@@ -4,99 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C3F2CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 12:35:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C162CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 12:35:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA2B36B008A; Wed, 14 Oct 2026 08:35:07 -0400 (EDT)
+	id 0CEB06B008C; Wed, 14 Oct 2026 08:35:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B53306B008C; Wed, 14 Oct 2026 08:35:07 -0400 (EDT)
+	id 0A5766B0092; Wed, 14 Oct 2026 08:35:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A68E06B0092; Wed, 14 Oct 2026 08:35:07 -0400 (EDT)
+	id EFD2C6B0095; Wed, 14 Oct 2026 08:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C5536B008A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:35:07 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C754A120508
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:35:06 +0000 (UTC)
-X-FDA: 85321176612.15.23AEA0C
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7D6D81C0004
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:35:04 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=PEsyjnDv;
-	spf=pass (imf20.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C17636B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:35:15 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 454B6A0554
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:35:15 +0000 (UTC)
+X-FDA: 85321176990.24.636E13C
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 68BE218000D
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:35:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DnjAVCAY;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791981305;
+	s=arc-20220608; t=1791981313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=deI6tRQ3FBGqgf5VLrNCIzeDLo8uR0T/R2GhdiHbgig=;
-	b=xiu7NcfINeYUx63faqh+QKtYDE4gPh4v20hquIEKv+TRGUEpv0YJd1Reoafh/ie4kBa4UI
-	H/xxnpHhHh4TAcoK1q10EA0jtCEVjRLLVGnoKTmEgndmWUIq+CI8NzjqxOKuv4aTJ74iYB
-	jYrdTZYY5errnxq4J5QXzAlD2AIxLnA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=PEsyjnDv;
-	spf=pass (imf20.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+	bh=QmQpU9PI8un7KuCGa3rKdlGVWqm4zvZIc3vocEo9k9Q=;
+	b=8BsxppIOsplVEn2y4lRcR45ZS0XDL+JVQy76ib0ZkIiEyF1dsLjksF8Uqayx1WZSZKt3px
+	dyK6vFjLumOV3/AnRSatDtjCDL1GwDmSREUb23WpcqDfQIMMlRX3ATQw9bbdTbn92eJ7bl
+	HTmxUQTEnU1eOwK37krHkynm4U60ylg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791981305;
-	b=ACjbrjX5tDbYmmXhH7Nc33ehd4vccJDQmgn30ZK/P6ddqhWy/nT3zJfBkJ3S9G3hzfVoNt
-	y/8xCaH6wZ16ZBuKDnOH7P37y6joPujBX3qJiqznQ+AsY5mXfwKjlibIl5whFeQWtm6rwO
-	FmvfSX68LdHpD/ofTwtHKaIWZmtwM0c=
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4j4Vyr23mFzMlTH;
-	Wed, 14 Oct 2026 14:35:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1791981300;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=deI6tRQ3FBGqgf5VLrNCIzeDLo8uR0T/R2GhdiHbgig=;
-	b=PEsyjnDveHgEGz6sTplxOjMmvpcUgyxRYPtDZ0CtqKD1uV4YZIv/jEDDqTeOT8w/DRqJmj
-	1iw6VDB3vWUPqBbhJ3C27sf33T97t74lvpyqZ7sEAE57IkAOUXB9EjILmBLyAXb/RSCirM
-	fBbCbwn9eSNoAViH48ZdNCnSp1M0V0rySxXNHSnA5v4kiiHmVesC8/7DGTgLPmr6cyoGxt
-	AX3KvQtnWgJwq6/qn/RzTC4YSByjbSg0O9P+IQA5iTvSCxvyNBATujaosmwO3iiCmWKQqS
-	B2n1gO3y+RWhSMaI9A9m2RhGynCe7RK0HcVPPbLtZMUwkmRyANXV/k2KuFVt+w==
-Message-ID: <dfa05908286b5e5684ea0002dde1ee99627154a4.camel@mailbox.org>
-Subject: Re: [PATCH] Docs/admin-guide/mm/damon/lru_sort: fix grammar and
- stlye
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	 <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
-	 <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
-	 <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	 <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
-	 <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	t=1791981313;
+	b=iHgXRd4sXNEqwK+Cx2cp96hXdeUAmsAL5ZbAZH4zC2iVcmUHc9odf60qHo1EDM4mVPcz7u
+	+6gpDnmrt9Pl71A43y9BHh7o8oWYoAX6U7QP98RuPhF29rnpl5j2LMVS74joxIXLPuWwT1
+	Hp/ccPG/1GF6R37Rkvdpj+h+BbR1mV4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DnjAVCAY;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91bb5795792so2200096d6.2
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:35:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1791981312; x=1792586112; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QmQpU9PI8un7KuCGa3rKdlGVWqm4zvZIc3vocEo9k9Q=;
+        b=DnjAVCAYNq4Ni+Ijsv8DNS3fOXcYvVi73Z+icTTBe1SYUf7aitotJhabCjEhnSTRLN
+         sG8qCwDdUwk47A4KX3O3Tda0SepdXKrfgoKIX1S8dtrvAF6ic7RE6BS6/gDdoJp93oVm
+         7Pt2kjKoSe45G2IQZEhqarNBjvyHMr/f/edj0ctAZFXwinfsRdpHHITpYO7tsaAni9dJ
+         fFqmlIKbiBkQV8q2odSUXgu2VFHkFMcbzET7WHJxtrkI32Gbe+Yd3FjoN5rqYTD/8ldb
+         uIloOPymL8avyK0ST0wCxSZ44m9/jdhF+KK1weS3l4jXUMGobllp6zHRK1EJvxBHCRPt
+         QSkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791981312; x=1792586112;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QmQpU9PI8un7KuCGa3rKdlGVWqm4zvZIc3vocEo9k9Q=;
+        b=If+FslXQiAbozEnC4kF4RbI2lyluBb+w+5rDjjgjjmkb88yO8RZQZ5IanMMKk8ZMbu
+         vtlDdUZhmOVwYkYn5KsT2ZwQnRpjHcfdFYSHJeh0DolMsEDSrOdG+tkLdsLQBZ1N/HjF
+         NzBSkyyKLYItHYk8RZ4vA0ibhujQErNqjVSiGSpdmOHoPGXkGxTboHOuD6b8KLuTC7nN
+         ZDLaull18/wPr2qi0KKdJxfGCwU1177h+75o8GSYYqwy43VP20xFBSu2Tz5vZVsSiXM0
+         kA3UctoL1UP+JwkbHAaUb+IgO45PajfyfPRIYJmQ8gyqp9LmTrPIlYEdN1VpApT0GMkG
+         0jSg==
+X-Forwarded-Encrypted: i=1; AKwUvBwO7HsKqMV5R+YZ+Gjrk84oqtC/Jf+thX0qRzCoedfar7WcQ2Ypenf8+pjYUj6N6IKfOgg3amEeDQ==@kvack.org
+X-Gm-Message-State: AFq9FYLkEIAgUIAJr3xeJs7uTW5dH2tpYCrHDHM1jA9tW2VNWagsdJSB
+	zwPrRwnib/L0Sk3T9LiUgoCvqLsaz+ysif87jck/VS6stV0qlYpB7YzIWxJBorWrFfI=
+X-Gm-Gg: AYBFou3ar0K9viUOO6a6RoeXAsSwJg9zrZLILcJvUqGnwDMBD/A8P0P7I3ZlUyep7xJ
+	ymbwNvEl554hVxj+zNZXXeahENewFBHT+88sSL4XAogy9tHY5ckkcoEW2Os/69MBDfnHUkyoKSk
+	h40OwpUC4OCT4YHoI1+2awvVyrB65ImilL635otMnPGvE4JD0lTeBz+hAETI/JxPcrVMhqIWDUd
+	KtYeGMETxlLC7ljNRH9qEDO4WW1aNWJ6PK/LXcNKaMvGfTpzioJ7yLsRy8S+ZVNeibI1SWO6L54
+	eWZS8tuqv7C0sVfu/lozhBHj98NYKVhFSWpHsAjyUKtwLUEwaEZA/LcWjapicGObHWYSc6Yo2bw
+	sbiuigmikf7S8K87W+2syANFCkrQgQpPLZyCZdrjEHh60Ud0hcdCEMk+p5Yk3HEjTdMKbboXnca
+	kaAMMoeHrWQ2Ynqeggcf3I7gS4t3a39NcVL8FkmQKsgnlCo9B6bix6zIbHnY4uUoXsxdN4GG7gG
+	ycjGrYU0UHVWDsR4g+wtQiwWIqFTuM8jVu8CIDNKS9psmNBwQwS21aU
+X-Received: by 2002:a05:620a:d95:b0:93e:e376:9b1d with SMTP id af79cd13be357-93ee376b37cmr1452850885a.9.1791981312473;
+        Wed, 14 Oct 2026 05:35:12 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef502608bsm483806485a.25.2026.10.14.05.35.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 05:35:12 -0700 (PDT)
+Date: Wed, 14 Oct 2026 08:35:09 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	eddyz87@gmail.com, memxor@gmail.com, mingo@redhat.com, peterz@infradead.org, 
+	juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, 
+	david@kernel.org, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, 
+	shakeel.butt@linux.dev, roman.gushchin@linux.dev, yu.c.chen@intel.com, 
+	zhao1.liu@intel.com, bpf@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Date: Wed, 14 Oct 2026 14:34:51 +0200
-In-Reply-To: <20261014003258.142926-1-sj@kernel.org>
-References: <20261014003258.142926-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+Subject: Re: [RFC PATCH v2 0/3] BPF-based per-cgroup NUMA balancing mode
+ selection
+Message-ID: <as92ra-Ko2c7OdRS@gourry-fedora-PF4VCD3F>
+References: <20261012120438.52849-1-laoar.shao@gmail.com>
+ <as5RFhW1Ch8ta5nZ@gourry-fedora-PF4VCD3F>
+ <CALOAHbCOTSOPTzoSqKoBJZ56o0pfW_dGQ7ZM_e1jT9N16z3VPQ@mail.gmail.com>
 MIME-Version: 1.0
-X-MBO-RS-META: ko86gy8rzxz8iyf6ysb7mp1kfuurbwa6
-X-MBO-RS-ID: 94973415d2ae5663d4b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALOAHbCOTSOPTzoSqKoBJZ56o0pfW_dGQ7ZM_e1jT9N16z3VPQ@mail.gmail.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 68BE218000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7D6D81C0004
-X-Stat-Signature: sdwo3yjkiee48w311i1ykefwqz8paojc
-X-HE-Tag: 1791981304-768025
-X-HE-Meta: U2FsdGVkX1+4jgf9xY4RDnGmoCpFcHk2me8wQSpV+IdP4zMpgczsRAdogmtdRmCQRfoMzG7SAMBbcTpId3Rb8ueUiIOF0l6sL/t38RCwlwtMsVpqFRVL8KLl1rJuK7rwEo6LjDy6dmq2CcakU+SQyRLhne5T18YnYvoN8GoQ3oM9FTK01aRHNlzvzASrUO8gtNSnbAo8mUxWnDDLn65GxQLlf6xgRFq51haQVqPYg+JU2bw6yEd9N0R9HclUWXFRSpYdLtn5ECy3IXwoCZaUANW83qfvMyWIUOFGbfwxs9MDJDEZnlgNLLKTCdRaLx6xz1Pgmvzc3ZXD3tGeFF1PhJ/j8oxWC98BpXnXSW1ImiXh1y4OeWgd4+uCuaaGSjC9KIZLzJleWhZtfNssUX4uG8eUo7ABJgHTtw1soXjoILxl0sGP0afIhQrJM58g2A1bv7KeCuta74coEbNxNnnovF8sLyp/ROzI+kD8LUOIS2rsSik025x+pweuM5GxtQOxzacTOzZamWkFNYSApxQJeOqdWu4JM2muhaeNCBgKgmNRTJPOdIpUkHLRPZhORBArwW5YXUI0Q+y03z/nAthtD4L1bEO1Sbk2z+eTAdZIvTZwRH7mZ+voqGKovszf1UWwBuRmOVfD7yzmKehax+uUpyqxUoiFzLPVGHM9PZmTfO7rU/MFdotCp0Oyfrjd/fiN2lUKrlnJN0Ows702fvSGIP6cDGK3d6+ZpiookzlldyNltMu8dp1nYxHas8nhOIg/1PEOeVi+IEjbrZjr4+yomCLT1nBQp9jB4v6MzDGmdIojA8XTHxWQT02GkxpFj4cqIEi9BVtFRmUkuEfUWb02RVZZy1gZ+RjVmfge819a9heFvW3t4HqrQIWgyxQcBps0Bmji55fbAIlAi9NyR+ipg98bhNIp4QCpt6z3kh3ImFX/PSSYHA41LHaL4MLZhOZyBWhZsDClJcpLggEeCJi
- KFmSgfuR
- +FmmoKDhe4AuSPdMYmLeYmBuC5wqZedz6bZtIqV3ye25TOaYK1aXqwnjdDnhgr9UtpcZ0ohUivj5ETck2ST4oeGBsZcfqnke+2XDteuc0LuuCb+428a8n3koVx/+4C3NRKlXE26I5XRglQKVMNzW6gh6viAZQVF0YnghC2STfx0FrgdTpN7nmrBPJKje1k0mWfXSF7sn5jim8/as0G31Z+BShNm0Xd6q4pRiCdm3pZ84bsZjT8CaOqiprYmxGDTaOF7hWBjIPQ7QiZsve+GE0ZOU2RUra0uL0llEQ6NjcZ0E47n8uvEEwbEKk0NgCGzu4K+ITvphgQW6uPChiubT5CqukeQnVV2dqqE3PuPZ0bBXwasewdJDSgrqOOTExNX1Ke9Yr
+X-Stat-Signature: oj6o5npf1bokub7haksrgi36kbmjdscc
+X-HE-Tag: 1791981313-843220
+X-HE-Meta: U2FsdGVkX1+erWi46PlCtwjeGQzgqEj4zSF+AHxMUkPriUIgXHNwfLumfaKvIN9sVI4n3SDeGn2d7pib560hFh9S0at0uadDOlLjfa0XrSypYVWuJ/w8UmQ6i4teEHRqaB2XPdgiQrD/diB0owOKhn2g0WFFHCDtGprO17sMDVCcJcGcFOxQrww3isug0n7YnPxWLn+mz7gcKQiYfyonnZTmK45BGUvxfsMvGxrOq/c/D7EiZTHu/cdpPcomK14IWPeu2JSARoFWnpwEnElGB8ZgLZr7lfY8TBQHdONzSmAQm2u6Gs83mjBvEzczowKpXc3V/cZGRN7Re+zFm39tUkdm2waDZG0wuF6DoQ7E5GoWJ164vqAvJEjW15QLR4wq3PlMApNaLU6bZqNe0E4/J4VM8FuKXwzzp3UkZm7iSMz89FxKZu0wy+lUOfyCO5mc0xF3POq/pHl4wQNXiOP0FvleEB6NOrVW+hDCQl/0iTahbiFL4g8F5f1l3fL/sze5WmJ9SVmu/Ptv9iwjgXqY2cef8tuRasT9KlIRH5RNjjE0Oqk/UuhPCotbDPH3RyUzHjVZm79mk5etp60K1R2ER3soUZ18s7U/FYJUExf6KqmEucPvCBSgO2CM2itQzf3Oh+bpEp0+49IXjQdfdT2xWsFBd4oQ7ncg0SQAINPqbOw74axJxcu9DyFpoJG3WsCG+heSGo4us27t/l8uTLMbUJ8sVRRhtw2vlctt37cNEf370oZYAJDfv0mzcFYnZfdOYSDBbmu9lGxcw4saXq0fgXyBl+frpqXkILtSFQicv/qkcIdS/N9p/RCXSbS8ZmlWwn+FUPxDafPa4QsH/EPqLm5N3G6NGCvnAkzyuiNIzvhKdEicRyGVSvJWBvsdTEU74KJojn5azYr5uUgL66mXveqaqMUTtv5r7euoIapz2KReO3zIC6ndUNPK7sNuQPptYy9loBvq/GYIeWm8mDs
+ ZzlUFygQ
+ xWTqbS6JAg6BQoLCeipIJtoscya2eDOv9DLCiWI7U2b4Rgd6hOb8LbYS5fAqo41jrKQxOXF1Jp6MjxHMXAHAYbEQBQgZnt5npmecm+6dpocn4L8KroHOPbFb0R9Xv76AcTXfvjOEPk6bvdfAd8aq/50lKbnxnn7dnmdu5b0evNZOB6QACBwXTpmgYrKrYvRB/GgoByyCVc+4mj0GdfNco9Rg9YGHrNmDV0BKX5QENdVgRIvwGryM9MpWJxkQe9SANcmeuONBnER3OPUQYh4dmhHNzbNWqQ6cdEvaJDRU7+NLB6hVgACz7GL4hv1DdBrunoy13LRIz9slRQnhHxy0iEdR4HKYEyp6YC22xiY78OFviDc4UZu10h8QfAe/7X18Kglk5PBiWmOefBXp0GeKPuFucFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,356 +127,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+On Wed, Oct 14, 2026 at 11:08:40AM +0800, Yafang Shao wrote:
+> >
+> > I also concur with Tejun that ops seems like overkill for this feature,
+> > this seems like something that can already be managed.
+> 
+> Tejun also suggested starting with a smaller kfunc rather than the
+> heavyweight struct_ops, in a separate mailing list thread. I agree
+> that this would be a good starting point.
+> 
+> >
+> > For example, why not add a new numa balancing mode bit that says
+> > "enabled but only for explicitly opted in tasks" and then ignore the
+> > global default mempolicy, e.g.:
+> >
+> >   if (numab_mode & NUMA_BALANCING_OPT_IN &&
+> >       mpol != default &&
+> >       mpol.flags & MPOL_F_NUMA_BALANCING)
+> >       /* do balancing */
+> 
+> Another option would be to add a cgroup::numab_mode field (without
+> exposing a cgroupfs interface file for now) to implement per-cgroup
+> numab mode. I will think it over, considering both your suggestion and
+> Tejun's.
+> 
 
-On Tue, 2026-10-13 at 17:32 -0700, SJ Park wrote:
-> Hi Manuel,
->=20
-> On Tue, 13 Oct 2026 21:13:27 +0200 Manuel Ebner <manuelebnerli@mailbox.or=
-g> wrote:
->=20
-> > mention 'least-recently-used' AKA lru at the beginning
->=20
-> I think the readers would know what LRU means, and therefore
-> 'least-recently-used' is not needed.
+I don't have a strong feeling either way, if Tejun thinks a kfunc is
+acceptable here then that's probably preferable to any new UAPI changes
+until the value is proven.
 
-I'm probably one of the few that doesn't know. I didn't think of the whole =
-picture.
-You are right.
-
->=20
-> > set as -> set to
->=20
-> This commit message is using incomplete sentences and describing only a f=
-ew of
-> changes.=C2=A0 Please make it to use complete sentences and cover all cha=
-nges.
-
-Will do.
-
->=20
-> >=20
-> > Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-> > ---
-> > =C2=A0.../admin-guide/mm/damon/lru_sort.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 | 51 ++++++++++---------
-> > =C2=A01 file changed, 26 insertions(+), 25 deletions(-)
-> >=20
-> > diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Document=
-ation/admin-guide/mm/damon/lru_sort.rst
-> > index 0c04d238ed..3b6d122887 100644
-> > --- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-> > +++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-> > @@ -4,8 +4,9 @@
-> > =C2=A0DAMON-based LRU-lists Sorting
-> > =C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
-> > =C2=A0
-> > -DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel modu=
-le that
-> > -aimed to be used for proactive and lightweight data access pattern bas=
-ed
-> > +DAMON-based least-recently-used-lists (short LRU-lists) Sorting
-> > +(DAMON_LRU_SORT) is a static kernel module that aims to be used
-> > +for proactive and lightweight data access pattern based
->=20
-> As I mentioned above, I don't think the above change is needed.
-
-K
-
-> > =C2=A0(de)prioritization of pages on their LRU-lists for making LRU-lis=
-ts a more
-> > =C2=A0trustworthy data access pattern source.
-> > =C2=A0
-> > @@ -17,7 +18,7 @@ systems, LRU lists are normally not proactively sorte=
-d but partially and
-> >  As page-granularity access checking overhead could be significant on h=
-uge
-
-Is this huge as in big or huge pages. For the latter I would put it: ``huge=
- page``-systems
-or `huge page`-systems.
-
-> >  systems, LRU lists are normally not proactively sorted but partially a=
-nd
-> > =C2=A0reactively sorted for special events including specific user requ=
-ests, system
-> > =C2=A0calls and memory pressure.=C2=A0 As a result, LRU lists are somet=
-imes not so
-> > =C2=A0perfectly prepared to be used as a trustworthy access pattern sou=
-rce for some
-> > -situations including reclamation target pages selection under sudden m=
-emory
-> > +situations including reclamation of target pages selection under sudde=
-n memory
-> > =C2=A0pressure.
->=20
-> I cannot find what's wrong with the original sentence.=C2=A0 Could you ex=
-palin?
-> Also, I think the updated sentence is rather easier to misread.
-
-It's two long sentences, thus (I think) hard to understand. I _rewrote_ it =
-this way:
-
-As page-granularity access checking overhead could be significant on huge s=
-ystems,
-LRU lists are normally not fully nor proactively sorted but rather partiall=
-y=20
-and reactively sorted for special events.  These events include specific us=
-er requests,
-system calls and memory pressure.  As a result, LRU lists are sometimes not
-suitable to be used as a trustworthy access pattern source. These situation=
-s=C2=A0
-including reclamation target page selection under sudden memory pressure.
-
-Please note:
-  target pages selection
-->target page selection
-
-> > =C2=A0
-> > =C2=A0Because DAMON can identify access patterns of best-effort accurac=
-y while
-> > @@ -28,9 +29,9 @@ pattern source with low and controlled overhead.
-> > =C2=A0How It Works?
-> > =C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =C2=A0
-> > -DAMON_LRU_SORT finds hot pages (pages of memory regions that showing a=
-ccess
-> > +DAMON_LRU_SORT finds hot pages (pages of memory regions that show acce=
-ss
-> > =C2=A0rates that higher than a user-specified threshold) and cold pages=
- (pages of
->=20
-> rates that "are" higher?
-... that show access rates that are higher ...
-and=20
-
->=20
-> > -memory regions that showing no access for a time that longer than a
-> > +memory regions that show no access for a time that longer than a
-
-... show no access for a duration that is longer than a=20
-
-Then ack.
-
-> > =C2=A0user-specified threshold) using DAMON, and prioritizes hot pages =
-while
-> > =C2=A0deprioritizing cold pages on their LRU-lists.=C2=A0 To avoid it c=
-onsuming too much
-> > =C2=A0CPU for the prioritizations, a CPU time usage limit can be config=
-ured.=C2=A0 Under
-> > @@ -63,10 +64,10 @@ enabled
-> > =C2=A0
-> > =C2=A0Enable or disable DAMON_LRU_SORT.
-> > =C2=A0
-> > -You can enable DAMON_LRU_SORT by setting the value of this parameter a=
-s ``Y``.
-> > -Setting it as ``N`` disables DAMON_LRU_SORT.=C2=A0 Note that DAMON_LRU=
-_SORT could do
-> > +You can enable DAMON_LRU_SORT by setting the value of this parameter t=
-o ``Y``.
-> > +Setting it to ``N`` disables DAMON_LRU_SORT.=C2=A0 Note that DAMON_LRU=
-_SORT could do
-> > =C2=A0no real monitoring and LRU-lists sorting due to the watermarks-ba=
-sed activation
-> > -condition.=C2=A0 Refer to below descriptions for the watermarks parame=
-ter for this.
-> > +condition.=C2=A0 Refer to below descriptions of the watermarks paramet=
-er for this.
-> > =C2=A0
-> > =C2=A0commit_inputs
-> > =C2=A0-------------
-> > @@ -74,9 +75,9 @@ commit_inputs
-> > =C2=A0Make DAMON_LRU_SORT reads the input parameters again, except ``en=
-abled``.
-> > =C2=A0
-> > =C2=A0Input parameters that updated while DAMON_LRU_SORT is running are=
- not applied
-> > -by default.=C2=A0 Once this parameter is set as ``Y``, DAMON_LRU_SORT =
-reads values
-> > +by default.=C2=A0 Once this parameter is set to ``Y``, DAMON_LRU_SORT =
-reads values
-> > =C2=A0of parameters except ``enabled`` again.=C2=A0 Once the re-reading=
- is done, this
-> > -parameter is set as ``N``.=C2=A0 If invalid parameters are found while=
- the
-> > +parameter is set to ``N``.=C2=A0 If invalid parameters are found while=
- the
-> > =C2=A0re-reading, DAMON_LRU_SORT will be disabled.
-> > =C2=A0
-> > =C2=A0Once ``Y`` is written to this parameter, the user must not write =
-to any
-> > @@ -86,37 +87,37 @@ violate this rule, the kernel may exhibit undefined=
- behavior.
-> > =C2=A0active_mem_bp
-> > =C2=A0-------------
-> > =C2=A0
-> > -Desired active to [in]active memory ratio in bp (1/10,000).
-> > +Desired active to (in)active memory ratio in bp (1/10,000).
->=20
-> I think use of brackets is also fine.=C2=A0 Let me know if I'm missing so=
-mething.
-
-There is 2x (de)prioritization, 6x [de]prioritizations, 2x[in]active and a =
-few more in the
-file. They are all fine by themself, but not mixed. [] or ()?
-
->=20
-> > =C2=A0
-> > =C2=A0While keeping the caps that set by other quotas, DAMON_LRU_SORT a=
-utomatically
-> > =C2=A0increases and decreases the effective level of the quota aiming t=
-he LRU
-> > -[de]prioritizations of the hot and cold memory resulting in this activ=
-e to
-> > -[in]active memory ratio.=C2=A0 Value zero means disabling this auto-tu=
-ning feature.
-> > +(de)prioritizations of the hot and cold memory resulting in this activ=
-e to
-> > +(in)active memory ratio.=C2=A0 Value zero means disabling this auto-tu=
-ning feature.
->=20
-> Ditto.
->=20
-> > =C2=A0
-> > =C2=A0Disabled by default.
-> > =C2=A0
-> > =C2=A0autotune_monitoring_intervals
-> > =C2=A0-----------------------------
-> > =C2=A0
-> > -If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes =
-DAMON's
-> > +If this parameter is set to ``Y``, DAMON_LRU_SORT automatically tunes =
-DAMON's
-> > =C2=A0sampling and aggregation intervals.=C2=A0 The auto-tuning aims to=
- capture meaningful
-> > =C2=A0amount of access events in each DAMON-snapshot, while keeping the=
- sampling
-> > -interval 5 milliseconds in minimum, and 10 seconds in maximum.=C2=A0 S=
-etting this as
-> > -``N`` disables the auto-tuning.
-> > +interval to 5 milliseconds in minimum, and to 10 seconds in maximum.=
-=C2=A0 Setting this
-> > +to ``N`` disables the auto-tuning.
-> > =C2=A0
-> > =C2=A0Disabled by default.
-> > =C2=A0
-> > =C2=A0filter_young_pages
-> > =C2=A0------------------
-> > =C2=A0
-> > -Filter [non-]young pages accordingly for LRU [de]prioritizations.
-> > +Filter (non-)young pages accordingly for LRU (de)prioritizations.
->=20
-> Ditto.
->=20
-> > =C2=A0
-> > =C2=A0If this is set, check page level access (youngness) once again be=
-fore each
-> > -LRU [de]prioritization operation.=C2=A0 LRU prioritization operation i=
-s skipped
-> > +LRU (de)prioritization operation.=C2=A0 LRU prioritization operation i=
-s skipped
->=20
-> Ditto.
->=20
-> > =C2=A0if the page has not accessed since the last check (not young).=C2=
-=A0 LRU
-> > =C2=A0deprioritization operation is skipped if the page has accessed si=
-nce the
-> > =C2=A0last check (young).=C2=A0 The feature is enabled or disabled if t=
-his parameter is
-> > -set as ``Y`` or ``N``, respectively.
-> > +set to ``Y`` or ``N``, respectively.
-> > =C2=A0
-> > =C2=A0Disabled by default.
-> > =C2=A0
-> > @@ -235,7 +236,7 @@ max_nr_regions
-> > =C2=A0Maximum number of monitoring regions.
-> > =C2=A0
-> > =C2=A0The maximum number of monitoring regions of DAMON for the cold me=
-mory
-> > -monitoring.=C2=A0 This can be used to set upper-bound of the monitorin=
-g overhead.
-> > +monitoring.=C2=A0 This can be used to set the upper-bound of the monit=
-oring overhead.
-> > =C2=A0However, setting this too low could result in bad monitoring qual=
-ity.=C2=A0 Please
-> > =C2=A0refer to the DAMON documentation (:doc:`usage`) for more detail.=
-=C2=A0 1000 by
-> > =C2=A0defaults.
-> > @@ -268,7 +269,7 @@ This parameter is for setting and getting the :ref:=
-`address unit
-> > =C2=A0
-> > =C2=A0``monitor_region_start`` and ``monitor_region_end`` should be pro=
-vided in this
-> > =C2=A0unit.=C2=A0 For example, let's suppose ``addr_unit``, ``monitor_r=
-egion_start`` and
-> > -``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respecti=
-vely.
-> > +``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respecti=
-vely.
-> > =C2=A0Then DAMON_LRU_SORT will work for 10 KiB length of physical addre=
-ss range that
-> > =C2=A0starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
-> > =C2=A0
-> > @@ -291,22 +292,22 @@ If DAMON_LRU_SORT is enabled, this becomes the PI=
-D of the worker thread.=C2=A0 Else,
-> > =C2=A0nr_lru_sort_tried_hot_regions
-> > =C2=A0-----------------------------
-> > =C2=A0
-> > -Number of hot memory regions that tried to be LRU-sorted.
-> > +Number of hot memory regions that try to be LRU-sorted.
->=20
-> that were tried to be ?
-
-Ack. Now I know why it's in the past.
-
-> > =C2=A0
-> > =C2=A0bytes_lru_sort_tried_hot_regions
-> > =C2=A0--------------------------------
-> > =C2=A0
-> > -Total bytes of hot memory regions that tried to be LRU-sorted.
-> > +Total bytes of hot memory regions that try to be LRU-sorted.
->=20
-> that were tried to be ?
-
-Ack.
-
->=20
-> > =C2=A0
-> > =C2=A0nr_lru_sorted_hot_regions
-> > =C2=A0-------------------------
-> > =C2=A0
-> > -Number of hot memory regions that successfully be LRU-sorted.
-> > +Number of hot memory regions that are successfully LRU-sorted.
->=20
-> that were ?
-
-Ack.
-
->=20
-> > =C2=A0
-> > =C2=A0bytes_lru_sorted_hot_regions
-> > =C2=A0----------------------------
-> > =C2=A0
-> > -Total bytes of hot memory regions that successfully be LRU-sorted.
-> > +Total bytes of hot memory regions that are successfully LRU-sorted.
->=20
-> that were ?
-
-Ack.
-
->=20
-> > =C2=A0
-> > =C2=A0nr_hot_quota_exceeds
-> > =C2=A0--------------------
-> > --=20
-> > 2.55.0
->=20
->=20
-> Thanks,
-> SJ
-
-Thanks for the feedback
- Manuel
+Thank you for the consideration,
+~Gregory
 
