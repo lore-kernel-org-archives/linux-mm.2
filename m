@@ -4,124 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78FECCC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 14:29:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD81BCC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 14:43:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D2F36B008C; Wed, 14 Oct 2026 10:29:34 -0400 (EDT)
+	id 4006F6B0088; Wed, 14 Oct 2026 10:43:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 484056B0092; Wed, 14 Oct 2026 10:29:34 -0400 (EDT)
+	id 3B12F6B008A; Wed, 14 Oct 2026 10:43:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 372CB6B0095; Wed, 14 Oct 2026 10:29:34 -0400 (EDT)
+	id 2CAC96B008C; Wed, 14 Oct 2026 10:43:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F2766B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:29:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B39CA03CC
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:29:33 +0000 (UTC)
-X-FDA: 85321465026.25.98DF05E
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 590231C0006
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:29:30 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="nHaT7s c";
-	spf=pass (imf18.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E08B86B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:43:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 41F1F1605CB
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:43:05 +0000 (UTC)
+X-FDA: 85321499130.01.DE7F085
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8572EA000A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:43:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b="RBgg/XHZ";
+	spf=pass (imf25.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791988983;
+	b=iEozADJUVSdvBG9Cmvw4dLcz1RHjVygdxuE40OBVDt97iDwj64MbAV/Jp3979S2CLYUGje
+	LBlZQW0GZy7ceS0GunJqPfm5ul/AC1o6NpVgJ338kH6Ka85ci0ssZv+zKqHrpSAjazjhSD
+	3FE0H374FUeY4SfdRuaTBZMHOd4Dx3s=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b="RBgg/XHZ";
+	spf=pass (imf25.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791988170;
+	s=arc-20220608; t=1791988983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rsATh2NvdfjYssyKDxNkJtZ2YWaOMp/Hif/9TBiSHDk=;
-	b=J5kip6ZUQunIG0eNCFIF+85w2H6BE7Mb1LbQGG2z5nbWqMwBQ9cn3pk1fQZgiCQ2fVuMMd
-	mPddnm3k7Ru7FdACnYe73MmwATjwQkABBxi99UKL/lA1/35EnPSwOdIZcmNEXEb6A2T5ty
-	BTXXK4aVFrLxoAvnMDepf5G1OmqXkkQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791988170;
-	b=yf2VmGgtL818FZj5Y5dqkV8sWliCZVOfUtew7Xk+Q2MuY4MGBfsrsYTdImKH/Vcdlf2ozn
-	+fpLBF2R+T7Uks7F/2wy0bwiEvMzRui9HubOlhTAKEDV9Nx/8Knwt83LlmVLEPj546HThx
-	dli+Vsjz8v0F+Dtyak5oTAeeKug7AWo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="nHaT7s c";
-	spf=pass (imf18.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=rsATh2NvdfjYssyKDxNkJtZ2YWaOMp/Hif/9TBiSHDk=; b=nHaT7s
-	cXU1WXU6CO3hd6w6vappdCuPeAFBZCKamSkG2eanWhFG5ef7XFK4lpomusUIbqBABgVlsT+XlXteg
-	2mMFrQwqUTSZ9kP3F3MsFx2A46M9MTDc0ndj67/y9ni7/JAghqLwhiddCULH6Q1yu9ZYtETTjkeNO
-	WqIwl2/gjC7jTKra5m8FJ7seZU+T8PpPCqCVXYaxUZb9Vueaa3fHz56WJjILh7DU5BUqAW2ypWDkV
-	gdUF9yM1Esri2XdhHpZmMBTMs/xp+eYfN2JpZuGXTwufa6A/eDVi17XuSoPr8uVW145eIVfTcsiq4
-	ANwzrdEJzrUvdGynMUHv6rgUtkSg==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xGzxS-00000007OmE-0fd6;
-	Wed, 14 Oct 2026 14:27:54 +0000
-Message-ID: <038db2e68469e74077264a490e104391bdffe35e.camel@surriel.com>
-Subject: Re: [RFC PATCH 2/5] mm/page_alloc: count a merged buddy's pages
- under the merged type
-From: Rik van Riel <riel@surriel.com>
-To: Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka	
- <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko	
- <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, Johannes
- Weiner	 <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Kairui Song
- <kasong@tencent.com>,  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,  Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
- <weixugc@google.com>,  Baoquan He <baoquan.he@linux.dev>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, David Hildenbrand	 <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"	 <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Date: Wed, 14 Oct 2026 10:27:54 -0400
-In-Reply-To: <55f51fb8-9777-424a-b45f-a6a5bd9a4693@arm.com>
-References: <20261007021250.1665929-1-riel@surriel.com>
-	 <20261007021250.1665929-3-riel@surriel.com>
-	 <55f51fb8-9777-424a-b45f-a6a5bd9a4693@arm.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	bh=t/UZtKfAP/AOsCTLOqASa/QaRlwucOv4zkWaYhC/wA0=;
+	b=tza0x/HFB6Zws8hMy2Yfxu8h2N5iYrFfb3ZOBjZoStRjpq6ecd3YilL2NOELFePNu86O7I
+	oxO6axSGda7JHjNeMANvQUNmPbjp7sLT9V9cu3aLmxGBFlKlhz0BFUQZi9Qnzwes3C0yFT
+	AeWCbvrvVdJs+vu1TshsZQIno3m4a3o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
+	:From; bh=t/UZtKfAP/AOsCTLOqASa/QaRlwucOv4zkWaYhC/wA0=; b=RBgg/XHZEF5N4a/JZiG
+	jP43gQhG6kJRhxVD+UVnG/cpXJfYdqXv+tkYtUFWvu6oYafc9fBg4QjYzBGXa9AquIuLEEhhsZ2EU
+	3e6+ppoTzCf9+Ht+c/c1MEsntPoSdw+I4P7Ux97Xk6Ji/bBfgCGaJOM1/4+djhW00mZWnJkcGYLhw
+	sti2RK8i+TowPnAQf3dzTp2myVyqjW4kk2UZP9uNz7xKq/AksmQsbro1IeD1OOop2Tug24foQYmWl
+	ESOXF5pPFQ73IvLjxdZP/2NfWwwZ0ED2I1i3Sw1mId+dow5gCH2Agj8y4pY5Wkf4byiMFNIrK5Ick
+	t3fAIp+ysN+vxGg==;
+Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <khorenko@virtuozzo.com>)
+	id 1xH08A-005A8J-2F;
+	Wed, 14 Oct 2026 16:42:30 +0200
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+Date: Wed, 14 Oct 2026 16:42:21 +0200
+Subject: [PATCH v2 1/2] mm/huge_memory: recheck a special PMD under the
+ lock in copy_huge_pmd()
 MIME-Version: 1.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 590231C0006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-1-e1548488fa68@virtuozzo.com>
+References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-0-e1548488fa68@virtuozzo.com>
+In-Reply-To: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-0-e1548488fa68@virtuozzo.com>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
+ =?utf-8?q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>, 
+ dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, stable@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3447;
+ i=khorenko@virtuozzo.com; h=from:subject:message-id;
+ bh=24xsS9uHXjbHNUmfuAgnap1aLrWSBY6Mx7i1m77Ij0I=;
+ b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBqz5TUTk1Iq6n/aWWXcVJlaLQNo84wp5TFDgCA1
+ cPpv8dcbTSJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCas+U1AAKCRBRlgpH+WFc
+ KnVYD/wNHthVuGM6T21qF1NC3MBC5WWWYhNN2wSERL0OJgSUtoxYYWvBeZGsCrUsmlg6MjLeCjV
+ 5Zqdhw5Khly/2gpOYdz1bYUYQS+6+4avGm/L9e/3h+mUkBjEr1Z+p5g7rOoEe9QeAGh7MjoCw0n
+ PEYr3RSsywRBLqHoN7iCxNJojbjEmlMgW28z46Cn2PoGPirti16ZxoWpmTvC6EZs8hWrYS/YYeN
+ xFTS4RAxPtk+xWGUeDP/jHeEniMBbEKf7/pNy54bbhxrD2Ln9p3EwanHm9V3noI2IFefm/QAvYg
+ QBG33/zassG97uUFEjsi6XY+qree+V11hln5c0t7mOpjAv7uc/bdY7hzM7GC4T09QSZvUCTiwYQ
+ Fj/VbO1VD8fqG3g45EiAoSOfUkUBdmPhhas2lw4qn5RnDAZHED1uAaFdJAAFBE33nF5aYB2Ehiq
+ VZNgSaqnUj5Quue405tJEhJVt0lD5DvR4qBskWeVIX5O8+V9v/S1OSPkV/vBj4sYNFhujEIKoCT
+ VYV71TiHUPiyFVQIhOk+RspeWyHi0nRK0KUUW0aXiuvhxDXFmc/qqQXgJE1pzRmGop/0uVgdX67
+ XkmRK24Xi41gpTDYGTXE0aZGvvT53/enIROVbAjb+j6k2l6Xx8tA3XOwxm7GyirCDUGC+LieM6f
+ CQsQZrrKGsQXv3Q==
+X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
+ fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8572EA000A
 X-Rspam-User: 
-X-Stat-Signature: nhw6nbwsf6do3kc4g86kz84j386jgnb5
-X-HE-Tag: 1791988170-681061
-X-HE-Meta: U2FsdGVkX1/ymf7ORQ1YDCqVvEzhRRgPDMha3hLJkwk8ieXA/UFGH4jYcoxd15sHCoQiibRc/AyFAGEfbH9zvcwMHnRgzTts7J+w2RJln/5lN4hrZYHqon9KoBGsrEnx4Hn1Hxp7b6iMP2or5Yd72xMGvlFdpjwd4QlUbmUBhE7f9tipQVfFkhF9K3RypG7Y42ArmRjgd0mtKdlFVtbAzCEQmXo4odVIDvlU/Y6rHGUHzenE9gF7RQBfWMPYu2PVNJwzsQ9Oso2fS0VoXCSgE86YINZqS9nrJ4OE9E102CYcLl1gVEOzMoI8fJfngAMz8K6xpcKiPQs5Rfvf9rIOxtM6tuCdqwrxh4S3kH0BOLWrC5PejxWlpYrdhnTM85RsH4evtxSDW50xcwp9YAoFxhHJ2YXWjNJlGdUcYTA2YwbWGS6ZAtCUn9VDwAIuVRErRAXEjQ+u7Pg+Sta0fkw7uuWLZYYC4ik8Zvp02Lj9PIAXy7ISik7KpF0ccTQ4OtQEdQK0R5zQYXuqHVEWwb2b+159l5qGqmJaM6cjWUvrc140HpFXF60S42fW/m/0RgZ2kPa5/IDQ/Wa60CV8fvMB3JwBxT76E64cDqNqaNEQyUi7dYqv5tqjbmR+dP3MrR8inu/mlO1NhLiIJ+F/kpW5jmCw+ORoxRhxRzLFZz5Kgrg9o8diJFp9hkKMvbJfE+erjhTggIsgmrhT4ara2uglXPB7vC5O0M3Bj06WiSwWO3+9s/2BaeiR4ZRsQQBBjKRL1C4zeRoBB774irm8e0xWUVl6kBP7PilJ68CIq92f3s12dOlBkWiw3usq3s0ZKc/BHJE/vGrJHfxvYD6Hgm/XZhWNt17IDCzAnt04ZXrFP3uYnzoekX1SAmEWkRvlMvU6qD/6mT12lMToOF6UUKJnIabojUzndPnG5yzdSAQJ/QyGWrgr/pekM/nsNq7WxMizDOUwLx97HjCO/VJIais
- 2EH0LMlS
- slDJldAu4vNzqv6fkJuToGOWWC9R778xi7gI+/SxaKe6LPZj+p0l4IBB8fXDe7E/APF3pPNn2p/f4I3FSg6hDdSyVdk20cH46HBCKr6Iccay7fOIik1qafJqtW/wolfJCeYHx7IpGuPbHgDerUpvPGf3kfHNljeyp+Etp0cKfxQD6hpWwEKYElilr/DPM1M0leyKtxixZa9qttEyhR+M9ihdB/Asz3uD45+rQYVWZs2fmR5yXYFRobo5LaXwX1xilp2E3BTwDj4NabzQWr1o1QqjM+TA+PVsdrIZXTizmrAsbTzyDFkW5HpXjku9kGMET53uEFMxwHj9BP2mMEVlisfN377vkjVKPoBbzYnBr6wVjW3OpPV6R1K6G70vKjx3tD2b2JJrAlq5zQrQNDLJrjRILnrh7axsWb9ez2MvghqiXu5Wnw6HRJfFCgG+SQm3NcDPU
+X-Stat-Signature: 6q5jg1twsyh8jnmzamhjzqosbzr38a6d
+X-HE-Tag: 1791988983-232786
+X-HE-Meta: U2FsdGVkX1/QDD0+B8YL0nvkzjnX0d0+ytU1CGHxlaetdVN1KeGr/b+uDb9Qu2a0PXoO8MxNDfWo5suY/hNvssmOirAmJp7L6f1d9HEJWIl4mjDkSnacjzQF+MOqnuC8V5iaCCQmJjvpbp6VZo/puemmp+DZaV+bNZnO2E4Sn9aA8LCi1fJKIIsDuvpJtiwM3W8R3sQct4YdSv1QdwvoEgDnhwguSnlJ3MSvnkvzjWGRgcEMNQmVwvtQx4FEZJVDZPi3ZMPUfyegnn8XnRDzNWnc4o9BT//xTXWCbZment4jNgUF1eqMVo8WpX4gmLUjlEcotDI7QlyIx7nAY1rFI9uXbY8/Hg0kDU8E5rv7XKJjEdU4iLCcawB2N1MYsbJcaEjzzoPF3HkS3xUs6nvt2H2dcz1+PQrPtet/85RLt7nk1ssDDWoLb55O2hMQuJSvbTvgokGri6OzyqKBH+OUztUa64bzH+FHx3w/vTehsUfBRJ7mpYr5xx94+W+JHB2s9ADGiEFEJ+4hbaScSOZONmB3G3qMS32HPXERcr3diHf2OyflxQy4Jy4hWdDiZ9FUxHGEuOFpSQZ3HuHhLn3o9U53x3O8pVWcMdMdcg86TFRHtyTFpkzu+LBCoqZjJ2ZD28W53XKRz/XLu/cr5QWfm3dJ4ozwmXTMrLpVN0t9JDtzhW6BcgnCDG+Vs1VzIkOb4aDYv91y7n1ah6I/Yr0pp8BLbEHH6x8Yh9bw3p0IfiFnw1TtykI2nn9pJJzJNic/Aloc7oTpLxkMWci3ixnWi5VW+4/3n0mZix9TYRrsHJ5scSi6q5pSk70CICGaF8tImytBk33aXeBPuJek11v7gFiJXq586RgLYeS/of3pX1HaEoECkRTqMT9CIJAQAQUSMJuvRK82o1tiOCPpDFrtsa+tkCGWkhJD1E5KCsHs08hxSXgveWhBLi+DMVClpw+sqWaKF5fAJ4+2+lJf0Ov
+ 0ief4gqs
+ fu32Fp2jaW3u6GTffKmsMW50Tt7bcJWfrs7JblRUz2XYTsAhPupu3W5kGGal5TgrHfRCciYO66yu+qL3DKerjrJHLqjblm1FfPHOLrTZJ7kdE6NxPHKBgLRS7idhM633XnE8/LNaDHnSgDgKAi8sqZWVcJkPpa22gZ1Kr+dRr8xvl2RIa5MPpeQ67Fh2miW64ODtGwlgr2fVice7+JXaPqIbvjq5B/20GPQAnYsEX00jETimxdfKDwiUaB3v49lriiAcCnkJW1HTXtpVg3n8Xa+PEOj4Frj1hwLWq5PdUwMkYPrsn1GKhYUMPOxb4tx31yaXqQyIfDvhAa5T7sa3hi84QNucGUDue/v6m2SQ93f8jxVkd5Hhipv1iZ1moZZTWTHIaQbyodCgcRBOCWcxjrqkLpDMGoSf+SIYa5IuzoNYGc/fzLcJwEjpEW75OgR0NxHQYMcSrNl+f/Hg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,85 +120,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2026-10-14 at 19:46 +0530, Dev Jain wrote:
->=20
->=20
-> > +++ b/mm/page_alloc.c
-> > @@ -993,6 +993,11 @@ static inline void __free_one_page(struct page
-> > *page,
-> > =C2=A0			account_freepages(zone, 1 << order,
-> > migratetype);
-> > =C2=A0		} else {
-> > =C2=A0			__del_page_from_free_list(buddy, zone,
-> > order, buddy_mt);
-> > +			/* The buddy's free pages join the merged
-> > block's type. */
-> > +			if (unlikely(buddy_mt !=3D migratetype)) {
-> > +				account_freepages(zone, -(1 <<
-> > order), buddy_mt);
-> > +				account_freepages(zone, 1 <<
-> > order, migratetype);
-> > +			}
-> > =C2=A0		}
-> > =C2=A0
->=20
-> MAX_PAGE_ORDER > pageblock_order confuses things so much : (
+copy_huge_pmd() reads the source PMD without the page table lock and,
+for a special PMD, installs that value in the child without reading it
+again under the lock. The comment says the PMD cannot change while the
+mmap lock is held for write, but unmap_mapping_range() does not take
+the mmap lock: it zaps under i_mmap_rwsem and the PMD lock.
 
-I'm not a fan, either. It trips me up every time.
+dup_mmap() links the child VMA into the file's i_mmap tree right after
+the parent's VMA before copying the page tables, so a zap visits the
+parent first and the child second. When the zap clears the parent PMD
+after fork has read it, and passes the child before fork installs the
+copy, the child keeps a mapping the zap was meant to remove.
 
->=20
-> Sashiko raises something:
-> https://sashiko.dev/#/patchset/20261007021250.1665929-1-riel%40surriel.co=
-m
->=20
-> Although feels like it is exaggerating.
+Drivers that map special PMDs with vmf_insert_pfn_pmd() rely on that
+zap. vfio-pci zaps its BARs when the device memory is disabled or the
+device is reset, so that userspace gets SIGBUS instead of reaching
+disabled MMIO; a stale child mapping still reaches it. panthor zaps
+the CPU mappings of a buffer object it evicts and then releases its
+pages; a stale child mapping points to the freed pages.
 
-I suppose if we switch the two lines around, doing
-the increment on migratetype before decrementing
-buddy_mt we could avoid that transient underflow?
+Read the PMD again under the lock. The zap clears the parent PMD under
+the same lock, so either the recheck finds it empty, or the copy is in
+place before the zap reaches the child, which then removes it. If the
+PMD is no longer a present special entry, return -EAGAIN: the source
+mmap and VMA write locks keep faults out, so only a zap can have
+cleared it, and copy_pmd_range() then skips the empty PMD. Otherwise
+copy the value read under the lock. pmd_same() would be the wrong
+test: threads of the parent can still set the accessed and dirty bits,
+and -EAGAIN on a present huge PMD makes copy_pmd_range() clear it as a
+bad PMD.
 
->=20
-> My concern is for systems with a high diff between MAX_PAGE_ORDER and
-> pageblock_order. So on arm64 systems with 64K pagesize but pageblock
-> size as 2M (and PMD size 512M), the pageblock order is 5. We use this
-> configuration to reliably get TLB optimization from contpte size
-> mappings.
->=20
-> Will we then repeatedly overflow the pcpu counter into the zone
-> counter,
-> regressing stuff?
+Fixes: bc02afbd4d73 ("mm/fork: accept huge pfnmap entries")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+---
+ mm/huge_memory.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-The per_cpu_pages struct does not seem to keep
-counts on a per migratetype basis at all. It
-has per migratetype lists, but only one
-pcp->count.
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 1e5d68acf62a5..fcea98f0d8865 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1965,13 +1965,22 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 		src_ptl = pmd_lockptr(src_mm, src_pmd);
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 		/*
+-		 * No need to recheck the pmd, it can't change with write
+-		 * mmap lock held here.
+-		 *
+-		 * Meanwhile, making sure it's not a CoW VMA with writable
+-		 * mapping, otherwise it means either the anon page wrongly
+-		 * applied special bit, or we made the PRIVATE mapping be
+-		 * able to wrongly write to the backend MMIO.
++		 * The mmap and VMA write locks of the source keep faults
++		 * out, but unmap_mapping_range() does not take the mmap
++		 * lock and may have cleared the pmd since the lockless
++		 * read. Let copy_pmd_range() skip it then.
++		 */
++		pmd = pmdp_get(src_pmd);
++		if (unlikely(!pmd_present(pmd) || !pmd_special(pmd))) {
++			spin_unlock(src_ptl);
++			spin_unlock(dst_ptl);
++			return -EAGAIN;
++		}
++		/*
++		 * Make sure it's not a CoW VMA with writable mapping,
++		 * otherwise it means either the anon page wrongly applied
++		 * special bit, or we made the PRIVATE mapping be able to
++		 * wrongly write to the backend MMIO.
+ 		 */
+ 		VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
+ 		goto set_pmd;
 
-Also doesn't the pcp only carry order zero
-pages currently?
+-- 
+2.43.0
 
-I don't really understand your worry.
-
->=20
-> Perhaps I am overthinking. Your approach is clean, but perhaps we
-> could
-> also do:
->=20
-> void account_freepages_move(zone, order, buddy_mt, mt)
->=20
-> 	/* PCP-types do not have per-migratetype free counts. */
-> 	if (likely (buddy_mt < MIGRATE_PCPTYPES && mt <
-> MIGRATE_PCPTYPES))
-> 		return;
-
-Wouldn't that throw off the counts when we merge
-e.g. a MIGRATE_UNMOVABLE page with a MIGRATE_MOVABLE
-buddy?
-
-With your test we would only ever do the free count
-adjustment for mismatched types if one of the pages
-was HIGHATOMIC or CMA. That leaves the common case
-without coverage.
-
---=20
-All Rights Reversed.
 
