@@ -4,78 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8798ECC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:14:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 870A7CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AEC36B0096; Wed, 14 Oct 2026 09:14:11 -0400 (EDT)
+	id 97E0B6B0088; Wed, 14 Oct 2026 09:16:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 386406B0098; Wed, 14 Oct 2026 09:14:11 -0400 (EDT)
+	id 92E796B0098; Wed, 14 Oct 2026 09:16:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C2D86B0099; Wed, 14 Oct 2026 09:14:11 -0400 (EDT)
+	id 844216B0099; Wed, 14 Oct 2026 09:16:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D6526B0096
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:14:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B5F7160560
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:14:10 +0000 (UTC)
-X-FDA: 85321275060.14.09BD07B
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 08E5C20005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:14:08 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf03.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 65EE56B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:16:10 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04EF2A054A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:16:09 +0000 (UTC)
+X-FDA: 85321280100.30.310B650
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8528AA0013
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:16:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfV8S4NQ;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791983649;
+	s=arc-20220608; t=1791983768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=1fmg/Ha63YqKdBivo+fLzBc06bPG5kqvRlHk0mnz5j0=;
-	b=NFeIS9086NL9U2RcmzKjhhk97hJENGph7KnB9iNf4PV2gWcgEDTzC4gRoZNiajWQh68joB
-	nYdh5+OPKAF4l2VX0mBKSyNWgu4k3m+tQa1822UWiSfE64Wgt0DgaqO10MzqEA4LRNhx7K
-	vGoQEid4nvb89eCQJPPhAv68Z7mZm08=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf03.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+	 in-reply-to:references:dkim-signature;
+	bh=N/Kx0frmkxosvQcop9AdOprS27rR/qXNkOdGxt6bKsI=;
+	b=FBQhYWESDYB7LXMKkoAQAjVnE+LbFW/zc8zsCbzAYRuHhAnOeSJ+tpZjWtXSo07QYcnl3p
+	gWT+2m84vpNC0/mTYEjYnjX/ocT9R3zFk96+YhGtMwNL0ZFnx3seDgEiEd8XCvAH+U0FVS
+	RdbOwako3HF1aVLLTR3847qSOUPX1kg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791983649;
-	b=JzbvhOJcJVcHOV/TL78/nYe/d58kqwO9EDi41589M70DDDX0OtA9G9b+RV7/XmJZDyBTih
-	AGvRNaMFMk/vLZnc6DyaMjNSDSWXr/Pw4o6mdB57Rqzo3F4atNJw0ODxn/1hSIAPG0Rxcv
-	FP6gJJ5lBjTruWK7MGO42bCIcn4fAP8=
-Received: from escalante.csail.mit.edu ([128.52.128.198])
-	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xGynv-005sVG-1B;
-	Wed, 14 Oct 2026 09:13:59 -0400
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
+	t=1791983768;
+	b=7I0eKhZ0vt6Xst/uK51CqC2bg6eZLQckeZxRu+3C9PI76mOH0FlW+Lx7QeFcifwYvriAhr
+	scoNB4QS9Zb2KgQHWap2GIrJeQxXsAYNKOjJFMVE/Tl1n6iAht3C6gyHRwf4HJ1d+8v7nZ
+	ZjvBKx0bir0sJZwJbCBKSYtSjMU3h+4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfV8S4NQ;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DA4BA60219;
+	Wed, 14 Oct 2026 13:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD001F000FF;
+	Wed, 14 Oct 2026 13:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791983767;
+	bh=N/Kx0frmkxosvQcop9AdOprS27rR/qXNkOdGxt6bKsI=;
+	h=From:To:Cc:Subject:Date;
+	b=IfV8S4NQS0MqMSLTMwNl1QtVDDkd4UFmd5o0O0OGBCKj/A4Te/Y8nCmicx7OVbrwq
+	 6DOy8g4oT/WhRQ7kj6Ob0FSCFmHLmTwhMvQFGI9QK3hFL6CdwN4EUKuYNzuDQiSNjX
+	 bArrNH0X6myiUQssLkLoGWrMMxej/xMGzZRMKfmW0ZbzCse+Z0b7fldUO91ZcIHFOM
+	 d+Hs+e1vRtiAbij056A7JxS/5qBI5Tv/WmDU6XUSkVyv9eK67kKv/B8cPngMEYBECe
+	 Kbbcgcll6kLnGn2PCbYd1kYd4Ae9KvsUUTW1OzIR0NwYzxDhr8QQUw4u2VZQbY+yqn
+	 uca2v4+jYSvKg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>
+Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: [PATCH v1] mm/mlock: use a long for the page count in mlock_fixup()
-Date: Wed, 14 Oct 2026 09:13:58 -0400
-Message-ID: <20261014131358.780240-1-nickolai@csail.mit.edu>
-X-Mailer: git-send-email 2.53.0
+	Bing Jiao <bingjiao@google.com>
+Subject: [PATCH] kho: do not reserve empty per-node bootmem areas
+Date: Wed, 14 Oct 2026 15:15:44 +0200
+Message-ID: <20261014131547.259138-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 08E5C20005
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8528AA0013
 X-Rspam-User: 
-X-Stat-Signature: jhku8s5of8c7wek5xpot8tp19rra98tc
-X-HE-Tag: 1791983648-888827
-X-HE-Meta: U2FsdGVkX19d93Z+/eG01SxbEFcDXJSg+YIjHj+ZNloj9tj3dvfNjyl77RgQzvKnRwgsIAm/yCn6RLAQda9iwGvwYSHE/JBrIEtffwca7XupMjlj5AMMPQ0Rcd1sjQqkAXLdQZbiBorIURPhMj0sYZ/tz2J7fNuACKM83pJ2RrdV00jQJ5N2vL6II6cCCz0Qc+bQELkJdEbX1TaA1h70TtuWSgRCGIWFCVpodAs+ELHr82ukcw1nM3XWMrUhcWrh6GJBsqb4owPsm2n2DLsULinAVtt17oPyq6PzFvA0bkbFQn84WFJd+io4e49Mqui+12yfX7NDmIs5EFNX5eVl29r9Y4Ft6FVu4YC9IbCkLp242TT0v5EOQB/jvBSrNGCS2pqfjDligFaILZ72rzrPuZpV6GQ/ViDOt6q+s+p515vfPlLgG9SCnnKGi2JPnyOEbEXtTcgJrBZBo5tfeYC/lKpzvAIky6SHFFHuV4RfeNC8lpWlPiVvM6JkVdgP5PgkZddDlU5BH3rMxHsQWZp9WpE/RVqLH1Qpz6Dh4GuF9vA39EE5eVaPRFIkIfqYDZEKRoyRIlshryvIrKNuDu1peHHaG33A+rUoTqTA+Zw/JNv2jTZ5JEzLh2L4zvNoGkYru8S4+UkcHAlTX5bXDTaedAnGz8wQ2US2PNv5c+eQHFj2nC6lhLNsnd8pU3Mqi2Ao8peuruaHiXbtKG86ATbg+sIzzvNQ+K3q/Qes0f3kbydC9u6q1YI2D4D1B06qqwFYLbAnHWdTVc0jfKU1zWXGGJIQeki7nkoI9QFR9HqE7Pnfnv5kJr3Op5extKNSVBdiItroWr+cHke8GmP4eFa8r/qCi85FsgpPdq8ZBWt9bvHnlVVLXKG4QsXl2o5iJRXFGL2cz+yZebXAAnhwN5eHoCTOpvaYjc+ZujONbv2opex4Y8y6yo6pA/afHONZkZS0cAQeEAxtUuQe9ZHIwMh
- Y7Z+WaHR
- yEybMHd488EVjLO2VYmsdteHKMYhxw7atjux5aNYFcZRIRim6hzvCrfSkukNIj+43Sxyb3OdBnvnek2Ir+YLYp5qvS/BTeGUmhlmEkSmBW/iql0nP8KnS5tUf7cLGMN324Drx6crBPUxfdG6MxekdWO4klfwK9iuVn6/u
+X-Stat-Signature: mowpi1q9zdsw3azirm6kesie93mwzcaa
+X-HE-Tag: 1791983768-343982
+X-HE-Meta: U2FsdGVkX18y74S4Pv28jLo/hFsON0cCg6s8yKrOXB7g5WHNoFgHgFIayWYf8AtEIuAgy3ekHKz2nFv0mLGveEQ+gd/e4AddL4OMqP9cyPDfqyO9oIq9mTwUzPR6qDuLnnDWuyfYyMYCEv3deKnLGyebtI7ZO4Y7G2RhmbCL50nOZKC8k56HVHmjVo8d9qTTAMpPFZiOZE3UqmKXAr6vvQTIUeulsegzyjdg85EGSSO1vNwMYZmmBLJzdJmZo6jcNtWR8IN4/fhICvnengkyMsQ8G2IIh8DL878Y6VvgAHAB9RlusjkVik3SCbZq/GDz28I8GDJ9MqUYo2Oi+9FXbesEeDa4Q/Lso40wRFV5U3O9ckyBfvNZKoFAVBJtfEMeJjPkzaLovh409fjCXv7Er+X2DSaPuOJTl9ig4y7VtqN977CzSjAG1prOwJ/IrB1JmrhnXfjxO1Eh5u8j+R1FH9w9tu0yJGo1TfYD4e50vgbLQBbpguFKaufQ81WgxcL93R6/+qoJWg/PsjBIn6Ln/zinaAcGavozudYgupcvSnSziMFddIefxZ8Xod5MWAHhdoA2+1yDVjCY/5jnrvhELZ2Gop1XMya3YVcDrX6XXIYnlz4Qflh2qCBnNvOtVQjvUfi1FzJ21WEDWCumMuLhKkgIEQFoqKY+Qr1jyJnicTXEp1MJfb0B5zK05Ky2BXHstEjCdCnOcDDNZElfuS/YnZAro6uY6yqa8joO4ETu1glCq4xoqExGxbalqv2+SixgZuKiY+pmE84X4TbBCI+aR1xDP/lJba3Jp8klSTkOznegZOq40gZhTJb9c4BC9d/BaKL3d+KMA0ReX4lsjnypieJj15xFe8g2qEYTDOeW8vPM0z7REHq2sw0cdZ+x4Xb/7KxGZs266O78J7aSuyB6gWssy29Jp39/fxjnWekHjclhSx3reEoTPCO1GuyMPfvv41tUnJ3VVCjYauG2ni4
+ 6QDFYJrO
+ PYHGb1PnhPHRoYCf7iSCcqr3gwfiZuNzEtXkejiivLiS+uH/CrW3/vf1GrWiwsYG8uIX/1H39peKtVAOG/DyCwNcXH/VrXLQOWxDe6EzxVMrwczpgaDFI7lnMbD0mXTKQNO9H0OJVll0beRh2byhslUGUVyzpx+w1sjgDhYpQcJcnIsS0WqRMKp+O0deQurGhq8i+Z8IwieKV4Ey9s6x8StlPTXGpQipsQ5YiXX4WgwwSSFxdRcULTi1n+yDj5zAP93oz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -83,118 +93,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mlock_fixup() adjusts mm->locked_vm, an unsigned long, by the number of
-pages whose VM_LOCKED state it changes, but computes that number in an
-int:
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-	int nr_pages;
-	...
-	nr_pages = (end - start) >> PAGE_SHIFT;
-	...
-	mm->locked_vm += nr_pages;
+Some nodes do not allocate any early boot memory. An example is
+hotpluggable nodes with movable_node enabled. So the scratch size for
+them ends up being zero. Zero size allocations normally don't play well
+with memblock. Memblock returns an address, but then doesn't actually
+reserve anything. This address ends up being recorded in kho_bootmem
+with a size of 0. In case of hotpluggable nodes with movable_nodes, the
+allocation on the node actually fails because memblock refuses to
+allocate there, and so KHO fails to initialize.
 
-When a single VMA range of 2^31 pages (8 TiB with 4 KiB pages) or more
-is locked or unlocked, the count is truncated to 32 bits and then
-sign-extended, so locked_vm is changed by the wrong amount, while
-munmap(), mremap() and the other paths that maintain locked_vm use the
-full unsigned long page count.
+Skip bootmem reservation for such nodes entirely.
 
-Such a range is reachable on 64-bit architectures with a 47-bit or
-larger user address space (x86_64, arm64 with 48-bit VA, riscv64 Sv48)
-by a task with CAP_IPC_LOCK or a raised RLIMIT_MEMLOCK, which do_mlock()
-checks against the full untruncated length.  It costs nothing with
-MAP_NORESERVE and MLOCK_ONFAULT/MCL_ONFAULT, since then no page is
-populated.  On x86_64, after
+To keep the code more robust, avoid overloading kho_bootmem_cnt. use
+max_nr_bootmem to store the size of kho_bootmem array. This ensures that
+the location of kho_bootmem_cnt assignment does not affect the cleanup
+paths.
 
-	p = mmap(NULL, 8UL << 40, PROT_READ | PROT_WRITE,
-		 MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
-	mlock2(p, 8UL << 40, MLOCK_ONFAULT);
-
-VmLck in /proc/self/status reads 18446744065119617024 kB instead of
-8589934592 kB; munmap() of the region then subtracts the true size and
-leaves VmLck at 18446744056529682432 kB instead of 0.  With 16 TiB,
-locked_vm is not changed at all, VmLck stays 0 kB, and after the task
-drops CAP_IPC_LOCK or lowers RLIMIT_MEMLOCK, mlock(), mmap(MAP_LOCKED)
-and the other mlock_future_ok() and account_locked_vm() users enforce
-RLIMIT_MEMLOCK against that count, so they let the task lock memory
-beyond its limit (or, in the 8 TiB case, refuse every further lock).
-The error persists for the life of the mm; unlocking the range in pieces
-skews it further.  The wrong count is per-mm accounting only: it does
-not change which pages are locked.
-
-The int has been there since before git history (the variable was named
-"pages" until it was renamed in 2.6.28); every other updater of
-locked_vm uses an unsigned long or long count.  Make nr_pages a long,
-which holds the page count of any user range and its negation, so the
-existing sign handling is unchanged.
-
-Found by formal verification of mm/mlock.c against the kernel binary.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Assisted-by: LLM
-Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+Reported-by: Bing Jiao <bingjiao@google.com>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
+ kernel/liveupdate/kexec_handover.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-Notes:
-    Reproducer: the program below, run as root from an initramfs on
-    v7.3-rc7-28-g4056b3c9d3c9 defconfig (LLVM=1) under QEMU, x86_64 (TCG,
-    -cpu max) and riscv64 (virt, -cpu max); a longer version also checks
-    munmap(), a 16 TiB lock and RLIMIT_MEMLOCK enforcement.
-    
-                                           before                   after
-      VmLck after locking 8 TiB            18446744065119617024 kB  8589934592 kB
-      VmLck after munmap() of it           18446744056529682432 kB  0 kB
-      VmLck after locking 16 TiB           0 kB                     17179869184 kB
-      mlock() of 16 pages over a 16-page   succeeds                 ENOMEM
-      RLIMIT_MEMLOCK, CAP_IPC_LOCK dropped
-    
-    // Needs root (or CAP_IPC_LOCK), >= 16 TiB user VA, vm.overcommit_memory != 2.
-    #define _GNU_SOURCE
-    #include <stdio.h>
-    #include <string.h>
-    #include <sys/mman.h>
-    #include <sys/syscall.h>
-    #include <unistd.h>
-    
-    int main(void)
-    {
-    	size_t len = 8UL << 40;		/* 2^31 pages of 4 KiB */
-    	char line[128];
-    	FILE *f;
-    	void *p;
-    
-    	p = mmap(NULL, len, PROT_READ | PROT_WRITE,
-    		 MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
-    	if (p == MAP_FAILED || syscall(SYS_mlock2, p, len, 1 /* MLOCK_ONFAULT */)) {
-    		perror("mmap/mlock2");
-    		return 2;
-    	}
-    	f = fopen("/proc/self/status", "r");
-    	while (fgets(line, sizeof(line), f))
-    		if (!strncmp(line, "VmLck:", 6))
-    			printf("%s", line);	/* expected 8589934592 kB */
-    	return 0;
-    }
-
- mm/mlock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/mlock.c b/mm/mlock.c
-index 39215a3eab1f..4fb43cddafa8 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -470,7 +470,7 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 7018e25e4eda..6f1f55fe3181 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -831,8 +831,8 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+  */
+ static void __init kho_reserve_bootmem(void)
  {
- 	const vma_flags_t old_vma_flags = vma->flags;
- 	struct mm_struct *mm = vma->vm_mm;
--	int nr_pages;
-+	long nr_pages;
- 	int ret = 0;
++	int nid, i = 0, max_nr_bootmem;
+ 	phys_addr_t addr, size;
+-	int nid, i = 0;
  
- 	if (vma_flags_same_pair(&old_vma_flags, new_vma_flags) ||
+ 	if (!kho_enable)
+ 		return;
+@@ -840,8 +840,8 @@ static void __init kho_reserve_bootmem(void)
+ 	bootmem_size_update();
+ 
+ 	/* FIXME: deal with node hot-plug/remove */
+-	kho_bootmem_cnt = nodes_weight(node_states[N_MEMORY]) + 2;
+-	size = kho_bootmem_cnt * sizeof(*kho_bootmem);
++	max_nr_bootmem = nodes_weight(node_states[N_MEMORY]) + 2;
++	size = max_nr_bootmem * sizeof(*kho_bootmem);
+ 	kho_bootmem = memblock_alloc(size, PAGE_SIZE);
+ 	if (!kho_bootmem) {
+ 		pr_err("Failed to reserve bootmem array\n");
+@@ -882,6 +882,9 @@ static void __init kho_reserve_bootmem(void)
+ 	 */
+ 	for_each_node_state(nid, N_MEMORY) {
+ 		size = bootmem_size_node(nid);
++		if (!size)
++			continue;
++
+ 		addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES,
+ 						0, MEMBLOCK_ALLOC_ACCESSIBLE,
+ 						nid, true);
+@@ -895,13 +898,19 @@ static void __init kho_reserve_bootmem(void)
+ 		i++;
+ 	}
+ 
++	/*
++	 * Nodes that needed no bootmem were skipped, so fewer areas than
++	 * initially estimated may have been reserved.
++	 */
++	kho_bootmem_cnt = i;
++
+ 	return;
+ 
+ err_free_bootmem_areas:
+ 	for (i--; i >= 0; i--)
+ 		memblock_phys_free(kho_bootmem[i].addr, kho_bootmem[i].size);
+ err_free_bootmem_desc:
+-	memblock_free(kho_bootmem, kho_bootmem_cnt * sizeof(*kho_bootmem));
++	memblock_free(kho_bootmem, max_nr_bootmem * sizeof(*kho_bootmem));
+ err_disable_kho:
+ 	pr_warn("Failed to reserve bootmem, disabling kexec handover\n");
+ 	kho_enable = false;
 
-base-commit: 4056b3c9d3c92ea45955641dbafeb9b960e146ef
+base-commit: e1fe7daedae7a4a23aca6dbd58e1746750b632dc
 -- 
-2.53.0
+2.56.0.385.gd3acb90ef8-goog
 
 
