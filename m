@@ -4,125 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEB2DCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 16:26:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D611CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 16:30:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B29F66B0088; Wed, 14 Oct 2026 12:26:08 -0400 (EDT)
+	id 369D66B008C; Wed, 14 Oct 2026 12:30:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADA636B008A; Wed, 14 Oct 2026 12:26:08 -0400 (EDT)
+	id 31AF56B0092; Wed, 14 Oct 2026 12:30:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C9916B008C; Wed, 14 Oct 2026 12:26:08 -0400 (EDT)
+	id 2308D6B0095; Wed, 14 Oct 2026 12:30:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AD306B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:26:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1FC2140601
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:26:07 +0000 (UTC)
-X-FDA: 85321758774.09.6D82375
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C94DDA0011
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:26:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=ACvljAGx;
-	spf=pass (imf15.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.48 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F3D336B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:30:55 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E93B3A06BB
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:30:53 +0000 (UTC)
+X-FDA: 85321770786.08.70039EF
+Received: from mta0.migadu.com (out-84.mta0.migadu.com [91.218.175.84])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BEC8310000E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:30:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r3yIi4uE;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.84 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791995166;
-	b=7DMgqBtQNpdoOa9m61Y1Ma6A59BzqYO3gCQgNE4COXjH5xNOnQfu5rI8njojZoZVL4OZKg
-	UUnpYMhxv4M+CicQc89PuvJowaELFhDqvQza2H8z1pZU4b875BCeN/8ABvxZMWFULyqhCw
-	Z94hSWBZOO5Dk8+45s7vWia+17aGlyc=
+	t=1791995452;
+	b=mbMdie0DpFPviy8YFW+PZt57KJHlbbfJZ0S/9RGl0J5Rw8y5HQ5+YxCnNu6uhyLBCOikI7
+	xaLx6ta/Ven8q7rbfd3s4pZXSuJwn3KFyBYnqphCAoSNcJJEJEKGM8NK45Tb1IMtkqZGtQ
+	EsE0zaG7Jh6cSE9p6+FDkiag2BKwLQk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=ACvljAGx;
-	spf=pass (imf15.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.48 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r3yIi4uE;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.84 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791995166;
+	s=arc-20220608; t=1791995452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCdj5PANVocN1j51viXw7MkFpoeK7XeNk1w2hTLnH5E=;
-	b=ZRc1XmR2p81oJ5gudZos0gNqQp9UMGgvVXMRT8U6HYJYN76D+sZGbAHUO9hoMhBKRqD8Px
-	1X4MgTYTEI6LOdt7QeOEE0CQNXURZcRy6wEQ3GrgUBi4+ZHppsf1kbf2CktUzMaLCfBUaI
-	3op2lJUb+pGTBYlww2gRijOdjj/WTpU=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b2237b596cso113504a12.0
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:26:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1791995164; x=1792599964; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PCdj5PANVocN1j51viXw7MkFpoeK7XeNk1w2hTLnH5E=;
-        b=ACvljAGxls8nn3Wk8VimzXabCm7KFgvkpU7opjGOhHnSJBW17J5qHRJ65pgUFWhEk5
-         pdBIFCcrMpEZLGkwAk6uJhY5E2s0GQK3f+qYjGk5EVXzHuDEEFRubNRgHzhH7biXcSn6
-         kzO/dFnDaGngQvT+qeS2M/82GipCIoZBCaR0I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791995164; x=1792599964;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=PCdj5PANVocN1j51viXw7MkFpoeK7XeNk1w2hTLnH5E=;
-        b=pdpVgKonZXJp8aN1FCzNEwRqYPMYmyefcan43ylbooVPk3pedsKRS2C+In5ADklq8z
-         jyL+cs0h52tDh3jnelPMi4SquSg91s0ZVfR2us9PvwHUMJjOx5aZe4yStZ+iI8R0S+s3
-         h84MFimGKb1E+WwiFjps08RZbVeNhxA0WDLKTBrrfcny/E1tkVBIJ3bx+cqHspoi9zGr
-         XCxX7OeG/hruczj1PrU1ipyPURYxirUKWQ84+S/IOlZXRB48uUVsYN4N2rw+bsBICENn
-         zC9VFXgeaRFFqpoVIXIhSHQso3nGPsjdKqcqAcI4cK7ME20zAxSlE/5PxkKWATrWvFV/
-         5eQA==
-X-Forwarded-Encrypted: i=1; AKwUvBzows1mi0+aAtWf55PtmTdaeJBMQc0bMKBKqMgc+351oy3no1aCYtPFje5HYLugpde2pLJXMzYh8A==@kvack.org
-X-Gm-Message-State: AFq9FYINsMafWcu25quxpJCcAsLJpQIp9XWkzWD2dUhI6MYMsggRaxfM
-	L2kVoSakSne/1WDt0clyMHEx1HiTU6YSTw7DrmzEkUW6SgtLbR/ymOGUblGl04MXUn8N5Im2BZY
-	ZGMGxw3k=
-X-Gm-Gg: AYBFou1FNOMdauZI2WVBWfagtoAqPvn03QQes3y6DA/NmUf8u4R9NnCSRDqI5+gXCrY
-	d+AGAHBsKxpT5HL8A47w7sXe9CtRNAGdh7CTywZ/4y2RDXelEKybsLtqGm3Odh0awowNgHVr9MX
-	FwbU66/jGcc1F7Kx+k30nVgCQvc2bHGpd7ZVoz7ZWAcQSH0j3aNcDBa2TaLZCxpffzm9uAvQ9tq
-	eyyjVsgn1g8iQY5amNeKKpRAq7KlFz0/0HGtmJFMow7bvZvknhvQzS7eoA9gFJbJoyvjLhq9Vuw
-	cNx5efy7QJejLgwx7ED5ldDF2yWvfjo5BMrXUSroU7d84fcpHf/bR+2BE/ETJ7XUvbxCMgZiNd+
-	C151mn8VWY37PRIy6RkVJQP0y5GJ+7VXawWCc635VUYfTmro87knDfnrb6ppFETB4fPQE9GrNUL
-	js6qIVUgxAh54Gu5tuGSt1PKKFkAE1ppHgXdvQHRF1hJel9mTiu4LIgwT3p5yKb+1NziNie/YXJ
-	EGJ6OJDDbu3otgVjJLrYZTcavXM07tl6DhGG3540moCJcOV
-X-Received: by 2002:a05:6402:44c9:b0:6b1:cc39:28ec with SMTP id 4fb4d7f45d1cf-6b1cc392d02mr5585393a12.42.1791995164017;
-        Wed, 14 Oct 2026 09:26:04 -0700 (PDT)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b203839a04sm1378048a12.10.2026.10.14.09.26.00
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Oct 2026 09:26:00 -0700 (PDT)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c3156e7705cso212612066b.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:26:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxDz4KoOYAUeMGa1i31mfG2ek8RoLSci/lNb16J1MmRTe+Tz4gR93cXhZKYR/sz9YowXIkuXZnaFg==@kvack.org
-X-Received: by 2002:a17:907:3f12:b0:c2b:ca9c:1379 with SMTP id
- a640c23a62f3a-c31aa04ac69mr1609899266b.28.1791995160582; Wed, 14 Oct 2026
- 09:26:00 -0700 (PDT)
+	bh=MuTZK0aEsxrrGIjTOXTTzaYE6LzxOpR8nAqifDnEhCY=;
+	b=wTk1272TWRZ/H6XMYaQD/8dVgizavftR3ELK3JkzzOeVAqVSg9v4ewEJwHvaH4FZHbjffO
+	7hbBTh0TfI8KL0tV46jZPyEKj1wZrBYFzAguCKk/USUgkdvedqdgQEkfGukz9LX9T+8dlC
+	pue50Hr358h1KfH6hFcv4UlAj/WqeSU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=dw453SjKRb4006gix6zhYjhyw8h2zLucTTilf+CwNnE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791995450; v=1; x=1792600250;
+ b=r3yIi4uErvQk3aLwnT7PwDpTB4yWB+1CYIXSUqIJm9A3Jffi86vuBrOQcxcmPc7uLrs6eqXc
+ vbcxYE6ma5IXv9mISCBjIvfJluES68Y+VI2tXLF0Or5x6DAz2SZGJzkWMIyGuSqqFe0UgSM4b/c
+ r0IauxsTNyMo2Li7PxRJolCI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b89656d6ed486c36;
+	Wed, 14 Oct 2026 16:30:50 +0000
+X-Mizu-Trace-ID: b89656d6ed486c36
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	huang.ying.caritas@gmail.com,
+	baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	ryan.roberts@arm.com,
+	hanchuanhua@oppo.com,
+	kas@kernel.org,
+	kylebot@openai.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
+Date: Thu, 15 Oct 2026 00:30:43 +0800
+Message-ID: <20261014163043.39233-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
+References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
 MIME-Version: 1.0
-References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
- <as690Xcu7FxIDYjf@thinkpad> <CAHk-=wiak+h+d2tZ5W_MwRzatUP=hJKn7cpGjDxArG-gwgHLXg@mail.gmail.com>
- <as9-2cIuGuXwE2Oa@pedro-suse.tail5790ac.ts.net>
-In-Reply-To: <as9-2cIuGuXwE2Oa@pedro-suse.tail5790ac.ts.net>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 14 Oct 2026 09:25:43 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgkoAuxNXga29nQ8w7GxdqR+4vPAUhPsbfp+gzKrb9EgA@mail.gmail.com>
-X-Gm-Features: AclHuK_pD_yiJ_EL5fvXHW6fwc0LStnp8MOP0VvBwqqfrNX1h2hGyUqQEybsEuE
-Message-ID: <CAHk-=wgkoAuxNXga29nQ8w7GxdqR+4vPAUhPsbfp+gzKrb9EgA@mail.gmail.com>
-Subject: Re: Improve page refcount scalability
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>, Harry Yoo <harry@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Ilya Gladyshev <ilya.gladyshev@linux.dev>, 
-	Matthew Wilcox <willy@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C94DDA0011
-X-Stat-Signature: xskcokbmkr9e5ex7fbx7rgqego8krzzy
-X-HE-Tag: 1791995165-293685
-X-HE-Meta: U2FsdGVkX1/GOhWib09RHysE142gde7+7blTzWrjn2AH+u/vAEZpnHFu+MS9bhqNWKQPpejVROGLI1n0uGFax+AT2q7Sc5la9n9CQFSRYPeSH89A8vy8ugwc588fkEa2uTy+Mn5VyJZDBSC5fH/ZOS0dnfopryHiCH17pAzyqH/hyOJSO0dz0E9DPBG0tnot8vDioWuswEuR9rhY5uaWusVPqVrhj3736P93FbbeLzX063Ax7roTFf/xQ+yF2KTLx7wSfBupfQq9yZ5d8vA7O+/9i1xVm234HjbOYq8Wzfk/uO6HjW9+kfN2d+rJBWcuOGTXzp4iLxtcay0J3ZnrDd+F+Ub0zQpsPGYHrAIIDaZ1C4wOmPYWeUr00Q6do6rW+wQC7NSgI0gKsWEekNBK8wcBo7jQLslM5Y74+IL2FAUtcRHu02xRvFV7Vu8JsPjmk+/1qEQuo/LwYw+ruDfQYUnlfbQT7m3Ha8HRO8gx/nJ+2Fr2ydLFb3gL4Acx2wXOBGO3duKmTVkgbwhCVPvXMZQ1xvp81sY3O5V4D18cGllFM6p/821krmwIpvVsTKxMS6fqx4IeFU1CYuhblFnQCy8fWeKVtQ8EVN6xdD1VFUJgz965oqBH7WVSbdhXlf0UiIt5GWhwKb1FQrsklDNyvp26Rfyhi0M92R7LuajJsFOSbbAAJbiRx6L3553fy8X5byUp2PSFRRZdk5MFAFjE2qPSeNvNShomNnEKUEl51WUSXZ0RT1u4w8tUzAICapTqrFNSaRKXGvsRsDcG6xxyoNxZU99V60z1ORZL5ysLiCLVmX99i7HrXYl8TxzQ1PSKjelvh/zAP4cITdcY2/6CGgx9IaYOAH4orOfxlhkGQiHqRozKQLa+J8JPvhF4UCjaWpMyTLjlprbiYB6wjFQTLP/Cr/rovG9FpCBIXR7e+2a+aMjXWlSVZE1RHS3uvLdHZT1CAd/K5bqAmmB7STz
- 4HGq2CSe
- o4xmzw60WI53EB82UnGfY8JZkt/monKpjw2rxFNlHwzYUHqctMeSe+EzUOCYDGoJy5shxPUvXlRtcHc49hfMdroiGbmbncMmeTSsWeqPKzuzQbAkp+sE+AYXv+kzwHdSQi7cVYuqN18hE7A9FvW2fsWItQ5QhDijJW28SHp6OzYM1/PVegTPL7ZMqXkTxK797ZyWK1QdmRMUU6mqFS95yKHdynVXgpE0VH6CTBGPKJqvTCObbUExIBM6HEDq8o4XvspQgX2ZxF0jk/Bu362l3QjVFLb2PMw+MmuYmc4EuJ6cMsy9PEFHwAgSOoIzg1hGHyXN3v2CtNQ6ls9UYVAiwLpm3mu/F5axg1dMOEWqDoIYdIeHI4u+68xRNvhG26q/xVzYTYLsZCtRMh4P/6u73HWeZhspCHhhPHsjtxfirJsKfWQDKBs/SbEy8wbXzzDB6mJ7eJPL1dO0Dpr2YBqoA6gxyopkC0iX3tYe/5bj2zJzQDqRJgEfH0QTdEsV6Vo3NTZx3
+X-Rspamd-Queue-Id: BEC8310000E
+X-Stat-Signature: hb118nkzixpxk7814591ugmikad4ycid
+X-HE-Tag: 1791995451-311903
+X-HE-Meta: U2FsdGVkX1/Sy8c2c6tUAls8XnBgbpjglRdEGHfZcWeIeELyr8+oxnNHA99gguVSmPZ+kX0NfMlW7IXAvsPfnm4Tof4fdBwhkdTRBglqdp1Fm12AAG1DfwH4iS00vFESPKxZrpE8GRhusLMNbVI/vRWF7s5oPlxlMcndEkkzvKD4WyZJnTSvK/yNAuXZoWjS+BHsiaAMZ6uOerhW5Hcvb590GFdICFvWBBJxaveBPDuMnERxGCEEAbiziBPCTzcQRNv1BYmMb1kjN4JpGS77BANZsoev8ElQR+uT19amyGHvM3rI45ti+abYr6AD3kt4h54tRtnj+Jq+gj2JirgAAyPaH0cGqVOwEKm8BnPQln5fsA2AKjGwbK3NvaDFi5tEPAWsoQckumbCoz/+02mFii1UWgWnLWgHgeiJadlouEmHtsxoZt088chIY0rbQ1pxeoLm7KyQKM9QoGpuHk8bpf4Ucmnb3lnGAxMdizNXjpLus+p64AJnR0qlcynjOjKbDIaGY6BckbyL69jG8jsC9qWb9WiP5wqWzIOTaMLAfsv1XMQvaBVnyCf5e3PO7sGQgBbkJ0ThE1fohJUvKDIoaB5ai7BmwLoSYXzZYw5wlQkbd63KAIWE01wBEeQ/uDoTK/cXL5eTZHkS98Y0CocbTZYKAM4FtBVikfeE/Xca8nkI/vZWYy0szedZlDJEnQjHi722HYzojuDJS8rEPDMyJEDmcgpQLcC/tCpsNgiZW9K8mT8PpLkACw4C2yi+zHs4owgX/0JRLkCiJKMPsVIUyO9ygA+OlBlh19XXbXvfPaXXXYEyIA6rKI5v5bXbv9aUyHRCH40secFv9TUa7QJ8Zd41wLBoYBm+ALkGddYUmbo5HBemXrwb2sY1ZCyXB+dL618CyZllxZ2m/hAeZz0Xw1ASiqbixaRERwsbG7oAdn2KegxPKZxLAj5oqKn11uPbiRjYNBQ3y8d9SYB69pW
+ vG8NEYDr
+ 6pAPsKWA82lPZd+UhcHUlX5C4HM3dbQ5AfYCoLbSy2/Nhx2nBM2L0+dZKyhQL9OLgM+MNc7zB/D7qAhol7U42lh46vt/86ueRh1WSAUBaeXmzk/CwNMjCN55qs9kVWu0mBUkMkUPlWbvMUdz6K9+dYB1APv937NwEKaH90PfcGn2Pf9zfU0/SBUzua/mHw2HhDuULQmOjEpf48TMYLlRsUvXQC7xyWuq9jXMtYGVtka1ki4Hxs2DPDt72iwkppddz5PDFes7/gePx4xGnyZyA3E/GnSFX/JW76o/lFPvj/l4tb2dBFdbtZAp8vbl6dRrML9w6texBVW003qiI/4by9czav2nI/Do9hQBH3G/kiO0K43Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,86 +105,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Oct 2026 at 06:59, Pedro Falcato <pfalcato@suse.de> wrote:
+
+On Tue, Oct 13, 2026 at 02:30:37PM +0200, David Hildenbrand (Arm) wrote:
+>numa_rebuild_large_mapping() and do_swap_page() can be tricked into
+>generating an address wraparound, crashing the kernel. All that's required
+>is to map a tail page of a large folio close enough to the start/end of
+>the address space to e.g., make
 >
-> On Tue, Oct 13, 2026 at 06:01:15PM -0700, Linus Torvalds wrote:
-> >
-> > So there's effectively three different things working together:
-> >
-> >  - mark a folio PG_rcu_free only when it's hot and keeps being accessed
-> >
-> >    (See commits dabc522cee5b: "mm: have folio_mark_accessed() return
-> > whether the folio is hot" and  bb5908b733a1: "mm/filemap: set
-> > PG_rcu_free on the folios that reads keep coming back to" for details
-> > - both are pretty tiny and not really all that complicated)
+>	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
 >
-> I'm not sure this is a good criteria for checking whether a folio should
-> be RCU-ified.
+>to wrap around.
+>
+>Let's fix it by providing a better helper, folio_pte_scan_range(), that
+>takes care of staying within VMA and page table boundaries while
+>handling possible wraparounds.
+>
+>Reported-by: Kyle Zeng <kylebot@openai.com>
+>Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
+>Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+> mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
+> 1 file changed, 29 insertions(+), 14 deletions(-)
+>
+>diff --git a/mm/memory.c b/mm/memory.c
+>index 1f5d5f7d39cd2..a3823010aa981 100644
+>--- a/mm/memory.c
+>+++ b/mm/memory.c
+>@@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+> 	} while (--nr_pages);
+> }
+> 
+>+/*
+>+ * Get the address range in which a folio might be mapped, assuming its pages
+>+ * are mapped consecutively and the folio page at the given idx is mapped at
+>+ * the given address.
+>+ */
+>+static void folio_pte_scan_range(const struct folio *folio,
+>+		const struct vm_area_struct *vma, unsigned long addr,
+>+		unsigned long idx, unsigned long *start, unsigned long *end)
+>+{
+>+	/* Stay within the page table and VMA boundaries. */
+>+	const unsigned long pmd_start = addr & PMD_MASK;
+>+	const unsigned long pmd_end = pmd_start + PMD_SIZE;
+>+	const unsigned long lower = max(pmd_start, vma->vm_start);
+>+	const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
 
-So my argument really is that there is almost no downside to marking a
-page for RCU freeing.
+That -1/+1 threw me for a sec ... Neat little trick!
 
-Yes, it delays the freeing, but it really doesn't make it very
-expensive - and it does make reading it noticeably cheaper.
+>+	const unsigned long offset = idx << PAGE_SHIFT;
+>+
+>+	/* Avoid any address wraparounds. */
+>+	*start = addr - min(addr - lower, offset);
+>+	*end = addr + min(upper - addr, folio_size(folio) - offset);
+>+}
+>+
+> /*
+>  * We enter with either the VMA lock or the mmap_lock held (see
+>  * FAULT_FLAG_VMA_LOCK), and pte mapped but not yet locked.
+>@@ -5121,16 +5142,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> 	address = vmf->address;
+> 	ptep = vmf->pte;
+> 	if (folio_test_large(folio) && folio_test_swapcache(folio)) {
+>-		int nr = folio_nr_pages(folio);
+>-		unsigned long idx = folio_page_idx(folio, page);
+>-		unsigned long folio_start = address - idx * PAGE_SIZE;
+>-		unsigned long folio_end = folio_start + nr * PAGE_SIZE;
+>+		const int nr = folio_nr_pages(folio);
+>+		const unsigned long idx = folio_page_idx(folio, page);
+>+		unsigned long folio_start, folio_end;
+> 		pte_t *folio_ptep;
+> 		pte_t folio_pte;
+> 
+>-		if (unlikely(folio_start < max(address & PMD_MASK, vma->vm_start)))
+>-			goto check_folio;
+>-		if (unlikely(folio_end > pmd_addr_end(address, vma->vm_end)))
+>+		folio_pte_scan_range(folio, vma, address, idx, &folio_start,
+>+				     &folio_end);
+>+		if (unlikely((folio_end - folio_start) >> PAGE_SHIFT != nr))
+> 			goto check_folio;
+> 
+> 		folio_ptep = vmf->pte - idx;
+>@@ -6280,16 +6300,11 @@ static void numa_rebuild_large_mapping(struct vm_fault *vmf, struct vm_area_stru
+> 				       struct folio *folio, pte_t fault_pte,
+> 				       bool ignore_writable, bool pte_write_upgrade)
+> {
+>-	int nr = pte_pfn(fault_pte) - folio_pfn(folio);
+>+	const unsigned long idx = pte_pfn(fault_pte) - folio_pfn(folio);
+> 	unsigned long start, end, addr = vmf->address;
+>-	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+>-	unsigned long pt_start = ALIGN_DOWN(addr, PMD_SIZE);
+> 	pte_t *start_ptep;
+> 
+>-	/* Stay within the VMA and within the page table. */
+>-	start = max3(addr_start, pt_start, vma->vm_start);
+>-	end = min3(addr_start + folio_size(folio), pt_start + PMD_SIZE,
+>-		   vma->vm_end);
+>+	folio_pte_scan_range(folio, vma, addr, idx, &start, &end);
+> 	start_ptep = vmf->pte - ((addr - start) >> PAGE_SHIFT);
+> 
+> 	/* Restore all PTEs' mapping of the large folio */
+>
+>---
 
-I'll argue that PG_rcu_free is cheaper than just marking a page
-accessed, much less having a dirty page. A page that got marked
-accessed is *also* going to make freeing it more expensive: it makes
-it go through the LRU lists one more round, and you're effectively
-delaying the freeing of that page. On an average machine these days,
-it means that that page will be delayed to happen after many other
-gigabytes of pages. But nobody even blinks an eye at *that*, do they?
+Nothing jumped out at me, feel free to add:
 
-And it's not even *remotely* the problem that a dirty page is, because
-while it requires that "wait for RCU", it won't cause the kinds of
-fundamental problems that IO causes with writeback.
-
-So marking pages PG_rcu_free isn't "no cost", but it's a real upside
-if it keeps getting read, and the cost isn't actually that bad
-compared to things people don't even give a second thought to.
-
-> - you don't need that many accesses to get an active, referenced folio. LRU
-> batching makes it a little harder, but not by much.
-
-I thing it needs  six accesses with the current mglru and default
-settings as it goes from "not referenced at all" through the lru
-generations and then finally hits the "no more generations => it is
-hot".
-
-Sure, if you don't do mglru you hit that final stage already on the
-fourth access as it walks through "referenced", "active / ref
-cleared", "active / ref set" and "no more stages => it is hot hot".
-
-But if you read the same page six (or even just four) times, it's
-clearly somethign that keeps getting accessed. So "mark it for RCU and
-fast accesses in the future" doesn't sound at all aggressive,
-considering how low the cost is.
-
-> - rewinding along a folio doesn't tell you much other than the reader
-> went back, for some reason. It's also natively racy so funny things like
-> multiple pread()'s to the same fd can easily confuse this mechanism into
-> marking this as hot.
-
-Multiple poread()s to the same folio is exactly the case we want to trigger.
-
-Can you make a load that marks pages active without those pages being
-useful? Absolutely. But if somebody does that intentionally, they only
-have themselves to blame if the end result doesn't perform well.
-
-And if you don't do it intentionally, you have to *work* at it. The
-read() logic already treats "continue from the same spot" as not being
-a new access. So you really have to *actively* do silly things to
-cause a page to be marked accessed six times.
-
-Or - and hear me out - that page really was accessed several times and
-should be marked for fast accesses. No?
-
-> How many pages (as a %) are you seeing as marked PG_rcu_free across a boot/
-> realistic workload?
-
-I haven't actually checked outside of "a normal boot doesn't cause
-even a single accelerated RCU period". But I'll go reboot into a clean
-kernel and see what a kernel compile does.
-
-               Linus
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
