@@ -4,99 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8241CC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 00:33:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FE4CC6B19
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 00:36:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 463536B0088; Tue, 13 Oct 2026 20:33:10 -0400 (EDT)
+	id 798656B008C; Tue, 13 Oct 2026 20:36:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40CE96B008A; Tue, 13 Oct 2026 20:33:10 -0400 (EDT)
+	id 76E986B0092; Tue, 13 Oct 2026 20:36:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 322D56B008C; Tue, 13 Oct 2026 20:33:10 -0400 (EDT)
+	id 65D1F6B0095; Tue, 13 Oct 2026 20:36:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 05ECC6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:33:09 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81665A01CE
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:33:09 +0000 (UTC)
-X-FDA: 85319357298.02.6B0CF5D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DAAA3A0002
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:33:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AcNyXWkW;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E2D26B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:36:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF100140391
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:36:23 +0000 (UTC)
+X-FDA: 85319365446.27.0970458
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B2B46180006
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:36:20 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=qULhHkC3;
+	spf=pass (imf24.hostedemail.com: domain of 18766350203@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=18766350203@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791938182;
+	b=gsPfuKUE3iUOAAzMsaIT8WXs/9o6htzRx9kbckXtYmz0cyU4aKiew0bKhHT5RBNxJwEDn5
+	7Ohcj1nM9E5QGaf29OCzyHM3s6innScwWjoucJSXeXlT3Ku5jaLn9imeeo5XXtkrcjtH1/
+	8pCQhqTgJ92LuqhZOU9JyYMRm6DBpwg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=qULhHkC3;
+	spf=pass (imf24.hostedemail.com: domain of 18766350203@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=18766350203@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791937988;
+	s=arc-20220608; t=1791938182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hXI2gIMzgROodmXxlY8UYg7eHDDceK9gOOniFQNAk3Q=;
-	b=XzJahpfdFKGFz22r130d6hlvc7pCMcyDNYVOlgA/2uHVX6m+KRkkKk2udZ7vlXs0/VbLza
-	EWrGlU/dpY4VUnDN3yRNwL8yv1Yr6k/5qUFCgXkVUzRdnp7nq5sV1PYKJdDtu6UJZp1PIz
-	/UlH+uHtpsrFGyZHQEF2kV062C0/tGw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AcNyXWkW;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791937988;
-	b=VF98QTGDxCunzHT6Hqp9iEOdt081xfFBBf2Xd7v5FiFyVbjCTUURIQEeGmh+ZO95KSorWl
-	Kc9flXd0lq8zlm0/oFF9STCc41OhCsK+fI4UzGTUsNb+ICN5//idnFx/NRWXOgARtZNIe5
-	NfTwz5wLSnbAOBoVQwSwfpsld5xpCD4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D192C42E60;
-	Wed, 14 Oct 2026 00:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2593A1F000FF;
-	Wed, 14 Oct 2026 00:33:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791937986;
-	bh=hXI2gIMzgROodmXxlY8UYg7eHDDceK9gOOniFQNAk3Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AcNyXWkWUiQ4PmIL1fwRebTfyWsstTYXhBeyKhU+mcHsOK4XKeaqIrJK4CxdXJFXI
-	 w6Tqmdq1ksw8EOrmZiMcxp1EwzRBEbCd8GXxwM08ZEjNIn+OlhPm1iaoLipPpgNVGF
-	 c5Xb9ZAygZOUILD1+FzcuMStKk6WtkwiyzxA6NgtsD7A26OWQGCj7pgQU4a2tJ6RIg
-	 cdMHCIp1RwDdfR4LXV1D4rCUkwtuXB89+JkVNKnIpdzI8hiGktU30WZYJPB57OJ5Ns
-	 euMCZeC8vAfpJiT0sIKEW7Gub3rFwRyyWRKU6VkMf9WS0jQDF3DsoEWLWF2r7Q6wyf
-	 PFHC3VJAJirHQ==
-From: SJ Park <sj@kernel.org>
-To: Manuel Ebner <manuelebnerli@mailbox.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	 in-reply-to:references:dkim-signature;
+	bh=e8l+LZqu+D+wbZzn73m1duCjP/mzQaKWa6FuilWnWdo=;
+	b=GRTJ9zxO17zQRDITyrB3PVcyuFkRI2iZYZg2fjauFEqVv6IoR9LYnRsYeLuScNh6qV1R+a
+	lNJa8t1tkgfGGmn+8pfDQNe8bAVu2DHec4paM47GcwxY99y2x+fJWhu9koiZLOkzDvqjRE
+	BKZ8GffoY4E3CJQsTlSjxgsrtNO2elE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=e8
+	l+LZqu+D+wbZzn73m1duCjP/mzQaKWa6FuilWnWdo=; b=qULhHkC3lWX1MFXNUu
+	1Nl3gCE4E8ih+XfVGgfuP2T+5bB6eOzKU7TSKmNoIebiDc9wFn2102nWfE8ZnFrt
+	SskUPGz90iJII+OEV/zrPsuqlD07b9POdlqGexSKZMSd4JLGExvw3WrFbLkzHyW/
+	mHV+j3mixKIFDS7So9U1yv3+g=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3_3p2zs5q5kSdEg--.1031S2;
+	Wed, 14 Oct 2026 08:36:08 +0800 (CST)
+From: Haolong Wang <18766350203@163.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	damon@lists.linux.dev,
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
-Date: Tue, 13 Oct 2026 17:32:58 -0700
-Message-ID: <20261014003258.142926-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261013191327.663331-2-manuelebnerli@mailbox.org>
-References: 
+Subject: [PATCH] mm/memfd_luo: carry the exec-bit state in the preserved record
+Date: Wed, 14 Oct 2026 08:35:58 +0800
+Message-ID: <20261014003558.357783-1-18766350203@163.com>
+X-Mailer: git-send-email 2.56.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DAAA3A0002
+X-CM-TRANSID:_____wD3_3p2zs5q5kSdEg--.1031S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuw1rZFyUKryrKryUtw4Utwb_yoW3GF47pr
+	ZxKr1rKr4kAFyIy3s7Zw18ZFyrZw4fJF15JryIgry8C3W5XrnIqF1S9Fy5WFyxAFnaga40
+	qr4Y9rykuayDZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jFq2NUUUUU=
+X-Originating-IP: [2001:250:5828:4461:5d0:1f3:be4d:bdab]
+X-CM-SenderInfo: jpryllawtvijiqt6il2tof0z/xtbC9hgg52rOznjF7QAA3T
 X-Rspam-User: 
-X-Stat-Signature: 1ahz7g1sqog866fbnby3izzui6zkp98e
-X-HE-Tag: 1791937987-826572
-X-HE-Meta: U2FsdGVkX1+5oOxKt/+sV6DGWy7RxNEN0AiH4+Enpxgw8F8S6idW3OCxj+4107HNVPqcdNZ66Wp9JWwLSdZDtu1lKt3tRBxWK4AVdRKbhKuCotYCxLoOWjZPt3gCrJo5O0HH0RkewxW/pEyRTCJVXAEFPWr5037yA9vZ6VuwEMi8IWJL3aB1e/0s2uDvPOgf0qpmyZmAM92Fx5GcrqTPI3c6N6W2Sk60w+eRIa5X8ZBkRV5AQ2wQFikt6Rh5NWCOj210xwEdCz6o5XoDt0ujbj2Fmubgf/PVyuu4m6PfgVe5vViNiJvj1yj8pqaDGycgu9E/FoszltSzM9C1MapLmp1zrL0EU5+k2ZOkOH5YTQmktt5E8dK5QFTn3tFxlGn72RAFL3/PLPdYN5upxLz9hzEVGP1GruiZqeOUNSXOCRdoaXc+u8Un+ZiG6ga1+uXms+rF/mjsszLdEgL/zYj/ST/2U3EB2dqEvr7RYbu1QLu/wN436ck6JuOx8cePxr+LT0CHnEr32rfnXc3l38JFT69LtiLnBJZHSus4kSKUYeirXc0YZ2xm6Rp97q0d3vMkBY8QolpixDcfAjAIqFqE4ReF3riGgTq1ry/4GY4F77BMy2e9n5aFUDquZacWtsCPKJtv0JwdKDCo9RlmLu50GWCxKVkyGoaT/KokFIGumnV1dvxmwjYJRxcXCXqrScxjHZbZfSiJVzSz5bXMneStVOC5GtFUrexKvYAw3YNZleD1PIJM0Tbs7FAq/HDSdJAulgTjlbsk35BMEw60lu2fIPczUkU25FJKcL5xbeOuPjpkXJUZYoDfGmAh9JtsawrU3vYomAjPBUicaakogqsVjP7n0BArs+bQi4vDXXNFVrGRuo7OpgDS4umCTMuHxoLz+efav6itM4xb5KqT/GYeWApbHpEOzPNo+YmKdy5xMcrL5kUUd7AQOD+vhn6F8rBbBDVCu87cHBRbv/9mhxx
- pIZIJb3p
- Ln2D6wNac5XAbFk+VaFQQIL2jKcObth60mvOB0Z3l7GW/zelgx2h+9hoh+rylGkT39+HP3vER/GJ4t0XtlUKUQWpwrKA4jwkNoUfJi/Z+hQDRzWlXYlFt6C5J9UInmdkXYLS4heCx6HoE/l0euAPJZ+H4DLEPRi15e/qnp76tt5iINpGTJPzNL1CmwQmY363D4laNCUDXp3Yv3WnPTv01SnaNoORDbadyPk5bjbz9t+NSKDAlmueBt0sgzTh8jzOdb9LwXE3TLPY+RuRzAkI++0I3192pkl/o1uwDfay7y1XyuMS1COhaH+A7/VaN4Vpvsi8/
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B2B46180006
+X-Stat-Signature: b7f5a8tdiqouex69t5yxj5rsemmdw5u4
+X-HE-Tag: 1791938180-106698
+X-HE-Meta: U2FsdGVkX18PNgex4LV80j/MgDPEt9ze5+4TnC9ipg4hrFvd9OwIC2IGXnQ4Tg+0Mgv/4AYijU/MGJs1sIvaowfVBxUD2MZZ59ia6njhT5qfjez9oMIcccQ0Jod29qP+AiUXKP3JjEQpY3baG5+SA0NRRfLplIbp3zSW9JnMsJrh3BP/R3DXoFR5QT1oSZb3EEsDAsHGk08Fd+7T/1vINlz8ePANNt0wArn3XInZWZGghN2TKRPobF5yri8M8ndfU27W5Hz/fFCfVHRLiF7tG1ngvfpJk5E8wuvSVlcoBSvsZXuYRE7lgT4LpsYs1SBo32A+Tjdov6O3mswl+MEOaGQw4vQdUEucwSJBWm8WMy8tTZP51WBUgiSKK9wJ+ksejxBziOqurshxrGWFM2NwGb2uXq0Ua/6Iodlum4wCoOa/YH1A3viZKwEoOkkKOKPPI/uHtl+rUFiDzrydBkACInrYKQATXjN7PBduJbnDY5/v7g68GqVsAHCtftTSBt0xDfnAB8SEr3pVkhusR9V791Y1UZnzME4BLZFz78vqpWEId0DosxoY+s9idLCsnpFuLCT0Ej50GwS0zhfBlnJ13K8QSVjPIv57FDQig3A5R+AYHxqwtmNL6m4n401RSBBfS/gcqhsGMZWvBevcmEGc2JR5l6UBFCHxxgpqRWSJcYjMRf1LYlxGXCbFze/do1wCy4jWEgicNcnnrhEKq715XUYXmO9eMuTw++ML4kUzSFHd0jPPG34g0RxINEzov0e7vso5oSnoS4zfcQKiJ6ymAFiKmqubMrX1WcMTM7/oT4dQwmM11CW/lGmCZ3hQf2hhuaxB2f9CZaWQV/TbD5VhmUw2RQAhhTDU7Bb9LOzixtKa8H2KTvLMnL+Rg1n/J58zeMmwtvMahzc4zZ8jw1DSAILr5zCZfMi5TK6hkjAgl5cDK5eJetl4/WwQ7dI3PL8N1hraIYtW8vQ8lVdWM9M
+ Ep6lCz4i
+ KEJIo8j88+1gO7cLnK4uNnfZCoDy3AO4KKlDWA67cRcQQPeILapFa+3BErBOFyYAPTA6Te0Z1rl9pBOMFJLmZS05z53U2ke3f7XWnAu+qRvXc3tH5aJkqvKEp/BljEwhTdbE933nWIiC5tv5ryg8s2h/Tg0ssQz5l62wNswY0iWI4173igse911L3Z39rSGUkPBtJiuEsMWw6ol3mH4z4BlyyF4km8rCcylotD3spNSIqBR1XMqpTx5FZ1NHXleQci0ZRMOp1GMiMLyF3DbzhgeX7vJ8sAb57RJfYNlWSbS9F9ZcNsH3sqCzmtzX6U1RdTYTq63b49zzSPhu90xefGkG6UZgUgTMeEqwkAYuVhzpxtZ1XzH1P5gEiwNS5ifgnJlEpnqYw9zQh48o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,219 +93,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Manuel,
+F_SEAL_EXEC freezes the exec bits as they are at sealing time: a memfd
+becomes either permanently executable or permanently un-executable.
+The preserved state of a memfd (struct memfd_luo_ser) carries the
+seals but not the inode mode, and the restore path creates the file
+with memfd_alloc_file("", MFD_ALLOW_SEALING) -- the default
+(executable) mode -- without consulting the vm.memfd_noexec policy
+(that policy is applied on the memfd_create() syscall path only).
 
-On Tue, 13 Oct 2026 21:13:27 +0200 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
+A memfd sealed as un-executable is therefore restored as mode 0777
+with F_SEAL_EXEC re-applied on top of it: the guarantee inverts.
+Because the restored file is executable, memfd_add_seals() also
+implies F_SEAL_WRITE, F_SEAL_FUTURE_WRITE, F_SEAL_SHRINK and
+F_SEAL_GROW (the W^X rule), so the restored memfd comes back with its
+write seals locked and its exec bits permanently irrevocable
+(shmem_setattr() rejects any exec-bit change).  This is a functional
+regression that needs no attacker: the owner's own pwrite() to the
+memfd succeeds before the update and fails with EPERM after it.  The
+inversion is also silent: F_GET_SEALS keeps reporting the seal.
 
-> mention 'least-recently-used' AKA lru at the beginning
+Carry the fact in the existing ser->flags field, which commit
+8a552d68a86e ("mm: memfd_luo: preserve file seals") added for exactly
+this kind of extension ("Unused flag bits must be set to 0"): preserve
+records whether the inode had exec bits, and retrieve reproduces them
+by setting the mode of the fresh anonymous inode directly, before the
+seals are re-applied -- the W^X rule in memfd_add_seals() looks at the
+mode when it decides whether to imply the write seals, so the mode has
+to be in place first.  The file is not published at that point, so no
+other thread can observe the intermediate state.  Reusing the
+MFD_NOEXEC_SEAL alloc flag was considered and dropped: it would
+silently add F_SEAL_EXEC to memfds that never had it (a plain
+non-executable memfd without the seal would come back with the seal
+attached and its exec bits irrevocable), and it would couple the
+restore to the current policy rather than to the state that was
+preserved.  A record that does not say the bits were set is restored
+without them -- which is what a memfd created under vm.memfd_noexec=2
+looks like, and is also the safe reading for records written before
+this bit existed.
 
-I think the readers would know what LRU means, and therefore
-'least-recently-used' is not needed.
+With this, the round trip is exact: a NX memfd (0666 + 0x20) is
+restored as 0666 + 0x20 and stays writable by its owner; a plain
+non-executable memfd (0666, unsealed) stays 0666 and unsealed, its
+exec bits still chmod-able; the baseline executable memfd stays 0777
+and still execve's; and memfd_create() under vm.memfd_noexec=2 still
+forces NX on fresh memfds.  No seal is invented for any of them.
 
-> set as -> set to
+Refusing to preserve memfds with F_SEAL_EXEC was considered and
+rejected: with vm.memfd_noexec >= 1 every memfd created without an
+explicit MFD_EXEC gets MFD_NOEXEC_SEAL forced on it (and = 2 refuses
+the MFD_EXEC opt-out outright), so the refusal would disable the whole
+preservation feature exactly on the systems that harden the most.
+Preserving the full inode mode would be the alternative, but one bit in
+the already-extensible flags field is sufficient and keeps the record
+layout unchanged.
 
-This commit message is using incomplete sentences and describing only a few of
-changes.  Please make it to use complete sentences and cover all changes.
+One point for the maintainers: a clear exec bit in a record is
+ambiguous between "written before this bit existed" and "the bits were
+clear", and both readings are safe -- the memfd comes back
+non-executable, which is what a memfd created under vm.memfd_noexec=2
+looks like.  For an old record it does change one case: an executable
+memfd with F_SEAL_EXEC preserved by a kernel without this change is
+restored as permanently non-executable instead of permanently
+executable.  If that is not acceptable, the reading has to be tied to a
+version bump instead: commit 8a552d68a86e ("mm: memfd_luo: preserve
+file seals") already noted that new semantics may require one ("they
+will need another version bump").
 
-> 
-> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-> ---
->  .../admin-guide/mm/damon/lru_sort.rst         | 51 ++++++++++---------
->  1 file changed, 26 insertions(+), 25 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-> index 0c04d238ed..3b6d122887 100644
-> --- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-> +++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-> @@ -4,8 +4,9 @@
->  DAMON-based LRU-lists Sorting
->  =============================
->  
-> -DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel module that
-> -aimed to be used for proactive and lightweight data access pattern based
-> +DAMON-based least-recently-used-lists (short LRU-lists) Sorting
-> +(DAMON_LRU_SORT) is a static kernel module that aims to be used
-> +for proactive and lightweight data access pattern based
+Measured on a QEMU live-update run (preserve -> kexec -> retrieve):
+before the fix the restored NX memfd is mode 0777, seals 0x3e, execve
+of its contents succeeds and the owner cannot write to it; with the
+fix the same test reports the round trip exact (mode 0666, seals 0x20,
+still writable, execve -> EACCES), a plain non-executable memfd comes
+back 0666 with no seal and can be chmod'ed executable again, and the
+baseline executable memfd and fresh memfds are unaffected.
 
-As I mentioned above, I don't think the above change is needed.
+Fixes: 8a552d68a86e ("mm: memfd_luo: preserve file seals")
+Assisted-by: Pi:glm-5.3-flash
+Signed-off-by: Haolong Wang <18766350203@163.com>
+---
+ include/linux/kho/abi/memfd.h |  3 +++
+ mm/memfd_luo.c                | 31 +++++++++++++++++++++++++++++--
+ 2 files changed, 32 insertions(+), 2 deletions(-)
 
->  (de)prioritization of pages on their LRU-lists for making LRU-lists a more
->  trustworthy data access pattern source.
->  
-> @@ -17,7 +18,7 @@ systems, LRU lists are normally not proactively sorted but partially and
->  reactively sorted for special events including specific user requests, system
->  calls and memory pressure.  As a result, LRU lists are sometimes not so
->  perfectly prepared to be used as a trustworthy access pattern source for some
-> -situations including reclamation target pages selection under sudden memory
-> +situations including reclamation of target pages selection under sudden memory
->  pressure.
+diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
+index 08b10fea2afc..471cfe8a4616 100644
+--- a/include/linux/kho/abi/memfd.h
++++ b/include/linux/kho/abi/memfd.h
+@@ -87,6 +87,9 @@ struct memfd_luo_ser {
+ 	struct kho_vmalloc folios;
+ } __packed;
+ 
++/* The execute bits were set on the memfd when its seals were applied. */
++#define MEMFD_LUO_FL_EXEC_BIT		BIT(0)
++
+ /* The compatibility string for memfd file handler */
+ #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
+ 
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index 59de210bee5f..950a43a4c328 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -300,6 +300,17 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 	ser->size = inode_size;
+ 	ser->seals = seals;
+ 
++	/*
++	 * F_SEAL_EXEC freezes the exec bits as they are at sealing time, so
++	 * the restore has to reproduce them.  Record whether the inode had
++	 * exec bits here; the restore sets the mode of the fresh inode
++	 * accordingly before re-applying the seals.  ser is zero-initialized,
++	 * so a clear bit means the bits were clear (or the record predates
++	 * this flag -- the safe reading for those is also "no exec bits").
++	 */
++	if (inode->i_mode & 0111)
++		ser->flags |= MEMFD_LUO_FL_EXEC_BIT;
++
+ 	err = memfd_luo_preserve_folios(args->file, &ser->folios,
+ 					&folios_ser, &nr_folios);
+ 	if (err)
+@@ -533,8 +544,11 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+ 	}
+ 
+ 	/*
+-	 * The seals are preserved. Allow sealing here so they can be added
+-	 * later.
++	 * F_SEAL_EXEC freezes the execute bits as they were when the seal was
++	 * applied, so the restore has to reproduce them.  A record that does
++	 * not say the bits were set is restored without them, which is what a
++	 * memfd created under vm.memfd_noexec=2 looks like and is also the safe
++	 * reading for records written before this flag existed.
+ 	 */
+ 	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
+ 	if (IS_ERR(file)) {
+@@ -543,6 +557,19 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+ 		goto free_ser;
+ 	}
+ 
++	/*
++	 * Reproduce the exec bits before the seals are re-applied: F_SEAL_EXEC
++	 * freezes the bits as they were at sealing time, and the W^X rule in
++	 * memfd_add_seals() looks at the mode when it decides whether to imply
++	 * the write seals.  Setting the mode here, directly on the fresh
++	 * anonymous inode, is safe -- the file has not been published and no
++	 * other thread can reach it yet.
++	 */
++	if (ser->flags & MEMFD_LUO_FL_EXEC_BIT)
++		file->f_inode->i_mode |= 0111;
++	else
++		file->f_inode->i_mode &= ~0111;
++
+ 	err = memfd_add_seals(file, ser->seals);
+ 	if (err) {
+ 		pr_err("failed to add seals: %pe\n", ERR_PTR(err));
+-- 
+2.56.0
 
-I cannot find what's wrong with the original sentence.  Could you expalin?
-Also, I think the updated sentence is rather easier to misread.
-
->  
->  Because DAMON can identify access patterns of best-effort accuracy while
-> @@ -28,9 +29,9 @@ pattern source with low and controlled overhead.
->  How It Works?
->  =============
->  
-> -DAMON_LRU_SORT finds hot pages (pages of memory regions that showing access
-> +DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
->  rates that higher than a user-specified threshold) and cold pages (pages of
-
-rates that "are" higher?
-
-> -memory regions that showing no access for a time that longer than a
-> +memory regions that show no access for a time that longer than a
->  user-specified threshold) using DAMON, and prioritizes hot pages while
->  deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
->  CPU for the prioritizations, a CPU time usage limit can be configured.  Under
-> @@ -63,10 +64,10 @@ enabled
->  
->  Enable or disable DAMON_LRU_SORT.
->  
-> -You can enable DAMON_LRU_SORT by setting the value of this parameter as ``Y``.
-> -Setting it as ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
-> +You can enable DAMON_LRU_SORT by setting the value of this parameter to ``Y``.
-> +Setting it to ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
->  no real monitoring and LRU-lists sorting due to the watermarks-based activation
-> -condition.  Refer to below descriptions for the watermarks parameter for this.
-> +condition.  Refer to below descriptions of the watermarks parameter for this.
->  
->  commit_inputs
->  -------------
-> @@ -74,9 +75,9 @@ commit_inputs
->  Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
->  
->  Input parameters that updated while DAMON_LRU_SORT is running are not applied
-> -by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
-> +by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
->  of parameters except ``enabled`` again.  Once the re-reading is done, this
-> -parameter is set as ``N``.  If invalid parameters are found while the
-> +parameter is set to ``N``.  If invalid parameters are found while the
->  re-reading, DAMON_LRU_SORT will be disabled.
->  
->  Once ``Y`` is written to this parameter, the user must not write to any
-> @@ -86,37 +87,37 @@ violate this rule, the kernel may exhibit undefined behavior.
->  active_mem_bp
->  -------------
->  
-> -Desired active to [in]active memory ratio in bp (1/10,000).
-> +Desired active to (in)active memory ratio in bp (1/10,000).
-
-I think use of brackets is also fine.  Let me know if I'm missing something.
-
->  
->  While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
->  increases and decreases the effective level of the quota aiming the LRU
-> -[de]prioritizations of the hot and cold memory resulting in this active to
-> -[in]active memory ratio.  Value zero means disabling this auto-tuning feature.
-> +(de)prioritizations of the hot and cold memory resulting in this active to
-> +(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
-
-Ditto.
-
->  
->  Disabled by default.
->  
->  autotune_monitoring_intervals
->  -----------------------------
->  
-> -If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
-> +If this parameter is set to ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
->  sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
->  amount of access events in each DAMON-snapshot, while keeping the sampling
-> -interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
-> -``N`` disables the auto-tuning.
-> +interval to 5 milliseconds in minimum, and to 10 seconds in maximum.  Setting this
-> +to ``N`` disables the auto-tuning.
->  
->  Disabled by default.
->  
->  filter_young_pages
->  ------------------
->  
-> -Filter [non-]young pages accordingly for LRU [de]prioritizations.
-> +Filter (non-)young pages accordingly for LRU (de)prioritizations.
-
-Ditto.
-
->  
->  If this is set, check page level access (youngness) once again before each
-> -LRU [de]prioritization operation.  LRU prioritization operation is skipped
-> +LRU (de)prioritization operation.  LRU prioritization operation is skipped
-
-Ditto.
-
->  if the page has not accessed since the last check (not young).  LRU
->  deprioritization operation is skipped if the page has accessed since the
->  last check (young).  The feature is enabled or disabled if this parameter is
-> -set as ``Y`` or ``N``, respectively.
-> +set to ``Y`` or ``N``, respectively.
->  
->  Disabled by default.
->  
-> @@ -235,7 +236,7 @@ max_nr_regions
->  Maximum number of monitoring regions.
->  
->  The maximum number of monitoring regions of DAMON for the cold memory
-> -monitoring.  This can be used to set upper-bound of the monitoring overhead.
-> +monitoring.  This can be used to set the upper-bound of the monitoring overhead.
->  However, setting this too low could result in bad monitoring quality.  Please
->  refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
->  defaults.
-> @@ -268,7 +269,7 @@ This parameter is for setting and getting the :ref:`address unit
->  
->  ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
->  unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
-> -``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
-> +``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
->  Then DAMON_LRU_SORT will work for 10 KiB length of physical address range that
->  starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
->  
-> @@ -291,22 +292,22 @@ If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.  Else,
->  nr_lru_sort_tried_hot_regions
->  -----------------------------
->  
-> -Number of hot memory regions that tried to be LRU-sorted.
-> +Number of hot memory regions that try to be LRU-sorted.
-
-that were tried to be ?
-
->  
->  bytes_lru_sort_tried_hot_regions
->  --------------------------------
->  
-> -Total bytes of hot memory regions that tried to be LRU-sorted.
-> +Total bytes of hot memory regions that try to be LRU-sorted.
-
-that were tried to be ?
-
->  
->  nr_lru_sorted_hot_regions
->  -------------------------
->  
-> -Number of hot memory regions that successfully be LRU-sorted.
-> +Number of hot memory regions that are successfully LRU-sorted.
-
-that were ?
-
->  
->  bytes_lru_sorted_hot_regions
->  ----------------------------
->  
-> -Total bytes of hot memory regions that successfully be LRU-sorted.
-> +Total bytes of hot memory regions that are successfully LRU-sorted.
-
-that were ?
-
->  
->  nr_hot_quota_exceeds
->  --------------------
-> -- 
-> 2.55.0
-
-
-Thanks,
-SJ
 
