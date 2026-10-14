@@ -4,138 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C40ACCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9897CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:55:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C96BF6B008C; Wed, 14 Oct 2026 06:52:28 -0400 (EDT)
+	id B15146B0088; Wed, 14 Oct 2026 06:55:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C479B6B0096; Wed, 14 Oct 2026 06:52:28 -0400 (EDT)
+	id A9EA16B008A; Wed, 14 Oct 2026 06:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0EE96B0098; Wed, 14 Oct 2026 06:52:28 -0400 (EDT)
+	id 93FFD6B0096; Wed, 14 Oct 2026 06:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9024A6B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:52:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 235B6404BB
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:52:28 +0000 (UTC)
-X-FDA: 85320917976.27.946C985
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5B0EF20008
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:52:26 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALUatxx7;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 676A66B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:55:32 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 01E4A1C3BFD
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:55:31 +0000 (UTC)
+X-FDA: 85320925704.13.56D4CE0
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DB7C080007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:55:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="n J0TaUN";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=QHgq217u;
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791975146;
+	s=arc-20220608; t=1791975330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A40pvqxsAljXMht0uJoUDXzF1WEP0B00UO/a2qcSq5c=;
-	b=LN5eruNtAt3GjtyyBGLVkx1Wng0Nojcl6D/FGdiir88qtRFga0MeVhpyuaBxIq4QwGZONg
-	CHZxxTuFNeC0zOaOJUZ5eLLJk4+dmWGxY97wHQg1yaaY36qBKLskGIGlczyIBqF8MkVpvB
-	qtbCcw/VNMvDXaDvS2l+nF1+f4TwZnw=
+	bh=omdT6uKFt6UgyRDQimCvM0GtrqhzgEMeFDCBOuOK7D0=;
+	b=4pnRVBL5mgdot1LAnrAubCb2ant0XN+NRLJ4pXEilK2qEEtv4poEwbsikro7RY7V7EI2uw
+	6zZ7pc1Hh9sZQPbyIXuXUQ1ZO0YOvYRkzXiB0l7pCx6OYoJHYEt4AkFIauvXfmtUe8yxQR
+	+WujzClbq03fjtIJxFhIXnehDE6h9VQ=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALUatxx7;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="n J0TaUN";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=QHgq217u;
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791975146;
-	b=5lbS3nYaDCTL2xfc7FKAj47zu/KdxQ+GOem1+y9CI2uoMoRmBapuB9xy6mHNeCgdfkXW0e
-	S/kGofhidonV2yGXyST/+NdkElFkgp4ibtfgLJ5lShts+raV79Ac3ebez3KeJyVRb3RozE
-	GWSXd6w8p2DsEHpuYBqMcUzOVxySMNs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6924E42DB7;
-	Wed, 14 Oct 2026 10:52:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462021F000FF;
-	Wed, 14 Oct 2026 10:52:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791975145;
-	bh=A40pvqxsAljXMht0uJoUDXzF1WEP0B00UO/a2qcSq5c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ALUatxx7upV3SZkfTnvX3IgE4XE+F0RxjUatM7WzbYQ58SeOSupRbXZp9Rs4KDDqb
-	 Yx8oUW/jtDikFJHSuTlvN5n3Q9pyBZundVS5MQjW9e5SRXjsayfxpDyQOihfdJ3GUn
-	 6Kchw16CYAjiKisdIGTDFi2pxpgtZYYmARcaI9bkxGSkpSJOpGXTm0umd7ZSo+Veto
-	 44qiHVrdUirbmIKKUdfVmndXENVDTLdDTTCwJISfk/mjIxWaSgfkCZsgftHVFkvODn
-	 fZXUrTMrkJG0nntGG7Mp/FpI/H/aA6k8pY/fBEgtvemb/M3i43UYGXt3JoMgavGHYU
-	 gWgh4rgFHLPXg==
-Message-ID: <fedff1b6-0522-4398-a0d4-d4111a570159@kernel.org>
-Date: Wed, 14 Oct 2026 12:52:20 +0200
+	t=1791975330;
+	b=ziII3VXcvdns8geqEYR3ERAxiA0d2CyV2HnjhBf1G85A/NqvaaeC1WkbqmS7xvllNk6SnY
+	W06d3D/QzvZYvFXhZor8E2rWT1FXlmqXSCsXqp7XtOERBVZItJlrWr+ZoQ8VfRU+vrE9gv
+	sAwynFKtLo4kueuMGkqk7OWvgfnEe4Y=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 50B0F7A0119
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:55:29 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Wed, 14 Oct 2026 06:55:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1791975328; x=
+	1792061728; bh=omdT6uKFt6UgyRDQimCvM0GtrqhzgEMeFDCBOuOK7D0=; b=n
+	J0TaUNMSoCZ0/0H2bOkTsJX8HktIhKJBA6tMb31Sc8qsgDlP1G0OMwdkHXrRrr92
+	Rg4jRwJcvVDDgiJSdEbWXr6jKzAml1eiYLgIH3xQ1/EewJ30gflkaCBaGntzXlKm
+	si2O3E5+InvVtolgEfiEenZACfHhb2rQv/X09cch1wbNCAJM3gHTi/K3lYN8a0Ta
+	MWsLw44F+qcxA/m/Ww6gc/rq9kG0EFJaOkZ5C33dq44t4vqNTlk2HQlF7QlEaTzt
+	gmjIyk5MBIfkXfFzdwRoVtzd3o6djSN6mnUGHLV3ZpHmPtqoUhHeDrlvnOqygrJ2
+	UZCyIaVJOSc6HWcQrCblQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791975328; x=1792061728; bh=omdT6uKFt6UgyRDQimCvM0GtrqhzgEMeFDC
+	BOuOK7D0=; b=QHgq217uiDX7qacTDMSrRKx6R6531j+4Zm5YzdkuiUSpmbcvmtd
+	k8Ev+7nZWGgiN4fF4EKqhhFlKakyAd83bFQEd5fGUsnCUX+Q6ZuDHsRJkiTzhidd
+	wGUQBDKVJSdzzz7DsalIQPjP5wOwzkXwaM+PyBi1Pq/GXi6H5E3wzXj/ZPm/3ccA
+	COK+SUsJFgH+iAMDzyfHVpwjOblr9+rBqKp9/aLeqHXO8zFQsKo5C8hhdnwEz5la
+	8bpDG2Dh3+NGR7VQgjZiXRt5RghqH7GrDqz1W/kc3f04xOL8L3RQR2w6x/Yx4S+P
+	lggZFIHEz44Tyhp62b5Tzhn4YMP72Ut6wWg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791975328; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm3:rsa-sha256:u+PuiC0UHHzFkCp2fJ3vl3lx+JIpZcL36TQrI/y51PPt7f8
+	Ik6Dtcjy1Ioywy9u94TR7rNdDv25OF3Ysk7d2qsMzi7xBg1/hLzDHB7tIY1ac5Cc
+	qNqYp3d7W228qwI1MP7hSG0qFHbXKrufxSXPVCAOvMDKoLddXsMoftuztzjGx5II
+	Nkf1VknYrL2JzcZ1hHLkwGgX0mY9+41+WYzFALxXU7/TJBGW+CUuFM4dEVSTBsVM
+	9p2hut0QfUAdnS0exivESyyq/b5cNuAr7WVUf/LnKrO5577tThJ25rprKBnHAtle
+	yO/s3Sm6Ag95i4UNM6PiIvex+nYIvTxFsqmgbJg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:w7lEh1tu20A+ZpNoUeDrRfl4RpRTFm0eS11CIC/Uq0Q=:Xk/fUwmHtRA0T1v4C4miwnlsKsD2mKq4YWKxoaoiUtU=;
+X-ME-Sender: <xms:n1_PasKFssOqG_LtWk8iA-X6qDJrR9PvGgiQfGhTbBXGWyq7CKtS_A>
+    <xme:n1_Papz6po_PG_q0ISUcPHFRFbTroa2P5U-_OBp4xOqbPcnswYwckOrohLMLDtlt4
+    S32f5jyL9NKrjj9DW7KIf39y827wJR3NZU0jr4vCV9VVtADA2Q3Yns>
+X-ME-Received: <xmr:n1_PakFuSU48SznQPrIcSWMyarIWl_LFBzaCD18ri01rklAFZU-FOFouvE8>
+X-ME-Proxy-Cause: dmFkZTGOn86wrNKWqtV/L9sYewCUn3X/0QTPjpd/7tUrwcs05L418nntweIa5Cf7z91sgj
+    cziqmIK8dhRC3X3AMKM1JjOkK85uXwPO/r0a8XxPIyu7pqMMOBaWtI4/Y4Kc2vgzvSEWVJ
+    ZaRsnP9Nv4tX62EYnxn4n0bn8AzRk53DhMm8R64MuOTDJ+90AcVgZVnBwPGdlXqHQE9tOz
+    SEHuJ16ddypP2WQxaX2fC4FhiZWyqjYyo2r2upTBplK5B5iszLmNZsNVxH3vvLrmntXn3R
+    T7YymoFpBrxjxR5NpXb6v2OSEEjeNdTU6Ju65KT/NUdORxnzJxQLU2l8E1rSgXzg6NR8jW
+    8OJjZMtRZyo7MQR+p9xub8402O7KsoTmZC+MUB8WxSjIdCu7HmdbLIFir6NhXjreyiGPSU
+    Yvl5I7aSRPhEIEjwWIuq9WX9uK6wK8DqPhQ4IyKZ5q/UR/lFHSeNT33rKqxfYNtxrLSg40
+    7iu4HZJk0KjiGVvtmEPF0O15Zn/C8qUfRkDhcP1PqpAQy/arDx6iY6s6hMa7ix8VXbSG/2
+    kYqmb09908Vk7ONX5Cyue045o9MxG9Ak/1/IDchsoSzVKogB9YlhAWB5ciW9DA9jDyIYcZ
+    76BuwDp3CRw87AIqlKpQMVF1bi6OhunxwAShdHy6koBWrkO0/U/SVF/CUy6Q
+X-ME-Proxy: <xmx:n1_PahkkZiKOWtd3LRLK5kc4mckJEWrLyoEzIe1j-leCcesNPSJxTQ>
+    <xmx:n1_ParGM32g4gQlVeftNMvjqJW8JXbDxQFmlVvSge6TNd40eWmWLiA>
+    <xmx:n1_PakxuUZQmj4ri4cguzLuyYh8O5IP1mPqwhxfdlQv3OUq4S5WAfw>
+    <xmx:n1_PakaJsvD46h4JrRHLaELBZQVfr--D2C3y-kje07b7JKozEcYpmQ>
+    <xmx:oF_PasPQd9PVQAZ92DN8r02aT2pzkmBkTm1DN9nkYjROD86_ywUCVr_V>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 14 Oct 2026 06:55:26 -0400 (EDT)
+Date: Wed, 14 Oct 2026 11:55:25 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH v4 10/13] mm/collapse: open-code collapse_single_pmd() in
+ its two callers
+Message-ID: <as9cHpbmDm2FzJai@thinkstation>
+References: <20260928100630.21870-1-kirill@shutemov.name>
+ <20260928100630.21870-11-kirill@shutemov.name>
+ <b2133cff-ce69-4a45-bf33-c44b774dee7b@kernel.org>
+ <ar-nKHZ5hlbsXeFP@thinkstation>
+ <dfbb4bac-0def-4e1b-87a7-91c9cd91349e@kernel.org>
+ <20261013143839.832f1a4db51f801a2b95f850@linux-foundation.org>
+ <3bd88620-c245-4fab-abb7-9091d9a1b649@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
-To: Li Zhe <lizhe.67@bytedance.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- akpm@linux-foundation.org, muchun.song@linux.dev, osalvador@suse.de,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260930064308.58159-1-lizhe.67@bytedance.com>
- <arzVaC2IYkqSb0_U@gmail.com>
- <9a7c026e-f5f2-40e0-84aa-919c988cc136@bytedance.com>
- <2b4571c5-8e51-4c91-9d88-11929f200875@kernel.org> <asjVUa6XBZ8ti-0_@gremlin>
- <70ea8ee6-6fc5-4209-8cee-362da37f5035@kernel.org>
- <86de1ee5-be14-4123-b372-b4691cea8e67@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <86de1ee5-be14-4123-b372-b4691cea8e67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3bd88620-c245-4fab-abb7-9091d9a1b649@kernel.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DB7C080007
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5B0EF20008
-X-Stat-Signature: e4t6fo9yys4a3c4ni7sjss37kjt3kuuy
-X-HE-Tag: 1791975146-850180
-X-HE-Meta: U2FsdGVkX1/QVV6YI29oP86dOKIqZnG49CP9WVz0yuj+BYDVASOCr8ykGhTOMbkrr9n64nri7t/FtpnI6vLTM5QEjfv50+EPmYVnP6+JoRA2/eBEGYmEIiSWPuMa6iOWhznGSorIUdugex2CpRiyGDYANcHs+8nPTSXwpc14QXsWO58uOb6efjJ/+7i/1WTf2Mv0eeQXRSjz2rO2N/WNlcNMpcTr3JvlEGXl1YjGL+ysla3vG0T+u59+h+CMpEH71FWokz7b+DMgbUpab39eirl24oTUO4Djdg9wzoijU4VDXAeJoRD4yLTqoY7UkDmJz2FCzrj9WazIN8mut/fG2SjmJu6is8YVsEi35bVKnkjUxzo6P7WXfY1XbFabx0Gzubw8txKnfv8vQx2P5NbpjiKfwi441lmvfWUrUvYpYYLUz+5GZ9gZN9J2rvgRQR3NSAjcLux4LlfzUUKv9lYXwEM4IMsXhUhpZbHZPd2YZun97+NTwK9M6DnQJGUfLRH5uAQue43voqb54AOhE9ijAUnUJcGhu9LbRFphyLTLQqkwBEaU7cMSY5N7UiRpxvS/aVkuljCsZmz18M1Y9TG9LQt/tGIfEmXn/angjMOb6jaztt4YqVQXOqPDU5C/ThjEvIzOOZXzdc4ihX9Wcx6Bq799EO3sDfgnRdHo3hxKKgGg/3+jMGVdUiQmag656L1KX5H0plhxnzq5/TP1rN9HZKQZKpg07Ab1e9ahg8RXRjHrRjBee5Z7kRQcbBpORFDhh6T4uOM7GVansQLxoxmPEKJ8STWLdB1l7UOb7NQ6tk98JwiETghZOkxEQp9duDTXgi/VWy16cIJ5DFaamVMX9QR1fLWt/E9OV8FxPbecxoPm2QLfN+d0T+EjwtIW5/gXOTT8yBrNc6RKBqowBflLBC6ujzfJ1eVs8gN7/Bdsaq0XTU8kGrmpaPhAfZxuftgLBkRUSToAcK8Rw1X6a0i
- skEECQZK
- xA2rOpPvmk4oVu2ucRNI7G/akyYNqeMPsiI1H76Na4fbLhlLWGeska718dRja8+wdW0860MYfWbJ895Li9fpm/gOxKPlSatYhn3RLtZobLd96f16s0eMIH73BDqCi4kRTwxnZCTNa7RfEHV+xXY8brSV7RBPxhtwRRuKsPKRCHpi00PHWhv3IGfifaot3Q4kWp79LMM8NV2y5pLUZSrdNl4u95OJUO91pd21mNwsICpxY8oN0UEVOPFy7tSz6pHRGIBf4Li1U+oHSDuaK/GjYP/gJTskrX78KyAbsB6a1j/VjhGQX6+MJXc4MvSrwkxevobgKvz4ZhcCgGQ1hzD1B8+fEMbl1MVG9Hf+9/4q45v0f0cY=
+X-Stat-Signature: apxjgqqsgzfu484e8hztobsqid9fxqyx
+X-HE-Tag: 1791975329-200694
+X-HE-Meta: U2FsdGVkX1/28lXgsOouAWVLljmv7BL46YAzckkXS7RiBBl5LaVbbCcN3EM6iPmV1zK6vh48QJXzcNXFvvtD8k3SYlfY13vociY/IJYOSE6fhnCn7R0tKJTUWnfEYWNa5a0OqD1LyOCpRYc5vIqabcrGlcGheB5oE3Uge8t9dEF1FfeBFKGewFN/kQTHiX8DhvUAflwXUYr7a2lu/LdtlzFWgkyCPqlpWScTIR2UTv0ocdF1TTixEvEnpFSmJ/TK2nyCT/HOvdtVSQiuCtxjc4tpV8A9TuaQkW9yIkeg6RaHI+q4VM273TqMhMM5XCfgMN90lbvEIrWwJ1SPmXLa1p3NRIQd+NKAcy2Ditn4oZq4gDY71uAQZhczJ+ZtLZDPSM7TZsKbdqho0iwwGz5abdd+6Vqb2Ra/vZuXWQwDhJbG/1bu24rQ/1N1Bdug0cLWUu1P01SXdyqnT40VzC94pKqs2/0ISofT6+J5sKnlPYCGKAALR3xkQBsYqaBIfK7yEPcDkYuoRMXwvohvxtPuOkHuIZlYnkz/BluMRVTxPFaXR2T19XJAO4mVQ/Iyno7+ak6vYthglVT4CyyGQT7f1KCom9/3MiFb/zS0iJYw8SEd3dV4EmPZmjIBwWxGkmedVPth/bRq043MehhnnUvZss2Ivq2+X9KLfn8voGynHF+uXeWh/3LexH99uP6JgbExRbWwTyfmEapK+tGBup2+FthRu3oiZzsGZb/ZLa1W32gzTvPRuW9jczch/aVYiLorcpRt7ayRjkqiA64EPpskKiW19iITX5+ZsilX25n3/iJH+lPQ+osq2rnhWMEYnRrzBZXqBWpZZpoirKP1wMXUlF5HKlgFtGcsrESJNwqEdb3NU2zTE7hqIn9eBkrXnNhwvyCpmQH4/wQWVar3ph/8BpgugtybvtGr3T8GfYmlm5y8eYjPsF9EZsA+Bkxv2V6g+4BR8k1BFQfklVrS1Sr
+ +lcDHBPR
+ vrkYoVfUjLvbWyfGhhG5VGs5vEkUw7FER6AvuxyAT/mBvW4MwFbfU7igBuG7L7rf4NqbAHMG3oLJ3quzHXUHhowEBRAsH9BvARAEUWb5IJSq0jb5iqRunxk2UebLPvtzCPhNFgTpfWQm0kgfeydziQQzTUFGKLGLL1+wJX0iZdwDO9e5/8cTsCwNQS51qhEWg3TpRNlldAGZKx3SUTdGbFb1LQLTKLPMS/hP/Ka7hmhP480F9IwKe1jWe3iescOOyRa1NwokrY+Nru9bmN/cf6q7BvuDE5heUzwMWSbbX9j0Gv78sgLfyuHw4NMHV2bnVeqLtZLZT3WcTq/eYiKxN7png53HZ4kyOmviR2z8fhFytlZv4AmHEsTFMrj5xxh6RuaJa3uww8TH4Mz7eIDSQPpR/tJ6WgZoociwaj23ipIY/klcaseOXtHWnpo/koxLaWELAZERwuTfW7lkX13fF+Oq2m+30sbtceuVapPPVIgFfLFHzCGjoceKTEdZIJUJtISQnp57UdTqNpKIndX/I9xVQx7WRHYcRaMJspSz9DRhOOHqE8WHPVFGqgONPhSVt2WwxMF39NVhqju0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,189 +158,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 08:39, Li Zhe wrote:
-> On 10/10/26 2:05 AM, David Hildenbrand (Arm) wrote:
->> On 10/9/26 13:52, Lorenzo Stoakes (ARM) wrote:
->>> Yeah I don't see why not! I don't think there's anything that needs to be
->>> private here.
->> Li, see below, can you work with the below?
->>
->>
->> ----8<----
->>  From 9e1c0676ea6c9cbcabf91cd8badf81a9d88fd3ef Mon Sep 17 00:00:00 2001
->> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
->> Date: Wed, 29 Jul 2026 18:33:08 +0100
->> Subject: [PATCH] fix
->>
->> ---
->>   mm/hugetlb.c | 103 +++++++++++++++++++++++++++++++++++++++------------
->>   1 file changed, 79 insertions(+), 24 deletions(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index e93c4d2456aa..88ff2c4ad483 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -5077,6 +5077,79 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
->>   	spin_unlock(dst_ptl);
->>   }
->>
->> +/* Returns last address processed */
->> +static unsigned long prealloc_or_move_page_tables(struct vm_area_struct *vma,
->> +		struct vm_area_struct *new_vma, unsigned long old_addr,
->> +		unsigned long new_addr, unsigned long len, unsigned long sz,
->> +		unsigned long last_addr_mask, struct mmu_gather *tlb,
->> +		bool is_prealloc)
->> +{
->> +	unsigned long old_end = old_addr + len;
->> +	struct hstate *h = hstate_vma(vma);
->> +	struct mm_struct *mm = vma->vm_mm;
->> +	pte_t *src_pte, *dst_pte;
->> +
->> +	hugetlb_vma_assert_locked(vma);
->> +
->> +	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
->> +		src_pte = hugetlb_walk(vma, old_addr, sz);
->> +		if (!src_pte) {
->> +			old_addr |= last_addr_mask;
->> +			new_addr |= last_addr_mask;
->> +			continue;
->> +		}
->> +		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
->> +			continue;
->> +
->> +		if (is_prealloc) {
->> +			if (!huge_pte_alloc(mm, new_vma, new_addr, sz))
->> +				break;
->> +			continue;
->> +		}
->> +
->> +		if (huge_pmd_unshare(tlb, vma, old_addr, src_pte)) {
->> +			old_addr |= last_addr_mask;
->> +			new_addr |= last_addr_mask;
->> +			continue;
->> +		}
->> +
->> +		dst_pte = hugetlb_walk(new_vma, new_addr, sz);
->> +		if (!dst_pte)
->> +			break;
->> +
->> +		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
->> +		tlb_remove_huge_tlb_entry(h, tlb, src_pte, old_addr);
->> +	}
->> +
->> +	return old_addr;
->> +}
->> +
->> +/* Returns true if preallocation succeeded across range, otherwise false. */
->> +static bool prealloc_hugetlb_page_tables(struct vm_area_struct *vma,
->> +		struct vm_area_struct *new_vma, unsigned long old_addr,
->> +		unsigned long new_addr, unsigned long len, unsigned long sz,
->> +		unsigned long last_addr_mask)
->> +{
->> +	unsigned long old_end = old_addr + len;
->> +	unsigned long addr_end;
->> +
->> +	addr_end = prealloc_or_move_page_tables(vma, new_vma, old_addr, new_addr,
->> +			len, sz, last_addr_mask, NULL, /*is_prealloc=*/true);
->> +
->> +	return addr_end >= old_end;
->> +}
->> +
->> +/* Returns last processed address. */
->> +static unsigned long __move_hugetlb_page_tables(struct vm_area_struct *vma,
->> +		struct vm_area_struct *new_vma, unsigned long old_addr,
->> +		unsigned long new_addr, unsigned long len, unsigned long sz,
->> +		unsigned long last_addr_mask, struct mmu_gather *tlb)
->> +{
->> +	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
->> +	return prealloc_or_move_page_tables(vma, new_vma, old_addr, new_addr,
->> +			len, sz, last_addr_mask, tlb, /*is_prealloc=*/false);
->> +}
->> +
->>   int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   			     struct vm_area_struct *new_vma,
->>   			     unsigned long old_addr, unsigned long new_addr,
->> @@ -5088,9 +5161,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   	struct mm_struct *mm = vma->vm_mm;
->>   	unsigned long old_end = old_addr + len;
->>   	unsigned long last_addr_mask;
->> -	pte_t *src_pte, *dst_pte;
->>   	struct mmu_notifier_range range;
->>   	struct mmu_gather tlb;
->> +	bool preallocated;
->>
->>   	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, old_addr,
->>   				old_end);
->> @@ -5106,30 +5179,12 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   	last_addr_mask = hugetlb_mask_last_page(h);
->>   	/* Prevent race with file truncation */
->>   	hugetlb_vma_lock_write(vma);
->> +	preallocated = prealloc_hugetlb_page_tables(vma, new_vma, old_addr,
->> +			new_addr, len, sz, last_addr_mask);
->>   	i_mmap_lock_write(mapping);
->> -	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
->> -		src_pte = hugetlb_walk(vma, old_addr, sz);
->> -		if (!src_pte) {
->> -			old_addr |= last_addr_mask;
->> -			new_addr |= last_addr_mask;
->> -			continue;
->> -		}
->> -		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
->> -			continue;
->> -
->> -		if (huge_pmd_unshare(&tlb, vma, old_addr, src_pte)) {
->> -			old_addr |= last_addr_mask;
->> -			new_addr |= last_addr_mask;
->> -			continue;
->> -		}
->> -
->> -		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
->> -		if (!dst_pte)
->> -			break;
->> -
->> -		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
->> -		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
->> -	}
->> +	if (preallocated)
->> +		old_addr = __move_hugetlb_page_tables(vma, new_vma, old_addr,
->> +			new_addr, len, sz, last_addr_mask, &tlb);
->>
->>   	tlb_flush_mmu_tlbonly(&tlb);
->>   	huge_pmd_unshare_flush(&tlb, vma);
->> --
->> 2.55.0
+On Wed, Oct 14, 2026 at 11:33:46AM +0200, David Hildenbrand (Arm) wrote:
+> On 10/13/26 23:38, Andrew Morton wrote:
+> > On Tue, 13 Oct 2026 22:25:21 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> > 
+> >>>
+> >>> I see the appeal of the single entry point for the collapse engine. I do.
+> >>>
+> >>> But it costs us on both the locking picture and the scan rate. That
+> >>> does not work for me.
+> >>
+> >> So this is in mm-unstable and I want at least the first 9 patches to go to
+> >> mm-stable rather sooner than later.
+> >>
+> >> As raised in person, I don't like the open-coding here; it just results in weird
+> >> API. I wonder whether we can come up with a better interface, while keeping the
+> >> locking as per your requirement cheap (scan performance).
+> >>
+> >> While we figure that out, does it make sense to send out revised patch 1..9 to
+> >> move them to mm-stable while we figure out the remainder of the new API?
+> > 
+> > I've suggested to Kyril that we park this series until the next -rc
+> > cycle.
+> > 
+> > But I can bring it back - we have a couple of weeks, three if we get a
+> > 3-week merge window.
 > 
-> Hi David,
-> 
-> I thought more about the case where the destination page table was
-> preallocated as a shared PMD.
-> 
-> I do not think the current move_huge_pte() handles that case very well. The
-> reason is that it assumes the destination PTE is not part of a shared PMD
-> page table: it clears the source PTE and then installs that PTE into the
-> destination. That works when the destination PMD page table is not shared,
-> because the source removal and destination install have a net-zero effect on
-> rmap and hugetlb accounting.
-> 
-> If the destination PTE belongs to a shared PMD, that assumption does not
-> hold. In that case, I think we should leave the shared destination page
-> table untouched and treat the operation as a source-side unmap. Otherwise
-> move_huge_pte() either writes through a shared page table or skips the
-> source-side unmap accounting. That can make the rmap, hugetlb count and
-> folio release handling inconsistent with the actual PTE update.
-> 
-> So I think the change should be roughly:
+> I'd say we move forward with the uncontroversial parts, and keep discussing the
+> controversial bits. Either these make it still in this cycle or we'll simply
+> have them for the next cycle.
 
-IIUC, what you are saying is:
+Agreed.
 
-A) If the source table is shared, unshare it.
+Andrew, could you pick up 1-9 and leave 10-13 out for now?
 
-b) If the destination table is shared, there is nothing to do.
-
-?
+I want to experiment with a few ideas for the rest and will get back.
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
