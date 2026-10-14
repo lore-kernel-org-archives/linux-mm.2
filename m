@@ -4,138 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07221CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0E05C3DA7A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:23:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2D26B0092; Wed, 14 Oct 2026 13:18:18 -0400 (EDT)
+	id C55806B008A; Wed, 14 Oct 2026 13:23:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08A5D6B0095; Wed, 14 Oct 2026 13:18:18 -0400 (EDT)
+	id C2CBB6B0098; Wed, 14 Oct 2026 13:23:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBB5D6B0096; Wed, 14 Oct 2026 13:18:17 -0400 (EDT)
+	id B1BD56B0099; Wed, 14 Oct 2026 13:23:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B88566B0092
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:18:17 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 51C0AA83AE
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:18:17 +0000 (UTC)
-X-FDA: 85321890234.20.45C5EB7
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5934240005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:18:15 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lHXhXUQe;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8A6106B008A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:23:21 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 229F61406F0
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:23:21 +0000 (UTC)
+X-FDA: 85321903002.10.C66BE77
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012069.outbound.protection.outlook.com [52.101.53.69])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2FCD0180007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:23:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=bVb1rV2Y;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of dtatulea@nvidia.com designates 52.101.53.69 as permitted sender) smtp.mailfrom=dtatulea@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791998295;
+	s=arc-20220608; t=1791998596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6dIx1C4EloGYzW+nfRM67Y+aOezqQQiy8pPph6WWQ/g=;
-	b=dESWXh5JXhWtQYceCoOU8tAeN0myBxTaU5xGQdG0NwMwNVTLGLWTs/XBdYrasqqgj7xwgw
-	8gZE8XGc4EyeiGpIG+dY4lyPfQWVbvDyFSEBMASW3HsuG5aYsgvHnnAIIk09RIZUq6dBA0
-	vNUvH+3omUVT53gNK0Zw0+ysQAjwbKg=
+	bh=pU+Q0ZM+OtCWWIZfUckYUcSDo0oKVok3eFxG30959Fw=;
+	b=6q1O9DNcy2P3satN4lKeNjRvJLAz597h/yP8OX7hAXM8DcuVOJHtMZKJY1ERN0vzxLZ2vd
+	RoLCz4nxuqcfRH8gGbbf5SDljDLnffDgd/twSoGfSixQsfSuqNFiS1EYsDdvONCEEe1p/n
+	ZFOW0ms8K+3S8YNQq+tq9VmVLt2iWpY=
 ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lHXhXUQe;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=bVb1rV2Y;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of dtatulea@nvidia.com designates 52.101.53.69 as permitted sender) smtp.mailfrom=dtatulea@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791998295;
-	b=lRXjBzAHEkDcaHQ3tJ/gXr0OAIlJP8rygvEEVCVVROLVCbbwyWtNgkpL+djAsAzHtMC5D7
-	gtmqAE+ysuiOKV4l/tqwBD4PAFTA5TEEpNT3XSjdy+8VSH6rinPl46lq4h2GYGnt/6kFWt
-	taX5OTSr2pV2W2S115AYKiYVFROizaM=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so230895ad.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:18:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791998294; cv=none;
-        d=google.com; s=arc-20260327;
-        b=G6easfCvbQzsmhuxfA8PCyGHG21TGWt8eMa5yT6UB+X64rJ+ZVDOUvxWvnhpVp1GZ+
-         fgUS059lm6jfgJhxi+vj2/3+qZosgmNLWy5c48PAYnOGn7O20sjTyOWSxyMI40CF2+Wl
-         pKIuDbpIxkycIT6672hnydF+P0z2S+hanqISTg3oecHcZOtka4f00clWaVqtHbcfaBpU
-         5frudIBtwMUECr+Pt+Li4pNPo6nWuEwLQIz07iLVyaMFoLB3uFw9EOIR1s/UcjdEpeLt
-         B7ZziLIRpwhTGw+RxExGdsdeGfZV8f3iV8BQ3JY5FnaPRRXOWhltRBo4JTNhC0bgOKxj
-         zBIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6dIx1C4EloGYzW+nfRM67Y+aOezqQQiy8pPph6WWQ/g=;
-        fh=DOX22516wV3tpnCzQ+vJBjaA2DAIVB/62DlaPDtnCBw=;
-        b=IgySID4CkVIUlFtVN9sF9AcK9/jdVIUEbKck14YUOVrcgcWFiD8lTXoHQgqD4aGqRi
-         iPDi+hcnvyYSLMukNAvFJ1LVCeCXRWMHL/6gIA+zyxiBLKGMvKG/C7joJaDgFu5o+v8A
-         3vHf0N6+tsr3F0Ls6iYCxrJhvhNMDpEWKTgvp4zIERYmHQ5Lsa19I5DFt5IlRy7bh7xl
-         oS0MNEZHBadpnLfHhlVGGUHF6VHFF+Hw5ldHEUeahHv/NyPF9QzOpoLI4O9zJERToQVy
-         iGqLCPw1xQ7U177G8cQ5lEuKdQrSbA1eicTzJ/hNyVUb+8BO2ZeytZgazdV1ONha2dML
-         vspQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791998294; x=1792603094; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6dIx1C4EloGYzW+nfRM67Y+aOezqQQiy8pPph6WWQ/g=;
-        b=lHXhXUQe/oVjJk7J/7z/pGeoM4llyBr0cTyyg41YLgEXg+DEZ+opGgxh/R3AWjnzvB
-         VzVJ19iChZX0VTb6PXGkOpAxiT8DKpGd/2ho6CIfcLkxTL2pIq09D5GPwowDAm8j+EJm
-         idThu4GuaEExTZgCqn8LVpshkVYQBub+ZPjLKzs9KSWwpnOkEbjjqz8OJ2LDjuK2jVyf
-         vypFp0YD2AAggdqNcC424WqhMDVB1xa8VH0rKVRymro3/XlXe4m1GCTMCCuDbAoX62Qb
-         0Z6iD7gMRHk9WWsrgE316ccaW6Mf1TKLsgk/K8FRB6U2uhNkT6gRUxOiOqR/J1xEinGY
-         74qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791998294; x=1792603094;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6dIx1C4EloGYzW+nfRM67Y+aOezqQQiy8pPph6WWQ/g=;
-        b=pDBfPcERatWzF/EvxYtM7xs2Z+uvAwTqrldsugCDPEoPyqU4g3hyZ0ylVouA0R1NKM
-         gjomt3PutiJ0z9I8Hc3qmMWZwIeD/IAALb6ejuNgEcFPMWQPxrK6HJkuIiPA99yOJF03
-         QcC53vdAiSGRA8IdmJtNH00Y+Mqv2P66w7eI+39uTn/ED/aG702KuhUrCYiRQ6q9k7ac
-         Td7KFqZqhJU8z+RQDoM9EVQTTzhkqmL7yjhFWmOYdcZL5Ee1oxtDyKwltrygdI0n1/67
-         M7ydNaADQnblfl6SfYliP3EMhp8h5EC8LhplrbudzA5x2AB8CEI/gkYEqAkuVwOYbGoZ
-         nagg==
-X-Forwarded-Encrypted: i=1; AKwUvBypEy7HoVZkm7OnfeqXhc58ntwmw8UUAaNKtp5XovznX4K9s/QaQ3yZKRAQU+02ZonvGi10XWb5Bw==@kvack.org
-X-Gm-Message-State: AFq9FYJQmwLWoeNkomtGol7cXVoyaP4NSpxgOGpNpjM94uPjlXRildN6
-	G5oITLu2o1QwH6VegvgzrRoPBtBCPprw+LU4CSwrPi2/61wflE3jmw7en/Dx1kDwyYFuW/jktVo
-	l3asL9/lbGB4AuL2+b70u+uxjxXOtGB704rTESZpa
-X-Gm-Gg: AYBFou2Il+TH0HE3RCRTaEFNsBudcqcrNhTLiaRy1yFvQVo3NoTHkSGUECX1S4t+iG+
-	y1gyqXFcFm5W8x6pV6YFYSMtUXDU8HAnppZSkHRn0NeZtkbbHz4xDDV1NN9/DPSCHJtFcDLigNF
-	puhQXbegFAAjojz+BMqx6nhVJCTyR/E4CZlNHKTwn/UuHeOMZ0qzViLY6OfaBhcSJvmApqFnmdc
-	1tNawXpjos/UEf9sjSj/Zfcg4xZg8ERMsuhEfzoVhxnqrF7jN8KSFRar1xnfF67IypLEN7hLnDC
-	R27AToDkoB1CnraNC3HkulooB8b9TVWmz3//3IUks2WaGHvcS7k/HraK2pOHjjDz+rKlEZBtv1V
-	Ki91qCU3wXg==
-X-Received: by 2002:a17:903:1a45:b0:2c7:f0cc:dafa with SMTP id
- d9443c01a7336-2e93db18c22mr3905245ad.5.1791998293306; Wed, 14 Oct 2026
- 10:18:13 -0700 (PDT)
+	t=1791998596;
+	b=Gs85L889Y8JdkzXis6LoNbwuILOWE7Q1lZeDRn76CSofGSguOJASZqcVv6sptBS/nCn5Ca
+	fBc1eq79percTdkzDujwI0fMIfL0leiqlwDrG+8LqCAJBtJkVo3jD9FnLDddyKntIWrxLd
+	I9ludrWXg+PxSwxu7jcFXgkwbfdQKJI=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v/kdN7tyiwnjtlCf1e9V+9vBvyugFIdGz9p/7DeTaGKyeHhC+0/ZT25k5NXtmDuCRtHE7fipqp/SJmxfjfLHIj0z0i8m2inEKeJlj6DwYgPPJZKpn1VdfFYhRy0zCRkhbdBXZ2gmQKAzQPc7TYXX2FJ1F98duHi89EXrqJ9ilZOC2/mxRSLJXR/57e3wY8898FiGTbk550C8JZyqnAjRtBXRqj6ePY4MJHbR4J8I5ooAi/8SywVPfXSP4MozYPRK+A97g3yhssai7309C21T+Ga7GSKTm1rpCIPcstHaOCEU/kKbGy42C0sD5rmzgWtIAX+L75OupEansQdz9X/kDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pU+Q0ZM+OtCWWIZfUckYUcSDo0oKVok3eFxG30959Fw=;
+ b=XHqo+ELHVS2bLufhv1Rr6p2K0pjK8YhD81bEhoEwI3E82izUIJoimfmaGq6l5naLlfJFU684TtKkhjaSt9APLhWuU70MeZYacwg2pHZys7MW/HsrdLvTwC4BKWA71AKEFCAQr7toS8h6hqSWtJUliGl6JSmKHQTLDzsTuRTiJCaKVo/5Ah7gGsKzb9dFXUrjQWfpvVPSbzzc7czq4OSh8kttJY+MxUtA3+J5XFywn6S9cQVxm8trUGNh9BzuJ1NwDe653gS91Z61ylZdMGnhFUCJ8jOASoktTj3N2sve4K1C5xeI7/Pe2zOSph3Zyv5LXYn5hjvF7ShQt9JYIugOJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pU+Q0ZM+OtCWWIZfUckYUcSDo0oKVok3eFxG30959Fw=;
+ b=bVb1rV2YB3sYdyPeaJ9s7bBe118hWmsUCT60Duj0ombLjLAoxG8YVaoBoIoz0wZ3GnVBF/ldbodVfZtLJdT1bwgh5QsZ0+vXEzl5mMaillUZNvzm6TIJnoYcoCAJE+dL19j9aY/0Z1r+bsVRV35CGh1zilPQ/kdsriq0FfXOoXEEuVlV94XgSvBy7fTuubj50BcH/+WIeURMDndNzoQlv6NlZlSToBA9AWwbz2EOihCHt2k5YHJYAxGmpRLJ1sR9nV6PPp2/MAujZA2C4aLmMfKT6Nsw+AlFpoNRAcZFojd4G/S++GfCyqNmgkLQMMvTQLe4i4Sy6KmiPEg1PEgwWA==
+Received: from CH1PR12MB9647.namprd12.prod.outlook.com (2603:10b6:610:2b0::10)
+ by PH8PR12MB7447.namprd12.prod.outlook.com (2603:10b6:510:215::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
+ 2026 17:23:08 +0000
+Received: from CH1PR12MB9647.namprd12.prod.outlook.com
+ ([fe80::228c:766a:191d:77b2]) by CH1PR12MB9647.namprd12.prod.outlook.com
+ ([fe80::228c:766a:191d:77b2%3]) with mapi id 15.21.0522.012; Wed, 14 Oct 2026
+ 17:23:08 +0000
+Message-ID: <52a702a4-14eb-4617-bd29-e3140fd36780@nvidia.com>
+Date: Wed, 14 Oct 2026 19:22:59 +0200
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [RFC: DMA_PMD 19/22] net/mlx5e: Use DMA_PMD memory for tx header
+ bounce buffers
+To: Luigi Rizzo <lrizzo@google.com>, Luigi Rizzo <rizzo.unipi@gmail.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <20261003212241.3432303-20-lrizzo@google.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <20261003212241.3432303-20-lrizzo@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0159.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a2::19) To CH1PR12MB9647.namprd12.prod.outlook.com
+ (2603:10b6:610:2b0::10)
 MIME-Version: 1.0
-References: <cover.1791410885.git.abhishekbapat@google.com>
- <1f77364a04d0ae20cf07efaca779756f92ec39f6.1791410886.git.abhishekbapat@google.com>
- <ed833aa7-90fa-4c44-a423-c5b689ede379@linux.dev>
-In-Reply-To: <ed833aa7-90fa-4c44-a423-c5b689ede379@linux.dev>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Wed, 14 Oct 2026 10:18:01 -0700
-X-Gm-Features: AclHuK9_ZJEant9YLtPvLQQpoEuAfQFaZJ_s2_U_90RFLmNDNJrE-gyvYTX6yYk
-Message-ID: <CAL41Mv6Kp9qLtPum36WaMpOtrmTG3LZoEXyD=s78DH+9ruKO7g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] alloc_tag: Introduce IOCTLs to toggle allocation tracepoints
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PR12MB9647:EE_|PH8PR12MB7447:EE_
+X-MS-Office365-Filtering-Correlation-Id: a86ad3f3-750b-40c1-a83b-08df2a17d09d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|23010399003|921020|56012099006|11063799006|4143699003|261009223027099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Jpc7nkYl+/Q2vfpm+rCIIhwidKrjEo16BaCm2gD4ay+fhx+f5FJBsJjJpsBHRt7AW+tOzbp2lL4wUDzHya0A3ZScVRreeKscojdhh/2Ke73mGgwBVLRpRoSJE3TOlMJrsFHUvuZvk/4agPLe0qRo8IA3iHSdxKMk++4ZWyYqatvfy0Mp2D9GZibIjom4fqwqwEBKw3hC4Dyr7bOecJcMu2lKVQ2DX1cTfQfAX5+9upmEa2q5rNRZzvpOPJVVE3VQI2+IEXW+8+lgemyiu09kiO6Zydt1gJp4KUBejTzChltSakVPhsYw55syVgHr5skaW5zVwEl4mcmY0277ZKVRWtZW5uAnzwZDLlN6IoCpDXSl2Yc8/thp9Q1n3hx3HD/0M5iA/8ysLHhfcBZuJAa6vCAQ0/+o0EbvxD99XGzx8YANaejBymnA0hkrl3SSbauNjRO1tzw7eG9xCfdHTmbPE3JOw84IC15oPYOWG/5fY2poGNpJhqnpRXCFEm5YrD6DYs/mnkaKrJfu32ZhqWxxMaJPsnLm8FIoUIo4OFahLwHWnTcvvM6GEbYLXLImijKDG9jVfW8gLJt+kDTuzwDenHLCPaY7CZ8GCg5VTJaIvNF2mR9Wsb1QNdCr5V+MXTuc505leevTZNMBiZQFrUj8S5Udn0gr6Tep1m+kQDrVwCIDR9Vgq4YmPzooCJXFC0syy5ggRjh7br688FFNjCueOA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9647.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(23010399003)(921020)(56012099006)(11063799006)(4143699003)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UTM2WWhDZDdHakxBSGtmNDdibWtXYmxnbHpDblJJVWpCV251aENJRDFCbURk?=
+ =?utf-8?B?ZVp5NnNYMUVXS1BKdnVsVFc1L0NocnNjdDVWcVliWFRhK2dvWnoxWDgvT29Y?=
+ =?utf-8?B?bHhuSGV2aTYrY0d6R2Q5RHd4NXd1MTM1NUl0Si91V3MrS3lKWFlvdDgzaDB6?=
+ =?utf-8?B?emRzbWFQYmIwNWUrWldnNmZBaGVwZ1R3L1FxNmREVzd5REtkbUdCSTFBZERu?=
+ =?utf-8?B?Vy9hcy90cDNsMURzRStqeDdPbjdnWDJWQmZHeEtFZUM2bm1KOEFod1dyTFFj?=
+ =?utf-8?B?Z2EwMWFMNUthbGloTEhwOHF5WEJCcTB5ZnMwOFh6V0t0ZE9RSXFFU3JoMjVO?=
+ =?utf-8?B?KzdGMFVlTXd5OHhjSWRDSURrQmpIZHRoMzlVQU5yZC9TRzFvaWowK3QzeVhm?=
+ =?utf-8?B?d1liWis0RVhxK3FZQVRwZEhSaU5zUy9CTUs0bFk3ZzRoZUFyeXQ2Si9LN1A0?=
+ =?utf-8?B?VENxQWpJbjBSSk5VMEI5cllnbHRYY1pYcWZnb0NXcTdhR1Fpclc2bWRyck9G?=
+ =?utf-8?B?YWlUWXZ1OG9tbHJudGhXMGhFR0VuZ084VXdOaExnMkFSV2ZBd253V3d2ZTJU?=
+ =?utf-8?B?NlR3aWp3ZU9CZFltRklGalRNVUdVZG5GWWJHOVlUU1AxcGRlaktkUmhvY1FI?=
+ =?utf-8?B?NjdGMjZqV1I1eTJaaWMrTnRTeXE1cnhzSmFEMFpqNkh6NVZEVXJvSzNwdlVJ?=
+ =?utf-8?B?OHdhQjZiUjhnamdVV3BaRFl3VFRjMStFd1c1MDVMVmFtUkROWTJOTEcwTUxL?=
+ =?utf-8?B?ZmxSMGRBUFNjVXY1eG1UQ1RSUXJ1ODlWeFBHdE1PbTBia29UbmdjZkVpT1Qv?=
+ =?utf-8?B?V3RXUTdCdUQzVDMxVC9XQi9SNHNQS3JmUnJnd3p1UG5reEp5bjhaaGdjSy92?=
+ =?utf-8?B?bzgwS1FXYUdkUFpnRVpMeHZGSlh2Nzg3WDk4RzllQ3dDYkd2eFlvL21MUEls?=
+ =?utf-8?B?dDFTOXM1VCtXNHF3aDEvZzEzUS9xVVU0em0rVktrWVEveDdHUzVDNU9DcnQ1?=
+ =?utf-8?B?QktTWWFBc3djT0o3QkQxajk2Z3ZoMVFiaWtleDFrL3E1V3ppRHU4WnpwTmtE?=
+ =?utf-8?B?UXhvSFZoVS80MC9LekFtelhCZ0Fma2hqM2dKcHA5Ym03cDZJVTdkY1RPdlFC?=
+ =?utf-8?B?QXpGdVFYVERvdHBiMEpncjJRVmNvRGx5cFFyNEZObnpmZnlSaXNxUFJudXE5?=
+ =?utf-8?B?Q25vU3JOaTBzdVo4YW1jaWVuSzNzQmt2TXM0T3R4VGp4RW1TRUk5S0RmKzVz?=
+ =?utf-8?B?VVRXU3FEZzRXbFoxcTJVdTZDSUptVnBueTdNMkJIVjI1R0hGd2t0N3ZDdWpV?=
+ =?utf-8?B?eTJaTjlZUlNacHZ0WkVrVUNGUmJMVGNGNjdoSnQrK0QrRm5OQlVXN0tnZ0hy?=
+ =?utf-8?B?Q2NlQnpReFduWHVsRXBIRlU1RHBlK3AwYjZQdmJxaTM3UVA5SmpPU1B1eFor?=
+ =?utf-8?B?ZVNraUMyUmRkdk9CdVJrVE0rRUZITVZQWjBMOE1MY1lodHllVG1ZekJreDJQ?=
+ =?utf-8?B?Yjl6SWxuZzdsQ3FpOWdvdmVwdFRZZDVCUG94aDNyZWs4ZGtaUCs1UnpHSzVp?=
+ =?utf-8?B?S1RaY0hzdStkV2c2Qmh5VUcrN04zblJINDZVZmpnampMTU1nN2lOODRIam93?=
+ =?utf-8?B?d0xNMTBuK0g3UFRWT2tGNFh4MWplVzFVNXJNaktOUU5nUXA0UFpadmt4dlEz?=
+ =?utf-8?B?K0Y4MGluWHB0RXEzUkRkZFhnRURVNGNDaHBkeTZzOEI4dE01QlpSdytIZXlY?=
+ =?utf-8?B?Rm80ZXJvRWNWSmtEL3FwQlV0ZnAzMnBKSTR1TG90VkxJN3pWZll5RGdMbjM4?=
+ =?utf-8?B?bkhGRmtDYmUrcXFpUStLU0xiRG5UVzQyQVE5S3JVK3dNLzhCL1hqMytacVBz?=
+ =?utf-8?B?VTlUbzRaNWM0VWwvZXZ4Z3labDduRXhvNjNYcGR1V3IwSGRpZ0VCUm40Tjc1?=
+ =?utf-8?B?RmdHRzFicXV0bU5ydndobzU2czhMYlY1VzExcVVnVnU2OVlqNFpUa1Z4L1hK?=
+ =?utf-8?B?VGJkSjdkbGJUbkpMVDFPT2NkVlNhaFVGMkc5bDRwOXZ4TkxDYllLc21mcEtC?=
+ =?utf-8?B?SkxKWTIxTnc1M0MxZU14US80UzdrcG04YlV1VWx6Sm5DMlJhUi8ybGROUUxn?=
+ =?utf-8?B?TFE5NjFTSDZRSm51SWYvSGZjSWF6azNSSWRBejc3Q2RtV3FLekVIODRUbUFx?=
+ =?utf-8?B?M0ZRUkNoZmFxRWtzZnd1SktheDdJMXlYMEpqZ1V5eUp1emU3ZDc0MlhRSlRu?=
+ =?utf-8?B?a2hJQnE5aWkveFdqdmFQby9kVlAxMXJGUVFoTHdwR0s3RzVRaFhsdnhlZDlT?=
+ =?utf-8?B?RGl5UURjRUFveDU5SE9SN2VFdmVuNUI0WXQzVjJzMmkzeE1jNENsUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a86ad3f3-750b-40c1-a83b-08df2a17d09d
+X-MS-Exchange-CrossTenant-AuthSource: CH1PR12MB9647.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 17:23:08.5465
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +cxCQXw2m7xsnSltg+bUip43cPkYNIDDR7N+YMg6s9sCmWbfKhDnJfDgc4P2tt2d09kO6v5Rbpv9o/iMkz/qLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7447
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5934240005
+X-Rspamd-Queue-Id: 2FCD0180007
 X-Rspam-User: 
-X-Stat-Signature: bj78pwa7a4pbdy5x9st8xmwu4yeexr61
-X-HE-Tag: 1791998295-338871
-X-HE-Meta: U2FsdGVkX19akiEkGC638pKps4x7lwLFwLPN/XwxEAlT0APCm1K9C92ViE9hw8KkIO4rzKl3G+wuR4AkvAGqISIklnYV73YrBjpKC4EBK9o+umtm8vtji6IPfFOmF6jacQG9r+Yj+8JZ//CMp5xqum8KwgP9V7fp4u0ipBuvzL1kQm5wrfiPxOr71WRcrzst3Zg+oO/zdxErgiI4m4mnWSMtXk3DlztK1sFzDKs6M6Zxg9ZlVLdjkQpwKeKURrxQ6D1QWwm6x3wp1DRDTxZNQQH2Fyf/fkAnFbSo7mUKN6BslLnIs+I/OS3h0mjQIa+rnStphY3Stk1KLf07wc2okJjyG1cVMv3aS/UKxil4XKXgjUxweqTl5CFKK70LDIKo3lZPfkGtqFy93HFVBuRhe4hFep3Mz71iV1Hljkbx4ngW1w76mlDuqJg25Dnyg977Ju2cOatt5rHsGS9Ug9QlDKa2R7qa5ygrt8HuouHfJBU+gSPVyB9VRbYv8SiRpTHUO6VFHb5t2KUW7k3lFAFzOg3Ipngq69n4tTdzH/OVpx0F9vGyZ2l/+vE5gH0vk2+qWMYycVAWE8kaP32j1fnLIEwDIc434U6/Gzm4YOKEbE5ICrSBU3s6bvOMI0BMs8XNGDFGqgWEUUIlMP87xECaVTywFy28D6LoXAkoc1QnEut09HMeZPVclcmOn2/4WV2YkRXbZvCLeT1fT0KDTEv7BdZkE32219cKdH5/CaMi1cRJTqOPRQxEx3TcX9dvViS5xD0OU1mh3MCiflr0i98bJPnpne5pSeI5YjhCFLFmTGfOyD43ioMerINqsngFjOvHjHcCr2607j+KawPLFhTIPIHO3UTO+TTNMoIL8HlQN4dT05xM13mcGFU7wENGV9DhMWzkzTZUoK6RcJO11f3J6kTUgVNq70/HEytLWCVZriq/4rn6hA57jmJ+CfqcodXC+LCE8KkEhOw7C0U/2Pm
- u5xtCwIh
- WBtI8rJfLfddUZc28dOt2nq5+P7qpeN/YEZleAD7I49jN9glEVJmY0/AEDCn1KrGB17KlXVT87j2ftEVKitcg1+J1qLIO66m1ahbXqg3i4z8LHxkEHRjG5t+x64ZZXz6i3OTIP9YX5cT3GG7vFatNCTVSaQbIdRzQ6IfkOuaSHc3LOt9hGB59bGPUwcoUgiJObaH5+Jg4cz+oCRLVwA7xFypo/+SDmVTo9oSBLtyWNKbXQWMce4J/PF/dn2yQT1n01c63UwjmYdI164agTxKraP3ipTPDsNT5E4VPeSMPxrTCYFaNTaL4R64DBg==
+X-Stat-Signature: mo1wy4q6xd33dsfarmusipoyjgh9gnpd
+X-HE-Tag: 1791998596-576228
+X-HE-Meta: U2FsdGVkX1+SsJLKQm4JGp9eX2g6NSps55ryEZlpzqDtE3nMavBSqy7pzs1hQuDU9ncvCBZRf54QXNKvmip3z2uDaGeHL0Mg6IzGHLA1AmZnB60VtNVDZKJJrsVGFU7nD58ImYTJMHrMsjYwU31P8Q1SCytKpfinyZShMWxFNNihVIEH9jyXZ4kTm7g4hJ77N84bCnAAHXCeOI4UWzAICf/0agmcnbXVTjDXGg5FN2QF/EHOE2FgTvQ84Jm+ogY23uylPZnmdwWtEYo+NSG/C2uqYOsi3XPWty/W/UYkLlw1OLtNJT/vnVXPpkpZcawV/0Dmeea6DyvneV93R6TjFKMJ5MZQbb23MpsX2SURP0RphIZUYJcgciIgK+LMzhSTNT5yhyt2Z4iFPCpHC2ovmAibpssIcE1xpDiI4bTr3jZZxQt5eOOu4js7E4LYlNAr6vuV5SrRlbLLMEb8ODMK2EfgHPPfcBQmoQQC7Dvb1GhIpvk8HP1VkSqUmBwvyVUztU7HJM7H2LzuZYDJtF45tNSwWZYni6oERHfXTvxjUHnjOXkSus20hmjsP3h8jv32BxHwv5ceSz5jPe/9cnulwLzwop1dyWYB/glVpKa9miz4IPTalwvMyiuF169Y2jpmwnAN8ChlRCkWANvww9k+Hm+LuWrd06SDEBU3TVGLjy+D49/XeUAGrR5k41+CPiFoJmFuItxTI7mjS/bIyOQ3a3ZANUPq4UKAu1sOi9MMtdbIEspQuN1n2VLRb1miR6u/Lnjg4VioF+EPd9aoS7VwLd5cVqpEiCBnxbhlNTdVrnh1XHdXSO9X5lATbeRPLl5HffAq89xqRxXHYamok2bI4OnLJD9SFPocNXrvuBgA+8TtKyJSrxu4Fzihqcgm2H8yqrEiKZPnebNsXb9kT/UITPzCyxOwi9Emqqyfx5A+bNWpW8fXlPjFINAp6YFmHn0oyyM0CbvrfYLW/Wls5Fs
+ TJ5/4rqK
+ vsdRc1WNgxLY/HXub20IdAtcKrdVQee3JX8L0vsfLKXTQVMH8z/EBpL/w42neOS7o8o6wbF/euVD8SxxV5tTtAk4npwSJfnr+RZdR7iJhz/tHYRJFriNwuOPushy9It1fwoSAQ6Mm1h2+VLfTDr+j79/X1XMi96Nfu4i/uPfcDJLsQZGSz6ZrUCj1bTJRRYjIoC7wejBd54JGJVGWQzDx5Li0eisbT0rsNzcIEJ2oPXbmRgbALTi8IUW218x/Cj+BzagT4qqCkgLmd0UcEz7xdjptqjw0dO+kmt0X/2b4empzrn1+8300tk3tmZoxfTpb0u3b4Z471m7DKwODE2GfG+nENbMpaMsHXOprl93y6nex6FRgBP+Jmkx66hEM7jOFWPO5+OrU2i++9WzxIxxXrKxGdilgl2sMP8SBQnNThPFduH2D4yjfoQzRZs6nVE4lYsZxP57y4dmy3HxpXDocatb1yAljwAX9IxDLFURuX2dCHv47oxg0Buxt0ieOlSwVFKk3zxQw1AJVDlBZjRA3HROx9zKvMreWd2486waxR7xSVOAdfo8+bGq3UA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,470 +194,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 12:41=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
->
-> Hi Abhishek
->
->
-> On 2026/10/8 06:40, Abhishek Bapat wrote:
-> > Introduce a new IOCTL (`ALLOCINFO_IOC_TOGGLE_TRACE`) to selectively
-> > toggle tracing on allocation call sites. Userspace tools can use the
-> > existing filtering mechanism to specify the set of tags to toggle
-> > tracing for.
-> >
-> > To facilitate low overhead execution for non-targeted call sites, add a
-> > new `CODETAG_FLAG_TRACE_ON` flag to `struct codetag` to track per-site
-> > activation. Protect these conditional branch evaluations using the glob=
-al
-> > `alloc_tag_trace_key` static branch and an inline static key check
-> > pattern in the allocator hooks (`alloc_tag_add`, `alloc_tag_sub`, etc).
-> > This ensures that the trace events are entirely skipped when no
-> > allocation call sites are being actively traced, leaving only a NOP on
-> > the allocation fast path.
-> >
-> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> > ---
-> >  Documentation/mm/allocation-profiling.rst |  20 ++++
-> >  include/linux/alloc_tag.h                 |  47 +++++---
-> >  include/linux/codetag.h                   |   5 +-
-> >  include/uapi/linux/alloc_tag.h            |  13 +++
-> >  mm/alloc_tag.c                            | 128 ++++++++++++++++++++--
-> >  5 files changed, 187 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/=
-mm/allocation-profiling.rst
-> > index b241450394df..63b668466342 100644
-> > --- a/Documentation/mm/allocation-profiling.rst
-> > +++ b/Documentation/mm/allocation-profiling.rst
-> > @@ -149,6 +149,26 @@ expose the full call stack and the lifetime of ind=
-ividual allocations:
-> >  - slab and percpu: the address of the object's `codetag_ref`
-> >  - page allocator: the `struct page` pointer of the head page
-> >
-> > +Events are only emitted for tags that have tracing turned on and while=
- profiling
-> > +is enabled. When no tag is traced, the hooks are behind a static branc=
-h.
-> > +
-> > +Enabling Tracing
-> > +----------------
-> > +
-> > +Tracing is toggled on and off per tag with the `ALLOCINFO_IOC_TOGGLE_T=
-RACE`
-> > +ioctl on `/proc/allocinfo`. It takes the same filter as used by
-> > +`ALLOCINFO_IOC_GET_AT`; an empty mask selects all tags. Size limits in=
- the
-> > +filter are checked once, against the tag's size at the time of the cal=
-l. Tags
-> > +already in the requested state are skipped and a -ENOENT is returned i=
-f no
-> > +tag matched.
-> > +
-> > +Tracing is turned off for a module's tags when the module is unloaded.
-> > +
-> > +Memory allocated before a tag was enabled has no alloc event but will =
-still
-> > +produce a free event. Likewise, memory alive when tag is disabled will=
- not
-> > +produce a free event. Tools should expect unmatched frees after enabli=
-ng and
-> > +missing frees after disabling.
-> > +
-> >  Correlating the events
-> >  ----------------------
-> >
-> > diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-> > index 49825177d8c8..94697b28053a 100644
-> > --- a/include/linux/alloc_tag.h
-> > +++ b/include/linux/alloc_tag.h
-> > @@ -136,9 +136,36 @@ static inline bool mem_alloc_profiling_enabled(voi=
-d)
-> >                                  &mem_alloc_profiling_key);
-> >  }
-> >
-> > -static inline bool alloc_tag_trace_enabled(void)
-> > +static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
-> >  {
-> > -     return static_branch_unlikely(&alloc_tag_trace_key);
-> > +     atomic_or(CODETAG_FLAG_INACCURATE, &tag->ct.flags);
-> > +}
-> > +
-> > +static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
-> > +{
-> > +     return !!(atomic_read(&tag->ct.flags) & CODETAG_FLAG_INACCURATE);
-> > +}
-> > +
-> > +static inline void alloc_tag_set_traced(struct alloc_tag *tag)
-> > +{
-> > +     atomic_or(CODETAG_FLAG_TRACE_ON, &tag->ct.flags);
-> > +}
-> > +
-> > +static inline void alloc_tag_clear_traced(struct alloc_tag *tag)
-> > +{
-> > +     atomic_andnot(CODETAG_FLAG_TRACE_ON, &tag->ct.flags);
-> > +}
-> > +
-> > +static inline bool alloc_tag_is_traced(const struct alloc_tag *tag)
-> > +{
-> > +     return !!(atomic_read(&tag->ct.flags) & CODETAG_FLAG_TRACE_ON);
-> > +}
-> > +
-> > +static inline bool alloc_tag_trace_enabled(const struct alloc_tag *tag=
-)
-> > +{
-> > +     if (static_branch_unlikely(&alloc_tag_trace_key))
-> > +             return tag && alloc_tag_is_traced(tag);
-> > +     return false;
-> >  }
-> >
-> >  void alloc_tag_trace_mem_alloc(const void *ptr, struct alloc_tag *tag,
-> > @@ -151,7 +178,7 @@ void __alloc_tag_trace_hit(struct alloc_tag *tag);
-> >
-> >  static __always_inline void alloc_tag_trace_hit(struct alloc_tag *tag)
-> >  {
-> > -     if (alloc_tag_trace_enabled())
-> > +     if (alloc_tag_trace_enabled(tag))
-> >               __alloc_tag_trace_hit(tag);
-> >  }
-> >
-> > @@ -225,7 +252,7 @@ static inline void alloc_tag_add(union codetag_ref =
-*ref, struct alloc_tag *tag,
-> >       if (likely(alloc_tag_ref_set(ref, tag))) {
-> >               this_cpu_add(tag->counters->bytes, bytes);
-> >
-> > -             if (alloc_tag_trace_enabled())
-> > +             if (alloc_tag_trace_enabled(tag))
-> >                       /* Trace successful allocs with their unique ptr =
-*/
-> >                       alloc_tag_trace_mem_alloc(ptr, tag, bytes);
-> >       }
-> > @@ -249,23 +276,13 @@ static inline void alloc_tag_sub(union codetag_re=
-f *ref, size_t bytes, const voi
-> >       this_cpu_sub(tag->counters->bytes, bytes);
-> >       this_cpu_dec(tag->counters->calls);
-> >
-> > -     if (alloc_tag_trace_enabled())
-> > +     if (alloc_tag_trace_enabled(tag))
-> >               /* Trace frees with their unique ptr */
-> >               alloc_tag_trace_mem_free(ptr, tag, bytes);
-> >
-> >       ref->ct =3D NULL;
-> >  }
-> >
-> > -static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
-> > -{
-> > -     tag->ct.flags |=3D CODETAG_FLAG_INACCURATE;
-> > -}
-> > -
-> > -static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
-> > -{
-> > -     return !!(tag->ct.flags & CODETAG_FLAG_INACCURATE);
-> > -}
-> > -
-> >  #define alloc_tag_record(p)  ((p) =3D current->alloc_tag)
-> >
-> >  #else /* CONFIG_MEM_ALLOC_PROFILING */
-> > diff --git a/include/linux/codetag.h b/include/linux/codetag.h
-> > index a25a085c2df1..f728295d50c0 100644
-> > --- a/include/linux/codetag.h
-> > +++ b/include/linux/codetag.h
-> > @@ -18,6 +18,7 @@ struct module;
-> >
-> >  /* codetag flags */
-> >  #define CODETAG_FLAG_INACCURATE      (1 << 0)
-> > +#define CODETAG_FLAG_TRACE_ON        (1 << 1)
-> >
-> >  /*
-> >   * An instance of this structure is created in a special ELF section a=
-t every
-> > @@ -25,7 +26,7 @@ struct module;
-> >   * an array of these.
-> >   */
-> >  struct codetag {
-> > -     unsigned int flags;
-> > +     atomic_t flags;
-> >       unsigned int lineno;
-> >       const char *modname;
-> >       const char *function;
-> > @@ -71,7 +72,7 @@ struct codetag_iterator {
-> >       .function       =3D __func__,                     \
-> >       .filename       =3D __FILE__,                     \
-> >       .lineno         =3D __LINE__,                     \
-> > -     .flags          =3D 0,                            \
-> > +     .flags          =3D ATOMIC_INIT(0),               \
-> >  }
-> >
-> >  void codetag_lock_module_list(struct codetag_type *cttype);
-> > diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_=
-tag.h
-> > index 7d4618bea043..dafcba2f7e2c 100644
-> > --- a/include/uapi/linux/alloc_tag.h
-> > +++ b/include/uapi/linux/alloc_tag.h
-> > @@ -85,9 +85,20 @@ struct allocinfo_get_at {
-> >       struct allocinfo_tag_data data;
-> >  };
-> >
-> > +struct allocinfo_toggle_traces {
-> > +     /* inputs */
-> > +     /*
-> > +      * Tags matching the filter are toggled; an empty mask selects al=
-l tags.
-> > +      * Size criteria are checked once, against the tag's size at call=
- time.
-> > +      */
-> > +     struct allocinfo_filter filter;
-> > +     __u64 enable;
-> > +};
-> > +
-> >  #define _ALLOCINFO_IOC_CONTENT_ID    0
-> >  #define _ALLOCINFO_IOC_GET_AT                1
-> >  #define _ALLOCINFO_IOC_GET_NEXT              2
-> > +#define _ALLOCINFO_IOC_TOGGLE_TRACE  3
-> >
-> >  #define ALLOCINFO_IOC_BASE           0xA6
-> >  #define ALLOCINFO_IOC_CONTENT_ID     _IOR(ALLOCINFO_IOC_BASE, _ALLOCIN=
-FO_IOC_CONTENT_ID,     \
-> > @@ -96,5 +107,7 @@ struct allocinfo_get_at {
-> >                                             struct allocinfo_get_at)
-> >  #define ALLOCINFO_IOC_GET_NEXT               _IOR(ALLOCINFO_IOC_BASE, =
-_ALLOCINFO_IOC_GET_NEXT,       \
-> >                                            struct allocinfo_tag_data)
-> > +#define ALLOCINFO_IOC_TOGGLE_TRACE   _IOW(ALLOCINFO_IOC_BASE, _ALLOCIN=
-FO_IOC_TOGGLE_TRACE,   \
-> > +                                         struct allocinfo_toggle_trace=
-s)
-> >
-> >  #endif /* _UAPI_ALLOC_TAG_H */
-> > diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> > index ca2412a67312..262f00f2bba9 100644
-> > --- a/mm/alloc_tag.c
-> > +++ b/mm/alloc_tag.c
-> > @@ -60,6 +60,15 @@ DEFINE_STATIC_KEY_FALSE(mem_profiling_compressed);
-> >  DEFINE_STATIC_KEY_FALSE(alloc_tag_trace_key);
-> >  EXPORT_SYMBOL(alloc_tag_trace_key);
-> >
-> > +static atomic_t alloc_tag_trace_cnt =3D ATOMIC_INIT(0);
-> > +
-> > +/*
-> > + * As `codetag_lock_module_list` is a read lock, we need an additional=
- mutex
-> > + * to protect against the race conditions involved in the alloc tag tr=
-ace
-> > + * toggle path.
-> > + */
-> > +static DEFINE_MUTEX(alloc_tag_trace_mutex);
-> > +
-> >  struct alloc_tag_kernel_section kernel_tags =3D { NULL, 0 };
-> >  unsigned long alloc_tag_ref_mask;
-> >  int alloc_tag_ref_offs;
-> > @@ -296,7 +305,7 @@ static bool matches_filter(struct codetag *ct, stru=
-ct allocinfo_filter *filter,
-> >               return false;
-> >
-> >       if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
-> > -             inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
-> > +             inaccurate =3D alloc_tag_is_inaccurate(ct_to_alloc_tag(ct=
-));
-> >               if (inaccurate !=3D !!(filter->inaccurate))
-> >                       return false;
-> >       }
-> > @@ -317,6 +326,23 @@ static bool matches_filter(struct codetag *ct, str=
-uct allocinfo_filter *filter,
-> >       return true;
-> >  }
-> >
-> > +/*
-> > + * Checks that a user supplied filter only uses known fields and that =
-its size
-> > + * range, if any, is not inverted.
-> > + */
-> > +static bool allocinfo_filter_valid(const struct allocinfo_filter *filt=
-er)
-> > +{
-> > +     if (filter->mask & ~ALLOCINFO_FILTER_MASKS)
-> > +             return false;
-> > +
-> > +     if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> > +         (filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> > +         filter->min_size > filter->max_size)
-> > +             return false;
-> > +
-> > +     return true;
-> > +}
-> > +
-> >  /*
-> >   * Seeks the ioctl iterator to the specified 0-indexed tag position, r=
-eads its
-> >   * profiling data and returns it to userspace.
-> > @@ -333,12 +359,7 @@ static int allocinfo_ioctl_get_at(struct seq_file =
-*m, void __user *arg)
-> >       if (copy_from_user(&params, arg, sizeof(params)))
-> >               return -EFAULT;
-> >
-> > -     if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
-> > -             return -EINVAL;
-> > -
-> > -     if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> > -         (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> > -         params.filter.min_size > params.filter.max_size)
-> > +     if (!allocinfo_filter_valid(&params.filter))
-> >               return -EINVAL;
-> >
-> >       priv =3D m->private;
-> > @@ -443,6 +464,75 @@ static int allocinfo_ioctl_get_next(struct seq_fil=
-e *m, void __user *arg)
-> >       return ret;
-> >  }
-> >
-> > +static void alloc_tag_trace_toggle(struct alloc_tag *tag, bool enable)
-> > +{
-> > +     if (enable) {
-> > +             if (alloc_tag_is_traced(tag))
-> > +                     return;
-> > +
-> > +             alloc_tag_set_traced(tag);
-> > +             if (atomic_fetch_inc(&alloc_tag_trace_cnt) =3D=3D 0)
-> > +                     static_branch_enable(&alloc_tag_trace_key);
-> > +     } else {
-> > +             if (!alloc_tag_is_traced(tag))
-> > +                     return;
-> > +
-> > +             alloc_tag_clear_traced(tag);
-> > +             if (atomic_dec_and_test(&alloc_tag_trace_cnt))
-> > +                     static_branch_disable(&alloc_tag_trace_key);
-> > +     }
-> > +}
-> > +
-> > +/*
-> > + * Toggles tracing on every allocation tag that matches the user suppl=
-ied
-> > + * filter. An empty filter mask selects all tags, same as for
-> > + * ALLOCINFO_IOC_GET_AT. Tags already in the requested state are not a=
-n error.
-> > + */
-> > +static int allocinfo_ioctl_toggle_trace(struct seq_file *m, void __use=
-r *arg)
-> > +{
-> > +     struct allocinfo_toggle_traces params;
-> > +     struct codetag_iterator iter;
-> > +     struct codetag *ct;
-> > +     struct alloc_tag_counters counters;
-> > +     bool fetched_counters;
-> > +     int matches =3D 0, ret;
-> > +
-> > +     if (!capable(CAP_SYS_ADMIN))
-> > +             return -EPERM;
-> > +
-> > +     if (copy_from_user(&params, arg, sizeof(params)))
-> > +             return -EFAULT;
-> > +
-> > +     if (!allocinfo_filter_valid(&params.filter))
-> > +             return -EINVAL;
-> > +
-> > +     codetag_lock_module_list(alloc_tag_cttype);
-> > +
-> > +     iter =3D codetag_get_ct_iter(alloc_tag_cttype);
-> > +
-> > +     /* Toggle tracing on all codetags that match */
-> > +     while ((ct =3D codetag_next_ct(&iter))) {
-> > +             fetched_counters =3D false;
-> > +             if (matches_filter(ct, &params.filter, &counters, &fetche=
-d_counters)) {
-> > +                     matches++;
-> > +
-> > +                     mutex_lock(&alloc_tag_trace_mutex);
->
-> Could we grab and drop alloc_tag_trace_mutex outside the loop?
 
-Well, that is possible. But I did it this way to minimize the critical sect=
-ion.
 
-Since this mutex is specific to the trace ioctl, I'm comfortable doing
-what you recommended too. It would just mean that one thread would be
-blocked until another thread fully finishes its loop, which is not too
-bad. I'll let Suren comment on this as well.
->
->
-> > +                     alloc_tag_trace_toggle(ct_to_alloc_tag(ct), !!par=
-ams.enable);
-> > +                     mutex_unlock(&alloc_tag_trace_mutex);
-> > +             }
-> > +     }
-> > +
-> > +     if (matches =3D=3D 0)
-> > +             /* Nothing matched the filter */
-> > +             ret =3D -ENOENT;
-> > +     else
-> > +             ret =3D 0;
-> > +
-> > +     codetag_unlock_module_list(alloc_tag_cttype);
-> > +
-> > +     return ret;
-> > +}
-> > +
-> >  /*
-> >   * Entry point ioctl function for /proc/allocinfo routing requests to =
-fetch the
-> >   * layout content ID, seek to a specific tag, or read sequential tags.
-> > @@ -463,6 +553,9 @@ static long allocinfo_ioctl(struct file *file, unsi=
-gned int cmd,
-> >       case ALLOCINFO_IOC_GET_NEXT:
-> >               ret =3D allocinfo_ioctl_get_next(file->private_data, arg)=
-;
-> >               break;
-> > +     case ALLOCINFO_IOC_TOGGLE_TRACE:
-> > +             ret =3D allocinfo_ioctl_toggle_trace(file->private_data, =
-arg);
-> > +             break;
-> >       default:
-> >               ret =3D -ENOIOCTLCMD;
-> >               break;
-> > @@ -492,8 +585,6 @@ static const struct proc_ops allocinfo_proc_ops =3D=
- {
-> >
-> >  void __alloc_tag_trace_hit(struct alloc_tag *tag)
-> >  {
-> > -     if (unlikely(!tag))
-> > -             return;
-> >       trace_alloc_tag_hit(tag);
-> >  }
-> >  EXPORT_SYMBOL(__alloc_tag_trace_hit);
-> > @@ -1031,6 +1122,24 @@ static int load_module(struct module *mod, struc=
-t codetag *start, struct codetag
-> >       return 0;
-> >  }
-> >
-> > +static void unload_module(struct module *mod, struct codetag *start, s=
-truct codetag *stop)
-> > +{
-> > +     struct alloc_tag *start_tag =3D ct_to_alloc_tag(start);
-> > +     struct alloc_tag *stop_tag =3D ct_to_alloc_tag(stop);
-> > +     struct alloc_tag *tag;
-> > +
-> > +     /*
-> > +      * Turn tracing off for the tags of the module being unloaded. Wi=
-thout
-> > +      * this, `alloc_tag_trace_cnt` would never reach zero and tracing=
- would
-> > +      * stay enabled forever.
-> > +      *
-> > +      * `alloc_tag_trace_mutex` is not needed here as this code path i=
-s
-> > +      * protected by a `down_write(&cttype->mod_lock)`.
-> > +      */
-> > +     for (tag =3D start_tag; tag < stop_tag; tag++)
-> > +             alloc_tag_trace_toggle(tag, false);
-> > +}
-> > +
-> >  static void replace_module(struct module *mod, struct module *new_mod)
-> >  {
-> >       MA_STATE(mas, &mod_area_mt, 0, module_tags.size);
-> > @@ -1357,6 +1466,7 @@ static int __init alloc_tag_init(void)
-> >               .alloc_section_mem      =3D reserve_module_tags,
-> >               .free_section_mem       =3D release_module_tags,
-> >               .module_load            =3D load_module,
-> > +             .module_unload          =3D unload_module,
-> >               .module_replaced        =3D replace_module,
-> >  #endif
-> >       };
+On 03.10.26 23:22, Luigi Rizzo wrote:
+> When dev->dma_pmd_tx_hdrs is enabled, allocate a MAX_TCP_HEADER
+> bounce buffer per TX DMA FIFO slot out of the DMA_PMD arena. When the
+> linear portion of a transmitted packet is at most MAX_TCP_HEADER bytes,
+> copy it into the pre-mapped bounce buffer instead of calling
+> dma_map_single()/dma_unmap_single() on every packet.
+> 
+What is the difference between using the DMA_PMD pool or one (or a few)
+coherent DMA (2MB) buffers allocated by the driver?
+
+> Signed-off-by: Luigi Rizzo <lrizzo@google.com>
+> ---
+>  drivers/net/ethernet/mellanox/mlx5/core/en.h  |  2 ++
+>  .../net/ethernet/mellanox/mlx5/core/en/txrx.h |  4 ++-
+>  .../net/ethernet/mellanox/mlx5/core/en_main.c | 14 ++++++++++
+>  .../net/ethernet/mellanox/mlx5/core/en_tx.c   | 28 +++++++++++++++----
+>  4 files changed, 42 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> index a3945195f454e..d762ad1c1ffaf 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> @@ -442,6 +442,8 @@ struct mlx5e_txqsq {
+>  		struct mlx5e_sq_dma       *dma_fifo;
+>  		struct mlx5e_skb_fifo      skb_fifo;
+>  		struct mlx5e_tx_wqe_info  *wqe_info;
+> +		void                      *tx_hdr_bufs;
+> +		dma_addr_t                 tx_hdr_bufs_dma;
+Why are only headers considered for bouncing? Because they have the
+highest mapping overhead?
+
+Note that TSO/GSO packets will copy the header inline in the WQE
+already. But not for small packets.
+
+>  	} db;
+>  	void __iomem              *uar_map;
+>  	struct netdev_queue       *txq;
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
+> index f2a8453d8dce0..6de7a2a430d72 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
+> @@ -365,7 +365,9 @@ mlx5e_tx_dma_unmap(struct device *pdev, struct mlx5e_sq_dma *dma)
+>  {
+>  	switch (dma->type) {
+>  	case MLX5E_DMA_MAP_SINGLE:
+> -		dma_unmap_single(pdev, dma->addr, dma->size, DMA_TO_DEVICE);
+> +		if (dma->size)
+> +			dma_unmap_single(pdev, dma->addr, dma->size,
+> +					 DMA_TO_DEVICE);
+>  		break;
+>  	case MLX5E_DMA_MAP_PAGE:
+>  		netmem_dma_unmap_page_attrs(pdev, dma->addr, dma->size,
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index 4c6060d54fbed..efd766aa43a02 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -1666,6 +1666,13 @@ static void mlx5e_free_icosq(struct mlx5e_icosq *sq)
+>  
+>  void mlx5e_free_txqsq_db(struct mlx5e_txqsq *sq)
+>  {
+> +	if (sq->db.tx_hdr_bufs) {
+> +		int wq_sz = mlx5_wq_cyc_get_size(&sq->wq);
+> +		int df_sz = wq_sz * MLX5_SEND_WQEBB_NUM_DS;
+> +
+> +		dma_free_coherent(sq->pdev, df_sz * MAX_TCP_HEADER,
+> +				  sq->db.tx_hdr_bufs, sq->db.tx_hdr_bufs_dma);
+> +	}
+>  	kvfree(sq->db.wqe_info);
+>  	kvfree(sq->db.skb_fifo.fifo);
+>  	kvfree(sq->db.dma_fifo);
+> @@ -1690,6 +1697,13 @@ int mlx5e_alloc_txqsq_db(struct mlx5e_txqsq *sq, int numa)
+>  		return -ENOMEM;
+>  	}
+>  
+> +	if (sq->pdev->dma_pmd_tx_hdrs)
+> +		sq->db.tx_hdr_bufs =
+> +			dma_alloc_coherent(sq->pdev,
+> +					   df_sz * MAX_TCP_HEADER,
+> +					   &sq->db.tx_hdr_bufs_dma,
+> +					   GFP_KERNEL | __GFP_NOWARN);
+> +
+>  	sq->dma_fifo_mask = df_sz - 1;
+>  
+>  	sq->db.skb_fifo.pc   = &sq->skb_fifo_pc;
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+> index 0b5e600e4a6a9..3b6a7a8b0128e 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+> @@ -177,6 +177,27 @@ mlx5e_tx_get_gso_ihs(struct mlx5e_txqsq *sq, struct sk_buff *skb)
+>  	return ihs;
+>  }
+>  
+> +static inline dma_addr_t
+> +mlx5e_tx_map_hdr(struct mlx5e_txqsq *sq, unsigned char *data, u32 len)
+> +{
+> +	dma_addr_t dma_addr;
+> +
+> +	if (sq->db.tx_hdr_bufs && len <= MAX_TCP_HEADER) {
+> +		u32 off = (sq->dma_fifo_pc & sq->dma_fifo_mask) *
+> +			  MAX_TCP_HEADER;
+> +
+> +		memcpy(sq->db.tx_hdr_bufs + off, data, len);
+> +		dma_addr = sq->db.tx_hdr_bufs_dma + off;
+> +		mlx5e_dma_push_single(sq, dma_addr, 0);
+> +		return dma_addr;
+> +	}
+> +
+> +	dma_addr = dma_map_single(sq->pdev, data, len, DMA_TO_DEVICE);
+> +	if (likely(!dma_mapping_error(sq->pdev, dma_addr)))
+> +		mlx5e_dma_push_single(sq, dma_addr, len);
+> +	return dma_addr;
+> +}
+> +
+This looks like a form of tx-copybreak.
+
+Thanks,
+Dragos
 
