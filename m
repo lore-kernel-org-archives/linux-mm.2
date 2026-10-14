@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64FE3CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:01:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C737CC6B27
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:01:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 757FE6B0096; Wed, 14 Oct 2026 05:01:14 -0400 (EDT)
+	id 891606B009B; Wed, 14 Oct 2026 05:01:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72F826B009B; Wed, 14 Oct 2026 05:01:14 -0400 (EDT)
+	id 868496B009D; Wed, 14 Oct 2026 05:01:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61E066B009D; Wed, 14 Oct 2026 05:01:14 -0400 (EDT)
+	id 7A4D96B009E; Wed, 14 Oct 2026 05:01:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3395A6B0096
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:01:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE54C14042A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:01:13 +0000 (UTC)
-X-FDA: 85320637626.10.8A39D02
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D792A10000A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:01:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pQFtufiM;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791968472;
-	b=gZKOb86/bGNg3ahv4D0LCV74gegd1vbUoU915eNTSDTnvSzHex48NhsoO/DPi2WVuQVY3m
-	Yxo9k+DI9drFMA+CFT3WfM1fMwO1uNfflRodtVM3S0Mz1MMvbRyrNTHcsoai0nTpE9Swhq
-	JELHCaedV6zvrNXMC9SPxhKaSHnhp8g=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pQFtufiM;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 558456B009B
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:01:22 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E907340471
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:01:21 +0000 (UTC)
+X-FDA: 85320637962.14.3F472C5
+Received: from mta0.migadu.com (out-95.mta0.migadu.com [91.218.175.95])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B950A4000C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:01:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n9Zi1TdJ;
+	spf=pass (imf17.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.95 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791968472;
+	s=arc-20220608; t=1791968480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w6d1ZGliYPhieSuvjGZO3kxTg3x67TSdLveb34MEzAE=;
-	b=R3XffFEKlPOF+dxekCa65u0p4uMstKALv2fLcKJdeLN+50h+CfqqX/nIDh2rEUaHGtOJ1w
-	WiTDfTwmrUgYJiNR59zJ0GlWYLu+6QaIs2yexQkWXHAh9BxjYmd33SuyI+jwo02Kz2gQdd
-	9OMQ6Xhv3dEb8Tw4fAEGhvftQEnq9ns=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 865661596;
-	Wed, 14 Oct 2026 02:01:07 -0700 (PDT)
-Received: from [10.164.19.62] (unknown [10.164.19.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9B7A3F7B4;
-	Wed, 14 Oct 2026 02:01:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791968470; bh=rara4mkQth8pYyWlFJvWmDaJu5z0cXsBOp7HoWDPrJE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pQFtufiMGehtJM9AcAsnwXLGqTJECDqjyuBHqaMUB/gJ0L3WUOI5EUTEsk2dHjdsf
-	 R99tb64LVgVWafMjWaPf3mdnd4dVDS58qabNcRdPk/FvmuqeNwUiGSRcWLC3RtnKhS
-	 UFcMMAZVO7L2zOSVKereOgmlQX/zL1pbdiQBv3Ng=
-Message-ID: <e0354457-8ca4-474d-b8cc-0ba843be8897@arm.com>
-Date: Wed, 14 Oct 2026 14:31:02 +0530
+	bh=t/B25+LLi82p0Sza6LyyArGq5kbraLvrdsSLQbmRQ4g=;
+	b=Ab0DyVtxJSdKiiz6axfpqBUf7Emnar2WxWcTHv98Y6AdjPZ9MRNifKNmbvbVRo2ly1bDc+
+	mpziZIsSo7M8d4KT0FHE9rujFoamUCorIOuuCxZ46f6Y3p3iwcFACQsWucBFOYeSjCza6+
+	+c3eAQVAYEe1OmPnaIg+oRgHhjsTzKA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n9Zi1TdJ;
+	spf=pass (imf17.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.95 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791968480;
+	b=LC3nrl4klu2TMQHLtn8yefuap5huwYe+MiMDzJI1Jbjk27vKO88PPJ0qyL8PA+Rsrlbx6i
+	oUUz2V1U6u9j65ANiOuWD7OjsO8+/quFkmMhjMYV8ZcnvXhJOarnLGmBloX2EA70uY/2as
+	GmPCuNN/Au4WFOekpGObgWt+AhyLxWc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=3zJjm6DiujVRRMFJWBEXTYsYUWwxY7lpqrEEqgi3VfI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791968475; v=1; x=1792573275;
+ b=n9Zi1TdJT42pITaZqc9CCPRDkoCAwu5JB+vUWldT2AVxfrZAj7gXMx6zZi8MLuzAoIqUIIqu
+ dsTU9/WTYEC3qwHEVv+/epjf40mWTZZL/CNn4Dhlq7B8jOT/ZvQ2unKya/6r8mVpkRX3Ztntzs5
+ 3f51CGAXeOb8oJtYaAI4gRV4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id a323c927ff3d4d89;
+	Wed, 14 Oct 2026 09:01:15 +0000
+X-Mizu-Trace-ID: a323c927ff3d4d89
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH v6 2/2] mm/vmscan: throttle MGLRU eviction when isolated folios pile up
+Date: Wed, 14 Oct 2026 17:00:24 +0800
+Message-ID: <2a5d323c1caede0f2e2d2016b99893abe656d372.1791968227.git.zhuhui@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1791968227.git.zhuhui@kylinos.cn>
+References: <cover.1791968227.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 01/10] arm64/mm: add pte_set_huge() and
- pte_clear_huge()
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
- urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com,
- ajd@linux.ibm.com, anshuman.khandual@arm.com, baohua@kernel.org,
- chleroy@kernel.org, david@kernel.org, jiangwen6@xiaomi.com, leo.yan@arm.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
-References: <20261002090947.869220-1-jiangwen6@xiaomi.com>
- <20261002090947.869220-2-jiangwen6@xiaomi.com>
- <7b3c3a39-4cf3-430d-9fd3-ba83e5175e72@arm.com>
- <CAHKocdFOoDhjcuWXJatQ-AbSXyXuV+Q=sA1-iGiGrp7vhHZMBQ@mail.gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <CAHKocdFOoDhjcuWXJatQ-AbSXyXuV+Q=sA1-iGiGrp7vhHZMBQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hod5m81g1d1a8efskgn4osjb65jwoo8a
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B950A4000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D792A10000A
-X-HE-Tag: 1791968471-196398
-X-HE-Meta: U2FsdGVkX19Jkr17Y8d5tbIe0TjrPR404Ft/fmIFPWgFpbYu8UYjoSiYrcy8CUWrYeOgaJlxVL9v8YkWrx2RlBOv66TE6j28YUg6W/SCjJuglRgffDmuvZRoo4KAYg8p6IozaG/+IWVQ6pTBpANBdURSl33zxpqt6XMeAMkcVT2FJ21qUAOiZ5LSAARuB4DPuSyUGPi6x5PlXa7vN5DdblEd4B3pQoIORvuwNlLN6JafWGGsXQFvQRWT3EIaUGZGzqUoqLK08ZS51J4CAurssUBrCnHIdswVeAnGflM3Si1mFFlawGHNCpn7m9WfzUB4JrIiMvIL9q1bdrLb3xS7WtlGsi0w8XYApNQTn7JzIrRnEh4VZhfwhcGt8AcDmpU36iT4gl+57vusUKi3zcPTq5Zfw+X8l0CDTt4wMvvdrpomHCngdjrpgxpm2fdMDRF0peLS0WOXT9Mcr9AgGyXQPfw00DCv71e7JpeMd9j/ekWSGDhoOMpaoBWxU9lNS5Ku+M60DO77PLhB3qDcHsrDAJjc18JoF1WHj009l6EAePXMnV8CUSG056SqUWpB84KpAXL9DPjmn2QbxykynEGPguUk/tr3e3FDlxmZA/v8EcWjJF0rg/sJpQ3trXtBxqomToMXb18+J2djq9qsM176W4Zp3vsqibpIUEjHgB6QrppVjq2clKC43e9IaZYTgCVkuqTAu3rlqnWSwRq0K2qI6ulxtA3Lxlsa8BfGSGi5VC3IrLKlPjdp5/SJ6R0+kjqSh/18EocAURXNV/zwbihTvaE/QDxee32m2YFJouTG1484JsJz+o28A00hbyWwbIlIQwcKzY3XSkx3689svFG7qZfcF6YNC+F2kcGBnt3rD2WOymBRdA7o1cg+zjHYdo9XrjrS3cOypg6EUd6mRLWvHTVbpNIL33rmCSPHe8W6ET1QC5n4glrMiVfstomyDxgKyw18i+PDQarPW/nWqK1
- wKqTddSh
- ZsGVJvorvSOhSYUXmqXOF6Hoy+H8OfpPBDZitx1t9oeBeDUGiE3xN0T3n0Ua4K0PKWyO5pawhwuohv2AsYjUgey7iFNoW5CzkAETmDbRPaSeOhYrHvHXrZ0T/KAxW6USJRmXF2Arspt6NSourFPBxnLUncH52QXWItkgtstflmVio0L6s5QyBCTuBFBtGGghyUdOBs3bB9G1hpxBJdoK2MGzSHDK8VO/SmjOUNqqBIFMv12R5Qp9sFLphq2xAhgkvfO3izPb4HHGDlbBrblwBPpY7d350RTJeGZik+tPpAKMVewkUv38UGypWuCkm4gEHctR7eIiAnr6wgZDzh+UOvsIqViPpf0Un1lPn4ZX/InguPBJahqXcCuyGPkUsox93Ibc0W0qyznHxf4QaSbizZIh2eLbw8ZQvrfShV9NvNcLjdQbAc7Nssca7u44mrbNS4XE/FAox7VFFJMew6H0i5VOMWQ==
+X-Stat-Signature: nf1mjojgeu1jnmqedxu1ta35roi7hyye
+X-HE-Tag: 1791968476-593144
+X-HE-Meta: U2FsdGVkX1/AAVANwV4yEgskos9YWXG/wtQGFN+IxKlxC0beCC4AWrkh5oJD7/kSyKKUg0Bhi1hahkVgPfBUF/RKJQW5WGNlbfFCAgXVCuHQOZOHWSrClKRyPHC7u9OaJ1zVusfjwHjzl2brwnq6zTDVktOY8c/7jCU/jTTL1pyk0W91Pq/GzbS3tE2BUI5pa/lWYtCML0epqHaFduHM6QM+An6+9pCSBg4+tIYYq+WzWljIIJmU0P1fv8oFFn+TB7AD9SQNS2oNdtW5QP38bI4lkWafqg7hO4po1SggMwA/X9uwggJmECa5GL2/muy58o9fVGXnC4vSak6aK3GJNmCwz5b7TcrkOMGK8ZFBwSHgE9KRVZSYPR8Qf0ejHwqfLOk03PB1mXWrSZK3CEpjsQZe1Y6tMa7loUzYUdIxVQou7U2wbl+fwVK0Vi/xa9t+Jwr+BcQ7QUd58Cf3fd4UNCBaG72xGGhFnUuTsdu8MlIfXsvkC2tlNzTQV0Tw/tD8u98o2UjzYyg4Lw5Dj9VsPFAtqjDVYIadwYEHoYLS/IHFA7bvh9J7e+fwrXO8BdnYEf0nP424PWv7ej/BrdP//HW9UxJMYs15Ty+zAyRMkEn3D7SH5MysxRfhrMn2w2cJXTiWpUJeExJGoUupHxnJqdb4+umaSxvKKypKsCt5lidqIZ/Vc2ByiIYo9GeX2GXJQ1as222js7aqB57zKeRk27PXWJOOHxkzxNVSxFkXAbaN7SBKYgynkDZTpfSReGRcmd4IYHE8gkynxcpiHjKkKJHu2K+5cn5isp0mbQUQRt/n8KtTJ/11fCDVe6IcIA9odhsqR9Cxef7MHr7Dd6PafEbcwmQ1OwJYsdfDH7KSHCPVTr4F0m/iPgGCPu7nI+pjGVxcNYiASuFM3SMU6O1e5PPMFUb8AMZKE6sVl4ACPtK2WgC7HezFL21ESleBHMkHlcz3YJIYnG3ARzbPNyQ
+ fDTCtwmO
+ /xiyNIi56eYckkWhyzeb+cOjxNdFokMGt2EcddmeD7271fNHLPHWag0tjrrzvEZjiJggb3XaTdYVX0WKqiWagLu0qpH09AgCPub210NKVQKGVd08yjK6FrTfiU3rD9IzQDj8Q2aFtmvi9vLobsfEZ5jANFQ6T7Zsbe22XNtuesKEfTbqU2c80tz6TmYZRhF41lD68
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,137 +101,300 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Hui Zhu <zhuhui@kylinos.cn>
 
+The legacy path throttles direct reclaim via too_many_isolated() when
+isolated folios pile up, but MGLRU's evict_folios() isolates folios
+without this check, which can lead to unnecessary swapping, thrashing
+and OOM.
 
-On 14/10/26 2:16 pm, Wen Jiang wrote:
-> On Wed, 14 Oct 2026 at 14:03, Dev Jain <dev.jain@arm.com> wrote:
->>
->>
->>
->> On 02/10/26 2:39 pm, Wen Jiang wrote:
->>> vmap installs PTE-level block mappings (PTE_CONT on arm64) by reusing
->>> set_huge_pte_at() and huge_ptep_get_and_clear(), which are HugeTLB
->>> helpers gated by CONFIG_HUGETLB_PAGE. This makes the feature silently
->>> unavailable on CONFIG_HUGETLB_PAGE=n kernels and couples mm/vmalloc.c to
->>> HugeTLB internals it does not otherwise need.
->>>
->>> Add pte_set_huge()/pte_clear_huge() to arm64, joining the existing
->>> pmd_set_huge()/pud_set_huge() family in mm/mmu.c. They build on
->>> __set_ptes() and __get_and_clear_full_ptes() directly, so they do not
->>> depend on CONFIG_HUGETLB_PAGE.
->>>
->>> There is no caller yet: mm/vmalloc.c is converted later in this series,
->>> once the generic fallbacks are in place.
->>>
->>> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
->>> Reviewed-by: Barry Song <baohua@kernel.org>
->>> ---
->>>  arch/arm64/include/asm/pgtable.h |  6 ++++++
->>>  arch/arm64/mm/mmu.c              | 23 +++++++++++++++++++++++
->>>  2 files changed, 29 insertions(+)
->>>
->>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->>> index 6000905a2e865..9b762eb68cff0 100644
->>> --- a/arch/arm64/include/asm/pgtable.h
->>> +++ b/arch/arm64/include/asm/pgtable.h
->>> @@ -1978,6 +1978,12 @@ static inline void clear_young_dirty_ptes(struct vm_area_struct *vma,
->>>
->>>  #endif /* CONFIG_ARM64_CONTPTE */
->>>
->>> +#define __HAVE_ARCH_PTE_SET_HUGE
->>> +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
->>> +               pgprot_t prot, unsigned long size);
->>> +#define __HAVE_ARCH_PTE_CLEAR_HUGE
->>> +pte_t pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size);
->>> +
->>>  #endif /* !__ASSEMBLER__ */
->>>
->>>  #endif /* __ASM_PGTABLE_H */
->>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->>> index 79d90226fd5dc..ae2f15618c97d 100644
->>> --- a/arch/arm64/mm/mmu.c
->>> +++ b/arch/arm64/mm/mmu.c
->>> @@ -1912,6 +1912,29 @@ int pmd_clear_huge(pmd_t *pmdp)
->>>       return 1;
->>>  }
->>>
->>> +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
->>> +               pgprot_t prot, unsigned long size)
->>> +{
->>> +     unsigned long pfn = __phys_to_pfn(phys);
->>> +     pte_t pte = pte_mkcont(pfn_pte(pfn, prot));
->>> +     unsigned int nr = size >> PAGE_SHIFT;
->>> +
->>> +     VM_WARN_ON(!IS_ALIGNED(size, CONT_PTE_SIZE));
->>> +     VM_WARN_ON(!IS_ALIGNED(addr, CONT_PTE_SIZE));
->>> +     VM_WARN_ON(!IS_ALIGNED(pfn, CONT_PTES));
->>> +
->>> +     /* For vmap, there is no valid -> valid transition */
->>> +     VM_WARN_ON(pte_valid(__ptep_get(ptep)));
->>> +
->>> +     __set_ptes(&init_mm, addr, ptep, pte, nr);
->>> +}
->>> +
->>> +pte_t pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size)
->>> +{
->>> +     return __get_and_clear_full_ptes(&init_mm, addr, ptep,
->>> +                                      size >> PAGE_SHIFT, 0);
->>> +}
->>
->> I think we should have the same VM_WARN_ON() checks here, as for
->> pte_clear_huge(), in addition to also warning for
->> current->mm != &init_mm.
->>
->> We should make it clear that pte_clear_huge() gets called only for
->> kernel mappings, and the range we operate on is definitely an aligned
->> CONT range - which is why we do not go through get_and_clear_full_ptes ->
->> contpte_get_and_clear_full_ptes, and possibly contpte_try_unfold(), but
->> directly use __get_and_clear_full_ptes.
->>
-> 
-> Hi Dev,
-> 
-> I'll add the alignment VM_WARN_ON() checks to pte_clear_huge() to
-> match pte_set_huge().
-> 
-> Regarding the current->mm != &init_mm check: these functions don't take
-> an mm parameter -- &init_mm is hardcoded in the function body.
-> current->mm would never equal &init_mm in practice: for user processes it
-> points to the process's own mm, and for kernel threads it is NULL.
-> So VM_WARN_ON(current->mm != &init_mm) would always fire.
+Add lru_gen_too_many_isolated() and throttle_evictable_types(), called
+from evict_folios() before the lruvec lock is taken since throttling
+sleeps.
 
-Right.
+The check is per lruvec rather than node-wide: reclaimers contend per
+lruvec, and a node-wide check would let isolation in one memcg throttle
+reclaim in another. The threshold is the evictable size of the type
+divided by MIN_NR_GENS, approximating one generation.
 
+Since isolate_folios() picks the type from refault feedback and may fall
+back to the other one, throttle_evictable_types() collects the types
+that are not over-isolated and have evictable folios, and sleeps only
+when all of them are over-isolated. The mask is passed to
+isolate_folios() to restrict its choice and fallback, so an
+over-isolated type never blocks the other, and isolation never lands on
+a throttled or empty type.
 
-> 
-> The existing hugetlb helpers that vmalloc used before this decoupling
-> (huge_ptep_get_and_clear -> get_clear_contig) also take mm as a
-> parameter
-> and don't check current->mm either -- the caller simply passes &init_mm.
-> 
-> How about adding a comment to make the "kernel mapping only" intent
-> more explicit?
-> Something like:
+Like the legacy path, kswapd and !writeback_throttling_sane() reclaim
+are exempt, the threshold is raised for GFP_NOIO/GFP_NOFS callers, and
+a dying task fakes progress to exit reclaim quickly.
 
-I think then we should just call the functions vmap_pte_set_huge and
-vmap_pte_clear_huge. In arm64 we have init_pte() which sets the cont bit
-at init time for kernel mappings. So to differentiate I think we should
-prefix the function name by vmap.
+Tested with threads write-touching a 48MB anonymous working set in a
+16MB memcg backed by swap delayed 50ms via dm-delay. With 192 threads
+the task is OOM-killed without this patch and survives with it. With
+64 threads both kernels survive the 60s run, and the patched kernel
+completes ~22% more touches (301B vs 246B).
 
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ include/linux/mmzone.h |   2 +
+ mm/vmscan.c            | 171 +++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 159 insertions(+), 14 deletions(-)
 
-> 
->  pte_t pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size)
->  {
-> +       /* Kernel mappings only */
-> +
-> +       VM_WARN_ON(!IS_ALIGNED(size, CONT_PTE_SIZE));
-> +       VM_WARN_ON(!IS_ALIGNED(addr, CONT_PTE_SIZE));
-> +
->         return __get_and_clear_full_ptes(&init_mm, addr, ptep,
->                                          size >> PAGE_SHIFT, 0);
->  }
-> 
-> Thanks,
-> Wen
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index c070b867e2f3..e8fc002c98c0 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -583,6 +583,8 @@ struct lru_gen_folio {
+ 	/* can be modified without holding the LRU lock */
+ 	atomic_long_t evicted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
+ 	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
++	/* the number of folios isolated from this lruvec and being reclaimed */
++	atomic_long_t nr_isolated[ANON_AND_FILE];
+ 	/* whether the multi-gen LRU is enabled */
+ 	bool enabled;
+ 	/* the memcg generation this lru_gen_folio belongs to */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 3bd604204ec7..2d551a1f91c7 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4232,25 +4232,34 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
+ 	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
+ }
+ 
+-static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness)
++static unsigned long lruvec_type_evictable_size(struct lruvec *lruvec, int type)
+ {
+-	int gen, type, zone;
++	int gen, zone;
+ 	unsigned long seq, total = 0;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	DEFINE_MAX_SEQ(lruvec);
+ 	DEFINE_MIN_SEQ(lruvec);
+ 
+-	for_each_evictable_type(type, swappiness) {
+-		for (seq = min_seq[type]; seq <= max_seq; seq++) {
+-			gen = lru_gen_from_seq(seq);
+-			for (zone = 0; zone < MAX_NR_ZONES; zone++)
+-				total += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
+-		}
++	for (seq = min_seq[type]; seq <= max_seq; seq++) {
++		gen = lru_gen_from_seq(seq);
++		for (zone = 0; zone < MAX_NR_ZONES; zone++)
++			total += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
+ 	}
+ 
+ 	return total;
+ }
+ 
++static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness)
++{
++	unsigned long total = 0;
++	int type;
++
++	for_each_evictable_type(type, swappiness)
++		total += lruvec_type_evictable_size(lruvec, type);
++
++	return total;
++}
++
+ static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
+ {
+ 	unsigned long total;
+@@ -4913,16 +4922,129 @@ static inline bool is_single_type_reclaim(int swappiness)
+ 	       swappiness == SWAPPINESS_ANON_ONLY;
+ }
+ 
++/*
++ * The MGLRU counterpart to too_many_isolated().
++ *
++ * too_many_isolated() compares node-wide isolated counts against
++ * node-wide inactive sizes. It predates per-memcg LRU lists, which
++ * moved isolation to per-lruvec granularity. MGLRU reclaimers contend
++ * per lruvec, so this check is per lruvec as well, and isolation in
++ * one memcg does not throttle reclaim in another.
++ *
++ * The legacy threshold, the size of the inactive list, is not usable
++ * here either: in MGLRU the inactive counters are only a compatibility
++ * shim - they jump around when swap runs out or a memcg hits its swap
++ * limit, and proactive aging can inflate them. Compare against the
++ * total number of evictable pages of the type divided by MIN_NR_GENS,
++ * approximating the size of one generation - the same unit the
++ * original MGLRU aging heuristics used.
++ */
++static bool lru_gen_too_many_isolated(struct lruvec *lruvec, int type,
++				      struct scan_control *sc)
++{
++	unsigned long isolated, evictable;
++
++	if (current_is_kswapd())
++		return false;
++
++	if (!writeback_throttling_sane(sc))
++		return false;
++
++	isolated = atomic_long_read(&lruvec->lrugen.nr_isolated[type]);
++	evictable = lruvec_type_evictable_size(lruvec, type);
++
++	/*
++	 * GFP_NOIO/GFP_NOFS callers are allowed to isolate more pages, so
++	 * they won't be blocked by normal direct-reclaimers, forming a
++	 * circular deadlock.
++	 */
++	if (gfp_has_io_fs(sc->gfp_mask))
++		evictable >>= 3;
++
++	return isolated > evictable / MIN_NR_GENS;
++}
++
++/*
++ * Unlike the legacy path, where the LRU list to isolate from is known
++ * before isolation, isolate_folios() picks the type from the refault
++ * feedback and may fall back to the other one. Therefore, instead of
++ * throttling on a single type, collect the evictable types that do not
++ * have too many isolated folios, and only sleep when all of them do.
++ *
++ * Returns the mask of the types isolate_folios() may isolate from, or
++ * 0 if reclaim should stop. Also sets @fatal to tell the caller that
++ * the task received a fatal signal while waiting.
++ */
++static unsigned int throttle_evictable_types(struct lruvec *lruvec,
++					     int swappiness,
++					     struct scan_control *sc,
++					     bool *fatal)
++{
++	unsigned int allowed;
++	bool stalled = false;
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++	int i;
++
++	*fatal = false;
++
++	for (;;) {
++		allowed = 0;
++		for_each_evictable_type(i, swappiness) {
++			/*
++			 * A type with no evictable folios has nothing to
++			 * isolate. Don't allow it, otherwise reclaim can be
++			 * redirected to it and spin making no progress, e.g.
++			 * when the only type with folios is over-isolated.
++			 */
++			if (!lruvec_type_evictable_size(lruvec, i))
++				continue;
++
++			if (!lru_gen_too_many_isolated(lruvec, i, sc))
++				allowed |= BIT(i);
++		}
++
++		if (allowed) {
++			/* Wake up reclaimers waiting on the isolation to go down. */
++			wake_throttle_isolated(pgdat);
++			return allowed;
++		}
++
++		/*
++		 * All evictable types are over-isolated. Like the legacy
++		 * path, wait once for concurrent reclaimers to put their
++		 * isolated folios back; give up if that makes no progress.
++		 */
++		if (stalled)
++			return 0;
++
++		stalled = true;
++		reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
++
++		/* We are about to die and free our memory. Return now. */
++		if (fatal_signal_pending(current)) {
++			*fatal = true;
++			return 0;
++		}
++	}
++}
++
+ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 			  struct scan_control *sc, int swappiness,
+-			  struct list_head *list, int *isolated,
+-			  int *isolate_type, int *isolate_scanned)
++			  unsigned int allowed, struct list_head *list,
++			  int *isolated, int *isolate_type, int *isolate_scanned)
+ {
+ 	bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
+ 	int type = get_type_to_scan(lruvec, swappiness);
+ 	int total_scanned = 0, scanned, tier;
+ 	bool tried = false;
+ 
++	/*
++	 * The preferred type may have been excluded by
++	 * throttle_evictable_types(); start from the other one.
++	 */
++	if (!(allowed & BIT(type)))
++		type = !type;
++
+ retry:
+ 	tier = get_tier_idx(lruvec, type);
+ 	scanned = scan_folios(nr_to_scan, lruvec, sc,
+@@ -4937,9 +5059,11 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 
+ 	/*
+ 	 * We are running out of the current reclaim type. Fall back to
+-	 * the other type if allowed.
++	 * the other type if allowed. Only fall back to a type that is
++	 * not throttled.
+ 	 */
+-	if (!scanned && !tried && type_fallback_allowed) {
++	if (!scanned && !tried && type_fallback_allowed &&
++	    (allowed & BIT(!type))) {
+ 		type = !type;
+ 		tried = true;
+ 		type_fallback_allowed = false;
+@@ -4973,18 +5097,36 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	bool skip_retry = false;
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++	unsigned int allowed;
++	bool fatal;
++
++	allowed = throttle_evictable_types(lruvec, swappiness, sc, &fatal);
++	if (!allowed) {
++		/*
++		 * We are about to die and free our memory. Like the legacy
++		 * path, pretend some pages were reclaimed so reclaim
++		 * unwinds quickly instead of looping back into the
++		 * throttle.
++		 */
++		if (fatal)
++			sc->nr_reclaimed += SWAP_CLUSTER_MAX;
++
++		return 0;
++	}
+ 
+ 	lruvec_lock_irq(lruvec);
+ 
+ 	/* In case folio deletion left empty old gens, flush them */
+ 	try_to_inc_min_seq(lruvec, swappiness);
+ 
+-	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
++	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, allowed,
+ 				 &list, &isolated, &type, &type_scanned);
+ 	nr_isolated = isolated;
+-	if (nr_isolated)
++	if (nr_isolated) {
+ 		__mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
+ 				      nr_isolated);
++		atomic_long_add(nr_isolated, &lruvec->lrugen.nr_isolated[type]);
++	}
+ 
+ 	/* Scanning may have emptied the oldest gen, flush it */
+ 	if (scanned)
+@@ -5047,6 +5189,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 		goto retry;
+ 	}
+ 
++	atomic_long_sub(nr_isolated, &lruvec->lrugen.nr_isolated[type]);
+ 	mod_node_page_state(pgdat, NR_ISOLATED_ANON + type, -nr_isolated);
+ 
+ 	if (nr_isolated > total_reclaimed)
+-- 
+2.43.0
 
 
