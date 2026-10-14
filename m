@@ -4,82 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BEF5CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:02:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0AC6CC6B27
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:04:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27DEF6B0088; Wed, 14 Oct 2026 04:02:50 -0400 (EDT)
+	id B32B56B008A; Wed, 14 Oct 2026 04:04:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2557D6B008A; Wed, 14 Oct 2026 04:02:50 -0400 (EDT)
+	id AE3586B0098; Wed, 14 Oct 2026 04:04:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16B5E6B0098; Wed, 14 Oct 2026 04:02:50 -0400 (EDT)
+	id 9D2066B0099; Wed, 14 Oct 2026 04:04:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A8EB66B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:02:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32D86C0479
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:02:49 +0000 (UTC)
-X-FDA: 85320490458.25.0423443
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E7326B008A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:04:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 056F61C385D
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:04:07 +0000 (UTC)
+X-FDA: 85320493734.12.2DC7292
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5988740004
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:02:47 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBpdrmSu;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 38BE418000C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:04:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ai0tDpZ2;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791965045;
+	b=MejtEgIVaPxAmERssX/g4VomYCj71dWMvfbl+2fxudY1eaVU0gZKRpnBu3/QSxd23lJJC0
+	K5ijJ9KenwRCI8kYzPbYSyTtJWCHNHgIBNSu/r1GVOiSRPH/kF6lRTLc96ZeynltYHCbwL
+	u9IZsXarzUjOnRaXpAeic4Swmbt+0Qg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ai0tDpZ2;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791964967;
+	s=arc-20220608; t=1791965045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X9ytMwqCWIzw05HboKv/lmzrNih4neXNeq84eInfJtw=;
-	b=7+Wmq8lcezOkAm/pWO8HuM1eIAOMW8ZkQlCOA/Y66keG7rQg+g34A6zV81meAewYWTVorK
-	UIXQEB3IFU3XrT4UgobHMASylFWxSshZ14ddR/ZHnVvIZ75b6cZVfqmIqHUgpd1my/4AG4
-	wvIwLbP8fydAv89XMbx6AP9A0HSX51E=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBpdrmSu;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791964967;
-	b=YzaBWPE3uToIQf5nq/ssm/RSXjrlV0+WbTPc2e8YnzUpp+coZYhvwn+Re31JRkIG5Uc5iH
-	YpL4mEdP4m0qtatbKiFTYL3tZDcr1Hxr42FUzawAsrrY33x+nRpEc/wlU1rML38BpPVnCY
-	zZ5SRNftrojjwzMkw+PeTXL+CGYLYbk=
+	bh=deXI1eiZdMA+rkrnahrdm835ND51y4e0N1ut/tP+PjI=;
+	b=3bccXDaEgGI6DiSdNGX0TswsCfWDj+UQxEDuMOjYE8zhpEoVx1sbrTHo/Dmqs1bp8luir5
+	NQMg3MFkTlyfW3IJhElT4jKU6IR8R7LW9t015GVbZ4OilKNl3xqok03zyEy/50FRhN7Uj0
+	FendANoWZ1Y6vN/BcfVwlo/zbEAajx8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB8F243483;
-	Wed, 14 Oct 2026 08:02:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41CD1F000FF;
-	Wed, 14 Oct 2026 08:02:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 482C543E0B;
+	Wed, 14 Oct 2026 08:04:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354451F000FF;
+	Wed, 14 Oct 2026 08:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791964965;
-	bh=X9ytMwqCWIzw05HboKv/lmzrNih4neXNeq84eInfJtw=;
+	s=k20260515; t=1791965044;
+	bh=deXI1eiZdMA+rkrnahrdm835ND51y4e0N1ut/tP+PjI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HBpdrmSuw1yhtNos3sT9tV91CknmD7XQmyevZJ2kCvLr9wL4Ai7tkicw8qI3xv88b
-	 WcGTwbsyvZjeXWw8Tt1CIgz99OdwOUzSskNkuWPT2J4HuUlOhCu22SH991wQJRkeUB
-	 JmmBAaVOFoQwJNoUzQjbofuUe1Esyw80tPOtyEzj56RMbdFZlPWuoto6Y0uJTaG85l
-	 fBFmF2xPxHBAsI68U9XRMUQuVNyw12y9NCl6CsZvodMpCXbONKufSOU2jOfyQ5dkOL
-	 aytwcAT4mgsn/uGjeMeJG3qvYL24Rbw9tqsfxUR0sezq+tQ7nsYttUzCLc0Rlgx+W/
-	 H2J5w58k0XqOw==
-Message-ID: <e9a6d5e4-31ee-4dea-b2fa-1813e7cf69ed@kernel.org>
-Date: Wed, 14 Oct 2026 10:02:38 +0200
+	b=ai0tDpZ2EZeG/dvtP+1wHIwzOW7ilCIq0udzFFDkI0sYJoRsijgr1TvQleV8oIaA3
+	 +AI4sbxOlu2cs0No/M/Orymgt3KpM7nYldonsRcxk44/NWct60V6MuWz6ND4fAuUnX
+	 sISzo56gQmTUvPta4zKqa+EuKemlpuGcBCG25RAs2jAMRa+n+p2jGXFTk97c7EvyIT
+	 X4av0a3nGHqCNa0X2yKZLUtU05RfHB3YdjPAAXtwOoOYWpFg3zaEH/pmgFDqMTRkTw
+	 9nDmaCaukYhgpG7j6rNBn9ByTlt8hoUYpH72HtL/HUqORiIi/+NQOY7NPFlAIGmU3R
+	 7KqMMan2HLljQ==
+Message-ID: <8d5bbe19-710e-4488-901c-22263ea6797f@kernel.org>
+Date: Wed, 14 Oct 2026 10:03:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Ying Huang <huang.ying.caritas@gmail.com>,
- Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Chuanhua Han <hanchuanhua@oppo.com>, Kiryl Shutsemau <kas@kernel.org>,
- Kyle Zeng <kylebot@openai.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+To: Barry Song <baohua@kernel.org>, Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Chuanhua Han <hanchuanhua@oppo.com>,
+ Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
- <5848db18-9de3-437b-9967-162ced4f8cb9@linux.alibaba.com>
+ <as4qKLx_XwQ6qY3p@thinkstation>
+ <CAGsJ_4y5j+p0-VdEzpnS-Q31vhvBZRa96VJtA6+HyNj=+r+Ufg@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5848db18-9de3-437b-9967-162ced4f8cb9@linux.alibaba.com>
+In-Reply-To: <CAGsJ_4y5j+p0-VdEzpnS-Q31vhvBZRa96VJtA6+HyNj=+r+Ufg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 38BE418000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5988740004
-X-Stat-Signature: xohqtkpisfhh915ignmrrfjs39hzoyxp
-X-HE-Tag: 1791964967-203969
-X-HE-Meta: U2FsdGVkX1/yTUR3qHTCB/QJOTO0/Shjfl5oDVM3gkbOT/QxQKYhH8mjUY75D/7O6xP7SIdPEuBjos+20gpsWyoZjf241Z8SSd6f1ktK6+kvsKrvhxvfsYhl0OjCeEfS0dToSRa9VpbHasMgBlDMbFZBJ7BbtkOV4B4MZ7z2LFYaUiC+fGs+hRDXGIb0kEYA7Cuy05cdPzwiO05xVc6PGaM7e64DRY6g0SRvgwXi1pIDR6f9F1Ux9IgC08UA2YuFHMgYtdRJIAJDFT9ezQ9gSrkk3vD8Y8AWDjx2GnPSZUaAMp6KrqjjuQ77JRZp++9jN5huqxZlkI4TAlkjjr8OgGLicbaL/KHKc0fIi3236s/vtVU5t6a9t8MDOb15ZGZHddKT8ggpPW5rxAALbf80z0lvqa5evT66QXgXiEMqhPcCV3xBz3e3tA3EfuedxwUR/+tcbNhMReFQB6m4FgyeSSqtYYHF3Y+BYUA7TXe2JtXTy895/jf8u0/eA4A2cqHKNZKlzZv6YEazmEJnUhQn4hQEctJ5jbzJx8lWU3KW87xymVeiP7mXcoB6Tn/uxN3uYNS0kXiHNYo8R3OG5XXbCXPeu6NrjtUpPmPfYliQuMSH1bG+yt0hA8lTd/bRL7v8YdXY+W7HKuc4anwRAsK/rRbrK89mutTf+I+G9n37KpcQI7aP+tY4mY/I7onFlpVsW2aM4wbI3ojz6A7KXFfEetOo1DwkjPhAZMaEAqfr0Axu8SlDMNuBTZ/FhkiJY3RYTF8uxOaUu31/86lT7CIFnk5J68RqMdF2rNI2NHE3dxszUDAPIuREyso7aUvxN8x04dY+zFYnsL+cyEDSikBGal8QZbNIf+16Bq1rvGPVWsrSZu7xDqG8iVoaJq5gppu2AUuyhtN2ZBZ1CK4a4sFoWU4sCpaKlKu5hyQlv3OPMUxUVFajo3QxJu4LwFz1+qIDiy2d7Bc1SU9KInvRPiJ
- 0P5247E9
- xwn4CsaOxzzTUzT3jXUN6FQWux7J9/FTDciOO66KIe6FtxIAukOlpA/LYYVdeM2ON25rMioSVOxXqhdG8GBMqcERxrP9mYmp573iCa91h+nSixEhZ4CxGjvwItaiTINLpeSGsuSClveTBz8dixhYKfwEM6L2myLgWpZPDfNk3Pib+6XjkbSl1+YDxGdzQg4DIvN4owiKOnnxHxbB/XbrkFaSBoFo+W0ZKdSSPMok6YfG3OUZDmK+B89TYjyUUmpPkNHjqmwcLQcmBLb9kG1iypZQoh5VZfCDxuR7Z4181TMLRZTzQtBhuT7/GlGcRepkWrexfdbiog8aLN8qKaCdyIksyhxSg0fYzJpPytGqnrFTMGLZ2LE5wpg3BZWpOSluy08UeVEE27CFoZydCGPi4O3lLeg==
+X-Stat-Signature: p111w9ksnb8jxosaxnocrdf8bxii6ab3
+X-HE-Tag: 1791965045-12507
+X-HE-Meta: U2FsdGVkX18uJcnyklUHpJwfwda90DzwEX5R8eoESnM3QuMl/y26gGjUEA+d+zrbDcsUHwXi5+zOfy/sxmDXNY1P0OldvnOCFmQqpcUbla6TOw48ofYDlNmLl6nCB3OuJmIxf+O02i37gUKuYTMIUpKwZcPkW1gJnsz07wU4bNFgKNW2XJzYWlPCsBJCLxyFIBm6M81LhHPmnRUg04hzUmDRfqbU5itNC/dBEhRPnLQ6WmlVH0yahCtfTwQpFsTqZGiaKor2rAfrpyvjsC3YUmvl/uRZxAKohS/yvCtknomVYvC3m5x/nQ8B8CioZrGTKY8uQNhNL8MRtJrn+sYkmBgNlrM/lJpt0h7/btLcHqkNaLbstoXoiKZ5GHXA/cbJhXSIF6DiftqtSawALjiH8zGVydoj8/Ko5RJuI7aGmMK58oMwTSyT6euzSsKxQYTIXjxLsk6wlqwsToefKcHkTnc+lMc5IAajYheTHblWKzepitVWDRxkHYVZBUBXrSC+exUuMddxhErtuzwC3AFdIF9GuhHeqyc23sAG9th+UmDpTVWo/QdDWOWppZwf1IFO81yuyMD3+0Q77liputCxzwpsxjz+lzGawC9ck7yN79dJNjB1qNtQ05htWB6oU7uTIzFhIzitvT18vNP7j2pBhO/hfccdGgBVi2fDWSinCQ+MxU5GAzW8Dhwkkr1vCr1s95NcFrxgG8fvUZaijOVh12EMJVyc9K3i+7rRa5+arYLTysUU2G7UsIPCOWziPkQWP1W8bvchtM7qgTqUCKGRlWOGHdDTf/ZZLVBRMHcEMzcCP1q8xmYbryAYTevzLgzuz1x/FcsWqKQlP8UY2wCbnxQogF4EZ3cmcdweCD589r3DP8SFtLytWee/7fEs7IEMprNvCvnuKfn1baUpQkO/tG//BVAIOtXWXB9+bSe3lIThujb9pE176wsgGKICubVUqIbSBRag/b3gxbzWVrF
+ F5Sa8lIq
+ GzEwHBIlvU3eyd+/IQX3sntAv+W140sI+E8NzUrxebK8H5SlkJi5Ep3uCTNPFHGEVxsDcQTBWvyk0rXJ+cUYyo5jgCBglsaGT6ntz1BD9Ew7fP4nD0A78rBstqZ+gcUvOkkVobMoGXsY92iUrQSUKty/c0Za7xyJ757QVxvHn2YTkjE/jAegGpYjaR5VJ7XCuZMM28Otok0nVq5MAHnQ1QXqZY2ZU0KcltI1TkVTgW1wmIdM3k38UBmmD8r9Hl5pb/6sPqCpz6gh/WGv02EsVhu1Q2vDsjlkptlafh+/UU+FFUXq5F25hCJz9tINQ1TAX6tlGr8ZXbyig9mnFPexup2n5oH2YasJ3B2jgM/OZJq5j5r/jkqFL5ig5D4HoW6QcB9dQGgGMh7d0tpAYzMIYNN/yNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,63 +146,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 08:02, Baolin Wang wrote:
-> 
-> 
-> On 10/13/26 8:30 PM, David Hildenbrand (Arm) wrote:
->> numa_rebuild_large_mapping() and do_swap_page() can be tricked into
->> generating an address wraparound, crashing the kernel. All that's required
->> is to map a tail page of a large folio close enough to the start/end of
->> the address space to e.g., make
+On 10/13/26 15:17, Barry Song wrote:
+> On Tue, Oct 13, 2026 at 8:57 PM Kiryl Shutsemau <kas@kernel.org> wrote:
 >>
->>     unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+>> On Tue, Oct 13, 2026 at 02:30:37PM +0200, David Hildenbrand (Arm) wrote:
+>>> numa_rebuild_large_mapping() and do_swap_page() can be tricked into
+>>> generating an address wraparound, crashing the kernel. All that's required
+>>> is to map a tail page of a large folio close enough to the start/end of
+>>> the address space to e.g., make
+>>>
+>>>       unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+>>>
+>>> to wrap around.
+>>>
+>>> Let's fix it by providing a better helper, folio_pte_scan_range(), that
+>>> takes care of staying within VMA and page table boundaries while
+>>> handling possible wraparounds.
+>>>
+>>> Reported-by: Kyle Zeng <kylebot@openai.com>
+>>> Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
+>>> Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> ---
+>>>  mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
+>>>  1 file changed, 29 insertions(+), 14 deletions(-)
+>>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 1f5d5f7d39cd2..a3823010aa981 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+>>>       } while (--nr_pages);
+>>>  }
+>>>
+>>> +/*
+>>> + * Get the address range in which a folio might be mapped, assuming its pages
+>>> + * are mapped consecutively and the folio page at the given idx is mapped at
+>>> + * the given address.
+>>> + */
+>>> +static void folio_pte_scan_range(const struct folio *folio,
+>>> +             const struct vm_area_struct *vma, unsigned long addr,
+>>> +             unsigned long idx, unsigned long *start, unsigned long *end)
+>>> +{
+>>> +     /* Stay within the page table and VMA boundaries. */
+>>> +     const unsigned long pmd_start = addr & PMD_MASK;
+>>> +     const unsigned long pmd_end = pmd_start + PMD_SIZE;
+>>> +     const unsigned long lower = max(pmd_start, vma->vm_start);
+>>> +     const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
 >>
->> to wrap around.
->>
->> Let's fix it by providing a better helper, folio_pte_scan_range(), that
->> takes care of staying within VMA and page table boundaries while
->> handling possible wraparounds.
->>
->> Reported-by: Kyle Zeng <kylebot@openai.com>
->> Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
->> Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
+>> These -1/+1 gave me a pause. I guess it is for pmd_end wrapping to 0 in
+>> the top PMD? A comment would be nice.
 > 
-> Thanks for the fix.
+> Will pmd_addr_end() make it better? I mean
 > 
->>   mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
->>   1 file changed, 29 insertions(+), 14 deletions(-)
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 1f5d5f7d39cd2..a3823010aa981 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio,
->> swp_entry_t entry,
->>       } while (--nr_pages);
->>   }
->>   +/*
->> + * Get the address range in which a folio might be mapped, assuming its pages
->> + * are mapped consecutively and the folio page at the given idx is mapped at
->> + * the given address.
->> + */
->> +static void folio_pte_scan_range(const struct folio *folio,
->> +        const struct vm_area_struct *vma, unsigned long addr,
->> +        unsigned long idx, unsigned long *start, unsigned long *end)
->> +{
->> +    /* Stay within the page table and VMA boundaries. */
->> +    const unsigned long pmd_start = addr & PMD_MASK;
->> +    const unsigned long pmd_end = pmd_start + PMD_SIZE;
->> +    const unsigned long lower = max(pmd_start, vma->vm_start);
->> +    const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
+> upper = pmd_addr_end(address, vma->vm_end);
 > 
-> I also agree with Barry and Lorenzo's suggestion to use the more readable
-> pmd_addr_end() helper. 
+> nop?
+I don't like pmd_addr_end(), given the weird semantics:
 
-I had that, then I found that for folded page tables it does something rather
-odd, which made me assume "this is not better at all".
+include/asm-generic/pgtable-nopmd.h:#define pmd_addr_end(addr, end)                     (end)
+
+Even if that doesn't apply here, I much rather spell out the boundaries clearly.
+
 
 -- 
 Cheers,
