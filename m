@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D77AECC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:54:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA0BACC6B27
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:01:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BC6C6B0098; Wed, 14 Oct 2026 04:54:42 -0400 (EDT)
+	id B763A6B008A; Wed, 14 Oct 2026 05:00:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96E5A6B0099; Wed, 14 Oct 2026 04:54:42 -0400 (EDT)
+	id B4E336B0092; Wed, 14 Oct 2026 05:00:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85C1C6B009B; Wed, 14 Oct 2026 04:54:42 -0400 (EDT)
+	id A8A9B6B0095; Wed, 14 Oct 2026 05:00:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C93A6B0098
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:54:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F83FC047B
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:54:41 +0000 (UTC)
-X-FDA: 85320621162.06.C0BC890
-Received: from mta1.migadu.com (out-235.mta1.migadu.com [95.215.58.235])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D3081180003
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:54:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Zbapy0FX;
-	spf=pass (imf24.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.235 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791968078;
-	b=d3XNCUEzmUL7/Vf6AKzAZ7miH8jGAmwh5zpY2WVA4MhCcUYxoeFFBVjcVqpfhTT0nLeLpA
-	bIlC8clHDZFwf7tPCRLEns68GrbCUXD67x9Xjdo8dQAap4tDGMDjlRm9qR7+EkttpHP6xe
-	RSc0JKWCRVcp4kSCdf7ig/OuGtJKkAU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Zbapy0FX;
-	spf=pass (imf24.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.235 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 814D76B008A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:00:59 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6219140441
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:00:58 +0000 (UTC)
+X-FDA: 85320636996.04.79BDF65
+Received: from mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A333114000B
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:00:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xL2T0Y4e;
+	spf=pass (imf09.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791968078;
+	s=arc-20220608; t=1791968457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=e6tlT+CdkybsEahHSkyHFizOmV7XFLVnNHALBZftthc=;
-	b=qZeeDNvB4tNYtvqNihi4Zb9xWw+28uqS4dYSoNyJDDj9Qql5/e9zBn9yjI3j9sJOozAk2G
-	Vzs1+KhgGImRHDpXgG8zJTbQfpKDAM4p/1smizfKPMPWDpMKeE0dAcNpwo9gxNI0EkxNnP
-	bRHdh05LtcawYdbeVxK1vSKevsqn1dI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=FJ9LqYfdMTA6wgjl1FHWHY/H8GrR1turSt63lgpd3b4=;
+	b=5UkBPVrdrIgAG4eOeupk4s/sDgXczGXoizQxSuh/tsTXMrwkkLwzBjmVc6IkbMlCwWS5zL
+	pl5uAA9hCtnQM5e0uKQ9VvROWGNLG6jhi7SIG/0FQiPX1xsvPcAWnnO29v+xOoz7c9MgYc
+	1fyhZuBtwSPHORSme0yX9ro6g5hIxJA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791968457;
+	b=gVC+I1/vtRsD2btbArkUXTYoFNy8DqX3mn+fxfgPe0Ip2Dcd2iMJ4DiXMPm1FXi6VinU9Q
+	wE9y0yvvAg4f340iFSnnGNP5sEx9JUSSicejyhOzwXMyNc1af7oL1RnQXbMiKqG11zRPIe
+	xiM9dpaWpKlqRy/LI/BQoF6z2j2lYjg=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xL2T0Y4e;
+	spf=pass (imf09.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=loRjuuwluUPBJRl/tOlkBshetBDq31ySMcEEeTZP1FA=;
+DKIM-Signature: a=rsa-sha256; bh=f83gIxzX791HXNUe8bdGB2JhxsHCRMrxjMWV0SswPjc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791968073; v=1; x=1792572873;
- b=Zbapy0FXo63YHbXZxPXfgu7DtrC4zljrj2a+j7cGiY0Q9FVDLJSaYfl3u8yNCTTl7GOMNAXv
- ud1BWk5ThN8GagiEjr1mv13BtobKPeHirxi5T2ZE/diuHcJ+v47r62hdh8mojno5iBJNZwFVghf
- SR1MDmB/GzGtntz52BYR9juc=
+ t=1791968455; v=1; x=1792573255;
+ b=xL2T0Y4erlXpf6tODGDdRmVfGzpvIesXM+F6+FmYxid67fyqDb6FHYFluy1zKP7BnjcbVlVY
+ +TalaytCWLlabZSvoEOL3Xl44Sq44YZlTEwTzlpOgEgi6H6JflvnGKiYDeeR7y7HDPuuoCk+9zA
+ Hy7uga45YGKLa3g8acHN3wiQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7b09edecf1889c5b;
-	Wed, 14 Oct 2026 08:54:33 +0000
-X-Mizu-Trace-ID: 7b09edecf1889c5b
+Received: by mta10.migadu.com with ESMTPS id 8638e9c036146f7d;
+	Wed, 14 Oct 2026 09:00:54 +0000
+X-Mizu-Trace-ID: 8638e9c036146f7d
 X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-Date: Wed, 14 Oct 2026 16:54:12 +0800
-Subject: [PATCH] proc: Move OOM-related procfs code to fs/proc/oom.c
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH v6 0/2] mm/vmscan: fix NR_ISOLATED accounting and throttle MGLRU eviction
+Date: Wed, 14 Oct 2026 17:00:22 +0800
+Message-ID: <cover.1791968227.git.zhuhui@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261014-oom_procfs-v1-1-f2d75e73571e@linux.dev>
-X-B4-Tracking: v=1; b=H4sIADNDz2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDA0MT3fz83PiCovzktGLdNHOTREsjozRz4zRDJaCGgqLUtMwKsGHRsRB
- +cWlSVmpyCcgEpdpaAJ+s1EtuAAAA
-X-Change-ID: 20261014-oom_procfs-f74a922f73f1
-To: Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, Ye Liu <liuye@kylinos.cn>
-X-Mailer: b4 0.17-dev-39d60
-X-Stat-Signature: jatzji79wsxwatb49ujfyz74weexjzhb
-X-Rspamd-Queue-Id: D3081180003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791968077-271992
-X-HE-Meta: U2FsdGVkX1+NHC/WQ6bdhbj0iS6+4IbHfB8JA/5ZP//1Lx6bvJZS3rTQBcrdnYrwEpxH+eVbIKYrPnHJiBdLlquyD1pJPamPDFLgFoDRX8mqym8Txc78S+TRRitjGUj86kLsMToTXvMNXJT4AAvqj3LvMH+qkcII8ADtlhNZJLRNSrpZiGGowZ0d9HO+kJG+dfB4Bax34K72XzfNxJDS3ioHPINEelXM8fV11WLNAx0WVaKd3eWS/SFSSnBinMUHCbXJXiSsth9oOEO8tlsMwarnShoD7Dueq4tEwWCtBgqkLmPUmZcQSYDZJdJV6JL0RPEO21LydTOjHOLhEd6Z9BtK1pbC9tdx+AkWX/WC8BOtb1HHt8mwkC1P5iDRQRuNvDJHJP0kXXPjgFMmDT5mLu75bDvdvGZYRBfuACongYwf13B+VfXhf/rKc+SM+8jSpBGkVW4KX21IxeYN9h5qDEg97C6ay1XzmhZGN/InY3PHGeqyAMi5c2K+hzbAfyTdUtRNtdo24Fl9yuYrOi10/HLcaEq50vydZrBPN5rLrwENJjFpqyefxm/RKb6Lz2GQ0dyyoXg5BgROgcTXO3Mp2dGl00ILavFecPM9/o5/I5U3alcfQPsuyxleqYuL8h9b0hLe/c3TrnFV4v+I3t9+okcdt8gPd8sVfnRZbGy6kyd6DYjsXaDybxRNvrE4hblOV6HbTEj2xnHzjbyEgCLjuXs5cCU7FnZ3ew1UskYP9lKYtMkZ+cG4JEfyltYTg8g2Y2eiElCtk6O6ebSrKwi/ZSxnv4kY1IzkWAW6Loo9w07ycsEzSpBvr7W3EUTDahvoJkJ5D7KcNnJalqVVj7C6U+BPzhIFXrJOmLz3d4YNrD2jXvG9U7wM2urb8ogxOi+G88edhoAeoU5ddvpZwP53hucgffk6ov8/0e/2CNLM0ddBNiUBFLlNskjVYxM2fdko7+Q1A0PcpWU5f46SYuA
- 1bxKmIPR
- pO8xgNUOOhXFkpxqNfrpLQRfYdZeuDBuLMA7bhUD35yQZgQcDb0AAFT2pz7q1mVeA7wjjYwixYCkrhDNxL/3UttqDfpvP4GT1yajy+UKvPxPZfXLxiTvpJh0E+Ztf3Psr4cubduqA5pdWDvekhBO3Y3bjLgZnuB2LU6Vh8KZPle1GuL9ZmAOivQJ92tFsfCfyM4ppWqtgg+NdgHJYu0nNGt8A7qgkXuvUHpo8PH8tL6238US6FVYT2Jmo3x+75irHj2MdPegyRPotka67s7LDegNqXCyli2zIo74Fg98udn0u88jHQlfgmwHDeXQHP+6KDjzF/4YRwCM4alUkr1DiRKR0hA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A333114000B
+X-Stat-Signature: g33up33jh97wz4rio65gexa6uugotd1j
+X-HE-Tag: 1791968456-653130
+X-HE-Meta: U2FsdGVkX1/7OANTFveuDZkFPP8+6mRpFeuC0/Dzz61ttKKC3KwM7xAK+/7JQDOnFiZWcnH4kMlfdAnjWAJr4wZMnPbFhoVJN/TrHEK+OnMuMqgz9nOFql2c1zBuWenJg7bL1SyV6mb/qelcWWLidRKIhxGoE9vmI2koMJBnn8A8VLCUp/oSJszbAkYv7deE5vqYB8xS3bb31U+WUz8FTa/56+D77/4o+flkH0mB7lqLPKjvk2M33rH5QhzsA77Mtc9jy8DEVPxGEz74rd+vzCf62krYjFKTvFIitW0QTaSc4ks7AlNEPtyzGU+kzO80CK+wKicrpY7ObjC+1BIbt25iAmb0T1P9wEQrscu5DsqobUqhhgRqp9KelQyorW7hSH+ih2pYH6z10/jD1066EDj0d67Q3xJUC/qe2Gi8joadmJ3HevpYmDlGk5XOxQm+uKSweGbAf8lstIwK5MeFY5y8V9GwJ/Y5J9c3A/aZu0/yV5bwGQKFQeK2nTeGHS5p86sogCn6jY2YWbBQ5f2pf88kfRORLPuIW6EpZRcvR4uXcUIuQ3NGqnYkKAR0AjCeVNtr4V7uho35wKh00riEwVal3gSwSLb1l1g/v+3asSLEsPWEXhFKco29malgF8yts/kDzxrXPuu0UpNOHvTcZRxxQT9JywhEnUiUm/e4+gu3vqGqzWbXsIVuXA/VFMCLRowaYff2tAUQlR4src7nj4C8GNkrYgAiRmORwKMVAIYzZYwJR8CuoubUvBwFXhPEXWooGuGhRBeJFFavYOX92PC7+miF9VTXFu5/XKRTrv1zpyF0vh12fWcGHyGYPmsfcrFTUyhh07xQl7UUX91m337rTVCpTNmQYfqnMSj8dJUvDL+oHFBdt1EATyyqppoggdOqybpYedMPZrg+iAN8rb3TUSE/rRepfiPiofNkI6XbA/iWqx9P0VNzFvtTS7DYHMz+arvnY+FTb19eTff
+ bfffjrAr
+ hveCkouuE8uZDRChpS1aSA8K50a5rB/kXu9S/0ookjUr61z9hX+q9zD8pby/wUVebfWLVs7Wgi8tstN+wQdEagvbQN6+fJxnNrbyJ18UNhKl/TBT2W6eD8EiDFy/MpwzgDYLi4WllUwtMuRvcy4Dk6tKve+gGAhBFrcq4FCBsAemURScdHktXfMdQEQN5pZxAuhJ8AjhGnPJkmmCD/s98tUFrjrKla3WOC+XeYemVTVzhmyKxRgnNdM+CkhybklG8wbNB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,596 +99,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-fs/proc/base.c is a large file (~3700 lines) handling all per-process
-procfs entries. The OOM score, oom_adj, and oom_score_adj interface
-code is self-contained and has no dependencies on other parts of
-base.c, so move it into a dedicated fs/proc/oom.c following the same
-pattern as fs/proc/fd.c and fs/proc/task_mmu.c.
+Barry asked for a real-world workload that suffers from the missing
+throttling. This version adds one: a CI-style kernel build inside a
+memory-limited cgroup with slow storage (mglru_build_repro.sh),
+measured at three pressure levels, plus redis-based cache service runs
+as no-impact data points.
 
-This makes both files easier to read and keeps OOM-related procfs
-entries together in one place.
+The series is also rebased onto the latest mm-stable; patch 2 is
+adapted to the current isolate_folios() type-selection context
+(is_single_type_reclaim()), with no semantic change.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- MAINTAINERS        |   1 +
- fs/proc/Makefile   |   1 +
- fs/proc/base.c     | 232 -------------------------------------------------
- fs/proc/internal.h |   8 ++
- fs/proc/oom.c      | 249 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 259 insertions(+), 232 deletions(-)
+The legacy reclaim path has two mechanisms around isolated folios that
+MGLRU lacks:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1da3623e77ce..4b1c13a65136 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17676,6 +17676,7 @@ R:	David Rientjes <rientjes@google.com>
- R:	Shakeel Butt <shakeel.butt@linux.dev>
- L:	linux-mm@kvack.org
- S:	Maintained
-+F:	fs/proc/oom.c
- F:	include/linux/oom.h
- F:	include/trace/events/oom.h
- F:	include/uapi/linux/oom.h
-diff --git a/fs/proc/Makefile b/fs/proc/Makefile
-index 27e2b26b2d42..68e65866b5df 100644
---- a/fs/proc/Makefile
-+++ b/fs/proc/Makefile
-@@ -21,6 +21,7 @@ proc-y += interrupts.o
- endif
- proc-y	+= loadavg.o
- proc-y	+= meminfo.o
-+proc-y	+= oom.o
- proc-y	+= stat.o
- proc-y	+= uptime.o
- proc-y	+= util.o
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 8c04fcd436d2..26ccc05a50ff 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -80,7 +80,6 @@
- #include <linux/audit.h>
- #include <linux/poll.h>
- #include <linux/nsproxy.h>
--#include <linux/oom.h>
- #include <linux/elf.h>
- #include <linux/pid_namespace.h>
- #include <linux/user_namespace.h>
-@@ -99,7 +98,6 @@
- #include <linux/cn_proc.h>
- #include <linux/ksm.h>
- #include <uapi/linux/lsm.h>
--#include <trace/events/oom.h>
- #include "internal.h"
- #include "fd.h"
- 
-@@ -580,28 +578,6 @@ static const struct file_operations proc_lstats_operations = {
- 
- #endif
- 
--static int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
--			  struct pid *pid, struct task_struct *task)
--{
--	unsigned long totalpages = totalram_pages() + total_swap_pages;
--	unsigned long points = 0;
--	long badness;
--
--	badness = oom_badness(task, totalpages);
--	/*
--	 * Special case OOM_SCORE_ADJ_MIN for all others scale the
--	 * badness value into [0, 2000] range which we have been
--	 * exporting for a long time so userspace might depend on it.
--	 */
--	if (badness != LONG_MIN)
--		points = (OOM_SCORE_ADJ_MAX +
--			  badness * OOM_SCORE_ADJ_MAX / (long)totalpages) * 2 / 3;
--
--	seq_printf(m, "%lu\n", points);
--
--	return 0;
--}
--
- struct limit_names {
- 	const char *name;
- 	const char *unit;
-@@ -1115,214 +1091,6 @@ static const struct file_operations proc_auxv_operations = {
- 	.release	= mem_release,
- };
- 
--static ssize_t oom_adj_read(struct file *file, char __user *buf, size_t count,
--			    loff_t *ppos)
--{
--	struct task_struct *task = get_proc_task(file_inode(file));
--	char buffer[PROC_NUMBUF];
--	int oom_adj = OOM_ADJUST_MIN;
--	size_t len;
--
--	if (!task)
--		return -ESRCH;
--	if (task->signal->oom_score_adj == OOM_SCORE_ADJ_MAX)
--		oom_adj = OOM_ADJUST_MAX;
--	else
--		oom_adj = (task->signal->oom_score_adj * -OOM_DISABLE) /
--			  OOM_SCORE_ADJ_MAX;
--	put_task_struct(task);
--	if (oom_adj > OOM_ADJUST_MAX)
--		oom_adj = OOM_ADJUST_MAX;
--	len = snprintf(buffer, sizeof(buffer), "%d\n", oom_adj);
--	return simple_read_from_buffer(buf, count, ppos, buffer, len);
--}
--
--static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
--{
--	struct mm_struct *mm = NULL;
--	struct task_struct *task;
--	int err = 0;
--
--	task = get_proc_task(file_inode(file));
--	if (!task)
--		return -ESRCH;
--
--	mutex_lock(&oom_adj_mutex);
--	if (legacy) {
--		if (oom_adj < task->signal->oom_score_adj &&
--				!capable(CAP_SYS_RESOURCE)) {
--			err = -EACCES;
--			goto err_unlock;
--		}
--		/*
--		 * /proc/pid/oom_adj is provided for legacy purposes, ask users to use
--		 * /proc/pid/oom_score_adj instead.
--		 */
--		pr_warn_once("%s (%d): /proc/%d/oom_adj is deprecated, please use /proc/%d/oom_score_adj instead.\n",
--			  current->comm, task_pid_nr(current), task_pid_nr(task),
--			  task_pid_nr(task));
--	} else {
--		if ((short)oom_adj < task->signal->oom_score_adj_min &&
--				!capable(CAP_SYS_RESOURCE)) {
--			err = -EACCES;
--			goto err_unlock;
--		}
--	}
--
--	/*
--	 * Make sure we will check other processes sharing the mm if this is
--	 * not vfrok which wants its own oom_score_adj.
--	 * pin the mm so it doesn't go away and get reused after task_unlock
--	 */
--	if (!task->vfork_done) {
--		struct task_struct *p = find_lock_task_mm(task);
--
--		if (p) {
--			if (mm_flags_test(MMF_MULTIPROCESS, p->mm)) {
--				mm = p->mm;
--				mmgrab(mm);
--			}
--			task_unlock(p);
--		}
--	}
--
--	task->signal->oom_score_adj = oom_adj;
--	if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
--		task->signal->oom_score_adj_min = (short)oom_adj;
--	trace_oom_score_adj_update(task);
--
--	if (mm) {
--		struct task_struct *p;
--
--		rcu_read_lock();
--		for_each_process(p) {
--			if (same_thread_group(task, p))
--				continue;
--
--			/* do not touch kernel threads or the global init */
--			if (p->flags & PF_KTHREAD || is_global_init(p))
--				continue;
--
--			task_lock(p);
--			if (!p->vfork_done && process_shares_mm(p, mm)) {
--				p->signal->oom_score_adj = oom_adj;
--				if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
--					p->signal->oom_score_adj_min = (short)oom_adj;
--			}
--			task_unlock(p);
--		}
--		rcu_read_unlock();
--		mmdrop(mm);
--	}
--err_unlock:
--	mutex_unlock(&oom_adj_mutex);
--	put_task_struct(task);
--	return err;
--}
--
--/*
-- * /proc/pid/oom_adj exists solely for backwards compatibility with previous
-- * kernels.  The effective policy is defined by oom_score_adj, which has a
-- * different scale: oom_adj grew exponentially and oom_score_adj grows linearly.
-- * Values written to oom_adj are simply mapped linearly to oom_score_adj.
-- * Processes that become oom disabled via oom_adj will still be oom disabled
-- * with this implementation.
-- *
-- * oom_adj cannot be removed since existing userspace binaries use it.
-- */
--static ssize_t oom_adj_write(struct file *file, const char __user *buf,
--			     size_t count, loff_t *ppos)
--{
--	char buffer[PROC_NUMBUF] = {};
--	int oom_adj;
--	int err;
--
--	if (count > sizeof(buffer) - 1)
--		count = sizeof(buffer) - 1;
--	if (copy_from_user(buffer, buf, count)) {
--		err = -EFAULT;
--		goto out;
--	}
--
--	err = kstrtoint(strstrip(buffer), 0, &oom_adj);
--	if (err)
--		goto out;
--	if ((oom_adj < OOM_ADJUST_MIN || oom_adj > OOM_ADJUST_MAX) &&
--	     oom_adj != OOM_DISABLE) {
--		err = -EINVAL;
--		goto out;
--	}
--
--	/*
--	 * Scale /proc/pid/oom_score_adj appropriately ensuring that a maximum
--	 * value is always attainable.
--	 */
--	if (oom_adj == OOM_ADJUST_MAX)
--		oom_adj = OOM_SCORE_ADJ_MAX;
--	else
--		oom_adj = (oom_adj * OOM_SCORE_ADJ_MAX) / -OOM_DISABLE;
--
--	err = __set_oom_adj(file, oom_adj, true);
--out:
--	return err < 0 ? err : count;
--}
--
--static const struct file_operations proc_oom_adj_operations = {
--	.read		= oom_adj_read,
--	.write		= oom_adj_write,
--	.llseek		= generic_file_llseek,
--};
--
--static ssize_t oom_score_adj_read(struct file *file, char __user *buf,
--					size_t count, loff_t *ppos)
--{
--	struct task_struct *task = get_proc_task(file_inode(file));
--	char buffer[PROC_NUMBUF];
--	short oom_score_adj = OOM_SCORE_ADJ_MIN;
--	size_t len;
--
--	if (!task)
--		return -ESRCH;
--	oom_score_adj = task->signal->oom_score_adj;
--	put_task_struct(task);
--	len = snprintf(buffer, sizeof(buffer), "%hd\n", oom_score_adj);
--	return simple_read_from_buffer(buf, count, ppos, buffer, len);
--}
--
--static ssize_t oom_score_adj_write(struct file *file, const char __user *buf,
--					size_t count, loff_t *ppos)
--{
--	char buffer[PROC_NUMBUF] = {};
--	int oom_score_adj;
--	int err;
--
--	if (count > sizeof(buffer) - 1)
--		count = sizeof(buffer) - 1;
--	if (copy_from_user(buffer, buf, count)) {
--		err = -EFAULT;
--		goto out;
--	}
--
--	err = kstrtoint(strstrip(buffer), 0, &oom_score_adj);
--	if (err)
--		goto out;
--	if (oom_score_adj < OOM_SCORE_ADJ_MIN ||
--			oom_score_adj > OOM_SCORE_ADJ_MAX) {
--		err = -EINVAL;
--		goto out;
--	}
--
--	err = __set_oom_adj(file, oom_score_adj, false);
--out:
--	return err < 0 ? err : count;
--}
--
--static const struct file_operations proc_oom_score_adj_operations = {
--	.read		= oom_score_adj_read,
--	.write		= oom_score_adj_write,
--	.llseek		= default_llseek,
--};
--
- #ifdef CONFIG_AUDIT
- #define TMPBUFLEN 11
- static ssize_t proc_loginuid_read(struct file * file, char __user * buf,
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index df873df9afc5..b72a2bd604ed 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -238,6 +238,14 @@ static inline int folio_average_page_mapcount(struct folio *folio)
- 	/* ... but return at least 1. */
- 	return max_t(int, avg + entire_mapcount, 1);
- }
-+/*
-+ * oom.c
-+ */
-+int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
-+		   struct pid *pid, struct task_struct *task);
-+extern const struct file_operations proc_oom_adj_operations;
-+extern const struct file_operations proc_oom_score_adj_operations;
-+
- /*
-  * array.c
-  */
-diff --git a/fs/proc/oom.c b/fs/proc/oom.c
-new file mode 100644
-index 000000000000..5f22ec4a4a6e
---- /dev/null
-+++ b/fs/proc/oom.c
-@@ -0,0 +1,249 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * OOM-related procfs entries
-+ *
-+ * This file handles the OOM score, oom_adj, and oom_score_adj interfaces
-+ * in /proc/<pid>/.
-+ */
-+
-+#include <linux/proc_fs.h>
-+#include <linux/oom.h>
-+#include <linux/seq_file.h>
-+#include <linux/capability.h>
-+#include <linux/mm.h>
-+#include <linux/swap.h>
-+#include <linux/sched/signal.h>
-+#include <linux/pid_namespace.h>
-+#include <trace/events/oom.h>
-+
-+#include "internal.h"
-+
-+int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
-+		   struct pid *pid, struct task_struct *task)
-+{
-+	unsigned long totalpages = totalram_pages() + total_swap_pages;
-+	unsigned long points = 0;
-+	long badness;
-+
-+	badness = oom_badness(task, totalpages);
-+	/*
-+	 * Special case OOM_SCORE_ADJ_MIN for all others scale the
-+	 * badness value into [0, 2000] range which we have been
-+	 * exporting for a long time so userspace might depend on it.
-+	 */
-+	if (badness != LONG_MIN)
-+		points = (OOM_SCORE_ADJ_MAX +
-+			  badness * OOM_SCORE_ADJ_MAX / (long)totalpages) * 2 / 3;
-+
-+	seq_printf(m, "%lu\n", points);
-+
-+	return 0;
-+}
-+
-+static ssize_t oom_adj_read(struct file *file, char __user *buf, size_t count,
-+			    loff_t *ppos)
-+{
-+	struct task_struct *task = get_proc_task(file_inode(file));
-+	char buffer[PROC_NUMBUF];
-+	int oom_adj = OOM_ADJUST_MIN;
-+	size_t len;
-+
-+	if (!task)
-+		return -ESRCH;
-+	if (task->signal->oom_score_adj == OOM_SCORE_ADJ_MAX)
-+		oom_adj = OOM_ADJUST_MAX;
-+	else
-+		oom_adj = (task->signal->oom_score_adj * -OOM_DISABLE) /
-+			  OOM_SCORE_ADJ_MAX;
-+	put_task_struct(task);
-+	if (oom_adj > OOM_ADJUST_MAX)
-+		oom_adj = OOM_ADJUST_MAX;
-+	len = snprintf(buffer, sizeof(buffer), "%d\n", oom_adj);
-+	return simple_read_from_buffer(buf, count, ppos, buffer, len);
-+}
-+
-+static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
-+{
-+	struct mm_struct *mm = NULL;
-+	struct task_struct *task;
-+	int err = 0;
-+
-+	task = get_proc_task(file_inode(file));
-+	if (!task)
-+		return -ESRCH;
-+
-+	mutex_lock(&oom_adj_mutex);
-+	if (legacy) {
-+		if (oom_adj < task->signal->oom_score_adj &&
-+				!capable(CAP_SYS_RESOURCE)) {
-+			err = -EACCES;
-+			goto err_unlock;
-+		}
-+		/*
-+		 * /proc/pid/oom_adj is provided for legacy purposes, ask users to use
-+		 * /proc/pid/oom_score_adj instead.
-+		 */
-+		pr_warn_once("%s (%d): /proc/%d/oom_adj is deprecated, please use /proc/%d/oom_score_adj instead.\n",
-+			  current->comm, task_pid_nr(current), task_pid_nr(task),
-+			  task_pid_nr(task));
-+	} else {
-+		if ((short)oom_adj < task->signal->oom_score_adj_min &&
-+				!capable(CAP_SYS_RESOURCE)) {
-+			err = -EACCES;
-+			goto err_unlock;
-+		}
-+	}
-+
-+	/*
-+	 * Make sure we will check other processes sharing the mm if this is
-+	 * not vfrok which wants its own oom_score_adj.
-+	 * pin the mm so it doesn't go away and get reused after task_unlock
-+	 */
-+	if (!task->vfork_done) {
-+		struct task_struct *p = find_lock_task_mm(task);
-+
-+		if (p) {
-+			if (mm_flags_test(MMF_MULTIPROCESS, p->mm)) {
-+				mm = p->mm;
-+				mmgrab(mm);
-+			}
-+			task_unlock(p);
-+		}
-+	}
-+
-+	task->signal->oom_score_adj = oom_adj;
-+	if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
-+		task->signal->oom_score_adj_min = (short)oom_adj;
-+	trace_oom_score_adj_update(task);
-+
-+	if (mm) {
-+		struct task_struct *p;
-+
-+		rcu_read_lock();
-+		for_each_process(p) {
-+			if (same_thread_group(task, p))
-+				continue;
-+
-+			/* do not touch kernel threads or the global init */
-+			if (p->flags & PF_KTHREAD || is_global_init(p))
-+				continue;
-+
-+			task_lock(p);
-+			if (!p->vfork_done && process_shares_mm(p, mm)) {
-+				p->signal->oom_score_adj = oom_adj;
-+				if (!legacy && has_capability_noaudit(current, CAP_SYS_RESOURCE))
-+					p->signal->oom_score_adj_min = (short)oom_adj;
-+			}
-+			task_unlock(p);
-+		}
-+		rcu_read_unlock();
-+		mmdrop(mm);
-+	}
-+err_unlock:
-+	mutex_unlock(&oom_adj_mutex);
-+	put_task_struct(task);
-+	return err;
-+}
-+
-+/*
-+ * /proc/pid/oom_adj exists solely for backwards compatibility with previous
-+ * kernels.  The effective policy is defined by oom_score_adj, which has a
-+ * different scale: oom_adj grew exponentially and oom_score_adj grows linearly.
-+ * Values written to oom_adj are simply mapped linearly to oom_score_adj.
-+ * Processes that become oom disabled via oom_adj will still be oom disabled
-+ * with this implementation.
-+ *
-+ * oom_adj cannot be removed since existing userspace binaries use it.
-+ */
-+static ssize_t oom_adj_write(struct file *file, const char __user *buf,
-+			     size_t count, loff_t *ppos)
-+{
-+	char buffer[PROC_NUMBUF] = {};
-+	int oom_adj;
-+	int err;
-+
-+	if (count > sizeof(buffer) - 1)
-+		count = sizeof(buffer) - 1;
-+	if (copy_from_user(buffer, buf, count)) {
-+		err = -EFAULT;
-+		goto out;
-+	}
-+
-+	err = kstrtoint(strstrip(buffer), 0, &oom_adj);
-+	if (err)
-+		goto out;
-+	if ((oom_adj < OOM_ADJUST_MIN || oom_adj > OOM_ADJUST_MAX) &&
-+	     oom_adj != OOM_DISABLE) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
-+	/*
-+	 * Scale /proc/pid/oom_score_adj appropriately ensuring that a maximum
-+	 * value is always attainable.
-+	 */
-+	if (oom_adj == OOM_ADJUST_MAX)
-+		oom_adj = OOM_SCORE_ADJ_MAX;
-+	else
-+		oom_adj = (oom_adj * OOM_SCORE_ADJ_MAX) / -OOM_DISABLE;
-+
-+	err = __set_oom_adj(file, oom_adj, true);
-+out:
-+	return err < 0 ? err : count;
-+}
-+
-+const struct file_operations proc_oom_adj_operations = {
-+	.read		= oom_adj_read,
-+	.write		= oom_adj_write,
-+	.llseek		= generic_file_llseek,
-+};
-+
-+static ssize_t oom_score_adj_read(struct file *file, char __user *buf,
-+					size_t count, loff_t *ppos)
-+{
-+	struct task_struct *task = get_proc_task(file_inode(file));
-+	char buffer[PROC_NUMBUF];
-+	short oom_score_adj = OOM_SCORE_ADJ_MIN;
-+	size_t len;
-+
-+	if (!task)
-+		return -ESRCH;
-+	oom_score_adj = task->signal->oom_score_adj;
-+	put_task_struct(task);
-+	len = snprintf(buffer, sizeof(buffer), "%hd\n", oom_score_adj);
-+	return simple_read_from_buffer(buf, count, ppos, buffer, len);
-+}
-+
-+static ssize_t oom_score_adj_write(struct file *file, const char __user *buf,
-+					size_t count, loff_t *ppos)
-+{
-+	char buffer[PROC_NUMBUF] = {};
-+	int oom_score_adj;
-+	int err;
-+
-+	if (count > sizeof(buffer) - 1)
-+		count = sizeof(buffer) - 1;
-+	if (copy_from_user(buffer, buf, count)) {
-+		err = -EFAULT;
-+		goto out;
-+	}
-+
-+	err = kstrtoint(strstrip(buffer), 0, &oom_score_adj);
-+	if (err)
-+		goto out;
-+	if (oom_score_adj < OOM_SCORE_ADJ_MIN ||
-+			oom_score_adj > OOM_SCORE_ADJ_MAX) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
-+	err = __set_oom_adj(file, oom_score_adj, false);
-+out:
-+	return err < 0 ? err : count;
-+}
-+
-+const struct file_operations proc_oom_score_adj_operations = {
-+	.read		= oom_score_adj_read,
-+	.write		= oom_score_adj_write,
-+	.llseek		= default_llseek,
-+};
+1. NR_ISOLATED_ANON/FILE counters are updated when folios are isolated
+   from the inactive lists. Compaction's too_many_isolated() relies on
+   them to decide when to back off. The MGLRU reclaim path never
+   updates them, so compaction cannot see MGLRU's in-flight isolation.
 
----
-base-commit: 1fffefb00cc0b0da1f2ae24e3d33364530ea6515
-base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-change-id: 20261014-oom_procfs-f74a922f73f1
+2. shrink_inactive_list() throttles direct reclaim via
+   too_many_isolated() when isolated folios pile up. MGLRU's
+   evict_folios() isolates folios without any such check, so many
+   concurrent reclaimers can over-isolate the same (oldest) generation,
+   leading to unnecessary swapping, thrashing and premature memcg OOM.
 
-Best regards,
---  
-Ye Liu <ye.liu@linux.dev>
+Patch 1 fixes the counter accounting in the MGLRU isolation path.
+Patch 2 adds a per-lruvec throttle, mirroring the legacy behavior but
+adapted to MGLRU's per-lruvec contention and its dynamic type
+selection/fallback.
+
+Testing
+=======
+Five test scripts are provided: the two synthetic reproducers from v5
+and three real-world workload harnesses new in v6. All are available
+at:
+https://gist.github.com/teawater/3ef51251f2e91a5a600e3d26bb477e34
+
+Common environment: 10 CPU / 8GB QEMU guest, cgroup v2, MGLRU enabled
+(0x0007). "unpatched" and "patched" are the same tree built
+without/with this series; every configuration is run with identical
+parameters on both kernels. Each cell below is one run; the build
+metrics are cumulative counters over a 1800s window, which smooths
+run-to-run noise.
+
+Real workload 1: CI kernel build (mglru_build_repro.sh)
+-------------------------------------------------------
+Models a CI build pod (k8s / OBS / gitlab-runner): repeated
+from-scratch "make -j20 vmlinux" rounds inside a memory-limited
+cgroup, with the object tree on ext4 over dm-delay (10ms) to model
+slow/congested storage. 20 concurrent compilers charge into one memcg
+and enter direct reclaim at the same time, while dirty object files
+stretch the isolate->shrink->putback window - the workload shape
+too_many_isolated() was invented for. Each kernel runs 1800s per
+pressure level; the headline metric is the number of objects actually
+compiled in that window (a full round is ~3,800 objects).
+
+memory.max = 1024MB (extreme pressure):
+                        unpatched       patched
+  objects compiled      4,744           7,211 (+52%)
+  pgscan_direct         2,901,083,521   2,228,776,807 (-23%)
+  scan efficiency       0.195           0.242
+  workingset_refault    565,169,241     537,686,479
+  mm_vmscan_throttled   0               511,441 (all
+                                        VMSCAN_THROTTLE_ISOLATED)
+  nr_isolated peak      0 (invisible)   1,152
+
+memory.max = 1536MB (heavy pressure):
+                        unpatched       patched
+  objects compiled      18,969          25,124 (+32%)
+  pgscan_direct         1,223,905,508   816,812,074 (-33%)
+  scan efficiency       0.320           0.338
+  workingset_refault    390,048,986     273,442,445 (-30%)
+  memcg charge fails    8,344,775       5,868,167 (-30%)
+  round wall time       199-391s        182-275s
+  mm_vmscan_throttled   0               503,117
+  nr_isolated peak      0 (invisible)   1,053
+
+At both levels -j20 is oversubscribed (20 cc1 processes need ~3GB of
+anon in total), so rounds end with a cc1 being memcg-OOM-killed on
+either kernel. Normalized per completed round the kill rate is the
+same (13.2 vs 13.1 at 1024MB, 5.8 vs 6.1 at 1536MB); the patched
+kernel simply reaches that point sooner because less time is burned
+thrashing, so it cycles through more rounds. The patches do not claim
+to avoid these OOMs - the point is that the patched kernel performs
+23-33% fewer futile LRU scans and gets 32-52% more build work done in
+the same wall time.
+
+memory.max = 2048MB (light pressure - no-harm control):
+                        unpatched       patched
+  rounds completed      6               6
+  avg wall time/round   271s            270s
+  scan efficiency       0.984           0.978
+  mm_vmscan_throttled   0               0
+  nr_isolated peak      0 (invisible)   144
+
+When reclaim keeps up, the throttle never fires and both kernels
+perform identically. Patch 1 still shows: the unpatched kernel reports
+nr_isolated=0 even while isolation is in flight, which is exactly the
+blind spot it fixes.
+
+Real workload 2: redis cache service (mglru_redis_repro.sh,
+mglru_redis_shards_repro.sh)
+-------------------------------------------------------------
+A redis-server serving a 1KB-value dataset larger than its 96MB
+cgroup, with swap on dm-delay (50ms): first as a single instance
+(100k keys, 200 clients), then as 8 shards with AOF persistence on a
+second dm-delay device sharing one cgroup (8 concurrent chargers).
+The bottleneck here is swap-in I/O serialized on redis's single
+command thread, not isolation contention: charge-induced reclaim is a
+trickle (~400 scans/s vs 10^5-10^6 scans/s in the build runs),
+isolation never piles up, and the throttle correctly stays dormant on
+both kernels:
+
+                        unpatched       patched
+  single instance       41.6 ops/s      41.2 ops/s
+                        (avg 2999ms)    (avg 2999ms)
+  8 shards aggregate    333-419 ops/s   310-358 ops/s
+                        (mean 376,      (mean 335,
+                        4 runs) (*)     4 runs)
+  mm_vmscan_throttled   0               0 (all runs)
+  nr_isolated peak      0               0
+
+(*) the aggregate is dominated by a preload-end residency lottery
+(which shards' datasets happen to stay hot) and swings by up to 26%
+between runs of the SAME kernel; with 4 runs per kernel the
+between-kernel difference of the means is within that noise (Welch
+t=1.95, p~0.11). The throttle never fired in any patched run (the
+tracepoint covers preload as well), so both kernels execute the same
+reclaim path here, and the kernel-side counters agree across all 8
+runs: steal/scan 0.59-0.63, swap-ins == refaults, zero OOM. These
+runs document the no-impact side: the check is dormant unless
+isolation actually piles up.
+
+Synthetic reproducers (unchanged from v5)
+-----------------------------------------
+mglru_iso_repro.sh (64 threads, 48MB working set, 60s):
+Drives concurrent direct reclaim inside the memcg and measures scan
+efficiency, throttle events, in-flight isolation and throughput.
+Neither kernel OOMs at this concurrency; the value of the patch shows
+in reclaim quality:
+                        unpatched       patched
+  OOM kills             0               0
+  mm_vmscan_throttled   0               35645 (all
+                                        VMSCAN_THROTTLE_ISOLATED)
+  nr_isolated peak      0 (invisible)   230
+  total touches         246,499,132,369 301,456,426,692
+  scan efficiency       0.0261          0.0194
+
+The patched kernel completes ~22% more work in the same 60s: the
+throttle keeps concurrent reclaimers from trampling the same
+generation, so less CPU is burned in reclaim. Note nr_isolated is
+always 0 on the unpatched kernel - the over-isolation is invisible
+there, which is exactly what patch 1 fixes.
+
+mglru_iso_repro_v2.sh (192 threads, 48MB working set, 60s):
+Raises concurrency to the point where over-isolation becomes fatal:
+                        unpatched       patched
+  OOM kills             1 (task killed) 0
+  memcg oom events      51              0
+  mm_vmscan_throttled   0               512292 (all
+                                        VMSCAN_THROTTLE_ISOLATED)
+  total touches         0 (killed)      682,300,000,972
+
+With 192 threads the unpatched kernel cannot keep reclaim ahead of
+allocation and the task is OOM-killed; the patched kernel survives the
+full run and keeps reclaim making progress.
+
+Changelog:
+v6:
+According to the comments of Barry, add real-world workload tests:
+a CI-style kernel build (repeated "make -j20 vmlinux") inside a
+memory-limited cgroup with its object tree on dm-delay-backed storage,
+measured at three pressure levels (1024/1536/2048MB), plus redis-based
+cache service runs (single instance and 8 shards sharing one cgroup)
+as no-impact data points. New and updated test scripts are in the
+gist. Rebased onto the latest mm-stable; patch 2 is adapted to the
+current isolate_folios() type-selection context (is_single_type_
+reclaim()), with no semantic change. Re-run the tests and update the
+test logs.
+v5:
+According to the comments of Kairun and feedback from the test scripts,
+make the throttle check per lruvec (new nr_isolated counter) and skip
+empty types in the allowed mask.
+v4:
+According to the commens of Baolin and Barry, rework patch 2:
+drop the throttle_is_throttled() helper extracted
+from shrink_inactive_list() and leave the legacy path untouched.
+The new MGLRU-only throttle_evictable_types() only sleeps when all
+evictable types are over-isolated - v3 throttled as soon as any of
+them was, which unnecessarily blocked the reclaim of the other type
+and passes the mask of the remaining types to isolate_folios(),
+which restricts both its initial choice and its fallback, so that
+isolation never lands on a throttled type.  The v3 gate did not
+constrain the type actually isolated, so the fallback could still
+pick the over-isolated one.
+Re-run the tests and update the test log.
+v3:
+According to the commens of Baolin, remove the redundant nr_isolated
+check before restoring the NR_ISOLATED_* counters in evict_folios().
+rename the extracted helper to throttle_is_throttled() to avoid
+confusion with the existing wake_throttle_isolated() naming space.
+Use for_each_evictable_type() in the MGLRU throttle to check each
+evictable type's isolation instead of only the type returned by
+get_type_to_scan(), since isolate_folios() may fall back to the
+other type.
+Re-run the tests and update the test log.
+v2:
+According to the commens of Kairun, Rebased on mm-unstable.
+Split into two patches; patch 2 is new and adds the
+too_many_isolated() throttling to the MGLRU eviction path, which v1
+did not cover.
+Add test infomations.
+
+Hui Zhu (2):
+  mm/vmscan: fix missing NR_ISOLATED counter update in MGLRU reclaim
+    path
+  mm/vmscan: throttle MGLRU eviction when isolated folios pile up
+
+ include/linux/mmzone.h |   2 +
+ mm/vmscan.c            | 174 ++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 163 insertions(+), 13 deletions(-)
+
+-- 
+2.43.0
 
 
