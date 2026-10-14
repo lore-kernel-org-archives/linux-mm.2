@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB4BCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:01:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C5BCC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:03:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55A806B0088; Wed, 14 Oct 2026 06:01:39 -0400 (EDT)
+	id 510D56B0098; Wed, 14 Oct 2026 06:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5324B6B008A; Wed, 14 Oct 2026 06:01:39 -0400 (EDT)
+	id 4E8E76B0099; Wed, 14 Oct 2026 06:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46F126B0099; Wed, 14 Oct 2026 06:01:39 -0400 (EDT)
+	id 425116B009E; Wed, 14 Oct 2026 06:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2774F6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:01:39 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A3D511202DE
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:01:38 +0000 (UTC)
-X-FDA: 85320789876.26.CF839B5
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 970D84000E
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:01:35 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=juTtINBj;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf04.hostedemail.com: domain of 18766350203@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=18766350203@163.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 21E996B0098
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:03:45 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5C76A04BA
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:03:44 +0000 (UTC)
+X-FDA: 85320795168.11.8B4F93E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0326E40005
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:03:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZzZ3EuQ2;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791972096;
+	s=arc-20220608; t=1791972223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gq9Me0DpRMB/8hAjXFH9qO/hxN6qlQORSNAboh1nE1Q=;
-	b=1le66rN1miD0PiuwJV9jk1LLiV1+UQnZxZjX5EjbNEdqL0v1s12Z7GRHs69Woi9kapy4nu
-	rU6/tFzmloufRGm3a2uYyX+9lSmgMzlOhyDHGX7UKu6kFOt6s7lNRcr8cl0UycDvzeO7wN
-	1Jjlqm/9z1HjdwMn7Yj9dD6+W2Ys6gQ=
+	bh=I7zp5Iv5p1o76A3rCfOrm7kS93kiCxrngn4b8u1wFuQ=;
+	b=XtTdnIT4Q7erxVDDhg+P1yosyu9m5aVM8KloiM2kkj9bmg4/7DWSY4lFqS4vPMMYEZxms5
+	LLJWZkg7U2QsZvm/d+4gy5/GJ5h1EzmfN33XEu0zRwiCQB/N2FRqhiiM8/wUMVhKP2QvBK
+	0JvjgKNuIXaC+bpxxpl8sMQzdneZ+Q0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=juTtINBj;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf04.hostedemail.com: domain of 18766350203@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=18766350203@163.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZzZ3EuQ2;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791972096;
-	b=OkAoxSTC19Y14PcW47b3D6aW2pA7GqDlycWERcTO1G7NEmLa3iXWx27QunxpSO/bFtEZ0+
-	LYYXM9u8iZl4snb8sv3tk6G3VTrVVp+4mXB2L64RteK2A8dsI36lnvs0k3sR7zY8jbz9RS
-	yIzl+5E3QNqdHXIHHc4FKjejUcrK4q8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=gq
-	9Me0DpRMB/8hAjXFH9qO/hxN6qlQORSNAboh1nE1Q=; b=juTtINBjinqvFI6EKd
-	dt8OA/a8imzLq1g9iBhTpkgSeXT3WQdpHGhAHRXxKEV7WpblCa+VlbvjmDFGmaRZ
-	jAfrI6X1gBzSFB8y6IiNsQFvE4d4gW3o9oeqYRwo1XQ9lq2cWPDdw846sVHGvjDq
-	Nj6NHM8sifcOHDfKcT0v4GSeM=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3_y3vUs9q6psGEw--.34516S2;
-	Wed, 14 Oct 2026 18:01:21 +0800 (CST)
-From: Haolong Wang <18766350203@163.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] mm/memfd_luo: preserve the sealed exec-bit state; reject kernel-private shmem files
-Date: Wed, 14 Oct 2026 18:01:11 +0800
-Message-ID: <20261014100111.79353-1-18766350203@163.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <2vxzmrsgipn2.fsf@kernel.org>
-References: <2vxzmrsgipn2.fsf@kernel.org>
+	t=1791972223;
+	b=C7fOu/FZwHOefyq352PbCb71BX8n15zmy+3hiYWS0euLMygvhJzZFILzZ6D0PPFkhdo8Pk
+	Y1AVQ85wqNUWqZ6ky8Fti+mXCTDIPtsUnJfPc8K22FX1Tj9+qP4/2BHkEIPzqhU7Rprj0P
+	aByKacVp2x2tmaCZVglUMHiOKAWqJy4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE654153B;
+	Wed, 14 Oct 2026 03:03:38 -0700 (PDT)
+Received: from [10.164.19.62] (unknown [10.164.19.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5CD293F673;
+	Wed, 14 Oct 2026 03:03:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791972222; bh=eb+1OnhCrwcLrcQXmju+ZI4BR5IYqvlaJ9YM0fXSEG0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZzZ3EuQ2qjlvO7W7V1MYgf1owieL7IFjWffRoEL3LS4XoiUrOOsBiva2N3xoTaB3m
+	 ktyfzIBiW8F5zFoFUKnSoDcMAPPosaXEIG0VceWlD1JAPEHVIGBTHR8uURhM7gloEu
+	 EMDBhP4TLCF+Xc0McZABfw9o0Mr/DTa6Ivxb4efE=
+Message-ID: <0bbbe312-47a4-4eeb-8299-1f20daf4e949@arm.com>
+Date: Wed, 14 Oct 2026 15:33:34 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_y3vUs9q6psGEw--.34516S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUO9N3UUUUU
-X-Originating-IP: [2001:250:5828:4461:5d0:1f3:be4d:bdab]
-X-CM-SenderInfo: jpryllawtvijiqt6il2tof0z/xtbC9RFfJ2rPUvEgDwAA31
-X-Stat-Signature: tct65fzxh3ezq8nkaxcyjkhbtizsroeo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
+ PTEs
+To: Zhao Gongyi <zhaogongyi@bytedance.com>, Lance Yang <lance.yang@linux.dev>
+Cc: catalin.marinas@arm.com, will@kernel.org, ryan.roberts@arm.com,
+ baolin.wang@linux.alibaba.com, mark.rutland@arm.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+ <20261013153953.77575-1-lance.yang@linux.dev>
+ <516828fb-558d-4a20-9532-51f50d6ba042@bytedance.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <516828fb-558d-4a20-9532-51f50d6ba042@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ppzuewh7m7ejbmihs5tcn8r3au9935xo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 970D84000E
+X-Rspamd-Queue-Id: 0326E40005
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1791972095-537245
-X-HE-Meta: U2FsdGVkX1+ZFJf8CTl5r1EHAepIeOQBKwAPDLuPr48fpxFogU5xaiBhMp9G5In8mIWoUlIFLOA2fL5b7/7ooiCcnHyjpMvKnVWs+kbkf96YoRn0/SbQeJpGiOzPpXR8DiGZer9P2ag6a8h6KQgr50lJAsfJ77pTDnjJ8fpooo+fqDG7qyXHdycZ4jCDm1Bpw6Q7S/Q/wvm1S+3kMjE5Nqkpm0jjuq8nIhtVhdk0OTz772dhWLzLfz5ZVBqamK23jdu6br+KjRjsl4R4LjII3K72rlkM2AzvRB0e884ezG+Po2+9nF35vdJ11G8sNPbn2D1bNo3ohwsC2Mp5EHvinE6Bn+i+UWu6siaGERU+9CaC27FtfySB4eIp7+kofBoyUspcdDJXNvpaUsh2AlctGawOISgUtP6KwglakOkK8ickxmcK54sJfbj32N/tlZ3H2X7FxXdATijIDVgLtFvx3WXTW+Futja6whNCkB77HGoH5b5elO5SLXh9qTQB92HrNWP2n9qyRctDu05L26MWsZh1SgeXZ9V6TeCqtfqplqiMYVeDT32an/2a8Tj10Urjk/TkqoGbwW5qbtfLtsUPYg/dj9o+AoJooYhbV4RbodRInyOWlg0rZS/8I5O/60p+2zuz3p/IP9UZl8AlB+3cYvTlGLPukEfU4EYOw5b9TY1pkecRneXbfy50X0R5s4iboyDlv8VUrTgIoPJYSIkZB1gzuFuXcUAHeyK7fFeBmukZPy3QibCbrpH8l9yJ++ncihtY2IFA5CdpBHcjKBfPdK8ZC3dmhkgQ6Ld9AsgQTAma65P8+jXZ5FuDqZdzG8/KdjQKcw++9Hz+s864YvFgHVlI/YV1c6LuOU/ULqTGz/LNXzamBxNxckXrgqIuW9+XbKJHViKn5nQcNYwVMAXKbtXOQlAWID4V0sbiQa9kXQKZTViI6LKMoRe9dyLI18bDU7uOoeyEhoh4AqunRvx
- ZefNWglP
- /B85rtFHBqMAy1TOfx/R87jRtq+ktKAlUXGXgaQDZmgcn27oWUjKkHj9j+HhXdhFKvuuM/pwhCp2BE8My0r+NmYCUlC/cl52AAazZhgRvUD1Trhub74kTf2eofhk35LYhPD9ayTQ3PqLPy6TCP37yoegfTQyP5h1vQ3QwlyfaY3u1k9MKC1ZKKxuO+k4DXhFgLrFUDKQ//N16AaI2LWHh+xCJ7Xdi8GIPkRCZCxdn87i+UEOfHDl9vrcmgTEQDr2+czDsqk9z5rSQmyfZU1wlLnDucVniUnKyFhEYRgwdwKF/E1Az6b3nMGLqe4QOjS3T5IqHVeME5s5VZYBpOnYirbNLPgCgGD/CVKzz27aSwqIc7w3DYm3I0PFquUTfKJQlrxuuWyPDvsRdKRE=
+X-HE-Tag: 1791972222-953362
+X-HE-Meta: U2FsdGVkX1/09BX5GopzE6+gTk73Z/NEKKvycpU10Wsebhn2Fgal0YoAWP85nISUEkdck/yWqM1fUH6J+vmd2bR6NZ4Rsk8QuBRIUFQWDuv4I78T4T8tgzW9XVlz1+XnffsLKTCFxL/epb0Fnud4hEoarWthM53mvRzDcpWdsD92FYNJxczL9nFWj1kr+N+6jxPWPQRMGLUHYVkPC0qCd0vN/g09euWkkX8R8H36kED9KxhLDDKPsYNg+LqJyUH7f6vADTtpUEJxZxDfdhp1gMyGWllSUSysvcN+pShoLSm2XHM5RXTJeOnoKMwsa6lpuRUtGS1wuvzpRbPe4jkwhlQRxKSaxsghOKpwFgHLtDPvhDMQykytck/1zGh27pTO7N/wy580xB6rIrSMg6Zt+Yt09Csdg70jKfX5i5qtVVs5kQm/wwe7szrR6wtmAwV1IU6qegfKei0Qt+Md9hH74/dBFx+9NOV5WB3+NptVSS85GO7HMrBkPMR7w7NdFl2hM4+vceuxNdeC6KySxJKtornclzAOfD26Pn0SXl+joT2ttKloRlSdIAweNMeSxjON1xiQ7Samuy4krIW4VJHs0wyd/3PZWh6NBuEhrRdJ/oy6emcIx3+av4WaDeAkkiBg0tj0eFajHlu5q3JrFBOu2QzOost3pLBdSxCqz6k81HzUmh5dpnhe/o6boAITJqk1m7i8BJF5sbaoWQNJAbynHcwHiX29F7wuTQUY5dK76pXrMqVBIU4gpoIsfJGz5xViQencPAcdrIa4GxxKF5ZPxR12MYP4rz+bwwi4LtFWriaoivuZny3sQsT/ayjqUHdfmypbznW4BWG7Xygyi75po1UQrWx+1FTwKlmqdNuILqmFfOxpw0ZQregG642mc2PFYf9oIwkPLu3+YbpQQgf3rhSyvj8nuxlzpyQp9u2rP7NjRRzDl/o286RxosXFm7CYrEG7LKs3ssexieQmETd
+ 6aYoo5PO
+ 5UI4IbRVVO1Jvt2mGjL960xqorZo57lhTlHadMYUU2YVtla/rbLBQUzB2ZAGvUvb7Ew/p2o57d/4rVFfn+RiE7ybDocTV0Ti1AKiH0EKbLhIq0z3KgeNEOMTgN6+vYWhVid2Fa86SHIaofjYE6YF/CWqNh3CuCqGRq8p90lHzAV83E7pa1N26fqNnK2KmeSegeGeH8Cb03KUT5tazi3lv/T5M0+jn4UW8bVkgtUtFt1IQKus=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,17 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pratyush,
 
-Understood, and sorry for the noise.  The Assisted-by: trailers are
-accurate: I used an AI assistant to draft these patches, and the quality
-problem is mine -- I did not review the output carefully enough.  I am
-withdrawing the series and will not post another revision until I can explain
-every line myself and have a much smaller patch with a clear use case.
-Please disregard v1-v3.
 
-Thanks for taking the time to say it plainly.
+On 14/10/26 12:01 pm, Zhao Gongyi wrote:
+> On 10/13/26 11:39 PM, Lance Yang wrote:
+>>>
+>>> +	/*
+>>> +	 * Keep the producer-side invariant documented in pgtable.h true even
+>>> +	 * if a direct caller passes an invalid descriptor with PTE_CONT set.
+>>> +	 */
+>>> +	if (!pte_valid(pte))
+>>> +		return __set_ptes(mm, addr, ptep, pte_mknoncont(pte), nr);
+>>
+>> set_ptes() is the only in-tree caller, and it already clears PTE_CONT
+>> before we get here ... no? Why not fold !pte_valid(pte) into the
+>> !mm_is_user(mm) check below and return __set_ptes() directly?
+>>
+>> 	if (!mm_is_user(mm) || !pte_valid(pte))
+>> 		return __set_ptes(mm, addr, ptep, pte, nr);
+>>
+>> If a direct caller does pass a !pte_valid PTE with PTE_CONT set, I'd
+>> rather add a VM_WARN_ON() to catch that. Silently clearing the bit would
+>> hide a caller bug :)
+>>
+> 
+> Hi Lance,
+> 
+> Thanks for taking a look.
+> 
+> Yes, you are right. The public set_ptes() wrapper already strips PTE_CONT
+> before calling contpte_set_ptes(), so the pte_mknoncont() in the invalid
+> path is unnecessary for the current in-tree path.
+> 
+> The issue I was trying to avoid is not that the incoming pte already has
+> PTE_CONT set, but that contpte_set_ptes() rebuilds the pte from pfn/prot
+> and then adds PTE_CONT again based on alignment. For an invalid descriptor,
+> that transparent contiguous encoding should be skipped entirely.
+> 
+> So your suggested shape makes sense to me. I will change this to return
+> through __set_ptes() directly for invalid descriptors, and add a warning
+> for any unexpected direct caller that passes an invalid PTE with PTE_CONT
+> set, e.g.:
+> 
+> 	if (!mm_is_user(mm) || !pte_valid(pte)) {
+> 		VM_WARN_ON_ONCE(!pte_valid(pte) && pte_cont(pte));
 
-Haolong Wang
+set_ptes does pte_mknoncont(), so the warning will *never* fire I think?
+
+
+> 		return __set_ptes(mm, addr, ptep, pte, nr);
+> 	}
+> 
+> That keeps the fix focused on not creating new invalid contpte entries,
+> while still catching a bad direct caller instead of silently sanitizing it.
+> 
+> Thanks,
+> Zhao
 
 
