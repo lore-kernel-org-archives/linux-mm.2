@@ -4,97 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1416ACC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:20:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57AADCC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:20:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FA5C6B009B; Wed, 14 Oct 2026 09:19:59 -0400 (EDT)
+	id 78A4F6B009E; Wed, 14 Oct 2026 09:20:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D56E6B009D; Wed, 14 Oct 2026 09:19:59 -0400 (EDT)
+	id 73B1B6B009F; Wed, 14 Oct 2026 09:20:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00F236B009E; Wed, 14 Oct 2026 09:19:58 -0400 (EDT)
+	id 6510E6B00A0; Wed, 14 Oct 2026 09:20:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D48B56B009B
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:19:58 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D036C054B
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:19:58 +0000 (UTC)
-X-FDA: 85321289676.21.D87DE7C
-Received: from mta1.migadu.com (out-110.mta1.migadu.com [95.215.58.110])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 236644000D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:19:55 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kRRCaIoJ;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.110 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 409EA6B009E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:20:31 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD22A804F6
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:20:30 +0000 (UTC)
+X-FDA: 85321291020.17.C713D6C
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DBE408000E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:20:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="YegQk/kl";
+	spf=pass (imf02.hostedemail.com: domain of 3moHPagkKCDkoVmpinVcpbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=3moHPagkKCDkoVmpinVcpbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791983996;
+	s=arc-20220608; t=1791984028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pRnoPDx1VLkNEQVq70EOdlXp9yd6QG+3d9WMxF4yYts=;
-	b=F27Ggk/EhBw4eaL3T/n4l5yL5JHRintsAPprAj+exh7dxtuVe8g9x7cZzXC7GqO8FKTPRc
-	8S8dWjG6HM/WmUvKymuMKeQS4ktZtqNl2Te1Qpy9sfuFGv4ZgjVNyquE8DgQT8VqFbUf3p
-	slOcvtzIdIOrtXE12Ws/DVoEc5YAWOk=
+	bh=4n9LUBp/94FrA7OEAIK6wGrf06ppdChh63JRq9nGxWk=;
+	b=PXwdQMgER8sZ5TqYi27xVYllVuqJ6CpYgv7hVd/O6K22FsCC0Exrj6RSqqngCvdeaWlD/4
+	mPm6uKY2dIW6mkpZ8KJAV9IY7EK2TorRcnJBNCurHpB09QKAhnlXPQKFaZPEP8fX9ahHDC
+	hFbjw8tyPhra9OQuI/0YoSCXCvPSKiY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kRRCaIoJ;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.110 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="YegQk/kl";
+	spf=pass (imf02.hostedemail.com: domain of 3moHPagkKCDkoVmpinVcpbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=3moHPagkKCDkoVmpinVcpbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791983996;
-	b=T/UqDX4Prvv/Wg/GLwnZvRmRmtUOUov2JczDwMFpKlOp0Wgp6NOXXO1ycQgNauusfS5QvY
-	e0TIDCz1Eu7Nv5epcoRBLOJLVqLOiAmbHBvrrkS0dGNJEvmOYVFw5nrK0ZYAWEhmPyIYCi
-	ZVYqtFVWn9Q/7qUwV1b1YCcSxbEEZTE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=m7HcPUAMizid1DX3lRG9Tzw1zddlCTzU8zWnOAtnnRg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791983994; v=1; x=1792588794;
- b=kRRCaIoJw0sJTJ/tOBQljz6AT/gufciBi0m1KrH8rJZGBnpa3mkxfjwGQPb+ELUw7hsBdCVU
- mmxqIxcLYn0+K+Zux9JnBzXzRsy69peQpfNnW2jSJ4q0+GnbK8U14BbNpbbi8550m/0hof2d0ZT
- ASh7FEPzd7j6QUveg7i6TzX0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b774b44408666da9;
-	Wed, 14 Oct 2026 13:19:54 +0000
-X-Mizu-Trace-ID: b774b44408666da9
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <58e8d79b-f7c3-4ded-9272-07c309917055@linux.dev>
-Date: Wed, 14 Oct 2026 21:19:42 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: recheck a special PMD under the lock in
- copy_huge_pmd()
-Content-Language: en-US
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: Alex Williamson <alex@shazbot.org>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Ryan Roberts <ryan.roberts@arm.com>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Nico Pache <nico.pache@linux.dev>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, dri-devel@lists.freedesktop.org,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Usama Arif <usama.arif@linux.dev>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, Peter Xu
- <peterx@redhat.com>, linux-kernel@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, stable@vger.kernel.org,
- Kiryl Shutsemau <kas@kernel.org>
-References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.com>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	t=1791984028;
+	b=XBx2DdnEXB4XWxfX50IaBrgepGK16Firi6akH3eEwSz41UcB9R/qxZB/C+lN3K8iQlVICz
+	r4TU9RiB/gwTI33+2NIZBd1n5B7/WxHfRPal0TQcR64BCfbJF0r6a1J0OleRT4JGb9xJx0
+	gkwHmHe3dUa+KWCNW41bqdF2l8jth40=
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6b1abced3b4so995290a12.2
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:20:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791984027; x=1792588827; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4n9LUBp/94FrA7OEAIK6wGrf06ppdChh63JRq9nGxWk=;
+        b=YegQk/klE3+BSmizB1X9trgnxh3Yht8bA3dky0awwooTlzjlq6cFQK5+riqF6FTm/i
+         SQ1kVq0o/QfgxvAQxH01pnxKz3EGIVauxX0elCEiMAw2V9QfVCQzq7ltWYuhvW+i+6DF
+         q8CLvDDtzf1xuE8jfOTif04fghrszSjOBNXKImKUeTtHKvNh+kl2cn7njSVz1johiPRv
+         BT8PUzIqBtQtmzaCWiWA97hrijRDCFCPT4LBDF2v6eSX8EodnIzt6pVPsF9iXmUCT+cn
+         5xrBfWMi+gYx4cKfhKK+8Qnm0u1czHNxr0/ysPxmPz3F1w3mahCvqxqZz7C0Q3g6KyxJ
+         IF3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791984027; x=1792588827;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4n9LUBp/94FrA7OEAIK6wGrf06ppdChh63JRq9nGxWk=;
+        b=wrHo+JnBHJhWyTdzHmPx/vP6NjbQtCcXz8pc4ovFsBPZymCXJgKYWLeDYh0rwAMVFR
+         c4T4U0G/qhjG4vrSr6dqJCWwLCOVejGYbD+SITrwICjIihNV3Y+bH6DEtlD55n8ZW4+F
+         6zzbAlwOqBwFvVFTC2KM8Irzj9sENm6zq5Xiy3cTwnIkaWTvZaJisuN2XozSfSG16BCu
+         II8NEJLKN0a1iXE/DPC4yEIiNptOzpUn5RdwrrdVwdpISqTGD/Mqo/DslvA0qXPQLcO3
+         ffeSxwEdQphbvcxfTaAUWf9Z+35+rLckQWExG5uO7byEpLmTHsCPQp86zi+8Kt92s2yk
+         f/7A==
+X-Forwarded-Encrypted: i=1; AKwUvBwvZc5lkQY0hNZbkstcVzgtUJ01bJrhjEXS3d2mEYKnC0W2K+eA9yCV2jroKlHT3A6nWEsZ5FY8VA==@kvack.org
+X-Gm-Message-State: AFq9FYIe/7jfV7VtFzMN+8jE1fD+jRJY/8dmbtMwnvf2waT3N/jHhFkf
+	foqCfx0bVxZ9ZlICB75cPZ4UrhFvJWKsQswnnHSXbARjATkyYFDJOWERGZ5cnvWW+0xFMSqED+U
+	OS/Rg4Qxi3GJ6009FWQ==
+X-Received: from edcpr25.prod.google.com ([2002:a05:6402:c1d9:b0:6ae:21f4:c371])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:320c:b0:6b1:df89:7e11 with SMTP id 4fb4d7f45d1cf-6b1df899325mr5347239a12.36.1791984026642;
+ Wed, 14 Oct 2026 06:20:26 -0700 (PDT)
+Date: Wed, 14 Oct 2026 13:20:25 +0000
+In-Reply-To: <2vxz7bjmkjeu.fsf@kernel.org>
+Mime-Version: 1.0
+References: <20260901180713.4185641-1-dmatlack@google.com> <2vxz7bjmkjeu.fsf@kernel.org>
+Message-ID: <9huz7bjkmnae.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH 0/5] liveupdate: LIVEUPDATE_SESSION_RETRIEVE_INTO_FD
+From: tarunsahu@google.com
+To: Pratyush Yadav <pratyush@kernel.org>, David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Vipin Sharma <vipinsh@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DBE408000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 236644000D
-X-Stat-Signature: ohf6ipmuffpxhhmdbib1bs8ki5mcpyxi
-X-HE-Tag: 1791983995-306769
-X-HE-Meta: U2FsdGVkX18tS5gVwSWyISjPDLFDS+N+xPq4/gMsnMwEY+abuXw+X/dS91XWOOxxSzYtPS30QCY+fl/hG2SvmCkqOBVdzdhd8iAdahISf0sQPCQ+qo2Qauzzkpj6HNS1y23uDxMNnbOHTJO7m5PMba2IQXlu8IKZxN1nQRT1KDEgXHJBMPEvqT5jRwxSQHuuJcg3tzQMmZz4R4FqYF2Q9Shfe1Gr5pBRnNAHIAjnk7N2kEDyuUDuZjB8oI/3d03B07UJ8p8Pl8VKdSZ8rqtYf6WHDAPGr2x5UvDb1TRRkS2WfkcGCxaFW8ABXdJl2XfPhq4ok6N3JmsOValLfcw2VTABB2mhTv8lBiPWWHIVARA3jBl870tjGu+o/ysXFf6lRNfe6QDYh0ECG0fcIx8b3Zf4klnruhGZOg8pkul3WNb4Xyq2CG6bquPhV/0gWD209yo8EPbybry4MpNb3OzJHianuH27zKn3k26FuvH6Fu2RoVz5ajiZ3a1rHPzWv66ziwkFJuN9ng0Fs0QCCc0E61SVObX5DlrUH8kGL9hJA96U1sRNpe4Nd8M74LcBjf8OUAWH7MgnGaiwmZLAri27eaqlP3aqiyi+0MR/eGQgLOpAmkzCQCPwzJiqzxl0I8+ViyghslaKi5N8Cuz27Yx0pXpw1y6N2oMnghJJLgY8/PiwYHOdKvarHlcunDVRiSRvvtpJ7zkX2f7lMqeFDW5wRlWiWGrO8cuJrqkQ9f4MWAPFE/Fh8BbXF0qF+EU7E4955TqcRVSel6z97RKS/VhQQB39H4sAdeO/h5Eqgs+1IO7JRshT0ckrIfpJYD4tZ/Z+Qshmgx9J3DhbZNlEqhZLH9AZFb6U+E6o5ZxKZ2vglN1hGMOnxlBGOpaZOmxz+SucnPFPlsELUPegNRIsZHvKLWNBvQW/TstuvSRqM3vEB7Sev72zGsBy5+Dfk22nKwy2BfygrP9F/OfmpPTyngV
- /08tBudq
- i9kAo2rs6MCZbyWx4inGB2JHJqpDGG9jWrI9PO40hM4BwZNAFkLsEggB8uDUf2MT76BwjVHTF1Mfno+7eP08N5W8LkLot0XDlmZ/cSm9rGfEDw+xWbdrDEA0KKeWShGK/Ay3B3oqgnHXWEi/7RmpajV7VCcptoTu5g0wH0MgDHJ5ziib4GOTgx/gLipueGUlRL/CNJyct/7DcJ+xXizP1Jp+YCmjuNy2lGIPsLNXO1uTajOwaLHUndQ0QiJpL03dZaqAtpaLv2jFD9+m+RDOS08PGvERohfZYrXqKpIqjeOIRyQfEmQjfAlSjK2yanHjOHy9hQpQHPup886lYY37/0c+JDbWBEnw04H5+EnLDUxPn40GqnmndGTXKDG+iL/fYcQ13EZgEt+kpknDp8+qZoCuyu9S8l7SClWqs
+X-Stat-Signature: 1bob9izk559aefeu6zayja5ezfzqtwds
+X-HE-Tag: 1791984028-839220
+X-HE-Meta: U2FsdGVkX19vn4XhIn2ZFb1iexy6reLNHNlCbJNe3lJEPkseOro69dwd8jBlDhqkodLWoLeT+0sJxoPP4/AIH9ofGJXM9cMRsK1chh3/YyvZDhAhlif4zn3R0QcKVhV6saPoEpEL8XflkItMwYCUGVNj1LaxhhWtQNIOkZBpxcH5GhLo0nwO/HR19T7927x564D20QInXaKsdcdKSVxjVXm1uhyR8EiemiJdnGE+gmafLvWEsqoVT9cGUc/ZFZIghABWxoKu/+2LnqC2U0wS/QFtJHScG5GxdnX87G6aTjWwW3ozMeVOGb2ZlPbvFzighbQIFpY5nVrL7XS/Xsc54V0fu0MCdPKKTsxsJy2PoyAkm0YnEt0YGna9u6MX6onLt+vacYZ1ygU4o2PKeNdwqULQEpQZCeaHNzCv9Xc/DjpbY5F/YQq6Is1zkCSCEm54S7Ycsli5F3gwiMrAfpUOB8A4oz8ugo5Z32zk2hWy3iMrqNVt3ku05qs5NTEVTJ/Iqe5LsDAEvHVLySaDTWQUjV7e2snYXL2kphQuUqX0Jn7Ch7D+xXNh51bdIicaIspCLH+1ptpYniIiFl0aiFG+cC1cJkTtp3HPE6q9gtuxaD0c74IXbAvahaA2yDGQFvI8PEbdV5qzaeUp5fWY+sCPJ07UUX0FfQ4uJpt3S0nmcD9eCqpih5J8YFokoexO8giE7KiGlrn4oolcW6B6TzGQvcQbOlS9GLE5qwACXRUu0jTa8yMVF0qezrQYoxmVxvfUcCztKEEMIg0Uy9FJjBf0ZdJad2nT7ql/hpp4eempr6nzNedr7lIy3pLscX1pdw1qIm6ZuTkwX4xUiOkH8FzD3OmD1MsUGauy0t1E2eHvpRN/uDPZn4gKC6OdquV3Hg/lXd+JIdi7M5JPmW30PvOO2mcYMLqe2R5t9Fdgyn9Ywf+f9LLFzGOogo5WW+doEiMBTGaiTZeHcUBxRPsrkzr
+ bNyHk0rh
+ tg6Fj0LGBVnA5QbxOXew7z9qXeBY8OO/somfdyJoV7drMaZct5gOqkEFGGeN//he6U3blHLodI6fKvNuN4LYA9ZS6U3Mo+gQxXGp/6SCQlLkJGf7muMD3PPGwqqprt0ccu8O6GtEg7hBjskDnJuDf+PN7u8hapymVm3EQF9gsQUXb8vHM/sdePGUzVGwwpZ/ijyZ5BoqEb0G959CJys3P3vhY8+NfxMy6OvjQbqf9mlPWrX14FxGZk4x3/UZdlF/Z005Foy860A+lFOjI80w5IDzBP+VAD5ketxwdZ1jmPAKsBByp3uC1wKrYJoWow1ik1mDzLoqyOwxoXiCbLV38/2PL2rZPgm3XTgk9g3ixurPPRMZ7cReXmW4fQMU+IzkIAhtEp2sSbD0Mq3uwNibF+RQ23+Jb9uTtQg49QwzpPBW5a8vZg86Q62nvLw8PhOU7qrncJB4RIlt43RCkQmvZDbMeMrfCKDgfDbJ56/n5yGQIDII8uxmTpc8Bxa4ZdFre8FQWpGqYxi1Eeh8YhFB6X77ZcGwjTiw7d3RWSWmPmDqkuvcJFBf9xNK8lTlSFbegpiU964vwAXv2Q5EvMiaGTC0aOv6hgHpUSvNFqR5NEOyDufyTvfc/M/p9Yr8czAmOEArz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,58 +112,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Pratyush Yadav <pratyush@kernel.org> writes:
 
+> Hi,
+>
+> On Tue, Sep 01 2026, David Matlack wrote:
+>
+>> This series adds support for LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, a new
+>> UAPI to enable preserved files to be restored into a userspace-provided
+>> file instead of a kernel-allocated file, and uses this to support
+>> preserving tmpfs files in-place without any changes to the LUO ABI.
+>>
+>> The Live Update Orchestrator (LUO) API currently explicitly returns a
+>> new struct file for every preserved file during retrieve() (e.g. via
+>> memfd_alloc_file()). This then forces userspace to use anonymous memfds
+>> for all in-memory files it wants to preserve. This works reasonably well
+>> for VM guest memory but does not work well for other types of files that
+>> userspace may want to preserve (e.g. in-memory logs, binaries,
+>> configuration files, etc.).
+>>
+>> Preserving entire tmpfs mounts in-place would require a large amount of
+>> kernel support and would effectively make tmpfs an ABI, which is a
+>> non-starter (or so I hear). Instead, we can delegate the reconstruction
+>> of the tmpfs mounts (directory structure, permissions, etc.) post-kexec
+>> to userspace. The kernel just needs to preserve the contents of tmpfs
+>> files and provide userspace a mechanism to restore those contents back
+>> into a specific file on the filesystem after the kexec. Hence,
+>> LIVEUPDATE_SESSION_RETRIEVE_INTO_FD.
+>
+> Based on the discussion at LPC, we came to the conclusion that this is
+> the path forward.
+>
+> Before reviewing the code, here's an idea that Pasha briefly brought up
+> briefly at LPC, and I more or less agree. I'd like other opinions on
+> this.
+>
+> Should we make the interface more generic by allowing userspace to pass
+> extra arguments to PRESERVE_FD and RETRIEVE_FD? This effectively gives
+> each file handler an additional uAPI of its own. The upside is that it
+> would be more extensible and we should be able to accommodate more use
+> cases with this. The memfd/shmem extra uAPI will take an optional target
+> file to retrieve into.
+>
+> For example, the guest_memfd patches might use this to tell the KVM FD
+> to retrieve the guest_memfd into. Of course, KVM needs to see if this
+> makes sense (alternative being preserving the KVM FD too), but this is
+> just an example of how it might be used. I think VFIO also does some
+> workarounds by using an anon inode on retrieve. It perhaps might be
+> useful there too, though I don't understand that problem well enough to
+> talk in more detail.
 
-On 2026/10/14 19:57, Konstantin Khorenko wrote:
-[...]
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1e5d68acf62a5..fcea98f0d8865 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1965,13 +1965,22 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->   		src_ptl = pmd_lockptr(src_mm, src_pmd);
->   		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
->   		/*
-> -		 * No need to recheck the pmd, it can't change with write
-> -		 * mmap lock held here.
-> -		 *
-> -		 * Meanwhile, making sure it's not a CoW VMA with writable
-> -		 * mapping, otherwise it means either the anon page wrongly
-> -		 * applied special bit, or we made the PRIVATE mapping be
-> -		 * able to wrongly write to the backend MMIO.
-> +		 * The mmap and VMA write locks of the source keep faults
-> +		 * out, but unmap_mapping_range() does not take the mmap
-> +		 * lock and may have cleared the pmd since the lockless
-> +		 * read. Let copy_pmd_range() skip it then.
-> +		 */
-> +		pmd = pmdp_get(src_pmd);
-> +		if (unlikely(!pmd_present(pmd) || !pmd_special(pmd))) {
+I agree, While developing the guest_memfd preservation support, I also
+felt the need of upgrading the preservation and retrieval ioctl to have
+arguments which will make it flexible. And help decouple the VM
+preservation and guest_memfd preservation. I would love to see where
+this argument idea goes.
 
-Why not just check pmd_none(pmd) here? We're holding the source mmap/VMA
-write locks, so the PMD either stays special or gets cleared, right?
-
-Cheers, Lance
-
-> +			spin_unlock(src_ptl);
-> +			spin_unlock(dst_ptl);
-> +			return -EAGAIN;
-> +		}
-> +		/*
-> +		 * Make sure it's not a CoW VMA with writable mapping,
-> +		 * otherwise it means either the anon page wrongly applied
-> +		 * special bit, or we made the PRIVATE mapping be able to
-> +		 * wrongly write to the backend MMIO.
->   		 */
->   		VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
->   		goto set_pmd;
-> 
-> ---
-> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-> change-id: 20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-bdf7efb612c2
-> 
-> Best regards,
-> --
-> Konstantin Khorenko <khorenko@virtuozzo.com>
-> 
-
+~Tarun
+>
+>>
+>> An alternative approach to restoring data to a named file would be
+>> supporting a zero-copy sendfile() that can be used to convert named
+>> tmpfs files to/from memfds across the kexec. But this poses significant
+>> challenges on the *preserve* side since the preserved file might still
+>> be actively in use. The benefit of the retrieve-into approach introduced
+>> in this series is that it does not require dealing with two different
+>> files. There is only ever one file that owns the preserved memory.
+>>
+>> By leaving file and metadata allocation purely in the purview of
+>> userspace, programs can create the target files where they want, with
+>> the names and security permissions they desire, before directing the
+>> kernel to restore the preserved folios into them.
+>>
+>> Currently, only tmpfs shmem files are allowed as valid target receptors.
+>> Attempting to target populated files, or anything other than an empty
+>> shmem file, will trigger -EINVAL. HugeTLBfs files could be supported in
+>> the future.
+>
+> I suppose we should rename all the memfd_luo_* stuff to shmem_luo_*?
+>
+>>
+>> The coding work for this series was done with assistance from Gemini. I
+>> am not sure what is the latest recommendation is with respect to adding
+>> Assisted-by tags, but I can add them when I send out the real patches if
+>> this RFC looks acceptable.
+>
+> The latest guidelines per Documentation/process/coding-assistants.rst
+> seem to be "Assisted-by: LLM".
+>
+> Although in _my_ opinion, I'd reckon most patches these days are
+> assisted by an LLM. The code might not necessarily be generated by an
+> LLM, but I think a large majority of developers use LLMs in some
+> capacity during patch development. So "Assisted-by: LLM" doesn't add any
+> value to me. Other people seem to find it useful, so please do feel free
+> to add it to your patches.
+>
+> [...]
+>
+> -- 
+> Regards,
+> Pratyush Yadav
 
