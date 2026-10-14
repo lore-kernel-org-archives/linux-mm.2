@@ -4,123 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16314CC6B2D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 21:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF18CC6B2C
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 21:45:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17A146B008C; Wed, 14 Oct 2026 17:32:10 -0400 (EDT)
+	id 0D0CF6B0088; Wed, 14 Oct 2026 17:45:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12B4D6B0092; Wed, 14 Oct 2026 17:32:10 -0400 (EDT)
+	id 0818D6B008A; Wed, 14 Oct 2026 17:45:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01A9D6B0095; Wed, 14 Oct 2026 17:32:09 -0400 (EDT)
+	id ED9156B008C; Wed, 14 Oct 2026 17:45:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CE1746B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:32:09 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B4F90C04F8
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 21:32:08 +0000 (UTC)
-X-FDA: 85322529936.24.D82D7E6
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D598C16000C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 21:32:06 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=qHH4nvbQ;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA22A6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:45:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 59AA9407A5
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 21:45:48 +0000 (UTC)
+X-FDA: 85322564376.06.F07C27D
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 77CAA4000A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 21:45:46 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bH4+8MRN;
+	spf=pass (imf04.hostedemail.com: domain of aa9736195201@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792013526;
+	s=arc-20220608; t=1792014346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tO5UQmTvouQg/ctKnDF1pYsfXafOcfme5DKNKK31tzc=;
-	b=qmWxF0EgtTT/f6Mrplc/kiVuKulCh5/t8aZP7C/U9zDHDVsNDbi+YZDZcM12vZ4IoJiuU4
-	dLy6+xckBtHch+AoOr3fyt2PltNMXLwaFE1UkeMS+6rsiDIyIB9uLdy/Uycr04jOcu2LOq
-	4HGukfhXElDci3UXBRrn/9oQM2re694=
+	bh=l18nddR02Ly5yUEL8+YeO6wSXsyRxbRSYGcpS6xzygo=;
+	b=x7HqvgiugO5Q7Od6fsXoklnFS3vnQ6NyPj4wBmNI4XJuEHbTxxvKMMEKBXPlU2RT91zq/N
+	ANGLNi9FiypPIjDHBFHf29MEg2PskvNdsvsM1s7EIZcjvlpBM96dVICjW/aoRCZYttl2k6
+	jJfzUbaiqpzx292cD2hwLd0M9mrBJSc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=qHH4nvbQ;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bH4+8MRN;
+	spf=pass (imf04.hostedemail.com: domain of aa9736195201@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792013526;
-	b=FKjgELYdgA3j5wEZUHqIgeeYW5oAQ86QgTBHOTpLa4RVTzuwIGNdDzOX1s/YyHreGvHlJ9
-	aThW63WzQlubGez/kLFPx5k6F4rECydFK7KeOGIlGoYtEtoKkOGw18evEyw1hUTow3zQgG
-	+1INE9W3BiPefYZ8vYq0On+kzCwXYj0=
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-917a4b69a79so55276006d6.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:32:06 -0700 (PDT)
+	t=1792014346;
+	b=Wt0Cf2wRESEM3mSC/FiZU/sbvEeb2fWcYnm/GkUpbmwFkChKZTOAWAFdccf8Zqefm3Zpzg
+	yICe2/8uM7LwS9CDjzlnQpRR5mp51fOyAuFpA7/8Ie9ma3+WbFADblH29I20fl+yMO/3ZM
+	evHAs7GPJjnQ3mlpOa0Oskj4zQRADAs=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-89e31e96173so300810b3a.0
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:45:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792013526; x=1792618326; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792014345; x=1792619145; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tO5UQmTvouQg/ctKnDF1pYsfXafOcfme5DKNKK31tzc=;
-        b=qHH4nvbQRIsBg3S6kowYIyyzXOZl7GBq58sZvjeuKrZxarRpSTUj4ONvuummpw+jP8
-         tbebpl5U15BxhDkINo87Nt4lHbLdVVZxoeR5KUlrJgozw3qpMAwSCEorYG3GywM5hqE3
-         38PowypiHZh3oUAyRN7xGBPvMI8G2zPqkpuPTEludCC8caBUBTNpzB6RvF7b61HigxLo
-         A/7+mbFPnigPq1PVTiQutiDLiDO5k2akdZBNpv2ola2wCnhWUjRbEennzAAERy15QIkB
-         AX7rYc9yUYeIEh5CHQeOhyzSIDuxpoBZYHKk55DYweSXgzRfJaadWCfTF6wK5GfcAWlY
-         1VsQ==
+        bh=l18nddR02Ly5yUEL8+YeO6wSXsyRxbRSYGcpS6xzygo=;
+        b=bH4+8MRNyjxwyHgkhL6e1MtzHuCh37IR5ihPDE873eHxEzfOKEHlc6Lk+mVBAPDbhZ
+         H7UOl5oOfEGv2vp9DXFa6zCQea1O3YbIjbGnbYd3vMcin4xnUlZUm75Y1q5HPLxLJdke
+         0GSWdcwxE8S1+8LM7HaOvI6Cw/Tqarz8QYqOmIvx21oEJT+AHb+Y/6zTi/3gLzsXQGrW
+         EESlihrSk169EJlU1VUjC8+thHk4gzRrx7IfkJ5McAFC1VbxHcxigNm1yplXDeb/eEME
+         4PQee6EUzwOpkJ0yhFG7MsNtilr7TNpqIm1BDWi5oZcgYak+H3p0DymQxMBX2Is69Zxf
+         0N7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792013526; x=1792618326;
+        d=1e100.net; s=20260707; t=1792014345; x=1792619145;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tO5UQmTvouQg/ctKnDF1pYsfXafOcfme5DKNKK31tzc=;
-        b=iOlBW5zwYETS44DCJWiwkelrpIxgfoC6Jm9OJkarbO6onrn9emaHkMhZyWz/AyCLtB
-         yAQ2RjDmgsbFS24dyQjTm0vrvblTFahgafjZOxeFfkCBvF3w4IH/BdnZmA855CXisc6E
-         Ykgjp869bR5S5pSYBjbK8WUPHkUTBgXebyPBrRFGjCxmlb5eoCgsQ5p4PPeqLVnc3KTi
-         CYH7V2apM/tNINVgyiMa1QmRizU8a6BWKfCwxGtwpzUvf6lTUHzRLLLt5geR037wYQYl
-         ETF7ppbRqkaNvrgT/2Vi6Ag3aqJ4iUIr0SxLLNwJsaUbLKk8g9gX+Lp4PH529URVwgWW
-         JkbA==
-X-Forwarded-Encrypted: i=1; AKwUvByaphQnJpZhlpZ0+xZrc+vcUYZV8HLFpoC9Cgkr2NPSOoqQWAHG2JfgIBPQZ066JI80CROHjhS7Xg==@kvack.org
-X-Gm-Message-State: AFq9FYLiIVZsdCEB9QYxrPrdpkkkx38cw0F5g5EJOTe1X+MTsP7YGKqP
-	U9eUrJFuRLdlDC7liBQwkGXQHSqaF7yvS5rQd9Zy8etupad5SvRvZINHXxPXcvvGbMg=
-X-Gm-Gg: AYBFou1a3A0UZVA9Wzp6SVOQkhLm+9d/lcLm1Bck+3uBnWHhpF6eZJiGi7KvGqrIx9L
-	k3VsSoHzolGzgNUEQFDU8iAImXk94uvzvXVYVYMXOWjFeCDqvljriliWB/NBYaOA4bEGxfJPrKT
-	vCn1OlDfyo/TcUIB++habmke8XdLkOB/CPzKcpZr0xWsAm9uhzD4H2WGL6gURc07NbiW2xY8uFA
-	vxIaqBKVePR8QexoCNO7FFJqnUeMiruEW1udGBf7Zwr8sbaTxjcfFKgbbEuLxuTJ5JtTlpAy+XO
-	hcx/psumMTVOw0CKNMIGstnUJOuhToMGGLhJ4E99LEBCjUUlNsFa3HbitT+eU7NZXEOrwMlJ7y6
-	3Q5xKQFvvXJPoXzwu7YAADtKEc++u9QUVXLO/BLpiuPP0uBa1knBYE9L0T/PBsiCzvQ7igaxu4g
-	8hmCMOm7iZQBITzPzw6s9v89Btuu8lIkKJxvc0rVKnEHQtOXkR12kv7WxmWo/afmObWm3R1dJWw
-	ycU39IetArRf0mTAE+lJP/iblLXDo76ckRs8ibs42Q3scUBEWNLEH657+cn
-X-Received: by 2002:a05:620a:1789:b0:937:5ab5:53f7 with SMTP id af79cd13be357-93ebd233be3mr2873421685a.43.1792013525863;
-        Wed, 14 Oct 2026 14:32:05 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b97b383dasm63183306d6.8.2026.10.14.14.32.03
+        bh=l18nddR02Ly5yUEL8+YeO6wSXsyRxbRSYGcpS6xzygo=;
+        b=l4sEMh/+wTBrjYNaOcFWn/OkOYsVgCvhmr0c0R3sEfjzKjWpXLqE6AWWCyjmcf5vvZ
+         2t+SnnmrYheVJI/sixVcxfMO7bYeOAZx+va73KnVVNyjzHI5KkZ6cQUvfHEGCLweS6+H
+         p99QxeG8cqx9zRltdyORQBbTshsd/VPcIVxzxbE/sXh0IwpYQfB0B6ZaApvfLI3dRULA
+         R/344AdyOQ3J5585Ohgp6KzUcY4nWRFFEpA77j/gT+yYnV3M7yTWHfT11PF64mgz01N3
+         ERRZj3ox9FYJfn8hR8sossp9KV/XY2hZXGJiKCAy8SEMRuO08KwJNq5gXcWrIxzYjLI4
+         mhgg==
+X-Forwarded-Encrypted: i=1; AKwUvBysBS6B93dJglp6SYKnQxQYs9HOKeHKNrBRSL9ZfB5BqV4pm8uKD+xWtAtOptIX5pCtuFD8XICSLw==@kvack.org
+X-Gm-Message-State: AFq9FYILtoZOG4uAOe4cUO16gtC5v/jbjiOt6mWxlM0DZjlm7AMH7ivH
+	rCsTRtqAMSwctZ5gFc2zannxRgtfZBP2OVqysnq9LuY4Kkg2PxGT5nmq
+X-Gm-Gg: AYBFou33We9l9KFVTG0AZ8iDEnD/0eEd0DHyeLIdpV8bJDnpQOxLu3XAoTCugGt6Bxr
+	7W59JGJNh3phJDdAoJtfIgDlFjjNjZU/vz/DSILETYonpvd4jHp+sIizneWxrCDZER2vNi3xwsw
+	/8oGBot5UhCBEs0r7UG1CHZigdlDQo9EOfuHCFeuS4pRxJAuUNAYQTRS1IImYqOfhNHvesvH32W
+	46FliIKBhs5tu6wthSlhRmoBmVNafQxy6a9e30CGpQq81h7GTzbtp0vM130BarAr98Yqv76xw1e
+	HN6Z0GvF3oV83b1NvOfh0Vubi/oaNii5RaQHiZ+qBpv1TdbnyEeAUiAbTOydzndZG1zDD4jWDRL
+	9TfS51RrSF6sDZo0fMz80kjMhn0mz/MmbbeR98Putj7UKc+bYkP1+mlEq1k1l7o8dx80DO45CtQ
+	2BR5vfXT+0b9MFlC864jW+coP1S4zcAQAk4k+M4hQNwlQtc8eSzzknVWTaAHAkUNgibbhm5ouot
+	G2iHBzMXaAakzve1qW+yoRF+sQg25zX1RfoGKE/BGBoJYHEsvTnSw8wzCbV89V0Z+JvSAjZP1or
+	WgfGs1/nGLNsKi655TtTUmJIzHh/xTgguw==
+X-Received: by 2002:a05:6a00:1818:b0:886:4070:ceb8 with SMTP id d2e1a72fcca58-897c7ec59femr15310243b3a.56.1792014345179;
+        Wed, 14 Oct 2026 14:45:45 -0700 (PDT)
+Received: from DESKTOP-TJS95SS.tail460ce2.ts.net (36-232-253-46.dynamic-ip.hinet.net. [36.232.253.46])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89d802c33fdsm1539946b3a.22.2026.10.14.14.45.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 14:32:03 -0700 (PDT)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
+        Wed, 14 Oct 2026 14:45:44 -0700 (PDT)
+From: Yuan-Hao Hsu <aa9736195201@gmail.com>
+To: Rik van Riel <riel@surriel.com>
 Cc: linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Subject: [PATCH] fixup! selftests/mm: check MADV_COLD and MADV_PAGEOUT range handling
-Date: Wed, 14 Oct 2026 17:31:42 -0400
-Message-ID: <20261014213142.2269787-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261014175756.2035176-4-gourry@gourry.net>
-References: <20261014175756.2035176-1-gourry@gourry.net> <20261014175756.2035176-4-gourry@gourry.net>
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v3 0/8] batch lookups in follow_page_mask()
+Date: Thu, 15 Oct 2026 05:45:39 +0800
+Message-ID: <20261014214540.574-1-aa9736195201@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260811025157.1632867-1-riel@surriel.com>
+References: <20260811025157.1632867-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 77CAA4000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D598C16000C
-X-Stat-Signature: j4g9iyashjyk1g9hfjjwqszayxgut8cg
-X-HE-Tag: 1792013526-168564
-X-HE-Meta: U2FsdGVkX18UkxjMwCmaJGg9wzT/fZnly/nyiWjaBSbdpr1T7n1O1or1IPbujvmHtNMKRWgSayn2OdgYfeWPOc/4oMso6n93pa9ExPjyKzqIrB05IYIKZ7II7EHsf117axNVvJs2Vfr5RMVbgrxxqZkRlSC0rs0++vBHPo/+eIg7bNErPGrx+8uNjWG95lIXMYFHh3O8lbrRQvtkbdWspYjH8JsZ7q8EFM3qL26Ayv2agmeotuYS475keKTFslcYL+NajZ1Fw4HUdR3ew6wSz3CJ7R5203itHIsoTwXqwd4g3hqGOPEJTZjBJcoxnvgfmq++KC0OmgwmHR75sc1FS4vVbahD1sdBlgBDm2UgMrHYk2dWPb/6lNvvk46tvhicxx6mEiq+fD4pQBBFQUzF5xNuvFaoLvxND029hdNTipSf2uZh+hcPnYKmlg5uY5xsK2dOyvhcJOV18YO+BIA+1F4tnHjTOqhQ43e6UN19kmFA+yrO9E4RN6QEcGYrWR1b0ym0LwHXYDBokUE9OTN/681Hk7C2pb4rUD0VnNc5YBFJjrZ1DaudJpkWoH+mlHHPxLlj/a3UfkmJPKTB6gg3/uO8WhYdZZOwIsmxI2iE30D0pJzGjCPli7/XutHGyT4Z5UqiqXkQCFTnT3ck29jhQ7Nhvji9VhQ4aHug5TZwckRZn6gWoUWw+32sbBQh5rj6bCxKDONWfF/Da4HLsyr9eG1A8h8K1qt8eO/pIXPJNRiobCLMgU9ugu/Nh3rRZ2O4JzR5FCU71QTtjZnKxkWSG5Dvc+wce9bkmzdpAf1UWB2XLjoEJ7lIv5vNAyo6dHGtuC/7TK5cm8OU+wpkx+t5FCkHfuoE/yDKQe9bejzE4kjjVMcgskXozFTRonsRUWve1g6NUgaqXqkYZr5EsvjGa1dZv8FzqDJod0V3z+7wJx8O0kQHGPDOZAcb64FMB4i4LTv1s9rY67O5NUdvMYm
- TuGtcCgW
- Xasj1Z/6mbHBJhkbj1H1Hr4HI0IK89DG9HbxxUcXapjpJWs/ozrp7oz+UWwE0h+6V7VttcAmQtkVKOs1mSCNkhLqSTJwKRMVrUI98GX4W3eCt4cUawpyg/QpzFCiJhkEPcCsUaf0Wh10cZ2dCM7UHD77KAXUmD0Vub9nbo2sijzGSgYFr0CfEAUZBS4wUnP2u4ZDGjNK7rz852UnOK2MMH+c9zYF8YdPp0XKj5iqHHZfl7Vda8FRdHh+Vi9o71WAFORSEH45hjs1K45KE6LvuGgjpohQwa2qy/Tbxl+PJLmNnmakT4zonW8QUfcDQN7YTGBAP5uNK1q3nrxQDGXPwDYYyS/cTxkEF1mcCSC7mEbMZwm0kUHNmc4FkmqBipN2Xu1A2tBaQrImsNyA=
+X-Stat-Signature: ym7kutdo333jjqijzp8poaqibf8kjqrr
+X-HE-Tag: 1792014346-83064
+X-HE-Meta: U2FsdGVkX1/Jl9Q/h7cpWaau/9c2TMzMgkpDAOxyqrRFv7L1K2eBo8XFYyBuABteSB9FqqW5oTTRwTw6Ksie2lhpKq+4x3Le5Wx3ND9/VBuVKuwk82UV9jgtCnjQwYXn7Wm/dqaeEcizeIS/LaWjtpBftMzHgRW+ZYf7FmbVEEz4iW8FtCmCq+0oP1ZNOpgt/SdN03E6G7YNoerRdckB7djhViDmjD6KcufzoBb0vztoIYEXqIIqq/YXz2tRVcfekcT5VdYCVY0a8Gxh5vWSx91yafokbd2XLwlFYPGlyMpcWbw+O1Bl+RcBrzQSMbeDkHAFa0c8kUE7Nhp5itfNbjMs8jur0WmkQIyP9KakakjX8ALOZhO6yUdXgCxEwN8qIzO1ufNNLOcQzyO1pIVxDqYcHjpU98lkPtTC1xpfJ/nhXsQPa/RcJCV54BUwcP6ArEiMp64uX8G9W+NAiGtND4DwRzGW0YtTr+j3inlNU8lkclnfN449Z8GK8psWMiAZiPJh5OFFkm9Im1PMjXbAy1st6fvDTj3yGrV93a21/4O7Kqjji8jEkZxNuoOcl6NlaCwwTJxJwKzggJcJcvhYEf5R/TV8WojHzjW/n1qVF5Ru1AreoiktQ9BmeKgGAimQbMZ+9BV0PjvlRJr4EZGtqgAfAv8X8Tu4S/fSCKpJpvqJZ08zcmLOBvzJBIcGeXNAyNV/3EzijbJqU/pv1vffYjGmBxLfNwfAozUtfwmXC+HGELjW+i8IrbKCroeRDuAAKVzBOLslWDEUcX+mFR67VtyR918ZeFrQg/R0zU+OpxYakt+ajPyrV+RE5RxEqtum0cS5ESadVdLQmv4zJ+r7OU941oP4Kw04nKGDr8e/Yo8Uw6QE9A8g2tgr38hfqDYXVw/orvMEg71SYDg5fdk2nyhFMjySd2zxILA/qw/aazgXC7xs34EMdc2QPy3dvNG6QhMvBDp4JEAGYBL1RvI
+ EElz6Od5
+ bsqmrBiCGIECKsvPrLCbzIwQuEM/aA+CgCgZUtg+2tnG3Lx/Y7MAgqG1PgRIXyKs+wpfLqU5dUxqf3zX+LGxlLKFg+DnqtkPyrwGOrn9JOAo2TclZz2r4AjnjOYkVhZkgmzVZQzZBO4fq7bJYgGgk3if+7O+5BDWwqxCnHp+gl5uj5huxPMatZ53U+4554iR4dSj4wEoF2vC/jjQ48NyDyVvX59KaxD2pGjKCPWtqE6olLiPMDktmkQopPYj3dWp3bSw9D8fVkOE9igPeIWndtczUy+B6YMrRJDX3ixuaHjj3N/QXgK9TqK5k2/Jrm0fUWr0ez8DX2R0ep8wklThtoc/CyDdhgbiq95MEOkl+MdPrDUIcQMmdJKzYtdY9aobju81+NrP2onqe0Uw+Xm8jkScSZ0FYVoeC+RGCfZ2TtV5nfzNoq/oROcF/EA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,49 +126,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sashiko fixup for patch 3/8
+On Mon, 10 Aug 2026 22:51:49 -0400, Rik van Riel wrote:
+> This series changes follow_page_mask() to return a page count and a fill an
+> array of pages, instead of a single struct page, so a walker can hand back
+> more than one page per call.
 
-This is largely an overly aggressive fix for systems with >1024 cpus,
-but it's simple enough and can just be squashed.
+Applied the series on current mainline (3857c2fe5449) and ran it
+through the mm selftests with DEBUG_VM and PROVE_LOCKING, a race test
+that drives get_user_pages() and pin_user_pages(FOLL_LONGTERM)
+against mprotect/MADV_DONTNEED/MADV_COLLAPSE/fork on 64 kB and 2 MB
+folios, and a core dump of mixed 4 kB/64 kB/PMD mappings with holes
+and a PROT_NONE page.  All of it passes with no unexpected warnings,
+and the fast path numbers did not move.  W=1, sparse and the cross
+builds for arm64 (4K/16K/64K), i386 (with and without PAE) and ARM
+nommu are clean.
 
-sched_getcpu() can return a CPU number at or above CPU_SETSIZE on large
-systems. CPU_SET() ignores such a number, so the fixed-size mask stays
-empty, sched_setaffinity() fails with EINVAL, and every test that pins
-itself fails. Size the mask to the CPU number with CPU_ALLOC() instead.
+pin_user_pages(FOLL_LONGTERM) over 64 kB mTHP, the whole region in
+one call, median of 15, base -> series:
 
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- tools/testing/selftests/mm/madvise.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+    16 MB      138 ->   15 us
+    64 MB      566 ->   60 us
+    256 MB    2318 ->  249 us
 
-diff --git a/tools/testing/selftests/mm/madvise.c b/tools/testing/selftests/mm/madvise.c
-index d59c03ec8191..3f361bcf1039 100644
---- a/tools/testing/selftests/mm/madvise.c
-+++ b/tools/testing/selftests/mm/madvise.c
-@@ -224,12 +224,18 @@ static bool pageout_until_evicted(struct __test_metadata *_metadata,
- static void pin_to_current_cpu(struct __test_metadata *_metadata)
- {
- 	int cpu = sched_getcpu();
--	cpu_set_t mask;
-+	cpu_set_t *mask;
-+	size_t size;
- 
- 	ASSERT_GE(cpu, 0);
--	CPU_ZERO(&mask);
--	CPU_SET(cpu, &mask);
--	ASSERT_EQ(sched_setaffinity(0, sizeof(mask), &mask), 0);
-+	/* CPU numbers can exceed CPU_SETSIZE, so size the mask to fit. */
-+	mask = CPU_ALLOC(cpu + 1);
-+	ASSERT_NE(mask, NULL);
-+	size = CPU_ALLOC_SIZE(cpu + 1);
-+	CPU_ZERO_S(size, mask);
-+	CPU_SET_S(cpu, size, mask);
-+	ASSERT_EQ(sched_setaffinity(0, size, mask), 0);
-+	CPU_FREE(mask);
- }
- 
- static bool page_is_present(int pagemap_fd, char *addr)
--- 
-2.56.0
+(4 kB pages at 256 MB: 2361 -> 1065 us; 2 MB THP unchanged.)
 
+One thing worth knowing from the 256 MB run: the unpin side goes from
+94 to 180 us.  The unpin time is the same on both kernels at 16 MB
+and 64 MB, which points to a cache effect rather than extra work: the
+batched walk no longer touches the tail pages' struct page, so
+gup_folio_next() in unpin_user_pages() takes those misses instead.
+Net 2412 -> 429 us.
+
+The one change I would make is on 7/8: the pages[] fill and the cache
+flushes now run under the PTE lock, up to a whole page table per
+hold, while 5/8 moves that same work out of the pmd/pud lock.
+Details there.
+
+Yuan-Hao Hsu
 
