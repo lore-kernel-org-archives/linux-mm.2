@@ -4,122 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51808C3DA7A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 19:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8112ACC6B2C
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 19:36:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5044F6B008C; Wed, 14 Oct 2026 15:30:19 -0400 (EDT)
+	id 0F2DA6B0088; Wed, 14 Oct 2026 15:36:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B50C6B0092; Wed, 14 Oct 2026 15:30:19 -0400 (EDT)
+	id 0CB4B6B008A; Wed, 14 Oct 2026 15:36:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A40D6B0095; Wed, 14 Oct 2026 15:30:19 -0400 (EDT)
+	id F24EB6B0095; Wed, 14 Oct 2026 15:36:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10D456B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:30:19 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92EE8A7F26
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:30:18 +0000 (UTC)
-X-FDA: 85322222916.27.B761C3E
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AE8EF40008
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:30:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=KOSeEkap;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id BE4146B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:36:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FE978068A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:36:49 +0000 (UTC)
+X-FDA: 85322239338.09.5202814
+Received: from mta0.migadu.com (out-190.mta0.migadu.com [91.218.175.190])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E25DA80005
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:36:46 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O0FuYSjL;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.190 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792006216;
+	s=arc-20220608; t=1792006607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2CNBamaaMCHB2WF9+SfyKf4vOVrbkIcaY3A7Ac/PFC0=;
-	b=1WZRR8A/OdTly4fhkBypqw9Kv3KoTGbcuRMpIq/rDub6dBNmthrF8hG2wFjnk/akdfnofd
-	Dby1VPHb3v2V/Xu+tk2BToSgd1+2eH9dei6Bnt+NR/KBm1D3xw4OX3rwKZiEIr3KufOA2K
-	Y68XPWup0KwUtajaC+Eu+7Z28WY/7SA=
+	bh=jUW/SeoKh1LoozjH5WtWW+2Iglz9/K7JlwN/AnkZvIM=;
+	b=uLYd28Da4mmGeLI1V7l+25jcbnkm+1vcWIN03KxwSD0RgqIlb8xTYPR91MVooOhGEFNt0T
+	NA6Od7GIMmmNLzKf8jhQUeGXRVbOofEwCTaKusK3rKFaBJqUkT7iVJq3+VhuxO084/fuCK
+	jKcqKTgRFy/pC1ZU7ziS3jXz3zvCMbs=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=KOSeEkap;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O0FuYSjL;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.190 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792006216;
-	b=Nr8AbfGfzkQZlGC/IPyvQginScovD4ip2zi8nbib4yB6CH7Oqd2gqAxuAOhA9wcO2KpdQJ
-	+zhP6xDoZhT7FHuIm0plZ5DB6ADCFE/lIslU9lFTcX57hagnEg8a9chnFETP72I0HSo8Yp
-	g+bxxqOr0tMzAjFlxOwsiv7X4COZ7Rw=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48c4d99c32bso994231f8f.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:30:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1792006215; x=1792611015; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2CNBamaaMCHB2WF9+SfyKf4vOVrbkIcaY3A7Ac/PFC0=;
-        b=KOSeEkapM6Vi+f3ZIA5RtFaVqkBE9Pxmno1sbueSq7FCz1xxNyrjAVzXge7CkC89aN
-         r/awEgVtGm89HSvzaBwM1NNc2+3PzC4IFZ2SwQa1c8rBsJqE70cXpPwCnrOUB+Ocw6ka
-         CCdpguIn+NZHmqDwaIxNwsTg/wDHrBjMSiYjVlKz9gFVjzTTwdv75KmmMeIaoJMqdNrG
-         t6yTnfg80L3+E3Bkk0I6sm1wf6N/jyUm7UON3UJUstKOOi89DhVL1BPk8cGuB8fnWrGP
-         eC4ioNIvOBt5ZwLtzUEyFsGWQPPsO9IdzBDA8DkN5Y9Ii9g4JCEnTFLMgBQ8YucYmJ37
-         8whA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792006215; x=1792611015;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2CNBamaaMCHB2WF9+SfyKf4vOVrbkIcaY3A7Ac/PFC0=;
-        b=zGQf3tUIKOasXTypLXcYyJojY4RzxzZIIfDUuxBTBROQlFHQa3L0I7AGgTg9upo0FZ
-         +AM/6DYMa9qy/+Vlbw88knENyb/JFg5Dj8+brg4sW/GUb8wCLvVoF7swqt9bPmOpP1Ai
-         7qVFnUrRn1igtG8YCWoeeahvcW6ZSfAzKQip8QkMjaX+Ooe/ifYUnRYGbwzaGf9zu0zb
-         4lH5XcI/lK4+nyk90fC49mcPIwgKjfIZiyiyt1wtKyoSyq0DsKiWzpDgLQO7TxDVbL5+
-         CyEilhSiyMzGECKzdBj7tSU8oinsnNtkvoqsw0vtXNauGE5y9yt2kWnhvOGth4Curcpi
-         KCaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwVg0eGv/5hP762r913R2IVjs0Srw5wlXIqqQe3EBE0bAnJsCJBHOFl6D+cSPzcT8n/GjJQh4DNbA==@kvack.org
-X-Gm-Message-State: AFq9FYJhogfDz1wwoJ9B8Ns/FRC2HyWePITY7Y5KWnpCyGYIfV7AjU0X
-	v182t5jZ/rG7jL24gPaPYnVvKlE4QFSDpw+vTlBYSB+ktK6ko/afN3qKOvFawBstVuc=
-X-Gm-Gg: AYBFou2oser+/j5YJyLXe2PAaWsXjyb6zhzO4UjNu56ed5u7aaGPIi0OUk7sftpGGZT
-	hNR/1nu6ZcHiFsOIcW/IJ1DYmpBzWDfLa5BLcZQjQ+dVXSTfE1npkCakqDayDh/fmk9uVnyZcTg
-	zvLBRasFooHvlM8SzlvzFlrFgCDYfCO0VePhWKFcMX6xRk9C196tmL/CrJ8GsrFIFZcGGCVC21G
-	GoI/pE74kkElweknDfqEL/LnaG6LjXa1stjbpr95yvxuv1p/IoZA/LqygDriyXQJqfSXM3eNm+H
-	A7XiS+6C7xU2xAAj7AmxFNE0PAwZ4RIo3EKL+F68T/dPDbCBQHcjIp6okYDSyZ6A2fDRz7oH5NU
-	GruvevBxJUIDmlpmInx4KCXvTvPg4N5BDYyeDKoAglNLnoB5y5CcAGbsEWnGYQRqSkbE492CWwx
-	Y3iPZ0MiSGwSrXNsAz6IAUvK/nFWjdlsj25U+N59aHoTpzAjX3ckp9ARO0tviVsR94potDKkc3I
-	Q8zPk3c7sa1
-X-Received: by 2002:a5d:58dc:0:b0:48c:77aa:2f78 with SMTP id ffacd0b85a97d-48dbacecfd8mr24520206f8f.56.1792006215459;
-        Wed, 14 Oct 2026 12:30:15 -0700 (PDT)
-Received: from localhost (109-81-25-183.rct.o2.cz. [109.81.25.183])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab4f34sm14183540f8f.28.2026.10.14.12.30.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 12:30:15 -0700 (PDT)
-Date: Wed, 14 Oct 2026 21:30:14 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
-	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH for-7.5 5/5] memcg: simplify high limit handling after a
- charge
-Message-ID: <as_YRh2qflANGs5F@tiehlicka>
+	t=1792006607;
+	b=C72vgajCvnrl9cgdzKFvB4tP37nt8zJnCo8+ZFsf+F616vjOpZo+HeKhh2dKLtxMhLuKde
+	ctnD2h2NwalefdH7WhL/67oDDGYXqtwAD7xthzwuJ0SqpbdFojkN9SGILPt43IbcMQzi38
+	rCXx7wpcLCD1TfM9rM+ls/2tow64X1U=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=083C/YHtNGmiDsCLg6a7weM6tlLUgKGnnJOHmEI8Abo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792006605; v=1; x=1792611405;
+ b=O0FuYSjLj/WmJsRWZxJpXbDZ3KrpA8OMFnQe/yrP2TTG/fGzZpG72vj3ZucIPIjzmSM6mVoW
+ tzt5z4Z92SmkqdQl0Afm1cdzifmeKaUcde1pYP05WbjLxIClEQzwZ6HugLC9tteQ/JCThlB7zNr
+ O8uFTml4zFu7OBv0AS5HQQKc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5208ad6ed7251eda;
+	Wed, 14 Oct 2026 19:36:45 +0000
+X-Mizu-Trace-ID: 5208ad6ed7251eda
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 14 Oct 2026 12:36:39 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH for-7.5 4/5] memcg: avoid queuing high_work from reclaim
+Message-ID: <as_ZNUcBwNHnF_jU@linux.dev>
 References: <20261010210957.1350874-1-shakeel.butt@linux.dev>
- <20261010210957.1350874-6-shakeel.butt@linux.dev>
- <as9rj8KoF1oKO8rE@tiehlicka>
- <as-sE3hZqFA_Wb5B@linux.dev>
+ <20261010210957.1350874-5-shakeel.butt@linux.dev>
+ <as9p2uFqCQprwdnI@tiehlicka>
+ <as97Nzob4XuzO9Ss@linux.dev>
+ <as-08j9_1C2F_N8s@tiehlicka>
+ <as_AxtUlV8K2fkNu@linux.dev>
+ <as_XvRZzV6vR9dCo@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <as-sE3hZqFA_Wb5B@linux.dev>
-X-Rspamd-Queue-Id: AE8EF40008
+In-Reply-To: <as_XvRZzV6vR9dCo@tiehlicka>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ne3sybmdzjp7pouidq3114ceor6xonhu
-X-HE-Tag: 1792006216-740217
-X-HE-Meta: U2FsdGVkX18srGBoVQLlXEyKH2cstWqEgsNLF0EmrRoeyov1CSXnhe2nQDjg0A25N9MLAyohqu2jSwlMnQq3m/tZIP94pJ9Ixovnumz3angmlHAkjPxqQKQxQqWpygvXM4eiFfNkRZLoryGymwS9tK6BOLA44+jBsUIhabQgI0KKVn/34kgBNH7lH+aB/Xx6gz3EuYvgUyDwW2d2/ZirkxMgn/SzhQx9i1fsK/yKIPR6MwojtUvQu5IwROUpyZElT93mCJxzOSDN1WSLitZl/tP6isC5zFeUASx2KOJ2CCI5JlfQs9GSToSCUY4RzJOIxmgHnVafXdSamNzkSyPQYHyE0jZ6XYtBtLcOFGZjLHRTfgVRb2WQDpTpttQCID77hVWRvqPjhUNdfLvKK2JwM2yfenBaI/SAwWi7upSu6OyZhKv4hFZ1qejxp/htcpCDFvEkUiTUsxwRghFVijibkqSC9a2jZ+pHpoP1Fb1CYHpKX/j0K/4D6YofDkKMHbHOGHcpcpL+G3hB6GNzS02e022fucQ6hvCurBZ7T/MrepH/mhiv9r8H0iLIhnwX0ovKK6iEKy+YoCeDN4a3eM1ZM0RZ0h0LxvMddxHW/v5GLClkMA65C8lEhPle6ED+mnOBkEVkZZoS/0H/zc7noNLbqpqCx8dK3J+0cnZfmhZomIszUR8VZ5EAju4xHDva7mnuV/Y9eLe76Bja4qV4CLWDmued3MCoKH10gTU5O0N/3D3NVexKX6jrhtAGE+Pg3nGu90pES0pS+FZtwWEvFlFHMgtFP5TrqRPuJwMlPCsNxi9Aps0w/tVwrFxetessftTDOZnqX8FpraUbZhqugYQlHSDLpKdBjWroJP40/RfP/dutVfMtl65xfUmnDaetx8A9NB5fFhKBp+OEhjIwU1mCXP/jeQiMEP5RysjmGBihkSyOQXSBktN+eB2FvFrCN1hKdw8C3eQbx7A7/oH+VbM
- afA0tKa6
- B3bHrdAHQU47QhnTd4FurHD3P7abVkec4fyt9BktBXroOGpZMKFaptIiCZWEhglfb6Uv78wIb8CxacVHC8TouzlkABhEbkP+fGKSlMxRMZb312SCg3v+rVpOwC1tn9lClmq8v81S0GJlWvlbtLbwAeNkuB6/wK6YUGi3iKlS3bBnncBj1Ic2sjVr4IZpNkqD3w/vWfflmNILdWicB4+loy9vfg3pT23VTABoz0rymTAPxNg/95qnBo5MnfmQFNS0mrOwX2cKNlIIRQ+p4KvCGnLf4IZVcYwWTB5/mW/JylWEY6DEZqKIkYshxXWAvSMnJYWSXVuVGWx9cJequgA33/XZ5lYLnXi0vBM9r9qVZnPzLXnS/2B7XWWq7kUkh8CFSQ6b25O+mw9bdHvV/vwntfWIsboyRjsevbK5+
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E25DA80005
+X-Stat-Signature: pnscrdafkjrbrmix9tiyd3dike5rd5e9
+X-HE-Tag: 1792006606-630991
+X-HE-Meta: U2FsdGVkX19tihYPVKHfwyAa71uczl1w6U8nRy4A4fcZMNXWctD1GC60+VIXp8ZwCNfv9PDO+uOnUMtVVuIvOmJokJKILpoHpw5HFhe6r05AzujU/TaJNr9gRTG8L8b1uxjINZzzXlHM+4h1vHbm612wGNGGG4QFORL2YFyOpX/+mE8xoDc1cnxjgpDw2ih1y5YweXCP9isICoICUblbCOgWexKU/lT7uf3szkfTUM3XlwSGelMTQe82p4SeywHfG6U64RyFUf+u6BuWdl9Qv4XVQw/oDnWre7pfGXz/Ns3tdCdP4xIFTQhfwOBU2Fj1F8zrAYaH8j4rVd4voO4BZO6Ps0Pccw/egq9FbYc2ePSXibMchQP/7XMX4tGmUSmgc9pfH//jBzLnTComAO7hkFGeAcMMhJArnBGUPmCKpSRX4xqEKuML7BqpcWSnJRbxLoDKvTqhxC/gg5eSHr5WxbSycPUi325+doKbnHBScplLAcVw9cdJ7lUphf6JV8Ul+Gwon/yxCYnUyw3jikN0X3VlpFetJmZE9/ltI+GPRFBnp1t+jYrowed57u7OSeF9rtDaFU3CjCS0piZQ/I1vq3xjiAq0XP7kYhkdjoubmsUe9B9Topit9rXOYGbIs7rTddgJ/+BzEEbqXrQVO6FcpAFsxjg36yRWxfzyOYDRTmTHJH4aa5oyu77Bfu02KDqSVKUWvFlOSIDdLiTQxpVIIi/7Vw+LD6ubCxWMybuxypKw7Xe+I7KbKGBi0u56HB8FINrmzRW97chI0EmZoafF9edQmIyCzqqs6i1FQzKIHZbT+u2/q1yaACaTVLlt2niUaD7CVjq+o641wdivCwixmAexZaYmRK7nwwSIqaRFbLTGBZH1llpF3Cp7KTMFl6OhJP5oCBjZfirdTkP+yl/ptPz+7463jBVNHVEjper0TKfikPQikzHwatgzio9+t2+aDxw3IuhkxXtiFbD9nBQ
+ 8WOEti3k
+ 69uxKGbIoRIewRnllimoN1xylLrkEksr/qieRAtI0AzqkkQ8YI0Pr1vcgPlSFj9qWUy6gc4swobiHAtrN0K4TJL9XQgozL1apTgbgjGBx+Y1azeVcmyxJgXbSyI80F4A/ugxvHNO2MDrKiQ024Z19Xp1hzfPceb5T/hv/16o0EiBsA7M2mElMkdduee6yXNRJJnfyar3TlNdGQDYkLGyiSLsdwxrIQv1Xxso046gUtNKYrVgPhBAbcdpypal9gUhNPjDcxXDHN57TrrlqO2voXwxnM/1Zaf7YTgeE6A1ZHdl3yV38glnyB2AVUW0+Ro83hhNU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,42 +97,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 14-10-26 10:43:33, Shakeel Butt wrote:
-> On Wed, Oct 14, 2026 at 01:46:23PM +0200, Michal Hocko wrote:
-> > On Sat 10-10-26 14:09:57, Shakeel Butt wrote:
-> > [...]
-> > > -	/* Interrupts, kernel threads, and remote chargers stop here. */
-> > > -	if (use_worker)
-> > > +	/*
-> > > +	 * Use a worker for interrupts, kernel threads, and tasks whose mm
-> > > +	 * does not match the charged hierarchy.
-> > > +	 */
-> > > +	if (use_high_work) {
-> > > +		if (!iter)
-> > > +			return;
-> > > +		if (allow_spinning)
-> > > +			schedule_work(&iter->high_work);
-> > > +		else
-> > > +			irq_work_queue(&iter->high_irq_work);
-> > >  		return;
-> > > +	}
-> > > +
-> > > +	if (iter) {
+On Wed, Oct 14, 2026 at 09:27:57PM +0200, Michal Hocko wrote:
+> On Wed 14-10-26 10:55:21, Shakeel Butt wrote:
+> > On Wed, Oct 14, 2026 at 06:59:30PM +0200, Michal Hocko wrote:
+> > > On Wed 14-10-26 09:06:00, Shakeel Butt wrote:
+> > > > On Wed, Oct 14, 2026 at 01:39:06PM +0200, Michal Hocko wrote:
+> > > > > On Sat 10-10-26 14:09:56, Shakeel Butt wrote:
+> > > > > > Kernel threads and remote chargers use high_work when memory.high is
+> > > > > > exceeded. Their allocations during reclaim can also charge memory,
+> > > > > > for example when zswap stores a page.
+> > > > > > 
+> > > > > > Without a check, the high_work worker can queue itself from its own
+> > > > > > reclaim. The pending bit is cleared before high_work runs, so each run
+> > > > > > can queue another run.
+> > > > > 
+> > > > > What does that mean really? Does this delays the actual run?
+> > > > 
+> > > > It will not delay the actual charge request. This mainly means that we keep
+> > > > enqueing the high reclaim work even from high reclaim context and can
+> > > > potentially keep wasting CPU if high reclaim is not very successful.
+> > > 
+> > > Hmm, so is there any practical problem if we do that? What exactly do you
+> > > mean by "keep wasting CPU"?
 > > 
-> > Would it be much simpler to bail out on iter==NULL (i.e. nothing over
-> > high limit) right after the loop?
-> > 
+> > More specifically if high_work kworker keeps enqueing high_work, most probably
+> > the memcg does not have reclaimable memory and keep retrying it wastes CPU.
 > 
-> I want this patch to not change any behavior. If we return here when iter is
-> NULL, we will skip a potential call to __mem_cgroup_handle_over_high() when
-> current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH. Though I agree that is
-> very subtle and most probably unexpected. If we decide to remove it, we should
-> do it in a separate patch.
+> Yes but this is not specific to PF_MEMALLOC context, or do I miss
+> something?
 
-OK, makes sense.
+Yes you are right and you didn't miss anything.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
--- 
-Michal Hocko
-SUSE Labs
+>  
+> > > > > > Skip memory.high enforcement for charges from task context with
+> > > > > > PF_MEMALLOC set when they would use high_work. This covers kernel
+> > > > > > threads and remote charges. The memory is still charged. Interrupt
+> > > > > > charges keep their current path.
+> > > > > > 
+> > > > > > In a VM with incompressible zswap data, the worker queued itself 163 times
+> > > > > > without this check.
+> > > > > > 
+> > > > > > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > > > > 
+> > > > > The patch itself looks OK. I am wondering whether we can unify the check
+> > > > > with the existing one which forces the allocation through in main
+> > > > > charging path.
+> > > > 
+> > > > The force charge (and ENOMEM) paths bypass the memory.high enforcement
+> > > > altogether.
+> > > 
+> > > Exactly. Isn't that exactl what we want to achieve here as well?
+> > > 
+> > > > Only successful charges (done_restock label) goes through
+> > > > memory.high enforcement. So, even if we move this check in try_charge_memcg, it
+> > > > will still be a separate check before calling high enforcement function. I think
+> > > > this check is very high_work specific and better to be in the high enforcement
+> > > > function.
+> > > 
+> > > I meant something like the following
+> > 
+> > Oh ok this makes sense. Do you want to send a patch or should I add this in this
+> > series replacing the 4th patch?
+> 
+> Feel free to take it. I haven't even tried to compile this. Just wanted
+> to show what I have in mind.
+
+Cool, I will resend the updated series after the merge window.
+
 
