@@ -4,107 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35ED1CC6B1F
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 02:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F0FDCC6B1F
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 02:48:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D86766B0088; Tue, 13 Oct 2026 22:37:34 -0400 (EDT)
+	id 0F0776B0088; Tue, 13 Oct 2026 22:48:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D37936B008A; Tue, 13 Oct 2026 22:37:34 -0400 (EDT)
+	id 0A2CC6B008A; Tue, 13 Oct 2026 22:48:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C266F6B008C; Tue, 13 Oct 2026 22:37:34 -0400 (EDT)
+	id ED2AC6B008C; Tue, 13 Oct 2026 22:48:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FA2F6B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 22:37:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B03B803E2
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:37:34 +0000 (UTC)
-X-FDA: 85319670828.14.8891567
-Received: from mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5CA46140002
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:37:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SuKgG0h1;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.187 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C941C6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 22:48:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2BA631603C1
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:48:33 +0000 (UTC)
+X-FDA: 85319698506.26.D6C9635
+Received: from mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EECD4160005
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:48:30 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kk02qkMV;
+	spf=pass (imf08.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791946111;
+	b=ANO4+qZYsJQQZ5kOJ6WK7PQ8SJvbs/5sLmAJzXi+3Kf4gI338HFqs8dlH7IGh5zcOugxZe
+	wnRRT9A7RziUSipU7/JF/HrK7Z9uO6NznbWybKuYktPr3i4ux9YJ6N5zkJPTlPp5Bilfp+
+	qbYwFjLbG5Kac9WEACw7xBEm8U0ZKwc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kk02qkMV;
+	spf=pass (imf08.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791945452;
+	s=arc-20220608; t=1791946111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dxd8Y6Lrt4s4PWsOCLBeyi346J8MZaF1zshRzm5udds=;
-	b=r1UpcuZG4/LFceLWpkJwUEAx++vFxMh3JPuRRdJiI6+EG4lcgXyh47bzEgaSAQp1jjASab
-	ynTy/jxBu2P7lSUgrQf7az0GtovELR34DPOLZiRqNst/AgQKTmQEDAXli6gFil/HhVbawU
-	2gyA2U9WmUXsdaZPa7DN4xUTzJ47bEs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SuKgG0h1;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.187 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791945452;
-	b=1iJMKnGyTwfpjceHG/IsvRMl4Fy4D3TNCZAmvUq7B1YlvPtKeNNQYrH58AVxYI7Azca6ue
-	i+AapjRjBtp+2ZEcdEQsifOyDsYkH0/KpWvM7ICxucoxr4iI7n4Q6SwG3j7Uhio5jPI+u6
-	zpw+4rcLB1Num5mhfEJUaj6CgqurcB0=
+	bh=R4z03Bv7bkdYx9bGLqVZqYE+4w8O1MxHE2dIRVvy8jc=;
+	b=zcfTCyW2YgS8GSpH3nWBrNHiu+DJ32UKZJGKmTiUX5TBjz/0PGOzFgUtMy26Ow2BByoBuw
+	+IBT4CtTTPfRf5olWeGISla4s0R9uFgaSOhOCRfyG2CEjaDcf0/tqSO4MnEXkRxDYZ3T0+
+	Z+afp9rKefJQEWOV/xu0mBWyxKEjFYQ=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7UUTt82RGwkEsPz4m1IMAXE3gzzct3/wWyS9tYPd83k=;
+DKIM-Signature: a=rsa-sha256; bh=2kHoms2QSSahMaMVeqUufPLoRe85ZbbkTBqAyiaowT8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791945448; v=1; x=1792550248;
- b=SuKgG0h1oLdHqaaJ9RHrwR/s04x1jK5Mwqs5ZzfmH0XRLckS0tHu2iba+7mwMZGIMKTwlbiO
- huUqRETO+zV2D+xoIvimg0dmf4nPISBkwfV51fkak4Bxb2YH7ZLI6YFPMxEPo+2+jE1iQOwEt0x
- 1gqWhvXrcPj0282aAU5le8mQ=
+ t=1791946109; v=1; x=1792550909;
+ b=Kk02qkMV1wnrYkoj8hoDrlMuw8WCNtXDUrHdEpkGmbHIkqWbFf4lOt7+YT2Z2U/xiEFZxaco
+ Szv5SlUvGoU/TgfbXb77JE9WqN1LAWpUwpm01sGDtvHp4qmbOyQhrmIkFcP32mgL1VDBypSK8rF
+ IXSbv//6P6ONuIu0/0/IqgtA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 48e5c038101e18a7;
-	Wed, 14 Oct 2026 02:37:27 +0000
-X-Mizu-Trace-ID: 48e5c038101e18a7
+Received: by smtp.migadu.com with ESMTPS id e25af03395e5a192;
+	Wed, 14 Oct 2026 02:48:29 +0000
+X-Mizu-Trace-ID: e25af03395e5a192
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH v2 1/4] mm: fix missing page-table destructor in
- pagetable_free()
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <2552e0bd-0e50-4dd5-a3d9-00e9204eb2c2@arm.com>
-Date: Wed, 14 Oct 2026 10:37:04 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Dave Hansen <dave.hansen@intel.com>,
- Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>,
- =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Alistair Popple <apopple@nvidia.com>,
- linux-mm@kvack.org,
- linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6DB87EB4-93BB-4861-AC17-159DCD1E442B@linux.dev>
-References: <20261010112457.49485-1-songmuchun@bytedance.com>
- <20261010112457.49485-2-songmuchun@bytedance.com>
- <2552e0bd-0e50-4dd5-a3d9-00e9204eb2c2@arm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5CA46140002
+Message-ID: <c9799efb-a002-4925-959f-c9a2b883d85b@linux.dev>
+Date: Wed, 14 Oct 2026 10:48:19 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: vmscan: don't count per-node proactive reclaim as
+ memory pressure
+To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
+ hannes@cmpxchg.org, mhocko@kernel.org, ljs@kernel.org,
+ roman.gushchin@linux.dev, dave@stgolabs.net
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>, stable@vger.kernel.org
+References: <20261012022917.1102467-1-vernon2gm@gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20261012022917.1102467-1-vernon2gm@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 76zx3xqbrnm3prdz857yb7z78nusu5f7
+X-Rspamd-Queue-Id: EECD4160005
 X-Rspam-User: 
-X-Stat-Signature: bjty51wn1cn5ah7i8font678djdinwou
-X-HE-Tag: 1791945450-573133
-X-HE-Meta: U2FsdGVkX18ntbjdFdjxIgstnT5v96d+TSBOp1HoToaIefM9TvPcWFf0TCJPFodcmDIfDw27rGXj9lt1kymKGGvCKhxDR+G5Ed4iDfgAdvzEvvJ9VCt4Msgp/fxMnBsqo/c45PQXaTA47wjDEAcrOnhig8tHgkcs3HlEyiw0wmAcujiiE2NRN9IsAxyy+OwJxPKcsh67qEYWsfSh8bWPk2xEJs7M7dornPcHVYwNiSArCw1IZ0JJwfkNrhbqQNwfRbaM1ZfjaK/mdeMMIh3rKll9sPoPZhbUUzNXF/ib/2VXLCWLTvCNn6X1J1ZwLoN756XVxTrpCXRx08iDNvcAEUYo57TQGjImoFYFFWmBydQeBpFoEu8biBr7/4hXlymBVcdsCxdSPgFbFW3Q2rQBcwio5set0h2B/WGmARZLBxHtagrpMQSUHktPmfpmmcuiQalt6Fjube1Bh9HnpQWCb++OgPuLrrMP9MGTEOZLkP1IG10SVSbWML1um6liJ5YxvujbWIQHnFr8U3DFDMiHcdM4MtedXUdkVCXAW8GbKfEcQZed+x+ajWqrOG5FndDrzwX1qg/ctipJ7KDlramAqegVTfFJy9G3YLCGslflTZlg++TTwi8KYiiCsvhxfF6/CVtb5Ia/sfnZJ7wH9tT8IdoXOiRJ+ZeJXzGI3akeqwwgJymV+/yLQTKA2nT9zmTwRu1fdUWqC1jiQieyOV5W8dQJvXNa0XT6QjMZWAgx3QOZjkD9cSTru4ubIo5AYX6gfLYmY/7pEsB8J/P5NYU3eWZ92G1T8Z4dWG3htgi7XxLh/+GhO7FIAFGLBFtPjxbklCT3ZC0ZtxKew17UhPAv/ia5qR9WzqkLQTXGlh2Mn3phJQt3iZsXimunHgW63lQTtgR3yBtl1XwX9v29xVyAEuhVNJb/Dwt2cEKIAKWXhPb3KbR6PW2i/yN3m9o+kNZ9z74RLpYy3u+EY+VbQMZ
- Gv5uvgns
- J39GAvBLYI2E118oOtIOwClxd9pYaADANmF3rrjzzZdKBZFa7JBxIJjIFD7fEPFxqqa1GXP/3Kk3O3gi4pg18lxWU2jqj3tzCw/n5+okmnv5FxcENAndHXtN7RAhMnkfUYZsah3t5wdnzu8GuARwFevN6gDPsHtbmBei/gSpQmKA0fH9iyrk156Q9Fan8Geioz2kI3Zsi8MmQsIKWJsxh0zNe2opXThvr4+MxLtiT1dzVZmX0c39aHpUrGOZKJBQQbR5aMHqkT5kNpQVP0DwTNWG5wb9aYZiQdMuvHpmvYUy2XKIrzRYSOEe7LAj1gY0jKnm4oTN+yM8dm6Y+SC/vjY+XeJOchxhjEARdGMz1R7xhfPjEbQq1LpFo4mSep3EzLuu/4KwYBwxj1QMbo1hAhfvdJgzVAJ0UXRJo
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791946110-362699
+X-HE-Meta: U2FsdGVkX1+2ZRY27Y+lPTn+Fot0m14YauEFTPuVnZoE1omXgvpKtElKXcRLsB3ErS+ENTLRe8f2PRptG1vEPYXtCmoKb/+LmnVJAC0a6y+Um85igwxupEsjO2NnMRwEdwSdFtvDt8GTESv6nFlS3p5OyM2VyIsyT7dcerwntQfH1Z44W8S/sUd5qS/x/hXmCCRczYtpUvn3NXrFRq+hKFpOkSGYJjwxIGpgu0IUjR60BLgyww5L0XwyKJLBPJ0EN+oIXz+xF/RedXpmZ69hYx2qZGLMKHBdczoD7r97x13SrTD3KFxCPSwRvaNTqmGQ7/sqYamU1ABHvnLfXDA6sN8nbpZxXmviwMa8DlH6WU8hK8awyqv5IZmxaXue3fvCixlMVqSCVzHfU7/4W0BRKg+MdUGbBXKrXvW/CVMMHpspxcBAT3d4yqi0aRoRbq8KtZYH95D8JoGfQorzRFV7FPOOWPmvzdwn3+w5KYf66b4KxsL3f1bmQA3WKDz5dL9Myu8tEHvlbkumG1XKoT76mi/OtUdENGZ+Makr35YJy7WfnVp8ShFaSwtX2GhBZbazRERsnY9ssBraC0LAzD1TXTxpi6ncdyPB4UyqptV4rj1HISYVVVFMmew4RBx0aB9sqmqVfa0e81I3SJ8Z6dE5/C4tRWBMWR9qTdTGxOjqbV7w/rpu77fPHQnZAwbFOoGALkxLQ9bqFuUH8bxtcnkg9iWAIJfs73Ze8rYatCLE9mSupCMAgOe+sMwA9FMGq3vyDeHWIeg5vw4ODArI1y3LYOWHCE/rQLY8Kyb66eE3QVcmZdz8id+aKWLWpAwgceYqg+AyusrehRFu6fV/E9PXxHydguFfBtp+hxE4lV+jMkMjRbhhoSe6jn/AtggWOTusUnt/PI+yHEEOFyCpAuU3LDOCDt//3gub3oLYeA4LlSuV25/rT527gJJ6H8ZDIO+Cb9rnHF1HeeJ40itG9RJ
+ rYtZ+Gd4
+ GroLY1cXzVex1gUq7NBz0EhdosFGQz9q0cpgqSpklK5ccO0qs4EM/uA+X1GosK6NjwFNjBFX8KvqyeCwtb+fu4yZzgUregcubtvrzFQQdmBrAehvrB8r67QNAv8KMkmWQFntEposNtn6F671F1zI9hDE640NHYLBx49v1iics8Cm6cQESB5YF+9AgXar4Bih+gndop/OdnOVPE6a25CKYkCpJFS3lx0rkTJrt6tsuchv8mtBP7K5dwFKJF6tK9eEN3dWW9i6x088lhGSrbHFWQBNEUWenGpjNGcnWkr1ZkN0NQD5I3Ig9GQR8CunC4XkINvkOkgviotjBlsPpKz+/lYvP2bPk3JyeQk3I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,162 +98,88 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Oct 13, 2026, at 23:46, Kevin Brodsky <kevin.brodsky@arm.com> =
-wrote:
->=20
-> On 10/10/2026 13:24, Muchun Song wrote:
->> Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
->> pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
->> tables.
->>=20
->> HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
->> splitting a PMD. Restoring the vmemmap backing pages does not =
-collapse
->> the PTE table, so a later memory hot-remove eventually frees it =
-through
->> pagetable_free() on x86-64. That releases the page without running =
-the
->> matching destructor and leaves NR_PAGETABLE elevated.
->>=20
->> Make pagetable_free() detect constructor-backed pages and run the
->> destructor before releasing their memory to fix the problem.
->>=20
->> Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
->> Cc: stable@vger.kernel.org
->> Assisted-by: LLM
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> v2:
->> - Move destructor handling from x86 into pagetable_free() (suggested =
-by
->>  David Hildenbrand)
->> - Trim and update the commit message (requested by Dave Hansen)
->> ---
->> include/linux/mm.h | 37 ++++++++++++++++++++-----------------
->> 1 file changed, 20 insertions(+), 17 deletions(-)
->>=20
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 5cca90fc1df6..771a7d60b0a5 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -3969,23 +3969,6 @@ static inline void =
-pagetable_free_kernel(struct ptdesc *pt)
->> __pagetable_free(pt);
->> }
->> #endif
->> -/**
->> - * pagetable_free - Free pagetables
->> - * @pt: The page table descriptor
->> - *
->> - * pagetable_free frees the memory of all page tables described by a =
-page
->> - * table descriptor and the memory for the descriptor itself.
->> - */
->> -static inline void pagetable_free(struct ptdesc *pt)
->> -{
->> - 	if (ptdesc_test_kernel(pt)) {
->> - 		ptdesc_clear_kernel(pt);
->> - 		pagetable_free_kernel(pt);
->> - 	} else {
->> - 		__pagetable_free(pt);
->> - 	}
->> -}
->> -
->> #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
->> #if ALLOC_SPLIT_PTLOCKS
->> void __init ptlock_cache_init(void);
->> @@ -4078,6 +4061,26 @@ static inline void pagetable_dtor(struct =
-ptdesc *ptdesc)
->> 	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
->> }
->>=20
->> +/**
->> + * pagetable_free - Free pagetables
->> + * @pt: The page table descriptor
->> + *
->> + * pagetable_free frees the memory of all page tables described by a =
-page
->> + * table descriptor and the memory for the descriptor itself.
->> + */
->> +static inline void pagetable_free(struct ptdesc *pt)
->> +{
->> + 	if (PageTable(ptdesc_page(pt)))
->> + 		pagetable_dtor(pt);
->=20
-> Took me a while to understand why this is fine. Currently we have:
->=20
->     ptdesc =3D pagetable_alloc();
->     pagetable_*_ctor(mm, ptdesc);
->     [...]
->     pagetable_dtor(ptdesc);
->     pagetable_free(ptdesc);
->=20
-> All good, nice and balanced.
->=20
-> Now we're saying that pagetable_free() should call the dtor. But of
-> course, in most cases, the dtor has already been called. Yes, this is
-> fine because in that case PageTable(page) returns false. Still, the
-> casual reader is likely to be confused (like I was).
->=20
-> The commit message should really explain this. I'm not a big fan of =
-the
+On 10/12/2026 10:29 AM, Vernon Yang wrote:
+> From: Vernon Yang <yanglincheng@kylinos.cn>
+> 
+> When the cgroup has no memory pressure at all, writing to
+> /sys/devices/system/nodeX/reclaim triggers proactive reclaim on
+> NUMA node, causing increase in the writer cgroup's memory PSI.
+> 
+> Due to this reclaim is performed in the context of the write(),
+> accounted as memory pressure on the writer, like
+> commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting reclaim
+> as memory pressure"). This is unexpected, the similar scenarios (e.g.
+> senpai) will continue to occur, only this time it is for the
+> /sys/devices/system/nodeX/reclaim knob.
+> 
+> The Documentation/ABI/stable/sysfs-devices-node documentation also
+> notes that "This interface is equivalent to the memcg variant."
+> 
+> This patch unifies the semantics of the memcg and node interfaces:
+> per-node proactive reclaim is no longer counted as memory pressure,
+> and the per-node proactive reclaim interface no longer produces
+> phantom pressure.
+> 
+> I ran demo[1] that performs per-node proactive reclaim 10000 times
+> in qemu, writer cgroup memory.pressure as follows:
+> 
+> without patch:
+> 
+> some avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+> full avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+> 
+> with patch:
+> 
+> some avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+> full avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+> 
+> [1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_node_psi
+> 
+> Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
+> V1 -> V2:
+> - Check `sc->proactive` to differentiate between proactive reclaim or
+>    page allocation. (Thanks Barry)
+> 
+> V1 : https://lore.kernel.org/linux-mm/20261005062236.564210-1-vernon2gm@gmail.com/
+> ---
+>   mm/vmscan.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 91295070ca33..2e9ca5e4c741 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -7994,7 +7994,8 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
+>   					   sc->gfp_mask);
+>   
+>   	cond_resched();
+> -	psi_memstall_enter(&pflags);
+> +	if (!sc->proactive)
+> +		psi_memstall_enter(&pflags);
+>   	delayacct_freepages_start();
+>   	fs_reclaim_acquire(sc->gfp_mask);
+>   	/*
+> @@ -8011,7 +8012,8 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
+>   	memalloc_noreclaim_restore(noreclaim_flag);
+>   	fs_reclaim_release(sc->gfp_mask);
+>   	delayacct_freepages_end();
+> -	psi_memstall_leave(&pflags);
+> +	if (!sc->proactive)
+> +		psi_memstall_leave(&pflags);
+>   
+>   	trace_mm_vmscan_node_reclaim_end(sc->nr_reclaimed, NULL);
+>   
 
-Maybe I should mention that pagetable_free() is supposed to free page
-table page from now on.
+LGTM.
 
-> asymmetry we're creating between explicit alloc+ctor and free =
-implicitly
-> calling dtor, but I suppose it's safer this way. (And looking at the
-> rest of the series, it does bring some nice cleanups.)
-
-Make sense. That's my plan.
-
->=20
-> I understand this is a bugfix series so its scope is limited, but if
-> time allows please post a follow-up series removing all those explicit
-> dtor calls that are no longer required.
->=20
-> Now don't get me wrong, I am absolutely in favour of moving as much
-> handling as possible out of the ctor/dtor and into
-> pagetable_{alloc,free}; a series I posted earlier [1] was a step in =
-that
-
-Excellent work.
-
-> direction. It unfortunately had many issues, including the unmatched
-> alloc/free calls [2]. The work you're doing in this series, and your
-> plan to use pagetable_alloc() for vmemmap, are exactly what I was
-> planning to do next, so thank you for taking care of that :)
-> With the commit message improved:
->=20
-> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-
+Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
 Thanks.
 
->=20
-> - Kevin
->=20
-> [1]
-> =
-https://lore.kernel.org/linux-mm/20260714-remove_pgtable_cdtor-v1-0-44be8a=
-7685d7@arm.com/
-> [2]
-> =
-https://lore.kernel.org/linux-mm/6d167aaa-e9b0-4687-970c-1c67d0df6344@arm.=
-com/
->=20
->> +
->> + if (ptdesc_test_kernel(pt)) {
->> + 	ptdesc_clear_kernel(pt);
->> + 	pagetable_free_kernel(pt);
->> + } else {
->> + 	__pagetable_free(pt);
->> + }
->> +}
->> +
->> static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
->> {
->> 	pagetable_dtor(ptdesc);
-
+-- 
+Best regards
+Ridong
 
 
