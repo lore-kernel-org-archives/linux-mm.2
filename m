@@ -4,97 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E6EECC6B2C
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 19:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6700CC6B2C
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 19:56:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C7796B008A; Wed, 14 Oct 2026 15:54:21 -0400 (EDT)
+	id CD9016B008C; Wed, 14 Oct 2026 15:56:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09FC66B008C; Wed, 14 Oct 2026 15:54:21 -0400 (EDT)
+	id C8A126B0092; Wed, 14 Oct 2026 15:56:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F21486B0092; Wed, 14 Oct 2026 15:54:20 -0400 (EDT)
+	id BA0A16B0095; Wed, 14 Oct 2026 15:56:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CC8696B008A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:54:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50D911607DB
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:54:20 +0000 (UTC)
-X-FDA: 85322283480.26.B98219B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 987B26B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:56:21 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1EC21C0724
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:56:21 +0000 (UTC)
+X-FDA: 85322288562.18.E2333A1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A6B1F80007
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:54:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l5s4qmCr;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2F72A14000A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:56:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j+TzbS7T;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792007658;
+	s=arc-20220608; t=1792007779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GOJVABY0IvwuLtUWnjxpl472DCTwt9A3UmESRE0DpRw=;
-	b=X7D7lTBiF2jyozXV6ZzoQkh9dkLZo5znJofEI5f8NEAdBteAkRitwHbEBl+PKNjYDAb2EY
-	KSft72GTI9Xfdun4CfRd25/EUXzZH7eWv402ChZSiIiOFyOyTBeirYLcnS5/uJrgOi27+p
-	W4qI6M16LTZaEDhqVRE1WM28o+uG7R8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l5s4qmCr;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=JW6T2NVrNiSYii9ZuXsvqcqsrQBmXx3CI/QXZh1Cb9c=;
+	b=o8G5d49Nbshsl5ZejVXjVxN8+REpwkNs/sztSgGK9m1PExwkGz0qfuFrMhIAHmrsPpWFc3
+	DpE2VEJk+ZDwrYFML3aEzvPzn5OyNimcRdG1ZO90HwxQoftvG5yE3qCqrJsJM++rvqgQf/
+	s4dOpkC+ukniCTReiIODG0irRMBlqfA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792007658;
-	b=4ioIRXEUcd9nqq7UmT6RNKX1l7vLYv95TroXQXuZZNyDU9mNzB37OQjws16GdP32cbQKMi
-	qvRZR2u84rVLtWOfiVpTjNgmobihzTMa/Szf7aFy0p3zdofQdFntohKvyvR978s2x2GiuV
-	168ZKRkkOIO9iFEWsPwi5JUZTSPa+5A=
+	t=1792007779;
+	b=CkmCelHYfjMV4ZIBxeCAM/+vwoqlWGOASg4p1nWQtyJPFw/LVLwKhL8/BOikN2VvmYC79L
+	RnONU70NSrrPWjjoGiv0aJcF1sDcBK9ra5827crqn5NdaGNK7eW9i2WgyoyqHARefdmeVo
+	x9abHcC5u+2pP8VprsyPNyp8vTqD9PU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j+TzbS7T;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E4A843B1F;
-	Wed, 14 Oct 2026 19:54:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD71A1F000C4;
-	Wed, 14 Oct 2026 19:54:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6916643D6F
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:56:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5421F000C5
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792007656;
-	bh=GOJVABY0IvwuLtUWnjxpl472DCTwt9A3UmESRE0DpRw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l5s4qmCrX8HZiY94A0AOUdfYCOTj+NBZ7bTxuqXD6YMP5G22pg4OY+JD1CNj8S1Ah
-	 JS8ZH36xCjJwhT2pchAEQJ+4OozFHNw4cZRZR8Tez6midV/Utnc0N0eFIuYJP7H1Fp
-	 G2woX7jKWWNkVcz4y10Fg82SrlSFssjtgV5VoK4NKc86EZ2Xwg291m5Za4Kh9Exw0g
-	 oTuzuDnvXv/KqTTuGPZOro03vjDrLkxMNUiFPv0q0/oKJfvblslWvRF4dPZHoBE0iR
-	 JBuLCVTUp+zVkrd7g8ZfEVi7YeUzOBou3sylmun2AveSWN/e/xfDWInTrXxE5sItCj
-	 fz6iLNYWFfUSg==
-From: "Harry Yoo (Meta)" <harry@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Imre Kaloz <kaloz@kernel.org>
-Cc: kernel-team@meta.com,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Jann Horn <jannh@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Jose A . Perez de Azpillaga" <azpijr@gmail.com>
-Subject: Re: [PATCH v2] mm/slab: sample slab_state once in kmem_cache_destroy()
-Date: Wed, 14 Oct 2026 20:54:05 +0100
-Message-ID: <179200759984.3589452.3981388920201754777.b4-ty@b4>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261014150844.8536-1-kaloz@kernel.org>
-References: <20261014150844.8536-1-kaloz@kernel.org>
+	s=k20260515; t=1792007778;
+	bh=JW6T2NVrNiSYii9ZuXsvqcqsrQBmXx3CI/QXZh1Cb9c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=j+TzbS7TpAFLQtfLh1lkHLvzP2ycFzBbTshh8XeQkiC0R1GGqa0kq70T3nMbVFMzz
+	 oILQB6aIFUxczmdVLzPpj7turEsh1dfJMI0A3PgBTWCItPfWpYyQ9FeOv4H8Tj1nKF
+	 qpPWqBmC3rG0WssOv0ncVsP8lIjSc8dSqQQ+45h9wEI2P+kCcrre0MsxEMbeD/CkmM
+	 OnAFweOqTkmPylhDqjEE/AcaGeFGo/G3kzj20d9egHMLjDshpq5Wj27Yma4O1eaxWl
+	 rr8EQuCuH747XSEGyO58H09Uz1Vut1iKzrVvi+DUKb0Zh6XzKavCGBD0HY/3HUBWpu
+	 AAjADlI9hKP6g==
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93ef1a2948dso308514985a.3
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:56:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz1NArOYSqdYAWcCoNXpTPCowrFthu/YnsVrvDwKC9gi7aK35G18iLC7skedPSuZCERtZXRR8GdXQ==@kvack.org
+X-Gm-Message-State: AFq9FYKEV54dQGiJpXCQg4S2ekbGRdUq+L3A6nr96VGeX1o34sWB2431
+	KSVorMqPl3e2g54OLoVEo8ByyMugxSDbfroO3uYY4PcTzSpab7V/ja5F1To5C+Nc+QhBNvewOjM
+	FBi89wnRKihwWpm4eekcRpQCydvjU2f8=
+X-Received: by 2002:a05:620a:6405:b0:93d:e031:5ad with SMTP id
+ af79cd13be357-93ebd224911mr2634160785a.17.1792007777727; Wed, 14 Oct 2026
+ 12:56:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A6B1F80007
+References: <20261014-folio_pte_scan_range-v2-1-00cf9bbaa364@kernel.org>
+In-Reply-To: <20261014-folio_pte_scan_range-v2-1-00cf9bbaa364@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 15 Oct 2026 03:56:05 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xMhtUWwZ1qCRkY=WjxwKGBTD-CSdQcp5jxcLW0WcMvFQ@mail.gmail.com>
+X-Gm-Features: AclHuK95frzik0jnDRCFT7tNgkatocH5THJ5EMTKIH-IiD6HCFI8xOfwA0yawbE
+Message-ID: <CAGsJ_4xMhtUWwZ1qCRkY=WjxwKGBTD-CSdQcp5jxcLW0WcMvFQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: fix address wraparound when scanning large folio PTEs
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Ying Huang <huang.ying.caritas@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Chuanhua Han <hanchuanhua@oppo.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Lance Yang <lance.yang@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2F72A14000A
 X-Rspam-User: 
-X-Stat-Signature: naj1s4dyhqmzq1gxmpjjew11szzfpcq6
-X-HE-Tag: 1792007658-746061
-X-HE-Meta: U2FsdGVkX18t27yWegsk1tT4F+HijcKDG1dZD0PP+O9y741eQauZPTSJB8CgTtgpzSZmtoFXCXxJ4pkGz5rjsNtGsEox2VSuRkJLwMz1pKpIes3dXXlmzddWsUZuoxnAJTda3Pb0g3r1C9CD9C+HuMzP8rdradIDfE66LPnM3ldXXPv7svDoGNnVAvD4TgjYrmyIz9Fv75M8C1PUS4xZjkzGNlcdTmS/Xp8rdFhmSlZ+p9ZFvIHKlRgrEGqErAX1ZPIrCduUSPEfvWI/hFk+yMdn+oW2We3yg8CasDEURost1tVm3oHP6s0K+pUhDb+SFP0pGodRYATFLVOsvFumU1ippPi9QUaZfiD5aQm8ODwukrrYYMSUfoPm7NbvFLoZlKNrCfQbN7Ngp3gLPyGWTV2HQ9bVtxVl5aprDp64qAqczH4rvAmjfvh2yFVNaoFb6XUiAiH2ugkLjXSGtBCZxqRNt8XVzKGWBi3w8VNzcT/e3fIBCryaEx60oF4yZ0m9spE8Ua/ZNr4Wj3WlB93yhyOeo51LXflmv8n873Njf3wyyMcB9Ww3KfnONuTRLYCK6pfQp9T91zIeIDhDwyeRWXSudjjubvgX6qsg9FXtBzTS0p4k+zgBJ7Ro00tn6AD3cnBCH6eWQlgz5a4etkVlnJRUEh2BorrtaqHZz12C/9Drlko+BrZSaCYH75VdejOMYeyT+gewdzeP0nHhfxCCugeEdwGTt73/JBZbyfv68TIWOttxMPhFL9QLN+eUg98iHLFwZ7FFQ53jjMFA1TRF6wIG96oYUyfEA6JnU+BSr7cb/ClTJOoafrHdJVSM323h+ub9d6L7co6FpvdLjewCORw6gnqsfl/HAv6Kb7R+TRgB8QDREctf/gm4jo01zP3nD/qpSf9cYlpvpd/IEhSphYYxaxHyH/j6KrrRt1zu2YyE6sqBU/0lO9MCeyhDqmjFKG6pVsBV0MNI4end9Nm
- mXL3BLOD
- fGZCUQC/v6nXRaeXntajErQKTf7GI8twtc8cV4uKyAh3v1px1qh69Y58KLsELbV1Hj0jy7v2d+iE7gN+glfmXQ6Nn6f7/Vg0ecp2ySB7Cxcbczz/Ek/VwILysPC2iINp6LzZ/KLe70XyrR0QkRMaGXGYr/rnPihzW2lirzTMu6wfSOuH66rJZ/z01YwDLWktWzWASGJTNLnjBpoNoX6hM+4SOwqMX16/ohEEKYkiih/NRNHkVw0tvlq4tdePUDmRrYioPOei7YhRisQw=
+X-Stat-Signature: pnoqmh6jeh8thf1yjoqguaxq7ukox5j8
+X-HE-Tag: 1792007779-172990
+X-HE-Meta: U2FsdGVkX1/C5PauNabeqMhKFb9Lx9MU8TxHK05mhykSBgmO3Qz1+4Z0H9zIIZ+sFuVPPZ5698XJMMILJOF0ZLcu+Rzxy1PJTOU8rCbL3qpSLzZ5AVf/3K63oq1Gypsy7Q5Gs1mlZL/16e7mBLFAFIGpC5GmQxSDmRwaraXjgm0op3qX5j8xfrfIEdmNq6NlqHKOm3WcWucdOPUN6QG1WOx8EptL5r8rO270xVrYNUbt2fWHg2cPMXfEuTdX+zE06ZRB8jqYxBOoGdGx2JVXWAfi0wtgI/LYyC3ad39Ka+8SxDcW7LMTZCmrCN/Sz71a1BYx07RZ/swPzNanecnUZASiFylbhyF4ZhHkktRhdO0AGCW9bt4oh3gIXmQQmz+oSHntz73pRjYagw566WfAiCV6+3jkuX5/DqIvmV561hcIKG3srBU3mCOGqHcS1JS7TlFZv4ZNusfeChGMBXMgPSmt6ZkqnUrAnO2SlBuOHR4Fa2llD7jg+u17RwWRD6oQ1EDii42ZRrZ/5pkQVPs/W+1IUSlMR12S8E4C+EJyZDOTpDPibCnTwQKtv+BXFBkp4bkAfysxAKRf2UvUF0Jh13dPLx/Dd0EwipkkIft7phn/V96BMfCIAXamrGHoRGs3y4ovxErV4j6xZe0xmweJPLhMej1+OR/uu8vLWlpVRmt0vzuVxjgrtbpGk8sqHPT61MbGKhaOhuNjOcskzSW/CzBdpPZ3a67oeobHCy7LRNqRuXbHnVkH6b3v4FIBahzX1K9O5CFiomKtfG7FYGS7msTFgzo4UE+Nu8+ttENkLAaYjxUTUU6BN8OZkzrpuMTuAlIbX8xy/dVz1p6sniLZgtysrMQEk6LQuGHkKHMCpI9BtBUCCQQzuFI6gNWOXqRQYwRIgVEIw/9WrsJM6HnU6qfJQtZoq24+3oAGQpZ4CPGVQvXajDboEZkrXhAEbYnV+NsD7fyXTdfE5df91Z0
+ Q4xtKEaB
+ wlR0dUAqv+TtiOqy78+xZOon7kxKBeOB9mmnJ3rFLsykoAP0BQGhvh3M461MHwMjIJ8pG1kIvByJPGnJuPbbmWl2teAI6e2i2G3/mRtLBL6g8R94c23wlrBNSt7oaigOMsi2xcWmzz5vhrBX8Q9h4GenODD6O7+2sFZOFc8s97EpDUSVHZ0P3JYtMr0Mcz61ZgZri5MJIMK/7JFD8c9c3RN86Y7vEN2Rla7MdFqPIfMgiwgetFYUmk2o0Lpz/Lk1Fb49B2sRnWsvz8gAeHGfSLtqcgTOc1humTD0L9R3M/bjPLjHziioIhsu9MCWBpGIWKroI1wuOe3FIIJkXS9LXUvC5J7n03HOHdZ0r3WX2wK4x4YuIkRjgvDCX/NmqYFJRFp04blhBDEHZtFY5ipWAgDoDeP0Oo7F6zrcZI6FuyDC04JTbEwHGGjF5pQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,23 +108,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Oct 2026 17:08:43 +0200, Imre Kaloz wrote:
-> kmem_cache_release() tests slab_state >= FULL after kmem_cache_destroy()
-> has dropped slab_mutex and unlinked the cache, and for a
-> SLAB_TYPESAFE_BY_RCU cache after rcu_barrier(). If slab_late_init() runs
-> before that test it sets slab_state to FULL but skips the unlinked cache,
-> which never got a sysfs entry, so sysfs_slab_release() calls kobject_put()
-> on a kobject that was never initialized:
-> 
-> [...]
+On Thu, Oct 15, 2026 at 2:34=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> numa_rebuild_large_mapping() and do_swap_page() can be tricked into
+> generating an address wraparound, crashing the kernel. All that's require=
+d
+> is to map a tail page of a large folio close enough to the start/end of
+> the address space to e.g., make
+>
+>         unsigned long addr_start =3D addr - (nr << PAGE_SHIFT);
+>
+> to wrap around.
+>
+> Let's fix it by providing a better helper, folio_scan_range(), that
+> takes care of staying within VMA and page table boundaries while
+> handling possible wraparounds.
+>
+> There are some nasty details, like not being able to use pmd_addr_end()
+> in this context. Add some helpful comments for these cases.
+>
+> Reported-by: Kyle Zeng <kylebot@openai.com>
+> Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
+> Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapca=
+che")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Applied to mm/slab.git slab/for-next, thanks!
-
-[1/1] mm/slab: sample slab_state once in kmem_cache_destroy()
-      commit: 6d9bc3d860e64e2c5dbfd7531954df9ea8c388aa
-
--- 
-Cheers,
-Harry / Hyeonggon
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
