@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6887FCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 05:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEDFECC6B19
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 05:23:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 066C86B008A; Wed, 14 Oct 2026 01:23:48 -0400 (EDT)
+	id 2FF946B0088; Wed, 14 Oct 2026 01:23:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F32E36B0092; Wed, 14 Oct 2026 01:23:47 -0400 (EDT)
+	id 2D6E76B008C; Wed, 14 Oct 2026 01:23:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E22386B008C; Wed, 14 Oct 2026 01:23:47 -0400 (EDT)
+	id 1EE276B0092; Wed, 14 Oct 2026 01:23:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B42326B0088
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E31BF6B0088
 	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 01:23:47 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40F07160445
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4DF6D80429
 	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:23:47 +0000 (UTC)
-X-FDA: 85320089694.29.83CD40F
+X-FDA: 85320089694.30.DD98238
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9E1F71C0004
+	by imf18.hostedemail.com (Postfix) with ESMTP id 925E81C0005
 	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:23:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HzpPgRZW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WWUy0I8g;
+	spf=pass (imf18.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1791955425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=SdSYpehsphW4ohcRgZ6kkg4WkXWb7YZZ4YKMZgeJFUc=;
-	b=Xy2RLURLFHCioldCQpsoaT/RO1DalUIHF3cP915jGrbjwsBzYmpArF03B1Iugu+HLD2/tZ
-	4/Gys3zjJPt+296L4lU4Ph84qfgnnpVpFEQidXeTNdWINhwcPcr5RslQR+/x9O1Phjfbr/
-	Tyo6lOxVwa3FDeU+e9U1D7pzyua/BdY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HzpPgRZW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DxBlHiyxQnkomrHKRTne2QV8xmS9hT0nspY3XRMEVWo=;
+	b=Ab+g0z5+uMxx83vJA7h71Rmeps/MqRkfwKAjWpUS0wsLxkFAT2k/N0iKFis7JDr+i6GpQs
+	ERqYfmr7nFTriGSQYd8Em6sIVrYbGwyHoSDAynfpxA/4morBtFFmVU+1uq5WeeT+yWZo1o
+	skHq0+aRtiOqKMq4Kpbxg2VUj30img8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1791955425;
-	b=tCFWUN3EgKZIPoIFdmfeIygmcn/s5oNzqKf+RYtCGfDr4DyIHUKiOEdgy3XpMVKHNKpZMM
-	1/kS6h/qsyGazhISLXw7uFeXt9luuxh14dQ/3JzAwhCsNjORUc2/Slt9IksdySZPJYFtsy
-	f+dtHcs+ZDkeMgeGv4Cf0LBhTnQqwPg=
+	b=zYYGE27u5myh4XTJdKdbgs2r+p3LzLl4t54bK1O2m2Fgoo23dCLGkn5klBNrx86A/MHLcx
+	M+yCUKg0vQ6lpb1ADiz96dO/5NU6vJVOvceLR8unano5RQ3WslhyVjbSTxPjI5VDfRXJJr
+	X7cP2EjHj/lQdziqujkGQI2UTQ3zIS4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WWUy0I8g;
+	spf=pass (imf18.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C620B404F9;
+	by sea.source.kernel.org (Postfix) with ESMTP id C63D941B48;
 	Wed, 14 Oct 2026 05:23:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40BB1F000FF;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DF21F00893;
 	Wed, 14 Oct 2026 05:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791955424;
-	bh=SdSYpehsphW4ohcRgZ6kkg4WkXWb7YZZ4YKMZgeJFUc=;
-	h=From:To:Cc:Subject:Date;
-	b=HzpPgRZW7EyAIbsLd5GKX0VblZsKb+zJCeaRAKypkv55Evn8jSkn5B8p8tvMMPCm2
-	 xijzFZB2nYUOGatSBxl83G3DFQTgROkz4XPHhlcd53XCnLhOPoQSe3lsMl3UIHGqRH
-	 2ZvJZeV68clhF4aR3d8Bf+jQjTHmh/QyjoUXBhUoj5Vi3SQq9O6JWQBWA05/qcz5bH
-	 UEYeQpJ498tvF8RNUuwUyPFuynOakjljBwcHxWBE8XxkC7jaZdHqWlgEDFW5Y6kAWF
-	 96LbKMxnTjB2444qTiNG/IP3UVAw3pIGY19tFhb/pY6yKMkjHByQ7heIdqK6dPpiZZ
-	 Jm5+7g/w98v7w==
+	bh=DxBlHiyxQnkomrHKRTne2QV8xmS9hT0nspY3XRMEVWo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WWUy0I8gBwJ01lFC5f8D/cYm1bdbW2yI/FzyXuxB+3pzt9oM66mFIJ5e6UiSXZeMo
+	 4Sb4jUgOj2T2AgOJ6Qih6viuw5ZTYFE/5y5uEzZhbOoEWUF9QgGtdXwX4soNLWfLa3
+	 HeyfX77CbeMA23wlnNkuL/aDuSggp6vaHISVA5GOyCF8OPstcbz0aktvCAQz2G07r7
+	 /F8V4al0bUpfEwcIxKjWWDRSjzJqh4FVAf6oayzDqGF8NjJhPaL8F0bL4IynXd+iLD
+	 Nwj1adxN5pJ9ugR+F/NH+dG0GQx7ZZGGbjxkaITQMHHgSP5EKWu2g7qpzf7gTIVP/M
+	 zyjfvjqLBodgA==
 From: Kees Cook <kees@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -72,34 +72,29 @@ Cc: Kees Cook <kees@kernel.org>,
 	Christoph Lameter <cl@gentwo.org>,
 	David Rientjes <rientjes@google.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-mm@kvack.org,
 	Pedro Falcato <pfalcato@suse.de>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v7 0/2] mm/slab, ipc: kmem_buckets kernel-doc and msg_msg accounting fixes
-Date: Tue, 13 Oct 2026 22:23:41 -0700
-Message-ID: <20261014052338.nothing.279-kees@kernel.org>
+	linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 1/2] mm/slab: Mark the kmem_buckets_create() context as a Context: section
+Date: Tue, 13 Oct 2026 22:23:42 -0700
+Message-ID: <20261014052344.384723-1-kees@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261014052338.nothing.279-kees@kernel.org>
+References: <20261014052338.nothing.279-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1208; i=kees@kernel.org; h=from:subject:message-id; bh=FiVZUxotLv/zfGLKYRPLznaaXPZGHAbqigwRAF3TMZc=; b=owGbwMvMwCVmps19z/KJym7G02pJDFnnBe/t3nuKReGOt/wEt9naXak37qq3HI+ODmi7oReuV aiRdlSqo5SFQYyLQVZMkSXIzj3OxeNte7j7XEWYOaxMIEMYuDgFYCLzyhkZ3t612Gb3y0vhvGLA 1/iXB8P7TM30HgSt8Rc/dmXnGsbrvgz//dzn6TWkHb2UE33h4A7N65/m50X8+XztvE6mTl1ZUv4 XFgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1804; i=kees@kernel.org; h=from:subject; bh=KqfbVCq/uttC9NZZEzuvqGaEBpfsS3q5IX9Y3dwx7Uw=; b=owGbwMvMwCVmps19z/KJym7G02pJDFnnBe9Z/lrYtMzAcEuVwirV1MU7PM45LuhYaqqjGPf+z +TklpkiHaUsDGJcDLJiiixBdu5xLh5v28Pd5yrCzGFlAhnCwMUpABMRnMjwv2yFzfbQ1Wc+iPPp vMq97b1ky60wp8T0LUdn+sqr+q5yvc7IcI59S6PgHfHZf/UbFq/vVWe4W33s6xSR9qnFTxoPlPx S5gIA
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tgt3me7h6nun3xeyobwmg3tsycbpxqun
+X-Rspamd-Queue-Id: 925E81C0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E1F71C0004
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791955425-444246
-X-HE-Meta: U2FsdGVkX1+XIqxX4eKlg5gvM5/KK797HoFIia+DthPAEwO8UEhZd9hrAhi5ptOr7ae/k8wUFQOe3uo1vSENuInhj1+J9nMbQB58idjdQcr3VpzeQ2qJ4mHMTeuIpejTJ4ESYotkBzQbIzVelxiDksYUC+BuXPUwyYjkM0Q6qqQAKoYYe8kL1TqcOgpz8o01yyiaSj0M7TIhoRNrciyzWOGtibs2YWaS5X/sm0dmksQy0t408etbiomH2OH286afOpmLz7aBeqZyVQ3nrhI/a2C4Gn3WnnqXg3tvowSjt9nCj0Y8hqmLizb9quLAjaDNlB2j9YFIZOgldC2Kc25IqsnvR4BpTYszX4Wx8BeAO6UYP2Gc5K7pJ5udRN4h8PscT7lerqJJCx4hPPP7Uxq2RIwh11lYYZK64n3Qf88jY5pEVRuCuWvKd9xqUytlM1MbdOmzTfANjFDvgnZX4X44IOqijN6eoEf7dygVakyXNiTAOJamdu07/xhyy3nzg74JGOqnjv/VcMcXAa0bQfhi2NY/A29G4NQwSgP/gdgGpQuSlGUqb91UFmi0NohoVgxaYoURPOza1wiRi1ZHEgNXJreWsKC+dOKiJgytuevqPIL0uGueTVTLWMXf/rPy0p89ZcOD+PxDRXCefB/f/tH0ZYJAQ3rPE1l1E3cRk3bTRPHAdVMTm2W/a/xF7qnFHth/y0HboNDsoSD1J9scTHtNkJDlX4fSQ8jT37imHDRoSez2xGx3G03OysR+fQ0KoiQ25hK2FmELCCIdPOAXc4RNzL8SpIKQ2VV3hg1bHA2jXdTQUrhLj9YvHVO65WPwdCsz+MzgODfIweTa4NFdLqUtXVVNBuqkS0Ij+kTsaIJQEyOd9Yw6h+uLwIhalTHBBXXP9BAZUyGZZUytudoSkkWh4Yq07t5ZFzbG3/DsgKVmT34chloVWDNlcJaRlIhNbfAxtebYLTLyyYSuVDdKOcj
- nKkOYosI
- wavBCxwAd2l1/mnaLug1yo8iz2og0HTXjYjhcu6wSbVHgkUJnW/a472IV7+Mu6BV28AC4JTx4uUp8ZCNlkMk7wxUOHqXZiO13+PnK2o0TCZR7XZ0uJYUzErGqdbOEVcAUwZb6ped53RYRFuNzuPG3CMe4CUBc+nRP+biTds7zBk1GKxS6s2ebEOxqzslFfabO/QZByR3ZFd4m//rI1d0L97pHE9NVuFA9SNwE0U4PAgI04EbnYq2fR4CJ5q5Z+GBf4ERnujDQpPgdyJpAW6F+UR6rouUgQjHfvY2l
+X-Rspamd-Server: rspam05
+X-Stat-Signature: wa4c9w1tgnpdhpjgaycep74f5t7c5bfk
+X-HE-Tag: 1791955425-318226
+X-HE-Meta: U2FsdGVkX18YdoHjGrEw1ECRdIUj1z/ZtvoyGWHeqHRPNBdJQ/hLa88lAXSvqDvtk05ir3Eao52EiNNefltrRgS53h8etmaWn/FUqaXBNsdzMp05qqJ+IKDZqojRbsNjjIIS15tNjgINcKVpyrqiEjlIb/fQDTkeotICdbf4lWBRZCnF62wCeq7S1BvgWLwwoANg5bC/+VstPggQCvwkGheMABADF4SM/tCp5m+YP37JUMzvkj0FXPbIKVP5w0U79O1HiVXuHdto6rRbwK2OtkKABjlyuQAmzz7gEi36Iwl3LKitVq0w48zzkrrkPOTGCk2uGAYwGcb9o3AwPzsxXmtqUvQSeiWykbZUgGyl0yl8kD0zhqMuYIRqiphd22P62QhlYQYkFUCHoGcusOdeO0a8UVFUFQoxTFx3mQHr9ayeQnnN4avIxQRJzkXd+afQp7DSRYFFqUEaOW1jsv8v/OcKw29ZLkon+0zYnCGow4vYaFSZpGpcXuQFo0QTiWNSCSSWRbmjJIIb6sFCp1RzuGjpAJhVNO7NDn/Scd2l97vJGfCY5NwNj+WvShd9dgb4pXTEZAUVituxr3LB9da8TPKpxfHjco51UzGAnVLV7d3sFZ7lx2HdERfYwuCZP242PPbM6MBuKlA1W/efl1aH7/0otY4HlOWxnhBCVL7QSJsLsBxP0Rqc4YbyEPNuCM9Bpx+aFYat73XNHlqCaMiosw38oPi5wYhEsJdNWPwwS9CZf/53PyuZf/X1KQnC8uuBwsV/KUGSmxIeB/tEIY13IIGRixZgxIba8tlXkAVyBzv/KFVdrsTlwKtm3tH6AeR+VSRupaUG2sKvwyx85lYxb1kWU8gvxl7qrD/R79jB4k0NcIyOk3q+DOjA4qHE/7vODsnistPhlRG/TaoN0UdWNGe3zvEYXmsqWwHHvjzU5I1GExCkBx0xhi7XqWhm/FUbnq8fjcP78cwkZ82Y8PR
+ TI97HrB9
+ 9Z129KtHbtbOaPoGry+RVwvidDogHfx/IKh1A5kvrkbwmSWrrmC7hcjQNvUm/zp44YUVdV53t+GXnsuQ/xcmefAVWiVFjZ2Q3dW7jPSMmsQF0ggh0kPdf772hJW3nQkeY+WHd6M84n8pmP5m9fIMNLqDJNHiQ8sWOAr7OCsCcXLqGtKCm9NRmq5imnKalTTnKBGCHJSTm5IsiIP7xcZxjXBps0066jbVCeX7Ai9RiCjAgdWYBkOqMdewws/9oXItmSKcp7p0N+MA/QaNDEZs8EnysqIjIl8mwUFWrqX8IzuW1VcWvPwq8bMUDfR2MB/ZsbGYgydncCkuSeAto2L0i4sAALJ1/R82zGL2DxgPl+wg41QGb5NThZMA3h4teMgck/S2208VMPiA5ME7aQbkZSJSkVXIKgnteV5jpOIadTMAYLpieAIY6AckwKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,39 +102,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!
+kmem_buckets_create() had the same sentence about calling context as
+kmem_cache_create(), but lacked the "Context:" prefix, so kernel-doc
+rendered in the body instead of as a "context" section.
 
-As Vlastimil suggested[1], these are the first two patches of v6, split
-out for 7.4. The rest of the skb buckets series will come back for 7.5.
+Give it the missing prefix. Additionally fix the "a interrupt" typo
+__kmem_cache_create_args() had.
 
-2/2 now keeps SLAB_ACCOUNT on the msg_msg bucket caches and allocates
-with GFP_KERNEL_ACCOUNT as well, so a msg_msg is charged with
-CONFIG_SLAB_BUCKETS either way.
-
-Thanks!
-
--Kees
-
- v7:
- - split v6's 1/8 and 2/8 out for 7.4; 3/8 to 8/8 will return for 7.5
-   (Vlastimil)
- - 2/2: keep SLAB_ACCOUNT in kmem_buckets_create(), and add Cc: stable
-   (Vlastimil, Andrew, Harry)
- v6: https://lore.kernel.org/all/20261006092030.got.500-kees@kernel.org/
- v5: https://lore.kernel.org/all/20261002231120.late.500-kees@kernel.org/
- v4: https://lore.kernel.org/all/20260921075811.too.775-kees@kernel.org/
- v3: https://lore.kernel.org/all/20260702170728.168755-1-pfalcato@suse.de/
-
-[1] https://lore.kernel.org/all/be34b92e-e82c-4f69-ac9d-b045081ea418@kernel.org/
-
-Kees Cook (2):
-  mm/slab: Mark the kmem_buckets_create() context as a Context: section
-  ipc, msg: Account msg_msg allocations with GFP_KERNEL_ACCOUNT again
-
- ipc/msgutil.c    | 3 ++-
+Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
  mm/slab_common.c | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index b19ba1b31484..270408ce5a9d 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -311,7 +311,7 @@ __kmem_cache_alias(const char *name, unsigned int size, slab_flags_t flags,
+  * &SLAB_TYPESAFE_BY_RCU - Slab page (not individual objects) freeing delayed
+  * by a grace period - see the full description before using.
+  *
+- * Context: Cannot be called within a interrupt, but can be interrupted.
++ * Context: Cannot be called within an interrupt, but can be interrupted.
+  *
+  * Return: a pointer to the cache on success, NULL on failure.
+  */
+@@ -422,7 +422,7 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
+  *		to/from userspace.
+  * @ctor: A constructor for the objects, run when new allocations are made.
+  *
+- * Cannot be called within an interrupt, but can be interrupted.
++ * Context: Cannot be called within an interrupt, but can be interrupted.
+  *
+  * Return: a pointer to the cache on success, NULL on failure. When
+  * CONFIG_SLAB_BUCKETS is not enabled, ZERO_SIZE_PTR is returned, and
 -- 
 2.55.0
 
