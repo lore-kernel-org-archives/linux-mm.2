@@ -4,123 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4479AC3DA7A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEED0CC6B2E
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:04:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BFCC6B00A1; Wed, 14 Oct 2026 13:58:20 -0400 (EDT)
+	id AA4106B0088; Wed, 14 Oct 2026 14:04:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 170776B00A2; Wed, 14 Oct 2026 13:58:20 -0400 (EDT)
+	id A55126B008C; Wed, 14 Oct 2026 14:04:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 010F76B00A3; Wed, 14 Oct 2026 13:58:19 -0400 (EDT)
+	id 943CD6B0092; Wed, 14 Oct 2026 14:04:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4C846B00A1
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:58:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B5401A073D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:58:19 +0000 (UTC)
-X-FDA: 85321991118.09.7280CC6
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5879DC0009
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:58:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Wj1x7WUt;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EAC76B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:04:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 040A6A0792
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:04:24 +0000 (UTC)
+X-FDA: 85322006490.30.11C9CD1
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 27058100007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:04:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=openai.com header.s=google header.b=EQ+eGAAy;
+	spf=pass (imf05.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=kylebot@openai.com;
+	dmarc=pass (policy=reject) header.from=openai.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792000697;
+	s=arc-20220608; t=1792001063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gCaGfSim3PIx3Nsok29/mbPBbK9Nc93PZX36t0w056I=;
-	b=nJhQLkVOOQh4hUtaeHaI8FF/cdTYIIF+1jMBjzQt5A89nMy93uhI1v9o4cWUafiJh//wXo
-	n/PVJ6bdPn5/esPuLLuLCYA6PiUpUEv0Nkm2yPupRliGmX+cCuoS4Nyxr4ptTEYrz3lho5
-	kS79Bt7QOeUkrqEa+zoKiVh40UitzFA=
+	bh=Sre2Q8d9osDFJ2pO/rFODA9M0mfR2oBhyc/Yo4XzZZQ=;
+	b=sORel5SWON0LMmtw3nnP6g8JqQ6gyppTRz3jg9qq6wpJ07PUVJ4J0Dj6jBo/jevIytIZmq
+	Xn2h0k0Zzu+6SWQcpNy3TxmaWHFT6/cK6Xfz6P10qr3n9c49tPjhUJnZZrIqGb31twbR6T
+	W/LeiVTyOQ0YX3p7TpODSKFk256CxXs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792000697;
-	b=mUtEiAGpxLymVvMqQ6w8QyulTpT8EQ4XZMW1QKSQVHxzurGEF7eO2FZW9jJHVp4XDTTSOB
-	vAA3otNlA9kWwGHs+gUJhYcSevV5hS08ulF/D/51mnVB/lhqkRqtClcVzROlro3qTbymDi
-	iNDI5vpzGL5nAdCACcv72kfJnX1lvi4=
+	t=1792001063;
+	b=gSQeQVnHXxl3yLAJCoseN5D6QsTZ0ZriC3aS9M8W4SMeWNNAEixczDPL6ZlOltE77Cu2MW
+	zwsmix1OU+asnov/lQo7WwIGtErI+h7vlnMrCxL2qaZNTwCHmOBGTYGCFSee3PWUdeA93M
+	4MC4uuD3Mlmis9iqdmZY8s3oIu/L3gk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Wj1x7WUt;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5339381b46eso44866011cf.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:58:17 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=openai.com header.s=google header.b=EQ+eGAAy;
+	spf=pass (imf05.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=kylebot@openai.com;
+	dmarc=pass (policy=reject) header.from=openai.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-8266c388b67so3757467a34.0
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792000696; x=1792605496; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gCaGfSim3PIx3Nsok29/mbPBbK9Nc93PZX36t0w056I=;
-        b=Wj1x7WUtalgVXIq45Vixmrj9PzKyzCHLKDGzBLVugw4qgXzJS6C85CsVl+AoCnLZLO
-         KKiDYXI518d3oKOjJ5S+ax+E2I9gF9in8vFxoGtVvDOLOuVY3GDEJ30eHZG6mNMrOZOr
-         8x+WssEB0S5/Nh/XMqMYimXXHxFDbdvjZswvLYh/CT1ySgkryL3gcohLEcmXITrGmohZ
-         gdMXFf+uxzQEI7dvzH4Ww4tn4/pOsHlTlR3YBCFUP9kpRosHyt7J1tYF6VEq8QaBxIe/
-         B2dUqx1xCVFuSC6qIA/dCpnUC8E7NOdLkeJ9rAxllYBUVNGJxmZsoZwnDI9t0Zx8V8jS
-         ZuvA==
+        d=openai.com; s=google; t=1792001062; x=1792605862; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Sre2Q8d9osDFJ2pO/rFODA9M0mfR2oBhyc/Yo4XzZZQ=;
+        b=EQ+eGAAykyd08PkoOykK2cjPRGaRzk5NsGXdDb+Ay1tINQB9pDVRRMsoV/Ca0KuU0z
+         1XHIXlCQ3ZO1MXvffh0vV7spBSVjTAwk8nqGpoKPlt0HPULKA5aSq6AuCM2QYEp2Xsbk
+         Rs6mb6/RmZqAtaLmJ1xLI/2ZLkATN98O04lo4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792000696; x=1792605496;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gCaGfSim3PIx3Nsok29/mbPBbK9Nc93PZX36t0w056I=;
-        b=VHjktvL71fco1UR3Kj8rdsez/lfGuLrmOtM0GxC50DudgImB1T3C4p/Lxefh2AOqTE
-         cHyJ2+6wNE16JY9+qX9FA5NwtS7x7Z7STkoP6vy+3fI7WU2HUt9cYMT9nprvZCclZ6bu
-         i8/tr+qR3Pbno5JIbngKyJx0XA2uklRkbl1EHKdM5E84w9q1HbwoG3rLmh7d+p6MQnt2
-         XGERq1vqo5vFFokbjR/gdAoNssmWkrYtS/PycT3muMKFGNiJSoKc35zJRxNXK9Wv8H5T
-         cGktVDTBmnCypUa4yCI1JQ14hOX6YS9sZgAse///SOOp191qma5biWRlj9onjiUhVLZZ
-         XSTw==
-X-Forwarded-Encrypted: i=1; AKwUvBwRzott5cLKnJNH2iEYzgT9gUoybFw5nBxLX/sO/B01sG9KNR9YzUouU18+rT9SCNOKIs02zk2m1g==@kvack.org
-X-Gm-Message-State: AFq9FYIM86KA8wUWUxRhWAQNcs2veBnB3uz0pC1dPgsbfAPUsgZkANyg
-	jN1P2w7Gdt2HABb/LSfvxbCOShW9bKh6rX2OpIRANQkzTEgGP+WJRWqq+ES6H7IbjDY=
-X-Gm-Gg: AYBFou1SND75TYzN4GzOpSh4y7C5+dh2tcCCct8FqIO0aWCg5QtLLN/XoPc8yQSxkrT
-	DAmRbTFJWAkFdf9yvIrQwGcO5FiM9TWL0GnrfMVVaHLUTz5YlSiF9w5kpsU61z9wOiKVM7KlY3o
-	3w+9B2chjhMao3OH2ocitzYyP1IHiahd2/bUsTfHEDMudn5yVEkx7H6I3eLTBYGd9iVzOYD/2RG
-	V9KZECtziNM7urlT/r9D9L9RU6DsYUe5ZlPdC8fppLtjapbcu6//MLxWBAbYrKRKmSNmRmtQvqc
-	8WjYLemtswcdNsr7+F2y7fQZH8MDSS5uQ+6qImoZNWulJXH7jyJ6uJ4Je3VsUWONVvDKafmLOzn
-	Ifiom+NZmpeIAnpdgla1AkHFflB36xVCapqwkDNhVkwgscVxDHwRdT5GteA+6iE8UHwq3SVPqAN
-	Ft//f7nCRe7gdlLx/8vbK5Zu1WZ+6vCDCPmAlkLFdrHE7ar14RA9Urs9X1HFziRuI1DeYEXxsav
-	6FcMJuRbEKru9B8JLeBK/NMP8woE4aGYta28jx6oqv2hJMjfWmsx8CpMfm5
-X-Received: by 2002:a05:622a:1f0b:b0:535:1291:f1c5 with SMTP id d75a77b69052e-535acef8d28mr253194901cf.54.1792000696292;
-        Wed, 14 Oct 2026 10:58:16 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b97b95847sm58498006d6.32.2026.10.14.10.58.15
+        d=1e100.net; s=20260707; t=1792001062; x=1792605862;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Sre2Q8d9osDFJ2pO/rFODA9M0mfR2oBhyc/Yo4XzZZQ=;
+        b=qsKQpfyiYElYqKaFJmoNPeOdjXaOdoYb6sgwqAY9pEA9OyV0daIoLFZHivhV5zCSq8
+         Hqxy8wGD6Q5ZEx1TXOVKVsNwEY3X/VbQnbQxAwmBOYDA+CU6B7cRcn2RGS0/fNYe3LON
+         2qcrp94OunIYOY3TM64+rUKSwDlEH4lHAkx3zXms2tBIUEuR+K1FxA3mAd5X9QZuwlLL
+         RQuGdTvqOMg+n664O6682FtSuf+8f+elfJMrsuvAz2mUTdNQ0X/Wujx9TaWOiEqAeED/
+         q5C3CZujyvZvda5jGltJq9yb+JDRMalFoin6oWQzGreYmdPStzIrAJKmagRrpERfZDoK
+         04RQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzMExJ7fMB/7AcJJ+/dfxpVjsnlG45MgrwbNReuvnIPmN04JSegssGewAvvfKsKT4ziesomWNVwZA==@kvack.org
+X-Gm-Message-State: AFq9FYJRXIQWBxoGgZ/zVNI5ciNzInV2m5VL3mqwaQgPu0746Ix6cNp5
+	ZtYd8QzAMCosxl/i6ZVyzMBJqbFP3cjGd/s3pHtYDU9C7AAloaOCV2vygeiFHbxsFgw=
+X-Gm-Gg: AYBFou2zgdlpXZISK5NGnwb1bfd1Rkitc9oRt2v7IxTw1LcI6HjJJTOkxRX60SjImBl
+	DrfTGCOBbkAaYEPshWakHxaj9irRbJ7Z+uLvZdibgsIhLsotrXUFkFgDizjhtBu9tDiTz3bbLDR
+	I58bwz9WaObwk50UUpfKHFxnWh6Nryc7wH0kMwQBZ45wtlwk15Ax56Lje/axqqDJit8zn9jjyKO
+	finCLhy4J1p3izKxcWoaKLhicVoZRAp3g/K++O16pzX+sCrw7HCcbxHj30n1cGicjLroif1uNTw
+	STudqyg7P3JwpLL0u6mHEHZCWubmHFji0UueZa6x1TxklUX+8oBEZEUyStUrBKewhp6jC5r7Sex
+	+hKb841VN+PZ4N4MVccLjJG09x+AYCMwJcD7iUgJ0kWKZVmtwA/hl7KsDZwygYDDONUGX68hTO1
+	GRlibeEKLT6cD3LVbE8Y1R4yW4Xvlfsa0g99T4y9iF2QME+HSjMsjgwgLmifhItv3ImP6nOC8ps
+	zqih4TSt7uQFPuRGGAxTF4q7gn04bKEfzuzs3wv+n/fLyoBH77+Fg==
+X-Received: by 2002:a05:6830:6f8f:b0:821:8e71:1bb5 with SMTP id 46e09a7af769-830963f4818mr16941700a34.14.1792001062029;
+        Wed, 14 Oct 2026 11:04:22 -0700 (PDT)
+Received: from com-75606 ([199.47.143.7])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-83039076dc3sm17027951a34.14.2026.10.14.11.04.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 10:58:15 -0700 (PDT)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Subject: [PATCH 8/8] selftests/mm: check that unauthorized MADV_PAGEOUT skips large file folios
-Date: Wed, 14 Oct 2026 13:57:56 -0400
-Message-ID: <20261014175756.2035176-9-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261014175756.2035176-1-gourry@gourry.net>
-References: <20261014175756.2035176-1-gourry@gourry.net>
+        Wed, 14 Oct 2026 11:04:21 -0700 (PDT)
+Date: Wed, 14 Oct 2026 11:04:17 -0700
+From: Kyle Zeng <kylebot@openai.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/userfaultfd: only allocate anon_vma in CoW mappings
+Message-ID: <as_EIRMinCdl1zOx@com-75606>
+References: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
+ <as99gyi-NUprRK6e@gremlin>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5879DC0009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as99gyi-NUprRK6e@gremlin>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 27058100007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: bxxjf1fddwzrusnt8dp8j6xjo537oe3y
-X-HE-Tag: 1792000697-566147
-X-HE-Meta: U2FsdGVkX1+lpQ40INylaS00wIWHmXooY5yR6ejOgO8pqE+Sie45fGGHKtFe92/axtZyhzPFE5N+7q34DucuqAZP0HXnmCwVasi9E457IVm7RSl0HdXCpjyUkXIcrou1rHnZMPckkV7lDqJFT4pbmySaHkYVx9h7KBzIpEq/CdpOBYabr4lwQ8flSjpRGl9s/1rmnik0rxYGoGbMHNavsYBnKbEiPC1U3BmXLVu7vDyBwQvCG29vGfnWVMUDQM1AqL1JywLvXdxSIotKKPhogG9sWPhRL4PSHgonJTQuDjK9XB9f8rBFgaLAnsRvyH+W9ciTwcRAOyjA6xBmt4lk9pNy9Qnsu6NGdqU8ofIBMUyPGQb+FTjnI0OxxQfQBsOltYt6pksWgV9WWuN7W5K+ONR8cPmv27nrpOjfFn/uTrsQ74zMzgagUYsVegokZSg8qU4YFBiYEsOIi9UPqy3RtxntxT0Q1jf1QJMXxeTODztnauE4sZOFrZyqy2mgp8DOEqBbYs0uZcL26LRElt/zdcYa8HXvyBlyEln1eoKaFv1Peo/tyhQ5BvxtyMUqPNfijyW+0kuAWglUN+xOKDOWpALRZkKUu+zGMqtj5e/Ir5f2I2gPalUml4ucsOtCbAkSEjQUidX4wBh9A3aI0cjMacJbkeWnHHbnTUFmVwkYsd5CQ4fQBbZcioWv1HPHsJBBiBj0TMg0Z8P5WX5Ut+FNu45iWVhV5Xdsk4x8b/u3W52gZGamdXUNhFCwHsTDQzItReDZsZ0JuQzIOrhvD3C50jZh+PJMSfH3peFOcWteXNWmTH9Z3eYPfGOHWjfHj51MJfWNuXtQFY0gVV9/zEOOBsG2Y0gySdl8gal9EtGvK5PKjV5OBFzxtr0LDYGGrZ+saY6v8f9MNDVAJVLiQZvGtbu705J3l51au3GZmIruLnyGDCogjvwAl810DyXdqtotHLXUk9QGh8LG8BKp0eg
- nl95+CFN
- EvTAQo0pAWdS56FQcDUyr2hhp7YVGvCkCuxHrQ8NwO42NMfp8QXecju5rbPDyHxDvL1QBqNQQsLllgWeY4etY6ty/WNGy+vKjc/8hP0r5u8mOGrtnrhOlNQobTA47OUIgqSSc2355morCtcM00f264/+tRxuR1qEzbg3erXaonkD/ZT1qqW5iTuGpspYWjFp8dQMtXvKA87y/opvZvSGo97JVdObWk2SUaIPOGB5VlkIaj9bbhA8P3KG8sVVZ9csYfZUNyCKzhxvD/LEYi0Z14YEXEnj/WdL+Y6sFimS/uF0BxIdp3eac5mFabX52rjv3Tc+aIQszZ0v9DEpJ+xFeIIyATU15v7QZ2IEe
+X-Stat-Signature: xwmd5g934b6akdwzd13arbuueahes47d
+X-HE-Tag: 1792001063-704628
+X-HE-Meta: U2FsdGVkX18BhNCd+aUFw9P7FlRKpNfH8fwTreUw212L7OQufjQaNmlkPUEJgyNe4uMOYobkF+I1jNwYuBTdGDgfUcrFCaRCsKjUg05Snqg+L0k1Lz/MjiQSYOCrXXUqcf2BXgmxs2QTid/RxW+Q8A8BGjGo9myhrnKYPPU72hdVKxw35DdP1zN97638Z+R3PRR/uMzVIrgPFqe/aRVPy5u1j5H4+xMoYqvCEzXL3vgz6B/bWCVHace2zLv19AyOpJXkyWJWnTaG5IwcNpix6VAivS3a0do9b48HC3LghzREHqm46Gs61gYAvmuL29uOswsR2hVzymJP6SQ1mK7JwucVrZEY4FhoGBDbp7S6HCGYf94hZ+p7BcxpgFNsTOwIPuIfd+YpBE5rkYgqUKQphbKVgXE5SqwMAtF23LwaIgellVfPyEb7HcrxHc3YUr983nU/WZhp7cwYAF6bOFMEF1ASM2MgrLuzz/PYLorlUlqlQu0XyoYeRO3DkWhNQB3yqbj6pqifnnOlUweyUxG22CWd5aI2NbI9pxtTdvTDp+Qh4PyKefh6GK90VJBX0hWyoJq4r/6E1wOsdcklgcG/cleKCqkYcj4XN4V23D5NP4+GzxezAGQI6mfnW8RGQq0FUSUNkXv2nZ8vUfoHRp2DYc64jtpJIRwQSZv0Pi+aNifDGb7fTYKtApzx+mBULH3T6dqpcI7qwm/6TLvlt18ymRS9qpJBiS55rM+7Hm3p/sXEOlJC144iADsZulOkpDFAG0/kREAWXMd/c3c4XEpqW/m4lpppVey9wFyvkONFDrQyjct/b+xhMZbTy8fAaHM13sjDbSctyJ0XYpHTjCofGUxp09kFB/qV0v8MqqacWTJ81QPB+heJouipxySuwkfpSHgZEOhHERa0zwqYD483yxIU3x3bRrw+DUgjVp6ngm0eI53FeGeKg72dI7mc3Iuqka5c/Tk//yjtYjLMlw5
+ POcGCG2k
+ PX3tA8aym86HS7CbK67bEWTG3Go2eAyTCmVizlGmkG/n88uEccqnYo1PqpGEKChagbP9thN61FlD+W0q3qWiMWbcP5b7wLX6iGwAlxufH03hanBiU78yWG09H0wZ1K9K2CHDsOVRKcxR682sumkWO3kM/3BxHfTqWtZIiYqnkDUmdugFelLYgp0ai2ciDPvBRcGmhBnRO+kqllOIVIKiBfY0i2EHrytABEDuI2TW0TwKlzPe2QXXPsYUj/VA+1mEXu4sZ118jK801uD4AfqMOuSMauJ40px6fl1zVljohJ9x7pspG7acZgs7E1KY3m/p2S1QBTj/rZQOX1MyeA2D3hlOsqd1v0ttkXr1k5srgkdMuJqQPYW+FFnK0nJIzMTaJUSVTpEktKBgI8uN3wwOMt5qLcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,181 +124,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A caller that neither owns nor may write a file may page out the COW pages
-of a private mapping of it, but not its file pages. When the advised range
-only partly covers a large file folio, the folio must be filtered out
-before it is split or reclaimed, on separate paths for PMD- and PTE-mapped
-folios.
+On Wed, Oct 14, 2026 at 03:51:22PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
+> > As uffd_lock_vma() is part of the same lookup machinery and
+> > also contains a misleading VM_SHARED check, change that one as well
+> > directly for consistency.
+> 
+> OK, I think that one isn't _strictly necessary_, but while we're there,
+> worth doing too, clearly.
+> 
+> We should also go through and convert the remaining !VM_SHARED checks ->
+> vma_is_cow_mapping() too if possible, but that's a follow up, obviously!
+> 
+> >
+> > A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
+> > lock in copy_hugetlb_page_range() entirely. Further, the usage of
+> 
+> Hmm really? Is it possible to do that without the hugetlb lock?
+> 
+> It'd be good in general if we could get rid of that lock as a whole :) but maybe
+> dreaming.
+> 
+> > VM_SHARED in userfaultfd code should be cleaned up later to focus on
+> > CoW vs. non-CoW mappings.
+> 
+> I think also anywhere else in the kernel where this is done. An audit on that in
+> general would be useful!
+> 
+> >
+> > Reported-by: Kyle Zeng <kylebot@openai.com>
+> > Fixes: 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd operations")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> This LGTM, thanks for handling this!
+> 
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+> --
+> Cheers, Lorenzo
 
-Check that partial MADV_PAGEOUT by such a caller leaves every page of a
-PMD-sized shmem folio resident, both when a PMD maps it and when a mapping
-of half of it maps it with PTEs.
+I ran the patch through my system and did not find any issues with this
+patch. Thanks for addressing this!
 
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- tools/testing/selftests/mm/madvise.c | 121 +++++++++++++++++++++++++--
- 1 file changed, 115 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/madvise.c b/tools/testing/selftests/mm/madvise.c
-index 74202fed2d04..d59c03ec8191 100644
---- a/tools/testing/selftests/mm/madvise.c
-+++ b/tools/testing/selftests/mm/madvise.c
-@@ -88,10 +88,11 @@ static char *map_aligned_pages(struct __test_metadata *_metadata, size_t size)
- }
- 
- /*
-- * Collapse a PMD-aligned range into PMD-mapped anonymous THPs. MADV_COLLAPSE
-- * may fail transiently with EAGAIN.
-+ * Collapse a PMD-aligned range into PMD-mapped THPs, and confirm the result
-+ * with check_huge(). MADV_COLLAPSE may fail transiently with EAGAIN.
-  */
--static bool collapse(char *mapping, size_t size)
-+static bool collapse(char *mapping, size_t size,
-+		     bool (*check_huge)(void *, size_t, int, uint64_t))
- {
- 	int nr_hpages = size / pmd_size;
- 	int retry;
-@@ -100,8 +101,7 @@ static bool collapse(char *mapping, size_t size)
- 		if (madvise(mapping, size, MADV_COLLAPSE)) {
- 			if (errno != EAGAIN)
- 				return false;
--		} else if (check_huge_anon(mapping, size, nr_hpages,
--					   pmd_size)) {
-+		} else if (check_huge(mapping, size, nr_hpages, pmd_size)) {
- 			return true;
- 		}
- 		usleep(10000);
-@@ -118,7 +118,7 @@ static char *map_thp(struct __test_metadata *_metadata)
- 	if (!pmd_size)
- 		return NULL;
- 	mapping = map_aligned_pages(_metadata, pmd_size);
--	if (collapse(mapping, pmd_size))
-+	if (collapse(mapping, pmd_size, check_huge_anon))
- 		return mapping;
- 	ASSERT_EQ(munmap(mapping, pmd_size), 0);
- 	return NULL;
-@@ -147,6 +147,33 @@ static void pte_map_thp(struct __test_metadata *_metadata, char *mapping,
- 	ASSERT_TRUE(flags & KPF_COMPOUND_HEAD);
- }
- 
-+static char *map_aligned_file(struct __test_metadata *_metadata, int fd,
-+			      size_t size, int flags)
-+{
-+	char *mapping = reserve_aligned(_metadata, size);
-+
-+	ASSERT_EQ(mmap(mapping, size, PROT_READ | PROT_WRITE, flags | MAP_FIXED,
-+		       fd, 0), mapping);
-+
-+	return mapping;
-+}
-+
-+/* Create a PMD-sized shmem file filled with 1s. */
-+static int create_shmem_file(struct __test_metadata *_metadata)
-+{
-+	char *shared;
-+	int fd;
-+
-+	fd = memfd_create("madvise-pageout", 0);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_EQ(ftruncate(fd, pmd_size), 0);
-+	shared = map_aligned_file(_metadata, fd, pmd_size, MAP_SHARED);
-+	memset(shared, 1, pmd_size);
-+	ASSERT_EQ(munmap(shared, pmd_size), 0);
-+
-+	return fd;
-+}
-+
- static void assert_filled(struct __test_metadata *_metadata,
- 			  const char *mapping, size_t size)
- {
-@@ -734,4 +761,86 @@ TEST_F(madvise, pageout_private_file_reclaims_only_cow)
- 	ASSERT_EQ(munmap(mapping, 2 * page_size), 0);
- }
- 
-+/*
-+ * An unauthorized caller must not page out a large file folio of a private
-+ * mapping, even when the advised range only partly covers it. See
-+ * pageout_stays_within_range about other unmapping.
-+ */
-+TEST_F(madvise, pageout_private_file_skips_large_file_folio)
-+{
-+	char *mapping;
-+	size_t offset;
-+	int fd;
-+
-+	if (!pmd_size)
-+		SKIP(return, "PMD-sized THPs are not supported");
-+	if (geteuid())
-+		SKIP(return, "requires root to change credentials");
-+	fd = create_shmem_file(_metadata);
-+	mapping = map_aligned_file(_metadata, fd, pmd_size, MAP_PRIVATE);
-+	if (!collapse(mapping, pmd_size, check_huge_file))
-+		SKIP(return, "could not allocate a PMD-sized shmem THP");
-+	ASSERT_EQ(fchmod(fd, 0400), 0);
-+	if (!drop_privileges())
-+		SKIP(return, "could not drop privileges");
-+
-+	ASSERT_EQ(madvise(mapping, pmd_size / 2, MADV_PAGEOUT), 0);
-+	for (offset = 0; offset < pmd_size; offset += page_size)
-+		ASSERT_TRUE(page_is_present(self->pagemap_fd,
-+					    mapping + offset));
-+	assert_filled(_metadata, mapping, pmd_size);
-+
-+	ASSERT_EQ(munmap(mapping, pmd_size), 0);
-+	close(fd);
-+}
-+
-+/*
-+ * An unauthorized caller must not page out a large file folio that a private
-+ * mapping maps with PTEs, even when the advised range covers only part of it.
-+ * See pageout_stays_within_range about other unmapping.
-+ */
-+TEST_F(madvise, pageout_private_file_skips_pte_mapped_file_folio)
-+{
-+	const size_t size = pmd_size / 2;
-+	char *mapping, *shared;
-+	unsigned long pfn;
-+	uint64_t flags;
-+	size_t offset;
-+	int fd;
-+
-+	if (!pmd_size)
-+		SKIP(return, "PMD-sized THPs are not supported");
-+	if (geteuid())
-+		SKIP(return, "requires root to change credentials");
-+	if (self->kpageflags_fd < 0)
-+		SKIP(return, "requires root to read page flags");
-+	fd = create_shmem_file(_metadata);
-+	shared = map_aligned_file(_metadata, fd, pmd_size, MAP_SHARED);
-+	if (!collapse(shared, pmd_size, check_huge_file))
-+		SKIP(return, "could not allocate a PMD-sized shmem THP");
-+	ASSERT_EQ(munmap(shared, pmd_size), 0);
-+
-+	/* Mapping half of the folio leaves it mapped by PTEs. */
-+	mapping = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
-+	ASSERT_NE(mapping, MAP_FAILED);
-+	assert_filled(_metadata, mapping, size);
-+	pfn = pagemap_get_pfn(self->pagemap_fd, mapping);
-+	ASSERT_NE(pfn, -1UL);
-+	ASSERT_EQ(pageflags_get(pfn, self->kpageflags_fd, &flags), 0);
-+	if (!(flags & KPF_COMPOUND_HEAD))
-+		SKIP(return, "the shmem THP was split");
-+	ASSERT_EQ(fchmod(fd, 0400), 0);
-+	if (!drop_privileges())
-+		SKIP(return, "could not drop privileges");
-+
-+	ASSERT_EQ(madvise(mapping, size / 2, MADV_PAGEOUT), 0);
-+	for (offset = 0; offset < size; offset += page_size)
-+		ASSERT_TRUE(page_is_present(self->pagemap_fd,
-+					    mapping + offset));
-+	assert_filled(_metadata, mapping, size);
-+
-+	ASSERT_EQ(munmap(mapping, size), 0);
-+	close(fd);
-+}
-+
- TEST_HARNESS_MAIN
--- 
-2.56.0
-
+Reviewed-by: Kyle Zeng <kylebot@openai.com>
 
