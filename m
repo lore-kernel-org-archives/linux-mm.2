@@ -4,151 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38FBDCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84207CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:29:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 357A16B0092; Wed, 14 Oct 2026 14:28:48 -0400 (EDT)
+	id 88A966B0096; Wed, 14 Oct 2026 14:29:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30A0D6B0095; Wed, 14 Oct 2026 14:28:48 -0400 (EDT)
+	id 862246B0098; Wed, 14 Oct 2026 14:29:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F97D6B0096; Wed, 14 Oct 2026 14:28:48 -0400 (EDT)
+	id 754DC6B0099; Wed, 14 Oct 2026 14:29:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DB96E6B0092
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:28:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9F5031A025D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:28:45 +0000 (UTC)
-X-FDA: 85322067810.30.7B54EEC
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B658BA000B
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:28:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 47DD16B0096
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:29:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C65A9120316
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:29:46 +0000 (UTC)
+X-FDA: 85322070372.16.84AADF2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0454AA0006
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:29:44 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Kuk0tOWz;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=lrizzo@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792002523;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lUh51J//";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792002585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0+JRXvl/R9u5pNiuiBxqdsVIx1pGWTS2oCduhPjMn+0=;
-	b=PE87IlDmPN5YjhYNIIku88H5/8vYnewN2sqNmyZs3Y4iwyJw9yvTmN1Biv4uLLhfuS+4qw
-	4RG99ut3w0P2PhvHaPlV+fVbO5XXw5jmwPfsNH56Is5huVJKmITSD7H8akIsRaaXXRt9+z
-	3Xt1KlyVa3toyjb559tHuhp1566ESj8=
-ARC-Authentication-Results: i=2;
+	bh=OTQB0TUAXUD3vxID5BdQah95iIYmmihnkyQRPpRL68Q=;
+	b=YCuONz/NYI3JsS3XCw8vZhhUifKfzO/HFaWbQ+63TwuNi8G5gtt4AtZHzWMobCDouR6B9/
+	l62ppiytXI9VVUMppvZTxGbmT+xka1CsGfxjV/sxjzqNkslb2RlbhCuBTnlpEJc+O1Islm
+	JKEcxEWcbF9L2wo6MEOlmO5KfHj7KKY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792002585;
+	b=pDNNJ2fjYNQur6WDbiQ2QI3meSTnucNgbKKVM7Dk/5+QmxSgShCrgJ14ZiHQLGEE2NbGHq
+	JXj7WFvuHUTCy2YJ8m3w3vT2ZsT0HiwTEyOd/rZ2FzVNDjFs2MecL6IsxB4CTCVvBbntlN
+	D3nGptJCJh66L9QHsSedQwfkZVjkkKY=
+ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Kuk0tOWz;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=lrizzo@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792002523;
-	b=Hi3ja1K9NNzc2v2laoKncVR9nV2Mg7+GGEYKymN44qvx1OUh6iML9r3ZF8vo12Gu4Oe5XH
-	X8nQ94XzBNf1KaWcw58QSQSe0n3LRZ2MTfIimxt4MTHrPF4D1zo/fsCcqclei7ajS/ZxMQ
-	tm2+aVCAu916GwfZlWigQPw6uNVJUkU=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so237165ad.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:28:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792002522; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eqdY6+TFJnm18OBpZTiVbqLoXZ9tRt35ZMDbgfUBBMrPuDuHR8SXWpaI9DtAsV/Xmm
-         5u+7mtVOkND13aA9Oi5qj5Pp/+621T1+EPlA1OHbrdSUdzmXHhlgwpBnqyoiAG3DxRGZ
-         iIVR735WiAJx3gDpFwArqI2ii+MxAy87+GTvNIBXpIhzukn3l+8wOMy7cII+6i9DXuzy
-         VwaRt3c9zmika6SDE6IMmnWt1cUtQ5kyDhiC1P5g8F8GT7SMq7e1bmRh1jYRGG+zq5oN
-         yGue1EJ9NnTbr+L2rQhJP3qnwqeZz2ewT1TKornoiuGb/JwdaFZrFVr6MCDVfSaLMgsu
-         3Fyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0+JRXvl/R9u5pNiuiBxqdsVIx1pGWTS2oCduhPjMn+0=;
-        fh=YjzX09EZV/pBzTiuOGruSoqLKKzGq0OMFBdGlQAu+uU=;
-        b=k/yRiNrzMgOkf17bFruqsr9K7El+iIaRV/LB1/NtNuCIsatBugJUiECoYbNHXeOYD/
-         GSfE3wDtO24qbP9jjMeY1pMnPu4OITbz9gefi7Hhw0hGvPlv9yqrRnbGha9WNShSuU/M
-         GhLbzepTJGKqr1eZu5oqKxIaCCslO6P0fQhwB6BJETwi8sNlJmm5ICjj66BUErKqb0jM
-         VgufcAVL0ObgrMngMsrq09zuakA4qQ5zCoZ4qk1uox2J0LPR/FdtQ/OIL1p0CQy7D6t2
-         pIyNYqhHSMzPmSkclnnt9UkTNh7zzIJEzNTm00Wr0ySi0nWeOdPXutvvZZWqIbCAMhtg
-         u5pg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792002522; x=1792607322; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0+JRXvl/R9u5pNiuiBxqdsVIx1pGWTS2oCduhPjMn+0=;
-        b=Kuk0tOWzLUEDR0eSwM9tkzZDBcejdmqv5wmfVGctYxLcIsA14tSCxBB7Eg8GWuNB1c
-         o38QYEkA927RvKmEsdW+UUhiwDw9C6KPCkObJRzihPQXb86vy9rnsP6GqvhgZ7mNHTVs
-         Fu5Q6Uz04WJuSsZ50RnFnl4EPP66s9iMj4NaPPTZ/WUwGzpN/i4/rx3zfiszauW7mBxj
-         4U5o/1wRbvuA5tpQ/vQjxxE9k0XgyfaiRi2LJXmd7IV05jgulQBTR5ewui5MMKi2Vpk9
-         fo3Kydw7k1yItOP2ki3m3IIySrLBUe6mT8O9HDAxqtQRG5KCLIEp76rlT32s5StdomzK
-         878A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792002522; x=1792607322;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0+JRXvl/R9u5pNiuiBxqdsVIx1pGWTS2oCduhPjMn+0=;
-        b=Zm2OChso+f+cRy7u0ZQUDsGFjM1wQwt2bRlgBhhO4M0X0VBnJJNYtJ1G78Z73RyLKw
-         7mrdX/5RwcDuKWhMjZKV4SQiIIAVmMq5D9RrqJNg9rCKoNyQhggL+tJUMaMbdFCuq5HX
-         zQmZzabHetLUK/3Lotb/dWpSqVTOcDc6+hYrp4sygL+Bi9o1RBLhSYRxc/KHUGTytc5z
-         1mb4pcGjRlzDZpir/6coIYjoapoI5DWA1PAGG24fxtZCX7V6MJs6Wr4zsu3jMOlQRsw4
-         gt5CimqzNLWec0NXz/6JjcPoQCb+qGJJhoayjzBWcPCDrr1jxYuWHseZPIcOjnnivq6x
-         RhhQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwuMwYO4+LLuhzZyTGCfMIGAhhNKWAw3W6Iq/INhc+ptiO1aOcHyNKQYA9F74jfqI0TcbgOYxPQ4w==@kvack.org
-X-Gm-Message-State: AFq9FYJrhHf5GZpIb5iXSkYqXiHDoXh0V/ejC7C91i4pkyu+PH1XPm7R
-	wEXoO2leAeaqDKNaRGmM5J42oCABpQgIabMPAvCpu72T0he6rFZPsbAMXbuQ/6XwODzOJUuTglm
-	EJDHSWDpVwoAQrQ45RwO5SYxVwRhDFFZHWyKtjHDA
-X-Gm-Gg: AYBFou2sRrIcjqFEszv4LT1HpelcTZjrTrRnfD9uEtdkHtEo5TE1aUOfyU1iTxTbT3n
-	rQuTTwfFmruG/+WuabyQ87vUi4wBHj6R4uy1z8lrl8KFJEgPRlDV8hlAMMzSozfte1bEEZiPxq2
-	spz45P5kfxH+dSpaxBMRMUI5dMu59gDmbrpHph+0vsT8oUovcAnzdIG9oBJnpQ4TtZCbvlDbP9l
-	zXoHTSwbGQVAXs58/6xskqIYzWkkbzPOAi6f8UgcaVvwTK1cqWTZsCmUu/IBMaldLnk54GMmgi/
-	3bLjZLSC3VJgcc1GwH97U7BMHvpupQzkkojDCo+10GBNdZym1TYay7wp
-X-Received: by 2002:a17:902:e944:b0:2e5:4604:c37a with SMTP id
- d9443c01a7336-2e87e303708mr18554105ad.18.1792002521805; Wed, 14 Oct 2026
- 11:28:41 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lUh51J//";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D1B9660229;
+	Wed, 14 Oct 2026 18:29:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4BB1F000C4;
+	Wed, 14 Oct 2026 18:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792002583;
+	bh=OTQB0TUAXUD3vxID5BdQah95iIYmmihnkyQRPpRL68Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lUh51J//ZpG1LvBeZMWXi9C2zDPmftO2Z9kWvh+UGMBT0fEhZz8eLiUf6Fj4NXtSk
+	 /zCbkpzo1Edcb+oUVOKw+ZcVasSMAADZ7N6FMj8MIMcK5j2YWXAPdTmgOuaZoOLH3q
+	 CCkoio3TrMQuGevPK0CN6yUnk2fMdZw4myNBFpZdZf3H1Eq4eUL6em0pn8vH8Ktt/G
+	 MAI9aU4JrPDAwXnJv4JLohBdnPzdUPcpNurDlVmXPCdUR+UJ2TuGRzYungwqomF5oU
+	 JlFVawmL65Sb6ivYBQCWZ5F76JGcz7jbmZ0kQuPI+SLNkkA0aiCxkAsQh/dlRPfNUg
+	 tlyGqGkPKN3xg==
+Message-ID: <a5c6edb4-9e8d-47f1-a316-6627e518fa7a@kernel.org>
+Date: Wed, 14 Oct 2026 20:29:35 +0200
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <20261003212241.3432303-20-lrizzo@google.com>
- <52a702a4-14eb-4617-bd29-e3140fd36780@nvidia.com> <afff5a1f-000a-4216-b4df-dd3d0406047c@nvidia.com>
-In-Reply-To: <afff5a1f-000a-4216-b4df-dd3d0406047c@nvidia.com>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Wed, 14 Oct 2026 20:28:05 +0200
-X-Gm-Features: AclHuK-6TbXuD5dQp6Q_-RxWjRRPPqkpIpvGcrKlslQ4aEjsOkMcO7VIrHzh1iI
-Message-ID: <CAMOZA0K4ZV53pE41AKoKz1g2wz3YENBz=HVoXng=RZbGyN3ssg@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 19/22] net/mlx5e: Use DMA_PMD memory for tx header
- bounce buffers
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B658BA000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/userfaultfd: only allocate anon_vma in CoW mappings
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Peter Xu <peterx@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Lokesh Gidra <lokeshgidra@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
+ <as99gyi-NUprRK6e@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <as99gyi-NUprRK6e@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0454AA0006
 X-Rspam-User: 
-X-Stat-Signature: 6qkxekqiqw6s5pmpzi1zsxa6tadbss5r
-X-HE-Tag: 1792002523-392593
-X-HE-Meta: U2FsdGVkX1+fCo3R8OICSaXYwoghsmaFjaUklhCEnXKlaIa/ri6Gp3j4IBcZfvwAlqUcmJ4QCBwUU8/YFrDKrLvSHxG7aqnrvpKiEVtygVwse8u00/e/b6JnhvDrp08HtUDeOG+F0n3lzzTzAvJo1k6W1JgRbLqCxXrlmAiYvmEwKwlN9OVKkcN0HoO4ttDOyL3tRHfKwsGG5Wgn1VuMMaV7Hywr9gskL9OMlxppyN7YlW9Nb1Y+8oTl0CeJtwYnkIe8X9B5P/Fy9Qz+zwtuUs4XwaKTR1SH/TnJELqQIti/w4v/GNg2PUsG9fuwRPs+G/RB9pnUAnAmzMIyp1wo1UddWfw43+P/Zgk0kZeULjVicnQ1YqzLoEkZn46YSfWSZ9LPdrLldPRrJeBOBqRSWMXL2wTJ/XwCDvI2Sl5VEBAb7GDXtzVXjxaYpm2kROYAKot7BEpzOx4G/p6OcqXv13uLf2c2DujxU3LmgegB3gy6hLYegB12DpJjUNGwYKu79ZIoE3UGInwrpGwiEEO3COldEi5EvLvJmgLDOObJ3P+YOLR4hI4jKskdigEwS0YCijllWfiHx5ClJAhl3jCrGl/q2jnul3/frhpr72Cdt5/5mrHL0pTgbkhJFfrpHsFtM0wPjzuh+1/5Qp+XmMmXDS5415hAnVg5JghEhguTDVNe4nNZLK5PQSGAu8dlD/1IKkIuM7ONUY3AkRA+iD0oWUKh7bS8MitUuZ6fuDCe+r2PmwfJgCuB0FEHwMK9MEobgJkxF+geFitv7uUmHKRbg1PqlMhcrWliNbm6NL814mJD3xGPOQgdqC4Wsc4Q8/qI3yCV6h6soRzYoWQ8dSnTAYC3I0Ay6npsTeU0fg1phngggbACuxBvgD976fT1g2fuHxA3fXI8ykMWHgd6DjyZOZtNolpzpeX3QUKitBJwOJhMGZqNB2cNOLc/tfrcYjHmXAZKxDyzmxrF9/g5tOO
- /rYGDV/N
- DE5SP0yjEMI7Rk1rzB37gR9hydgKIE/kH4sdP6hn+Yr9n9JxkWdfjtA4WSuzttsYhWkTsAtZz8tUIgd5QlhYN73/IwpwWENFU2ct+6jrov1Yc6+IcLONJIG5EL9MFcLVwYUJKgj4RRQTA1ZxHssXr/u+CMINlGlHWVL7gBN857DEGysyCddGm+EcZ8zbjIXWQEJKM51IX6Y+n6phCB8ktGf3LHuPm50ksdg2vG8mvCpLsBm9gWDNMwPMBfvuxDbTvZ7hW/Ih9rU/7rWkOPCeM+jdgGVJWNhe3NEsIwfjkLUNvJuf2hExGJTKWE1skDrQJGKhmXusmvnoxZ6AzUf1QvhdeFk163Kjg6cPoIpv/WLF2qGdqSCLKHrI+HHrqM7D3U4bX
+X-Rspamd-Server: rspam05
+X-Stat-Signature: smpschyh9gf4dbjooqokcc55mx574p45
+X-HE-Tag: 1792002584-992963
+X-HE-Meta: U2FsdGVkX1+Um7wnyxa2rQCvMBGbZdogZIYYsln5T1lyHNBS48q/ZqKTT7e4WGGY9zXZPNPX6eOu7rwTIQrpgAK6M9aqde4TvylncFTATPBqtDSm72pXPUDRDZOg/l1tOGt3RqaW8zKgwEwALphOT3BTsPRVLPdvgqCG2TPluI1hl4FrjfH4ATNqSfdsY5SEgpzS5dsqvx5wrVlUwEOe/AjFGfHe9CQs6zV+YNXMzYYx9AXs7YPvI7JlFz9fLIF/wgA8WISbVj5Z+KFsnsC6dFcLLiROlK0JJlF88jsvVr33jqGs6239tpGkkRTWwAN455FzAO0IamtsJE6n8c7gds9B4EbxXE7moyca0AtBiSHPM8VKNE0awoJEtVn+DOhi/D81hK/Wk8wAy/usbGhh6pSVghyUZlML2LM5KOKrRM3X0pMDmz2ektEtOQ6dg0m24E2qkHKG5l1zyda7Oh4EVaJ1eYkGkaeR3f85HJZaN3uPCG5magXErtm8pdJdsQ2njHaytj8YZn7HqvpC6aM97pUo2LYjkN31rHtH+Zt5X2qa54CSGO/8OBxDY1SafFUejwrGQnjLVRGNZV3JCOYdlvpFLX4FeRjxuZ2l2tNmIIXMlLYXGEFSa8LPSWjCt37wbTszgoEBrYs31SxYfGtAqdoi3Jh0CRC7Oa0A4ntlCYjTyhacF11VQrCfKk8sUPzkRWUniNQxbLXF093vbSfs2rxVPOa5Fylq1W+KGsUtfAXWXEmPz3xQTHtBBi1iViug7TKFTDHxCvs3Q/9ZviQHku+rePp+dRdMgM17U0bDihik9/LHFS69BcDMtncjIv+QRhUzZzerM8SuzM6Q/4Fvj9NeDsoi8GEzJPjAakbYDy9irhxC3v+iAQzWsak7leTMg2waeUkgt+xwom+RcTFDCwHWvSIlQzpv4UnpcCUyhgXoI4/N7UFnmc5Ax0IWC0PUCi6/8aPKQpabFTR6dFn
+ kmWSUPpo
+ JTioFLsete57r8bRHLMItO9+VJnvS7+lCc4IylvuB5sl5i9DM0nqD2mupb7/5bhIkpuoEK9ZxvR6CJFjx7iZEMmYO+VI+KAzaXIEFcpYUU7gXhnBsRLWbwxD5OH/AgTtaaj+u65kI7jrSFf+jQB58vuwVcIq89twhR5VeMooOlzNW5a52U/Vf8J6h9pOK2QXg8nk5y3dHNruX6pnUrbk3ZXqA8D8z1Gue6wDX4rLDAa42xerBzaK8FOE6Iu2scTGsyQlhXOsp11bpu/007sSMsRXb3RhMz0n+yxlnPBgjbrLYoVJVJwLbc+OM+kvtQHqzL5gpko/aGKhAbYk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,42 +142,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 7:51=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.com=
-> wrote:
->
+On 10/14/26 16:51, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
+>> As uffd_lock_vma() is part of the same lookup machinery and
+>> also contains a misleading VM_SHARED check, change that one as well
+>> directly for consistency.
+> 
+> OK, I think that one isn't _strictly necessary_, but while we're there,
+> worth doing too, clearly.
+> 
+> We should also go through and convert the remaining !VM_SHARED checks ->
+> vma_is_cow_mapping() too if possible, but that's a follow up, obviously!
+> 
+>>
+>> A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
+>> lock in copy_hugetlb_page_range() entirely. Further, the usage of
+> 
+> Hmm really? Is it possible to do that without the hugetlb lock?
+> 
 
-> > On 03.10.26 23:22, Luigi Rizzo wrote:
+Yes, we don't have to sync against PMD sharing if PMD sharing is impossible.
+This is what I have laying around:
 
-> > Why are only headers considered for bouncing? Because they have the
-> > highest mapping overhead?
->
-> I meant to say headers and small packets.
+commit ad6a5c65bd5fa31d93a2de2d2e5e473b26ad6a3d
+Author: David Hildenbrand (Arm) <david@kernel.org>
+Date:   Sat Oct 10 13:00:13 2026 +0200
 
-Headers have a high cost for the map/unmap (especially in strict iommu mode=
-),
-and also cause significant IOTLB thrashing, because they come from skb_head
-that is not pre-mapped. The impact of IOTLB thrashing depends on
-the hardware and load but they consume one IOTLB entry per packet with
-almost non-existent recycling.
+    mm/hugetlb: stop syncing against PMD table sharing in copy_hugetlb_page_range()
+    
+    We must never end up in copy_hugetlb_page_range() when PMD sharing
+    applies, yet we still have to perform the hugetlb_vma_lock_read() so
+    hugetlb_walk() is happy.
+    
+    Let's introduce a new vma_supports_pmd_sharing() and use that instead
+    in hugetlb_walk(). Also convert want_pmd_share(), which now looks a lot
+    cleaner, and document why the uffd checks cannot go into
+    __vma_shareable_lock().
+    
+    We can now relocate our safety checks in copy_hugetlb_page_range() to
+    the beginning of the function.
+    
+    No functional change intended.
+    
+    Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-In the following version I have modified the slub and skb allocator to
-feed skb head from DMA_PMD memory, which removes the need
-for header bounce buffers. It is a compromise (the skb head includes
-skb_shinfo, which we may not always want to expose to the device),
-but gives an option to those who want it, and in that case drivers
-that use pagepool can get all the benefits of DMA_PMD with zero
-modifications.
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 5029c72418631..b2da5d5816944 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1389,6 +1389,20 @@ static inline bool __vma_shareable_lock(struct vm_area_struct *vma)
+ 
+ bool __vma_private_lock(struct vm_area_struct *vma);
+ 
++static inline bool vma_supports_pmd_sharing(struct vm_area_struct *vma)
++{
++#ifdef CONFIG_USERFAULTFD
++	/*
++	 * Keep the UFFD checks out of __vma_shareable_lock(): UFFD flags can
++	 * change at runtime while the hugetlb VMA lock is held. They must not
++	 * cause unlocking or freeing an existing lock to be skipped.
++	 */
++	if (uffd_disable_huge_pmd_share(vma))
++		return false;
++#endif
++	return __vma_shareable_lock(vma);
++}
++
+ /*
+  * Safe version of huge_pte_offset() to check the locks.  See comments
+  * above huge_pte_offset().
+@@ -1406,7 +1420,7 @@ hugetlb_walk(struct vm_area_struct *vma, unsigned long addr, unsigned long sz)
+ 	 *
+ 	 * NOTE: lockdep_is_held() is only defined with CONFIG_LOCKDEP.
+ 	 */
+-	if (__vma_shareable_lock(vma))
++	if (vma_supports_pmd_sharing(vma))
+ 		WARN_ON_ONCE(!lockdep_is_held(&vma_lock->rw_sema) &&
+ 			     !lockdep_is_held(
+ 				 &vma->vm_file->f_mapping->i_mmap_rwsem));
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 60f9b209c8db1..606e93e32eefb 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4987,22 +4987,16 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 		 * Shared mappings only need copying when we could have
+ 		 * information stored in page tables (e.g., userfaultfd PTE
+ 		 * bits or markers), which is incompatible with PMD sharing.
+-		 * Still take the hugetlb VMA lock for now to satisfy
+-		 * hugetlb_walk()'s locking requirements.
+ 		 */
+-		hugetlb_vma_lock_read(src_vma);
++		if (WARN_ON_ONCE(vma_supports_pmd_sharing(src_vma) ||
++				 vma_supports_pmd_sharing(dst_vma)))
++			return -EINVAL;
+ 	}
+ 
+ 	last_addr_mask = hugetlb_mask_last_page(h);
+ 	for (addr = src_vma->vm_start; addr < src_vma->vm_end; addr += sz) {
+ 		spinlock_t *src_ptl, *dst_ptl;
+ 
+-		if (WARN_ON_ONCE(want_pmd_share(src_vma, addr) ||
+-				 want_pmd_share(dst_vma, addr))) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-
+ 		src_pte = hugetlb_walk(src_vma, addr, sz);
+ 		if (!src_pte) {
+ 			addr |= last_addr_mask;
+@@ -5147,8 +5141,6 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 	if (cow) {
+ 		raw_write_seqcount_end(&src->write_protect_seq);
+ 		mmu_notifier_invalidate_range_end(&range);
+-	} else {
+-		hugetlb_vma_unlock_read(src_vma);
+ 	}
+ 
+ 	return ret;
+@@ -7005,17 +6997,9 @@ bool want_pmd_share(struct vm_area_struct *vma, unsigned long addr)
+ 	unsigned long start = addr & PUD_MASK;
+ 	unsigned long end = start + PUD_SIZE;
+ 
+-#ifdef CONFIG_USERFAULTFD
+-	if (uffd_disable_huge_pmd_share(vma))
+-		return false;
+-#endif
+-	/*
+-	 * check on proper vm_flags and page table alignment
+-	 */
+-	if (!(vma->vm_flags & VM_MAYSHARE))
+-		return false;
+-	if (!vma->vm_private_data)	/* vma lock required for sharing */
++	if (!vma_supports_pmd_sharing(vma))
+ 		return false;
++
+ 	if (!range_in_vma(vma, start, end))
+ 		return false;
+ 	return true;
 
-> > Note that TSO/GSO packets will copy the header inline in the WQE
-> > already. But not for small packets.
 
-Yes additional bounce buffers are not needed on hardware that are
-essentially using the WQE as a bounce buffer. I'll double check the patch
-(mechanically generated).
+Will send that out for the next cycle.
 
-Small packets should not be too problematic, as long as they come from
-fragments allocated during the copy_from_user.
+> It'd be good in general if we could get rid of that lock as a whole :) but maybe
+> dreaming.
 
-cheers
-luigi
+Yeah :)
+
+Thanks!
+
+-- 
+Cheers,
+
+David
 
