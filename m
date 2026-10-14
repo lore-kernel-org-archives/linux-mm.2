@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84207CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:29:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9FE6CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:30:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88A966B0096; Wed, 14 Oct 2026 14:29:47 -0400 (EDT)
+	id 889FF6B0088; Wed, 14 Oct 2026 14:30:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 862246B0098; Wed, 14 Oct 2026 14:29:47 -0400 (EDT)
+	id 83B376B0098; Wed, 14 Oct 2026 14:30:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 754DC6B0099; Wed, 14 Oct 2026 14:29:47 -0400 (EDT)
+	id 72A966B0099; Wed, 14 Oct 2026 14:30:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 47DD16B0096
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:29:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C65A9120316
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:29:46 +0000 (UTC)
-X-FDA: 85322070372.16.84AADF2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0454AA0006
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:29:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lUh51J//";
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 4B9D66B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:30:05 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C834412046A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:30:04 +0000 (UTC)
+X-FDA: 85322071128.05.6A27E45
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0117940006
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:30:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h9/hPajC";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792002603;
+	b=jtKP+3sRsy+jaUafPyuFW1FfB2nmPPOahItTI9juPHtSg61bPCmixnpmk+Q8p5ZbS4aNXB
+	YFqiyzDUQlbvPhPMDoyx2b4s/mp9dx98yoLYWKeQ+TU+Ot0Z2SpULxLqcqxMaNSO1nIcXN
+	hlhK96Z1LZo4eY3e3SrBlSb4BEYAQVs=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h9/hPajC";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792002585;
+	s=arc-20220608; t=1792002603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OTQB0TUAXUD3vxID5BdQah95iIYmmihnkyQRPpRL68Q=;
-	b=YCuONz/NYI3JsS3XCw8vZhhUifKfzO/HFaWbQ+63TwuNi8G5gtt4AtZHzWMobCDouR6B9/
-	l62ppiytXI9VVUMppvZTxGbmT+xka1CsGfxjV/sxjzqNkslb2RlbhCuBTnlpEJc+O1Islm
-	JKEcxEWcbF9L2wo6MEOlmO5KfHj7KKY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792002585;
-	b=pDNNJ2fjYNQur6WDbiQ2QI3meSTnucNgbKKVM7Dk/5+QmxSgShCrgJ14ZiHQLGEE2NbGHq
-	JXj7WFvuHUTCy2YJ8m3w3vT2ZsT0HiwTEyOd/rZ2FzVNDjFs2MecL6IsxB4CTCVvBbntlN
-	D3nGptJCJh66L9QHsSedQwfkZVjkkKY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lUh51J//";
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=goPUvnwsBIJ7nqx5a1aYL/GrCgKsovn5VsOtQmOka0M=;
+	b=zsrAEApnm4mDW3S3WbEzMXLYrl61fwPJJFK4SG5WsMXmxofozdsgmwDAc3uJ4QEusiRQEU
+	l4Q3z14imYsRyaqzMfZ5DrwQ7Yy+Nw1wsGtAGwdExqvwO3jiax1UZrW81Q5+d6ZN4u0NYN
+	lRJP1JdCRdkFOjfj07OUMhKZgl8PUhc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D1B9660229;
-	Wed, 14 Oct 2026 18:29:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4BB1F000C4;
-	Wed, 14 Oct 2026 18:29:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 05EF543A06;
+	Wed, 14 Oct 2026 18:30:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEAD1F000C4;
+	Wed, 14 Oct 2026 18:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792002583;
-	bh=OTQB0TUAXUD3vxID5BdQah95iIYmmihnkyQRPpRL68Q=;
+	s=k20260515; t=1792002601;
+	bh=goPUvnwsBIJ7nqx5a1aYL/GrCgKsovn5VsOtQmOka0M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lUh51J//ZpG1LvBeZMWXi9C2zDPmftO2Z9kWvh+UGMBT0fEhZz8eLiUf6Fj4NXtSk
-	 /zCbkpzo1Edcb+oUVOKw+ZcVasSMAADZ7N6FMj8MIMcK5j2YWXAPdTmgOuaZoOLH3q
-	 CCkoio3TrMQuGevPK0CN6yUnk2fMdZw4myNBFpZdZf3H1Eq4eUL6em0pn8vH8Ktt/G
-	 MAI9aU4JrPDAwXnJv4JLohBdnPzdUPcpNurDlVmXPCdUR+UJ2TuGRzYungwqomF5oU
-	 JlFVawmL65Sb6ivYBQCWZ5F76JGcz7jbmZ0kQuPI+SLNkkA0aiCxkAsQh/dlRPfNUg
-	 tlyGqGkPKN3xg==
-Message-ID: <a5c6edb4-9e8d-47f1-a316-6627e518fa7a@kernel.org>
-Date: Wed, 14 Oct 2026 20:29:35 +0200
+	b=h9/hPajC0Azg9CvJ98mqMqpfTxxP3tEL0tJENRXOXOdPpN21/xwJANzF0XJT20uEB
+	 8ELin1BYHvgD0N0NTjGV2SS7QTiVClPuKdy9qndWJLXyLmgxGK4y3mG8CdYKUqT/vF
+	 DyqP9JEHo7TMKboBIPuoQ8M7v9UQGhKIP4Qk9LOX6lTw5aMFzensHD/vWJS7osZ14+
+	 lg0plopzf6p8DARJDysGNTpNSR8qvtJEcL9eMu+tb67MVL2m81S5bCWOth8AInlMpO
+	 10+niaPkGe77yTgorT+xOIyc+8m6DbJOK17DYw3/z2S4+GG8xN36u7lttN4Evx/Yox
+	 khSNkfCi3qmtA==
+Message-ID: <c3b95083-f014-432a-8b21-b555f0ab71f5@kernel.org>
+Date: Wed, 14 Oct 2026 20:29:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/userfaultfd: only allocate anon_vma in CoW mappings
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kyle Zeng <kylebot@openai.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
  Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Peter Xu <peterx@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Lokesh Gidra <lokeshgidra@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <liam@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 References: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
- <as99gyi-NUprRK6e@gremlin>
+ <as99gyi-NUprRK6e@gremlin> <as_EIRMinCdl1zOx@com-75606>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <as99gyi-NUprRK6e@gremlin>
+In-Reply-To: <as_EIRMinCdl1zOx@com-75606>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0454AA0006
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0117940006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: smpschyh9gf4dbjooqokcc55mx574p45
-X-HE-Tag: 1792002584-992963
-X-HE-Meta: U2FsdGVkX1+Um7wnyxa2rQCvMBGbZdogZIYYsln5T1lyHNBS48q/ZqKTT7e4WGGY9zXZPNPX6eOu7rwTIQrpgAK6M9aqde4TvylncFTATPBqtDSm72pXPUDRDZOg/l1tOGt3RqaW8zKgwEwALphOT3BTsPRVLPdvgqCG2TPluI1hl4FrjfH4ATNqSfdsY5SEgpzS5dsqvx5wrVlUwEOe/AjFGfHe9CQs6zV+YNXMzYYx9AXs7YPvI7JlFz9fLIF/wgA8WISbVj5Z+KFsnsC6dFcLLiROlK0JJlF88jsvVr33jqGs6239tpGkkRTWwAN455FzAO0IamtsJE6n8c7gds9B4EbxXE7moyca0AtBiSHPM8VKNE0awoJEtVn+DOhi/D81hK/Wk8wAy/usbGhh6pSVghyUZlML2LM5KOKrRM3X0pMDmz2ektEtOQ6dg0m24E2qkHKG5l1zyda7Oh4EVaJ1eYkGkaeR3f85HJZaN3uPCG5magXErtm8pdJdsQ2njHaytj8YZn7HqvpC6aM97pUo2LYjkN31rHtH+Zt5X2qa54CSGO/8OBxDY1SafFUejwrGQnjLVRGNZV3JCOYdlvpFLX4FeRjxuZ2l2tNmIIXMlLYXGEFSa8LPSWjCt37wbTszgoEBrYs31SxYfGtAqdoi3Jh0CRC7Oa0A4ntlCYjTyhacF11VQrCfKk8sUPzkRWUniNQxbLXF093vbSfs2rxVPOa5Fylq1W+KGsUtfAXWXEmPz3xQTHtBBi1iViug7TKFTDHxCvs3Q/9ZviQHku+rePp+dRdMgM17U0bDihik9/LHFS69BcDMtncjIv+QRhUzZzerM8SuzM6Q/4Fvj9NeDsoi8GEzJPjAakbYDy9irhxC3v+iAQzWsak7leTMg2waeUkgt+xwom+RcTFDCwHWvSIlQzpv4UnpcCUyhgXoI4/N7UFnmc5Ax0IWC0PUCi6/8aPKQpabFTR6dFn
- kmWSUPpo
- JTioFLsete57r8bRHLMItO9+VJnvS7+lCc4IylvuB5sl5i9DM0nqD2mupb7/5bhIkpuoEK9ZxvR6CJFjx7iZEMmYO+VI+KAzaXIEFcpYUU7gXhnBsRLWbwxD5OH/AgTtaaj+u65kI7jrSFf+jQB58vuwVcIq89twhR5VeMooOlzNW5a52U/Vf8J6h9pOK2QXg8nk5y3dHNruX6pnUrbk3ZXqA8D8z1Gue6wDX4rLDAa42xerBzaK8FOE6Iu2scTGsyQlhXOsp11bpu/007sSMsRXb3RhMz0n+yxlnPBgjbrLYoVJVJwLbc+OM+kvtQHqzL5gpko/aGKhAbYk=
+X-Stat-Signature: zcxx49u3ejfsumw53uodreihwfp8n6t8
+X-HE-Tag: 1792002602-238147
+X-HE-Meta: U2FsdGVkX18MvdmEOaaDDKPKNCfEyTHuM78CcEGlBj/raKvIbT987qRZeyk3ZPgb/KwY1eiJiCiCKj3QCtnJaksOjmxlld4Y/uf0UZMGvzDZ+xHONqGIwri/ayh1LqER3KCWCkNQPtTd9bzYD5+xomDseHXAB1Lz3vw8xbdPFNIvaEwe/yetVzYHZASvxvIcEm93vn1TG88WPtWXNpY8rMwtailh53gXChfymaHVqOrQrVJBuulTjU7/GLQGvfDHDC1+/NCPs93RPIm48eZUVHKoCvJ82Tv2DEt7FMraYYQGf5mY0nyWxKX6P+NWldEgf0eA2c28+FttsYmT4uh0Fy2JyCgVEB2WNFfTt7pdlxjemV4bLsvqSzAaZuhZbRFZSpky/U6w3Toze+47WYXSJDPnC7KNPC25jj4dqGMt7SeJ3nx05q7o3NCkiMkmeTnseEfyX79nPIHs6f6DoFdCymQXavWsz5OCCDWf5qSTV5fA+4sPL3jPrMuP0rAlczMqLPPgq/rIur6spH+TEHg+/6W/Y98gQxt3TM7x5C+vBi3HKUK8B0iGKRitVdn9dSHFLE/vwxtlr3fD1Cwg1wBmDGgGa8qByjXQXnnUD9i+PPOX23nuin1Rg7xlcgwLPLrceOnw3DyHnCWeUIT9o+OrjPMOtKJdR+57aI7yt+cO0LmOT30SYG6NWVmjqwF6SiDQ1o/cV4OHSVyzRoExYBxvk101613POfA+Eq3pWi8J4K2MvKdKXySpaSUg3osxHUVMwYScH6t0Bjt0XphShOyqw1xNGF5AU1iRJwm0jMAlDH5XlwTundKP/ySyYRQzD9hgs6/Qcp+pLCY2q8MxSzTOSN5j4ajzLtzAWuys2mEbkRc2Ph3qPII4wrxD6qQexijTr5mAMOS0Ez8FY4WuBdBfm4dMy5+C8ZYTzOvB0JEvN4q0MQv0ct6HuHjPi/SHwo2YXG7BKiUM0Dj2ATRlFrB
+ 51QsK13/
+ x01UUn6gnT2PsV72f8ZBbs2qvL4s2Vqx6yo3GCvyYpobg0j4vfOEojkpCL4vS+o3UYP8N8h09KDqyLpgHKuhQpZOy6CLl5LTdC/9C5DJ/1fBsbK7+WS0x4WOkTsHb8y+5vYQ8qxlG+A2exLddM7LuUlugS2LjpbPYkNSobfuoM9UmFVwo+rYMpippWYr3wTJ1vx5+Z90yQ3b+2JkkOFa06UffV92Y4bA1ufFu/9sh7vqHnEvW5p9bk6p1Ss67FDEKhdtaXE0cTQk3LktZ/EyLBZK0C7+8F6htrpBUb7mNLuHiWcxPp+jm7eH0N9zjzFAkmjMGzo6LUMhEHLR0on5RA8enNVfKDke4RsKU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,153 +142,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 16:51, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
->> As uffd_lock_vma() is part of the same lookup machinery and
->> also contains a misleading VM_SHARED check, change that one as well
->> directly for consistency.
-> 
-> OK, I think that one isn't _strictly necessary_, but while we're there,
-> worth doing too, clearly.
-> 
-> We should also go through and convert the remaining !VM_SHARED checks ->
-> vma_is_cow_mapping() too if possible, but that's a follow up, obviously!
-> 
+On 10/14/26 20:04, Kyle Zeng wrote:
+> On Wed, Oct 14, 2026 at 03:51:22PM +0100, Lorenzo Stoakes (ARM) wrote:
+>> On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
+>>> As uffd_lock_vma() is part of the same lookup machinery and
+>>> also contains a misleading VM_SHARED check, change that one as well
+>>> directly for consistency.
 >>
->> A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
->> lock in copy_hugetlb_page_range() entirely. Further, the usage of
+>> OK, I think that one isn't _strictly necessary_, but while we're there,
+>> worth doing too, clearly.
+>>
+>> We should also go through and convert the remaining !VM_SHARED checks ->
+>> vma_is_cow_mapping() too if possible, but that's a follow up, obviously!
+>>
+>>>
+>>> A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
+>>> lock in copy_hugetlb_page_range() entirely. Further, the usage of
+>>
+>> Hmm really? Is it possible to do that without the hugetlb lock?
+>>
+>> It'd be good in general if we could get rid of that lock as a whole :) but maybe
+>> dreaming.
+>>
+>>> VM_SHARED in userfaultfd code should be cleaned up later to focus on
+>>> CoW vs. non-CoW mappings.
+>>
+>> I think also anywhere else in the kernel where this is done. An audit on that in
+>> general would be useful!
+>>
+>>>
+>>> Reported-by: Kyle Zeng <kylebot@openai.com>
+>>> Fixes: 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd operations")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>>
+>> This LGTM, thanks for handling this!
+>>
+>> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>>
+>> --
+>> Cheers, Lorenzo
 > 
-> Hmm really? Is it possible to do that without the hugetlb lock?
+> I ran the patch through my system and did not find any issues with this
+> patch. Thanks for addressing this!
 > 
+> Reviewed-by: Kyle Zeng <kylebot@openai.com>
 
-Yes, we don't have to sync against PMD sharing if PMD sharing is impossible.
-This is what I have laying around:
-
-commit ad6a5c65bd5fa31d93a2de2d2e5e473b26ad6a3d
-Author: David Hildenbrand (Arm) <david@kernel.org>
-Date:   Sat Oct 10 13:00:13 2026 +0200
-
-    mm/hugetlb: stop syncing against PMD table sharing in copy_hugetlb_page_range()
-    
-    We must never end up in copy_hugetlb_page_range() when PMD sharing
-    applies, yet we still have to perform the hugetlb_vma_lock_read() so
-    hugetlb_walk() is happy.
-    
-    Let's introduce a new vma_supports_pmd_sharing() and use that instead
-    in hugetlb_walk(). Also convert want_pmd_share(), which now looks a lot
-    cleaner, and document why the uffd checks cannot go into
-    __vma_shareable_lock().
-    
-    We can now relocate our safety checks in copy_hugetlb_page_range() to
-    the beginning of the function.
-    
-    No functional change intended.
-    
-    Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 5029c72418631..b2da5d5816944 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -1389,6 +1389,20 @@ static inline bool __vma_shareable_lock(struct vm_area_struct *vma)
- 
- bool __vma_private_lock(struct vm_area_struct *vma);
- 
-+static inline bool vma_supports_pmd_sharing(struct vm_area_struct *vma)
-+{
-+#ifdef CONFIG_USERFAULTFD
-+	/*
-+	 * Keep the UFFD checks out of __vma_shareable_lock(): UFFD flags can
-+	 * change at runtime while the hugetlb VMA lock is held. They must not
-+	 * cause unlocking or freeing an existing lock to be skipped.
-+	 */
-+	if (uffd_disable_huge_pmd_share(vma))
-+		return false;
-+#endif
-+	return __vma_shareable_lock(vma);
-+}
-+
- /*
-  * Safe version of huge_pte_offset() to check the locks.  See comments
-  * above huge_pte_offset().
-@@ -1406,7 +1420,7 @@ hugetlb_walk(struct vm_area_struct *vma, unsigned long addr, unsigned long sz)
- 	 *
- 	 * NOTE: lockdep_is_held() is only defined with CONFIG_LOCKDEP.
- 	 */
--	if (__vma_shareable_lock(vma))
-+	if (vma_supports_pmd_sharing(vma))
- 		WARN_ON_ONCE(!lockdep_is_held(&vma_lock->rw_sema) &&
- 			     !lockdep_is_held(
- 				 &vma->vm_file->f_mapping->i_mmap_rwsem));
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 60f9b209c8db1..606e93e32eefb 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4987,22 +4987,16 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 		 * Shared mappings only need copying when we could have
- 		 * information stored in page tables (e.g., userfaultfd PTE
- 		 * bits or markers), which is incompatible with PMD sharing.
--		 * Still take the hugetlb VMA lock for now to satisfy
--		 * hugetlb_walk()'s locking requirements.
- 		 */
--		hugetlb_vma_lock_read(src_vma);
-+		if (WARN_ON_ONCE(vma_supports_pmd_sharing(src_vma) ||
-+				 vma_supports_pmd_sharing(dst_vma)))
-+			return -EINVAL;
- 	}
- 
- 	last_addr_mask = hugetlb_mask_last_page(h);
- 	for (addr = src_vma->vm_start; addr < src_vma->vm_end; addr += sz) {
- 		spinlock_t *src_ptl, *dst_ptl;
- 
--		if (WARN_ON_ONCE(want_pmd_share(src_vma, addr) ||
--				 want_pmd_share(dst_vma, addr))) {
--			ret = -EINVAL;
--			break;
--		}
--
- 		src_pte = hugetlb_walk(src_vma, addr, sz);
- 		if (!src_pte) {
- 			addr |= last_addr_mask;
-@@ -5147,8 +5141,6 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 	if (cow) {
- 		raw_write_seqcount_end(&src->write_protect_seq);
- 		mmu_notifier_invalidate_range_end(&range);
--	} else {
--		hugetlb_vma_unlock_read(src_vma);
- 	}
- 
- 	return ret;
-@@ -7005,17 +6997,9 @@ bool want_pmd_share(struct vm_area_struct *vma, unsigned long addr)
- 	unsigned long start = addr & PUD_MASK;
- 	unsigned long end = start + PUD_SIZE;
- 
--#ifdef CONFIG_USERFAULTFD
--	if (uffd_disable_huge_pmd_share(vma))
--		return false;
--#endif
--	/*
--	 * check on proper vm_flags and page table alignment
--	 */
--	if (!(vma->vm_flags & VM_MAYSHARE))
--		return false;
--	if (!vma->vm_private_data)	/* vma lock required for sharing */
-+	if (!vma_supports_pmd_sharing(vma))
- 		return false;
-+
- 	if (!range_in_vma(vma, start, end))
- 		return false;
- 	return true;
-
-
-Will send that out for the next cycle.
-
-> It'd be good in general if we could get rid of that lock as a whole :) but maybe
-> dreaming.
-
-Yeah :)
-
-Thanks!
+Thanks a bunch, and thanks for reporting all these issues!
 
 -- 
 Cheers,
