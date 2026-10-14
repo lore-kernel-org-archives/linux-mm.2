@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 870A7CC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:16:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC4E4CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:16:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97E0B6B0088; Wed, 14 Oct 2026 09:16:10 -0400 (EDT)
+	id 0F3246B0098; Wed, 14 Oct 2026 09:16:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E796B0098; Wed, 14 Oct 2026 09:16:10 -0400 (EDT)
+	id 0CB216B0099; Wed, 14 Oct 2026 09:16:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 844216B0099; Wed, 14 Oct 2026 09:16:10 -0400 (EDT)
+	id F23246B009B; Wed, 14 Oct 2026 09:16:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 65EE56B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:16:10 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04EF2A054A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:16:09 +0000 (UTC)
-X-FDA: 85321280100.30.310B650
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D6CDD6B0098
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:16:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71F791404FE
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:16:29 +0000 (UTC)
+X-FDA: 85321280898.28.38842CC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8528AA0013
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:16:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfV8S4NQ;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id CC0B3140015
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:16:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BBho0QDF;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791983787;
+	b=wLmvO9BztPam0X4G/zEIblonHnakLfL1F6G9MlUMSBzCA0m7TQyTdD+3HlA4f2HcBuanLR
+	RzFMHkkb6AmGsSe/lWSkehPYFEYnSZ4uEwBjTdOgn0mYd91qBajT3p6D8iD1BG2P9MzXEa
+	IcK/my2HnA0NFivJuZyEauVlxDfXc24=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BBho0QDF;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791983768;
+	s=arc-20220608; t=1791983787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=N/Kx0frmkxosvQcop9AdOprS27rR/qXNkOdGxt6bKsI=;
-	b=FBQhYWESDYB7LXMKkoAQAjVnE+LbFW/zc8zsCbzAYRuHhAnOeSJ+tpZjWtXSo07QYcnl3p
-	gWT+2m84vpNC0/mTYEjYnjX/ocT9R3zFk96+YhGtMwNL0ZFnx3seDgEiEd8XCvAH+U0FVS
-	RdbOwako3HF1aVLLTR3847qSOUPX1kg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791983768;
-	b=7I0eKhZ0vt6Xst/uK51CqC2bg6eZLQckeZxRu+3C9PI76mOH0FlW+Lx7QeFcifwYvriAhr
-	scoNB4QS9Zb2KgQHWap2GIrJeQxXsAYNKOjJFMVE/Tl1n6iAht3C6gyHRwf4HJ1d+8v7nZ
-	ZjvBKx0bir0sJZwJbCBKSYtSjMU3h+4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfV8S4NQ;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hrpo4cN83jrj+e2I5RQ50g0XlOIzeJ58mg+PewPmR3I=;
+	b=m+/WojZjJsJ7aRTrGf4nvdPz9DNnGQm0OB0hQkV6SmHvFzZ4S6gayd2wCjBSa5amEmKksN
+	eKnnpo+ElN3bJb5JmBxq3yIvSaI7cC7ELfDI4v/N32/jNA8R4PYj6UszlZEKBO4YjPFSMT
+	HQoCyET94ZtnP7MDxGHnmOUwOIra3bU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA4BA60219;
-	Wed, 14 Oct 2026 13:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD001F000FF;
-	Wed, 14 Oct 2026 13:16:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 246D4600DA;
+	Wed, 14 Oct 2026 13:16:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6051F000FF;
+	Wed, 14 Oct 2026 13:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791983767;
-	bh=N/Kx0frmkxosvQcop9AdOprS27rR/qXNkOdGxt6bKsI=;
-	h=From:To:Cc:Subject:Date;
-	b=IfV8S4NQS0MqMSLTMwNl1QtVDDkd4UFmd5o0O0OGBCKj/A4Te/Y8nCmicx7OVbrwq
-	 6DOy8g4oT/WhRQ7kj6Ob0FSCFmHLmTwhMvQFGI9QK3hFL6CdwN4EUKuYNzuDQiSNjX
-	 bArrNH0X6myiUQssLkLoGWrMMxej/xMGzZRMKfmW0ZbzCse+Z0b7fldUO91ZcIHFOM
-	 d+Hs+e1vRtiAbij056A7JxS/5qBI5Tv/WmDU6XUSkVyv9eK67kKv/B8cPngMEYBECe
-	 Kbbcgcll6kLnGn2PCbYd1kYd4Ae9KvsUUTW1OzIR0NwYzxDhr8QQUw4u2VZQbY+yqn
-	 uca2v4+jYSvKg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Bing Jiao <bingjiao@google.com>
-Subject: [PATCH] kho: do not reserve empty per-node bootmem areas
-Date: Wed, 14 Oct 2026 15:15:44 +0200
-Message-ID: <20261014131547.259138-1-pratyush@kernel.org>
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+	s=k20260515; t=1791983786;
+	bh=hrpo4cN83jrj+e2I5RQ50g0XlOIzeJ58mg+PewPmR3I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BBho0QDF8uf5LQYJduMCtXsQHoR7qkt/9uXjiXsow2im7mQgSGD14LO/UIlh0jYpA
+	 bRtbtrnXDJz05sPV/9eEiBlxQwp5PSiN9BkMDJ3he8d/9Icjqj+a/4YdKVXK287e6W
+	 MCTrvva80BsCMHIESG2+JqR70b8iJS6KUjxt1B19GBlhZXupMbqsCrXFK6ww8U0XKz
+	 B4GygYXRmfEBE1qeQUmtkOgW2WDrJXm5Q1/VXhoWCnQU9rpE4vB8OnKHGHST7n0DXT
+	 Qr9KNgC0S1fgR2/eBzpe/4Xq57L6fT8DJKxBJ4IMY+Ojd8Jd3lx9rev/yVUTZDajsE
+	 +dkHNMmbi+qpQ==
+Date: Wed, 14 Oct 2026 14:16:24 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, linux-hardening@vger.kernel.org, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/2] ipc, msg: Account msg_msg allocations with
+ GFP_KERNEL_ACCOUNT again
+Message-ID: <as-AWdUncVtquHdv@thinkstation>
+References: <20261014052338.nothing.279-kees@kernel.org>
+ <20261014052344.384723-2-kees@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8528AA0013
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014052344.384723-2-kees@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CC0B3140015
 X-Rspam-User: 
-X-Stat-Signature: mowpi1q9zdsw3azirm6kesie93mwzcaa
-X-HE-Tag: 1791983768-343982
-X-HE-Meta: U2FsdGVkX18y74S4Pv28jLo/hFsON0cCg6s8yKrOXB7g5WHNoFgHgFIayWYf8AtEIuAgy3ekHKz2nFv0mLGveEQ+gd/e4AddL4OMqP9cyPDfqyO9oIq9mTwUzPR6qDuLnnDWuyfYyMYCEv3deKnLGyebtI7ZO4Y7G2RhmbCL50nOZKC8k56HVHmjVo8d9qTTAMpPFZiOZE3UqmKXAr6vvQTIUeulsegzyjdg85EGSSO1vNwMYZmmBLJzdJmZo6jcNtWR8IN4/fhICvnengkyMsQ8G2IIh8DL878Y6VvgAHAB9RlusjkVik3SCbZq/GDz28I8GDJ9MqUYo2Oi+9FXbesEeDa4Q/Lso40wRFV5U3O9ckyBfvNZKoFAVBJtfEMeJjPkzaLovh409fjCXv7Er+X2DSaPuOJTl9ig4y7VtqN977CzSjAG1prOwJ/IrB1JmrhnXfjxO1Eh5u8j+R1FH9w9tu0yJGo1TfYD4e50vgbLQBbpguFKaufQ81WgxcL93R6/+qoJWg/PsjBIn6Ln/zinaAcGavozudYgupcvSnSziMFddIefxZ8Xod5MWAHhdoA2+1yDVjCY/5jnrvhELZ2Gop1XMya3YVcDrX6XXIYnlz4Qflh2qCBnNvOtVQjvUfi1FzJ21WEDWCumMuLhKkgIEQFoqKY+Qr1jyJnicTXEp1MJfb0B5zK05Ky2BXHstEjCdCnOcDDNZElfuS/YnZAro6uY6yqa8joO4ETu1glCq4xoqExGxbalqv2+SixgZuKiY+pmE84X4TbBCI+aR1xDP/lJba3Jp8klSTkOznegZOq40gZhTJb9c4BC9d/BaKL3d+KMA0ReX4lsjnypieJj15xFe8g2qEYTDOeW8vPM0z7REHq2sw0cdZ+x4Xb/7KxGZs266O78J7aSuyB6gWssy29Jp39/fxjnWekHjclhSx3reEoTPCO1GuyMPfvv41tUnJ3VVCjYauG2ni4
- 6QDFYJrO
- PYHGb1PnhPHRoYCf7iSCcqr3gwfiZuNzEtXkejiivLiS+uH/CrW3/vf1GrWiwsYG8uIX/1H39peKtVAOG/DyCwNcXH/VrXLQOWxDe6EzxVMrwczpgaDFI7lnMbD0mXTKQNO9H0OJVll0beRh2byhslUGUVyzpx+w1sjgDhYpQcJcnIsS0WqRMKp+O0deQurGhq8i+Z8IwieKV4Ey9s6x8StlPTXGpQipsQ5YiXX4WgwwSSFxdRcULTi1n+yDj5zAP93oz
+X-Stat-Signature: be1uk4rnpri1n8iun3se9tdfkxsihx8w
+X-HE-Tag: 1791983787-625639
+X-HE-Meta: U2FsdGVkX1+XpNHc1jRK+7P+S5OoYtOLP5ETj8lMcKrmD151OVXTpJQO8jVJiq3MTnz4q1CgDH6B5pb/s7eMqqtLsES+TrX3Eayp/3vEsUxKmAiAcKWv2KCEt1XQUI7MCkxrp4NP6xaaahg30qmRFl8hmdOPaFTq2wCpeWC3/CLAZmJNZt/27RDSUtzhHgOYQ08A3Vy/DXelBbTrORZ1d3PwkwAMSlGC+eXHgXkv0lADHtcbDGHQFmFT5MoNpBqsvysgekAfJ1glPkD861JH3ShdzyVX7AePlfL5aoim0DGcB8fPC2sM07O2o9PN5c4eUS0MOJVoniEoaXcT258zDPF/SoMIe9b3G8Kmlplakc/+jChS6rwuFv6lkfccfLAgZcxCZHeTIvXe9vCcr+660QJIROWarkeWt0Njb9JXNedbu9EcDIvPNzNZU5DecmCDx+SyoT+vM+dAoJ/AbGaMI4PqH9TLh7QUiEI5tWfQgJqvibTgKH69sLWHdmxH//Nq7cjehBH0NmqZ8yXsN68DnuCxlCoww/BWmLXahapqyHnzd/rme+xgbq8VgIxfuzN0soHsg6A7AadgEgiDEYgnDim0F/LIPdCncz4YPOLQOK4SvnHpX7Tlx3/dDe57ezd2x2A5ZhnG1jqNEBMl3IrWSYfTki2Vaxu6OixBNNgjYfPcL1N7hB+pOxDS6uTCgBLWIdSVdldUMXWQXHdwdXl8sRUuZdPg0vBvNliXrJLgXrWxaXotcMHiT5oaff7pbwT47T9fDV97tuBAc0GrbLtSd6cCbhd0zitzs4Wit+b+W92ix1KTkhdvzTobK/lDDICKP9fu2tm/6Ywu5waNYRc0emaTBeow6RF23yAAqWSXwfiakPcUl1u74E7fzOEF+VQZioWqzQYW7bOg80Q/7ZdiA1DclQ9kXm7TS6xhrU6jhfaxXZFf/8yDlN94GMGZ0G8jt9dmiKUvLEN745RklWl
+ /h+JRVQM
+ 6AQWCvUAzUWArPp1oX8XF83/rumC89iQv3Sj2tIhM7Dn8y907zFTs4Fh+wRITKonVu71xyHgRucx7oUWcZg+zMZtpuAg41dIVNugu0M/JpGaKGFJNQMu+rDK9cC7wbOEoq4kZRl6AOYMqvA+CQNq8UZSbar65O1bubkwBufJt+eUHzkZeipBEN9kdRXNF4R4mgW8ZbziqA2uvGgQr7A1rDgf0iIX5Ym4J0BTi8NyHuhET6cAoUqiNWQVTb+/XIMxA/AXhZG67i0Qrg0znGeTP20QdyxABxiJJ4apU7Mmbou+kJQ1Ma4PgixCi4m+PPI3SmDN5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,90 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Tue, Oct 13, 2026 at 10:23:43PM -0700, Kees Cook wrote:
+> Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
+> alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
+> accounted only through SLAB_ACCOUNT on its bucket caches. With
+> CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
+> kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
+> which do not account it; the same happens when kmem_buckets_create()
+> fails. Either way, the allocation is not charged to the sender's memory
+> cgroup.
+> 
+> Allocate with GFP_KERNEL_ACCOUNT again, as before that commit, so the
+> allocation is charged whichever cache serves it.
+> 
+> Build tested ARCH=x86_64 defconfig with GCC 16.2.0, with
+> CONFIG_SLAB_BUCKETS as y and n.
+> 
+> Fixes: 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for alloc_msg()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
-Some nodes do not allocate any early boot memory. An example is
-hotpluggable nodes with movable_node enabled. So the scratch size for
-them ends up being zero. Zero size allocations normally don't play well
-with memblock. Memblock returns an address, but then doesn't actually
-reserve anything. This address ends up being recorded in kho_bootmem
-with a size of 0. In case of hotpluggable nodes with movable_nodes, the
-allocation on the node actually fails because memblock refuses to
-allocate there, and so KHO fails to initialize.
+Looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 
-Skip bootmem reservation for such nodes entirely.
-
-To keep the code more robust, avoid overloading kho_bootmem_cnt. use
-max_nr_bootmem to store the size of kho_bootmem array. This ensures that
-the location of kho_bootmem_cnt assignment does not affect the cleanup
-paths.
-
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-Reported-by: Bing Jiao <bingjiao@google.com>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
- kernel/liveupdate/kexec_handover.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 7018e25e4eda..6f1f55fe3181 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -831,8 +831,8 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
-  */
- static void __init kho_reserve_bootmem(void)
- {
-+	int nid, i = 0, max_nr_bootmem;
- 	phys_addr_t addr, size;
--	int nid, i = 0;
- 
- 	if (!kho_enable)
- 		return;
-@@ -840,8 +840,8 @@ static void __init kho_reserve_bootmem(void)
- 	bootmem_size_update();
- 
- 	/* FIXME: deal with node hot-plug/remove */
--	kho_bootmem_cnt = nodes_weight(node_states[N_MEMORY]) + 2;
--	size = kho_bootmem_cnt * sizeof(*kho_bootmem);
-+	max_nr_bootmem = nodes_weight(node_states[N_MEMORY]) + 2;
-+	size = max_nr_bootmem * sizeof(*kho_bootmem);
- 	kho_bootmem = memblock_alloc(size, PAGE_SIZE);
- 	if (!kho_bootmem) {
- 		pr_err("Failed to reserve bootmem array\n");
-@@ -882,6 +882,9 @@ static void __init kho_reserve_bootmem(void)
- 	 */
- 	for_each_node_state(nid, N_MEMORY) {
- 		size = bootmem_size_node(nid);
-+		if (!size)
-+			continue;
-+
- 		addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES,
- 						0, MEMBLOCK_ALLOC_ACCESSIBLE,
- 						nid, true);
-@@ -895,13 +898,19 @@ static void __init kho_reserve_bootmem(void)
- 		i++;
- 	}
- 
-+	/*
-+	 * Nodes that needed no bootmem were skipped, so fewer areas than
-+	 * initially estimated may have been reserved.
-+	 */
-+	kho_bootmem_cnt = i;
-+
- 	return;
- 
- err_free_bootmem_areas:
- 	for (i--; i >= 0; i--)
- 		memblock_phys_free(kho_bootmem[i].addr, kho_bootmem[i].size);
- err_free_bootmem_desc:
--	memblock_free(kho_bootmem, kho_bootmem_cnt * sizeof(*kho_bootmem));
-+	memblock_free(kho_bootmem, max_nr_bootmem * sizeof(*kho_bootmem));
- err_disable_kho:
- 	pr_warn("Failed to reserve bootmem, disabling kexec handover\n");
- 	kho_enable = false;
-
-base-commit: e1fe7daedae7a4a23aca6dbd58e1746750b632dc
--- 
-2.56.0.385.gd3acb90ef8-goog
-
+Thanks!
 
