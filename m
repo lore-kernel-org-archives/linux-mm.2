@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0D22CC6B24
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 07:28:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F894CC6B24
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 07:28:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C27D56B008A; Wed, 14 Oct 2026 03:28:20 -0400 (EDT)
+	id 7BC326B008C; Wed, 14 Oct 2026 03:28:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD87C6B008C; Wed, 14 Oct 2026 03:28:20 -0400 (EDT)
+	id 794736B0092; Wed, 14 Oct 2026 03:28:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC7256B0092; Wed, 14 Oct 2026 03:28:20 -0400 (EDT)
+	id 682956B0095; Wed, 14 Oct 2026 03:28:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 81C906B008A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:28:20 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9CEC1120456
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:28:19 +0000 (UTC)
-X-FDA: 85320403518.12.C9036A3
-Received: from mta1.migadu.com (out-82.mta1.migadu.com [95.215.58.82])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8D0E5100003
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:28:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a75adkaw;
-	spf=pass (imf14.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 47AB26B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:28:44 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D3F5B80451
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:28:43 +0000 (UTC)
+X-FDA: 85320404526.27.98A1DC8
+Received: from mta0.migadu.com (out-150.mta0.migadu.com [91.218.175.150])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CB4C8180006
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:28:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ad/jrMpR";
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.150 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791962897;
-	b=mr3NGDN83OzI8BumjXbVMPBDXRobkldkOgtBma0ib+OjUmWtu0IowuyrXW7bQ1XNuLl/go
-	r4wpHqRZMr9Y04w9dLzqHX5+i7cWwkUwiWIvAwwyg+ddFODr+ncLw2dhG22JNhZ2mIzld5
-	JYe9xVwiBeGoq1/mqX6Y7XvSY0SCEXA=
+	t=1791962922;
+	b=kf0tAPLK0A95paZwneU3YsrIfk5FSRRj53SGBl2Nz+28uj+821UIVUF7yqv/BsYeuD4aMo
+	ADkaJqBNO3BP/tFqEhDZWZPu0Qym0PFMx8E+SxPrSKzvKOQEQlBKCbaRawoXhbKGzNosMl
+	per2/DnQ4OyzUGVlcsxQZcEAeBMiSBk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a75adkaw;
-	spf=pass (imf14.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ad/jrMpR";
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.150 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791962897;
+	s=arc-20220608; t=1791962922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sKdAh4DSPDajzvJegyN5GGao4FMUHTTyQLWPRHfK9UI=;
-	b=SgL2Rci0ttNtOral56gXMZaGkSC9cVGuRoHnSjKfAB0IR9kOIcsTEnzC1hg7hBcMzeUBih
-	6jRo1K58QGqGb45bh8ori7Jf2AHVcDW68bleRTaD6aFkUJ/zSfcaWBpdvXfd73mmsD2Y/s
-	gXXa78EM0XAZ8cjaWDQxxgYC+2UHgtg=
+	bh=v+BZb7N4NKQleaa9lq5bugXGnOz/dEyA9NxnEh5TVvc=;
+	b=62x+x231lkb+q2LyMfO/TwgSGnEJ3Wm268nRdOyui/Bn4o+9O755ZrRxoSPj+pxEv7USgU
+	XCs19NnRGoY9AffG44Nz9Ah/7bHQzBBwlcVLvcfugSICeDW+EspxAe5oEczU60yWp4ZpcX
+	XodXRv51W4pzF6QPaOeSHrG9AuYNwYU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=KIpg8DK6yUzBXoPal9V2gzxOahvuwx1OXybBEt4rIgk=;
+DKIM-Signature: a=rsa-sha256; bh=HzoLGn/NBj6P08TgEbWS0zGGjXPm8raRSAmF5JjEaBo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791962896; v=1; x=1792567696;
- b=a75adkawqXP1Wd3mjMkZBAH1Byun3Cp8eshRphipu15Nl8UMxMXZ34RhR4CYRG4vDEq2b+/p
- oT/8UEiMPr364720dPZy9Lx6ApLKI6GY2+fwxbd4SHIrDs5rGIIxoqesjZ6ITOO8mCKx8QGrK/a
- 0HLHkMoAfDgEE3mddAyzlCR8=
+ t=1791962919; v=1; x=1792567719;
+ b=Ad/jrMpRjKf2WeQ2dpoXSBFj/Zau33YvpnZT987xq4x3KVLkAi/FJJBoJcyG9jSaa8jrVQ/r
+ gbNp7xkDmNXuu9JP43flf3rDmxOVco66OchFyYVD/uooW2ugBTrbbBbuFV1nITJKzK0eiXbXArF
+ Z1egrm/XsLWJ9g/WTkVOskM0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d0234dd56ab13b63;
-	Wed, 14 Oct 2026 07:28:15 +0000
-X-Mizu-Trace-ID: d0234dd56ab13b63
+Received: by mta12.migadu.com with ESMTPS id 853cf23eb73e70bf;
+	Wed, 14 Oct 2026 07:28:38 +0000
+X-Mizu-Trace-ID: 853cf23eb73e70bf
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <bdcf2425-c0cf-48df-96a8-7ee1d23125d7@linux.dev>
-Date: Wed, 14 Oct 2026 15:29:08 +0800
+Date: Wed, 14 Oct 2026 15:28:35 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Klara Modin <klarasmodin@gmail.com>, Baoquan He <hebaoquan@kylinos.cn>,
+	linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, nphamcs@gmail.com,
+	baohua@kernel.org, youngjun.park@lge.com, yosry@kernel.org,
+	shikemeng@huaweicloud.com, chengming.zhou@linux.dev,
+	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
+Subject: Re: [PATCH v4 00/14] mm, swap: extendable swap devices (xswap phase
+ I)
+Message-ID: <as8vI5DzXAZgelws@MiWiFi-R3L-srv>
+References: <20261003003136.750633-1-hebaoquan@kylinos.cn>
+ <asZt7-8mcxqc1a02@soda.int.kasm.eu>
+ <asylV5YyyaHs8rP3@fedora>
+ <565e1744-54ff-4daf-ac14-7b6c49fd3fa2@kernel.org>
+ <as33VMjNRIZOG5Ua@MiWiFi-R3L-srv>
+ <d6209813-d53e-428c-90a9-6404618d0804@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] mm/vmalloc: undo partial mappings inside the
- mapping functions
-To: Uladzislau Rezki <urezki@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>
-References: <20261009063619.112313-1-hao.ge@linux.dev>
- <20261009063619.112313-3-hao.ge@linux.dev>
- <CAJuCfpE9VfgTw2ZNMJTEVh41H_R+1RY_MtzeMuZNCD3BFm-Piw@mail.gmail.com>
- <as5epHFQF4iE_VQK@pc636>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <as5epHFQF4iE_VQK@pc636>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d6209813-d53e-428c-90a9-6404618d0804@kernel.org>
+X-Stat-Signature: i7fhwxuddrw3newyymzxpizw5q8g8y9u
+X-Rspamd-Queue-Id: CB4C8180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8D0E5100003
-X-Stat-Signature: eoxqyjnsexussrc794tt3weye6otihwk
-X-HE-Tag: 1791962897-458649
-X-HE-Meta: U2FsdGVkX19VuRNEz9TassX2Yvtj5YT6XG/mSbIgCwltKoOAqKfCfP9ZeFi0pifi9o+y9M/ZDAtYRvrVmX9tinZE1WVOXndiTLvsz//4AY6X4CndZz187D/B3HKn84ko3NxXPvlZo6n4vtEBAfZIc7CpUCbqwagLKvJvUn9spE6IEBC3CLSliKCA8cKs+uWLgI9ArXJj8tmwN/mvwjIFCbk9/pBM+AJIEJTEjrFqQj0CiWtS8lV90QTJirpez68Z1MFrC5yNOIf2qkve/TRyTfqsc/TQGrIcQzXNjt54VdPwdRlpyhQn34+19++V1XNdm4NB+AGb7kHKzwedK8D2z1RJj+wWgBx+FmBESN66WALtdha+xuTadIbt4BHLOEGYEKYghP+gxJuS1jjVWe3E5UQx2tZbLYjU4ubvkKcgtZxh/ds1FVxuNJPoffy7XGuiX0LhuUvDECYa2SqfrFOGiXtm/Pp+a0xk/Nt7P61zuPbD0bamWby9CSd8PNN3iDKnke02RKQBTq8M4eb/yg3vCaim+EIAgvRcHuwCsbFx9BC+uC3hb/FEuyXSZAo3J6bwDpDUvdDu0awKc2xzorePUSHW1KQT4oaGmIYLXdXbUxjvcNUj4IfakpJ7gIRHwZdeTcDFPkquohgzPw42bX5aLnZBtxLI0upexAqzg+8j9nb/0pK28uREfnaYmerHDN4vIg5atkdv6YEZF6j73r3Mgws+J9jlhyLSAq17SRB/3/0qycoWxUcGPSuffY2FKKcuyXKdx6vpH5v+iAp/t43KAAeoEHHQI+VASMPd95XJCfXY5kIU4+uRI70GK0eckl5ZPerGOKvDOLD9I1Ij+UC9E0MA5PBogYKZiVqGVN4GeaKQ5xHWYMKU05+2UH3CLllBZPvmOLYpoiT8TiWDewzH17EfjS+FOuf2ai4pbMFnDxfDXdRMC/kecvowOX+YYU2qroT8ps+bPkXvgQPZ7pn
- HnT3RoUu
- cwddYmmQdaqw0CY63rKboBfgqaJpGQ8L4L8vslp3c8J3ZGGABxoV3+MYCxKUoevmveA0mnJOqhRpnNiZx2co3XXNJeMAP04Xkrl3XS+Y6TPvxOJs7C0WDPDUSC5IIwSJwHLE/PehNGCRBLQ3iOiF3Ay1dHL5yuZ72DuJ/u0K9f2vf6jgRSiKbuxqfZE5QZdYjTFO9a3NQbL6/jw8WgalQxq+IC46RoPXkUh66nqdVAuHAGuQyjKCYsRD4lKO0aXnzE87kXNHUz+FMVSrBypLsICYbnxr6f8x/nTZSMzWtBUUkHUfOu9yEOzt3MOz8dGOCcZPRFItZfJPPEVLtXC2w/V7Nm5LZiXmPLwVvTUOxpPXdPgSqsJDcPMDIuG4V0i13UqhPCZt1jnr2CqUqAV2rQPS2uMT6FWHOdS2RNEadAveC00c=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1791962921-274039
+X-HE-Meta: U2FsdGVkX19qFNskXP4PB6UDz/TEM8UiOnNXd8JsRUWfK14p61RhrmGBN4RLhDWW9l7L8LqIEJw9NBsfDvM3sKIKIqo4e+5Jrl0EnzvXsBlOlDLgP3MFdvaZBml5Hi0gipFvndv9aMhxxST9KGm2zIY/kFhLBdRSzJKQVFgNpUUKs++p7Gh2uFfKJHKgfJG96HGuUTn66I30otsQiLJ+h9k5i/osh7geJhm0q814OqI+oKBeVbPbwt9vuAz/d1wgDLES1E1RTPktmrtF0p6ngQsW7xmu0CmKt1DgKg9TpkGl4NAvVPlO3KXwFmmgm4vH/zHkT9pJ2+6YvtHDxQqeU6SCvYQ0sU2pn3fXfirG24XRiLQbxzr5bqOZ8C8GLIx1fUb1yH8wTF3G83vOz5/qYwOdCayaWth3JCjw1Krtlxm67RgEMrFMq7R0g6nfyh8wVLIpSGFIRB+xNI7gHE7uKpN/DzYXc6P/1dvnyorssiI9KX+Zt1Y0HPDtCSzudlCSONiPA0DUtrICkS/kJ/WJgJR69XxB189kVa+OTeWKTiPtOmCBCGzUOV5bSr5MxQeAXycK1POELz8ZiMP8a+AADBMeIB5HAFrzmCOJiXsXxLx4lhZkP201o2q8ptRuIZ5Xbcu0wuMPE/l+x4H4TViUBplnxEXqKy9OS/yGfsXJzXbOhrlMwf3BI62OZv+iwE7eZitBL+0BQC9QUCDxtt0c95Rp5ynEagM+F4ozMAbwjXOFbe5oOtAJELtayR3z0a2LLgvRFMUBJApUkqnKwl6HtCSHgLUViRVD8WDTGYfuJ2VLHl9tgIdqkkkMpFklZ0IhcBLwRTRsNsk4e3YBcugk1XuTle/8R3sSz1yJsJK85YyA7rhK0z30NMJT7yUlQ2s0gNSimG34uPotxeo9Kifek9+A74ZQkmzTHDqQsCcr3gf07dfyFy7APtm10y/jHvrK7/W+z9Q28WrfdWY0EwN
+ gFDtDKFw
+ S7Osixu8GO1Q2vRmK1TYTAkmrotISlS15JueOe6NII97l3l7Dv18rzTXpKLjM9LFytWnjP/XYB5rB1pMJoOF+ycS2XMImG+RNFkPCESTJ2i7D4syW8VlSDE1ZO+iEUlgDtMERacXkqCDs7iaxOkJd2hEYiPYOxAyS47OUMcnjd9dN+VtbdkuqZROvXeE/+H2F3RPpNawLAWlFlcMMJx7wE9A8CLgZFF8F0RTafWHoOS10U2Vdr4l6u0fubw8fBDfcEMgccEwYGlqWHCMrgK22FvkgyHxTb0aYcHMqiqzle+lm20920e34LOSvQZMG4oO/cvCHcwGLTzNmaP7XL9Ch+pV0K/yWrFxVXK4b/gS6bsZgtMieFjKw+yrSW05Qbq8nXk0F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,124 +98,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Uladzislau and Suren
-
-On 2026/10/14 00:39, Uladzislau Rezki wrote:
-> On Tue, Oct 13, 2026 at 03:23:14PM +0400, Suren Baghdasaryan wrote:
->> On Fri, Oct 9, 2026 at 10:36 AM Hao Ge <hao.ge@linux.dev> wrote:
->>>
->>> __vmap_pages_range_noflush() and friends can install some PTEs before
->>> failing and leave them mapped, and the kernel callers do not agree on
->>> who cleans them up. pcpu_map_pages() and kmsan_ioremap_page_range()
->>> roll back what they mapped before the failure, while
->>> vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
->>> __vmalloc_area_node() rely on the mapping functions cleaning up and
->>> do not call anything like vunmap_range() themselves. When the same
->>> range is mapped again, the attempt hits the leftovers and fails, with
->>> a BUG() in vmap_pte_range() for huge mappings and a warning on the
->>> small-page path.
->>>
->>> After discussing with Suren and Ulad, we decided to put the rollback
->>> into the entry points of the vmap API rather than into every low-level
->>> helper. __vmap_pages_range_noflush() undoes the whole range it was
->>> asked to map when it fails, and vmap_page_range() undoes its range
->>> for the ioremap-style mappings.
->>>
->>> The rollback is __vunmap_range_noflush(), it only clears the PTEs,
->>> no TLB flush, nothing has touched these mappings.
->>> vmap_pages_range_noflush() drops the KMSAN metadata when the data
->>> mapping fails, and an empty range bails out with -EINVAL now, which
->>> used to BUG_ON() on the small-page path and map nothing at all on
->>> the huge-page one.
->>>
->>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>> Suggested-by: Uladyslau Rezki <urezki@gmail.com>
->>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->>> ---
->>>  mm/vmalloc.c | 44 ++++++++++++++++++++++++++++++++------------
->>>  1 file changed, 32 insertions(+), 12 deletions(-)
->>>
->>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>> index db669103dc66..e1b376f57dd2 100644
->>> --- a/mm/vmalloc.c
->>> +++ b/mm/vmalloc.c
->>> @@ -363,6 +363,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
->>>         if (!err)
->>>                 err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->>>                                                ioremap_max_page_shift);
->>> +       if (err)
->>> +               __vunmap_range_noflush(addr, end);
->>> +
->>>         return err;
->>>  }
->>>
->>> @@ -683,27 +686,35 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->>>                 pgprot_t prot, struct page **pages, unsigned int page_shift)
->>>  {
->>>         unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
->>> +       unsigned long start = addr;
->>> +       int err = 0;
->>> +
->>> +       if (WARN_ON_ONCE(addr >= end))
->>> +               return -EINVAL;
->>>
->>>         if (WARN_ON_ONCE(page_shift < PAGE_SHIFT))
->>>                 return -EINVAL;
->>>
->>>         if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
->>> -                       page_shift == PAGE_SHIFT)
->>> -               return vmap_small_pages_range_noflush(addr, end, prot, pages);
->>> -
->>> -       for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
->>> -               int err;
->>> -
->>> -               err = vmap_range_noflush(addr, addr + (1UL << page_shift),
->>> +                       page_shift == PAGE_SHIFT) {
->>> +               err = vmap_small_pages_range_noflush(addr, end, prot, pages);
->>> +       } else {
->>> +               for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
->>> +                       err = vmap_range_noflush(addr, addr + (1UL << page_shift),
->>>                                         page_to_phys(pages[i]), prot,
->>>                                         page_shift);
->>> -               if (err)
->>> -                       return err;
->>> +                       if (err)
->>> +                               break;
->>>
->>> -               addr += 1UL << page_shift;
->>> +                       addr += 1UL << page_shift;
->>> +               }
->>>         }
->>>
->>> -       return 0;
->>> +       /* Undo the PTEs installed before the failure. */
->>> +       if (err)
->>> +               __vunmap_range_noflush(start, end);
->>
->> Would it be too complicated to track how much was actually mapped and
->> unmap only that portion?
->>
-> I think it is possible to vunmap the range which is already unmapped.
-> i.e. in this case it is better to no to track anything as soon as a
-> mapping failure is a corner case. Also it is more reliable without
-> extra track logic.
-
-Thank you both.
-I take note of Suren's concerns. The worst case is a single PMD where only
-the first page was installed, __vunmap_range_noflush() then loops 512 times
-to undo one PTE, plus 511 empty ones.
-
-And tracking the exact progress would require vmap_pages_p4d/pud/pmd_range()
-to report how far they got. That also puts counting instructions on the successful
-mapping path, while the saving only pays off on the failure one.
-
-So I agree with Ulad.
-
-Thanks
-Best Regards
-Hao
-
+On 10/13/26 at 05:08pm, David Hildenbrand (Arm) wrote:
+> On 10/13/26 11:18, Baoquan He wrote:
+> > On 10/12/26 at 03:44pm, David Hildenbrand (Arm) wrote:
+> >> On 10/12/26 11:16, Baoquan He wrote:
+> >>> Hi Klara,
+> >>>
+> >>> ...snip...
+> >>>
+> >>> Thanks a lot for careful reviewing, and sorry for late reply.
+> >>>
+> >>> ...snip...
+> >>>
+> >>> Thanks for the comment.
+> >>>
+> >>> Here xswap.max= is a global boot parameter, while not a per-device or
+> >>> runtie knob. It sets the space space (si->max) of the xswap device
+> >>> at boot and can't change at runtime. So on the two places: the size is
+> >>> a global setting, fixed at boot; the priority is per device, it is in
+> >>> the create interface. They are different things.
+> >>>
+> >>> The default is 2xRAM. From our earlier discussion, this is the largest
+> >>> size we think is sensible, and in practice I don't think it is not
+> >>> reachable in reality. If a system has swapped out 70% of its memory, and
+> >>> even more at 100%, it is already doubtful that it can still function
+> >>> normally. So 2xRAM is an upper bound, not a target.
+> >>
+> >> I remember some overcommitted hypervisor setups where people swapped out
+> >> significantly more -- without any issues.
+> >>
+> >> For example, Windows VMs initialize all VM memory when booting up. Afterwards,
+> >> you might just have plenty of memory that was touched once but will not really
+> >> be used in any near future.
+> >>
+> >> So I would consider some crazy hypervisor scenarios as well where people
+> >> commonly have significant cold memory that is currently not hot (not in the
+> >> working set) but might possibly used in some distant future.
+> > 
+> > Hi David,
+> > 
+> > Thanks a lot for the valuable input. This is probably the first first-hand
+> > information I have heard about a production environment. And Klara
+> > measured about 160% of RAM in zswap on her RISC-V box, so the 2xRAM default
+> > is reachable in practice, not just in theory.
+> > 
+> > So I see 2xRAM as a default, not as a cap. xswap.max= already overrides it.
+> > After your comment and Klara's numbers, I am open to a larger default, or to
+> > a "max" value for the address space. The real limit is still the backing:
+> > the zswap pool plus the block devices. The address space should no longer
+> > be the limiting factor.
+> > 
+> > By the way, in Windows-VM case you mentioned, is there a block swap backend,
+> > or is it zswap alone? If it is zswap alone, the knob that matters is
+> > zswap.max_pool_percent, because it sets how much cold memory the pool can
+> > hold.
 > 
-> --
-> Uladzislau Rezki
+> Excellent question: I don't remember all the details. There were talks about
+> over-committing up to 400%, and people played with both zswap and zram to
+> avoid/reduce IO.
+> 
+> I assume as a safety net people would always look for an additional swap backend
+> (that's what I remember, but I don't recall all the details).
+
+I see, thanks. I will take this as a real use case and think how to
+handle it.
 
