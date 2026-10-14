@@ -4,136 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 011EACC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC1EFCC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:26:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E23A36B0092; Wed, 14 Oct 2026 09:25:44 -0400 (EDT)
+	id D14EF6B0096; Wed, 14 Oct 2026 09:26:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD5016B00A1; Wed, 14 Oct 2026 09:25:44 -0400 (EDT)
+	id CED546B00A2; Wed, 14 Oct 2026 09:26:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C76776B00A2; Wed, 14 Oct 2026 09:25:44 -0400 (EDT)
+	id C03956B00A3; Wed, 14 Oct 2026 09:26:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D4F56B0092
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:25:44 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2D69A1403C6
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:25:44 +0000 (UTC)
-X-FDA: 85321304208.08.2833A9D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 455A240010
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:25:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iPVJjUzD;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8F64A6B0096
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:26:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 260AE1404E5
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:26:41 +0000 (UTC)
+X-FDA: 85321306602.06.93A5315
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 567B24000D
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:26:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=j1CafOv4;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791984399;
+	b=RbsdYEbH97j3KohRdUMF/J78PB/xofYJiXJYqWJdzRSfC03Gcd1+kzWNa9NDuIiPLUMf7C
+	9ujQXUKOzE6C/uHrwYwEWrxg6g5a/cpEETTpe5VixGfylaPR9k7YBiMlEMLIjjXNxrZGgH
+	teUcChtWCQEyvUVDf8+4+wFz/oOfmag=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=j1CafOv4;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791984342;
+	s=arc-20220608; t=1791984399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TQa+MBCQh2+NmFEKYE9b9rxt6YnvIpdiftCj4DjCvMU=;
-	b=MixcUFvpWkP1hFBy4flUWqVo1Caob4dCJ7nRZvL2n/zjCi6l8ooOIokWp1QillSUgHELPV
-	wTu4URCdsQL8Rv4YmOa7mxFSBCv8mA8AUI5LVCMHmaWOPVI5U9LIEdOVOhIQtknB6HOuzV
-	+KxQ+Xdo59Oj9v6lCCrudm2OjSrys/Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791984342;
-	b=2pbUMOEB+w8mwZiXQDF3r/3thqufTqCY4X1629tNlNNl4sdTIK78CXr8F0h1DQKwu7kmds
-	+I+bCvTLjq1zZYjxiJ/UoEIZ1Nq/8KnXoB/4EsH8MYdC5Szf31ycM1upu+qrhyRwdE+VMv
-	iF/yGzYRYBRCdL9aljjGGROvZS9W+9s=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iPVJjUzD;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD998416AE;
-	Wed, 14 Oct 2026 13:25:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BC01F000FF;
-	Wed, 14 Oct 2026 13:25:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791984340;
-	bh=TQa+MBCQh2+NmFEKYE9b9rxt6YnvIpdiftCj4DjCvMU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iPVJjUzDZq3OfFF3zZSXEbB4wZPD8Y4VDcWDLHR+NVFYm4OMfOCzjMTlqaxCxVzUk
-	 Pz81Th53bPT0DP2ykrJtnYjDImjIHN96Bdu5dmDBZtqa1oUovm3KDOAnR7j3bjEzur
-	 fh4c2SYFJLfdIsiXEKD754hwjYw2QfDG31C9+K6u2c26srf++dMn2GjvFps7Q9USJN
-	 fpENVIAMLtLx+JZZXO1oAwZ4ngFGa1Y+8YF7l2ryuYKLQp7exiQd7N23DsV86STq+q
-	 3c0VQZdlV1hcXbXV7AHV83hAHpqBHrjXvrBI6haEx27lN2pCI1Xt00WRT6NtWp5Dtk
-	 Fx9ssbBpRRThw==
-Message-ID: <6660d3bb-3485-4c34-8734-3ea99df920f1@kernel.org>
-Date: Wed, 14 Oct 2026 15:25:33 +0200
+	bh=i9IOcxSqwYrBSr8BFbrbfz8etoo1JAf0XtOV1kMheuQ=;
+	b=PEZrdguA1zJKcjh3F10MGgiaZPS8DcPVKWlQ0v+4j8/foVElUk3lBR2bqyWflDjhKR54Ly
+	aZv618kODQnS6rLybgl8UkWr67V61pu743gmTYi/d/CamyFHsHH2D+3VcAQxomonNttzXM
+	6Twfwl/xYnpy+fkjvxAlcek93wsE7Hc=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-535f9de49fcso2290491cf.0
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:26:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1791984398; x=1792589198; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i9IOcxSqwYrBSr8BFbrbfz8etoo1JAf0XtOV1kMheuQ=;
+        b=j1CafOv4n6MTMWn0jC+gnYhfUOU4yT9hw14USd0bFS0ytAI8aI0uBFSYlP0zdJhO46
+         vmaUHfkTex4xRxufXYCgTWyyDNA7xh1VDEz9oymuFtK+rNBYEApOA2LuBdxrm7ryHAEn
+         53/ytLfKYvyovkQqM73Vd+gqrFT7rmH8yPpGZTiM1bIDbGyvJWRwpnyHzP8Zhs1tQ2De
+         0QQRK0gkUU6Qdn1+PJuxTZxamltxygbZ51TdVXy8aq2ebQmNUjTupNx5E+MHedqNWBYh
+         kiXRG5gubVmSdCpUVfNgDHnYyw0pNeVv1bIUaX553pzTODdbxiOsy7eCzZt5Fzx5S2ON
+         vrJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791984398; x=1792589198;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i9IOcxSqwYrBSr8BFbrbfz8etoo1JAf0XtOV1kMheuQ=;
+        b=16NUEogKFRgb7lfUgA7X8BhL4qO+0UCyUMbMBe+bO8ORZ9NqjHHkGryhPpuR/B49ch
+         MNdfuZuJ6tI6ttj0/l8dXE7eWgtbKOaK4ybTF+H2I03VZ/vbwbpjZwOKmYUi2y+Ut/4w
+         ZlMCy1bpQrHomdNgxvoWZOlMVyQWSsA8kafnVE/Tobritq2hdVgoBZgsptRHv+xk3pN7
+         3ficnzNsmLWKSrY8TnkqpYFk08ICsxruWsu75JK4qtxJXzUvTxIVdedhxPPfGDwSsKdr
+         UQCgVMyNjvm31Sb6GCUoVPNBe4pxSKdNJ2YA5P1d9L8Vt3PZw7RhqjuDBf+5Oc6L8Ujr
+         z2DQ==
+X-Forwarded-Encrypted: i=1; AKwUvBydAEGz5CnPD92fndS572pgRD8FFiqdcERhng/6+vsw3ZFoTcuj7ne3kpV3Xyo9cviiQOGcQz3kWA==@kvack.org
+X-Gm-Message-State: AFq9FYJKMPw1QfoTd888ZF14AByxsv8QuH19urg80VwzIUyunfDsMPX8
+	AHTfXeZXPcf/ztH1p7GKT2Illp4mxP48cEIRZJD1w5NE7SmktYT6yLq44yEBpCd91k0=
+X-Gm-Gg: AYBFou3/1QEkGLsf3ZX7bfAz6t2kUQIPm5H5p0z/AComcFUUzrm7lFL8dp4zp9UnNBp
+	HCug890yElsCm+bcEANVn5FyyCzKF3agKZYinNfopXCw6I5FUWJ7RZ8vz5TvLg7WBK3laLNAUwZ
+	RzfoWyRd7HYh52MxTy83RLvK6WDUMou7gXeHYrJYQJWgqfbmEhseOCvo/c2mZ/KvqktYmzhi4+o
+	egut0/5XBMC5TwrZtfjNaforsW7lIMkfU+NEsyyfBv4vKwIOuTzaaeQojT400Wl4PfuPIvq/fI8
+	BpVFh/E44oMEiC//WOCC40QVrA9wkOmG0+zweNl4a+4cS+NvQYdSX4KjMgGrpxvF+hHO0fHyrfL
+	7Ly3dFx0LqXdGLm4L7Ycf3Fm10rosTbKbVeW3DpI6DQg0d0wVlJq+CvU1h+fkxYeZSpIFjBUvoq
+	D+ZW0cmtzG/zw6rBmsWejZWJA01VWWwZED5v1mQ2EvXk6UezchmeF/BvXh4TkcTwmCjHrqT4gLy
+	94InVfHkz+NnVtH3YJrwIQZebVRF5HcanxJN/ZLJt25WaNL86PAKrk=
+X-Received: by 2002:a05:622a:5a0f:b0:535:f9df:cc8b with SMTP id d75a77b69052e-535f9e049f5mr53842251cf.21.1791984398464;
+        Wed, 14 Oct 2026 06:26:38 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5359b731a6csm125043441cf.11.2026.10.14.06.26.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 06:26:38 -0700 (PDT)
+Date: Wed, 14 Oct 2026 09:26:36 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	joshua.hahnjy@gmail.com, ziy@nvidia.com, mingo@redhat.com, peterz@infradead.org, 
+	mgorman@suse.de, riel@redhat.com, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, vschneid@redhat.com, kprateek.nayak@amd.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 5/6] sched/numa: do not feed tiering promotions into task
+ placement stats
+Message-ID: <as-CxqUTS-DjO5HU@gourry-fedora-PF4VCD3F>
+References: <20261014094347.99157-1-lizhe.67@bytedance.com>
+ <20261014094347.99157-6-lizhe.67@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: memory: fix truncation removing mapped folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com>
- <8245424a-f068-4be5-9e58-713cbff1f8ae@kernel.org>
- <405811f5-ee36-4b3c-80d0-7dc6827ab5d4@linux.alibaba.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <405811f5-ee36-4b3c-80d0-7dc6827ab5d4@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 455A240010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014094347.99157-6-lizhe.67@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: q5rtyrm5zwrrzofb9jkczg438moxtxhq
-X-HE-Tag: 1791984342-440611
-X-HE-Meta: U2FsdGVkX1+5BEkDMEPO6JQOyB8ocHkGxvdgkDTH3Khsax4ezxtPADw8ns85uV0tuN4Kbswje5ENDM1GhmLcENnb2ANqQk9oE+LXJpgvCPaJSz4DNtRwEEDYJheBam0saRu1qKsxeqMtAuXYY39IHqK8HL6z4aV6Um5f8DGYOniaG2aoShyCfBV/idOrsvF/vC88HcAxE6MwmOG2yyDL1QKj5DmQzIB4mSEVwbzjkusW5s03hixuBzL/HXsj19vmvOZ7Hh80AJmwCLcCUiiqlZ2vVMg7nO2/WCs4iN14V+YBz7L36HlT5yTVXUo+7ZP+yz53F72/fJEnU7niEhzvTBkoXDavXWCfvtscXvOOpSGyvAuCQeRqv5YQdBUmRSQ3rHr5J2Q8hVo6v0AYKmx0M8c2zwaxOvYVDikR9qJP/AhVFek8YhjDFuAQc96Q1X0xYuXr4TxCXu67dfHbwOHDhx79xI+CrLRzqr0k2IcZgcTi9by4hu/ydnncpO0TmGVPHsEJiFCZKE39xNxNZiMTNSYB3vceLICj69FwXBHd9pkDOdq2N/2S585F1bB4FoDA9xxRt/oOPkPTELns07fMGcyNuVOWjGWxcVNTDD4UD+1jc55tGG4QG3cV0f/iFFjn6D6blZJe8iuEjHCVadatTfsd0P/w1cKb/mL71Y7GNHnNW1gbkSFjr6ccVTxMugFvr5QKwAG7akJ/nKRbPCjXn0V/SQxdw8uBBXbLPnoQmrgvEVfoIMMhG3TsPpU7ttLR10Gwke7Otehbh85vH24Ye0dGKzQj+n1l3AWkgJcycyJ8/86kCz1Ra25/Hx/HtBrXMBuOgKWyp/wayTTVTEnAMW+wnHc1F2Cu/0vNSfgrNrrQ31ssTYV81nQ/xe2c3fNsAOwiTFOBxlcQpopPKuT8CxPkoDP6lqrriuHMszLNLUynuXEZuQRoKmsC51jdbwV7Ic5mfgm6LRayOzzx64q
- 0igr2cs5
- AGYnrWNq5UsEcL3FdhZQnY5l6JydK2hPpJISfE9wfaVo9Ka+NCk16Ek77G/vsfA7G0bPohsKjCRNUK9JgWd+4rGpEDRngVjUj7z49ARMo9EI/+2rsEZ+ZwpkmjcQRBwX+LlQpBs36nJV9VQAlELPQSv4eKbaNs0euh44uVQqjDMJrpxmuEf/Kx2hsJWDt0oiCjsqr8gR5ifNqLVPXH2AHQzKg2taak55g8787Bn3N6VNY/VeMmK7i+589D9uvUVMzUKYg2LTbplIr0QD9MjLH3y9Oz7v/LQngzmVf
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 567B24000D
+X-Stat-Signature: pa71qixxok49eecwnn3ept7cfokdiksm
+X-HE-Tag: 1791984399-976134
+X-HE-Meta: U2FsdGVkX1/sQHP3mAUHyjJ2i/kpywUX3nZeA5fMX6CM6WkhocOgEv2S3uY24VMrqA9+Y2Bm+gL7QobiouxW6dscV+PhFUpnz/5H6uaVIZPC4NW42TnvTWKJ0u8qFHAOJTekaIH7c6CsPtQJYH8RKol0iGy45idr62ZIrFCFr4y9eHhjX7RgJ0G8lYBkY/CCPoxYs5W1OmwdTUA856GkAXXw+wZqMx6nB6XQ9cdd1TE7YuoWJBKreLl5w2S1ShvzicSUeH44OynTBXqdxLXEX6pu8MBzxvjvcwL4OZVx4xfhYPgK95Ghvfx83i0rY8xMl+WEWaNWNsjuqPZG49nPDTx1nDMAsiaQcfG3uJAzlUKTpd0BK1/dhusK0NcALmco80BrPfagNVYkapJ2+zzCYkObsOXfcNyZJt7pHVnoODnQMW3b4MrMy5as+yZW5aQV9nbLoX5Wype7mH8ZZhvhjJyMZvuelGPQC/2G4rfgpv5jUaYBTjUOBMwd4O5h6K75TzD49ovYwe4P+bZtcTxGWObOKvNWdpCWFkoIyAdgwWNKrU9QOtERXUQZhifrJkclJVQvLQYOA+X/JSgMhssM7PXipxFQr37gkfUVy5JmntDntlVrsXSL4m9M6DU/cJy3Q7cRLNRY7NsmmPvaGhtSW4B/kaeao50tQKBdc+N9FHbK6QrMPd9LILgPJu4NJVulscKeHaA27TolJ1nz0YJyWdicSIKssZsyaMT7sUfAy1sh5R/0DCVp3i8ALUET8c+Lw9M6HXFig7hu0ZBMAwoMpItBliClcukYuE8nt4z667rhHI1VXhYiCX+eBg6GUHoBFUE+zIoEeXSoWuQG0qI7wmdZCFdqe2i4SD6lTBTSWbMA4GQd673LqH9x0evAzH4n+2hODwN+jkYRpu6V+hBal6kje1h8dQpw3/Bl7soa2IKLaY49TFp6qgGDAU3gfpMHfqinpuNlFJiygkfQT6c
+ GxUoPc0b
+ H/nkifpC2MUKsCeujsrfJBBBbUgzQzwDsvb5Qa4T5VXz+/GHmiwqOAf/XNOn/bra2AdzHN4B5Q/amJeK2gxibDjfv1nqDKMTxfsT5gsinLDam86xRtqecqb515te1M1IgHLLYVE8eTjaNUPS7FN5u0h4bkHyhmb2RYzWYCJWMOhPqo9aQK6twD7aaee4ljWz7KvxCGx5bIn5lOWJxJNz9jP2Spd3/FLdKiyzplpB9iSfEA+emFgnjLekdrfK2MVlJ/V2LTHD7TPvy6WvzA3PVTICmjNuBI0ORz1sRI9OqhodsEldvk8MKgSGG2YsvWvOlJ028w21B/fAavKshA61h6yBWiwdEhYu90kyzwjPeQs+oKla4JnAf32XcvI3ZQrwwpX7xmkkcxxGSmWdwovykYXQzUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,143 +125,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/13/26 11:36, Baolin Wang wrote:
+On Wed, Oct 14, 2026 at 05:43:46PM +0800, Li Zhe wrote:
+> NUMA balancing has separate mode bits for normal task placement and
+> memory tiering. In memory-tiering-only mode, NUMA hinting faults on
+> slow-tier pages are used to detect hot pages and promote them to a top
+> tier. They are not normal task-placement faults.
 > 
+> task_numa_fault() already avoids normal placement accounting for slow-tier
+> faults while memory tiering is enabled. However, a successful slow-to-fast
+> promotion can bypass that check. do_numa_page() reports the destination
+> node to task_numa_fault() after migration, so the fault is seen as a
+> top-tier fault and can update p->numa_faults, task placement state and
+> the preferred NUMA node.
 > 
-> On 10/12/26 6:23 PM, David Hildenbrand (Arm) wrote:
->> On 10/10/26 09:22, Baolin Wang wrote:
->>> Ayush reported an issue that shmem/tmpfs folios are still mapped when
->>> truncating them on production:
->>> "
->>> BUG: Bad page cache in process ...  pfn:...
->>> page dumped because: still mapped when deleted
->>> "
->>>
->>> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
->>> branch, and I got the following crash info. From the dump message, we can
->>> see that truncate_inode_folio() is really trying to remove mapped folios,
->>> which is incorrect.
->>>
->>> "
->>> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
->>> index:0x3880 pfn:0x191647
->>> [  189.171995] memcg:ffff0000cc073d40
->>> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
->>> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
->>> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
->>> .......
->>> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
->>> [  189.172026] ------------[ cut here ]------------
->>> [  189.172027] kernel BUG at mm/filemap.c:155!
->>> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->>> .......
->>> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
->>> 7.3.0-rc4+ #277 PREEMPT(lazy)
->>> .......
->>> [  189.183986] Call trace:
->>> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
->>> [  189.184391]  __filemap_remove_folio+0x34/0x160
->>> [  189.184633]  filemap_remove_folio+0x4c/0xb0
->>> [  189.184859]  truncate_inode_folio+0x34/0x58
->>> [  189.185087]  shmem_undo_range+0x220/0x658
->>> [  189.185308]  shmem_fallocate+0x2f0/0x470
->>> [  189.185527]  vfs_fallocate+0x128/0x328
->>> ......
->>> [  189.187078]  el0t_64_sync+0x184/0x188
->>> "
->>>
->>> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
->>> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
->>> MADV_DONTNEED synchronously releases the pagetable page before calling
->>> tlb_flush_rmaps(), this could cause another thread's truncation to skip
->>> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
->>> as non-zero. A possible race scenario is as follows:
->>>
->>> CPU 0                           CPU 1
->>> shmem_fallocate                 madvise_dontneed_single_vma
->>>    unmap_mapping_range            .......
->>>    ......
->>>    (filemap_map_pages() remap folios)
->>>                   zap_pte_range
->>>    truncate_inode_folio            zap_empty_pte_table(pmd clear)
->>>      unmap_mapping_folio
->>>      ......
->>>        zap_pmd_range (saw pmd none, skip)
->>>
->>>    filemap_remove_folio
->>>      BUG_ON(folio_mapped)
->>
->> That reminds me of sync_with_folio_pmd_zap() usage in page_vma_mapped_walk().
->>
->> Isn't that the better approach?
+> Slow-tier PTEs store access-time metadata in the folio last-cpupid field.
+> Before this change, numa_migrate_check() returned the same all-ones
+> last_cpupid value for those faults that normal AutoNUMA uses for a first
+> or unknown access. Those cases are different: the ordinary unset value
+> means there is no previous CPU/PID sample, while a slow-tier access-time
+> value means the field does not contain a cpupid at all.
 > 
-> I had considered this approach before, but it is not feasible. IIUC, the
-> sync_with_folio_pmd_zap() is used to address the race with zap_huge_pmd(), and
-> both the PMD clear and the folio mapcount decrement are performed under the PMD
-> lock in zap_huge_pmd().
-
-Just to be clear, I am thinking about something like the following on the
-zap_pmd_range() side:
-
-diff --git a/mm/internal.h b/mm/internal.h
-index 38b1165212c94..a8820ad7e2f21 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -584,14 +584,15 @@ void free_pgtables(struct mmu_gather *tlb, struct
-unmap_desc *desc);
- void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
-
- /**
-- * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
-+ * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
-  * @mm: The mm_struct.
-  * @pmdp: Pointer to the pmd that was found to be pmd_none().
-  *
-  * When we find a pmd_none() while unmapping a folio without holding the PTL,
-- * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
-- * indicate that it's unmapped. Skipping the PMD without synchronization could
-- * make folio unmapping code assume that unmapping failed.
-+ * zap_huge_pmd() or zap_empty_pte_table() may have cleared the PMD but not
-+ * yet modified the mapped folios to indicate they are unmapped. Skipping the
-+ * PMD without synchronization could make folio unmapping code assume that
-+ * unmapping failed.
-  *
-  * Wait for concurrent zapping to complete by grabbing the PTL.
-  */
-diff --git a/mm/memory.c b/mm/memory.c
-index 8b0c2c735d3de..c585f5eb255c9 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2139,9 +2139,7 @@ static inline unsigned long zap_pmd_range(struct
-mmu_gather *tlb,
-                                continue;
-                        }
-                        /* fall through */
--               } else if (details && details->single_folio &&
--                          folio_test_pmd_mappable(details->single_folio) &&
--                          next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
-+               } else if (details && details->single_folio && pmd_none(*pmd)) {
-                        sync_with_folio_pmd_zap(tlb->mm, pmd);
-                }
-                if (pmd_none(*pmd)) {
-
+> Name the ordinary all-ones sentinel LAST_CPUPID_UNSET and use it for the
+> normal first/unknown cpupid state. Return a distinct
+> LAST_CPUPID_ACCESS_TIME value while the folio still carries access-time
+> metadata. If normal NUMA balancing is disabled, keep the migrated-page
+> accounting but skip normal task-placement accounting for those faults.
 > 
-> However, the race here is different: tlb_flush_rmaps() is under the PTE lock,
-> while zap_empty_pte_table() is under the PMD lock, and reordering between the
-> two functions is also possible. That is, the folio mapcount operation could
-> execute after the acquire barrier (spin_lock()) of zap_empty_pte_table(),
-> allowing a reader on CPU 0 to incorrectly observe that the PMD is none while
-> mapcount > 0.
+> When normal NUMA balancing and memory tiering are both enabled, promoted
+> pages can still feed task placement. In that mode, the user has enabled
+> both CPU placement feedback and tiering promotion, so a promoted top-tier
+> fault is treated as an ordinary unset-cpupid AutoNUMA fault.
+> 
+> A stale access-time value can also survive after memory tiering is
+> disabled and later reach task_numa_fault() from a top-tier page, where
+> the slow-tier validation no longer applies. Treat any remaining invalid
+> last_cpupid as LAST_CPUPID_UNSET before task_numa_group() can decode a
+> CPU from it.
+> 
+> This does not change whether a page is promoted. It only prevents
+> memory-tiering-only promotion faults from being consumed by the normal
+> AutoNUMA placement heuristic.
+>
 
-I think we really just have to make sure to flush rmaps before zapping the PMD.
-Then it's really just the same thing we had before with sync_with_folio_pmd_zap().
+Similarly with prior patches - this is a pretty major change. Although I
+agree with the premise, do you have any performance numbers that show
+this change is beneficial?
 
-So I agree about doing the tlb_flush_rmaps() before zapping the PMD. But on the
-zap_pmd_range() front that's really just what sync_with_folio_pmd_zap() wants to
-handle.
+It's quite difficult to determine what the user-face effects of this
+change would be other than expecting some kind of performance benefit.
 
--- 
-Cheers,
-
-David
+~Gregory
 
