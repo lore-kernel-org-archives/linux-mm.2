@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F865CC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:46:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7CABCC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90ECD6B00D1; Wed, 14 Oct 2026 05:46:48 -0400 (EDT)
+	id F29CE6B00D2; Wed, 14 Oct 2026 05:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BF836B00D2; Wed, 14 Oct 2026 05:46:48 -0400 (EDT)
+	id EDA786B00D4; Wed, 14 Oct 2026 05:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FDB06B00D3; Wed, 14 Oct 2026 05:46:48 -0400 (EDT)
+	id E186D6B00D5; Wed, 14 Oct 2026 05:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 60E536B00D1
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:46:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 02D9DC04A4
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:46:47 +0000 (UTC)
-X-FDA: 85320752496.07.C6FA249
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EB9C580005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:46:45 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WxmUyVUp;
-	spf=pass (imf02.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B6E386B00D2
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:47:14 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A266140452
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:47:14 +0000 (UTC)
+X-FDA: 85320753588.08.B0C625B
+Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6141B80005
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:47:12 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=UNWzPU7G;
+	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791971232;
+	b=p7/OLt0omZ/8Zi73XLinV6VmJwJcdjJFVPn0xYhitoXu9eqfModoEIVPORsaE9QVUNUvKU
+	0Z+CTyQOtjLbfQ5P6QT1jC44flRIks5XM7wGNiKlxx29zrOdS4udsDvHETZOhyR/r1HhqD
+	fDxB/xvnWoxHJVjItPTLtQthrC3YTl8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=UNWzPU7G;
+	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791971206;
+	s=arc-20220608; t=1791971232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EoGHK2d9o+Gv89lihwm7ZyHMnSAieOGeRDgz9v8xE8U=;
-	b=H+pSYA9j+UWeUgXF+Xjgj/Vfi4wWx6JsYklcUXOjYUo1BtEVX3ajzb4gm3tfWUx7mjJDoi
-	dwhdATwZQ+SZYD4/XA+iExiqK7SYAXOMviKzdHcWN6q4KWcPGr3hQqJ4vVhO8J5Ab+brHs
-	uA6iMgWtJ4qTCvh85qsXqj5HQPTYi/8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WxmUyVUp;
-	spf=pass (imf02.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791971206;
-	b=8WEWynqFAs4Jbm2ittHcS4FlZfcm/l1HZZQerF4Pti2JRosNkx3o8hGLIp6ZMuXGO72k70
-	DyjdtPKDCgrEcK18dGW2iB7W0uOOdu5GYa4oemeYiEnKdOaHOmPGmQji5oHHPwayXXBX9Z
-	WPAy67FFTc/41bOZ0OUB2M4dTLTgY90=
+	bh=WvSSi/qfex9riZEpa78JUEMn8C07c1f5TdCJDgGPBWk=;
+	b=u6+OYcODyL6Vj7wkOjRBlyw0B1Kqn6nWYnF00WLqKpCcAqsPryahMDYLuBhvqRHo7goR41
+	cF5MVdacH465LY3QDpCVuSU5VN7EkHJ13/3JHZ8XJSPwXmuNH2HdMarLWb6IN6tjxH3wa+
+	q2cENqkx7XhhG6hqSCRbTLg2WlU+xME=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1791971198; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1791971227; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=EoGHK2d9o+Gv89lihwm7ZyHMnSAieOGeRDgz9v8xE8U=;
- b=WxmUyVUp9f0VkCdRUyFck6O1+gg8N6BM8V54dce6x2J51ylLnREcTHnbg8xoTTh8WX7ule
- UcDlljtAxYDJe9PZGMjF9/ZvsFUFuCiP7cNzOo4KvW8n+ZbBsHOdEG/87PdCu0TI9g2CdI
- 0HC5T6BqjjrLsGNx1lvyd+pnJhrHspzWLKDPAN+8f3kE+KDgaSeg1gR69Q0SzPCi1/8Lml
- i9xXN67sncjoqc17iXhoOMQod+ysi7jn5GxeCr3d0KpGbMIXI16S00Rd45OdqpHMR7nc9b
- oR9sm2Vp/zf8+J+U9fxLoJ+32QCdGvh7Tb3HfXkX5eEAMi5kDh1JtDqdsTuqTQ==
+ bh=WvSSi/qfex9riZEpa78JUEMn8C07c1f5TdCJDgGPBWk=;
+ b=UNWzPU7G/WKZtu+E2SlLjQSyjdH2ozBiMRrQCqdQqq5uL1k0IAqbf/KeqKt8zVXJcxSJQo
+ zrJUKakCB1m4nYJM9XRplGQTbkVW/1I6uGihVaxjpdYxmsee2npPP6+63lie70RzZyArXm
+ uffBP67OCtRFibDRnc+We89rPxhlooK2tkuZWVOSHDFybamQBqL3rVwMJFsYnmqss/nSNI
+ f71ZrO9ONsgcj8ur58DpsJozBPqLznHK9aIcpuAOjqt7vTYtUAI9/w3eaV8jr6OszJjWP9
+ B6b45DhBabq0hc2bhkMa6pKo/reYOT7Dnp4x2TAVjVRJ8zUCKviIM0L0rOV0zQ==
+X-Mailer: git-send-email 2.45.2
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Date: Wed, 14 Oct 2026 17:43:47 +0800
+Mime-Version: 1.0
+In-Reply-To: <20261014094347.99157-1-lizhe.67@bytedance.com>
+References: <20261014094347.99157-1-lizhe.67@bytedance.com>
+Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, "Li Zhe" <lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: [PATCH 6/6] sched/numa: ignore preferred nodes without normal balancing
+X-Lms-Return-Path: <lba+26acf4f99+4829ef+kvack.org+lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
 To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>, 
 	<gourry@gourry.net>, <joshua.hahnjy@gmail.com>, <ziy@nvidia.com>, 
 	<mingo@redhat.com>, <peterz@infradead.org>, <mgorman@suse.de>, 
 	<riel@redhat.com>, <juri.lelli@redhat.com>, <vincent.guittot@linaro.org>, 
 	<dietmar.eggemann@arm.com>, <rostedt@goodmis.org>, <bsegall@google.com>, 
 	<vschneid@redhat.com>, <kprateek.nayak@amd.com>
-Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, "Li Zhe" <lizhe.67@bytedance.com>
-Message-Id: <20261014094347.99157-6-lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26acf4f7c+deb21c+kvack.org+lizhe.67@bytedance.com>
-Subject: [PATCH 5/6] sched/numa: do not feed tiering promotions into task placement stats
+Message-Id: <20261014094347.99157-7-lizhe.67@bytedance.com>
 Content-Transfer-Encoding: 7bit
-Date: Wed, 14 Oct 2026 17:43:46 +0800
-References: <20261014094347.99157-1-lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20261014094347.99157-1-lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EB9C580005
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6141B80005
 X-Rspam-User: 
-X-Stat-Signature: imncc7wssq46azrnr6xeade1jy3xdna7
-X-HE-Tag: 1791971205-986264
-X-HE-Meta: U2FsdGVkX19WpGOJiYSH8ULk6gajFkxNkWunqlMNlS1h3rv1ZukNbux52a4Hv+VT0E5XhE9EweHj7v8tg87WVRMRKTcZPnLL6Re6uEWe/VRJJr2rNCJgV1KwcTYe3PYr1sTH3G2ITLHML8g5OpxGW34CY1Wn/Cb9b+fjE/Y7yuVtnoJZxmcj2+2Z0QujlkCHH3nZ6zhwMleXzmiqvsHzeSnwYvWgc+x9QK0CI8+V6Vw3KcaGJ/+eFEJQthkv8xkmlbdRUy9rlJRbHsEIBNl0YT9yRKflCYP9h/1J+VqObt0PB+sXrnBR16zBvgeypN3BvPkjEE/WUrn5uaJCM4J0QcJOfjbfx1bcXCQOunxT0XIzWIGZkFvpD4m7SEBTDqzLxppN/Q0JHFQ37quNZkUGuorUERurhvq/YS0ZqYe/PHAMI8uF7xQKbyhP8qMvGk0SkIRanXUb/NZech2juS/zQlRIB3QF4e7gQvTOxHRC26MT85UCgnTD2v9dnH+Nszu7DJ+07bKsb9xJCt/2irljZJC466zIVRlOnvwEYKsgkJCQe+fZ+2AI4uk1h1tZbFnHVOH0uwpPXjX/LHWztSDWwqwLk1NkCfo8fHs+3izzqEk10o8G8s4aTotYiWPQomu7dybpMoWrUqkA5WWjwo4aNMvGuHKmmoedZUsqlv2/YP0MyWwHKD6tGhEu7gTZoUq0rts6g5jC8oxCSJ3kKk4kxNZ3ppYjySCNakV0UQ22jWwu9fhFKyedIZgL/+3JGQyDxC6BxueqmNK6xPGoRvfqyyQpSTCUKjRnrYKsQ7MeW3e2qPVOchnQs5z6vT7QaAvsUutAKGpOkEo5Gx21oVZNeG6aQYHev+AXfR+VAlcQomz/0uIu4QCvS2uJb4aTLrAREBMzaBU5TvZdRuJJCjL9B74pHpjSeVMHDAzTzjIdG10XK2LqZ1JJQqYRR0Dg1UNCa8Z+lFuWjPCwOG8+twQ
- 4hJ1rEn3
- lM8BLv9Zj+wJg75y8nBxaPo4jgNOFUoY3vdHym6zWH5zP9FbPA1u9b19sos+NTQofufweuXil0YejNQnbW4xx/DVytfFuQoOQECFyhm7ddJaFL4IuLkDFk38MgbUKxM0qoNwHP3VeJnLyRvJ751BmCOvSEb1PzxRPXZI4927rzM7JrHcIq2YyhJD10/Dj5vKWxi15YBBgEbCrBW9w5FvHHAT2C+3aSLrT64gITycNOIAW9Xgo068G7spa//Kcx4KZJf63Yn5AqMWDKSObhdS2QaqQ7DJxtE3UqtHw3HdzgFNIxM1DFUsT3qk04nH/lsO8esx1dy9NWpud7Lc=
+X-Stat-Signature: s3yocuhxd677k9amajhyz3hky7pj4tbi
+X-HE-Tag: 1791971232-728758
+X-HE-Meta: U2FsdGVkX1/701ZTvEx4ERQaYmtHeTHzExuCZU2bE3pEP1g+ZHP3qlGsjeaeGNehI6maQLnS/ejLbPn/V2BIhL6apgl7z+vkb8kn/3od1/QM3CEFgYCP6Qm8oYmAKiXxlOo01wCW0iN9CGqa1JQs5TZ2vmHefz/bSRapOIBzbSB99kScy1TSNYtyNhWPMqdWDP9qGHLc00oZ7GsJL99SbeEvSDRhT1zyoXX3sXp6K1zB0YKMdJP0KUk9sihqfk8M7BLZrKxCTZPV6002+kW++ZpRs3oDxxC28OlUQQ8Qb0PNGa/pVYYEiSxfaFB4hnbqvPDNrGMSbEaevd3+g2h0YfKS93GHLapbOS2GGXYedsXN9Sfs14OqGpRSY9bOq6Nyfo4CGJuhd0WF0Dv5nYq8X2i5mFViAmUpFNes/CQ04/SYkXaoRS4k1ZdSJE5TC5AmBgVuTUDaHthL2OlD6bYu87rr+ULxFLKS/pphSSRC8XTwbEtHIFMj+dLYhYSHCn2B0KmXh4SOhyVGy+7/27uCrBURc9brQQ0kbHdoL32Z44ajloPLcLwlMdtSxvYflZMFZ9v73VFR/onNDFvP2v2yZo+0bnMx1f1ybqh0aVUTyFw9rOMNCXgJpmcNf7JcAjk/taHs92EvR32n3H2Dm08gsPp+noNVXemtz4LWkIysWCR3hpxTKJ/7LLdFyiL/B9MKtJwiXbNTZLVSJ3+cbYrvkeoW6ayFrQoIYKvOxqNkcvkpagxv1Ll4wPmN4IBWSa1ZLY7vG1G+28lxmdzQNPBVdGCATBm+Y9SEuzkaGcprSmoFJJ0ax51J8MdzbE4OQp3H3pIN4Bs178xnG+b5rjZMXBmN5UEF/zzEvoi0L4G0R0Z9hposZv6jMH7S/mA1UUwizPaZQe4bQuizLphEvn6/7siCmnAextLFn04E6GwKAS7IsXlZw/baGmeTGhI2C4Z77x9UpDKYLZxWmOiiVLL
+ Pl73QH/h
+ ufZYomWt8g17Nl2dZOwQt+mzssXBY5PDWtXte2JBByM8QvSkXPgksZlPmLLsg5R+rH4+7Z1O34ec/IhuWDt1mm3hWSAyuUrOEhe9NAxn5Y5se0nF2VpM6jwTYpsPdNfxvlf1pcjdXMAkIAC9jdiBBiaR8hEwZsoFbK1osp9FT0UK1DqnrehKl3hXPw0Vrj84zqdRW6Xlm3zCdfjPoxIWTjpPmt2ysaJDTswdP33kZ8DUQqVJ2Qn2UwJ/usyVo5gdnc2A5ssMV6mU07Bi4dzB7SOPXEcayemBbtT8zx8OhfJwY5Z3Gtyg+eKbYckkP3b9NqHb0M1/G7oRssi0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,140 +94,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NUMA balancing has separate mode bits for normal task placement and
-memory tiering. In memory-tiering-only mode, NUMA hinting faults on
-slow-tier pages are used to detect hot pages and promote them to a top
-tier. They are not normal task-placement faults.
+numa_preferred_nid is normal AutoNUMA task-placement state.
+Memory-tiering-only mode uses NUMA hint faults to drive page promotion,
+not CPU placement.
 
-task_numa_fault() already avoids normal placement accounting for slow-tier
-faults while memory tiering is enabled. However, a successful slow-to-fast
-promotion can bypass that check. do_numa_page() reports the destination
-node to task_numa_fault() after migration, so the fault is seen as a
-top-tier fault and can update p->numa_faults, task placement state and
-the preferred NUMA node.
+Even after tiering-only faults stop updating normal placement statistics,
+a task can still have a preferred NUMA node from earlier normal balancing
+or from previously polluted state. Several scheduler paths consume that
+stale state when the NUMA balancing static key is enabled, including
+explicit NUMA task migration, sched-cache preferred LLC and scan CPU mask
+selection, load-balance locality checks, fbq classification, and wakeup
+group selection.
 
-Slow-tier PTEs store access-time metadata in the folio last-cpupid field.
-Before this change, numa_migrate_check() returned the same all-ones
-last_cpupid value for those faults that normal AutoNUMA uses for a first
-or unknown access. Those cases are different: the ordinary unset value
-means there is no previous CPU/PID sample, while a slow-tier access-time
-value means the field does not contain a cpupid at all.
+Add a small helper for normal NUMA placement being enabled and use it to
+ignore numa_preferred_nid when NUMA_BALANCING_NORMAL is disabled. Keep
+the preferred-node migration retry timestamp update before the normal-mode
+check so accepted non-normal sysctl states do not leave stale retry state
+behind.
 
-Name the ordinary all-ones sentinel LAST_CPUPID_UNSET and use it for the
-normal first/unknown cpupid state. Return a distinct
-LAST_CPUPID_ACCESS_TIME value while the folio still carries access-time
-metadata. If normal NUMA balancing is disabled, keep the migrated-page
-accounting but skip normal task-placement accounting for those faults.
+Keep the rq nr_numa_running and nr_preferred_running accounting unchanged
+so runtime mode changes do not make enqueue/dequeue accounting asymmetric;
+the load balancer simply stops consuming those counters while normal
+balancing is off.
 
-When normal NUMA balancing and memory tiering are both enabled, promoted
-pages can still feed task placement. In that mode, the user has enabled
-both CPU placement feedback and tiering promotion, so a promoted top-tier
-fault is treated as an ordinary unset-cpupid AutoNUMA fault.
-
-A stale access-time value can also survive after memory tiering is
-disabled and later reach task_numa_fault() from a top-tier page, where
-the slow-tier validation no longer applies. Treat any remaining invalid
-last_cpupid as LAST_CPUPID_UNSET before task_numa_group() can decode a
-CPU from it.
-
-This does not change whether a page is promoted. It only prevents
-memory-tiering-only promotion faults from being consumed by the normal
-AutoNUMA placement heuristic.
+This does not clear numa_preferred_nid and does not change memory-tiering
+promotion decisions.
 
 Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 ---
- include/linux/mm.h  |  5 ++++-
- kernel/sched/fair.c | 26 +++++++++++++++++++++++++-
- mm/memory.c         |  2 +-
- 3 files changed, 30 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 55 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 44 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index dd09c438fa23..bb0c72640152 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2420,6 +2420,9 @@ static inline int folio_nid(const struct folio *folio)
- #define PAGE_ACCESS_TIME_MASK				\
- 	(LAST_CPUPID_MASK << PAGE_ACCESS_TIME_BUCKETS)
- 
-+#define LAST_CPUPID_UNSET		(-1 & LAST_CPUPID_MASK)
-+#define LAST_CPUPID_ACCESS_TIME		(-2 & LAST_CPUPID_MASK)
-+
- static inline int cpu_pid_to_cpupid(int cpu, int pid)
- {
- 	return ((cpu & LAST__CPU_MASK) << LAST__PID_SHIFT) | (pid & LAST__PID_MASK);
-@@ -2468,7 +2471,7 @@ static inline int folio_last_cpupid(struct folio *folio)
- }
- static inline void page_cpupid_reset_last(struct page *page)
- {
--	page->_last_cpupid = -1 & LAST_CPUPID_MASK;
-+	page->_last_cpupid = LAST_CPUPID_UNSET;
- }
- #else
- static inline int folio_last_cpupid(struct folio *folio)
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2e11107bf5ca..ec08406d1364 100644
+index ec08406d1364..11b54bb353ad 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -4214,6 +4214,21 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
- 	if (!p->mm)
- 		return;
+@@ -1328,6 +1328,21 @@ static int select_idle_sibling(struct task_struct *p, int prev_cpu, int cpu);
+ static unsigned long task_h_load(struct task_struct *p);
+ static unsigned long capacity_of(int cpu);
  
-+	/*
-+	 * Slow-tier pages use last_cpupid as access-time metadata instead of
-+	 * a real cpupid. Do not feed these faults into normal task placement
-+	 * when normal NUMA balancing is disabled.
-+	 */
-+	if (last_cpupid == LAST_CPUPID_ACCESS_TIME) {
-+		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL)) {
-+			if (migrated)
-+				p->numa_pages_migrated += pages;
-+			return;
++#ifdef CONFIG_NUMA_BALANCING
++static inline bool numa_balancing_normal_enabled(void)
++{
++	return sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL;
++}
++
++static inline int task_numa_preferred_nid(struct task_struct *p)
++{
++	if (!numa_balancing_normal_enabled())
++		return NUMA_NO_NODE;
++
++	return p->numa_preferred_nid;
++}
++#endif
++
+ /* Give new sched_entity start runnable values to heavy its load in infant time */
+ void init_entity_runnable_average(struct sched_entity *se)
+ {
+@@ -1890,10 +1905,12 @@ static int get_pref_llc(struct task_struct *p, struct sched_cache_group *grp)
+ 		 * than sched_setnuma() at least -- and thus the
+ 		 * conflict only exists for a short period of time.
+ 		 */
+-		if (static_branch_likely(&sched_numa_balancing) &&
+-		    p->numa_preferred_nid >= 0 &&
+-		    cpu_to_node(mm_sched_cpu) != p->numa_preferred_nid)
+-			mm_sched_llc = -1;
++		if (static_branch_likely(&sched_numa_balancing)) {
++			int pref_nid = task_numa_preferred_nid(p);
++
++			if (pref_nid >= 0 && cpu_to_node(mm_sched_cpu) != pref_nid)
++				mm_sched_llc = -1;
 +		}
+ #endif
+ 	}
+ 
+@@ -2009,7 +2026,7 @@ static void get_scan_cpumasks(cpumask_var_t cpus, struct task_struct *p,
+ 	 * current running node to mitigate the bouncing risk.
+ 	 * TBD: numa_group should be considered during task aggregation.
+ 	 */
+-	pref_nid = p->numa_preferred_nid;
++	pref_nid = task_numa_preferred_nid(p);
+ 	/* honor the task's preferred node */
+ 	if (pref_nid == NUMA_NO_NODE)
+ 		goto out;
+@@ -3649,6 +3666,9 @@ static void numa_migrate_preferred(struct task_struct *p)
+ 	interval = min(interval, msecs_to_jiffies(p->numa_scan_period) / 16);
+ 	p->numa_migrate_retry = jiffies + interval;
+ 
++	if (!numa_balancing_normal_enabled())
++		return;
 +
-+		last_cpupid = LAST_CPUPID_UNSET;
-+	}
-+
- 	/*
- 	 * NUMA faults statistics are unnecessary for the slow memory
- 	 * node for memory tiering mode.
-@@ -4223,6 +4238,15 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
- 	     !cpupid_valid(last_cpupid)))
+ 	/* Success if task is already running on preferred CPU */
+ 	if (task_node(p) == p->numa_preferred_nid)
  		return;
+@@ -10740,6 +10760,9 @@ static long migrate_degrades_locality(struct task_struct *p, struct lb_env *env)
+ 	if (!static_branch_likely(&sched_numa_balancing))
+ 		return 0;
  
-+	/*
-+	 * A stale slow-tier access timestamp can survive after memory tiering
-+	 * is disabled and later reach here as if it was a cpupid from a
-+	 * top-tier page. Treat any non-cpupid value as an ordinary first
-+	 * access before task_numa_group() decodes a CPU from it.
-+	 */
-+	if (unlikely(!cpupid_valid(last_cpupid)))
-+		last_cpupid = LAST_CPUPID_UNSET;
++	if (!numa_balancing_normal_enabled())
++		return 0;
 +
- 	/* Allocate buffer to track faults on a per-node basis */
- 	if (unlikely(!p->numa_faults)) {
- 		int size = sizeof(*p->numa_faults) *
-@@ -4240,7 +4264,7 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
- 	 * First accesses are treated as private, otherwise consider accesses
- 	 * to be private if the accessing pid has not changed
- 	 */
--	if (unlikely(last_cpupid == (-1 & LAST_CPUPID_MASK))) {
-+	if (unlikely(last_cpupid == LAST_CPUPID_UNSET)) {
- 		priv = 1;
- 	} else {
- 		priv = cpupid_match_pid(p, last_cpupid);
-diff --git a/mm/memory.c b/mm/memory.c
-index 8b0c2c735d3d..212e9d1d5b64 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6173,7 +6173,7 @@ int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
- 	 * to record page access time.  So use default value.
- 	 */
- 	if (folio_use_access_time(folio))
--		*last_cpupid = (-1 & LAST_CPUPID_MASK);
-+		*last_cpupid = LAST_CPUPID_ACCESS_TIME;
- 	else
- 		*last_cpupid = folio_last_cpupid(folio);
+ 	if (!p->numa_faults || !(env->sd->flags & SD_NUMA))
+ 		return 0;
  
+@@ -12533,6 +12556,9 @@ static bool update_sd_pick_busiest(struct lb_env *env,
+ #ifdef CONFIG_NUMA_BALANCING
+ static inline enum fbq_type fbq_classify_group(struct sg_lb_stats *sgs)
+ {
++	if (!numa_balancing_normal_enabled())
++		return all;
++
+ 	if (sgs->sum_h_nr_running > sgs->nr_numa_running)
+ 		return regular;
+ 	if (sgs->sum_h_nr_running > sgs->nr_preferred_running)
+@@ -12542,6 +12568,9 @@ static inline enum fbq_type fbq_classify_group(struct sg_lb_stats *sgs)
+ 
+ static inline enum fbq_type fbq_classify_rq(struct rq *rq)
+ {
++	if (!numa_balancing_normal_enabled())
++		return regular;
++
+ 	if (rq->nr_running > rq->nr_numa_running)
+ 		return regular;
+ 	if (rq->nr_running > rq->nr_preferred_running)
+@@ -12843,17 +12872,21 @@ sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int
+ 		if (sd->flags & SD_NUMA) {
+ 			int imb_numa_nr = sd->imb_numa_nr;
+ #ifdef CONFIG_NUMA_BALANCING
+-			int idlest_cpu;
++			int pref_nid = task_numa_preferred_nid(p);
+ 			/*
+ 			 * If there is spare capacity at NUMA, try to select
+ 			 * the preferred node
+ 			 */
+-			if (cpu_to_node(this_cpu) == p->numa_preferred_nid)
+-				return NULL;
++			if (pref_nid != NUMA_NO_NODE) {
++				int idlest_cpu;
+ 
+-			idlest_cpu = cpumask_first(sched_group_span(idlest));
+-			if (cpu_to_node(idlest_cpu) == p->numa_preferred_nid)
+-				return idlest;
++				if (cpu_to_node(this_cpu) == pref_nid)
++					return NULL;
++
++				idlest_cpu = cpumask_first(sched_group_span(idlest));
++				if (cpu_to_node(idlest_cpu) == pref_nid)
++					return idlest;
++			}
+ #endif /* CONFIG_NUMA_BALANCING */
+ 			/*
+ 			 * Otherwise, keep the task close to the wakeup source
 -- 
 2.20.1
 
