@@ -4,151 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007A4CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 11:06:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F1CCC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 11:13:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0298C6B008C; Wed, 14 Oct 2026 07:06:00 -0400 (EDT)
+	id 7B0766B0088; Wed, 14 Oct 2026 07:13:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1D4E6B0092; Wed, 14 Oct 2026 07:05:59 -0400 (EDT)
+	id 7880A6B008A; Wed, 14 Oct 2026 07:13:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0B4D6B0095; Wed, 14 Oct 2026 07:05:59 -0400 (EDT)
+	id 69E186B0095; Wed, 14 Oct 2026 07:13:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B58F66B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:05:59 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 569131C3CAA
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:05:59 +0000 (UTC)
-X-FDA: 85320952038.14.1DB49E1
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5799A140005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:05:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mT3GgBKq;
-	spf=pass (imf09.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=lrizzo@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791975957;
-	b=1pMM/02E10/m3pEyEI8rx+OQ9kipYnf3Mtz1p33i71LihaGXH3SkfZtLbYkmXi/bVKVTQs
-	QB/6Dn/W9EQSWTiGE2708JEA86YAAinwMQIxpILx+yIa1r1W79H4U/u0yMOdcR9QR4T7pN
-	4je/MpArXlyzE/eCj3BJ3N9LL0fjGEE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mT3GgBKq;
-	spf=pass (imf09.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=lrizzo@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791975957;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E573A6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:13:41 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74F3D1404A2
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:13:41 +0000 (UTC)
+X-FDA: 85320971442.30.42D575E
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 661AD40004
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:13:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=XlQAItU1;
+	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791976419;
+	b=MrQQeFv9GThEcBSkrZlb65HpCAjaxoGod3Cgu7+Q8AqO9ONJH1FpRFxLVok/EaT4ABSX2S
+	RD6Y5bbqFRCx1H0zHZinaW1kfym1HwhivEKv99M0UIxu1xZ6MCwtrgpgt3+4pNmdCWefcD
+	DPnTyS1ahk4VEu3OtxDcVN0f4urHkBU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=XlQAItU1;
+	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791976419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKg3O/9qWwL0S/n8isR5H6f1yss4N5Cz6zPMHFWqGP4=;
-	b=cSE82HSo8wo8kNm3k0fOmEoRlhRl3cpXqGTxnKb9CZwiKQlsb6fWugGP664k9Tp0c20YmV
-	GnOsTKFUUKJaj7OKxoOrHxTG4DRIcsg+3WBzmebItleI3oWIFAyWazsKkvKec3PbZFX7UD
-	lMkhqk7v7RHyxVYg7A0VHN+g7Oi2Ao8=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so196755ad.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:05:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791975956; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T0BcbGlWIGvnCHuPB+vOmaeerdlMBhHH+5qCjqfN6R4TKiil/tScP1ZFmbuO579e7c
-         8m61lWDYt1NMXEK4Kwg4ushjlmJJVu0n/az+zVvuMzDz9bpPDHO1dmFTQfEZVd4b9QY1
-         BHh5ZCNDySCyjEBi9dBuCT5opKfqVznLO5uyeaBRKi2p87v3zwX83x/ueyAjoBgwpbFn
-         CalGekL7eIElVF2MnOBtjCckk1jQ2b7UPKGrfC2SDPizINjpoKfIgmv2s8XUtSdisrbM
-         Qu24qJZqHcuKvUz8dDCA7IYBbnU6PwyWaqNUgtJ70H2lESsCqKitGGVV8Ua21ARs46Z3
-         iplg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oKg3O/9qWwL0S/n8isR5H6f1yss4N5Cz6zPMHFWqGP4=;
-        fh=nhrMfwz3hPzbbniHteNkTVKFkK72N+W7LHTijG4PeoU=;
-        b=lgkPN9nb+dd1kT4LLeUlA+D+V5rXIIcyqT/7nutDmqSHhWBfjgsWyVhZ2xNiiKmlGl
-         r5oYmeAwfrCRIZFxtq+viuXkfYHPFU2tPsF89gZj6azQRdDhu1uYp7Zsk0h7QILuvqcd
-         jVnwwvHB5MI1d2/UhTDmq6OCyST8aAZCtabuEsRYmlCpw2bTRo5uPxiw3Mx2ZMwI4aP6
-         1HTht/YlIpjnB14QPLswvojjkL0U7ksA+fBeTljndGT+2RgtYkyMAAsSIhRfpFxeOluG
-         NtwriHQvzhATSiurD53X2zZ+PjHoDJuUYHyrDrX2p7CiJrkJsiik5doafbRf8IsGHeY1
-         pLcg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=NXlUIURbYu6APktqXqLBKzg8bDGva6jksAa9GUaz5Wg=;
+	b=QiwIW9Ff6yJmJKzJtOkjcbVWnNlT6uDNO8nCSGjtI4y8qeQsu02YOKDvqdJ+fFSX/7QqGw
+	ecMD2YiDvOAPgR7EsAH0X4hEuT2kiSJ043W7LYj265Li5WceX1nIUNuwsbtPXbeD/rPaVI
+	lv1AgFUfmzaMFe7n9s15I2YGnZaj6dw=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a1ad2e2391so12659645e9.0
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:13:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791975956; x=1792580756; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=suse.com; s=google; t=1791976418; x=1792581218; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=oKg3O/9qWwL0S/n8isR5H6f1yss4N5Cz6zPMHFWqGP4=;
-        b=mT3GgBKq4XrWQwAIAuvJ53PluHzmLVjuds/R79gWekgocCJcaB/D/SnaJMnY7MZF1D
-         xDjkgmHBOpgpmT05pflmYNH0/t472i3oGkZbS2Qma/2Q7Syf8rNsAeAZ3DH7rYouzF3M
-         cZQ8b40rwBWEGp+8r6eKuq1E2gkyS+mxE9/3NnTTS36p5XOLL7mvTFv8O3rvB7XNBmP7
-         dGeVV9rqF6Ap50Zl/ZdqtluE8mwtvfmgOx+2M8Q/oUsXvjxmgTi5IpGlmvReLB/8LbS0
-         ljGPXmZXAfXhdMZR4OcD7sZUuUKxYWeDtwxMJL/ooZ6gQg6hYz1B7Uy33zY6kEikXo48
-         mrwA==
+        bh=NXlUIURbYu6APktqXqLBKzg8bDGva6jksAa9GUaz5Wg=;
+        b=XlQAItU1yH8N8+09+uuDVdF5u132DrhnQ3sit+YXmV060ZoyTz47ce4mgmxkPvBnse
+         yEYOmMhFttlqSDEXFGIq+fwB+EI4IkkL68ypV0TU7m7OHZjqlWA411uKTQw5QhJQhdLA
+         2yIQZCrQcWZmbH//iciFOzwylznPgf0oA34orv4XjGuCKza4UK0YpZH4bPN6gtU3nbf4
+         hY9w77wdwIrIdc9+RVNZozBx1c8RJMX3I9HDl9ZKIEcDVEVjSXF76Q6ih7PGbC00D0m2
+         dCmPjg0d2Ex+ceJZfkDus9ULpAbNEbokAuLqebF5ayVJE4fLyZ8gfRItbpZMgaoxxH11
+         FW6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791975956; x=1792580756;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1791976418; x=1792581218;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oKg3O/9qWwL0S/n8isR5H6f1yss4N5Cz6zPMHFWqGP4=;
-        b=eK9aJrMlxVxeJ0e22+aowzKmlYVbcZpiRXfuX6Yok3kFC0mQhyhL48OE2rrydYJ83t
-         cfZS0UiA/IrtSRXwyznNihj9PncP1lFuMUj0g9hNI9Bx0SnEvML2Q34z7aMObBLRSUL9
-         BMoPcnBXI4YFXnaEsG9fEnh9gEJKE3TiY6aO7ZYjPBaii7c8t2LT49r2h20jjBtKc13R
-         tT60UVLK9TkptXvnaCF6TRoOkZ1PpGBgwevADhkvu6pBGWAegS06/jj0GiAfjdlzJvK6
-         YJlLBqTasklXXIMEAgq0pV4cd0NoyB39QiY7uT1F4rOic9O69UvCtSWEFlaOZctU4AKi
-         Lw1g==
-X-Forwarded-Encrypted: i=1; AKwUvBx3X9c2MQPmdoJppS2ZqRf943jgKOn0EhUYpD9iYCthBd9jQDHf5VISxzSxB51tDV8KnthpSUHvMQ==@kvack.org
-X-Gm-Message-State: AFq9FYKgLkHQ767X0RIaEzMfzLYNgz1w17CqkDpWkjEQvZIpFNES7w1+
-	ftLpXWVT2KzjA5W8+mPcJBrGa/6GQQqfYLloWjQIpElyET/n+978D58qZfjT520qY5Z5gs+k7xM
-	PRNjWe9FJ1IHhGiq5h/GwQb2Y4GL6CnWiPW9vtUPf
-X-Gm-Gg: AYBFou3hNzcUzn4168iVusajgSC+waLnLtSWk3KIdwbt8+xvWDnqqqeyKEt6dO6JxyG
-	Xv/cFqUTGyuFovDKG3LLm2RognqwpXA/gcmo/hn2VoarYIZMi5bQ4z5Ii4hITfSZxvzl9W6JOQq
-	uJk8nzGvUu5gxaGNVebSNckmK43AYsS1lqCNYq83PKoKaB8n0uKqV1aqcn+SWrrpWeBFZq8IkH6
-	SfY4+RXQfmk+7qS7EiNAR6ttDCoZmH0wrycMoBn3bR0v7no3yXDCG2WD0o5pWY7lGaPV7oDuE3N
-	JFnYWOsh8kt0c9yaho4p3lxENE5BLJzvccTMOLML9WQ8vXbuQAsXulwr
-X-Received: by 2002:a17:903:1a2b:b0:2c6:99be:9dd with SMTP id
- d9443c01a7336-2e939d0f5c2mr3033515ad.12.1791975955291; Wed, 14 Oct 2026
- 04:05:55 -0700 (PDT)
+        bh=NXlUIURbYu6APktqXqLBKzg8bDGva6jksAa9GUaz5Wg=;
+        b=hCXxO0kj7BlMExBS8ybj6hSM0o4Fr+av0cZM1FCEnJzc2uq+ZqZA0g5ORI5fEg7b7f
+         CgdojKXJaBltRabxg/vOcLVDxsjGpN8EdP8brmmVtSsqZkmSH2N1YscoW7BOqW6SPqkF
+         OqMFb2FfsMYju5lenrTC6pGQC2t63Q/088aBhDKz6Z44t/NmG74xi5Dl9eyvbbB79Jc4
+         28MdPfcT1HCeeaD5WA3X4aH2abMbTPfa3dY+0QSTDOaXIT4sdg5uFaRvz/esNlj2HB0e
+         xcAXDruG5eK3XuxcrJeDCQ91Hv7EGosUhJ3YyquBCbOVzObko5CiGtZkYJZvrLEjyfn/
+         0Vdw==
+X-Forwarded-Encrypted: i=1; AKwUvByOzy8yMAdOAG13/MLc8ULDGToaFGk6BOR/9i4bwYeOKkhRKiHsupkO2PjfuI3gF0c3Lpn+mPfLmQ==@kvack.org
+X-Gm-Message-State: AFq9FYIMAI2fVwgHK0AxB3Sxyv0/RpTxh/ivWqji3XkQqCQlMZYo06Is
+	xSd5aC4mPbmHHVTmjkz5dvVZJg2yZ3yWNkZzjW2JODCbm7xuQCw6oJejQ6j92el87Fs=
+X-Gm-Gg: AYBFou3+6t4uIfVJ10zrQTY1CxLCVVBFvNGduulH03rQD9ijU1FP8KP3EmcrYoSWZ4W
+	YqTjq+x9ZxdL+s3Hm7h4oSq7LLTQftHTkorY+zR5jE7l3sShynjfOqwZdnyU6uD2PQCQXbpbIzF
+	DR7BOgUzMjpqdk1+gmJcvr9KcI19A1wYRts884mcvuk28307DPXxOra7rMtdjiuK/Q5oE+Vl7tK
+	ZIeOJA07rJR5+70aRjapzql/iOJo434N5E24SlTNwBYsBGLa5kZzuJUW2QAk+LmUbHZRZVXOqHF
+	VFDmazza86H+7M/6Q+0wi4XVaNDIoKXY2txrSQEwMWaCa14WWauRWIhzbPUVOhQQxrb6YAByPlY
+	4+DJPWAm5QIhRIPlc296qNuY3z3kB7yR2UtOZ9dCbx2lx2JYvhzx4mFZs0VPbaSzRLV/U6CIv1m
+	3JB1vtSGyrGRqG2UpmbMHP1CzlQ+fzhqb892tcXPQTxHaVtwRHXhCPZ5zCZZSeENRWRuZXL3co7
+	UqGGFz2UBH5
+X-Received: by 2002:a05:600c:4ecd:b0:4a1:96cd:2f60 with SMTP id 5b1f17b1804b1-4a19ecf4c20mr181213675e9.3.1791976417794;
+        Wed, 14 Oct 2026 04:13:37 -0700 (PDT)
+Received: from localhost (109-81-25-183.rct.o2.cz. [109.81.25.183])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1b3615f2esm43732895e9.1.2026.10.14.04.13.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 04:13:37 -0700 (PDT)
+Date: Wed, 14 Oct 2026 13:13:34 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH for-7.5 1/5] memcg: move memory.high enforcement out of
+ try_charge_memcg()
+Message-ID: <as9j3rH3qRtFO0-7@tiehlicka>
+References: <20261010210957.1350874-1-shakeel.butt@linux.dev>
+ <20261010210957.1350874-2-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <4fda41ed-741b-4c5f-ae83-e3ea5a447441@arm.com>
- <75c229ef-ae41-4072-9c90-98d4779c52bf@kernel.org>
-In-Reply-To: <75c229ef-ae41-4072-9c90-98d4779c52bf@kernel.org>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Wed, 14 Oct 2026 13:05:18 +0200
-X-Gm-Features: AclHuK8XP34mfrE8lQUslMQMNc1nPr8ujKpQNMaoAI_u53qDQl4REr9J8L8QdAk
-Message-ID: <CAMOZA0L6hWd=PYLF2PkYwMG11JCson6Wp4Fy9B3k3VC0Vt2R0w@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261010210957.1350874-2-shakeel.butt@linux.dev>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5799A140005
+X-Rspamd-Queue-Id: 661AD40004
 X-Rspam-User: 
-X-Stat-Signature: hjtzqijg36i366x5jww91phrzufw3ahe
-X-HE-Tag: 1791975957-500992
-X-HE-Meta: U2FsdGVkX1+ejBI7EncKwMqNqXw0TwMhoOP8IAVC6t4sXsqEWla3txtE5rlVKCNBS7hM9WTC4cBv3dZb8K6jR+iLmEwXWb3hUyrkfr/AzgT1UoFNlj7LJ1VunIJrSYCSOkTlXgKFEHbFxkPva+Vbm9I7BlD9voLC/4diRFpL0o58A1xAx6B0rGVhAA3/Xl5qZlfSsFgwU+TYksXDVX2yoWgFpQtXqEM3I6GvC14HSY9F08vifyo0TMzPvc/S9rmH7dPvadv3V07paDnRtA4s0OBO6RSV1VVf5/wFjcrh8vaqJQqW95MVVgIjiPYKKIZE41N/QfHd8K2MXS/ViltwThYInPM4tIY39SwtV9YEixK2peO6ThsLCbJU3zJB+b26X5aTP5M9xwBJDsMWSM8WMWvKVL4Ir0Qcp5ZXfxt69uBwAsXiGt/YhUNwDPEh2xIABh6SDPie8HdCtUiJIL0WkWbrRTbkXz/v++7A/QjLWxH6uk+1G3FVS0HCBYwcLG9xyQ2YDhEp1nO7J0ULSoQI4C0kqVSshrQMjqERMW/NuuE0QG6OnSfvWEaItX+JUCSbNtnYGLhiLH8k9g52ct7mS796n7qt6um7zGdsZi/370TpqrOERHUKA2B7A1bw5zukLB8/noBs1c7XzsUmrGFlbUz0ZZLRjmaTRC2YIaybjN88COd/0FM2zmuXkhaEhJaibgujlW5xjlvkuYpg/B/lf1GHBu2YnBiTDgLwlMN1Fq5xqCYrllr0KqOS9sKvcwt39UlBKKd9qjWFZnFFIB/SuyPMhPlqw8JU6jZbEvnoGJMyFThVrxhQCaY+F9NLxYi0zOkRUsr9Tvsoi5EbiCEbMVa8ZkeeF6Ozt+ZFGtmKISQr8A1mPrAo7TppSiUqTOaiYTEIZfXMw4wacNWCINxwf/Tnq85LBEe2UoM0EAPnLOadQYJb0RMgsDsluwxUnVPAakKl7A6AOmUB+/05QnK
- wK+hqd2m
- z+Hygku3S2fLESydZeGS80agyN8+Na4goTsvvMGeG3ZNrEvaewRverxIV7P6qrV+AtHxU66ikjKEZjVzF8bZ3dRpmPePe1WclCqdIUPTubjs/S7NrOFmrBrSr6oCgdxA4m8e19He9qFtpZohrxYLYXVPxAPSIXkQhln1dY9R004H643C31qElOgq7UunJacU4ZYZfBkQXZPhA0w3zfmmuz61ebn+nv/gtpllnPcznx6uU4jhuMY693OuJEhBgmejkJWpMjf5sF8Rsx/gBXBSViZTHfxH89t0NZnlj6D8Obj/Dnidm2C26SXuZI7mZiFR9Trm1nWj9U9mHScTIORPUo7kPXrz1IKIRhpYrXHEdJ2Yw6lnHQFdpRSM8ksYDjeq8yk87
+X-Stat-Signature: fmyb9ttgznk6xy4e8kckz7z4sy7p9b65
+X-HE-Tag: 1791976419-674150
+X-HE-Meta: U2FsdGVkX1+vGWaoE0Rz2VkRQqj+8H+CCYeFlEUYXIlMwvOmgrbVQOGo4JlJ1PyHaJfZ/dHrsB4aa5GHhJbYdmn06o46NB+oN0IMSVsFjWjQFVtCUeGoTKYv0rjButEzBuNDbwc6BTf6/ZgP/qIMhI2zYejo5zr/r1awxA/pnFUGCWRMoyaN4yETbhEtJHNkU5neVftUSkgQ3JX3VPV1+djpTO3oWOzS8srFLCvycIDs1luTu6zF5xugPigu1kNQXbpXx0L2Ic+NQaNzr+stEOfjK9GsMLHJRz/t1M2xlYITRHt6JcJJu/3rSMSkb/4jNmBBLfxs6Jxve7CmCtVi3yzqQCDRZ+Hgw6nvrWZGYD2gwM+OdVspLfAkmtiS8Zo/vNKfxi7NvvirppRGMEmH6LCJc/MPjqjkpPzBZLLIQKldXrvc9RGfydZKHblL4beYRbbNvyAtyMC1j+yP6hufl6xRSi0Oq/epTigv4TrPqclzfmrkrx/Cj/UHoVHUamneZoEl7fRZ8mPFKM4W7sSyW9eyYVd5HkeEkM/9E/+7sqcSRjMTrtFfqizvhvbFwy3btSCLzXSSWvWma9RsAxQHu1Jl/fx3I4rMsd2JsR9hI2O44/op4Z+BBRvWV7O0WTR7dLd0Mg55m1tcR5KlugXYi1GGKJC9v6BtEN5aYXgBMMUzHJV7VDvwA93SFMpYji1DQLyKThqKX6C096eDPczVr0P25e/bXnGjHE++RZWE7AeKyTN4znoBsVtc9MWcDyRpLcQdAn2wQo+6JItqpfIk/4j5BL6pLsKWXQ6W0g9d3t5e12FX++Cp4cj9nHRsjdiSpjFVD0/7wOabSNrbCP4/O1M5SKkhIgZtl7+si1OztY5rvGWMfuiT9I6F3OsFGQygtYZKFPlQukvj484Pwa9Re7JTTcR0lQLimMLcShkqsnDaBZ+0mYnpy8P2R3QY8BLDG72UUgumZHz87S03vmj
+ foljGFhm
+ tuwuWszNlmME69sWvLCX2L/LGB8GQzVxqzbxWUPA7IqEFIZcjzytvupxI8MIiD1GlrRHD835THCkC46Q3Mh5K7nUWjaTSn7m/lD42nrdoCR3HSjzWsvKsOaLj1NkZUzofUeWiMIXfSfTUEXXpDD11oedndEehdM4iSI4UzmZTYcKAKw8qc8c5ZxFywKp9rW76lzy/0nEr19PFel9VMHajV4d2pCEusCtrywLoFTMTwqLwi5yZraMNo3zXga3n99VE13Ch9D3p6S6RRcxX6UmLVZmLbQaOQnoiw7XoMsaya1DzgS5r6zQmYpN70vj9PIa19GPm9LVO0fAbX9n8BGR27/6VqtGuR2sI5GVBtnRFU7tl25XHeQKgjL10MzqiQnwQnu/p+HLACggOuIzA07VmQ1S88+za0YziUu6sSnVCdc7pH/HnsFz1b+01Gyw4jFCEn7h4lN2LrkTxa9ZxhDNXQ0wDaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,66 +125,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 12:48=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 10/13/26 12:42, Robin Murphy wrote:
-> > On 12/10/2026 8:43 pm, David Hildenbrand (Arm) wrote:
-> >> On 10/12/26 16:45, Luigi Rizzo wrote:
-> >>> On Mon, Oct 12, 2026 at 3:51=E2=80=AFPM David Hildenbrand (Arm)
-> >>> <david@kernel.org> wrote:
-> >>>
-> >>> I had to call it something... an earlier prototype used the name IOMM=
-U_2M,
-> >>> but I didn't want to suggest that the design was limited to 2M (it is=
- not).
-> >>>
-> >>> Aside from the name, the _current_ prototype restricts to 2M allocati=
-ons,
-> >>> exactly because too large units are expensive and wasteful.
-> >>>
-> >>> In the code, decoupling the allocation size from the PMD size is triv=
-ial.
-> >>
-> >> Yeah, we should do that.
-> >>
-> >> We should probably just find a way to describe that this is a POOL tha=
-t focuses
-> >> on physical contiguity in some configured granularity.
-> > And since it's intended for DMA we could call it dma_pool and oh look i=
-t already
-> > exists...
->
-> Heh, I did have "DMA_POOL" in mind when writing my reply.
+On Sat 10-10-26 14:09:53, Shakeel Butt wrote:
+> try_charge_memcg() does a lot. It charges the page counters, reclaims
+> when a limit is hit, may call the OOM killer, and at the end it checks
+> and enforces memory.high. Move the memory.high part into a new function,
+> memcg_enforce_high(), so that try_charge_memcg() is shorter and the
+> memory.high code is easier to read and change.
+> 
+> The code and its comments move as they are. The only difference is that
+> the new function gets allow_spinning from gfp_mask itself.
+> 
+> No functional change.
 
-which confirms that naming is one of the hardest problems in CS...
-Let's try to figure out a good name before renaming everything.
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 
+> ---
+>  mm/memcontrol.c | 125 ++++++++++++++++++++++++++----------------------
+>  1 file changed, 69 insertions(+), 56 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index aad0498a7bd6..20c5dfe1a894 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2696,6 +2696,74 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+>  	css_put(&memcg->css);
+>  }
+>  
+> +/*
+> + * Called after @nr_pages were charged to @memcg. If @memcg or one of its
+> + * ancestors is over memory.high or memory.swap.high, start reclaim or slow
+> + * down the task.
+> + */
+> +static void memcg_enforce_high(struct mem_cgroup *memcg, unsigned int nr_pages,
+> +			       gfp_t gfp_mask)
+> +{
+> +	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+> +
+> +	/*
+> +	 * If the hierarchy is above the normal consumption range, schedule
+> +	 * reclaim on returning to userland.  We can perform reclaim here
+> +	 * if __GFP_RECLAIM but let's always punt for simplicity and so that
+> +	 * GFP_KERNEL can consistently be used during reclaim.  @memcg is
+> +	 * not recorded as it most likely matches current's and won't
+> +	 * change in the meantime.  As high limit is checked again before
+> +	 * reclaim, the cost of mismatch is negligible.
+> +	 */
+> +	do {
+> +		bool mem_high, swap_high;
+> +
+> +		mem_high = page_counter_read(&memcg->memory) >
+> +			READ_ONCE(memcg->memory.high);
+> +		swap_high = page_counter_read(&memcg->swap) >
+> +			READ_ONCE(memcg->swap.high);
+> +
+> +		/* Don't bother a random interrupted task */
+> +		if (!in_task()) {
+> +			if (mem_high) {
+> +				if (allow_spinning)
+> +					schedule_work(&memcg->high_work);
+> +				else
+> +					irq_work_queue(&memcg->high_irq_work);
+> +				break;
+> +			}
+> +			continue;
+> +		}
+> +
+> +		if (mem_high || swap_high) {
+> +			/*
+> +			 * The allocating tasks in this cgroup will need to do
+> +			 * reclaim or be throttled to prevent further growth
+> +			 * of the memory or swap footprints.
+> +			 *
+> +			 * Target some best-effort fairness between the tasks,
+> +			 * and distribute reclaim work and delay penalties
+> +			 * based on how much each task is actually allocating.
+> +			 */
+> +			current->memcg_nr_pages_over_high += nr_pages;
+> +			set_notify_resume(current);
+> +			break;
+> +		}
+> +	} while ((memcg = parent_mem_cgroup(memcg)));
+> +
+> +	/*
+> +	 * Reclaim is set up above to be called from the userland
+> +	 * return path. But also attempt synchronous reclaim to avoid
+> +	 * excessive overrun while the task is still inside the
+> +	 * kernel. If this is successful, the return path will see it
+> +	 * when it rechecks the overage and simply bail out.
+> +	 */
+> +	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
+> +	    !(current->flags & PF_MEMALLOC) &&
+> +	    gfpflags_allow_blocking(gfp_mask))
+> +		__mem_cgroup_handle_over_high(gfp_mask);
+> +}
+> +
+>  static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  			    unsigned int nr_pages)
+>  {
+> @@ -2853,62 +2921,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	if (batch > nr_pages)
+>  		refill_stock(memcg, batch - nr_pages);
+>  
+> -	/*
+> -	 * If the hierarchy is above the normal consumption range, schedule
+> -	 * reclaim on returning to userland.  We can perform reclaim here
+> -	 * if __GFP_RECLAIM but let's always punt for simplicity and so that
+> -	 * GFP_KERNEL can consistently be used during reclaim.  @memcg is
+> -	 * not recorded as it most likely matches current's and won't
+> -	 * change in the meantime.  As high limit is checked again before
+> -	 * reclaim, the cost of mismatch is negligible.
+> -	 */
+> -	do {
+> -		bool mem_high, swap_high;
+> -
+> -		mem_high = page_counter_read(&memcg->memory) >
+> -			READ_ONCE(memcg->memory.high);
+> -		swap_high = page_counter_read(&memcg->swap) >
+> -			READ_ONCE(memcg->swap.high);
+> -
+> -		/* Don't bother a random interrupted task */
+> -		if (!in_task()) {
+> -			if (mem_high) {
+> -				if (allow_spinning)
+> -					schedule_work(&memcg->high_work);
+> -				else
+> -					irq_work_queue(&memcg->high_irq_work);
+> -				break;
+> -			}
+> -			continue;
+> -		}
+> -
+> -		if (mem_high || swap_high) {
+> -			/*
+> -			 * The allocating tasks in this cgroup will need to do
+> -			 * reclaim or be throttled to prevent further growth
+> -			 * of the memory or swap footprints.
+> -			 *
+> -			 * Target some best-effort fairness between the tasks,
+> -			 * and distribute reclaim work and delay penalties
+> -			 * based on how much each task is actually allocating.
+> -			 */
+> -			current->memcg_nr_pages_over_high += batch;
+> -			set_notify_resume(current);
+> -			break;
+> -		}
+> -	} while ((memcg = parent_mem_cgroup(memcg)));
+> -
+> -	/*
+> -	 * Reclaim is set up above to be called from the userland
+> -	 * return path. But also attempt synchronous reclaim to avoid
+> -	 * excessive overrun while the task is still inside the
+> -	 * kernel. If this is successful, the return path will see it
+> -	 * when it rechecks the overage and simply bail out.
+> -	 */
+> -	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
+> -	    !(current->flags & PF_MEMALLOC) &&
+> -	    gfpflags_allow_blocking(gfp_mask))
+> -		__mem_cgroup_handle_over_high(gfp_mask);
+> +	memcg_enforce_high(memcg, batch, gfp_mask);
+>  	return ret;
+>  }
+>  
+> -- 
+> 2.53.0-Meta
 
-> > Sure the current implementation is capped at PAGE_SIZE for allocation (=
-and thus
-> > mapping too), but I don't see why that couldn't just be made more flexi=
-ble.
->
-> That intuitively sounds like the right direction.
-
-Point taken, I will decouple the allocaiton size from PMD_SIZE this in
-the next iteration.
-
-I have also followed up on most of Pranjal's feedback (stricter error check=
-ing,
-compact IOVA ranges, opt-in per destination on the tx path...) .
-
-I am also looking at reducing some inefficiencies (e.g. pagepool already ca=
-ches,
-and allocations of new pages are relatively rare, so there is not much
-of a point
-of having a dma_pmd_pool per queue; and on the tx side, something similar t=
-o the
-percpu page cache to reduce locking costs when a page is allocated on one C=
-PU
-and freed on a different one)
-
-cheers
-luigi
+-- 
+Michal Hocko
+SUSE Labs
 
