@@ -4,88 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D76CC6B19
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:22:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60BC7CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A80916B008A; Tue, 13 Oct 2026 23:22:41 -0400 (EDT)
+	id 5EE606B008C; Tue, 13 Oct 2026 23:23:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A32586B008C; Tue, 13 Oct 2026 23:22:41 -0400 (EDT)
+	id 5C65F6B0092; Tue, 13 Oct 2026 23:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 947F66B0092; Tue, 13 Oct 2026 23:22:41 -0400 (EDT)
+	id 4DBF76B009D; Tue, 13 Oct 2026 23:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6388E6B008A
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:22:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6BB2A041B
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:22:40 +0000 (UTC)
-X-FDA: 85319784480.01.F203F17
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 29C5D40002
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:22:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nzoJGRdT;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CF536B008C
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:23:16 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C12611A03FC
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:14:04 +0000 (UTC)
+X-FDA: 85319762808.17.BD316CF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C9FE720005
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:14:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hVK98rTK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791948157;
-	b=ssM+JyGusSaBPxkjc3VLgq2I3fr++5au1ioIALXxfYeX8SW0SIko2KF/aY8JrVo2ZZAsNM
-	pySQfn7k6pOwSfHI75EfJxpmfuih8Z9ooTCrTiCuosOAKpBcpqSux2Jh/HECbDRrEcaH36
-	dbLTBDFBdhwCcZYQG9Lr8VhvTTeq0oc=
+	t=1791947642;
+	b=ZJF25u7ayU+t8vkGvJv4o7JViL9T5N+hEOkJ1kEfFyQcg79lHnwNzLevHsfHVbX/GK1Xjq
+	Gy663Nw2+KlYlsIh0JnjDzqVGb0iSrGaQzqumtsvxsdM2WLWJMfaGvdRWfYRl/EGOLc+8o
+	fH5h7RJBfMygS6rUs+/HwqppTmHJOZ0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nzoJGRdT;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hVK98rTK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791948157;
+	s=arc-20220608; t=1791947642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fdka3fW2xfZWec1SEge8s2+5rN/8mzzIM3aBDPfyI00=;
-	b=Ht4fCwzhwgjGsY+KD82rg7CppAZwfEJOHkvvDOyYyJtHWniY7f6fFBDFsZdGbbQcYZzjwM
-	dNeDmr8Ynl1G6GP8ySnfpH+YHnGls5/fSj2SXzirklskpJs2ypX5b4xJDl11q8gUUUKrUN
-	U6LGFiYARNreRMsWNO65GlbsD2UuQcc=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791948151; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=fdka3fW2xfZWec1SEge8s2+5rN/8mzzIM3aBDPfyI00=;
-	b=nzoJGRdTK0eJ/D030mB+d/QPtxMm8/rKj8tG35afiow6H7O6gKUDXq9fRsN82IgAnBm5BMiPNEvS5R348L88s/SLZtp6sAPIhusmsx9cupfGALzlRzsp2BdfP1gGuUSSN2MWBGLGmPdqCur3Qd0YPvUom+y8vG8iyx7AgV7n77Y=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R591e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XCnt-tC_1791948149;
-Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCnt-tC_1791948149 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 14 Oct 2026 11:22:30 +0800
-Message-ID: <8c1a1c3a-df87-42a5-874a-0e1283a6b31e@linux.alibaba.com>
-Date: Wed, 14 Oct 2026 11:22:29 +0800
+	bh=xafWGKCMJrMg4LkqDNQKwh6exjnqsIIY7f6p2ybXHl4=;
+	b=ahM6GtjrSfh5RYtbaKvLjSSrSRV+dD22JkEIjhl/pI8qguQovSMpysXPy/juLt4ofvx7mF
+	P3MT7BKYi0+e5IBAHamH4ez3UocHJqmO6/ytuhivS9eMFedUxAP0v5M/EebUdoi3nijeQR
+	rvoCpD/iqAnZg6u/T43t+bFNB1zJMjA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9FB6A42D8E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:14:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9A21F008A0
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:14:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791947640;
+	bh=xafWGKCMJrMg4LkqDNQKwh6exjnqsIIY7f6p2ybXHl4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hVK98rTKP4691AQDpea0IZUehE1S5b+Kf2KdjL7u3a1Sk3+2gr8PqrwYD6U0QBwnv
+	 KBlQHnd+C6n4V4hSm4B31tiZoT2KeKdd5COiBBq8weQ2op80Ltm3hOiFvHE/vnV3K7
+	 rDOkDOrWlbEenUJpOCFnJomqrFCsq3mvUwiA5+OxY+XTRgtmLMbnRYxQwO9IEiWuU8
+	 AQaQKIjkG7r3Hm/cpY8c+KXCBVWnjncZ0LwqHMGrbbuTHIuY4jk7rN97NUr2PmqYdX
+	 kSgO/th3DoNUpJmPvdd5WhbcuK/QaFPis+XRJw9wraE/iQcHL6/LkWrCphKBSt6ydl
+	 FcdFfx3kOL5Mw==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93cb9e9405fso190419085a.2
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:14:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwJtv7qwAPWLcYRM4aMii5SOaQKEADPNq7883Gio6AnUyfgeC1LBUP6D5LsnaeOHyNYrPMRuxhoNg==@kvack.org
+X-Gm-Message-State: AFq9FYKReehs47Gbf5S1AbgjMHMGh9FQWdQJJdTF8EMqqgiPWFmotnzy
+	SvmaevrvOLijPD2h73agGyRcFQMmHe8RHg6IDG2v+Z4H8yhkHbwtIfM/ghwqfZa5LrKL7H3MOls
+	SlquCky23RC8gUNpCp01PIPQ82z1We8c=
+X-Received: by 2002:a05:620a:17aa:b0:93c:c162:1260 with SMTP id
+ af79cd13be357-93ebd24a4camr2358972585a.38.1791947639745; Tue, 13 Oct 2026
+ 20:13:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/mglru: Avoid reclaiming kept folios during
- retrying missed rotated folios
-To: Kairui Song <ryncsn@gmail.com>
-Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>, linux-mm@kvack.org,
- akpm@linux-foundation.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- axelrasmussen@google.com, yuanchu.xie@google.com, weixugc@google.com,
- baoquan.he@linux.dev, chenridong@xiaomi.com, Yu Zhao <yuzhao@google.com>,
- Bo Zhang <zhangbo56@xiaomi.com>
-References: <20261003054216.9155-1-baohua@kernel.org>
- <088f991f-429f-49e0-be11-548a77e8d44e@linux.alibaba.com>
- <asd-8uoATmpH9YN9@KASONG-MC4>
- <CAMgjq7DR6h6GTKASQo_fHx1hyzw_zJZ1OHP-dzy3RDcTcZJUxQ@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7DR6h6GTKASQo_fHx1hyzw_zJZ1OHP-dzy3RDcTcZJUxQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 29C5D40002
+References: <20261013221307.850803-1-joannelkoong@gmail.com> <20261014030737.2102-1-lance.yang@linux.dev>
+In-Reply-To: <20261014030737.2102-1-lance.yang@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 14 Oct 2026 11:13:48 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
+X-Gm-Features: AclHuK8lputVsSCWQ9JjCuBEuJbYAeIyTKia4Leun33uZrp9EVvPHDRnkQPzee0
+Message-ID: <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
+Subject: Re: [PATCH v1] mm: unqueue deferred split folios outside the lruvec lock
+To: Lance Yang <lance.yang@linux.dev>
+Cc: joannelkoong@gmail.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, hannes@cmpxchg.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, ryan.roberts@arm.com, 
+	usama.arif@linux.dev, hughd@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: hpn5huna7sbynmba4q6uf4bdqbf9me8s
 X-Rspam-User: 
-X-Stat-Signature: yxdu7zzo5dysmkhf1sfncm3ydpjueftk
-X-HE-Tag: 1791948155-563965
-X-HE-Meta: U2FsdGVkX18WawVJHFxnPg8X9q2sGNoCpJdI37mLIUsEQkutm7AeCgLlVrYcaIKGifR7XPKVFoXmjhI3j05CKhBaXHfHNEDgfokPCpHz8kO9bZJX8sAr6iIjV8k6AUvknksbFClns/HIrLBzWjJ+HCOw1EPq+rR8rEHu10c5H0xedbsxNipvSj1FJoA/sYzFWsTshezoAvfNjECVuhGQ1ufdFcOUTvN9IJjFqpQYQv8k8gEj+T4tQV1/9drv2B3KVckn4uYGtNQTWsZ+UW004RGhHNmClfBrSseemDVBZFjGzSBW+DiDaBFx7xpjqycfYlD7IBeYxTy18b6/Gk2MCKtIY/bDO0ejUPiNnOzNHGTly6AxnsQ9py/DhMRTXYaEgF+RXvn6bkpGXbD2VUjSgg1Ohcgl/Gqp4G0NbFE143Lf3TqtLPkZSWOGWp/YINhjrWSY0ZUeeIgboYxXASX0W3KMO4iVBNS2OsnOh3iMiXfs2UFOx+j8ujJUPGPc0Y1W6YE0QgxXrn7qtXKOPluIcvTvXDIg4kksUhkNsxAjKTGJWRuPDJBffFuwt2Dt7598aB/nzIbgJEyIbonq7BC9D59gRH9Bstq7FxyxiPbNl+ilOEF22WGTxgF+P5gB8vYDUTh6jepebWm2utFxGXJSXQpk6bAKd03t3Q6KMz1UcJrhd51bKus4poX7SKeVjE7gle523Dp6vpafgB8OjIhHwy7fGSvwzRynlQ9G5kFY/6kuRmZaTj/NHTlTt8brCaPbr4jRJTksNcHCxh3/KbWo+dsyzWp9kTz2sYNV4A/pqXBl1e2zmyPqt+ibZbpWAVtFmXDpiXAO58DYDuP+gEG2ACkPaSyGZsv1AjNPGer1WxO5MVFxdFx4Dya5EJmJu+YBuzarbRpExZTMVjnDnkcUwnp0HSzHx7cEjbaQ/CG+xOfTPaoZ1myP8ZnFR2vWTD8lTzdWHrtGpuJUQtw6RNc
- wajyIvyD
- 9+rQTX9VSw70APGixFiPHl2hD8u1WpSk3gp/S8c0WSDmPxpq2IhoAgp/JS64fRl+EplpLix+R94Fb3I+2VOnP6h0a2eRs3ePky+U6AjCv8zmmtqYUAfjB12i/lwJcEGyrdOZhXWSZVAhC7TbvxkJq4dMk+Gm0hhTjeLofkOPPDGrjM5QPiQFzM4U2yLXFOwereMczB1sf97PMjFAd4YS5eKR+6hxVl148dC5IMRaXOHu8nPrt1hu3kbdzqneWj09zR9TjpT1kZC3cBBrXV4WepU9+KXEwoO2S6+tREVjKO88+ASpMbYl+VjELOUEzhojKaL7/2Qm5g/6j6+aicEYSEVyAVP5bQhu8o8gswRa01pzCQ/PFlW22OT1e0L0zFr2/nYJTHkTlvhBkoNBgeiDYnFP5uU/wmf3CZFRa+trL4o4+zzCjuJkRwv0Ezp18XgYvSczyEQtRxTglVtA=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C9FE720005
+X-HE-Tag: 1791947642-38184
+X-HE-Meta: U2FsdGVkX18/6oxjsxF4k8T2vjYLEwNqQS+xwxiI2ts5x++2xQDPUBtxB06cix3IT5BdU2Nj7Pzfi83KgjnQNGER+eEMT78gnseSyoN/DsAmsHKxG2QSlmC9cmEGG32QqMeY011aRN642vJR1P5b7GRnBNp30y1ckxctNY+z4WakwQC6qyhNwGnupzQP1/TVcXwVO1ctUPdBs5Va/8BpoJLi3L+ADxU7p5KCOp1VnU4j+ms6s7mWdqo26Wz2fR5JsCtGAHCM73/6bBtqr64wZ7YFiqtaBZurChReTOXqzydkBDfu2nbcGykjawOx/42THLApaeTvSN4AKUlCyJ1zdipRKe28KIGe2fBu7A6P5REkBu3n9lbS8Y+URAA+RVpmH/go7b1gRDhIuCGTxVgu6ZNruPO4KPTzwa9BWWy37/ouAEmqzTgJB8YBPzLwrq0yw/gStGAt5ekxuQ5MszrIxunEyxIKkNxqJ3Az+S6s8OKGjs1pShB4b08vg2ukDlQ1T63GPP49mPaKwDlGVTh5onXcGOAT2OAhXYH8hG3RkPMocCjhnouhURe47buSYDpB+/U0uRX9cLxXIAQ8z+mF+kN0UzWkBSeJaLFUCf5iNceZQfAHLirYs3aa0PQj28LjqHejAb64NE9i8vBy6TkaxAzzzGsJ1lTMrOwON2skc77HIkH9KvDTBc9LLQLik5dZyQ+hcLfXViNSRTzsGSNd7c8SVC8z9HMQwZvm44m/gjL3Rg6lQ4OWGr/l1Q1MatHVt21X6vkM/6822zRcyL5fX8udANFi3UxDeqJZxE5I2vgcK5NjDaklQ80NKWSH9Q8Q7m6O3rJ8501y6rF9M/aPNYERhs8nRFjgUrMqkAqpuDsO7qmxotveDgULA0Wq1UvOcSZLGkQMpzZqvjdICntPi04Lu6xe4UoMfISfxBDK2mbyJRBUTHL+IjQYw5Yu78VH4WvrohuGGIj2JxRMJZW
+ 0+uXJ8U9
+ gWJvIYaNIY7c2l14DY2CloqbR8aTwQQxHmdh21Z3zIVybI2u1qh/47+DLbsvohRysSvyii64qWL4XG7HNK0YgUtXlFfhh08U2wZRuLAfH/1U4gLsuFnO0dG3QEfka89uZw8oCytwE6p8svVO6geMRSH4cBn80uwm0Qs8VaGaiAY14ct/sb490LedJ80qPmrEtBwnCn7WqCeLy5A/0mfgVbyVsgbu+ECkACcXIEkKP68n0H4gpha8YsgQqm9bpu4/dXFcWCxJDZObhKfi4JND8ZbXti64twu8MsXQw5EMVG5xbn75rPsdxXrUhjc9YdVdBIeBE/unEX0mwf1o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,98 +107,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Oct 14, 2026 at 11:07=E2=80=AFAM Lance Yang <lance.yang@linux.dev> =
+wrote:
+>
+>
+> On Tue, Oct 13, 2026 at 03:13:07PM -0700, Joanne Koong wrote:
+> >move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
+> >folio_unqueue_deferred_split() on folios where the refcount has dropped
+> >to zero. In these paths, folio_unqueue_deferred_split() is called with
+> >the lruvec lock often held (move_folios_to_lru() always holds it and
+> >folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
+> >in the batch except the first). However, it's not needed to hold the
+> >lruvec lock.
+> >
+> >The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+> >the deferred split queue lives on folio->_deferred_list in
+> >deferred_split_lru. The deferred_split_lru is a list_lru with its own
+> >per-memcg per-node lock.
+> >
+> >There are already other existing callers that call
+> >folio_unqueue_deferred_split() without holding the lruvec lock (eg
+> >__folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
+> >
+> >Add folio_batch_unqueue_deferred_split() and use it in
+> >move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+> >unqueue each batch of zero-refcount folios from the deferred split list
+> >after the lruvec lock is released and before
+> >mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+> >critical sections, which run with IRQs disabled and are highly
+> >contended.
+>
+> Nice work! Thanks!
+>
+> BTW, have you seen measurable overhead from unqueueing deferred split
+> folios under the lruvec lock?
+>
+> Any before/after numbers for this change, including the cost of the extra
+> pass over the batch?
 
+I recall Joanne mentioning some data on this in the link below. Is that rig=
+ht?
 
-On 10/8/26 7:52 PM, Kairui Song wrote:
-> On Thu, Oct 8, 2026 at 1:43 PM Kairui Song <ryncsn@gmail.com> wrote:
->>
->> On Thu, Oct 08, 2026 at 02:52:35PM +0100, Baolin Wang wrote:
->>> Hi Barry,
->>>
->>> On 10/3/26 1:42 PM, Barry Song (Xiaomi) wrote:
->>>> Since commit 4d5d14a01e2c ("mm/mglru: rework workingset protection"),
->>>> `folio_test_referenced()` was accidentally removed when checking for
->>>> missed rotated folios. As a result, kept folios without an active set
->>>> could be added to the retry list and eventually reclaimed.
->>>>
->>>> The impact should be very small, as we have the `folio_mapped(folio)`
->>>> check before retrying. Kept folios won't have `try_to_unmap()` called,
->>>> so this is really only applicable to folios that are unmapped by users
->>>> after `folio_referenced()` has been called.
->>>>
->>>> I'm not sure if anyone else has seen any issues with this. Sending an
->>>> RFC to check whether it is worth fixing.
->>>>
->>>> Fixes: 4d5d14a01e2c ("mm/mglru: rework workingset protection")
->>>> Cc: Yu Zhao <yuzhao@google.com>
->>>> Reported-by: Bo Zhang <zhangbo56@xiaomi.com>
->>>> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
->>>> ---
->>>>    mm/vmscan.c | 7 +++++--
->>>>    1 file changed, 5 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 91295070ca33..6a931b576b7d 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -994,8 +994,10 @@ static enum folio_references folio_check_references(struct folio *folio,
->>>>              return FOLIOREF_KEEP;
->>>>      if (lru_gen_enabled() && !lru_gen_switching()) {
->>>> -           if (!referenced_ptes)
->>>> +           if (!referenced_ptes) {
->>>> +                   folio_clear_referenced(folio);
->>>>                      return FOLIOREF_RECLAIM;
->>>> +           }
->>>
->>> I've also been investigating the issue of referenced folios being reclaimed
->>> recently. The background is that classical LRU will return FOLIOREF_KEEP for
->>> folios accessed once via page table, giving the accessed folio another
->>> chance.
->>
->> Hi, thanks for looking into this.
->>
->>>
->>> However, for MGLRU, if the folio's pagetable access has already been
->>> consumed by aging or lru_gen_look_around(), referenced_ptes may be 0 at that
->>> point, leading to reclaiming folios that were accessed via page table, which
->>> could cause more refaults (I don't have data yet).
->>
->> If we go with MGLRU-FG, aging or lru_gen_look_around may move the folio
->> to newer gen which is identical to the behavior of promoting at eviction
->> time.
->>
->>> But it's not easy to maintain logic consistent with classical LRU, because
->>> we cannot distinguish whether this one access count comes from page table or
->>> file descriptors (for anonymous pages, it can be distinguished). I'm not
->>> sure if Kairui's MGLRU-FG patchset helps with this case (I haven't looked at
->>> it carefully yet).
->>
->> It definatly helps, check this one:
->> https://lore.kernel.org/linux-mm/20261003-mglru-fg-v3-4-cbd4546a5bd9@tencent.com/
+https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1M=
+aU9bXs99w@mail.gmail.com/
 
-OK. Great.
-
->> folio_inc_lru_refs and variants will promote the folios in a consistent way.
->> See "First access only defers eviction from the oldest gen" part, I believe
->> that is the issue you worries about?
-
-Seems so. I'll look at your patchset closely.
-
->> BTW promote then to newest gen directly does over protect them, I've see
->> regression with that.
-
-Agree. A folio with only one access indeed should not enter the newest gen.
-
->>> Perhaps at least for anonymous pages, if the referenced flag is set, we
->>> should return FOLIOREF_KEEP to give it another scan chance.
->>
->> No I think we really shouldn't do that, it will over protect single used
->> folios. Promoting them to second newest gen or second oldest gen seems
->> a good idea and similiar to CLRU, and this is the behavior of MGLRU-FG.
-> 
-> Oh I also mean that protecting them by lookaround / walking, and not
-> at eviction seems better? As the rmap here have higher overhead and
-> can see stall hotness info.
-
-Sounds good to me. Thanks.
+Best Regards
+Barry
 
