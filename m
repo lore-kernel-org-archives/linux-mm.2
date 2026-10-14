@@ -4,66 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57767CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 14:56:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 171D2CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 14:57:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 503296B009D; Wed, 14 Oct 2026 10:56:12 -0400 (EDT)
+	id 3307A6B008C; Wed, 14 Oct 2026 10:57:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DA066B009E; Wed, 14 Oct 2026 10:56:12 -0400 (EDT)
+	id 307B06B0096; Wed, 14 Oct 2026 10:57:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F01B6B009F; Wed, 14 Oct 2026 10:56:12 -0400 (EDT)
+	id 244F86B0098; Wed, 14 Oct 2026 10:57:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D84A6B009D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:56:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A0B9B120570
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:56:11 +0000 (UTC)
-X-FDA: 85321532142.01.C3E93DB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0356C6B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:57:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8CBB8C05BC
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:57:09 +0000 (UTC)
+X-FDA: 85321534578.15.9B46E38
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 148ED2000D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:56:09 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okqV2nzQ;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791989770;
-	b=MqO8iaapWZ6IjmxTyoB3UKfnJbXWj6VjLtPmWwZ0OzImZvt9Dpr4OMtNbQ+1gXcCu0yCGY
-	fgG5NWpKzLLHZ3eo5WSBg+PE8D1TI+KAnwQ5YoxeNHNBSEAOb6rzhBUUetiv5GPo2NImYt
-	f49PKhs7a1tkDEbYx+rHpoOzxxZVkfw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okqV2nzQ;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id C1FD5C000A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:57:07 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EbMvOooE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791989770;
+	s=arc-20220608; t=1791989827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Re8GJbdhl5QjVvoUI2rtJjUCyF0iWbGuReuk1JeK0as=;
-	b=xIWzODJvg2P7ce8MD8yVYVABMiswZrr+wR/RtXyMVb9v/r23wcFm4cnZ94YEl827jk0jP/
-	fKQR6GUbo+hKPp5zxLhssyZ1Wl9k5vUTiOAhj81RHNWo68laMx4H3XCF/0GN1F5Pw43s1l
-	0paVB31E5nViMgyxkbPVTQT4dVF62qI=
+	bh=dMSlHyjUU02bSE6X5r7bmxpu4G21C9qfseYw6MgAPQg=;
+	b=USBuTI4qWTDOWLlgH30JRKSR00WNjEC7OXBk1BhavmXsRMqa2qRv+E+FuWATwpRtS6Y0rh
+	XohDb686FIWX4/Vgo6t271FzxyfeVjgI1BY9IkE3WY+k5qrov1v2+iDSroumfpa7A2hQBw
+	hrRxdKMkHQK1fQiM/A11en3fw9I/W78=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EbMvOooE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791989827;
+	b=GUgoBrqPZK6QyTZizy3YROXu9wuH81he6Q0snOKfHg4hmCVhnLAk910BsFW/PLURDbJUX9
+	nIqoxpQCK1L5e8m46ovYH49xx34Tp1zBz8S2D1Hs3ehxxsbFbSGZqDeZXg6aggoVt0sfVr
+	DXN7FiVifJDgEfiTIacyvQGxcPhhwGA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ECE9F40B1A;
-	Wed, 14 Oct 2026 14:56:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12291F000C4;
-	Wed, 14 Oct 2026 14:56:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 154D4408D4;
+	Wed, 14 Oct 2026 14:57:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79231F000C4;
+	Wed, 14 Oct 2026 14:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791989768;
-	bh=Re8GJbdhl5QjVvoUI2rtJjUCyF0iWbGuReuk1JeK0as=;
+	s=k20260515; t=1791989827;
+	bh=dMSlHyjUU02bSE6X5r7bmxpu4G21C9qfseYw6MgAPQg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=okqV2nzQ+YeNHZZ4PAdi+2zs9E6BjLN0y3+24X96ykEz4tM8JTnoxD9cqhN0+FQLC
-	 wqnCwx+ZncTNSm03hEGxeujWLAcq4wMBvJVboK+94QqAgNjgko+DuXV5YDpFnAsVp4
-	 Pd/2v/4/ultfuC9mru+g8VW4vlz9VkgA8Wj6WoENEUCKPCL1QyWv96+GU3rkyDx+4Z
-	 +uqmmCqp6hS6zim6u4hISNm52CxsGNis7O9RFq7UvNx+1X9dTKa0f/NySGeGaP08Rv
-	 luYLtxDrLyV2CcZgmmEmjXl+cSNyzELMpio5BPuMjF1ZyaHsNKOa5Fy4f1HVXsNmm7
-	 GJu7ysP+uLPWA==
-Date: Wed, 14 Oct 2026 15:56:02 +0100
+	b=EbMvOooECTvm/Ipx8SAwgZIMtCfZihKqt+i5jpyRsbYq1Tke2SaGkP6ka1W3LCa2x
+	 hudVD7+nufM2VAtPfxpv3a4CR1d4yQjgpm7+r/lPFOkCOfT3W1CZgESrLlWQTqq4S4
+	 DipzIM9r/24kdNAjhUEK7p3omVzWLrhAaKn3jbiSuM2cqeuBqwEam/Tm1R4I252ORA
+	 rioZLKupo3RlFRG0WwWB1yCYhTq9en5eeHDETNKdXBnOgPCkUl556Iiergz0QHWHlR
+	 eSr3MRBI4uI2VDMFk95c/T0BOPwwG6JRSsaQWoE07NSvw4TPE+5Tfp6WI6vD+bln6B
+	 TA9Ib1VaXhiiw==
+Date: Wed, 14 Oct 2026 15:57:00 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -75,24 +76,26 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Kiryl Shutsemau <kas@kernel.org>, Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
-Message-ID: <as-XYuUJdeHD3W9p@gremlin>
+Message-ID: <as-YFIBeupNnW8Pf@gremlin>
 References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
  <as4kvHe9IFZH5qrC@gremlin>
  <9add8400-66c1-47e9-b5af-7a4081ebf3c4@kernel.org>
  <as-BZibPscw4cxsD@gremlin>
  <06930044-4bcb-4478-8a6f-2dd3cf6d290e@kernel.org>
+ <807e8d2e-e7c1-4491-a3e1-21d84cc58946@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <06930044-4bcb-4478-8a6f-2dd3cf6d290e@kernel.org>
-X-Stat-Signature: 87xc6kc5ykjgney4367jiuowwmdfako4
-X-Rspamd-Queue-Id: 148ED2000D
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <807e8d2e-e7c1-4491-a3e1-21d84cc58946@kernel.org>
+X-Stat-Signature: hkzweyp453jjh6sk9rzakc5r4kmgdahi
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791989769-532089
-X-HE-Meta: U2FsdGVkX19K/90c+xOshWZm19ZSC2HqsVtzGRsiaIjCF3GZx/g8k1poSWhpJr+V8fqLgBQ3vFE2syj5uLTi0KkYqFD7EBFYvjysuLoIejTR0PrZVfIvqWB/eTlwRYvmpBbHLwsy/iP12dae5LwFvU0icMMqVIAfp8UmVY8sdppNpQI7dCVMi/IFfMiU5yU56cQLHdSsfejNtpIXo1sx37witikb8pVjrlDI/lttyeLgX4AYtCF344yrpJHOVHQqXA6HO/NotfPu7KKd2zPK5x3965zSj/TZnjdZDBLyo19C7MSN3STHDWOqyKhTkrF/Tj9jEMeoCR5IWlC27+R8m0WMkp2TNOQIQuaKUJwbjQAcqFbGAJVRyt6zFvTrELSj7zsyfPGH/m751Ukhc0BAS+CQ2XJEjm9oPYsD8tffqSpPgEuoB1CyEAIkdXiWvsOeUQPRRYa5C6E2JQ3kaiyxJsTOmq45A0ov4HfW33zW2EUYN0w+/tsrdXhNLZpm/ABT/SSFz32DGwajePreTdwiSpkRr5VLrp3ZfKO75g3hb6Couh0MbzLH1Cr6QgBnudJKnXf2wAMIXNPFJe2pPmNQgDQY5AlyzKt5W/lOyjOP8HHlmcE1kiBV0Y9zbpWKieWquk+VIFwN6abIPS36OIQPsSxd5B7rX2aIprSD3DP/y8JP6bfR6d4lhYYGVQ4nGlYtmcc7QPPi1rlvO2mXgPd2ondkFj+sgOrIo1avZEWKmpP7QzjnlX2ea/lqlURX2ds5MTGe0OGVkv2aDYGFibTAn7BudE4LF6MQOH5J0nIXev3Dr07tpAbgJ42arcCOqABqQrdf66Rj9nuhR/j3IRQTBkRjwz/hKj8n5nC+u77G/sJgue2jU0LmrtHm3Emokvfo1GKTyQfo5xuxlWDFFVXHCQWw5gOFRWC06cxBJUYQaAqrN7AkVz0qApwxmqLnuv39eJRfrUmnzZ7x93irVxI
- prfnPi05
- +4uZaS/MnoRa61xU/t9UZGsF1+/z+l5sKH5mT8HBHUxEiwmQB9ZDiAWlIdZa080711H4057DXtOEldMGsTHYzG2shzt4F1at0JnMdYj9Y8RRCSQC3z1q3hUyDdLWJLpfVSIF4L5MjmpleCzcuYzIPWXWzabzAF/EftJHvc1NI5fG/abLaYt/MCR/MR/L4/Jpzp1F1ihezUETFrO4kH/bmrPTGARYcBAoOF1WFqz6+wkPBdiDlciz/9GUwokGQPFdRXp4DonhrjEAVNirqau6aOZFVlZV+0Ya/5Z62T0aEvYRiKqQkxo29vFH1mZXbk1rjuoArAZQRodW+4azUZhLe7m58gbmhxfXPObIk
+X-Rspamd-Queue-Id: C1FD5C000A
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791989827-760797
+X-HE-Meta: U2FsdGVkX1+pGz7lr2yXWNoNIxeV3xdyk7n02jTenLeFtUoytTBOzBf+w0ZpxoQmcVQ38SZpxwVL+UntPaGKJZBWU8h4i3Gss5irfh6Ghk0gIatqNCcJYvVEb9bu9enLSsFANIj/5UXy4JcC6CjFxhvjAeBVNDhNenKkLT5HPmWXBX7YJSegvAm+Psyn4oSMs3TlXu+9wNhyR3CaVbh46vkFC4TZeBELtHfWkIOCGSY/YoPir48tad461+b6RwfqgbhjOmCP7Pl2YsbnmLTuqeZnq9RS7AAw/phaX1bVirKWaJQZ4GIQ6TtkKvj3NZHtn0W6g7T9Oc2UTF0faWznxAc4MaH/FTgbumMHXDUZFq+8mZuauBQuJC0GFPlfAzNwhZMm3ycpvgtU3fXhAg8ZmuGaTTOMxSoATho0B68cOndvgGtOdxnRKPOdU0gOsOF/Mxth4oM8utkYZO0ErPNoSJUz9ov5InG/kjUp/3eJgTw6dTFy8blxjDbXqLsFwkfBWtbF3zHjz0+KlJ4p1Zr9Twpc/ZtVT+KEuXPMMpeGTe9haDFstsrd7MFYeyZDqLx9JdHW+A7NpZOTpjzhtdWm+2Mfv+rokpFE7nQYLje2PPGndd/JUFC6z+lwEOAtGHTOgUIUnX46Pk2aymrv5EpMqhfiswMQoxCYJFj85qNjay9qFR9St0w0fmaX96eInGQPny2ygycW3TOhXLaXIctJdL4k4eTzP8Ufl1o816JqO4xarVJ8a9H5j6KCH/st1qfJc0COz3hKFZj1ZAv4pPY3kKRNCefLEwUP556drIf74Ui1LnzW6RpHmNrAGvuu+audiYWk13/ckOdbiuR5jvRumiQ+bZrDV79vE8pDVD6oH5RuhOkOVnnfdmH4HCZcFY+mubPkxkDVkSuJSW4MqsohphLmYSs5syKTE6oVOsJwOLtP7+LwYQbslmRdih4vtSIh/qKs2CzjrcEMgtPNnhy
+ Jm/g9051
+ HEHu/BxwtJno2bhc051l0DNw7UNmTP066f7l51wIUIs3U46zhMN2QGHXujrxRxZjZroyObzmexSxc/YJKFrnIBX1Kea9g9bD5fTOTZpGbfrKfT/D+5NwjB3QFYX6jt11VgTY2b6msOIdiQWPHS3oSmbohU2RDI/kAhG7moT4by94UWSldug283cJ/+/7BCP+Z/+4Yo2H/1j/m1bntNsdVAeCGp00lcXjpFfJ707MsCj5A+V/L6qJJuOAQ9XUL5iKhSrYzJKbJ3UvMpRPkn1XCPC7s+sWLgBAPYf4VYS1l21XesDG//D+NsAeVXx+eXr8ZencinI49DlCC+ywMPDWrMjnyxP82rMj2grhI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,28 +103,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 03:45:41PM +0200, David Hildenbrand (Arm) wrote:
-> It's the following thing that adds confusion:
+On Wed, Oct 14, 2026 at 03:49:05PM +0200, David Hildenbrand (Arm) wrote:
+> > I think we have to assume here that with NOPMD we will never end up in this code
+> > because large folios will not apply (each PMD table has exactly one entry as of
+> > today, so we cannot map large folios .... I think).
+> >
+> > I can try condensing that in a comment and cross my fingers that that is the
+> > case. I tried that now. and codex review already tells me:
+> >
+> >   • [P1] Folded PMDs can reach this helper — memory.c:4948 (mm/memory.c:4948).
+> > The comment’s assumption is false: arm64 with 64 KiB pages and 42-bit VA uses
+> > folded PMDs and supports THP and
+> >     NUMA balancing. Here, pmd_addr_end() returns vma->vm_end without clamping. A
+> > large folio remapped across a PTE-table boundary can therefore make
+> > numa_rebuild_large_mapping() walk beyond
+> >     the mapped PTE table. The previous code explicitly limited this to pt_start
+> > + PMD_SIZE. Cap the forward distance at PMD_SIZE - (addr & ~PMD_MASK) as well as
+> > the VMA and folio limits.
+> >
+> > Let me see if there is any truth to that ...
 >
-> include/asm-generic/pgtable-nopmd.h:#define pmd_addr_end(addr, end)
->        (end)
-
-Ah ugh :) of course.
-
-> What I am saying is that I don't agree with adding another two const variables
-> with names that are less intuitive than just saying the computation. Let me try
-> to improve the comment:
+> Ok, the PMD table as a single entry, but the PTE table obviously has 2k entries :)
 >
-> /* Avoid address wraparounds by not adding/subtracting beyond limits. */
+> So large folios are possible and pmd_addr_end() would be wrong in this context.
+>
+> pmd_addr_end() really only works in page table walkers ...
 
-The variables are a (possibly) neat way of self-documenting that, but then
-possibly adds complexity by having yet another variable :)
+Ack!
 
-A comment works for me, though the confusing bit I guess is knowing which bit
-exactly might overflow.
+OK yeah, I missed that it gets redefined when wrapped, so forget about that.
 
-So maybe saying 'avoid wraparounds of <variable that can wraparound>' and a
-brief bit about how would help?
+A quick comment should do the job re: understanding.
 
 --
 Cheers, Lorenzo
