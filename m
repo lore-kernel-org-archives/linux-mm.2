@@ -4,115 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D4EDCC6B19
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 00:11:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0F5CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 00:18:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66FD86B0088; Tue, 13 Oct 2026 20:11:50 -0400 (EDT)
+	id AD7B26B0088; Tue, 13 Oct 2026 20:18:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6086B6B0092; Tue, 13 Oct 2026 20:11:50 -0400 (EDT)
+	id A81CC6B0092; Tue, 13 Oct 2026 20:18:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 520306B0095; Tue, 13 Oct 2026 20:11:50 -0400 (EDT)
+	id 970A56B0095; Tue, 13 Oct 2026 20:18:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 286486B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:11:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D38414038C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:11:49 +0000 (UTC)
-X-FDA: 85319303538.29.F6861B2
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 90F1FC0002
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:11:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=AFjnC2fx;
-	spf=pass (imf10.hostedemail.com: domain of deborah.brouwer@collabora.com designates 165.173.180.11 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791936707;
+	by kanga.kvack.org (Postfix) with ESMTP id 618746B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:18:18 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA1A6140391
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:18:17 +0000 (UTC)
+X-FDA: 85319319834.17.6FE79E4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1AAB7140006
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:18:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hzn17pG9;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791937096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=31RYT1NeKYC/yx5MWS0uypGHxzMJAgXasfC8mMXP0jU=;
-	b=0O2857KKauz5MZK5u/f2SicEBxuRLEGc6BekNToIfvbKKi5BK9apU9MiUM5ZBh1td0ReII
-	abOPirJVeLHVeylBwFapkRO7c1g/mKNoUxbXbkAAR66QJ8zsutQk+f4Mued1TTXhE7H0CU
-	IQvqxkhu8lGDA9z7fD260eZZbsDDPQg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791936707;
-	b=YHo2525M5SD4VoNkDxRT1xWW1JLjeCabZM5MrApavyATLKFZxtbsLEU+0xgtwadYHL9uBz
-	EKK2Iwf38tMQmNnB9ZqV/K5lfnjjPWC3qDEg/xxX46THbj6BbpiqFu2s0tG1kMgynv6MbD
-	Up4Nov3P4WzB314qxFQdza0tcOb0pmA=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=AFjnC2fx;
-	spf=pass (imf10.hostedemail.com: domain of deborah.brouwer@collabora.com designates 165.173.180.11 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=1; a=rsa-sha256; t=1791936687; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=A5vSWpTRbU3aybI2eZ4bWu31FH9JMEUvPl1dx5fSyhofvK3W8OpljKkSYaK78zCWDgFL3r2OM6ft+wKXk3R67v8IJ3JVQWlI3Wz+9z6nlPCEIk2GYghIM+QUW1WOtdAq5L/619w5bEGHMOe5BSjWYqHm0isecrG1rzra007nc/s=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1791936687; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=31RYT1NeKYC/yx5MWS0uypGHxzMJAgXasfC8mMXP0jU=; 
-	b=l8OGgWMFz0yalA9cBHXEzxupyUm0purbkguZeQxHCIsDEOtgbzkvfX71GC1TT9ybz/q56ibzhyUSsWbxYkXY1lNLY6ucP++ULrA8NhG2Pa3n7sgeggv2eDDrypQ6e432gBEQKFFocb0hvOewW8lPGI0pN9jnh2ijmKxQSe2H88Y=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791936686;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=31RYT1NeKYC/yx5MWS0uypGHxzMJAgXasfC8mMXP0jU=;
-	b=AFjnC2fxNenyy/0OM0XTvcgpC5e4cGZr/A/vDN4Vy2BPywkWgmEkU3EsvwGVlDVx
-	Ep0ttlN1eh8/22xHZ7sH2oFMYWlA4cvJ6Bsef5O+W1ueGNxTSJXrNdubaN2HPRMLhb1
-	x/HF+IPuSAYQQNvbbRe5ZxbqmEMXSmK8gLuJrW2w=
-Received: by smtp.zohomail.com with SMTPS id 179193668404267.12973937554386;
-	Tue, 13 Oct 2026 17:11:24 -0700 (PDT)
-Date: Tue, 13 Oct 2026 17:11:22 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Ke Sun <sunke@kylinos.cn>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
-	dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev,
-	Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v3 04/11] drm/tyr: add per-file VM pool
-Message-ID: <as7IqjINtIURG4yi@um790>
-References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
- <20260929-tyr-ioctls-v3-4-26955fb111d5@kylinos.cn>
- <aspyoBHaSaJpMxJv@um790>
- <B20D93F5-4950-4E9C-8E3B-E2DC476DA539@collabora.com>
+	bh=6ojGJwDPTVvH1mNyQFRD6ZgJPJ+C3Xv6E6vMi/T8h+E=;
+	b=qBjohNeNbAO3nwY8vykblo8Xejio2fd07Yg4V/0x/n3O8sD4NDKhkehs4CZndsyW3Z1XGV
+	aXojYgnM8Iu9ID2TLyt+/U5FgiRKQWVwB+mbbsS8sqMq/zswhLwxqAySdy+b6k8efvsuLq
+	J4eU4M21MrFq2qEv85wBZl65A9VRKOU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791937096;
+	b=y9mmFeQm9JsOu2Gb9ULdzEuQdQhvPUa0xPUw9bKLdMc7rC+VBuV9MGufqA0oRqLlOMSxTP
+	886OxKmGBOKJ3IZOPIPUM57ajwlyRxEPaO7TheoOjuQcoatwSejyOOdfm91V+EblYcPa5c
+	WZd+qdTLFXaWq37y5jDwvBVT9vlGvXQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hzn17pG9;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9669B601DB;
+	Wed, 14 Oct 2026 00:18:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C578F1F000FF;
+	Wed, 14 Oct 2026 00:18:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791937095;
+	bh=6ojGJwDPTVvH1mNyQFRD6ZgJPJ+C3Xv6E6vMi/T8h+E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hzn17pG99bpu4AnLp0GZuqYv84aeXmdu4EX/E6PlW4tSL5nn0xPhvQDvylCA8J4uJ
+	 HbbsWrjqdsqr+5dUmhTwGFQS3JYlfN73D/LFNtot6qcrLEm6LPWCW10jnGuow8zifc
+	 9RyfYHDVGFy+nXcM/0BGc+00HvdJnXD85ukvRN9qe5PCHldwZ/SwfZgQsVrDYuRLw4
+	 XI91kO7ay9LNFSMbz2EBR+tGXBLbTyQS7QJtF3/E0EiEg1gYfXe9Nij9xqHqlw8yXc
+	 wTI1Rre0YJdOPZ1g0a8kjdVzSL6xkVCi5EVgekdy5FMoYjeb3OUTRwk/jmjGIBzG0i
+	 J94sV8320RL7A==
+Date: Wed, 14 Oct 2026 00:18:13 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
+Subject: Re: [PATCH v1 5/8] mm: zswap: Store the folio's node id in the
+ zswap_entry.
+Message-ID: <as7JC8o2kggiq_ss@google.com>
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+ <20261008182814.27450-6-kanchanapsridhar2026@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <B20D93F5-4950-4E9C-8E3B-E2DC476DA539@collabora.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/291.928.13
-X-Rspamd-Queue-Id: 90F1FC0002
+In-Reply-To: <20261008182814.27450-6-kanchanapsridhar2026@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 94wefte8qucqfb83wd3s9gsppyo7iqik
-X-HE-Tag: 1791936707-621979
-X-HE-Meta: U2FsdGVkX1+iYS/ZSnxVAofmBXHZt9G6ha8pna9YNk4W0S8mpPcCZfFnHsYMbPXZEl+giow+EtN2von+JgQXDQ+HUAzcInd08fZhJ8C1Jw1VfIS3q0x5aXMHfhKIQznW5gnaPrLNaVzLbmamDUnVWRfzvqg87bIx7WVR0PZA4yj7qMrfghVADFn0unBt3Z63fdxG8eBufPJkMvxQCgAEmiMhPk1fwvX3p/3y9PJw5At493CP6aQSL3w6R+TZ2HVzQEh1Y1eDZjA+RDlitOO3pXqtpZGFzg8ukoYQMtIL7wgi7OxHox/pGcosG9T93SUR2z/ffuQXjZWkcC7CNDRXr1N6/cjr4qndm2dbjvqTCgR6sF1l/YSgGeuoMIelBVTy9wOOvJsb1Yi3LscLAIjC+R3XXwEDEP4m7rO+iKU687ADhURFoCCoeS/AsT8FF3H6CG6+cVVsUhLGXiyWySxxjMCFdbsnPB1JzdMIVoVVGiut5tkaC359H53RzEyXC4JlYy45AfJMiMn4G6a6aJ4GdNLw4VyJWnnATW+fPvd2sCSgjQ0hM3dRNlZCNCt3FeTOteZMwaM7deBNstvu0CT22ybYJ1fNptF6/EnD5/ZgcEJ4TOd6EfwPbuhhi6FfS9dGZDNs2SCYzbxdW9CPHp7i0ID6i70lASfMshy+NBtKsQVLphwkTAXYv46eE2rKkgWHFp/chmH6lU/9LusqMYEdsGnQoWL/z5GUuVQvaTZVCXzEe3E9yqO3CW2ypJyapWtadh2NFcHvnyEo/cnfapSImkAZFtLDs8uwLPYm2HB4b2DcqrPrPP8xvW2mhrkK91fpes+8oJ2NZ6MD5NRBw3cabG7KchD0vZv6gjxJkfP5gCynRTFTPJ0iKXe0usl3SI/CMvTeVDh1U2YflJqyy4Sft7XsHFX1X2IME6Jus494xhxDsJiTfny1zk9ps8fMmYu/dPesyjbDZe2vHS9PFF4
- LF8aKVRM
- FeqNqgig3yZitSS4WO1TJBC2AWC+8xw3AsaY93mUDGrRtw+2uda5W7vyuRccnz/uL3EPtQECsXLMiMKltt+s0swHoI/Xc4zs6dy8cPY1gWG2BEB/4ntsIdBAjls9O6SeRATZoZll13g/qtL+jwfkrw1/+ZEvj3loz6Vfd1/ToqbPsCfDt8nUxDsjtVhZUcWeAALtTpV6BTEyxILeyRss1WRHQKksn5IaLkgB+Vxbr734D5NBOWWX07ckMAP2ivKNajxooYkrOR9AMMG9EhaVR+mQP81Vv5ebai6Pw/0hSxAAO5dCR7MOJiTJQAgFNHt9N5dduTsrqZ25liWw=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1AAB7140006
+X-Stat-Signature: oj16tuo6i4th4u5h4tp63igbx5o9k37b
+X-HE-Tag: 1791937095-821690
+X-HE-Meta: U2FsdGVkX18Ay/tMTax07t2QuV8IFACaK4qWOwAkW1KuD97XSgjXxPeQ/BVhua8lu3enip/FAP6Bdjp7ALLBhS6DCaLJPd+VgV1qj0a0En5Bm7kymqMf6SIVsqubzDEoVuYJhaNVNmRkfz1x1DKPOQQMgVdQyEuydMfewijsAGWA5wVuHHSPcMsCAoZ/XhBQHxmu/nn3WZVjEecPd6am65R0TLmHn/MgEXRxOKknZMkS/YlhMPqkjMeJyHyf394n5hWCIdsNu7suUjhokoXnwSnfcAPkL6uYdYNkpciRDPJVoc1A2lRGtDpc8Q6X2OAOpeZG19VJ5f9IpdUHV0rVT3P2vIhO6cLa8DFB6n8/27WviTTJz/EwmfHyXgjr5rjrHkoU83O4WWDQQjUukYY052ugYzUvsF6lx578WpBuBWrqTV7h9e4vw09/T7siIiUk0z55Ir1xX8PF5KTzOFC4RFsfiBOYOibuBLFNBXiJ9prI2iWTlEjpRCkL3bCJkFXfLConHJxuATLJ5y7mxPw46Zd6nsKObVIr33++6MU1NehX3YpPS1mRoNLPkSPY7mNWnQy6DhyuHPaM2H603dT8xO3dYLUolH0gYyp0mAjlCbbdje/pPa8+uNQKIsD79wY+p5mqKONweujd9aB9SI5xL5oVGrhtum4gKOhGZNMQun06XYUFvN1Hz59D2W0ClImKgcSfwa7+U0DBn9HDSpRGhw0TwqdBRLuTSe2sHaAKHMKHCIy4FyaoQcHQEquZOf+Urzil7AGfMInibewSQ2GPVQUYedPBNM5fQnERBIPVXYOLmz7DphRU0tbMtn65a8wzHkuVLOIhix05f0hHEON417brZ2ShWIbMe2PXJh2AQhsVzX7qhOJQkO5ejmy5+DG0a6OKU8YOvJCmtYPBUUytLqj9Au6Gq9g94Lt8GZIaRONxIBkDKsDgMTjOFX14J7ePe/hRht+/Uxpn/VJsFvG
+ p48ojaDk
+ XLnD8bCAosFMmNQOfmVlHBw/8Xi1lHCeDqRCUzDDPiWdEdIwE6fXVeZY59TOMwNfZeyuaC/vRNVNCZhq76si/47U9kCZrcdouhuEkxbd7yj9kFfddJQ1vtfN7EARX+s6AvUGXae9cam0zToTe5ZmWJ5cBq6WQWdi+XkzUmZmi5S3Lpx0w4ltiwR+LpdNleBqPy0ywVSc/a5tkAQZ3pejpAUwYXqDqO1KDVKJKn22i+u68i1AcIgWFEQAImf54BHfGVgArZiO/fWee98Y1sHCr+n7KLnc3jo9SFlaR4kUMhXMvJbQsgJLmpJI+HoRUcJEJFlRHVY3DJTiwkRPLamfwE50V1MGS6RBvTlgyuzun/5MAy4fBf+2aD0PuFWFq8J/rFHQm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,49 +94,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 10, 2026 at 04:33:32PM -0300, Daniel Almeida wrote:
-> Hi Deb,
+On Thu, Oct 08, 2026 at 11:28:11AM -0700, Kanchana P. Sridhar wrote:
+> When storing a folio in zswap, save the folio's node id in the zswap
+> entry instead of relying on the zswap_entry being allocated on the same
+> node. This enables optimizations such as batch allocation of zswap
+> entries for large folios using kmem_cache_alloc_bulk() that does not
+> support specifying a node id.
 > 
-> I find it unidiomatic to have containers destroy an item if addition fails. A
-> more common pattern is to return the item in an error. Something like:
+> The size of the zswap_entry remains unchanged as 'referenced' is lumped
+> in with the 'length' (as it doesn't need a full unsigned int anyway).
 > 
-> pub(crate) struct AddError<'drm> {
->     pub(crate) error: Error,
->     pub(crate) vm: Arc<Vm<'drm>>,
-> }
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+> Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+> ---
+>  mm/zswap.c | 23 +++++++++++------------
+>  1 file changed, 11 insertions(+), 12 deletions(-)
 > 
-> This would not convert automatically to Error, so callers could not simply "?"
-> it, they have to handle it:
-> 
-> pool.add(vm).map_err(|e| {
->     e.vm.kill();
->     e.error
-> })?;
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index ca513a9f89e3..c2731d3acb2c 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -194,6 +194,7 @@ static struct shrinker *zswap_shrinker;
+>   *              writeback logic. The entry is only reclaimed by the writeback
+>   *              logic if referenced is unset. See comments in the shrinker
+>   *              section for context.
+> + * nid - NUMA node id of the page for which this is the zswap entry.
+>   * pool_idx - id of the zswap_pool that the entry's data is in.
+>   * handle - zsmalloc allocation handle that stores the compressed page data
+>   * objcg - the obj_cgroup that the compressed memory is charged to
+> @@ -201,8 +202,11 @@ static struct shrinker *zswap_shrinker;
+>   */
+>  struct zswap_entry {
+>  	swp_entry_t swpentry;
+> -	unsigned int length;
+> -	bool referenced;
+> +	struct {
+> +		unsigned int length:31;
+> +		bool referenced:1;
+> +	};
+> +	int nid;
 
-Interesting, I see what you mean because it would give the caller control
-over the vm and managing its tear down. And it would be nice to separate
-the creation of the vm from inserting it into the pool. I implemented this
-myself and that's fine if you want to go with adding a custom VmAddError
-or something like that.
+This will increase the size of the struct now with pool_idx, right?
 
-But, would you also consider going the other way and actually creating
-the vm inside VmPool::add()?
+Before you patch on x86_64:
 
-One advantage of this approach is that we don't have to create the vm at
-all if there are no ids available so we can just return ENOSPC.
+struct zswap_entry {
+	swp_entry_t                swpentry;             /*     0     8 */
+	unsigned int               length;               /*     8     4 */
+	bool                       referenced;           /*    12     1 */
+	u8                         pool_idx;             /*    13     1 */
 
-And, since we have to kill a prev_vm if store unexpectedly returns a vm,
-then this would centralize vm creation, registration, and failure cleanup
-all in a single place. It would also be consistent with planned revisions
-to VmPool::remove() which is going to take responsibility for tearing
-down the vm.
+	/* XXX 2 bytes hole, try to pack */
 
+	unsigned long              handle;               /*    16     8 */
+	struct obj_cgroup *        objcg;                /*    24     8 */
+	struct list_head           lru;                  /*    32    16 */
+
+	/* size: 48, cachelines: 1, members: 7 */
+	/* sum members: 46, holes: 1, sum holes: 2 */
+	/* last cacheline: 48 bytes */
+};
+
+After:
+
+struct zswap_entry {
+	swp_entry_t                swpentry;             /*     0     8 */
+	struct {
+		unsigned int       length:31;            /*     8: 0  4 */
+
+		/* Bitfield combined with next fields */
+
+		bool               referenced:1;         /*    11: 7  1 */
+	};                                               /*     8     4 */
+	struct {
+		unsigned int               length:31;            /*     0: 0  4 */
+
+		/* Bitfield combined with next fields */
+
+		bool                       referenced:1;         /*     3: 7  1 */
+
+		/* size: 4, cachelines: 1, members: 2 */
+		/* last cacheline: 4 bytes */
+	};
+
+	int                        nid;                  /*    12     4 */
+	u8                         pool_idx;             /*    16     1 */
+
+	/* XXX 7 bytes hole, try to pack */
+
+	unsigned long              handle;               /*    24     8 */
+	struct obj_cgroup *        objcg;                /*    32     8 */
+	struct list_head           lru;                  /*    40    16 */
+
+	/* size: 56, cachelines: 1, members: 7 */
+	/* sum members: 49, holes: 1, sum holes: 7 */
+	/* last cacheline: 56 bytes */
+};
+
+I think we want to reorder the fields. We can probably also avoid the
+bitfield if the maximum page size is 64K (is it?)
+
+struct zswap_entry {
+	swp_entry_t                swpentry;             /*     0     8 */
+	u16                        length;               /*     8     2 */
+	u8                         pool_idx;             /*    10     1 */
+	bool                       referenced;           /*    11     1 */
+	int                        nid;                  /*    12     4 */
+	unsigned long              handle;               /*    16     8 */
+	struct obj_cgroup *        objcg;                /*    24     8 */
+	struct list_head           lru;                  /*    32    16 */
+
+	/* size: 48, cachelines: 1, members: 8 */
+	/* last cacheline: 48 bytes */
+};
+
+
+>  	u8 pool_idx;
+>  	unsigned long handle;
+>  	struct obj_cgroup *objcg;
+> @@ -672,14 +676,8 @@ static int zswap_enabled_param_set(const char *val,
+>  * lru functions
+>  **********************************/
+>  
+> -static inline int entry_to_nid(struct zswap_entry *entry)
+> -{
+> -	return page_to_nid(virt_to_page(entry));
+> -}
+> -
+>  static void zswap_lru_add(struct zswap_entry *entry)
+>  {
+> -	int nid = entry_to_nid(entry);
+>  	struct mem_cgroup *memcg;
+>  
+>  	/*
+> @@ -696,19 +694,18 @@ static void zswap_lru_add(struct zswap_entry *entry)
+>  	rcu_read_lock();
+>  	memcg = obj_cgroup_memcg(entry->objcg);
+>  	/* will always succeed */
+> -	list_lru_add(&zswap_list_lru, &entry->lru, nid, memcg);
+> +	list_lru_add(&zswap_list_lru, &entry->lru, entry->nid, memcg);
+>  	rcu_read_unlock();
+>  }
+>  
+>  static void zswap_lru_del(struct zswap_entry *entry)
+>  {
+> -	int nid = entry_to_nid(entry);
+>  	struct mem_cgroup *memcg;
+>  
+>  	rcu_read_lock();
+>  	memcg = obj_cgroup_memcg(entry->objcg);
+>  	/* will always succeed */
+> -	list_lru_del(&zswap_list_lru, &entry->lru, nid, memcg);
+> +	list_lru_del(&zswap_list_lru, &entry->lru, entry->nid, memcg);
+>  	rcu_read_unlock();
+>  }
+>  
+> @@ -1449,9 +1446,10 @@ static bool zswap_store_page(struct folio *folio, long index,
+>  {
+>  	swp_entry_t page_swpentry = folio_swap_entry(folio, index);
+>  	struct zswap_entry *entry, *old;
+> +	int nid = folio_nid(folio);
+>  
+>  	/* allocate entry */
+> -	entry = zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio));
+> +	entry = zswap_entry_cache_alloc(GFP_KERNEL, nid);
+
+We don't need to allocate the entry on the same node anymore, should we
+drop this and let the slab allocator handle it as it sees fit?
+
+>  	if (!entry) {
+>  		zswap_reject_kmemcache_fail++;
+>  		return false;
+> @@ -1466,6 +1464,7 @@ static bool zswap_store_page(struct folio *folio, long index,
+>  	 * to an unrelated live pool.
+>  	 */
+>  	entry->pool_idx = pool->idx;
+> +	entry->nid = nid;
+>  
+>  	old = xa_store(swap_zswap_tree(page_swpentry),
+>  		       swp_offset(page_swpentry),
+> -- 
+> 2.39.5
 > 
-> Don't worry, I plan to remove the need to manually call kill() soon, so this
-> subject will become outdated in the near future.
-> 
-> Paths where the Vm is already in the pool can call kill() though, this includes
-> remove().
-> 
-> -- Daniel
 
