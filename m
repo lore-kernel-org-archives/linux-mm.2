@@ -4,100 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D611CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 16:30:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B58B9CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 16:35:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 369D66B008C; Wed, 14 Oct 2026 12:30:56 -0400 (EDT)
+	id B148D6B0095; Wed, 14 Oct 2026 12:35:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31AF56B0092; Wed, 14 Oct 2026 12:30:56 -0400 (EDT)
+	id AC4DB6B0096; Wed, 14 Oct 2026 12:35:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2308D6B0095; Wed, 14 Oct 2026 12:30:56 -0400 (EDT)
+	id 9B62C6B0098; Wed, 14 Oct 2026 12:35:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F3D336B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:30:55 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E93B3A06BB
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:30:53 +0000 (UTC)
-X-FDA: 85321770786.08.70039EF
-Received: from mta0.migadu.com (out-84.mta0.migadu.com [91.218.175.84])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BEC8310000E
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:30:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 784266B0095
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:35:35 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0049112062F
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:35:34 +0000 (UTC)
+X-FDA: 85321782588.18.738693C
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2312F100003
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:35:33 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r3yIi4uE;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.84 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=gourry.net header.s=google header.b="fDlZsm/Z";
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791995452;
-	b=mbMdie0DpFPviy8YFW+PZt57KJHlbbfJZ0S/9RGl0J5Rw8y5HQ5+YxCnNu6uhyLBCOikI7
-	xaLx6ta/Ven8q7rbfd3s4pZXSuJwn3KFyBYnqphCAoSNcJJEJEKGM8NK45Tb1IMtkqZGtQ
-	EsE0zaG7Jh6cSE9p6+FDkiag2BKwLQk=
+	t=1791995733;
+	b=xuGue5a5U0JVpl5yfVhr28jPrAnTQ4otAOZDhm4B7TlvP0btraTYoH6U6UjIBb/eyhE/Qs
+	rUuaxTZjTx1LzS3ALgfo2HDnl2dkDHTGLtVAAvvgtX+9xhF595buhk2JFWQ5ljdXs0LIXR
+	mssAwH7F6cAhV1YbXn4QVpNJXvSqwTI=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r3yIi4uE;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.84 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=gourry.net header.s=google header.b="fDlZsm/Z";
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791995452;
+	s=arc-20220608; t=1791995733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MuTZK0aEsxrrGIjTOXTTzaYE6LzxOpR8nAqifDnEhCY=;
-	b=wTk1272TWRZ/H6XMYaQD/8dVgizavftR3ELK3JkzzOeVAqVSg9v4ewEJwHvaH4FZHbjffO
-	7hbBTh0TfI8KL0tV46jZPyEKj1wZrBYFzAguCKk/USUgkdvedqdgQEkfGukz9LX9T+8dlC
-	pue50Hr358h1KfH6hFcv4UlAj/WqeSU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dw453SjKRb4006gix6zhYjhyw8h2zLucTTilf+CwNnE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791995450; v=1; x=1792600250;
- b=r3yIi4uErvQk3aLwnT7PwDpTB4yWB+1CYIXSUqIJm9A3Jffi86vuBrOQcxcmPc7uLrs6eqXc
- vbcxYE6ma5IXv9mISCBjIvfJluES68Y+VI2tXLF0Or5x6DAz2SZGJzkWMIyGuSqqFe0UgSM4b/c
- r0IauxsTNyMo2Li7PxRJolCI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b89656d6ed486c36;
-	Wed, 14 Oct 2026 16:30:50 +0000
-X-Mizu-Trace-ID: b89656d6ed486c36
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	huang.ying.caritas@gmail.com,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	ryan.roberts@arm.com,
-	hanchuanhua@oppo.com,
-	kas@kernel.org,
-	kylebot@openai.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
-Date: Thu, 15 Oct 2026 00:30:43 +0800
-Message-ID: <20261014163043.39233-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
-References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
+	bh=3LCiZCX1tQyW/7JZu4KAyjpWEpR2mOgBTcl8BdXvK6Q=;
+	b=eNn07cJQKkgRnQLTcndQr0VbBBphHicDao38gMFM9Rtec6rwwc7JFuxDAuL0PA2CRWKFbs
+	RtLgSrEiav+dtH4+Jx5lEVmFgyH2HIJjUCYGKIXZDkkDlGV6f1AYiIKHT09+0zER/a7f8M
+	+a4qPeCNh4qJMHRSqfWB/rBGvA7rxU4=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-535d60d850cso11988151cf.0
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:35:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1791995732; x=1792600532; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3LCiZCX1tQyW/7JZu4KAyjpWEpR2mOgBTcl8BdXvK6Q=;
+        b=fDlZsm/ZfKYjJkroDC+PcCWqqytBajSFnWUghsfQxj0GVEW7Llwa3eZxle2bApEvw7
+         VS2KQhakC8L1p558DomJH6awqqff77t6FcU7qBc2KkBaNSOQ2b/0urbAOtLlLOWrZUS/
+         2L+ggEEd+6U59JLm9Q2TMDLT1g+Ny4+dn52Wnkq6aJH59jJ7jeeDvxCqmxsl156XYJaO
+         DPoYntDyH4tbE4/Jrasah5W/Ne9CTZPtyws7qHH4FuA2+kcQP871qbwBpw3M02y22LIe
+         6XVo43/SdFXHZBNExhBhC19NP3hA7DODdaTQfSRHUxkg76ga9cJNW1pencGXlsty+kKs
+         MwXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791995732; x=1792600532;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3LCiZCX1tQyW/7JZu4KAyjpWEpR2mOgBTcl8BdXvK6Q=;
+        b=CTi72q/7B68XUPz+/U58+uQlWIRGnJML1ub+NqQdNN1ype6Ny5AaFlcizqpk330o18
+         kzkR76MU4n2Cqp1d9Gkh1I4zxQBydGPs2iNEowNFly4xA3xiTFxLKfFlgRHOb3V8FX02
+         bFdn6BVMgRQpUvyyFYevam+nlP/OPOtK95riWPgMzdOYEYcHuTlWEjGQT2hVgkdRShnt
+         AktmYUbN1K0b7zAzTK6E9eF7azkI+CRL8X6+Cw2OxHFWbHmJAiThVbvdfQ+A3D39fUpR
+         icb7n+L+s81hGbsxKNbDTTgFbIvB+ZiBKkHL1O/H47RgmtQql82eFVHiBASQhUbJmdrA
+         TSZA==
+X-Forwarded-Encrypted: i=1; AKwUvBxVyXDfc86A+gdsFwR/t98C0xtKLYnGaoxtk9jnG8WdkwONvzT11JuEiUVbsbYR6CzX+knO3ieoUg==@kvack.org
+X-Gm-Message-State: AFq9FYLEvaziQuxQmLjUVmA6u7AS+fj8lLV2mq2sqt+XBCZ2tY6eWt/m
+	K/UbSGUFslvUxFQ6az6qnrLZ0jIvJH1Fl1vps74E0Pr/xl8OqJ+BwpbaPxhQQASVKjU=
+X-Gm-Gg: AYBFou0WYx4q1MxqGUO0YiNy23XdLwibOYb/opl/UMkCQDZkB41uCNY0+Q0Pfae8C8a
+	1Tcc5DzL9mpM0XREh+zJpKqovbgE9gJssP4eHjop6BmWxGJS91tbbTMz/mkpKjxn54u6nTI8qc+
+	JzITydVJ+teuOSe/7NbODoBshvCwY/yN1ZKRZNzX/yvSSZGjT96gpCwVfckYiibHBevC5wDD/sP
+	+hrMML1zVprPLJYwIK4EbX3PhTMEE4p/UhLNJRz0pujLOWQzchTOVqU2kLQ62RYeBmQZwTrr7Vn
+	hJUUAq9pXjBZehcNXFNRWx8s+y3lM40HKeXiXL4K7sNrLVQ7ppa7Lr07AeNa0kl7VqnzJcaQB3e
+	kghj9b0qSGmNxuhdRZUhK20rcC4kJi4uKOCku22RvNa9//pCAuwwY/OC1+8Im5N0vqrZo7SJrhr
+	b8K4GumlWluI/l2TVhbKlZnccSCP/pVgR/vD8i9M7d6UrDoo4bjKSqPozBBoPyFf1eBd3RRXzgM
+	lRa+RFHhIA91nJMKc0l+wEv31jr+pD92uXnUU6+cKKCGh3v+jlRclg=
+X-Received: by 2002:a05:622a:258a:b0:535:22c2:f161 with SMTP id d75a77b69052e-535a618a2camr237942081cf.21.1791995732352;
+        Wed, 14 Oct 2026 09:35:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536128418b2sm1108391cf.30.2026.10.14.09.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 09:35:31 -0700 (PDT)
+Date: Wed, 14 Oct 2026 12:35:30 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Minchan Kim <minchan@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, stable@vger.kernel.org, 
+	Samarth Narang <samarth.colleges@gmail.com>
+Subject: Re: [PATCH] mm/madvise: atomically clear the young bit on THP
+ MADV_COLD
+Message-ID: <as-uTYp6--OM1CYr@gourry-fedora-PF4VCD3F>
+References: <20261013191719.95502-1-pfalcato@suse.de>
+ <as-dr-S6c3FALwQb@gremlin>
+ <as-iHm9Y4wxRTG5d@pedro-suse.tail5790ac.ts.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as-iHm9Y4wxRTG5d@pedro-suse.tail5790ac.ts.net>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2312F100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BEC8310000E
-X-Stat-Signature: hb118nkzixpxk7814591ugmikad4ycid
-X-HE-Tag: 1791995451-311903
-X-HE-Meta: U2FsdGVkX1/Sy8c2c6tUAls8XnBgbpjglRdEGHfZcWeIeELyr8+oxnNHA99gguVSmPZ+kX0NfMlW7IXAvsPfnm4Tof4fdBwhkdTRBglqdp1Fm12AAG1DfwH4iS00vFESPKxZrpE8GRhusLMNbVI/vRWF7s5oPlxlMcndEkkzvKD4WyZJnTSvK/yNAuXZoWjS+BHsiaAMZ6uOerhW5Hcvb590GFdICFvWBBJxaveBPDuMnERxGCEEAbiziBPCTzcQRNv1BYmMb1kjN4JpGS77BANZsoev8ElQR+uT19amyGHvM3rI45ti+abYr6AD3kt4h54tRtnj+Jq+gj2JirgAAyPaH0cGqVOwEKm8BnPQln5fsA2AKjGwbK3NvaDFi5tEPAWsoQckumbCoz/+02mFii1UWgWnLWgHgeiJadlouEmHtsxoZt088chIY0rbQ1pxeoLm7KyQKM9QoGpuHk8bpf4Ucmnb3lnGAxMdizNXjpLus+p64AJnR0qlcynjOjKbDIaGY6BckbyL69jG8jsC9qWb9WiP5wqWzIOTaMLAfsv1XMQvaBVnyCf5e3PO7sGQgBbkJ0ThE1fohJUvKDIoaB5ai7BmwLoSYXzZYw5wlQkbd63KAIWE01wBEeQ/uDoTK/cXL5eTZHkS98Y0CocbTZYKAM4FtBVikfeE/Xca8nkI/vZWYy0szedZlDJEnQjHi722HYzojuDJS8rEPDMyJEDmcgpQLcC/tCpsNgiZW9K8mT8PpLkACw4C2yi+zHs4owgX/0JRLkCiJKMPsVIUyO9ygA+OlBlh19XXbXvfPaXXXYEyIA6rKI5v5bXbv9aUyHRCH40secFv9TUa7QJ8Zd41wLBoYBm+ALkGddYUmbo5HBemXrwb2sY1ZCyXB+dL618CyZllxZ2m/hAeZz0Xw1ASiqbixaRERwsbG7oAdn2KegxPKZxLAj5oqKn11uPbiRjYNBQ3y8d9SYB69pW
- vG8NEYDr
- 6pAPsKWA82lPZd+UhcHUlX5C4HM3dbQ5AfYCoLbSy2/Nhx2nBM2L0+dZKyhQL9OLgM+MNc7zB/D7qAhol7U42lh46vt/86ueRh1WSAUBaeXmzk/CwNMjCN55qs9kVWu0mBUkMkUPlWbvMUdz6K9+dYB1APv937NwEKaH90PfcGn2Pf9zfU0/SBUzua/mHw2HhDuULQmOjEpf48TMYLlRsUvXQC7xyWuq9jXMtYGVtka1ki4Hxs2DPDt72iwkppddz5PDFes7/gePx4xGnyZyA3E/GnSFX/JW76o/lFPvj/l4tb2dBFdbtZAp8vbl6dRrML9w6texBVW003qiI/4by9czav2nI/Do9hQBH3G/kiO0K43Q=
+X-Stat-Signature: h5zfdy8fckspzuat55ygqkwkdrbqci5g
+X-HE-Tag: 1791995733-198333
+X-HE-Meta: U2FsdGVkX19oYJfPvzahwtu1VMD9j+sRjVO7clkt07iNfENHAcyrsAeMWtk7gfFUq0tRxU3x7VCi5Cb8NafyYPm0pDHpFeM30CMT1msNcySbOYP0SO1YPqK7FiQ1PS3lcUpw+ZzUcwTWsItFlTR/Vu5JthImUi+TlHFy2bPeOUkAZOrESLEphKl6QriVi93G8rDxRQ2Y8SaFFT2RHj4P7BI2KIHLEndrFkAgOZ1Xu7ZRv5TjxYAd1e7yXT/SzR9cJ9+f8DWPDgM/rBe41vSsawWv1HLeCfAUQpF2vCEVwOJzejOk3kVcUohtCvtm688Klb881zDdhkceJGEiO58R6FpJecF9UEmokHcrJK5QjI60KEYQVv2+u/lkLQjaxBZ+aah+on7MyM8V4LoYYcjf4wJXZlFul0xAQt1fePQXvQyAsh8obj/FPKjm7Bi00u/RRTrCnOdUpy3oNYgLxF0t9SDV7GZuLUIDJ+Jsh0mCZ9mf/wqb7F7xWJpTGCbC0SMyaXIilkffZFmh0E1iPfb3w2VQ5iFqAxM38ko4cOIdcWrrkYKUceBdeXCbkTyRFZi8NTxm+VfLJR9aF5OPhs7e9mKLDyGiVLTuFeqkDMAs+Bd5ImWw68DTeoTjZLl6IDCFsrETtmMfi2H3mtWklyXa6/kKY495c2sLsoMhFW62CswBTPbvmKHOhwBDo4oYu6UhDT1jU1jwez53i9q/l4onNYkIvaBlRlTNPCqcmFxpDav4RfFnETDArU2W1P/suE3t3ws3dyPxv/z/RaFoY3gG55WACZZuuFzBh3Mhr4SwdPj9RzhsAxO0CShyT0fWbb+LCIBgdD0MWnnX8K+gBsN0RzOkRbLQBtlPMfk6T3LaXxXG52uJEyv/DHKXUsLiMrS9A/6jPPtQf7poX9n3dUwMNF6je98Pj7a9vd3jN5wr9GNumYjAxsDnkyN6CZNk2yjjewK1fTsRvvlFPXQ0KGw
+ EFVqb4tp
+ tXGr7idkeGYbqQWQbk4wbaSLHM1AHDK1W8QKqvd11goyoexiBc2kFuLb/AXtEOUn5eU1S7mf+T35i60SEkbMF2eUgaiFPxS84rVqvwdEwd/2vuZ8/qfYZ1jlii1ceo8xsjkmgT10KRJPjrKE/ANB2dUNWTyfQYUy0IEeTXd1p4zRp/5f4Piv0CpGXe1CFHgh0rjALMW8ImPT7g77Ar8ytN7gU9oZOak8iTT2vZM4MZorZ+lE4eA3onEM1ISjZy0CVzXeAAPBf+P7jsTBZ/lMXR0nLTEWrS13ItkZk1bsqYdAaEDuKFSMQM4i23vwk/qIR2+O8cvW2arRWtiJbhS606UcszsGxr0MkQwKYeDKiNBJ/SIPSe5bVftn6r2KtidzZjYn/ehkL9X+MqlyNJ/HsjpwF41q/q3gCEMsYEqRCdH5SalZgC57YsiksGeSUcKyZiOIJz2LOvN5JsR4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,111 +126,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Tue, Oct 13, 2026 at 02:30:37PM +0200, David Hildenbrand (Arm) wrote:
->numa_rebuild_large_mapping() and do_swap_page() can be tricked into
->generating an address wraparound, crashing the kernel. All that's required
->is to map a tail page of a large folio close enough to the start/end of
->the address space to e.g., make
->
->	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
->
->to wrap around.
->
->Let's fix it by providing a better helper, folio_pte_scan_range(), that
->takes care of staying within VMA and page table boundaries while
->handling possible wraparounds.
->
->Reported-by: Kyle Zeng <kylebot@openai.com>
->Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
->Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
->Cc: stable@vger.kernel.org
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
-> mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
-> 1 file changed, 29 insertions(+), 14 deletions(-)
->
->diff --git a/mm/memory.c b/mm/memory.c
->index 1f5d5f7d39cd2..a3823010aa981 100644
->--- a/mm/memory.c
->+++ b/mm/memory.c
->@@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
-> 	} while (--nr_pages);
-> }
+On Wed, Oct 14, 2026 at 04:52:59PM +0100, Pedro Falcato wrote:
+> On Wed, Oct 14, 2026 at 04:37:59PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > +cc Gregory
+> > 
+> > On Tue, Oct 13, 2026 at 08:17:19PM +0100, Pedro Falcato wrote:
+> > > As-is, madvise_cold_or_pageout_pte_range() discards the hardware young
+> > 
+> > The function from hell... Gregory - PLEASE FIX THIS SOON :))
 > 
->+/*
->+ * Get the address range in which a folio might be mapped, assuming its pages
->+ * are mapped consecutively and the folio page at the given idx is mapped at
->+ * the given address.
->+ */
->+static void folio_pte_scan_range(const struct folio *folio,
->+		const struct vm_area_struct *vma, unsigned long addr,
->+		unsigned long idx, unsigned long *start, unsigned long *end)
->+{
->+	/* Stay within the page table and VMA boundaries. */
->+	const unsigned long pmd_start = addr & PMD_MASK;
->+	const unsigned long pmd_end = pmd_start + PMD_SIZE;
->+	const unsigned long lower = max(pmd_start, vma->vm_start);
->+	const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
-
-That -1/+1 threw me for a sec ... Neat little trick!
-
->+	const unsigned long offset = idx << PAGE_SHIFT;
->+
->+	/* Avoid any address wraparounds. */
->+	*start = addr - min(addr - lower, offset);
->+	*end = addr + min(upper - addr, folio_size(folio) - offset);
->+}
->+
-> /*
->  * We enter with either the VMA lock or the mmap_lock held (see
->  * FAULT_FLAG_VMA_LOCK), and pte mapped but not yet locked.
->@@ -5121,16 +5142,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> 	address = vmf->address;
-> 	ptep = vmf->pte;
-> 	if (folio_test_large(folio) && folio_test_swapcache(folio)) {
->-		int nr = folio_nr_pages(folio);
->-		unsigned long idx = folio_page_idx(folio, page);
->-		unsigned long folio_start = address - idx * PAGE_SIZE;
->-		unsigned long folio_end = folio_start + nr * PAGE_SIZE;
->+		const int nr = folio_nr_pages(folio);
->+		const unsigned long idx = folio_page_idx(folio, page);
->+		unsigned long folio_start, folio_end;
-> 		pte_t *folio_ptep;
-> 		pte_t folio_pte;
-> 
->-		if (unlikely(folio_start < max(address & PMD_MASK, vma->vm_start)))
->-			goto check_folio;
->-		if (unlikely(folio_end > pmd_addr_end(address, vma->vm_end)))
->+		folio_pte_scan_range(folio, vma, address, idx, &folio_start,
->+				     &folio_end);
->+		if (unlikely((folio_end - folio_start) >> PAGE_SHIFT != nr))
-> 			goto check_folio;
-> 
-> 		folio_ptep = vmf->pte - idx;
->@@ -6280,16 +6300,11 @@ static void numa_rebuild_large_mapping(struct vm_fault *vmf, struct vm_area_stru
-> 				       struct folio *folio, pte_t fault_pte,
-> 				       bool ignore_writable, bool pte_write_upgrade)
-> {
->-	int nr = pte_pfn(fault_pte) - folio_pfn(folio);
->+	const unsigned long idx = pte_pfn(fault_pte) - folio_pfn(folio);
-> 	unsigned long start, end, addr = vmf->address;
->-	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
->-	unsigned long pt_start = ALIGN_DOWN(addr, PMD_SIZE);
-> 	pte_t *start_ptep;
-> 
->-	/* Stay within the VMA and within the page table. */
->-	start = max3(addr_start, pt_start, vma->vm_start);
->-	end = min3(addr_start + folio_size(folio), pt_start + PMD_SIZE,
->-		   vma->vm_end);
->+	folio_pte_scan_range(folio, vma, addr, idx, &start, &end);
-> 	start_ptep = vmf->pte - ((addr - start) >> PAGE_SHIFT);
-> 
-> 	/* Restore all PTEs' mapping of the large folio */
+> :))
 >
->---
 
-Nothing jumped out at me, feel free to add:
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Sending up selftests and reworks shortly.
 
