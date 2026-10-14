@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB1D2CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:47:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 929DDCC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:49:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01CA76B008A; Wed, 14 Oct 2026 09:47:45 -0400 (EDT)
+	id 7BF4C6B0095; Wed, 14 Oct 2026 09:49:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0F046B008C; Wed, 14 Oct 2026 09:47:44 -0400 (EDT)
+	id 796426B0096; Wed, 14 Oct 2026 09:49:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E23786B0095; Wed, 14 Oct 2026 09:47:44 -0400 (EDT)
+	id 6AD786B0098; Wed, 14 Oct 2026 09:49:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC8ED6B008A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:47:44 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 251C2160560
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:47:44 +0000 (UTC)
-X-FDA: 85321359648.22.B550F5D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 64D1B80010
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:47:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WEfRCoC+;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791985662;
-	b=il20Df1xUwX46zxRBQ+ISAPswhQ5Y42R25LVCaReCCij286J7OmC8e2o91Uz06oYk605KA
-	3WCDzAqFaQEPiZx3Re1S3Te/0SyKjHTwio0WuD+p84t5Gt8RnLRxWeX009YDfeBkMDcxhf
-	KtlpvTlmOaMywyPT7Y9exz/X6cFYMs4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WEfRCoC+;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CB746B0095
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:49:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C93D51A0563
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:49:16 +0000 (UTC)
+X-FDA: 85321363512.19.221EDD6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id ED8DC18000B
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:49:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PPzlrtN5;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791985662;
+	s=arc-20220608; t=1791985755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C7rEAmv2Y4mVbuWnXY5QYs9VkJecL6pHhI1EYgfL8BE=;
-	b=DFJnjqt8Egu7uddHJpNVwWSiDJy6TFyyEvlNlTedCEMoB3FYZzV391RXVrgBvPgWwlpnKI
-	ohzfsc/CkQ5jrvSxbtE4Hung/ubpexePagUuRGanj8nGwfweF4UInbeVm8CgCBlUeTrzVU
-	4qHKR9+u8OCuxQlqpApmDab72zfta5k=
+	bh=VlLY8lFnuENoZRIPsEzQ8Q4quedoDle8h5IdEqEOpQ8=;
+	b=AIWHEpYIeENai3W8FXYK3IrYPJLikXlou+MR0B8JmdFCt1qPDwOwM7egXcknELc8sUlqLG
+	R/lAcTWCtZklnSBiJRPp4DTGFxev+Re5qWcJQikHsQgAHk4OIEkKa5S9X71NmxlyT0FsXl
+	7Qj0guA5/pu48zxrZupr/v545PA9Csk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PPzlrtN5;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791985755;
+	b=P/UpJTZ6aKAtDa26EnizxpSn9yKGzcHa34Wl47taVOVOGdReqfE4D1AvX5E+VLjdvg4bEj
+	fjcddW5PSBnxxszv6ZthWme/sd/pPYmSqa+8Pv7vtulBL8ie+tkJXc6wfpctiPhLzK9Mua
+	DZCKLcBd4NHTNu8lOSQwT+Usrg5pkNQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D2E9360218;
-	Wed, 14 Oct 2026 13:47:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5C41F00A2F;
-	Wed, 14 Oct 2026 13:47:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 64FAE409F9;
+	Wed, 14 Oct 2026 13:49:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6631F00A2F;
+	Wed, 14 Oct 2026 13:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791985661;
-	bh=C7rEAmv2Y4mVbuWnXY5QYs9VkJecL6pHhI1EYgfL8BE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WEfRCoC+R3VRrxONOgWNcznZLQiKqTuza5mYVnkNZuvaQoJ9OUJ9u2bqGA65Ahlwm
-	 HsZ5UrIVN/WL2No64DEttz0LSGxtBqmQgZKB+Z5Oe07i82Iwe7JSIdkrISY/7d83M/
-	 8MkYEPtjHBOxPpkVnSNu6pRBNs84vL5TKqoQlI3RUGDLOWqHuOYGYpvz97Om9ePedo
-	 Ht2EI32ZEgkgx3m5155e5WDtDL3dq2EM0KgRyr6OJuydmjvO7tdyXmT9QU4uGY61XB
-	 jArsOcU/tAqClyseUQkjxH2GgXkM4QaSXMzEpEVH3JWuKR7hk5JuPMeuLGXbk0GMmW
-	 tLwBdlMc7waSg==
-Message-ID: <06930044-4bcb-4478-8a6f-2dd3cf6d290e@kernel.org>
-Date: Wed, 14 Oct 2026 15:45:41 +0200
+	s=k20260515; t=1791985753;
+	bh=VlLY8lFnuENoZRIPsEzQ8Q4quedoDle8h5IdEqEOpQ8=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=PPzlrtN5VSLvNoSdjJv8S6IWz9JcAweG/P0+UvtQ1sFu3nTPMRHLcXiHWN6/+oOnh
+	 b6OtZ7RNPpBkN6oXyFeYTlWLq8AVTzH20JzehD7cT8uw2qqGkQVdsEU2Z2f5T7zxkC
+	 vTf251qwCUxZmP+wHqVHv04VZChr+GLxPVOZltV1asZdwZhTXbPgUqJMB2nd2dAvM+
+	 aI/JIprBTd4sXSeuAB2rchOiIBEH2YxSdtlKkNWOhmY+ePYdJLniCVRNHZRbaaplMG
+	 +PBAufsc9gt/VUYrXHHRlIK1CL1g+vCrrpqELVc8ry9r2hSzKlV6OkbaT3ClmIlA7v
+	 tafO21tHnIPig==
+Message-ID: <807e8d2e-e7c1-4491-a3e1-21d84cc58946@kernel.org>
+Date: Wed, 14 Oct 2026 15:49:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -80,8 +81,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
  <as4kvHe9IFZH5qrC@gremlin> <9add8400-66c1-47e9-b5af-7a4081ebf3c4@kernel.org>
- <as-BZibPscw4cxsD@gremlin>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <as-BZibPscw4cxsD@gremlin> <06930044-4bcb-4478-8a6f-2dd3cf6d290e@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -127,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <as-BZibPscw4cxsD@gremlin>
+In-Reply-To: <06930044-4bcb-4478-8a6f-2dd3cf6d290e@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: ED8DC18000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 64D1B80010
-X-Stat-Signature: iofgaj14bqsbxusodny3eteee5mtin8m
-X-HE-Tag: 1791985662-524023
-X-HE-Meta: U2FsdGVkX18R/LrTWgEXU1qdp445mIYAwxnt9m+RYY/lD5Php1j0EFi/HVIfbvinT4uH//gX7xEWqTiq+1NPkTmhqeLaWhPkL8UNRubFu8q5nGAgC1lJt4Ht7UEOM6QnrLpHOXa7yCJnBxjoJZ9oKlpLze8uQFNGnF3TIfIxxwb+2eCROG8bO4VCy4YRMrWnDR+UW69rczepfJBI3mLi6qMSpsqS7V6FvcxMju/c+wr1Qz2RRkgk3sNticzaDe9Cd1crDmgMYDmDwHpSfpiT5OOWVEdaR/ejzO7YrNXOShunBBGCMPpoEGfU66nKQU5Qmo+tm9sfyDa9H5o5Xo4gmuxTgPrdYAi/o6HDvmQZbR6yMflaVsn1K6+KXrWdsDnyEcdW83rNWppQXgXfJhWhN2mNXWgfaZ6iCI9UxVt+4DHY3ZwU7Sq2iX5S3kSEiZ6c4lC49VvyREhn8coaepwz3sNCA50LGclcnvtf32KRKM7ATatYRUvZMasNQSPXHCOyQW01HHjDNdlpreazTKN34zN4p/SrnruQSIaOwqbYDmbXXARbl9HKEI9VuYg/ik6YeX03QRbT9zmat4j0K0xspHmPcP9oHHnd4AWhnniXeBTKQQpt5byc/B2FRh4FspydZEPCQlovKa0BrPQIPzle8D9YAFfbYsVoMKTHOW+K0h5vVKEdnok9fzkI/BkBla/DtzPhrZ4GtSWBt/cpi4r2UEbFI2xrXT1t3GQ9UY3qObtFQmzcTTo3GkSB0ZCN/1aUn9lDQi89dWW5Dr2i8lcXRp0CMV4Q+1Ol865YnOJ4BmmELL+3AKp0LL/2ANfWRV64/FmvUXnnjp6mFV4JCC+1m4Ezs0zZyhBZ8QexMgkoybEszXMfFAX+2H5fiv8J6rS/5DGWlLnKk7Xu08Tb9Kgjk3GVNUAk6qJ7ZVN8giZ8Huki0IQq7ldKKc2zYEnMGwaBLFHCtVwtbWQqXmA9M7V
- qzF0tbcc
- c+IkwMdEGKoGQko/c8d/tIbo9nV4S9c+EtZcmoWYTE21xZwMK16DEbJoxZdw4c+nvN7wQ4V7Kn+wi567cM0e0t80bv93wfESUCBQ/bipoHTlXePVz8cjeau51waIKZlxgj/HQMg8dZxT7gTp8PKGe1Jbz1L0oxBF0N1Y3GEVyRJJPa62GTvklE6aymoJbnlGGFC4XivSTpBOzboEu8Je0Gj6S3PwWOLPYlyf3sUPLDEDRqFs1q0EI8MKr3FDZW6VBelQvgtAmUz1vxlZ3XjqaGt6G6zb4Pcb5MayU3pVKxo00eDUZbKJiq1B+Cvlx530rw4s4yoDpYFxEyI7udEJvcSSxdJJ8/mM3iMYso8CN7dCOmFp7VxjHyBLi4QzBFfagYZ3M
+X-Stat-Signature: ueziwwx987nauqomubiyteguytf3ug99
+X-HE-Tag: 1791985754-780194
+X-HE-Meta: U2FsdGVkX18KxB4pG8XUxN13vf5+w4MLoSisn3hQaHxh8WIPpNrlv+l+bP48bFZSE85IchpBquimAZ5ha8ktugXFZCvSL0SYAbwZ6k44MS1uL4xE6uU3ehAwWeSCt4ELo4n+ZeAP6CKrwVGzbCvo5Jg+pBmKhPAtm3Y7zC+edTbUCWvoHB8B4af6aVeAupDDQunYhMQLqdulwQ5IKKc46PJtO+6FMB4fg8AlnsjGLM/jhF03v3u72dlP8abvucu5uU+JQSOPuQXsJvi5+VsJka6wtGMoJSn76w+Jh0SDS5YPf2LiJqrqRW5imAJS84G1dMXi5hHLj50zZ4IpZBUZSBCb7QpLrICmeiSsO03Zd6xkY/DAs3gNR41YU3qEqGfJmbkZED95U7AR6N513YK+UhDW1+eU6JEtnMdiUjA9f9ipjmaJPZ/MhM2hgGunUyQTIxkAyBIki0vwBWFi68YK/PaG/nDdvGQofC+7csFgddxz8rBK0Ppg7ztyOsXhkZxWNSnq+4FzCScpKvyWeBbDwwNzLLpgWkZloLhefpfK+DKAOFXrTYS/iRWT8uTlBScX4ujlCcIVMYCc7gWC2VWTMhnczO1Fgg29bkFeI2X0S2a3FSb7yOZgtU2UjFLtVCFe4teWS140NCW4LwFZj/s4ENxkJPbItPMlfxTfH+4YWkpxcO0umGmPW7M+S6hXTNXK4j7XkXdlbP9+R/7gkKB9UO6pV1Y/Ij0OeYgZLty3Iv6M7O2/cTyPn32NIxdIPYkQlg9C6raqHhkvhylEk9bNx9sVzAWSJy3Z5oTaV44164tUUFQFRV+++ZMzU/S0yzgBkqslrtLnReQUAS+ZZ7PEwbmlCltKxd8mzVA/i+LOCKcyfZCIR0GNWZ42uFiOgQ3sq5zwC7KSQUvrucOP0NQaB7UFhbq8EGcEELAcrVDKVeISs13JzLrGRmAtnqYn08VS3qMujXWL22RE1iqZ2Mw
+ aUJIVoWW
+ +JVFXqze+9C/qaAqF0TiKYaULNwmbhbVxyisIStW6i1Gr8TCjbuceXYV1K8T9Dg81wt2n6L9pBL42oob6huJS+cqDx4jHWVyQkfbLcy+3otov+zrqhe7tG1zdST8n5HcMFfxyrLSea+5HiohtzxjIANvoG9ApM0MFtqHDqREnskb7AK/l5LR67fnK2X8/sCP88NEmBnoh9hXpU+AOqsBZ3im8ShRObyJHumaaP2OSRKJ1YBFf66C4rhrqpCWBLNqcjInH/I34wjGZd2sTw7K6tWLFqherSDYsc8K/fwxN7iLEGjhZp/w9Dy7ZEz9ALMsPclRGFSlXkhmchu4G2fwsggNUH7nTgHHxgNME6NNN67e15Rawa9JQaBKR9IBlbzuCEiJc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,122 +145,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 15:27, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Oct 14, 2026 at 10:12:06AM +0200, David Hildenbrand (Arm) wrote:
-> 
-> Since I'm convinced the logic itself is correct:
-> 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> 
-> This cycle is brutal enough not to hold up fixes :>)
-> 
-> 
->>>
->>> I know it's a static function but kdoc here might be nice given the number of
->>> params, including 2 output parameters.
+On 10/14/26 15:45, David Hildenbrand (Arm) wrote:
+> On 10/14/26 15:27, Lorenzo Stoakes (ARM) wrote:
+>> On Wed, Oct 14, 2026 at 10:12:06AM +0200, David Hildenbrand (Arm) wrote:
 >>
->> I had that, but decided "not worth it for an internal helper".
+>> Since I'm convinced the logic itself is correct:
 >>
->> Is anything here really that confusing to understand in mm/memory.c context? I
->> highly doubt it.
-> 
-> I mean I found it pretty confusing :)
-> 
-> But this is a nice to have it's not a big deal.
-> 
->>>
->>> I don't love the name - to me it implies to me that you're scanning the range.
->>>
->>> Maybe clamp_folio_pte_range()? I guess though clamp implies it limits an input
->>> range.
+>> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >>
->> Ugly.
-> 
-> Yup, fair enough.
-> 
+>> This cycle is brutal enough not to hold up fixes :>)
+>>
 >>
 >>>
->>> Maybe get_folio_pte_range()?
+>>> I had that, but decided "not worth it for an internal helper".
+>>>
+>>> Is anything here really that confusing to understand in mm/memory.c context? I
+>>> highly doubt it.
 >>
->> I can just call it "folio_pte_range()". Slightly similar (but different) to
->> "folio_pte_batch()"
-> 
-> OK that works.
-
-Ok, let's do that.
-
->>>
->>>
->>> This is trickier :)
->>>
->>> I guess you're doing this in case either bound is right at wraparound
->>> somehow?
->>>
->>> But then couldn't the +1 push you over the edge?
->>>
->>> Oh wait no, because then vma->vm_end would have to equal 0, which would
->>> fail the other-place enforced invariant that vma->vm_start < vma->vm_end.
->>>
->>> So it's pmd_end that could overflow, hence the -1, +1 dance.
->>>
+>> I mean I found it pretty confusing :)
 >>
->> Yes. It's fairly common, though, to handle clamping of exclusive ends that way.
-> 
-> Right, it took me a while to figure this out though.
-> 
-> It involves an implicit assumption in there too, that _one_ of these values is
-> known not to overflow.
-> 
->>> #define pmd_addr_end(addr, end)                                         \
->>> ({      unsigned long __boundary = ((addr) + PMD_SIZE) & PMD_MASK;      \
->>>         (__boundary - 1 < (end) - 1)? __boundary: (end);                \
->>> })
+>> But this is a nice to have it's not a big deal.
 >>
->> As replied elsewhere, I had that, but decided to open-code as pmd_addr_end() has
->> very weird semantics with folded page tables, where we just don't clamp at all.
+>>>
+>>> Ugly.
+>>
+>> Yup, fair enough.
+>>
+>>>
+>>>
+>>> I can just call it "folio_pte_range()". Slightly similar (but different) to
+>>> "folio_pte_batch()"
+>>
+>> OK that works.
 > 
-> Hmm how so?
+> Ok, let's do that.
 > 
-> The logic seems, at a glance, equivalent?
-
-It's the following thing that adds confusion:
-
-include/asm-generic/pgtable-nopmd.h:#define pmd_addr_end(addr, end)
-       (end)
-
-I think we have to assume here that with NOPMD we will never end up in this code
-because large folios will not apply (each PMD table has exactly one entry as of
-today, so we cannot map large folios .... I think).
-
-I can try condensing that in a comment and cross my fingers that that is the
-case. I tried that now. and codex review already tells me:
-
-  • [P1] Folded PMDs can reach this helper — memory.c:4948 (mm/memory.c:4948).
-The comment’s assumption is false: arm64 with 64 KiB pages and 42-bit VA uses
-folded PMDs and supports THP and
-    NUMA balancing. Here, pmd_addr_end() returns vma->vm_end without clamping. A
-large folio remapped across a PTE-table boundary can therefore make
-numa_rebuild_large_mapping() walk beyond
-    the mapped PTE table. The previous code explicitly limited this to pt_start
-+ PMD_SIZE. Cap the forward distance at PMD_SIZE - (addr & ~PMD_MASK) as well as
-the VMA and folio limits.
-
-Let me see if there is any truth to that ...
-
-
-[...]
-
+>>>
+>>> Yes. It's fairly common, though, to handle clamping of exclusive ends that way.
+>>
+>> Right, it took me a while to figure this out though.
+>>
+>> It involves an implicit assumption in there too, that _one_ of these values is
+>> known not to overflow.
+>>
+>>>
+>>> As replied elsewhere, I had that, but decided to open-code as pmd_addr_end() has
+>>> very weird semantics with folded page tables, where we just don't clamp at all.
+>>
+>> Hmm how so?
+>>
+>> The logic seems, at a glance, equivalent?
 > 
-> As above, I tagged it, for the purposes of a fix let's just get this in.
+> It's the following thing that adds confusion:
 > 
-> But no, there's not overthinking IMO, it took me a long time to understand what
-> you were doing here, and there's a lot of implicit understanding in there.
+> include/asm-generic/pgtable-nopmd.h:#define pmd_addr_end(addr, end)
+>        (end)
+> 
+> I think we have to assume here that with NOPMD we will never end up in this code
+> because large folios will not apply (each PMD table has exactly one entry as of
+> today, so we cannot map large folios .... I think).
+> 
+> I can try condensing that in a comment and cross my fingers that that is the
+> case. I tried that now. and codex review already tells me:
+> 
+>   • [P1] Folded PMDs can reach this helper — memory.c:4948 (mm/memory.c:4948).
+> The comment’s assumption is false: arm64 with 64 KiB pages and 42-bit VA uses
+> folded PMDs and supports THP and
+>     NUMA balancing. Here, pmd_addr_end() returns vma->vm_end without clamping. A
+> large folio remapped across a PTE-table boundary can therefore make
+> numa_rebuild_large_mapping() walk beyond
+>     the mapped PTE table. The previous code explicitly limited this to pt_start
+> + PMD_SIZE. Cap the forward distance at PMD_SIZE - (addr & ~PMD_MASK) as well as
+> the VMA and folio limits.
+> 
+> Let me see if there is any truth to that ...
 
-What I am saying is that I don't agree with adding another two const variables
-with names that are less intuitive than just saying the computation. Let me try
-to improve the comment:
+Ok, the PMD table as a single entry, but the PTE table obviously has 2k entries :)
 
-/* Avoid address wraparounds by not adding/subtracting beyond limits. */
+So large folios are possible and pmd_addr_end() would be wrong in this context.
+
+pmd_addr_end() really only works in page table walkers ...
 
 -- 
 Cheers,
