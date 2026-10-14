@@ -4,86 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 578CECC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 07:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19170CC6B24
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 07:26:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9B636B0092; Wed, 14 Oct 2026 03:04:51 -0400 (EDT)
+	id B391F6B0088; Wed, 14 Oct 2026 03:26:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FD936B0095; Wed, 14 Oct 2026 03:04:51 -0400 (EDT)
+	id AC2DE6B008A; Wed, 14 Oct 2026 03:26:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EC566B0096; Wed, 14 Oct 2026 03:04:51 -0400 (EDT)
+	id 98B016B008C; Wed, 14 Oct 2026 03:26:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 62BEC6B0092
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:04:51 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8662A046E
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:04:50 +0000 (UTC)
-X-FDA: 85320344340.18.468F6A8
-Received: from mta1.migadu.com (out-205.mta1.migadu.com [95.215.58.205])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8BD03A0004
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:04:48 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ra8dCi7Z;
-	spf=pass (imf25.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.205 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 6BDD96B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:26:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7868A047E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:26:12 +0000 (UTC)
+X-FDA: 85320398184.16.F519419
+Received: from mta1.migadu.com (out-48.mta1.migadu.com [95.215.58.48])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BF3AD100004
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:26:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=D1QEeRz0;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.48 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791961488;
-	b=ymPuvy8504bcJk0ZBoNDutLKzFQE/DZCgHr3LNIEkr02LmDPb5SAcfN1B36Kighkz//po4
-	Pw6RBtDJfC1AcXFDkvI9tVCYPyG8jlsNYdyWSgheytzG+NP/WItR7iV9CseessmbgNhCTg
-	HkP4Cu83/x8COAzGLk3JL9GX8UAgUbM=
+	t=1791962771;
+	b=rEiiaGRbtVjjmQkX5R2VpAGP5HlV/bBHymfdB8d2LWebKM3tp9LhT/mDOzdaDNxZcYT7eX
+	JFzpB4h5youv6CLgN3u3oTb60Ek2YvOO2YGwI2r/M7A/6Ayd4RFhgeLDS+2eceWv3znxnk
+	O2nftI5+BfZgAahz+idmwqrPrs5ElZE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ra8dCi7Z;
-	spf=pass (imf25.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.205 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=D1QEeRz0;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.48 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791961488;
+	s=arc-20220608; t=1791962771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B4iINhr/fa6E/H7Ed+srDK2oaltaOpyuak9IEZ6VKNI=;
-	b=wclt5SAYWSoFKvUVun8Fme+evTCyRvkGXSeLkBYJFGh6hft/MidWzcYlo7jRGzY+Fra8oP
-	8npOYcxFEjsD2pm51MQg4uHEBJjTNQ2II/OYm8KjWX5l26hEeWPhF6ylSC/EWoPCmkR1zA
-	cOBd9N2Gdqo6ed05OzTwepAcnEQrd1o=
+	bh=4+RBVSp3rJz9n0AZl54Q7QDTDYZaqjYt8GYBhm2QspE=;
+	b=3dscp/OpZV8MvqrvFgoeY9MjeBftRMotWTvKgwy8KCjSU0sqyRF43Lk7M7Yn7u67k0vQRo
+	32iJ8Mw4qx4xiMY6znFrWiQ7pfS9ID7NadydQKwuIdW5RKs7t8zNVk6sxqDtJ6uuSxSpzO
+	7k76AVZeLYa/+xiyl36BzadTAPEWLis=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=O5KAl1QIwFpmtS13iXGYwnjfmOpnWs/eRpvfDXQ+vk8=;
+DKIM-Signature: a=rsa-sha256; bh=hHZJT6a9AHSI0FRADan7O9ikGQ54SPVMGHXSCUhyLoM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791961487; v=1; x=1792566287;
- b=ra8dCi7ZPYrlpf0ZGT4M6s5BessyG3EMwJRSkca4FneIyRVZH5d6TFsDNwjy7SGBb7VreTEK
- yJTOCu31a4IsrxUCxqKqsqga19xqjmLQhSxl3ighoXU0C6qry6KRzvUrv2hRqI7PKViob04Zz+U
- WnfLmCErPkKr4gA3r/BsiZjY=
+ t=1791962768; v=1; x=1792567568;
+ b=D1QEeRz07pyQk2O3GiZVOT9dvoQwUDEyqePUb2wnY/+hVCDcveUWV0utkMw1YZVznUBRR33R
+ P0FTpxlMwEJK/k7wD9U8CqNte8OYkSoLyPaO1bZ9GDzZoBub/fAdNzfWJ5IzVHp0xQtvMWwQ99B
+ K7qpf2B1It3iMwX3SRcbRFRQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1490cbe7552e56db;
-	Wed, 14 Oct 2026 07:04:47 +0000
-X-Mizu-Trace-ID: 1490cbe7552e56db
+Received: by smtp.migadu.com with ESMTPS id 5a2aabe76301d61e;
+	Wed, 14 Oct 2026 07:26:07 +0000
+X-Mizu-Trace-ID: 5a2aabe76301d61e
 X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-Date: Wed, 14 Oct 2026 15:04:30 +0800
-Subject: [PATCH 3/3] tools/mm: add VMA flags decoding and name display to
- show_page_info.py
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261014-show_page_info-v1-3-7a68aee0114a@linux.dev>
-References: <20261014-show_page_info-v1-0-7a68aee0114a@linux.dev>
-In-Reply-To: <20261014-show_page_info-v1-0-7a68aee0114a@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Ye Liu <liuye@kylinos.cn>
-X-Mailer: b4 0.17-dev-39d60
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH] ipc/shm: fix RSS accounting for hugetlb shared memory
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261014062705.1997201-1-tongweilin@linux.alibaba.com>
+Date: Wed, 14 Oct 2026 15:25:49 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Dan Carpenter <error27@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0B5B2CA9-8FA9-4DEE-BF78-8E280F337362@linux.dev>
+References: <20261014062705.1997201-1-tongweilin@linux.alibaba.com>
+To: Weilin Tong <tongweilin@linux.alibaba.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8BD03A0004
+X-Rspamd-Queue-Id: BF3AD100004
 X-Rspam-User: 
-X-Stat-Signature: bx4i7mtfxhaixdxwzs3yfasbpd7pkfzd
-X-HE-Tag: 1791961488-226588
-X-HE-Meta: U2FsdGVkX1+ZDsbK9YyJZr8CmlW5wrXJ8RPFIZyB18cjpbJCRsn5VWdCErJDjhS2S5SRzNSmdPU2pIJv/Nuof5JUZWOiIZ5gGgD8uUPNQ+OcMvG1rTZk+upMEjLVI/xV3i1iQtHPK4JkgigMNoBjT641GYmPPHCTq/f0pPIC1uWwlNQ72GenUXUsrJQTo77X+3/LwaejlOAlK1qYAcK1Jrni7QeXn4ujTpc1cKlMHTex4ZnIv/F1NzVyH6QBB3BFbfr+pI3KjX68Vqz0QpDX9rkUB8KQ/wakrau3TbzBcEeVwIBYF7aS0vkaI/DtNISHLcizz1McuYE706v4W4m8+JYmqy5dx4vXq+CkEQSlU+niovy7lkYdLR62P68EcOzuwYqK+hOiU3Zfe24/PFAMfvYYHe/ybQmMNetZPH8X9LCgRHa0n4ZOQnqP0ojtEyOLb21jf0lwh55pwTs/axyhKiXPCNr5LXRH7I1Evnk9FMclXP0oPQfkaiYaomgjHc6krBeun3EqniEhVTs+cSmTp+azAh2TFUMP8qHus1S5oaqWWrS+NFQv23QLVwh2VBC9Q5M4XxovNkfndsew7YF8/1tBwK7BrNAqGOh0J6ZxE4TushxCgnlJFeKHfKzslZtJvvjQfR5or2QQQDphVjzlPfmZnyW9mH5EBir3eeGH9BZK22Lv3XPS/c6m6HdcBpAHZ5KP87m0jEl1xynTmGlPgXJA8J+9eiRXy3dUOCICaxqtjR8rTsivpQTNbesR3KVkdMd2PNbOPC3KMtxBygb+dD03HsdcMITJrjPYF4k2YCwNFmE3UgTo2cdSCQ4SStglexWJz5V3xa7xPyBmlSNBjw3jfbWifOSM8LzeW3rsF3EQHuf4btBpcBMls7+BKasl8DdN7tPYxIyU3POSdx/tR9kyMto40eVwmjULhOe6NdYAmtBDfRJCcc5PPecc5YSC988aiRQgZSlSLzN76Ud
- gxAfeK8k
- XMfEzYWLFcWI6SLaXIz4VpdljyLKFA14779jumDaBkKn6Ri5quBfzy77rTN+IO7n0Y0IY9ndhyAor25XIclQrjb3uAK3jakrir8cH3KYQ5lxgSytHVPPvGbBidoQCtELeqL0cd8wc1OBTlgmKhCLu1NvGbyZ070IfZxbi8RIKJ61Y6paHVRlcdDaxg2B2uGdYV7rr3Glai5FgsIsYIMmBDCx2KIqid8WiAd0M7QN0XJvAhJk31qmkRinXy7R0zk4mfLqM3SxBly3bPRrpCo5ykttwxQ==
+X-Stat-Signature: urerz3sjd63h48fax7iys6um1hrbnuf8
+X-HE-Tag: 1791962770-626710
+X-HE-Meta: U2FsdGVkX1+O5Lb7T4OUvCo2FAWTfTQFYlvye/UKqdMxFOPlDoXfQttgGaY+EQnx3Wpp1sostPh57TELoAHTssFMnnz6kas6gBejaD6QMEJoI009l86pOgitJlRLjN2R11NP0eb4qloeHBaN23PwAACNI5oGI+QSy8Q7wKjF0RLan2/X1joULY3l6xUqrdYdjOLiEyqMqvDxcRS6P42OoIKBKCH8VI8nVJd4pUfoo3qb4+88LrlwvgEyXAxUezoNHfOrfFj8BD4kWOXfXr2ANgKp4SA5gVnwxADz+xa8i4kfBxccQjGZjzKBytBNJ56Ndtffvk/KcSjquFPR+R992himQ7cbjksPU2/zVHSKXQa3Vum0IGkd7CEb+fcQANYVJ01FYVxx+FRAeMJT/gslwaty9ctSIKRwwwpgnUCkCBr61407dp7x0ZdB7rKCgLSDvUjFHKmMdhbPGcGo35GUNIkEQbLN75zuLgtHVw26WzdKUrrGaxlM7bYm/x5c+Otd3xm5InRB5ITMzxlWnX6qQ8wzMu3RCNArFV65tnp2TgYy5gsaRo49cI4jkwa5gRagCgtUhZwjvrIiplPXgugD53wxvk5buKrBe/DN8Q7qiqXdPQ1tfxszjO6AHDI9/nyG0r4ervdHDZZU2+HBCd2rLTLSzgXfzPXejzfROmN+UoGXFkEkYtWbU70Sc/0rZ1y0+Z1AUQuI4BfaybCqhiDmIJPTRC9sxvQnEBu+dsmaJMPXzeYw1NNEeqBrZbJF8iHh0PX6B8NCfWbPiizrVOBn3nqNJvkg1d33zh6ls5u6NsdQYi1PS4AAbEBfgG7maQU0ZBfYpC/Xjg3fEogCMTSzXsFJJd8mjOoY+YYb7YnqR2Ip4ke1Q1CxHRYvDRN/3OtRCWpgR2wljeeC+1fS3YuefyKBf+oL9VGzyfP/6hjaOBdWREbaa5PX4t0BnUkoIBsAi3nU+gfLO1nVytFbkXM
+ tQF6EKfE
+ KbRdB6M/Nx0tjjspnMmMbfLvIfBwyoef7LIju7WN23tQJ6/wAHG7S9qOaLSI36kSPwOjBODW5DmrQLOPLZwxfYU07I9FfBunW5J3FcqLZLlr+8UtfH6pW8mLGjGTh3iC+sgBavxD1ouMShTDIK+KY0tWa4XlNV5+lym7UoyLhu1HNAyka3p12+H1Vc1rqEFWAdAB9kKfJoFfxeTV5tlu4Md17IBulIw09y4zvuYSxHEOlXDwPrCWcHkbGCaAwpoW7cZnG16SpZJCWG0sMID0eZTGL3XiUID8O+lpt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,105 +98,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
 
-Add support for decoding VMA flags into human-readable format and
-displaying VMA names. This provides more detailed information about
-the virtual memory area containing the page.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- tools/mm/show_page_info.py | 54 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 53 insertions(+), 1 deletion(-)
+> On Oct 14, 2026, at 14:27, Weilin Tong <tongweilin@linux.alibaba.com> =
+wrote:
+>=20
+> Commit a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in
+> filemap.c") changed mapping->nrpages to count base pages for hugetlb
+> folios. However, shm_add_rss_swap() still multiplies it by
+> pages_per_huge_page(), overcounting RSS in both SHM_INFO and
+> /proc/sysvipc/shm.
+>=20
+> Use mapping->nrpages directly and remove the unused hstate variable.
+>=20
+> Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in =
+filemap.c")
+> Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
+>=20
+> ---
+> ipc/shm.c | 3 +--
+> 1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/ipc/shm.c b/ipc/shm.c
+> index 25190965c9a50..5ed2beef0f1d2 100644
+> --- a/ipc/shm.c
+> +++ b/ipc/shm.c
+> @@ -943,8 +943,7 @@ static void shm_add_rss_swap(struct shmid_kernel =
+*shp,
+>=20
+> 	if (is_file_hugepages(shp->shm_file)) {
+> 		struct address_space *mapping =3D inode->i_mapping;
+> - 		struct hstate *h =3D hstate_file(shp->shm_file);
+> - 		*rss_add +=3D pages_per_huge_page(h) * mapping->nrpages;
+> + 		*rss_add +=3D mapping->nrpages;
 
-diff --git a/tools/mm/show_page_info.py b/tools/mm/show_page_info.py
-index 1fbef3889e91..9dc65b4d2b29 100644
---- a/tools/mm/show_page_info.py
-+++ b/tools/mm/show_page_info.py
-@@ -7,10 +7,11 @@ import sys
- from drgn import Object, FaultError, PlatformFlags, cast
- from drgn.helpers.linux import find_task, follow_page, page_size
- from drgn.helpers.linux.mm import (
--    decode_page_flags, page_to_pfn, page_to_phys, page_to_virt, vma_find,
-+    decode_page_flags, page_to_pfn, page_to_phys, page_to_virt, vma_find, vma_name,
-     PageSlab, PageCompound, PageHead, PageTail, compound_head, compound_order, compound_nr
- )
- from drgn.helpers.linux.cgroup import cgroup_name, cgroup_path
-+from drgn.helpers.common.format import decode_flags
- 
- DESC = """
- This is a drgn script to show the page state.
-@@ -75,6 +76,52 @@ def get_memcg_info(page):
-     except Exception as e:
-         return "unknown", f"Unexpected error: {e}"
- 
-+def format_vma_flags(flags: int) -> str:
-+    """
-+    Format VMA flags into a human-readable string.
-+
-+    :param flags: The VMA flags as an integer.
-+    :return: A string representation of the flags.
-+    """
-+    # VM flags from include/uapi/linux/mm.h
-+    # Since Linux 6.19 (commit 2b6a3f061f11), VMA flag bit numbers are defined
-+    # in an anonymous enum. For older kernels, we hard-code them.
-+    VM_FLAGS = [
-+        ("READ", 0x00000001),
-+        ("WRITE", 0x00000002),
-+        ("EXEC", 0x00000004),
-+        ("SHARED", 0x00000008),
-+        ("MAYREAD", 0x00000010),
-+        ("MAYWRITE", 0x00000020),
-+        ("MAYEXEC", 0x00000040),
-+        ("MAYSHARE", 0x00000080),
-+        ("GROWSDOWN", 0x00000100),
-+        ("UFFD_MISSING", 0x00000200),
-+        ("PFNMAP", 0x00000400),
-+        ("DENYWRITE", 0x00000800),
-+        ("EXECUTABLE", 0x00001000),
-+        ("LOCKED", 0x00002000),
-+        ("IO", 0x00004000),
-+        ("SEQ_READ", 0x00008000),
-+        ("RAND_READ", 0x00010000),
-+        ("DONTCOPY", 0x00020000),
-+        ("DONTEXPAND", 0x00040000),
-+        ("LOCKONFAULT", 0x00080000),
-+        ("ACCOUNT", 0x00100000),
-+        ("NORESERVE", 0x00200000),
-+        ("HUGETLB", 0x00400000),
-+        ("SYNC", 0x00800000),
-+        ("ARCH_1", 0x01000000),
-+        ("WIPEONFORK", 0x02000000),
-+        ("DONTDUMP", 0x04000000),
-+        ("SOFTDIRTY", 0x08000000),
-+        ("MIXEDMAP", 0x10000000),
-+        ("HUGEPAGE", 0x20000000),
-+        ("NOHUGEPAGE", 0x40000000),
-+        ("MERGEABLE", 0x80000000),
-+    ]
-+    return decode_flags(flags, VM_FLAGS, bit_numbers=False)
-+
- def show_page_state(page, addr, mm, pid, task):
-     """Display detailed information about a page."""
-     try:
-@@ -106,10 +153,15 @@ def show_page_state(page, addr, mm, pid, task):
-             fields["Page VMA"] = hex(vma.value_())
-             fields["VMA Start"] = hex(vma.vm_start.value_())
-             fields["VMA End"] = hex(vma.vm_end.value_())
-+            vma_flags_hex = hex(vma.vm_flags.value_())
-+            vma_flags_readable = format_vma_flags(vma.vm_flags.value_())
-+            fields["VMA Flags"] = f"{vma_flags_hex} ({vma_flags_readable})"
-+            fields["VMA Name"] = vma_name(vma).decode()
-         except FaultError as e:
-             fields["Page VMA"] = "Unavailable"
-             fields["VMA Start"] = "Unavailable"
-             fields["VMA End"] = "Unavailable"
-+            fields["VMA Flags"] = "Unavailable"
-             print(f"Error retrieving VMA information: {e}")
- 
-         # Calculate the maximum field name length for alignment
+Hi Weilin,
 
--- 
-2.43.0
+Thanks for fixing this. Using mapping->nrpages directly for hugetlb
+folios is correct.
+
+Could you please simplify shm_add_rss_swap() further as shown below?
+
+The info->lock taken here only serializes the read of info->swapped. It
+does not protect mapping->nrpages, which is updated under the page-cache
+XArray lock. Therefore, taking info->lock cannot provide a consistent
+snapshot of nrpages and swapped.
+
+These statistics are inherently best-effort, so READ_ONCE() should be
+sufficient for both fields. This is also consistent with
+shmem_swap_usage(), which reads info->swapped using READ_ONCE() without
+taking info->lock.
+
+With that, the nrpages accounting can be shared by all backing types,
+and only the swapped accounting needs to remain conditional on
+CONFIG_SHMEM and non-hugetlb files.
+
+Please also mention the lockless snapshot change in the commit message.
+
+Thanks,
+Muchun
+
+diff --git a/ipc/shm.c b/ipc/shm.c
+index bb1a721a3e74..6862f681373f 100644
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -936,26 +936,11 @@ static inline unsigned long =
+copy_shminfo_to_user(void __user
+*buf, struct shminf
+static void shm_add_rss_swap(struct shmid_kernel *shp,
+     unsigned long *rss_add, unsigned long *swp_add)
+{
+-     struct inode *inode;
++     struct inode *inode =3D file_inode(shp->shm_file);
+
+-     inode =3D file_inode(shp->shm_file);
+-
+-     if (is_file_hugepages(shp->shm_file)) {
+-             struct address_space *mapping =3D inode->i_mapping;
+-             struct hstate *h =3D hstate_file(shp->shm_file);
+-             *rss_add +=3D pages_per_huge_page(h) * mapping->nrpages;
+-     } else {
+-#ifdef CONFIG_SHMEM
+-             struct shmem_inode_info *info =3D SHMEM_I(inode);
+-
+-             spin_lock_irq(&info->lock);
+-             *rss_add +=3D inode->i_mapping->nrpages;
+-             *swp_add +=3D info->swapped;
+-             spin_unlock_irq(&info->lock);
+-#else
+-             *rss_add +=3D inode->i_mapping->nrpages;
+-#endif
+-     }
++     *rss_add +=3D READ_ONCE(inode->i_mapping->nrpages);
++     if (IS_ENABLED(CONFIG_SHMEM) && !is_file_hugepages(shp->shm_file))
++             *swp_add +=3D READ_ONCE(SHMEM_I(inode)->swapped);
+}
+
+> 	} else {
+> #ifdef CONFIG_SHMEM
+> 		struct shmem_inode_info *info =3D SHMEM_I(inode);
+> --=20
+> 2.43.5
+>=20
 
 
