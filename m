@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3155CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:58:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4479AC3DA7A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:58:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DA586B009F; Wed, 14 Oct 2026 13:58:18 -0400 (EDT)
+	id 1BFCC6B00A1; Wed, 14 Oct 2026 13:58:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7641F6B00A0; Wed, 14 Oct 2026 13:58:18 -0400 (EDT)
+	id 170776B00A2; Wed, 14 Oct 2026 13:58:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58EFE6B00A1; Wed, 14 Oct 2026 13:58:18 -0400 (EDT)
+	id 010F76B00A3; Wed, 14 Oct 2026 13:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F73E6B009F
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:58:18 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B15EA16077A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C4C846B00A1
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:58:19 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B5401A073D
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:58:19 +0000 (UTC)
+X-FDA: 85321991118.09.7280CC6
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5879DC0009
 	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:58:17 +0000 (UTC)
-X-FDA: 85321991034.08.A94F4CD
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CA01D18000A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:58:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QdBm3xXN;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Wj1x7WUt;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792000695;
+	s=arc-20220608; t=1792000697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B4y6AvoDjRL3MjFRJLFGO2/ddqJNiHaVlDDXEV/4hBQ=;
-	b=gm3dhqPyuRVpq69CfDocDgr58Ogz5grAcC21LYNwJXTGoOwNPfC3vHTmq3Vobk7AvtQElV
-	mtcXqf9cMDVeWTF8ai3AnxTbc63LwxJjVYbYlcxSd9ONqL6HY/9sguKlWZfncXzdcRIqlc
-	NTnmTPKrVWxJQt0aLMUYZrnDcbyhzoY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QdBm3xXN;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	bh=gCaGfSim3PIx3Nsok29/mbPBbK9Nc93PZX36t0w056I=;
+	b=nJhQLkVOOQh4hUtaeHaI8FF/cdTYIIF+1jMBjzQt5A89nMy93uhI1v9o4cWUafiJh//wXo
+	n/PVJ6bdPn5/esPuLLuLCYA6PiUpUEv0Nkm2yPupRliGmX+cCuoS4Nyxr4ptTEYrz3lho5
+	kS79Bt7QOeUkrqEa+zoKiVh40UitzFA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792000695;
-	b=UzK5eRDcWwR9EpLdLZzacTInf6KhzVTM+x4up42hsl9WRO0QCuAcX9BP8KCLjl9FWxDiq+
-	QfTf0Ww6AYD4u5Raj7ha91f6ywOYFX6YXZlPmbhe9Ur/cAKt/Qtbm1MEOSM+JYX7M6c8yz
-	/atPgHPbzM8gv2/swkYxRvprImgF4wY=
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-917c04630c2so56179286d6.3
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:58:15 -0700 (PDT)
+	t=1792000697;
+	b=mUtEiAGpxLymVvMqQ6w8QyulTpT8EQ4XZMW1QKSQVHxzurGEF7eO2FZW9jJHVp4XDTTSOB
+	vAA3otNlA9kWwGHs+gUJhYcSevV5hS08ulF/D/51mnVB/lhqkRqtClcVzROlro3qTbymDi
+	iNDI5vpzGL5nAdCACcv72kfJnX1lvi4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Wj1x7WUt;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5339381b46eso44866011cf.1
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:58:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792000695; x=1792605495; darn=kvack.org;
+        d=gourry.net; s=google; t=1792000696; x=1792605496; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=B4y6AvoDjRL3MjFRJLFGO2/ddqJNiHaVlDDXEV/4hBQ=;
-        b=QdBm3xXNnM4mHeJHG7N5hDYmQOmtwA/fDFpiEnqOvbHf0Y7MHx7zFHq74XNsaIcyKa
-         x4iPE/sxdcaxt47gKmyiyNhCOLK9Z6Obz9mekDvyJOLHvsZQ1tNwhzZb8ESoCKf0xEIQ
-         4dtUvkKBaFYDTQ5PevchiDrsyGBrC1m6Th78GzpNalsMohE9nL3cGFqnZQFggjIInHZ1
-         H+qxL9AF1bJ5iZAs7sKV7y3CgZH6By1MURqLlYeSipgvVMk7LOgIAIiyzAabKATVQ4jF
-         TNQOL2N4ygCvTc5aGunfAgFWkHWYT+z5sW2LR3M67Xpbv4pfgU0pMI9Ao66GnrKmcSXw
-         1TfQ==
+        bh=gCaGfSim3PIx3Nsok29/mbPBbK9Nc93PZX36t0w056I=;
+        b=Wj1x7WUtalgVXIq45Vixmrj9PzKyzCHLKDGzBLVugw4qgXzJS6C85CsVl+AoCnLZLO
+         KKiDYXI518d3oKOjJ5S+ax+E2I9gF9in8vFxoGtVvDOLOuVY3GDEJ30eHZG6mNMrOZOr
+         8x+WssEB0S5/Nh/XMqMYimXXHxFDbdvjZswvLYh/CT1ySgkryL3gcohLEcmXITrGmohZ
+         gdMXFf+uxzQEI7dvzH4Ww4tn4/pOsHlTlR3YBCFUP9kpRosHyt7J1tYF6VEq8QaBxIe/
+         B2dUqx1xCVFuSC6qIA/dCpnUC8E7NOdLkeJ9rAxllYBUVNGJxmZsoZwnDI9t0Zx8V8jS
+         ZuvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792000695; x=1792605495;
+        d=1e100.net; s=20260707; t=1792000696; x=1792605496;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=B4y6AvoDjRL3MjFRJLFGO2/ddqJNiHaVlDDXEV/4hBQ=;
-        b=p3BoFwBkkctW7vGOGA9abAiTzomE3j6Vz9nY/sF+dFIRjiTzBy1KFqMUcLEYv8MgO3
-         lrQGdqAd3uoyKSRgSLOzojMgUPaIwAVaoSjFBGgo3Dg84JJQsBVVLukTGX6Or+2dfach
-         pxsP1/gwvBtMRUFhwSnetD3MHr6Rkqg5L9EwjhV1FJGMtYGIXO1vTKn+wJXgnhzj4KX+
-         cF3iHgJTDQAbc3h0la32zxqwBnHv+xIKcxUkxzIuR7Hs/Vi88C8/xWp2ZWyRtjBEoHP1
-         chmWmKZpvxEeVtjsHulDrRG3fNBXmbDNdwPYgmme55uoqxwlzwLzu/zofPmoTw+cHnM4
-         A2LQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzcG5NUsalx4yl8Tg4ujtF65PYRXle1VvIsJrUUbvixUwKu2ghoSxGMbrWoxyESPhqleMuBH7H0fQ==@kvack.org
-X-Gm-Message-State: AFq9FYKXCgGCzyS5W1Jc7v/GScsM/2lxbxhRt/EdKlPYhOgAjP03dm5X
-	J5WHONBzPicPzn9lBywq6RqoLjpcEj9NaGc2XgGrzrheCCAqBu+dV9QYZYcpDLT8s5mNWcyVLdO
-	ckZ5fYOQ=
-X-Gm-Gg: AYBFou1Khqa4L4TZK039HUkhmkQnyDCvgycqGkMLYTLbMRpKJWUQBLWH00LZwBxXyhU
-	LnKQlQMLgvYic+hRg6q42SQrCCnxiIxbx8RYJ+ishX+sSKvTC9Mh43qKDjQ1m+YR61Gdyrywrwu
-	x6+E388Db3hZ1cBQkSsy1LgCBXe+99nqh3HQTJj5arviNQCwIJCqBmb7olOS7Bzky52tTrATH2T
-	Zj6DmCTNYuWS2847wxTP3jBjI/89N1O4ta+osA9vp18JS3WtUTH1GVx8/yqA2Rl28P2cHN8+6eV
-	xehaQ4NZ3MYn/ZSASSNQj5Dm6e5c7s9TYVRP4tOJ+hBnLR6bQfmoCYobayaHw63RVMnqFNmbzpy
-	AaP2dII+DT9xy4uqqvk4cMo5CYXOL1MNIbCxqZZ8GyIHFlDsWOaS+47NeCOoAObUPwJ9ppoXj9l
-	hYYsiWOuuaiNvPmwb7JdMCzv5I6EOlK4luuNqnnVTTuTbPtoOxQPI4NF7a10MnvCEV57DUOh/bM
-	80Nq6qZRxg4jSgM4b8Qt1BtoJ9YSyS2I1QiZnuPGT2LhaYZL98KOoCqLEWd
-X-Received: by 2002:a05:6214:2469:b0:91b:9441:131a with SMTP id 6a1803df08f44-91b9441155dmr124063136d6.2.1792000694921;
-        Wed, 14 Oct 2026 10:58:14 -0700 (PDT)
+        bh=gCaGfSim3PIx3Nsok29/mbPBbK9Nc93PZX36t0w056I=;
+        b=VHjktvL71fco1UR3Kj8rdsez/lfGuLrmOtM0GxC50DudgImB1T3C4p/Lxefh2AOqTE
+         cHyJ2+6wNE16JY9+qX9FA5NwtS7x7Z7STkoP6vy+3fI7WU2HUt9cYMT9nprvZCclZ6bu
+         i8/tr+qR3Pbno5JIbngKyJx0XA2uklRkbl1EHKdM5E84w9q1HbwoG3rLmh7d+p6MQnt2
+         XGERq1vqo5vFFokbjR/gdAoNssmWkrYtS/PycT3muMKFGNiJSoKc35zJRxNXK9Wv8H5T
+         cGktVDTBmnCypUa4yCI1JQ14hOX6YS9sZgAse///SOOp191qma5biWRlj9onjiUhVLZZ
+         XSTw==
+X-Forwarded-Encrypted: i=1; AKwUvBwRzott5cLKnJNH2iEYzgT9gUoybFw5nBxLX/sO/B01sG9KNR9YzUouU18+rT9SCNOKIs02zk2m1g==@kvack.org
+X-Gm-Message-State: AFq9FYIM86KA8wUWUxRhWAQNcs2veBnB3uz0pC1dPgsbfAPUsgZkANyg
+	jN1P2w7Gdt2HABb/LSfvxbCOShW9bKh6rX2OpIRANQkzTEgGP+WJRWqq+ES6H7IbjDY=
+X-Gm-Gg: AYBFou1SND75TYzN4GzOpSh4y7C5+dh2tcCCct8FqIO0aWCg5QtLLN/XoPc8yQSxkrT
+	DAmRbTFJWAkFdf9yvIrQwGcO5FiM9TWL0GnrfMVVaHLUTz5YlSiF9w5kpsU61z9wOiKVM7KlY3o
+	3w+9B2chjhMao3OH2ocitzYyP1IHiahd2/bUsTfHEDMudn5yVEkx7H6I3eLTBYGd9iVzOYD/2RG
+	V9KZECtziNM7urlT/r9D9L9RU6DsYUe5ZlPdC8fppLtjapbcu6//MLxWBAbYrKRKmSNmRmtQvqc
+	8WjYLemtswcdNsr7+F2y7fQZH8MDSS5uQ+6qImoZNWulJXH7jyJ6uJ4Je3VsUWONVvDKafmLOzn
+	Ifiom+NZmpeIAnpdgla1AkHFflB36xVCapqwkDNhVkwgscVxDHwRdT5GteA+6iE8UHwq3SVPqAN
+	Ft//f7nCRe7gdlLx/8vbK5Zu1WZ+6vCDCPmAlkLFdrHE7ar14RA9Urs9X1HFziRuI1DeYEXxsav
+	6FcMJuRbEKru9B8JLeBK/NMP8woE4aGYta28jx6oqv2hJMjfWmsx8CpMfm5
+X-Received: by 2002:a05:622a:1f0b:b0:535:1291:f1c5 with SMTP id d75a77b69052e-535acef8d28mr253194901cf.54.1792000696292;
+        Wed, 14 Oct 2026 10:58:16 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b97b95847sm58498006d6.32.2026.10.14.10.58.13
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b97b95847sm58498006d6.32.2026.10.14.10.58.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 10:58:14 -0700 (PDT)
+        Wed, 14 Oct 2026 10:58:15 -0700 (PDT)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
@@ -106,22 +105,22 @@ Cc: linux-kernel@vger.kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
 	shuah@kernel.org
-Subject: [PATCH 7/8] selftests/mm: check MADV_PAGEOUT file permissions
-Date: Wed, 14 Oct 2026 13:57:55 -0400
-Message-ID: <20261014175756.2035176-8-gourry@gourry.net>
+Subject: [PATCH 8/8] selftests/mm: check that unauthorized MADV_PAGEOUT skips large file folios
+Date: Wed, 14 Oct 2026 13:57:56 -0400
+Message-ID: <20261014175756.2035176-9-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261014175756.2035176-1-gourry@gourry.net>
 References: <20261014175756.2035176-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5879DC0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CA01D18000A
-X-Stat-Signature: 1ifycjz4tyq8sx44jt57fjbacmqmtcgo
-X-HE-Tag: 1792000695-134534
-X-HE-Meta: U2FsdGVkX1/R3jCkHsjZhdMsACWnYYHGsltbE8UVSHIwv6gt8bPzNu/XptwWizfyQbjj7kboNRamevSqSnbLWebKLUrProaHdbVVbJaKJ6ErxNV9Kb0EV9j9AIpiIayuXf8hRXmtZ+rYqKMRYICxI3aXFLAhDaXdsA0Vo75jH2UK3rDSIUQOCon1Gv9Zwp8pITT5i/SoFI1hfrjB5+wzuyiel8Y2XjDokhJYWGdTNERbGkjAJnOTCDy+irk9qdkOrSrVS2jzKHIEqLAoKRSA+6f6xujI7CUQ7Hazq/UoribfyI4NadGVbzJAqMdeQ9ESiqTe6w0doaP1Wc4MSeUjZ7hs+Lh8DmzNAcexz5Roo9mhMSNc4QBHblwu/vh7eWgN46qOzVHp4uQD4p+DXVT6fcS5g7CibFwZ8MNRGT55eiWR/2vik7W4DiVZu4bPemk3pFr7ksbva8wLCPwOhwRTF10dOmwVhpdo7QCXsFmBm0WYTUWwwqwW2RMJghtbDCqNQH6mir/BU4tieczpzC9vTvaQuQBdxEP3hwB2WegWBKJPo5glhjvBQzR8LexS+21Dpi0r0OWoqbnZ0AgiruQjsMzo2IoYpiL131u/BoLUzPWMujhQn13QNr4vJVjMHXN/T/ahh/mdMw0zp2WNA+o0OvibEMW03Br9UceH0t+zNVFQpvVyeX1ngDmKtdvoPbEGxO07n5Dtt961cG0ISPyVLC4Mk3IwLV9rAtoVOPOkIwbHO4arVroh1e9zrfXy1hibi1onVyjBzUOkWXVyzHzJJ2PT54jBmZCOQwKqF2bn7ytUvX51mzUycA5kJ3N1QWS0Pd9SRXy+VKcEqyTP9xvWlg3BL5q6xLMjxArTZML5luYB8r/UIxPgAiYVltJ3LOZz/NIcNPR8Q5ZY8IeGfsNH2auHRGqGbsvIYagj+yHIKzyV48KH3r29V4POqjXTt0muNvwdGAH/GJPV9yzrOt/
- WNe2Deiy
- UyyRQrPf2CQXcQTJzZ7OpmVLrcl1likc2+scZ/vxOnF+MxPcwDM77RyI63H3OIFnJGGWLi5iFmGTvBw7GdiiKf44rOVEQp9Z+RiE3+O9hk3C2C8z7xoayTFDjhmtVgjH+EtPtf5rdWf8Zjhd9lY4WHm+Rdd44qRhvvu3AQId1SYTfon2skilDbQIoWE4pPecewP9eopL4n8NfQjbFhPHQYAE4KopKnZH4IH30sU+zfjt8pW6bULFVmA8qnE0S5X7GmDlYT4eoikzjWv5frpkyOhUCFZchRVym1tgAou8OEUN4hWs31CPut/zVF/eako4zDWi7wQzABkfYKgrse2aNniqBUgS/pHABaFgO
+X-Rspamd-Server: rspam05
+X-Stat-Signature: bxxjf1fddwzrusnt8dp8j6xjo537oe3y
+X-HE-Tag: 1792000697-566147
+X-HE-Meta: U2FsdGVkX1+lpQ40INylaS00wIWHmXooY5yR6ejOgO8pqE+Sie45fGGHKtFe92/axtZyhzPFE5N+7q34DucuqAZP0HXnmCwVasi9E457IVm7RSl0HdXCpjyUkXIcrou1rHnZMPckkV7lDqJFT4pbmySaHkYVx9h7KBzIpEq/CdpOBYabr4lwQ8flSjpRGl9s/1rmnik0rxYGoGbMHNavsYBnKbEiPC1U3BmXLVu7vDyBwQvCG29vGfnWVMUDQM1AqL1JywLvXdxSIotKKPhogG9sWPhRL4PSHgonJTQuDjK9XB9f8rBFgaLAnsRvyH+W9ciTwcRAOyjA6xBmt4lk9pNy9Qnsu6NGdqU8ofIBMUyPGQb+FTjnI0OxxQfQBsOltYt6pksWgV9WWuN7W5K+ONR8cPmv27nrpOjfFn/uTrsQ74zMzgagUYsVegokZSg8qU4YFBiYEsOIi9UPqy3RtxntxT0Q1jf1QJMXxeTODztnauE4sZOFrZyqy2mgp8DOEqBbYs0uZcL26LRElt/zdcYa8HXvyBlyEln1eoKaFv1Peo/tyhQ5BvxtyMUqPNfijyW+0kuAWglUN+xOKDOWpALRZkKUu+zGMqtj5e/Ir5f2I2gPalUml4ucsOtCbAkSEjQUidX4wBh9A3aI0cjMacJbkeWnHHbnTUFmVwkYsd5CQ4fQBbZcioWv1HPHsJBBiBj0TMg0Z8P5WX5Ut+FNu45iWVhV5Xdsk4x8b/u3W52gZGamdXUNhFCwHsTDQzItReDZsZ0JuQzIOrhvD3C50jZh+PJMSfH3peFOcWteXNWmTH9Z3eYPfGOHWjfHj51MJfWNuXtQFY0gVV9/zEOOBsG2Y0gySdl8gal9EtGvK5PKjV5OBFzxtr0LDYGGrZ+saY6v8f9MNDVAJVLiQZvGtbu705J3l51au3GZmIruLnyGDCogjvwAl810DyXdqtotHLXUk9QGh8LG8BKp0eg
+ nl95+CFN
+ EvTAQo0pAWdS56FQcDUyr2hhp7YVGvCkCuxHrQ8NwO42NMfp8QXecju5rbPDyHxDvL1QBqNQQsLllgWeY4etY6ty/WNGy+vKjc/8hP0r5u8mOGrtnrhOlNQobTA47OUIgqSSc2355morCtcM00f264/+tRxuR1qEzbg3erXaonkD/ZT1qqW5iTuGpspYWjFp8dQMtXvKA87y/opvZvSGo97JVdObWk2SUaIPOGB5VlkIaj9bbhA8P3KG8sVVZ9csYfZUNyCKzhxvD/LEYi0Z14YEXEnj/WdL+Y6sFimS/uF0BxIdp3eac5mFabX52rjv3Tc+aIQszZ0v9DEpJ+xFeIIyATU15v7QZ2IEe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,186 +128,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MADV_PAGEOUT only pages out file pages for a caller that owns the file or
-could open it for writing, per can_do_file_pageout(). Any other caller
-gets nothing from a shared file mapping, and only the anonymous COW pages
-from a private one.
+A caller that neither owns nor may write a file may page out the COW pages
+of a private mapping of it, but not its file pages. When the advised range
+only partly covers a large file folio, the folio must be filtered out
+before it is split or reclaimed, on separate paths for PMD- and PTE-mapped
+folios.
 
-Check that the owner of a read-only file can evict a clean page of it,
-once a writable file page shows that file pages can be paged out at all.
-That test runs as an unprivileged owner even when started as root, so
-that capabilities cannot stand in for ownership.
-
-Also check that an unauthorized caller leaves a shared file page resident,
-and that it pages out the COW page of a private mapping but not the file
-page next to it. These need root to change credentials, and skip if that
-fails.
+Check that partial MADV_PAGEOUT by such a caller leaves every page of a
+PMD-sized shmem folio resident, both when a PMD maps it and when a mapping
+of half of it maps it with PTEs.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- tools/testing/selftests/mm/madvise.c | 105 +++++++++++++++++++++++++--
- 1 file changed, 100 insertions(+), 5 deletions(-)
+ tools/testing/selftests/mm/madvise.c | 121 +++++++++++++++++++++++++--
+ 1 file changed, 115 insertions(+), 6 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/madvise.c b/tools/testing/selftests/mm/madvise.c
-index 8822991eae4a..74202fed2d04 100644
+index 74202fed2d04..d59c03ec8191 100644
 --- a/tools/testing/selftests/mm/madvise.c
 +++ b/tools/testing/selftests/mm/madvise.c
-@@ -5,6 +5,7 @@
- #define _GNU_SOURCE
- #include <errno.h>
- #include <fcntl.h>
-+#include <grp.h>
- #include <sched.h>
- #include <stdbool.h>
- #include <stdint.h>
-@@ -12,6 +13,7 @@
- #include <sys/ipc.h>
- #include <sys/mman.h>
- #include <sys/shm.h>
-+#include <sys/stat.h>
- #include <unistd.h>
- 
- #include "kselftest_harness.h"
-@@ -208,8 +210,9 @@ static bool page_is_present(int pagemap_fd, char *addr)
- 	return pagemap_get_entry(pagemap_fd, addr) & PM_PRESENT;
+@@ -88,10 +88,11 @@ static char *map_aligned_pages(struct __test_metadata *_metadata, size_t size)
  }
  
--/* Map a shared mapping of an unlinked, zero-filled temporary file. */
--static char *map_temp_file(struct __test_metadata *_metadata, size_t size)
-+/* Map an unlinked, zero-filled temporary file with the given permissions. */
-+static char *map_temp_file(struct __test_metadata *_metadata, size_t size,
-+			   int flags, mode_t mode)
- {
- 	char template[] = "/tmp/madvise-pageout-XXXXXX";
- 	char *mapping;
-@@ -219,14 +222,21 @@ static char *map_temp_file(struct __test_metadata *_metadata, size_t size)
- 	ASSERT_GE(fd, 0);
- 	ASSERT_EQ(unlink(template), 0);
- 	ASSERT_EQ(ftruncate(fd, size), 0);
-+	ASSERT_EQ(fchmod(fd, mode), 0);
- 
--	mapping = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	mapping = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, fd, 0);
- 	ASSERT_NE(mapping, MAP_FAILED);
- 	close(fd);
- 
- 	return mapping;
- }
- 
-+/* Become an unprivileged user without capabilities. */
-+static bool drop_privileges(void)
-+{
-+	return !setgroups(0, NULL) && !setgid(65534) && !setuid(65534);
-+}
-+
  /*
-  * Both hints are best effort, so these tests check what userspace can rely
-  * on: which mappings are accepted, which pages must never be reclaimed, and
-@@ -432,7 +442,7 @@ TEST_F(madvise, cold_preserves_dirty_shared_file_page)
+- * Collapse a PMD-aligned range into PMD-mapped anonymous THPs. MADV_COLLAPSE
+- * may fail transiently with EAGAIN.
++ * Collapse a PMD-aligned range into PMD-mapped THPs, and confirm the result
++ * with check_huge(). MADV_COLLAPSE may fail transiently with EAGAIN.
+  */
+-static bool collapse(char *mapping, size_t size)
++static bool collapse(char *mapping, size_t size,
++		     bool (*check_huge)(void *, size_t, int, uint64_t))
  {
- 	char *mapping;
- 
--	mapping = map_temp_file(_metadata, page_size);
-+	mapping = map_temp_file(_metadata, page_size, MAP_SHARED, 0600);
- 	mapping[0] = 1;
- 
- 	ASSERT_EQ(madvise(mapping, page_size, MADV_COLD), 0);
-@@ -449,7 +459,7 @@ TEST_F(madvise, pageout_preserves_dirty_shared_file_page)
- {
- 	char *mapping;
- 
--	mapping = map_temp_file(_metadata, page_size);
-+	mapping = map_temp_file(_metadata, page_size, MAP_SHARED, 0600);
- 	mapping[0] = 1;
- 
- 	if (!pageout_until_evicted(_metadata, mapping, page_size,
-@@ -639,4 +649,89 @@ TEST_F(madvise, cold_preserves_half_of_pte_mapped_thp)
+ 	int nr_hpages = size / pmd_size;
+ 	int retry;
+@@ -100,8 +101,7 @@ static bool collapse(char *mapping, size_t size)
+ 		if (madvise(mapping, size, MADV_COLLAPSE)) {
+ 			if (errno != EAGAIN)
+ 				return false;
+-		} else if (check_huge_anon(mapping, size, nr_hpages,
+-					   pmd_size)) {
++		} else if (check_huge(mapping, size, nr_hpages, pmd_size)) {
+ 			return true;
+ 		}
+ 		usleep(10000);
+@@ -118,7 +118,7 @@ static char *map_thp(struct __test_metadata *_metadata)
+ 	if (!pmd_size)
+ 		return NULL;
+ 	mapping = map_aligned_pages(_metadata, pmd_size);
+-	if (collapse(mapping, pmd_size))
++	if (collapse(mapping, pmd_size, check_huge_anon))
+ 		return mapping;
  	ASSERT_EQ(munmap(mapping, pmd_size), 0);
+ 	return NULL;
+@@ -147,6 +147,33 @@ static void pte_map_thp(struct __test_metadata *_metadata, char *mapping,
+ 	ASSERT_TRUE(flags & KPF_COMPOUND_HEAD);
+ }
+ 
++static char *map_aligned_file(struct __test_metadata *_metadata, int fd,
++			      size_t size, int flags)
++{
++	char *mapping = reserve_aligned(_metadata, size);
++
++	ASSERT_EQ(mmap(mapping, size, PROT_READ | PROT_WRITE, flags | MAP_FIXED,
++		       fd, 0), mapping);
++
++	return mapping;
++}
++
++/* Create a PMD-sized shmem file filled with 1s. */
++static int create_shmem_file(struct __test_metadata *_metadata)
++{
++	char *shared;
++	int fd;
++
++	fd = memfd_create("madvise-pageout", 0);
++	ASSERT_GE(fd, 0);
++	ASSERT_EQ(ftruncate(fd, pmd_size), 0);
++	shared = map_aligned_file(_metadata, fd, pmd_size, MAP_SHARED);
++	memset(shared, 1, pmd_size);
++	ASSERT_EQ(munmap(shared, pmd_size), 0);
++
++	return fd;
++}
++
+ static void assert_filled(struct __test_metadata *_metadata,
+ 			  const char *mapping, size_t size)
+ {
+@@ -734,4 +761,86 @@ TEST_F(madvise, pageout_private_file_reclaims_only_cow)
+ 	ASSERT_EQ(munmap(mapping, 2 * page_size), 0);
  }
  
 +/*
-+ * The owner of a file may page out its clean page-cache pages. Run as an
-+ * unprivileged owner, so that capabilities cannot stand in for ownership.
++ * An unauthorized caller must not page out a large file folio of a private
++ * mapping, even when the advised range only partly covers it. See
++ * pageout_stays_within_range about other unmapping.
 + */
-+TEST_F(madvise, pageout_evicts_owned_file_page)
-+{
-+	char *mapping, *control;
-+
-+	if (!geteuid() && !drop_privileges())
-+		SKIP(return, "could not drop privileges");
-+	pin_to_current_cpu(_metadata);
-+
-+	/* Make sure a writable file page can be paged out at all. */
-+	control = map_temp_file(_metadata, page_size, MAP_PRIVATE, 0600);
-+	ASSERT_EQ(control[0], 0);
-+	if (!pageout_until_evicted(_metadata, control, page_size,
-+				   self->pagemap_fd))
-+		SKIP(return, "MADV_PAGEOUT did not evict a file page");
-+
-+	mapping = map_temp_file(_metadata, page_size, MAP_PRIVATE, 0400);
-+	ASSERT_EQ(mapping[0], 0);
-+	ASSERT_TRUE(pageout_until_evicted(_metadata, mapping, page_size,
-+					  self->pagemap_fd));
-+	ASSERT_EQ(mapping[0], 0);
-+
-+	ASSERT_EQ(munmap(mapping, page_size), 0);
-+	ASSERT_EQ(munmap(control, page_size), 0);
-+}
-+
-+/*
-+ * A caller that neither owns nor may write a file must not page out its
-+ * shared mappings. MADV_PAGEOUT succeeds but leaves the page resident.
-+ */
-+TEST_F(madvise, pageout_skips_unauthorized_shared_file)
++TEST_F(madvise, pageout_private_file_skips_large_file_folio)
 +{
 +	char *mapping;
++	size_t offset;
++	int fd;
 +
++	if (!pmd_size)
++		SKIP(return, "PMD-sized THPs are not supported");
 +	if (geteuid())
 +		SKIP(return, "requires root to change credentials");
-+	mapping = map_temp_file(_metadata, page_size, MAP_SHARED, 0400);
++	fd = create_shmem_file(_metadata);
++	mapping = map_aligned_file(_metadata, fd, pmd_size, MAP_PRIVATE);
++	if (!collapse(mapping, pmd_size, check_huge_file))
++		SKIP(return, "could not allocate a PMD-sized shmem THP");
++	ASSERT_EQ(fchmod(fd, 0400), 0);
 +	if (!drop_privileges())
 +		SKIP(return, "could not drop privileges");
 +
-+	ASSERT_EQ(mapping[0], 0);
-+	ASSERT_TRUE(pagemap_is_populated(self->pagemap_fd, mapping));
-+	ASSERT_EQ(madvise(mapping, page_size, MADV_PAGEOUT), 0);
-+	ASSERT_TRUE(pagemap_is_populated(self->pagemap_fd, mapping));
-+	ASSERT_EQ(mapping[0], 0);
++	ASSERT_EQ(madvise(mapping, pmd_size / 2, MADV_PAGEOUT), 0);
++	for (offset = 0; offset < pmd_size; offset += page_size)
++		ASSERT_TRUE(page_is_present(self->pagemap_fd,
++					    mapping + offset));
++	assert_filled(_metadata, mapping, pmd_size);
 +
-+	ASSERT_EQ(munmap(mapping, page_size), 0);
++	ASSERT_EQ(munmap(mapping, pmd_size), 0);
++	close(fd);
 +}
 +
 +/*
-+ * A caller that neither owns nor may write a file may page out the anonymous
-+ * COW pages of a private mapping of it, but must leave the file pages
-+ * resident.
++ * An unauthorized caller must not page out a large file folio that a private
++ * mapping maps with PTEs, even when the advised range covers only part of it.
++ * See pageout_stays_within_range about other unmapping.
 + */
-+TEST_F(madvise, pageout_private_file_reclaims_only_cow)
++TEST_F(madvise, pageout_private_file_skips_pte_mapped_file_folio)
 +{
-+	char *mapping;
-+	bool swapped;
++	const size_t size = pmd_size / 2;
++	char *mapping, *shared;
++	unsigned long pfn;
++	uint64_t flags;
++	size_t offset;
++	int fd;
 +
++	if (!pmd_size)
++		SKIP(return, "PMD-sized THPs are not supported");
 +	if (geteuid())
 +		SKIP(return, "requires root to change credentials");
-+	mapping = map_temp_file(_metadata, 2 * page_size, MAP_PRIVATE,
-+				0400);
++	if (self->kpageflags_fd < 0)
++		SKIP(return, "requires root to read page flags");
++	fd = create_shmem_file(_metadata);
++	shared = map_aligned_file(_metadata, fd, pmd_size, MAP_SHARED);
++	if (!collapse(shared, pmd_size, check_huge_file))
++		SKIP(return, "could not allocate a PMD-sized shmem THP");
++	ASSERT_EQ(munmap(shared, pmd_size), 0);
++
++	/* Mapping half of the folio leaves it mapped by PTEs. */
++	mapping = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
++	ASSERT_NE(mapping, MAP_FAILED);
++	assert_filled(_metadata, mapping, size);
++	pfn = pagemap_get_pfn(self->pagemap_fd, mapping);
++	ASSERT_NE(pfn, -1UL);
++	ASSERT_EQ(pageflags_get(pfn, self->kpageflags_fd, &flags), 0);
++	if (!(flags & KPF_COMPOUND_HEAD))
++		SKIP(return, "the shmem THP was split");
++	ASSERT_EQ(fchmod(fd, 0400), 0);
 +	if (!drop_privileges())
 +		SKIP(return, "could not drop privileges");
 +
-+	ASSERT_EQ(mapping[0], 0);
-+	ASSERT_EQ(mapping[page_size], 0);
-+	mapping[0] = 1;
++	ASSERT_EQ(madvise(mapping, size / 2, MADV_PAGEOUT), 0);
++	for (offset = 0; offset < size; offset += page_size)
++		ASSERT_TRUE(page_is_present(self->pagemap_fd,
++					    mapping + offset));
++	assert_filled(_metadata, mapping, size);
 +
-+	ASSERT_EQ(madvise(mapping, 2 * page_size, MADV_PAGEOUT), 0);
-+	ASSERT_TRUE(pagemap_is_populated(self->pagemap_fd,
-+					 mapping + page_size));
-+	swapped = pagemap_is_swapped(self->pagemap_fd, mapping);
-+	ASSERT_EQ(mapping[0], 1);
-+	ASSERT_EQ(mapping[page_size], 0);
-+	if (!swapped)
-+		SKIP(return, "MADV_PAGEOUT did not swap the COW page");
-+
-+	ASSERT_EQ(munmap(mapping, 2 * page_size), 0);
++	ASSERT_EQ(munmap(mapping, size), 0);
++	close(fd);
 +}
 +
  TEST_HARNESS_MAIN
