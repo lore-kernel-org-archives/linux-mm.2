@@ -4,177 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBBB7CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 15:27:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87AAECC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 15:28:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2D5D6B008C; Wed, 14 Oct 2026 11:27:34 -0400 (EDT)
+	id 9FA6C6B0096; Wed, 14 Oct 2026 11:28:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDE9B6B009B; Wed, 14 Oct 2026 11:27:34 -0400 (EDT)
+	id 9AB846B0098; Wed, 14 Oct 2026 11:28:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCC956B009D; Wed, 14 Oct 2026 11:27:34 -0400 (EDT)
+	id 8C18C6B0099; Wed, 14 Oct 2026 11:28:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AFEB6B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:27:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17B721A05FC
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:27:34 +0000 (UTC)
-X-FDA: 85321611228.09.24BA696
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023086.outbound.protection.outlook.com [40.107.162.86])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1E6642000C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:27:30 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=mRoYI2yw;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of khorenko@virtuozzo.com designates 40.107.162.86 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791991651;
+	by kanga.kvack.org (Postfix) with ESMTP id 7009F6B0096
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:28:18 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FC4E4041A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:28:18 +0000 (UTC)
+X-FDA: 85321613076.15.6ECB2C6
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 61CD3140008
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:28:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d2d6+Q/W";
+	spf=pass (imf09.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791991696;
+	b=WY2KT0NAH15UkQKkM9LXQgzQ+1aYK+y3U9ibPxMvTx3QkjIq7BFErHMEYFX+CmZvX8l3SM
+	l8qsJcoPp2/b1QTG36bIUD5iTZvzmmJKm3SDzh9X8JTCI2x5ZQ7MUXINlC1NY5nBqM1c+s
+	TzgE96kRnNhEExmyEtHNZoMbWiFdVEI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d2d6+Q/W";
+	spf=pass (imf09.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791991696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DfBpEQ2ryeYVrByhGL6wYfH0Kqc9ZBts4hFI2NsVd/I=;
-	b=ri96xra2BaFnCL3nVpkc8YtEV/S/WU6Z8MFqJNcwuYgUGe37RjCLrwlR4LM0Fhx+vLNKNB
-	JLymJlyiNvWrvBqAQw9DAg/5bvmJ+7YKlFyzFVEL7BimiEilZci3Vnq8XYsqJ8EcOYvSpE
-	kO/FTgeA4q/UgtgMFRA5r5+x74/nfkQ=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=mRoYI2yw;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of khorenko@virtuozzo.com designates 40.107.162.86 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1791991651;
-	b=rrDhQZXOy9c8WPEFGbwgFFp7YPe2JFrO17ScW2tWbqBF/7rKUsuFiLaAS31509SnbPUbSA
-	S3v1bZsLIH4liAohh5YaCOtJudel76bpJ/oOsbO7ATks5Q77HMHyZGFMIhVwhwgfk5eTXf
-	9lY+R6uAz0VG845UDxArq4VQHpR/1CA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JURZXy6lnpmHF3hUVCKGCIQU83ad3ZOsc1Tf0x3131TOAYafDh7ql+F6WDHF9lVJCU83W531RUbQP3mr9et/nwQ0bCJNYG2jkur0rhYzyhAa7wy9o3mupKHCQ3UGJMwbCOoqPERfsUMOudnOCBG3X2Dwyzh9NEMgoga6VW/6cYnkTW2/0dcKpukvTPiSdug80r28wd0cRSQ0mWVOP+qdl8w3H6Sn87ktV4Xyqm2u/2FNmqXSIGzynPEU/0Ib80uyeb6dtSJrTw+ukEeeblkMXyXdN+F98T1btEnsDL0fvu7NXYYmOKPg9qopi5DwzLsgvCt3xFUhVN0JHXcYo63APQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DfBpEQ2ryeYVrByhGL6wYfH0Kqc9ZBts4hFI2NsVd/I=;
- b=q0ZY9shYsK5F59HZPOppzVhAO2x17w3HfUyEVK6JCuChC91Z5U8q0BxkbxF0oyk92+AO/+UWOyJwqkBjUPy1Lri+lFX3al8EF5mqf4RAfKhwKr3MfrH//kZWLRJSwY/9/xXsQ16UIVDQUnm6kV5/XOBYwJPK38blDUTKXdRQrJnRdI/SZHaIaxD2eWPs1+BF+fm9X9R+4LiQPN9mOxz1PEHmw3h7h921sFpqtgTa7q3BpRAIvmV2kscw/iDgkXwB0/b9NwjY1F5Th8J8smSwwPUIEGOTuCc+RX+9jZUIF10AelXzoSk4kqWTXV9v11WCTzShEYA0HGqrbz4iEwMufw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DfBpEQ2ryeYVrByhGL6wYfH0Kqc9ZBts4hFI2NsVd/I=;
- b=mRoYI2yw/ObSH3UHLw0IH/1OBwqpZPE4ackwrRo8wWTsMCEaCcu3lsYYBQAu4zbLNzlNtUt4DqNrNEBy4Gc+3uU5orX8sbJYnLgPJzCNA5aKmZp8r1+tXn3v2epDa3RN2wly+5IPsIrZ1YDTepWyttf+EnmBnD0JVKs2AFahYTyJimZIcK0OdRESh7TFp07NkNjQuAB8Uam3yNhepthgxKCt2cy/US4k6WwNVGRgzmH+8fGVOrYPdOwMh3yBUf5z6mnuLfIK01sQE0NC2GVd6WeyzwcundGDYPEyane9ocMflW3bdDgCSj9Z/FrGK4HN1FNsL9AmdgCvQ5UJ92Ua+w==
-Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
- (2603:10a6:102:3c7::20) by DU2PR08MB7375.eurprd08.prod.outlook.com
- (2603:10a6:10:2f3::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
- 2026 15:27:27 +0000
-Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
- ([fe80::1999:c6db:dc55:494a]) by PA6PR08MB10708.eurprd08.prod.outlook.com
- ([fe80::1999:c6db:dc55:494a%5]) with mapi id 15.21.0522.011; Wed, 14 Oct 2026
- 15:27:27 +0000
-Message-ID: <85b319d2-ba91-45cf-9f68-4182df93c848@virtuozzo.com>
-Date: Wed, 14 Oct 2026 17:27:24 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: recheck a special PMD under the lock in
- copy_huge_pmd()
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Alex Williamson <alex@shazbot.org>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Ryan Roberts <ryan.roberts@arm.com>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Nico Pache <nico.pache@linux.dev>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, dri-devel@lists.freedesktop.org,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Usama Arif <usama.arif@linux.dev>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, Peter Xu
- <peterx@redhat.com>, linux-kernel@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, stable@vger.kernel.org,
- Kiryl Shutsemau <kas@kernel.org>
-References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.com>
- <58e8d79b-f7c3-4ded-9272-07c309917055@linux.dev>
-Content-Language: en-US, ru, sr
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <58e8d79b-f7c3-4ded-9272-07c309917055@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4PR09CA0007.eurprd09.prod.outlook.com
- (2603:10a6:20b:5e0::8) To PA6PR08MB10708.eurprd08.prod.outlook.com
- (2603:10a6:102:3c7::20)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dJYuLJEcfs84KY9PmVVqiI3meMH/2vzqF0uyrJ0GjuE=;
+	b=ZkoyFwckGQZjfHntT9997nocJ0gVwu918gsP2xqI3QgI02JOeyw6IJJUggSP0l6ihxD9K7
+	JPyZH1Tj8fuRE/ZOOw/I2zfAIkTFPSJMk5ObpJPsOQO4kA1wQc63ryctggWN9LqQjgKMgY
+	8IdqJSh7XWpd37QlOBJ87VvCn0Dx6o8=
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ccca948203aso1715170a12.3
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:28:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791991695; x=1792596495; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dJYuLJEcfs84KY9PmVVqiI3meMH/2vzqF0uyrJ0GjuE=;
+        b=d2d6+Q/W1baZBNlB6DFKAOe2p8EsK1QMd65MORUfdHakop+flT5ooqJpscCal+aHSJ
+         bLqsrHd5MWBH98qLwr6IFliEYwl+r25RLkET1tKK34zF/SKL9TCDWVGJpEwR938Z8n5Q
+         UfG8NDQI42ARCpEsc7dTEqyczP4oQSjsbUvCbKOnEQK7p3b/NKuGUfHN3zkQTf6olEMa
+         HacZqPPV+12DqnqaYY0rivCFArWFJeydedInJk4SqRlp8ZRV1weE76faS+zGRslS8QQT
+         BDGyPSk8fEBO4Ty3XTdVKs0aPYxraIACvpaXQ+Oq1qY5ggwqtyRRhIG8g+bLKbpCNEk8
+         ed7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791991695; x=1792596495;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dJYuLJEcfs84KY9PmVVqiI3meMH/2vzqF0uyrJ0GjuE=;
+        b=d5u2D9a2BFy7IBVDylV8vGmf5By2JVfbVM1bxTNTJNN/qjRJmkBsW5PMgvcX1f2Rf2
+         kigeQ/dgNH8TH6KsWkpAn6G4i0M+Oov1mwpGfNA4Flf606I6grrgNgroMUkmON/3/iq7
+         EQu2fZIk69y+UzCKiZeRi7/eLQmhB5g28BySlSasAby5uenIE04jt6Llaq9dNQRkZw1h
+         UHC2LjuVD0dDAv0NO4o0X0D3zScfY+x4cYO9TRB6r+uJSvnqQpQo2NevT7gDTMBmI7Ox
+         kWJ+xNjY12Q6gddjmGTchL5ynOU1eqjQsP0deoaifK1CuRQleQBsWC/jFROBKLU5ciZn
+         8nVA==
+X-Gm-Message-State: AFq9FYKWdBPObQ0tlbMJWaHC7XmziEkfnZI+Z7wJ12QIZzKr5cia3Pe8
+	tkydmrQVl4SOLetVzTOM57+e6eLUuN1qOIJ7AQhib/CT7K+xF33UbaJL4sGSZA==
+X-Gm-Gg: AYBFou1ZUa0rjepWBPndEbJHl3eA/a9NMcq/g3lZKlntwzCjGgBB3UbosX99nIHJTGT
+	F0msLnyrvZu2m78ON4k9bgX8sZdLOJfA1ZBKqphEKFj509FfK0r7IYnGYi4bKNG7hp8KmVWtnpG
+	o0h6HI3f92vg4VUq3vXHuxi8g9rHyVRhg9qdMabyH5tTA4IQaylwMCqR1SNUOmU6Bqw2Ixqir1E
+	dxfu6eT0IQISOl8fseb5SxYBZ5iow4S55SlH4rckezTi5KzMg0y6VQ9uTnzafAxfdEQ0LPjXSkv
+	ijdRBdbeqZF1gJNLGbubtgr8H7e4YhkntFEUCHKgyZICCp8KYMUToP3Fq0xSrjh0gTD5bEihNhQ
+	cG2eVXSNivzmhu9yDaNc708Bg7Im8WylHAaIkqp0Cj1mL/aGuFSi5LyG5txuZhjwBk/pFwXzmed
+	L9S9MuVmZ/93OgACx3myMa0IFBiDw33niPe8cPCmp+uurwmtHMqrESXtI/PddUoLVXeKwDiFaxB
+	8lM9v/QIoGgqR7srorkIKs2VjAYdHfwcPZB
+X-Received: by 2002:a05:6a20:a10a:b0:3de:3f4d:f2e8 with SMTP id adf61e73a8af0-3e16be0520bmr13151970637.25.1791991694919;
+        Wed, 14 Oct 2026 08:28:14 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd3d9e3dafesm6874910a12.20.2026.10.14.08.28.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 08:28:14 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [PATCH] arch_numa: remove setup_node_data()
+Date: Thu, 15 Oct 2026 00:28:01 +0900
+Message-ID: <20261014152803.740376-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA6PR08MB10708:EE_|DU2PR08MB7375:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7ff5d98-58b4-4c11-cb67-08df2a07a753
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|7416014|366016|18002099003|22082099003|10067099003|261009223027099003|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	dvk+WfitNgf+sRbaaf4bunN5f9fmD8rb2mEeOrtJHQQMIf+leMJuWATYnLALrEIuuV1Nm9bHRGzvwkCiRXQ1RNdz8ErgE6JMmSF4uFP0RoW7joq5GtWojhX6BIbH9jRPUe9vV6TIVi/QonBij9F3obAxVlEVKJ9SLHw8yVLkx3KxSnQ/sFzzXdF2689ujOGSC5oYAD9Bo+7Rka7IfAqnRJOPmPyj8S2Wf6Cx/RHWkJBGVyIvpXUWZFzUTQ7iAk3RcTgzWxhPw4Pt6167mAb1ieP7kNf4ZOi1EsbefX7prTnNcVjfaH/KHF+LA8G5vKig49ChgkZzJE/SkKU0O1mLw0+peloxgO/vxjNyhNUmUDvxcrpYHeC0WJmPCop4R8Jrwd97nxn5xiWVwJdw9eCGzjLsWuPRjhQhIBprDAxsl3CU3KoQUxj8nPdpvnAzOUZVWmfMjtMIYppozdq+k3ME7/c2beMsT2S5e1/Sn2Yod17ht4+wCvfaDlnSPC6qSQ/QAxNrgABrnnzYK6JTwGnjP7ILk6Gyih7zmcyWvwbX+yru1TY8m/U1w5qd3GPr+GgOTwWkDxBgjppZAnzMgUX6V5h9cuHeJYDZ8bUflqs++ss=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR08MB10708.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(7416014)(366016)(18002099003)(22082099003)(10067099003)(261009223027099003)(4143699003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aWJxaUorOTJKZFZ2MmhPUEYrY0IyTXF6VnAzYTVnMDJWbUNxQ2VCQ0R1UDBn?=
- =?utf-8?B?MFRaY3A4WTlhbmxaU1NYd24rV3dkTzVsSys0MGFlVTZGUDhmNlNYam9wdW52?=
- =?utf-8?B?UElEYjFEQkR5VmVCL0FXMXlQNytrV0x4dzVTNmY2SWVlTk1tVDR3d1cySUVs?=
- =?utf-8?B?anQvS3JkWU5pTEpOWXRiRTVpQ1o2NEkxckZleDVNcGVtSy9CZi96OXRsSTdu?=
- =?utf-8?B?RG1HUFF0WE5NRFZ0T2RQWi9aVXNOSitCM25aWGxNYXBadm03NHhIWlpibUdI?=
- =?utf-8?B?VkVSSi8xOXdaemVEL2FibHg2WEZkT1kwZElpS3pISmZhQ2lBYzVVWnYrdXpj?=
- =?utf-8?B?eDdDSmhBeDNNZkh2WUlZRkRBTmk1UlR6QVhET2FWR0xNWEw1UlVJdFlKV2ww?=
- =?utf-8?B?QmQ5NWs2UnpSelBpVllBNjc5dUZHSktyajJtdzNzeUFpLzdzVmg2cjdMblZD?=
- =?utf-8?B?NERPNDR0US96ZVRIWTc2T1JFeWoxTHNpMXFHK25QRXNqNHhVdjcwSnhZN0NT?=
- =?utf-8?B?Q2NmMHlSNUdiQ1ZSMVVKVzZmNm0wUlpvWWV1V1E5b1E1SzF5ZG5MUG5HVEQw?=
- =?utf-8?B?TjBhdS82TVkrTkNPMDJBdWk2SlF6WGJlb3JXL09MRUtDWXp6bkp4WlpUL2pt?=
- =?utf-8?B?SkJLWGdyOHA3TXF5bDZqcTVITEZ2b1Q2WE40TUdSZ0xsSjQrZEZFSzJ6ZThq?=
- =?utf-8?B?L1NDUXpVVDQ2aXRSUy9vRk4zTjNKaElBTWxjV0tPczVWU2dJNFlSU2dFSDl3?=
- =?utf-8?B?OEI5eWxGcmlKL0tSSUNvREQwOFY1Nm4vMkpha1ZsQ05nNE5yaFhzLzhtdmNV?=
- =?utf-8?B?blpxSEtPUTVCMDhPbGpoY3U2MGRlaUhHN3NBUTJkMERxUUFXbGtYOEE1dXNU?=
- =?utf-8?B?QmR4dTNOUHZVU1RHS0hoWDFRNlpwcGRxVXdZQ3Z1OUxZWW5NWkdlempOUGs1?=
- =?utf-8?B?Slp1cHBDRU81UCtPUUdFRzhFb0x0ekhuTGd0MEVibVE2T2x3THU4eDRwNVZr?=
- =?utf-8?B?TkVTSzNBZG45NTl4OTQwa2VOMk5iYUo4aGZtSHcwTHJJNHB0SE1CSzVQRmp2?=
- =?utf-8?B?bXlPOXV0QWlIVVl2YWJodE9pWXh1YkJrbnFYMjkrQ2ZFYzZBQ2JoaUFKd1Ay?=
- =?utf-8?B?YjJScy9hOGtoSWxlWjJtYzdGYVRDUXZMUW81OUVwdnJOSWNJOC9GVVc0M29l?=
- =?utf-8?B?V2xUWHlRRE90aCtBMENFNlExZXhpZmxzTmZXRkVpSUJhVlRmZVJjM1RSYTdB?=
- =?utf-8?B?NmNrbkdGUHYva0FHdWNTWEM1S0NtV1NYMGtsRVpCYTNRZFZycWlTMVV0Yk80?=
- =?utf-8?B?SWNPMmoxUTVnNk10Nmw0QXFBS3l2Q1lCWC9kWEsxUVBvZGdwUU16dEtKZWpo?=
- =?utf-8?B?K2dnSnN5ejJxeWFVdGpRVWM2dE0yRHpZa1dhUzVCdTJPTGM1R29PMGtXa3A0?=
- =?utf-8?B?RTNPSU1IQkRRTEdKUzlDMjhUYVVGUWV5YjNZd3liNFJlcnY4aGZaQXdnRlI5?=
- =?utf-8?B?K0Q2NmNCaDIwbG1mdS9RelJQbitDeTA5aXZtdkVuVURNWDU2NmwzTzNabzd4?=
- =?utf-8?B?OGVpUlRzTGdXdTM0SmF4bU1DK1VkZUFpelZwZWtrcTY1Smh6Q0lGdHNYRDMy?=
- =?utf-8?B?V3ZjdHJnQjVuUEU4UmF2WHdGZGs0SWxWbnVrVEtkZnN3MXNxMnpmK25lNnhO?=
- =?utf-8?B?L0xRSlgvUWQya1ZESVZobllKSkhqdUhjRHhuTGI4Mkd2V1RYd05US3l6T1JL?=
- =?utf-8?B?b1JMbkxJaUlnc2JKYXo2NEp5ZmxhM044SWFHRzl2eDJWT1J6d0VEMU4rakdx?=
- =?utf-8?B?ZDlQZTk1OG1xdElOb0RpNUZVSXlVM3lKbVZDNWRBcnY1ZVpXaDJzRGpLUjQ0?=
- =?utf-8?B?MFRKVkZLb1VpMGMvaWdMYVhQNkMxYVVIemhycm9KN1FvSHNDZE9ZTnBKMlBY?=
- =?utf-8?B?TXdkVmN4R0tGSnkrU2dGVkN1NEF0dVI0RjR1aDRjcEQxdFVuQytsQVdCb0Q4?=
- =?utf-8?B?UUZBOGNWZlhTeVNVTFIyM0ltNVhuYzliTHFLSEpyQ3A1ci9rSHJteHNyTVFz?=
- =?utf-8?B?cFgzK1U2MUVmM3dXbnVVMXlPRUlTRUVMSklOSzJsMFZUR3JKWXpyUXFWdDl4?=
- =?utf-8?B?N3dnOFZzZ25oMFNLVnFsS0dzT2pxR0RPak1iMThJMlFjNmhUSWViMU1YRFNL?=
- =?utf-8?B?aEVMRkJBdzBocDF5YWU3ZkFOeXZTWklNY05NTFRuMHYyeWkxdXREQ0RscUZF?=
- =?utf-8?B?STB0K0h1OGlGWnVkanVJZ2xxTmJabUl2NHZiKzZkeDdRbUFzaGRtQzlxalc4?=
- =?utf-8?B?bWM3c1R2b2xLeUhXQmFiUENRSHZabjdDOTcxRFArZHJMK2pickFGdz09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7ff5d98-58b4-4c11-cb67-08df2a07a753
-X-MS-Exchange-CrossTenant-AuthSource: PA6PR08MB10708.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 15:27:27.1905
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HtNzeo1XuLBPzG0VX4RDD+Dg0PVZRdJkvsOl8nPcF/dK+fDfnur8S3cOklkz1tERAETPpVg14sjbCkjt5oJJgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR08MB7375
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 61CD3140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1E6642000C
-X-Stat-Signature: inejcx77utfm5q9a457f64wpdzzdqp9p
-X-HE-Tag: 1791991650-223263
-X-HE-Meta: U2FsdGVkX18nNEy7RtaGb39/tLzuFdUFF/f02OJiM5M59O3GXryh8+T7L8GMcKDmCEBhNbwWSvxwN+2ml3IxzwQ6yrG9auP4gfjdRi/IYz7+RAi/6c0TqaFE2hoZ+YyW0cGFEgSm83qnMjzSKUzM7vYTxHyjAM1FNpO/qVIcxX01fLImd/OVPvWG25KoU+9fBlOoMnhzpRnhHIkEZco5brugaxyx2GnWQKI7qyED+19AxoUNNIWCCx+F70GymT8Wx4gG0Y/zALaPvIqaxYmbDbb0PpT4iWfdKm3pHGNr/lqY6Z+7n6nSNE5RI62RSTXTxXFw6mFvvGtw2NJHaj9j2aMMDOuOHQO3f/WoPWYAMI9+VdS3RC1Xb8l1AeR6/neZA9BeBjOvCLWd7Gav+JjXVCyteo9jcLKv4JZZ2gKCwkz2m198eA54ecK9gBFNws7nv9PbI1aV5jgqIvui+8s8ClAnDtt/LmYDMB0PAPwKmfZPzeFUkGS8YhkurBYGJe8D6w30iBUYN8a/wC+ddigTODqHO2SxwCQnYWpEf6IOd3zpBOPyhjjGPtyAhi9aZLUYiY1HAt+MDamcMuS1Tpld4NZVklMtFAbQ1dplw4lTlO2n1e2V1IFezI5U+vECzwCBoInWnGttG86AtV5QC1gqjGP32j1IOgBTn73xHK9Hz5iCFq8ibN/IN2zB9uvVsIaX7rfRAQoWmixzS62ng+oy4U7ka2MaSuUPPk3Lb6MOauXzHKFLMpTwMIhtvKosTM0Y2793ZNm6WTWp94moKeLSrVqX7oQltD7kWSLDo72HZSXW+ikLxjLeCN2uFFqZsfYnDIkVTeW44BNZp9Hb9EVjbu9ePMsh/dYAf2qUTANNdOIMYmezG5h7yGe1l37uCVNIShNeGykwsPDFNIpybJlemmUTi+er3m+qevC38iRYv7lyxnkLgjirXTSAfIwoyml49q30eTasUjm9XQP+pC5
- qKrr2lax
- dC/HPHoECzEVCd/o2Y9ySGeLQTn4xSAVSgXvk4/2OVJ5LfUfTuM0N8q84ylCoPxg8WN1YPm5Tq68eL26mdwTgF/HN2gS9zEZeAHiGbDx1OtkIylNmrvBcZAdfp5NGkM+nMp5Wl8jr/UoVsUm1tIL9oqeFabnU531zu1wYvo0PhWIAFGYZ4HuqudR9ym7pqHXyy0XgLz7tEaifpuTfS5jKJ0ae3aEO5pzQ0Sj1aTbKIJXybnxGWdWfSyzzPrNxJZNpdh9tHclu4Woo/zt7MNRRnbgykgFIWwV7Lbat35X2ingP8wFq0j8Sj1TnjCz2pUDdjsDmSs69c30oOBO9ZivHxHOtYPFf5UsB2s/HKx8Xfu9MYZbTD++bnhNpkerf/Izv8vHvqEY6GoOzbxd+CINLCWE6SLzAa4IxdF3ZNMoxO5YWacT0UA5I8CJZKwVBvoxkBjvZLEflOebwj1SIStlA50ZkR9QQcXjVC49Uh1VCw/oHBoebTrT/i/vFaYvMQrSKoa2VkvM4FBvUJCdZhfmWZU5C0xx+RKQDN08BSCJI4Jy8DGGbJ7qS3RbsS+i+xIWg+fuEuIzaGJemETJEMhG7JI2ksg==
+X-Stat-Signature: n1mmu7bzf5u5yk3z5w5bmurtu6y8cdb3
+X-HE-Tag: 1791991696-677495
+X-HE-Meta: U2FsdGVkX18yH2vQ+jglUoPKbiLf92x2vhKmdO+xbmR/7Wk4svIe72o3+kpsHKsjGVYY9rU4hhl4uODUH6OnuZP5uFxCzUBTGf9teOHWJCTKkqtdFuVH/3Nd+c4wJvVWenlLjRTTdIZLRbA2/vDP7OuE30s2e/ALYDPAVV5Yve5aMrwyRUeBrBaFg7xqkkCKJ6aDJ8T++Oo9qINc//CEQMsa9uFTSUfYHwOp6g+fQZ+EQe/HbdisjRfZxV7kRODEHu/REj4ozP5V9gOuXS6CWFiWLsaQK0lfmGoCwwVbgKq7bHjxOC4a4pBXNKL6TUKwJ68HKRwc3RWOE1iwemzmaTxd58osgMpzjs5jR0IJlM32k5BOGZF0X+Evz9Aa0PxBBEL5eTrZqFniN21ksZKkMo5zBFtS/7+EbXLomeKM9sslhKGTPLwD4G/sJcgAUovCsGknQ5/FZYq/PBhv7MeUhzV5o3mIQL388VSyaxK/qjAPL6ycDpQzfyxASjZzA0ed8UuZeLLO8N7atMXsYN9sFVbknHKtRIyFACRXvlr9EswvY9ga5Y7GzUmOpigDyGhOTKIrWX02JCfwR+/wrIiiSxZHwEPNRb8AfGrL1i5WGYThSqW+ov5KgvsNSNJXCSoiXmIw2YepDPJ1BltFGeuib10pOC+yCRlRExT6AkYmOnCYPq7toBGYLIgRdZ9dNXf0atQsYAzYuslXoFhlTl+RosPp8kuV0NTWjQqjxgxwZwtg0Ug+a/S+2x4Zd40Mjajfr8KibFaLZb8bqexcPyj0KhcoLZcxp4ono4HyRJfQuQw6zj5gP+xO8m9CsTjBnTNaY7an2Jd53vTgDMaDpGuE0itMEwI6GKOR9Y6fXqO84ekcf76BrtkFBKvZEiEpfo5sTD85Pn+/EIE4CljTxqXnjkvDcAFcEAL2ox27KuLtq/Zk6QXbb5kAbJMo/ogZLis2bfnDnXOi04HInCsbZlX
+ e0jOuGG3
+ TE2f//myeybxJjYJ+3Je3QczW7rZ6SEG9JINMbXBQwD4FJkvBZ3klOVZerZU3ZE9T+yUf0rsepa5ZXZyka19U+uDV9pE7DOvh1cKC5xFaPPG9A/IIRnJF+mbxbGxUUuX120REEV+Vm7GLAIB2pG9SrBEuXx42W8lI2asXrosgzwOChq1Bk+8BFeIFmIxGAfraaFbz3MQjVNrXebgClxTK4xW7H6CA1Uvz/rDUxFeflZRP2c1pOySZAhR+UrTgqhVgYLfzpEZX9uDuSnTGxpDFegEkuzd3YR1VBi/cCdRKaHwK0YA4Lj1cp+HadH48qj5JnfbKPQE6AB7XVqSRVmM437GB7b4X/9Z7cCdjQxuMCzUAL2aSI9XHuFaLdkIGHlf+ZY6dDwvzO2a8pd3UYpItpxtGgqOyZUJ2aOH9k8Wz6rEa2sZoe8Ul4RRW9h4xFGabQj9KvOhlRUZL6q8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,78 +114,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 15:19, Lance Yang wrote:
-> 
-> 
-> On 2026/10/14 19:57, Konstantin Khorenko wrote:
-> [...]
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 1e5d68acf62a5..fcea98f0d8865 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -1965,13 +1965,22 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>   		src_ptl = pmd_lockptr(src_mm, src_pmd);
->>   		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
->>   		/*
->> -		 * No need to recheck the pmd, it can't change with write
->> -		 * mmap lock held here.
->> -		 *
->> -		 * Meanwhile, making sure it's not a CoW VMA with writable
->> -		 * mapping, otherwise it means either the anon page wrongly
->> -		 * applied special bit, or we made the PRIVATE mapping be
->> -		 * able to wrongly write to the backend MMIO.
->> +		 * The mmap and VMA write locks of the source keep faults
->> +		 * out, but unmap_mapping_range() does not take the mmap
->> +		 * lock and may have cleared the pmd since the lockless
->> +		 * read. Let copy_pmd_range() skip it then.
->> +		 */
->> +		pmd = pmdp_get(src_pmd);
->> +		if (unlikely(!pmd_present(pmd) || !pmd_special(pmd))) {
-> 
-> Why not just check pmd_none(pmd) here? We're holding the source mmap/VMA
-> write locks, so the PMD either stays special or gets cleared, right?
+setup_node_data() sets node_id, node_start_pfn and node_spanned_pages
+of the node data it allocates. free_area_init_node() sets these fields
+again in mm_core_init_early(), and nothing reads them in between.
 
-Right: with the source mmap and VMA write locks held, only a zap can
-change it, and both ways a zap takes leave the PMD none:
-zap_huge_pmd() clears it, and a partial zap splits it in
-__split_huge_pmd_locked(), which for a special VMA only clears it and
-returns.
+So remove setup_node_data() and call alloc_node_data() directly. Also
+remove the log for memoryless nodes, because free_area_init_node()
+prints the same information.
 
-I tested the same condition as the lockless check that chose this
-branch, so that the branch never copies anything it did not select,
-but taking into account the above paragraph we can easily use pmd_none()
-here, it even better matches the comment :), so I will switch to it in v3.
+No functional change.
 
-v2 is already out, with a second patch for the missing page table
-deposit on ppc64 hash:
-https://lore.kernel.org/r/20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-0-e1548488fa68@virtuozzo.com
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ mm/arch_numa.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
-The pmd_none() change will go into v3.
-
-Cheers, Konstantin
-
-
->> +			spin_unlock(src_ptl);
->> +			spin_unlock(dst_ptl);
->> +			return -EAGAIN;
->> +		}
->> +		/*
->> +		 * Make sure it's not a CoW VMA with writable mapping,
->> +		 * otherwise it means either the anon page wrongly applied
->> +		 * special bit, or we made the PRIVATE mapping be able to
->> +		 * wrongly write to the backend MMIO.
->>   		 */
->>   		VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
->>   		goto set_pmd;
->>
->> ---
->> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
->> change-id: 20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-bdf7efb612c2
->>
->> Best regards,
->> --
->> Konstantin Khorenko <khorenko@virtuozzo.com>
->>
-> 
+diff --git a/mm/arch_numa.c b/mm/arch_numa.c
+index a4b1732274fa..c88a323a34fd 100644
+--- a/mm/arch_numa.c
++++ b/mm/arch_numa.c
+@@ -201,21 +201,6 @@ void __init setup_per_cpu_areas(void)
+ }
+ #endif
+ 
+-/*
+- * Initialize NODE_DATA for a node on the local memory
+- */
+-static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+-{
+-	if (start_pfn >= end_pfn)
+-		pr_info("Initmem setup node %d [<memory-less node>]\n", nid);
+-
+-	alloc_node_data(nid);
+-
+-	NODE_DATA(nid)->node_id = nid;
+-	NODE_DATA(nid)->node_start_pfn = start_pfn;
+-	NODE_DATA(nid)->node_spanned_pages = end_pfn - start_pfn;
+-}
+-
+ static int __init numa_register_nodes(void)
+ {
+ 	int nid;
+@@ -226,10 +211,7 @@ static int __init numa_register_nodes(void)
+ 
+ 	/* Finally register nodes. */
+ 	for_each_node_mask(nid, numa_nodes_parsed) {
+-		unsigned long start_pfn, end_pfn;
+-
+-		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
+-		setup_node_data(nid, start_pfn, end_pfn);
++		alloc_node_data(nid);
+ 		node_set_online(nid);
+ 	}
+ 
+-- 
+2.43.0
 
 
