@@ -4,127 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC625CC6B2D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 22:25:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CDA1CC6B2D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 22:26:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86D0B6B0095; Wed, 14 Oct 2026 18:25:08 -0400 (EDT)
+	id A933E6B0098; Wed, 14 Oct 2026 18:26:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81E0A6B0096; Wed, 14 Oct 2026 18:25:08 -0400 (EDT)
+	id A43EE6B0099; Wed, 14 Oct 2026 18:26:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E59B6B0098; Wed, 14 Oct 2026 18:25:08 -0400 (EDT)
+	id 933306B009B; Wed, 14 Oct 2026 18:26:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E03C6B0095
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:25:08 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE8091A0834
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:25:07 +0000 (UTC)
-X-FDA: 85322663454.15.798E774
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 10A43180002
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:25:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fkKKHkZ4;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792016706;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 622E66B0098
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:26:15 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDA2AA80E7
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:26:14 +0000 (UTC)
+X-FDA: 85322666268.03.F5FBD21
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 01998140004
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:26:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lubHV4Yx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf26.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792016773;
+	b=7gf9NhpnrtNRnYhjsFHMAzj3+F3OkSsU8oOaInPxX7DCUdm7LVkmJDEjW4Q2VwZ7gMEoBV
+	iJxFtPYwGgeBmVwk0U9r8lPgEC61VjUu97JfxJejmnlQVzN6wBoFBp8YCA8DSQtT3MwPYP
+	+NK+I9qh1XTzb8K6gWKMDcVZmWxVrC0=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lubHV4Yx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf26.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792016773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pX7eJVw8NKbWVjClJVlyeDcXYqLdmF7XB6xKTvch9pw=;
-	b=ThtciUtDPg0BiLXLNakF4f/2T3pmA1Trv2h29taMePMpeEXZevHSMc4vDwe4ye+WsV7PiP
-	5m6w98flFW9zMrmLTM1W6rS1lZf+9W3a0X6cJsEWYt4HG8qBedMctAXzdjnqDaQCJkdwtF
-	L0w5HMyOA4f1QagtV30CMBNTJ7qSJB8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fkKKHkZ4;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792016706;
-	b=woZSDu1JhsxIF4ZImBFkQZ2GCKuTBdttOeSbw6FnLGjt/flY+OBTweQ7cp0hvXbCDyTuG8
-	OAedFzE5FOewaCbVYxSl3J/mhQiSastyytc2xoDGUVDoFf4hd3tGgcwU+Mb8Xukp2yzWP4
-	TjZ16Xyjf59f4dZqHB212mkSp9a55Ys=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-533930955a4so42407651cf.3
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:25:05 -0700 (PDT)
+	bh=hrLsYh+bDCQ4SD2pq57KfdodfbjKTaIF5lmaAgEwzww=;
+	b=xuldmrE8u2ZNeWmdJZ8OjIVRxx5+u9/UmNl9LBVXqwC1BHddIBn8+WYkNRnfSDDAQjPHBq
+	fd56kakT3FxD1feg45Ih1IIUS+evlXXKQBukEYrUcGwGtreB3FA5yjVUyl57GwrxxERb6l
+	T+0ixUv58Lj4FHWxpP4HLzS5vksb2hk=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48c4d870d54so2922006f8f.2
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:26:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792016772; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iu5wJhdyT9mARq+cljT6lUBOQzIErGqspy+uSJmqrVPaJD3hyY9JhHl5NXwS9A0+QG
+         +I8M6FxnGXrwIT2RcA7My2OPerXd0UC7TuWkKCzpc1MEIO+Y0k8aD3+Lu7wzHR5fdQqg
+         wST9r3XKJ21wBjbfoP/Hf9tT8m3Nb9nasb+/zmCwJ0t1OC3X5E7Lxoq+I6urWFzuvBmb
+         qJFYEacT7LaZeRAo4k4YY5xdZ+KDtQEG2+Atra0E4hdnZSftacj8G+VXH/UKi+I1KJIk
+         9WNrzKcz88jVCfIuIiSiKzw/wWAt+MtjEMpP1ztC40lget08LzpBVyxztczFzZKZGOlK
+         nMAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hrLsYh+bDCQ4SD2pq57KfdodfbjKTaIF5lmaAgEwzww=;
+        fh=ugbYsZ25jOd4NCKt06L+TlU8sRU4+mBeiftQsNOKVwo=;
+        b=rVwQ0AceHTJXrjDYS16Qht+CdPJy43hkgp7JEeJFG+Edv5RqXgrq+VomxfWjv/pNxT
+         8fuh9y6MV+H2cbdNazL1i2L+XFrCuAJcDDJ7KZ28Vt/4pfmK+m7VeYag8PgVVee45vGh
+         skMKsp9mPGido4XUVhBJX65Q5ohkYAGiUalsqL3prONQzqkK2Ju7L9qJmKo+guHlhouz
+         E21yOGJJ76/+fyo1DHFkP1xQZrNd40f/1hIDWXBu6H+y1T88phnBKJTJK1zFF3FdEZyb
+         15OtdNuxWBV3K3inVMs7EndvZFf0yFEdfCDqF2Xn/Jlg2AgLeiOhw5a/Yw1KA24Nrs6B
+         IZRw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792016705; x=1792621505; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pX7eJVw8NKbWVjClJVlyeDcXYqLdmF7XB6xKTvch9pw=;
-        b=fkKKHkZ4ACIb+4fKVwxekh9/TlqyYV9IYfxhi4mVw5x4Es8cTRIRnVmCe+qTmky8b0
-         8dRc85MqK3ke6VfzT7MkD8croEW9hIZ9PdA+ap0ndsKmcxcjnoLYKg9yxadqMZP5UIgo
-         uBjliKgniKM3dKADHRYgpZZ13WGw26dtrOUXtkIGCtJr02kuTHgGgBF/Amv1/1lRbv76
-         wUh2cln+OgWM8/t6fIGZR8xQLRU9BFxK4jPKJeg+iO5ccAiDngaEG+3oeFGtovvuPNsM
-         F2KXaeWJUuESHREO4yBmYzCSaDiwpsnSNaEcbxeuFoLjRo/n9jS6ZxpgP8vUGelTaG5s
-         UcRg==
+        d=gmail.com; s=20251104; t=1792016772; x=1792621572; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hrLsYh+bDCQ4SD2pq57KfdodfbjKTaIF5lmaAgEwzww=;
+        b=lubHV4Yxf3oF19yuQcFAQnaL3F/xhB5jzz0+1/dRTjN+iTXFb/2D8+o5sZWfEgqpPh
+         JIOc78CkiyVnrdIQP4qrqVctmWauAz2eJgD0i5N3sKD6975o8YETS9SswTiYnm08F33T
+         tmfWzCJ95C/LAffcRBZuTpsS1p7926zOhlBa0PUjbfVGrjbOk8FXhUF8qDLnp8sC7J0B
+         r3FAXJkJEEuwSLi9g1QYHeTaGh7wtVw47e6MMiHdsaLEOUsZ9nkbjQp6TN0vKEacz/Sh
+         TbKLG5KWmEMS5vOI/bv9lZ52KPYl6sW9cxqgagbCeYlhPkxj/W88WtlaHdZUnVQwuWt7
+         cDuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792016705; x=1792621505;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pX7eJVw8NKbWVjClJVlyeDcXYqLdmF7XB6xKTvch9pw=;
-        b=Lt1yNY83ovgdBD27+9b11HcIfeR4ozl+k/+M0jO0abhgTjTRxi1vlsHRXkQMq8dXDX
-         x0EzATiCGK6Y0mvhVLo8fgpPjOfpl/MhE+PsH+qqN5vISb3PVmGjW6qNsn6a7sT2Zgt6
-         N5ivyZikOGDTNDs9WB+BYQbNwj6Dw9j9oeF5XtfuaI8CbxVq8uR+Qrh76VTY3xss+3sc
-         rucIs0sILfIVLSgtTcyEc2ZPtPkyozZ3WAk/Acg/nXLMo2yukKt3kisM8tX+Az+V8RnC
-         6RIQC0ByvohKVz0PDxbowxxBLu9KAvfHvIPabXAd8SO3HQJy7eHvqnKxNJqEPp47dWaN
-         rR/g==
-X-Gm-Message-State: AFq9FYKPiLxC3Jvgwd2gI5RXxiBstY38a2hTfZnTxjws8R0PNT170lAj
-	Hy6ky46Dtq9CMElEzBn6JHVq6Z/pUIuY/QHNoKPiK8LmUIs7/7bCG8OEl5ch5Eh22WrtyLL0ohe
-	xYQaZ2nw=
-X-Gm-Gg: AYBFou1QR6mxu0SXtDplHL8UN4G5fjiPlhIzqj0VxMvsQ82+QMPdRXzXphRKVniQ4Di
-	vHqTWGQD6OL+fXFroiYBQ8UfjjjKvqMZ06XqrLkbWNjeTSM7WD6dPB9N83LzTwj5IvtMAYUIgej
-	JipmFTFU+pKVxpPBjwOSjQzI/S+oXmmtxrU9s/g00En9JM4e5squvuHkFaauHOybiYo30vuDpL8
-	n6ZASvhDQvM4Mthe0OgWrmEbq0GDGZjgPk4Gl81R5J7vHnak4rLBs0jL5KOhpIzT4h/cPXUU8+I
-	NKcGTgv36eiAUr+PFbDAFLae//Pi5dh77JqOiPGkalGZ0qGQVQFhmQ27D70KMBEQgITLbq1nRwd
-	+xxoORgPHNfENPmDdnbFRf0IyQqs7T8nkiiHwETWlihuJduQp3lpk14O9Gy67VQEoVKewjXNu4W
-	JlsScX1JagZkb8KsCoeXGHHTPAMNe1jX9w/EydB9pcSmKKOrD2qTA9MKxTXPQY2NAr6D2MyIe0w
-	ubu8hwWt3hOcfGIO8jdqXvfyB4kUDt6UPWiE3wBTkTbRz9YVjyXDryLuPHR
-X-Received: by 2002:a05:622a:13ca:b0:535:25db:17ae with SMTP id d75a77b69052e-5359f48cabdmr289086201cf.11.1792016705227;
-        Wed, 14 Oct 2026 15:25:05 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536128418b2sm8652601cf.30.2026.10.14.15.25.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 15:25:04 -0700 (PDT)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-mm@kvack.org,
-	cgroups@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	longman@redhat.com,
-	ridong.chen@linux.dev,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	mkoutny@suse.com,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	ziy@nvidia.com,
-	david@kernel.org,
-	mgorman@techsingularity.net
-Subject: [PATCH 2/2] cgroup/cpuset: use mems_allowed_seq when checking a policy nodemask
-Date: Wed, 14 Oct 2026 18:24:56 -0400
-Message-ID: <20261014222456.2318284-3-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261014222456.2318284-1-gourry@gourry.net>
-References: <20261014222456.2318284-1-gourry@gourry.net>
+        d=1e100.net; s=20260707; t=1792016772; x=1792621572;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hrLsYh+bDCQ4SD2pq57KfdodfbjKTaIF5lmaAgEwzww=;
+        b=vZqM/gj7u0S/Qc717Kze8JtKygiKm1rihu1zLq9CRS+j40EId8dcXLXpswlH84+TXe
+         6M7Q4vToh71QFZSaafQABfZ1ewekykhbLGys3a8ImtuqwRiZXGyYyQG84WHFqo8p6U1N
+         EjUvBjFR0X/4WHKkg3bMo4xxDRIu/1VErdZ816VC4A36Ic4G6GYKCCh54BrFjrNLgSSy
+         iXMRZv5KLrYUFlhSXJ+OyOvpV98+J/ieiUbzcwvFvEVvS/ni4cMJG6TdgkNLswevEAIZ
+         avt3P59hb1JN5trdLnTCry3ZtLGA5spXbG+3mrt9LthGb29QVc+K0+c2tr4kFRWW6b6I
+         lCpQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwXg1PKB2Rq0lMttyuh7ExxFjXD2sXCyoF4FWIR/JBBSigHwnHzS4S4r3nfriQKaMM2Eg8Q40fSiA==@kvack.org
+X-Gm-Message-State: AFq9FYKt4pvBocJIPj5L0nHQN9Uj4UtB3cx43+ph3c74iU9irozOsKRd
+	cMHfauTTDKY1/y6N8UO319qGS2/082CYyZn6qwI5XgBRENP0asjlRXPvbFsBlHEM1UVOWKqEQXP
+	caNcsNUsIUPE4qmTNLJurvPVdtfCedZ4=
+X-Gm-Gg: AYBFou0Z0e4iPS0a63iytPCXdWKnVYXX6XVyh0Itb7s8zhYSoKjHwm5y/JbasWXUV4d
+	kGj0JJJeR9ew2D90vZrpFJZ8gOU/sblQrgr4+bE3lSXjUcksOvhoL4YHCFxyP4PW8FjjCKZFCCa
+	xdiBccbvPkCckRTD134iOvUq/nZXLANn5ANn8v+QGSdgcUEEGY6VGjIHik3NzRMOlxfW634V+oO
+	P2yWVigYDXKA3NK8M2dTBPayZwhDA2Ne9DpbOnzrYuLe4/WM7St3iBVCErzNMBu0TsQG3YKVbNJ
+	LvjDHyQtbm424OjoPJzMqhy08Ufr23jJB/b5sw5MIQ5Phc4B82Wl5xKLNWI8miNWfLr7HQreBRg
+	nF5lrdkcngfX9/y/aeIEGmOOMCq41FxqNiKa9ew==
+X-Received: by 2002:a05:6000:989:b0:48d:b650:69aa with SMTP id
+ ffacd0b85a97d-48dbacf596fmr32237437f8f.50.1792016771662; Wed, 14 Oct 2026
+ 15:26:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4tkn61r8uuiw1x6zscue84ya3eo6nitz
+References: <20261013221307.850803-1-joannelkoong@gmail.com>
+ <20261014030737.2102-1-lance.yang@linux.dev> <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
+ <75a46520-0771-4a50-ba77-ba815dfb6bac@linux.dev>
+In-Reply-To: <75a46520-0771-4a50-ba77-ba815dfb6bac@linux.dev>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Wed, 14 Oct 2026 15:25:59 -0700
+X-Gm-Features: AclHuK9UfZ-sx1-TECHAp9W_R-OgLeze4vd70DCXAYZ9g1bHKOlxo8H-AHDm1oE
+Message-ID: <CAJnrk1Z_5x05rYRCwX=SDvK9v=AB_bHHe=1csaPA_yZj6jbnUg@mail.gmail.com>
+Subject: Re: [PATCH v1] mm: unqueue deferred split folios outside the lruvec lock
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, hannes@cmpxchg.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, ryan.roberts@arm.com, 
+	usama.arif@linux.dev, hughd@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: m53ukyyufh9x14sfo6i8grm41geabyge
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 10A43180002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1792016705-7866
-X-HE-Meta: U2FsdGVkX1+1xFlbXqjIlAKU6EA4MpRTjXjZPcuqPzDAjfg+yfInWpjU1FVtTWURgFECv6l6eUcDOhSY+nOyh0hSazvIU9osE+SkFiVxTrboHJhx9I5IIRbs1plJLrDHHEQ2Q/lWtuMMDXCbvScfG/HldFByr4+G6DN6Gnq6jG4zT+S5TPmF+dS/ITwM9IulN3Vt/r1I9l1zliuzw9E+WwJtrgks89yNsPB2L7sI4gQ4BSU6A/kvWMW+pKvPVilDUwlmVfHPfqpWwXcXb+867mpc8/1FKIAcjmo2svy3ayUobT2pVH4IKy1nL1JHpQzjkxdlsC9M6kyhAiCTPmegSocTERjEN2gKwMSISRi6BgSpZsF6AAaDrJYgwbD9bhVjXNZgRVIwkOA4yFeMbmnu8caGn3f/TCPvNqZObBY4JP0uWLBmdVFbO+B4/AHWjzMm4Anzh6kSCivkd8CzKggA8mQP4AZtu1xZY0F4/8wavRDfxUAdG/xkiqpmrJHFTTDfy+uJdR7gfmQK2YukTOL3+i8HqDtYkllRn4MbPj9XsbE/8g4YpMYana5x68/m/C0QByPhq+MzSEoLcY+lOV1Iyp98utnJTE/h+O8K5XlwFaVVUow9awgAoqZW79NLLyN9ri6eUVf+ZQBqDaN0VXHRFuUBPLMviQWEwCaVLNmz2Nej3+HG4NvYu3hsAIVX67RlRcvU4wbl3RdqhZ2RoEh4XYREBPGb82PryauR1wfn7219Y8dH90aX6j7Qk3d17sOpJVA0O+MGe9v9R0RNULiaN/5gmTNCBiapVe4gpsVLA5wezTRstp9Gv/bS75MvY74KQyaXoPd6ANU3UZ+mgWig0wTLNBmDZZovPbaNWGEo8geCq6pmGeO0x/eQZxV9mrS/wWweMtcb4V909RK0aBE2UpZN7FuxZH63kHe0FkphF3pkS+ASzaW4esma5Q3FKSR7HMmfBzaN655OF1MPeGM
- dOcWZoEP
- ukcIIf0l5lyBy8ny5yWdp62GclZUc2VrUEhqtIA7aBTUThTx1fgmoVfbj/fcChulSU6nKBKHGh4uuGx5IwKXJgKhR+Op5+UkuDIRcRL8FAE3Slq5if2k2rZLw/o+P8asDOvVfvi/qMLWDqUYreIqFfWWcazZZXASht8U+fkQCk5P9/JxDkC+cpCt8xzPVLRdp64lxbDfHDzMTu+nakASzFSXi/LvdM6I33RAM5Yavr6RKp/vrc/xFH+NdQtCgxo0UYFCep+wdyPLi6s2w+nbMfJsUIaYvO36bvPG+7Fvjyr2gu1iRfWN4NGUW0YwLGXJoZuqvNWJTkmhUmtfHme4TpufikrB0h9G0lXho
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 01998140004
+X-HE-Tag: 1792016772-884889
+X-HE-Meta: U2FsdGVkX19LdeTg7MI8JXC7AVCl65VCbigkm0Wkobk6/nbS9hMtd5ae2d/Dt/EHHD8BJbRAZQJupedUaJXh6rm+kCIOL4AXmx7OTjCffwQi59XATLuSrov3tT+0NoEY86/r5IxqpVZrifx6PjxxMv+1Eik+p/UddMH+9/Nh/RZSRgIOrjXWIGKEu7G4peqF2Bz8sqCcZyI5cySpfC+j6ZytLlUn3/dk6E23J9UT60dlu+TiJtsNw/Xy+UuNTi9zxnZATteT06SnRLm0kyPQz2G4R4C+QNRMkZjd86ngtdo1RHrbD7WvCKn2csemnwCrK2LYNgJ6VMyWjZMFmvZM9NVoukCrMVtttT16l/oVsKkiaheKrXB+Zqd3MkM4vsYmFK3Nym6gmUSENEQ5vQE1BHG/Wp2lysrsuhNotW+UMU6wgnj5PAYhfv3NEOloajxz3NpGTVjaQtoNN1nW+t3rE3ekUuCU+ztxRXsVGA309ewbpB2CHFNUmB+EdxzjKap4orRWe2jSTaX2HRfFxy8vaqyRWjfXke6CgbXsebDqAM6X4Z9xygefYeEIR8hpHJcFfEOgJI9DRmLgQ225il9nMcTscXfPBpIttuTZ0ojxvMzW4ocidEJl4n098zYBSWdi/UFJ84rar4uBljK6FCO0qlyvszmwNKRcLXhVDQacMX+p5H7HiwROQHzmjITvJQ/B2tczCxRhf4HlwoT/hIBnSKkCdpjwVwJ3RtsnDpj/7wQA2udfXDUuwTd+Xc+5Qd7OGGmLiW76ua3nnxolIHF+yKtaLVDZ59jwLXKddPgX+NfZRz66n9qvkDw3SLsXm7YRaqaM4jk0YeIYTD0T3SMF059zjKOTD6rf4mrOERW9UdTxI//vQZmnnohD0+X9WBWZoE6XUO0oH9J7YH7ap4sCNE0GmVbO0+8ZUbtyfCFGxX+DcEJhxuL/bYDCA2gsEiR9OrOgMkn8aq9+RaHkSgL
+ GLRBMt5c
+ VKTvdFIA/mqpgIw2m+vdqBJ7rz2aBEZCzEqFi7nX+P/PxilQySLImyjtlZQdIXMaIUMdTI+UeTFM6H8JII8zp3rtiAftzyefbD1Mdxo1MpEfukLod+E+ltYNNmZO0H+5wfXm4WOrfbzHQ+D0IMXxP4sdlZxkFsAZonDsOC+wkFmGAPMpckuLE/s2SHHkf9m74eS7+M304uZuHZnTy0QKcBLdl05VZPBWrQN/UfuqEpxb1ACEYy9O+cs8S+ulf6T+HLhmkNIIyVWWsX+khw6czYLTqNtUF7aAnnwTGERc+P8ukGE8vavSFAWSrt+oGr7k12dHPwTsC050oiD+PvtMZn1X0WwMip1pcmugytQ2zPq++kQtWdHVTSgRb3geJG/Zg3FkUFwuQ5ehsoFlCDz9xFJcs6/biWeoYmBEU5gMjCQ7UO8+9i04BhL7kEBjVu/NtLhs1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,61 +147,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A cpuset update changes the task's mems_allowed and rebinds its
-mempolicy in separate steps under mems_allowed_seq, but the check
-reads both without it.  This can cause a spurious numa placement
-miss under some cpuset/mempolicy combinations.
+On Tue, Oct 13, 2026 at 9:24=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
+rote:
+>
+>
+>
+> On 2026/10/14 11:13, Barry Song wrote:
+> > On Wed, Oct 14, 2026 at 11:07=E2=80=AFAM Lance Yang <lance.yang@linux.d=
+ev> wrote:
+> >>
+> >>
+> >> On Tue, Oct 13, 2026 at 03:13:07PM -0700, Joanne Koong wrote:
+> >>> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() ca=
+ll
+> >>> folio_unqueue_deferred_split() on folios where the refcount has dropp=
+ed
+> >>> to zero. In these paths, folio_unqueue_deferred_split() is called wit=
+h
+> >>> the lruvec lock often held (move_folios_to_lru() always holds it and
+> >>> folio_batch_move_lru()/folios_put_refs() usually hold it for every fo=
+lio
+> >>> in the batch except the first). However, it's not needed to hold the
+> >>> lruvec lock.
+> >>>
+> >>> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+> >>> the deferred split queue lives on folio->_deferred_list in
+> >>> deferred_split_lru. The deferred_split_lru is a list_lru with its own
+> >>> per-memcg per-node lock.
+> >>>
+> >>> There are already other existing callers that call
+> >>> folio_unqueue_deferred_split() without holding the lruvec lock (eg
+> >>> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
+> >>>
+> >>> Add folio_batch_unqueue_deferred_split() and use it in
+> >>> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() t=
+o
+> >>> unqueue each batch of zero-refcount folios from the deferred split li=
+st
+> >>> after the lruvec lock is released and before
+> >>> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+> >>> critical sections, which run with IRQs disabled and are highly
+> >>> contended.
+> >>
+> >> Nice work! Thanks!
+> >>
+> >> BTW, have you seen measurable overhead from unqueueing deferred split
+> >> folios under the lruvec lock?
+> >>
+> >> Any before/after numbers for this change, including the cost of the ex=
+tra
+> >> pass over the batch?
+> >
+> > I recall Joanne mentioning some data on this in the link below. Is that=
+ right?
+> >
+> > https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te=
+8G1MaU9bXs99w@mail.gmail.com/
+>
+> Thanks, Barry! Yes, those numbers answer my question about the
+> observed overhead :)
+>
+> Joanne, have you rerun that benchmark with this patch? I'd be
+> interested in the before/after runtime and lruvec lock wait.
 
-A reader that loads one mask before the update and the other after
-it can see a spurious empty intersection and drop the nodemask.
+Hi Lance,
 
-For example, a task with cpuset.mems={0} and MPOL_BIND={0}.  If the 
-cpuset moves to mems={1,2}, the policy is rebound to {1}.
+(Thanks Barry for providing the link to the earlier discussion!)
 
-The allocator can race and compare the old mems_allowed {0} against
-the new policy {1} - which will result in a dropped nodemask and a
-misplaced allocation on node 2.
+I have not run those benchmarks with this patch yet but I will get
+those numbers and add them to v2 when I send that out.
 
-Simply retry the intersection until mems_allowed_seq is stable.
-
-This covers the task policy, which is rebound under mems_allowed_seq.
-VMA policies are rebound afterwards by mpol_rebind_mm(), outside
-mems_allowed_seq, and are not covered by this change.
-
-Fixes: cc9a6c877661 ("cpuset: mm: reduce large amounts of memory barrier related damage v3")
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- kernel/cgroup/cpuset.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 3f52717c19654..8ee239d5c6b48 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -4354,10 +4354,21 @@ nodemask_t cpuset_mems_allowed(struct task_struct *tsk)
-  * @nodemask: the nodemask to be checked
-  *
-  * Are any of the nodes in the nodemask allowed in current->mems_allowed?
-+ *
-+ * A cpuset update rebinds the task's mempolicy and changes mems_allowed in
-+ * separate steps, so retry if an update raced with the check.
-  */
- int cpuset_nodemask_valid_mems_allowed(const nodemask_t *nodemask)
- {
--	return nodes_intersects(*nodemask, current->mems_allowed);
-+	unsigned int seq;
-+	int ret;
-+
-+	do {
-+		seq = read_mems_allowed_begin();
-+		ret = nodes_intersects(*nodemask, current->mems_allowed);
-+	} while (read_mems_allowed_retry(seq));
-+
-+	return ret;
- }
- 
- /*
--- 
-2.53.0-Meta
-
+Thanks,
+Joanne
 
