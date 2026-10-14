@@ -4,127 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A70BCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:59:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A29CC6B20
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 04:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51FEE6B00A3; Tue, 13 Oct 2026 23:59:37 -0400 (EDT)
+	id 6D7526B0088; Wed, 14 Oct 2026 00:25:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D2086B00A4; Tue, 13 Oct 2026 23:59:37 -0400 (EDT)
+	id 6870D6B008A; Wed, 14 Oct 2026 00:25:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 398846B00A5; Tue, 13 Oct 2026 23:59:37 -0400 (EDT)
+	id 59D1C6B008C; Wed, 14 Oct 2026 00:25:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 19B836B00A3
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:59:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89255C0408
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:59:36 +0000 (UTC)
-X-FDA: 85319877552.04.3A1B13A
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7919F180006
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:59:34 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 39DBE6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:25:00 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9EF1E160437
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:24:59 +0000 (UTC)
+X-FDA: 85319941518.21.46FA539
+Received: from mta1.migadu.com (out-76.mta1.migadu.com [95.215.58.76])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7450A18000A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:24:57 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Wwsy+n34;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf24.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gd0b7toG;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791950374;
+	s=arc-20220608; t=1791951897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xaAy9NFbsaWAIqgLcyoOERlKyqqeQpYUYBxUTmvTMEc=;
-	b=aJbZdzicJEI8fDKjM99RBx4zPcvv7o8yVuaIYV/6Lnv3agOcc0/9ikHcIcuXUlAPk/oMzl
-	ASsQVVslc5OZJu7qHhC6pyiuT4xjOhTb2x/+X6LELiBJfU6JajpdRh9I/nO5MKwHwrqEVi
-	ws/2tMFxL38MbsIS3P6dWgbyQkBJT48=
+	bh=w/4RCAHmxfZKog+Rqrr2dhf+m/n4L+JGt37JmLoY3fs=;
+	b=qt76f9Ild4HjZVL0uH4+PooUMSgnZfX4wuCXPEcF6v/j4fQfEmvRFBgOkfk9OwL+sloJ6H
+	ABZ7CsXc31dZ9/TsFzud3WXzSJN7vpPQACoCuLn86lhcjTK9uyclg4dGfRp4yHErGsRICq
+	91PUtnqE6RvErKBymOAe/nRwRvvTWlw=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Wwsy+n34;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf24.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gd0b7toG;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791950374;
-	b=z+ktVJ/WsPIuzwr9LdYw9VLJuU6Zk5clgO7NWmeCrxGWqeri+MVQJ8hJdxeoB2AxsdDTdD
-	9oJGRvVIMPMu+uRBExun2N3WmO84QegoYqB2sepjQqfKQCfYpkZRkT6KYh5PTSnhxtQsKf
-	lrC9PGYAi1H5Rgz32t046Wb7bJrbD9w=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ccc6b11a19aso1544020a12.0
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1791950373; x=1792555173; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xaAy9NFbsaWAIqgLcyoOERlKyqqeQpYUYBxUTmvTMEc=;
-        b=Wwsy+n34q7rQgoAJDbTe3PiE5hzDwboutE8YoifOohy4pbS2HTOiTxO9Yt8yJ0a06T
-         +FBBuuHUh3Ks0p0ahJymunlfSe7l4Na/tquATqCucLCpML5bStOj0Wr4IZQWvtxuVjM9
-         XZqhcRJAjphWh+lQnQcZ1CkQ9HTT+xsjMOn9JAzyVHLK3hoQBkfpphYtxLISfoR437C+
-         Th/oWw705L3g+EbKrqe6JMvEA5meU6Qym9q5cDwUZBgvrw/qFtastddn5pUhD51Hp8YX
-         No+4pn1etTy6sVL42NT80nTaYMLpiiKDbO/ZOBlQxDOjqIjAZAX+ZOGzfR0CpxVWsDeG
-         ZVUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791950373; x=1792555173;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xaAy9NFbsaWAIqgLcyoOERlKyqqeQpYUYBxUTmvTMEc=;
-        b=b/KT1vLMdsG1qudOwwPPJgQu9jarQZ/OLjDbwGs+DAVKlSVMMHlE70n3oFSvu0t1kb
-         wgwZD5yIVoV+Uc1Gd7RjBJkd72wXOCDOi5NwCUaIowPInL4p+iw9F9g2wjn0LojkIol5
-         Ojor30xKWOAA5GumRlCDNN1iprUzIfEiR6ostrqxhsuDpitq3Q/boIH9QdGWQ4C+8WfS
-         UMtB/SPMIE9gEzlQo8I2v76VvfOvnCIbra56xI6aWV8Q9ikr9yiUAP4o/ArgO8Np3LxA
-         ablUiZ3GeIJF12i/w/pLxZfthAaCw1Eir3DoQiK6CsLit1f2SBvcfO+RLMkzpMwFTmw2
-         YbqA==
-X-Forwarded-Encrypted: i=1; AKwUvByX4HqDKDwn4rWEZi17g2ToFRzTlQripEKIte1FPG3LR4VqFt/nnEYrIt6bUuzSQQgZJr+QBaaXDQ==@kvack.org
-X-Gm-Message-State: AFq9FYK6VQe28VGb/k5xTi919LHsqqsUQJ20kecR/C1J46f+1//oudUI
-	zjuDAr2NKomNMfFpbumDuHLno8GQBar8G9NF3j6MK9KoLtTS/vr21W6L1I1qwu8t468=
-X-Gm-Gg: AYBFou0ljD2oKxkHT56RKPxZPfGwaXau4/UocfcFMAm2ngHaA1wdT2jobljiYnvGq35
-	Q7VzZZOrSAgSLBmAy5Zyf0xNIz7L9j+fY8GTrE+zpopqTKMIiopYjLGgyIaljL5qkRA/KJjcl7P
-	l0F/msYxeVsw0AdlctvXOXjell5pndm5i62P1wyVNUkB/EBaAems5FrRWd5k8ztrzudLAsNIdLY
-	RCfzy0pWjW0l2+Kdl2JxPnu4hoNE0C++vuPXEpfFotVVjZ9wUZ1CRNTHUOt0TffeERo41zsQoZB
-	pMoBFfGXGa2Al1afHPo5jTWZfcTFHeJfzxZL/JPtEcYovUByaYZSrKLnkRA3LPM4+pXe/b4jCjy
-	HOWiW1Q/vYF/u0K4lm3iEfpS38tRYinM6srs3lZVEqvur4mOVOvEcv2A838EAAzoWzcwlU580zQ
-	6jZcQJmKX40H8CCDmyECsztOptlPled1v+uWPegoM0vwvdrVo/L81jVnlZGjqJQ97TSIHInEC4k
-	HmQLjYDNhEjGSA6AhDK
-X-Received: by 2002:a17:90b:384c:b0:3ab:f38:2b43 with SMTP id 98e67ed59e1d1-3ab3ac86fbamr12973731a91.34.1791950373230;
-        Tue, 13 Oct 2026 20:59:33 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.103])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac5f24a538sm2492305a91.9.2026.10.13.20.59.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 20:59:32 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] mm: generalize PUD page table allocation
-Date: Wed, 14 Oct 2026 11:59:10 +0800
-Message-ID: <20261014035910.687847-4-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261014035910.687847-1-songmuchun@bytedance.com>
-References: <20261014035910.687847-1-songmuchun@bytedance.com>
+	t=1791951897;
+	b=0EMv0AFFpQL4Eu2pYGIcPULE0iAiAE1RpUXVTlkuIhYfYlVAcj8wJeYXMX+4Kf3VLGz19F
+	hhrxWBazDaLqtyP5QWkqVlElOqz9dCEKjWB9EC2G0msCHp6sWUDqRg7DV1E9DdV176yw1w
+	d7TIWVV3cBx8eW8oCJRk48rwNT0ZkDQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=tOKfQbBfrehty/qW3pINrljOFcxIODGYHAtE2STWOrY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791951895; v=1; x=1792556695;
+ b=gd0b7toGmMGQDvpmBBvyyF3R02lD9xSMO1zWSRXnAw8D/oooqnqMObDHfg1IX5NEjYH/NXYN
+ qsZYwebFpj2UQBi/rq86Egs3R9oaLkH8uquYbANSiOxaploED0AS76bAvyGzNGBObjZK9Pv5le7
+ N3DdpIyQIeXZ70vIDXn6rQwU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 967b8fc28b66cba3;
+	Wed, 14 Oct 2026 04:24:55 +0000
+X-Mizu-Trace-ID: 967b8fc28b66cba3
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <75a46520-0771-4a50-ba77-ba815dfb6bac@linux.dev>
+Date: Wed, 14 Oct 2026 12:24:44 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm: unqueue deferred split folios outside the lruvec
+ lock
+To: Barry Song <baohua@kernel.org>, joannelkoong@gmail.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hannes@cmpxchg.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
+ usama.arif@linux.dev, hughd@google.com
+References: <20261013221307.850803-1-joannelkoong@gmail.com>
+ <20261014030737.2102-1-lance.yang@linux.dev>
+ <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7919F180006
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7450A18000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: pyosixjoh6j4qk1cdr4azrqsr5azfirx
-X-HE-Tag: 1791950374-483307
-X-HE-Meta: U2FsdGVkX1/ZhQdhCQHoN516X6htuH8mnOnw1mcnY2KQpS8z7Dxa9KEODAhuI2UFdeWHmplLSupb9IibFEfYMXuV4OVgXWBdxHru2ULbxIN84ZY7yV3nX3+AvrsgpAe5cWri4LNq/1+h7cb9SfVF9e0wxlOC5TdyJBFnWUD4vmklMPLYu3KQwWfo+1+r2Ziuy7yP4c91sSw2Ua5N8cG0FhRI07gOe0b9cSMKIqp851lM0mIBHkE8xcXGl2JtQMX3wHrUJkXeqBuZsgXB6GijwSflre5BmJyksRRmhB+48IRtMVQKI+dfJZQ8ROA9S4VUw1RaTvcTUSkD9qB3Bsx0CvRDgNScjiadgr31b7ToL31FC/ovat5//F83A/65kBLaj9epEUF+inv2UsFOYmKzXPykLkfaojX4LVBixy29c3kuw0R0WWUCZvRAQrCV4ivv5uj11uhmQL4TO5BeEJ2GV5cfBkP7sFD6yp+T9RAXkvX0eZGvLlwvlv+dn9hKXNGoW0YUpnFu9848mgWx+de0Qf4rwMutHTuST2BT9kNf04+E/XfH0Nk2DlJpd8hQIdip03ZCUhXA5xDkEHKyvS5kOOtKpfPhxlN3j+nM6Ox6p2oZeNHYnWfM2iCkNUCsxzmUA03IOZYgKM+4+WmYoQy+uYQ+NLrFk8HfKoRT7lUDTvRh3bte6wKnkCR7x4YoGAy3P3UnnLmUUzKDoMiEY9POc7VRcL6JBL6DpNnrx3cH03/PeSCoHNhOVdfjYgi8guzoiXMP6SiBPI+501MowrUfeALUAqmoxspb1KSzso/8Wpl1YFbSB25U3ZpSoKxSPIG+iya0+3ORrU0rLeO/EjFYC+CjPRnkcuCt/RKlPUPzvC+no0ExcdQOSODpATbWbeieoO0hsZXX07ydV7twJOB8o/z06JUSIMWKRqehZFUc0ytspG48pXF+uuKCru2Sd8v4s1z3s9qB8Vo6+TahlTX
- cTRK93ll
- IfeWW2oamxyxFRDj/WDx07j2vkTHp7AMOet9HB/iZSYrEvMxoXdh6SMcY91k9P6bICbegZIqnwITPTDMz1N0P8NG29mL09Bmt6B06PjwWF16DbhPdfdVQ0fj/yHPVmbC6/C2U7makPW7UOOcd2NhaXOoXYIbqpW9laC8073ABD6hpd+vAJ9Q0Qo2q7DN1ZJW7nNRuDe4DJ/y/eQroMvg5giQ+U7X1GFT77JuiqJ2eSMDE283VajOJkHukeHU04YJ3uwi53kCF2otTOnpa7GeMcCNyvjRHDRPthvHSKxuyoJela8R2JDLBWxUfYdDtdsK2jO1TtXK2LTSi/nzk9aM1Wc/sYETS3FoXuv5WnD24gEbPYx2YV3PcfS7XHkTtFQDCxQGuasXUkqV0i9OYUMLXH3gTiwXOQpm1h9h8Gwlsje7tIeo=
+X-Stat-Signature: 1oi43x5u3ipadm1tioqbxx9idtxp4zag
+X-HE-Tag: 1791951897-555415
+X-HE-Meta: U2FsdGVkX19u02wrIEytAcFi0A1nxpD5068OrjMbJAWJCzu70pF9K4C2iGBa7Heykd45c8j0czPGX1rJj3BQgFTPgzTAjqIV795sOsvYafJSYydbgqJDoephD986lFLc7N0PeIC+BdTP4248aE7W952qo1wmwSlfHQUbFq2pVHq/LKNjH67zE4fLXfkvz0F+QxoB0CjWRd0KjdLOmkq7kl8EGHe20Z+fIMUZSVvvLsQTLjtfYFmnljwbKpHLBPj+g6EiJlCbvPWYP0K3W2a/VAAo5jIwYI5XRj4Y/v7iU5HTTQydJ67KYQ2njLaKaXPvQUm52l9xf3V1DuGRPBbMfr0Ql0X8enaGKnAIqpq/yBhZPupAOSMWAE5EWsMIosCkt2z9xJpeWlp5rJu1Q/xvPj8dN5z+oWrngrhZ/CRCXDUXeAAJ+YNGf1x+irOlP4AcikYXWmAWVO8OM+S2fsjlhKwxyCRZCtS0jZCcS/O7Eww5qIMEw+qlYs0TPd2FcJaLF3nd0d/YwXz+EAcvCA/iKfx0c8ZOLNCAD5ML/PWSvJ0IrkUwI0aRClaXt1u+d+yfnSw7+Iz5lWVqml/8qFHtto8xjGvh+I4p2rcUa+InYwhz19XJn3Zduty2gOanigVERddCaVqna8WR+MeSjPZ4fZzjk1nfsSEWnCGiSm/ycFFPTO40ixUMBaPe2mqxmTOekIgrkG5U2JGHOdGO+zkG67cOEVN6a05F9xJxeolFaNMOA7BnIYpUUvZmGUsaPWQ54nBuDEgfI2RXnIUGyMNUcWR63cby/3K1LlCMvHiaWTRCtS1XS9JgbXlBFU3rR0d34tRsWJZbnKjjsb3dXN/OYkrjYS3z6oQTo50BgZxeD5CTMoWjqm660MhHObfxsj+q60vQ08nfckrJ4xF3JvWnrLyI4YEcABuwHpiJ0Ob8dmtFe2oIwYA3uZutDiLcaGp/PM1hL53A5b21f/hVFOS
+ dWZlX5YO
+ HyQiYI5yIfubasxiK1/XE6tuX2OerJr/z5gMNhu7T3CVurKByd9T53WhZYcE6WBUSa6kbuM7fFwmo4/9MWBUi585eJJ8lPlua6UcpJ2BIgRrP3+MJ70FHaB1wzI8MMHR+e+csJfdLqTpamP6MHgl1a+Z9pvjcfc5m95YDuOtYMyJuL29ggzBXMMYbn1vHZogCfiNwVslBzUp5RkOKbU5lx5V27O75eFaMZH9Clg52Sm4kSWH3IKYmVYwMIrBy6UFYzjI5TpPv28kJp53pELctLDfAnu71GBd7L5o9BMqYJO5xpWbyS+De6pTwydYGOLLfYipYAcvBxjYb0LDkNvY8MWyTQfUdybGsEfe/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,133 +99,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The generic PUD allocator assumes order-0 page tables and zero-valued empty
-entries. MIPS and LoongArch need pud_init() to install their invalid
-entries. MIPS also uses PUD_TABLE_ORDER to describe the allocation size.
 
-Default PUD_TABLE_ORDER to zero, honor architecture overrides, and invoke
-pud_init() from the generic allocator. MIPS and LoongArch can then drop
-their duplicate helpers and use the generic constructor handling and kernel
-ptdesc marking.
 
-This also switches their user PUD allocations from GFP_KERNEL to
-GFP_PGTABLE_USER, so they are accounted to the active memory cgroup
-context. Allocations for init_mm continue to use GFP_PGTABLE_KERNEL.
+On 2026/10/14 11:13, Barry Song wrote:
+> On Wed, Oct 14, 2026 at 11:07 AM Lance Yang <lance.yang@linux.dev> wrote:
+>>
+>>
+>> On Tue, Oct 13, 2026 at 03:13:07PM -0700, Joanne Koong wrote:
+>>> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
+>>> folio_unqueue_deferred_split() on folios where the refcount has dropped
+>>> to zero. In these paths, folio_unqueue_deferred_split() is called with
+>>> the lruvec lock often held (move_folios_to_lru() always holds it and
+>>> folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
+>>> in the batch except the first). However, it's not needed to hold the
+>>> lruvec lock.
+>>>
+>>> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+>>> the deferred split queue lives on folio->_deferred_list in
+>>> deferred_split_lru. The deferred_split_lru is a list_lru with its own
+>>> per-memcg per-node lock.
+>>>
+>>> There are already other existing callers that call
+>>> folio_unqueue_deferred_split() without holding the lruvec lock (eg
+>>> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
+>>>
+>>> Add folio_batch_unqueue_deferred_split() and use it in
+>>> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+>>> unqueue each batch of zero-refcount folios from the deferred split list
+>>> after the lruvec lock is released and before
+>>> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+>>> critical sections, which run with IRQs disabled and are highly
+>>> contended.
+>>
+>> Nice work! Thanks!
+>>
+>> BTW, have you seen measurable overhead from unqueueing deferred split
+>> folios under the lruvec lock?
+>>
+>> Any before/after numbers for this change, including the cost of the extra
+>> pass over the batch?
+> 
+> I recall Joanne mentioning some data on this in the link below. Is that right?
+> 
+> https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1MaU9bXs99w@mail.gmail.com/
 
-Assisted-by: LLM
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- arch/loongarch/include/asm/pgalloc.h | 16 ----------------
- arch/mips/include/asm/pgalloc.h      | 15 ---------------
- include/asm-generic/pgalloc.h        | 11 +++++++++--
- 3 files changed, 9 insertions(+), 33 deletions(-)
+Thanks, Barry! Yes, those numbers answer my question about the
+observed overhead :)
 
-diff --git a/arch/loongarch/include/asm/pgalloc.h b/arch/loongarch/include/asm/pgalloc.h
-index 1fc9a0751f19..06a36da302d3 100644
---- a/arch/loongarch/include/asm/pgalloc.h
-+++ b/arch/loongarch/include/asm/pgalloc.h
-@@ -8,7 +8,6 @@
- #include <linux/mm.h>
- #include <linux/sched.h>
- 
--#define __HAVE_ARCH_PUD_ALLOC_ONE
- #include <asm-generic/pgalloc.h>
- 
- static inline void pmd_populate_kernel(struct mm_struct *mm,
-@@ -51,21 +50,6 @@ extern pgd_t *pgd_alloc(struct mm_struct *mm);
- #endif
- 
- #ifndef __PAGETABLE_PUD_FOLDED
--
--static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long address)
--{
--	pud_t *pud;
--	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
--
--	if (!ptdesc)
--		return NULL;
--	pagetable_pud_ctor(ptdesc);
--	pud = ptdesc_address(ptdesc);
--
--	pud_init(pud);
--	return pud;
--}
--
- #define __pud_free_tlb(tlb, x, addr)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(x))
- 
- #endif /* __PAGETABLE_PUD_FOLDED */
-diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
-index 2f123455e363..4346802e283f 100644
---- a/arch/mips/include/asm/pgalloc.h
-+++ b/arch/mips/include/asm/pgalloc.h
-@@ -13,7 +13,6 @@
- #include <linux/mm.h>
- #include <linux/sched.h>
- 
--#define __HAVE_ARCH_PUD_ALLOC_ONE
- #include <asm-generic/pgalloc.h>
- 
- static inline void pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmd,
-@@ -52,20 +51,6 @@ extern pgd_t *pgd_alloc(struct mm_struct *mm);
- 
- #ifndef __PAGETABLE_PUD_FOLDED
- 
--static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long address)
--{
--	pud_t *pud;
--	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, PUD_TABLE_ORDER);
--
--	if (!ptdesc)
--		return NULL;
--	pagetable_pud_ctor(ptdesc);
--	pud = ptdesc_address(ptdesc);
--
--	pud_init(pud);
--	return pud;
--}
--
- static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4d, pud_t *pud)
- {
- 	set_p4d(p4d, __p4d((unsigned long)pud));
-diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-index 68e473908758..cc8445e6078d 100644
---- a/include/asm-generic/pgalloc.h
-+++ b/include/asm-generic/pgalloc.h
-@@ -182,24 +182,31 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
- 
- #if CONFIG_PGTABLE_LEVELS > 3
- 
-+#ifndef PUD_TABLE_ORDER
-+#define PUD_TABLE_ORDER	0
-+#endif
-+
- static inline pud_t *__pud_alloc_one_noprof(struct mm_struct *mm, unsigned long addr)
- {
- 	gfp_t gfp = GFP_PGTABLE_USER;
- 	struct ptdesc *ptdesc;
-+	pud_t *pud;
- 
- 	if (mm == &init_mm)
- 		gfp = GFP_PGTABLE_KERNEL;
- 
--	ptdesc = pagetable_alloc_noprof(gfp, 0);
-+	ptdesc = pagetable_alloc_noprof(gfp, PUD_TABLE_ORDER);
- 	if (!ptdesc)
- 		return NULL;
- 
- 	pagetable_pud_ctor(ptdesc);
-+	pud = ptdesc_address(ptdesc);
-+	pud_init(pud);
- 
- 	if (mm == &init_mm)
- 		ptdesc_set_kernel(ptdesc);
- 
--	return ptdesc_address(ptdesc);
-+	return pud;
- }
- #define __pud_alloc_one(...)	alloc_hooks(__pud_alloc_one_noprof(__VA_ARGS__))
- 
--- 
-2.54.0
+Joanne, have you rerun that benchmark with this patch? I'd be
+interested in the before/after runtime and lruvec lock wait.
 
+Cheers, Lance
 
