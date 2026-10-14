@@ -4,122 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 780BACC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 07:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BEF5CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:02:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57F1D6B0095; Wed, 14 Oct 2026 03:56:28 -0400 (EDT)
+	id 27DEF6B0088; Wed, 14 Oct 2026 04:02:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5578A6B0096; Wed, 14 Oct 2026 03:56:28 -0400 (EDT)
+	id 2557D6B008A; Wed, 14 Oct 2026 04:02:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41F036B0098; Wed, 14 Oct 2026 03:56:28 -0400 (EDT)
+	id 16B5E6B0098; Wed, 14 Oct 2026 04:02:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10E7F6B0095
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:56:28 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F0B314044D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:56:25 +0000 (UTC)
-X-FDA: 85320474330.09.9D487E1
-Received: from mta1.migadu.com (out-169.mta1.migadu.com [95.215.58.169])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E4B9BA0004
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 07:56:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KgfDKtGl;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.169 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A8EB66B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:02:49 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32D86C0479
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:02:49 +0000 (UTC)
+X-FDA: 85320490458.25.0423443
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5988740004
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:02:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBpdrmSu;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791964584;
+	s=arc-20220608; t=1791964967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E3+Wge0kwS7IwF5RKEI33wHVeSTwsUI9t9OYcmQ3Cl0=;
-	b=5CmYaA2NYnxBrlxQZhotKW5ZI1WuQ+YFCW99ByqL3Gs/0mdsxJBa6tJK5Cy6ne8pXZqoKq
-	Yu6dWBq0GRkmfsq5lRmKZttol4+9FpBxz3TxKmrZ0iE/Y1W2hM+nzmaJu0VtGv6k8cWeWV
-	/hW8FKBBQ0YBM6tcvuw8voJYD9ofZxA=
+	bh=X9ytMwqCWIzw05HboKv/lmzrNih4neXNeq84eInfJtw=;
+	b=7+Wmq8lcezOkAm/pWO8HuM1eIAOMW8ZkQlCOA/Y66keG7rQg+g34A6zV81meAewYWTVorK
+	UIXQEB3IFU3XrT4UgobHMASylFWxSshZ14ddR/ZHnVvIZ75b6cZVfqmIqHUgpd1my/4AG4
+	wvIwLbP8fydAv89XMbx6AP9A0HSX51E=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KgfDKtGl;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.169 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBpdrmSu;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791964584;
-	b=Sk1vfJcnC+K2Urb9QskgiMgpkjIW4T9haOxdHgUOyCzW/kVVA4zxfKAKGitZeYge2hDD9s
-	Mue5gRjmX08ssKx3WgcQdwOZtA+0Y7LqPia3StD/cEIXjqkmH/P8vSepAUNpAUZIj2jNvn
-	Ie/3Rq85axxE/7eH7dZ7SLPKzK1clrA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=3NakkYm+exfqHeo87l+Jy3RJZBZS8mbhTiQS6F5ENvk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791964582; v=1; x=1792569382;
- b=KgfDKtGlnya+w0y+13eDfqGYwadeUvStcnSjdRAXRZPy/w4ajj0Yu1rBDQ1hqaulwiQkV10G
- TBiORH9tEtm52K4jwFva0QEuVVFkuvUSmTzHiLNz9qiE/zk15Gsg+ZFlKVkSI9pJdKeHfueUC/x
- 68XbzPnENWRiOxSmlLisNpgE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 38737ea13a66a289;
-	Wed, 14 Oct 2026 07:56:22 +0000
-X-Mizu-Trace-ID: 38737ea13a66a289
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	akpm@linux-foundation.org,
-	zhangchunyan@iscas.ac.cn,
-	rppt@kernel.org,
-	kas@kernel.org,
-	andrew+kernel@donnellan.id.au,
-	rmclure@linux.ibm.com,
-	debug@rivosinc.com,
-	baolin.wang@linux.alibaba.com,
-	usama.arif@linux.dev,
-	wangruikang@iscas.ac.cn,
-	namcao@linutronix.de,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	alexghiti@rivosinc.com,
-	viro@zeniv.linux.org.uk,
-	ajones@ventanamicro.com,
-	arnd@arndb.de,
-	axelrasmussen@google.com,
-	brauner@kernel.org,
-	conor.dooley@microchip.com,
-	conor@kernel.org,
-	jack@suse.cz,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	paul.walmsley@sifive.com,
-	peterx@redhat.com,
-	robh@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	yuanchu@google.com,
-	stable@vger.kernel.org,
-	pasha.tatashin@soleen.com,
-	linux-mm@kvack.org,
-	me@ziyao.cc
-Subject: Re: [PATCH 1/1] riscv/mm: fix soft-dirty migration PMDs being treated as present
-Date: Wed, 14 Oct 2026 15:56:16 +0800
-Message-ID: <20261014075616.76429-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261007113345.32755-1-lance.yang@linux.dev>
-References: <20261007113345.32755-1-lance.yang@linux.dev>
+	t=1791964967;
+	b=YzaBWPE3uToIQf5nq/ssm/RSXjrlV0+WbTPc2e8YnzUpp+coZYhvwn+Re31JRkIG5Uc5iH
+	YpL4mEdP4m0qtatbKiFTYL3tZDcr1Hxr42FUzawAsrrY33x+nRpEc/wlU1rML38BpPVnCY
+	zZ5SRNftrojjwzMkw+PeTXL+CGYLYbk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CB8F243483;
+	Wed, 14 Oct 2026 08:02:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41CD1F000FF;
+	Wed, 14 Oct 2026 08:02:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791964965;
+	bh=X9ytMwqCWIzw05HboKv/lmzrNih4neXNeq84eInfJtw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HBpdrmSuw1yhtNos3sT9tV91CknmD7XQmyevZJ2kCvLr9wL4Ai7tkicw8qI3xv88b
+	 WcGTwbsyvZjeXWw8Tt1CIgz99OdwOUzSskNkuWPT2J4HuUlOhCu22SH991wQJRkeUB
+	 JmmBAaVOFoQwJNoUzQjbofuUe1Esyw80tPOtyEzj56RMbdFZlPWuoto6Y0uJTaG85l
+	 fBFmF2xPxHBAsI68U9XRMUQuVNyw12y9NCl6CsZvodMpCXbONKufSOU2jOfyQ5dkOL
+	 aytwcAT4mgsn/uGjeMeJG3qvYL24Rbw9tqsfxUR0sezq+tQ7nsYttUzCLc0Rlgx+W/
+	 H2J5w58k0XqOw==
+Message-ID: <e9a6d5e4-31ee-4dea-b2fa-1813e7cf69ed@kernel.org>
+Date: Wed, 14 Oct 2026 10:02:38 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Ying Huang <huang.ying.caritas@gmail.com>,
+ Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Chuanhua Han <hanchuanhua@oppo.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Kyle Zeng <kylebot@openai.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
+ <5848db18-9de3-437b-9967-162ced4f8cb9@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <5848db18-9de3-437b-9967-162ced4f8cb9@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E4B9BA0004
 X-Rspam-User: 
-X-Stat-Signature: 5r8fro7y5twwak5taassx6oiwj6rm3xw
-X-HE-Tag: 1791964583-326267
-X-HE-Meta: U2FsdGVkX1+bW8+/vGPwZDE6uh40YXBCsA9I3+pxDvBSnJTBmw7WOS0lSGkNcW6soQx0GVCRz5Yej5fPRUZIkDeFIgPFh6bvRjJ1YiBGtG9p9NrChDCb8QHACV6DBjVLKm5R/+N9r+Rsj0LrVSZs98gaemdMQ2PFXw+J9ZFBY0xYJNa/sITdi4MDPd+/DaDdJ8SWigskTHfhxl60E9eRKDLs1Z7PIsQ+AlKHJEy3Bwk6ZiztKkVeIlCq9PfEKYKNN4tjr7RXttLwVoTp7LoN1ZalvsGa5Syu0sUdOtyAMWzZDg6y033z12v9KddWpFrwFFpXtCgQrRLcvl98hd3EsslZuPMa4/NTuOmqs4n4S5u4Nbly6JHnnAnFR4sAtxR8PuEOsjO3iwjbnk/JxiDM/VF9FDJCxHjTc3lw9x5xh4sr1H4BrD8KK+Gwsfngsmyx8UapuonVmUq08syejGWbb6HwgEOtXTllvfEBbhevp7FzOV5+rwPo5pV1axQ9TF6zkZewa5gA2J/DcrLZCzUUx4GxsAxweTIKPzZT2PnpnZy4Den2T2jvOigHl7/32U82tQ4/wCDslUGpePiEzzZgoYwcCU03kmH/1JoLj7dch9hE0KZUjJvXSvP0RmjxpWEfBZerneDMk7kI5EGope6d2dxwMq3P2Xv6dFpmROCpRDWcuzC0Ly009wqyf4SwnFynR17CQHBJtskHQNGwMPCjW69C1+ffEYwCwnwUhJedLp2xP1pcJn+5qRqqbZ+DAzveg+0rEen5nEbjEvaFlNfh81yyl0XqJfXXnLF/SNMduuhpm/GjGz4EpySUawqaSWzz+rN3zVbNHtD9N8jRMJgzm19gs22SFPrvi4pP94scLkpN412kPfa/V76EI3UNUomejjHa++j8tB9EigCw6halMt0L8Lpb4ce7ElWOXUkadYzw2+9HT5ScNdZp3QyH2etDPjGZeZS25Ct79W18yyQ
- HwFiXfTE
- jgl1D8/kckMCwyX2SUBDDmW8W1XiCYuIudYoFaYtbB0MzcyZG+A62PX3WAYywCyn/tU/T8WBuoIu5XihvU7Q8T6BYq6N1Qehbhx+MzdrvF9XCzacl89d1ggaIuWd6xhlC6nFOeBgahqqt3KBCg9aAQeDJhge836aNIJWIOFxg7EFaJVka8jfvhXwfKiMdQXN3RbJx7R/Pscxtz4w0S/z3IVTj06z/lb2zWr6U5qp1QLM1q43+x32KsN+C/hTQ1v5r1aDPJc127RV1i/CumCFnl77w8KtdN6vCWam8qeEZ0UOmJJVMSFaRW4ExbKRuTW0jYQOM2pZT9vifaqk/lGtOHhNXM5TazW0jBr0x
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5988740004
+X-Stat-Signature: xohqtkpisfhh915ignmrrfjs39hzoyxp
+X-HE-Tag: 1791964967-203969
+X-HE-Meta: U2FsdGVkX1/yTUR3qHTCB/QJOTO0/Shjfl5oDVM3gkbOT/QxQKYhH8mjUY75D/7O6xP7SIdPEuBjos+20gpsWyoZjf241Z8SSd6f1ktK6+kvsKrvhxvfsYhl0OjCeEfS0dToSRa9VpbHasMgBlDMbFZBJ7BbtkOV4B4MZ7z2LFYaUiC+fGs+hRDXGIb0kEYA7Cuy05cdPzwiO05xVc6PGaM7e64DRY6g0SRvgwXi1pIDR6f9F1Ux9IgC08UA2YuFHMgYtdRJIAJDFT9ezQ9gSrkk3vD8Y8AWDjx2GnPSZUaAMp6KrqjjuQ77JRZp++9jN5huqxZlkI4TAlkjjr8OgGLicbaL/KHKc0fIi3236s/vtVU5t6a9t8MDOb15ZGZHddKT8ggpPW5rxAALbf80z0lvqa5evT66QXgXiEMqhPcCV3xBz3e3tA3EfuedxwUR/+tcbNhMReFQB6m4FgyeSSqtYYHF3Y+BYUA7TXe2JtXTy895/jf8u0/eA4A2cqHKNZKlzZv6YEazmEJnUhQn4hQEctJ5jbzJx8lWU3KW87xymVeiP7mXcoB6Tn/uxN3uYNS0kXiHNYo8R3OG5XXbCXPeu6NrjtUpPmPfYliQuMSH1bG+yt0hA8lTd/bRL7v8YdXY+W7HKuc4anwRAsK/rRbrK89mutTf+I+G9n37KpcQI7aP+tY4mY/I7onFlpVsW2aM4wbI3ojz6A7KXFfEetOo1DwkjPhAZMaEAqfr0Axu8SlDMNuBTZ/FhkiJY3RYTF8uxOaUu31/86lT7CIFnk5J68RqMdF2rNI2NHE3dxszUDAPIuREyso7aUvxN8x04dY+zFYnsL+cyEDSikBGal8QZbNIf+16Bq1rvGPVWsrSZu7xDqG8iVoaJq5gppu2AUuyhtN2ZBZ1CK4a4sFoWU4sCpaKlKu5hyQlv3OPMUxUVFajo3QxJu4LwFz1+qIDiy2d7Bc1SU9KInvRPiJ
+ 0P5247E9
+ xwn4CsaOxzzTUzT3jXUN6FQWux7J9/FTDciOO66KIe6FtxIAukOlpA/LYYVdeM2ON25rMioSVOxXqhdG8GBMqcERxrP9mYmp573iCa91h+nSixEhZ4CxGjvwItaiTINLpeSGsuSClveTBz8dixhYKfwEM6L2myLgWpZPDfNk3Pib+6XjkbSl1+YDxGdzQg4DIvN4owiKOnnxHxbB/XbrkFaSBoFo+W0ZKdSSPMok6YfG3OUZDmK+B89TYjyUUmpPkNHjqmwcLQcmBLb9kG1iypZQoh5VZfCDxuR7Z4181TMLRZTzQtBhuT7/GlGcRepkWrexfdbiog8aLN8qKaCdyIksyhxSg0fYzJpPytGqnrFTMGLZ2LE5wpg3BZWpOSluy08UeVEE27CFoZydCGPi4O3lLeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,96 +144,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Wed, Oct 07, 2026 at 07:33:45PM +0800, Lance Yang wrote:
->
->On Wed, Oct 07, 2026 at 01:01:14PM +0200, David Hildenbrand (Arm) wrote:
->>On 10/5/26 15:46, Lance Yang wrote:
->>> 
->>> On Mon, Oct 05, 2026 at 12:37:20PM +0200, David Hildenbrand (Arm) wrote:
->>>> On 10/4/26 05:03, Lance Yang wrote:
->>>>> RISC-V uses _PAGE_EXEC for swap soft-dirty tracking when
->>>>> CONFIG_MEM_SOFT_DIRTY is enabled and Svrsw60t59b is available. That's
->>>>> a problem for PMD migration entries, since pmd_present() also checks
->>>>> _PAGE_LEAF (R/W/X) to recognize THPs with _PAGE_PRESENT temporarily
->>>>> cleared during splitting.
->>>>
->>>> I'm curious: why do we have to set leaf indications for non-present things? The
->>>> HW sure will ignore it, right?
->>> 
->>> Yeah, that surprised me too :) Still wrapping my head around the details
->>> ...
->>> 
->>>> Is this a sw problem? Who needs that?
->>> 
->>> IIUC, it's for software during a PMD split.
->>> 
->>> __split_huge_pmd_locked() invalidates the huge PMD and flushes the TLB
->>> before installing the PTE table. Software still needs pmd_present() and
->>> pmd_trans_huge() to recognize the THP in between.
->>> 
->>> RISC-V clears V but keeps the R/W/X bits for that, so the entry is invalid
->>> to hardware but still identifiable as a THP by software.
->>> 
->>> Hopefully I didn't miss something.
+On 10/14/26 08:02, Baolin Wang wrote:
+> 
+> 
+> On 10/13/26 8:30 PM, David Hildenbrand (Arm) wrote:
+>> numa_rebuild_large_mapping() and do_swap_page() can be tricked into
+>> generating an address wraparound, crashing the kernel. All that's required
+>> is to map a tail page of a large folio close enough to the start/end of
+>> the address space to e.g., make
 >>
->>I thought some change we performed to GUP-fast wouldn't require that anymore.
->>But my memory is a bit vague ... :)
->
->Yeah, I'll have another look at that :)
+>>     unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+>>
+>> to wrap around.
+>>
+>> Let's fix it by providing a better helper, folio_pte_scan_range(), that
+>> takes care of staying within VMA and page table boundaries while
+>> handling possible wraparounds.
+>>
+>> Reported-by: Kyle Zeng <kylebot@openai.com>
+>> Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
+>> Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+> 
+> Thanks for the fix.
+> 
+>>   mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
+>>   1 file changed, 29 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index 1f5d5f7d39cd2..a3823010aa981 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio,
+>> swp_entry_t entry,
+>>       } while (--nr_pages);
+>>   }
+>>   +/*
+>> + * Get the address range in which a folio might be mapped, assuming its pages
+>> + * are mapped consecutively and the folio page at the given idx is mapped at
+>> + * the given address.
+>> + */
+>> +static void folio_pte_scan_range(const struct folio *folio,
+>> +        const struct vm_area_struct *vma, unsigned long addr,
+>> +        unsigned long idx, unsigned long *start, unsigned long *end)
+>> +{
+>> +    /* Stay within the page table and VMA boundaries. */
+>> +    const unsigned long pmd_start = addr & PMD_MASK;
+>> +    const unsigned long pmd_end = pmd_start + PMD_SIZE;
+>> +    const unsigned long lower = max(pmd_start, vma->vm_start);
+>> +    const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
+> 
+> I also agree with Barry and Lorenzo's suggestion to use the more readable
+> pmd_addr_end() helper. 
 
-Emm ... I'm back. Do you mean 4b471e8898c3, which removed the GUP-fast
-pmd_trans_splitting() check after the THP refcounting rework? That check
-made GUP-fast bail out during the old THP split. The refcounting rework
-made extra GUP references prevent the physical split :)
+I had that, then I found that for folded page tables it does something rather
+odd, which made me assume "this is not better at all".
 
-RISC-V gained THP support in 2021 (e88b333142e4), after
-pmd_trans_splitting() had been removed. It never implemented that helper.
+-- 
+Cheers,
 
-Keeping R/W/X in an invalidated RISC-V PMD preserves its leaf identity for
-software page-table walks. That requirement is separate from the old
-GUP-fast splitting check.
-
-For RISC-V, pmd_mkinvalid() clears V and PROT_NONE but keeps R/W/X, so
-pmd_present() and pmd_trans_huge() still return true:
-
-#define _PAGE_LEAF (_PAGE_READ | _PAGE_WRITE | _PAGE_EXEC)
-
-static inline pmd_t pmd_mkinvalid(pmd_t pmd)
-{
-	return __pmd(pmd_val(pmd) & ~(_PAGE_PRESENT|_PAGE_PROT_NONE));
-}
-
-static inline int pmd_present(pmd_t pmd)
-{
-	/*
-	 * Checking for _PAGE_LEAF is needed too because:
-	 * When splitting a THP, split_huge_page() will temporarily clear
-	 * the present bit, in this situation, pmd_present() and
-	 * pmd_trans_huge() still needs to return true.
-	 */
-	return (pmd_val(pmd) & (_PAGE_PRESENT | _PAGE_PROT_NONE | _PAGE_LEAF));
-}
-
-static inline bool pmd_leaf(pmd_t pmd)
-{
-	return pmd_present(pmd) && (pmd_val(pmd) & _PAGE_LEAF);
-}
-
-static inline int pmd_trans_huge(pmd_t pmd)
-{
-	return pmd_leaf(pmd);
-}
-
-And the rmap walk also needs that leaf indication. page_vma_mapped_walk()
-checks pmd_trans_huge() before taking the PMD lock, then rereads the entry
-under the lock. Keeping R/W/X lets it recognize the invalidated THP and
-wait for the split to finish :)
-
-Anyway, R/W/X still have a job there (RISC-V doesn't have a separate leaf
-bit), and I don't think we can just drop them yet :D
-
-Cheers, Lance
-
-[...]
+David
 
