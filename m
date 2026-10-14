@@ -4,119 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E9DCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:02:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A89ADCC6B2A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:03:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 322736B0088; Wed, 14 Oct 2026 09:02:53 -0400 (EDT)
+	id 7B7EA6B008A; Wed, 14 Oct 2026 09:03:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ACCB6B008A; Wed, 14 Oct 2026 09:02:53 -0400 (EDT)
+	id 741096B008C; Wed, 14 Oct 2026 09:03:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1751B6B008C; Wed, 14 Oct 2026 09:02:53 -0400 (EDT)
+	id 657CA6B0092; Wed, 14 Oct 2026 09:03:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E32316B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:02:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65919140504
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:02:52 +0000 (UTC)
-X-FDA: 85321246584.27.99CDECE
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 600A040003
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:02:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=IzTh7nAf;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791982970;
-	b=VkbVccd2EZbL6dQcnQHp9YmyqSZQEVhwzE5hUQ9HF+SMucH8PyCT21P371Z1gfnSWOT+Zl
-	R6/6tr8kIAWxtDqcLEV09VfLfQFltPqACEhWKzur7fUtaXXYSgg56bR9F7lJNNdaQ1TzjR
-	/iWrFaFg5gS9Tz8Bhwghj3PyDHTl4Ec=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=IzTh7nAf;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 41D296B008A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:03:11 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AFC51C0558
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:03:10 +0000 (UTC)
+X-FDA: 85321247340.21.F4907E9
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C87678001C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:03:08 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf30.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791982970;
+	s=arc-20220608; t=1791982989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c+g+JcQ9fBuosfYzKHFrjP1VpW5rAUzuZgfEvkBjq+A=;
-	b=IigiXGn5Lum4RxQ+ncYsqs1jPvVgYV/BWVSGPxdPrIttPr/yXcGsgSVDGODAo/wCB7DU6e
-	nzv+Z8QMbggOgd7TzpXWD5E17bpiGvEX0pBchuo7E1i3Wj3HnwfewZ/fL3nA6b+8/L0M2H
-	7ta2EYlDfH8N5D2OzIF6Q6SS01hOWV4=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-53504882980so49477511cf.2
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:02:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1791982969; x=1792587769; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c+g+JcQ9fBuosfYzKHFrjP1VpW5rAUzuZgfEvkBjq+A=;
-        b=IzTh7nAfmDxP1C2Al8wmAuPzTgW8InxMz0cn+9eux/V7n8uWUA8xXP5/W24V2Ve/VZ
-         WNgUk8A28NaWh/x9ZUmOlKLP9JdTuLb3fKaScWpNymOZVz5aeRjsTvo+Zp6ZQP0p1j7l
-         1EIfFx4Hqn7q+iwtde/cudAyOU0Z4D0OLrkpczN9POmZjSO2cqu2eGEEgUASULLjFxxx
-         LcJlU8hllY9aHNWWl4J+3zkgKHwhXVT+6Mg3NR8ZsVFzNZ2j3NCfTfkHfjfOX61m8NBk
-         uG+s0FJvssQAcl5X3QtCVlzTzxCsrA4Z8lYIa7mLyUD85LGU1zEm0ZvnWvOLybCOgw/Y
-         WbcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791982969; x=1792587769;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c+g+JcQ9fBuosfYzKHFrjP1VpW5rAUzuZgfEvkBjq+A=;
-        b=oZgMOJZjJ3FCM5TIcakkFY9OfAwVAh9q+7wp6aiJDSvHVQ/jjbNkqudoMp3pIPqICk
-         v/u3Q5ILKfYm9s4mm4jHR3IiOuoApR4rOOeYXtEyb7OGqCg/U/vhGynefAt3RsKPeIM7
-         tNkLghCPRirW0KI4ba5vdkaip4+bpVK8F4lxnpaucdpu7cFmS1wfYxNh6lq3zEalSoar
-         VI7uw5vReVuFHL8hCMuPyvPYcGaoOvxpp6UNLWiPvby+1g+ph+NblMfZq4Eeb3PQmPrr
-         Rlw/c49r3LEimqXurChilZM+5wirxyj9WxYfMsbvTkPVdqK9+hKhIj4xWGUcZwrEkxZ4
-         eFMg==
-X-Forwarded-Encrypted: i=1; AKwUvByXB+4twFUkXtM1JvfNhgpOMzKp0L7Q3SiJYrpVvaPqye6Bjp9wQ55YsgT9owH2zg6rt02yaKFpLg==@kvack.org
-X-Gm-Message-State: AFq9FYL0K9NOFBz/hTSPlIVVkzb/wnAZRVOpOwzML6ezE/OarX284k7Q
-	Ck/0JynUkY/Fli4dt+WNdAev0k2HRCUofFse1pA6jnpARvZhkjKvoCx34tUT4FfyizM=
-X-Gm-Gg: AYBFou21QtEKI/sT0GzA//2iy2tQpNObT6t/KmLd2i13Wcmii2wq4a0ExQBg9u4NcfH
-	Fbl44RqlussESFJAWXERzdip9fkTyiiMT/N+5o66IhkMLQBZ+cpZ4GhQvXqSQKcClvrz+khmKLU
-	RvHCO8hOFcd7xhzCHc14K62bQl1rQY2xdxWiFzQkiiZY3tYNKnGrYaRVUmh8ARuWluESk5/PiZh
-	VZzN+ieUJcsHOKIf+bWFnKU2sLaIe1fr4GvVl6GV+X3IKNy2w2MKy7Zakh+mzJpChqmwcZexLLi
-	hju1IGLci+3h48oow2yc1OC05svxqH7+QcokOMMxrFqJEDSmSkzI8J2JSloC/POHk1RP7uoZKDl
-	zWHpCYchLbIgpbO6r3SmX6Twe7ny0IjKEVG7fjWxfdLyUr28mmtAOGEsLvok+xDtzfIcp6CH7Yx
-	eLrF97hEle1DdtlZdECw8viT2PZwNpkrPn/2xzjWI85fHC/8WV/yTOhvgcUaAr1BogNhvGU88hY
-	V+JQdCa0dOlilROd1NsVqLQ20lMz4Mx7ezc6HVEPvrQsatde3DELP0=
-X-Received: by 2002:a05:622a:e14e:20b0:535:b506:11c8 with SMTP id d75a77b69052e-535b5062ea3mr142869471cf.46.1791982969440;
-        Wed, 14 Oct 2026 06:02:49 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5359b76b030sm124693521cf.17.2026.10.14.06.02.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 06:02:47 -0700 (PDT)
-Date: Wed, 14 Oct 2026 09:02:45 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	joshua.hahnjy@gmail.com, ziy@nvidia.com, mingo@redhat.com, peterz@infradead.org, 
-	mgorman@suse.de, riel@redhat.com, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
-	bsegall@google.com, vschneid@redhat.com, kprateek.nayak@amd.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/6] sched/numa: clear fault locality state on execve
-Message-ID: <as98SA5yfBaeI4oj@gourry-fedora-PF4VCD3F>
-References: <20261014094347.99157-1-lizhe.67@bytedance.com>
- <20261014094347.99157-2-lizhe.67@bytedance.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=iin1sIXMTAV2H+wRnzOVuAnJE9D4MJ8lBRCW+3XOhE8=;
+	b=snEvaA2+lRguVhwLIw70arrerm3oolv+y39nqphe5/uzyytwlHYWPs7k1lJMyzNe/BHee/
+	ss/olnY61MunyNeu9UUhJ7tx7q8jWHLjt5KJwafOlaTpcGn3ANNcNkGUyoXPrkQ8cATwQq
+	jo6Uk3hgciBoF6NK3AAwWwTqR1kqFis=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf30.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791982989;
+	b=uOoJoqAwlbTRVKvQZRQqi6j8vOalM+ZKVR0lLpIVNF7vzdJy2s9xaIb1JaGkdekXuAU5E8
+	HB/kVbcc28vj/k9S3NG/G+apqB7LvfxFLti9BWPFsnwhI5bkbO2GhFCUT8TyXb8gcyoMqr
+	zJFHdX/Lo6h4HMfE084CxQiDuwiP2to=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 8FF64227A88; Wed, 14 Oct 2026 15:03:02 +0200 (CEST)
+Date: Wed, 14 Oct 2026 15:03:01 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: Harry Yoo <harry@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	David Rientjes <rientjes@google.com>,
+	Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>, Christoph Hellwig <hch@lst.de>,
+	vitaly.vul@partner.samsung.com
+Subject: Re: [PATCH] mempool: optimize mempool resizing
+Message-ID: <20261014130301.GC15407@lst.de>
+References: <20261013091408.1231786-1-vitaly.wool@konsulko.se> <20261014084528.1280968-1-vitaly.wool@konsulko.se>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261014094347.99157-2-lizhe.67@bytedance.com>
+In-Reply-To: <20261014084528.1280968-1-vitaly.wool@konsulko.se>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C87678001C
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 600A040003
-X-Stat-Signature: wpgwtbij79oqm39dsnuqxgoipjdpw4wi
-X-HE-Tag: 1791982970-598790
-X-HE-Meta: U2FsdGVkX1+IuPck5V5V9r/k0TueZo8KlR6axmv58sLjNYYnc48sRcof+BNf/kX25H9fseNmW/J5r4Z+nMqmePUyiba9WZuNiwp+z+qXvtpsSExDXPDmunbX/OJbOa3idDSm0IA/w9ReUU9Goewf9uilQ1xSr35mZLSwVK4TeL7L/NeeyHgLpC5inaYFE9+pqj6u8TyIOnIMT6BYUXGuPE+E5+1mRF1VEzDMG/3KXQyFq7sK/2ab2P/4wx/D8xN1ocKQYqK5f4QrGx/9w9AN+IHt7NFcOhaClJWRQq49BKfio0he3IFLraz8vF4sXk54K1OqnMt6VmHrM8FFiDhR6GcQQNPZYEXtN6J273pMOCKJQg2900Ran/VLGl6oGfKCPQtsf8RcSCuQQMZZVs0dWfQkr4PgYG38fzbvVG34t0RkNN/40nFvFRz6/kcdzS5OkoQxLngh+25mutC8ODXne8WQw3KVxbqxpid6CWCxGhTmpRdn/QqFbIZigfv2ASCWoxYXrEWK/zK9biMyp9Y9CnPx3+0ANkmRXA7LsbWVJzK1UrK2rNxC54Z4QmB1OKg15A+1Kyj41mDXljb/qXIKmIPURDQv+au1I6OFVugp6z+JWhgVaUZElnlkzGmiHzeDdLKQDL6emWPcOFj3rkBXeSu+HBw7qymi5xbljqM3Q7oPm0sk+14raULQyQ5tdbMSpl1VYgnwAKI3UNeCQaPbcdNraoOXyybcedQPwNj0TOLBJTw6OsNAV020SZkGm7NKVZw/56pKQMKH+EGqwuI52skvRdidaxwopWR2F8M9zcyuoMlJHpYVgJtKU4Cjpj4UlwW0bltr2rOzmnII6LN7VRqdTkh6UvWvMsbVmPO6l47nlKsnWmqcZl3XYnJE54/yRSwRRXsLYPXAvf8W7d4dnRCZwnNHHRAAc6VmYU9uaQp2R+MdXkHc74yyh2CKWk29Ys2a9pEaR2Qn9+rDWJy
- XbxBxINW
- 5R6v8M1TZ8hlOOB9zirirG7CiXFpEhpMdVVXj+Ck7b8M6JqxoX+OK9RlB4FZ9RJso/YDweSQdrQMzkVaCEg3hLozBO7JdblXRA6FdP2cvCrFG8v59CQYY2CyqQOvCuihDc93F7z/RFmUFTTanV3zJiqJx/5ezkns34BMKENT5jboOxjy4fcmTWtebeZXnbpmxtqwcMFwFPhgp/T3DDbT+h3opgeNBxmpII8XKKXVW3/v9u0T2MjVPYFLTJa/T2jVFPHXBIzlBGM28V/OaqWgIVDEHVvf1nNCPCQPM3yuAwunRMrTfjYfRxSdW8XD+LJOs8vlw9g9VgFVh0FeFQhsdryk0hHYBjy5TYcHTVWviIrlcin9cqhK16YjSr7ZY4k+bLzFxJRiK4ZBSWO03Lzx0FsxIyIBfkFFkKxOeJfdcuNOgRiPNo6nUfGTcgiUG8PzAQg0YTQtw7sZexDU=
+X-Stat-Signature: e7hqd7stgwk9sub1r5mx6jaxeku615qd
+X-HE-Tag: 1791982988-991648
+X-HE-Meta: U2FsdGVkX1++BNMOh2+SBhx4rUbD63mfFcerdwuyMYzqr4DsW5OSCANjWF35lSdlRUReQdvQ/HfQCn2qwInVOnWpS43SXY5OMGyLC4U1nwz+syea42YKDhIj7fDMB+aSKF9Jf+CqAE4oZgqpZJF691+tqavCz9yHXQKtBvBjnsNAPQRwp74nu+l/DZ31Y9V70avekXwqWh/iM7TNz91eyiwc/DDhQ0EjPZvM9KJYSePGhgExRV1FgWWiEFnQ7cYuul7lo0n4dnIVx9jI1sgTd9USeNJzAoV2hi2nrJlwXfVcVgJ0wfcvQ6dicyo44ny3HQDqLbKf9LCAK5twNm7hr1CciovOCh8X0m0y4J+4TKEM1iEopmocrEVhL8VmTr1ildBEDX9owyaoI7YPNwrqmbzXwlRI/BgNQS7ckBe50jM79SNU2WCcvUcdsComojNLi3z934M9hVHCtTQipljsF1c6N8UVjuVPYL2ZJZ7oN2LzATte4iqQRoKny6Qxxx1dcd+L48TgPwg5wsBr0AtJFWe8INbgjgEYFeFgS+mFR9SMBYJiixCdnhbaptyYGqujJT2ytr8taG+wvQqTNStm/AFSeFQCiEBW2vcwqWwDMzGc4IWYcfPlK1Q8iHwCTmxRhXJy7p1uJBFDm/wcom3x43mOfwjwk7/FLxr4F1aLeD5Lg1FoTPECtV2XCvb8VpK1EvNBqjUBPdNvkSTfd+pqzSV2UlIS85hw3eOPmJzUd/JbI61q/32XVWJmtZK1+8eNF8Wqz8xgSO5PwQO2aUAN40d45zFJx3ek858Q4CxsdFizamYSWyxL0ZyWTFT960YtHcjt/94X40DVHXuSID1tuXf0HzvzepeJIzMk0YETtiOGcWaLzw0MNTD+o0k6wjHEMrbLeUUGwH/3Qwyuy0J/WNkOAGdWXh93o0ySwukzgGWZjBAclxEfiza0Iii2xIDsM24N2xMWF0NHWJrL/gI
+ lPWfOzI3
+ WvFS5/r6PYUQeKpXZ/FOfczO1krvkZkI6sQlAuE5hW2myhqLptIUFbAQFzcepdpTygYxxV1NTHrjb77HCcz+dCBE1f2fe0zgdly5SekswKfiYBoL5UCbqVuqcdw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,58 +85,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 05:43:42PM +0800, Li Zhe wrote:
-> task_numa_free(p, false) is used by execve() to reset NUMA balancing
-> state without freeing p->numa_faults, because concurrent readers may
-> still observe the task.
+On Wed, Oct 14, 2026 at 10:45:28AM +0200, Vitaly Wool wrote:
+> We are using mempool to store a large set of preallocated rather big buffers. In case
+> of memory pressure we'd call mempool_resize() (via shrinker callbacks) to reduce the
+> amount of memory occupied by that set, and when the situation stabilizes, we'd go back
+> to the original set again.
 > 
+> Imagine you have a mempool with 10000 elements, and you have to reduce it to 3000. Then
+> if you at some point want to go back to 10000, you'll end up reallocating the elements
 
-Is a process that exec()'s going to run long enough to actually collect
-any real numa fault data?
+Who is "we" and where is the code?  This is a highly unusual, not to
+say most like broken usage of mempools.  If you need changes to support
+such a use case you should include a link to the intree user (or bundle
+it with the submission of the new code).
 
-> the retained p->numa_faults array, but leaves the current-window buffer
-> half and p->numa_faults_locality unchanged. Those are also NUMA fault
-> feedback consumed by task_numa_placement() and update_task_scan_period(),
-> so a newly executed image can inherit stale fault feedback from the old
-> image.
-
-I'm not sure this actually corrects much unless you have a long running
-program that eventually exec()'s - and even then it seems like this all
-self-corrects within a couple seconds.
-
-Do you have some clear reproduction that makes an obvious wrong effect,
-or was this just some static analysis?
-
-It's "not wrong", but I'm trying to understand what impact this actually
-has.
-
-> The non-final path clears p->total_numa_faults and the averaged half of
-> 
-> Clear the whole retained p->numa_faults array and p->numa_faults_locality
-> together in the non-final reset path.
-> 
-> Fixes: 04bb2f947505 ("sched/numa: Adjust scan rate in task_numa_placement")
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->  kernel/sched/fair.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 57360f5cdde4..1053437933ee 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -4177,8 +4177,9 @@ void task_numa_free(struct task_struct *p, bool final)
->  		kfree(numa_faults);
->  	} else {
->  		p->total_numa_faults = 0;
-> -		for (i = 0; i < NR_NUMA_HINT_FAULT_STATS * nr_node_ids; i++)
-> -			numa_faults[i] = 0;
-> +		memset(p->numa_faults_locality, 0, sizeof(p->numa_faults_locality));
-> +		memset(numa_faults, 0, sizeof(*numa_faults) *
-> +		       NR_NUMA_HINT_FAULT_BUCKETS * nr_node_ids);
->  	}
->  }
->  
-> -- 
-> 2.20.1
 
