@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0F5CC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 00:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8241CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 00:33:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD7B26B0088; Tue, 13 Oct 2026 20:18:18 -0400 (EDT)
+	id 463536B0088; Tue, 13 Oct 2026 20:33:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A81CC6B0092; Tue, 13 Oct 2026 20:18:18 -0400 (EDT)
+	id 40CE96B008A; Tue, 13 Oct 2026 20:33:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 970A56B0095; Tue, 13 Oct 2026 20:18:18 -0400 (EDT)
+	id 322D56B008C; Tue, 13 Oct 2026 20:33:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 618746B0088
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:18:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA1A6140391
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:18:17 +0000 (UTC)
-X-FDA: 85319319834.17.6FE79E4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1AAB7140006
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:18:15 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hzn17pG9;
-	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 05ECC6B0088
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:33:09 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81665A01CE
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:33:09 +0000 (UTC)
+X-FDA: 85319357298.02.6B0CF5D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DAAA3A0002
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:33:07 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AcNyXWkW;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791937096;
+	s=arc-20220608; t=1791937988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ojGJwDPTVvH1mNyQFRD6ZgJPJ+C3Xv6E6vMi/T8h+E=;
-	b=qBjohNeNbAO3nwY8vykblo8Xejio2fd07Yg4V/0x/n3O8sD4NDKhkehs4CZndsyW3Z1XGV
-	aXojYgnM8Iu9ID2TLyt+/U5FgiRKQWVwB+mbbsS8sqMq/zswhLwxqAySdy+b6k8efvsuLq
-	J4eU4M21MrFq2qEv85wBZl65A9VRKOU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791937096;
-	b=y9mmFeQm9JsOu2Gb9ULdzEuQdQhvPUa0xPUw9bKLdMc7rC+VBuV9MGufqA0oRqLlOMSxTP
-	886OxKmGBOKJ3IZOPIPUM57ajwlyRxEPaO7TheoOjuQcoatwSejyOOdfm91V+EblYcPa5c
-	WZd+qdTLFXaWq37y5jDwvBVT9vlGvXQ=
+	bh=hXI2gIMzgROodmXxlY8UYg7eHDDceK9gOOniFQNAk3Q=;
+	b=XzJahpfdFKGFz22r130d6hlvc7pCMcyDNYVOlgA/2uHVX6m+KRkkKk2udZ7vlXs0/VbLza
+	EWrGlU/dpY4VUnDN3yRNwL8yv1Yr6k/5qUFCgXkVUzRdnp7nq5sV1PYKJdDtu6UJZp1PIz
+	/UlH+uHtpsrFGyZHQEF2kV062C0/tGw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hzn17pG9;
-	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AcNyXWkW;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791937988;
+	b=VF98QTGDxCunzHT6Hqp9iEOdt081xfFBBf2Xd7v5FiFyVbjCTUURIQEeGmh+ZO95KSorWl
+	Kc9flXd0lq8zlm0/oFF9STCc41OhCsK+fI4UzGTUsNb+ICN5//idnFx/NRWXOgARtZNIe5
+	NfTwz5wLSnbAOBoVQwSwfpsld5xpCD4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9669B601DB;
-	Wed, 14 Oct 2026 00:18:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C578F1F000FF;
-	Wed, 14 Oct 2026 00:18:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D192C42E60;
+	Wed, 14 Oct 2026 00:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2593A1F000FF;
+	Wed, 14 Oct 2026 00:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791937095;
-	bh=6ojGJwDPTVvH1mNyQFRD6ZgJPJ+C3Xv6E6vMi/T8h+E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hzn17pG99bpu4AnLp0GZuqYv84aeXmdu4EX/E6PlW4tSL5nn0xPhvQDvylCA8J4uJ
-	 HbbsWrjqdsqr+5dUmhTwGFQS3JYlfN73D/LFNtot6qcrLEm6LPWCW10jnGuow8zifc
-	 9RyfYHDVGFy+nXcM/0BGc+00HvdJnXD85ukvRN9qe5PCHldwZ/SwfZgQsVrDYuRLw4
-	 XI91kO7ay9LNFSMbz2EBR+tGXBLbTyQS7QJtF3/E0EiEg1gYfXe9Nij9xqHqlw8yXc
-	 wTI1Rre0YJdOPZ1g0a8kjdVzSL6xkVCi5EVgekdy5FMoYjeb3OUTRwk/jmjGIBzG0i
-	 J94sV8320RL7A==
-Date: Wed, 14 Oct 2026 00:18:13 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
-Subject: Re: [PATCH v1 5/8] mm: zswap: Store the folio's node id in the
- zswap_entry.
-Message-ID: <as7JC8o2kggiq_ss@google.com>
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
- <20261008182814.27450-6-kanchanapsridhar2026@gmail.com>
+	s=k20260515; t=1791937986;
+	bh=hXI2gIMzgROodmXxlY8UYg7eHDDceK9gOOniFQNAk3Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AcNyXWkWUiQ4PmIL1fwRebTfyWsstTYXhBeyKhU+mcHsOK4XKeaqIrJK4CxdXJFXI
+	 w6Tqmdq1ksw8EOrmZiMcxp1EwzRBEbCd8GXxwM08ZEjNIn+OlhPm1iaoLipPpgNVGF
+	 c5Xb9ZAygZOUILD1+FzcuMStKk6WtkwiyzxA6NgtsD7A26OWQGCj7pgQU4a2tJ6RIg
+	 cdMHCIp1RwDdfR4LXV1D4rCUkwtuXB89+JkVNKnIpdzI8hiGktU30WZYJPB57OJ5Ns
+	 euMCZeC8vAfpJiT0sIKEW7Gub3rFwRyyWRKU6VkMf9WS0jQDF3DsoEWLWF2r7Q6wyf
+	 PFHC3VJAJirHQ==
+From: SJ Park <sj@kernel.org>
+To: Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
+Date: Tue, 13 Oct 2026 17:32:58 -0700
+Message-ID: <20261014003258.142926-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261013191327.663331-2-manuelebnerli@mailbox.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261008182814.27450-6-kanchanapsridhar2026@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DAAA3A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1AAB7140006
-X-Stat-Signature: oj16tuo6i4th4u5h4tp63igbx5o9k37b
-X-HE-Tag: 1791937095-821690
-X-HE-Meta: U2FsdGVkX18Ay/tMTax07t2QuV8IFACaK4qWOwAkW1KuD97XSgjXxPeQ/BVhua8lu3enip/FAP6Bdjp7ALLBhS6DCaLJPd+VgV1qj0a0En5Bm7kymqMf6SIVsqubzDEoVuYJhaNVNmRkfz1x1DKPOQQMgVdQyEuydMfewijsAGWA5wVuHHSPcMsCAoZ/XhBQHxmu/nn3WZVjEecPd6am65R0TLmHn/MgEXRxOKknZMkS/YlhMPqkjMeJyHyf394n5hWCIdsNu7suUjhokoXnwSnfcAPkL6uYdYNkpciRDPJVoc1A2lRGtDpc8Q6X2OAOpeZG19VJ5f9IpdUHV0rVT3P2vIhO6cLa8DFB6n8/27WviTTJz/EwmfHyXgjr5rjrHkoU83O4WWDQQjUukYY052ugYzUvsF6lx578WpBuBWrqTV7h9e4vw09/T7siIiUk0z55Ir1xX8PF5KTzOFC4RFsfiBOYOibuBLFNBXiJ9prI2iWTlEjpRCkL3bCJkFXfLConHJxuATLJ5y7mxPw46Zd6nsKObVIr33++6MU1NehX3YpPS1mRoNLPkSPY7mNWnQy6DhyuHPaM2H603dT8xO3dYLUolH0gYyp0mAjlCbbdje/pPa8+uNQKIsD79wY+p5mqKONweujd9aB9SI5xL5oVGrhtum4gKOhGZNMQun06XYUFvN1Hz59D2W0ClImKgcSfwa7+U0DBn9HDSpRGhw0TwqdBRLuTSe2sHaAKHMKHCIy4FyaoQcHQEquZOf+Urzil7AGfMInibewSQ2GPVQUYedPBNM5fQnERBIPVXYOLmz7DphRU0tbMtn65a8wzHkuVLOIhix05f0hHEON417brZ2ShWIbMe2PXJh2AQhsVzX7qhOJQkO5ejmy5+DG0a6OKU8YOvJCmtYPBUUytLqj9Au6Gq9g94Lt8GZIaRONxIBkDKsDgMTjOFX14J7ePe/hRht+/Uxpn/VJsFvG
- p48ojaDk
- XLnD8bCAosFMmNQOfmVlHBw/8Xi1lHCeDqRCUzDDPiWdEdIwE6fXVeZY59TOMwNfZeyuaC/vRNVNCZhq76si/47U9kCZrcdouhuEkxbd7yj9kFfddJQ1vtfN7EARX+s6AvUGXae9cam0zToTe5ZmWJ5cBq6WQWdi+XkzUmZmi5S3Lpx0w4ltiwR+LpdNleBqPy0ywVSc/a5tkAQZ3pejpAUwYXqDqO1KDVKJKn22i+u68i1AcIgWFEQAImf54BHfGVgArZiO/fWee98Y1sHCr+n7KLnc3jo9SFlaR4kUMhXMvJbQsgJLmpJI+HoRUcJEJFlRHVY3DJTiwkRPLamfwE50V1MGS6RBvTlgyuzun/5MAy4fBf+2aD0PuFWFq8J/rFHQm
+X-Stat-Signature: 1ahz7g1sqog866fbnby3izzui6zkp98e
+X-HE-Tag: 1791937987-826572
+X-HE-Meta: U2FsdGVkX1+5oOxKt/+sV6DGWy7RxNEN0AiH4+Enpxgw8F8S6idW3OCxj+4107HNVPqcdNZ66Wp9JWwLSdZDtu1lKt3tRBxWK4AVdRKbhKuCotYCxLoOWjZPt3gCrJo5O0HH0RkewxW/pEyRTCJVXAEFPWr5037yA9vZ6VuwEMi8IWJL3aB1e/0s2uDvPOgf0qpmyZmAM92Fx5GcrqTPI3c6N6W2Sk60w+eRIa5X8ZBkRV5AQ2wQFikt6Rh5NWCOj210xwEdCz6o5XoDt0ujbj2Fmubgf/PVyuu4m6PfgVe5vViNiJvj1yj8pqaDGycgu9E/FoszltSzM9C1MapLmp1zrL0EU5+k2ZOkOH5YTQmktt5E8dK5QFTn3tFxlGn72RAFL3/PLPdYN5upxLz9hzEVGP1GruiZqeOUNSXOCRdoaXc+u8Un+ZiG6ga1+uXms+rF/mjsszLdEgL/zYj/ST/2U3EB2dqEvr7RYbu1QLu/wN436ck6JuOx8cePxr+LT0CHnEr32rfnXc3l38JFT69LtiLnBJZHSus4kSKUYeirXc0YZ2xm6Rp97q0d3vMkBY8QolpixDcfAjAIqFqE4ReF3riGgTq1ry/4GY4F77BMy2e9n5aFUDquZacWtsCPKJtv0JwdKDCo9RlmLu50GWCxKVkyGoaT/KokFIGumnV1dvxmwjYJRxcXCXqrScxjHZbZfSiJVzSz5bXMneStVOC5GtFUrexKvYAw3YNZleD1PIJM0Tbs7FAq/HDSdJAulgTjlbsk35BMEw60lu2fIPczUkU25FJKcL5xbeOuPjpkXJUZYoDfGmAh9JtsawrU3vYomAjPBUicaakogqsVjP7n0BArs+bQi4vDXXNFVrGRuo7OpgDS4umCTMuHxoLz+efav6itM4xb5KqT/GYeWApbHpEOzPNo+YmKdy5xMcrL5kUUd7AQOD+vhn6F8rBbBDVCu87cHBRbv/9mhxx
+ pIZIJb3p
+ Ln2D6wNac5XAbFk+VaFQQIL2jKcObth60mvOB0Z3l7GW/zelgx2h+9hoh+rylGkT39+HP3vER/GJ4t0XtlUKUQWpwrKA4jwkNoUfJi/Z+hQDRzWlXYlFt6C5J9UInmdkXYLS4heCx6HoE/l0euAPJZ+H4DLEPRi15e/qnp76tt5iINpGTJPzNL1CmwQmY363D4laNCUDXp3Yv3WnPTv01SnaNoORDbadyPk5bjbz9t+NSKDAlmueBt0sgzTh8jzOdb9LwXE3TLPY+RuRzAkI++0I3192pkl/o1uwDfay7y1XyuMS1COhaH+A7/VaN4Vpvsi8/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,188 +104,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 08, 2026 at 11:28:11AM -0700, Kanchana P. Sridhar wrote:
-> When storing a folio in zswap, save the folio's node id in the zswap
-> entry instead of relying on the zswap_entry being allocated on the same
-> node. This enables optimizations such as batch allocation of zswap
-> entries for large folios using kmem_cache_alloc_bulk() that does not
-> support specifying a node id.
+Hi Manuel,
+
+On Tue, 13 Oct 2026 21:13:27 +0200 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
+
+> mention 'least-recently-used' AKA lru at the beginning
+
+I think the readers would know what LRU means, and therefore
+'least-recently-used' is not needed.
+
+> set as -> set to
+
+This commit message is using incomplete sentences and describing only a few of
+changes.  Please make it to use complete sentences and cover all changes.
+
 > 
-> The size of the zswap_entry remains unchanged as 'referenced' is lumped
-> in with the 'length' (as it doesn't need a full unsigned int anyway).
-> 
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-> Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
 > ---
->  mm/zswap.c | 23 +++++++++++------------
->  1 file changed, 11 insertions(+), 12 deletions(-)
+>  .../admin-guide/mm/damon/lru_sort.rst         | 51 ++++++++++---------
+>  1 file changed, 26 insertions(+), 25 deletions(-)
 > 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index ca513a9f89e3..c2731d3acb2c 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -194,6 +194,7 @@ static struct shrinker *zswap_shrinker;
->   *              writeback logic. The entry is only reclaimed by the writeback
->   *              logic if referenced is unset. See comments in the shrinker
->   *              section for context.
-> + * nid - NUMA node id of the page for which this is the zswap entry.
->   * pool_idx - id of the zswap_pool that the entry's data is in.
->   * handle - zsmalloc allocation handle that stores the compressed page data
->   * objcg - the obj_cgroup that the compressed memory is charged to
-> @@ -201,8 +202,11 @@ static struct shrinker *zswap_shrinker;
->   */
->  struct zswap_entry {
->  	swp_entry_t swpentry;
-> -	unsigned int length;
-> -	bool referenced;
-> +	struct {
-> +		unsigned int length:31;
-> +		bool referenced:1;
-> +	};
-> +	int nid;
-
-This will increase the size of the struct now with pool_idx, right?
-
-Before you patch on x86_64:
-
-struct zswap_entry {
-	swp_entry_t                swpentry;             /*     0     8 */
-	unsigned int               length;               /*     8     4 */
-	bool                       referenced;           /*    12     1 */
-	u8                         pool_idx;             /*    13     1 */
-
-	/* XXX 2 bytes hole, try to pack */
-
-	unsigned long              handle;               /*    16     8 */
-	struct obj_cgroup *        objcg;                /*    24     8 */
-	struct list_head           lru;                  /*    32    16 */
-
-	/* size: 48, cachelines: 1, members: 7 */
-	/* sum members: 46, holes: 1, sum holes: 2 */
-	/* last cacheline: 48 bytes */
-};
-
-After:
-
-struct zswap_entry {
-	swp_entry_t                swpentry;             /*     0     8 */
-	struct {
-		unsigned int       length:31;            /*     8: 0  4 */
-
-		/* Bitfield combined with next fields */
-
-		bool               referenced:1;         /*    11: 7  1 */
-	};                                               /*     8     4 */
-	struct {
-		unsigned int               length:31;            /*     0: 0  4 */
-
-		/* Bitfield combined with next fields */
-
-		bool                       referenced:1;         /*     3: 7  1 */
-
-		/* size: 4, cachelines: 1, members: 2 */
-		/* last cacheline: 4 bytes */
-	};
-
-	int                        nid;                  /*    12     4 */
-	u8                         pool_idx;             /*    16     1 */
-
-	/* XXX 7 bytes hole, try to pack */
-
-	unsigned long              handle;               /*    24     8 */
-	struct obj_cgroup *        objcg;                /*    32     8 */
-	struct list_head           lru;                  /*    40    16 */
-
-	/* size: 56, cachelines: 1, members: 7 */
-	/* sum members: 49, holes: 1, sum holes: 7 */
-	/* last cacheline: 56 bytes */
-};
-
-I think we want to reorder the fields. We can probably also avoid the
-bitfield if the maximum page size is 64K (is it?)
-
-struct zswap_entry {
-	swp_entry_t                swpentry;             /*     0     8 */
-	u16                        length;               /*     8     2 */
-	u8                         pool_idx;             /*    10     1 */
-	bool                       referenced;           /*    11     1 */
-	int                        nid;                  /*    12     4 */
-	unsigned long              handle;               /*    16     8 */
-	struct obj_cgroup *        objcg;                /*    24     8 */
-	struct list_head           lru;                  /*    32    16 */
-
-	/* size: 48, cachelines: 1, members: 8 */
-	/* last cacheline: 48 bytes */
-};
-
-
->  	u8 pool_idx;
->  	unsigned long handle;
->  	struct obj_cgroup *objcg;
-> @@ -672,14 +676,8 @@ static int zswap_enabled_param_set(const char *val,
->  * lru functions
->  **********************************/
+> diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+> index 0c04d238ed..3b6d122887 100644
+> --- a/Documentation/admin-guide/mm/damon/lru_sort.rst
+> +++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+> @@ -4,8 +4,9 @@
+>  DAMON-based LRU-lists Sorting
+>  =============================
 >  
-> -static inline int entry_to_nid(struct zswap_entry *entry)
-> -{
-> -	return page_to_nid(virt_to_page(entry));
-> -}
-> -
->  static void zswap_lru_add(struct zswap_entry *entry)
->  {
-> -	int nid = entry_to_nid(entry);
->  	struct mem_cgroup *memcg;
->  
->  	/*
-> @@ -696,19 +694,18 @@ static void zswap_lru_add(struct zswap_entry *entry)
->  	rcu_read_lock();
->  	memcg = obj_cgroup_memcg(entry->objcg);
->  	/* will always succeed */
-> -	list_lru_add(&zswap_list_lru, &entry->lru, nid, memcg);
-> +	list_lru_add(&zswap_list_lru, &entry->lru, entry->nid, memcg);
->  	rcu_read_unlock();
->  }
->  
->  static void zswap_lru_del(struct zswap_entry *entry)
->  {
-> -	int nid = entry_to_nid(entry);
->  	struct mem_cgroup *memcg;
->  
->  	rcu_read_lock();
->  	memcg = obj_cgroup_memcg(entry->objcg);
->  	/* will always succeed */
-> -	list_lru_del(&zswap_list_lru, &entry->lru, nid, memcg);
-> +	list_lru_del(&zswap_list_lru, &entry->lru, entry->nid, memcg);
->  	rcu_read_unlock();
->  }
->  
-> @@ -1449,9 +1446,10 @@ static bool zswap_store_page(struct folio *folio, long index,
->  {
->  	swp_entry_t page_swpentry = folio_swap_entry(folio, index);
->  	struct zswap_entry *entry, *old;
-> +	int nid = folio_nid(folio);
->  
->  	/* allocate entry */
-> -	entry = zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio));
-> +	entry = zswap_entry_cache_alloc(GFP_KERNEL, nid);
+> -DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel module that
+> -aimed to be used for proactive and lightweight data access pattern based
+> +DAMON-based least-recently-used-lists (short LRU-lists) Sorting
+> +(DAMON_LRU_SORT) is a static kernel module that aims to be used
+> +for proactive and lightweight data access pattern based
 
-We don't need to allocate the entry on the same node anymore, should we
-drop this and let the slab allocator handle it as it sees fit?
+As I mentioned above, I don't think the above change is needed.
 
->  	if (!entry) {
->  		zswap_reject_kmemcache_fail++;
->  		return false;
-> @@ -1466,6 +1464,7 @@ static bool zswap_store_page(struct folio *folio, long index,
->  	 * to an unrelated live pool.
->  	 */
->  	entry->pool_idx = pool->idx;
-> +	entry->nid = nid;
+>  (de)prioritization of pages on their LRU-lists for making LRU-lists a more
+>  trustworthy data access pattern source.
 >  
->  	old = xa_store(swap_zswap_tree(page_swpentry),
->  		       swp_offset(page_swpentry),
+> @@ -17,7 +18,7 @@ systems, LRU lists are normally not proactively sorted but partially and
+>  reactively sorted for special events including specific user requests, system
+>  calls and memory pressure.  As a result, LRU lists are sometimes not so
+>  perfectly prepared to be used as a trustworthy access pattern source for some
+> -situations including reclamation target pages selection under sudden memory
+> +situations including reclamation of target pages selection under sudden memory
+>  pressure.
+
+I cannot find what's wrong with the original sentence.  Could you expalin?
+Also, I think the updated sentence is rather easier to misread.
+
+>  
+>  Because DAMON can identify access patterns of best-effort accuracy while
+> @@ -28,9 +29,9 @@ pattern source with low and controlled overhead.
+>  How It Works?
+>  =============
+>  
+> -DAMON_LRU_SORT finds hot pages (pages of memory regions that showing access
+> +DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
+>  rates that higher than a user-specified threshold) and cold pages (pages of
+
+rates that "are" higher?
+
+> -memory regions that showing no access for a time that longer than a
+> +memory regions that show no access for a time that longer than a
+>  user-specified threshold) using DAMON, and prioritizes hot pages while
+>  deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
+>  CPU for the prioritizations, a CPU time usage limit can be configured.  Under
+> @@ -63,10 +64,10 @@ enabled
+>  
+>  Enable or disable DAMON_LRU_SORT.
+>  
+> -You can enable DAMON_LRU_SORT by setting the value of this parameter as ``Y``.
+> -Setting it as ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
+> +You can enable DAMON_LRU_SORT by setting the value of this parameter to ``Y``.
+> +Setting it to ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
+>  no real monitoring and LRU-lists sorting due to the watermarks-based activation
+> -condition.  Refer to below descriptions for the watermarks parameter for this.
+> +condition.  Refer to below descriptions of the watermarks parameter for this.
+>  
+>  commit_inputs
+>  -------------
+> @@ -74,9 +75,9 @@ commit_inputs
+>  Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
+>  
+>  Input parameters that updated while DAMON_LRU_SORT is running are not applied
+> -by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
+> +by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
+>  of parameters except ``enabled`` again.  Once the re-reading is done, this
+> -parameter is set as ``N``.  If invalid parameters are found while the
+> +parameter is set to ``N``.  If invalid parameters are found while the
+>  re-reading, DAMON_LRU_SORT will be disabled.
+>  
+>  Once ``Y`` is written to this parameter, the user must not write to any
+> @@ -86,37 +87,37 @@ violate this rule, the kernel may exhibit undefined behavior.
+>  active_mem_bp
+>  -------------
+>  
+> -Desired active to [in]active memory ratio in bp (1/10,000).
+> +Desired active to (in)active memory ratio in bp (1/10,000).
+
+I think use of brackets is also fine.  Let me know if I'm missing something.
+
+>  
+>  While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
+>  increases and decreases the effective level of the quota aiming the LRU
+> -[de]prioritizations of the hot and cold memory resulting in this active to
+> -[in]active memory ratio.  Value zero means disabling this auto-tuning feature.
+> +(de)prioritizations of the hot and cold memory resulting in this active to
+> +(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
+
+Ditto.
+
+>  
+>  Disabled by default.
+>  
+>  autotune_monitoring_intervals
+>  -----------------------------
+>  
+> -If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
+> +If this parameter is set to ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
+>  sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
+>  amount of access events in each DAMON-snapshot, while keeping the sampling
+> -interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
+> -``N`` disables the auto-tuning.
+> +interval to 5 milliseconds in minimum, and to 10 seconds in maximum.  Setting this
+> +to ``N`` disables the auto-tuning.
+>  
+>  Disabled by default.
+>  
+>  filter_young_pages
+>  ------------------
+>  
+> -Filter [non-]young pages accordingly for LRU [de]prioritizations.
+> +Filter (non-)young pages accordingly for LRU (de)prioritizations.
+
+Ditto.
+
+>  
+>  If this is set, check page level access (youngness) once again before each
+> -LRU [de]prioritization operation.  LRU prioritization operation is skipped
+> +LRU (de)prioritization operation.  LRU prioritization operation is skipped
+
+Ditto.
+
+>  if the page has not accessed since the last check (not young).  LRU
+>  deprioritization operation is skipped if the page has accessed since the
+>  last check (young).  The feature is enabled or disabled if this parameter is
+> -set as ``Y`` or ``N``, respectively.
+> +set to ``Y`` or ``N``, respectively.
+>  
+>  Disabled by default.
+>  
+> @@ -235,7 +236,7 @@ max_nr_regions
+>  Maximum number of monitoring regions.
+>  
+>  The maximum number of monitoring regions of DAMON for the cold memory
+> -monitoring.  This can be used to set upper-bound of the monitoring overhead.
+> +monitoring.  This can be used to set the upper-bound of the monitoring overhead.
+>  However, setting this too low could result in bad monitoring quality.  Please
+>  refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
+>  defaults.
+> @@ -268,7 +269,7 @@ This parameter is for setting and getting the :ref:`address unit
+>  
+>  ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
+>  unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
+> -``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
+> +``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
+>  Then DAMON_LRU_SORT will work for 10 KiB length of physical address range that
+>  starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
+>  
+> @@ -291,22 +292,22 @@ If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.  Else,
+>  nr_lru_sort_tried_hot_regions
+>  -----------------------------
+>  
+> -Number of hot memory regions that tried to be LRU-sorted.
+> +Number of hot memory regions that try to be LRU-sorted.
+
+that were tried to be ?
+
+>  
+>  bytes_lru_sort_tried_hot_regions
+>  --------------------------------
+>  
+> -Total bytes of hot memory regions that tried to be LRU-sorted.
+> +Total bytes of hot memory regions that try to be LRU-sorted.
+
+that were tried to be ?
+
+>  
+>  nr_lru_sorted_hot_regions
+>  -------------------------
+>  
+> -Number of hot memory regions that successfully be LRU-sorted.
+> +Number of hot memory regions that are successfully LRU-sorted.
+
+that were ?
+
+>  
+>  bytes_lru_sorted_hot_regions
+>  ----------------------------
+>  
+> -Total bytes of hot memory regions that successfully be LRU-sorted.
+> +Total bytes of hot memory regions that are successfully LRU-sorted.
+
+that were ?
+
+>  
+>  nr_hot_quota_exceeds
+>  --------------------
 > -- 
-> 2.39.5
-> 
+> 2.55.0
+
+
+Thanks,
+SJ
 
