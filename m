@@ -4,143 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3311FCC6B2A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 22:22:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22906CC6B30
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 22:25:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8A0B6B0088; Wed, 14 Oct 2026 18:22:04 -0400 (EDT)
+	id C64A56B008C; Wed, 14 Oct 2026 18:25:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3B9B6B008A; Wed, 14 Oct 2026 18:22:04 -0400 (EDT)
+	id C159C6B0092; Wed, 14 Oct 2026 18:25:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 903E06B008C; Wed, 14 Oct 2026 18:22:04 -0400 (EDT)
+	id B2B5F6B0095; Wed, 14 Oct 2026 18:25:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 64EAD6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:22:04 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC212C0836
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:22:03 +0000 (UTC)
-X-FDA: 85322655726.19.B00636E
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DCA98180004
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:22:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n81o06VC;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792016521;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 909346B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:25:04 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 297971C41C1
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:25:04 +0000 (UTC)
+X-FDA: 85322663328.10.24EC197
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5FDB22000C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:25:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GiJtlHTS;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792016702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U8QQjN27s0Pot0JCVcrmzcvPmF+Pv8lSLqLgVFGNeaI=;
-	b=u9ET5GaZaT0hNqf4b9GvRUwHzR+MAlmWgh2kbQDK6U39RebfSPqXilvMM7Vf/oirwC+HtI
-	wfPLD7F/9egANbz6uPdlXFMt4CNHnOIa5kFreyhjVuAJjTk27R0Z4bg2SvKltYe/PkHEr8
-	lugQQi0KUFs2gaBSMJKRH/U61wNAWZM=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n81o06VC;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792016521;
-	b=iBKVVumhVUOieYnFLaWT1bkQYspHtJux0OJAkG+RkGHLE5vJ5tN2dDpvFGFk2PC+rWpcWa
-	g0PWdKmjHI51vN8xwGSEbIIM+vK/GPsOkkOoAmc30u4hTX26qBik3IIjldEKYgnL482+st
-	cGT+pF5IwBYA0viv1KtkTGBQWHOjgUw=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-486e8faff03so2017598f8f.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:22:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792016520; cv=none;
-        d=google.com; s=arc-20260327;
-        b=i6W4KWWxdte0/bDHyXL8n2izGP6Mb+cAuAoDm3h50Iio7o4orS9OycAjyUhwfF6+e2
-         1TCpCfqfenIQS6UnJdWRE2f34yu2D/ZgiYpQgZeGTDI2yVKUX11df3s3NsS3cNfiznAV
-         HhFn8ngBeSg/QSbY3NkbA6T+hUgiallD6T/Q3CRIw2ov+6n3VcOOfKbsGCDanHzHdNbT
-         ueIZYlDIpmTPAyP8Aft7CGzJ6mYRybb5AoZlhUsB28YQ1mXyR9QLwT3OlC8wHAeTzH7h
-         MG/J1CJog9uHtAB4fO5+e5L9zxCak4SPV4yPHdBZ9iv1WcPg5ZnahoS8kLZ2QBXmkE5n
-         jh+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=U8QQjN27s0Pot0JCVcrmzcvPmF+Pv8lSLqLgVFGNeaI=;
-        fh=xrPwPx7uYwy0nqTlQg3chyKrs+SkROcDz3j+ZmY9Ing=;
-        b=cOgdKhFYjmqTqaEmLmRO4MomZmKCjFkeOLqG7FxuhK2AkrMmxmnenDLoA4YsQXPZph
-         Ms26oMmzBsoX5Sc7zEDiD+BHMmLPivLkw4vljJYeN/8CWE4nuQtNcPaECOLKGx8mv/66
-         ramU7UnWF2znUOEQhP2hYk01krFe4ftOdFlpLjN7b10ZLb6mJ/lxcRicbL6fSpNr9ihD
-         JP3ISwQJNDAC7SyqaWX/ahpq2IXDcjOMKTbSK2btYNI6XhDZ12LrqL6XRSTI03FRsCkD
-         P1vkuikmn79UveBxnH/s5skmwwbjxVYsDR1TBWTwnO2PQrrqVZS+qmZfQiH+RVhPph4W
-         b5aA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Q7Ub4KDl09XJRSF6d4W+ZBSqnX35V2vs0yWYMavxzk8=;
+	b=TEbRl/Ij1IG2ChIQPFU0H5xo+KSW0xtHTn5GtmjNUIsFLcjDCyS4RNWxe9ad2qqfQGRsZL
+	hvN9dlfGdbXD01TyFC+r/FypRQE9JY+weu2lW75aglv2grgNUxyTZvq/Yw8myhLC3t/Md8
+	VdNYc6bwl7jFBMMrRAa+kyogocsub98=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GiJtlHTS;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792016702;
+	b=2w8y0QED3B8SpClOTrFieANwdbrOB5Q7swYyLQBv6/HdMdpyKYFGXT+Luv6XLMA9DgY5Ay
+	ct4E7c3iBupucYIUlwdxnqhoDdpjk5WFszWwseEp0Vvc2vIYSXGRBJJvY8oBfvNfxpU97M
+	EwnfxW3/PR4x7yYBMLYI6VPTG3Df/TA=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-53505bc6524so16777561cf.0
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792016520; x=1792621320; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=U8QQjN27s0Pot0JCVcrmzcvPmF+Pv8lSLqLgVFGNeaI=;
-        b=n81o06VCXwI8nW30ciKJLQaI/n510m2HS2f8vwQUujOJMjw2w1GR6p2gXtAjJxbW3X
-         lYkFl9MeC/gPayajrtnb8T8YE7C6jJWpIi8I0JKiJ/6rIyhGnsCbYMSpT25wF/ii7jY7
-         AOktBWxvgWnViUT4ETtgjK1j8Y6EgIGiDBDw62zqK9GSG1RoOMDEjsJGh7+YdLeiCA6a
-         vJdXb5EIM7mVkc5jpvGX4nlaL/FEsrYXdrSc7MCffQUDZatV8S36tWLgxg9YMbrXbPl4
-         74pqQjrkIBoQA7tDo0F34c/PDXtwtbdwmxCFvg0fJw4E5LgVUgYJOIEdm6QIekzlQ0pH
-         4oow==
+        d=gourry.net; s=google; t=1792016701; x=1792621501; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Q7Ub4KDl09XJRSF6d4W+ZBSqnX35V2vs0yWYMavxzk8=;
+        b=GiJtlHTSHtpzpBhsEV1Cl8upZhWxy8YeUMDM9gHtqYSBcosoqaQCdvAVnZ+sInnTu7
+         oktZkhxOWdBc3WjFCFUVKOFWpr+98aXufFvs8QRik0JNktmHk5GnigAE4IZkF24raB5O
+         eMAP27yd5wmWsa7RmB7bLOIfCDx3mWcWOqnbWaAokRNFutIUqyzNsjnqvduTgBQfnuOq
+         35vM7SrfRmvWESeuf5KpTXVlI33vA8gml9aVvfQl+emTJ/Bq7g+MmqaDQr0zIAla6hsu
+         tlR8+H0wevhZrUMQeBjEht9Ktpb4cqhaqg9mBRTrwhIFlAqowA0eyQtE7IbuXCp5+sNV
+         SXBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792016520; x=1792621320;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U8QQjN27s0Pot0JCVcrmzcvPmF+Pv8lSLqLgVFGNeaI=;
-        b=07cIC+d/+ZPfUT9YrfRFNRTD/vewl869Za15LF/LOkpOhNObiGlL+4RFIUoBIM/RdA
-         xtekOkXGd1m37ndFo/ssyNv3Luio7Iw3jScK0grWL9Q8plXuy52e175DfCsvq7Z57Aih
-         Sphw+bKpCKh101jegmWqQJ6zJfP4n5sjHYGWVWwQqO/9+cQfxf5USo4iHXE0UYRl0Bkz
-         ay4kBC9VWACS3AsxteyGu8EvjUfxEPwW6MGb5vDKSCqc8ydPjS1/ma8i4FEawCmXIvJu
-         Mo5f8ID4VLhiYFNeX2KwySWw7KbG5LaSuU/xBNI3J8iZkMa+D0JG27Cy+8lluPmCz9nQ
-         sJyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzHAKf/CbR7eRUqspmyhxgni/+zSuFwHJ1bIEgs+A0LrDXnUfodva7QCgrIJLEYPxd2j58lpTkFjg==@kvack.org
-X-Gm-Message-State: AFq9FYIFIYuMiHGOyusn/6yTktQN6S4I7bIpa8McS9L2VXytfnKwpdHO
-	wIXQJ1uRffW/ztzM86ZnRAu5N8OTM5CaYUK9P1HrY+0ax8vjJga8KzZH1Yk3+itEK7eEdBsUnaO
-	dgjf4jb1YbCCF4iZRHqVCdn26GpMddKE=
-X-Gm-Gg: AYBFou0GDffv2fG89bqm9A2AGpNc/ixcnNuDZxoSE4P+fVKkM2ErdClmWjoRSKfyP9g
-	DhoDPq1XKeQm5oS27Emr7aAcRzp4e+DzWgt7bkY5elYNjIMzBme8PP2E8RoS+/7G91lJeX8jnil
-	gGyHqlm46C/oZIdbyGIHdJkHqMhrgGZGxQKrmGop1hjrfr2eKIIK1dSH2aD+slQXm0ClRcdBAae
-	EMnBO8qbRp9jv9ztiMMlLqqc2Fdh0z6RlLGR9K1j5L9MFcVVqFdugGkfEfIawk5OwYscx+R+LqV
-	voWZpiscOCZpvmIjXhzeN60+q9A/pi4HMCz0J+bg+FBuymDHQD7ab2q0+lVPCj7hSkdrkBPBSHs
-	RgxQ0i18Mfs9C9dNoMgFWewtLkjilUGBeawiigQ==
-X-Received: by 2002:adf:fad1:0:b0:487:342:d142 with SMTP id
- ffacd0b85a97d-48dbacf59d2mr23574589f8f.44.1792016520219; Wed, 14 Oct 2026
- 15:22:00 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792016701; x=1792621501;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Q7Ub4KDl09XJRSF6d4W+ZBSqnX35V2vs0yWYMavxzk8=;
+        b=PsDGJHQQ2H8X1Gp6X28N/bN6QrSTL30zBugOc6g2QU5iiZ/s8Z8defPIbfFDh0v5UO
+         OmlQTLQd3febdaezQIDIKj5LTbuMNUrGLp0F17V2+/XbKcI3Y/n4N92xTPqrdM6du0sj
+         Ras9EukTGFyy10cwK71WaLYy+PCwT3a2zyQQxdw5048Li+7zOgbpMuviGK/1VOoR+69v
+         /FpYVT5qiNZ/eKL2zs3RX4oQXoONC1ZDuEMgMQplr5hE1RuWT+v8VfsRZpevwI95FWvK
+         UQNt3lWgev/tzO3TtbK/AseDZuggh+8WJEzAJQI211AeIpeNA8XO+CbZNvRj/xUgDJc8
+         cthg==
+X-Gm-Message-State: AFq9FYKE/ERFPegi8sw9LWjKGS9v3z606YzWjSatgbMVsCHAn72A+/lX
+	oERrKpwBsJbBd/QOPBj/JYazrYYNS+IQUE8k0zcy0sE8djdY0KtzlV7tTrpG1/kpebzIQeXgAFF
+	2Uv6QCOw=
+X-Gm-Gg: AYBFou2BF8hh8m+v2kPScMsIKmRc393PuzprMOpRUoFzQSFmjnwmOHQmJZyt5U/p2A+
+	F1K7ADjEV727+H+D72JRMigCtqdKxAhv3+h9G5hU+UgKww0iBy+lhYuO0GbsFRhL9iTUtgMqOQF
+	mmjbcmUNC5l58HAg0kS/s1Cyvu8FhXvcGZVyLaX3FVbNZBMWROsgKb1EOR28z/fVqhuXPUdpptN
+	gaMxbGvkET63QDn6Qebn5UYoooKj46J389brPelp4+01UM3gQuHisTh99BRBdeunlQvqA8vMHe2
+	HyRi2pg0tsDufV6FUz0Fyrd79rSQj++SXSERooEbSc2f62ScmLEKn4/5GD4z7DrIooZ+ZqQN1Xz
+	uvskYZ9Sv67OKAgUpPJ+8BblfbYZbRRJIVdq3Rv2frq70zB/aLEV2rasHI2OeeK7btNdkRMriV0
+	x225YFRDap96RUTobE2uRNKZN+LtkhI4XmnrVG3waFRl4eO7poW2hN4qH6x7jHHokDQHxEwFcLC
+	SUID0gYesJ+QRKcEh3XUY1G2ORADQ/iHsffUT6LcUPdXYiJySuFrFSC5qVK
+X-Received: by 2002:a05:622a:551b:b0:535:70b3:fa09 with SMTP id d75a77b69052e-535a628f4bfmr260621911cf.37.1792016701507;
+        Wed, 14 Oct 2026 15:25:01 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536128418b2sm8652601cf.30.2026.10.14.15.25.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 15:25:00 -0700 (PDT)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: linux-mm@kvack.org,
+	cgroups@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	longman@redhat.com,
+	ridong.chen@linux.dev,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	ziy@nvidia.com,
+	david@kernel.org,
+	mgorman@techsingularity.net
+Subject: [PATCH 0/2] mm: fix two allocator races with zonelist and cpuset updates
+Date: Wed, 14 Oct 2026 18:24:54 -0400
+Message-ID: <20261014222456.2318284-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.56.0
 MIME-Version: 1.0
-References: <20261013221307.850803-1-joannelkoong@gmail.com> <b90ec4b6-e0a4-4f46-aa3b-b1a3a08570c9@kernel.org>
-In-Reply-To: <b90ec4b6-e0a4-4f46-aa3b-b1a3a08570c9@kernel.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Wed, 14 Oct 2026 15:21:48 -0700
-X-Gm-Features: AclHuK_tUcdkEvV4W4vq6H3QP4SX_X0yPFMq0-te8p6YxVgvDdJo3929XLEFj8I
-Message-ID: <CAJnrk1aroGboovN=VVSkODEvcGxkAOaDmg_dh1NyqDkTjwF4Uw@mail.gmail.com>
-Subject: Re: [PATCH v1] mm: unqueue deferred split folios outside the lruvec lock
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DCA98180004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5FDB22000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9wm7n58pc9y9sd83y7toume9zjcbaf86
-X-HE-Tag: 1792016521-212982
-X-HE-Meta: U2FsdGVkX1/baG9+soo5irJzlKAlqtaW7tIpW80EhGM1TFY+AoIu2ovQQi0/iY0hzcUciKvnQzJjr/iuSqwTaofi73QkkK0316JT/9M0S0ZclBccEQowCHBXaod1YqFkUZ6PBiW0egeriWOB7iVfK4RjW2ooOGJNmHh8Ys1OUes+Ibck9UNlrER1SNpHeRyoY4ajvfe6Y8KNNKwB35Ufn7UwN/+uOu6aCa1Bf/SNlv8bwIFFgt4C7DMuGw8RzBiqsVocmwUfD9nR2G5gV1TaVhA0vC54kZsifiTmLMmdmEj+aF231HGw+LJJZzT8B7fOJzAPM18jY9o14wWekKxcvfsum2XDh4nbGGLqyCRTOT65BKQOMUwqoAl/0+geV0u4CdlxdlV7DVdio5A965krIplvWviIzQtk/vBrRtTLwJQbQXXt8Id7QgHyZhG28mkx4zmvd138ZQbE9rpZGJuwRI4nAnbvRQfb1dp9yBzsWWprZWDtQ7mAa4HjbKQAl0PsHeNHUO8VP81fx47U5UbLgNM8MJ1rKW6MO7qNqxsU9jhG9dYuF5ZO8doBilbdTrZAV7QpxGTMtgD2A/RP+gk0CvfW7WVTR+iu5YZ9cm5mYq+Lj3EKqcA/hRvzdUDGVHt+IHqFunHkcS48RbQRYHUK/14fpUBkp5UTXoFxwymO9e37WfJm1lpLG93wigEmkcD+m9Hgq5fYHxOb2eapyhM/UnXPOu+oGtN4Ppb9N0NrFHb8D/XDQ/IrgUKWPtaZMYjYpxY7r2G7UAtlJaPDbFUkkmkC60T6A4hw6ARlx63QaZYp7j1LuYaj3aT5kKEXIljeQNtiqbbLiY3gVxretX8vHlwbG9HB9SBGXWc7EWazIRhUC4c0jwRyoUbZZJEVdIEy/L6YlM7Cx594llMbnoBp5YEO5MeXMYcGW4JYGlDXtFJRNDWKJhZJP/+BNgtFwKDaMWu0M5w8U2azlCmtolG
- J1RKM+x6
- /uc7wxV1FbYW7QCN7dKIEWhd+82Zlxf773gs+cTBStC6qIdazIwFS2lnSRG36kvSw/yDdBIcnvBy69C7XIY3rVczBGAvw04aa1zp60hK3JKulSHo62B2Tghae72jKScXNlrMyLkSboV3jHdOlnLB5dPFF7QRSd653hM3H22t5bsjXdowqpAE/HebWAAFFIgcWhDNiDp4UqVXA06rR9K/C1t6Ml58TIMiVStzpiFLhpBR2306H/xNFnCIPoz0SfkUk3xSYP6rnhFchAsRp6jSsMjtM7QhJRF7PRr0fKpueV4B4ledScozdVvdLXTqCT1nAXIlsBBRmlrjPV4fkeqFzehkuRv4zRptbLr4I6wWaAt0o2cIhdFu+wyIyiV4sLsAgmNluxSMi+tPsVUwT1Z9q5Siny7YAZZRxOHFXMfaGe9c7AMg=
+X-Stat-Signature: aycypgwyc554kcuz9bybp8pu3mi8ee8h
+X-HE-Tag: 1792016702-570952
+X-HE-Meta: U2FsdGVkX1+Pi6zOryg+J8GIksQnLfWrQt3sPN5uJa+W0WXF5/1cjawkt3kLAW0l2KckvFSh/DlO7NiaVbh1A3/yeo5J+4EbWUy49O7dawQpNeaVlgtmB3/YJQ7DK/p5+3jP5plISuBrYI83vdflgGu40+DoUYH0RU5G6ivzz3JrTA+uX+QPGGN+DDmxfk3hBWitWErX5hcR/gSmcBegNA0CBUHO0Lz77hedqqv+aitzd8zNNt+A1bTato0aT2TdZ5NsryLxhjnVcqKv9wZT/u+X8pj5QfJRxH9soF9G1uI3fcQVgxeAWwCXuVtAXqORbLZxww+rmM3k6BDwVBLlPX+mvrnsbKOtuWgpUjKXpUYVtiSMCbapjCuWoCbPi5/RlhLPZKV5+e0bZJrH27z+uXHu1fXK+PENVz623MPwXcmBxwzI8JnxgHS7DiJrNxY2Omvl63c7NTyPukVokhCoyaHwcFr/AJC7wI3amWrUPlFRvTGfCLjjBpvDJGcmyOX85/3dlw/XZsYxU+QszAw+TmvEVBpVeVt87c0j07kGXo6pGVfxbB7IaF6Q/qyz9mPQJt0/TsAq6e7+j+58qHdyxqgrLuv8AGpQreKh2zPzYR6PAQAi19UbxVuEv+hpUEjLWIw7OKz/tJa+jzv6Sesjt2UJk/GVDIYfm+XE/CKlJVGq1wSHn5LtTjsXy6eQiReW4QQQiwtz08SzJKoLNgrP7cpVylCMVpYPqrLNYs/Oif5uTbrXfMG8CbrJwMi7clImesRXNLK14nTQ2yb7DNAzef3FYeDkBycEJE41021DlqimXY2a1kHDVk0vWV0YdvKLkBzeYszJSjlzn06/EdRP4zJ6TJQqgBEeaRYlQ9663re1xuWoVAjSZfvl2aIqoQMVmapugJC0VqbSnCbZ73xSVfCDynSKVGpOBTbCBjGeC0Cii+zBxLCdO/6Ilal97mBBTHw65kfvAMK5QahaqqO
+ ITFBnsEP
+ McfkNalUtIT/p6FMO0J4h5cJNHV25VyjdFDDtNwWVqpa3KHGTklznV+134h5mQwUrMjtCeWg//XjrB3e1+r6CSpHTpQK9mRZaNeFX8z2MMko/OnvNBSgzubrYSnJPkI7RehtYXS2tpzll/MAaDtUGazTMoT8Tx92mEX4Es1PrSa+rrm4WG+Y9/tii0kJwLxnFEGZ2L+dvui+u0gOszU7Gf1RJ4ZjocxT2uZj0XTRyVptT/Nlc1IVWPPQ1Dg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,53 +129,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 2:31=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> > @@ -177,14 +190,10 @@ static void folio_batch_move_lru(struct folio_bat=
-ch *fbatch, move_fn_t move_fn)
-> >                *
-> >                * We're bypassing normal cleanup. Clear flags that are n=
-ot
-> >                * applicable to dead folios.
-> > -              *
-> > -              * Since the folio may be part of a huge page, unqueue fr=
-om
-> > -              * deferred split list to avoid a dangling list entry.
-> >                */
-> >               if (is_lru_add && folio_ref_freeze(folio, 1)) {
-> >                       __folio_clear_active(folio);
-> >                       __folio_clear_unevictable(folio);
-> > -                     folio_unqueue_deferred_split(folio);
-> >                       fbatch->folios[i] =3D NULL;
-> >                       folio_batch_add(&free_fbatch, folio);
-> >                       continue;
-> > @@ -201,6 +210,11 @@ static void folio_batch_move_lru(struct folio_batc=
-h *fbatch, move_fn_t move_fn)
-> >
-> >       /* Cleanup filtered dead folios. */
-> >       if (is_lru_add) {
-> > +             /*
-> > +              * Since the folios may be part of a huge page, unqueue t=
-hem
-> > +              * from the deferred split list to avoid a dangling list =
-entry.
-> > +              */
->
-> In general, this lgtm, thanks. I am confused about this existing comment =
-you are
-> moving.
->
-> folios being *part of* a huge page? Huh? A folio might represent a huge p=
-age,
-> but what does the "part of" thing mean here.
->
-> Is it simply "Dequeue any large folios" ?
+Two small fixes for lockless allocator checks that can act on an
+inconsistent view of state another CPU is updating.
 
-Agreed, I'll reword this to "Unqueue any large folios from the
-deferred split queue to avoid a dangling list entry once the folios
-are freed".
+Neither of these are stable-worthy.
 
-Thanks,
-Joanne
+Patch 1: the zonelist_update_seq retry is compiled out without
+CONFIG_MEMORY_HOTREMOVE, but memory hot-add can also cause the race.
+A __GFP_THISNODE allocation can observe this and fail to allocate.
+
+Patch 2: cpuset_nodemask_valid_mems_allowed() compares a mempolicy
+nodemask with mems_allowed without mems_allowed_seq. A concurrent
+cpuset update can cause a spurious empty intersection and end up
+relaxing an MPOL_BIND needlessly. This only covers task policies.
+
+Reproducers
+===========
+
+Both races were reproduced on an unmodified kernel in a QEMU guest with
+three NUMA nodes:
+   node 0: 3G, CPUs 0-1
+   node 1: 1G ZONE_NORMAL, CPU 2
+   node 2: 1G ZONE_NORMAL, CPU 3
+
+And a 512M pc-dimm cold-plugged on node 1, left offline at boot
+(CONFIG_ACPI_HOTPLUG_MEMORY=y, CONFIG_MEMORY_HOTREMOVE=n).
+
+The windows are a few instructions wide, so I used a test module to
+widens them with a kprobe placed on a single instruction inside the
+window.  This basically emulates an interrupt or vCPU preemption.
+
+Patch 1 (zonelist):
+
+  Online node 1's first memory block as ZONE_MOVABLE, which rebuilds
+  node 1's zonelists.
+
+  Stall the rebuild after it writes ZONE_MOVABLE into the first entry
+  but before it writes ZONE_NORMAL into the second.
+
+  On another CPU, allocate GFP_KERNEL | __GFP_THISNODE from node 1.
+
+  Before: the allocation fails, 3/3 runs.
+  After:  the allocation waits for the rebuild and succeeds, 3/3 runs.
+
+Patch 2 (cpuset):
+
+  Put a task in a cpuset with mems={0}
+  set_mempolicy(2) the task to MPOL_BIND={0}
+  Run the task on node2 (yes this is a little flagrant).
+  
+  Fill node 0 with HugeTLB pages to make allocations fail.
+  Stall between the two loads in cpuset_nodemask_valid_mems_allowed().
+
+  While stalled, change cpuset.mems={1,2}, this rebinds the task
+  mempolicy to MPOL_BIND={1}.
+
+  The check compares the old mems_allowed (0) with the new policy (1),
+  finds no overlap, and drops the nodemask.
+
+  Before: the allocation lands on node 2, 3/3 runs.
+  After:  the allocation lands on node 1, 3/3 runs.
+
+Gregory Price (Meta) (2):
+  mm/page_alloc: detect zonelist rebuilds from memory hot-add
+  cgroup/cpuset: use mems_allowed_seq when checking a policy nodemask
+
+ kernel/cgroup/cpuset.c | 13 ++++++++++++-
+ mm/page_alloc.c        |  4 ++--
+ 2 files changed, 14 insertions(+), 3 deletions(-)
+
+-- 
+2.53.0-Meta
+
 
