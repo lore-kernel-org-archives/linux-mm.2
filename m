@@ -4,140 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 929DDCC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB3FCC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:52:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BF4C6B0095; Wed, 14 Oct 2026 09:49:17 -0400 (EDT)
+	id C58966B0088; Wed, 14 Oct 2026 09:52:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796426B0096; Wed, 14 Oct 2026 09:49:17 -0400 (EDT)
+	id C316E6B0092; Wed, 14 Oct 2026 09:52:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AD786B0098; Wed, 14 Oct 2026 09:49:17 -0400 (EDT)
+	id B6D0C6B0096; Wed, 14 Oct 2026 09:52:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CB746B0095
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:49:17 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C93D51A0563
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:49:16 +0000 (UTC)
-X-FDA: 85321363512.19.221EDD6
+	by kanga.kvack.org (Postfix) with ESMTP id 96F7E6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:52:50 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 111831A0536
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:52:50 +0000 (UTC)
+X-FDA: 85321372500.01.5850829
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id ED8DC18000B
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:49:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PPzlrtN5;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 51025A000C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:52:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WYLOKPLa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791985968;
+	b=bFmaIXWS4mDuXtx6qo+mnlowzibHwUdyBqzb9m7U1uGl3EnnwhrZJ2vdpeflcxQdpoVp4F
+	tqrTQpNLZr9rLX84wTVJa5cZqMT95/eQpj/R3mdbb6FlFnbaIAc6W4pCmh3XBg4ZalDrtJ
+	pMILtfFG/PWpCNovWlmZoPclHzYzTUk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WYLOKPLa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791985755;
+	s=arc-20220608; t=1791985968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VlLY8lFnuENoZRIPsEzQ8Q4quedoDle8h5IdEqEOpQ8=;
-	b=AIWHEpYIeENai3W8FXYK3IrYPJLikXlou+MR0B8JmdFCt1qPDwOwM7egXcknELc8sUlqLG
-	R/lAcTWCtZklnSBiJRPp4DTGFxev+Re5qWcJQikHsQgAHk4OIEkKa5S9X71NmxlyT0FsXl
-	7Qj0guA5/pu48zxrZupr/v545PA9Csk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PPzlrtN5;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791985755;
-	b=P/UpJTZ6aKAtDa26EnizxpSn9yKGzcHa34Wl47taVOVOGdReqfE4D1AvX5E+VLjdvg4bEj
-	fjcddW5PSBnxxszv6ZthWme/sd/pPYmSqa+8Pv7vtulBL8ie+tkJXc6wfpctiPhLzK9Mua
-	DZCKLcBd4NHTNu8lOSQwT+Usrg5pkNQ=
+	bh=fG9/eyKPy40SDyhi1NG0w7HlNhFj+AsuLqMKvUUaVp0=;
+	b=oiLJ5WZI7ATJ8vliRRMryj3CjkzPWMyctCPTPYEo0Epug8zEHcjTaahVsAhDyQu8YlxSfO
+	ktZt17o42C3cysSAhQpmPHc2DEqzg0MjyPuyICbjJSHYLoWqV1fGURN7QzQhD5efp+KVxk
+	3QOb1bgg7dFUCIW2XpWgX7zzPQ1hy8w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 64FAE409F9;
-	Wed, 14 Oct 2026 13:49:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6631F00A2F;
-	Wed, 14 Oct 2026 13:49:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 89A0340223;
+	Wed, 14 Oct 2026 13:52:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1C41F00A2F;
+	Wed, 14 Oct 2026 13:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791985753;
-	bh=VlLY8lFnuENoZRIPsEzQ8Q4quedoDle8h5IdEqEOpQ8=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=PPzlrtN5VSLvNoSdjJv8S6IWz9JcAweG/P0+UvtQ1sFu3nTPMRHLcXiHWN6/+oOnh
-	 b6OtZ7RNPpBkN6oXyFeYTlWLq8AVTzH20JzehD7cT8uw2qqGkQVdsEU2Z2f5T7zxkC
-	 vTf251qwCUxZmP+wHqVHv04VZChr+GLxPVOZltV1asZdwZhTXbPgUqJMB2nd2dAvM+
-	 aI/JIprBTd4sXSeuAB2rchOiIBEH2YxSdtlKkNWOhmY+ePYdJLniCVRNHZRbaaplMG
-	 +PBAufsc9gt/VUYrXHHRlIK1CL1g+vCrrpqELVc8ry9r2hSzKlV6OkbaT3ClmIlA7v
-	 tafO21tHnIPig==
-Message-ID: <807e8d2e-e7c1-4491-a3e1-21d84cc58946@kernel.org>
-Date: Wed, 14 Oct 2026 15:49:05 +0200
+	s=k20260515; t=1791985967;
+	bh=fG9/eyKPy40SDyhi1NG0w7HlNhFj+AsuLqMKvUUaVp0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WYLOKPLa/MdYb05p7MIzhm8DPN1Fgwnkw40e7Vcv0XpzcecOvuBfoJmJJQaMhJfg+
+	 IluyIEbgm0hyTOWoLGLroYLWssx0UA+mqbOiopN0itMoaqt7pS7O/fG29bxG2exo+N
+	 dgfeKQ7BhsBwwKtkwCcaUtdYNdcKED4O387x1vtSk2ctGUWbio1z6qtAjQqFvBnG+M
+	 miDmC6C4EDRXpdP6D8ChQ+HjjbZNdo6NXJJFPHlvRqJ6Xcw5wxBSSMJjSH7kXJbq3L
+	 ro2dwVTOErDsgzlI8Z3+W4BgotVk7LyxyyK4qGMdGES8mqrxODugGCb1QM1W3HW+B3
+	 kyZN258MxGy3g==
+From: SJ Park <sj@kernel.org>
+To: Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
+Date: Wed, 14 Oct 2026 06:52:38 -0700
+Message-ID: <20261014135239.3596-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <dfa05908286b5e5684ea0002dde1ee99627154a4.camel@mailbox.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Ying Huang <huang.ying.caritas@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Chuanhua Han <hanchuanhua@oppo.com>,
- Kiryl Shutsemau <kas@kernel.org>, Kyle Zeng <kylebot@openai.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
- <as4kvHe9IFZH5qrC@gremlin> <9add8400-66c1-47e9-b5af-7a4081ebf3c4@kernel.org>
- <as-BZibPscw4cxsD@gremlin> <06930044-4bcb-4478-8a6f-2dd3cf6d290e@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <06930044-4bcb-4478-8a6f-2dd3cf6d290e@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: ED8DC18000B
+X-Stat-Signature: q6tj99gowp3ikinnietwsx4nh3nnb6fr
 X-Rspam-User: 
-X-Stat-Signature: ueziwwx987nauqomubiyteguytf3ug99
-X-HE-Tag: 1791985754-780194
-X-HE-Meta: U2FsdGVkX18KxB4pG8XUxN13vf5+w4MLoSisn3hQaHxh8WIPpNrlv+l+bP48bFZSE85IchpBquimAZ5ha8ktugXFZCvSL0SYAbwZ6k44MS1uL4xE6uU3ehAwWeSCt4ELo4n+ZeAP6CKrwVGzbCvo5Jg+pBmKhPAtm3Y7zC+edTbUCWvoHB8B4af6aVeAupDDQunYhMQLqdulwQ5IKKc46PJtO+6FMB4fg8AlnsjGLM/jhF03v3u72dlP8abvucu5uU+JQSOPuQXsJvi5+VsJka6wtGMoJSn76w+Jh0SDS5YPf2LiJqrqRW5imAJS84G1dMXi5hHLj50zZ4IpZBUZSBCb7QpLrICmeiSsO03Zd6xkY/DAs3gNR41YU3qEqGfJmbkZED95U7AR6N513YK+UhDW1+eU6JEtnMdiUjA9f9ipjmaJPZ/MhM2hgGunUyQTIxkAyBIki0vwBWFi68YK/PaG/nDdvGQofC+7csFgddxz8rBK0Ppg7ztyOsXhkZxWNSnq+4FzCScpKvyWeBbDwwNzLLpgWkZloLhefpfK+DKAOFXrTYS/iRWT8uTlBScX4ujlCcIVMYCc7gWC2VWTMhnczO1Fgg29bkFeI2X0S2a3FSb7yOZgtU2UjFLtVCFe4teWS140NCW4LwFZj/s4ENxkJPbItPMlfxTfH+4YWkpxcO0umGmPW7M+S6hXTNXK4j7XkXdlbP9+R/7gkKB9UO6pV1Y/Ij0OeYgZLty3Iv6M7O2/cTyPn32NIxdIPYkQlg9C6raqHhkvhylEk9bNx9sVzAWSJy3Z5oTaV44164tUUFQFRV+++ZMzU/S0yzgBkqslrtLnReQUAS+ZZ7PEwbmlCltKxd8mzVA/i+LOCKcyfZCIR0GNWZ42uFiOgQ3sq5zwC7KSQUvrucOP0NQaB7UFhbq8EGcEELAcrVDKVeISs13JzLrGRmAtnqYn08VS3qMujXWL22RE1iqZ2Mw
- aUJIVoWW
- +JVFXqze+9C/qaAqF0TiKYaULNwmbhbVxyisIStW6i1Gr8TCjbuceXYV1K8T9Dg81wt2n6L9pBL42oob6huJS+cqDx4jHWVyQkfbLcy+3otov+zrqhe7tG1zdST8n5HcMFfxyrLSea+5HiohtzxjIANvoG9ApM0MFtqHDqREnskb7AK/l5LR67fnK2X8/sCP88NEmBnoh9hXpU+AOqsBZ3im8ShRObyJHumaaP2OSRKJ1YBFf66C4rhrqpCWBLNqcjInH/I34wjGZd2sTw7K6tWLFqherSDYsc8K/fwxN7iLEGjhZp/w9Dy7ZEz9ALMsPclRGFSlXkhmchu4G2fwsggNUH7nTgHHxgNME6NNN67e15Rawa9JQaBKR9IBlbzuCEiJc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 51025A000C
+X-HE-Tag: 1791985968-850552
+X-HE-Meta: U2FsdGVkX1+ScDs9JiulVfj3Jskuf6Sh1bJegryfaOHnNOcferrSifC+/Zyl8seYsXeiBAXW2pzklmOWbrvNvfh9gD/Zr0f7Yvy1guxWDDJWuZs3zoWo2H5gyhhz12/uGjoifIhuOKBu7Ky0YSj8zOfq8WxCjbjXX/VxdMXxVyg/5M7eyDc8VEuMyhVIP80lGPM0Hk5hf6AbkpfcU1QlRTpWB5KysH+zW7mqu+GRdpiAdLAjroiBw9VCKen4BI0Ocrr0sih6dWt04/Quo2Ec3UT1GxwSIDye56aQfcX0uqudAk7e2RLIZZEW7oSIQvvm9mZA/+C2juJTkPPEMvUFLiTUw0H/eEyZ9ehzk7Qpsr8VImqf0fU1eUHA8ZPMJ0FpG8MKtAViTfVjgIIma+oTDGg6FI6BVEI5aZO53xIFWYEDyF0Ag8cznn89IEJZSo0RhLNAUIWJOHEFU2A36XEbACq15uFAjs8QxuZaqB4Ul2t1tQzU2MaFgGxR6AD9MoL6esD0NWsrOMxA5DJfoEKPW0ZGyrZiWn5Z7Qvqvmq1JjgQxPEUKG35u5XJO6t/lZrr8YK8cJJHkPyAyeyvV1822Jv5JZKEyysyBJFSNOYYX2xtiGJBNSI5srk/mNLRF+u9mGZJ7JKBvGda/cYrHR48CcYs6ntiI1Y+l55InpQVnNBiMeMWscdIwDE40Rj3pAIwLIfH4YQoOtiLh2XkdlenUVpH26F/K9+/hvWF3CzIxkYWQYGyTssQE4kI8HeibnG9QiSd4AB38ik40uq4oNyhfGrIZjTKlPdLqg9JLpRLqyiz3ErsVUrwl1JhEB7rUGScDJbGts0sjo+8AHgunIvfwYxGrD7yeU3SZ+9HqMxv8zues5ChvQO+HVFEXWS/i2QC7sU1yizIWEUtgvDKskOjm5/qybsu4moz1LpLTmSnQY/e34dOjOxI7ggVbUMMf8wEwLjwMoXEkFBh/7IZX5d
+ oY7dD5nZ
+ ZOpKyFyl/Rkh67Xf9mXeUw3NEQ9yKuubpqKgLZt5sAdWlgoBxXs+r+tO1mZTHho38IdDV/PD7jFAeymlm39jSueDa9XoNFqY1nwExazxeN7H3N/WH5kBMfUrcShEFqPdYkm9uGMlOjz2Z6pAuJRy+5l0sqDISxjX8OAO3uNr9V6ZlQH4p4OLmOF8mgt/nOPk3A1y63gkuC/WnIfkeR965DUDwDmm1xld2j0Q5tAPOoVATtEW5jkCa8gz6XyAnNRvSfunwjqg3JsG230ABfwlmosyVKy6DuytbQVEVSTCUtxn1mvAHB1ydqNNvdfw71qxYSP0ZwkyFHUAWNdTSaugEP+cvlLH1niFYUrUAzs2YVsb0i00p92SOY7HjawVOrPmxJuND
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,89 +106,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 15:45, David Hildenbrand (Arm) wrote:
-> On 10/14/26 15:27, Lorenzo Stoakes (ARM) wrote:
->> On Wed, Oct 14, 2026 at 10:12:06AM +0200, David Hildenbrand (Arm) wrote:
->>
->> Since I'm convinced the logic itself is correct:
->>
->> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>
->> This cycle is brutal enough not to hold up fixes :>)
->>
->>
->>>
->>> I had that, but decided "not worth it for an internal helper".
->>>
->>> Is anything here really that confusing to understand in mm/memory.c context? I
->>> highly doubt it.
->>
->> I mean I found it pretty confusing :)
->>
->> But this is a nice to have it's not a big deal.
->>
->>>
->>> Ugly.
->>
->> Yup, fair enough.
->>
->>>
->>>
->>> I can just call it "folio_pte_range()". Slightly similar (but different) to
->>> "folio_pte_batch()"
->>
->> OK that works.
-> 
-> Ok, let's do that.
-> 
->>>
->>> Yes. It's fairly common, though, to handle clamping of exclusive ends that way.
->>
->> Right, it took me a while to figure this out though.
->>
->> It involves an implicit assumption in there too, that _one_ of these values is
->> known not to overflow.
->>
->>>
->>> As replied elsewhere, I had that, but decided to open-code as pmd_addr_end() has
->>> very weird semantics with folded page tables, where we just don't clamp at all.
->>
->> Hmm how so?
->>
->> The logic seems, at a glance, equivalent?
-> 
-> It's the following thing that adds confusion:
-> 
-> include/asm-generic/pgtable-nopmd.h:#define pmd_addr_end(addr, end)
->        (end)
-> 
-> I think we have to assume here that with NOPMD we will never end up in this code
-> because large folios will not apply (each PMD table has exactly one entry as of
-> today, so we cannot map large folios .... I think).
-> 
-> I can try condensing that in a comment and cross my fingers that that is the
-> case. I tried that now. and codex review already tells me:
-> 
->   • [P1] Folded PMDs can reach this helper — memory.c:4948 (mm/memory.c:4948).
-> The comment’s assumption is false: arm64 with 64 KiB pages and 42-bit VA uses
-> folded PMDs and supports THP and
->     NUMA balancing. Here, pmd_addr_end() returns vma->vm_end without clamping. A
-> large folio remapped across a PTE-table boundary can therefore make
-> numa_rebuild_large_mapping() walk beyond
->     the mapped PTE table. The previous code explicitly limited this to pt_start
-> + PMD_SIZE. Cap the forward distance at PMD_SIZE - (addr & ~PMD_MASK) as well as
-> the VMA and folio limits.
-> 
-> Let me see if there is any truth to that ...
+On Wed, 14 Oct 2026 14:34:51 +0200 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
 
-Ok, the PMD table as a single entry, but the PTE table obviously has 2k entries :)
+> Hi SJ,
+> 
+> On Tue, 2026-10-13 at 17:32 -0700, SJ Park wrote:
+> > Hi Manuel,
+> > 
+> > On Tue, 13 Oct 2026 21:13:27 +0200 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
+> > 
+> > > mention 'least-recently-used' AKA lru at the beginning
+> > 
+> > I think the readers would know what LRU means, and therefore
+> > 'least-recently-used' is not needed.
+> 
+> I'm probably one of the few that doesn't know. I didn't think of the whole picture.
+> You are right.
 
-So large folios are possible and pmd_addr_end() would be wrong in this context.
+Thank you for accepting my humble suggestion.
 
-pmd_addr_end() really only works in page table walkers ...
+[...]
+> > > @@ -17,7 +18,7 @@ systems, LRU lists are normally not proactively sorted but partially and
+> > >  As page-granularity access checking overhead could be significant on huge
+> 
+> Is this huge as in big or huge pages. For the latter I would put it: ``huge page``-systems
+> or `huge page`-systems.
 
--- 
-Cheers,
+It is the former case.  "huge" as in big.
 
-David
+> 
+> > >  systems, LRU lists are normally not proactively sorted but partially and
+> > >  reactively sorted for special events including specific user requests, system
+> > >  calls and memory pressure.  As a result, LRU lists are sometimes not so
+> > >  perfectly prepared to be used as a trustworthy access pattern source for some
+> > > -situations including reclamation target pages selection under sudden memory
+> > > +situations including reclamation of target pages selection under sudden memory
+> > >  pressure.
+> > 
+> > I cannot find what's wrong with the original sentence.  Could you expalin?
+> > Also, I think the updated sentence is rather easier to misread.
+> 
+> It's two long sentences, thus (I think) hard to understand. I _rewrote_ it this way:
+> 
+> As page-granularity access checking overhead could be significant on huge systems,
+> LRU lists are normally not fully nor proactively sorted but rather partially 
+> and reactively sorted for special events.  These events include specific user requests,
+> system calls and memory pressure.  As a result, LRU lists are sometimes not
+> suitable to be used as a trustworthy access pattern source. These situations 
+> including reclamation target page selection under sudden memory pressure.
+
+I agree it is too long.  I like your suggestion, thank you.  Please ensure to
+put two spaces between sentences, though.  The last sentence has only single
+space after its former sentence.
+
+[...]
+> > > -DAMON_LRU_SORT finds hot pages (pages of memory regions that showing access
+> > > +DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
+> > >  rates that higher than a user-specified threshold) and cold pages (pages of
+> > 
+> > rates that "are" higher?
+> ... that show access rates that are higher ...
+> and 
+> 
+> > 
+> > > -memory regions that showing no access for a time that longer than a
+> > > +memory regions that show no access for a time that longer than a
+> 
+> ... show no access for a duration that is longer than a 
+> 
+> Then ack.
+
+Looks good to me.  Thank you for the nice suggestion.
+
+[...]
+> > > -Desired active to [in]active memory ratio in bp (1/10,000).
+> > > +Desired active to (in)active memory ratio in bp (1/10,000).
+> > 
+> > I think use of brackets is also fine.  Let me know if I'm missing something.
+> 
+> There is 2x (de)prioritization, 6x [de]prioritizations, 2x[in]active and a few more in the
+> file. They are all fine by themself, but not mixed. [] or ()?
+
+That makes sense.  I agree consistency matters.  Let's use ().  Also please
+don't forget explaining the rationale of the change on the commit message.
+
+
+Thanks,
+SJ
+
+[...]
 
