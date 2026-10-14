@@ -4,105 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C071BCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 04:47:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6887FCC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 05:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9976D6B0088; Wed, 14 Oct 2026 00:46:59 -0400 (EDT)
+	id 066C86B008A; Wed, 14 Oct 2026 01:23:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 948756B008A; Wed, 14 Oct 2026 00:46:59 -0400 (EDT)
+	id F32E36B0092; Wed, 14 Oct 2026 01:23:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85EEB6B008C; Wed, 14 Oct 2026 00:46:59 -0400 (EDT)
+	id E22386B008C; Wed, 14 Oct 2026 01:23:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 638056B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:46:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63DBF14022C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:46:57 +0000 (UTC)
-X-FDA: 85319996874.25.C8CF033
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B42326B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 01:23:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40F07160445
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:23:47 +0000 (UTC)
+X-FDA: 85320089694.29.83CD40F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7C5D840004
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:46:55 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ynn2eBTU;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9E1F71C0004
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:23:45 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HzpPgRZW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791953215;
+	s=arc-20220608; t=1791955425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GOBAAntqs+1udpw3fkkHGyAvF+q+wF+2NHy3MJ/XtcE=;
-	b=1yEtOlNudsmY//QeHpTSnU7C6Zan+R6YAqRkNqaAG9yWJOSA/fMhKDA6VIrJIMYMMhHm2I
-	lGkc0q/FOgR1tC5LpDwDpDe/b2oGXp2uRCEGGuCuI4/qaWsBvU6NqB/gMYCfSOxfQFEWCw
-	N1KzTJUEO1YCziQdL/BzLDIGhHJpt5g=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SdSYpehsphW4ohcRgZ6kkg4WkXWb7YZZ4YKMZgeJFUc=;
+	b=Xy2RLURLFHCioldCQpsoaT/RO1DalUIHF3cP915jGrbjwsBzYmpArF03B1Iugu+HLD2/tZ
+	4/Gys3zjJPt+296L4lU4Ph84qfgnnpVpFEQidXeTNdWINhwcPcr5RslQR+/x9O1Phjfbr/
+	Tyo6lOxVwa3FDeU+e9U1D7pzyua/BdY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ynn2eBTU;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HzpPgRZW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791953215;
-	b=gY5LyNvhHatS2RUCKTz4Wce7FaBetSyFDPpXp3CSuFg6E0MH/W58/8jU7zyd1lXtrSh0Xs
-	+RjopaMJTAi86EiiN5FyMssgzIF3bMCRRATSEpkxyEuRW/6YYrs68yXrqKkCBRtuh+Tp1z
-	Ej7LyNB82zw/5JGcrpodtn4st5PNlnU=
+	t=1791955425;
+	b=tCFWUN3EgKZIPoIFdmfeIygmcn/s5oNzqKf+RYtCGfDr4DyIHUKiOEdgy3XpMVKHNKpZMM
+	1/kS6h/qsyGazhISLXw7uFeXt9luuxh14dQ/3JzAwhCsNjORUc2/Slt9IksdySZPJYFtsy
+	f+dtHcs+ZDkeMgeGv4Cf0LBhTnQqwPg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4440E4402E
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A1B1F008A3
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:46:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C620B404F9;
+	Wed, 14 Oct 2026 05:23:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40BB1F000FF;
+	Wed, 14 Oct 2026 05:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791953214;
-	bh=GOBAAntqs+1udpw3fkkHGyAvF+q+wF+2NHy3MJ/XtcE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Ynn2eBTUc3w60hIV2e288f6OYMHEdO4qJI26rrf1lVAyKpxPGrnZc9kownP87KKEQ
-	 IKXLYw2lhm+Zz71F6eJlpA8jpO3TpRM0TOy2uPC0cbVt5CkQNuCG0p1g+BXPq2y69y
-	 n0ODVYMgK27HfizdR5eHGEpwpba/qsVKtsQPhsWVqr/jmjfssBYWqtCKElsXthRTqm
-	 /4GKAluI8u73xS2JfxrGL+x/rrHH7zE04N/qRwfxqlMY1Yw3xs6kDMX1MUk8opBGt/
-	 qvA7JKnLRpEoQ2BI7MwlYGVwy6Otke0zyYx4dv3UNgctuvPafrPLXnhjmC0VisP06z
-	 OXyI54Vx0BOaQ==
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93cb9e9405fso192507685a.2
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:46:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz0F3PE+C0lj8obq5f8lZ4U8Ec/yibHu53Z3OG1sWxUPh6uY+OxHv7INc+o42umFldInay5E9KN0g==@kvack.org
-X-Gm-Message-State: AFq9FYJawn1Sd3iXqwVBn0xwqkyU78ObIPBrAGtvHXVxp9mUli2HNtB8
-	bCmMxfsNbuSeoEuxFy2WNpFbivgMCH0RRNXlwQGPbgS0Mjg006VjNz1F5TBRyzGZ/N9YxlrbCXE
-	OHgEsTf8nIHjpvVeEjt8wG43S7AmGfxU=
-X-Received: by 2002:a05:620a:370c:b0:93e:7944:b874 with SMTP id
- af79cd13be357-93ebd244676mr2342724585a.33.1791953213386; Tue, 13 Oct 2026
- 21:46:53 -0700 (PDT)
+	s=k20260515; t=1791955424;
+	bh=SdSYpehsphW4ohcRgZ6kkg4WkXWb7YZZ4YKMZgeJFUc=;
+	h=From:To:Cc:Subject:Date;
+	b=HzpPgRZW7EyAIbsLd5GKX0VblZsKb+zJCeaRAKypkv55Evn8jSkn5B8p8tvMMPCm2
+	 xijzFZB2nYUOGatSBxl83G3DFQTgROkz4XPHhlcd53XCnLhOPoQSe3lsMl3UIHGqRH
+	 2ZvJZeV68clhF4aR3d8Bf+jQjTHmh/QyjoUXBhUoj5Vi3SQq9O6JWQBWA05/qcz5bH
+	 UEYeQpJ498tvF8RNUuwUyPFuynOakjljBwcHxWBE8XxkC7jaZdHqWlgEDFW5Y6kAWF
+	 96LbKMxnTjB2444qTiNG/IP3UVAw3pIGY19tFhb/pY6yKMkjHByQ7heIdqK6dPpiZZ
+	 Jm5+7g/w98v7w==
+From: Kees Cook <kees@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v7 0/2] mm/slab, ipc: kmem_buckets kernel-doc and msg_msg accounting fixes
+Date: Tue, 13 Oct 2026 22:23:41 -0700
+Message-ID: <20261014052338.nothing.279-kees@kernel.org>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20261012205447.2717801-1-max.kellermann@ionos.com>
- <20261012205447.2717801-4-max.kellermann@ionos.com> <a64f6a98-de70-4004-aac0-312cb05aaf92@linux.dev>
- <CAKPOu+83bH2CRtiAio+1VTTQrYFF9th5XfG5wL45ujEavPS3Dg@mail.gmail.com>
-In-Reply-To: <CAKPOu+83bH2CRtiAio+1VTTQrYFF9th5XfG5wL45ujEavPS3Dg@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 14 Oct 2026 12:46:42 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y_c3TZb5=rNK-sQ5bJWozL42bGo_zgvAtY6hW5eoMcmQ@mail.gmail.com>
-X-Gm-Features: AclHuK_pOHHzKZZH_dTCG6g8kkCM2rEF8JtYxcMjCWMOy51d0raKwsKHCVbMgDI
-Message-ID: <CAGsJ_4y_c3TZb5=rNK-sQ5bJWozL42bGo_zgvAtY6hW5eoMcmQ@mail.gmail.com>
-Subject: Re: [PATCH 3/5] mm/mglru: cache the last memcg node, make tail
- insertion constant time
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: Ridong Chen <ridong.chen@linux.dev>, akpm@linux-foundation.org, kasong@tencent.com, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, hannes@cmpxchg.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1208; i=kees@kernel.org; h=from:subject:message-id; bh=FiVZUxotLv/zfGLKYRPLznaaXPZGHAbqigwRAF3TMZc=; b=owGbwMvMwCVmps19z/KJym7G02pJDFnnBe/t3nuKReGOt/wEt9naXak37qq3HI+ODmi7oReuV aiRdlSqo5SFQYyLQVZMkSXIzj3OxeNte7j7XEWYOaxMIEMYuDgFYCLzyhkZ3t612Gb3y0vhvGLA 1/iXB8P7TM30HgSt8Rc/dmXnGsbrvgz//dzn6TWkHb2UE33h4A7N65/m50X8+XztvE6mTl1ZUv4 XFgA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: tgt3me7h6nun3xeyobwmg3tsycbpxqun
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7C5D840004
-X-Stat-Signature: b3grzcm847ihrfd1kxte841dz5qzjzpo
-X-HE-Tag: 1791953215-515903
-X-HE-Meta: U2FsdGVkX1+6HYcF2nZv5vVVQQsli3tUoNaIP8byi/VhQdfvrGg9q0rP2d5gbMKpIR2QY3mm+2wrqUqWOJm4/gLKZ0pz0aDo0hBZR8dnhoumA15HqBmM3nnt1gYhvB5CyqatyJMkpTsgP80kQVgq08aMkFZsIpikD3LSZLa7ZPkpBlDSEXkp418gh3QKoP4I31gDAWxfaXiiJ8R5lxfzvqd5oE57q5l4E5jpSU2tRGVIQnYWFYc6pBTyf/N6uH9z7DtaaS2deVga9mJFHTHywPu7zvvCp56L/wyK03fy4se1GI+K9h6t6IMRbqGJSosECWgW1k85NazuawDZQNBBTl9rLAW57xtjEZkAu7RWpJssYDVN5ttM2AtyxBlAi7hreBF29/fKquJGNvSqVrIvXB8Qrt/3GT+fOyZx1ioeb0oXdcGmYANcOKOme/PXXARyAbOw9ql6aURym7pvGfty3sj1+48WZ0HCzQIo3z5lzdTfHm1ta7jhF08mvG0Gg+Zr8PTY9JdBuxdUHb6FGQssBzKMCBYM9tA7Ppc2Uhnh7NoRMkRCZxTwSMaL64IC7Nlc9+W4OJAuBHjKWT7h4CvXQCIoGTtwLBDDhf2atNTUTsa5eNQtABbRf332AoLAflSAixAaoecNvXskXPreL7Z4XGtcLEuPEpi6QFfT0Pjyof7dsv62+hYyOwQJpJUc/gMHB+C8tt7WUAuDw6+/wn+Xx5v4AM0F9HWy9cZj4R8TMVJaxbjs5zQwEwyo9s7Ybq56kFd3Qqvvmp/vfEpCt42YfGrPq2E3K/vcwqYLg9r1lhZlWUnrI67dIkOqbeTdLXHu/uyjs/LkruRsy8oxMfeWLRF+IuwUuhSsB2zSZww5xo5UP5V+90FnRXPokVntzNjDYZQtGXWaPCgt1qoQLycgMuhSNzl/jVtocJUMVFQFCNt/KNsm7HdPVPForl8LmukCgxiENRCI24x++q1v/ml
- EGM6rqAj
- cMTxkYkEgmaE67C5Wzes7b57Jg5vnN7G6RxyyCY0fpRSBBmC4mT+kOPr+QBIH4fLJsRlwACGbebI33CNap4RiOMuBbakT0D7PwTxI/NlXXVlo1Gl7hONCtId3z2umaKDzZDtNlL1/fErlrOVuSg3/+mNIrXLeDiHoKpq+GhVzzGo5hG9dtAzqJZqHP7fpFVD41FzHiSLe9REdR2NOZqKpf3LCvd53+yLe7N5Nj+Q9Kk5rta9ZAr1TJMOEP4zGfDUc99LwWvNYP8Bh2Wr5uoL3PivZ4FLL0B6j0SlzlaBTjAYDAc9QufhBdDDXpolV35PouKZyJY55Ogam9C+cmx5MBLSopw==
+X-Rspamd-Queue-Id: 9E1F71C0004
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791955425-444246
+X-HE-Meta: U2FsdGVkX1+XIqxX4eKlg5gvM5/KK797HoFIia+DthPAEwO8UEhZd9hrAhi5ptOr7ae/k8wUFQOe3uo1vSENuInhj1+J9nMbQB58idjdQcr3VpzeQ2qJ4mHMTeuIpejTJ4ESYotkBzQbIzVelxiDksYUC+BuXPUwyYjkM0Q6qqQAKoYYe8kL1TqcOgpz8o01yyiaSj0M7TIhoRNrciyzWOGtibs2YWaS5X/sm0dmksQy0t408etbiomH2OH286afOpmLz7aBeqZyVQ3nrhI/a2C4Gn3WnnqXg3tvowSjt9nCj0Y8hqmLizb9quLAjaDNlB2j9YFIZOgldC2Kc25IqsnvR4BpTYszX4Wx8BeAO6UYP2Gc5K7pJ5udRN4h8PscT7lerqJJCx4hPPP7Uxq2RIwh11lYYZK64n3Qf88jY5pEVRuCuWvKd9xqUytlM1MbdOmzTfANjFDvgnZX4X44IOqijN6eoEf7dygVakyXNiTAOJamdu07/xhyy3nzg74JGOqnjv/VcMcXAa0bQfhi2NY/A29G4NQwSgP/gdgGpQuSlGUqb91UFmi0NohoVgxaYoURPOza1wiRi1ZHEgNXJreWsKC+dOKiJgytuevqPIL0uGueTVTLWMXf/rPy0p89ZcOD+PxDRXCefB/f/tH0ZYJAQ3rPE1l1E3cRk3bTRPHAdVMTm2W/a/xF7qnFHth/y0HboNDsoSD1J9scTHtNkJDlX4fSQ8jT37imHDRoSez2xGx3G03OysR+fQ0KoiQ25hK2FmELCCIdPOAXc4RNzL8SpIKQ2VV3hg1bHA2jXdTQUrhLj9YvHVO65WPwdCsz+MzgODfIweTa4NFdLqUtXVVNBuqkS0Ij+kTsaIJQEyOd9Yw6h+uLwIhalTHBBXXP9BAZUyGZZUytudoSkkWh4Yq07t5ZFzbG3/DsgKVmT34chloVWDNlcJaRlIhNbfAxtebYLTLyyYSuVDdKOcj
+ nKkOYosI
+ wavBCxwAd2l1/mnaLug1yo8iz2og0HTXjYjhcu6wSbVHgkUJnW/a472IV7+Mu6BV28AC4JTx4uUp8ZCNlkMk7wxUOHqXZiO13+PnK2o0TCZR7XZ0uJYUzErGqdbOEVcAUwZb6ped53RYRFuNzuPG3CMe4CUBc+nRP+biTds7zBk1GKxS6s2ebEOxqzslFfabO/QZByR3ZFd4m//rI1d0L97pHE9NVuFA9SNwE0U4PAgI04EbnYq2fR4CJ5q5Z+GBf4ERnujDQpPgdyJpAW6F+UR6rouUgQjHfvY2l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,29 +107,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 11:58=E2=80=AFAM Max Kellermann
-<max.kellermann@ionos.com> wrote:
->
-> On Wed, Oct 14, 2026 at 5:31=E2=80=AFAM Ridong Chen <ridong.chen@linux.de=
-v> wrote:
-> > I've also submitted an RFC patch that addresses this issue.
->
-> Oh, interesting!  I did not know but your patch, but it looks very
-> similar to mine (but without the hlist_nulls refactoring so yours
-> comes with some code duplicating the hlist_nulls header).
->
-> Too bad your RFC went nowhere, that would have saved us from a
-> production incident...  Anyway, even if neither gets merged, I'll keep
-> my patches on our internal kernel fork, because they do help a lot
-> with our workload.
+Hi!
 
-Hi Max, Ridong,
+As Vlastimil suggested[1], these are the first two patches of v6, split
+out for 7.4. The rest of the skb buckets series will come back for 7.5.
 
-Let me discuss this with you and Ridong, run some tests, and get back
-to you. I'd be very interested in getting this optimization upstream.
-I'm also happy to discuss it with Ridong privately, as that's easier
-for me.
+2/2 now keeps SLAB_ACCOUNT on the msg_msg bucket caches and allocates
+with GFP_KERNEL_ACCOUNT as well, so a msg_msg is charged with
+CONFIG_SLAB_BUCKETS either way.
 
-Best Regards
-Barry
+Thanks!
+
+-Kees
+
+ v7:
+ - split v6's 1/8 and 2/8 out for 7.4; 3/8 to 8/8 will return for 7.5
+   (Vlastimil)
+ - 2/2: keep SLAB_ACCOUNT in kmem_buckets_create(), and add Cc: stable
+   (Vlastimil, Andrew, Harry)
+ v6: https://lore.kernel.org/all/20261006092030.got.500-kees@kernel.org/
+ v5: https://lore.kernel.org/all/20261002231120.late.500-kees@kernel.org/
+ v4: https://lore.kernel.org/all/20260921075811.too.775-kees@kernel.org/
+ v3: https://lore.kernel.org/all/20260702170728.168755-1-pfalcato@suse.de/
+
+[1] https://lore.kernel.org/all/be34b92e-e82c-4f69-ac9d-b045081ea418@kernel.org/
+
+Kees Cook (2):
+  mm/slab: Mark the kmem_buckets_create() context as a Context: section
+  ipc, msg: Account msg_msg allocations with GFP_KERNEL_ACCOUNT again
+
+ ipc/msgutil.c    | 3 ++-
+ mm/slab_common.c | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+-- 
+2.55.0
+
 
