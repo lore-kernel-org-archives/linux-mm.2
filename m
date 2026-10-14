@@ -4,120 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E5A6CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:12:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8798ECC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 13:14:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13A456B008A; Wed, 14 Oct 2026 09:12:41 -0400 (EDT)
+	id 3AEC36B0096; Wed, 14 Oct 2026 09:14:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 112F36B008C; Wed, 14 Oct 2026 09:12:41 -0400 (EDT)
+	id 386406B0098; Wed, 14 Oct 2026 09:14:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027A66B0096; Wed, 14 Oct 2026 09:12:40 -0400 (EDT)
+	id 2C2D86B0099; Wed, 14 Oct 2026 09:14:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CDED26B008A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:12:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6576D804B7
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:12:40 +0000 (UTC)
-X-FDA: 85321271280.05.E21092E
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8F84C100012
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:12:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=hX4TMtoV;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791983558;
-	b=aztgHK5rytkbMqO+2WLGiNqd1qwXNnVrytTkOquHqGTi59ct+NDyrRlQZTni5qr/mWOm1p
-	Cp6aU0y5s9IDWiA/Nzhgg51+tokQiSpgqgaMR+O50t8wT5nlEctJmRITcvPcOeYJ8SBsaG
-	7CEy2ZeG2ta5eKMeSJT6LH0TTlpyKdw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=hX4TMtoV;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D6526B0096
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:14:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B5F7160560
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:14:10 +0000 (UTC)
+X-FDA: 85321275060.14.09BD07B
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 08E5C20005
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:14:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf03.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791983558;
+	s=arc-20220608; t=1791983649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7jEpV9CpjUjV+rZO83DWrS1XtF4LOaO3+hdRBygY+Bw=;
-	b=IBArNg9hXdoGTCbjVoi7/O81pTMsj/kHcBffwb35pXDSByuhNyYnFF/dzpGPJxTVAPUpdD
-	OYiwSUnzA6AEWoPcyvcAEDJFp4wbO8wRrQrPXvMFd31lqPqlc5gI7Kj1SOILeTeFqOMxHQ
-	i0cA74g2buN3OcWKU2Q5VMOSqyg1w8E=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-533861a59b8so3534801cf.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1791983558; x=1792588358; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7jEpV9CpjUjV+rZO83DWrS1XtF4LOaO3+hdRBygY+Bw=;
-        b=hX4TMtoVb9FxpQ5IWHVGu/ngT801H9kUPlMCVGPYyRSa+pvLkFND9VJ3V0AWqiNtlP
-         yZYB6NljCoiOjgR8eypIGOeKZmr11UOAdU/CKz11jGqdz75vZyWzFuROS4K+rQiGWH9L
-         ww1iw5ULZWTZDfPBlQUTLtZZMr9pXbuQFPE87Y3nopuaDeIFLiY0kkzSTJuMldgvPSdG
-         Dfcc1bMyuBurySubJNiHK0i0kIp5novlXsIsBK36VmBBIWLYIh1lP5N4E8LfDft5HZsN
-         gxKhBygx9kN0XD4u+c7mdrPruiY72Aw+fY7+SMW/3PLOiwNb/t64lfq1du+2937q6iJz
-         N7dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791983558; x=1792588358;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7jEpV9CpjUjV+rZO83DWrS1XtF4LOaO3+hdRBygY+Bw=;
-        b=07aYrZOXbhNFlMT7mQ0EuyU0igbdjfHO5maZvR+oyMKq5Q9PXxQDrKFqMuAQdYaJpE
-         MkR2LZ0GaFyuNY3XlUXRTXRMhw/mkJ8KCfomcOIz8Ex8OklPbbHWbG7ROYdOS+/5uioZ
-         rLka0GK4hIntWEMUxEwPZhfSxdkdGhI5SjxwUxWI8t9db9q6zAwgMaPDlArZZWyGLUIu
-         Q75nGy/MzL8stVBXnCcNCvlZIvTRCmUTaa+InMDZPKU3CeSg+jFaQESmkHznWSwMUyIx
-         Wn4SIO4eh0bsJD/NzY1kPVLe2kDTGFHb2JORj5AIXkk84sX7gfrQ3QkIKx222Ca4VCaA
-         J6dA==
-X-Forwarded-Encrypted: i=1; AKwUvBzdBUq1T1qrKmSa6j5RULXrI4e77mwPhNOFtGBq/nBOh2J+PNoYk0FnjiomobeISWkeNZZBJ8dI1A==@kvack.org
-X-Gm-Message-State: AFq9FYJjCO18hUMY2XiYNpO7PI1qYkx/N+kV3Ok9Xu5lTpZxxz2ZtCor
-	A/2afX7vpMyixHAWcGeFdT4occHbLw5o09MdmBImhjkx1tKPaIjLFtODpC12RfLjCvo=
-X-Gm-Gg: AYBFou1Ot4h5S2rXOCliArsAMbbucMEhRwKQm74XahDbH4F9jT2hDCNO7UOQXzjjgKF
-	fAY33A8umFRYclqo4U80uXsKJn0VbO8dbfunUCfpt3Q0aDds3L7pH6WKLJ/Ft4x326+gFe9A3Hi
-	y9oHmw/HPcp5L33bwY7U0Orft4TGONNZe3xveEaioq2yeKwB9ZWRzWP8wd2tdcaiq68oluCP4ei
-	OFEpdXILY93S2wQAOXgThwQ26P+hsidWJ+XRNpih9rUMOz1U5MFpqOPLkD+MG6ipAZp7DYW806I
-	y6yiIaPA9h7zuldaKfvfnm9X8ewZ4nI0jMbKs1VKPgXXAClNC0lzvewJUCwroHFf7cYO5YNYKko
-	19yv0mDhVwj2vAbdRlMnFgvNwozGKgK9SgqSSYR3DaC0PjSBuQzxKKBbMBNzLyLootV7k51gjLX
-	PSxCNgyp+mgZzewP/2j7bjTHtLGgdhvK9FffQ5rNse0wYkdHDAJvSXtqoxt482Vp2DT5rOi7ol3
-	+uu+/GAYYptORPs1e2QyCT2CYg8gl3vvU0kiUP9F27ffY3lJTTqqVs=
-X-Received: by 2002:a05:622a:511:b0:533:3ec8:a834 with SMTP id d75a77b69052e-5359fb3dce3mr261396561cf.40.1791983557461;
-        Wed, 14 Oct 2026 06:12:37 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5359b6fa173sm124088821cf.7.2026.10.14.06.12.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 06:12:37 -0700 (PDT)
-Date: Wed, 14 Oct 2026 09:12:35 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	joshua.hahnjy@gmail.com, ziy@nvidia.com, mingo@redhat.com, peterz@infradead.org, 
-	mgorman@suse.de, riel@redhat.com, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
-	bsegall@google.com, vschneid@redhat.com, kprateek.nayak@amd.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 3/6] sched/numa: fix scan-period adjustment for shared
- faults
-Message-ID: <as9_SwmLxAcTovnl@gourry-fedora-PF4VCD3F>
-References: <20261014094347.99157-1-lizhe.67@bytedance.com>
- <20261014094347.99157-4-lizhe.67@bytedance.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=1fmg/Ha63YqKdBivo+fLzBc06bPG5kqvRlHk0mnz5j0=;
+	b=NFeIS9086NL9U2RcmzKjhhk97hJENGph7KnB9iNf4PV2gWcgEDTzC4gRoZNiajWQh68joB
+	nYdh5+OPKAF4l2VX0mBKSyNWgu4k3m+tQa1822UWiSfE64Wgt0DgaqO10MzqEA4LRNhx7K
+	vGoQEid4nvb89eCQJPPhAv68Z7mZm08=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf03.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791983649;
+	b=JzbvhOJcJVcHOV/TL78/nYe/d58kqwO9EDi41589M70DDDX0OtA9G9b+RV7/XmJZDyBTih
+	AGvRNaMFMk/vLZnc6DyaMjNSDSWXr/Pw4o6mdB57Rqzo3F4atNJw0ODxn/1hSIAPG0Rxcv
+	FP6gJJ5lBjTruWK7MGO42bCIcn4fAP8=
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xGynv-005sVG-1B;
+	Wed, 14 Oct 2026 09:13:59 -0400
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v1] mm/mlock: use a long for the page count in mlock_fixup()
+Date: Wed, 14 Oct 2026 09:13:58 -0400
+Message-ID: <20261014131358.780240-1-nickolai@csail.mit.edu>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014094347.99157-4-lizhe.67@bytedance.com>
-X-Stat-Signature: tr3cbunx13fmatd8i87awfiep1qzgcx9
-X-Rspamd-Queue-Id: 8F84C100012
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 08E5C20005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791983558-351812
-X-HE-Meta: U2FsdGVkX1/1QFlbrFgDW7sM7IqoiAEEHaN7fC9GGnRczXYn4nzTKsIVfGxNqWY9XYPv246ybI0WtdKhRkbVuWgYSspNVFvO3qfr1zcugAOW9NXRd8T85+Lta7jUm5ZQj70JbJrlZNiN5VnH4aM0/lvgN4QU0n5trABBS0fFsO0Q8bH2ZeJNTUSUV30BTFe8OCWTUTKM0tGjX27FJm9LsmMx+3I48z+WFgxP6NgKGCCiGhen484Q7OsmIZqUCRRy/4dOgehIh/8ckHecOY6/3bFvUuC8ugKKdur8omNISw7Vl9DqcVX2RgexPTjMw2yCYSOIAtomW1RSp2N1S9iYc5oNOOZkgelhUUT/OS81A/BUnMQKKpLaKBDotbo/JkzAG2zNqPaa3pMZlRIs4wSakqXGYZPtH5S8iLEhSTcAiwGpP6lZmwxvmfMtG4sVobnaSgm+Zac9SM3L7bzWgDdnUt3dNuzLqpp5I9Wxkj5mbYhsMkA7tdQi5LEDW0brndbPoMM8VN5gmZ2DliD6XNOHa4qtzt922OyHdIsJEcQlpBMUEogyI4rSsXgIIMzrpCSTbBnHXiIM+lqCiU/28lUnr+QT+L2N4WeppXPQTvAZREtO04lDXpPBP9ZOKbSv3FR+wfAjpXw0C1FNBiJJCVPIdzwh+TJxq4pPtZet8uWrwmlpkaIsCVyw+bh1nyG9x8ZzId7tNmO3E9JVybYfqyCb1WBv6BjPVT09f+MZbxvXPwbCBvMcv+PefzJiJk39oJGK4cKB3yG4lOKu87ercl8+dP67ogRmZrQTRRGRPTa8NLswIshoqHdBXEZtS/WwTIZMXw/pPFDc6h536CJ228x1bCCGsngW1NvDF0ssiyxdG6RB9FYUg9SaACynA6Lx1d2lw8wAEt5MujBAU5rW+jbZDRUUiBZZ2hHOBe8QVdY+axXs6oaqhIS4rh3WA/rAd9DiDobwQje5fKsKT8foRbA
- JI0h5R3j
- ZP9E4bP1HFR1dq1FbOGJbSgu9BiVBI65qYkI86x5KLDimTagXfhyHKcKs/m+nROgKTNd1RRUHBUMiDSTGs5cacWnf4lUEIeB0HjyJnaLB/Zfn0k/UL9zDm6kDwrOAxkXNSvyZ+nsjNxIwsa+mu8rMRCH0g/u9ywuqziSpPTgGkuBIpKcqZhzXFaWzoMDM4HF9MQetE9hM48LHhmc/H65zwYLcH9GYd1uEmPL2MmkPd9yOiyZRVtGohOBPhmvNIhPvWoDChm9Z0lbxEzXdcNsQe+heInCuIjkZyciD4FJJEOcrdCpBv1wWy4HKApyc4j5OKz4Ycrsoa1FZ1HcCz/8zphSrG8pgZKIjyC/fwOTd97knv1OEwuPG7TwSCCWK671mnMv9+IXQSR5KXTO7zw69trkhcw==
+X-Stat-Signature: jhku8s5of8c7wek5xpot8tp19rra98tc
+X-HE-Tag: 1791983648-888827
+X-HE-Meta: U2FsdGVkX19d93Z+/eG01SxbEFcDXJSg+YIjHj+ZNloj9tj3dvfNjyl77RgQzvKnRwgsIAm/yCn6RLAQda9iwGvwYSHE/JBrIEtffwca7XupMjlj5AMMPQ0Rcd1sjQqkAXLdQZbiBorIURPhMj0sYZ/tz2J7fNuACKM83pJ2RrdV00jQJ5N2vL6II6cCCz0Qc+bQELkJdEbX1TaA1h70TtuWSgRCGIWFCVpodAs+ELHr82ukcw1nM3XWMrUhcWrh6GJBsqb4owPsm2n2DLsULinAVtt17oPyq6PzFvA0bkbFQn84WFJd+io4e49Mqui+12yfX7NDmIs5EFNX5eVl29r9Y4Ft6FVu4YC9IbCkLp242TT0v5EOQB/jvBSrNGCS2pqfjDligFaILZ72rzrPuZpV6GQ/ViDOt6q+s+p515vfPlLgG9SCnnKGi2JPnyOEbEXtTcgJrBZBo5tfeYC/lKpzvAIky6SHFFHuV4RfeNC8lpWlPiVvM6JkVdgP5PgkZddDlU5BH3rMxHsQWZp9WpE/RVqLH1Qpz6Dh4GuF9vA39EE5eVaPRFIkIfqYDZEKRoyRIlshryvIrKNuDu1peHHaG33A+rUoTqTA+Zw/JNv2jTZ5JEzLh2L4zvNoGkYru8S4+UkcHAlTX5bXDTaedAnGz8wQ2US2PNv5c+eQHFj2nC6lhLNsnd8pU3Mqi2Ao8peuruaHiXbtKG86ATbg+sIzzvNQ+K3q/Qes0f3kbydC9u6q1YI2D4D1B06qqwFYLbAnHWdTVc0jfKU1zWXGGJIQeki7nkoI9QFR9HqE7Pnfnv5kJr3Op5extKNSVBdiItroWr+cHke8GmP4eFa8r/qCi85FsgpPdq8ZBWt9bvHnlVVLXKG4QsXl2o5iJRXFGL2cz+yZebXAAnhwN5eHoCTOpvaYjc+ZujONbv2opex4Y8y6yo6pA/afHONZkZS0cAQeEAxtUuQe9ZHIwMh
+ Y7Z+WaHR
+ yEybMHd488EVjLO2VYmsdteHKMYhxw7atjux5aNYFcZRIRim6hzvCrfSkukNIj+43Sxyb3OdBnvnek2Ir+YLYp5qvS/BTeGUmhlmEkSmBW/iql0nP8KnS5tUf7cLGMN324Drx6crBPUxfdG6MxekdWO4klfwK9iuVn6/u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,37 +83,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 05:43:44PM +0800, Li Zhe wrote:
-> Commit 37ec97deb3a8 ("sched/numa: Slow down scan rate if shared faults
-> dominate") intended to slow scanning when either shared or local faults
-> dominate, and to speed scanning up only when many private faults are on
-> remote memory pages.
-> 
-> The implementation uses the private-fault ratio as the slow-scan signal.
-> That makes private-dominated samples slow scanning, while
-> shared-dominated samples can still fall through to the speed-up path.
-> That does not match the stated intent.
-> 
-> Replacing the private ratio with a shared ratio fixes the
-> shared-dominated case, but the scan-period code still only has separate
-> locality and sharing ratios. Those ratios cannot distinguish a window
-> with many remote shared faults and only a few remote private faults from
-> one with substantial remote private faults.
-> 
-> Track faults that are both remote and private, and only speed up scanning
-> when that signal is large enough. This keeps local or shared samples
-> slowing scanning and avoids extra hinting overhead when the remote
-> activity is mostly shared.
-> 
+mlock_fixup() adjusts mm->locked_vm, an unsigned long, by the number of
+pages whose VM_LOCKED state it changes, but computes that number in an
+int:
 
-This changes NUMA balancing behavior that's been around since 2017.
+	int nr_pages;
+	...
+	nr_pages = (end - start) >> PAGE_SHIFT;
+	...
+	mm->locked_vm += nr_pages;
 
-While it's not the stated intent, it's been consistent since then,
-and i'm concerned that this could cause unexpected regressions.
+When a single VMA range of 2^31 pages (8 TiB with 4 KiB pages) or more
+is locked or unlocked, the count is truncated to 32 bits and then
+sign-extended, so locked_vm is changed by the wrong amount, while
+munmap(), mremap() and the other paths that maintain locked_vm use the
+full unsigned long page count.
 
-Do you have performance numbers on this change to show it's actually
-beneficial compared to the existing behavior?
+Such a range is reachable on 64-bit architectures with a 47-bit or
+larger user address space (x86_64, arm64 with 48-bit VA, riscv64 Sv48)
+by a task with CAP_IPC_LOCK or a raised RLIMIT_MEMLOCK, which do_mlock()
+checks against the full untruncated length.  It costs nothing with
+MAP_NORESERVE and MLOCK_ONFAULT/MCL_ONFAULT, since then no page is
+populated.  On x86_64, after
 
-~Gregory
+	p = mmap(NULL, 8UL << 40, PROT_READ | PROT_WRITE,
+		 MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
+	mlock2(p, 8UL << 40, MLOCK_ONFAULT);
+
+VmLck in /proc/self/status reads 18446744065119617024 kB instead of
+8589934592 kB; munmap() of the region then subtracts the true size and
+leaves VmLck at 18446744056529682432 kB instead of 0.  With 16 TiB,
+locked_vm is not changed at all, VmLck stays 0 kB, and after the task
+drops CAP_IPC_LOCK or lowers RLIMIT_MEMLOCK, mlock(), mmap(MAP_LOCKED)
+and the other mlock_future_ok() and account_locked_vm() users enforce
+RLIMIT_MEMLOCK against that count, so they let the task lock memory
+beyond its limit (or, in the 8 TiB case, refuse every further lock).
+The error persists for the life of the mm; unlocking the range in pieces
+skews it further.  The wrong count is per-mm accounting only: it does
+not change which pages are locked.
+
+The int has been there since before git history (the variable was named
+"pages" until it was renamed in 2.6.28); every other updater of
+locked_vm uses an unsigned long or long count.  Make nr_pages a long,
+which holds the page count of any user range and its negation, so the
+existing sign handling is unchanged.
+
+Found by formal verification of mm/mlock.c against the kernel binary.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Assisted-by: LLM
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+---
+
+Notes:
+    Reproducer: the program below, run as root from an initramfs on
+    v7.3-rc7-28-g4056b3c9d3c9 defconfig (LLVM=1) under QEMU, x86_64 (TCG,
+    -cpu max) and riscv64 (virt, -cpu max); a longer version also checks
+    munmap(), a 16 TiB lock and RLIMIT_MEMLOCK enforcement.
+    
+                                           before                   after
+      VmLck after locking 8 TiB            18446744065119617024 kB  8589934592 kB
+      VmLck after munmap() of it           18446744056529682432 kB  0 kB
+      VmLck after locking 16 TiB           0 kB                     17179869184 kB
+      mlock() of 16 pages over a 16-page   succeeds                 ENOMEM
+      RLIMIT_MEMLOCK, CAP_IPC_LOCK dropped
+    
+    // Needs root (or CAP_IPC_LOCK), >= 16 TiB user VA, vm.overcommit_memory != 2.
+    #define _GNU_SOURCE
+    #include <stdio.h>
+    #include <string.h>
+    #include <sys/mman.h>
+    #include <sys/syscall.h>
+    #include <unistd.h>
+    
+    int main(void)
+    {
+    	size_t len = 8UL << 40;		/* 2^31 pages of 4 KiB */
+    	char line[128];
+    	FILE *f;
+    	void *p;
+    
+    	p = mmap(NULL, len, PROT_READ | PROT_WRITE,
+    		 MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
+    	if (p == MAP_FAILED || syscall(SYS_mlock2, p, len, 1 /* MLOCK_ONFAULT */)) {
+    		perror("mmap/mlock2");
+    		return 2;
+    	}
+    	f = fopen("/proc/self/status", "r");
+    	while (fgets(line, sizeof(line), f))
+    		if (!strncmp(line, "VmLck:", 6))
+    			printf("%s", line);	/* expected 8589934592 kB */
+    	return 0;
+    }
+
+ mm/mlock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 39215a3eab1f..4fb43cddafa8 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -470,7 +470,7 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ {
+ 	const vma_flags_t old_vma_flags = vma->flags;
+ 	struct mm_struct *mm = vma->vm_mm;
+-	int nr_pages;
++	long nr_pages;
+ 	int ret = 0;
+ 
+ 	if (vma_flags_same_pair(&old_vma_flags, new_vma_flags) ||
+
+base-commit: 4056b3c9d3c92ea45955641dbafeb9b960e146ef
+-- 
+2.53.0
 
 
