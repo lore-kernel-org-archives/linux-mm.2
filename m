@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7B6CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:12:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02937C3DA7A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 17:12:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C67796B00A2; Wed, 14 Oct 2026 13:12:20 -0400 (EDT)
+	id CDE436B00A3; Wed, 14 Oct 2026 13:12:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3FB56B00A3; Wed, 14 Oct 2026 13:12:20 -0400 (EDT)
+	id C8D9E6B00A4; Wed, 14 Oct 2026 13:12:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2E8B6B00A4; Wed, 14 Oct 2026 13:12:20 -0400 (EDT)
+	id BCAB46B00A5; Wed, 14 Oct 2026 13:12:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 975976B00A2
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:12:20 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 233EF1A06DC
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:12:20 +0000 (UTC)
-X-FDA: 85321875240.16.6BCB275
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0E9E140010
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:12:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XaM75o3m;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DFAC6B00A3
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:12:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23C94C06A6
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:12:23 +0000 (UTC)
+X-FDA: 85321875366.22.F841C64
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2EE0B40009
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 17:12:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g2D9riPQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791997938;
-	b=BVji+JtV9YzHrbjHN+4khJxqg1lDHwWI3P8uf80aaaGsULoYKMHYbKyZNFB54Z6Vq7aOUQ
-	7TEHS93HHWn0Fnq/WD+xjZel2XQJwAhVhobmd/BhU6QjjKS0iKaudVCA16FX42xSaKq7Su
-	aCRq08luWF45cFFtn0OnFiDPBXweyAg=
+	t=1791997941;
+	b=a0o7pMfn08R2p8XH/7hbjQwBYZPhup5Bnq2kdNgoU0Lc6w4W0BbXx2II18R79RF35Gg8Es
+	lJBBX4NwjJLRCrNCBzpurASKPcd3j8FtrSXdDgprxqZq4R3+j9Qi3Shj0d5QuLobI4ZWFT
+	Yehr9B+LyKQR3YBF1d4dBlfNCvu/rYA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XaM75o3m;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g2D9riPQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791997938;
+	s=arc-20220608; t=1791997941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tE4Nouxbe18VqCAKs0hRv8AZoWoMV1442HL0oYf55VE=;
-	b=Jcup7IyVNrYITd8nsEjaBfGaMd2Y/Or2xRkHloKvlIPMf6Fd+zrIg0o7FuUtGQ0RZ4TnRu
-	pVRzPIjM4s//dRWJz2V+5w1pS3+ABo4i5k6A6GqltvCvXE3lXlmhS6sBK+Ulb3dc1jI+Dc
-	2ginxg9U4K+ZkwM6cxKMxPIESkopLeI=
+	bh=Dpuf9YwQeXbyxpKeMDvzTwCnwr2xLVuFfJ1Lcw9LKFA=;
+	b=BOx5Skcz0h21K7ConPoDRwSEu4TP2f1D0YdZcfO/seadlxOuQEr9aRW0GsVT4f53OnGdqO
+	4JKqsCYcajp6VvgGGqe4I7wAzRNcDBWui+/bw6LLAg1zxmjg0GAAYcc7nkGClevrOXYIAX
+	/68HSo7Ne6U6Fie9MSiD4QfgRqrDLiA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 65AD743D4E;
-	Wed, 14 Oct 2026 17:12:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59B21F000C6;
-	Wed, 14 Oct 2026 17:12:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC90C60230;
+	Wed, 14 Oct 2026 17:12:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7236E1F000C4;
+	Wed, 14 Oct 2026 17:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791997937;
-	bh=tE4Nouxbe18VqCAKs0hRv8AZoWoMV1442HL0oYf55VE=;
+	s=k20260515; t=1791997940;
+	bh=Dpuf9YwQeXbyxpKeMDvzTwCnwr2xLVuFfJ1Lcw9LKFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XaM75o3mI6pelfaHhRT1T+bhFcI6CyaObGxu7udvQRvXbDw7bIRh/7JnbA1bJOR1R
-	 KQK2IkCTo0OoQMJoH87iAdkmQwq2yFcKqWR/7twPIdxVnjNMY6TtBk6el7v99BFBXO
-	 v20UHUCdO8GgLx82qrAk8fC/VHILw0oJ5LoIqJLn/l6dfbfybcvPuNOKebItTgMkSW
-	 tX5ycMey7upLQDWSRv+9++61k/c+WoBdWjE12ENJAU+BtRS3M9vG4DAxGgnAXfTand
-	 z/jjEsl/D9XRXqDt0spTeBy90r0scFRkHVNIidDggke68/6IbhsqbHsA0Ssp8Y+TNB
-	 /F9+mxvUfgZDQ==
+	b=g2D9riPQbVePOj+aGiP4CVAucNUxKE2xPpGwXSibS1LjpFXKWeQyAc7oUw8c0B3uP
+	 dA9wS/JPrRT1m/wsIC2bszUPtd1KGz3bkprv98oTDwe1BOIy1cgU/6b91vjUkWTunE
+	 rGAZZSD8brlEIEJIy7GPxXjZPoUTjQsyGLRVKlbVavukXgg0NdExOfcBZ3FK7+mdw6
+	 S/KgaHmninA6ZDwJd2jMrGH9oaFmb8nLb1KOIZXk6U4ofbiOEUhYTCxckyMBMZJM1C
+	 upXvZ+OmRmMy8wne+TTAACexd+uwB078cvmWjAvGvXPDhsxjz2tdR+Alz170+Ycomk
+	 MB3vGFIGXWbWg==
 Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id A1BC4198003A;
-	Wed, 14 Oct 2026 13:12:12 -0400 (EDT)
+	by mailfauth.ams.internal (Postfix) with ESMTP id AEF381980047;
+	Wed, 14 Oct 2026 13:12:16 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 14 Oct 2026 13:12:14 -0400
-X-ME-Sender: <xms:7LfPai_gUs5IOIXCUK-7z9qedLXJppntMdsbedFi7nWLGftJCLNwOA>
-    <xme:7LfPaupsTAWyyrMkhzqgwPlrji8-org4ExE61KhKIiwhkERWGWbft9faS2TTFGq54
-    P_YvWLOe6yXIDBTRXJzd9kx8uF4hoQCfkUf_kgfE1YxrGtUn_lQNOg>
-X-ME-Received: <xmr:7LfPauI3_gEaUg6qwhhUtSATsxSAhmh1USIrYQJcuq6tWnfvgK41s-NQvSc>
+  by phl-compute-01.internal (MEProxy); Wed, 14 Oct 2026 13:12:18 -0400
+X-ME-Sender: <xms:8LfPanoI_J4nKlR1hVgJiS-mm5kJx9gUTWeAv1sJ4HoFoJLhWn36nQ>
+    <xme:8LfPatn2qQYPnOcNEfgNrBXS3JfMcFkJg7YbZsy2nlM4vK6D5FAPhGirdk4Mqk4OC
+    jvj3NUFNSDVD5ccl6uGqOc2jC6uYRAUjQXqZpT4Z5GogIqTMLCzCKw>
+X-ME-Received: <xmr:8LfPaqWsEgtzdrC5kdiHtQHs-nrHZVGWH-K5LXFcx8otWERAwpQTvXhq4yQ>
 X-ME-Proxy-Cause: dmFkZTGg3k0TVKsEP7CfoR57WWB+3h574BO5vjP4iWax6f9GidZ8szHobtaOvLAEbPCZ2m
     mw+y4/PWP+fl/ZrEvowyJM606Aqux2KjdkbOrs1qTyDsxUDjHhZTWksnA7am7MGg9VukjB
     qcXL+mBtcoMF0nKIYV1Ko0CB5fx2IplfPHhSynDMYzb+URxJm2HhB9bzqvrzy4Cvkw3z4+
     1ufb70dVHftr+eFTK65fTPkzZfMFIkT+fPjngxsm3eiPLOeyYT2uqJ47ZuQsB+0l7i804Q
-    fk/9VtLe5apNPJHA5iwMfFjFMaiWANNYkGgKJdhqeFkBwi3mvIJ1y0E25HLDGDGvYAjfPO
-    wgKlVGgK06TLK4ylVIU/L9XTKnWUJcbcnc2+drc5n1QpsX/5627QWFoL7ReBqhtFkREkdI
-    0ZC6+V7VkKZG0Ajp4ZVbry5+s0NEKfTl2Zqv4lw1iWNasW/jcNQC5hgvhBCt11ByTR4aU6
-    4m9rrItXQm8A6Javh/PpVIJBqcTZvcbON86/czwQTnHiaD4aKMtYGyTf/LqjB6Scuy8md2
-    ko+GGwUQ/NLnTmLmtiTs7mKdghSzBwiQ3uPhA9oub98EiDiYqXrtVa5iQCicjUGzZaSS2R
-    1I2vq1oMkBeEzA5COg09mxpi4FM2I9ao0gc5bpeUZksMuGenm6t9X/6hTNWg
-X-ME-Proxy: <xmx:7LfPag2wcOI5BGFPL4YWAuHaUKtwIjdyeVA900oUin4qZ233-_vCng>
-    <xmx:7LfPalVW4kaDPJJgqz7sbq4f7ycEFDcP2x4BrylT00NBDy4AJyXmyA>
-    <xmx:7LfPauW7c3GHXpVZHOxy7PkkLMiGR8usB7_BGkFvAov1Kw8NuuFRaQ>
-    <xmx:7LfPagHe0WBHi9qTJzrXeP8ATNwnFN7NzY2lq9DW0puGE7jpAGa4xA>
-    <xmx:7LfPaqsD16_Sbg9QDybvbNpihxQamfOEqvVtDgRmn-j_JAY2BZkurqfA>
+    fk/9VtLe5apNPJHA5iwMfFjFMaiWANNYkGgKJdhqeFkBwi3mvIJ1y0E25HLDGDGvYAjfQC
+    4ygZZTkTFcmLIU84Rk2K3neDXBN23tMe6KTwPsi/aeT1PwjzNdrJAf+hMCpq7X4yJ09ecd
+    6PJ+ZULyESbKHbCKzYlCQXS6xBV7zpJWdOiJbnCfk64pYNlUWbHvX/y2SH6LF3z40FD1JE
+    YYGlMan+hWIOFGl59r6gt+zYj9gYSC3gbxvB1w67A2Hm4QhJBmet/agh+lS0whzgqdm6YF
+    tSTLyPKC0P0sOWyhOXOA5tEdGY58aOLhF2h7N2x7ctGtA0j/1NiflaFdsHBPCvjEb2+0fc
+    AlBiXKDf5GS3gW6UPaJlUPPH6pI6VbLlPIqn1FAcxlwgcNq2qF9n9yLbm+XA
+X-ME-Proxy: <xmx:8LfPahSZ0d5So_IqKt0tHYVApDnyrheDFRR8jaXhbsJlpKb7GYuIcQ>
+    <xmx:8LfPalDY9bEFwpb02Ma69qUYOGRR9fkdvlZ1uKdVekcgDjrV8F5I9w>
+    <xmx:8LfPasSV7Qx9AAP7n_Z_B9TzuKzqouQ9E6_gkAH1-XoC37spLM7UOA>
+    <xmx:8LfPavT7BUklSsh7Pyzcw6ZT6X1MmNT8qJSHJyjHXDMeGH6yY4xXJg>
+    <xmx:8LfPaiIW9LZm_7hsXvehx0-09ojDyJOwhCuwQ7957h9CLPodSbdTsupe>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 14 Oct 2026 13:12:11 -0400 (EDT)
+ 14 Oct 2026 13:12:15 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -109,22 +109,22 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	Usama Arif <usama.arif@linux.dev>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH v5 6/9] mm/collapse: drop the collapse_possible() wrapper
-Date: Wed, 14 Oct 2026 18:11:39 +0100
-Message-ID: <20261014171145.3292736-7-kas@kernel.org>
+Subject: [PATCH v5 7/9] mm/collapse: name the per-table scan reset for what it resets
+Date: Wed, 14 Oct 2026 18:11:40 +0100
+Message-ID: <20261014171145.3292736-8-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261014171145.3292736-1-kas@kernel.org>
 References: <20261014171145.3292736-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gznqrmy9wtpbt8uqems84x8i5naquh98
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0E9E140010
-X-Stat-Signature: ia9u8y9zzcphyybtwyzi8sjxpbriyn41
-X-HE-Tag: 1791997937-390662
-X-HE-Meta: U2FsdGVkX1+5cWgN2zQFzVpw2ViMxIN/GaIteLFQtpGrItbxi2IVIuTUV6nnDa0z9242rhP0MJ7hs5MpG19t5fqlYtBE2ZcFEXJkHojY5PpcqzhijXyPIjeE8pNiAiNCpXasid9reSxV3AxkBcz5pU7Qq8BptS0c4mlcfi6VFDIYHYsG7Ql2H3L2SFLwXbQKOHcd+7ssm8Z45XR3L7XTG2unmiwTMofm5TfyiizvFjUhVN8GTVcdBhnA8uWlUkA1G3Rty10uOERv78gIh/ob5pChuQK87YrrbvVhkM5B/gdbtCjLGyUwm+JawtjBTpEPkiifp4foc/hm0vyMSp6G7CIkrHT4WhnrKwLZVgWS5wtohEnL+pszmlD/dnuJlIO7B95clresm4w6uAZH16NWqXlgXpCE+Ge7YO+eFLBWTF4PLLvMKTNZb/e0CSWqp1dRH2Ldo9InTiyyqTrwPcv2/waoyBBE0t5kCm1kEqEUZ91vhDPekMUMwTYmdMIULcevzh8ule3meJ75JJmkaHTyw00JNecb00oC7KtiQkPPVRL3dpAcr2qmlHOwEe/ha0eNqw9B7r4hVLiWOM2Skr3t3oL1QuYcayQYC7wFXRH5sSmV5Trc7VlTXKfY7Pq8wcCeeWJxoz0M01o+UM2IYj/vb4K0Luiola6D9S0h/+5wJ5Kz2Ob2w5iY/dajLSCia5O8LZKjNzYmrsYQ10uPDlGJHT+92MPw6oubYdryDhOW/t4/ejiuS5hwK2sRtiPUB70xTFNj8QHxGFY8+tPtFgJ4RTMRGEyXJKQay2BqRe3XJSLkYII9qrInLKUH/ftg4RrLVZe3uvczGDC90tNOdvVOZcLvYTRw3HlfDF9JQQWVlDi4Gg5RiEA40GHodgC3U1e3M933loYhXJJsY0IkXtHF1j01exeRSFv4XXwpm7BAXLuTUVTX6cMkwJFy10OJh1ksENisMbEvPxJYmjsm5b6
- VvwTzQa0
- BrO/dl07FEmNwqi5NJShpvd8WqxcB1v2F+De+hYFrK+eTrvCqKGuEganI6M9Uq+vA6IV882gUHv6HPWk+tKFxwe/jP2I3+GgBjqw6h0tHewZdqC0+t0/yLnCGc+s6kLEfIx0kgjD+M7OO8oboFus52oV3AXMt/Dbxmv9xfph+Rwb7Bl4jZ16prd+2csWlZq35KIaSpftUnq7x82VRmW87783LNGclz2piCIc7EytqlaXvzKyHshrRiswfKArbki2vitLhEGZPK9Tc3mFkKpbFHhQbJCCR878td3e0Vio91ws9cqWBL4ecakFd0yFQHpwF69+BNN+AHzFd+zHBJ2JujX8eZUxlU+DLEP7P
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2EE0B40009
+X-HE-Tag: 1791997941-353479
+X-HE-Meta: U2FsdGVkX18ivZBPZRJhsRWwlVTQZXvzS8ffoOlmgSdtlN7iJrv45POQd9mWhFYuAY9TCwQEFEM8rx+UYwdgMXc1+jvPqBNZpyzx+eDVpIoUOpimBQ+aW7uWlfv5JTCixQ6vF8p3uhz5ah22KjCEzN6+0pyF9bGPstoeUAWOMIqJHcMaboNALKZ1NFvVsQijjZKGovyOwglc7aDNYSAlYb8qowWtGQXQsqQ2MB+AGh8u1f2wHMoD0Bknjjxpavuuwz7KhMVd2pbAHsZraxniszmSse5C1nFpleM9n3F23/RlL+rNg9xq4YssQ7GrmjQ7rSrhfWoLWcthES694i9WjN5ay4C3Zj20pU0E6iAk2F+6xxb1I2etYWfzJgKtD3BOaB66J5RDJVJlGTzkyLZlszKGDmYSLI1zUjHKWOMFPhYCRjK28VWsbv47m4n8cVtHn7YrdqFHTVvBGw6mBs2NYkTOApejFX2Ejz5fz9gbxV6bgvFSFjKBPeojlKcLg6qC15sY8LUWGbBotQZ6wTtKaLFRZwVaMfAo/Fg/3siecSpfcJeoKNNpyIOo+et1NjBwLV8JSbNbvqZiWgme/4HV3BWYsQYPOWWDOVJ8YBKxy92SEhnwpm7XHTDO4ypAFu9XIiOmVUNicuBSVxdh3gZh6LwwwEId0GLkUQ9C+vMPrJLW7SBukNjZDVsbto6R87aY0XJwhg7CGeT+TJJWvN2WaC8Gg6JgnFBSb+oZY3Bq05DoW/7ijpwwxAkXWnYt4Sqpoxt1q0afOF71Gm2l1eMOkunoTHWFJmtTTKr4jtJIpRiYTkkFbj5VIIvyLIAO/bCYVr5YqfUEj4P44UaGiuDfd9fA+VsXdhb5MOb3H//dMHP/oS+MZJkiEDNpXfNGW27g6HNDVKZO7MescpmzFuKJyX5kDzNbR4yy10bHOw26oUcM9mnDYcmIpoLWOjiHz69yNaWaV0YWfF/3Q6X3pnB
+ epKajIY2
+ 4JHdf2nM9s2R0MEcIXUuqoUR5eCRWlE28EFHBXDQQCPuFLU8EZfi3FuzjWaYiE2XmnSx9tZqJZ4QdNnCQZ1orJo4lPXH4H3F8IBdW3fUxuTSEureMOxKsw7XLY97lr7CAZXzKuor7y1gUNbiANiiJUO+M2/zujZqr1IJAoyPHWYnCf/PZVvBpGzCS7e2wSvrJWKLV+OMWKeuJv1cGvOb/DL75oyBbHxGP1R55PAGuZVtjwqB7/WMZsp55NzBUnbtXv2Wj66LxpaVb9jnTJZ3w39dwhsuxWtry86L2WupVsz7I8jNUgKw/pKwytw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,8 +132,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_possible() only forwards to collapse_possible_orders() and turns
-its mask into a bool.  Its three callers can test the mask themselves.
+collapse_control_init_scan() resets what one scan accumulates: the node
+load, the allocation nodemask and the eligible-PTE bitmap.  It runs before
+every PTE table a scan is given, not once per control, so its name points
+at the wrong thing.
+
+Call it collapse_scan_reset().
+
+Preparation for giving a control a real init, run once for a whole series
+of scans.  Two names a word apart would then stand for two different jobs.
 
 No functional change.
 
@@ -143,52 +150,40 @@ Reviewed-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/khugepaged.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ mm/khugepaged.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 667216ae15dd..cc69281c542f 100644
+index cc69281c542f..60ec7e80d554 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -494,17 +494,11 @@ static unsigned long collapse_possible_orders(struct vm_area_struct *vma,
- 	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
+@@ -532,7 +532,7 @@ void __khugepaged_exit(struct mm_struct *mm)
+ 	}
  }
  
--static bool collapse_possible(struct vm_area_struct *vma,
--		vm_flags_t vm_flags, enum tva_type tva_flags)
--{
--	return collapse_possible_orders(vma, vm_flags, tva_flags);
--}
--
- void khugepaged_enter_vma(struct vm_area_struct *vma,
- 			  vm_flags_t vm_flags)
+-static void collapse_control_init_scan(struct collapse_control *cc)
++static void collapse_scan_reset(struct collapse_control *cc)
  {
--	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) && hugepage_enabled()
--	    && collapse_possible(vma, vm_flags, TVA_KHUGEPAGED))
-+	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) && hugepage_enabled() &&
-+	    collapse_possible_orders(vma, vm_flags, TVA_KHUGEPAGED))
- 		__khugepaged_enter(vma->vm_mm);
- }
+ 	memset(cc->node_load, 0, sizeof(cc->node_load));
+ 	nodes_clear(cc->alloc_nmask);
+@@ -1577,7 +1577,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ 		goto out;
+ 	}
  
-@@ -2855,7 +2849,8 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 			cc->progress++;
- 			break;
- 		}
--		if (!collapse_possible(vma, vma->vm_flags, TVA_KHUGEPAGED)) {
-+		if (!collapse_possible_orders(vma, vma->vm_flags,
-+					      TVA_KHUGEPAGED)) {
- 			cc->progress++;
- 			continue;
- 		}
-@@ -3167,7 +3162,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 	BUG_ON(vma->vm_start > start);
- 	BUG_ON(vma->vm_end < end);
+-	collapse_control_init_scan(cc);
++	collapse_scan_reset(cc);
  
--	if (!collapse_possible(vma, vma->vm_flags, TVA_FORCED_COLLAPSE))
-+	if (!collapse_possible_orders(vma, vma->vm_flags, TVA_FORCED_COLLAPSE))
- 		return -EINVAL;
+ 	enabled_orders = collapse_possible_orders(vma, vma->vm_flags, tva_flags);
  
- 	hstart = ALIGN(start, HPAGE_PMD_SIZE);
+@@ -2655,7 +2655,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+ 
+ 	present = 0;
+ 	swap = 0;
+-	collapse_control_init_scan(cc);
++	collapse_scan_reset(cc);
+ 	rcu_read_lock();
+ 	xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
+ 		if (xas_retry(&xas, folio))
 -- 
 2.54.0
 
