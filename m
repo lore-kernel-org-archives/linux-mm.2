@@ -4,115 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FA20CC6B2A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 23:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11DF6CC6B2D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 23:58:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C4346B0092; Wed, 14 Oct 2026 19:58:03 -0400 (EDT)
+	id 269B56B0096; Wed, 14 Oct 2026 19:58:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5752E6B0095; Wed, 14 Oct 2026 19:58:03 -0400 (EDT)
+	id 219056B0098; Wed, 14 Oct 2026 19:58:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 463356B0096; Wed, 14 Oct 2026 19:58:03 -0400 (EDT)
+	id 1083C6B0099; Wed, 14 Oct 2026 19:58:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 246316B0092
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:58:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87EE0160817
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 23:58:02 +0000 (UTC)
-X-FDA: 85322897604.11.422638D
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6AE1A80005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 23:58:00 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b="SLuEqzU/";
-	spf=pass (imf30.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792022280;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mDt0V3zgEeFnZ/hUkaSJcIFWjQFpdbBhUCXQ2dd4iBU=;
-	b=zMRN+HVK9nlsoqZhlb36MR9m8dbZ143aFXSDMaqCsjLEEqDZRGHjrVryPvih/mx2pyY8y2
-	7PwLngsiNvMO/FIk7RvYXKCjN14OZRQdbUxfNCGKdckPn08IteD4VVZ8KVzJ1rVRhB6Zpb
-	imktLa80t/vC6xhUOVV4lJbs3qhTHEE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b="SLuEqzU/";
-	spf=pass (imf30.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	by kanga.kvack.org (Postfix) with ESMTP id E11626B0096
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:58:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE31716086F
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 23:58:23 +0000 (UTC)
+X-FDA: 85322898486.15.5AC0ED0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 307AD40007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 23:58:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A33F829G;
+	spf=pass (imf07.hostedemail.com: domain of "SRS0=G5i3=IE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=G5i3=IE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792022280;
-	b=JCyjRAZx6zP+Q1c7g8cE3tcl7DOFlO22tmiiJ5KSTBl9erYGEhSFQdJq1BaVpghai8eWMt
-	H6FQqWTxkTmM6Wsw60yl4HaUi6icl3R0vNgh2258FpJuWKZ2+OTLwque3RGUw4XgsGHIM2
-	64Mr6T1ExeHzqwxxgKsb4qIUbcG1ooE=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 03FEF40E02B0;
-	Wed, 14 Oct 2026 23:57:59 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 0WrJzv70E26G; Wed, 14 Oct 2026 23:57:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1792022275; bh=ausymQBLxGPkz8L1V9or1eZuZEhcZPEXJFf6c9MvyEc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SLuEqzU/U7CpOevlxTdf4JMdWrEsdhl4Ly3hNkV+YnXQjso24OezAoI5jPxXX7RVU
-	 nVbadgbhoHWEikDWOqZE5ybpd9MV5+RodTQOP4Mq71rRT7OH7j8NI/LtQS3uIh2H1S
-	 /L9aI0eDAU3E6i1wPAz5ACacNQ2raJ0e9RJ5NHur6MG5PvW0XiJ8amlgT+O68qCDF+
-	 eXCEUIIkCoyDj7rAgZxCE125qfs7h5tw486uJBbpnl8Qe0kluNZ5+NGa/TKlmJwZ99
-	 ekNEMY+LRqcupfNQ/M0LFaVi4q6SBsDYJ6z2VMcoKA98iwXBVtSu8p564t3HZuYOIY
-	 kZiueIKOgSnHilcy+ezVADb2+5iYtAhRTm+6KoYNjbASicIJN1viEm7VnKONPcx/lr
-	 aDkObPk8I/1ptf34U3PYq8/AWOiezYuxA5PneVZpOF2yXM9KM+wOTaAUyQRxA87an4
-	 imyyh/Z1Bxr1cVndhTaVzhPBU6Uf/MEZ5fYU0rSNK5LGvyR30glxoyesLe82wXo2Ei
-	 4/MStRWkTbyD9GrRgQWzQajbO4Ci1KE/fMfuiXdHgfg49F993VDvDN8Z4/mSi4nmD7
-	 eToLqyvRBFslgqGRBsw8awFCuT44ItN8ygYv2scANmyq9WxQLBx2tbe69ybNvT2kbU
-	 2Xj3TQ39uk4OWmbEEyOxhD0c=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2BD9240E02B3;
-	Wed, 14 Oct 2026 23:57:39 +0000 (UTC)
-Date: Wed, 14 Oct 2026 16:57:36 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Cc: David Laight <david.laight.linux@gmail.com>,
-	Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	david@kernel.org, Mike Rapoport <rppt@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-	luizcap@redhat.com, pbonzini@redhat.com,
-	Tal Zussman <tz2294@columbia.edu>,
-	Matt Fleming <matt@readmodwrite.com>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
-References: <ar/F6+OUzj8qQ8YC@pcnci.linuxbox.cz>
- <asAE3kLFDUx5v0Nw@gremlin>
- <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
- <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
- <20261005132113.43548696@pumpkin>
- <asP5xK4axiUk7jun@pcnci.linuxbox.cz>
- <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
- <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
- <20261009090042.39ba9c06@pumpkin>
- <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
+	t=1792022302;
+	b=Is+DrHj8QQPaPuTIMTHuIRDN8MEEXO8Lmkx69SyGWQeIjYvi7Qk/U+xxe9gAoaLX5GBOAi
+	PMetjx1zLHYKA18fuoPzjjINbbM5ZWq7rhazll5PtFzSMjmC/vd16ysbXBVA9/9agb49mi
+	djIqCZSwBy7+MyDghB84dBSCehPCa/s=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A33F829G;
+	spf=pass (imf07.hostedemail.com: domain of "SRS0=G5i3=IE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=G5i3=IE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792022302;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+GQVMGiuWpacm/yY0sBxB5nCl27MVCd9qUh4v9ttBgk=;
+	b=OoBwAtzBsq7V8HoYUsC8SRCEaDjgYjzJnMit6kFFN+a8oYBEfK1qk9bB+CZOUjSMuB0Hmc
+	N8uLhyE1eKs6kW8gFMRvYei5Syp0O9gO79R9yCgd/a74v8aovTszSyVK17k6tUqqJj9oY9
+	9LTPxngKv5p5MLUeDxlxPC/UW9N8zIk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A48F46022E;
+	Wed, 14 Oct 2026 23:58:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586C21F000C4;
+	Wed, 14 Oct 2026 23:58:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792022301;
+	bh=+GQVMGiuWpacm/yY0sBxB5nCl27MVCd9qUh4v9ttBgk=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=A33F829G1+QLV10Te1Z6d1QN9JhJOT1c2SfcOsQMGrXRuySms+ECpjPP3jgIVNZWW
+	 wXzpMwlnGnABcjByC/5q2ak3l7LtlWB/Kk4zhLSpELzhfw3KIznYeP+JebZNVPS3Gj
+	 VzAynwu4+DgjvNYfuBM06NIISVCpmeQtFCYG8nCtRhW3pG2gBZ+vaYkiZ/J5MYZfe/
+	 9zr/BnKL+/q2zYszZOy9E57e0i1a2VNJEvcvHo9B0I6IC7xwt7X4fUZahpm2GMZUyV
+	 AhcfTUf7luW5eVXHibhev+oj4jQ4PdPvQ+/vHwCP1MBj4lJOq/RYE3okkDWKaW+Kpj
+	 Lrv+ihhwo+g8Q==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 16F3DCE0C55; Wed, 14 Oct 2026 16:58:21 -0700 (PDT)
+Date: Wed, 14 Oct 2026 16:58:21 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH 1/5] include/linux/rculist_nulls: add
+ hlist_nulls_add_behind_rcu()
+Message-ID: <7037ee68-5dcb-46ed-a73f-ed6ea58915f4@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20261012205447.2717801-1-max.kellermann@ionos.com>
+ <20261012205447.2717801-2-max.kellermann@ionos.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6AE1A80005
+In-Reply-To: <20261012205447.2717801-2-max.kellermann@ionos.com>
+X-Stat-Signature: x8fx5xecdibtyudxrn9tdkxnfx9mp9zb
+X-Rspamd-Queue-Id: 307AD40007
 X-Rspam-User: 
-X-Stat-Signature: 3ktdjdiypmzmdaxrapq6emm1u95hn8o7
-X-HE-Tag: 1792022280-660042
-X-HE-Meta: U2FsdGVkX1/Kq86cxf70nDF9kvml2NQZhZKVK7646qNXMUkVKYkoiLYceEf4jzaZ3VThjDw2xYUZiQkchP24v+oKN4QlLaXAvoY1nO4k91PkELkNHg64CFX14/dL/GpDV3OieCkZiMiJVHkVrzsAk1wYuuWunz/EVUI58vVX528jPdznHkgoinxv7EOlY7fpQAAYkIEy+a6SnKSak39+EebaMOF6HKY62Ni18U/TYn80gn9m4k0M7uMqwBKcqc0SSvrHgoiKBOdc8BCQK+vEE/X4Olp+H2PSxnszxhm+LGKxiws4qpgbGhQja7lL4/83+/nQl1N0gyLiFr1814DT48VHQ6Ab0a6BTNZdkE+kFWSPbKfmIqLAc2Sz9oFsPR7+K+HA/5ndK/5q2OouMuWYNq0Drak1+HfuRRpI0UP3EAWD5s6xfrfKvvnVvuLtkm+wIW2xfauoxM62i855rFp8kPnSqFoFEPZw6XmdkNgtafip/vzm8yGRkY2BP6IuJ08LiqQGheFukYzoO2OZcBvXd+NhZ0f/BgsILJ7dKj9lVHkzq2XlJW5pBDGVaOj5hM/5uDGCHRJiZmtK/TqwHeu9+zRlMkqPvS67k5vNTck5RyKEg/yZwjvLqSrcz8RzL6x+MjGEcmWtbmVuuzj2Ow1OCIJdVEYkf0IgB3L0zh9w/A7EMBO5PX5EFRtJLjwoY2Q/VveROBn+FUFRXlo/LEOYLE6r430ItKAaePgH6pE0ggfPguUVhVx1+OTauQsJZrIkoFANSQjeM/UXVkNaePzQgSQlQKccS4viqtckZH/9/uDsJg8pm1CDJFoyNoWCwX90S2MpoLmPghlOS20bo8yQ6cD0uHNFSonzz4ujHpUtGIj4+QQqSv7pVIu6qVRjPTzGm0MsI53kiB6MtEjKsDnekXQK6Sg5UcsCnrWUQa82Phoq3SrQFi11XfaohR7dyKS6Xwh0bLtn1G6RBeJtkSO
- mkr+Jp4E
- /bFXUOvD1csO8MLpfHvNj4MZniJAufvHeUsXbrqBTQrVw/3DivOHH2oXnUx370RPxRSaMc5+zFmZIVzXrVBoO7STUedto/pqDKq+YeiI7Cpw1J+B4moZtqRhAAF2uoc7YSLBAQ9kSvQ8LnwVtBeV+UgvudvmCbTZSw9hjQj9eISj2QJYvrKLe+SMYKvXb1SDJ5OAGZvyd7QbSWpigHbwnOYTOZSHBiPn9it8b2KQcaJk+DGAYMD4YRbaeMW24DemNMoRYQQsax3qMbAAMtsZzaOCwXZtg0iJ5Hnsar3ouwd9K7kSPnqmZWmUTePCbKr/vSz10BcVXUujB4NO+rpPXLy5SD9AcmJifAnCNAFT9akqwv4TgJBxv67c2466SSwcPixYDOD0OLl6cjsxnOBYV7FyZAZeVQWr1AERKB6QPesm2bM6LKVNHbqegYw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1792022302-562076
+X-HE-Meta: U2FsdGVkX19Xwg9iDiay1M5+uNcK944JZnWjADz1tO9hvIJTewbGwMT6OWutnSHNZKmXZqf53ni48qKPdFnOfoOXWlTv1s9H+zbihre9A3KKoq96GCuty3tmLvzg5CU0bcf8jZwVuuLrMQ//YXpz0YjLPaSuInExytnQ7ub3fU5W/DeJePoCupb2EIbFI6fza5W3QaqHer+0vBaSMqSereWmySAUbJ8PR9dzEgFfuDUrvcLhlFrBc+niHLwGvZIkTmOHU6tKUBNQC2B8f6v2d7putHWTg2wWcUbEBrc4vqztOqBUgvYN7NXTOd27rPQwoZGL41t/meHGHId/ZW45imXd9uDBP4PR73yu/PdMGI1SA/rTXgPsC1+Fn9ciDqGjpmmYo60IIT2ureBa/bWWwuArT0ELtjiCl2zwt0wQ/ZNmupkil0oUfogAv8+jp8bsh5znaY4hgLoe8XfI1RiRgUmdf6KVZ0sMiYtMTTsD1G9RHPHUEKFme0lQCsWcHgsyD7bxYWUddkyrXgLouFdPP/xs1w0ZzHSw1PRVVuLJzrkZQ8HM6lCSnVksyjcxdGrPEftBYm7xWsEIXyrRlNdipb67EgL7scxSDWIeA9S/DbpSwlcj4FzUWssjAxp+G3JsuOYaQEVTl+CD66hdKP6gx/bnbCwKhm6Dzcw2US6BbRyF7tjF/BdSUv5kalsgs+4Bxy2x5WZXV5rgupkUTRgt61CLDP7xk4O0HoPBDOWOQ0859rxJAFxUS+kUFWP4Nn5MGaKY4TAqpZFp5Wmcct5SWL4cqnvH5eeUMYq19Q2Pz00NNv8Kx2nLefK3LwT5RL1Gb8ZEgUFpt7ti04N8smK9EOJ8V818ExKP7AZzPxXEHJsQalywXNavfvr7H86BgC7n7AgeI9s5qznORIQxtVCBRjNAFLmIeHigdhPJ6rqtNNlvTEUqN+iK6IL2sOqVIHsrHTG+O+IKAeIquZgEYQ0
+ /YuaB5B+
+ DhvoFtSYED1nPmEmrYNUhMi/IRExb50eFAC4UqFdZKXOaEM9P6pOd5Xtm+xCq/Yk3QtMVVybLmoWHVyfI0iEdc8T7dwKt82K3gMN8FO2pLQrNKNuTH9M09qUEtflUyXLmqc5jciSH/1rH2gEFcfDgqthWBOl94UdpVPenuVilC5CrwV/3E9ohsLOfda9Kv4x7o0rtRNOOIPqmg99p6k5pRThvS9I+aHJylsUsNHod+l4jlSF6tc4cce80E0E8b5UO8w1C0cqVE61YL4V/Mw70zOZX8sZgSEPPPzAl/DaVN0C/0EYSR7g3B0MLBGJrPgeanMyui5gTmsZJ0H2Us4cCLMNBq3QIAVS+3CKXqZ05wfCWoK1sU9y8rpYoaQoTfO9PdbyNYIkR9Sh4Qa/YeErdnNT0YiT2e8cEUlK1uzX9oCxDkdICBvAjPW9rzOHPZUZIdb/b7q9/qN9wSuUCLwZFfam0Okt76ldd+4v6Ryej7q16012OYP9g3GajZhfdEBjclLYbWRJIb3mayKHsgGMKCZpTqacREicakCdlDOepNWFesnnvYsm0571Fix9GNi+oVGUsY/NrziVby+hEbpBq1gTqvcTnM8Hd3VZ1kAaLbkDdqnbymO8/tRlWmqkaSgKOAuTIJZp6XA6S10l8l3hzUPBCPR3eFGVD8WZxCIgOpl6NLTBYhIdE3ok7D+jPqJti5/qMT307Cz6AGpBJYlRQr9lwsGp6fQSTznT7n4DwxgGVocwNLl+RU8X5j5Uo0pDysOSF4Ehc+K/57PDTpnL8pxhqv8pbBQ2uf98BhbJuO3ZU/ytejaFHVG8mSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,32 +101,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 01:43:30PM +0200, Nikola Ciprich wrote:
-> Since I didn=E2=80=99t have anything else to try, and we started having
-> crashes on our own cluster nodes, where I can be a bit bolder,
-> I built 7.3-rc6, deployed it on two problematic AMD nodes, and
-> started a migration torture loop.
->=20
-> Over the weekend, there were ~70 migrations of ~160 VMs between
-> those two nodes without a single issue.
+On Mon, Oct 12, 2026 at 10:54:43PM +0200, Max Kellermann wrote:
+> Move some code from hlist_nulls_add_tail_rcu() to the new function
+> hlist_nulls_add_behind_rcu() for callers that already know the last
+> node of an `hlist_nulls` list, to allow constant-time appends.
+> 
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 
-Did it reproduce usually with this?
+I am assuming that this commit should take the same path as the rest
+of them.  So:
 
-If not, keep hammering on it with the latest kernel. We might've fixed
-whatever that was, along the way. :-(
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
 
-And if so, that would be a damn nasty bisection to figure out what fixed =
-it...
-
-So pls hammer on it as long as possible to see if it is really fixed or i=
-t is
-simply harder to repro.
-
-Thx.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> ---
+>  include/linux/rculist_nulls.h | 36 +++++++++++++++++++++++++++++------
+>  1 file changed, 30 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/rculist_nulls.h b/include/linux/rculist_nulls.h
+> index a97c3bcb1656..054e477dd093 100644
+> --- a/include/linux/rculist_nulls.h
+> +++ b/include/linux/rculist_nulls.h
+> @@ -115,6 +115,33 @@ static inline void hlist_nulls_add_head_rcu(struct hlist_nulls_node *n,
+>  		WRITE_ONCE(first->pprev, &n->next);
+>  }
+>  
+> +/**
+> + * hlist_nulls_add_behind_rcu - append after the last list entry
+> + * @n: the new element to add to the hash list.
+> + * @last: the last element in the list.
+> + *
+> + * Adds the specified element after @last while permitting racing RCU
+> + * traversals.  @last must be the last list entry, with its next
+> + * pointer holding the terminating nulls marker.
+> + *
+> + * The caller must take whatever precautions are necessary
+> + * (such as holding appropriate locks) to avoid racing
+> + * with another list-mutation primitive, such as hlist_nulls_add_head_rcu()
+> + * or hlist_nulls_del_rcu(), running on this same list.
+> + * However, it is perfectly legal to run concurrently with
+> + * the _rcu list-traversal primitives, such as
+> + * hlist_nulls_for_each_entry_rcu(), used to prevent memory-consistency
+> + * problems on Alpha CPUs.  Regardless of the type of CPU, the
+> + * list-traversal primitive must be guarded by rcu_read_lock().
+> + */
+> +static inline void hlist_nulls_add_behind_rcu(struct hlist_nulls_node *n,
+> +					      struct hlist_nulls_node *last)
+> +{
+> +	WRITE_ONCE(n->next, last->next);
+> +	WRITE_ONCE(n->pprev, &last->next);
+> +	rcu_assign_pointer(hlist_nulls_next_rcu(last), n);
+> +}
+> +
+>  /**
+>   * hlist_nulls_add_tail_rcu
+>   * @n: the element to add to the hash list.
+> @@ -143,13 +170,10 @@ static inline void hlist_nulls_add_tail_rcu(struct hlist_nulls_node *n,
+>  	for (i = h->first; !is_a_nulls(i); i = i->next)
+>  		last = i;
+>  
+> -	if (last) {
+> -		WRITE_ONCE(n->next, last->next);
+> -		WRITE_ONCE(n->pprev, &last->next);
+> -		rcu_assign_pointer(hlist_nulls_next_rcu(last), n);
+> -	} else {
+> +	if (last)
+> +		hlist_nulls_add_behind_rcu(n, last);
+> +	else
+>  		hlist_nulls_add_head_rcu(n, h);
+> -	}
+>  }
+>  
+>  /* after that hlist_nulls_del will work */
+> -- 
+> 2.47.3
+> 
+> 
 
