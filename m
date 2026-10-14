@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 411ABCC6B19
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 06:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67386CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 06:04:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D6546B0088; Wed, 14 Oct 2026 02:02:52 -0400 (EDT)
+	id 853966B008C; Wed, 14 Oct 2026 02:04:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0615C6B008A; Wed, 14 Oct 2026 02:02:52 -0400 (EDT)
+	id 803966B0092; Wed, 14 Oct 2026 02:04:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB8206B008C; Wed, 14 Oct 2026 02:02:51 -0400 (EDT)
+	id 6F2FC6B0095; Wed, 14 Oct 2026 02:04:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C54A66B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:02:51 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4959EA0266
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:02:51 +0000 (UTC)
-X-FDA: 85320188142.01.1AD2F1E
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1C71F16000A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:02:47 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=reh3EPjm;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B3006B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:04:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 48FEA1C289D
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:03:59 +0000 (UTC)
+X-FDA: 85320190998.14.30E7A4B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2A9F940007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:03:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NGFOsBqQ;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791957769;
-	b=riS4vO6axNPy9hN5ugpx9mnzqWZ7O3ntmHLqtfyruoqXr7IQZvoHxiWOdfMGYIu0AJvO0M
-	ZTgtiyTgUa3qEGQykQJH/SGTyjeN1wdDRVrUXlHPmQZbKa+1qqwvCp69BHaFFsWe3waYNU
-	/nT3deipyFBFFJ6V/we8EPJ4SLAYwc0=
+	t=1791957837;
+	b=NQsHnLHPg8ZMxg8LRVfOZ6tSYPMriufNXV7ZYTkSuzEkv6zRvjNnUC94pAn6rCNSU8OVTY
+	XMiyi7rDnjJeWW0oRNoAqpYVvZ3MANsderQ2GqCq6IJ6PUcnU3CB4AOXJT1Yh97a7YJoM/
+	mhe6bynfLPXj/IRjQrAuavQ58ZE07tc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=reh3EPjm;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NGFOsBqQ;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791957769;
+	s=arc-20220608; t=1791957837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9BIscm2cTTBNlc9P4KV7eUnjnf4F0Y6UQu2TU1+hhSQ=;
-	b=1kqNaz18avCrlYB6FxS3yR+4fe64WQdQW9MyD5je+poN/CTjsOMlbwAevIJFEBsHhBrpJS
-	Qt+d1cxEcXlAe1mcSdy+TE9XRzd+vst4Gg/MCECCGE4hTjlS/iNoSHBJxhvd/oKUUug4iQ
-	Fyp85rj2EKYHypl2gHcctCJvSbAuS/0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791957765; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=9BIscm2cTTBNlc9P4KV7eUnjnf4F0Y6UQu2TU1+hhSQ=;
-	b=reh3EPjmmP0ATGMx3tdU85PVBPkJA2d9P5dQXJuumoYd0q/MPh+0P7KwswuD3Ik6yrCPdw2zs8sxRDjwrcE7zPbJ7jDZlpb27EWsOSyTxI66EZwrd3P+3sUu4/0D98r8TWy/dreT17pawSvrgaLbMOpYWuIyvHe+8RDo9wS7HKw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XCo3AyK_1791957763;
-Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCo3AyK_1791957763 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 14 Oct 2026 14:02:44 +0800
-Message-ID: <5848db18-9de3-437b-9967-162ced4f8cb9@linux.alibaba.com>
-Date: Wed, 14 Oct 2026 14:02:43 +0800
+	bh=ESeptom+XdILDBZ1SV9z+qsZLUlrAdxL/MtsJa3zQY8=;
+	b=PY7VRL6qYzQ4mgpGKo9GunNVNWsG4ouSQ5yjM87GfzAKnDahu97jM+49yLPwlmWoCGMT/i
+	Cquu/9unAce1BpG05NYaYAg5X2LY19z+ndjvDJUkwU69JfprsWwSYixOLRxLr+Fd0TUm/x
+	ZOwp6pcI4KgSbDlYcIdm/BuWvxbP3Tk=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98CEA15A1;
+	Tue, 13 Oct 2026 23:03:52 -0700 (PDT)
+Received: from [10.164.19.62] (unknown [10.164.19.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D3F03F7B4;
+	Tue, 13 Oct 2026 23:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791957835; bh=a+ePuoScWznFCdZL7kuuIwctTxuRzsdaAnI868FjqvY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NGFOsBqQlkYzYRc6c9oeI62OwONXctPXAWs1X+w9O0ZGSX08mzBFLCRloqvuXoEcs
+	 l+RKSocjuhfxG9ajTVLYRvJo74qsxS3Fa4vk2551oznUYNciNmnhrtaKCzGd4OvWLE
+	 xxJq6dznjLsg4ngtYlAUgjw44+L1Kvxk1pfNNxrY=
+Message-ID: <7b3c3a39-4cf3-430d-9fd3-ba83e5175e72@arm.com>
+Date: Wed, 14 Oct 2026 11:33:47 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Ying Huang <huang.ying.caritas@gmail.com>,
- Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Chuanhua Han <hanchuanhua@oppo.com>, Kiryl Shutsemau <kas@kernel.org>,
- Kyle Zeng <kylebot@openai.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v10 01/10] arm64/mm: add pte_set_huge() and
+ pte_clear_huge()
+To: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
+ will@kernel.org
+Cc: Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com,
+ baohua@kernel.org, chleroy@kernel.org, david@kernel.org,
+ jiangwen6@xiaomi.com, leo.yan@arm.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org,
+ ryan.roberts@arm.com
+References: <20261002090947.869220-1-jiangwen6@xiaomi.com>
+ <20261002090947.869220-2-jiangwen6@xiaomi.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261002090947.869220-2-jiangwen6@xiaomi.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: m3ae1t5gag58mdu68iu85su3sbcjqajg
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2A9F940007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1C71F16000A
-X-HE-Tag: 1791957767-43380
-X-HE-Meta: U2FsdGVkX19v3vzlMFxbt+ufxzWnUnokHL8r9QOVMvqmCiArqIVLgTp9euexH88nVqhw3ch50jnB0GO3MkYXSRnOKZ4Mxatl///WdbWVjuowq8MzdfOR2PIdfaHRezdabYNIrYbPek0w9tE1yYZKVnln3pm7IJBktRU6e39VHChnS02ocZG25+9IsgvERgf6DGz07xK6xf+YS8FqRRE7XMUFtu4xD5Eb78YXO7OusMBz1mbOGidZ/DF2qjIA+KzoAoAQGnI2+Y9dfuk5CZh7nzFGqgZzLqRsYWjy3RmeIfe0CcMgVyE6s4/L8JqNmRwaVTSDDeWrNX4OVLsTcL0qA0sGAauAy4Dk+jlL7kTWzeSNMUU8aUx5GJEB3knOTLLFr+whj8kDdCMRBaJSnb48gO7p8/oW3EREQGQrrXJCAisLj/CD4uVRI0YcV5OCrDoAhkZGldH7HM/yXG88H9YUlhAxlp3bACLOIFWMU3UMTnIgsHWgj/iOMy9akacH0ggwnamOB/ynveTBDz6mAxROaShGdKJE6Ml+XnRvPKszmBrQpnpVnZgsWWadzN8OQTBTasc8EIvTXkZHA0hQGkj5VBd+xS2lQDYCyMn/+CRnZkjEjFn3cRLucC60KPACGp437U/77hMeRFI/fhtNHDpAOukvvcCts1twmfFc+YiZYKNOqM5+/uKDoYmwxXLvgb2X/5/cXjhGdL+qAcZQXDhRC48maNIuGKcehwM13eZ87lqp08qZPzDguIrpsA8lNTAvTNYnj0lVsBEhFRzo3NTAeRKEWYRRM8g8xmCp6KbKaGJHxJYtbpL46R2jfS/djyMIlOwiXnzeOnkbxffSY6gDL+VP1bz6KArO5OVFsRljjC3O6YOc9YRMPOlzGFig4Q1yZWkGjDJ+Mtr3y2zdl+7Fcag+FTFAWjVIXlZ8MEVWsWzS1zuX00MmbneeHMgshVshIHQZUIg29lIkAqmXJLp
- 16hTLgMI
- YgM06/ixUHEKA8y1EpZP5gm67JaXT2r3i6jo9Yh7vs3Q8AxHby9gJbk6axwNm/f5jVkFSRhizPwNuBbFJIZYQxQJHfockJzzPQlNOTCvFYnDyQCR2VNR2rrC9xVdIHmZQnAliHxaqivM4UP+uaH6HssPzAE27dY869e1ia+ntweHi8DibFQRo0r9SZfzDaqarzaemoUCcAQqNfyqLehnrxZlwEocXfXa86q9BG7/PZ3EFGFrogRDrX4SfEvjcRS8bw/5E5HdtEQZDHmcMethEX/L5W++P7/GhB3zIwNPHUjBZJvTo8e7GO+anV5TT4gLDxJjWfP7PGglVgPpgwsja+aZnj6CDpsnOPAOsDme9VJS9wDLREjEFgOouYNjY04R3TNJaILoueduhc55Pi07joNk5wKO33WVbxLFHl8DJg0X9ljw=
+X-Stat-Signature: b9sh5tnpxibhw8feuftpeserikky1mcn
+X-HE-Tag: 1791957837-702606
+X-HE-Meta: U2FsdGVkX1+oRJ9eIrvd1mc5DhO5y7exGJd4VAu+2HSexuJCHxzFh2EwVc8sA75AI5LikK7MA+kO80K/UiIeOImS6AKTOM43PtQ+ID4yZ2bwosGbFVeCcW04/PEHvtzlHQDBEA3qTnnfp4Wg7hNtMtNZBTd0Koq1N1b8wMu7a1XvGXDSbDmIu7susaBZNx9wfSwHiQwo1lTB0jW1F8oG8yWsLvDHHYk49xkuE7ldTrOb0pnXPkwJkYywuRNkswPZwt+gs/QPOxyA44JwEmdDU1rcS1HnPCYGSfQgVCdJlcgl8YOP6pPvheNgutM/zzhweASc9tdEKvsGCgwy+qKLjK4WdxiM9kPPvvBTCESO6CzRhousysW0SUbRrkiTSjJSv6mzeLPxzqu/oG16st9BomJranWLORf20WxXMEKWqnmv1hJ4GdVEtptg/0dhrx+8Y3cGXlq3KA4mKrpILD+wYQUxCRvMJOtVdCHMlCZoghvBULXGlf+hTbZtj9VuUej3KCBXDjSAKKnNTlEpZmhA6qw9t7SbYqk3IBoPF6w+xQCBYYdw51+Zsk58vFVsq4pxkFkMNuDVcYZvn/blnhPIY/Vm9voE0ylJR/yWifj2uSkVl1aTxhyG40cpAVDO0Ba31DedOcYA7yHdNScWtqBfpHH74fesaR1+UAvZjVwwLef0ucsHyXr7b2of7n6wuVM1BFvKBAaAoPWTKQdYzAzdy6jDCw7MhROZUz7BYFfxkyLHnsnDXSOZyZG+gjGTv8fFHTag8eroZY+8TNPNvDbRdOoHt5lDvCM+GQb1YPp3DGH73V+fm1ALa6XXAQ01hKY6QI9ODqiLwbACH3ZRZ+8UTfJo5u8XUr51S/bXqfidKnMcLKUhszZgngsCQOGIcAxgrxvvF7gnx9yOt2MKmHDlP7lZWZXyd3Eqmegnjo1kwJhP60YyRDxag+nfiODj/ZYXfdFf8Qrp1VQP3t/umvx
+ kGKfajty
+ r0HPVjgcB4/1OBEc9JgoCL04+Fn2EX3kQ96LCthxDuGy5bmpZSY1sURATS83+if5XVlZQSjKhEg33J3Aussgz+Z7aMpVUuaw9skXe7sXQ80wGeOtcuH/J1+hbPVu/dbgabM1LZzHA0nEyPbSsrulMfx3R8U8ZQBkOU3Gis2iDBK099mdjEDs56IXZVcZgTnSJpZ4fPsRK4UGzCQu0eM9f9RDP0GpoV79bH+G8hTdfbO6Ml71KQs3pp8bTa+LhZ2pPZgrNkVSmWLS0WSMy985YggY6TcDnPw6qo3UpSZScUA8fQGijDCJKk2S2T3/XGTMnQIDfpdSwdNPTjLgTYitbwjilL2rvl5Jd/7D6pOJA1CPSwQHjm0bKBnzJeQ08OKtipkNen8mIclCpklSCLe9NVBxhtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,57 +100,90 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 10/13/26 8:30 PM, David Hildenbrand (Arm) wrote:
-> numa_rebuild_large_mapping() and do_swap_page() can be tricked into
-> generating an address wraparound, crashing the kernel. All that's required
-> is to map a tail page of a large folio close enough to the start/end of
-> the address space to e.g., make
+On 02/10/26 2:39 pm, Wen Jiang wrote:
+> vmap installs PTE-level block mappings (PTE_CONT on arm64) by reusing
+> set_huge_pte_at() and huge_ptep_get_and_clear(), which are HugeTLB
+> helpers gated by CONFIG_HUGETLB_PAGE. This makes the feature silently
+> unavailable on CONFIG_HUGETLB_PAGE=n kernels and couples mm/vmalloc.c to
+> HugeTLB internals it does not otherwise need.
 > 
-> 	unsigned long addr_start = addr - (nr << PAGE_SHIFT);
+> Add pte_set_huge()/pte_clear_huge() to arm64, joining the existing
+> pmd_set_huge()/pud_set_huge() family in mm/mmu.c. They build on
+> __set_ptes() and __get_and_clear_full_ptes() directly, so they do not
+> depend on CONFIG_HUGETLB_PAGE.
 > 
-> to wrap around.
+> There is no caller yet: mm/vmalloc.c is converted later in this series,
+> once the generic fallbacks are in place.
 > 
-> Let's fix it by providing a better helper, folio_pte_scan_range(), that
-> takes care of staying within VMA and page table boundaries while
-> handling possible wraparounds.
-> 
-> Reported-by: Kyle Zeng <kylebot@openai.com>
-> Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
-> Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Reviewed-by: Barry Song <baohua@kernel.org>
 > ---
-
-Thanks for the fix.
-
->   mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
->   1 file changed, 29 insertions(+), 14 deletions(-)
+>  arch/arm64/include/asm/pgtable.h |  6 ++++++
+>  arch/arm64/mm/mmu.c              | 23 +++++++++++++++++++++++
+>  2 files changed, 29 insertions(+)
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 1f5d5f7d39cd2..a3823010aa981 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
->   	} while (--nr_pages);
->   }
->   
-> +/*
-> + * Get the address range in which a folio might be mapped, assuming its pages
-> + * are mapped consecutively and the folio page at the given idx is mapped at
-> + * the given address.
-> + */
-> +static void folio_pte_scan_range(const struct folio *folio,
-> +		const struct vm_area_struct *vma, unsigned long addr,
-> +		unsigned long idx, unsigned long *start, unsigned long *end)
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 6000905a2e865..9b762eb68cff0 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1978,6 +1978,12 @@ static inline void clear_young_dirty_ptes(struct vm_area_struct *vma,
+>  
+>  #endif /* CONFIG_ARM64_CONTPTE */
+>  
+> +#define __HAVE_ARCH_PTE_SET_HUGE
+> +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
+> +		  pgprot_t prot, unsigned long size);
+> +#define __HAVE_ARCH_PTE_CLEAR_HUGE
+> +pte_t pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size);
+> +
+>  #endif /* !__ASSEMBLER__ */
+>  
+>  #endif /* __ASM_PGTABLE_H */
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 79d90226fd5dc..ae2f15618c97d 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1912,6 +1912,29 @@ int pmd_clear_huge(pmd_t *pmdp)
+>  	return 1;
+>  }
+>  
+> +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
+> +		  pgprot_t prot, unsigned long size)
 > +{
-> +	/* Stay within the page table and VMA boundaries. */
-> +	const unsigned long pmd_start = addr & PMD_MASK;
-> +	const unsigned long pmd_end = pmd_start + PMD_SIZE;
-> +	const unsigned long lower = max(pmd_start, vma->vm_start);
-> +	const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
+> +	unsigned long pfn = __phys_to_pfn(phys);
+> +	pte_t pte = pte_mkcont(pfn_pte(pfn, prot));
+> +	unsigned int nr = size >> PAGE_SHIFT;
+> +
+> +	VM_WARN_ON(!IS_ALIGNED(size, CONT_PTE_SIZE));
+> +	VM_WARN_ON(!IS_ALIGNED(addr, CONT_PTE_SIZE));
+> +	VM_WARN_ON(!IS_ALIGNED(pfn, CONT_PTES));
+> +
+> +	/* For vmap, there is no valid -> valid transition */
+> +	VM_WARN_ON(pte_valid(__ptep_get(ptep)));
+> +
+> +	__set_ptes(&init_mm, addr, ptep, pte, nr);
+> +}
+> +
+> +pte_t pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size)
+> +{
+> +	return __get_and_clear_full_ptes(&init_mm, addr, ptep,
+> +					 size >> PAGE_SHIFT, 0);
+> +}
 
-I also agree with Barry and Lorenzo's suggestion to use the more 
-readable pmd_addr_end() helper. With Lorenzo's comments addressed, feel 
-free to add:
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+I think we should have the same VM_WARN_ON() checks here, as for
+pte_clear_huge(), in addition to also warning for
+current->mm != &init_mm.
+
+We should make it clear that pte_clear_huge() gets called only for
+kernel mappings, and the range we operate on is definitely an aligned
+CONT range - which is why we do not go through get_and_clear_full_ptes ->
+contpte_get_and_clear_full_ptes, and possibly contpte_try_unfold(), but
+directly use __get_and_clear_full_ptes.
+
+
+> +
+>  int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
+>  {
+>  	pte_t *table;
+
 
