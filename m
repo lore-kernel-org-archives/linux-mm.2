@@ -4,109 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87AAECC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 15:28:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 984AFCC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 15:28:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FA6C6B0096; Wed, 14 Oct 2026 11:28:18 -0400 (EDT)
+	id 9D5176B0099; Wed, 14 Oct 2026 11:28:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AB846B0098; Wed, 14 Oct 2026 11:28:18 -0400 (EDT)
+	id 95E3D6B009D; Wed, 14 Oct 2026 11:28:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C18C6B0099; Wed, 14 Oct 2026 11:28:18 -0400 (EDT)
+	id 829E76B009E; Wed, 14 Oct 2026 11:28:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7009F6B0096
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:28:18 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FC4E4041A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:28:18 +0000 (UTC)
-X-FDA: 85321613076.15.6ECB2C6
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 61CD3140008
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:28:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="d2d6+Q/W";
-	spf=pass (imf09.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791991696;
-	b=WY2KT0NAH15UkQKkM9LXQgzQ+1aYK+y3U9ibPxMvTx3QkjIq7BFErHMEYFX+CmZvX8l3SM
-	l8qsJcoPp2/b1QTG36bIUD5iTZvzmmJKm3SDzh9X8JTCI2x5ZQ7MUXINlC1NY5nBqM1c+s
-	TzgE96kRnNhEExmyEtHNZoMbWiFdVEI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="d2d6+Q/W";
-	spf=pass (imf09.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5EF386B0099
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:28:52 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C3AF01A05FC
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:28:51 +0000 (UTC)
+X-FDA: 85321614462.19.959649C
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 25A8C18000A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:28:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HkaTxe82;
+	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791991696;
+	s=arc-20220608; t=1791991730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dJYuLJEcfs84KY9PmVVqiI3meMH/2vzqF0uyrJ0GjuE=;
-	b=ZkoyFwckGQZjfHntT9997nocJ0gVwu918gsP2xqI3QgI02JOeyw6IJJUggSP0l6ihxD9K7
-	JPyZH1Tj8fuRE/ZOOw/I2zfAIkTFPSJMk5ObpJPsOQO4kA1wQc63ryctggWN9LqQjgKMgY
-	8IdqJSh7XWpd37QlOBJ87VvCn0Dx6o8=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ccca948203aso1715170a12.3
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:28:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791991695; x=1792596495; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dJYuLJEcfs84KY9PmVVqiI3meMH/2vzqF0uyrJ0GjuE=;
-        b=d2d6+Q/W1baZBNlB6DFKAOe2p8EsK1QMd65MORUfdHakop+flT5ooqJpscCal+aHSJ
-         bLqsrHd5MWBH98qLwr6IFliEYwl+r25RLkET1tKK34zF/SKL9TCDWVGJpEwR938Z8n5Q
-         UfG8NDQI42ARCpEsc7dTEqyczP4oQSjsbUvCbKOnEQK7p3b/NKuGUfHN3zkQTf6olEMa
-         HacZqPPV+12DqnqaYY0rivCFArWFJeydedInJk4SqRlp8ZRV1weE76faS+zGRslS8QQT
-         BDGyPSk8fEBO4Ty3XTdVKs0aPYxraIACvpaXQ+Oq1qY5ggwqtyRRhIG8g+bLKbpCNEk8
-         ed7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791991695; x=1792596495;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dJYuLJEcfs84KY9PmVVqiI3meMH/2vzqF0uyrJ0GjuE=;
-        b=d5u2D9a2BFy7IBVDylV8vGmf5By2JVfbVM1bxTNTJNN/qjRJmkBsW5PMgvcX1f2Rf2
-         kigeQ/dgNH8TH6KsWkpAn6G4i0M+Oov1mwpGfNA4Flf606I6grrgNgroMUkmON/3/iq7
-         EQu2fZIk69y+UzCKiZeRi7/eLQmhB5g28BySlSasAby5uenIE04jt6Llaq9dNQRkZw1h
-         UHC2LjuVD0dDAv0NO4o0X0D3zScfY+x4cYO9TRB6r+uJSvnqQpQo2NevT7gDTMBmI7Ox
-         kWJ+xNjY12Q6gddjmGTchL5ynOU1eqjQsP0deoaifK1CuRQleQBsWC/jFROBKLU5ciZn
-         8nVA==
-X-Gm-Message-State: AFq9FYKWdBPObQ0tlbMJWaHC7XmziEkfnZI+Z7wJ12QIZzKr5cia3Pe8
-	tkydmrQVl4SOLetVzTOM57+e6eLUuN1qOIJ7AQhib/CT7K+xF33UbaJL4sGSZA==
-X-Gm-Gg: AYBFou1ZUa0rjepWBPndEbJHl3eA/a9NMcq/g3lZKlntwzCjGgBB3UbosX99nIHJTGT
-	F0msLnyrvZu2m78ON4k9bgX8sZdLOJfA1ZBKqphEKFj509FfK0r7IYnGYi4bKNG7hp8KmVWtnpG
-	o0h6HI3f92vg4VUq3vXHuxi8g9rHyVRhg9qdMabyH5tTA4IQaylwMCqR1SNUOmU6Bqw2Ixqir1E
-	dxfu6eT0IQISOl8fseb5SxYBZ5iow4S55SlH4rckezTi5KzMg0y6VQ9uTnzafAxfdEQ0LPjXSkv
-	ijdRBdbeqZF1gJNLGbubtgr8H7e4YhkntFEUCHKgyZICCp8KYMUToP3Fq0xSrjh0gTD5bEihNhQ
-	cG2eVXSNivzmhu9yDaNc708Bg7Im8WylHAaIkqp0Cj1mL/aGuFSi5LyG5txuZhjwBk/pFwXzmed
-	L9S9MuVmZ/93OgACx3myMa0IFBiDw33niPe8cPCmp+uurwmtHMqrESXtI/PddUoLVXeKwDiFaxB
-	8lM9v/QIoGgqR7srorkIKs2VjAYdHfwcPZB
-X-Received: by 2002:a05:6a20:a10a:b0:3de:3f4d:f2e8 with SMTP id adf61e73a8af0-3e16be0520bmr13151970637.25.1791991694919;
-        Wed, 14 Oct 2026 08:28:14 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd3d9e3dafesm6874910a12.20.2026.10.14.08.28.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 08:28:14 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [PATCH] arch_numa: remove setup_node_data()
-Date: Thu, 15 Oct 2026 00:28:01 +0900
-Message-ID: <20261014152803.740376-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=t7CoEsDiQ1jsv+tlhphmD5A0y/E12bIMAu8++omEJbs=;
+	b=DqFkrqkp6cvuPL7EUqHkc3iDIcGqywIzt5rBSU2+34Zp1M2cygBH4Fxuqyf/vvpSgI0K0G
+	5IoVlhGDO845FVzYGHWl8AO2GA8qmyCJO0bCi4XXQPpz1hEoka7kU0YkzMYaoyuURX0HwT
+	dtWsbTFJOEVwbK8TpfpQ7UVllqYm5xg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HkaTxe82;
+	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791991730;
+	b=xrX/XsEwLsum+4iqW0B0OQQhRBHNS2i8WIlPdcoosYUU0g9S3HhRmI2ScS7uEjvvQoZ33t
+	/box8sy3sbYINpqowGM0Ls8FxKgjGjV1NF6K9lKthsVrwL7cYW8qqMyI6+RjUA5Y2C2loh
+	P1x0YaDYwDmhab3xdzAgReIHyReyGRE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=t7CoEsDiQ1jsv+tlhphmD5A0y/E12bIMAu8++omEJbs=; b=HkaTxe82hu/bFQSTbhRkxjiCdg
+	wjyuZNDWtmdTLnSjkttC3dT0SQtUvsPIWo/kKFs7Cc/Tl4o0PWlXvyPU6hwB+niy++R12oPEDZ49H
+	fUlpIflEtj6ZgWkt45p/BlmRmY1Qawvk1qdmv0KFtJsCxMBkUhyzQoTOhTbcxBj+tZLkFYI8dOPBV
+	YXArFtljlcMFUYLEOi3HpHl4jYsFHtIkYElhiHDU+Li6NCaVU6YimndrXML15zdWILcEY9xNCO7T8
+	KVJutzjpSEPyftDW660jptFrUWhUd5a3fSqj0vwQpr18Gf/ceFxgG+W1hYHT2M6HWP8Md0YvZCp1/
+	GDeIQ0Kw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xH0uJ-00000004ndB-0BKr;
+	Wed, 14 Oct 2026 15:28:43 +0000
+Date: Wed, 14 Oct 2026 16:28:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Ilya Gladyshev <ilya.gladyshev@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux-MM <linux-mm@kvack.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: Improve page refcount scalability
+Message-ID: <as-fqjiGj5T5NLOe@casper.infradead.org>
+References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+ <as6vBoWQGglxXxb0@thinkstation>
+ <CAHk-=wiCe2H33izZHDyDHEhcFwUr9fXZk27-WZ2vn_pn5FcZTg@mail.gmail.com>
+ <as9rk-T5cedl8Myq@thinkstation>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 61CD3140008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as9rk-T5cedl8Myq@thinkstation>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 25A8C18000A
 X-Rspam-User: 
-X-Stat-Signature: n1mmu7bzf5u5yk3z5w5bmurtu6y8cdb3
-X-HE-Tag: 1791991696-677495
-X-HE-Meta: U2FsdGVkX18yH2vQ+jglUoPKbiLf92x2vhKmdO+xbmR/7Wk4svIe72o3+kpsHKsjGVYY9rU4hhl4uODUH6OnuZP5uFxCzUBTGf9teOHWJCTKkqtdFuVH/3Nd+c4wJvVWenlLjRTTdIZLRbA2/vDP7OuE30s2e/ALYDPAVV5Yve5aMrwyRUeBrBaFg7xqkkCKJ6aDJ8T++Oo9qINc//CEQMsa9uFTSUfYHwOp6g+fQZ+EQe/HbdisjRfZxV7kRODEHu/REj4ozP5V9gOuXS6CWFiWLsaQK0lfmGoCwwVbgKq7bHjxOC4a4pBXNKL6TUKwJ68HKRwc3RWOE1iwemzmaTxd58osgMpzjs5jR0IJlM32k5BOGZF0X+Evz9Aa0PxBBEL5eTrZqFniN21ksZKkMo5zBFtS/7+EbXLomeKM9sslhKGTPLwD4G/sJcgAUovCsGknQ5/FZYq/PBhv7MeUhzV5o3mIQL388VSyaxK/qjAPL6ycDpQzfyxASjZzA0ed8UuZeLLO8N7atMXsYN9sFVbknHKtRIyFACRXvlr9EswvY9ga5Y7GzUmOpigDyGhOTKIrWX02JCfwR+/wrIiiSxZHwEPNRb8AfGrL1i5WGYThSqW+ov5KgvsNSNJXCSoiXmIw2YepDPJ1BltFGeuib10pOC+yCRlRExT6AkYmOnCYPq7toBGYLIgRdZ9dNXf0atQsYAzYuslXoFhlTl+RosPp8kuV0NTWjQqjxgxwZwtg0Ug+a/S+2x4Zd40Mjajfr8KibFaLZb8bqexcPyj0KhcoLZcxp4ono4HyRJfQuQw6zj5gP+xO8m9CsTjBnTNaY7an2Jd53vTgDMaDpGuE0itMEwI6GKOR9Y6fXqO84ekcf76BrtkFBKvZEiEpfo5sTD85Pn+/EIE4CljTxqXnjkvDcAFcEAL2ox27KuLtq/Zk6QXbb5kAbJMo/ogZLis2bfnDnXOi04HInCsbZlX
- e0jOuGG3
- TE2f//myeybxJjYJ+3Je3QczW7rZ6SEG9JINMbXBQwD4FJkvBZ3klOVZerZU3ZE9T+yUf0rsepa5ZXZyka19U+uDV9pE7DOvh1cKC5xFaPPG9A/IIRnJF+mbxbGxUUuX120REEV+Vm7GLAIB2pG9SrBEuXx42W8lI2asXrosgzwOChq1Bk+8BFeIFmIxGAfraaFbz3MQjVNrXebgClxTK4xW7H6CA1Uvz/rDUxFeflZRP2c1pOySZAhR+UrTgqhVgYLfzpEZX9uDuSnTGxpDFegEkuzd3YR1VBi/cCdRKaHwK0YA4Lj1cp+HadH48qj5JnfbKPQE6AB7XVqSRVmM437GB7b4X/9Z7cCdjQxuMCzUAL2aSI9XHuFaLdkIGHlf+ZY6dDwvzO2a8pd3UYpItpxtGgqOyZUJ2aOH9k8Wz6rEa2sZoe8Ul4RRW9h4xFGabQj9KvOhlRUZL6q8=
+X-Stat-Signature: 44ue6hpicej4gb5efpmxnendc9q4poyp
+X-HE-Tag: 1791991729-716285
+X-HE-Meta: U2FsdGVkX1/ibMQkL34jtETTJGyIdDULP8V3R19Zyxab0H+W1Sr2pE+ECBVTxEcBU95xVNJdiChI/2ujU+tIurjD87XZ2GXc/bHp8ncS3sF8VPYcc2eoOW1vhwuY2KPJrFIzdMnRVYVXzbgiDqIP84DVhuaPduaxs9jcFleGWEHAf5lArLA6kK9OmtXJZUKXadT81KMC1NYMh6Zi9pLiwAXoLzL4Iee951qDhBhWCDYzx4gcB8a1keaJNINnWSfNNGACT5JFEa+5szeB8PZ05I3N7LApUWPvaQtLnrQCrnN4fYf1GzHq6m/VF3Pa3jXLqsvnOJxFcxxf7hgDPpdYg6aQLNOx46MajyBzFsKksK9ymoxANEh1GgPiih3BWBYN1XrNiBovMqJ9Z6Pyjz941TgxpJ6uOXKRppaluTuuL5P5iJidTE9QZDSPgi9b9MdRAens281lgnaCV5rvKqzam6ehO1glhEfPipZmT1q+WBhZnFrq60zayTsGbAuuYVCU4aYHscbMNxKaPJaQlEKyZq80Uas8K5ZvLzWEt3LJptbp0EWP+LOecKBFnDV6xEFpHrO6AjIpw+VFWfr08HkIFyUc/OyzRnBFLBMdic2eGfaeHgd0YgyxIV9CWf4MbUoNxlqJWP5NYkvryF0S33MNWj5mWPEKcbnMhEo9tVuPKJGe6FN0gLvWErJ2Ny0CByaYQeYnhW2X+0G43HXJHuIvu6kjQ68PXC70Oo1U88MgSn3c9fKnIAY6hvUdKrsh7dpgjxi7iMBQzAZc0xF+hS97K85u0e9GcQywO09V3NhFQMcilY4B1tXijqLkEBoOjkb5Ek2BZhh2hrogXbexjmAp18LWd8uyeTkZ4Huvble9PDnhYnRnAq7Glc7JupMUmNNZqAHCoN4H73OqqQGxBtsf35viF+xlrwO23ieRlnhC+yiV2V215dGLLx5e7/SO4MD09Lu97VeBc8NmL1nD+7s
+ auspbfeO
+ jW4dD5RQMGzBITmVts5d4WfutIPaubvs/uvHVLhGVAI441JSyKzcK6u7RnhyafalhHncAnOl/fFR6WS89LxBvjNUGtOOrkwvuk1a7EqAAR+XkZGajxYKonGbTdlvdS/UuJLVKajB7kE9paKH6gExDPRye3sdeDX3gGT8fXMjnX/1TfhuSgDPB20c4S1HA9vq6+DfmkhmX1ffRRmmz2ukd1GDABJX1gchm24bI9O4oodWJ73lexf/Kxh4G+KmVJqbMxNLvl7xpaSCKYig=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,60 +97,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-setup_node_data() sets node_id, node_start_pfn and node_spanned_pages
-of the node data it allocates. free_area_init_node() sets these fields
-again in mm_core_init_early(), and nothing reads them in between.
+On Wed, Oct 14, 2026 at 12:53:11PM +0100, Kiryl Shutsemau wrote:
+> The uptodate check in filemap_read_rcu_can_copy() has to stay, though.
+> The flag only says the folio was uptodate when it was marked. Some
+> filesystems clear PG_uptodate on a folio that stays in the page cache,
+> and that can happen after the folio got the flag.
 
-So remove setup_node_data() and call alloc_node_data() directly. Also
-remove the log for memoryless nodes, because free_area_init_node()
-prints the same information.
-
-No functional change.
-
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
- mm/arch_numa.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
-
-diff --git a/mm/arch_numa.c b/mm/arch_numa.c
-index a4b1732274fa..c88a323a34fd 100644
---- a/mm/arch_numa.c
-+++ b/mm/arch_numa.c
-@@ -201,21 +201,6 @@ void __init setup_per_cpu_areas(void)
- }
- #endif
- 
--/*
-- * Initialize NODE_DATA for a node on the local memory
-- */
--static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
--{
--	if (start_pfn >= end_pfn)
--		pr_info("Initmem setup node %d [<memory-less node>]\n", nid);
--
--	alloc_node_data(nid);
--
--	NODE_DATA(nid)->node_id = nid;
--	NODE_DATA(nid)->node_start_pfn = start_pfn;
--	NODE_DATA(nid)->node_spanned_pages = end_pfn - start_pfn;
--}
--
- static int __init numa_register_nodes(void)
- {
- 	int nid;
-@@ -226,10 +211,7 @@ static int __init numa_register_nodes(void)
- 
- 	/* Finally register nodes. */
- 	for_each_node_mask(nid, numa_nodes_parsed) {
--		unsigned long start_pfn, end_pfn;
--
--		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
--		setup_node_data(nid, start_pfn, end_pfn);
-+		alloc_node_data(nid);
- 		node_set_online(nid);
- 	}
- 
--- 
-2.43.0
-
+Those filesystems are buggy.  We have assertions that the uptodate flag
+is set on folios mapped into userspace, and filesystems going arund
+clearing the uptodate bit will cause problems.  It's something I'm
+working on removing, but since it's all connected to writeback errors,
+it takes a lot of arguing with each filesystem maintainer.
 
