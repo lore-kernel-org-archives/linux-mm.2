@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEB87C3DA7A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 20:37:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21272CC6B2D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 20:40:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B52C46B0099; Wed, 14 Oct 2026 16:37:40 -0400 (EDT)
+	id 3B68B6B009B; Wed, 14 Oct 2026 16:40:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B03D66B009B; Wed, 14 Oct 2026 16:37:40 -0400 (EDT)
+	id 367C76B009D; Wed, 14 Oct 2026 16:40:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F2786B009D; Wed, 14 Oct 2026 16:37:40 -0400 (EDT)
+	id 2592B6B009E; Wed, 14 Oct 2026 16:40:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 74CB46B0099
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:37:40 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D312B1206DE
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 20:37:37 +0000 (UTC)
-X-FDA: 85322392554.09.4F8CE58
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 777BB40005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 20:37:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Eob66Fai;
-	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0132E6B009B
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 16:40:47 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8FB4780764
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 20:40:47 +0000 (UTC)
+X-FDA: 85322400534.08.2A6186F
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 570B140007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 20:40:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=i60MjBND;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792010445;
+	b=qxioKdWpUuvU0WltTImr+l7k4wf/QyRk29BRBVK+cjQKQs9GVi78tvZgIxUr6XG5WXokVP
+	37PVvP5vLBwIBkjONCItnVbTH2tZ829XhaVYQi2oZBJmY0dzfvpuA1e8LOH8b4TPVKFP1E
+	iaVDcMqZEp79cEaEntyV735JDvJVwD4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=i60MjBND;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792010256;
+	s=arc-20220608; t=1792010445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8jmkZ2iZY8eFbnVPoRrHfgWIjC40ttpxwtqJ35UT++4=;
-	b=LIZ5fqcttq/raDURpZ3OT+c5feg9O7gtvCKQ/V3ytMsakxPalppO6ixmmp0ukWG8FAVqrG
-	gLbKb+FhcRsrHQNM7hsv15Hzoaz61M+KMi8iwP/ikXU+UdbUxb5YNbaev92KmkIEWr0N+Q
-	CUaduImQL8DgYYM7jap6aIpeog4HW98=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792010256;
-	b=tzu/hJYxC5GVppSYyYHB6xVCi573Ur5tX5cKDvbvHM1RVipe4ZfBGJXxskoEvDZif3QtIj
-	nj5PC/Ty6Ptl2aDHwOr6Prb+WhXulnNIjEHbIRJ49igJ8lqiszbtEPpb+YMzNL6rR2Mj+W
-	r9B8ivBckVtUdrnC/ZphUUDq7npI8fA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Eob66Fai;
-	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93e6f83f0bbso418123885a.2
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:37:35 -0700 (PDT)
+	bh=4ZzboJ+fBHb0sZhaDRiaNRbOcPWLCVijOqfXtCDwsFU=;
+	b=6i5oTP6gUBIPPUIT6MykKf7vaLv6gTVmwozdrVw2LWB7+/1SnYBLr9uWbktar69mezXPvk
+	el+nUz/7tIoRc1TKPsbrqjuDPYSb8OX5cxBJ6/q6lG60WxyGTlaS8sMqRkjsVpH4Wwk/Ky
+	v0uggL0eCNVJhRoRE2glBuLLoH15P9g=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5339381b46eso46047301cf.1
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 13:40:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1792010254; x=1792615054; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1792010444; x=1792615244; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8jmkZ2iZY8eFbnVPoRrHfgWIjC40ttpxwtqJ35UT++4=;
-        b=Eob66FaiBolboTytgUigaRRo0NB3TSLv02eupSEKroPhZb+G1biBV2FGhLOE6YAVqV
-         wF7SW+HJR5w1h8epR34shur7HNIRdm64mlnvgPqivrYf1GQpjyYX4eOnFUwgbg9+4Mjx
-         QWfXoRWj6hBgwXhfI8akod1WVH/8Zn3BXiCXN5movbKuaCHfxwG+/jpw8TF199/2EIym
-         +vFQLwDQVdMBD/lYG9hlH5YDI63uDRL50jqNvpRhNJumyGR58ycnLZXSFp1FA06BuCbf
-         qvvXWF+f8IRimXiqw2Fh/0iL6xv1+v/+GTzYlGon55QdlFZVL3zxuwznTp129jElfAc8
-         tqaQ==
+        bh=4ZzboJ+fBHb0sZhaDRiaNRbOcPWLCVijOqfXtCDwsFU=;
+        b=i60MjBNDA+BoKISEEfgaKNqPYUy9oq8V+FRfZknfIOHFwgQXngYGsZdpgp9JMy0n+d
+         XTuwMq+9gro74lrrvLUGjgDbgl382k3Eu0dtZWJv2qgIsyTmRDnivzu8eGRSUZT5YSpC
+         zoIYF82ukctX97sq1G5ZjkckH0J/c2BqIXjVCF2SIrfwfElg53V5Efjaov6kzl07/0w6
+         ySxFxnCx7Br3GOpQqo0rLqqVRZC2wzlZdAm73JPuQzH8ZBnh6eFhlImHap8O6zWJ01h/
+         K6dpSebCZY1jQSiX3H6gD0uAsW9QNs8bfwkc1Mpd1IkenOvmGuYVB47owN5U9gnI0I7G
+         IQMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792010254; x=1792615054;
+        d=1e100.net; s=20260707; t=1792010444; x=1792615244;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8jmkZ2iZY8eFbnVPoRrHfgWIjC40ttpxwtqJ35UT++4=;
-        b=TKYG8jW64K7YB0ItG0YlcgrQEvgyckQqxHIsNmRx50rY2JDuMKOGg/JjJb5wMMsHdR
-         +9QvMQQv131IugpLPwwrHejTXXk39CPBqoam6ny6dy+uWB1IQi3fFkClrMEASw0W12tV
-         TGI3NwJ6pIMsVP5i/MX8t0aJyfgT9w+Ck20+44/HfGlJBZaQ52qXw7W7OvMywdIEffiC
-         eVqYoh3xDpZRUbrbV8Ds7ERgxtrsnAe4Pj4L0UL4z/OrgG1x0aAWgSamFQg+iNB4jmms
-         BEVuGFUtZ6mb5R0VYnH2IikNGHnhKRgTZ/aoiuTOw1XAQ56WXTYyqRpOiaQh/uwdbnfj
-         Ykvg==
-X-Forwarded-Encrypted: i=1; AKwUvBzx9XYp0PHsbpE7lcZy1jU8U0aSOlnwDzQdj+Q1OmeNJT+rY3FzxmM4E4wmuOzrc9VAuVzQBcTXeg==@kvack.org
-X-Gm-Message-State: AFq9FYK9MzbFZNShgAmrCF0MNxJ9oDcBwENP8W3pPlVfryHFdEfotp9N
-	AZZfvE32g3w6XhAQT8ndWIDds52Kmm6ofnkEf9CJISy3TH1t9zSAf2pCKw/6V1pzBUo=
-X-Gm-Gg: AYBFou2FDOGLDypNhDg4CaHNk47nfOfO0Yee+Xf5VJ9afnwPndN307hIopQ9e/Manmp
-	cL1QbbyptNH/nEiBbZeoD53IUikFRDxwtNoafsxs/Yd8UOUFAJ2nbm8VmpL3vvkrbgxHE94LFBN
-	3DcOhuEDEzMMPLWhT9Pv0JMPZoN+Jd12xqYAoh3Iz2ox+IXyHaQvofNgAvqRemZ7e+rvejNno4r
-	6nQ3unwVcZ8VYFVyzhKRfakPW8O1Xa9VeOWBw8nn9op0zyHhxBl2nja2yq90IaaQocYS+wF584n
-	f+zOhPnMqLNlBP9K4MZQk5zfWQbj2ytpN/h7GWInH02wfFQd5et5j3+TOjzX06lShTVNIG+7ETq
-	9HkIPEiQjbxQtE5PdYyCS9dFgzsUh5nbt5i++fJ64YSUtluAGRSCUrsOl8YRPqPjtdTMO5fsXch
-	Mf3DdKqEgIVRorJZGSWrfCryebdevLtfHfmcq8mK3SpKEhWn5rJncbL2lHkOs9kITrYbz8
-X-Received: by 2002:a05:620a:3188:b0:93c:7fab:c44e with SMTP id af79cd13be357-93ebd272a0dmr2741779785a.63.1792010254517;
-        Wed, 14 Oct 2026 13:37:34 -0700 (PDT)
+        bh=4ZzboJ+fBHb0sZhaDRiaNRbOcPWLCVijOqfXtCDwsFU=;
+        b=ELW/bWC8gbSbq+cd0PJ/8p7/ykTDLNuqq5B/wzOUCxyBFLbNCpc3k936wTOGzyDjRi
+         QCe4Jni55ty6FYsd+NvxLv75cEymvBy3UXfU8Z0ElSJiiZDXvRhvs+6QukGAeFocWzHS
+         GTEObNLILJo5XVJwIcEnRHphBr7PjFc2C8IvQvwCHNmeTmmOwOnDnJSIbK/6yUYger2R
+         y/oaW2jIUPz5vUbYYAJw9RbeTHce1YX2SJNQXP7fZ40rMz1pX01NZHH/+AFP6/Q6+YuU
+         PyzGz4XO+8VLhKrTk9+Pzukw75K7YSYjTJwRW6CAm5BU81ptb3cdCnqsgAp/3l+iKu3l
+         eWbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxKiHuMwDcvIK50BS28Oczb5won16EXYVLWrGG0op9S/pKKhUkvXaei0mIrh9pysMJggfp2E2nqaQ==@kvack.org
+X-Gm-Message-State: AFq9FYLqT9z3IxzH9t+OpJn2SL7FAxqfai2Cx7cxtxsDxCr6L4ohxeN0
+	bTQG/a05OKoy5CaVFAOihK8gr9roQXmX592JVAfQxCQ9MWGucCnlzUWS/Bik2syJSL4=
+X-Gm-Gg: AYBFou19DF6e1pV8jZGt7olOi54TeJMoGL+P+9MJ62Ee9S700JxC4sl874Y2rSm9MX3
+	xCzlWpoHB5c//dy/16/YgAcYZAUlk93zicom0uyRy5Nv0LPDjYxY/BTHquCUZAjIlX13rAWOg/6
+	gmtpGSZHs02kMZLQ335w5Gz0hO2uWx7aBJehYDSr3a8S+kDxeYZDotpfZKU0Xgg1tCrD/IhfBgt
+	b+9sLZvlGUwdB7pikrvbsuan0XerQrZobwaU4j44/O6vi3k+S9xj94eiap5EbnAAN1HRs1ffzaD
+	9w8IoR6Gzy+4wJoynng+2d/hFfEgl5y5KKPQ1pd/4eFDtk2JOISdXkkJTZLQWMhMfjeM7LlNw/n
+	v84w/mQfApdn/E5Kp0yd4c3J/vOnQ7/NtRP69ZS2UTXPm6T294Kvtzr31hpGsvFFB01nQUp1olQ
+	8KE33LNUb11f+EDeU0/JkRkCB+ZH52b606PMx4K7aKfEQNeCv6AL/hzXvIZ1f4NkLX1fjYJw==
+X-Received: by 2002:a05:622a:251a:b0:532:f124:18dd with SMTP id d75a77b69052e-5359f49891emr274507121cf.11.1792010444315;
+        Wed, 14 Oct 2026 13:40:44 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:5081:9526:3c0:45cc:5ac6])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef505463esm576153585a.32.2026.10.14.13.37.33
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536127baba0sm6256231cf.13.2026.10.14.13.40.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 13:37:33 -0700 (PDT)
-Date: Wed, 14 Oct 2026 22:37:32 +0200
+        Wed, 14 Oct 2026 13:40:43 -0700 (PDT)
+Date: Wed, 14 Oct 2026 22:40:42 +0200
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Rik van Riel <riel@surriel.com>
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
@@ -110,25 +110,24 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [RFC PATCH 1/5] mm/page_alloc: count guard pages as free again
- when their buddy merges
-Message-ID: <20261014203732.GG371161@cmpxchg.org>
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
+Subject: Re: [RFC PATCH 2/5] mm/page_alloc: count a merged buddy's pages
+ under the merged type
+Message-ID: <20261014204042.GH371161@cmpxchg.org>
 References: <20261007021250.1665929-1-riel@surriel.com>
- <20261007021250.1665929-2-riel@surriel.com>
+ <20261007021250.1665929-3-riel@surriel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261007021250.1665929-2-riel@surriel.com>
-X-Rspamd-Queue-Id: 777BB40005
+In-Reply-To: <20261007021250.1665929-3-riel@surriel.com>
+X-Stat-Signature: 3texeq8o6x659w8nuhqkpppspdd3ugis
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ufwgnkzzdisd6ntoicm989fwi7jw7wbp
-X-HE-Tag: 1792010255-164002
-X-HE-Meta: U2FsdGVkX1+bRosAz/v/QMgLd+59O9PzC+ufv3ZHaLIBmv3T4j0/BMu+Od5yaD4hvqi6xoSZuBUAH1ZtTugkiyEBM2ypWHoKTAqrhXHLNjluRDla73A6BxNJC236hVrFJiD15iXyqnapvW5JA3krTYssXd3ko0Unl1bfpqqgX5/Pkaj36XcGnSQL6tvBzL+NH+2KRl9oS1KBy3Ip0N2I4iZqdBlciADXmhUdtc1SJamfieRKOF1bLf2eofY5dPVqVSCr+NVplnkEaohPqY3KHLiNnXaVTuJGoZ2qwoRmC0CZiZEBlPyvpGjwBH9fYKvz6hN1d8AhvgRiWDVg5xMs2q4bqqLIB+tTcfi17IZ/z9r2C6000mx2SBJOMEaUhQNk/DudjFoQMpJk/GK5FN20k5+0t3+LNh0/Jy9n3xVE0VZ5KeT3/3pCuffOxoxQ9WrSFykHYhzW6gVXqQ5vJTLluKXdF5rYiO2psWz1g+Um0ehZfpInC1fyri7pG9YtWGltPjI12ZEa2kOXu4iT8LALL+u6fl/DV6FzzOyqX6c4AXUKXGIF2wsNyg9L61zS4mu4JJOZXsVryQ/0Wew8llV5aG/gMy80alS7BVzaJxXhy9Js20z9MXK/DVs2Z9bW4oEbZhn9uKChMQ4d16RdiEJGuIfNtVFqSEwoY4JULWZ6LPAeBBauLzdgtljPAeEgP0sw5Wmo4zfmHjy18W8nSF3KZunR04Bfg4f34CmXNwAY5GuAK4g0c+/ezRGFlRgY//mtJuCaQSIfk4WBT8NJPgnqCU4MUojXnM87T2bOofddqYPra62pBqZmZcwkIdJSbk8GzSsCsfP601S0HudOckZngsjwVB1EoeDhgWUfc9XeyBMoGQrBnGqE2m/eczxa0vbgu4loIiGCLSv21B9L2HwKmSv8dJp24reYuOr/iY6mblkerS5GPIyDzgupjB7IbdQkmAMg/dkKEgBgR589zl7
- Vp5uEkgX
- HRf9BCecr6eCEd+so+mxSm1V6wKSn6OKIxrxXy8SVknGMrU4o8m1eSd18lm4ZwFDVE7gzlTjrwIT9+VSWRyEONaR8WYMlhooMP+NnD7YWhwRvsOhkMqNeKLj6YXynFuK3km+0dq7WM78cZEDq4whdZRH231CHbVGE9N0zuh+91rg20mhNzzrwrd11gAEr/kQvC6/ows4EcrB2zQPkhSU7DF4/M9emb+wtQu8Juk7Ut+QigrePr/FqBGSxoNyMCAtAkex79QkK/Y2FEl78DOgmzZQNdybhPV0pQv40xMtgnl7lanMRaFriSo2lSz81Toc+G2BwyRtrSNq8WJZPHJv2o4Ts6poT1dSZ7cZV0BHxK3Lbv+jBBJB7iLNyCo+EPzCUMx0flIeQIhZNSmTGdU7zjrgGkzJuEgslBAaL+wcyHfWuoKwZSRh5Hz4rrn+j35sND7uY68HE4dLL4pURC3v6P/frd4viuZ3x4ubBJGHDdkUXOjf1KcJWc7KCJWWO9uz25vpKhw3/R8CQI2qo9ZwoOT0sAq/JHj4c8ndJCa9VpPLypivHaBaLbA9GQw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 570B140007
+X-HE-Tag: 1792010445-219178
+X-HE-Meta: U2FsdGVkX1+DK2Kgy6hQHAAkioH+mnRlNp7hNhQEtMQpIqYPIFkPv4DY9kzE/SRmaHUN53Xjb7lXVvnL9Y/Eb2M7svCTgO0HTyJTPYgKIk2Uadzhf5stVlm2Qy1B9hSMeWrZl2HWd+mlTf35bWVARVgEglBOX65D3crDR7AE9kNiiUAwDte5VlGNAnAZs5YOjlx07YM5iyTYn+g9fY0HKsHr3S5o2zGFcGJ9EK2Mbo5FJ14krU/hYMlErAoviFqDV8SYFim2KgGSO3VNYzwL2QdAyZCBs3Gfv6hz/XZhT1YIPUy3cyoT9NmLK+/EgKWN3pbMAr9eKCMuczclVaHm+9a+Jb962W7CLOPOOpYvgE5yJX6ZfLtH9DmJHRlX43CEXx1rx5+gXkB9n40RHDqUNG2N/N+g42xEJ5ZgTJ+x9tJjWP6sQRcGYlzRCmTNdigG7LKaB1s0qsd+kDYJvOHdWh+4VQys4z8yIn7zqJ3G4XFKisG7fKiVn2cPy5UszMR+mAz7caZ+f/kDV6wZoZcDp3MeWZt7b0H/a5EMwoM6XDaqX9kxJA8Z+30uMkInt76Vf3WmVf9ZHvPoubJHJ0/88/8f8EU3vVoK0VzAOF/zkwUrqpc1HwSLhZ0WH49HdFqfKZfDM8CmBHDqRBcdkOkJICNsBBt+Cjmfy6Cite2/oeSH/OSZnrhGmGIVhSJV/OH/a3qSCxSrAE47SBPnzL+koTMw/ahGvCJZimk6Iz4sHAgw4oce9Rf/3WlCr0BBlISK3LaZ9j+A846w+qGNWQEk74wZF9EcpQ0LmJKRWMLuviaaMZawAHQhBPCmDoFi0X/9G9CKy/4NRdhVmB6e2kd7Iq/zzg1sE5+pEcqprJBUHAnhcwklCCdLcVbA6xaG0xmuSZlZ6vNpNBEDbI/VeaBl/Q5FH/tyfz/TEM5z4buPF3wnluNzK4WDe2O+OBpUdy6sWjt/Txvcs3ds2/NlqjH
+ gbn7y9mU
+ Yg039JJonC+4JSB4HWWWDbVJb/LI1oOsoq4Rb8MTI8z/madPG/oveSrRTuPj7kYbDOOgxPhwT6+AXCmzy5fxUMwM30ZrQqFPZMNbdCDc8HVgdjUy+RAWcJf4dufIoBuCNUhd3OkBufmtYAuECDTpM6N/2CkrBN2OfEWkHvNHaiu5Ai8tRsMyxPb5FQJpKJRMTcD4wDJjbCZLd9qsisniebapSPskoufsFtvQgSO/bOgqkvQ8t74Vj9zOrNsbsPyD0wpXv73y4DT2x39uNsnAfaaZQFc6/rFDuMo/D4unhmNH9aj8tzPw3O7dNFmlp+lW5/Bm16ka3XH0Az7S8is9ejGGP/Urhi410Pbhm+SzAgBuuRi8WGIDGA2c7LN1jyV9VUMKgAgB+Z30OeE9zz/iOX0Z3fo4rctk3+bfz0kuo6t8VKQ3lFd0BPdRs89Hu1jFaPxcZEi6NqwCcYJ0a5nTPGLHN/amLAovcBRJoujc6IJe5uNT09/xJKhDbEMByztCsaMxE1a42PFVO0O0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,47 +135,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 06, 2026 at 10:12:46PM -0400, Rik van Riel wrote:
-> With debug_guardpage_minorder set, expand() turns the unused halves of a
-> split into guard pages, which page_del_and_expand() leaves out of the free
-> counts. Freeing the allocated half credits only that half, and
-> __free_one_page() then merges the guard buddy with clear_page_guard(),
-> which no longer touches the counters.
+On Tue, Oct 06, 2026 at 10:12:47PM -0400, Rik van Riel wrote:
+> __free_one_page() merges a freed page with a free buddy of another
+> mergeable type at pageblock order and above, and retypes the buddy to
+> match. The buddy's pages stay counted under the old type: nothing moves
+> them to the merged type in the free counts.
 > 
-> The merged block goes on a free list with the guard pages never counted,
-> so NR_FREE_PAGES falls behind the free lists by every guard that merges.
-> Before commit e0932b6c1f94 ("mm: page_alloc: consolidate free page
-> accounting"), __set_page_guard() and __clear_page_guard() adjusted the
-> counts themselves; that commit dropped both adjustments but kept the
-> subtraction implicit in expand().
+> That is unobservable today. NR_FREE_PAGES does not separate types, so the
+> missing move nets to zero there.  Any future per-type free count would
+> undercount on a merge from the other side, and allocating the merged
+> run later could wrap it.
 > 
-> Count the guard pages under the merged block's migratetype when the
-> buddy is cleared. account_freepages() skips an isolated block as it does
-> for every other free page, and moving the block off the isolated list
-> counts it then.
+> Move the buddy's pages to the merged type in the count too.
 > 
-> Booting a 16GB VM with debug_pagealloc=on debug_guardpage_minorder=1,
-> check the difference in free pages reported between /proc/vmstat
-> and /proc/buddyinfo.
-> 
-> At three points (idle, after a read and file-creation load, after
-> a second load), check the difference between nr_free_pages and the
-> buddyinfo numbers in the normal zone, as a number of pages:
-> 
->                 idle   after load   after second load
->     unpatched   -130        79205               99121
->     patched      -16           45                   0
-> 
-> The small remaining difference seems to be due to the numbers
-> not being read at exactly the same time, and is also seen
-> without guard pages.
-> 
-> Fixes: e0932b6c1f94 ("mm: page_alloc: consolidate free page accounting")
-> Cc: stable@vger.kernel.org
 > Assisted-by: LLM
 > Signed-off-by: Rik van Riel <riel@surriel.com>
+> ---
+>  mm/page_alloc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 4658af97be010..ae38e25971559 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -993,6 +993,11 @@ static inline void __free_one_page(struct page *page,
+>  			account_freepages(zone, 1 << order, migratetype);
+>  		} else {
+>  			__del_page_from_free_list(buddy, zone, order, buddy_mt);
+> +			/* The buddy's free pages join the merged block's type. */
+> +			if (unlikely(buddy_mt != migratetype)) {
+> +				account_freepages(zone, -(1 << order), buddy_mt);
+> +				account_freepages(zone, 1 << order, migratetype);
 
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-
-This should probably be not RFC?
+Reasonable on one hand, but I think at that point it would be simpler
+and more robust to drop that 'single account_freepages() + __add/__del
+operations' optimization, and just use the accounting add/del variants
+directly instead.
 
