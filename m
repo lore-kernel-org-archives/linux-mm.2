@@ -4,118 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F5DCC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:55:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10AE1CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:57:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C5AD6B009B; Wed, 14 Oct 2026 05:55:52 -0400 (EDT)
+	id DDD276B008C; Wed, 14 Oct 2026 05:57:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59BF06B009D; Wed, 14 Oct 2026 05:55:52 -0400 (EDT)
+	id DB4F26B0099; Wed, 14 Oct 2026 05:57:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B2976B009E; Wed, 14 Oct 2026 05:55:52 -0400 (EDT)
+	id CA4FA6B009E; Wed, 14 Oct 2026 05:57:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1995F6B009B
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:55:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9CB4F1A02F0
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:55:51 +0000 (UTC)
-X-FDA: 85320775302.25.E2E061A
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E651020002
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:55:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PKrpzTox;
-	spf=pass (imf03.hostedemail.com: domain of ngocquy0700@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ngocquy0700@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 982506B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:57:08 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0B561604C2
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:57:07 +0000 (UTC)
+X-FDA: 85320778494.11.E69432E
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C4909C0002
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:57:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=adaYzdT+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of griffoul@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=griffoul@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791971749;
+	s=arc-20220608; t=1791971825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=eo7EXw67vjv6v+p6PQKohVa243q8P8L2AoGfCHvln/U=;
-	b=km7jA38bfS9VbZfY7HFm/0eVXZjUbvmFHw4ojZ1l+CF7jwo9ye147FEDl98SGwnzIezYRx
-	DoZurA33wXvrnfJiE5x6q1PWFOKUepQD9bszsX+Wp2IdPS42zo6YRLHPMpHORWIwhdh1Wu
-	ml2V7xCyp/MQs6qHxAFLOsTetq0hMR8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791971749;
-	b=SVQ8xTq6pJOT5bBf1YMgShUAnEmrdG6qApqQBSxVOlynyUE9B2ZntLaHO2EZzMi2aQ/UdH
-	58phoykqAVSAWirC45mtcMqbUYwZ4h7ViY55O9zG3H3GdkVvQWX3Fo/k/VfEKyvQKTT1yf
-	6LI6Hv7Z/cQc9LEFdBdk6mzBNRs2XOE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JhQ5yirY83poEzPx8x3H8aN7RnWItIKkuGofgEQwLq8=;
+	b=d5LXm7j7JceIodnT8B00DcBCAIaFGMvAIhCv1Hu7M/CTR5XxntZoWlp7+i7OiaPbzyVNTT
+	EYfz/3YULEjd0XLKZV54IgeyQYtkb8jigc/xyYXTGHnaV0KDagQw7eeSxFlcfUalpWERQh
+	cfIwJ9qUQ5ixuJJBJ0CtAVupQwXWuIk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PKrpzTox;
-	spf=pass (imf03.hostedemail.com: domain of ngocquy0700@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ngocquy0700@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e942864693so1263365ad.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:55:49 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=adaYzdT+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of griffoul@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=griffoul@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791971825;
+	b=qMrNWjFaOX90QLwBrjqoVbyyfa77KOav0fjwlac0bHajsoKSYPUJiEFx4Fck/bMWKhxpGE
+	3pQiQ38UWBBGq3ZbpoUcHX3+Q5dY3/QSJaP/nDmUormvT4X16aTY1e6pdQxwxaiTnBzSum
+	HXcxcO8vSCJ/RWUAHMg+p+hknuDBYH4=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a171b677d2so23756455e9.0
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 02:57:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791971749; x=1792576549; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eo7EXw67vjv6v+p6PQKohVa243q8P8L2AoGfCHvln/U=;
-        b=PKrpzTox8QHK54blZq7F3BvS4E7jKhwZyMIkGhHI3MCx6KKO3ESmvMwpRIfQW1Xtvt
-         e90dgbL/oTiR0HGyQ7Z+HDm52HvgjVwHNr66R7wJRQfVpMYX0tEt98yphBnrTOcOcQDd
-         Dbi5NnHV6mnTq4NdIE0bIC/xsa9sfHltywnUE7iD/0fnD6AVBSi+OBnFJYL8+xPR3dtH
-         Dt6UxHIGqLpaPGg6DDP0y64qE0gMzXsDYHadGrmaFEqOm2V2Uo1UXf19sOxJ9pKcjdVH
-         hkaw8VjDVj+hv9VieAlQkUWMLliB9FDFOsXNzCqYERA4uFNvBEwc4G/ZX61vzKua4ny4
-         4okQ==
+        d=gmail.com; s=20251104; t=1791971824; x=1792576624; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JhQ5yirY83poEzPx8x3H8aN7RnWItIKkuGofgEQwLq8=;
+        b=adaYzdT+z3YNfcKJSYd4uhY/UOn7luV6H3q/0W6+2nCW2iy10JZ9pQ+I0QObfz+KXM
+         52PFgh/6DKT6AXdRGByqwq/MBgFoxIMifDOKp/3n8ZBCDspXjBpMm/VqGQY2eNV2apyC
+         SJewdWZhPttUFw4B1Go4+XGr/BLV4goedxaeK4JMSZn+eaGJ6URVIooHCPuFNxlv6X31
+         CHWcU1PZILToNMRKtvem5r6Kf96TDJYMMp3V2A+U72fPvaMgYok6RbzvTsM230JLDuDM
+         THtf9CUM0sRSZYX+cn9n5ms/B+J68hfnCM4b92289lf6LeWPBRG7AuR5HmddQvNFp3Tx
+         2JEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791971749; x=1792576549;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eo7EXw67vjv6v+p6PQKohVa243q8P8L2AoGfCHvln/U=;
-        b=K9pDBxBQfTp1eqYQs2JCDbvJY+fWrxzIMCAGCunzKbola7Z8qqon+36i+qynO2J2ng
-         EMa/yiX0RcbSqTAdhmiSPYLP3pOlwxvTj85WYlcYF2ElVDBfQLAHbFEIUPgC+f3tDYUE
-         3akRC7PxZLfrnCI0dYnueKQekF42UlJWjrAawSfzXw4w27jbNoZ2eeGRbBH809gdAqgx
-         VEYwjx3Y2rZyaNDr+2L+Edh9E+jlJbQKjsO8Deyqpk+hm7uZF1T9NDqphr04m33dQPYG
-         0LDDmB+/7+M9T8wscaaSW4nPUbyoatSn1ijKAM/prBxsfUR97ing7iFVDSWSPxNWz9Os
-         6sUQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxH9t7ekMII1mq30EPfUVlWyDdU9KjVn+YuPlnSlHmO2GS1681iHi514W5TIaFQvhD+7MuVw99ObQ==@kvack.org
-X-Gm-Message-State: AFq9FYJXPVVAsl6yC3LD+XlxN4jvsPCc/gLW1s4kb1TWJXwrYVNESzJL
-	M294mraItQHS1oIq74VPTlvmoCTZN6A7Bg0E8S4mAjWTKbCyBfMRMhe8
-X-Gm-Gg: AYBFou3OSR25bfAEb/P4aET8Pb1Vp/r+gHhOVZsNrZekJQvCtoDVi++BkWuevH55Rwe
-	WqniKcKjL+4NetPlaQRw32GtyF5yi+3In74uczJdDoR9I25OrcuQzFaLztvcuI6Mk1inDzArhaS
-	7hfnkcqZLlOF3alysdeHNxwnI5St+t/2Tvwk3LZaEmRbMJv905IZhkztjIhKumZQeadobE+/XPr
-	NnGkYbdv1foHge2bUrgLA9mzslwOP0RD5h9+r1/IL+o9L+rcLLbY0qmtSm8dzLxXob9eDtfUiZT
-	wVqWJjGPBDyCKrQ7yA0KWiOaRvCtQNtBJV3in/yIvDfhacUEy0DrfaC73puhRtSsdUyinn5a1J8
-	KeUHtz2m/FLmYSK+t/F5npMoqNbArTxsidZLFef+XdJdCaaA2Jop1mjrafu1spppE2CdIPSNbfI
-	4P4ProGeONySBb7nZsELkpXaGM1U+hODNQZslfD0GD00rIHW4xxD18WMKYKCe7rZrwqKkoxUBCn
-	R7q
-X-Received: by 2002:a17:902:f688:b0:2dd:ad74:ac22 with SMTP id d9443c01a7336-2e842cfcd6emr137809885ad.29.1791971748657;
-        Wed, 14 Oct 2026 02:55:48 -0700 (PDT)
-Received: from chinocute.lan ([123.20.221.232])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422b5924sm67131405ad.47.2026.10.14.02.55.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 02:55:48 -0700 (PDT)
-From: Ngoc Quy <ngocquy0700@gmail.com>
-To: akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	linux-mm@kvack.org,
+        d=1e100.net; s=20260707; t=1791971824; x=1792576624;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JhQ5yirY83poEzPx8x3H8aN7RnWItIKkuGofgEQwLq8=;
+        b=y2wlpIJpswVkYbAYQJekkpa/hqsslJzT+RVSB/vf0XKweiD5x2K+lg1QapoSLXEnpl
+         X4uj+cZ9wQB72ggpdGSK3zglUTPG3+2z/zqAGFwANG2GObOGJNSi0SSdccktP8x+KHaH
+         Y3BltcThtWkL4zIXVEYgXMWJsDo+Zh1FU5RC3s6Thp2jUVzhHt4btLZvOHbrwJSTOEOH
+         0GWMx1uvkgA5ZDzrHaPdiyqkObDXgF0WUTayVWqy9I8cBEiu0932yX+7vTI89V5BcWzX
+         LWms4nUA9dlK1oZ02Ynr2xWsoAFgbpSYFzdbTwHOZ3SN7V+zjjKyPjtXH6FPhtiVn5it
+         4ssQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxhU0v6c92r8dUzh+OuyIq8Juk0d1TuhE3og9Z17ovMbj1GMEyhNRX4hpe2E8t8snpU41HWryBEeQ==@kvack.org
+X-Gm-Message-State: AFq9FYKVe3TQDjrB2CPMp7Y2354VJndlkDAyP5acMyuQ404B7ngakpZS
+	1EeOx1xiP4jgDcZmIoYrLjiGiZMU+EAc6nhwN0y93zejtjlxh2/3jRjk
+X-Gm-Gg: AYBFou2G+yA5u1xgoeIZMGr+RVWmvVYDH7pqQLoNHU4t5aRubXTxxNE3ouYO42KBXYX
+	obx4UfPeEPpD9PmN3kJzANq9VN3BERM8LEHIsJpzADEzrFLjsD4rGxj1l+ba+1HUS1wmAD2fXOC
+	6W+d3jh/I/TvzVeOwkZmzdy33+TTe+K7SckbHDe3RKJd18VNzmaRwqbq/4yGL8oZ24xIVYEfPd1
+	byVFdzgKvRLkXWMKdHpjf/DcH1CCrvcrVzMB3/VU6Qt4cJTHZtidyXeacDPFOtAliayoMZib5Es
+	EDYhWjOG3sqnre9G0jdvhEk9kJ7p6W+b16yVsdm9PRl/7HsJE5jTsH1k5C1pcnZqZcXCyNoQYeO
+	ohpbDvcb4W8QFgzxaqtOra+JVxO+5gBlJwyVTnNGJMDolqksUQnxj+7Qzzq2z/Do+1voeslejJm
+	2r+t/kV8LBcmJFjOj+mCqBfs8/D6hlyaWWM0fYyxFVgd4u/8KIXE9LJU7fU2MfBWGbuWWshN7rG
+	f3c/ID20YZ0m9xSty8MzcUK8A+eN0af3nc36m6gHjAhx4mbwmS+/R+wuHhzvP3alkMO7EZ8vRQ7
+	4z/rdKjYuxelBnnoX5zXhsDUcuot4zIJr13v
+X-Received: by 2002:a05:600c:4747:b0:4a1:80d8:aed0 with SMTP id 5b1f17b1804b1-4a18e4a9862mr311763425e9.15.1791971824195;
+        Wed, 14 Oct 2026 02:57:04 -0700 (PDT)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ac5257sm11206338f8f.42.2026.10.14.02.57.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 14 Oct 2026 02:57:03 -0700 (PDT)
+From: Fred Griffoul <griffoul@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Ackerley Tng <ackerleytng@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
 	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] fs/proc/task_mmu: pin mm_users in do_pagemap_scan()
-Date: Wed, 14 Oct 2026 16:55:40 +0700
-Message-ID: <20261014095540.3261469-1-ngocquy0700@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
+Date: Wed, 14 Oct 2026 09:57:02 +0000
+Message-ID: <20261014095702.39676-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com>
+References: <20260720111259.122911-1-dwmw2@infradead.org> <20261006183235.16576-1-griffoul@gmail.com> <CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: qq1cwb35ucyzx8xbhnoreb3ujqxjbj7r
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E651020002
-X-Stat-Signature: jtiat7e31gz6io6xjsxskj4z5keym63w
-X-HE-Tag: 1791971749-357301
-X-HE-Meta: U2FsdGVkX19QI8TCZUMZaCWlpLarZH4CVl3kSwCSgogB0XpnNz95bxyk1iZ4uKZJuJW2NxXqfIx/KSU2U89QS7qtYNOmGir3lnr57oiL71cvDCx+SymSGhSV2sQsWnSUNguYtwJbtpqlL8sEwCmrrQ00vkBAKHdl6yTVJSm1Z1VDQiNPd4WYSCvhgb40aRvP98ByidEqJd6ubaoZmEO6HC1dejUp6IW7GhjKuyzdd5HDldwnjW7uht54NqoyI53I1gwZ5UfKv8rGoCnKr3Z1WkMvq6FQ+lHGISDbk++Y4qAXsR3qkfxFf2iYna6cG/LcFWjutkszQjssvJU2BaGtFeERq34eKm03nOnNiaR6Q4aYtRy5soyRNalfTBCQSt9MMh/YbdLEeGjvH2cSwMBEQdRQfIevkqagCFV4JYwVgpyquMJxAR4ujf2eiDJE34SdIl8v4jE51C7O1egoMubTKX2dcR/SXssVDRfgmTGQplSE7mLJLyx8e/ztguAWCswnQ92sYkm7hDBP90syvuDHmcV3ukLVsa7NFdUjWWqb1rfniQ4bqJvEpo/4JGS0A1+aqirZEp6lY3xgAHhhJadcd+jPERaRB6scYbEF29uNbeRlUsMO7UW21XRzPUDFZ18o1PyBXP0pzGFQq/ROaYFmTWFHCk6MajgioWT/uDNGGXMOPLuWw8K67DAS4Nvyt4lNvYjSncPOngtrVmxSHUa996nBSBsODEIuFKJQBj+DPqlo9BtC+KckiBSS4QtKIiWaQNdWhQMURIn0FVoDlm5TA8NeU64BrPdoLdM25+Xax5tjQJi64jyv7mYptCLEk4oJ4rHEKy4Se2rhPfX7S/ShlSgEmNJFjJNUABeJb6zet0ZYYyQDVKA0f9FJmhRJDMG/HXqXrKnpC/EJsTU5motnVDPZVkNemj1c26KO4WxiYllyCVMDyVNdqaiuhBsdmMi8hIVB7aDUzi3rQ4qRlQd
- d+hb3v8a
- bLpGJS2J116o13FYepfHaaCmDHDyFvRHHitM8kUnaj/rg1Y5/woz11WNvEM/2hGOQnpxh9OFz4vmJ+7nWVKmdzpxQCUwieM1beTHZHM54yAxUw9J3qQI7zF4Ft5TPdwEK90r9EdJaGLSrs5ByEEK5rJ3O/8w15Cmi9Uc1/xJCWGpFW8b/rZtjiH6sbVuo9JD4RPDqFdj9SfMorg6m04zrka6yBCS1364rlpcnAQt6yOTlp//04apmT9zMIINwOb5rMIXhDuUAfdVoam7I/w4/bPn9n8bgP11Yoz/5RQt6CRj6SUXEAMtYQeBMB/PPhCWEDtNO4KsA8fe1LfIZVOmPnIbBwy6I53EV/icjEdMhm6bq5gTcXK7Slvz3idNp4EKE+qAZ68khrM6ZJyXxN6pido7ln+HzpmygDVlzk/RIId6InaQXpQUvyJSpNKY7PVXlxaeao1KrnxPExTgeYgR491bF9/t7g9w5wo3xgcIABz9rRcQ=
+X-Rspamd-Queue-Id: C4909C0002
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1791971825-728721
+X-HE-Meta: U2FsdGVkX1+Rs1S88SihhIZvH2tM72mUVJBKGycHMnD8Ht+Os7gUwBJXaHYNQzRm2Hjm0SHsPjU/vMReQPdnfDhKvJmchnuRrdy4to2GT0XQISm9x0sD/inOurpVIul9qKDDdNGQuXPdCSfgWLX6QAT/INNMTSx5LGfvai2fjbzLhcnQIHfYvE4c8aFTR7mRGD6HC/pCeuMnvC+gqozrPJW+A/LDuS/E3YKq18ZD2U0lb23F0oJ/EFBSEc2dP6Ebg2SEUpRUjpFlwg6dxnjJPgrdfw+k/KJ+Ufs18NJgvi/Lof9zRnjs/8pt/OICt05gP7aTxoxxtXNhpa4uliORV53RtWmslyIOcVhnfkjv0P3tUej4ZWKYfWSLWot55rkk9oVEGwqei/crneQdKbOPhRgB/P2UGMmAyjs5W4scWt2Se2ApQDK+SLV+epeT+OYzaj4IKFfm/wh+fE5mxFKBMdyKmGI7X4rMgI+21UuzUE1yTiRkfmOoV09Ogov2r1e9ili6wKROSWX/AVRjxaB3F1vIIL3ktqXjhZP02e3G6YJqYzjRQYbYEvT+LXeIDq4wnldJ9R+THjjbrfziirEM/9NHwBiTrIIFNAmppTuAr5Rp4wk3872Ddctq6AUUK5wr0rBz3mfFVaZLW1kJmUZn/Sboeu10ZlFFpRrxPuWa6/VFVybUs/L0f+bjOEZE/Aasjtzdl1ZB03kVbVQfWGG/9xu/xko5bqOyAoIx6z3xl55NJo38Tz+Waio6sOB0LZEDYSSOF8I+hz4kOHk9oMXD8c2vw05nU/i5RnWEJ6O5/fxN3gP4LFQm7RN5EtCMs2TrSjuvxJ/BC32mVbGMGC5hSj5heEXINvficscN8f7EJL1vvrap9G7ceRYplZDDomE1niV7waUJvkMjF3h2tAroa+9gp284QAcu3R5bq0X1osWBoL8b/I1hWpIF0YT2dl3zBhzjrp0/T33Qe+BNQOU
+ EGSD0pBo
+ t8PPIPwwai1yh/+3YXiJBrWbhPmlcQ2QLvxnhaEe9Y0N6UoT2X/9q1Gs3Bd23LY5MAFwy1DbIt3k3XQLlnb2SeyE8qLIidEP38Mrm2v1WpY2QK5mL7a4W//m5Eoj+WP7kFg507FAEQMSj6zYlZrcFjZzoqu4HUGTZZIK0WtRARDaqke0nstkv/qS5l8wC+eyyMjY9yZhIQcc4CUmTMBZNR9uIh07o5zrTXxbEysZxLE2YzJPp0ab+Rb+P66arQw0FrXunT0Clk6kurbce6IEm8PW9dKYosimCVy1rO1adp1Pao2L+jUrFZ6RvfCd72wpmoO+HlJ9wD3q0Hkl5LWADJSIxUt7WK0+0ULzzgwmd9kXWZyApi6T/LGkbTdHJzLyQ2b6L3Wyj9UZrsE/e9WpuJHR7vhyLHwmRq+fXQ8k5KIe9lGQwgr1qelR9IKL/veh2actR38i0qtDY9N88B+5DU9ndx2oCgI1Xeti3oJYfiM4VyxNFj8qvzz1QLviMTHbGwFGOVP65Yscfn0Mu3jlXdOJ6PGXiZWCVgInPAclRw0k5INssDz7DrAQ2R/KDBe3F2uqrXYwY/qv82V/p9MyoYPjUFFkqI8f5xz3IzxCte7GFt8k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,78 +165,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The PAGEMAP_SCAN ioctl takes mmap_read_lock() on an mm obtained from
-/proc/<pid>/pagemap without holding a reference to mm_users.
+Ackerley Tng <ackerleytng@google.com> writes:
 
-proc_mem_open() deliberately grabs only mm_count, so a consumer that
-touches the address space has to call mmget_not_zero() first. Every
-other consumer in this file does -- m_start(), do_procmap_query(),
-show_smaps_rollup() and pagemap_read() -- but do_pagemap_scan() does
-not.
+> When the provider wants to revoke the page, the notifications/function
+> calls flow this way, the last [ENTITY] in the chain actually does the
+> zapping.
+>
+> + [PROVIDER] -> [KVM]
+> + [PROVIDER] -> [DMABUF] -> [IOMMU]
+> + [PROVIDER] -> [GUEST_MEMFD] -> [USERSPACE] (AFAICT this was not
+>   implemented in the RFC.)
 
-Without that reference the target can reach exit_mmap() concurrently,
-and exit_mmap() calls unmap_vmas() while holding mmap_lock only for
-reading, which does not exclude the scanner. For ordinary VMAs this is
-harmless, as free_pgtables() and remove_vma() run afterwards under
-mmap_write_lock. A shared hugetlb VMA is different: __hugetlb_zap_end()
-frees the VMA's hugetlb_vma_lock inside the read-locked phase.
+Thanks for going through it. I have just posted v2:
 
-walk_hugetlb_range() can therefore load vma->vm_private_data, have the
-lock freed underneath it, and then down_read() a freed rw_semaphore.
-The load happens before the freeing side clears the pointer, so this is
-a use-after-free and not a NULL dereference. Any unprivileged user can
-reach it with no huge pages configured, as hugetlb_reserve_pages()
-allocates the lock before the VM_NORESERVE early return.
+  https://lore.kernel.org/all/20261014093733.90312-1-griffoul@gmail.com/
 
-Pin mm_users across the scan, the way the other consumers do. mmput()
-from the exiting task can then no longer reach exit_mmap() while a walk
-is in progress.
+It changes two of these chains. dma-buf is gone: iommufd attaches to
+the provider file itself, through a small interface in mm. And
+guest_memfd now maps the file into userspace from the provider's
+frames, so a revoke also zaps the VMM's mapping:
 
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Ngoc Quy <ngocquy0700@gmail.com>
----
- fs/proc/task_mmu.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+  [PROVIDER] -> [GUEST_MEMFD] -> [KVM], [USERSPACE]
+  [PROVIDER] -> [IOMMU]
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 5c54aebe2118..8825b01f5e38 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -3231,15 +3231,18 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
- 	size_t n_ranges_out = 0;
- 	int ret;
- 
-+	if (!mm || !mmget_not_zero(mm))
-+		return -ESRCH;
-+
- 	ret = pagemap_scan_get_args(&p.arg, uarg);
- 	if (ret)
--		return ret;
-+		goto out_mmput;
- 
- 	p.masks_of_interest = p.arg.category_mask | p.arg.category_anyof_mask |
- 			      p.arg.return_mask;
- 	ret = pagemap_scan_init_bounce_buffer(&p);
- 	if (ret)
--		return ret;
-+		goto out_mmput;
- 
- 	for (walk_start = p.arg.start; walk_start < p.arg.end;
- 			walk_start = p.arg.walk_end) {
-@@ -3294,6 +3297,8 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
- 		ret = -EFAULT;
- 
- 	kfree(p.vec_buf);
-+out_mmput:
-+	mmput(mm);
- 	return ret;
- }
- 
+> IIUC guest_memfd conversions was not illustrated in the RFC: what
+> happens on a shared -> private conversion?
 
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
--- 
-2.53.0
+There are none yet. Only VMs of type KVM_X86_DEFAULT_VM can use a
+provider, so all their memory is shared.
 
+> Does your provider need to know if some memory was transitioned between
+> shared/private states? The provider can be notified too, if
+> necessary. If not, then isn't guest_memfd doing all the coordination
+> better than going via the provider?
+
+Our provider does not need to know, and I agree: once there is private
+memory, guest_memfd converts the pages, so it should tell the others
+what to zap.
+
+I think the two models meet there, and the v2 cover letter now says so.
+The iommufd side of v2 does not pin and keeps no references: it asks for
+the frame behind each page, treats a page with no frame as a hole, and
+maps again on a revoke. guest_memfd can offer that for its own file:
+shared pages return their frames, private pages are holes, and
+guest_memfd revokes a range whenever it converts it, in either
+direction. That is your [GUEST_MEMFD] -> [IOMMU], and it should work for
+folio-backed guest_memfd without memfd_pin_folios() or refcounts, as
+long as guest_memfd also revokes a range before it frees its folios.
+
+The one difference is that v2 also lets iommufd map a provider file
+directly. Going through guest_memfd would add nothing without private
+memory: it would only pass each revoke on. And memory that only devices
+use, such as MMIO, does not go through guest_memfd at all. Both paths
+would use the same iommufd code.
+
+> Does the revocation model work for you? If it helps, I can rebuild the
+> sample provider to illustrate how the revocation can be done.
+
+Yes, the revocation model works for us. v2 replaces David's sample
+with one that moves, donates and makes pages read-only, and a selftest
+that checks the guest, the device and the VMM's mapping after each
+change. It may be a good base if you want to try guest_memfd as the
+provider for iommufd on top of it.
+
+> 4. [DIRECTMAP] Kernel direct map.
+
+Agreed, that is separate. The memory we have in mind is a range hidden
+from the host with memmap=, so it is not in the direct map.
+
+Thanks,
+Fred
 
