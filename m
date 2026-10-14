@@ -4,92 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 984AFCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 15:28:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFD8CCC6B24
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 15:32:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5176B0099; Wed, 14 Oct 2026 11:28:52 -0400 (EDT)
+	id DD4226B0088; Wed, 14 Oct 2026 11:32:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95E3D6B009D; Wed, 14 Oct 2026 11:28:52 -0400 (EDT)
+	id D84506B008A; Wed, 14 Oct 2026 11:32:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 829E76B009E; Wed, 14 Oct 2026 11:28:52 -0400 (EDT)
+	id C9A886B0092; Wed, 14 Oct 2026 11:32:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EF386B0099
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:28:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C3AF01A05FC
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:28:51 +0000 (UTC)
-X-FDA: 85321614462.19.959649C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 25A8C18000A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:28:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HkaTxe82;
-	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id A5D366B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:32:43 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3ACAE1A060B
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:32:43 +0000 (UTC)
+X-FDA: 85321624206.09.133FA66
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8AFA1A0009
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:32:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OakyNMZZ;
+	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791991730;
+	s=arc-20220608; t=1791991961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t7CoEsDiQ1jsv+tlhphmD5A0y/E12bIMAu8++omEJbs=;
-	b=DqFkrqkp6cvuPL7EUqHkc3iDIcGqywIzt5rBSU2+34Zp1M2cygBH4Fxuqyf/vvpSgI0K0G
-	5IoVlhGDO845FVzYGHWl8AO2GA8qmyCJO0bCi4XXQPpz1hEoka7kU0YkzMYaoyuURX0HwT
-	dtWsbTFJOEVwbK8TpfpQ7UVllqYm5xg=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HkaTxe82;
-	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7drg1auP9RpxmrNbLDzwzOM6Q2TABIQBS9mj++ncBaE=;
+	b=dkJpEdaLqL5dvebCZbq4EvMUZfdn3vrX7ZjFE0qIJ6C4wNadr73L2/BuyakWeIY1J//c+e
+	fOT+ty8lFqmXuoB3uy8IjO87XUfFJy740VnFs62W+Fl2Dp+qSmghWn1ThaOWTUt3Ar3dNn
+	0ukwlh0vpby/7ejyKjQYZkgorte08XA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791991730;
-	b=xrX/XsEwLsum+4iqW0B0OQQhRBHNS2i8WIlPdcoosYUU0g9S3HhRmI2ScS7uEjvvQoZ33t
-	/box8sy3sbYINpqowGM0Ls8FxKgjGjV1NF6K9lKthsVrwL7cYW8qqMyI6+RjUA5Y2C2loh
-	P1x0YaDYwDmhab3xdzAgReIHyReyGRE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=t7CoEsDiQ1jsv+tlhphmD5A0y/E12bIMAu8++omEJbs=; b=HkaTxe82hu/bFQSTbhRkxjiCdg
-	wjyuZNDWtmdTLnSjkttC3dT0SQtUvsPIWo/kKFs7Cc/Tl4o0PWlXvyPU6hwB+niy++R12oPEDZ49H
-	fUlpIflEtj6ZgWkt45p/BlmRmY1Qawvk1qdmv0KFtJsCxMBkUhyzQoTOhTbcxBj+tZLkFYI8dOPBV
-	YXArFtljlcMFUYLEOi3HpHl4jYsFHtIkYElhiHDU+Li6NCaVU6YimndrXML15zdWILcEY9xNCO7T8
-	KVJutzjpSEPyftDW660jptFrUWhUd5a3fSqj0vwQpr18Gf/ceFxgG+W1hYHT2M6HWP8Md0YvZCp1/
-	GDeIQ0Kw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xH0uJ-00000004ndB-0BKr;
-	Wed, 14 Oct 2026 15:28:43 +0000
-Date: Wed, 14 Oct 2026 16:28:42 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Ilya Gladyshev <ilya.gladyshev@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux-MM <linux-mm@kvack.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: Improve page refcount scalability
-Message-ID: <as-fqjiGj5T5NLOe@casper.infradead.org>
-References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
- <as6vBoWQGglxXxb0@thinkstation>
- <CAHk-=wiCe2H33izZHDyDHEhcFwUr9fXZk27-WZ2vn_pn5FcZTg@mail.gmail.com>
- <as9rk-T5cedl8Myq@thinkstation>
+	t=1791991961;
+	b=XkJ4b+xnWeWoO7m13FCX41/QClyNLFuCJTnvkDzfz7IuoCRyw2XRVrD5FbzxCN16FEYRd9
+	Flq6RBxLg4KKHE1S8ZXBgfYm+Ww3KU5sQR5dRjVqFA5S2+E9LrQ0mMT8qHMCS3oB9j0Sxt
+	3VxnZq8ObCDmzbNKmUJlmNgSK73cydU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OakyNMZZ;
+	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e61ac64ec3so37305555ad.2
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:32:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791991960; x=1792596760; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7drg1auP9RpxmrNbLDzwzOM6Q2TABIQBS9mj++ncBaE=;
+        b=OakyNMZZDoCPVMOPd+Zw6ZCHp88t5PnImUAVY5y7lrpuFZbT1xZzpvNNkzwc03jvj5
+         rqoR22zmNqHJkInzjbEGNUUGDmQZWx8YLauh23+kME4SpjngzySzqyX23JbnC9EWMzLe
+         CVmVu+ewtjN04q746qDdJDkM8mnjZQaK3juMVq6ERUAGImvsP6KipP0hCtwYVF13jz4/
+         aqRRLQjCIZGzd45BmzcwdxJUm3CJakOBtEDI/6PRncz1I6iCPpaJsBDlwR2GxcNTe20D
+         SEQnbhqTpDhcQ5iywil4yi9YtEa8WLDOXNQgUxlmBhvp5ScZug4dZKe7n1goh+xcK/mH
+         KBZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791991960; x=1792596760;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7drg1auP9RpxmrNbLDzwzOM6Q2TABIQBS9mj++ncBaE=;
+        b=nlAmof1UpsnFxqcRDBd+bFFJ5AianhiIbgF3NvEhAZVdjPJJhG8V9elC9/bzLsUaC6
+         Y78gz5mUhoHCXgUlDcjeoMEFaLr14+Ju6+WYJ8GbUK+EEFnt3vLJU6lYGnosMQR9JM21
+         Sw1Ppge+6IfUgUPR2tfjwLZTGFj72zS9Pf7KUOhLLhlZJ4i9oZIiGnBdwBpqrsaUsCKG
+         ZTo/Nh63BioKd/iuF93ZoaZIRGhjQpAZd7aTLhGfXWKPLx1naB9SWOeVUeoInWvbDlxG
+         zhv54UqaPDbupmqOCX52mvKy5C9zptFNiv/IfpOzWw5pq6yhCZbsf9Qzqg4mdXPdqOOR
+         6A3Q==
+X-Gm-Message-State: AFq9FYLCpxBxKy/yhhcXhHNQBalGcpP2u7XCV0Tqv7Af02v4SV5S437k
+	f2DStUdVx/JC67xEUsfCcFi89jxZN+R2NxZJdO4Ov/yeBEw2gfhNgk0aPVQtmg==
+X-Gm-Gg: AYBFou2XBg19zx20obryeZa9tMf1USqxPxzG9eabFcUAcX3cudkBCb7sy1gRyI642TN
+	giS6gySSwg0oaSkwZ4d502gE3KaGo4f/A9Rq6KLYh2BpdFczhvEH0kMR41neQqtiliQn6RdIwlZ
+	KhDBvs4kQbN1AweeaLtlEoZ+pY9VuJuxqjDhHFp7A+ggcWTp9Y3b1o1S77fqCUiLEC221qLaxKE
+	UXq2HWfU/7HmwltwMBtV1wP6WRB9bweDyeiFKc6qumxxGFXeRPCntT46OmfN7yVfxv/xns1GcAl
+	urYVRXZyl/Aoo4G9vdDjf9Nhilhz2ZlhhUkVrYTiyYX/dPc7pulrEg9MltTeR1k3OqWvyBMwakP
+	7fIR8V1cMOl9GkVPQWjNAtodyIuTUCHLzg0+tjM1oSiq9Q9Ndm0asWqAbT5lmjidsU5A2WnW+C0
+	AkE8o1ZTqEyC7duR6n/IxspEVy8WWlENuKEklCtCtcsEweWuxIl0i21PLZY4ZtdNxqBZcd28ckP
+	pF6kWqwl8cDyxthVmJAXd9O
+X-Received: by 2002:a17:903:b8f:b0:2e8:3190:74e with SMTP id d9443c01a7336-2e842e02dbemr136560325ad.57.1791991960190;
+        Wed, 14 Oct 2026 08:32:40 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e9113d213bsm24771975ad.38.2026.10.14.08.32.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 08:32:39 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [PATCH] mm: numa_memblks: remove local copy of numa_nodes_parsed
+Date: Thu, 15 Oct 2026 00:32:24 +0900
+Message-ID: <20261014153225.741884-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <as9rk-T5cedl8Myq@thinkstation>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 25A8C18000A
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 44ue6hpicej4gb5efpmxnendc9q4poyp
-X-HE-Tag: 1791991729-716285
-X-HE-Meta: U2FsdGVkX1/ibMQkL34jtETTJGyIdDULP8V3R19Zyxab0H+W1Sr2pE+ECBVTxEcBU95xVNJdiChI/2ujU+tIurjD87XZ2GXc/bHp8ncS3sF8VPYcc2eoOW1vhwuY2KPJrFIzdMnRVYVXzbgiDqIP84DVhuaPduaxs9jcFleGWEHAf5lArLA6kK9OmtXJZUKXadT81KMC1NYMh6Zi9pLiwAXoLzL4Iee951qDhBhWCDYzx4gcB8a1keaJNINnWSfNNGACT5JFEa+5szeB8PZ05I3N7LApUWPvaQtLnrQCrnN4fYf1GzHq6m/VF3Pa3jXLqsvnOJxFcxxf7hgDPpdYg6aQLNOx46MajyBzFsKksK9ymoxANEh1GgPiih3BWBYN1XrNiBovMqJ9Z6Pyjz941TgxpJ6uOXKRppaluTuuL5P5iJidTE9QZDSPgi9b9MdRAens281lgnaCV5rvKqzam6ehO1glhEfPipZmT1q+WBhZnFrq60zayTsGbAuuYVCU4aYHscbMNxKaPJaQlEKyZq80Uas8K5ZvLzWEt3LJptbp0EWP+LOecKBFnDV6xEFpHrO6AjIpw+VFWfr08HkIFyUc/OyzRnBFLBMdic2eGfaeHgd0YgyxIV9CWf4MbUoNxlqJWP5NYkvryF0S33MNWj5mWPEKcbnMhEo9tVuPKJGe6FN0gLvWErJ2Ny0CByaYQeYnhW2X+0G43HXJHuIvu6kjQ68PXC70Oo1U88MgSn3c9fKnIAY6hvUdKrsh7dpgjxi7iMBQzAZc0xF+hS97K85u0e9GcQywO09V3NhFQMcilY4B1tXijqLkEBoOjkb5Ek2BZhh2hrogXbexjmAp18LWd8uyeTkZ4Huvble9PDnhYnRnAq7Glc7JupMUmNNZqAHCoN4H73OqqQGxBtsf35viF+xlrwO23ieRlnhC+yiV2V215dGLLx5e7/SO4MD09Lu97VeBc8NmL1nD+7s
- auspbfeO
- jW4dD5RQMGzBITmVts5d4WfutIPaubvs/uvHVLhGVAI441JSyKzcK6u7RnhyafalhHncAnOl/fFR6WS89LxBvjNUGtOOrkwvuk1a7EqAAR+XkZGajxYKonGbTdlvdS/UuJLVKajB7kE9paKH6gExDPRye3sdeDX3gGT8fXMjnX/1TfhuSgDPB20c4S1HA9vq6+DfmkhmX1ffRRmmz2ukd1GDABJX1gchm24bI9O4oodWJ73lexf/Kxh4G+KmVJqbMxNLvl7xpaSCKYig=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8AFA1A0009
+X-Stat-Signature: tc1cui34zmmn84nzbuj7k6em97mwd94y
+X-HE-Tag: 1791991961-256723
+X-HE-Meta: U2FsdGVkX1+fEMXQeHb5fpkPlppKHoBphbRCy47nhj8Egs04nTXqfOumIDlTvL9o+/DIbUZDqSqq4lnByFHOAcq8PtMXMAzSgSDQNi3Sp5bdwxKuhJJn6pZmt3is5r983FisZByvtQTUWHSluWDx5ybWktj//O8scuskcICHxKD5HTumbSSjI5gJmIxW23AF1hGdD8/M/BhOn893JPxWcFrErqJhmcNmJCZ1yU/J7e/sFdHyiWPw2EpZ57yzfKf8KbWDZFu4AbLUegeUozokQ4AXDemT7/BL7mP3GoL1z9hhaFGiaMzBGNIpjGAHBr6k4AeAsjAm6FTTEgV389E9/VH52rl1HoeCf/Do+zkcFj8+u5c53US1um3cfXMfA5oE6D/bgU0Zz5exORsM1W8ltAecgEWXqidTBgLjnboIK4gZwSO2ZBNk8c3LDJBMVS9mm/yrJw/DMLroMnOckcmc4dvnhUAXnEVavUBcEVjeSCI3ZwOWV/ddLyyqhtVWpIqbJ1il5HzPVYeEpXdcst8VsSfBMN3gb30DHK1JI8pxSog9QgYg/ox7yOtL4RkXYlbPBUUKPdGkqTiKUPjgjHxnVhquYdHArXSxFsPRLDKEGFKNqW+zODL7HgWgeGEra2MLLpCaJvMdR0wkX2yl/pA5sgb+NZ9lM2vrGz6JcVdJvimwh23uWmGuFwr2S0WdntnqUsHm2umQbOTtaMta4n3J5V2XjiO7Vas5N9dClLTi9cfn2zldotA6hwKQWqgdhE7B2IJTRugxgM8awV9YFU5OD91V8+6NK5Osn2NJJo6dSpGcPvboBWOxWerK5vJLE3PaVTFR2RQXGCMlOIGNdzvyRqN7ayjQdSA36fia8yRzzubrShxBQdVbpK0bvaUSFR3fEVGdl76P4F4mG2yJrnmMGDNWlOalep1qCdIlMAp6QvALGnhxW0F4QxFf4EiGDgCTUgzbzONnOSm/4PvEA52
+ T26bSF/d
+ VLA6Wwd0w58NyVcrzflQj8QiPBMhZBjl1NjhNC5AJfNk7/OSJTQkPGjFR1XzeMForcfF2puQZo3zCYFkAH0VD5gqLfxrxxlpTB0O1X6a8pqCqwuw4wXnnSy0Etm/cAggTeDGUx47ZGr5l8TlW5tK4yEYhoCjeW7wIvohW8l4v69RQxPT6InNOhNkZAFSmZqwqlIRQtm+2wnA/n0br/0UyzglgzV89HopQYuU95dYlnhzTrnIPYprqchs2yXNkheUKPsPuHKCzwPA9G19RbFEfOjRR4azfleBtxpPw9sl8GnbDYRlC3MDVU6IDTvaSZa4QVC0rqZH016Joq/orE4yZFhvtcL9kR258PBIhb1seQfOP2KXK7zCl2wV4/1Iq7FEo5K+cHJz9KfWImzmiywtfdVJdLN7qafkLvc77C75VPDGEd58qh9FejDLcEaR6MWWIVDJKrReb4SRQqow=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,15 +114,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 12:53:11PM +0100, Kiryl Shutsemau wrote:
-> The uptodate check in filemap_read_rcu_can_copy() has to stay, though.
-> The flag only says the folio was uptodate when it was marked. Some
-> filesystems clear PG_uptodate on a folio that stays in the page cache,
-> and that can happen after the folio got the flag.
+Since commit a9bafc1832d2 ("mm: numa_memblks: remove redundant
+numa_nodemask_from_meminfo()"), the copy of numa_nodes_parsed in
+numa_alloc_distance() is the same as numa_nodes_parsed.
 
-Those filesystems are buggy.  We have assertions that the uptodate flag
-is set on folios mapped into userspace, and filesystems going arund
-clearing the uptodate bit will cause problems.  It's something I'm
-working on removing, but since it's all connected to writeback errors,
-it takes a lot of arguing with each filesystem maintainer.
+So remove the copy and use numa_nodes_parsed directly.
+
+No functional change.
+
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ mm/numa_memblks.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index be6e7346f6c7..1ea6871c0eb5 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -36,14 +36,11 @@ void __init numa_reset_distance(void)
+ 
+ static int __init numa_alloc_distance(void)
+ {
+-	nodemask_t nodes_parsed;
+ 	size_t size;
+ 	int i, j, cnt = 0;
+ 
+ 	/* size the new table and allocate it */
+-	nodes_parsed = numa_nodes_parsed;
+-
+-	for_each_node_mask(i, nodes_parsed)
++	for_each_node_mask(i, numa_nodes_parsed)
+ 		cnt = i;
+ 	cnt++;
+ 	size = cnt * cnt * sizeof(numa_distance[0]);
+
+base-commit: 5728d3523f12826a2b180c1c5738f74e33197e14
+-- 
+2.43.0
+
 
