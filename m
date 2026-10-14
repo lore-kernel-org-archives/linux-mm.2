@@ -4,89 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7CABCC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:47:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3FD3CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 09:51:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F29CE6B00D2; Wed, 14 Oct 2026 05:47:14 -0400 (EDT)
+	id B14086B00A0; Wed, 14 Oct 2026 05:51:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDA786B00D4; Wed, 14 Oct 2026 05:47:14 -0400 (EDT)
+	id A76FF6B00A2; Wed, 14 Oct 2026 05:51:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E186D6B00D5; Wed, 14 Oct 2026 05:47:14 -0400 (EDT)
+	id 964D96B00A3; Wed, 14 Oct 2026 05:51:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B6E386B00D2
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:47:14 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A266140452
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:47:14 +0000 (UTC)
-X-FDA: 85320753588.08.B0C625B
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6141B80005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:47:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=UNWzPU7G;
-	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B05D6B00A0
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 05:51:23 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DBE0F1C3C6B
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:51:22 +0000 (UTC)
+X-FDA: 85320764004.05.2CFAA56
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 32AD814000C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 09:51:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EeBYtdAq;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791971232;
-	b=p7/OLt0omZ/8Zi73XLinV6VmJwJcdjJFVPn0xYhitoXu9eqfModoEIVPORsaE9QVUNUvKU
-	0Z+CTyQOtjLbfQ5P6QT1jC44flRIks5XM7wGNiKlxx29zrOdS4udsDvHETZOhyR/r1HhqD
-	fDxB/xvnWoxHJVjItPTLtQthrC3YTl8=
+	t=1791971481;
+	b=yEc4TC9hgBJ1K2XHb0GsvTdxo4q/k3fpkyMj3XS4WHG6n1wrMtjn2+lluFO12wtuLlfU+F
+	EQLVjQywgH2A8ko3osruHzwIGquuKxUKUPB4IKPxFM9qMEAEpkO8Frf+HxjcwWjio4uKbW
+	WzCRPBYBnhp3VDSB/RuZ4frUHEMXvhQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=UNWzPU7G;
-	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EeBYtdAq;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791971232;
+	s=arc-20220608; t=1791971481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WvSSi/qfex9riZEpa78JUEMn8C07c1f5TdCJDgGPBWk=;
-	b=u6+OYcODyL6Vj7wkOjRBlyw0B1Kqn6nWYnF00WLqKpCcAqsPryahMDYLuBhvqRHo7goR41
-	cF5MVdacH465LY3QDpCVuSU5VN7EkHJ13/3JHZ8XJSPwXmuNH2HdMarLWb6IN6tjxH3wa+
-	q2cENqkx7XhhG6hqSCRbTLg2WlU+xME=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1791971227; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=WvSSi/qfex9riZEpa78JUEMn8C07c1f5TdCJDgGPBWk=;
- b=UNWzPU7G/WKZtu+E2SlLjQSyjdH2ozBiMRrQCqdQqq5uL1k0IAqbf/KeqKt8zVXJcxSJQo
- zrJUKakCB1m4nYJM9XRplGQTbkVW/1I6uGihVaxjpdYxmsee2npPP6+63lie70RzZyArXm
- uffBP67OCtRFibDRnc+We89rPxhlooK2tkuZWVOSHDFybamQBqL3rVwMJFsYnmqss/nSNI
- f71ZrO9ONsgcj8ur58DpsJozBPqLznHK9aIcpuAOjqt7vTYtUAI9/w3eaV8jr6OszJjWP9
- B6b45DhBabq0hc2bhkMa6pKo/reYOT7Dnp4x2TAVjVRJ8zUCKviIM0L0rOV0zQ==
-X-Mailer: git-send-email 2.45.2
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Date: Wed, 14 Oct 2026 17:43:47 +0800
-Mime-Version: 1.0
-In-Reply-To: <20261014094347.99157-1-lizhe.67@bytedance.com>
-References: <20261014094347.99157-1-lizhe.67@bytedance.com>
-Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, "Li Zhe" <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: [PATCH 6/6] sched/numa: ignore preferred nodes without normal balancing
-X-Lms-Return-Path: <lba+26acf4f99+4829ef+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>, 
-	<gourry@gourry.net>, <joshua.hahnjy@gmail.com>, <ziy@nvidia.com>, 
-	<mingo@redhat.com>, <peterz@infradead.org>, <mgorman@suse.de>, 
-	<riel@redhat.com>, <juri.lelli@redhat.com>, <vincent.guittot@linaro.org>, 
-	<dietmar.eggemann@arm.com>, <rostedt@goodmis.org>, <bsegall@google.com>, 
-	<vschneid@redhat.com>, <kprateek.nayak@amd.com>
-Message-Id: <20261014094347.99157-7-lizhe.67@bytedance.com>
+	bh=g7PVsWTOJqkiosjUN8H7OzSWCN6+Mwp1tgv/kocb8dk=;
+	b=FTPrimxBF2I2N3H3Dom+9SuWwbqWboMaWgolZHor9dxMTWZc6UXxMl6EBpMUtiKsLg+cps
+	oo0C5F4aAyNNvlDktB7jlgL6y1RqlGqZNdblZh8p2e994+3EgpSIt6yh06jL6ppdctfP24
+	bSQGI9c7InsJzrD4Gw5rX+hUvU27QiU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791971475; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=g7PVsWTOJqkiosjUN8H7OzSWCN6+Mwp1tgv/kocb8dk=;
+	b=EeBYtdAqEtoFxNGTgxbeiLe47ZZXfcAnhEMNZnpOoM1c7nTRciDbUeP2iIH0zED5Fl3OXX9QO3G6SLU56E5XLruGC11W0Nl6SLBgv8rmLMAzu+brXv4Sqrhg1o6RuCZCJSiyhqQgGNCKIAjBkYn/Y3mKpZD5l4sknux+/0o5tWM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XCon-04_1791971473;
+Received: from 30.74.144.153(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCon-04_1791971473 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 14 Oct 2026 17:51:14 +0800
+Message-ID: <41966c48-3a10-43e6-9b12-f15a9621af6f@linux.alibaba.com>
+Date: Wed, 14 Oct 2026 17:51:13 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: memory: fix truncation removing mapped folios
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz, ayushr@modal.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com>
+ <as4FIaQlxb_nqyX9@pedro-suse.tail5790ac.ts.net>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <as4FIaQlxb_nqyX9@pedro-suse.tail5790ac.ts.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6141B80005
 X-Rspam-User: 
-X-Stat-Signature: s3yocuhxd677k9amajhyz3hky7pj4tbi
-X-HE-Tag: 1791971232-728758
-X-HE-Meta: U2FsdGVkX1/701ZTvEx4ERQaYmtHeTHzExuCZU2bE3pEP1g+ZHP3qlGsjeaeGNehI6maQLnS/ejLbPn/V2BIhL6apgl7z+vkb8kn/3od1/QM3CEFgYCP6Qm8oYmAKiXxlOo01wCW0iN9CGqa1JQs5TZ2vmHefz/bSRapOIBzbSB99kScy1TSNYtyNhWPMqdWDP9qGHLc00oZ7GsJL99SbeEvSDRhT1zyoXX3sXp6K1zB0YKMdJP0KUk9sihqfk8M7BLZrKxCTZPV6002+kW++ZpRs3oDxxC28OlUQQ8Qb0PNGa/pVYYEiSxfaFB4hnbqvPDNrGMSbEaevd3+g2h0YfKS93GHLapbOS2GGXYedsXN9Sfs14OqGpRSY9bOq6Nyfo4CGJuhd0WF0Dv5nYq8X2i5mFViAmUpFNes/CQ04/SYkXaoRS4k1ZdSJE5TC5AmBgVuTUDaHthL2OlD6bYu87rr+ULxFLKS/pphSSRC8XTwbEtHIFMj+dLYhYSHCn2B0KmXh4SOhyVGy+7/27uCrBURc9brQQ0kbHdoL32Z44ajloPLcLwlMdtSxvYflZMFZ9v73VFR/onNDFvP2v2yZo+0bnMx1f1ybqh0aVUTyFw9rOMNCXgJpmcNf7JcAjk/taHs92EvR32n3H2Dm08gsPp+noNVXemtz4LWkIysWCR3hpxTKJ/7LLdFyiL/B9MKtJwiXbNTZLVSJ3+cbYrvkeoW6ayFrQoIYKvOxqNkcvkpagxv1Ll4wPmN4IBWSa1ZLY7vG1G+28lxmdzQNPBVdGCATBm+Y9SEuzkaGcprSmoFJJ0ax51J8MdzbE4OQp3H3pIN4Bs178xnG+b5rjZMXBmN5UEF/zzEvoi0L4G0R0Z9hposZv6jMH7S/mA1UUwizPaZQe4bQuizLphEvn6/7siCmnAextLFn04E6GwKAS7IsXlZw/baGmeTGhI2C4Z77x9UpDKYLZxWmOiiVLL
- Pl73QH/h
- ufZYomWt8g17Nl2dZOwQt+mzssXBY5PDWtXte2JBByM8QvSkXPgksZlPmLLsg5R+rH4+7Z1O34ec/IhuWDt1mm3hWSAyuUrOEhe9NAxn5Y5se0nF2VpM6jwTYpsPdNfxvlf1pcjdXMAkIAC9jdiBBiaR8hEwZsoFbK1osp9FT0UK1DqnrehKl3hXPw0Vrj84zqdRW6Xlm3zCdfjPoxIWTjpPmt2ysaJDTswdP33kZ8DUQqVJ2Qn2UwJ/usyVo5gdnc2A5ssMV6mU07Bi4dzB7SOPXEcayemBbtT8zx8OhfJwY5Z3Gtyg+eKbYckkP3b9NqHb0M1/G7oRssi0=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 32AD814000C
+X-Stat-Signature: nhqyod17wnirb8bi1akqmthmomkcaaq9
+X-HE-Tag: 1791971477-20145
+X-HE-Meta: U2FsdGVkX1/7YYVkeHpoyY6iWNXtVwDYeqXs0y3lFhJSvwZW5NPSN3laUet2H0WjtI/p5uV2DIHYY9mIRySdL7/U8ERCaE2f6ALrD7zOlXkzZFqF6X63JyOlaTNcU3HZOTPiCBQ83f5Hf7nSlaQ06Wh/I4jux0IoXQvA3VGSsR3JG7NgeTpUANJo/7c6YJIKMsjdsbpF4TDVzlR1tuUGJq52GMUgAek8KUJL+Gx9TrmI3O5ndX9QIGl6Xlj3eLq/CG6cjwNvkawmDTtLzkJxPICF5E8HtYuSlbDguUxoDQJhN3iZp0rV9iAUUnXgOjJe4PZk/kDZOatMEMYtyanipYhrNWqHpL5uwsZf7WUjGOzBQ8N/X6Z1Hl/HwwNbfDpw0b8QUMiVAD/9iH3DoWwfrT4pNWMFzZfUVLsJlnn0RWsdf1wSxL7R/t3Zf4rG10CIm9u0HpupvBfcT8WM4YXOfzC4VGEKz0vVREJ1DU7AZiGTxzi9gb/qftr7MkmQmeJVbOAgbq70kUwtH5b0kgrLOo+k2tQPbS0L4xWqVdNN6rDoy9cmUyVcmNeCfc/0mfU2RXKNPxGt38+vvOfspAHrpv2NAXd0Z9SaNOvkfZZwEO0Fu05ywqPws87bkkPACrRKRuQGu7dr8q9j/EEK3RHx7u/4ElTB26qIhknKKmgcuW88033jUZojpvAitNLGMQBNy/gkWGHfWsCiHTamuAE/AvYeSS21OzbutetFRlPn2NsRUVRIIOHwWVkm2oV/89B3tp9vncyiTYrFoXOSI/jW8hAJi2AmU4JpUCpu6c4q3CFxjNVhMPvbmm/f5cZDIsOYxWDZVXXenvDyhJ4xSaHbMLqnVbmUX56b52glelXBUgbfgpd5DO3usUEhpaYlxEcs2IKesHXJVHkLLePWKCTt5eFZm2+Z3o3XNG+0FsEhovf7gbH1M7MY/ml7Hwl8LxT4RDSgNgSIpuhD+MaHswB
+ xeorCTY+
+ bQcBzihr80DfYw4oXylEBDHBu7990NuiJRETdo1/2/SzSMF8c4V2UHQFqpTqi/Cqr0ibCOkwf9c2rVITDrqTU0D4Jqxu1SenhnAWODsxUve+ujjw567qTuO8uhmX1uPkLr1yO/nArw7cVz+Hh6fnDWC6ac4Vj6FjPxjugL825zfbpbBTBs356+SzsVFBln0jj8tm/foBLY5dIrFfZ5ohYDGpTBnsiqqdADfj/rPC7lucEXtSGsphuUH19m5xwbce+IH1m0YnVT2Sbt1xtEr23u7Ib28IPodog1B94nelgPLzyOoM47eC8RdL+iGv2lfMKtLQyN9eVnf2Zw5l4ijgFheRBDf4SZlI/3y7JCOjibi254hRxrcok64T2mTresWrn1IVU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,157 +89,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-numa_preferred_nid is normal AutoNUMA task-placement state.
-Memory-tiering-only mode uses NUMA hint faults to drive page promotion,
-not CPU placement.
 
-Even after tiering-only faults stop updating normal placement statistics,
-a task can still have a preferred NUMA node from earlier normal balancing
-or from previously polluted state. Several scheduler paths consume that
-stale state when the NUMA balancing static key is enabled, including
-explicit NUMA task migration, sched-cache preferred LLC and scan CPU mask
-selection, load-balance locality checks, fbq classification, and wakeup
-group selection.
 
-Add a small helper for normal NUMA placement being enabled and use it to
-ignore numa_preferred_nid when NUMA_BALANCING_NORMAL is disabled. Keep
-the preferred-node migration retry timestamp update before the normal-mode
-check so accepted non-normal sysctl states do not leave stale retry state
-behind.
+On 10/13/26 6:24 PM, Pedro Falcato wrote:
+> On Sat, Oct 10, 2026 at 03:22:18PM +0800, Baolin Wang wrote:
+>> Ayush reported an issue that shmem/tmpfs folios are still mapped when
+>> truncating them on production:
+>> "
+>> BUG: Bad page cache in process ...  pfn:...
+>> page dumped because: still mapped when deleted
+>> "
+>>
+>> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
+>> branch, and I got the following crash info. From the dump message, we can
+>> see that truncate_inode_folio() is really trying to remove mapped folios,
+>> which is incorrect.
+>>
+>> "
+>> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
+>> index:0x3880 pfn:0x191647
+>> [  189.171995] memcg:ffff0000cc073d40
+>> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
+>> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
+>> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
+>> .......
+>> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
+>> [  189.172026] ------------[ cut here ]------------
+>> [  189.172027] kernel BUG at mm/filemap.c:155!
+>> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+>> .......
+>> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
+>> 7.3.0-rc4+ #277 PREEMPT(lazy)
+>> .......
+>> [  189.183986] Call trace:
+>> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
+>> [  189.184391]  __filemap_remove_folio+0x34/0x160
+>> [  189.184633]  filemap_remove_folio+0x4c/0xb0
+>> [  189.184859]  truncate_inode_folio+0x34/0x58
+>> [  189.185087]  shmem_undo_range+0x220/0x658
+>> [  189.185308]  shmem_fallocate+0x2f0/0x470
+>> [  189.185527]  vfs_fallocate+0x128/0x328
+>> ......
+>> [  189.187078]  el0t_64_sync+0x184/0x188
+>> "
+>>
+>> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
+>> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
+>> MADV_DONTNEED synchronously releases the pagetable page before calling
+>> tlb_flush_rmaps(), this could cause another thread's truncation to skip
+>> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
+>> as non-zero. A possible race scenario is as follows:
+>>
+>> CPU 0                           CPU 1
+>> shmem_fallocate                 madvise_dontneed_single_vma
+>>    unmap_mapping_range            .......
+>>    ......
+>>    (filemap_map_pages() remap folios)
+>> 				  zap_pte_range
+>>    truncate_inode_folio		    zap_empty_pte_table(pmd clear)
+>>      unmap_mapping_folio
+>>      ......
+>>        zap_pmd_range (saw pmd none, skip)
+>>
+>>    filemap_remove_folio
+>>      BUG_ON(folio_mapped)
+>>                                      tlb_flush_rmaps(remove rmaps)
+>>
+>> To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
+>> to after tlb_flush_rmaps() and add smp_wmb()/smp_rmb() memory barriers, so that
+>> when we find a pmd_none() while unmapping a folio without holding the PTL, the
+>> folio's mappings are guaranteed to have been removed via tlb_flush_rmaps().
+>>
+>> [1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
+>> Reported-by: Ayush Ranjan <ayushr@modal.com>
+>> Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
+>> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> 
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Keep the rq nr_numa_running and nr_preferred_running accounting unchanged
-so runtime mode changes do not make enqueue/dequeue accounting asymmetric;
-the load balancer simply stops consuming those counters while normal
-balancing is off.
+Thanks.
 
-This does not clear numa_preferred_nid and does not change memory-tiering
-promotion decisions.
+> Mostly LGTM, thanks!
+> 
+>> ---
+>> Changes from v1:
+>>   - Add an smp_rmb() to pair with the smp_wmb() (Per Lorenzo and Pedro).
+>> ---
+>>   mm/memory.c | 29 ++++++++++++++++++++---------
+>>   1 file changed, 20 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index 6a8e7772b8d6..c3a1faf580c8 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>>   		}
+>>   	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+>>   
+>> +	add_mm_rss_vec(mm, rss);
+>> +	lazy_mmu_mode_disable();
+>> +
+>> +	/* Do the actual TLB flush before dropping ptl */
+>> +	if (force_flush) {
+>> +		tlb_flush_mmu_tlbonly(tlb);
+>> +		tlb_flush_rmaps(tlb, vma);
+>> +	}
+>> +
+>>   	/*
+>>   	 * Fast path: try to hold the pmd lock and unmap the PTE page.
+>>   	 *
+>> @@ -2044,16 +2053,13 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>>   	 * to ensure they are still none, thereby preventing the pte entries
+>>   	 * from being repopulated by another thread.
+>>   	 */
+>> -	if (can_reclaim_pt && direct_reclaim && addr == end)
+>> +	if (can_reclaim_pt && direct_reclaim && addr == end) {
+>> +		/*
+>> +		 * The rmap changes need to be observed before PTEs get zapped.
+>> +		 * Pairs with smp_rmb() in zap_pmd_range().
+>> +		 */
+> 
+> I'd amend this comment to something like:
+> 		/*
+> 		 * rmap changes need to be observed before page tables get zapped.
+> 		 * Pairs with smp_rmb() in zap_pmd_range().
+> 		 */
 
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
- kernel/sched/fair.c | 55 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 44 insertions(+), 11 deletions(-)
+Ack.
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index ec08406d1364..11b54bb353ad 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1328,6 +1328,21 @@ static int select_idle_sibling(struct task_struct *p, int prev_cpu, int cpu);
- static unsigned long task_h_load(struct task_struct *p);
- static unsigned long capacity_of(int cpu);
- 
-+#ifdef CONFIG_NUMA_BALANCING
-+static inline bool numa_balancing_normal_enabled(void)
-+{
-+	return sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL;
-+}
-+
-+static inline int task_numa_preferred_nid(struct task_struct *p)
-+{
-+	if (!numa_balancing_normal_enabled())
-+		return NUMA_NO_NODE;
-+
-+	return p->numa_preferred_nid;
-+}
-+#endif
-+
- /* Give new sched_entity start runnable values to heavy its load in infant time */
- void init_entity_runnable_average(struct sched_entity *se)
- {
-@@ -1890,10 +1905,12 @@ static int get_pref_llc(struct task_struct *p, struct sched_cache_group *grp)
- 		 * than sched_setnuma() at least -- and thus the
- 		 * conflict only exists for a short period of time.
- 		 */
--		if (static_branch_likely(&sched_numa_balancing) &&
--		    p->numa_preferred_nid >= 0 &&
--		    cpu_to_node(mm_sched_cpu) != p->numa_preferred_nid)
--			mm_sched_llc = -1;
-+		if (static_branch_likely(&sched_numa_balancing)) {
-+			int pref_nid = task_numa_preferred_nid(p);
-+
-+			if (pref_nid >= 0 && cpu_to_node(mm_sched_cpu) != pref_nid)
-+				mm_sched_llc = -1;
-+		}
- #endif
- 	}
- 
-@@ -2009,7 +2026,7 @@ static void get_scan_cpumasks(cpumask_var_t cpus, struct task_struct *p,
- 	 * current running node to mitigate the bouncing risk.
- 	 * TBD: numa_group should be considered during task aggregation.
- 	 */
--	pref_nid = p->numa_preferred_nid;
-+	pref_nid = task_numa_preferred_nid(p);
- 	/* honor the task's preferred node */
- 	if (pref_nid == NUMA_NO_NODE)
- 		goto out;
-@@ -3649,6 +3666,9 @@ static void numa_migrate_preferred(struct task_struct *p)
- 	interval = min(interval, msecs_to_jiffies(p->numa_scan_period) / 16);
- 	p->numa_migrate_retry = jiffies + interval;
- 
-+	if (!numa_balancing_normal_enabled())
-+		return;
-+
- 	/* Success if task is already running on preferred CPU */
- 	if (task_node(p) == p->numa_preferred_nid)
- 		return;
-@@ -10740,6 +10760,9 @@ static long migrate_degrades_locality(struct task_struct *p, struct lb_env *env)
- 	if (!static_branch_likely(&sched_numa_balancing))
- 		return 0;
- 
-+	if (!numa_balancing_normal_enabled())
-+		return 0;
-+
- 	if (!p->numa_faults || !(env->sd->flags & SD_NUMA))
- 		return 0;
- 
-@@ -12533,6 +12556,9 @@ static bool update_sd_pick_busiest(struct lb_env *env,
- #ifdef CONFIG_NUMA_BALANCING
- static inline enum fbq_type fbq_classify_group(struct sg_lb_stats *sgs)
- {
-+	if (!numa_balancing_normal_enabled())
-+		return all;
-+
- 	if (sgs->sum_h_nr_running > sgs->nr_numa_running)
- 		return regular;
- 	if (sgs->sum_h_nr_running > sgs->nr_preferred_running)
-@@ -12542,6 +12568,9 @@ static inline enum fbq_type fbq_classify_group(struct sg_lb_stats *sgs)
- 
- static inline enum fbq_type fbq_classify_rq(struct rq *rq)
- {
-+	if (!numa_balancing_normal_enabled())
-+		return regular;
-+
- 	if (rq->nr_running > rq->nr_numa_running)
- 		return regular;
- 	if (rq->nr_running > rq->nr_preferred_running)
-@@ -12843,17 +12872,21 @@ sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int
- 		if (sd->flags & SD_NUMA) {
- 			int imb_numa_nr = sd->imb_numa_nr;
- #ifdef CONFIG_NUMA_BALANCING
--			int idlest_cpu;
-+			int pref_nid = task_numa_preferred_nid(p);
- 			/*
- 			 * If there is spare capacity at NUMA, try to select
- 			 * the preferred node
- 			 */
--			if (cpu_to_node(this_cpu) == p->numa_preferred_nid)
--				return NULL;
-+			if (pref_nid != NUMA_NO_NODE) {
-+				int idlest_cpu;
- 
--			idlest_cpu = cpumask_first(sched_group_span(idlest));
--			if (cpu_to_node(idlest_cpu) == p->numa_preferred_nid)
--				return idlest;
-+				if (cpu_to_node(this_cpu) == pref_nid)
-+					return NULL;
-+
-+				idlest_cpu = cpumask_first(sched_group_span(idlest));
-+				if (cpu_to_node(idlest_cpu) == pref_nid)
-+					return idlest;
-+			}
- #endif /* CONFIG_NUMA_BALANCING */
- 			/*
- 			 * Otherwise, keep the task close to the wakeup source
--- 
-2.20.1
+>> +		smp_wmb();
+>>   		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
+>> -
+>> -	add_mm_rss_vec(mm, rss);
+>> -	lazy_mmu_mode_disable();
+>> -
+>> -	/* Do the actual TLB flush before dropping ptl */
+>> -	if (force_flush) {
+>> -		tlb_flush_mmu_tlbonly(tlb);
+>> -		tlb_flush_rmaps(tlb, vma);
+>>   	}
+>>   	pte_unmap_unlock(start_pte, ptl);
+>>   
+>> @@ -2108,6 +2114,11 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+>>   			sync_with_folio_pmd_zap(tlb->mm, pmd);
+>>   		}
+>>   		if (pmd_none(*pmd)) {
+>> +			/*
+>> +			 * Order this PMD read before the folio's mapcount read.
+>> +			 * Pairs with smp_wmb() in zap_pte_range().
+>> +			 */
+> 
+> and this one to something like:
+> 			/*
+> 			 * Order this PMD read before any (possible) mapcount/rmap read.
+> 			 * This isn't a problem in most cases, due to us synchronizing on
+> 			 * the PTE lock, but such doesn't happen when PTE tables are zapped.
+> 			 * Pairs with smp_wmb() in zap_pte_range().
+> 			 */
+
+Ack.
+
+>> +			smp_rmb();
+>>   			addr = next;
+>>   			continue;
+>>   		}
+> 
+> Also, as a note, I would suggest we hold off on this fix until the merge window.
+
+No strong opinion.
+
+> I don't think it's that urgent, and it seems like there is a possibility of a
+> nicer, cleaner fix. That and we need to audit pmd_none() sites for other
+> possible smp_rmb()'s...
 
