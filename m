@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52FB7CA9EBD
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25833CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:53:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFCA36B0092; Tue, 13 Oct 2026 23:52:52 -0400 (EDT)
+	id 5B0AA6B0096; Tue, 13 Oct 2026 23:52:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC4B76B0095; Tue, 13 Oct 2026 23:52:52 -0400 (EDT)
+	id 560676B009B; Tue, 13 Oct 2026 23:52:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C176F6B0096; Tue, 13 Oct 2026 23:52:52 -0400 (EDT)
+	id 27BC96B0099; Tue, 13 Oct 2026 23:52:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DAA86B0092
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:52:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0A759403E2
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:52:52 +0000 (UTC)
-X-FDA: 85319860584.04.CE85194
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1D9961C0006
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:52:48 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=QOqxztTa;
-	spf=pass (imf18.hostedemail.com: domain of 18766350203@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=18766350203@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E4BB86B0095
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:52:53 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59B06160422
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:52:53 +0000 (UTC)
+X-FDA: 85319860626.12.8E28C47
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CF0D6100005
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:52:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=iUMPATF1;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf05.hostedemail.com: domain of 18766350203@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=18766350203@163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791949971;
+	b=jkWZJZa8KfMSDC9P8C1EqhrF87FeyaD35cN+xjEY2yjNPmK9ukqbCu9qFoPLStsMwuspf6
+	kfiX4mLFngOsYL7RX8gNZQGpeeP2qzNlUzw9vkzz6l2LXZcXN/Yepz6tpIGwNhkd6WUkg0
+	aaeyxLjyrnhtAn7wgrzAgoSQACbQVOQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=iUMPATF1;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf05.hostedemail.com: domain of 18766350203@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=18766350203@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791949970;
+	s=arc-20220608; t=1791949971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7I4Ah0JVOQm1OSF3+TCarpY5Fjoooqn/9uhkbG0e7FE=;
-	b=krtNOYZVDMo4c1nGPhq0ZdYHxJZ+QN8ak9Upo117EhwdigeychpGv21cyF8FEeyMCVuVex
-	7J7Z/ZgDAFRgcjo1u7PLOIv8cP8MOmH2Ob1tK3O37263GAlcYxod+P6Wpyw6SEMVHEPCqq
-	umE4BxW20Joj9cFkHsQ0oWJT31WxPG8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=QOqxztTa;
-	spf=pass (imf18.hostedemail.com: domain of 18766350203@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=18766350203@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791949970;
-	b=Vf3YApp552p4Qmr3HqzT+TDh1vWjWoLtUOHYQ0GR4c2tBrEjefGoIYyvyG3F7Y83UjD9dG
-	p2aLtqkGR5MAjSBoNkEd+/9XJFAjDS9PaGm+gGuuHdHUXEpEYUs8uhlNxbkXx/B0RTFsIv
-	Rr9E349zccdw9B0iTbsL8ndCDg0GdZA=
+	bh=QcEsOUGr21bCUTpVOPyzctLEnKTSYTY97CZFKgs4Ic4=;
+	b=hixLqkCvYD69/Me9Ma4pPFdWVlXvyMaYeBWz95XHCDk+nt9mXASMvN7ELQ0E/0/rHDHvpy
+	/VTLtyJSjeiYNpFcdCs4s/zEcHV3IFArI7mniJr7Fu/HCv/4NSa7ms1TspVuMrzZ6bx7OA
+	0suSAAn5Hy+lMKAiYmWAu9e6sKUkDhk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7I
-	4Ah0JVOQm1OSF3+TCarpY5Fjoooqn/9uhkbG0e7FE=; b=QOqxztTaHU/KDDMRWs
-	qdZKtJ2toFL5dv+B5weTvnVzxv2avWG41VGnDWsahaetTdIh0sO6FsWMAgyNIBmc
-	gUIQf9aYxmyy06DWRCrQHYEovx/ZVyCJabckLRg4o/t/NpySTtzEpcSHWKoWm4W6
-	tjKwe9RVueeEhgAEMlz4U4zZQ=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Qc
+	EsOUGr21bCUTpVOPyzctLEnKTSYTY97CZFKgs4Ic4=; b=iUMPATF1Fun5xKiepj
+	kDdtAGw+EJQpDrOZxQhdsrliaxSvtlj1Rm19PBZa2hsFIIxIFwZhI/wzI+9j33lK
+	ZiNt7VbStip8JNHhaRqkO3RyhiNjpY1XdmpPI36vEHBTQfn6hUAolOaTjQiCVkr+
+	Mi8kGtzE+RahZgdXgIVayAMM4=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgBncnaF_M5qUtfjEQ--.37990S3;
-	Wed, 14 Oct 2026 11:52:41 +0800 (CST)
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgBncnaF_M5qUtfjEQ--.37990S5;
+	Wed, 14 Oct 2026 11:52:42 +0800 (CST)
 From: Haolong Wang <18766350203@163.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -65,29 +65,29 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/3] mm/memfd_luo: reject kernel-private shmem files
-Date: Wed, 14 Oct 2026 11:52:26 +0800
-Message-ID: <20261014035228.473825-2-18766350203@163.com>
+Subject: [PATCH v3 3/3] mm/memfd_luo: release preserved folios when retrieve fails
+Date: Wed, 14 Oct 2026 11:52:28 +0800
+Message-ID: <20261014035228.473825-4-18766350203@163.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261014035228.473825-1-18766350203@163.com>
 References: <20261014035228.473825-1-18766350203@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgBncnaF_M5qUtfjEQ--.37990S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAw1UXF4rZF4xZFWDKw48WFg_yoW5Kw1Dpr
-	Z5K3WrCay8KFyI9a97Ar109asYva1fAF4agrZ0gw17C3WvvrnIqFyI9FyUuF4UJrZ5WFyY
-	qr4YkryakF4UAr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07URmh7UUUUU=
+X-CM-TRANSID:QCgvCgBncnaF_M5qUtfjEQ--.37990S5
+X-Coremail-Antispam: 1Uf129KBjvJXoW3XF1xuFWxCF4kJF1fAr43Wrg_yoW7uFWUpF
+	W5Gwn8KrW8KF4fA397Za1jv34F93yfAFy5WFW7W3s7A3W5Xr17W3Z0v34DuFW5GrWDGFyx
+	Xw4YkryUZFy5Z37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jLl19UUUUU=
 X-Originating-IP: [2408:8418:c22:8000:1bbd:2550:438b:167e]
-X-CM-SenderInfo: jpryllawtvijiqt6il2tof0z/xtbC0wmvd2rO-IlSxAAA3F
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1D9961C0006
+X-CM-SenderInfo: jpryllawtvijiqt6il2tof0z/xtbC0wuvd2rO-ItS4QAA3g
+X-Stat-Signature: nyebda8n6f1ed6s4cxt9uxphhnon1szt
 X-Rspam-User: 
-X-Stat-Signature: 6fu5k7kg8zb95ibn7w8bd5jj8jigax5t
-X-HE-Tag: 1791949968-332215
-X-HE-Meta: U2FsdGVkX1+eZXUsMLWo+USg3n/6OLQoU9grosSSe3TjQ0e9l+V6TSvf3eO10zNfdGsyhUsfcMcPjnP1tFGZ3eu2i0/j8TV4iI1LKmouJV5w/EHafxi1fyrGTrr5qkHwxgYVM1i7VjcxzhvfV2cLHOf9p9Zqff/uQKqGJy+DQHwm2mdjZiuBtXtque4nEoePe54pdWPTmuysev4Z6+6wYMIxuCP5K+osUH3N2pPW8dfg0skXCS2O/oh8KjC1Jahzp4SuWd7yVP1KV4zn9KCUSOO+JvVjK88A6ko7cLnFH1kFFvM+4PilnoybW21Dk5m41gvJuNRmQgNpkTKU8e7w1Q7L4d2+XDLnY5oOHZWs2pR1xgIX+C7TG3Qx2hIC91C065UOdS/auaMW9oXyaz1AqNI4jxiuq6me+WJcGNDwiANvcgMyrp+h+kr2f36Xv1/diTaeqcTnu98Z8Iqhi49YSnVOw7v46zfcmTQjdCmGbBuTQ5h0nT1oDprwpKhSHCpZvdS9lgds/kQcUBW7RXTHOXyicxzSwf7DM+6WvHP2EZAfkjqFG4ppzQM7t8dX5L00ysdZdPp15LSSXZtEiFa4Cp8XawBD4yLnKixqbEbMC6/ln1Vq7WRSu7LRRkWAweYl8cyepbdxI+XmvimHDKLFvouHkVcFZMKj19qtsKIHKECYo2qvFWWoLEgC5O1CAEhaY6e1uaDiv1yZgnbjcryKxJujxKXod0A5zalh5g5ObLXbu84PKoRdAfPVBP3hwVkxBnwEMAFOkYfHMc7JlLWcprNRhFltTsUmZthG6IS4jfUkYo1ZDpKDRh6bY0SydYinUFhMzE5eYhh7MG5KDwAjordBRV0nDtuZdpcZPtNck1S5Aes2VPr6Xci7iaGrM9RYWpXMvclLNmDdeCPeQt05JuszVopjF0e7X2T92cTmuNaAKoI685KKv7DOAKW6M2YMn0e4oXoAdkiGlCcitK8
- hYavHnrA
- SwrSjWbVNIOvt/Tcvhri6pvFVp467gcYzoy1iQHABZ5HBbaUWIukuFUle8Q8ja9ssm/PK6UExnMRLs8hQIlMijou9xRH6w/oca7G6FvklbGcGGXqhIDGYOrwSqmSCblrRucdqK0JXYAzdCrLh8jHD/wXpJMi4b2TfXLQo2Ta9aO6NCzLPq/Df11bvoPEFU9Q774f7A3kmtTOmBTrordAp7beetTrK0G28xVX+3z9ko6qHJQc6TyRm3exz+pZrxYRqqG0puQGrC4wxpeq1S9SEH1ARyj4VfGqvYDzBBvOn/aph2pNufyM+xNpWZYNqzPDbTVRo3RemYBWW1LgUN9x0e1hJGvztd8el08mEoR8krPhSfG135Auz7vkMXZHn+/7+q+e9TqDpGHpMIa0T7+MbQORdjw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CF0D6100005
+X-HE-Tag: 1791949969-147660
+X-HE-Meta: U2FsdGVkX18wq683HWoaBHf/92qhoWLK4s2SS9pMlXIpn4TDAWkA2ADO4Hui1ffKugeP/eIHqd2Asok34bOg4jdZPLAnhO3NX3XnldqjUK7pcWadjejpUFwLGlHzbchyKhKkYneOO6two3aru2D999AQH1MBTg9EuyS/gANB3aarKw2mFnlNa+XSAmWO5d07nCx1zz2jW3pfHFfBOoHIfxtf7WTT1geexBKQRMI/RfaVCilAywJeHI9jfFylnUGnhGAJtsmg8OpsAIab3LNmb3BkrVqBsQPU9aLU5aMZCGp0bUCWNVr9OhU7tN6+qI3rYLnde9esVxUvUvS7YtQJoxOpSOVkwYVQVmQIxL3sv9sjI6ZqTAnUHP7PUuuFdhQ0fSTXaGlLEIbZXjx0f3iThnqKkPuHTMRna6H6oY2TJQWu1dIcUzv261MTmp/Svceb1NEyHQP4fbuZr9LVa0IJVrbwDOYzCEUlWpAoINUx03xyXtBy5FpijBRek9yvZBr6kPhg0/aqxbWjSVrVkEBRGW2upyKFr/whqI2vZb5t7HGAdMuRRw4Yllhh1rIpRg6ZaCnGUQO6n9WxaytrreW+gzbA4Z+PZGyE2KofjS3etQl7yw+F7pcbkv+uvMzBtpqM52fuVi9QtPy+P4qgxDyfuHXgDkmhjNrG6hJYO+5ow+07L0StCqbDJWJhxkmLEL4UE5cU9Hoye+iwcviO1+BMNOasSqZcGvLl66VcaP8+OH9m/cOsJQM/n27kl86N1dSVszLgXeJf/b6u33MB8a7Q0tTqWSOWchg2C8MWEgaXjiviBsev/iR0RAl3Jewo5XD+9gJIaWBDth2MTWyx0EVOPE4Cxp9kpoOPJosDGoBRGYI8v3vhd0DE2pYSA6m4FXeDB4Iq0WbzukCSKUU5XyH0gECsYz95JejzjAAo9jTV3rNTMVgKhY6b26EKKmZRNpnKsjf3wAhva7GzcHHIq7S
+ spDpcqwt
+ 9ANr0EzB6ur6RJBm/iUC0fUbVOYQWredw3SXtS/MN5QxWt6zCwrW3rK8tZyH7sdr9iPpkLWm2YiRZ1f3FqhcRwlxoqyqaePWCl62ZuoF43yu6KxwjuXzEmvLHmblKL+BYV4JQ1KeJ7dR7jGp7oo0XKgdxpZKW85dn1vFXzKu4S58wupv7xTnC8NqCcuOY6rEIZFzoFtCSLnJpk5pfopjsxXp0dKohHGihpqac5OBbnqUGxat4w8mNgexLt00NudO0i+anRftJwMTLngZbBrF4oUY8xaIU9bLZ6ItBRv5JivYSSX3QtC7chRwbKbiaZ+KC7MFOM0ghz6RxA294DXW2onOsJ20fQAF2ve/6+CCov5Hqa5C5DDHI+DoXHTXmC5Zoyf+3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,80 +95,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memfd_luo_can_preserve() accepts any unlinked shmem file.  That includes
-SysV SHM files, which are created with shmem_kernel_file_setup() and
-marked S_PRIVATE: a privileged process can obtain a file descriptor for
-an attached segment through /proc/<pid>/map_files and hand that
-descriptor to LUO.
+retrieve() only frees the serialization structure on its error paths, but
+the folios it describes are still preserved at that point:
+memfd_luo_finish() deliberately skips its own cleanup for records whose
+retrieve() failed, since it relies on retrieve() to have released them.
+The folios and the folio array are therefore never handed back and stay
+reserved in the next kernel.
 
-The preservation path then updates SHMEM_I(inode)->flags under the inode
-lock when it sets SHMEM_F_MAPPING_FROZEN, while SHM_LOCK and SHM_UNLOCK
-update the same word through shmem_lock(), serialized by
-ipc_lock_object() instead.  Two read-modify-write cycles on one word with
-no common lock can lose either the LUO frozen bit or SHMEM_F_LOCKED, so
-the frozen state the handler depends on may quietly not be in effect.
-The seal-state freeze this series adds (SHMEM_F_SEAL_STATE_FROZEN) has
-the same synchronization requirement.
+Release them from retrieve() as well, by sharing the cleanup with
+memfd_luo_finish().  After the record has been validated, the folio array
+is restored before the file is allocated, so a failure from
+memfd_alloc_file() or memfd_add_seals() can release the folios directly
+instead of allocating memory while already handling a failure; a record
+this version does not support is rejected before that and uses the shared
+cleanup too.  The folios may only be released while they are still fully
+preserved: once memfd_luo_retrieve_folios() has run it has consumed every
+folio it touched -- the ones added to the file go away with it, the ones
+that could not be added are released in place -- and releasing them a
+second time would warn and free memory that is in use.
 
-Reject S_PRIVATE shmem inodes from the memfd LUO handler.  Real memfds
-are created with shmem_file_setup() without S_PRIVATE, while
-shmem_kernel_file_setup() deliberately uses the flag for kernel-private
-objects: SysV SHM, big_key payloads, the XFS buffer and scrub files, and
-the anonymous /dev/zero mapping file.  Those must not be preserved as
-memfds, and dropping them also removes the only concurrent writer of that
-flags word from the handler's reach, so no shmem-wide locking change is
-needed here.
+Two error paths still cannot release the folios: if
+kho_restore_vmalloc() fails, the array cannot be walked at all, and that
+API is not failure-atomic, so a partial failure cannot be retried either.
+Closing those needs a KHO-side fix or an allocation-free discard/iterator
+API and is left alone here.
 
-The predicate is deliberately not narrowed to memfd_create() objects:
-unlinked non-private shmem files stay eligible.  SHMEM_F_LOCKED is only
-maintained for SysV segments, so they do not share this race and keep
-being preserved as before.
+Found by code inspection while extending the preserved record (reported
+by Sashiko AI review).
 
-Measured with QEMU runs on this tree, with CONFIG_CHECKPOINT_RESTORE and
-CONFIG_SYSVIPC enabled and liveupdate=on, so that a descriptor for a
-segment is reachable; memfd_luo is the only file handler registered in
-that configuration:
-
-  kernel                SysV SHM fd        memfd     unlinked tmpfs
-  without this patch    accepted (0)       accepted  accepted
-  with this patch       -ENOENT (errno 2)  accepted  accepted
-
-The SysV descriptor came from /proc/self/map_files and reads back as
-"/SYSV00000000 (deleted)"; the memfd and the unlinked tmpfs file are the
-controls that show the ioctl path still works and that the check is
-limited to kernel-private objects.  The SysV case is the same guarantee
-that the pre-existing SHMEM_F_MAPPING_FROZEN bit relies on, so the
-mismatch is older than this series; atomic flag updates or a shared lock
-would be a change across shmem and ipc, and this patch removes the
-handler's exposure to it instead.
-
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/all/sashiko-outbox-170776@kernel.org/
+Fixes: f85b1c6af5bc ("liveupdate: luo_file: remember retrieve() status")
 Assisted-by: Pi:glm-5.3-flash
 Signed-off-by: Haolong Wang <18766350203@163.com>
 ---
- mm/memfd_luo.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/memfd_luo.c | 78 ++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 53 insertions(+), 25 deletions(-)
 
 diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 59de210bee5f..6f8b84530995 100644
+index 333502ea3735..f1f07d90f73d 100644
 --- a/mm/memfd_luo.c
 +++ b/mm/memfd_luo.c
-@@ -582,7 +582,12 @@ static bool memfd_luo_can_preserve(struct liveupdate_file_handler *handler,
- {
- 	struct inode *inode = file_inode(file);
- 
--	return shmem_file(file) && !inode->i_nlink;
-+	/*
-+	 * shmem_kernel_file_setup() marks kernel-private files S_PRIVATE.  In
-+	 * particular, SysV SHM updates SHMEM_I(inode)->flags under its IPC lock,
-+	 * which does not serialize with the inode lock used by LUO.
-+	 */
-+	return shmem_file(file) && !IS_PRIVATE(inode) && !inode->i_nlink;
+@@ -467,9 +467,31 @@ static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *folios_se
+ 	}
  }
  
- static unsigned long memfd_luo_get_id(struct file *file)
+-static void memfd_luo_finish(struct liveupdate_file_op_args *args)
++/*
++ * Release a preserved record: return its folios to the page allocator and free
++ * the record itself.  Only valid for records whose folios were never handed to
++ * a file -- handing a folio to a file consumes its last reference, and
++ * memfd_luo_discard_folios() would release it a second time.
++ */
++static void memfd_luo_release_ser(struct memfd_luo_ser *ser)
+ {
+ 	struct memfd_luo_folio_ser *folios_ser;
++
++	if (ser->nr_folios) {
++		folios_ser = kho_restore_vmalloc(&ser->folios);
++		if (!folios_ser)
++			goto out;
++
++		memfd_luo_discard_folios(folios_ser, ser->nr_folios);
++		vfree(folios_ser);
++	}
++
++out:
++	kho_restore_free(ser);
++}
++
++static void memfd_luo_finish(struct liveupdate_file_op_args *args)
++{
+ 	struct memfd_luo_ser *ser;
+ 
+ 	/*
+@@ -484,17 +506,7 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
+ 	if (!ser)
+ 		return;
+ 
+-	if (ser->nr_folios) {
+-		folios_ser = kho_restore_vmalloc(&ser->folios);
+-		if (!folios_ser)
+-			goto out;
+-
+-		memfd_luo_discard_folios(folios_ser, ser->nr_folios);
+-		vfree(folios_ser);
+-	}
+-
+-out:
+-	kho_restore_free(ser);
++	memfd_luo_release_ser(ser);
+ }
+ 
+ static int memfd_luo_retrieve_folios(struct file *file,
+@@ -600,7 +612,7 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 
+ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+ {
+-	struct memfd_luo_folio_ser *folios_ser;
++	struct memfd_luo_folio_ser *folios_ser = NULL;
+ 	struct memfd_luo_ser *ser;
+ 	struct file *file;
+ 	umode_t exec_mode;
+@@ -614,18 +626,28 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+ 	if ((ser->seals & ~MEMFD_LUO_ALL_SEALS) ||
+ 	    (ser->flags & ~MEMFD_LUO_ALL_FLAGS)) {
+ 		err = -EOPNOTSUPP;
+-		goto free_ser;
++		goto release_ser;
+ 	}
+ 
+ 	/*
+-	 * The seals are preserved. Allow sealing here so they can be added
+-	 * later.
++	 * Restore the folio array before allocating the file.  Once this succeeds,
++	 * every later error path can release the preserved folios directly instead
++	 * of allocating memory again while already handling a failure.
+ 	 */
++	if (ser->nr_folios) {
++		folios_ser = kho_restore_vmalloc(&ser->folios);
++		if (!folios_ser) {
++			/* kho_restore_vmalloc() is not safe to retry after failure. */
++			err = -EINVAL;
++			goto free_ser;
++		}
++	}
++
+ 	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
+ 	if (IS_ERR(file)) {
+ 		pr_err("failed to setup file: %pe\n", file);
+ 		err = PTR_ERR(file);
+-		goto free_ser;
++		goto discard_folios;
+ 	}
+ 
+ 	/*
+@@ -648,15 +670,12 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+ 	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
+ 	i_size_write(file_inode(file), ser->size);
+ 
+-	if (ser->nr_folios) {
+-		folios_ser = kho_restore_vmalloc(&ser->folios);
+-		if (!folios_ser) {
+-			err = -EINVAL;
+-			goto put_file;
+-		}
+-
+-		err = memfd_luo_retrieve_folios(file, folios_ser, ser->nr_folios);
++	if (folios_ser) {
++		/* retrieve_folios() consumes every preserved data folio. */
++		err = memfd_luo_retrieve_folios(file, folios_ser,
++						ser->nr_folios);
+ 		vfree(folios_ser);
++		folios_ser = NULL;
+ 		if (err)
+ 			goto put_file;
+ 	}
+@@ -668,9 +687,18 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+ 
+ put_file:
+ 	fput(file);
++discard_folios:
++	if (folios_ser) {
++		memfd_luo_discard_folios(folios_ser, ser->nr_folios);
++		vfree(folios_ser);
++	}
+ free_ser:
+ 	kho_restore_free(ser);
+ 	return err;
++
++release_ser:
++	memfd_luo_release_ser(ser);
++	return err;
+ }
+ 
+ static bool memfd_luo_can_preserve(struct liveupdate_file_handler *handler,
 -- 
 2.56.0
 
