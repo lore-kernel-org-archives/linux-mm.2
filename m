@@ -4,139 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A30BFCC6B27
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C15CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:16:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C052D6B0095; Wed, 14 Oct 2026 04:12:16 -0400 (EDT)
+	id 8D8DA6B0088; Wed, 14 Oct 2026 04:16:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB6146B0098; Wed, 14 Oct 2026 04:12:16 -0400 (EDT)
+	id 8AFC96B008C; Wed, 14 Oct 2026 04:16:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA4EC6B0099; Wed, 14 Oct 2026 04:12:16 -0400 (EDT)
+	id 7EE4A6B0099; Wed, 14 Oct 2026 04:16:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E7FC6B0095
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:12:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21956160481
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:12:16 +0000 (UTC)
-X-FDA: 85320514272.23.876F8C7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DFF26B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:16:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DBE58A0485
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:16:24 +0000 (UTC)
+X-FDA: 85320524688.11.08BC52F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4D75DA0005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:12:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tpkb7ata;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 44C46C0006
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:16:23 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jk25NULz;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791965534;
+	s=arc-20220608; t=1791965783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjyStItez/lrqfbwrXHGoAACE+/nkxndtKi9r0jfGSc=;
-	b=TryAtVr3JEqGuFD8ukgFKHeivSXl90rHySwG+oCORWKL9TJJ3jOipUxwqkPGdwBJNic1Eo
-	aJncwIxzcODsGC9ZF9KKB3cLza+9dPBvlSmKpiOJS2brWRyR+UQ1pwoEg4j68pvu8/nr3m
-	cq2Pwueea5/EOcrm/j2b4JbHhBLEa+s=
+	bh=pXk+bgsfV6vorpYN5oSqgTgpORjuife32Grsgb2Gqbg=;
+	b=pxhQF7z4MGPzoiccASV1IsqRe7UAsAW8c2nD+hGKGLFQUSDpMc8EA0Elj1OqQwBGJbByIL
+	JQLmQDujXpxpHWrlIXoJ/euUx9LgFbZBx5qjpW4KjvUl+4YLWyJ9WW3QJ6lFCRnLx+Ty3e
+	rdBIhNhwr7F2YqJIXkHE5oA442ESxhk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tpkb7ata;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jk25NULz;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791965534;
-	b=j+mn59gwA1yyZFye6Zj5TVDtR8LZvc/aJ6ouhFAZeTBa58seLth4fO8fJHiRXrnh9QMzkc
-	8EyH6TLHeJyNdD7nimlYyzu6qEgptqVe5uzXOZWio2X0/6vQ+we8/mGfYOReoB4mOZOHgw
-	Li04+LqzUcgLwRJF5aek2FAmOhnBqLM=
+	t=1791965783;
+	b=LS2X2H07WYqMXISgIt6Azj0Uhvx7EoD5JDt/PV3sojbCwXujI/sHqZQCNdThdoyq9ejn45
+	NW+yyQX9UZEmvRXAqwylF3fqtBjNsVERdE9w60TmR6SWLzoK/NJzprB6ncldnUPnU31M1A
+	5ASU91OSpJZzKvEWAnRyDeupyT4m6e4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 91C3360213;
-	Wed, 14 Oct 2026 08:12:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408071F00893;
-	Wed, 14 Oct 2026 08:12:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C374960213;
+	Wed, 14 Oct 2026 08:16:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DBE1F000FF;
+	Wed, 14 Oct 2026 08:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791965533;
-	bh=kjyStItez/lrqfbwrXHGoAACE+/nkxndtKi9r0jfGSc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Tpkb7ataYiB/8Njw/Xj3hVOnUVPs++6DaKbTyUJBA9VMD0aq9yUZKXe0/hlKuEpTY
-	 mnUKX5xn+csTxxy/t1qlythXN0JwfhJWmIa7GxyN1Irq36gpBnxqWEHQfkkWKON9tG
-	 LrHSm4oY69zjlKpCTaczIRAgC8jzDLN97l3wH09AyqUoz7Z/kI6FCBByn1ABJad8EH
-	 T81WqRh0QCnjpaZOxAymGPBM2pMex0p1HVd9TqYf37voreoS57S9IVZC+6zXfXD4yo
-	 WkgZWKYMGwoiNz3TghhRXYd+UY/DQ4KZKDBxHmXVN9iHLfREEAnvz2m0hj+3T+CABX
-	 fkNTcgoIA3yBw==
-Message-ID: <9add8400-66c1-47e9-b5af-7a4081ebf3c4@kernel.org>
-Date: Wed, 14 Oct 2026 10:12:06 +0200
+	s=k20260515; t=1791965782;
+	bh=pXk+bgsfV6vorpYN5oSqgTgpORjuife32Grsgb2Gqbg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Jk25NULzGFVBz2j4agtrSl8HWyhyVJORSzc5FsfdPnnB8S2UAZXm7EXn1s8z2jKtZ
+	 5t2xWosLNq2Q+caqbUQxPJBMFSBVX1EZaOGSnAfmUQaanHzxL6nKlNVFBkGCVdv6TR
+	 X7bBOc27Mq52Gz1VDSUkY7ZHlmWIVvjv5ZynWC/rCK/3eriytOQCM71BHwsqEJGHAN
+	 5pvzwokjmX4VQHLc7cI7h9uJMSL4KR0Wj1TQFYtX9zyNiU/LnDeW9i/kSjw8zeJT8q
+	 tE3QmKnXvleSUsC+OlE2V9jd7MbA69/6TSlR9zfJV+ze1x+eGmx1Qrlk12/GBaAO7S
+	 KJ4ZQDtyaLpQw==
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Kees Cook <kees@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v7 0/2] mm/slab, ipc: kmem_buckets kernel-doc and msg_msg accounting fixes
+Date: Wed, 14 Oct 2026 10:15:56 +0200
+Message-ID: <179196561882.18524.5893215402239363173.b4-ty@b4>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261014052338.nothing.279-kees@kernel.org>
+References: <20261014052338.nothing.279-kees@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: fix address wraparound when scanning large folio PTEs
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Ying Huang <huang.ying.caritas@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Chuanhua Han <hanchuanhua@oppo.com>,
- Kiryl Shutsemau <kas@kernel.org>, Kyle Zeng <kylebot@openai.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261013-folio_pte_scan_range-v1-1-c50dc30bf6ad@kernel.org>
- <as4kvHe9IFZH5qrC@gremlin>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <as4kvHe9IFZH5qrC@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4D75DA0005
-X-Stat-Signature: sn6j9fopmym3z6nd7n736sirzmj5rz6e
-X-HE-Tag: 1791965534-165587
-X-HE-Meta: U2FsdGVkX19ebkY6i2wt3tJNwehK7UId5qjNf+wewUhod647b7EktH0WhIi5OrIG8z0esKtb23aVF2s2E8n9zmsoIfn+tAbFKWuKNujbh6LR++3RTJrHzhHMPlqrco3gY1Oao9b2OIg0c5QUIKeToWT3Uo4z7kOr5SDaA+bm8Tv7Jp8TwgDACNTieC3yMcBeM7tC05VUj/cG/rnAyFyPRv1Mx+78pgNVV8b4e07CnRaC0UQJpZi3WRaETrgbheYU/hh1AMaMO4wwau/tlUyloVbAF0PNN3a+UJ5wkkDGGXm/JwNifJ6WVtIH81tsGhY4T1v+mUt116jqtmNWd0olkGRceGZlw2C0UvIOWuWoBpHjJe8S1nZIMNv1rjG9ku6YaWCr3MGB7y8SIwjwUTPQi/hQR49AH5LLaGWxhmDFPzK69aGslIDovnU1dbBmRvuJ2hmLvhR2PMiDZz2ZNq+Z2h7RNlxbJOEece6i9dbG+G5N3pGCG36npfAepv4h99oUAA2Rq5a0Vsgwapxksz9G9lPC5jG1oPZMbVIO2K66m0RwxTfPVcpUxtKLLnmoV0FJGtiwU/2juq3Y0AXelNV504Ps3wkH1kX3LWECFuAh6Xc23QjacO0pO+u91TZG2fMidjrqeBqE5z7WjWmqmQsze1mjUv9unmsJWBstRZ9WB2RDNyiH6UKIYQfJbZwVXEsMqy4+4nkD3CPAF8aKeu1QHM+SympBE0c/KdKwdfF1djWHlaQd3EqrNrgZsuwAkDsi38Ssz8ghANCrYahfGItynPoWjoT0+fAQUFbPdvkgMzRyg+aXej8X9rsXrifraYdNde8DLmK/VuFANZn3Pc1eQJOsdELiIyY7eVmdF7MujG7vlpKlCTxegYprdZeOn2Eb3PP1VxGOvqwZKKwY7NYmMbXE1hUsMQ4s2amqHE+GkuLvt2QvNlkNxofz4SHLLXSY0FiMdaJa16PTqrgw+/v
- 9e5s0feE
- hS86ftAEJLae8U4MxnVnCeNaESJjURPuFFwyZmRAPKa/20ihcw5RhMj6E7mBFBg/69kvD31ZNG3s7CKfwZ3oJIzI92cHLMufTHb8GivlUOL+VCvLjMcTk0ysYMU2iEl3imRP6BSUw2tEE8itWi1cc+xAg1I5K9IUo656A0/J4XprZd6tnPH0G62CBE2GH7a7Z3jbG1NCtB0Inpty5JKvuCv06ILXR3y1cSYxn+SnB7YDsji5x2ZhyNW8TDd3aECTRlOY7j5lZzc9kkAFUy7tO5I5dNfY/vry2kVxv27+UBSJKmTLRRwazGbdziqPQw6GcgRaz8W2PlwQADinYrzIKTb/a07sVIw3eMtNRDRVtE0Yv5DMtxZk5WKiU2v7RgTWPnPuK
+X-Rspamd-Queue-Id: 44C46C0006
+X-Stat-Signature: w6xmrcd5sw5by8zfqgsrpho9ey4987xi
+X-HE-Tag: 1791965783-497291
+X-HE-Meta: U2FsdGVkX1+84jDKbdwsKgMJYPbR2SAs+4MhcU83wE1l8tw3h8yZ2sPsdgGTTGm4jiiPGkds01sDZdfZiv+IJZT7RLmRw0slDWiNgjJOG97xqPT0PwzMkiMVoL39GYQV7/fPdeSOue6ZxplEDAqj2JGnujv3ilXGVIuCAiTaR7a5cfcMFAfz7AhcvJUBeDvt4X3YZOQWqui2uJqPSmYNJdRYH4Kw6cD5GhHl3mUBGDxP4lxA8liS/1Ivl5xxZd+TgUp4xUJnc/kRgPS9eMq2VsWdbx5FvLoER9u0SdMJ/1btFxgOzpauYKoSaFHq6hAq4w9Rg+pvYSpsvJekDXnTSdxwDlUtyyGFga1qU9OlB+N+cHdzU5WkfrRUnn/Jyh6YSPnh4hDnbmT5xDRxHmRODkDYdQ1d/P9GJP9IyLYQU7mt7qUEx3JX/13XKr+Tn2t8ZRT79ftjrMN8Y7Y8PKxwpnY6QR63a7BoNEPBnKsdkB6U6c8T/w+bdl+Cyg7PcMKxIYZENDCra2i5TYxJU3V2g0JkBSLIgWuMWVjP/F/48nMnxV3oRa6Gwt8EXCX1pcnSwrN8Ab39Qi1k5oPUJiKm4Nj5xbvGEPO7k3So3Z8yuGdee7oS4vgRvtpw2GQMGuNkohhjXSKWY5GcP+IIlzn1MBQ3EprEbT+KtOZVl0t+nCj7wtRoGmvB8oNRwdU/VkBeAKs2XnjssfMqx9foJVI9wmp8LPBHyI+5KyYU0fkc2vw6P13kmcfB+89Tqa0Cr3kmHA3mmnNxu6WvZhQwz1W4hF6kByiaWxDnkG+9UuXUUoRiE+tadZMZq7SZ1rOjsEr4ScCq9XvFS0ebcqeUWzeRNAdhAtw8bGKD+HN2NDsWqpC7K06j1tbpqw3Zyp2myABoBCPLTW2kEypL2NDWUv9nttfAAq/MGOlfWpqj8DntUn69p5oVq0GP2PNH0gZ5WkkINNGt2H6DbA6tTNAuwhJ
+ n9rSQThp
+ gW2S5uRmMnBoEW1enJbBBaUTNO5FBSNmEXjRGkp3Tk/2224xEWuu1TKU1OOVt3hL0UVDptSD5fF2hKo2WwOnxq/P5HiO5CxPWmYRQFTh9C8gul6G80k2/4S1EAebC8/DTXrwEJyDPWZcGxOq4Paw1bXkYbMyAeob07xDmIFrPUV6SiII4sWFaz2K8umgZd21hoSfnDrzCuPAwaGrIQoIOSNj3vpIQSxsVjg5ZCJ+CWcuTaCYlRJvlraS+nAP5uEHQkAOqc9gEaWw9OTJebr0yIMPKheh2IySPUzebtk6hbY4Jf+J1FAEQMecMz9bjaOcVFPaZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,168 +109,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> Reported-by: Kyle Zeng <kylebot@openai.com>
->> Fixes: d2136d749d76 ("mm: support multi-size THP numa balancing")
->> Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  mm/memory.c | 43 +++++++++++++++++++++++++++++--------------
->>  1 file changed, 29 insertions(+), 14 deletions(-)
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 1f5d5f7d39cd2..a3823010aa981 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4933,6 +4933,27 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
->>  	} while (--nr_pages);
->>  }
->>
->> +/*
->> + * Get the address range in which a folio might be mapped, assuming its pages
->> + * are mapped consecutively and the folio page at the given idx is mapped at
->> + * the given address.
->> + */
-> 
-> I know it's a static function but kdoc here might be nice given the number of
-> params, including 2 output parameters.
 
-I had that, but decided "not worth it for an internal helper".
+On Tue, 13 Oct 2026 22:23:41 -0700, Kees Cook wrote:
+> As Vlastimil suggested[1], these are the first two patches of v6, split
+> out for 7.4. The rest of the skb buckets series will come back for 7.5.
+> 
+> 2/2 now keeps SLAB_ACCOUNT on the msg_msg bucket caches and allocates
+> with GFP_KERNEL_ACCOUNT as well, so a msg_msg is charged with
+> CONFIG_SLAB_BUCKETS either way.
+> 
+> [...]
 
-Is anything here really that confusing to understand in mm/memory.c context? I
-highly doubt it.
+Applied to mm/slab.git slab/for-7.4/misc, thanks!
 
-> 
-> Also then can specify exclusive end, etc.
-> 
->> +static void folio_pte_scan_range(const struct folio *folio,
->> +		const struct vm_area_struct *vma, unsigned long addr,
->> +		unsigned long idx, unsigned long *start, unsigned long *end)
-> 
-> I don't love the name - to me it implies to me that you're scanning the range.
-> 
-> Maybe clamp_folio_pte_range()? I guess though clamp implies it limits an input
-> range.
+[1/2] mm/slab: Mark the kmem_buckets_create() context as a Context: section
+      commit: 655668f0caf32a42fef10aaf31137e52f46a0260
+[2/2] ipc, msg: Account msg_msg allocations with GFP_KERNEL_ACCOUNT again
+      commit: 49c0b3dedf7c8c64e432e63dd7b24f00909916d8
 
-Ugly.
-
-> 
-> Maybe get_folio_pte_range()?
-
-I can just call it "folio_pte_range()". Slightly similar (but different) to
-"folio_pte_batch()"
-
-> 
-> Also I think it might be useful to have it return the number of pages contained
-> within the range?
-> 
-> Then this below:
-> 
-> +		folio_pte_scan_range(folio, vma, address, idx, &folio_start,
-> +				     &folio_end);
-> +		if (unlikely((folio_end - folio_start) >> PAGE_SHIFT != nr))
-> 
-> Could be:
-> 
-> +		if (unlikely(get_folio_pte_range(folio, vma, address, idx,
-> +						 &folio_start, &folio_end)) != nr)
-> 
-> OTOH, that's pretty ugly... :))
-
-
-Not a fan of these semantics.
-
-> 
->> +{
->> +	/* Stay within the page table and VMA boundaries. */
->> +	const unsigned long pmd_start = addr & PMD_MASK;
->> +	const unsigned long pmd_end = pmd_start + PMD_SIZE;
-> 
-> OK so get the range of the PTE page table.
-> 
->> +	const unsigned long lower = max(pmd_start, vma->vm_start);
-> 
-> Then clamp to VMA start...
-> 
->> +	const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
-> 
-> This is trickier :)
-> 
-> I guess you're doing this in case either bound is right at wraparound
-> somehow?
-> 
-> But then couldn't the +1 push you over the edge?
-> 
-> Oh wait no, because then vma->vm_end would have to equal 0, which would
-> fail the other-place enforced invariant that vma->vm_start < vma->vm_end.
-> 
-> So it's pmd_end that could overflow, hence the -1, +1 dance.
-> 
-
-Yes. It's fairly common, though, to handle clamping of exclusive ends that way.
-
-> Yeah I kind of hate that, that's a lot of 'just have to know' right there.
-> 
-> Actually we have pmd_addr_end() already, could we use that?
-> 
-> #define pmd_addr_end(addr, end)                                         \
-> ({      unsigned long __boundary = ((addr) + PMD_SIZE) & PMD_MASK;      \
->         (__boundary - 1 < (end) - 1)? __boundary: (end);                \
-> })
-
-As replied elsewhere, I had that, but decided to open-code as pmd_addr_end() has
-very weird semantics with folded page tables, where we just don't clamp at all.
-
-I'll sleep over it, but to me using pmd_addr_end() is not particularly better.
-
-> 
-> That embeds the trick in the helper and it expresses what you're getting.
-> 
-> Then it could be:
-> 
-> 	const unsigned long pmd_start = addr & PMD_MASK;
-> 	const unsigned long lower = max(pmd_start, vma->vm_start);
-> 	const unsigned long upper = pmd_addr_end(addr, vma->vm_end);
-> 
->> +	const unsigned long offset = idx << PAGE_SHIFT;
->> +
->> +	/* Avoid any address wraparounds. */
->> +	*start = addr - min(addr - lower, offset);
-> 
-> This is also tricky. This is clamping to max(lower, addr - offset) right,
-> but being very careful about underflow?
-> 
-> I don't love the addr - (addr - lower) = lower here, and it feels like it
-> embeds a comparison there too. It's all very implicit.
-> 
-> Actually maybe just naming addr - lower gets us there:
-> 
-> 	const unsigned long max_offset = addr - lower;
-> 	...
-> 	*start = addr - min(max_offset, offset);
-> 
-> There's check_sub_overflow() or you could use a ternary also but both feel
-> like they add more complexity than is useful.
-> 
->> +	*end = addr + min(upper - addr, folio_size(folio) - offset);
-> 
-> Same deal here.
-> 
-> Maybe something like:
-> 
-> 	const unsigned long max_remaining_bytes = upper - addr;
-> 	...
-> 	*end = addr + min(max_remaining_bytes, folio_size(folio) - offset);
-> 
-
-Sorry, to push back, but are we overthinking this helper here?
-
-I much rather get this fixed quickly then fine tuning some details in a helper
-with clear semantics that anybody can understand when looking at it for 1 minute?
-
-
+Best regards,
 -- 
-Cheers,
-
-David
+Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
