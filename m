@@ -4,85 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A40CBCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:22:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 096BDCC6B27
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 08:24:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B54B46B0092; Wed, 14 Oct 2026 04:22:38 -0400 (EDT)
+	id B800D6B0098; Wed, 14 Oct 2026 04:23:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B05F76B0095; Wed, 14 Oct 2026 04:22:38 -0400 (EDT)
+	id B58CB6B0099; Wed, 14 Oct 2026 04:23:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F4B86B0098; Wed, 14 Oct 2026 04:22:38 -0400 (EDT)
+	id A94E66B009B; Wed, 14 Oct 2026 04:23:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 853F16B0092
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:22:38 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 015A512046D
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:22:37 +0000 (UTC)
-X-FDA: 85320540396.07.1327BFB
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B92DC80006
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:22:34 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KYMeI4Iy;
-	spf=pass (imf30.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 829696B0098
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:23:59 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DF0D512046E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:23:58 +0000 (UTC)
+X-FDA: 85320543756.14.9EF9F65
+Received: from mta0.migadu.com (out-247.mta0.migadu.com [91.218.175.247])
+	by imf02.hostedemail.com (Postfix) with ESMTP id AE7038000B
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:23:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="pEHQ7O/b";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791966156;
+	s=arc-20220608; t=1791966237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9whjSmFeVrtGFJkwGOlXSWXEQUcqRKBWx6oJqixE8N0=;
-	b=K+XxQ6eJF/4rCoLeGGG+34lx1fWVartRRFo9VOdpxCEBcCNu3HH0k49gTpRtFLMD2CA77a
-	I0YHPe9fMgncLmdd/rDXTTfMkUV4kuXexM880pTm0DB/YQEdxk5R9Fan5IWOGtxkzxrU+j
-	WISqqtT/kIjYDw54T1ccaFzsT94B5XI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791966156;
-	b=CXEwfehcmwFeO0F2L3TsiNTBBVUEr9JFTC0x5OTB7fCzd3tCJU/eHpNZc6ihlbtwl2YekO
-	sSMH1xEU4bSoQNvSi4cyJUxYv4Fx0JUK2qTdGS3RIRgMdiv0EhiIVaXHWTsk6rjoSm4ctY
-	srHjY+igpzkb17jCPLUff+u1FH8/VY0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OLXC7qw5IjejpZgUTQx1wM51wAjGcyUwJPApHpQcNVQ=;
+	b=nnVYmsh4Doxddh/S6ciP2YmXiA3kNJvOkDUVUekqVNUdf1wmAF+tApk/xuQJjXfL20ehwt
+	jMfBAIE7TPBS1TPkmtyKCp4ekNRfjRaVKpRhzDx/Bu5faPxQW722g+d3mr1qKlg51Bom9x
+	VrScgSTWCesJRG0KaPcq4cs5Rr+dNL4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KYMeI4Iy;
-	spf=pass (imf30.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1791966152; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=9whjSmFeVrtGFJkwGOlXSWXEQUcqRKBWx6oJqixE8N0=;
-	b=KYMeI4Iya8UqBihadkUPGAtLWzOuQokGOAp2me3UQQyvIM1daBjIIb4NhCEBDYFw2G7vqQKpJStDevYwPhpB6L4a7JhZ8si/4HqRkdWOW5ANr39Qk1XP+jbAvgiwq584ZZgorGnBzsBWOW/DMnfmld1xeUj4ZdyIv/jMzKjJUNI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0XCoX3b3_1791966139;
-Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XCoX3b3_1791966139 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 14 Oct 2026 16:22:31 +0800
-From: Weilin Tong <tongweilin@linux.alibaba.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Dan Carpenter <error27@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Weilin Tong <tongweilin@linux.alibaba.com>
-Subject: [PATCH v2] ipc/shm: fix RSS accounting for hugetlb shared memory
-Date: Wed, 14 Oct 2026 16:22:18 +0800
-Message-ID: <20261014082218.2236088-1-tongweilin@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B92DC80006
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="pEHQ7O/b";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791966237;
+	b=yC1D2/xRoiK3Sz32pnK0EcS4HRFgccUGc8PwYmU1dt2tabNiA2QHTBOtmIiqZPzvvaPKBM
+	JPCTdvFgszljCPwLuWkV1z8w0QkmnMGrrl1kbEDtIA1r3hnHSe/WDCRYCXaQd9szb7dsjp
+	FeXKKJiOhLd+6B2FJf2Ueztu8DTYI0s=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=OLXC7qw5IjejpZgUTQx1wM51wAjGcyUwJPApHpQcNVQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791966235; v=1; x=1792571035;
+ b=pEHQ7O/bjvhjp+IrhX+KbDztmvxS1SAMcfaFZiKHYOIdq5lDlBmxX6hbYGAR95EirfqsY7ln
+ Gcyepyo8d2/FL6+usTFgOYPiM1qW4R4HeTjTR5x812TyC0BnOrBqCCvIRewbHY9iP0lR4VfXH2W
+ W62ZB0xbHwMpIB25vbQeSf3M=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1780a9b33c14a0b1;
+	Wed, 14 Oct 2026 08:23:55 +0000
+X-Mizu-Trace-ID: 1780a9b33c14a0b1
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v2] ipc/shm: fix RSS accounting for hugetlb shared memory
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261014082218.2236088-1-tongweilin@linux.alibaba.com>
+Date: Wed, 14 Oct 2026 16:23:38 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Dan Carpenter <error27@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <05518093-AA04-4525-96F2-FC7AC327DCDF@linux.dev>
+References: <20261014082218.2236088-1-tongweilin@linux.alibaba.com>
+To: Weilin Tong <tongweilin@linux.alibaba.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Queue-Id: AE7038000B
 X-Rspam-User: 
-X-Stat-Signature: 8g6ce34wqype45mkh5t5be3fcgy7zznh
-X-HE-Tag: 1791966154-486545
-X-HE-Meta: U2FsdGVkX1/PisUxN3ixG8kFnja0zPecsSGemseRUSsDeiR/AIohVL4VbpylxhSSYaLird/HTHXDVXirAhJVpigE+x/mPQgziK3qAd38fiXYmYrGHLOi+zCiJfCXAUE63qwvNkd9LYEzl2/rxxnuHV/VpmkZlf0oJekAucwUpEmkVWhoGCRJ+xYOqXNR8rhgjv9966D9RN3YSeNSs6p+sOddWlBKsH81EA7BS/07c1nCFM+D7xQ1vjuXrHBuyJoclc1wnByNHWOqpaao3JFwm/glfUYavDAoAbefcuzSKu9osxyYAW/40ah9o2ToiE7qmjeVYLwikc9fvpWwFwyXRhk0h4L3Tpx1yjH2AIVwSjXM0STbYY432slocvM3jVfkJEK//WsY/6TsEhiKajcYcws5mkiX78JK/d5ueqJ0o9Mb5l+jt4W35J0pKI0dW0zsZGxXv/0KjHM4B7IfT0LEYO3kPGWWUHjh7o47crDY37+j2aRnbQRIkNyZPmnMmFd+DV7JQsXDM55ltEVMd7BeME5Nq37y70aBXZ+NXB818eJuUaGU5qiS7v1FLYStblLiBtUbIXQw45JPy29iskWlv95OWrRORGsVhm5KofIF1/1aBC3yXG6orqfUHg5UWvpRjlELk/FFwm4KjAVh5AY2ZZ69u2maYGc0uq3fppY+bSUaGhiQmBUSFCm3ZTSauzNxuuq4WbiW7ALOFxMO/0ibdSir63b9YEMTfhM05KKu/nP8mvspht2vuHheymf6uC9IAUCmtOEFwZY26fFpauytrKHQQxizq65ao0UPgPfqSTJL85Byn6VHuU8uv95ne3w0cEynAhOEDMdg9uzeTVdF32N8h7hKyyj0NbOPhQHHYh4GedgVXJmIzHjp9/zsdn8GY18PwsSS2fjKKIr5GB/n9+EKKoz3OulfA1vY+umqGSC9FOswZOW/xCbs7zeCjFciTBUk5qpMuWcGeuPe13B
- IFEX32vC
- lPMol+VN53oW7+UqcVbZUrlVw35BaNq8HZGYlLwRD5NGpOxqo4uutGVZpln1pplf8p3MfdJDw+svAZmWSowifVlTpaR+2TcLegb6vHDDW+7Wk59ZOjYlwGGR6+xH9axQh384gpd6sQxWRdcYBZFGSRoN7pXAVhRd66rnwpls/uh+rI2v1bAYKbhK8iJxMs1Cig7QDve+0aDGGnHRqzmugDl0lu9r27doVHi94dFFZep1dPAuhgMlTLZla9P8gOZsLUJtdm+f+wtEfICd5OD6Y8dq9iA==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: eqnjwr1bxsjrba6g891h57isaojyjgyc
+X-HE-Tag: 1791966236-759036
+X-HE-Meta: U2FsdGVkX19euvhMCaqfnPzIFSWE3qrRKyGgIDZcyPbboo9/7OnFtUFY88sFYxMponD7Dciv0Mg2n4gboqWXH8yw6RGZOWMGnWciIJ4huYGtgXrwwg4eqZfMsZzGvou+TAHEUGJLsC6yj7NGaMt7zLL0MmANuN6wNjKLO5OaMqecydK2iLrKHT4rT+iQnMVDzQ7jXBwHancEgbc2tzZsN20VZHqjI1S7IfROmx2QzrXB557zn96tbFlt6XpJbadXDmish+LdpQfCPfRcCyg83QW2Ll3WykLG+WbVPQvIkPHMuyoBUJ95lCZxax66XQx54RtZN2Kwk4QyFkVVXHr5F1Mb+OgGzEAgbSeemPcpG/ZIbOB28jbdZZqbdiuKdcVcR29I5eXL6QrH+/1gleAemXeXeG0J4mjJetfLJ6FaqVbPpqV/azkhKglSgZmbzsLNLii2UU4qA2eFl3ay211CdsCeQm15StzxmjnaqFWSS0DL5j86YWRnoP+uNbgrKHxhaJNucPgjIe1U9FfN7j2mXYkPs1S1JptYc/VV/0fmRujiRLAu6es04f10QNdS2BzawLWgMVi90FXTxZn2Grkc1QBOL6MGTUkXFnxd0azlM8tTG8/gFSYZw3o+OLsrU68i3a11EvXqmTgFQtAWc1ke2WcQSmV6yPsotkovsVVuhkLQ7Hm6gpdmqoOjqRKxr3IVs9/8BZPUw6+XsjiJ5+iFyrdMyFYHXHrrodd3mPFO4sUoN0w/IYw+tmhhHFJGeS09U3SPe6kWtpaIbVg0a1CveUexIUx6IGkW+s5ddSX1GVjJg4H+5JR9D2tLbojE3ybGgPlfAHu/Hhia/Ig32SPwmG4SAY/V9wB/KQ/lgSFetjflB7xqXQ0kZehJ8VT8BuYlRgEjSGsgYwA7E3cEGh5BYKo3F9UzeXNs/BSp+Ifqo6yldF85FsNqcrcr5vZfCIKGnC9+zTQxlZ73+MgREq7
+ Yeuw1j12
+ bFC2PSHTowIG5nBbRpd4oS7ohqn5Wx4x/1ze2xsEAWD6FAdwLOVCG4PC3qEMX/fP72jFBU8IL6zyAfkyF0bAPjCwLMIZdi2HB2RgYH16V4My50eMIvCCAjXzOhuBxRoDSXDmreIr6o3EilRWHVORFQoO1+elqQzyLYE8cuH/BEHEMOiRHha/R2o6NArhL/Otz3odNTUXbtEMVE+FyqVCLN7nxlwAfyIe+MsNeFZU3akDv6G7aq7QfP856LvpRzNQZMnJwFpjxy4hPFTFt+HmdNw0cBtrpF/jDt4rSWQrUPtAIaJkEu6aV+rK535f0C8hLQEXju+/60ygIANcNkG0hEsVMFkkUF8MzbLyF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,67 +98,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in
-filemap.c") changed mapping->nrpages to count base pages for hugetlb
-folios. However, shm_add_rss_swap() still multiplies it by
-pages_per_huge_page(), overcounting RSS in both SHM_INFO and
-/proc/sysvipc/shm.
 
-Use mapping->nrpages for RSS accounting across all backing types, and
-account swap only for non-hugetlb shmem. Use READ_ONCE() for both counters
-instead of info->lock, which does not protect nrpages and cannot provide
-a consistent snapshot.
 
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Suggested-by: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
----
-Changes in v2 (suggested by Muchun Song):
-- Share RSS accounting across all backing types, leaving only swap
-  accounting conditional on CONFIG_SHMEM and non-hugetlb files.
-- Replace info->lock with READ_ONCE() for both counters.
+> On Oct 14, 2026, at 16:22, Weilin Tong <tongweilin@linux.alibaba.com> =
+wrote:
+>=20
+> Commit a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in
+> filemap.c") changed mapping->nrpages to count base pages for hugetlb
+> folios. However, shm_add_rss_swap() still multiplies it by
+> pages_per_huge_page(), overcounting RSS in both SHM_INFO and
+> /proc/sysvipc/shm.
+>=20
+> Use mapping->nrpages for RSS accounting across all backing types, and
+> account swap only for non-hugetlb shmem. Use READ_ONCE() for both =
+counters
+> instead of info->lock, which does not protect nrpages and cannot =
+provide
+> a consistent snapshot.
+>=20
+> Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in =
+filemap.c")
+> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
 
-v1: https://lore.kernel.org/linux-mm/82f099d8-e46d-481e-bba5-95bff118ffbb@linux.alibaba.com/T/#mf511e253ce84ad64a9b7fcfe7bff51bc7ed23f12
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
- ipc/shm.c | 23 ++++-------------------
- 1 file changed, 4 insertions(+), 19 deletions(-)
-
-diff --git a/ipc/shm.c b/ipc/shm.c
-index bb1a721..6862f68 100644
---- a/ipc/shm.c
-+++ b/ipc/shm.c
-@@ -936,26 +936,11 @@ static inline unsigned long copy_shminfo_to_user(void __user *buf, struct shminf
- static void shm_add_rss_swap(struct shmid_kernel *shp,
- 	unsigned long *rss_add, unsigned long *swp_add)
- {
--	struct inode *inode;
-+	struct inode *inode = file_inode(shp->shm_file);
- 
--	inode = file_inode(shp->shm_file);
--
--	if (is_file_hugepages(shp->shm_file)) {
--		struct address_space *mapping = inode->i_mapping;
--		struct hstate *h = hstate_file(shp->shm_file);
--		*rss_add += pages_per_huge_page(h) * mapping->nrpages;
--	} else {
--#ifdef CONFIG_SHMEM
--		struct shmem_inode_info *info = SHMEM_I(inode);
--
--		spin_lock_irq(&info->lock);
--		*rss_add += inode->i_mapping->nrpages;
--		*swp_add += info->swapped;
--		spin_unlock_irq(&info->lock);
--#else
--		*rss_add += inode->i_mapping->nrpages;
--#endif
--	}
-+	*rss_add += READ_ONCE(inode->i_mapping->nrpages);
-+	if (IS_ENABLED(CONFIG_SHMEM) && !is_file_hugepages(shp->shm_file))
-+		*swp_add += READ_ONCE(SHMEM_I(inode)->swapped);
- }
- 
- /*
--- 
-2.39.3 (Apple Git-146)
+Thanks.
 
 
