@@ -4,155 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E52FCC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 15:13:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90574CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 15:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EA286B008A; Wed, 14 Oct 2026 11:13:16 -0400 (EDT)
+	id 356426B0088; Wed, 14 Oct 2026 11:17:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39A7B6B008C; Wed, 14 Oct 2026 11:13:16 -0400 (EDT)
+	id 307596B0095; Wed, 14 Oct 2026 11:17:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 263256B0092; Wed, 14 Oct 2026 11:13:16 -0400 (EDT)
+	id 1F5C66B0096; Wed, 14 Oct 2026 11:17:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED98B6B008A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:13:15 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7591014058F
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:13:15 +0000 (UTC)
-X-FDA: 85321575150.01.7003A55
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4E9E318000E
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:13:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="u Qta/om";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=OxtN50Ew;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EB2246B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:17:40 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9437EA0617
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:17:40 +0000 (UTC)
+X-FDA: 85321586280.20.F981648
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9696CC0009
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:17:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VqCGFG0F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791990793;
-	b=TVydHCgj++uOaRlK7kPVVc+ZwCCIOYXMB2fGoAkSG9mg4YmNaBr/au9HytOpfDMU2pjb8T
-	Fa7T1SfohWV8Z/wLDBmDYREU1wYmSDRmX7JhLJsQSymYq1mGAE+DjoQ9Xc7ar/NKWSHZXa
-	Et3YP/9fhMY8ecdbroRQo/1m4aet1Is=
+	t=1791991058;
+	b=hGi8ZPxeCQklhGe+DUq/sk5NfbQgLzPzk3kHAJwmtpQJTiO3FZVctx3xt8BK1jZF0QsIHM
+	m/wpfreLApRYM5+u5FUOQXsQpkkJlPTDqnk60n4yNWINIFiLM0lg9YTI7fF93P0zOjZT25
+	kvk+Hm2itxCPo6mngkHL/XPZ1M+wN3o=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="u Qta/om";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=OxtN50Ew;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VqCGFG0F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791990793;
+	s=arc-20220608; t=1791991058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wOpUc93gFFArBoAXhaus4seduOQibJAcMCNch1pqklg=;
-	b=SbZX/aHpy8TZ2l/h2TklC7HR1t+pAD2zcuD/hGMB+o2zytFuPG3ASJy4nt6ECmMPuKo/uF
-	VIpQ4BLJ9emqOqDu5wVRXJwVuqSrZM39B4Kc6mp4y0/ZThBQZwiWH12Bx65aEDF8z9WaWq
-	36d4W5++cb77G0U8Bqy0UrMnxDHnkZU=
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfout.stl.internal (Postfix) with ESMTP id 9878C1D000FE
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 11:13:12 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 14 Oct 2026 11:13:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1791990791; x=
-	1792077191; bh=wOpUc93gFFArBoAXhaus4seduOQibJAcMCNch1pqklg=; b=u
-	Qta/omLOGimjIHUEKQwfL7ovZ1Lo4R2MfYGoNM89lkMZeWaHMKy7GL1g5UqyTjbI
-	mbo66i77QLZAfV3PpUG9ahmmUcu8KmnaxXoccU+oSWy76beQqEjtU5Ph5I+bYIyi
-	/XsLiOP+VgLb5ZDRb0KDuweDD4JEhAlN1hTqnm2Iz99/rcku+U599ErRcNi7VLJB
-	d5EhCcxfcGidc6TJf38fmp6Y2vxjz2WMRFDD1ZUuf+CP8glkRtHfIt5xkq9B8W5N
-	FlNAFLz2W9OGOCr2nEuO5bfFbbmTYQ7VuET4qkr4dICA3uIhUB+3kn5BMCr3D5xH
-	2fYfseBlR4WbAouF730eg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1791990791; x=1792077191; bh=wOpUc93gFFArBoAXhaus4seduOQibJAcMCN
-	ch1pqklg=; b=OxtN50EwzPAHLrIDo+SxTurWAKMOY2VMScylMB8tMqI8HyUuzVG
-	kZo04+Z/KnJeSZ3zklT3vpuhPha5g4GYCQG/C5T17xcl1y+Me9kxGkct0/I010KQ
-	ZJi+UAjAg4exnfGaX15qgmxBHXeIFy1Akbx/qYdd14LZv/FJMTs2RUjiViJAOFJd
-	OF7LsOWh0BRHfenivBQRo0K+8qVxQ82KWlE/F8gSQBU32V35CclON0xi9yWcTnvA
-	qaQUAuqjkeRGIuerWTUzn9DboQvbMl71xyT3EfG5LcLJExVlyA+jVKzuilKRV8pW
-	JSmoiazAIucv0nmcqcekkac+NqHOBcgRBvA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791990791; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm3:rsa-sha256:q2WALhSfnIQZxi4P9NMEADuV/aH2Ltt4gXGHZ1GTMGwQPaE
-	vnGphxm5eueBlhDJpb3//LRx4d7FU5/2WdqGWSS/NktfVcV0onFv61RfNSUTqaAU
-	5ZvqspzEV4WC8kKwf+2v7TcL3XoRelYGMsdkt5Q3VMQ63jaYVmtFRiM/OIkWthR2
-	uHB9JdqPpYNdyNkGNfNgwZgjlH27+e3RezK+EZeblaT255tFc2/sUt8Yr2heBdlP
-	q1B0Ofac0Q4Vjr7UQ7b6ApoKxh7UoDxen5XNakoIGS/QQaltBNW1oSvwBJJcSvIx
-	vsDbBQVm4jUJAlrsKSmWyJm6j5cSNWOCAr3QjfQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:l7exCgdNv9j0ZInYme449tBrkRlNDP+jpQLyBNQizzU=:G60KgCAh3+4rO87ttQo4oGU0cSK3AxlL7WM4JZKqcCA=;
-X-ME-Sender: <xms:BpzPagLxp0jZW1pc4QX2lC1ovBgjRCBisoidbAJQmyCY0Acu9v0p6A>
-    <xme:BpzPaq_7GYtVozT03T6peLWLV67rToRejqTMAdddSqANNPp-hwx_FRUtGAszqKSDs
-    aDbD4uYMQ35vzCPXCD8GDy8QXJwCfuG2TWrgm_4BbqsVw98oVxz5HQ>
-X-ME-Received: <xmr:BpzPau8vqyvIR_bktSL81eFnEAJe6HFpopdo_oLBkXN70gOaxp2Nm2GKxDQ>
-X-ME-Proxy-Cause: dmFkZTGOpaIiUCvzOKJYmWwXLjE5VgiI69sgmw5zefHn3fmXaEZm9155gUIeRoBxRHgim+
-    ixRIflW98cI4qN3hOAjoBaFOgQR1uVMYXdKZ+fm59GlcrANLb2+KrT5qejXhIsxbQBVqak
-    1xyLocSkJsK8DtQftxAbNn+72pI6QgbvPcQ7E5BcVM+MrYW/mxVTtwGxkpJBdPU9OZdPFZ
-    j7vKRWCjzBkG9w+tE20g1pFuIPAhd78DzHySseDSKBy2rIghh8NJer6mAS6Tj5c43ccszP
-    ggeSyQ7V/cdwJiI6FVREhq6feoXVDszLULow4fyrDr4sy3cFU/Ms4vtOPIs8OhElQk/sTm
-    wIfCb4Z9fF0Zvqb++fnTIbI4LSFY72L9U8H9f0eDS9isgrlxGTsieOHp8uGHXF4yZOubLv
-    NIRHaTqOdPpHbjZWewcgr4kRAZZIX/u2CQfSgLXHfT+ck/AAq3W7duqcwKIuo8gNzmbc+q
-    4x0IG+l7d+LyfQIx6LpMd9z8lsHFqaYAMZbp2OCncLW/4cUCpmh+DOWFeWqK91+U12j+qu
-    ITuE3dOOc4PqunrKwNv37D5SJpDCe76lw+pmkMj3Od2Y1zm7v8GEDpC4kQMU/aqVyHhiFe
-    oNzPBWg3oQOV6cUd5NYqJxMtjgHJq2qU38hxfrikXYACTyMHiHgCuwZb7new
-X-ME-Proxy: <xmx:BpzPas_aL-HXSm6Evglg5jCYT_Vqfbmuuym6tulxuya7o9B4bbE5sQ>
-    <xmx:BpzPahKlWfzgSXDFkUL_olfi1a6lLRK6WTW4PyP-nSUzqcKu-30-rA>
-    <xmx:BpzPapS_789xelULVYeqwXs2AfZZvE2AYwLqgJ4Iu8tjfcwmzZQXqA>
-    <xmx:BpzPai-m-KAXgGLQZ7CGnmSbNfJbNNrEFJTouUWp-_Apo5O-uFZ1gw>
-    <xmx:B5zPalhIblhyXImjNOn_4nXgCQ6sg96scz4_xXA25V2_KEep2ZytyFTS>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 14 Oct 2026 11:13:10 -0400 (EDT)
-Date: Wed, 14 Oct 2026 16:13:08 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v4 10/13] mm/collapse: open-code collapse_single_pmd() in
- its two callers
-Message-ID: <as-WGjXRHws2f0z7@thinkstation>
-References: <20260928100630.21870-1-kirill@shutemov.name>
- <20260928100630.21870-11-kirill@shutemov.name>
- <b2133cff-ce69-4a45-bf33-c44b774dee7b@kernel.org>
- <ar-nKHZ5hlbsXeFP@thinkstation>
- <dfbb4bac-0def-4e1b-87a7-91c9cd91349e@kernel.org>
- <20261013143839.832f1a4db51f801a2b95f850@linux-foundation.org>
- <3bd88620-c245-4fab-abb7-9091d9a1b649@kernel.org>
- <as9cHpbmDm2FzJai@thinkstation>
- <b5b2e72e-496a-4756-bdd9-c83c78b3da89@kernel.org>
+	bh=TGg9zLBzBGi2zH1vsZ4XSrJ5/M5hqhcjBRGfXtJNFlo=;
+	b=K0rbggQ1o6yZfeSDpRm7TfmLHqoGyzL/vM0v9zkCCuxeqdFDb6VgOP73kM4Om4FKq8ZIMx
+	uvNklC36FGJw0EeesSLGhScpViJjnKAJayWU872LrHZqPXqnTFixMNN3yOmXKd2M2I/32R
+	EPxyoXYibeNZ+SQb+D2lbwt40flvRMw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CF11D4136F
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:17:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF431F000CF
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:17:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791991057;
+	bh=TGg9zLBzBGi2zH1vsZ4XSrJ5/M5hqhcjBRGfXtJNFlo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=VqCGFG0FjtcUuILwpPuGdgHtuCcBWADJQSszoq4KNyqk+L4Liax3tsJJQFJZYSKRJ
+	 D6qyT4hX2CUbDHcf2zbFpS+nDHPAIgBxFZectfIWi+E6FSl8w6VI7ARC3HUAJ+N+XU
+	 309UyiyWVkx5scKU8zQiT8PXJYzEhQXRdhNgt5pM2PuEpj270Affsx1oD5Os6RD7Lg
+	 32Qa1w1Ol53KMIvzB7Dq5VURnvmuLRVxl0e9ssf9pGcLKOPWT2Diqeh9dZZr2f/mov
+	 qKVPxYOkGtwsAiRIv5cUG76DEfeO8ciB47l62LJy3sJtvwWBBq3ezv4JMiD9rFJDrL
+	 cvoM0S2rLWalw==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c2e5e801487so645805966b.3
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 08:17:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByw55osgAqJbmjO3zlhm0E5rAZIAnNsfEZBqIP/1kyITjhT3kFhpuw0MSsFWvoyekK1BHTrMDUkCQ==@kvack.org
+X-Gm-Message-State: AFq9FYK4Utf6Y9+8LP2ShaI+X3HKrOqDvCLOZnVGCYo2KvVLpv49ARzD
+	QKCs5+JY196RHRilnqkcReC2PGOB5a1THGOUA4swLn2pboZL0uMhvXDa1rfNwtP4Q8+CBBU4Jl/
+	ytudiSzHBPe4PcTxlL1hN48NOayhZTGs=
+X-Received: by 2002:a17:907:1997:b0:c2d:c98f:4824 with SMTP id
+ a640c23a62f3a-c31aa057064mr1511236766b.30.1791991056352; Wed, 14 Oct 2026
+ 08:17:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5b2e72e-496a-4756-bdd9-c83c78b3da89@kernel.org>
-X-Stat-Signature: cap98xy17mwhi4igptsx69decdkxtz99
-X-Rspamd-Queue-Id: 4E9E318000E
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+ <20261008182814.27450-6-kanchanapsridhar2026@gmail.com> <as7JC8o2kggiq_ss@google.com>
+ <CACpmpofXMGBP70Rn7jHLwOF38GRKMUGoW3rb1Jp2SPH7ygKcfw@mail.gmail.com>
+In-Reply-To: <CACpmpofXMGBP70Rn7jHLwOF38GRKMUGoW3rb1Jp2SPH7ygKcfw@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 14 Oct 2026 08:17:24 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOEcGmg8eVttu41htugnng0ahnVQbubiJfxVH+GfDe47Q@mail.gmail.com>
+X-Gm-Features: AclHuK-ehxXi7A0e1gRS8w_1Qe3FwN4I9eAdtlth0BvoDqVKzvl-jH6zB_7Y6xQ
+Message-ID: <CAO9r8zOEcGmg8eVttu41htugnng0ahnVQbubiJfxVH+GfDe47Q@mail.gmail.com>
+Subject: Re: [PATCH v1 5/8] mm: zswap: Store the folio's node id in the zswap_entry.
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: pqkdxkerwggxuwtty3789fuui6uhdexo
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1791990793-828941
-X-HE-Meta: U2FsdGVkX18Zm565fnz18st3BccHdvxx11Fega3tTX3eifRdnKO9TDQS8UXyvUIWe7pB6az+6dOgsGTsUAIhk5s6RGEJ9zudmvTsYlJErj3eggDn6LKlUFQ1SFSwv2QmFnzvXXz8BK+8pRuW+fpNsQ5P9d2iY4Z9ZAw9ZgB5pEEph/rgp8GGiu8jfkizInPO3RIv4JWmJBhSy15eeQ2KORkk2W7YoTFsWkujfCroo8KnnDRXMHJFb1db1XR5dSDQuhkzLCPuJkLFnFI9loDEN0bWAMArxMou9OK3yc7pRGCHtgnWZbkH5rNjs5QTo4Yll75EjNjtfZbEmt5hRfi+XsFGAxVq8GTsjHnV0NSTsPXcA2yRrXU8sF333GTkuWZrk6SEyMRQPDd70jQzEWk/aUYpvGTXL7MftS9ho3RAggjqYahab/hCYB0wS1jM/dWFZ6fro7JdvNiIos/iVpYYICBWVTkfZ/PTliiEOlJ+NIY5n3ali2MWm2E+nYgyx51aT3utY0xm4ihrhcbSe3n3EkfalxTja5HqDVtsiG0VN462l/83O7XGkuesiMzjmlYIqtdp/gjxGw7bFg98JKojkZqTE+3PPoo2yndfBHI+4e4a6h+0UP9YhyaM5sdpL7iVu4HgzQ5TXqjkDrAU36xKBnr4jQpS1zOg2FWupXjo3Wv+7Q1dSmIsoVBAs6Y4mEhczS6+bLtE1vY5xm3OLJAJ+5tq0DVe0LRT/mBS8rN37IHM6WGDm4I8Uc/1EkEobwOhkFu2jJI2SXxMYBiXpgBcrJepdvBaQDs6uo/s4I/EFAfzDFsBcirWbARhDnZAnLx5WYG1O4IluPxpXf8LYjZyHR8XiCpqUDYYbSJnpf6aZRF588d/fv6vctOwmdZ3VQ4l3//egtqC2TrtnyX2GrvnMGUvHK39FR06V7bU0xEiaieY4T6EP6fjz5G1oZyRmd78e0DmGO155rzUyGir6yw
- FI8BVnlB
- UcxpOpDQnMTPNmr03/tzLC5LAurKNUEolPQILcYYGP78/k3TGRgMmO5WTAPph2P7EdUunaWHtDtUkuQa0Vmt8cL/jqqB/kMZiElYD4bSPDCCnO5TBQRyrERyAB7GJOe/4Wh+dGTWaa0n5sXi6eJ++EQ45tnTIrZeoeFSXoUjucaLUP0oBttWvb/9MWV4fPq4JcT40QCHAzpVPb7AF5VDQvjASlTbcrrtXiPORCjK+loY1lVSlTC5tkhPnEhHVuxiRH+dmTgFXl3TRUD7SMawEzN+gUGCIvalEvH34O86kmWALK5PknxMw6E5F8slHgQOw0GqHPTfQwdT+OesHQXw8KvU+B3jjw1O5AANr2GxWUClB8uH4CvA8hPFJEBvQrT48ZQ/vKSL6PI7vf1gwVCSKSVn2kdJLi3jD1M9VypQ1NvPpXF6vrOK1TBj78i07L2sR3wNJOeCgWCbhnWqYElmNzSU5zSULNddfZTks9Or5HSSTTpMoZC3xn3CHzJLkdr1LdxIXiM424GyPknCm2htX8VETHW735XqDNBZhRRFrIneCRHT81Z46zuC6Pw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9696CC0009
+X-HE-Tag: 1791991058-817630
+X-HE-Meta: U2FsdGVkX1/GZ4m1YoIomWDOS9y2XXdtVleTjfTkCDZEH5SD67NtTtEkJBe5e21hWQT7qJn/96J2VaUiIRz/iZX8DERanv8ciYM1jLI1ZFCUAFdPPrE4Ib5bWdEw0EVZE1hSAlE53AtFaYHZXslMw48Yc/z/SRivK4p8CO5QPiVWZ8lV47iC+N92zZHDUzlVnpnQTIIxnGsOyuflzBYhv0TH6U1WE64UoxMrOuPxEMyW2VCytFn5l6etXKrKtDLK25hJ6CKUL4OHAtAJvZPGNpTfLHRQGG7LS7sq/SRCS1zHJHsr7yUROBe8gGTQ+Q7cFKI6z6UeG36T9Rt2XoJU0q9duns/U96R8DL9hGhlXBStMvSWr5tcR8nwsJjewE+l7Thd1SNT10cGV/fml285ThDik0hrRKm0rSx5FZMdcSb5Q3ORoAs81YsShfiDhO44SHyhj6k0mYbq3TGDJU7KqN/Gz/49GPa4VwNO7pSpOdJWMMPRfdlthtqvAIt935V9TEZHZxrHShOg+aqRF5XQT2Jx5gDazbEx9q7vdlvtUN0GX65HL9WCTXfvuANgJod8RnpYE2fxP4AaG0/W0a9ij3V1uFm5+AZZ9APbh2xBog+PUAvAJM9quIVPI0U5xmTHauYwl6syaJx/XVOVv0WATh4IYmxgiQWH+GCPCDAmlnhsG+7cQUOIH4BhTetcVyj326tggMAKioJrfExO7+M7epAJnvXGv1H+0oaIe3cHShmz5ZVejDupbdSqSKQGP2Y3mpU3Gd7HGL9/FrS3yz2iSS4A7aw6VptR76j3PWN3o4QwYIb2g+aoiOBYlh7G8+U80JlJVvc+kyI5DgBi/yLxc77HYUq9JIVEfkUpHoFUuUwi85RNredWlsivxqBSiTkX28S/EvKK1xsZihFCMZsjyk86U6xmKbxsLPUoKDq0uX2GPsIG+Y+Vr6ZCXXJEMblSZETvTMmtYxH9rSUk3EO
+ /NXe1rUD
+ 8sK3PRvHFD6wnuY3kTWx3t8APwDkO9eXMop1Cs9ZJwM2VtSo4rtfH34WDDF7d4ZQCdFuErbIKsOer1LyzccJv1Ze5blJ1+r0FNdF19Xjc7cBDw+2QMOhEQyckxRXJ9zD+96UdqTRySw9Vbq4xQjIJ/AqJKBGNgAQxNqkfob+wmXwmg5LyO/66qpVNmgLg69PWT26KHb91FUy7gzt8HWZ83LRQykKj+nsygrd/wJQIEmxPkSbpmc1InhXThlZI2ugXfdaht4TzY1abIp14iwPA2lqGnzf0m14tWL1Jie8jnbyDpDxwm9CBrEEYF0uslXchnpweLZud5tSmfb7sA+W7U1c2gFPnE1Tn0SjHAwUQh649QQLd0iWiHLBcxMQfno1pYrVPmHvuoz1ttytg8z4KKIB9Bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,30 +107,351 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 02:37:02PM +0200, David Hildenbrand (Arm) wrote:
-> On 10/14/26 12:55, Kiryl Shutsemau wrote:
-> > On Wed, Oct 14, 2026 at 11:33:46AM +0200, David Hildenbrand (Arm) wrote:
-> >> On 10/13/26 23:38, Andrew Morton wrote:
-> >>>
-> >>>
-> >>> I've suggested to Kyril that we park this series until the next -rc
-> >>> cycle.
-> >>>
-> >>> But I can bring it back - we have a couple of weeks, three if we get a
-> >>> 3-week merge window.
-> >>
-> >> I'd say we move forward with the uncontroversial parts, and keep discussing the
-> >> controversial bits. Either these make it still in this cycle or we'll simply
-> >> have them for the next cycle.
-> > 
-> > Agreed.
-> > 
-> > Andrew, could you pick up 1-9 and leave 10-13 out for now?
-> 
-> I think #9 needs a resend, right?
+On Tue, Oct 13, 2026 at 6:17=E2=80=AFPM Kanchana P. Sridhar
+<kanchanapsridhar2026@gmail.com> wrote:
+>
+> On Tue, Oct 13, 2026 at 5:18=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Thu, Oct 08, 2026 at 11:28:11AM -0700, Kanchana P. Sridhar wrote:
+> > > When storing a folio in zswap, save the folio's node id in the zswap
+> > > entry instead of relying on the zswap_entry being allocated on the sa=
+me
+> > > node. This enables optimizations such as batch allocation of zswap
+> > > entries for large folios using kmem_cache_alloc_bulk() that does not
+> > > support specifying a node id.
+> > >
+> > > The size of the zswap_entry remains unchanged as 'referenced' is lump=
+ed
+> > > in with the 'length' (as it doesn't need a full unsigned int anyway).
+> > >
+> > > Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> > > Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> > > Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+> > > Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+> > > ---
+> > >  mm/zswap.c | 23 +++++++++++------------
+> > >  1 file changed, 11 insertions(+), 12 deletions(-)
+> > >
+> > > diff --git a/mm/zswap.c b/mm/zswap.c
+> > > index ca513a9f89e3..c2731d3acb2c 100644
+> > > --- a/mm/zswap.c
+> > > +++ b/mm/zswap.c
+> > > @@ -194,6 +194,7 @@ static struct shrinker *zswap_shrinker;
+> > >   *              writeback logic. The entry is only reclaimed by the =
+writeback
+> > >   *              logic if referenced is unset. See comments in the sh=
+rinker
+> > >   *              section for context.
+> > > + * nid - NUMA node id of the page for which this is the zswap entry.
+> > >   * pool_idx - id of the zswap_pool that the entry's data is in.
+> > >   * handle - zsmalloc allocation handle that stores the compressed pa=
+ge data
+> > >   * objcg - the obj_cgroup that the compressed memory is charged to
+> > > @@ -201,8 +202,11 @@ static struct shrinker *zswap_shrinker;
+> > >   */
+> > >  struct zswap_entry {
+> > >       swp_entry_t swpentry;
+> > > -     unsigned int length;
+> > > -     bool referenced;
+> > > +     struct {
+> > > +             unsigned int length:31;
+> > > +             bool referenced:1;
+> > > +     };
+> > > +     int nid;
+> >
+> > This will increase the size of the struct now with pool_idx, right?
+>
+> I was gathering the struct size with the struct {unsigned int
+> length:31; bool referenced:1} as suggested in v14, for my before/after
+> comparisons:
+>
+> before:
+> struct zswap_entry {
+>         swp_entry_t                swpentry;             /*     0     8 *=
+/
+>         struct {
+>                 unsigned int       length:31;            /*     8: 0  4 *=
+/
+>
+>                 /* Bitfield combined with next fields */
+>
+>                 bool               referenced:1;         /*    11: 7  1 *=
+/
+>         };                                               /*     8     4 *=
+/
+>         int                        nid;                  /*    12     4 *=
+/
+>         u8                         pool_idx;             /*    16     1 *=
+/
+>
+>         /* XXX 7 bytes hole, try to pack */
+>
+>         long unsigned int          handle;               /*    24     8 *=
+/
+>         struct obj_cgroup *        objcg;                /*    32     8 *=
+/
+>         struct list_head           lru;                  /*    40    16 *=
+/
+>
+>         /* size: 56, cachelines: 1, members: 7 */
+>         /* sum members: 49, holes: 1, sum holes: 7 */
+>         /* last cacheline: 56 bytes */
+> };
+>
+> after:
+> struct zswap_entry {
+>         swp_entry_t                swpentry;             /*     0     8 *=
+/
+>         struct {
+>                 unsigned int       length:31;            /*     8: 0  4 *=
+/
+>
+>                 /* Bitfield combined with next fields */
+>
+>                 bool               referenced:1;         /*    11: 7  1 *=
+/
+>         };                                               /*     8     4 *=
+/
+>         int                        nid;                  /*    12     4 *=
+/
+>         long unsigned int          handle;               /*    16     8 *=
+/
+>         struct obj_cgroup *        objcg;                /*    24     8 *=
+/
+>         struct list_head           lru;                  /*    32    16 *=
+/
+>         u8                         pool_idx;             /*    48     1 *=
+/
+>
+>         /* size: 56, cachelines: 1, members: 7 */
+>         /* padding: 7 */
+>         /* last cacheline: 56 bytes */
+> };
+>
+> And decided to go with the placement in patch 7, since it also
+> separates out members by compress/decompress path accesses. pool_idx
+> is set once, and never changes. Further, moving pool_idx to the end
+> gets rid of holes.
 
-Ah, my bad will spin v5.
+Please look at the layout I pasted (quoted below). Your patch
+increases the struct size from 48 bytes to 56 bytes, undoing the
+optimization introduced by pool_idx. We need to pack length, pool_idx,
+and referenced in a single u32 to keep the size constant.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+FWIW, moving pool_idx to the end just trades holes for padding, I am
+not sure if that's necessarily an improvement.
+
+>
+> >
+> > Before you patch on x86_64:
+> >
+> > struct zswap_entry {
+> >         swp_entry_t                swpentry;             /*     0     8=
+ */
+> >         unsigned int               length;               /*     8     4=
+ */
+> >         bool                       referenced;           /*    12     1=
+ */
+> >         u8                         pool_idx;             /*    13     1=
+ */
+> >
+> >         /* XXX 2 bytes hole, try to pack */
+> >
+> >         unsigned long              handle;               /*    16     8=
+ */
+> >         struct obj_cgroup *        objcg;                /*    24     8=
+ */
+> >         struct list_head           lru;                  /*    32    16=
+ */
+> >
+> >         /* size: 48, cachelines: 1, members: 7 */
+> >         /* sum members: 46, holes: 1, sum holes: 2 */
+> >         /* last cacheline: 48 bytes */
+> > };
+> >
+> > After:
+> >
+> > struct zswap_entry {
+> >         swp_entry_t                swpentry;             /*     0     8=
+ */
+> >         struct {
+> >                 unsigned int       length:31;            /*     8: 0  4=
+ */
+> >
+> >                 /* Bitfield combined with next fields */
+> >
+> >                 bool               referenced:1;         /*    11: 7  1=
+ */
+> >         };                                               /*     8     4=
+ */
+> >         struct {
+> >                 unsigned int               length:31;            /*    =
+ 0: 0  4 */
+> >
+> >                 /* Bitfield combined with next fields */
+> >
+> >                 bool                       referenced:1;         /*    =
+ 3: 7  1 */
+> >
+> >                 /* size: 4, cachelines: 1, members: 2 */
+> >                 /* last cacheline: 4 bytes */
+> >         };
+> >
+> >         int                        nid;                  /*    12     4=
+ */
+> >         u8                         pool_idx;             /*    16     1=
+ */
+> >
+> >         /* XXX 7 bytes hole, try to pack */
+> >
+> >         unsigned long              handle;               /*    24     8=
+ */
+> >         struct obj_cgroup *        objcg;                /*    32     8=
+ */
+> >         struct list_head           lru;                  /*    40    16=
+ */
+> >
+> >         /* size: 56, cachelines: 1, members: 7 */
+> >         /* sum members: 49, holes: 1, sum holes: 7 */
+> >         /* last cacheline: 56 bytes */
+> > };
+> >
+> > I think we want to reorder the fields. We can probably also avoid the
+> > bitfield if the maximum page size is 64K (is it?)
+>
+> It seems on ARM64, the max page size is 64K, however on PPC, it can be
+> 256K. So it appears we need at least 18 bits on currently supported
+> architectures.
+
+In this case unfortunately we need to stick with bitfields. We should
+probably add a build-time assertion that the width of length is enough
+to cover PAGE_SIZE.
+
+> If you agree with the pool_idx placement to be moved to the end as
+> proposed in patch 7, I can try and optimize this further, by limiting
+> the "unsigned int length:18", if you think this makes sense.
+
+I don't think we can put pool_idx to the end and keep the struct size
+constant. For length, yeah let's use the minimum number of bits needed
+and add an assertion, so that the free to use bits are obvious.
+
+>
+> >
+> > struct zswap_entry {
+> >         swp_entry_t                swpentry;             /*     0     8=
+ */
+> >         u16                        length;               /*     8     2=
+ */
+> >         u8                         pool_idx;             /*    10     1=
+ */
+> >         bool                       referenced;           /*    11     1=
+ */
+> >         int                        nid;                  /*    12     4=
+ */
+> >         unsigned long              handle;               /*    16     8=
+ */
+> >         struct obj_cgroup *        objcg;                /*    24     8=
+ */
+> >         struct list_head           lru;                  /*    32    16=
+ */
+> >
+> >         /* size: 48, cachelines: 1, members: 8 */
+> >         /* last cacheline: 48 bytes */
+> > };
+> >
+> >
+> > >       u8 pool_idx;
+> > >       unsigned long handle;
+> > >       struct obj_cgroup *objcg;
+> > > @@ -672,14 +676,8 @@ static int zswap_enabled_param_set(const char *v=
+al,
+> > >  * lru functions
+> > >  **********************************/
+> > >
+> > > -static inline int entry_to_nid(struct zswap_entry *entry)
+> > > -{
+> > > -     return page_to_nid(virt_to_page(entry));
+> > > -}
+> > > -
+> > >  static void zswap_lru_add(struct zswap_entry *entry)
+> > >  {
+> > > -     int nid =3D entry_to_nid(entry);
+> > >       struct mem_cgroup *memcg;
+> > >
+> > >       /*
+> > > @@ -696,19 +694,18 @@ static void zswap_lru_add(struct zswap_entry *e=
+ntry)
+> > >       rcu_read_lock();
+> > >       memcg =3D obj_cgroup_memcg(entry->objcg);
+> > >       /* will always succeed */
+> > > -     list_lru_add(&zswap_list_lru, &entry->lru, nid, memcg);
+> > > +     list_lru_add(&zswap_list_lru, &entry->lru, entry->nid, memcg);
+> > >       rcu_read_unlock();
+> > >  }
+> > >
+> > >  static void zswap_lru_del(struct zswap_entry *entry)
+> > >  {
+> > > -     int nid =3D entry_to_nid(entry);
+> > >       struct mem_cgroup *memcg;
+> > >
+> > >       rcu_read_lock();
+> > >       memcg =3D obj_cgroup_memcg(entry->objcg);
+> > >       /* will always succeed */
+> > > -     list_lru_del(&zswap_list_lru, &entry->lru, nid, memcg);
+> > > +     list_lru_del(&zswap_list_lru, &entry->lru, entry->nid, memcg);
+> > >       rcu_read_unlock();
+> > >  }
+> > >
+> > > @@ -1449,9 +1446,10 @@ static bool zswap_store_page(struct folio *fol=
+io, long index,
+> > >  {
+> > >       swp_entry_t page_swpentry =3D folio_swap_entry(folio, index);
+> > >       struct zswap_entry *entry, *old;
+> > > +     int nid =3D folio_nid(folio);
+> > >
+> > >       /* allocate entry */
+> > > -     entry =3D zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio))=
+;
+> > > +     entry =3D zswap_entry_cache_alloc(GFP_KERNEL, nid);
+> >
+> > We don't need to allocate the entry on the same node anymore, should we
+> > drop this and let the slab allocator handle it as it sees fit?
+>
+> Was this a recent change? I see the folio_nid(folio) on my version of
+> mm-unstable as of 10-3-2026. Let me check, and yes, allowing the slab
+> allocated handle this is probably a good idea.
+
+We allocate the entry on the same node to avoid having to store nid in
+the zswap entry (see entry_to_nid()). If we store it, then there's no
+need to allocate on the node.
+
+>
+> Along the same lines, I have been working on replacing zsmalloc with
+> direct SLAB allocations for the zswap compressed data storage and see
+> very promising results: memory savings and latency improvements. I
+> will submit an RFC shortly.
+
+Keep in mind that zsmalloc is movable memory, while slab memory isn't.
+Zsmalloc may also be less likely to make a new allocation in the store
+path. There are other considerations beyond memory overhead and
+latency here.
+
+>
+> >
+> > >       if (!entry) {
+> > >               zswap_reject_kmemcache_fail++;
+> > >               return false;
+> > > @@ -1466,6 +1464,7 @@ static bool zswap_store_page(struct folio *foli=
+o, long index,
+> > >        * to an unrelated live pool.
+> > >        */
+> > >       entry->pool_idx =3D pool->idx;
+> > > +     entry->nid =3D nid;
+> > >
+> > >       old =3D xa_store(swap_zswap_tree(page_swpentry),
+> > >                      swp_offset(page_swpentry),
+> > > --
+> > > 2.39.5
+> > >
 
