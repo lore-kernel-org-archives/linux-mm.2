@@ -4,89 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 545F1CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 14:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10A21CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 14:54:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39AC76B0098; Wed, 14 Oct 2026 10:51:32 -0400 (EDT)
+	id 094636B0088; Wed, 14 Oct 2026 10:54:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3248F6B0099; Wed, 14 Oct 2026 10:51:32 -0400 (EDT)
+	id 045286B008A; Wed, 14 Oct 2026 10:54:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 213896B009B; Wed, 14 Oct 2026 10:51:32 -0400 (EDT)
+	id E75A66B0092; Wed, 14 Oct 2026 10:54:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F2D056B0098
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:51:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B971405A4
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:51:31 +0000 (UTC)
-X-FDA: 85321520382.17.4838453
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C4B1940007
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:51:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SXhY6GQm;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C194C6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:54:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4325A1C3E23
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:54:51 +0000 (UTC)
+X-FDA: 85321528782.09.2685FC9
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9501C4000D
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:54:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=V1WGQBEK;
+	spf=pass (imf04.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791989689;
+	b=yyHsV0Iux9s5++SWyahcbaEQL2DcAtCl3IzzMj4rj+JL9wRfYzGQpWcJ8M+5PRC7HtI2f8
+	q1ea62NJcP4TEPfQASLb/mo2GyiELSTIyplextAALaZvKd5pBtW02Ky8Dg9G0I7D+gF3gD
+	xJVgEUWXuHXfqMAnR9SzgMccfOZy8ZI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=V1WGQBEK;
+	spf=pass (imf04.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791989489;
+	s=arc-20220608; t=1791989689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sbwm0kYIICcSUmwlborhldmup0bfDzLGUcDOPU7O94I=;
-	b=Ewf8n88wpBLMX74dVetPps/t62UL+C58YQcdYTDa14b92YGX/sJc+eqza1Crrz7Qer1xho
-	+tq+gIyW5P6LoDmze8QzgLCiTqYxLuNE8sm5ACnx+q4keSnKV4YJE3OCm7/uHikIGQAbNW
-	fStWiGbcWoG61diO6LgngP0TFqoKEkA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791989489;
-	b=JDFQDGv0uQd54xcuI2f9gqhehM8XT2/cxl0wEp4RC2Sl5Px9tO0/79ducYwrs/43of9Vtf
-	jnvAiElRAMAlNDja7eyTEI2AfsO/Gr98CfF3bDPMAPuI+tMsz5OmzDYoMhIh8hqAE0EPqp
-	PGfeEogqPb78pL4a1HeEpw/HG+fASik=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SXhY6GQm;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E18360229;
-	Wed, 14 Oct 2026 14:51:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B66B1F000C4;
-	Wed, 14 Oct 2026 14:51:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791989488;
-	bh=Sbwm0kYIICcSUmwlborhldmup0bfDzLGUcDOPU7O94I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SXhY6GQmLweh7DjlvPMxA2dTktV5lkYnXiUk3tMnz8oSC987FLw4a0aDlv8ibbI+O
-	 LmKs/zZJ0VLMz5v2QwPJZ6nsrtDLkcaa1VRnPLCw9VqY8XwbPAe419chlY6LwJzV+w
-	 X8VkiclUEYqMiUKu/9gvrUuYqnhzKQzy1Bxf7cyL1I0PzA4CPooT1Lc3T7RRLnPJah
-	 VnnOYE8uQwe7shBI2ztZRizfWah0o8mz2o999ScqgnkciSfyjlLEe06WZJ23v8WmjD
-	 EPvpL/ik+KgpdOZ3uPm7GFOnsej2jA7xLYtCx29gDZNlfO0RzoO//6ruH2jdbyyaPK
-	 kxoeAqOLA7pYQ==
-Date: Wed, 14 Oct 2026 15:51:22 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Lokesh Gidra <lokeshgidra@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: only allocate anon_vma in CoW mappings
-Message-ID: <as99gyi-NUprRK6e@gremlin>
-References: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
+	bh=HWkLknY7xKuy1SA57I+rolv6ltWrRmW9nqFyBjSVvQU=;
+	b=A3S06I0CLFM10NwrczRyAnBtWp1agx6+ASF6u7BKOr6tmHm3j01W5fIqVpIIzwG4njw/jP
+	T+msdtrpSeoUScQnogvzLHfsEK4r2ZuL8Z8WbrVM1ck7lsT0XnGQSgkfUBFohQJbCcxlFL
+	li4/KaVhjksxdlSum1dna/HmElHa/u8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
+	:From; bh=HWkLknY7xKuy1SA57I+rolv6ltWrRmW9nqFyBjSVvQU=; b=V1WGQBEKONr07ayyPOq
+	f59wHfgGQCXmctUhu4aQGgSJKvgHsJnKSTouvxK9sfyv8boIWdyvHm/i1C4bBnzSsBgsfd0PMeN6D
+	NDISZRH7uTU3M1lqZFdtzwxTH80pg88JI4FLUYc05mU+zX6esk7o+VFHEeaYyJNW3HC73dDKRcQNu
+	1MH4uGox25QJDGBcQzgxTOlMiAFphadKDKBpDn17SNaMOgP70AYO2dvY7suLnH4vPXsLbwxMWp3Kz
+	NlFQeZCnVZYqmgC6cw3/hzlct944W91ADQRh/4YODFKtOxDwVyskK5+UulXUI5iSlUep3alkSISXk
+	th41TVl7iqmJipw==;
+Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <khorenko@virtuozzo.com>)
+	id 1xH0Jy-005Oui-08;
+	Wed, 14 Oct 2026 16:54:42 +0200
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+Date: Wed, 14 Oct 2026 16:54:37 +0200
+Subject: [PATCH v2 1/2] mm/shrinker: size shrinker_info_unit to a power of
+ two
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
-X-Rspamd-Queue-Id: C4B1940007
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261014-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v2-1-51af2aedbe6c@virtuozzo.com>
+References: <20261014-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v2-0-51af2aedbe6c@virtuozzo.com>
+In-Reply-To: <20261014-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v2-0-51af2aedbe6c@virtuozzo.com>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Muchun Song <muchun.song@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ cgroups@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3201;
+ i=khorenko@virtuozzo.com; h=from:subject:message-id;
+ bh=S5pKXlc8nyAL42PzwQoBsDoCOCSgtHQeHvMgfKY+ET4=;
+ b=kA0DAAoBUZYKR/lhXCoByyZiAGrPl7Cj+MS2MZcYboAZyGfaWxUgNJHSegFzxv1aZwzsnYJY1
+ YkCMwQAAQoAHRYhBFYPbcg9xdPQY70ILFGWCkf5YVwqBQJqz5ewAAoJEFGWCkf5YVwq+g8P/j71
+ 4qOS1vdUF33iiqyre5o6E4LH1jmZ8aERi2jJnKkQPqXBGQab5QFxVfVOV4OxX1DS0rPYy89LVhX
+ jvirxoS1MDu3fWxpXe7pwgLcPHMK+9uYsei3l6ghVsnEALpriZWvv6urqvtTUaL1MRFyWVp3dZ4
+ MqfkPG50rMArlFl9bHXZ0qizhPy6C869lDHsu0UoGXhZagS2Pj8zEhn92V0NvwlvSErzHRPRvhO
+ b6jFYkkGVwjtOgHdUv4TnO1rKQ/991MKZcXMO+4P3ZKcffVLCyuX4CI1hN1WQHFihynBJzlVjmX
+ 6Anie+1bM6zRslYp3Vi9bHHnVorRre86BLtgVrEc15g+SWtXFm4pc238Vb0F+efwAKR9lvoCDPV
+ r/WVII5avltoH+MbIcilws8hvPwbIOHXZGdTAtTXWIkrj5KZ4beqLSJuoczqeP6MVQD77wm4BCT
+ nuvzyV35XOscvwRVtVHtTzsLn4S6EaP1A4LrzEydsKbv7Qitht0cNIdTgrmO5TnDSfN/RdJuXQF
+ IaKszmxzQtzh38MGRKl3dEvXPKaPpL/urMvrGF+xcSySAo/JL/1gaPHe7L8xgDMBQSLrO2lpALx
+ p+oCDejJw3R+pkiprYf8q8wpAgiPW8ic94Y0kycYPIM3rD0eRRfHvznJ8N83QTsbnJxcjY4H+E8
+ Ztnyr
+X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
+ fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: xzk7qkt5f5ggosure79sqoii1gctaaow
-X-HE-Tag: 1791989489-807384
-X-HE-Meta: U2FsdGVkX1+MdDO26Pc6XRpGDsEJF8TzqTYu5ZivtjLPcYA1eBZiqysrzQoaqiaBSS2vheCVXd3eOViLYPWSFScxnfHBvUxXvLS5CyQ5f9WOhDo2ie8sexuU9aVX1kiTWBSZ7a3T2OznPyp8xNMET7ZA8oyJUNwhYNOxCwjH/wMei42DMbSUGc1qXDiFUkspjx9Q5KJHnYbeGRgATap5u4npOyupcfzrq8mJiBUiu/WiJtvDOfKQNhh0CvaToJht4N2o3YicKHZHuBVl3tk+BWO/QeodU/Ofy4z6EHioKpLfiiYIBHRHtneRI+TgXdIe81YoKja1R1OgSnXkHNJMnKbNYudHYyhf3Z41OROCo9p21Z5KJ6F8L0JOmZLy9sOmtXcoPxIxEqZdcia6ddlxcHDDVNbcj6lhu7hBspmZFAriIgmAymKGcs2dQiVwHSlb547nnkJKKH3fGE9XBms7myCKY1vTuwAsadRwK9LXYgRAmrpoNB93ji9sSu3U00gBdjERZeKMsKpTEEmlP2oDOQcsTIlfL2Xf1pvreRROepaguh7QjxOWbz0iibOz/01RlQvqGbnPR4B1AFwYPd2oSUoOE5yFFkhRLTkPrJJlrG6eEXVuwoTfXos729xdXEE+8jJInNyXzqv0Lssj4vlP85SqFNCS5VWDYRHCFfJ7Pyq9abJRzn0KYgAEjsI0vJEBbTYkgP0FbjKgvYiXdU9iaT8xAtX43PI4cpqjWi6zpEUtdHHf9tdUBS66H3fSKGCU1FeXurZmfE6pTuz9GBeb9dEKuze7+jFZYlZsOQT/axgiHU21FgFxwqxVrkZgc7V6PNtKAKmkokGipr0Cp+T11Xsgyd+Q/MqskOBUHV+k1aVAfmJIGk7PxwX0WwujWXGmst/EuUM6t5becxRzKYrhd8beYE4MI7Uuqle6Ph6eU1aNn7aFqaRiQzdjo/eQd96KDYE3yJrAqZQ/5o/1H94
- AXEF7SCj
- DzafhdOBAmM9xxTPsFbsYNYd7rBiETp1AVMD3BFrTGRn6QlFzOxJ32UHYBs5BavcuWghQHOvsjRAG1BU4L4QKVTg0lsuGYqy+YQrnTa8BxNJ+9vD1N3d1MITVmyfn6jVKOOO5pY/j1FFnk+GzmxYqVz2WN6Ha8kwevnVzo2UsJUWx4l5yrjI6TCRww+QXc4hhli0/DxPnB5owjl8jzi+Oa226jzyWAchOfpgxxXQRIOelkgYA1nFzZpZlayx85fT2FTxcyb1S1dgpTksjQpg9L7uClFO7ycCz1gwRl7CWaxFUyGZ1bT1XWXXwp6kUNNBN6k8NNOOlm03EdlkbjenAnEb9Ig==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9501C4000D
+X-Stat-Signature: 4t5q4z53w31wnfeazdcw3gskcnsa7r6j
+X-HE-Tag: 1791989689-381977
+X-HE-Meta: U2FsdGVkX18fNjN8n4vcXWLdM8vt4zk9jTQUYGcwZtrGBLRpNf0mWVXnOmjffF2pe9P12hC4sec7W69mwDnXshNTZTrbdcW+1y39LBqz9cvmfwOSC/OVj/Y9qN1x419Co4eEPMZLWlKZSaku2o+I2P+1M0C6KC9uID30QEtVbID0q/RnJT2vq2yWLGRxIUU3areiIuo4i/Rh8annFeXly6sj5pTBHkiAuZBsvxUU8qhB4Cwcs2szvinXoTStEwXslRA92M/6cUbRM7i29dPJf21V4DF+W5sSdhCMfd0+aJO7pBvJ7WNmfcbIMX+lJO1y0kvYmcbbyg1+0XavKiEjOpuGiIwdPQaHnvF2aZRtB1LW0vp6RJv1jgbypPFTu7dsZaS5hle7NRocmVF8No4+YCC2lC5bG6RJ9Uopm0UQaBXwfzjF6hKHCjPgl+cEoxGNy2sLmM9zOSIxILEAnCzCu/ZhlepnlcoZ13xtKGmXcOJ00nuimp6GyZuv4gN+mlKi0IvKN3pHTataZGw9IiMwtMxmtOl0OkhJB2Zajdz/FfJUG78+00jT8HpAi7oH+YvJ4SMH2JP4K6CloM3A5UZrCzVzFFO8Tknz9hSYpf9iA/D7r7xUBZ/meJ+HUxPZ5JrCxTCvRQrelYreNh3QGI/dBytoArFgBz3BsU9drcP3ybjvLGU7KnHmRav2x27PM71g+huuunyTlAioe4wuFR9IsmPYs3U/WG0963GyPwMu18054rG7/N6nEuezWW6M2I8wSzHJKsII5ziuranu/gK8kAo/Q5juRzd8/bkF1294exBRcgKYH/79Ko0N8/ujvNiKgZUmKXaQnZv9yfLQe4PzgfuxrWQwriSmxDLXqDuMIzk2gJOzMS/MIeedO28rl6H3A7wFFFuM8fjhinRcerGkhmauOtbnrggAvxGT6Uv0W5dpNgGmimwk+TxZNRPHOrX5v64sDa5/xXIlL4jaEMm
+ QiAoftpP
+ seHyfmfT5kFnCMGfplkN0FmapCUV3qia3jb5Ig1hl9n9E4EYKhlG/dj84wvDSlf3kf9OvWCgV7sSQODJmEevbuZu/BjXsIIVur9jImaGSD9cj9+omz9mQWlkeocJJvBeppXeHgJrefqEecXuGFSNGMHMK3cRCzU1nSc/klrMjRZGDVz51MJ6mjZmgbAwELpoHNBKz7MHiE33T9Qp0w4a8iDYY5otM3LMc2iIS7Sumr5vKBm45xo0gK36OHIyehPUJRv0Atvh4E4dL4nXV7mLTBaYDbyhx30nt2arbr5qXAb31QdM80eEPiasdgeh8Mme1RsUzo3QGTC/P0uU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,42 +112,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
-> As uffd_lock_vma() is part of the same lookup machinery and
-> also contains a misleading VM_SHARED check, change that one as well
-> directly for consistency.
+Every memory cgroup allocates, per NUMA node, one shrinker_info_unit
+for every SHRINKER_UNIT_BITS shrinker ids up to shrinker_nr_max. The
+unit holds BITS_PER_LONG atomic_long_t of deferred work, a power of
+two, plus the one-word bitmap of shrinkers with objects charged to the
+cgroup. That word takes the unit just past the power of two, to 520
+bytes on 64-bit, so every unit comes from kmalloc-1k and almost half of
+it is padding.
 
-OK, I think that one isn't _strictly necessary_, but while we're there,
-worth doing too, clearly.
+The units are allocated when the cgroup goes online and freed when it is
+freed, so a dying cgroup keeps them until the last reference to it is
+gone. Their number is the number of memory cgroups, times the NUMA
+nodes, times shrinker_nr_max / SHRINKER_UNIT_BITS. shrinker_nr_max is
+the peak number of memcg-aware shrinkers registered at once, and every
+superblock registers one, so a host that mounts many filesystems and
+runs many cgroups carries the padding as unreclaimable slab, and keeps
+paying it for new cgroups after the mounts are gone.
 
-We should also go through and convert the remaining !VM_SHARED checks ->
-vma_is_cow_mapping() too if possible, but that's a follow up, obviously!
+Let a unit cover one id less than a word holds. The bitmap still fits
+one word, and nr_deferred[] plus that word add up to BITS_PER_LONG
+longs, so the unit fills a power-of-two kmalloc slot exactly and, on
+64-bit, the memory taken by units halves, for about one unit more in
+BITS_PER_LONG.
+round_up() in expand_shrinker_info() needs a power-of-two step and
+becomes roundup(); the other uses of SHRINKER_UNIT_BITS are divisions,
+modulos and multiplications that do not care. Assert the unit size at
+build time, since the layout depends on it.
 
->
-> A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
-> lock in copy_hugetlb_page_range() entirely. Further, the usage of
+Assisted-by: LLM
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+---
+ include/linux/shrinker.h | 6 +++++-
+ mm/shrinker.c            | 4 +++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-Hmm really? Is it possible to do that without the hugetlb lock?
+diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
+index 1a00be90d93a9..f1cf6096a7a06 100644
+--- a/include/linux/shrinker.h
++++ b/include/linux/shrinker.h
+@@ -7,7 +7,11 @@
+ #include <linux/refcount.h>
+ #include <linux/completion.h>
+ 
+-#define SHRINKER_UNIT_BITS	BITS_PER_LONG
++/*
++ * One id less than a word holds, so that nr_deferred[] and the map word add
++ * up to BITS_PER_LONG longs: a power of two, which fills a kmalloc slot.
++ */
++#define SHRINKER_UNIT_BITS	(BITS_PER_LONG - 1)
+ 
+ /*
+  * Bitmap and deferred work of shrinker::id corresponding to memcg-aware
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 7ec2a9704f6f2..5e4a5ce231868 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -46,6 +46,8 @@ static inline int shrinker_unit_alloc(struct shrinker_info *new,
+ 	int start = old ? DIV_ROUND_UP(old->map_nr_max, SHRINKER_UNIT_BITS) : 0;
+ 	int i;
+ 
++	BUILD_BUG_ON(!is_power_of_2(sizeof(struct shrinker_info_unit)));
++
+ 	for (i = start; i < nr; i++) {
+ 		unit = kzalloc_node(sizeof(*unit), GFP_KERNEL, nid);
+ 		if (!unit) {
+@@ -159,7 +161,7 @@ static int expand_one_shrinker_info(struct mem_cgroup *memcg, int new_size,
+ static int expand_shrinker_info(int new_id)
+ {
+ 	int ret = 0;
+-	int new_nr_max = round_up(new_id + 1, SHRINKER_UNIT_BITS);
++	int new_nr_max = roundup(new_id + 1, SHRINKER_UNIT_BITS);
+ 	int new_size, old_size = 0;
+ 	struct mem_cgroup *memcg;
+ 
 
-It'd be good in general if we could get rid of that lock as a whole :) but maybe
-dreaming.
+-- 
+2.43.0
 
-> VM_SHARED in userfaultfd code should be cleaned up later to focus on
-> CoW vs. non-CoW mappings.
-
-I think also anywhere else in the kernel where this is done. An audit on that in
-general would be useful!
-
->
-> Reported-by: Kyle Zeng <kylebot@openai.com>
-> Fixes: 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd operations")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-This LGTM, thanks for handling this!
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
---
-Cheers, Lorenzo
 
