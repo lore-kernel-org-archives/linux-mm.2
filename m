@@ -4,94 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A29CC6B20
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 04:25:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C071BCC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 04:47:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D7526B0088; Wed, 14 Oct 2026 00:25:00 -0400 (EDT)
+	id 9976D6B0088; Wed, 14 Oct 2026 00:46:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6870D6B008A; Wed, 14 Oct 2026 00:25:00 -0400 (EDT)
+	id 948756B008A; Wed, 14 Oct 2026 00:46:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59D1C6B008C; Wed, 14 Oct 2026 00:25:00 -0400 (EDT)
+	id 85EEB6B008C; Wed, 14 Oct 2026 00:46:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 39DBE6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:25:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9EF1E160437
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:24:59 +0000 (UTC)
-X-FDA: 85319941518.21.46FA539
-Received: from mta1.migadu.com (out-76.mta1.migadu.com [95.215.58.76])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7450A18000A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:24:57 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gd0b7toG;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 638056B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 00:46:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63DBF14022C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:46:57 +0000 (UTC)
+X-FDA: 85319996874.25.C8CF033
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7C5D840004
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:46:55 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ynn2eBTU;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791951897;
+	s=arc-20220608; t=1791953215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w/4RCAHmxfZKog+Rqrr2dhf+m/n4L+JGt37JmLoY3fs=;
-	b=qt76f9Ild4HjZVL0uH4+PooUMSgnZfX4wuCXPEcF6v/j4fQfEmvRFBgOkfk9OwL+sloJ6H
-	ABZ7CsXc31dZ9/TsFzud3WXzSJN7vpPQACoCuLn86lhcjTK9uyclg4dGfRp4yHErGsRICq
-	91PUtnqE6RvErKBymOAe/nRwRvvTWlw=
+	bh=GOBAAntqs+1udpw3fkkHGyAvF+q+wF+2NHy3MJ/XtcE=;
+	b=1yEtOlNudsmY//QeHpTSnU7C6Zan+R6YAqRkNqaAG9yWJOSA/fMhKDA6VIrJIMYMMhHm2I
+	lGkc0q/FOgR1tC5LpDwDpDe/b2oGXp2uRCEGGuCuI4/qaWsBvU6NqB/gMYCfSOxfQFEWCw
+	N1KzTJUEO1YCziQdL/BzLDIGhHJpt5g=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gd0b7toG;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ynn2eBTU;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791951897;
-	b=0EMv0AFFpQL4Eu2pYGIcPULE0iAiAE1RpUXVTlkuIhYfYlVAcj8wJeYXMX+4Kf3VLGz19F
-	hhrxWBazDaLqtyP5QWkqVlElOqz9dCEKjWB9EC2G0msCHp6sWUDqRg7DV1E9DdV176yw1w
-	d7TIWVV3cBx8eW8oCJRk48rwNT0ZkDQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=tOKfQbBfrehty/qW3pINrljOFcxIODGYHAtE2STWOrY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791951895; v=1; x=1792556695;
- b=gd0b7toGmMGQDvpmBBvyyF3R02lD9xSMO1zWSRXnAw8D/oooqnqMObDHfg1IX5NEjYH/NXYN
- qsZYwebFpj2UQBi/rq86Egs3R9oaLkH8uquYbANSiOxaploED0AS76bAvyGzNGBObjZK9Pv5le7
- N3DdpIyQIeXZ70vIDXn6rQwU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 967b8fc28b66cba3;
-	Wed, 14 Oct 2026 04:24:55 +0000
-X-Mizu-Trace-ID: 967b8fc28b66cba3
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <75a46520-0771-4a50-ba77-ba815dfb6bac@linux.dev>
-Date: Wed, 14 Oct 2026 12:24:44 +0800
+	t=1791953215;
+	b=gY5LyNvhHatS2RUCKTz4Wce7FaBetSyFDPpXp3CSuFg6E0MH/W58/8jU7zyd1lXtrSh0Xs
+	+RjopaMJTAi86EiiN5FyMssgzIF3bMCRRATSEpkxyEuRW/6YYrs68yXrqKkCBRtuh+Tp1z
+	Ej7LyNB82zw/5JGcrpodtn4st5PNlnU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4440E4402E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:46:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A1B1F008A3
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 04:46:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791953214;
+	bh=GOBAAntqs+1udpw3fkkHGyAvF+q+wF+2NHy3MJ/XtcE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Ynn2eBTUc3w60hIV2e288f6OYMHEdO4qJI26rrf1lVAyKpxPGrnZc9kownP87KKEQ
+	 IKXLYw2lhm+Zz71F6eJlpA8jpO3TpRM0TOy2uPC0cbVt5CkQNuCG0p1g+BXPq2y69y
+	 n0ODVYMgK27HfizdR5eHGEpwpba/qsVKtsQPhsWVqr/jmjfssBYWqtCKElsXthRTqm
+	 /4GKAluI8u73xS2JfxrGL+x/rrHH7zE04N/qRwfxqlMY1Yw3xs6kDMX1MUk8opBGt/
+	 qvA7JKnLRpEoQ2BI7MwlYGVwy6Otke0zyYx4dv3UNgctuvPafrPLXnhjmC0VisP06z
+	 OXyI54Vx0BOaQ==
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93cb9e9405fso192507685a.2
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 21:46:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz0F3PE+C0lj8obq5f8lZ4U8Ec/yibHu53Z3OG1sWxUPh6uY+OxHv7INc+o42umFldInay5E9KN0g==@kvack.org
+X-Gm-Message-State: AFq9FYJawn1Sd3iXqwVBn0xwqkyU78ObIPBrAGtvHXVxp9mUli2HNtB8
+	bCmMxfsNbuSeoEuxFy2WNpFbivgMCH0RRNXlwQGPbgS0Mjg006VjNz1F5TBRyzGZ/N9YxlrbCXE
+	OHgEsTf8nIHjpvVeEjt8wG43S7AmGfxU=
+X-Received: by 2002:a05:620a:370c:b0:93e:7944:b874 with SMTP id
+ af79cd13be357-93ebd244676mr2342724585a.33.1791953213386; Tue, 13 Oct 2026
+ 21:46:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: unqueue deferred split folios outside the lruvec
- lock
-To: Barry Song <baohua@kernel.org>, joannelkoong@gmail.com
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, hannes@cmpxchg.org, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
- usama.arif@linux.dev, hughd@google.com
-References: <20261013221307.850803-1-joannelkoong@gmail.com>
- <20261014030737.2102-1-lance.yang@linux.dev>
- <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7450A18000A
+References: <20261012205447.2717801-1-max.kellermann@ionos.com>
+ <20261012205447.2717801-4-max.kellermann@ionos.com> <a64f6a98-de70-4004-aac0-312cb05aaf92@linux.dev>
+ <CAKPOu+83bH2CRtiAio+1VTTQrYFF9th5XfG5wL45ujEavPS3Dg@mail.gmail.com>
+In-Reply-To: <CAKPOu+83bH2CRtiAio+1VTTQrYFF9th5XfG5wL45ujEavPS3Dg@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 14 Oct 2026 12:46:42 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y_c3TZb5=rNK-sQ5bJWozL42bGo_zgvAtY6hW5eoMcmQ@mail.gmail.com>
+X-Gm-Features: AclHuK_pOHHzKZZH_dTCG6g8kkCM2rEF8JtYxcMjCWMOy51d0raKwsKHCVbMgDI
+Message-ID: <CAGsJ_4y_c3TZb5=rNK-sQ5bJWozL42bGo_zgvAtY6hW5eoMcmQ@mail.gmail.com>
+Subject: Re: [PATCH 3/5] mm/mglru: cache the last memcg node, make tail
+ insertion constant time
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: Ridong Chen <ridong.chen@linux.dev>, akpm@linux-foundation.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
+	baolin.wang@linux.alibaba.com, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, hannes@cmpxchg.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 1oi43x5u3ipadm1tioqbxx9idtxp4zag
-X-HE-Tag: 1791951897-555415
-X-HE-Meta: U2FsdGVkX19u02wrIEytAcFi0A1nxpD5068OrjMbJAWJCzu70pF9K4C2iGBa7Heykd45c8j0czPGX1rJj3BQgFTPgzTAjqIV795sOsvYafJSYydbgqJDoephD986lFLc7N0PeIC+BdTP4248aE7W952qo1wmwSlfHQUbFq2pVHq/LKNjH67zE4fLXfkvz0F+QxoB0CjWRd0KjdLOmkq7kl8EGHe20Z+fIMUZSVvvLsQTLjtfYFmnljwbKpHLBPj+g6EiJlCbvPWYP0K3W2a/VAAo5jIwYI5XRj4Y/v7iU5HTTQydJ67KYQ2njLaKaXPvQUm52l9xf3V1DuGRPBbMfr0Ql0X8enaGKnAIqpq/yBhZPupAOSMWAE5EWsMIosCkt2z9xJpeWlp5rJu1Q/xvPj8dN5z+oWrngrhZ/CRCXDUXeAAJ+YNGf1x+irOlP4AcikYXWmAWVO8OM+S2fsjlhKwxyCRZCtS0jZCcS/O7Eww5qIMEw+qlYs0TPd2FcJaLF3nd0d/YwXz+EAcvCA/iKfx0c8ZOLNCAD5ML/PWSvJ0IrkUwI0aRClaXt1u+d+yfnSw7+Iz5lWVqml/8qFHtto8xjGvh+I4p2rcUa+InYwhz19XJn3Zduty2gOanigVERddCaVqna8WR+MeSjPZ4fZzjk1nfsSEWnCGiSm/ycFFPTO40ixUMBaPe2mqxmTOekIgrkG5U2JGHOdGO+zkG67cOEVN6a05F9xJxeolFaNMOA7BnIYpUUvZmGUsaPWQ54nBuDEgfI2RXnIUGyMNUcWR63cby/3K1LlCMvHiaWTRCtS1XS9JgbXlBFU3rR0d34tRsWJZbnKjjsb3dXN/OYkrjYS3z6oQTo50BgZxeD5CTMoWjqm660MhHObfxsj+q60vQ08nfckrJ4xF3JvWnrLyI4YEcABuwHpiJ0Ob8dmtFe2oIwYA3uZutDiLcaGp/PM1hL53A5b21f/hVFOS
- dWZlX5YO
- HyQiYI5yIfubasxiK1/XE6tuX2OerJr/z5gMNhu7T3CVurKByd9T53WhZYcE6WBUSa6kbuM7fFwmo4/9MWBUi585eJJ8lPlua6UcpJ2BIgRrP3+MJ70FHaB1wzI8MMHR+e+csJfdLqTpamP6MHgl1a+Z9pvjcfc5m95YDuOtYMyJuL29ggzBXMMYbn1vHZogCfiNwVslBzUp5RkOKbU5lx5V27O75eFaMZH9Clg52Sm4kSWH3IKYmVYwMIrBy6UFYzjI5TpPv28kJp53pELctLDfAnu71GBd7L5o9BMqYJO5xpWbyS+De6pTwydYGOLLfYipYAcvBxjYb0LDkNvY8MWyTQfUdybGsEfe/
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7C5D840004
+X-Stat-Signature: b3grzcm847ihrfd1kxte841dz5qzjzpo
+X-HE-Tag: 1791953215-515903
+X-HE-Meta: U2FsdGVkX1+6HYcF2nZv5vVVQQsli3tUoNaIP8byi/VhQdfvrGg9q0rP2d5gbMKpIR2QY3mm+2wrqUqWOJm4/gLKZ0pz0aDo0hBZR8dnhoumA15HqBmM3nnt1gYhvB5CyqatyJMkpTsgP80kQVgq08aMkFZsIpikD3LSZLa7ZPkpBlDSEXkp418gh3QKoP4I31gDAWxfaXiiJ8R5lxfzvqd5oE57q5l4E5jpSU2tRGVIQnYWFYc6pBTyf/N6uH9z7DtaaS2deVga9mJFHTHywPu7zvvCp56L/wyK03fy4se1GI+K9h6t6IMRbqGJSosECWgW1k85NazuawDZQNBBTl9rLAW57xtjEZkAu7RWpJssYDVN5ttM2AtyxBlAi7hreBF29/fKquJGNvSqVrIvXB8Qrt/3GT+fOyZx1ioeb0oXdcGmYANcOKOme/PXXARyAbOw9ql6aURym7pvGfty3sj1+48WZ0HCzQIo3z5lzdTfHm1ta7jhF08mvG0Gg+Zr8PTY9JdBuxdUHb6FGQssBzKMCBYM9tA7Ppc2Uhnh7NoRMkRCZxTwSMaL64IC7Nlc9+W4OJAuBHjKWT7h4CvXQCIoGTtwLBDDhf2atNTUTsa5eNQtABbRf332AoLAflSAixAaoecNvXskXPreL7Z4XGtcLEuPEpi6QFfT0Pjyof7dsv62+hYyOwQJpJUc/gMHB+C8tt7WUAuDw6+/wn+Xx5v4AM0F9HWy9cZj4R8TMVJaxbjs5zQwEwyo9s7Ybq56kFd3Qqvvmp/vfEpCt42YfGrPq2E3K/vcwqYLg9r1lhZlWUnrI67dIkOqbeTdLXHu/uyjs/LkruRsy8oxMfeWLRF+IuwUuhSsB2zSZww5xo5UP5V+90FnRXPokVntzNjDYZQtGXWaPCgt1qoQLycgMuhSNzl/jVtocJUMVFQFCNt/KNsm7HdPVPForl8LmukCgxiENRCI24x++q1v/ml
+ EGM6rqAj
+ cMTxkYkEgmaE67C5Wzes7b57Jg5vnN7G6RxyyCY0fpRSBBmC4mT+kOPr+QBIH4fLJsRlwACGbebI33CNap4RiOMuBbakT0D7PwTxI/NlXXVlo1Gl7hONCtId3z2umaKDzZDtNlL1/fErlrOVuSg3/+mNIrXLeDiHoKpq+GhVzzGo5hG9dtAzqJZqHP7fpFVD41FzHiSLe9REdR2NOZqKpf3LCvd53+yLe7N5Nj+Q9Kk5rta9ZAr1TJMOEP4zGfDUc99LwWvNYP8Bh2Wr5uoL3PivZ4FLL0B6j0SlzlaBTjAYDAc9QufhBdDDXpolV35PouKZyJY55Ogam9C+cmx5MBLSopw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,55 +110,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Oct 14, 2026 at 11:58=E2=80=AFAM Max Kellermann
+<max.kellermann@ionos.com> wrote:
+>
+> On Wed, Oct 14, 2026 at 5:31=E2=80=AFAM Ridong Chen <ridong.chen@linux.de=
+v> wrote:
+> > I've also submitted an RFC patch that addresses this issue.
+>
+> Oh, interesting!  I did not know but your patch, but it looks very
+> similar to mine (but without the hlist_nulls refactoring so yours
+> comes with some code duplicating the hlist_nulls header).
+>
+> Too bad your RFC went nowhere, that would have saved us from a
+> production incident...  Anyway, even if neither gets merged, I'll keep
+> my patches on our internal kernel fork, because they do help a lot
+> with our workload.
 
+Hi Max, Ridong,
 
-On 2026/10/14 11:13, Barry Song wrote:
-> On Wed, Oct 14, 2026 at 11:07 AM Lance Yang <lance.yang@linux.dev> wrote:
->>
->>
->> On Tue, Oct 13, 2026 at 03:13:07PM -0700, Joanne Koong wrote:
->>> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
->>> folio_unqueue_deferred_split() on folios where the refcount has dropped
->>> to zero. In these paths, folio_unqueue_deferred_split() is called with
->>> the lruvec lock often held (move_folios_to_lru() always holds it and
->>> folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
->>> in the batch except the first). However, it's not needed to hold the
->>> lruvec lock.
->>>
->>> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
->>> the deferred split queue lives on folio->_deferred_list in
->>> deferred_split_lru. The deferred_split_lru is a list_lru with its own
->>> per-memcg per-node lock.
->>>
->>> There are already other existing callers that call
->>> folio_unqueue_deferred_split() without holding the lruvec lock (eg
->>> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
->>>
->>> Add folio_batch_unqueue_deferred_split() and use it in
->>> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
->>> unqueue each batch of zero-refcount folios from the deferred split list
->>> after the lruvec lock is released and before
->>> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
->>> critical sections, which run with IRQs disabled and are highly
->>> contended.
->>
->> Nice work! Thanks!
->>
->> BTW, have you seen measurable overhead from unqueueing deferred split
->> folios under the lruvec lock?
->>
->> Any before/after numbers for this change, including the cost of the extra
->> pass over the batch?
-> 
-> I recall Joanne mentioning some data on this in the link below. Is that right?
-> 
-> https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1MaU9bXs99w@mail.gmail.com/
+Let me discuss this with you and Ridong, run some tests, and get back
+to you. I'd be very interested in getting this optimization upstream.
+I'm also happy to discuss it with Ridong privately, as that's easier
+for me.
 
-Thanks, Barry! Yes, those numbers answer my question about the
-observed overhead :)
-
-Joanne, have you rerun that benchmark with this patch? I'd be
-interested in the before/after runtime and lruvec lock wait.
-
-Cheers, Lance
+Best Regards
+Barry
 
