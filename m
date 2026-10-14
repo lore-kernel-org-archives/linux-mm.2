@@ -4,92 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C5BCC6B1D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:03:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44F31CC6B1D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:37:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 510D56B0098; Wed, 14 Oct 2026 06:03:45 -0400 (EDT)
+	id 181286B0095; Wed, 14 Oct 2026 06:36:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E8E76B0099; Wed, 14 Oct 2026 06:03:45 -0400 (EDT)
+	id 0E22C6B0092; Wed, 14 Oct 2026 06:36:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 425116B009E; Wed, 14 Oct 2026 06:03:45 -0400 (EDT)
+	id ECA826B0088; Wed, 14 Oct 2026 06:36:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 21E996B0098
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:03:45 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5C76A04BA
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:03:44 +0000 (UTC)
-X-FDA: 85320795168.11.8B4F93E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0326E40005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:03:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZzZ3EuQ2;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C02466B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:36:58 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5D7111204A4
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:36:58 +0000 (UTC)
+X-FDA: 85320878916.10.71942DA
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 394261C000C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:36:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="a xBB0Li";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=WF726lTT;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791972223;
+	s=arc-20220608; t=1791974216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I7zp5Iv5p1o76A3rCfOrm7kS93kiCxrngn4b8u1wFuQ=;
-	b=XtTdnIT4Q7erxVDDhg+P1yosyu9m5aVM8KloiM2kkj9bmg4/7DWSY4lFqS4vPMMYEZxms5
-	LLJWZkg7U2QsZvm/d+4gy5/GJ5h1EzmfN33XEu0zRwiCQB/N2FRqhiiM8/wUMVhKP2QvBK
-	0JvjgKNuIXaC+bpxxpl8sMQzdneZ+Q0=
+	bh=9niRVdDofrrpATLDu24HuwcFMCvfPmKkgmurPmzx6jY=;
+	b=EnWcT9jL+S2shI98IT5k5/4nYWJDRmt1pf15Kl7CRebNnitaTiN5ZvyfgYTqxE1n26PnGI
+	n51pEHM5gIviL/rn9hwbGI4Eu3SwDyZGFyGpmdzkC9XtO1AFCP9if8FADHkgQNysDKSsjD
+	a2U0HCQlfxbmwqS/sch+RFXDalxfC7s=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZzZ3EuQ2;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="a xBB0Li";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=WF726lTT;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791972223;
-	b=C7fOu/FZwHOefyq352PbCb71BX8n15zmy+3hiYWS0euLMygvhJzZFILzZ6D0PPFkhdo8Pk
-	Y1AVQ85wqNUWqZ6ky8Fti+mXCTDIPtsUnJfPc8K22FX1Tj9+qP4/2BHkEIPzqhU7Rprj0P
-	aByKacVp2x2tmaCZVglUMHiOKAWqJy4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE654153B;
-	Wed, 14 Oct 2026 03:03:38 -0700 (PDT)
-Received: from [10.164.19.62] (unknown [10.164.19.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5CD293F673;
-	Wed, 14 Oct 2026 03:03:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791972222; bh=eb+1OnhCrwcLrcQXmju+ZI4BR5IYqvlaJ9YM0fXSEG0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZzZ3EuQ2qjlvO7W7V1MYgf1owieL7IFjWffRoEL3LS4XoiUrOOsBiva2N3xoTaB3m
-	 ktyfzIBiW8F5zFoFUKnSoDcMAPPosaXEIG0VceWlD1JAPEHVIGBTHR8uURhM7gloEu
-	 EMDBhP4TLCF+Xc0McZABfw9o0Mr/DTa6Ivxb4efE=
-Message-ID: <0bbbe312-47a4-4eeb-8299-1f20daf4e949@arm.com>
-Date: Wed, 14 Oct 2026 15:33:34 +0530
+	t=1791974216;
+	b=yTKYXGhPO6PNd3/OTrEr4Cd93sDLMLIAO8l+KYuO/1Bo+qiEpdPhXLVMhxF22nBOi6pzKM
+	TwP59m6fdZEZOBIb/ax0Piwoldh382u9uiVkreslknJgnbVVEuaziKh/9KOVSiQLVUBQzs
+	TgEkLuJ10I8MdZgfTU/ZBpeR0sGABa8=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 43C841D0007A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:36:54 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 14 Oct 2026 06:36:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1791974213; x=
+	1792060613; bh=9niRVdDofrrpATLDu24HuwcFMCvfPmKkgmurPmzx6jY=; b=a
+	xBB0Li96NsnZ/irHZ75FwB358ZLuiHr8HYFCThJqj+48/W78WxD6N4J2DvG7FeGP
+	+rs17hKVtqdQ0d0QRICLj0NnJp5ki9QWpZFpeo5/MatMWd8ArMRQsGWXA1hc7IUK
+	AS+0PAvKZXg6vZS2NnB7vis3t8kFRYfj0wYve9A30f1tYQXvFNFWCWmNMo4kTdqf
+	yDfw2ryM+qWl3OC9gxFFNsN1ehtRG2MuLKMTkSEreYesulb3/JSIn/BoFdbB1qA/
+	ePB70qA5OiYtf6pmfcBJqaz8FWzMShdFeQrcVomL7HeSpjYimJwvSFwlE6U52KAX
+	rz2WumTxv0ZyNYNZ2Qcdg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791974213; x=1792060613; bh=9niRVdDofrrpATLDu24HuwcFMCvfPmKkgmu
+	rPmzx6jY=; b=WF726lTTF4TeXrr2DspNhoOkiBR+TxIGBRedtHiATcfLjapWbCl
+	wayhOOc0WQRYK7e07I5Bv7grVrPhp6pDABeqqfktoxI60wpG/ZVZH9SNAWDLVanP
+	G1Kyx2P5QopdMgCP4SMnj2OJeyEgyusUpCyuc8a3cGOQ89JjuMFz3dLjZYpILgjl
+	fjESDeI9tyJGj6uQVb6ejmsO48SzhAqneqKoZVHAM41eyWWyXqm/yoITJkiwb+RB
+	38xO84KYco1+HxmDJg8rU99XxSQdmZJI/6hR0dBGEjygAZxInr15UIRxuYa7TieD
+	66ZCpXSsxwenJ7iGVzRmExsMlRR58cvcSWg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791974213; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm3:rsa-sha256:wGVv/YiNNaeZkLTBlOf7qnB8cZTUHPOdpIjEeRJ0zfJz3Fo
+	2yyY/hNm64UTMvWvTSShV0BO4PWHvHm22p4+DzQOpGdYEZr4NQzUk5GsMDt76PlE
+	RkIhF1YTNx01kN/rnbtC+3LfSH2faWYRWaQverbcaXBc5jZ8oW38rxIZoZPzPCFV
+	+oDTb0T2SL0xseaFz79nfLL++MEow4U3OJeIgIX3qoI0r5Hfa8xzU+6NcsrN8KPb
+	/FEdwDL8HzAP9dNSqIv5EUaAEX77vinHP2QiqNYgroWd2u5UJLkH3CqJLbHkLoWw
+	JJ6ti6ncJ+46qL0o8yj4kBUVOZ7nJhtOSr1lo1Q==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:s40ghuQqRQ+FsRNKxrRGLcZ0CZnfAi2ZGMOEXRZlVAw=:Dxu9i3WMW4TKf6HMVitbB+K0/Ep0WTHU06lA/MWjVMk=;
+X-ME-Sender: <xms:Q1vPardLtLdVCYlcriw_iTQ16Zp--NECrzF9Hhuai3-y2Y8QZB7Vfw>
+    <xme:Q1vPatJlw_svcxr0gTzy4vlSHQrbWVfWvmO25hsqGRZDtY7Bi4ucGmSNVHoLUmURY
+    SJcYcOES-4FBIshzufItqpM7GjU4wFc-BBd9sXdXFpCwMbXyIB0nTs>
+X-ME-Received: <xmr:Q1vPaqqiJnxsX5YO4j2Pjt4jSqhc9yu5qdRR8_7C6Ekbcl99Sc6scDUNpuA>
+X-ME-Proxy-Cause: dmFkZTFuONKeASOwUHIqNios3PKDeDz7a+w5ERMwBMX2xbkUUxN7LaQyAOnaqs2VvUULV+
+    BfQDNCW8SlJYrZwGjqiW6IGrusOlnBvYQzTbbc2XBwNA9c+hwHRTvGTa/AkV2hu+b3xjcP
+    BYC7+ccDzFGShUqc1XXiYtUdRTMbOt+mIciVRtXYd+Q8vbKlG3RilDf1jXWE3rb0FYTISG
+    FX3h79NuctJRG04LoKBj4tPSiA7UMywGZ0r4DQahGk3YRWLO9FAC3k/o6HtcJhjA6u2tJL
+    mL5Z+gad42T/BssNYShyuJi8iE80ahE4F5r0ENRGE3FtjmmQypA61x8HNAeAclMvm81ym/
+    +hMQUKK7y7YbR75AoJxfxt/bM/3WXCP/VFW+GHN8B3NPhHIdgAAykimUB345Og0bdRPVSC
+    0t53Iuq6/BkkPhHMkNrozZIMyos7bMuxPC6wCmixWDbIvOqSUU2HY1PqEQgSP8tbeqKH7n
+    T3HyO3XeA0A5uEBJJyzNXPkuBO1BOX7tkLBh1bLk06/Pijtyc54V4zwJZTrg8u2361T/yT
+    m5wFVaj6v8tegBBVmh1z5bmpDVtiPrL9zL9DhgNmz8NeUy+I6yFUZ/Sxhd40p5+VkION76
+    IgVt582vhduxLyPGK5/NcbPrdcSW2e6R0sSVuejBmw+CZnIjDzWE4KkuTAEQ
+X-ME-Proxy: <xmx:Q1vPajXX9RVVPga73Zv9kQAkvxD6Zw9Ao1bxZGq3BCYva8fUUj9hRw>
+    <xmx:RFvPal3yoaAyHvt-RB1v0Dfg4rkSTnyzfHRGUfVxs2ztQpwlMvgJFw>
+    <xmx:RFvPak1bmJXjmbM_naLFhTBIXSy82I28zSHlvWKqOEOJUVq_ECGchw>
+    <xmx:RFvPakktgc8hQJxeLnwTgtwXGtOkH_EqXNlPuvAjszXl1OBj1HWGWg>
+    <xmx:RVvPakqdKaLnz7LMdw0mFfAHfYpV620GwI-B4M8TBScd--cjPb-_mqHQ>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 14 Oct 2026 06:36:51 -0400 (EDT)
+Date: Wed, 14 Oct 2026 11:36:50 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Ilya Gladyshev <ilya.gladyshev@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: Improve page refcount scalability
+Message-ID: <as9af-Jd_rVZvMlC@thinkstation>
+References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+ <as6ckC9NJVB8JBuV@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
- PTEs
-To: Zhao Gongyi <zhaogongyi@bytedance.com>, Lance Yang <lance.yang@linux.dev>
-Cc: catalin.marinas@arm.com, will@kernel.org, ryan.roberts@arm.com,
- baolin.wang@linux.alibaba.com, mark.rutland@arm.com,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
- <20261013153953.77575-1-lance.yang@linux.dev>
- <516828fb-558d-4a20-9532-51f50d6ba042@bytedance.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <516828fb-558d-4a20-9532-51f50d6ba042@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ppzuewh7m7ejbmihs5tcn8r3au9935xo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as6ckC9NJVB8JBuV@casper.infradead.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0326E40005
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1791972222-953362
-X-HE-Meta: U2FsdGVkX1/09BX5GopzE6+gTk73Z/NEKKvycpU10Wsebhn2Fgal0YoAWP85nISUEkdck/yWqM1fUH6J+vmd2bR6NZ4Rsk8QuBRIUFQWDuv4I78T4T8tgzW9XVlz1+XnffsLKTCFxL/epb0Fnud4hEoarWthM53mvRzDcpWdsD92FYNJxczL9nFWj1kr+N+6jxPWPQRMGLUHYVkPC0qCd0vN/g09euWkkX8R8H36kED9KxhLDDKPsYNg+LqJyUH7f6vADTtpUEJxZxDfdhp1gMyGWllSUSysvcN+pShoLSm2XHM5RXTJeOnoKMwsa6lpuRUtGS1wuvzpRbPe4jkwhlQRxKSaxsghOKpwFgHLtDPvhDMQykytck/1zGh27pTO7N/wy580xB6rIrSMg6Zt+Yt09Csdg70jKfX5i5qtVVs5kQm/wwe7szrR6wtmAwV1IU6qegfKei0Qt+Md9hH74/dBFx+9NOV5WB3+NptVSS85GO7HMrBkPMR7w7NdFl2hM4+vceuxNdeC6KySxJKtornclzAOfD26Pn0SXl+joT2ttKloRlSdIAweNMeSxjON1xiQ7Samuy4krIW4VJHs0wyd/3PZWh6NBuEhrRdJ/oy6emcIx3+av4WaDeAkkiBg0tj0eFajHlu5q3JrFBOu2QzOost3pLBdSxCqz6k81HzUmh5dpnhe/o6boAITJqk1m7i8BJF5sbaoWQNJAbynHcwHiX29F7wuTQUY5dK76pXrMqVBIU4gpoIsfJGz5xViQencPAcdrIa4GxxKF5ZPxR12MYP4rz+bwwi4LtFWriaoivuZny3sQsT/ayjqUHdfmypbznW4BWG7Xygyi75po1UQrWx+1FTwKlmqdNuILqmFfOxpw0ZQregG642mc2PFYf9oIwkPLu3+YbpQQgf3rhSyvj8nuxlzpyQp9u2rP7NjRRzDl/o286RxosXFm7CYrEG7LKs3ssexieQmETd
- 6aYoo5PO
- 5UI4IbRVVO1Jvt2mGjL960xqorZo57lhTlHadMYUU2YVtla/rbLBQUzB2ZAGvUvb7Ew/p2o57d/4rVFfn+RiE7ybDocTV0Ti1AKiH0EKbLhIq0z3KgeNEOMTgN6+vYWhVid2Fa86SHIaofjYE6YF/CWqNh3CuCqGRq8p90lHzAV83E7pa1N26fqNnK2KmeSegeGeH8Cb03KUT5tazi3lv/T5M0+jn4UW8bVkgtUtFt1IQKus=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 394261C000C
+X-Stat-Signature: oim83e9cakzq9hyuis8xqbg3eag7w94r
+X-HE-Tag: 1791974216-900910
+X-HE-Meta: U2FsdGVkX18hVr1pKVxJBByPOPQlPTwSiC/ACbVd7oav3toG2w1KsuRU0nyqokPjK1EyaLxUI4chgHiNQOwa02c2SccIIfVYySk27+7aghZqBMGUdH0bBsimO5tKUeBiPs9WLSX7oxw5++48gao+/eKtWnCGqqQXpPV214sYK9daXqPRjhCJ6cUd5bTGFpZdDnFn6CHxRtb/DT7LtuNWRub6GIz5jkOPF4OcO/IvVODRpLxVqtRztYEMxqoh57NMOhlpIIKZD2KSbH4dv3KWTL2UMcvmaw3UzGeiyqMpxolZ+hmcChjGclp17fMsMpTw5Q1szv28rndQyvB2HEaIuxvGfZly9g9//Jlbk6ofMoU58l8cUdrlM1j6xlSzABR73KMPcEwRn3kAZtXFuYCm7boniguim7bwXrbCa0MAf0S7Qth0W7XgZoYeMJbee0lZKpQDt0oS3B1pP5t/ofh3D2xJxqXgjAkC2UF00eZimWZ0FmmaS48RHP1qxil+fto6r2pBBlYjsuaLFCyec+3OqHiJcQlT1VTNyRflIcsY54TRXSOQ2YWdJvFtCel0PV+c79cctgczmxlhXA9da01zIjoTf7QntCGtzrcKNl59+dRqqfT/XzJU5JdB0cyUg6xsPGHYbSAtYZdX5QSVd2/6O7dGoz6l2GFW73LkYg9N76KHGzFTXOdiZU/Iw6T8UrMcYPO+RL+qR9C/yPF8WkJDOzYO0UQGp1I5Vuz5be3/7mrQ70GT7axh3cvJ4UrKohCrQKHSmBoJHAJoobFlmf1GawYmt0Pt3WXp3zrSZsh6tNb13UlbCKPltS11xE9ox4U2yJ66Ae1lqHfOePiq0MrbI9BAPIiMVcNjUr9AiEd1VZFGumMmCkbhYLHxUBdu3+/X0MnjzRqObEYr26jUFVLSjG0AsMIAMGX/bcPE3yrFKE0khBtJOMFC1L7p6mmjep/AS8G32gYRMwKBdRrCwDS
+ 52pUzn61
+ /8mWEbMlxoTHbNQoHI6s69+Iy8HcoUqZ79PTklHPQ7D9u4MXEihLmekQ1m0dYLUTv12ErbXH51e7kreM9XyxtR7Zg1MPJ0WseK0D0Ggk1UWpemAtGcO8iRNI7fskbA4MFgnxCIUYhpNKs9rc05rwr8TWKVHpE4nfsGroPu5PHlizR3ccV2AFpAkV96yNCDOs6dTRxUNmMBPKKKRdjcaQ/xmdJ6egoe1Of/wcQNqElad9q99GwIOfEgpf7sPLu5anqw2J32RiUvbjImZ/WCcS/1Sqab5GH2ogXqXlz8y4AYXmyTDkh0I93Nm8n338pmT+hh/xLfEqZl7epj5oPRbKFyrPXJR12T/VTYGwISpU1Ar8G9MBmviK7o9BcAPMK2DsowxLyE1utCmB5ErLTbeYSO6WezZq9JKZzROM3AOPYVrMTbXxFN7iixyVKVuzHLpo49hzoGpUU35ff4V60Q/8gOGjcGEjPNJF2JRz1v09qYdvNMqLeH/t2MfvEsCpCuZScIFTvfc7W51jnl6BRTvEcX2lyBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,61 +149,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Oct 13, 2026 at 10:03:12PM +0100, Matthew Wilcox wrote:
+> On Tue, Oct 13, 2026 at 11:43:14AM -0700, Linus Torvalds wrote:
+> > The fairly short series of ten patches basically enhances folio lookup
+> > by noticing when folios are hot, and setting a "delay relasing this
+> > folio until after a RCU period", and then using that RCU delay it does
+> > not just the folio lookup itself under RCU (which we've done forever),
+> > but also the actual folio data accesses themselves under RCU. No
+> > refcount taking needed for the fastpath where we can just read the
+> > data from the folio entirely in an RCU-protected region when the user
+> > copy doesn't cause page faults.
+> > 
+> > Unlike my original approach - because it now actually delays the
+> > freeing of the underlying folio data - there's no need for any double
+> > buffering, and a lot of the original limitations of my original patch
+> > go away too. That improves performance quite a lot. And by "quite a
+> > lot"  I mean "I see a 23x performance increase on my Ryzen
+> > threadripper". Admittedly that is a very artificial case of reading
+> > the same small part of a page over and over in a threaded loop on all
+> > CPUs, so any real life impact will be much much less.
+> > 
+> > Anyway, I wasn't planning on posting the individual patches, I think
+> > we all use git by now and probably find it easier than fetching
+> > patches from the list. So it's all at
+> > 
+> >     git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux rcu-free-v3
+> > 
+> > and the commit messages are a bit more verbose than I would have done
+> > it myself without tool use, but maybe it's better that way.
+> 
+> Obviously the numbers are compelling.  And thanks to Kiryl for figuring
+> out a workload that confirmed my fears, then remedying the problem.
+> 
+> I don't like the PG_rcu_free flag.
 
+I wonder if you would be okay with a 64-bit-only flag? Those are less
+scarce. That's the direction I was looking at:
 
-On 14/10/26 12:01 pm, Zhao Gongyi wrote:
-> On 10/13/26 11:39 PM, Lance Yang wrote:
->>>
->>> +	/*
->>> +	 * Keep the producer-side invariant documented in pgtable.h true even
->>> +	 * if a direct caller passes an invalid descriptor with PTE_CONT set.
->>> +	 */
->>> +	if (!pte_valid(pte))
->>> +		return __set_ptes(mm, addr, ptep, pte_mknoncont(pte), nr);
->>
->> set_ptes() is the only in-tree caller, and it already clears PTE_CONT
->> before we get here ... no? Why not fold !pte_valid(pte) into the
->> !mm_is_user(mm) check below and return __set_ptes() directly?
->>
->> 	if (!mm_is_user(mm) || !pte_valid(pte))
->> 		return __set_ptes(mm, addr, ptep, pte, nr);
->>
->> If a direct caller does pass a !pte_valid PTE with PTE_CONT set, I'd
->> rather add a VM_WARN_ON() to catch that. Silently clearing the bit would
->> hide a caller bug :)
->>
-> 
-> Hi Lance,
-> 
-> Thanks for taking a look.
-> 
-> Yes, you are right. The public set_ptes() wrapper already strips PTE_CONT
-> before calling contpte_set_ptes(), so the pte_mknoncont() in the invalid
-> path is unnecessary for the current in-tree path.
-> 
-> The issue I was trying to avoid is not that the incoming pte already has
-> PTE_CONT set, but that contpte_set_ptes() rebuilds the pte from pfn/prot
-> and then adds PTE_CONT again based on alignment. For an invalid descriptor,
-> that transparent contiguous encoding should be skipped entirely.
-> 
-> So your suggested shape makes sense to me. I will change this to return
-> through __set_ptes() directly for invalid descriptors, and add a warning
-> for any unexpected direct caller that passes an invalid PTE with PTE_CONT
-> set, e.g.:
-> 
-> 	if (!mm_is_user(mm) || !pte_valid(pte)) {
-> 		VM_WARN_ON_ONCE(!pte_valid(pte) && pte_cont(pte));
+https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git/commit/?id=59b23fdc4bb0d008e2a30d24156177eeede8a577
 
-set_ptes does pte_mknoncont(), so the warning will *never* fire I think?
+I don't think we care about the scalability of 32-bit machines here.
 
-
-> 		return __set_ptes(mm, addr, ptep, pte, nr);
-> 	}
-> 
-> That keeps the fix focused on not creating new invalid contpte entries,
-> while still catching a bad direct caller instead of silently sanitizing it.
-> 
-> Thanks,
-> Zhao
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
