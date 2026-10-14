@@ -4,116 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE1B1CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 14:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 545F1CC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 14:51:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 008B26B008C; Wed, 14 Oct 2026 10:43:13 -0400 (EDT)
+	id 39AC76B0098; Wed, 14 Oct 2026 10:51:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFBAA6B0092; Wed, 14 Oct 2026 10:43:12 -0400 (EDT)
+	id 3248F6B0099; Wed, 14 Oct 2026 10:51:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E12696B0095; Wed, 14 Oct 2026 10:43:12 -0400 (EDT)
+	id 213896B009B; Wed, 14 Oct 2026 10:51:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 995CC6B008C
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:43:12 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE90F1C3AF6
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:43:11 +0000 (UTC)
-X-FDA: 85321499382.03.8FAF364
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4F17516000A
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:43:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=hKxNDQ+M;
-	spf=pass (imf08.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F2D056B0098
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:51:31 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B971405A4
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:51:31 +0000 (UTC)
+X-FDA: 85321520382.17.4838453
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C4B1940007
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:51:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SXhY6GQm;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791988990;
+	s=arc-20220608; t=1791989489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hcluCPw1guoo6eTwrCk1DCm8wcF/REa2+vS/gGt+sB4=;
-	b=dQjyoVqgrv0opo3HRmtgWmVoXkLqP0TSjVUwsRUTEZ/RnZeIwAYQ58B7h9Kw+S7Rw/+sKP
-	kshxM0mjzfqb6MaTdkPeR0r0MFZ54cV6SA9VRijEUM5/RFq88oeH9WVVCOLHpOWSeQsjO9
-	B/XamlmL834v0XNmMm62BMNsZ6RpZpM=
+	bh=Sbwm0kYIICcSUmwlborhldmup0bfDzLGUcDOPU7O94I=;
+	b=Ewf8n88wpBLMX74dVetPps/t62UL+C58YQcdYTDa14b92YGX/sJc+eqza1Crrz7Qer1xho
+	+tq+gIyW5P6LoDmze8QzgLCiTqYxLuNE8sm5ACnx+q4keSnKV4YJE3OCm7/uHikIGQAbNW
+	fStWiGbcWoG61diO6LgngP0TFqoKEkA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791988990;
-	b=jaIRqX2qpSzuOtnvD6PNa+sVNSarfzSpy3xiI92R4Pp4RlgY0PV81rfqVAFTHBamC/buTX
-	KAX9ImG6lexd4jHHfdsvqxadJkyFA8se4trsrFdsi+cu5dyeZZGS8xk8S/YvNIkDLXnlIr
-	LzXdynkYAmIFPaGXeN2wdbBeKUCd48M=
+	t=1791989489;
+	b=JDFQDGv0uQd54xcuI2f9gqhehM8XT2/cxl0wEp4RC2Sl5Px9tO0/79ducYwrs/43of9Vtf
+	jnvAiElRAMAlNDja7eyTEI2AfsO/Gr98CfF3bDPMAPuI+tMsz5OmzDYoMhIh8hqAE0EPqp
+	PGfeEogqPb78pL4a1HeEpw/HG+fASik=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=hKxNDQ+M;
-	spf=pass (imf08.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=hcluCPw1guoo6eTwrCk1DCm8wcF/REa2+vS/gGt+sB4=; b=hKxNDQ+Mxr8X0fXgQst
-	/YjlCa98braEHiObqAQKG+I7vG6ASme9WEz7OHdIuQoBQ7mS/yKw92c7UfFjYRlkM/SX9Elk64WQl
-	0/ybId+BHOwJm25kPFfLmOrrxG/DAnuIgXvag/SiF22z4RCcS2pTdRWnYq3fKXh5qr2aAf8E1RRKh
-	B3xoVHiWYuUjjdZsAy0kefl7DJ2lLt//dRyehTGyoUNkkCb4WrnreGcmv0xP+X+sbEbsyOSrm92UC
-	i4P4L6LPwv0RU40qqChiewDx25NGPpTnyEQGqizEOU6mKIY2CsMbmvnbWr/R1VTz7P7o7d7DXsQ1a
-	meV6BVNBgwjMF2g==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xH08B-005A8J-1T;
-	Wed, 14 Oct 2026 16:42:31 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Wed, 14 Oct 2026 16:42:22 +0200
-Subject: [PATCH v2 2/2] mm/huge_memory: deposit a page table for a special
- PMD copied by fork
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SXhY6GQm;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E18360229;
+	Wed, 14 Oct 2026 14:51:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B66B1F000C4;
+	Wed, 14 Oct 2026 14:51:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791989488;
+	bh=Sbwm0kYIICcSUmwlborhldmup0bfDzLGUcDOPU7O94I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SXhY6GQmLweh7DjlvPMxA2dTktV5lkYnXiUk3tMnz8oSC987FLw4a0aDlv8ibbI+O
+	 LmKs/zZJ0VLMz5v2QwPJZ6nsrtDLkcaa1VRnPLCw9VqY8XwbPAe419chlY6LwJzV+w
+	 X8VkiclUEYqMiUKu/9gvrUuYqnhzKQzy1Bxf7cyL1I0PzA4CPooT1Lc3T7RRLnPJah
+	 VnnOYE8uQwe7shBI2ztZRizfWah0o8mz2o999ScqgnkciSfyjlLEe06WZJ23v8WmjD
+	 EPvpL/ik+KgpdOZ3uPm7GFOnsej2jA7xLYtCx29gDZNlfO0RzoO//6ruH2jdbyyaPK
+	 kxoeAqOLA7pYQ==
+Date: Wed, 14 Oct 2026 15:51:22 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Lokesh Gidra <lokeshgidra@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/userfaultfd: only allocate anon_vma in CoW mappings
+Message-ID: <as99gyi-NUprRK6e@gremlin>
+References: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-2-e1548488fa68@virtuozzo.com>
-References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-0-e1548488fa68@virtuozzo.com>
-In-Reply-To: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-0-e1548488fa68@virtuozzo.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
- =?utf-8?q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>, 
- dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Sashiko <sashiko-bot@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2320;
- i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=slTLN+HTnyPRDcPUmB57Ei1RxAqdQ9VfazOYgqTzQcY=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBqz5TVF9flfaIoTBYEiUAWlbx9oilAi3NU4+UWI
- atXUxHOcduJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCas+U1QAKCRBRlgpH+WFc
- KjwfD/9U0aEkzB3l6KdM/Gq9P4U7CV+cgd/WlsK1UMK9FIbgJK5laBYK4Ck5WwwgRBu9UZ3HtKf
- dD7edkPu8wofgeRbl1WdoRIqbuXUG0I25ZocjDd/bU92I4JWUTAgDBVT3MfWlF8qzL9k1dB2v/x
- 2jUSNletnpdxeWXf3f2Pfs3ir7L0eWLWKyzIb6FjMSLYyuWUkyGc3UoxTgezkHBDEfrsmB3MDHP
- Mzml9YdTYFrhlm5uLMDQIRz7tw1/tyXwaKXB5Hspr53+rZX2exiKHT7YSXiIQplnc4hSGYGt7bD
- 5OdsSBg/x8Em5EoTBZyXjEBZ2E9e6FQfIeFs/8TFGdsZs9bABelVioMTVAw8k6qtI3Pvs8hkF+u
- +lgubCv6nAg80h7jbyf73ScVaQ/q8A7eoDKvlwq0AWIjpCr+qUExs7+xoYiWDiEn6xwKnBu8MVh
- fKyARguMKFEU5frQbxbblhR5ZEZiTj4lCfHourTERhuUCcLcZhsYpoHjJvlUJUi+Z5ca2jkmtQv
- f0qsdex4TvgJzEF2NEaHT4FGMDkywzg6MTIzEFOTVmB+/LVcA77yPvXH7IlaNSM+rI5k5Cs/Ed7
- /hkF7GUMKFLVY+hCE6Owk4FqZF5P1H5FQOWL1zOyU/h6clHjiV+CZAuv5Hva7D33XDc/5Vi5FkJ
- yiWyJbgY4OozYGA==
-X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
- fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
+X-Rspamd-Queue-Id: C4B1940007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4F17516000A
-X-Stat-Signature: tw6h3u5bb71fpueb464rg664916c9mry
-X-HE-Tag: 1791988990-631448
-X-HE-Meta: U2FsdGVkX19UsivcnP9MGnwadBqfmE4TiiwfEuzfL4TYnAOvbkcfhi4OOGyjR+rEyAWYN8nRh7k7Y+3pdvA3HC56phAeOvGCP6QJtF0EwG1iuM1AHBRFY1rm8ekKyA0fU2R1A8fDqWzli6iXROT86uXqeGMHyHImQqP3sKxvsb66tsAmXnAW0HXu6SwWB1Q2soouFZMrmOlidQRZlq69FN1jjV3mnAtXSAIT4MG8kABVvCtm3+oy7javG8D8x1pq0OtVYeyDS5rQPt3LzsUIngquotWipnpnlw1sC7eoaUDYMSi+ok/CjGkscu1eFIHC94ofF3Uaq3vkOcjJrE9qOkal2ABm741kYlZn8ONcXjjyxYJuZ7CMQU8gcG0hJJuHe4VkxAJFURvnVXpnhE+JFCNoLAH1WfsV0a2oVcGqG4C0NtHsc+un8vQmFgkVF83vyLwcpAGNc9wPL2+7mb0dvmjL1DcTAlloNkqwEHiIRnd4yCQPxN/IPfDAMf1EprIn4LdLNmQmrI92AUwfz7/+MakD+v3cp0TyOCFf4ltbNr2jP1bD+bai7qbG51sWjElRpMbWYRvObi2ZkeyPtXwUW7/q+pQCBCvWj3KfOnSbpUmXHiVVeCbRkV7z/rH0uvhltoiVIT9H6c/66dAYLcOPwrGF3qbnJb5XPHd3vRpocXGvkqBCRBz1lrqx0+v9bdgPJtWjzmdUy6l0cFzxj6cXNbZdKPD9UBKw4MrnBaa3L2/D9qv0wc30IEsZ/00JqAOGaRVxukV12unbbZrhTe9PE0XEYD6/pkN9CNzfMmUivxU3ZD8c74UFbI5Lw+ckjnBSPej6C8a6c8eltBKXO3xwGTpCN1OTZXJGqpIrMxiycd4nQVIFFcU+wTt3skuzwGLsW/GlDIRl/XJTz71crJUuNO/4XMF6ogfhjZ/frPqBVzz4pfstfwaAuqXUiWoIj/cSah/UJwebwYxUO82s4Ns
- Zpxvt4Ye
- Dv4iUwiKWcuASuNvwFtlA8Lo3JKHor8YBOo9/kB2Z2we3g/fCteHBmW1ILj2vWx7UMUjy926lTL9OOXS9wLJLdvViArn6xGw4AcB6rTw45m8kjscT2RiX8WAbrscS0PFq2gaUsUAXsESzBnRf8nutGrrNkOJhMQVKQO1oR7ntl2T+KVgyxhhoumqkHsEu4QNG1zU+og30O8gGEiTqE61xuxj3Rur8lLyBvbwnFoS1OkdJlBPIOFBAlEupKK6tbekVBjgYUC4uFdUbBTyYNJlz7m7Jst4E59sGGeXnkWMrJF23sKW8rKmdB5CCpuROIf/xksBZRo1EFMFHYiklrcIjNxQV/qqJ4wEdIa7xX6+v4fS92RtPpVsPdmsiI0nrCanY2r749HZTyw930zoTWoyE3E8SJVdtpavaE7/1qsvtuiqjYXuWTlTytAew5oQjg768acjPUVSxiBKDIACkN9dkzJsaa6m1ANXBzAKUuBGF+VFwmns=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: xzk7qkt5f5ggosure79sqoii1gctaaow
+X-HE-Tag: 1791989489-807384
+X-HE-Meta: U2FsdGVkX1+MdDO26Pc6XRpGDsEJF8TzqTYu5ZivtjLPcYA1eBZiqysrzQoaqiaBSS2vheCVXd3eOViLYPWSFScxnfHBvUxXvLS5CyQ5f9WOhDo2ie8sexuU9aVX1kiTWBSZ7a3T2OznPyp8xNMET7ZA8oyJUNwhYNOxCwjH/wMei42DMbSUGc1qXDiFUkspjx9Q5KJHnYbeGRgATap5u4npOyupcfzrq8mJiBUiu/WiJtvDOfKQNhh0CvaToJht4N2o3YicKHZHuBVl3tk+BWO/QeodU/Ofy4z6EHioKpLfiiYIBHRHtneRI+TgXdIe81YoKja1R1OgSnXkHNJMnKbNYudHYyhf3Z41OROCo9p21Z5KJ6F8L0JOmZLy9sOmtXcoPxIxEqZdcia6ddlxcHDDVNbcj6lhu7hBspmZFAriIgmAymKGcs2dQiVwHSlb547nnkJKKH3fGE9XBms7myCKY1vTuwAsadRwK9LXYgRAmrpoNB93ji9sSu3U00gBdjERZeKMsKpTEEmlP2oDOQcsTIlfL2Xf1pvreRROepaguh7QjxOWbz0iibOz/01RlQvqGbnPR4B1AFwYPd2oSUoOE5yFFkhRLTkPrJJlrG6eEXVuwoTfXos729xdXEE+8jJInNyXzqv0Lssj4vlP85SqFNCS5VWDYRHCFfJ7Pyq9abJRzn0KYgAEjsI0vJEBbTYkgP0FbjKgvYiXdU9iaT8xAtX43PI4cpqjWi6zpEUtdHHf9tdUBS66H3fSKGCU1FeXurZmfE6pTuz9GBeb9dEKuze7+jFZYlZsOQT/axgiHU21FgFxwqxVrkZgc7V6PNtKAKmkokGipr0Cp+T11Xsgyd+Q/MqskOBUHV+k1aVAfmJIGk7PxwX0WwujWXGmst/EuUM6t5becxRzKYrhd8beYE4MI7Uuqle6Ph6eU1aNn7aFqaRiQzdjo/eQd96KDYE3yJrAqZQ/5o/1H94
+ AXEF7SCj
+ DzafhdOBAmM9xxTPsFbsYNYd7rBiETp1AVMD3BFrTGRn6QlFzOxJ32UHYBs5BavcuWghQHOvsjRAG1BU4L4QKVTg0lsuGYqy+YQrnTa8BxNJ+9vD1N3d1MITVmyfn6jVKOOO5pY/j1FFnk+GzmxYqVz2WN6Ha8kwevnVzo2UsJUWx4l5yrjI6TCRww+QXc4hhli0/DxPnB5owjl8jzi+Oa226jzyWAchOfpgxxXQRIOelkgYA1nFzZpZlayx85fT2FTxcyb1S1dgpTksjQpg9L7uClFO7ycCz1gwRl7CWaxFUyGZ1bT1XWXXwp6kUNNBN6k8NNOOlm03EdlkbjenAnEb9Ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,68 +94,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Where arch_needs_pgtable_deposit() is true, every huge PMD needs a
-deposited page table. ppc64 in hash mode keeps the hash slot array of
-the huge page in it, so vmf_insert_pfn_pmd() deposits one for each
-special PMD it maps.
+On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
+> As uffd_lock_vma() is part of the same lookup machinery and
+> also contains a misleading VM_SHARED check, change that one as well
+> directly for consistency.
 
-copy_huge_pmd() copies a special PMD into the child without a table.
-The child then dereferences a NULL table:
+OK, I think that one isn't _strictly necessary_, but while we're there,
+worth doing too, clearly.
 
-- on the first hash fault on the PMD, in __hash_page_thp();
-- on the zap at munmap() or exit, in hash__pmdp_huge_get_and_clear().
+We should also go through and convert the remaining !VM_SHARED checks ->
+vma_is_cow_mapping() too if possible, but that's a follow up, obviously!
 
-Allocate a table before taking the page table locks and deposit it
-with the copy, as insert_pmd() does.
+>
+> A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
+> lock in copy_hugetlb_page_range() entirely. Further, the usage of
 
-Fixes: d1503aa9ab805 ("powerpc/64s: Add support for huge pfnmaps")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.com?part=1
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
- mm/huge_memory.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Hmm really? Is it possible to do that without the hugetlb lock?
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index fcea98f0d8865..d53db73f52676 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1961,6 +1961,11 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	pmd = pmdp_get_lockless(src_pmd);
- 	if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
- 		     !is_huge_zero_pmd(pmd))) {
-+		if (arch_needs_pgtable_deposit()) {
-+			pgtable = pte_alloc_one(dst_mm);
-+			if (unlikely(!pgtable))
-+				goto out;
-+		}
- 		dst_ptl = pmd_lock(dst_mm, dst_pmd);
- 		src_ptl = pmd_lockptr(src_mm, src_pmd);
- 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
-@@ -1974,6 +1979,8 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		if (unlikely(!pmd_present(pmd) || !pmd_special(pmd))) {
- 			spin_unlock(src_ptl);
- 			spin_unlock(dst_ptl);
-+			if (pgtable)
-+				pte_free(dst_mm, pgtable);
- 			return -EAGAIN;
- 		}
- 		/*
-@@ -1983,6 +1990,10 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		 * wrongly write to the backend MMIO.
- 		 */
- 		VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
-+		if (pgtable) {
-+			mm_inc_nr_ptes(dst_mm);
-+			pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-+		}
- 		goto set_pmd;
- 	}
- 
+It'd be good in general if we could get rid of that lock as a whole :) but maybe
+dreaming.
 
--- 
-2.43.0
+> VM_SHARED in userfaultfd code should be cleaned up later to focus on
+> CoW vs. non-CoW mappings.
 
+I think also anywhere else in the kernel where this is done. An audit on that in
+general would be useful!
+
+>
+> Reported-by: Kyle Zeng <kylebot@openai.com>
+> Fixes: 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd operations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+This LGTM, thanks for handling this!
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+--
+Cheers, Lorenzo
 
