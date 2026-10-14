@@ -4,102 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60BC7CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9EE3CC6B19
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 03:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EE606B008C; Tue, 13 Oct 2026 23:23:16 -0400 (EDT)
+	id A857D6B00A0; Tue, 13 Oct 2026 23:24:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C65F6B0092; Tue, 13 Oct 2026 23:23:16 -0400 (EDT)
+	id A5D266B00A1; Tue, 13 Oct 2026 23:24:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DBF76B009D; Tue, 13 Oct 2026 23:23:16 -0400 (EDT)
+	id 972C76B00A2; Tue, 13 Oct 2026 23:24:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CF536B008C
-	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:23:16 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C12611A03FC
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:14:04 +0000 (UTC)
-X-FDA: 85319762808.17.BD316CF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C9FE720005
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:14:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hVK98rTK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791947642;
-	b=ZJF25u7ayU+t8vkGvJv4o7JViL9T5N+hEOkJ1kEfFyQcg79lHnwNzLevHsfHVbX/GK1Xjq
-	Gy663Nw2+KlYlsIh0JnjDzqVGb0iSrGaQzqumtsvxsdM2WLWJMfaGvdRWfYRl/EGOLc+8o
-	fH5h7RJBfMygS6rUs+/HwqppTmHJOZ0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hVK98rTK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791947642;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6838B6B00A0
+	for <linux-mm@kvack.org>; Tue, 13 Oct 2026 23:24:32 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E0304160419
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:24:31 +0000 (UTC)
+X-FDA: 85319789142.06.4F53609
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E6D3440008
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:24:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=At9NI9mZ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf17.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1791948269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xafWGKCMJrMg4LkqDNQKwh6exjnqsIIY7f6p2ybXHl4=;
-	b=ahM6GtjrSfh5RYtbaKvLjSSrSRV+dD22JkEIjhl/pI8qguQovSMpysXPy/juLt4ofvx7mF
-	P3MT7BKYi0+e5IBAHamH4ez3UocHJqmO6/ytuhivS9eMFedUxAP0v5M/EebUdoi3nijeQR
-	rvoCpD/iqAnZg6u/T43t+bFNB1zJMjA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9FB6A42D8E
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:14:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9A21F008A0
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 03:14:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791947640;
-	bh=xafWGKCMJrMg4LkqDNQKwh6exjnqsIIY7f6p2ybXHl4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hVK98rTKP4691AQDpea0IZUehE1S5b+Kf2KdjL7u3a1Sk3+2gr8PqrwYD6U0QBwnv
-	 KBlQHnd+C6n4V4hSm4B31tiZoT2KeKdd5COiBBq8weQ2op80Ltm3hOiFvHE/vnV3K7
-	 rDOkDOrWlbEenUJpOCFnJomqrFCsq3mvUwiA5+OxY+XTRgtmLMbnRYxQwO9IEiWuU8
-	 AQaQKIjkG7r3Hm/cpY8c+KXCBVWnjncZ0LwqHMGrbbuTHIuY4jk7rN97NUr2PmqYdX
-	 kSgO/th3DoNUpJmPvdd5WhbcuK/QaFPis+XRJw9wraE/iQcHL6/LkWrCphKBSt6ydl
-	 FcdFfx3kOL5Mw==
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93cb9e9405fso190419085a.2
-        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:14:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwJtv7qwAPWLcYRM4aMii5SOaQKEADPNq7883Gio6AnUyfgeC1LBUP6D5LsnaeOHyNYrPMRuxhoNg==@kvack.org
-X-Gm-Message-State: AFq9FYKReehs47Gbf5S1AbgjMHMGh9FQWdQJJdTF8EMqqgiPWFmotnzy
-	SvmaevrvOLijPD2h73agGyRcFQMmHe8RHg6IDG2v+Z4H8yhkHbwtIfM/ghwqfZa5LrKL7H3MOls
-	SlquCky23RC8gUNpCp01PIPQ82z1We8c=
-X-Received: by 2002:a05:620a:17aa:b0:93c:c162:1260 with SMTP id
- af79cd13be357-93ebd24a4camr2358972585a.38.1791947639745; Tue, 13 Oct 2026
- 20:13:59 -0700 (PDT)
+	bh=5W3Yp3oK6NosuISWrK7hbNW+ZeNBXIIyZITKoeVCL+k=;
+	b=Qs7FK7ONzvGd7W43I46L3nF/KKGbUeh+EjNe5r36NTfMom1gwasjZkXCgITbnIQ4GH52jP
+	e/pRgdl8ZfD3BLdVWnQHgNzEU/Zv1DU5aRnymsEJGdNdbL6vcztqpGZjCp5GGlg8ltgsHY
+	sQJLM7NMvXz5gvYzHbBaIZl+aQ9wKjk=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=At9NI9mZ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf17.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1791948269;
+	b=GEDrx+5eaQZY8O5wYXs7npORa0ntB0wiTtnnCk/KHC/OjSyQ/e/w0VHjwiUHB/NOgc8sqX
+	/EjafokMN5kwlQ3CBTfAZegxEjRIYKdfUYYeclZ0fGc7MDk0gsjS1+Ha3++2qxGGp+31IS
+	O0gslx4xVKAz2Dh806LYi3miU23MZy0=
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-677aec6ddfcso3082653d50.3
+        for <linux-mm@kvack.org>; Tue, 13 Oct 2026 20:24:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791948269; cv=none;
+        d=google.com; s=arc-20260327;
+        b=k3sGqoG6Tq43QIUwNTb2NiWogQrs3L0rFQf911jCS6qcQ7Jo7uIiknbjrz2D84YJoW
+         /6Myc2ksdlP3LPS4xGlIk5+04Kj9q78wMwJ5zQTbTm5RjkGj3xBFZfP1UU6aW8GmfeN2
+         jiHHNd7r28bpP9fLsWYJ5m/5XfOYmU9yw/U8LhNLCN2zqKayOlXwyqL6pdbV8sfLVpK/
+         d5mh9AFMvKIqIcYMOsmSlINiY8VObT8LjZLQMFDOgHg3Hc8D5YijVsLGQP5xCZY9sQui
+         JpAlLwlyf2nGl1H4nMNP1GjK/Rn46ZYQdqx9SAuRJQn7pll1eakkzQ8WzmmH84AzP4ed
+         eBUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5W3Yp3oK6NosuISWrK7hbNW+ZeNBXIIyZITKoeVCL+k=;
+        fh=Cz8fO4Qa+lOfqyu5hqu0/wWxHk2bN+JCylnyrEcv3PE=;
+        b=rCssE8gELdbCcG6g8+WRACmz4cH/jejQdzTmHz2LogKUlxcS6epfjWXTUt4ZhFy93m
+         WnIsRRBfpDFnieObw+ayv3l/FoJp1QimP6zRZFEJSNzYvLeZ3dUSVzJSzO9z2st6SNM4
+         o6sLkvsh/kNEJLztP8EISkV8uKnNFLNSI2YVUFTwuyjNP7y4MBXC2z3LoOQU+ekWlbt8
+         8Nsi+r1fn4vzJ2lOsL/5LI3NsFsXcNNWKCugoBchOBdTDwm9pl8glQ3I7alm6p8B5bFf
+         LW17xykfF+K03yxmSVcgmfSQKQJqXzdOg7dYp6xwNKd8VWWrZrJTmCrul7zpfaPhizKP
+         kC4g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791948269; x=1792553069; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5W3Yp3oK6NosuISWrK7hbNW+ZeNBXIIyZITKoeVCL+k=;
+        b=At9NI9mZzyYoc37JaEvuTzqJbfgZon0rTIGu7eehtrk6oLa4WgSmF0HxgPGPDZDURw
+         nBA32XIx4rXpqYTkNBQBOpPmPZgBSfyiMSdgn6ok6lw4pY7TOqovmVkzh8zbndItDyaE
+         8pqj7RyOnaIesB/vPFFjUmRFwOx/6mLmI7djV33n/p6y3VXiUmntgoU4XdrwLm3OJer+
+         siSv5lD8YfiH2CkCwDQ3kt3YxScgrPkmwj++MqBPDXi3kCH9389AaANSrfqu4EQZ+nb8
+         01/oE8sOK7AKCNVYKAA7dBb17Rij4O3YTCCSUa/T8yM4gyx8px8cbcOLLirQ2pUE25+T
+         6lXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791948269; x=1792553069;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5W3Yp3oK6NosuISWrK7hbNW+ZeNBXIIyZITKoeVCL+k=;
+        b=d0MFgMhGmjyaGGTcqwytQup9/rxeWA7Gr9W36fDYk4vO7PfhLNC7O466wrFJ6ggGfI
+         UEEBWfl7CoLbo07xm1W318EAxwLUTr3wTFVtNHOf/6EwN0dFvEJe7dLZti3WSw4rxAZq
+         JtEhuj3ueRHMdnbVB4qD70IREzJ4dlVScPD58VLKY0eAhzds8wThxeWbLbm4uSpg3mZL
+         SYbJOLbQbF1GhBHT+cNBxgDWc6Bmp6/eNdp9akZ5qXj9PSZK48CnkdryfezVngWifZuP
+         aItwi8z5eKFxXClloxey3Rkz/PNZh/p2sibZigzjXLwElk1kdFMfeIciSIzRTDJV8kd0
+         nqMw==
+X-Forwarded-Encrypted: i=1; AKwUvBzSwRvfZ4HAKYtxo6iGhlCTxbfW8G5T0czCmBoDegcPTZRJWf1YqLHPJUrYngxSn6eOzvPK9DiEvQ==@kvack.org
+X-Gm-Message-State: AFq9FYKgOtT9OQUHqGDwUSxjqYy07Iq1p0rDdZcY5ojFeuJtD0z7LJ2h
+	Noyjo7fdziIU82id2CMwTPP9jGB9SzUQgb4ufybHjkHFtpylspbftMiNpLOROxkSfy+sbT2bgUu
+	yQgV+cIg8HT9edbZQi7SABtFzmQ9lZ+A=
+X-Gm-Gg: AYBFou2pH8bGTzzmSH7X5FezRDKUE9Im2TwQ+lslBiyy39l/JrqBOXttIOopCiHvmjh
+	OR33H84IBNCpkMrKbqc2VzuRs19CQlzn8AbA5UCfPZfcQ60oyqrnlE1Fkf2H8mh+m/ND48RZE9H
+	g9r/2WryNcofE6EP/Z8exZZCO3Xd+OXT6AZDqFlHKF8JmGrMDUifKGG9fHDwpYr02dd1i3QxBG7
+	5v4JjDzTwrEtJUlorfKhnWV+G70j011pNjODXLZq/qjvctrtacfc9R/2uvwLkdhs6/CjOiUFzFS
+	8Aapo+eZa4VcfDWIIqhQjGp+6ELIWI1MzGkaK3g33xRZFPF4FgBrWhP94MAjd6Xe7U3XkypETDx
+	odsPJWkR91A==
+X-Received: by 2002:a53:d017:0:b0:675:74c6:79d with SMTP id
+ 956f58d0204a3-679362ac182mr3741120d50.122.1791948268949; Tue, 13 Oct 2026
+ 20:24:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20261013221307.850803-1-joannelkoong@gmail.com> <20261014030737.2102-1-lance.yang@linux.dev>
-In-Reply-To: <20261014030737.2102-1-lance.yang@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 14 Oct 2026 11:13:48 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
-X-Gm-Features: AclHuK8lputVsSCWQ9JjCuBEuJbYAeIyTKia4Leun33uZrp9EVvPHDRnkQPzee0
-Message-ID: <CAGsJ_4wxKQK=caM6a_AqJArGyJdBgq_=i=gSNjiVePkGBZHnpg@mail.gmail.com>
-Subject: Re: [PATCH v1] mm: unqueue deferred split folios outside the lruvec lock
-To: Lance Yang <lance.yang@linux.dev>
-Cc: joannelkoong@gmail.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, hannes@cmpxchg.org, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, ryan.roberts@arm.com, 
-	usama.arif@linux.dev, hughd@google.com
+References: <20261012120438.52849-1-laoar.shao@gmail.com> <d9a3367a1852158f60cc2e89677fb12f@kernel.org>
+ <CALOAHbBE_1ssK_26c-UY7N6WxhkVNpB6v9WACVGaOiWZ5zchCA@mail.gmail.com> <3eda489898ebf7c848ce61760af745d9@kernel.org>
+In-Reply-To: <3eda489898ebf7c848ce61760af745d9@kernel.org>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Wed, 14 Oct 2026 11:23:45 +0800
+X-Gm-Features: AclHuK8rh2AW6bZVG8ZqRjg04D-kUz_OaCPBeR9yqJbXuPX4vDKYFO4Wi9z6gLo
+Message-ID: <CALOAHbB58xLBdBOZCwJ=4yeKyvGvSsX1wfeAXehD2SGHSmB1+A@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/3] BPF-based per-cgroup NUMA balancing mode selection
+To: Tejun Heo <tj@kernel.org>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, 
+	memxor@gmail.com, mingo@redhat.com, peterz@infradead.org, 
+	juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, 
+	david@kernel.org, gourry@gourry.net, hannes@cmpxchg.org, mkoutny@suse.com, 
+	shakeel.butt@linux.dev, roman.gushchin@linux.dev, yu.c.chen@intel.com, 
+	zhao1.liu@intel.com, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: hpn5huna7sbynmba4q6uf4bdqbf9me8s
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C9FE720005
-X-HE-Tag: 1791947642-38184
-X-HE-Meta: U2FsdGVkX18/6oxjsxF4k8T2vjYLEwNqQS+xwxiI2ts5x++2xQDPUBtxB06cix3IT5BdU2Nj7Pzfi83KgjnQNGER+eEMT78gnseSyoN/DsAmsHKxG2QSlmC9cmEGG32QqMeY011aRN642vJR1P5b7GRnBNp30y1ckxctNY+z4WakwQC6qyhNwGnupzQP1/TVcXwVO1ctUPdBs5Va/8BpoJLi3L+ADxU7p5KCOp1VnU4j+ms6s7mWdqo26Wz2fR5JsCtGAHCM73/6bBtqr64wZ7YFiqtaBZurChReTOXqzydkBDfu2nbcGykjawOx/42THLApaeTvSN4AKUlCyJ1zdipRKe28KIGe2fBu7A6P5REkBu3n9lbS8Y+URAA+RVpmH/go7b1gRDhIuCGTxVgu6ZNruPO4KPTzwa9BWWy37/ouAEmqzTgJB8YBPzLwrq0yw/gStGAt5ekxuQ5MszrIxunEyxIKkNxqJ3Az+S6s8OKGjs1pShB4b08vg2ukDlQ1T63GPP49mPaKwDlGVTh5onXcGOAT2OAhXYH8hG3RkPMocCjhnouhURe47buSYDpB+/U0uRX9cLxXIAQ8z+mF+kN0UzWkBSeJaLFUCf5iNceZQfAHLirYs3aa0PQj28LjqHejAb64NE9i8vBy6TkaxAzzzGsJ1lTMrOwON2skc77HIkH9KvDTBc9LLQLik5dZyQ+hcLfXViNSRTzsGSNd7c8SVC8z9HMQwZvm44m/gjL3Rg6lQ4OWGr/l1Q1MatHVt21X6vkM/6822zRcyL5fX8udANFi3UxDeqJZxE5I2vgcK5NjDaklQ80NKWSH9Q8Q7m6O3rJ8501y6rF9M/aPNYERhs8nRFjgUrMqkAqpuDsO7qmxotveDgULA0Wq1UvOcSZLGkQMpzZqvjdICntPi04Lu6xe4UoMfISfxBDK2mbyJRBUTHL+IjQYw5Yu78VH4WvrohuGGIj2JxRMJZW
- 0+uXJ8U9
- gWJvIYaNIY7c2l14DY2CloqbR8aTwQQxHmdh21Z3zIVybI2u1qh/47+DLbsvohRysSvyii64qWL4XG7HNK0YgUtXlFfhh08U2wZRuLAfH/1U4gLsuFnO0dG3QEfka89uZw8oCytwE6p8svVO6geMRSH4cBn80uwm0Qs8VaGaiAY14ct/sb490LedJ80qPmrEtBwnCn7WqCeLy5A/0mfgVbyVsgbu+ECkACcXIEkKP68n0H4gpha8YsgQqm9bpu4/dXFcWCxJDZObhKfi4JND8ZbXti64twu8MsXQw5EMVG5xbn75rPsdxXrUhjc9YdVdBIeBE/unEX0mwf1o=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E6D3440008
+X-Stat-Signature: cbj95y1mp4j58o68zfix1dad5e7ok9ks
+X-HE-Tag: 1791948269-767349
+X-HE-Meta: U2FsdGVkX18fiBHiG+tAxbh77fcZeXPxPFOhrsrfqKV2rbjIhVejyq9Lynj5HJm/ppFsoieoqtKM4BoqRu/oLGXlcu/FeyUoMmt6a5DcZjdjgRzQvoxPGRxxUXGnKE5sEmzhlh1O+NYgU8hgzYH8VBtrvWgTzled1rEPYivXUXsvTs3saeNFhM2ONshJwV9LyNJR7TEuv6qOs5zGHU0R/XZQEhJhJHkrB1/v3J+pmxeaP4v7yv8plcbeTuVNYndfaXwMrfpOrtfbpjmhwDHXQtY5h6+0oaJehsywsHKVDT7aAALF77d2lkdcr8DI9Q01JlJz1BykpB/EvFou5bDJHtqwx8WEb0z7lPcfeqo0HOCHPdo601+XnleAfaxCWgrWFqK/tCAHYvADXP0uKc4YKAihvDyavPizXXRm9N+2qFVhzFTvkn0F4oFgu6KyDbbvuJzSoJLkhftiLpIMY2XXnMwoI4zNz8YdQ+1FxDiDrUsVSiQmIAcLvGFCydK0L+zA+V0SJTWlUwhDwePyxqmwwTB8wwXI6gcgCtPukIGa2tl7lKSMRlF3jRvcCCWBnpcMtp+WqM+zvazGuGsorzPxgVhmYDDlB0X90ec4nJIMb0j0Ut8mHtS1Qe2QZircKLVpdfutqqBGWvOC4PWzFG9V8MLoDb+ojEYgzavIu33aRguldCJaXINPvT1JHQyASh7rg4WLAqDESuVzZ0iZoFpAXLUfxxaxUHPT4FmqV0rViYJxcdou8201DePIZGCg3zza9YwBzdZhAs0tL2z2GFlACfUStnnykMfUnhjsBHSo4KELs6Cgqr2b8+2Csgz1KVlmNAR0mv7lgju/A+s/Ni4QXC7XuE4GOjUjGb4Kp97zJpqiU1onY+O5xeBOOqXqTobiCRV54ZOveMUmrQb4QshZkC7i2g/Cbj0IFPNfEnUnHZno/XC6mq/5khKSvu3KXg45520iAL1e7yCYSLogzSg
+ OajSdnvk
+ AgQ5+h9fJ82Kj8858LkC9PSt7qasuZNiIZ9GMjPU3MOyibtM7PJmtRClcwRdNeq+qdGYcXj7owxWfkOEpu87rZ8BhrKUMYNBZQ5zCdKF6jBnpRmsTdPepcSiNUZd13RJ9Rkxx5sFnbwczMnY0bLWDcMNU63GfzTJzzWvD8YXEPK2s36On8H5mc/7DLqdy57oQ7oGNmKz5VeneVIW1wcXHlowBe5NXNU4HQkADD1ySZg1AKJKBqaoi/Y4IWn8SQalDv4/LquA3LCxokMZN/drfY3zViWmhzD9Z85nBnPatyJeRHZky71vDnIdaHU3ap6bbbee/F9R6Eg2FmgIlocpzbjy4U3+nRXbjae8ZozXIHGvUm7fEqA/Eqocaw4N1QdF9Yo5IIUZS9hqDrUihIyZVru/9TB3/UGqlp36z4brlaxsMNTVmbNI4pl90sDxF2H3+wrPRwVNtjfThGbw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,50 +146,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 11:07=E2=80=AFAM Lance Yang <lance.yang@linux.dev> =
-wrote:
+On Wed, Oct 14, 2026 at 2:02=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote:
 >
+> Hello,
 >
-> On Tue, Oct 13, 2026 at 03:13:07PM -0700, Joanne Koong wrote:
-> >move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
-> >folio_unqueue_deferred_split() on folios where the refcount has dropped
-> >to zero. In these paths, folio_unqueue_deferred_split() is called with
-> >the lruvec lock often held (move_folios_to_lru() always holds it and
-> >folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
-> >in the batch except the first). However, it's not needed to hold the
-> >lruvec lock.
-> >
-> >The lruvec lock protects folio->lru and the reclaim LRU lists whereas
-> >the deferred split queue lives on folio->_deferred_list in
-> >deferred_split_lru. The deferred_split_lru is a list_lru with its own
-> >per-memcg per-node lock.
-> >
-> >There are already other existing callers that call
-> >folio_unqueue_deferred_split() without holding the lruvec lock (eg
-> >__folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
-> >
-> >Add folio_batch_unqueue_deferred_split() and use it in
-> >move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
-> >unqueue each batch of zero-refcount folios from the deferred split list
-> >after the lruvec lock is released and before
-> >mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
-> >critical sections, which run with IRQs disabled and are highly
-> >contended.
+> On Tue, Oct 13, 2026 at 10:16:32AM +0800, Yafang Shao wrote:
+> > Part of the consults are keyed on struct folio rather than struct
+> > task_struct: the folio surface answers from the folio's memcg, the
+> > owner's request, not the touching task's.
 >
-> Nice work! Thanks!
+> Right, and I take the prctl() point too. It's stable uAPI and too rigid
+> a bar for this.
 >
-> BTW, have you seen measurable overhead from unqueueing deferred split
-> folios under the lruvec lock?
+> My suggestion is to start smaller. The op doesn't compute anything
+> from its inputs. It returns a fixed mode per cgroup, and you don't
+> need struct_ops for that.
 >
-> Any before/after numbers for this change, including the cost of the extra
-> pass over the batch?
+> A kfunc that takes a cgid and a value would do: -1 for the system
+> setting, otherwise the existing NUMA_BALANCING_* bitmask stored per
+> cgroup. Task callsites read it through the task's cgroup, folio
+> callsites through folio_memcg(). Same capability for the use case in
+> the cover letter, a per-cgroup field and minimal plumbing, and the
+> kfunc can grow later if a real decision-time policy shows up.
 
-I recall Joanne mentioning some data on this in the link below. Is that rig=
-ht?
+That's a good suggestion.
 
-https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1M=
-aU9bXs99w@mail.gmail.com/
+I believe that will be a good start for other per-cgroup memory
+management features as well, such as per-cgroup THP.  Also, it is
+much easier to backport to older kernels and rapidly deploy them.
 
-Best Regards
-Barry
+I will draft it soon.
+
+--=20
+Regards
+Yafang
 
