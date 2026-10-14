@@ -4,100 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF24CC6B1A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:48:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C40ACCC6B1A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 10:52:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C90726B0092; Wed, 14 Oct 2026 06:48:00 -0400 (EDT)
+	id C96BF6B008C; Wed, 14 Oct 2026 06:52:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C66E96B0095; Wed, 14 Oct 2026 06:48:00 -0400 (EDT)
+	id C479B6B0096; Wed, 14 Oct 2026 06:52:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B55E16B0096; Wed, 14 Oct 2026 06:48:00 -0400 (EDT)
+	id B0EE96B0098; Wed, 14 Oct 2026 06:52:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 911386B0092
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:48:00 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2CD571A0316
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:48:00 +0000 (UTC)
-X-FDA: 85320906720.14.61BC13A
+	by kanga.kvack.org (Postfix) with ESMTP id 9024A6B008C
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 06:52:28 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 235B6404BB
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:52:28 +0000 (UTC)
+X-FDA: 85320917976.27.946C985
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4FE5D180003
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:47:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3c1dj6j;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1791974878;
-	b=P/vJetwl/dMJYZ4uQYYaEQ0AG736eQjo1reKIdzuhhhFynOAy7EfmHACSJsrla4zJDH3Xa
-	QNMFJPQZi/IOi65EmICegZf0rr9dL3thtbuYEf+BqmMq5hhIHCkZdkcXfu/lTSJlxCcN7l
-	F35T1pvy4OKiNuwgSjz8Iu0zEkDlhjc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3c1dj6j;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5B0EF20008
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 10:52:26 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALUatxx7;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1791974878;
+	s=arc-20220608; t=1791975146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IApCsci3eSqyBIQ6NmzUaRZb+6TUkOs0tii8wwaDBSI=;
-	b=lXj7qeYd8uDOifKJOnV9jJdep5w7sUOtBH1B+mlfNSRlouKfsu2DcKZSrTdjgEuljYpV8W
-	Wnc40zhwg6vz2LJh3vwZoc4kEmGe0EgAyF8Rm22i2XHmtI51ggHQZvur/KE4nRxGhhsxC7
-	nOqMu9Q/ej8/HCbPQprsnwxmOrO0EBE=
+	bh=A40pvqxsAljXMht0uJoUDXzF1WEP0B00UO/a2qcSq5c=;
+	b=LN5eruNtAt3GjtyyBGLVkx1Wng0Nojcl6D/FGdiir88qtRFga0MeVhpyuaBxIq4QwGZONg
+	CHZxxTuFNeC0zOaOJUZ5eLLJk4+dmWGxY97wHQg1yaaY36qBKLskGIGlczyIBqF8MkVpvB
+	qtbCcw/VNMvDXaDvS2l+nF1+f4TwZnw=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALUatxx7;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1791975146;
+	b=5lbS3nYaDCTL2xfc7FKAj47zu/KdxQ+GOem1+y9CI2uoMoRmBapuB9xy6mHNeCgdfkXW0e
+	S/kGofhidonV2yGXyST/+NdkElFkgp4ibtfgLJ5lShts+raV79Ac3ebez3KeJyVRb3RozE
+	GWSXd6w8p2DsEHpuYBqMcUzOVxySMNs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3E317407D5;
-	Wed, 14 Oct 2026 10:47:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E891F000FF;
-	Wed, 14 Oct 2026 10:47:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6924E42DB7;
+	Wed, 14 Oct 2026 10:52:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462021F000FF;
+	Wed, 14 Oct 2026 10:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791974877;
-	bh=IApCsci3eSqyBIQ6NmzUaRZb+6TUkOs0tii8wwaDBSI=;
+	s=k20260515; t=1791975145;
+	bh=A40pvqxsAljXMht0uJoUDXzF1WEP0B00UO/a2qcSq5c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V3c1dj6j+QKYfnIwQZERyfqrqe+FaHIfB5HHYjPoP0iAFKmlB58XPIiLTt7NQv26o
-	 yonRlVYITgy21176x66blhL5AkAMa4TvRkno2/XqbkwC4dW+W2w9Th1e2iAaTYz62R
-	 oPN0TwNKKF3PtMljvjL+I3HZ3z104drFV04P0LLPTptEmJ4UozFh2kNDweXk3D+IMz
-	 8ZsKrBAhfHbDg4V7X7Dw484s50jmdVeTVmRXrtoxpHIqHtHFglgHNeTAxDUYatjQBh
-	 74V+mBmqbH4/BnuZ5RuS/qTv1y1HKtQchEiMx8HGnSeSfsfyWbzJurQWFQcsRbCn5I
-	 3zsBoR4hgDM4w==
-Message-ID: <75c229ef-ae41-4072-9c90-98d4779c52bf@kernel.org>
-Date: Wed, 14 Oct 2026 12:47:45 +0200
+	b=ALUatxx7upV3SZkfTnvX3IgE4XE+F0RxjUatM7WzbYQ58SeOSupRbXZp9Rs4KDDqb
+	 Yx8oUW/jtDikFJHSuTlvN5n3Q9pyBZundVS5MQjW9e5SRXjsayfxpDyQOihfdJ3GUn
+	 6Kchw16CYAjiKisdIGTDFi2pxpgtZYYmARcaI9bkxGSkpSJOpGXTm0umd7ZSo+Veto
+	 44qiHVrdUirbmIKKUdfVmndXENVDTLdDTTCwJISfk/mjIxWaSgfkCZsgftHVFkvODn
+	 fZXUrTMrkJG0nntGG7Mp/FpI/H/aA6k8pY/fBEgtvemb/M3i43UYGXt3JoMgavGHYU
+	 gWgh4rgFHLPXg==
+Message-ID: <fedff1b6-0522-4398-a0d4-d4111a570159@kernel.org>
+Date: Wed, 14 Oct 2026 12:52:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Robin Murphy <robin.murphy@arm.com>, Luigi Rizzo <lrizzo@google.com>
-Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
- netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
- <4fda41ed-741b-4c5f-ae83-e3ea5a447441@arm.com>
+Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
+To: Li Zhe <lizhe.67@bytedance.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ akpm@linux-foundation.org, muchun.song@linux.dev, osalvador@suse.de,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260930064308.58159-1-lizhe.67@bytedance.com>
+ <arzVaC2IYkqSb0_U@gmail.com>
+ <9a7c026e-f5f2-40e0-84aa-919c988cc136@bytedance.com>
+ <2b4571c5-8e51-4c91-9d88-11929f200875@kernel.org> <asjVUa6XBZ8ti-0_@gremlin>
+ <70ea8ee6-6fc5-4209-8cee-362da37f5035@kernel.org>
+ <86de1ee5-be14-4123-b372-b4691cea8e67@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <4fda41ed-741b-4c5f-ae83-e3ea5a447441@arm.com>
+In-Reply-To: <86de1ee5-be14-4123-b372-b4691cea8e67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4FE5D180003
-X-Stat-Signature: mwtuknppu8hpnqq5if4shu93sy8xtf97
-X-HE-Tag: 1791974878-23538
-X-HE-Meta: U2FsdGVkX1/26fb3H5/7tEvQPYRpWDHNxURWauhaX3Gf7pK8pFSBzExobiOwTprn1bXQTvhyv85Cfp/g+HrF7SZN6kMnRjdw6eEvXav175LWLPGCB4UqGLe/DifKjVArXVkYTCrgCV1czYcxxnQ/iexQMi4CptbTtuphvkKKhPP1l95Eby1r8EKjCmECAknhE3dt39bpOkQvpLuy/hzXv3EoYio2vzSxKgQi5PrxfcTmmnEcK0aYcclT4VrhX49g6Qy2uNkkyI0+SVM3BJ+fwke8hTmfht4O3oszCS6ERVQxqsfeLQ/pi/r7YFP3bY4aIu+wOEmtb+n2h9Dp6B3gFeI8/uHx55XMXIMhNlPXbJjqbEP4Tf8SONT9/wwt8ZbWfBUqO5i5h7cBX/DCb324I0TVOHz4AiONI+s9ZGMMh3XKIwNPO5X31erZ5YIMT6wkZqYX0RFvRZ2O2ZBuBgIqt3qV5vPQyD4VNnyZm0vV6f8Bjd70o8IAbSjGqpinF1roGQFfx12b4MJmgM2ftqtO0MDkotC9RQnodoBF7xuCbkQPT/7BWFmdGokwuvT9Pt9SOwvoMuB/XffYSwlRu4kBqm+1tBoNmT2LkN0VvdWDCrpoRrMfQB6iZGxfoBqL3Qv3gJdGwz3Ae4lzwUfYNokzCJcPAlk4w4MDV0vSCSH0MO1ac66Ch3K4/rSSOT5ttrEtkplCk/bWaCqK5qW4+XWs2rkzMcjpP5iXhW2OynzF8cgvNIUpAASh3lb6gXm1KLqYCshFEEWDoQ1Vb66v5rqdjifQfnEn2rCbjjH8bTQvQ6Vg1g5hKOT/5MKMVkKGcJaxKSJSG4fjklATTkmwplybjj4xtF8k/XRtGteM5otEWAO0lGgjKPECmRG+vbErgjkUTROkhUQsLf4XEUE6TnZaC4ECIyP1nOCj9bUSgE65ceLqQRYbOhSZQ+4Z2oFAi22Jr5ZLy8ntwJlW0peDy7w
- IE9ijov1
- ss/eYDp9OnTZJP9sthUUqXD902KUGX+nWbusSzuhi9IjocG+SAypf/fJSopp1yIMkk2H0jiELcfqKP9YYe+n2Qq0+XmcmiUg3tid8E58iukGHn0tcFK0xBtPjJQJetjFNfy296l7ZnQAdto+DxFDedkHaAUyoUIHRsboj6JmKXuSBU8IzGERRCx16mQ0tSZJuZ6q7HT23wbi9fSN5rb1Q3ygYsxdUkf5jNZnK3kWNbBr2Bp87zZmNCpPHb5Q2DtnqE3JBYhsM6nv96fEdf5PXXtYSk2XUaU7RuCsFpoM5+rl/RBLlf5NAVzc3Yv7KxYkCDmn90pZEJzTHHkhPOtLdXlA+DzHIMrRegGRLE8VLq6+sjTiTrpRU/ZZ6XNSu/6x4HAVIMRP5lqymrd+sQQLCo7kvJ0nxlXky/GBDQPB7dzNOa38=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5B0EF20008
+X-Stat-Signature: e4t6fo9yys4a3c4ni7sjss37kjt3kuuy
+X-HE-Tag: 1791975146-850180
+X-HE-Meta: U2FsdGVkX1/QVV6YI29oP86dOKIqZnG49CP9WVz0yuj+BYDVASOCr8ykGhTOMbkrr9n64nri7t/FtpnI6vLTM5QEjfv50+EPmYVnP6+JoRA2/eBEGYmEIiSWPuMa6iOWhznGSorIUdugex2CpRiyGDYANcHs+8nPTSXwpc14QXsWO58uOb6efjJ/+7i/1WTf2Mv0eeQXRSjz2rO2N/WNlcNMpcTr3JvlEGXl1YjGL+ysla3vG0T+u59+h+CMpEH71FWokz7b+DMgbUpab39eirl24oTUO4Djdg9wzoijU4VDXAeJoRD4yLTqoY7UkDmJz2FCzrj9WazIN8mut/fG2SjmJu6is8YVsEi35bVKnkjUxzo6P7WXfY1XbFabx0Gzubw8txKnfv8vQx2P5NbpjiKfwi441lmvfWUrUvYpYYLUz+5GZ9gZN9J2rvgRQR3NSAjcLux4LlfzUUKv9lYXwEM4IMsXhUhpZbHZPd2YZun97+NTwK9M6DnQJGUfLRH5uAQue43voqb54AOhE9ijAUnUJcGhu9LbRFphyLTLQqkwBEaU7cMSY5N7UiRpxvS/aVkuljCsZmz18M1Y9TG9LQt/tGIfEmXn/angjMOb6jaztt4YqVQXOqPDU5C/ThjEvIzOOZXzdc4ihX9Wcx6Bq799EO3sDfgnRdHo3hxKKgGg/3+jMGVdUiQmag656L1KX5H0plhxnzq5/TP1rN9HZKQZKpg07Ab1e9ahg8RXRjHrRjBee5Z7kRQcbBpORFDhh6T4uOM7GVansQLxoxmPEKJ8STWLdB1l7UOb7NQ6tk98JwiETghZOkxEQp9duDTXgi/VWy16cIJ5DFaamVMX9QR1fLWt/E9OV8FxPbecxoPm2QLfN+d0T+EjwtIW5/gXOTT8yBrNc6RKBqowBflLBC6ujzfJ1eVs8gN7/Bdsaq0XTU8kGrmpaPhAfZxuftgLBkRUSToAcK8Rw1X6a0i
+ skEECQZK
+ xA2rOpPvmk4oVu2ucRNI7G/akyYNqeMPsiI1H76Na4fbLhlLWGeska718dRja8+wdW0860MYfWbJ895Li9fpm/gOxKPlSatYhn3RLtZobLd96f16s0eMIH73BDqCi4kRTwxnZCTNa7RfEHV+xXY8brSV7RBPxhtwRRuKsPKRCHpi00PHWhv3IGfifaot3Q4kWp79LMM8NV2y5pLUZSrdNl4u95OJUO91pd21mNwsICpxY8oN0UEVOPFy7tSz6pHRGIBf4Li1U+oHSDuaK/GjYP/gJTskrX78KyAbsB6a1j/VjhGQX6+MJXc4MvSrwkxevobgKvz4ZhcCgGQ1hzD1B8+fEMbl1MVG9Hf+9/4q45v0f0cY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,34 +143,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/13/26 12:42, Robin Murphy wrote:
-> On 12/10/2026 8:43 pm, David Hildenbrand (Arm) wrote:
->> On 10/12/26 16:45, Luigi Rizzo wrote:
->>> On Mon, Oct 12, 2026 at 3:51 PM David Hildenbrand (Arm)
->>> <david@kernel.org> wrote:
->>>
->>> I had to call it something... an earlier prototype used the name IOMMU_2M,
->>> but I didn't want to suggest that the design was limited to 2M (it is not).
->>>
->>> Aside from the name, the _current_ prototype restricts to 2M allocations,
->>> exactly because too large units are expensive and wasteful.
->>>
->>> In the code, decoupling the allocation size from the PMD size is trivial.
+On 10/14/26 08:39, Li Zhe wrote:
+> On 10/10/26 2:05 AM, David Hildenbrand (Arm) wrote:
+>> On 10/9/26 13:52, Lorenzo Stoakes (ARM) wrote:
+>>> Yeah I don't see why not! I don't think there's anything that needs to be
+>>> private here.
+>> Li, see below, can you work with the below?
 >>
->> Yeah, we should do that.
 >>
->> We should probably just find a way to describe that this is a POOL that focuses
->> on physical contiguity in some configured granularity.
-> And since it's intended for DMA we could call it dma_pool and oh look it already
-> exists...
-
-Heh, I did have "DMA_POOL" in mind when writing my reply.
-
+>> ----8<----
+>>  From 9e1c0676ea6c9cbcabf91cd8badf81a9d88fd3ef Mon Sep 17 00:00:00 2001
+>> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+>> Date: Wed, 29 Jul 2026 18:33:08 +0100
+>> Subject: [PATCH] fix
+>>
+>> ---
+>>   mm/hugetlb.c | 103 +++++++++++++++++++++++++++++++++++++++------------
+>>   1 file changed, 79 insertions(+), 24 deletions(-)
+>>
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index e93c4d2456aa..88ff2c4ad483 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -5077,6 +5077,79 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+>>   	spin_unlock(dst_ptl);
+>>   }
+>>
+>> +/* Returns last address processed */
+>> +static unsigned long prealloc_or_move_page_tables(struct vm_area_struct *vma,
+>> +		struct vm_area_struct *new_vma, unsigned long old_addr,
+>> +		unsigned long new_addr, unsigned long len, unsigned long sz,
+>> +		unsigned long last_addr_mask, struct mmu_gather *tlb,
+>> +		bool is_prealloc)
+>> +{
+>> +	unsigned long old_end = old_addr + len;
+>> +	struct hstate *h = hstate_vma(vma);
+>> +	struct mm_struct *mm = vma->vm_mm;
+>> +	pte_t *src_pte, *dst_pte;
+>> +
+>> +	hugetlb_vma_assert_locked(vma);
+>> +
+>> +	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
+>> +		src_pte = hugetlb_walk(vma, old_addr, sz);
+>> +		if (!src_pte) {
+>> +			old_addr |= last_addr_mask;
+>> +			new_addr |= last_addr_mask;
+>> +			continue;
+>> +		}
+>> +		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
+>> +			continue;
+>> +
+>> +		if (is_prealloc) {
+>> +			if (!huge_pte_alloc(mm, new_vma, new_addr, sz))
+>> +				break;
+>> +			continue;
+>> +		}
+>> +
+>> +		if (huge_pmd_unshare(tlb, vma, old_addr, src_pte)) {
+>> +			old_addr |= last_addr_mask;
+>> +			new_addr |= last_addr_mask;
+>> +			continue;
+>> +		}
+>> +
+>> +		dst_pte = hugetlb_walk(new_vma, new_addr, sz);
+>> +		if (!dst_pte)
+>> +			break;
+>> +
+>> +		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
+>> +		tlb_remove_huge_tlb_entry(h, tlb, src_pte, old_addr);
+>> +	}
+>> +
+>> +	return old_addr;
+>> +}
+>> +
+>> +/* Returns true if preallocation succeeded across range, otherwise false. */
+>> +static bool prealloc_hugetlb_page_tables(struct vm_area_struct *vma,
+>> +		struct vm_area_struct *new_vma, unsigned long old_addr,
+>> +		unsigned long new_addr, unsigned long len, unsigned long sz,
+>> +		unsigned long last_addr_mask)
+>> +{
+>> +	unsigned long old_end = old_addr + len;
+>> +	unsigned long addr_end;
+>> +
+>> +	addr_end = prealloc_or_move_page_tables(vma, new_vma, old_addr, new_addr,
+>> +			len, sz, last_addr_mask, NULL, /*is_prealloc=*/true);
+>> +
+>> +	return addr_end >= old_end;
+>> +}
+>> +
+>> +/* Returns last processed address. */
+>> +static unsigned long __move_hugetlb_page_tables(struct vm_area_struct *vma,
+>> +		struct vm_area_struct *new_vma, unsigned long old_addr,
+>> +		unsigned long new_addr, unsigned long len, unsigned long sz,
+>> +		unsigned long last_addr_mask, struct mmu_gather *tlb)
+>> +{
+>> +	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+>> +	return prealloc_or_move_page_tables(vma, new_vma, old_addr, new_addr,
+>> +			len, sz, last_addr_mask, tlb, /*is_prealloc=*/false);
+>> +}
+>> +
+>>   int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>>   			     struct vm_area_struct *new_vma,
+>>   			     unsigned long old_addr, unsigned long new_addr,
+>> @@ -5088,9 +5161,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>>   	struct mm_struct *mm = vma->vm_mm;
+>>   	unsigned long old_end = old_addr + len;
+>>   	unsigned long last_addr_mask;
+>> -	pte_t *src_pte, *dst_pte;
+>>   	struct mmu_notifier_range range;
+>>   	struct mmu_gather tlb;
+>> +	bool preallocated;
+>>
+>>   	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, old_addr,
+>>   				old_end);
+>> @@ -5106,30 +5179,12 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>>   	last_addr_mask = hugetlb_mask_last_page(h);
+>>   	/* Prevent race with file truncation */
+>>   	hugetlb_vma_lock_write(vma);
+>> +	preallocated = prealloc_hugetlb_page_tables(vma, new_vma, old_addr,
+>> +			new_addr, len, sz, last_addr_mask);
+>>   	i_mmap_lock_write(mapping);
+>> -	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
+>> -		src_pte = hugetlb_walk(vma, old_addr, sz);
+>> -		if (!src_pte) {
+>> -			old_addr |= last_addr_mask;
+>> -			new_addr |= last_addr_mask;
+>> -			continue;
+>> -		}
+>> -		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
+>> -			continue;
+>> -
+>> -		if (huge_pmd_unshare(&tlb, vma, old_addr, src_pte)) {
+>> -			old_addr |= last_addr_mask;
+>> -			new_addr |= last_addr_mask;
+>> -			continue;
+>> -		}
+>> -
+>> -		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
+>> -		if (!dst_pte)
+>> -			break;
+>> -
+>> -		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
+>> -		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
+>> -	}
+>> +	if (preallocated)
+>> +		old_addr = __move_hugetlb_page_tables(vma, new_vma, old_addr,
+>> +			new_addr, len, sz, last_addr_mask, &tlb);
+>>
+>>   	tlb_flush_mmu_tlbonly(&tlb);
+>>   	huge_pmd_unshare_flush(&tlb, vma);
+>> --
+>> 2.55.0
 > 
-> Sure the current implementation is capped at PAGE_SIZE for allocation (and thus
-> mapping too), but I don't see why that couldn't just be made more flexible.
+> Hi David,
+> 
+> I thought more about the case where the destination page table was
+> preallocated as a shared PMD.
+> 
+> I do not think the current move_huge_pte() handles that case very well. The
+> reason is that it assumes the destination PTE is not part of a shared PMD
+> page table: it clears the source PTE and then installs that PTE into the
+> destination. That works when the destination PMD page table is not shared,
+> because the source removal and destination install have a net-zero effect on
+> rmap and hugetlb accounting.
+> 
+> If the destination PTE belongs to a shared PMD, that assumption does not
+> hold. In that case, I think we should leave the shared destination page
+> table untouched and treat the operation as a source-side unmap. Otherwise
+> move_huge_pte() either writes through a shared page table or skips the
+> source-side unmap accounting. That can make the rmap, hugetlb count and
+> folio release handling inconsistent with the actual PTE update.
+> 
+> So I think the change should be roughly:
 
-That intuitively sounds like the right direction.
+IIUC, what you are saying is:
+
+A) If the source table is shared, unshare it.
+
+b) If the destination table is shared, there is nothing to do.
+
+?
 
 -- 
 Cheers,
