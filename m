@@ -4,81 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12E87C3DA7A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:44:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74F6EC3DA7A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 18:46:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1530E6B0095; Wed, 14 Oct 2026 14:44:27 -0400 (EDT)
+	id 6380F6B0096; Wed, 14 Oct 2026 14:46:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12B406B0098; Wed, 14 Oct 2026 14:44:27 -0400 (EDT)
+	id 5E9806B0098; Wed, 14 Oct 2026 14:46:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0401D6B0099; Wed, 14 Oct 2026 14:44:26 -0400 (EDT)
+	id 4B0706B0099; Wed, 14 Oct 2026 14:46:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D11E16B0095
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:44:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 47EEA1C3E25
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:44:26 +0000 (UTC)
-X-FDA: 85322107332.01.87FA5D7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6F5B21C0003
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:44:24 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kjAPCYaW;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2124B6B0096
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 14:46:36 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B88C61C410A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:46:35 +0000 (UTC)
+X-FDA: 85322112750.27.AB43577
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0C16B14000E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 18:46:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fc1TvbQ/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792003464;
+	s=arc-20220608; t=1792003594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g6JScfSsWgesg/1WtK9RTmCPMl1xA6BFFNt/w568P2w=;
-	b=6bd41TvdJxLXzrtLm1Nn1RfUO2LVTcmn31SJvaT4T0U7AmfWPpbHQ4nBPrOJqEPXgSI+FF
-	qqKypwfRhJlsVbf8rIS8uXFAuH8/nbkCqyya38LzGi5IzVVf1N2xqJFJX+TpMNOLQOKSoV
-	LYrOWjRIrYgu+QW/KDr16sQr1pBz0RA=
+	bh=ESvCGRLFTew8m7s5oFwM1Eu4zFgjax4mVQujOpbznXo=;
+	b=kxeyxPCJtu1bJVEJTebij3b8450cM6+j5aAxbNuiFJWN2pi8+xbNDGaPUEqHZlVnBE7zp+
+	ig6W/9obzpPkJ7Kq0i6T+d41V/TPuuCn036Zz+8xdtFPKEERk+uxPV3ptEaXvEh7w6ypgn
+	o+OOMi/eCMQvV/aviT3UhlTnr8eXMH8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kjAPCYaW;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fc1TvbQ/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792003464;
-	b=d0pL0vgvAL97EOT8NuCoDE3a02w8iIp0V1CnsKSCa8YFqaq6LSaPaWdnI7/a14euZiaCbb
-	GoJbnuxZQ8RjMrWHF3noWIT2jOF9r8D5/enUOTnQhgxx/uSko6q3sJRQolPV3uEt5/Sn8E
-	flBFDpuPcLSSd/y8n4+1VJSd9GbD4t4=
+	t=1792003594;
+	b=EO1HBwHCem70wOu/oEcqiJ15MPgCHkIMb63MxiEKsAcx8kGjc9VFMJ5auKVjnUCZDomgC3
+	lBoCrRWlU9pJquyBcAOcsM7R4j2clIic/+9qILTu49TSYU3saQQl9YNo1Q+vF1ohffzdw2
+	L3dUFrfSjIyLNCAnKy09p11sf/WKJ9M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 94B0E42BA3;
-	Wed, 14 Oct 2026 18:44:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699221F000C4;
-	Wed, 14 Oct 2026 18:44:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 82EE16022E;
+	Wed, 14 Oct 2026 18:46:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343281F000C4;
+	Wed, 14 Oct 2026 18:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792003463;
-	bh=g6JScfSsWgesg/1WtK9RTmCPMl1xA6BFFNt/w568P2w=;
+	s=k20260515; t=1792003593;
+	bh=ESvCGRLFTew8m7s5oFwM1Eu4zFgjax4mVQujOpbznXo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kjAPCYaWrnOUgSCE1ZkOd4MPnsmhx/r5WxajxxuYFxUwucAaSttKAE/IXJCG+DuP2
-	 i/SbALVGceqTj/O05V3UuqRooghqrq8qL+BxPEdjUQKfWV77/MLHM+3iZNY5Je4i6e
-	 1TiNwuVqtJ+3R9EX8yfrLMrClw09i73W3EqwQRhBgPVNPYI0J0B2m/2nDvAPcfFy0u
-	 P+6h5mWmutCGtz1tL/lOJYTp5SP+vlc6SFLRrjtGyBnZhaTM2t4str2ceBkB2C+a+N
-	 DKe5k5FXge8ZMCjl6JOlheL3z1BqQXPRDCzup1q0YeajxmoC1X6unntHCovU3s4/m9
-	 7xi8UByzUQgUw==
-Message-ID: <08a0907f-8e3a-4071-a2e4-fd1411c446f3@kernel.org>
-Date: Wed, 14 Oct 2026 20:44:16 +0200
+	b=Fc1TvbQ/IoFOWkS4r9GpWZ2uI/Fmq5vGoocDI2qZsvsZOVwo8dmzPHQ9AwpQI65xc
+	 0hyNO9BHNGvfFFpSBYm6orjA9dwMSWtC7ZyO/ycpjw7otwP49fLanDBobCsJVEWMCr
+	 V+BY4QuqvYvzydWxhGX/5ZlKzq0/6KndsbuCTpxkdJvRzjdoh7Ew7OQv7F9ut0mcUC
+	 BcxLEXSN2DMEcYDt/rzRwnx5zVlXYIKJpbj97Vsl7f/CqzKtaKk7pBlz2sPbF5x/wk
+	 GGohatcwUAzO3eKrwCn1+89fS13vuVrYOYYmgOM6V864X5fudq0RjKnemq2o8lEQHh
+	 WPSB8j57GDIzQ==
+Message-ID: <f4a5223e-7cf9-458f-9cef-23618da9fb09@kernel.org>
+Date: Wed, 14 Oct 2026 20:46:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: memory: fix truncation removing mapped folios
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- ayushr@modal.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com>
- <8245424a-f068-4be5-9e58-713cbff1f8ae@kernel.org>
- <405811f5-ee36-4b3c-80d0-7dc6827ab5d4@linux.alibaba.com>
- <6660d3bb-3485-4c34-8734-3ea99df920f1@kernel.org>
- <as-L6bGPpGRiF4-Q@pedro-suse.tail5790ac.ts.net>
+Subject: Re: Path forward for Virtualized Swap?
+To: Kairui Song <ryncsn@gmail.com>, Chris Li <chrisl@kernel.org>,
+ Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
+ <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
+ Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-doc@vger.kernel.org,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
+ <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
+ <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora>
+ <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
+ <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
+ <CACePvbVTnCOh51jvEpkDJ32idvCubgN1eHBps6vESjhVC8E_aQ@mail.gmail.com>
+ <CAMgjq7D_=_4ZsCWJYywpZhPtg+YeH8o=ymRrV3sQ_58G6rs0sg@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +155,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <as-L6bGPpGRiF4-Q@pedro-suse.tail5790ac.ts.net>
+In-Reply-To: <CAMgjq7D_=_4ZsCWJYywpZhPtg+YeH8o=ymRrV3sQ_58G6rs0sg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6F5B21C0003
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0C16B14000E
 X-Rspam-User: 
-X-Stat-Signature: zye4utkfubuh96r4xiuc3khymjc3whx6
-X-HE-Tag: 1792003464-886865
-X-HE-Meta: U2FsdGVkX1//e4H/itisHqzvhwJqkoBRIkLunpAvtMCqE0Es8H9rrMoXBIz3mAz9fWSjmrkBq1i3iPdtfwVsqygbjzxM0L3zGLXB2TJUldhIKEDACL9hRKh1Q/ndlsi672jSK6B3dF6d+rHfQuNx1lwICvqgcEp3n8coHbFVXANGMhGrPC+3SC0SzcZLmufJFc0W7Wyltat1RNLNLXL86voIsMgt9apKfXR2VOKHENJMzCQV1QzZqMJDy9mcjoS5z/4dd9LyZUEvrn63BUAjKHhoS8S6TxEcvcu01FqQpgPCzlqQ5UaiY5LrW8rlu3+vBrQrRdqk4NS3eySYiJ4VzCdayHYP5UBaZH5/XkN4ElmzCI+KbkbpOEUPFcmllsjP0UscxCYvo4uSMesGAY7DfSn+1aFYTNOZlSG+6DceZSecM5FM+SFvxubC13ZqNilKY1xDv18M0tUOtP8kBLBNdepmTXsUe098Q1n8HS4rA5R1STjlHInwzjej+g936kw//tw18UcAHS7IH/7vXqjUE3+ATtiQbbxYNjrF3plqyVqLccv+tuL4k4v2TaBr0RZZZYWDglJToK+txMTJPUXU7klnQxAjYqz6a5ybc4XtIxaJK/XC2kWKhR7U1XW9ThLa8O/aKb8L0szbbyoKBQA7kEWi33r1OOzKBj3V9T+FnLGawnadtOqdpENUJzA/Wm+on5JCejCrxPyYaSwdAVmfzJEM4nvTjxLbDimjC67HGMMoWHNwgmjdqihtolIFwS1yLeISXQnV32OmFFEAWADuD9UIDEzcIhcegh9pqlsmw2j4MGSs7suM69JhI3rZ5uPQ3krqM6rJrv3UrlLfxQG1MZlcrqOLIBJ+fHprXpYbqWt7BL+1qz55i1uLR76QfzCTaR9JoyNjwkSYLVdbe9N8fzttjuiw8M3K91O+ZtR4oof10N0aTyMBiiXUxkco/Os9QjNqp8dGt2BytUR4qr7
- jFN4dSVl
- e2Kw7kEsRVsKD14DvRB0xQjG7wvv1piEBmsVHc4wlQs1zrhYFyTtdIRqXoWpaNrA+uPFt/so16h8OeO1wE2G14NMaHPmh29mXQhtRNLDrMse0RBbPsTo3I8DItIgFbDSsK5ccL4e6JPVdaxLAmbmPAAQ2TvcZXt33TW92TvU92TY/+K1xz3XrRfWuq4lQPlQfwrMnDDtawclcIRhT/1ljvuasseRZSRwG3IQiqtjSHOrp9/M6n6gtnRkkW02wcbc3qQq9
+X-Rspamd-Server: rspam12
+X-Stat-Signature: wit7u8wke9qakry8ry93jqajh1gqzjxf
+X-HE-Tag: 1792003593-413912
+X-HE-Meta: U2FsdGVkX19ZKM2Vr6jOKnCWYRvXLx6K8ypZR8nKGm5p4clHj4Ut4KGvg6IpbZGY4XM/PQ0hsBwGckcmOuzmx7q4I7qWQDKzYLmUQKu/S9monljBZA2ZPuJb1irlt9JpQ9fTM1J5ALElJcPf43wYjZEGV+5NRDCjntGilRsL8p0LnlraINBDmso7GDi18KZ1KWUbngDeltj0kCAqWDvFgsy3awQLsMc4kn/+Ma+nSxRxgcPBJCVzR29/ThxmwmlfJ6m86bx5EdeqndPj3Ywxy1keE+WvkT/kd0L0mada8fEqrz8DPiVt21Kb+J0DOQnZMvB7x6JUUauO8lx3tnPH6Mpz2pw/lOQKyiqBJTzctX7eYOJ8fcRKJXuPO4XBqPFn4k7bbEpSK4JOtFhnHQoC+KlWmp2qg7tdkiElvXsFqF9rRNTcw7BLxGjQlLXMJ/DjlA6W5OgO3Nh+Dn0sJbpHSlOO7r1gurJBGakW/oJBEQD3VmEvxsReifF35iYUqKSgtzHkO/hFcSa6t83ZpqqiNvzo5fTBsrQey9Dd93WZM7Exux4TeYyY+s6fW9KEBvR3iWRmN2mPIycUf7h52lK/M5bu2Fmc0tmcUOlocm3nDcKIlJmd1jSYgiEwY8D9xbb7sCWxy+eZSwkP5k3axJjr/eT54yi61Oo2jIjD4MrfMZHwKDnbR/aQTzWtM+mqg+z89BsCYela7RYWXdKtjdOdcbPLET1RTE3UH+EczdEn4f0ymw9NDPLJVyhUoKBP8/8mpcQwVZXoG/dklE200Fc+BPOvPW7pmXOsstsb51kyNVaU1q7fRrROJOv6BKKQzTfYRk5VEQH0bETz5S8mjS6LnoU8tTCM1qnpwlpjtMAYzalEbpbJZn3CEbtxNaDABPNg8F4X4sRPyRD/S2dZJs4rrybflT3HuskOFk9NcRg34AwJUOrYzyHBTi2g/pK5Kf5QOpFJlmh0rSGoLc+xjJQ
+ PkbRKyLB
+ 1Z1VEFjx5HqAf7r0V2FrdWtaFolk37TsPnQ+Bojoup/OxQZOFegrQRpDllcVJ8UoBZvb3Sryr2QdfPryDnZ1i/oqGOo22jhJya5KTX/ZAUGC7YQooKdRKk9ZfRNKuvro7+Y770fGDcwbM9E3MqldCV3w4HlV8mOIM3y49uA7MJPJrJLKVvhWM4RivF/ks98bTEZ818QcSel7oi8hwAnFyJ6MMRO0UfZUHGX1Vnb2ucWM0fUhXfp+uC1HFOSDyXwYTb7ulzYIJH649qqiqwOq/6aMoFY2fikdwkaUv0iH9JeJy/rtA5A1C3zyFUALS4oP7vx7CcyXtwmKOCq3jm+GsEocTZqbSvzVW2nDZeXKeSz/YzyGbz3gA1EsHBAlju8u8bTv/k+DBxMnO4itOkt5ErfVotilbsIOGRuqJiKDcse9yhUL3i7HKGeylV2x8B0VlPE5JJtILsEdgwL8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,109 +173,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 16:05, Pedro Falcato wrote:
-> On Wed, Oct 14, 2026 at 03:25:33PM +0200, David Hildenbrand (Arm) wrote:
->> On 10/13/26 11:36, Baolin Wang wrote:
+On 10/14/26 19:17, Kairui Song wrote:
+> On Tue, Oct 13, 2026 at 1:27 PM Chris Li <chrisl@kernel.org> wrote:
+>>
+>> On Mon, Oct 5, 2026 at 5:19 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
 >>>
 >>>
+>>> Looking at the mailing list, that approach doesn't seem to work.
 >>>
->>> I had considered this approach before, but it is not feasible. IIUC, the
->>> sync_with_folio_pmd_zap() is used to address the race with zap_huge_pmd(), and
->>> both the PMD clear and the folio mapcount decrement are performed under the PMD
->>> lock in zap_huge_pmd().
->>
->> Just to be clear, I am thinking about something like the following on the
->> zap_pmd_range() side:
->>
->> diff --git a/mm/internal.h b/mm/internal.h
->> index 38b1165212c94..a8820ad7e2f21 100644
->> --- a/mm/internal.h
->> +++ b/mm/internal.h
->> @@ -584,14 +584,15 @@ void free_pgtables(struct mmu_gather *tlb, struct
->> unmap_desc *desc);
->>  void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
->>
->>  /**
->> - * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
->> + * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
->>   * @mm: The mm_struct.
->>   * @pmdp: Pointer to the pmd that was found to be pmd_none().
->>   *
->>   * When we find a pmd_none() while unmapping a folio without holding the PTL,
->> - * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
->> - * indicate that it's unmapped. Skipping the PMD without synchronization could
->> - * make folio unmapping code assume that unmapping failed.
->> + * zap_huge_pmd() or zap_empty_pte_table() may have cleared the PMD but not
->> + * yet modified the mapped folios to indicate they are unmapped. Skipping the
->> + * PMD without synchronization could make folio unmapping code assume that
->> + * unmapping failed.
->>   *
->>   * Wait for concurrent zapping to complete by grabbing the PTL.
->>   */
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 8b0c2c735d3de..c585f5eb255c9 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -2139,9 +2139,7 @@ static inline unsigned long zap_pmd_range(struct
->> mmu_gather *tlb,
->>                                 continue;
->>                         }
->>                         /* fall through */
->> -               } else if (details && details->single_folio &&
->> -                          folio_test_pmd_mappable(details->single_folio) &&
->> -                          next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
->> +               } else if (details && details->single_folio && pmd_none(*pmd)) {
->>                         sync_with_folio_pmd_zap(tlb->mm, pmd);
->>                 }
->>                 if (pmd_none(*pmd)) {
->>
+>>> Finding a time slot that makes US, Europe and Asia happy is ... tricky.
 >>>
->>> However, the race here is different: tlb_flush_rmaps() is under the PTE lock,
->>> while zap_empty_pte_table() is under the PMD lock, and reordering between the
->>> two functions is also possible. That is, the folio mapcount operation could
->>> execute after the acquire barrier (spin_lock()) of zap_empty_pte_table(),
->>> allowing a reader on CPU 0 to incorrectly observe that the PMD is none while
->>> mapcount > 0.
+>>> 1 AM is certainly unpleasant.
+>>>
+>>> US vs. Asia is also tricky, but doable.
+>>>
+>>> China 8AM vs. US West Coast 5PM?
+>>>
+>>> China 9AM vs. US West Coast 6PM?
 >>
->> I think we really just have to make sure to flush rmaps before zapping the PMD.
->> Then it's really just the same thing we had before with sync_with_folio_pmd_zap().
+>> Hi David,
+>>
+>> Thanks for organizing this. Time slot that works for Baoquan and
+>> Kairui should also work for me.
 > 
-> Hmm, could we viably replace sync_with_folio_pmd_zap() with the memory barriers
-> instead? Seems lighter-weight and functionally equivalent?
+> Let's see Baoquan and other's suggestion, both slot are fine to me as well.
+> 
+>>
+>> Hi Kairui,
+>>
+>> I understand that you have some face-to-face discussions at the
+>> conference. Do we have a list of what has been aligned and what is
+>> pending to discuss? We should have an agenda to avoid repeating
+>> already aligned items.
+> 
+> Right, from my perspective, here are the following key points we can
+> discuss further in the incoming meeting (most of them are not fully
+> concluded yet):
+> 
+> 1. A limitation for the logical size: from my side, there are real
+> usages for a global non-memcg limitation of the non-physical swap
+> space: e.g. thin VMs as containers/pods with no cgroup limitations
+> inside but which need in-VM memory compression and a proper limitation
+> to avoid thrashing; or low-end devices/desktops that want global
+> (root) limitations. And also, Android have a limitation on the ZRAM
+> size (well for this one I'm not from Android team though so that's
+> just my personal development experience with Android, enlarging the
+> ZRAM size on several Phone swill cause serious junky of Apps due to
+> over compression).
+> 
+> Nhat is concerned that exposing the sizing allows users to tune it and
+> potentially misconfigure the system. However, I think a user with root
+> permission should be fully aware of what they are doing or they can
+> easily mess up the system in many ways and swap limitation is a very
+> minor concern to me.
+> 
+> I think the requirement for a logical non-cgroup limitation is strong,
+> but the discussion hasn't concluded on the implementation method.
+> Perhaps something like a Kconfig combined with an interface or command
+> line? More ideas are welcome.
+> 
+> 2. Charging: If you consider memory.swap is physical only then indeed
+> we should not charge it, however, user are already doing that for
+> years so this is a behavior change and we are also pushing memsw into
+> memcgv2 as a interface to limit the logical memory usage of a
+> container. So charging of the logical space is useful, how to handle
+> that is tricky though.
+> 
+> From our usage, this should at least not block adding memsw or
+> anything similar for memcgv2, even if you want more customized cgroup
+> accounting, we need to charge it into some counter (a page counter,
+> not just a statistic) in some way.
+> 
+> 3. Swapoff: This was discussed again too, as vswap was trying to
+> remove it. I think the concern is mostly about maintenance,
+> performance, and practicality. From my perspective it's a critical
+> component both for preventing minor or major faults before predictable
+> high traffic arrives, or for operations/debugging, and for releasing
+> the swap metadata to rule out any potential swap / page fault effect.
+> There are concerns about maintenance or suggestions to use MADV, while
+> I'll be happy to explore and improve the current in-kernel
+> implementation of swapoff later if needed but removing it is a really
+> bad idea in my view.
+> 
+> 4. Writeback: No doubt we all agree that we definitely should have
+> writeback support, Nhat's concern is that we should handle the case
+> where some cgroup doesn't need zswap/compression and ensure that works
+> well.
+> 
+> 5. Interface: Given the issues above, what should the interface look
+> like (swapfile, sysfs, /proc, etc.) and how should multiple
+> (non-physical) swapfiles be used? Nothing much is discussed about this
+> part though. I've heard users mention the use case of multiple
+> compression swap spaces, but I don't have a use case for that myself,
+> so I don't have many comments.
+> 
+> 6. The one part that I think we can and should agree on it shat the
+> implement approach: at this point I think VM_SPARSE is the right
+> direction, Nhat is concerned about the testing on it, and I think we
+> can have more data for that, and collabration is highly encouraged. I
+> previously conducted many tests on everything posted from both sides,
+> will try to post more on this too.
+> 
+> That's a lot of problems already. I think we can discuss these points
+> further in the meeting.
 
-For the ordinary PMD zap case it's really:
+Just in general, if I'm attending and it's 2/3am in the night, I would
+appreciate a short summary of "these things were already sorted out". I might
+have some weird swap-related dreams afterwards, but it would certainly help
+keeping my brain awake.
 
-1) Clear PMD
-
-2) Drop refcount+mapcount
-
-So I don't think it's a direct replacement. If we had a proper way to invalidate
-+ adjust + clear it could work. Like
-
-1) Invalidate
-
-2) Drop refcount+mapcount
-
-3) Clear
-
-
-But in general I think:
-
-a) Likely all places where we have existing sync_with_folio_pmd_zap() have this
-   problem (2).
-
-b) I don't want us to throw around memory barriers that way. This all belongs
-   into a helper (like sync_with_folio_pmd_zap()) which we only call when
-   required (e.g., details && details->single_folio) and that properly documents
-   all the nasty details.
-
-c) Maybe there is some smart way to decide whether we need a memory barrier or a
-   proper lock for now inside sync_with_folio_pmd_zap(). Based on the folio size
-   should do (PMD vs. < PMD). But I assume grabbing the PMD lock briefly is not
-   really a concern: if there would be something mapped we would have to lock
-   it, and if it would be a PTE table we would lock that instead.
-
-[insert rant about our PMD table locking]
+Surprisingly, sometimes summarizing common understandings still sparks
+discussions ;)
 
 -- 
 Cheers,
