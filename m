@@ -4,99 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8188AC3DA7A
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 19:05:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 443A8C3DA7A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Oct 2026 19:11:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D4B96B0088; Wed, 14 Oct 2026 15:05:43 -0400 (EDT)
+	id 5A2566B0088; Wed, 14 Oct 2026 15:11:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 486456B008A; Wed, 14 Oct 2026 15:05:43 -0400 (EDT)
+	id 553966B008A; Wed, 14 Oct 2026 15:11:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 374506B008C; Wed, 14 Oct 2026 15:05:43 -0400 (EDT)
+	id 4427F6B008C; Wed, 14 Oct 2026 15:11:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 131A36B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:05:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 98C1A1607CA
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:05:42 +0000 (UTC)
-X-FDA: 85322160924.19.225F219
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D6752100003
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:05:40 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AA996B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 15:11:19 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A1ACF8073F
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:11:18 +0000 (UTC)
+X-FDA: 85322175036.23.9BA4886
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A949B10000E
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 19:11:16 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T2KwKket;
-	spf=pass (imf14.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792004740;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mz046Ck2;
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792005076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YyINmxXO7pd+spEYBHJ/vCjoSEPDem460Y+EQItZG60=;
-	b=41WFwXVKWKXiaOl4rO3w5NA3X+oRxM/zppXgQvMexczhL+c+oT36NBcPlF8F8rYDu7tuZs
-	9dzi9QQ1fwf7v69G21DHwM8xDmFKj28C0WmWgZ086nwrc1NlRt8dxbM6H2YkZwKyJpfVUR
-	wqJegRHGqhvDpykreJBDjlmq5ocrhJc=
-ARC-Authentication-Results: i=1;
+	bh=6Q0RE/342Z/vGnJRZ53rKL922YaGQQ/XyiajVgtWERI=;
+	b=Sl4jeZTH54u7rmbZs4JrY3CAA2GLOOV7ShGCLkpesy7wzxydKTlO3f5f1yWREoqB74QXgE
+	zyT+9F9/YoAkqncYUhwkPMMCgybh5jlrWBVuMNIgJg/lBtJsj2jtnxGYEN+3Vkux0/LCi+
+	4XuyJsqGqilpyeORaYMJvDzsVP0ajMM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792005076;
+	b=qy1iubEr903IFi3N8wFyEwj0YU1vvMu3PxqYSFjU0zrcTuDkmnLuY4houd4i01o7SlBn8m
+	fO/KPaj/OdA2IzjvFku6B/hlT2lLnHG8hajlfVg2N2Y/3rfNuP9D2yg7MIs8h0bg1Y5o89
+	3DoxOe/7T5Nl0FEWFOaeyGfo0MWCd4I=
+ARC-Authentication-Results: i=2;
 	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T2KwKket;
-	spf=pass (imf14.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792004740;
-	b=E0PxHF5lUteLtvbRGD//snyx9VcZEuyFiermDwRXzRTNWzS+O1lvi6UUb6aTfzRKVJaD0r
-	+EYnDME77VSxtOjHFPWSgshE7dmt1ycW5w4GqMwjPJTLXg6yN5xkSpXjmkby/ulq+b8qEK
-	uVrZ5DU1p1KAIXKUO+Gsa2ZV1ztdXAk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 062B442E14;
-	Wed, 14 Oct 2026 19:05:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FE81F000C4;
-	Wed, 14 Oct 2026 19:05:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792004739;
-	bh=YyINmxXO7pd+spEYBHJ/vCjoSEPDem460Y+EQItZG60=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=T2KwKketgjd78ySIjWZfpm14SK8fmn/dOIHeg5mSexSu49wSiIFL09CZgoCSlNZmV
-	 dRSwwOOBSwSht+owNr5w6EKvDRfvqfCX3RrdYlgV427de0Ct/6OnNgMEQGoNkZpZhS
-	 XWq+FzHLiklU/hnG3eZKRkX5HJ1Wg8sf8lMbt9yEO3ukX4BwkRnmng/FuAXpg8ONTn
-	 /dgm3svw5odmG9ltLLcFDAC/v5bC9DoVDcIRhA/kfudaDw4H/lRAY3xihqBbQM3khC
-	 YVFb15bIeGtRCGC97m61q8Syu2fhAEPXlV/DeFwWk5ytvozOGNoeLdlAb74nxTwBBo
-	 ROPpDl6OXoiWA==
-Date: Wed, 14 Oct 2026 09:05:38 -1000
-Message-ID: <0bc5d58533f10b4841807be3025daa11@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Liz Fong-Jones <lizf@honeycomb.io>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Xin Yin <yinxin.x@bytedance.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ian@honeycomb.io
-Subject: Re: [PATCH v6 3/3] writeback: switch a replaced cgwb's inodes to its successor
-In-Reply-To: <20261002-wb-dying-cgwb-flush-v6-3-1991b4e2dcff@honeycomb.io>
-References: <20261002-wb-dying-cgwb-flush-v6-0-1991b4e2dcff@honeycomb.io>
- <20261002-wb-dying-cgwb-flush-v6-3-1991b4e2dcff@honeycomb.io>
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mz046Ck2;
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48870973bddso2698987f8f.1
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 12:11:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792005075; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FtB3fFsYpNUvDKE18nBlIQGjUUWnrtA1Uu7JKeWf8LczlH3n4Fa+nY1+9jibnpbs7z
+         oxpqNAgbz3/32TYP3Q0sklmAnsTkqS6VMgspO4XSPa8FdqgHuF+GDDRt9QqMhzqr1vs9
+         L+CcIUGOVDerxweGm8CvQn9tv9DJqpcMCzuzD6y6cOIa4bmY90AAP3KHk3JYrDtkfTQ0
+         x2KI/DOT48ERtxSQKHpJi4YBWA45vuixQ6lLdKYFfKpjZsDyGILFIlcXL+2+Qj9nzSou
+         TTEX08EoTQ5xbQEv42avdSUh7UcY+uvQGsdQk4xuQUFjVeEvhAhU2KmNFGdbdoAH9I7u
+         s+xQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6Q0RE/342Z/vGnJRZ53rKL922YaGQQ/XyiajVgtWERI=;
+        fh=6MTsTsxfzoqdVbNdn7KPCzGTrh8C7z7oRu8o8f+gYSE=;
+        b=rxKwClQ+Pbc9V1nsNPWcJsxGQBYqKVRnkUJr6IAlzsVvfI7Akr3OeJCVvr3VcZiII+
+         yNTU4yMBEfPmEHkF+ADztwhoB8zsmSpithdFDR+d7qbehfEo5YG+6IImz8yTopPN8lpM
+         bKF5KS0VJns+M5OngChulGhmMu2q64cArhyf1+sZ+KV4uHsBPJZJu6HB7H5MgyJ1ZohS
+         fmTgLTTsZLQMyNRb4lEv29cWdAoaBjauTfE1yMQyk0nWz3WDI3bRjCMhXVJlAFQFwS/y
+         PRhGm9s0pMT44SbXJhUDv9O0goUglSdRjsd/FVo/JfJhUPBnXzHSgO93lRGaEJYjoeR5
+         r5JA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792005075; x=1792609875; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6Q0RE/342Z/vGnJRZ53rKL922YaGQQ/XyiajVgtWERI=;
+        b=mz046Ck2NpxK8NfCaZ/rdDYO9leyNzsejgc0m3Lak8tlAWbxvUmSJxku8199V5Ltad
+         YKXEvnMtoojujc+HlQ5SncdyCSATKWiDrogFQjUwCrU4igQiICAypdcIBJ9ONOPn9Adw
+         ROH7DTQpj8tI73M3QH3I71wjH2f9v2WBiOgppgzQCAz/uMtpXtHrKjiPv7xWICuH5f+S
+         mXZ57iuLTXOHbPSJRCQjR16gxgQVKoF0MELQWyK/aLW9Z1YYIsNmanSoPnus7GnJgInj
+         2YHMI1Sx/mZMPZW+5MHF5CEC4wIVbyDzF0Bb4nrICiDV1CFdMHBqYRN7gyr38ExKZh9h
+         5aHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792005075; x=1792609875;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6Q0RE/342Z/vGnJRZ53rKL922YaGQQ/XyiajVgtWERI=;
+        b=FU8LsB+5vO4vW2s9t1rNZ3erroRRbIZJgUchwrtmDK3CEnpeAqq3tsNhURzynjoqmx
+         mNJVb/VgyA5d05Wffb6VAcyKE+7kRMI7jm2rSK5zh/+awHGHzWNAhQCvZbu2mWrL4B+m
+         jzz2dOQBF4OyvS9D6+a+P43XLJZtod3IKVDzyhbJtei98yGpJxRpj5PwmFShz32+Pgfu
+         mulmYLKl5sEpZTOUajHPrMbq+Og6OWTENefSmdhidArIUVW6FYGnLoWFnpV24izSaewL
+         FBlzUWaZddkPLJKcJmFCCzpA6Yb3Bkk0aB4H4tEeXi3uj+lCvr3lp1P8gQtUJhhAioCs
+         zf/g==
+X-Forwarded-Encrypted: i=1; AKwUvByCIZZtn7jZKv+tmEq+GjWazE0t2RmhXFuUy6aoyCNSvCSqnrx3JwDsm56xLSQzetMWxLravDwGEA==@kvack.org
+X-Gm-Message-State: AFq9FYJeVrG7ZCiigw2TR0ZVtgoS81/BRWMC1eKmVPetO5EWfnvPYfDH
+	URfwMsOId/KOUxorN8NxPB0Gtk45mWWdtEj+ca/OdE+lrzM3iMXn68saeQ6Xb/ZYXZ8S9Tg1qAr
+	t4p7nDFScg/itHjnvPKqMBzeuXrLKDZg=
+X-Gm-Gg: AYBFou0PwG09sKdg/mJ0tHpK6iGsi314VMicLCWBjWCMI9KAfms2qfz7pPAFU4RrKB+
+	3HC/GVHzPU8vUePvko89HnR0k/w93cYvOia/Xgqz0zH2ZPLaWWoO0vtpEwkO+kYam8ah+R2hSJC
+	m5MtwUnB8Ybtb+M4KLveY5AxSqnD9qA5mpciuyVk7I4N+WpyBIsNGK1lfgYVwlqnu7Bn3G8F693
+	ywxoe9vESCg8ULgeckhbwxXyY0HGhY8OH9JQpyTGUVStSc3T9jkIgZiFv602L/LEilBrYLHm7K6
+	+yjyOE94K0bFsGc75EoYac87NQ1IHD7jQxlV/m4GFBsbhkCJrSTwsfmO7WbwS9xjRANVVDzdnzS
+	MDayfZdJuQnZgvtmQha7I76vShWWFzKDSNvdkpFvHca3d9fVimeCpikMGRcjYebUi3TRq1OzTaH
+	tLkoRDVg==
+X-Received: by 2002:a5d:5e88:0:b0:48d:bafc:a3f6 with SMTP id
+ ffacd0b85a97d-48dbafca4a1mr35041657f8f.0.1792005074870; Wed, 14 Oct 2026
+ 12:11:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D6752100003
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org> <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
+ <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org> <CACePvbVTnCOh51jvEpkDJ32idvCubgN1eHBps6vESjhVC8E_aQ@mail.gmail.com>
+ <CAMgjq7D_=_4ZsCWJYywpZhPtg+YeH8o=ymRrV3sQ_58G6rs0sg@mail.gmail.com>
+In-Reply-To: <CAMgjq7D_=_4ZsCWJYywpZhPtg+YeH8o=ymRrV3sQ_58G6rs0sg@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 14 Oct 2026 12:11:03 -0700
+X-Gm-Features: AclHuK-O9xN2h7Y61BKOyhDB3rUul2Ti7sGXJ2Q2LlVEmPwqRXTcsAZ_F7aCTNI
+Message-ID: <CAKEwX=MTapFb8ZjjoFNSyG-_ZKAsxqPY+x9st2s0b2iPL-d1Kw@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: h58ixizxjkwsrwbe4qjgxrohq54unhg3
-X-HE-Tag: 1792004740-20535
-X-HE-Meta: U2FsdGVkX1+q62BVaiYu8nvXL14l1VCaSWKxF9TQXkI0Dot2CGg8nDWXv46jQdRNEhpdVfH83EZelHJdN9i0+c1ZrCyAtp3QOZ/S0jysDx5BR2JOdDdqrECA+A1x1SjcdZ5ayTXqXbOu6faOSUOGQWv4EmDYoBNQ9mPF9t/+PGw9r2w6tVRTmCDbEAnxBrik9vsjMEYbyyaj0MB2Sp9ZC50c4VjsmQVV8gQWn02K+7t9LI5cJioyBFq0BsyT9HfW0b37lKgIzCrKgalePcKJBdHH1VA4vQ+neTG3T4ydUqsdnojVtt9sFTzFQTSjpRTI4IbFVtC/wD/c3jGywOEscXpz24TuP/zTNez6nZnj3otENPPcN/uJJWSffOGyrYeNMaBdZhFiCn4ZbiE6YPMwrp5Eq2zTag4a/g3TnyESADLeTDlZILRp0wqLoUrhmfaZYsYND/zWmIM4oO6BzTEkZ0F7fkfjsxyioCYrKhQo+o1kwt6NqSV05UXGAKg1nVNscPbk0het1NjYr6eIMac5l2ezIGt4YMB5XTnz5p4ovl98HoTkq8vttSUNND4SzxYJrAWE758fWa/c5qmKZjDhIhs7L4aw6izCk6PKbT7gnsF5mX8Cjz9I/Vaou3WeJsLbyTJfTSS/DZ9jv6wjiVJAVNeth2VNl4mtuKkOV61LqgJGBf07adQjszMCOYubb7ft9frtmWKjX+S7wGMh8siVJlbT8u6+cBCTQQHsQg3KyY6jwBuWuC3d+DUUEHmJnA3G/ZU1GW5p8yOunSXw/r4M4UIQ9x6RpTg7Mp3vWGOGHMaEfGjNfSmLNQemKez0J/eyZvParAyViMbQ09vUpNvgQSTyKn2ENb2BuAPXTRu6XQbQDYMbEbN2NA7i6fcIkOPDUyiuZiNWq25+rXuf6j4pu2yhhYjOu8cj8A1Rq4+EncZqMuCmQb8//Yiw3pNd29WvWHfMn5G0b6Q0uo+so+J
- wL8wV0iG
- LZpVdOoJuq0ng5mxjWXAfrsEk/HGtLMomXYKpuoaMfizDr3Oowny/oTOe314td88fChVIf1W2ULGMxCpWAlp/aZo9IW5QsyysOCpYv+PhP2s0XgNnSqd+N7k42iHFHTaoO9yl+g9wgPmc2ZPkyt0LvnCSBAdV40zs9o7tLsXvlF8KeK3irn2L3+Fh5cTcOpFMb7FNVOKqf6n2by3uEN6wVtqfTbJn2feUEmWfyLl6bntR2YR3kKrXjJH4im/W33K/lKci
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A949B10000E
+X-Stat-Signature: bz81nnmbyxm8b7dnfp4u45rdmzda9oyn
+X-HE-Tag: 1792005076-544836
+X-HE-Meta: U2FsdGVkX19aaH+9djOOmWemnKck+V4M/8w2erEQi82jwVCtMn9lA1xUT9yPe5mYAOUa7i6UBnm+fP70Z3uFFL02cjH7iLpYWdnxgl1o3ZS5biQGtOwuxCHwUEM+SiuCgY4U2YWHRcNwsxs9RGPcLQM/AsquZcKJDBXFgSwDDwqNUMmFiEGQlDT+pNicmWZymfRkbKyQpLoEta/xeQofZm7VPBq+8p8T12AoasFgYBuVR0d9x4qxSzKrtZszki4oMKlKrmmyO1NCTRIXOK71LGb0hTWsJ4eD69COyEKMCPdBqBmJfcOaolwmQ/T8ppUG6Zag2Vhg/LZucAfTwCJUcAsWa20Rz+lO9De53jJQTqjk2gzN/6Yt+0t1+q7CVUFiNKAie3T/o+WUnMuPFe0v3yLg/gd6lpInKmpedZi6tNo6T/KqB7KI1U3FRA+rlYDkTlycQE6cgQx09XZtNkkcv/fiQcV4hnuVTvv1SKeqVbNfcMCFlOi6k9dwA2y3kSyxFP7ellOh9wydedfcf9P4BAvNorD325WDaeqeLzAkNzn/3m/WzbGE3mQaxrN5nCvvTSA0dzk+eikahPup7bJfmTPu6QdfS1JhkueqVlM/VHZNfpksL+FFJH/OVVX47DpxwDEBwrW5JM8I6gWCjTz31vjsxQId53J1mOYKIlXPbZoh7OUOfIp+0Z+5fV0X5WMWky2kxAjUk6T0MxkJEUBLaXdQ2Z1/dlFQLPaXG961hn+wKP4MFGRuHOgMKdSjjTjqlvyO6QGUYbCV8lQ3eGWYNHX75v3QQXxvnX14fK7JhoVHyuAGCJJ8a7f6ym6ebKdq6oMv+uYFyFEUv+RxKFA6uVFn1VhnhaPvt1KEh5AncpHlFRaK0qFjI3T5hN4x5JDWh02T17uSY5C/ELNU7n1eWHhDLKkvlbQVvsh4Cqm9aVrbZE1fXkieBtfZDh1YeNi3FzKfANc/6u9cH1DYY1c
+ ZtIzMtCo
+ dppxkxj9rId+qvvwWDIwgv+PsUUsVhhIfdUFOaAZBVbqA8peN+PIf+bCWhhK/BVM6/VgUTVWArAbLssMGk7XLC0f49JNGrCURqnmTj58nL/YtlaMPPOmf872clk+INDFKaYuzZHRoy4Mk0jy8AHwNtpURtzSIwU6sOotgKHwR66HgDAX8eJGg9JM0gImyqiTQzivDrcwkU4TAESxtK+ciroWeDDLMyoj2ZKRv5qAv2b/PRsed5oxt2wHYOqd17JfWCQJojzVbR+fWh2dAzZjKpmlx4BwE5+UthBY7FdI9erRpCoUB5//bCmBhWBd6tndMXT+Kz7/9bz93gYmFweWFvwaADbAfBiLDCd/B/vvvxOiZ1e6DH62hHAvtgPxjk0EJBhMUOXhHu1bGcQQsWsS9Z0EFSCu+Rn7jxAYJyLZYHTQZ4ViHRY1q0cgQQvL3SAmjH86LSw14/z42fN4e7xupnvhgubnEFgUdKf27bNLc3FJfwMtbP2+qPrker9DeQYggmT90r1zYvWGLXJzY2DkCEvnn87NSTuKqiJT0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,66 +167,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Liz.
+On Wed, Oct 14, 2026 at 10:17=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+>
+> 6. The one part that I think we can and should agree on it shat the
+> implement approach: at this point I think VM_SPARSE is the right
+> direction, Nhat is concerned about the testing on it, and I think we
+> can have more data for that, and collabration is highly encouraged. I
+> previously conducted many tests on everything posted from both sides,
+> will try to post more on this too.
 
-The following is a Claude-generated review.
+Let's see if I can help by doing the rebase :) We can use vswap as the base=
+line.
 
-On Fri, Oct 02, 2026 at 09:40:48PM +0000, Liz Fong-Jones wrote:
-> + * Switch all inodes attached to @wb, dirty or not, to the wb that foreign
-> + * flushes now find for @wb's memcg.  If that one is already gone, fall back
+And yeah, from a pure conceptual PoV, I'm ambivalent about VM_SPARSE.
+I just think it needs more data, as it imposes design implications on
+the rest of the implementation, whereas I already test vswap on a
+couple of workloads, including real swap-heavy production workloads
+with a mixed of swap and zswap users. Performance was good.
 
-The scan only reaches inodes on @wb's lists, so any inode attached to @wb
-but on none of them stays behind, not just one from the
-__inode_attach_wb() race. A clean inode switched over from the root wb,
-which keeps clean inodes off its lists, is one example. Maybe say "all
-inodes on @wb's lists" here and broaden that sentence in the description?
+My question - and we can wait until the meeting to discuss - is why
+are we insistence on dropping all of existing code to just switch to
+VM_SPARSE? I would understand if it is indeed very difficult to switch
+down the line, but I don't think it is, based on my past hacky
+attempts to do it?
 
-> +	spin_lock(&wb->list_lock);
-> +	restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_attached, &nr) ||
-> +		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty, &nr) ||
-> +		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_io, &nr) ||
-> +		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_more_io, &nr) ||
-> +		  isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty_time, &nr);
-> +	spin_unlock(&wb->list_lock);
+>
+> That's a lot of problems already. I think we can discuss these points
+> further in the meeting.
 
-With f6988c90671e ("writeback: bound cleanup_offline_cgwb() rescans by
-rotating scanned inodes") on mainline, isw_prepare_wbs_switch() moves
-every scanned inode to the newest end of the list, and wb_switch_rwsem
-keeps switches from landing during a sync but doesn't cover this scan.
-On b_dirty, that can make a sync miss data:
+Thanks for the summary, Karui. From my end, these are my concerns:
 
-1. A background work on the replaced wb yields to a sync_inodes_sb()
-   work and leaves inodes on b_io.
+1. Interface: I don't like interface without justification. It has
+real userspace impact. Things like priority should not be exposed at
+all.
 
-2. The sync work fixes dirtied_before at entry but doesn't queue_io()
-   until b_io drains.
+And we should also avoid overloading swap interfaces with things other
+interfaces are better suited to handle. For instance, while I
+sympathize with your logical memory use cases, but I chatted with
+Johannes, and he pointed out that the overcommitting interface is
+better than swap for this purpose.
 
-3. Meanwhile, the memcg dirties a clean inode, which goes to the head of
-   b_dirty.
+Idk - maybe expanding /proc/sys/vm/overcommit_memory?
 
-4. This scan fills an isw from the tail of b_dirty and moves those older
-   inodes in front of the new one.
+2. Charging: personally I don't want virtual slots to charge to
+physical swap space, but I won't speak for memcg maintainers. One
+thing we can discuss is what kind of use case relies on the existing
+charging behavior, and come up with alternative setups to handle these
+use cases.
 
-5. Their switches block on wb_switch_rwsem, which the sync holds for
-   write.
+3. Make sure any solution supports setups with mixed backends (per-cpu
+caching should also distinguish vswap v.s other swap solutions).
 
-6. queue_io() stops at the new inode, so the older ones, dirtied before
-   the sync started, are still dirty when it returns.
+Once we have a better idea of the rough design, then we can talk about
+implementations.
 
-Maybe hold wb_switch_rwsem for read across the scan?
+Things I think we can skip:
 
-> +/* called with cgwb_lock held, possibly with interrupts disabled */
+1. Writeback - this is a given now, I don't want to argue about it
+anymore. Just include it please.
 
-cgwb_lock is always taken with irqs disabled and lockdep_assert_held()
-already says the rest. Maybe drop the comment?
+2. Swapoff - I don't think it should be a blocker in the first place.
+Vswap does not expose that functionality to userspace, but exposing it
+is trivial, because the machinery is identical to physical swapfile
+swapoff. If you want it could be a small-ish follow up patch.
 
-> + * cgwb_kick_replaced - switch inodes away from @wb again if it was replaced
+3. Memsw:  I think it's mostly a separate conversation. Vswap does not
+block memsw. FWIW, right now I keep vswap charged to memsw in cgroupv1
+because my understanding is that it's a logical counter, so it should
+count a page regardless of the physical reality.
 
-This queues replaced_work rather than switching anything. Maybe "queue
-@wb's replaced_work if @wb has been replaced"?
-
-Thanks.
-
--- 
-tejun
+So if you expose memsw to cgroupv2, it will work as-is. The question
+is whether memsw will exposed to v2 in the first place, and that's
+orthogonal. Maybe the memcg folks can have a separate meeting to
+discuss it?
 
