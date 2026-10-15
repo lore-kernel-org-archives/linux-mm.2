@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2700CC6B38
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 20:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A27DCCA464
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 20:13:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1FB26B008C; Thu, 15 Oct 2026 16:10:37 -0400 (EDT)
+	id F23FC6B0092; Thu, 15 Oct 2026 16:13:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF78D6B0092; Thu, 15 Oct 2026 16:10:37 -0400 (EDT)
+	id ED2EA6B0095; Thu, 15 Oct 2026 16:13:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C35526B0095; Thu, 15 Oct 2026 16:10:37 -0400 (EDT)
+	id E0F6D6B0096; Thu, 15 Oct 2026 16:13:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BEA96B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:10:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 20AA51A0188
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:10:37 +0000 (UTC)
-X-FDA: 85325953314.15.E8371C9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 684631A0009
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:10:35 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gxhkLSP1;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B8EA26B0092
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:13:52 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 976D7140188
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:13:50 +0000 (UTC)
+X-FDA: 85325961420.18.4F9390D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id ED3E714000E
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:13:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bFBprGoa;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792095035;
+	s=arc-20220608; t=1792095229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bm2ERFyVvwHy3KL3GkZjGCypavkWH4W9XQY9JXBOp38=;
-	b=gGn6x6P+CI1gFadTjfl8RHFb1jx+8UfTiKTGY9mzyF5ISaYEm9r0YwZVu9Xhj6XvnnIggT
-	JE9hEwCHrnxFEd4OgB0k7LGiQO45Nq1ZLENXuBEafKJ7rDFVJvZ3wMktkcAV+EhhjIXpz1
-	Q/+w+D9NbRp1G4m8tbliUPBdHP3lLmo=
+	bh=oeu7IPs+bOeo1bu+3Qb1TsSjju14FLD65wrejrRGqiQ=;
+	b=jcQe7s412Y9/Byr71+m6c8rM3o33io0C1jOdQh5HYrY3WJSuMX+EzAl+dFg1uNrabOufOT
+	y4AFUW/mshG43eQZ4u/yFFraL0FXXobArViSdPZzAI50s+JqgMj2Cm0NFSnMdWa1rzKjyV
+	bQx/I0oT90g+IdfDf2JK/LYRASrCPd8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gxhkLSP1;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bFBprGoa;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792095035;
-	b=hfnxJDlymWQ33maioAf4bW1hyZKPVPqK51VLb99f0SIoido5Br8JLD8hf9FzblXT44BOlV
-	2brnmoNlxSnN6cW4RD8EE7hdvJ9EUl6M8fs4m4ILMgp5a2tWieVOAwA1TTHDeRMcV03OG1
-	N1e+74XXF37sdo0bbVHTzEblSr5g5RA=
+	t=1792095229;
+	b=AfpE0SIO6jkCrMCR+DXLl2gATO9O9xBFeVrTZuR/0ofIaN0CJQITYBtJyEDPUMGGeeqgFW
+	41IUKqUJpONI1+n7JY10VZcBTytBfSmN5VJoVEUj9jo6dKOthqyO4EciMcs8rNBexAXY3a
+	5LguBQf/UzBNFdZGyW8eMwUIbitlSdQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CC08436C8;
-	Thu, 15 Oct 2026 20:10:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DDC1F000C4;
-	Thu, 15 Oct 2026 20:10:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4872360239;
+	Thu, 15 Oct 2026 20:13:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4BB1F000C4;
+	Thu, 15 Oct 2026 20:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792095034;
-	bh=Bm2ERFyVvwHy3KL3GkZjGCypavkWH4W9XQY9JXBOp38=;
+	s=k20260515; t=1792095228;
+	bh=oeu7IPs+bOeo1bu+3Qb1TsSjju14FLD65wrejrRGqiQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gxhkLSP1ZNSGV8UU5saxrx0QHAqHeo8ZiuEPhoF5s7P570x19ZLLx/+1hYWjllG3A
-	 uTfOjm2GqP2hGVC1vT2M7tc0qf0kx0D8PpllSnxKPqAFhvKYwAAR+sbFcxsQbUwkA1
-	 atznjnS9TsmxwCILJJFNVTDqc6MDJF603RyAn2FK7UBYoMyRHiZmvUaDxm1N5Qn82x
-	 D6GGDEuRUBNVLommG2TkyePjUjK2On7X1EYYJ19e/Oaz/Dir4OON5iBzh901RRhKmp
-	 EatjIdApRPLEolKK2VkjzZlga9mhWhUyHiczizT3hcSoqezppKW7qdxB9wNnR3dckn
-	 ZgHwgwKq2+uzQ==
-Date: Thu, 15 Oct 2026 21:10:26 +0100
+	b=bFBprGoarmRriOKc11aeVf8OYnVppRM1CFkjd33Eiv7bO3CB4iTshpHO3W/nl33mW
+	 c1x2ipeUrJ00b274FY2h1kpGmqoQEtTXdf1jefMU3D5kXzokz0vphK6t+Lvpv5tSXx
+	 rNyo49R4YycPTkZ/EuM0zMbHZqYhmqTvdHa4Rc9D5wUI5AUiGWyOgEXle3502b8XrE
+	 LDRY0yguY16AI8hSdELHV6JmJPCmBhBVc9Ya6n8WNDXnS0ccoWhIwmZ6+C6KlBUpqH
+	 hDoGxaHy0YwdQf7AhEZtfYksTHJ7afF9RhqWmINWY27FOrzVZh2Il6RWQPdO0o6Q+1
+	 w1cIAOXO2unmw==
+Date: Thu, 15 Oct 2026 21:13:40 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -74,24 +74,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Adam Litke <agl@us.ibm.com>, Mel Gorman <mel@csn.ul.ie>, Rik van Riel <riel@surriel.com>, 
 	Peter Xu <peterx@redhat.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Josef Bacik <josef@toxicpanda.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 06/10] mm/hugetlb: fix endless write fault on a leftover
- uffd bit
-Message-ID: <atEuB27wc9Yp-_Ax@gremlin>
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 07/10] mm/hugetlb: tolerate uffd bits set without uffd
+ for PROT_NONE PTEs
+Message-ID: <atEzjnc734DMvFd9@gremlin>
 References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
- <20261015-urgent_fixes-v1-6-42796911043b@kernel.org>
+ <20261015-urgent_fixes-v1-7-42796911043b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261015-urgent_fixes-v1-6-42796911043b@kernel.org>
+In-Reply-To: <20261015-urgent_fixes-v1-7-42796911043b@kernel.org>
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 684631A0009
+X-Rspamd-Queue-Id: ED3E714000E
 X-Rspam-User: 
-X-Stat-Signature: 9m78ehndnbw4y8tgt8o9c733adbcpsne
-X-HE-Tag: 1792095035-26075
-X-HE-Meta: U2FsdGVkX1/ea29sSDq2bf1mF4+t3++lpEBPU8bVSFGy3il8evC+YCz9WaGr38sjYNbRHscpRsZ3+mGESb/oumXgEUUflcr/NszT2Eb9T4mVmG5EVjBSW2J9vl9ujxIss4onn5gwQSUJmfZmN/hE8iFIEuH9o7DdjtB5eN1mDnpH7zZJW315BW9iLjxpRNsWfRP6fupzwrxL5XwbAL5sMsOA/YeZjb4eH145oDrhzVQeCaqePHNaK4rqK0mawqcp950uLTqGPrknvCZkUKTqcMeVNelEY58MHgWfrUJpBSAoqVc0fgsXYWdppL/t+YVx69onq26fvHmoWf5AEombkT3jeYl3AhU2lTwdnj+bZK8UQq1cktzkcXGCAy4v17+9zRCZTMZFXtAgl7SER4qKjQrTfZGtUcaLntMktCm55gV+cQaEbEPnUqKGrWZJ3PQFDan4pJLNQMzkZRLBGYQY19PlFz53vhTd0Ee9Jz3Ie74R1JKQeT/ZYe9Wx8xxVh5bLWxD8rn7zkNeS+71lEFX8SJCoNyr4zP57bp3KeMLiTsMPPrAAzDxQ1tfTyzu1Wob13w+AXk1a1i1ejGAEOJKKtSw96lSyfHlhDEwyKIy/Thc5rPrGriMCrPGAfGexEb4twXkbQX3Foik89T/5nLTqp6mSI43EIJlcPz+iY8POVcyCiAzQk55Jp2h7lZJ78KWAxnJuBcH9bI4uCGz5OKGJI+q6fR7KVgJVMjpqL0Lq559c88ToaUkBUupO36qTELeX8Sj5DucUPsmaRe6T2MoUL+aGdTaHEoPnbOj0yhfPpL6u0Fweu0iJ6a7hXWjKzCyHMN/MXj7wS9Z/fsNd5Gtf68wcMTbro7SXdmMrwuDPRfHEm6hjc71Ouco0/wV5KtyBBYKR3c3OOZ5rCtOvYNhhxXeJ3ngobJIlrMytm3nnLYrrgqf38GME9+1ESTWBlqAonZEg5n3AyIQBybc1v+
- D7f5d5vj
- bj9yPw1dYwEZJ5DtuHyb1PuG7IU27dV8puZLWWYxPQPBL0rUi96Mc8EWlTBOrm6OerbrKA0b/AY8vU0N4iGyTCPmRJtjm1ovTGW0ywgcZ8G2dUMorLeghu8WtVBXDKDBTzz4MZ1gee5e4csF1mFeMNK0sn5UQi5BO8RzZGKpeKsIE6gXk+tBhGmNUVNDHpVXBwpFMQ86lwKj6KDTndmRZbNlMJIhojMTjGCdPW5fjDK257yAx2Xco7sIQwjX3fyAcor/ts78oH1AXHIwOmrvS5Cd4T7Ut52p4wZtUNTyuKJ/jwrVjoCZGaOoRYNRV+Zaa1OqV1RUqAHWhkpET+ztEOVNm4x9PuFt8WxmCz/hDCOu9YPrfoA5eS4v9Bmt8Zd6HKwXXchJ1Hw7e7rEFv5Tc0qBA/dEgDAwqyuxl
+X-Stat-Signature: escjsmbtqtughbi9a4g87898w1maqjoh
+X-HE-Tag: 1792095228-920191
+X-HE-Meta: U2FsdGVkX18NMx8N7VIm6z7BIc1EkckvgCmdGEVgaU7dY30IbVVPpG+RcVXUJp7qXsksQ956Cr7ucx661L2E+EuqVzYxso03lSn0J01O5MKrgRH2+EfwH6V6g4tSebZr1WLlQKIChRV0s9Q2QiPJSFiimtD8dSHNJw6Ua6451esHRV4C7ZYrpNx/bBhv7Lj/y6Rg/v1kdSJ0S9uPh0hmIRNT1gAvieZ6+5DBUXad6w6cARR2kOUkzk1X3iI+2Id4VI5kkBys2qgs/NBKy0D1iTPqBaWB1oO/R5ebUO288TosrNXDhqKCyUL23O+YQacT8jwi89Y4X2hvY6yeQkYjFuqaKlcbIn6oc5QZoNBchjsrhdNttc8bF8lzv3aKt6isVPYnm0uA1QmiJHky1mSoXrpS8UVMKFCqRTDPs9Zwmm2RaTUDyn0uxMdlsQoiCDYz+GGzohgSwOpNTPJccJAwj1zGDoFT9XwZR153F1Dd1HiytSS2+NFBpdTwIHzeo4UzMtXVzMif/AsuSK7yCUaVUu8Aamm8y9Hdkk0KX38JTyHwGcLm6TN72+2r8zUvVSIpmXLtrxnX+jUSgA0lNLiEgLj4TtW/a5bH6qN3y+AQphq10w18NGz3Rt6ogJRBQsIYEq+9rDdGJmClu71Pyn8+Rc0Ah21+nv8KC5dWTfVETKzNhk+EpYEJCUlFrypFAtlWiXqPNdPvFHXDInSQD8z7oE8MXP4qLgmDv47sGH2G1irtgU1pCBBoC8R/KJEMVeLuzwowE8S900wbYtxvgAsag56GmZITczpF3Oegv8aKWjCpXOQrlgea2dGSLyQRONIAElvzhMF3JjgpkXswpuXTcLX5QXHmYJ9lTX19vMP9vtCsueqgMvFK3eJlCLFICk+NQ8JFHANGxSPqeHuBDddPDUG9/8f/T9Y6Quy1O04mXzZwIHJQbmgmDZWCEgZOpoGCEYPF+V+b5HNRlJjFijm
+ DOk/GDJ8
+ Zb9qv7zjmYl2MQRn9nSz0Pfn1XwJgbXwgMUv8XYq2c3fGpIci0dJxfsCWPvTwCTQlnFDsBziiWKzwW3HQvs1WKRK4SSMuNlXZgNbWvTdCP6Q0ssv17wkd3RQv0+V6JQfD56y826RrOf+rC7hEiuBz/FbsYeY3jEtklVhZL417cPehzvvFmYbsFO0dTFKc0vPGYFWmLqUv9YYaPzNg/WRpJpyoq/nuUy6IHtkTBqgEuJvwSCRf32F8i4ukW0P2HKhHjI8FVawCIRLyLOhy3XGHt7FmkjEn5akgOXXs3Erh9vRTsdXUoW3cG2qYCIgm8n+QAfPiM+6y2sOPIRU06zb+jt2Kvr6gsg1oTfiY0op0BN/vDrirjXVGUTYwSk+/zli1Sxam/AeOk3bPSag=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,46 +99,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 06:07:12PM +0200, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
+On Thu, Oct 15, 2026 at 06:07:13PM +0200, David Hildenbrand (Arm) wrote:
+> The whole uffd handling when a VMA is unregistered from UFFD is shaky:
+> there are still some scenarios where we might have stale uffd PTE bits
+> in VMAs no longer registered for UFFD, which confuses other code.
 >
-> hugetlb_fault() resolves the uffd bit on a write fault only if the VMA is
-> registered for userfaultfd write protection, and hugetlb_wp() bails out
-> for any entry with the uffd bit set assuming hugetlb_fault() has already
-> resolved it.
+> Let's just tolerate that for now and simply clear the PTE bit. Add a
+> TODO to really clean up any uffd leftovers when unregistering a VMA from
+> userfaultfd.
 >
-> When a read-only hugetlb entry with the uffd bit set is mapped in a VMA
-> that is not registered for uffd-wp, a write fault to it never makes
-> progress. If the access comes from the kernel, e.g. read(2) from
-> /dev/zero into such page, the task spins in the page fault handler,
-> ignores SIGKILL and keeps holding the locks taken by the system call.
+> The handling is now more similar to what we have in handle_pte_fault().
 >
-> Such entries should not exist, but an unprivileged user can create them,
-> for example with MADV_DONTNEED of a page protected with UFFDIO_RWPROTECT
-> or with UFFDIO_COPY in MODE_WP racing with UFFDIO_UNREGISTER.
-
-Ugh yuck. Uffd is another gift that keeps giving...
-
->
-> Clear the uffd bit when the VMA is not registered for uffd-wp and let the
-> fault proceed to hugetlb_wp(), like do_wp_page() does for regular pages.
->
-> Note that a FOLL_FORCE write to a page protected with UFFDIO_RWPROTECT in
-> a private VMA that was made PROT_NONE now drops the RWP protection of
-> that page.
->
-> Original fix generated by an LLM and sent in private by Josef.
->
-> Fixes: 60d5b473d61b ("mm/hugetlb: fix uffd wr-protection for CoW optimization path")
-> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [rppt: massage commit message]
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> [ david: convert comment into a TODO ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Looks sensible to me so:
+Ugh what a mess. It seems like bad code makes any edits going forward
+problematic because of the labyrinth of bailing wire and chewing gum left
+behind.
+
+Anyway seems sensible to me so:
 
 Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
@@ -147,31 +127,32 @@ Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >  1 file changed, 6 insertions(+), 2 deletions(-)
 >
 > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index f8ad2efd472cb..c3823f1958568 100644
+> index c3823f1958568..ba6860b9b7f4c 100644
 > --- a/mm/hugetlb.c
 > +++ b/mm/hugetlb.c
-> @@ -6184,15 +6184,19 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
->  		goto out_ptl;
+> @@ -6127,16 +6127,20 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+>  	 * NUMA hinting), so let normal hugetlb fault handling proceed.
+>  	 */
+>  	if (pte_protnone(vmf.orig_pte) && vma_is_accessible(vma) &&
+> -	    userfaultfd_rwp(vma) && huge_pte_uffd(vmf.orig_pte)) {
+> +	    huge_pte_uffd(vmf.orig_pte)) {
+>  		spinlock_t *ptl;
+>  		pte_t pte;
 >
->  	/* Handle userfault-wp first, before trying to lock more pages */
-> -	if (userfaultfd_wp(vma) && huge_pte_uffd(huge_ptep_get(mm, vmf.address, vmf.pte)) &&
-> +	if (huge_pte_uffd(huge_ptep_get(mm, vmf.address, vmf.pte)) &&
->  	    (flags & FAULT_FLAG_WRITE) && !huge_pte_write(vmf.orig_pte)) {
-> -		if (!userfaultfd_wp_async(vma)) {
-> +		if (userfaultfd_wp(vma) && !userfaultfd_wp_async(vma)) {
->  			spin_unlock(vmf.ptl);
->  			hugetlb_vma_unlock_read(vma);
->  			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
->  			return handle_userfault(&vmf, VM_UFFD_WP);
->  		}
+>  		/* Sync: drop hugetlb locks before blocking in handle_userfault() */
+> -		if (!userfaultfd_rwp_async(vma))
+> +		if (userfaultfd_rwp(vma) && !userfaultfd_rwp_async(vma))
+>  			return hugetlb_handle_userfault(&vmf, mapping, VM_UFFD_RWP);
 >
+>  		ptl = huge_pte_lock(h, mm, vmf.pte);
+>  		pte = huge_ptep_get(mm, vmf.address, vmf.pte);
 > +		/*
 > +		 * TODO: fix all cases where uffd PTE bits remain in VMAs that
 > +		 * are no longer registered with uffd.
 > +		 */
->  		vmf.orig_pte = huge_pte_clear_uffd(vmf.orig_pte);
->  		set_huge_pte_at(mm, vmf.address, vmf.pte, vmf.orig_pte,
->  				huge_page_size(hstate_vma(vma)));
+>  		if (pte_protnone(pte) && huge_pte_uffd(pte)) {
+>  			unsigned int shift = huge_page_shift(h);
+>
 >
 > --
 > 2.43.0
