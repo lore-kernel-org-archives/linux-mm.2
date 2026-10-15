@@ -4,118 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD55CCA462
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 23:13:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 583EFCCA462
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 23:17:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AFFD6B0095; Thu, 15 Oct 2026 19:13:28 -0400 (EDT)
+	id 09E366B0096; Thu, 15 Oct 2026 19:17:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6600C6B0096; Thu, 15 Oct 2026 19:13:28 -0400 (EDT)
+	id 0775B6B0098; Thu, 15 Oct 2026 19:17:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54FB16B0098; Thu, 15 Oct 2026 19:13:28 -0400 (EDT)
+	id EAE9B6B0099; Thu, 15 Oct 2026 19:17:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A9DA6B0095
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:13:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DFA9A023B
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:13:27 +0000 (UTC)
-X-FDA: 85326414054.07.D2F8F03
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D622B1C0003
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:13:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=IQnxwjSY;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C14496B0096
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:17:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F59216026E
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:17:54 +0000 (UTC)
+X-FDA: 85326425268.08.1BFB581
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D4CE7100007
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:17:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JIhFkpTb;
+	spf=pass (imf05.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792106005;
-	b=Xul2Na+VTFOwhPXX+U/tCMixVpd2dAC+r6ToV1+v/S0uOYTkoD98ZD5cM1hGfCJk2R+ZRr
-	SCXUR6MA5vN/n8mX6PhaY+5rsCsfLs/a5gGJUQgQcyUG2Ey5CXPED1k+1bEk/hBJ2pbrFu
-	3YMlSmJByaDQuqmDmZKE8SXo4VB99Yw=
+	t=1792106272;
+	b=vM4An3mhgqfm4k2uhlyBLb9BrTWF8a1/DzYnln3oJduC8Ry48doisiN++HkzF4nIMpdZks
+	OOAJWmBSMVCeb1EKF6dkTk1Og7b0Fzxd0IoeZ24iXdc2mu6uPxlA53CuULyiSpoEYOmX65
+	1NOn2dD915/TZx5xV20Hs++t91757AM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=IQnxwjSY;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JIhFkpTb;
+	spf=pass (imf05.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792106005;
+	s=arc-20220608; t=1792106272;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dAaIZ7hoQbW4Z60fNlL2ubqoX4QsjqbaZoJuPxq8vJY=;
-	b=L9Tb95pTECQ+PJiWuzZpirJxgcfQxRKn0vQWDjt0mvYvNfmxR8NBHDuCy20IcgSM/BSwdP
-	9RSBwFJdWWU5o5eO9Dbz7Bdxeb72lwPzom7nNwtOS5J9Vi/VN2DMybepAca4k136srW9nq
-	yLy6kOlwEerx5awcI+1mQnnglr62SsA=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-533861a59b8so21902561cf.1
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:13:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792106005; x=1792710805; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dAaIZ7hoQbW4Z60fNlL2ubqoX4QsjqbaZoJuPxq8vJY=;
-        b=IQnxwjSYSdGxPZguwfouWZF5BEGfKV5M5zbR+bqXEHnnwlHgUzuVIkZw9Qzw7a5avI
-         Ka/9meUA476a4etXQt1t/HCA3oqIYW7d9cZ3IpjQpGdfFI9B9pxx+MSU9Ng22BqzBS0A
-         nh5IaC5EWSS8lBtM+kzuPLXEJ6jibHTVoHM/BNI73IG8a/n8j+hqHTBcJDpz4dGZ9nVd
-         hwIgYuCWhVgkJbDCP4v8WduuvmPicfbmPDj6bnXYA7iwnq3Urd73sZWmDVF4D9NovlpA
-         F8Ak1n1ufWmubYaQOYWYoqDuJyoT+mNyAzwouDDCTpckiGpCIc0KkLvVkKWs9ymI/Muw
-         Vdzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792106005; x=1792710805;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dAaIZ7hoQbW4Z60fNlL2ubqoX4QsjqbaZoJuPxq8vJY=;
-        b=I+OvnrzWFU7NRBURUmR0fg4DzKDTNfOUYDIjc0Q2+ASaZYF0IvCSdtkYGUX5ymsXaK
-         uQQtXezuZ/HJ9X/dxrTRPwhu6+ClsuO5VSqrmEcQRHmpp5+pdKYKkuaW5UI9rgkP5vwW
-         bbGBYrjq0D+XzzvqJCJ+Nwt1A6R9Dcs7KeRcHbGJV17eKrAHlQ7ZE6ptvXczzeLHquCa
-         0zRT+tGvvGs2kLxPnk+BCmOIlMc/5iIQBYN78EJx+IHOxq3GJpIHvieew1tqHNGaXl7F
-         ki5/lXDa5k+s72ZLGRQB0uU4Cm//V8LBt/U58Cqz5Lrpud6YHHjkRZE0XivFg6iY5QzV
-         7kiw==
-X-Gm-Message-State: AFq9FYKUmO2holGyjc+GqElNHsP1Vbp4CJQU+UUDf8SVcfRL8j6k/tct
-	E1MWo9059XFDUkDgKj/mnQXkHNdp7j2IJjV/xifJIs392nlGy8VYTSCYEjB82QpJsAGrqRazw6x
-	Yi2gtXpU=
-X-Gm-Gg: AYBFou2cP2IpCwpL11UPqpFu+wsaZLrf0ByqLvXtLnoTG2W+Gl80d0rDOaZUfP8aFXR
-	6aL8wTae4sPxqL/9k/JNTlN0yGHWytHAN9B4urLDkHisTCd1f0rey57JRMXeY8J1qrK19efynte
-	fGhhe0eW2g7tsnV/IdSBGK9lfMYRLRuqSj51jbRVJlvxCYIeOWPVJpiGvCXiG1gkKP+tQjjh0BM
-	AfKj2D7a9p8X/mNCMoJ1tt4l1kEI04j+loQMvz9+ikjEqQ2i8g3h53uwNTqFhP5fBYoLH1aReg7
-	DVhPjZbQVeWhTWTGAG1QrXW1lwOniUsyLo9RDOIj61Jk/pwZaqhkoJvEMePI4P41cXEZiPPVfUP
-	qUvARiRzq0v61l3ARuzQ1GNnMZ1dD1QXInc0BuYauFU3NKuzyZoBgIciI/5uy4X9ni2+6Gjkwtn
-	zlXq5Hzxajk25QOdHkbfNfpECmvBwCH+yIioHfp5HQpNWCkXawhDYORPk7SNG2sX84TbC++ipQ/
-	m3lNRcRY+KxRCIjIhjzll98DvtxNcQcpQicVHbZ7ukUKkyLWbIJmzPir2yz
-X-Received: by 2002:a05:622a:a0c:b0:516:ed02:c85d with SMTP id d75a77b69052e-5359f46e1e4mr316611731cf.3.1792106004967;
-        Thu, 15 Oct 2026 16:13:24 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362a9637a7sm6256501cf.14.2026.10.15.16.13.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 16:13:24 -0700 (PDT)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	gourry@gourry.net,
-	ziy@nvidia.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] mm/mempolicy: convert mempolicy refcnt to refcount_t
-Date: Thu, 15 Oct 2026 19:13:22 -0400
-Message-ID: <20261015231322.3392551-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.0
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dU4UV7b10jQWXzZAx1LzF2HZTCcoK87Yy3TYJNTLgy0=;
+	b=1a1ystVXT/jDA+EyY1xRLzKRejrnp7E9jRZ7rDY/31p2DMjI1u3+DMoRTeDj+REkqWc0oc
+	JNaBNsvH8QQIneSH1kVKCJSL5HG2jheDr0Xad1xgvwxiwS/BrueCTULRgUYnfrmXRqK597
+	J2U0DVIYAZUSKRi/hTfupfJ4H6W8YqY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792106272; x=1823642272;
+  h=message-id:subject:from:to:date:in-reply-to:references:
+   content-transfer-encoding:mime-version;
+  bh=Iich2VyA9Yl56RfAzD+pgFuU2K921AKcJLk7Up8k2OQ=;
+  b=JIhFkpTb0AdC8QP7jU5Fsu7GpYJ8UbvBX49SxVa/nlbpcPvXpG2DCCyK
+   9NM44/Y8ToReSFahy/dkhDfMrPaLDruOR4Umz4/LDhkrK/Te0aXZTbXbT
+   z3/ITogwGlQHGeG9PYrRyPHvhBAeK+rOjkHSZidmBnEExSeD9YM1ojCRU
+   93BMaEiXi4+ZQvVwhrzHO16MfKlRo9JqcmyL88AMF11h1bR/kOQpQPLjh
+   lLizr3Ryf8PWQjL+ZH/NR4VYHDE8X7PgqsPDVqeimpgwn4dljzBrcms3C
+   rXRDrQ+NbRoAjn1D7GP4Z0OsN/k+YGDxb+eHOlI74rOeUpM+aXxwHnF7G
+   g==;
+X-CSE-ConnectionGUID: Z5B9OSPVTXyLTJl5+R1Jiw==
+X-CSE-MsgGUID: z20LWbJgS3C5O7wlbOno9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="781051"
+X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
+   d="scan'208";a="781051"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 16:17:51 -0700
+X-CSE-ConnectionGUID: QPDXIi4JQEuXWbbkvfN5YQ==
+X-CSE-MsgGUID: KujZTx+hRAChXpirRYufLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
+   d="scan'208";a="1904693"
+Received: from unknown (HELO [10.241.242.105]) ([10.241.242.105])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 16:17:49 -0700
+Message-ID: <1ec1aab8eabdad173ddef7483a940bfa3f6c3238.camel@linux.intel.com>
+Subject: Re: [PATCH v1 7/8] sched/topology: Avoid redundant percpu
+ allocations and bitmap walks in build_sched_domains()
+From: Tim Chen <tim.c.chen@linux.intel.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, kees@kernel.org, 
+	rppt@kernel.org, juri.lelli@redhat.com, nik.borisov@suse.com,
+ tglx@kernel.org, 	vschneid@redhat.com, kprateek.nayak@amd.com,
+ vincent.guittot@linaro.org, 	bp@alien8.de, thorsten.blum@linux.dev,
+ cgroups@vger.kernel.org, 	tony.luck@intel.com, david@kernel.org,
+ mingo@redhat.com, akpm@linux-foundation.org, 	linux-mm@kvack.org,
+ seanjc@google.com, ljs@kernel.org, zhangguopeng@kylinos.cn, 
+	dietmar.eggemann@arm.com, mhocko@suse.com, vinicius.gomes@intel.com,
+ tj@kernel.org, 	vbabka@kernel.org, linux-kernel@vger.kernel.org,
+ peterz@infradead.org, 	surenb@google.com, hpa@zytor.com, x86@kernel.org,
+ dmatlack@google.com, 	kexec@lists.infradead.org, pratyush@kernel.org,
+ dave.hansen@linux.intel.com, 	rostedt@goodmis.org, gmonaco@redhat.com,
+ jgross@suse.com, mgorman@suse.de, 	graf@amazon.com,
+ linux-edac@vger.kernel.org, liam@infradead.org, 	ridong.chen@linux.dev,
+ longman@redhat.com, bsegall@google.com
+Date: Thu, 15 Oct 2026 16:17:48 -0700
+In-Reply-To: <20261015153331.1872641-8-pasha.tatashin@soleen.com>
+References: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
+	 <20261015153331.1872641-8-pasha.tatashin@soleen.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D4CE7100007
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D622B1C0003
-X-Stat-Signature: mt4raxu98649bp9m88g3rqkzw9u8tyk9
-X-HE-Tag: 1792106005-86568
-X-HE-Meta: U2FsdGVkX18TpEZFnLn849rXgQvd/Jcnqsayb0Ld/1chwntEqosavaoIEoz2R61TbCZP0nkuxyWpCk6XwWHxNn+/ID7hEKreZIhCrv23jIRe5hsk8IprTrHeRyBlsF8HTG5tZi1EtWw88NuPhogwd7FykX9g1OvM+FXKhafWbOpnG7y50y6QbusaHllvm6We+tJrqM3L9H5iOcPXU+DLKCmdNNLqJG7cH1+C5drQz0nSeFr14BBUVpVirV418ynuHDpBPv7iDLvzOdZWGeubZeB99Y2JQh7Wfisfp8rmb+pWxaWJy+vFShuH1NIHyRoc4vBcSmrqZxvrMjDUcF/mMQXNrrZjMbX7IZrGKCadMb5+tm4KwN2MF4VOAsYYtcf9WiLFTj7cLh/cdMfNqILwMt+gcB6nCCjkPTmN9ISS8d9YR7EnQ3EmAmYov8zkLU875RbxGQGBxcBTPE4jx+dlwCmNI1bcDC66WBJvRAzA0Wrdw8wqnVHyPQDg2s7ejb+SRisVFZ874cuQ3SseEf17O3T2ZkziKqamGrO/TqUbxI7TU776HR+I0HkFJMdzosM2xspoQEB+T/sEw3Qt7c7ZRfJIYiDgiIecOGdjdjE4xYj53tB8/7ZGIgHd7/1P+FndR9eo02OM6mMN2f2UJcXDjYycskcSzuZdJryd1ydnyX4jGbtya/F5fxQUxUe+wh51KSGnzb/kcrvxrF2d8zIJJDIS5AIaj9/oNTO/YDkaQhjAVXYQ8V9lWyj82W/2Y9+pBR85g2ZUu462ZcWFOnBiRIUOrWHoeNb2o/bC030UrRtCwbKj1DD2g3/Wn2pmV2CBuwYmMwK/s8xvKiVu50hCMxaTHi9snenWSN+U2uh2z4Se78VgnBhOA5dLzncmnW1O/5nH/cBSObJiukWY7dQb7xZJafNrlQTK2mbRmCiYvjZA1AKyveXabwfz1vJSS4d7p15AW0tKj7j2Z9xJXc2
- xb2IB9on
- pVaQXaRI3K9jAYtTWjir9noW36pbCPtdI4xDDisA2raxpEhFhrgNRNlfPKw/F2l0KLqT3d2HfK8lwWgRI2oVVEJHHqoKoUPMDik6+wxg6WBK7lZiP9Tan+dkkdYWF+I92pkWKrg8eSd7AwJiHVfQhDnBzgg6LNcPMzEDJVvIIPxGTlGbdWPbn5li080I/ZBjX0rGtB5e4joqDMdrytn4M8mm3vaYt5KDp8OHBZFwrstk/A5vHRYUdpRD2dYnDalpQL7hNGzm45YTPs9dECJ4suZ9GN2mno1rQWJPADPmWUOx1ijLxEYJezSjAIrhk4w3nLYGk0r9a+6RiZbW2Y+PsSdKbCgDOZFe6zY+txgrXUub8ZKLadWSs3L41uh9XMrpjeM4uZuQcnCc3N1g9z3thC053gWbNSc08pNOYRW62QG64BlNmJSCzFVmj+AqgeY818Ju0wJPGFaNNPNlA9NzN38Os6Q==
+X-Stat-Signature: hhrt9mtubjeuutfqw7h9ngp8qfb71pua
+X-HE-Tag: 1792106271-434951
+X-HE-Meta: U2FsdGVkX1+95seqmvoBYb1cBDYuwwtNmNaGFEBha0ZObKHeChh86aYfV34ls+aAylMB8Wv3aAPblKWzrFgC0i0mjeicwl41vPjk0UCv4xcV4jA+2r311vkMTmiLNW2PTW6iK9p2r1ZXgDQnJTbzsJIIPmk/SUVY15BCmrsCGCUsIBatni9TmvJMwJX6kr7ZQ11Tvb8uBJ9kmFfYeHcMmXZvBgKZThxmkN8LHms1mTFHOiaIcQxWEBQK7DT3Rg2LemcQCo/+PrHIgTmPHFHvSBFyjZiKJAtKCpfeolt7OSTWu8gdL8Od/Af/XmKwKS/aBgxuqgBKSnfCMhtAVHeqiuCJboZAXHbkyyAh1o+saJcAIfYnHp4bL7ZZNL4+drybfRYlfQEAXE5waBJ87b6KsJAQfniP4ZC5FFqyWFUXaoBrm5ZicC0rSvolgIlP383OnPgF22w+qfsmUQxsCjEG9a2oMp7FIvpnuT0iRTy2balsbY9h+JQWQsUKpR2r2CCoWQH8tmKqGSliHkAqIsOEAAiDk+3D3VgEfymxfLUTfRxpYLtATqxP0ocG1ijSXdSUY9/CXfmXtFgXCKEeBLJ+jvTIR1Vnb2BVa9hmEnWvABR6MCFXYi5rF+VZaqaAixs4/m3SCVuPV8kAiEdC+l9B3MsVUKSoDoM7UH4nj/1Eu1kjduzO3XwqB9RkbFQLZiW8Xs148R1gsTFkqJXxyTC0LFbPCUWcBnIOF9uJ1Y6mabs2/B7OQSAD3BCxYDP2+EuRRmhGnwvpwf6ltrNUSWcTNMgGTbLy35XQmJEMYbYo9ROPrYmQO+/iyJKDexREy5vn78bgvQpH86k7+pYqJiAkevspEFsMp5PmMcBrf9Kw4ULP/JW4MT2Emc1YSflTaSuTbYDoHkzX16F0LQHNAlbjusGpKK1PME0WnmzvqgSsOG8bXFcsIG/S7NOLXEKHgEqhxrg265uV/hmmMcIkwLz
+ cnoCrQa1
+ YYQ6vbZF0R40kXpzQDJZlOlWbC8vA+W0v2ltUf4mgzP43Xl9OEN6GSBJ6ReFHqHKPhsIrwExiDkcSZpg1zMpQWQ+3bzNpaiB3CV/wIylhYZMowjmMNzxLrKc4v7ymbegq/9knizBJ+d1S+R2ZWYWZcpHLI8a8K1N7dviWr9HC1ePrdbDEJxQjcScyFx+/Vy0Qs+jzVQMF1JT7znLgTGmIrkvUmdHaK9kYWo3+p0/2xpFlz3PTGH3NwBCH7Z+THQdbJzcV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,122 +118,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-struct mempolicy uses an atomic_t as a pure reference counter.
+On Thu, 2026-10-15 at 11:33 -0400, Pasha Tatashin wrote:
+> During CPU hotplug, build_sched_domains() is invoked on every CPU
+> activation and deactivation. Profiling build_sched_domains() on a
+> 480-CPU Intel Xeon 6985P-C and a 512-CPU AMD EPYC 9B45 shows several
+> sources of avoidable O(N^2) and O(N) work per step:
+>=20
+> 1. build_sched_groups() and build_overlap_sched_groups() iterate over
+>    every bit of sched_domain_span(sd) via for_each_cpu_wrap(i, span, cpu)
+>    and check cpumask_test_cpu(i, covered) one CPU at a time, even after
+>    entire child groups (e.g., 120-CPU NUMA nodes) have been added to
+>    covered. Instead, track the remaining uncovered CPUs
+>    (cpumask_copy(uncovered, span)), clear each built group's span with
+>    cpumask_andnot(), and advance directly to the next uncovered CPU.
+>=20
+> 2. __visit_domain_allocation_hell() and __free_domain_allocs() allocate
+>    and free 3 * nr_levels + 2 temporary per-CPU pointer arrays via
+>    alloc_percpu() / free_percpu() on every domain rebuild. Reuse the
+>    per-CPU pointer arrays across domain rebuilds under
+>    sched_domains_mutex, clearing entries in __free_domain_allocs() and
+>    only freeing the topology-level arrays when sched_domain_topology is
+>    replaced in sched_init_numa() / sched_reset_numa().
 
-Convert it to refcount_t so that overflow and underflow are caught
-by the refcount saturation checks.
+sched_domains_mutex does not protect the free:
 
-This silences the atomic_as_refcounter.cocci warning, which started
-matching __mpol_put() when it switched kmem_cache_free() to kfree_rcu().
+[snip]
 
-No functional change for correct callers.
+>  #ifdef CONFIG_NUMA
+> +static void __sdt_free_percpu(void)
+> +{
+> +	struct sched_domain_topology_level *tl;
+> +
+> +	for_each_sd_topology(tl) {
+> +		struct sd_data *sdd =3D &tl->data;
+> +
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202610061946.Bx22ZFrw-lkp@intel.com/
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- include/linux/mempolicy.h |  5 +++--
- mm/mempolicy.c            | 14 +++++++-------
- 2 files changed, 10 insertions(+), 9 deletions(-)
+sched_init_numa() and sched_reset_numa() are called from
+sched_update_numa(), which runs from sched_cpu_activate() and
+sched_cpu_deactivate() without sched_domains_mutex. The free is safe
+because every domain builder holds at least cpus_read_lock(), and
+sched_update_numa() runs under the hotplug write lock.=C2=A0
 
-diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
-index 65c732d440d2..8b7570a90e54 100644
---- a/include/linux/mempolicy.h
-+++ b/include/linux/mempolicy.h
-@@ -10,6 +10,7 @@
- #include <linux/mmzone.h>
- #include <linux/slab.h>
- #include <linux/rbtree.h>
-+#include <linux/refcount.h>
- #include <linux/spinlock.h>
- #include <linux/node.h>
- #include <linux/nodemask.h>
-@@ -45,7 +46,7 @@ struct mm_struct;
-  * to 1, representing the caller of mpol_dup().
-  */
- struct mempolicy {
--	atomic_t refcnt;
-+	refcount_t refcnt;
- 	unsigned short mode; 	/* See MPOL_* above */
- 	unsigned short flags;	/* See set_mempolicy() MPOL_F_* above */
- 	nodemask_t nodes;	/* interleave/bind/preferred/etc */
-@@ -96,7 +97,7 @@ static inline struct mempolicy *mpol_dup(struct mempolicy *pol)
- static inline void mpol_get(struct mempolicy *pol)
- {
- 	if (pol)
--		atomic_inc(&pol->refcnt);
-+		refcount_inc(&pol->refcnt);
- }
- 
- extern bool __mpol_equal(struct mempolicy *a, struct mempolicy *b);
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 70298fded1b4..7c78c66f7f21 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -138,7 +138,7 @@ enum zone_type policy_zone = 0;
-  * run-time system-wide default policy => local allocation
-  */
- static struct mempolicy default_policy = {
--	.refcnt = ATOMIC_INIT(1), /* never free it */
-+	.refcnt = REFCOUNT_INIT(1), /* never free it */
- 	.mode = MPOL_LOCAL,
- };
- 
-@@ -492,7 +492,7 @@ static struct mempolicy *mpol_new(unsigned short mode, unsigned short flags,
- 	policy = kmem_cache_alloc(policy_cache, GFP_KERNEL);
- 	if (!policy)
- 		return ERR_PTR(-ENOMEM);
--	atomic_set(&policy->refcnt, 1);
-+	refcount_set(&policy->refcnt, 1);
- 	policy->mode = mode;
- 	policy->flags = flags;
- 	policy->home_node = NUMA_NO_NODE;
-@@ -503,7 +503,7 @@ static struct mempolicy *mpol_new(unsigned short mode, unsigned short flags,
- /* Slow path of a mpol destructor. */
- void __mpol_put(struct mempolicy *pol)
- {
--	if (!atomic_dec_and_test(&pol->refcnt))
-+	if (!refcount_dec_and_test(&pol->refcnt))
- 		return;
- 	/*
- 	 * Required to allow mmap_lock_speculative*() access, see for example
-@@ -2871,7 +2871,7 @@ struct mempolicy *__mpol_dup(struct mempolicy *old)
- 		nodemask_t mems = cpuset_mems_allowed(current);
- 		mpol_rebind_policy(new, &mems);
- 	}
--	atomic_set(&new->refcnt, 1);
-+	refcount_set(&new->refcnt, 1);
- 	return new;
- }
- 
-@@ -3188,7 +3188,7 @@ static int shared_policy_replace(struct shared_policy *sp, pgoff_t start,
- 					goto alloc_new;
- 
- 				*mpol_new = *n->policy;
--				atomic_set(&mpol_new->refcnt, 1);
-+				refcount_set(&mpol_new->refcnt, 1);
- 				sp_node_init(n_new, end, n->end, mpol_new);
- 				n->end = start;
- 				sp_insert(sp, n_new);
-@@ -3224,7 +3224,7 @@ static int shared_policy_replace(struct shared_policy *sp, pgoff_t start,
- 	mpol_new = kmem_cache_alloc(policy_cache, GFP_KERNEL);
- 	if (!mpol_new)
- 		goto err_out;
--	atomic_set(&mpol_new->refcnt, 1);
-+	refcount_set(&mpol_new->refcnt, 1);
- 	goto restart;
- }
- 
-@@ -3380,7 +3380,7 @@ void __init numa_policy_init(void)
- 
- 	for_each_node(nid) {
- 		preferred_node_policy[nid] = (struct mempolicy) {
--			.refcnt = ATOMIC_INIT(1),
-+			.refcnt = REFCOUNT_INIT(1),
- 			.mode = MPOL_PREFERRED,
- 			.flags = MPOL_F_MOF | MPOL_F_MORON,
- 			.nodes = nodemask_of_node(nid),
--- 
-2.56.0
+Please fix the changelog and add lockdep_assert_cpus_held()
+in __sdt_free_percpu(), so a future caller cannot break this without a warn=
+ing.
 
+
+
+> +		free_percpu(sdd->sd);
+> +		sdd->sd =3D NULL;
+> +		free_percpu(sdd->sg);
+> +		sdd->sg =3D NULL;
+> +		free_percpu(sdd->sgc);
+> +		sdd->sgc =3D NULL;
+> +	}
+> +}
+> +
+>  static int cpu_numa_flags(void)
+>  {
+>  	return SD_NUMA;
+> @@ -2449,6 +2483,7 @@ void sched_init_numa(int offline_node)
+>  	/*
+>  	 * Copy the default topology bits..
+>  	 */
+> +	__sdt_free_percpu();
+>  	for (i =3D 0; sched_domain_topology[i].mask; i++)
+>  		tl[i] =3D sched_domain_topology[i];
+> =20
+> @@ -2507,6 +2542,7 @@ static void sched_reset_numa(void)
+>  		kfree(masks);
+>  	}
+>  	if (sched_domain_topology_saved) {
+> +		__sdt_free_percpu();
+>  		kfree(sched_domain_topology);
+>  		sched_domain_topology =3D sched_domain_topology_saved;
+>  		sched_domain_topology_saved =3D NULL;
+> @@ -2708,17 +2744,23 @@ static int __sdt_alloc(const struct cpumask *cpu_=
+map)
+>  	for_each_sd_topology(tl) {
+>  		struct sd_data *sdd =3D &tl->data;
+> =20
+> -		sdd->sd =3D alloc_percpu(struct sched_domain *);
+> -		if (!sdd->sd)
+> -			return -ENOMEM;
+> +		if (!sdd->sd) {
+> +			sdd->sd =3D alloc_percpu(struct sched_domain *);
+> +			if (!sdd->sd)
+> +				return -ENOMEM;
+> +		}
+> =20
+> -		sdd->sg =3D alloc_percpu(struct sched_group *);
+> -		if (!sdd->sg)
+> -			return -ENOMEM;
+> +		if (!sdd->sg) {
+> +			sdd->sg =3D alloc_percpu(struct sched_group *);
+> +			if (!sdd->sg)
+> +				return -ENOMEM;
+> +		}
+> =20
+> -		sdd->sgc =3D alloc_percpu(struct sched_group_capacity *);
+> -		if (!sdd->sgc)
+> -			return -ENOMEM;
+> +		if (!sdd->sgc) {
+> +			sdd->sgc =3D alloc_percpu(struct sched_group_capacity *);
+> +			if (!sdd->sgc)
+> +				return -ENOMEM;
+> +		}
+> =20
+
+Keeping the arrays also means every slot must be NULL when a build=20
+starts. Patch 5 depends on that: get_group(),=20
+init_overlap_sched_group() and init_sched_domain_shared() treat a NULL=20
+slot as "not allocated yet", and the overlap fast path treats=20
+"sgc->ref > 0" as "set up in this build". An old pointer would pass
+these checks and be used without a warning.
+
+The rule holds today, but nothing says so. It also depends on builds
+never filling a slot outside cpu_map, because the clearing loops only
+visit cpu_map. Please write this down and check it, for example in
+__sdt_alloc():
+
+
+>  		for_each_cpu(j, cpu_map) {
+>  			struct sched_domain *sd;
+
+Maybe add
+
+        /*
+         * The slot arrays are kept between builds. Every slot for a CPU
+         * in cpu_map must be NULL here; lazy allocation treats NULL as
+         * "not allocated in this build". claim_allocations() and
+         * __sdt_free()/__sds_free() clear the slots, but only for
+         * cpu_map, so a build must not fill slots outside cpu_map.
+         */
+                for_each_cpu(j, cpu_map) {
+                        struct sched_domain *sd;
+
+                        WARN_ON_ONCE(*per_cpu_ptr(sdd->sd, j) ||
+                                     *per_cpu_ptr(sdd->sg, j) ||
+                                     *per_cpu_ptr(sdd->sgc, j));
+
+
+
+> @@ -2748,30 +2790,36 @@ static void __sdt_free(const struct cpumask *cpu_=
+map)
+> =20
+>  			if (sdd->sd) {
+>  				sd =3D *per_cpu_ptr(sdd->sd, j);
+> -				if (sd && (sd->flags & SD_NUMA))
+> -					free_sched_groups(sd->groups, 0);
+> -				kfree(*per_cpu_ptr(sdd->sd, j));
+> +				if (sd) {
+> +					if (sd->flags & SD_NUMA)
+> +						free_sched_groups(sd->groups, 0);
+> +					kfree(sd);
+> +					*per_cpu_ptr(sdd->sd, j) =3D NULL;
+> +				}
+>  			}
+> =20
+> -			if (sdd->sg)
+> +			if (sdd->sg) {
+>  				kfree(*per_cpu_ptr(sdd->sg, j));
+> -			if (sdd->sgc)
+> +				*per_cpu_ptr(sdd->sg, j) =3D NULL;
+> +			}
+> +			if (sdd->sgc) {
+>  				kfree(*per_cpu_ptr(sdd->sgc, j));
+> +				*per_cpu_ptr(sdd->sgc, j) =3D NULL;
+> +			}
+>  		}
+> -		free_percpu(sdd->sd);
+> -		sdd->sd =3D NULL;
+> -		free_percpu(sdd->sg);
+> -		sdd->sg =3D NULL;
+> -		free_percpu(sdd->sgc);
+> -		sdd->sgc =3D NULL;
+>  	}
+>  }
+> =20
+> +static struct sched_domain_shared * __percpu *sched_domains_sds;
+> +
+>  static int __sds_alloc(struct s_data *d, const struct cpumask *cpu_map)
+>  {
+
+and maybe similar check=20
+
+        for_each_cpu(j, cpu_map)
+                WARN_ON_ONCE(*per_cpu_ptr(d->sds, j));
+
+> -	d->sds =3D alloc_percpu(struct sched_domain_shared *);
+> -	if (!d->sds)
+> -		return -ENOMEM;
+> +	if (!sched_domains_sds) {
+> +		sched_domains_sds =3D alloc_percpu(struct sched_domain_shared *);
+> +		if (!sched_domains_sds)
+> +			return -ENOMEM;
+> +	}
+> +	d->sds =3D sched_domains_sds;
+> =20
+>  	return 0;
+>  }
+
+
+Thanks.
+
+Tim
 
