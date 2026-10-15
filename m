@@ -4,121 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E7B3CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:37:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4109CC6B3A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:39:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F195E6B0088; Thu, 15 Oct 2026 10:37:52 -0400 (EDT)
+	id C12286B008C; Thu, 15 Oct 2026 10:39:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECA5C6B008A; Thu, 15 Oct 2026 10:37:52 -0400 (EDT)
+	id BC1726B0092; Thu, 15 Oct 2026 10:39:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB8BC6B008C; Thu, 15 Oct 2026 10:37:52 -0400 (EDT)
+	id AFE116B0095; Thu, 15 Oct 2026 10:39:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B3B9C6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:37:52 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 97D736B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:39:53 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 312BFA0AA8
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:37:52 +0000 (UTC)
-X-FDA: 85325114784.27.DDB21C0
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 843662000D
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:37:50 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ddbSipcR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=4ncienth@gmail.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35441A74B8
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:39:53 +0000 (UTC)
+X-FDA: 85325119866.27.5A357B3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 35FD840002
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:39:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ehxEHhNM;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792075070;
+	s=arc-20220608; t=1792075191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=wzlE60HTAGr+gfmDoDFGpsVbnSFEzyvSpQks7NPwYvU=;
-	b=7z2RKs6N8jS9WOtXui5wxvh2drKkJnTbU5FjBaE9L2IHD3BZm8QbHB+1+l0B8HCoN89D/A
-	9QIEAYBo++995DglGRI0BbpNaaJpbVugrWAmDwqOB0L/L0g/452UtEx0OUsC7cB1Ayaxbu
-	Ztbfs1lZ9FQRsZZTrSAkqGQWtxGZBZE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ddbSipcR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=4ncienth@gmail.com
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mmiUyqmsfSRg6ClwR6Q6JMr/UJ3nE7Qv5AHeR45H+eU=;
+	b=S+8osq+UgcTyL/nJhvGNoDL+TnjDXOO4nGWlZ2TyoXnqBKyA8C8BwTMvYFg5cIfpPtdchu
+	O+wIrnNFVBfOKKonNMHCc3eIoov93rbhx6++prO7x85Ga4JPC4fDdQpHFZYhDM1eh6QNda
+	16OhttGTP5kDCHMODcsna3qT81m1UGg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792075070;
-	b=HgJT/NK7z7qHghcN/fCJTSo83EmWpWFrTitT28d5KQ+k3ZdUckoK6sNeXohaOWi13fvrmj
-	KlsGSThcvj//+iSbur/GuhufkgQ1oUvfwiigQax3h3nKbLSIqwbfmQoHz6OtvEAQSZSUHT
-	2Rsz7W4UaCl++BaTUPLpseQidNI2OI4=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3ac677668a9so1442507a91.2
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:37:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792075069; x=1792679869; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wzlE60HTAGr+gfmDoDFGpsVbnSFEzyvSpQks7NPwYvU=;
-        b=ddbSipcRlRsZcvOVQ/7cWSvOeWfKQOiTJBVPk+CUVYh6N5F33YH584iSsCq+Z4qDYQ
-         HIXIpsAMHuWatiwj0i7/XGHmnRwYM/YjWONKMNKvpnQgYnhzS6UCRxNyo04ixcPJvMAJ
-         LrZiHY3x9Pt86DPGo18s3bsOsFDFGZMdA0UA9l4Bgofr/ekJjLKLBg0ePgX2LVatFe2T
-         OOuFiooahmZqlShwo1WWHoT7kPvafHR0STnAUCare7Acen9QxF8dQry996AET91m5JA3
-         uwjEk4GNk+5WszexP9TxvBwxIXMLFwr6Qi6zICjvNs2yD+5AjKW70qsES7dAgqL4Ipiy
-         QJOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792075069; x=1792679869;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wzlE60HTAGr+gfmDoDFGpsVbnSFEzyvSpQks7NPwYvU=;
-        b=nZ+++sFT1mYFoWONi7rSD588x5v0L5MV/jN+9lM9NXm0/iW2oTO/M6YwSWv8rWEVmy
-         IAYxwgCNpNA2h22VSm9AWoYBspiRsjhZvB9bTSE28OLLoafwuHGeQBCtJuT+PWgDGW1P
-         /ARu6wEG8p5ChAAhlEtToX+W1YmQoGCQMfredYn9wu0aOsIKk+Q+Z4getpLPW/EQLRQa
-         e5WkrgR+KVaHR3Y0kN/qZqj98vd6zLKV39e8VE6SzmJIKjBwLWUOGTPNDn68+7HYQDGD
-         HuxBx/zMlKN3NeXmOzzzdMd8lV8px1I+5e0QvmvF42dxmslrdIqlZPYgbq93LEmHa3qy
-         6UBA==
-X-Forwarded-Encrypted: i=1; AKwUvBz7MmNGx6Uzdj8CRnQ7EC3Pp6UB/LrduUcTB9csdPHc+L4m1KaKNMSR8lj07hl+ZqMIzEvAzPFYAA==@kvack.org
-X-Gm-Message-State: AFq9FYIvcbL8AdOPdftd5tcfwDwPSvaWTP0IzbzlHo2DES7lvhKfIegz
-	fWwsC4v6uiMUjlY1Lrwn0jvtLcU8yWSNK3Gy5W6cEUQLZObiho6EiHT7
-X-Gm-Gg: AYBFou2zwlRge/ZUkdP9tlsBG04vAjB8BkEi1efcreii41TASsMONspvmHqHAxqsAxx
-	R1YppkJsAxAs8uffmHZsJjPp7xstvIieEVcLo43CyiEUZ4lihloJoqESzIfH9jHFzPUipZeiSi6
-	amXLRFVIcekKIKbUXgbgNUvTABjMr8WWJxs7GvExjbWyZTCcHJLgHwW/zp7wCWvUnkbpcmLon1V
-	36vC4s0zSrbvoNuY9uo4BJ6qHsHQRAQBMQO4DHwT3cnXJRJo20KwWdmNRf8NZfVamBIkaVtKhgx
-	HtJ8OQtaimgGuUSxwPsivXPvrmhF/eXJXwiUd0pQbYsQWBo1XJnWUbhP2/Sbe1F6hEXmdyVKadw
-	XagvqQ5w2yhmp9qoo/PlCPVi5ebxQ7gAtGfPUjbN93mgKNIBKCmfIUOFKDU9S8Amu5lvzcszzgE
-	ASZsVNJMq8mgogofh0W0uBxMmCVLD92KDLYO/SRcKPUzKGCZldQg3VYgx776n2ekUPfXpZ5fDoi
-	PgeDIiCn9w=
-X-Received: by 2002:a17:90b:4acc:b0:3a0:e1f7:9b04 with SMTP id 98e67ed59e1d1-3ab3a60ac9amr17946112a91.12.1792075069046;
-        Thu, 15 Oct 2026 07:37:49 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac936f89d1sm2729799a91.2.2026.10.15.07.37.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 07:37:48 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Daehyeon Ko <4ncienth@gmail.com>
-Subject: [PATCH] mm: prevent VMA generation reuse from skipping readers
-Date: Thu, 15 Oct 2026 23:37:35 +0900
-Message-ID: <20261015143735.1630957-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	t=1792075191;
+	b=tyOkKGAvMSpFqFRvw4hBHK7Muwcnb4Sp/lYQx2qgCAyDtYARts/EDkVT74iDNH4EtrG6/M
+	YpHrYnnvMkxmWjxDTX8aQwXHgZuLaxSbBiHV26vmp0l85wiwgkP0O9PswXX+d6WmYlNYNQ
+	qAHbI57aZYjpUckSrKwE/wGUxo2ILqE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ehxEHhNM;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 78B4943B84;
+	Thu, 15 Oct 2026 14:39:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81CE1F000C4;
+	Thu, 15 Oct 2026 14:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792075190;
+	bh=mmiUyqmsfSRg6ClwR6Q6JMr/UJ3nE7Qv5AHeR45H+eU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ehxEHhNMPvEzprsuKPf0KyV72AqmkoT0cFkugddWqDR1jW16KcjT4sO/ySSxEfGWT
+	 DIlBxD4Y3HvPqj7a4dnfqU+9/yusDtBRALtYlZ6ZcU+KYo9SE6SCsXrezt0eLqlFmL
+	 zHSGOIl3ezj7Y7sJzdbmtAKWHo0ylKdS2ihWXtbD12TecBWekas7wDvGVsybx3q7hF
+	 CDEK611Eh9ePcP90Uo37gH6RHHEd2RsIfFuEJOrqJhMXTcKw7ljsXYYVR7VuV2983j
+	 gvSQOJ0Ujn2HLOmoXOdlbU5rgRmZZmg3JNA5Oaq4h9Ly6f3xUUsg+CXrpr/vlP2q+O
+	 ZD+UwhvY4/X9Q==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id E8C531980047;
+	Thu, 15 Oct 2026 10:39:45 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 15 Oct 2026 10:39:48 -0400
+X-ME-Sender: <xms:seXQatj6yK-vAkGfz3nmtzKfQEFz5k8BX2NImvxWqUbYpsHkFTQ01g>
+    <xme:seXQakYEg9wygmgO8qd9seG4qnI9uV1FznHgR73T2LqaINe9lH9e9JGyjRIcvPgjN
+    5-UyZOH9z1AE_w28SJ8XhztMPG7VFPG3N8OvnMXYuxZwrCPNLPl8Wtm>
+X-ME-Received: <xmr:seXQamW3ujf5cRPatCqmaVHg7mAYJNu8yUpSsSsDY4CYvzzTGX5vBv0WB3A>
+X-ME-Proxy-Cause: dmFkZTErd8TIAjJGupJmPa7o/yBWPPRT5ZQiaOhRc5EH22t7peU7D1eeODEsp8i629tNhO
+    r4mHy21KV0D6RvfIOkH3orkwlPlVaAN6jAj64nPwE5LJH03cLu0deasjjvmPESP5FrRnyw
+    jePRXgR+deIN9SCGY3LKnpTMhEl80DUyZsvo/zt9GQ4FZXq0CZ278f5cLt9/f6ZRqhOO0z
+    MW3niMw169KWxeTjSDwTUJBvQbp6c2o9+777eazijSZpKAhWCsSh1+j1yQFNgkZxgW+JEC
+    QKT4R1QjCQZxBw+xy0ZP+qQNv2hi8RFl5iAbv4eFLhMdaBxtKPy3D7BBsuG5AGTzp6ocfO
+    gW9/rTewo5ZjF/I7btK8pdenXh4Pai1Tp+eppPQBJmhh3h7qPtwjCu46ta7YXgDVbSS8Vl
+    Xy1vFOQa3hVQkaD8aDr9nO2Ru8V8jtY1ADsw+jwmfKujikDA1gymEpH8JSR9zF2Tk6Mq+y
+    0GHFZ7J9Fy+MbjhVfRFODtQDDx8VwCvZoWDuk7YUY4YDiZbLhZeOkPECpmVW0meovVfYBn
+    LxrVGtlOuAgpbe2FWut7pkilEntTgIphkhOEz28RSG8XGZXjvH721/OJrwz1gxUriBmlpx
+    kglVxqDks+d8Lgi2rTjnr2fXqEkKG0pk69Anuc0vT+mD8dIqRl+/rUEDT3HQ
+X-ME-Proxy: <xmx:seXQalZ_Ia4dtdBh7Y0MNSkyV_tmDrSX11oLZzx7oE4qV226opti-w>
+    <xmx:seXQatKEZXVI8WusdGaszIdpzIltlRXDnHaqnVKMgn-ZBWuxeYomNQ>
+    <xmx:seXQag1p6-xpzk_G1Uh6kjlQ1B1pIFbQs_lyg4K2NR9OivETPJTidQ>
+    <xmx:seXQarj-N8TiYs_mhj8M4epjZVN4_2UGXOyOyXn9eH-y7_7aVVs8UA>
+    <xmx:seXQavwGIxfp-zTAD4JRC20qfXYX_ZVHXgCfdyXS2sTR8wDiK9Y_eUPY>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Oct 2026 10:39:44 -0400 (EDT)
+Date: Thu, 15 Oct 2026 15:39:43 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-ID: <atDlYr_RM4WRlMqG@thinkstation>
+References: <20261009125503.126202-1-kas@kernel.org>
+ <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
+ <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
+ <as5q14OsbK2CmOrh@thinkstation>
+ <20261014202936.GC371161@cmpxchg.org>
+ <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
+ <atDMN5MoGrwJNpAj@thinkstation>
+ <a809956b-9775-4667-be60-f635b9a72ee6@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 843662000D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a809956b-9775-4667-be60-f635b9a72ee6@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 35FD840002
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 5yfjnyrywpqzqgqgtg1i5q3t8oeefwbd
-X-HE-Tag: 1792075070-112846
-X-HE-Meta: U2FsdGVkX19+7wbLqbwVjpIUHzl4NFshH9WGQMKkc4FUTdAo9I7McNzCD/nysXyxeVTiA55w+sji0OffuDvj/kYmVAkGw3+GhnQ0Y0Q7HWoMLEVxJI+Y8Nsc4dv32DI0EUnIyh70A1Q7Il1e2i6YQ4ovXs7IDRn8i4uhT2CMRB3VMRb2Uz3ChedKj4lTulMvFGJlNHNmuvAK/Xw2UEgU1I6yeraBCT0vTXbxiyUkoY40tOo0GkYHfMm2oof/l07ndME9whWgTtrQ2PwInYHEBKPhhLId9zRfjqwB8A6RsbFhdWCQrofakYNnshTuABjij1jVOYqqpTU+S/qvAOGHCA8W1WuZSAy/ZToiP93qJzDxFRTRCc4Yhob1UkhhnMmT+ofDr9RShmooccvKjUjoSq7PLVAMM0Un+rHypjQzAe/38OcFzdgDrqDVQzw//ZMoYf+sJqG1ebIWSYcamxoXSeYez/w93/Q4cLc3nLak3ntol9TlqWUwKTdVAuSPwtP78RjYoRezysJ47qA6eWiNiYSF8L1g1AwSEFDM5F2Afm6I+MypVDiEo+xPiVPRiP7JOteVob3rc0Qh10AKXfQ+ZSEtsoU1JsQcZ1hgIRYa2Ltt8SpIa6rFaW4Iwp2fvWdfkTXXWRQOLqANtHz/w6HeYvjSDLA9keWbLzlnXzOWe3zKc5hG02AYdhsI9fiAuVmoqrM4rfnMDMRba2hUq8NqhGyOWiyLRjGEGaXMeyLBbZt/cPGe3FLPTCvrFgJe4REF38PktcJCRJNRBbdcSIxa8QUqBeL5Tj9C2gDyNrOZGGLyaElPfOFqropj9pFD/DbSW0rC2lwDwmh78lWpREFqiRMUs5W94oTUaGkmw37j+p/nIk6y5cHTrWA3N+rw9JXYoJDNTfH76dR2bN4LFVc6IcKEMXthmTecBs+h4RlRx46u03iGoYRXxYFgZQxozww6f6kpJFBzJ7ewEwyl6Ss
- 3Y/FX36E
- WmEIuf2eiPqyPN81UVzBGxOQEOasa+oJzdBF1UDKGWFtXLeTzbjBMmZfyz6pPMu7WrZ2waScGo5370uomkOwT9vB2V6DnztNLFKzfSpJ2qQKA1QTSzku4Ks7Izju3MPaTFtQxrjxajuMxl05kpPpllXeYgoFiJe+2ySW+ZzzPj8FlZ3n3eLQpFjWKbcES8a27cWw6/3/LqDDXnjaD4JGC3C8/x0MzLXDXvi7GIdsJY2PRsR6lj2IB9RKkTarvk/aYn1lYphImvuT6ZCIV9yRyZA6lqnMRnCY2kwTJnCRGKTg31ss4AhiJvcvS3IrZ0m2lvL65zINJAHR/ZubggazrtVbU40YAfxBo6xAksXQUQFyfNVqXAVIZiGMRzEElejvsnxnTBMST1QBRyDVAqTJTgqUdCaFvHayT0VaKO1ifLNYUdnVUJwG0rZf8Hg==
+X-Stat-Signature: 6ofqpf6n93wnc83k15jgs8t4kh3oq13p
+X-HE-Tag: 1792075191-421266
+X-HE-Meta: U2FsdGVkX19BKNeG5OAjOkofL6KOraLZAJ+3bs7KjI+giGQwCNz39txqVPY5cPDoM1eFXxXgeQVZi3loz/DXVx3Xc96edUoQsLCN2y/CyOHoHMNBE3seCs+NzXU+1WviXlMbeEEDbRVa8P96Km3hVcV237awpRHRT6GphJG2MxBewZz5c0Csj7AcO4OIWfu3VXEO0U/tjls4bjc5GnApAIxhR6IBx/t82Ru3cCzGycH+WmWjtxTLzxOymDH2wL9Snv25hbgILRcH0ZJ/6Bx0OVLFjd1hPOBFXlkY8asLz3x3KDstFe8pgHhKvcRXwo0p9gCjjS1oca71Dgn90lld7d9xyarnSN6OiNl/QnM78T2/dWeZSFQmj8VU+xoKpaJribylqz7bvmxwZ9SrTq4ldrsvhzTLjJMxw7gvwRR5jFzjzMkDhXQQRzwatzJ4PZR9XvkwkZzCGxMl66QDYGwt8anx37gRA0zvaE8BbV0Ou/rORm4lM3l1viLoUZyZXNjC4p98kxhe3e7G53mLiPO/JT2rrnT6t6LGBAtUEsfWGm3qW6d8imIy1ncezoN5UcTcknauuG0lxUnBxp54YFd3fMgbgZxALcW2Iv9RtgKGihRFFuYjPEa3y7YlD1wMnDro2awNx9ZMz9XFRTikcfOPTr+JLnXgIemY96V+Q6BNx0FFiow991ghUBl28WGHVfb4JmPGsNPax3ID4rp/PxQo9VM25XRYxu0DKHKm1lAIaAuMr4Nrxsn3FV8xcj3806APcA9TQoyYcc/nNQx/VRQY22Sw/jP9pTkUkw6QPNqkDzI8GxScZ8ZhWhFDDlxdexHqdWE0izSnhXExWhUnnE49aYjKBDaqicLs9lz2g+YSeesEsUr91oqubp7aCr6i2Ik6jvREZ8gAcC6xO5NnRFC/fPZhLj76niEYIzwFYxJdTIQ2k1EQ7NlYSymYTJ8UjvKDGG8aL6jPbrKQqwszroH
+ tDIDW9iF
+ 8LHCSzXQ2DmK87cUNhw/N1x68h5ZD3d4oXjrKA7oLdVD91xQ5qvYBsymgNNRbiVHFmdbvTov9VKj31+AUTGs1ALNr5EI52mg5F5sqbIkAbfb1EKDtGMyEUPCakXSZY0uqqs2j9fs5Dwv6UDSvOTQ2b5304vSkSGar6AaSdDwBWvOZTWEcmdoEZc6LwC/Nm4Fy7nhK6nRseFycZiF2jqU1FohjPVmhrteZP5dZm25JdP9vn2KZ6eGaMybcn/lsCDrAuJ7WL8cwQ9Ec3q4OyIbekmZ9/Oh7xBD/foOXOVF3BJMKTdwhIvhg7mDtCZWWga5XOMz4Rcwqj7QnjFQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,182 +130,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Per-VMA write locking treats equality between vm_lock_seq and the current
-mm_lock_seq as proof that the active mmap writer already excluded readers.
+On Thu, Oct 15, 2026 at 03:53:30PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 10/15/26 14:55, Kiryl Shutsemau wrote:
+> > On Thu, Oct 15, 2026 at 09:16:36AM +0200, Vlastimil Babka (SUSE) wrote:
+> >> > And agree 7.4-rc1 with CC stable is fine. Sadly, not sure if anyone
+> >> > but Meta is using the feature right now.
+> >> 
+> >> I thought it was there for a long time but it was only added in 2025 :) At
+> >> least the enterprise world is slow to adopt things, AFAICS.
+> > 
+> > I was thinking to propose a patch after merge window to make defrag_mode
+> > default. Do you think it is too early? I don't think it is ever going
+> > to be truly stabilized without wider exposure.
+> 
+> We can try it, but preferably with arguments (and best, numbers).
 
-Both values are 32-bit. After 2^31 complete mmap write-lock acquisitions,
-an old VMA stamp can alias the live odd generation. vma_start_write() then
-returns without waiting for an existing reader.
+Will do.
 
-A capability-free reproducer uses brk(0) to recycle the generation, then
-races an anonymous fault with MREMAP_DONTUNMAP. The stale equality lets
-mremap move and tear down a PMD table while the fault retains vmf->pmd.
-Unmodified kernels panic in folio_add_new_anon_rmap(), while diagnostic
-runs show a freed PMD access and a writable mapping created in another
-PROT_NONE VMA.
+> > We also discussed with Johannes to make a stricter (defrag_mode=2?) mode
+> > that will not give up on fragmentation ever, but OOM instead.
+> 
+> Would you use that mode at Meta? That however most likely wouldn't be
+> general purpose enough to become default.
 
-Add an epoch that advances whenever mm_lock_seq wraps. Stamp it with the
-sequence after excluding readers, and require both fields to match before a
-writer takes the already-locked fast path. Reader checks remain unchanged;
-reused sequence values only cause a pessimistic fallback there.
+Yes, we consider it to be preferable to fragmentation. But it requires
+experimentation.
 
-The fixed KASAN kernel completed the real-wrap THP schedule on three fresh
-boots without KASAN, warnings, oopses or panics. Kernels before v6.15 use
-the older rwsem-based per-VMA locking and need an adapted backport.
-
-Fixes: 5e31275cc997 ("mm: add per-VMA lock and helper functions to control it")
-Link: https://lore.kernel.org/r/20241010205644.3831427-3-andrii@kernel.org
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
----
- include/linux/mm_types.h        | 10 +++++++---
- include/linux/mmap_lock.h       | 14 +++++++++++---
- mm/mmap_lock.c                  |  2 ++
- tools/testing/vma/include/dup.h | 10 ++++++----
- 4 files changed, 26 insertions(+), 10 deletions(-)
-
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index f3e5a2fadbe5b7..309a278e552451 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -961,9 +961,9 @@ struct vm_area_struct {
- 	 * Can be read unreliably (using READ_ONCE()) for pessimistic bailout
- 	 * while holding nothing (except RCU to keep the VMA struct allocated).
- 	 *
--	 * This sequence counter is explicitly allowed to overflow; sequence
--	 * counter reuse can only lead to occasional unnecessary use of the
--	 * slowpath.
-+	 * This sequence counter is explicitly allowed to overflow. Readers can
-+	 * treat a reused value as a pessimistic false positive. Writers also
-+	 * compare vm_lock_seq_epoch so reuse cannot skip reader exclusion.
- 	 */
- 	unsigned int vm_lock_seq;
- #endif
-@@ -1004,6 +1004,8 @@ struct vm_area_struct {
- 	struct vma_numab_state *numab_state;	/* NUMA Balancing state */
- #endif
- #ifdef CONFIG_PER_VMA_LOCK
-+	/* Extends vm_lock_seq without moving the hot VMA header fields. */
-+	unsigned int vm_lock_seq_epoch;
- 	/*
- 	 * Used to keep track of firstly, whether the VMA is attached, secondly,
- 	 * if attached, how many read locks are taken, and thirdly, if the
-@@ -1274,6 +1276,8 @@ struct mm_struct {
- 		 * mmap_lock.
- 		 */
- 		seqcount_t mm_lock_seq;
-+		/* Extends the VMA writer generation across sequence wrap. */
-+		unsigned int mm_lock_seq_epoch;
- #endif
- 		struct futex_mm_data	futex;
- 
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index b8a13b8d36a45b..27caf8818e0b75 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -118,6 +118,7 @@ static inline void mmap_assert_write_locked(const struct mm_struct *mm)
- static inline void mm_lock_seqcount_init(struct mm_struct *mm)
- {
- 	seqcount_init(&mm->mm_lock_seq);
-+	mm->mm_lock_seq_epoch = 0;
- }
- 
- static inline void mm_lock_seqcount_begin(struct mm_struct *mm)
-@@ -128,6 +129,8 @@ static inline void mm_lock_seqcount_begin(struct mm_struct *mm)
- static inline void mm_lock_seqcount_end(struct mm_struct *mm)
- {
- 	ASSERT_EXCLUSIVE_WRITER(mm->mm_lock_seq);
-+	if (unlikely(mm->mm_lock_seq.sequence == UINT_MAX))
-+		mm->mm_lock_seq_epoch++;
- 	do_raw_write_seqcount_end(&mm->mm_lock_seq);
- }
- 
-@@ -157,6 +160,7 @@ static inline void vma_lock_init(struct vm_area_struct *vma, bool reset_refcnt)
- 	if (reset_refcnt)
- 		refcount_set(&vma->vm_refcnt, 0);
- 	vma->vm_lock_seq = UINT_MAX;
-+	vma->vm_lock_seq_epoch = UINT_MAX;
- }
- 
- /*
-@@ -281,11 +285,15 @@ static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
-  */
- static inline bool __is_vma_write_locked(struct vm_area_struct *vma)
- {
-+	const struct mm_struct *mm = vma->vm_mm;
-+
- 	/*
--	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
--	 * mm->mm_lock_seq can't be concurrently modified.
-+	 * The current task holds mmap_write_lock, so neither generation can be
-+	 * concurrently modified. The epoch prevents a wrapped sequence from
-+	 * making an old VMA stamp look current to a writer.
- 	 */
--	return vma->vm_lock_seq == __vma_raw_mm_seqnum(vma);
-+	return vma->vm_lock_seq == __vma_raw_mm_seqnum(vma) &&
-+		vma->vm_lock_seq_epoch == mm->mm_lock_seq_epoch;
- }
- 
- int __vma_start_write(struct vm_area_struct *vma, int state);
-diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-index 898c2ef1e95803..281659225b1dbb 100644
---- a/mm/mmap_lock.c
-+++ b/mm/mmap_lock.c
-@@ -139,6 +139,7 @@ static int __vma_start_exclude_readers(struct vma_exclude_readers_state *ves)
- int __vma_start_write(struct vm_area_struct *vma, int state)
- {
- 	const unsigned int mm_lock_seq = __vma_raw_mm_seqnum(vma);
-+	const unsigned int mm_lock_seq_epoch = vma->vm_mm->mm_lock_seq_epoch;
- 	struct vma_exclude_readers_state ves = {
- 		.vma = vma,
- 		.state = state,
-@@ -158,6 +159,7 @@ int __vma_start_write(struct vm_area_struct *vma, int state)
- 	 * we should use WRITE_ONCE() for cleanliness and to keep KCSAN happy.
- 	 */
- 	WRITE_ONCE(vma->vm_lock_seq, mm_lock_seq);
-+	WRITE_ONCE(vma->vm_lock_seq_epoch, mm_lock_seq_epoch);
- 
- 	if (ves.exclusive) {
- 		__vma_end_exclude_readers(&ves);
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 4c58487b764e9d..211ffbf5850057 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -571,9 +571,9 @@ struct vm_area_struct {
- 	 * Can be read unreliably (using READ_ONCE()) for pessimistic bailout
- 	 * while holding nothing (except RCU to keep the VMA struct allocated).
- 	 *
--	 * This sequence counter is explicitly allowed to overflow; sequence
--	 * counter reuse can only lead to occasional unnecessary use of the
--	 * slowpath.
-+	 * This sequence counter is explicitly allowed to overflow. Readers can
-+	 * treat a reused value as a pessimistic false positive. Writers also
-+	 * compare vm_lock_seq_epoch so reuse cannot skip reader exclusion.
- 	 */
- 	unsigned int vm_lock_seq;
- #endif
-@@ -611,7 +611,8 @@ struct vm_area_struct {
- 	struct vma_numab_state *numab_state;	/* NUMA Balancing state */
- #endif
- #ifdef CONFIG_PER_VMA_LOCK
--	/* Unstable RCU readers are allowed to read this. */
-+	/* Extends vm_lock_seq without moving the hot VMA header fields. */
-+	unsigned int vm_lock_seq_epoch;
- 	refcount_t vm_refcnt;
- #endif
- #ifdef CONFIG_64BIT
-@@ -1230,6 +1231,7 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
- 	vma->vm_ops = &vma_dummy_vm_ops;
- 	INIT_LIST_HEAD(&vma->anon_vma_chain);
- 	vma->vm_lock_seq = UINT_MAX;
-+	vma->vm_lock_seq_epoch = UINT_MAX;
- }
- 
- /*
-
-base-commit: 0fcb05b72344f40806cbe810de8872f1698bf053
 -- 
-2.55.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
