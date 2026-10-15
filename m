@@ -4,128 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAE01CCA464
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 18:17:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD6ECC6B38
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 18:24:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C730B6B00B4; Thu, 15 Oct 2026 14:16:05 -0400 (EDT)
+	id 249DF6B0088; Thu, 15 Oct 2026 14:24:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C24816B00B5; Thu, 15 Oct 2026 14:16:05 -0400 (EDT)
+	id 1D5636B008A; Thu, 15 Oct 2026 14:24:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC3C06B00B6; Thu, 15 Oct 2026 14:16:05 -0400 (EDT)
+	id 09ADD6B0092; Thu, 15 Oct 2026 14:24:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E12F6B00B4
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:16:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DAD62C0114
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:16:04 +0000 (UTC)
-X-FDA: 85325664648.03.4052357
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D1DC040008
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:16:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="M/VSqVM9";
-	spf=pass (imf27.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792088162;
-	b=hxND0fmZmnczaFvsSRfFCfqV411ugxnDPcvFcMSg6CjeUB2VEifEYW3+RnBD/NFDYSSvWj
-	FMKRx/Nnk4yk4bHZh+Omg3PV8vBUO+tnHajqkFnSSQjAtJUHsKXHggAOodu7s2CJgMnJ0O
-	tAZKrEv10d/yg8dTOfVmVemzGiEK+Zg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="M/VSqVM9";
-	spf=pass (imf27.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CA3B96B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:24:03 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DDE3EC015B
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:24:02 +0000 (UTC)
+X-FDA: 85325684724.04.E7552E0
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1BA5A80007
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:24:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Nm2YYmkP;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792088162;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1792088641;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v6pb7UxVtgposJ3+DhzVqYCobAnMOtPeZwr7Kf17zVw=;
-	b=0v1vzwgfgfa3CClHSMABS03laM+bsX/ysih4tdPQ9CFnUD4loliOLAKHKjxrB6tgRoASxO
-	F09QZFbukFQ9OSoczucx0JQL6cAYEeotbuDkhjw9cyRWenYd5buvOd3svi/j9Zz9zOpxOL
-	BzRcUYURcMwyRVKTicYNdnJE8PaZFeE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 965DA447B9;
-	Thu, 15 Oct 2026 18:15:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 76DCAC2BD05;
-	Thu, 15 Oct 2026 18:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792088156;
-	bh=9vYadqVkh4WrhDMsH1jX5lN/XH9JwLR+fwEjQqvXr+8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=M/VSqVM9jJUGAMm2rmzaGRTlfA1KecX+avNavtRyTAfdlsSBYSzUgFtLcsq4XD3aS
-	 wU3RIHerSYc+iW5yiW8PxYF4E+++seprkzUMoLXA8hCUq7GBle9n5VW6wY24yxhG+q
-	 gteyIE0lOqQYcw6X87lY46GlqqfRSA3DT74VvWOpjCksfA6vqR4uHuEyx4soGNYKZ4
-	 JNkUdGDRr+mFbPMImkog47DofQrw9N2LmqNU43+r5RpvKJp6331Xgq8kX5EgKDqqsj
-	 W0V3LUjXEeSDEWXPtMem3RwzrwPbPJ3xaPggetVITO0wHJn9957FMFd20Gz9q96B2M
-	 LTvlP1bXbY35g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63007CC6B38;
-	Thu, 15 Oct 2026 18:15:56 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 16 Oct 2026 02:16:06 +0800
-Subject: [PATCH v4 17/17] Documentation/mm: multi-gen LRU: update for
- frequency guided promotion
+	bh=fejDPgUdb/iOyoCqBL5K47RANMeJV8pAF9VzuVR2mQg=;
+	b=jJigEYUTTSUXIqFcnMS/VhQRn5bO87scB/C5/WeCnqO4i/h3J7Mq+MOvT53qJDx97nIvlf
+	8yZV6gEglUFFZYs+jJUkLsio7eE42EQL+KwI8Sh7BGVANMOPrHpgYGN2CJXOmGqH7xmcQT
+	LLTkBmp+8C68KtD/1XDf65/U9tT3xA0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792088641;
+	b=72jWTKo5tNdNZmYa/rJJoScQ516hukJ5BmZ/LLRioZj2A93wV5UK2ZunHS6ZY/6uduAqBL
+	szvO2nscFxl+ooLuriyrWb4bRVnWNfejoLzovWFyMiYLDUp3hptmeVZfCNEbq4eD/qxjg2
+	EkTzJiqKPxfAk/ntsRm41CIbBGsedvE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Nm2YYmkP;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-5e9a1f1681dso647313e0c.0
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:24:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1792088640; x=1792693440; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fejDPgUdb/iOyoCqBL5K47RANMeJV8pAF9VzuVR2mQg=;
+        b=Nm2YYmkPUj/3wA3oGjZs3PWn0vfMnAnoe9WYU/fHgvURJQyTF7dNaQUEuPpv7+lsum
+         FkZ+5SqawTC7CA7a8DRC4rKP5y5ypJWVTGDkqNHR/8ab7LhjqwE/rne/6V9MZNvGA/H8
+         Vq4+dD+pgTCFiMGD5+ZnkTcGpF6tmlEvknyIZ5UoCGTKAdpG+5oAOGZNJRNGioUuAd9x
+         U/PnLU5RepLDul7D174dyHIVRGjn6h7Zysjpb5+JWUqWg9/OmRPmOT/rLZVxuaXOeFu+
+         cYEhyI09fKtD0lqh9iEXB7pPwzDY0Fx9c0+OkCSIpMZGllsSNn2m3Ul1sS03cN0QKJ9O
+         060A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792088640; x=1792693440;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fejDPgUdb/iOyoCqBL5K47RANMeJV8pAF9VzuVR2mQg=;
+        b=Gz63ZGBpwjpnHVg7HIFB1SPrdpEu9k/46OfVy9eq89earYx+vz7Q0kl7YU5vWZUZje
+         4w8hEhnfn/hJJCS5mlbOPGh41gPe3dcyKnUt6Mwqga+uhUSg/w816PB9Xkh2kh6AFflL
+         /iBFDPtLMb/nCAe6mjsdWAaBP9PPDbIzncTYOeu+lHtM+FK5rA60tUcHmMVfWtiXTC8f
+         /4y7BhEzueRoZc1YqcnI3bF8yRe2y+kpusFnJtrYfEZ3XnfSWjj4Qh+Hybj15x751c+X
+         eJkyHeI2tgCWZz+sdE2Px/ytn7gjChOO5kA+ZdW8TSeItWfyBNp9JS5xQosYOPrxLaVz
+         6AFA==
+X-Forwarded-Encrypted: i=1; AKwUvBzmm0hgEsWHBO/QAbTmN7HRKZDpbkz5Mc0GHdjMCGxSDB1q+MQoPYawTZ4kzgX27gFNoci0wZ94Eg==@kvack.org
+X-Gm-Message-State: AFq9FYK8KFEDw+i5+FjVpeZ+p/NPkw0QwB6C/oMoJZ7KdJaDHN3Aj3Dv
+	HFYZJTFENulaoQaG9gqone3rextObBgzXVrQ8VeJSyUwfqiXYmKYFKQu3r9ndRuHDvs=
+X-Gm-Gg: AYBFou0hKg0QpJuqecqko8JaoXhIG8+hlo6NGEoSBhyEghyJ22OzhRvGVyYPUUcAqT8
+	n2e6ry68vImk6Jsarv0uTit0slL+XdfOlwRprPLy2/h6bLP0ofA4NB+BpENuZMISYkGsaHSdJLb
+	ZAd8SRhjQEogPiiglgJRMsylL9G5zgPFIHneORaC9Tqm3JU/5g01EENoBImd4rL0J/DTpXozIX7
+	qKUyPZOS7wBzmQOcmIMa7BIfAxQoEpx3SzMaRC37Ce0YdjYetvplNqn8CmwXLdKbUg1ea2qk7Lv
+	iguWlduJXkuXo2HI/yxAwS8vM0S6XNDzu/iZWTR4dCCg6yV9O3y7z28wa8GYmE6vJfT+wLCQo4Z
+	2f6HE+vXKWQalgq8HOGQHkIux/0OcszQTgzshjuPPwhtc8qFNjoA/sfEBoNemcfrEO0i4vlsjiX
+	KkrqxfcdwRjgk3VEcpOOfM+vYlA7G1nQQ3cFiHiG0n8x1UCfsyPQOa9BhIp0+1FQFDcEv4OUTvs
+	uTUPePDuTSkULLl7A26B/5DcX6pTsxqiHYLLBOQSXkx2uyWc3thj1Cn/Fxn0Zd9o8zw/ImnoVWo
+	CNC7UogZNw==
+X-Received: by 2002:a05:6123:91:b0:5ce:b65d:22c4 with SMTP id 71dfb90a1353d-5e91f51f7d0mr7511976e0c.16.1792088640045;
+        Thu, 15 Oct 2026 11:24:00 -0700 (PDT)
+Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9943d7ffsm331215e0c.3.2026.10.15.11.23.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 11:23:59 -0700 (PDT)
+Date: Thu, 15 Oct 2026 14:23:58 -0400
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org, vipinsh@google.com,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	pratyush@kernel.org, graf@amazon.com
+Subject: Re: [PATCH v1 0/7] liveupdate: tmpfs preservation and early freeze
+Message-ID: <atEaPuWNOm5VLc7A@google.com>
+References: <20261015093816.2438942-1-pasha.tatashin@soleen.com>
+ <atESAwf17pJ11S9U@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-mglru-fg-v4-17-2106750c0bfa@tencent.com>
-References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
-In-Reply-To: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
-To: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
- SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
- Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
- Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
- Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
- Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
- Gregory Price <gourry@gourry.net>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
- David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
- Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
- Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
- Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>, 
- Ehab Ababneh <ehab.ababneh@intel.com>, 
- zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, 
- Lian Wang <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, 
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
- damon@lists.linux.dev, Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792088152; l=5953;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=H9ePyPxQfKEyJG8pjQryA22Bu9URRS7jnmN2RCV298Y=;
- b=Vb9KmjNNstGoNvaMOwNk7ofyjEq/gP8OVY3K9CwFsX4iWIUxqEgFFz0bvwWvH+Y2p0iByDKlP
- wZqWyoquQutCr8DLLctzG4RU7bhi8F6VKDcrlaEAi+LHGq3mAiOnAnb
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
-X-Stat-Signature: bxpeh6swg7wjfb44zhzjc9rwizze8it8
-X-Rspamd-Queue-Id: D1DC040008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atESAwf17pJ11S9U@google.com>
+X-Rspamd-Queue-Id: 1BA5A80007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1792088162-290253
-X-HE-Meta: U2FsdGVkX192BEP5Jq1CM4170LZ1iC6WXtjRf+3WwQebTQubsZa6MqwLII6EkucHYDVExJrMph/i+RpuqvUlfcvaDms/9xS4/ARvEkjlT59upHjqwgTERLzcIj2Q8yKZNEIygurXTEsixIFYpuhr86IlcUXFcaYVmvqJvucmwlmN9A/E3ZYlPR5ZJ0DGFv15J2SJE1bXnd8seppo0x7N0wlLhN7jADhj7axly5tuAUa5famdPuvjmmzhIF6QBkzqN9C9Mz8byMYQYsiCCR21i/epCTWPdLLHlcbLFT3z4F//fxNaBRX3qktPOycBKmLc7LaR9cluWZ2yak6EO+JmvA1OVD/Rrp5xo2LZA/YJiEZH+rOhA86hSsOTpWg9i1E5USJdM9rxkmdRU9zfBXqLx0eGnoyjqUKbezbCDpMSKAgeP1NKXSq86pK5Sc/l04CYTSShJtH9tk3NyOMF2PQW/ijtiGDxAaMZyUUsYQanGBvR9zyX2intUwKkHMMyZjNpzjb5f+Bv2QtFduiGfK7XcBO0FtqO7+LJ/ins3xZznyc18LHulq+uOyC4Lg5PaIDAKQZaPzFmGXIUq1TzAc3waNa1/Q6nVXtoJp7g+ZVTSkT4F5Smct3uL22fNIctMRzCRyIYgf5hS1BMUr+Is6LCcD8DI8aEhAjwhZRZEcc9mMPYhzdOpSiPNrNzXrTp/p6jfzNUjU4FYqRjJKN2IDzWFri4+PXEXL1lhXdJa9joIwYPl/JTKQw9XW35uGiHyMrOEFWV+O0g1iSpENKNC99UBsupHQ4iynJ+JtxqYFvRB7WQvNlF3GMIvXSTRyRflPe+eobugVsZRs0P9ceh79PYcXkZvCI+nUCMslWmicy9kGG7UezrLzyqEAMgLycoR14WsF1h2Lfj+hI/Blz+kBmldBuBmPs9XCh4+cRZz6NjUx8t7eNfmPoYkQdqINozyuRFi6sA7x2DGVa7/3I8v1P
- eI6I7dsq
- GegERutwwDHGWSZ6RuLSRNH1ySTyx9ESAobUJcX6H9Y4aisiV+uEHzH3KkAA6b+PNBCjhjtJZ345DVthmpBaxjmKpStjT+DE/5DU+GTpEON7pkGzflgRalcmjbkkap2zWJaivjD/USY9etup75zFPMbt9LAn7INqR/4SpCb14g4oOlQ0ikHOD4pKPPejMGnRhjBIvlCfkwSj7RyKfwAaouPkRsX7Vow67IhUi82Wc+PId76pySMRhtRDRPeJDSeWQ3D1/edfKGFbrI/1JQ7Z8HjDxH0G3a0AW9kOXqqElX+apRHDLyColtDCBkE/5XQdrTuL/q0QY4/4YcGP+3u6m1SmxJnvkTb0ex9KTzysvPT8YfXZm4xNnMreGtyLE5e6/nwS9NK/qFubUf/zjFWzzNOkrv8/ltMNyWMo5D3A3kDiJVYRhUOz8kTLtUn9GU/KmJVXm
+X-Rspamd-Server: rspam05
+X-Stat-Signature: kzrcn5tubpgiy43fkot71xzcdqht54b3
+X-HE-Tag: 1792088640-528056
+X-HE-Meta: U2FsdGVkX18T/FO9ntqcSk2LiY6rOr2vRv1eh+qnWvlug3ycNRObaz/pA4/rIzGwld9IsdFjlYk5/Ww1RoTTwTpnFqf+whoXarqlVQ7N8UxGLrLXQLIX77a0m12gfCA6d3lDCHHWf5qaY6wSVy7KvMs4QXecKwXelYUyYhom80qxm/Ykqnmf50deuBp+ccZ9K9ym/RiyZJS4qWknflrZ+e35D6GTxZpgOrjz5Gv+xiACO9KW4q6fhtqrr9IM92zFv2umthi6HCLQKq6KSa6Ug4F68f7ryMwQ0w9m6LFdw3E+a9pMM4cCW4fyLNxZIJWJMU6ltQu83zLIyqyBVplUcngeRaM5ohYooWjB6ehrBbmF3TYgx/PVpGiHvACQbxXKm6LsaRYaIKNI++6JhTof3jTGeVeIDX4LVkKa+1anJFHM1nxWaKoWqeD/kQIrr2rVQDAf00UAC8+MIvi8k2nBAxSnKri71+r0wySWqzpacD7iB0riP3xRWj5scyHjSwIR87LfpN9iYVPgGaNOGyFZUinoAtOQJ3NodMYphA8WXB0GEWQ//oOlH4yebUodDd5m2OBOWWw/ZqKx+172Yv8E6gl+h+Ngd4Ek5OAfWCBszzcexpAXVrMriwe3ZcRhHGGPCj2oVpljkmLLhGh3caVuYh98KgaVIM5y4Hsv4h8RCZKdDaPSQlsOtgdqqI3W2KOaz5AQlVWy2PIA1Oht7ILZIJUY+CczRgtWUkBhgMxLolAptCaahyaR7ERVRlL+mNu1k2inpCU111wHwdnRERCIHmrzqtMqMbDQwQkF8abHLuc6qTwHuJ7MlrOYXLXEYYte6QKyeel7Q5vW4Gs8n+o4jd1JH6L9NdqbuYh57z4vya2rRpOTXqWFHqBADVClrQ3lB003hbX6Qfszlepf/7f1Uj4LGn6VfgsKPDPEhFusf+PTYfQbZAtf2VJVft5Vpk5Wklmi1MeobI5wWmB7QGq
+ AYGxKz2e
+ sOTIQ2gpxk44DYvlwKlBkLPQtcSYJafdRcIrNSyuWdW1WtltGhAGjCPjoX0g/njKbQ0VtImzUJ9LLFl2Q6fq00iEuluUiQLcFP7AN0N8TJEIdxZkqckyXlKTyPUTnoWNmFeJyTVVHrsCcSgrYXT6XH+mcXQJ/twZMqwdGM5l/bMLUwmj3OPQJ++sLRu/8+WIoebM5pI85JMNOuFWm6K7nKNFl44OzuUC1g0Rl9CpvYymPvu/mGi6AZxzZJfD1SZwIFFvEj/k/91JP72T2lMYkeHvjcFUuV1w0viJxL4AUwYcgxuJ+gPpq1EQO5tiHizQDXvD9SOEULcRJAuciiw0fvtneLEiE/cDmGkiuk/zNOWrjrXCVlPKdWB7GyHVdKNIwm2ee
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,115 +124,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On 10-15 17:48, David Matlack wrote:
+> On 2026-10-15 05:38 AM, Pasha Tatashin wrote:
+> > This series allows preserving files in tmpfs via LUO to survive across a
+> > live update, and allows userspace to decide when to freeze a session
+> > instead of delaying until auto-freeze at kexec time. Once userspace is
+> > done with a session, it can freeze the session immediately (and across
+> > multiple sessions in parallel), reducing blackout time by not postponing
+> > this operation to kexec shutdown where all sessions are frozen serially:
+> > 
+> > 1. Early session freeze (LIVEUPDATE_SESSION_FREEZE):
+> >    Currently, LUO sessions are frozen automatically only inside the
+> >    reboot(LINUX_REBOOT_CMD_KEXEC) path, where luo_session_serialize()
+> >    iterates through all outgoing sessions under global write locks and
+> >    freezes them serially during shutdown.
+> > 
+> >    Add the LIVEUPDATE_SESSION_FREEZE ioctl on session file descriptors so
+> >    userspace can freeze a session as soon as it is done with it (and freeze
+> >    multiple sessions concurrently, since luo_session_freeze() only acquires
+> >    the per-session mutex). During kexec, already-frozen sessions skip the
+> >    late auto-freeze step; if an early-frozen session is closed before
+> >    kexec, its files are rolled back via .unfreeze() before being
+> >    unpreserved.
+> 
+> Thanks for putting this together. I'm on board with driving
+> retrieve-into through a per-handler argument instead of a LUO-level
+> flag. It's what Pratyush suggested on the RFC too (sorry Pratyush, I
+> never replied to that). I still need to review the actual patch but
+> I think the idea is fine.
 
-The design doc still describes the old tier and promotion model:
+Yeah, Pratyush and I discussed this at LPC. I've been using this extra
+argument in my cpu_preserve series to launch jobs at a given entry
+address on a preserved CPU, and figured it would be a useful, generic
+interface for others as well. So I decided to send this series now to
+reduce the extra infrastructure I carry in my cpu_preserve series, and
+your tmpfs work was a good reason to land it now :-)
 
-- Tiers are no longer order_base_2() of the file descriptor accesses.
-  A folio's tier is derived from its referenced count, which counts
-  accesses from both page tables and file descriptors.
+> However, nothing ties the arg struct to a handler, it's interpreted by
+> whichever handler owns the token. At LPC we discussed letting userspace
+> pick the handler in PRESERVE_FD/RETRIEVE_FD, so that it controls which
+> one is used when more than one can take a file. If we do that, the
+> handler name would also be the natural key for which arg struct is
+> expected.
+> 
+> > 3. Tmpfs file preservation and retrieval:
+> >    Using the file handler retrieve argument, extend mm/memfd_luo to allow
+> >    preserving generic shmem-backed tmpfs files (not just unlinked memfd
+> >    pseudofiles), recording MEMFD_LUO_FLAG_TMPFS in
+> >    struct memfd_luo_ser.flags so that preserved tmpfs files must be
+> >    retrieved as tmpfs files and preserved memfd files must be retrieved as
+> >    memfd files.
+> 
+> I've been working on a v1 of the tmpfs preservation since LPC. v1 fixes
+> a number of problems in the RFC that I think this series still has
+> (sorry for the wall of text, it is LLM-generated):
+> 
+>  - Failures that userspace can fix lose the file. The folios are
+>    restored, charged and added one at a time, so if the target's mount
+>    is too small (ENOSPC/quota) or the caller hits its memcg limit
+>    partway through, the target is truncated, the folios are freed, and
+>    the failure is permanent. Only bad-argument errors are retryable.
+>    v1 restores all the folios first, charges all the blocks and memcg
+>    up front, and adds all the folios to the page cache or none of them.
+>    It keeps the restored folios in private_data between attempts (LUO
+>    needs to pass private_data to .retrieve() and keep it on failure),
+>    so the only permanent failure left is losing the KHO state itself.
 
-- A young PTE no longer always promotes a folio to the newest
-  generation.  The first access only moves a folio one generation
-  forward if it is at the tail of its LRU, i.e., in one of the two
-  oldest generations of its type, a second access promotes it, and
-  executable file folios are promoted on their first access.
+I think the current behavior is fine: if the file doesn't fit when
+restoring, I think it is okay to lose the file permanently. We shouldn't
+keep preserved data around in private_data once we have started
+retrieving folios.
 
-- The eviction no longer uses the first tier as the only baseline.
-  The type is selected by comparing all tiers of each type, and a tier
-  is protected by comparing it against the tiers below it.
+>  - memfd_pin_folios() doesn't require the inode lock, so iommufd can
+>    pin folios of the target while they're being added or truncated
+>    away. v1 starts with two patches that make iommufd take the lock
+>    and make memfd_pin_folios() assert it.
 
-Update the aging and eviction sections accordingly.
+Hm, isn't this mostly orthogonal to the change we're making here?
 
-Assisted-by: LLM
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- Documentation/mm/multigen_lru.rst | 57 ++++++++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 24 deletions(-)
+> 
+>  - The target has to be opened for writing (FMODE_WRITE). Since LUO
+>    holds a reference to it until finish, that means a restored binary
+>    can't be executed until the session is finished (-ETXTBSY). v1
+>    instead requires mnt_want_write_file() and file_permission(MAY_WRITE)
+>    under the inode lock, like FS_IOC_ENABLE_VERITY. That also rejects
+>    immutable files, which a fd opened for writing before chattr +i
+>    doesn't.
 
-diff --git a/Documentation/mm/multigen_lru.rst b/Documentation/mm/multigen_lru.rst
-index 52ed5092022f..ec8744c1f42c 100644
---- a/Documentation/mm/multigen_lru.rst
-+++ b/Documentation/mm/multigen_lru.rst
-@@ -95,16 +95,19 @@ at most ``MAX_NR_GENS`` generations. The gen counter stores a value
- within ``[1, MAX_NR_GENS]`` while a page is on one of
- ``lrugen->folios[]``; otherwise it stores zero.
- 
--Each generation is divided into multiple tiers. A page accessed ``N``
--times through file descriptors is in tier ``order_base_2(N)``. Unlike
--generations, tiers do not have dedicated ``lrugen->folios[]``. In
--contrast to moving across generations, which requires the LRU lock,
--moving across tiers only involves atomic operations on
--``folio->flags`` and therefore has a negligible cost. A feedback loop
--modeled after the PID controller monitors refaults over all the tiers
--from anon and file types and decides which tiers from which types to
--evict or protect. The desired effect is to balance refault percentages
--between anon and file types proportional to the swappiness level.
-+Each generation is divided into multiple tiers. A page's tier is
-+derived from its referenced count, which counts the accesses collected
-+from both channels above and is capped at ``LRU_REFS_MAX``: pages
-+accessed at most once are in the lowest tier, and the tiers above hold
-+pages accessed at least twice. Unlike generations, tiers do not have
-+dedicated ``lrugen->folios[]``. In contrast to moving across
-+generations, which requires the LRU lock, updating the referenced
-+count only involves atomic operations on ``folio->flags`` and
-+therefore has a negligible cost. A feedback loop modeled after the PID
-+controller monitors refaults over all the tiers from anon and file
-+types and decides which tiers from which types to evict or protect.
-+The desired effect is to balance refault percentages between anon and
-+file types proportional to the swappiness level.
- 
- There are two conceptually independent procedures: the aging and the
- eviction. They form a closed-loop system, i.e., the page reclaim.
-@@ -122,25 +125,31 @@ and calls ``walk_page_range()`` with each ``mm_struct`` on this list
- to scan PTEs, and after each iteration, it increments ``max_seq``. For
- the latter, when the eviction walks the rmap and finds a young PTE,
- the aging scans the adjacent PTEs. For both, on finding a young PTE,
--the aging clears the accessed bit and updates the gen counter of the
--page mapped by this PTE to ``(max_seq%MAX_NR_GENS)+1``.
-+the aging clears the accessed bit and bumps the referenced count of
-+the page mapped by this PTE. A second access promotes the page by
-+updating its gen counter to ``(max_seq%MAX_NR_GENS)+1``; the first
-+access only moves a page one generation forward if it is at the tail
-+of its LRU, i.e., in one of the two oldest generations of its type,
-+so that the next time it becomes the oldest one, its accessed bit
-+reflects whether it has been used again. Executable file pages are
-+promoted on their first access, since reclaiming them causes typical
-+I/O thrashing.
- 
- Eviction
- --------
- The eviction consumes old generations. Given an ``lruvec``, it
- increments ``min_seq`` when ``lrugen->folios[]`` indexed by
--``min_seq%MAX_NR_GENS`` becomes empty. To select a type and a tier to
--evict from, it first compares ``min_seq[]`` to select the older type.
--If both types are equally old, it selects the one whose first tier has
--a lower refault percentage. The first tier contains single-use
--unmapped clean pages, which are the best bet. The eviction sorts a
--page according to its gen counter if the aging has found this page
--accessed through page tables and updated its gen counter. It also
--moves a page to the next generation, i.e., ``min_seq+1``, if this page
--was accessed multiple times through file descriptors and the feedback
--loop has detected outlying refaults from the tier this page is in. To
--this end, the feedback loop uses the first tier as the baseline, for
--the reason stated earlier.
-+``min_seq%MAX_NR_GENS`` becomes empty. To select a type to evict from,
-+it first compares ``min_seq[]`` to select the older type. If both
-+types are equally old, it compares the refault percentages of all the
-+tiers of each type proportional to the swappiness level. To select a
-+tier to protect, it compares the refault percentage of each tier
-+against that of the tiers below it. The lowest tier contains pages
-+accessed at most once, which are the best bet. The eviction sorts a
-+page according to its gen counter if the aging or an access has
-+updated its gen counter. It also moves a page to the next generation,
-+i.e., ``min_seq+1``, if the feedback loop has detected outlying
-+refaults from the tier this page is in.
- 
- Working set protection
- ----------------------
+Ah, good point.
 
--- 
-2.56.0
+>  - There's no file_modified() or fsnotify_modify(), so setuid/setgid
+>    bits aren't cleared and timestamps aren't updated. The normal write
+>    path does both.
+
+That is true, though I'm not sure fsnotify_modify() is really needed
+since the whole file is restored at once and I doubt anyone is watching
+for modifications during restore (clearing setuid/setgid via
+file_modified() makes sense, though).
+
+>  - f_pos is set through fget() + vfs_setpos() without f_pos_lock, which
+>    races with read()/lseek() on the same open file. v1 uses
+>    fdget_pos(). (Sashiko called this an ABBA deadlock. I don't think it
+>    is one, since vfs_setpos() doesn't take the lock, but the race is
+>    real.)
+
+Right, this was reported by Sashiko; I haven't looked into it yet.
+
+> 
+>  - Early failures leak the preserved folios. The seals/flags check
+>    frees ser and records a permanent error, so .finish() skips the file
+>    and the folios are never freed. Sashiko flagged this as well. The
+>    new MEMFD_LUO_ALL_FLAGS check adds another way to get there. In v1,
+>    early failures don't consume anything and aren't permanent, so
+>    .finish() cleans up.
+
+We originally agreed that if retrieve() fails, we fail permanently and
+leak resources until reboot to avoid memory corruption from ongoing DMA
+activity. However, now that we have the retryable option, we can start
+relaxing what is considered a permanent failure vs. a recoverable/early
+failure that .finish() can clean up.
 
 
+>  - If a token was already retrieved, luo_retrieve_file() returns the
+>    existing file and ignores arg. Userspace that asks to retrieve into
+>    X gets success and an fd for a different file. I think LUO should
+>    fail with -EBUSY if an arg is passed for a token that was already
+>    retrieved.
+
+Agreed, if an arg is passed for a token that was already retrieved,
+failing with -EBUSY (or -EINVAL if the target file doesn't match the
+originally retrieved struct file) makes sense.
+
+
+>  - Sashiko's WARN_ON(liveupdate_claim_file()) report on 3/7 is valid:
+>    xa_insert() can fail with -ENOMEM there, and userspace can trigger
+>    that.
+
+Yeah, we can address that.
+
+> One place our series are not aligned is MEMFD_LUO_FLAG_TMPFS. My
+> thinking has been that RETRIEVE_FD should support retrieving into any
+> shmem file (including linked files, memfds, and O_TMPFILE). It is
+> userspace's choice at retrieve time. The only thing the kernel enforces
+> are the fundamental requirements such as exceeding the file's mount's
+> limit.  When I think about it that way there is nothing special about
+> retrieving into a memfd and MEMFD_LUO_FLAG_TMPFS is just artificially
+> limiting how a shmem file can be retrieved. WDYT?
+
+I do not want LUO to change the type of a preserved file across live
+update. Take seals, for example: a memfd can be sealed with the
+guarantee that it will never be modified, whereas a regular tmpfs file
+does not support sealing. Allowing a preserved memfd to be retrieved
+into a tmpfs file would create a loophole to strip seals (or bypass
+mount/superblock boundaries). I strongly prefer keeping the file type
+strictly the same across preserve and retrieve.
+
+> One last thing is my v1 also comes with a dedicated tmpfs selftest with
+> much broader positive and negative test coverage that I would like to
+> land (things link O_TMPFILE and read-only targets, executing restored
+> binaries, exact block accounting with statfs() and st_blocks, including
+> large folios that extend past EOF, etc.).
+> 
+> Maybe what we can do is keep your 1-5/7 patches and I'll rebase my v1 on
+> top and send that as a replacement for 6-7/7?
+
+Sure, please go ahead and send the new version.
+
+Pasha
 
