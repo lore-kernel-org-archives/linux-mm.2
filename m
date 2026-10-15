@@ -4,125 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4109CC6B3A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:39:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CCA0CC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C12286B008C; Thu, 15 Oct 2026 10:39:53 -0400 (EDT)
+	id 2CC646B0095; Thu, 15 Oct 2026 10:45:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC1726B0092; Thu, 15 Oct 2026 10:39:53 -0400 (EDT)
+	id 27D5E6B0096; Thu, 15 Oct 2026 10:45:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFE116B0095; Thu, 15 Oct 2026 10:39:53 -0400 (EDT)
+	id 16D876B0098; Thu, 15 Oct 2026 10:45:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97D736B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:39:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35441A74B8
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:39:53 +0000 (UTC)
-X-FDA: 85325119866.27.5A357B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 35FD840002
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:39:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ehxEHhNM;
-	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E58606B0095
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:45:50 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 709CA140A0F
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:45:50 +0000 (UTC)
+X-FDA: 85325134860.06.E13E1C0
+Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 275E4180010
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:45:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=JGbS2GWo;
+	spf=pass (imf06.hostedemail.com: domain of "prvs=741bae1ce=fparola@amazon.de" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=741bae1ce=fparola@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792075191;
+	s=arc-20220608; t=1792075548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mmiUyqmsfSRg6ClwR6Q6JMr/UJ3nE7Qv5AHeR45H+eU=;
-	b=S+8osq+UgcTyL/nJhvGNoDL+TnjDXOO4nGWlZ2TyoXnqBKyA8C8BwTMvYFg5cIfpPtdchu
-	O+wIrnNFVBfOKKonNMHCc3eIoov93rbhx6++prO7x85Ga4JPC4fDdQpHFZYhDM1eh6QNda
-	16OhttGTP5kDCHMODcsna3qT81m1UGg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mno5u7ZzRZU/+mTenUA2QzGfL90+kMbsdzEVFvrdQKc=;
+	b=RtG1nRiRQxsCClB0Q1CMVt61OLfe5hRRTs0AEMptRtkZ5Rf5aIm6q2m7RY/8Nl85f1PhIr
+	CxB0Jea93+sBukbN8Dl1TPu35oWuqgnrWSIBrjQHof+ZcBSqBK4d/RdlHXfiO3YGsE5Qwu
+	ey48KTdOtAezrVQkx3H1GDO5DDl2MJE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792075191;
-	b=tyOkKGAvMSpFqFRvw4hBHK7Muwcnb4Sp/lYQx2qgCAyDtYARts/EDkVT74iDNH4EtrG6/M
-	YpHrYnnvMkxmWjxDTX8aQwXHgZuLaxSbBiHV26vmp0l85wiwgkP0O9PswXX+d6WmYlNYNQ
-	qAHbI57aZYjpUckSrKwE/wGUxo2ILqE=
+	t=1792075548;
+	b=usx/bkleZa6WrRB6OsCaEjYcYBggNAD4ImpGIExuJXW597wrsMDaJJjUibvhXkt94GSDkU
+	SBqPNytNCSFb34OteHFH9dmV8tDlu46TUIvKb7dTAIcU05J6ASnee99JdvsVxgJ00AUwGc
+	In9NH1Be9pnAEsfy5LCZBv24RxKVtLs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ehxEHhNM;
-	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78B4943B84;
-	Thu, 15 Oct 2026 14:39:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81CE1F000C4;
-	Thu, 15 Oct 2026 14:39:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792075190;
-	bh=mmiUyqmsfSRg6ClwR6Q6JMr/UJ3nE7Qv5AHeR45H+eU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ehxEHhNMPvEzprsuKPf0KyV72AqmkoT0cFkugddWqDR1jW16KcjT4sO/ySSxEfGWT
-	 DIlBxD4Y3HvPqj7a4dnfqU+9/yusDtBRALtYlZ6ZcU+KYo9SE6SCsXrezt0eLqlFmL
-	 zHSGOIl3ezj7Y7sJzdbmtAKWHo0ylKdS2ihWXtbD12TecBWekas7wDvGVsybx3q7hF
-	 CDEK611Eh9ePcP90Uo37gH6RHHEd2RsIfFuEJOrqJhMXTcKw7ljsXYYVR7VuV2983j
-	 gvSQOJ0Ujn2HLOmoXOdlbU5rgRmZZmg3JNA5Oaq4h9Ly6f3xUUsg+CXrpr/vlP2q+O
-	 ZD+UwhvY4/X9Q==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id E8C531980047;
-	Thu, 15 Oct 2026 10:39:45 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 15 Oct 2026 10:39:48 -0400
-X-ME-Sender: <xms:seXQatj6yK-vAkGfz3nmtzKfQEFz5k8BX2NImvxWqUbYpsHkFTQ01g>
-    <xme:seXQakYEg9wygmgO8qd9seG4qnI9uV1FznHgR73T2LqaINe9lH9e9JGyjRIcvPgjN
-    5-UyZOH9z1AE_w28SJ8XhztMPG7VFPG3N8OvnMXYuxZwrCPNLPl8Wtm>
-X-ME-Received: <xmr:seXQamW3ujf5cRPatCqmaVHg7mAYJNu8yUpSsSsDY4CYvzzTGX5vBv0WB3A>
-X-ME-Proxy-Cause: dmFkZTErd8TIAjJGupJmPa7o/yBWPPRT5ZQiaOhRc5EH22t7peU7D1eeODEsp8i629tNhO
-    r4mHy21KV0D6RvfIOkH3orkwlPlVaAN6jAj64nPwE5LJH03cLu0deasjjvmPESP5FrRnyw
-    jePRXgR+deIN9SCGY3LKnpTMhEl80DUyZsvo/zt9GQ4FZXq0CZ278f5cLt9/f6ZRqhOO0z
-    MW3niMw169KWxeTjSDwTUJBvQbp6c2o9+777eazijSZpKAhWCsSh1+j1yQFNgkZxgW+JEC
-    QKT4R1QjCQZxBw+xy0ZP+qQNv2hi8RFl5iAbv4eFLhMdaBxtKPy3D7BBsuG5AGTzp6ocfO
-    gW9/rTewo5ZjF/I7btK8pdenXh4Pai1Tp+eppPQBJmhh3h7qPtwjCu46ta7YXgDVbSS8Vl
-    Xy1vFOQa3hVQkaD8aDr9nO2Ru8V8jtY1ADsw+jwmfKujikDA1gymEpH8JSR9zF2Tk6Mq+y
-    0GHFZ7J9Fy+MbjhVfRFODtQDDx8VwCvZoWDuk7YUY4YDiZbLhZeOkPECpmVW0meovVfYBn
-    LxrVGtlOuAgpbe2FWut7pkilEntTgIphkhOEz28RSG8XGZXjvH721/OJrwz1gxUriBmlpx
-    kglVxqDks+d8Lgi2rTjnr2fXqEkKG0pk69Anuc0vT+mD8dIqRl+/rUEDT3HQ
-X-ME-Proxy: <xmx:seXQalZ_Ia4dtdBh7Y0MNSkyV_tmDrSX11oLZzx7oE4qV226opti-w>
-    <xmx:seXQatKEZXVI8WusdGaszIdpzIltlRXDnHaqnVKMgn-ZBWuxeYomNQ>
-    <xmx:seXQag1p6-xpzk_G1Uh6kjlQ1B1pIFbQs_lyg4K2NR9OivETPJTidQ>
-    <xmx:seXQarj-N8TiYs_mhj8M4epjZVN4_2UGXOyOyXn9eH-y7_7aVVs8UA>
-    <xmx:seXQavwGIxfp-zTAD4JRC20qfXYX_ZVHXgCfdyXS2sTR8wDiK9Y_eUPY>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Oct 2026 10:39:44 -0400 (EDT)
-Date: Thu, 15 Oct 2026 15:39:43 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
-Message-ID: <atDlYr_RM4WRlMqG@thinkstation>
-References: <20261009125503.126202-1-kas@kernel.org>
- <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
- <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
- <as5q14OsbK2CmOrh@thinkstation>
- <20261014202936.GC371161@cmpxchg.org>
- <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
- <atDMN5MoGrwJNpAj@thinkstation>
- <a809956b-9775-4667-be60-f635b9a72ee6@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=JGbS2GWo;
+	spf=pass (imf06.hostedemail.com: domain of "prvs=741bae1ce=fparola@amazon.de" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=741bae1ce=fparola@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1792075548; x=1823611548;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mno5u7ZzRZU/+mTenUA2QzGfL90+kMbsdzEVFvrdQKc=;
+  b=JGbS2GWobKX7ZhiFoS6otIFHbm1EPu70HsDD19AuQRL686E5IAlRS/Zh
+   DnkgX90/iGG8ssJkas1G4UxfKirY+Woye2AkHW1x37N/D+5GrXSQmS08Z
+   RxH4DutpxDuE2yOXCk8hGQuwBp12Iiyx+1HHIxDQEYLkQwVLmNUAAieCo
+   EpV6/gb2UYH5uMCCcji8VcMFEZYAIDNeispeE/OehR6AhwF6y6xZaHKSF
+   keiTdNLg5wHWdWCV40nDqFmDOvDCzGchiSTigmnUvfrlMeQA8t7p4xIUH
+   6etqTK1XG+qtEVAJ2PkLd6E08VpU+4sUJSG6h4gWu+1X5msR6e7TXi1Ew
+   A==;
+X-CSE-ConnectionGUID: TQuNEdILSB+qoRk8DsfdOg==
+X-CSE-MsgGUID: AMc/D2JPQk2nJkK7XniR7A==
+X-IronPort-AV: E=Sophos;i="6.27,160,1787011200"; 
+   d="scan'208";a="31325232"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 14:45:43 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:25214]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.54.1:2525] with esmtp (Farcaster)
+ id 42897119-f455-4005-98a6-06b7136192d6; Thu, 15 Oct 2026 14:45:43 +0000 (UTC)
+X-Farcaster-Flow-ID: 42897119-f455-4005-98a6-06b7136192d6
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Thu, 15 Oct 2026 14:45:43 +0000
+Received: from dev-dsk-fparola-1b-85ea2014.eu-west-1.amazon.com
+ (10.13.236.104) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53; Thu, 15 Oct 2026
+ 14:45:41 +0000
+From: Federico Parola <fparola@amazon.de>
+To: <stable@vger.kernel.org>
+CC: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin
+	<pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, "Alexander
+ Graf" <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>,
+	<kexec@lists.infradead.org>, <linux-mm@kvack.org>,
+	<nh-open-source@amazon.com>
+Subject: [PATCH 6.18.y 0/2] kho: free buddy-allocated metadata with free_page()
+Date: Thu, 15 Oct 2026 14:45:27 +0000
+Message-ID: <20261015144529.76911-1-fparola@amazon.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a809956b-9775-4667-be60-f635b9a72ee6@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.13.236.104]
+X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 35FD840002
+X-Rspamd-Queue-Id: 275E4180010
 X-Rspam-User: 
-X-Stat-Signature: 6ofqpf6n93wnc83k15jgs8t4kh3oq13p
-X-HE-Tag: 1792075191-421266
-X-HE-Meta: U2FsdGVkX19BKNeG5OAjOkofL6KOraLZAJ+3bs7KjI+giGQwCNz39txqVPY5cPDoM1eFXxXgeQVZi3loz/DXVx3Xc96edUoQsLCN2y/CyOHoHMNBE3seCs+NzXU+1WviXlMbeEEDbRVa8P96Km3hVcV237awpRHRT6GphJG2MxBewZz5c0Csj7AcO4OIWfu3VXEO0U/tjls4bjc5GnApAIxhR6IBx/t82Ru3cCzGycH+WmWjtxTLzxOymDH2wL9Snv25hbgILRcH0ZJ/6Bx0OVLFjd1hPOBFXlkY8asLz3x3KDstFe8pgHhKvcRXwo0p9gCjjS1oca71Dgn90lld7d9xyarnSN6OiNl/QnM78T2/dWeZSFQmj8VU+xoKpaJribylqz7bvmxwZ9SrTq4ldrsvhzTLjJMxw7gvwRR5jFzjzMkDhXQQRzwatzJ4PZR9XvkwkZzCGxMl66QDYGwt8anx37gRA0zvaE8BbV0Ou/rORm4lM3l1viLoUZyZXNjC4p98kxhe3e7G53mLiPO/JT2rrnT6t6LGBAtUEsfWGm3qW6d8imIy1ncezoN5UcTcknauuG0lxUnBxp54YFd3fMgbgZxALcW2Iv9RtgKGihRFFuYjPEa3y7YlD1wMnDro2awNx9ZMz9XFRTikcfOPTr+JLnXgIemY96V+Q6BNx0FFiow991ghUBl28WGHVfb4JmPGsNPax3ID4rp/PxQo9VM25XRYxu0DKHKm1lAIaAuMr4Nrxsn3FV8xcj3806APcA9TQoyYcc/nNQx/VRQY22Sw/jP9pTkUkw6QPNqkDzI8GxScZ8ZhWhFDDlxdexHqdWE0izSnhXExWhUnnE49aYjKBDaqicLs9lz2g+YSeesEsUr91oqubp7aCr6i2Ik6jvREZ8gAcC6xO5NnRFC/fPZhLj76niEYIzwFYxJdTIQ2k1EQ7NlYSymYTJ8UjvKDGG8aL6jPbrKQqwszroH
- tDIDW9iF
- 8LHCSzXQ2DmK87cUNhw/N1x68h5ZD3d4oXjrKA7oLdVD91xQ5qvYBsymgNNRbiVHFmdbvTov9VKj31+AUTGs1ALNr5EI52mg5F5sqbIkAbfb1EKDtGMyEUPCakXSZY0uqqs2j9fs5Dwv6UDSvOTQ2b5304vSkSGar6AaSdDwBWvOZTWEcmdoEZc6LwC/Nm4Fy7nhK6nRseFycZiF2jqU1FohjPVmhrteZP5dZm25JdP9vn2KZ6eGaMybcn/lsCDrAuJ7WL8cwQ9Ec3q4OyIbekmZ9/Oh7xBD/foOXOVF3BJMKTdwhIvhg7mDtCZWWga5XOMz4Rcwqj7QnjFQ=
+X-Stat-Signature: 5hfjuqo51yws5mzfu8895xp1qumkoqru
+X-HE-Tag: 1792075547-154630
+X-HE-Meta: U2FsdGVkX18StqMc7sVpT3VRyvfAAIo1G837ugEw2W6ntCnKpsQ08xoniXjSE97kGsG9moj5KfzQmFQc9sX29xhbQM7MGO4v/Yq5238ZShzU2jDTKOzc1nAdp3vwtpE6MspcE8uKrWfhdsbKEsUPM/yaVGdUl+J2pqut+dABGx6b5diAquJnQ8fE0INEHm+yZLBLVIdTKJgXUgqC+13jEROJKa/KrGNuTQU4OWpFUdbdXDfS+JYcC/d8aWE7HVPCftL5gi8PmA0LUbqtYnELF3+tuYepVtvTXYoX1/OF7WXteda5gL3oPX7UeY6yt1YBOoSy/3xrCa6608eCb46pLvv1+ElpdtrleYLIV8Y1HX3CCVJLNbxX9RUCrB0JBeEI8KGYImNtGLTinQQMWWLWpeb1v7V/GSEa3wPYFmLNzwz/e/SKsxKc/UdOVlP/ZgRTZ4tDUyYzEovschpg/bpd96wJ4IQK7Pps6trclEitPTT05nuhlF12cOlmR+9lGN2cBQTSNqSpauLCgHgPNlfPlpm6DxkqK0vkBkkfhhYKCgcz5jfV0aOMsCAlCP82HkqxgHZ9WoMILg3bhg+0ntnNVSuhXKNZNyCnwV7jnPbhTTWv9x8vMEe37GsI4xfysQMfNg4Ezp0ObFM14mGvkbrHtlxQYzQmV3uILlPjSRhwFBW1KpKMcTOYLFz5/CeqzZLOzgBYV4xOPcXphCtf9mjpf3cBTTv+GLSJT3m4wp3wZjmJItswVkZ03Z8/UpaSmwoqEftqQloiFNA3zGanEA+G/NuvhbvNUFk5RQYhQhmD7uj7ZjDcataPL6kn2htVgpjwET0cySs+xMuqurBXMQe3yhzphWQZTG1vNhOzR6EO0IQ1rSiOd7o73GkZbRdAPNUXhnmjvTeOu0RlYp1VABMlE4OWOyitwaeVc61HySVu1c7bJ0blJzfTp0mesbym7lx1kwCilhKCXxrq88LAqj5
+ nGWnn4nh
+ CG/RYaPkJ7VuLBLFMy3+RA+FoTY8zkb9S2T/fTxRRX1oH4T6QJQMEz6bImlMUTJkZmnBXP3+fayCgI8Ix7vRqxlTCCSsV6uY3qZrpkti+kE8dHSVJWbu0Tdx8Qm/9oSBxio1qJmVrbIS8u+vUCEdpjqSQY2slRh9K84RcJXriSD4JJqvyJkXPReWdMtKFbKkNSZ3z5HahCKF1H2XCZT3YqFYLqdO6uc52QmGaltFJxUT0nwS3I0azxHk8jDvW5BJ9fdELh2i0nj9YvDoOZEX6Yit5reTiegKtKjqLw0K8ovJxmklup9J24sdVz+fBkQ/rlftUHqzaj6/94Op8b2zr0E4qrUllCsMFdjXSvTjvbKbL8uF2mMeUkO14vpav8dGuLqQ6j3iWRMuHhBUwdZteAb6e/vVcM9MbHseY5UZUBY4dIm01hG7zWvP6hPpuyVtedXGHPRzsakIAO9c1u3bq4UP1VuHBFHMOs/v+nQbpVVGwj2M0DOs6Nz6wrF3HJonXRjLlLLDVdSbxai+7EEQF3Z3g7YOGQQLRFf7DIfXMlWb2f5h58Izp1/4nIyoiUPgDPc2U5paglL75MeE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,32 +112,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 03:53:30PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 10/15/26 14:55, Kiryl Shutsemau wrote:
-> > On Thu, Oct 15, 2026 at 09:16:36AM +0200, Vlastimil Babka (SUSE) wrote:
-> >> > And agree 7.4-rc1 with CC stable is fine. Sadly, not sure if anyone
-> >> > but Meta is using the feature right now.
-> >> 
-> >> I thought it was there for a long time but it was only added in 2025 :) At
-> >> least the enterprise world is slow to adopt things, AFAICS.
-> > 
-> > I was thinking to propose a patch after merge window to make defrag_mode
-> > default. Do you think it is too early? I don't think it is ever going
-> > to be truly stabilized without wider exposure.
-> 
-> We can try it, but preferably with arguments (and best, numbers).
+Commit fa759cd75bce ("kho: allocate metadata directly from the buddy
+allocator"), merged in 6.18, moved the KHO serialization chunks and the
+preserved memory bitmaps from kzalloc() to get_zeroed_page(). Two places
+still release them with kfree(): kho_mem_ser_free() for the chunks and
+__kho_abort() for the bitmaps. kfree() on such a page hits the
+WARN_ON_ONCE() in free_large_kmalloc() and returns without freeing it,
+so each aborted or failed KHO finalization leaks the metadata pages.
 
-Will do.
+Patch 1 is a clean backport of the upstream fix for the chunks.
 
-> > We also discussed with Johannes to make a stricter (defrag_mode=2?) mode
-> > that will not give up on fragmentation ever, but OOM instead.
-> 
-> Would you use that mode at Meta? That however most likely wouldn't be
-> general purpose enough to become default.
+Patch 2 fixes the bitmaps and has no upstream counterpart. Upstream
+removed the tracking teardown from __kho_abort() in commit 99cd2ffac697
+("kho: don't unpreserve memory during abort"), which relies on the
+unpreserve interfaces and the notifier removal that came with 6.19. In
+6.18.y, KHO users still preserve memory from the KEXEC_KHO_FINALIZE
+notifier, and the teardown on abort is the only thing that drops those
+preservations. I kept it and changed only the free; patch 2 has the
+details.
 
-Yes, we consider it to be preferable to fragmentation. But it requires
-experimentation.
+Federico Parola (1):
+  kho: free phys_bits bitmaps using free_page() in __kho_abort()
+
+Pratyush Yadav (1):
+  kho: free chunks using free_page() instead of kfree()
+
+ kernel/kexec_handover.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.47.3
+
 
