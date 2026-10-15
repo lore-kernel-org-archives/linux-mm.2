@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52D73CC6B3A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ADCFCC6B33
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:33:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D9B66B0095; Thu, 15 Oct 2026 11:33:44 -0400 (EDT)
+	id F34F66B0096; Thu, 15 Oct 2026 11:33:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 289BE6B0096; Thu, 15 Oct 2026 11:33:44 -0400 (EDT)
+	id EE65C6B0099; Thu, 15 Oct 2026 11:33:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 178976B0098; Thu, 15 Oct 2026 11:33:44 -0400 (EDT)
+	id DD4246B009B; Thu, 15 Oct 2026 11:33:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D35EF6B0095
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:33:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4B1F0C0A4C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:33:43 +0000 (UTC)
-X-FDA: 85325255526.17.BF6439A
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8D165A0006
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:33:41 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=eZkZS7pk;
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id B02E96B0096
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:33:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07E26C0533
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:33:46 +0000 (UTC)
+X-FDA: 85325255652.19.E758AAD
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4681220009
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:33:44 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=PuNv4dve;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792078421;
+	s=arc-20220608; t=1792078424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IofewvjhR0Ae8pfrPVVge9u/2aO2fEHS91BGZ9RvoVo=;
-	b=gNl5ELfBnRllT75iNgpgjDftNiACmvZJMI/es3HkzciH303thRMUrvkWK+D6SMRS9DSTpt
-	O1jMTOHVBkRYMhAW7wFaVHW7n0CYybF7Ww9LklQtU2z/qsMDdcI2HiwhLcymIQFq4KAbpU
-	CkMe4mXwYrZNMI59ZSeKqhySSyYAAxs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792078421;
-	b=I8wdMTjAMgSs9qTf3ojD7T6AZq1gRwPDDwKUuTPiSqcRnR2PSAJaIShCrGql+v8lHkdQ4t
-	QLvNwrHQszUze1jticwuHAty2ZpaF2lc1Y5mzVevXRLaoDfGfHevaWIqhhIX3DrqT8sD9I
-	i7uBUBWF43tglgqpIg4+de06ViHaw0Q=
+	bh=72zF3yLWX3oeYl+y53VRvYROQBmMjAwdTi7nEp+9VUA=;
+	b=goX7IBBKsEp3w2KD1+JpUdgVnnyzuz4ilTsiMDyEN6RyNNC2z5mRD4rZYmY31pII2nG1rY
+	tBgFLyuTt7WG3WxVzL7jntRUQBLcI7WxRKke70Pwoa2/feYL8AsEuCVJhe3VYFtJECIMKr
+	zcoB5K2IzUcVOSeqqC9rvlSzi73eX/M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=eZkZS7pk;
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-98c786605e7so822177241.1
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:33:41 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=PuNv4dve;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792078424;
+	b=x6kLYUf5uQKM+8bq5gdxVrNLBJlGKoX96vyM32ICwiQ2PocfRTd7ZTxtrjk/7lnwSH2DSE
+	IX6rFEME86p++gOrXj1ljiQEB6tDCxLle74yr7lTxzPdeTGbyXz6C2QBhS/6B7zNBmRBNv
+	6YyiCdiwqs8oHgRUf5fer1Q6XQvvc64=
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-74ab6c88052so608203137.2
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:33:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792078420; x=1792683220; darn=kvack.org;
+        d=soleen.com; s=google; t=1792078423; x=1792683223; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=IofewvjhR0Ae8pfrPVVge9u/2aO2fEHS91BGZ9RvoVo=;
-        b=eZkZS7pkUF4T2WJjCLXZzVsbYsTWX3GCNkf+oQUAGcE8+fmqzqZ2bkb66NCXJg3ptV
-         iPAoyQJGt1qMbCw1muH80lwzA+voH3rtfDLigPnZdLjWuwNjB0/mbYJ7bkcqKLiILnqc
-         z56Exg01Jwj7ryE7md8H8mP9v/cOuIg4YDsS3zFNBsSfe5FIUeNb5l+9iKF9+YbOK8n4
-         x2ADaa6hxwe5uF/ySOuITtiuxgZzkViNNiC9RbuQCbhgF1FAPOe3UngDXBU1UmdvSICA
-         +eBd133dSlZOpdGae2LOjLU13zblZYBRvhtRH1ZuBm3cGHB64MLo5DYqSjRwYCrJ62hE
-         bazQ==
+        bh=72zF3yLWX3oeYl+y53VRvYROQBmMjAwdTi7nEp+9VUA=;
+        b=PuNv4dveY06f8feqtAnyzV2X66kWWXcLllSbV5lZSf8rOkbAWu5/a5SpdxRAHT6PoV
+         shCihGAk1cSS9a46UsVc75uXp0YyzukmL313TWNYHVRj2IaT1IbQBmsghISOx3Z565P5
+         c4VTxCN0HWAHOa2EmGQB0nDMYN+3dH4Oq/QC7hm9i5YSnfVZ9K/U/5QpCX6guqJm9q+7
+         gPrlq4Rx2TI4J5oVlC3DEE3ZkNmo4lwnZeRvrsx3SdZn2OQ623R10M9pbSdf+E1ehGXN
+         DYybJ9f85GnU+mTvWqPnlXDiFcUffr5Ri257gljhotRxb/qcc3YmJfPB3ENeGvfDGuqD
+         mWng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792078420; x=1792683220;
+        d=1e100.net; s=20260707; t=1792078423; x=1792683223;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=IofewvjhR0Ae8pfrPVVge9u/2aO2fEHS91BGZ9RvoVo=;
-        b=tTdHCHEBZPlfUC+R28Tduead0kFo1SESMn6/qQThxlNFKlOadDA+mJgaVgTIvpX48Z
-         HeWzsCRUOjjvKoXMNMwiGTG0OT/CUNc2crPRxp14MfgOvo5DC3qrp4MVjACR5we5VO3m
-         RqT0I/iyTGNi9Y38DCBPfXW9bFMJDmF9JE29883wLhY01lGfuwGM+YJta0aMagASCk9W
-         vjKfVudbl7eE9OofMbuKKXcmq5P5+Jq4lBKCTEEm/kL6/AB0BGZQ6YnU6Qc+yRVitGDe
-         gxvddiEhBdTiJr9xMzm/v4lEEFJ/yQlCIzDtcJ2q1du3TmX4e4fIQjdkzUxbp0SnUJHH
-         GPYw==
-X-Forwarded-Encrypted: i=1; AKwUvBy+ZzZ/jwJIhzXGBOJxBkRC8GXvBOhE8DWJ1ue6BzKPwr3Z+1O/KwqOWZrKl/nVERA2xXm0Oq81FA==@kvack.org
-X-Gm-Message-State: AFq9FYKEJG5fUMVsIhO4PBrjL/GjCdcOX2u4zcSHJThu5FZ+jHkwXqae
-	gh6x8re1bO42v15LWyNNMhQuv5orBe4RlT0fapf9GOxlHNMxJDmQoR9mYwgy4m/mo3U=
-X-Gm-Gg: AYBFou2jTESHbk3nZ48fqC1wnCfgRovU1I5/9TJ/aTEWbh/4ZC6aKSxkIa/yifkdWJq
-	V7wQIzd+Y49+DFcyyF9ybCrIQE5Cvx8CFsIBqFwTq4ZtN8Hw73kexCisJu17blWqRKRBsgn7cwa
-	uv0CF8/aw8BXsdnFU5ytG8PEiyXB6fyB2IcRehZbTIWjNGOeH+l1IkJgH3zEHT/rpx/dri6Y0sl
-	p1DOlm0OsphpENfkfDUqCIkam5Ch1NRwr3YD0BQE8VLOVkKCQ4r2pfTdLg7glVXMbLN7AfDyfEt
-	OOU/DniphyTORGSUW+8I4Dsv0VBVqB8gfvCWLXaG7bQub/9dtYHNCyJP4wV1o/9/AIcFAeMNJAs
-	Ricnw+8k4ih5ylZYyRdW1zJ0ngl45RVC+Z/G1S1ZfpyAOqd8Wqy7hTUnli+VA62GDrSLHb5vnD7
-	djG6xOspxsXpseDuhKqeICrrw2jYc3j2OxEbb0W3l4240lauTW7qGw0nrN8Jj8Iv913Xt5eSjqt
-	qe0rT/u30nT3oZRqhUSp2dgM+RuPZWRQM+iejq25/VQOLO4quaxptC07w7S8f1yh42qdKbyi5CV
-	/DDGR4r+PdwOzgFYGnE=
-X-Received: by 2002:a05:6102:8088:b0:7c1:62d2:e18a with SMTP id ada2fe7eead31-7cb372f3a68mr6949040137.16.1792078420419;
-        Thu, 15 Oct 2026 08:33:40 -0700 (PDT)
+        bh=72zF3yLWX3oeYl+y53VRvYROQBmMjAwdTi7nEp+9VUA=;
+        b=W5gCr0uYwTuqakpOxdaae9nUoV2+votMs9HYuftqAPjv3O9z+cFwPETG+GBFJ8j6TR
+         4ZaV9U0YYjLT0dFTIdhVSaJlTjok3H/2D0O7sW/+BSZOtCjXAFJoFZuBX0kkHi+B/u75
+         aX08eBy7lviLdQ/+amXEvuY/BAEvQQzUOE4nuAxaaS6E4zaMxtDbWC1Y3uS9FzOt/bu8
+         /+iTSfxKbxMveoaeyeWLvdTUEmm6JUmubUhVNDUNy2KH241tdZEZBfwl5NJPPccFwgw5
+         oJuBVkyg4x1YM5Gjelx3KdlxmUR8ik4CsaTI1Gu+IHRsPvnDlcErxOB2Z5lmkI3kHbiW
+         f1mQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxgEgrQ4UH5Hl3zju2tn0ae+kEl5h5DBWa68VaTR2VPgg6CS8xnvr9S+X7ya8V2oV55m7YDmdMvKg==@kvack.org
+X-Gm-Message-State: AFq9FYLKs1dF6zJcLLmUsB6k1y7PWOx9Swvm0kyvTcRkWtxAPfHLfbi9
+	aoP9AMR9DgJZBZdfG38nPzwdO/9iaseIte7AIeQ6QDyGPPt9MykAjQrHI3/F+diFbMfP8OAKolP
+	0qt04
+X-Gm-Gg: AYBFou0GsBe9Ajwbwzi/2yjClsW7ZBfAMk1IjxKgc9mMSfkET/z9JGcY+qjQhtqTcRl
+	90uj3AJRHIRjy8KB4gsNcrt2s9fq0H1pjtwJ6R117IvgaUuYiNQSuqh9zv2nRrfdyVovRpUwoyc
+	R2+QvbdyDUY4NdqmXALYlk81gKOs6geGr3fAZiH8KGPxqlBd2ZKEVJiAT2QSUGHP3AcGjYJOGEq
+	RbC/SFZQfW3XVRC2PrvUhx1BxfoY3/ekENomVZTj0CmA8dg0LFhpTuHD9J1+XAok1cyczHSQbfs
+	RKi3nbDCy2mPFPpCzlzYOqk81mOHc1p5Dp8BtWeR7x2WdoFx3XzlDAWFAztGnbKMv0yME76MUZJ
+	FHzlToFAF+rOn7fihDJr9HrF87y4cR7FJZJbSV266ZHn/i1eCUcxZWneUD2Wpyzr0IFm7KlDz+3
+	KAh+z/CeYjcp/Imaa70N/JV0euXTjuXygl942CSHforGZYTVBjjRvAfwwyB6nIh7apj7kQ7LFmz
+	6oynNqevHtlmTlGMcIkp2n5pMCyxtQezxX9x0N9hOXT/0l51zvw/t02hMuTCw7QWZK91RjJQ4UO
+	zlV8VmoXhf+SCiDUHgM=
+X-Received: by 2002:a05:6102:c4a:b0:7a7:19aa:f0d8 with SMTP id ada2fe7eead31-7cb37b3015cmr4260402137.37.1792078421907;
+        Thu, 15 Oct 2026 08:33:41 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99003f66ad9sm12986347241.10.2026.10.15.08.33.38
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99003f66ad9sm12986347241.10.2026.10.15.08.33.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 08:33:39 -0700 (PDT)
+        Thu, 15 Oct 2026 08:33:41 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: kees@kernel.org,
 	rppt@kernel.org,
@@ -138,22 +139,22 @@ To: kees@kernel.org,
 	ridong.chen@linux.dev,
 	longman@redhat.com,
 	bsegall@google.com
-Subject: [PATCH v1 3/8] x86/mce/intel: Bound cmci_rediscover() to a single topology peer
-Date: Thu, 15 Oct 2026 11:33:26 -0400
-Message-ID: <20261015153331.1872641-4-pasha.tatashin@soleen.com>
+Subject: [PATCH v1 4/8] x86/cacheinfo, mtrr: Skip stop_machine rendezvous in cache_ap_online() when MTRRs match
+Date: Thu, 15 Oct 2026 11:33:27 -0400
+Message-ID: <20261015153331.1872641-5-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 In-Reply-To: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
 References: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8D165A0006
+X-Stat-Signature: k8u95pf1orku89bb618aaic17brpgj6k
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: gzbses14drtrjf8rwky9ezsp7en7zcjo
-X-HE-Tag: 1792078421-666531
-X-HE-Meta: U2FsdGVkX18QdbToS+sWoGU6AvKqMxt9IqJg88OFK72Ss/Af8SsbebobbrdOP40GhuRwPdJmKVQ23+bB9+x99ySQfGv0W4FAnptR/pLT32wJkn2P8d2V4lIwqcEa+FlQlXHRO8ymvKyhSQIuWMm71bhhWBjxLKkjms0vfPKvRNWnPnJcUmG4u8K8dfjT64laJ0oNzcIBXO4VRUKg389B35sGTWNCMPRiySHc6wW15T/VkP+oSd3bJH6YL1xXNLFc5q3qWbyROE/vMd18+c8rs92JmXtpc1q5sbYF0InOkKWshM5XnAfrFRawoUe++LuS93dhfhzS+QRNzdaqf2bQyAtHzfsQOfg99WK4b6RJNH/qMaM7OKwH+3+yVtdfwvo40QkywDSbQAtve36v2yeC1an910PCunbBdALaV8iydI5+E4ZYCNr0T6XwO9Z0kMQsSbE5zNt2sniHsgWSfEEEa16Xfo67Mka6Gv0h89/68K0Y51a71B+F3NDUnBZiH89u0NFUtCwAJNbuBzGUQv48aXnITqtHpPZfhhJKk0h657sm/E67V4biBZ1ZlT4fzagFCSMxNdWwqWsclFXmL2/ni0W9YkdzZGP7BqCeah9J/B59+dKTEFll/7versHPcjdowdFvgSt51i0cUwd7+N29rQghAMvI7pHqbC78jfrnYo0gr1wTDdkK3J7Tg/jOCg/3oeBDpWzqITHHN0T5ndFzopQtz6ayZ7FGkasjTcTq+JOHFM/qugNB0V580GFrRffKawTnn/lS6jTx1VTnKb2dLoyie/L69n/B6fjmIu3IQegwMo/i3mBm3SDbo0D10Iqr2I8M28zXX4ASZ7oKSKvDf72pmz40Wi5c98DYcyDzd1/ck9KipmYTCx/DxmtDSxbldSr99di5BNb+1GwvA4lr8aoHJR5sD7Zb8D+yg4THdNl159Mijk7EvLkR1+xwWVor18iqlBYhXdGGKfCBjEe
- AWkneUuh
- EzpPCjKtrSkOgxNffPNYy++ScO8Rhk46fLmQ8+ZUHCYItxC0zWjKVrKLYYrBYSil4xy9SqXq56tSrdsodfdFZwFWkG0Q0BjKQvVFcAXfEo2Y9xYPVg4eGK5w617Ae9Q92VtTzQ76GL87FPdVnV9Ho0yl/P5BDV+bEzpIga8AJTaoyad0oMCB0D6RJ3HR67CtvuVU+q4iQAjZEFgRJNMET3wT0i+sFK1k3cqdmh+D8qwNbcFIMm7Tu5IPmfIgarHzKVXjJbs2wSEZXWgLuWlHwrYjEmWlzvBeMX1qI7WdqoOeWlcbMwwdbNVmWWifYoPDdji3D48KCPWQpk1MCzLjffNR1VJLdoJ63PrEsTPvhgK1uXKO8VB0AL2IlZoJ9VSHwoMXI
+X-Rspamd-Queue-Id: 4681220009
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1792078424-314469
+X-HE-Meta: U2FsdGVkX1/xnEE1jRuyEbLJemi4M+vH3/lLmBkn9q3N+ascfDfnvqFu6IAzJhTuqmLlKUlyGEfQKfzA88xJloErNJwozKl0Y2uKLhBQDsrmDnBABOIb9K2oky5pBBBBYkiCtnD/XWYqOZYMLeuuRJzaCRAx396nB6lW2vKw5I1U2yHacyd0ZO/lE4fvn1YPJrj1nFauA3gJTBOVct69YMNq6rlCmyZYx6EjKZWZvgFx9HKdTi4LP4GVof3tyHZiba6NdbdsVdhWEjltqhR8qhc0ytI4lve7oEvt6ErTsOcpAqWqMGziqUzOAFmq5VMi2D+kCReYQ8ctwm6l6+srcYA1++fCTmLMwVqHSXwDLFJrzfywGJHmP6MxLmGfU36CDYjBIJVoGMFIxngvXFPa21Z0b3oj9K0xk2bSNfbnes9Ff3VeesqCQgcJ5cWEX2xvh/JQ6UvU2w3Pi2W1dCPItWw+ILXAw2Ak1AHguf6Faeo/gHOTrVUmIBuF2VQcy7J9wdndPI8XumFs5Uu8XYTZVbH0MmH+Kw/ABcj+rzN/wmxgG0b6LHLiz9RzdBvp94nGuoLN63S9J18vF1noHthG+yVmF0e3PalTqYkUuXf4Qgcy82Zp0jSNYJbX3mT8LTahZIu1SpIsPEfT2hOdUSkutLTjueSeMoOvwrMgLRdDdGEoGF+fQTzdD5W3W/zeFZd/5Yep3XzfgznJ0KilAXq7sbPx+UrKU99taIFz87sORx1rOxlMeTWfnWKB9M7c25285J2EWOblTjhc6GXgKACgaCtvon7C7jVn6DMi8wJTxiX7QMHVMzTGOQgQIl1hOpl4la6TZb9LJgVue8B0m2RKOk+GtE+Wzu3ghVAL/TzbuBHlnVzIgE4DjzfK0Sae/e4imsn1aTWavW8vzYuUEScnOoh9X7kQrsqU1r/6RZX+MDfnyoElpRRC/b7x/fpLs+njMv4eVyRYWmOa5HE55g8
+ x9jLupy1
+ qOBZqw7CuQaKyvSQEY008jQBJVjGn1KSjVUWvyHd3/0FS6AW6Op25Emi6vEiea/qLx6e6c19MOQCr5KWjzaYHJzvONiWc9p43OpIN9ChSTUQIygZMX6Ydc1hn8469x2WOaiVwYHAADwLI6yerPoHY8NG+x6pL7/KIV1CMRfZuSHAtot7QUxjsbqjvxCyxiA6z4fQuE8sc6NfPQtgmvaVMaoXrHSHf5td26IUjbCI4rUzmckTuZniQFpYP06cc4+tJT0nugK/5j9Xo5cCLu8ohbc51OSztQmrrbohY/yNg6w2STXPpnb9MbnGZkqhXx8aN6/Cx/TsE2NcrDmzlo3C4N8AIfsRtrc5SyXJa/3RZ7RmUAF/tVJUv6LFEJdI46oYbOvFF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,163 +162,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a CPU goes offline, cmci_clear() disables CMCI on any MCA banks
-owned by that CPU, and mce_cpu_dead() calls cmci_rediscover(). Currently
-cmci_rediscover() invokes on_each_cpu(cmci_rediscover_work_func, NULL, 1),
-sending a synchronous broadcast IPI to every online CPU in the system,
-all of which contend on the global cmci_discover_lock while reading up
-to 32 MSR_IA32_MCx_CTL2 MSRs.
+When a single CPU is brought online at runtime
+(cache_aps_delayed_init == false), cache_ap_online() unconditionally
+calls stop_machine_from_inactive_cpu() to rendezvous all online CPUs
+while the incoming AP runs cache_cpu_init() to disable caches
+(CR0.CD = 1, plus wbinvd() when X86_FEATURE_SELFSNOOP is not set),
+reprogram MTRRs via mtrr_generic_set_state(), and re-enable caches.
 
-Any bank disabled by cmci_clear() is either thread-private, core-scoped
-(shared between SMT threads of the same physical core), L2-cluster-scoped,
-die-scoped, or package-scoped:
-1. Any bank index that is already owned by the target peer in its own
-   mce_banks_owned bitmap is private to a narrower scope than the shared
-   level and will be skipped by cmci_skip_bank() on the target anyway.
-2. Core- or cluster-shared MCA banks can only be claimed by an online
-   SMT sibling or L2 cluster peer.
-3. Shared die-scoped or package-scoped uncore banks can be claimed in a
-   single pass by one online peer on the same die or package.
+During initial boot (cache_aps_init()) and across warm CPU offline/online
+cycles, the AP's hardware MTRR MSRs have already been programmed to match
+the saved mtrr_state. Stopping all online CPUs in stop_machine (and
+flushing caches on the AP) when the AP's MTRRs already match mtrr_state
+is unnecessary.
 
-Record the bitmap of banks disabled by __cmci_disable_bank() in
-cmci_orphaned_banks, select a single online topology peer
-cmci_orphaned_target (SMT sibling, L2 cluster peer, die peer, or package
-peer) in cmci_clear(), and mask out any bank indices already owned by
-that target peer. In cmci_rediscover(), return immediately when
-cmci_orphaned_banks is empty; otherwise probe only cmci_orphaned_target
-via a single smp_call_function_single() call.
+Add mtrr_generic_state_matches() to compare the local CPU's
+MSR_MTRRdefType, variable MTRR ranges, and fixed MTRR ranges against
+mtrr_state (including k8_check_syscfg_dram_mod_en() on AMD), and check it
+on the AP in cache_ap_online() before invoking
+stop_machine_from_inactive_cpu(). If the hardware MTRRs already match
+mtrr_state, initialize PAT locally on the AP and return.
 
 2-socket, 480-CPU Intel Xeon 6985P-C (N=479, mean of 10 runs):
-  Offline:  11.42 s ->  9.63 s (-15.7%)
-  Online:   11.08 s -> 11.11 s
-  Total:    22.50 s -> 20.74 s (-7.8%)
-  cmci_rediscover() (cpu479 offline):
-    7,720.6 us -> 0.6 us (-99.99%)
+  Offline:   9.63 s ->  9.85 s
+  Online:   11.11 s ->  8.69 s (-21.8%)
+  Total:    20.74 s -> 18.54 s (-10.6%)
+  cache_ap_online() (cpu479 online):
+    7,704.0 us -> 4.7 us (-99.94%)
+
+2-socket, 512-CPU AMD EPYC 9B45 (N=511, mean of 10 runs):
+  Offline:   4.53 s ->  4.51 s (-0.4%)
+  Online:    3.92 s ->  3.15 s (-19.6%)
+  Total:     8.45 s ->  7.66 s (-9.3%)
+  cache_ap_online() (cpu511 online):
+    1,354.6 us -> 6.4 us (-99.53%)
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- arch/x86/kernel/cpu/mce/intel.c | 57 +++++++++++++++++++++++++++++++--
- 1 file changed, 55 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/mtrr.h        |  2 ++
+ arch/x86/kernel/cpu/cacheinfo.c    |  7 +++++
+ arch/x86/kernel/cpu/mtrr/generic.c | 49 ++++++++++++++++++++++++++++++
+ 3 files changed, 58 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
-index 4655223ba5606..f57718b097d9b 100644
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -11,6 +11,7 @@
- #include <linux/percpu.h>
- #include <linux/sched.h>
- #include <linux/cpumask.h>
-+#include <linux/topology.h>
- #include <asm/apic.h>
- #include <asm/cpufeature.h>
- #include <asm/cpu_device_id.h>
-@@ -40,6 +41,8 @@
-  * owned by the offlined cpu.
-  */
- static DEFINE_PER_CPU(mce_banks_t, mce_banks_owned);
-+static mce_banks_t cmci_orphaned_banks;
-+static unsigned int cmci_orphaned_target;
+diff --git a/arch/x86/include/asm/mtrr.h b/arch/x86/include/asm/mtrr.h
+index 76b95bd1a4058..0527e216808c4 100644
+--- a/arch/x86/include/asm/mtrr.h
++++ b/arch/x86/include/asm/mtrr.h
+@@ -61,6 +61,7 @@ extern int amd_special_default_mtrr(void);
+ void mtrr_disable(void);
+ void mtrr_enable(void);
+ void mtrr_generic_set_state(void);
++bool mtrr_generic_state_matches(void);
+ #  else
+ static inline void guest_force_mtrr_state(struct mtrr_var_range *var,
+ 					  unsigned int num_var,
+@@ -106,6 +107,7 @@ static inline int mtrr_trim_uncached_memory(unsigned long end_pfn)
+ #define mtrr_disable() do {} while (0)
+ #define mtrr_enable() do {} while (0)
+ #define mtrr_generic_set_state() do {} while (0)
++static inline bool mtrr_generic_state_matches(void) { return true; }
+ #  endif
  
- /*
-  * cmci_discover_lock protects against parallel discovery attempts
-@@ -244,6 +247,7 @@ static void cmci_claim_bank(int bank, u64 val, int bios_zero_thresh, int *bios_w
+ #ifdef CONFIG_COMPAT
+diff --git a/arch/x86/kernel/cpu/cacheinfo.c b/arch/x86/kernel/cpu/cacheinfo.c
+index 13ed16527905f..64796d5b34fdc 100644
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -770,6 +770,13 @@ static int cache_ap_online(unsigned int cpu)
+ 	if (!memory_caching_control || get_cache_aps_delayed_init())
+ 		return 0;
  
- 	/* This CPU successfully set the enable bit. */
- 	set_bit(bank, (void *)this_cpu_ptr(&mce_banks_owned));
-+	__clear_bit(bank, cmci_orphaned_banks);
- 
- 	if ((val & MCI_CTL2_CMCI_THRESHOLD_MASK) == CMCI_STORM_THRESHOLD) {
- 		pr_notice("CPU%d BANK%d CMCI inherited storm\n", smp_processor_id(), bank);
-@@ -328,6 +332,7 @@ static void __cmci_disable_bank(int bank)
- 	val &= ~MCI_CTL2_CMCI_EN;
- 	wrmsrq(MSR_IA32_MCx_CTL2(bank), val);
- 	__clear_bit(bank, this_cpu_ptr(mce_banks_owned));
-+	__set_bit(bank, cmci_orphaned_banks);
- 
- 	if ((val & MCI_CTL2_CMCI_THRESHOLD_MASK) == CMCI_STORM_THRESHOLD)
- 		cmci_storm_end(bank);
-@@ -339,6 +344,8 @@ static void __cmci_disable_bank(int bank)
-  */
- void cmci_clear(void)
- {
-+	unsigned int cpu = smp_processor_id();
-+	unsigned int target;
- 	unsigned long flags;
- 	int i;
- 	int banks;
-@@ -346,8 +353,31 @@ void cmci_clear(void)
- 	if (!cmci_supported(&banks))
- 		return;
- 	raw_spin_lock_irqsave(&cmci_discover_lock, flags);
-+	bitmap_zero(cmci_orphaned_banks, MAX_NR_BANKS);
-+	/*
-+	 * A bank is shared by the CPUs of one SMT core, L2 cluster, die or
-+	 * package, and these scopes nest. The first online peer found from
-+	 * the innermost scope outwards is therefore part of every sharing
-+	 * scope that still has an online CPU, so it alone can claim every
-+	 * orphaned bank that is still claimable. If it already owns an index,
-+	 * the instance released here is not shared with it, hence not with
-+	 * any online CPU, and that index can be dropped from the rediscovery.
-+	 */
-+	target = cpumask_any_but(topology_sibling_cpumask(cpu), cpu);
-+	if (target >= nr_cpu_ids)
-+		target = cpumask_any_but(topology_cluster_cpumask(cpu), cpu);
-+	if (target >= nr_cpu_ids)
-+		target = cpumask_any_but(topology_die_cpumask(cpu), cpu);
-+	if (target >= nr_cpu_ids)
-+		target = cpumask_any_but(topology_core_cpumask(cpu), cpu);
-+	cmci_orphaned_target = target;
- 	for (i = 0; i < banks; i++)
- 		__cmci_disable_bank(i);
-+	if (target < nr_cpu_ids)
-+		bitmap_andnot(cmci_orphaned_banks, cmci_orphaned_banks,
-+			      per_cpu(mce_banks_owned, target), MAX_NR_BANKS);
-+	else
-+		bitmap_zero(cmci_orphaned_banks, MAX_NR_BANKS);
- 	raw_spin_unlock_irqrestore(&cmci_discover_lock, flags);
++	if (!(memory_caching_control & CACHE_MTRR) ||
++	    mtrr_generic_state_matches()) {
++		if (memory_caching_control & CACHE_PAT)
++			pat_cpu_init();
++		return 0;
++	}
++
+ 	/*
+ 	 * Ideally we should hold mtrr_mutex here to avoid MTRR entries
+ 	 * changed, but this routine will be called in CPU boot time,
+diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
+index 67cf69f24b005..8760a7b4dc38b 100644
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -981,6 +981,55 @@ void mtrr_generic_set_state(void)
+ 	}
  }
  
-@@ -360,15 +390,38 @@ static void cmci_rediscover_work_func(void *arg)
- 		cmci_discover(banks);
- }
- 
--/* After a CPU went down cycle through all the others and rediscover */
-+/*
-+ * After a CPU went down, rediscover orphaned shared banks on a single
-+ * topology peer (SMT sibling, L2 cluster peer, die peer, or package peer)
-+ * selected in cmci_clear(). Core-private banks whose core is now completely
-+ * offline cannot be claimed by any other core, so probing more than one
-+ * peer is redundant.
-+ */
- void cmci_rediscover(void)
- {
-+	unsigned int target;
-+	unsigned long flags;
-+	bool orphaned;
- 	int banks;
- 
- 	if (!cmci_supported(&banks))
- 		return;
- 
--	on_each_cpu(cmci_rediscover_work_func, NULL, 1);
-+	raw_spin_lock_irqsave(&cmci_discover_lock, flags);
-+	orphaned = !bitmap_empty(cmci_orphaned_banks, MAX_NR_BANKS);
-+	target = cmci_orphaned_target;
-+	raw_spin_unlock_irqrestore(&cmci_discover_lock, flags);
++bool mtrr_generic_state_matches(void)
++{
++	struct msr val;
++	unsigned int i;
 +
-+	if (!orphaned)
-+		return;
++	if (!cpu_feature_enabled(X86_FEATURE_MTRR))
++		return true;
 +
-+	if (target < nr_cpu_ids && cpu_online(target))
-+		smp_call_function_single(target, cmci_rediscover_work_func,
-+					 NULL, 1);
++	rdmsrq(MSR_MTRRdefType, val.q);
++	if ((val.l & MTRR_DEF_TYPE_TYPE) != mtrr_state.def_type ||
++	    ((val.l & MTRR_DEF_TYPE_ENABLE) >> MTRR_STATE_SHIFT) != mtrr_state.enabled)
++		return false;
 +
-+	raw_spin_lock_irqsave(&cmci_discover_lock, flags);
-+	bitmap_zero(cmci_orphaned_banks, MAX_NR_BANKS);
-+	raw_spin_unlock_irqrestore(&cmci_discover_lock, flags);
- }
- 
- /*
++	for (i = 0; i < num_var_ranges; i++) {
++		struct mtrr_var_range *vr = &mtrr_state.var_ranges[i];
++
++		rdmsrq(MTRRphysBase_MSR(i), val.q);
++		if ((vr->base_lo & ~MTRR_PHYSBASE_RSVD) != (val.l & ~MTRR_PHYSBASE_RSVD) ||
++		    (vr->base_hi & ~phys_hi_rsvd) != (val.h & ~phys_hi_rsvd))
++			return false;
++
++		rdmsrq(MTRRphysMask_MSR(i), val.q);
++		if ((vr->mask_lo & ~MTRR_PHYSMASK_RSVD) != (val.l & ~MTRR_PHYSMASK_RSVD) ||
++		    (vr->mask_hi & ~phys_hi_rsvd) != (val.h & ~phys_hi_rsvd))
++			return false;
++	}
++
++	if (mtrr_state.have_fixed) {
++		u64 *saved = (u64 *)mtrr_state.fixed_ranges;
++		int block = -1, range;
++
++		/*
++		 * Ensure MtrrFixDramModEn is clear so fixed MTRR reads do not
++		 * expose K8 RdMem/WrMem bits and cause false mismatches.
++		 */
++		k8_check_syscfg_dram_mod_en();
++
++		while (fixed_range_blocks[++block].ranges) {
++			for (range = 0; range < fixed_range_blocks[block].ranges; range++) {
++				rdmsrq(fixed_range_blocks[block].base_msr + range, val.q);
++				if (val.q != *saved++)
++					return false;
++			}
++		}
++	}
++
++	return true;
++}
++
+ /**
+  * generic_set_mtrr - set variable MTRR register on the local CPU.
+  *
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
