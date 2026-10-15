@@ -4,185 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9062CC6B33
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:11:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C54BCC6B39
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:16:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87C556B0095; Thu, 15 Oct 2026 11:11:38 -0400 (EDT)
+	id 4657D6B0088; Thu, 15 Oct 2026 11:16:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854316B0096; Thu, 15 Oct 2026 11:11:38 -0400 (EDT)
+	id 43DB76B009D; Thu, 15 Oct 2026 11:16:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 742CD6B0098; Thu, 15 Oct 2026 11:11:38 -0400 (EDT)
+	id 32BEE6B009E; Thu, 15 Oct 2026 11:16:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4909D6B0095
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:11:38 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5AA4809ED
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:11:37 +0000 (UTC)
-X-FDA: 85325199834.05.A199920
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023079.outbound.protection.outlook.com [52.101.72.79])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A6AB1100006
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:11:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=codasip.com header.s=selector1 header.b=ezv+YuMw;
-	spf=pass (imf14.hostedemail.com: domain of florian.schmaus@codasip.com designates 52.101.72.79 as permitted sender) smtp.mailfrom=florian.schmaus@codasip.com;
-	dmarc=pass (policy=quarantine) header.from=codasip.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792077094;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 023B46B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:16:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8FC02120A7F
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:16:01 +0000 (UTC)
+X-FDA: 85325210922.12.719D71D
+Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6673020005
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:15:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=UFTYFfoG;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=UFYxFynu;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.140 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792077359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cYtmxCUvqp7uAvIv65C6YeNlBqcz3P1dGgtePsETCxY=;
-	b=AVdLLQ0DV6YWYFB81gqbFMUQoCWBd9xRRDU/s3AMyKgDGmW/8pEgVqqYrOdtd09GQy6vYC
-	1hxjDhZeEWv0+ioCq0SQlU7tkw+eOEPRQfUvZt7hezv9ogsineX4E6ZOIb90DUjRLEspNa
-	7F+qZnQ1y5m3Lr9U2XW7rVpm4mEvqd4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792077094;
-	b=xa7OAniVhGxz5Ob0KfV9pTmzKMxJWoaRhAtklzimtHENnm+VqmTEod7FUCcdd2aJYPfXda
-	F0qZjv6O/Vr2w9yNZ8SX/WBCtEhESUwjgHjM4jkqbT8pqLt4oIyvNN/McK+J8KdtG5qRD2
-	KWkhLwmDy0Vki+23NPeiWzXPL+lNCO0=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=codasip.com header.s=selector1 header.b=ezv+YuMw;
-	spf=pass (imf14.hostedemail.com: domain of florian.schmaus@codasip.com designates 52.101.72.79 as permitted sender) smtp.mailfrom=florian.schmaus@codasip.com;
-	dmarc=pass (policy=quarantine) header.from=codasip.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nd1954fhu6c9m0x/D0IOt+l4pRQdxwDCG27TnScIi5PPYRpo9g89HctoYJX2CDqrD7EbrH6SDKZO7DCFxflLP9OjHJYFPWvHCsW6ET19pjfzwjymKX4tK4KjcXdlYPAJ6Q+GO/qGjr+xgkK5iJwX1erZsVgN3My0PogbCuWreYc1QPavjX8pAhUjINrI0N6CKjyO4t7x9dSqUgJWoQEXUHwmSEdGQCnpZNjPnhJoDo36CihQrWAuRx7WxrRUrCm3ZONPcP4AWsJMxNXYCHo/IEwPIjX0kDjXWzVAgYYxZd3StwNAQJq/HAFrcs7SrUoEmg3WLsPEP/nEZ+ua+5FWKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cYtmxCUvqp7uAvIv65C6YeNlBqcz3P1dGgtePsETCxY=;
- b=iPfYfsWRlQreraOFuYIYwFDy6rcG2iw1nFqS2DI2wg35DruAW9XH7Nq7HA1inPAL31Gk03XwgCo8n6Mo+VVgUp/xa4pmt7vbWulqc4HSAECNO+F3WbPhtOpSlzfUQKMKIx/g6BLfRBMxTSm1R68z2ZsMC6UPYOkt1WcYXSdX/H/qSbw5ms8t8du/WRTmbGZPmtg6jl6WGe3FokAtE25/qxTSCpsVozakndg+PrH+MKtdApOPckOQUaHIgmwCeg6BKgIaOiOYPv8n/o0ucIR22WkB1prVnFZINFTR/YLoymjNvDkcULByoH8K/OKBhFejxw2b/i7/6O4oi++sLilNLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=codasip.com; dmarc=pass action=none header.from=codasip.com;
- dkim=pass header.d=codasip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codasip.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cYtmxCUvqp7uAvIv65C6YeNlBqcz3P1dGgtePsETCxY=;
- b=ezv+YuMwT8q9ycf90JrU3ZuFUhaXKa+wKXV4/UCyLSYAnnYdl/Wju1c5S9HQdJ7QYuXoWCLrUx2t/5IZi0fJuGFXC1mtPLFBM176bNCe7umX/VAYfleDlOLMQOR1+w5Zzo7BfMreIo5+Hj4hT8uV5xvyVfzF2RbXPCXV09rBHCK4lAfr9Dih/LbjZc/ifr2BS4WcNWNAueuE5XeANWqgPD7ZMMYmWCozrnI64CuqslgqNAiCkSfCK5eEAUUrLHfcPp5giYNMzS8QdVl5VWjmJc8fo9NqQsZgajHz1YHSS/YX1G1+YS7h/YnzDlCV0jZcsC4DGZNoyeMPAJU+bPmWUw==
-Received: from AM9P192MB0983.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1f4::5)
- by DB9P192MB1898.EURP192.PROD.OUTLOOK.COM (2603:10a6:10:39d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 15:11:21 +0000
-Received: from AM9P192MB0983.EURP192.PROD.OUTLOOK.COM
- ([fe80::f0e5:8465:302:9a9c]) by AM9P192MB0983.EURP192.PROD.OUTLOOK.COM
- ([fe80::f0e5:8465:302:9a9c%4]) with mapi id 15.21.0522.013; Thu, 15 Oct 2026
- 15:11:21 +0000
-From: Florian Schmaus <florian.schmaus@codasip.com>
-Date: Thu, 15 Oct 2026 17:11:17 +0200
-Subject: [PATCH 3/3] maple_tree: add a test for destroying RCU-mode trees
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261015-maple-tree-fix-slab-corruption-v1-3-160d97f7304c@codasip.com>
-References: <20261015-maple-tree-fix-slab-corruption-v1-0-160d97f7304c@codasip.com>
-In-Reply-To: <20261015-maple-tree-fix-slab-corruption-v1-0-160d97f7304c@codasip.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
- Andrew Ballance <andrewjballance@gmail.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Suren Baghdasaryan <surenb@google.com>
-Cc: linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, 
- linux-mm@kvack.org, Florian Schmaus <florian.schmaus@codasip.com>, 
- "Liam R. Howlett" <liam@infradead.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2703;
- i=florian.schmaus@codasip.com; h=from:subject:message-id;
- bh=jgFsBitOSMzywJzgXX82rl/KgRE7CrKNpxpS5oG39ak=;
- b=owGbwMvMwMWoZLn8xddWhSDG02pJDFkX3opEfOyffsGxMeo0L7+06+6UxtKiV/WTd920eMM/f
- TNv+8z4Tsb1LAyMXAwzxRRZppeyzrdSvPMw+8nvdTCDWJlApkiLNDAAAQsDX25iXqmRjpGeqbah
- niGQoWMUD5HTY9DILC4uTS3STSsocsjLL0ksyczPK9bLL0jNK0gv0EvLTCvJyMgvKk4FGqGXl1p
- iaW5uamBq6WbsaGTo4uxqaObkauLm5OhqZGRs6WjuauFmamFqZGBqxMDFKQBzDVcf+1/J4yf3Nx
- 3WbV672f1c9jT9rUqs07J1ItrFS37WOizX2Gfe1vLP/0RYu9fH/Ej56RVL6gK0VWZzzO6O8J21m
- EnNyNWndN21tzERJyJ/ro2fOe3BPX6LhZKm51VmiSyW1/687ZndbVXeuAs6J2cHZD2+vX1pWIjc
- iWtd+53tfi6fK8xgHTYnjj3loLvBLSn7xqj3jY39G3P6G6deOlqxb5O1+82OImWpXQ7xO+qWbdn
- yY4VajvYzp1XPRGs+CbSsi3m3pu7gSvUNzKv8YhTbhI8EF7XWnCqVS5xynMlkxQ8e7bm7vNy+y+
- 6IW7TmV+83c7V1H496TfS3Ur9yMIzT6HGQUA7LVHWvU1I7suICXgMA
-X-Developer-Key: i=florian.schmaus@codasip.com; a=openpgp;
- fpr=1357B01865B2503C18453D208CAC2A9678548E35
-X-ClientProxiedBy: FR2P281CA0020.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:14::7) To AM9P192MB0983.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:1f4::5)
+	bh=rwP/VSpgERuSmU7CAJ/qc9G4ynusNvA0TtZXr7xxgio=;
+	b=MJrU2LuM6OtqnUrULofxgBqQU+XXVVri1/frFx8JibsMfP8NMXymz52m72cRDZRJUU4rck
+	twDz8kb5N1gFhbcRW0+KaYZeKgcsv0DfrxK686RkXgpULu/l0wBv6VVbUJeN7YjOzGU4VC
+	yagW5qTC638T2oGW34IMDPgoAogZB0A=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=UFTYFfoG;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=UFYxFynu;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.140 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792077359;
+	b=Yn3e+nCnm3fL3VTraJKEE6c5B0vZgtnaEuWztPlvEOEktGwfwRMa+Mi9stY+dXKz/Aql+d
+	vOsKQBgR3hbzzWOrhJy2VLa5AWJBwiymmk1XqMmDMFtbiloH/zcwh5QuY0ZIyjE3bQJdZe
+	8rCQFCCj20Rs6B2LjwxCJE1bM0JU9/E=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id C66D013800EA
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:15:58 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 15 Oct 2026 11:15:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=s-joshi.in; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1792077358; x=1792080958; bh=rwP/VSpgER
+	uSmU7CAJ/qc9G4ynusNvA0TtZXr7xxgio=; b=UFTYFfoGhsTq8HiIpIXIpNZPm6
+	7iA74E0cc8cA2Oj+QhqNCvF4FgW+iDBAw3s9cicX/vB2wMODmrZoeWBNT1iYzOPA
+	WMTDLuw5VncYTEPnlWYi7YHOkuTgVbug+4iPJIQgTKryfSwXd3sTRQomQ8NXqTnF
+	WFNKWF6sYeTs3fP72BHvtyHsnJ7dfe9nud2bkSrEsGbj9S8CEAPaNb3h88vivQ3m
+	8y/4vE1zUCRBus5Ch+I5kpg6/Z+QE1sGUw3g1z9DB5TDlYI0cAUVCZM9Ukaz25dY
+	AK7hMO7pTukGScpL3v/MAP+GnIn5PDpfKzDYY4vuQGFHOh/NbcbMaaN/V2yw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1792077358; x=1792080958; bh=rwP/VSpgERuSmU7CAJ/qc9G4ynusNvA0TtZ
+	Xr7xxgio=; b=UFYxFynuS5VFEDgpEddigeyPZgsp3YlH2/EPWt8kF8H+mtJzeMp
+	V5bNAl4mDNCk98UOmR+dbTa+UU0BwofacpEXfECrfeWf0DXafZkeeySWmRT1Y/VF
+	c7/KUMRJ+rAaFQWI6/S+QVwPGIU1gCjQ/WbwH2ARxfxDuswpOoq28E6fEm0MTaaI
+	1cDlUXXVz34/yQ/w8PgGna0uMEgFe/yuP951VvIWiNKS956zCZ++0/c+Ly51R7n6
+	m3LbLQVsSU2IYLBl9k9P9h75MG2rXIfBYb+zhDaP7mHPJ9jkl4HTJdpPUf2BS7bv
+	ijFINFebCHny/68yn3AHSa3Eo7JRmPNG8Kg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=s-joshi.in a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792077358; d=s-joshi.in;
+	mf=PHN1aGFhc0BzLWpvc2hpLmluPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:xuYDA0l7S7dZ5vzEMGmgfKPuVFvW7/Syyp3cZKM7WneB4HL
+	IwL8O5kxwm0dUm1PFNpU4p+3LIBP8Khf52OjXJXcsJYzCHx1ar3+zmBjA4VYQBnW
+	orfoL4U/s3lu0NAAKY/UpZi30sIQxPi2Y4HhV5eIDuf4/t67th7OaFghOKXYpMEL
+	pcDVd6v6lKbPph6Komd3jkrVfUAt3tCFrZMmUbH5R+r87vwN7Fy+ceeC34KC2ppc
+	CrRcFZvh9JDRMxps16Cqtu6h+1TwDtgs+axtfVNQcp1eUI4osm/NBgeYgSlh3GwQ
+	oTMYUsdnPFw7T0pyQpDYFLkiKC6MM+a7JCE4x7g==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:LevM5tzYYaumburSvV64b0N1TAhZSGBxVKsiouv4ydQ=:dyEcVD1Y3vcGMbvRYZPMcBuG39NEenS/76iBFF46FXI=;
+X-ME-Sender: <xms:Lu7QahPSbuoSEa55WNF0bRmYpBOR56OACjbIEWk3JNCTKXr8S0dUHg>
+    <xme:Lu7QatTzXWkm548AYtQ7k520gnsMpGDOvcTx_I_QcLOtHaNftYaxBmwakPDW73-u9
+    BEyGgAvDIBt2WxZn4iiNtafI9vClk7WhgFP6Bgh1sDyWgIHAaDhUjQj>
+X-ME-Received: <xmr:Lu7QangY90ueWEFwxkeM7vD86KwGJvyb3mjSEBJtLDvDuvktgtHGf6KFCg>
+X-ME-Proxy-Cause: dmFkZTEV6GHuCH6/QILcFaKhduef3gBBREJE1psiKhqNhihAbWJpVZhLJ+hjcHxwMmFgu1
+    1ywxKhp44j4XcoW/5YOxKZnHloAZ6M8EZwTLdraBuWX2IMO5Y6TSrd6AfBpXSCzQKx0D20
+    mwzR80Oay3a5lk+she7Gco8OasTS0vQFqoFCydIfg8lChTL3uvKIEoEIPz1LUoznhNFGPi
+    euXxgmiGPs/xOF9xmJXkNWGmwuXMXr6Jl1lUTmw1dSQTE0IhQhP4dm2absUAt/BJ8VMv+G
+    drJAHy/HDfSKXmi6mvi/gRtLW+8vgafJVm7rABfv1x4e7cGTnMUk/dq+zXc75QDcbOS1Mr
+    o3pOAy7W9oVK+dD+zGy9o7hKIHamLw4WlZLV+O9MMoVwW9+QQ0Evih45zy4quxiSBKObu+
+    FuXs/cmZyu0fhmOTivf/u6OOA0Q0g/ZkmOhspMMwstiZUcMc29sU9OMnZlKn+l5UkiQaIi
+    27bQ6K0rcuO0QbDmGHGDZiGg/iCM96A1d04T5LS9lXXuflz5/V1u3EeVLdyCXR1KxZTgNX
+    dJ/2e4O2SFGRnXxfBxagMFtS/9USPCQGXjM22CKQ9IkJakcNVYld+tfBESGTw+b3sPCLyb
+    rTnrQD0L6pRndK3SbZnuEGyiA3aRAsIZ7CqPryk2YBmZA4vMrZLXABubd8eQ
+X-ME-Proxy: <xmx:Lu7Qau9ZAYYCGJwm5unJr0RsqICmZMM7FkyyszqFnXcKdVGHfSpBWQ>
+    <xmx:Lu7QamF7vH0XnEWYj2C3XXfw34gVVfP5ie2vK5e4F8amLVaUxX-56Q>
+    <xmx:Lu7QapmyU7qgp08NfXPvci4TUSvinip5aAploGIzhkXltUA9-mVpHA>
+    <xmx:Lu7QaiZdaMYjNtNKqYUbs0njf4nW1nVERxBWBaavg-O-4LriBmrdig>
+    <xmx:Lu7Qasn1_OxzwpJGarX3m-fKGxT_WOlJ-T9a131aPlVJUMF60VIS7-Mn>
+Feedback-ID: ia9504abf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Oct 2026 11:15:56 -0400 (EDT)
+Date: Thu, 15 Oct 2026 20:45:48 +0530
+From: Suhaas Joshi <suhaas@s-joshi.in>
+To: SJ Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, aethernet65535@gmail.com
+Subject: Re: [PATCH v4 0/2] mm/damon/core: Iterate over installed probes
+ instead of DAMON_MAX_PROBES
+Message-ID: <atDtNpEiy96Lbna7@fedora>
+References: <20261015135533.18761-1-suhaas@s-joshi.in>
+ <20261015142933.105760-1-sj@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9P192MB0983:EE_|DB9P192MB1898:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa8f6798-c5b2-4c9c-a1a7-08df2ace91f7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|10070799003|23010399003|56012099006|261009223027099003|18002099003|10067099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	xDFlXRrDCAK2x0EYSLH9RBjTgxoiGNzkaxg0D47tNAKyO8tFCcT9GxpeIaP3T5i/KZ3x6dQ6DEb8nJ4duoPaQe5pR1Y2Nnpw3xyslMrqdML/rUVciR5e4NJjQheV9lNVqdI/rLQ8PoOMjEf1BpwKpwPO/3Lgcn3qm5uX7qA9HA60H828uCxigSwdC4c4oa6EU1WyLCE9hBIx9KDQegIz+IwvJN/2pJdrnQISbMjSx7WdT59eWlZvo2RhP1aft3m7b8fjHuTFpua2q7Ko9KS9r1tFPlOBBPJwLheo+T0mBBS6cEp8hpItir4UsnC2GcZjH8yO9VyMSbplvcMVf1IlIt0gn4fbmaI2XbfJKfTQEu3xldCGhIM62JenZYy+l8Dd2Rj6/4AtpBEOwhrhc51eojm+5MHpTCHhIVbLnWmLS7lyZ2AHts4c0JbDEPjMEA7dG3h3TRCrsq681m0YjvhPCBjcOr+cxAUGyPOCOH0XBmw8ocFPrDkGTkd2dHlVMj6UMQxTlFS5LkLIbZLDc7UIlHdNTGxSPSqe0k9vK9WgHOpS3pgM8X5rDPUtTLodpMg1RUoPsW7/tmlSfTEyCmHxh+lTOMesp+ICgGw3tA4xviCy3f3bYiQroETMjxoEzZlEU7lvfX+xH7Bs2bfkPHS14lBTRuSOSuJuD2BObWeAERI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB0983.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(10070799003)(23010399003)(56012099006)(261009223027099003)(18002099003)(10067099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TUpqVXdHV1BDcTNRMDZ4UnNabktvbXpWaVdWWUpKeEtESjczMkxid3pvSnY5?=
- =?utf-8?B?TFYra2xkT1c4UWo4Zkl5akVlZFd1Q1pPMXBlYkxFeWhkZUV4VjNxRktSTVpK?=
- =?utf-8?B?SmtqYm02Q3F5d2g3L2pEZTI4T29YZDJMSEhXeVpuTTJEb2prYkdNVzkxVTYv?=
- =?utf-8?B?YUJMeSt5M0hPN202ekptZ013OWNLQ0NrS3ErZnBLYWdoNitQZHZQNzA0K3dB?=
- =?utf-8?B?M1M4TnJ3NUs1NnM4bnRxUTlvSzk0ZDdXOUZMenUvVkcwRiswSkNqVmlSMFdu?=
- =?utf-8?B?d3pVYVl1dEdSVVhBTzlDazN6SFN6cVpyTlJrcFIreEFEcHJyVDBhUnFzQnZl?=
- =?utf-8?B?V0ZydmtKZ1B0RHQ1VFpUVWRFVzIyT2JkTVloVU12WTJTNHRVT01VNk0weS9a?=
- =?utf-8?B?MElIRjhOZ3RTeXhuUmxzODFIdUprUHgvdkIyemZ5dnhGV0tJeHJ6Z3NrWW02?=
- =?utf-8?B?RDZrVnFxdzNLcE1GMy8wQmVaRGl3WDFFVG5iRTh3YXhXcGpXYnUyQ3A1SnY3?=
- =?utf-8?B?bEhiaWNESHpBbTVJaEJnbFcyVkphOTVEUUp0UDQxNGZKUmJ0YXhlNm1NWmFh?=
- =?utf-8?B?YW5HbEs1QlBoRVZ1aWF3TWVZbHJEUitHYmhIYXBuNUxTRm9KSWVpdnQxcjNI?=
- =?utf-8?B?eFV1YXBrWXJqUjhVRW43WmdlYTliOXJqclltMEthQU02NnhSNzhDY3ZMQzRa?=
- =?utf-8?B?M3Z2QjMydFNqbmZselVrVkZTSy9UQ0xhZE1ad1hhTkozbFBobm1ranYxdXZC?=
- =?utf-8?B?UkFxMUFMaGZINW5ZWXJEVTRPYzRLY1JwYVF0QmdYVFVkaDIxZEVaTnM5eWFr?=
- =?utf-8?B?cFdWQ1c4em03ekovcitJTTVxSm02RFl2N0t2ejBPV1NBRDBxemI0UVI4Zyt5?=
- =?utf-8?B?SFVmeUtVb3FiNmI3UktnbnBVaXJ4U0xKSGVxN25HbCtHcjBxdnkyT2NmR2lU?=
- =?utf-8?B?Q0lkYmZ2Q0Z2aGJGczZtMDgwb0MrcFRJWi8rVGFmaUZwVW5jN3k0Qk9aL0Fn?=
- =?utf-8?B?RC91YlUweUMyNFRtaFY0SXQ3dGk3ZkxqdUs2dTkxZkF5alFlS1BnWEdIWHdl?=
- =?utf-8?B?RTJ3WGNWdDNGTEdUTGUxeTZMSEhVRFJ3SkFoQWF4TSt1ejlKK1VTaUxLYU5Q?=
- =?utf-8?B?WXZWWGRwQS9YeTVNbExlSk1hNktIZk1JRlBQVW9oOW9lejZHNDFZVEUyU1U0?=
- =?utf-8?B?UFpHQmc4aUtHL0xVM3duOWp2QnhzK1YxZ1d1L0paNDFndFA5U2VKZzQ5SzJT?=
- =?utf-8?B?cUJzdm8wMnVqTUpuK0hHNk01WCtQLzlBTXRVSWh0azZkRmF4VGc0RGZJaHFZ?=
- =?utf-8?B?eVlIRjdwb0VHY3ZWOGxoVVBrRFVoSzR4TUxlNWNJTEYwNDdkYldqNDJQMGsv?=
- =?utf-8?B?dDBsS1l3ZG1TSlFoREE3OWpTZE10RWluK2JtS2NBUW9nRjlYREVjS3QyM0tD?=
- =?utf-8?B?Um51WWxucmExWGsvWEd0TEdjRUZNazRubUNHQXNxVWd0WkVUa2Y1Nlp5V3Ns?=
- =?utf-8?B?TVQ1YSs2VXVPUkhZT3BGQzBRekQvSEIxVWhPelBRUDIwMDNGc1ZMSGJMU1dt?=
- =?utf-8?B?b0h2UEdNR2JXbGZlZU1iZDJOSGxXamp1Rm1vNHpZbWU1Y0NIMENUUmtWTnd6?=
- =?utf-8?B?Q2hXSXc3Ti9ha3Z0VHpMTXNJWVRSNGVZdE5lQkZodmlUQlF1amhhc3R0VmJh?=
- =?utf-8?B?a3QxVnBxTWR5b3ZqZDZhWEc1TXBxY2dnbzhEYndVdGJqcHVFMzNiSldRY2ZD?=
- =?utf-8?B?T1B6c2xNMkJqVWZNcjlwQUpBUHpmNFdtUXc3V2U2ckFkT1ZIbEh3bzFHVEpZ?=
- =?utf-8?B?dUJxN3ZkTWh1WWlPUFZaYytzdGgrUGdOTXNheTc2NXhZNjFYbmpZWTBzVUgx?=
- =?utf-8?B?WXFuSW9LaWhMU2lxNCt1SXlGV09ja29Sa3BEajVSeVdKV3JJWmptNjNZZHVS?=
- =?utf-8?B?UWVyNWRVU3I1YlQwZjJjSFhiUW1KVDVwRVhrZVdOSnBqQkNPUXRnTklON2p5?=
- =?utf-8?B?ejk1dmJYUFI1ck4xRllYaWxqOWZGU2o2ZFAwQUxYRTJNNWhtUnV5RjNsMVBk?=
- =?utf-8?B?Nlc0cG1VcmdaSms1TnF3aGhEbFYyNm1rMytDaEZzNmw4RktYa09jZ2RzcXBo?=
- =?utf-8?B?OXpDQUlEeUJnK05SdUhpZWRmamZ2Qm5BVzZRNm5LUGVidHFXVG5qaWVQVWdI?=
- =?utf-8?B?NUVFZGlTbFhuNG0xeWdTdmVydlFuRXcxazBvZ2orN09vSXh5bUZuVS9EL0R3?=
- =?utf-8?B?WkthcmtWUStPdndIazVnMzM2Unc0U0tNRTRtSTdBYit0NmxKV2dPUTNzK2hF?=
- =?utf-8?B?Z2phc3pHSXRIZW9vVWxFZVJGUjk2OFJIdXdWZHVkc0YxYmJOc1lUenYvY3dZ?=
- =?utf-8?Q?yjqnFLAHFFphvT7DWYDUOEGyabfkpLe6FkGblKuGmrIIW?=
-X-MS-Exchange-AntiSpam-MessageData-1: leXRRq1saYRC/sgDNccy5tUwmcjBhzCSybo=
-X-OriginatorOrg: codasip.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa8f6798-c5b2-4c9c-a1a7-08df2ace91f7
-X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB0983.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:11:21.4004
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0d91ffef-bb81-4cbd-b9b8-552583685f20
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v8J4hnpMmpJ1k6A3imR8AKzXnMJrjJ8EL/ThV/oANyZ+bayUrLlyuPtJnTiR5ZAK1SybE16aO/l5vj4T4XJ3x1Br0Ebr0zzmuvqcmRcrykQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P192MB1898
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A6AB1100006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015142933.105760-1-sj@kernel.org>
+X-Stat-Signature: m3tt9crtxghenedm1j65zmm7k659urf5
 X-Rspam-User: 
-X-Stat-Signature: mjymcyfg8nn6utqt3htkqjukptwwr6pp
-X-HE-Tag: 1792077094-123712
-X-HE-Meta: U2FsdGVkX18LBkNneXaz3kmfoPGoZk6hWCPuUZ+PmL4wS1Ui7sHXzmZ1snumCRt2q/xJSOxZhxe/HPfyUfodcQ/xfB+oT5+B2p4MD+xfqnakF2uD3UQUUei3tAVk0mn8to+SpUzoaVXGuPtluw5wwlOxf5uaEYqdZX0dVpmCNU6gAbIqbui72wYV6rnpszCbhTuYXR9FfByae5TdaNe3BkpdQbwCVMgNPpK0qc5QCCijNuq0/I9oQQAIAOQl+6lgOOc+G5x2yzw2aQJONIAY5ISOjF+rCSCfbooOpzr+y6/GrkvFjsgfO8iXk0r5YsXBKAX+msC7skogPaE+k0hekUBsD//+DpsGp/zFPUTrUnRoRpt5NZ3IKaKCjrWoOZzgQBUmoRbA2MdP6O/1iMujsMYdK3MxwiomdQkSUza9MKKOkAjdD96+2gxCqWNB84SPGIFXM2ihPKdpFEnrtBZv7yiOCjYmC5ml1al+vN2rcH0/85/FGC69xoxqTHBtWV3132y8EP01bToqJfmt2ro1aXKKo3KanUNghrj5KSGplZgMS/Ay3jBruIrSol8bn7/h5mP0Ybe95vtnhAp9ErFaJ4UHPVymWYUMfrLdD6qLlSZtDLiqmRDSjM+OhudsAEQgjU3v5Hh9nTiVguTNrMJiPx1BGy62SyP79yQk9yyn7fyBESkLiW9fXZ26I0z+FccAigTw8w2XOqE2p9+shAFMUW2c1m7Bl9d3eA4xDVTGKVwv4p9ntnUDpXFbC3Gf5gJXxgCzaDkvK+DkduwRo1g3jcsOuLwZys9eMcpBMHh0qWeAHcpk+/DtxBXbLPgPpfH1B5CBehGahc3/aNlmXQmkhnAV6BSa300uA/kO1+zRWy8YzdrhzfIs10c0gnIMGS0XJuEI3OlgRhFSw+VZNJU25ezOviET7Voiz8O4XGguayu1pcSp6NQ4SRUZXJ+qXRELK5KtBjTwH2dtak51Tus
- o23IPb4z
- FHw+QWOy2AGjH2q4K8eIxF+Q7VzpIw9rOz+/RmhfZcKfpPEG1jAGHv3DyYYW9JS2ukGj2Cw197j5WaDkGBwkvwN4vkNgfFCOjkL7H5GbZGY6w5xRqxoxZ9W6aMSXwmufhMmbB/EVGQapDnI8ZNLf26ejZGugF7F2sLSr4TyGYQvF0uEYEDs+PbVDOtknLflxEhiDs1AZIXr9klToihYnCx7hiKAbgtnW6KoVuwpJ+g4RR2dLUPqNnPSI6+rTiwZMPQOuwPNyCRG4FmeAP+IN+aSaAhtUx1WCz897brFIpWOKRnyN9mHXg57M6A4rKNMs4f8i+hdtwhxDP4FvqOjwj4tqoQHkILii+QBiJhXgNSg6f4hdrykmyVjYhzaIisHOJLsFkugRHwN1QVUrJhXK+DzLUUs5SGv/PePAO5Xk3kTGrggzVzl7UJZXxtw8QCw9nTm89VfVd1ceIcNqg7KW9teJYRzmKDlsMgu/ZV0i8q/W3n+k=
+X-Rspamd-Queue-Id: 6673020005
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1792077359-81439
+X-HE-Meta: U2FsdGVkX1+zehtQSB5wpTRdo7mOxT5kVdadAr2WhFr3KXSY1icd5Vs6I4v8EsvdZzAybY65yHoFplXABO28wHgT2v29+C/qogvv898B1WdGpqbfc06Rc/S+RjHy01H+XgEEpcopbuQa6sxz9m0GnJ7SEtzEySS84XY/LBWJ3S497o9DHtlZIpp8chNEuhilWaxoce2gD7T/Hb9v5UunSEA8mKeXYWfB5Sg/9kw5snv+2xfQmXPBZU8VpG3K2oY5yDVZjkoT+yhC0+DCB66/YyzPVWVeafHm19aWBvXrlRZ/YE95DdS+dQI0Rrn2nulgDGnUrRPLajjBa+TWL8Lv+xWB3yLoIBqThXQTpIOi222V3Mew6aZqVrtlwdjORjvVn9InlMFYC1guX3fyIhwK0Lojf8Knn9AFPQB+3btIPzaGcTmppSzOqATi7z6VpTbQ6K4ld27W8BlxKzcflopYbhlmGF1Una/ETLARc2OrZ5d8P/DPl5Rary/aG1YVjc2A+xPfK6u7KOwaAqoVgsU9HDqbyFEQVoInaTUSsoxh5tmrONCHcwKL+jt758ei884xpMWTalUjiyEDW6ABJZhzgSWJrvmTgieFE6mfaIp9J55iZwkuXEnr2dEnci5fToF0ssU9/UZk9h3a9z7OaVfFhSQCOn+Yd6tdwGn8Ld+72b5PSWRLIFGVOMgVqoVE3m4X5SEtSxuRDXwgqmFWDh2FPAUsk1OuZakmYL8e5tD47unGeUoNU7ptvdTsHBJRdRizVwF42qZQbyF0i9FByrAqmTksAs+d9NHFLKKY/b/m8iWKYqJI+hrQRktEvc2978+oZDr+iH7c+niNCRV78lI68eoZF1YcI33rJv66Ftf0spEPR5xDM5037Y/stce6S0PBo4DnGJo1STzHzpNs1QEVK5Agh2/UrDNZLJ7A+mXW1vzgvQkqxBmTMEFKvqoev89bySFztJU8rdcTt6MFLdy
+ Dr4i8xzK
+ QB3AGfrZ2xnV3pM9YGL/iCHMETitHt7HDmguRgyZYygn9QojWS3yf9K7R6bO6VmDyi0r55trFqTjzf6zobS3CffJFbCtwmrqE1q9/8yoBSnYHRLcnw4zqasNyFykaCXQjchwFrdRZReMAA+ovV/OC8cPwyvrRh1PwgolpsLydEKCj2zyZcRxJ5emoN7E8SUr26gDrR3Fhrl4zUYqKE1GjcDWoDClKqNIdIvnS/vr/8ftRo2OrZ7VCnRI3cm5jC6SAjuVhSzu3/8W2kxweAwYN7a4V8Pebm8hPFJSrFnzmnhz2ZPJHclzQW/tHoBP8KYm5cRBY00p8pK+0RIR/iAQ5HQpJhL2uynfGTRp+CJdjqKJYY3L/7IPfn9xzdhAcJ7L06bEulFLKjAkYrLzhp9DAjebHm+VZrRxT9t986lwNmpbK1y/o8Irt3EEM7OYrOOU4CXKfBANPttxp6hKVDguW9iUt10cPhANXZ0tmtvIILvsVJZnHzZGlv1+Cqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -190,80 +146,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Destroying an RCU-mode tree that is not an allocation tree defers freeing
-its nodes to mt_free_walk(). This path had two bugs, both caused by the
-metadata that a maple_range_64 node may keep in its last slot:
+On Thu, Oct 15, 2026 at 07:29:32AM -0700, SJ Park wrote:
+> On Thu, 15 Oct 2026 19:25:23 +0530 Suhaas Joshi <suhaas@s-joshi.in> wrote:
+> 
+> > Hello,
+> > 
+> > This is v4 of a series I sent earlier. Please find changelog below.
+> > 
+> > There were two "todo: " items of the same nature in mm/damon/core.c. Both
+> > of these suggested that we should iterate over only installed probes while
+> > updating (last_)probe_hits[] during merging/splitting regions, instead of
+> > iterating over the entire array, which may have empty/unused indices.
+> > 
+> > So this patch series does exactly that. It replaces the for-loop over
+> > [0, DAMON_MAX_PROBES) with a damon_for_each_probe() over the probe list of
+> > the context.
+> 
+> Looks good to me, thank you.
+> 
+> I applied  this series to damon/next [1] tree.  We are now quite close to next
+> merge window.  It may better to focus on making mm.git more stabilized and
+> therefore ready for the next merge window, rather than adding more changes that
+> are not really urgent.  I understand this series is not really urgent.  Hence,
+> Andrew might not add this patch until next -rc1 release.  In the case, I will
+> request adding this to mm.git after next -rc1 release.  So, no action from your
+> side is needed for now.  Let me know if you think this is really  urgent.
 
-- mt_destroy_walk() took the last child of a full node for metadata and
-  corrupted it.
-- mt_free_walk() took the metadata of a node with 15 children for a child
-  and dereferenced it.
+No, its not urgent at all. We can wait until after -rc1 indeed.
 
-Add check_rcu_destroy(), which builds RCU-mode trees with 120 ranges
-(a full root) and 2768 ranges (height 4, where a non-root internal node
-has 15 children), then destroys them and waits for the RCU callbacks.
+Thanks a lot to you and Liew for the reviews! :)
 
-The second case crashes without its fix. The first one corrupts memory
-silently and needs KASAN, or ASan in the userspace test harness, to be
-detected.
-
-Signed-off-by: Florian Schmaus <florian.schmaus@codasip.com>
----
- lib/test_maple_tree.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
-
-diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
-index b9367c61e8b5..aea62269810b 100644
---- a/lib/test_maple_tree.c
-+++ b/lib/test_maple_tree.c
-@@ -286,6 +286,36 @@ static noinline void __init check_seq(struct maple_tree *mt, unsigned long max,
- #endif
- }
- 
-+/*
-+ * Destroy RCU-mode trees that are not allocation trees, so that the nodes are
-+ * freed by mt_free_walk() from an RCU callback.  With the ranges and gaps
-+ * stored below, the sizes give the tree shapes (on 64-bit) that used to break
-+ * this path:
-+ *
-+ * - 120 ranges: a full root.  mt_destroy_walk() took its last child for
-+ *   metadata and zeroed part of the child pointer.
-+ * - 2768 ranges: height 4, and a non-root internal node has 15 children.
-+ *   mt_free_walk() took the metadata in its last slot for a child.
-+ *
-+ * Without its fix, the first case corrupts memory silently and is only
-+ * detected with KASAN, or with ASan in the userspace test harness.
-+ */
-+static noinline void __init check_rcu_destroy(struct maple_tree *mt)
-+{
-+	unsigned long sizes[] = { 120, 2768 };
-+	unsigned long i, j;
-+
-+	for (i = 0; i < ARRAY_SIZE(sizes); i++) {
-+		mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+		for (j = 0; j < sizes[i]; j++)
-+			MT_BUG_ON(mt, mtree_store_range(mt, j * 10, j * 10 + 5,
-+							xa_mk_value(j),
-+							GFP_KERNEL));
-+		mtree_destroy(mt);
-+		rcu_barrier();
-+	}
-+}
-+
- static noinline void __init check_lb_not_empty(struct maple_tree *mt)
- {
- 	unsigned long i, j;
-@@ -3804,6 +3834,8 @@ static int __init maple_tree_seed(void)
- 	check_mas_store_gfp(&tree);
- 	mtree_destroy(&tree);
- 
-+	check_rcu_destroy(&tree);
-+
- 	/* Test ranges (store and insert) */
- 	mt_init_flags(&tree, 0);
- 	check_ranges(&tree);
-
--- 
-2.55.0
-
+Regards
+Suhaas
+> 
+> [1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 
