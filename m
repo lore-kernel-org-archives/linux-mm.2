@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3358BCC6B33
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:07:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60B4ECC6B39
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16C596B008C; Thu, 15 Oct 2026 12:07:33 -0400 (EDT)
+	id 3DD856B0092; Thu, 15 Oct 2026 12:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11E7E6B0092; Thu, 15 Oct 2026 12:07:33 -0400 (EDT)
+	id 38E416B0095; Thu, 15 Oct 2026 12:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F279B6B0095; Thu, 15 Oct 2026 12:07:32 -0400 (EDT)
+	id 256A36B0096; Thu, 15 Oct 2026 12:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BD5726B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:07:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3DE1BC0399
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:07:32 +0000 (UTC)
-X-FDA: 85325340744.22.1BE6A24
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 776BF140007
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:07:30 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oClVWSoc;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F1FF36B0092
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:07:38 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E7F7120AA7
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:07:38 +0000 (UTC)
+X-FDA: 85325340996.09.5231996
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6FD7A16000D
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:07:36 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Srjq4clX;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792080450;
-	b=Se0izup7JY0w81qQLArXtHkzgoDRg0R4WD2YV1C/WQ1aIyPGrY4EArTPrQ6kVtd+gfnlVm
-	pfbVxzE0IQkCITbJclmJa3QqAp3TeAle9/8jOuZGKlq6RpLn6ZEh9c1Gb12KBus+iPXxdc
-	aT+3cRev6B6XcC+aCziA6RFIKWhVIlA=
+	t=1792080456;
+	b=FpKzzVBd68qaJQHvAlqrCZG9RIEctJPgp+z4LpI5yhGx+X26Bpz/G+CQzii9rSV1X7trMW
+	qAc4jWEtvvGpu6h1+GumyrExmUB5OZnlu2CPFZ4eI9J8aCIPYiCAH7DSeUZqCyD4m0tf1d
+	yiyqNiM20GR7d1gseLMQdvbceiEirzE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oClVWSoc;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Srjq4clX;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792080450;
+	s=arc-20220608; t=1792080456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CciFSgIFbCKdkyGPR3RAGdYw4f/ibGwxPnazJEcANEE=;
-	b=mRyYlI5149cVj5dlNH+/988hamm20xF7UAmqpErUNaPKsFTrnHGGhi0Rw6V8nR4pKqlFIh
-	Jfe/O6T3tlxah5dMmKCxLGkiDmyQ11AO1g3fvKLvjGI2ZU6AN30V+ZOmgXnPw+msuyzcU0
-	r9/5naMiBRWp6zGWGYYvn6kdjBZ2JuI=
+	bh=36klJXXC0aAnOR97CHQ7Hc6li6xJpMIjRx0K78eNZ4U=;
+	b=Ipvz1bP774oDudsvMg8oBbhKa7dtU7aEVQLvKJgrbVI3UX+r4342/QX975Ovl/FARhwEZG
+	9zT779SbshaZ6013KQ8j+lHVjKb1m9yVEtsVRFgrH3rUqpzuj/DuAa69Tt4qgvAVdP2xw4
+	O9y3H9RpN6xp+oZiqizPtbuoYJ/uYOw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 349A46022A;
+	by sea.source.kernel.org (Postfix) with ESMTP id E949141E99;
+	Thu, 15 Oct 2026 16:07:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699971F000C9;
 	Thu, 15 Oct 2026 16:07:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B38E1F000C5;
-	Thu, 15 Oct 2026 16:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792080448;
-	bh=CciFSgIFbCKdkyGPR3RAGdYw4f/ibGwxPnazJEcANEE=;
+	s=k20260515; t=1792080454;
+	bh=36klJXXC0aAnOR97CHQ7Hc6li6xJpMIjRx0K78eNZ4U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oClVWSocfqvduPR2ALfzIteEFks2esswxs0F5Y2oZ/OA+HLCsAV/fLlib5j95qPEq
-	 +3kZatFC0ANxS/DB0lRArKWAxUA+V/mKeyDOldSMMcAwzYJrl7fu+w2qeL+9QEAvW9
-	 wuui8iSP/G/wc3mZPtq8nFawHp2pPEOzw51/wgIO95YwNYlx/8OW3tO/V1wUyYm4tT
-	 upGx+ji2prBVevtIwEgY38MI2o90fU5H4R7Z4KqZgUtrXG6Ju8afkoBoaF1ddxngwY
-	 Po9NzE5sqCS6nyjwxUxNtqLm3ObuglI8ZrMX9ToVMbhjAcpB0CN5NbdfdbsNMob9kS
-	 2W5jC2QjzjP8Q==
+	b=Srjq4clXVSQXEKQQlseICrzLRzIL6wBQhcIt4doE6Kwl5gbMmc0wlsf6RN8bK1LLn
+	 zhWDaGukT2jrCeQzR2HzZ3LozLDLPs39jjDarJ15nC6DD23d8gb3jazVZqXv21R+AF
+	 v9w8crQBLYPFVy1/JBxiOdNYElWhXNJE193aSkpDaqlg8QTSA7oC1szVNXNkY7uh3R
+	 OCdxnZGaJtcVHFF13Mox6RIxXCbJoIghfz3LrFcsyV7Y42FhpXp+/H+zk2ngsQVUzw
+	 cIvoFw3KkFURsSvPVUyJUqiQOsYU+sAy29s7hQg92vQR+mSRS+J8ehoikT9/fn5Eup
+	 HVFEXI1FOkPpQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 15 Oct 2026 18:07:07 +0200
-Subject: [PATCH 01/10] mm/vma: don't leak the commit charge on mmap failure
+Date: Thu, 15 Oct 2026 18:07:08 +0200
+Subject: [PATCH 02/10] mm/hugetlb: fix use-after-free of a new anon folio
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261015-urgent_fixes-v1-1-42796911043b@kernel.org>
+Message-Id: <20261015-urgent_fixes-v1-2-42796911043b@kernel.org>
 References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
 In-Reply-To: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -86,22 +86,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3090; i=david@kernel.org;
- h=from:subject:message-id; bh=PrdvM6UwTy8T7DRmlAnUC/i1CY7asN3v2e9tohKJ6aM=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIu/DL+dvLjnYVC5XPumHP1rnrR8tnh5Ik9fX+myYXLh
- yzxUueQ7yhlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAimlEM/9OLcg34K3TmMjy/
- kizyN7FEZ63Q0ohiPqWsv16H3Lcl3GJkeHSnM3SLOv/CjvtnxW7K8s5Zt2/jtcrvfBc3rCpTutd
- iwAkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3241; i=david@kernel.org;
+ h=from:subject:message-id; bh=/+TVzqw3aRMIyr8brH6Ah9l55OImF6leRLWzdkIev/I=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIu/DJeq/J/o3CE/kphCbsFRw9VzbnyqWO/yvPul9WtO
+ 1YpnG1M6ihlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAih+4z/M/M1Fbq81TtXKcW
+ fiPFQoOh8nS3l9TJw1sFVwre2LunYi0jw97l0wt0ndl1HFWPhOy5eKTqrmHievE75rtz30h47L2
+ kzw0A
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 776BF140007
+X-Rspamd-Queue-Id: 6FD7A16000D
 X-Rspam-User: 
-X-Stat-Signature: 8xtnrh6tksa97iptkhnnnhdi91pbj9pu
-X-HE-Tag: 1792080450-84270
-X-HE-Meta: U2FsdGVkX18h3hdV4S1GYrqPteTZgGFT3aJIlqfRA4iEoenTQTQQic3NAWmxrPX7x4EHg87vk4ukGjmCORk7TVw0JB3pxB1igwtrpijiE38y4239sommndk1oz/9Kqj75FtBkyAFl7wt45Z5HMVECzJ49a4gtqoJz2FR4Mx780D6/stSAaZlIJ3h1IKTmcY/SGzRwJoGEnuERLDYXs4+YpF2qDA3MDGdW9TOJsyrecOgvX0R2SkM5OMVrBpg/NpRUbuXfqmmVlb7FGPHW6/KAoGXDoYomLX72lj9JdDLpM1X2HP+A6WEEVtSTRsmmnh5qEYl0aFmh56mVIfI/LBk1SUHWuPGoWrMdtikNW70QNHtRctT9JNE2EpmNbh1Suuao+HEztOloNteMvncEIwwZWkm9FzkD/zkJ6Oie5KHUqKEJvgzVHD0hWQUIf65e1aXE0xzvswfwOIW9FVRG/ZfbWV43E9i8NUwrO8mN+KywySWhkYr/asyIjOqLLKX0URS6TTtRwl8xfKy8e2ocRiRmyHHWmqEzs3D0FOeAyxUSzyTzSaMp6Sy2vIssf4c2KXuNbXLVofjfBnm0Hd2RB1GmH208Y36/KpcmCcD1HPSGCbyOCs13vFtCeMTN2npLVkEo/PzdNVTsU2qlXzpeRAXA9u+OnVsu983gwnCAv2BDU1cJrWibtHnSFlxfkwmcsxwZ8rGC7R/lk/FyKT67N0XDlHVJJf8gNhHvbM4uQD8epr8xW4MQp+eDAyW3GjEnmzfvU27CJmzqHyRQ1/LUGoF03ABSp2ItzsUCrxWj1IDxY09xWkaHzyTzV0WzAhmi8gSx5yGiqP+9i1KYeWRLdXqF+S+OliVTE1IgZIlZU/f0FtW0/0XBIDFagSXWCqMRJ/fO+95SFAJ+Qsr2eFk95o+LK6tmwTkbD7sXFbrVIc44WcVpoYDG+lG37nmzop6YWzSF9D3CFt2HPi61IcVZQp
- 4pTCLXWM
- JSJIHAcfPtjTyLpKYknTqNTO/CI+w3Z4e2bakXKThwfVnHTJ2FyOcpST1FgxNT2SvIGS+CFtbBG8X4Bsk5Y+Kqmz2nyDrNJAFZt6BrHtc03JdXFNgGXGQbLc29s4CTnmxkzgCKDtZGNTRVKMMD74u7IDLnL/Om+NCnnE1oMoWEpvpzL1leiSMIbftWO3AxBFzy0qzeePS/0iH5F3Z2ImNq9gbCC3CRXPkOVLR60In1zjISHREDsIBh01+4yuokWi9aHBZj9wF/9RqmPlxfFJ/5RFH00WNckfUpEVOE+p/Rx4fBIohWmS1tqh+ge+/dT0LEA+izcbdH8HxdY7wXMy67EmGbGfnxl+NG0chBPFE0UEmo4438xsT49ND4hZZwIRfv/CK
+X-Stat-Signature: xioxm93gg7hrxukii7p5cx8ezqaw4xtj
+X-HE-Tag: 1792080456-1233
+X-HE-Meta: U2FsdGVkX192ZJyoU9uBtUk3uUpN6JoHbjQs2W4p+t9cq3qB2/3KYPeRE7EnHP/pDZjOIOuJcjO8NDl2KJEvl6daBMGRxf4Z3CFPKbicUi1hQAm+lFoSmizGtpKl4jKYlMlIQUVw3ayVXCXKsgLdlTcnBHTZ3hhWUkeKuLEl2swrQCcAzHNTxS6Ai3FLw2w/T5sDc7SsCeXm/h93lLLBg983Ppd7mwBKn+P96Z5dY2440W6MmJ1j4YO4F1o5FE54rwELtPYkwM/bKLnf9eZnF5UlzaKxTFhr6f1/RG6xUqyx2e44UbVUjRsn7CDngplVGqposWmuW3XDSt3P87/MafkJu7Jsp3MceNSXfXxk+ovk4QgW/X2vr/l0ReznFdJtO9BlDyQif3lin4gOpjJYWvlka4XCwBtyV1lbZkC475UzqKx1yBTBQqq6DJeWzJ9O1c/81OWfZZ21M6aTuki1jztD7URFXYRTmJNDo2xTR5QqrcvxNL/++3Mt24Z9ZHNsGsaZon0UbN0gUjkp7CU5NJcUxznyWgOsZjw3qaqCCeXBFi4cviRTXQdSde5kjOlcsU9AfcJX3iy0OQF31Nsed0mI9l1mFU7X5t19liUxcnVYS0IcYdFfUAL0n3lFv8SZprVHBJOlJRMyFo/mbXXSQXkZdibSuTdSoOcVLp/DaDZtDMuylA4RNE9M8tVgXr/XIdGmDhVZzYDdq1GpA6cn5cW9U2SkpuZnlQdkB1w6mHHvO3vUf3rOlSLZZ9GDGL0ZH3lJNXVMBt7ajNa9/nHUapiveekKZ833yYJw88mB3JeqnenTRjJoVRJacKIIqZUBSpr44BE+Rxbs8o28w1iRJCdpbjP4RqADa218hBaDhohs61xNmXzoD5R75rCJaRjD/b1H0/hb9Ey9hfjK3uLPzN1EdYhAU6HccABAmfygYxFS7dA5OCmFvkhHi1qQmmLLV4KU2eVC/URKmlwrHY/
+ CgijUePs
+ KwyD8SmK3Ym31buBM6k5aXjIyEUWzJreScliqJ5Sztb93+dUKqYd9rM0y0ZqdxSo9poStHFCY3WGaLsjbPdGLfVAvuWTlUld4vuidC4R/h1bf2jokSWbkjtynDqByvyuYrYV/nsaq7hv5nvSylCkdxKbVWNlyrflMXCttI3Z4GtYu10VkGTg7VBpOnZ7S68JfDhqeW6Wsz7Armw87qqQ/6ZTpq0IyKwBdbkVD1OEryYf/ZaKoGdm2nyQZw87pqnJRR0/Ua51HpA5hbkTjr30wv05wpPLoxy20DYn/lw6sxrSYx1IPMfDNlIdt8kTFAtfcXBhcK5sKwyShkFNwuNxKZv3IbPRh5d4UuUO4KfxglD+Mz8MCg8e3FqPSNXTs6jZFBioP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,79 +111,86 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-When an accountable mapping replaces existing mappings (MAP_FIXED),
-__mmap_setup() only charges the difference between the size of the new
-mapping and the VM_ACCOUNT pages it replaces. It then zeroes
-vms->nr_accounted so that unmapping the old VMAs does not return their
-charge, which now backs the new mapping.
+For a fault in a private mapping with nothing in the page cache,
+hugetlb_no_page() allocates a folio, locks it and maps it.  The folio has
+one reference, which belongs to the page table entry from then on.  After
+dropping the page table lock the function still sets the migratable flag
+of the folio and unlocks it.
 
-If the operation fails after that point, the error path returns
-map->charged, i.e. only the difference. By then vms_clean_up_area() has
-zapped the page tables and closed the old VMAs, so
-vms_abort_munmap_vmas() cannot reattach them. It leaves a gap and
-finishes the unmap with vms_complete_munmap_vmas(), which uncharges
-vms->nr_accounted == 0 pages. The old VMAs are gone, the new one was
-never created, and the charge of the old ones is never returned, not
-even when the process exits.
+Whoever zaps the entry in between frees the folio.  The fault holds the
+fault mutex and the lock of the vma.  MADV_DONTNEED and the first unmap of
+a hole punch, hugetlb_vmdelete_list(), do not take the fault mutex, and a
+private vma only has a lock if it owns a reservation map: not with
+MAP_NORESERVE, and not in the child after fork().
 
-No privilege is needed to hit this, only a file whose mmap hook fails,
-for example a socket (sock_no_mmap() returns -ENODEV):
+Then the flag is set in, and folio_unlock() is called on, a folio that is
+free or has a new owner.  A surplus page goes back to the page allocator
+while it is locked:
 
-	p = mmap(NULL, len, PROT_READ | PROT_WRITE,
-		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	mmap(p, len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_FIXED,
-	     socket_fd, 0);
+  BUG: Bad page state in process init  pfn:108e00
+  flags: 0x200000000000059(locked|uptodate|dirty|head|node=0|zone=2)
+  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
 
-Every iteration adds len to Committed_AS for good. With
-vm.overcommit_memory=2 this lets any user make all further accountable
-allocations in the system fail with -ENOMEM.
+A page of the pool can be given to the next user, of any file, who locks
+it and loses the lock to the late folio_unlock():
 
-Once the new mapping has taken over the charge of the mappings it
-replaces, it owns the charge for all of its pages. Record that in
-map->charged, so that the error path returns all of it.
+  kernel BUG at mm/filemap.c:1532!
+   hugetlb_no_page+0x111b/0x23e0
+   hugetlb_fault+0x3a9/0x14a0
 
-A failure in __mmap_setup() itself is not affected: it happens before
-the charge is taken over and the old VMAs are reattached with their
-charge intact.
+An unprivileged process is enough: threads that write to a MAP_PRIVATE |
+MAP_NORESERVE hugetlb mapping, threads that call MADV_DONTNEED on it, and
+one that takes the freed pages for another file.
+
+Until commit 3a47c54f09c4 ("hugetlbfs: revert use i_mmap_rwsem for more
+pmd sharing synchronization") the fault held i_mmap_rwsem for reading,
+which everybody who zaps takes for writing.  The lock that commit
+bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private VMAs") gave
+to private vmas closed the window again, but only for those with a
+reservation map.
+
+Be done with the folio before the page table lock is dropped, as
+hugetlb_wp() is with its copy.  The function already unlocks page cache
+folios under that lock.
 
 Original fix generated by an LLM and sent in private by Josef.
 
-Fixes: 4f87153e82c4 ("mm: change failure of MAP_FIXED to restoring the gap on failure")
+Fixes: 3a47c54f09c4 ("hugetlbfs: revert use i_mmap_rwsem for more pmd sharing synchronization")
 Cc: stable@vger.kernel.org
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-[ david: call variable "uncharged" and make it const, adjust/simplify comments ]
+[ david: simplify+move comment ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/vma.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ mm/hugetlb.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/mm/vma.c b/mm/vma.c
-index 6c35f0d775ab6..81e2c93a1cc52 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2577,14 +2577,17 @@ static int __mmap_setup(struct mmap_state *map, struct vm_area_desc *desc,
- 
- 	/* Private writable mapping: check memory availability. */
- 	if (accountable_mapping(map)) {
--		map->charged = map->pglen;
--		map->charged -= vms->nr_accounted;
--		if (map->charged) {
--			error = security_vm_enough_memory_mm(map->mm, map->charged);
-+		const unsigned long uncharged = map->pglen - vms->nr_accounted;
-+
-+		/* Charge only what's not already charged by mappings we replace. */
-+		if (uncharged) {
-+			error = security_vm_enough_memory_mm(map->mm, uncharged);
- 			if (error)
- 				return error;
- 		}
- 
-+		/* Our new mapping owns the entire charge now. */
-+		map->charged = map->pglen;
- 		vms->nr_accounted = 0;
- 		vma_flags_set(&map->vma_flags, VMA_ACCOUNT_BIT);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index cea25773a6c95..ce9e87228ec62 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5949,8 +5949,6 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 		ret = hugetlb_wp(vmf);
  	}
+ 
+-	spin_unlock(vmf->ptl);
+-
+ 	/*
+ 	 * Only set hugetlb_migratable in newly allocated pages.  Existing pages
+ 	 * found in the pagecache may not have hugetlb_migratable if they have
+@@ -5961,6 +5959,12 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 
+ 	if (folio_locked)
+ 		folio_unlock(folio);
++
++	/*
++	 * Hold the PTL until we're done with the folio: the page table owns the
++	 * folio reference now.
++	 */
++	spin_unlock(vmf->ptl);
+ out:
+ 	hugetlb_vma_unlock_read(vma);
+ 
 
 -- 
 2.43.0
