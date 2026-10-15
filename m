@@ -4,127 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4605ACCA464
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 18:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60472CCA465
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 18:53:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66B756B0092; Thu, 15 Oct 2026 14:25:39 -0400 (EDT)
+	id 2579B6B008C; Thu, 15 Oct 2026 14:53:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 643AC6B00B4; Thu, 15 Oct 2026 14:25:39 -0400 (EDT)
+	id 208616B0092; Thu, 15 Oct 2026 14:53:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55B1D6B00C1; Thu, 15 Oct 2026 14:25:39 -0400 (EDT)
+	id 0F9DD6B0095; Thu, 15 Oct 2026 14:53:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F5C86B0092
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:25:39 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FD5E6B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:53:54 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCDD31A018B
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:25:38 +0000 (UTC)
-X-FDA: 85325688756.09.1CC289A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BED8E16000B
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:25:36 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eMg02pV0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24354801A6
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:53:54 +0000 (UTC)
+X-FDA: 85325759988.09.6A48D00
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 68CB540003
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:53:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="imD0/fca";
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792088736;
-	b=2lSLPO7kieLag1+WXvXNqzxYe7xfQkqvSbTeOyVf4+K8iU4bA6fBVnmABMqFdRLHNQC/lE
-	dgUPNOLfyeYJ3wnNchZo/lbxnp5loIOYvxKDuK+8V+X6loYeyvslrx2NEGMQhSusTMeglm
-	dsKd8+K2WlnFNvHXLbVWoy+8Cp/ozCg=
+	t=1792090432;
+	b=AhzcBrkF92Ufbv2WfpUVq6N59tUCyaTfdSmetoylqPf+G6VDkEpmQa/jFww+U94VBXJCQU
+	LNPB4pCzdsrSyRtMciK4rC60IwU+ww9xky+6z5IYzyG4glnPuumCdtvFn8yVzgbvljuOAS
+	eNgHJqnqVn6k4C39QO+iIFAKihoCAAQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eMg02pV0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="imD0/fca";
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792088736;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1792090432;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NN/t3NPtCPIlMkq9teF5APhaxlBKOvS1hDeMY40hhzQ=;
-	b=gVNJrV1sEi61gcsDoEBXIOAE/pgIU8KzgxH/f78eQNBmvButnK1A4r2jbl9n7FYJUmpHlR
-	3vd8kPSC45mQLKU/wQvz0i/5XCtTITziO2GCJCYinM8ilBFVdsSws6asNmrsB+Z1fDrAFq
-	6iJYG89eFqTXLqmrwbRgy4s1uzvKhCw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA18E447C9;
-	Thu, 15 Oct 2026 18:15:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 545AAC2BD04;
-	Thu, 15 Oct 2026 18:15:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792088155;
-	bh=Tgv6BaPO00+S97jAlKTn6xh90zKsXielMTf93zwSMVo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=eMg02pV0j2JCWPb5cuVkzKt2xEl4QphaZGbfI/lXaJw8KGG5JF9kkE4cie2WNKuB2
-	 ofMM9t9xZVswRKoTmAlE5gSYjt/feGOAMlzk4KWDxJm3/LFKPMlF0qrNNB4RIGpdGy
-	 +lrd35d8Yp9f03o1mV4dfGhXNBNHkC3wwkVlYJfzL1TWuU2PipcDsrI20lzokMVou1
-	 OcvvHleFUSgFEjXRvr5kLNcPYQAp9RRUmxfkEe7dEPBxsiwZhIh3VzvrbL+9uN7nYH
-	 oPMQlItj9qAkIBXzJpvArrW+JkSsIQ440+7kvd+N8beNa4W0v/MgHAftlWM5C+6/bM
-	 t1Q5JjM/s9WpA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36382CCA467;
-	Thu, 15 Oct 2026 18:15:55 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 16 Oct 2026 02:15:52 +0800
-Subject: [PATCH v4 03/17] mm/memcg: add folio-based lruvec live helper
+	bh=fggwqKCRETIhrcEpFzizgT+ZMtVPKk27E/12MBZzVeU=;
+	b=G7M4RrnksvIcuBQGo9Q6bvXgsJhR0KXlXUEGyTBZkIR7hEtG/9JalvnO+Qz9ttGk83h/05
+	01P7Z3qWDA9+EDgmeCDikELumK38pzBOLSMacQGabSoszcblYakMzW6LJg7xeO9LWtBhQZ
+	ZDgJlF2o6s3XpTrx76U9kKiBLlWho1U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5A64E605F0;
+	Thu, 15 Oct 2026 18:53:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0EC1F000C5;
+	Thu, 15 Oct 2026 18:53:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792090431;
+	bh=fggwqKCRETIhrcEpFzizgT+ZMtVPKk27E/12MBZzVeU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=imD0/fcaZvYiLvldbRP2hJZWo+t3fYKcnRpe4CJJqSII9+iZcy62TbBWKccAGi5L/
+	 ccNJeTXpizip2xhR7A1RuB3ovY9rd53kWr/stKicM9LE9HJzoP/G2Qj7xlN9h36mui
+	 jihqRxxNbxCnwMY3SuUDprf608IVjVu9z1nPLnY9kgfVp+DgX2cXZK2wrJEhK1oZVx
+	 UW14DIGVomNqxb250G+dNLnUIUk2G6lUGpijJWsnCRmm3jd8xaUDYxiphShs5RM/7u
+	 hXAKS64kmxnApAEYFsxqmmyQrTx06uFtURinLAq4yTeEEFwxj9ulmkRRlN8SYzbxbj
+	 o3ZbRAKLYbo8w==
+Message-ID: <723dcd38-909c-4bb5-8384-0e13da1a8c72@kernel.org>
+Date: Thu, 15 Oct 2026 20:53:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/10] mm/vma: don't leak the commit charge on mmap
+ failure
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Adam Litke <agl@us.ibm.com>,
+ Mel Gorman <mel@csn.ul.ie>, Rik van Riel <riel@surriel.com>,
+ Peter Xu <peterx@redhat.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Josef Bacik <josef@toxicpanda.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
+ <20261015-urgent_fixes-v1-1-42796911043b@kernel.org>
+ <atERwRzzAdCSXaPM@pedro-suse.lan>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <atERwRzzAdCSXaPM@pedro-suse.lan>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-mglru-fg-v4-3-2106750c0bfa@tencent.com>
-References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
-In-Reply-To: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
-To: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
- SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
- Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
- Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
- Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
- Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
- Gregory Price <gourry@gourry.net>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
- David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
- Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
- Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
- Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>, 
- Ehab Ababneh <ehab.ababneh@intel.com>, 
- zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, 
- Lian Wang <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, 
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
- damon@lists.linux.dev, Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792088152; l=2034;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=bqSj6GEUFE1ch4tTEQEPZOkssBWYsWV/WhQc/GCJ0Bs=;
- b=ade8dgVk/QLtMdvzfHEj3EebA82ilil4wqag8aQYk8TBs2jVnr7PYCpkRECMbBvrjTfV5YSLN
- PEO3hnbVTjMAeyNrCoshcrvmZa1ho7dU4F2NiVCiQv+mbLQ0DEfSQ5d
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
-X-Stat-Signature: ckkhmcmap951a1tw1ppbxfraky4mqtnd
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 68CB540003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BED8E16000B
-X-HE-Tag: 1792088736-636850
-X-HE-Meta: U2FsdGVkX1+S2lgnMOJySKK2W7VWPzG4qREO/txXL5oZM9IkmZlAjbV/kBPHtyKxlyOe04DAH5AwcgNc86DIFp3Dy+JYvPVg5DyPrZMUszrw6agkDkgpsZXBpfVm8Cv7RD82t34Ydn4ttkwr/RNRZb7/4cBaRG84l2zbB8Sgi1FdsqwJ0MyM1rBP4OT/7v9scS2BmbvVRMeC6AB2sc0SsX84MejB8h1E9HSxm9qBLq4JPhDCcnU5dLQoeFqMGkkkGiOM3NNP0c4jYPYxfvTMxp5yt3baYS5e+uPPTt8Mjj6f7XBs0HqSFw+xUFZMbAjrm7jBlwVMDyy0LY9zQg6xYQTsJojZY2e8CXQeAPc6VB7wnlA6lZN+Bc4tJOS+BZgO/Z9e2lyZPpiQ/N2Zh8guUUbsodYqfqe3uABZ6h2PNEwSUPV/QC7yB0fkp8AIFQNSk0yhLVWgWCuGPnRCqx9+F+H0cJTXiFZaaTRPbCotZ6LLcpwEyY0CGZhzABmfZ6+znJNWaehyQqUg7O7KRGQPv7dUVV+IcJvuQFKeXuuXw7lV//+XZlcThlXR1o0m5Uxb2Hfu84gehrHRUaTghP12x9y3kW0AKmeniyQIMhZxH39Fdszgjw3iCawPTQXP4gKT9Rgbg0nLuyto5ie4/0TjDukkl832l8PmIJEPY5cF73vheVv9yXGalPqetGDpVzgXVWFr9EPpLFqA+gWfcNQpERL17vAlrjgsI2ocFzJO8q+RZMj2tWJADgluICZbMaabkJ/UXl5GgFTBmy6B6KqbRrf3iDNBa47DxbwrFyl4dXnhF2KQjOxa1wlkoyaG8MzRAjKWQzWQBzvBIjlfuA8/LDLVOk833bpyKV6ZpD+mnD8I7qz2iDuXPukYEPAwDnsFMikmXuvFlh9vAgyEeRKV9Rh4kUfG7qeagNL6iL1J3Ykzrtkx31DPytViiGmWEdqBIuwVBPKqHsM7AzHpFMn
- jB0HthqZ
- er+JC2AHFpvyJbVb/WRHWoD3Z9FbhOYn00H1Ro1waSwUAxL8kQ9WpCxNTjCN1gBMZYNJ/zUPv3QdhPy+GaV/q1t9aB47oAQga3TrXcNsp+E7pN+k/2omYMqJR89v0OI0yKUDZfa0NmmNfVx/p19p2hMPJV8dt3xzxQjGr2GKADNdtpBNvJNCm/dOemypOtKTrf0qu74+uFW2Ey5FlTeGH0HsGOidpG4drmOqWvn+x13r3/o7nbWpUBFRFEYCAiFH8BOJH12zE1Oa/hW/6L7N5ApYttb47oeNplhGEMlPYHCFLzCXhdwZ9Hmx0vG5mJVRePCfgq/2bSis8zOGF4HAjXOra/pXhoF6R/W9QJkC/702ZDqwqJ6pFm7fu3gEtNsz3PP0T9GPm18skKsD7/p8MarTlp22OePxcRyxLHJGagvQsVCApktnZJsksimTZOi00AJNxc/6piOJeuK/sqrHZSnAOfeWv3r/gcGVzFligF26h+PBXSBL5WcuCzcgyAvNwmnr4
+X-Stat-Signature: a3d3oqxib33cgo5e6m35wcgsu5w9w1cf
+X-HE-Tag: 1792090432-380349
+X-HE-Meta: U2FsdGVkX1/OfGBL76UT5JVUUnbmJnda4mjMfeoVHgkAq9NgSqPh5EP5Mw6vWVPx/sUmHfU4keJSpA5at7Io2YAq8QzFMq4SxPaXqBCnfTX/S3IoIdRmiV7rr7uIF5uA1GZsrZ1Pz/aMr4kJMMAhypEzRXBQBKaLmSEcvsg+uZJRrHfPJ6U+y+XxAYT6XCgU1mXSf/QA0UonVNG5N5tjoG74EFOfYNBzt++4GRYiCjwNBoguyeF0XzIfIE9n7A6LSj/WCBGk64uYGmotrtrK+5RNK4MhsoWD3kX0zm6R2cp260EMcFhiuOKwyZ3r23IDYBwOqc6J+rxWXVy+ymWK1Fn9XLVsstSaqsith2ayMzRMlLmN6y9a+vDEJk4q+KdT/Ix34X7lLDsrCCjIWMaI11IV9JQUXWPq/exG7ljYSv36uHxskobapU+tDdrwmpv5nruJoOfcKlo31FrC1UaQ1Pd3yGTseQQytPuDklH6U2JQAUDIzRoXy+4ug+aHp33lb3/hGBrHXVHp041m1g4kXb7kH0mTuJTO039kK7/4ZIIvJFkhwobK/fSOvd+O8E3xLYMW9iNSDzswd6Z0pNkDACAcu1xnhLd+C2PvV9SWoBIu0OQne+OV6t8Ya5lkvLdF/Xz6Ts8B6+3HBHT5/dqXxF1xCs8JuOcYlxbgi6W8Bl4GtbSZ+QuloNBNeYW+w11uiZ+xxmxoFf8MTEXXt7jF1C/aVXrGvA8z5SdnF3W817vLfVcV3j52B9+FHi9rOMZ8fcJRQS30IsgBBcw1nxGKGsKwy8SrwHtaDlgJ/cDW1cjuNonKDAOs9lLZD8OpvSFU1Pdnl17U57mP7pt7c+jdUWBTNf2BSUcNFGaqhIJ7mnfE5JlaUyyfXarO66AkPuqwi6DoR51W9qbCroSucEQYrYcRxQiUebrXAafqSaFk7WCj47qqGMrFT4agJ3M4o3FbEbyH4u98NFxKpVCN91f
+ M8/eWvna
+ 9dVqSR3w3GoFheGVu/WrhjKb1f9xX4tUgkNB/Zdq21E2ZW7Xzgq+oSVxrEpfjaQRVVqjJHnpFRwFIAt67QaYwgZCL+ZEjWkfjzaimJXAqv/OQOT/WqST1BHJAyo8BW4tqChI1035DIdrJjsC5nqH9OAVmXG+pMuOobHX6ku2YLIMe2lDbnNcYQ0AtnuW6AKSN5pWk/E2cqFnYQpFPgGvbZT3ZMDy4KIa1+tJb598nxJeRrCJnQ1NjS+DaFVWSxRullSUV6yxB/Kuf54bmKsS6oELU90yjq5NDUybRhLRo57fEH3xPk9Wf/ZXjm904m45v6Q4a8NKN9+6Jx3x59pOPdH9peSmKwszpDoH91bGCVJDbGk2nAZDN9rGRvXpRBo1bkDu3WtX4dVzknP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,74 +149,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On 10/15/26 19:54, Pedro Falcato wrote:
+> On Thu, Oct 15, 2026 at 06:07:07PM +0200, David Hildenbrand (Arm) wrote:
+>> From: Josef Bacik <josef@toxicpanda.com>
+>>
+>> When an accountable mapping replaces existing mappings (MAP_FIXED),
+>> __mmap_setup() only charges the difference between the size of the new
+>> mapping and the VM_ACCOUNT pages it replaces. It then zeroes
+>> vms->nr_accounted so that unmapping the old VMAs does not return their
+>> charge, which now backs the new mapping.
+>>
+>> If the operation fails after that point, the error path returns
+>> map->charged, i.e. only the difference. By then vms_clean_up_area() has
+>> zapped the page tables and closed the old VMAs, so
+>> vms_abort_munmap_vmas() cannot reattach them. It leaves a gap and
+>> finishes the unmap with vms_complete_munmap_vmas(), which uncharges
+>> vms->nr_accounted == 0 pages. The old VMAs are gone, the new one was
+>> never created, and the charge of the old ones is never returned, not
+>> even when the process exits.
+>>
+>> No privilege is needed to hit this, only a file whose mmap hook fails,
+>> for example a socket (sock_no_mmap() returns -ENODEV):
+>>
+>> 	p = mmap(NULL, len, PROT_READ | PROT_WRITE,
+>> 		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>> 	mmap(p, len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_FIXED,
+>> 	     socket_fd, 0);
+>>
+>> Every iteration adds len to Committed_AS for good. With
+>> vm.overcommit_memory=2 this lets any user make all further accountable
+>> allocations in the system fail with -ENOMEM.
+> 
+> I don't think is urgent nor does it have security implications. You can
+> already broadly screw up the system from any user when overcommit_memory=2.
+> This just goes around the single-process user_reserve_kbytes AFAICT.
+> Am I missing something?
+> 
+> Just looks like a good old bug to me.
 
-Add a helper that resolves a stable lruvec for a folio under RCU
-without taking the lruvec lock.  It takes a folio directly so the
-lruvec lookup happens inside the RCU read-side critical section,
-which a lruvec-based interface cannot guarantee.
+Yes, most of the things here are just good old bugs with limited criticality (as
+I expressed in the cover letter and the "urgent?" highlight in the subject).
 
-No functional change.
+Things like use-after-free or deadlocks are rather bad, but they are mostly
+hugetlb specific, requiring actual allocated hugetlb pages in the pool. So there
+is limited attack surface in practice.
 
-Tested-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- include/linux/memcontrol.h | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+All valid things we should be fixing, though.
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 74110a324f9e..829ab776ab44 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1535,6 +1535,45 @@ static inline void lruvec_lock_irq(struct lruvec *lruvec)
- 	spin_lock_irq(&lruvec->lru_lock);
- }
- 
-+/**
-+ * folio_lruvec_live_get - get a live lruvec for a folio under RCU
-+ * @folio: the folio
-+ *
-+ * Computes @folio's lruvec and walks up to the nearest live ancestor
-+ * if the folio's memcg is dying.  Paired with folio_lruvec_live_put().
-+ * The result may be stale: RCU keeps it alive but does not pin @folio
-+ * to it.  That is fine as the counters are fixed up on reparenting.
-+ *
-+ * Return: the live lruvec, with rcu_read_lock held.
-+ */
-+static inline struct lruvec *folio_lruvec_live_get(struct folio *folio)
-+{
-+#ifdef CONFIG_MEMCG
-+	struct lruvec *lruvec;
-+	struct pglist_data *pgdat;
-+	struct mem_cgroup *memcg;
-+
-+	rcu_read_lock();
-+	lruvec = folio_lruvec(folio);
-+	pgdat = lruvec_pgdat(lruvec);
-+	memcg = lruvec_memcg(lruvec);
-+	while (unlikely(memcg && css_is_dying(&memcg->css))) {
-+		memcg = parent_mem_cgroup(memcg);
-+		lruvec = mem_cgroup_lruvec(memcg, pgdat);
-+	}
-+	return lruvec;
-+#else
-+	return folio_lruvec(folio);
-+#endif
-+}
-+
-+static inline void folio_lruvec_live_put(struct lruvec *lruvec)
-+{
-+#ifdef CONFIG_MEMCG
-+	rcu_read_unlock();
-+#endif
-+}
-+
- static inline struct lruvec *lruvec_live_lock_irq(struct lruvec *lruvec)
- {
- #ifdef CONFIG_MEMCG
+I suspect we have a flood of MM fixes coming our way with differing criticality,
+so this here is one attempt to figure out how well we can deal with the
+mostly-trivial ones in a fairly controlled (e.g., proper human review) yet
+efficient way.
+
+Anything less trivial or shaky needs proper time to settle, as always.
 
 -- 
-2.56.0
+Cheers,
 
-
+David
 
