@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C12E7CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:10:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62183CC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:10:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 745896B0099; Thu, 15 Oct 2026 10:10:04 -0400 (EDT)
+	id 634D96B008C; Thu, 15 Oct 2026 10:10:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F6556B009D; Thu, 15 Oct 2026 10:10:04 -0400 (EDT)
+	id 60C5D6B0098; Thu, 15 Oct 2026 10:10:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E58B6B009E; Thu, 15 Oct 2026 10:10:04 -0400 (EDT)
+	id 522BA6B009E; Thu, 15 Oct 2026 10:10:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A9BD6B0099
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:10:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A3EEB1C402D
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:10:03 +0000 (UTC)
-X-FDA: 85325044686.01.546F13C
-Received: from mta1.migadu.com (out-216.mta1.migadu.com [95.215.58.216])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 41F3D100008
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:10:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rz+Utc8b;
-	spf=pass (imf14.hostedemail.com: domain of pankaj.raghav@linux.dev designates 95.215.58.216 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 324D66B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:10:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFF67409F7
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:10:36 +0000 (UTC)
+X-FDA: 85325046072.06.16F3716
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F2FD2120005
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:10:34 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TMCS2YTk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792073401;
+	s=arc-20220608; t=1792073435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+wHWQIfIdYYbchY13VQLsb4nd5Znh60XR6PR+paQNlo=;
-	b=Ho0uPOC13hGxghY3zUXNtJPRylAcVPQkhPYRzscehMUiJtSjdqZbdPg2CVzIuNJELXwAlq
-	VFKVwrrJmL1PQb2VutXZSOdIprUBjPIXCvcl9wksjNvBIkbdWozCxuwcHziJcMXG2+rK7l
-	sJOCJKtgH5wSYvYNX+1tFXI+PozYJlM=
+	bh=SnejWl8mRfWCD5JUDxQovY6ZIaJqGSRZlxKQNmpxKmE=;
+	b=iXZXHrfGQjnS9xE1Os1lP6CR3EbBD2jd/Fmawf3i+ry5GU4oXTMMloU4N1PPuo8xnRE8aj
+	OKZ1zJ8zjB+tjfxLUF8P7zbKggkkKdA2rLf6WHBrZzZP9VzFzA5pxN5zcgGHzdCX+yfk4z
+	Gh9aWETlJ2FfJlFadggTNjwNrnP7LBg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rz+Utc8b;
-	spf=pass (imf14.hostedemail.com: domain of pankaj.raghav@linux.dev designates 95.215.58.216 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TMCS2YTk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792073401;
-	b=yF1LvrevMwctK9BHFkJrkMxT6SjxqQiPQMwEQPY/6WRzlmjuCFg/a0NOZvYve3jg8PnEE5
-	rZbDcg51KzR6cIT17M0bsaUaCz6ge+tN9n1Az1sqJRCOYHRiV131uIVYtbxBMjBZUmzScM
-	WRHKLyv/NyRhtbhJCa5iTX8tbnvZbCk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IoHF48dbE7mSf4cxc6kAiqoGLhZGegSeGkb8H4uroPU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792073399; v=1; x=1792678199;
- b=rz+Utc8bAGijsFCr/QEl8LzFZmlaXbdU+3KQ3TSCpCvY0NCBAVrqDDFHlDy9pKg1g4YOoEAy
- Q2F0H1awh18TQ2zYMDsIv97QFBbg+/gXwf1gB4N5daxMpDk/kLiOdTYOTiJlAyJHTJGL1nVvL5q
- M4Hjn4R55sL1v33sffhObyDs=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a2a20668fccf1d9d;
-	Thu, 15 Oct 2026 14:09:59 +0000
-X-Mizu-Trace-ID: a2a20668fccf1d9d
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 15 Oct 2026 16:09:50 +0200
-From: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	"Darrick J . Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
-	Zhang Yi <yi.zhang@huawei.com>, Christoph Hellwig <hch@lst.de>, 
-	Dave Chinner <dchinner@redhat.com>, Daniel Gomez <da.gomez@kernel.org>, Theodore Tso <tytso@mit.edu>, 
-	linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Andres Freund <andres@anarazel.de>, Dave Chinner <dgc@kernel.org>
-Subject: Re: [RFC PATCH v4 05/12] iomap: Add initial support for buffered
- RWF_WRITETHROUGH
-Message-ID: <as-BQAbk7U43vkqs@quentin>
-References: <cover.1790596383.git.ojaswin@linux.ibm.com>
- <c76f9babf1b00f4574e37db156621edc6c078969.1790596383.git.ojaswin@linux.ibm.com>
+	t=1792073435;
+	b=j/9tvH0Tuo+bJkIF+aJcAlONIvlYmbLPe6LCMHh2UU4kaPQP3hku7nxU3UCFVGoozR+jU9
+	dmOrMjc+OoE34VT9ZB7P0APZG7JjS26lPGDk9Jy8t6wwHllvEnT/I9dCQtgw3uapMcBarC
+	sQY6quhSLknb//cGo+T+C1+j2vV6PNI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 20D9540849;
+	Thu, 15 Oct 2026 14:10:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB30F1F000C4;
+	Thu, 15 Oct 2026 14:10:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792073434;
+	bh=SnejWl8mRfWCD5JUDxQovY6ZIaJqGSRZlxKQNmpxKmE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TMCS2YTkoe7BKnA15EF+5Ouqg+UGP8EXI/UmIwlG7kZH47vSKuIbWwLOYBdN/yWr/
+	 2Ci0WE4eT61jRLjAnNOi+Jsi1vhsvOINexjtV9gL/FFTByv44w8VSAMyljmKIoJlJq
+	 2pdKUmDH87tN4fgsrNnrSV3CSvm8K9IBzFj5UUseztEEJmPy+Tdwbw8AMPAIwxj7Kr
+	 /GEIZrjfcSWWd1gCkHv1sIs2hdEWqzoAawfA69A6sbDmYbh3NeHrEzGbzVhzjHHBkX
+	 7jP7PPcHZ+UdI7bWavdZve6qwFHZn4gEFWo0cFd51vX/U23IrOpM3T+bik/p3Im6Zc
+	 kYTyo7plDoxJw==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [BUG] DAMON: 32-bit overflow selects wrong sampling interval
+Date: Thu, 15 Oct 2026 07:10:26 -0700
+Message-ID: <20261015141027.88149-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CANOyQmFkTQMEpR10sxjoB+8XMsk=m9DAJVnyxguwV2LLYCg09A@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c76f9babf1b00f4574e37db156621edc6c078969.1790596383.git.ojaswin@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: fgt4j6j5h4nd8ujnr38et5e168ew1d7a
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 41F3D100008
-X-Stat-Signature: 515s98ad1n7pxkat15at5j15hmt3thur
-X-HE-Tag: 1792073400-948094
-X-HE-Meta: U2FsdGVkX1/LhRYAApFm/jCS9tnop5327TkFXcsy9ka9sFnkUM+70gJfuDw1ZIZnsK5wErOeh1MAB09rpAU9wvD8ku4fJtUnpfmnMP6g1w9GM+Ly18IYmyxiaewkdY4r3FOZv0hPffxE4OgUiYOTkQwi6gUOd8CP9OcAfytPiXQD+nskk4FZ4+09Uk8DKZExL6BYR4i4C5otHZD0lZbT3Vc9M2h0vl7nJPNwAhuMsAsyKFFdMWXyQYRFkp63ru71KrUGVGfHhZhGLoygo7UkH23ohImcI2u226k16lC0/ug7cAUPOXB42k3UGSTJybP5fAp1y3xYd4b9PeYDM4e4mghmHM3SV0BG/mGXWOnFuL0XS2t4u6Zp5gohc4Qus0461t9IYzjn+QtER98oHoY3x0WEWIjmfvF+TmmLeBxTU/K0Z6NUVsGPwadIHA12Q6Ca8mXDSDg7Z0XArBAjDOO4hFv+9yiBb6e8kP95IIfnrqOqKCqhzbm5Y5ZYJiCJ5FfqCOh/kMcrmf697hEmK/HwC9wAOqOBFmHy6/RSs1J3NU46fbGL406MesnM2HbSmFb16apaNtTJz+hzOCcmqohRvEqW/gVovZRREJh2R1UZA08qCQRqs50nGR8F1CdmjYlYRUtoQkNC/CsC4iFSGSp87ISriHNg+1bB1lOXAmH3lcG/ldkVtBbMs4wiOXBYawFiPehNK2xZmxxQBx5BDaoMSdZ/ffPSFJ99YRYVJovMbC/vOSKN+oowKwdsarW2m3WQzwvkqXa+jpNiP6OlkrfxQVaudk7fOLC7tJfcc5sVKbN/KGHzkECGCQHEn4JRlquW/3vmywvEc3q40nYsq1Y6PAFvNkA0hW3EKbOtdl8EJU2Oq671Pi00R1N/KMpDQtV4CiiAkOMGwhUHipLEk7VHa0FU2h/MvFzZj/wzBPdqGkqOZZYp6T4pQvCK36/1SMO0XYagWDp1zhdkNM/R4Om
- 6S+fuSUd
- pyGi/VLNNQa97yK4MTtnAu0DJo11xPjRA0uaCkkFDCBKvpqvPt1Tk46yK2yfLQSdjAUeqBvQcCh94T26q1AmDV6NltU8gv1lSipgqr4aLZQHixoaT+dHayk0Y5hnIGwZGCcKZPqDM+6jHbPSaTuZkun7KBUm1E2hBXebtXceFsbSJOI1RSztJasS26l0yHJ4XyHiWnLQtgQVgZNeEt/xnLhaen8KeF1xtUrmq52oDtYlbHD7hQjwvt1wyTtZCGRA+PmFQdYqYv5e4zPvyrd+7u07qNFDNq/dzyD9VCIIe2G5woA08K0q+WaaLtTld8drSY5ZnM7T7n5BD6yyYraZc69Mb2qMKt4PmwrqMiU2kET6ONfUqjdJzfXPi0P35Iyi1peLs+yFkoYzfUS0=
+X-Rspamd-Queue-Id: F2FD2120005
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1792073434-696506
+X-HE-Meta: U2FsdGVkX185OXTJUmvkEmzCMLv1kajSRIccxYlOG0Kbo6B/OvEV5gsc0nX6pLbMn+VUdrkEcl8urp+hYAbXcZXh7uDnbwrWHCP0C7LHweY+slarXhFIma2q8A1neATZPZZ1lPdl3Hlud7+KjmDRxY3BwhhEULV9SRu7uhdy/yCrfdhpNmZd+6WTrPhUwEr5fYonrQuQvHjSEAIDg54ZFMgHhYoAbuXnDu3e3u5AC8FR7/SCJ51Xba9vnyfBenRKJIIzKqEe3E7MfBurnKU9vlU9UlYFt02AQXNE6di7/bRg2r079IVhYIPVUNBmhFLAfztaFa5oUXqsiD7jbBtkAtz0aS15k9I5EstDGHztlbb6nnjcPX8TjenpEJc0tmJMKYVvCp/33q3ZabGFPKUgChT0IgzL9zajO6n5qrDJE/2jooItoZAVlEvLxgsQ9AJptkO8b2uYzKVHJP12ipWrbJBlAtq38bFZdE9dFkFtQyg+gE3rhQgeFvLuMfecuFch3xWkOeGGVF9JiujA/rHV72fDj8L60EmLD0SG+7xvNp7npgIn6QGKZ4LgnF+YneZ/Jt19yRE0NLPIdHArc8nvdEfi4w4kjDbSiDUYO4N1GenHPUe1cdbyHJ3J60y73JQVH+8HztP4kCJ/ayVNvWvbomFo9eJUV0Qw3e8uo7JEnxVGD+FBbDFbA64TVR+FeqJQceEjaxEL1yLKyWykNxteme93/E1wI+vFPUbpZchDBOxpnDfr/vV37nsbG9wMn55LYoW0mDZ9TgeSx0FSp8Qe4ba5J7xBlledf+N++954YSjfvtC00WjhR36FdxB/O3irxk09g3dcOoQWPR11U3OoTO7eBM8eX7W746xAQlqYNoff+eLM2S1JONyBy/0n7OiyxX0hqGF3+1pXuXFrcWTjXrpEG9GFEZ0ttTvHL1jaQx/MWkBPOed+e2I0nZ15ME76Q9B/wWMQ03mF8rz6cqO
+ 1UH9Qqfc
+ Ec988GcjxSTOkvNVec0k1SeW7gSS6eSdE0FMmsgOl1NQs5l6StKRdYNhhDx59bwhY/M6TCrmO+hSd6+g20pSmptBBpGFpvmzclPf/rELUOR0LnuqeaKWgmh8cYW6z92CeRZ68i+UKFS+8ucR4CztmlDbOlW2RVy0om0V6+rTmq4i9axrfqgQ8Y6z+F4HUty0QKTuLzM+3VAY5mxveIYwzpw2B29c/oW3KNe5Z02zV2LUuiGQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,101 +93,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ojaswin,
+Hi Avelin,
 
-I was comparing normal buffered IO scenario and writethrough.
+On Thu, 15 Oct 2026 07:24:08 -0400 Aveline Noir <jm5905938@gmail.com> wrote:
 
-In a normal buffered IO scenario, for unwritten extents or CoW extents,
-we first convert them before ending the writeback on the folio.
-xfs_end_io calls xfs_end_ioend_write().
+> Hi,
+> 
+> In an unmodified i386 QEMU kernel built from mm-new commit
+> ad9f2d463666, an intervals goal selected a 2500 us sampling interval
+> after the first aggregation.  The same trace inputs give 2812 us with
+> full-width arithmetic.
+> 
+> The kernel has CONFIG_DAMON_VADDR, CONFIG_DAMON_SYSFS, and tracing
+> enabled.  The guest monitored a 1 MiB VADDR range as four contiguous
+> 256 KiB regions, with sample_us=5000, aggr_us=100000, access_bp=400,
+> aggrs=1, and min_sample_us=2500.  The default minimum of 5000 us would
+> hide the difference.
+> 
+> At the first aggregation boundary, the four damos_before_apply records
+> for kdamond.0 showed nr_accesses=1,1,1,3.  The next
+> damon_monitor_intervals_tune record showed sample_us=2500; sysfs then
+> reported sample_us=2500 and aggr_us=50000.  The records cover the same
+> four 262144-byte regions before the first tune.
+> 
+> For that aggregation, the inputs to damon_get_intervals_score() are:
+> 
+>   max_access_events = 4 * 262144 * 20 = 20971520
+>   access_events     = (1 + 1 + 1 + 3) * 262144 = 1572864
+> 
+> On 32-bit unsigned long, max_access_events * access_bp wraps before
+> division by 10000.  This gives a target of 409364, a score of 38422 bp,
+> and the observed interval of 2500 us.  With full-width arithmetic, the
+> target is 838860, the score is 18750 bp, and the interval is 2812 us.
+> The later mult_frac() remainder multiplication does not overflow in the
+> observed 32-bit path, so the difference here comes from the target
+> multiplication.
+> 
+> The affected expression is in mm/damon/core.c.  Widening only the
+> target product would make the later 32-bit mult_frac() remainder
+> multiplication overflow for these same inputs.  The 2812 us result
+> requires sufficient width throughout the score calculation.
+> 
+> The 2500 us interval was measured on the unmodified kernel.  I
+> calculated 2812 us from the trace; I have not tested a patched kernel.
+> The i386 config, guest init, serial/trace log, and build/run steps:
 
-static void
-xfs_end_ioend_write(
-        struct iomap_ioend      *ioend)
-{
-<snip>
-       /*
-         * Success: commit the COW or unwritten blocks if needed.
-         */
-        if (is_zoned)
-                error = xfs_zoned_end_io(ip, offset, size, ioend->io_sector,
-                                ioend->io_private, NULLFSBLOCK);
-        else if (ioend->io_flags & IOMAP_IOEND_SHARED)
-                error = xfs_reflink_end_cow(ip, offset, size);
-        else if (ioend->io_flags & IOMAP_IOEND_UNWRITTEN)
-                error = xfs_iomap_write_unwritten(ip, offset, size, false);
-
-        if (!error &&
-            !(ioend->io_flags & IOMAP_IOEND_DIRECT) &&
-            xfs_ioend_is_append(ioend))
-                error = xfs_setfilesize(ip, offset, size);
-done:
-        if (is_zoned)
-                xfs_ioend_put_open_zones(ioend);
-        iomap_finish_ioends(ioend, error); // #1
-        memalloc_nofs_restore(nofs_flag);
-}
-
-#1
-iomap_finish_ioends()
-  iomap_finish_ioend_buffered_write()
-    iomap_finish_folio_write()
-      folio_end_writeback()
+Could you share more details of your use case that this setup is needed and the
+overflow becomes a problem?
 
 
-On Mon, Sep 28, 2026 at 05:33:06PM +0530, Ojaswin Mujoo wrote:
-> @@ -1185,6 +1186,384 @@ static bool iomap_write_end(struct iomap_iter *iter, size_t len, size_t copied,
->  	return __iomap_write_end(iter->inode, pos, len, copied, folio);
->  }
->  
-> +static ssize_t iomap_writethrough_complete(struct iomap_writethrough_ctx *wt_ctx)
-> +{
-> +	struct kiocb *iocb	= wt_ctx->iocb;
-> +	struct inode *inode	= wt_ctx->inode;
-> +	ssize_t ret		= wt_ctx->error;
-> +
-> +	if (wt_ctx->end_io) {
-> +		int err = wt_ctx->end_io(wt_ctx, wt_ctx->written,
-> +					 wt_ctx->error,
-> +					 wt_ctx->flags);
-> +		if (err)
-> +			ret = err;
-> +	}
-> +
+Thanks,
+SJ
 
-<snip>
-
-> +static void iomap_writethrough_bio_end_io(struct bio *bio)
-> +{
-> +	struct iomap_writethrough_ctx *wt_ctx = bio->bi_private;
-> +	struct folio_iter fi;
-> +
-> +	if (bio->bi_status)
-> +		cmpxchg(&wt_ctx->error, 0,
-> +			blk_status_to_errno(bio->bi_status));
-> +	bio_for_each_folio_all(fi, bio)
-> +		folio_end_writeback(fi.folio);
-> +
-> +	bio_put(bio);
-> +	if (atomic_dec_and_test(&wt_ctx->ref))
-> +		iomap_writethrough_done(wt_ctx);
-> +}
-> +
-
-But in the writethrough patches, we first end the writeback on the folio
-and then call xfs_dio_write_end_io(), which converts unwritten or CoW
-extents.
-
-Is there a race possible as we are doing the other way? What if folios
-are reclaimed between ending the writeback and conversion? A new read in
-that area will return zero filled folios as XFS still sees IOMAP_UNWRITTEN?
-
-I don't have a reproducer, but my hunch says we can run into this if we
-have a lot of AIO as the end_io will be run via a workqueue?
-
-Do we do something similar to buffered IO where we do
-folio_end_writeback after extents conversion?
-
---
-Pankaj
+[...]
 
