@@ -4,81 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 348BCCCA464
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 19:00:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B860CCA465
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 19:01:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C8646B008C; Thu, 15 Oct 2026 15:00:40 -0400 (EDT)
+	id 7E42B6B0096; Thu, 15 Oct 2026 15:01:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19F426B0096; Thu, 15 Oct 2026 15:00:40 -0400 (EDT)
+	id 794576B0098; Thu, 15 Oct 2026 15:01:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B64A6B0098; Thu, 15 Oct 2026 15:00:40 -0400 (EDT)
+	id 685096B0099; Thu, 15 Oct 2026 15:01:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E166B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:00:39 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5870516024D
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:00:39 +0000 (UTC)
-X-FDA: 85325776998.27.40AA6D9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 189F410000C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:00:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jxfnhKaJ;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 459556B0096
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:01:32 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 899D0A4F63
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:01:12 +0000 (UTC)
+X-FDA: 85325778384.07.A8C2FA4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AAF511C000B
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:01:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCmCeyWQ;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792090837;
+	s=arc-20220608; t=1792090870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJ/G9yyXD4qyUPrTP1b85QhiMx6Sqjd/0iLMmnkucLE=;
-	b=g1Tk6POLHg/QlzqERwUEcHZmiEBI704HfEh0eHV9PeMUV5Hoyrin/i7AoGG7IneJHHQGhM
-	/1N0RsqUwNqOEqm6bZRXVygTSFdav7yM7Vr17PloO4f2/JUL1fMeWONQ8h5pN5QjL4ydn4
-	KoqYKAb9fkKS7atRZVbP0fjKrVbM39c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792090837;
-	b=HZb9hlU7vfx2kiDTTHd42lUE+tHzQkjXTaJnhabmmcVc8kStTqrP1VIXjSPE6Qd+6SR9dD
-	Rve5CVi/MiDCuT697rP/jCbuAIxYEg3Jv+MtBdQ24hNIrVRDrSEIgGSfjSiCjoarhx/ITm
-	hrSVkasOarjVp4RSCUc7qNo7eElTi3E=
+	bh=O6YGICvRqo5ZX7Fs34PHB2pxcAwJ+U8wwEjavmBhres=;
+	b=PTxhqh3CU3zoeSMvx0UIwAe31simURt3kB7x+/xGWxCE7BHMDTyRRuie91eMt2/CKwy/pY
+	/o9UVBQDAiu1JLYxueNJOflnOJJic0vy45+gTdRlZdJPIVmi1k1XUcRo50BXjxdA3tjvvk
+	w0K2pjbLl+VhsLDZGXgHX1rZpDVTZYo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jxfnhKaJ;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCmCeyWQ;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792090870;
+	b=UGsXEbGQoD0bvGWG+jCqGcXwaSmHZg3o4fuEX/I0q4ti5A6GFidnGKmsu3ORCOMm+YANbq
+	Q7jT8eGy2WsHn4a3cf2jWLWOKX4Rq0HySkyVC4kz7SJDASxJkRrLWKiXz1QvuSvDbBtnMa
+	6qoC98XZJVTvVfycbvI2IksPurrIE+Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 27C7B60A5F;
-	Thu, 15 Oct 2026 19:00:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D451F000C5;
-	Thu, 15 Oct 2026 19:00:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A392043FF1;
+	Thu, 15 Oct 2026 19:01:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F221F000C5;
+	Thu, 15 Oct 2026 19:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792090835;
-	bh=uJ/G9yyXD4qyUPrTP1b85QhiMx6Sqjd/0iLMmnkucLE=;
+	s=k20260515; t=1792090869;
+	bh=O6YGICvRqo5ZX7Fs34PHB2pxcAwJ+U8wwEjavmBhres=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jxfnhKaJN88Ifi5mS18bnuyd4Z77T+cmmVs9M0jHfYRGlIiWSuVEih3mUUp6Thtn3
-	 eNXVirQLiGONqNEymMftbPUH9Z6FSGUwC1T7RTlCgwUxPjQyx0RPYuEKHNG99PP/oG
-	 1xtPVuGad8RK4Y2qSKNSFkURp7OmdXcUBnqd5pwcAMqFRNCz3BSTb8qc3K66cG+vik
-	 h39qpHBXvN7EH1Es1wJNGHPq9jTKWZVDNlOfMjvA63ZRbtBobpqggfrfq4+XmnU4PN
-	 m+n5rZZGOcoWPmf4Uo8p2PoB8arS4mkJ+tTz5qND8MIgI0BvaE5B9ahcs5UOxk9CNh
-	 YKnNZ3SVjyb7w==
-Message-ID: <f7735584-e020-4ee1-8afb-2b5d580cfa49@kernel.org>
-Date: Thu, 15 Oct 2026 21:00:28 +0200
+	b=YCmCeyWQ8yReS/GaK13Kzq1NgNhsv4MPuXFY8WAV+sAcrXekzPCqKU28EGPoZyzun
+	 1IWAp52aBdG6ux/e/XCbcpDcCc4jGgl39/JLF0+pkGmsQARBWiuyHOAA3LD1XJiygc
+	 78DH1wCbimpiIOMtQGS3CA/v20HKLJAH79Q1vC7lhezfZYyEQhynFrLaLVxJR9Kosl
+	 h4y0ulhQzJniIAijReW4Q82YStoBU3wELT7AEr0oFujp4WguhHDWK/adUd9Ojskzfe
+	 vJbEBYn76QydAwsG9BL2UEeCeqC0OyKl2W6l8uNJ8Y1480Kf6/qre5bUvuvyxRFhlP
+	 nMb4AnhKbihVg==
+Message-ID: <f7f0dd17-d7ec-4829-998b-5e8de564fc38@kernel.org>
+Date: Thu, 15 Oct 2026 21:01:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: memory: fix truncation removing mapped folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com>
- <8245424a-f068-4be5-9e58-713cbff1f8ae@kernel.org>
- <405811f5-ee36-4b3c-80d0-7dc6827ab5d4@linux.alibaba.com>
- <6660d3bb-3485-4c34-8734-3ea99df920f1@kernel.org>
- <02c9a968-92e2-49e2-bffc-74d264a5c911@linux.alibaba.com>
+Subject: Re: [PATCH] MAINTAINERS: exclude DAMON docs from MEMORY MANAGEMENT -
+ MISC
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, SJ Park <sj@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, damon@lists.linux.dev,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261015-maint-mm-core-x-doc-damon-v1-1-226decb5cd0d@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <02c9a968-92e2-49e2-bffc-74d264a5c911@linux.alibaba.com>
+In-Reply-To: <20261015-maint-mm-core-x-doc-damon-v1-1-226decb5cd0d@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AAF511C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 189F410000C
-X-Stat-Signature: hqhrfo84kqi7by58dgmses37samuozb7
-X-HE-Tag: 1792090836-319577
-X-HE-Meta: U2FsdGVkX1/5WAWq9L3a3xVtAQtAY1+vZDEPwieDyvWYgnZhP02URqXC9pSS8RKR15i92KWRIST25fmwP9WDZGYhzDs75cachGX0oKIwakHgbn8DDqz8GqZ9fA+xo1VimN3rSVBiNkM2yDqbEwd/Bb+VKP4N1K5DYo5VE8OcD4FS+wE5ffk2J/FFgvBcWWtb9ZAyn/TcXMh8UvVufxDTkojjSiYEOPQxOpNfm2I848CxZ43xnoDsdAx5tMU0K4KZ8/gBF3Ic0N13qSDSbrH7qk4Dt0X8AXyGDfBniiRp2ZbOCr2c6Bw56AVK+f4etP6oTjn8Xn1WI/8lMbcn8pcVi7oLfC7SC4LWCv+RBEHPb89dcZY/MHWmdxKvchxCwxNt4OYT5sbxCo4BBNzEQCQlJsNRarOtxhEmttduze3K48O7Wh+5+rhAHBgnD77x+WZXn+oUTjuYfp2CR6jKmfDKJeZRLSkaEsQxS4DVQflUaLMA9x7hHWqIn+GlXEHZ5ge2r3NdZWz8aq5vdRdeeNpE14Otv1R3z0xL2cO3RGtKHGwW/c8zBS0To6R6D7Ggur3D5G+tKxeaWMQ6fH5LBn+FHJeqshUka+Kk9w1Ho6nnHs7FjJMK9dI6S0uXwldT5/iocENwPDe3jZY63SqtdZOuxyuaLoXUvO7+83YKR/f/4ZLe5NloWb4JurtAm4AINIsUbQzXjKX1BLmSR1avds+j+qsOxx8eUmpRGIddHo1nwKAZPrvoTFynCYERUYGMKCCWP2IBclBzmDHFr8+lmjodrTu4czs/a2JVwV4ev3oMS1x4t8i1iLq74FiJ/hHsC9FTZ/kkGiSTWOvwGZbsrTQOmZWCGnNL52gbroTHIpTzZzdk03cjIWXK8zTomjCn5abbKc072gTB5J97VBj4zkpuX451fQGDPAh/HXR/LUKxtWnpi7XYH8zg629u6Z+BU9c3wJsm+ZvvtBg3q5VdanL
- C5H5///M
- 8Iqd1Oc2HDJsXXAXF7LWGUydNSyFsTFxf23OXDPJNDnZpODWSyf0MMmtLJGQv8QReQ9/czAaukMKVEy5RpaPFkY9Y+vKNvjKjXyiJvw5sUZktosOGm2AGVFMvuO4XGq7kk/ZD0IbIZaWounYHpRon9HAN8pIF8R06iHP83fjN9nW3kBE7UW+6X+E4QlHq4klSaa2MVvausyAn11reORiTZ828LU10f/MDKfuOk1TqKJANj8yHewP32SoqLUqobHGUxxe2edWbjLpn4MKPAY+mA7YwiZtJZgxyjI+e
+X-Stat-Signature: q4mm7e9mxp9r9zy6on735epi863y9dpf
+X-HE-Tag: 1792090870-68273
+X-HE-Meta: U2FsdGVkX1/HIqdNkdcWH24/4kBUaWZYN/+aD4bsvL2ARA8wbD7OEpVmzmnwWjaLp4kRz2aa4t+1aPlyskFeUhhnxoBSW3jKauTdqW/KE2Fn0TjcuRflOaX+pYTHOr9Xa4gNyzDpyEQIPwVkmkOwLOTy5f+Y+XuVnj10SSdHCr+JDRpgiOzjCnQjBO1lChx4sJJzP3V3TKm0za52FjejNFWfM84Xx94yyqhXH04u0nXK675pCQUlcAUeRHedzJr90DqeaMVrsagUDELtY2VpLirzxa7S104wWsa/mRf9YEMB7OS/GCo3eHxDGZoIxIsbEpt2pXyDlS+WAr+t8N4tLMP4Xp9D/xnwzODwvSuFChuAOevE5VHrP3Pa29B8rEAVl6EaKowiUjBFH3qSQ8+v9Krk28+k0ZPm3e52BVvqk0DOYoWMHwfQSuqeD6QLdiaHxwB6bh6ynh4epE/NIwH8OKvGSJVVqqcJHdNG8bDJL7aGTIvYKqAmwKE7nv5WzfVJrxXob4sBWPaCUUThyk8RjgFx3kJzYMwzqPUMXVWTOzvh2EQW08R9YxRSV+TpHDh8G+2aRfgudil2zJxZtKHix4yfl+nBP4aLwfk+31bSw0RERrEm/RK+/bgtC01O7s1PZjIbkUuuwsQZoA2ghOg+eh88lDZeNtDXjo9uQqprws5coHsbO3PGR5toj4DZ/4cEkN55D2BLR2Ha8HoGNTnnbGtv6V3Zra2BmctlICUg+8QOCmDD3LVplM1mzF0tw3qAkN6Hh8P4PyIWkrrIW31zoV1je7x78bfJgpVImJLwxadyWz17k5Si8XHtDRF/wx0EAp87rP4t9pFQxORXDofC4TFZWOLQaghbROZADR+aFAfDGu18co8bGKREglohwqxaiEujJGKtf3MiTPY1pShNuPZDbPih8jSBvzlJlhwvB2a/J+fMbWp7VJTsXTeh+1ihEC+PbO5keyLPHxDSVh7
+ K7U8rMob
+ VudoUOin3vz1+tsMfxJkAkituwDDl+oZwsetV63db43P4mEGDfcm/nYJb7z3NNg7xBtHvcBUwoiheuy96/A3lsDOjw5p7jl+nUa7/KUuNcQeXHPrq2Z0U7cLWr0RaAWo44W/pSrDfKG6GEb3Oq1selNcTbSHg//q3vKgQTn0qJ7hWQW7KH9gUxUmer5u7X/S79+QN4qfnKdgsC2/isPYAAnVbLlJ/2duE2tU3eGJOaHkhNtiTc+dYrVJN/ARS/7oQdBOEPe4woc4s/pvUzycWFvEIcyKcKNdoPSRY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,180 +142,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/26 08:41, Baolin Wang wrote:
+On 10/15/26 18:31, Vlastimil Babka (SUSE) wrote:
+> MEMORY MANAGEMENT - MISC is a list of misc mm sources and also acts as
+> catch-all for the mm Documentation subdirectories. Documentation for
+> DAMON is well maintained within its own subsystem and also actively
+> updated, so there's no need to Cc all MISC maintainers for them as well.
+> Thus add exclusion entries for them.
 > 
-> 
-> On 10/14/26 9:25 PM, David Hildenbrand (Arm) wrote:
->> On 10/13/26 11:36, Baolin Wang wrote:
->>>
->>>
->>>
->>> I had considered this approach before, but it is not feasible. IIUC, the
->>> sync_with_folio_pmd_zap() is used to address the race with zap_huge_pmd(), and
->>> both the PMD clear and the folio mapcount decrement are performed under the PMD
->>> lock in zap_huge_pmd().
->>
->> Just to be clear, I am thinking about something like the following on the
->> zap_pmd_range() side:
->>
->> diff --git a/mm/internal.h b/mm/internal.h
->> index 38b1165212c94..a8820ad7e2f21 100644
->> --- a/mm/internal.h
->> +++ b/mm/internal.h
->> @@ -584,14 +584,15 @@ void free_pgtables(struct mmu_gather *tlb, struct
->> unmap_desc *desc);
->>   void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
->>
->>   /**
->> - * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
->> + * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
->>    * @mm: The mm_struct.
->>    * @pmdp: Pointer to the pmd that was found to be pmd_none().
->>    *
->>    * When we find a pmd_none() while unmapping a folio without holding the PTL,
->> - * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
->> - * indicate that it's unmapped. Skipping the PMD without synchronization could
->> - * make folio unmapping code assume that unmapping failed.
->> + * zap_huge_pmd() or zap_empty_pte_table() may have cleared the PMD but not
->> + * yet modified the mapped folios to indicate they are unmapped. Skipping the
->> + * PMD without synchronization could make folio unmapping code assume that
->> + * unmapping failed.
->>    *
->>    * Wait for concurrent zapping to complete by grabbing the PTL.
->>    */
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 8b0c2c735d3de..c585f5eb255c9 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -2139,9 +2139,7 @@ static inline unsigned long zap_pmd_range(struct
->> mmu_gather *tlb,
->>                                  continue;
->>                          }
->>                          /* fall through */
->> -               } else if (details && details->single_folio &&
->> -                          folio_test_pmd_mappable(details->single_folio) &&
->> -                          next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
->> +               } else if (details && details->single_folio && pmd_none(*pmd)) {
->>                          sync_with_folio_pmd_zap(tlb->mm, pmd);
->>                  }
->>                  if (pmd_none(*pmd)) {
->>
-> 
-> Yes, I've considered that. However, implicit memory barriers give me a headache,
-> so I ended up going with explicit memory barriers (suggested by Pedro).
-> 
-> If you don't like memory barriers, let me re-check whether the implicit memory
-> barriers here can ensure race safety with sync_with_folio_pmd_zap(). A
-> simplified logic is as follows:
-> 
-> CPU 0 (truncation)                        CPU 1 (zapping)
-> down_read() ->Acquire A1.                pte spin_lock() ->Acquire A4
->                                          clear mapcount
-> 
->                                          pmd spin_lock() ->Acquire A5
->                                          clear pmd
->                                          pmd spin_unlock() ->Release R5
-> 
-> if (pmd_none()) { //read pmd
->                                          pte spin_unlock() ->Release R4
->     pmd spin_lock() ->Acquire A2
->     pmd spin_unlock() ->Release R2
-> }
-> up_read() -> Release R1
-> 
-> spin_lock(y) ->Acquire A3
-> folio_mapped() // read mapcount
-> spin_unlock(y) ->Release R3
-> 
-> CPU 0 constraints:
-> 1. R2 is a release, so "read pmd" completes before R2.
-> 2. A2 completes before A3 (ACQUIRE vs ACQUIRE).
-> 3. "read mapcount" completes after A3, hence after A2.
-> 
-> CPU 1 constraints:
-> 1. R5 is a release. Both "clear mapcount" and "clear pmd" complete before R5.
-> 
-> According to above constraints, if CPU0 sees pmd_none() caused by CPU1's clear
-> pmd, and CPU0 then acquires the same pmd lock released by CPU1 at R5, then
-> CPU1's clear mapcount happens before CPU0's later folio_mapped().
-> 
-> Therefore folio_mapped() is guaranteed not to read the old mapcount in this
-> case. So I think sync_with_folio_pmd_zap() can work, but needs a small change to
-> avoid the double pmd_none() check.
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+> I'd love to have the time to check the DAMON documentation changes, but
+> it's simply not happening, so this will save some mail traffic for me,
+> if others agree.
 
+Ah, that's why I was getting CCed on them :)
 
-I'd be okay with some (follow-up?) memory barrier handling inside
-sync_with_folio_pmd_zap(), for example, based on the folio size and with proper
-documentation why we need the PT lock in one case and why the memory barrier is
-ok in the other case.
-
-> 
-> David, does the following diff look good to you?
-
-I think we should extend the sync_with_folio_pmd_zap() doc as suggested.
-
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 6a8e7772b8d6..c0aadab1b59e 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->                 }
->         } while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
-> 
-> +       add_mm_rss_vec(mm, rss);
-> +       lazy_mmu_mode_disable();
-> +
-> +       /* Do the actual TLB flush before dropping ptl */
-> +       if (force_flush) {
-> +               tlb_flush_mmu_tlbonly(tlb);
-> +               tlb_flush_rmaps(tlb, vma);
-> +       }
-> +
->         /*
->          * Fast path: try to hold the pmd lock and unmap the PTE page.
->          *
-> @@ -2044,16 +2053,8 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->          * to ensure they are still none, thereby preventing the pte entries
->          * from being repopulated by another thread.
->          */
-> -       if (can_reclaim_pt && direct_reclaim && addr == end)
-> +       if (can_reclaim_pt && direct_reclaim && addr == end) {
->                 direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
-> -
-> -       add_mm_rss_vec(mm, rss);
-> -       lazy_mmu_mode_disable();
-> -
-> -       /* Do the actual TLB flush before dropping ptl */
-> -       if (force_flush) {
-> -               tlb_flush_mmu_tlbonly(tlb);
-> -               tlb_flush_rmaps(tlb, vma);
->         }
->         pte_unmap_unlock(start_pte, ptl);
-> 
-> @@ -2102,12 +2103,11 @@ static inline unsigned long zap_pmd_range(struct
-> mmu_gather *tlb,
->                                 continue;
->                         }
->                         /* fall through */
-> -               } else if (details && details->single_folio &&
-> -                          folio_test_pmd_mappable(details->single_folio) &&
-> -                          next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
-> -                       sync_with_folio_pmd_zap(tlb->mm, pmd);
->                 }
-> +
->                 if (pmd_none(*pmd)) {
-> +                       if (details && details->single_folio)
-> +                               sync_with_folio_pmd_zap(tlb->mm, pmd);
->                         addr = next;
->                         continue;
->                 }
-
-We do have another sync_with_folio_pmd_zap() user in page_vma_mapped_walk(),
-does that one need care as well?
-
-Not sure if removing the thp_vma_suitable_order + pvmw->nr_pages negatively
-affect performance, I suspect not but we better double check.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
