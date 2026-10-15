@@ -4,132 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E79CC6B33
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 10:17:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32D6CC6B30
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 10:54:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 549046B0088; Thu, 15 Oct 2026 06:17:00 -0400 (EDT)
+	id 42BC86B0088; Thu, 15 Oct 2026 06:54:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FB2B6B008A; Thu, 15 Oct 2026 06:17:00 -0400 (EDT)
+	id 3BC2A6B008A; Thu, 15 Oct 2026 06:54:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9476B008C; Thu, 15 Oct 2026 06:17:00 -0400 (EDT)
+	id 27E0B6B008C; Thu, 15 Oct 2026 06:54:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C4E16B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:17:00 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 995D8A09B2
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:16:59 +0000 (UTC)
-X-FDA: 85324457358.02.1BA089F
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B59F3140004
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:16:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="OvBh4//J";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf26.hostedemail.com: domain of ampr.mhd@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=ampr.mhd@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792059417;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E5A406B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:54:15 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 573334093B
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:54:15 +0000 (UTC)
+X-FDA: 85324551270.27.646A821
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4A7D420005
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:54:13 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=eLFJz2i3;
+	spf=pass (imf31.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792061653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7RGsYQTIYU0+A9ayCb7SrWoBueBztNc5suUM+fjhzoQ=;
-	b=cv3MzvTWzKbDFlFC5OZspA0PnAl4PK/nhUwgDZzpclUN8JvxqDAsC0OVrubQsAlBn4X5te
-	FdDFjwXIn5JuqgxU64lGlW4CFDcgF/0MJMpaNgo+EBjRXcExnNWzBI6LHZ6NZdoptj8dXB
-	W43rECfQ9sQVLbCAOmcPSsgrkVNvLo8=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="OvBh4//J";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf26.hostedemail.com: domain of ampr.mhd@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=ampr.mhd@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792059417;
-	b=Od/GPAn+0VPyuTOIsKi7rUnwHc3zaIkXLX/8LFDDWbR74ZNTopgGzGCaB4TGCYOj3vQ+2k
-	9YcCu3gN9srUWfLgmfrCxfJvzTz4KDRrUGpmWvvmQ272xJFbseE533lgfyKSm+uV/9HnYl
-	KYLkhQXFbyXiFtMG0lFpTbcqSEsLGoI=
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bccc73eea4so2590193e87.1
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:16:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792059416; cv=none;
-        d=google.com; s=arc-20260327;
-        b=A128gCmE4E8toYUQqNF9NXGgrXZlwUczUj4ibHD5IBAMG82E3rVhkP8z2yhlZNDIdg
-         v+qLa/PLy/P3Z3a5H0BSrY6XXUoQ18mjy2BC+sb/2JLHYHIzaTFS1LyKKDmKFnDPUwJR
-         mWKNLbGFpJW/mDoqCatGBqyhwzPtUFiKACopwm2JD+LXAKbgXp1Wk4JTn7CydW6VvagE
-         rourvHLt6F3f8Ztc9BZ67Iti/s4XWtYhmyXgDLfc8mFjq9zDRsdWToBxbSMHmrHlMKj4
-         fLsuXRcDzljItfH1DD90U7NnK64wcKCz4guf9oOCsUOMbcJqXqlz+8NnHS+6zftym/eo
-         DqKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=7RGsYQTIYU0+A9ayCb7SrWoBueBztNc5suUM+fjhzoQ=;
-        fh=ziShhgjUKaeoEV5uB3m+A1p1+MMLFUBACjcnKpp4uKc=;
-        b=bsazaZmjGnkHFc0Cp3mIFjhNowa3ZGmj5Yo8DE2MyN0bH9mz2MknxIDkAYix+EFqRa
-         YsD0U6VzckdrZbzjz9uBthpqoJ4851OAV75Hz8ylmUn25+OXDYWjPz4+ictXfdb/twEj
-         Wv7pZW82EIqQUVgaAGOkWZRJspJEubsrCm7CTB+awhLiwFHgQX2LkGxCPi84qaOAJmxr
-         3dXYCksVuU3LI/h7VYQ/pu+GA1m20Zd5O4Xe8E8wO+0ZQmQBUM/JiqrfttdPSLlE3uMZ
-         mxRJxL79pRs2eECGiwV/b+hGKPC0KyWxjTL8u2FPTAGxFshFWYsaktkuVvbfUdyr7jue
-         ZQxQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=7GiFJNEdHCyl9o7lyZvAVM97bzBWzN9FAsadD1M92V8=;
+	b=PVW8h+NN3hTTLZSwvyZZg7tcrfgk3gLLwJERJnkyef98R006VUfNQIImVHeq+duaw7CQOq
+	kJxlLG9Olof3pXMps9oOTQ57NCSY9I7EWCwn9Hj7+7t+2W41wKnZMBVW5kR28kDkWQZUFo
+	pqJASQfSloroiVzfcXAzw6amY29nxKo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792061653;
+	b=oRxtaKqV1tUUMUZYdnXKWm0vtxPDqH6RJhMmQ6dYE2NFr7/bWQf43Qn+7APSP09+VMj6Xw
+	Eiv2bdxTE2wWcmOW8IqG+vLGi3dGfxYc76Rbx0Y3JESfm9dukEJwnN3fatG5OQfVrWf5RR
+	58tEgA8Nv8cx0vqWbSYblm9mBDNXT3c=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=eLFJz2i3;
+	spf=pass (imf31.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48c4be28b82so273023f8f.2
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:54:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792059416; x=1792664216; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7RGsYQTIYU0+A9ayCb7SrWoBueBztNc5suUM+fjhzoQ=;
-        b=OvBh4//J68qR6RsTqd1VSw+MIrc16USXNjui1btXwmJyU8r+ozLqzTfXNNyv42IQ3C
-         feWP9/3vkwQjNF5n3cC44m9qZR3sYtPJbniWILnTHXjPxli1IKtmoa1s/fDlIHTD10U2
-         QWSPBfEvnliN4/rKoWUX7c47WxPhPqUL1TEr4Q0/E0QasQfRyZcKofR1v4gFt+deRqX2
-         SFzwMd2Z7ErgyKnn+2yJTdcePfXaW3g66XWtAXsLh4a30gD+f6ucXu6HnK3GlLWQ+r+m
-         8BIhK1eUoECB1YiT9ggBpTcYrZYAvw6XGGdhTBRwfNuqRRfpJa1goZ3cWLSkaU4yLGLE
-         izvw==
+        d=suse.com; s=google; t=1792061652; x=1792666452; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7GiFJNEdHCyl9o7lyZvAVM97bzBWzN9FAsadD1M92V8=;
+        b=eLFJz2i3X4pCdsjXyzK9mKy5aNqURfLOmOjyrU9+2acFR5hmLQGwP/sylX/QDNVoYp
+         +Hw89bVO628i0VKRf7QpKtpANKeI5y1UcpQIc8EPZ4/LCItCN4hPraNW9Sxtgf/4lwVv
+         6IKDct1CCVHR41isKkQvGOL+PP6CWmodfGV6GUwrLmkj18+VpzGwpdyI5cm9eVNyIQii
+         yvkzYP3Yit6LBsUr/YuxWpagd58nSvA+o5N4tc5rbvjdQpCS6+pYSa5C6ThW12FE0LFv
+         ULtF3ajbSG29l4o3F2W9mFOcpI+ZGBi4yz0FLKtSX7gRAxnoA632IFWQmjk4hJpGVfOy
+         +h9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792059416; x=1792664216;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=7RGsYQTIYU0+A9ayCb7SrWoBueBztNc5suUM+fjhzoQ=;
-        b=YWqW/QxUu4NIHvqDWn5fK34UF1+YKybW/XM11aUb6eCRCgZ9FAFn4xS1GM3M9mwAT3
-         zHjKDiAEINcQNwk9bnrKrwfRsjqaA1TVyPbXta7+HmNuQiegANp5+dK7kOHeWDcEcmXR
-         vtjVkUh8G3gSRBspx3q9d2CoUcBe3kg7+q9dE81hL4lK8gYUs9aq7Lm2WuSSUb+eiGxo
-         I+71/u73YdJAPrZsGke9/pZ0sg7pkRX+UKTD4oKhscWnganwSVlMX4t6pDdz21ViLwTO
-         6TFpry3qQUOWh4VfxXXRPm3U9b0Er8JIBmKPZ5zPvE352xOHcM4F22IIp5H/OZlInfxP
-         rp1A==
-X-Forwarded-Encrypted: i=1; AKwUvBwdwVUo+VMLgLwFuB72af4z407JAriQ+qUt+10S/wwPiIBtPlyitgepR4MLz+ESiz/+fQlfo9vTDw==@kvack.org
-X-Gm-Message-State: AFq9FYIWzdVR4QfVqMX4Oje/QetPl6yv4IUVhDbEra45jqXtNvet/4AC
-	jRhG5HHkCV1o9UNoXkfZgxUl6u32eaJjwlq9uPCrR+dAMvhGpcmIiyNOqhZaO9Al8fHD/atqfGI
-	gYHJpW2I+XqZ13wZcH49a80MAnovE6fg=
-X-Gm-Gg: AYBFou2S4Dydcu51Rw5UKtDRf7XDOcyKGBeuc5Z2faMzBuB4IUT9jOj4KXSp0S1loYd
-	15di7DClShBHjbT5IU2s8XNHlQsBLlOKTfvbX4sTVdjxHK1WnNBDU8wETdurewuPUz6/v/nvsml
-	z5DaPnR1LJFVEWX3QF+6nvkCscgLzBHiRbOhRmH5L1PHmoOGsMpSZZasDBEHPqFVXdoeu4VhzQB
-	TJi6SJMnlPveIVpDjXBPkXTMjDXN4MOvz+qeXGUyDBWpSqNtRLOjgPg6NYrX+WSBAJO6bEhy8GX
-	B3k+FWVGBPvqgJuKMf9bxGLFIb3ES3k3MlEsobJr9m8V8+9yg7VWie5N1/VCFiPBZAKbOs56sj/
-	Hs8tyDaqL
-X-Received: by 2002:a05:651c:1ca:b0:3a9:787a:fa1a with SMTP id
- 38308e7fff4ca-3a9c55db202mr38052981fa.15.1792059415520; Thu, 15 Oct 2026
- 03:16:55 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792061652; x=1792666452;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7GiFJNEdHCyl9o7lyZvAVM97bzBWzN9FAsadD1M92V8=;
+        b=DNcTqtwrxF0Ghslk3iWwGnIV6yMuQq1YkelYkhIDlcHypCthE5IhH9fFL6+grvKKwt
+         sD9bDQL45WewKGjbEr9IZi3hZe9roe1ldp0fvtdrxabxsjVQcweYKndOT5wIyJl/l7Km
+         Y66frt1K/LgGSYlLeA/0ZXIpt9CJ2bLm1RUQM2z+OwbfD417nLuZxsZQPf7iOONoI3s6
+         Ev8ZMLTIXF9bMrlPXhprnryuY+9ww69OmgKHwYoV+lXXm3x1Roe7yYoaSW7rBztU2zXn
+         sHfQ5HHwgsyma19Y/DU6WuUd98Y4pA7Q+9sViThhFdtKzPYXm2NmeuY7hVw9bKADGJC6
+         cftg==
+X-Forwarded-Encrypted: i=1; AKwUvBzCOD16YKLgq5pileUbqzYNBM6/unujq+Px1JcPsryIyZk8u7v99g3gBjVTYngfG48pcU0YjAMDlA==@kvack.org
+X-Gm-Message-State: AFq9FYIpCAWK0Z6dN/Rcoy4/ZnAoi1EqJHT0+bEFomHAZuvJtm5Xkw7t
+	GmRsDflSO+00Lm0i3GY6QCm3TObdrXJbEtxUp1TjSDifHnQAAtFFsPyHySArtII0HO4=
+X-Gm-Gg: AYBFou0+awAI/23OZssAGsqjthokPhlEECo8rHiFYni1xr9jlqim0B7rOOKVsnYwB8v
+	zvd0n4MCb9iEE1goRxJSme6VwfKLTC1YWfHhqnnMvMNfaG4kGe7Csjy9pzKrlcrTkJ06o7eIuuT
+	bGpQqvrpjjVlyECcNrNGar+0rKJ/BZVzQ/J27O3Dt4h9Zjrfk/c4LpPAHRzVNSQtsvOGCAoj3iV
+	BfJLCSoshzeNaOjLQghadqffeugSwVU/maYquAgUMVMHVW96kr7Hy+8BbsALYlN5PpXL5ykdmBw
+	j7uyZ0NfaIW/ngh3iLrElUUepZAIzdnsrzKxFI8gAPXcDc+Tq/3KDwkZHfd46VF9n9kf+XIcplR
+	PX6ijdojkiwfmL0YkmUQKBukI8lm24Dr8moaHLQAAlW11FhQl0lk/uNHxcGtt4UDdDOy0MBNguN
+	uN46jd+SpcpdmZZVsu/9LzeKDYmVyCfOwwgQAXvL0bji0uQerGcO6ZntPL8EI53G411Ow1oSUcV
+	PcXsNvC+WzH
+X-Received: by 2002:a05:6000:388:b0:48d:ed0a:e064 with SMTP id ffacd0b85a97d-48ded0ae0b8mr9811826f8f.24.1792061651748;
+        Thu, 15 Oct 2026 03:54:11 -0700 (PDT)
+Received: from localhost (109-81-30-108.rct.o2.cz. [109.81.30.108])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de77606fbsm10461734f8f.53.2026.10.15.03.54.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 03:54:11 -0700 (PDT)
+Date: Thu, 15 Oct 2026 12:54:10 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, Ye Liu <liuye@kylinos.cn>
+Subject: Re: [PATCH] proc: Move OOM-related procfs code to fs/proc/oom.c
+Message-ID: <atCw0gk77fF5ISQV@tiehlicka>
+References: <20261014-oom_procfs-v1-1-f2d75e73571e@linux.dev>
+ <as9MG_BtepLV6DsC@tiehlicka>
+ <e51c14e9-5559-4ff7-8a38-de815a8f8230@linux.dev>
 MIME-Version: 1.0
-References: <20261014191803.196515-1-ampr.mhd@gmail.com> <f09eedd2-3a82-4184-a456-6d8a3b0f4139@arm.com>
-In-Reply-To: <f09eedd2-3a82-4184-a456-6d8a3b0f4139@arm.com>
-From: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
-Date: Thu, 15 Oct 2026 13:46:44 +0330
-X-Gm-Features: AclHuK9c1uoC12fzsYkL10Fvj5EVj7kGyZlf7kLGw5eDqN6WJpFxOQyPoVmdJw0
-Message-ID: <CAB_t1-AdDXPaShrLZ8wt0EcGK=PXVSwFweNjvhO1_QehhzNocg@mail.gmail.com>
-Subject: Re: [PATCH] selftests/mm: test mremap DONTUNMAP with locked memory
-To: Sarthak Sharma <sarthak.sharma@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Content-Type: multipart/alternative; boundary="000000000000e0e82c065dde584c"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e51c14e9-5559-4ff7-8a38-de815a8f8230@linux.dev>
+X-Rspamd-Queue-Id: 4A7D420005
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B59F3140004
-X-Stat-Signature: k8ptt4tczokdmecus5je7n57ryrzk3fg
-X-HE-Tag: 1792059417-47670
-X-HE-Meta: U2FsdGVkX18nSC/nxEudWusUbblONDWOlMuctg8/UrOVWAD0995dBJNOVKWHX4zkMltbSmeAC/pSwUvJgI3cxS6nH9mYhIuudJKZ6IQCqWrRLDFtUHQoOm630mPj32VCs2IEa9EkFXPYptVT+97Tqvz3W45CBylGLNSc+/bWF7mD1+xQLZf5v9FKUbIgiAM2emuP3LUhtDsMS6kYcm/P2bLQoVra70FMfhUvOuRD1AAx337w1n5gnyEi1ziBg0P4VS0Ye/fM6u7N6aOzJ/NBvD7jxAM25G4isJfwQRjBVWMS49iClkcH+Hr/aA6jfgooQXm4e5OSBnaOfGLMs6m+XckGOoeuyLkH0h060/py+QyHkqaDX4XA8byWwlZsAycVBf0qWaIl0nl+8ANzf2SE6t+044PBQsl0gz7J07W+LuvRljPC5rsxC8QNuWthp7a8BNXRXb4Mqvtt5yG4tvr9brFWLhhttQkHSZdoqbXtGYNuCuydY+ShslcrFbPQCALaQ6bfRdH+4IdbP6MRtYtUOjmR3Jtjco9w1cWglJ2v9Vq3s2BBeA/NF8onfhHebRszomq2nMpJ2i9IZlHVIO3+VmhQKNiwLAc58OtyUpmet2OEYiPo/zSa0tSpZxFeULD8m/cdmBBikUhI8huao3P/JWZSMxHAAVG8xPhPov2EjoxOmL/97rnNahE4t6fsW9MFWNMz08Fn4yM92tBLz0wnae9nezG9M4Y1woqVvttvnQZg/8+rWtKw85rBW/p78jIp+g92MKLEHUmc27Le/nWgYTuc4JYXvuWj/TYQGU9HOEKsaHZGE9MTBV8V1U56CwznEewMYWY5Qdj5RIVr5NumeB3pr3Go8jrKMMN0P7Ls2CdoamemVWsloIjlOnoT98FY6qWsmdNfRYtXeFY5tZ3FaN02VSiOCxUZK6weMac5BKhu1BtDdJvIwxFEdlYHblneoeIXWxUVFoA8KVCT2HC
- C2qjYVLa
- RgD0iGBMim5yhO7NOVXsmb8Ob5n6GvksCpf+VyiaZXQnI0LSMWfI5z1GQMVD2QaOQR+vrGRAxXrZFMPoUmuuQEMxu4Two2Pap+nQAKoOwkXK4gxltuF5TXxSQlx167OC9uCEAxem/5gmj3jKXus2dWHZaYvkMYz1RMwEdBggCnc69xfDbEFYvGIvwmRXC5wWuEKWbkJToQPNbC5b+VuyCsgRDTrIOft3iAQFoih/CS9gF9WSExB+EYMC/Hb+vvWuL1KgBx1BH78d3qg7jswvyG92GJy/8w8QbOKNUu5iRkXOPRjp2WMU+PGzoccdDMg6l9ADJkmJoejPsc7Lv+7BaJAmAgmoFpgmzOY14Hm/F+T7OzySPE2TyOwgO73jHqNq8uRqK/c7JVUZOjk+A75q27iuYVjrA5YH83z2mIiBZg7U/zRXQCXpyf6okCj0FJoXZxiRDhVEMAlw+EJc2R4Plbv7XbmyAXSrn8w/o9r3TGIZJTlvgH8WP36CyLyiXCWZRR7HAd9Uc68RoUvSncxlXN1iKoG3Aow1QvDHu2oMICbF8LLtVIVGzpLIHWoXUsx6fy3jWHZ15MAGVpnN5PEOOoCCKTS/oa5clZ5yfcQYsdE1Gg7Uyx5+oxnA9R1GwHn5xiZbpbS9IQzQfd28=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: gr8gaubty587g8tymfdg9oar1ai13i6r
+X-HE-Tag: 1792061653-562010
+X-HE-Meta: U2FsdGVkX18nQCsK6n4eLq/Tn+0IykJCdBcOhXiXyL0J+5LoCOI24hgwGerOvgxiP0fErdsN99ux6eYAnN4nbyuX6S4xvE0bVqvOmBRd8RGMVZXoRQFYb4fWD9Zar1zkQz2iQ2ii4rwAzVCAPz0VcAbJcAtYFc0Aveu30Opv3qS2+yb54i5lhnrwcXy6ePOXyRC3ay+YVWbPD0bNJB1b+PrZOIb3eAGtjbcUPS+9kQbki5sq3FJJ/zkEFc9u2Bdxt3IwDHNGfARjGl86BIETT7YOS75r+SX+KZb7i6p+UOgRhqR+jKjsQQJG8UQ5nfjObr2s4IytWeEEZXIHAVfZ9ndWdromMiRHMCoipPSFUT7z9j1OESTbotJvAvhHrPASazhsAG/zA1W8yXM+bFs7CD/ZpOvsW4DFGpUd2oJjlF57PTmkOyz0ddfshQcPfToqN1y/hjCIa9zxtgRApJovuWlW6Dn2LymorFptrZt1sfTC3bGD10NwEbe/+39AD824jrDAWF5Lv1vEogXcyUQ1VNCrF3HtVWptxd/Wtu22Id0ADtyC9kcP6/5Mb90NH1/VTyEsnBxwSGwTz1eq3U/JTY1rXlXD/jeCWTJulYCKAm27W1+BNqqtXspVWMq2USUtf2isazw5vhIqBAkoOMrNQzg695DHfYVtpbZ1/6Cq5VjhDQVtOdeyvVzMvPkTTRxjNZ+oG3uY8oLvIgXFHe7EiERirxHc+rXZ36H140ukbfocH61ng6O1fKK6L7n+WTqZ35wvoy6NWND9Ft9vuxjHIDgMlZTXhRhbgSUZnpgCIIYn1RpL3sYUMeeOgxupVZzKGPlJHabjV8+2bHMAi+3TqbC/HNxTibNPpcvogzIdM1ArqpcfujiB9H63VzFMVyO8o57DTsSvSFQBhkAIXV7ypQd/+wdUX6VuFqhgvH4SIubnecD75eNi01IHWlCYDbKlXacaPRdZfsvD+IDnQwX
+ IOchPQct
+ 8IGEB8zK8GXVjLuF/glALNd3qR/I6RjF0D+KZx9T9kUhcgFi/7qLz8Y1QdFGROWLZQQZx0sgsYS+RpqdY0bTygdx0rEBXIGYvLbwdZwOISr1lxDsbxqAu8tQAXerjRvES/lVtRGA3KB/V7Xqhe3KzysyCvr335ge5JeCoI+H7AKCUmzkdFQna6tpmcGFHP0zaRKgtUj3IK49GGYaHhhLfzGcS1quSf9Mhjp4pHfLNgCkb6Kg4GUVJ/lpCd3Tsci7B7vpj2USF09+jW3tt37gcMklId/QZkBF3vVxwWY27A3bfzycGmuf5XJjZ2gqbgxeGIpx9rpHrYT7L4fimot5SscMsPdh6ciQb2Yus1Dpf2JCbjbpWHw3wiYNH5yhgvzZPX7rM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,88 +126,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000e0e82c065dde584c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu 15-10-26 09:32:53, Ye Liu wrote:
+> 
+> 
+> 在 2026/10/14 17:32, Michal Hocko 写道:
+> > On Wed 14-10-26 16:54:12, Ye Liu wrote:
+> >> From: Ye Liu <liuye@kylinos.cn>
+> >>
+> >> fs/proc/base.c is a large file (~3700 lines) handling all per-process
+> >> procfs entries. The OOM score, oom_adj, and oom_score_adj interface
+> >> code is self-contained and has no dependencies on other parts of
+> >> base.c, so move it into a dedicated fs/proc/oom.c following the same
+> >> pattern as fs/proc/fd.c and fs/proc/task_mmu.c.
+> >>
+> >> This makes both files easier to read and keeps OOM-related procfs
+> >> entries together in one place.
+> > 
+> > Are there plans to separate other functionality or is this one off
+> > thing?
+> > In general I am not against of moving stuff to more specialized files.
+> > An obvious downside is a review as it is quite easy to overlook a subtle
+> > change when moving so much code. Something worth undertaking if there
+> > is a bigger goal. Not so sure if this is just a one of and fs/proc/base.c
+> > still keeps other random stuff in.
+> > 
+> 
+> Hi Michal,
+> 
+> This is a one-off move specifically for the OOM-related procfs code.
+> I don't have a broader plan to split up fs/proc/base.c at this time.
+> 
+> I understand the concern about subtle changes during code moves.
+> To address that, the patch is a pure relocation with no functional
+> modifications — all function bodies are moved verbatim. 
 
-Hi Sarthak,
+But you do understand that I effectivelly need to redo the patch to
+confirm this is the case, right?
 
-Thanks for pointing this out. I=E2=80=99ve reviewed Jose=E2=80=99s patch in=
- mm-unstable and
-confirmed that it already covers the partial-remap case I was
-investigating, along with additional cases.
+This is something I am not particularly thrilled to do for a single
+isolated patch without a larger plan. taks_mmu.c will remain a huge pile
+of code after this change. So what's the point for all that effort?
 
-I=E2=80=99ll close out my duplicate submission. I appreciate the pointer.
-
-Best regards,
-Mahdi
-
-On Thu, Oct 15, 2026 at 10:19=E2=80=AFAM Sarthak Sharma <sarthak.sharma@arm=
-.com>
-wrote:
-
->
->
-> On 10/15/26 12:48 AM, Muhammad Mahdi Amirpour wrote:
-> > Check that a partial MREMAP_DONTUNMAP operation on mlocked memory
-> > preserves locked-memory accounting and that unmapping both mappings
-> > returns VmLck to its original value.
-> >
-> > This tests for a locked_vm accounting leak after a partial remap.
-> >
-> > Signed-off-by: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
-> > ---
->
-> There's already a patch in mm-unstable that adds a test for mlock
-> accounting [1]. It covers the partial mremap with MREMAP_DONTUNMAP case
-> as well.
->
-> [1]
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=3D=
-35524c870053cb28bb056fb17e715ebebec17229
->
->
-
---000000000000e0e82c065dde584c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><p><span>Hi Sarthak,</span></p><p><span>T=
-hanks for pointing this out. I=E2=80=99ve reviewed Jose=E2=80=99s patch in =
-mm-unstable and confirmed that it already covers the partial-remap case I w=
-as investigating, along with additional cases.</span></p><p><span>I=E2=80=
-=99ll close out my duplicate submission. I appreciate the pointer.</span></=
-p><p><span>Best regards,</span><br><span>Mahdi</span></p></div><br><div cla=
-ss=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_at=
-tr">On Thu, Oct 15, 2026 at 10:19=E2=80=AFAM Sarthak Sharma &lt;<a href=3D"=
-mailto:sarthak.sharma@arm.com">sarthak.sharma@arm.com</a>&gt; wrote:<br></d=
-iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
-er-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
-<br>
-On 10/15/26 12:48 AM, Muhammad Mahdi Amirpour wrote:<br>
-&gt; Check that a partial MREMAP_DONTUNMAP operation on mlocked memory<br>
-&gt; preserves locked-memory accounting and that unmapping both mappings<br=
->
-&gt; returns VmLck to its original value.<br>
-&gt; <br>
-&gt; This tests for a locked_vm accounting leak after a partial remap.<br>
-&gt; <br>
-&gt; Signed-off-by: Muhammad Mahdi Amirpour &lt;<a href=3D"mailto:ampr.mhd@=
-gmail.com" target=3D"_blank">ampr.mhd@gmail.com</a>&gt;<br>
-&gt; ---<br>
-<br>
-There&#39;s already a patch in mm-unstable that adds a test for mlock<br>
-accounting [1]. It covers the partial mremap with MREMAP_DONTUNMAP case<br>
-as well.<br>
-<br>
-[1]<br>
-<a href=3D"https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/comm=
-it/?id=3D35524c870053cb28bb056fb17e715ebebec17229" rel=3D"noreferrer" targe=
-t=3D"_blank">https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/co=
-mmit/?id=3D35524c870053cb28bb056fb17e715ebebec17229</a><br>
-<br>
-</blockquote></div></div>
-
---000000000000e0e82c065dde584c--
+-- 
+Michal Hocko
+SUSE Labs
 
