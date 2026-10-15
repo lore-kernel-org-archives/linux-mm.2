@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF940CC6B2F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 08:20:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 675ABCC6B39
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 08:28:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E37E26B008C; Thu, 15 Oct 2026 04:20:57 -0400 (EDT)
+	id 78F0A6B0095; Thu, 15 Oct 2026 04:28:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0F6C6B0092; Thu, 15 Oct 2026 04:20:57 -0400 (EDT)
+	id 740536B0096; Thu, 15 Oct 2026 04:28:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4CCB6B0095; Thu, 15 Oct 2026 04:20:57 -0400 (EDT)
+	id 656306B0098; Thu, 15 Oct 2026 04:28:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2036B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:20:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 301761A0981
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:20:57 +0000 (UTC)
-X-FDA: 85324164954.27.29AC761
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 34E85C0002
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:20:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PfmiqPqt;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792052455;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=74dmfERX3NwtAgK/bnYeEncu1DFsTgxUC4MCbXJ1IRg=;
-	b=YlmqnQdXm7mwlWYFuf3PJYAAWXoTbiTxu7FG+Ur72X+91dUw+4Yoi63uWKQyDy7Q71E2Pf
-	vcagVJHtAc/amJ48dYyWrAaPovsOPYcIkDdH3M0h2vhJ4iXVRQpQuyS70j5PObVjuXoils
-	eQL72mDxgrWJQ1zK7EL9LBwKtIO6I8s=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PfmiqPqt;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 41C856B0095
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:28:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F67E1A0984
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:22:21 +0000 (UTC)
+X-FDA: 85324168482.25.43A2B00
+Received: from a4-24.smtp-out.eu-west-1.amazonses.com (a4-24.smtp-out.eu-west-1.amazonses.com [54.240.4.24])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7FE9420005
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:22:19 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=granata-sial-paris-2026.com header.s=4vj7o2dqjpszhdz2rsqt5pymrqzhnzt3 header.b=EgH7qWPy;
+	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=KpF5n7xa;
+	spf=pass (imf31.hostedemail.com: domain of 010201a13ea7a6a4-ff54c3b1-f5c1-40d3-96c4-520662a52266-000000@bounce.granata-sial-paris-2026.com designates 54.240.4.24 as permitted sender) smtp.mailfrom=010201a13ea7a6a4-ff54c3b1-f5c1-40d3-96c4-520662a52266-000000@bounce.granata-sial-paris-2026.com;
+	dmarc=pass (policy=none) header.from=granata-sial-paris-2026.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792052455;
-	b=LbDcwzVJeTiPP4OlsbO9s7bSk4BwLih4rzDdZ9p+ZOAiCkGmWkuIIdhB3T9binP/+gvc2/
-	vUzXRrZTXuZxcv6vcRCZ458VyM68VRKduZdaF2uMosRKVeSuGo0bPQpoR9q9F2/+iK2rsX
-	PzoH/MGgvx+nBMjhfktxY3YWPj/1GkI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC0782F;
-	Thu, 15 Oct 2026 01:20:50 -0700 (PDT)
-Received: from [10.164.19.62] (unknown [10.164.19.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C0883F871;
-	Thu, 15 Oct 2026 01:20:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792052454; bh=F5wGTE/FgF7+DxZwQR6hrwUobidum0QUlEo4Hxn7PgY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PfmiqPqtNGQ2dfYvOxXeKNFpBumxHwD1dnsfs6AQ3si8OoeyswdyPCoLhpbWLXBZB
-	 sn3dTCfmjgXTHQN9NCjTotyUhehm0Hyq39Yd/3y4Ew5HkmxlfSbcTNN0vepn7KKauj
-	 zSfZsJOHcWrwtnsnxm/y3Cu6cc6e6RTEVvd/wrLE=
-Message-ID: <087678bc-41f8-4250-bde9-e9fe9399e67b@arm.com>
-Date: Thu, 15 Oct 2026 13:50:45 +0530
+	t=1792052539;
+	b=5P5XscuWqdvHJkB8egYZU8aX8gXyTF/RTVQVQ0ubkF35Ntm5r2HTH0uVAeb+ykWOlKHOwA
+	qXME7QBsFT+KJCq3M3aq056fzgQUXoDa25tFU5hS208Esb00uoxzJg0jdZoKs7bEfJZOur
+	RYpwhIUvyPl8Cig1ukS+yEUnr6CbTow=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=granata-sial-paris-2026.com header.s=4vj7o2dqjpszhdz2rsqt5pymrqzhnzt3 header.b=EgH7qWPy;
+	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=KpF5n7xa;
+	spf=pass (imf31.hostedemail.com: domain of 010201a13ea7a6a4-ff54c3b1-f5c1-40d3-96c4-520662a52266-000000@bounce.granata-sial-paris-2026.com designates 54.240.4.24 as permitted sender) smtp.mailfrom=010201a13ea7a6a4-ff54c3b1-f5c1-40d3-96c4-520662a52266-000000@bounce.granata-sial-paris-2026.com;
+	dmarc=pass (policy=none) header.from=granata-sial-paris-2026.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792052539;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SkxwZCSghbmvuu/95L/wyFDjDKzX40K+WggcCuIxfIM=;
+	b=Nt276awwDo254QMXmRon+Rew2y+FTs72uaG9LGHTvkMoS42bN4qD45+4kt2JUkUFp2TpA4
+	H0m9b6JWuab6AbqAWkTx+uiVqMEmq7EXwOjL4FwIzpaBsh9XZ8NA/n55dOWef2IydEAQL5
+	OBnEshLVQNLE8Cuw2Hw47JBATJtxY3k=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=4vj7o2dqjpszhdz2rsqt5pymrqzhnzt3; d=granata-sial-paris-2026.com;
+	t=1792052537;
+	h=From:Reply-To:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
+	bh=SkxwZCSghbmvuu/95L/wyFDjDKzX40K+WggcCuIxfIM=;
+	b=EgH7qWPy17jDo24IOnBx3CFYsRDRHgFyB2YyEdLIGJYZFkZSugZUqcFItnRugfZl
+	DsRyB8vgsvRh+wpRXAu7p7ZwDkgOnS9BFXwn9i/hDifk+7tu8D7Q+3rbdpCo7Pqzh6h
+	O6pEDvHm2bHv5xBal8RgkVEwyVy34jONaeUyKMOn7MlESjR9kVUoJxLzloSDY45IeRr
+	QTozw835SJOSaitHr4dX8luJ3I6FPn1oWIGvc29VMs/Ss1xy78W+rkPzvly8ZrJaU4L
+	lcr+E6meHTyE2CnsL7Pni1DyD1nnN0dsJjZSb+GyNDwamTEG0lMDJNMN5aNRLPnf7Jn
+	CoTR9ZRIGQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1792052537;
+	h=From:Reply-To:To:Subject:MIME-Version:Content-Type:Message-ID:Date:Feedback-ID;
+	bh=SkxwZCSghbmvuu/95L/wyFDjDKzX40K+WggcCuIxfIM=;
+	b=KpF5n7xaFLOUlRBRbX+TXJA62TeZ6ImKKs51Y72RE+sZoFvwFjbD2xE0BxzMLj7C
+	Z79DBG+71FuOYlMnIeEa5oVKnFmY34GQbOMSYpT5UvIXXcX19SfpSwkZ6TpSpc6X+HJ
+	OjwKmNr5EJfFk44Vwnw7n0LZht8822ATZCzXgn/M=
+From: Silvia <silvia@granata-sial-paris-2026.com>
+Reply-To: silvia@granata-sial-paris-2026.com
+To: linux-mm@kvack.org
+Subject: Avez-vous des besoins en olives italiennes ?
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/5] mm/page_alloc: convert any movable pageblock on a
- non-movable allocation
-To: Rik van Riel <riel@surriel.com>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org
-References: <20261007021250.1665929-1-riel@surriel.com>
- <20261007021250.1665929-4-riel@surriel.com>
- <20261014204836.GI371161@cmpxchg.org>
- <5234543d2c1b44706501d2e079b41e95a6a1d200.camel@surriel.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <5234543d2c1b44706501d2e079b41e95a6a1d200.camel@surriel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_269313_221934219.1792052536996"
+Message-ID: <010201a13ea7a6a4-ff54c3b1-f5c1-40d3-96c4-520662a52266-000000@eu-west-1.amazonses.com>
+Date: Thu, 15 Oct 2026 08:22:17 +0000
+Feedback-ID: ::1.eu-west-1.YbPVrDFKMqIai/PZSqkauNNVyu0Bi9A9R29gQ/Iz/tU=:AmazonSES
+X-SES-Outgoing: 2026.10.15-54.240.4.24
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 34E85C0002
-X-Stat-Signature: cwg4ssz3obmc7g48s16da7oestgegsgu
-X-HE-Tag: 1792052455-321995
-X-HE-Meta: U2FsdGVkX1+qwF/7pj3cWZlZGobG/AyZ0BeSRgzBLNGSAJ98siqFtb4aZsRKFfOUGZkCOdoFjsjoLyqPag6cpcm/8S/rJLbE0L3+8ZYWggvbJ+rC+wI2uVMorwHfQx3NtmFCy3Mn6xdOB5Q8WRLDNd6hPgRaw8QW5keDRFrg8iBF24n0gizr+cw6tcoBVfS7HWas1fhqyiLotOysfTBwJahBO5Pv2OloxQeBYfDNnycrEAwk6mHGIshjBfSIiui1jjQyDOpPH5OWSzD2EhueoteXWWBSC+gNv+flWTZf0TyOOFzXKiywSjWCj7anVBxQXV+lhKSYfXvdQx8CbOS0IsMzm2EQJOd1SqhBVyzlzDqpmF4TJdyU1Mr0S1Rz+xGYXYgKHrEkMoPAHDdcUMxz+yE68L8Y4BvllyvH3wVmihec7DhlUlc77/EkUWaY3cxxvOWiZ8GvKPHOjljdWWQdauEt08JEK9Dp1XceZs4yL9ALZTrjiXnpeq4G5tFuHIriCNiONW8erPln1TvqTY3Di2bhp1wiEUx1RG7kpZmgBH7ZOgtVErFTAcp6FnwMTdH9O5qKs0X8Bt7e3UEKx7rm6C44rnb6Lgcg8y6VGGM87EbSgeOGQe9CDYIoODRn7oC0W7L9iRL4DceSahXVHQqSO5Xta7Jg/I1DXU6R/y9tpH91g1KfdjpDjpRq9czMVa2xG4RHBEF13NuggZHHaAMc3u6lDGh8BbGHosk1jPhPRsPunDY/lqSe5Y26BRqQEuce2SsKxEWf3Zrg0Zli/kWJpCXyIylubbVHMQg91/XJV/oxIYbKOnlNYd/KVQ0dnx9WL8Lge+K7yIJIbHJDBMKjXXsxrGXOd6TRCeS/qZYJAyqdicTn1XgJukkqkt/S3O/wCRPcTiqVD+TCpMgY5zxRFU5Bjr90rezUUVdVKzQExyslBom/B/BTn1WohRy6FxwdaMDodqC1ZfOjaHlsDP+
- 25c49CEe
- c/lg9iZb6W1CDRo4IwOBHTKYWJ4imESvNg/cXM4pzTwKMBOvttL5mPVz29BhXGQaKXBasqmNey7Hkp+dWU7ux+vA057B7ejDm+/pQEijpII487bKN4XHhl7PAOejiQzMM3hGyZSkcuYIzPDmituKnSrGC/2yXJzy6uJK55sDX9UjsQD98vTwmVMFqIE6R35B0r/zkJeQ/jKVc+LdwCG493Bcfm2hmUFnLgT39qURptAA1TQU+c85pibxXaCIFKdHbDKTx9yxFZOL1xno662P3MQl86wejbzJ3gefzu+LsgtcYov2ydcpvmILKgSoPeg1Lf+vGaeug67FO16E8ztGcwOuXjspQ2sjFfPSSa3pABXaCHAHTZZUP3JbIVA==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7FE9420005
+X-Stat-Signature: ctnpqepe8utzj5mytu9a3bieswjbtckx
+X-HE-Tag: 1792052539-617802
+X-HE-Meta: U2FsdGVkX18maGD9Xt0nLQcStC1VjqYCzr6X1Bf+oN0j7PyANnj/tocgu9CcxkCfFQZRHfxB1xhtexghomRLBwf8zYhQfGMW/0Sl58/XozbxqNV85dNCNxUF4NiEj/kbSmYrkVRG9eoDPaIrxqqfdZC6YLfAuJWWczLWLh3wI8j16vedLcV1Y8YmM9Iyh5KuOqeSezT+1JN6Ta2ytEBKGVH4+q7vKVX4ktKH/NcTzvaKW5SnGfM0BOQVi+PZqphqmDoURRJmegM7LBtd//V28FN5oED+zw8eEZFU939jd2sAO1vHxh471qvAQHBkfwx3GfBK3flAiTNw/2+5BCmhSHo81zZs+rt1OSFLsy5XB8lf1lHww6cqXfxcakHljFjKjj9E6TnMgfeQtRfrbFjxmq6qXkDWHyBwuFCVVI4KC94gEoXbu3ubzSv2oOIwJig/cvmSglQLTIvk88vKYg9gVk/2sIQ+R0gfsmyKLENpLLMKgiuDUG28mWPzZoADLVoYNreSG/VslR4/y9AGL+d2ptg6QuO70LU7ZkxrHFocI35AbgpaFBUrZMUOiBw2VyvXZtyHNJY/UIrkMZavtHVmmfXLgD71QvARkIgy/HdW+UeJHu1OWM/kXDFsj4mTqSRHpYhru4vvs1VZwwffJVmvpStIhPWeUi/huNwL6M2kn2gnWTrMk6rFPOHxvRBQOCrnpxtEHZsU35WY85W4s9QtuhzLW6ne4wujVmHj9b6mBjEy1YMhYro94RsMOqxey99Bsj+V6kl4qygi5iY7kbV8CJpo/vp32vH95T/7XJY5iJTLcHxs6mR6ocjuFKtble+gA0v0pozsSn+AoqZZ1k51BIg9kBR3LbjJiLYM1IoAv7NDyIMe/io8ItBclJJOXqK7bTOUJrpyhgWNBxeWSceAKgJdyGYpNqLqLrJUUPYAGim3QW1d7CpO8hCUoERF9HSh/DSxXRGO4fc3SUqcqZt
+ 2ufyixoC
+ MrLEFmfplBFGjkOQskYpz+jo2ub1tlGosphya/+vZkAm3GogjWmGGi8jZIOJHiCqyF6casRGKRTv/CDzjUTn0PD3ujO487z5Gj1HbZEM+BTlklsk2AllOwoekrb8CQIS25Dx3emZZwjgomQ+tnVFVmgWtCB6M5F27yboMANxS1gOVDW9+2Zmh4A8itNqWTT4zCsHldNligrvU7Fdpeh1gU5ARVrFWfcj4FAFvzHGahOhKN2RLSLMTSQdq50lZVzCz0XyP8h9zevMM2gos2KYiFkC/MKhMrcEguuI2MS41bIttaPNk4O7IPesSg10Xxh7KPmamAVWXquq1tHsXR0hdb8CGkbZ2pBWViIfKYCgjftWrvgvW1i6E9UCMBPmushUEzzyJWqRW2Je6FulngXPrdnPdav9jGnmyOYpP8H/9HwLV6J16pOavK1Ns+x6v+ucSzFFOl3lPzo9JAKs/DZLIFDg022ToFZVsK7lqqzFmyWDA0T4LM9vMxIPspEXKLGmTcNt3fvAZLbw/NojBkr31GIjrY6zG/nF81AoCA1oCNMKws74MrdiriSt80nByE32oQMdWrt5lmTps4ZHTvmfX4VmTbWR0J+iPpaxJv1U9d92AAb5uR7MHPoVLFAtcM7+9hbZQGab52omv6Rl14kgcR3XliTpItgFXx1NWg4ATRI9bhJXWybwAjmY8NwcEEiLcYKtGGQebRG9Sh1EGBCIHRrtMARCVWRmXB+rbFodc0+k2Qd+NAnrKBNpWPWgCExG6HF0W7/387fayYevu+K8xqQbraCeMqFaWwcZMvZuYuguLJc/ROXPBi2lRr6BuwmcGL4nZqCIRSISUB7Cx5UY42pnmHxu1AheSubRg7uGGdWbfiPB+ZmpZjBhbYwcjCksmddERsAOop5XW9bQzXrjoOjxA4CVrvsDzNrSqd7K66APMC2huE4hPRI+ppoIyKIk/T3wF4Mga/uVd2ciApaOhv7qSvgFP
+ MTTN4BRj
+ 7hoLRgGjbzIT76+nmKGm5phzQBf/+oTPrZHVs3xTp8OPEeEjIRNRKAqkgfZMFnk77PAoyyL6Bv9IhiVR9nKCZ309nV3f3zNec69dCsRPVy3kR5kuVz4RW2qLqwX8Icedhe/XTfjdC1p//HJTgnaVzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,61 +95,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+------=_Part_269313_221934219.1792052536996
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+Bonjour =C3=A0 toute l=E2=80=99=C3=A9quipe de PHYTANIM,
 
-On 15/10/26 2:23 am, Rik van Riel wrote:
-> On Wed, 2026-10-14 at 22:48 +0200, Johannes Weiner wrote:
->> On Tue, Oct 06, 2026 at 10:12:48PM -0400, Rik van Riel wrote:
->>> try_to_claim_block() converts a movable pageblock for a non-movable
->>> allocation only when half its pages are free or compatible.
->>> Otherwise the steal path takes pages without converting, and
->>> non-movable content sits in a block still typed movable.
->>>
->>> Convert a movable block on any non-movable claim, however few of
->>> its pages are free, so the block's type matches the allocation it
->>> serves.
->>>
->>> When other pages in the block are freed later, they end up on the
->>> non-movable free lists, directing more non-movable allocations to
->>> the already non-movable page blocks.
->>>
->>> Converting a non-movable pageblock to movable is made stricter:
->>> a movable claim takes a non-movable block only when every page
->>> is free or movable.
->>>
->>> Blocks straddling a zone edge are never claimed;
->>> zone_spans_pageblock() tests for a block wholly inside its zone.
->>>
->>> Assisted-by: LLM
->>> Signed-off-by: Rik van Riel <riel@surriel.com>
->>
->> I like this in theory, but wonder how this behaves in practice.
->>
->> The block is claimed, but the movable constituents aren't proactively
->> kicked out.
-> 
-> I have code for that, too, but it seems like
-> it's a lot easier to get things reviewed in
-> small portions.
-> 
-> If you want I can resend this as a larger
-> series, with:
-> 1) the pageblock claiming
-> 2) per migrate type free lists
-> 3) evacuation of movable pages from unmovable 
->    pageblocks, when the kernel free lists fall 
->    below a watermark
-> 
-> That would be the full extent of the 2MB granularity
-> fragmentation avoidance stuff I have here.
+Je vous contacte pour savoir si vous avez actuellement des besoins en olive=
+s italiennes ou en antipasti.
 
-I think your patch series applied as-is would regress stuff:
-we may have lots of UNMOVABLE pageblocks with lots of
-movable allocations, unable to be rescued, hurting mTHP
-allocations.
+Je serai pr=C3=A9sente avec GRANATA au SIAL Paris, du 17 au 21 octobre 2026=
+, Pavillon 4A =E2=80=94 Stand G026.
 
-> 
-> Just let me know your preference.
-> 
+Notre entreprise familiale produit des olives et des antipasti en Italie de=
+puis 1936.
 
+Si ces produits font partie de votre activit=C3=A9, ce serait l'occasion d'=
+=C3=A9changer sur vos besoins, les gammes et les conditionnements que nous =
+pourrions vous proposer.
+
+Pr=C3=A9voyez-vous de venir au SIAL ? Si oui, quel jour vous conviendrait p=
+our nous rencontrer ?
+
+Vous pouvez simplement me r=C3=A9pondre ou choisir directement un cr=C3=A9n=
+eau ici : https://granata-sial-paris-2026.com/
+
+Une fois votre rendez-vous confirm=C3=A9, vous pourrez s=C3=A9lectionner le=
+s produits qui vous int=C3=A9ressent et recevoir notre catalogue ainsi que =
+nos tarifs. Nous pourrons ainsi pr=C3=A9parer notre =C3=A9change =C3=A0 l'a=
+vance.
+
+Au plaisir de vous rencontrer,
+Bien cordialement,
+Silvia
+Assistante commerciale
+GRANATA Antonio & C. S.r.l. =E2=80=94 Italie
+
+Pour ne plus =C3=AAtre contact=C3=A9, vous pouvez r=C3=A9pondre =C2=AB non =
+=C2=BB =C3=A0 ce message.
+------=_Part_269313_221934219.1792052536996
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<html lang=3D"fr"><body><p>Bonjour =C3=A0 toute l=E2=80=99=C3=A9quipe de PH=
+YTANIM,</p><p>Je vous contacte pour savoir si vous avez actuellement des be=
+soins en olives italiennes ou en antipasti.</p><p>Je serai pr=C3=A9sente av=
+ec GRANATA au SIAL Paris, du 17 au 21 octobre 2026, Pavillon 4A =E2=80=94 S=
+tand G026.</p><p>Notre entreprise familiale produit des olives et des antip=
+asti en Italie depuis 1936.</p><p>Si ces produits font partie de votre acti=
+vit=C3=A9, ce serait l&#x27;occasion d&#x27;=C3=A9changer sur vos besoins, =
+les gammes et les conditionnements que nous pourrions vous proposer.</p><p>=
+Pr=C3=A9voyez-vous de venir au SIAL ? Si oui, quel jour vous conviendrait p=
+our nous rencontrer ?</p><p>Vous pouvez simplement me r=C3=A9pondre ou choi=
+sir directement un cr=C3=A9neau ici : https://granata-sial-paris-2026.com/<=
+/p><p>Une fois votre rendez-vous confirm=C3=A9, vous pourrez s=C3=A9lection=
+ner les produits qui vous int=C3=A9ressent et recevoir notre catalogue ains=
+i que nos tarifs. Nous pourrons ainsi pr=C3=A9parer notre =C3=A9change =C3=
+=A0 l&#x27;avance.</p><p>Au plaisir de vous rencontrer,<br>Bien cordialemen=
+t,<br><strong>Silvia</strong><br>Assistante commerciale<br>GRANATA Antonio =
+&amp; C. S.r.l. =E2=80=94 Italie</p><p>Pour ne plus =C3=AAtre contact=C3=A9=
+, vous pouvez r=C3=A9pondre =C2=AB non =C2=BB =C3=A0 ce message.</p></body>=
+</html>
+------=_Part_269313_221934219.1792052536996--
 
