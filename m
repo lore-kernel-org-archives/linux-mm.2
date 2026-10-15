@@ -4,109 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D34E8CC6B2E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 05:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1103DCC6B2E
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 05:19:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B95F86B008A; Thu, 15 Oct 2026 01:08:57 -0400 (EDT)
+	id B5B186B0088; Thu, 15 Oct 2026 01:19:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6EB66B008C; Thu, 15 Oct 2026 01:08:57 -0400 (EDT)
+	id B0D2E6B008A; Thu, 15 Oct 2026 01:19:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A843D6B0092; Thu, 15 Oct 2026 01:08:57 -0400 (EDT)
+	id 9D4256B008C; Thu, 15 Oct 2026 01:19:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A0596B008A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 01:08:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E86F640657
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:08:56 +0000 (UTC)
-X-FDA: 85323681072.26.B6BF58E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5B0C3140009
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:08:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gDsAs7Zq;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5B6D76B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 01:19:05 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CDC86408A3
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:19:04 +0000 (UTC)
+X-FDA: 85323706608.20.9CF18F7
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DC98240007
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:19:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Hhb8U3Wx;
+	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792040934;
+	s=arc-20220608; t=1792041542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ptgP00sd/ZHQf8jXyEC6r3P4XBtcjYgBjiI0CN+BPI=;
-	b=ghB98lh0oMWYXUrAGvDV1DUX6jN1/B/U5FuGtfWeC/Z6o49YG9CdZX4+WPlJuHF5PMcOIH
-	Bt6cC0AuuvCKcViElYn6jcYrkr4DmnY4abRT6C2EWDF+HW6dthZgwMdzCSnhUbMB+QXDGc
-	kmK2OFpS+7v18DSXz6RmX3dUuCmTFDs=
+	bh=aL42kwtpY9xz2nUxaLVspyn822mepZz266L04+MLaso=;
+	b=jNSbOM/gmQOfWa0ePt3emmiIaUqC3R9xopZbx3UmaK3xOV/Jgy3Z2MiG2YTpqYrQFQvpSH
+	hi3sm9zoRUrb2PB/We/cpiYsgNN7qHcbNtduKVRVL1pkZcERBEN2lFWB1s7By3mW+n3N1Z
+	PoEGsev3vqN8tBpWf9PG0ShoSDk6PTA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gDsAs7Zq;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Hhb8U3Wx;
+	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792040934;
-	b=zDJAr+Pc6S+kdanD2NQfEbc6fQCBny/YObTQNr8hrSqzK9G53LWAyt4tlwbbTRpg9fOyCB
-	LxFVtZOVig+44DdTiRVZLjuaIst804pYl2i3X0WBCCtTxgxLgFFe8GeSZNhspimA96agua
-	P4ltKi9j8Gq7v81JYLh6OKMx62gaYMA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792040934; x=1823576934;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=97Vu4jpYp2aks4nbaPyPADJJAJoPLb1W/mjp/r2Niuo=;
-  b=gDsAs7Zqm8nJS526bla2ERKp/KUcU4mwWxu5awYHA5pT6WtD8UTA3yjO
-   0B7qAa/CJMUjVIaprCbdmREnE3goG6czJ5FOysOhFK/MukysZbY+2boil
-   UKeeFuWHdx+XgKO5YwH006N/W1H2eXR5dzN6NpQWvza6L6DpuOEXfiLh5
-   P25keYLEcx4vr8DUMuyv/irct9XqlFTWB6JuZUt36kqkgI/6haGdfsVLd
-   a/lWv/HMRkm8R1wjrJgrsNhjY41IvX7/RFJtjwBQ/8MI87Vbd1knPj1nc
-   PrMz4mC4CUgvq+6HoHbmRVmsz/dBh7CF7rKt2S0Cje/y5G7gB3GlVpFNj
-   w==;
-X-CSE-ConnectionGUID: q5sBTz3MTSuOqyeNtfCC9Q==
-X-CSE-MsgGUID: gC0vLzd+Ra6jFri9YaXrfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="705812"
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="705812"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 22:08:52 -0700
-X-CSE-ConnectionGUID: ggnnewxAQhOvKlDMXWFanw==
-X-CSE-MsgGUID: t9OZU+hVS8q9thcdNllcrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="1518909"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 14 Oct 2026 22:08:49 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xHDht-00000000FqR-1LPb;
-	Thu, 15 Oct 2026 05:08:45 +0000
-Date: Thu, 15 Oct 2026 13:07:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, gourry@gourry.net,
-	joshua.hahnjy@gmail.com, ziy@nvidia.com, mingo@redhat.com,
-	peterz@infradead.org, mgorman@suse.de, riel@redhat.com,
-	juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	vschneid@redhat.com, kprateek.nayak@amd.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Li Zhe <lizhe.67@bytedance.com>
-Subject: Re: [PATCH 5/6] sched/numa: do not feed tiering promotions into task
- placement stats
-Message-ID: <202610151319.LxjGvN6y-lkp@intel.com>
-References: <20261014094347.99157-6-lizhe.67@bytedance.com>
+	t=1792041543;
+	b=PT+29tdt+BPIjNX7a6wKtiHXVE3EgmFaL6vdvL46w+tgHGgGxKsyadz3TplxrEYYlI7cZK
+	BSbDM3RgNh5lwrcTqYn3h1tkoiBeOt5oi96vcoGKbPh4g01hbIb3FFyyQgDCdVMtB5xPGp
+	Jo/35U8SiNGQNFnc5WjCqjeQBS68yPk=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2df8c28a0b1so22764385ad.1
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:19:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1792041541; x=1792646341; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aL42kwtpY9xz2nUxaLVspyn822mepZz266L04+MLaso=;
+        b=Hhb8U3Wxn8IS7AsnA6obZ2DumyUCq01l9SkqMS+uQT13JtQppKwlLtkWjVb+qK9DUx
+         PlzADdbczsRr+CfVrDpsWa0Bl2Pz4wTM06y9QIn/9Nq/qdRq8M+pd2KuEGg7n7chT/Xf
+         sUDZLaq+H7hmPoTlfKWNSAhnMDwvnvqT7jp7E=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792041541; x=1792646341;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aL42kwtpY9xz2nUxaLVspyn822mepZz266L04+MLaso=;
+        b=uwtYrUklsVwSHtExA0YwG+RvzZx8bL+HhHccOoHxwNHNrYrHOj2xzfgVWq7RFZFVu/
+         sx6FcDMBEsu4+bKzn/ICEN47OkbRaexS+jfjrAUR2B8LI5t6/a4AmddB8EIL7N0k7owf
+         FoXWf0N3AEWWPSmWOG3+eE6t+vSLQuuPenlCc39KPVhciLLJapgUFhoehXEXg+l2YvhL
+         xiX2R/n/b4Ipoth75wt5BJJ7zmjbtwwzo6X9mgWM3KCGECaMSq/gxGSydpIGd8i3HH9d
+         vGSVwdsxNvhVbIEjFAtBVW+oWcwmIT8RhavDiY6f3iyQilH9bSkJA6pFD1mb90JkURCx
+         QDxg==
+X-Forwarded-Encrypted: i=1; AKwUvBx8rvzfhB3WLpuOq4bsKl/GUjAo5uoISRhwMNrD8X3s1nlQ48mLz5pqgLXd1xtnm6dBShRVJj4FMg==@kvack.org
+X-Gm-Message-State: AFq9FYJ/91yeOoQQ7HVjnTYHQ2wVAaLrMX9cHdiVgRYwhHfKBGOqH13w
+	w88YfzpJ2/AbjItRjRDasbjdqBqvM+a5Yurb43r/5ZHt8QUiLNEFu7jxGsWUQqMLbw==
+X-Gm-Gg: AYBFou3ncdxwZ7+O027GgG0lm5ou6RRrH61+MY/Cnvf9XyJIVjJ9QhIrMYVTAqOzTLd
+	SVWBfrJsg/Y3toTvWg3a7k0oH4oCLbc2SBvrW29dyOFLlg2CSeZ6rdxBhuXkwkGZlMTdav36+v0
+	kETsHJeyBGqqdZyY7LLd6dQaLWfN1neAlwnU+BtDQIuSHVGaokDwdN8mMWBfYV1+8u0/FNR3YSV
+	onADaQWt1Nz3fmbnfCiasEHaQtO18PsXo62uScBrWvMX7nDjfeIAKSPmLh9RB+I4+KqnKlH1qnX
+	OYfQMmQTWwKN4SKATW5Sn+blcOtjqaHMZQeq7mcjBM4YPAR1VIJu60wrihoAlF8uVLfAI6J0WZE
+	Jlg/S67KkPUnSjAnR+doRXa1vlrBEJyDHNn9w/Fn1NX8XtUCUi/hVqQjrtcE164IFu3OuOftg9K
+	yDFWbI1+F+VQm2UaAg8yFbNZ5+IUjZq3HBt6vO5RhM2PhzApg5EzJ6m1scxWZJDctzojAt2bxmw
+	Vcd2dVVUDWCiiyEvZa7V7Mdf39UUDeIE+kRrZY=
+X-Received: by 2002:a17:902:e748:b0:2dd:c053:e669 with SMTP id d9443c01a7336-2e842ab7902mr153442525ad.47.1792041541599;
+        Wed, 14 Oct 2026 22:19:01 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:8455:7899:5a2e:26f8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8421b1562sm77412345ad.34.2026.10.14.22.18.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 22:19:00 -0700 (PDT)
+Date: Thu, 15 Oct 2026 14:18:55 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Bo Zhang <zhangbo0325@gmail.com>, akpm@linux-foundation.org, 
+	bgeffon@google.com, minchan@kernel.org, richardycc@google.com, baohua@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 10/11] zram: use rw_semaphore for decompression streams
+Message-ID: <atBh9xfpOji_A7A_@google.com>
+References: <20261013035201.2809924-11-senozhatsky@chromium.org>
+ <20261014153603.1365617-1-zhangbo56@xiaomi.com>
+ <atAj9o5IgrAeiGiW@google.com>
+ <atBAWZ3WZvat3UA1@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261014094347.99157-6-lizhe.67@bytedance.com>
-X-Rspamd-Queue-Id: 5B0C3140009
+In-Reply-To: <atBAWZ3WZvat3UA1@google.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DC98240007
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: m3bmjf49tynofxdsfq98d958o4snyu4h
-X-HE-Tag: 1792040934-980366
-X-HE-Meta: U2FsdGVkX1+ui5Azcb/kw/5oi2XkMQhh+GpL/01gFuwkaXlvce8b5iaAZ7GOkSNFrDGs8m9ilIkJkHHIFr1UMQgHQeK32y9pibkTjAEm4rh0qYbBkrB8C2fbxZTWd29/vqRcBqxNqA7KF0TYykRtG3niw3mVWzlbxJkVCdqeLNf2JgVjCQaRlBFcX/am7T2lRh0X63W7paA/VoOS9PftU7xPCfBs4RHsowtP0GDpXsbWSIhZkS290r8OSgZ8OkTaY7/NnzcstoGzphz28/3RXlbXb6F7yVD3B4YIR03XT8WtRR+WXJ85gd8SHYHFQhenipMXzmT5Qv0S+lcGlXJ1Uc0c7Lve5itGBREd+e/qwjsLSSxMNV32wjKvpOmlRzw3r9HJLwhD/saY6nzCdpVtqy0l0hp6Bsk8Mthie2lOU7T2ZWne6tBfLNI4EVEvfmTOBVu9BBbFHiTctgq4uy8beX3ZAREaltZz1fT8pmNr9bZozwskvHH/l3rS58EihcG7vKnscDDr9NMLJjagqAFu6e6zTnSqr40DVCIGfT9mR3nGM5vXvP6HcVDNWAc0GYSSkyOxrAydZ7+sN1KoBbBkm1xrK17r2WPbgXJprWriW7HOQ6pl1YgMKlIsFN929d3uwp0OGHqlzt5EgsYTl69JEEgLPzT2Odj36WfhVq0LHxXOWguGBQGQq/hK9bifFE8ZvoA/5jhVFjnb2bKbBKJXYLzU4718a9+byt6Yq3GwTgzoaFTvqddDDWUA7rRkIrIE7hMsnI+BT1AblVtZVY++XiPPt9A3bCFMPMnC5HSDhLNvsEUTZWngDsIeqLZEny5mHxylMJt9uPFeTT9ES388sCqo4dlhS3PtiEjqabMHHyTDZHhacymlYtRChsFNAW7gIjuTrp0XELFArEb75z5dJDReHvmO7uB7xLmvC7EUmpAqd7cmklzipeM6Jrfvajb9/+xk9NZtfAZCUCgEPwV
- 9laOInMx
- R0c8C5/njfzlx275RPB7JCSpBuxBG6PNb0c/BCB7VOHkXZ1hgxVzngGU7GEbzWjFTTd1YCqG5o0wUvrb+/ZGXU83X6jCtBVD1ZZ9Lghklwu4OfDP0/QfKB4gncHTx7ii+iSSQh2OCIYjWiJJKbXrKQMQkhZgrj+tefXfwVQFyb+V+3XP4i0MAONxylN3779vkOfmD3AyTiCsWlsyHuK7UmTD+Yna7GdRCp+NLxf5E0rs3LSjqQxQFVSadoFX/eykPQZLn0BI4BRt22VeA7NVAOHkA0lawgvPmVeEpr+B8eCAaycXvxTllpDI01QHDn5xKN4x/oeomTQqIpufA+Phhi+2spq/lBEakSW8zXeug8Lz/yVGt+RBSyUFbjf7uObyLuVRXz5w6e+vK1V6ba7oK4iB/+T99y5ITcKPFVcUjh2LiWnyk6to+nIJxNrcATbIb1WPBR+tS7M7gPPA=
+X-Stat-Signature: ygdkipighy6q9y5gfkmwaoubqfkpgqhd
+X-HE-Tag: 1792041542-908803
+X-HE-Meta: U2FsdGVkX1/r6gxKBxtDxrKR8GENfZWOB0pg2Ui17q2xTWDW6mROf6DeJFK/detckMtSCacXJVEZYgD+Izjp0LCWGeABpV7HVJIdDfviYREuCogjvyhMylAZ4bK/2+/aKBCekly6r8PZgLnj+CfY/oryAMgkBzzJX84qzHDpeyBSaoG2WFnoK1fy/45SYzRO5rwYxyHeBp0CO/uJub5hpZbCZN3wyrnYU42lNUrs+IcIwzMnRQZvcfqAgYgYIca+cCElbAo1dZJ+6H5tJkUxKwhSxt2aZMdRltsCA0VdBl0ABb+WWu0aTJavcJx4ga9RV8t3Gy7bof43mck9SaF+pFGeN60nGP0QFM+jTBmoTJInraqkEMo3Ap3RfM8YhmY3tewlEXCekWfoey4MCloZJKKxhrFz+917QxDecKqe0eOeqRA3KEKUg2uuRKt0rsg2k9Wilqdd8EZydphl/4fqUX8Xzh8fpgawELu3KeagXYF4MT7jKWuD0gUCz84ahCso298kLum+0Md3KIX1/T8BhJpsbaaDCvlqVHCzTODzaqPbC3iy3RkpUtBDL+/OVtaSrWjG6e9R255UkNiyM+Fun99FNkZ3CJh5Rz/tQloVkK5BZ57re+N69eRlAiJNVHAjaL52zOW26EbHTKCj9zRzF7DCs/LypbMaE69Lpn9oM83zylWOhgFf/USat9hx9Jmtn38wMvnEuw8EBkrd0/wp7aLCrjsITmOX88aR74l/JkO/sBQeh99KipZn3+5KGHofd8DY6xh4CY2urcwziZgcyJEzWhe+Tn7E2OV+EPxHGvpqLPTrd6IyuQKUbeTaz7SqTwXAeCy7mG5Mt1EubtDj4uNjWj4PcafdhBfkQ+6vKpP4gx/k29jSdrApMO73Y1lSY9V4BJRRu4PPtjCVg9nGtMBYBu1g8G49xUKHeeyAYeeqvGImkAH32Ow8anPAx0xcMojQBwbrAHDQRAjXrsk
+ 64No5nHo
+ wAUPwlzAvYPQQrJlTEPt+8IqfllEzYsNAv2k+xpUHnx4jyR70mWaEwBYwDptFvZzLfK7hiaAI/go8P+tFQsYQNeti8ArisMkQ21IN3Ks4snGutzWjCPYorhUw4OjJSEiOGn5rrxuJezm/t+4rkHRR6UJtFKIJ2seR2dJ29qD8SJmUlT32WgHeWKekVbmzTNywA5wAjYy+HOI25wDZfw686gUVJlxyoPtU7a1pbAsFGUvbPHXzTsHGK/ICDKCJ4pOjhS2AndPHD9ENkD56qv5i5ijoVQ1hJhlHEI9Pq94ma/hdhG2EfElgH+CgcBmfAsyW644DOGeeEd/tS01gmg/hCiOGGpEA+QOAirMVkhy8DQUdJfZRPqSYgt6ekY5ekYo9a7I3D8iGeuS5BmwME1HZpTrJIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,90 +120,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Li,
+On (26/10/15 12:19), Sergey Senozhatsky wrote:
+> Or perhaps we can avoid vm_map/unmap.  A slightly different approach.
+> kmalloc on fast path + memcpy (zsmalloc objects are strictly less than
+> PAGE_SIZE bytes)
+> 
+>    Run #0: 1,475k IOPS, avg 3.26 us, stdev 14.24 us, p99.99 24.45 us, max 5,617 us (5.62 ms)
+>    Run #1: 1,472k IOPS, avg 3.27 us, stdev 15.35 us, p99.99 23.94 us, max 5,619 us (5.62 ms)
+>    Run #2: 1,473k IOPS, avg 3.29 us, stdev 15.37 us, p99.99 24.45 us, max 7,190 us (7.19 ms)
 
-kernel test robot noticed the following build errors:
+Just a better looking code (but same idea).
 
-[auto build test ERROR on tip/sched/core]
-[also build test ERROR on akpm-mm/mm-everything peterz-queue/sched/core linus/master v7.3-rc7 next-20261012]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+---
+ drivers/block/zram/zcomp.c    | 47 +++++++++++++++++++++++++----------
+ drivers/block/zram/zcomp.h    |  2 +-
+ drivers/block/zram/zram_drv.c |  2 +-
+ 3 files changed, 36 insertions(+), 15 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Li-Zhe/sched-numa-clear-fault-locality-state-on-execve/20261014-174342
-base:   tip/sched/core
-patch link:    https://lore.kernel.org/r/20261014094347.99157-6-lizhe.67%40bytedance.com
-patch subject: [PATCH 5/6] sched/numa: do not feed tiering promotions into task placement stats
-config: csky-allnoconfig (https://download.01.org/0day-ci/archive/20261015/202610151319.LxjGvN6y-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261015/202610151319.LxjGvN6y-lkp@intel.com/reproduce)
+diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
+index 39d1f9384939..81f21bad787e 100644
+--- a/drivers/block/zram/zcomp.c
++++ b/drivers/block/zram/zcomp.c
+@@ -181,14 +181,13 @@ void zcomp_cstrm_put(struct zcomp_cstrm *zstrm)
+ 	mutex_unlock(&zstrm->lock);
+ }
+ 
+-bool zcomp_shared_decomp(struct zcomp *comp, struct scatterlist *sg)
++bool zcomp_shared_decomp(struct zcomp *comp)
+ {
+ 	/*
+ 	 * Shared decompression is only safe when the backend has no
+-	 * mutable per-stream decompression context and the object is
+-	 * contained within a single page (no ->local_copy bounce needed).
++	 * mutable per-stream decompression context.
+ 	 */
+-	return !comp->ops->create_dctx && sg_is_last(sg);
++	return !comp->ops->create_dctx;
+ }
+ 
+ struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
+@@ -244,6 +243,15 @@ int zcomp_compress(struct zcomp *comp, struct zcomp_cstrm *zstrm,
+ 	return ret;
+ }
+ 
++static int zcomp_decompress_buf(struct zcomp *comp, struct zcomp_dstrm *zstrm,
++				struct scatterlist *sg, void *buf,
++				struct zcomp_req *req)
++{
++	sg_copy_to_buffer(sg, 2, buf, req->src_len);
++	req->src = buf;
++	return comp->ops->decompress(comp->params, &zstrm->ctx, req);
++}
++
+ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
+ 		     struct scatterlist *sg, unsigned int src_len, void *dst)
+ {
+@@ -252,27 +260,40 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
+ 		.src_len = src_len,
+ 		.dst_len = PAGE_SIZE,
+ 	};
+-	void *src = NULL;
++	void *src;
+ 	int ret;
+ 
+ 	might_sleep();
+ 	lockdep_assert_held(&zstrm->lock);
+-	if (!zcomp_shared_decomp(comp, sg))
++	if (!zcomp_shared_decomp(comp))
+ 		lockdep_assert_held(&zstrm->excl_lock);
+ 
+ 	if (sg_is_last(sg)) {
+ 		/* the object is contained within one page, read it in-place */
+ 		src = kmap_local_page(sg_page(sg));
+ 		req.src = src + sg->offset;
+-	} else {
+-		/* the object spans two pages, linearize it into local copy */
+-		sg_copy_to_buffer(sg, 2, zstrm->local_copy, src_len);
+-		req.src = zstrm->local_copy;
++		ret = comp->ops->decompress(comp->params, &zstrm->ctx, &req);
++		kunmap_local(src);
++		return ret;
+ 	}
+ 
+-	ret = comp->ops->decompress(comp->params, &zstrm->ctx, &req);
+-	if (src)
+-		kunmap_local(src);
++	/* exclusive mode already holds ->excl_lock */
++	if (!zcomp_shared_decomp(comp))
++		return zcomp_decompress_buf(comp, zstrm, sg, zstrm->local_copy,
++					    &req);
++
++	/* shared mode: try a per-request bounce buffer first */
++	src = kmalloc(src_len, GFP_NOWAIT | __GFP_NOWARN);
++	if (src) {
++		ret = zcomp_decompress_buf(comp, zstrm, sg, src, &req);
++		kfree(src);
++		return ret;
++	}
++
++	/* fall back to ->local_copy serialized by ->excl_lock */
++	mutex_lock(&zstrm->excl_lock);
++	ret = zcomp_decompress_buf(comp, zstrm, sg, zstrm->local_copy, &req);
++	mutex_unlock(&zstrm->excl_lock);
+ 	return ret;
+ }
+ 
+diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
+index 924c4185abe9..6764818d2a9f 100644
+--- a/drivers/block/zram/zcomp.h
++++ b/drivers/block/zram/zcomp.h
+@@ -115,7 +115,7 @@ void zcomp_destroy(struct zcomp *comp);
+ struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp);
+ void zcomp_cstrm_put(struct zcomp_cstrm *zstrm);
+ 
+-bool zcomp_shared_decomp(struct zcomp *comp, struct scatterlist *sg);
++bool zcomp_shared_decomp(struct zcomp *comp);
+ struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
+ 				    enum zcomp_dstrm_mode mode);
+ void zcomp_dstrm_put(struct zcomp_dstrm *zstrm, enum zcomp_dstrm_mode mode);
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index ad244624d4a5..e608769bfad5 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2128,7 +2128,7 @@ static int read_compressed_page(struct zram *zram, struct page *page,
+ 	prio = get_slot_comp_priority(zram, index);
+ 
+ 	zs_obj_read_sg_begin(zram->mem_pool, handle, sg, size);
+-	if (zcomp_shared_decomp(zram->comps[prio], sg))
++	if (zcomp_shared_decomp(zram->comps[prio]))
+ 		mode = ZCOMP_DSTRM_SHARED;
+ 
+ 	zstrm = zcomp_dstrm_get(zram->comps[prio], mode);
+-- 
+2.56.0.385.gd3acb90ef8-goog
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610151319.LxjGvN6y-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   mm/memory.c: In function 'numa_migrate_check':
->> mm/memory.c:6176:32: error: 'LAST_CPUPID_ACCESS_TIME' undeclared (first use in this function)
-    6176 |                 *last_cpupid = LAST_CPUPID_ACCESS_TIME;
-         |                                ^~~~~~~~~~~~~~~~~~~~~~~
-   mm/memory.c:6176:32: note: each undeclared identifier is reported only once for each function it appears in
-
-
-vim +/LAST_CPUPID_ACCESS_TIME +6176 mm/memory.c
-
-  6147	
-  6148	int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
-  6149			      unsigned long addr, int *flags,
-  6150			      bool writable, int *last_cpupid)
-  6151	{
-  6152		struct vm_area_struct *vma = vmf->vma;
-  6153	
-  6154		/*
-  6155		 * Avoid grouping on RO pages in general. RO pages shouldn't hurt as
-  6156		 * much anyway since they can be in shared cache state. This misses
-  6157		 * the case where a mapping is writable but the process never writes
-  6158		 * to it but pte_write gets cleared during protection updates and
-  6159		 * pte_dirty has unpredictable behaviour between PTE scan updates,
-  6160		 * background writeback, dirty balancing and application behaviour.
-  6161		 */
-  6162		if (!writable)
-  6163			*flags |= TNF_NO_GROUP;
-  6164	
-  6165		/*
-  6166		 * Flag if the folio is shared between multiple address spaces. This
-  6167		 * is later used when determining whether to group tasks together
-  6168		 */
-  6169		if (folio_maybe_mapped_shared(folio) && (vma->vm_flags & VM_SHARED))
-  6170			*flags |= TNF_SHARED;
-  6171		/*
-  6172		 * For memory tiering mode, cpupid of slow memory page is used
-  6173		 * to record page access time.  So use default value.
-  6174		 */
-  6175		if (folio_use_access_time(folio))
-> 6176			*last_cpupid = LAST_CPUPID_ACCESS_TIME;
-  6177		else
-  6178			*last_cpupid = folio_last_cpupid(folio);
-  6179	
-  6180		/* Record the current PID accessing VMA */
-  6181		vma_set_access_pid_bit(vma);
-  6182	
-  6183		count_vm_numa_event(NUMA_HINT_FAULTS);
-  6184	#ifdef CONFIG_NUMA_BALANCING
-  6185		count_memcg_folio_events(folio, NUMA_HINT_FAULTS, 1);
-  6186	#endif
-  6187		if (folio_nid(folio) == numa_node_id()) {
-  6188			count_vm_numa_event(NUMA_HINT_FAULTS_LOCAL);
-  6189			*flags |= TNF_FAULT_LOCAL;
-  6190		}
-  6191	
-  6192		return mpol_misplaced(folio, vmf, addr);
-  6193	}
-  6194	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
