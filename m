@@ -4,100 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF34ECC6B30
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 02:12:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27A2DCC6B30
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 02:23:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D068B6B0098; Wed, 14 Oct 2026 22:12:25 -0400 (EDT)
+	id DB8BA6B0088; Wed, 14 Oct 2026 22:23:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDDBB6B0099; Wed, 14 Oct 2026 22:12:25 -0400 (EDT)
+	id D42746B008A; Wed, 14 Oct 2026 22:23:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1AEC6B009B; Wed, 14 Oct 2026 22:12:25 -0400 (EDT)
+	id C09B66B008C; Wed, 14 Oct 2026 22:23:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A47C66B0098
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:12:25 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 37341120897
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:12:25 +0000 (UTC)
-X-FDA: 85323236250.17.EAED44C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8593840009
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:12:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=myVQQQc3;
-	spf=pass (imf17.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9484F6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:23:54 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EFAD8407B3
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:23:53 +0000 (UTC)
+X-FDA: 85323265146.09.AACCEDF
+Received: from mta0.migadu.com (out-132.mta0.migadu.com [91.218.175.132])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D258940003
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:23:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gKUofZl6;
+	spf=pass (imf01.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.132 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792030343;
-	b=nvjFrbShKBLVttXhuqIrSBH2s4gqGSpc5+9V3SAdngrJLBZWGbGig2F+TXltl+x37m96og
-	6izZJ7H8vfshiTa+zNPagKDT3u6bI7SVAnkWFvLRFfGp5HnJuNr9GdMYsuFgH6cPa/muax
-	oX7F/46RFfafneHeQvrnZE+GFZprTbA=
+	t=1792031032;
+	b=N1+DWP0xue9wbaWecHlXH1cL12oBY8hLavIHrxUnM1Q8hPnPEb+y3MqB557m/c2Sj1JR6L
+	7tUhn+Gtek6fDPX0F08lkSkcxogqR/YdlUwPNf7rrP/9vexrIu29NykVezt0uMUF09hSoz
+	XJMCWzhkWEVrfwYnGG01Y9PSTTh4Eug=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=myVQQQc3;
-	spf=pass (imf17.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gKUofZl6;
+	spf=pass (imf01.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.132 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792030343;
+	s=arc-20220608; t=1792031032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qMLHCJtJQPgffvNFPP52wXbusU89D1NMxKSfS6CjEcI=;
-	b=r0/h/IAtNFTdo736K5ukViMOv66ABUIGUePXW5I/MA2c9Bk0B3XkD+8M/S9ljevqTHfTkf
-	sz0NK/AqOcSijWgRNJEFFYJPa8JISPV6U1GPG2xVosSqghhjd/CC2zWB1w2kuJ01FN+gR1
-	L5tey9YHpHHkd2F3/q8d/dJci+lBabo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D883042B7D;
-	Thu, 15 Oct 2026 02:12:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513E31F000C5;
-	Thu, 15 Oct 2026 02:12:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792030341;
-	bh=qMLHCJtJQPgffvNFPP52wXbusU89D1NMxKSfS6CjEcI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=myVQQQc3AkWg8Rs99ajie+H/9mSd02rYHqEaBv/AwUu4bxrQw/ajPX05cuK2vfb3U
-	 9oPNrlp1fwHzufh2gcwcRZwnLVRDqJTXbcoeCLSZLkfqNZkh0TVMKeWvoa1vfwI3pn
-	 mI5AmxAxBwOVOvLJo8BOHVyfDTesd1sn/9XzDbkIndYFbvC8hsi2UIlQAiMUhbWzd2
-	 QDiyZ1ziCBIoSXyhsuN8cyttqdmwwNMAXXSSGkI/+/ZhKNSy1kaPfDF2/FkeJm6b5T
-	 Ck+VCoXrKFdMsRCKtsX7U+Qm0Up5ZfBj61t4pqM4Zl5fu1clA1HcJRy+84CsaQMptx
-	 zRtE005Y9n36Q==
-Date: Thu, 15 Oct 2026 02:12:19 +0000
-From: Jaegeuk Kim <jaegeuk@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
-	Pedro Falcato <pfalcato@suse.de>, Harry Yoo <harry@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Ilya Gladyshev <ilya.gladyshev@linux.dev>,
-	Matthew Wilcox <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-mm <linux-mm@kvack.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: Improve page refcount scalability
-Message-ID: <atA2g8OgpiNOiVL_@google.com>
-References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
- <as690Xcu7FxIDYjf@thinkpad>
- <CAHk-=wiak+h+d2tZ5W_MwRzatUP=hJKn7cpGjDxArG-gwgHLXg@mail.gmail.com>
- <as9-2cIuGuXwE2Oa@pedro-suse.tail5790ac.ts.net>
- <CAHk-=wgkoAuxNXga29nQ8w7GxdqR+4vPAUhPsbfp+gzKrb9EgA@mail.gmail.com>
- <CAHk-=whzkNzkBmCspHYd80D1Z=krDc4SgVC32=pJ5PtEgqSDrw@mail.gmail.com>
- <3c613725-406a-4506-b788-987a337b9771@app.fastmail.com>
- <CAHk-=wh+1Hz+3HJ8evmh=FKO1fCGiwuNTqArXEfe-tAJ6hDy0A@mail.gmail.com>
+	bh=8rFhmBqIgjgfxAD9sxnQNyGCp2kfplwoyuKABN1cENU=;
+	b=onbEjIV88GZZOlQ1PDv/SyBx9zg9ClhmjA+Bhnyq6WFKf5ghvrMFSvoHCdjbL4xCfCGYF1
+	KLexHkLroDDajSIr4Be1SGP3pf54BwYmSjlHB8ed4bPE9M13xi3YeSjkRHgveeMDpbvO4S
+	ai6v8oQSHTft2KSkX0hG04JN9oA92Gw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nUe5p8yDfrxxzbakZWJcPwqsW7cOSu54n5/w3I/l8Gs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792031030; v=1; x=1792635830;
+ b=gKUofZl6BXqgTs89E8MKTTxBF6OAgm3Wb0i3YsQW9+YhKg8+KsAmctt0OJnPuwUhlmoz1nD9
+ wV2qioOTSH+xP6BXr94EMmDwL3e1/kym7tSFGMy+fARt8p/3mpXWDWn2gCL50EIEL/koVscQqzt
+ mWlJ27jbw8SV/mxkl4hSvFvY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ce96ad1491dcf66a;
+	Thu, 15 Oct 2026 02:23:50 +0000
+X-Mizu-Trace-ID: ce96ad1491dcf66a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <f6ad4302-3540-458b-aa94-1b306ba23d65@linux.dev>
+Date: Thu, 15 Oct 2026 10:23:44 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wh+1Hz+3HJ8evmh=FKO1fCGiwuNTqArXEfe-tAJ6hDy0A@mail.gmail.com>
-X-Stat-Signature: itcuhdpzudc9zekn5y8osane5y45surx
-X-Rspamd-Queue-Id: 8593840009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] tools/mm: show_page_info.py enhancements and fixes
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Ye Liu <liuye@kylinos.cn>
+References: <20261014-show_page_info-v1-0-7a68aee0114a@linux.dev>
+ <20261014170519.d07e3a5f791e16a5cb9f51b2@linux-foundation.org>
+Content-Language: en-US
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <20261014170519.d07e3a5f791e16a5cb9f51b2@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1792030343-922961
-X-HE-Meta: U2FsdGVkX19TojJoMTZmu8OrloaKNgkiwtk7djJNzlBbj2nkHX+a4NCrLM9gkMKbT0da6c0Bkig8UNdqcu61bbG4k4kqa1tVSBmh9NsbfHpwPErKAfNR7AxdTkYK0iFevNkX3AGmHxc397vJUKpc2lFD9asqrH90VB1mgspj0yWjhm0OfoJAh/5g+t7/OcoKlAvljJVKvXEuMFvOVCXaXU85qY0QIPtAizi8eK/QuGnx880m4ATN6FOe4ZtXn7iF398ZSshQi0D3JR10j2x6Rm2XYdRxeudDuT7Ctm3COCZZgGntK8qGHZSDA5YdCI3RVYS6vxnqA+zK6WlWjxTtRohUcsInOxWq81mbaWaRlrIMrvW4H51BJQLndp14FRg14xpOEOlno+l5fWFRsnXGlLV768LqmsTiB8EH9IueYi5fX0bafXe63hQZVmPTmRl+l6bTsq+J+isHAVvzmCAqB9PclBXPAYu7sYwu8Ke3ynRw92PIkMrHQo6g4314AfzYX0taeb7uE1C58KJgMbW1ytvcnCWWoYLmzwwgaHMbwhqjGsqWlzV7cg49h/tydJaGJ6cxaZHLO2VYAskx0cJDdKbiYu8T/GS34GJvLkTYmfGP6KmCGEhELHrHhWDZjpjpjL0ILBxV4ZS1S9YxrBaMELfmk6U+8TAgKUwY0JfIJhNHy7Lt163kPKCRT7AIkBdor3fvxDnmpmbw0NpP6tBc5dvp1lk3StFsRSRdZX6ZMvEGtIC12zIY0zDmy8bPzRMDtdEo0tPqclTLOIgvm6V+5jiCZVC1Mkea889ALqbEdhrgj6aycig4qPMBfMBlUx5W+m3NCTddfJMF7xWN42VdQnVLhf10X+d1bkuiLCxojV2TBdT6wSOlcf5xeMjMR07eWrmAIx9hfAzYjlb+lDBEe7vamLeJ8/3DO5Y+1pQ3P7KGX1LNVXHyZAUD9mAhjt0fHt/F1B/2wWT4ylfkrgP
- Jajmlel9
- UUiNOYmLalmsuJf99Ta+FUzNboNZzaZlZJLG1wKYwErMx4aSzoJiAUJgT4IARkYr8b23Hpg3yVTzFTdebtn3e2S0c3EZlfYgeAkogehz+XHia4DJdg4tgN6telldPkoZCaI41ELovChHIkUWjymRZ34sn7iiCLml7g+cvMBegSdvjYa9I1q8jmluHZ/xV1NROJf2BGT97reaGg45rK7C2+ndpJ7I2DQ79TczweS4f+9OCdcaZ8JbRjm6FxyxEPOUWHbL7Vpe1Vf0AYwu0u1qEtoa04lG6Ja6jMNV/
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D258940003
+X-Stat-Signature: 1wnrqs7zd6c5jdw5aznhae35cerkaeq1
+X-HE-Tag: 1792031031-557903
+X-HE-Meta: U2FsdGVkX18Cj81UOAdLZzCHRsPJ9cYNo/jwBjpXBAJ7ywqpadET4RYViQHLv9LtjYufJBRujeVBdJZUCWsVMhXe0L8Ih4UWwO7Fr9iw4s42GuD9sz3WcUvXsEQPnxPA6FOlWAIrtEA6sTEcRW4Zxffw5upek2Ywe03R/F4KEKUqcCzEI3cO4RPIhQ4tC2CL8AxQ+KNA5u3C0vulMlvQLSid4WZFlaZcO3w9kgiUCS0v8tYxShk0rEFK5/7oL9aw72fjaqJ2XWO6C8hwnUqDa0GO0C8l9g5hhOSxUem7vLj35Go/gv9gaoicYThJINehvb8Vz4AXglK0lzOUmJ0WEUvMYch/7xyGMAqSZiXmyBarNH8V4ziiIJpw5ZI/H7UCujBbGvD+2Dq+LN2RrAgxQMlMxvuMYxvRrJZ+7wIQAT8y3ht5puLI/xm8AX63wUd+EC/Xc2pCVmXRT1hrRA7qLPY5zAnkTKUo1Gsakt4Yvd6/y+H0Z4QTYK6d5BH1rQd/T1QkMJsRTFft2bp/sC3VIPQwRCJfvwGSxNI8QP6NdXbIpmokTj1SShzr6QFyr90pT2Gfdpsj23yE3LN6Zs7VqYctAR1lBgIN7nitV8FUkFpnEXryjZ2bwHAHjV6Q+dy822suT6T1Nwmls0mls2ve+EN+jrVHcxWb6PVSJ5cD9ctE/OhMA6bCLzJPVT27C1p7lqrykbCaku7s8puz6BUaQW7bIiBNC1Uz1eFv7b56D4h8EfPi7k3qbrXtbaID9BwFYAOsiKKVwbRDe3UqbavgsSaKzMYdc9IzYC00LrDUJsHJy0K8GLE510F1VgUdIhqNCIPpKLAEasEPnro0XtIqmDxC01UtBMtfJveP/UhEI1LXmyqSFH8P6RY33b5Sb4uzTdKkvG1JXGpEqAvEQ2tuUI4gOgLyHqp1+vlcxu6JjwCAzh06fUDQgXlnIaf+MR9OEXfskpgHcITSZySnYoL
+ PCzRNoLd
+ BmkUWqDFVePLqgGh8pdFz/RvNeHqml9XCjAvtDK8yp4BQG0NvfDb1BkwFKAFkSwuFwvxNzXtiRwIkzXnQuRYXlCdNMASVpAnPrjLkf82jlOaTkuybcv+gNe2fdF12RAAFpKAqBpLiFYNh5f8WjFdXoDxMBf83oCa9BDyqiniIsKHI926vrwd4WEH43/CgbXzFkOcS9CGwptK1ZHAcaBldfgKZesqRs29ckGcty2lW84U5UJs9kKcsgucOUGtg/01vqVUOeYU35+ocfQStGeZ3SETAoYXxBu/eyHO4MN0hmNXgBwBZ+B8TRQNQNZ4e8ADXe7/UrcqGJq7iREjNGP3MpWkLyn2ZayMUx/v/4Dd48XrZYMpid17Am+yffBsR4rqFwPK39xSjXROTwUfVppq7MG2JiQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,46 +92,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14, Linus Torvalds wrote:
-> On Wed, 14 Oct 2026 at 10:44, Kirill A. Shutemov <kirill@shutemov.name> wrote:
-> >
-> > I already have it:
-> 
-> So that was my thinking too, but I have my notes (from the original
-> truncage/hole punch patch) about mapping_exiting() being problematic
-> due to f2fs playing games with it.
-> 
-> Now, that's probably just a f2fs bug waiting to happen independently
-> of this. But the path is
-> 
-> ioctl(F2FS_IOC_START_ATOMIC_REPLACE) ->
->   f2fs_ioc_start_atomic_write() ->
->     truncate_inode_pages_final()
-> 
-> and that truncate_inode_pages_final() is the problem - it's what sets
-> mapping_set_exiting() on a live inode.
-> 
-> I had this as a note for the original branch, and it became a
-> non-issue with the change to the "set PG_rcu_free on hot pages in the
-> read path" instead.
-> 
-> But your change makes it an issue again.
-> 
-> Now, I think f2fs really is just buggy here. Calling
-> truncate_inode_pages_final() on something that is still live
-> afterwards is wrong - because it's not "final". As far as I can tell,
-> there may still be hundreds of active readers holding that fd open.
 
-F2FS_IOC_START_ATOMIC_REPLACE was supposed to replace a heavy ATOMIC_FILE class
-in Android, consisting of 1) creating a backup file, 2) write data to the file, 3)
-fsync(), 4) rename(to original one), 5) fsync(dir).
 
-Indeed, it's a bug that user can see zeros between F2FS_IOC_START_ATOMIC_REPLACE
-and F2FS_IOC_COMMIT_ATOMIC_WRITE. I think we need to move the truncation path
-into the commit phase and use truncate_inode_pages() instead.
+在 2026/10/15 08:05, Andrew Morton 写道:
+> On Wed, 14 Oct 2026 15:04:27 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+> 
+>>
+>> This series improves the show_page_info.py drgn script with bug fixes
+>> and new features:
+>>
+>> Patch 1 fixes memory cgroup information retrieval by updating the
+>> obj_cgroup type casting and handling slabobj_ext field name changes
+>> for compatibility with newer kernel versions.
+>>
+>> Patch 2 removes the incorrect Page Index field display, as pages
+>> don't have indexes - only folios do.
+>>
+>> Patch 3 adds VMA flags decoding and VMA name display to provide
+>> more detailed information about the virtual memory area containing
+>> the page.
+>>
+>> These changes ensure the script works correctly with current kernel
+>> memory management structures and provides more comprehensive page
+>> state information.
+> 
+> Thanks for continuing to maintain this.
+> 
+> I'm curious.  Does this work mean that you're using this tool in
+> real-world situations?
+> 
+Hi Andrew,
+
+Yes. We've been using this tool to investigate real issues on our
+production systems at Kylinsoft.
+
+One concrete case: we hit list_del corruption warnings in
+isolate_lru_pages() during memory reclaim (shrink_inactive_list /
+shrink_active_list path). The system stayed running, but the LRU
+list was clearly corrupted for some pages. We needed to inspect the
+affected pages' state.
+
+I also use it during kernel development as a general-purpose page
+state inspector. There's an rmap analysis feature I haven't posted
+yet — it currently only works on our internal kernel version. I also
+plan to add a mode that accepts a page address directly rather than
+requiring a PID + virtual address, which would be useful for analyzing
+pages found in dmesg crash traces.
 
 > 
-> I might be wrong. Adding Jaegeuk to the cc.
+> Sashiko had quite a lot to say.
 > 
->                  Linus
+> 	https://sashiko.dev/#/patchset/20261014-show_page_info-v1-0-7a68aee0114a@linux.dev
+I'll address Sashiko's comments in a v2.
+
+-- 
+Thanks,
+Ye Liu
+
 
