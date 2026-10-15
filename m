@@ -4,103 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8168DCCA462
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 22:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FFACCA462
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 22:12:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 965346B0098; Thu, 15 Oct 2026 18:06:27 -0400 (EDT)
+	id A80BD6B009B; Thu, 15 Oct 2026 18:12:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F7696B0099; Thu, 15 Oct 2026 18:06:27 -0400 (EDT)
+	id A328A6B009D; Thu, 15 Oct 2026 18:12:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B6766B009B; Thu, 15 Oct 2026 18:06:27 -0400 (EDT)
+	id 91FE86B009E; Thu, 15 Oct 2026 18:12:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B7736B0098
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:06:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7590E401E0
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:06:26 +0000 (UTC)
-X-FDA: 85326245172.15.99D35F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7304EC000C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:06:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="itmch/aA";
-	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 679FE6B009B
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:12:10 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1EEA1201B9
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:12:09 +0000 (UTC)
+X-FDA: 85326259578.02.34B3CE7
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9EA93180004
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:12:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b=DE1WeW4c;
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792102328;
+	b=pgpkU3k70+ipWwLHK8ik+/JiVcu6bj9bKQw3/dA3O+EGoQFy2Bbt2JI6gJTgIPBDwACtyK
+	Z10G7D2tzFFwNONcTjUK/EYbiz0tB1BbMJK+6wBikA/LgNaGIh6DfWCW9DQYv7O1X8aeew
+	j7ryAXrAmfV1HBWWPx50qeJanP9V9b0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b=DE1WeW4c;
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792101984;
+	s=arc-20220608; t=1792102328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mJbsb6dU/XznSRrcG1GSuxTRuvW4/61fnYkUcg+ByiM=;
-	b=XwNySVF6WjZ8X8wqUzBIGYipcvJKMopOsEjc8zQiDdmSib1ucMurNHnwlZ36e8otucppn/
-	tPTYGgrv9+FBQvECq5uBRiNpB5lDbzrqaXsy6SBUWb+aslHTzMRs2u/I2CEkFlJoHtGm8K
-	fMAe6C+y7qmOzrXNXDHNCGb+wEs9MlY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="itmch/aA";
-	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792101984;
-	b=ReWV0D6MnXvFUKv0L9KklXOucqTr/DWLCRMJB0OPhK29Lg2UVB5B+pPN6s7eTazAxyjig+
-	SbhXN8zD0x05b1S0Iw8TDKdEIbQNstjgQFk5aCBXXjQ9wb3ec1ecZQ4rj5OEmyZmhhht3l
-	/Q8IqTsNJtjsBe6TtBAoUgpUdueS1+8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0108243455
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:06:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC4F1F000D0
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:06:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792101982;
-	bh=mJbsb6dU/XznSRrcG1GSuxTRuvW4/61fnYkUcg+ByiM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=itmch/aArHNeBR/ur+BnCI+m882cF1KxHAM9x0OT8uMYRvdLvVM1x0/qIeS151x5L
-	 Fyoo6cz7VRpbhDZKe915EUj0SEQmP9ybIJeRc0PFePcvDsOkr9Vp4CPO3d1xGYscXF
-	 dbfazzin059JqRPz3VadX8oAMj3XjSxudqglgs1/2e6P8WvVvJUi1DsKmNkiwdEjty
-	 NEouf7vKm/ktaNHDjyjQ3SOVQcRcHQ8iW/KPBaddWhbyemcvbzDeVFV419KEhJ1KeS
-	 M8ntuHWI6hkqyNPOCcAOVXFVhrJO4TJWxjMZt75aEm0U7ve0+2/aJE4ClWgWI3zSip
-	 MKTC1HRN8MPYQ==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c2055573c8cso749198666b.3
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:06:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwJU6mseuTf5hdm5AQ9+Ufr/gaXAW/LWD0AfpwP4vTSzWaTaYxcgbGvC5/K/VU6saOSU64hZB9bdw==@kvack.org
-X-Gm-Message-State: AFq9FYJbyicekEGEM7lDpo2pVYhu54zjvfhVvgfsLrHfnWJ1tPZIJSJR
-	ITgio8xqA/BpoCuCB0mdUFI8cA2BRjl/XNYDsLsnnBuoeU5XozfMPBEMLkwm/4NmCkH0MGk8qkB
-	M0+LLygjJ+AR1laQyzuIWD0aJUDDHFfI=
-X-Received: by 2002:a17:907:8692:b0:c2e:2720:8f68 with SMTP id
- a640c23a62f3a-c31aa01b41fmr1817223366b.46.1792101981739; Thu, 15 Oct 2026
- 15:06:21 -0700 (PDT)
+	bh=QpxWfmVKtXS1BlKwnI0WNl/SWpgwJ6zFtQ3+EFhe0K8=;
+	b=jJ+t/2l9Ksy5G0MF9koL0VlPiXYtsdbkQHY2bRJtmzTKETSOlQhxmSW7eyzQ1yFXmLi3nT
+	necGBK15wjF76ZD5kKZGRXaUINckh/9YFZKxy3jgIcuiBMjsPIj8CrY0Ldvb8CzSGIBKH9
+	RTp0jzToiMu+Gke6Hv2GYT3JhZXeG8I=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1A6D540E0496;
+	Thu, 15 Oct 2026 22:12:05 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id WZRZIFICunmD; Thu, 15 Oct 2026 22:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1792102321; bh=Q4zdkBmCJkwaNcqIWMyNxUTg7txukjH0ImGpHvk01HI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DE1WeW4c21ddS0G2EJm9nTmj+Ap1mfPM3cNEpil3tS7BjwoK3de0oLFrOBnE5s4Xe
+	 otDlPSe4Qp7EKf3+uATAmamRUnw/aVRLh4VUcr3zRng46zwX5jRag0CaM2O9PFRrrd
+	 2ffc25i9ikziYt8v1yraB5kAeZtDb4TFRadTyh/Cs+shDhFyCQs5rU4ICVKhGA3y98
+	 ftetSmicF/70TGyLuRM5wEe9UMXCnBWBQfqjvZNWBn99flmKLB1NOuROSaZwU3j6ap
+	 XUG18THI9XL5SpuulnsZqYHG2aB1lw0qG6/h6jjxMoOT1epD7YRLvB8CBX2jnKlW5w
+	 sfjmUKt2phPVMRdDsCi24vH6JrHNnodZ0BxMXZf2krwK60vogdEGIgIyN7b9GC+fbe
+	 aSWrPzYskFDbE5YqooVwMgZmqc9iYU/x7mbtxhPXUOiCyuc5FRAh2Ce+VS5SJhyHjl
+	 7Jel/N7EL+ECp1bFwxmod+agJ7D5N1rhA4BVEk46wKqq61e7cH1RmYujXFJ7YmoKNc
+	 xywkY5uCT0ByT/xkXgrC7Oca2OnOjs8lNZdsUkpdUQi5DU7CKlGpTm7/U3M96gBF4D
+	 JQQHYsNIhOSwhZAWOMmTaof5kkRiAzo76KstNij1P2PdY+kVRmPcGVcbl9OcXicM3Q
+	 SbKrT+MG6sCieCZPLrbFTc8k=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 29F3940E02B3;
+	Thu, 15 Oct 2026 22:11:44 +0000 (UTC)
+Date: Thu, 15 Oct 2026 15:11:41 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+Cc: David Laight <david.laight.linux@gmail.com>,
+	Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	david@kernel.org, Mike Rapoport <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
+	luizcap@redhat.com, pbonzini@redhat.com,
+	Tal Zussman <tz2294@columbia.edu>,
+	Matt Fleming <matt@readmodwrite.com>
+Subject: Re: hunting memory corruption bug in 6.18.x
+Message-ID: <20261015221141.GAatFPnVQafErlDX8v@fat_crate.local>
+References: <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
+ <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
+ <20261005132113.43548696@pumpkin>
+ <asP5xK4axiUk7jun@pcnci.linuxbox.cz>
+ <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
+ <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
+ <20261009090042.39ba9c06@pumpkin>
+ <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
+ <20261014235356.GBatAWFNsWaIA2HQ4M@fat_crate.local>
+ <atCYcsfB4s5Anf1m@pcnci.linuxbox.cz>
 MIME-Version: 1.0
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
- <20261008182814.27450-8-kanchanapsridhar2026@gmail.com> <as-izeIj5bP01bna@google.com>
- <CACpmpof++tM9MUYgqgenwEBfaaJ60VsDwptK7Ne_-b+-DKMRZg@mail.gmail.com>
-In-Reply-To: <CACpmpof++tM9MUYgqgenwEBfaaJ60VsDwptK7Ne_-b+-DKMRZg@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 15 Oct 2026 15:06:09 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPpmLyMHF+yDb2ZHRmSdAHFTNvsu8PZsQ2Z-EVvF-dc3g@mail.gmail.com>
-X-Gm-Features: AclHuK-S4zsk6EqmhjsVui6ifjRKos1ouVvuuztrm3peIKBuRi4LD8-5u9AW2Mg
-Message-ID: <CAO9r8zPpmLyMHF+yDb2ZHRmSdAHFTNvsu8PZsQ2Z-EVvF-dc3g@mail.gmail.com>
-Subject: Re: [PATCH v1 7/8] mm: zswap: Optimally place members of struct
- zswap_pool, struct zswap_entry.
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <atCYcsfB4s5Anf1m@pcnci.linuxbox.cz>
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9EA93180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7304EC000C
-X-Stat-Signature: 886u76juwg1x1bc75fr89rjsxb1texoy
-X-HE-Tag: 1792101984-37819
-X-HE-Meta: U2FsdGVkX18FZ2fenyK6aZoFgZZu45KssBhRxpaJ+mwYKNx8G8/NZw0MPbasTxBLz/zSAwiCwcIXzdfPnhd9GLCYDXgXVFTXsbpRQjhRpkDsr5uJDYOJXnHUgPWhmBkIhdND3reKapq3HzE7ulz6Cf7JMuAB6sg4jDxT6/o4yiYJx0cFQOscZiqfUnp6UWw2toatO4Rin/+UKdN/m9C0W3D+/6u3rBA2eQb3JHsIb8fgnNHa4I0jHYKW4Qm5PStHOfAHxOkiLiKFrxkBycmcaEBBxZWF6XqKm00pTBxjTvjaiENkcT2SDrkyCSo0Cj8zq2CYgVKfuWcFBxafYl9rk9RWnE/kWUiUV241iFmKKkWfTfv+3mynd3aaHFi7Lh0Vx3cFQJZtq9zjeDcx4nTQpcvVcDnfBWOHVnLAWql1yW7fEqBarj7sG4arkEH3y7oR5qaWo5uZxNEQlUIUXSUjQ7aYJ8MnCSFa46SeMU01ypNZkR2F2LOe9D4mMm6q3reLeGsmzZYRoCqUYTBj5XcyiQHR57C3glo+nSLNx3lGq4yiDmK03MEESmzZ3FqWRaGKn42CTO0ZwoMpsOm4NDrLpNdOv0eOC94HY5CMKgctY2/DliU9OMYPpxaJ6GWWpAaxumH33IdoxYrs6aH1I0h9ihmHxI4Usqk9ljFFMcY4RAOX8JPUMN0P8wSl9tjs7XMIJhOzsnIrlL76ZthYiIhcVZQgWRs94ESYsc5Tg7KI4WS0zlg4Au1e7rFbgTVEjaY4u7fFTOF6jueiLPx8TmDVOSsUhqTlBJ01YoxK7sEx3U2GZUgVvgip9UCljgUkxAVyktM6UDioriBp1Pg5OYbsXif4LpfOI43Btb60B4lFryhVY8xkZPRfj9di9D/xWId1Jp5/0/O6FVgMbv3Y+2vzkLl0Rg6WBdAdiFM3vfP2Q6n6FCUWf9VAWA94yMdFPTJHP4ZA6bzHCI1HzSJPv+c
- 772/B2tr
- GgnA25eRS+FXygK/nViqMQRmeEF8Z6iMSLm53juJHR/cPKgr3G/6F8yJ9hS4gHSj2p4MDjnE7MzlLrL2DyZxUV+PjIAR80RwfeHDsowuK3P65gKLPN86H0OLZXvBERKTyQ+daDQojf+YtLIw4uqOFnQfUbX8+nwVLIWrC1BcuWx4qjTZ/Go0r/h/Vw/fZnHnxMdOg66k6oC+BtJEHOw6TjCOfRgkTO+I7uUkf8gDuOap6tWZJgi69V6vk9Le+X8nsMgM0J5HkK6mAmbg3CqrOc3Rs87p5jJodTrs8OarSstsdJPFCQJvoTYa9i9ldRZxP7rINpY2EJOnsyhbPpMY74FLSQ/N+rYBIeWc+PULk65IZtYGP6ZPow+o2Kv3WJc8hyNLp
+X-Stat-Signature: yys4654sy5j79b9ssrxtpqkto3uz5dg5
+X-HE-Tag: 1792102327-243662
+X-HE-Meta: U2FsdGVkX1+ZAlScPzxX0xqAQiNSiq5IdhLsI3C1YSHwL88mc+oLzmiMHrYQtkS3s4kRQko/vKQrGoj+c60e9KBCuCBCmV0FuwkxQ/rfn7exm4XDsps+vZOzo+iGVCXq6GPm9O/yalNJEzHBzMDfQDqeFCTqKSARfbRpTnf5S4S0+g8w7dLDbFOQec+9HtRd6kw90T3i22b/UM9CA5+/WxhrhKvK1rz0WBoUjDmsOn9K7A3LxvRNDUhJtLgWqnLVTuybV/Jfqlqo4r697zpd4UpKU2vjASteZUVBv9+bzhmVs5fyVebBEi9ZfEdM8zsCryS79EgeapA1RDSLTQ+NbNg1bM5qkir0PEIBpePvAaOTPS86k5vyZ8FukhNkDRYXmIgvDsX9jnv9clhYIe3ow0q76pLF4IK4qFMuszl8vdGzCOPUM/rLqxFZ7cVwLGASUnT6+uJi/CZrbCDsAHFWv979+BFw/viiP56UAN38w0ZAv2KBj91qpbtJYtdAl2TiqKU7SGp+9zK+G28Liv7thzFAHbELnl/LDzhqP+2reRCP4QzNCxjCyhEEx0KvICUb0Sfc60TBFpFVmblgiBlOvx6FVGcaxsEVzHxDqI2hX5HJkHzxKWYXXZjHXVucFWIRzYMFltth8i0LKUq/CJrWXqZVq4dpo/1Hh0PhjlOtvVqnFty+3zKnt6lonl74vS/G0B7sklzWCxCfq99yRHiuW1wz2UBzZaiB8oSUQkk64DccRqYFP+ERCEG/aOFK6O61g6y4EUNIc+nf1dH0Apcg6kjec+iprH8rr9Qg4o2WN0IkwoXdf8VRUjLMwHDF4N113KfvJvVU+dX+DIJaknx8XpAHh3a2QjKY6u4aZXbZlfNRV4vZpIbkvDKLP1mkDOan8LI5i/ttVTsyrUx5t+9IF12IloPcMkQ5Wh/EVhrBU26hXBxHfuxEyFI8rep/tSuDyD7248hi0aA7LucXguW
+ XpSNgxB1
+ qw/Dzb8ilP0gpwDcmex5EvrlC3GwTPLdzPNZBp9yghsjhtHd2JWTJjT08KUEL2QO6I/QILc2KvQAAzi12MOlH/yo58Ty9DyiJwQ+KJVTWk9nJGrnikxO/5jqH+DZVDCmMz3HYMFBgWUjF0S4aUBB0YX9tT3Mx1neiVu6qqHh2+f4cQn5V8sdgvNyudytOwHJFeYuznUSMbFe1OtaiqgWgKDl6FhpLrf8CBnwOznly9xtPh8gtbymCtLRbLDEla70UELaHlRKeI+vzfI/xKn6ZGofy6rCjoc0YPsC5nYH3UMrxQgKyKK+++mKo8b99LnqSwobcbZtfJIwPkEzqc1lW8xOzpNl60Hvqfx1PrPmKD+bdfRacBdzQqfdtBJ/yQfp7425RkRqHKbEK2Emx0YPTOJ/RiskIKXn0fVmzyDJqV7mQlNMxzugXpJSLmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,52 +120,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 2:49=E2=80=AFPM Kanchana P. Sridhar
-<kanchanapsridhar2026@gmail.com> wrote:
->
-> On Wed, Oct 14, 2026 at 8:43=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > On Thu, Oct 08, 2026 at 11:28:13AM -0700, Kanchana P. Sridhar wrote:
-> > > Place and align the members of struct zswap_pool and struct zswap_ent=
-ry
-> > > such that members used together in compress/decompress hot paths are
-> > > able to share the same cacheline. Minimize holes within these structs
-> > > while doing so.
-> > >
-> > > Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
-> > > ---
-> > >  mm/zswap.c | 10 +++++-----
-> > >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/mm/zswap.c b/mm/zswap.c
-> > > index 8ae67fd10522..ade84ac4076e 100644
-> > > --- a/mm/zswap.c
-> > > +++ b/mm/zswap.c
-> > > @@ -160,11 +160,11 @@ struct crypto_acomp_ctx {
-> > >  struct zswap_pool {
-> > >       struct zs_pool *zs_pool;
-> > >       struct crypto_acomp_ctx __percpu *acomp_ctx;
-> > > -     u8 compr_batch_size;
-> > >       struct percpu_ref ref;
-> > > -     struct rcu_work release_rwork;
-> > > -     struct hlist_node node;
-> > >       u8 idx;
-> > > +     u8 compr_batch_size;
-> > > +     struct hlist_node node;
-> > > +     struct rcu_work release_rwork;
-> >
-> > compr_batch_size is added by this series, why not just add it before id=
-x
-> > to begin with?
->
-> In patch 0006, where compr_batch_size is introduced, I was attempting
-> to place it in the same cacheline as the acomp_ctx. This increased the
-> size of struct zswap_pool to 248 bytes. I later optimized this in
-> patch 0007, bringing back the size to 240 with the addition of
-> compr_batch_size.
+On Thu, Oct 15, 2026 at 11:10:24AM +0200, Nikola Ciprich wrote:
+> I don=E2=80=99t have the vmcore for 20261008-lbxv1f (that box got fence=
+d), but I have
+> a full vmcore for 20260930-flev1c, which is the same bug: same crash in=
+ the
+> dcache hash walk, and the same bad value =E2=80=94 flev1c has 0x0ffffff=
+f0c930020
+> (top byte sheared),
 
-This doesn't make much sense, and the size of zswap_pool is not that
-important (usually only one globally). I would drop the patch and add
-compr_batch_size directly where it needs to end up.
+Bah, I'm looking at the dmesg from that one:
+
+[378185.135721] Oops: general protection fault, probably for non-canonica=
+l address 0xfffffff0c930038: 0000 [#1] SMP NOPTI
+
+and that says non-canonical but I cannot see that there are 7 leading f-s=
+, not
+8. :)
+
+The register dump shows it better:
+
+[378185.223709] RAX: 0fffffff0c930020 RBX: 0fffffff0c930020 RCX: 00000000=
+0000000b
+		     ^
+
+...
+
+> So on flev1c it looks less like =E2=80=9Ca dentry pointer went funky=E2=
+=80=9D and more like
+> =E2=80=9Csome other structure=E2=80=99s content got written into dcache=
+ (and other) frames,
+> one copy landing in a hash bucket.=E2=80=9D Does that header signature
+> (0x00ff00ff00100010 / 0xbdcc802700060042) ring a bell for any structure=
+?
+
+No idea. It looks like some weird corruption happened somewhere and then =
+that
+propagated into the hash list... but what do I know.
+
+> Happy to run anything else against this vmcore =E2=80=94 struct page du=
+mps for the
+> affected frames, the full record contents, the physical-search hit list=
+, etc.
+
+What you can do is, have AI go over all crash dumps you have and ask it t=
+o
+scour and find patterns in the dumps and perhaps give you theories how th=
+at
+corruption might've happen. And compare the dumps and see if there are co=
+mmon
+patterns...
+
+From all the gibberish it would spit, sometimes there are interesting hin=
+ts
+there to chase forward.
+
+Other than that, this looks really weird.
+
+And I don't see any MCEs getting logged..., or? Anything related to hw er=
+rors?
+
+
+The 20261009-lbxv1g one looks even weirder:
+
+[  938.693886] BUG: unable to handle page fault for address: 00068fff008b=
+0058
+
+Some funky pattern got eaten...
+
+The top nybble zeroed is also present in the 20260905-adav2i case.
+
+Strange...
+
+Thx.
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
