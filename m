@@ -4,141 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C54BCC6B39
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D37B6CC6B39
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:17:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4657D6B0088; Thu, 15 Oct 2026 11:16:02 -0400 (EDT)
+	id BBA616B009D; Thu, 15 Oct 2026 11:17:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43DB76B009D; Thu, 15 Oct 2026 11:16:02 -0400 (EDT)
+	id B92106B009E; Thu, 15 Oct 2026 11:17:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32BEE6B009E; Thu, 15 Oct 2026 11:16:02 -0400 (EDT)
+	id AA7D86B009F; Thu, 15 Oct 2026 11:17:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 023B46B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:16:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8FC02120A7F
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:16:01 +0000 (UTC)
-X-FDA: 85325210922.12.719D71D
-Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6673020005
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:15:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=UFTYFfoG;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=UFYxFynu;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.140 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792077359;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 859566B009D
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:17:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06C3AC0A41
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:17:11 +0000 (UTC)
+X-FDA: 85325213862.06.CEEDD8C
+Received: from mail-oi2-f7.google.com (mail-oi2-f7.google.com [74.125.231.199])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 05745A000A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:17:08 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e6sU3yIZ;
+	spf=pass (imf25.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.199 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792077429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rwP/VSpgERuSmU7CAJ/qc9G4ynusNvA0TtZXr7xxgio=;
-	b=MJrU2LuM6OtqnUrULofxgBqQU+XXVVri1/frFx8JibsMfP8NMXymz52m72cRDZRJUU4rck
-	twDz8kb5N1gFhbcRW0+KaYZeKgcsv0DfrxK686RkXgpULu/l0wBv6VVbUJeN7YjOzGU4VC
-	yagW5qTC638T2oGW34IMDPgoAogZB0A=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=UFTYFfoG;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=UFYxFynu;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.140 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792077359;
-	b=Yn3e+nCnm3fL3VTraJKEE6c5B0vZgtnaEuWztPlvEOEktGwfwRMa+Mi9stY+dXKz/Aql+d
-	vOsKQBgR3hbzzWOrhJy2VLa5AWJBwiymmk1XqMmDMFtbiloH/zcwh5QuY0ZIyjE3bQJdZe
-	8rCQFCCj20Rs6B2LjwxCJE1bM0JU9/E=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.phl.internal (Postfix) with ESMTP id C66D013800EA
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:15:58 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 15 Oct 2026 11:15:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=s-joshi.in; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1792077358; x=1792080958; bh=rwP/VSpgER
-	uSmU7CAJ/qc9G4ynusNvA0TtZXr7xxgio=; b=UFTYFfoGhsTq8HiIpIXIpNZPm6
-	7iA74E0cc8cA2Oj+QhqNCvF4FgW+iDBAw3s9cicX/vB2wMODmrZoeWBNT1iYzOPA
-	WMTDLuw5VncYTEPnlWYi7YHOkuTgVbug+4iPJIQgTKryfSwXd3sTRQomQ8NXqTnF
-	WFNKWF6sYeTs3fP72BHvtyHsnJ7dfe9nud2bkSrEsGbj9S8CEAPaNb3h88vivQ3m
-	8y/4vE1zUCRBus5Ch+I5kpg6/Z+QE1sGUw3g1z9DB5TDlYI0cAUVCZM9Ukaz25dY
-	AK7hMO7pTukGScpL3v/MAP+GnIn5PDpfKzDYY4vuQGFHOh/NbcbMaaN/V2yw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1792077358; x=1792080958; bh=rwP/VSpgERuSmU7CAJ/qc9G4ynusNvA0TtZ
-	Xr7xxgio=; b=UFYxFynuS5VFEDgpEddigeyPZgsp3YlH2/EPWt8kF8H+mtJzeMp
-	V5bNAl4mDNCk98UOmR+dbTa+UU0BwofacpEXfECrfeWf0DXafZkeeySWmRT1Y/VF
-	c7/KUMRJ+rAaFQWI6/S+QVwPGIU1gCjQ/WbwH2ARxfxDuswpOoq28E6fEm0MTaaI
-	1cDlUXXVz34/yQ/w8PgGna0uMEgFe/yuP951VvIWiNKS956zCZ++0/c+Ly51R7n6
-	m3LbLQVsSU2IYLBl9k9P9h75MG2rXIfBYb+zhDaP7mHPJ9jkl4HTJdpPUf2BS7bv
-	ijFINFebCHny/68yn3AHSa3Eo7JRmPNG8Kg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=s-joshi.in a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792077358; d=s-joshi.in;
-	mf=PHN1aGFhc0BzLWpvc2hpLmluPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:xuYDA0l7S7dZ5vzEMGmgfKPuVFvW7/Syyp3cZKM7WneB4HL
-	IwL8O5kxwm0dUm1PFNpU4p+3LIBP8Khf52OjXJXcsJYzCHx1ar3+zmBjA4VYQBnW
-	orfoL4U/s3lu0NAAKY/UpZi30sIQxPi2Y4HhV5eIDuf4/t67th7OaFghOKXYpMEL
-	pcDVd6v6lKbPph6Komd3jkrVfUAt3tCFrZMmUbH5R+r87vwN7Fy+ceeC34KC2ppc
-	CrRcFZvh9JDRMxps16Cqtu6h+1TwDtgs+axtfVNQcp1eUI4osm/NBgeYgSlh3GwQ
-	oTMYUsdnPFw7T0pyQpDYFLkiKC6MM+a7JCE4x7g==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:LevM5tzYYaumburSvV64b0N1TAhZSGBxVKsiouv4ydQ=:dyEcVD1Y3vcGMbvRYZPMcBuG39NEenS/76iBFF46FXI=;
-X-ME-Sender: <xms:Lu7QahPSbuoSEa55WNF0bRmYpBOR56OACjbIEWk3JNCTKXr8S0dUHg>
-    <xme:Lu7QatTzXWkm548AYtQ7k520gnsMpGDOvcTx_I_QcLOtHaNftYaxBmwakPDW73-u9
-    BEyGgAvDIBt2WxZn4iiNtafI9vClk7WhgFP6Bgh1sDyWgIHAaDhUjQj>
-X-ME-Received: <xmr:Lu7QangY90ueWEFwxkeM7vD86KwGJvyb3mjSEBJtLDvDuvktgtHGf6KFCg>
-X-ME-Proxy-Cause: dmFkZTEV6GHuCH6/QILcFaKhduef3gBBREJE1psiKhqNhihAbWJpVZhLJ+hjcHxwMmFgu1
-    1ywxKhp44j4XcoW/5YOxKZnHloAZ6M8EZwTLdraBuWX2IMO5Y6TSrd6AfBpXSCzQKx0D20
-    mwzR80Oay3a5lk+she7Gco8OasTS0vQFqoFCydIfg8lChTL3uvKIEoEIPz1LUoznhNFGPi
-    euXxgmiGPs/xOF9xmJXkNWGmwuXMXr6Jl1lUTmw1dSQTE0IhQhP4dm2absUAt/BJ8VMv+G
-    drJAHy/HDfSKXmi6mvi/gRtLW+8vgafJVm7rABfv1x4e7cGTnMUk/dq+zXc75QDcbOS1Mr
-    o3pOAy7W9oVK+dD+zGy9o7hKIHamLw4WlZLV+O9MMoVwW9+QQ0Evih45zy4quxiSBKObu+
-    FuXs/cmZyu0fhmOTivf/u6OOA0Q0g/ZkmOhspMMwstiZUcMc29sU9OMnZlKn+l5UkiQaIi
-    27bQ6K0rcuO0QbDmGHGDZiGg/iCM96A1d04T5LS9lXXuflz5/V1u3EeVLdyCXR1KxZTgNX
-    dJ/2e4O2SFGRnXxfBxagMFtS/9USPCQGXjM22CKQ9IkJakcNVYld+tfBESGTw+b3sPCLyb
-    rTnrQD0L6pRndK3SbZnuEGyiA3aRAsIZ7CqPryk2YBmZA4vMrZLXABubd8eQ
-X-ME-Proxy: <xmx:Lu7Qau9ZAYYCGJwm5unJr0RsqICmZMM7FkyyszqFnXcKdVGHfSpBWQ>
-    <xmx:Lu7QamF7vH0XnEWYj2C3XXfw34gVVfP5ie2vK5e4F8amLVaUxX-56Q>
-    <xmx:Lu7QapmyU7qgp08NfXPvci4TUSvinip5aAploGIzhkXltUA9-mVpHA>
-    <xmx:Lu7QaiZdaMYjNtNKqYUbs0njf4nW1nVERxBWBaavg-O-4LriBmrdig>
-    <xmx:Lu7Qasn1_OxzwpJGarX3m-fKGxT_WOlJ-T9a131aPlVJUMF60VIS7-Mn>
-Feedback-ID: ia9504abf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Oct 2026 11:15:56 -0400 (EDT)
-Date: Thu, 15 Oct 2026 20:45:48 +0530
-From: Suhaas Joshi <suhaas@s-joshi.in>
-To: SJ Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, aethernet65535@gmail.com
-Subject: Re: [PATCH v4 0/2] mm/damon/core: Iterate over installed probes
- instead of DAMON_MAX_PROBES
-Message-ID: <atDtNpEiy96Lbna7@fedora>
-References: <20261015135533.18761-1-suhaas@s-joshi.in>
- <20261015142933.105760-1-sj@kernel.org>
+	bh=OeZR/JOPa/KrDeQOVwy6UcwSPvI8j2bKhcX8zNJ+XWU=;
+	b=lbXu/KO/C5dz4RymhTCh2uIHkq5T2E3CjKsucD5na4AgkM/x0jrxbCPAnwg1Su75DSpTBC
+	Wl4WWT2+6k1dlJAogXz6kiBfDOhDTHjRr+RY5T+ffnSEN+keagO7iwm43ZGmHP76HSHBbv
+	jVhM6yFyxYqJ0qWg52PzhTkn/YwoPeM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792077429;
+	b=u0RrnVTCV76X2KAH8GxVEaQjO9+UrSoYYBtoaEdCm50WzGsMYUCaI8iXRI+SsPShw8BGni
+	DVwM55fTOgDOPeHsT8v4Odj3povGYij0G/GDtYP/jFbqSeXTR37LFw2s6qGc2CtpWAZDSN
+	lFgQMD3cviwwwF4vPJz5QLMFWIwQjPM=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e6sU3yIZ;
+	spf=pass (imf25.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.199 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-oi2-f7.google.com with SMTP id 5614622812f47-4b39374fab5so2147611b6e.1
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:17:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792077428; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PFjGOlXVjGS7NwB+l76ErrL5SESwMsgwPR8jUWSnm1kQXr9SS+K7q7HSWvAh89xy48
+         pLh5OJ2ReliR6fNuFLJdcGaInwXSIBbHFybjDNbKZs5v4Cvh4S7qeoldQXfxlI9ugeIj
+         PXblTuBsKVi79RsKKR0wFWhVG0V2fMHFgNZNCGfY8uEYeihuPumW63VD3rQe0m4TSIOy
+         f0VfYgQ+c+QZNC/0Z23i5HFWEgeDCJUaqhjyU7dYq3K0N7Es5DRO71kAItVAyOnUnp2n
+         4NWcjc/lTHO2aNxhgfcIJWEt08XvEtX9N5CV8bQirGY0LHtxfAe3K0Lwt0jTcm4iSfGp
+         azDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:references:in-reply-to:from
+         :mime-version:dkim-signature;
+        bh=OeZR/JOPa/KrDeQOVwy6UcwSPvI8j2bKhcX8zNJ+XWU=;
+        fh=Spad8KXqLC+3tVBG9Ile2YXl3Fpyu83lKErqrvCZu9Q=;
+        b=W70zncUfa+nmWvW9MpKdQ6lHk1kCCPxZXyG8AWT/eQSLYJeH/ZO38u5XKDVfzgJkIL
+         5qmwz+JWUqhT7k17aQAaQMRDXVGqdpvWBrxUXh/xQJ54frpWM0mpYteq/8IZ94a/H6/K
+         +BTjp+LDMAiVTK5ESIUHNMRnpA467hGuoksKb+mYqFNOTx6AoHgJUkvwXqlUShtMgZR2
+         T4jbHcXJM34FipubWjoGNYhV8zcyohLwSex5NR44oNLih7I4tqPHT1hAV2yWOTKadD7X
+         ZqAn8ysfhMW3hQ6kuPnv0Bo3mmPZ9hfuwgSyYEvWJNUsDXiS5+icY11yIemdyJcIHvt9
+         OSIw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792077428; x=1792682228; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OeZR/JOPa/KrDeQOVwy6UcwSPvI8j2bKhcX8zNJ+XWU=;
+        b=e6sU3yIZqpuX13GqlNd8k2xcuBh7SC53tK6xWuB/gjdgCKrDRDjiSXhhVrKdZbc5MP
+         MAeuJoBDh1h8q88fr9eA97d4Wy1NpLLWroqw5OZIZ1mI6oh4U7S53d54bS+3RSB/GGqZ
+         FZ7cArT4o5TOwxwiE3Y+4SOYiPenucoxDd59sNHp1y4nZMEKUDBKN6cGcbXzBjF9qqKf
+         VePCmaGSZ1yZ0JsdPf/KRaDgzXunYMMHCBtYMnTxUHCqWcetpREsXfcDWdGRBd6unYvW
+         mwQKyHKBBdIdFm7l+8YTMK79N6Mce2TZQJ6hkbh3XYhtYVq6ukyZiTUJA+xHXoQzqQxv
+         cJRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792077428; x=1792682228;
+        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
+         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OeZR/JOPa/KrDeQOVwy6UcwSPvI8j2bKhcX8zNJ+XWU=;
+        b=Rxwlv/wHG2X9HQ1wdEziy8CVahTQ91WJk9vSGxk5uqlft7+9X0nI8lghDQld9mDCYn
+         xvYvieua733kwIFXFq+IwMxlOSxTOtMoysIY48SS7n17eUrmaWdpwEcE55mIK8BQtHGA
+         bhaRIvu6zpKUghlnCzycbs9GceaxZbiy5eyM32Vxi9Wce1gjGbS+DiHeKuOBBpNCw/g3
+         bExJWXDCUQYIp9FLFBqbGBHcxqlsOE2sqZXdfOIHSD8lNqwZXaaphNvHilW0M+kDqnc+
+         ipvE4Z9Vq5MveRR16Mfyhxc3bvjgXXN085BRe3Ck6LaKueA+fO4t918rMnbOgmNoatYC
+         1QhA==
+X-Forwarded-Encrypted: i=1; AKwUvBzbcHngSJocG9xcf3SGTNOrHX0zgE1do2CJDlliokwNJSHg90RVNCC3EM5QjY96wG7LcIVmieiiZw==@kvack.org
+X-Gm-Message-State: AFq9FYLabTIy5hg5nbhV4I/8Tv4VLt//+CcU/LJmoKTzudMV/pp/r2gj
+	et1mOslBXWExPtLR//+GUPA/K28kZFaHjS7NGFG8Dy6smOxfmkFZsiqzMBb2ePIifzRb+XU2cQL
+	+WAU7DqFn3DdtlZQ79WOtM1BsIicHjkE=
+X-Gm-Gg: AYBFou3P+0ju+O5ZamzK7UV+3ewxguu94LuEveCw2kY02TDocoSHNZe6fRwoId3fH8k
+	pXHmKDuHtKdmVoJHZX91p6jqV6MWQk5fVzewQWtHfVepx/pLCOUBw6htCOvgrOQfpIadJFlMghh
+	2zi+X4iOOn95wSJOc5i65oIkff+r/9mzK5h15K7OvTPiPGI1e+xjOiJrEZ0LDaFN9RfzuTCbzgn
+	BtlITW2i+7QdcxeqFI3PB7XLpvg66+wvrUS9ihvphemNXZuWCuoSTZXYDDisT5CJLQZfN63rBx5
+	8xZSfX4wqhwBT5pcgDkzTf69dSeJ0uCgfLQ5MmaLo4eHH0yi/Q79VhBUo2EXJ7VhDHLOIUVuvAD
+	S8ixLMAo=
+X-Received: by 2002:a05:6808:50a4:b0:4d3:6be7:c5e9 with SMTP id
+ 5614622812f47-50c4e67b316mr20247148b6e.24.1792077427501; Thu, 15 Oct 2026
+ 08:17:07 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 15 Oct 2026 10:17:05 -0500
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 15 Oct 2026 10:17:05 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015142933.105760-1-sj@kernel.org>
-X-Stat-Signature: m3tt9crtxghenedm1j65zmm7k659urf5
+From: Aveline Noir <jm5905938@gmail.com>
+In-Reply-To: <20261015140502.87975-1-sj@kernel.org>
+References: <20261015140502.87975-1-sj@kernel.org>
+Date: Thu, 15 Oct 2026 10:17:05 -0500
+X-Gm-Features: AclHuK_GMaQKMIsKIixwyygc0aElEhr0PiYnJJZwMfa1CmbK4jR8xC8YVujhE6k
+Message-ID: <CANOyQmHhCJEbHpHUZ2P0hui+We7wxWkEde-Vh4k2rRXWovRYrQ@mail.gmail.com>
+Subject: Re: [BUG] DAMON sysfs: failed update clears tried_regions snapshot
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 05745A000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6673020005
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1792077359-81439
-X-HE-Meta: U2FsdGVkX1+zehtQSB5wpTRdo7mOxT5kVdadAr2WhFr3KXSY1icd5Vs6I4v8EsvdZzAybY65yHoFplXABO28wHgT2v29+C/qogvv898B1WdGpqbfc06Rc/S+RjHy01H+XgEEpcopbuQa6sxz9m0GnJ7SEtzEySS84XY/LBWJ3S497o9DHtlZIpp8chNEuhilWaxoce2gD7T/Hb9v5UunSEA8mKeXYWfB5Sg/9kw5snv+2xfQmXPBZU8VpG3K2oY5yDVZjkoT+yhC0+DCB66/YyzPVWVeafHm19aWBvXrlRZ/YE95DdS+dQI0Rrn2nulgDGnUrRPLajjBa+TWL8Lv+xWB3yLoIBqThXQTpIOi222V3Mew6aZqVrtlwdjORjvVn9InlMFYC1guX3fyIhwK0Lojf8Knn9AFPQB+3btIPzaGcTmppSzOqATi7z6VpTbQ6K4ld27W8BlxKzcflopYbhlmGF1Una/ETLARc2OrZ5d8P/DPl5Rary/aG1YVjc2A+xPfK6u7KOwaAqoVgsU9HDqbyFEQVoInaTUSsoxh5tmrONCHcwKL+jt758ei884xpMWTalUjiyEDW6ABJZhzgSWJrvmTgieFE6mfaIp9J55iZwkuXEnr2dEnci5fToF0ssU9/UZk9h3a9z7OaVfFhSQCOn+Yd6tdwGn8Ld+72b5PSWRLIFGVOMgVqoVE3m4X5SEtSxuRDXwgqmFWDh2FPAUsk1OuZakmYL8e5tD47unGeUoNU7ptvdTsHBJRdRizVwF42qZQbyF0i9FByrAqmTksAs+d9NHFLKKY/b/m8iWKYqJI+hrQRktEvc2978+oZDr+iH7c+niNCRV78lI68eoZF1YcI33rJv66Ftf0spEPR5xDM5037Y/stce6S0PBo4DnGJo1STzHzpNs1QEVK5Agh2/UrDNZLJ7A+mXW1vzgvQkqxBmTMEFKvqoev89bySFztJU8rdcTt6MFLdy
- Dr4i8xzK
- QB3AGfrZ2xnV3pM9YGL/iCHMETitHt7HDmguRgyZYygn9QojWS3yf9K7R6bO6VmDyi0r55trFqTjzf6zobS3CffJFbCtwmrqE1q9/8yoBSnYHRLcnw4zqasNyFykaCXQjchwFrdRZReMAA+ovV/OC8cPwyvrRh1PwgolpsLydEKCj2zyZcRxJ5emoN7E8SUr26gDrR3Fhrl4zUYqKE1GjcDWoDClKqNIdIvnS/vr/8ftRo2OrZ7VCnRI3cm5jC6SAjuVhSzu3/8W2kxweAwYN7a4V8Pebm8hPFJSrFnzmnhz2ZPJHclzQW/tHoBP8KYm5cRBY00p8pK+0RIR/iAQ5HQpJhL2uynfGTRp+CJdjqKJYY3L/7IPfn9xzdhAcJ7L06bEulFLKjAkYrLzhp9DAjebHm+VZrRxT9t986lwNmpbK1y/o8Irt3EEM7OYrOOU4CXKfBANPttxp6hKVDguW9iUt10cPhANXZ0tmtvIILvsVJZnHzZGlv1+Cqw==
+X-Stat-Signature: kabs46ds7biukaxg5jb3o1jxykkmef9g
+X-HE-Tag: 1792077428-465629
+X-HE-Meta: U2FsdGVkX19r7J57tVoVtdmkqR6nQwPEe4YWJPi3AroLtwStVRHyD/MpeKn1hqFqIUlWbI/RvPBfg8lck6v0SzwHMTtplFdQ0dPNn9AFTkNi80HrcW9nKXuztZNsIOXH+hyFfdZIQiniiGIq/f+wW62mqweSg35e5mniqxK2hKloe9KKcnoQp16JnCslKNX888JZ8pj9Oz0f96GdSkB4Fnt4vDJGR0Ed5wR15kN9WeNDTgMtdVu1U5154OWLfln4kkFABZfqRcSN+y0PrSNjJuVsBDcQXhwbm8wPl7sTRPDTs4wAmKQj6mgGUWeQ3J6/R6xcrPZnRDGWD3/JPHs7C7JtZTvDqmrz5+VavMaHjRBr5alkCtyYZ2IqHtVb/4Cru2L97Nc+6/KwePq1NG1VMq6qNzu0a6D9EEs4/OMw9jdvquuIeO0uH5V9zTEXA3R4U0+VlWT5rkb6gMh858oagdp16EjoTpmg7+JjAbe7Bu88+tEJW/lAdQv0xDv4z3HEHDoRMSyhARKO/yG4l4hCr3/NgyQWBEz4Jg5X+u+QtqdKAR9K6K9nOPqqgVfMu8Rl1jMhoTOIT/ss9OZlLygMUhUKwd7PqRUCRkb18EhWfCSsrTahVJ8YzoHHylFI1hnO6tQODUGMEl+JzEKUWLwks+8bG8deGLfloz4LIQxJMudf0MuQ+W0nbFM/ysVClZJga6O5eKIGoCotyljJOgGY/zinR8JK1zFkVd7c4mA1+1w9moxtUxM053BBkHPcRtBZ8HhHgAw1bK7FKhymT+NkE+83bg+J+hovKRZbLVt+VZDIcIHjmvdy3lgGcBiVlgvQogMgKngEq0HSkiz9VjHeV8J5IfLOPTN63P8dyABUtUsYRk0+j8DMSKMAJeXgiPz5Pj8bWm6eC987P/e+Oa5TYyvEkO8M9vClyrEk7OiZATsO6s1X2UC5LUIPnzB10oqJZbWS6W5/JletPYWMeoG
+ hZz5oUY+
+ 6Z72ZkRF63nNMh6we0pSxxTn/WTnIGmbr8fEQbIGySVxNFYBnHbplbyhR+8Whv0n/J/l2bbBNNM0nlexUF3nWZJxryD0ekeu+1xX5+wOYq9J6BTcMimmgXQpPtZI5wd/EKnICmwxqCVBihOY9VhxN09cb/PKnrbIFK77J3lO9mJ4Lg35GB+JZCW68CUHplRJPK729WYL1lpSB5BZy6CKgpYYM7CTylnHaWqGzHMnE5TrdPTe/HrA2oXl/DWbMG4xjrEqJPtR7mqLZkgBLd53P6p3lt7Xs5dXshExhDn6H5/ggFeljxqelOV2PzYzHpzvxa6gtb7evogJ8bWrdxmlsa+72BilXlUYZi2RyEH9VqWJy0aSxfkVqeW1u5B+nxbDtZgx242zSFR+XLy6JXAaHmp4RgJ2eV/KtaFVYl6KnSlgYPK0QRIeQzs9umoYYveWBjeiNXanScUVNem/S47JoweiAMhTuJSX4NTikB70H7ShfjEyEklI/r1VJ76nk/7+W4KBiYYANPNiUdsE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,44 +141,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 07:29:32AM -0700, SJ Park wrote:
-> On Thu, 15 Oct 2026 19:25:23 +0530 Suhaas Joshi <suhaas@s-joshi.in> wrote:
-> 
-> > Hello,
-> > 
-> > This is v4 of a series I sent earlier. Please find changelog below.
-> > 
-> > There were two "todo: " items of the same nature in mm/damon/core.c. Both
-> > of these suggested that we should iterate over only installed probes while
-> > updating (last_)probe_hits[] during merging/splitting regions, instead of
-> > iterating over the entire array, which may have empty/unused indices.
-> > 
-> > So this patch series does exactly that. It replaces the for-loop over
-> > [0, DAMON_MAX_PROBES) with a damon_for_each_probe() over the probe list of
-> > the context.
-> 
-> Looks good to me, thank you.
-> 
-> I applied  this series to damon/next [1] tree.  We are now quite close to next
-> merge window.  It may better to focus on making mm.git more stabilized and
-> therefore ready for the next merge window, rather than adding more changes that
-> are not really urgent.  I understand this series is not really urgent.  Hence,
-> Andrew might not add this patch until next -rc1 release.  In the case, I will
-> request adding this to mm.git after next -rc1 release.  So, no action from your
-> side is needed for now.  Let me know if you think this is really  urgent.
+Hi SJ,
 
-No, its not urgent at all. We can wait until after -rc1 indeed.
+I haven't seen this affect a real workload. I found it while testing
+the DAMON sysfs interface.
 
-Thanks a lot to you and Liew for the reviews! :)
+If a tool tries to refresh after monitoring stops, the failed request
+can delete the last snapshot. The tool then has no previous result to
+fall back to.
 
-Regards
-Suhaas
-> 
-> [1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-> 
-> 
-> Thanks,
+I built and tested 66178e4ec30a and its parent cce0b334c310 with the
+same config and reproducer. In three runs each, the parent kept the
+4 MiB snapshot after rejecting the refresh; 66178e4ec30a cleared it.
+Both returned -EINVAL.
+
+Thanks,
+Aveline Noir
+
+
+On Thu, 15 Oct 2026 07:05:01 -0700, SJ Park <sj@kernel.org> wrote:
+> Hi Avelin,
+>
+> On Thu, 15 Oct 2026 07:22:38 -0400 Aveline Noir <jm5905938@gmail.com> wrote:
+>
+> > Hi,
+> >
+> > On mm-new commit ad9f2d463666, requesting
+> > update_schemes_tried_regions after stopping a kdamond returns
+> > -ECANCELED and clears the previous tried_regions snapshot.  The final
+> > result collected before "off" is then lost.
+>
+> Could you further share your use case that this behavior becomes a real
+> problem?  Also, have you tried bisecting this to find from when this behavior
+> was introduced?  If so, could you share the commit that introduced this
+> behavior?
+>
+>
+> THanks,
 > SJ
-> 
+>
 > [...]
 
