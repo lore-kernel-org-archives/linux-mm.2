@@ -4,140 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF631CC6B2F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 05:21:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 270F2CC6B38
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 05:39:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC3786B008C; Thu, 15 Oct 2026 01:21:33 -0400 (EDT)
+	id D7E3F6B0088; Thu, 15 Oct 2026 01:39:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A75CB6B0092; Thu, 15 Oct 2026 01:21:33 -0400 (EDT)
+	id D2EC56B008A; Thu, 15 Oct 2026 01:39:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 963CF6B0095; Thu, 15 Oct 2026 01:21:33 -0400 (EDT)
+	id C44B46B008C; Thu, 15 Oct 2026 01:39:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 653756B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 01:21:33 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3C0CA854F
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:21:32 +0000 (UTC)
-X-FDA: 85323712824.10.DC43A4C
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CB88480009
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:21:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=xCFK7NVg;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=XV0h6kJy;
-	spf=pass (imf02.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.147 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 9B4336B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 01:39:34 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 00B451408BD
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:39:33 +0000 (UTC)
+X-FDA: 85323758268.27.B2AAA0E
+Received: from mta0.migadu.com (out-243.mta0.migadu.com [91.218.175.243])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C911140005
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:39:31 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=plnongdN;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792042772;
+	b=zRP0KfR984A4c2UwjQIwyvbOo0TDYudBlSoAb+g8qI/926n2gGMpTzAqAUc7eVb6KTOMfQ
+	0oSM5fsNVmrLYjWsq6fu/cCWgX0SFHOhirFKtPOG2lRM3D8sQRUIEKITFLoVir6j9X/ezc
+	PNFx5vjO1VXfb/jG8AEVQ6eumreTtIo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=plnongdN;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792041690;
+	s=arc-20220608; t=1792042772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=plxy+DrT8Ze0nim79TR1yOEuPaMxj6VH3O713CTbSuw=;
-	b=o8RoHZi3O2cnC235GmanepcdJw6xAgHNBxlEEGW7nSFBstXq2gC4CWpr1p71Mh+eCeMtYT
-	2xrx7hrg/ijK9I6ckebUmkGXAQ2iRa+jF2fd4vYzPQnKh83DhNuKUWR+VQnwgkEn0CzpgZ
-	lRM33zLYxXauygwPN/ZFTdmrXYPQkGQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792041690;
-	b=S3yCqnFeRm9Y+Q6fDORrQuWoOpYeqTma7uoLv8zElanWL6yjQhWRbj5qAnyx0DVwYh6GOn
-	ItzD6DQ4SK+DqPA8gnKKamnWZqUk7tWoT4GFMJU1yuzbL82sEz1mkgKvYRoPJ1mig2GODI
-	tAZNG4KVaIUF36k2cGOiL4b2R/OK9hw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=xCFK7NVg;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=XV0h6kJy;
-	spf=pass (imf02.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.147 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in;
-	dmarc=none
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 74235EC02A9
-	for <linux-mm@kvack.org>; Thu,  8 Oct 2026 11:20:05 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 08 Oct 2026 11:20:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=s-joshi.in; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1791472805; x=1792336805; bh=plxy+DrT8Ze0nim79TR1y
-	OEuPaMxj6VH3O713CTbSuw=; b=xCFK7NVgs12YR5Os+1qjKUQTdSiWxqgeaTR7+
-	HdLBT2ynFVEJm65+tI5UpZUl6J0JMt6zSveTLT3+beQyDHidKSONCVRIB6X66D6e
-	nBisnKjkG+93qLtbVqS5f4PGuG50zhsBZx0wpewxgNYRa9A49UOwu4ZTgChOjBWt
-	eQwzyfjuRJUtAdbtFPWSwvOVwR+q8nkxiZLtmTwbmTLMlsNo8oK1JczusEyfiOvC
-	Nu94JXVh1cMHyT/Lfnq6geg9XdG9CAvtE1Cg6i8e0WDhc5x/5htdB4L3d6C9ewKp
-	xP7zCM+x743Aci9qlludrOMWnnYlkf1D8peD3C6PSkKoZvOnA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1791472805; x=1792336805; bh=plxy+DrT8Ze0nim79TR1yOEuPaMxj6VH3O7
-	13CTbSuw=; b=XV0h6kJyywuq4uTCPPT+vlRvFV2CWZJfS5hUIci9ETpt/Inwfoh
-	JdyoUH+orjCvLwrd9cOr+roDiYqw6AYuexLOJ47Enyc8OFbnMI4xbJubSQQ12YYC
-	8EQgHYj/Q1tyY88DGZOawPirgcOfCcuQLyUnz30qooL+d0/PVXJF9nCGKnf2sbnc
-	6fU6aAA4DTuLDKg6Y2d5T3eBsWqVUA4P9mE2YrkA5zoifdFaLGM3wAap8mvvn6JY
-	NIiZM6hGl/J0UspWfU/f+25+I7EqT7b6HUqmiriGIX81h/kP9WPJxBmuhyJp4bQv
-	qXZ7sWRZ4gz2+C6PrZX/0V3nr0hxZzqh0uQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=s-joshi.in a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791472805; d=s-joshi.in;
-	mf=PHN1aGFhc0BzLWpvc2hpLmluPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:PRQIdlCvZ92HXYuQ05Pe+mjUvAwRppfELo8o54j+3V5whLv
-	jSvlfd2ItjXA0FEY6EiVlkBNfE/u1+YpMknqOkP5bP5Oo8aCazv9jToQEQDpDhV8
-	ZerkBs6iR8hMxYWdDjGOHRTXSCzC30kS7F/NrPRzfS+3AZF8sYOAepLk704I7ldE
-	SGcXjUmQp4yvl3K6eQ3ugHwEZzDvMqCfR1XhlC/HxM3m0aDnENEvimQOBQIGeo67
-	+2Jt6Xd7e1kCBCg47kmGXpFufkkgaBZRGZk3OLKEe/tikC8pAZBQGQ3o7WI5VKLq
-	l3GOXHSEmkANahtJwwxG8H1tbBYq0rqn7mCn26A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=9;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:rf6ufOzkNZa7QhG4kTdpPLLyHMZLstPqQjFG7FSWTOc=:5syrNj/JLgLqlg7IRGXpYcJyk/HNi/mWCL7GsaEOynw=;
-X-ME-Sender: <xms:pLTHakvaYYI-n9-yyKB9pcZ3LPqDNpK-FwMA3RjbVNyLmkWVnnIQ5w>
-    <xme:pLTHaiLCnEOZoJ84DPrAJGjAF_N6eQn-KTPOCozUCoe8rakKYLMJVMcLmZOj6eijV
-    KCWrq4_XSB_JRMSXc828gbEbd5D_9H2RftZPkLWVKCkMNVH_H3iFRs_>
-X-ME-Received: <xmr:pLTHat8INlt6X0w19517Mx6gm20tn60O6Cbfw8JSQFy14iighyFvBdvl0g>
-X-ME-Proxy-Cause: dmFkZTGqxKJltKcxARJadtVktDBjtkTJW7gorgTB8Ld7pXgguWgs5hqg6/YGAbmf+3ndY6
-    LjqKDAI3EvH46oJqR0tWDuKjWnqcBAK55NEqWzEvzSxNjp+D3hNoffq1DonGlE89pCLzx7
-    fXzqKf8HtHttmd8QNutoRFIK6OEt2nz179BXmfB08wXw5RFnw+OX7Fuxqses2X8N7pM0MR
-    uix+e515sIDeirVi9i5sd9lgyNmtEz7/zoYfcBs4tM+ZskmEUvRGl4U1QHO9XkLYCMamWm
-    3NYpzIgBUJjx0iK2KXMvacFbQo+WueYCOphdPLzMH6GbuCPBxPTTQWkkPdp7XlpaUmN+Kg
-    fZmb6MQvaBT2/j3ANqZQpG7bX3bzTAz+HR674FVqrCnNETt7/fTIYJa6R2bmOeMn3xK86J
-    sNYywAhEtrC+AikraNY+CpaxZ7swDj4/y6WXHCfvw0IeAGAazvJ/krqsF/UlegqMvxZkCI
-    KB+WnPfo5WGXtdz/x/M80prHyqfZNxEuAy8aSCJlavWKyLvFqO5KU4Q7aYxSDmpzFaLF/m
-    qIuSNaP5vgZ+lygJWy5PY6YYKVreeTw8rQJv9fJvMDENRDnemN8OWF5jyduYZV4jf+SrN3
-    /24ZqrMN7P0km3ZBvU7n/ml8VJ5yRUd4TOwE5BChMTU4ral69GdY/sTnijEA
-X-ME-Proxy: <xmx:pLTHaryA20PcyxVoVyL1vFpbYtAlPaHyVAkXsfAhV0AIjiVWDGjIyw>
-    <xmx:pLTHaq4TSUMvs15Vy7RS-tkpV0k6gyPpshHqwnSQcNPruuw2gC9IrQ>
-    <xmx:pLTHai-wnORkuU6EUKfcDIWUbkOXXM7cI4rxXrHBSJQpkkpxgz1GUQ>
-    <xmx:pLTHavr74d05gvSYM-VsZ1efHAM_ybRZ2_lrBScrHQ-PMhOZF1Oe1Q>
-    <xmx:pbTHahihQO3qK4uVQ4gX6QAwMwfKoLQe4WrIpPZ9vOU_EzIwmY1xOOpA>
-Feedback-ID: ia9504abf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Oct 2026 11:20:03 -0400 (EDT)
-From: Suhaas Joshi <suhaas@s-joshi.in>
-To: sj@kernel.org,
-	akpm@linux-foundation.org,
-	aethernet65535@gmail.com
-Cc: damon@lists.linux.dev,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oiEpH24FbFqexA4eOSCbXbTMRlIRrqeyfIEf1kRH3s8=;
+	b=TLkN0wk42MPCflbHyYV2kgCNxrLzsq4N4g1QHOMTSGyv1+7sUFeaEl+vJuKh2NZoCeBoBt
+	8TJKT3m9sGiqq9KEARxP6SrCmxAHDv36kslGGqJeXxxkrIXGegYBrdc0ti7wLsvDo18vTb
+	PaTAfrzXv3fcXie3envTPMXbZDzskqo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7FbM2+eg5UOfZmuq9hM1PptzWVaYqJbij9uFNK5DEfE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792042769; v=1; x=1792647569;
+ b=plnongdNlx/ABXxa3ODTNMeAa9/Ne7seuCIHHmuMvF8xSjU91QiUZkvIHCR28Ei+7C3ETtMH
+ f7YCkRrt4N3aXa/cmMYrJ/qVmdwgvBKTwLllIxv6/V25nxQCXh/Q7VlF4+z4t30UsN8qU2Uy2q5
+ ZXEmzh00Kbkh/ClF0/f6FY5Q=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id d9d6b683631b8ce6;
+	Thu, 15 Oct 2026 05:39:29 +0000
+X-Mizu-Trace-ID: d9d6b683631b8ce6
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: kas@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/2] mm/damon/core: Iterate over installed probes instead of DAMON_MAX_PROBES
-Date: Thu,  8 Oct 2026 20:49:24 +0530
-Message-ID: <20261008151944.113714-1-suhaas@s-joshi.in>
-X-Mailer: git-send-email 2.55.0
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	jannh@google.com
+Subject: Re: [PATCH v5 8/9] mm/collapse: call collapse_file() from collapse_single_pmd()
+Date: Thu, 15 Oct 2026 13:39:20 +0800
+Message-ID: <20261015053920.64675-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261014171145.3292736-9-kas@kernel.org>
+References: <20261014171145.3292736-9-kas@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CB88480009
 X-Rspam-User: 
-X-Stat-Signature: uebhq5jymoym75di4zaqo7r5xq3uiro7
-X-HE-Tag: 1792041690-234526
-X-HE-Meta: U2FsdGVkX19Zct6FqOMJZ8qtl6WAncSQ7X3m58KRvix2PJJJIVxI4EmXzrNABicVJnQ5q6sYcn105e3g0DX5gBK3N6rTSZ83uZ8TbpbCNpUaUqGIZ4juSEDYNyPfCazPLcXi+MVty7vxSMVn91czMvoTG+BR/ojHqe0M2ZJrlwxU+i9+MIvXQSpXrZjkp/cm+bROuBsT0qCdApEWjfKrT9/JKAw/pxkeLhcFeIWY2YrT2jaT8eyYdFQUDDIrs41f7hBslqrV062cftek7oIxwh2X+RD7J8Yk7Ul6haSZ9eQziiiG28+VjwkV6Jkk6K2I+DdVwCAmVRpk04LDHYC+7wpyugUlilSqly1k5GbE+FfM4cciP5UDijlAFs6JZkFARJT9DU5o9+/2IAl1ZKB5yey6OBbouN2hZJ3ys0GpjOSFa1wpufS8Ik1RUdTrO3Pad5P8PEGhdGkswiiY81yin3daUDh28sEffomyl30yh2dYtd0kD8ldlgRQUc4MVCcKI8VqIf5bWklvos4jadcZkXBBXTFHC8eohq8XDcHCIKol/JIaeesYrpL/eKJsZ2/aqSS1Jz8AfX8suk8TtEHU63CtuklCVxZP+XgbPtD0FOZFuPB8P/Nv6f9xdgR4jlOUhKCCIIQFHb1QHTOwfhQuK7TbMaH0mZe9wZg/A7xP4uGNh8M/JmAjaw7ANkiA9Tr8Jxg0RQa297A6UsRYphXDsHn/CQQByru/FTUTs2I3ds6/6sLQ6ocg7JVl0Za9iSE8MsKOVfn5xGIWQBLEVOaZjFxUNH2i2TXIct/SQFsP/ia7c9JDoImGui5u08/nJQ4vHI8R417K8Rdd6X2SNNYsUqhWPEbdzB/2GODkXXe0+4zv+zE3FHxtCzuYhb3OIQSnhoB3gQb6rUqtLeP66Y0n18qtMQaVvHKVB6B2MLnwihzoufu8ODW559ht2/DY9jdwwLh/orVCc/4y437pNKV
- 7IHhCeRN
- bO84RD8dPaNUuK6mORIxYN5yUqOH3oA/ecoOQCerZlbmNksESHfpeyHvwh7Kqc88rpN6meAPXqe7ip7ljK7t1c8+xWCxgMBCv3Ieb6xHSVR4HwrrQtk/xQRJredp+DzHfUfN1tX0Be3Ob/yrjl3XeO2G+ig15Jd1DeHt9l1LktX1Mvk4dsrgqc//dUv1nW4CxvUfjxnyekhwSV1wmp5qN5TcedusbvQljkBQf/BQhVT2aK349q3/uHFK0u6FUdsPI2lcgWIc0MU3UOP6QdEtwJbgfi3FmBwWMJ0Jc+A69rHAMZjlZsFonAasnU/vGjoZ82nDaRPSdVwJLHVz1IH9TLsOtmSqGYW5/qFYJ9KefqWyXIeIXzkHcctU9VpiED6aeKYqIDNnt6Q+awERgAqB87IBiKVZ8YkDL510dV7+yL7t2QToZU03cLdvFYucFehO947ki/LqqWq2aE/pQQfe4jGF5qk+ipO6A9ljrAPQJsAU3ODw=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C911140005
+X-Stat-Signature: tt6dxnz77s6dgqaucqzaed9k4k68pkmn
+X-HE-Tag: 1792042771-869895
+X-HE-Meta: U2FsdGVkX1+iChXAzURvMiuSrr3iP7oyTMnjjf3O73kToLE5yjmOudreV1ozhARO1nWpxPiwRmP5++9Sz654gf9dmEv3wp1iVo4pd6h91m4OIBa2KsZaeboMZFyrrUVc5zoVfnUaY3iimEpaxHM9EGELWpdv6ugSeZzRAnXbsWSsITKzjibu6ZPzPptOW1eftAWwrFXAbEqtsW05sslcG4rsVuKSOcQ3owmKpt8QX/obh5HxOhau7FwRMR7h/dhVse7POsVKZ4V1C/Gxj274BPwE/z68tYkN81vaFBVJsU7Y5//maCSSlHxjBGXT9Uzqhw2k4Q0MEYYAG8m+MXttZIz8+7zO7FPbsxmiCXBe3zd7iDPZ9/iiCtu/7i6nXmGwe04p9vKEOpWnbqvXCjE9ASKAJTo8cmoe9P6WC/Hkznhnw7SvpBWDsL9u7URqNRjcOixq5mLgqdI70n77vDaWxBTk1pUINi+jhwqCx6tEfU5aGqFgwOoi5NBSQUvIWhXBKTIb2VSV3of305VhwOG5cBOWpOulagOxceb7+0hxt7Ogv39nli+fe7GSK3jdQ4ju9fNn+c8kiV5G4aKQxt3ZpR2p80CuV2tJw2+zlQOpqHz5CQrnuDKs/J7JRD73/htMmB6hemMh67SHUfRf9+tWBs85A87ZtlVbPSCedlM9+TOWbIcDp6U1eW31j8P5SV9Ju+0ZGSjfnU5YOHJDzA6zeUG6tqbX0i41SckbLMwi2A8R/IrIeZxyMuIVy1obezoEeLn8PJ1UtIJ+DGWTwLnu+8e2HubtyKo/Kg2HWoeHzYCMSHtwEo2s/nmB8MlekHCPrGoLfke53Glm5996D56n3WCRgE2WKX5n+0u6laHWkxmf8P3G+VeF9cG2HRq3J8Sfi5Kc8gRfP90LTpDw+D/wB6Qngz1asKhLrC9zAu1E6oUOl25LPPykdVjiGmoR4l/Y4vZ3n956vwXXwkSat1N
+ tgvPZnDD
+ 0A4gi08GMNIKD6RiHJmHYIvZxJplxszYvpUn58wDMmMqt+MLw1z6jZqW3xIKSjVIL2Dy0TW1UJkRFVegpZvlEoCezP0xo/4se52+Jy8amp0QfjsleKAzqIDC58Xg1/aSqffQmBMRjL2fuHfXZqPyWB2lDBo05AccfyDNHDLgDvKES5mddSqqlYWiBvOk/jMBaPD4knEM/NdjoVwqT4KwR0QG0zJiuhTX5yIEkZwv05z8mzeOtMC/5LtVVj64CyIUBA13yFBK6l+OscY6hZiDWCSqRzGBy90EZ82b6EIrzPdpCLHyklvcF+gxim3UKPdsalWg51hnJbs1jJCo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,45 +105,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
 
-This is v2 of a series [0] I sent earlier. Please find changelog below.
+On Wed, Oct 14, 2026 at 06:11:41PM +0100, Kiryl Shutsemau (Meta) wrote:
+>collapse_scan_file() reads the page cache to decide whether a table is
+>worth collapsing and, when it is, calls collapse_file() itself.  The
+>caller cannot get between the decision and the collapse.
+>
+>Move the collapse_file() call up into collapse_single_pmd(), so the scan
+>stops at the decision.
+>
+>Two things change with it.  The writeback retry re-runs collapse_file()
+>alone instead of rescanning first; collapse_file() repeats the scan's
+>checks under the page cache lock anyway.  And mm_khugepaged_scan_file
+>fires before the collapse, so for an accepted table its status reads
+>SCAN_SUCCEED; what the collapse made of the table is for
+>mm_khugepaged_collapse_file to report.
+>
+>Preparation for splitting a collapse into a scan under mmap_lock and a
+>run without it.  The file scan has to stop where the anonymous one will.
+>
+>Assisted-by: LLM
+>Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>Reviewed-by: Zi Yan <ziy@nvidia.com>
+>Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>---
 
-There were two "todo: " items of the same nature in mm/damon/core.c. Both
-of these suggested that we should iterate over only installed probes while
-updating (last_)probe_hits[] during merging/splitting regions, instead of
-iterating over the entire array, which may have empty/unused indices.
-
-So this patch series does exactly that. It replaces the for-loop over
-[0, DAMON_MAX_PROBES) with a damon_for_each_probe() over the probe list of
-the context.
-
-These patches are based off mm-new. They pass all KUnit tests related to
-damon. I have boot tested (but nothing beyond) on qemu-x86_64. Please do
-let me know if I should do any specific tests and link the logs here.
-
-Changes v1 -> v2:
-1. simplified commit message of patch 1 (on Liew's suggestion)
-2. wrapped all lines at 80 characters (on SJ's suggestion)
-3. added comments for new argument in function (on SJ's suggestion)
-4. added damon_ctx_destroy() in r2 failure case in damon_test_merge_two()
-   (on SJ/Sashiko/Liew suggestion)
-[0] https://lore.kernel.org/damon/20261007154851.45368-1-suhaas@s-joshi.in/
-
-Regards
-Suhaas Joshi
-
-Suhaas Joshi (2):
-  mm/damon/core: Use only installed probe in damon_merge_two_regions()
-  mm/damon/core: Copy only installed probe in damon_split_region_at()
-
- mm/damon/core.c             | 61 ++++++++++++++++++++-------------
- mm/damon/tests/core-kunit.h | 68 +++++++++++++++++++++++++++++++------
- 2 files changed, 95 insertions(+), 34 deletions(-)
-
-
-base-commit: de3c5f0e6ebc5e0885d99043e071320cbb6ffbde
--- 
-2.55.0
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
