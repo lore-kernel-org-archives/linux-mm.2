@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E78CC6B33
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:08:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA74ECC6B39
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:08:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE04A6B009D; Thu, 15 Oct 2026 12:08:10 -0400 (EDT)
+	id A96296B009F; Thu, 15 Oct 2026 12:08:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C68AC6B009E; Thu, 15 Oct 2026 12:08:10 -0400 (EDT)
+	id A46286B00A0; Thu, 15 Oct 2026 12:08:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0B236B009F; Thu, 15 Oct 2026 12:08:10 -0400 (EDT)
+	id 8E72D6B00A1; Thu, 15 Oct 2026 12:08:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BC036B009D
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:08:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D76B51C4109
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:08:09 +0000 (UTC)
-X-FDA: 85325342298.06.D2A67F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 040D4100013
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:08:07 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A1276B009F
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:08:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFCBEC0163
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:08:15 +0000 (UTC)
+X-FDA: 85325342550.20.E22616E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 27E0310000C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:08:14 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZYcxpNIF;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792080488;
-	b=ITY3+UmrkumsmvYgHh1vSLTCvgOc4XYJpfxVCj1rau/xSqqYVVYul6/hAtJ/xkPJuwWtmy
-	cJK7UB2YV4b8PjcAHoBFYX07KnXZJZKn9gkOSNcimE3Hs/TpDyAF6bkt3BIoFkHMaE50a8
-	mGKM5DdWLXcgLEtNAB8pg2isYl+lJkY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZYcxpNIF;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fYhfvFO4;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792080488;
+	s=arc-20220608; t=1792080494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eqtt2G7yriEeHnOR1/BbpfoTCAOmwPLLgIR0/nLFghI=;
-	b=YDjQihfTD+9Qu96I3aoFMukKLwfonfLP8rH/glZrlAeZ7pNc9+4+PSHlQcGAOXy7Sp948q
-	RtC3MddEHl3PbBAF6TiTIO4wStnPSnrxmbQ/5t4bZtru0CXWZp8f6/It5SgeoT+m1Ype6C
-	L4kpMU25Qnfj4jtbVOfu1wgUbHKnLiE=
+	bh=3afvpKZmu+aKIyTGjKM2wG2gBoeR2hpYzLmhDcjm3gw=;
+	b=7WDt9UwFAx0c5YmwqwphUOJ18euB+C2OQN1DZPgXqsexjK8I6UFrznw6g/fwhFCPjd8Xsu
+	JfoAJSuzJODLD5gGUU+3uIULeTai5Sr6O837N9AUn12i+ob18ymsJkFz+3thRMFTpWLSI9
+	YHxToIBWD9bxkZ4YHJtWJCOtcYqJfek=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fYhfvFO4;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792080494;
+	b=eiHj3aqUJebIr+Dl7tN0fyvlIG2ILZGxrdzC6j8FbdxLcUSgxFn8HOQynhVYllSKPbHv1C
+	pmmo1XM+vExQiVX74N4ndBv3TEEF/hn7RsyzTZPy+3EVMeJ+c+uzjCUumM3D5eMkQq5cFX
+	GUA+d49rICpnTKoR6Mw6VVhYrTLmn5I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3291F41089;
+	by tor.source.kernel.org (Postfix) with ESMTP id C3BB560120;
+	Thu, 15 Oct 2026 16:08:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B770A1F000C4;
 	Thu, 15 Oct 2026 16:08:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3A01F000CC;
-	Thu, 15 Oct 2026 16:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792080487;
-	bh=eqtt2G7yriEeHnOR1/BbpfoTCAOmwPLLgIR0/nLFghI=;
+	s=k20260515; t=1792080493;
+	bh=3afvpKZmu+aKIyTGjKM2wG2gBoeR2hpYzLmhDcjm3gw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZYcxpNIFmgCQLbJ6gKyzpvUn7tozj4+2u7vUUUL+7Aqo1W3aYwEw8PGzXGi32Wvij
-	 OxjNg5lRcSvx811juXHVi5R43K/h+tHrxDIlWq4X7woi2AfJUMzhFRAM2hvfFtkqAc
-	 zo1PaPqXFL06M+UnAh0E10nXPAWC5GOWrIDWwCBDSEX2O+06CC6NEhnfIbS0hnieTX
-	 ygopodw7SUNSJ4DHMKzIxtUJjGU0YfKJdrU5OVMPuS0ae4AEemAEMeClPSsaJvuRbS
-	 clwz5u8Lqxs+Z3nIy5gK+H49YplBh0PH9ilp20xalypFnd30cBVNro5R+d4Qif+PfV
-	 NzPfB0acVJLxw==
+	b=fYhfvFO435HJX8G2tJtP76UAXmJ91Nqa2hGQgcoVIF+DmlQd1+edSNcaE1eEqpnvg
+	 slM//rKzJmgasqG4T3BL8RHQwMQn7VfrN/UPyCvclOS6KJ5zuXQcJcgL2EIsAUCIy1
+	 +WE8HwVO/tfCMQ7iqK//NkgCsprNmQ6irdFK4X6ROpiLwhn7QRz8ZL4dYlFDe1GRc/
+	 YhOk4ISazQ9WQfsOxGSynufEw9x+vERdRgx4ENL4OqQwd5dWVDS+Zz7dWB0MZ7rlWy
+	 hsz2tsA2CD7DotS78D5FBwfpxg8jVm5OFin/K4HDru4o6SZ+EJryWcMmEpvlmqv5tf
+	 ea2VqumbPfPtw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 15 Oct 2026 18:07:13 +0200
-Subject: [PATCH 07/10] mm/hugetlb: tolerate uffd bits set without uffd for
- PROT_NONE PTEs
+Date: Thu, 15 Oct 2026 18:07:14 +0200
+Subject: [PATCH 08/10] mm/hugetlb: tolerate UFFD_WP markers outside uffd-wp
+ VMAs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261015-urgent_fixes-v1-7-42796911043b@kernel.org>
+Message-Id: <20261015-urgent_fixes-v1-8-42796911043b@kernel.org>
 References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
 In-Reply-To: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -87,22 +87,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1793; i=david@kernel.org;
- h=from:subject:message-id; bh=+A1Chphb2VITOuNoz7RmBYZYcGXcwS2W5/AbSTwZtoE=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIu/DJulRZwuF5+1XCm2AsPcXa1rWLN5dPLRQr/rm6o4
- twZuNG3o5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgIlEuTIybOy203dTeec342v3
- Tp8/l9aVRk/yeS9ffmqX+DW27kcHNjD8FXjetnKq72OJ1qzn277qy8govLZy/bnx1b29+vedTs5
- z4gcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1330; i=david@kernel.org;
+ h=from:subject:message-id; bh=ofcXbd6OOZoV/XLvMGg3PkUCMySCCrJuOQSO/eipRzw=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIu/DKO/u4dbn2Vryjmo2WmyN2iOelftGYEZC9wuDY90
+ WSiiHR9RykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABPZ3crwT2ESC8MXne43+r4x
+ hk+0nC/qmUf0JDC8qko3dEoXW6yRzfC/sHDFvMK5Jk+S43JFfEuiegWWbtqYekwm2/3cBq47233
+ 4AA==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 040D4100013
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 27E0310000C
 X-Rspam-User: 
-X-Stat-Signature: cy5qd66fmagjuxnpbyidx5xckp8pmfwt
-X-HE-Tag: 1792080487-708306
-X-HE-Meta: U2FsdGVkX187s8x10JWx/HP+WXvEglWfyDL+Bj7RbIw8MAVh5KEVgFP7pMROq9vg2KJGaJpz7GancFtzM4TN+mr/nlDmyibfDg0mncdCMF2AnjDk/vMEwd2KVyqdk6UH4n5KPtTvRJu5sqhH/PURhGBKssn9YJ8BDQuToG5epR2uiN401Cmezdau73HGQwWvajuXhzrd3dZ50z1LekBeDER6Wyp5aeJ4F0NUXj/4FEzJ1d9P3cr1hPcaTtSqnjWgVpTtew+8fi/X7Yt/SVboqSj52t56BkfsGfMPJlabGcBy9rtyT5HE3lUfgUkdhbs6k3PBUnVWt4JljYHwzN5nMCP2kmunlvI7N6N6H2yrw/dU/k3DYvH71MmQ0PZGmzUqRftPiIrSKfpuZLbcur95ssA+7lbVdKY3Vu+Pip3fZvO869cNFg0uI859eLNXfpvtlajY1XLRWqGUr2XczRwkiyC+7pQlD3xk2YaLbZF3pbxbvMSqkPUPj3dXHxkG/8Bbk0QTz56JD65tz7Kxe5Y/WFyhmb9yjGLISvY/WJUCjru7EN6+/p8pNuxh51pZuYvUKXC+dQzqQS+QEHQpmIreW+r2Epjkv8lbM5F4RsjPH/gwJLY4h+scQTD0vHV5PJp4W0FcHO3ArJH7smgWQeqOlYhB5T1QieHV41apWhzukrojwGl9YDHuiuRG8VuPstc2FN4RXwMHewQThsLYfEvbWqqfG5zAuDF1Er4eDsbYQG3UDtamJb5vztwlGU7QPk2KvlAZtrUK8Ni4AnEUZfGO5YYUtpbRTDcK4A4f4g+R8mv1e5bqQZ3gpQ2L/YS59YsO6/+tnMgTJ6rDfo9jgOpqN7zKDxcIZnYRnGW0oDzUGML0LlOyMZJZzNduGYPA6cxSH0O9p13mCyy1L2ntIP2xCVdx1O3QVm6TtB2pAFeUnRw4qUqUFlkL80fnTUegjS2aRYW4W+5RpGpQEi/WMqG
- lsN1L2kv
- Paf5mA3sp9RDHqQMkq/pDbqVocxgnYeybTPgJ4ABwMmljr8wgI5mclZcOOX8dtUak0oJvqIhJi0n6tnhE9+CcOFUvl5RZiONKR5iSOf1ECjJr/7hnlg1UqVLQ4EkADz/CgNgL5i410eLGW5GJUDOi7+SlEWAB4JyTypXw44xFox3EWWD15lpe1QAzLauHNjG0OQnaqwoqLlQ+d8VzfMdIME4ONy+CJOLSOj0vKtMBQkb5BTxQkfjL6J0+eCTWaUQB9Q1sMl8f1+0hDClBXpxdKcvcHShgjcbTp1MaTseV3JgRE9gmH6kuPQvhhD+FqhtQhQdFGbKk5jgLeL4tBNQ9CLHL6jxST1PHbn09CXjgkgVafCOGQEWQyMs1wg==
+X-Stat-Signature: 6esu1hz7q73y3sriaj8a6ir5wn7upzfy
+X-HE-Tag: 1792080493-546740
+X-HE-Meta: U2FsdGVkX183qRgV+LV52/nuDBqp7RozqjdaSBOvNXGAmbldPU4FrfDElfD/djCMKi40DR45PHYqeW4f/g+da5OFRj+Jqd8gxtNH0abllShu9FHm/9ElVrPe6izud5URZVgyt5T1mYZPXnBOeKvlizsVcbo4L88ZMf+jA+p/Pa3RXwr00RjKg7EONCpG3FIWETSpCcB9Twr8eHf8ppkVJDG3EVs6D8z6vQlqfzn2hsQIkiZnly0o7Gw8ysXk3o+enPC1z0HOGh/02IZX2nbz/RLfJBD8Tj4ngFRmJhM7+ZAFmaWi4jnjnc5b8QyMIGJpFW6YE+arVxn/u+MwRGGl+y+b5F+HfJ7y3ha16jiFCpjEwJxtVhz7Clo9BixzFp93b8+KEhZzn0dOtwQa+kbtFUi/7vb/GYKM2BPbEk8E7IHl6ZVvscO6JyvoLeD9j7+8zbXDxiBj76LDCZaULMIcrwJc71oPlpJL06giBA94lTKNlH20l9A0z6H7GriQr0dXDKty74zoVJ4cotBtFa0YnX40uV3TB1KFdAwrUfRj4c+/gtr8c6g2kkL5PsyzfAiFGkuZxScaRQ4smAA2JZqs/PylmD5CrZq1bkNCkWX9LObrL+KtVfrc+2qp0jXvm+9+ycY3nvWQhbFRcv6XG0yPBVHOn59wFbFlkBjOFeYecsQcjfO5gbpacADId2Uvguca9t6c04Ths78dBW6/NIHoFCqe8QwqckXrlmdawT5+fv0HvcmUqJZauxPBcE8YvW88lvqbfZdydjFGToDNCrW9ssFI1mZ2LQ2ihK/MdpsfUXSWpRQCcBTOzSVi7qe4tB6ocrK6pq9heswCDrDQqS+D76QCMlT7sycTwLPYbf1mY7HO++k1DU6wtzLB0u69HDcUwIuz5NQRhIsTDd4QNUSITAv2/w1NYzDNVDnTf9DUkBu6DwcI2nd1vfrtaISv3ikNmePWQgEAeufdz7HHhZH
+ ysbaqW5a
+ AmSaxWOlPwZ4qZjuySXDnUfItIT/Hxf1eWCplNrJMn3V7+ozYmuP25jXj+SCKKDwo7YOodoiOiAnknMT6lHKq6+n/u4vXpvPSZ6EAFUdUecMrfkZFe3seGiJPeLZErPynKWBcg3zCq/ZQgwSGBUlHlCieJBnf+RPJLogyhkhv49izVu4vmI7JZGaHl8Reg/fK7hrvpPj2R/KRnnAGb6HQD6cClnSJXiZrdXHt8rdNemSbGk4kfjF7VsukMv1u6F++H+KEFsQEBnY/DUSL1tFuYuJkbCQvOFsFyta1KwaaDIM+xXkODM9qgHPGnqSeQfHY8Jo+UkhhTibUm3M6y+2t/Bn4Pc0qzZmAZY60/ddyJq9x6CU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,49 +110,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The whole uffd handling when a VMA is unregistered from UFFD is shaky:
-there are still some scenarios where we might have stale uffd PTE bits
-in VMAs no longer registered for UFFD, which confuses other code.
+UFFD PTE bit handling is a bit like swiss cheese, in particular with
+recently added RWP mode. Having uffd-wp markers outside uffd-wp VMAs
+already confused this code in the past and resulted in uffd-pte bits
+confusing other code later.
 
-Let's just tolerate that for now and simply clear the PTE bit. Add a
-TODO to really clean up any uffd leftovers when unregistering a VMA from
-userfaultfd.
-
-The handling is now more similar to what we have in handle_pte_fault().
+Let's play safe and just ignore these markers in hugetlb_no_page(), not
+silently propagating the uffd-wp PTE bit.
 
 Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
 Cc: stable@vger.kernel.org
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/hugetlb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c3823f1958568..ba6860b9b7f4c 100644
+index ba6860b9b7f4c..1548a6156206b 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -6127,16 +6127,20 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 	 * NUMA hinting), so let normal hugetlb fault handling proceed.
+@@ -5939,8 +5939,11 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 	/*
+ 	 * If this pte was previously wr-protected, keep it wr-protected even
+ 	 * if populated.
++	 *
++	 * TODO: fix all cases where uffd-wp markers remain in VMAs that are no
++	 * longer registered with uffd.
  	 */
- 	if (pte_protnone(vmf.orig_pte) && vma_is_accessible(vma) &&
--	    userfaultfd_rwp(vma) && huge_pte_uffd(vmf.orig_pte)) {
-+	    huge_pte_uffd(vmf.orig_pte)) {
- 		spinlock_t *ptl;
- 		pte_t pte;
- 
- 		/* Sync: drop hugetlb locks before blocking in handle_userfault() */
--		if (!userfaultfd_rwp_async(vma))
-+		if (userfaultfd_rwp(vma) && !userfaultfd_rwp_async(vma))
- 			return hugetlb_handle_userfault(&vmf, mapping, VM_UFFD_RWP);
- 
- 		ptl = huge_pte_lock(h, mm, vmf.pte);
- 		pte = huge_ptep_get(mm, vmf.address, vmf.pte);
-+		/*
-+		 * TODO: fix all cases where uffd PTE bits remain in VMAs that
-+		 * are no longer registered with uffd.
-+		 */
- 		if (pte_protnone(pte) && huge_pte_uffd(pte)) {
- 			unsigned int shift = huge_page_shift(h);
+-	if (unlikely(pte_is_uffd_wp_marker(vmf->orig_pte)))
++	if (unlikely(userfaultfd_wp(vma) && pte_is_uffd_wp_marker(vmf->orig_pte)))
+ 		new_pte = huge_pte_mkuffd(new_pte);
+ 	set_huge_pte_at(mm, vmf->address, vmf->pte, new_pte, huge_page_size(h));
  
 
 -- 
