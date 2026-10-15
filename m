@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0397CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 08:33:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C971CCC6B2F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 08:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9216C6B009B; Thu, 15 Oct 2026 04:33:39 -0400 (EDT)
+	id DDD196B009D; Thu, 15 Oct 2026 04:34:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D0CA6B009D; Thu, 15 Oct 2026 04:33:39 -0400 (EDT)
+	id DB47B6B009E; Thu, 15 Oct 2026 04:34:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80EFA6B009E; Thu, 15 Oct 2026 04:33:39 -0400 (EDT)
+	id CA39D6B009F; Thu, 15 Oct 2026 04:34:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 614296B009B
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:33:39 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CCE4FA86D7
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:33:38 +0000 (UTC)
-X-FDA: 85324196916.03.83D4DD1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 47E6C40007
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:33:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UtjExpLX;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792053217;
-	b=pEwpKSE9F/qB+p64SubYVFOlQd41+Gnrvk1IYNmMWfdXfm48Y5lpfvA5zTD+7Dj9f1rhvB
-	nr/1Px10fZmwUfdljgnczydlRfKQG5zeG0XAggDlb/aetbwrTRiGYjQUtsfbOlNYKf/s30
-	TkbcqhlZ3QwhLWqU4TqhZiImo9NHVqs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UtjExpLX;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AA27F6B009D
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:34:10 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B1EA41208CD
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:34:09 +0000 (UTC)
+X-FDA: 85324198218.21.6859B67
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0EDA440002
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:34:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaZgNvMA;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792053217;
+	s=arc-20220608; t=1792053248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AOZJvgkf51bXSMCUGPR93r0N2Iu+EN4HtBMStIPgKjU=;
-	b=zRB9eaE1I5ZTrK1zqra1x/tWojC+Q1SMQ/h8im8SDTNDEnSbnS4APdu6xTpglc8nPP9OyD
-	Vr4TH7Uc3N5FrkuEQg9WQJ/jiOegb1n+C+bMFvfOxfM0j6X7Aw45lrotSSfj8L95uSGGQ9
-	JTe9i3jAIRUxFp22glJmgzK/Oc71Ta8=
+	bh=1y2O0PSZS5Bzt/8EZ2Y7b6A1XzbAJe0MR4Va/N0YUuU=;
+	b=INaJNiiDjYHTdG3oJ3ZwbmdUwhbBrZUEWhStIwx6tNbnCj3g4ReYWcNJHjFZscmwnGZZly
+	UeRZGQFptumODP+5bu0YfPVwT4lGKljSX04VN7TiPBzfw4NjYSwGyESNoD24P1k9HNEITk
+	w3S6s931d1MDY0PBA9HAOw9bsBKeEWo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaZgNvMA;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792053248;
+	b=ld/8yaXLhnUaK+U3KikgYDU2XiDr8rIKHT6RDhMuPMglpYsZBddRsqUKZkDkGi6mhLnVOL
+	e9+XnDk5+/2XWPZg7twW4oI/OVgKgNNhEuVCuvLNwQAm5kes0wLqauh9Vj2HZ5MPtnFVSh
+	6DHbSWmLbrZZ2jJxW5MKYhhvo6+cxK8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 032B96020C;
-	Thu, 15 Oct 2026 08:33:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31CA1F000C5;
-	Thu, 15 Oct 2026 08:33:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F1EF843708;
+	Thu, 15 Oct 2026 08:34:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8351F000C4;
+	Thu, 15 Oct 2026 08:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792053215;
-	bh=AOZJvgkf51bXSMCUGPR93r0N2Iu+EN4HtBMStIPgKjU=;
+	s=k20260515; t=1792053246;
+	bh=1y2O0PSZS5Bzt/8EZ2Y7b6A1XzbAJe0MR4Va/N0YUuU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UtjExpLX+a8cuwlOqRz7cmtKMwlhGF6EnvQaF0p0x4Idxm7ijZzJ4N4aHzgnTwlwz
-	 R8l5QkDwcjiwdCBHnSSRjTENCW08WR3l+IPSoc8tl1wAz2YK6UMjqe+xrJrJTVMzqJ
-	 MF7tyXtn/OSw2I7X24p6aWSO9Oj/85pkVXRZJqnSDeQXfOMbOnbLe0GUhAOGM2sD2X
-	 HekeupaPpNdH7XpRSKNDfJ7waPaTVh+8cokwHTARhRjZNQUO+kbrqC0b10qK3i0PHH
-	 L89uERs+2aOpCbcvSSbRB28Xz57aSinboHKLUsW89VCRBBgh6LJp0SsTjzcNZ77czB
-	 aZ5VuixK0k5AQ==
-Date: Thu, 15 Oct 2026 11:33:25 +0300
+	b=aaZgNvMANpmUBSrs1hVX5dOBdZ5ubITsPMpzYC6ohqDfmcGNBK0HFP5IIu9enoq6P
+	 M90gmP2DGfFq7fJBhjZXldmj7fCOobTX9AHeFQzYBu4OsHOqAPJJq89m5d2JBMLE6d
+	 IX1ZzHm67oSWuDWCK9DW06xW9l7a/FAvXx9Q0KKpdbq+YUXOZRCJUzJGIofXanWSnG
+	 iZqjvsZlDyceUmFP40JWDI0N5xbgR0TDu1XDbh4oGorzXB8pv2C4VsUYL7MtPYDwtv
+	 9k/hkPAULu7KSk8UF8gOha7el2Ie8z8fXbCfvm6aqqNh3aAxRqU6ts/NigbqVxw8SM
+	 fCAorPY+owbwQ==
+Date: Thu, 15 Oct 2026 11:33:58 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, Arnd Bergmann <arnd@arndb.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, linux-mm@kvack.org,
-	linux-arch@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] mm: Generalize page table allocation helpers
-Message-ID: <atCP1YszjrtrB30U@kernel.org>
-References: <20261014035910.687847-1-songmuchun@bytedance.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Xu <peterx@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Kyle Zeng <kylebot@openai.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/userfaultfd: only allocate anon_vma in CoW mappings
+Message-ID: <atCP9hqNdqsdE-y4@kernel.org>
+References: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261014035910.687847-1-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 47E6C40007
+In-Reply-To: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0EDA440002
 X-Rspam-User: 
-X-Stat-Signature: ysm96z4x3za34ndaoarwmszn6wh41kmf
-X-HE-Tag: 1792053217-23663
-X-HE-Meta: U2FsdGVkX18zyOIt9WmweeC9YwI5tSDUR+gOrLpM9P+QZJM86DB1sWCG6MjhDCbQso5ne5A0pfhZcSfrutGU0yi6t2xNkLrp3MVXx+WgtkOwNL00uWhzSUjYRuvKkpjTDQr7LZOOqL2CvlziX/y7cH6t1FFnZAnAzdh8h0Tbdr7/kJrD2Jab0A3h2v9kh0Tp+sLIEtdIY9FbRSt25z0STNzO0bKS9ZTziQXro3PXfkWZ7mSwpqpId4EbLYvSX+sjTOHM+5zwhMp8cUQZ56b5RxAKxppvqWxJxr63IkFCpdOIvISG4xUw/aPHXBbQuDQlfGZO4/mEVgke35b42RwF+HLHElgVfmxPMTLng9g61vfKKjE9psdMvF8PXLajO1qJbjTKlztNebxCwgT/EUUpa9hdJUJe4y7acImynOYIAErR0h3qAHNDPIPVK5Ey6xYaKq21odA4NnZfa8AIoyN3CIC+elud1572ZdxgiqhsJKV2DV9kxcMAYf0/SEZ/oSaeNmrTM2vIW2huPpC+aSsLt6e+42LcwXDgY8GMApkn7A1SKRpNYJJi7yv7MmdlzlsMqzgTzce8rWaWmuJjCtZ4s2FSQEz0YfONM4EJN2HmB5jHct7Srlb9n9cy7ddARmchjM7f3rDrXXamur5a6o8vNecMenyBh8kY/wJXIksUrGWSvD9T5GalNX/wf10J0GkotYv2bWx3DpGZ+Mh0v3YLGP2WR7bqJTZkAv/8d5cCEF9BxzKLD2L1NLEriEB3dcsuSIHUbmlJ/N7hvDmHstwOWhlYFk6xJnqJJh8+Ao28MuJzPYYDZdIooffh5LNBoJdXz+/RnkUG2gq5xUkY69fAO5DFJJRp2SlxGVq1pepDaH8QISzN/ChtFhGlZ4w/L54r/8Ae4M/RtvduZVv+5KoYv6O+Jm/xjJCDn0tq3b2YWH+x8XIJ1txOeIVDmQEmXmBP1kJYje7D/tIhlzOOTFD
- Hu+UIQCX
- hjNbdqBgB3NxM/PmZyZVkF+tTkOC1j9hoCriToB0OBIGeGkvZwIjHZmWFD1zfrBVv5mMayb4VnINJPwazz4qE04Vy2cUAH1ejTCSzXXRoaUidIXGieqclUeek8z640bBgX+n7Y3PEXj8if5CG608EjokPiN4rowW8+t3ozII8cM5pWDDwWGcbd7NXqUYw/irFGjudF6Em3E8DBR3++w0EtCuzQW2zsl5BYngp8hGzO9CREPsOHLoprxCNhWLbb2/XUaMmqB1QvWIld5+JjG4YgBS9YGc9tSPKgpqEz6zeWAMwq7P1+sxA36NAPvizEni53pneB4Ng2NTHDAfe3VG1Zk3slyy2uoKWhhAa
+X-Stat-Signature: qpg5jbcc9op3wybgz939734zkspcjr3a
+X-HE-Tag: 1792053247-990946
+X-HE-Meta: U2FsdGVkX1//jpp+bx6t7C1IZUg1ijcHoBdqIpQaXIx6y9p6EJmqiORaciBfUjj/GP+KD+gV+JQIaPsEFJcfsDnWRlHAP1r9DEjtDodD7grZB5aLzXABfmzWcT48bioVtTfuLBPj/DCbZYgrj3XUQGS/uOb6aBNYFn3XtrKeTDlBjV3kLJ9wUlBU+qCkdXE9iLlh2qURfybyOi88MJjN4zR+ulvMaYYHebavwNCloPrOG+61guIMRelRq7wsLtUnlLE+XwIwWqwSkQaGrp6+VA34N5kLaquFWivcoDGsNdxeYrFJQL4+7zAfi020aVZPnpEAFB71SG7iFAdeVk8sZT1tVYKqLH2FI2DaA4qHlVSGBmYpLZqTNu06kwJGIX+efwkWeFdG8mD8aAotelQ5a/r57hIQlMUkwNkP2WAQzNNya4COxfn4zTv/9/p6lXc0inemtZeWeAXEWz2QDyk2NeteLAQkYSHPKHhSrWpI//DSq+0IJsP5A2mqWFDHzzLY++1RfG+VfgaRClFGvrsGUlYzMBF0iRZ7P8jZAMVjTu9fbOvIAxzOXggrjJ5XeEMS5emSvy1UJAA5EbOmr4N0q/IJ0T/iDtbqIalLGHvlyIs2V4IlIJlBecJTSz4pLzV4db3DMz2hAftUXBVT3hqygnWa4qqhR3bkfwjVnDbPAIUvvHmJmxptH91RjqqDMHAh9/rvYKgaVCqHvgeLK/Rcn5wafagbErQbCmhxLIZVskptEhmxrfXMWOtIbkejLRK/oGM0NioRdmjQ6sfxjo127Nr7w90V9tnTCzjYzX/wq0yEN/f0QSZwK3MjkoxpSomIDxFLJdBk+dZcr28cluS0EBFbJ5T1dsoq6/kEloDasG8/gnwMiqIHQ9HoNEsIjOqUfwZFe0mCLFPFK5XjfJFPNdhjpNI6on9655kfyCydffxQ6WngyYjsFkZQ9CUCT481wZe2PM4oA0qInbeb+AS
+ NrtcSO5J
+ pl4x6KsNLul5CSq3cUdJCU50rYWx81Qz1uCRagBzjfhVTsa7MM57sA69ySvv5o9hrZv3VT7i1/cSbYgfG9n1AsJeQDJt/LyRRMv8+PMz9ZaPwUC43LRm4yDIvVf3xpdumQxI7Wf6N3Tyx7gbyujVrQASWrMaUbHFSeCqRnvfAo5RoGn/aPUCjQRpFLurmpCnNSodFzqN4QuL5o0+ah3K/R9SNFYP4p+r7EnQysS9ANeMLib50jwqXhpVGutlyIHVXRWJtLbvhXr4AZ2tQ4t8T3MNOr3lgRPBb8eXObLtOODvt5HHezifZbULOMSoVtsNz8n/MtcKacd6TC2HHpn3/JWKPBj9EbB8znB+q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,44 +96,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 11:59:07AM +0800, Muchun Song wrote:
-> A subsequent series will switch runtime vmemmap population to the
-> generic page-table allocators. Since vmemmap tables belong to init_mm,
-> the allocators must select GFP_PGTABLE_KERNEL and mark the ptdesc as a
-> kernel page table.
+On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
+> find_vma_and_prepare_anon() can end up allocating an anon_vma in VMAs that
+> are not CoW mappings, which is wrong.
 > 
-> Some architecture-specific allocators do not preserve both semantics.
-> LoongArch and MIPS choose PMD/PUD GFP flags without checking the mm,
-> which can charge kernel PMD tables to a memcg and leave user PUD tables
-> unaccounted. The private PMD/PUD allocators also omit kernel ptdesc
-> marking.
+> If we have a MAP_SHARED R/O file mapped, we lack VM_SHARED (but do have
+> VM_MAYSHARE) and lack VM_MAYWRITE.
 > 
-> Rather than duplicate this handling in each architecture, extend the
-> generic PTE, PMD and PUD allocators to support architecture
-> initialization hooks and non-zero table orders. LoongArch, MIPS and
-> parisc can then drop their private allocators and inherit the generic
-> GFP selection and ptdesc handling.
+> While uffd later rejects such mappings (uffd registration requires
+> VM_MAYWRITE, see comment in validate_dst_vma) find_vma_and_prepare_anon()
+> still wrongly allocates an anon vma before it validates the vma.
 > 
-> This series only prepares the allocation interfaces; the runtime
-> vmemmap conversion will be submitted separately.
+> This in turn later confuses copy_page_range()->vma_needs_copy() such
+> that we end up calling copy_hugetlb_page_range() with ranges that
+> actually do not contain *any* per-pagetable information that would
+> require copying, which is the basis for PMD-table sharing in the first
+> place.
 > 
-> Muchun Song (3):
->   mm: generalize kernel PTE table allocation
->   mm: generalize PMD page table allocation
->   mm: generalize PUD page table allocation
+> copy_hugetlb_page_range() should not have to worry about shared
+> PMD tables at all: it doesn't make any sense to copy page tables that are
+> shared, as they can be fully recreated later. Ending up in the function
+> with shareable page tables is the real issue.
+> 
+> If a destination PMD table is shared in copy_hugetlb_page_range(), it
+> might get concurrently unshared as we are not holding relevant
+> locks, resulting in us using a page table that is no longer mapped and
+> possibly freed after calling:
+> 
+> 	dst_pte = huge_pte_alloc(dst, dst_vma, addr, sz);
+> 
+> To fix it, do not allocate an anon_vma in non-CoW mappings and add a
+> safety guard to copy_hugetlb_page_range(), making sure that we never
+> end up messing with shared PMD tables in there.
+> 
+> Before commit 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd
+> operations") we would always validate the VMA before allocating an
+> anon_vma, and consequently never wrongly allocate an anon_vma.
+> 
+> As uffd_lock_vma() is part of the same lookup machinery and
+> also contains a misleading VM_SHARED check, change that one as well
+> directly for consistency.
+> 
+> A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
+> lock in copy_hugetlb_page_range() entirely. Further, the usage of
+> VM_SHARED in userfaultfd code should be cleaned up later to focus on
+> CoW vs. non-CoW mappings.
+> 
+> Reported-by: Kyle Zeng <kylebot@openai.com>
+> Fixes: 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd operations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
->  arch/loongarch/include/asm/pgalloc.h | 48 ----------------------------
->  arch/mips/include/asm/pgalloc.h      | 40 -----------------------
->  arch/parisc/include/asm/pgalloc.h    | 17 ----------
->  include/asm-generic/pgalloc.h        | 29 ++++++++++++++---
->  4 files changed, 24 insertions(+), 110 deletions(-)
+> ---
+>  mm/hugetlb.c     | 24 ++++++++++++------------
+>  mm/userfaultfd.c |  5 ++---
+>  2 files changed, 14 insertions(+), 15 deletions(-)
 > 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 63dc836061c99..60f9b209c8db1 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -4984,10 +4984,11 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+>  		raw_write_seqcount_begin(&src->write_protect_seq);
+>  	} else {
+>  		/*
+> -		 * For shared mappings the vma lock must be held before
+> -		 * calling hugetlb_walk() in the src vma. Otherwise, the
+> -		 * returned ptep could go away if part of a shared pmd and
+> -		 * another thread calls huge_pmd_unshare.
+> +		 * Shared mappings only need copying when we could have
+> +		 * information stored in page tables (e.g., userfaultfd PTE
+> +		 * bits or markers), which is incompatible with PMD sharing.
+> +		 * Still take the hugetlb VMA lock for now to satisfy
+> +		 * hugetlb_walk()'s locking requirements.
+>  		 */
+>  		hugetlb_vma_lock_read(src_vma);
+>  	}
+> @@ -4995,6 +4996,13 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+>  	last_addr_mask = hugetlb_mask_last_page(h);
+>  	for (addr = src_vma->vm_start; addr < src_vma->vm_end; addr += sz) {
+>  		spinlock_t *src_ptl, *dst_ptl;
+> +
+> +		if (WARN_ON_ONCE(want_pmd_share(src_vma, addr) ||
+> +				 want_pmd_share(dst_vma, addr))) {
+> +			ret = -EINVAL;
+> +			break;
+> +		}
+> +
+>  		src_pte = hugetlb_walk(src_vma, addr, sz);
+>  		if (!src_pte) {
+>  			addr |= last_addr_mask;
+> @@ -5006,14 +5014,6 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+>  			break;
+>  		}
+>  
+> -#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+> -		/* If the pagetables are shared, there is nothing to do */
+> -		if (ptdesc_pmd_is_shared(virt_to_ptdesc(dst_pte))) {
+> -			addr |= last_addr_mask;
+> -			continue;
+> -		}
+> -#endif
+> -
+>  		dst_ptl = huge_pte_lock(h, dst, dst_pte);
+>  		src_ptl = huge_pte_lockptr(h, src, src_pte);
+>  		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 0e0fe9bfef239..82b56a58fc40d 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -115,8 +115,7 @@ struct vm_area_struct *find_vma_and_prepare_anon(struct mm_struct *mm,
+>  	vma = vma_lookup(mm, addr);
+>  	if (!vma)
+>  		vma = ERR_PTR(-ENOENT);
+> -	else if (!(vma->vm_flags & VM_SHARED) &&
+> -		 unlikely(anon_vma_prepare(vma)))
+> +	else if (vma_is_cow_mapping(vma) && unlikely(anon_vma_prepare(vma)))
+>  		vma = ERR_PTR(-ENOMEM);
+>  
+>  	return vma;
+> @@ -145,7 +144,7 @@ static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
+>  		 * We know we're going to need an anon rmap, so check that
+>  		 * early.
+>  		 */
+> -		if (!(vma->vm_flags & VM_SHARED) && unlikely(!vma_has_anon_rmap(vma)))
+> +		if (vma_is_cow_mapping(vma) && unlikely(!vma_has_anon_rmap(vma)))
+>  			vma_end_read(vma);
+>  		else
+>  			return vma;
 > 
-> base-commit: ad9f2d463666c64e94b04be5263c9bf8f9f96fb7
-> -- 
-> 2.54.0
+> ---
+> 
+> base-commit: 1d0b04a60516de48250b04227dcf483c6c09aab1
+> 
+> change-id: 20261014-copy_hugetlb_page_range-743d71a2980e
+> 
+> --
+> 
+> Cheers,
+> 
+> David
 > 
 
 -- 
