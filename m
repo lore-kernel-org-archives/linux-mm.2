@@ -4,111 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B5CDCC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:46:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 172E6CC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:46:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 368F56B009E; Thu, 15 Oct 2026 10:46:07 -0400 (EDT)
+	id 3434A6B009F; Thu, 15 Oct 2026 10:46:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 340B56B009F; Thu, 15 Oct 2026 10:46:07 -0400 (EDT)
+	id 319C16B00A0; Thu, 15 Oct 2026 10:46:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 256FD6B00A0; Thu, 15 Oct 2026 10:46:07 -0400 (EDT)
+	id 209A96B00A1; Thu, 15 Oct 2026 10:46:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EEF426B009E
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:46:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6430B160A7B
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:46:06 +0000 (UTC)
-X-FDA: 85325135532.03.1855592
-Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AA80116000A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:46:04 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 050506B009F
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:46:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A08340A27
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:46:13 +0000 (UTC)
+X-FDA: 85325135826.27.2567F5D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E61F3160005
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:46:11 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lpirLI7A;
-	spf=pass (imf08.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQHjGx37;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792075564;
+	s=arc-20220608; t=1792075572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=n2eKzu35TvaEv8HyPaHxC7x3j0v0d8cIHnv6Jg8auww=;
-	b=F1n2HKg2K3i0B3k4eUogg6SArqgkWXwssXor5O8iltQ6BiC7ZCyniP3T8rUF5OlB5wwaUV
-	4BzQZcB4/V8HUfCS32fZvKg7dizP2Ync8oP8k5M+4sPckVMLYpL8rd/QqyIq53gDH9VHZC
-	DfnO4wx1I4DLUqm5ajGKs96SQg4rQ10=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oaBE09sot4Sjh/GN4h0+OoAYOe1dKUMnd6MgbTjvFrI=;
+	b=X/6FHbDo5E1qip4CsO/ShUbZb8d6NMVwT4FE3OvVv3TEPFhH+Fsr2taSKvJTqsERloPzBO
+	KohaQ3OVdEssEq0mC6ZEMCWocV5Aqb6rdmArZ/DBKIOgm9GbU8g+Mv5sLhovFuDh3Oq05c
+	xW84JY4xJhnWNlM80zPLRaSfTX6ck9U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792075564;
-	b=dkyI+Rs5ux524YgR67wxJdsOnlLy+R90F+OeNAuPpoGKpWDGOylxZ5xQG16T6x6UsjD0G6
-	gdx+JISY1AHcjyTGBohB+meKPMCC2xBjex9UOsNMKXNnIipr9RkdZirvrnrYY4WA4o4v6Z
-	D9b/aJ6KIVr5Oz8Ip7HaeZQw/H/NAU0=
+	t=1792075572;
+	b=8etm1GPm1Kd/hUiFRcjQB8F7yk5Tptt5hI243NxUA24OS9+mOslGESs7QzBM1GoTF9Dlb4
+	eNy4qhsNiI9NK0DyTkwtaI59APty1APQ89ADIOgfV0Er9YGWaliXiIX3scbrW+UsmjTT1W
+	QziNAwmCJzS39GIpEceeEWSHIj65rXk=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lpirLI7A;
-	spf=pass (imf08.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f10.google.com with SMTP id 98e67ed59e1d1-3abe4821449so2267435a91.1
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792075563; x=1792680363; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=n2eKzu35TvaEv8HyPaHxC7x3j0v0d8cIHnv6Jg8auww=;
-        b=lpirLI7AIMZCXTJsM6IEsklQXueP+g2TZ8tytzkobcFC04/z6Z8Fhcpmf3Gi5pXHBd
-         wjgnkdh6Toyyo72tWRus5MVTqjHSNzTswNHgZmDGLJYLLhzyz4IOPI1X7C5LjxlsJnUX
-         CYkqJ2mZSjj0ieInl4nFDsBqG1VE1gQ9U6ak8xzHjuMTv9YsrBXUOzdQ3dwSZGgPHL7y
-         y8hNot20nVkolRnCszvbuguf3v2RZuX8dBzApHVwscgmfvPQ9Vj2FTxH4q1AU3PI3QM/
-         cQ5WCH+jzmLEHR2Fj+huN4Bz2Ndx9rTOtFb+heHvfajEzeNdYjyAC3ovGIYoG5KkkCdP
-         ZEFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792075563; x=1792680363;
-        h=message-id:date:references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=n2eKzu35TvaEv8HyPaHxC7x3j0v0d8cIHnv6Jg8auww=;
-        b=yL+TEhHABNTcEKT+yFvVsPsdbkPklN97upm+ci681AvPSutcqC4O9uKHIe3G755Af4
-         tU1wYDp6ouubgNOshwJZ1t7Tm5LSF/s+UBQ40YgB74aTg27+/0NsV+0SE7xK9TH1wNdr
-         RzEIlWm7KpYpKPwRxIcGGR9k5bib0EIdZJq6H7soQPPZ+SONCLbXKDwpOIH1RNQhtxNH
-         dXtJCCaHVBlDtjTnDIb1K1IU7wmFTgBO2HTNjpoHR6iqF8Fj+eYaQA5a7r2DKDQaIvd7
-         3mvQeobLLD/UpIsRwxWjOL5SAD7QOgrN2/LPTOr+m2t1WLdN3xyhkh+G6hk2hbPq7uPk
-         9hSw==
-X-Forwarded-Encrypted: i=1; AKwUvByONJyKc7HprLkPK9YkdCSeEuB7AfuRXz8v7IqDLYRPFo09gg4alCtvD5Cr4OOo/fx/aK6mMyzq7g==@kvack.org
-X-Gm-Message-State: AFq9FYK7g/tvWA7aXoAeGTYPW9HW2cr4zzdUe5kYqTZveMW9QLRLnPYr
-	v7+dfeYrQHiu+toVWq3Di7Gv6U3CcpcAAUDKUEObI6jwHHpzGn+cuCxhonIOSgGa9FofiCMK
-X-Gm-Gg: AYBFou22rdgxWmhilntu2stz7qIxf3tEnqnO2Kv5FXbvBUDxKcCTPzFLH3/WmWp/HlZ
-	mE3WeXWu62zK4QSQbq15p+iTsPP/KrHB0NDWccDhQFx2M5IBE6QOrVezA9dJGRPCLg42Vbo+5Oc
-	MjsRC5B2XnYjByhwp84LCx1SHc4REQEhGahWUYOcc9b/lLmnXj6zRVqkfyXr6cL23LjevE9KXmu
-	N9Fw6Vu1sF1dQw9fnHNB65AO2ygd7Zy8Q54VLV5GlELxeOKCAcAP+WlV0X7kuCd6P0R+vcrncky
-	lEGFcob3u+dRxoK8AXJ1wYigvRZnpvsRNKEElDOOiZqmyp4ZyfICckRcE824uLe5l++theJNRx0
-	lPqxN08qzPKupdSlkoUIUp0g+GSvf8tnAeVnttkaIDRpStQ9FshNhhB9iV6fr9wGi96uWWCv73s
-	Xv2q0/Fwl4SouGVzAejbPE/tsep6MjdnGqBJ9j98sL/Tn12dyayv14pM7WyhSQ7JQFJ9kco2WVA
-	tuVNqZxbNtdEo5z
-X-Received: by 2002:a17:90b:35cc:b0:3ab:2737:3392 with SMTP id 98e67ed59e1d1-3ab3afce21emr16003498a91.53.1792075563236;
-        Thu, 15 Oct 2026 07:46:03 -0700 (PDT)
-Received: from [10.131.15.42] ([115.200.102.144])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd635cdffa5sm1393286a12.29.2026.10.15.07.45.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 07:46:02 -0700 (PDT)
-From: Aveline Noir <jm5905938@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [BUG] DAMON_STAT: idle percentiles out of order on 32-bit
-In-Reply-To: <20261015141319.88393-1-sj@kernel.org>
-References:
- <CANOyQmHad1vamnZT12M5yPrJ69==Pt1U0+MGw6u0MuNtr-DRCw@mail.gmail.com>
- <20261015141319.88393-1-sj@kernel.org>
-Date: Thu, 15 Oct 2026 22:45:01 +0800
-Message-ID: <179207550140.2.6042983090152523193@gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AA80116000A
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQHjGx37;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 080A24373A;
+	Thu, 15 Oct 2026 14:46:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A611F000C4;
+	Thu, 15 Oct 2026 14:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792075570;
+	bh=oaBE09sot4Sjh/GN4h0+OoAYOe1dKUMnd6MgbTjvFrI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gQHjGx372xUzwScy7l7ebTZIc2K/J6GCYQ55IL7orWB2Mmp/8Qj4LX4olQu2gF57n
+	 V0B/AGqzV7zlzMAc+TKUiabzbVHrJ/uHS4AIUaoCWLdCI8PPR8T9i56gCwmYrv2EJA
+	 gcs/v/zOLjQfFUEJlYZABNpn2kspZGm+9Fne+xAr0oWErPoI0rb5CGsQ/GYGtp6vbI
+	 zEC4Qe9rVceXVtR8DUxd31M5VzsYQlvoHzWqTFd/wUsvtW9M3nlNo7s6vbXIqBmEn3
+	 IiKqMPqODnv2iyQfPLPGS8E5kO557TMgQUmBP2izZf9rtcQg8n/qsiNXUtfVOwwIjx
+	 liN3DwGDn4x9w==
+From: SJ Park <sj@kernel.org>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: SJ Park <sj@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org,
+	ackerleytng@google.com,
+	akpm@linux-foundation.org,
+	chriscli@google.com,
+	hannes@cmpxchg.org,
+	jack@suse.cz,
+	liam@infradead.org,
+	muchun.song@linux.dev,
+	shakeelb@meta.com,
+	ziy@nvidia.com,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: Sashiko change proposal
+Date: Thu, 15 Oct 2026 07:46:02 -0700
+Message-ID: <20261015144603.106449-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <9139A421-50DE-45E1-99D5-4EFBD4225A98@linux.dev>
+References: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E61F3160005
 X-Rspam-User: 
-X-Stat-Signature: r5eb99diwh81oxatfuezmf4e9a3ehtkn
-X-HE-Tag: 1792075564-579906
-X-HE-Meta: U2FsdGVkX1/SO2VRF4DNDe24nFvRk0Mg/VqHEHYdAtLl5Jw0uJQN+lzEQhhNFKPJpU/69aBA2cgbWCXZ0PwIdraHNfZNVaqA08YC9vwI0aQuWBA2RrbZExbTNcGKueBFDLAbzrXInPy8XW9cptCQdFyTuGQWAHRRJ4tbKNo8jzXRMV+sfIJprFP2l8wmYenrZ7Fs9RCP3V4FTNS0EJJJM6C/msL/mKCsv4dOgUoWx9wqN/CPNeQWK7z7JN/x/7nPv0HOq0Uo69lrzOpCnXE71zapQ9MSximkS3MlZvF/u4wmgJSSyOCeL4NFOGPyJTmUkWtogLtoNU8Bx4pbpeBBtLSkCCOAR+PscvRW57u9cuuPz9jO6PMfxiZAGkx871KZ+4HBf/TNkNCrVqMjyiw3O9HJGRDV/VYoEpxvoQViUg9EvGbVWDpeTmyESkOovHW70rD7Ag92dMOIahy1pct/rAXsEDEKWuhKOcbTS5Y3FPbysFjn4z8B/ZNBo4vh12Q5YcbHyonoFX4cHpVLcc2a4x0yInD2pLM94ynIluI4f1Vbmb7WGhgSSFkfLJ1/mfcG2Grx84E7HDpVIUtUt4lf7HA6OdM/3EmTUyhxOh2Lv2cPFZzmDOPHZWtebKpUB8Vl1XF8Z5LfFR8jzOkYtSO+nLTl9940F3fTVSNotSDlp6AEZeJex/vxPxuH/6Gi9IKepfhQ1zNL72hFEwgvvXYN1pCaApoCHkFFOGX0cdC1MtEALZHfYbgUjmgRCHQho+x26BhP7I0Mb7RTvo3DBkPKz6Dxm0ixleoH8k66IpZinE/h5HuwyjxEXKtGWKv8WJAvMUbXBkopBF9j7rxCdvnohcPyoBaNowp2Ae3jNeYqKALbPLut40/Q83QGTXCJaXBfoygY3XHjQQ/DpmzUUZs1CLLG0m5pKK3EJ2+qw6W1T7v6Gkc74CFqeR+HRuD5F42OoegW/G5b600oV7ThuZP
- HaX3e8Yk
- OweL4yjJFBkQIQ0ZjIljjEA3Ioi2+nmUm3fg32rSN7/P4FmVa/zv6W3z2UZSMdKOL8SwjLXtYyKeTZVwv/Qd9jq8TwHJbBjQQILZ2nb0FdzYoTnxVSYRmIQSXr66Dp0xG/w32rJkIunHWS+oOxw0/fkUYI9prFC1pIMs8sIYQHuBldyKMI3eHNdUV8k6tpL/Im7Y3heAyQHK7RwKOX2ZuBYNwibZU9Wt6JhsOh9b276zjkpacRFNEcycdizodAiCpySpSgVED4j1cLS2O0Exb3Vawgl83/AIuETGMBrCLY/+GanNiTFT61xSj8/PWYnIT+tuLC9UsJ15I2njr5Y3mMVBkZmZ95HoC3J+Nr5ObOZUGDwMgqwiqfnEIBEoroDD+v34BNBdQghabESw00/QYp3AtnltampK0RfO8uHRB6z+G5vg+zDiIognieG1ViZsAo3kK/H3nKhJvZQhrWatP96Rnf0DQnsI1qv2xmJg5TKYn8xU8WIkgY8M2vw==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: c1cy4gkxapyed9dfrzn8fdfkmxefkbf5
+X-HE-Tag: 1792075571-639857
+X-HE-Meta: U2FsdGVkX18+/Z5/9ndvh2MckXiLrfKZLBX/SmRa7ZXxGCNkWtDuoWI33U5a087n7HSwAXLj55JJN2SeJzPkEz2R91ktVUODkeq5qR85bLbsE6kdRHIIZxQmbx2SgggGAe18tuU1WmeqzsIiPDPIRBJnTdgnnvPFct//0c6Mq2gja+vZOzyTPK5Pxf/GzzGnRmosbE86w/Gbp92j+Syqs89Eff+ohJxFL5ENRIXQVokFjkewe3gGbhhvvIdLyiV419JETM+bW/60NX5YSQ5k40O8Qr2nxDGbIcLu0vSSeKrfbgXAWM5tuZ/CtXi7peEQJWvZsR3HL/BvisstKiziWv7S+mA3iZvNoyh/cS55pRN5NxlEE1bn9ZtvEpyRif2UKS25GU3xVEk9fFVsVFjGxU0KqFZ0yTBaoc/4S3rOe6ACXtr79NJ/gsIKGW+gBkWtq4R8uMwoieMGVFEKbl5HiNmqPI6z6+SuLi0AfP2WEP+ho9qf0LqKovNcdwuIMnIbX41LutplkJtsWrMqjG4e3tTXdpL1eaY1Hjb1wow58LQaz0Vv83zxEEp5z+/306GTqII2o8V4cuBhUsCWrdSaORTDZDF1B5BZofoYALrMmbEpGkV+6xnqCjkuaoCwbPUVanedwv+MgsYn24ordLl075++TXAhWIaz08+VYsAGw2hQVFhF1yibv6BgK5Tke0YGhq5ES5ujZeLko75pJb9omI9a+vqT6MV9pIT+WwXlRD5Kuhk3P1gmRrkJkMjGupjC3wq8dcAwFeoooNPpKTCbk0cK3PFLml/834NWiS6xthsesviT7H5JZ3BKIv+h5VsF2JQt/xBw5DR3X0n+jsZ1VFz+LRd5JI5OiwQBPNfy0UcqaGI9RfA3+9yBv+J144/LdldmG+0kwgWGdQ9Qn0cUukGNHv7t8R1Ww517B2Mayz6ZOdyWTvOyKHSO2HdooNAHvgskKksTaWNqT881arX
+ qbbIqRvE
+ gemsR2Dg3zYhi770uKhdbZ3+ka/zr6Rqc3d4uQMT9j6+yXU3kfo9dO7nNR3wEzf76BiWa7bMe5cJAgBUqc2n4nb1dLyMay4UpUfc65J77QI1z/Z1nso+bvgUGlb/1DPEmr3DKx6HWxhZeFRtDpj04cBkBOu95yYRilLeNX4QQZCdgXWmt/4iPZ41vLGQmrttykdbt7418xD4+nBQEMLFMPuEY9xmgbFrPh1QiuEfeN7wNmg4xTUl0RHLtGvPX6gLPFQCjbnLqJPDSCqzXxC2ET6zdMttoZXq5SkCe81ruF8fbuEPb5o/qumhNfQ6ElANwZCt1WvrXfzBEHXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,17 +107,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+On Thu, 15 Oct 2026 05:15:05 -0700 Roman Gushchin <roman.gushchin@linux.dev> wrote:
 
-I haven't seen this affect a real workload. I found it while testing
-DAMON_STAT on 32-bit.
+> > On Oct 15, 2026, at 5:08 AM, Harry Yoo <harry@kernel.org> wrote:
+[...]
+> > Quick question: when are maintainers supposed to lift embargo?
+> 
+> They don’t have to: it will be lifted automatically after 24h (or whatever is configured).
+> But if you as a maintainer has an immediate comment to Sashiko’s review or you’re ready to pick the change, you can lift it immediately.
+> And of course maintainers can see review results immediately.
 
-The upper percentiles can stay at zero or keep old values. If someone
-uses them to judge how much memory is cold or to choose a reclaim
-threshold, they could get the wrong picture.
+The maintainer feature sounds cool.  I was wondering how I could do this in
+detail.  This "What's New in Sashiko" [1] is kindly explaining it.
 
-I'll send the fix and test results in a separate mail.
+: Maintainer embargo access & early embargo release
+: Signed-in maintainers can view embargoed reviews immediately without waiting
+: for the timer, and use the new "Release Embargo" button on a patchset page to
+: publish results early.
+
+By the way the "What's New in Sashiko" is very helpful new feature.  I will
+visit Sashiko web ui more frequently.  Thank you Roman and Sashiko team for the
+great works!
+
+[1] https://github.com/sashiko-dev/sashiko/blob/main/static/index.html#L1894
+
 
 Thanks,
-Aveline Noir
+SJ
+
+[...]
 
