@@ -4,89 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35BEECC6B3A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:28:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25B33CC6B3A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:31:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB3B16B0092; Thu, 15 Oct 2026 12:28:09 -0400 (EDT)
+	id 3BCC16B008A; Thu, 15 Oct 2026 12:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3D036B0095; Thu, 15 Oct 2026 12:28:09 -0400 (EDT)
+	id 36D236B008C; Thu, 15 Oct 2026 12:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D04606B0096; Thu, 15 Oct 2026 12:28:09 -0400 (EDT)
+	id 283BC6B0095; Thu, 15 Oct 2026 12:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A12286B0092
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:28:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C43E12011E
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:28:09 +0000 (UTC)
-X-FDA: 85325392698.07.05848C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6725A20008
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:28:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XoDoNgJY;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792081687;
-	b=W61q5uLXDzg/aeq2L/wQyXg++CkQuTV7QDt2OktmN1hDwZfPx5xOCamLzXkiMQ8UU5PW/8
-	vuj5nXVRYF1ukCad1R3MwhQesbYklai+/HNLo3wXj8++f3gN/gcCeuWEyQypiaJM8awuWL
-	RhktROswKj0Zvt2P0qKe3i6Ie5nFSPI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XoDoNgJY;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 05E896B008A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:31:15 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E71EA5CAC
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:31:15 +0000 (UTC)
+X-FDA: 85325400510.27.F75471F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C27024000F
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:31:13 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZFPC/KMz";
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792081687;
+	s=arc-20220608; t=1792081873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XLnWwWNMPSm6y57bf4F4xUjaAeFj35H0VYjcsc11Jog=;
-	b=Mu0/cvuD1OiLt5aDbDYndevLud5+Cbos7zzbe3ftMxMlJv+9st2qDodc2ly/PVID8hHEua
-	cTTBAPonv3XcjEY14TsNPJOJWTzzwVJ9wpUlJXKyUEt7k72A336voobw28XpcL+dXjvtYq
-	C0io44z5rlFcVqRLKzu/Yq+TiXOQpZA=
+	bh=U2FTBC55kHlfmFsiLIJXZR0ZuKP9p6FEbsh8MFHa/Xw=;
+	b=usBhW1idJ8Fdh/XUj+DPJluUogxrire4Y1wMGdM0sHl5ndyXtqwHopxKD4THQLG93QbIKS
+	V+brITkqSFaaSIq5WUjYSDjx4NBWKEJGjZrAtXWkK+Llt/tgHib7Wwb2XUAw/nrpl8te5U
+	jbm/fw3eluxZJ3mP9rPdnrdHwHYusdY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZFPC/KMz";
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792081873;
+	b=UV3JX/yxuk5b9yyDma+3ftWOL03Jo9t2luT3h96QKkABhPPTwVApz+D5dLooJ6wszgX+0G
+	lLReNtskP1ZmqH3iIQA5u6Dckx6J7dhlW6xftSO5vjqAAXzwlMnRwwYW9kYyvTE/x+MaE8
+	ueFGwvvNU6K6HL8VzEdhX6172bErTN8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9CF5E41881;
-	Thu, 15 Oct 2026 16:28:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6661F000C4;
-	Thu, 15 Oct 2026 16:28:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4DCB6601EF;
+	Thu, 15 Oct 2026 16:31:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047B21F000C4;
+	Thu, 15 Oct 2026 16:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792081686;
-	bh=XLnWwWNMPSm6y57bf4F4xUjaAeFj35H0VYjcsc11Jog=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XoDoNgJYJMqr9vyGRiW3ypkgKBopgiUuSRDg6wNPKmdgpfrW11xHPPaLdEyhNhDW2
-	 YUWvLh5ZV6hNwVJOcu38x0CgKFxpxvreAHI/1jqpxTxcGmC5sFaPZJYCcY0CmpkzNb
-	 JWi4NEC9MyrEPpInNFS8cqXGiLyHLtLA6k7Phsjfs8vDXr+ddqa90jgGpwSoINykgE
-	 xJo88GhhHwORpaTZvHUTgfYQIK8eg6DnI28n27yzbJ468Gs3XIn2Nkc4xJeM3R3GXg
-	 zLKQFLzJJxiYcXKBjL7TsHfAYCFyKYddxGlaniCrm3xPQJye5eaISd4aI8RSy6mnXN
-	 AHqD8M4tv4JVg==
-Date: Thu, 15 Oct 2026 17:28:00 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Jann Horn <jannh@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
+	s=k20260515; t=1792081873;
+	bh=U2FTBC55kHlfmFsiLIJXZR0ZuKP9p6FEbsh8MFHa/Xw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZFPC/KMzqnFDT+QKGQ+FgK9734+xFyYL0ffRIrpYpj6dTn6pK0dYlgTzh+mtRfZJk
+	 8QiotR2D5nfLbgGkEMe2luxsjzEvPXzG57QErp2r04JhlGxF3Xf55WYVbqCI0J6wb2
+	 fU44SFZykcwhi9tTyJ2BjtHYRt5qdtQJvlwlk4604zQHkaFVr3jrbKA5/K0LADHL7S
+	 xYzKZaKYC5aN+q+Yj3UxpsD+Z4vZjjgC6RGrq72kVogO6TBnA8L9ESOy8YDtL4lEFZ
+	 MM9ppYBIhuOhtLH0qRCu4SRpV8L042BU3XGyvJqusOE5jAqnRh5IbD34ly6dYrIuIE
+	 Vht0gLJm4G85Q==
+From: "Harry Yoo (Meta)" <harry@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Karl Mehltretter <kmehltretter@gmail.com>
+Cc: kernel-team@meta.com,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shengming Hu <hu.shengming@zte.com.cn>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: prevent VMA generation reuse from skipping readers
-Message-ID: <atD8jesRoc38xF0J@gremlin>
-References: <20261015143735.1630957-1-4ncienth@gmail.com>
+Subject: Re: [PATCH] mm/slub: initialize the free pointer of the bootstrap kmem_cache_node
+Date: Thu, 15 Oct 2026 17:31:08 +0100
+Message-ID: <179208176814.13496.3999707949555956880.b4-ty@b4>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261010203906.93156-1-kmehltretter@gmail.com>
+References: <20261010203906.93156-1-kmehltretter@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015143735.1630957-1-4ncienth@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C27024000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6725A20008
-X-Stat-Signature: e41pi7n19bct8sk3f98or39ie7u4db7a
-X-HE-Tag: 1792081687-147564
-X-HE-Meta: U2FsdGVkX18nZEp/GGlxHh1E6R/H58nwOoHgptoEZOoQuRy4Eq8IhTFBGhMij+2oH/cqiYDar5AyAi4uy00bIdXPHkv/3EgmQRr5lS0S6uETIxiWJ+U9aCUw9nrSRzd197aJqkKYTS77IjKjbQiqZ4ai0aVtAS48L1QY+kaovW4e14uqMeq8faq1aF5rByyvb7VdI1hexRnSa34y2nZM7foViHUNXwyY98Km7vrN8BJlS1tupujRsSTXKAmW7F4ZXqdT/5ZORY73ZHD9gZ0xROCCxic3pk2ihjFPcvgHIk/ATZ44Hxjfd2dXNt3bcUDefs0GnSnXBDKm74h66fK4rUyMF1P2piJmb4hi/8zYucMu+QJhDOqWeqdSn/qMW5RW8BElPhufSwL9XWYS8Ov++lCOG6xIGDbiLFfnjA8t5mmFb0Wyhu2se2oWZxaPgEnlQfGZ908vt10uJEUpUf3BNzFhBVfCQoUyAtgPJpu5fnIP0UpVaklr2rG+qukMr4kX/q0jb4IOr1C7aGeNcip34GHzQdUckza3Z5p1yGO8iV3KmsKbomYasDu6+F42L9C/F9t6zmr6Mo9ZoeOAznYhgVFvEyV6qqNrBHRu3im2udCgv18FbhUlYBjuz2igB+lzw+jw0H+DNkJ7hu3eEKsKYX58D2RDtvXRdqvhQD1CSAGmdlnCBsc+FZKnnkVY0H2YTJoVsJO1VT/EXbdHrK3xiXdqI/vWfVLqjZyB2qc5YCYU7LZYwnLSf6uK1egoWoyzWo6AJy25pNP0B2K0ekq/ZuZc/hFP7iV3Pqz3l+OjGO+ZFT26bV7/i+eG30Rjil88oOfiBVakQpBQnyLqAncy/4D6xdORJ4XJgNPKSl8FGjlTfw8KF3klWMZ/ipqnokhRi4mrxRBgax97Of8YmQgCgYp3K72wVzDOylkqKf8oEBKrqEoPEozZELSZMOUlmWJDNF8C2ApTG1atgMVeE4x
- 2ke4M0bU
- BfXepn93GATpznF9tkMxGbiRtX65l6P64RsWNdz7OsYnSK/kKvD2AYyug8RtOw0QgWLtqrxpJkSz5uTNbE/O7Al8aNQJIarDJz66R8HNktdul6+d2r9zYwyconcvMZVCMXzw8yDo8q8oKb4k/fU67D9jtwQDMwhzf1cQh90A55/F1OhH6NTR/gLFPcW9vQv+MDk9mtUjGAzfiDqmhJRGTrfgFXLUPV7yVhpRB256YgylZw6V6mKBnvqCxeQLlbDE/cniT
+X-Stat-Signature: jr8n31tadz5be9wzcxa3e9k6swjy4efo
+X-HE-Tag: 1792081873-547361
+X-HE-Meta: U2FsdGVkX18Rq8QykxzoC8xssLmW5+WQE8ecbSnRNSt1rWtu8kST1Qr5QW7tANoQUSOcewbhnROwnOX1h3XdH0i7C3Fozc9d1syITZfLlnY2XPIXNNUrAU9XHUMxtRqsUkUIAFMWOvIsG6HjJd5g19f7wYGvX4LKgfxYmYpO5uw/63YIgv7ftQIVKV+vbDljis7qs+Wm0x7MDs4VRy0pIwI0b198r/FTZ8UGUz+YrYXV22KkBJgOpEd1H1Tz43kHkBiaVR6MqFTW3jlyr18MNp3seFaxFCIUhNxIxItlQzeFFlJvIepbd9F/U+v9xnxbX2SH0evFoUIrNiwlDAKNtRNOv6KHkMAcWWi4AJF95Fc+63sn4/7spT8GSc5SxaRV9jPKgEzFVcWNF5CAUXRQ0b6Zv3u9wzVnUDoobeqhOYupZZXQbWtfuuyC9185fdVghgCG0O5JmQKpcA9udhYPzdKw9l5mHOvDfIzBsMhTQNFGwWTa16snZ+PLHIM9jLyIjwGu0/MGW+D16eUUyA5OAOVO6N9L6YPXHT0/4ruIa4fpBcuqCX75qMss2FMdf2cGzfj4Z5v6bU8rRiVbfRjHuo/QAzxhZm/99zRdnDXc2xyyK6j4rW4/o6bMX7Wp7kLmGvcFGnHKt+NL3Pv3dHdb85z4J404VxfO6f7S1yWHstwUSFigQr1iwpsDsNv/iajtseM6XkFZuj5m86BKczciBXQEUOZ5MtqAxkM/bowp5lEIScv+YxbnkxU+0puUZXH2HGffHA+QZ8lSUftabmNAgJFEymFVhMkWp15xn6Id+A/J61+dh1TzVJMNuEOyIut6M1QXUiu+GfINClo5ldW/8nHJIUbMw5q1VSYYMEwWAWjLUs29FDByDgN3pXnhzLCRpS+XbsewoAd1jCVPg7674zEzYm4rcndfHvfc0PDPcuGHHhkJBlNdY89zFxtSBWDwoK5EMMyLxNwWaxUtnBy
+ ofPvRJj4
+ n4L0j2bpjG3XtcpjJJE1nrmGLI5UTQO4R4OzWkI9BAtEuTLXj++nb2ightCtMOsIbHZLgLwZ4AtCxibrq1VAsECq0KLTtjzsTmjFI6EFpDa7ZvRbPmxmsUruUDG0wmyOiNLR1Ql3N7Y206RB3Tk66OSuZB7AwRkMPXUqfob2tDmCLQj+BhuuALFFtnu+Zi8wY4PuCwRGJ6tC/rT+Mtl329WlIUVY9M6VXqK33CRdJkLhYaUNGrDyv+M6RE9pleLPBHPEflECtHcSLICE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,23 +100,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NAK.
+On Sat, 10 Oct 2026 22:39:06 +0200, Karl Mehltretter wrote:
+> With slub_debug=FZPU, validating kmem_cache_node reports
+> 
+>   BUG kmem_cache_node (Not tainted): Freepointer corrupt
+>   Object 0xffff888000140040 @offset=64 fp=0x5a5a5a5a5a5a5a5a
+> 
+> and taints the kernel. Poisoning places the bootstrap object's free
+> pointer outside the object, where check_object() checks it even while
+> allocated.
+> 
+> [...]
 
-You're making VMAs a cache line bigger.
+Applied to mm/slab.git slab/for-next, thanks!
 
-Since this is the second time you've done this - stop sending patches to mm, we
-don't want your AI slop, thanks.
+[1/1] mm/slub: initialize the free pointer of the bootstrap kmem_cache_node
+      commit: 10a5ff7555ae3042393d8a662a25dca9b38ea415
 
-(In future you'll likely be ignored.)
+Note: I did not add Cc: stable because it only affects slab_debug users
+and requires writing to 'validate' field, which requires the root.
 
-On Thu, Oct 15, 2026 at 11:37:35PM +0900, Daehyeon Ko wrote:
-> Both values are 32-bit. After 2^31 complete mmap write-lock acquisitions,
-> an old VMA stamp can alias the live odd generation. vma_start_write() then
-> returns without waiting for an existing reader.
+-- 
+Cheers,
+Harry / Hyeonggon
 
-This is really unclear, I guess, as before, a member of the core team (likely
-me) will assess this to see if there's anything actually valid here.
-
---
-Cheers, Lorenzo
 
