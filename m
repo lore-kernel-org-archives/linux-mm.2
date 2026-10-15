@@ -4,136 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6692CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 10:02:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E79CC6B33
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 10:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C813E6B0088; Thu, 15 Oct 2026 06:02:15 -0400 (EDT)
+	id 549046B0088; Thu, 15 Oct 2026 06:17:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C593A6B008A; Thu, 15 Oct 2026 06:02:15 -0400 (EDT)
+	id 4FB2B6B008A; Thu, 15 Oct 2026 06:17:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B703D6B008C; Thu, 15 Oct 2026 06:02:15 -0400 (EDT)
+	id 3E9476B008C; Thu, 15 Oct 2026 06:17:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 99A706B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:02:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BDEE6C04EF
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:02:14 +0000 (UTC)
-X-FDA: 85324420188.23.D03D3EB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 072C510000D
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:02:12 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iko2b0kk;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792058533;
-	b=J6DSnTAFRJ6zEoPZTKjoFJ+rIcqHFpvL6/AcfsZqmBUlnh2xEsCp68w8KVJj4rEeK1Yre/
-	r67WiMprFpckcOCNm8hey7x9MLA2nxWfjc+mJhE+H4oiHBARSqBbkGZuPq/RaaWOAnbWzP
-	Mg5BtiH8mxznKdjICX7tI6j2dtB020E=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iko2b0kk;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792058533;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C4E16B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:17:00 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 995D8A09B2
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:16:59 +0000 (UTC)
+X-FDA: 85324457358.02.1BA089F
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B59F3140004
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:16:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="OvBh4//J";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf26.hostedemail.com: domain of ampr.mhd@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=ampr.mhd@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792059417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Pqi9+FJ5ewTDOrXx6NJLaiZDN05LqWUpfO1uWA0Wgw=;
-	b=EJv8q7k1HdaBXFjjHQJmObXkc6Z3qc5qOCVbEKOAVJg51rP6NIKs+ccej/LDLdVXR5osLf
-	9ZeI2nU6AKSLkzg68gywiZAO0WBPl/ykEDC3jWeGD8Cd2sKAjUnFJf2Rc+KsLulO4oSCBK
-	6Lycz2dJIGONWakOhYbpwmKIj/8qRF8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C3D9B60120;
-	Thu, 15 Oct 2026 10:02:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256631F000C4;
-	Thu, 15 Oct 2026 10:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792058531;
-	bh=5Pqi9+FJ5ewTDOrXx6NJLaiZDN05LqWUpfO1uWA0Wgw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Iko2b0kk0bIGk8QVSE1lc+78pqVzKqFb/c6PX07rt8o/L64rRlfyLiAwQAvvm2D2f
-	 F1G7/yeHsYCSltPOKzyG4dRvWl2wAq1Ha0lYOadrYRg8C/7VlDR3MhOfmEOuyYI3O6
-	 1TR/hjFFUBSJGsWQ/bRc4w/sr6l1jJFyO4MqJ+MrCO//h0SsbVvwQv9lwP5HZZqHsq
-	 xlBSvSeMPrQFaVZ5njxYJNPyR9/+2VYRrfm/xfsKCfbTvAsehGYV3ndjTxJxoN5hVZ
-	 jav4uXA7zZ5PVeUMKQEjlF2ppEl4ByteA+ZH9MsjRxFrCuLnIOu3m/+n7yq50ydTGC
-	 1V4mGjBjkdvAg==
-Message-ID: <1f36992d-00c1-4f74-9947-b543ed794cf0@kernel.org>
-Date: Thu, 15 Oct 2026 12:02:06 +0200
+	bh=7RGsYQTIYU0+A9ayCb7SrWoBueBztNc5suUM+fjhzoQ=;
+	b=cv3MzvTWzKbDFlFC5OZspA0PnAl4PK/nhUwgDZzpclUN8JvxqDAsC0OVrubQsAlBn4X5te
+	FdDFjwXIn5JuqgxU64lGlW4CFDcgF/0MJMpaNgo+EBjRXcExnNWzBI6LHZ6NZdoptj8dXB
+	W43rECfQ9sQVLbCAOmcPSsgrkVNvLo8=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="OvBh4//J";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf26.hostedemail.com: domain of ampr.mhd@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=ampr.mhd@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792059417;
+	b=Od/GPAn+0VPyuTOIsKi7rUnwHc3zaIkXLX/8LFDDWbR74ZNTopgGzGCaB4TGCYOj3vQ+2k
+	9YcCu3gN9srUWfLgmfrCxfJvzTz4KDRrUGpmWvvmQ272xJFbseE533lgfyKSm+uV/9HnYl
+	KYLkhQXFbyXiFtMG0lFpTbcqSEsLGoI=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bccc73eea4so2590193e87.1
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:16:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792059416; cv=none;
+        d=google.com; s=arc-20260327;
+        b=A128gCmE4E8toYUQqNF9NXGgrXZlwUczUj4ibHD5IBAMG82E3rVhkP8z2yhlZNDIdg
+         v+qLa/PLy/P3Z3a5H0BSrY6XXUoQ18mjy2BC+sb/2JLHYHIzaTFS1LyKKDmKFnDPUwJR
+         mWKNLbGFpJW/mDoqCatGBqyhwzPtUFiKACopwm2JD+LXAKbgXp1Wk4JTn7CydW6VvagE
+         rourvHLt6F3f8Ztc9BZ67Iti/s4XWtYhmyXgDLfc8mFjq9zDRsdWToBxbSMHmrHlMKj4
+         fLsuXRcDzljItfH1DD90U7NnK64wcKCz4guf9oOCsUOMbcJqXqlz+8NnHS+6zftym/eo
+         DqKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=7RGsYQTIYU0+A9ayCb7SrWoBueBztNc5suUM+fjhzoQ=;
+        fh=ziShhgjUKaeoEV5uB3m+A1p1+MMLFUBACjcnKpp4uKc=;
+        b=bsazaZmjGnkHFc0Cp3mIFjhNowa3ZGmj5Yo8DE2MyN0bH9mz2MknxIDkAYix+EFqRa
+         YsD0U6VzckdrZbzjz9uBthpqoJ4851OAV75Hz8ylmUn25+OXDYWjPz4+ictXfdb/twEj
+         Wv7pZW82EIqQUVgaAGOkWZRJspJEubsrCm7CTB+awhLiwFHgQX2LkGxCPi84qaOAJmxr
+         3dXYCksVuU3LI/h7VYQ/pu+GA1m20Zd5O4Xe8E8wO+0ZQmQBUM/JiqrfttdPSLlE3uMZ
+         mxRJxL79pRs2eECGiwV/b+hGKPC0KyWxjTL8u2FPTAGxFshFWYsaktkuVvbfUdyr7jue
+         ZQxQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792059416; x=1792664216; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7RGsYQTIYU0+A9ayCb7SrWoBueBztNc5suUM+fjhzoQ=;
+        b=OvBh4//J68qR6RsTqd1VSw+MIrc16USXNjui1btXwmJyU8r+ozLqzTfXNNyv42IQ3C
+         feWP9/3vkwQjNF5n3cC44m9qZR3sYtPJbniWILnTHXjPxli1IKtmoa1s/fDlIHTD10U2
+         QWSPBfEvnliN4/rKoWUX7c47WxPhPqUL1TEr4Q0/E0QasQfRyZcKofR1v4gFt+deRqX2
+         SFzwMd2Z7ErgyKnn+2yJTdcePfXaW3g66XWtAXsLh4a30gD+f6ucXu6HnK3GlLWQ+r+m
+         8BIhK1eUoECB1YiT9ggBpTcYrZYAvw6XGGdhTBRwfNuqRRfpJa1goZ3cWLSkaU4yLGLE
+         izvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792059416; x=1792664216;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=7RGsYQTIYU0+A9ayCb7SrWoBueBztNc5suUM+fjhzoQ=;
+        b=YWqW/QxUu4NIHvqDWn5fK34UF1+YKybW/XM11aUb6eCRCgZ9FAFn4xS1GM3M9mwAT3
+         zHjKDiAEINcQNwk9bnrKrwfRsjqaA1TVyPbXta7+HmNuQiegANp5+dK7kOHeWDcEcmXR
+         vtjVkUh8G3gSRBspx3q9d2CoUcBe3kg7+q9dE81hL4lK8gYUs9aq7Lm2WuSSUb+eiGxo
+         I+71/u73YdJAPrZsGke9/pZ0sg7pkRX+UKTD4oKhscWnganwSVlMX4t6pDdz21ViLwTO
+         6TFpry3qQUOWh4VfxXXRPm3U9b0Er8JIBmKPZ5zPvE352xOHcM4F22IIp5H/OZlInfxP
+         rp1A==
+X-Forwarded-Encrypted: i=1; AKwUvBwdwVUo+VMLgLwFuB72af4z407JAriQ+qUt+10S/wwPiIBtPlyitgepR4MLz+ESiz/+fQlfo9vTDw==@kvack.org
+X-Gm-Message-State: AFq9FYIWzdVR4QfVqMX4Oje/QetPl6yv4IUVhDbEra45jqXtNvet/4AC
+	jRhG5HHkCV1o9UNoXkfZgxUl6u32eaJjwlq9uPCrR+dAMvhGpcmIiyNOqhZaO9Al8fHD/atqfGI
+	gYHJpW2I+XqZ13wZcH49a80MAnovE6fg=
+X-Gm-Gg: AYBFou2S4Dydcu51Rw5UKtDRf7XDOcyKGBeuc5Z2faMzBuB4IUT9jOj4KXSp0S1loYd
+	15di7DClShBHjbT5IU2s8XNHlQsBLlOKTfvbX4sTVdjxHK1WnNBDU8wETdurewuPUz6/v/nvsml
+	z5DaPnR1LJFVEWX3QF+6nvkCscgLzBHiRbOhRmH5L1PHmoOGsMpSZZasDBEHPqFVXdoeu4VhzQB
+	TJi6SJMnlPveIVpDjXBPkXTMjDXN4MOvz+qeXGUyDBWpSqNtRLOjgPg6NYrX+WSBAJO6bEhy8GX
+	B3k+FWVGBPvqgJuKMf9bxGLFIb3ES3k3MlEsobJr9m8V8+9yg7VWie5N1/VCFiPBZAKbOs56sj/
+	Hs8tyDaqL
+X-Received: by 2002:a05:651c:1ca:b0:3a9:787a:fa1a with SMTP id
+ 38308e7fff4ca-3a9c55db202mr38052981fa.15.1792059415520; Thu, 15 Oct 2026
+ 03:16:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/6] mm: pass alloc_flags through folio, filemap, and
- bulk allocators
-Content-Language: en-US
-To: Gregory Price <gourry@gourry.net>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, willy@infradead.org, brendan.jackman@linux.dev,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- kernel-team@meta.com, jack@suse.cz, akpm@linux-foundation.org,
- ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, surenb@google.com, mhocko@suse.com,
- hannes@cmpxchg.org
-References: <20260923211041.3127588-1-gourry@gourry.net>
- <asdTptfeLkuypU8t@gourry-fedora-PF4VCD3F>
- <df588805-6f97-4ef6-a64f-39222669bf3a@kernel.org>
- <asloWFM96BATH8SB@gourry-fedora-PF4VCD3F>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <asloWFM96BATH8SB@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 072C510000D
+References: <20261014191803.196515-1-ampr.mhd@gmail.com> <f09eedd2-3a82-4184-a456-6d8a3b0f4139@arm.com>
+In-Reply-To: <f09eedd2-3a82-4184-a456-6d8a3b0f4139@arm.com>
+From: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
+Date: Thu, 15 Oct 2026 13:46:44 +0330
+X-Gm-Features: AclHuK9c1uoC12fzsYkL10Fvj5EVj7kGyZlf7kLGw5eDqN6WJpFxOQyPoVmdJw0
+Message-ID: <CAB_t1-AdDXPaShrLZ8wt0EcGK=PXVSwFweNjvhO1_QehhzNocg@mail.gmail.com>
+Subject: Re: [PATCH] selftests/mm: test mremap DONTUNMAP with locked memory
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000e0e82c065dde584c"
 X-Rspam-User: 
-X-Stat-Signature: 5mwtj3yymdr34ohk19nf485eo4jxbkam
-X-HE-Tag: 1792058532-764297
-X-HE-Meta: U2FsdGVkX19+hPnDJz8zCDk5yVkQcz9Ny8UtnklSXqlx+6n2lwA5/gNByUrwXlVgX83v/COOJmC5UYpjTNvASw4uKpjDRpv81X9XLAPNIC7JxXN98pnJ7KvA5aUkPX+PpIUmJZ/22unzMpP/sxINZSI2V9GbhrEpzCYbyHtGvAsrdsylUaeiEkBcp4iGnIca48QbC6CragFXdxmRXfD9b8LbFbbN+1HBsU6Iyr87QhlYgth3aUlNcTAyy3yAxDWkEDUdn39RfWOfXU608Ph/+UWOVR1g5VsBTOMyK/Bgr/T0CPKE6TtpsJ+97tQ0pe0BoRBFpo6TDka0Wx7fpzG8LsY/njPpIYCyGScFmmak9VWVZsBg+PCxku1C3jPKJxy3M6FbC+pnydQ3BmOHHXVC6PSb4YANvrnFAcUz2jfzOJBYGp7CluD6PSX8gLBIeJ90TEOriSMN77j+14Pl+x0JXHG2MrsdKqNHoGYtKlt/E2Kn+ckRQJj+3Qh2fYNwuNafKFDXbOV2KpsymrE9lJ8AJ4RTopfjwQ95o4pKnQ/bYHbEbozyaNNWENfO/HA++2yYclGzXT2ybkwSs/wzqTRqqDiOCMDbfua/GyysIPw7cRrIm4HpHPf8RinSaqm36sS/u/l8LLPc9ITakHblfXchL7xmj8D90Q/wlAE6m+fbIOm6kc5GN0oSCVdP0g9q8X/3NaJojCJYZoep4SYWJSwXuS5O53Xd0G4XDZ2jN8oLflQY5oSRNkB7PvkS+RUUzCcFqYcTWezC+mRjBnjr1434RH8nEAVUgYWAM4JAmEOpb6JZFAQNARlKpnPQJ1hkdeTNCLxqeZuzDrJntHAfwc/XKP/+7zO+qQ/bUUKvo2O1r8FXREsD0ymtQbb3qHRlV36CFKzoxQVstR80dt5BXePnl8nujI2NKK/tKVBneUjWPTm+Lt8jMgNh6r2AhhIVPP3ODnMWnCTf1BqrI16QCJw
- XbKWBQws
- /AOBDrVW2MDoEAQQ7Rv3/SKP1OaUlYl2WRlQNMGL9gDXEDV92nsbifKsFKm8s0os3g8M26VZV64Ithia7A3WRKMqmawe6Y4dshDKF7t8BG6/W8M77pg3KiReDa9fFJa9VnfFAFHL5csziSMk5HE5Ip6s7ejXUfJX72j3+VuksL2jxu6gGqmEf6WDxWlkyziYRmdoalofLZbNy5MUehJESOK6xcfOt0OKdRfqoXofLn2ZbW3NkDQ36XdAKFhTTpoS74Ee4xWulrpbqa15YlEIKLKJjCOdBtXO11OOiyGBcEcs4Sq7kFFzQWZ/rziRw5ggNlqJuN36e3Kqz/fFIrSelJAB3VB61NdcZ3mvdjQnIO4v4kDFrzKETPUQbQuTEudfvZmcV
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B59F3140004
+X-Stat-Signature: k8ptt4tczokdmecus5je7n57ryrzk3fg
+X-HE-Tag: 1792059417-47670
+X-HE-Meta: U2FsdGVkX18nSC/nxEudWusUbblONDWOlMuctg8/UrOVWAD0995dBJNOVKWHX4zkMltbSmeAC/pSwUvJgI3cxS6nH9mYhIuudJKZ6IQCqWrRLDFtUHQoOm630mPj32VCs2IEa9EkFXPYptVT+97Tqvz3W45CBylGLNSc+/bWF7mD1+xQLZf5v9FKUbIgiAM2emuP3LUhtDsMS6kYcm/P2bLQoVra70FMfhUvOuRD1AAx337w1n5gnyEi1ziBg0P4VS0Ye/fM6u7N6aOzJ/NBvD7jxAM25G4isJfwQRjBVWMS49iClkcH+Hr/aA6jfgooQXm4e5OSBnaOfGLMs6m+XckGOoeuyLkH0h060/py+QyHkqaDX4XA8byWwlZsAycVBf0qWaIl0nl+8ANzf2SE6t+044PBQsl0gz7J07W+LuvRljPC5rsxC8QNuWthp7a8BNXRXb4Mqvtt5yG4tvr9brFWLhhttQkHSZdoqbXtGYNuCuydY+ShslcrFbPQCALaQ6bfRdH+4IdbP6MRtYtUOjmR3Jtjco9w1cWglJ2v9Vq3s2BBeA/NF8onfhHebRszomq2nMpJ2i9IZlHVIO3+VmhQKNiwLAc58OtyUpmet2OEYiPo/zSa0tSpZxFeULD8m/cdmBBikUhI8huao3P/JWZSMxHAAVG8xPhPov2EjoxOmL/97rnNahE4t6fsW9MFWNMz08Fn4yM92tBLz0wnae9nezG9M4Y1woqVvttvnQZg/8+rWtKw85rBW/p78jIp+g92MKLEHUmc27Le/nWgYTuc4JYXvuWj/TYQGU9HOEKsaHZGE9MTBV8V1U56CwznEewMYWY5Qdj5RIVr5NumeB3pr3Go8jrKMMN0P7Ls2CdoamemVWsloIjlOnoT98FY6qWsmdNfRYtXeFY5tZ3FaN02VSiOCxUZK6weMac5BKhu1BtDdJvIwxFEdlYHblneoeIXWxUVFoA8KVCT2HC
+ C2qjYVLa
+ RgD0iGBMim5yhO7NOVXsmb8Ob5n6GvksCpf+VyiaZXQnI0LSMWfI5z1GQMVD2QaOQR+vrGRAxXrZFMPoUmuuQEMxu4Two2Pap+nQAKoOwkXK4gxltuF5TXxSQlx167OC9uCEAxem/5gmj3jKXus2dWHZaYvkMYz1RMwEdBggCnc69xfDbEFYvGIvwmRXC5wWuEKWbkJToQPNbC5b+VuyCsgRDTrIOft3iAQFoih/CS9gF9WSExB+EYMC/Hb+vvWuL1KgBx1BH78d3qg7jswvyG92GJy/8w8QbOKNUu5iRkXOPRjp2WMU+PGzoccdDMg6l9ADJkmJoejPsc7Lv+7BaJAmAgmoFpgmzOY14Hm/F+T7OzySPE2TyOwgO73jHqNq8uRqK/c7JVUZOjk+A75q27iuYVjrA5YH83z2mIiBZg7U/zRXQCXpyf6okCj0FJoXZxiRDhVEMAlw+EJc2R4Plbv7XbmyAXSrn8w/o9r3TGIZJTlvgH8WP36CyLyiXCWZRR7HAd9Uc68RoUvSncxlXN1iKoG3Aow1QvDHu2oMICbF8LLtVIVGzpLIHWoXUsx6fy3jWHZ15MAGVpnN5PEOOoCCKTS/oa5clZ5yfcQYsdE1Gg7Uyx5+oxnA9R1GwHn5xiZbpbS9IQzQfd28=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,67 +137,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/10/26 01:28, Gregory Price wrote:
-> On Fri, Oct 09, 2026 at 10:55:05PM +0200, David Hildenbrand (Arm) wrote:
->> I do agree that two sets of flags is suboptimal, but likely more flexible. I
->> guess an alloc_flags only interface is not easily possible ...
+--000000000000e0e82c065dde584c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Agree with the alloc_flags option of all the other options.
+Hi Sarthak,
 
->> I do wonder whether it should be:
->> 
->> 	typedef int __bitwise alloc_flags_t;
->> 
->> instead of "unsigned int alloc_flags".
->> 
->> ... while at it
+Thanks for pointing this out. I=E2=80=99ve reviewed Jose=E2=80=99s patch in=
+ mm-unstable and
+confirmed that it already covers the partial-remap case I was
+investigating, along with additional cases.
 
-Can't hurt, but given how it's internal only it didn't seem that urgent as
-for gfp.
+I=E2=80=99ll close out my duplicate submission. I appreciate the pointer.
 
-> Does it make sense to leave alloc_flags to internal-only state
-> and just implement a new flag field?
-> 
-> gfp_t       -> describe the page (fully public)
-> req_t       -> describe the allocator behavior (mm-internal only)
-> alloc_flags -> internal allocator state only
+Best regards,
+Mahdi
 
-Maybe in that case the remaining alloc_flags should just become 1-bit fields
-directly in struct alloc_context so we don't manage 3 separate bitwise
-types. Or more bits in case of ALLOC_WMARK?
+On Thu, Oct 15, 2026 at 10:19=E2=80=AFAM Sarthak Sharma <sarthak.sharma@arm=
+.com>
+wrote:
 
-Depends on how much work this would be (and if you want to do it) and how
-the result would like.
-> typedef int __bitwise pa_req_t; /* Page Allocator Request Flags */
-> 
-> #define PA_REQ_DEFAULT        0
-> #define PA_REQ_NOLOCK         BIT(0) /* from ALLOC_NOLOCK */
-> #define PA_REQ_NO_CODETAG     BIT(1) /* from ALLOC_NO_CODETAG */
-> #define PA_REQ_SPREAD_DIRTY   BIT(2) /* from __GFP_WRITE */
-> #define PA_REQ_DEFER_INIT     BIT(3) /* from __GFP_SKIP_ZERO */
-> #define PA_REQ_ZERO_TAGS      BIT(4) /* from __GFP_ZERO_TAGS */
-> #define PA_REQ_NO_FALLBACK    BIT(5) /* select no fallback list */
-> #define PA_REQ_NO_OOM         BIT(6) /* do not oom */
-> 
-> Off the bat we recover 2 ALLOC flags and 3 GFP flags. Possibly more with
-> a bit more work.
-> 
-> Then we get:
-> 
-> #define PA_REQ_PRIVATE        BIT(7) /* allow private node allocation */
-> #define PA_REQ_UNMAPPED       BIT(8) /* page must be unmapped */
-> 
-> And we might not even need a new zonelist for private nodes in this case
-> as long as we require internal users to pass PA_REQ_PRIVATE and add a
-> function like
-> 
-> folio_alloc_private(void *owner, ...) {
->    /* validate (pgdat->owner == owner) before allowing allocation */
->    __folio_alloc(..., req | PA_REQ_PRIVATE | PA_REQ_NOFALLBACK, ...);
-> }
-> 
-> User still has the option to request NO_OOM via __GFP_THISNODE :]
-> 
-> ~Gregory
+>
+>
+> On 10/15/26 12:48 AM, Muhammad Mahdi Amirpour wrote:
+> > Check that a partial MREMAP_DONTUNMAP operation on mlocked memory
+> > preserves locked-memory accounting and that unmapping both mappings
+> > returns VmLck to its original value.
+> >
+> > This tests for a locked_vm accounting leak after a partial remap.
+> >
+> > Signed-off-by: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
+> > ---
+>
+> There's already a patch in mm-unstable that adds a test for mlock
+> accounting [1]. It covers the partial mremap with MREMAP_DONTUNMAP case
+> as well.
+>
+> [1]
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=3D=
+35524c870053cb28bb056fb17e715ebebec17229
+>
+>
 
+--000000000000e0e82c065dde584c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><p><span>Hi Sarthak,</span></p><p><span>T=
+hanks for pointing this out. I=E2=80=99ve reviewed Jose=E2=80=99s patch in =
+mm-unstable and confirmed that it already covers the partial-remap case I w=
+as investigating, along with additional cases.</span></p><p><span>I=E2=80=
+=99ll close out my duplicate submission. I appreciate the pointer.</span></=
+p><p><span>Best regards,</span><br><span>Mahdi</span></p></div><br><div cla=
+ss=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_at=
+tr">On Thu, Oct 15, 2026 at 10:19=E2=80=AFAM Sarthak Sharma &lt;<a href=3D"=
+mailto:sarthak.sharma@arm.com">sarthak.sharma@arm.com</a>&gt; wrote:<br></d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
+er-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
+<br>
+On 10/15/26 12:48 AM, Muhammad Mahdi Amirpour wrote:<br>
+&gt; Check that a partial MREMAP_DONTUNMAP operation on mlocked memory<br>
+&gt; preserves locked-memory accounting and that unmapping both mappings<br=
+>
+&gt; returns VmLck to its original value.<br>
+&gt; <br>
+&gt; This tests for a locked_vm accounting leak after a partial remap.<br>
+&gt; <br>
+&gt; Signed-off-by: Muhammad Mahdi Amirpour &lt;<a href=3D"mailto:ampr.mhd@=
+gmail.com" target=3D"_blank">ampr.mhd@gmail.com</a>&gt;<br>
+&gt; ---<br>
+<br>
+There&#39;s already a patch in mm-unstable that adds a test for mlock<br>
+accounting [1]. It covers the partial mremap with MREMAP_DONTUNMAP case<br>
+as well.<br>
+<br>
+[1]<br>
+<a href=3D"https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/comm=
+it/?id=3D35524c870053cb28bb056fb17e715ebebec17229" rel=3D"noreferrer" targe=
+t=3D"_blank">https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/co=
+mmit/?id=3D35524c870053cb28bb056fb17e715ebebec17229</a><br>
+<br>
+</blockquote></div></div>
+
+--000000000000e0e82c065dde584c--
 
