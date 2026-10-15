@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C259CC6B2D
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 02:12:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF34ECC6B30
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 02:12:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 406906B0095; Wed, 14 Oct 2026 22:12:17 -0400 (EDT)
+	id D068B6B0098; Wed, 14 Oct 2026 22:12:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DD876B0096; Wed, 14 Oct 2026 22:12:17 -0400 (EDT)
+	id CDDBB6B0099; Wed, 14 Oct 2026 22:12:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 319BC6B0098; Wed, 14 Oct 2026 22:12:17 -0400 (EDT)
+	id C1AEC6B009B; Wed, 14 Oct 2026 22:12:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10ECC6B0095
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:12:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 26AB9407BA
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:12:16 +0000 (UTC)
-X-FDA: 85323235872.09.8237CE4
-Received: from mta1.migadu.com (out-160.mta1.migadu.com [95.215.58.160])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2AA6420006
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:12:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=anJHCpp9;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.160 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A47C66B0098
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 22:12:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 37341120897
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:12:25 +0000 (UTC)
+X-FDA: 85323236250.17.EAED44C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8593840009
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:12:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=myVQQQc3;
+	spf=pass (imf17.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792030334;
-	b=8ksviMXL9SpN/oQpE6XqNsU2VGlm4/maOvZJM8+f1ri+ip5apiTVDnQAqn5zeruOX/YeH1
-	h8NS0STFqHnumjTDtlli7WbODMOB46BpO11Xcqblh5l3HqPwugoUakqA9qhgBKQOsQCalo
-	bltr1fA28zB5FiG0cPlxnqlNofdo3Jk=
+	t=1792030343;
+	b=nvjFrbShKBLVttXhuqIrSBH2s4gqGSpc5+9V3SAdngrJLBZWGbGig2F+TXltl+x37m96og
+	6izZJ7H8vfshiTa+zNPagKDT3u6bI7SVAnkWFvLRFfGp5HnJuNr9GdMYsuFgH6cPa/muax
+	oX7F/46RFfafneHeQvrnZE+GFZprTbA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=anJHCpp9;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.160 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=myVQQQc3;
+	spf=pass (imf17.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792030334;
+	s=arc-20220608; t=1792030343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/EzU1Gh0KoAjxxeW1xrXzRl0nXjI0bud2B70cL8Kev4=;
-	b=0ZxrJX45gw++6lAhf5smnWS/2lad4yGrcnjljLH/O7Tya4AtQ0ZkEK7yFoZoaz/mAtQcil
-	vyrbBJGxIRgkb3uSe+uLy+gCOa3PVC52fve5OAhLO0OXkF5fO1wliZuGcTRbm7n+93PTfK
-	mjiEXaghkFX3srYkQybnanh2fMHtaHE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=WoflgdutCHX+75m/8u4RqTEViaYItTF1x/KEbFMWUDk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792030332; v=1; x=1792635132;
- b=anJHCpp9AormFyhTpIgBPCBgDUBQTPwHY00sub3Mn0GzAHgGLalCsbOWJEtxqpJ3309YkoOg
- RIvt8wgCmEdmSHC3BEAKSiy7eI80/jDHFSI/RnwjRPxLCEL7aYxjYzgkV7Nkbq15GfP4SyERvgN
- cKfKqqTtSHTCGIjCDQlliRh4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 7aab8d1b515bf6fe;
-	Thu, 15 Oct 2026 02:12:12 +0000
-X-Mizu-Trace-ID: 7aab8d1b515bf6fe
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 1/2] mm: memcontrol: remove mod_memcg_page_state()
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261014-memcg-unused-page-helpers-v1-1-240b37c53831@columbia.edu>
-Date: Thu, 15 Oct 2026 10:11:21 +0800
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- cgroups@vger.kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <B55F574A-498B-4E97-8CE0-CA975A23A5EC@linux.dev>
-References: <20261014-memcg-unused-page-helpers-v1-0-240b37c53831@columbia.edu>
- <20261014-memcg-unused-page-helpers-v1-1-240b37c53831@columbia.edu>
-To: Tal Zussman <tz2294@columbia.edu>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2AA6420006
+	bh=qMLHCJtJQPgffvNFPP52wXbusU89D1NMxKSfS6CjEcI=;
+	b=r0/h/IAtNFTdo736K5ukViMOv66ABUIGUePXW5I/MA2c9Bk0B3XkD+8M/S9ljevqTHfTkf
+	sz0NK/AqOcSijWgRNJEFFYJPa8JISPV6U1GPG2xVosSqghhjd/CC2zWB1w2kuJ01FN+gR1
+	L5tey9YHpHHkd2F3/q8d/dJci+lBabo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D883042B7D;
+	Thu, 15 Oct 2026 02:12:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513E31F000C5;
+	Thu, 15 Oct 2026 02:12:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792030341;
+	bh=qMLHCJtJQPgffvNFPP52wXbusU89D1NMxKSfS6CjEcI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=myVQQQc3AkWg8Rs99ajie+H/9mSd02rYHqEaBv/AwUu4bxrQw/ajPX05cuK2vfb3U
+	 9oPNrlp1fwHzufh2gcwcRZwnLVRDqJTXbcoeCLSZLkfqNZkh0TVMKeWvoa1vfwI3pn
+	 mI5AmxAxBwOVOvLJo8BOHVyfDTesd1sn/9XzDbkIndYFbvC8hsi2UIlQAiMUhbWzd2
+	 QDiyZ1ziCBIoSXyhsuN8cyttqdmwwNMAXXSSGkI/+/ZhKNSy1kaPfDF2/FkeJm6b5T
+	 Ck+VCoXrKFdMsRCKtsX7U+Qm0Up5ZfBj61t4pqM4Zl5fu1clA1HcJRy+84CsaQMptx
+	 zRtE005Y9n36Q==
+Date: Thu, 15 Oct 2026 02:12:19 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
+	Pedro Falcato <pfalcato@suse.de>, Harry Yoo <harry@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Ilya Gladyshev <ilya.gladyshev@linux.dev>,
+	Matthew Wilcox <willy@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-mm <linux-mm@kvack.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: Improve page refcount scalability
+Message-ID: <atA2g8OgpiNOiVL_@google.com>
+References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+ <as690Xcu7FxIDYjf@thinkpad>
+ <CAHk-=wiak+h+d2tZ5W_MwRzatUP=hJKn7cpGjDxArG-gwgHLXg@mail.gmail.com>
+ <as9-2cIuGuXwE2Oa@pedro-suse.tail5790ac.ts.net>
+ <CAHk-=wgkoAuxNXga29nQ8w7GxdqR+4vPAUhPsbfp+gzKrb9EgA@mail.gmail.com>
+ <CAHk-=whzkNzkBmCspHYd80D1Z=krDc4SgVC32=pJ5PtEgqSDrw@mail.gmail.com>
+ <3c613725-406a-4506-b788-987a337b9771@app.fastmail.com>
+ <CAHk-=wh+1Hz+3HJ8evmh=FKO1fCGiwuNTqArXEfe-tAJ6hDy0A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wh+1Hz+3HJ8evmh=FKO1fCGiwuNTqArXEfe-tAJ6hDy0A@mail.gmail.com>
+X-Stat-Signature: itcuhdpzudc9zekn5y8osane5y45surx
+X-Rspamd-Queue-Id: 8593840009
 X-Rspam-User: 
-X-Stat-Signature: 6nohw9uq4jej971hnf95p1psfprxeijp
-X-HE-Tag: 1792030333-570005
-X-HE-Meta: U2FsdGVkX18sLfX/6iix/+12h90rlSfXdDvTYUvHgvOrd1cISMuc85InA7vHRwH4xygYCTVUwouY69hTGLJSuwv6+VNqGgOrvwPyNiyQLM/vPjJfzgQMRh17SKz+tvcqebz+2NnJJ4Ftmtypo6N5w6iykD5GUDPzKJ9XeujFtExlCdnybhGhClxl1IP/9QwLBrwThc7N91peIVpHCFIWVBnnxflBJQvz3Kp1rn6fdo9eJHBzrIkPse1/zSf4g5OrlHygJWDAUJxUzGbveyABcyqhHX6XsfO8Tfj7Jz9RGxl+yfV/pGo/KjahKaP2vET2vpJ8JgMYcU8nqTU/HMkmEnB5orv13VUL72hWGKHx3QKLW/l+nF/im1c186OpNWnA5HPenE38lXaXZlukzUDViBGwhHiOwr/ABv/+SbPmmX7CyAea19JYKtOXM3N/S/NqphSCvoDUupyEqtAc7WcXeCH2aGTKX8uvF8GB+mYpF7gAGjLIPUPpa6qAiAg6mMYkF6t7qQ+vtrerNt6VT+s4wDQMR2dxXOk1jPIeZ2l9dUMOzCMIyTLcAJTCDxgzdd01nlQkcKYSgiLLIpD/g/ONyAUvX/9SyfUHLweukW99Z7v2FzavexNMBCmu8/C57CdwB7YCJE4ZL5jgEuPvaQUAsrNqaAWGwW3v3rs3JCItaUy19aKi0Uzf7AFsYQRXRMKUeZvI7LfWhe5R8ETq5FwExDZgnXpERze2/XvJyEjS/cAK3kbUFawT320mh488dLPnxI9AR3236hoxfU+X5mWQH1oSelWfRJXSTqnPzRvRXVUHTbmFDp+mYKHbmM/hsuYGSxbhqT0gcfc+V1oS4JiVYqloV/nUN+Qxp4sCUSjZkYdVS0QgVowLTqyyCrbgH1A63+dZWYjQSEb844mU7IwmiSAEd/DLle8D2641Lpj/AVo7gtVUakfgByMIttHXg5a1VeZdDQcTou8NKg5lVJR
- HYtEfQj5
- R81G+B0WTiNPTwIojC9r25ED0buZzWPOYW1gYJewp4FKrDV02ArLwbNu0Af4yIiymi3cKKqro8Emji9ZeTi/nh/a6tU++AApmQS69w+fuA5TLoN53NZanmOlr9v3IfyrNo1tsRBwNvXukxZkNq60yqu/jbWL0qwwjGGVdZ4HOLqX8gGjhA1LUr1Kohe9QMO17p2fNehWV1F/Wg9qG1SPSeg+XbsX4Hc0x0BMtFMjOS1dQb8F+BBgyelrC/cL6WjLsosbpQHz2nXW7ia/sW1vxZj6HYgD1ReVlWMPELIu50eYEV72zZ9RvtB9udg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1792030343-922961
+X-HE-Meta: U2FsdGVkX19TojJoMTZmu8OrloaKNgkiwtk7djJNzlBbj2nkHX+a4NCrLM9gkMKbT0da6c0Bkig8UNdqcu61bbG4k4kqa1tVSBmh9NsbfHpwPErKAfNR7AxdTkYK0iFevNkX3AGmHxc397vJUKpc2lFD9asqrH90VB1mgspj0yWjhm0OfoJAh/5g+t7/OcoKlAvljJVKvXEuMFvOVCXaXU85qY0QIPtAizi8eK/QuGnx880m4ATN6FOe4ZtXn7iF398ZSshQi0D3JR10j2x6Rm2XYdRxeudDuT7Ctm3COCZZgGntK8qGHZSDA5YdCI3RVYS6vxnqA+zK6WlWjxTtRohUcsInOxWq81mbaWaRlrIMrvW4H51BJQLndp14FRg14xpOEOlno+l5fWFRsnXGlLV768LqmsTiB8EH9IueYi5fX0bafXe63hQZVmPTmRl+l6bTsq+J+isHAVvzmCAqB9PclBXPAYu7sYwu8Ke3ynRw92PIkMrHQo6g4314AfzYX0taeb7uE1C58KJgMbW1ytvcnCWWoYLmzwwgaHMbwhqjGsqWlzV7cg49h/tydJaGJ6cxaZHLO2VYAskx0cJDdKbiYu8T/GS34GJvLkTYmfGP6KmCGEhELHrHhWDZjpjpjL0ILBxV4ZS1S9YxrBaMELfmk6U+8TAgKUwY0JfIJhNHy7Lt163kPKCRT7AIkBdor3fvxDnmpmbw0NpP6tBc5dvp1lk3StFsRSRdZX6ZMvEGtIC12zIY0zDmy8bPzRMDtdEo0tPqclTLOIgvm6V+5jiCZVC1Mkea889ALqbEdhrgj6aycig4qPMBfMBlUx5W+m3NCTddfJMF7xWN42VdQnVLhf10X+d1bkuiLCxojV2TBdT6wSOlcf5xeMjMR07eWrmAIx9hfAzYjlb+lDBEe7vamLeJ8/3DO5Y+1pQ3P7KGX1LNVXHyZAUD9mAhjt0fHt/F1B/2wWT4ylfkrgP
+ Jajmlel9
+ UUiNOYmLalmsuJf99Ta+FUzNboNZzaZlZJLG1wKYwErMx4aSzoJiAUJgT4IARkYr8b23Hpg3yVTzFTdebtn3e2S0c3EZlfYgeAkogehz+XHia4DJdg4tgN6telldPkoZCaI41ELovChHIkUWjymRZ34sn7iiCLml7g+cvMBegSdvjYa9I1q8jmluHZ/xV1NROJf2BGT97reaGg45rK7C2+ndpJ7I2DQ79TczweS4f+9OCdcaZ8JbRjm6FxyxEPOUWHbL7Vpe1Vf0AYwu0u1qEtoa04lG6Ja6jMNV/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,17 +105,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-> On Oct 15, 2026, at 01:08, Tal Zussman <tz2294@columbia.edu> wrote:
+On 10/14, Linus Torvalds wrote:
+> On Wed, 14 Oct 2026 at 10:44, Kirill A. Shutemov <kirill@shutemov.name> wrote:
+> >
+> > I already have it:
 > 
-> The last caller was removed in commit c466412c73c3 ("mm: memcontrol:
-> switch to native NR_VMALLOC vmstat counter"). Remove it.
+> So that was my thinking too, but I have my notes (from the original
+> truncage/hole punch patch) about mapping_exiting() being problematic
+> due to f2fs playing games with it.
 > 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> Now, that's probably just a f2fs bug waiting to happen independently
+> of this. But the path is
+> 
+> ioctl(F2FS_IOC_START_ATOMIC_REPLACE) ->
+>   f2fs_ioc_start_atomic_write() ->
+>     truncate_inode_pages_final()
+> 
+> and that truncate_inode_pages_final() is the problem - it's what sets
+> mapping_set_exiting() on a live inode.
+> 
+> I had this as a note for the original branch, and it became a
+> non-issue with the change to the "set PG_rcu_free on hot pages in the
+> read path" instead.
+> 
+> But your change makes it an issue again.
+> 
+> Now, I think f2fs really is just buggy here. Calling
+> truncate_inode_pages_final() on something that is still live
+> afterwards is wrong - because it's not "final". As far as I can tell,
+> there may still be hundreds of active readers holding that fd open.
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+F2FS_IOC_START_ATOMIC_REPLACE was supposed to replace a heavy ATOMIC_FILE class
+in Android, consisting of 1) creating a backup file, 2) write data to the file, 3)
+fsync(), 4) rename(to original one), 5) fsync(dir).
 
-Thanks.
+Indeed, it's a bug that user can see zeros between F2FS_IOC_START_ATOMIC_REPLACE
+and F2FS_IOC_COMMIT_ATOMIC_WRITE. I think we need to move the truncation path
+into the commit phase and use truncate_inode_pages() instead.
 
+> 
+> I might be wrong. Adding Jaegeuk to the cc.
+> 
+>                  Linus
 
