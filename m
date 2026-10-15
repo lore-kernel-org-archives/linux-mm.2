@@ -4,102 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE739CCA462
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 22:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD55CCA462
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 23:13:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C604D6B0098; Thu, 15 Oct 2026 18:59:16 -0400 (EDT)
+	id 6AFFD6B0095; Thu, 15 Oct 2026 19:13:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C11E26B0099; Thu, 15 Oct 2026 18:59:16 -0400 (EDT)
+	id 6600C6B0096; Thu, 15 Oct 2026 19:13:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02876B009F; Thu, 15 Oct 2026 18:59:16 -0400 (EDT)
+	id 54FB16B0098; Thu, 15 Oct 2026 19:13:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8865F6B0098
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:59:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C349C0213
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:59:16 +0000 (UTC)
-X-FDA: 85326378312.24.BFAA1B0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 51D2480005
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:59:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XZEP2WBf;
-	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A9DA6B0095
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:13:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DFA9A023B
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:13:27 +0000 (UTC)
+X-FDA: 85326414054.07.D2F8F03
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D622B1C0003
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:13:25 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=IQnxwjSY;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792106005;
+	b=Xul2Na+VTFOwhPXX+U/tCMixVpd2dAC+r6ToV1+v/S0uOYTkoD98ZD5cM1hGfCJk2R+ZRr
+	SCXUR6MA5vN/n8mX6PhaY+5rsCsfLs/a5gGJUQgQcyUG2Ey5CXPED1k+1bEk/hBJ2pbrFu
+	3YMlSmJByaDQuqmDmZKE8SXo4VB99Yw=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=IQnxwjSY;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792105154;
+	s=arc-20220608; t=1792106005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vnQrwyzLoVynTCLEtuWk+TScXXTmTjeMSsfmQV0kEjE=;
-	b=XT9e1PML6MMmUI988j138r8WAv8pr69caLwBtC0pLn7ESLNtDFh+F4ekOKcDcnrqt53cxL
-	wKLsduetYKbugCoGpKWhLX8nrHAGe7xytD/qypyBKZOLYKmrGRIzOTLlF3Kx+ytM3oUy4p
-	TEnWDndK1ExFJCaYwX0b1bwXVsCDKPQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792105154;
-	b=GF3Ae1GD2xO+z4aDPx82kEviOjtCJfY0wVhtYri7mH++Hwu5Oi+mKmy3fCRGGyLGAMtjjW
-	xWp+A3BSLQzpgt8H/HPFCSJ7CYYfbitJ2g4+0L7qr/5Lksp4lmX2YRIFuR94RvWeXlI/7p
-	OTiRhALAuBxu3vhUBSfpAFKWruKkpPE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XZEP2WBf;
-	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 869C060A74
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6961F000C4
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:59:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792105153;
-	bh=vnQrwyzLoVynTCLEtuWk+TScXXTmTjeMSsfmQV0kEjE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=XZEP2WBfROoz/n/DQyrwTl60Bxqkw8stXfth5gXqEeC4dP/IiSB1l6fZaqdB5/9bn
-	 F1J31UvRoUjffzlKp8FmKCVZogCI2A1t9dQM1Ilh8oSYUqrIh8dbK67PVp6NdeqrMH
-	 IowuIbK0VmtR+Sj6UK59PLnnmUUfTDtm+0MdFvHHjbANcGKF2hUWK/Ke9tmSGGWkC0
-	 hv8zKP2bSHHR/S6rsRZM4v6FLXu8xrlA9UQ7Q6IpRP3v+HJHp+BPU/EwKwj8F+wKrh
-	 5VxXQp3KjUwOM77gCWwppm/ccGZKYCpj0cSadmqmJa1JDiqhA1+uFr3DXm9ciw7KrH
-	 ZrFFJmHD4a4CA==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b1ab2ad719so1577848a12.3
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:59:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx1c6HhKr741wbIv8Aw7LPoeni4FxhRPy3yvvAMJKcO+9lNxV2/miIbi301FqK8f9+TLrTIv/1OKQ==@kvack.org
-X-Gm-Message-State: AFq9FYLtIfinFJiz5PBrXRgXa/N2VagCk19BpMAPbc9WxVSvRLkQwc3D
-	CTLvcQZqfRtsQY1k7g9xZVf2P5vlN+xt9kn+BKH2Mfpdw6xZTnyn3mu4CMlROiimVRdW3P2aRP0
-	Cazut7Fdmh+pSR9aURsPs4qTyRF/CQc0=
-X-Received: by 2002:a17:907:d08c:b0:c3f:c856:fb7a with SMTP id
- a640c23a62f3a-c3fc856fda9mr209686866b.3.1792105152116; Thu, 15 Oct 2026
- 15:59:12 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dAaIZ7hoQbW4Z60fNlL2ubqoX4QsjqbaZoJuPxq8vJY=;
+	b=L9Tb95pTECQ+PJiWuzZpirJxgcfQxRKn0vQWDjt0mvYvNfmxR8NBHDuCy20IcgSM/BSwdP
+	9RSBwFJdWWU5o5eO9Dbz7Bdxeb72lwPzom7nNwtOS5J9Vi/VN2DMybepAca4k136srW9nq
+	yLy6kOlwEerx5awcI+1mQnnglr62SsA=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-533861a59b8so21902561cf.1
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:13:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792106005; x=1792710805; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dAaIZ7hoQbW4Z60fNlL2ubqoX4QsjqbaZoJuPxq8vJY=;
+        b=IQnxwjSYSdGxPZguwfouWZF5BEGfKV5M5zbR+bqXEHnnwlHgUzuVIkZw9Qzw7a5avI
+         Ka/9meUA476a4etXQt1t/HCA3oqIYW7d9cZ3IpjQpGdfFI9B9pxx+MSU9Ng22BqzBS0A
+         nh5IaC5EWSS8lBtM+kzuPLXEJ6jibHTVoHM/BNI73IG8a/n8j+hqHTBcJDpz4dGZ9nVd
+         hwIgYuCWhVgkJbDCP4v8WduuvmPicfbmPDj6bnXYA7iwnq3Urd73sZWmDVF4D9NovlpA
+         F8Ak1n1ufWmubYaQOYWYoqDuJyoT+mNyAzwouDDCTpckiGpCIc0KkLvVkKWs9ymI/Muw
+         Vdzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792106005; x=1792710805;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dAaIZ7hoQbW4Z60fNlL2ubqoX4QsjqbaZoJuPxq8vJY=;
+        b=I+OvnrzWFU7NRBURUmR0fg4DzKDTNfOUYDIjc0Q2+ASaZYF0IvCSdtkYGUX5ymsXaK
+         uQQtXezuZ/HJ9X/dxrTRPwhu6+ClsuO5VSqrmEcQRHmpp5+pdKYKkuaW5UI9rgkP5vwW
+         bbGBYrjq0D+XzzvqJCJ+Nwt1A6R9Dcs7KeRcHbGJV17eKrAHlQ7ZE6ptvXczzeLHquCa
+         0zRT+tGvvGs2kLxPnk+BCmOIlMc/5iIQBYN78EJx+IHOxq3GJpIHvieew1tqHNGaXl7F
+         ki5/lXDa5k+s72ZLGRQB0uU4Cm//V8LBt/U58Cqz5Lrpud6YHHjkRZE0XivFg6iY5QzV
+         7kiw==
+X-Gm-Message-State: AFq9FYKUmO2holGyjc+GqElNHsP1Vbp4CJQU+UUDf8SVcfRL8j6k/tct
+	E1MWo9059XFDUkDgKj/mnQXkHNdp7j2IJjV/xifJIs392nlGy8VYTSCYEjB82QpJsAGrqRazw6x
+	Yi2gtXpU=
+X-Gm-Gg: AYBFou2cP2IpCwpL11UPqpFu+wsaZLrf0ByqLvXtLnoTG2W+Gl80d0rDOaZUfP8aFXR
+	6aL8wTae4sPxqL/9k/JNTlN0yGHWytHAN9B4urLDkHisTCd1f0rey57JRMXeY8J1qrK19efynte
+	fGhhe0eW2g7tsnV/IdSBGK9lfMYRLRuqSj51jbRVJlvxCYIeOWPVJpiGvCXiG1gkKP+tQjjh0BM
+	AfKj2D7a9p8X/mNCMoJ1tt4l1kEI04j+loQMvz9+ikjEqQ2i8g3h53uwNTqFhP5fBYoLH1aReg7
+	DVhPjZbQVeWhTWTGAG1QrXW1lwOniUsyLo9RDOIj61Jk/pwZaqhkoJvEMePI4P41cXEZiPPVfUP
+	qUvARiRzq0v61l3ARuzQ1GNnMZ1dD1QXInc0BuYauFU3NKuzyZoBgIciI/5uy4X9ni2+6Gjkwtn
+	zlXq5Hzxajk25QOdHkbfNfpECmvBwCH+yIioHfp5HQpNWCkXawhDYORPk7SNG2sX84TbC++ipQ/
+	m3lNRcRY+KxRCIjIhjzll98DvtxNcQcpQicVHbZ7ukUKkyLWbIJmzPir2yz
+X-Received: by 2002:a05:622a:a0c:b0:516:ed02:c85d with SMTP id d75a77b69052e-5359f46e1e4mr316611731cf.3.1792106004967;
+        Thu, 15 Oct 2026 16:13:24 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362a9637a7sm6256501cf.14.2026.10.15.16.13.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 16:13:24 -0700 (PDT)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	gourry@gourry.net,
+	ziy@nvidia.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] mm/mempolicy: convert mempolicy refcnt to refcount_t
+Date: Thu, 15 Oct 2026 19:13:22 -0400
+Message-ID: <20261015231322.3392551-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.56.0
 MIME-Version: 1.0
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
- <as-jZopKRfuYAiTE@google.com> <CACpmpoeS_cvXRWJXqiYZV9oykk=91efv8KtZgK2Pi-QwHnQH3A@mail.gmail.com>
- <CAO9r8zN5n=9v4K+OtEEODg=e0kcFW99PreUcZm09q9CUMQc+ew@mail.gmail.com> <CACpmpofdoeVbbw7izCDeJ7eS+XpWj+3sp3teKEQWywyRB75jYQ@mail.gmail.com>
-In-Reply-To: <CACpmpofdoeVbbw7izCDeJ7eS+XpWj+3sp3teKEQWywyRB75jYQ@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 15 Oct 2026 15:59:00 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
-X-Gm-Features: AclHuK8OVaqtU74IUTXePWDKqT9l38kwuNNsIo2XNA9CQvEhaVmXaKfetDsN0wo
-Message-ID: <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
-Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 51D2480005
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3p1n4iup9dhu7xs6gwcupq4bh9w1rwkg
-X-HE-Tag: 1792105154-557709
-X-HE-Meta: U2FsdGVkX1+sUZVQyVf3J952uV2sLHS2X0dMFMZslHCidbuzjomv+qdloRBe4Wpc16508goINAnOut+DOX0lh8h95+CRuXd8jVWQWgjmi+kC4c0RjivMYURKT9KIhhHcJnbcneY5V+4B8Pm+wMlGaw7DshHOMOyTCMOA6sHilQJkmIH6TX68fEnyXTOb81o+QxV6vKQ/rHjvagWk2PldltHyccp1f99IyoSB04kx2ET0HLv1dRuCLALr4g3f4hbkH3lEL6GhzdbmBC/AdhdWNqQEZiTw5iZ58cpim+icI0YA8UD05iVi5kro01ZmbfZA7focuzsC91+ukwSVI4OsMBc5Q02PvL/L4uvei8vdksPJaCrKUxp2jsFWArgYzdGmv553DAtrgVQlYpXarsgaKkHiedR8E1MyWLt+tYGykMux+bhy7psP9pxFW+fNM03Sv8gxYPKLi4gOnR27uqVJfvF9ayaDO9EoJ6e7KOQ7a9qInOHokkHJ11dTRKvH3KvtEfPOWZp0Lhgv6Ex3TmVVCulslSyKFec5/FfAvhmJZY6AVQq8pPhie3jK8DyDtplLXkEpBVgvwp0VFPDJ5ZucqeApFNdE1xNrkd0tZXSR39Ii1n1dlpbkdRmGVI7d9csea85erGr8NTxcQAQxt0DID9WV6yjB3hEUucF38O8258uUlLOXBIxA5ScN6Oh682MfPO/9WtwFgCDEryL1UU/l3p+rrS8PFPWs7E5+i1D3sHs5Uby/YbBgkKIGvaJVKL8bLp6EbR3MAyipG0RW5D4xmihCEnyN4DBSwz63jEO1EqhaLNyQcHArHZzRFvlzPpJcouj2r1zwqXNht8VJvxbqJqBKtw5bXm2TjkzRsy+tReOy45rEQyDzW95r4RqrZyXh5viqk6SDrNQQILUvAep2+PywZiwKfL9m+lkCIpDKv3pYwv/UGzCUuagkB9F97HmQqoSBy8I+Yh0rEaNb1DU
- vD9Hx7u7
- uwimGrsc334BRIzJDFlzs+r07RnfTH+ZumuXVuEBUD8bdiOBOBjAxHJaSDexe/rxODjW9pe8e4DmS7c4k7Dy8VJirWofP7CL/mZ9H1qnlxtJF3Kz4nhxEzLJ9ltEBe+w7uKOCVXPo1QYbydzs1CNPjuvufRZIVT6pZAgKkcN60LnTBAATCmWUGIWTdVj8f9sJbC1gP8e7LQ2esZgeJIjCJEaZQecYQvHeSsO1jMwH7hUY+bWa0mMruDy5m1fyKzS8CMWgbgrPOaAVa4nMZzlhgJcPDl200XGVecXaSJxNCaqQTBNoYs7q4qyfgxCCpT0gzvudeyaLBLGnGhGiYcAHA18UhTgEZv4MxBjD9z5rSvdh65msUwR/rX4RH5hAQJAyWUBi5ddI6Y/nziIfSM8Ln912pA==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D622B1C0003
+X-Stat-Signature: mt4raxu98649bp9m88g3rqkzw9u8tyk9
+X-HE-Tag: 1792106005-86568
+X-HE-Meta: U2FsdGVkX18TpEZFnLn849rXgQvd/Jcnqsayb0Ld/1chwntEqosavaoIEoz2R61TbCZP0nkuxyWpCk6XwWHxNn+/ID7hEKreZIhCrv23jIRe5hsk8IprTrHeRyBlsF8HTG5tZi1EtWw88NuPhogwd7FykX9g1OvM+FXKhafWbOpnG7y50y6QbusaHllvm6We+tJrqM3L9H5iOcPXU+DLKCmdNNLqJG7cH1+C5drQz0nSeFr14BBUVpVirV418ynuHDpBPv7iDLvzOdZWGeubZeB99Y2JQh7Wfisfp8rmb+pWxaWJy+vFShuH1NIHyRoc4vBcSmrqZxvrMjDUcF/mMQXNrrZjMbX7IZrGKCadMb5+tm4KwN2MF4VOAsYYtcf9WiLFTj7cLh/cdMfNqILwMt+gcB6nCCjkPTmN9ISS8d9YR7EnQ3EmAmYov8zkLU875RbxGQGBxcBTPE4jx+dlwCmNI1bcDC66WBJvRAzA0Wrdw8wqnVHyPQDg2s7ejb+SRisVFZ874cuQ3SseEf17O3T2ZkziKqamGrO/TqUbxI7TU776HR+I0HkFJMdzosM2xspoQEB+T/sEw3Qt7c7ZRfJIYiDgiIecOGdjdjE4xYj53tB8/7ZGIgHd7/1P+FndR9eo02OM6mMN2f2UJcXDjYycskcSzuZdJryd1ydnyX4jGbtya/F5fxQUxUe+wh51KSGnzb/kcrvxrF2d8zIJJDIS5AIaj9/oNTO/YDkaQhjAVXYQ8V9lWyj82W/2Y9+pBR85g2ZUu462ZcWFOnBiRIUOrWHoeNb2o/bC030UrRtCwbKj1DD2g3/Wn2pmV2CBuwYmMwK/s8xvKiVu50hCMxaTHi9snenWSN+U2uh2z4Se78VgnBhOA5dLzncmnW1O/5nH/cBSObJiukWY7dQb7xZJafNrlQTK2mbRmCiYvjZA1AKyveXabwfz1vJSS4d7p15AW0tKj7j2Z9xJXc2
+ xb2IB9on
+ pVaQXaRI3K9jAYtTWjir9noW36pbCPtdI4xDDisA2raxpEhFhrgNRNlfPKw/F2l0KLqT3d2HfK8lwWgRI2oVVEJHHqoKoUPMDik6+wxg6WBK7lZiP9Tan+dkkdYWF+I92pkWKrg8eSd7AwJiHVfQhDnBzgg6LNcPMzEDJVvIIPxGTlGbdWPbn5li080I/ZBjX0rGtB5e4joqDMdrytn4M8mm3vaYt5KDp8OHBZFwrstk/A5vHRYUdpRD2dYnDalpQL7hNGzm45YTPs9dECJ4suZ9GN2mno1rQWJPADPmWUOx1ijLxEYJezSjAIrhk4w3nLYGk0r9a+6RiZbW2Y+PsSdKbCgDOZFe6zY+txgrXUub8ZKLadWSs3L41uh9XMrpjeM4uZuQcnCc3N1g9z3thC053gWbNSc08pNOYRW62QG64BlNmJSCzFVmj+AqgeY818Ju0wJPGFaNNPNlA9NzN38Os6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,103 +123,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 3:51=E2=80=AFPM Kanchana P. Sridhar
-<kanchanapsridhar2026@gmail.com> wrote:
->
-> On Thu, Oct 15, 2026 at 3:04=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > On Thu, Oct 15, 2026 at 3:00=E2=80=AFPM Kanchana P. Sridhar
-> > <kanchanapsridhar2026@gmail.com> wrote:
-> > >
-> > > On Wed, Oct 14, 2026 at 8:45=E2=80=AFAM Yosry Ahmed <yosry@kernel.org=
-> wrote:
-> > > >
-> > > > On Thu, Oct 08, 2026 at 11:28:06AM -0700, Kanchana P. Sridhar wrote=
-:
-> > > > > v1: Batched zswap_store() with compression batching
-> > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> > > > >
-> > > > > This series is a spin-off of "v14: zswap compression batching wit=
-h optimized
-> > > > > iaa_crypto driver" [1], and focuses on the generic crypto_acomp a=
-nd zswap
-> > > > > compression batching enablers. Resuming work on this series follo=
-wing a gap
-> > > > > since v14 (January 2026). Please note that my email address and a=
-ffiliation have
-> > > > > changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026=
-@gmail.com. I
-> > > > > have retained the original Intel sign-offs on prior patches for h=
-istorical
-> > > > > attribution while signing off v1 of this series with my current a=
-ddress.
-> > > > >
-> > > > > To summarize the main contribution of this patch series: Batching=
- is introduced
-> > > > > in zswap_store() of large folios: we carve out a large folio into=
- batches of
-> > > > > ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and stor=
-e each
-> > > > > batch. Moving the fundamental operations that need to be happen t=
-o store a page
-> > > > > to now work at the granularity of a batch offers opportunities to=
- optimize them
-> > > > > from these perspectives:
-> > > > >
-> > > > > 1) Utilize existing kernel API that minimize obtaining locks for =
-bulk
-> > > > >    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk(=
-).
-> > > > >
-> > > > > 2) We keep the working set for each of the core store functionali=
-ties (alloc
-> > > > >    entries, compress pages, store pages in zsmalloc) to be focuse=
-d on a
-> > > > >    batch, thereby minimizing cache evictions and benefiting from =
-cache
-> > > > >    locality.
-> > > > >
-> > > > > 3) Along the lines of (1), the main zswap_compress() batching rou=
-tine obtains
-> > > > >    the acomp_ctx mutex lock once per batch, and releases it after=
- it has
-> > > > >    processed all pages in that batch.
-> > > > >
-> > > > > 4) Any zswap store functionality that works on a batch can potent=
-ially be
-> > > > >    parallelized as a next step, to further improve performance.
-> > > > >
-> > > > > Performance data: usemem with 60% over-commit:
-> > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > >
-> > > > How much of the performance benefits come from patch 6 vs patch 8?
-> > >
-> > > This is how the performance changes: Average throughput is averaged
-> > > from 10 iterations of usemem.
-> > >
-> > > patch 6: 19,119 KB/s
-> > > patch 8: 17,593 KB/s
-> > >
-> > > So the acomp_do_req_chain() path that ZSTD goes through with patch 8
-> > > causes a regression, even though it provides a generic batching
-> > > framework in acomp.
-> > >
-> > > I was able to retrieve performance with the following change in acomp=
-ress.c:
-> >
-> > Why add it to begin with in this case?
->
-> Patch 3 ("crypto: acomp - Add trivial segmentation wrapper.") was
-> co-developed with Herbert. The request chaining for non-segmentation
-> algorithms was as in Herbert's original implementation. Since this
-> causes a regression, I would like to get Herbert's Ok on replacing the
-> request chaining in this part of crypto_acomp_compress().
+struct mempolicy uses an atomic_t as a pure reference counter.
 
-I mean, why add patch 8 if it doesn't improve performance? Seems like
-even with your diff, we only recover performance, but we don't improve
-it after patch 6?
+Convert it to refcount_t so that overflow and underflow are caught
+by the refcount saturation checks.
+
+This silences the atomic_as_refcounter.cocci warning, which started
+matching __mpol_put() when it switched kmem_cache_free() to kfree_rcu().
+
+No functional change for correct callers.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202610061946.Bx22ZFrw-lkp@intel.com/
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+---
+ include/linux/mempolicy.h |  5 +++--
+ mm/mempolicy.c            | 14 +++++++-------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
+index 65c732d440d2..8b7570a90e54 100644
+--- a/include/linux/mempolicy.h
++++ b/include/linux/mempolicy.h
+@@ -10,6 +10,7 @@
+ #include <linux/mmzone.h>
+ #include <linux/slab.h>
+ #include <linux/rbtree.h>
++#include <linux/refcount.h>
+ #include <linux/spinlock.h>
+ #include <linux/node.h>
+ #include <linux/nodemask.h>
+@@ -45,7 +46,7 @@ struct mm_struct;
+  * to 1, representing the caller of mpol_dup().
+  */
+ struct mempolicy {
+-	atomic_t refcnt;
++	refcount_t refcnt;
+ 	unsigned short mode; 	/* See MPOL_* above */
+ 	unsigned short flags;	/* See set_mempolicy() MPOL_F_* above */
+ 	nodemask_t nodes;	/* interleave/bind/preferred/etc */
+@@ -96,7 +97,7 @@ static inline struct mempolicy *mpol_dup(struct mempolicy *pol)
+ static inline void mpol_get(struct mempolicy *pol)
+ {
+ 	if (pol)
+-		atomic_inc(&pol->refcnt);
++		refcount_inc(&pol->refcnt);
+ }
+ 
+ extern bool __mpol_equal(struct mempolicy *a, struct mempolicy *b);
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 70298fded1b4..7c78c66f7f21 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -138,7 +138,7 @@ enum zone_type policy_zone = 0;
+  * run-time system-wide default policy => local allocation
+  */
+ static struct mempolicy default_policy = {
+-	.refcnt = ATOMIC_INIT(1), /* never free it */
++	.refcnt = REFCOUNT_INIT(1), /* never free it */
+ 	.mode = MPOL_LOCAL,
+ };
+ 
+@@ -492,7 +492,7 @@ static struct mempolicy *mpol_new(unsigned short mode, unsigned short flags,
+ 	policy = kmem_cache_alloc(policy_cache, GFP_KERNEL);
+ 	if (!policy)
+ 		return ERR_PTR(-ENOMEM);
+-	atomic_set(&policy->refcnt, 1);
++	refcount_set(&policy->refcnt, 1);
+ 	policy->mode = mode;
+ 	policy->flags = flags;
+ 	policy->home_node = NUMA_NO_NODE;
+@@ -503,7 +503,7 @@ static struct mempolicy *mpol_new(unsigned short mode, unsigned short flags,
+ /* Slow path of a mpol destructor. */
+ void __mpol_put(struct mempolicy *pol)
+ {
+-	if (!atomic_dec_and_test(&pol->refcnt))
++	if (!refcount_dec_and_test(&pol->refcnt))
+ 		return;
+ 	/*
+ 	 * Required to allow mmap_lock_speculative*() access, see for example
+@@ -2871,7 +2871,7 @@ struct mempolicy *__mpol_dup(struct mempolicy *old)
+ 		nodemask_t mems = cpuset_mems_allowed(current);
+ 		mpol_rebind_policy(new, &mems);
+ 	}
+-	atomic_set(&new->refcnt, 1);
++	refcount_set(&new->refcnt, 1);
+ 	return new;
+ }
+ 
+@@ -3188,7 +3188,7 @@ static int shared_policy_replace(struct shared_policy *sp, pgoff_t start,
+ 					goto alloc_new;
+ 
+ 				*mpol_new = *n->policy;
+-				atomic_set(&mpol_new->refcnt, 1);
++				refcount_set(&mpol_new->refcnt, 1);
+ 				sp_node_init(n_new, end, n->end, mpol_new);
+ 				n->end = start;
+ 				sp_insert(sp, n_new);
+@@ -3224,7 +3224,7 @@ static int shared_policy_replace(struct shared_policy *sp, pgoff_t start,
+ 	mpol_new = kmem_cache_alloc(policy_cache, GFP_KERNEL);
+ 	if (!mpol_new)
+ 		goto err_out;
+-	atomic_set(&mpol_new->refcnt, 1);
++	refcount_set(&mpol_new->refcnt, 1);
+ 	goto restart;
+ }
+ 
+@@ -3380,7 +3380,7 @@ void __init numa_policy_init(void)
+ 
+ 	for_each_node(nid) {
+ 		preferred_node_policy[nid] = (struct mempolicy) {
+-			.refcnt = ATOMIC_INIT(1),
++			.refcnt = REFCOUNT_INIT(1),
+ 			.mode = MPOL_PREFERRED,
+ 			.flags = MPOL_F_MOF | MPOL_F_MORON,
+ 			.nodes = nodemask_of_node(nid),
+-- 
+2.56.0
+
 
