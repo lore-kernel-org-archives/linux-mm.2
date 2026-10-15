@@ -4,113 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 583EFCCA462
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 23:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F3ECCA462
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 23:33:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09E366B0096; Thu, 15 Oct 2026 19:17:55 -0400 (EDT)
+	id A09AB6B0095; Thu, 15 Oct 2026 19:33:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0775B6B0098; Thu, 15 Oct 2026 19:17:55 -0400 (EDT)
+	id 9E1EF6B0096; Thu, 15 Oct 2026 19:33:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAE9B6B0099; Thu, 15 Oct 2026 19:17:54 -0400 (EDT)
+	id 8F74E6B0098; Thu, 15 Oct 2026 19:33:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C14496B0096
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:17:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F59216026E
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:17:54 +0000 (UTC)
-X-FDA: 85326425268.08.1BFB581
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D4CE7100007
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:17:51 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JIhFkpTb;
-	spf=pass (imf05.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B8066B0095
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:33:14 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFF37A0234
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:33:13 +0000 (UTC)
+X-FDA: 85326463866.30.79767BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1BFD8180010
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:33:11 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCKps5B6;
+	spf=pass (imf24.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792106272;
-	b=vM4An3mhgqfm4k2uhlyBLb9BrTWF8a1/DzYnln3oJduC8Ry48doisiN++HkzF4nIMpdZks
-	OOAJWmBSMVCeb1EKF6dkTk1Og7b0Fzxd0IoeZ24iXdc2mu6uPxlA53CuULyiSpoEYOmX65
-	1NOn2dD915/TZx5xV20Hs++t91757AM=
+	t=1792107192;
+	b=DO3YsMZu927nCprZTYbon/htX1RqiFJP5sJED/d/8175vEIdeIVT5DDajo99BjgO2xXRL1
+	huZtGgE2b+doCZpKaGh5V7R9VeXtrMfqGQvoLJR0hpcaUQp141gEX64OqEQJTbtE8ZIlMn
+	+iJdivyaH5fxWQUftIiUA5Sis72Unic=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JIhFkpTb;
-	spf=pass (imf05.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCKps5B6;
+	spf=pass (imf24.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792106272;
+	s=arc-20220608; t=1792107192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dU4UV7b10jQWXzZAx1LzF2HZTCcoK87Yy3TYJNTLgy0=;
-	b=1a1ystVXT/jDA+EyY1xRLzKRejrnp7E9jRZ7rDY/31p2DMjI1u3+DMoRTeDj+REkqWc0oc
-	JNaBNsvH8QQIneSH1kVKCJSL5HG2jheDr0Xad1xgvwxiwS/BrueCTULRgUYnfrmXRqK597
-	J2U0DVIYAZUSKRi/hTfupfJ4H6W8YqY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792106272; x=1823642272;
-  h=message-id:subject:from:to:date:in-reply-to:references:
-   content-transfer-encoding:mime-version;
-  bh=Iich2VyA9Yl56RfAzD+pgFuU2K921AKcJLk7Up8k2OQ=;
-  b=JIhFkpTb0AdC8QP7jU5Fsu7GpYJ8UbvBX49SxVa/nlbpcPvXpG2DCCyK
-   9NM44/Y8ToReSFahy/dkhDfMrPaLDruOR4Umz4/LDhkrK/Te0aXZTbXbT
-   z3/ITogwGlQHGeG9PYrRyPHvhBAeK+rOjkHSZidmBnEExSeD9YM1ojCRU
-   93BMaEiXi4+ZQvVwhrzHO16MfKlRo9JqcmyL88AMF11h1bR/kOQpQPLjh
-   lLizr3Ryf8PWQjL+ZH/NR4VYHDE8X7PgqsPDVqeimpgwn4dljzBrcms3C
-   rXRDrQ+NbRoAjn1D7GP4Z0OsN/k+YGDxb+eHOlI74rOeUpM+aXxwHnF7G
-   g==;
-X-CSE-ConnectionGUID: Z5B9OSPVTXyLTJl5+R1Jiw==
-X-CSE-MsgGUID: z20LWbJgS3C5O7wlbOno9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="781051"
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="781051"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 16:17:51 -0700
-X-CSE-ConnectionGUID: QPDXIi4JQEuXWbbkvfN5YQ==
-X-CSE-MsgGUID: KujZTx+hRAChXpirRYufLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="1904693"
-Received: from unknown (HELO [10.241.242.105]) ([10.241.242.105])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 16:17:49 -0700
-Message-ID: <1ec1aab8eabdad173ddef7483a940bfa3f6c3238.camel@linux.intel.com>
-Subject: Re: [PATCH v1 7/8] sched/topology: Avoid redundant percpu
- allocations and bitmap walks in build_sched_domains()
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, kees@kernel.org, 
-	rppt@kernel.org, juri.lelli@redhat.com, nik.borisov@suse.com,
- tglx@kernel.org, 	vschneid@redhat.com, kprateek.nayak@amd.com,
- vincent.guittot@linaro.org, 	bp@alien8.de, thorsten.blum@linux.dev,
- cgroups@vger.kernel.org, 	tony.luck@intel.com, david@kernel.org,
- mingo@redhat.com, akpm@linux-foundation.org, 	linux-mm@kvack.org,
- seanjc@google.com, ljs@kernel.org, zhangguopeng@kylinos.cn, 
-	dietmar.eggemann@arm.com, mhocko@suse.com, vinicius.gomes@intel.com,
- tj@kernel.org, 	vbabka@kernel.org, linux-kernel@vger.kernel.org,
- peterz@infradead.org, 	surenb@google.com, hpa@zytor.com, x86@kernel.org,
- dmatlack@google.com, 	kexec@lists.infradead.org, pratyush@kernel.org,
- dave.hansen@linux.intel.com, 	rostedt@goodmis.org, gmonaco@redhat.com,
- jgross@suse.com, mgorman@suse.de, 	graf@amazon.com,
- linux-edac@vger.kernel.org, liam@infradead.org, 	ridong.chen@linux.dev,
- longman@redhat.com, bsegall@google.com
-Date: Thu, 15 Oct 2026 16:17:48 -0700
-In-Reply-To: <20261015153331.1872641-8-pasha.tatashin@soleen.com>
-References: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
-	 <20261015153331.1872641-8-pasha.tatashin@soleen.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9RMtPUFCuYN30zPTOxaGP7huxuPCnbVGVzaU0gv5SsI=;
+	b=s4I5ZFcoeCiLpb74zMTgu7qelES5XFT4PvgduNsqm/hCfBbmXy2s+935wa0hiSC4z3nYMh
+	iq6ItWl/N1NR72LcVAu2XMrdkIVqv7v1WiKA7L8XoWp6Mc+oiNHk3RRpKZx9yKxDrOHob4
+	ch/IZxTYDmYLurCIctq8BZM+KsQK1Yk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 092C441FFE;
+	Thu, 15 Oct 2026 23:33:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0F21F000C4;
+	Thu, 15 Oct 2026 23:33:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792107190;
+	bh=9RMtPUFCuYN30zPTOxaGP7huxuPCnbVGVzaU0gv5SsI=;
+	h=From:To:Cc:Subject:Date;
+	b=lCKps5B6tN64QKfcqzZ+RvB8Bg9M2RNeDCYDu0l2x4NEpOBEv/Qt/WQS/GeVg5mSO
+	 3woRdrHgR38uBxhq0wBN7zmc5rQ1M38acBff9t7a4ujmC14ahLM06ZVdOPiPg+MDZl
+	 46mH4NBvArwphbtKGpiyhzm2plfvbxp77yigFieZdFhNhgIj13IHrXv1NUbSRmvowU
+	 k48PKvIMOka8AQZJXw6we4g/Qx+uixODaHVHtlkom3rEBefzN3bF+D2F4hWWqGe/7q
+	 TytPwN7eZHvftsj63ipPhEKRs6nEZFCnv1IQMEC0JWSC/EX7mH117tF6l7SB8ZXiVS
+	 tFK7D6tQrSf+Q==
+From: Mike Snitzer <snitzer@kernel.org>
+To: Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>
+Cc: linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org
+Subject: [PATCH v4 00/10] NFSD: keep direct-mode I/O out of the page cache
+Date: Thu, 15 Oct 2026 19:32:59 -0400
+Message-ID: <20261015233309.42999-1-snitzer@kernel.org>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D4CE7100007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: hhrt9mtubjeuutfqw7h9ngp8qfb71pua
-X-HE-Tag: 1792106271-434951
-X-HE-Meta: U2FsdGVkX1+95seqmvoBYb1cBDYuwwtNmNaGFEBha0ZObKHeChh86aYfV34ls+aAylMB8Wv3aAPblKWzrFgC0i0mjeicwl41vPjk0UCv4xcV4jA+2r311vkMTmiLNW2PTW6iK9p2r1ZXgDQnJTbzsJIIPmk/SUVY15BCmrsCGCUsIBatni9TmvJMwJX6kr7ZQ11Tvb8uBJ9kmFfYeHcMmXZvBgKZThxmkN8LHms1mTFHOiaIcQxWEBQK7DT3Rg2LemcQCo/+PrHIgTmPHFHvSBFyjZiKJAtKCpfeolt7OSTWu8gdL8Od/Af/XmKwKS/aBgxuqgBKSnfCMhtAVHeqiuCJboZAXHbkyyAh1o+saJcAIfYnHp4bL7ZZNL4+drybfRYlfQEAXE5waBJ87b6KsJAQfniP4ZC5FFqyWFUXaoBrm5ZicC0rSvolgIlP383OnPgF22w+qfsmUQxsCjEG9a2oMp7FIvpnuT0iRTy2balsbY9h+JQWQsUKpR2r2CCoWQH8tmKqGSliHkAqIsOEAAiDk+3D3VgEfymxfLUTfRxpYLtATqxP0ocG1ijSXdSUY9/CXfmXtFgXCKEeBLJ+jvTIR1Vnb2BVa9hmEnWvABR6MCFXYi5rF+VZaqaAixs4/m3SCVuPV8kAiEdC+l9B3MsVUKSoDoM7UH4nj/1Eu1kjduzO3XwqB9RkbFQLZiW8Xs148R1gsTFkqJXxyTC0LFbPCUWcBnIOF9uJ1Y6mabs2/B7OQSAD3BCxYDP2+EuRRmhGnwvpwf6ltrNUSWcTNMgGTbLy35XQmJEMYbYo9ROPrYmQO+/iyJKDexREy5vn78bgvQpH86k7+pYqJiAkevspEFsMp5PmMcBrf9Kw4ULP/JW4MT2Emc1YSflTaSuTbYDoHkzX16F0LQHNAlbjusGpKK1PME0WnmzvqgSsOG8bXFcsIG/S7NOLXEKHgEqhxrg265uV/hmmMcIkwLz
- cnoCrQa1
- YYQ6vbZF0R40kXpzQDJZlOlWbC8vA+W0v2ltUf4mgzP43Xl9OEN6GSBJ6ReFHqHKPhsIrwExiDkcSZpg1zMpQWQ+3bzNpaiB3CV/wIylhYZMowjmMNzxLrKc4v7ymbegq/9knizBJ+d1S+R2ZWYWZcpHLI8a8K1N7dviWr9HC1ePrdbDEJxQjcScyFx+/Vy0Qs+jzVQMF1JT7znLgTGmIrkvUmdHaK9kYWo3+p0/2xpFlz3PTGH3NwBCH7Z+THQdbJzcV
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1BFD8180010
+X-Stat-Signature: m3gbqzwr8oizb1c5orshrq5pygpcziun
+X-HE-Tag: 1792107191-932954
+X-HE-Meta: U2FsdGVkX189Gy/3TkXVIwSEMhGYGN2QKzfwFG03s9F+3DCiofjC56K5upZSsTWO7hOFOQ27jJLYlql/NI80Ap4CYQdb/Z8MiNYsP/pizrapDe2pfSb7bRQJLN7UNx6+fsZSQTJtOorVMDph1vs0CHw8SRTtTzJRbIIaL+Kap/McDbbXiIUA8737q5Bv4fUOcT7k1RBXD7bkd9KXYrjCf2wSDmGllu/K/ralMU5qKNeXASkxvuU6mLynkZYMpQUP9FMi7P27bP9ztazZhpHvLvaTdiu3hEaK13GBcxNjOh+V9PSXN5a3n61BKWcMiLUV3DYvZIS0xmuN4kWEpFD0vswv09tFtAQvXLLzxNNqq+haTp2unkUytdSywDL3CHOqU6Por6r/VL5oZnDp3ZTIkw5VKT0GnzbuwxQV9p9Ih562Ng1QMHBdzBgjADTWByC0YLien2PwB4HQmLMyII7h0XKNWxmadNbnj79om1vZLLecXi0BGpl3Dcx7xWvV7T7IDhTsr2PhlRTjnp47Ly2L1gRnqVKjGUixpWtTgIuSO209BJaGqLDHlvDag2V0ZkhsX8h5zw03/Da/6h5MnPHmbnaWx3Ju0/C0neeW+rEGzUroA+DHem4hljXlU33LKEHX/qvULTNIfLOgRqnukzdl3e7ScHtSJGtiLtA5+O1QLfMmWhYriMaHbFcK277wjdM6foHvDmLuGRVNGXee/kqIRfLNuyuZT3iwTJI08JP/jg0K1hN04KVZfiWaKUJTn7G6JAUdJvXR6PWmDevZhpbCo0HdYmm1pYKg5TbJT237hDZcvsYCkMmFFzgaXz61Vr0njekhNI8Pz4vydxMDPxT/1d0Lf8temzf0wUiGrGjVSfUWE4YkOhorXeMX2Ok/GAq/TbAgqPmc8p3dwTplwFPDyOQ3uUv4/uPzB4QCeWtIuHvW4KnlNGYaGXXm51l2q3g4y5QMJGrz7/YGzgaGVvU
+ gsp9S9vZ
+ rMdaVwmVIgDsXb2UecbHKzjmniQsET1ZmnEHoeavlMt7C8nlfCTKfJWUL1UqEFA5DLXgm6UubdPD1XkM6pgG6dNgR0dtvGL3qD2T5i7OC0aBA+iCPpGPNMRtHjE8epw3yIo84rpLhc4hyHxKmYzpgK8N9cjmwNp87MlXrAP0ENJjs2rWNJjw6fb9V4ypQsirEv1hyroKhXNqXnLnJOMCoVDymgSRdyBpjDHCaufeJK3iR33YjXVFr1YEm2fjgZxsPkolGshRAHjVGuBvmmYpkYDMGj7y3oDqVSQB/rAL3HoTKTQ2OFsDYBwtYvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,209 +96,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-10-15 at 11:33 -0400, Pasha Tatashin wrote:
-> During CPU hotplug, build_sched_domains() is invoked on every CPU
-> activation and deactivation. Profiling build_sched_domains() on a
-> 480-CPU Intel Xeon 6985P-C and a 512-CPU AMD EPYC 9B45 shows several
-> sources of avoidable O(N^2) and O(N) work per step:
->=20
-> 1. build_sched_groups() and build_overlap_sched_groups() iterate over
->    every bit of sched_domain_span(sd) via for_each_cpu_wrap(i, span, cpu)
->    and check cpumask_test_cpu(i, covered) one CPU at a time, even after
->    entire child groups (e.g., 120-CPU NUMA nodes) have been added to
->    covered. Instead, track the remaining uncovered CPUs
->    (cpumask_copy(uncovered, span)), clear each built group's span with
->    cpumask_andnot(), and advance directly to the next uncovered CPU.
->=20
-> 2. __visit_domain_allocation_hell() and __free_domain_allocs() allocate
->    and free 3 * nr_levels + 2 temporary per-CPU pointer arrays via
->    alloc_percpu() / free_percpu() on every domain rebuild. Reuse the
->    per-CPU pointer arrays across domain rebuilds under
->    sched_domains_mutex, clearing entries in __free_domain_allocs() and
->    only freeing the topology-level arrays when sched_domain_topology is
->    replaced in sched_init_numa() / sched_reset_numa().
+Hi,
 
-sched_domains_mutex does not protect the free:
+This series refines the heuristics NFSD_IO_DIRECT already uses, mostly
+on the WRITE path and in one corner of the READ path: the io_cache_write
+and io_cache_read modes where an aligned request goes to the filesystem
+as O_DIRECT, with DONTCACHE for the parts a misaligned WRITE cannot issue
+directly.
 
-[snip]
+It does not knowingly undercut anything the existing upstream code is
+built on.  An aligned WRITE is still one O_DIRECT write and an aligned
+READ is still one O_DIRECT read.  A misaligned WRITE is still split into
+a direct middle and buffered ends, and by default those ends are still
+DONTCACHE where the filesystem supports it.  io_cache_read and
+io_cache_write mean what they did, and nothing new is asked of the
+filesystem.  What changes is where the split is cut and when it is worth
+making, which READs are worth expanding, how often a synchronous WRITE
+is persisted, and what happens to the page two misaligned WRITEs share.
 
->  #ifdef CONFIG_NUMA
-> +static void __sdt_free_percpu(void)
-> +{
-> +	struct sched_domain_topology_level *tl;
-> +
-> +	for_each_sd_topology(tl) {
-> +		struct sd_data *sdd =3D &tl->data;
-> +
+1/10 is a stable fix.  A misaligned WRITE is split into a direct middle
+and buffered ends, and the middle was cut at the filesystem's DIO offset
+alignment.  Where the page is larger than that alignment (16 and 64 KiB
+pages over 4096-byte blocks, or 4 KiB pages over 512-byte blocks) the
+middle then starts or stops inside the page a buffered end writes, its
+invalidation drops that page, and whichever of the two neighbouring
+WRITEs comes second reads it back from the device.  A misaligned end is
+now cut at a multiple of the larger of the alignment and the page size.
+An end that is already DIO-aligned gets no buffered segment and stays
+where it is, so a DIO-aligned WRITE is still issued direct on every page
+size.  Such an end can share its page with a buffered neighbour, but
+NFSD's direct WRITEs are synchronous and XFS holds its IOLOCK across
+iomap_dio_rw(), the page cache invalidation after the write included,
+so the neighbour cannot dirty that page in between and make the
+invalidation fail.
 
-sched_init_numa() and sched_reset_numa() are called from
-sched_update_numa(), which runs from sched_cpu_activate() and
-sched_cpu_deactivate() without sched_domains_mutex. The free is safe
-because every domain builder holds at least cpus_read_lock(), and
-sched_update_numa() runs under the hotplug write lock.=C2=A0
+2/10 also marks the direct middle IOCB_DONTCACHE, for when XFS
+re-issues it as buffered I/O (-ENOTBLK) because something else has
+dirtied page cache in its range, such as a local process writing the
+exported file through mmap, which XFS's IOLOCK does not keep out.
 
-Please fix the changelog and add lockdep_assert_cpus_held()
-in __sdt_free_percpu(), so a future caller cannot break this without a warn=
-ing.
+3/10 splits a misaligned WRITE only for a direct middle of at least
+direct_misaligned_min_bytes (debugfs, default 8192), and moves the
+segment flag decisions into nfsd_write_dio_iters_init(), both from
+Christoph's suggested diff.  The threshold counts bytes: with 1/10 a
+split WRITE's middle is whole pages, and a threshold of two pages would
+demand a 32 KiB middle on 16 KiB pages and 128 KiB on 64 KiB pages.
 
+4/10 (Jonathan) adds direct_misaligned_dontcache (default Y), which
+selects whether the parts that are not O_DIRECT are DONTCACHE or
+cached.
 
+5/10 stops expanding a READ smaller than its alignment into one or two
+whole aligned device reads.  The check sits in nfsd_direct_read_ok(),
+beside the last-operation-in-COMPOUND check now in nfsd-testing.
 
-> +		free_percpu(sdd->sd);
-> +		sdd->sd =3D NULL;
-> +		free_percpu(sdd->sg);
-> +		sdd->sg =3D NULL;
-> +		free_percpu(sdd->sgc);
-> +		sdd->sgc =3D NULL;
-> +	}
-> +}
-> +
->  static int cpu_numa_flags(void)
->  {
->  	return SD_NUMA;
-> @@ -2449,6 +2483,7 @@ void sched_init_numa(int offline_node)
->  	/*
->  	 * Copy the default topology bits..
->  	 */
-> +	__sdt_free_percpu();
->  	for (i =3D 0; sched_domain_topology[i].mask; i++)
->  		tl[i] =3D sched_domain_topology[i];
-> =20
-> @@ -2507,6 +2542,7 @@ static void sched_reset_numa(void)
->  		kfree(masks);
->  	}
->  	if (sched_domain_topology_saved) {
-> +		__sdt_free_percpu();
->  		kfree(sched_domain_topology);
->  		sched_domain_topology =3D sched_domain_topology_saved;
->  		sched_domain_topology_saved =3D NULL;
-> @@ -2708,17 +2744,23 @@ static int __sdt_alloc(const struct cpumask *cpu_=
-map)
->  	for_each_sd_topology(tl) {
->  		struct sd_data *sdd =3D &tl->data;
-> =20
-> -		sdd->sd =3D alloc_percpu(struct sched_domain *);
-> -		if (!sdd->sd)
-> -			return -ENOMEM;
-> +		if (!sdd->sd) {
-> +			sdd->sd =3D alloc_percpu(struct sched_domain *);
-> +			if (!sdd->sd)
-> +				return -ENOMEM;
-> +		}
-> =20
-> -		sdd->sg =3D alloc_percpu(struct sched_group *);
-> -		if (!sdd->sg)
-> -			return -ENOMEM;
-> +		if (!sdd->sg) {
-> +			sdd->sg =3D alloc_percpu(struct sched_group *);
-> +			if (!sdd->sg)
-> +				return -ENOMEM;
-> +		}
-> =20
-> -		sdd->sgc =3D alloc_percpu(struct sched_group_capacity *);
-> -		if (!sdd->sgc)
-> -			return -ENOMEM;
-> +		if (!sdd->sgc) {
-> +			sdd->sgc =3D alloc_percpu(struct sched_group_capacity *);
-> +			if (!sdd->sgc)
-> +				return -ENOMEM;
-> +		}
-> =20
+6/10 persists a FILE_SYNC or DATA_SYNC WRITE that is split, or issued
+buffered, once after all of its segments, instead of once per segment:
+one fsync where there were up to three.  A WRITE issued whole as
+O_DIRECT keeps IOCB_DSYNC, so iomap can still complete a DATA_SYNC
+overwrite with FUA writes.
 
-Keeping the arrays also means every slot must be NULL when a build=20
-starts. Patch 5 depends on that: get_group(),=20
-init_overlap_sched_group() and init_sched_domain_shared() treat a NULL=20
-slot as "not allocated yet", and the overlap fast path treats=20
-"sgc->ref > 0" as "set up in this build". An old pointer would pass
-these checks and be used without a warning.
+7/10 is an mm patch: folio_mark_dropbehind() marks an existing folio
+dropbehind and keeps WB_DONTCACHE_DIRTY balanced when the folio is
+already dirty, as folio_mark_dirty() does for PG_dirty where
+folio_set_dirty() only sets the flag.  Marking an already dirty folio
+with folio_set_dropbehind() instead drives the counter negative, and
+the DONTCACHE writeback kick then stops writing anything back for every
+writer on that bdi_writeback.
 
-The rule holds today, but nothing says so. It also depends on builds
-never filling a slot outside cpu_map, because the clearing loops only
-visit cpu_map. Please write this down and check it, for example in
-__sdt_alloc():
+8/10 is also mm: it reports WB_DONTCACHE_DIRTY in the bdi debugfs stats,
+as BdiDontcacheDirty and per bdi_writeback as WbDontcacheDirty, summed
+over the per-cpu batches since the flusher targets the summed value.
+The counter drives the DONTCACHE writeback kick but was not reported
+anywhere; this is how the balance 7/10 keeps was observed.  It carries
+Fixes: for the commit that added the counter.
 
+7/10 and 8/10 are Cc'd to linux-mm and need an mm ack.
 
->  		for_each_cpu(j, cpu_map) {
->  			struct sched_domain *sd;
+9/10 calls folio_mark_dropbehind() to keep the page two misaligned
+WRITEs share until both have written it, with no state in NFSD: 704
+device reads for 42895 WRITEs where there were 45144 for 45664
+(47008-byte records, 32 interleaved writers, 4 KiB pages), and on a
+four-server pNFS flexfiles rig 0.003 device reads per record instead of
+0.014-0.015, about 2.9 GiB of page-cache growth instead of 11 GiB, and
+2.4% to 4.9% more write throughput.
 
-Maybe add
+10/10 adds tracepoints for how each direct-mode READ and WRITE was
+serviced, and why a WRITE was not issued direct.
 
-        /*
-         * The slot arrays are kept between builds. Every slot for a CPU
-         * in cpu_map must be NULL here; lazy allocation treats NULL as
-         * "not allocated in this build". claim_allocations() and
-         * __sdt_free()/__sds_free() clear the slots, but only for
-         * cpu_map, so a build must not fill slots outside cpu_map.
-         */
-                for_each_cpu(j, cpu_map) {
-                        struct sched_domain *sd;
+The series applies to cel/nfsd-testing (78c334bc5ae6) and each patch
+builds with W=1 with no warnings.
 
-                        WARN_ON_ONCE(*per_cpu_ptr(sdd->sd, j) ||
-                                     *per_cpu_ptr(sdd->sg, j) ||
-                                     *per_cpu_ptr(sdd->sgc, j));
+Changes since v3:
+- Dropped "NFSD: Enable return of an updated stable_how to NFS
+  clients" and "NFSD: add direct-mode WRITE settings that persist each
+  WRITE" (v3 8/9 and 9/9).  The rest of the series does not depend on
+  them.
+- New 1/10, NFSD: cut a misaligned direct-mode WRITE at page
+  boundaries (Cc: stable).  v3 cut the direct middle where the DIO
+  offset alignment falls, which is a page boundary only when that
+  alignment is the page size.
+- Rebased onto the current cel/nfsd-testing.  5/10's size check moved
+  into nfsd_direct_read_ok().
+- Descriptions, comments and nfsd-io-modes.rst corrected throughout,
+  among them: 2/10 says what can still make XFS re-issue the middle
+  buffered once 1/10 keeps it off the pages the buffered ends share;
+  3/10 says why a WRITE misaligned in memory is not split; 4/10 no
+  longer misstates what the split threshold decides.
+- 3/10: the threshold is direct_misaligned_min_bytes (default 8192)
+  instead of direct_misaligned_num_pages (default 2).  On 4 KiB pages
+  the default is unchanged.  The debugfs file is renamed with its unit,
+  so a value written to the old name is not read as bytes.
+- 6/10: a WRITE issued whole as O_DIRECT keeps IOCB_DSYNC; v3 turned a
+  DATA_SYNC overwrite into a plain write plus an fsync.
+- New 7/10, mm: add folio_mark_dropbehind().  v3 marked an already
+  dirty folio dropbehind directly; the clean that follows subtracts it
+  from WB_DONTCACHE_DIRTY, which never counted it, so the counter
+  drifted negative and stopped the DONTCACHE writeback kick for the
+  whole bdi_writeback.
+- New 8/10, mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats.  Reports
+  the counter 7/10 keeps balanced; Fixes: Jeff's commit that added it.
+- 9/10: claims a page only where a buffered segment covers it partly, at
+  either end of any segment, so a multi-page start or end segment and a
+  sub-page WRITE are handled; claims for a split WRITE at any DIO offset
+  alignment, since 1/10 keeps the direct middle out of the claimed
+  pages; does not claim when the mapping's minimum folio is larger than
+  a page; allocates with __GFP_WRITE; does not mark a page a short
+  write did not reach; a FILE_SYNC or DATA_SYNC WRITE marks its shared
+  pages after its own fsync, when they are clean, so they are not
+  counted as DONTCACHE dirty and do not wake the writeback kick.  The
+  description no longer says marking must not be accounted or that the
+  kick targets marked folios.
+- 10/10: the DONTCACHE state is its own tracepoint argument instead of a
+  bit ORed into the disposition (nsegs is dropped; it follows from the
+  segment sizes); the redundant #include "vfs.h" is gone;
+  NFSD_WRITE_DIO_NO_ALIGN is renamed NFSD_WRITE_DIO_NO_ALIGNMENT to
+  match its string; mem_offset is 0 for a WRITE with no payload.
 
+v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
+v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
+v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
 
+Thanks,
+Mike
 
-> @@ -2748,30 +2790,36 @@ static void __sdt_free(const struct cpumask *cpu_=
-map)
-> =20
->  			if (sdd->sd) {
->  				sd =3D *per_cpu_ptr(sdd->sd, j);
-> -				if (sd && (sd->flags & SD_NUMA))
-> -					free_sched_groups(sd->groups, 0);
-> -				kfree(*per_cpu_ptr(sdd->sd, j));
-> +				if (sd) {
-> +					if (sd->flags & SD_NUMA)
-> +						free_sched_groups(sd->groups, 0);
-> +					kfree(sd);
-> +					*per_cpu_ptr(sdd->sd, j) =3D NULL;
-> +				}
->  			}
-> =20
-> -			if (sdd->sg)
-> +			if (sdd->sg) {
->  				kfree(*per_cpu_ptr(sdd->sg, j));
-> -			if (sdd->sgc)
-> +				*per_cpu_ptr(sdd->sg, j) =3D NULL;
-> +			}
-> +			if (sdd->sgc) {
->  				kfree(*per_cpu_ptr(sdd->sgc, j));
-> +				*per_cpu_ptr(sdd->sgc, j) =3D NULL;
-> +			}
->  		}
-> -		free_percpu(sdd->sd);
-> -		sdd->sd =3D NULL;
-> -		free_percpu(sdd->sg);
-> -		sdd->sg =3D NULL;
-> -		free_percpu(sdd->sgc);
-> -		sdd->sgc =3D NULL;
->  	}
->  }
-> =20
-> +static struct sched_domain_shared * __percpu *sched_domains_sds;
-> +
->  static int __sds_alloc(struct s_data *d, const struct cpumask *cpu_map)
->  {
+Jonathan Flynn (1):
+  NFSD: add direct_misaligned_dontcache debugfs knob
 
-and maybe similar check=20
+Mike Snitzer (9):
+  NFSD: cut a misaligned direct-mode WRITE at page boundaries
+  NFSD: mark the direct middle of a split WRITE IOCB_DONTCACHE as well
+  NFSD: only split a direct-mode WRITE for a worthwhile direct middle
+  NFSD: do not use direct I/O for a READ smaller than its alignment
+  NFSD: persist a synchronous direct-mode WRITE once, after all of its segments
+  mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
+  mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
+  NFSD: keep boundary page of a split direct-mode WRITE until both writers complete
+  NFSD: add tracing for how direct-mode READ and WRITE are serviced
 
-        for_each_cpu(j, cpu_map)
-                WARN_ON_ONCE(*per_cpu_ptr(d->sds, j));
-
-> -	d->sds =3D alloc_percpu(struct sched_domain_shared *);
-> -	if (!d->sds)
-> -		return -ENOMEM;
-> +	if (!sched_domains_sds) {
-> +		sched_domains_sds =3D alloc_percpu(struct sched_domain_shared *);
-> +		if (!sched_domains_sds)
-> +			return -ENOMEM;
-> +	}
-> +	d->sds =3D sched_domains_sds;
-> =20
->  	return 0;
->  }
+ .../filesystems/nfs/nfsd-io-modes.rst         |  93 +++++-
+ fs/nfsd/debugfs.c                             |  25 ++
+ fs/nfsd/nfsd.h                                |   2 +
+ fs/nfsd/trace.h                               |  77 +++++
+ fs/nfsd/vfs.c                                 | 265 +++++++++++++++---
+ fs/nfsd/vfs.h                                 |   9 +
+ include/linux/pagemap.h                       |   1 +
+ mm/backing-dev.c                              |  11 +
+ mm/filemap.c                                  |  31 ++
+ 9 files changed, 473 insertions(+), 41 deletions(-)
 
 
-Thanks.
+base-commit: 78c334bc5ae61d23ca1cc2e43079c620f1d40866
+-- 
+2.52.0
 
-Tim
 
