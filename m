@@ -4,118 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E88ADCC6B38
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 18:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 348BCCCA464
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 19:00:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF3546B0092; Thu, 15 Oct 2026 14:55:26 -0400 (EDT)
+	id 1C8646B008C; Thu, 15 Oct 2026 15:00:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7D846B0095; Thu, 15 Oct 2026 14:55:26 -0400 (EDT)
+	id 19F426B0096; Thu, 15 Oct 2026 15:00:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C456D6B0096; Thu, 15 Oct 2026 14:55:26 -0400 (EDT)
+	id 0B64A6B0098; Thu, 15 Oct 2026 15:00:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A0136B0092
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:55:26 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 82860A7204
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:54:52 +0000 (UTC)
-X-FDA: 85325762424.18.594D9E7
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AA7D340006
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:54:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kLylG9d1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792090490;
-	b=hO/3Y8/g8rzUlhIUGrKBU8hubr5l0+TumxihUw3/r1M0c6E71noPFbhjYvRcqyBn6lqFoD
-	4/xeoQCzuUMQcv4G6O9qAHLQteTkNm8GOHXhrNY12ONpR4X9P6G0sPBs/DCe6ffUTbL+2n
-	HMy+Ti49lF4rQKDm0pjvIFYuTJDc0So=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kLylG9d1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D0E166B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:00:39 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5870516024D
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:00:39 +0000 (UTC)
+X-FDA: 85325776998.27.40AA6D9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 189F410000C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:00:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jxfnhKaJ;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792090490;
+	s=arc-20220608; t=1792090837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IltlA15ffn2teEWgoeALmwOWBDbtdgaPXsnTGsD5rwo=;
-	b=cIAgK0eCok7YU3wKOXoRBelNz5sTsKNO0lIlnB9HrPjqyOZXEf5/PVYQlC4jawILGwdbwP
-	2tYVFWMa5V+mYWll2m2o7p9IJ7kE/QzWaGQzgZ0dlDU+YKnElKBmg+pRbu4YKNa71vEDIG
-	Qg2o2g6JQrh6AME33Ne7zWj+Y6EiuLE=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3ac451e128cso1965831a91.1
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:54:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792090489; x=1792695289; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IltlA15ffn2teEWgoeALmwOWBDbtdgaPXsnTGsD5rwo=;
-        b=kLylG9d1tbD5Rkm8RDC1lqVbKA0rtE0gP4jfE0xGSo8QZkFTyF/HIIEhy5GL6t5nW+
-         mnmz2ECuk12gs691YM1EmQD5HKicvG06CBc2WvdTfL5+n+YcDFXB6nGE6xivVDt2Rq/P
-         CZFKLfrS44/z0l6siAokgnlBisEYjBy1QaDQVBr/cmSdxrNr4wEqPJz3mPQY70pwdc70
-         pVMOiADfp41JnVj8WJBCNZYC2RvxaszQ6zvbt4t1hzYGrkQayv9xCcvYzRc+tQs/RR1Z
-         Fyg0bfWmXDjErnmS8iKgEmclxrH7KIc2iSQg+GJARZd5/t+EzfRtc8OkQdNoNXNL/o1l
-         mlHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792090489; x=1792695289;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IltlA15ffn2teEWgoeALmwOWBDbtdgaPXsnTGsD5rwo=;
-        b=uf5FQaAprYZpxQqdhP4k4AVp+5KbMc+LUaBIsHdmYuppCtESWV7cr0WzlI24mGF5X/
-         BAOzXsQONgi4sESFs9cm2CRyBAE9RaL1n7WMmoOhs4h+p7pkGLR2CUW3PKn3A+DzQ3j0
-         rlGv9WMBp5AstLLxSYQ+y+WM5SimnlHSRAET4EVuK9VEYX8TIiHOEksoysETEBcYPUsL
-         7Q947/utvnpN/MnGrgkTt7BrJpcG8gwvY5+HO2AstrNFDLKwmAGfVHUBlLJr/urrdMHu
-         o0ZpTazsw77XngamTmyoM9RFjl6dlDBrREj39xtzPwMTiT0znBjIMwBRKlYdFVil3Oky
-         GekQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwNI6LAnoSdNmEkwZdpuS/6b7ILnOemmL+XJhzxosfhAVAs+a1+gawFGzGpOUaYVBDmBU857yjgaQ==@kvack.org
-X-Gm-Message-State: AFq9FYJcFbJpOJkIzlkeJvFkBdZIkkxPA26ydDESozypEz13s9isQU+w
-	sQH7nKXpW9CCWfO40m2ppsFOz4paxtkQ6OJzWg9IRXOql1a+DyJFoQ6PsUeQxxsC0A==
-X-Gm-Gg: AYBFou2eKX30tn4sDEYGSI+x4qL4YewK1QJZudF0BFxDYO5UK2cyFF2mf8VrvVQhj40
-	8izmLb2JJR2nbUGuLDlyQhvPtlgU6FXXJ8J7yFY2d2ae0b9kTR1zrw2QymjdhyQJEwN+T1+skw4
-	1ndzyP7cGQsPYBf5VaO2B1+ebU9hZEDqaVlssSmP2twAycru+jKjOJA68cz8MP6LIWJzrv3Gdig
-	30hFJzlQosw1E1g/beMG0jKwkmx77nj6DD7UI/olRT/Cg90QYgTF2w8OJM5feiavfOzMrEg/im+
-	HCX9JsZa+bxeXuAJDYpHGUZgETGMtNNc9PbbGtGDuLdFEymuQcnibEhnyBtG/pAl1axiSj7gZPB
-	TA6gUlF+dmXVqB8RYVHWoak8OnBy6Ver7lBpo/N3CbObKGoEwmCgPCtNwRv+NiDtakYPwn5NZyH
-	d4tTYNG1n5wyqI+VnUTXiwortqHPd/PtohWsnFnuEeW+ioUcxxh4451ux8beBamPL+ux/5Psus8
-	sZz0PLezqWGeGHQ/3qlXhDUhdOZnTk4dTk=
-X-Received: by 2002:a17:90b:390d:b0:3ac:b6eb:e0d4 with SMTP id 98e67ed59e1d1-3acb6ebe1c9mr959297a91.63.1792090488544;
-        Thu, 15 Oct 2026 11:54:48 -0700 (PDT)
-Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc46ecd32sm452704a91.3.2026.10.15.11.54.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 11:54:47 -0700 (PDT)
-Date: Thu, 15 Oct 2026 18:54:43 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org, vipinsh@google.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	pratyush@kernel.org, graf@amazon.com
-Subject: Re: [PATCH v1 0/7] liveupdate: tmpfs preservation and early freeze
-Message-ID: <atEhc20Zawj4D62x@google.com>
-References: <20261015093816.2438942-1-pasha.tatashin@soleen.com>
- <atESAwf17pJ11S9U@google.com>
- <atEaPuWNOm5VLc7A@google.com>
+	bh=uJ/G9yyXD4qyUPrTP1b85QhiMx6Sqjd/0iLMmnkucLE=;
+	b=g1Tk6POLHg/QlzqERwUEcHZmiEBI704HfEh0eHV9PeMUV5Hoyrin/i7AoGG7IneJHHQGhM
+	/1N0RsqUwNqOEqm6bZRXVygTSFdav7yM7Vr17PloO4f2/JUL1fMeWONQ8h5pN5QjL4ydn4
+	KoqYKAb9fkKS7atRZVbP0fjKrVbM39c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792090837;
+	b=HZb9hlU7vfx2kiDTTHd42lUE+tHzQkjXTaJnhabmmcVc8kStTqrP1VIXjSPE6Qd+6SR9dD
+	Rve5CVi/MiDCuT697rP/jCbuAIxYEg3Jv+MtBdQ24hNIrVRDrSEIgGSfjSiCjoarhx/ITm
+	hrSVkasOarjVp4RSCUc7qNo7eElTi3E=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jxfnhKaJ;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 27C7B60A5F;
+	Thu, 15 Oct 2026 19:00:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D451F000C5;
+	Thu, 15 Oct 2026 19:00:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792090835;
+	bh=uJ/G9yyXD4qyUPrTP1b85QhiMx6Sqjd/0iLMmnkucLE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jxfnhKaJN88Ifi5mS18bnuyd4Z77T+cmmVs9M0jHfYRGlIiWSuVEih3mUUp6Thtn3
+	 eNXVirQLiGONqNEymMftbPUH9Z6FSGUwC1T7RTlCgwUxPjQyx0RPYuEKHNG99PP/oG
+	 1xtPVuGad8RK4Y2qSKNSFkURp7OmdXcUBnqd5pwcAMqFRNCz3BSTb8qc3K66cG+vik
+	 h39qpHBXvN7EH1Es1wJNGHPq9jTKWZVDNlOfMjvA63ZRbtBobpqggfrfq4+XmnU4PN
+	 m+n5rZZGOcoWPmf4Uo8p2PoB8arS4mkJ+tTz5qND8MIgI0BvaE5B9ahcs5UOxk9CNh
+	 YKnNZ3SVjyb7w==
+Message-ID: <f7735584-e020-4ee1-8afb-2b5d580cfa49@kernel.org>
+Date: Thu, 15 Oct 2026 21:00:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atEaPuWNOm5VLc7A@google.com>
-X-Stat-Signature: ipwnhzfay97sczrxzjsid44ixsay3zt3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: memory: fix truncation removing mapped folios
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
+ pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com>
+ <8245424a-f068-4be5-9e58-713cbff1f8ae@kernel.org>
+ <405811f5-ee36-4b3c-80d0-7dc6827ab5d4@linux.alibaba.com>
+ <6660d3bb-3485-4c34-8734-3ea99df920f1@kernel.org>
+ <02c9a968-92e2-49e2-bffc-74d264a5c911@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <02c9a968-92e2-49e2-bffc-74d264a5c911@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AA7D340006
-X-HE-Tag: 1792090490-546698
-X-HE-Meta: U2FsdGVkX1+g9mq/dju3XI19oaimUc58nE75P9UJKK+DI8HGiq+p8QKudz3HTY5Sfv8Rh9XinqKU1pE+n1sUi5uuluNWafEP0Wjx8U/owP+7+524ir8tBO26XDvr0CWPlvEUfjtPboMwfp044WL2KLdM9lUHZagM0JyWXUoooHwWm6U4eQDW42uZsM40N4Z4zALJX6eXc5OAbgEXGhGSZHhr4p1q+UT3tPW7WKjIrqAydGTi+srv4TQeOLlGg07UPB3H1nzv0vnkIDNWm01eiVGU5NY29OIFY3r9GwBSz7RqBBXPhyTim5E9Abd70/k+zxE1PECnIZOTTP5G7QRF2giDRDMZlwCYix45o3pxK3841T8s6gWu8dHoZyfrKjBLUgwThvNT240jXXTsXl8laTPJtSnh6uA3Ys+DPgM2lBTCgm3inXhAPb7GfuTdDNf8TaUCWD0nbci+54YAfd/aBqNEdzw35nguHChUsLx6hx36CTkY/oADIH0157RFXprpx2tsAD80y59kic0gCrfpXahV5EPKMLyhE6GskMVn0baPkZpr90udQi3UknXXqWzKS4rS/Y3RZPT4xIl105Cbg1tAQRwKkpzkswlkQFcy41fKxSjL28YertRnyzbbXkbJyHk8abGM5e/8HtGWfWusoHcFI+r18tI4b8pef+i9PzgT5vRleFh39gt0xBMIWOoPxC8jNc+F0bKzFcmvR1ctnvdSOlGh+FD4NUdV/9vyu9FHtyYBoaLevTRIM0TjRmzyiFnMZtmki3jOQ1CKyGIJ4ivL1xO12x+D5t/X83IGdBFd+Q0jsHE9+W3Kdy9Y+TnJdXbcszpgYQrRYbJunghLut2n5121/OzHyrc6FTuVO7U3kXepHl+xmD40JLXabpq8rQEPfJRG987vZgxczsI2WSNM9iJzTXBmUAQd8tVWWofvZjAHgD57Fbp8yIl8854lrT+g7evswjN7TC89RIH
- Je326Ko2
- ujgsibz/gY5clTtOEkNduwXPAtemYH6iCZA1IDJ9LVVi0xRalI0/1L3pAKlyWOqk0W2a43FqC0eM5JjABCJclod6gUW2dbSwAS6jK9lMZtRCNh7X/eASw7QKXiZSQM05s67Zq5KGFX4osZ6d9SaS3JpZbqmwBDo4e+Tdz6NWmf/4iauScO0dyCzGsWKttAFxi3lXtHuv3AY20eOZsBOSa601J6ofgfQO+hL8CFUeUmpnxD6tCM3sKdAe8hy9deLM/mT81+i2qCV3yp+TeRsvtY+lxV5bMez/E4tLn2FxN0W+KKZQTGkc5CkcON11u1BcudmQNPFWQc6BhXufdXh5xLIIJK8ov6WxPFU3ulaHY2KaDzag=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 189F410000C
+X-Stat-Signature: hqhrfo84kqi7by58dgmses37samuozb7
+X-HE-Tag: 1792090836-319577
+X-HE-Meta: U2FsdGVkX1/5WAWq9L3a3xVtAQtAY1+vZDEPwieDyvWYgnZhP02URqXC9pSS8RKR15i92KWRIST25fmwP9WDZGYhzDs75cachGX0oKIwakHgbn8DDqz8GqZ9fA+xo1VimN3rSVBiNkM2yDqbEwd/Bb+VKP4N1K5DYo5VE8OcD4FS+wE5ffk2J/FFgvBcWWtb9ZAyn/TcXMh8UvVufxDTkojjSiYEOPQxOpNfm2I848CxZ43xnoDsdAx5tMU0K4KZ8/gBF3Ic0N13qSDSbrH7qk4Dt0X8AXyGDfBniiRp2ZbOCr2c6Bw56AVK+f4etP6oTjn8Xn1WI/8lMbcn8pcVi7oLfC7SC4LWCv+RBEHPb89dcZY/MHWmdxKvchxCwxNt4OYT5sbxCo4BBNzEQCQlJsNRarOtxhEmttduze3K48O7Wh+5+rhAHBgnD77x+WZXn+oUTjuYfp2CR6jKmfDKJeZRLSkaEsQxS4DVQflUaLMA9x7hHWqIn+GlXEHZ5ge2r3NdZWz8aq5vdRdeeNpE14Otv1R3z0xL2cO3RGtKHGwW/c8zBS0To6R6D7Ggur3D5G+tKxeaWMQ6fH5LBn+FHJeqshUka+Kk9w1Ho6nnHs7FjJMK9dI6S0uXwldT5/iocENwPDe3jZY63SqtdZOuxyuaLoXUvO7+83YKR/f/4ZLe5NloWb4JurtAm4AINIsUbQzXjKX1BLmSR1avds+j+qsOxx8eUmpRGIddHo1nwKAZPrvoTFynCYERUYGMKCCWP2IBclBzmDHFr8+lmjodrTu4czs/a2JVwV4ev3oMS1x4t8i1iLq74FiJ/hHsC9FTZ/kkGiSTWOvwGZbsrTQOmZWCGnNL52gbroTHIpTzZzdk03cjIWXK8zTomjCn5abbKc072gTB5J97VBj4zkpuX451fQGDPAh/HXR/LUKxtWnpi7XYH8zg629u6Z+BU9c3wJsm+ZvvtBg3q5VdanL
+ C5H5///M
+ 8Iqd1Oc2HDJsXXAXF7LWGUydNSyFsTFxf23OXDPJNDnZpODWSyf0MMmtLJGQv8QReQ9/czAaukMKVEy5RpaPFkY9Y+vKNvjKjXyiJvw5sUZktosOGm2AGVFMvuO4XGq7kk/ZD0IbIZaWounYHpRon9HAN8pIF8R06iHP83fjN9nW3kBE7UW+6X+E4QlHq4klSaa2MVvausyAn11reORiTZ828LU10f/MDKfuOk1TqKJANj8yHewP32SoqLUqobHGUxxe2edWbjLpn4MKPAY+mA7YwiZtJZgxyjI+e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,211 +143,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-10-15 02:23 PM, Pasha Tatashin wrote:
-> On 10-15 17:48, David Matlack wrote:
-> > On 2026-10-15 05:38 AM, Pasha Tatashin wrote:
-> > > This series allows preserving files in tmpfs via LUO to survive across a
-> > > live update, and allows userspace to decide when to freeze a session
-> > > instead of delaying until auto-freeze at kexec time. Once userspace is
-> > > done with a session, it can freeze the session immediately (and across
-> > > multiple sessions in parallel), reducing blackout time by not postponing
-> > > this operation to kexec shutdown where all sessions are frozen serially:
-> > > 
-> > > 1. Early session freeze (LIVEUPDATE_SESSION_FREEZE):
-> > >    Currently, LUO sessions are frozen automatically only inside the
-> > >    reboot(LINUX_REBOOT_CMD_KEXEC) path, where luo_session_serialize()
-> > >    iterates through all outgoing sessions under global write locks and
-> > >    freezes them serially during shutdown.
-> > > 
-> > >    Add the LIVEUPDATE_SESSION_FREEZE ioctl on session file descriptors so
-> > >    userspace can freeze a session as soon as it is done with it (and freeze
-> > >    multiple sessions concurrently, since luo_session_freeze() only acquires
-> > >    the per-session mutex). During kexec, already-frozen sessions skip the
-> > >    late auto-freeze step; if an early-frozen session is closed before
-> > >    kexec, its files are rolled back via .unfreeze() before being
-> > >    unpreserved.
-> > 
-> > Thanks for putting this together. I'm on board with driving
-> > retrieve-into through a per-handler argument instead of a LUO-level
-> > flag. It's what Pratyush suggested on the RFC too (sorry Pratyush, I
-> > never replied to that). I still need to review the actual patch but
-> > I think the idea is fine.
+On 10/15/26 08:41, Baolin Wang wrote:
 > 
-> Yeah, Pratyush and I discussed this at LPC. I've been using this extra
-> argument in my cpu_preserve series to launch jobs at a given entry
-> address on a preserved CPU, and figured it would be a useful, generic
-> interface for others as well. So I decided to send this series now to
-> reduce the extra infrastructure I carry in my cpu_preserve series, and
-> your tmpfs work was a good reason to land it now :-)
 > 
-> > However, nothing ties the arg struct to a handler, it's interpreted by
-> > whichever handler owns the token. At LPC we discussed letting userspace
-> > pick the handler in PRESERVE_FD/RETRIEVE_FD, so that it controls which
-> > one is used when more than one can take a file. If we do that, the
-> > handler name would also be the natural key for which arg struct is
-> > expected.
-> > 
-> > > 3. Tmpfs file preservation and retrieval:
-> > >    Using the file handler retrieve argument, extend mm/memfd_luo to allow
-> > >    preserving generic shmem-backed tmpfs files (not just unlinked memfd
-> > >    pseudofiles), recording MEMFD_LUO_FLAG_TMPFS in
-> > >    struct memfd_luo_ser.flags so that preserved tmpfs files must be
-> > >    retrieved as tmpfs files and preserved memfd files must be retrieved as
-> > >    memfd files.
-> > 
-> > I've been working on a v1 of the tmpfs preservation since LPC. v1 fixes
-> > a number of problems in the RFC that I think this series still has
-> > (sorry for the wall of text, it is LLM-generated):
-> > 
-> >  - Failures that userspace can fix lose the file. The folios are
-> >    restored, charged and added one at a time, so if the target's mount
-> >    is too small (ENOSPC/quota) or the caller hits its memcg limit
-> >    partway through, the target is truncated, the folios are freed, and
-> >    the failure is permanent. Only bad-argument errors are retryable.
-> >    v1 restores all the folios first, charges all the blocks and memcg
-> >    up front, and adds all the folios to the page cache or none of them.
-> >    It keeps the restored folios in private_data between attempts (LUO
-> >    needs to pass private_data to .retrieve() and keep it on failure),
-> >    so the only permanent failure left is losing the KHO state itself.
+> On 10/14/26 9:25 PM, David Hildenbrand (Arm) wrote:
+>> On 10/13/26 11:36, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> I had considered this approach before, but it is not feasible. IIUC, the
+>>> sync_with_folio_pmd_zap() is used to address the race with zap_huge_pmd(), and
+>>> both the PMD clear and the folio mapcount decrement are performed under the PMD
+>>> lock in zap_huge_pmd().
+>>
+>> Just to be clear, I am thinking about something like the following on the
+>> zap_pmd_range() side:
+>>
+>> diff --git a/mm/internal.h b/mm/internal.h
+>> index 38b1165212c94..a8820ad7e2f21 100644
+>> --- a/mm/internal.h
+>> +++ b/mm/internal.h
+>> @@ -584,14 +584,15 @@ void free_pgtables(struct mmu_gather *tlb, struct
+>> unmap_desc *desc);
+>>   void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+>>
+>>   /**
+>> - * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
+>> + * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
+>>    * @mm: The mm_struct.
+>>    * @pmdp: Pointer to the pmd that was found to be pmd_none().
+>>    *
+>>    * When we find a pmd_none() while unmapping a folio without holding the PTL,
+>> - * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
+>> - * indicate that it's unmapped. Skipping the PMD without synchronization could
+>> - * make folio unmapping code assume that unmapping failed.
+>> + * zap_huge_pmd() or zap_empty_pte_table() may have cleared the PMD but not
+>> + * yet modified the mapped folios to indicate they are unmapped. Skipping the
+>> + * PMD without synchronization could make folio unmapping code assume that
+>> + * unmapping failed.
+>>    *
+>>    * Wait for concurrent zapping to complete by grabbing the PTL.
+>>    */
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index 8b0c2c735d3de..c585f5eb255c9 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -2139,9 +2139,7 @@ static inline unsigned long zap_pmd_range(struct
+>> mmu_gather *tlb,
+>>                                  continue;
+>>                          }
+>>                          /* fall through */
+>> -               } else if (details && details->single_folio &&
+>> -                          folio_test_pmd_mappable(details->single_folio) &&
+>> -                          next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
+>> +               } else if (details && details->single_folio && pmd_none(*pmd)) {
+>>                          sync_with_folio_pmd_zap(tlb->mm, pmd);
+>>                  }
+>>                  if (pmd_none(*pmd)) {
+>>
 > 
-> I think the current behavior is fine: if the file doesn't fit when
-> restoring, I think it is okay to lose the file permanently. We shouldn't
-> keep preserved data around in private_data once we have started
-> retrieving folios.
+> Yes, I've considered that. However, implicit memory barriers give me a headache,
+> so I ended up going with explicit memory barriers (suggested by Pedro).
+> 
+> If you don't like memory barriers, let me re-check whether the implicit memory
+> barriers here can ensure race safety with sync_with_folio_pmd_zap(). A
+> simplified logic is as follows:
+> 
+> CPU 0 (truncation)                        CPU 1 (zapping)
+> down_read() ->Acquire A1.                pte spin_lock() ->Acquire A4
+>                                          clear mapcount
+> 
+>                                          pmd spin_lock() ->Acquire A5
+>                                          clear pmd
+>                                          pmd spin_unlock() ->Release R5
+> 
+> if (pmd_none()) { //read pmd
+>                                          pte spin_unlock() ->Release R4
+>     pmd spin_lock() ->Acquire A2
+>     pmd spin_unlock() ->Release R2
+> }
+> up_read() -> Release R1
+> 
+> spin_lock(y) ->Acquire A3
+> folio_mapped() // read mapcount
+> spin_unlock(y) ->Release R3
+> 
+> CPU 0 constraints:
+> 1. R2 is a release, so "read pmd" completes before R2.
+> 2. A2 completes before A3 (ACQUIRE vs ACQUIRE).
+> 3. "read mapcount" completes after A3, hence after A2.
+> 
+> CPU 1 constraints:
+> 1. R5 is a release. Both "clear mapcount" and "clear pmd" complete before R5.
+> 
+> According to above constraints, if CPU0 sees pmd_none() caused by CPU1's clear
+> pmd, and CPU0 then acquires the same pmd lock released by CPU1 at R5, then
+> CPU1's clear mapcount happens before CPU0's later folio_mapped().
+> 
+> Therefore folio_mapped() is guaranteed not to read the old mapcount in this
+> case. So I think sync_with_folio_pmd_zap() can work, but needs a small change to
+> avoid the double pmd_none() check.
 
-Ok I think we can omit keeping restore folios in private_data across
-retry attempts. It is a bit subtle.
 
-> >  - memfd_pin_folios() doesn't require the inode lock, so iommufd can
-> >    pin folios of the target while they're being added or truncated
-> >    away. v1 starts with two patches that make iommufd take the lock
-> >    and make memfd_pin_folios() assert it.
-> 
-> Hm, isn't this mostly orthogonal to the change we're making here?
-
-Kind of. Today .retrieve() fills a brand-new memfd that nobody else can
-reach until the ioctl returns. Retrieve-into fills a file that other
-processes can already open by path and pass to iommufd, so pinning can
-now race with the folios being added, or truncated away on failure.
-
-In the failure case a folio can stay pinned (and mapped for DMA) after
-it's been removed from the file. Retrieve-into introduces the race, and
-the fix is two small prep patches.
-
-> >  - The target has to be opened for writing (FMODE_WRITE). Since LUO
-> >    holds a reference to it until finish, that means a restored binary
-> >    can't be executed until the session is finished (-ETXTBSY). v1
-> >    instead requires mnt_want_write_file() and file_permission(MAY_WRITE)
-> >    under the inode lock, like FS_IOC_ENABLE_VERITY. That also rejects
-> >    immutable files, which a fd opened for writing before chattr +i
-> >    doesn't.
-> 
-> Ah, good point.
-> 
-> >  - There's no file_modified() or fsnotify_modify(), so setuid/setgid
-> >    bits aren't cleared and timestamps aren't updated. The normal write
-> >    path does both.
-> 
-> That is true, though I'm not sure fsnotify_modify() is really needed
-> since the whole file is restored at once and I doubt anyone is watching
-> for modifications during restore (clearing setuid/setgid via
-> file_modified() makes sense, though).
-> 
-> >  - f_pos is set through fget() + vfs_setpos() without f_pos_lock, which
-> >    races with read()/lseek() on the same open file. v1 uses
-> >    fdget_pos(). (Sashiko called this an ABBA deadlock. I don't think it
-> >    is one, since vfs_setpos() doesn't take the lock, but the race is
-> >    real.)
-> 
-> Right, this was reported by Sashiko; I haven't looked into it yet.
-> 
-> > 
-> >  - Early failures leak the preserved folios. The seals/flags check
-> >    frees ser and records a permanent error, so .finish() skips the file
-> >    and the folios are never freed. Sashiko flagged this as well. The
-> >    new MEMFD_LUO_ALL_FLAGS check adds another way to get there. In v1,
-> >    early failures don't consume anything and aren't permanent, so
-> >    .finish() cleans up.
-> 
-> We originally agreed that if retrieve() fails, we fail permanently and
-> leak resources until reboot to avoid memory corruption from ongoing DMA
-> activity. However, now that we have the retryable option, we can start
-> relaxing what is considered a permanent failure vs. a recoverable/early
-> failure that .finish() can clean up.
-
-Ok I think we are ligned that we need to keep the preserved folios
-around until finish(). I think this point was saying there are bugs in
-the existing memfd_luo code and in this series that leak the folios even
-after finish(). Either way I'll fix them up.
+I'd be okay with some (follow-up?) memory barrier handling inside
+sync_with_folio_pmd_zap(), for example, based on the folio size and with proper
+documentation why we need the PT lock in one case and why the memory barrier is
+ok in the other case.
 
 > 
-> >  - If a token was already retrieved, luo_retrieve_file() returns the
-> >    existing file and ignores arg. Userspace that asks to retrieve into
-> >    X gets success and an fd for a different file. I think LUO should
-> >    fail with -EBUSY if an arg is passed for a token that was already
-> >    retrieved.
+> David, does the following diff look good to you?
+
+I think we should extend the sync_with_folio_pmd_zap() doc as suggested.
+
 > 
-> Agreed, if an arg is passed for a token that was already retrieved,
-> failing with -EBUSY (or -EINVAL if the target file doesn't match the
-> originally retrieved struct file) makes sense.
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 6a8e7772b8d6..c0aadab1b59e 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>                 }
+>         } while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
 > 
+> +       add_mm_rss_vec(mm, rss);
+> +       lazy_mmu_mode_disable();
+> +
+> +       /* Do the actual TLB flush before dropping ptl */
+> +       if (force_flush) {
+> +               tlb_flush_mmu_tlbonly(tlb);
+> +               tlb_flush_rmaps(tlb, vma);
+> +       }
+> +
+>         /*
+>          * Fast path: try to hold the pmd lock and unmap the PTE page.
+>          *
+> @@ -2044,16 +2053,8 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>          * to ensure they are still none, thereby preventing the pte entries
+>          * from being repopulated by another thread.
+>          */
+> -       if (can_reclaim_pt && direct_reclaim && addr == end)
+> +       if (can_reclaim_pt && direct_reclaim && addr == end) {
+>                 direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
+> -
+> -       add_mm_rss_vec(mm, rss);
+> -       lazy_mmu_mode_disable();
+> -
+> -       /* Do the actual TLB flush before dropping ptl */
+> -       if (force_flush) {
+> -               tlb_flush_mmu_tlbonly(tlb);
+> -               tlb_flush_rmaps(tlb, vma);
+>         }
+>         pte_unmap_unlock(start_pte, ptl);
 > 
-> >  - Sashiko's WARN_ON(liveupdate_claim_file()) report on 3/7 is valid:
-> >    xa_insert() can fail with -ENOMEM there, and userspace can trigger
-> >    that.
-> 
-> Yeah, we can address that.
-> 
-> > One place our series are not aligned is MEMFD_LUO_FLAG_TMPFS. My
-> > thinking has been that RETRIEVE_FD should support retrieving into any
-> > shmem file (including linked files, memfds, and O_TMPFILE). It is
-> > userspace's choice at retrieve time. The only thing the kernel enforces
-> > are the fundamental requirements such as exceeding the file's mount's
-> > limit.  When I think about it that way there is nothing special about
-> > retrieving into a memfd and MEMFD_LUO_FLAG_TMPFS is just artificially
-> > limiting how a shmem file can be retrieved. WDYT?
-> 
-> I do not want LUO to change the type of a preserved file across live
-> update. Take seals, for example: a memfd can be sealed with the
-> guarantee that it will never be modified, whereas a regular tmpfs file
-> does not support sealing. Allowing a preserved memfd to be retrieved
-> into a tmpfs file would create a loophole to strip seals (or bypass
-> mount/superblock boundaries). I strongly prefer keeping the file type
-> strictly the same across preserve and retrieve.
+> @@ -2102,12 +2103,11 @@ static inline unsigned long zap_pmd_range(struct
+> mmu_gather *tlb,
+>                                 continue;
+>                         }
+>                         /* fall through */
+> -               } else if (details && details->single_folio &&
+> -                          folio_test_pmd_mappable(details->single_folio) &&
+> -                          next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
+> -                       sync_with_folio_pmd_zap(tlb->mm, pmd);
+>                 }
+> +
+>                 if (pmd_none(*pmd)) {
+> +                       if (details && details->single_folio)
+> +                               sync_with_folio_pmd_zap(tlb->mm, pmd);
+>                         addr = next;
+>                         continue;
+>                 }
 
-I agree that seals must not be strippable. I am not proposing to allow
-that. Regular tmpfs files are created with F_SEAL_SEAL, and v1 refuses
-to retrieve into a target that has F_SEAL_SEAL if the preserved file has
-any seals the target doesn't have. So a sealed memfd can only be
-retrieved into a memfd that allows sealing, and gets its seals back
-there the same way F_ADD_SEALS would add them. Only unsealed memfds can
-be retrieved into regular tmpfs files.
+We do have another sync_with_folio_pmd_zap() user in page_vma_mapped_walk(),
+does that one need care as well?
 
-On mount boundaries, retrieving into a tmpfs file charges the blocks
-to that mount, so its size limit and quota apply. That's stricter than
-the unlimited internal shm mount that memfds live on, not looser.
+Not sure if removing the thp_vma_suitable_order + pvmw->nr_pages negatively
+affect performance, I suspect not but we better double check.
 
-This is what I mean about enforcing the fundamental requirements, rather
-than enforcing something artifical like MEMFD_LUO_FLAG_TMPFS.
+-- 
+Cheers,
 
-BTW, MEMFD_LUO_FLAG_TMPFS is set based on i_nlink, so it doesn't really
-track the file type. An O_TMPFILE or unlinked tmpfs file gets preserved
-without the flag and comes back as an anonymous memfd on the internal
-shm mount. That changes its type and drops its mount's size limit and
-quota, which is the boundary crossing you're worried about.
-
-If you still want the type to stay the same, we can define it by
-superblock instead of i_nlink:
-
- - memfds (on the internal shm mount): plain retrieve only, as today.
- - files on a tmpfs mount, linked or not: retrieve-into only, into any
-   empty tmpfs file, including O_TMPFILE files.
-
-That keeps your guarantee, fixes the O_TMPFILE case above, and still
-lets userspace restore into an O_TMPFILE file and linkat() it into
-place once it's verified.
-
-But my preference is still to enforce the fundamental requirements,
-since we have to enforce them either way and MEMFD_LUO_FLAG_TMPFS adds
-ABI.
+David
 
