@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E45EFCC6B2E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 05:07:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D34E8CC6B2E
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 05:08:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBB696B0088; Thu, 15 Oct 2026 01:07:57 -0400 (EDT)
+	id B95F86B008A; Thu, 15 Oct 2026 01:08:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6C596B008A; Thu, 15 Oct 2026 01:07:57 -0400 (EDT)
+	id B6EB66B008C; Thu, 15 Oct 2026 01:08:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A82586B008C; Thu, 15 Oct 2026 01:07:57 -0400 (EDT)
+	id A843D6B0092; Thu, 15 Oct 2026 01:08:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8279B6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 01:07:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F3F291208B6
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:07:56 +0000 (UTC)
-X-FDA: 85323678552.27.3E744CF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A0596B008A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 01:08:57 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E86F640657
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:08:56 +0000 (UTC)
+X-FDA: 85323681072.26.B6BF58E
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 406048000A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:07:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LYrwO2Ou;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5B0C3140009
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:08:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gDsAs7Zq;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792040875;
+	s=arc-20220608; t=1792040934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GZSylkghn0hdtGw504CdgkwUfQo8JryElEWFk3OQf20=;
-	b=XJL3YSf01qJoEzZgsDN/wAifknQamjPPbAWkeW5U+rMkKrJl66/uFz1OKwQNPH+IIuUNfk
-	ub5Lm/06An72BpFmxcnJDgOgDV21ayFd2eouIFK0KgTfs36e4B87tb7KKb9DYa/jzbpXk5
-	cwEshqyo3ThZ96na/6iENlugyc5KyqE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792040875;
-	b=qf5jqk2Hs3+B6bvK+BygovDYaBkMnkJgRCsSBy1IKXaCyELpsBRyuweioBWmIPRasY/p7F
-	sex+z5rehzfpkhNZALP8XHxMp8hC3fI0ZoG+A7BIBhLGLClTgNH3JP80EOlOtoZONs8B2Q
-	I4GTaCTYLkoPVCIBlEhdUDEl3VBZynA=
+	bh=0ptgP00sd/ZHQf8jXyEC6r3P4XBtcjYgBjiI0CN+BPI=;
+	b=ghB98lh0oMWYXUrAGvDV1DUX6jN1/B/U5FuGtfWeC/Z6o49YG9CdZX4+WPlJuHF5PMcOIH
+	Bt6cC0AuuvCKcViElYn6jcYrkr4DmnY4abRT6C2EWDF+HW6dthZgwMdzCSnhUbMB+QXDGc
+	kmK2OFpS+7v18DSXz6RmX3dUuCmTFDs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LYrwO2Ou;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gDsAs7Zq;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792040934;
+	b=zDJAr+Pc6S+kdanD2NQfEbc6fQCBny/YObTQNr8hrSqzK9G53LWAyt4tlwbbTRpg9fOyCB
+	LxFVtZOVig+44DdTiRVZLjuaIst804pYl2i3X0WBCCtTxgxLgFFe8GeSZNhspimA96agua
+	P4ltKi9j8Gq7v81JYLh6OKMx62gaYMA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792040875; x=1823576875;
+  t=1792040934; x=1823576934;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=GDkcSrZZLMPZxLwziNM3jSo8wJh7MM3T+70vE87ZBL4=;
-  b=LYrwO2Ou4Kpo+wcwOhE8yV2rhTOTbDPgppuIqwNr1aD/VJc0zOZC0sV4
-   EPHfTbBfWu39hOwhwoPMUKdxt/U5xkxN224UswflgxuMl1Vqdg+LAyaqZ
-   vB+MKp6IzQKxUIO/IRc9HrXsEdyPFwDkRx6A4/AXrJ7my+YP31wHtij14
-   b3Cl7GDoWUMKg3rxfJEKjgkCSqxBhfu7bZ7SMj98oHNm+Y4sV0FE6swDy
-   6IJySW67smRw6ssX/+O9xy3QfOn2sYLEm3tHxBUAIwwnEyTps1HRYIiEE
-   OUG43vaPvVRLSlO3Eqmj+UKK9Dn/Arco0CdsMFOtLImLdCBw83oHaeang
-   Q==;
-X-CSE-ConnectionGUID: VIAV5DMvTcuO92LtcENWmA==
-X-CSE-MsgGUID: WbzOXHDhSXiiB6rShR5wfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="705785"
+  bh=97Vu4jpYp2aks4nbaPyPADJJAJoPLb1W/mjp/r2Niuo=;
+  b=gDsAs7Zqm8nJS526bla2ERKp/KUcU4mwWxu5awYHA5pT6WtD8UTA3yjO
+   0B7qAa/CJMUjVIaprCbdmREnE3goG6czJ5FOysOhFK/MukysZbY+2boil
+   UKeeFuWHdx+XgKO5YwH006N/W1H2eXR5dzN6NpQWvza6L6DpuOEXfiLh5
+   P25keYLEcx4vr8DUMuyv/irct9XqlFTWB6JuZUt36kqkgI/6haGdfsVLd
+   a/lWv/HMRkm8R1wjrJgrsNhjY41IvX7/RFJtjwBQ/8MI87Vbd1knPj1nc
+   PrMz4mC4CUgvq+6HoHbmRVmsz/dBh7CF7rKt2S0Cje/y5G7gB3GlVpFNj
+   w==;
+X-CSE-ConnectionGUID: q5sBTz3MTSuOqyeNtfCC9Q==
+X-CSE-MsgGUID: gC0vLzd+Ra6jFri9YaXrfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="705812"
 X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="705785"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 22:07:53 -0700
-X-CSE-ConnectionGUID: vWmQz1fcQdOEqrNQm9ZkVw==
-X-CSE-MsgGUID: pi78vQZ4TPmTkOcNhE/Opw==
+   d="scan'208";a="705812"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 22:08:52 -0700
+X-CSE-ConnectionGUID: ggnnewxAQhOvKlDMXWFanw==
+X-CSE-MsgGUID: t9OZU+hVS8q9thcdNllcrg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="3360663"
+   d="scan'208";a="1518909"
 Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa012.fm.intel.com with ESMTP; 14 Oct 2026 22:07:47 -0700
+  by orviesa008.jf.intel.com with ESMTP; 14 Oct 2026 22:08:49 -0700
 Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1xHDgu-00000000FqN-09LI;
-	Thu, 15 Oct 2026 05:07:44 +0000
-Date: Thu, 15 Oct 2026 13:07:35 +0800
+	id 1xHDht-00000000FqR-1LPb;
+	Thu, 15 Oct 2026 05:08:45 +0000
+Date: Thu, 15 Oct 2026 13:07:45 +0800
 From: kernel test robot <lkp@intel.com>
 To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
 	david@kernel.org, ljs@kernel.org, gourry@gourry.net,
@@ -88,25 +88,25 @@ To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
 	juri.lelli@redhat.com, vincent.guittot@linaro.org,
 	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
 	vschneid@redhat.com, kprateek.nayak@amd.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Li Zhe <lizhe.67@bytedance.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Li Zhe <lizhe.67@bytedance.com>
 Subject: Re: [PATCH 5/6] sched/numa: do not feed tiering promotions into task
  placement stats
-Message-ID: <202610151319.1QoCU2Pd-lkp@intel.com>
+Message-ID: <202610151319.LxjGvN6y-lkp@intel.com>
 References: <20261014094347.99157-6-lizhe.67@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20261014094347.99157-6-lizhe.67@bytedance.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 406048000A
+X-Rspamd-Queue-Id: 5B0C3140009
 X-Rspam-User: 
-X-Stat-Signature: j5qrh88i3yckc787799pbc14sr8bz7hy
-X-HE-Tag: 1792040874-3556
-X-HE-Meta: U2FsdGVkX19y/gSnq/gqnL4BiBIb8o40c0eaV5OSrpNqGkzdNkjQTeZPtKevjGuqpQpaoQXndfCuBOMyZslpq3EBd6hpMscARHHJ2LvvPM2BueO7XvzHxnb+VHDs6/2FpIAxgAD0mUN6SnYfBbmIpTvjhDOepO2SPPyP3Bk/eVNU8tlS8EJMFCl8JsFNCMa1gaRy4S98SPTlxgyS0kWohvb5ZM/0hnqbDLN5FmA+v7hxXMN6M0x+rMF6OnFHKjRuBI5b9VqWa8w1DORazoqKo0hfkcWcDbcmu950KJldP+Ln2UIRIYpegiWY4SjSaJp3bLJ/uvqW1lhY9UXF1lGqhSTX/mTMEIZTzCDLx1rpnB9xBh4jkyIRL8SoW3B/bVuPgUu6srSWtDXmDYD1g2dcrGXoe6lnhrgUQ7kvT52mib4QWxOZF1LI30RbdljN6e2uP0v9z24mtNkEJNaOoO57U2abk4bjlKvFwdPiAADlR42AoUFdJzkaiQMvNA7A4Ep+IGcynytKMdP+Y4M0y5KXx9Q1bbI9X8SfQpL2FtIkGGhWowjp5Ma8m52saprTDSPOCq1+JsXkYwEJkDfdQ39j3+HNlnCTuX4Vw0sRTIVWaFCZkTyqI5vSL91zKOuYfT/cJ1fZde0tf6WQ/EwO6QzMGa5YZUjnUZnAArLLEUMC4MAE4d6xG2gFz2JRESmJPGaLKSVwY6dmhUSnioICCYG6kTyUqBd+XfZ4aad6gPcnreCx5tuAoSrAabfndkGkW3PdEAeOZYGWKIymAXB4Dd9KxY1MobHyxvWnijKQMeY6+115eopyb7QopV1y8ChZ+aZedz82QTU0ByVdRyQ/fE0qelz5iAmwfxGkQvRCk2bp9SYL/RwDuRC6y3BIXIfcY1v2Dt/6wF8Ihs2hI55opnvlEWy5Ouuu/OJcWL4wWo2AKfAE64vZCBFXJWYT4qmpF8t1F4KIbt09O928l+5ErJm
- GfoBg8l0
- rTSBBL3XS2gcGfMcwK5VS1fx4EA1waoBwlS2oki+EicF7H1fq6oeHfimbg7Vb29dBWWkKhBVqMuQH6dhqyV5KBxAs3C9nD8Qmw6LNHw7fG/Rwq7enGlEEJZVCNwhGsMzm7T0NbMlJvILm+PPTroFZY0suiv6Sozm5RB92+v7DvQtjpmoiU7uhbaEelAN8cXo2e8iUCVGMZOrg3bfCNWOKRkOEzZYZPtEdY7wTG3em3HYRtRxSehKzI0EHNc9jVLOR9eaAJgucG05qVvyqhGO28thBErQ79VRAWG4Disv/GW796d2ZgpTIZWNABR4u1FiJYVvGcGBHVkg/RDS/WDEz9Op9/DFFMFOr9A/viaNV/xU4Enax9WoGMMEGAnQ5nTPd83oLBjWuHksKa2loISK9TsgfDqs2viT2vMysE+6TFZE7l4FnG+sny/OU5ZiAsejLO1vjKRN8mThlQTc=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: m3bmjf49tynofxdsfq98d958o4snyu4h
+X-HE-Tag: 1792040934-980366
+X-HE-Meta: U2FsdGVkX1+ui5Azcb/kw/5oi2XkMQhh+GpL/01gFuwkaXlvce8b5iaAZ7GOkSNFrDGs8m9ilIkJkHHIFr1UMQgHQeK32y9pibkTjAEm4rh0qYbBkrB8C2fbxZTWd29/vqRcBqxNqA7KF0TYykRtG3niw3mVWzlbxJkVCdqeLNf2JgVjCQaRlBFcX/am7T2lRh0X63W7paA/VoOS9PftU7xPCfBs4RHsowtP0GDpXsbWSIhZkS290r8OSgZ8OkTaY7/NnzcstoGzphz28/3RXlbXb6F7yVD3B4YIR03XT8WtRR+WXJ85gd8SHYHFQhenipMXzmT5Qv0S+lcGlXJ1Uc0c7Lve5itGBREd+e/qwjsLSSxMNV32wjKvpOmlRzw3r9HJLwhD/saY6nzCdpVtqy0l0hp6Bsk8Mthie2lOU7T2ZWne6tBfLNI4EVEvfmTOBVu9BBbFHiTctgq4uy8beX3ZAREaltZz1fT8pmNr9bZozwskvHH/l3rS58EihcG7vKnscDDr9NMLJjagqAFu6e6zTnSqr40DVCIGfT9mR3nGM5vXvP6HcVDNWAc0GYSSkyOxrAydZ7+sN1KoBbBkm1xrK17r2WPbgXJprWriW7HOQ6pl1YgMKlIsFN929d3uwp0OGHqlzt5EgsYTl69JEEgLPzT2Odj36WfhVq0LHxXOWguGBQGQq/hK9bifFE8ZvoA/5jhVFjnb2bKbBKJXYLzU4718a9+byt6Yq3GwTgzoaFTvqddDDWUA7rRkIrIE7hMsnI+BT1AblVtZVY++XiPPt9A3bCFMPMnC5HSDhLNvsEUTZWngDsIeqLZEny5mHxylMJt9uPFeTT9ES388sCqo4dlhS3PtiEjqabMHHyTDZHhacymlYtRChsFNAW7gIjuTrp0XELFArEb75z5dJDReHvmO7uB7xLmvC7EUmpAqd7cmklzipeM6Jrfvajb9/+xk9NZtfAZCUCgEPwV
+ 9laOInMx
+ R0c8C5/njfzlx275RPB7JCSpBuxBG6PNb0c/BCB7VOHkXZ1hgxVzngGU7GEbzWjFTTd1YCqG5o0wUvrb+/ZGXU83X6jCtBVD1ZZ9Lghklwu4OfDP0/QfKB4gncHTx7ii+iSSQh2OCIYjWiJJKbXrKQMQkhZgrj+tefXfwVQFyb+V+3XP4i0MAONxylN3779vkOfmD3AyTiCsWlsyHuK7UmTD+Yna7GdRCp+NLxf5E0rs3LSjqQxQFVSadoFX/eykPQZLn0BI4BRt22VeA7NVAOHkA0lawgvPmVeEpr+B8eCAaycXvxTllpDI01QHDn5xKN4x/oeomTQqIpufA+Phhi+2spq/lBEakSW8zXeug8Lz/yVGt+RBSyUFbjf7uObyLuVRXz5w6e+vK1V6ba7oK4iB/+T99y5ITcKPFVcUjh2LiWnyk6to+nIJxNrcATbIb1WPBR+tS7M7gPPA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,21 +128,22 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Li-Zhe/sched-numa-clear-f
 base:   tip/sched/core
 patch link:    https://lore.kernel.org/r/20261014094347.99157-6-lizhe.67%40bytedance.com
 patch subject: [PATCH 5/6] sched/numa: do not feed tiering promotions into task placement stats
-config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20261015/202610151319.1QoCU2Pd-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 6719b9e31d6a93099612c474eec76d9f41d0275a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261015/202610151319.1QoCU2Pd-lkp@intel.com/reproduce)
+config: csky-allnoconfig (https://download.01.org/0day-ci/archive/20261015/202610151319.LxjGvN6y-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 16.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261015/202610151319.LxjGvN6y-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610151319.1QoCU2Pd-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610151319.LxjGvN6y-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> mm/memory.c:6176:18: error: use of undeclared identifier 'LAST_CPUPID_ACCESS_TIME'
+   mm/memory.c: In function 'numa_migrate_check':
+>> mm/memory.c:6176:32: error: 'LAST_CPUPID_ACCESS_TIME' undeclared (first use in this function)
     6176 |                 *last_cpupid = LAST_CPUPID_ACCESS_TIME;
          |                                ^~~~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
+   mm/memory.c:6176:32: note: each undeclared identifier is reported only once for each function it appears in
 
 
 vim +/LAST_CPUPID_ACCESS_TIME +6176 mm/memory.c
