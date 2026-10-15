@@ -4,143 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41D6DCC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 12:26:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42C72CC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 12:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DCD56B0088; Thu, 15 Oct 2026 08:26:40 -0400 (EDT)
+	id EA05C6B0088; Thu, 15 Oct 2026 08:51:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08E406B0092; Thu, 15 Oct 2026 08:26:40 -0400 (EDT)
+	id E51706B008A; Thu, 15 Oct 2026 08:51:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC09F6B0095; Thu, 15 Oct 2026 08:26:39 -0400 (EDT)
+	id D3FB16B008C; Thu, 15 Oct 2026 08:51:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B80C16B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:26:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1ABA4A879A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:26:39 +0000 (UTC)
-X-FDA: 85324784118.21.28CCA1A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B2D7D6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:51:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 498A9409AE
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:51:05 +0000 (UTC)
+X-FDA: 85324845690.18.AEAAFEA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3FB94C0003
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:26:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TVqNRxNl;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3F518140002
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:51:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hu6C2j30;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792067197;
+	s=arc-20220608; t=1792068663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j3bR7xBLXc/8ycpWmz1YxvgT1RUOKYrmerO8LO5zBrY=;
-	b=LG74qLgHB9bUhA2ovV71GM0TCYr6y7ROaVnA86IWDYVHoqBMEcCMYOQPSwKj73yOMFklcb
-	HoTSMoIc4IjX9x8I9U2Fw5QYBpMcPBrvkqWVZNxSmXclY2dRXdKtxC3bLpAgGr5Ww3gnvZ
-	8xDDwcUUWpi2b5PR09vOa8OfBYJX8Q0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TVqNRxNl;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=7Um6CkdFgFUiyKYnZ7yOGgIt/JttBH/B2psH8qXvtys=;
+	b=rW5RY9XYnG4+EFrRKUBc7XyQD4ftAXY0qx4RfPXM2oOcRIgz4Xkoo1cUMPjGPeEagAupCB
+	e/6REVlG4RTga4qlRT+QeWgEnIOQggHlABiskkMNQqZqY1ocNWQcK6OCbkJIkwHDGSFVj/
+	vJpWYcjS8Co8wFYc7PUXwUSr4+pQwH4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792067197;
-	b=bMsQi+TFgjO6ri/qaID1xUqHVN+oNkwizaWWUvHMUfzKpl0ak4X356Jt9EZbNXgQOu9/Qa
-	nvxIQq7S2XkhKfJP+Oay3tSfcPLfGVzMhBO9XSUvjBdwjW9ftJIRrhofN0u3r50ng0nfuf
-	wLLFJHYHEY+fOqm27QhJW64q0XzMHZA=
+	t=1792068663;
+	b=hKXnKe1sMlxxvhajWAC9YxuX2qXziCuLuCNIm5eUGc/AyAQy64p21PjJf+naTtEjX+SJAG
+	FPAUR1UAuYdMXujYb+iANsc+ugKgZ8jRCMnCv6SR3kpDe3erWOPNBYyYJ/xNp4PwBYbQOA
+	LWMT/y61tYMRHxoLXh+yi8t//JucSms=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hu6C2j30;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B0A343E95;
-	Thu, 15 Oct 2026 12:26:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602E71F000C5;
-	Thu, 15 Oct 2026 12:26:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C5344055E;
+	Thu, 15 Oct 2026 12:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0A71F000C5;
+	Thu, 15 Oct 2026 12:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792067196;
-	bh=j3bR7xBLXc/8ycpWmz1YxvgT1RUOKYrmerO8LO5zBrY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TVqNRxNlHxwiUuwM2JpxdvpiC+4J2NEPYJGDcEDMz4BcF2rir49h/ag+P2a4oHFyH
-	 IyseDmHswT20uayeYjQYNwv6QEKQuq+X1rYJBNVv+w3523zmcSTu5k/5EfPqYOTUJb
-	 D9tI65m7WcIaJmU8fmrwMjUkBu6kqGu90IMFrLG2N3D7JNA9bNZEhZlX4wQB8SG6OF
-	 mXmPphjP4EtUsx9MMUrbkEb/iUP+QZkBUbEE3djIuz6cwXelFZM3rriDic3wp8AWn5
-	 oqzt/OvGXutYSI6mvCddgBXNOZuhj+eE853rAqYwKWjt1u20VR+p+Ui8Hm2excc93W
-	 Gq/+tKTRxkNGg==
-Message-ID: <1fe4027a-6ad8-42a1-9943-cb3b8aad3fb6@kernel.org>
-Date: Thu, 15 Oct 2026 14:26:28 +0200
+	s=k20260515; t=1792068662;
+	bh=7Um6CkdFgFUiyKYnZ7yOGgIt/JttBH/B2psH8qXvtys=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Hu6C2j30wXNnbuczWidEmYA2tYA8h0HL/8ogd9tRkF4Is0v1xLiH26FObqD9Fi3gc
+	 3DT603vtut5x6vtlR2/ZZErENSa8sCgBksufnasaVoaN6Aa7afy6Iy1kYrSHtiiF92
+	 QV+U3JmV/SLApJOhRXO1nyLX4w1QuJolPip19JNP9m9WGhd8A9Xm1Xo2O1Ko9MQQjt
+	 jp1nVPxnbCgPTp5/enFIAbrNo9v/0gXo8SOB/3ywYUgxVBZRMAsoOGS6aihEDWKHnD
+	 ZT9nRULIIwhjlNLVcAIDyg5DFmM44qF/i5QrFZv0DH/J49ja6ahtRy8qBgag39NQJZ
+	 x8IyrVAYCZ5QA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 91CEA198003A;
+	Thu, 15 Oct 2026 08:50:57 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Thu, 15 Oct 2026 08:51:00 -0400
+X-ME-Sender: <xms:MMzQakR0IF72dlZ4HsQ_UigfElwBAi5-kJG2Nq8h4ZXejiLJjUPl2Q>
+    <xme:MMzQakK_aEbQ6kWUpJa1nzJHnnKLzCyroXZz95EqNc9TnAbI1XaXXz1ZuyD5bR-Ar
+    _uU7o8esZeIVOJjrggfxTLwY320zY_YFSk6qhodR84cFWBvO4TCeEk>
+X-ME-Received: <xmr:MMzQarG82ZwlLWm36rWKCazDk8rqnagziOZx8ZQ_TVqLFyi9qyRsZpanYgw>
+X-ME-Proxy-Cause: dmFkZTGYpibDVUZ03mxVIum9EHYrtGYOQn4TWhgXWuWTE8ALD1yvxSQ55vrA6jOaYpis1s
+    eS1Fo8Mjgi7ucTvYo9aIaXtOB/73L1YM4sCtarqJZqvGWCcTaMxfc7HBxZVtKcb4wJvczJ
+    DhWGHrpbBlLD6ge7X4kHBWKewvm6YVYsr45UakZ5Q7HzmsGDeJz5eRFyJToaZGUUTIwjiJ
+    yalidQOWiPKcNzTs9pKQ7mOgU4SCuGwVAYQlV41nKioPZgy9HanYgoNCcWM2YM4gaw9TNP
+    mdJ72gP3f6FG12kya8a+TGGjVcnp9Lok8H/20qPi80IexeX8J/hf2KI4CDbytSCd4F1mUJ
+    JtvWfWJX2J+PDTRIpyCkiU/p4ZK7j0ildAASL/a4jisJUFqvA4VooHn9uNFYYxKsEJfI4S
+    rSwrV6wUbwsYIIn3tVsZtpasauV73VGEZRZ49ngUE2b99FDhpIoAozH7GXQOiogAcJNS8+
+    DnEgDZwKE1awDWKAuQDYMum9QqRIqsDhcMiFIctw1LcpYZV64AULTeIbHGkp7o9Gm+YN7B
+    ZxW1Z6zG1AUjtItBDbdXd/IgJBVpwju24VFpuMr/5Q36mi3uRQVxEUAI9YGv1U/0XJJHuj
+    JeCbMLrTA/D6HN1LcLdhop93y+fiheEVISd3AcyjLbPfd44aCxTbDXevs0ig
+X-ME-Proxy: <xmx:MMzQarIIKWVPhU3P_F4pN9US7en8m23-GcvRTeu3GHEyQ60xBGTfOg>
+    <xmx:MMzQav6o05HUtsc2wfRc8TCtA3LTflDIv9sxh0CUNo8Sp6yis9mgEQ>
+    <xmx:MMzQaslX4HyepFWK6-873Jo7lrDtezkVNsh0vFLzjDqFly4d9tvpTQ>
+    <xmx:MMzQasSMTjuKD4Y9V6salpe5zd1tz5X6igUYJdJtebn83pv0dO8ygw>
+    <xmx:MczQahhKbGrNgwbwiREVVR_uNxM75mkZDGAeDd9HN_mewaIWNneCvGLz>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Oct 2026 08:50:56 -0400 (EDT)
+Date: Thu, 15 Oct 2026 13:50:55 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-ID: <atDL-nSFP2KVU7cI@thinkstation>
+References: <20261009125503.126202-1-kas@kernel.org>
+ <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
+ <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
+ <as5q14OsbK2CmOrh@thinkstation>
+ <20261014202936.GC371161@cmpxchg.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] khugepaged: hold invalidate_lock across
- collapse_file() readahead
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>, Zi Yan
- <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>
-References: <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
- <20260913163644.122133-1-ngocthang2710.1999@gmail.com>
- <20260913111700.6de78b5834842f7dd3f12d07@linux-foundation.org>
- <aqbvFtlXd3Jdnfbm@gremlin>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aqbvFtlXd3Jdnfbm@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3FB94C0003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014202936.GC371161@cmpxchg.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3F518140002
 X-Rspam-User: 
-X-Stat-Signature: f9hru7dsqaitny7h86bnrtpep3omqmnt
-X-HE-Tag: 1792067197-753245
-X-HE-Meta: U2FsdGVkX18+mKB0g2wXdOR/I/tgdPn3Iv8pEcuT0XewZ2LNlTMf+pFJv6B9NhWR5LCAIKJ4qqhF9hbDnGxqmGU7Av/CyO5+jCOi9TKPdb2+xgtUdzNWp/GmvOxHLpy+dvqLAfN6kygnLcSCSYcM2NTN5XHmC5UY5WlQPYAo2ARKG7fCeBAP/PTD2dwrUySwyFRcEEoIKmcnhWyh3lVT5Fs8fUtZ75tGHoJIAm5YY09OdE2pN7420ARNkDuHNDmRQD1gs8RiDkGNgqtlmGjof35yDOseBB0B960sZZJ8rZBIz/kjBLAvluTtQjtvW6CDywEEcH5p4aasjKCO8s3kK/jzp5nHsCcG7e3mPsKaJVn6alRnoINah8XtR3WbQDg4+ajgfPOkNINedCF3+1R1+Z11lteVO+AwRPlc8mMuJlMT+ky488BZa1oUNHIYhUV4363ZpqPmlAG22YNy/Eijcp72qGz+6/rDHgMMUIuczWeYI9VqaPVgVQqvZW7Nkh1lhnXVd2oLuXQhWa07P8IxoPhtrAwsX09lSwvjxL8N1JMJ9LU5q/WL8grJhjvvWdAGOTWvQ7wV3uZ/cCArUbEJrIDvsfl48HJ5cLvsBGnGNh4a/01H0Q5qLEhnPlG1Ls9JsYHNA46vEWHWVJOxxTzlUENaT2rZW1QgRjH3DLf8XLHwqsf0UnrFm1UzWUI/9jRV7Z86xGAPKkUx23JHE/Eq+o7O07ITN7dhAbJ9YbZdt/vuTft598O3cn8t+/8TF+joeNQk6x61a1CiHNS4Z6ZgMElle/Shf9k8S2RIl8kRSnc0QdiQuKs6jayyRMAT6XgEaS71WBMJhZ3ffmHKWlN+Tx3y4GWIMZlY2k6LixBIQ3DPDJ47j4x/hInOTyXeMCzQ2Bh5biwAkVslRIoXhjVDcOUKBGavFopwLl+RtMxwwF+h9fRKqnRW+elMoHvL8LgJSGE5KZM7h/lEZA02n4W
- sZ3cVyht
- lAB7E0qGlabZlUujorrmIRytfKHEn7sUplM+xyr36mwwBKwkiUsPimNsBg1g+A1cZBZtc00QSAgSNPg/zs2My7RfEoPJ8k0iBROyyI5k0aTU+q69jM5e4BRwDZ0b5plzZKsEvca6Pqz4dMapUFGPh855RlfQNi0HLd1sNkapf6L1kIgJtDdD9cO3kUvwngOwrrgKjES3ZU2ZC397hIeBPO9umkSX4FViMU3DsfmQIts5jY6d1vOKD6d20i8brdlhq3ejU+yO0tc803TPVA8ojjIXYv18zZBfeBiZculTPDn00AeczPyQ27bYZPoZNKQrEUV5WLAgAFpmIZtEL86QguAEHB9yu6NwFg2dCBsndee5YaY20xJeRAEc0Gs02iVGBxrMmNyJau5zbwPdWOq8RxfhdevUcoaSYN1dUrK/7EIs5L1HBdc4Fl+1LLQvy0es+RMpoHF6HhlWZZPr+0vnK2rh9Vt2AlUHwo28RcLGkG9UtGCkAHJzK7nujLPiCkMrlNP2TTTiuSLo2OVJKU5Tgn57QbGnGoYx+aAH2
+X-Stat-Signature: bjcracctx7yt6rt3xahd1adya533399i
+X-HE-Tag: 1792068663-920006
+X-HE-Meta: U2FsdGVkX1/lTOE6p61y5UEXOIvL+3jUj/kB+xY9zMMPGGIPL8b148OrIPk+XI2XemgkUjJBElemm/f/mn2ows3tAepxhVp0zSeUJPQdhEejuBga43WbfXBquJqVCr1BnNhPUYeCc965c/UnMoHn3Pq9irExYACet1wzrH/SF3TKuKJmSlJHlL4wKYI8S0HjwamS/pQfyxxYDU6220cYn8bxZ+EWXsIGc8P62vS4hUGZGuQ5JE8Z18fPy2ObczIblZGfzsSwCh/Gke924cJRnAMULmLKV+08wG5Y1UNfve8C7wi9LIrloA8lK+BY8TgpLNx6b7wVupfCToVR0/d1lCLroB62CICOfzA1SI3n001B+qb1x0wNVrOLzCl1H/32i4Gf9BaxpWCx22VJq0m8bwhi3TWJ54mICBszfK5Gako0wN8MH6NJt3PYXS8o+CTljlLuFHKyBzAEqv1Bh5ASk29ZqBA9+x+5vfOr9wL6g4kYTu0/M9dbOMVTEa4Ny0VZiOxRDInC3jajrMRWgajW0XjS3NSC/0GpZfb4T6j8v/ORtYE18VkXXh4fnE77iWX2vvIDL9KjeDGWeI5J2jguw5mUACoF8ZRFTsM+b0+1pLyOYRPhbpa4HInSfZ+9ljkwYGEjX4WgdgAZH/lHGzu0ong1TpdA+NmL7snvUhxCichSdv+71CDt92IemcRmbKtvTeHkc3NAXksAqadA+9MpdPOVjuvF5kPscSiUi63e1yGVMcpqvJzZK98kE2exI25MCT8YJWE2loYDmx9+GAXj+GqTvK+33m0NIGl7Y8HIBOdGArxHqx7+rq6K4Dnx7wWiL0qXoPxmgClgDAecclhZgIxgVpigPiRLXi4M3mfkGsAJlErcmFaiPCx1l7+J/VfsMQX5ezZRb14wrVOCmGt8U2MnERH4SEoynX/yd71K9Xb/TaGRk5BokRjvSE83Nusl1rxU0QGPxooMYQ8b1Z2
+ M/knBX3l
+ 5QPFgeoHzRUXmrlXe3OF2ls8SYKW57cphjmu0ubU8KgGbVly2rnkrT6OA0JWbfvN+zcYGPVElQIV6jEB163otKEzSiVK0JrLs6iWv1nmMMRfzWFli1hW+QebYbDd66jlSz16pbhROjFEbjxBZ5q7BpBj4cvKkhR6JsWeRydV388eEamq2iqzFtG+rQvXiDLc6Gi1hkYxBuXiPhsjJ7u390DhcbM6SH86FfJZ8TvcE31PQ2yO0fJ6Q+44T95rDF5rdxfP3TxuEQ1nA2krPQ6PEA13FnkwlUoZE/S4+oVHHhgqdNXtILD6TLPE9lqzFnevkbS95mdOSiLXcR6E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,76 +127,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/13/26 20:48, Lorenzo Stoakes (ARM) wrote:
-> (Nguyen - do not send v2 in reply to v1, look across mm and see how things are
-> done here).
+On Wed, Oct 14, 2026 at 10:29:36PM +0200, Johannes Weiner wrote:
+> On Tue, Oct 13, 2026 at 06:37:20PM +0100, Kiryl Shutsemau wrote:
+> > @@ -4127,6 +4127,12 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
+> >  	return page;
+> >  }
+> >  
+> > +static inline bool order_nofrag_promoted(unsigned int order,
+> > +					 const struct alloc_context *ac)
+> > +{
+> > +	return ac->reclaim_compact_order != order;
+> > +}
 > 
-> somebody who has a
-> 
-> On Sun, Sep 13, 2026 at 11:17:00AM -0700, Andrew Morton wrote:
->> On Sun, 13 Sep 2026 23:36:44 +0700 Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com> wrote:
->>
->>> collapse_file() calls page_cache_sync_readahead() to fault in missing
->>> pages before collapsing them into a THP. That helper takes
->>> mapping->invalidate_lock itself for the duration of the call, then
->>> drops it -- but truncate (e.g. ext4_setattr() -> truncate_pagecache())
->>> takes invalidate_lock and then waits on each page's folio lock while
->>> holding it. If collapse_file() has already locked one of those folios
->>> by the time truncate reaches it, and then tries to acquire
->>> invalidate_lock again (e.g. on the first readahead call, since
->>> invalidate_lock is not yet held at that point), the two paths can
->>> deadlock/hang on each other's lock: truncate blocked on the folio lock
->>> collapse holds, and collapse blocked waiting for invalidate_lock that
->>> truncate holds.
->>>
->>> Reproducing this over ~150,000 collapse iterations with truncate
->>> racing concurrently reliably hits hung_task: blocked tasks within
->>> about 20 seconds on an unpatched kernel.
->>>
->>> Fix it by taking invalidate_lock_shared once for the whole scan, after
->>> alloc_charge_folio() succeeds and before locking any folio, and using
->>> page_cache_ra_unbounded() directly in the readahead call site instead
->>> of page_cache_sync_readahead(), since the latter would try to retake
->>> the lock we already hold. page_cache_ra_unbounded() does not clamp to
->>> EOF like the helper it replaces, so clamp the requested range
->>> explicitly.
->>>
->>> 730633f0b7f9 added invalidate_lock acquisition around readahead but
->>> missed collapse_file(), which already locks pages while calling
->>> readahead; later filesystem conversions made the deadlock reachable by
->>> taking invalidate_lock before waiting on page locks during truncate.
->>>
->>> Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
->>> Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
->>> Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
->>
->> (You forgot to cc the original author)
-> 
-> Also a change log, and that mm doesn't like sending a respin in-reply-to a
-> previous version. Which is all consistent with somebody using e.g. openclaw to
-> pepper generated patches across the kernel...
-> 
->>
->> Five years.
->>
->> I wonder why this hasn't been discovered by lockdep, AI, syzbot or any
->> other of the tools we've been using for so long.
->>
->> Thanks for doing all this.
-> 
-> See https://lore.kernel.org/linux-mm/aqbtfms0_2ULBIT7@gremlin/
-> 
-> I am not really entirely happy with somebody who has sent a flurry of patches
-> across disparate subsystems with no previous track record being in charge of a
-> potentially backported fix.
-> 
-> It's David's decision but I think this fix should be taken over by somebody
-> else.
+> order_defrag_promoted?
 
-So what's the status of this? Any volunteers? Otherwise I'll polish this up.
+Works for me.
 
+Andrew, could you fold the fixup below?
+
+---
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c593913a14f8..440e515be50b 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4127,7 +4127,7 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
+ 	return page;
+ }
+ 
+-static inline bool order_nofrag_promoted(unsigned int order,
++static inline bool order_defrag_promoted(unsigned int order,
+ 					 const struct alloc_context *ac)
+ {
+ 	return ac->reclaim_compact_order != order;
+@@ -4260,7 +4260,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+ 	 * Promoted requests fall back instead.
+ 	 */
+ 	if (compact_result == COMPACT_SKIPPED) {
+-		if (!order_nofrag_promoted(order, ac))
++		if (!order_defrag_promoted(order, ac))
+ 			ret = compaction_zonelist_suitable(ac, order,
+ 							   alloc_flags, gfp_mask);
+ 		goto out;
+@@ -4642,7 +4642,7 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+ 	 * for compaction without freeing anything.
+ 	 */
+ 	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER &&
+-	    !order_nofrag_promoted(order, ac))
++	    !order_defrag_promoted(order, ac))
+ 		*no_progress_loops = 0;
+ 	else
+ 		(*no_progress_loops)++;
+@@ -5024,7 +5024,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT)) {
+ 		alloc_flags &= ~ALLOC_NOFRAGMENT;
+ 		/* Retries went into making blocks, start the fallback afresh */
+-		if (order_nofrag_promoted(order, ac)) {
++		if (order_defrag_promoted(order, ac)) {
+ 			no_progress_loops = 0;
+ 			compaction_retries = 0;
+ 		}
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
