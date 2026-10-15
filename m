@@ -4,134 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAFCACC6B3A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43164CC6B3A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB08C6B00A5; Thu, 15 Oct 2026 12:13:14 -0400 (EDT)
+	id 3F01F6B008C; Thu, 15 Oct 2026 12:17:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B61056B00A6; Thu, 15 Oct 2026 12:13:14 -0400 (EDT)
+	id 3C7AA6B009B; Thu, 15 Oct 2026 12:17:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A513B6B00A7; Thu, 15 Oct 2026 12:13:14 -0400 (EDT)
+	id 2B74E6B00A6; Thu, 15 Oct 2026 12:17:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 77BF26B00A5
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:13:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 076BA80A32
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:13:14 +0000 (UTC)
-X-FDA: 85325355108.13.29246C6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3A31418000C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:13:12 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwaqDlkV;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792080792;
+	by kanga.kvack.org (Postfix) with ESMTP id 07D416B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:16:59 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 89E31A88FB
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:16:59 +0000 (UTC)
+X-FDA: 85325364558.10.2A580CA
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010040.outbound.protection.outlook.com [52.101.85.40])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9428620005
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:16:56 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dPBYtxYa;
+	spf=pass (imf31.hostedemail.com: domain of noren@nvidia.com designates 52.101.85.40 as permitted sender) smtp.mailfrom=noren@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792081016;
+	b=kV1Dob/fyfa9dW5gInYGmdXmjSykGoIqYkL6bZevQQQnEvrqDzAlggJqIiffXJsaToHs3v
+	JDx64cG0TTOvLqR+dXCqNiq6mPdzwnL1fJHIexxAzaN2IL5KlmVzEVBAF3eBHvCB7ozu/l
+	kYku5DG3Y2gzr/CtcTc9fB0I2taR5wo=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dPBYtxYa;
+	spf=pass (imf31.hostedemail.com: domain of noren@nvidia.com designates 52.101.85.40 as permitted sender) smtp.mailfrom=noren@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792081016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A1lWzMwbJEgcUx9os4ekav6RXpiDlYglRJy0W/gEY+0=;
-	b=eb+68rViP6Dhr2DvhM1SzuJ/nMeZZ66xv7oTyAotocQ07vCDPXmsTwsShLlMPPS3kuKwCO
-	263OzK2pkmHEZErMOHII9vW+yb9dJRGjywDg5qLHv2VdejYRFHESBmFVhoh0Q/XTFo34sw
-	TpX4tocRyYuUvyRN5gdLsO/uD0AGSe8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwaqDlkV;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792080792;
-	b=ubjA+l0TgyRUzeD5OXAf06D6DnFLGnzsyY6/VqZIEb9NipMrnNTu2BZqXPjgfkFGpRDEIR
-	ZRksQFV9xidvkl6chM6kOgY1j00Q4YxI3TU4DmWxyxscwfjdnp8PlKmMirS1WbTuaYBlmd
-	fYu3ZartGc6yEMHCKHMyIPeOKC/irrg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC7D1601EF;
-	Thu, 15 Oct 2026 16:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224CD1F000C5;
-	Thu, 15 Oct 2026 16:13:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792080791;
-	bh=A1lWzMwbJEgcUx9os4ekav6RXpiDlYglRJy0W/gEY+0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cwaqDlkVtP6j6B1d84hufMyxHHSX37bQLnU9JpgpFIDZh8Yjviyu6OaVYeW0uXiHg
-	 906RHmTeB5aaX8eReHi2v/EwJ9jHyvIm5TvJynkaJ6R2YdVOEvSSFFTKfdI46NhLh5
-	 mc+YfFvIu4JJPfwrcd7MkcbY+X47OXQNmzEFprUN0tbqeRjcfOOB1c9XmDYVrDy8/j
-	 GxiOj+uf8bywxPAE72RcpgqE5+Id3NH797ZNFSsOQKOL8JmkNovZfbhuv08Qz1x1dX
-	 /UzMIcloJ7FYcTOqBYfSIvkqoOnQoievUr2x0Bx6qIM72asHfZaNuYpkEXiKuOG31J
-	 j/wVkakPHykYQ==
-Message-ID: <1a13467a-443b-4228-bca2-9cb8f4b53086@kernel.org>
-Date: Thu, 15 Oct 2026 18:13:07 +0200
-MIME-Version: 1.0
+	bh=K3Cv6fGJH6C2oyCtrbYwZiDSqVG8tvi8cbhrQxFM4Jk=;
+	b=mtfvumpRcFZ73h55bLiIFxa/osR4mlRXc6aqWooQZbXst5CvZOAO5NzJNGtHpw2oiQQBOw
+	evTNfdsgi8g8OA8sSwSTcpg7MYGKfe2p22s7j3gqm7h0piE2DK5PmfXc6RoIJG1mIcItf7
+	i5zGdogRJ3zEAXfm/M/7LkOha85U6TQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DLQqJwKVOyVe+r+ApbdgL3uwDK8sS+eY8tqRJNSpskuJJAuzAnkmDvdaWiY295LlTuva1tOCsm1v5oMnAkdFWl8jqg/d8rReeTF/itloks2AFEQVuJLg54fUXSWlQk7J9ReWNOyrg+ASRL3oNgcLRkTbI6Fs6u8XHdY9x4RFAsuU2qD/i1Z9iku1V0WTUPBzXxmEAF7OJm/LgmiO6WV6GWjt3XQyvCVpniopeskFE45LvhTqQW3px67ai7VMuy3aRZDtzCdqK/5oxZq2INc9ft/4p6qHy1Yw9SodRy8prxJ7oMncDMTT6nJJbzp8mQycI4thUhFDzSuWGl4g3JG5hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K3Cv6fGJH6C2oyCtrbYwZiDSqVG8tvi8cbhrQxFM4Jk=;
+ b=vdxqgyRnt3P7jmM2X7H1IPx7aEQnvN2snYbaE8q2fgQk+VBAhSqtgiM/II5dgI+cIHJbQ67Zsy+gLtkN+4Kx8W/xQStsBwRhEdYFX7CwLRPPdixTTU4gTsqWpCI8mAsVY1vGp06LUPtWEYFQLyb7VWgyU7Zf9hNygIu5a/FG1YUZvXdWL+Wts2+/P7zdHBPp3n5XVv3OJAD89M4fjepL8J/8/Tlapm3NhJ+ofPD49bZ4acsXd/WN/CJsFMtao/ulal1ICzB+e0UQQULCUfbhQNVm870PMgekvCbtd2YPsSo+eHYwonVZtMelNjhtUBOP/aZoYdTLrCy7RdrH4Vnl8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K3Cv6fGJH6C2oyCtrbYwZiDSqVG8tvi8cbhrQxFM4Jk=;
+ b=dPBYtxYa6VYmezjMsKXzrxjiZloMv4eTLFxQrtKiG8+TgxiXo1OrmSJeF6ew5xbFS5JVN8WBVXIFVKfUybHPKub/zLd8ZQRv7FQpKZ6KSEB+bQREokfzJpTxlLCtBYssk5Wcg6PY4zqTBm8oQj550ri4yZDYXBLo7RkpanYhZqN9Pa/q0vEbEnXrqtVMVJpGjjklL7TpRhKNQlEVlFcNyFKo3WNwYbne0p7Ghb2z9i5LEaDT1yZCqsMrx9P1Od49KdGbVF/Nt8+jQMeFbLyzbNNlkYGE9icazc8nvoAdLWXeH1ArvPq4bkzrpaiUdfqBLId3IpX/jWHPRUHRVG57MA==
+Received: from MW4PR12MB6802.namprd12.prod.outlook.com (2603:10b6:303:20f::19)
+ by DS4PR12MB9681.namprd12.prod.outlook.com (2603:10b6:8:281::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
+ 2026 16:16:49 +0000
+Received: from MW4PR12MB6802.namprd12.prod.outlook.com
+ ([fe80::51f4:a3d9:b44e:9587]) by MW4PR12MB6802.namprd12.prod.outlook.com
+ ([fe80::51f4:a3d9:b44e:9587%4]) with mapi id 15.21.0522.012; Thu, 15 Oct 2026
+ 16:16:49 +0000
+Message-ID: <26103c38-7b22-4176-8bc3-63e4b8fc6bbb@nvidia.com>
+Date: Thu, 15 Oct 2026 19:16:40 +0300
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/slab: sample slab_state once in
- kmem_cache_destroy()
+Subject: Re: [PATCH] mm: stop recalculating min_free_kbytes once set by
+ userspace
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261014140859.1006967-1-noren@nvidia.com>
+ <20261014144823.8c89da26c547fa95936a2fe5@linux-foundation.org>
 Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>
-Cc: Imre Kaloz <kaloz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- "Jose A . Perez de Azpillaga" <azpijr@gmail.com>
-References: <20261014150844.8536-1-kaloz@kernel.org>
- <d966f16a-a2be-48c7-b31a-a2c7d3ef6d5c@kernel.org>
- <atDCYwNfKW3m6YXh@thinkstation>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <atDCYwNfKW3m6YXh@thinkstation>
+From: Nimrod Oren <noren@nvidia.com>
+In-Reply-To: <20261014144823.8c89da26c547fa95936a2fe5@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3A31418000C
+X-ClientProxiedBy: MR1P264CA0035.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:501:2f::22) To MW4PR12MB6802.namprd12.prod.outlook.com
+ (2603:10b6:303:20f::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6802:EE_|DS4PR12MB9681:EE_
+X-MS-Office365-Filtering-Correlation-Id: 382cadd2-8808-4c69-b472-08df2ad7b6c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|23010399003|56012099006|4143699003|11063799006|261009223027099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	lbYbm+7HMKbjUvPIETxkCYOFReqfmX1Slx/Veod4b80ax6tCMhzu2LBhDQWCJ8z6oYdxQ3PrCb2A0sqJvZG8Tg6BSnn/QIWbe3N5ovW3VIWsLwz7C0UFoVecKqrP6fovpliz0adn/ZP0rU/CI0hNJTyADhRl4lymZ7e29XuxCMFtZf9M6B+xsUvcHwI/pa0aVA1mFbfXOTs2pdpCGwy7nbTAFKWMKCVOpCN+lFtUiL7xULRm6OrwCRJ5UqDt/vfDzxnUKVOzvEGwhuhm1KtVGACJtKwoEyPLcbeLADlMqSMWX8aBgSrrJILPrmuoKXixennFgkWC+zE8bzGMtW+XO6eUNaGOP6x0wYTBiD1FYBwZS6DvXf4s+NAiuVcYHiOu4scfTz3dkwwInRhWK/05lCw1GtX8jJ+w3x2DO3jZMU5PAK0Mlw3yC/RPUMeuepMXQxHJ9gGvrQtH2s3m+lOgjC2XHdg0W4smWid43ULJgndlBU4aIuq4NkHLMVDnzAVy7thLlQEa5Ma8BxzGOKLQPLEqAw/Gl4tMw/5VPx3fDLap5WbAmbyPgzfPYZs5TupCAecKDHYZb/VSxK6sqHU0BZ9efwQ+RktIyaMgFjPJvxopsa/X+J1zAz7Z9qzdTA1wJVYWFQC8DpHGiQLqmBH1GcMSvYZv9nn6oa9eV8DkRdY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6802.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(23010399003)(56012099006)(4143699003)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TGJsNkpTdU1pZElieU9TVzVqY3MzWitWdlhabWdnc2JSZlZqMmZuUVpXVXF5?=
+ =?utf-8?B?QnNuZHVmVy8wNExYZ1Bnc0FjcjBkVmk1QkZJS3dMZ3ArdW5IVmlHdHFreFJO?=
+ =?utf-8?B?VmxlT25pQ2RGVG1SeWF1V1h2SHVZTU5HMEQrVExkN0VXd0JFNTZOUWhVYW1U?=
+ =?utf-8?B?c0ZDNDkreUEzTFJKSW9ZVmpLVDNMVmxSZEQ3RGdCajF1MHFOcmM3VVAxZTdx?=
+ =?utf-8?B?RTlwS1lyeWpTbVhPU0JyNzFwanJERTI1aGN2bjVkMUllMk5OK2pwTTlSUG5O?=
+ =?utf-8?B?Mkt3NFRXZnJxUlVSUWhFVElwdGR5emRtQUY4aVVpQjJSYURsVXBidWdzUEJh?=
+ =?utf-8?B?T01OTGFXOUNqR1hqVE1tb2JNTkEyMlFDK3Z1QW0wTzJmV3lOMXJZVWlhcUdQ?=
+ =?utf-8?B?VDhzSDlCdUFpemtmOTRJcWdndmRoWFkyN3RLUGJJaGFEUEFWLy82eThueGUv?=
+ =?utf-8?B?czNDQm9vbkU2S0ZZalE1bzl6SlRZYnFXMTlEeDBDNnN5U1M2enE1V3JRc2Ro?=
+ =?utf-8?B?bjczYlA5UHBHYWNqOFYyVjhlQXVLUnJzQTM4ZjJ6Y3N0bjFGa2JRblRzdnJP?=
+ =?utf-8?B?Z3RnU3l2R2VuVDdnWUR3TzBUUEVVTFFjT05pMTFRYm5NdVpqcFN0YmdOaUVa?=
+ =?utf-8?B?RnA4ekJPbXB3Y2pXb2tVTUthOVdPTy8vMEpwVGtMekVpVnRaOTIzZEFCNjlG?=
+ =?utf-8?B?ZGNYZU5aU3hYejJGOTZiTGxRRUJzRkVKU1VFSi9DbDk1U3NYeWY4bE1xaXRR?=
+ =?utf-8?B?Z3dnTE5IM21KN2Z3NStlbVM3eWFvaHQ2aFRGcUtOMFpZcTN5UmlIcjRTNyt5?=
+ =?utf-8?B?QTNCeWxaT1oyTjF6a1JGV2Z3NWZpcUt4ZlI5L2pQcEpZWEEyb0xoOXlXL2RP?=
+ =?utf-8?B?Q0J1YVhxWkVlUjJnL0FITU0xeHlQYzJ5MC9CUXc1WEJEUUlYdHBCREVnMjNz?=
+ =?utf-8?B?TVBiNm1leDA4S0JlQnZ0eVNoa3hiNWxubFR0N0liOUlZeVVxVS9SdWQxSW85?=
+ =?utf-8?B?emw0bFkzamRCNmZDTmh1RVBXWFI3Q2RWbFYvTTExRVJPNzcyRFJDVVVzVnZh?=
+ =?utf-8?B?eStJT3dzZkFHc09YdlRQM0tpbGlTUkY0RTFtQXVRQWp5U251Z1FFaDNPYkhH?=
+ =?utf-8?B?UlNqOE45eWRkeWlMdm11V0IzWG5VVWd2NXlCQ1ZrZ0lWeUJTVmNOYjlMVUhC?=
+ =?utf-8?B?dXgrMjRrbUVSMkhidTY4SlZ6YldOSnpRdlFTc05Cd28zUkJRa1NvQkkzVG4r?=
+ =?utf-8?B?WUtmNnVtV3k4c08rK3l0Y2N1dlh2V2ZjUG9mT2NHUE9EU09NUklRd08rYVpM?=
+ =?utf-8?B?ODNOVjhlYm5LaVRTdGNScmlveHJxemhNWTRLUmVHdWlnbnhOcU5kZTJrVVJt?=
+ =?utf-8?B?Z0Jib1lHMFNldC9yOGtsLytNSzdDSGxaeDRqTGJWQnFQK1NONEtQSkNhQ3l5?=
+ =?utf-8?B?L2ZQMG9Jd0UwVi8wNEI4akYyTUpZcHdGRExPaHpBK3VNZzRMNXM5eWRKK3pu?=
+ =?utf-8?B?L1pZYXVHeHlTRlhvdG1aQ0NTNWR5WGpOUGI5MnVMS3FZc3dNaTg3T1lvQ2Y1?=
+ =?utf-8?B?bkdoTE9wbmcxYmVLNEVDb1RqNzZReERsMGw3VG14MnN3Z210RTJnRGV1VFdR?=
+ =?utf-8?B?VGVDMWZXWG9sL0J2eDJyU0YrRjhneGE1Mi8xdVYxWHR5RzhUZ0ViTFB3aGp4?=
+ =?utf-8?B?YWlUOUR2bmZNMkMxSEVudjFzMnhWUWgvZm5DZURXek41YUlQYUlBWFY0SlFl?=
+ =?utf-8?B?aW4zZ01XRXZHK1ZoeUtMTXh0TXoySUZPN295ZTh4VXRJZmtzYUs2YkFpdXZo?=
+ =?utf-8?B?L2ZiZUVGYW1xMzg4TEdMcHRYeVRHV1YyQWVjRTZDME9EZUJVQlhodS9WZ2Zr?=
+ =?utf-8?B?eWxqQ1FNSFVnaGVsSW9mRmdJcXJFVnkvd2hEQzZEd2VsRm1Rc2lEWTZiVnB1?=
+ =?utf-8?B?LzNBMmxPd0x3bDhIRG8xS0tVbGxsUjJCcWxUYXZYQW5YanlvdnJlc3hKYmtT?=
+ =?utf-8?B?OThRRGRVaFhPaTVFS08xMnE5YktsR1ZRTU9HWDYzVUZYVFZqVENRYkpncmEy?=
+ =?utf-8?B?VFdjQ1c5M21MZHpya1NqZ0l5cElHa01VeHp5b2UvWThKYjBSN2h6b0dZYkJF?=
+ =?utf-8?B?cy9xdkFvckFXa3pUM0FZMEV5UjFBMWUvZVpEbnhLNFQyYWxTbkFMSlBlY1N0?=
+ =?utf-8?B?anVLSE01WThFVThlbGpMUmhJcUlrenNMWjU4dzVCQ2lqakhZTDQ3bHhhRXcw?=
+ =?utf-8?B?ZGNXd2hDTkl4b0RpVFQ5RnZEcXlHWkk4QkxBd3pXZHlyVGxPVlo0cCt2VzV4?=
+ =?utf-8?Q?mFoIcE6Cd9z5VPEB3V?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 382cadd2-8808-4c69-b472-08df2ad7b6c6
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6802.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 16:16:48.7872
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b6gPbgzDWd6W/x+rBhjpHUDpF/7nOqfDE9PhgykMWCM93vyVCBX+sNkDKyfd5fpZYk+LMvMaBGQ6H2oFivFnqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9681
+X-Stat-Signature: 9sipxgfjhyw4awj99bzek4gas3p9g9t3
+X-Rspamd-Queue-Id: 9428620005
 X-Rspam-User: 
-X-Stat-Signature: bq4da456k796yibq9u1o1sungcyuxb37
-X-HE-Tag: 1792080792-504725
-X-HE-Meta: U2FsdGVkX18Dth+EzQiquC/jeyGCBde8keCakUiybkecfTjqYm7dNzHRDrl8I3Ec62N6guhwGib13GvTSABl/GXt30PI4RgOHXN8wBuKhbTm5rySReaYCkv3PjunehZSLaxbbPIwz/InmBZt1Pcm9mEf2J/WK8pParuI3F1PHjlRE9AuXcdNjm2D5G4SnNszUXIC9I5JAoBq1ii38owbUaeD5PaqYomI5o81lJwsLxxrr1aAt8+nujfiJol75dVITqGqnBTCC798NgDmmrnRf74Xa8/7QpwjeQUpHhzw44ZrwMaQKWaMTiqxtXhaWMpylBatEOiUelwuiv+LNFWgQF8W92n1WVDcodUS/uTw+S43/5FMFmJjzxnA1Ybc1V8tYF7cfZy0mjTmx2Ald3M78UlK9Od60BjfwzMay3n70Sn3tTJtpVVAW6RMwjxfFnAdW6/XZfeFerafv/4qtoeP6ZCCi6vUDp+iQTz3/pZIkf2XjIurG38RQWM5CX/+Hz8Yqsvkm6bu/VWT1kL6tCzAUmmJWTohEu3yVw89aCn1eeyx20ZxhuExP5WI62rQLDBs0CiKGNwgJhFkmafT1cE20Y0wC/g4wqEXnUUqhkGv8aJPQ0WHqhbNQeCqjPpnFQFPVQnBK9wdNHFmA5vFiv98T4lNd53S7dfYnnwPg8hWau3WAMRCfbfu+fkFeedSrsI+qGiHHE9W8UvchSPxDD9Rg4qoCcDkqQdVzigAMhz0h7f4Iux59Cmda9hlmnzLo8j5Q4Sv9ejMnyifjNtNxK5lIFuRXyOZJlr8IWDoJoD8p6BJvQ/WQKd2Jdd+zvegw1UJac54NQpljpilRDc39iIeOyID88MJe2s46dQuincsd/zSQsoQTqJLPLdlJs725c8zBJnyO3ngo1KQJPmorGCig/gWiYPZUtColUHxTiCoYbvHq5eHh2exp4BcE7SRpbMSBOo0zKh9G/xHBNgoi4F
- xCu/yf/7
- oEpnruzLDZ37anOTAznKOGttFPsmRdG3A5A2Fxb5Rf4un2Xkv8AB2rrUlWBPQtPoTRFXEqFCNfn5GBuTBkAq/6925qC9M+IJoEijbN0HNlcsV0bd9aKzYaUUbr+bdHS69GEzYZTvwu7ZPcnIYBe+d0UgafLCrmYU+1kDVeF3z39VAHqBj56DtKwMYy0lDuH4kYqYR0S3b5aCinhDVZWv42HYRlzfuDA7FDDqOaWbldw/n1s8jXyeTA2GiEw91/xdkXxG4EWUDX68S1WRu2wucK/RTvJJczPNPH3L/CCdEGlci814xK61vn8HRblsC1PeWgeL/nZd0m9tJV+u6c/DvC4oZcZlHDJSPv+Wk7g2EuNTjFfGaBLQGu8sPrTMX7UrEpAbuoaoCjQMtYuBQjCkDBgrxI9MFXfmJtGKtitzg/p6tu9ObL09v05Dmlg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1792081016-624424
+X-HE-Meta: U2FsdGVkX19Xb7BL1HFABbEElr5xG4NoaLs0MfNzzzLQzctJu0jsJcsRPitxlxuTk0hd9cCMnd+3Fo/aIgaCQFpC+SoLJ2HBSEOCQL0eRdbNlkQCs3vMfyQszXiZWbPtZ7nMMEgzkhYlOiaE2gpJRwy8JAljgVQfCDVHA0TXl2y1Rx2Sk0+9TUShY0iOgcSYbv3N1jnKwszjkqC+ZTp/amn36l5SVe0Wjb+SzHpeSVNlehx2sgPqsjvtD67kzlUlSlhZOZGW6fElAHcFLHlL1Olkj73l6Q+Do7ZJS3MynPWDuiT52DkTiUIIGL4Jgj0oGb2X7P5u+SZ59P0A9HVHGJsHJb68tazLRxwjaT9o1bn/2yaZmmZbkCQZxRs3XjDHAFPBn97pmOY+j77LkSh90jgnBHGDAr78xeSStJh6DnqW0LNaXrHHTvHimivJ+SHdGCHL6uMyZtHIGn6njqa4U3wI7rjteFvq9wApmpWEDEgEQFkt6nssl7/kMeXXc2cEIvS0iRv7VrQnCOvSTfktnjb2VTBPqCU+hmnZbMYuiaGhi2fQBU13u2iwLhFcLUMpcmifHYxq/81u/W8Y6fdqvzu2TOJxvdqkHhq6DplnW3BlY9X700i+fnrfgBYTGuKbKObBRbyhHBqGvmGUAi2hLI5CkERkU16bYUktqsEE+KZD7LP67l+KVD6YTNT5Ie8wIpgE9oUZtTEBkTHPZlLpVdVnIuIz76wGg4Pk2IwQraHgz6UyyYio2tvf4qhsP1IHxodZacJ5MKMZw8DiR26h+UrK/v+mHMygNPDchJayxu+1C+Y8jkpBFk3PzkBlzKrJ61Haw+/wRYseIWBPSSGVaTvyewCSaSb5svclVufaS7G7T4BUBfuKIdya/RcUEAQah9gC+fGDYMnn+VSlib3oNhG7I9c/O5g1Mx/RtaiguuI1fvLksGdlyk2Bk2gIfOD+LgR9MNf9x1NJWP6Rkcj
+ 3s3v6C1f
+ xNILT41xZBRLBKtv+pj/EnCcZr5dC172WeCHjIJ3OX+ImEyxM0seBPVZgABAgE+Psp3L18Fm2OuDQdY8Xiz7F4m7rZyA598UBVNod6VSJ1KTBimL8As+rHH46LY9z0LdotCtxwquEPhQUCDlAq0VrWcBszWVton6xXkitzOGk0Yo+Wgf7semhGGKHybvyP3+zx1pN2Rr5rBQK8EMDuu+1CMaHgIq/GWheeyYwZwzHS4jhNBIWDKZxMuSbdjZ/e5bRgcRKjhUvsCQiM49Sgx8L3tj4oUl6sxhhPLamdEzqzu6QtcEQCePKICQIWf9HCr5WqmRuPU1pJIPenD32Sawuta5qxewBgSZ/3oBEF4Hyt4oyZieic2xdWwQE0+oQhGhOZ7bo3CnALZL8AWc+KgA9mZasnA1Bg112fjdHLCD1lHTG9UH2ie+rPVF0o0z4k+feFlQIwwO0Qa2982mZxMbuiW9qHN2SdX2xOThvWELOLmbJNZDXWTMNmNmxxQdVcgbcpMskoYVxRqkhDlylKGdjEBakHCkzB7D6YB/gVGzumvNQiyub4MDLHJrVNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,142 +184,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/26 16:48, Harry Yoo wrote:
-> On Thu, Oct 15, 2026 at 09:21:43AM +0200, Vlastimil Babka (SUSE) wrote:
->> On 10/14/26 17:08, Imre Kaloz wrote:
->> > kmem_cache_release() tests slab_state >= FULL after kmem_cache_destroy()
->> > has dropped slab_mutex and unlinked the cache, and for a
->> > SLAB_TYPESAFE_BY_RCU cache after rcu_barrier(). If slab_late_init() runs
->> > before that test it sets slab_state to FULL but skips the unlinked cache,
->> > which never got a sysfs entry, so sysfs_slab_release() calls kobject_put()
->> > on a kobject that was never initialized:
->> > 
->> >   WARNING: lib/kobject.c:734 at kobject_put+0x64/0x2c0, CPU#1: kworker/u8:3/55
->> >   kobject: '(null)' ((____ptrval____)): is not initialized, yet kobject_put() is being called.
->> >   refcount_t: underflow; use-after-free.
->> >   kobject_put+0x64/0x2c0
->> >   sysfs_slab_release+0xc/0x20
->> >   kmem_cache_destroy+0x104/0x1e0
->> >   bioset_exit+0x13c/0x1e0
->> >   disk_release+0x54/0x140
->> >   put_disk+0x18/0x40
->> >   floppy_async_init+0xbec/0xd10
->> > 
->> > The release-time test has run outside slab_mutex since at least v4.4 for
->> > SLAB_TYPESAFE_BY_RCU caches, and since v6.0 for the others. Since v6.12
->> > the unlink-time test in kmem_cache_destroy() is a separate read of its
->> > own, also after mutex_unlock(), so the two can disagree. Both tests ask
->> 
->> It would be useful to mention the commits here along with the versions. Also
->> this suggests 3 commits but there's only 2 in Fixes.
+On 15/10/2026 0:48, Andrew Morton wrote:
+> On Wed, 14 Oct 2026 17:08:59 +0300 Nimrod Oren <noren@nvidia.com> wrote:
 > 
-> Agreed.
+>> min_free_kbytes is recalculated on memory hotplug and on THP sysfs
+>> writes. The new value comes from calculate_min_free_kbytes() or, while
+>> THP is enabled, from set_recommended_min_free_kbytes(). A value written
+>> to the vm.min_free_kbytes sysctl is replaced whenever the new value is
+>> higher, so a lower value does not stick. This matters most when THP is
+>> enabled on configurations with large pageblocks, where the new value
+>> can be excessive [1].
+>>
+>> Stop recalculating min_free_kbytes once a value has been written to the
+>> sysctl. Systems where the sysctl is never written keep the current
+>> behavior.
 > 
-> At second look I think we should improve the changelog a bit....
-> And the history of this race is really... messy.
+> This problem lies somewhere in the range of "minor annoyance" to
+> "catastrophically horrible", but it isn't clear where in that range it
+> falls.
 > 
-> I'll just rewrite this part a little bit with specific commits and
-> add Fixes: tags for each commit that introduced for re-introduced
-> the commit, along with some history so that people* can decide whether
-> they* should pick this up.
-> 
-> *who may maintain downstream stable Linux kernels
-> 
->> > the unlink-time test in kmem_cache_destroy() is a separate read of its
->> > own, also after mutex_unlock(), so the two can disagree.
-> 
-> This part is unnecessary because reading slab_state outside
-> slab_mutex is what we should fix. As long as it's read under
-> slab_mutex, reading it once or twice doesn't really matter.
-> 
-> (See full changelog at the end of this email)
-> 
->> I would guess the 6.0 change is not a crucial one?
-> 
-> Uh, I thought the Fixes: was 6.0 one, not 6.12 one :/
-> 
->> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> Thanks!
-> 
-> So... below is my suggestion. What do you think?
+> So can we please can we have a paragraph which explains the real-world
+> userspace-visible runtime effects of this problem?
 
-Oh wow, what a complicated history :)
+Sure. Can we add the following after the first paragraph?
 
-LGTM, thanks!
+  For example, with default arm64 pageblock sizes, the THP
+  recommendation can reach 5.5 GiB per eligible zone with 64 KiB
+  pages vs 22 MiB with 4 KiB pages. This keeps a significant amount
+  of memory free, reducing what applications can use and triggering
+  reclaim much earlier. Users can lower vm.min_free_kbytes to avoid
+  this, but the lower value only sticks until the next recalculation.
 
-> commit 13564e1cfc847aa540019b55a1f8e588670892fe
-> Author: Imre Kaloz <kaloz@kernel.org>
-> Date:   Wed Oct 14 17:08:43 2026 +0200
-> 
->     mm/slab: sample slab_state once in kmem_cache_destroy()
->     
->     kmem_cache_release() tests slab_state >= FULL after kmem_cache_destroy()
->     has dropped slab_mutex and unlinked the cache, and for a
->     SLAB_TYPESAFE_BY_RCU cache after rcu_barrier(). If slab_late_init() runs
->     before that test it sets slab_state to FULL but skips the unlinked cache,
->     which never got a sysfs entry, so sysfs_slab_release() calls kobject_put()
->     on a kobject that was never initialized:
->     
->       WARNING: lib/kobject.c:734 at kobject_put+0x64/0x2c0, CPU#1: kworker/u8:3/55
->       kobject: '(null)' ((____ptrval____)): is not initialized, yet kobject_put() is being called.
->       refcount_t: underflow; use-after-free.
->       kobject_put+0x64/0x2c0
->       sysfs_slab_release+0xc/0x20
->       kmem_cache_destroy+0x104/0x1e0
->       bioset_exit+0x13c/0x1e0
->       disk_release+0x54/0x140
->       put_disk+0x18/0x40
->       floppy_async_init+0xbec/0xd10
->     
->     slab_state >= FULL asks whether the cache has a kobject, which cache
->     creation skips while slab_state <= UP. UP is the state just below FULL,
->     so a false sample cannot skip a kobject_put() that was owed.
->     
->     Seen on sparc64 at boot, where the asynchronous floppy init tears down
->     its bio slab while the late initcalls are running.
->     
->     Sample slab_state once, under slab_mutex which slab_late_init() holds
->     when it sets FULL, and use the result for both the unlink and the
->     release.
->     
->     The history of this problem dates back to v3.2:
->     
->       Commit 69cb8e6b7c29 ("slub: free slabs without holding locks") in
->       v3.2 moved sysfs_slab_remove() outside slub_lock and introduced
->       a race condition between kmem_cache_destroy() and slab_sysfs_init().
->     
->       Commit 945cf2b6199be ("mm/sl[aou]b: Extract a common function for
->       kmem_cache_destroy") in v3.7 accidentally closed the race while
->       extracting a common implementation for kmem_cache_destroy().
->     
->       Commit 5413dfba88d6 ("slub: drop mutex before deleting sysfs entry")
->       in v3.8 re-opened the race by dropping slab_mutex around
->       sysfs_slab_remove() in __kmem_cache_shutdown(), to avoid a lockdep
->       splat between slab_mutex and the sysfs lock.
->     
->       Commit 657dc2f97220 ("slab: remove synchronous rcu_barrier() call in
->       memcg cache release path") in v4.11 shifted from synchronous
->       rcu_barrier() to asynchronous RCU work for SLAB_TYPESAFE_BY_RCU caches.
->       That commit, again, accidentally closed the race by moving
->       sysfs_slab_release() to shutdown_cache(), but only for
->       !SLAB_TYPESAFE_BY_RCU caches because destruction of
->       SLAB_TYPESAFE_BY_RCU caches is done in an RCU work.
->     
->       Commit 0495e337b703 ("mm/slab_common: Deleting kobject in
->       kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock") in
->       v6.0 re-introduced the race for !SLAB_TYPESAFE_BY_RCU caches.
->     
->     Fixes: 69cb8e6b7c29 ("slub: free slabs without holding locks")
->     Fixes: 5413dfba88d6 ("slub: drop mutex before deleting sysfs entry")
->     Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
->     Cc: stable@vger.kernel.org
->     Signed-off-by: Imre Kaloz <kaloz@kernel.org>
->     Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
->     Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
->     Link: https://patch.msgid.link/20261014150844.8536-1-kaloz@kernel.org
->     Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->     Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-> 
+Thanks
 
 
