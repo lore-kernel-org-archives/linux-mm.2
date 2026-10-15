@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5163BCC6B39
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:33:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61CB9CC6B3A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:33:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C001E6B008A; Thu, 15 Oct 2026 11:33:40 -0400 (EDT)
+	id 8305C6B008C; Thu, 15 Oct 2026 11:33:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD8D06B008C; Thu, 15 Oct 2026 11:33:40 -0400 (EDT)
+	id 7E1116B0092; Thu, 15 Oct 2026 11:33:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC7AB6B0092; Thu, 15 Oct 2026 11:33:40 -0400 (EDT)
+	id 6CF4C6B0095; Thu, 15 Oct 2026 11:33:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F6256B008A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:33:40 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 050C2A88F2
+	by kanga.kvack.org (Postfix) with ESMTP id 37C876B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:33:42 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F956A88F4
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:33:41 +0000 (UTC)
+X-FDA: 85325255442.30.28C3851
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B89E38000B
 	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:33:39 +0000 (UTC)
-X-FDA: 85325255400.17.2226B0C
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4303B40002
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:33:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=eNk2Ejkn;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792078418;
-	b=n6MMUYUrvfFPZqhsBG8hu9HFIay1iAE0RLc4PdZ7L4+aGKC7qDLQ0YSTKOBFOGvlVbX6zL
-	x8hOQhgD4Q+C5F2963GbZ4xqW7Mj91iOayPdgsvWL3aLB0IhH6xnnDDpZWPRg1nRPwjfwP
-	2zBzak9qn5SAmRxAKHY1dZkAeAn8qDQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=eNk2Ejkn;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=StouSDC+;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792078418;
+	s=arc-20220608; t=1792078419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=imriAKslpKmc2rOuduOVfwOSxXiBTlYDccI9fjTDxi4=;
-	b=I41x7NSilN//Pv3W6mgIrxqmwSmdItA/zuiZp0LKAGsQ5dFd2F4SZGekqnIFcAu6pG6yxn
-	ZjX045NLKIq8iM0XIhOoUFMr0tn2uZT96xbx1r5xABJpxgAPVL0TZ8sC5Qjadm92wqGWDM
-	Q7B+iVK7qE3li5D5D4ijMzBUzo8zx88=
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-745497ac8fcso1696574137.0
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:33:38 -0700 (PDT)
+	bh=j4tKjkoRHQBs/0qfSCONCIuiBtr3cfqRy92h/STkCYg=;
+	b=x56BByn4CSrYAzRRWScbNwVOOD8Cc8Se+LBkVIMVDsAwJwP4jcVmA0HS9qz4AATaINXNHN
+	C4OhUYESl5MkGXoaFtb4qzgBt60TDhUsGBYUQ3UI04OYSjFDOy3DNPFF3SgktbG/jCTDEU
+	E8C77TNWOVzLvhDiLD68ZTXRx+ZOBl4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792078419;
+	b=yEbmiVVEn3CxDxYH7rkIs2qAeKXC1LDdkIvHXD6Ia3gL8Zzgw6AJiLOdL3HgR0iApLIngT
+	XrgezKy9LZ39GrFhpnpTbAzoX8B79eSKKuNUo0w35p2nVV++vl502IDXBUW+uEqYlqqvGB
+	+0ahIRlJA+GudK038R2h0JAYiyKLqAY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=StouSDC+;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-74ab99038afso3462170137.3
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:33:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792078417; x=1792683217; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=imriAKslpKmc2rOuduOVfwOSxXiBTlYDccI9fjTDxi4=;
-        b=eNk2EjknFbM1nhTx03zTTaJK6Izym+3oqg6oxefQPo9sk8uhxfiN5g91meLj/L0Ynk
-         puhv7atR/ZVNEtUsotllj9IIMtWV7RurZGmx8gjn5K9UYRqXqcsgXpfyd0cUQEtjFul0
-         5kGl0+yMHlijRo81LnXzXsYCbQNsxQpELQElWSf0iEScLYS8eCHwzKX0AtKhY5xloYwj
-         e2LqqQMe4cc0xmNGAuR00rlgzhGHhdMDhKNaNjntNMLIOV4r2RBX7AZ9IXsWM1eCrpU/
-         0ldPjhomouHlVwosifJorO7PXkG2G/jwYSPIoJZ+Xt78U3XMRnidkJEMf5IORlHBcX09
-         2RQw==
+        d=soleen.com; s=google; t=1792078419; x=1792683219; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j4tKjkoRHQBs/0qfSCONCIuiBtr3cfqRy92h/STkCYg=;
+        b=StouSDC+0+CfhWWAjJeqycWmKAqt1METC/tMJwgGjW+3ISuQhOCNPog9QOIkMtX0WQ
+         zYuBduLf4u4xAM2LIODQRLOFEqYSlgUO2MEvVa/lIldhoSPJhWmBuUgyIa5YkEWx8kY9
+         XPmgqchJn5c+HAdeykZemSKCb5oIHssmrfQps4/efx4RZXiCO02oCPKryozaBRdK1bnN
+         zG2FW2rD+ydrRi/r1nGJlyXamuIS5dpJbbXftIIzfTvhxzEv54LTw5x0/GavRu4TKCcc
+         KusvI3TKWgvDjPAIFK/BT1MtLUeBzSqJv6RhsEINrx5USL6mkPr6/SiOSkHDJNYdJY0N
+         PDvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792078417; x=1792683217;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=imriAKslpKmc2rOuduOVfwOSxXiBTlYDccI9fjTDxi4=;
-        b=bUvVbLs2FUumnrbvHWG24aXChKJFDPIaQwXO3abR3kOJJBsi5b4qa9arfneQz93/Q4
-         khoXHxlqGDSZandVh3mjuLLJry4tzyoxoHYa42VwKmoPOdxqFulkMSp+Oe5al7ZAaGjL
-         E+jkSv1PIRClq/9HAHQL+CIpBOkSgwpB4xzykmqugeSnil9ZEFp19tQnKX6lq/PXJPxe
-         BiyxrsTav+RFxsXziGV9JLR+kBSN6diGFLZABbbm2IyAHtpnTCD2ryjrBONzxtZ82SK9
-         kr0upEnikVUlyFMeItkBYzm11cP8ATgttGWPr3DoYd7JGBUg7cn8phUJ4jYh2OYlr2Cd
-         BT8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBx2qa840Vt9aJ73d0hwal6XoxBqcS7y61p9KYT7F82RJAWUDdziTypXM1uVITFV98ZTf6BExOE+bA==@kvack.org
-X-Gm-Message-State: AFq9FYIOKEaGnVfWopaRyPaI+mo6j67kDpjcWMsvhjZfmQ1rCsGQRtVH
-	TipoSm4I9aWgQoToJ7oZCB8yzCP+10xozo3R5L5Q+OufPvhCZq22FSBcMpFFeVIFOmI=
-X-Gm-Gg: AYBFou0wE9Mb2cAd71VwXCywWnl6Y/4QUGcdEKMUaaRBYW8lu+n97z/bENvxkIG/i2z
-	lsLd4Wn4dCnF3tRQ0atFHbzKoqn4dR3WLYct4FW/lxv1/brtPaACYkQjc7feEfcoU4qCPerhvYr
-	9z8Wbb+1wVCvHGN5gcXnYcatAr7ddUNH1+4Jpl6bjOpARNL6BV3pxT9Yb0TTeI+E+600AIEieFB
-	mqxd0iEVcVEUe38eXr9ndLWpMehLkaYy/LqwvYnVtElnqbUrzonjoNXfaOL0BbjbbUfb4N/5wRn
-	0ydD7bJpQTth2bhZ+R9FX8yf944YlltxP1/raB27Hk5Y2PKLIKQsBaF4ZLaktj8L0HcYVEWEWZn
-	UhHUnO5kzDnhBGZZfiKg2TmFxT2c8Q6w/58XU3kwt2gegAPE+s06ULWVbdPZPv3GVpwk0HynIEd
-	RH7grUpEZC0BTvTJOxV/qdXy2I36jLDnDUDNSb9QIlyWbRsVTSrFVfHdzXFyHOscCXt0EQvc+AX
-	AKXhHd/X50wlKol7HAgzF8x1axS36eRYwdvjJxUf/hXW5loFNl78EtK6tGC6zCqIpzXCpdkUfKv
-	Tb5xy7r4xAunvKDs4X3i
-X-Received: by 2002:a05:6102:441e:b0:7c3:263c:511e with SMTP id ada2fe7eead31-7cb36989716mr5308286137.3.1792078417340;
-        Thu, 15 Oct 2026 08:33:37 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792078419; x=1792683219;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j4tKjkoRHQBs/0qfSCONCIuiBtr3cfqRy92h/STkCYg=;
+        b=wvjN5S8HZhZJfnNPZnzCRrQewfDObG3VhKbIOkpb5nZvrpDFsZudnKTV4UJ0cvEykp
+         KPyJhJFvB1P9EJNBzPi5VcuxjMZfJ208PA6x2GDKTn8YfXd7etP0r+wxgE5njRTFLqdI
+         2H/+fc7tL4rh/4JmYRhRZNIbJpwqGdvvAZPglKTrDVjjFSCWI8btYglu6Jvkg6Av+x2j
+         xQrUA5PyTi9qjoS1APpUf2fU0I6Dpr1spwq+SL+b11vHPiqs2/NtQs7SnFy44hcHwb1d
+         fDL6Sdw1fR/tPTvLtJLiFWWg57+NpFw1/jI9anx9CHJKCiyQPdlNiwbc9rAtk/NvY6Ux
+         IYEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwrdbIBDf+YwPXl66d/XVIsI167/umAMM99+J/0O7tTAQsz5jh71qRZX5vQR4rSErTynVkBtoUUTA==@kvack.org
+X-Gm-Message-State: AFq9FYI0wTUcgjxF/TN+PYPtZuVxrEtrOSXjVESLlYwnwiP4NewcY6cm
+	63ViGJd1uyfYs+aJ+CQdmREu4os0KXRjUb3TXNPjF2CySRxkTKOa7gwjwOwUJE4Yas0=
+X-Gm-Gg: AYBFou266qad157UzvAMdO80iT0TDINYT6v9GkTw2C/Fz9BGZvh4gDXXnD8+/R71sXC
+	qkbdaH3kNJ3b1CJ/hHGuGiP87C11wJ32wZ1XGTuMAT4KRrXgK8n2fKonsnUuAxpCc2I7QenSg34
+	AZsJkMjI5qSVaGGKZxolmc5xTOASy8q5lMFZHi3yCNpCZ9X3lsLsBnHkN2nYQNhDpJ03N/NvqVW
+	OlYQT0vDTcCUFD/enV5d4lDNZDYINyvh2qPuMmOh3uFzR6aE6DlOmvVClWNrmwYDtKAwmwjSspW
+	6gKeRGmaGyEt1P26X0WtFBEKGBWsHawGC8V08HTxk7iofpDrX8NFiN6o69WstoDIZnCPWp11xRP
+	QTNKIMiFfc5rn0eRp7dV5mb4QtIsoL9LdVO6y8m9TdnEnBRdg7tObxLGkrLHJJLJxGS4ZnCDWUG
+	GB0aqqufGuMalIQZKwo2ybRtoYSTSqrLMXDfKg0H6gBxbPG1q1/RUsN4YnLAcFgq28JdA+fBkF+
+	kPNeqL+Gu1XjHKScBMgQWaBJTx9kAdfXd8D3ZFsmLfDdlIahS4N7RSSLMxlbPqBkgvDd0g8nFdF
+	hHbRd1o2o1XJw7mtP2xI9SO0iF4N0g==
+X-Received: by 2002:a05:6102:5110:b0:7c8:448:5237 with SMTP id ada2fe7eead31-7cb3a0e2580mr5832272137.24.1792078418833;
+        Thu, 15 Oct 2026 08:33:38 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99003f66ad9sm12986347241.10.2026.10.15.08.33.35
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99003f66ad9sm12986347241.10.2026.10.15.08.33.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 08:33:36 -0700 (PDT)
+        Thu, 15 Oct 2026 08:33:38 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: kees@kernel.org,
 	rppt@kernel.org,
@@ -138,22 +140,23 @@ To: kees@kernel.org,
 	ridong.chen@linux.dev,
 	longman@redhat.com,
 	bsegall@google.com
-Subject: [PATCH v1 1/8] x86/realmode: Remove unnecessary WBINVD from AP startup trampoline
-Date: Thu, 15 Oct 2026 11:33:24 -0400
-Message-ID: <20261015153331.1872641-2-pasha.tatashin@soleen.com>
+Subject: [PATCH v1 2/8] x86/smp: Remove unnecessary WBINVD from mwait_play_dead()
+Date: Thu, 15 Oct 2026 11:33:25 -0400
+Message-ID: <20261015153331.1872641-3-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 In-Reply-To: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
 References: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ftedae1w6jxwijes7h6gnswx5pb45o3y
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B89E38000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4303B40002
-X-HE-Tag: 1792078418-3561
-X-HE-Meta: U2FsdGVkX18V3Omh5H9Ko95julSBSim21uwnQo1Gej0sgqhMaRhk2J0J5+R48UcB0xAEpB9AB8rzpi4bvNIdLMnAurmPRIKYNqTn8o589EzeD5bsLqPzUXDnKnnwwqOrD0WKLmf3FiV1wg8QbDAnAZ/f0fFT6IaPCuByYjL+JkKq4ttP9fAaIXEDLALFkvoD8zVGekpKby6mCW611/1Ck0j/gs150hWOmtOyyyP8aJ4yk5xlG4d+f9FXBd6v77l9TfQQu+l3LL2HPEt0sKFlWOryTUEW7jzuDii7zb91/7fJJzcSTSICiH2g2mt+KhY9KqO39UETERnVzt2ypBzIsQd6PMkfart6mRjS0wG2CoAD6DYwV2GOcgSLaR0xqu+H+Xy2E5TN28iYfyVSIskmF5T1h/T+20cbBflPCmdk/25svis0qzXX9zoRh8zdz9/rvGKJQMDDeE0ZvDohjCoqnPU63dWkaMVl5r6AEaZm9mHdncsqPBI8rBBTmwKPMxSgg3abCqjomaQ4d4DvPSq2fYPWcvisrE55mkTljxtdw9H9CgjNNFJiy3HeJh2QRe5xVozyZFcST0pfZv9igXboPMieJAB7XcMPHlwQYg/AyjPOKPmMDkmcKiRYjU4NU0dkykIEySgMm1IN1Y5v7UlqHdTnCr5pUgruus99vw6I6QaZYQ6DXu4ktG7UwUkNX6lgjVlmnQ0Knn3Zw91HJg6p+j0KtjxR4OXk6Y1m4d7O7A4wrJ+8di17qksMilwO0Socw72vr9bacEFV/7HIqFmkuU632jNlXttR30hqlU0HnMLeYuPwdNmkpbSmFHq022Ztwa39EbpV2YpEP4DhINX7eC+tUMhzLcmFSjVHER9ZcrRa6LHpINbmGrPcOVua/JWsWhHHaZqXeAt2ugXMpihqXBZEsES0VH9DbLPWvPEDklrNwOhXtT0381RUTRMBpxPnUmF2+N78w+lYzMYfHle
- wCUW8mU3
- 5NmJIJzJu0VjH8gfdC3BOM7MXZ66V7QKKKWc3La+OamRUkv1e9fs3WFEWcPOGWZ8ylJNBJvC17phjC+ZcX10S9WQrCf68n0UcTMmP3/JC7PrGLxn/ou3zPeF5Ao7KIDATQibwRkU9k/HJRRWfQx7/0fdZ5PXN0b0D8ruJc51Vpk/epecsRHVxiBMCkcN9mGvbLUFjtANavhNxlMp3PQ2Q3xYwgIGLjyB1lxHoZRDRi+5hMtKTnyWeaUhaLOofF46D6QEPz8db63+GBTfi+rQeUbPVbzYhY4lSbCmslhtuThb14onpuK08kNi1cUiqNgaxKO0yqpB7pSFlU84=
+X-Stat-Signature: ufra3m6c8c3y5fdkkm8c3wjkg8qfgkj8
+X-HE-Tag: 1792078419-482977
+X-HE-Meta: U2FsdGVkX1/urDktBlSsUH7MUEYlYM3ltyCfjpJV9e2vjpgXxPG3uQwuXD2GybxPHmsRiZUt61On6r1s1CMwPRkmifUz9DMQV0++ktpmm48Qqn/dCZNTgN6sIkpEelW0eylZzob1CK7o+74oz9Xxqn64NhzUXefF7oSaU+9F3/NEKC4MPHTCH7J+gq4H4FLFkLus3qIK/SYRqsr53QNEJQSDu0gET6lQJsNc1xGfD541rk3TiK/JKWaIVZUtH0Q2cWjYKgeTfgyGtJW5/W7RaGbbfmnyU+GxIGG7l0e+1YUT3TTcChlHlCNzv0/YQ29yPc7yY8Q9x2WynOAospEHrOT2LjhiTIVxjyhqVy198ykVMp/SvQHFs9hmrhDV2NqTsvwRgXyRkBQL+3NePfx1ICEgigF2Nogz16eBYhI08Ld+8B4UA9sO6M3BudBVL4NAEBIVv67gXmIeY6mWp5h7UpxGBiSLM4pZmKioJaCPV754Pg7zDFoddVozNFeYJ2kTutsYk5Qy6OLzRfbYHqsTOybWUfBH433IdR/H6PB73uMuMSIm0eP0ELsy7cPu+sPn6xONH9os0gyCHe6qdsheyo8T3rfzb0RPzOiwkh5SmXL/Q31Jy6IpNa3L4HlEMqGffhY9M64KbIqbFiY9vJutoeDP5EfU849hSwu4i8rgZvsJW+nsPsB1pGVaklxviEBg/2u8aePaIDd0yPnzpJsLKvnOFzCL+z85y4flpFt5Nr3g/4Kdw9y+apQfxQlJgx8jjyNPUwFCPDY0lssCACU6l8pnMY/QUUMgvdPE/bpNtZrekdSnNPsO3Ndc2TjEH8QY2DgbhzZasOEI2E2veRVar6ZBMbbVSxvwb0bmoMh2W/qSYV+kUqhb8cbqx5oMjY3nSH3ao1ym76zmRSJs8aCy0LnX+5wAOJ6xW+BT+shjrWIAO6rq8Eh8OcLShLpIDYoMv5V+LLk0ookTRBnk9GW
+ nQjM0Lak
+ 612jA8AqlPLsqE6OrFJiPNa38zCPdw5vlnEkxR5J2LFtvGn2YMNvrBRxZtUKu/Zkety5pPvMXh2AEZzbuHoQ0IcrtUiQy3q0f0ttZk9+BowIbWohgVw5mEjZN/yxkHQPS5QQYXaD27C3Yt+qz06oycVWMpX0BvjnI6b1Ha5/et1CVTLG7KTdSwqug/diQhMuNaz97xuKGWWcoHMOxW8pmJUXASUKD60ZN2lmrFgr2tkSc5t9ZVoXxElCXn23hlyBvZ11i4QWCNPKoMkVRowsb0Fc/y4Umd5X3SjmrhxQYxpZiIzsiWsbESKoGTaCSVIOO2juGL3+mJnMqvf0TSPYr4GhrVaUFyYRqux8/IhrMBvXcKc/wr9JNaQgGUAC4v5TlHnkwxXHBLXAUbKRw87jVp+JZ9yboDamvqBYG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,64 +164,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-trampoline_start executes WBINVD in 16-bit real mode before switching to
-protected mode. This WBINVD was originally added in the 1990s for
-Sequent NUMA-Q hardware (as noted by the comment in trampoline_32.S:
-"Needed for NUMA-Q should be harmless for others"), whose cross-quad
-caches came up non-coherent prior to OS initialization. Sequent NUMA-Q
-support (CONFIG_X86_NUMAQ) was removed in commit b5660ba76b41
-("x86, platforms: Remove NUMAQ").
+When a logical CPU goes offline via mwait_play_dead(), it executes
+WBINVD before entering the MWAIT loop. On processors with large shared
+last-level caches (such as Intel Xeon 6985P-C with 504 MB L3 per
+socket), each WBINVD takes ~85-115 ms, flushes and invalidates the
+entire socket's shared caches, and stalls the physical core (including
+any online SMT sibling on that core) for the duration of the flush.
 
-Per the Intel SDM (Vol. 3A, Table 10-1, note 2) and AMD APM, the INIT
-IPI used to wake secondary CPUs preserves cache contents and leaves
-CR0.CD and CR0.NW unchanged (0, as already enabled by firmware or the
-kernel). Neither sev_es_trampoline_start nor trampoline_start64
-executes WBINVD.
+mwait_play_dead() places the logical processor into an architectural
+MWAIT C-state—the same hardware C-states entered by intel_idle during
+normal idle without executing WBINVD—where hardware maintains cache
+coherency while the package remains powered and automatically flushes
+core-private L1/L2 caches to the coherent LLC on C-state entry.
 
-On modern multi-core processors with large shared last-level caches
-(such as 504 MB shared L3 per socket on Intel Xeon 6985P-C), WBINVD is
-not harmless: each execution flushes and invalidates the entire
-coherence domain's caches and takes ~85-115 ms per CPU while disturbing
-active workloads on online CPUs.
-
-Remove the obsolete WBINVD from trampoline_start.
+During system sleep (cpuhp_tasks_frozen), however, power may be removed
+from a non-boot package's caches after all of its CPUs are offlined,
+and the sleep-entry cache flush on the boot CPU only covers the boot
+CPU's own package. Skip WBINVD in mwait_play_dead() during runtime CPU
+offline and only execute it when cpuhp_tasks_frozen is set. Note that
+wbinvd_on_all_cpus() callers (such as cpu_cache_invalidate_memregion())
+only reach online CPUs, so a package whose CPUs are all offlined at
+runtime retains its cached lines while powered.
 
 2-socket, 480-CPU Intel Xeon 6985P-C (N=479, mean of 10 runs):
-  Offline:  40.40 s -> 40.46 s
-  Online:   65.83 s -> 11.14 s (-83.1%)
-  Total:   106.23 s -> 51.60 s (-51.4%)
+  Offline:  40.46 s -> 11.42 s (-71.8%)
+  Online:   11.14 s -> 11.08 s (-0.5%)
+  Total:    51.60 s -> 22.50 s (-56.4%)
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- arch/x86/realmode/rm/trampoline_32.S | 2 --
- arch/x86/realmode/rm/trampoline_64.S | 1 -
- 2 files changed, 3 deletions(-)
+ arch/x86/kernel/smpboot.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/realmode/rm/trampoline_32.S b/arch/x86/realmode/rm/trampoline_32.S
-index 3fad907a179f1..14e56ea954160 100644
---- a/arch/x86/realmode/rm/trampoline_32.S
-+++ b/arch/x86/realmode/rm/trampoline_32.S
-@@ -30,8 +30,6 @@
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index ba01a9e919b78..60a781dac9991 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1414,10 +1414,6 @@ void play_dead_common(void)
+ 	local_irq_disable();
+ }
  
- 	.balign	PAGE_SIZE
- SYM_CODE_START(trampoline_start)
--	wbinvd			# Needed for NUMA-Q should be harmless for others
--
- 	LJMPW_RM(1f)
- 1:
- 	mov	%cs, %ax	# Code and data in the same place
-diff --git a/arch/x86/realmode/rm/trampoline_64.S b/arch/x86/realmode/rm/trampoline_64.S
-index 14d9c7daf90f4..e5a3f03d62217 100644
---- a/arch/x86/realmode/rm/trampoline_64.S
-+++ b/arch/x86/realmode/rm/trampoline_64.S
-@@ -60,7 +60,6 @@
- 	.balign	PAGE_SIZE
- SYM_CODE_START(trampoline_start)
- 	cli			# We should be safe anyway
--	wbinvd
+-/*
+- * We need to flush the caches before going to sleep, lest we have
+- * dirty data in our caches when we come back up.
+- */
+ void __noreturn mwait_play_dead(unsigned int eax_hint)
+ {
+ 	struct mwait_cpu_dead *md = this_cpu_ptr(&mwait_cpu_dead);
+@@ -1426,15 +1422,21 @@ void __noreturn mwait_play_dead(unsigned int eax_hint)
+ 	md->status = CPUDEAD_MWAIT_WAIT;
+ 	md->control = CPUDEAD_MWAIT_WAIT;
  
- 	LJMPW_RM(1f)
- 1:
+-	wbinvd();
++	/*
++	 * MWAIT C-states keep the caches coherent, so runtime CPU offline
++	 * does not need to flush them. System sleep, however, may remove
++	 * power from this package's caches while all of its CPUs are
++	 * offline, and the flush done by the boot CPU before entering the
++	 * sleep state only covers the boot CPU's own package.
++	 */
++	if (cpuhp_tasks_frozen)
++		wbinvd();
+ 
+ 	while (1) {
+ 		/*
+ 		 * The CLFLUSH is a workaround for erratum AAI65 for
+ 		 * the Xeon 7400 series.  It's not clear it is actually
+ 		 * needed, but it should be harmless in either case.
+-		 * The WBINVD is insufficient due to the spurious-wakeup
+-		 * case where we return around the loop.
+ 		 */
+ 		mb();
+ 		clflush(md);
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
