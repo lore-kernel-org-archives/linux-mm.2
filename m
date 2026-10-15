@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D213CC6B33
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3C19CCA463
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:08:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20AED6B00A1; Thu, 15 Oct 2026 12:08:24 -0400 (EDT)
+	id C6B226B00A2; Thu, 15 Oct 2026 12:08:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BAF16B00A2; Thu, 15 Oct 2026 12:08:24 -0400 (EDT)
+	id BCD3C6B00A3; Thu, 15 Oct 2026 12:08:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 082B56B00A3; Thu, 15 Oct 2026 12:08:24 -0400 (EDT)
+	id A95456B00A4; Thu, 15 Oct 2026 12:08:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CDCE66B00A1
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:08:23 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3A5D160A1F
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:08:22 +0000 (UTC)
-X-FDA: 85325342844.17.E9E419C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F31B080016
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:08:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IpWmW2p0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8261F6B00A2
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:08:29 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07E22A031B
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:08:29 +0000 (UTC)
+X-FDA: 85325343138.27.5AFE344
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 438B920014
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:08:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S0BiqyM1;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792080501;
-	b=ac/2XWuVVSA7sUqZt3Qi5sUwCECi6bqwfK5swp/4BgjhI7rnaancNHz+4frR5SzqKqppA4
-	4uoV6QLPfmHU/8GVxxGeXjO4+TE28VYFHv8/1IbC+v0IXI2oOtEnLU2ETf4HZVG5Etf1YC
-	WflUHpBQIJeGXj87Y7LlQ4gcyh/YzA0=
+	t=1792080507;
+	b=2KVZNRW22odIS7kdMp/bFCi0yh5rRHI3un5XIFC2ucvaoyfckp/pkHeIm0SRfTDioVWcUS
+	rZk7c1w6kXQedDLXaxMr76iJLquEPznWBtggmHORKgzYcTbLS/Z9BI3tqcwnRXRkx3Z1S1
+	PwdBqgUPGA2dzDoMY58wb55wcSIZZ20=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IpWmW2p0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S0BiqyM1;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792080501;
+	s=arc-20220608; t=1792080507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=luu9zceebiAM3DcgabjNhnEA73HFyTTMwHsaVP8GP7s=;
-	b=qfny1jVmirl/AZp8n6XxLF8w5ndxQmy+zvRv7xivUJzHmV7B9gILfhzw2zVc0Unfj08Q7A
-	dRwFKiY/zFIvLnB4bwqtPbTIv6dNgmJFXgMOqwlptSMaxEuQrGC4QFpJe/k/WNdHKySXst
-	l+vfLldmK2OxoxSlZ070dTSRcMN2590=
+	bh=aNBJ012Mx6kfcvUBOVNjCydGf++Y8d3EAS1qqSl0elI=;
+	b=I9XIB3hWiMnOeZDDwcmEm/Vcc+d1wNY96hTz7NKZID9rf1VDrpnnSAywI0MEiLlzSRHFVL
+	1jvToXUupudPeXtbVRk9l/fXkoNxiOJW/aggj+jD0tEMFMgfQIUT2AERW863pfqT+GT3xT
+	H6iAFLgTZ1AZprpOC+PA7nw9w8PSKgM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8DCF960A64;
+	by sea.source.kernel.org (Postfix) with ESMTP id 89FE74147B;
+	Thu, 15 Oct 2026 16:08:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18C91F000C6;
 	Thu, 15 Oct 2026 16:08:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020211F000C5;
-	Thu, 15 Oct 2026 16:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792080500;
-	bh=luu9zceebiAM3DcgabjNhnEA73HFyTTMwHsaVP8GP7s=;
+	s=k20260515; t=1792080506;
+	bh=aNBJ012Mx6kfcvUBOVNjCydGf++Y8d3EAS1qqSl0elI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=IpWmW2p0cOKas78pJQq1fPzYf4OjZG1D5/E4uGVb/sSKqnGO8zzcFpOAMCj8r8Y/j
-	 0fwISAtT3NHdyUMidHHvUFlN1Ohz3zEfITaeqcVWXSZ9700SpEyGIoPz4xLl9I0pHu
-	 VZBaNezmk6pDEjLmgMsWOoTiGpsG8WEdR5ClhfEbOexU1Ev8s3wlE3q9Tkl81ZXpoG
-	 0YtuMfNIq2fs5QkozUjwOKDOzPEL6e/QBoeaBm+P4umBvL3e//p62h/ezUx6VvuyNp
-	 8LnNu/FcW0+Joug79ZWYKFiCnW7+t/ZW068LrHoTdTP/sWaR//pp2AGA7dByV03Atv
-	 4GfSjSlq9VMRg==
+	b=S0BiqyM1EikbU5FSP5gpgmgVDBpDGZBYWODwAV1Ic3pNA1VmXdIOuQKrAshlqR3Qh
+	 wVP9C6RR2rBriogLU/+ZEYh5q71OPq3xSELDt/+3lXBBdtWTc62aIKPCFWPSZq0FTf
+	 y6+9+NgDq6+rinyM3/++iSFdepuLfZS1iXvRjqoHz/LLqcH2SBHFMQrbsWVD9qMVGX
+	 Npc6IX+bOez0lyR1YTFpqRQ4DunIPt8k24kjrcvhVpo20A5FzpUgPqMMA4R9ttx4ME
+	 T2oHNK+l1Aj19WPcDh0pts0jgnqhIXtUncc3/s8gfI4+GuDEuAybw/NORTIoyH32aV
+	 s37ewwY6xA1WQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 15 Oct 2026 18:07:15 +0200
-Subject: [PATCH 09/10] mm/hugetlb: don't leave a uffd-wp marker when
- zapping an RWP entry
+Date: Thu, 15 Oct 2026 18:07:16 +0200
+Subject: [PATCH 10/10] mm/mremap: fix calling fixup_hugetlb_reservations()
+ on the wrong VMA
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261015-urgent_fixes-v1-9-42796911043b@kernel.org>
+Message-Id: <20261015-urgent_fixes-v1-10-42796911043b@kernel.org>
 References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
 In-Reply-To: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -85,25 +85,24 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Josef Bacik <josef@toxicpanda.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
- Chris Mason <mason@kernel.org>
+ "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2705; i=david@kernel.org;
- h=from:subject:message-id; bh=jDtJa/vbrcghzS+kebnll5J1z6JL9nvmr5+IgGhx8P8=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIu/DI5dFov+la3mt9qM5ODbX/Yn6erNG2ukU4xN+8vP
- uv78NunjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACZycwkjw6O/8w7p9l0VffTL
- brFP0ttta0IMbO++/Gm6LHSF1dSsoisM/93Ut/a3rmRmX2n/dGrndpWZgcG1Tx9VnVFPu6yx3Ke
- ekx8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1190; i=david@kernel.org;
+ h=from:subject:message-id; bh=xzUoLGsOY/4424/eZSx1vu8LhLt89f41pteXNyOKue8=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIu/DIpVItrO/T+XsDxVxsfyqpM+Td5ovDErdGyr3ZqT
+ jh2/utCvo5SFgYxDgZZMUWWoOD7Bi9frqutduNjhpnDygQyhIGLUwAmsuEDI8OUOOH5+WJBQm+u
+ xXNcnr3e6QdPid4Hqb8/ltfaOHxx2GfP8D+9qqk/RG3zpy9q+ZLHG72S6nZxFrUa31m/csHRGGu
+ dbewA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: qrssqotcdnaxzx3x4s3eg8dkmzz6qm5g
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F31B080016
-X-HE-Tag: 1792080500-565607
-X-HE-Meta: U2FsdGVkX181m8WFjiEjfQ3FYut4UMJneR2e2Izki4hnpUsL30cxfEMxTcpMM4N4JR3SlqnqBzASufDzU0cGqG1rZJ34XBeUMjFa1VRuAE6CNEqd465cVVqWefLJC1ycVzOw70iNutPDRhcnf+zA/M08Y3V9UAGesTg5h9jhxpDTFWxLARbdbiFNA5nh6/LX0M7Rryj55qvuDm/byOdaInuEtw/oOU6eB5HaG21e43F5xPyk0kcjqeqwttrX7FjpbmaOr7USKbZ+gVv86TSUvTS8HTo3ZbkJnDw1PaA6NUtrAkK1xQNQmfBIUjBLYHEPZIEnMpOpR2WdzbZZJRllVyjIDUJ+bCL25ZX/L4nNC/6O3tR3z7xdNjFNkmpqXmiqHAgARdGDluMdg4o/7uoqaDE98IjGy+4Z2oeYWrs1bkbqYk4kxdOQw/mUH2gWy+OrsePUPJHOWeESEGOGv8A/KmtUT2ijSYbHOeIBst2h56bxrR4RUn9ZDsjv+/GC9/REO6iKhsS9TslzzmL9NWdkAcMEBp/tCrJHPoayWCTWO3RfTP+kMAsKYSuc3Xw9sRjvTKnc+7kclwxE9SdpC4mwm/zH4MEIzUOaU3xHfUUKRLOgY/cxG9Pq1zLwPEukz8UMTiGgvo0BvOGdd3JFElVizN29P8iru+z7OjUIe3IqP429OMUMEkYu+QiIzcVZhZNE1dHM8B0kYZ6p+GAZ8kdti2g0AW/gfI4tDpyPL7Sf5cc6xQkMiP1HyPh590k8QLVA5iEGukFADmGzUfUFH0qbIGI0hvm0YtkPd5bacE6ERGroA75yX8pm0/73b/wRU1enO7Xlql3lJsCG5dBNKq44SO8x1NllFTZukWhxNKw2/BkZtC27l2sdioGyzsbW9eVFZ1lsa1zTzHmRSua51JBTb5bw1iCLU2GK0vl1HxZDVgCyTGeFX1/xzMcNSSqSUTmAMQKqnfnGZoVJOsdLuR9
- 8dfxyxy3
- Zy3qOgvUnzTLqKwHW/fpQW8g88smhAhXLcfeMOUBwv5M7QVGCa/1PPiWpTFJKBMZd/5BFmBXX31V+yOF6qTQ1EHKqY846Eo1O1sAgud7fkXanF/WFGD+gYPRgvf/w7Vr7wURDQ1jhzBMx13zU8KUze4v7N4FCEidmHGyfqJ9gV2ylmG7JYbvmIhOYK2k6Tc3dMdTgvbdFD/fBdOwhL16/JylHhodDyIW1MNdyaFSm4HSfHQqvlL/dT+a+HWj+4vEzdNdn4bpqGvjm6ZrMLc+WzYKP0OajtBILAyMBY4BWvR/8SsI1+izB6zkIDdkYC3Qq7HKCeXjJ1XFtx7zeIwx2V0IWRrjbBGf+HB1ntAEny+p9T6qTxDFONXBppiDkvvLIEHv9
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 438B920014
+X-Stat-Signature: bgd3cn9oue6rqeza9cm1c39nfzq8whm1
+X-HE-Tag: 1792080507-749693
+X-HE-Meta: U2FsdGVkX19aiTJJrb9NgZh4itVGER59Srm8cd6vt1vGBQPzgtQokp2NSLUOae/AEkdISs/SLd5BMLGl+iPGpfp9jjJ8VVHv+1h9XORlNIPNMx9LqRkiXTsfOe+qdEvO5CkckTdezmtRUiZLpDkArCXiIuk3TfzL/bKD3T3h1h3qEPoBxRheh8ZbT4s+GpbhzGJJZN+ZBNA0HUHfDoGI53w1FFRxIFGvRu+RcwSEeijqBJ8/YJmQtd6WB4MXlj941xXrAEhOcvEV70Njf2DhMm4PJdr/HlmqbJVCYN1s2/tEaI3UOC4SkcAdisSq7w2cfRSCeBaC39JT5+cclpfzPuhsQBX4C53f3cD9bjZcGHHTVS8WAqAXucuYkM/mOmL6HFz9/JW1wVie5D/+fiM0cT+ilzC+edOnWPMHR3jLkZJ91E6KUUUamMqJIArRvdF9yrZKCdvQHebhKrlyGYDb2hjzQBhr92iK/GoSHvlI+uyXOBKhDy4WfcuqHzmVzQjuHx2kgsaE1YN9NNm5y0V89Jh38H04Yl9OmlPKnwK96fAC3R/ro+xPHhnVFgu5X/CoGFS3bBAIpSYbb+rtkyDUT5n7nYY5wQs316u1EVUddMxps15C9ZfIWdUZLDvocwBmXwn2aax5oZmFU/C4stOuT4scKu533ojT1zu9BfV/QlbycAGYmGA2mY0yaTj3TFh4+99ufN6S04VnrrQIp66ADxr1UL/uz7fOQ6jENqvojkd+bL9X3a1aU/Ldeq1UThxl0KsLUXArfTtcLRGar2ySkbsJUyNA+tt/niHIZ0az0hwO7eir+tHUIw3+rUACI4zlJzqP3MbwfnAwlJQg+4VDx1YwjHED7IfiSRSIDHo5bn9pUgIU+Gy854RC8MJck5kFd2X62KCAO/pI0/D2cVZH8bX65bM/7quX9empUdLtYrX9SaxJKfXBV+O72AUL2YYGLu4s/maDjUv5F75wuOV
+ lmgUcwfm
+ EqV+5zNnXYX1oyOmCihcAMQq6utAxoVydBJenWzftYKGGYOsgrmWh/k/0WRtawTUrYZAIPYJq+tChYAeeAS7YsFFW0giFjz9rr082nIM8jB5gC89h91GH/TRdJH8dxJCvHAnSv7DuLhEfyB0yB9TeQZ8owdQB4PJBk+T6JNgpAJGNY4XfyGGX6gwyDAhZlydMJ4GHNpHx1yq1s6huOv3HDQg767HccAYC95oUT7sXJWdd+fpTN5DTBWGPUMFpjp7kMxsGDRMKVUv5iBg0/K162srUy0PNun4A6IuiiMRt0agjdIcX/9bsuopgLt9cEXTO/Ny0EecD7xy46n0ThTwEjtHujg7RK3cuVionuclGF/3+hSa+vk4MWneCfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,64 +110,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Josef Bacik <josef@toxicpanda.com>
+In case we fail to move the page tables, for example, because we fail
+to allocate a page table, we actually keep the old VMA.
 
-An entry that is protected with UFFDIO_RWPROTECT is PAGE_NONE with the
-uffd bit set, the bit that userfaultfd write protection uses too.  When
-__unmap_hugepage_range() zaps an entry with that bit it leaves a
-PTE_MARKER_UFFD_WP behind, whatever the VMA is registered for.
+Calling fixup_hugetlb_reservations() on the old VMA is wrong. Fix it
+by just calling it on the VMA that will be removed.
 
-In a VMA registered with UFFDIO_REGISTER_MODE_RWP that marker means
-nothing.  The next fault has hugetlb_no_page() turn it into a present,
-read-only entry with the uffd bit.  That is not an RWP entry, since it is
-not PAGE_NONE, and the VMA has no VM_UFFD_WP (the two modes can not be
-registered together).  An earlier fix solved some side effects, now just
-stop the zap from wrongly installing a marker.
+The user-visible impact is that the VMA loses its reservations, meaning
+that the existing reservations get stranded (leaked) and new hugetlb folios
+that are getting allocated in the VMA cannot make use of the
+reservations, failing these allocations.
 
-Leave a marker only if the VMA is registered for write protection, both
-for present and for non-present entries.  The zap of ordinary page
-tables has the same test, in cond_install_uffd_wp_ptes(), and
-hugetlb_change_protection() says that "uffd_rwp does not install markers".
-
-After a zap the range of an RWP VMA is simply empty, as it is for
-anonymous memory and shmem.  Nothing changes for VMAs with VM_UFFD_WP.  In
-a VMA that is not registered at all a leftover uffd bit or marker is now
-dropped by the zap and no longer kept alive.
-
-Original fix generated by an LLM and sent in private by Josef.
-
-Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
+Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
 Cc: stable@vger.kernel.org
-Reported-by: Chris Mason <mason@kernel.org>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ david: a bit of description overhaul+simplification ]
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/mremap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 1548a6156206b..fb51f7d02cebf 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5267,7 +5267,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 			 * drop the uffd-wp bit in this zap, then replace the
- 			 * pte with a marker.
- 			 */
--			if (pte_swp_uffd_any(pte) &&
-+			if (userfaultfd_wp(vma) && pte_swp_uffd_any(pte) &&
- 			    !(zap_flags & ZAP_FLAG_DROP_MARKER))
- 				set_huge_pte_at(mm, address, ptep,
- 						make_pte_marker(PTE_MARKER_UFFD_WP),
-@@ -5303,7 +5303,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		if (huge_pte_dirty(pte))
- 			folio_mark_dirty(folio);
- 		/* Leave a uffd-wp pte marker if needed */
--		if (huge_pte_uffd(pte) &&
-+		if (userfaultfd_wp(vma) && huge_pte_uffd(pte) &&
- 		    !(zap_flags & ZAP_FLAG_DROP_MARKER))
- 			set_huge_pte_at(mm, address, ptep,
- 					make_pte_marker(PTE_MARKER_UFFD_WP),
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 444f37d7cd28e..ace0c6a343b1b 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1345,7 +1345,7 @@ static int copy_vma_and_data(struct vma_remap_struct *vrm,
+ 		mremap_userfaultfd_prep(new_vma, vrm->uf);
+ 	}
+ 
+-	fixup_hugetlb_reservations(vma);
++	fixup_hugetlb_reservations(vrm->vma);
+ 
+ 	*new_vma_ptr = new_vma;
+ 	return err;
 
 -- 
 2.43.0
