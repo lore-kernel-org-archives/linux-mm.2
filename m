@@ -4,101 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF11CC6B2F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 08:10:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B863ECC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 08:16:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 521316B0092; Thu, 15 Oct 2026 04:10:25 -0400 (EDT)
+	id 665D16B0088; Thu, 15 Oct 2026 04:16:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F8236B0095; Thu, 15 Oct 2026 04:10:25 -0400 (EDT)
+	id 6168C6B008A; Thu, 15 Oct 2026 04:16:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4350D6B0096; Thu, 15 Oct 2026 04:10:25 -0400 (EDT)
+	id 52E276B008C; Thu, 15 Oct 2026 04:16:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D3AA6B0092
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:10:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F5C7408FB
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:10:23 +0000 (UTC)
-X-FDA: 85324138326.14.0E056BD
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9F22240003
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:10:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=OIib8AXI;
-	spf=pass (imf01.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 31A9E6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:16:39 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA5B714091D
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:16:38 +0000 (UTC)
+X-FDA: 85324154076.10.DA87EB7
+Received: from mta1.migadu.com (out-194.mta1.migadu.com [95.215.58.194])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0FB9720006
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:16:34 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WRZgdt90;
+	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.194 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792051822;
-	b=Am1QmNKRSQKAJPPm77Xb3aEk2Q6vy9sXfF3zkXGT4mV61AgmVpyXnWfbss53yXbgF3lVPe
-	rovz15HNBjbBhTOXbBBrIC6i2x1rt7JMl9oqQzCOj/V2MYAeISRLYnQH/eDYsDTedIaj4t
-	9zMUX3YptcOvTUfOpvj501Tb72Z50nU=
+	t=1792052196;
+	b=qRIj6Mj/moXvS9MFracsw/IrSjk8WN2OHsmENp5kufSVuL0IL902Fyds8ariKGxC204GrD
+	O/X87xrwbMMB0Q2TkwI3vjMY2h1yZ1pmStwI4milIzqnW/dVXBugmCb8gDjjqna72dPj9b
+	XCdWxPWIJt26/i7ez2OgWYkuG388Uos=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=OIib8AXI;
-	spf=pass (imf01.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WRZgdt90;
+	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.194 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792051821;
+	s=arc-20220608; t=1792052196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=rGIxBYcjL8R8PIe1O4VWCK/MKqmva9CjteD/loE46rs=;
-	b=KKazV4iHL6Dm2YmVQC8bScDSI9ANmP/UbeAkkEojBouM1j4tmRnsCRPBUlzqi5kijXIX8K
-	wIy8StY8lm6LStv6sbsIkmdNg1eiJ2K3FlAxTf6R5pLr7APXXmr6ZhFL71T3iCUeV4VSm+
-	HzGXlyRn6Q9eBBonKzeRZkh6WAJhU6k=
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4j512y0XQszMldw;
-	Thu, 15 Oct 2026 10:10:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1792051818;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rGIxBYcjL8R8PIe1O4VWCK/MKqmva9CjteD/loE46rs=;
-	b=OIib8AXI33k88tPlZC4f3msQCy8sLnN/bj07SVtZH5FsvqcXvE+GFqzEXdYIwCsxivsOsn
-	19fAdPF4EsOm9iriFR79E/VUpFeWYF1xA7MqALjHfhz60bpGVELBxItb89JRda1lFJ/h0I
-	UngNBU75vd5iFgNMaXykL1sAKfi1PgLFdJ0K+VevQifMZc99Ge3B74t/dnHcNAbLCvE2OY
-	x+SY0rLyDKI3U0isJC4wB9Ouj73exn7d/yuT5TLth9RVWZWvve0/LxIrduEpOgM8YX2SXp
-	n3azhQxbXEmniiRaE7ElUwSkCiseXubvbWriTi2GxI5EAD4gUw3xwUc224VWhA==
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	damon@lists.linux.dev,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tAn6DVgRdW5208osiJaq+1CZYYHO1h7smP5XUSMjjwI=;
+	b=kOxUtMBuVuwfESyPL9sKrAiAY5kI+NGBXdhr8WwP2y/52WZyK32JMpHDSJHwN5Y6jrc91e
+	e8ZGYLMgY/cKsKdy8T5FN3LYHNxeoPU3Si+n0Bqqfi4iLuCJIdpR8NrVcP9Mlhvz5aUhhI
+	hoKloo0qiAOKjQYbx5R1kqGYIL8H9c4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5OCQHy6Vii8nQbNIXcF5hqJKTP56Pm4uayTxNm1ZzNo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792052192; v=1; x=1792656992;
+ b=WRZgdt90fDwpWyl7tmiVZ7rq5QxJxsurRK5MRaEXlJV4Mx9UXMnBHRDGtsA2Ncos5itOtc6y
+ p1Dv7yOi7rEGEME67/T22v66GstJTQ77DAwJOx+sGFq7Na2JPlvsKDg0nxEQHAIEnZ+OlwfS+FM
+ qheEXSHhVBPxveBH2gtBpb4I=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7213910b432bc55e;
+	Thu, 15 Oct 2026 08:16:31 +0000
+X-Mizu-Trace-ID: 7213910b432bc55e
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	linmiaohe@huawei.com,
+	lokeshgidra@google.com,
+	liam@infradead.org,
+	kylebot@openai.com,
+	ljs@kernel.org,
 	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/damon/reclaim: improve grammar and style
-Date: Thu, 15 Oct 2026 10:06:23 +0200
-Message-ID: <20261015080623.808458-2-manuelebnerli@mailbox.org>
-X-Mailer: git-send-email 2.55.0
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/userfaultfd: only allocate anon_vma in CoW mappings
+Date: Thu, 15 Oct 2026 16:16:25 +0800
+Message-ID: <20261015081625.4974-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
+References: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: c6aoxm8ipxdy74wo7dcayh8ap6qwsbmx
-X-MBO-RS-ID: 19c5c96c5337cf8f5bf
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9F22240003
 X-Rspam-User: 
-X-Stat-Signature: s6qpk4nhan7gobk6qfnuah1t6xtajpas
-X-HE-Tag: 1792051821-494045
-X-HE-Meta: U2FsdGVkX19qifUxc1PnYMgmEc4KRRF6FxW174maYqkekFpLJyaum/Zfcp/I2Wt/I5nG8E6d9Xa1aLpNRMqvOyM9Xt8q96HFw4qfFQFUEPfbqcG18AyBZCk/nCG4XROqfvmK9rl/Sa+AsahCFme0EZJDuv8Rd7ON68zcR9CYr7/gN2638KYqjo2gdwZqTVliDkRrlaB+4d6dLhdUzvKSW7MF6Y/gr2m0SwrkfPPrhhSGlw9YR5NuzJmjIOGFTOlvZLUDY2yAkOIFLQb9Acj0RtYIGNefhlB6vhz7Oyp8OCcv2flOfj0O2vEQtgSVI3sIIXGM3RwW7ZvSPeHASrc7WB2hIrcR8GLBuHWHXxQf/w50XxhvKnt+LYU3okfrARYO+LOz2OXNp+T9lRVp6NbeHc/VCn/xcyHtYpFUE1LFbmCU/972i3hWqolvEg7YBA2ZublIDpiVatAo+RSlhmYortU9U+VfSy57KM8g933T1EzADTniU0mW2HNl9gu/gdNnAR92Y87wWWM6KTwN7kJ2/MRn67qTVallUUWgGtNgIYYzS13Yf4gmCsSH+y7wpGvuTFeH2tfAZ9eCW5d7QCRySOi1hqEm412x6iPJnv28FEUa5vozpx4+52dmy4L9/T7lfpuQIAAP3vIXoRCKTpfwUbAQcOCRn+w1cziGsrxCMS0/n0/J/dTewDA+ShAsN+BnbSlSYQ4y6ZGsW+yLRSrNXDsgGrMxSOitH48tUTqK4ytpsOoduuftmd0RMIqrT+YJXbGjoJ2GerFSYHi+/YbxPhTZQn+s8XhTF1DQgTARGg0cjJC942j1UvZXCZkJ/1aDgry79txYHi7aoN4JxZOQf5wLK0f3UnwCmELWJYhYTS4BqMhQSMY+4ohNcbMlOZYaxEx8O+FjAqaI5R9jOr5nYniMW1n5t6r4LO/EkSdAQPHC8q/UyJWvlquoEY4XuJq+HkesfZEMupvuXYXs+98
- 57BeE6ae
- FyE6u+UMfZwbwTzplNu2fmCFpgl+MNkZjrNbHd4kN0gCTfEMIg3uL9dsdyEBD9pbZ/r39VN0oc9NWQ3u8bIbS09t+tEbeUaAI9+fFl4EENGXy55Z5NTADYVm+3W978vTJ021bl9TfyK/4la1IRPsYbgbMZfqCk9J+kVDj7OqCnK48uCfJ1fXaMMsElAXin5kXUEGdws1bT0YSEGliJaGbi8gyBjERUilMU94/S/67ZwroXVfyY6QBdDZ2fDHULOkF9Yyl2i/DVhn4p/Wz3aeqL7n0771ejP61e1HAWTbaa/lBayEdkVYlNVzX+lIIQjgj1FnB
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0FB9720006
+X-Stat-Signature: tnwh5m4kyxoupyozswmub8bxyu5kzky7
+X-HE-Tag: 1792052194-107680
+X-HE-Meta: U2FsdGVkX19GjqjP+1yJTLJe1WL2Sc5GXOsrmBj9C0jP2s2wg52fvLLBcupH8Jz9DJKH/Z9K2WfCbPdjQvFEOCCTAA022lzi7+U+edn5ivAiQ1x/8M/UhwIeuKljzzHXxF07jXzPoVb37pqApwTEFDROwpE6WmEnTqBa7H1zMx+IOBjQSbHY/Io0Kkh4JSqrKLpB209cadNyHiHKgrsSLDPSck61cI6tCKFegXe7LIzeqcT7m9H5vTJJwpsTDNbcx3KbebnTxWfdLNVANAqV3pVKxe1Km5Y0L4lel1L218ZyTNN2mBxOlep/+bbi4NDZo1NhJmhK8nSfYYyl+zd1i+WJ/ubSr0oyo8b0dIBXQFNwU3oig5PNJJC8oRu/OrPgR/xjmG8PYO/HT0mr3m/BTzc/jIvM/pH75ilBi4dPH8ntbyGD9glfpkRTu0nURsZgjHNVb9uPS2Y8R/0tezf5S7LBo7ht0DL6yUkdNxOCbobAEioBKcwWAZ4hmPrwoRiuIN1z2byv4/6aEbYzZtvJUVHuEzfz5tzdo8X3amcBpttDPDj7exJSv1+LKgtJsXO2CiHWSzdX8ap0uSslg7UX0cF5eiQuec7H0SU2/05vjXsYn3Dsu23qcucgMI7qd793a2ld9mvU6Z4zCct8xxJIo25UaM2dL1Xwzndzv/BqwkefHl18pYU81Ns8ITp7jXJbjnKgRG52LXrHVy8Uu3gLOzFQbOisVhTOUkd4PEkLOd2AyrN49I4i9tZ/GPHplKtyMR2D1kHUqnmJO6hBUwU2ljffhmThwGuVQtEaiPUsTCGzWt6Nq82j8gtAwPhNsCbaPtETRdXoBISWg2K8EEymr7shkt83budU3CoUUzr4DYqwEporiegsYmLxybaSMQqCrtlXdybwRb/KbnKTtHWGht+HBtIfQRFJbN7leotnHTJoQWq5I6KIM52cD4pZmL3OHohwIK4gm/9giEjmfWD
+ 8Hqq0w3j
+ ft0b78yVbTo392pSjFrzbfn9GaT/sAQAoytpp9CGE3y6qzviVl64j+DWc+Hu8IkEAAk4V2rfsT8LJ9jB/M8PfYsMJQaTMWBZXxI2vJG8Mu8FTLpZ2UP0tZzEENKd8w+/uVBMSK5FQYxZC7/RfwMlUkwLKd4T6XW79VnMbh0khCG7wZY++11hFirHr/Uj/Ek25KN4eyJELIGd+m+AUt+XbAJDMMgRaGGgwiJXTz6LRdWYDhBA68HJrR32HmXbltRCWTSxJQs3l9R26rl4TypiqPENYUQ5IBXpF8o2mv+p+JJCFMaiQSDuRciv4UXVwlxQ8GVu6cKEDiZ9SIy4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,143 +101,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix tenses. Replace 'set as' with 'set to'.
-Rewrite complex sentences.
 
-Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
----
-@@ -113,8 +113,8 and
-@@ -125,19 +125,19
-This sentence was difficult to read for me. I don't know if I
-improved it. Please advice.
----
- .../admin-guide/mm/damon/reclaim.rst          | 40 +++++++++----------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
+>find_vma_and_prepare_anon() can end up allocating an anon_vma in VMAs that
+>are not CoW mappings, which is wrong.
+>
+>If we have a MAP_SHARED R/O file mapped, we lack VM_SHARED (but do have
+>VM_MAYSHARE) and lack VM_MAYWRITE.
+>
+>While uffd later rejects such mappings (uffd registration requires
+>VM_MAYWRITE, see comment in validate_dst_vma) find_vma_and_prepare_anon()
+>still wrongly allocates an anon vma before it validates the vma.
+>
+>This in turn later confuses copy_page_range()->vma_needs_copy() such
+>that we end up calling copy_hugetlb_page_range() with ranges that
+>actually do not contain *any* per-pagetable information that would
+>require copying, which is the basis for PMD-table sharing in the first
+>place.
+>
+>copy_hugetlb_page_range() should not have to worry about shared
+>PMD tables at all: it doesn't make any sense to copy page tables that are
+>shared, as they can be fully recreated later. Ending up in the function
+>with shareable page tables is the real issue.
+>
+>If a destination PMD table is shared in copy_hugetlb_page_range(), it
+>might get concurrently unshared as we are not holding relevant
+>locks, resulting in us using a page table that is no longer mapped and
+>possibly freed after calling:
+>
+>	dst_pte = huge_pte_alloc(dst, dst_vma, addr, sz);
+>
+>To fix it, do not allocate an anon_vma in non-CoW mappings and add a
+>safety guard to copy_hugetlb_page_range(), making sure that we never
+>end up messing with shared PMD tables in there.
+>
+>Before commit 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd
+>operations") we would always validate the VMA before allocating an
+>anon_vma, and consequently never wrongly allocate an anon_vma.
+>
+>As uffd_lock_vma() is part of the same lookup machinery and
+>also contains a misleading VM_SHARED check, change that one as well
+>directly for consistency.
+>
+>A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
+>lock in copy_hugetlb_page_range() entirely. Further, the usage of
+>VM_SHARED in userfaultfd code should be cleaned up later to focus on
+>CoW vs. non-CoW mappings.
+>
+>Reported-by: Kyle Zeng <kylebot@openai.com>
+>Fixes: 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd operations")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index e4e2ffa52e..d521563633 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -4,7 +4,7 @@
- DAMON-based Reclamation
- =======================
- 
--DAMON-based Reclamation (DAMON_RECLAIM) is a static kernel module that aimed to
-+DAMON-based Reclamation (DAMON_RECLAIM) is a static kernel module that aims to
- be used for proactive and lightweight reclamation under light memory pressure.
- It doesn't aim to replace the LRU-list based page_granularity reclamation, but
- to be selectively used for different level of memory pressure and requirements.
-@@ -30,12 +30,12 @@ guests could mitigate this problem.
- How It Works?
- =============
- 
--DAMON_RECLAIM finds memory regions that didn't accessed for specific time
-+DAMON_RECLAIM finds memory regions that weren't accessed for specific time
- duration and page out.  To avoid it consuming too much CPU for the paging out
- operation, a speed limit can be configured.  Under the speed limit, it pages
--out memory regions that didn't accessed longer time first.  System
-+out memory regions that weren't accessed longer time first.  System
- administrators can also configure under what situation this scheme should
--automatically activated and deactivated with three memory pressure watermarks.
-+automatically be activated and deactivated with three memory pressure watermarks.
- 
- Interface: Module Parameters
- ============================
-@@ -55,10 +55,10 @@ enabled
- 
- Enable or disable DAMON_RECLAIM.
- 
--You can enable DAMON_RECLAIM by setting the value of this parameter as ``Y``.
--Setting it as ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could do
-+You can enable DAMON_RECLAIM by setting the value of this parameter to ``Y``.
-+Setting it to ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could do
- no real monitoring and reclamation due to the watermarks-based activation
--condition.  Refer to below descriptions for the watermarks parameter for this.
-+condition.  Refer to below descriptions of the watermarks parameter for this.
- 
- commit_inputs
- -------------
-@@ -66,9 +66,9 @@ commit_inputs
- Make DAMON_RECLAIM reads the input parameters again, except ``enabled``.
- 
- Input parameters that updated while DAMON_RECLAIM is running are not applied
--by default.  Once this parameter is set as ``Y``, DAMON_RECLAIM reads values
-+by default.  Once this parameter is set to ``Y``, DAMON_RECLAIM reads values
- of parameters except ``enabled`` again.  Once the re-reading is done, this
--parameter is set as ``N``.  If invalid parameters are found while the
-+parameter is set to ``N``.  If invalid parameters are found while the
- re-reading, DAMON_RECLAIM will be disabled.
- 
- Once ``Y`` is written to this parameter, the user must not write to any
-@@ -88,11 +88,11 @@ identifies the region as cold, and reclaims it.
- autotune_monitoring_intervals
- -----------------------------
- 
--If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAMON's
-+If this parameter is set to ``Y``, DAMON_RECLAIM automatically tunes DAMON's
- sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
- amount of access events in each DAMON-snapshot, while keeping the sampling
--interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
--``N`` disables the auto-tuning.
-+interval to 5 milliseconds in minimum, and to 10 seconds in maximum.  Setting this
-+to ``N`` disables the auto-tuning.
- 
- Disabled by default.
- 
-@@ -113,8 +113,8 @@ quota_sz
- 
- Limit of size of memory for the reclamation in bytes.
- 
--DAMON_RECLAIM charges amount of memory which it tried to reclaim within a time
--window (quota_reset_interval_ms) and makes no more than this limit is tried.
-+DAMON_RECLAIM recordes the amount of memory which it tried to reclaim within a time
-+window (quota_reset_interval_ms) and stops when this memory limit is reached.
- This can be used for limiting consumption of CPU and IO.  If this value is
- zero, the limit is disabled.
- 
-@@ -125,19 +125,19 @@ quota_reset_interval_ms
- 
- The time/size quota charge reset interval in milliseconds.
- 
--The charge reset interval for the quota of time (quota_ms) and size
--(quota_sz).  That is, DAMON_RECLAIM does not try reclamation for more than
-+The quota reset interval of time is quota_ms and of size is
-+quota_sz.  That is, DAMON_RECLAIM does not try reclamation for more than
- quota_ms milliseconds or quota_sz bytes within quota_reset_interval_ms
- milliseconds.
- 
--1 second by default.
-+1000 (1 second) by default.
- 
- quota_mem_pressure_us
- ---------------------
- 
- Desired level of memory pressure-stall time in microseconds.
- 
--While keeping the caps that set by other quotas, DAMON_RECLAIM automatically
-+While keeping the caps set by other quotas, DAMON_RECLAIM automatically
- increases and decreases the effective level of the quota aiming this level of
- memory pressure is incurred.  System-wide ``some`` memory PSI in microseconds
- per quota reset interval (``quota_reset_interval_ms``) is collected and
-@@ -263,7 +263,7 @@ This parameter is for setting and getting the :ref:`address unit
- 
- ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
- unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
--``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
-+``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
- Then DAMON_RECLAIM will work for 10 KiB length of physical address range that
- starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
- 
-@@ -280,7 +280,7 @@ skip_anon
- 
- Skip anonymous pages reclamation.
- 
--If this parameter is set as ``Y``, DAMON_RECLAIM does not reclaim anonymous
-+If this parameter is set to ``Y``, DAMON_RECLAIM does not reclaim anonymous
- pages.  By default, ``N``.
- 
- 
--- 
-2.55.0
-
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
