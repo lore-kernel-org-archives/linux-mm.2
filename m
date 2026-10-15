@@ -4,100 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E030DCC6B2F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 04:34:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6BE0CC6B2F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 04:34:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 821696B0088; Thu, 15 Oct 2026 00:34:15 -0400 (EDT)
+	id 8BF466B008C; Thu, 15 Oct 2026 00:34:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D1586B008A; Thu, 15 Oct 2026 00:34:15 -0400 (EDT)
+	id 896966B0092; Thu, 15 Oct 2026 00:34:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C3AB6B008C; Thu, 15 Oct 2026 00:34:15 -0400 (EDT)
+	id 7ABF76B0095; Thu, 15 Oct 2026 00:34:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FF856B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 00:34:15 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AAC2A1C42B7
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:34:14 +0000 (UTC)
-X-FDA: 85323593628.04.52F415B
-Received: from mta0.migadu.com (out-39.mta0.migadu.com [91.218.175.39])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 88E1020008
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:34:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dhsEw5MK;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.39 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 58F786B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 00:34:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2E55A81BE
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:34:45 +0000 (UTC)
+X-FDA: 85323594930.03.9924FD5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3575D20008
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:34:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ly+xXjT3;
+	spf=pass (imf31.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792038852;
-	b=mEBsDld/gTHUXPd8EC4+9MExribL1SMR8kMxPuePOecDD+C+HDxn/SttQfv/EhfbixMsmm
-	uhdaXTwjSI+yT64fFAx6Mxij77LjN7jCMFrTIJdFn57MMS8RmLhBVBVPUODpFxWLcggAFm
-	/QnKE21wE9kvt/nkftwtWQK0HQSkTCg=
+	t=1792038884;
+	b=Mn3DiOl6QCI8tHTgcKgDsq6bWZlpSgFlGyE4GSHK9xv14BGABEtZOgkSc7HRBdptbVJOpw
+	3AHHd6uwYfGRIV/y7V8WTO6+tIyTyxoxRvLjNGN0VP0SmCUKdWT5CR3JXe80Rw2PDvesL4
+	Jm6VaEcudqsjoS5ipv5Z4GRN+ze1JXU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dhsEw5MK;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.39 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ly+xXjT3;
+	spf=pass (imf31.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792038852;
+	s=arc-20220608; t=1792038884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AuHIO3qVjKGH7gFz7JPZCc6o6MO4igxmSHN59B2FBnk=;
-	b=Qr7GcOG9EBfM/aT5CoZMtIlMFrFqjd2T+ZMsurm4YCnfrTO/l4yc2yxSJWM+nIX/HIRLyE
-	a81k9IBoL+EzjqR3LUVVyX0ORcShe6vESVbcO73yzS+62B7ekflufiioLxnlO3M+MFzdZr
-	PEtbj+TKhQtwa0MaPRMhxxXgwztM5Aw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=tyD77QsF1TpQDhIMjdBhY/MqpYw4DT/Qu2z80DaAtcI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792038850; v=1; x=1792643650;
- b=dhsEw5MKBBoGzTz2w+QQH1VHDCAyl4zXmQkATTHI09MQO24gtw3YEC2O5JR/3Z85P5ul1FUU
- H/KNCWTprdhB/RgHdWFZ1ul/Da31iu5WJNnNlh9NOxBkrjErN4CuSZB3UP/iU5tQqS1U+L7G8v1
- 9IBheFIT97GPLhkjcIVWP8lg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b288e4c6ce06f05c;
-	Thu, 15 Oct 2026 04:34:10 +0000
-X-Mizu-Trace-ID: b288e4c6ce06f05c
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: kas@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
+	bh=CDCR3zTq4gu5VssH7XXKdr+KOGhe+b5fWjQKW9Pd8mo=;
+	b=3ta+4Zo39MA+qUaRSzIC/LB9lvZbnGI8s1zvYXKozfN2V1B0cgms8NnP/oDPMZpHwfz4KO
+	OiMOUTvISprqw9KERYRdHnCU7FcPxT/2+Wz8k3n5QMe+BKgpBz2lmWUBFzm/wGGo5JMbFa
+	lrtj38u7tMr0OMJXX2u9yAsDaWSKnGo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D416415B5;
+	Thu, 15 Oct 2026 04:34:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F401F000C4;
+	Thu, 15 Oct 2026 04:34:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792038882;
+	bh=CDCR3zTq4gu5VssH7XXKdr+KOGhe+b5fWjQKW9Pd8mo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ly+xXjT31/uiIN5iO0IJyZQ4l6WbE1kf6GCDYEJ7hESL9rU/0PjG1znObm/Qrv9vN
+	 pwodBmsKnx72FjNDNYKmj0FnTw+jvxHSDdOpakFJWTLt9MGNA0DYKVUTBSgqAD8jUm
+	 LdVN6h38/kD6/OfC6s6PMwaIgw+yUfn5uYuyoKoJ/R4L+FEYkIjs6Hw787qYI02BDv
+	 rSAQZ1wrJqb7IsATBXwx1qpafQkJAKcg8XGfFPUcoC8JoqXk8yxoYla8k35fMSszLR
+	 qmO05lc/YZxxF9WhLNZ3aD2x2C5rREmclR4biyPu9Lpc97PbD/wi002ozBjXwAD60U
+	 yhtji0mr+Y9BA==
+From: Kees Cook <kees@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Farid Zakaria <farid.m.zakaria@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	jannh@google.com
-Subject: Re: [PATCH v5 1/9] mm/khugepaged: drop redundant mm_struct pin in madvise_collapse()
-Date: Thu, 15 Oct 2026 12:34:04 +0800
-Message-ID: <20261015043404.57470-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261014171145.3292736-2-kas@kernel.org>
-References: <20261014171145.3292736-2-kas@kernel.org>
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/exec: report the skipped binfmt_misc_bpf test on stderr
+Date: Wed, 14 Oct 2026 21:34:38 -0700
+Message-ID: <179203887733.2951657.8311886793376077466.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261014200135.1364053-1-sashal@kernel.org>
+References: <20261014200135.1364053-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: eenbw8da3fughrmsrbw4onuygjo8js3t
-X-Rspamd-Queue-Id: 88E1020008
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3575D20008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1792038852-764797
-X-HE-Meta: U2FsdGVkX18xTyHJFLDiAIbfV9KFKtDKmd2Rg3d7mnoOVIfkFNwaibT4/awlXv2Z9Jr5MUFXagaAfj8315/G8Xx/XSAk3wAx5KfIMfFUKRNv9sxUx6qUE1yChKlUMjOt5M7SGu8Go4V49EUhiOVsyXHwh5pEO14pZaeF54hTrZHt0tOwA+kIbCJR8/JtLVFuAo1dtX7MtE3pzB1KvvAXAELDkMjBGV811ZdLfy6bfUYz9NlQcGC3VtKV5Po3wWpXQ2snsXl60stJoU8+8qLljwg3k1Ko/vm3w0M6z0IOzTfYHVJAdABzuOZGE1hfhcNywNnaCLY8IYE9Q0I0AlPUhP2BRUE0NfN3kIJrMhVZIRh7v4hY4x5fIl7VOmlNEG4fjhYvmh7RLTH+BeU1pzMClfz2splDsVCVapLiiK34qCxDliW0lX522Aq/pI/4UZ9SQRMgbsrIU3yevoZy1XOUP9ff6b+qDQvTeaNDYDQsdPkCzohB9rU85LZjS+H6n0OPPyHjseuH/BIPsNeU/zt8wOzRxUASjspqNNsqLC6sC25c4rXV/ZkYgWljshzZiCFOcuD1yHeF7AE/pAPTkq9XifTOKTryfBeZc5KUXkWAjukgutWolw6M5Yd94kcIRIKUzqknEHGcVapbeas5T9hmmJQHCh/iz33f05NNFOO+OqTR7b5uNpTm7LPF2kET0vdHKwNEm1kQMcGVMAf2PQ+/Ig5EH0jRPaprXgTuKIYM6Tv1ozWj0kNAOfR352+g5njNG/I3pD+8R4CfHKtACts3W/n+LgDNOkbwYNIh4AxC6pdjJyRClSZtXqLCAyoJ/h917tzowLyjRhEya3C1htNRzJg5YZ+2t+WoF3wApNB8g1jhHfeYzcLuJqyFO1N5NBq/OYeBNhNTakaf/bWvLi0XLci1d4cYhzSK609qPa0mASlyvhhgQLEjdAz5+zW063EC3HyzSsrvW7iMOOU0dFs
- XDCcr3xS
- ZyRWRoV/Xn+FPmaQL0bi3sv5wzTKgvjc+X+odpPKCGx7qy/GYws6IyijuD2Kc1GaPYSGRIso0p2vWWDhVB62XKG0TuFtfipt2sQbaiTpsMD6qo+NKczJn2MEgCAqjENYNWd03TqztmVMRLeNeNvFR6X6tHMFXTbFodBbPYxnyWoJazKiwpAFSt94z302/UumG8OtdAmi8v5of42Kv8NaqOtDfnFc5mV2FCMOSK/0uiIwMLNZGjWPwo566OgBP4vpWKg+CS2cu878i67hxL9AV51aY89OsRkyPl075dGlMwBNQyLJYkMvUn1qsnFuX9sPYfsseVDghHZSQ7lT7xzO5b375acTdnWfb9y49
+X-Stat-Signature: xzbdurk533dz5wkxntocursfe9ni6ad9
+X-HE-Tag: 1792038884-683911
+X-HE-Meta: U2FsdGVkX18GyK/QBHZVrG82WM7PkO2g/qS/doiZ7Yob7v1GLKHeFO93RKaQpbWuEJB374Xnp7xK3ElpC5Y/wyD7fvO2RCaxWlmThZOnEEZ0geCI1T5zHFsIhTGgJMxOKmvM4VWo8EPmQtUv+/nDfjyoHWswt7JwWHG8BtnIP1Pa6jsf8LP93hBW2CMuv9GjcEXBb9UfnwhR2LTwQLdtAGPXgVMqeCqUnDa+o/NxnRaHbotOF4aQiNy6iSicamki0eOfPe8mtBrFHgsDGLz0fXEhYMiEuCiIeI53YKcE5kFhpeZphbnPvcWtZI0SebjlYeLfWDPmJ147uqUSAuBm38Y2n2heVeZ8luO+/w02PNYyj02vunFKoewCqSEwINq+zbtWw+DQVQr23a5pODRnM4tHbm0aXQ7OCjacSDC0OKcmPfM4LwLJf8v5s99Lx+HH415xaPKKSbg4G4zz2LBISrDK2BtXexyj0KfZaIbB+X7Za0IYzXVYs8aETG9xWOcuMET/sguuiY9KmZMb2OBumXyGKnkZbQ9/u4uEnZaEZYKInuU1IfOwAeonzNz2C0PjS8u3gw/bmAMN9sBAncGvZK5fzejTo9zDmyYr3qUbIwK+PAcYbEhI5SRI3EPvFIT2qFCpYxZNTjTSctq/caCwm5TWpqqoLMu0O76gdup1I24H4edDFlweK4PssGjwIkUQ8XYuEch2oCrnbXEOuJ5pEUOuwD5Gx5XiL6pejpBVzei4DBO6QvxMRMSh6gHIMhPXOEO2FKXvaWazKDrB4s2gVnkUWy2SGbvHN39BatwQijvHayHKIcWhle4wat6bw0ywAIOEaLd7fx7+7Shec6vkp/BuN+IrFQ4O3h2ypwYUo8BFXzJayZyKvr2OdJTrK5LqQWIGSyRUPWye0Sow6SUWEUrXl/Qr1ZdApbjatIJAHHSTfRy4ewYpVtvaSRCrDMgBFsNkYPuGaeodduO/jJG
+ KKvLnpa7
+ HvhQjYss+GodwolIUVnDKZ/L28RUih+lSSy6rb9KVAGIM3HpNbco39FBXP1JPm4OmhvQAjw0/iLXANhkcr/VqigwHl2hGZl7TewNNTf3douLw00gqBT0LL19JS4jbXIQ189AHFs+cH3hhlUD9c0yY7TV2N5vQCo7C+VFmG5A+anzXDw4yKl6YZHSybJTUtAK2OS+4C97FIPpDShlaMqCaoI+IW6eQdwpTAoGF5Y/XbJ+UAEXeE0UH7GLIUXmL973TIM9vPdKEqPKlskRJU5Gb+lbPda3uNwxVIQPs3sqjZL7nB7zzb4N/nOAM5ovB2ZEQJ9MZ1FDVDlMYFPA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,26 +97,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, 14 Oct 2026 16:01:35 -0400, Sasha Levin wrote:
+> The exec Makefile announces that binfmt_misc_bpf is skipped with
+> $(info), which writes to standard output whenever the Makefile is
+> parsed. The selftests install target appends the standard output of
+> "make -s emit_tests" to kselftest-list.txt, so on systems without the
+> BPF toolchain the runlist gains a line that is not a test entry:
+> 
+>   exec selftests: skipping binfmt_misc_bpf, needs clang, bpftool, ...
+> 
+> [...]
 
-On Wed, Oct 14, 2026 at 06:11:34PM +0100, Kiryl Shutsemau (Meta) wrote:
->madvise_collapse() holds an mmgrab() reference across its work. It is
->redundant. Every caller already holds mm_users:
->
-> - madvise(2) works on current->mm, which lives as long as the task is in
->   the syscall;
-> - process_madvise(2) reaches a remote mm through mm_access(), which takes
->   an mm_users reference and holds it until the syscall returns;
-> - io_uring passes current->mm;
-> - DAMON takes one with get_task_mm() and drops it after the call.
->
->Drop the mmgrab()/mmdrop() pair.
->
->Assisted-by: LLM
->Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->Reviewed-by: Zi Yan <ziy@nvidia.com>
->Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->---
+Applied to for-next/execve, thanks!
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+[1/1] selftests/exec: report the skipped binfmt_misc_bpf test on stderr
+      https://git.kernel.org/kees/c/b36b990c50b1
+
+Take care,
+
+-- 
+Kees Cook
+
 
