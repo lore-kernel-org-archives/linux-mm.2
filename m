@@ -4,132 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FE2BCC6B3A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 09:35:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89C17CC6B38
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 09:38:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08E8D6B0088; Thu, 15 Oct 2026 05:35:18 -0400 (EDT)
+	id 6640C6B008C; Thu, 15 Oct 2026 05:38:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 042BA6B008A; Thu, 15 Oct 2026 05:35:18 -0400 (EDT)
+	id 613DD6B0096; Thu, 15 Oct 2026 05:38:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E72BF6B008C; Thu, 15 Oct 2026 05:35:17 -0400 (EDT)
+	id 48D6C6B0095; Thu, 15 Oct 2026 05:38:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BAA886B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:35:17 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 33063120938
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:35:15 +0000 (UTC)
-X-FDA: 85324352190.04.A68F028
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 71B89100009
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:35:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KNXCdGfN;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792056913;
-	b=mq3fIncIxQn+mjaz04xlPX5RrltwXbXSJC4TwpBtCscVFONhHXRMkBtjnmER8cySdI3KUS
-	s9AXvJfrAW271o0TKxlTzn8gait9rcjTCPpVuYB0LcQ4M8Do8oSPxfeI2yW5uhgzEEq983
-	DZWfn48N0YNN/xpmb5Hl8QZn0kg5iOs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KNXCdGfN;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EB026B008A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:38:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 004C8A0986
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:38:25 +0000 (UTC)
+X-FDA: 85324360170.22.9DA46DA
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5A38D40007
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:38:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=fvEUb887;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792056913;
+	s=arc-20220608; t=1792057104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wd89IB6F35+VrD13HO5qIH7pRsIPbB4O8y5yfSMQE9g=;
-	b=cX08PgXgC+kSeGXATNoYRDSsKA4GvTqYXuPdn8PZaNXJbYwn6bSxWjlzjwU8q+yektLjNy
-	orQv/4NgFdofdqk7l1w0uS1VN4PDG8BbPhaMlYZZsMQz+pcFInzJcJliv6Dlu8+dxYAHYu
-	ZsvbhGQbdNieihs55QjuX7PRmHMxhVQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7A126020C;
-	Thu, 15 Oct 2026 09:35:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EFF1F000C4;
-	Thu, 15 Oct 2026 09:35:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792056912;
-	bh=wd89IB6F35+VrD13HO5qIH7pRsIPbB4O8y5yfSMQE9g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KNXCdGfNYckgMfgIYEdWmk9/QXs4UpBJDycdgK6witGS0/JGTw0WV/VcMnL0xRZDU
-	 YeJ15zxkR+pKadSfoBUOsdrTjGG5R2EVykZBcqMnntHursaW5mzLZ1R7b2x7A76l0O
-	 Fcj+ez7e+VppWxXr1tWbMl1x9htrAcmk65OfY9NdsstkkOfNTy5IY4UEzbFvW9TP21
-	 ukb4e/hgurPg4iiTOniwJ8HY6apoN6ep6kTvHslQX3K25i/tdBKNYJTF2VE8jltE6I
-	 ktz+XbNRRv2deMYEc96fv9A0e5+5r+AneZTEESAzZO7nd3BL3kw2qQOa27/qAXgUuk
-	 iPPaBbP7YCmHA==
-Message-ID: <8d570d0a-e65c-43e9-9266-175e883f8766@kernel.org>
-Date: Thu, 15 Oct 2026 11:35:07 +0200
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=0shlhRLFxXQ3R4nNuzOyegjpP8vI4RmInyPqxYDwsw8=;
+	b=CqF7A4XGEWftBf6l4p2ePLl9nf/QfvtlRztH83/M7Xcn+AFBvoJXCQBvFE1CuGQzw3iQKb
+	TfdZRGhUUgZ2R2ktGmPLKhI3QvLPSNpu5dg7DDHM9el85GjCdL0SAacqdxT0fReH/++eeW
+	kAz3UZVbb+elm/Vz6OUlK/cOIjb9UIs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=fvEUb887;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792057104;
+	b=DnWdZApHWvJn9n01aDQ9PFe0mImo4KCNiG6ZbrpqKaMCwd+XKOsHCYq/bikw4Ysn8d6PJJ
+	FKy7Kp1iKTJ1/l39U9knhRyixKhaP/1vAM7fF0xwekqa3MAPFt5Dc6SI8k85vx6xmTgfWH
+	izVETM/XVxPyNbFLN4K7VfXLmQRIw8g=
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-5e9405fbc33so2201337e0c.3
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:38:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1792057103; x=1792661903; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0shlhRLFxXQ3R4nNuzOyegjpP8vI4RmInyPqxYDwsw8=;
+        b=fvEUb887b7j1Jz9FXH6fjlvxbGB9W9tL+w/y3WCkHOtGUmKMNLdL/8ILQA9osea8hc
+         u5gjYnM7gKQtd7HbTJLzl8VKV9J3gf7jpED7g7wUR/UbaRJWEWBO7lmPCM32xpc7AMvf
+         XPbPZsiIfJjiNBUi65kf8KsA8WgM7N6CMiC9Kb/rozs07qoxUMniWe6B9eqcmqo2lovC
+         AnlFPStCvDLMS51jOfv33qiXUb5XMGC1uBGpQxdVJmDEgldJMEp0S29GapoCoGO2pRmE
+         +ac4XAi4k9k/XuwqjNVGOsCf9Hf/xiURg7N9QC1TgY+lGVOjDWhWk/9EAQABJvqaQ2Zr
+         81bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792057103; x=1792661903;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=0shlhRLFxXQ3R4nNuzOyegjpP8vI4RmInyPqxYDwsw8=;
+        b=ykCds+G79PyPjizGcco76AqyWFJYGsTynMCp0MxWlK0vG7ndqNU/x0msp7mbae/ibL
+         zY9NIvQCLhrZwie+qvUh44Fx1bBo7WuFn5lbwLe6pxg++qwVtBedHxf5mpYnAKbDyce+
+         AORMZE0vDO8+bA2nR3pcwkLLJp4h1M3TYyMGz6WySIBRCJlLTZWGhqZppVhbQdT3bbRW
+         GvXY6cFD21uV6Lf4+k9AdnA76ZzHS7Qdz5zKFXqAUr2ZDlB6Ym3AvLxOqdtim+/OOayo
+         PEB1G10q6fzdYZYj+cUvgfefp2zRBgJzVUlbXA2S5LqL6N29eFH/rNSeDvYDJpFbb2/I
+         iwHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxP0l7boCoOi/j/pLlN+HMIzxR+azTTJ6A60tP5tkA4BUyWvSnkaNgC70g5/FDdTqX4oQtpCOqJRg==@kvack.org
+X-Gm-Message-State: AFq9FYI/6EqcVnZqmSS80zMJoig+VWwMBYca/nkzmZWVw7UPGkMQM5Mq
+	xjAe/0yiVQe3wtG0Db0VAKYfvqwF9UcyA6U8OV+uuqwPUttTdoKTityr/U8/asojVY8=
+X-Gm-Gg: AYBFou0LqglhLk/psXRBQPl9BTLpk4hC8DUHJ3DyG7fHWEJaoK1pYA38NhTRITinmcr
+	nt1Ir2SdOuGiBAL5I5HHYxzxMqezv9UeRHK6BRQVxxEvT96yh3SG+sHsiBrnVID7JCzw5vB/YdI
+	FI+CvjWKropQo5daaqv2hhpXi0KosZMK5GemGYEQgLQvTfAj+9U0Vwm/VbLcHpvaSNTN3l+PgJ3
+	RGnMn8KnfJuoudX2RKCIU0MxyhM0tRsfOPthWMmcbfDTGFxi5pdCUEHq1eLmvKjpUm+ft7ZNQQZ
+	q6budJ5XT9qDiOA/5wNUp8HLNiCekDNHD4z6rjDHYrQe1+GgMID8M9i2NfjFHQSgJeSxdzpm5pR
+	X6EE6zxs8VU+pFlhBVMRLwrSoDrXbMp+X0/Yd57KCHVjBh9xvHSP50nV0PSrIWw/IwiS7n0VeGY
+	KsRl/QGQVgggIQcbzUx6dF3GCSVzSmV/wrEJxw357yrvN8e8S+dhCE9uJr36HMQHtEsNyKZpp48
+	FbtWASLFeOgdkmwJohioRmwpvDp2yHFRTEPgK3YLMxwpFzcZm+bxdbX/jm7XQBVXWWuxzZsYZRJ
+	AYZiyfq9jDNrLTGLExY=
+X-Received: by 2002:a05:6102:14aa:b0:7bb:81de:ebaf with SMTP id ada2fe7eead31-7cb372b60a2mr4935421137.15.1792057103138;
+        Thu, 15 Oct 2026 02:38:23 -0700 (PDT)
+Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99003d37009sm12275672241.2.2026.10.15.02.38.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 02:38:21 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: linux-kselftest@vger.kernel.org,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	vipinsh@google.com,
+	linux-kernel@vger.kernel.org,
+	pasha.tatashin@soleen.com,
+	dmatlack@google.com,
+	kexec@lists.infradead.org,
+	pratyush@kernel.org,
+	graf@amazon.com
+Subject: [PATCH v1 0/7] liveupdate: tmpfs preservation and early freeze
+Date: Thu, 15 Oct 2026 05:38:09 -0400
+Message-ID: <20261015093816.2438942-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Sashiko change proposal
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, ackerleytng@google.com,
- akpm@linux-foundation.org, chriscli@google.com, hannes@cmpxchg.org,
- harry@kernel.org, jack@suse.cz, liam@infradead.org, muchun.song@linux.dev,
- shakeelb@meta.com, sj@kernel.org, ziy@nvidia.com,
- "Lorenzo Stoakes (Arm)" <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Wilcox <willy@infradead.org>
-References: <5eae44a6-06c3-445c-9508-58b372c01b2c@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <5eae44a6-06c3-445c-9508-58b372c01b2c@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3gku7uqb8i3s1snfsozjyys77fd7w9nc
-X-Rspamd-Queue-Id: 71B89100009
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5A38D40007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1792056913-27959
-X-HE-Meta: U2FsdGVkX1+UYILqWUluAD3A4Q23wf7FXx/8bBeuphbHbb/j/hvr0Vsbp3GqHHfKk05qiKpvUNJDOTuplmrbzJBUvrqtsKlqdp2zCZs6g6MKjGIJXoD2aLYF2dZ5WhmC6SvNaQNxLU41GENeYlLOfn6q0PY5MEYZaAMQ0/yZ/PJemri/VXRH7g8V1r9lWnGgbHKPRen1+OL5q0OQR7S2indLhC2a02egMY2RgaCXByoONKKSG8l9vvDWIzQvu/NhXY8zcVuIIDB5kXII9jHZD3RhmgxA/ppQACS8RwQXL55Vdq/O+oh9DfR/BKHcC4ZOj5vTDU0lrxyWZLfN3wn6q/wmaYvZH/oGhQUBTqnKq0ikwG67YE0QLY8WLoGHQxdOyJ8gEAiwuMex1xfKUOYF/+UuIzJRroErJYWmqEXLIeseHB3BNWUU5+7QHQTLEM25QwSBtx3svweq4DBgyDnsUxI622zXqSiCrwN6WEq/fl37/qs981Cbimykv6MUOOEQlEa8zdiaj1D43xqjoYnciVimfamvY20XO1mmIdjysm7vZuSmjvAefbYyaAqCfAv0xKze8Y2Hrbwc940DDdd8C1JaBgT9Uhnrmesx8XCUcJpDt5qhVwAOVZVYz6yXKtCErzjp3Sb3D8e+OzloU9SECysigFf01I3m/ckoz5h9zng0sZ/L5elGNYHpHtE/UPROpgt5CF5xVImFqpZhr+Jw2jsu/bRKnuqUDroNXyKbOfTJOEKRK+ftoiHCyOHMyDSUqabkTwo1WkJWhwIK+Hlk5k3IdZlcaNoAmXGkZQGW3iADrU80vF4c/GVwn5AT4zNCqHtav06FO4FXJJT1LBBhLNaAxgE54ks7fPxmGbrA9DyOSaATK5XqOmoyZS1rGaVZGzF7yybYv7WPGKypsZNq8kmO8ZV06aGcO9q2mD9Q95+Gc6clRXfH+KaPpihInqthr0Kg0Gr5I5NhgD8kWI2
- f5xYxswH
- vR6sH9pjeIJSATTwcFnQMmkJaskodAzM8T0x3N9FjWLpcv9nLiIaaayFyS8Z1/ChyoaW5AtxaORYfkOsLiodyEoSpL0YSB14EVf1cdobV8I+GUc2Pz5Q/xFLyZUONdF0RZ9CGKZ6iDelxzhIKj9wmu8D1YP4rin09gzxjVO/62Iney0Du6Y1eSKDvDNVB+MaFBRSQZ+GmoSkr2BJ2LjlDGZ6dXtQkwuaASQeOf25rvDWdo5BE1A2QdlcMKovag5NCfbURu5aFEna7mFDoBGc3mm9KD/HOTVv3GPpa3t35hEhskCVqCMqatx4rE4G94ltdZzSUwk7tzUjc2li1TCKSjYdvcbMA98wFRNS29DwnoVl+R1Y7q7nxva2te7FyjuHg/eA6Afe2EKR4Y2BzgBuPeFscATYseoZlTaUU20xE6bvll1fDUHOBegSA3T2fvMSyI/aaAjVLbT1I2TlffY4MrwdtxcxmlBqS8y8l7KxNasPYSFYh5Jmt8Eplpg==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: n43i7gnox79cwccx9m5gojna7okpasn1
+X-HE-Tag: 1792057104-884214
+X-HE-Meta: U2FsdGVkX1/Xtohd7bdpHZ5n+4+rpARWXmZKNU7woHSHiATjBTWOtmEB76vzxLCDB/fv5iYzw7IjS9/UgublYW6H0C1ha8PPdzcpERtmkwn3eBmVQpOb0YFv2zz8U8tuFSpNzBte7q4gVkEB6m3GBfR5lRl2wqgt5YZk+Pgr7JYt/aVrr8xwbIau1JM6T3M8DDkUl4dxb3a2DScsD6DUxhTXr/yDEhfMjoCgx1s57ooa+k5Yfm7nh8gxPXYroMyN2+Z+zqSPV6MKKC6AO8iKeXkVUnE9G7/Vw5jRn50Naf5GMOAC/YOLgC1i41Rjo51Gxyg8phsR5GfUCKcsqaK7jt3vcnslsYaYbxfJnYnARcgHSQ/Ibo5yn/v9CEaDlC8btvWr1YmVGRBWR6emiLa9oGXBUH7gxuKESvZkpsNYhEz0VX6bFlJvk7QyJXZrHdIoMAby48JFD3NQdLx/jSWnnP5U76xfyrSNdODJU/t1rGvTg2gzRK3XNisC5ZVb7oIP3QsnddbWoPrYo6AGzT/3+0hbKfDGCtlgDkUp6GR0PGEWOSOvd66VbjjZTBnBVuiZpB2WaYDlRDneQpKqv0iBqP/YogCj8hWRPquL1c4NkObRNipddtlu6JB9KaqUNwRZVfOa2ALI6NhsRzNyaVjytL0EOErQMe20uC1huLmH1JKwSH6r+6RrzPILVNwerNNgOl2Au7jGtzZEEuLF64H4QB8/kplT6UcgGFUtl/T41Q16aDwjVc0O8LXGgSFjmz4d1EwP8pFbXCc4QZWqZL88OnC3UVOHF9GSXwbA+zAomxcpBVT0s50+/Oth0G0RJ0bmEbxKdG+sMUzrlOfRyve97XcjEnzblPi9SzTVmRNgCWvs3l8GJkF11WJT8ENEHDADW84my3oVVgh74pS03+v9gTNoMHVC71HFTSRq55PwznTONYyg4pZhZmIewBIk59f1YDg+PnCUK+cfE5FJbMB
+ 4SI9ACuY
+ SqQV3qTymWWN9pdmgtUdyAeNIUQA6Ul8hcYzGCP8FFRvjdt+KN/x5mCIoxKnnoOwJPW0/HDhcduPxlWiUQtkML330GFv3QLjOjTeQ2RJU1l4Jm7/mDSDPDZKwn9/zAXxSEMFMUrZuO+Ge3f0C7kQYuGEbLORvHdbB1xqroZQg/qxXvaXK0zQbGTwyd30x0o9OWNOHzC29MB66OZCQPvot5X8vgdEmgS+FW6Bs0d1G4nmJr1povAGF14R7KeEipRIUYhe7WfjDo6n+l64=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,54 +124,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/26 10:38, David Hildenbrand (Arm) wrote:
-> (CCing all people attending the mm-next call)
-> 
-> Hi,
-> 
-> After talking to Roman at MS, he just informed me that sashiko now has a new
-> feature combination:
-> - "embargo_hours": hours before review is public + emails sent
-> - Mechanism for signed-in maintainers to lift embargo immediately
-> 
-> That solves the key issue I had with sashiko: people/agents re-spinning stuff
-> too fast before a human at least had the chance to jump in first.
-> 
-> I suggest the following sashiko change for linux-mm:
-> 
-> diff --git a/projects/linux/mailing_lists.toml b/projects/linux/mailing_lists.toml
-> index a9198de..ba123da 100644
-> --- a/projects/linux/mailing_lists.toml
-> +++ b/projects/linux/mailing_lists.toml
-> @@ -46,7 +46,6 @@ ignored_emails = ["patchwork@emeril.freedesktop.org"]
->  ["linux-integrity@vger.kernel.org"]
->  ["linux-kernel@vger.kernel.org"]
->  ["linux-kselftest@vger.kernel.org"]
-> -["linux-mm@kvack.org"]
->  ["linux-nvme@lists.infradead.org"]
->  ["linux-omap@vger.kernel.org"]
->  ["linux-pm@vger.kernel.org"]
-> @@ -315,3 +314,7 @@ reply_to = ["author", "list", "recipients"]
-> 
->  ["fsverity@lists.linux.dev"]
->  reply_to = ["author", "list", "recipients"]
-> +
-> +["linux-mm@kvack.org"]
-> +reply_to = ["author", "list", "recipients"]
-> +embargo_hours = 24
-> 
-> 
-> Which means:
-> - Embargo 24h
-> - Mails sent to everybody (author, list, CC list)
-> - No positive-review ("looks great") mails (default)
-> - No other static email addresses that receive a copy (default)
-> - No additional ignored author email addresses (default)
-> 
-> I'd say we start with 24h and see how it goes.
-> 
-> Thoughts?
+This series allows preserving files in tmpfs via LUO to survive across a
+live update, and allows userspace to decide when to freeze a session
+instead of delaying until auto-freeze at kexec time. Once userspace is
+done with a session, it can freeze the session immediately (and across
+multiple sessions in parallel), reducing blackout time by not postponing
+this operation to kexec shutdown where all sessions are frozen serially:
 
-LGTM!
+1. Early session freeze (LIVEUPDATE_SESSION_FREEZE):
+   Currently, LUO sessions are frozen automatically only inside the
+   reboot(LINUX_REBOOT_CMD_KEXEC) path, where luo_session_serialize()
+   iterates through all outgoing sessions under global write locks and
+   freezes them serially during shutdown.
+
+   Add the LIVEUPDATE_SESSION_FREEZE ioctl on session file descriptors so
+   userspace can freeze a session as soon as it is done with it (and freeze
+   multiple sessions concurrently, since luo_session_freeze() only acquires
+   the per-session mutex). During kexec, already-frozen sessions skip the
+   late auto-freeze step; if an early-frozen session is closed before
+   kexec, its files are rolled back via .unfreeze() before being
+   unpreserved.
+
+2. Per-file user argument on preserve and retrieve:
+   File handlers may need handler-specific context when preserving or
+   retrieving a file descriptor without introducing custom session ioctls
+   for each file type. Whether the argument is required, optional, or
+   unused depends on the file handler.
+
+   Extend struct liveupdate_session_preserve_fd and
+   struct liveupdate_session_retrieve_fd with a 64-bit 'arg' field pointing
+   to a handler-defined argument structure that begins with a 32-bit 'size'
+   field. Because IOCTL_OP validates a minimum struct size up to 'token',
+   existing userspace callers passing the 16-byte structure remain
+   backward-compatible and have 'arg' zero-filled by
+   copy_struct_from_user().
+
+   Add parg and rarg (struct liveupdate_arg_spec) to
+   struct liveupdate_file_ops, initialized via LIVEUPDATE_ARG(_struct,
+   _min_last), which records the full struct size and minimum required
+   size while enforcing at compile time that the argument structure begins
+   with a 32-bit 'size' field. Core LUO validates the minimum size and
+   copies non-zero user arguments via copy_struct_from_user() up to the
+   handler's expected size (or rejects them with -EOPNOTSUPP when the
+   handler does not accept an argument) and passes the kernel copy to
+   .preserve() and .retrieve() in struct liveupdate_file_op_args. Also
+   allow .retrieve() callbacks to mark early argument/target validation
+   failures as retryable so userspace can retry
+   LIVEUPDATE_SESSION_RETRIEVE_FD without losing preserved KHO state.
+
+3. Tmpfs file preservation and retrieval:
+   Using the file handler retrieve argument, extend mm/memfd_luo to allow
+   preserving generic shmem-backed tmpfs files (not just unlinked memfd
+   pseudofiles), recording MEMFD_LUO_FLAG_TMPFS in
+   struct memfd_luo_ser.flags so that preserved tmpfs files must be
+   retrieved as tmpfs files and preserved memfd files must be retrieved as
+   memfd files. Introduce struct liveupdate_memfd_retrieve_arg so
+   userspace can pass a writable, empty, linked tmpfs file descriptor via
+   the retrieve argument and have the kernel populate its address space
+   with the preserved folios.
+
+David Matlack (2):
+  mm/memfd_luo: Support tmpfs preservation and retrieval
+  selftests: liveupdate: Add test coverage for tmpfs preservation and
+    retrieval
+
+Pasha Tatashin (5):
+  liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl to freeze sessions
+    early
+  selftests: liveupdate: Add tests for LIVEUPDATE_SESSION_FREEZE
+  liveupdate: Pass user argument to file preserve and retrieve
+  selftests: liveupdate: Add tests for preserve and retrieve user
+    argument
+  liveupdate: Allow file handlers to mark retrieve failures as retryable
+
+ include/linux/kho/abi/memfd.h                 |  13 +-
+ include/linux/liveupdate.h                    |  74 ++++++++-
+ include/uapi/linux/liveupdate.h               |  59 ++++++-
+ kernel/liveupdate/luo_file.c                  | 152 ++++++++++++++----
+ kernel/liveupdate/luo_internal.h              |   8 +-
+ kernel/liveupdate/luo_session.c               |  58 ++++++-
+ mm/memfd_luo.c                                | 144 +++++++++++++----
+ .../liveupdate/lib/include/libliveupdate.h    |   6 +
+ .../selftests/liveupdate/lib/lu_utils.c       |  71 +++++++-
+ .../testing/selftests/liveupdate/liveupdate.c |  84 ++++++++++
+ .../selftests/liveupdate/luo_kexec_simple.c   |   5 +
+ .../selftests/liveupdate/luo_multi_session.c  | 110 +++++++++++--
+ 12 files changed, 695 insertions(+), 89 deletions(-)
+
+
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+-- 
+2.56.0.385.gd3acb90ef8-goog
 
 
