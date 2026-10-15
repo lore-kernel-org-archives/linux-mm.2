@@ -4,122 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42C72CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 12:51:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E45CCC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 12:54:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA05C6B0088; Thu, 15 Oct 2026 08:51:05 -0400 (EDT)
+	id 77AEA6B008A; Thu, 15 Oct 2026 08:54:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E51706B008A; Thu, 15 Oct 2026 08:51:05 -0400 (EDT)
+	id 72B546B008C; Thu, 15 Oct 2026 08:54:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3FB16B008C; Thu, 15 Oct 2026 08:51:05 -0400 (EDT)
+	id 641386B0092; Thu, 15 Oct 2026 08:54:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B2D7D6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:51:05 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 498A9409AE
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:51:05 +0000 (UTC)
-X-FDA: 85324845690.18.AEAAFEA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3F518140002
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:51:03 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hu6C2j30;
-	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 42E766B008A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:54:29 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05E691A0A1A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:54:28 +0000 (UTC)
+X-FDA: 85324854216.15.014B32D
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BFA0414000C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:54:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="X/k7N6 f";
+	spf=pass (imf09.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792068663;
+	s=arc-20220608; t=1792068866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Um6CkdFgFUiyKYnZ7yOGgIt/JttBH/B2psH8qXvtys=;
-	b=rW5RY9XYnG4+EFrRKUBc7XyQD4ftAXY0qx4RfPXM2oOcRIgz4Xkoo1cUMPjGPeEagAupCB
-	e/6REVlG4RTga4qlRT+QeWgEnIOQggHlABiskkMNQqZqY1ocNWQcK6OCbkJIkwHDGSFVj/
-	vJpWYcjS8Co8wFYc7PUXwUSr4+pQwH4=
+	bh=+aloW1e/2hgj0CG7zlWvi6F85K8Mxq4LgXboRC8EEw4=;
+	b=xLOliZIQYmFPiRdW2/Hh7IYdrx7jI/urO3eV59Tkn0VGh0zXoL3F04OyVbLl/MTUdlkeay
+	Z/ERtPetco1lJ2Ik1WLk3KI7McUFEC6YtZNq0XqdtLDNriMSsPMUIa6/u5D+nKT1pWB3LU
+	ltLvwME690xwoWwvhX3pNWy0zxpqt6Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792068663;
-	b=hKXnKe1sMlxxvhajWAC9YxuX2qXziCuLuCNIm5eUGc/AyAQy64p21PjJf+naTtEjX+SJAG
-	FPAUR1UAuYdMXujYb+iANsc+ugKgZ8jRCMnCv6SR3kpDe3erWOPNBYyYJ/xNp4PwBYbQOA
-	LWMT/y61tYMRHxoLXh+yi8t//JucSms=
+	t=1792068866;
+	b=eReN3Oz4DPc0bWjxwQtuOMYTJU80sn0SmLNRdCQsReYMsffPrbI9jPFkRJaD1ch2NQUh/o
+	akeaq35M8jKpQdpHDGrCnhJ478Q1n4gt9UmroVPsy5ZtXs9fIpCZPl9n0DMexh3Y4Tc/YG
+	3YwMdwNAWLTRdaFlL23Keqo5bGyjP/g=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hu6C2j30;
-	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C5344055E;
-	Thu, 15 Oct 2026 12:51:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0A71F000C5;
-	Thu, 15 Oct 2026 12:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792068662;
-	bh=7Um6CkdFgFUiyKYnZ7yOGgIt/JttBH/B2psH8qXvtys=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Hu6C2j30wXNnbuczWidEmYA2tYA8h0HL/8ogd9tRkF4Is0v1xLiH26FObqD9Fi3gc
-	 3DT603vtut5x6vtlR2/ZZErENSa8sCgBksufnasaVoaN6Aa7afy6Iy1kYrSHtiiF92
-	 QV+U3JmV/SLApJOhRXO1nyLX4w1QuJolPip19JNP9m9WGhd8A9Xm1Xo2O1Ko9MQQjt
-	 jp1nVPxnbCgPTp5/enFIAbrNo9v/0gXo8SOB/3ywYUgxVBZRMAsoOGS6aihEDWKHnD
-	 ZT9nRULIIwhjlNLVcAIDyg5DFmM44qF/i5QrFZv0DH/J49ja6ahtRy8qBgag39NQJZ
-	 x8IyrVAYCZ5QA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 91CEA198003A;
-	Thu, 15 Oct 2026 08:50:57 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Thu, 15 Oct 2026 08:51:00 -0400
-X-ME-Sender: <xms:MMzQakR0IF72dlZ4HsQ_UigfElwBAi5-kJG2Nq8h4ZXejiLJjUPl2Q>
-    <xme:MMzQakK_aEbQ6kWUpJa1nzJHnnKLzCyroXZz95EqNc9TnAbI1XaXXz1ZuyD5bR-Ar
-    _uU7o8esZeIVOJjrggfxTLwY320zY_YFSk6qhodR84cFWBvO4TCeEk>
-X-ME-Received: <xmr:MMzQarG82ZwlLWm36rWKCazDk8rqnagziOZx8ZQ_TVqLFyi9qyRsZpanYgw>
-X-ME-Proxy-Cause: dmFkZTGYpibDVUZ03mxVIum9EHYrtGYOQn4TWhgXWuWTE8ALD1yvxSQ55vrA6jOaYpis1s
-    eS1Fo8Mjgi7ucTvYo9aIaXtOB/73L1YM4sCtarqJZqvGWCcTaMxfc7HBxZVtKcb4wJvczJ
-    DhWGHrpbBlLD6ge7X4kHBWKewvm6YVYsr45UakZ5Q7HzmsGDeJz5eRFyJToaZGUUTIwjiJ
-    yalidQOWiPKcNzTs9pKQ7mOgU4SCuGwVAYQlV41nKioPZgy9HanYgoNCcWM2YM4gaw9TNP
-    mdJ72gP3f6FG12kya8a+TGGjVcnp9Lok8H/20qPi80IexeX8J/hf2KI4CDbytSCd4F1mUJ
-    JtvWfWJX2J+PDTRIpyCkiU/p4ZK7j0ildAASL/a4jisJUFqvA4VooHn9uNFYYxKsEJfI4S
-    rSwrV6wUbwsYIIn3tVsZtpasauV73VGEZRZ49ngUE2b99FDhpIoAozH7GXQOiogAcJNS8+
-    DnEgDZwKE1awDWKAuQDYMum9QqRIqsDhcMiFIctw1LcpYZV64AULTeIbHGkp7o9Gm+YN7B
-    ZxW1Z6zG1AUjtItBDbdXd/IgJBVpwju24VFpuMr/5Q36mi3uRQVxEUAI9YGv1U/0XJJHuj
-    JeCbMLrTA/D6HN1LcLdhop93y+fiheEVISd3AcyjLbPfd44aCxTbDXevs0ig
-X-ME-Proxy: <xmx:MMzQarIIKWVPhU3P_F4pN9US7en8m23-GcvRTeu3GHEyQ60xBGTfOg>
-    <xmx:MMzQav6o05HUtsc2wfRc8TCtA3LTflDIv9sxh0CUNo8Sp6yis9mgEQ>
-    <xmx:MMzQaslX4HyepFWK6-873Jo7lrDtezkVNsh0vFLzjDqFly4d9tvpTQ>
-    <xmx:MMzQasSMTjuKD4Y9V6salpe5zd1tz5X6igUYJdJtebn83pv0dO8ygw>
-    <xmx:MczQahhKbGrNgwbwiREVVR_uNxM75mkZDGAeDd9HN_mewaIWNneCvGLz>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Oct 2026 08:50:56 -0400 (EDT)
-Date: Thu, 15 Oct 2026 13:50:55 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
-Message-ID: <atDL-nSFP2KVU7cI@thinkstation>
-References: <20261009125503.126202-1-kas@kernel.org>
- <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
- <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
- <as5q14OsbK2CmOrh@thinkstation>
- <20261014202936.GC371161@cmpxchg.org>
+	imf09.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="X/k7N6 f";
+	spf=pass (imf09.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=+aloW1e/2hgj0CG7zlWvi6F85K8Mxq4LgXboRC8EEw4=; b=X/k7N6
+	fspp5W6e8UAk0tlBTGlLJqt/knJxaZv/HSreyt27UeqP/L+ZLYrf4L+Uf3gy7wgOBVXAiXzHY1zvH
+	S5CWn586QQqCpePLdGEMgqCZ32XhhO3x3sEqWffk/P/+z+qjkHFRDScxg7b5tIb0cu6F01Ha48jYi
+	L30Hi7WKktwyrERXAwwRlVBA+GCW/RMWdy3IBISq0OcHnsRMb5LTGwTIdABSgRX1O7sPD4eQKsFiR
+	y5lb+J09Kz4B0swsv7QTJetgGBZgSNnKM8t8MKnCn/rH/nU5DQASnncdwnJQ4egOKPfT/drJ0aXsg
+	ktn+E1H/oKdhqOf5Txf/J68dvdZg==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xHKxH-00000008Tlo-4A2G;
+	Thu, 15 Oct 2026 12:53:08 +0000
+Message-ID: <a9c30209e1fc024a11664f959d4c1b697ceab5a5.camel@surriel.com>
+Subject: Re: [RFC PATCH 3/5] mm/page_alloc: convert any movable pageblock on
+ a non-movable allocation
+From: Rik van Riel <riel@surriel.com>
+To: Dev Jain <dev.jain@arm.com>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+  Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>,  Brendan Jackman
+ <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Kairui Song
+ <kasong@tencent.com>, Qi Zheng	 <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Barry Song	 <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie	 <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, Baoquan He	 <baoquan.he@linux.dev>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
+Date: Thu, 15 Oct 2026 08:53:07 -0400
+In-Reply-To: <087678bc-41f8-4250-bde9-e9fe9399e67b@arm.com>
+References: <20261007021250.1665929-1-riel@surriel.com>
+	 <20261007021250.1665929-4-riel@surriel.com>
+	 <20261014204836.GI371161@cmpxchg.org>
+	 <5234543d2c1b44706501d2e079b41e95a6a1d200.camel@surriel.com>
+	 <087678bc-41f8-4250-bde9-e9fe9399e67b@arm.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014202936.GC371161@cmpxchg.org>
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3F518140002
+X-Rspamd-Queue-Id: BFA0414000C
 X-Rspam-User: 
-X-Stat-Signature: bjcracctx7yt6rt3xahd1adya533399i
-X-HE-Tag: 1792068663-920006
-X-HE-Meta: U2FsdGVkX1/lTOE6p61y5UEXOIvL+3jUj/kB+xY9zMMPGGIPL8b148OrIPk+XI2XemgkUjJBElemm/f/mn2ows3tAepxhVp0zSeUJPQdhEejuBga43WbfXBquJqVCr1BnNhPUYeCc965c/UnMoHn3Pq9irExYACet1wzrH/SF3TKuKJmSlJHlL4wKYI8S0HjwamS/pQfyxxYDU6220cYn8bxZ+EWXsIGc8P62vS4hUGZGuQ5JE8Z18fPy2ObczIblZGfzsSwCh/Gke924cJRnAMULmLKV+08wG5Y1UNfve8C7wi9LIrloA8lK+BY8TgpLNx6b7wVupfCToVR0/d1lCLroB62CICOfzA1SI3n001B+qb1x0wNVrOLzCl1H/32i4Gf9BaxpWCx22VJq0m8bwhi3TWJ54mICBszfK5Gako0wN8MH6NJt3PYXS8o+CTljlLuFHKyBzAEqv1Bh5ASk29ZqBA9+x+5vfOr9wL6g4kYTu0/M9dbOMVTEa4Ny0VZiOxRDInC3jajrMRWgajW0XjS3NSC/0GpZfb4T6j8v/ORtYE18VkXXh4fnE77iWX2vvIDL9KjeDGWeI5J2jguw5mUACoF8ZRFTsM+b0+1pLyOYRPhbpa4HInSfZ+9ljkwYGEjX4WgdgAZH/lHGzu0ong1TpdA+NmL7snvUhxCichSdv+71CDt92IemcRmbKtvTeHkc3NAXksAqadA+9MpdPOVjuvF5kPscSiUi63e1yGVMcpqvJzZK98kE2exI25MCT8YJWE2loYDmx9+GAXj+GqTvK+33m0NIGl7Y8HIBOdGArxHqx7+rq6K4Dnx7wWiL0qXoPxmgClgDAecclhZgIxgVpigPiRLXi4M3mfkGsAJlErcmFaiPCx1l7+J/VfsMQX5ezZRb14wrVOCmGt8U2MnERH4SEoynX/yd71K9Xb/TaGRk5BokRjvSE83Nusl1rxU0QGPxooMYQ8b1Z2
- M/knBX3l
- 5QPFgeoHzRUXmrlXe3OF2ls8SYKW57cphjmu0ubU8KgGbVly2rnkrT6OA0JWbfvN+zcYGPVElQIV6jEB163otKEzSiVK0JrLs6iWv1nmMMRfzWFli1hW+QebYbDd66jlSz16pbhROjFEbjxBZ5q7BpBj4cvKkhR6JsWeRydV388eEamq2iqzFtG+rQvXiDLc6Gi1hkYxBuXiPhsjJ7u390DhcbM6SH86FfJZ8TvcE31PQ2yO0fJ6Q+44T95rDF5rdxfP3TxuEQ1nA2krPQ6PEA13FnkwlUoZE/S4+oVHHhgqdNXtILD6TLPE9lqzFnevkbS95mdOSiLXcR6E=
+X-Stat-Signature: cz9ozrtxmztr6pofnmxafodxcw1b4q1y
+X-HE-Tag: 1792068864-126526
+X-HE-Meta: U2FsdGVkX1/9ubz7OpVOJ7OIjbg0tiIZGvNxggvLuPD1Uaw9fbch3slmmS4sojHT7lb1WbWmoiXLDCms4ZrpTBaOLvNXCY1VTS8b8Z36kq0SsAprvweAvMx7sNpnFO5Ae5WjZQL37P3XREAHoFpYUcp75fjhSEkExXTWw757RePK+keLOjluV/mdKLfQ1PtMqv8OqJGYhsU59jDW4mpcsALg11GueId1XnuIDJ8uEg79q1fdtEo31FxVMbplKELO2LGHiBOkUCo7hokFDzKAqLfsA3DRpB0tGAwZHwV3PvZVkO9JrttjFsBuPYo6Grirv5MvYsp501hXE1PFc+nJa/9bffvBy7O4aLZc7WIP+FSFC/fAb7+pcRpFCrHvYLISYfF6LrFQbGptqBOzkHfZzI27bk85GaxPaGMIx7AbSoSIFMSVhC8Y9VbCoWZH35O7BdE0wrfYdHaS4rE9S5fOQJQPMizGMQqV5j1Ee1+u7lXksUxsKWq+QBmRUURroXwcC3F2MADbcZ53f/+W+gBo7uLSOSory1tHUEyvQNgED56ePlMUGQfnSrJ7QJ9r8l8QPz83/OLaAUZ46DJnWa68HoUdmD5TKk8oXotUNCEA+qOwKtiREyr690cUHTOMcy1gjqDWU9NjgWdOF26QBvthMgBdVopRV4oBHkxtCWjlY/7l0c6wUK81Hk191NncozuFzQO763E35jXTUsd7bADzHvWbNL7YAlLEwF8rdeIlL8hxsVDJYWcjARLgwWdVh+HpUhTY4OKbPxSEEUouxaqgrfMIEqADNu0TRmpQYNvRm3LXETcWt9vTm2E+Rpsjc4OBUE3Ofed/7BDLUKa2Xf+UIRwu2DBMbnOnyQyHeJPhjkbnpUIfIx4rurlg9pbAvqMzucGfNox6k557oBPGuMUc2aSo0PA5GvZaWHzlfnCiilb6dGENP84Jc73WEBjQTcoTvuyk8lORSGid/lkPRcK
+ AL9QMx0/
+ XgCI0A2V4WI2ThPvtZMjHcqypMrlS3EmM2BwE6N6ZP0XFjPDJu2ndOxb99JKuLwyJP7ADbZQCnyfR0aviEGb9+EOb73rxdNW1tGsf+XQ2Dy3XG/UyEYNci5pWNXc/xOXl9UT0hRiUsgSEC6ZThbc2Q3hlu3LQmjL0bBvziz6ebN7FtbirFlPGTw2LRveAxKWmpebYcPvw7jn7qnZRO0ad+/tY3ejthAyAaAHi8HeEzpgqqbML7w9KKF58FDWKU3KMrutbL5FxIc7oJbnOmocYjKuZZV/J/+j7lFEBVtnTOGzWmbhdTbfg7K5civswo+ILc2tp2M33+pnMMmE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,66 +131,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 10:29:36PM +0200, Johannes Weiner wrote:
-> On Tue, Oct 13, 2026 at 06:37:20PM +0100, Kiryl Shutsemau wrote:
-> > @@ -4127,6 +4127,12 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
-> >  	return page;
-> >  }
-> >  
-> > +static inline bool order_nofrag_promoted(unsigned int order,
-> > +					 const struct alloc_context *ac)
-> > +{
-> > +	return ac->reclaim_compact_order != order;
-> > +}
-> 
-> order_defrag_promoted?
+On Thu, 2026-10-15 at 13:50 +0530, Dev Jain wrote:
+>=20
+> >=20
+> > I have code for that, too, but it seems like
+> > it's a lot easier to get things reviewed in
+> > small portions.
+> >=20
+> > If you want I can resend this as a larger
+> > series, with:
+> > 1) the pageblock claiming
+> > 2) per migrate type free lists
+> > 3) evacuation of movable pages from unmovable=C2=A0
+> > =C2=A0=C2=A0 pageblocks, when the kernel free lists fall=C2=A0
+> > =C2=A0=C2=A0 below a watermark
+> >=20
+> > That would be the full extent of the 2MB granularity
+> > fragmentation avoidance stuff I have here.
+>=20
+> I think your patch series applied as-is would regress stuff:
+> we may have lots of UNMOVABLE pageblocks with lots of
+> movable allocations, unable to be rescued, hurting mTHP
+> allocations.
 
-Works for me.
+How should we move forward with this?
 
-Andrew, could you fold the fixup below?
+Do do guys want to review this series first,
+and then I post an update with the other
+stuff, before any gets merged?
 
----
+Or do you want me to post a larger series
+all at once?
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c593913a14f8..440e515be50b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4127,7 +4127,7 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
- 	return page;
- }
- 
--static inline bool order_nofrag_promoted(unsigned int order,
-+static inline bool order_defrag_promoted(unsigned int order,
- 					 const struct alloc_context *ac)
- {
- 	return ac->reclaim_compact_order != order;
-@@ -4260,7 +4260,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
- 	 * Promoted requests fall back instead.
- 	 */
- 	if (compact_result == COMPACT_SKIPPED) {
--		if (!order_nofrag_promoted(order, ac))
-+		if (!order_defrag_promoted(order, ac))
- 			ret = compaction_zonelist_suitable(ac, order,
- 							   alloc_flags, gfp_mask);
- 		goto out;
-@@ -4642,7 +4642,7 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
- 	 * for compaction without freeing anything.
- 	 */
- 	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER &&
--	    !order_nofrag_promoted(order, ac))
-+	    !order_defrag_promoted(order, ac))
- 		*no_progress_loops = 0;
- 	else
- 		(*no_progress_loops)++;
-@@ -5024,7 +5024,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT)) {
- 		alloc_flags &= ~ALLOC_NOFRAGMENT;
- 		/* Retries went into making blocks, start the fallback afresh */
--		if (order_nofrag_promoted(order, ac)) {
-+		if (order_defrag_promoted(order, ac)) {
- 			no_progress_loops = 0;
- 			compaction_retries = 0;
- 		}
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Before I move on, do the combined policy
+changes from patches 3, 4, and 5 make sense
+to you (with or without evacuation) ?
+
+Patch 1 from this series can be merged all
+by itself as a separate thing.
+
+--=20
+All Rights Reversed.
 
