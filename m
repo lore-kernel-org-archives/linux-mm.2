@@ -4,100 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C784FCC6B2E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 04:46:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF213CC6B2E
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 04:48:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B94366B009E; Thu, 15 Oct 2026 00:46:42 -0400 (EDT)
+	id 8629C6B009F; Thu, 15 Oct 2026 00:48:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6C276B009F; Thu, 15 Oct 2026 00:46:42 -0400 (EDT)
+	id 83AA26B00A0; Thu, 15 Oct 2026 00:48:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5C736B00A0; Thu, 15 Oct 2026 00:46:42 -0400 (EDT)
+	id 778116B00A1; Thu, 15 Oct 2026 00:48:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AF136B009E
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 00:46:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6BC2C08EF
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:46:41 +0000 (UTC)
-X-FDA: 85323625002.21.AC75AE9
-Received: from mta1.migadu.com (out-197.mta1.migadu.com [95.215.58.197])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D6498C0003
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:46:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XbUFTs++;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.197 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792039600;
-	b=p1rxsH3UqDxIRfxGPbbJcYrhnuQeGboKfqGFmtyqQD0c/5/EvpyG/p8VP3rk3IMIiNrBLs
-	iQohZBQTdaGz2Oo/elviBY+lyzcCT/E8ZAslOvzXUnOZiWBwRU4qpaig5hqQd+Dam0QazL
-	+wanTnaP86Sc+9uaraDFDBm+A5fix4U=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XbUFTs++;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.197 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 44E506B009F
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 00:48:22 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFBB2404CE
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:48:21 +0000 (UTC)
+X-FDA: 85323629202.06.57D46E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id F2144A0007
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:48:18 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGDqoKhF;
+	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792039600;
+	s=arc-20220608; t=1792039699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J9CfiudFUkWUTBfc+CpZZ9afI/zwZEasEjnzQEqX9I0=;
-	b=zmYXbQDfjgWHC5EGtAPlx4fjYTNmRB5PgEsLppfwEboiTIONiH1mMkW2dBY/fxclfsLsuM
-	YASLjZsmK5yeNb8Qgx8xM6ir3+i5WqjUf4SkOnDQerp9pxLKqhbaub4K34N1xtWhnpnJk5
-	QjhjMSOpAdRL4ah3UtxFNxkQO3DQx+U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xGmsa/vfdzmgR4inHm+nx01+1+CizJckEWu34ED7NnQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792039598; v=1; x=1792644398;
- b=XbUFTs++ueeUg6Qr4YyvsuNWFU9UoDE/y+8tWuJktBbtSQsMceW7d07DwvG4KHD481EiqNBK
- u3mtSyo3vlnCHsxbuVwfTY1lYbMouffRRfbtUG/ohEldTsNrsCzLlatz1gRV36XZPHjtp1EqVse
- 38PcGAIQHdEGwTmjokfBMMiM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0fb9831d6411b311;
-	Thu, 15 Oct 2026 04:46:38 +0000
-X-Mizu-Trace-ID: 0fb9831d6411b311
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: kas@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	jannh@google.com
-Subject: Re: [PATCH v5 7/9] mm/collapse: name the per-table scan reset for what it resets
-Date: Thu, 15 Oct 2026 12:46:32 +0800
-Message-ID: <20261015044632.58880-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261014171145.3292736-8-kas@kernel.org>
-References: <20261014171145.3292736-8-kas@kernel.org>
+	bh=6HMD5RchpGYsY0pRtaAyq/WdqXxarGhJNj4S4UKCbr4=;
+	b=RcqWLNsShdq0qu/RWX2g5QUTJcKE6TZKlvSkzhyCxmNRQ3oeP6lGg5Xst7lA3AZ50zvW+v
+	wI59LIBiKskeJ+XsLecrAFXnOdfXcR5nnx68i9SolrB296+R19yZN13vge0s//6ZSH3TZ8
+	GTBopT19srCHRxNCeZAx7GMZjP+7UyM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792039699;
+	b=y9zd2csHkWwWhHmLX+Eybkesm8L57tKl39gYhz4OPfsZJeWG53zoTGWSnkqJtj1ux6Ztoz
+	SghbOON4JNEXLbOJ6VnuzYEhsi+Tq1+k8nC6/rcxTZhR/aD6LK/Dr0y9TjshrTbkl992yc
+	xnLflRImtobOSlwIPdPkRZ3Kw0tGbUM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGDqoKhF;
+	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4179843912;
+	Thu, 15 Oct 2026 04:48:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245AA1F000C5;
+	Thu, 15 Oct 2026 04:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792039698;
+	bh=6HMD5RchpGYsY0pRtaAyq/WdqXxarGhJNj4S4UKCbr4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UGDqoKhFmdLWTU9OhCOSgo50nsXn0YVZhp/FbpZFeGwBctn7pug8HGkZTqeWCHxKm
+	 xa1D3TEmpneVhIx2+Tero6MKORL1GupO/dubvGXy1VoKjMwzvK2MvSD2b2QdTPCoJo
+	 HMlkkrZpOYmWT7HaUxU40aj2i2v5oNxrJMIoLOIBX1nEryVdK6Prp0OqWTT8+zstpv
+	 Oy5z+HqMzwBby7BZ/BQAKoG5/ufi3sd0q2ELjLDilfW/yu7twZrn0CojcTU+1260Yw
+	 SukxQDVaUQbjhVWRDBClFV/eYpYEJoP9aBsyZEIVVDVbENaEcTvTp0yiJRGwsy0/pi
+	 +DECelzbkKd4A==
+Date: Wed, 14 Oct 2026 21:48:17 -0700
+From: Kees Cook <kees@kernel.org>
+To: Konstantin Khorenko <khorenko@virtuozzo.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Paul Burton <paulburton@kernel.org>, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] binfmt_elf: return the real error when program headers
+ cannot be loaded
+Message-ID: <202610142140.D483AE26DF@keescook>
+References: <20261014-b4-prep-vstor-149847-binfmt_elf-enomem-load-elf-phdrs-v1-1-f39c74d55e42@virtuozzo.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D6498C0003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014-b4-prep-vstor-149847-binfmt_elf-enomem-load-elf-phdrs-v1-1-f39c74d55e42@virtuozzo.com>
 X-Rspam-User: 
-X-Stat-Signature: 6z6cy649di5dbpk1gtp17u3ibdgiredp
-X-HE-Tag: 1792039599-543460
-X-HE-Meta: U2FsdGVkX1+2Q+8hXKDouQsJR2B1w/6Q/yVZmfOuUBds45Q6NgutNY2LPxq360Ec/qrlFDhjvNfMRCZYumik4AxEOv7EzkBS4TVpAyGfXDuBEzk2TUiL5dWFXQikcJ1eyp+Bdk3Pt7pIjfz8oZTknr6PplQWJyuP5WAHxkpz+Wj1aARCNUaGi1wziVsj+Wcfs9FP/KkZGdb9ARNQk6EaqP0OtiVC7+GqibAi3vCOL98aTccyVXovxJyRTjlTGFTdQcUsEsULC26uLeyT6m6MrfZFeIS25f2/SozADYBFH3hWidVsiWcNBa5X52LmL9nfWIp9ZZHcKWmVEehOWvt+Du9PEk48DKwI5Mp8kxylxDyS39gymDXFtS6Fflj6ubL0yZ4//+K1pVVAId0Z9ElTdRUQNwvwoXZGMwlhWeIwdVd/1Db14W8n0RRarOOVXAw6ki2cAXabf+JSDcIndwi6B8bAsvNxYaMRxJE+RwUFnQZtq6j41S1YEhEmz8imUFo/g6sxQ+HMZun+DeMtdju/rR6Ct+9Vm6ujEzq0lap0Snc436kHPPtn8oAZZS84kaHAj20iOpLkoPP4H9jJawdojrgeHY4bVyXbOKssH1ju0WcoUg84X234hKNHw2QdH+6vuT4zIbpeBXSisP1HnUt2rfIBfFeVN+WfQIjACglqKGvdS83PVmxyJLSl5wGHJUk8GuLXgG5ePYwjKw5OwFxmzZsUr7FFnmeoUKsWCutq6KL1IseSVuJItmyyp1I4z8mz8M1CkRdKKogBg0HB0l7eGtkqU8OusRK7MYw8NwyW9/Sc/DX0NEkYLUIWM5WhgvI5BXcAg6eHHCDLtrXPDeYnAaGnDvybI4QScAbuje1fX0S5Mj6/vmE1f21uYN2ejVd+ukKg/z7kzegvdLhGQrL379ABV8MCmb4ixArmWz1Mw7woI50/fQTlIr/OS4b+qmx2Vaa/qr/KdesVoBuN4Fx
- HUA0cX8U
- 5Lkvz13Qze1/DUv0mXDXyCyi1pFrzsPZUyiIkW7DYRKuMTw+SxukU7WRa2ktKO6W5tjB6mzMSqGDad+UsomXHfceuqiJvkSYBM2e5lIf/y11/GVtpHDR41y25Zf5A7xS9pHRmyCfKxE7ZrcTE5MxoL2e5OLVE5z9eDRtH2EmuzGKQsi3VCR/pI51uI9qWdQoRhEj3W9zIA5VO/tHcbsjhz6JMmTRm/Q0LPtyDqRum/d+GDYgdgVhTVtBzkCy5bu8L0M9Mpp3Wb6oyNxnYrVaBP3Ks6XIUFsaDpTdrvJrf6UM/J7cBQopabf6wDg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F2144A0007
+X-Stat-Signature: jucwrhzpiazngwc8t1ym775h63t7d1py
+X-HE-Tag: 1792039698-917267
+X-HE-Meta: U2FsdGVkX1/QspEiInqQyY9mBssuOuYk0CIkpw8tg1zAJ5uLIeRFZYtbU7WUIApkg880T9ohS58OyjN+ROudwb0taLqOn3dEUtiXhLi9Ki7aA5LjJsnHVVyAKYN5vrFs7u9EBbm8+zlrPp3BLf0jqVEWuyQPvh8/2lmAt6YtQSL8iuJmGLySaKOEMf67tp0Emj3Im6e8SISRr/85UMRDDJpFkVjnDbHTiJBDoyTWPd/e5iO3yU1iBrnPJBZlaKhVf556qpjdPeL7GDQ7x6PgUUejvFnv8jSoxtYYwCDH370ktuJluHdizxeiojCNDWs0NfvMuNcGb2Yl7t7US+dSlZQRrU0aALHZeJqOQgnzfggCd+s9qSXxnyS5BfsHajTOq4hKIwE+Yw7RopSrhyWQ8rmXR9yko5v/HrjZ/uKddutMlpu9DvSxOnVjr7gChF6Nduwo1fEbECziAV7VkdiyPr7uqpJ38nwgEsNTZ65ky21T5QDJ1dYq8PgE6m77DvFu5qjmuJULLPsgZoCF6A8fuIYADqZCjmKy6vI6agMO3nAJ8u2l4Tvr1//1UmV++Xcef5ahmIhyWSUK7GIzfUg7RKxEgapzdaXI0jUUoyKT/lfcMMx1MisTJ4+7/YNgZla+6tGkId+5VlZK+7uL2VbYN60iagfI5ZUVRlp6pesGRQNjufMrSVjPUVn7FQiXrVJDUp2DV/Zes0HuHy83vbIsjukPc1SiIWdxAHM6NjftKhi4ACnUVTtcS+XFpXUEuBJMoDcQkZHVG9ApfbU4375OvWspOB3TGN3qVNAiNHGAkigF78jQutBj8BC7IqrF4B0Sv7odGWN3ifTSbCbjUJPWAhk61cY0x5YAuwiP5CIS11QwMTCGND0azDzXPnukuAM/ihlO6/3KUuZCkR5n45TsdoZU8RmQt1IOyqGZv0jUr0tnlpM2H3LKbsD1qmz7C8cJvR+AOXkmfYeOtCdNF8q
+ trBcdsO+
+ un1Xp9wkzgdBsdmtM107CGHDQ/R3sgRdyiVMCHx3ellv0nFx4Sh0qC5kyOzSX/Jdv21+TPzGIszDzPMmZyBT/G+fkCqFF9DllIdpJsacwpmKybq50OtnXQcHmLa14j2tr88dMBspiu+h2ZhD1Mt0BTPKcoCPixwJ1tHUZYSYgegNxuu5CmFufLPaDV/u2HyAMrixAPH3upinENWfDleeoielrKYC8ouHyT0DFHJrH9BLCEZn4RrA+Np3PhJzoCHNI2ROnTjAAJV4M+4G88HNcduFPuSuu/hlsforKYsYLYppI/5wheaXVLgK0rvJMnnlIFZ7dNTW1I7L71XCssvxrRGCzKFhNjksT7lXJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,26 +93,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Oct 14, 2026 at 02:30:33PM +0200, Konstantin Khorenko wrote:
+> Problem
+> =======
+> 
+> load_elf_phdrs() returns NULL on any failure, and load_elf_binary()
+> turns that into a fixed error: -ENOEXEC for the executable, -ELIBBAD
+> for its interpreter. The real cause is lost:
+> 
+>   cause                                  really      execve() returns
+>   -------------------------------------  ----------  ----------------
+>   bad e_phentsize, e_phnum 0 or too big  bad file    ENOEXEC (right)
+>   file ends before the header table      bad file    ENOEXEC (right)
+>   kmalloc() of the table fails           ENOMEM      ENOEXEC (wrong)
+>   kernel_read() fails                    EIO/ENOMEM  ENOEXEC (wrong)
+> 
+> For the interpreter every row gives ELIBBAD.
+> 
+> Consequences
+> ============
+> 
+> ENOEXEC says the file is not an executable, which is a property of the
+> file, not a transient failure:
+> 
+> - glibc's execvp() and execlp() take ENOEXEC as "not a binary" and run
+>   the ELF file with /bin/sh, which reports a binary it cannot execute
+>   instead of the ENOMEM or EIO.
+> - search_binary_handler() tries the next binary format instead of
+>   returning the error.
 
-On Wed, Oct 14, 2026 at 06:11:40PM +0100, Kiryl Shutsemau (Meta) wrote:
->collapse_control_init_scan() resets what one scan accumulates: the node
->load, the allocation nodemask and the eligible-PTE bitmap.  It runs before
->every PTE table a scan is given, not once per control, so its name points
->at the wrong thing.
->
->Call it collapse_scan_reset().
->
->Preparation for giving a control a real init, run once for a whole series
->of scans.  Two names a word apart would then stand for two different jobs.
->
->No functional change.
->
->Assisted-by: LLM
->Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->Reviewed-by: Zi Yan <ziy@nvidia.com>
->Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->---
+Isn't that what we want? If one handler can't load it, move on to find
+one that does.
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> - For the interpreter the caller gets ELIBBAD, "Accessing a corrupted
+>   shared library", about an ld.so that is fine.
+> - A caller that would retry on ENOMEM or report EIO gives up on the
+>   file instead.
+> 
+> When it happens
+> ===============
+> 
+> - The allocation fails under fault injection. Since commit
+>   8030790477e8 ("binfmt_elf: remove the 4k limitation of program header
+>   size") the table may be up to 64K; above 32K that is an order-4
+>   allocation on 4K-page kernels, which can fail on a fragmented system.
+
+I would not want to risk changing established userspace error message
+interactions to make fault injection happy.
+
+> - The read fails with an I/O error, or with -ENOMEM when the page cache
+>   cannot take the pages.
+
+This is kind of a bad failure case -- I don't think the "right" error
+code is going to help much there. ;)
+
+> 
+> Where it came from
+> ==================
+> 
+> - Until commit 6a8d38945cf4 ("binfmt_elf: Hoist ELF program header
+>   loading to a function") load_elf_binary() returned -ENOMEM and the
+>   read error. That commit documented an ERR_PTR return but returned
+>   NULL; commit cfc46ca4fdca later fixed the comment, not the code.
+> - Commit a9d9ef133f44 ("binfmt_elf: load interpreter program headers
+>   earlier") gave the interpreter's headers the same NULL check, and with
+>   it -ELIBBAD.
+
+So it's been like this for 12 years? :)
+
+> [...]
+>   kernel                errors returned by execve()
+>   7.3-rc7               ENOMEM 17, ENOEXEC 1, ELIBBAD 1, E2BIG 2
+>   7.3-rc7 + this patch  ENOMEM 19, E2BIG 2
+
+... so there are _fewer_ distinct failure codes with the patch?
+
+> +	/*
+> +	 * Read in the program headers. A read that fails part way returns
+> +	 * what it got, so read on to see the error or the end of the file.
+> +	 */
+> +	pos = elf_ex->e_phoff;
+> +	for (done = 0; done < size; done += rv) {
+> +		rv = kernel_read(elf_file, (char *)elf_phdata + done,
+> +				 size - done, &pos);
+> +		if (rv <= 0) {
+> +			kfree(elf_phdata);
+> +			return ERR_PTR(rv ? rv : -ENOEXEC);
+> +		}
+>  	}
+
+This is a behavioral change mixed into the errno handling change to
+support partial reads??
+
+I could be convinced that errnos need to be fixed, but the rationale
+here doesn't really make me think it's worth potential disruption to
+userspace. I'd need a pretty comprehensive survey of what would change
+there and then a clean patch that made zero other behavior changes...
+
+-Kees
+
+-- 
+Kees Cook
 
