@@ -4,114 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FAF0CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 09:14:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0351BCC6B33
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 09:20:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 720C36B0088; Thu, 15 Oct 2026 05:14:45 -0400 (EDT)
+	id D1CF46B008C; Thu, 15 Oct 2026 05:20:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2216B008A; Thu, 15 Oct 2026 05:14:45 -0400 (EDT)
+	id CCEE76B0092; Thu, 15 Oct 2026 05:20:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BF996B0095; Thu, 15 Oct 2026 05:14:45 -0400 (EDT)
+	id C0B986B0095; Thu, 15 Oct 2026 05:20:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3910B6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:14:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B8B07804D6
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:14:44 +0000 (UTC)
-X-FDA: 85324300488.27.8BA7C21
-Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 40D6920002
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:14:42 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b=SbjwgFlr;
-	spf=pass (imf31.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
-	dmarc=pass (policy=none) header.from=linuxbox.cz
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792055682;
-	b=QOnBNCRWoEKe7tHZfPDTeKajSaq98Y/E9W9DFbckcJ+C944DmeRQ8DBXAkX9fyMRQLSP1Y
-	r8eTuDMXglMIQ+fJB7iYQa2jLddfBlB1QBxaea3YfLu96Y6sPCLPNQ8hXu4fbMCsQVE1mV
-	Zqfjzfktk/4zNrB9+VKRVk2HaS+eUBA=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b=SbjwgFlr;
-	spf=pass (imf31.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
-	dmarc=pass (policy=none) header.from=linuxbox.cz
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B5916B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 05:20:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 12B831C4351
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:20:07 +0000 (UTC)
+X-FDA: 85324314054.12.D4D31C3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 77B3A1A0003
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:20:05 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ee8GqM5Q;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792055682;
+	s=arc-20220608; t=1792056005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=McdUAvh5NY74wejVvsrsL2dv3zhZUPLBMc+Rqofd0fU=;
-	b=KGhWRP2/j6rvcZTcqKG1M3kTiE1nhGXAPCTmznvryWd3gSb07q+v3RYUAxAm3jT2QBASSO
-	/eJfPNxndwoEUJ1ASY1uiDDTb6uUic2IqEQlkmN3JA9vJ38I+HNYW6Kg/IM9kUZVKYe4Z+
-	FDwO+iMVZ1Ake1mWCN13i0xr3piPGFE=
-Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
-	by gwu.lbox.cz (Sendmail) with ESMTPS id 69F9ETpt679695
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 15 Oct 2026 11:14:30 +0200
-DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 69F9ETpt679695
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
-	s=default; t=1792055671;
-	bh=McdUAvh5NY74wejVvsrsL2dv3zhZUPLBMc+Rqofd0fU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SbjwgFlrB/HFvPgvt1Z37zZvYBJutnz5+Cj3SJVpRUyznUx+JPtLoUA6cbc87dFJM
-	 FRIl8p9AAB0st1WbEzg1xi6ENWl3FjaSnkGi1QPDIZKET+cyrrKkkS72KxZY4KHLPN
-	 dKOVbcM7xvb2wuabcn7zWrys9/gyikLO23YXMvpA=
-Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
-	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 69F9ET7c003597
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 15 Oct 2026 11:14:29 +0200
-Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
-	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 69F9ERRU2934612
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 15 Oct 2026 11:14:29 +0200
-Date: Thu, 15 Oct 2026 11:14:27 +0200
-From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-To: Borislav Petkov <bp@alien8.de>
-Cc: David Laight <david.laight.linux@gmail.com>,
-        Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        david@kernel.org, Mike Rapoport <rppt@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-        luizcap@redhat.com, pbonzini@redhat.com,
-        Tal Zussman <tz2294@columbia.edu>,
-        Matt Fleming <matt@readmodwrite.com>,
-        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <atCZc+XB1eWWR02x@pcnci.linuxbox.cz>
-References: <asAE3kLFDUx5v0Nw@gremlin>
- <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
- <bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
- <20261005132113.43548696@pumpkin>
- <asP5xK4axiUk7jun@pcnci.linuxbox.cz>
- <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
- <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
- <20261009090042.39ba9c06@pumpkin>
- <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
- <20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
+	bh=jWjMbMJOkJlVwkNWl6sXzkpalYbjUF5GANsswwBKBBE=;
+	b=wKFG56Po6hDmZ1eN0Nl2+3ZnjH4vbcNrKIKmfSzmJslO71ZBwsM4YXthHSOC3SdX76gaOq
+	nY/sC03JjZWD3zATsgvDiEfeHsKUL3Vj/mtnuR48q302lE0W/5rIUASJ1NufQKmaBclcAu
+	ADIsipxWDy+FxLGi7saMwno/b+QQBaU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ee8GqM5Q;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792056005;
+	b=d4hq9usbEzLK+njSeB//WShan9Ptoj2pVKHrErWLxzMuHkKluTrhcTJLueTZGwN4YN3z8D
+	RkKVduVZLkdZ2klhBe+Z9/vbq6hdDHvSjxgStVe42x7xNOJBhw/GcWKe7aJRjZtEPE98uT
+	t9m1bnB+3Es0zVq8IG0mSBqHU1YW3sI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 061366022A;
+	Thu, 15 Oct 2026 09:20:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8431F000C4;
+	Thu, 15 Oct 2026 09:19:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792056004;
+	bh=jWjMbMJOkJlVwkNWl6sXzkpalYbjUF5GANsswwBKBBE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ee8GqM5Q8ed1YdkRKIdgL5TdxLdgu5NjTIu/9H/2bHGSpU79fcQV+K4dQcuP5UxEZ
+	 Sp7QhHmQwTXdL/rbynzwN2rhmVGnmHYCOo99YQuHiBBXqIUmLYbySXD1/UXocCKmsV
+	 AFOexAFfDmwiKXLVEFjhX9XgHF16YCHqHYV9CVnO4jsybDzVbZ4tAzEPmc76QnGf5T
+	 t/rJTzxXn8AQHwQ/kB5s+fCa0n9FJrCUifhB71/YYBzZh9On3dqP0BiYesp9/wihg9
+	 sdFWaGY9/iCUGLVsCqBBAVks+PugGBX7i21WbrN6bcG9ZEPJ4cC4CuiVexY2wfpqIs
+	 /Cabgy2U9Y/7w==
+Date: Thu, 15 Oct 2026 10:19:55 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Nimrod Oren <noren@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: stop recalculating min_free_kbytes once set by
+ userspace
+Message-ID: <atCYukfCn8TOgM7S@gremlin>
+References: <20261014140859.1006967-1-noren@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
-X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
-X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
-X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
-X-Antivirus: on lbxovapx9 by Antivirus 
-X-Milter-Copy-Status: O
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 40D6920002
+In-Reply-To: <20261014140859.1006967-1-noren@nvidia.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 77B3A1A0003
 X-Rspam-User: 
-X-Stat-Signature: nky4j4qj8n61uqbzte6tft1c1ugwzeor
-X-HE-Tag: 1792055682-253288
-X-HE-Meta: U2FsdGVkX18VL4x5sTgL50B48APH/lr/UKdQVe/PusptS3TGnqEJthaXykDxxAUblk/Pva5T/cjQxRRcBmWpO785DU7u/74FjFrOoGh/S8aqIzuOug60F6hcLbYFP7pQMziJc6B5EAs78ec6smEPHtPiLxx1T/A05QUTbq6XDwgUT87f5VDFcpZN4azbINsRLLf/caulUmy1WB1VFQ2AAZrLDeB3b+vcsWPl4al/vrMa0rqsh5J8zmR0KOLnPHIP0kygCO+Isl2cEulynbkKOMifz85s4P4SRq/DPKKMEoOhPLNu9EzLIsu3dcsvaIslxYzFDNXBYhn8D6nycoFul8Jg2Eaakegu8vHSnduWd6b1E/AAaPeuvvvrnS5PQvKMlMQz3hafA1x3Z5vYx+5yyA5OIC9O/vThqEplNDJcnrnrZO4K5BMfL/t8GaQ+2yfhojj2+bywVaDisYMQkGmtVANYmQnsguSGGtsP672ztyYCClgK1rAP7istYHWiu0oUaUvpTbkMSfssSsuktiSjgSyPNDKpPQLRGgZT8lyk9IWMYmDYp7PNrejBjGxTL2iki5QyeyHLqWZlYPoqMAATbKu873jkvRd98ebSKex7OMiZDhp7u24v7mOo03pl/MqywVhr/Hx/bBRG5vpmPxnSbmL+kDPM+VkYoCQNwcqE4fpiIVmlfOY0qq0486fftSXm7ouqloJXMnlGVQla1+dvNT2eN0Cp4tcGccqdUNlbMBoWfbHJKVI87nJdGSUkdNZkjbZNyg6zxGeaxqV44vsVSQkw6pd13odPHbv2pDXtXY/IUgBOcl1lAhYKv4LjuWjCY+tqERUHy71lAJd+pc6yfF/TUy1ptHlcKcVjMGXIzleOOzw8yyv7u99iFRgQ5iO1bVQAJudHjU7n1AGTE7Tlf1c8lwk29C467ARXopyRUMM8EK5Td1glzqCatXolPWIR7ubK1ammfmOCZz3qyEj
- BScbIIJ9
- 6ZGBn7qXzGowyc5DaEmaI0G2hvYbcPxfBLXIGfH0UXAcMmDD7Oj161ts3Np65qg9r0AQRsFFxk3JO0bKN6VXxsr6WlCISg42z6juzPAPZ9RmhsPNmt+H1Ft4p5zmGPFQ0HEm0dxpeN5p5ilvmoXogD99COP47KXJaOUhib9d2Rjtt4oFjap/CqusyAnJl4ganZLElXXsLd9TxFaJOxD88ewVKaKgUwRQd/ReS2OLU+cy2R+9uyplTe3lb8CTnLFWlz33PyEWMD/74clRczw6uRttsXagcgmrBIM2frU5ctjelOwHiJ93yHwEVF9/pvRMBnbgT5Lie6qW8HTDbOUGcp8mZSQ23+3D1GPdJ1wlXMik1mwMIgCJTEYQPM8+e0s4b1VWyOiNQsDYmhTGPfE5THLVOCw==
+X-Stat-Signature: 46yugzgcs9qwuqkczcf9ox4d31wfrjxb
+X-HE-Tag: 1792056005-794310
+X-HE-Meta: U2FsdGVkX19SuhZll7Gg2Dv8sBhxVtg+aW9qkKN2SkwsYGAlMCkllf1HZuvtUAZ5LGMM7Yw2yl4sBiwJxY2l3m9Ae98fxjafxfT8CZVGp7HY6ZsBFaRMPQEkXEvqbS4I90KhSdAChOKXVMcO85fl899QKt8U2n619WNQYmX0/l0Grly1JFFIz1zEl60jrAN7fwnEFPOrI5lD7IYKRU98QjOsKJuUC5ApoDAR+UnNMnlqbRrS60DfhUeltH3Jumi8DV+vwHbB0CEQBjKJP4bDMsGXxOLRtiEA7V/eGt98JRwxATAevv15WXX3Ejs95sXW+lG+O/Q1AN6kSPaKJmovXcsIkFf+S+/h/fgolGt+ma6ZtJk/ss6Ot2bsOgPaYh4dBK/KsMsco6e5VFzm0/Kt//Aij3rcrdbX+uU0mIx9VSWIPeTT9Y51v3uUpj3X5j5JKSqgxnV5fun67EoiCoZuG1OvTpcSFnuIvo/tBeHOfJ4CoyVQon2L1IfvfdBuB90zCqyuz2gaTSpLe3XjsnnbZAbhDQN5+Lx5UQUD+DsABySZzAJBUiB9hJ4N8LWraWYeZBhXn9ZrqgM+14p3C3bKpA4zBgHGLXA32nC99hMtt+o+Uso7uaDAKMwgQi8nrpBSoQs+XcvwXAFwq5WUyHuI9jyQEjcPK706ETKK0vxvrPRuKUtoPzQdwp7BPrhfqTNJpiixXwDrw49xv+NtYNPqgvBJK46lOdyC+L1Xj9swgdZSQRAUbQZJ0wI3Bt3JcpJD/9MtZ/1+hQ4Is5u6zLguuM6S0gODwAsVmKJmXZ05zlvopa7UCR34Hy5Da34LtNSUPEwP4IvT+9GGjjK2AaX0iqFD8QCepmg5Bs7ds7rf2R5pbwqdb2Lx8Pol1/yc1R45VlEicz4YDmkXe48C2QmckCkW900rCuMq/8Y+WGWKYU2FTJCVeGHXWpuIFuE2ZQSXs/TzkWEpUPxqblzHqsJ
+ xmIdnHSX
+ D46UeLPRweFk8tRf4ar1kiA6sHRCthP+dft6Hj7DK9ZG/Vywk7/z6ubKUCE8QIrQUPt5yHY1aVNPCMbdFX1k10Ns2gbgo7FJkWFbMUgLKXvVKeThEAu2RCr6lzt4rNibxywQDXeBZdNo9x9ZMhKmqhhKeCtGAWQX73DeOMvpexKY2Omw49SrcnU1TCZa8IxEi1D6+F3TeTHiRBWDDfwyo8xN8tSNrQryKoj0VifGZDmoUq/JXAoZpYzv9dj9i/J7MLoqhbRPD+4EQLn3z/pWhB9oc2fGIoC6GMxB1bMdrKRSQICG+6GS3bqTPK4cIJxQfJMQhUcRa2YVeMjsH+2PBp0orjrPGCrGiXdxvNAABdxKH5ChXiSHWrOkZsfi1TQjTnYLPYb4mE//35Or/vE5SDq9EovbwKOzLR5JmGhOvfIwSE98=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,50 +100,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Did it reproduce usually with this?
-yes, we got most of the problems (crashes / corrupted libraries)
-during / after VM migration, so it seems to be the best trigger
-so far
+On Wed, Oct 14, 2026 at 05:08:59PM +0300, Nimrod Oren wrote:
+> min_free_kbytes is recalculated on memory hotplug and on THP sysfs
+> writes. The new value comes from calculate_min_free_kbytes() or, while
+> THP is enabled, from set_recommended_min_free_kbytes(). A value written
+> to the vm.min_free_kbytes sysctl is replaced whenever the new value is
+> higher, so a lower value does not stick. This matters most when THP is
+> enabled on configurations with large pageblocks, where the new value
+> can be excessive [1].
+>
+> Stop recalculating min_free_kbytes once a value has been written to the
+> sysctl. Systems where the sysctl is never written keep the current
+> behavior.
+>
+> Link: https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/ [1]
+> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Link: https://lore.kernel.org/r/d202dcc3-d7d7-4e98-a9a5-3137cfbfd041@kernel.org/
+> Signed-off-by: Nimrod Oren <noren@nvidia.com>
 
-> If not, keep hammering on it with the latest kernel. We might've fixed
-> whatever that was, along the way. :-(
-yup, it's still migrating, it's been another 3 days since upgrade to 7.3-rc7,
-another 107 cycles (of ~160 VMs, some of them pretty large), still no problem.
-it starts to look rock solid to me.
+With an added, focused, paragraph about user-visible effects as requested
+by Andrew (you can probably just reply to Andrew with something and he can
+fold it in for you), LGTM and:
 
-> 
-> And if so, that would be a damn nasty bisection to figure out what fixed it...
-> 
-> So pls hammer on it as long as possible to see if it is really fixed or it is
-> simply harder to repro.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-it doesn't seem to affect users in any way, so I'll just keep it running
-and report if I get some issue
+Thanks for sticking with this! :)
 
-BR
+> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+> index 5b318d17aa4b..189fc57dac5f 100644
+> --- a/Documentation/admin-guide/sysctl/vm.rst
+> +++ b/Documentation/admin-guide/sysctl/vm.rst
 
-nik
+> +By default, the kernel sets this value based on the amount of lowmem
+> +and recalculates it on memory hotplug.  When Transparent Hugepage (THP)
+> +support is enabled through global or per-size controls, the kernel may
+> +also raise it to help keep pageblocks free and reduce fragmentation for
+> +THP allocations.  Once a value is written to this file, the kernel no
+> +longer adjusts it automatically.
+> +
 
+Ah nice to update this also!
 
-
-
-> 
-> Thx.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
-> 
-
--- 
-Ing. Nikola CIPRICH
-technický ředitel
-
-+420 591 166 214
-+420 777 093 799
-nikola.ciprich@linuxbox.cz
-
-www.linuxbox.cz
+--
+Cheers, Lorenzo
 
