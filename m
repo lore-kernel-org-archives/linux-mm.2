@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C971CCC6B2F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 08:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA587CC6B39
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 08:37:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDD196B009D; Thu, 15 Oct 2026 04:34:10 -0400 (EDT)
+	id 0274C6B0096; Thu, 15 Oct 2026 04:37:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB47B6B009E; Thu, 15 Oct 2026 04:34:10 -0400 (EDT)
+	id F1A296B009F; Thu, 15 Oct 2026 04:37:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA39D6B009F; Thu, 15 Oct 2026 04:34:10 -0400 (EDT)
+	id E2F486B00A0; Thu, 15 Oct 2026 04:37:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AA27F6B009D
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:34:10 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B1EA41208CD
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:34:09 +0000 (UTC)
-X-FDA: 85324198218.21.6859B67
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C22606B0096
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:37:07 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3895C1A05FD
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:37:07 +0000 (UTC)
+X-FDA: 85324205694.06.A48AF10
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0EDA440002
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:34:07 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaZgNvMA;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 89D3BA0004
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:37:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ceFJqAFL;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792053248;
+	s=arc-20220608; t=1792053425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1y2O0PSZS5Bzt/8EZ2Y7b6A1XzbAJe0MR4Va/N0YUuU=;
-	b=INaJNiiDjYHTdG3oJ3ZwbmdUwhbBrZUEWhStIwx6tNbnCj3g4ReYWcNJHjFZscmwnGZZly
-	UeRZGQFptumODP+5bu0YfPVwT4lGKljSX04VN7TiPBzfw4NjYSwGyESNoD24P1k9HNEITk
-	w3S6s931d1MDY0PBA9HAOw9bsBKeEWo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaZgNvMA;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=NLcSuJO4U8vjtpBw9Dd1guU9F3I58AzL7EvX+dUZ0Qo=;
+	b=UrbExEMLwOsQ1GYaSYRifpPGb3rQaLNZ/fUEUhGcVrR0gt2CMofiTsDvaxbOMt8Xy3r55v
+	5i7sOetKFDUGHvbu9THKk+kTQkoBm3tFwbuLB3hDemtCFJKuz+rxjO72LhrjBzZNCD00fK
+	rpZ6oKniD9q9r2O2clbOhZXPfksMnk8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792053248;
-	b=ld/8yaXLhnUaK+U3KikgYDU2XiDr8rIKHT6RDhMuPMglpYsZBddRsqUKZkDkGi6mhLnVOL
-	e9+XnDk5+/2XWPZg7twW4oI/OVgKgNNhEuVCuvLNwQAm5kes0wLqauh9Vj2HZ5MPtnFVSh
-	6DHbSWmLbrZZ2jJxW5MKYhhvo6+cxK8=
+	t=1792053425;
+	b=h7iXpN0j4awON+uUNv5rdFtnzj1mNHcNEG534wt1GeR2mOi/nlBTCejO+p13L/XPDWJoLT
+	hqfMPzX3HId61ny/cJ0+w4dzDXBCRcOcLgGOTr1eFjE9jK6RCT+CBJjvA0LmXFE36ay5/+
+	zhw+iqyGxRKGPMZOXtnIzrmdzIhbacQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ceFJqAFL;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1EF843708;
-	Thu, 15 Oct 2026 08:34:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8351F000C4;
-	Thu, 15 Oct 2026 08:34:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B4A1B43C14;
+	Thu, 15 Oct 2026 08:37:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1BB1F000C4;
+	Thu, 15 Oct 2026 08:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792053246;
-	bh=1y2O0PSZS5Bzt/8EZ2Y7b6A1XzbAJe0MR4Va/N0YUuU=;
+	s=k20260515; t=1792053424;
+	bh=NLcSuJO4U8vjtpBw9Dd1guU9F3I58AzL7EvX+dUZ0Qo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aaZgNvMANpmUBSrs1hVX5dOBdZ5ubITsPMpzYC6ohqDfmcGNBK0HFP5IIu9enoq6P
-	 M90gmP2DGfFq7fJBhjZXldmj7fCOobTX9AHeFQzYBu4OsHOqAPJJq89m5d2JBMLE6d
-	 IX1ZzHm67oSWuDWCK9DW06xW9l7a/FAvXx9Q0KKpdbq+YUXOZRCJUzJGIofXanWSnG
-	 iZqjvsZlDyceUmFP40JWDI0N5xbgR0TDu1XDbh4oGorzXB8pv2C4VsUYL7MtPYDwtv
-	 9k/hkPAULu7KSk8UF8gOha7el2Ie8z8fXbCfvm6aqqNh3aAxRqU6ts/NigbqVxw8SM
-	 fCAorPY+owbwQ==
-Date: Thu, 15 Oct 2026 11:33:58 +0300
+	b=ceFJqAFLM7g4NE9wZsEJoybbeHVCVxchnM7ejTiim3IUlIFyU3ctm4G9tESzMQMla
+	 DtM5RNVSK1/JVG2PJqbDaMrJtDeUiCNnpI7BbLZkgoooSQUevs8vV++LK021vfv2cV
+	 2pdkgAjUJy8kcL1c/QXjLltJq619Z1+4uE0gOSXKSgBn9+sAjWca4ng0iBZb/Wj+HF
+	 DoQgKlj4SpKEMEYFJaqRJssFTt18waBVfOXf1eOWjRYA2znJ1KOFyqgCAu6Qk1i1kL
+	 LzSTCa3+D34hc8AKJVAg7VQxtm+MGSw+6K9TtN/GxtwaY4A1HRstooBKVORn402cMK
+	 YJKOUb/qL/qqg==
+Date: Thu, 15 Oct 2026 11:36:58 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Xu <peterx@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Kyle Zeng <kylebot@openai.com>, Lorenzo Stoakes <ljs@kernel.org>,
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>, kexec@lists.infradead.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: only allocate anon_vma in CoW mappings
-Message-ID: <atCP9hqNdqsdE-y4@kernel.org>
-References: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
+	Bing Jiao <bingjiao@google.com>
+Subject: Re: [PATCH] kho: do not reserve empty per-node bootmem areas
+Message-ID: <atCQqghin0KOyx63@kernel.org>
+References: <20261014131547.259138-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261014-copy_hugetlb_page_range-v1-1-5b68e03fe7fe@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0EDA440002
+In-Reply-To: <20261014131547.259138-1-pratyush@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: qpg5jbcc9op3wybgz939734zkspcjr3a
-X-HE-Tag: 1792053247-990946
-X-HE-Meta: U2FsdGVkX1//jpp+bx6t7C1IZUg1ijcHoBdqIpQaXIx6y9p6EJmqiORaciBfUjj/GP+KD+gV+JQIaPsEFJcfsDnWRlHAP1r9DEjtDodD7grZB5aLzXABfmzWcT48bioVtTfuLBPj/DCbZYgrj3XUQGS/uOb6aBNYFn3XtrKeTDlBjV3kLJ9wUlBU+qCkdXE9iLlh2qURfybyOi88MJjN4zR+ulvMaYYHebavwNCloPrOG+61guIMRelRq7wsLtUnlLE+XwIwWqwSkQaGrp6+VA34N5kLaquFWivcoDGsNdxeYrFJQL4+7zAfi020aVZPnpEAFB71SG7iFAdeVk8sZT1tVYKqLH2FI2DaA4qHlVSGBmYpLZqTNu06kwJGIX+efwkWeFdG8mD8aAotelQ5a/r57hIQlMUkwNkP2WAQzNNya4COxfn4zTv/9/p6lXc0inemtZeWeAXEWz2QDyk2NeteLAQkYSHPKHhSrWpI//DSq+0IJsP5A2mqWFDHzzLY++1RfG+VfgaRClFGvrsGUlYzMBF0iRZ7P8jZAMVjTu9fbOvIAxzOXggrjJ5XeEMS5emSvy1UJAA5EbOmr4N0q/IJ0T/iDtbqIalLGHvlyIs2V4IlIJlBecJTSz4pLzV4db3DMz2hAftUXBVT3hqygnWa4qqhR3bkfwjVnDbPAIUvvHmJmxptH91RjqqDMHAh9/rvYKgaVCqHvgeLK/Rcn5wafagbErQbCmhxLIZVskptEhmxrfXMWOtIbkejLRK/oGM0NioRdmjQ6sfxjo127Nr7w90V9tnTCzjYzX/wq0yEN/f0QSZwK3MjkoxpSomIDxFLJdBk+dZcr28cluS0EBFbJ5T1dsoq6/kEloDasG8/gnwMiqIHQ9HoNEsIjOqUfwZFe0mCLFPFK5XjfJFPNdhjpNI6on9655kfyCydffxQ6WngyYjsFkZQ9CUCT481wZe2PM4oA0qInbeb+AS
- NrtcSO5J
- pl4x6KsNLul5CSq3cUdJCU50rYWx81Qz1uCRagBzjfhVTsa7MM57sA69ySvv5o9hrZv3VT7i1/cSbYgfG9n1AsJeQDJt/LyRRMv8+PMz9ZaPwUC43LRm4yDIvVf3xpdumQxI7Wf6N3Tyx7gbyujVrQASWrMaUbHFSeCqRnvfAo5RoGn/aPUCjQRpFLurmpCnNSodFzqN4QuL5o0+ah3K/R9SNFYP4p+r7EnQysS9ANeMLib50jwqXhpVGutlyIHVXRWJtLbvhXr4AZ2tQ4t8T3MNOr3lgRPBb8eXObLtOODvt5HHezifZbULOMSoVtsNz8n/MtcKacd6TC2HHpn3/JWKPBj9EbB8znB+q
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 89D3BA0004
+X-Stat-Signature: gk1mfwbpn7mjurqapqhr4ctzphu61yy5
+X-HE-Tag: 1792053425-688009
+X-HE-Meta: U2FsdGVkX1/Kr8cBpmYn0+KeDYxQyNAV77ZIXXALCONwa6s7u0lzOPEGD/goWUzXSPA5spd+odGFWncuubQBm179YFC4/JLQXLfodOh1pRr0J1pTZyLH2xyDRRgnWU5uxMffqyGCrs7itX3oNn3rj78BDsJvjlCerZEusiG7s2ASFin2GiVL8RF7yfr60R5DfDGk3aAXkiVOfrpg1hoNPam2neu6esaZ/uqkMtvFHF/Erh43in123e1Kwa/EYrxyWYtDfMOxYU5E0egHbvb9K5UwVXwyXHF7eXKLgT1HvCJRAQ1IMUNbsdHFr0LuaqZvxNKS0p+51cUr8SM7NkE/Eyq/ydKNFXRvI7IqyKzCl/83cKAGDaWN/LnPiYuBWge5JeLn14rut0cFLimxL3o+mFK0EV9o8BJDAvKsLHEazSIpumI4dAVXEOPmFdVv30rH3KqS/JDmaoR8qrIxb1P/7ZDile2WMjHPtfcPuwJTtm6BpZVvLRoTbFkhIFlHJa/EXtUwSPaSxQiIZSMHmk3Zk6HDK8CYO5/aBbHO2mNfz5u4GdSjLXwWxBma8HEBJiLyc0O6SYxo6MaDXEu4xx4zVFjGY23boE58tGnn2jY+26Zc0/oKtxo5X1udJUYLwzxTdamidLotNNpCe1PgK4B72dgf1Qgg5Puw4LFKGMIV35Ek9FmJ0HXejcvcqE8j/0IXm5oQsS4mxzVjyVtRmK5oQS6z2+Y9tzFungjm+aU29C3WajpnRQ6KfH3Y9AIcEAwL1aO21/zDAcifjytcGjT/CNZdwyrq9geqMuYSgF3gwKpX3gmzimWt/LZVrl4NrZc+lU6EPUnKjQNAZcJx46ZgGZYQ01w+rh41OOnkH3LSujrKdQloUByfIzaNdBTxzWnyBGxqJrfsBkrrpprSbaCiX36nEW7OwHggYUu9PMK/P98qQLyr6a3sK9pC3b0E2UqJJtLdvv9B2Nxg+ycsfiM
+ 3Rv8FMdQ
+ tjmlkNa8lqdXRkBm0SVm1UI/fSY2UkvoB35u3FyitvY+CdJY1xoVhkL5efGKPhmKnhlDIcxWxzRAba2Q1oWh+LFDlXR8Sp8KExNLFHMp1yMTZPWpXjgno7QGMt3PKDhU3B7b9mAbioSion5GQtzc7FJPicKEnC8QTAAr/suHNbpOfElNAAmzBumDIdeKS9o9p7li+qBXv8HxlEzfU4hU84huo4FTLUNGTZbPB1Ci7+htVZY1PmOU/OP/NPl1iwxCENQX271pmlMikjYlYQ/f/iMLaS7sSqb4oR0H7LOgkUjYY2Oo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,148 +92,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 01:53:11PM +0200, David Hildenbrand (Arm) wrote:
-> find_vma_and_prepare_anon() can end up allocating an anon_vma in VMAs that
-> are not CoW mappings, which is wrong.
+On Wed, Oct 14, 2026 at 03:15:44PM +0200, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 > 
-> If we have a MAP_SHARED R/O file mapped, we lack VM_SHARED (but do have
-> VM_MAYSHARE) and lack VM_MAYWRITE.
-> 
-> While uffd later rejects such mappings (uffd registration requires
-> VM_MAYWRITE, see comment in validate_dst_vma) find_vma_and_prepare_anon()
-> still wrongly allocates an anon vma before it validates the vma.
-> 
-> This in turn later confuses copy_page_range()->vma_needs_copy() such
-> that we end up calling copy_hugetlb_page_range() with ranges that
-> actually do not contain *any* per-pagetable information that would
-> require copying, which is the basis for PMD-table sharing in the first
-> place.
-> 
-> copy_hugetlb_page_range() should not have to worry about shared
-> PMD tables at all: it doesn't make any sense to copy page tables that are
-> shared, as they can be fully recreated later. Ending up in the function
-> with shareable page tables is the real issue.
-> 
-> If a destination PMD table is shared in copy_hugetlb_page_range(), it
-> might get concurrently unshared as we are not holding relevant
-> locks, resulting in us using a page table that is no longer mapped and
-> possibly freed after calling:
-> 
-> 	dst_pte = huge_pte_alloc(dst, dst_vma, addr, sz);
-> 
-> To fix it, do not allocate an anon_vma in non-CoW mappings and add a
-> safety guard to copy_hugetlb_page_range(), making sure that we never
-> end up messing with shared PMD tables in there.
-> 
-> Before commit 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd
-> operations") we would always validate the VMA before allocating an
-> anon_vma, and consequently never wrongly allocate an anon_vma.
-> 
-> As uffd_lock_vma() is part of the same lookup machinery and
-> also contains a misleading VM_SHARED check, change that one as well
-> directly for consistency.
-> 
-> A follow-up cleanup will stop taking the hugetlb_vma_lock_read(src_vma)
-> lock in copy_hugetlb_page_range() entirely. Further, the usage of
-> VM_SHARED in userfaultfd code should be cleaned up later to focus on
-> CoW vs. non-CoW mappings.
-> 
-> Reported-by: Kyle Zeng <kylebot@openai.com>
-> Fixes: 867a43a34ff8a ("userfaultfd: use per-vma locks in userfaultfd operations")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Some nodes do not allocate any early boot memory. An example is
+> hotpluggable nodes with movable_node enabled. So the scratch size for
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+                          Let's use the new naming please ^ ;-)
 
+I'll fix it up when applying.
+
+> them ends up being zero. Zero size allocations normally don't play well
+> with memblock. Memblock returns an address, but then doesn't actually
+> reserve anything. This address ends up being recorded in kho_bootmem
+> with a size of 0. In case of hotpluggable nodes with movable_nodes, the
+> allocation on the node actually fails because memblock refuses to
+> allocate there, and so KHO fails to initialize.
+> 
+> Skip bootmem reservation for such nodes entirely.
+> 
+> To keep the code more robust, avoid overloading kho_bootmem_cnt. use
+> max_nr_bootmem to store the size of kho_bootmem array. This ensures that
+> the location of kho_bootmem_cnt assignment does not affect the cleanup
+> paths.
+> 
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> Reported-by: Bing Jiao <bingjiao@google.com>
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 > ---
->  mm/hugetlb.c     | 24 ++++++++++++------------
->  mm/userfaultfd.c |  5 ++---
->  2 files changed, 14 insertions(+), 15 deletions(-)
+>  kernel/liveupdate/kexec_handover.c | 17 +++++++++++++----
+>  1 file changed, 13 insertions(+), 4 deletions(-)
 > 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 63dc836061c99..60f9b209c8db1 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -4984,10 +4984,11 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
->  		raw_write_seqcount_begin(&src->write_protect_seq);
->  	} else {
->  		/*
-> -		 * For shared mappings the vma lock must be held before
-> -		 * calling hugetlb_walk() in the src vma. Otherwise, the
-> -		 * returned ptep could go away if part of a shared pmd and
-> -		 * another thread calls huge_pmd_unshare.
-> +		 * Shared mappings only need copying when we could have
-> +		 * information stored in page tables (e.g., userfaultfd PTE
-> +		 * bits or markers), which is incompatible with PMD sharing.
-> +		 * Still take the hugetlb VMA lock for now to satisfy
-> +		 * hugetlb_walk()'s locking requirements.
->  		 */
->  		hugetlb_vma_lock_read(src_vma);
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 7018e25e4eda..6f1f55fe3181 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -831,8 +831,8 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+>   */
+>  static void __init kho_reserve_bootmem(void)
+>  {
+> +	int nid, i = 0, max_nr_bootmem;
+>  	phys_addr_t addr, size;
+> -	int nid, i = 0;
+>  
+>  	if (!kho_enable)
+>  		return;
+> @@ -840,8 +840,8 @@ static void __init kho_reserve_bootmem(void)
+>  	bootmem_size_update();
+>  
+>  	/* FIXME: deal with node hot-plug/remove */
+> -	kho_bootmem_cnt = nodes_weight(node_states[N_MEMORY]) + 2;
+> -	size = kho_bootmem_cnt * sizeof(*kho_bootmem);
+> +	max_nr_bootmem = nodes_weight(node_states[N_MEMORY]) + 2;
+> +	size = max_nr_bootmem * sizeof(*kho_bootmem);
+>  	kho_bootmem = memblock_alloc(size, PAGE_SIZE);
+>  	if (!kho_bootmem) {
+>  		pr_err("Failed to reserve bootmem array\n");
+> @@ -882,6 +882,9 @@ static void __init kho_reserve_bootmem(void)
+>  	 */
+>  	for_each_node_state(nid, N_MEMORY) {
+>  		size = bootmem_size_node(nid);
+> +		if (!size)
+> +			continue;
+> +
+>  		addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES,
+>  						0, MEMBLOCK_ALLOC_ACCESSIBLE,
+>  						nid, true);
+> @@ -895,13 +898,19 @@ static void __init kho_reserve_bootmem(void)
+>  		i++;
 >  	}
-> @@ -4995,6 +4996,13 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
->  	last_addr_mask = hugetlb_mask_last_page(h);
->  	for (addr = src_vma->vm_start; addr < src_vma->vm_end; addr += sz) {
->  		spinlock_t *src_ptl, *dst_ptl;
-> +
-> +		if (WARN_ON_ONCE(want_pmd_share(src_vma, addr) ||
-> +				 want_pmd_share(dst_vma, addr))) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +
->  		src_pte = hugetlb_walk(src_vma, addr, sz);
->  		if (!src_pte) {
->  			addr |= last_addr_mask;
-> @@ -5006,14 +5014,6 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
->  			break;
->  		}
 >  
-> -#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-> -		/* If the pagetables are shared, there is nothing to do */
-> -		if (ptdesc_pmd_is_shared(virt_to_ptdesc(dst_pte))) {
-> -			addr |= last_addr_mask;
-> -			continue;
-> -		}
-> -#endif
-> -
->  		dst_ptl = huge_pte_lock(h, dst, dst_pte);
->  		src_ptl = huge_pte_lockptr(h, src, src_pte);
->  		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 0e0fe9bfef239..82b56a58fc40d 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -115,8 +115,7 @@ struct vm_area_struct *find_vma_and_prepare_anon(struct mm_struct *mm,
->  	vma = vma_lookup(mm, addr);
->  	if (!vma)
->  		vma = ERR_PTR(-ENOENT);
-> -	else if (!(vma->vm_flags & VM_SHARED) &&
-> -		 unlikely(anon_vma_prepare(vma)))
-> +	else if (vma_is_cow_mapping(vma) && unlikely(anon_vma_prepare(vma)))
->  		vma = ERR_PTR(-ENOMEM);
+> +	/*
+> +	 * Nodes that needed no bootmem were skipped, so fewer areas than
+> +	 * initially estimated may have been reserved.
+> +	 */
+> +	kho_bootmem_cnt = i;
+> +
+>  	return;
 >  
->  	return vma;
-> @@ -145,7 +144,7 @@ static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
->  		 * We know we're going to need an anon rmap, so check that
->  		 * early.
->  		 */
-> -		if (!(vma->vm_flags & VM_SHARED) && unlikely(!vma_has_anon_rmap(vma)))
-> +		if (vma_is_cow_mapping(vma) && unlikely(!vma_has_anon_rmap(vma)))
->  			vma_end_read(vma);
->  		else
->  			return vma;
+>  err_free_bootmem_areas:
+>  	for (i--; i >= 0; i--)
+>  		memblock_phys_free(kho_bootmem[i].addr, kho_bootmem[i].size);
+>  err_free_bootmem_desc:
+> -	memblock_free(kho_bootmem, kho_bootmem_cnt * sizeof(*kho_bootmem));
+> +	memblock_free(kho_bootmem, max_nr_bootmem * sizeof(*kho_bootmem));
+>  err_disable_kho:
+>  	pr_warn("Failed to reserve bootmem, disabling kexec handover\n");
+>  	kho_enable = false;
 > 
-> ---
-> 
-> base-commit: 1d0b04a60516de48250b04227dcf483c6c09aab1
-> 
-> change-id: 20261014-copy_hugetlb_page_range-743d71a2980e
-> 
-> --
-> 
-> Cheers,
-> 
-> David
+> base-commit: e1fe7daedae7a4a23aca6dbd58e1746750b632dc
+> -- 
+> 2.56.0.385.gd3acb90ef8-goog
 > 
 
 -- 
