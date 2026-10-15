@@ -4,90 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58F5CCC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 11:40:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56AE7CC6B3A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 11:40:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 542596B0088; Thu, 15 Oct 2026 07:40:16 -0400 (EDT)
+	id DF6266B008A; Thu, 15 Oct 2026 07:40:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F4946B008A; Thu, 15 Oct 2026 07:40:16 -0400 (EDT)
+	id DCE036B008C; Thu, 15 Oct 2026 07:40:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 408B56B008C; Thu, 15 Oct 2026 07:40:16 -0400 (EDT)
+	id CE4B26B0092; Thu, 15 Oct 2026 07:40:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F7D96B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:40:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A4F6D6B008A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:40:49 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9EAE512097C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:40:15 +0000 (UTC)
-X-FDA: 85324667190.13.9A80A78
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 15D0C8000A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:40:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=KMaBtk66;
-	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792064414;
-	b=0/eUIY7WLXk4PfU6P9iDLtIU+uFxv1p34pi1c4YQtB8ceZgIDrp+nvSTUD+rsu6ci6a7gO
-	2H6GsNAKv42xi/bOBj667iZ9jGjocDfqIoHZmL1rp+8ar7oHa6qyp3mRaXI42dzZ+wmUam
-	EyAy0wmADhD96QwR0WmbVRFAIqfhyXQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=KMaBtk66;
-	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 248EEC0987
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:40:49 +0000 (UTC)
+X-FDA: 85324668618.13.B50A1CC
+Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0D3C316000C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:40:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=hRT3L113;
+	spf=pass (imf08.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792064414;
+	s=arc-20220608; t=1792064447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WrIl2V6/+vHdh9lsYXKRb2wtLrMBBxx5uhfmnB2HaOI=;
-	b=4+cA0yNgamfT9RwuF6KELoJr40QxkBGsVb3vcaaGhpExYMJ1gXphL77VIk4Uh/jzsvzuFP
-	DgyYc57jKLuQol//3zu02AZvyjF0dtalBJsmgsQPqhQGijwI9dHfAdYiCbbdb0wDhLokhX
-	3R7M82oFt6VeEVr+1S74Uvx9+gd074M=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792064407; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=WrIl2V6/+vHdh9lsYXKRb2wtLrMBBxx5uhfmnB2HaOI=;
- b=KMaBtk66CUOyRVizyXfwVFkmtoIqA5aJKevCMvzv+ib3u39jeIBs1f6nTEs5DIqOsNpEvk
- GgM3JUescu7U4TGnKW0+5AVuswtaiQ6VERjptDC3Gp/CbCKyDN/dYXu/RcfuYJVpAHIhik
- eTsyZ9no+DEgRKtWU41b6v3NdOqmXjYpke5bnKmXgsO8eQK1FabjXwK/Hhy+uKA+dgz4sf
- k6Z/Y9a1gV5UtFWgUeWl5vBKxwOQRijsWhrcFfUKN8WR10P4dEEVZwjGJAci4+FQXF+Gkd
- KrF+X0s4AHDkvuWzGRdbuajgsYysEjrHKzXq5QKvafrNlJup6auZtdmGFolUUQ==
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>, 
-	<joshua.hahnjy@gmail.com>, <ziy@nvidia.com>, <mingo@redhat.com>, 
-	<peterz@infradead.org>, <mgorman@suse.de>, <riel@redhat.com>, 
-	<juri.lelli@redhat.com>, <vincent.guittot@linaro.org>, 
-	<dietmar.eggemann@arm.com>, <rostedt@goodmis.org>, <bsegall@google.com>, 
-	<vschneid@redhat.com>, <kprateek.nayak@amd.com>, 
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Date: Thu, 15 Oct 2026 19:39:42 +0800
-X-Lms-Return-Path: <lba+26ad0bb96+7927e5+kvack.org+lizhe.67@bytedance.com>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bCnNKTsKL4tE3BHNaD7/M/1HrMbDpTApOPkzvLfLa5g=;
+	b=VEZd6oCM/rXeWt1j7fVFCXOWMoLio24Esj8mIET5iT5ihglzbGifC66toWJNbjymYzpNJ0
+	+eT71/72IP7Ba1JZ32m+wZaNSfw2M81XmgK/zksug3CJx3BvT4bNIHjuOnuFssaQqmmDYv
+	0clD3PFBDlpAEBXBWrI6PdMVDVHURqg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792064447;
+	b=KuNngKinNmGiq1Y/VsJeY8nr7qFQITsUbHCkjk5qdng9Xlk/dsktZCS08u60U18lYh/dlY
+	Txx99XfL8Tt/Cn0aMbBLcXyUXMhJibX8dtON/Ox11lVYzI1SFxyRgb+T/KBCk3eVoo4ITU
+	WmiyppKQAZcFSF+SHI+9Y8KQWYiTPmE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=hRT3L113;
+	spf=pass (imf08.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
+	h=from:subject:date:mime-version:content-type:content-transfer-encoding:
+	to:cc:cc:content-type:date:from:subject:to;
+	s=s1; t=1792064446;
+	bh=bCnNKTsKL4tE3BHNaD7/M/1HrMbDpTApOPkzvLfLa5g=;
+	b=hRT3L11324ca9Ft7XOMKfYweW4/PIGMM2bp8svQMmgQNEGw9xKizASF4amEdHXjeaUOD
+	8ixIK7eg7vHDuwcKMDWyPwwZQSUw4GxT5S8H0NgEhJbtoSq7x9v5UrZP8RcRmlQGpPVtec
+	vOoKF5YOnevB7qPdc2OTs9ipDDULSfx9M5nR8KBLtNB1WffFZaN+xxcChs8o1jqgLeXrjb
+	dIO9WQLuGbvyPPE1MVxkU95Dshxd1hlVMHkAyok1Lb0D8HG7A7VhJuHHgrXHu8FPfxN5jl
+	lvkagSTWeG04hOVveGTcpkVhEteVwL0X7fAc9TBhtuPgx7IySVHjsTMgZeh+/URQ==
+Received: by recvd-c977b4567-gqtp9 with SMTP id recvd-c977b4567-gqtp9-1-6AD0BBBD-60
+	2026-10-15 11:40:45.768673003 +0000 UTC m=+1363213.894827407
+Received: from [127.0.1.1] (unknown)
+	by geopod-ismtpd-34 (SG) with ESMTP
+	id B9491fufQs-q2WdzhwHlDg
+	Thu, 15 Oct 2026 11:40:45.691 +0000 (UTC)
+From: Liz Fong-Jones <lizf@honeycomb.io>
+Subject: [PATCH v7 0/3] writeback: let foreign flushes reach dying cgwbs
+Date: Thu, 15 Oct 2026 11:40:46 +0000 (UTC)
+Message-Id: <20261015-wb-dying-cgwb-flush-v7-0-9278d9ebaf5d@honeycomb.io>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-References: <20261014094347.99157-1-lizhe.67@bytedance.com> <20261014094347.99157-4-lizhe.67@bytedance.com> <as9_SwmLxAcTovnl@gourry-fedora-PF4VCD3F>
-Subject: Re: [PATCH 3/6] sched/numa: fix scan-period adjustment for shared faults
-Message-Id: <9b9e6c92-a291-48b4-a128-c31bc718db7a@bytedance.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-To: "Gregory Price" <gourry@gourry.net>
-In-Reply-To: <as9_SwmLxAcTovnl@gourry-fedora-PF4VCD3F>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-User-Agent: Mozilla Thunderbird
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 15D0C8000A
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43N20rEMBAG4FdZcm0kx0nile8hXuQwbSPaSrNbL
+ Uvf3XQFKRLEu/mZme+/koJzxkIeTlcy45JLnsYazN2JxMGPPdKcaiaCCWBOAP0INK157Gns69i
+ 9XspAGWDdovDBJ1I/32fs8udNfXr+zuUSXjCed2q/GHI5T/N6q134fvd3w8Ipp94m6yyz2kv/O
+ EwjrnF6C/d5InvJIo6MbTOiMhqCVjF5ozrRYOQ/GEkZRamlUdYqANNg1IGRrM2oyoSEII1l0jt
+ oMPqH4YzxNqMrYyVwDDaCji0GjoxoM1AZ7hwPCkWKXfeL2bbtC3NKM4AuAgAA
+X-Change-ID: 20260926-wb-dying-cgwb-flush-06e260e2abad
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10932; i=lizf@honeycomb.io;
+ s=gpg; h=from:subject:message-id;
+ bh=VTyms48DupY+M0j/NCiYvBN7G4Zz1bI67Q/WcU/bpsM=;
+ b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBq0Lu8vDws/hL8zJ29aRx4P9bAz1xfFdnbW+yeL
+ yD8A1dvSzGJATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCatC7vAAKCRClztTjl62v
+ wne6CACRt/8/1YTHY185YfOEJQJj0q+wiQPW/2GJI5mW6NKKZRf+zsmSnRC222UdaH4d/h9i5nx
+ H8q7Ci36BzF3lJXZYXmL+hSbblnPxBSggQCZ6c2NcpyhL0qZLqelDX3zK7CXUFx8pyuxvavD68+
+ PtGKzhDqfNRdLLgHaToOzLMPXrFdstaMQdrQMQ8fRD9oCagwZqFNlUm6SD5kdZbixgRvWWhUhhs
+ gQ1affqT2oVAq67waNZIHhfHfApKm4zYnZhH7e7ab7MWCOzrLdrdukJlZTHR4c3x5C7mf5Cffj0
+ nEHCciG5EjVMSJyVZ56JoJLRiosr2boYuQRhjcR/hdR6GQDe
+X-Developer-Key: i=lizf@honeycomb.io; a=openpgp;
+ fpr=1F7714D7EC3441D2CECC24606A3F8B00FBDDD2A4
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
+ =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeTImm1ntFeNm?=
+ =?us-ascii?Q?KU0+S2VZz4+h1CgyKuU4W5+SlLnm5IOUKkeu0qR?=
+ =?us-ascii?Q?bXK=2FJ3KNE8qr70bjIltnfPCHskRplMOE07S9Hls?=
+ =?us-ascii?Q?x+Rc3MlUsKt=2FtJQa2eO2z=2F7Cbos+PV7YwoE6OrJ?=
+ =?us-ascii?Q?zgGx=2F6I2JpO4+Lta5txpYw=3D?=
+To: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Tejun Heo
+	<tj@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
+	<hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Xin Yin <yinxin.x@bytedance.com>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
+	<lizf@honeycomb.io>
+X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0D3C316000C
 X-Rspam-User: 
-X-Stat-Signature: a1guoxw15rpaf18qft6ha15zekcxcj51
-X-HE-Tag: 1792064412-686139
-X-HE-Meta: U2FsdGVkX19fwHLZKKnHxiWt3iLqpmQbQ9p7C/JisnHV/43pDSk95Zu4zGoJbQFOeEOY/jCE7BHG0qXybGifDfRCJ3CurMWkP0M1xP/ihHqxOeh/NztbooSAvQS88kKOvaIXPQAYOnmGvWFwFjP3uNL8yQEcx/vfI4gcYLVvV/ONBwWG3QyFs/zQwbLb3Yfs0PhEqVva0bGPyOUihGcYXIYGxglpt3EWkQLQnRMHQNstQb/0cdQef7R1IDWcL4HG/Jq3UQICoqqztYnuBlbvYoUQs20DyKlY8Q7fhmYK7RDJH7xHbqUElYKfBhiYWwZRhXlAplHNeiMj74UV81DrOkwjYu7A5VrOXt1k/GgfxoiHnXTqeuObAFX4hkolbhWZ7+mD9aYEICSIsGKZ6xS5kBUFlJw75aXAnmxkN2TSXhrSyNGEPXZBMmGYGB0hgOaMDr+RQQ1hCFU4U7+gxZ0tpv5NTAjdWNR6ycVpRbAtM3k08MY7UDOt6lDp7+9vuk0trJFPQBryBhbHWFTW+J1F3JPDCPWqnY1U1WqSPQHnU3aCPGwLpTaME2XSg6CueySKTEir1HBIILgMNN7GBh7WrfFkjeHo+oLcnUUErAELie1sqjOfYdDoC/X1PFu/TML1AGxG7wa1+AJfzQwqlVM9E2I/8Zdk0SgqEakPH+c6qyjf1iruUe2h7+somqF6RReriolcV7WeK44fzbUj8diaZBY+AkU+bfiZ3ngVOTFXTNoL58qZALrSwiJP2iEJyJ4XKe0fFbKfT6oz73NHjVsVhke+yZGx8BWAI2ZKRrKAU3zSGRylowvvQg3FfjE5VKnn70SJSdHD03fOgMR7XATVuab/XXqvfXtmgPwMp61I+D3NVX6UpWKjt8/+SggsgSnAkr0qnYcmedc44mp8DwRC+/Ql/z5wo2G/6Fj3mzvBC8HLCmLq8tq7kuw+HWWxffY+yax5dN6rlEkWamVjpkS
- WdOy8cPh
- dndQYfWYjiyM6rDdJ72E5mzqg+sJMfqt9asXS+02ZIF/bW/VcGvGImAVJudXz4fr4aT5VmSZu3mvt57dScwJ1LJA8XYxrrdDZaxW3B5k5moOR0EOWDQKEuxhSaQg/e94uMv/ie3N5gZM6DPQUqn6oUUpZ4wo5y5rqJK5+8j+je/nvuk5apbdVdWcwOmqb7k2ekdaWj0K0DIUkXwI/a6vVjyUDDnqp0uYg6anGM2qUpLrgjPsmJ+ZMCTkq9uAkHn+4q8GmZ3B5prsFZrT3cCY5+ZEosE2m03Q9GwpZ7soe4vPJdnQxmHGBVU1fnwvxQr30zisX0BlP1rG/OTDlPrjpxVuGFwgPyheNp4jU
+X-Stat-Signature: r9c49sr5cj4c8o57rf3gafrahrkejxis
+X-HE-Tag: 1792064446-419494
+X-HE-Meta: U2FsdGVkX18/HWatxunn2NvmuBFGpZKAPiGLSY+/yNOwWQ/3w8HbtMu3p5DFLntLlTzNSStyTjURheGU+Q6hnkt2Y2+y9Sw4fOSx5QTL2Hok+vTiXhV6WWzxjaHbxY+kQdCapmlN6WBU2su9fesADzNlqJwpscMHriB0nn081SR099DxYaijcT6JCNBliekjN4sjoK6pecZrrIxvtKYHkdcoTzENMyw+w5/TuFvcVbj0PdTJ3MiKTyBcUSsBZIYUWwiNabT/NI5iD0HgEPm58peqOuZ5Sr6CeZO2AmvHlRjy1ZuwPz1Irj8Lk3CdeBvtzogXqARPn9XfZtyXnrWQR0TlMk8jZZ4Fispf/q5erPVtd5q+tkl4Qx3n4vK/3Jw+7SrGCl1KCzGON5wFLUamVtOjRbGCK2QWA9jiE92k6AQPSLFk6nuWSSO28jrvUTGxlzO0ezlP2LAThpUt/EPC4p0tp93WeyRFFt9q7rOEpZymP9qEEZIH3F67aZD0R+p4prHl6TxLGipM3yUsCkU5qaAIOgCyu+zuikBc8dTYvH5E+nu66vbjwCOUt77wnZaIvYRKuxKnOdDQRqas+TIjW4tCyZKyafOVLWU/jcMjx1P43OlrTwI/xyphST00r2l12OOVAmOah0N4bjseBRrGVgEM6BCkaCVrJC6NX/FEDREM22GyFcUyem0DmA1+62TJn04otlsP5slGQ3uZcZL5GJZxHSckS4gCD6Q1V5OCrF3X77H2YEYBayOxUdosX7AixFsF+97MwJjx7xdICxIdc3shAxShTRTTKqscvDOiVgF/ww4POojatKh2LFcUi/3YubKxrcUZ5uOCjrUQd6ULILfVKg3QxKJIzt72H5WKFfFw5HRFJykpTu38l0GE/4HeMlXch84wGEhJRHZCUiQOLOahSkUaBrwoeS+olVm55r/csb4xhIbQTnNoEQDDaby8kDzcGjGGCmsnhC5iOJU
+ gIP+3a8C
+ A/PK8my9ymtq8JTrtVvPTrlJk5yhXV5r5+4T/C/vxUHf2NF0P5U1BRTCGY/mWMDHL5j8w3iv7T/ewGmvHQSY1LB9oLvJimB6uTwZ4AQAWqs5SA5tAj9DlbsO45rxN2owuNWzHNWa05dQk1lK5P2rh+96n+qz7gMm6l2G5YykSu+iWpSxVjMkq+ptAvg2Ffvsn5fy6eh94gC9PCLaOkx+cjNikGyWbQBxvKGPJsHTY91Df5JY6Y3LcekXfNYYTrtOTLpIodLsccOiLufyAqyZGTq5hNAjolt3J58bVkGcKdQOGXB8XajW5L1j37o0/5VKV9KfnuyURH5V9o0mCGZFpfkOh3I/wxoZuXR266teiVW6eKBKdAOHjTmEddlpLZyAmN+ugBzKDEr91Eg6u+9Kyep2mMVXtqbW5EZC4dqGA/kpmJ5PELV+ECUFDntVZvv8uXOmdvUrl1OmIm7L3XtYlynlBMsgkuN2PKsh6ojmKblWS89e8lLKuci9sNxc6/rPMaYCxKjO/S4TpbmCYmqZtFmJGskYoXXvDzETt3VeSxOiWt44HS68BaMZBAoWDxr285OlZt+Vc9hYkUz2mYhsh6icV+KPBn0v0RUNJG3eQVrb7GCdsNwymP8W9tA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,64 +122,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 9:12 PM, Gregory Price wrote:
-> On Wed, Oct 14, 2026 at 05:43:44PM +0800, Li Zhe wrote:
->> Commit 37ec97deb3a8 ("sched/numa: Slow down scan rate if shared faults
->> dominate") intended to slow scanning when either shared or local faults
->> dominate, and to speed scanning up only when many private faults are on
->> remote memory pages.
->>
->> The implementation uses the private-fault ratio as the slow-scan signal.
->> That makes private-dominated samples slow scanning, while
->> shared-dominated samples can still fall through to the speed-up path.
->> That does not match the stated intent.
->>
->> Replacing the private ratio with a shared ratio fixes the
->> shared-dominated case, but the scan-period code still only has separate
->> locality and sharing ratios. Those ratios cannot distinguish a window
->> with many remote shared faults and only a few remote private faults from
->> one with substantial remote private faults.
->>
->> Track faults that are both remote and private, and only speed up scanning
->> when that signal is large enough. This keeps local or shared samples
->> slowing scanning and avoids extra hinting overhead when the remote
->> activity is mostly shared.
->>
-> This changes NUMA balancing behavior that's been around since 2017.
->
-> While it's not the stated intent, it's been consistent since then,
-> and i'm concerned that this could cause unexpected regressions.
->
-> Do you have performance numbers on this change to show it's actually
-> beneficial compared to the existing behavior?
+At Honeycomb, a container that reads from Kafka and writes columnar
+files to a host volume stalls for 30-60s after each deploy replaces it
+(v6.18). We're increasingly confident this is the cause: the stall
+looks the same as in the reproducer (little CPU use, lag growing
+linearly and then recovering), and the mitigation it predicts, moving
+our final syncfs after the last write, worked in production (below).
+We haven't caught it with probes in production yet.
 
+Patch 1 is a prep fix: switching a dirty inode away left the old wb
+counted in bdi->tot_write_bandwidth. Patch 2 keeps killed wbs in
+bdi->cgwb_tree until they are released, so foreign flushes can still
+reach them. Patch 3 handles the other way a wb leaves the tree: when a
+memcg's blkcg association changes and a new wb takes over the slot, it
+switches the old wb's inodes, dirty or not, to the new one.
 
-Thanks for the review.
+Applies to mainline (24a19b953e2a, 7.3-rc7) and vfs-7.4.misc. Tested on
+vfs-7.4.misc and on mainline (d24e8ac715de, after 7.3-rc5) with
+168a8c13159c, where patch 2's test gave 1.0s, 1.0s and 1.1s worst lag.
+Patch 3's loop follows 407a5d205179, and f6988c90671e bounds its
+rescans.
 
-I do not have convincing performance numbers to show that this is broadly
-beneficial across workloads. NUMA balancing heuristics are
-workload-dependent, and my motivation here was mainly the consistency of
-the scan-period decision logic rather than a broad performance claim.
+Syncing before the removal isn't enough: cleanup_offline_cgwbs_workfn()
+skips a dying wb with any dirty inode and only retries on the next memcg
+offline. On ext4, syncfs can leave inodes I_DIRTY_SYNC: at 5000 files
+one syncfs still stalled in 7 of 9 runs (19-26s worst lag), a second
+syncfs avoided it in 5 of 5, and with this series one syncfs lagged at
+most 1.5s in 2 of 2. On XFS one syncfs left the wb clean in 5 of 5 runs,
+but a single 4KiB append from the old cgroup after it stranded the wb
+again (15-28s worst lag, 5 of 5; 1.2-1.6s in 2 of 2 with this series).
+In production, our writer synced after closing its data files but before
+writing its final Kafka offset to a small shutdown file, and moving the
+syncfs after that write mitigated the stall for us on XFS. In the
+reproducer, a 14-byte file written after the syncfs stranded the wb the
+same way, whether created directly or via a temp file and rename (16-29s
+worst lag, 7 of 7; with this series, 1.0-1.4s in 2 of 2 created
+directly); an empty file did not.
 
-The same concern also applies to patches 5 and 6. They were written from
-the code/semantic correctness side, but I do not have convincing workload
-numbers to show that they are broadly beneficial.
+The harness that produced the numbers (paced writer, lag per second,
+MODE=alive control) is at
+https://gist.github.com/lizthegrey/2209d831930588f63076bdc0ac7b78e2, and
+a minimal recipe is below. Settings for all numbers: MEM_MAX=max
+POD_MAX=4G RATE_MBPS=250, plus NFILES=5000 SYNC_OLD=1 (or 2) and
+DIRTY_AFTER=1 or SHUTDOWN_FILE=offset|offset_rename|empty for the syncfs
+runs and NFILES=500000 OLD_SECS=120 SYNC_OLD=1 POD_HOP=10 for the
+500k-file runs.
 
-For `update_task_scan_period()`, there is a more concrete issue in the
-memory-tiering-only case. The function currently depends on normal NUMA
-placement fault statistics. In memory-tiering-only mode, when there is no
-useful normal-placement feedback, it can keep taking the slow-down path
-and grow the scan period towards the maximum. I am testing a separate
-patch locally to handle the memory-tiering-only scan feedback explicitly.
+Also reproduced unpatched on bare-metal arm64 with Ubuntu's 7.0 kernel
+(ext4 on a loop device): 12.9s worst lag with the old cgroup removed,
+2.5s with it kept.
 
-So I think I should separate the severe fixes from the heuristic changes.
-For the latter, I will narrow the next version to NUMA balancing behavior
-that is specific to memory tiering, instead of trying to justify the
-changes as general improvements for normal NUMA balancing workloads.
+Tested: arm64 KVM guests (virtme-ng), ext4 and XFS on virtio, on
+vfs-7.4.misc and on mainline with 168a8c13159c. No KASAN, lockdep,
+PROVE_RCU, DEBUG_LIST, DEBUG_OBJECTS_WORK, DEBUG_ATOMIC_SLEEP or
+DEBUG_PAGEALLOC reports, including a stress run toggling io on the
+parent of two writers 40 times so their wbs are killed and replaced in
+the same slot (240 calls of patch 3's switch, 16400 inode switches,
+counted with bpftrace), and the patch 1 and 3 tests in their changelogs
+and the re-kick race test below. W=1 and checkpatch --strict clean, no
+new sparse warnings. All changes are under CONFIG_CGROUP_WRITEBACK, and
+only builds with it enabled were done for v7.
 
-Thanks,
-Zhe
+Not tested: x86 runtime, this series in production, linux-next, and
+patch 3's fallback for a successor that is already gone (not reachable
+on demand; it is cleanup_offline_cgwb()'s loop).
 
->
-> ~Gregory
+Workaround until this lands: syncfs after the old container's last
+write (twice on ext4). Lowering vm.dirty_expire_centisecs from 3000 to
+500 cut the worst lag on unpatched mainline to 4.8s, 4.6s and 14.3s, but
+did not remove the stall.
+
+Related: without 168a8c13159c the flush is sized from the dead memcg's
+own dirty pages, so this only helps while it has some. f6988c90671e
+(mainline) also matters: on XFS with 500k synced inodes and the pod
+cgroup removed 10s later, the handover was slow enough without it that
+the replacement fell 21-22s behind (vfs-7.4.misc), against 1.0-1.2s with
+it (mainline), both with v1 of this series.
+
+In patch 3's test all 5001 inodes switched within 23-35ms, and on
+mainline the sibling lagged at most 2.1s. That lag varies from run to
+run: in 15 alternating runs each on vfs-7.4.misc, it averaged 1.33s with
+v6 and 1.35s with v7 (1.0-2.1s and 1.0-3.4s), and in the 10 pairs I
+probed no sync ran, so the new lock was never contended. As with today's
+per-inode switches, switched inodes land at the newest end of the new
+wb's b_dirty with their old dirtied_when, so periodic writeback may
+reach them up to dirty_expire_centisecs late; background and foreign
+flushes are unaffected.
+
+To test the re-kick in patch 3, a debug-only delay in
+inode_switch_wbs_work_fn() held back foreign switches to a memcg's wb
+until after io was disabled on its parent, a new wb took over its slot
+and the memcg was removed. With v5, the 61, 62 and 19 inodes that then
+landed on the replaced wb stayed there until the next memcg offline ran
+cleanup_offline_cgwbs_workfn(); with v6, all 5, 35 and 82 that landed
+were queued to the successor as they landed, checked by wb pointer with
+bpftrace. Switches queued after the takeover went to the successor
+directly. The inodes were clean by the time they landed, so this shows
+where they end up, not a stall. On the lockdep kernel, the re-kick moved
+165, 82 and 198 inodes from the replaced wb to the successor with v6,
+and 116 and 85 in two runs with v7.
+
+Tejun spotted on v6 that, with mainline's f6988c90671e, patch 3's scan
+could make a concurrent sync miss data. I reproduced it on mainline with
+a debug-only delay holding a sync's work on a memcg's wb between fixing
+its cutoff and queueing inodes (and skipping sync's best-effort
+pre-flush there): the memcg had 400 64KiB files dirty, created one more
+file after the cutoff, and then its wb was replaced. With v6, sync()
+queued 22 of the 400 and returned with the other 378 still dirty,
+and after a crash right after it, those 378 files were empty. With v7,
+sync() queued all 400 and all 400 survived the crash. 3 of 3 runs each,
+on ext4.
+
+Developed with Claude Opus 5.5, which wrote the code, the reproducers
+and first drafts of this text, and ran the builds and VM tests. Claude
+Fable 5.1 reviewed the code and the claims in this text before v2 to v7
+were posted. I drove the investigation from the production symptoms,
+designed the experiments and controls (repeated runs, parent-commit
+baselines, testing this patch on its own), and reviewed the analysis,
+code and results.
+
+Minimal recipe:
+	#!/bin/bash
+	# As root, cgroup v2, in a directory on ext4/xfs/btrfs ($DIR).
+	cg=/sys/fs/cgroup/wbmini
+	mkdir $cg && echo +memory > $cg/cgroup.subtree_control
+	echo 4G > $cg/memory.max
+	mkdir $cg/old $cg/new
+	append() {  # append $1 blocks of $2 to each of 1000 files
+		for i in $(seq 1000); do
+			dd if=/dev/zero of=$DIR/f$i bs=$2 count=$1 \
+			   oflag=append conv=notrunc status=none
+		done
+	}
+	(echo $BASHPID > $cg/old/cgroup.procs
+	 append 8 1M            # old owner writes the files...
+	 append 1 64k)          # ...and exits with all of them dirty
+	rmdir $cg/old           # its cgroup goes away while they are dirty
+	bpftrace -e 'kretprobe:cgroup_writeback_by_id {
+		@ret[(int32)retval] = count(); }' &
+	sleep 3
+	time (echo $BASHPID > $cg/new/cgroup.procs
+	      append 4 1M)      # replacement keeps appending to the same files
+	kill -INT $!; wait
+	rmdir $cg/new $cg
+	# Unpatched: many @ret[-2] (-ENOENT) and the append stalls.
+	# Patched: @ret[0] only.
+
+---
+Changes in v7:
+- Patch 3: hold wb_switch_rwsem for read across the scan, so a sync
+  can't miss inodes it moves (Tejun); doc and changelog say "inodes on
+  the old wb's lists"; drop a redundant comment and reword
+  cgwb_kick_replaced()'s summary (Tejun)
+- Collect Jan's Reviewed-by on all patches
+- Link to v6: https://patch.msgid.link/20261002-wb-dying-cgwb-flush-v6-0-1991b4e2dcff@honeycomb.io
+
+Changes in v6:
+- Patch 1: trim the test paragraph (Tejun)
+- Patch 2: comment updates for wb_get_lookup(), wb_get_create(),
+  struct bdi_writeback and wb_dying() (Tejun)
+- Patch 3: queue replaced_work again when a switch lands on a wb that
+  was replaced after the switch was queued; share the tryget, queue
+  and put on failure in a helper (Tejun)
+- Link to v5: https://patch.msgid.link/20261001-wb-dying-cgwb-flush-v5-0-8361eb8c65c6@honeycomb.io
+
+Changes in v5:
+- New patch 1: clear the old wb's dirty IO state after switching
+  inodes (Tejun)
+- Patch 2: drop the css_is_dying() check, not needed with patch 3
+  (Tejun)
+- Patch 3: if the successor is gone, fall back like
+  cleanup_offline_cgwb(); report a Tasks-RCU quiescent state per
+  pass, as 407a5d205179 does (Tejun)
+- Also tested on mainline (7.3-rc6) with 168a8c13159c
+- Link to v4: https://patch.msgid.link/20260930-wb-dying-cgwb-flush-v4-0-bde637803a96@honeycomb.io
+
+Changes in v4:
+- Don't link a new wb for a dying memcg in cgwb_create() (Tejun)
+- Patch 2: switch the replaced wb's inodes to its successor instead
+  of kicking writeback (Tejun, Jan)
+- Link to v3: https://patch.msgid.link/20260928-wb-dying-cgwb-flush-v3-0-e35374884667@honeycomb.io
+
+Changes in v3:
+- Use wb_dying(), scoped_guard() with the offline_node list_del moved
+  into it, and {}; filter dying wbs right after the lookup in
+  cgwb_create(); comment wording (Tejun)
+- New patch 2: kick writeback on a wb replaced in cgwb_create() (Tejun)
+- Lead patch 1's changelog with the problem and its trigger (Andrew)
+- Link to v2: https://patch.msgid.link/20260928-wb-dying-cgwb-flush-v2-1-56b54cda74f2@honeycomb.io
+
+Changes in v2:
+- Keep killed wbs in bdi->cgwb_tree until release instead of walking
+  bdi->wb_list (Tejun)
+- Drop Fixes: and Cc: stable (Tejun)
+- Link to v1: https://patch.msgid.link/20260926-wb-dying-cgwb-flush-v1-1-a8d898085a3a@honeycomb.io
+
+---
+Liz Fong-Jones (3):
+      writeback: clear the old wb's dirty IO state after switching inodes
+      writeback: let foreign flushes reach dying cgwbs
+      writeback: switch a replaced cgwb's inodes to its successor
+
+ fs/fs-writeback.c                |  73 +++++++++++++++++++++
+ include/linux/backing-dev-defs.h |  23 +++++--
+ include/linux/backing-dev.h      |   3 +-
+ include/linux/writeback.h        |   1 +
+ mm/backing-dev.c                 | 138 ++++++++++++++++++++++++++++++++-------
+ 5 files changed, 210 insertions(+), 28 deletions(-)
+---
+base-commit: 168a8c13159c6e3f0f08da6f8fa2f633a91ba9fd
+change-id: 20260926-wb-dying-cgwb-flush-06e260e2abad
+
+Best regards,
+--  
+Liz Fong-Jones <lizf@honeycomb.io>
+
 
