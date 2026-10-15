@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB49CC6B38
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 06:14:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 482CDCC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 06:24:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D98EE6B0088; Thu, 15 Oct 2026 02:14:40 -0400 (EDT)
+	id 0D9AF6B008C; Thu, 15 Oct 2026 02:24:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D49626B008A; Thu, 15 Oct 2026 02:14:40 -0400 (EDT)
+	id 08A0C6B0092; Thu, 15 Oct 2026 02:24:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C37F06B008C; Thu, 15 Oct 2026 02:14:40 -0400 (EDT)
+	id EE20E6B0095; Thu, 15 Oct 2026 02:24:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A73996B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:14:40 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E5041A0915
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:14:40 +0000 (UTC)
-X-FDA: 85323846720.20.3FB9C85
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5E50540008
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:14:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=FvNgevAo;
-	spf=pass (imf17.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CC1C36B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 02:24:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3BA921408DA
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:24:13 +0000 (UTC)
+X-FDA: 85323870786.16.69FB48F
+Received: from mta0.migadu.com (out-89.mta0.migadu.com [91.218.175.89])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B41F6140008
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:24:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RnzgwFeU;
+	spf=pass (imf09.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792045451;
+	b=5n4CxA47JYefMChr/jbk/dms79FOzkkJd0u8Mp/I5DZ8OVzKDUMkjgJb8dc79kGpFKsGBt
+	lHbkIY7bSBKTB4wXJmLuJTUbEfTSmHXoAxmvnT6MXQOdpYkHVUWHE/rJCyiynXG+En17lF
+	xyu4mbvdwGwTCu4RX9jSdmpeHpnnLgM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RnzgwFeU;
+	spf=pass (imf09.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792044878;
+	s=arc-20220608; t=1792045451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qv24sae+053Ylb9mtZOUO/0rpjI5ufdzb/PYYHOrXrk=;
-	b=tvLOwWNAlXKV5vFOJSnEQuoiOO1FSFJ90W/pk+StSfPegRmX1/I16V/oXoAvWegyda41Xx
-	/1NWN6YfB1Fz052n6lyvxauEYrIbMvjh51O9RBwtfvIeHq09AwkCejAZ2F8sYOb3lPwOju
-	0JV7Rpc+DstSJkGhI3G/GUDKmBbVJUg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792044878;
-	b=yY9AUVesEl1BIFCzxt9bYS3O/UwRHChxnWwew5lIYjyFAC31sEc11X44ydr99vC+u21DW4
-	4t05OJu22NFQH/glw331od+/06nrx8qj2ityxSZ7bTiMM9qieKi3MnZQpAc4YOSBOkEcVN
-	Kosqrs6mhPbEs140YvIE2XW+iIRtzBA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=FvNgevAo;
-	spf=pass (imf17.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DBB0F1516;
-	Wed, 14 Oct 2026 23:14:31 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C38BB3F871;
-	Wed, 14 Oct 2026 23:14:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792044875; bh=ZjHmUvD814tjkhysjYalQNoKk/0MhRSls02vcp1OVtw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FvNgevAoTv232YZhVkEm7d++ZVEKA0pJhUSWt3GosYUbkm5hDIEIx75W5Y33f7zs7
-	 3ACuYSJGmk4lkTHG2VDI1rwU/6nPZByOqb8lICdTFpcigp3s+5oWcWe/dzvpsQIf+m
-	 vTyW5mgvnVnn0rY2YOjrQFigPYkrjRFPF6rZ7Vio=
-Message-ID: <3d43e4bd-7065-4ae1-bbc9-b034a9de531f@arm.com>
-Date: Thu, 15 Oct 2026 11:44:29 +0530
+	bh=pcd7biHNUObkYBunhcKosP0qeLOdBI+t9Nka04BwxcY=;
+	b=lp4VgojS+AA1ZWmlv/sMWbBjDgyjxynVpKdaHJuHU+OyCfl8vJ/qv3RXz1KUF1uBvCNki1
+	0MMXRlP+VcSx7RkaChidG6IVwUDtnb6yFIWvy+UMEnAfh+x4bN4OjnE1lZ1jMwfnF7AeIj
+	xQP019JxhCicj80tu8ooDT6KW02CG2o=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=xzxTDP1kJen/uCrhE9uPE6+rH/MP3btycDaiyOCiueA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792045446; v=1; x=1792650246;
+ b=RnzgwFeU88f6BI4zgBBNdIygjAMJ3BZjmdDlRyFOlyHV+KyIxpf3GKSgFibzH+rU3O52dIke
+ mMUSfah2Ekqy7w4PY4YWQn3pWpcsKIR2ss2DS+VPZIX5z+TbGwn/COKfvRR+kTQ4wRHdBgZGIZY
+ E/LCa8Drk0DofYzdd62E+RG0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 539d3ab3f892d32c;
+	Thu, 15 Oct 2026 06:24:06 +0000
+X-Mizu-Trace-ID: 539d3ab3f892d32c
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fd35d9dd-8fc9-4cec-97d8-86917bb3c216@linux.dev>
+Date: Thu, 15 Oct 2026 14:24:01 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: mremap_test: Validate the preamble region
- before mapping it
-To: =?UTF-8?B?UmljYXJkbyBCLiBNYXJsacOocmUgKFNVU0Up?= <ricardo@marliere.net>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261014-selftests-mm-mremap_preamble-v1-1-2e97f501cb56@marliere.net>
+User-Agent: Betterbird (macOS/Intel)
+Subject: Re: [PATCH v6 0/2] mm/vmscan: fix NR_ISOLATED accounting and throttle
+ MGLRU eviction
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+References: <cover.1791968227.git.zhuhui@kylinos.cn>
+ <20261014160910.eeaa24697b614d1b94806d0d@linux-foundation.org>
 Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <20261014-selftests-mm-mremap_preamble-v1-1-2e97f501cb56@marliere.net>
-Content-Type: text/plain; charset=UTF-8
+From: Hui Zhu <hui.zhu@linux.dev>
+In-Reply-To: <20261014160910.eeaa24697b614d1b94806d0d@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5E50540008
-X-Stat-Signature: 1iq3f3q76y4tgmfwcdkn9i46kho7jaer
-X-HE-Tag: 1792044876-638800
-X-HE-Meta: U2FsdGVkX19jtwhsVRA5fmna5P+PIBWAOMg0sSHVRbdt4BbUwv9aTaS9nWD24QseegwGVfzmPfZs2xmDjHP3tuYCIlaoOTJw+tYxZ+Z2cYc3Qr+OMflKM+IY0mEJ26iNfGYmiFkZxx0EP3jFf2dyZNrz08mmyi7Zi9GIQwyrKuplk6lrGxR0UQ59WyUnQGeY6ycbxsiVqeVGdtl8zljjfjS3ksNc9GLWSGtBGmAJUPtSE1NtCxJnbs8C4OgQHWkinZYtdIGS2U+zYO550ARgGsutJ2RJYzQ2VwIsYFKy6hJS1jHJF2WQ6PtEIgWSmtauTTQLw2GJV2hJBarmilJ8mcS39PsoRrPZYKhVPv7EAj2xs55eNdAfC9l+tSAyRNVdVPF9LIqda7VWJxAlbHXQ7fEPWR+B33Xn4sI6hivC7Vmq7cL4m4tDZu0859HTl5jG1G8Tafudk1o+knLEBLL1exwgznL9TTFBks1yc9sYJNBa3G0hXrs2DiUKw0DuRsmIMOKOZUPD+2j8Semh8BnCW6gLc8/KRU+RNekGs4qB3ivWX19JRtIY3JsKTBFW30Gdk6CnqbgA9mWn6nQHTuge/5XIz5TLYyMJyJeLAFzzsEYNkNXT3A/Zvh9T41dGDlDPdqqm9TPKvo5qGhF73A91eZk2/M0XEn+8ajlzBqP0APbwwFKOSIXeZsJjA7T5XWSw7oE1GvaVGkOpo9gyPumbiR50EAH/WTFV2AcUxfYpgJGZHus6vJ6t5/4mUJxr1GEYzU+V2u+RQMxeC6Wh3MPPhc6adrw7NrNss4eLZSDsFjLpKBW8+1iGsMB16wihje48ELHvqw5K1fQMygjsHPsFGwj0e58veeRnxgxCZrIEoj/7+6XFeowkW0tX1G/QJCpZYVO1MNyVV74ogIsevUdyhwSyQpKhWwugu3AJfYEqXpwpHRwPnTPdxT37UZGLKmK4CIE4A6kwWv1yXiwQH5V
- pR76Bqq3
- qL7ki0diZk+YxJLE9sbGzlnZFJnhBk7MbJmQ0SdTTproboucq7UI9QekpIcf2D3hpVTwNRzdfzX+Lbv7uKAEKYN9s7BzbfelmxDyRavHVMhUmH82kyB2tKDt4Sz1CNW4IXJ4LE+mKQ8Ow38A/Ms6Ol8/CKhaks3LpPgV36LOzN6GpaD3pf8opxGRQqXnSBRriAQZVGBCdqxtQNlBOH90WClmOEevZPx9TcgVNi/ggqOyDOWkZrt96v35yO9Gjs1BZfUsJ0b71ze+v/myzlmY+F/jeIrfOPaHCoja82Vs+zCLxA0mZF2e6L0e8USoB4u40IzFqvt1hgi2seO0jB6N6Af2T17pBCPH7QbI9P6r+C8Gk8BuYj/y9zYXnxfKpKhsZ/+sTWeG/cGFosySgVxhim43pglwxTXbV1Yjdi86qDLeX2pr5kzYA24AqQcPXdIcAhXWHHUFDarZZbzoZd2rODp3qo4rudRqf4+Sh3bIhkdhyCnU=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B41F6140008
+X-Stat-Signature: owwjrigfr4degma9hypnukf7zxgrr475
+X-HE-Tag: 1792045449-632315
+X-HE-Meta: U2FsdGVkX1/3Web+kjSxxqjEVotDcBFtgA13fXvjfATrEc+dRd8k8za+zHO+EJJ4BWDALzVES5qIZoo+83UFAQaj5hLXogbpW+BYWmURl9bIqYi0NXJZq3TYY0G2/wFBTcIUq5fqVHIvXRKjBj3BBmRAYD4u3j1b2W+lvgvrCI+JT5n/7qtZsgTV3xViIi7AbE7lD8oA+YRDvIF4IhhTf9FTkOCDqKRCrvtuMCJnezCC8o/ihdPptbhpo+j0ha4UuCedn96x4kQabo0TCbq1QcumK8mIiphb5l42OVnE10/ZN4Qyt7qasNSXyX7uwR+9C2BAqcbu+m3Qf2kX6NRksG0JgeigDGj4CQnyDuPDkyiB+Jc/YxDRLF9hngSUA/U3fPupwYnfWRqc34qUDvrDObycegs0FwnlWdzGaRXN3Z7iQ4Kty0xluvlKiypZm2d0HjuWLDCz+GN2x/Ma46P3SieuDIoiMgefnMjZ8M/zkWutXJmnLQ+i7REAr1RC9jQFvMJrHoeMoqyLMiG/MkIpuzNKcdACHnbUp6FLeLz78/r3I+xNWDIdKKnJ8dk+cSA0pmW4vH8utQKca1nQbdMWHwkekI2XGvXzvezTZyHImquGL6nSBcC4UWPRd7o66cjBdUFpdEzaEVyCRXl0tFVDlUaAqcRsIlxr4s66g+k3fP4hTWexZPUQsefYZ7xVfsZo5rkHSCeqM9pS/UTbX20y6fKOIlwMbnHwKWEvPoIBxvIydg/ZYXyrd75nyYnkUpCdqbN9wcS8zhZTPKV1zA5k6ge2LWYYZ+cZL5JOmSG/txHTJraRpfLI8fTH7xJGdVwvgEzFB1bc/Di/YdHtoyMtja3Sfc6fi2oOXMJT24l0HVn1BeqYyCxej7P0s/GfxoXCQW29RbDGeb/RuBCEEHhBSU7VKycFHOX9OhgxRGMaJAtiQgeAFXpeKRpQIOhevKomjn4cGyOO1J/voG6rNsm
+ BcSKpCrL
+ Y45J+ys27Mbp9qfXzW85WDhC9IHplIwje8mtc5GllpsC2ZhYF+P4HVD4cHCT2zdql2heYfon4ObDVU0Mynnm4erN4r60SrKV7WOeHRW3iBJJPpB+3VzuEUzNaCtCrlxBUW4zJJzWHfqrEjTP/KEpwgibNH1lntucGFLopiTE3mKooIkcmRuXSBdUVt4Zrw7XI/45N+b66aVrS7TF2Gvrp+cpeL6ORCSxKfkyFpEhLiZchYXd3HUtnm5gkZA06T2dhNNhRNpDQAd4p2Oov/xMnltFzEnNdT3T3pUfHuNx2+dTuQP2KiCD4PhEUe1yk2YbcLPu9QggCusNRapF8h5WHL9at/d9d/SHG081Q88/NJZ4eGnyMm56khRmzQTWWnf6ZJD+65OaSR4OSBhDNXoh4eQpKTg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,62 +100,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+在 2026/10/15 07:09, Andrew Morton:
+> On Wed, 14 Oct 2026 17:00:22 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+>
+>> The legacy reclaim path has two mechanisms around isolated folios that
+>> MGLRU lacks:
+>>
+>> 1. NR_ISOLATED_ANON/FILE counters are updated when folios are isolated
+>>     from the inactive lists. Compaction's too_many_isolated() relies on
+>>     them to decide when to back off. The MGLRU reclaim path never
+>>     updates them, so compaction cannot see MGLRU's in-flight isolation.
+>>
+>> 2. shrink_inactive_list() throttles direct reclaim via
+>>     too_many_isolated() when isolated folios pile up. MGLRU's
+>>     evict_folios() isolates folios without any such check, so many
+>>     concurrent reclaimers can over-isolate the same (oldest) generation,
+>>     leading to unnecessary swapping, thrashing and premature memcg OOM.
+>>
+>> Patch 1 fixes the counter accounting in the MGLRU isolation path.
+>> Patch 2 adds a per-lruvec throttle, mirroring the legacy behavior but
+>> adapted to MGLRU's per-lruvec contention and its dynamic type
+>> selection/fallback.
+> Thanks.  Questions for yourself and maintainers:
+>
+> [1/2] is nice and simple and reviewed.  How about I queue this for
+> second week of the upcoming merge window?
+>
+> [2/2] is much more code, isn't reviewed and has a Sashiko whine[*].  So
+> I'm thinking this is 7.4-rcX material.
+>
+>
+> [*] https://sashiko.dev/#/patchset/cover.1791968227.git.zhuhui@kylinos.cn
+>
+Hi Andrew,
 
-On 10/15/26 12:16 AM, Ricardo B. Marlière (SUSE) wrote:
-> remap_region() checks that the destination region is free before mapping
-> it, but not the preamble region placed right before it, so mapping the
-> preamble can intermittently fail with EEXIST:
-> 
->   # Failed to map dest preamble region: File exists
->   not ok 15 5MB mremap - Source 1MB-aligned, Dest 1MB-aligned with 40MB Preamble
-> 
-> This happens when the kernel's heap ASLR (arch_randomize_brk()) lands the
-> process heap inside that unchecked range. Confirmed by correlating
-> brk(NULL) at startup with pass/fail across 60 runs: every failure had brk
-> land inside that range.
-> 
-> Fix it by including the preamble in the free-region check.
-> 
-> Signed-off-by: Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
-> ---
+Sounds good to me. Thanks.
 
-Just wondering, should this have a Fixes: tag as well?
+Best,
+Hui
 
-Other than that, LGTM.
-
-Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
-
-> Hi, this sporadic issue has been found in openSUSE CI:
-> 
-> https://openqa.opensuse.org/tests/6270334/logfile?filename=serial_terminal.txt#line-6760
-> ---
->  tools/testing/selftests/mm/mremap_test.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-> index 131d9d6db867..8d4fa3025a9d 100644
-> --- a/tools/testing/selftests/mm/mremap_test.c
-> +++ b/tools/testing/selftests/mm/mremap_test.c
-> @@ -1006,8 +1006,10 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
->  	if (!((unsigned long long) addr & c.dest_alignment))
->  		addr = (void *) ((unsigned long long) addr | c.dest_alignment);
->  
-> -	/* Don't destroy existing mappings unless expected to overlap */
-> -	while (!is_remap_region_valid(addr, c.region_size) && !c.overlapping) {
-> +	/* Don't destroy existing mappings unless expected to overlap. */
-> +	while (!is_remap_region_valid(addr - c.dest_preamble_size,
-> +				      c.dest_preamble_size + c.region_size) &&
-> +	       !c.overlapping) {
->  		/* Check for unsigned overflow */
->  		tmp_addr = addr + c.dest_alignment;
->  		if (tmp_addr < addr) {
-> 
-> ---
-> base-commit: 0fcb05b72344f40806cbe810de8872f1698bf053
-> change-id: 20261014-selftests-mm-mremap_preamble-5f98ad625f93
-> 
-> Best regards,
-> --  
-> Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
 
 
