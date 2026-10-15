@@ -4,142 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF7B7CC6B38
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 22:45:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 863BFCCA464
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 22:45:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 678BF6B0095; Thu, 15 Oct 2026 18:45:24 -0400 (EDT)
+	id 89C146B0096; Thu, 15 Oct 2026 18:45:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 650D16B0098; Thu, 15 Oct 2026 18:45:24 -0400 (EDT)
+	id 825B36B0098; Thu, 15 Oct 2026 18:45:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51ACD6B0099; Thu, 15 Oct 2026 18:45:24 -0400 (EDT)
+	id 73D136B009B; Thu, 15 Oct 2026 18:45:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 180B46B0095
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 21C496B0096
 	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:45:24 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9C08A0206
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:45:22 +0000 (UTC)
-X-FDA: 85326343284.06.6EFF778
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F2E46180002
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:45:20 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WDSj3sy6;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792104320;
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72BE4C0158
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:45:23 +0000 (UTC)
+X-FDA: 85326343326.19.2C4710E
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B7B5B14000C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:45:21 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="N5BdJO/I";
+	spf=pass (imf23.hostedemail.com: domain of 3f1fRagkKCNAFwDG9Ew3G2AA270.yA8749GJ-886Hwy6.AD2@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3f1fRagkKCNAFwDG9Ew3G2AA270.yA8749GJ-886Hwy6.AD2@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792104321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cDTDKMrdQwRgjoWMeyrkyF6DIGr4iKPuJqKn3z4+wB8=;
-	b=ui+yJsx+uzTcbKlXgnBqIRhfA3pCrLSjzFn0aPIkcW5FYu9LYIQJIbS3ZT8YtB8OKSYH5w
-	/+RiWX9dWFvSSgL7k/TEUiR7abrVJlYYZwDPJABnovFJSMZgZks4O4mdMZfqFQIjJTLjl7
-	nHGV3xU0CwGR/btDXwdNsZW+469w4jE=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WDSj3sy6;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	bh=C8xIcAcbBHZy1mi8Rb1UegUyeiD956DGbti3HZCArR0=;
+	b=z7/CD9ah6jDK+dWlMguiPISuk22adrDAz+KiMsPwRMv/updSZyGx9klOAEO50Cd+bvs6sB
+	XKGf0w4w9E8qpFE9qTJPyDL3CQz0MWPLCUSaWzJ8AUK3zVsRms8WISl3g/9x5GwTdSAWKa
+	5ZDgc7NREGhpsLqiQvziEE8iiSgkTuI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="N5BdJO/I";
+	spf=pass (imf23.hostedemail.com: domain of 3f1fRagkKCNAFwDG9Ew3G2AA270.yA8749GJ-886Hwy6.AD2@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3f1fRagkKCNAFwDG9Ew3G2AA270.yA8749GJ-886Hwy6.AD2@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1792104321;
-	b=oykyE5KjhTmOo5OP78wZ7HgZjRYGpX/z2PJMcrQbS4q4Hm34UF07/jp7nrdSpy4AdGmDot
-	jQa0i96DAIA1Pbt4Rx3yFAc+3z6lt36n+ZXMkhUAw7Sqm8sX7ibPxwAFN3XU5muHlDtvVD
-	iHzzED7tslOIeyPWFkpuU+xh3qJbAAw=
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5b2b92065ffso2861672e87.1
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:45:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792104319; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MmqQn8ynhTIm9JDVtS8C19jenomv6Cu9OXXjjMvmJ3KNvM8Z09KxWxIOX7UkCcxdZb
-         F7P4TZvD6s0QC9reuv+iVkd9QRef/zYNSpSd9+cCCsWgPlWdSH5K2yZmmEKRwq2YulIb
-         lrHXG6OkY0K3YEhEAu98qggKFRQIhg8JuRSYcUJutk6NxC+T+gbDI3CSeHoLj4T6XKUq
-         Y7E4h7BBFBUpE3fa0owi9qp72YwQF5NmR3qMTpTC7TQqea0C6PoTlIJHsqVbE6drexLV
-         PboecI6M1CzBkkNJipmm4we5APEyC8lmiruzudv5P9VP/6ikLalBd9NKaXUIFBe0yQfn
-         MbWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cDTDKMrdQwRgjoWMeyrkyF6DIGr4iKPuJqKn3z4+wB8=;
-        fh=lGlJCNnJWM+n8PF6rL/PCY0xfrjgE2vM4+JBF1QY0Ts=;
-        b=lhZM8nTyv061RjcVIdmy5FKoJ9xd3kspc103op89gYG/w9vwpUNKkye5fBYL4A17IW
-         uMUJ6XDc+9rUrMqAJVTvm+fvoh60Wu9643NoQUbYosvvC1wq2lXFbaH0sQXCsWHc83Ae
-         xSl6HM4EEFkm9qX0J2kzI/hQ/4NH8FPhGDH4CWT1Fwaz75CAki46sdTRfOdQ6tuHhpKu
-         P+3zacgdDlW7fUUUa6QpCMbzTEwqsVq5vqQqnZEXQ/jvXR6zWGsiX3DG9kNXPDGLBP0q
-         RTUsg1ONkpDGTOjSLnfMl9+4sQtlzGYL7URciOdcm6Zl7BrpoQLAeV1zVPvwkfBhHK8J
-         cI/g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	b=rqKySTlpDg3C42SH5E0A19xCKjftN+A5GTuUbiZswO+amsQwmr60XBnHzc7gD297vM5upW
+	/mTOFzB5KP7x+Qcf1MeVg+KrGbmqgCDvzLMkmE2hkxYMQbhvD5lLOxGI54v+mdKAjPtb/e
+	rOm1bClQ2+FDwiV6+Fu/3huvNmBfGtk=
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c2e77b7742dso760708266b.3
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:45:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792104319; x=1792709119; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cDTDKMrdQwRgjoWMeyrkyF6DIGr4iKPuJqKn3z4+wB8=;
-        b=WDSj3sy62qkFa1/WZCIIZJ++c6utMmYiDnVwrjB8oSbewZJBfO59NPkZJdTifOqruX
-         bmD7DzdTpROlpSD3duHa2Wfz2FOeLD3NUJeqkqiVNqxZAZ+KZa2cTc0HfWij4yAIrtL+
-         YqTjRfY1H61xqYvNMa9y6iZi28xld+ignT+W5/Ce0uKVdglXEsjXNVSbaOPeCpeZ7tXD
-         hUjkdl738ejev5Ci05utzQIpH7bvkfvTqGSRYO/25KmKKterxMZXOYfAW120jWeF+5zl
-         nX1tyjw/ya2TpSy5nYIJiyZVuii+iHrdhDcaI+1p5jmhNObHx/M+xBPSWoHVtDoyyEfr
-         ozSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792104319; x=1792709119;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792104320; x=1792709120; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cDTDKMrdQwRgjoWMeyrkyF6DIGr4iKPuJqKn3z4+wB8=;
-        b=XVftbx7+3OFDFfSci/qKY5nKz1jvUh1SmglDtXRsgxz/ylWnhCopV/wjqqGJi9XpY6
-         oxFCUg6Qn4FrT1P7fFr5FhnHsEbgqjykeh7Yxfe4WK+OZfFRq0LQqDz5JOtTmZFdjCAu
-         Esal2QAUvJzQMTU8eOfvSxIw/h00UHE0tKKGYcZGU3V1wIxpsVn2hRiGDYIJeKTYMXs8
-         +dMvnFAWXvE3XWkAVUWkG3vovlqxBK6o3jvKOC73HVQ2ETXPwGku5qJx5RtSc/qHyPqy
-         9aOetY+GhZ2W9XYJcX8KdSJbvIeNRtalDCtR6VJEh+wyvJrvF8GZp41KtxsCMOoWXDQw
-         5a2A==
-X-Forwarded-Encrypted: i=1; AKwUvBwRmPu/XhqPe12n//8KkXbrh5amvlQHYvSA5AHlnutKcSBg/1rAqcz2QWMSp2mn7p6MXNEqMbBDlQ==@kvack.org
-X-Gm-Message-State: AFq9FYLdgUu/g/dL2D8YAhaQBJ3DyAUsHIIIO7Vg0Mv56JcLKAMK5Sei
-	QAQKbpET/19dJI7/Dd3fdn4E/GNLTwZnI5UkXAk54ajk+xdn7P18jatHnpd0MmbCQJhXAMHB2tG
-	l+4jL1n4rnOhU7Hxdm+6yAq11i6ISpR0=
-X-Gm-Gg: AYBFou1GUw04Ia8hMzbiLKufQPIAtgXfaI0ETT+RwpKxY1VuUc+Uarovq+MKjtiX2lT
-	rn9xqTrhKgBUS8jIvi38SoD4wAyLzY80hEr9PpEqmhE2qH7FjYt9k/5H08nnBICwYZByJq4abTm
-	d/0S6BdAYn5VUtCpkvyS2Bf0nCXjSGktJjwiMRb25hXSX6qIShBEn1enMwTXEtnG9h592bSaX6T
-	ycnDYQ+U0AxmuX8ymWpc1DSm3fgPdO/1CUfsvxoo8P7CokA3sCO13alr/VafgB0dCJVr43NxvZQ
-	oascf6tlx7/JDrbZWih92e2ut+dlKL+PRoDzjb2n3zW8d2gUGASILkE=
-X-Received: by 2002:a05:6512:3f24:b0:5b8:f533:d439 with SMTP id
- 2adb3069b0e04-5bcde8c1acdmr7282009e87.38.1792104319215; Thu, 15 Oct 2026
- 15:45:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
- <20261008182814.27450-6-kanchanapsridhar2026@gmail.com> <as7JC8o2kggiq_ss@google.com>
- <CACpmpofXMGBP70Rn7jHLwOF38GRKMUGoW3rb1Jp2SPH7ygKcfw@mail.gmail.com>
- <CAO9r8zOEcGmg8eVttu41htugnng0ahnVQbubiJfxVH+GfDe47Q@mail.gmail.com>
- <CACpmpodDA=oqnVa_hsJpyhGt=4zxknYF=QX9L6-sJbxsRxtM2w@mail.gmail.com> <CAO9r8zNN6F01icKUFr8q_AgJvhxGw0MkGezKbBuKzFQV0NaAdg@mail.gmail.com>
-In-Reply-To: <CAO9r8zNN6F01icKUFr8q_AgJvhxGw0MkGezKbBuKzFQV0NaAdg@mail.gmail.com>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Thu, 15 Oct 2026 15:45:06 -0700
-X-Gm-Features: AclHuK8NXYRqg5T9PQ2fZ89a7chOTLHtC37Sjh9lMWynljXBN8yHgyQfD3XnlOE
-Message-ID: <CACpmpocCJWkA+zvZ9ivNCt8xSZWfViKQ2ZeYN+f1EmdVTewzRQ@mail.gmail.com>
-Subject: Re: [PATCH v1 5/8] mm: zswap: Store the folio's node id in the zswap_entry.
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+        bh=C8xIcAcbBHZy1mi8Rb1UegUyeiD956DGbti3HZCArR0=;
+        b=N5BdJO/IZQ+63NyoyPM5skA5QGgl7aeTHo0mYqJuLwkk6yYqIfTBnFSt1yfWG8fx2/
+         TaDzbKVirdLvWt/LHxRNZkM3bqMhxvW5m4v8Mv2dz8RS1XSzG+l6QKfAWj79kgzrmFYQ
+         IASV53Ru31BkYfsmBQxPcSe1pWiv+/rf15SCVxwuc0t6CgbvmLU/MjQCAOjfpKfoW91D
+         JU0hUZESDX/Ys4diq3pcd+cqxKRuqS2VbiXGNPmb5pXWJByTgEUe1LWOd2AM45AnRW5M
+         0cPIRY9M96DU0xx5npTPAduqpllEktR3ANf+2IC8f6DwYPzUPStlK9/zcl9LUsal0JUp
+         0GTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792104320; x=1792709120;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C8xIcAcbBHZy1mi8Rb1UegUyeiD956DGbti3HZCArR0=;
+        b=qVvaiUcgDPwIrUSSqXia599C7i7ZH4Csc1L3VOK+1eUytxq/YRHVPrIghON37jRgtX
+         61FxYxFGe3lgbXH1j/N1CpzWRCFRyhlCePJxoi8dsM9pfWX4aQMayQPgLaN4drJ4qGWW
+         zSFupw0mluNvdg3LrRywV2gIZ/BpeaeVerCB13PfWKTzUdIiDD3DmLd/kvf7FhGsC61b
+         f/BFz7mdoLcNjVWXOz0gScX5n5CwCXNkC34gxrabX+lh4Pm8KZ6HtNrWUOiXFd167/Cg
+         Nre1JTAdUmPB0XL3XJ02nfgzK3aPYs8zx3IAQuHWVa1PjCzOn0t8p0FnP7Pp60giWc+D
+         66Og==
+X-Forwarded-Encrypted: i=1; AKwUvBylJiVGZ6jLLh11gwQ5HWzmNlxArDyIqe4HyHgtU5pjcQK781jti4ooKuUY4i7SxViyuxBYZbtRmg==@kvack.org
+X-Gm-Message-State: AFq9FYL+dLfbId+3wqprFSZ6d5vsHbriZz2S9xSEB+eotu6by0O5h3Fa
+	gckMdI4uCARNwFdGIlB75qCz2Orgq8Em/FbyG1RQm0pYQHIEsGglDAo634pWwhFXXRyZQJ5XlZf
+	mRZa+32rP/cPhREXu0w==
+X-Received: from ejyb15.prod.google.com ([2002:a17:906:834f:b0:c39:4b00:1781])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:9801:b0:c25:504a:1e25 with SMTP id a640c23a62f3a-c31a9fcf521mr1847005866b.13.1792104319385;
+ Thu, 15 Oct 2026 15:45:19 -0700 (PDT)
+Date: Thu, 15 Oct 2026 22:45:18 +0000
+In-Reply-To: <atB1uG8kLfmZyLIH@kernel.org>
+Mime-Version: 1.0
+References: <20261008190828.3221718-1-tarunsahu@google.com>
+ <as4EcgiBH5jjww42@kernel.org> <9huzecdt633e.fsf@tarunix.c.googlers.com> <atB1uG8kLfmZyLIH@kernel.org>
+Message-ID: <9huzo6cuinwh.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 1/2] memblock: drop for_each_memblock_type() and open
+ code its users
+From: tarunsahu@google.com
+To: Mike Rapoport <rppt@kernel.org>
+Cc: dmatlack@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pratyush Yadav <pratyush@kernel.org>, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B7B5B14000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F2E46180002
-X-Stat-Signature: n8y4748m9576a9hajp74erp6h6koc3jh
-X-HE-Tag: 1792104320-168635
-X-HE-Meta: U2FsdGVkX18JOH0ILB1Hfe0Q1fW+oALj0cRTXuXMsgv4wIfCUr4GHtJGktyfFn+Bmfl4QuVtGG7fyzflMOgLMF7O0oFu0aTA3fLgWgJFGlxeK+MF/BQoeDIyWxXfSJ/4Pw5IAmOrPmiBY0zCQbpcxDZun7lb4KJUwQ0bAkZHQFYOpwSpR2zoVCo6wi9I4Fr7htCFwdTdbf4L6pFZbDJ+vobeoBhlsp661XVr+IO305lNbVFeZycHL8ZAmoWhoSHX8HJgMhkfYFZvXzS60T8mPREGbZExdSXxNt8ZDiKIEO/3Lafc1u3/7viWgqpmz/sLao+Jz1htjjMCpiRHUcWnxDP/3Jx1gVkzjYkkXUDb4kTpyLW4ievi4jUZ+1rm2reW0edHvCxY7cBI+D/EasePI3cHZDgGW1HE9WOqBXP7JKPIIR8WpQnmaACtfoWZlSOKwqzHNXe20h7QM+1LCoJvPgCZBUfaDX84GgL+7kzqCiRk20uKAys2t28DUyr2PEJ56b8S9CcPYUJzfg2mVnAorPfJWvrtz4an1NyrCdit2Jvxkce6gx2Als5FKDGFqbmqEXV16ABxhA1psz7/HmGsqxhFE11AfE9nv/t87gqn3Cc+a1xhKS64adHn7Y25+tsM/JqwFj+z1Cycssu2Tqs2ETUnFn+Cbh5qCs3QL8UkaFrrahSQ0MJXhhHtvmGd7c9eWqkSjErV3m24Q9dpnw8brWTUzkqdK2j6RlnntdCkbmRLfpjEr3Kl3LvZJ0GUAEZFlMsrbIrHfBbgFa2XIGeWqHtiB+0cNVdR6JFCxRdedpucm06PUegNCv5okJ0NHG5DB9v4SViMp9moM5TZ8AdxVuGlQY8g+A376MU/fRCM1tHTttcsyXwv+23SSOTCpbOdfYKekaJwRizaHe+eZTD8CNnCgtDXst5CIStZ6qB0vdQsl+IgMkFZYcVTXwBaUvR1/r4ucSkRcXXGUZNMKPn
- ybOUOizw
- UfH9ywAE3SPX8LSzaOXbR5OIRc+ohvClNx+Z9A19mRqeNpWQvWmTVMyI0niBzm10Xokwjkw9xJ2I9V+pPfE4YbpGBnfs8BT0x+dYukIt2dHqj1E1FBRmoeTAvkN1TjaW+xKQu3HWed/D09bGwJ+38a5yJrQZolgnKTmk35pkqZVudxNc+9e8S+crpU0mYjVw2v8otFNfErxvMr5dmRoLzE7TpYa731g96puu0as2nhCTu0qut0WGlLBMwjiPjg92uBVkHG8VVfSsCW5TbczRDUVc82seNp3htJfI0BktCp5eiMipkvCIwNIY40B4SLremRIxbKGpWky/uBZSPqGdsrx7RAyIInChCBLM7HpIUkAs3VWh56pGg8NU82YyV4NJoqHW3zph3Q7gQptwn01xjxz72UKgQ4xhTpyKcc+UL98rLq45DtPsu1BjNBmPfNoBqLoshC1JQCB/KtpvESFeiPEVB+3HPfKG18YMo
+X-Stat-Signature: 8d3wyjs5yeyodurgc4or4dmoo7nca64x
+X-HE-Tag: 1792104321-496893
+X-HE-Meta: U2FsdGVkX1+U3S6eTXr8NGhDvtzEHrCP0iA45Yarcqh117C9+ljol5S/3b7wMmPNTBAovPZ8jaJIJrDc1vtXCsT3wW7RXEjADvoDtMcmL0T6khqw5AE93YDbyDNg9XeROv0MBn+pHo/yHPt/iA9knQTOfoN37ubwlm1A7czsWUcbZ6yG8Lc0NS0l2CBbbQwavRDbS4skT3wDRernTBjGDUcgoSwTGqiRnTBkwVo16xa0UqmXrTX+FV5kASYRWsLZi43Y3am7V1yX2njDbxMAe/kiBp77BWZgKmwVs6WcAGZUG8Yquet7VRf0w0QZ1JtAnycHsRqZZfatkwSM2JtTg5jdks8xhHaVKVqcsBl/ErV8dz9BVoNsZ9j2Y5/a8SDnhXuv8EUJdt+wMWHFgK1PTTzrNkS2D3IKDXUFhvFBrEmWb+yilT0q1dcawczvojNigF/yQdyb5E0F6fVrUcV6UXkBH6z8LV3nmVM3Yl4Bcvw6pjeegbMXGvF/A8PfLcmQarGlUz+NcPyRFh9qg4UAPRF1K7xy9o4PqCwzlGf+XrhTBnh261LEc2F8fINhc6qq//rTASg/KYgLkCSOuOPAvqkKKCeiILzhdRaG28HOxWLBmUQv4IHiR++P6mAFZ4A0/8kMWnGmxt/rss2zSJfHdlRXdFaf6cmMiOFjyHl+SXVzAQYp1JTXGqysiJgRXSEav6OZ8UVpOc6lMLqNCumy33GewSww3x/6q1yZjGFoh8pHPsn5Hhc0SrI2xnwl26EbLBrQmkUyStHh939/VHNSxUBCexDRodJeYkn+IP+4F42XD21QeVoY2mTFUpXrQvVqMaQX8qkBwgPqTeKX8Peg+awS7Qj9boVlIC/xoRCrMb0IEGt4IdYrEn0tcgjN144OvsztvzRuCIykSNxzMgYu3o1JfYawCapVAzOHG6TthHB/ePnIqmOuz/JfdAf09Bz5ifMCMGByogvpSl4DE9q
+ /RCGuQix
+ i8+PYkHAbbfBTju6h/Hziw21Gq5VCjeR3thpk+4moYKgkhijTMNydbKnDzI+hqKECPHZTIw4kAKeVeIw89IrkEubHjeLPueLPrk4b+hiFCcTkS1U6pRQ00pDdhFIQZdxO1tFoXX6w5nyjd3wEl9i7RjfUyujFKnpqLNF/0X6Mm9YfRAS0nBz7JXxOPDkeYN7hOR6vvyQ7U5VK4yt91iMpD0flBpAmOPhxjSElqh3giqs4nQOB/iZxLUBY06k/ysmT0/GzFffEX+oiHT8asQL797j35HePMSqggFJAVaWh2WswQxNIoN2kYrgBitJ8u/wEc+QTqHDtPiw0B0sooFfoMZqYpi3cs04C5u6EIIMns2T4+fMugDY4VXjF12Z8kWYg6mN/cR6/ZMYujgQkqnayzbmcyCdC1mPyK66xYGZjjkCMsY3c896fwbP3lajmjjAKIp4gd1IwOmeNQEH4DTPS8d071v8mZc/s5+VKhbpM4mAZP22xZtKLwmVZHptl2cgeQWKc0h1aLxaxcO0BOD7N2uYPvs2NRn4KbgDcyJPmmPZiuNTui3zocENqCiSr6wRDR5EmeOy6fQbOtn8qMPqcUBeGnxx6w9+LsbIH300EEJYrS+xOwIUlxsRjVJoQx2/1aQObUohLc8mV4qaAUn8dalBbLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,126 +111,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 2:39=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
+Mike Rapoport <rppt@kernel.org> writes:
+
+> On Tue, Oct 13, 2026 at 03:18:45PM +0000, tarunsahu@google.com wrote:
+>> Mike Rapoport <rppt@kernel.org> writes:
+>> 
+>> > Hi Tarun,
+>> >
+>> > Please for the next time add the cover-letter when sending more than one
+>> > patch.
+>> 
+>> Thanks Mike for piking up the patches.
+>> 
+>> Sure, I will take care of adding the cover-letter.
+>> 
+>> You had some nit change suggestion, Let me know if you want
+>> me send v5 or it is alright.
 >
-> > > > > > @@ -1449,9 +1446,10 @@ static bool zswap_store_page(struct foli=
-o *folio, long index,
-> > > > > >  {
-> > > > > >       swp_entry_t page_swpentry =3D folio_swap_entry(folio, ind=
-ex);
-> > > > > >       struct zswap_entry *entry, *old;
-> > > > > > +     int nid =3D folio_nid(folio);
-> > > > > >
-> > > > > >       /* allocate entry */
-> > > > > > -     entry =3D zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(f=
-olio));
-> > > > > > +     entry =3D zswap_entry_cache_alloc(GFP_KERNEL, nid);
-> > > > >
-> > > > > We don't need to allocate the entry on the same node anymore, sho=
-uld we
-> > > > > drop this and let the slab allocator handle it as it sees fit?
-> > > >
-> > > > Was this a recent change? I see the folio_nid(folio) on my version =
-of
-> > > > mm-unstable as of 10-3-2026. Let me check, and yes, allowing the sl=
-ab
-> > > > allocated handle this is probably a good idea.
-> > >
-> > > We allocate the entry on the same node to avoid having to store nid i=
-n
-> > > the zswap entry (see entry_to_nid()). If we store it, then there's no
-> > > need to allocate on the node.
-> >
-> > With patch 0006, we try to bulk allocate all entries for the batch.
-> > Only if this fails, we call zswap_entry_cache_alloc(gfp, nid). So
-> > patch 0006 addresses this already, and the nid is used on in the
-> > fallback case.
+> I fixed some of it when applying and some right now, no need for v5
+
+Thanks Mike!
+
+>  
+>> ~Tarun
+>> 
+>> 
+>> >
+>> > On Thu, Oct 08, 2026 at 07:08:27PM +0000, Tarun Sahu wrote:
+>> >> for_each_memblock_type() always starts the iteration at index 0 and its
+>> >> body is a trivial 'for' loop, so it hides very little. It also gets in
+>> >> the way of iterating from an arbitrary index, which the next patch
+>> >> needs.
+>> >> 
+>> >> Remove the macro and open code its three users: memblock_add_range(),
+>> >> memblock_isolate_range() and memblock_dump(). While at it, move the
+>> >> region pointer into the loop body scope.
+>> >> 
+>> >> No functional change.
+>> >> 
+>> >> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+>> >> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+>> >> ---
+>> >>  mm/memblock.c | 17 ++++++-----------
+>> >>  1 file changed, 6 insertions(+), 11 deletions(-)
+>> >> 
+>> >> diff --git a/mm/memblock.c b/mm/memblock.c
+>> >> index f5aaa38cfa31..59dda7d085f3 100644
+>> >> --- a/mm/memblock.c
+>> >> +++ b/mm/memblock.c
+>> >> @@ -155,11 +155,6 @@ struct memblock_type physmem = {
+>> >>   */
+>> >>  static __refdata struct memblock_type *memblock_memory = &memblock.memory;
+>> >>  
+>> >> -#define for_each_memblock_type(i, memblock_type, rgn)			\
+>> >> -	for (i = 0, rgn = &memblock_type->regions[0];			\
+>> >> -	     i < memblock_type->cnt;					\
+>> >> -	     i++, rgn = &memblock_type->regions[i])
+>> >> -
+>> >>  #define memblock_dbg(fmt, ...)						\
+>> >>  	do {								\
+>> >>  		if (memblock_debug)					\
+>> >> @@ -615,7 +610,6 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>> >>  	phys_addr_t obase = base;
+>> >>  	phys_addr_t end = base + memblock_cap_size(base, &size);
+>> >>  	int idx, nr_new, start_rgn = -1, end_rgn;
+>> >> -	struct memblock_region *rgn;
+>> >>  
+>> >>  	if (!size)
+>> >>  		return 0;
+>> >> @@ -651,7 +645,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>> >>  	base = obase;
+>> >>  	nr_new = 0;
+>> >>  
+>> >> -	for_each_memblock_type(idx, type, rgn) {
+>> >> +	for (idx = 0; idx < type->cnt; idx++) {
+>> >> +		struct memblock_region *rgn = &type->regions[idx];
+>> >>  		phys_addr_t rbase = rgn->base;
+>> >>  		phys_addr_t rend = rbase + rgn->size;
+>> >>  
+>> >> @@ -815,7 +810,6 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+>> >>  {
+>> >>  	phys_addr_t end = base + memblock_cap_size(base, &size);
+>> >>  	int idx;
+>> >> -	struct memblock_region *rgn;
+>> >>  
+>> >>  	*start_rgn = *end_rgn = 0;
+>> >>  
+>> >> @@ -827,7 +821,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+>> >>  		if (memblock_double_array(type, base, size) < 0)
+>> >>  			return -ENOMEM;
+>> >>  
+>> >> -	for_each_memblock_type(idx, type, rgn) {
+>> >> +	for (idx = 0; idx < type->cnt; idx++) {
+>> >> +		struct memblock_region *rgn = &type->regions[idx];
+>> >>  		phys_addr_t rbase = rgn->base;
+>> >>  		phys_addr_t rend = rbase + rgn->size;
+>> >>  
+>> >> @@ -2194,11 +2189,11 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
+>> >>  	phys_addr_t base, end, size;
+>> >>  	enum memblock_flags flags;
+>> >>  	int idx;
+>> >> -	struct memblock_region *rgn;
+>> >>  
+>> >>  	pr_info(" %s.cnt  = 0x%lx\n", type->name, type->cnt);
+>> >>  
+>> >> -	for_each_memblock_type(idx, type, rgn) {
+>> >> +	for (idx = 0; idx < type->cnt; idx++) {
+>> >> +		struct memblock_region *rgn = &type->regions[idx];
+>> >>  		char nid_buf[32] = "";
+>> >>  
+>> >>  		base = rgn->base;
+>> >> -- 
+>> >> 2.56.0.385.gd3acb90ef8-goog
+>> >> 
+>> >
+>> > -- 
+>> > Sincerely yours,
+>> > Mike.
 >
-> If we are storing the nid in the zswap entry, there is no need for
-> zswap_entry_cache_alloc() to use the nid anymore.
-
-As of now, zswap_entry_cache_alloc() uses the nid for
-kmem_cache_alloc_node(). Is the suggestion to change this to be
-kmem_cache_alloc()?
-
->
-> >
-> > >
-> > > >
-> > > > Along the same lines, I have been working on replacing zsmalloc wit=
-h
-> > > > direct SLAB allocations for the zswap compressed data storage and s=
-ee
-> > > > very promising results: memory savings and latency improvements. I
-> > > > will submit an RFC shortly.
-> > >
-> > > Keep in mind that zsmalloc is movable memory, while slab memory isn't=
-.
-> > > Zsmalloc may also be less likely to make a new allocation in the stor=
-e
-> > > path. There are other considerations beyond memory overhead and
-> > > latency here.
-> >
-> > I realize this means we trade off page migration for writeback for the
-> > pages representing zswap compressed data. This might not necessarily
-> > be a bad thing for 2 main reasons, the way I see it in this specific
-> > context:
-> >
-> > 1) Page migration would only be transferring a memory pressure problem
-> > elsewhere. Not sure how well this would work with memcgs or
-> > containers. At some point someone would need to do writeback.
-> > 2) I don't believe there is a zswap specific page migration flow in
-> > the kernel other than zsmalloc compaction. IOW, memory tiering
-> > components like CXL are handled directly in the reclaim path. From
-> > what I understand, things wouldn't break with slab memory for zswap
-> > compressed storage, but I could be wrong. I hope to include the
-> > architecture level considerations/trade-offs in the RFC.
->
-> Zsmalloc memory is currently movable, so compaction can move it around
-> to free contiguous blocks (e.g. for THP allocations). Slab memory is
-> not movable. It can be reclaimable, but writing back memory from zswap
-> when we are not under memory pressure is also bad.
-
-All good points, thanks. I agree, writing back memory from zswap when
-not under memory pressure is bad, however I have not seen any
-writebacks in my experiments with usemem at 60% over-commit and with
-64kB mTHP.
-
-I am running these experiments in a memory constrained environment:
-
-QEMU VM: 7G RAM
-Swap: 3G
-cgroup memory.high: 3G
-4 usemem processes want to allocate 1200M each. To make the experiment
-even more stringent and representative of actual compression datasets,
-each usemem process reads the Silesia dataset from a
-pre-fork-allocated buffer into the 1200M. This causes realistic
-compression payloads in usemem.
-
->
-> Note that compressed memory can be very large compared to slab
-> allocations (or kernel allocations in general), so it can increase
-> unmovable (or reclaimable but not movable) memory significantly,
-> causing fragmentation.
-
-It took me a while to experiment with compressed size bins, until I
-settled on a compromise between memory wasted per slab and zswap
-latency in finding the correct size bin to minimize fragmentation. I
-have been gathering extensive SLUB stats which indicate:
-
-1) Even under peak zswap compressed quota ("pool") utilization across
-10 consecutive iterations, SLUB comes out ahead in less overall memory
-overhead.
-
-2) At steady state (when 10 iterations of the workload are done), most
-of the slabs have been returned to the Buddy allocator, except for 3M
-worth of slab setup per compressed size bin (0 objects in use): this
-is as compared to 32K of zsmalloc slub metadata that remains at steady
-state.
-
-I learned some really interesting things from these experiments, which
-pose questions about the memory penalty due to latency that zsmalloc
-adds to zswap compress/decompress paths vs. "internal fragmentation".
-I expect to quantify this with data from my experimental setup.
+> -- 
+> Sincerely yours,
+> Mike.
 
