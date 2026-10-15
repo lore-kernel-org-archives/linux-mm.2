@@ -4,141 +4,199 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22AE6CC6B38
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 21:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA3ECCCA462
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 21:34:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D42186B0095; Thu, 15 Oct 2026 17:30:41 -0400 (EDT)
+	id AD5D56B0098; Thu, 15 Oct 2026 17:34:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1B386B0096; Thu, 15 Oct 2026 17:30:41 -0400 (EDT)
+	id A875B6B0099; Thu, 15 Oct 2026 17:34:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C06966B0098; Thu, 15 Oct 2026 17:30:41 -0400 (EDT)
+	id 94E666B009B; Thu, 15 Oct 2026 17:34:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 946DE6B0095
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:30:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 131F81C206C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:30:41 +0000 (UTC)
-X-FDA: 85326155082.01.29C80DE
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0885340005
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:30:38 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rLomQzxp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B9856B0098
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:34:19 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C46ECA01C4
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:34:18 +0000 (UTC)
+X-FDA: 85326164196.08.CC8C552
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B2E73120004
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:34:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SB5pa6IW;
+	spf=pass (imf29.hostedemail.com: domain of tony.luck@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=tony.luck@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792099839;
+	s=arc-20220608; t=1792100055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6QOUwpYyaURolaGh43C2DQXMGVfTGXyyd22jdUdTcOM=;
-	b=wBHHTFgkKJXAhxDarGVP2Bj0OvPJfQEtL4jBE1e/idYRVeKhnuQaFw2jA3/NWYCSk9mpRA
-	QnU4WBkY1vFCJ+xWG1feUOsepBLnDczkTBEkEvLTza+UbdT8Nt+oD+C+9GJcjCrPivsgFl
-	neJxyZIRQfaK7xGcyVFa2gkRNsQ3Aaw=
+	bh=abqK7JjMuXHkA5JRXJKdFjjat/qPQ3psYGWo6Y8Bdsw=;
+	b=3y+Mw7rVr2eHwBYeWFb84snCCgNTWAZ1qq3ddbcwE0L0MLKuI6gzN7fIN0NTnkM9DoRZO3
+	YCnarBKX094w4lyXVeqX7E+RM7xV++GTPba9RvKvZDJP8ep+ynMWmPhELAF6TbWfE/w26P
+	+y84QXCa6WsZnSz10GdHGKV2300iMmQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1792100055;
+	b=ozBKfOHj1Wwi/Yx/bwa/AnaKEx1IQDxCWqS4HACJlvN3MbiuQdwF/IvUYyDYPCH5z/TPGL
+	l3Jg6htUW+8ynmNIC/eDl/+ecRyG3m0d9bK/jAMLVDPZtRkmJQYlqvO7tOa6vKaQDjTa8b
+	ENUEvy1XHBclc9AhkgKvXsUlsY/W9/A=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rLomQzxp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792099839;
-	b=fDeWT1VNCkpGHOJSX7i/A1T1s55Y8V382Cx5BpCWJVpaSd3T5PvEVKLBABilKw+ubeqwig
-	U9mfTJQHOx8W6VNi6v2+deukU+KqUolUkv8YHTeGuiJb/xOo8ls+Y60enQDsQXnFfsqmdY
-	HMFfe9+Tx+e9TayttjyzxbqpHCEhASc=
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3a7858d3a20so19382611fa.0
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:30:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792099837; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Gb2GDw8uMUS7whdfxY7sbq62qghzZJUJPk4t8AeXdiw9AtTlxI2LYitbkXTNIGbrc8
-         gpX83C8a+ddnXLAWBnBr8pGyvYCWpsoYhLj9iL9iSkhBG2HIyiCAM4mo8TmUDrkBDgin
-         cnWh/aJa81dt1pKO+x3qTZz6rCPGrMkh1uj7KAcQQKqR/JwmYjuhXjs5Y6boCwCUQkmI
-         taQULAQSAqK5UFZwq60W8GhDkiQf4rbqsc+eI7Tw4D0VRQ05WY5wyC/GXdjsvrloEkvh
-         duyUiKUVTCMt3Xbm7lNw0BYarhu+PAIa7VKy5wH/QCZvjvn5XNN3+TfY0VYOy/tuWYYH
-         dDAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6QOUwpYyaURolaGh43C2DQXMGVfTGXyyd22jdUdTcOM=;
-        fh=E/5S7u8NEMqDHTVfQnGS5aOXCPI1vWAI0SmxFQkOsJI=;
-        b=mJW6IAkcMdEsxWL5VBMygOuu9HuNqtjz59+dRDBbMv7O4VdEXJy0Ph7OoRYW7DtnKs
-         6tzUj542tkMBcVy9WSfUiBaMHltpziMjrKgrrckwBIJnCWG4kkKh61l7yiZIJCugrDJu
-         dzJLqPaASNuvirLJiCp4jnfS3JVWy/ZUbT92HM3qnY8rOkDULUWBeo/am3ikUCJWaHcM
-         dNoDt233gKLsv9pXp6Nc7+cbFr97pilqhBAfjRsFf4MKaxnlX0gHGo0EgS6FJJ4QGORW
-         6bOS8MJiwa83B8wokNZJozUc+LuoadC5Xzw7kt5IchQ1hSYX3HLXqGWLizkRFPfYSoT/
-         1sKA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792099837; x=1792704637; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6QOUwpYyaURolaGh43C2DQXMGVfTGXyyd22jdUdTcOM=;
-        b=rLomQzxpJGPbrtCV9bzaJaCeqkYLb8tyRPYuYxF5YU/PJZXyVby9SmdYe773oLOfYd
-         g3811JcDm3FF9Xia1Qc13HcCnN3tEQFgAH9gHh+Vn3xVGyb9KCjAaEiQVbl+3UPONUQ+
-         ek1QgKlp4DVZwMkiau9OQY7K5fjgs6aM1XpXIhA32vp9X2zeK6iaZAIa4ewy3ip8PzDc
-         QfUlxbrofZdI+IJTywxdhLCOtrO5SwVeUgbnFX4BAjHJdzKqGafP6VxM1NRWBJ3Hc5So
-         gp0eUTuI1nBOxQdK6fWXg2rKXvnj7Kn51F3QRqL0MfUGSy4g/43M5CDlZowsJmQWiSzx
-         zh3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792099837; x=1792704637;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6QOUwpYyaURolaGh43C2DQXMGVfTGXyyd22jdUdTcOM=;
-        b=MNN8eo5HFwZEzN7UNCrbTPvawbsxiHqUJvKOi5Zvqh1b80PbRIYQT7/sGexA+WXlci
-         dW2eOPuhCzwqpqGlxjToc7X5/PeKBMVLMea5IgwHh9xN3r52xpNObkcjfuGWv8IbGAzx
-         gkCwywIs0KlB2n/aBBoFHk3eH+2iAHqNtw8+aX2BubRVAp1dPxb/OHZnwsPMOJstd2bs
-         1DbsskXh137sxm55SY/zLzI2bZvZOP7C59GVrMC7yfpEY3i+4h3w8jisIVsJoCPsr7Ah
-         eNk4yJpTkXysw/uww8GNdRALH+UUMt1RzsxVZwevb/+ZKub7GGM97CyO6KrJr337Wn0p
-         pJ5Q==
-X-Forwarded-Encrypted: i=1; AKwUvByDWSTgT+75dp+e7qvAo3Yibfy/bqEj39AKzcqYQde4NIo1w1QUCTAAZHeHQGpeAZxRrhhFqjYnzg==@kvack.org
-X-Gm-Message-State: AFq9FYKMOAJAhCtUWQup9MoId5V8DfImOZ/9H/Yw0jmugcDPupocTHot
-	OapHvnhcqGjQOOsgKtU5fY7h8l5rxnpoP1NYrWSd3rKoqKqX3+8v8ixJEkY0hJKW3NAnHnVXQ8E
-	ix4V/Ro9X1x322Ux5cdZ1IXErDxAsmyA=
-X-Gm-Gg: AYBFou3R1f9pYA6XsRJJ48K7t94AeSLbz6qldltcPYCevb9rb1vkyGwcHiXFebg7sGw
-	HZc13IDqL5MXhZRccbDIGmXBQ3n3IiRAwCzbsB588s36r1qo3tCj4tgZ7Xbp3xO7aw4DQGHyBxD
-	Vdy9Q6XhyKS1YXv+rmKyitiwS7qsEyZHPWzc/suiMY9eh02IeUzqyMTwHqp0BSCiJAppvan4xPu
-	T48msulcudFN6hlJe2j/QtV1qMaby8JxlKsKiR43KukoBTp+llObhNMUABG3AT6+ts2uWNARHRI
-	mnNMQQtGvtFCZTbGrZWEF2iMI7Cqqosi7DSYf2r6K28lJF41QREI01jfiwR2d1k0rRun3GyH7yR
-	sCs25tFOlHHjJEsPZzbXOGdMvbl8K5fJuHIKr
-X-Received: by 2002:a05:6512:1151:b0:5be:41a1:d2ae with SMTP id
- 2adb3069b0e04-5be41a1d3ebmr1107279e87.15.1792099836702; Thu, 15 Oct 2026
- 14:30:36 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SB5pa6IW;
+	spf=pass (imf29.hostedemail.com: domain of tony.luck@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=tony.luck@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792100054; x=1823636054;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=/pHOygyuGfSThcZERlpw6akYH/UxO6pbzym2kfgGufI=;
+  b=SB5pa6IWw94ialA40G+m92uJNPUdoqra5h5IG7XJQI6Z9mRlCMz1v9gP
+   slA8puPtXzYk66iDikPBxkgbTCjVd3OidQYir6p7Lflu8xLhcsiITWsx+
+   rZHf18jmT5NgCuheRkTA23DwkrS6luv7sQ0apl8vZXbideOPcg6Xe/BkP
+   QjkpS6e8ej2ZaVau5UYFY0RaTIxc9naZ/DRtfqkaxlPk0NsZOEhSIedRG
+   ciQ/AoZwPtJyFqhrF4TaDFr+orK5rZbBFHUC0dxOOKb99CvkB6qeOU1Jh
+   jUccA69YliAGWyTW2x/XITY2B9Ogal+dYAbyfJ1+LYXy8HKly67XGATuG
+   Q==;
+X-CSE-ConnectionGUID: qfmkp1+6R4eNf6Dz3N5cTg==
+X-CSE-MsgGUID: 8YGes/kITT+aElUNDhIlkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="874060"
+X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
+   d="scan'208";a="874060"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 14:34:13 -0700
+X-CSE-ConnectionGUID: fseNKWmnTc+jdD/fgStDPg==
+X-CSE-MsgGUID: WVazl1W2Q+KCLuY+Li6XDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
+   d="scan'208";a="2154103"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 14:34:13 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 15 Oct 2026 14:34:11 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Thu, 15 Oct 2026 14:34:11 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.51) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 15 Oct 2026 14:34:11 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZiiD/srzptSSS3jL0am4PWkUqJPHtsW8ayY6502UhpGrzBTc7fgMfHMtP9MxcDJcr4KSwTwP5gTxJIyhTqV19EH5qypjok0+NvBnbz7SGIQcfTdNL1ynSBh+FliluvFWFCQg6YjIxvMLYGOtb5XX3m5WIlhBP8ylk9QneJuAgGHFbtMT5wUEjDYZ8IbRBbSKQlG1Px37Orc1iqZZq+Gwh61gWv0FWTSGS6/a8H+RJkOj2BlJMe2O0YE3GkF6z9NSW15qIfupvMKlCg7uWCmGfdmkyh6YsH2yEIVqXOX2moPZDjU/War9cacflX+EUZIXbVnp5Ha6+4Rzoqaj317wpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=abqK7JjMuXHkA5JRXJKdFjjat/qPQ3psYGWo6Y8Bdsw=;
+ b=VszV+GSabUYF03yoa863crC7CK+aIgnnM+fQrd8N8lZnprvGalnrjr/nsnlsjiKubrrqSxwg4MbzfZQkHHLzomUgFvXBxM0dLYY5QM3m8ExXJ6DNe2WG3cWUlcRz2qj2zY/oNYnxH8oeH0Ll8dGeln0eurJGj/13SCRqyxUwoXF6wbGN16rFBZTwNlZNeV5/wYbISjPPTB98GXRyM1EeKeZg3xiFhcQKcG+r9QdEGTYOaU/xQuYXcb5wriMY/5+lq2qIDdsoJCR8oPGX32xOOf1q147B0qBLSoDByIIQ42C7IrwU94pl8cE/Cjkl2wf2xedLM0s8Wr5ppDSwzC50Yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
+ by DS6PR11MB139798.namprd11.prod.outlook.com (2603:10b6:8:4a5::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
+ 2026 21:34:03 +0000
+Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
+ ([fe80::3454:2577:75f2:60a6]) by SJ1PR11MB6083.namprd11.prod.outlook.com
+ ([fe80::3454:2577:75f2:60a6%4]) with mapi id 15.21.0496.021; Thu, 15 Oct 2026
+ 21:34:01 +0000
+Date: Thu, 15 Oct 2026 14:33:57 -0700
+From: "Luck, Tony" <tony.luck@intel.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+CC: <kees@kernel.org>, <rppt@kernel.org>, <juri.lelli@redhat.com>,
+	<nik.borisov@suse.com>, <tglx@kernel.org>, <vschneid@redhat.com>,
+	<kprateek.nayak@amd.com>, <vincent.guittot@linaro.org>, <bp@alien8.de>,
+	<thorsten.blum@linux.dev>, <cgroups@vger.kernel.org>, <david@kernel.org>,
+	<mingo@redhat.com>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<seanjc@google.com>, <ljs@kernel.org>, <zhangguopeng@kylinos.cn>,
+	<dietmar.eggemann@arm.com>, <mhocko@suse.com>, <vinicius.gomes@intel.com>,
+	<tj@kernel.org>, <vbabka@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<peterz@infradead.org>, <surenb@google.com>, <hpa@zytor.com>,
+	<x86@kernel.org>, <dmatlack@google.com>, <tim.c.chen@linux.intel.com>,
+	<kexec@lists.infradead.org>, <pratyush@kernel.org>,
+	<dave.hansen@linux.intel.com>, <rostedt@goodmis.org>, <gmonaco@redhat.com>,
+	<jgross@suse.com>, <mgorman@suse.de>, <graf@amazon.com>,
+	<linux-edac@vger.kernel.org>, <liam@infradead.org>, <ridong.chen@linux.dev>,
+	<longman@redhat.com>, <bsegall@google.com>
+Subject: Re: [PATCH v1 0/8] x86, sched, mm: Speed up CPU hotplug on large
+ systems
+Message-ID: <atFGxagFo50iG6IS@agluck-desk3>
+References: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
+X-ClientProxiedBy: BYAPR21CA0013.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::23) To SJ1PR11MB6083.namprd11.prod.outlook.com
+ (2603:10b6:a03:48a::9)
 MIME-Version: 1.0
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
- <20261008182814.27450-6-kanchanapsridhar2026@gmail.com> <as7JC8o2kggiq_ss@google.com>
- <CACpmpofXMGBP70Rn7jHLwOF38GRKMUGoW3rb1Jp2SPH7ygKcfw@mail.gmail.com> <CAO9r8zOEcGmg8eVttu41htugnng0ahnVQbubiJfxVH+GfDe47Q@mail.gmail.com>
-In-Reply-To: <CAO9r8zOEcGmg8eVttu41htugnng0ahnVQbubiJfxVH+GfDe47Q@mail.gmail.com>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Thu, 15 Oct 2026 14:30:22 -0700
-X-Gm-Features: AclHuK_VkvA5Ou--PjXINBAVxrFNqnCfphylRWwthtObaGmikBDgzUqpBnjQop4
-Message-ID: <CACpmpodDA=oqnVa_hsJpyhGt=4zxknYF=QX9L6-sJbxsRxtM2w@mail.gmail.com>
-Subject: Re: [PATCH v1 5/8] mm: zswap: Store the folio's node id in the zswap_entry.
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: hi8yse1nfpkteoefwizy4ir84hx73tuj
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PR11MB6083:EE_|DS6PR11MB139798:EE_
+X-MS-Office365-Filtering-Correlation-Id: 315e3d05-9dc3-481b-c16b-08df2b0406d6
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|23010399003|1800799024|366016|376014|10067099003|18002099003|22082099003|261009223027099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: vhJsuqDroBgMxvwc+k596vtvWF/QvkV2WVXjfpQ3K4jIhUB+n/YMhw5Zxnq7R+bLoexlTl/fpXIPM6AQUty08gHvkah10a6PtpQku/B7V2YJtCvXD2lUevBrA10E8w+EVtr8BHTE0u04/ZaO+eECxRVPAvWwTnuTMsvyIQijFl40rCcs3Wy38s5HeZakWJral1Xis23FI2qIZze6CpwrPGdYJF8skykQ/qzY694A8r343XJY3mg4dwm2wid+pMo342qHg5Y2T83+9t7EOGsoUVDF0zs+iGsbAeDx5stGe2wV10DOmLWWO9nU9n558vaoddlHpPT3nGcudepy+UKhIGvEVEoHxm1JVx21p6HwKd6rcDq0GJBO5A5RvB44isszVCg/vG9YSNLBQ8WOGynxThJAWf8nD3T6XU2WxBv3OrjrZzSVp3AVp808OJSNK7S1gAuLh5MbAeibgzZaVJC442oX7ZQ7HpkZSj3AQFjCMp82SQ3AkPLFWrQ0f1W1eZlCGFq26V5IxlBXT1JxNzMwSnYqjn7lKExT+L2muMawT5Y7lpA2CwWezElTIOBWaWbFWUB040idd0ph7W0bKkORI5ijV0OniGewyGdnoIGgWAfWeJI26LU0h0HiM4FR5f9is7NvSp4+ZbklO3oLy/LOqcf/+noN8cthu9izH+bidlw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(366016)(376014)(10067099003)(18002099003)(22082099003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ihk0zYJfMFn19YdCPmHlnQEI/oRc1ZGTN0WL4BXrPKfBE39g1TrEEgPzxuMo?=
+ =?us-ascii?Q?f4sSzHdKeruaO5Kl/ajPU9Q/j36ZeO0QUmrnX+IjHd6jf6Gm8+UFys7qz9wc?=
+ =?us-ascii?Q?19mIXT4rGsLlSxU1+XINzjqYVp+gOz0cP48mm7BBreYXINuZP/fALKAlCv9c?=
+ =?us-ascii?Q?Z4sFmQYRa78DzcO1qcB3Rw3vNGDr+9JOCGFgfF8A05tcbCCIX0FX81xxs4Nf?=
+ =?us-ascii?Q?uSong2BrqzdB/lywKbS0jBudJoFozRs7f+s+IKrtky+DsKvxlirFOBI/HAQR?=
+ =?us-ascii?Q?NZ/gFTHOvQKF1vcUIUIuRVfLDX6iZIpAeWYZFSBptSaE5xsJj1/V2F9taYYC?=
+ =?us-ascii?Q?WvomljYVE7841xx9FwabTn+jgGpBdumOSdcWfFZ+Vi7f6WLA+jAMDPj9hyVw?=
+ =?us-ascii?Q?GTtKrNPdHDAiBbX7Qjb0CVZZlSBPGyWpr7r2+H3bMS2g29N73/u1JhJvDYLS?=
+ =?us-ascii?Q?CpfQK8TbDBo6kG4YexOD624cG+6laoLIJeSXFhRbcR7dGe2ChTpL64apUt2X?=
+ =?us-ascii?Q?eUPg8rv5FAitY8ApuJFO6a/Cu44IiKkxjL42pxh6fGt4djkgKYxjFwzG0X1N?=
+ =?us-ascii?Q?AjG7J9vm+jSnH0TYs7PXaVi08S0hHCHl92kA0U30/LofLj/+seZ9oVXrQHYT?=
+ =?us-ascii?Q?k5IdxWbXceTkVhFRKM8akaw6ZamOHvGnzPhMp3PGHVV9jCljXGFiEdB9XOKF?=
+ =?us-ascii?Q?2hQxnHdbW+EldusmUfEPZR9Xam8wsAalZL4S4ge4AlbxrqHeQIZgDeE7secy?=
+ =?us-ascii?Q?i/Zo+eJE0m1kCxzybRft2/mFI7nmdULmGww3asUqn2QahT1cUV+JUV1dKQ9e?=
+ =?us-ascii?Q?le1keFDIlSbPXPBrGL8hWcGVwA31u0YUeP3pThmYzgpSjK0DPomCvWy/mORG?=
+ =?us-ascii?Q?nXO1dt0JHfRvPjWONDURJyU4cCQmmC4H18+t2imVbYTui4DF3bC1IycXOl9g?=
+ =?us-ascii?Q?SVJxIVykGO4D6aT0BsB8WQre69mGvMQ4tG6mykQI908bI5rOfIPtAdd7dgcT?=
+ =?us-ascii?Q?RT1Xc5WyBzGNHvX6yxwFRDi630TvjLkBowgz0GTg63TPOaKEwvoHx2e1LUey?=
+ =?us-ascii?Q?Y7TGt1lZ9S4RyDisMAJwN7J+iTU4GU3VXNd3/kZjqd71tiOkljrTm+TOlc/7?=
+ =?us-ascii?Q?l3HRY8zhNQtCnpyNbqqIyhTCu3I2vdxwZVQFw/vVhRZJd9MyGEdaPb26j7mQ?=
+ =?us-ascii?Q?sQ0Xm4kUGK9kjX8uHfpKz/k92YIXMc2cNuqp9YCT0+FNZe8v3W1Teb5wXsgB?=
+ =?us-ascii?Q?YRsz5N+xrfmJbib+TolwS/a3vuZjrE8IAaAs4BF2cm86dCOp7AC3L61PayVY?=
+ =?us-ascii?Q?lku6LQXLWU6KAdz621oACMTfLNRIgbovyl2+9YBLY9bJHbbmESH3ltGj7dmU?=
+ =?us-ascii?Q?8brOP1ugvssE5jSI+A8kSsttC/+7DEyT+0mC6oEp5RVBlEBA20Hp1wutFV1w?=
+ =?us-ascii?Q?Wd17HckYpXbAiImpag80eZNEhZF7lpRChKZQlFHBCryEEuKDbuIqCeREwEq2?=
+ =?us-ascii?Q?KT7qtvvE8QMUFThtLD7SZiEhkS4bOmfpilshLTU2aqUyHZDZXh6ruemmU6D/?=
+ =?us-ascii?Q?6uYkxJ54EOL5N7K5SNoQrdGPw9D+oDSA/ZHeL3D/a0XXUUoWdarTaJM9S+uH?=
+ =?us-ascii?Q?/oGOH1GCQUMM5MZ38veeg9Q2xhHpcw8yVI+kWAziJYgehxaLcz1PNbP6I1qE?=
+ =?us-ascii?Q?38X2sfY+AxeLjw9HuT078Yc6Ku2eQdM9d2/H5NLlsowL+/wHX1XGZ95yXMDt?=
+ =?us-ascii?Q?fs4rbey6vQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: vHnxOUiy7Du0sM4YNaZzufDd6xStLhNC/TcSFnQMnArrzEamSi/QZLDGoCjPrkB/s3S4tXafFEgK/lVXQ0p8o8Q/KpPU1oYdEkYivjrYtBmeuC51crRCxbCvs+bsiF4afQy0f8/z82G5Zq9Dxfdc25gDE4HF5PjOWRHndrIhzhHEwRdXyITp5Ku9blUn12eu6zAx5gwwENlH8f/kmARX5qvfefxh6YZqKol6x2s5eCl1+OjP4zs2iUIrInvCw1oFsTPSbVoQ1PpcOZqw77vNxv/qXZaqfH2JVf1DjrOtaNbildaccIqkidfbg4cUQyiHVcLTfXM19c6gFZOlaai3eA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 315e3d05-9dc3-481b-c16b-08df2b0406d6
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 21:34:00.8995
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5MMAdSzimFks0RRaxaf7Hby8kzcQ3wwbev7YLaqjWHBbaZvcbE1rizML+S0RBMSdEeTX1WRCCLGglU/nsMt/yg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB139798
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B2E73120004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0885340005
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1792099838-658229
-X-HE-Meta: U2FsdGVkX18BeA1tuOMwJ6K/5+WarN2Q3SK2+6Gbf6w1n1AJnsyoS0T0FQdpr+4gzqNWY6ASrkB0UNna7RysXFKsa5Bh2Cpcl9gj0XAqftypcONWrWvpZjWbs5pzTlRTBMyMbvFj5KMFysSfWUBqC6F9dW8dYD8h7LuRuP2MvGXgN3M2MKGs6HVwIb7Y4CDSw2/ZwJ1HkqbRvGL5PU8gcivXarcG8qmO+aRPzc1PFPs3K7RSu4aLRma4pqb2UDgm2eThcMRJmw+qASH6h0g9mC0LOLxHGdj7vl8jipTfYaCHIz5H8iViFH663MWwco0q5ydiaNQsuGUI0r7TI1ZvFcc1QwQKV8qGoV5UFK3FMjFR8gPdRZdAZyAp7UW2uM9EdF4OE/z7xnq5kVm1jHWWEUflspzMlxWqyruoFYOv2qHN5wbZEItBgUzF9EauawiFRw7SrVgBlLJ+7zmiR3DpspPt5rb5f8YnmJoU9G2vvLgxXeF+6T1yAsgdpooorWVAd2e2aFhXBli7iTvWHWIi+rIhcJJTAaXhyJMWCii7NtriMeuol2T0ZtZHa9Dx88Fm6aeDgHCd5xRefsdx4oFWPrPuNwOTEcCkr4C50/svr9H6E6XI17wSCZ4jB/vEEE0GwQdg3hHYSlA4JB/TXwd1X8Ditr2e2+AxUuZM9FDSv+SA947rGzThJuc6UDNKh3d5LHXmcQ8OBV4MzWq3orEpD8an4bRI/Hr1mdhcrPb3d+DWZwhqixkbV1f0F5UynsQttoXQ6QqwDdj9qyLjYqGEfVLl1Q3p+n3CCSmO5SHF0Ggv7ZsCrbPFXW9+4eJBFPxT+My4Hi1Zo+02ey5V6i/UpwQdcv64+j95OjRIQok5Hx2xOlIkENzLW2+WP8wpJsYbvs3ycH49tMMSs+d/EDx+iKOyceJudggvpVWa+j7ebB6wr6EvHL+xjIyGslMBsxT1iELaBzwV8xt9zDPySBL
- vZir5lRo
- RyqMPeR2XBoAoNMlUZKk4+zZCS9oPqgJXb1Vznmod8KW14f9JkB/RPEN+YS8GTViHV9r30zsJuQqmKqnaeVOCPbqAkCxNEcQUs0ku2XuxHZE98wMBf1ixHRjl3F4dmixFfEca/oZtKn/BBWrlLNKgJ/PpZjyZFGa69VnERxLl0FpCBFUMqENdC++X8r8Znk2MvUP17yAoQkWIU5JFvab+W3qF2hHd3li1BXKz1ttc6yw8OlBXdua0Q+ZAiTqSFraeOQUSWDor5T4GYNvoRqyh3x+dvy1d4uK+9LUYn9xvfN3uVdTB6QOebfv6NwvBIq3cJMhBKBSyIGuGnk18Q7qcjMcnr9MffEHeO6zyNC0zDdN0b6zQC02vPLI964uKpe1zTutbnuFHqhypkHc6AYf5zXSIgC7TwvAiH0wMtZUbh/I6if/lNXXr/5FoiL3C1YIctKm1yl6iLGzB3A6buTbPh0nMLSZFj8eN8H4UkUVv05VTecpgLCF78EtgJFpyiRCpTCHYa3RYQkaPcA8=
+X-Stat-Signature: u9rytnxtmkp64mpuer7p1tkgh6ymbz3m
+X-HE-Tag: 1792100054-902297
+X-HE-Meta: U2FsdGVkX19aSt1KpY1oKUTZbNK+fcb5LEjtUxIF7O3NBwPVjoXgJJKWGj8JmfVtLd8xu+9qRU9cofsue1CJCBm2TY5lTtlP3jTrnzroCxSgQmDrfthfH/+MCGGVzi9cLlmb78stcaaoqOE8l0sr9J8sBu0ZawHKzcl7dKOt9vo6gYaNdd8GsKYSH8xGgcFe91HEReS8Rqq4sPKHoe0j9eeUTmaNy51FWAvJUan3RZWCSnYZmIEKFdLW2IxnxEMdC0TkEF7o/6k28zL+nJgIwoKK7wLe0HulunFMWrGGYGAkTtdA4JCea5FZmcKZBjSqVhmxrdfPZ2YW0Jn/H6I372bkNRrlg5AszT64uh5tI1xvHZL9Gnq1k31VzZWiQUZsBcdKE4QXxmwvP/gMWmSOYTtfEsCvaTh/kC3hQFgU54rdkGeQDY5RQ4IZxQytCHQDjv7WKCSTrzgSmYS8PyqZPsmwoGU7M99Hh+5aGTlo4QVS44ZkA0xV6CSMUUud6Rj68Gh1jUeEV3nKFPI1A0K4g/FH53lNLRAko8iRGDgg97FSxfZ2eJWgdh8ff57SG+SNEAoH3sCJVNdgbsSEERS1+dwy+Q0x+c8y1CCSNFFnIPj56QMux5zDyW6ireS8Fv3+VMo0uJe6VhmmBOg1tUGzODuBJAyslpbRqJTqUPlYn/HoT5OvjjdGazhQZZsaBUBlPrRGV/sALk4ClWI2VCNrrjhxi1Bvt7MLawgTMaVXFhR9RoPeFpLjoH3Y1CY3bEBXXee+MygPrSU6pSjxe4VI/CawWRUKUyNpeof1hodYwpNuwIMu89OYrTWXinrevgwRmmdIcAxvomuPnwsmyKvSYvFBVnnem0s6K2byIW5RRWPjQR7zBifP3xKT1zEJRNdPEGgLaXNb4BjJp5YYbFNvy7v/ebjZZb0k5zIYl9pt9hzVtZuIx0z8KGmlMK/gBvMUKu58hMLxNEk/wEkCbBU
+ tqwYnOlf
+ jOooH2gNKFxCBJxQa+I2KtHB00KhPZ+gbETqJoIU1xSzQeTeXK4Mmd0bkHr8gLXBRdWPrwoz1vrOMOhlPWjtcGlaK9/K4m3CCVmsRh6Px65QuCcTP69kgnPcyuLSEr0voYvXsOzFf4J8oYchKusDyl796G7XfsdG1qr8HT6Ijr82IEk71uJFWbNG+tV++z5Nw7ptvR8QA/Pan+VoBsfiidwC1HD/6/JvG0iXVIK2XbwXDnbyNePSzpQir/tYJ/4cVBgUTx0PfJmV+WPj+/iPLK9CL7nzkLZI/GXdYb0O9CCjWGHYKLNgbbMMv/i2tOQKlBaGJQDmqzrnyaOnaCajceVJdxd+qTJ7J48iYbHx0cXI/Ku/U9yxym7BZPYFrHpIn054Vo4vWQywo8I8iott16yWDvxZnkO0n9tmUK5WTzP0WzBVKKRD2fcoXWjxR07HiX7DZDX28kQAq9+skguRqE/MAdk+zjeBn58YC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,431 +204,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 8:17=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Tue, Oct 13, 2026 at 6:17=E2=80=AFPM Kanchana P. Sridhar
-> <kanchanapsridhar2026@gmail.com> wrote:
-> >
-> > On Tue, Oct 13, 2026 at 5:18=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
-wrote:
-> > >
-> > > On Thu, Oct 08, 2026 at 11:28:11AM -0700, Kanchana P. Sridhar wrote:
-> > > > When storing a folio in zswap, save the folio's node id in the zswa=
-p
-> > > > entry instead of relying on the zswap_entry being allocated on the =
-same
-> > > > node. This enables optimizations such as batch allocation of zswap
-> > > > entries for large folios using kmem_cache_alloc_bulk() that does no=
-t
-> > > > support specifying a node id.
-> > > >
-> > > > The size of the zswap_entry remains unchanged as 'referenced' is lu=
-mped
-> > > > in with the 'length' (as it doesn't need a full unsigned int anyway=
-).
-> > > >
-> > > > Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> > > > Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > > > Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-> > > > Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
-> > > > ---
-> > > >  mm/zswap.c | 23 +++++++++++------------
-> > > >  1 file changed, 11 insertions(+), 12 deletions(-)
-> > > >
-> > > > diff --git a/mm/zswap.c b/mm/zswap.c
-> > > > index ca513a9f89e3..c2731d3acb2c 100644
-> > > > --- a/mm/zswap.c
-> > > > +++ b/mm/zswap.c
-> > > > @@ -194,6 +194,7 @@ static struct shrinker *zswap_shrinker;
-> > > >   *              writeback logic. The entry is only reclaimed by th=
-e writeback
-> > > >   *              logic if referenced is unset. See comments in the =
-shrinker
-> > > >   *              section for context.
-> > > > + * nid - NUMA node id of the page for which this is the zswap entr=
-y.
-> > > >   * pool_idx - id of the zswap_pool that the entry's data is in.
-> > > >   * handle - zsmalloc allocation handle that stores the compressed =
-page data
-> > > >   * objcg - the obj_cgroup that the compressed memory is charged to
-> > > > @@ -201,8 +202,11 @@ static struct shrinker *zswap_shrinker;
-> > > >   */
-> > > >  struct zswap_entry {
-> > > >       swp_entry_t swpentry;
-> > > > -     unsigned int length;
-> > > > -     bool referenced;
-> > > > +     struct {
-> > > > +             unsigned int length:31;
-> > > > +             bool referenced:1;
-> > > > +     };
-> > > > +     int nid;
-> > >
-> > > This will increase the size of the struct now with pool_idx, right?
-> >
-> > I was gathering the struct size with the struct {unsigned int
-> > length:31; bool referenced:1} as suggested in v14, for my before/after
-> > comparisons:
-> >
-> > before:
-> > struct zswap_entry {
-> >         swp_entry_t                swpentry;             /*     0     8=
- */
-> >         struct {
-> >                 unsigned int       length:31;            /*     8: 0  4=
- */
-> >
-> >                 /* Bitfield combined with next fields */
-> >
-> >                 bool               referenced:1;         /*    11: 7  1=
- */
-> >         };                                               /*     8     4=
- */
-> >         int                        nid;                  /*    12     4=
- */
-> >         u8                         pool_idx;             /*    16     1=
- */
-> >
-> >         /* XXX 7 bytes hole, try to pack */
-> >
-> >         long unsigned int          handle;               /*    24     8=
- */
-> >         struct obj_cgroup *        objcg;                /*    32     8=
- */
-> >         struct list_head           lru;                  /*    40    16=
- */
-> >
-> >         /* size: 56, cachelines: 1, members: 7 */
-> >         /* sum members: 49, holes: 1, sum holes: 7 */
-> >         /* last cacheline: 56 bytes */
-> > };
-> >
-> > after:
-> > struct zswap_entry {
-> >         swp_entry_t                swpentry;             /*     0     8=
- */
-> >         struct {
-> >                 unsigned int       length:31;            /*     8: 0  4=
- */
-> >
-> >                 /* Bitfield combined with next fields */
-> >
-> >                 bool               referenced:1;         /*    11: 7  1=
- */
-> >         };                                               /*     8     4=
- */
-> >         int                        nid;                  /*    12     4=
- */
-> >         long unsigned int          handle;               /*    16     8=
- */
-> >         struct obj_cgroup *        objcg;                /*    24     8=
- */
-> >         struct list_head           lru;                  /*    32    16=
- */
-> >         u8                         pool_idx;             /*    48     1=
- */
-> >
-> >         /* size: 56, cachelines: 1, members: 7 */
-> >         /* padding: 7 */
-> >         /* last cacheline: 56 bytes */
-> > };
-> >
-> > And decided to go with the placement in patch 7, since it also
-> > separates out members by compress/decompress path accesses. pool_idx
-> > is set once, and never changes. Further, moving pool_idx to the end
-> > gets rid of holes.
->
-> Please look at the layout I pasted (quoted below). Your patch
-> increases the struct size from 48 bytes to 56 bytes, undoing the
-> optimization introduced by pool_idx. We need to pack length, pool_idx,
-> and referenced in a single u32 to keep the size constant.
+On Thu, Oct 15, 2026 at 11:33:23AM -0400, Pasha Tatashin wrote:
+>    - Patch 3 bounds cmci_rediscover() on CPU teardown. Currently,
+>      cmci_rediscover() broadcasts an IPI via on_each_cpu() to all online
+>      CPUs, serializing them on cmci_discover_lock while reading up to 32
+>      MCA MSRs. Because any disabled MCA bank is shared at most with an
+>      SMT sibling, L2 cluster peer, or die/package peer, probing a single
+>      online topology peer via smp_call_function_single() (or returning
+>      immediately when no shared banks were orphaned) reduces 479-CPU
+>      offline time on Intel from 11.42 s to 9.63 s (-15.7%) and total time
+>      from 22.50 s to 20.74 s (-7.8%).
 
-Thanks for the suggestion. I have modified the layout such that the
-size remains unchanged at 48 bytes. The "u8 pool_idx" requires byte
-alignment, so I moved the 1-bit "referenced" field to be before this:
+I took this series for a spin on a timy 2-socket Icelake (36 cores, 72
+threads per socket). My test was to just offfline/online the 72 logical
+CPUs on socket 1, and I saw some good speedups:
 
-#define ZSWAP_MAX_COMPR_LENGTH_SHIFT 18U
-struct zswap_entry {
-  swp_entry_t swpentry;
-  struct {
-    unsigned int length:ZSWAP_MAX_COMPR_LENGTH_SHIFT;
-    bool referenced:1U;
-    u8 pool_idx;
-  };
-  int nid;
-  unsigned long handle;
-  struct obj_cgroup *objcg;
-  struct list_head lru;
-};
+	offline: 4.833s -> 3.17s
+	online: 6.157s -> 3.796s
 
-struct zswap_entry {
-        swp_entry_t                swpentry;             /*     0     8 */
-        struct {
-                unsigned int       length:18;            /*     8: 0  4 */
+I noticed that your cmci_rediscover() improvements mean even better
+offline performance if you work from high to low CPU numbers as the
+shared banks are assigned to the lowest numbered CPU within the sharing
+topology domain. So working from high to low avoids creating as many
+orphan banks that then need to find new owners.
 
-                /* Bitfield combined with next fields */
+	reverse order offline: 2.984s
 
-                bool               referenced:1;         /*    10: 2  1 */
+I haven't looked into the code yet. But the general direction seems
+good.
 
-                /* XXX 5 bits hole, try to pack */
-
-                u8                 pool_idx;             /*    11     1 */
-        };                                               /*     8     4 */
-        int                        nid;                  /*    12     4 */
-        long unsigned int          handle;               /*    16     8 */
-        struct obj_cgroup *        objcg;                /*    24     8 */
-        struct list_head           lru;                  /*    32    16 */
-
-        /* size: 48, cachelines: 1, members: 6 */
-        /* last cacheline: 48 bytes */
-};
-
-The macro is required to add a build time assertion in zswap_setup():
-
- BUILD_BUG_ON(ZSWAP_MAX_COMPR_LENGTH_SHIFT < PAGE_SHIFT);
-
->
-> FWIW, moving pool_idx to the end just trades holes for padding, I am
-> not sure if that's necessarily an improvement.
->
-> >
-> > >
-> > > Before you patch on x86_64:
-> > >
-> > > struct zswap_entry {
-> > >         swp_entry_t                swpentry;             /*     0    =
- 8 */
-> > >         unsigned int               length;               /*     8    =
- 4 */
-> > >         bool                       referenced;           /*    12    =
- 1 */
-> > >         u8                         pool_idx;             /*    13    =
- 1 */
-> > >
-> > >         /* XXX 2 bytes hole, try to pack */
-> > >
-> > >         unsigned long              handle;               /*    16    =
- 8 */
-> > >         struct obj_cgroup *        objcg;                /*    24    =
- 8 */
-> > >         struct list_head           lru;                  /*    32    =
-16 */
-> > >
-> > >         /* size: 48, cachelines: 1, members: 7 */
-> > >         /* sum members: 46, holes: 1, sum holes: 2 */
-> > >         /* last cacheline: 48 bytes */
-> > > };
-> > >
-> > > After:
-> > >
-> > > struct zswap_entry {
-> > >         swp_entry_t                swpentry;             /*     0    =
- 8 */
-> > >         struct {
-> > >                 unsigned int       length:31;            /*     8: 0 =
- 4 */
-> > >
-> > >                 /* Bitfield combined with next fields */
-> > >
-> > >                 bool               referenced:1;         /*    11: 7 =
- 1 */
-> > >         };                                               /*     8    =
- 4 */
-> > >         struct {
-> > >                 unsigned int               length:31;            /*  =
-   0: 0  4 */
-> > >
-> > >                 /* Bitfield combined with next fields */
-> > >
-> > >                 bool                       referenced:1;         /*  =
-   3: 7  1 */
-> > >
-> > >                 /* size: 4, cachelines: 1, members: 2 */
-> > >                 /* last cacheline: 4 bytes */
-> > >         };
-> > >
-> > >         int                        nid;                  /*    12    =
- 4 */
-> > >         u8                         pool_idx;             /*    16    =
- 1 */
-> > >
-> > >         /* XXX 7 bytes hole, try to pack */
-> > >
-> > >         unsigned long              handle;               /*    24    =
- 8 */
-> > >         struct obj_cgroup *        objcg;                /*    32    =
- 8 */
-> > >         struct list_head           lru;                  /*    40    =
-16 */
-> > >
-> > >         /* size: 56, cachelines: 1, members: 7 */
-> > >         /* sum members: 49, holes: 1, sum holes: 7 */
-> > >         /* last cacheline: 56 bytes */
-> > > };
-> > >
-> > > I think we want to reorder the fields. We can probably also avoid the
-> > > bitfield if the maximum page size is 64K (is it?)
-> >
-> > It seems on ARM64, the max page size is 64K, however on PPC, it can be
-> > 256K. So it appears we need at least 18 bits on currently supported
-> > architectures.
->
-> In this case unfortunately we need to stick with bitfields. We should
-> probably add a build-time assertion that the width of length is enough
-> to cover PAGE_SIZE.
->
-> > If you agree with the pool_idx placement to be moved to the end as
-> > proposed in patch 7, I can try and optimize this further, by limiting
-> > the "unsigned int length:18", if you think this makes sense.
->
-> I don't think we can put pool_idx to the end and keep the struct size
-> constant. For length, yeah let's use the minimum number of bits needed
-> and add an assertion, so that the free to use bits are obvious.
-
-This is all taken care of in my latest version.
-
->
-> >
-> > >
-> > > struct zswap_entry {
-> > >         swp_entry_t                swpentry;             /*     0    =
- 8 */
-> > >         u16                        length;               /*     8    =
- 2 */
-> > >         u8                         pool_idx;             /*    10    =
- 1 */
-> > >         bool                       referenced;           /*    11    =
- 1 */
-> > >         int                        nid;                  /*    12    =
- 4 */
-> > >         unsigned long              handle;               /*    16    =
- 8 */
-> > >         struct obj_cgroup *        objcg;                /*    24    =
- 8 */
-> > >         struct list_head           lru;                  /*    32    =
-16 */
-> > >
-> > >         /* size: 48, cachelines: 1, members: 8 */
-> > >         /* last cacheline: 48 bytes */
-> > > };
-> > >
-> > >
-> > > >       u8 pool_idx;
-> > > >       unsigned long handle;
-> > > >       struct obj_cgroup *objcg;
-> > > > @@ -672,14 +676,8 @@ static int zswap_enabled_param_set(const char =
-*val,
-> > > >  * lru functions
-> > > >  **********************************/
-> > > >
-> > > > -static inline int entry_to_nid(struct zswap_entry *entry)
-> > > > -{
-> > > > -     return page_to_nid(virt_to_page(entry));
-> > > > -}
-> > > > -
-> > > >  static void zswap_lru_add(struct zswap_entry *entry)
-> > > >  {
-> > > > -     int nid =3D entry_to_nid(entry);
-> > > >       struct mem_cgroup *memcg;
-> > > >
-> > > >       /*
-> > > > @@ -696,19 +694,18 @@ static void zswap_lru_add(struct zswap_entry =
-*entry)
-> > > >       rcu_read_lock();
-> > > >       memcg =3D obj_cgroup_memcg(entry->objcg);
-> > > >       /* will always succeed */
-> > > > -     list_lru_add(&zswap_list_lru, &entry->lru, nid, memcg);
-> > > > +     list_lru_add(&zswap_list_lru, &entry->lru, entry->nid, memcg)=
-;
-> > > >       rcu_read_unlock();
-> > > >  }
-> > > >
-> > > >  static void zswap_lru_del(struct zswap_entry *entry)
-> > > >  {
-> > > > -     int nid =3D entry_to_nid(entry);
-> > > >       struct mem_cgroup *memcg;
-> > > >
-> > > >       rcu_read_lock();
-> > > >       memcg =3D obj_cgroup_memcg(entry->objcg);
-> > > >       /* will always succeed */
-> > > > -     list_lru_del(&zswap_list_lru, &entry->lru, nid, memcg);
-> > > > +     list_lru_del(&zswap_list_lru, &entry->lru, entry->nid, memcg)=
-;
-> > > >       rcu_read_unlock();
-> > > >  }
-> > > >
-> > > > @@ -1449,9 +1446,10 @@ static bool zswap_store_page(struct folio *f=
-olio, long index,
-> > > >  {
-> > > >       swp_entry_t page_swpentry =3D folio_swap_entry(folio, index);
-> > > >       struct zswap_entry *entry, *old;
-> > > > +     int nid =3D folio_nid(folio);
-> > > >
-> > > >       /* allocate entry */
-> > > > -     entry =3D zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio=
-));
-> > > > +     entry =3D zswap_entry_cache_alloc(GFP_KERNEL, nid);
-> > >
-> > > We don't need to allocate the entry on the same node anymore, should =
-we
-> > > drop this and let the slab allocator handle it as it sees fit?
-> >
-> > Was this a recent change? I see the folio_nid(folio) on my version of
-> > mm-unstable as of 10-3-2026. Let me check, and yes, allowing the slab
-> > allocated handle this is probably a good idea.
->
-> We allocate the entry on the same node to avoid having to store nid in
-> the zswap entry (see entry_to_nid()). If we store it, then there's no
-> need to allocate on the node.
-
-With patch 0006, we try to bulk allocate all entries for the batch.
-Only if this fails, we call zswap_entry_cache_alloc(gfp, nid). So
-patch 0006 addresses this already, and the nid is used on in the
-fallback case.
-
->
-> >
-> > Along the same lines, I have been working on replacing zsmalloc with
-> > direct SLAB allocations for the zswap compressed data storage and see
-> > very promising results: memory savings and latency improvements. I
-> > will submit an RFC shortly.
->
-> Keep in mind that zsmalloc is movable memory, while slab memory isn't.
-> Zsmalloc may also be less likely to make a new allocation in the store
-> path. There are other considerations beyond memory overhead and
-> latency here.
-
-I realize this means we trade off page migration for writeback for the
-pages representing zswap compressed data. This might not necessarily
-be a bad thing for 2 main reasons, the way I see it in this specific
-context:
-
-1) Page migration would only be transferring a memory pressure problem
-elsewhere. Not sure how well this would work with memcgs or
-containers. At some point someone would need to do writeback.
-2) I don't believe there is a zswap specific page migration flow in
-the kernel other than zsmalloc compaction. IOW, memory tiering
-components like CXL are handled directly in the reclaim path. From
-what I understand, things wouldn't break with slab memory for zswap
-compressed storage, but I could be wrong. I hope to include the
-architecture level considerations/trade-offs in the RFC.
-
->
-> >
-> > >
-> > > >       if (!entry) {
-> > > >               zswap_reject_kmemcache_fail++;
-> > > >               return false;
-> > > > @@ -1466,6 +1464,7 @@ static bool zswap_store_page(struct folio *fo=
-lio, long index,
-> > > >        * to an unrelated live pool.
-> > > >        */
-> > > >       entry->pool_idx =3D pool->idx;
-> > > > +     entry->nid =3D nid;
-> > > >
-> > > >       old =3D xa_store(swap_zswap_tree(page_swpentry),
-> > > >                      swp_offset(page_swpentry),
-> > > > --
-> > > > 2.39.5
-> > > >
+-Tony
 
