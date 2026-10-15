@@ -4,139 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C48CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 13:53:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D474CC6B3A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 13:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E6476B0098; Thu, 15 Oct 2026 09:53:38 -0400 (EDT)
+	id 09C6A6B009B; Thu, 15 Oct 2026 09:56:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BDBE6B0099; Thu, 15 Oct 2026 09:53:38 -0400 (EDT)
+	id 04D946B009D; Thu, 15 Oct 2026 09:56:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF09A6B009B; Thu, 15 Oct 2026 09:53:37 -0400 (EDT)
+	id E7FDA6B009E; Thu, 15 Oct 2026 09:56:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA68D6B0098
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:53:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 543224055D
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:53:37 +0000 (UTC)
-X-FDA: 85325003274.29.1C2B9CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7DD04A0006
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:53:35 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OnRE3wXa;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B8CC96B009B
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:56:14 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9BF59C09AE
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:56:12 +0000 (UTC)
+X-FDA: 85325009784.02.AE8A11C
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9A1521C000B
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:56:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=CVZiHBK3;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=HjLxytqe;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.143 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792072415;
+	s=arc-20220608; t=1792072570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZWR4amPQ/GR2zsJ6RMsOHCZNfvKrDpnYYA3vUh4QnfI=;
-	b=5WuY60n/yR8N4ToeHIEm5uakRQVmxQI+Ka8twsMTNyVObLF03MEb94r9xZN/hbRPcsjGEY
-	0XPVhbbda1URonIPw96PZk8gc5R2M5sAmr4D8Adb3rC/7DkFSgNsI9ZIN0ZhT/mTqkGO4c
-	cwQCIvSJ2EdQ94ibycWU+gHZ0RNEQyo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792072415;
-	b=KBDn8vS0e4xWb3zDNbkpphswe0MLC5mAb2zK9HwaxcJ1Z9dr7ka4lpPVrOG90DjAlii3im
-	3XxPzCSJNM4KG5qHtk4+sDCH/kw8eXnYezF1ACtuHT5y71+FSsALC9dgc1x190h5ysXygG
-	xSHNuqikmfXkkn2w+Ax3+zKQDHdOHcM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6Iz0SjV1j14iXIROKiV1q9pod0znZkHcJbWWiOIXZmo=;
+	b=eCpXVsuJVIe+madMyxKZmfrQZNcBce3ElOE0ZYvmn58et0kc15np7in/RhJp9SohQt2ixS
+	SwVGfQey6P98pV/J4T94NdtDqu53i5kT5REJ/pf6C9odGjENPCUgC8Ddrq19yyFX/TF6as
+	XDiyFvquKVJtv3y82Zk55gnAqLdXV5A=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OnRE3wXa;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8CD741493;
-	Thu, 15 Oct 2026 13:53:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E971F000C4;
-	Thu, 15 Oct 2026 13:53:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792072414;
-	bh=ZWR4amPQ/GR2zsJ6RMsOHCZNfvKrDpnYYA3vUh4QnfI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OnRE3wXa1FnO6WZFf7oUjHX08tQXKfw7ITTK6i8lrDHZ2lmdMKhLKKTpZO3iImMN1
-	 1x767ig0nCvDC6P3IVw554C4FAGBeHYGH0jkl7Hv9gTYoPo0CPR8bVMJy6NPkNv01y
-	 MSpF8kq0LchCpIXBYhjRmfRsjlJmVFXtR19G5gl1gu75T20iIfZ/bJ6D5pxtTC8M0z
-	 +SSVDAYbVnCafngS+6OMWW4bmMCfeOS8btTMZd4hlQsteBxFbmE2AqeSywsSUYtBJd
-	 A1ENoQiIFU68hRifyjvd/47Peg1VK8qPK5jZuGgyVfe7QElEZmx/Qt4J2jcc+rfkJL
-	 qEH9ShHGTEY6w==
-Message-ID: <a809956b-9775-4667-be60-f635b9a72ee6@kernel.org>
-Date: Thu, 15 Oct 2026 15:53:30 +0200
+	imf20.hostedemail.com;
+	dkim=pass header.d=s-joshi.in header.s=fm1 header.b=CVZiHBK3;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=HjLxytqe;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of suhaas@s-joshi.in designates 103.168.172.143 as permitted sender) smtp.mailfrom=suhaas@s-joshi.in
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792072570;
+	b=FEi/hc/lOKYHRp/nB9x+Rh/vD+9vppMXNTaAdNN5ifFRqmd9RwLnKdg0z/9Oyw6UzvpMBX
+	JJi1M23WARM5OdBcN4uvDjG1TMJW1LyIahgjn0knDb9okgP1658zVjQpgwMxbW19xx2Phg
+	WE2JmSTVoec5hrWuDWi+aZ/QgtZBQFY=
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailflow.phl.internal (Postfix) with ESMTP id 0546113801AB
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:56:10 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Thu, 15 Oct 2026 09:56:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=s-joshi.in; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1792072569; x=1792076169; bh=6Iz0SjV1j14iXIROKiV1q
+	9pod0znZkHcJbWWiOIXZmo=; b=CVZiHBK3lRFcJwycltw5lNqnUDrWkkXK6Z3FW
+	n37bF6hXONm4/TGr++Oi/xMEqvex/KbMJzOzNegj29k8KeOQLfO0XdehS+vSf29g
+	w8+kMirUNVbSlMeGG3shDyDXHxTmSxAcakk/s6bV8cjkdXtG1fI0rQRnqUEDV+VR
+	qG3bIYWh5wRLiCEiz3jF9e4nNeLuPsxsiPreTaiIIjb0f3DXkdwZa32zF8PpkRox
+	Mj+A7O4sGPm9lnbq2VOOMnyl9xKSeDHkku6aP3qdp9fd5jLAAh+bRlwO4H4Y6ZRJ
+	FXiLELr0gFbbdOHtwSIapskCJvQ48/4uosDVLwJkxkaZuK1fQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1792072569; x=1792076169; bh=6Iz0SjV1j14iXIROKiV1q9pod0znZkHcJbW
+	WiOIXZmo=; b=HjLxytqe9kiMUEwdZsMTwttwuZyKJ+MYCF2PCMY9dX7uOrFAs4D
+	ddLIfZPa5V95+CskHlFauiDl3Jn+9cACUt6dUJn0pxuKs2g5Imq3pP+WayAH2oWS
+	RROuHKcUGRazK0yHUuBdpGlMzaqaFr8HfZRgRnSt858We/69U8hU7guS54m3pYjZ
+	LP0p9nJrt1/NaZghTttnrQ47cBWbyBkwlz1SOlSwCo2vgRDDAZrd0xKPngAHT5En
+	dT3GXxbehY/EuOFSVuoiLrXoNr+03ffzhDbb7pIA2+w7Rq2FKKeqmvrWcds5FZKE
+	bl1i0pBlnwyMS29ZkWIaQyQJ2R//sVxAD/g==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=s-joshi.in a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792072569; d=s-joshi.in;
+	mf=PHN1aGFhc0BzLWpvc2hpLmluPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:ZmF/Vf3KK5aV4aYSVXTneiUzcZi5SBY5R41RTK3b/nn1VDh
+	KknE4SiGmwtIdBKV2LVRDQtL3//zDkHnHP3okptZcR86lBZQxEbBAeTf1fZDKe2J
+	isjYpsE2qIUHkqvxCYnlF+BjBGrEvPWpUtMxL6KoMdYa4sz0zDSVxNp6nz+jK5bh
+	hMpCLzTqMvwJidPCy8HxYKvRyUabtI7NLwat4eJSNT9OBSukf7aO04GZZ+ZCKN40
+	jUAgsYtxHaaUwhct6ZAOlhv8NanzBYe7nIq0YqHEq0O5jmAwXxmI2D3GNK+KUEIX
+	zIy8rzd3/GAnzToNZbcHsWcsAgnk3e8PFWtEOKA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:3jnYft+Dh/qHjAkkCdxyFgGWgxlFEGjjq4ysYZhssbw=:yVu6IvLdlbItjVbGSeytArgWjbLhLMf049inMbErsd0=;
+X-ME-Sender: <xms:edvQasCCxVT_BlnWZmfZAADer7YCSKtzVeO3vXGLwVvFZprwChvjpg>
+    <xme:edvQan2bfniD9c65BFFzSEoviNOyFFQh_upymh7-lYZsKxSxC2JrbU5vWPtmp3Lh9
+    EeRaZ9wpfI9bmdzSHdf06F1XN36-YAwPTbAUu7h4qG4UiaiKllPrFI>
+X-ME-Received: <xmr:edvQam1RTDF8lUuylYMBt4ur1EeujR-MKXjivCEMXMj0TTbRHUGWuedLEw>
+X-ME-Proxy-Cause: dmFkZTFMuPxk0+Wh0qun9tazji9kwhFpFI+8qyirmz22zfT2QMxLUvh9TE3VKO1Q6/d7Kc
+    LsBd8rEgRoTWF10LBwEOOGSaXLAI+It4wZP4vNDmU3coAW4qLn/s8ZVCCrVLzU6n17fsC3
+    1JmF+bd86tOabjc0lpAXKg2NQ5wJknYTpwG3fsXDbP2vq1pTc/TCzJxkK6b3f0oi6z+YDc
+    /bBl7L51PnsOrIfHRhwlIW8A5LhNxTP4fFXdyDfPB34GP4qUZADUlH5xvOOamtkK5PEvw6
+    PCldTt8QbCbdFwduMf9PnWO97z8iw0RcXDm0kKpDLr65NA7/MahSk4penFXWeQO7yU+UZu
+    3CAU38I36GOyOzugBHb0ZHH8hvltGn1RZmhRF6o13YVJNOCgnKIFCLhiMQZFO68r9BvpXT
+    wclLHnCeowclg03JfDpXwZKqxyaMB3FCdOzqAPnqrev2GsiA8lwoVC9xAy5IQ24NLMGEfB
+    TMTGckuyT8Uti0IWBKsCWOw6QDYJ6ZmhARheQMgk+Rn3VrejTDuOZxv5Te2NeooVtzENLo
+    2hXODHBEZ3IXq67OrD669b7EYKsegFtH9aX51tyma3DWtqrdsNwC1nLNA6mlH2E2uchLHs
+    UImeg9664C7UXhf3SNNYL6nBGTU1ZuXMd9G4AEY8pXY6IMAA2//hM3cbQJZA
+X-ME-Proxy: <xmx:edvQakC4UrRt2vRwYgVH6nPLYMbPqPjanlEGoB7maFNPEOFxGOZBxw>
+    <xmx:edvQat5pyoEaa_AXaDvVarHyMXnB83WRsUJpExx_jazsJFpyG3CIsQ>
+    <xmx:edvQatKLwjncucxVN5yzx6W5uMrFkYxVaHVWPcCQMvqKRvj6T_Fwnw>
+    <xmx:edvQamsQUE5bRHWW0jtE8X4jeXqy6DdjLdbSG4_Z-JmJIvZSufcOLQ>
+    <xmx:edvQanYR9i9xB1Wii1XgzIQ4BGJJ5Dl1gYok_EF0-PYXSWBwT_9CnOWO>
+Feedback-ID: ia9504abf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Oct 2026 09:56:08 -0400 (EDT)
+From: Suhaas Joshi <suhaas@s-joshi.in>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] mm/damon/core: Iterate over installed probes instead of DAMON_MAX_PROBES
+Date: Thu, 15 Oct 2026 19:25:23 +0530
+Message-ID: <20261015135533.18761-1-suhaas@s-joshi.in>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
-Content-Language: en-US
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kernel-team@meta.com
-References: <20261009125503.126202-1-kas@kernel.org>
- <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
- <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
- <as5q14OsbK2CmOrh@thinkstation> <20261014202936.GC371161@cmpxchg.org>
- <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
- <atDMN5MoGrwJNpAj@thinkstation>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <atDMN5MoGrwJNpAj@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7DD04A0006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: wkjbp39dpqiro1pa34rkpnof8zspr6w8
 X-Rspam-User: 
-X-Stat-Signature: 5ier9qi9gbp6bwsuze9wdw3gcpd95yth
-X-HE-Tag: 1792072415-34915
-X-HE-Meta: U2FsdGVkX1/5HfV52FcrP92CcZ3SudeQU7e9HxaeUVe9BLD4qunBWp3GRLYZhJZQ6Bi8nlyNmww5WpsJ92vxUOa6hQ5+hKS+XjfvRbirUIIoObSZl6VeuKGBaUbMAQzL4i5YQSokn50qyqUMa9iNG0augpYO/o2kfp50Ry7FEsrjUOR56jrNhGYgQgOSTO01eAorT0xZz3byVIJoGlRO3JGNHNqsicuEJ2Xv3A3q9VU0WtSITA2Xu8y/kJ+l+ipxPy8XTR4D+CItvbgJxlUbwDOv/f2538OmO3Dmbn0n5u1HUGrDLdhTaSAsA6m1ypS1kwGugMEWq+RkP2mRl0439yYQPW7eZud6JrRZa0ImkCzOdZjrY3bjDvv8YWsfDl4NcCmrCjVzP6nH23SevCFw8QzCWtXXwWEuAR9tLxF3xyjNS4ksyxESz+RyRQsR+MdVIS+RIeEx4Z7MT/b2m8aeCH1f1jdN9qPcFoKGy+DKiDwo+ZVRASNOBgb7HNOhcQEKhBt42OWhY2xTapPzKMPR15yFyfdT+lckwEkbXRFZDedmqMU/KatVSxqTtmF0zOVCtvgL3dXv34/2e6ZW9IMENEkgFGK3FDRGaJqP5/veGa1IjzpCGhByhSMC6Ct0aiucdPh5gvRdGRd0pZQNdAGE/LeVyfL0JeZTdFFd8uJ+xNyCEX0+57yb4v6CfCwvRJoNmx3q2vLsw7v493aYroHcuJwSsxLKX9TSNtdSVUS9Fpky0SDYqyJHPp98qAW8/YIIoBQGoa+Uh5UwsVJA8YohQJi0P4JQ6F2r3hFzwpI2O8aituPK/JKH7eCcqg1eL10kTW9se8MseWjvvwYLSYdNkHia/CTO4f0xDArb+/f5GTJMpDw9YeaAX5oWn3AE5QZfgwCto+Le6O+NSSGa16IwsgbALb6qtvKkhUKk/spnclsX6EnJFPxEs969ZWsyz2sFzb+xK+B0dAongl2KgCA
- DGFMH7uT
- L2viWV8cxng48oa2i4vBF4MA/agS0IZ7BysEonIjFFhuS/VXDj+uBVu9TrMglMi/2mIOcBb0LyasZLxkLW3lnCVHpleP1qjhbPsb2PzukkCA8OuRfQFoWh9zQuVSisTlaiPNOQxRfLIsw7He/LQsbFbeAMb0V5nJ0pPTlyaD2SwdJYndgTYt4dwuGZvYmKUa6i1Q/lZBBgAuSsry0iEihpD1oOKTiv4gZvQtvuK1OVOSHPNYktFBkNxE5VVI5D8nWpZ0xn2G6uf8D1pXDnRGSk/114S/pGpdlyDYOCdNZZzFEH0C+D3J2ass8Rg==
+X-Rspamd-Queue-Id: 9A1521C000B
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1792072570-546866
+X-HE-Meta: U2FsdGVkX18S2RRNOOIER2PuYWkjouUc3r/smN+M0eAMRQTg2B1k6Qy9x0+aNVh8WWKwKxfLI5kxrT/fSTQBiMt9Xp5+89s749b+Llzs+JoGiJZ/3XRwCshPA4TiVoi6cVk26Bh34HHuyCpoflKRnzzKfJkwYMl7yDwMp3Yw4v2obHqVnX+dySp2zLt1BoZkdLn+QY+hr/Y8K3INEqTUi1o9ODjqFxwoi2fEK4NWoQut92dOguNgTaZHzAOODhpQIZehE6YXwYPau9oPiiqUBPvJLVyhXq4elvq/2p3NtgwENPybLQviqdy/0uv+cdTnIVFPwG7h2Rk3FD0Ke4m4vFRGGMW7IaKLbD8haRR4+1ALxAIhtQLyQGgS344sAsB8rNMHnDfQ+NXeotzbirIk/zD8g3SlAH2D/CLcVG3SJEcR7NwR35YQSlP+1l1y9UeIeX5+Mxup1X+QpOKvvpS0nuLPzEykYCcGDIojztCkJIk4Xpy8/P3SV27+EFwZgS1SP1+gp7V0LjgGjXiuUayhFEzdfxgiA5/JT/9Xc1M2KBuXemA/MGfA7cEzZZ7eS6ieh2YPtcROC0xlaEWa5CWVEZ4k9+6NYbGB5G5oX82q9dKvMSxwaTrM+Pxr6sPfRXB0+GnRFpGAPvziCRpdjeSDVWD9bhTN2N1gBpGyFysSGsrKcbWnDEbhL8p4Eun3xOk7MXTDgFNEEqgHsTHarMPyWe4wy/rp63liCaDM455XHzYqNlF+1YYTzadzCiGuKx3ps9Q7YqXjI3fHNpWVTLBcLzS9/fQRwuH14o+gr49Q0Q+MeOF1EWBJvReXMm7lI9sgWXkCgyEHNIacIQ5u7pN2zy95nm/SAAcNkJkldxrrqORY3spEiIf5+mOYIW+R6pINxM4YyHT0uucubnpomOKoYOtwyzvJ/VVsAD/NhLVnirPZSWPsqKXApSPqTiwEM/UhBznGdpw7afbts6UiXcU
+ CohEMb5B
+ dndxM58kuUHpIPkS4JXXt+N+i4MqBVnR8Z4z2lVjkdZj+7/LqHihyk6fPI4dZrho8iNmEZmAo+p+cBXA4Y2L1Nt0hmFYGQ1isJQw6yXY88ajsO6sF8DkgBMg2U8gJMA7swXrFWgbclHWKUCpVcYd/puC4Mw0Xl5UOYPCWvnuznPkOqGdt/nsnxs5iF+5Z+i5ISd3b/VpAcRmQF+NqMbpL/VeZwdMJxQe2m9kdSrsclA3BpyYyUFzgUt5NfH4gAZHCyYq7kDde/wGgrxs69zjjWKE0AiDS9QAmfL6i6Hl/8nxORS0N8z8MKf98C6e8Li0vULJg49dRiEcEDk5RdZQasrabe5qetZzcAMnW2PQbl1h00UrMRe0adVLhr2XWLJUYfHUz0VdA0secCBD5lcvij0alR5mGk6rucemWMv8bGGJmU3UbZQUgDy9/wKSeBx/WcLw1RFwWHAdDfYc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,23 +144,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/26 14:55, Kiryl Shutsemau wrote:
-> On Thu, Oct 15, 2026 at 09:16:36AM +0200, Vlastimil Babka (SUSE) wrote:
->> > And agree 7.4-rc1 with CC stable is fine. Sadly, not sure if anyone
->> > but Meta is using the feature right now.
->> 
->> I thought it was there for a long time but it was only added in 2025 :) At
->> least the enterprise world is slow to adopt things, AFAICS.
-> 
-> I was thinking to propose a patch after merge window to make defrag_mode
-> default. Do you think it is too early? I don't think it is ever going
-> to be truly stabilized without wider exposure.
+Hello,
 
-We can try it, but preferably with arguments (and best, numbers).
+This is v4 of a series I sent earlier. Please find changelog below.
 
-> We also discussed with Johannes to make a stricter (defrag_mode=2?) mode
-> that will not give up on fragmentation ever, but OOM instead.
+There were two "todo: " items of the same nature in mm/damon/core.c. Both
+of these suggested that we should iterate over only installed probes while
+updating (last_)probe_hits[] during merging/splitting regions, instead of
+iterating over the entire array, which may have empty/unused indices.
 
-Would you use that mode at Meta? That however most likely wouldn't be
-general purpose enough to become default.
+So this patch series does exactly that. It replaces the for-loop over
+[0, DAMON_MAX_PROBES) with a damon_for_each_probe() over the probe list of
+the context.
+
+These patches are based off mm-new. They pass all KUnit tests related to
+damon. I have boot tested (but nothing beyond) on qemu-x86_64. Please do
+let me know if I should do any specific tests and link the logs here.
+
+The series has been tested with mm-new fetched on Oct 14, 2026.
+
+Changes v3 -> v4:
+1. In some places, kunit_skip() was being called before freeing resources.
+   This is correctly ordered now.
+2. In some places, regions were not being freed. In v4, they are being freed.
+Link to v3: https://lore.kernel.org/damon/20261012145636.168436-1-suhaas@s-joshi.in/T/#t
+
+Changes v2 -> v3:
+1. In test functions, new probe and context allocations happen after target,
+   region etc have been allocated. Further, target is added to the context.
+   These 2 changes help in reducing allocation code and improving simplicity
+   and readability of the patches. This change is true for both patches.
+   (on SJ suggestion)
+2. Earlier, if a function's argument list required multiple lines, I was aligning
+   these lines to the opening paranthesis of the function. In v3, these begin
+   after 2 tab spaces. (On SJ suggestion)
+3. damon_test_last_region_quota_reset() uses the older version of damos_skip_charged_region().
+   Make it use the new version.
+Link to v2: https://lore.kernel.org/damon/20261008151944.113714-1-suhaas@s-joshi.in/
+
+Changes v1 -> v2:
+1. simplified commit message of patch 1 (on Liew's suggestion)
+2. wrapped all lines at 80 characters (on SJ's suggestion)
+3. added comments for new argument in function (on SJ's suggestion)
+4. added damon_ctx_destroy() in r2 failure case in damon_test_merge_two()
+   (on SJ/Sashiko/Liew suggestion)
+Link to v1: https://lore.kernel.org/damon/20261007154851.45368-1-suhaas@s-joshi.in/
+
+
+Suhaas Joshi (2):
+  mm/damon/core: Use only installed probe in damon_merge_two_regions()
+  mm/damon/core: Copy only installed probe in damon_split_region_at()
+
+ mm/damon/core.c             | 57 +++++++++++++++----------
+ mm/damon/tests/core-kunit.h | 84 +++++++++++++++++++++++++++++++------
+ 2 files changed, 106 insertions(+), 35 deletions(-)
+
+
+base-commit: beaba65d5704418b6fa03c96a389bc2c2b6702b8
+-- 
+2.55.0
+
 
