@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62183CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D26A4CC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:13:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 634D96B008C; Thu, 15 Oct 2026 10:10:37 -0400 (EDT)
+	id B1C2D6B0088; Thu, 15 Oct 2026 10:13:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60C5D6B0098; Thu, 15 Oct 2026 10:10:37 -0400 (EDT)
+	id ACD456B008A; Thu, 15 Oct 2026 10:13:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 522BA6B009E; Thu, 15 Oct 2026 10:10:37 -0400 (EDT)
+	id 9E2786B0092; Thu, 15 Oct 2026 10:13:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 324D66B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:10:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFF67409F7
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:10:36 +0000 (UTC)
-X-FDA: 85325046072.06.16F3716
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F2FD2120005
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:10:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TMCS2YTk;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CFCF6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:13:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 15230C09CD
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:13:29 +0000 (UTC)
+X-FDA: 85325053338.13.FE75477
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 755E940014
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:13:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VK2jk6qM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792073435;
+	s=arc-20220608; t=1792073607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SnejWl8mRfWCD5JUDxQovY6ZIaJqGSRZlxKQNmpxKmE=;
-	b=iXZXHrfGQjnS9xE1Os1lP6CR3EbBD2jd/Fmawf3i+ry5GU4oXTMMloU4N1PPuo8xnRE8aj
-	OKZ1zJ8zjB+tjfxLUF8P7zbKggkkKdA2rLf6WHBrZzZP9VzFzA5pxN5zcgGHzdCX+yfk4z
-	Gh9aWETlJ2FfJlFadggTNjwNrnP7LBg=
+	bh=vSbVaC0f2gNWsRFqnc1zPjJqFLHG96Rj4dv0cQbpqHk=;
+	b=oMo7jx/uDnbjwrxtgK54PnSh4qvpzONMXD54qasZkikLGsPiib2l/hgTMwwQDEeEpRcnvL
+	rWycxLFtrh/TPuHriGEnG2/KKH2cSjaADjFkJ/RDr2PO3Qh8jzV7FQWiDQ8hCzT8AGNzpv
+	vf0tXJXyd2TLrod+4HDECFlxGZviffg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TMCS2YTk;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VK2jk6qM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792073435;
-	b=j/9tvH0Tuo+bJkIF+aJcAlONIvlYmbLPe6LCMHh2UU4kaPQP3hku7nxU3UCFVGoozR+jU9
-	dmOrMjc+OoE34VT9ZB7P0APZG7JjS26lPGDk9Jy8t6wwHllvEnT/I9dCQtgw3uapMcBarC
-	sQY6quhSLknb//cGo+T+C1+j2vV6PNI=
+	t=1792073607;
+	b=Vg/acBxpMT+9QYZ4HmYSCwWj+q1cIw60gqCffWcvjQA24+3sljZAdl4bwM6rX0L1uaWt3t
+	d8Nl0cEA97FRAFBgz2+L2nrfi9aZDAl+3E8CeJXKNAZA5WsZSECCO4mayvo0/sXvdQhLjF
+	xukCf6dqVPKUi9u5dY9Kx65vF3aeQvA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20D9540849;
-	Thu, 15 Oct 2026 14:10:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB30F1F000C4;
-	Thu, 15 Oct 2026 14:10:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E5DE3601EF;
+	Thu, 15 Oct 2026 14:13:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C5F1F000C4;
+	Thu, 15 Oct 2026 14:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792073434;
-	bh=SnejWl8mRfWCD5JUDxQovY6ZIaJqGSRZlxKQNmpxKmE=;
+	s=k20260515; t=1792073606;
+	bh=vSbVaC0f2gNWsRFqnc1zPjJqFLHG96Rj4dv0cQbpqHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TMCS2YTkoe7BKnA15EF+5Ouqg+UGP8EXI/UmIwlG7kZH47vSKuIbWwLOYBdN/yWr/
-	 2Ci0WE4eT61jRLjAnNOi+Jsi1vhsvOINexjtV9gL/FFTByv44w8VSAMyljmKIoJlJq
-	 2pdKUmDH87tN4fgsrNnrSV3CSvm8K9IBzFj5UUseztEEJmPy+Tdwbw8AMPAIwxj7Kr
-	 /GEIZrjfcSWWd1gCkHv1sIs2hdEWqzoAawfA69A6sbDmYbh3NeHrEzGbzVhzjHHBkX
-	 7jP7PPcHZ+UdI7bWavdZve6qwFHZn4gEFWo0cFd51vX/U23IrOpM3T+bik/p3Im6Zc
-	 kYTyo7plDoxJw==
+	b=VK2jk6qMdVNH/RTkBn4PiZI8l5MImtqd3I3/rcyPP3Z0H9vIq89Aqw22/KwApHpvq
+	 sq8EsJleJfgC6Cjn62uzJ0PV5sSqtxM5ZHTry/w8PU8mlXfWxmH9jGrONj71JsufQn
+	 BdVquPDJF368SCGof+kurkib3QSmOjvG/gWWEwXssUECfiN/Re+GlMjz62a1bxPFDV
+	 XgCdx/GqOrPGwHc8J29qkAlYhs9rU6NH0I4eWzlJw1qNGsNbubg51pUq0zBCzySD1j
+	 R16wu5PI+4GtNFfiN9cHyLrRR1T1D7o65TYAd88FFUWkm5QxeduSsN9z66q/PyV3jm
+	 32hAyDmOWkq1w==
 From: SJ Park <sj@kernel.org>
 To: Aveline Noir <jm5905938@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] DAMON: 32-bit overflow selects wrong sampling interval
-Date: Thu, 15 Oct 2026 07:10:26 -0700
-Message-ID: <20261015141027.88149-1-sj@kernel.org>
+Subject: Re: [BUG] DAMON_STAT: idle percentiles out of order on 32-bit
+Date: Thu, 15 Oct 2026 07:13:19 -0700
+Message-ID: <20261015141319.88393-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CANOyQmFkTQMEpR10sxjoB+8XMsk=m9DAJVnyxguwV2LLYCg09A@mail.gmail.com>
+In-Reply-To: <CANOyQmHad1vamnZT12M5yPrJ69==Pt1U0+MGw6u0MuNtr-DRCw@mail.gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fgt4j6j5h4nd8ujnr38et5e168ew1d7a
+X-Stat-Signature: ba95cnqfx8cqoypszgprbuop6o3ugg4f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F2FD2120005
+X-Rspamd-Queue-Id: 755E940014
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1792073434-696506
-X-HE-Meta: U2FsdGVkX185OXTJUmvkEmzCMLv1kajSRIccxYlOG0Kbo6B/OvEV5gsc0nX6pLbMn+VUdrkEcl8urp+hYAbXcZXh7uDnbwrWHCP0C7LHweY+slarXhFIma2q8A1neATZPZZ1lPdl3Hlud7+KjmDRxY3BwhhEULV9SRu7uhdy/yCrfdhpNmZd+6WTrPhUwEr5fYonrQuQvHjSEAIDg54ZFMgHhYoAbuXnDu3e3u5AC8FR7/SCJ51Xba9vnyfBenRKJIIzKqEe3E7MfBurnKU9vlU9UlYFt02AQXNE6di7/bRg2r079IVhYIPVUNBmhFLAfztaFa5oUXqsiD7jbBtkAtz0aS15k9I5EstDGHztlbb6nnjcPX8TjenpEJc0tmJMKYVvCp/33q3ZabGFPKUgChT0IgzL9zajO6n5qrDJE/2jooItoZAVlEvLxgsQ9AJptkO8b2uYzKVHJP12ipWrbJBlAtq38bFZdE9dFkFtQyg+gE3rhQgeFvLuMfecuFch3xWkOeGGVF9JiujA/rHV72fDj8L60EmLD0SG+7xvNp7npgIn6QGKZ4LgnF+YneZ/Jt19yRE0NLPIdHArc8nvdEfi4w4kjDbSiDUYO4N1GenHPUe1cdbyHJ3J60y73JQVH+8HztP4kCJ/ayVNvWvbomFo9eJUV0Qw3e8uo7JEnxVGD+FBbDFbA64TVR+FeqJQceEjaxEL1yLKyWykNxteme93/E1wI+vFPUbpZchDBOxpnDfr/vV37nsbG9wMn55LYoW0mDZ9TgeSx0FSp8Qe4ba5J7xBlledf+N++954YSjfvtC00WjhR36FdxB/O3irxk09g3dcOoQWPR11U3OoTO7eBM8eX7W746xAQlqYNoff+eLM2S1JONyBy/0n7OiyxX0hqGF3+1pXuXFrcWTjXrpEG9GFEZ0ttTvHL1jaQx/MWkBPOed+e2I0nZ15ME76Q9B/wWMQ03mF8rz6cqO
- 1UH9Qqfc
- Ec988GcjxSTOkvNVec0k1SeW7gSS6eSdE0FMmsgOl1NQs5l6StKRdYNhhDx59bwhY/M6TCrmO+hSd6+g20pSmptBBpGFpvmzclPf/rELUOR0LnuqeaKWgmh8cYW6z92CeRZ68i+UKFS+8ucR4CztmlDbOlW2RVy0om0V6+rTmq4i9axrfqgQ8Y6z+F4HUty0QKTuLzM+3VAY5mxveIYwzpw2B29c/oW3KNe5Z02zV2LUuiGQ=
+X-HE-Tag: 1792073607-249660
+X-HE-Meta: U2FsdGVkX1/iqFwEBt0+RS3o5ACrnkAsMYbpbsiZt6EemkBOMV8d4detmaqs0R337PJI3u6PaVaZtt4Can1f1G0ulsd9H8ijYEKd5x/TkuS5EJggQkneCidMiQX3EyYNkbD2WHyUoRfPNTaPe3/kwW518c7yBBATA3Kju8G/DGXJEIsJrjDeH8deZpn3Dp8wLA2Zs8JLGhcfCHW45Sx7DStEJzQaQanTjjVy9Ca5b6AOWYIAo37mB9OGntQkdKYIdkU+lKo7NM/HZ1IXumnIgfDrN2BVzEfYHIP7D/ZrDPesOKUiBIoYJ/EOWnxvvoWz2m5soPQpZYfhVfZgkfFiWdAtCwVBCIwfVeHmJdBrLbkKxCeMSnPAvM54Bq4RDPcn5TMIUA8pnGlrbHrIoi/Eqk9OnkEBVYbVSQuuHoqSEyemChthFnI7mSQgGjMXu6TvV7pg/yf2kK109eZZ3bRUgQJ/lFq5NRIWk/b3o7lNUlhZV7uQkXFkjphICVp+AdRNfStzU1u26hmmaDoFBJv0K2ctaaCDZwlBrv44nzg7c52DgqIlWv7M2BEVApdSZnFbseVyrDUkMpiSZkSa5KOG+2Obk5fC6jzm1bM7d2jmYxhUX3Qi963Y6Hhp+geAcQjVGmrPEMo8es20pmsJTi8EORulHkedPSsugJmHvF3yZMMQADTystC9k6VpZ97tldhGjxJJ8bVPEmZL0WyUSnD2Er3sT3K39NQ9bW8laLgIzwSu7Vevn+zMK95oSna7F9atx6PTfWB0Tx/ydTueyjeNsidD7aaxO1qRpbpv/m87nfr6rP8QFPDtcNOJVaG1CVMlumBjT97rJWG+z6xa/QGRmXRsdgFPQodx9teFIMzkTAU2jqnMFoEeVZ2JIk0l2Mcwo2DaEhHnelbAx36N2s12XM2GwqZ7gSSnx5d6GVgBOobpK9nSclprjONevxc+htnRXpHcbCL421jn/otoj3d
+ IyeGdOns
+ K72Mznmz9RS9XXD5IW6ag7geO51xYraHiOwpokgRVQzzy2dpRQFZzotgVUSv4aH6GAyqLjXPj54uxoAHrJHZwtxsUNZdXZhd2FAHG0e/t01nhet+kKQhx2uUCj8YjLqA1zF6OE0Z8tiNQDNv4c/5yfIIx0giFfj7fQqIBM3jtPNwuPkLfPRuS2C/CxX+blG/Ni/6+1alJ6rBUzqKQeybcmUnFBHa7wTCFmPUyO1iKXNW5HxjWvLmvl9zumWn7dyZsEMYZs/qtY0LtnsNQ4k+gMM/dZlEajWnMtM7YJj6n/dDbC+WUBQUhhJwFyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,51 +95,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi Avelin,
 
-On Thu, 15 Oct 2026 07:24:08 -0400 Aveline Noir <jm5905938@gmail.com> wrote:
+On Thu, 15 Oct 2026 04:24:12 -0700 Aveline Noir <jm5905938@gmail.com> wrote:
 
 > Hi,
 > 
-> In an unmodified i386 QEMU kernel built from mm-new commit
-> ad9f2d463666, an intervals goal selected a 2500 us sampling interval
-> after the first aggregation.  The same trace inputs give 2812 us with
-> full-width arithmetic.
+> In an i386 QEMU guest built from mm-new commit ad9f2d463666,
+> DAMON_STAT reported these memory_idle_ms_percentiles values after a
+> statistics update:
 > 
-> The kernel has CONFIG_DAMON_VADDR, CONFIG_DAMON_SYSFS, and tracing
-> enabled.  The guest monitored a 1 MiB VADDR range as four contiguous
-> 256 KiB regions, with sample_us=5000, aggr_us=100000, access_bp=400,
-> aggrs=1, and min_sample_us=2500.  The default minimum of 5000 us would
-> hide the difference.
+>   guest uptime:       22.51 s
+>   aggr_interval_us:   3200000
+>   percentile 0:      19200 ms
+>   percentile 50:         0 ms
+>   percentile 100:        0 ms
 > 
-> At the first aggregation boundary, the four damos_before_apply records
-> for kdamond.0 showed nr_accesses=1,1,1,3.  The next
-> damon_monitor_intervals_tune record showed sample_us=2500; sysfs then
-> reported sample_us=2500 and aggr_us=50000.  The records cover the same
-> four 262144-byte regions before the first tune.
+> The 0th percentile is greater than the 50th and 100th.  The guest had
+> 256 MiB of RAM (MemTotal: 254216 kB), a running kdamond,
+> CONFIG_X86_32=y, CONFIG_DAMON_STAT=y,
+> CONFIG_DAMON_STAT_ENABLED_DEFAULT=y, and CONFIG_COMPAT_32BIT_TIME=y.
+> aggr_interval_us changed from 0 to 1600000 and then 3200000, showing
+> that statistics updates ran before the final read.
 > 
-> For that aggregation, the inputs to damon_get_intervals_score() are:
+> In damon_stat_set_idletime_percentiles(), the loop compares
 > 
->   max_access_events = 4 * 262144 * 20 = 20971520
->   access_events     = (1 + 1 + 1 + 3) * 262144 = 1572864
+>   next_percentile <= accounted_bytes * 100 / total_sz
 > 
-> On 32-bit unsigned long, max_access_events * access_bp wraps before
-> division by 10000.  This gives a target of 409364, a score of 38422 bp,
-> and the observed interval of 2500 us.  With full-width arithmetic, the
-> target is 838860, the score is 18750 bp, and the interval is 2812 us.
-> The later mult_frac() remainder multiplication does not overflow in the
-> observed 32-bit path, so the difference here comes from the target
-> multiplication.
+> where accounted_bytes and total_sz are unsigned long.  On 32-bit, when
+> total_sz exceeds 42,949,672 bytes, the wrapped product cannot yield
+> 100%, even after all bytes are accounted for.  Upper entries in
+> memory_idle_ms_percentiles then retain an earlier value or remain zero
+> on first use.  DAMON_STAT monitors the system RAM address range, which
+> exceeds that threshold in this guest.  I did not capture a per-region
+> trace in this run.
 > 
-> The affected expression is in mm/damon/core.c.  Widening only the
-> target product would make the later 32-bit mult_frac() remainder
-> multiplication overflow for these same inputs.  The 2812 us result
-> requires sufficient width throughout the score calculation.
-> 
-> The 2500 us interval was measured on the unmodified kernel.  I
-> calculated 2812 us from the trace; I have not tested a patched kernel.
-> The i386 config, guest init, serial/trace log, and build/run steps:
+> The guest init read the module parameters after 22 seconds of uptime;
+> it did not write to them.  The i386 config, guest init, serial log, and
+> build/run steps:
 
-Could you share more details of your use case that this setup is needed and the
-overflow becomes a problem?
+Could you share more details about your real use case that require the setup
+and how this becomes a real problem?
 
 
 Thanks,
