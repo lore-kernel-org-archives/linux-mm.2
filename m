@@ -4,137 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B860CCA465
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 19:01:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE676CC6B38
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 19:11:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E42B6B0096; Thu, 15 Oct 2026 15:01:32 -0400 (EDT)
+	id B2B006B008C; Thu, 15 Oct 2026 15:11:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 794576B0098; Thu, 15 Oct 2026 15:01:32 -0400 (EDT)
+	id B02366B0092; Thu, 15 Oct 2026 15:11:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 685096B0099; Thu, 15 Oct 2026 15:01:32 -0400 (EDT)
+	id A45286B0098; Thu, 15 Oct 2026 15:11:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 459556B0096
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:01:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 899D0A4F63
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:01:12 +0000 (UTC)
-X-FDA: 85325778384.07.A8C2FA4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AAF511C000B
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:01:10 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCmCeyWQ;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 70C516B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:11:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E254E14013D
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:11:25 +0000 (UTC)
+X-FDA: 85325804130.02.C612A78
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4B61B4000C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:11:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cOi0wl0w;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792090870;
+	s=arc-20220608; t=1792091484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O6YGICvRqo5ZX7Fs34PHB2pxcAwJ+U8wwEjavmBhres=;
-	b=PTxhqh3CU3zoeSMvx0UIwAe31simURt3kB7x+/xGWxCE7BHMDTyRRuie91eMt2/CKwy/pY
-	/o9UVBQDAiu1JLYxueNJOflnOJJic0vy45+gTdRlZdJPIVmi1k1XUcRo50BXjxdA3tjvvk
-	w0K2pjbLl+VhsLDZGXgHX1rZpDVTZYo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCmCeyWQ;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=SAUwP8uv+umPvOo9Qj4Nscuwt4gS+Jp3uOlXS5VCJX8=;
+	b=XnVF/D0J3wrv/HDwqYDdgQTD/rcS/oYilQFbCK91dyJ/pyl7Yi/FRpLyONLBVX9Gw+Z86d
+	yJ6dJCNIrWvJUdatyCNMRtLvQXm90DuoPHaSSdM+mLI2wzd8HUFIVJSYZg53N0dOLiK3Ld
+	cfxGz2FyrNeh9npZG3ltuvuv4JdNQAU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792090870;
-	b=UGsXEbGQoD0bvGWG+jCqGcXwaSmHZg3o4fuEX/I0q4ti5A6GFidnGKmsu3ORCOMm+YANbq
-	Q7jT8eGy2WsHn4a3cf2jWLWOKX4Rq0HySkyVC4kz7SJDASxJkRrLWKiXz1QvuSvDbBtnMa
-	6qoC98XZJVTvVfycbvI2IksPurrIE+Q=
+	t=1792091484;
+	b=VoE9tCX4ghzjbGzw68s9lmm4dM+UD+sOxramay4k1T2aEW7plnLa/u2JAVhX2dFLLmimmJ
+	R/au0W4XQsBZ0k9dMc/0CTivRm5rSQvZEmlw5+2ozBnaFYVYcgM0jM6c84Y4glilWvQhv1
+	DYRb5YodcN0oGJOoSceZIMHuXGxm7aA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cOi0wl0w;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A392043FF1;
-	Thu, 15 Oct 2026 19:01:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F221F000C5;
-	Thu, 15 Oct 2026 19:01:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 793D660A7A;
+	Thu, 15 Oct 2026 19:11:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8A11F000C4;
+	Thu, 15 Oct 2026 19:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792090869;
-	bh=O6YGICvRqo5ZX7Fs34PHB2pxcAwJ+U8wwEjavmBhres=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YCmCeyWQ8yReS/GaK13Kzq1NgNhsv4MPuXFY8WAV+sAcrXekzPCqKU28EGPoZyzun
-	 1IWAp52aBdG6ux/e/XCbcpDcCc4jGgl39/JLF0+pkGmsQARBWiuyHOAA3LD1XJiygc
-	 78DH1wCbimpiIOMtQGS3CA/v20HKLJAH79Q1vC7lhezfZYyEQhynFrLaLVxJR9Kosl
-	 h4y0ulhQzJniIAijReW4Q82YStoBU3wELT7AEr0oFujp4WguhHDWK/adUd9Ojskzfe
-	 vJbEBYn76QydAwsG9BL2UEeCeqC0OyKl2W6l8uNJ8Y1480Kf6/qre5bUvuvyxRFhlP
-	 nMb4AnhKbihVg==
-Message-ID: <f7f0dd17-d7ec-4829-998b-5e8de564fc38@kernel.org>
-Date: Thu, 15 Oct 2026 21:01:01 +0200
+	s=k20260515; t=1792091483;
+	bh=SAUwP8uv+umPvOo9Qj4Nscuwt4gS+Jp3uOlXS5VCJX8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cOi0wl0wIMf7h6fRzBGzvmfNVak4QfBXmz5UnHGQQ//LoBbqmk8ISLwwLjlNRe5Zs
+	 GA+DIVBtyk2epQQzkS5TNPlbIs+JwXJKrmqRcEsBJSWfZtwEwp6uOhULQfYLjtyqt4
+	 5KFgSQL9Dhu9YzqkojCN/j3wcVZQRzcNzEZZCuKeaA4OZVyM6vtQtE5Sek2XP1xDQo
+	 mkYJ0zv8NUdXBgNONVQzRTD6VJVLkWBPUdxhdnHztVjO68F4vBJaRJUizOkps3jn4S
+	 0PY3ZMjpwDIuyI2Bc9jmPKHvakp8HRDb918uC+aEDjli9MTrM19VmYHLO5mSfkiozk
+	 53TZ4XwXpuMYg==
+Date: Thu, 15 Oct 2026 20:11:21 +0100
+From: Harry Yoo <harry@kernel.org>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
+	SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
+	Hugh Dickins <hughd@google.com>, David Rientjes <rientjes@google.com>, 
+	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Chen Ridong <chenridong@xiaomi.com>, 
+	Tal Zussman <tz2294@columbia.edu>, Kairui Song <ryncsn@gmail.com>, 
+	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
+	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
+	Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev
+Subject: Re: [PATCH v4 03/17] mm/memcg: add folio-based lruvec live helper
+Message-ID: <atEkfmRFgXJCbJuK@thinkstation>
+References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
+ <20261016-mglru-fg-v4-3-2106750c0bfa@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: exclude DAMON docs from MEMORY MANAGEMENT -
- MISC
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, SJ Park <sj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261015-maint-mm-core-x-doc-damon-v1-1-226decb5cd0d@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261015-maint-mm-core-x-doc-damon-v1-1-226decb5cd0d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AAF511C000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261016-mglru-fg-v4-3-2106750c0bfa@tencent.com>
 X-Rspam-User: 
-X-Stat-Signature: q4mm7e9mxp9r9zy6on735epi863y9dpf
-X-HE-Tag: 1792090870-68273
-X-HE-Meta: U2FsdGVkX1/HIqdNkdcWH24/4kBUaWZYN/+aD4bsvL2ARA8wbD7OEpVmzmnwWjaLp4kRz2aa4t+1aPlyskFeUhhnxoBSW3jKauTdqW/KE2Fn0TjcuRflOaX+pYTHOr9Xa4gNyzDpyEQIPwVkmkOwLOTy5f+Y+XuVnj10SSdHCr+JDRpgiOzjCnQjBO1lChx4sJJzP3V3TKm0za52FjejNFWfM84Xx94yyqhXH04u0nXK675pCQUlcAUeRHedzJr90DqeaMVrsagUDELtY2VpLirzxa7S104wWsa/mRf9YEMB7OS/GCo3eHxDGZoIxIsbEpt2pXyDlS+WAr+t8N4tLMP4Xp9D/xnwzODwvSuFChuAOevE5VHrP3Pa29B8rEAVl6EaKowiUjBFH3qSQ8+v9Krk28+k0ZPm3e52BVvqk0DOYoWMHwfQSuqeD6QLdiaHxwB6bh6ynh4epE/NIwH8OKvGSJVVqqcJHdNG8bDJL7aGTIvYKqAmwKE7nv5WzfVJrxXob4sBWPaCUUThyk8RjgFx3kJzYMwzqPUMXVWTOzvh2EQW08R9YxRSV+TpHDh8G+2aRfgudil2zJxZtKHix4yfl+nBP4aLwfk+31bSw0RERrEm/RK+/bgtC01O7s1PZjIbkUuuwsQZoA2ghOg+eh88lDZeNtDXjo9uQqprws5coHsbO3PGR5toj4DZ/4cEkN55D2BLR2Ha8HoGNTnnbGtv6V3Zra2BmctlICUg+8QOCmDD3LVplM1mzF0tw3qAkN6Hh8P4PyIWkrrIW31zoV1je7x78bfJgpVImJLwxadyWz17k5Si8XHtDRF/wx0EAp87rP4t9pFQxORXDofC4TFZWOLQaghbROZADR+aFAfDGu18co8bGKREglohwqxaiEujJGKtf3MiTPY1pShNuPZDbPih8jSBvzlJlhwvB2a/J+fMbWp7VJTsXTeh+1ihEC+PbO5keyLPHxDSVh7
- K7U8rMob
- VudoUOin3vz1+tsMfxJkAkituwDDl+oZwsetV63db43P4mEGDfcm/nYJb7z3NNg7xBtHvcBUwoiheuy96/A3lsDOjw5p7jl+nUa7/KUuNcQeXHPrq2Z0U7cLWr0RaAWo44W/pSrDfKG6GEb3Oq1selNcTbSHg//q3vKgQTn0qJ7hWQW7KH9gUxUmer5u7X/S79+QN4qfnKdgsC2/isPYAAnVbLlJ/2duE2tU3eGJOaHkhNtiTc+dYrVJN/ARS/7oQdBOEPe4woc4s/pvUzycWFvEIcyKcKNdoPSRY
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4B61B4000C
+X-Stat-Signature: jncnwr7ginx48485sjutoje4x6jshq9y
+X-HE-Tag: 1792091484-137196
+X-HE-Meta: U2FsdGVkX1/1w8etMZ1814XckJD/xNbx62R6hDIZoP06RhFSFu32fu4iI4DpovsaTaYfZuFpFDKRUvNp1CjWjE6gd/7tkQOXzP4PbexJIeA3ujnvIHEUG20A6YPRl9dkdP5Yg739nKFiRztcAvz3Iw6h2ztt5xgQUJws5N0uHu7B/6To4mTB5CSKHBm2qDqB4Olr9WNc84+Uz4P2zq1267pzrhS1oVg1JcXc0DqgtMJk9VMoC3MkR3aasxiOJwHvPNzOXWpiYunshfBc2JDvwANl8bIEefDwu6/fpkP1PL0GfAa7Va4+HVGTPU3dzSg5tiuHRKL55F6BUSM0gJLo5IoJ96OOmfeEaC4uGayjGfwD1h6hrF3UMU28+mTAdVcOlh+CVp03LXBNwxMqUrn7h9+yBHZ5eQ1zd1fFo+3HdajNRinD8jMY39WPSfqdnROepqkju9xrBSQmwo3iQHW4NhI8TdKoSrsh2xfJfsOgX6iRUf15OoPzojrmqMmdnImddIPBL2QatV9sT+QSXc0zMqlK1v7favHt2tF5ew+fd2OXvu3iyijDchaJQTEXOdukW8hhm93uhiEiHYzrSpCM2jf1wa/IyEtH7A2qGrtUeN1JqbI40bhtY6FjE7XIQS0Gd227/LJ/AonbZLbqtCci5X+rZbNj8ASp9oyXIAbxA7Jj8cWoSBJqR6wng/jgun+192FHZfJyQJ4M9OJfTq4cYoQbnwhanuONdvgLclkGBZG3fDpSnzbCnn0SWEg3k3RGCADYwX51m3l5AeKGaNnFY8wxQJDv43z79o5LgC2+05icS/ELNnZze0Oa0D99vXy05T2nfl4aU4OuUxyPZHZhBt+AqwiSWFviIU+vi0E8qb8j+jVIvClTxlnPZzVPYPXZ8Lkvu0q6Ctlv90P/LqxUN0OaY9e8ydX9K/0enmHCMmdKJMOyJpWgdwmb7lPj+bKJQZX2vuFjx4BiYciNWTj
+ SYFzGgXq
+ eN6hDtg0QU/nmeEF5opgGd1pHDIsknQb9xKzqWFBLVh3y81v4jAKSIMWJNSXiHS33ro8O1Rv7s9Kd1NKPiSKBcIPadQc/QFi4E9pez8oRYzNeiBHaOohZeooVtt59K6Zm1ITESs0RjklgWXL0meB/gKYUEIxp6Dx3itHlmeYK6YLw5kwtprma6Zp/sYgzduRlPtnAN9ch3nNbk504H3u7gsz0PGnyyadH4te5aVrLHqhhdGpQzLvdAMdZrsySzucQr+5sd/zMypT3wfW5wb5gXzcsh0J484LwmuDiryil39xGATRyFQw0rDopkgp6JVEWJRZEoWDVmfBKcGYQkDgX4Eh9YVTTWt6n4Zmd858/lLg6H9gg71ZQa+skTwnXdh2nzWaA+WhhboOvZM7ltPBHN3fezcwq7sxlBWS8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,25 +112,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/26 18:31, Vlastimil Babka (SUSE) wrote:
-> MEMORY MANAGEMENT - MISC is a list of misc mm sources and also acts as
-> catch-all for the mm Documentation subdirectories. Documentation for
-> DAMON is well maintained within its own subsystem and also actively
-> updated, so there's no need to Cc all MISC maintainers for them as well.
-> Thus add exclusion entries for them.
+On Fri, Oct 16, 2026 at 02:15:52AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Add a helper that resolves a stable lruvec for a folio under RCU
+> without taking the lruvec lock.  It takes a folio directly so the
+> lruvec lookup happens inside the RCU read-side critical section,
+> which a lruvec-based interface cannot guarantee.
+> 
+> No functional change.
+> 
+> Tested-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
-> I'd love to have the time to check the DAMON documentation changes, but
-> it's simply not happening, so this will save some mail traffic for me,
-> if others agree.
 
-Ah, that's why I was getting CCed on them :)
+This new helper is doing the the same thing as what
+get_non_dying_memcg_start/end() do.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>  include/linux/memcontrol.h | 39 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 74110a324f9e..829ab776ab44 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -1535,6 +1535,45 @@ static inline void lruvec_lock_irq(struct lruvec *lruvec)
+>  	spin_lock_irq(&lruvec->lru_lock);
+>  }
+>  
+> +/**
+> + * folio_lruvec_live_get - get a live lruvec for a folio under RCU
+> + * @folio: the folio
+> + *
+> + * Computes @folio's lruvec and walks up to the nearest live ancestor
+> + * if the folio's memcg is dying.  Paired with folio_lruvec_live_put().
+> + * The result may be stale: RCU keeps it alive but does not pin @folio
+> + * to it.  That is fine as the counters are fixed up on reparenting.
+> + *
+> + * Return: the live lruvec, with rcu_read_lock held.
+> + */
+> +static inline struct lruvec *folio_lruvec_live_get(struct folio *folio)
+> +{
+> +#ifdef CONFIG_MEMCG
+> +	struct lruvec *lruvec;
+> +	struct pglist_data *pgdat;
+> +	struct mem_cgroup *memcg;
+> +
+> +	rcu_read_lock();
+> +	lruvec = folio_lruvec(folio);
+> +	pgdat = lruvec_pgdat(lruvec);
+> +	memcg = lruvec_memcg(lruvec);
+> +	while (unlikely(memcg && css_is_dying(&memcg->css))) {
+> +		memcg = parent_mem_cgroup(memcg);
+> +		lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> +	}
+> +	return lruvec;
+> +#else
+> +	return folio_lruvec(folio);
+> +#endif
+> +}
+> +
+> +static inline void folio_lruvec_live_put(struct lruvec *lruvec)
+> +{
+> +#ifdef CONFIG_MEMCG
+> +	rcu_read_unlock();
+> +#endif
+> +}
+> +
+>  static inline struct lruvec *lruvec_live_lock_irq(struct lruvec *lruvec)
+>  {
+>  #ifdef CONFIG_MEMCG
+> 
+> -- 
+> 2.56.0
 
 -- 
 Cheers,
-
-David
+Harry / Hyeonggon
 
