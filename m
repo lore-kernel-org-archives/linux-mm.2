@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1415DCC6B39
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:18:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35BEECC6B3A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 16:28:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BFB26B008A; Thu, 15 Oct 2026 12:18:58 -0400 (EDT)
+	id EB3B16B0092; Thu, 15 Oct 2026 12:28:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 097FD6B0095; Thu, 15 Oct 2026 12:18:58 -0400 (EDT)
+	id E3D036B0095; Thu, 15 Oct 2026 12:28:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEFFE6B0099; Thu, 15 Oct 2026 12:18:57 -0400 (EDT)
+	id D04606B0096; Thu, 15 Oct 2026 12:28:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D0FA66B008A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:18:57 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62A1BA02FC
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:18:57 +0000 (UTC)
-X-FDA: 85325369514.28.D1ACE8E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C4436140007
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:18:55 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hsIquxPo;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A12286B0092
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:28:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C43E12011E
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:28:09 +0000 (UTC)
+X-FDA: 85325392698.07.05848C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6725A20008
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:28:07 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XoDoNgJY;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792081135;
-	b=fK2uyABoaUQab7esQap9cTyKRPAlJ0vN9Pp7kxsTORJWIwIAIco5jAG/KE4+dnNxraMA/u
-	AiS7rCiwBhJEqwiCmsTenjO/bl9ZydEMIBzsL8RRB9x0xRD58y/YnkQkA2kQP/LhLtLtTU
-	pZpElpaXg8BBYsYR7MCNWzttdytQBGw=
+	t=1792081687;
+	b=W61q5uLXDzg/aeq2L/wQyXg++CkQuTV7QDt2OktmN1hDwZfPx5xOCamLzXkiMQ8UU5PW/8
+	vuj5nXVRYF1ukCad1R3MwhQesbYklai+/HNLo3wXj8++f3gN/gcCeuWEyQypiaJM8awuWL
+	RhktROswKj0Zvt2P0qKe3i6Ie5nFSPI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hsIquxPo;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XoDoNgJY;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792081135;
+	s=arc-20220608; t=1792081687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cz1oUpp56Zew9WMeuLYnFSeLe5kZDdhcep3hXyffVkg=;
-	b=BsTSuBdb9TvT9VkJfjTsnxiha77dOc8Ah8ZzB+IvlxqeD7e3WDADOtdC5+90hpM7IUPZJs
-	3iXu3Hp8LrQ+TAdLCL6ibAivKZh83gu04n32NNZGNp/06nQAshvTL1/vSYju4YxAtXTUlp
-	fSDyd7dLlRLAkxUuEYWBVZ51LgXCRls=
+	bh=XLnWwWNMPSm6y57bf4F4xUjaAeFj35H0VYjcsc11Jog=;
+	b=Mu0/cvuD1OiLt5aDbDYndevLud5+Cbos7zzbe3ftMxMlJv+9st2qDodc2ly/PVID8hHEua
+	cTTBAPonv3XcjEY14TsNPJOJWTzzwVJ9wpUlJXKyUEt7k72A336voobw28XpcL+dXjvtYq
+	C0io44z5rlFcVqRLKzu/Yq+TiXOQpZA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 386C5601EF;
-	Thu, 15 Oct 2026 16:18:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735571F000C4;
-	Thu, 15 Oct 2026 16:18:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CF5E41881;
+	Thu, 15 Oct 2026 16:28:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6661F000C4;
+	Thu, 15 Oct 2026 16:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792081134;
-	bh=cz1oUpp56Zew9WMeuLYnFSeLe5kZDdhcep3hXyffVkg=;
+	s=k20260515; t=1792081686;
+	bh=XLnWwWNMPSm6y57bf4F4xUjaAeFj35H0VYjcsc11Jog=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hsIquxPo3YGMGU8bVly+ySWIwCtz7VpX7N48Oe57rXA9hkwYB+4/BypRyYw31PusL
-	 GqEHOuFLWjk8YwyANJlY6ps9CphdiGMDFWWD3XTLXykR7IP6zPAbBDAyYA9gL7FjGa
-	 lCJmVl1nDbglKx7AJS8ow1t5SIwXLZcc16wtXLcnVPwzjL8fkgmkSQ0gbQyEdyz7uc
-	 5py8cF3WvepQpTop22peaQh3M01PMEKR1/mKlhkjN3bNHCOSq1bcEM+HNiSaYY+auk
-	 BhHtxqdz0usYhDsnqc2B23gp4cA+DFnF4C/LPUbMRYGYhwIfxtP8y4KwSJPYklx9EG
-	 eYnilLva2gk+Q==
-Date: Thu, 15 Oct 2026 17:18:52 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shengming Hu <hu.shengming@zte.com.cn>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slub: initialize the free pointer of the bootstrap
- kmem_cache_node
-Message-ID: <atD8CeImfP79s-9b@thinkstation>
-References: <20261010203906.93156-1-kmehltretter@gmail.com>
+	b=XoDoNgJYJMqr9vyGRiW3ypkgKBopgiUuSRDg6wNPKmdgpfrW11xHPPaLdEyhNhDW2
+	 YUWvLh5ZV6hNwVJOcu38x0CgKFxpxvreAHI/1jqpxTxcGmC5sFaPZJYCcY0CmpkzNb
+	 JWi4NEC9MyrEPpInNFS8cqXGiLyHLtLA6k7Phsjfs8vDXr+ddqa90jgGpwSoINykgE
+	 xJo88GhhHwORpaTZvHUTgfYQIK8eg6DnI28n27yzbJ468Gs3XIn2Nkc4xJeM3R3GXg
+	 zLKQFLzJJxiYcXKBjL7TsHfAYCFyKYddxGlaniCrm3xPQJye5eaISd4aI8RSy6mnXN
+	 AHqD8M4tv4JVg==
+Date: Thu, 15 Oct 2026 17:28:00 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Jann Horn <jannh@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: prevent VMA generation reuse from skipping readers
+Message-ID: <atD8jesRoc38xF0J@gremlin>
+References: <20261015143735.1630957-1-4ncienth@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261010203906.93156-1-kmehltretter@gmail.com>
+In-Reply-To: <20261015143735.1630957-1-4ncienth@gmail.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C4436140007
-X-Stat-Signature: w3zt7oxdjxhtjt7ccjt9f1ypdyurtidb
-X-HE-Tag: 1792081135-938808
-X-HE-Meta: U2FsdGVkX19L5r3XTU59ey6+MkWLC7z7mtr+mcYO6ld7xRAKa2UIPwP7bMerdOlaI+Hq8D5DzLdgmDDLvGP4oE0tVboXuitjOrTupB7DKhuKqr7UrHBpiDaTFx73TwgDMb6eBoYAM8+MzpOSqKnzF5uqLiX3Np0MrYLjFCKugVK+1u6o3JGTXDI7w1f/zkYwlyk3YOtx7ZqOguF9dIG3Is9fEYWJG9sUJAfk4438xpQ5ZpjcocyPZhrm6q2hp5YSvSkWYvnGYhcMMJb1s5i0vMrtmaWFg71Mmpj0aZj+05CTYOP1/ew+5lOwrzMVXYgFf6dJp9EcJNd7mJdeEvAOQk/dVTY5f8Ox39f4meqcIkcUQxhpvuiIGDk3nZXCU5do4i5Tvob2DdmyiD2yW/VD7uf3Lfm83Fz2GXai5atUhu80zoTeGDDZbzrpWgG/p99AGKkhkU7iD6zKLttGPoGw9Xs9vxzqOFODAcKiXAA+Tl/99YrYg845qbjLjq4Ko7ua/gpSZKeDhem1z7vLdgU0uSTq06354WC1QVeS+rf0TlEUBDIRgG+3DAbZ/emnNUwfR0PWmq1dwN6FoS8HLLtVDFGsyOTPpunHMwRT6Zg17z5GgW2QupFYVqrrhKuNHJvta53CDV5+bRXX/4Hqocp6Bku3hIOGe0kk9Ds64bSFZF16jGJfuruQqnKX73j8fi7fzvU1dWibNkEUg7xflfmHdR9+mL6jSvumH0Dh6UxnrSQLlBMdCUADzdBXdEhRH5hZDSFPBnGL/qDEgjIug4uG1C47k5vtToXgQIl6Fz1hClL0fJkl0Ed9yYd6+XGQL90dsKQW7IhfqasnFpZutEnXswoj/5NMu1D2VHYC6EeIYfET1BCu9rSfn28dHrInKuyum22mIInBcN+x7aappV/O2QNh6RMjaEtH0hYv6ZjSlBj+59bLgqiyKvunp4yNhM3Y6inug49Xiw7pqp41LP4
- CpAzQ6eh
- 1LOO8dhRkiAYGPe/DdTUcF+ryFgIvxXxWGXOAWGFp19JmDN45YbaRhMYcLoGjcCm5vBNGeB+AxOagOCoa8pGSpvrsevkX26DaAX0Hppy6oJtjlxQG0ERWkq5JwXupVoi6sJfwxBbYRMUap4jVLF7So2WqtI1m4z0mM8ruyoknK2GGMcJTY2lxnknXPrgQF6OVoLgXNmmsZwKbs+RH40P0M39tnvf1QCb6VRGMTP0UvjD+C8y7uq8229xacLnUkGhdmoE91avqrwgZifwJxB+q/s825qTo5SsPE5AIE5rINd7g2xe2jKgmOEm0SrlX3cphvYGfNJAsPdvo1BppC2MIvRVwyw==
+X-Rspamd-Queue-Id: 6725A20008
+X-Stat-Signature: e41pi7n19bct8sk3f98or39ie7u4db7a
+X-HE-Tag: 1792081687-147564
+X-HE-Meta: U2FsdGVkX18nZEp/GGlxHh1E6R/H58nwOoHgptoEZOoQuRy4Eq8IhTFBGhMij+2oH/cqiYDar5AyAi4uy00bIdXPHkv/3EgmQRr5lS0S6uETIxiWJ+U9aCUw9nrSRzd197aJqkKYTS77IjKjbQiqZ4ai0aVtAS48L1QY+kaovW4e14uqMeq8faq1aF5rByyvb7VdI1hexRnSa34y2nZM7foViHUNXwyY98Km7vrN8BJlS1tupujRsSTXKAmW7F4ZXqdT/5ZORY73ZHD9gZ0xROCCxic3pk2ihjFPcvgHIk/ATZ44Hxjfd2dXNt3bcUDefs0GnSnXBDKm74h66fK4rUyMF1P2piJmb4hi/8zYucMu+QJhDOqWeqdSn/qMW5RW8BElPhufSwL9XWYS8Ov++lCOG6xIGDbiLFfnjA8t5mmFb0Wyhu2se2oWZxaPgEnlQfGZ908vt10uJEUpUf3BNzFhBVfCQoUyAtgPJpu5fnIP0UpVaklr2rG+qukMr4kX/q0jb4IOr1C7aGeNcip34GHzQdUckza3Z5p1yGO8iV3KmsKbomYasDu6+F42L9C/F9t6zmr6Mo9ZoeOAznYhgVFvEyV6qqNrBHRu3im2udCgv18FbhUlYBjuz2igB+lzw+jw0H+DNkJ7hu3eEKsKYX58D2RDtvXRdqvhQD1CSAGmdlnCBsc+FZKnnkVY0H2YTJoVsJO1VT/EXbdHrK3xiXdqI/vWfVLqjZyB2qc5YCYU7LZYwnLSf6uK1egoWoyzWo6AJy25pNP0B2K0ekq/ZuZc/hFP7iV3Pqz3l+OjGO+ZFT26bV7/i+eG30Rjil88oOfiBVakQpBQnyLqAncy/4D6xdORJ4XJgNPKSl8FGjlTfw8KF3klWMZ/ipqnokhRi4mrxRBgax97Of8YmQgCgYp3K72wVzDOylkqKf8oEBKrqEoPEozZELSZMOUlmWJDNF8C2ApTG1atgMVeE4x
+ 2ke4M0bU
+ BfXepn93GATpznF9tkMxGbiRtX65l6P64RsWNdz7OsYnSK/kKvD2AYyug8RtOw0QgWLtqrxpJkSz5uTNbE/O7Al8aNQJIarDJz66R8HNktdul6+d2r9zYwyconcvMZVCMXzw8yDo8q8oKb4k/fU67D9jtwQDMwhzf1cQh90A55/F1OhH6NTR/gLFPcW9vQv+MDk9mtUjGAzfiDqmhJRGTrfgFXLUPV7yVhpRB256YgylZw6V6mKBnvqCxeQLlbDE/cniT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,32 +94,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 10, 2026 at 10:39:06PM +0200, Karl Mehltretter wrote:
-> With slub_debug=FZPU, validating kmem_cache_node reports
-> 
->   BUG kmem_cache_node (Not tainted): Freepointer corrupt
->   Object 0xffff888000140040 @offset=64 fp=0x5a5a5a5a5a5a5a5a
-> 
-> and taints the kernel. Poisoning places the bootstrap object's free
-> pointer outside the object, where check_object() checks it even while
-> allocated.
-> 
-> early_kmem_cache_node_alloc() previously took this object from a
-> freelist with an initialized pointer. It now takes it from the slab
-> iterator and builds the freelist only for the remaining objects,
-> leaving its pointer filled with POISON_INUSE.
-> 
-> Initialize the bootstrap object's free pointer to NULL.
-> 
-> Fixes: dc795d4c0282 ("mm/slub: defer freelist construction until after bulk allocation from a new slab")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
+NAK.
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+You're making VMAs a cache line bigger.
 
--- 
-Cheers,
-Harry / Hyeonggon
+Since this is the second time you've done this - stop sending patches to mm, we
+don't want your AI slop, thanks.
+
+(In future you'll likely be ignored.)
+
+On Thu, Oct 15, 2026 at 11:37:35PM +0900, Daehyeon Ko wrote:
+> Both values are 32-bit. After 2^31 complete mmap write-lock acquisitions,
+> an old VMA stamp can alias the live odd generation. vma_start_write() then
+> returns without waiting for an existing reader.
+
+This is really unclear, I guess, as before, a member of the core team (likely
+me) will assess this to see if there's anything actually valid here.
+
+--
+Cheers, Lorenzo
 
