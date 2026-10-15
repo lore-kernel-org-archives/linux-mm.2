@@ -4,146 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6939CC6B3A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:14:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A324BCC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 14:14:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8EB76B008A; Thu, 15 Oct 2026 10:14:19 -0400 (EDT)
+	id C56B66B0096; Thu, 15 Oct 2026 10:14:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D65E06B0092; Thu, 15 Oct 2026 10:14:19 -0400 (EDT)
+	id C083D6B009B; Thu, 15 Oct 2026 10:14:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7DD86B009B; Thu, 15 Oct 2026 10:14:19 -0400 (EDT)
+	id B1DC16B009E; Thu, 15 Oct 2026 10:14:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B4956B008A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:14:19 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 294D71C43E9
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:14:19 +0000 (UTC)
-X-FDA: 85325055438.20.F1CA760
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 983926B0096
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:14:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3BFA7409FC
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:14:51 +0000 (UTC)
+X-FDA: 85325056782.17.04ED983
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 575C1C0004
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:14:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MtXhzWod;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id AC575A0009
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:14:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7oT4j2M;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792073689;
+	b=xod2uT8CqzO2IjXtzOEvWAvoBWWHJLwkAhNNHldQer8u14lzHHw7qZmsYulOnZfJ+bYkP0
+	RU3T1fmpCRuM9RohA3ke6AqN3bV2sRu/na8xA15AKDZjHzyzUsnl7eIZsyPc2UOpLFoX9l
+	Dh/ZyE/oQbsRjUGBrBl+79nddsNdXgE=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7oT4j2M;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792073657;
+	s=arc-20220608; t=1792073689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UgdqyF6FEN8olbz6l9+spc+Bapy75+BcU13cALLW+eI=;
-	b=nR4zPENIbyNw2e5fLZQmcJKzVWVmA+9Obo+VQrmpZtKi3siWNWmfYihBynNoc/ofD2rhBu
-	k2rNpLu8zzLg8NIM0gADXBaYiJEaeO9XS4Smmc9tJLmTpfdKUd6eKBkruWpIYpyYEKo85P
-	qvC84SO4KqQpAbLOefQLdcG2eouBiiE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MtXhzWod;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792073657;
-	b=yl0DWeh95VnGLwZfFsnwkOQOBi4/kcDDXBXZIo3A8nwGNit3Jp+KXxpG2PAUi5k7k9kTsX
-	kADVonyoiTXD2qmQFPxUB7TO2Nbyk0nHnTcGQHDY634kQUiJkDEdsCoJ2brObbZWyKx1MA
-	54ry3NrhcYef/KkbB7sbmf6N8dST6mo=
+	bh=dEbkmTWrpR6q9/sWzznVAOdz9b4w+GRgYvyg0dkV3XY=;
+	b=3y/uYe+2ARBAJu3s36bkSHb1dGvWbiyv0/VfAIXti7M9J+rwU24W8xSY4ewzlMBPm0RCNL
+	OuKRhORgnlOdly9YzA+E5XlMl1ykNKizUrPAtaiVVwHM4wlTMNSufyzttyJIdpdmPJMxrN
+	mveT/1QLCA9rOcp51Q7GM+GhPJ2K1Us=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8DE6C43AAB;
-	Thu, 15 Oct 2026 14:14:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBEA1F000C4;
-	Thu, 15 Oct 2026 14:14:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F047D418B5;
+	Thu, 15 Oct 2026 14:14:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AAB1F000C4;
+	Thu, 15 Oct 2026 14:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792073656;
-	bh=UgdqyF6FEN8olbz6l9+spc+Bapy75+BcU13cALLW+eI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MtXhzWod9jpMv2PHNRke7nFXeXMTCxfQmq1SByHN/ACefsv1CJ40kxnEmYNPzEqHm
-	 knVkDXnJrIKBc5IkEo/4zRzB59Vm2fD+RdnEwKresx9fecoGg6SEvizJu6nOwq2v0t
-	 XChs7uSw9Rn6UwqnLvI4FQUHke9LV6VhBDdmQODyh75Wj82lKG5hl4Cd5xd37+B7YH
-	 7/tuNjR7X1cHa0nBeuEek/QA863n2R+XLbnnnyckmFO6o2UiJktkSKVS7Yu5LtHphA
-	 aM3Yb4Md1bBwpIeDA+NkUo/xOzJ1wGHTv27be6RQIhBnWeIDa2aSmWu71s/kh2slh8
-	 5g+/y/3hlS2yA==
-Message-ID: <5800bc6e-7671-41eb-bb09-7fbc8f2d085c@kernel.org>
-Date: Thu, 15 Oct 2026 16:14:07 +0200
+	s=k20260515; t=1792073688;
+	bh=dEbkmTWrpR6q9/sWzznVAOdz9b4w+GRgYvyg0dkV3XY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=U7oT4j2M/dxRJ5UNhePstb/qD65RJhAQPsJrp+OXO3aFNyn0N4VRuUNGOX8hLBunf
+	 UyM7SVGnVPwsvtkw0f3lrVZT4exY43JBzW0zo6cW/wXCLEUThDQZpWnUiftQ/ysYb5
+	 Wqhz5xrSpYdlnU63hDvFwcLOoBKxQ18mkZMNRq4ZQGPWR9nlaohdt3b7nKzihXv+OQ
+	 8Yzi8UIkB/f+hMP9lgRzHgEx2fCTSlvK9Tvzlj9S9rwiJpyboAwbvE0ZebUUXTb3Jd
+	 ukYMmmSomSgg/NxQSSqymmh8CC8QrQ3oNjoxhLcASqIhKEeTByRiBwDmlz7MvTVXTD
+	 mAfZLXzrwXufg==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [BUG] DAMON_STAT: 32-bit overflow reports wrong estimated bandwidth
+Date: Thu, 15 Oct 2026 07:14:41 -0700
+Message-ID: <20261015141442.88741-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CANOyQmFPJt=-=hJh9Gt-FPG6YiyeidyfUbnW0mF5bSmJ0m7P0w@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] mm/huge_memory: recheck a special PMD under the
- lock in copy_huge_pmd()
-To: Konstantin Khorenko <khorenko@virtuozzo.com>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- stable@vger.kernel.org
-References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v3-0-85eaec8417f6@virtuozzo.com>
- <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v3-1-85eaec8417f6@virtuozzo.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v3-1-85eaec8417f6@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 575C1C0004
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: o4rxdiyqfamc4kw698dewbbk13d19ego
 X-Rspam-User: 
-X-Stat-Signature: kaazatohwj4aetyjx3ioc9k1tr5tfyej
-X-HE-Tag: 1792073657-353167
-X-HE-Meta: U2FsdGVkX19Xk73czyrmT3pEhoCVV7x6TiG+eepSjST0xiC6wgwvxaAxZBU0nwxXY7LmsCcKJsSO2ng/BMFJv3EZUQGU7lBzG96vzjr7Km6ijKvJL3wz0Yuh3emJuaxrbf6y9i57H9mV1Ptt48KWeHZmHNiqK98UCPcpS0oJNGrsdSF9vuUutmPOR1j570WBGoQiCMQKxVXLqHbeU3V3x9BIB5IwCEarvBX8wmxdWf/ABVz/eM2cmchPrF2+0TuV5k/RN47qGI11tqClltBw2H8Tb4gCO2eRRRv4Na8K4CS5qMXuBBgsvV1qax+gX/PNCqVRSGB0xKLRqdgc/KZeqFVzjFTqfnTykHCINN7e6nkiQHekc0ZLTNJbkZrhA4jKaPEK43MYGlRaScpjtP9sdM7U1Vr9egLj2pgMFULRSUfdwp0sKewh1Wwwm+oGwloUCCmfSoSIVeKkztojJ085ss+6Vp2NbBBoNJ20IEEhswe7JkcjmryvkFKNY54ajOx/n4F97sWaSSABjrVUjjvwet3Uwz8w+A5l2CjdESu/J9CyFPVn6M1LPNZ23IBcXQ44LsyK1TNYcbDZWFVjWr/ns+xV0IvWTixzU25L3xCs2VpDOd59GY8vpk9XVTtAPqXUFWTolfH557OuEWkB0SN5lW/N8nxhYWbe2pmuye40NESV3OxRxJJrzSo+ArhjMbVfpiX9lWjZiDhYrsDPzDAPN6uoNOehppiDAkJNvLnJ7M4ixYukhknokhG9Fxo7zAnGfU1xCOgN+GJKEOmgGRWHTG3VIGRF3LlpS5H2aLbXAW12Ub2RrhtrXpboPtRvVLYDpAtBQk/nsVXP4TM1tV24ZnAD46JCmfFdEN0bx59WrHM5PJm88Pylwu5/3weEBRvKd5wqFz6KMoKGPOCI335F8gTexIjHYdUhRPgCcnVo+4u3bWmrJWvmYpuKnaP0nMbdKjmgJ7nkzNZw4edgP/C
- P6+Y3aQR
- ghwY8/acgQgrmLBt2pkHEY9BsPpXpVXk47+janrZw2V4RxOYKf+Y1m468Oex1X+HSKeSHcdq7TecvPw+B1Sx1veicu8SYnem2BWjpS2WRf6ZSG1U8YNkWOMcyAwKi2viDqPIDvvXfr/PbcUBVx7hTBaKyr0o4wOXLmR/sZiiz3fttRz00vWS7ZLa4o+c3+dAJLpV1jVsd4eHAqrfkDfjYZba8wZNIhKV1NthR9SPb2UFSdrFI0+6K/Pzu2aMrvU+lNh9J/vSPiFsPsy3lu5Oa5qqogcnJRrQOyLiGfn7srBdluoaAtIt3luAXfkV7VilR2+VsEdWPYC/G6YGo4uZsyZUWPjNfYxLNezNlWc2ov7kYaTZME0Q+xjLKTRlvTpTgVyk1QJuMr8ZVrCDRSpVs1/j5w/mXVCuG9jL8/JWzdS5bszaAIjvIEtejIel3tXfTs/2xAwGjLmyhSyPOtG3viSRvh+QRbopHE0ZDNjrKXj3a1fYXiKfTOPLupA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AC575A0009
+X-HE-Tag: 1792073689-544025
+X-HE-Meta: U2FsdGVkX1/un631CJACK0Fl2rlkB0mi9OYkEViM2kLpW++m9+AGj7lpMzaMpf0Yn3Cm6gtFkCySsrr5xLO+0oBOGgI5EysybtJv+12yQy/XW2iQ1XCsGmQqRIoViSQh/wZUxtDcH4CPmu4mEqxdEjFe7c2h3qw8O28YmJeq/h+uwNsMivQxAhYllMCH52woyEdE5VNyb7bJNeNPaAf0RujMc1Y0VqwrAeFgeiPrj/s/e0ddmVe3hPxrN4FhKJ9jgsuA6MnQPU6mWmHaK5VFfVjNehXdd+8FrE34VnkPzMsvts0MUl0HNLVsZf2P6GANzri/qPVxMpWdBDX6qhoyWQU8RTRa5x3n/ZJ3eLn3v1SHt6ddliAvXEJL4wu/FtmxFpvOUn4t3TEVJjuAs3Tg8qLvqqNhAa0OwrcXyjZeOfBYUnfvaQwUd2N+Gy/13dYqBJ2wkyf5IpuR+4orruzEDNCiieRaBobHEBZqQ/VML4fxZj4y1VPxzqTO6vE3QHGZkZLrCrI52gwxEAXCNatvL40uJXXNnyu8OV7pKF7T3BqVuV5tidMwTbBHRdW2oySo+7P/n2vAQ+CSKEVKO0RCZnpxZ24TqvrubZFdK48GC4v2B3yEvuum4Sh9Yvcj1L4QreySTCjyjYlC5ifgB0QRD64JRs5XpBOPWW9gTvqZFRhg9bJsEzbNtgkAWK1x+hcVIbmOpgGLJ4yGJZnE/399jAe3VsZ47Yw83stg1FzIDuEiizxuto27Bcp1ypu9jBVXxLA7kh7O5Qd6KDSkfZqb/LNcD/cV3INXwpqW3gE+ROQBIKCxeV6FO9y7OetZ82smv5FqtIGcOJm8mI2CMFARNJb7o9VMPzzaI8rt5VA4e2B3GlIrW8bb1ySHv19sqne7ChIU81RpGcdwOkqP2zcW/UOL/HjxPmmTpdJsLgiR5MpHCS7AW1Kzo3HsAsdwWy5E+bp9cW86RUZy/OPXir2
+ DIsxlUfS
+ vKSMdJo1TxeAPKR2UAxEHJ3dTnvw9+TTE7/HkTUUnwOmFPnA0fk3jJHDIcT9GXJNK7tc+RKNztJBoP9fbZBu0OQ4Ttn9B/snG4twOrrSDGva8jNmZ8Im+cWfc8q1fqGU2qk5bXYst1EzKv0amonU4Jz1tgdk5EiU+Ogta82r1uXFl36ulkwr15pmrJZAu/+xpvLoi3z23B1y5Wyy7/N3ts6PFURNYF5opeYUC2AHsuXZ7eu6fd6LBwmAGtbB2ZSQUWRIWzekrcbMEkmU+qp/X7/biSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,96 +93,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 17:46, Konstantin Khorenko wrote:
-> copy_huge_pmd() reads a special PMD without the page table lock and
-> copies that value to the child. The mmap write lock held by fork does
-> not stop unmap_mapping_range(): it zaps under i_mmap_rwsem and the PMD
-> lock.
+Hi Aveline,
 
-For a special PMD (that is not the huge zero folio), we need to go through
-vmf_insert_pfn_pmd()->insert_pmd().
+On Thu, 15 Oct 2026 04:24:19 -0700 Aveline Noir <jm5905938@gmail.com> wrote:
 
-I would have thought that unmap_mapping_pages() is only called in corner cases
-when we would have concurrent fork().
-
-Like vfio_pci_zap_bars().
-
-But yeah, likely there is a theoretical race.
-
+> Hi,
 > 
-> The zap visits the parent VMA before the child's, as dup_mmap() links
-> the child right after the parent in i_mmap. If it clears the parent PMD
-> after fork has read it, and passes the child before fork copies it, the
-> child keeps a mapping the driver has revoked:
+> On an unmodified i386 QEMU kernel at mm-new commit ad9f2d463666,
+> DAMON_STAT reported an incorrect estimated_memory_bandwidth value.
+> CONFIG_DAMON_STAT=y and CONFIG_DAMON_STAT_ENABLED_DEFAULT=y were set.
+> The guest continuously wrote one byte per page across a 32 MiB mapping.
+> I used QEMU's GDB stub and the matching vmlinux to stop just after
+> damon_stat_set_estimated_memory_bandwidth() stored its result.  At each
+> stop, I traversed the same target's regions separately and recomputed
+> access_bytes with full-width integers.
 > 
-> - vfio-pci: the child reaches the BAR after the device memory was
->   disabled or the device was reset, instead of getting SIGBUS;
-> - panthor: the child maps the pages of an evicted buffer object after
->   they are freed.
+> Three nonzero callbacks, all with aggr_interval=100000 us, showed:
 > 
-> Read the PMD again under the source PMD lock, which the zap takes to
-> clear it. Either the zap got there first, and the PMD is none, or the
-> copy is in place before the zap reaches the child. Faults are locked
-> out, so only a zap can change the PMD, and pmd_none() is the test.
+>   access_bytes   independent sum   stored B/s   full-width B/s
+>       33357824          33357824        31079        333578240
+>       65200128          65200128        25244        652001280
+>       41152512          41152512        24303        411525120
 > 
-> Fixes: bc02afbd4d73 ("mm/fork: accept huge pfnmap entries")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-> ---
->  mm/huge_memory.c | 23 ++++++++++++++++-------
->  1 file changed, 16 insertions(+), 7 deletions(-)
+> The final sysfs read was estimated_memory_bandwidth=24303, matching the
+> last stored value.  The independent region sum matched the kernel's
+> access_bytes in every callback, so the sum had not overflowed.  Each
+> full-width result fits a 32-bit unsigned long.
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1e5d68acf62a5..bf788bb231691 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1965,13 +1965,22 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->  		src_ptl = pmd_lockptr(src_mm, src_pmd);
->  		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
->  		/*
-> -		 * No need to recheck the pmd, it can't change with write
-> -		 * mmap lock held here.
-> -		 *
-> -		 * Meanwhile, making sure it's not a CoW VMA with writable
-> -		 * mapping, otherwise it means either the anon page wrongly
-> -		 * applied special bit, or we made the PRIVATE mapping be
-> -		 * able to wrongly write to the backend MMIO.
-> +		 * The mmap and VMA write locks of the source keep faults
-> +		 * out, but unmap_mapping_range() does not take the mmap
-> +		 * lock and may have cleared the pmd since the lockless
-> +		 * read. Let copy_pmd_range() skip it then.
-> +		 */
-
-TBH, I think we can drop this comment entirely. That's just simply the right
-thing to do? :)
-
-> +		pmd = pmdp_get(src_pmd);
-> +		if (unlikely(pmd_none(pmd))) {
-> +			spin_unlock(src_ptl);
-> +			spin_unlock(dst_ptl);
-> +			return -EAGAIN;
-> +		}
-> +		/*
-> +		 * Make sure it's not a CoW VMA with writable mapping,
-> +		 * otherwise it means either the anon page wrongly applied
-> +		 * special bit, or we made the PRIVATE mapping be able to
-> +		 * wrongly write to the backend MMIO.
->  		 */
->  		VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
->  		goto set_pmd;
+> In mm/damon/stat.c, the expression multiplies the unsigned long
+> access_bytes by 1000000 before dividing by the aggregation interval.
+> On i386 the product wraps.  In the first row it becomes 3107979264;
+> dividing by 100000 gives the stored value, 31079.  Full-width arithmetic
+> gives 333578240 B/s from the same inputs.  The other two rows show the
+> same problem at the callback site.
 > 
+> The workload is synthetic; the test checks DAMON_STAT's arithmetic, not
+> the accuracy of its traffic estimate.  The i386 config, guest init,
+> disassembly, GDB probe, logs, and build/run steps are here:
 
-But why do we do this early copy dance *at all*? I think I complained about this
-vma_is_anonymous handling in the past. vma_needs_copy() is the one deciding
-whether something should get copied or not.
-
-So, can't we just get rid of the vma_is_anonymous() handling and perform the
-weird special-pte check (that I hate entirely) when already holding the PTL?
+Could you share more details about your use case that require this setup, and
+how this becomes a problem?
 
 
--- 
-Cheers,
+Thanks,
+SJ
 
-David
+[...]
 
