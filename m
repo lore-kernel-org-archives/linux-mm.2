@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF23CC6B2F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 07:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9959CC6B2F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 07:16:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C5E06B008C; Thu, 15 Oct 2026 03:10:43 -0400 (EDT)
+	id D6D696B0088; Thu, 15 Oct 2026 03:16:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 376E06B0092; Thu, 15 Oct 2026 03:10:43 -0400 (EDT)
+	id D1EA96B008A; Thu, 15 Oct 2026 03:16:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23F816B0095; Thu, 15 Oct 2026 03:10:43 -0400 (EDT)
+	id C35676B008C; Thu, 15 Oct 2026 03:16:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DF9616B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:10:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD449C0927
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:10:41 +0000 (UTC)
-X-FDA: 85323987882.18.788B9EB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 10762180002
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:10:39 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtteeYFf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792048240;
-	b=wLR+YZb36MLhLgVLBWpi8bwhVLp0GQzZ6+iWjwHGtaDCgnUP7DL2Nm+azO6/0cbbnqrsrG
-	SkylqaPa2s/jYLsCqmV30KLna9uHcbQGZb4UGf5WD87ptg7ER7fUc69X3EtkhI6GhOguFA
-	WvsPclXUuGTTyJaVPKP2U5zZ9Z/sRAM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtteeYFf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A2CEF6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:16:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2BBD8A86DF
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:16:43 +0000 (UTC)
+X-FDA: 85324003086.11.0FD1581
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5ECD9140006
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:16:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cBMKeyWm;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792048240;
+	s=arc-20220608; t=1792048601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t35CZqhZ37FpgWrxYiwnoxvM2WrIBjmPysOYClvNAFg=;
-	b=Nvb1Dg98ODOQoeBod/YzeAJfd6joOhAlBZJR7o/R2sV4dTezxo2L/GhvOrZQoZBDENzL5o
-	7ea3+gXmyZp8n7nSOAO17LnPW2W1YQ0P6xN6bdnOXLGBOECaFusk8jd8jx+gC1Oiy20n6+
-	8gBS1iGtqHk5kjbDdxCeEm0te9n50A8=
+	bh=euYFuk3tP5sJN9EaHHzoJWao/11EtLBrMeC+h7+T5vs=;
+	b=YijmLa6NVd73uBFpbj3JCp7y2dm1q4P4ynIXmL5zdtUIaYety3y4W8N/bDZQvkRaaY9YNu
+	wBXqFmb2FHz9J0eVrP8ed4xnNzLeYsxLxN13QRrGZ4J/xCIHt60I5//8t8fQvWgjc5cNxI
+	UQRhAzOmvl9dyGSPTYXKl4lzfOFTztk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cBMKeyWm;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792048601;
+	b=Lw1Sq58U89PMU4bplNy8Y4ANgHTTaYbTP9l5C0zJ2aqMK1nMD2fe5BUTv3r5wEtoHTd8DH
+	aptzxY98IlhZUZ+lEQP7mgc9EuWJ7cV26Kuit7Rd8RpaPJcQDxOnhWngBD56IU3vaVRMRq
+	TPrbaJxOvfQqhXFelSnAy0bNSY0E+fI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B79FF6053A;
-	Thu, 15 Oct 2026 07:10:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2571F000C4;
-	Thu, 15 Oct 2026 07:10:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C70842A41;
+	Thu, 15 Oct 2026 07:16:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1391F000C5;
+	Thu, 15 Oct 2026 07:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792048238;
-	bh=t35CZqhZ37FpgWrxYiwnoxvM2WrIBjmPysOYClvNAFg=;
+	s=k20260515; t=1792048600;
+	bh=euYFuk3tP5sJN9EaHHzoJWao/11EtLBrMeC+h7+T5vs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AtteeYFfkxiI7tEEpMbi8Yt7KJIKQSaoWpn4H36UJAg09QBpf7WG4edfMyvKSNnmk
-	 f8K68Cx3Q/125UsxrICx0flle39xsvHYEgg2vTNLdV9dvODivacIr0a2kWbAdpAY84
-	 JkR5imJAv2Fud4Q/jO6EXhK4to8N6hfGPKinyQ6fKNWbtQwyzmf7Q2eTvxgEUdkFF4
-	 KxtZAGiEhyIOGhpWb2ACDNImCrhkmB+dLsPbO92NkHm1xREah+d0w7UJcIBo/A9ADe
-	 pOMorbyndlL677Oaj4VHidtSTpiYXIJ9HHYJfTMNOWR7sALvJZ23LBMBXZiCnhXrXq
-	 joWvay/B8zEtw==
-Message-ID: <51b242a5-3918-446b-8884-30d6d05327aa@kernel.org>
-Date: Thu, 15 Oct 2026 09:10:31 +0200
+	b=cBMKeyWmFtWpau6jvr11dMaY3e3aYX4jzKH/+n1L2gFQyuLmSv6pojwA3moF4g11Q
+	 6/wFvXQr+iwAzDSzRwAh2NYKTZ9JNvePA1Tnhvsj1vlfH4E4XIlUE/PPSByvLtPJlf
+	 WTLf1K+o5joquvDM49alwv7sD3GhwkuTivPCrSO4fcJdqLgcqWYTOrHVh3UR0XlT5l
+	 oi+ixDu7leIw91Dp6AV7KkxNWdpOjJr666PokXcD1u9ypGPkX2/kEWwmZZDNF80m91
+	 DOfUO13f4gEmcA1FbHmOPzFEyuSvMREv8EM+sRMRm/2zTnSCkk572/wjXZcGv48+ye
+	 RtupIktQS4F9w==
+Message-ID: <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
+Date: Thu, 15 Oct 2026 09:16:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: stop recalculating min_free_kbytes once set by
- userspace
-To: Nimrod Oren <noren@nvidia.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261014140859.1006967-1-noren@nvidia.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
 Content-Language: en-US
+To: Johannes Weiner <hannes@cmpxchg.org>, Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ kernel-team@meta.com
+References: <20261009125503.126202-1-kas@kernel.org>
+ <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
+ <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
+ <as5q14OsbK2CmOrh@thinkstation> <20261014202936.GC371161@cmpxchg.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -127,17 +123,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261014140859.1006967-1-noren@nvidia.com>
+In-Reply-To: <20261014202936.GC371161@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 76xk77ph3k8kyc8euecotbd7p7fhkimc
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 10762180002
-X-HE-Tag: 1792048239-288727
-X-HE-Meta: U2FsdGVkX1/KQdFdgQmH/AHlT5VVncOP6K+iSpKhE+QBgYuGkn0ytmC+MTsJmQUh/dVxraIcdfEJCBko94PCARphRxqX0M39RYrdguWObPJ8cL4/Knt7NTKGHM4v6eRFR7eiBo0xwYBphvhSefLuYkpiIB5EIs5fvSXmxyKGxOuBZTe+OPELFT3tzCoWtam+dH07DJgWDjsr9XwH8tX5BaNgy7YDaJNt2qrsGD3hGvTNwhRdg/51cxbRFrWaeVDuVg4PIAdmDRxVH68UIl5uSha8CKLaIYXoTQy5CX3voUnv2YTDbBvHDOFCpbIMibO1Z8LbsgyNWB4TGwpSe61xywAwk2BYlRe41vx2TYkEfr02F1kf4r22PJYb1xopmAetd4svBZjGlRxwPCMqj3uhtQcF8DqlSG1tsJsRqeze5L1NX/rCGrydE8143ccDcoUW1SkhDMP6NJQwDfvBuihT/ZXU9r8scB2f9LXSzh4vQA4Euadw61KDhUtXahssJcNg56GBWRMPOi47AsIN+tposeGKNIn8Htcl9JhUjtfO11pU0KMq43Ki9IInbpzsyKS3aKrJvsbHzZHL8cO1r/8ulCB/uvif8D9kNXOzAW00TuE4doHyZiGFV+V2uV29zl2sM3T7MUe0K/pX0WHTNubgngUL19LRjnqVuudyLDLVrp2RhyJoPMzRg9CFYgTrj3jFgXotFGVexCyazHMiTG5iy02Pt0NgAL1qevJL6lUmrchVQbqUP4VDF5lV7YO4qrRHusmu32KwByctjYRxndwhul7rCns8Wi1O9P/97VIf4AsNrx+qluJZF1pgeKTVYfG8pfxx9zmuLnxjHIxxE0rZVLFxzTm7/Esf4gL66TIrmZhzCqHmQvSJg5UJn7NKGEtuC3YYsudzvy61hGyM2j58Ud0pOgaIqx4Kpk00Tzn1x2ZgfYmFHBWm5vzx3QBeD6H7l9fhoUPDbEQ/Feoxm3N
- gkwS/hoo
- p+mHMgmKXeZEzQhMrlZCfxWju4FI7wbCr0VbTZHdSDh2u2i9keQcqwZrBwINHKmaNFatlkcbF3xD6iElLQlKNjpCg58CKteMJfPgS0n1VkdiUiTd2DHK77jpaOraelvNHum/tiP+qMvu11pm744fbaAnrvP+MGdImdUwPEuKy/uoQRZ1BY4lm7LWcSuoyUgSSCOSaIRqQlvZUXrxaRLzbw1enMM0H3hukaHhGXYSOGSFtgp0RR+cRpmpPpSP/20QqvzTe0+MJTK7kjAyblzn2znszCSFVxM498jGBSc7eYuoTxPe59zmD9UaPOl8o8oNJpmwsxKJVVjb+2+1WwFVqzwZuyuNBdSGDuwJ7tHSMQw6HnzPco3Y4CNIK+bNTUBwAfF1WUz1EISOy3+8WcwzYQZ0tYPLdybBLN2sx2h8Zfdizy50=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5ECD9140006
+X-Stat-Signature: notfi5owxuyiciiwk8s5e9889878pqob
+X-HE-Tag: 1792048601-617815
+X-HE-Meta: U2FsdGVkX19rFS9ZbTPMORYbqp0TtvZaef3GTkPDik7B4j81kItjH+Bs4I+CQZF4ysnFTFqesHDSCtSXtKbgUpTzEEKxCZ/GujkuFb2foO7h2kXvV8eOC3f5L5ojCQ0ipOPWLENy9wUuesLjjS+aDRCuMavwF/snlslA5LF9PooYyBL9XR47bz4d6FJc1l3WdN/VUr4MUWNoH1g470jQJWabFL5mVUiZxnaEwuwYtEVk+kxZEiOUXZUl3tic+KF6EKHdarJVbC+XctdtEfjY5wY1TWaqUetwt6lpsswfBPmP5mmw0z4fx9QjsvKUOxMw5eCMwf0g8RZg/Lch2yFcqibVmbd2ImIiMaZMdy/SGmZTGxQcc1R50BJI6o7gtfMeQfKWhhe0zFHtyt0S7/nCSSMNpW4p4KJ4lTMrJqtCLJga1NXi/OYdfs+sz6B0b30Q0HXjVJ9q9stCxa0JdOOcSS8JZncrEE71AIU2j8wFNyTJGMMaVIFDAC4bvkq/Qt8qVgNFwyWJNmaXgDnj4/2o2MysIKFPiowFfRGxHLXthh+E08YHauvSL52W+aXQhcGUPzR0N8+o+/VbulVOCwXNiBsL41yPxU27CaCiY5vGqIgW1tPo8YBVi0luu5J6ESIUoYPUt8l1boK7I1ZJnPTMtu6bCjzTKx2OD8YXomj4aNuqQArxYY8cEjjon0Bwq6NNUJCGPQiaT5GN6IM954OmeYWdRXGUqLoWTOi15P6Hpon9ICtH+BH5ciBCy1m36LUtAzdF5oZBJ+Ilv5psRod34yNHLoD01gbJIUOrSvsydjt+EF4/47Ls62YBH14mN4NYa5uZw5Qlwp1YnOipSR5WHd44ae/4K3sH5HeJBsCykWN77C6frD/S7Mp/+pcBaU0Qm/YMPbBKm41s7snj9a5hsExBUZ8S5B2a7Dr1uuHCc5gZgzlpTW3OTL7JH44TFxWHhJG8PBmkCkBZwxrSXrc
+ z0Jv4Lln
+ 4xZ4vRsAYvVz81nrNzccqd8u6ziYnXR1tfuRQsPMAz4ZuyjKtJd4IasEOR4LObHT1kpN5chU5pVfXka9egI1fX5fSzixnvQxfIMOdcrjd7EyY6DVm4VCev+2EofW6DOO3lj8DToKZzsQMNXxrvDFPAAvmGJaPEWs6c0B6dkOePoZlnbWn1dw3Q4a52OUCyDZajouJFsf7R5KSkGB/8AJIQHo+pk7Fs7chGaQKwQe34Z3NkGhKGHmmaETdJ8Cf0vOBkkGBPvN8xIs09rZjxf/Sl9kEYYZPULNQH3h/vfE3wezmWrCINBicOlj27WmhFuaFnkAvLsB3ZxKnBt2A/7UtY+Eigs4NEnsbhGadGa504tDHq4M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,26 +141,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 16:08, Nimrod Oren wrote:
-> min_free_kbytes is recalculated on memory hotplug and on THP sysfs
-> writes. The new value comes from calculate_min_free_kbytes() or, while
-> THP is enabled, from set_recommended_min_free_kbytes(). A value written
-> to the vm.min_free_kbytes sysctl is replaced whenever the new value is
-> higher, so a lower value does not stick. This matters most when THP is
-> enabled on configurations with large pageblocks, where the new value
-> can be excessive [1].
+On 10/14/26 22:29, Johannes Weiner wrote:
+> On Tue, Oct 13, 2026 at 06:37:20PM +0100, Kiryl Shutsemau wrote:
+>> @@ -4127,6 +4127,12 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
+>>  	return page;
+>>  }
+>>  
+>> +static inline bool order_nofrag_promoted(unsigned int order,
+>> +					 const struct alloc_context *ac)
+>> +{
+>> +	return ac->reclaim_compact_order != order;
+>> +}
 > 
-> Stop recalculating min_free_kbytes once a value has been written to the
-> sysctl. Systems where the sysctl is never written keep the current
-> behavior.
+> order_defrag_promoted?
+
+No strong preference.
+> Otherwise looks good to me!
+> Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 > 
-> Link: https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/ [1]
-> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Link: https://lore.kernel.org/r/d202dcc3-d7d7-4e98-a9a5-3137cfbfd041@kernel.org/
-> Signed-off-by: Nimrod Oren <noren@nvidia.com>
+> And agree 7.4-rc1 with CC stable is fine. Sadly, not sure if anyone
+> but Meta is using the feature right now.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-Thanks!
-
+I thought it was there for a long time but it was only added in 2025 :) At
+least the enterprise world is slow to adopt things, AFAICS.
 
