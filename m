@@ -4,99 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73BBDCC6B3A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 13:51:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C48CC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 13:53:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 798926B0095; Thu, 15 Oct 2026 09:51:00 -0400 (EDT)
+	id 0E6476B0098; Thu, 15 Oct 2026 09:53:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F916B0096; Thu, 15 Oct 2026 09:51:00 -0400 (EDT)
+	id 0BDBE6B0099; Thu, 15 Oct 2026 09:53:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 686B66B0098; Thu, 15 Oct 2026 09:51:00 -0400 (EDT)
+	id EF09A6B009B; Thu, 15 Oct 2026 09:53:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4328A6B0095
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:51:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB3341409DF
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:50:56 +0000 (UTC)
-X-FDA: 85324996512.20.C02B4B0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1B631180009
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:50:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eep/pvRW";
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792072255;
-	b=AV6JA+jp1dp260pr6qK/0K96RiC9vZmZy7bjjX2j0CHK6ozOUNsXF4Flu2THFF8a0UkgfP
-	e4P5fTR+an7iD37j+0yhmWWy/U0o1xLPe8HyN9GS9fIBl8c+ibHO9omTO0vBzGys5nWeF8
-	fTZr++uN2z8/klkQMMMWOf/RzxT7Wvw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eep/pvRW";
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA68D6B0098
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:53:37 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 543224055D
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:53:37 +0000 (UTC)
+X-FDA: 85325003274.29.1C2B9CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7DD04A0006
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:53:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OnRE3wXa;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792072255;
+	s=arc-20220608; t=1792072415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uky4LxVMuNdxzqnRXqwRhSpdCLtiXE4d97pVcYf0z28=;
-	b=hQb5Y/xOgs4dyfjtrZLynvGkjxNU9d2iYkvKkx0kvs3gA5ULVlAS4xchul/7KhObbm79Cm
-	N1u0/rCIcI3eMZVBVMhzEMhwIll2cUPsbrMDHF0a4xOsXZSQZ8Ir3WOhUP6Vwnq8uJvK9G
-	JTDJOZ4Xiez8cZchLcSofKFshlR678c=
+	bh=ZWR4amPQ/GR2zsJ6RMsOHCZNfvKrDpnYYA3vUh4QnfI=;
+	b=5WuY60n/yR8N4ToeHIEm5uakRQVmxQI+Ka8twsMTNyVObLF03MEb94r9xZN/hbRPcsjGEY
+	0XPVhbbda1URonIPw96PZk8gc5R2M5sAmr4D8Adb3rC/7DkFSgNsI9ZIN0ZhT/mTqkGO4c
+	cwQCIvSJ2EdQ94ibycWU+gHZ0RNEQyo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792072415;
+	b=KBDn8vS0e4xWb3zDNbkpphswe0MLC5mAb2zK9HwaxcJ1Z9dr7ka4lpPVrOG90DjAlii3im
+	3XxPzCSJNM4KG5qHtk4+sDCH/kw8eXnYezF1ACtuHT5y71+FSsALC9dgc1x190h5ysXygG
+	xSHNuqikmfXkkn2w+Ax3+zKQDHdOHcM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OnRE3wXa;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 958E460120;
-	Thu, 15 Oct 2026 13:50:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9EA41F000C4;
-	Thu, 15 Oct 2026 13:50:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A8CD741493;
+	Thu, 15 Oct 2026 13:53:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E971F000C4;
+	Thu, 15 Oct 2026 13:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792072254;
-	bh=Uky4LxVMuNdxzqnRXqwRhSpdCLtiXE4d97pVcYf0z28=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eep/pvRWLeP7LUG6Llnfw1tNk6uZtNkk3PWjmeLelCpsn1VwxSQQqGifW+Owm3H68
-	 O44r3hiFFVgv4vpz6w+heQRlMkDt5Zj6cqprL6FuxEy9maxJD8tFIUquiUdSOIkrnL
-	 T+crrUqoslxVDIUyk6OPWTDrGs5YuMWlDbxhPO1Q95NT9LqXXVqM8Ahlhcex8ZFy8I
-	 2lBEcO/zPkNSqULwIdy9zQQZq2C1pzRXAJ2H6vQDtd9Ihbgp4Qucoqv4ZeDbOn35AY
-	 BX/hdcdohYwq9MHltL8ShzcHFu8YAJyO3H20ZhCKt0lyqDzyq7LdcwnHSpw0WJS+Rg
-	 BTHUVNoYXbkQg==
-From: SJ Park <sj@kernel.org>
-To: Manuel Ebner <manuelebnerli@mailbox.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/lru_sort: fix grammar and stlye
-Date: Thu, 15 Oct 2026 06:50:46 -0700
-Message-ID: <20261015135047.87355-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261015072947.802821-2-manuelebnerli@mailbox.org>
-References: 
+	s=k20260515; t=1792072414;
+	bh=ZWR4amPQ/GR2zsJ6RMsOHCZNfvKrDpnYYA3vUh4QnfI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OnRE3wXa1FnO6WZFf7oUjHX08tQXKfw7ITTK6i8lrDHZ2lmdMKhLKKTpZO3iImMN1
+	 1x767ig0nCvDC6P3IVw554C4FAGBeHYGH0jkl7Hv9gTYoPo0CPR8bVMJy6NPkNv01y
+	 MSpF8kq0LchCpIXBYhjRmfRsjlJmVFXtR19G5gl1gu75T20iIfZ/bJ6D5pxtTC8M0z
+	 +SSVDAYbVnCafngS+6OMWW4bmMCfeOS8btTMZd4hlQsteBxFbmE2AqeSywsSUYtBJd
+	 A1ENoQiIFU68hRifyjvd/47Peg1VK8qPK5jZuGgyVfe7QElEZmx/Qt4J2jcc+rfkJL
+	 qEH9ShHGTEY6w==
+Message-ID: <a809956b-9775-4667-be60-f635b9a72ee6@kernel.org>
+Date: Thu, 15 Oct 2026 15:53:30 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dd5nk8c9w6py55i1g6msmc6ohj5a57kn
-X-Rspamd-Queue-Id: 1B631180009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Content-Language: en-US
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ kernel-team@meta.com
+References: <20261009125503.126202-1-kas@kernel.org>
+ <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
+ <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
+ <as5q14OsbK2CmOrh@thinkstation> <20261014202936.GC371161@cmpxchg.org>
+ <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
+ <atDMN5MoGrwJNpAj@thinkstation>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <atDMN5MoGrwJNpAj@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7DD04A0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1792072254-41583
-X-HE-Meta: U2FsdGVkX19X/bD1Trne5agUfIayYtiIweKry0UeBSRjWvK25CyYBynax2/S0UJZJH7YfTFxG9qEhlYNrcPYbK2hD8My0eg/Ze26sLtTPb1bfOyhodY4aDTGZ7bDe6IVWIjLYMLklE+QDo/vTuyQmwLqHeLTeFGqdrSTHA0Agg4mKdLLwc3M/pvh8CyBwb7yhS2vAiKRwTzt7YMm1Bjy/vjVy4eLC97aEtF8U5lIdzg6zSRwljyMWO33ZI/PYdQOV854nqY85pcaLj2m77B2QPrZfD0M/E3Q+RgSd29HmyWaD6tu5iHM0FV4QM7/pU2F9cTOfDGsQllkb30U5ArQ35F+E3d4tSZFGgwFqSpnNoiL+XWJUPszyki4YGku8L3spkvWOnXbfdDsoxioT805FKmM7Crasu+a0E+h+/sxePuNWDe0XY5GrQjbor/20xUnLDxHjrB+nbO+bznhT0I05TJb+F/pgRj953HMLlwQ6NdFGmbRy1pNKV2XDccHOWEO5VHe6f9drJzGzb5CQ2Pz0qxFwLo4KDS+iEX3CVyE+Bmb9rHFPKQgYcjPssfPtZZoPiPK5eNzQEuSlYS0M43drfVCrZZWoiNy1y3Oz1qxM5DEA94+FwCVNZ0dpA5U2OFQeERRKe+igsGiZPyCGq25moSCLeMkW4bIWgNNozQ+gzQmDcLbELY/8wmInSNy+1bQFW/prk1xIu+oP/GHp9L1FHxg3Oomha/Wi6eZYKt04T53SyTgGemkAz5/cW5H1tos3KbeGqXev1pgTVH9A0CcgAtK7QBmuuoJddThGb2FgDlEK1LvmrXXDw7Fwkyqe5FIzKwJGycOXqk85laE4h2VvbGxqbgqnvUBYz7tSq5rQ1QzkXf9TS3VyMOAHCNtu6KB9z72WFKFxqD/vgLyod7K3SKYjIG/hVM6GTuXPmgXZBDMkzvstBjilnkYieFzO7+5NKH0cTUEXHZA8xthJDP
- S1CRCy69
- uSxPwUWKsR1JQR8TGfmW+0hVqm1bqxD+DXOS+Fp6K6isDi8If8REJDe9CQ4s/Lfts79HXmDiGCCe08m58TuwURWfexh2ptIhdyKZOc4CHI+Vm7wcBGIsfKURVwbRBs4pMO1ydPrxmi4nXCEQd7C6iFPR6TiFIIXvQ350qHGGOLL6HjTUClRmXAyng2Pa18/UxauHmjDPozxp9vDI6hZToCLHuKJFpR2TsitNbRm6QV7k23pUykHbN0rZUoFRR8Echx3qH5mtN8RBxLoU0UJwkZKRm1l2txpozjT3eS/RRVo2Nd4t57rnQQDphu+W6HjzzEHSzobyJ5QZaXySDQDlZHJxCPHqtG+/uk858dNQR6a6hP8S8Lx4I76gSPWYCXHkfGQUz1ed4ARBY1QQ=
+X-Stat-Signature: 5ier9qi9gbp6bwsuze9wdw3gcpd95yth
+X-HE-Tag: 1792072415-34915
+X-HE-Meta: U2FsdGVkX1/5HfV52FcrP92CcZ3SudeQU7e9HxaeUVe9BLD4qunBWp3GRLYZhJZQ6Bi8nlyNmww5WpsJ92vxUOa6hQ5+hKS+XjfvRbirUIIoObSZl6VeuKGBaUbMAQzL4i5YQSokn50qyqUMa9iNG0augpYO/o2kfp50Ry7FEsrjUOR56jrNhGYgQgOSTO01eAorT0xZz3byVIJoGlRO3JGNHNqsicuEJ2Xv3A3q9VU0WtSITA2Xu8y/kJ+l+ipxPy8XTR4D+CItvbgJxlUbwDOv/f2538OmO3Dmbn0n5u1HUGrDLdhTaSAsA6m1ypS1kwGugMEWq+RkP2mRl0439yYQPW7eZud6JrRZa0ImkCzOdZjrY3bjDvv8YWsfDl4NcCmrCjVzP6nH23SevCFw8QzCWtXXwWEuAR9tLxF3xyjNS4ksyxESz+RyRQsR+MdVIS+RIeEx4Z7MT/b2m8aeCH1f1jdN9qPcFoKGy+DKiDwo+ZVRASNOBgb7HNOhcQEKhBt42OWhY2xTapPzKMPR15yFyfdT+lckwEkbXRFZDedmqMU/KatVSxqTtmF0zOVCtvgL3dXv34/2e6ZW9IMENEkgFGK3FDRGaJqP5/veGa1IjzpCGhByhSMC6Ct0aiucdPh5gvRdGRd0pZQNdAGE/LeVyfL0JeZTdFFd8uJ+xNyCEX0+57yb4v6CfCwvRJoNmx3q2vLsw7v493aYroHcuJwSsxLKX9TSNtdSVUS9Fpky0SDYqyJHPp98qAW8/YIIoBQGoa+Uh5UwsVJA8YohQJi0P4JQ6F2r3hFzwpI2O8aituPK/JKH7eCcqg1eL10kTW9se8MseWjvvwYLSYdNkHia/CTO4f0xDArb+/f5GTJMpDw9YeaAX5oWn3AE5QZfgwCto+Le6O+NSSGa16IwsgbALb6qtvKkhUKk/spnclsX6EnJFPxEs969ZWsyz2sFzb+xK+B0dAongl2KgCA
+ DGFMH7uT
+ L2viWV8cxng48oa2i4vBF4MA/agS0IZ7BysEonIjFFhuS/VXDj+uBVu9TrMglMi/2mIOcBb0LyasZLxkLW3lnCVHpleP1qjhbPsb2PzukkCA8OuRfQFoWh9zQuVSisTlaiPNOQxRfLIsw7He/LQsbFbeAMb0V5nJ0pPTlyaD2SwdJYndgTYt4dwuGZvYmKUa6i1Q/lZBBgAuSsry0iEihpD1oOKTiv4gZvQtvuK1OVOSHPNYktFBkNxE5VVI5D8nWpZ0xn2G6uf8D1pXDnRGSk/114S/pGpdlyDYOCdNZZzFEH0C+D3J2ass8Rg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,46 +144,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Oct 2026 09:29:47 +0200 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
-
-> Fix tenses. Split long sentences thereby imporove readability.
-> Replace 'set as' with 'set to'. Replace [] with () to make the file uniform.
-
-checkpatch.pl warns as below.
-
-    WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
-    #10:
-    Replace 'set as' with 'set to'. Replace [] with () to make the file uniform.
-
-If you don't mind, I will fix this on my end.
-
+On 10/15/26 14:55, Kiryl Shutsemau wrote:
+> On Thu, Oct 15, 2026 at 09:16:36AM +0200, Vlastimil Babka (SUSE) wrote:
+>> > And agree 7.4-rc1 with CC stable is fine. Sadly, not sure if anyone
+>> > but Meta is using the feature right now.
+>> 
+>> I thought it was there for a long time but it was only added in 2025 :) At
+>> least the enterprise world is slow to adopt things, AFAICS.
 > 
-> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> I was thinking to propose a patch after merge window to make defrag_mode
+> default. Do you think it is too early? I don't think it is ever going
+> to be truly stabilized without wider exposure.
 
-Assuming you don't mind me fixing the 75 columns warning on my end,
+We can try it, but preferably with arguments (and best, numbers).
 
-Reviewed-by: SJ Park <sj@kernel.org>
+> We also discussed with Johannes to make a stricter (defrag_mode=2?) mode
+> that will not give up on fragmentation ever, but OOM instead.
 
-I applied  this patch to damon/next [1] tree with the above mentioned commit
-message line length fix.  We are now quite close to next merge window.  It may
-better to focus on making mm.git more stabilized and therefore ready for the
-next merge window, rather than adding more changes that are not really urgent.
-I understand this series is not really urgent.  Hence, Andrew might not add
-this patch until next -rc1 release.  In the case, I will request adding this to
-mm.git after next -rc1 release.  So, no action from your side is needed for
-now.  Let me know if you think this is really  urgent.
-
-> ---
-
-Please add changelog on the commentary area [2], with links to the previous
-revisions, from the next time.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-[2] https://docs.kernel.org/process/submitting-patches.html#commentary
-
-
-Thanks,
-SJ
-
-[...]
+Would you use that mode at Meta? That however most likely wouldn't be
+general purpose enough to become default.
 
