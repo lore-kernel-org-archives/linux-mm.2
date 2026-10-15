@@ -4,93 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29F6CCCA462
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 23:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E98ECCA462
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 23:40:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83BD66B00A3; Thu, 15 Oct 2026 19:33:26 -0400 (EDT)
+	id 758756B0096; Thu, 15 Oct 2026 19:40:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80D886B00A4; Thu, 15 Oct 2026 19:33:26 -0400 (EDT)
+	id 709E86B00A9; Thu, 15 Oct 2026 19:40:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 723516B00A5; Thu, 15 Oct 2026 19:33:26 -0400 (EDT)
+	id 5D4F46B00AA; Thu, 15 Oct 2026 19:40:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F04E6B00A3
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:33:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9746180234
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:33:25 +0000 (UTC)
-X-FDA: 85326464370.30.2FD4D99
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DF0F940005
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:33:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XQuUPKki;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792107204;
+	by kanga.kvack.org (Postfix) with ESMTP id 3479A6B0096
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:40:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A789980205
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:40:49 +0000 (UTC)
+X-FDA: 85326483018.13.C1DC1E1
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BB8D320002
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:40:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WyHBrOOV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792107647;
+	b=efldu94XpTr7mtUwHzl7EsufMjM6zFMN/w3i8Ap4OKg8fPwsqHaDGDEIHxddgPrkyZZixj
+	KheVbr4e0f/yIoigWrEWC2p8m/Y3QEdh3q2UBom7+lMpimdYKKisdH40wCczk3LqYE70HA
+	vFzJJgqIZMn/bBU33komc0nUO+jF3Js=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WyHBrOOV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792107647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vO0aU+Ggic5anKiHOHkUq0jfIagPPjKPDfb5kf4RyGA=;
-	b=r9JaEYp6XeuWhFO+AY9I6FRPNrskf7+WtGC1pCrvgRbf3/zfxFF423XPvsbPPXXXUwIRbG
-	VNdgQUu2ARijyUwPQzQoaGWHk0+WBpkieK9j4C6Bcu+kzJZqfwGBA8SqvTpnif6wpj1GK7
-	ge3na3YguK+PLdCVWoIaWjeKXIo4nZw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XQuUPKki;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792107204;
-	b=Ir1Lm5LsZ4bEHdHwr6NF99Gn1K6TkuBSfJuzC4npNJpQXtMiN5yzZg0rYiEHX2ovFinoJy
-	xn3tASQSd5/Y/WQDLKv+I/YpiNYZaANjizIYGW2sZ2iixCG3D+tSI1sXiMalhO/d3x7/7L
-	1BEu4YkimrRNfW3VjMZCthUGZkjyJqg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F8AD447BC;
-	Thu, 15 Oct 2026 23:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79B21F000C4;
-	Thu, 15 Oct 2026 23:33:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792107203;
-	bh=vO0aU+Ggic5anKiHOHkUq0jfIagPPjKPDfb5kf4RyGA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XQuUPKkiweJ2diIuJQyxI8qBmaGNR2RjaXAIl28JpvbM2hZmECcDEmH/lamfi7Vaj
-	 JurrEaNXjGhWEBlPcbraMXHDc/uyCYarzi4BuOHqYOkaX3RJkK3j8R76tHdqoVv9R6
-	 APb4hBM3Q8XQdh2bxlRpk0NotoA1HdWfIpHjoi+zwPsULYw8JdpFpY97A2ffjMLf4L
-	 G+IQ5Mu/UF+/RV1mtGCKwiyuFz/5jK7iQHZOdRZnbw/ilxzSb1beaS74zEdxIaj4ZU
-	 sBYTZPZLnSKh3CH3omSriRpNwk1IvbRHAXiNjWLFyMhbmljfx2c8ynDEIejBifw279
-	 XOC67b3bEANWQ==
-From: Mike Snitzer <snitzer@kernel.org>
-To: Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>
-Cc: linux-nfs@vger.kernel.org,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-mm@kvack.org
-Subject: [PATCH v4 10/10] NFSD: add tracing for how direct-mode READ and WRITE are serviced
-Date: Thu, 15 Oct 2026 19:33:09 -0400
-Message-ID: <20261015233309.42999-11-snitzer@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20261015233309.42999-1-snitzer@kernel.org>
-References: <20261015233309.42999-1-snitzer@kernel.org>
+	bh=ICP/xr5+1YMQinRVIx0qLLDaZPBqnXiqmFQQcLFIEgw=;
+	b=WvN7qaCsLVsS1oZbn0y/4+NjGn8UFReliIHfKRrbq2tsRnDxW8BohbAbDMLDJhBZAPrgJl
+	4Rr+u4CFxWiIg53h0tRJoIs2KsvLrQbal/dRNPQHaqrbXxX5j6OAqRIH/a52sliqtkLMjS
+	plHG841lAvu2oMxqm7ABKIRQJ2CgUko=
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba3ec92031so6065515e87.2
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 16:40:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792107646; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NG8i4GmlOlPYPci/fw8461MmZzKaH04hFS6Mi+nZHR0BJV07QWtKE/zKpcoR+bojYm
+         PmKe10BfYhWKs8HnFA2YU5QwHT0MfatGXDvC39H/JM0rzJHs+AJDuVWsg4nf/GereM8z
+         0W2gLC6ZhkvGMHG2wMhDyZqVnbtowBIrQxDenrPg0abb+tuB78W4NCJxzFe1sbeP88nX
+         stwsHmQMuA/WGT4DCXZWKWgExOWCaktYsG5Cf4nLjmuAlkUgMEkAukll0iT1/CSjsEBp
+         Bb3J9oWXg3tqpVzy1SKqqXE97YlBr8kOTB2/hFgis635zbVhYn9/qwT2K8eW80jWAQgh
+         qk1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ICP/xr5+1YMQinRVIx0qLLDaZPBqnXiqmFQQcLFIEgw=;
+        fh=V+QC1tCx85L8CCTc+otZ5OTraztqh+DO1dPfHIsJLfM=;
+        b=XYfMdTf3BwwXfB+13iA6h28DAdBiM4Tic55RJSFsdpDrQJUZVD7OOLhU4dVGFOBGK0
+         AJ+9lLynhZpwMEAwADnOl422rhCKR7hW8TvBXATvom1naszl8BuVRCFI1nChVS43k7YQ
+         AI4vEHOOrQOXHpBn/GHyJzyeWPNZyREXE7zEkHNlYFE32urhq3pYdV70oqaLadpQklh9
+         MpibHReITUJ+TeppYcrZNVbqrwDEoNs+1clF9Yja6r7BVZUGQeelCoilOJ9dIO6rcDae
+         wSROzcgf6bFKYx62f7wn0U54XPaCdl7P7mKRnaAPVmTC4mEUV229tBm0nre+Bzj50xj5
+         WC5Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792107646; x=1792712446; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ICP/xr5+1YMQinRVIx0qLLDaZPBqnXiqmFQQcLFIEgw=;
+        b=WyHBrOOVOLZBvs3mCOv4NVTpyBx2zjt/+hRHoryXwftdIWsfH2L3CUNXB6LasUIscR
+         REQ1Qoob1eczePVEVHIERWHwRD4O2nBPLJdm2/HiVlLbSwdnH9DfG8EeKzv9opJHBH0Q
+         keJn29EfNaXnYz+xkjr4Z2ZOLfF0ajr0Ko7vLGG7uzKauctYJKm4fqztI+1RJrhcgDza
+         6QkVUyEKCrNFD21zSfKqtgNCZli/KO94bCvRaXGzvKAB6bz2lIhkA1F8IrJgmXfupHex
+         4YU5AbUp10KHr547dXtdvBJPxbSIWh26Z3ycimMrEz3udUzWex9fMVX6gNx3PBqkR1RA
+         EeeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792107646; x=1792712446;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ICP/xr5+1YMQinRVIx0qLLDaZPBqnXiqmFQQcLFIEgw=;
+        b=ejhss/lbIu5SXhFlx/N3b8+6RbDfIvp79Bk3go3ZRFQPRdkc0ID10jeAsf1VkM7wyN
+         ftJcAKKHUZcAxxyPxgCsa0kkxDHByrDtYO8RXB7VBUSHM2fyee55la9i1H4uV60OWk9S
+         NqbbDJsxr1roG6HrFoG81mWHqu4b8hf7P3ypJTC+72zSQV2laSZM+oRfU+WhpSikNe8I
+         pYui3Ms/t7dDtWY7XPUpXEvvsszUb96InRFLHnjika7/FYPoF8HHhHaonJBHzB9nBU+y
+         eCZpAzzwiH0PnGymhpaz08nk95NdCRgycuHBQBZHzSEIT8+vtMNNBf7Iqqn6vqN4qsU5
+         GZSA==
+X-Forwarded-Encrypted: i=1; AKwUvBx1FXdiV97WKNWj2398MAe48z5JCRrg3nUjdCK4nvrv2fLp3avk8nKg0qv+U/86RtKtvZN503QtTQ==@kvack.org
+X-Gm-Message-State: AFq9FYIyYaXLMNts9bZc9K4SrFqXWphhb8F5majobNWVvS1lKU32dFUX
+	cG2oumpRLetUlsGuIhw1VgWvDz6HlFaBPVO6AxxrKs7H0tSdXXJTsoe6ObV4f1eOEOmzGZHpJz4
+	sdo2KJBHDsm0wgQA0YlzxOQMi2Lh/k1E=
+X-Gm-Gg: AYBFou3R8usm4rbo74Ivx18g7jDcj4gHeMImQ7chcCUVaoOBAWaMGthtOK+YeI6qqxY
+	f56dAYJpKc1ixBtaBdqhRUxWfIkmLNuoQklnqQrNNIfTSo08M8Tr6cSqLmw/WtulKptZe/MvRD0
+	QfCRDeucpfMiHAkU+UaqXes/uHoSzhKduCrMNYo6fzAmx96Dj9PX8OsAfiSzqH/0S0FAXJQu27m
+	IkpyXrRtQxV2GTWXP77qifr0yBCaXDsFGpT61moUaw2rTIG/NDcEZT978G0ByGA0YTZo4xvgEnh
+	Y+W0DyUfDdw8X/EN2LMfqYrujydwAEOxIv/ZmS2tCtzGWXoSGtELISSz
+X-Received: by 2002:a05:6512:682:b0:5ba:3c60:b875 with SMTP id
+ 2adb3069b0e04-5bcde5aab53mr7165266e87.43.1792107645951; Thu, 15 Oct 2026
+ 16:40:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rnwomirmc8rogwepkigqbrrijb5nh5hb
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+ <as-jZopKRfuYAiTE@google.com> <CACpmpoeS_cvXRWJXqiYZV9oykk=91efv8KtZgK2Pi-QwHnQH3A@mail.gmail.com>
+ <CAO9r8zN5n=9v4K+OtEEODg=e0kcFW99PreUcZm09q9CUMQc+ew@mail.gmail.com>
+ <CACpmpofdoeVbbw7izCDeJ7eS+XpWj+3sp3teKEQWywyRB75jYQ@mail.gmail.com> <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
+In-Reply-To: <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Thu, 15 Oct 2026 16:40:33 -0700
+X-Gm-Features: AclHuK-o0YoycUuTLR9c0WACqcfx9D0UCCwaTlp6tqXVGsdos9IwJufLaP7OH9Q
+Message-ID: <CACpmpoecz4tjr-qvFRy22CGuF+4NBWbE7HVjdTGFqQOheK3CLg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: z8m5gbxqj54bcewhxggo8ooycdpow345
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DF0F940005
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1792107203-994064
-X-HE-Meta: U2FsdGVkX18zmeHFVcJmQFOThsEX9JdAwscNuZm1RfnHCKJA7t2ladXpLzKfUlaSE3wcNuC022F+6vJdPzZcRY3jO9fxM7wwIKeK6isYwjqeOePSvM+5XXDjeBzc8Lun/bvXd7ug+GbCO1/X4zA1Qb0wGt6ruSKQcMKU4XlettiADYBxJD3ucmESBEAnCPwggJsLD5h15iRq6DncrMAt6FpMUrOQPdTrmW8z3PbDlZUQgpVN+84rMk94+6/BogD7oSP4xEZQ52BcybYolwQVl/9ci0MEyMp5BVuJB2v4HrFjJlW7SkcpkQxRUj3fNBdgOezArCRjtkjoGfMnsneGrmGJTftFO0Jx9yqDXETUEAELDoCKHG2kSTviv9vmW6JDoV3fawGGjuRYjoetthgla5B+/snVXIT4uMEciPzFVCMvWIHgGS+iaK2VMzyOyvWV0FFoc9cflGkpgeMNDVEldmfdXJ7syHEgG3bXiCCq12w9J0Nqhf1xWG1rg05h5a4JxDeDcSuXmOmltuo8aRCDWy7v9lgMMV6wCRc9KHCDJVgxRVn/fJw1zYB2YWyvr4f/ZeUeZOWsfO/9lAl1FKbBJ7dcPruOe/Gql4+9Bt7Z0SAMJPREO/pueVekUBelyl6suaTm+xn7ZDJFh7Satui/uMZVDXz74W/1Vl/51iV+ADXvA4nlj+ShQi1bs/shtTUuz/JfnBkDmCzmR1/MmUj2Mn1ooxPLb9/x/txsjIPWu6l28s7x3VE6rgy+ohaXsKOXlar8uUKK8Ij57sZ7E0Hi8GM5GP2RBhp83J3daeuhYMyjpw6d3/LQDRlELv6ku7p75QnR5y14Ajm/xJNI77PHne2MO2l0Z327JttycPfk5GGHxOZ3SJySG1cuBPEK/3OS3SIt0+GSJjHU67crviWnIdbId2PtYNLxJrEUil2PyM8QWd9tvzazcnm+wVZtGrEhlBEEn7dc7yZepMGtJWy
- iHV4T972
- icAyVSYkfaz0/Y4SVbt9pwhWsG3qCoaDwK8k2/vVNf9GgqscF2r1H8J/x4F24pvy/bf2qd+P+PXOylGZmAeM18au3dCzYoFJmy80bZ/+jaLIDmXqdyIF/Pbn7g4HfHBG8ZSvpGgB4NTOCqKxapQ9DdXApaZVMpPEUtLF7VjKqguO155WVApYbYIOlNsvct1QcJrN/xBeCZs06nZZx3yCkI46AUXPxGig9K9v9SPXROL6vK6znyZq2FpoJeyL4YzWCCZ6gOr6dlxvLAhwGQ/jyrMHoQsGE8UqkLmec6Yb+f8wr6CFuNpfC7YPnBA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BB8D320002
+X-HE-Tag: 1792107647-173122
+X-HE-Meta: U2FsdGVkX18gcTJg6aD89rD+rxava26dEOWAVE87YUldxsU3cxT4/MxFBYl0lU+QXeh/2LnO6KF67BFmAv78Tst08t7jRa6jW8lLGJtkiTIMpt+tpLyOjwlognS62VWVinkhKheQK12gDYaN7kDnqvJg7mWr+fIyWQpRg60xCjAp09rvMjdsIVLuMbrCPlUSSMHOi5kA/r8M6zb9hlAhmdgUgFp4PwJZ6n1f6iVajwQpL4vZjmNKy3PgNdPqlYqjhVV1y7rCzx7s3UFYh2+w6s03bxkbstsYj/gbS/y64NZx4wjOYRTb/TUxVBMfQKQPbaMaQVo8YZ00QLfiayczkho+qTqvRlNpJKsPa401DBPjw4SFA1hrJC45tBfQpoaQMUy7Abr+16wdz01xZ4DlxaO5+7h/x9phoH4/VRb3XJ67XNCPjFgFqEeT3S0LUU/oQjZEOI+qlBu9zMmHJBMX8duSnuqduPJlRBlRlb2eliIZSDHrvnPAYaUyCwxJQExMhEU8YLmWlDYn4Ea4bOjFGuAxK3Ihbh5PcNrJG6c4z7IoSLRnPrRP+4LNQr75WLzXfe2jIdQFj8SnkE68fkJzotLl+RRvCBP1yQHVuCH/J4TMl9Mi3EuHEhxYeb7jASLeLOIiZn5pbltUvvuD1R/4r0e9Z99mwFM2w32IWPwbuyCOQBF6DjzzEKc0JabxwqdivL9cn4UBylsmS4vztdlzGIdpss86Ww4LjaXu47UkA1RuurRDjcd0LCgHk9sT+pZtsOtOnZmSOSDBlpNCG6E9HT54CbFzxnGMzYDqCcOGZLdOvW4AiR2H+AdQ87nq43nnT4Xx1Zq+kWIHC0G5H3VM8jpD5aIPAohI19v0P5RXXFGkPEoqdJ8pAMO10xIoRmQVQ0qZ1uKHcIp260uDJiekyoVszjxJiAJrGUDm69Ebs5NAH6gMcOWH5bm28SL+ExPHuwHJJyWdQSQz0kDopEk
+ I4qGNFtQ
+ g2So1BJSdLLCNVUAn4VU7NJBaqsoFdf2OPfQBDedHL4QKba4H9LgRRrDUncWSkw4rSrZ/b9R2+vHWe1NfMOF3+6+lY/cBygZgJYb+21woUzsES2sfblleJj85qIWtgwOujkwy9MdLnoq7orv8DWE3P7+ik0tHWnHyaUKq6bqpErhIdBcHYUPlFbVZv9nN9OTMkT0Rc4sJPmGrQTItEEV4MAINWU81UsrzjuLJvgqBfKV/ke1eWHhDeGS+2k1NTHrk4sd6sj+HxBwdStDptoyB2SmlYPv2wzhVbE+MnmAsxCVWwjH92owcDYEbEdWbIMaAS7NEwTIaXVXA/h9m0xCHwhDtWxsYEDMXJNSYt2j3Q+A5gqPgw3g43tftaLtM4x3kDI+hk3mTbpCr/0xmN4K7snPp05HhCwDonF1nZPEtkCbm9ui2WOszBVcfzvICr9bxBSqBlMbuk/bpl+iahsCsVOYsCJQjYangPxVCDoMqx8nS3UKPMseagvj/QQ/97HyJ6DEiaU+GltE6PLs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,355 +146,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When io_cache_read or io_cache_write selects a direct I/O mode, a
-request may still be serviced with DONTCACHE buffered or normal
-buffered I/O, and a WRITE may be split into up to three segments that
-each take a different path depending on the request's offset/length
-alignment, the payload's memory alignment, the filesystem's
-FOP_DONTCACHE support, direct_misaligned_min_bytes and
-direct_misaligned_dontcache.  Until now the only visibility was
-nfsd_{read,write}_direct for O_DIRECT and nfsd_{read,write}_vector for
-everything else, so the DONTCACHE and cached buffered cases were
-indistinguishable and the reason a WRITE was not issued as direct I/O
-was not recorded at all.
+On Thu, Oct 15, 2026 at 3:59=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Thu, Oct 15, 2026 at 3:51=E2=80=AFPM Kanchana P. Sridhar
+> <kanchanapsridhar2026@gmail.com> wrote:
+> >
+> > On Thu, Oct 15, 2026 at 3:04=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
+wrote:
+> > >
+> > > On Thu, Oct 15, 2026 at 3:00=E2=80=AFPM Kanchana P. Sridhar
+> > > <kanchanapsridhar2026@gmail.com> wrote:
+> > > >
+> > > > On Wed, Oct 14, 2026 at 8:45=E2=80=AFAM Yosry Ahmed <yosry@kernel.o=
+rg> wrote:
+> > > > >
+> > > > > On Thu, Oct 08, 2026 at 11:28:06AM -0700, Kanchana P. Sridhar wro=
+te:
+> > > > > > v1: Batched zswap_store() with compression batching
+> > > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> > > > > >
+> > > > > > This series is a spin-off of "v14: zswap compression batching w=
+ith optimized
+> > > > > > iaa_crypto driver" [1], and focuses on the generic crypto_acomp=
+ and zswap
+> > > > > > compression batching enablers. Resuming work on this series fol=
+lowing a gap
+> > > > > > since v14 (January 2026). Please note that my email address and=
+ affiliation have
+> > > > > > changed from kanchana.p.sridhar@intel.com to kanchanapsridhar20=
+26@gmail.com. I
+> > > > > > have retained the original Intel sign-offs on prior patches for=
+ historical
+> > > > > > attribution while signing off v1 of this series with my current=
+ address.
+> > > > > >
+> > > > > > To summarize the main contribution of this patch series: Batchi=
+ng is introduced
+> > > > > > in zswap_store() of large folios: we carve out a large folio in=
+to batches of
+> > > > > > ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and st=
+ore each
+> > > > > > batch. Moving the fundamental operations that need to be happen=
+ to store a page
+> > > > > > to now work at the granularity of a batch offers opportunities =
+to optimize them
+> > > > > > from these perspectives:
+> > > > > >
+> > > > > > 1) Utilize existing kernel API that minimize obtaining locks fo=
+r bulk
+> > > > > >    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bul=
+k().
+> > > > > >
+> > > > > > 2) We keep the working set for each of the core store functiona=
+lities (alloc
+> > > > > >    entries, compress pages, store pages in zsmalloc) to be focu=
+sed on a
+> > > > > >    batch, thereby minimizing cache evictions and benefiting fro=
+m cache
+> > > > > >    locality.
+> > > > > >
+> > > > > > 3) Along the lines of (1), the main zswap_compress() batching r=
+outine obtains
+> > > > > >    the acomp_ctx mutex lock once per batch, and releases it aft=
+er it has
+> > > > > >    processed all pages in that batch.
+> > > > > >
+> > > > > > 4) Any zswap store functionality that works on a batch can pote=
+ntially be
+> > > > > >    parallelized as a next step, to further improve performance.
+> > > > > >
+> > > > > > Performance data: usemem with 60% over-commit:
+> > > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > > >
+> > > > > How much of the performance benefits come from patch 6 vs patch 8=
+?
+> > > >
+> > > > This is how the performance changes: Average throughput is averaged
+> > > > from 10 iterations of usemem.
+> > > >
+> > > > patch 6: 19,119 KB/s
+> > > > patch 8: 17,593 KB/s
+> > > >
+> > > > So the acomp_do_req_chain() path that ZSTD goes through with patch =
+8
+> > > > causes a regression, even though it provides a generic batching
+> > > > framework in acomp.
+> > > >
+> > > > I was able to retrieve performance with the following change in aco=
+mpress.c:
+> > >
+> > > Why add it to begin with in this case?
+> >
+> > Patch 3 ("crypto: acomp - Add trivial segmentation wrapper.") was
+> > co-developed with Herbert. The request chaining for non-segmentation
+> > algorithms was as in Herbert's original implementation. Since this
+> > causes a regression, I would like to get Herbert's Ok on replacing the
+> > request chaining in this part of crypto_acomp_compress().
+>
+> I mean, why add patch 8 if it doesn't improve performance? Seems like
+> even with your diff, we only recover performance, but we don't improve
+> it after patch 6?
 
-Add:
+Patch 8 does improve performance over patch 6 (19,578 KB/s vs. 19,119
+KB/s) by 2.4%. Besides, patch 8 provides a compress batching framework
+in zswap, which is the purpose of this patch series. zswap is the
+first user of the crypto_acomp compress batching API provided earlier
+in this series, which I think, is a great starting point for us to
+evolve this further, as mentioned in the cover letter.
 
- - nfsd_write_dio_split, emitted once per direct-mode WRITE before any
-   segment is issued.  It records the advertised offset and memory
-   alignments, the payload's offset within its first page, the start,
-   middle and end segment sizes, a disposition naming the path taken
-   (direct, no_alignment, too_small, no_middle, mem_misaligned), and
-   whether buffered segments are issued IOCB_DONTCACHE.
-
- - nfsd_write_dontcache and nfsd_read_dontcache, emitted for WRITE
-   segments and READs serviced with IOCB_DONTCACHE.  nfsd_write_vector
-   and nfsd_read_vector now fire only for normal buffered I/O.
-
-The disposition enum lives in vfs.h, which trace.h already includes.
-
-Document the new events in nfsd-io-modes.rst, together with iomap's
-iomap_dio_invalidate_fail event, which reports an O_DIRECT segment that
-the filesystem serviced with buffered I/O instead.
-
-Assisted-by: LLM
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
----
- .../filesystems/nfs/nfsd-io-modes.rst         | 38 ++++++++-
- fs/nfsd/trace.h                               | 77 +++++++++++++++++++
- fs/nfsd/vfs.c                                 | 47 ++++++++---
- fs/nfsd/vfs.h                                 |  9 +++
- 4 files changed, 156 insertions(+), 15 deletions(-)
-
-diff --git a/Documentation/filesystems/nfs/nfsd-io-modes.rst b/Documentation/filesystems/nfs/nfsd-io-modes.rst
-index 278c0487b5bb2..2a648cedf2588 100644
---- a/Documentation/filesystems/nfs/nfsd-io-modes.rst
-+++ b/Documentation/filesystems/nfs/nfsd-io-modes.rst
-@@ -182,21 +182,53 @@ Misaligned WRITE:
- Tracing:
-     The nfsd_read_direct trace event shows how NFSD expands any
-     misaligned READ to the next DIO-aligned block (on either end of the
--    original READ, as needed).
-+    original READ, as needed). A READ that is serviced with buffered IO
-+    instead emits nfsd_read_dontcache (DONTCACHE buffered IO) or
-+    nfsd_read_vector (normal buffered IO).
- 
-     This combination of trace events is useful for READs::
- 
-       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_read_vector/enable
-+      echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_read_dontcache/enable
-       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_read_direct/enable
-       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_read_io_done/enable
-       echo 1 > /sys/kernel/tracing/events/xfs/xfs_file_direct_read/enable
- 
--    The nfsd_write_direct trace event shows how NFSD splits a given
--    misaligned WRITE into a DIO-aligned middle segment.
-+    The nfsd_write_dio_split trace event is emitted once per WRITE in a
-+    DIRECT IO mode, before any IO is issued. It records the alignments
-+    the filesystem advertised, the payload's offset in its first page,
-+    the sizes of the start, middle and end segments, and a
-+    disposition::
-+
-+      direct          the aligned middle segment uses O_DIRECT
-+      mem_misaligned  payload memory is misaligned; not split
-+      no_alignment    the filesystem advertises no DIO alignment; not split
-+      too_small       smaller than the larger of the offset and memory
-+                      alignments; not split
-+      no_middle       no aligned middle, or a misaligned start or end
-+                      with a middle smaller than
-+                      direct_misaligned_min_bytes bytes; not split
-+
-+    dontcache=1 means any buffered segment is issued DONTCACHE: the start
-+    and end segments of a split WRITE, or the whole of a WRITE that is
-+    not split. It is 0 when direct_misaligned_dontcache is N or the
-+    filesystem lacks FOP_DONTCACHE, and is reported even for a WRITE
-+    that has no buffered segment.
-+
-+    Each segment then emits nfsd_write_direct (O_DIRECT),
-+    nfsd_write_dontcache (DONTCACHE buffered IO) or nfsd_write_vector
-+    (normal buffered IO).
- 
-     This combination of trace events is useful for WRITEs::
- 
-       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_opened/enable
-+      echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_dio_split/enable
-       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_direct/enable
-+      echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_dontcache/enable
-+      echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_vector/enable
-       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_io_done/enable
-       echo 1 > /sys/kernel/tracing/events/xfs/xfs_file_direct_write/enable
-+      echo 1 > /sys/kernel/tracing/events/iomap/iomap_dio_invalidate_fail/enable
-+
-+    iomap_dio_invalidate_fail reports an O_DIRECT middle segment that
-+    the filesystem serviced with buffered IO instead.
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index e5d19c6f48a2c..8783c092b6338 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -501,6 +501,7 @@ DEFINE_EVENT(nfsd_io_class, nfsd_##name,	\
- DEFINE_NFSD_IO_EVENT(read_start);
- DEFINE_NFSD_IO_EVENT(read_splice);
- DEFINE_NFSD_IO_EVENT(read_vector);
-+DEFINE_NFSD_IO_EVENT(read_dontcache);
- DEFINE_NFSD_IO_EVENT(read_direct);
- DEFINE_NFSD_IO_EVENT(read_io_done);
- DEFINE_NFSD_IO_EVENT(read_done);
-@@ -508,11 +509,87 @@ DEFINE_NFSD_IO_EVENT(write_start);
- DEFINE_NFSD_IO_EVENT(write_opened);
- DEFINE_NFSD_IO_EVENT(write_direct);
- DEFINE_NFSD_IO_EVENT(write_vector);
-+DEFINE_NFSD_IO_EVENT(write_dontcache);
- DEFINE_NFSD_IO_EVENT(write_io_done);
- DEFINE_NFSD_IO_EVENT(write_done);
- DEFINE_NFSD_IO_EVENT(commit_start);
- DEFINE_NFSD_IO_EVENT(commit_done);
- 
-+TRACE_DEFINE_ENUM(NFSD_WRITE_DIO_DIRECT);
-+TRACE_DEFINE_ENUM(NFSD_WRITE_DIO_MEM_MISALIGNED);
-+TRACE_DEFINE_ENUM(NFSD_WRITE_DIO_NO_ALIGNMENT);
-+TRACE_DEFINE_ENUM(NFSD_WRITE_DIO_TOO_SMALL);
-+TRACE_DEFINE_ENUM(NFSD_WRITE_DIO_NO_MIDDLE);
-+
-+#define show_nfsd_write_dio_disposition(x)				\
-+	__print_symbolic(x,						\
-+		{ NFSD_WRITE_DIO_DIRECT,	"direct" },		\
-+		{ NFSD_WRITE_DIO_MEM_MISALIGNED, "mem_misaligned" },	\
-+		{ NFSD_WRITE_DIO_NO_ALIGNMENT,	"no_alignment" },	\
-+		{ NFSD_WRITE_DIO_TOO_SMALL,	"too_small" },		\
-+		{ NFSD_WRITE_DIO_NO_MIDDLE,	"no_middle" })
-+
-+/*
-+ * Emitted once per direct-mode WRITE, before any segment is issued.
-+ * prefix, middle and suffix are zero when not computed.  mem_offset is
-+ * the offset of the payload within its first page.
-+ */
-+TRACE_EVENT(nfsd_write_dio_split,
-+	TP_PROTO(struct svc_rqst *rqstp,
-+		 struct svc_fh *fhp,
-+		 u64 offset,
-+		 u32 len,
-+		 u32 offset_align,
-+		 u32 mem_align,
-+		 u32 mem_offset,
-+		 u32 prefix,
-+		 u32 middle,
-+		 u32 suffix,
-+		 enum nfsd_write_dio_disposition disposition,
-+		 bool dontcache),
-+	TP_ARGS(rqstp, fhp, offset, len, offset_align, mem_align, mem_offset,
-+		prefix, middle, suffix, disposition, dontcache),
-+	TP_STRUCT__entry(
-+		__field(u32, xid)
-+		__field(u32, fh_hash)
-+		__field(u64, offset)
-+		__field(u32, len)
-+		__field(u32, offset_align)
-+		__field(u32, mem_align)
-+		__field(u32, mem_offset)
-+		__field(u32, prefix)
-+		__field(u32, middle)
-+		__field(u32, suffix)
-+		__field(unsigned int, disposition)
-+		__field(bool, dontcache)
-+	),
-+	TP_fast_assign(
-+		__entry->xid = be32_to_cpu(rqstp->rq_xid);
-+		__entry->fh_hash = knfsd_fh_hash(&fhp->fh_handle);
-+		__entry->offset = offset;
-+		__entry->len = len;
-+		__entry->offset_align = offset_align;
-+		__entry->mem_align = mem_align;
-+		__entry->mem_offset = mem_offset;
-+		__entry->prefix = prefix;
-+		__entry->middle = middle;
-+		__entry->suffix = suffix;
-+		__entry->disposition = disposition;
-+		__entry->dontcache = dontcache;
-+	),
-+	TP_printk("xid=0x%08x fh_hash=0x%08x offset=%llu len=%u "
-+		  "offset_align=%u mem_align=%u mem_offset=%u "
-+		  "prefix=%u middle=%u suffix=%u disposition=%s "
-+		  "dontcache=%u",
-+		  __entry->xid, __entry->fh_hash,
-+		  __entry->offset, __entry->len,
-+		  __entry->offset_align, __entry->mem_align,
-+		  __entry->mem_offset,
-+		  __entry->prefix, __entry->middle, __entry->suffix,
-+		  show_nfsd_write_dio_disposition(__entry->disposition),
-+		  __entry->dontcache)
-+);
-+
- DECLARE_EVENT_CLASS(nfsd_err_class,
- 	TP_PROTO(struct svc_rqst *rqstp,
- 		 struct svc_fh	*fhp,
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index d899d00714b1a..d56b2f01b1cfd 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1255,7 +1255,10 @@ __be32 nfsd_iter_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	}
- 	rqstp->rq_next_page = page;
- 
--	trace_nfsd_read_vector(rqstp, fhp, offset, *count - total);
-+	if (kiocb.ki_flags & IOCB_DONTCACHE)
-+		trace_nfsd_read_dontcache(rqstp, fhp, offset, *count - total);
-+	else
-+		trace_nfsd_read_vector(rqstp, fhp, offset, *count - total);
- 	iov_iter_bvec(&iter, ITER_DEST, rqstp->rq_bvec, v, *count - total);
- 	host_err = vfs_iocb_iter_read(file, &kiocb, &iter);
- 	return nfsd_finish_read(rqstp, fhp, file, offset, count, eof, host_err);
-@@ -1428,7 +1431,8 @@ nfsd_write_dio_seg_release(struct file *file,
- }
- 
- static unsigned int
--nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
-+nfsd_write_dio_iters_init(struct svc_rqst *rqstp, struct svc_fh *fhp,
-+			  struct nfsd_file *nf, struct bio_vec *bvec,
- 			  unsigned int nvecs, struct kiocb *iocb,
- 			  unsigned long total,
- 			  struct nfsd_write_dio_seg segments[3])
-@@ -1436,7 +1440,9 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
- 	u32 offset_align = nf->nf_dio_offset_align;
- 	loff_t prefix_end, orig_end, middle_end;
- 	u32 mem_align = nf->nf_dio_mem_align;
--	size_t prefix, middle, suffix;
-+	size_t prefix = 0, middle = 0, suffix = 0;
-+	enum nfsd_write_dio_disposition disposition;
-+	u32 mem_offset = nvecs ? bvec->bv_offset : 0;
- 	loff_t offset = iocb->ki_pos;
- 	unsigned int dontcache_flags = 0;
- 	unsigned int buffered_flags;
-@@ -1452,9 +1458,14 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
- 	 * If alignments are not available, the write is too small,
- 	 * or no alignment can be found, fall back to buffered I/O.
- 	 */
--	if (unlikely(!mem_align || !offset_align) ||
--	    unlikely(total < max(offset_align, mem_align)))
-+	if (unlikely(!mem_align || !offset_align)) {
-+		disposition = NFSD_WRITE_DIO_NO_ALIGNMENT;
- 		goto no_dio;
-+	}
-+	if (unlikely(total < max(offset_align, mem_align))) {
-+		disposition = NFSD_WRITE_DIO_TOO_SMALL;
-+		goto no_dio;
-+	}
- 
- 	prefix_end = round_up(offset, offset_align);
- 	orig_end = offset + total;
-@@ -1478,8 +1489,10 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
- 
- 	if (!middle ||
- 	    ((prefix || suffix) &&
--	     middle < nfsd_direct_misaligned_min_bytes))
-+	     middle < nfsd_direct_misaligned_min_bytes)) {
-+		disposition = NFSD_WRITE_DIO_NO_MIDDLE;
- 		goto no_dio;
-+	}
- 
- 	if (prefix) {
- 		nfsd_write_dio_seg_init(&segments[nsegs], bvec,
-@@ -1498,13 +1511,16 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
- 	 * the first bvec, all subsequent bvecs start at bv_offset zero
- 	 * (page-aligned). Therefore, only the first bvec is checked.
- 	 */
--	if (iov_iter_bvec_offset(&segments[nsegs].iter) & (mem_align - 1))
-+	if (iov_iter_bvec_offset(&segments[nsegs].iter) & (mem_align - 1)) {
-+		disposition = NFSD_WRITE_DIO_MEM_MISALIGNED;
- 		goto no_dio;
-+	}
- 	/*
- 	 * IOCB_DONTCACHE matters only if the file system falls back to
- 	 * buffered I/O (-ENOTBLK).
- 	 */
- 	segments[nsegs++].flags |= IOCB_DIRECT | dontcache_flags;
-+	disposition = NFSD_WRITE_DIO_DIRECT;
- 
- 	if (suffix) {
- 		nfsd_write_dio_seg_init(&segments[nsegs], bvec, nvecs, total,
-@@ -1512,8 +1528,7 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
- 		segments[nsegs].flags |= buffered_flags;
- 		segments[nsegs++].claim = !!buffered_flags;
- 	}
--
--	return nsegs;
-+	goto out;
- 
- no_dio:
- 	/*
-@@ -1525,7 +1540,12 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
- 				total, iocb);
- 	segments[0].flags |= buffered_flags;
- 	segments[0].claim = !!buffered_flags;
--	return 1;
-+	nsegs = 1;
-+out:
-+	trace_nfsd_write_dio_split(rqstp, fhp, offset, total, offset_align,
-+				   mem_align, mem_offset, prefix, middle,
-+				   suffix, disposition, !!buffered_flags);
-+	return nsegs;
- }
- 
- static noinline_for_stack int
-@@ -1542,8 +1562,8 @@ nfsd_direct_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	int sync_flags;
- 	size_t expected;
- 
--	nsegs = nfsd_write_dio_iters_init(nf, rqstp->rq_bvec, nvecs,
--					  kiocb, *cnt, segments);
-+	nsegs = nfsd_write_dio_iters_init(rqstp, fhp, nf, rqstp->rq_bvec,
-+					  nvecs, kiocb, *cnt, segments);
- 
- 	/*
- 	 * Persist a synchronous WRITE once, after all of its segments.  A
-@@ -1560,6 +1580,9 @@ nfsd_direct_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		if (kiocb->ki_flags & IOCB_DIRECT)
- 			trace_nfsd_write_direct(rqstp, fhp, kiocb->ki_pos,
- 						segments[i].iter.count);
-+		else if (kiocb->ki_flags & IOCB_DONTCACHE)
-+			trace_nfsd_write_dontcache(rqstp, fhp, kiocb->ki_pos,
-+						   segments[i].iter.count);
- 		else
- 			trace_nfsd_write_vector(rqstp, fhp, kiocb->ki_pos,
- 						segments[i].iter.count);
-diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
-index eb75e4c823185..8f6349233c892 100644
---- a/fs/nfsd/vfs.h
-+++ b/fs/nfsd/vfs.h
-@@ -229,4 +229,13 @@ __be32		nfsd_permission(struct svc_cred *cred, struct svc_export *exp,
- 
- void		nfsd_filp_close(struct file *fp);
- 
-+/* The path nfsd_write_dio_iters_init() took for a direct-mode WRITE. */
-+enum nfsd_write_dio_disposition {
-+	NFSD_WRITE_DIO_DIRECT,
-+	NFSD_WRITE_DIO_MEM_MISALIGNED,
-+	NFSD_WRITE_DIO_NO_ALIGNMENT,
-+	NFSD_WRITE_DIO_TOO_SMALL,
-+	NFSD_WRITE_DIO_NO_MIDDLE,
-+};
-+
- #endif /* LINUX_NFSD_VFS_H */
--- 
-2.52.0
-
+Thanks,
+Kanchana
 
