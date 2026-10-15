@@ -4,136 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D37B6CC6B39
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:17:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19F71CC6B33
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 15:24:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBA616B009D; Thu, 15 Oct 2026 11:17:11 -0400 (EDT)
+	id 22B936B008C; Thu, 15 Oct 2026 11:24:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B92106B009E; Thu, 15 Oct 2026 11:17:11 -0400 (EDT)
+	id 1B5AC6B0095; Thu, 15 Oct 2026 11:24:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA7D86B009F; Thu, 15 Oct 2026 11:17:11 -0400 (EDT)
+	id 07D4F6B0096; Thu, 15 Oct 2026 11:24:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 859566B009D
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:17:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06C3AC0A41
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:17:11 +0000 (UTC)
-X-FDA: 85325213862.06.CEEDD8C
-Received: from mail-oi2-f7.google.com (mail-oi2-f7.google.com [74.125.231.199])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 05745A000A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:17:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e6sU3yIZ;
-	spf=pass (imf25.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.199 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D3D336B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 11:24:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 614A0140A26
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:24:35 +0000 (UTC)
+X-FDA: 85325232510.16.87D3111
+Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6205180005
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 15:24:33 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="FX37Bh/O";
+	spf=pass (imf30.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792077873;
+	b=6UyJCOy40t6rjX3JgDVsfUpznNHC0SgqbkKqnLhnZXE7F/fXp89UQgWbQf3z0bPcnP9d4+
+	8bnTA5tSBiYPjB9dX6D/5aB0IrCDovS0Bk0sq6okOOe8p/a3lFT1k6A9aaIZlNe2p6ylYy
+	P8BsPScMbapHxz5Eq/ly9/ywO2CUIVs=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="FX37Bh/O";
+	spf=pass (imf30.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792077429;
+	s=arc-20220608; t=1792077873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OeZR/JOPa/KrDeQOVwy6UcwSPvI8j2bKhcX8zNJ+XWU=;
-	b=lbXu/KO/C5dz4RymhTCh2uIHkq5T2E3CjKsucD5na4AgkM/x0jrxbCPAnwg1Su75DSpTBC
-	Wl4WWT2+6k1dlJAogXz6kiBfDOhDTHjRr+RY5T+ffnSEN+keagO7iwm43ZGmHP76HSHBbv
-	jVhM6yFyxYqJ0qWg52PzhTkn/YwoPeM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792077429;
-	b=u0RrnVTCV76X2KAH8GxVEaQjO9+UrSoYYBtoaEdCm50WzGsMYUCaI8iXRI+SsPShw8BGni
-	DVwM55fTOgDOPeHsT8v4Odj3povGYij0G/GDtYP/jFbqSeXTR37LFw2s6qGc2CtpWAZDSN
-	lFgQMD3cviwwwF4vPJz5QLMFWIwQjPM=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e6sU3yIZ;
-	spf=pass (imf25.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.199 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-oi2-f7.google.com with SMTP id 5614622812f47-4b39374fab5so2147611b6e.1
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:17:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792077428; cv=none;
+	bh=YD6S+6u+gzgwuU4ceon9d+8HFftoXU9zg34ox/v9I5o=;
+	b=d5Tq3S9W8ALHJZ+keQ+AsvpdKNHpAuck4YJkq78i6BTCBQra9kHRkyxua3DFgY9EXsEZLz
+	fMt70+mUu5EGjf83ZEMOp4QBUaXIi4Aggjy6tjMrs8jvWe/yFB22eXq4IKDkAn1W9qO0rN
+	E0t8UPRRgAq7fL1kS/zgLy7O6E9q9wY=
+Received: by mail-pj2-f9.google.com with SMTP id d9443c01a7336-2e4a61a2ff9so24880955ad.0
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:24:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792077872; cv=none;
         d=google.com; s=arc-20260327;
-        b=PFjGOlXVjGS7NwB+l76ErrL5SESwMsgwPR8jUWSnm1kQXr9SS+K7q7HSWvAh89xy48
-         pLh5OJ2ReliR6fNuFLJdcGaInwXSIBbHFybjDNbKZs5v4Cvh4S7qeoldQXfxlI9ugeIj
-         PXblTuBsKVi79RsKKR0wFWhVG0V2fMHFgNZNCGfY8uEYeihuPumW63VD3rQe0m4TSIOy
-         f0VfYgQ+c+QZNC/0Z23i5HFWEgeDCJUaqhjyU7dYq3K0N7Es5DRO71kAItVAyOnUnp2n
-         4NWcjc/lTHO2aNxhgfcIJWEt08XvEtX9N5CV8bQirGY0LHtxfAe3K0Lwt0jTcm4iSfGp
-         azDQ==
+        b=Is5XE+U7Fwn+MGBkkC8/4SZTnDxbHqfC2Tn50kncnUOE4BMKUYKGdDXkK4nyk0Rrc6
+         Lyur9hQFkkfz6ofXwLVksEgZ4u425zJZ3TUTP/AY1LNwZAXVl6zKi1vgvlG01cQcSA92
+         YT5muG8vq3tPcxiq/LBMi/xoRIp4SNlyqbGrBk7lKeggrAHTYhVUlfOBqMy7NMgB4QLT
+         I5folIn4wUVK2YFXR3gI3tAwnmEqrv5Wq5OO1XZ60ScHKsHUOzTLfh7aMdXaluteuI3S
+         WUTB3ezE/IUEYpJiIDaxMtLHgRoJjZsLIehTMWGUMab2G5jL5oDWt24QPM5JbyH5LQV+
+         cbsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:references:in-reply-to:from
          :mime-version:dkim-signature;
-        bh=OeZR/JOPa/KrDeQOVwy6UcwSPvI8j2bKhcX8zNJ+XWU=;
-        fh=Spad8KXqLC+3tVBG9Ile2YXl3Fpyu83lKErqrvCZu9Q=;
-        b=W70zncUfa+nmWvW9MpKdQ6lHk1kCCPxZXyG8AWT/eQSLYJeH/ZO38u5XKDVfzgJkIL
-         5qmwz+JWUqhT7k17aQAaQMRDXVGqdpvWBrxUXh/xQJ54frpWM0mpYteq/8IZ94a/H6/K
-         +BTjp+LDMAiVTK5ESIUHNMRnpA467hGuoksKb+mYqFNOTx6AoHgJUkvwXqlUShtMgZR2
-         T4jbHcXJM34FipubWjoGNYhV8zcyohLwSex5NR44oNLih7I4tqPHT1hAV2yWOTKadD7X
-         ZqAn8ysfhMW3hQ6kuPnv0Bo3mmPZ9hfuwgSyYEvWJNUsDXiS5+icY11yIemdyJcIHvt9
-         OSIw==;
+        bh=YD6S+6u+gzgwuU4ceon9d+8HFftoXU9zg34ox/v9I5o=;
+        fh=7ZxAYzBdt5cmxgEqMWMM/mnS8lCi1S1lEuEfYvxnzZM=;
+        b=OsPxD1Ar1tuOF+jPqESoWxBx7tWgQ4T/I8Wyrd3EVYtoSocg1QCycGd9XzLaHpBZ4X
+         wvku0NyAGSva9tE+TrwSRhArUK1l/sruNV13R0XewFUrR07ybWDKRYpp3qHvr7ONUdBh
+         d4AxHE6+j2n0/bMw4W590SuhU8OCTT/L5bTNoCOZL/WKSroyK+P9GfbzrldP3aE/wMqX
+         UkO0P6R+52xu5Id7GkbblYJDOwhbJy9Fi5zQ356DbVSNKr1rtWrF1yLm75RjESuyvzeN
+         hOgewO/Lma2gZsr33cdmbj6QEODYz2ldNIRGI8rxjXeuuKfzp8/Fw72XLcP+u8RPyTs3
+         aveQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792077428; x=1792682228; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792077872; x=1792682672; darn=kvack.org;
         h=content-type:cc:to:subject:message-id:date:references:in-reply-to
          :from:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OeZR/JOPa/KrDeQOVwy6UcwSPvI8j2bKhcX8zNJ+XWU=;
-        b=e6sU3yIZqpuX13GqlNd8k2xcuBh7SC53tK6xWuB/gjdgCKrDRDjiSXhhVrKdZbc5MP
-         MAeuJoBDh1h8q88fr9eA97d4Wy1NpLLWroqw5OZIZ1mI6oh4U7S53d54bS+3RSB/GGqZ
-         FZ7cArT4o5TOwxwiE3Y+4SOYiPenucoxDd59sNHp1y4nZMEKUDBKN6cGcbXzBjF9qqKf
-         VePCmaGSZ1yZ0JsdPf/KRaDgzXunYMMHCBtYMnTxUHCqWcetpREsXfcDWdGRBd6unYvW
-         mwQKyHKBBdIdFm7l+8YTMK79N6Mce2TZQJ6hkbh3XYhtYVq6ukyZiTUJA+xHXoQzqQxv
-         cJRA==
+        bh=YD6S+6u+gzgwuU4ceon9d+8HFftoXU9zg34ox/v9I5o=;
+        b=FX37Bh/OkCcScFf9466t7/ZU5kebbF5dX83eH2cpU2lQxakHGUAQUWu8tktDb/1cgr
+         4yzCViBg/GPPYSAEOnoM3nebr25rlY7t8+X0tHqpzTcjg1A2jRbS7EHKDx2IzTKObl0u
+         yuy783zAuJExj76bzyownfRVc6loOrj9uMXquE81fxlI9c1wEaIVNod2P+8jTo0530ce
+         LrIRJOlTe5TRoijSjkOVt4q/R01ObvNeJ4z5HG4VDBkk6vwWFjyj+OcY0qjvWKAcSxQH
+         vZ/YwJg+pPc+D/BAqtRUnNMKBEnNqxPlUqnSezTNyma6BupNnUiJ/cu+DYoTjdqSfhTt
+         y7Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792077428; x=1792682228;
+        d=1e100.net; s=20260707; t=1792077872; x=1792682672;
         h=content-type:cc:to:subject:message-id:date:references:in-reply-to
          :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=OeZR/JOPa/KrDeQOVwy6UcwSPvI8j2bKhcX8zNJ+XWU=;
-        b=Rxwlv/wHG2X9HQ1wdEziy8CVahTQ91WJk9vSGxk5uqlft7+9X0nI8lghDQld9mDCYn
-         xvYvieua733kwIFXFq+IwMxlOSxTOtMoysIY48SS7n17eUrmaWdpwEcE55mIK8BQtHGA
-         bhaRIvu6zpKUghlnCzycbs9GceaxZbiy5eyM32Vxi9Wce1gjGbS+DiHeKuOBBpNCw/g3
-         bExJWXDCUQYIp9FLFBqbGBHcxqlsOE2sqZXdfOIHSD8lNqwZXaaphNvHilW0M+kDqnc+
-         ipvE4Z9Vq5MveRR16Mfyhxc3bvjgXXN085BRe3Ck6LaKueA+fO4t918rMnbOgmNoatYC
-         1QhA==
-X-Forwarded-Encrypted: i=1; AKwUvBzbcHngSJocG9xcf3SGTNOrHX0zgE1do2CJDlliokwNJSHg90RVNCC3EM5QjY96wG7LcIVmieiiZw==@kvack.org
-X-Gm-Message-State: AFq9FYLabTIy5hg5nbhV4I/8Tv4VLt//+CcU/LJmoKTzudMV/pp/r2gj
-	et1mOslBXWExPtLR//+GUPA/K28kZFaHjS7NGFG8Dy6smOxfmkFZsiqzMBb2ePIifzRb+XU2cQL
-	+WAU7DqFn3DdtlZQ79WOtM1BsIicHjkE=
-X-Gm-Gg: AYBFou3P+0ju+O5ZamzK7UV+3ewxguu94LuEveCw2kY02TDocoSHNZe6fRwoId3fH8k
-	pXHmKDuHtKdmVoJHZX91p6jqV6MWQk5fVzewQWtHfVepx/pLCOUBw6htCOvgrOQfpIadJFlMghh
-	2zi+X4iOOn95wSJOc5i65oIkff+r/9mzK5h15K7OvTPiPGI1e+xjOiJrEZ0LDaFN9RfzuTCbzgn
-	BtlITW2i+7QdcxeqFI3PB7XLpvg66+wvrUS9ihvphemNXZuWCuoSTZXYDDisT5CJLQZfN63rBx5
-	8xZSfX4wqhwBT5pcgDkzTf69dSeJ0uCgfLQ5MmaLo4eHH0yi/Q79VhBUo2EXJ7VhDHLOIUVuvAD
-	S8ixLMAo=
-X-Received: by 2002:a05:6808:50a4:b0:4d3:6be7:c5e9 with SMTP id
- 5614622812f47-50c4e67b316mr20247148b6e.24.1792077427501; Thu, 15 Oct 2026
- 08:17:07 -0700 (PDT)
+        bh=YD6S+6u+gzgwuU4ceon9d+8HFftoXU9zg34ox/v9I5o=;
+        b=axCYV6/2S91UN1qCEZ+AxO3ot8UKzhHDthThQXAaj3EQ+uoRgut3H/Jmd4pAKEfbAq
+         AIYjaKm0vLatzEFkV0Mfr1cl+88FR+5BBEoSTE32XU0r8CqIHnZnDnQvTZVcxjlHAoCX
+         RO2nAg+DNqb90cm10O8ZEOzROO/PTduLQ9sSb0PouXU1m5bJm86rgzoFrxbhON2yVKSK
+         KPR3wEdSr9262K0jRrGF/McIwed4pzUk2acQIfcdVAEgOUIkOTMFUYXIBOwmKQ9rLidL
+         HvCyTwK27TJXy8h619kNiz6+0MGu9QK/BIUfcY2OR2SgOLf8n8asH4L7Jdat0Gc+gbZl
+         Yi0A==
+X-Forwarded-Encrypted: i=1; AKwUvBxqZ+1fmaSBaMOIHKT6hPXHv+/97kdfuG0rFIuwAsd5Bv9+vSg0NpKU95bec1LcsXWjvnpQagLUdg==@kvack.org
+X-Gm-Message-State: AFq9FYIdqkHu/+LbTV6UqZ9uGuH5tTA17rgNiXYNRh/wUV6L8IQlZWfb
+	GoXxGi6deWymJ7HtaZopXL2yLXhlnA7OaIKVP295MIUpzZCBz2r72N7SgIpqPH2ppAegrf/HcQx
+	jYQ8UWgUQnda5MtlJs7qw/inB9q7aNR0=
+X-Gm-Gg: AYBFou3PG02W6aBFk5hw9V5zyE1VgghsKk0kYndYAolkMXOn1h2yyT7e9AK/0oUfeLb
+	e87NyLDZFq0yvqeS1HPXCmy8CBqAiwwsdP53aBpHK67kxFY+x1LYmjnx3Zc11i6om9Gd5ptQ+Eq
+	XvIpTiWtBWB9sFq1xKdU0GVqF6aKAeW4LjYLRAmWiKkIRse0QBwRpsZ/uyd8o0Vpg0s1SKVu11K
+	uqNsgILrzXN4njGblL0aHpDCdZsGOG6v+WHDyh2Ryk72Ixje2DjI/KmNXCp9uXkSN1epgiAuYuL
+	YVd+CBoV6wt+uDFebhuMlR80PxOOVp6r8IaWanfBPYWJ2tbxyXsG8Wj61Ja9Amh0ZdvO3gmFAUQ
+	dYt39GDk=
+X-Received: by 2002:a05:6a20:d4c:b0:3e1:d80e:c960 with SMTP id
+ adf61e73a8af0-3e1d80ecaa1mr4599730637.1.1792077872127; Thu, 15 Oct 2026
+ 08:24:32 -0700 (PDT)
 Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 15 Oct 2026 10:17:05 -0500
+ Thu, 15 Oct 2026 11:24:30 -0400
 Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 15 Oct 2026 10:17:05 -0500
+ Thu, 15 Oct 2026 11:24:30 -0400
 MIME-Version: 1.0
 From: Aveline Noir <jm5905938@gmail.com>
-In-Reply-To: <20261015140502.87975-1-sj@kernel.org>
-References: <20261015140502.87975-1-sj@kernel.org>
-Date: Thu, 15 Oct 2026 10:17:05 -0500
-X-Gm-Features: AclHuK_GMaQKMIsKIixwyygc0aElEhr0PiYnJJZwMfa1CmbK4jR8xC8YVujhE6k
-Message-ID: <CANOyQmHhCJEbHpHUZ2P0hui+We7wxWkEde-Vh4k2rRXWovRYrQ@mail.gmail.com>
-Subject: Re: [BUG] DAMON sysfs: failed update clears tried_regions snapshot
+In-Reply-To: <20261015141442.88741-1-sj@kernel.org>
+References: <20261015141442.88741-1-sj@kernel.org>
+Date: Thu, 15 Oct 2026 11:24:30 -0400
+X-Gm-Features: AclHuK9j35VyoW4Zsj0WfuB6VFfItZnWYUAYwwxvoEyaCDxY4Cay-VoxbSK8Zf4
+Message-ID: <CANOyQmG9Cw5wtv_XHzOPa7o+rWcDn6R0WQLpeFUc1uK=e94ARQ@mail.gmail.com>
+Subject: Re: [BUG] DAMON_STAT: 32-bit overflow reports wrong estimated bandwidth
 To: SJ Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 05745A000A
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6205180005
 X-Rspam-User: 
-X-Stat-Signature: kabs46ds7biukaxg5jb3o1jxykkmef9g
-X-HE-Tag: 1792077428-465629
-X-HE-Meta: U2FsdGVkX19r7J57tVoVtdmkqR6nQwPEe4YWJPi3AroLtwStVRHyD/MpeKn1hqFqIUlWbI/RvPBfg8lck6v0SzwHMTtplFdQ0dPNn9AFTkNi80HrcW9nKXuztZNsIOXH+hyFfdZIQiniiGIq/f+wW62mqweSg35e5mniqxK2hKloe9KKcnoQp16JnCslKNX888JZ8pj9Oz0f96GdSkB4Fnt4vDJGR0Ed5wR15kN9WeNDTgMtdVu1U5154OWLfln4kkFABZfqRcSN+y0PrSNjJuVsBDcQXhwbm8wPl7sTRPDTs4wAmKQj6mgGUWeQ3J6/R6xcrPZnRDGWD3/JPHs7C7JtZTvDqmrz5+VavMaHjRBr5alkCtyYZ2IqHtVb/4Cru2L97Nc+6/KwePq1NG1VMq6qNzu0a6D9EEs4/OMw9jdvquuIeO0uH5V9zTEXA3R4U0+VlWT5rkb6gMh858oagdp16EjoTpmg7+JjAbe7Bu88+tEJW/lAdQv0xDv4z3HEHDoRMSyhARKO/yG4l4hCr3/NgyQWBEz4Jg5X+u+QtqdKAR9K6K9nOPqqgVfMu8Rl1jMhoTOIT/ss9OZlLygMUhUKwd7PqRUCRkb18EhWfCSsrTahVJ8YzoHHylFI1hnO6tQODUGMEl+JzEKUWLwks+8bG8deGLfloz4LIQxJMudf0MuQ+W0nbFM/ysVClZJga6O5eKIGoCotyljJOgGY/zinR8JK1zFkVd7c4mA1+1w9moxtUxM053BBkHPcRtBZ8HhHgAw1bK7FKhymT+NkE+83bg+J+hovKRZbLVt+VZDIcIHjmvdy3lgGcBiVlgvQogMgKngEq0HSkiz9VjHeV8J5IfLOPTN63P8dyABUtUsYRk0+j8DMSKMAJeXgiPz5Pj8bWm6eC987P/e+Oa5TYyvEkO8M9vClyrEk7OiZATsO6s1X2UC5LUIPnzB10oqJZbWS6W5/JletPYWMeoG
- hZz5oUY+
- 6Z72ZkRF63nNMh6we0pSxxTn/WTnIGmbr8fEQbIGySVxNFYBnHbplbyhR+8Whv0n/J/l2bbBNNM0nlexUF3nWZJxryD0ekeu+1xX5+wOYq9J6BTcMimmgXQpPtZI5wd/EKnICmwxqCVBihOY9VhxN09cb/PKnrbIFK77J3lO9mJ4Lg35GB+JZCW68CUHplRJPK729WYL1lpSB5BZy6CKgpYYM7CTylnHaWqGzHMnE5TrdPTe/HrA2oXl/DWbMG4xjrEqJPtR7mqLZkgBLd53P6p3lt7Xs5dXshExhDn6H5/ggFeljxqelOV2PzYzHpzvxa6gtb7evogJ8bWrdxmlsa+72BilXlUYZi2RyEH9VqWJy0aSxfkVqeW1u5B+nxbDtZgx242zSFR+XLy6JXAaHmp4RgJ2eV/KtaFVYl6KnSlgYPK0QRIeQzs9umoYYveWBjeiNXanScUVNem/S47JoweiAMhTuJSX4NTikB70H7ShfjEyEklI/r1VJ76nk/7+W4KBiYYANPNiUdsE=
+X-Stat-Signature: o8z1sy351rjin5imbk6z6z345ka6ey67
+X-HE-Tag: 1792077873-389804
+X-HE-Meta: U2FsdGVkX18DiGlC0HsQrDeFUAFb6zUbPfDpzUeXmWO0KIyKI2d3wC2y2b9mBjwh1fB9Lrikp5whyE7FDfNBMsK1QwpelI2yq+TZOkKCPEG1hTYzupyZ0jTWU7TPlMxydm8XBUIIgWza++yQeVEfil+uHu++/06yYqU/6vx1gIw94nsq9tFTfYSQN+MnoHD+6Qooi9msqjDGs8PFXnZnvXM5XhgNfUy5N6IanyUQTQ/a8vlXhCDeePjloqBhe4SPKKVCgGxhj2dSsuz684tGdSH4UcxQqYIvUDVQ1XIARMkwgC7OEZi6/KaKyvcj1nxrayUIk+CAjpCDqGH+tSxhU9tvnbYjIMilCk5ZkRAEw3vExACK7gAm3H3YGLxWTY2GvQBH9HRMDowC/Sy+t2BsctHoM46IBuu68SrcNod7GzsaCoeROkq7tC2lMN7RNKRDxvAPftyoMWaAXwBKJi2bqq8EpqXk3VRI6NAT5x8HZmmeRXoT0P7YFX6w0ZZomC2KSKuCPeXZZqlY6W9btuHVbgsRsX8UCcGCDztj5AYu6a05kqEldG0f56lWjnaCcKsN/P3TR20GHk9QtWTHWLaUGLcmX2KPgG72MsSvGV/U0wPpKLwBbncQaWdYNDidvv0g/0868qT4O16d8T6zML3Pmokneh/eYUGHC5bGD23Cu8HAiTci/RmX2OuSUIRBRhajCe9EEXHzxIDMxKu7vzLzslIYWePtC0RKcsh3IW2yi907X5qf5e6J2kBBdy3ATuGSZ/0/i6uKwrRq7SUrHIsVuLwPzymWI7LlzSNHpKkw183RWxNy1bf9H5+Eya+euKM8ynAh0Kqpen39hbuiWM6GuKQwi+gxK7zEVPSQVMwQD0yap3Fm/U+gsTSxw/t3KKe+X+yy99APKeLH2vGDkYDx+CPqE2WmTchkkBB8DUAy0w9Z4a9YarQ9G+G0ZRedUARu6Rci1EK7KVJikTB03fT
+ RDVojL6k
+ VlDG5LeJNQzb3vC4Pp0AOgRkKvIy0DCMEZHcaQzZ+Fsh3aLx3qgC23amM1i7gWdZF1rbK9QA7b2Xl2FevHs7mw8h+WmuaiY9LtKKqvd8AVt23xHxdLlLhDDW0V+00w9VJnYcJxjLYWd/afS6L2jZSFFhRuJR7oShteKciQ02sOV26GRbdfP0WVJOHCQepfulh0MIr21VQ2ny2yoMoPWN5qgFDU5pzC1t8SpeXHhbWObVgS2IoEWF3QEv8YJNZEXt48Ll5sm6p9iC3ZALrLgTO5r5SkBSs/4iXirjZDLEZHFCfeRp+LpeUkRpZpbz9/HYpaZ6CE1J19mW2SGckHnQd5cxXofjXr67YUD+piIJ5Mnw18uICaUNdtRvu4KmGjQf9qq7Q1Ko9suAgj/hnueaf/vojV5TOMMalpO263LwBHCde+lly1g1Oe8zltn78ITIqbT91JIbp1LXjc7mvclSkeE1gtMwosmiVcqcgn/2qgnVawNxcQyCm2+V97qqNJvcRgCoKYOkh2pjW2yc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,40 +144,63 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Hi SJ,
 
 I haven't seen this affect a real workload. I found it while testing
-the DAMON sysfs interface.
+DAMON_STAT on 32-bit.
 
-If a tool tries to refresh after monitoring stops, the failed request
-can delete the last snapshot. The tool then has no previous result to
-fall back to.
+I used a 32 MiB page-touching workload to get nonzero samples and GDB
+to check the calculation. For one sample, the kernel reported 31079 B/s,
+while full-width arithmetic gives 333578240 B/s from the same inputs.
 
-I built and tested 66178e4ec30a and its parent cce0b334c310 with the
-same config and reproducer. In three runs each, the parent kept the
-4 MiB snapshot after rejecting the refresh; 66178e4ec30a cleared it.
-Both returned -EINVAL.
+A tool using this estimate to compare memory access intensity could
+get the wrong picture.
 
 Thanks,
 Aveline Noir
 
 
-On Thu, 15 Oct 2026 07:05:01 -0700, SJ Park <sj@kernel.org> wrote:
-> Hi Avelin,
+On Thu, 15 Oct 2026 07:14:41 -0700, SJ Park <sj@kernel.org> wrote:
+> Hi Aveline,
 >
-> On Thu, 15 Oct 2026 07:22:38 -0400 Aveline Noir <jm5905938@gmail.com> wrote:
+> On Thu, 15 Oct 2026 04:24:19 -0700 Aveline Noir <jm5905938@gmail.com> wrote:
 >
 > > Hi,
 > >
-> > On mm-new commit ad9f2d463666, requesting
-> > update_schemes_tried_regions after stopping a kdamond returns
-> > -ECANCELED and clears the previous tried_regions snapshot.  The final
-> > result collected before "off" is then lost.
+> > On an unmodified i386 QEMU kernel at mm-new commit ad9f2d463666,
+> > DAMON_STAT reported an incorrect estimated_memory_bandwidth value.
+> > CONFIG_DAMON_STAT=y and CONFIG_DAMON_STAT_ENABLED_DEFAULT=y were set.
+> > The guest continuously wrote one byte per page across a 32 MiB mapping.
+> > I used QEMU's GDB stub and the matching vmlinux to stop just after
+> > damon_stat_set_estimated_memory_bandwidth() stored its result.  At each
+> > stop, I traversed the same target's regions separately and recomputed
+> > access_bytes with full-width integers.
+> >
+> > Three nonzero callbacks, all with aggr_interval=100000 us, showed:
+> >
+> >   access_bytes   independent sum   stored B/s   full-width B/s
+> >       33357824          33357824        31079        333578240
+> >       65200128          65200128        25244        652001280
+> >       41152512          41152512        24303        411525120
+> >
+> > The final sysfs read was estimated_memory_bandwidth=24303, matching the
+> > last stored value.  The independent region sum matched the kernel's
+> > access_bytes in every callback, so the sum had not overflowed.  Each
+> > full-width result fits a 32-bit unsigned long.
+> >
+> > In mm/damon/stat.c, the expression multiplies the unsigned long
+> > access_bytes by 1000000 before dividing by the aggregation interval.
+> > On i386 the product wraps.  In the first row it becomes 3107979264;
+> > dividing by 100000 gives the stored value, 31079.  Full-width arithmetic
+> > gives 333578240 B/s from the same inputs.  The other two rows show the
+> > same problem at the callback site.
+> >
+> > The workload is synthetic; the test checks DAMON_STAT's arithmetic, not
+> > the accuracy of its traffic estimate.  The i386 config, guest init,
+> > disassembly, GDB probe, logs, and build/run steps are here:
 >
-> Could you further share your use case that this behavior becomes a real
-> problem?  Also, have you tried bisecting this to find from when this behavior
-> was introduced?  If so, could you share the commit that introduced this
-> behavior?
+> Could you share more details about your use case that require this setup, and
+> how this becomes a problem?
 >
 >
-> THanks,
+> Thanks,
 > SJ
 >
 > [...]
