@@ -4,199 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA3ECCCA462
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 21:34:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6811CCCA462
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 21:40:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD5D56B0098; Thu, 15 Oct 2026 17:34:19 -0400 (EDT)
+	id 4EDCA6B0098; Thu, 15 Oct 2026 17:39:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A875B6B0099; Thu, 15 Oct 2026 17:34:19 -0400 (EDT)
+	id 49FFE6B0099; Thu, 15 Oct 2026 17:39:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94E666B009B; Thu, 15 Oct 2026 17:34:19 -0400 (EDT)
+	id 38CF86B009B; Thu, 15 Oct 2026 17:39:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B9856B0098
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:34:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C46ECA01C4
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:34:18 +0000 (UTC)
-X-FDA: 85326164196.08.CC8C552
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B2E73120004
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:34:14 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SB5pa6IW;
-	spf=pass (imf29.hostedemail.com: domain of tony.luck@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=tony.luck@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792100055;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 141BC6B0098
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:39:59 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 944861201B5
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:39:58 +0000 (UTC)
+X-FDA: 85326178476.30.EA00D6F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BDB2C180002
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:39:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LRPVxAtK;
+	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792100396;
+	b=axaK164WXP2F65oHAZ/gjL4wouyv6QNnC97F4rVD+uPiLUTXNAlqNWDFCYRbQNKRPybTxm
+	DKEObPTFW8LyOEQOkN/83GSdvb3bE0e8jeVKuE8es3OerdiBwCIpYuDThwO6fKciqpzf6s
+	XC2F90twdsR3TM0n2KUrXZ8eUhAhtFE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LRPVxAtK;
+	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792100396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=abqK7JjMuXHkA5JRXJKdFjjat/qPQ3psYGWo6Y8Bdsw=;
-	b=3y+Mw7rVr2eHwBYeWFb84snCCgNTWAZ1qq3ddbcwE0L0MLKuI6gzN7fIN0NTnkM9DoRZO3
-	YCnarBKX094w4lyXVeqX7E+RM7xV++GTPba9RvKvZDJP8ep+ynMWmPhELAF6TbWfE/w26P
-	+y84QXCa6WsZnSz10GdHGKV2300iMmQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1792100055;
-	b=ozBKfOHj1Wwi/Yx/bwa/AnaKEx1IQDxCWqS4HACJlvN3MbiuQdwF/IvUYyDYPCH5z/TPGL
-	l3Jg6htUW+8ynmNIC/eDl/+ecRyG3m0d9bK/jAMLVDPZtRkmJQYlqvO7tOa6vKaQDjTa8b
-	ENUEvy1XHBclc9AhkgKvXsUlsY/W9/A=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SB5pa6IW;
-	spf=pass (imf29.hostedemail.com: domain of tony.luck@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=tony.luck@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792100054; x=1823636054;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=/pHOygyuGfSThcZERlpw6akYH/UxO6pbzym2kfgGufI=;
-  b=SB5pa6IWw94ialA40G+m92uJNPUdoqra5h5IG7XJQI6Z9mRlCMz1v9gP
-   slA8puPtXzYk66iDikPBxkgbTCjVd3OidQYir6p7Lflu8xLhcsiITWsx+
-   rZHf18jmT5NgCuheRkTA23DwkrS6luv7sQ0apl8vZXbideOPcg6Xe/BkP
-   QjkpS6e8ej2ZaVau5UYFY0RaTIxc9naZ/DRtfqkaxlPk0NsZOEhSIedRG
-   ciQ/AoZwPtJyFqhrF4TaDFr+orK5rZbBFHUC0dxOOKb99CvkB6qeOU1Jh
-   jUccA69YliAGWyTW2x/XITY2B9Ogal+dYAbyfJ1+LYXy8HKly67XGATuG
-   Q==;
-X-CSE-ConnectionGUID: qfmkp1+6R4eNf6Dz3N5cTg==
-X-CSE-MsgGUID: 8YGes/kITT+aElUNDhIlkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="874060"
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="874060"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 14:34:13 -0700
-X-CSE-ConnectionGUID: fseNKWmnTc+jdD/fgStDPg==
-X-CSE-MsgGUID: WVazl1W2Q+KCLuY+Li6XDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="2154103"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 14:34:13 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 15 Oct 2026 14:34:11 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 15 Oct 2026 14:34:11 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.51) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 15 Oct 2026 14:34:11 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZiiD/srzptSSS3jL0am4PWkUqJPHtsW8ayY6502UhpGrzBTc7fgMfHMtP9MxcDJcr4KSwTwP5gTxJIyhTqV19EH5qypjok0+NvBnbz7SGIQcfTdNL1ynSBh+FliluvFWFCQg6YjIxvMLYGOtb5XX3m5WIlhBP8ylk9QneJuAgGHFbtMT5wUEjDYZ8IbRBbSKQlG1Px37Orc1iqZZq+Gwh61gWv0FWTSGS6/a8H+RJkOj2BlJMe2O0YE3GkF6z9NSW15qIfupvMKlCg7uWCmGfdmkyh6YsH2yEIVqXOX2moPZDjU/War9cacflX+EUZIXbVnp5Ha6+4Rzoqaj317wpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=abqK7JjMuXHkA5JRXJKdFjjat/qPQ3psYGWo6Y8Bdsw=;
- b=VszV+GSabUYF03yoa863crC7CK+aIgnnM+fQrd8N8lZnprvGalnrjr/nsnlsjiKubrrqSxwg4MbzfZQkHHLzomUgFvXBxM0dLYY5QM3m8ExXJ6DNe2WG3cWUlcRz2qj2zY/oNYnxH8oeH0Ll8dGeln0eurJGj/13SCRqyxUwoXF6wbGN16rFBZTwNlZNeV5/wYbISjPPTB98GXRyM1EeKeZg3xiFhcQKcG+r9QdEGTYOaU/xQuYXcb5wriMY/5+lq2qIDdsoJCR8oPGX32xOOf1q147B0qBLSoDByIIQ42C7IrwU94pl8cE/Cjkl2wf2xedLM0s8Wr5ppDSwzC50Yg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
- by DS6PR11MB139798.namprd11.prod.outlook.com (2603:10b6:8:4a5::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
- 2026 21:34:03 +0000
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::3454:2577:75f2:60a6]) by SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::3454:2577:75f2:60a6%4]) with mapi id 15.21.0496.021; Thu, 15 Oct 2026
- 21:34:01 +0000
-Date: Thu, 15 Oct 2026 14:33:57 -0700
-From: "Luck, Tony" <tony.luck@intel.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-CC: <kees@kernel.org>, <rppt@kernel.org>, <juri.lelli@redhat.com>,
-	<nik.borisov@suse.com>, <tglx@kernel.org>, <vschneid@redhat.com>,
-	<kprateek.nayak@amd.com>, <vincent.guittot@linaro.org>, <bp@alien8.de>,
-	<thorsten.blum@linux.dev>, <cgroups@vger.kernel.org>, <david@kernel.org>,
-	<mingo@redhat.com>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<seanjc@google.com>, <ljs@kernel.org>, <zhangguopeng@kylinos.cn>,
-	<dietmar.eggemann@arm.com>, <mhocko@suse.com>, <vinicius.gomes@intel.com>,
-	<tj@kernel.org>, <vbabka@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<peterz@infradead.org>, <surenb@google.com>, <hpa@zytor.com>,
-	<x86@kernel.org>, <dmatlack@google.com>, <tim.c.chen@linux.intel.com>,
-	<kexec@lists.infradead.org>, <pratyush@kernel.org>,
-	<dave.hansen@linux.intel.com>, <rostedt@goodmis.org>, <gmonaco@redhat.com>,
-	<jgross@suse.com>, <mgorman@suse.de>, <graf@amazon.com>,
-	<linux-edac@vger.kernel.org>, <liam@infradead.org>, <ridong.chen@linux.dev>,
-	<longman@redhat.com>, <bsegall@google.com>
-Subject: Re: [PATCH v1 0/8] x86, sched, mm: Speed up CPU hotplug on large
- systems
-Message-ID: <atFGxagFo50iG6IS@agluck-desk3>
-References: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
-X-ClientProxiedBy: BYAPR21CA0013.namprd21.prod.outlook.com
- (2603:10b6:a03:114::23) To SJ1PR11MB6083.namprd11.prod.outlook.com
- (2603:10b6:a03:48a::9)
+	bh=gJ+0YN8j089fj2ZV/djvu5s7T0hJNC6kJYYYjsa++Vw=;
+	b=5b5/hOwzvqy2mRfrRuiJMiLIktgR57JlfVpLMDl22oXa/oWB+dKNdDVYlqJmq1goWVmOFe
+	eC5kyAk8GFPgHLHjrnuNO08pxZWHh3x4gZBvizUzHDbZbUuEZLiMEsj9xFAIksZGmaHXdC
+	vQ2OJ0uYSwGWwLQh1hc11qLNOc6nlig=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 603F160A57
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:39:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A33D1F000C5
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:39:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792100395;
+	bh=gJ+0YN8j089fj2ZV/djvu5s7T0hJNC6kJYYYjsa++Vw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LRPVxAtKyePwlj7nRCOHozmKtpL5xH7vvA+BiKRv7PZEAPatwvbFpQeosgeOwR2us
+	 o9Q/DRB1MWTTAPaNelD42Gmm9i9RAn6GqfrvZgUlPY5gsN7ukVqZyu9NTyPuGI19RI
+	 9FBTgEfMeyiF1iIksvC5BcSQYqnsmS4PaAi7pVjuJ7HWzqQjXA5k9RvLoK0sqNGVyL
+	 +f6wc01mrWwlfFJfTpkXpbcr1r+hdQoVoFFn+9feJ5ZX85Wn0JZW3r5hudck9E6nXa
+	 IrWvri+NKaqq3mA+4Fb1nHUN3MHKdkrgsHXIJyW4VvXE5J/nr4d+NQRqQtEVQ7UuqG
+	 gLqesWkMwcD/w==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4086e892a4so11464166b.2
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 14:39:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBybRze6nHc2VQ5wAGyoUkjciGOb8tuGB7KuKMZJj+rw7jUuLt/py/KTPuugwOqNOScAHABNgXr6xg==@kvack.org
+X-Gm-Message-State: AFq9FYJsnG9TCEn3S734hfBU3Ipnm4slqvKdh99BWcmWrlTzOZnzFnMi
+	5O+OQMogDkVCp82COkvBvJkDRNKYLF6W3EvWU7BnObLW4OtTGskhMibKiyXf0ofH++Y25a+Z6XA
+	XVNCWQJ/TXLZtL/1sxzJ6pUSzrxwR1T4=
+X-Received: by 2002:a17:907:3f12:b0:c21:450d:cd7e with SMTP id
+ a640c23a62f3a-c31a9af76e8mr2002892866b.9.1792100393987; Thu, 15 Oct 2026
+ 14:39:53 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PR11MB6083:EE_|DS6PR11MB139798:EE_
-X-MS-Office365-Filtering-Correlation-Id: 315e3d05-9dc3-481b-c16b-08df2b0406d6
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|23010399003|1800799024|366016|376014|10067099003|18002099003|22082099003|261009223027099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: vhJsuqDroBgMxvwc+k596vtvWF/QvkV2WVXjfpQ3K4jIhUB+n/YMhw5Zxnq7R+bLoexlTl/fpXIPM6AQUty08gHvkah10a6PtpQku/B7V2YJtCvXD2lUevBrA10E8w+EVtr8BHTE0u04/ZaO+eECxRVPAvWwTnuTMsvyIQijFl40rCcs3Wy38s5HeZakWJral1Xis23FI2qIZze6CpwrPGdYJF8skykQ/qzY694A8r343XJY3mg4dwm2wid+pMo342qHg5Y2T83+9t7EOGsoUVDF0zs+iGsbAeDx5stGe2wV10DOmLWWO9nU9n558vaoddlHpPT3nGcudepy+UKhIGvEVEoHxm1JVx21p6HwKd6rcDq0GJBO5A5RvB44isszVCg/vG9YSNLBQ8WOGynxThJAWf8nD3T6XU2WxBv3OrjrZzSVp3AVp808OJSNK7S1gAuLh5MbAeibgzZaVJC442oX7ZQ7HpkZSj3AQFjCMp82SQ3AkPLFWrQ0f1W1eZlCGFq26V5IxlBXT1JxNzMwSnYqjn7lKExT+L2muMawT5Y7lpA2CwWezElTIOBWaWbFWUB040idd0ph7W0bKkORI5ijV0OniGewyGdnoIGgWAfWeJI26LU0h0HiM4FR5f9is7NvSp4+ZbklO3oLy/LOqcf/+noN8cthu9izH+bidlw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(366016)(376014)(10067099003)(18002099003)(22082099003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ihk0zYJfMFn19YdCPmHlnQEI/oRc1ZGTN0WL4BXrPKfBE39g1TrEEgPzxuMo?=
- =?us-ascii?Q?f4sSzHdKeruaO5Kl/ajPU9Q/j36ZeO0QUmrnX+IjHd6jf6Gm8+UFys7qz9wc?=
- =?us-ascii?Q?19mIXT4rGsLlSxU1+XINzjqYVp+gOz0cP48mm7BBreYXINuZP/fALKAlCv9c?=
- =?us-ascii?Q?Z4sFmQYRa78DzcO1qcB3Rw3vNGDr+9JOCGFgfF8A05tcbCCIX0FX81xxs4Nf?=
- =?us-ascii?Q?uSong2BrqzdB/lywKbS0jBudJoFozRs7f+s+IKrtky+DsKvxlirFOBI/HAQR?=
- =?us-ascii?Q?NZ/gFTHOvQKF1vcUIUIuRVfLDX6iZIpAeWYZFSBptSaE5xsJj1/V2F9taYYC?=
- =?us-ascii?Q?WvomljYVE7841xx9FwabTn+jgGpBdumOSdcWfFZ+Vi7f6WLA+jAMDPj9hyVw?=
- =?us-ascii?Q?GTtKrNPdHDAiBbX7Qjb0CVZZlSBPGyWpr7r2+H3bMS2g29N73/u1JhJvDYLS?=
- =?us-ascii?Q?CpfQK8TbDBo6kG4YexOD624cG+6laoLIJeSXFhRbcR7dGe2ChTpL64apUt2X?=
- =?us-ascii?Q?eUPg8rv5FAitY8ApuJFO6a/Cu44IiKkxjL42pxh6fGt4djkgKYxjFwzG0X1N?=
- =?us-ascii?Q?AjG7J9vm+jSnH0TYs7PXaVi08S0hHCHl92kA0U30/LofLj/+seZ9oVXrQHYT?=
- =?us-ascii?Q?k5IdxWbXceTkVhFRKM8akaw6ZamOHvGnzPhMp3PGHVV9jCljXGFiEdB9XOKF?=
- =?us-ascii?Q?2hQxnHdbW+EldusmUfEPZR9Xam8wsAalZL4S4ge4AlbxrqHeQIZgDeE7secy?=
- =?us-ascii?Q?i/Zo+eJE0m1kCxzybRft2/mFI7nmdULmGww3asUqn2QahT1cUV+JUV1dKQ9e?=
- =?us-ascii?Q?le1keFDIlSbPXPBrGL8hWcGVwA31u0YUeP3pThmYzgpSjK0DPomCvWy/mORG?=
- =?us-ascii?Q?nXO1dt0JHfRvPjWONDURJyU4cCQmmC4H18+t2imVbYTui4DF3bC1IycXOl9g?=
- =?us-ascii?Q?SVJxIVykGO4D6aT0BsB8WQre69mGvMQ4tG6mykQI908bI5rOfIPtAdd7dgcT?=
- =?us-ascii?Q?RT1Xc5WyBzGNHvX6yxwFRDi630TvjLkBowgz0GTg63TPOaKEwvoHx2e1LUey?=
- =?us-ascii?Q?Y7TGt1lZ9S4RyDisMAJwN7J+iTU4GU3VXNd3/kZjqd71tiOkljrTm+TOlc/7?=
- =?us-ascii?Q?l3HRY8zhNQtCnpyNbqqIyhTCu3I2vdxwZVQFw/vVhRZJd9MyGEdaPb26j7mQ?=
- =?us-ascii?Q?sQ0Xm4kUGK9kjX8uHfpKz/k92YIXMc2cNuqp9YCT0+FNZe8v3W1Teb5wXsgB?=
- =?us-ascii?Q?YRsz5N+xrfmJbib+TolwS/a3vuZjrE8IAaAs4BF2cm86dCOp7AC3L61PayVY?=
- =?us-ascii?Q?lku6LQXLWU6KAdz621oACMTfLNRIgbovyl2+9YBLY9bJHbbmESH3ltGj7dmU?=
- =?us-ascii?Q?8brOP1ugvssE5jSI+A8kSsttC/+7DEyT+0mC6oEp5RVBlEBA20Hp1wutFV1w?=
- =?us-ascii?Q?Wd17HckYpXbAiImpag80eZNEhZF7lpRChKZQlFHBCryEEuKDbuIqCeREwEq2?=
- =?us-ascii?Q?KT7qtvvE8QMUFThtLD7SZiEhkS4bOmfpilshLTU2aqUyHZDZXh6ruemmU6D/?=
- =?us-ascii?Q?6uYkxJ54EOL5N7K5SNoQrdGPw9D+oDSA/ZHeL3D/a0XXUUoWdarTaJM9S+uH?=
- =?us-ascii?Q?/oGOH1GCQUMM5MZ38veeg9Q2xhHpcw8yVI+kWAziJYgehxaLcz1PNbP6I1qE?=
- =?us-ascii?Q?38X2sfY+AxeLjw9HuT078Yc6Ku2eQdM9d2/H5NLlsowL+/wHX1XGZ95yXMDt?=
- =?us-ascii?Q?fs4rbey6vQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: vHnxOUiy7Du0sM4YNaZzufDd6xStLhNC/TcSFnQMnArrzEamSi/QZLDGoCjPrkB/s3S4tXafFEgK/lVXQ0p8o8Q/KpPU1oYdEkYivjrYtBmeuC51crRCxbCvs+bsiF4afQy0f8/z82G5Zq9Dxfdc25gDE4HF5PjOWRHndrIhzhHEwRdXyITp5Ku9blUn12eu6zAx5gwwENlH8f/kmARX5qvfefxh6YZqKol6x2s5eCl1+OjP4zs2iUIrInvCw1oFsTPSbVoQ1PpcOZqw77vNxv/qXZaqfH2JVf1DjrOtaNbildaccIqkidfbg4cUQyiHVcLTfXM19c6gFZOlaai3eA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 315e3d05-9dc3-481b-c16b-08df2b0406d6
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 21:34:00.8995
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5MMAdSzimFks0RRaxaf7Hby8kzcQ3wwbev7YLaqjWHBbaZvcbE1rizML+S0RBMSdEeTX1WRCCLGglU/nsMt/yg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB139798
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B2E73120004
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+ <20261008182814.27450-6-kanchanapsridhar2026@gmail.com> <as7JC8o2kggiq_ss@google.com>
+ <CACpmpofXMGBP70Rn7jHLwOF38GRKMUGoW3rb1Jp2SPH7ygKcfw@mail.gmail.com>
+ <CAO9r8zOEcGmg8eVttu41htugnng0ahnVQbubiJfxVH+GfDe47Q@mail.gmail.com> <CACpmpodDA=oqnVa_hsJpyhGt=4zxknYF=QX9L6-sJbxsRxtM2w@mail.gmail.com>
+In-Reply-To: <CACpmpodDA=oqnVa_hsJpyhGt=4zxknYF=QX9L6-sJbxsRxtM2w@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 15 Oct 2026 14:39:42 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNN6F01icKUFr8q_AgJvhxGw0MkGezKbBuKzFQV0NaAdg@mail.gmail.com>
+X-Gm-Features: AclHuK9_U4t1aJcro9clqrnxlUhMU2VGLAoMd7xVc_4UgYJfOHupT3dXjx731Xo
+Message-ID: <CAO9r8zNN6F01icKUFr8q_AgJvhxGw0MkGezKbBuKzFQV0NaAdg@mail.gmail.com>
+Subject: Re: [PATCH v1 5/8] mm: zswap: Store the folio's node id in the zswap_entry.
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BDB2C180002
 X-Rspam-User: 
-X-Stat-Signature: u9rytnxtmkp64mpuer7p1tkgh6ymbz3m
-X-HE-Tag: 1792100054-902297
-X-HE-Meta: U2FsdGVkX19aSt1KpY1oKUTZbNK+fcb5LEjtUxIF7O3NBwPVjoXgJJKWGj8JmfVtLd8xu+9qRU9cofsue1CJCBm2TY5lTtlP3jTrnzroCxSgQmDrfthfH/+MCGGVzi9cLlmb78stcaaoqOE8l0sr9J8sBu0ZawHKzcl7dKOt9vo6gYaNdd8GsKYSH8xGgcFe91HEReS8Rqq4sPKHoe0j9eeUTmaNy51FWAvJUan3RZWCSnYZmIEKFdLW2IxnxEMdC0TkEF7o/6k28zL+nJgIwoKK7wLe0HulunFMWrGGYGAkTtdA4JCea5FZmcKZBjSqVhmxrdfPZ2YW0Jn/H6I372bkNRrlg5AszT64uh5tI1xvHZL9Gnq1k31VzZWiQUZsBcdKE4QXxmwvP/gMWmSOYTtfEsCvaTh/kC3hQFgU54rdkGeQDY5RQ4IZxQytCHQDjv7WKCSTrzgSmYS8PyqZPsmwoGU7M99Hh+5aGTlo4QVS44ZkA0xV6CSMUUud6Rj68Gh1jUeEV3nKFPI1A0K4g/FH53lNLRAko8iRGDgg97FSxfZ2eJWgdh8ff57SG+SNEAoH3sCJVNdgbsSEERS1+dwy+Q0x+c8y1CCSNFFnIPj56QMux5zDyW6ireS8Fv3+VMo0uJe6VhmmBOg1tUGzODuBJAyslpbRqJTqUPlYn/HoT5OvjjdGazhQZZsaBUBlPrRGV/sALk4ClWI2VCNrrjhxi1Bvt7MLawgTMaVXFhR9RoPeFpLjoH3Y1CY3bEBXXee+MygPrSU6pSjxe4VI/CawWRUKUyNpeof1hodYwpNuwIMu89OYrTWXinrevgwRmmdIcAxvomuPnwsmyKvSYvFBVnnem0s6K2byIW5RRWPjQR7zBifP3xKT1zEJRNdPEGgLaXNb4BjJp5YYbFNvy7v/ebjZZb0k5zIYl9pt9hzVtZuIx0z8KGmlMK/gBvMUKu58hMLxNEk/wEkCbBU
- tqwYnOlf
- jOooH2gNKFxCBJxQa+I2KtHB00KhPZ+gbETqJoIU1xSzQeTeXK4Mmd0bkHr8gLXBRdWPrwoz1vrOMOhlPWjtcGlaK9/K4m3CCVmsRh6Px65QuCcTP69kgnPcyuLSEr0voYvXsOzFf4J8oYchKusDyl796G7XfsdG1qr8HT6Ijr82IEk71uJFWbNG+tV++z5Nw7ptvR8QA/Pan+VoBsfiidwC1HD/6/JvG0iXVIK2XbwXDnbyNePSzpQir/tYJ/4cVBgUTx0PfJmV+WPj+/iPLK9CL7nzkLZI/GXdYb0O9CCjWGHYKLNgbbMMv/i2tOQKlBaGJQDmqzrnyaOnaCajceVJdxd+qTJ7J48iYbHx0cXI/Ku/U9yxym7BZPYFrHpIn054Vo4vWQywo8I8iott16yWDvxZnkO0n9tmUK5WTzP0WzBVKKRD2fcoXWjxR07HiX7DZDX28kQAq9+skguRqE/MAdk+zjeBn58YC
+X-Stat-Signature: 9je4343gk9j7w956h6wupd8wxk1y8pj6
+X-HE-Tag: 1792100396-810446
+X-HE-Meta: U2FsdGVkX1/mux9mqrH0qvP0Jz6yKOuwkFvNUApiQ+b+emK1ADER3wnNI+1+DjY1ygqNsxDLqFmPfu5o3EiP4Tom50sQfK6JeLSSSgmlNxw8DZakYeDtoIY304c+sQxLGkcbaxFSTbtGI8wfdNzg30x34Z34tqmJww02fJGFnHugb71qGhFdgsV/tn1L0DwKOZXA8Hav0LcnkjLAFgjcE1r66HKfIQBUSpZfbh34F8ISLX93W79n0Ol5fAHGu2VBHTT9I1NjU004xkFUPE3aIu1zNDt//2oflOLGR1wUGcZS3UfQBxahLmPHTGwwKNV19aZde3QQlU9xf0uqbEF5tDs0IipjHLHyGIcdaz1ibHvK/7jP0aaimQ0FAbiaMDySsnFYLm8SDk5NKo7QJy2BG7cNhmrkidbgcfnJVaU6nOY2YUvmKwI4VWW8hCT9AVY+yJ/kTdQV3gZvP80Ts881yuPHOQEIJncDyXE2VzUkdpjpWzVo5WemSFmrP3Qxp5W8+XBCYdZI0+wY6cf8ES8fCn+zSV9LNJKUNiWIEVGHt69+vEn42GqytRr5WAkL7k9nzE98yXqryMspP2ONLQ6V1xc54BdZR3blHCkgAfC2ZTdd/kScdSU4IgbVpxHgoxtfIjHmtOLrFDcsJODoljZipj1bGvCjJEzx/9rt69Da8Oo8TF4nK32CkjS+ueZ9d3pzAtsc54jEMRGIuvqIeJqew3M/L/du/V5/Fg6R+Vbg3E6FCSsDxJL/OFe62pUzs4BylIMPS4q1TWxDjtuvcqgGlAgmarpNS164Twmc+l3DtQ+qPT4XmV1UzdG8PxpRX7+QzUw4xAIcAug7e2BLL8X4ekmnyolqBWdaP9LUIwEyVEH8eLyIjIqAyyOVn/YwS7srZrXdHxK+X//iW0DoueusF6OuzA+cRepfqfokkgjGlSPdXPek3g1Tx3N0EM7GlJ44/T9g6ZnF7vOQiXiXhNQ
+ IkUIwLFJ
+ t5DIJqcfAUk2tErl2UycKxgb+QjcJ75+GBGAamTBqWOVZxPDjP/k4/QnNyGQL3+ke51SqSC45K6svXx6rmSK5YJg1CUdJNu5c7hAZOfbPgZ7/Xjti+/Yz3Z3YRrH7Pyp6wKtCh+SaXBXjttmOG1sqi+SuYXfKKIcxTeW5gs+JIbnf3ZCgLOKAcjZr3s9C4IKn1pw0UtsNMW/QFRbpoUALlusT5ijatatnu25n7MlLgtH+Txs3QgJ68pfNnT06kQpdoQNtM1hQGRIVj44MafsI6tFdQscG3yoO5cIsF8lEtJakpFgNbOdZkM2tCdTnuzROUTfEym5u3umopNQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -204,34 +106,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 11:33:23AM -0400, Pasha Tatashin wrote:
->    - Patch 3 bounds cmci_rediscover() on CPU teardown. Currently,
->      cmci_rediscover() broadcasts an IPI via on_each_cpu() to all online
->      CPUs, serializing them on cmci_discover_lock while reading up to 32
->      MCA MSRs. Because any disabled MCA bank is shared at most with an
->      SMT sibling, L2 cluster peer, or die/package peer, probing a single
->      online topology peer via smp_call_function_single() (or returning
->      immediately when no shared banks were orphaned) reduces 479-CPU
->      offline time on Intel from 11.42 s to 9.63 s (-15.7%) and total time
->      from 22.50 s to 20.74 s (-7.8%).
+> > > > > @@ -1449,9 +1446,10 @@ static bool zswap_store_page(struct folio *folio, long index,
+> > > > >  {
+> > > > >       swp_entry_t page_swpentry = folio_swap_entry(folio, index);
+> > > > >       struct zswap_entry *entry, *old;
+> > > > > +     int nid = folio_nid(folio);
+> > > > >
+> > > > >       /* allocate entry */
+> > > > > -     entry = zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio));
+> > > > > +     entry = zswap_entry_cache_alloc(GFP_KERNEL, nid);
+> > > >
+> > > > We don't need to allocate the entry on the same node anymore, should we
+> > > > drop this and let the slab allocator handle it as it sees fit?
+> > >
+> > > Was this a recent change? I see the folio_nid(folio) on my version of
+> > > mm-unstable as of 10-3-2026. Let me check, and yes, allowing the slab
+> > > allocated handle this is probably a good idea.
+> >
+> > We allocate the entry on the same node to avoid having to store nid in
+> > the zswap entry (see entry_to_nid()). If we store it, then there's no
+> > need to allocate on the node.
+>
+> With patch 0006, we try to bulk allocate all entries for the batch.
+> Only if this fails, we call zswap_entry_cache_alloc(gfp, nid). So
+> patch 0006 addresses this already, and the nid is used on in the
+> fallback case.
 
-I took this series for a spin on a timy 2-socket Icelake (36 cores, 72
-threads per socket). My test was to just offfline/online the 72 logical
-CPUs on socket 1, and I saw some good speedups:
+If we are storing the nid in the zswap entry, there is no need for
+zswap_entry_cache_alloc() to use the nid anymore.
 
-	offline: 4.833s -> 3.17s
-	online: 6.157s -> 3.796s
+>
+> >
+> > >
+> > > Along the same lines, I have been working on replacing zsmalloc with
+> > > direct SLAB allocations for the zswap compressed data storage and see
+> > > very promising results: memory savings and latency improvements. I
+> > > will submit an RFC shortly.
+> >
+> > Keep in mind that zsmalloc is movable memory, while slab memory isn't.
+> > Zsmalloc may also be less likely to make a new allocation in the store
+> > path. There are other considerations beyond memory overhead and
+> > latency here.
+>
+> I realize this means we trade off page migration for writeback for the
+> pages representing zswap compressed data. This might not necessarily
+> be a bad thing for 2 main reasons, the way I see it in this specific
+> context:
+>
+> 1) Page migration would only be transferring a memory pressure problem
+> elsewhere. Not sure how well this would work with memcgs or
+> containers. At some point someone would need to do writeback.
+> 2) I don't believe there is a zswap specific page migration flow in
+> the kernel other than zsmalloc compaction. IOW, memory tiering
+> components like CXL are handled directly in the reclaim path. From
+> what I understand, things wouldn't break with slab memory for zswap
+> compressed storage, but I could be wrong. I hope to include the
+> architecture level considerations/trade-offs in the RFC.
 
-I noticed that your cmci_rediscover() improvements mean even better
-offline performance if you work from high to low CPU numbers as the
-shared banks are assigned to the lowest numbered CPU within the sharing
-topology domain. So working from high to low avoids creating as many
-orphan banks that then need to find new owners.
+Zsmalloc memory is currently movable, so compaction can move it around
+to free contiguous blocks (e.g. for THP allocations). Slab memory is
+not movable. It can be reclaimable, but writing back memory from zswap
+when we are not under memory pressure is also bad.
 
-	reverse order offline: 2.984s
-
-I haven't looked into the code yet. But the general direction seems
-good.
-
--Tony
+Note that compressed memory can be very large compared to slab
+allocations (or kernel allocations in general), so it can increase
+unmovable (or reclaimable but not movable) memory significantly,
+causing fragmentation.
 
