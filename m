@@ -4,69 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DA99CC6B1C
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 03:50:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85847CC6B1C
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 04:09:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 733CA6B0092; Wed, 14 Oct 2026 23:50:09 -0400 (EDT)
+	id 77EAC6B0088; Thu, 15 Oct 2026 00:09:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BD1F6B0095; Wed, 14 Oct 2026 23:50:09 -0400 (EDT)
+	id 707FE6B008A; Thu, 15 Oct 2026 00:09:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 586896B0096; Wed, 14 Oct 2026 23:50:09 -0400 (EDT)
+	id 5F9E46B008C; Thu, 15 Oct 2026 00:09:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 34A236B0092
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 23:50:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AB27B1A08E6
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:50:08 +0000 (UTC)
-X-FDA: 85323482496.01.2163478
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 348801C0003
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:50:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=iHdBvxLs;
-	spf=pass (imf18.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E9776B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 00:09:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D5CC21C3BF9
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:09:48 +0000 (UTC)
+X-FDA: 85323532056.09.6FFF72F
+Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8110620002
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 04:09:46 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Oei178cR;
+	spf=pass (imf03.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792036207;
+	s=arc-20220608; t=1792037387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Om/DEKPFgRQsjS9jvWBk11FC4wZN19UjaH+0CqwpAI=;
-	b=m7S4pGH4Y5xKjH6nziZ4tndqjZfqzMg8uIIWH6XRq5y5q4PbEJf/a16+e5h9Zl2nJWGwyW
-	C66rtg/73rpzqCTCzKoUYlNwYQdomvaVIvD1VLvYpf7nJeMq67kNFWAyhkcv+Tgs+ujkqW
-	11IvVu9WPDgOTS29AXBM+NGihg4i8Vw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=iHdBvxLs;
-	spf=pass (imf18.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	bh=ZRj2GAZqXT54HVtNDIUND68T2cWL0CDUpFdwNDt9C/c=;
+	b=QxbXpnhpfC40cN9vRd7r4allhAV7SmuTFblzIJl0hB0eK9sLollZzKOIoIk2qW3b5dqOEJ
+	B/M9mXmHeJvVAGOI85eVFsMBkOvgRcql5Kwnm0Iqd74aLIUF5pcpR8zd6h8e+b8iUAh+Hd
+	FYI7LWXxYcnGMcUdKQAt2dA7VHQN3Bg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792036207;
-	b=yx+YTfGxa9EYLnLCtunwTtduyK/+Gk/Aig4oCgTRAA3FHtpKg7YgZ4TdgG0QXG9Z3nBV9i
-	rKtgSd9W6EN1Ac2TLiekQC1DhlFQSKP7Ogf/tF7Hy0pBLnNBxzEhTg156Q33oW1pUjW2HG
-	QDRbkcbIrar27aAtNHlfOYTb+1PIPb0=
+	t=1792037387;
+	b=Icj0PFxA6lw+xxk1RyrhYUD+AwAM12Xa3BdCchn3gpEXikZs3svj81a5gmaz5rxLY2T7u2
+	7rwQ5wuWetYC7ddxrvlZclkNLIkmvbtwmK1dH2o8lE6+r8i/nPf7JtcUSJT6Oat9MWXDIK
+	0bApsHugNn07rSmS8nem/ffejrKABeA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Oei178cR;
+	spf=pass (imf03.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792036201; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1792037381; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=6Om/DEKPFgRQsjS9jvWBk11FC4wZN19UjaH+0CqwpAI=;
- b=iHdBvxLsCe6VKML1UDBIVBEVbKFLo8DnofGbc4InJp/VkH0NorH0ufmuscxP1G7twAATN3
- CmP83p9NDUhyYjKXCOGEFWpO0Sdc6uTwB/sS0Iu29+9CbcUPQtprMYn+eO0+7zA8+RU3oD
- +/ixsno8GJFxYEblRSEGPkIkwFu+FaD+D1HwhXIUgf3K2611v/KUQF7xzmL1X/ViYqQ6+z
- uhKlDrO+TLma9gYWn5K0atgx0XV89Y1EEBUZEncqHVch85+t1pw4ljwQDuOUF331ViIOYr
- OPltrvhl65RsendTykWgj3U/3aTJSc8ajUuu0ODrlRwdZH50JDHkr83CFKX6Uw==
-Date: Thu, 15 Oct 2026 11:49:34 +0800
-Message-Id: <4231150e-ea20-473b-bec7-cf2787c1b567@bytedance.com>
-User-Agent: Mozilla Thunderbird
-To: "Gregory Price" <gourry@gourry.net>
-Subject: Re: [PATCH 2/6] sched/numa: fix scan-period ratio denominator checks
+ bh=ZRj2GAZqXT54HVtNDIUND68T2cWL0CDUpFdwNDt9C/c=;
+ b=Oei178cRmt4vFYunYV+nz2zYtcJOdySv/VpwVa+HnCmkfWrMeUVWCQ1+Q64g/UIo9oSNxl
+ wfXlLAOeCpZfRCRxh2bJHLSkV4PtOiz0UvVqUlUxbSage3FEQG9M2mLZxhB8Qx5ujj1CY8
+ IeRVuMcxf5YRPImNqkrtgNYqCa8e6mBVIh2/SgkVcN2rl0NBjJaktlOed1H8bTnFs49ost
+ Ux+6tWmGIZk90EOvrIgpD3UvK1BUWevxq8Gf6k227grE1YvrDwhBG9Jy0bG9cOvfYNMYRo
+ /nleHmd11clal0/S/mmfYgO8aH8LJppW/S4G7YFZ1v7BbGf+kUDlNtuq7QFxKw==
 From: "Li Zhe" <lizhe.67@bytedance.com>
-In-Reply-To: <as97rD5uxYva4ayg@gourry-fedora-PF4VCD3F>
-References: <20261014094347.99157-1-lizhe.67@bytedance.com> <20261014094347.99157-3-lizhe.67@bytedance.com> <as97rD5uxYva4ayg@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH 4/6] sched/numa: make free-space tiering promotion bypass configurable
+Date: Thu, 15 Oct 2026 12:09:17 +0800
+In-Reply-To: <as-AV04p-AZ45-mw@gourry-fedora-PF4VCD3F>
+References: <20261014094347.99157-1-lizhe.67@bytedance.com> <20261014094347.99157-5-lizhe.67@bytedance.com> <as-AV04p-AZ45-mw@gourry-fedora-PF4VCD3F>
 Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>, 
 	<joshua.hahnjy@gmail.com>, <ziy@nvidia.com>, <mingo@redhat.com>, 
 	<peterz@infradead.org>, <mgorman@suse.de>, <riel@redhat.com>, 
@@ -75,19 +72,22 @@ Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
 	<vschneid@redhat.com>, <kprateek.nayak@amd.com>, 
 	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
 	<linux-mm@kvack.org>
-Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Message-Id: <a01ccd5a-f443-49bb-a615-5712881ee7cd@bytedance.com>
+Mime-Version: 1.0
 X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+To: "Gregory Price" <gourry@gourry.net>
+User-Agent: Mozilla Thunderbird
 Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+26ad04d66+daffea+kvack.org+lizhe.67@bytedance.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 348801C0003
+X-Lms-Return-Path: <lba+26ad05203+e180a4+kvack.org+lizhe.67@bytedance.com>
+X-Rspamd-Queue-Id: 8110620002
 X-Rspam-User: 
-X-Stat-Signature: ao4z678zreyg1aso4ubd15epqmeendue
-X-HE-Tag: 1792036206-621713
-X-HE-Meta: U2FsdGVkX1+L9/uYKJEkBtDTUcHGHTWOPevtApk3fkE/DS0yXCGuqU00hGKYuiQHUO43SwQoolc0Xh7AAi5q9SGirvT2hG28LPU4/qZMUCuemD4ruYC/Z1W6RnNuA6cnyAXiHa0iT5cB+bleXkI8Ts4HS3gFc8Q4K6l0nA63rHxIJEi6mJwP8Pp2/L/wnjXnmragPhZ2Vw5oOuwRJMZoVgPJh/oZjo2u1XFLGsuu+MTBHyK+muQGvAhtM5NRv6sSzU45ItwXx+53SJts7VFfC0QMW30FSRaHaaXStIfp4OgzxUY4SPvdcnjNvErSzyeY+NLitbq0xgXcT4jXaMo3iJ3TCeKLN+tA82qLMNYdt5ErXNTl5MIWo77KL+TI/PoX5eqLuARAk7dYk8G2a/aKv9bU6YOnj5691YvETlQcR0p1TpwsiI/YYJzkPXhRgtDxDThSdK6bEzuItExOQrCaUH2BLkIZGcCrDnqLU3sE1BttvAeelND8bcfFkjlUke6A6zGwFZwwLygZrMRGOJf+x6T5CDk/9acIgcGtkWavaNeIlxMxV78nM77/5eSOcl/aYDDMuVDNcVFu4wWcMOC9M715NjAhgPOvThTBCCbxRk1mRVZUMafx31lwGnD+B00zePE5fBu63Crg/IZCaLfDsZ2MbIp7H5hslRhjfuSFtDnCMByFpzYiwFM/AeieA44YTbzXYiD+1IpN28DUXWYpARM4kbxbMMiDWCzcNH+2m8vt2Ym978UwRT8IhrCobW9CjzgZAPgQ2oCeSGMKZYProJ132WN28tBz4I3WkR1KZ9jyhHXZZ6DRWjZBVAMbPDW+Xm9Din8dTkREYE7RggE7Z9ulW6y+PypZTvUmGQC8f+zja62wUQU9unRgsdFhJc6UF/l/q0jU3PGIhPbrhLiSvNAyghIFk8av3yvWMtTDXyvcm2Elm5ZEi/5lFvpz12js5j88K7r3tMuGtQFp6XQ
- KgzLmIhf
- tkCNEvdkSMzBhGx8vLGHMJVcJyzzzM6kJoYe0o9uVTN3jezOAcERCZyelbeYXKbQyUVNiO2lgT1qRmMBnpjR1evyJ08s/g3fi6AQlONJFRcf/w4XxPS1ZBqRwrY4zbwG9O0oahwGQ8M/ZHwRzjVhjIsTn7IxfyJ3pUgXkLpYda0VooAOFMJjSryEK/ff/m6P0dWHFc8GWaGz2aTOzELDc5zkPwC6eusAwXOHKpeeoONMWHJj5kFYARctyyHH0zfncvYJr4q0oq6KOwN3lw/MCDE88EjVgWChxrCWe9cylA940A0LBKPnka/bC2UPmDZ2wFF7GpoIEvqU/yiMQmlrkPtAJ4nAf2GbP1ACP
+X-Rspamd-Server: rspam05
+X-Stat-Signature: wtp194wwesoz5e9y3sey1erhjsbtfo91
+X-HE-Tag: 1792037386-633771
+X-HE-Meta: U2FsdGVkX19hfJeEJw6h8EoDSzPZ+gknzosPjTn18u/3/2/MSUEQf6KUP8jeJiv167lOsiAI4SCqxK1ihzGiHdYcYuewkok/m/dFaSuJW2ckAISTLz9tQeI9XTcAiMQ2LEcK0yMcw30rwp89lY58pKSI3VzmgckTYrhO/t+w4MSQMry3n14FkQYpAPzT4hYIZcYT3onkivfndukUFWWTARG/uuer0ogWG3z28GnoWKpwdkpEDjTRqVJNZQGN4J22/O4prtzLJWaPhTnIH6Glv6BawmzwH5rF7Bnpg6xNS3+36trfqYm2/IhkYrPbnR7iQr4A6A6lZxs/BhBHOIUwG8sVwqhLq/C9sH9r43K0QMCqsNJWZv9VOssNm9eRkTmLXZFya0vLVKkB9tfLvVqvuhJZgXaZyUSZ1XUb6O6Bfcf12mZvjs7YX93oUPwtWzv0a6vO6abhOueK4O8QiM7EgqE0LLJFdDhuUMHS1T8A8T8c5z5JnJJ4ZYPzNvg2hL/+P/GSsyZh1LlHtnmMzIQkxl+nW6EdlGhzEaPLbZZKw+HIpiIvrwfwBRnbPFgB+WeQvoyXc5cnQW1J4tNUzAfDF2GGGPtogCLV2HjQ76qmEaHjfT3nbkdzY4vZ2XSzPdLUmx8CkSSaXih7U5pz21PZ/Xl3+22P/fMyIiDPJMjta2Gq8chr7VllqNVbqcy47FSW22jmGVagi4Td+XFy/ahzkKwkPmTOVZcfqJidxmOt5lzzQlj1o9FN1Hqro6dS7pwjeIgVQo9yrlYEdTgAJBYgHbg2N5w6LQaHu0910RAbR4aSU2TiwM9oc13/ViKHz5ZBk59LNUFFdvNhjknwfGs2Tr2Fxmxw7yd2Tv1UNS28Kp7zaSUidsP4vSl68J1F/3JpklriWxT3db55dpneQau0UcUiz5YLPnsebVbiQmSOzu0jyeq8PWHUFI7fTACKZjf5tDzeAgH3Ng0hb+BZYTn
+ KyjTHzGi
+ oYg7dvdtFgu0G+g85/nt1pjhM5z2Y70JyBT/9tNFLMgJ5TyUAa2uTpSyKckc8F0PAsEnaZ9uM2I1Ek/8tNmQSbJbRK5X2b5UywDbXPAJ2rK2nyWNE6ARUmCqgkLq4uB0kaGorrW4zcwI2OPIvbrqHtY0i3WAnka4/9GPXmgzSccXntr4LKBk8OBrQMH3y7MObhTb9jA7m0/W8scsP38BxSwcGhrP2L8UOFtDvidkikWgT36BWREAOxlebBPbjSkOjLp86F0lkGTzCxYCCOUMRducNUqT8WcM3vKMr0I4IRu7KZ6NT/V3vfBD6jotf79RHQJtAlzxvyltvOhjsTw6xMn1dgBr/jhMJ9yMBev0e9vO3C65+ZZLNbK6jmpzeRQY/WE1L40VlZsNCUiA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,63 +95,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/26 8:56 PM, Gregory Price wrote:
-> On Wed, Oct 14, 2026 at 05:43:43PM +0800, Li Zhe wrote:
->> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->> index 1053437933ee..76532b8202dc 100644
->> --- a/kernel/sched/fair.c
->> +++ b/kernel/sched/fair.c
->> @@ -3698,6 +3698,8 @@ static void update_task_scan_period(struct task_struct *p,
->>   
->>   	unsigned long remote = p->numa_faults_locality[0];
->>   	unsigned long local = p->numa_faults_locality[1];
->> +	unsigned long locality_faults = local + remote;
->> +	unsigned long type_faults = private + shared;
->>   
->>   	/*
->>   	 * If there were no record hinting faults then either the task is
->> @@ -3706,7 +3708,7 @@ static void update_task_scan_period(struct task_struct *p,
->>   	 * migration then it implies we are migrating too quickly or the local
->>   	 * node is overloaded. In either case, scan slower
->>   	 */
->> -	if (local + shared == 0 || p->numa_faults_locality[2]) {
->> +	if (!locality_faults || !type_faults || p->numa_faults_locality[2]) {
->>   		p->numa_scan_period = min(p->numa_scan_period_max,
->>   			p->numa_scan_period << 1);
+On 10/14/26 9:16 PM, Gregory Price wrote:
+> On Wed, Oct 14, 2026 at 05:43:45PM +0800, Li Zhe wrote:
+>> Memory tiering normally promotes any recently accessed slow-tier page if
+>> the target fast-tier node has enough free space. This preserves the
+>> existing policy of filling available fast memory before relying on
+>> hotness and rate-limit control.
 >>
-> This does more than just change the div/o below, it changes the behavior
-> of the function overall.  It's not clear to me this change is correct.
+>> That is not always the desired policy. Some workloads may intentionally
+>> place memory across CXL-attached memory and DRAM to use aggregate memory
+>> bandwidth. With the free-space bypass, cold one-shot accesses and bursts
+>> of hot accesses can refill the fast tier and pull the workload away from
+>> that distribution whenever DRAM has free space.
+>>
+>> Add kernel.numa_balancing_promote_free_space_bypass. It defaults to 1,
+>> preserving the existing behavior. When cleared, enough free space in the
+>> target fast-tier node no longer bypasses the normal hotness and
+>> rate-limit controls.
+>>
+> A global switch for this is a poor solution for this problem.
+>
+> Also, if the memory was spread out intentionally, it presumably was done
+> so with a memory policy.  In that case, if the user did not set
+> MPOL_F_NUMA_BALANCING - that spread is already protected because the
+> mempolicy overrides the numa balancing fault and no migration occurs.
+>
+> I don't think this is the right direction.
 
-Yes, this intentionally changes the fallback condition.
+I agree that a workload which wants to fully preserve its initial spread
+can avoid MPOL_F_NUMA_BALANCING.
 
-The old local + shared check mixes two independent dimensions. The
-ratios below are computed from local + remote and private + shared, so
-those are the denominators that decide whether the sample is usable.
+The case I had in mind is different: the workload wants to opt in to
+tiering, so hot and cold pages can still be adjusted, while keeping the
+DRAM/CXL distribution meaningful. This is the same kind of use case I
+was trying to describe for weighted interleave plus NUMA balancing:
 
-The old check can also classify a pure remote-private window as an
-unusable sample: local == 0 and shared == 0, while remote and private
-are non-zero. That is exactly the kind of signal that should go through
-the normal scan-period decision, since commit 37ec97deb3a8 wanted to
-speed scanning up only when many private faults are on remote memory.
+https://lore.kernel.org/all/20260930072617.64665-1-lizhe.67@bytedance.com/
 
-So the fallback is meant to be used when one of the actual ratios cannot
-be computed, i.e. when local + remote == 0 or private + shared == 0.
-Otherwise the sample should not be discarded before the ratio logic.
+With the current free-space bypass, opting in to tiering can promote
+recently accessed slow-tier pages without the normal hotness and
+rate-limit checks whenever the top tier has enough free space. That makes
+it hard to combine weighted or interleaved placement with tiering
+feedback.
+
+That said, I see your point that a global switch is coarse. Maybe this
+should be controlled by a per-workload policy instead. For example,
+Yafang's RFC for BPF-based per-cgroup NUMA balancing mode selection seems
+related:
+
+https://lore.kernel.org/lkml/3eda489898ebf7c848ce61760af745d9@kernel.org/
+
+Would a per-cgroup control for this promotion behavior be a more
+reasonable direction than a global sysctl?
 
 Thanks,
 Zhe
 
->
->> @@ -3723,8 +3725,8 @@ static void update_task_scan_period(struct task_struct *p,
->>   	 *	 >= NUMA_PERIOD_THRESHOLD scan period increases (scan slower)
->>   	 */
->>   	period_slot = DIV_ROUND_UP(p->numa_scan_period, NUMA_PERIOD_SLOTS);
->> -	lr_ratio = (local * NUMA_PERIOD_SLOTS) / (local + remote);
->> -	ps_ratio = (private * NUMA_PERIOD_SLOTS) / (private + shared);
->> +	lr_ratio = (local * NUMA_PERIOD_SLOTS) / locality_faults;
->> +	ps_ratio = (private * NUMA_PERIOD_SLOTS) / type_faults;
->>   
-> This otherwise looks fine.
 >
 > ~Gregory
 
