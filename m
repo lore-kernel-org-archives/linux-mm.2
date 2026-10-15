@@ -4,122 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89DF7CC6B33
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 13:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22927CCA460
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 13:49:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 632706B0088; Thu, 15 Oct 2026 09:48:16 -0400 (EDT)
+	id 3EC516B008C; Thu, 15 Oct 2026 09:49:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E43B6B008A; Thu, 15 Oct 2026 09:48:16 -0400 (EDT)
+	id 3C3BA6B0092; Thu, 15 Oct 2026 09:49:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D2AB6B008C; Thu, 15 Oct 2026 09:48:16 -0400 (EDT)
+	id 2DAB76B0095; Thu, 15 Oct 2026 09:49:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 23FE66B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:48:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B4AA21A0A5B
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:48:15 +0000 (UTC)
-X-FDA: 85324989750.23.F025724
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D41A820008
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:48:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="gcob/8Ef";
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 063166B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 09:49:47 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8E7F116086C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:49:46 +0000 (UTC)
+X-FDA: 85324993572.12.FC68B4F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B3DE380011
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:49:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d861A3BS;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792072093;
-	b=YsZhP39zju/SnqofENHHwgm6KN62vLDxNaKPo8QXxkrdaVo2BSM662VijKDDJD3/L83QIj
-	hE5psTrK69YXI1b0ewNcGSPR2JLiESl3QFUfrnRNQ3Ok21CqDaLoS7J6uLdbLu1uPRGka7
-	OX0tYL9Tc2Rimjr6Dx/d2m97T5BTOxM=
+	t=1792072184;
+	b=7JcsZck25Y40RMpg/Pago2hIzeTWFb5zFAxkrnhfkwSFz+XN2EsZfdDpDGqAT3kcEMeuJu
+	ttxuOF80mR+4FJ/kF8AWyPM8UPrzbHDVeqKnSJyBgtnxwyXCa3vNXt9lqy9cEfvDWRONUb
+	cx9bCaqPTz7xUXgINIBc4mgYniYF3Qk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="gcob/8Ef";
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d861A3BS;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792072093;
+	s=arc-20220608; t=1792072184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TxnvmrOxX1kKFV6pDOanox6haeqxL61LHWivdGG7JgE=;
-	b=ILTyEesh0nvOIun/Ah9zuRdQnmugYWVLm7IgV20GEXCAkQL1TauaVWExg0rvHHK2/+BiBO
-	z0U7vbdG35lV+hJkb78aOBaAg31BsN4zBOV3RUhCJiZlWds5TFQUTeON4WPOr5rs6QjhSL
-	Xpg5iAW8mVs42VP4kktQB2mqpQO+avQ=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-917a04338c1so56859646d6.0
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 06:48:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792072093; x=1792676893; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TxnvmrOxX1kKFV6pDOanox6haeqxL61LHWivdGG7JgE=;
-        b=gcob/8EfcYiqHA9Ih2evqGkEh+pZpn0oHambrOeR2YuSQsNoBSosIlCx8WnmQopcw3
-         B7b137BwtpROqsufMOhfmZcEqruQyQaDKERCzdmGV3queG/RAzFEgL28lRYBbCe1Q6QJ
-         NDNmRKJi1wtyq4S/ED298xTEdliIj8rWHZ2HusC7sjTTJyc/3JtMyfXdaDBUagogYMaX
-         y2QVXoaVqHIzrToLQGZI6iF0SvBXLqFisNvkq3x5J0ZpPM1e8F4jXNT+mts/jtxGD1JM
-         FT2Lxu5FVZNzVGlljHiCvPyn4Z3Rf0DrNjUu6W7/R90ZyJNN19e5KFeShZY0CAlzehVJ
-         fcOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792072093; x=1792676893;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TxnvmrOxX1kKFV6pDOanox6haeqxL61LHWivdGG7JgE=;
-        b=kSM1cC5z77JQhryv0ISZdHEHAITOLq93AW6vCVfi/mnwVXbhh2bz0yTJc22lOxHlZk
-         AxkzGo0JF6r6iD9Dm1oD6ftZv1fmMeFe6kLVGoOnREp9lzEU65xhIkDMdcSU493AlPM1
-         WRd8F3EQHg9rpCxRJ2sAAGuZ6DTSScMGXTUsp8Aswe6dm23xzGXa/M6uOazsp9e76+um
-         fDpLOJdKrjn8qdga5FG0yjqfrJeY0uEA4UsXU7h1S9DpHPyJ9buJX0KznZsKcTb2lXY7
-         nC9W+qsTmCN4OX3NlX1+YkJTeIr7TEuH8YITDnB6iJ4zdla0N5mWYJAFUh1YxACz2dDF
-         EqUA==
-X-Forwarded-Encrypted: i=1; AKwUvBxn0PrIUz/S+Hro1Ty2nkYHk0h3fJxwJ6MPBoeqxGri4Whp0by0xmafSDSEvAJKrZZygDmEF2lKgQ==@kvack.org
-X-Gm-Message-State: AFq9FYIp4k+HJCFgvZoD8cAkCnfZl0B6x/dfB35C3IYKJ7QqTYwkl5fM
-	Q654HNaENPdwjPMEYpOe8eS3LWQbkCfuNSudYpfnfgDQcmaegFUXMEF8uvUa4zsfMGw=
-X-Gm-Gg: AYBFou2jimCnGeb7Rw/B6D7Uw3LRjGnUCxmCdlqE59R6+kDaoGYnmuryOEmqz1xNpPI
-	igTHjPS3moSvvQ7SvYZD96cq+JyaLq9RX47fmb+x+lXR/cZDPblfMer77cqm7TTYhD+obxYVb+j
-	6EXMtXNOSVc/hgGKY0UAs9vQV9/rCjqo9443K/fiaDv0WXx9hUs2X1y3Q2T5b/9K5MuFerMukDK
-	oCmxma0ufU9IwjIGNTXLwexukRruqF548XLuvfepzU+wRiX1UMQdHw0fayNxxC8nhcwNQNyghtw
-	6uC0sqGfAumQgLiMdipXemwtOPjlCAha4LJ+nRZFc99OVWOljfBG5mLb0mJrofkQ5R1m72E7Z+1
-	RTBPSBF4+yI9Ily8OBJauiQAApmdHVBujGTTtqJLCH0R6/K6ahWfxotLDwWvTNNPnFQj0kIZzIW
-	sxY0YDiZCfdVsqfdyYOFu/aH9Nn7ScLjhs31uAQjSiusze61oc/0UFNAVaukQd2cqobs+fjImVo
-	xbZB1bpYM1qwpmkiEoG5i8cv9p/IyK8dljvUpRZeGxCRc9akgpFpM4=
-X-Received: by 2002:a05:620a:4606:b0:93e:c12c:f12d with SMTP id af79cd13be357-93ec12d0608mr3020561585a.72.1792072092737;
-        Thu, 15 Oct 2026 06:48:12 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef50b6c4fsm760019685a.47.2026.10.15.06.48.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 06:48:12 -0700 (PDT)
-Date: Thu, 15 Oct 2026 09:48:10 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
-	willy@infradead.org, brendan.jackman@linux.dev, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com, jack@suse.cz, akpm@linux-foundation.org, 
-	ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	ying.huang@linux.alibaba.com, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org
-Subject: Re: [RFC PATCH 0/6] mm: pass alloc_flags through folio, filemap, and
- bulk allocators
-Message-ID: <atDYiLYjF_Phxy-h@gourry-fedora-PF4VCD3F>
-References: <20260923211041.3127588-1-gourry@gourry.net>
- <asdTptfeLkuypU8t@gourry-fedora-PF4VCD3F>
- <df588805-6f97-4ef6-a64f-39222669bf3a@kernel.org>
- <asloWFM96BATH8SB@gourry-fedora-PF4VCD3F>
- <1f36992d-00c1-4f74-9947-b543ed794cf0@kernel.org>
+	bh=VP0jF5bnf0g3p1HRHBbIMSTGCx+taYCBpLmJnYYBFYM=;
+	b=zQfHzCSCGdt2Jpywx69fnbPIVSHcOePMmEHgby1UV4zeoaf8YMK5/M7SFpRep5IbuHD3DF
+	mCYP9xeYIg+sTKP+1wUFCHcoR77odPYu/9QKQyF2TwyuX8WygztyGa581Zx5XtrBKuNwBn
+	C1LLomdJPqsoqAVZB2yl6r0yUSWg8no=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A80A84166D;
+	Thu, 15 Oct 2026 13:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6444F1F000C4;
+	Thu, 15 Oct 2026 13:49:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792072183;
+	bh=VP0jF5bnf0g3p1HRHBbIMSTGCx+taYCBpLmJnYYBFYM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=d861A3BS0NNc1P1ZuaLP81CBT0yRUV/MSIHHcvdDZV+dT+6mcQz8xzHjOWGCjrKj/
+	 +Su2EAXRXRa0OPgm4DdRtvGpP68bzQQeOo8SY23c/1GGvCjHgOVvQapCfnqyJjF5OQ
+	 Y9YuFfH+rFf1Krh1H8iZACaIiRQhkuFM1zfag8a7UHqYOw+H8JpOjtD/RRjjHlNxgE
+	 PwsuxctdlD0cIFn5F3Bt2VPCIW6kxs6mh/656KSn49syyDwLR3nmksNR3RlfxExqn8
+	 4lEbI3hGXBW8JisgrkrlA/gajaSBDI/jmSMRTo9TBPj8vfkbY9eWlhYd2PEivpAckz
+	 6A6+I8MG3zhNw==
+Message-ID: <10932a95-28c9-4b7a-9d57-95890bdaee51@kernel.org>
+Date: Thu, 15 Oct 2026 15:49:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1f36992d-00c1-4f74-9947-b543ed794cf0@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D41A820008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] cgroup/cpuset: use mems_allowed_seq when checking a
+ policy nodemask
+Content-Language: en-US
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, longman@redhat.com,
+ ridong.chen@linux.dev, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com,
+ akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, ziy@nvidia.com, david@kernel.org,
+ mgorman@techsingularity.net
+References: <20261014222456.2318284-1-gourry@gourry.net>
+ <20261014222456.2318284-3-gourry@gourry.net>
+ <8d611a0a-4ada-4536-875d-061492773e05@kernel.org>
+ <atDUMtlM9Z8CPlRo@gourry-fedora-PF4VCD3F>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <atDUMtlM9Z8CPlRo@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4auc4soquutmp4prprmibh8zajwtffgz
+X-Rspamd-Queue-Id: B3DE380011
 X-Rspam-User: 
-X-Stat-Signature: kmxo7ktb4exafxqxwmibx9e8wf5qhzec
-X-HE-Tag: 1792072093-611077
-X-HE-Meta: U2FsdGVkX19HUevlb4e55RCE5dkcxA4UFrbmJ6VzhVC6a/NeCgPz5+MPHVdEicmWfwh2xJc0XUhSmn98P0QZ4o8xqOVXaiCPPirSpJmeXupkA4rhb4qMqTSTg/DU2zALVs5ONI/9to6nB+6ZIv4hXR3dhhANOh/nCBup8s9kufVC+g4vJ5HKeo0cDgzybxOLblZV2hqh5x+lp1+8Yaj11MphHTamBQChHY8flu6uYEWw1kvB/YsyAGZv0vHE74yxobWxeW1amPbSRut1kANwNtfWunGS3WrUpNgs7deQuh1aa3hpdZrozPyM8Fg7cQKYs+/Yz3xsYRaGUfIukSPZOT1oXynpELlyjbrV5IfTF70pKP4LBPLtaVchlf/dbWxmzCLNnmL7nwYBPlsLw25n70mBD70/ICu3iGtZS8jmeLnWFf6owb31wtPUlH0EY2uvxoXdde7GOxasG0zl4EjOSJ3ieMYdCRIG1572GNxUvTOa4UVkHSPK4aYsTWThcpTefdOjgCU0nAt2ExZocOKdbpfc4GHDb367KqlUzcC9oJS8m7WXkfttphLpR8wYk3YUNa1sYTj4mfLqdFaeIEHgsmjrtwgdBMP8TnJ007aI8XuriqEO7aGq7u9XMDAcPjXq55IQc7VJ5kKuoBCLcmjZpCIAYcxiui4YfdalkbgtKxfhCLmKJBCFlTW3zxxABQHElqhz3Im8QkfQvyeMmdb0YXQJb/jb1fhM5NvfQ7kkmos6ElAKlpKr7AOYR+FhevIGcxiC/d2hu/F/ELam1CkqRlFyImhagsVnSfcPdj0hdfreMIXhzKtyb7v1O9WpV4LUsatdIf4eBHs7A4Vhnx1kSTWhDY2LJqGuInZBhriuyLCm6Nvt1M62U6GMOAlTQ5FD5CwQJrics8DcVqH7WgRNMBW1WTLHwoZs/MSmFBECOAdwSuBZ5T0jlqs6LQy6sAXBe314vntnhTn0rKw+cFi
- d1fxP37o
- XP72fYjToOrhAE0X9N80CTkHI4jjNXnE0E2j8qAnD9OBgqxvx/xIUWJJ/ZBp6ywWM4Iou9dToC71vPaCoXJv/O+378LfU9EjZBxQWiHdQWpNqPdrQbe+oLdFrc9MDWO/RUf6ew3GusAm5vk0FURUoDIQ0b+acF6l+ItWjkbx5lRoaiQu/iOpYo+Q+1K5U0RprlrZrtJgvg+WnFapb+bYjLWGqvaUV+jp+9g8idm9wWgvJjjqthzZg1/Ph0fFeLidDbYeq5+q73e7abXkW11J2PKWDElESgXY4wbABXpUzAwjqquQARlhoLhtV2lPakJDhz528Uj242IGtsO34hSuXeI6RN/KdnO8pVkf0X9hB0QGJttlafODzSdODSfSCoJ8uOaoEJfv8OKlkIkNWI20ytw0J2Fy5HWrWtlGWNA5dYSgigXUxVP34i5LlC253//0pDpBvctayGgOqQ7U=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1792072184-56279
+X-HE-Meta: U2FsdGVkX1/zdlC85XlLlYNJeY7krhoF318KoSG/8LkARXW1wmtsO3t17ZR9Xqg2yoUHlRM2LDxH0pof80M3nESTKzjJC7vFSGd2dxgNBTJqm50UY3C8UCA03CY/aLpcMc84TAsSbEqNxaXExG0VBnuFRVl3jvarhHBgnRAAjKMqMi18hSgHBEKGLGxJUxGYwFX5HG/LqMgemb8G047nSuN90kKxBU/0lURVWLPXqkh17xh29DyFVIIq6N4mbf6jSipTpsryyrgjqOLtjgm8tTtzKQ0vlHbvLe9BSKcMc7JQgruroPSqc9zgADW/EVoQ5OmYUoxjZsh5yXweAUdEaznb3YY6ZCpH6sByeSA3Y9m7tYlQazb4fx513XfplqoBqrHNUxCANTiwu1R6ZssqAq5pjaeATSs39XVfnvrHIPWFXJFGmBMBEhhHUjDXL5556Tevfim6cZ/kaaPRV5ABSZbCbFrtwFgH1LpKveIkJJGhJw8cLflKAbsk9seXHpOwch6mp5TidCD6AMdm73Zco1jgEuVo2The3qljbV/BCSw372Ck1XJwnrh9tg37ah0mOsvkztaz1Nh3kTqj6d0Komh9zcHtRahKVCT/Wyf09TEtR6tHH1LV+K9HGInCTAYFfnBaIe8jXxJ1NHyTlfkXWotxJjWaUXPx6mvMoXIb8ykCJIJGVqtpOLihq++ZRfTNlchhM7LFun5+5cJ8RLj2PLYBWPWZQgHNJr32rDDFm2pn4V3Z2HhaJjwcNyxV+SEA1VoIRHQIi6n4RTvaqzdFJRbiWAQFyjTnwqOD/OHXWTRWgHkGeZSPhEnwOXP4hzx0eDQ6rkjzieIxw8NMo7f0hvaFxDvOoMZexqkFBS2mqZD6KyDzc5Rc3bw8Q+cEy+/yNA9yGVBboYqBd/X1hHZsdIrM1iD+c1Hw8fTFHbaFqPDpqfSGT20EE8/n/Sm3ij8XL+a9sQY9agPFOeRbSBd
+ RqOsfRoc
+ W6yP7sNDGT1IGKDSUADmYMjG6DkpJ4k5eQfMkAX91fL5P48+/MheI3HxED3REhZZecTf6k4pewgCyADedfFotfkYFXR5nANzm1CLusMTOb7eGOEzwkunO7y6cRW64DWZkiwJaF+CJIe81fHzzSuSAWuxfsi88Y+klg8gfK7Q2z9rfwAe4B8FfBqpyC3/nq3saCbW531f98faJ9HWFriTH9nHASgh1cEo5ygXTjrPb5FSsRsh47tU9daXYPIKXl9RL6KLbbJ4L5Lc0XHQL2jKfK7RINsyvw0GWoLPOKVnk9ck2I+kFX8kFMHRAGCL+uEOIj5R75vBTtzNugHEwJfk2er9z7izJFb0spZG57yDE21mQAfkbRlPomVhwdtW/ckMhqkhkmcyW2+r0dtQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,52 +140,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 12:02:06PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 10/10/26 01:28, Gregory Price wrote:
-> > On Fri, Oct 09, 2026 at 10:55:05PM +0200, David Hildenbrand (Arm) wrote:
-> >> I do agree that two sets of flags is suboptimal, but likely more flexible. I
-> >> guess an alloc_flags only interface is not easily possible ...
+On 10/15/26 15:38, Gregory Price wrote:
+> On Thu, Oct 15, 2026 at 09:59:31AM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 10/15/26 00:24, Gregory Price (Meta) wrote:
+>> > A cpuset update changes the task's mems_allowed and rebinds its
+>> > mempolicy in separate steps under mems_allowed_seq, but the check
+>> > reads both without it.  This can cause a spurious numa placement
+>> > miss under some cpuset/mempolicy combinations.
+>> > 
+>> > A reader that loads one mask before the update and the other after
+>> > it can see a spurious empty intersection and drop the nodemask.
+>> > 
+>> > For example, a task with cpuset.mems={0} and MPOL_BIND={0}.  If the 
+>> > cpuset moves to mems={1,2}, the policy is rebound to {1}.
+>> > 
+>> > The allocator can race and compare the old mems_allowed {0} against
+>> > the new policy {1} - which will result in a dropped nodemask and a
+>> > misplaced allocation on node 2.
+>> 
+>> > Simply retry the intersection until mems_allowed_seq is stable.
+>> > 
+>> > This covers the task policy, which is rebound under mems_allowed_seq.
+>> > VMA policies are rebound afterwards by mpol_rebind_mm(), outside
+>> > mems_allowed_seq, and are not covered by this change.
+>> > 
+>> > Fixes: cc9a6c877661 ("cpuset: mm: reduce large amounts of memory barrier related damage v3")
+>> > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+>> 
+>> Should the comment and/or code in check_retry_cpuset() be updated as well?
+>> 
 > 
-> Agree with the alloc_flags option of all the other options.
+> No I don't think so. We're checking different things.
 > 
-> >> I do wonder whether it should be:
-> >> 
-> >> 	typedef int __bitwise alloc_flags_t;
-> >> 
-> >> instead of "unsigned int alloc_flags".
-> >> 
-> >> ... while at it
+> The loop here makes sure nodemask and mems_allowed are stable when
+> compared so we don't erroneously drop the nodemask on a race.
 > 
-> Can't hurt, but given how it's internal only it didn't seem that urgent as
-> for gfp.
-> 
-> > Does it make sense to leave alloc_flags to internal-only state
-> > and just implement a new flag field?
-> > 
-> > gfp_t       -> describe the page (fully public)
-> > req_t       -> describe the allocator behavior (mm-internal only)
-> > alloc_flags -> internal allocator state only
-> 
-> Maybe in that case the remaining alloc_flags should just become 1-bit fields
-> directly in struct alloc_context so we don't manage 3 separate bitwise
-> types. Or more bits in case of ALLOC_WMARK?
-> 
+> The cookie-check in check_retry_cpuset() determines whether the entire
+> allocation should restart.  It runs after the nodemask would already
+> have been dropped, so it can't catch this race.
 
-I think that would be much less disruptive.
+Ah, right.
 
-> Depends on how much work this would be (and if you want to do it) and how
-> the result would like.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-I took a short look at converting __GFP_SKIP_ZERO and the change has
-bigger than i thought it would be.
+> ~Gregory
 
-Yosry recently said ALLOC_UNMAPPED was being put on hold, and for my
-base private node series it seems I will only need to extend folio_alloc
-with with alloc flags - so i will probably try to split these efforts up
-and carry the minimal folio_alloc patch separately.
-
-Otherwise i'll look at whether we can move some alloc_flags into
-alloc_context bit fields somewhat cleanly as a first step.
-
-~Gregory
 
