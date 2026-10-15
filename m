@@ -4,138 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C08D1CC6B39
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 17:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02D71CC6B39
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 17:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9C706B008C; Thu, 15 Oct 2026 13:12:13 -0400 (EDT)
+	id 128536B0095; Thu, 15 Oct 2026 13:13:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4CAB6B0092; Thu, 15 Oct 2026 13:12:13 -0400 (EDT)
+	id 0FFF56B0096; Thu, 15 Oct 2026 13:13:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93B0D6B0095; Thu, 15 Oct 2026 13:12:13 -0400 (EDT)
+	id 015BA6B0098; Thu, 15 Oct 2026 13:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FE996B008C
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:12:13 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D39A2120274
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:12:11 +0000 (UTC)
-X-FDA: 85325503662.15.1934521
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id F215F4000A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:12:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gHzBIKhs;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792084330;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D19686B0095
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 13:12:59 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A9A3A7AB5
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:12:59 +0000 (UTC)
+X-FDA: 85325505678.20.E7EF378
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C379D120007
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:12:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5kYrja8;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792084377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E5wvLBgFqxSZGnqXC4JtAllV7DpqQrgFZ5hJ2YmKNEc=;
-	b=gG4H+wO7Omyk8hNDK9/Jr9+rh+Iw4JCOaGnDWbaewee384nDpkQZJfTWKAe76rBEm4qubu
-	zxB1Y4iOL7l4h1rUcQ61B41f7i/LWRFNTFbrJKrcGo2JqUHdG0TPWSEZWdK9hZGTe2VsKb
-	VRiETstcz5thQzUX20yeKCSTIMhrN6A=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gHzBIKhs;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792084330;
-	b=ZQRVQn7o2xgyUivr87YmBkqWwcMcMFbBNkVzDfOShBCs4zPCUmMJRxxKN35yY4Fqe/Nm2m
-	5cxKGBJ5COVafafD4kt7ss245ouzsGPfEqcHUodYk8ZtGHXleJWktKVsnJmzUx3RsmZWCx
-	9WaBeZrlWXAcUBimOpNCqZcF4TF81B0=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49e73611928so1292015e9.1
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 10:12:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792084328; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UppGHwX3LWadxl2ZmXhT1qYkofYJVPCDfmsfOtAu+rDn1HvVEYslIwcY7B4294D9Sy
-         NMNgXLhHl4WHflfZ24ZHhptguxG3NKDzlcZePHufV1SaVtC3DRcxvEbxuy9HodWG8YmG
-         DqleQjRccAi+km2clJrgjqiWIHYlXdw/cSNvnBxkX52pfpfYMuj+S2F4BVUuir+wxw25
-         SFHeToO4TgVysktF7E/mU/e7JqgNmKtX1ixMM4pjvknAe/cfX3vQCFoJ+ZAoW54q+9ox
-         CjSsrAVW22v1FWue3LNYps3MEB5/ZoVZV+mWYVLMGBOjgTGoaDrO7maESx+7A12ZKVLg
-         V5CQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=E5wvLBgFqxSZGnqXC4JtAllV7DpqQrgFZ5hJ2YmKNEc=;
-        fh=+kaU1iHIaW+ItaFemEuhUhQMHkfzuIXl0fJ+PPXhbxg=;
-        b=HdgrZ7H6Q1cLvxiifbjuZ4bdCH3FO/EGL1ufgix02jh2HkqRKY8idcdgBtwzhSXxvU
-         N+BjvDJlBU4/7wCZUhHY4PdIG46wEtbWx3cv+0/DjFLVs/MItqFDK5195mcJVdsDs1KY
-         6RVOsygBNVbLlca8Sj6nVY8Zmh6tq9w+3U5hK6iYwSGhAb1aRr5m8LGJA6zl8tydJ+Ic
-         gnlawyADovl+hrl/YgsS5PbWEHg5wsol19w+fTyHxmdKkox1tWZPsZ6g5fzAMUNoAqwq
-         T2mUckMZwDKnlj2T9FXvUJlwfinhnA4Ua2eKbJWEIMT2KDECfhwTqNUb4wu1aMqR8s2O
-         0j3Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792084328; x=1792689128; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=E5wvLBgFqxSZGnqXC4JtAllV7DpqQrgFZ5hJ2YmKNEc=;
-        b=gHzBIKhs82DyR4KL618zk+QUFOxh+rldcFkG4WTR4fAJTG/K5pJdIz/PMUBesyO/h3
-         wlW7YyOKoMfPkPY9Nv4+RXQ49ZNLwUDHLrrBWUyAjHWxwGoO57JeF6X59j3HnfM8M6Hl
-         RqBHLXsLZO6rwJ/7DKCQ/U/GlFdakosc/6YVj4r03ALpoRPLMZiarUA0NVYwN6d31ZfR
-         45uL/HTLD5YSEhmT/yvCffWMijceln+2p2wTlhyLcArQrL8YbV4Al3BZAhaAWpqCWAvZ
-         5XqgYY8yxH0j7Fi1rFpcp2BZv4ziji7x5ayylYzEVSxPzC67sbRoYo5xs7785VZiYEeu
-         tjlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792084328; x=1792689128;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E5wvLBgFqxSZGnqXC4JtAllV7DpqQrgFZ5hJ2YmKNEc=;
-        b=lXWk5xuMD5IkoB9cxXT3nz0VXccNa++fpgq1aP9MGidbf/yz9/hUr/9ERHDSWqNrqL
-         Yt5xOZhu0U+v3aBWTCxaVwo0kN3EJRmef3EyJImD5KFg5X8B3U8ktt4y0V+JivGaSQw9
-         pjlLyTuEnESEI+RvzmFbzlU55bXqG2c8a6eUSOpdGfcwJVhPUawXcYwGxfD0KGDZsbip
-         A/lY1lUmMvY/cVd3pFd3ty/z02Sba07ZX7or4Ma0xCpYdyab+hcmTYJZsCVgPXmD/Pyp
-         zY7WHS2iEIuizOR7xKjbCbBEmZjXS1U+Hd5AryiLDwbNFmh7/oQMdiqVhFpbCavesCXw
-         pfug==
-X-Gm-Message-State: AFq9FYL0WErcjrBaLugxF2mDUtjiL8Ep/dMcQnbPWmTzeAhacshNwSy3
-	0ZQFF1i2FNiVtAbwhz0nPYkOYfJlJMB30hieoFcOdhF1qL9aHIowfd3uXlwnSW8w/wwQkLmktiR
-	FhDIKV3pe3JTGlVD0GXCK9C+QysYsKXw=
-X-Gm-Gg: AYBFou2VDzoCawcx1hJe0eW3xJpvBAEjhvFNzr+d1kMBK6jPlNYK4/yisXt7vXxp435
-	yinM5sxxLan+dpxQpw0qyd1cOAgVNbDvzQliaeho/Ag7e4oppxYz2hzc/MNEyJ0qb1eDwAjInfs
-	KjRH+XW4EVA4hWcvRCw9l96NlvdQiU1SFy/pvmgQcwtZwlAkwhdYtG4XgQ2u5sTDLlkFe1MAXuZ
-	ip5D38SWxgDimw5pbBgtgywmzGiuFiZJgd83yC0dN+QFJLxjLZZKk7P0BvGGBrbqunTGsyzZxtZ
-	a6OyPhG7VhibO4NO2o4YC1uEeZFqGgvQKoYg4dlDhcUAr/aXb5QNdLtdK/YtdUATH+ax8PsAYZ9
-	Zg+LQufMS08HSl75xwJCQb2ZeCXQiYe3t5d0BPzhd0gALBNUR3U9isMgev9Au9ZG3QJhV+cg=
-X-Received: by 2002:a05:600c:6c42:b0:4a1:7f96:9b42 with SMTP id
- 5b1f17b1804b1-4a1c6688027mr10170115e9.15.1792084328256; Thu, 15 Oct 2026
- 10:12:08 -0700 (PDT)
+	bh=Wfze5VWXLXgXs5xl8MP5DoIEk350uqQ1C5W3otbekT8=;
+	b=0Vb9xE55d0JTOypqbyGRY+V/c3MGNzhuCsE1A5u5Q3Jb1aLQpS4kO+8ezI7jTAn+SMsKA1
+	DGsDe2ReRLkTXYYDH00KPQETS9eURGvuCJdKBjW2/Ipy80v/L1JuCN1/disEdjLmjFuV8V
+	mt8vOnP827g0vyi0AC5z2fDyz2FELU0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792084377;
+	b=QYvu03V9/NdGSQ51p2Hk5fHLgMwWByeuV5rG4zCOAnvjreMXrTN1UW6yG3xiL0IZ/McXqt
+	xxfAfpcUCZtfg5NoydmzZEY3etO3modnb6rUvVlEbRN2tLavazN9shP+HPKg597nSx5w1S
+	5SaJLdZ2LCVujJZYJr+9uGTykKEX840=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5kYrja8;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 293B760232;
+	Thu, 15 Oct 2026 17:12:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8B51F000C4;
+	Thu, 15 Oct 2026 17:12:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792084376;
+	bh=Wfze5VWXLXgXs5xl8MP5DoIEk350uqQ1C5W3otbekT8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=F5kYrja8SaPmmRd62CvpHSgl1CLCslMmBa0Ztex3scwmK9Sj8LW7qAVxkN9sLZjCs
+	 a25EZoHTvkMeCa0xTnFnCYxg/i/qE6Llw/idu5W/ceYEhkutc7PF5/y544pqTYxuo7
+	 /maVXBQpmvQUvLiHhazAzVu8wifbv+13tDJP+Emsw5ik00VegEaHaVvJ71154pIh9w
+	 2ecs9xQ5XVk0nxcl/YYA+rx1u7QqSk3wNm5nKcjybXH0GeHesbVdxnSHZ+M07j0Z4I
+	 J7dkNupsuX1pETtzK9C11p/TKb9Pt/bA+XpNJSZDp03RCsJ99x0KoqKON5TJ3dHehm
+	 QnYQsjv09WVRQ==
+Date: Thu, 15 Oct 2026 20:12:49 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, damon@lists.linux.dev,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: exclude DAMON docs from MEMORY MANAGEMENT -
+ MISC
+Message-ID: <atEJkcKqcfOg-Q8g@kernel.org>
+References: <20261015-maint-mm-core-x-doc-damon-v1-1-226decb5cd0d@kernel.org>
 MIME-Version: 1.0
-References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
-In-Reply-To: <20261014090821.227366-1-jiayuan.chen@linux.dev>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 15 Oct 2026 10:11:56 -0700
-X-Gm-Features: AclHuK-yQypDW08qkRMvF4aeQpLcp1NcljdYGmGua4TF6Gj8KnRRVGox3kNtLVs
-Message-ID: <CAKEwX=NE51ko2U0-TCd9+sAm8NKeGeT61HFXTnnU_q2Tn75rCQ@mail.gmail.com>
-Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
- up on
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: F215F4000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015-maint-mm-core-x-doc-damon-v1-1-226decb5cd0d@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C379D120007
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: xstsjr6cnuxif74g1iopnuda4cokzij6
-X-HE-Tag: 1792084329-46534
-X-HE-Meta: U2FsdGVkX18emclGYq5ELk7NyMtJdU1L+eRwOVi5Mfrjps9NmRuJCn3CR+zvfuW9cwCBias5pl+Ow6Jp3igSLN6r/hOrQdqsVyqqlE7AqxzyPapx7vMSsGt3l+BDqhIWOO7nsDAkiwdq1FCAjudfzSGNB+dJsboLynjmlXY1d2jpLUieC35KNbzZY52+OJvLASNvJ2alhIDMU9yRIKhusW2y0by1mXECtr90hYbjYp9pPxDsKGCPxuIXZtq8Zof4liQkny52uCBUUZSLxSXe3c9yb3SmWhVSKatwOSf7pm8MDWSzkpeGL2WTvUiChDP2ffgpebNPOckGjbFI666g12w5OfjrdG3yV8k2X425TrPPpSF21zsTbrEPzADN38H0d5hoBp4dHohtaXP8TgZg6Lfw2JA5O+YNpPpkTQSGr1MDdPMTL+mMJxb9EkIY09C4M/ghJ07ggrEUExNK/PxM26xN0HmtQMieaGYTejGyhkj5EDbQOGjYVOIm4P5IgGGWiFGiG5CCivl4z6apeCyyt1YXwdLseC4xJzlYMqDiy6IChDjiKRHnlB1PK7/LB4D40VASTzD/EvGlYZ18qEq8VHhRcNa/S9K8lmlZ1RqNhwZVlAMIbzK7gBEMuCUd5Sl/rYSUkhHqUu9FKLUqXmp9I842wSV1P2/x1Ijtebo0iYQzr7U1IS5MT9ja+Mo4GhDlC+DN74AC9mpQVrbziQuts9T5KekejLtpd0vmzWeRo9tPekAJTSXR3izgpYiR5BleV76ooGi5DUMp8F3OqWTV/0oDhNISaLE339GoNBmL1aix5CVMTgHlnf5MHQEVrNrFATz13Ny4n7SlEV/eCmFBiOtJSI1EY0aOuEYLPniSWh0C/oif+PiqohswbLR2dqez95uNrC7X4ystmeKOB314C10wKQfjpJ5V+ZxoyKLDJ2UAmXX2TqataCfYC4sYsPD0dokra+9UFFozbuS0sud
- xuqbdUtx
- 5bf2M5G/j5/D46ZRFXchY5fS8Ld5LjIkZBJ20XkaJONRcq+qmJTfemSOMIo7wnGxp1WXm+AEsOfimNhynvLpKuX6Cgs4jv2PLtuD2k0bWXmq1zhu1Zj88YRo2iJH0x/vQbqxmLGEyoiHvJ7g7z3lfLTdQcnCOyJsYsv5SI9vLNbIC50kfSFC1JskJRilhsWSyjKEzPljs2m+tKInGTEU3NCUDcmEgTfJ/tcxym30hzevQ1C/boHJbCrlQJzJQE0m7fOKzsO9XWfCLde0kR943V7AIZvYvl/RgwArgDCM6BLV6y6Pk2CMFIa+/Y9Qog48GIBbxNvFbK3cxDrXX1RYpqOtb5RNoaG4VG8P86wakFPvh+AUtdiMAJ8weYneLYMCnCVhyhR/M9TCv6JUu7CkelWKQQMzJOiTglyxtfC7nmuYugScRwnyAUBmCxOxrXm8t+Iv+mXQ7mi4Hq0X3e9FCqNygVB/VdVBe5XrAyeGaruExfuxO73kLjAKJyg==
+X-Stat-Signature: bmmp7msdjzcwyjp6dtczxc3sy4emxhth
+X-HE-Tag: 1792084377-718027
+X-HE-Meta: U2FsdGVkX1+mo+nSuLTGCBJ7MjOJO3J+5cRHNIeaTrFVpG30qqCgc9kVQN/4jZOCs9li8OcSXagrRHDdzW/UheikyZHfgzlOaLY42/L322W48Zm/G1e4jKZnYV0gxx7ZYtirutQl4W/XXhhHntpDxYFjfYZ4w2qs92/7KmEyF2EJH8e8usTpdoNnbE4yhPhMGh7gzYP+jtgmzkCteobgWZ5nbPx1U8HkIq/ppp77hzdl/KdiWGYpF7qs+8uVPtuX0lTauyJSu6WQsPpa5HpISvAij4r4zdb03EpR4uRAQf4/2Cosnh0EwGsFMW4SJWzKjsh2YQBgsp6RsUBGuLpR1jyufOgWypHnnDe/zbLZMlmv7jtCI7D2OqUr0jjCGhWiV3kPe+wtrB314SI6zmNfdr+XU1I/bxX/9JsatG1qEOVaw53JhlsCxD6NjE+8QA6z8o8e0/0d9kOsgKGJjtObPn8GM2CFlYzspiYK/dyrtbUhEkr7kPrzNmx4owGccuXaV5JqSfdB19snOdjDblOU8ycjEU/GH29WFXzBGAdJSgteUJ5vB7oJpWowjsOELsFDVaRmzAYV8RG4nmR3y2NTQPZZMDc9+uB/6LdWP6v0Qo5e8+5DnQv+qLLwzN7KH5Tjt6AZl3lpCJF704uc7vQK3kSEKQK4dM28EKxeQOdnfnvgtwtVOx8hpmrPI2BUyV1zt39eBFe+gEmlz8jaUqKe3P2/HU1VeVOkOFySHXmKxEEsQeeupQMK7VX7jj3ELpTF2CKREa2OyfyAwm49KmPS3NDgMwWI03xGG2w3JVwclchoi8DQRAlKpn02QzyUhvix6aATzu3KY9cPCw8Xly6zWXxA7Qjg0wi3cYMs8ijyBzBz9LWYPJFin9esP4xg6z7nAynFFcU2Dowis9Sfe8cUX8FTncwHK+vIySS7RGgpOuziIXEJrnugupd4ahfYDQUNAi/nxwx5laUG9dREfP9
+ BR1ZCmAG
+ DNJnypxaM2VNuczO7TNuzceFybi0QlcnUImCE9YybVoXaLc/I7FUZQAnmosxcAIjMrNGYzc1RhWLJ+pFkXfvHh78ET7hEprtZAwQHd8FITUp5HTJWg/q/VF2RA65Nvc12+jkMQDpOlgr1cqt8CbY8GOxfYqY1PIgB5WN/vr/mF5jaiX/GxnuhY8imcE3/z+jqy41su4roEofap4VHR8oKPQiwdP6FGsmC1r+DYul8BRfX08kmDeXU3NlQbwDjzeN1mho2LVjd48GAkNjxPavwiT9u6w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,32 +99,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 2:08=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
-v> wrote:
->
-> From: Jiayuan Chen <jiayuan.chen@shopee.com>
->
-> On our production hosts we saw swap cache only pages keep growing for day=
-s:
-> on a box with a 500 GiB swap partition, 250 GiB of RAM and 250 GiB of
-> swap slots were held by folios that no process mapped any more, charged
+On Thu, Oct 15, 2026 at 06:31:46PM +0200, Vlastimil Babka (SUSE) wrote:
+> MEMORY MANAGEMENT - MISC is a list of misc mm sources and also acts as
+> catch-all for the mm Documentation subdirectories. Documentation for
+> DAMON is well maintained within its own subsystem and also actively
+> updated, so there's no need to Cc all MISC maintainers for them as well.
+> Thus add exclusion entries for them.
+> 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-That's a really nasty situation.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> to cgroups whose workloads had long exited. The only way to get them
-> back was swapoff, and with other services actively swapping on the
-> same host that is not an option.
+> ---
+> I'd love to have the time to check the DAMON documentation changes, but
+> it's simply not happening, so this will save some mail traffic for me,
+> if others agree.
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f53047aa8d3c..cbe565b353d1 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17269,6 +17269,8 @@ F:	Documentation/ABI/testing/sysfs-kernel-mm-cma
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
+>  F:	Documentation/admin-guide/mm/
+>  F:	Documentation/mm/
+> +X:	Documentation/admin-guide/mm/damon/
+> +X:	Documentation/mm/damon/
+>  F:	drivers/char/mem.c
+>  F:	include/linux/cma.h
+>  F:	include/linux/dmapool.h
+> 
+> ---
+> base-commit: d6d3455d8751854e0d1820f14184682e23ac4475
+> change-id: 20261015-maint-mm-core-x-doc-damon-d2da56de5ee8
+> 
 
-Is it not similar to cold file caches?
-
-The recommendation for these kind of scenarios (for both file and
-anon) is to adopt a proactive reclaimer (in the same vein as senpai).
-That's what we do internally.
-
->
-> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-
-Code looks solid to me otherwise. Maybe include some numbers from your
-testing in the cover letter to verify that the swap cache usage drop.
+-- 
+Sincerely yours,
+Mike.
 
