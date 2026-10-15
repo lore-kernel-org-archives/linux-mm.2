@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBEB9CC6B33
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 12:15:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9300FCC6B34
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 12:19:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D72716B0088; Thu, 15 Oct 2026 08:15:26 -0400 (EDT)
+	id 7ACFB6B008A; Thu, 15 Oct 2026 08:19:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFC496B008A; Thu, 15 Oct 2026 08:15:26 -0400 (EDT)
+	id 75D576B008C; Thu, 15 Oct 2026 08:19:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEA476B008C; Thu, 15 Oct 2026 08:15:26 -0400 (EDT)
+	id 673E76B0092; Thu, 15 Oct 2026 08:19:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C6E86B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:15:26 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8452CA09FC
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:15:25 +0000 (UTC)
-X-FDA: 85324755810.16.82F68DB
-Received: from mta1.migadu.com (out-231.mta1.migadu.com [95.215.58.231])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 47CDA1C000A
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:15:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sBTDHNfj;
-	spf=pass (imf20.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4203B6B008A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 08:19:13 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC04F1609E1
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:19:12 +0000 (UTC)
+X-FDA: 85324765344.10.ECADC7C
+Received: from va-2-112.ptr.blmpb.com (va-2-112.ptr.blmpb.com [209.127.231.112])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 02563C000A
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 12:19:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=VG+PLl+w;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf10.hostedemail.com: domain of zhujia.zj@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=zhujia.zj@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792066751;
+	b=0oppt48hP2F1fAE/ut5uAVF+sseaZPKM5btp0dZPEWYxFaNF1MpQsO6NcQXW57VJGdVYwG
+	ROGw9fsP44gGVo+oxP5To74yb37XqC26eLxqT4OtIIqQfoH6PYG6TZvuTXy354ieFDdYxQ
+	8O3QSYOzTqv3d/7dmmPPl9mL2/yl1xw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=VG+PLl+w;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf10.hostedemail.com: domain of zhujia.zj@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=zhujia.zj@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792066523;
+	s=arc-20220608; t=1792066751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dFQqDFSLWUX3qNLMd4CipfmTp+6GJjD9xzB+HPh8pJ8=;
-	b=0JC8qaVjdWDMuKMrJIak+yzCwMlifBWmoFLHUcunmVaejMUhyyJPZmytZIY23HNJdfleMS
-	zIa5pdr/eit0UdIRsCm13wobnLHQuF8dCeC2ELPMLBfo8cne3EQBE/8BJtawSj1KI3dsIf
-	TxwQJr8uspdN2ULnMAu9RB//Vv3cfDM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sBTDHNfj;
-	spf=pass (imf20.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792066523;
-	b=Wv6Mw5FEj0GuOX+8Ctk2CgtR42VA/MJhSgQ2Ty1gjshkf4r1Tpv/mYkQr9VCMfQ3CcaBx4
-	0ENAZM7SU2Rq8fTNOWxWv6MG8eOA9y0U+Pwj6CKW0ILTyYbVdXO/rbMrMbIwRyXrHSFR3C
-	rnXlNdcLPIBAN7T6M7+UUk7rry4yaCM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dFQqDFSLWUX3qNLMd4CipfmTp+6GJjD9xzB+HPh8pJ8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792066521; v=1; x=1792671321;
- b=sBTDHNfjs/AylhQgBwEaBNy4rYnLjRFHmyT2SN2Lr2Ua5bNVmlqsnUdtPtFos0PskvnLsssU
- GZxq0kJp5Rcwqc3zSsiVE+G+Drt57KAdDVTgP8hOmONbE965jlWxiy34NmhuYIUE+ChuHeuK3gE
- KIKlpkL4KklkI2zHkPHSRHnk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 03566d34a598d7b7;
-	Thu, 15 Oct 2026 12:15:19 +0000
-X-Mizu-Trace-ID: 03566d34a598d7b7
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (1.0)
-Subject: Re: Sashiko change proposal
-From: Roman Gushchin <roman.gushchin@linux.dev>
-In-Reply-To: <atDBk7ZKfDtKQKTT@thinkstation>
-Date: Thu, 15 Oct 2026 05:15:05 -0700
-Cc: David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
- ackerleytng@google.com, akpm@linux-foundation.org, chriscli@google.com,
- hannes@cmpxchg.org, jack@suse.cz, liam@infradead.org, muchun.song@linux.dev,
- shakeelb@meta.com, sj@kernel.org, ziy@nvidia.com,
- Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Matthew Wilcox <willy@infradead.org>
-Message-Id: <9139A421-50DE-45E1-99D5-4EFBD4225A98@linux.dev>
-References: <atDBk7ZKfDtKQKTT@thinkstation>
-To: Harry Yoo <harry@kernel.org>
-X-Mailer: iPad Mail (23G90)
+	bh=pR+ZsPE/BAelWupFuHMCruhA+1GjAPIp291axGzUwWA=;
+	b=SK+25KwJlMjF+iql7/KSgoUUJpqv50cnREU5tj0HmrWNa+I2vNBTzRYFXNoZ2HnRyl5v0z
+	15OE/eX1upTGHOJk9/AcNExLi95bCqhygQvigcnkSv8QpDJu51TkmPLGGucp1XN13koLhR
+	XZU04SyrO/vI8twyhSZXgc5br9hV4U8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1792066744; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=pR+ZsPE/BAelWupFuHMCruhA+1GjAPIp291axGzUwWA=;
+ b=VG+PLl+wPZaDDPMYPq6GkxYmKO4rNSzfOLsHrao2RDXa+4+k53dLu2UYnf9gyp2fTK2QdU
+ Tn64X4BBxrbYniN1GhgIduuJYDU9d4njm6H2AvmGnU0XuOfTbqNs2Pt/GSVq6IrWyxWyXm
+ CI+MkxfWi6BlQljNAkSrPqPjWK+HHSVA27xbgWXPfhuuOxykuXQsKOHN1LNqUfpNdlsCsQ
+ VksMoK0AMe75t+QYbjp3E2/SrxjSUUzUeLbao/JRR4jm78EPARLKbXy3PWQ8+BITBBssta
+ YMeZXmf8Esd8d2jIM0t3RkM8aryIP93oQk9NqS8Kkg2jfwd7/hlGVUR/G2Z4rw==
+To: "Jan Kara" <jack@suse.cz>
+From: "Jia Zhu" <zhujia.zj@bytedance.com>
+X-Lms-Return-Path: <lba+26ad0c4b6+e3dc6e+kvack.org+zhujia.zj@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Cc: "Jia Zhu" <zhujia.zj@bytedance.com>, <amir73il@gmail.com>, 
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, "Shakeel Butt" <shakeel.butt@linux.dev>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261015121850.1448810-1-zhujia.zj@bytedance.com>
+X-Original-From: Jia Zhu <zhujia.zj@bytedance.com>
+Mime-Version: 1.0
+References: <cover.1791452174.git.zhujia.zj@bytedance.com> <mzx4rhr7zqhza6qh7zefytrmcx547nh2bvopwtdnannhnjl7md@sm2kdibrorwb>
+In-Reply-To: <mzx4rhr7zqhza6qh7zefytrmcx547nh2bvopwtdnannhnjl7md@sm2kdibrorwb>
+X-Mailer: git-send-email 2.20.1
+Subject: Re: [PATCH v2 0/2] fsnotify: drop SRCU across inotify event delivery
+Date: Thu, 15 Oct 2026 20:18:50 +0800
+X-Stat-Signature: 9sfh39wf5m1ftegptastkppduk4a3ryu
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 47CDA1C000A
-X-Stat-Signature: hf4hw6zwqzpgttfsrkn1ft89yr6rcr73
-X-HE-Tag: 1792066523-391951
-X-HE-Meta: U2FsdGVkX19fHGYwx0C8BS41DoUx6HJoohpulL322mn0zVIfnLxqApUFbrlKYidhhInVlYyXTh0jzqAoqvJR8JHKzrJYExJrMoshohVfSDjsIwtdPsRiV4MVcRmjNi7fcuqmRIEsq+SrF/3OirI0NHmMFFNitPw4dliaAwD7iotVuGSIu5cNG/iX64gBp04RqUOMqMfYmi9Y8uwX1YJan3nWFcXnGwcUDTi3iukIBU+me7ruVtmggVosdVGt3ILQA/iwU9DsHWNUjgKAYCSl9JleZiba7/h1TtoWNQaHKWsq0MNmcz1ZeUze3fIYEYA8B6wjKoJNqA/K39qfgbGNrvFBX2SJOGKICeBbYEstPreaWt1WwsZyN8bCp7naDCnJFg2TJ8nAwvGjhzda5VQyt1lIGImtfwxSYKD4/gCE5jG8IjyNsL0ZPc1qkfNlu2BSq8jd/NeDCUwXtdqU6HvuVZwUA8ZY1iin9XqEct/uR+NrcMSGdNen55CHrhNkPWYNya90WkTmn2iISLoMsMEHRmwWwGQ4J62mzavjTx9WwgmFfrtyeqN1ecncOv/6qgj3nm3T1OtIX89XxVry6ird7o/uG4bJ83vUjLz8fLodoNPbQhW7DtwXrrlEVU7n9xkrOrbd8Sh5cBd5+1Cx8/Y6rU1HDezTA4Vhx/cfzHBi+RZJGoFGrUlG2pZvJc/WQDthWshseIw1/Y5z2Qf1CmdTQsLB4KN5eOtBY62zflD+rItwHjcOE6qMGRM+danRYzw/KG9PcMD4fT6M7A7ZB8gdYHrIDKhyRul3g8T/e32kz9T4LucXGEIsrglX6ZltM5dEQqHFeR2+ivCY47H2r7Ato851gzFEESVNngXqb73cFk+lMWfEGI5tLsfBcDCMQwbeLC2de316AB5ab6oNAeCcJMnx2vZ5WTiXEpNUR1/BcsF3ZV/+ZfEBZleQyFWEzWhGr2w46TBq/yJA2j5Md77
- OZkZnfU0
- rcf7gV1w7lTASv9XmCenl+/mMwztaiHsuOAGq1YccdIr8ha65nb3j8DZ8Za3bIjElRhD624AmMCkp3A6Teb3TEnI/eiMDOa+xJlNDN1UL7nPR3b0riK8ayHiQOto+AUvc/5DL1faD1GzVR34k3wZgteG5wluz6lJ+/IJKi0yqn7wyZ40ZQ/+9L85bUVVXgviiMGqEyMTWqzODsYw6O5vMXDxPLCoyo2oSa7U6Dhnfm/crABinKpBiqOzaooViuuyy1OKDvJPd+6VaMhEaHOEgC9HNQhn0Cc0A8mkp3hRgY899qa6gMWUaKfnVn2mqPf/R+cHNhSWvJpqWAYCD/cgSlWKvPsEzaRZepyIdFEAtLS0jg/fa8VxrLxTNrmOWGQsdymQNgtLt30cGWN3rZTii6riK7sJqapL37SumlZXFLxJaNIouLN4V8FF4IK9ucJQ8ueW23HRCZYFnqwQfQNZgl0BBoKMGoQZ8z8h9qKCA1dNNO/o=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 02563C000A
+X-HE-Tag: 1792066748-189920
+X-HE-Meta: U2FsdGVkX19UnnPkvMuTsPsDDYZBOYxb/Y0pYeV0xBXxe5siLNL2nBRMxj87j1fyw8VtiPx5SmC6QJ4cy3eIbN3oeE5036iwKrmauCld3rz6mrXl+zzNn6kARc0/k6bqjQM3TysAS9xhqVVcOmVSJ9WQoEsaecibtF/f0giTOhKuc3EsfT6CbFiCeDP4z7nRcGY57tJZeqYwW4Bf6Pb6l5BIJDELa4IzkDUVbOnqjtiRRtt7SXokgOlNsqjMj4vv0VidOVEDXa+o76TnES6Tll3asxkgQekYD0k+ceh7o6wgL29dMWKoWrzURnTWE6qVH8SvLtRjDT+XQ4FW7pvneNoSi6g1W0e5gCPmziWg8v3mT/kZ+CyLgo86ur5/NImURyNkQjrhw0HPMJHDxZBCmLH1lQQ0kPTx4dPyczwFyRhwQsbemE0MroUuvDONHD4pIsIrOCg2AkMwIxkWc3lgLhziKsM4DD2dIxutY622nhoHUncgT/s1IucwtEMXpgYIBbzIZ3Wv6v/kInTJmk5kYhJVakw3g3UYQl1u2k44IpZlTgEJdlfPj7MHI8qeb8Z4ssVaIKQwRCd2GVqkP9g8bQKypR7URI9+ywDHmKKQkwURJ7A9t82QDB90w9MbJQU2JRby2kHAQk3VNzN+l+cR3HZ54Xz/Cj1PzBY2vJugU1d0Ucecx7e+4qJNt8Yz6ve2m3n78j1PZPuav7UPkZkAoWNngD2cfB5KEEz3CjbKbXgUeboUSq4Dp3e2OkYM8688E1kiXTwCiL7yqR3olj7BXWbuRuyiwoUZ3erf7pkFrgzK+raM3K0mOkouikMHdIdOsBI3yNRzZLIdLdhigg6EkhDPcCb6DzJZ04Z7iKsff9OLcSu0etYVOSgPjimhOTm/VijmrSu4CGRVzoWyd6+8OfyvLs498wFb5sk0ejtfMDYSqczO9pPaGKXOj0CLy9TU24w2Wm2AVNTp5Bx9R4K
+ VtE+fic8
+ 3sNQTKzTftJ6WOcov63/92i254G+FgsBtLOLbeCOysKR1/TbIDYGt/pO3QkugzS45v0K8sZRWU9HSpEFD63uwF8jUzrYyx5Q2fC7SVCxdKlAi0qQHT/nAwsTgFFID4U0bsjdV6LzC3KgzEu95Uff5oNlAH55AveqfR3BfyToWhhPIYPF5EkWpPIOgjF+4dnBFi0WY/xi3p+BcXCcp+r3S1EOewViujjqVDmAMgGV2GEaRVlY8ePC5RT9p1KmCEdAVY0nx6mvdfxNI4CY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,72 +90,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Oct 15, 2026, at 5:08=E2=80=AFAM, Harry Yoo <harry@kernel.org> wrote:
->=20
-> =EF=BB=BFOn Thu, Oct 15, 2026 at 10:38:14AM +0200, David Hildenbrand (Arm)=
- wrote:
->> (CCing all people attending the mm-next call)
->>=20
->> Hi,
->>=20
->> After talking to Roman at MS, he just informed me that sashiko now has a n=
-ew
->> feature combination:
->> - "embargo_hours": hours before review is public + emails sent
->> - Mechanism for signed-in maintainers to lift embargo immediately
->>=20
->> That solves the key issue I had with sashiko: people/agents re-spinning s=
-tuff
->> too fast before a human at least had the chance to jump in first.
->>=20
->> I suggest the following sashiko change for linux-mm:
->>=20
->> diff --git a/projects/linux/mailing_lists.toml b/projects/linux/mailing_l=
-ists.toml
->> index a9198de..ba123da 100644
->> --- a/projects/linux/mailing_lists.toml
->> +++ b/projects/linux/mailing_lists.toml
->> @@ -46,7 +46,6 @@ ignored_emails =3D ["patchwork@emeril.freedesktop.org"]=
+Hi Jan,
 
->> ["linux-integrity@vger.kernel.org"]
->> ["linux-kernel@vger.kernel.org"]
->> ["linux-kselftest@vger.kernel.org"]
->> -["linux-mm@kvack.org"]
->> ["linux-nvme@lists.infradead.org"]
->> ["linux-omap@vger.kernel.org"]
->> ["linux-pm@vger.kernel.org"]
->> @@ -315,3 +314,7 @@ reply_to =3D ["author", "list", "recipients"]
->>=20
->> ["fsverity@lists.linux.dev"]
->> reply_to =3D ["author", "list", "recipients"]
->> +
->> +["linux-mm@kvack.org"]
->> +reply_to =3D ["author", "list", "recipients"]
->> +embargo_hours =3D 24
->>=20
->>=20
->> Which means:
->> - Embargo 24h
->> - Mails sent to everybody (author, list, CC list)
->> - No positive-review ("looks great") mails (default)
->> - No other static email addresses that receive a copy (default)
->> - No additional ignored author email addresses (default)
->>=20
->> I'd say we start with 24h and see how it goes.
->>=20
->> Thoughts?
->=20
-> Acked-by: Harry Yoo (Meta) <harry@kernel.org>
->=20
-> Quick question: when are maintainers supposed to lift embargo?
+Agreed, addressing this in MM would solve the problem more generally.
+I'm looking forward to Shakeel's work on this. Thanks for the review!
 
-They don=E2=80=99t have to: it will be lifted automatically after 24h (or wh=
-atever is configured).
-But if you as a maintainer has an immediate comment to Sashiko=E2=80=99s rev=
-iew or you=E2=80=99re ready to pick the change, you can lift it immediately.=
-
-And of course maintainers can see review results immediately.
-
-
-Thanks=
+Thanks,
+Jia
 
