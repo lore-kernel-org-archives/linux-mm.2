@@ -4,120 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5AF6CC6B2D
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 03:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A0AECC6B30
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 03:19:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BC136B0088; Wed, 14 Oct 2026 23:19:49 -0400 (EDT)
+	id 797D46B008A; Wed, 14 Oct 2026 23:19:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 972146B008A; Wed, 14 Oct 2026 23:19:49 -0400 (EDT)
+	id 748F86B008C; Wed, 14 Oct 2026 23:19:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85B246B008C; Wed, 14 Oct 2026 23:19:49 -0400 (EDT)
+	id 637A16B0092; Wed, 14 Oct 2026 23:19:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5634A6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 23:19:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E02C61A08D9
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:19:48 +0000 (UTC)
-X-FDA: 85323406056.05.E9DB36B
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1E86A180005
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:19:46 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="QzrA/PAY";
-	spf=pass (imf06.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 20B936B008A
+	for <linux-mm@kvack.org>; Wed, 14 Oct 2026 23:19:58 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 87DC314088D
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:19:57 +0000 (UTC)
+X-FDA: 85323406434.17.4DB5952
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B3895100003
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:19:55 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="itXG/BTk";
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792034387;
+	s=arc-20220608; t=1792034395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dDuUS9lEAlDmYNRCGgtkqtpjRNa5kOmWvu33Let1WwQ=;
-	b=h390n8T7MI0Zd56Wf8IqB4g2zEadpqZdL27jorizXoYwPPvWLQ62OZXJwnMjve3OSlsd1t
-	8AL/CDb4gDNrKAowsuCdvOLXnXzn6uTLdOwTV8sYmSMeaoC7Dh3bHY1pD9OhquW+Ikjf/9
-	+yo9zbLTFjkyqGXefjq7QY/Bg5c96Gg=
+	bh=V9QLU7Zy1JxvuPwl1RadI1Kh1ZC3AW3elrtvC4EPZVY=;
+	b=Fg8j93dNJJbWCzu/FHPK6lOqZUKpsPu4ztL5Psgkw3qnuoAvHV2FBSDAWkJjQrZqqzXkSo
+	NL0qxitB+qKxFwczh34EIbjn7ENaLj+dvtXE2lRmoElJe/aWfXaJKP2y3E0PJwA8dl0uf6
+	BL3HEJ+K8EJzQa+JjNiS32+c7j5eN/k=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="QzrA/PAY";
-	spf=pass (imf06.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="itXG/BTk";
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792034387;
-	b=UqkCPhYPi3++OxnO696BefLt/yjDZyWeUw4b/K0llY6ZGSkJ7b0n2K/xcC1TjE7gilwPPL
-	Lnt8Fo9IG4l+cButQiFG+BKvDzv9MC4Il6Zk1jZZLdBKY4X6v2eumsrFmHpioddmtXTKMZ
-	7OzGp0RkOhwbW5IMQbGOs3Zqmywv7+o=
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-35f036b17easo1332888eec.1
-        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 20:19:46 -0700 (PDT)
+	t=1792034395;
+	b=mw5skMSdj5d725EBxfLOIKwLMwJVCQbdbjPOhKhmSJbkCskFPODdHqmWnpWyEKe+nxJr8y
+	zNSiXjMHWjFRGI/3/9/40gQhEcU4abLEsa4OCwuLzjJcYwXAUllPXy7JUSHx60LYoJQY8b
+	+A9C98LbXbvXl18V5r8pCN0t+Crc+dI=
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc7e79c1eaaso2160256a12.2
+        for <linux-mm@kvack.org>; Wed, 14 Oct 2026 20:19:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792034386; x=1792639186; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dDuUS9lEAlDmYNRCGgtkqtpjRNa5kOmWvu33Let1WwQ=;
-        b=QzrA/PAYEf1lExEFbfAViflm9I6//VA2vuVRQE+S0X5lx/trDo01ZOJUTid1ZntROP
-         AP9X87a1STkhhdxVVTW0P81Qkm37MBTZzz5qLT4RDMKP55iOdNf6vyIkN/XUL4X2up4b
-         7hNsE7TfZXyGYnmXJ8sgRRgdM6MAFbf+ZnMxqCZ+mkxeEIbZ+N9hnak+ODR1N58ZmFaq
-         d0HEXZoqHO7c309OjIKhqla1nm++hCw5RZWBFoynEVDmTJi9GCDHEMZGlLYPa+uv4xBi
-         0ZWTMUSuKdCV1vmx/EaAXNcj9m8gqkFZO28qjyBRB56wZxuDHPSUdzLX6WuV/aLJ1x00
-         RX+Q==
+        d=chromium.org; s=google; t=1792034394; x=1792639194; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=V9QLU7Zy1JxvuPwl1RadI1Kh1ZC3AW3elrtvC4EPZVY=;
+        b=itXG/BTkZ5aBzPYkbwtY3xzxgkL4fnESpAeRJJfmJyI/oLxuVQcHA3neT2WZ3eS6pj
+         ndLwPCnN/9NkUnFh8Ap1l5+RdaNq93PhR3dTcMaVTY0Mws/OWA09jbPnrrrPbQDQDgZX
+         gwomeEd0tB/hOf/lxsyVmspApnQPQSYeM2L6c=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792034386; x=1792639186;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dDuUS9lEAlDmYNRCGgtkqtpjRNa5kOmWvu33Let1WwQ=;
-        b=rKKCyGKrC0du8PFLvncOx7gwP26U+C8Iq8pjsYQBQjU8RcykLxBdblNpQbAv1dGBEm
-         mG0q4+3iZ9zo0NkiDH3JzGUBIump4ZxhCF39RGNrgn1Ws4owOm2TLtg196Q5TE94eDpR
-         BGw64DcGDzIQ8p3whEFk6DxSUoq7cW9g+axbk4qc3fgKMDR9scmC/VCja00vHF5g2HW3
-         5IcwndiORNwCv7plrlr4S/J/q2vlAx2Jhxr4bPZuXXBx5MUb/gSclt2Dsgor5Jhwsfh1
-         7CM//AEoBDCFLpK5nkcRjQQ5DdsHr9J6JvEMzzLjG0aY6V6qNbQ7QHpNB34Y0eRZQgJx
-         nLIQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw3UpkpuI344HOG3XQWxZ0P1LKA31kpcZUboPmSDfsPAsahhV2b9z/a+my7p7BbQK5V9AKOCBzr+A==@kvack.org
-X-Gm-Message-State: AFq9FYJqLqt4a3IxN5u+jlaCGi9z+2cIWNtbk83SRPFwbg0XJxenxAJJ
-	VtCLxMRZMySm0D0JhZtIaWsO0G2kAmjbVVvTVUI289LFQeDeqqw0Wfvf
-X-Gm-Gg: AYBFou0c5SkkRN8zby1CTU01026Bl+on/nFlfyBQS9/ouB+8mfC+CXataO1gxgRYQjd
-	aYXMqhm8BGz0JaFWJTl0VgxDMzSDtAmZQsSq7CvudCZFv/sPVtaTR2yfpS4AR68rsh/C0qtkmcw
-	CsVpzh35mLFW814mdCF5g14HNi3v2MAkmij76FuPGsCrF0DFSpaJA/bQkCge1GWaZKFoajGYhuE
-	sU725cp77cqZDnntQRQ4oKUOkzBXftARqB0tyQEMXVokPTkDdH7nmvJZzde5AWJTqD4+H7pkZum
-	sZQ/N/pbMER25/B7LuYwGjYPYj6lYMzdjXSsl+SJgcEGlejHlNa0XhrnPxYd3CUcjUdCZJOtO5x
-	mxhedF6UGW2Wm7yDp3Q4Soqiu22mmek2SfezUjGYO+VF4mHziLFiN2cC59Y+yGBmoVc6hnnk8ig
-	DTzrp1vmvIxMrbxszhc6nLMrUnM8+YmWnZ7j8U0NNFPyP85eLgiOyQXdfMZy9cMq9X6fWjZ42F3
-	ZbrsS0289GvaRFl
-X-Received: by 2002:a05:7301:3a84:b0:351:985:e729 with SMTP id 5a478bee46e88-3537e01e8b6mr26189806eec.12.1792034385583;
-        Wed, 14 Oct 2026 20:19:45 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-353814b556esm64832837eec.18.2026.10.14.20.19.43
+        d=1e100.net; s=20260707; t=1792034394; x=1792639194;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V9QLU7Zy1JxvuPwl1RadI1Kh1ZC3AW3elrtvC4EPZVY=;
+        b=URzFeYwEzQ9IONP1BqhwPpqVj//17kqaU2aYo/ZpCL/IBY1pKXF4KxsCQrZ6eLBp1Q
+         fgVyycOGBBqy4OjW4p/CfiM/F6PFIU/zjWCFqHwchKh41O4IXkF7RcwPHTLGKkQNr8NX
+         pV24DjnyDhT00JJGXUJS3tBxms5SC5oe9X8DLZ2ZbwlJDI8cui7cgXC7M3FFKUlNLUXm
+         zgAMbXCQLAozwj5FPlIZecctsoWCVjRESfySDrKb/ZNirLjWlLFMklVIaghQOFxHFTgf
+         +BAaPnPjHZrq5iZsxCn56B38Ydj1rHxYKaUQvxPo63OtlTPOP7zAV+iTvwyY+HQwle4a
+         pRXQ==
+X-Forwarded-Encrypted: i=1; AKwUvBymTBO4eQ14i2vVMTCBIpega7dipoUSHUKAMqehoGA4F4LTxm8C2lkONOJ9NUWFyZiqjlvS00+bAA==@kvack.org
+X-Gm-Message-State: AFq9FYJYK+zebhxRiN+wtwYEy2BsFnq4/eualun9VAiJ/XjBPCtTbXbV
+	bcLqz1MEnVG3zycd5wzxavOH8zkKWMVNp4ejStBircwr96WA4M48RAgAf0LMx5sSQw==
+X-Gm-Gg: AYBFou2/iNFP2nADwBCKTiFLkq8oCplmfrICXzQZUA2SxwhrrrrA1bJDpkYkoakYbNP
+	dsVPFA5EfEWSLyZmPeEoF0/moWojJ5rBD1XIQje93uJlVMPgCJhoX4gmmDaVFFX9WH6DfRjLyKI
+	CUP1QrGMf56uVT0yZ8vAsj16whpv+JBtKH5n7PFY34CFtnNPob7WHWy8MrRUUTxpMwPng3qJUdY
+	Bt59FNeDBa//W44Eb2N3inR+8sFa4I0Rinm2tyhq1C2DjgGDsA08muBOhojgCt5TtxeHA6G7wwx
+	5HH8oMJsaTMMoQ+iUO8BuCydGHRrPCKwnAoVwy747/1sn7iqR4Ra1L1etvVADIa7Uo1NHO8d4+a
+	afVxr5c200/4DiYOlkTI+6jX7uP1+OU+iEI5/ziR9WZS+6fMCnDFTxPQ+yygH3LiG6f78Br19ez
+	iBgdsGGI723l3iYgsxmhCyCJXztq5MWMwxuLLuyB+80HEHf4QvMvUDBs6uu7C6Qm7+u65PhPdNk
+	J3+c77mEA1i1GpZJ1qW1u3gYoEgkRDP0hVVTAI=
+X-Received: by 2002:a17:90b:39a4:b0:3ac:8ee5:e007 with SMTP id 98e67ed59e1d1-3ac8ee5e69cmr1654880a91.20.1792034394534;
+        Wed, 14 Oct 2026 20:19:54 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:8455:7899:5a2e:26f8])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac93849da5sm1176737a91.4.2026.10.14.20.19.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 20:19:45 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: baohua@kernel.org
-Cc: senozhatsky@chromium.org,
-	akpm@linux-foundation.org,
-	bgeffon@google.com,
-	minchan@kernel.org,
-	richardycc@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org
+        Wed, 14 Oct 2026 20:19:54 -0700 (PDT)
+Date: Thu, 15 Oct 2026 12:19:49 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Bo Zhang <zhangbo0325@gmail.com>, akpm@linux-foundation.org, 
+	bgeffon@google.com, minchan@kernel.org, richardycc@google.com, baohua@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [PATCH v3 10/11] zram: use rw_semaphore for decompression streams
-Date: Thu, 15 Oct 2026 11:19:40 +0800
-Message-Id: <20261015031940.1410875-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAGsJ_4wuPCPR0DnbrLp7ebdO=Oih6K_yP4XxwETKQ+3U+THVjg@mail.gmail.com>
-References: <CAGsJ_4wuPCPR0DnbrLp7ebdO=Oih6K_yP4XxwETKQ+3U+THVjg@mail.gmail.com>
+Message-ID: <atBAWZ3WZvat3UA1@google.com>
+References: <20261013035201.2809924-11-senozhatsky@chromium.org>
+ <20261014153603.1365617-1-zhangbo56@xiaomi.com>
+ <atAj9o5IgrAeiGiW@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atAj9o5IgrAeiGiW@google.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B3895100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1E86A180005
-X-Stat-Signature: qtf8octo3a1c65xi4wy97dj88yhik56s
-X-HE-Tag: 1792034386-511796
-X-HE-Meta: U2FsdGVkX19WFi9Ot4khhRHkQK9yGdmEGnwCUGBgO1L2oaaYClkTDZ9JwbEmo89nByn7JV0z61QNF4YcpeYRhdPVZjw2f6x5OwZrjedxDxEv+rWpZ7cKWLDXDFC7g4YufXvLgFBW90KtciZWb7v+yIwUURc5v28tTfZ0COSxaL+xNTg/xx77wRY9Ggtyr7H1Qh7Mwmq7meJzB1HeHz/vM0PYqwNZP9iqDmI7hg5oPBFPA9lIh9D9+dIj6XcvdENmCa3wVpRZxW1tTjP9nta6bdY94nx05vauBWgzM05zs9vCTaMFoQ1SQyW2gWP4uPq185qK4lqZpWCGRWF+PtZxUVvPH7Ad1qzF8kCo8t3wQZ4gJS7Oj8BWfmxbOk3f6IoveM+wMkPwK1scvEPSee2bMdWSlJ25Egm3B8mFhJTh8ayVA8UHZC5IFHQ61iuLOR3RQQ/7coWGfoZmBb0cHK/6DgUL6W4A5jyuuXJ6Nv6d2bOFPiFIAfxCTRpTHlD0IXsGbpUL+j10aKWpEwenlLGrsd0XAnScZkWrFxtZkHkVMCoYKpuHjOHBs9h1ZBC8n3en3ZKPiSoRkf8qyXcKAJM2pVhuy7eQsrFsFzjSSR4CnS3bwLNoDHcjfJyMGailx5HrZYmRZDc/UXK3/cEUZVQkaT8C9hPl/fPuatrfihg537gnsKkstgV/5nNArpflkp7OJnQeN0w7l/dp49CKEmdIDwpNE/l4efYYrwJf6LhlNQFg7u4uHDdu1/XMLc1gZ7GrEIMCjPUYbPv+PdDx6U4Hw3IkE/bM2y2IKtg47rTk428yxbEP7AoguTv0SlVp7AGGh/TgyyKzrMislOm9gvxPs5T0AU1/Jwm4l8C6niB//7xvgfdz9EhoQNTOmt27EiV/6iII8UiEPxz0DQaDaZ40+VluqaTgn4Vaoxj5aFhAk0pjDOGTmuKTobAdoTxH5VW5fI4GLhdUU8SBTtpjXyC
- 17e7DY1k
- KN6hGBSHPjaRiPFdC54vq4AfXlhhAcy1w1hVzM1N/xnK1WbiKA6wAcfoery7f9aHS+XLnr7dWdr4w40DyLZhN2KAY1N0o/2SMqudgvOuaRelarvcbFh9kbhd88EiP5wvaVeUm6adlQ1iu5zPWNhTBEy4tDdu06088jOqBgpi4vBiVoMphMC4oV1oteMlcsvZy10FZgjQC6dtLenCY1pslywZuAyFSwcxuW2rL6+H0tDWpmTikkx6VyxbzaFfccafpwqe9nfKnBPiDIoq6/v/7Y81r1igQ1fWC0xGycxxJ+aZw2P0ONLqfjgF4S0aNUuBgkH1w4BVMC1AbyCnirLeMW5ZbkyRQfJGpK9nIva9nhNUg27Rx5Yg6NzqDGYj+qNZ7NlvTny5Ndr9lIUkNoYtyfBeLQnwedJD2Wrku
+X-Stat-Signature: hr871g3xnwuzbrx5bnqx1tga946i9yez
+X-HE-Tag: 1792034395-262136
+X-HE-Meta: U2FsdGVkX18eD7BZ84x7CNaSyVj4XhwfQUaBFRKOuktA7JcW1gyFPiDFauYd85SGs4OH30+0xZX+O4nZ01ll24O33iZp2+q2uVV+R3EjBsVmG/i6X/qh0uSNOaqJilH/2XJ7zI3FVnavYrMO3RTAPAY8oH/qyHC0KI2i4rh1bojEZljV3XQccurmUJgV4lAEqWJ/5ijXhAV/nP49WZLNe7k0MTMbyBgn53V+wTlO4X/WhZExqt/9fqyjxYwFOdhFIa5ebkHXt3I1znBRE7Vdi1Bf0ip0IbBquoq7nPRO8CQn84UIHZwdow+rRa7xyN6X1pRx3ym/uxt3oHn0vQu7x+B5vq3iDxH0dopr5fxZQpxIllrJN/MDLaOFhzkXr800zFH9P1K7+tMB5fZKm5AfdrY1EhYyYvPVbB/4/GLk8CN05N0af5hLOOWwMSLflveReGQaye+/e5Fa64Z9zBHCxuAb8rjFaA0N+0vivlc76SvP2FWJQ7kwjMLz+iKr2mlAcddebUXcTVZzYPQE1CQfV1I6WDi5H8UEyK/l+IRTqWTH1Y5WO/VT1YJlST5RHG53IXRNNPMyQ1zkOZ5l7xthrT9aiO/1lyqre5PlmC1nBCo8KeNzjb/mKRdJ7M+UTatWYeYPUEgnSxtvzMIJcwAUmk1wHUW1kpheXv0qPChDNze4lx/mhL1zgnTuXtwEQwL7eycn7rv56ALxv8xOxQmXjntCw7YwreMFnxzod/2v8T9vqFoFkAZGsVEM9J5L1W8fi3v/8Dlnw/KDNxtrKgbKhnd+gk6IB3uC9GPgExdH1fdQwHAoW9FSDoZKv+2kVEzOHM8WEBxCkg9qSRUgRGXk53Aen3rDYuZmFJsjSEzEQYJ/5zsrj2qwP3vn9pvP0vesc1Z5CDRdaPqH7woyiirOT/5aweHz07AS+IEumVgD9zCXfI9zxyiOvcN8ybeWOkIzXxXk9fTbe6bPXWcqQ1R
+ ejvnYjHq
+ hpFaC9cjLvPTsQIB5qBxcQiAhYJCFv9DKIZyS3cW8Cz/WMQcRyyR3op/fQIp6wLQcz8Qmy3snT4Igj9MMG0x9dNg/txrF9pCnfvPQgHMo60Ma7r1EZpCPLfpFr3V4oybsdMtFgVUQsTS4D6yrPCJZXmGS1EIEkd3PEfLQCrbrw8y94py9QD4Wa43Syj3xsuyE5CsqjtMzxd+WuJoUSHd6LfYI/8z+zAzsYPZzp9FLFFO0YglHk6iHy5z4UiTaIITcp24RsleYTLA3p9zGmQt20Ty2z+PB9DEm1khXRuh6WxvoA+38BpJAeCgQjls8GQiU0x1NaQkaklwhkzsD7H1jr/DWDnn3FF5keMXq7PtG6PZ5rl5/XT1WvcVBel9VRo3TXuS339W3DjnPkzvYlA3kC1A/tQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,32 +119,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Oct 2026 04:46:27 +0800 Barry Song <baohua@kernel.org> wrote:
-> is it due to the case that sg_is_last() is false, local_copy is needed?
+On (26/10/15 10:41), Sergey Senozhatsky wrote:
+> 23.3% is a slightly high bounce reads number, basically almost 1/4 of
+> reads are exclusive.  I wonder if we can do better.  Technically, the
+> number of bounce reads depends on the data.  Data that are not compressed
+> good enough can results in much higher numbers.  E.g. if most of the
+> objects compress to say 2500 bytes then every second object in the size
+> class becomes a spanning object.
+> 
+> I have a quick and dirty patch that turns ->local_copy into a fallback
+> slowpath and uses vm_map_ram() for fast path.
+> 
+> A synthetic fio test in VM (reader vs reader inversion test).
+> 
+> BASE (local_copy + excl_lock for spanning objects):
+>  Run #0: 1,434k IOPS, avg 3.74 us, stdev 443.11 us, p99.99 23.94 us, max 741,374 us (741 ms)
+>  Run #1: 1,465k IOPS, avg 3.36 us, stdev 99.88 us, p99.99 26.50 us, max 187,415 us (187 ms)
+>  Run #2: 1,454k IOPS, avg 3.51 us, stdev 171.87 us, p99.99 24.45 us, max 257,715 us (258 ms)
+> PATCHED (vm_map_ram() for spanning objects):
+>  Run #0: 1,471k IOPS, avg 3.33 us, stdev 14.69 us, p99.99 28.29 us, max 2,844 us (2.8 ms)
+>  Run #1: 1,463k IOPS, avg 3.32 us, stdev 15.93 us, p99.99 24.96 us, max 5,182 us (5.2 ms)
+>  Run #2: 1,458k IOPS, avg 3.34 us, stdev 14.70 us, p99.99 24.96 us, max 5,619 us (5.6 ms)
 
-Yes, exactly. Our tree isn't on the sg read model yet, so I detect the
-single-page case via zs_obj_get_pages() (page1 == page2) rather than
-sg_is_last(), but the condition is the same: the residual exclusive
-reads are the cross-page objects that need the ->local_copy bounce.
+Or perhaps we can avoid vm_map/unmap.  A slightly different approach.
+kmalloc on fast path + memcpy (zsmalloc objects are strictly less than
+PAGE_SIZE bytes)
 
-> Also, with either deflate or zstd, create_dctx() will
-> always be present. So, what algorithm are we actually testing?
-> What happens if we switch to zstd?
+   Run #0: 1,475k IOPS, avg 3.26 us, stdev 14.24 us, p99.99 24.45 us, max 5,617 us (5.62 ms)
+   Run #1: 1,472k IOPS, avg 3.27 us, stdev 15.35 us, p99.99 23.94 us, max 5,619 us (5.62 ms)
+   Run #2: 1,473k IOPS, avg 3.29 us, stdev 15.37 us, p99.99 24.45 us, max 7,190 us (7.19 ms)
 
-We're testing lzo-rle, which is stateless (no create_dctx), so the
-~77% shared figure is specific to it. You're right that with zstd or
-deflate every read takes create_dctx != NULL and would fall onto the
-exclusive path, so the shared benefit wouldn't apply there - as Sergey
-noted, zstd mutates the decompression ctx and its dctx workspace is too
-large to allocate per-request. So the shared-read win is really a
-stateless-backend property; I should have called that out.
+---
 
-I'll also apply Sergey's vm_map_ram() patch (with the memalloc_noio
-fixup) and re-run on-device. Note this only helps the cross-page part
-of our exclusive reads on a stateless backend like lzo-rle; it won't
-change zstd/deflate, which stay exclusive regardless because of
-create_dctx. Will report the numbers separately.
-
-Thanks,
-Bo
+diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
+index 39d1f9384939..1838057475f4 100644
+--- a/drivers/block/zram/zcomp.c
++++ b/drivers/block/zram/zcomp.c
+@@ -181,14 +181,13 @@ void zcomp_cstrm_put(struct zcomp_cstrm *zstrm)
+ 	mutex_unlock(&zstrm->lock);
+ }
+ 
+-bool zcomp_shared_decomp(struct zcomp *comp, struct scatterlist *sg)
++bool zcomp_shared_decomp(struct zcomp *comp)
+ {
+ 	/*
+ 	 * Shared decompression is only safe when the backend has no
+-	 * mutable per-stream decompression context and the object is
+-	 * contained within a single page (no ->local_copy bounce needed).
++	 * mutable per-stream decompression context.
+ 	 */
+-	return !comp->ops->create_dctx && sg_is_last(sg);
++	return !comp->ops->create_dctx;
+ }
+ 
+ struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
+@@ -257,22 +256,37 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
+ 
+ 	might_sleep();
+ 	lockdep_assert_held(&zstrm->lock);
+-	if (!zcomp_shared_decomp(comp, sg))
++	if (!zcomp_shared_decomp(comp))
+ 		lockdep_assert_held(&zstrm->excl_lock);
+ 
+ 	if (sg_is_last(sg)) {
+ 		/* the object is contained within one page, read it in-place */
+ 		src = kmap_local_page(sg_page(sg));
+ 		req.src = src + sg->offset;
++		ret = comp->ops->decompress(comp->params, &zstrm->ctx, &req);
++		kunmap_local(src);
++		return ret;
++	}
++
++	/* the object spans two pages, linearize it */
++	if (zcomp_shared_decomp(comp)) {
++		src = kmalloc(src_len, GFP_NOWAIT | __GFP_NOWARN);
++		if (!src) {
++			mutex_lock(&zstrm->excl_lock);
++			src = zstrm->local_copy;
++		}
+ 	} else {
+-		/* the object spans two pages, linearize it into local copy */
+-		sg_copy_to_buffer(sg, 2, zstrm->local_copy, src_len);
+-		req.src = zstrm->local_copy;
++		src = zstrm->local_copy;
+ 	}
+ 
++	sg_copy_to_buffer(sg, 2, src, src_len);
++	req.src = src;
+ 	ret = comp->ops->decompress(comp->params, &zstrm->ctx, &req);
+-	if (src)
+-		kunmap_local(src);
++
++	if (src != zstrm->local_copy)
++		kfree(src);
++	else if (zcomp_shared_decomp(comp))
++		mutex_unlock(&zstrm->excl_lock);
+ 	return ret;
+ }
+ 
+diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
+index 924c4185abe9..6764818d2a9f 100644
+--- a/drivers/block/zram/zcomp.h
++++ b/drivers/block/zram/zcomp.h
+@@ -115,7 +115,7 @@ void zcomp_destroy(struct zcomp *comp);
+ struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp);
+ void zcomp_cstrm_put(struct zcomp_cstrm *zstrm);
+ 
+-bool zcomp_shared_decomp(struct zcomp *comp, struct scatterlist *sg);
++bool zcomp_shared_decomp(struct zcomp *comp);
+ struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
+ 				    enum zcomp_dstrm_mode mode);
+ void zcomp_dstrm_put(struct zcomp_dstrm *zstrm, enum zcomp_dstrm_mode mode);
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index ad244624d4a5..e608769bfad5 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2128,7 +2128,7 @@ static int read_compressed_page(struct zram *zram, struct page *page,
+ 	prio = get_slot_comp_priority(zram, index);
+ 
+ 	zs_obj_read_sg_begin(zram->mem_pool, handle, sg, size);
+-	if (zcomp_shared_decomp(zram->comps[prio], sg))
++	if (zcomp_shared_decomp(zram->comps[prio]))
+ 		mode = ZCOMP_DSTRM_SHARED;
+ 
+ 	zstrm = zcomp_dstrm_get(zram->comps[prio], mode);
 
