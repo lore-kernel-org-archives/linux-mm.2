@@ -4,119 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25B33CC6B34
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 07:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF23CC6B2F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Oct 2026 07:10:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDF236B0088; Thu, 15 Oct 2026 03:04:39 -0400 (EDT)
+	id 3C5E06B008C; Thu, 15 Oct 2026 03:10:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8F596B008A; Thu, 15 Oct 2026 03:04:39 -0400 (EDT)
+	id 376E06B0092; Thu, 15 Oct 2026 03:10:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7DA26B008C; Thu, 15 Oct 2026 03:04:39 -0400 (EDT)
+	id 23F816B0095; Thu, 15 Oct 2026 03:10:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B8A846B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:04:39 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33C85160962
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:04:39 +0000 (UTC)
-X-FDA: 85323972678.10.122871A
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 16AB1100004
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:04:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XFXPaqjV;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DF9616B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 03:10:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD449C0927
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:10:41 +0000 (UTC)
+X-FDA: 85323987882.18.788B9EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 10762180002
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 07:10:39 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtteeYFf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792048240;
+	b=wLR+YZb36MLhLgVLBWpi8bwhVLp0GQzZ6+iWjwHGtaDCgnUP7DL2Nm+azO6/0cbbnqrsrG
+	SkylqaPa2s/jYLsCqmV30KLna9uHcbQGZb4UGf5WD87ptg7ER7fUc69X3EtkhI6GhOguFA
+	WvsPclXUuGTTyJaVPKP2U5zZ9Z/sRAM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtteeYFf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792047877;
+	s=arc-20220608; t=1792048240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t/3aSoEQ03reUr8m22oz0Rnacm8T+cI8I55Y5UqdBhw=;
-	b=IUH4OJIRnOodyLAnnPvtLXBOdApgqWTFbAt4UR/aRpkgFv2MNkdgbeGF5ClvYFLLQry7/i
-	fVGd83lv/Id6DeDgzonmHeLa6kIL/IRqs7h7ZNtiduZp7JlhRGgcXWcMoAKV+f9NkYz4fJ
-	jNKEU0mEaV8t+Zbm0WEdId5/HO3YfhY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792047877;
-	b=DH6FWRjyzVncwHcr1g6pSD02xXCSPmWNSLXh/b7eLIfvz3SxAJh2quereO/Cjs8p84k1DO
-	+/spS9P7eRXCH5P+43zdlSBKCNaEQqEMHVnEILGd9uH5u49NewHS+jT1tAxtK8EXLI+vEX
-	KSmWnNtfae7aklweD6JDEfzlyqaA1s0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XFXPaqjV;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a01933b584so42097385e9.0
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 00:04:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1792047875; x=1792652675; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=t/3aSoEQ03reUr8m22oz0Rnacm8T+cI8I55Y5UqdBhw=;
-        b=XFXPaqjVW8vRJTEUU8kw5uSGKrDYiRYGGB2XCU2OAO2NJMPl8xraWIuQAPX3JCrlXZ
-         j4KTg1KEmH6sf/eSfM4y5xE2tCQRbAlf6HopUWhDQmm7AYhIbeAsQGwTvCgmBzRBuRSR
-         dePcZWmOfzjLPpgeSHfP0daGOEHY+UGF90ZUEE9rKRrfKnoUIQJCXP3zVW1Z0JXdYXMS
-         CuqaTlA6piZdRUMaLeTaygqJ7BgnBUeaL2P5twptlhNOUS9Vyvij4QballuJTL7Xg7Gb
-         T7NlIJSxgmKqn8zsbaJEi2o91bTq0hXA4U9EPxnvG+5AIGtpk4npmUFp/KFvQj1l2Yij
-         GnWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792047875; x=1792652675;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t/3aSoEQ03reUr8m22oz0Rnacm8T+cI8I55Y5UqdBhw=;
-        b=aGsxCagdqnIHUrxEON+4IUP0L5G2Py5eoDYYKA1LdzPAkmyMPtDCXfGvLa0CX/3x/0
-         sNOGLShe57ZTbIintdypjITC5TglUBSihop3umrLnK9+P51t8X8kMXVFxALTOV3YlMNt
-         qpr14//zBWdTQYa2DAetIYBY3V9KBtluHhEg7FjqqpQjV3grycSQcW2NOcxhCnJvAd5s
-         5pz3f/cJT+dUEHNcAnB4mz9bxg+vHsfzKWgGQgtNOEHw/Rqzmb6FWQ8+BxWnW8PYn+o3
-         O5SHV5L7XjghmDnjv05Dp5Ve3hYgTWbz9xL4DdgYng1kd55830UiR6AU0WL7Tc1YOF6q
-         FSgQ==
-X-Forwarded-Encrypted: i=1; AKwUvByj8lzdw0K059k9/IKw1EZ7mM0FjpbQVKyZ0EdJ20X+/9Sp/PJzwM4N9fgn3JqT01201ZA1mxDh4Q==@kvack.org
-X-Gm-Message-State: AFq9FYJHNati7h3mIYGelu+rQPd7GNpBH39nTz2e6j2S2ORHLMyEXjiG
-	IgEAi/zvvwOZo7qhiTaR1bexv0VTJ995HQtG+Supn+7B1pSoqHpu0mq9MD9b6rGkt1E=
-X-Gm-Gg: AYBFou3W/Wr/2BL9yfpY1VZ6cLxkUhnx1/NVelWvhn6knuLgpaY3k7z0JQSwCjDNLco
-	Xz/jY203c0L3+gNKP/WJo92eVy/0/Qar5+ER+j/0ZwJe0KvkJGCm2ckpIKQJQXc6fZ0Iu2zTkIl
-	OPzfmqHF7CJYErmTBWXs73Wqt8gOdc/5xiFvgQYA35ensdomtxdLOBnHU3xk7YuNfTLcDy7Lal3
-	snVBfYa7yj95l8WS4VsyINECQZK71o98IZZ4dy+/MkkFM36IxcQIjAAStubxF++YV904DShv32f
-	DPqwM+hKJI16HzDTN41bQ4hJ7isN1F+jPu9/EALZ9+DU1+SVhfXnbAPMvqNjJv6oasxaEHPmLQI
-	4SbopskGVqDdlg2ZrD/gy8T/7Acgrs4zlxNco64FP1Jg3Uprsuz4dOidKMdWU4EzrVi3JdjaVuk
-	/PVoSPR1iT34eSWjZKmN/ZpYCzKX7xoMoOetwKayoZ1osKmba/IoXsAk9NiB1xVWTJr2p4uGZhz
-	hP74Hj6pVNB
-X-Received: by 2002:a05:600c:548d:b0:4a1:71e5:9420 with SMTP id 5b1f17b1804b1-4a18e49c128mr367720005e9.13.1792047875368;
-        Thu, 15 Oct 2026 00:04:35 -0700 (PDT)
-Received: from localhost (109-81-30-108.rct.o2.cz. [109.81.30.108])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd69b2a2sm20612325e9.4.2026.10.15.00.04.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 00:04:33 -0700 (PDT)
-Date: Thu, 15 Oct 2026 09:03:57 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Alexis Bouzigues <BouziguesAlexis@johndeere.com>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"liam@infradead.org" <liam@infradead.org>,
-	"ljs@kernel.org" <ljs@kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm: nommu: set MMF_OOM_SKIP in exit_mmap()
-Message-ID: <atB63fzpLyfWpzPn@tiehlicka>
-References: <20261013-fix-nommu-exit-mmap-oom-skip-v1-1-cb957cdbfcc3@JohnDeere.com>
- <as80Rpm-VHhP14aK@tiehlicka>
- <BY3PR05MB82607AF910C023253C48CD26A09D2@BY3PR05MB8260.namprd05.prod.outlook.com>
+	bh=t35CZqhZ37FpgWrxYiwnoxvM2WrIBjmPysOYClvNAFg=;
+	b=Nvb1Dg98ODOQoeBod/YzeAJfd6joOhAlBZJR7o/R2sV4dTezxo2L/GhvOrZQoZBDENzL5o
+	7ea3+gXmyZp8n7nSOAO17LnPW2W1YQ0P6xN6bdnOXLGBOECaFusk8jd8jx+gC1Oiy20n6+
+	8gBS1iGtqHk5kjbDdxCeEm0te9n50A8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B79FF6053A;
+	Thu, 15 Oct 2026 07:10:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2571F000C4;
+	Thu, 15 Oct 2026 07:10:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792048238;
+	bh=t35CZqhZ37FpgWrxYiwnoxvM2WrIBjmPysOYClvNAFg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AtteeYFfkxiI7tEEpMbi8Yt7KJIKQSaoWpn4H36UJAg09QBpf7WG4edfMyvKSNnmk
+	 f8K68Cx3Q/125UsxrICx0flle39xsvHYEgg2vTNLdV9dvODivacIr0a2kWbAdpAY84
+	 JkR5imJAv2Fud4Q/jO6EXhK4to8N6hfGPKinyQ6fKNWbtQwyzmf7Q2eTvxgEUdkFF4
+	 KxtZAGiEhyIOGhpWb2ACDNImCrhkmB+dLsPbO92NkHm1xREah+d0w7UJcIBo/A9ADe
+	 pOMorbyndlL677Oaj4VHidtSTpiYXIJ9HHYJfTMNOWR7sALvJZ23LBMBXZiCnhXrXq
+	 joWvay/B8zEtw==
+Message-ID: <51b242a5-3918-446b-8884-30d6d05327aa@kernel.org>
+Date: Thu, 15 Oct 2026 09:10:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BY3PR05MB82607AF910C023253C48CD26A09D2@BY3PR05MB8260.namprd05.prod.outlook.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 16AB1100004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: stop recalculating min_free_kbytes once set by
+ userspace
+To: Nimrod Oren <noren@nvidia.com>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261014140859.1006967-1-noren@nvidia.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261014140859.1006967-1-noren@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 76xk77ph3k8kyc8euecotbd7p7fhkimc
 X-Rspam-User: 
-X-Stat-Signature: q6ojnnoghkkjj418ziwxn7au7sfupjyw
-X-HE-Tag: 1792047876-405841
-X-HE-Meta: U2FsdGVkX19BJqAUgqeYaotdJJCkNEZX9Z6oGHbDziz0ERMWaWnpZUzQOHCrMJykvt2xGLwJ8LDd8bAmzopZfPpzEsc9b5QHLZx/Md5YAtZ64KGi5TuByd7CTG0sXx6Jx6kpOj9M6qhBa9yRvxB9VMDTWAlhbwGUOH5z1J3Ol0BNMY6xbiTDINFgeYkLmPJVZh1EDi86LyZ9/EiuQ69gF/CGLm5KiWsULqRgLyq70YdKhL95kl99AhIizOl/7lIYkNhUHze2nestI2zrLyD+hImkIVOxnzptAgwVwq0XNnDvGnguxFonJlSkLjEOs85NmxvHW0WvU1EjW+GgKl0lnWYu594RD7UAvF70jIaR1mz5yHmFt3s5kNYBUCU3joHqM7maaOakiHNvZYHLwpCVBmpHV4q9xMH5NZIW12HfMryfSKw6XUOQ7N9FFdA3HPCgMz/AgImxVBPq3WIrmL5p5dOMm8zn2Pg5001eix6INKDlvS9LVDEsoSlAFz9NgLcin8cL+cSQ05WzkIwTDNk1xHPVVMYefLb6u5E5CoiZqDoBBYh42kNSv4IsEslkgEt9NDRrHPPAI2glgipCKebXTQDyRGOwzppXjvnLCRmwqyMcm8e2suTSY4ltfvWh+1IyBlUtO8cgEvLZqhsbOepbXXXHBfqCPMpbYJ/4m3LQYte5FfwYxXrrsdDCB0cWxH98Cf4vbD/d+ApRgwLk7q/TQz4rDwSkS+gdKUW1zTnxquQj+Io6Qn5OsWLXMQvXrFrLy8Uflkocs4IOoCzEgblori/EJhgAUWaGdA6djY8viy6z+XIYXOq61a2OS+XVIFMJNjsO2wWcAnlaP0WY6OZQlpo875SOuhICGK6Nm1YAtE4KMKc6+jW5rQkuRi3DbUAsxv7fEAD7QIQ2VWje1wCh8hBZxnYZcDW4ohomYgfWKAwHEknZDr7+6LhKqYQADUopulplWG87UgREKxOBrdz
- WaXs6Y6w
- 5ZqdA334SP4jtSL6ftkDFBqCcjbDQpRShXBJQGg5X/Fvs1JE3XkY5ajaHoWENWtFVPDghXit1pbiYAZD0wkh3E7UDcDSJkNXKjk/jCeJZ9ZSM1uy2ulomyOyK142KghL6YJLCvwAmv9tXxL3hhAMxVKvrSnGdGW8x59Le99ebCznEAUaOHZ5fg/Y7OJ1pk7UkbhN54vYH13IQdFDto08cVKyVK+mrWjL4fGYkfRk0AwhxYGQVGuGt2MVrOr1kqUKHXm+GdO/DT2gM64fjOwH8onXCPFklB1sC2tjOt1TkEF2UmGfJfb2WvaFzp5s/5j2R5FwMpcrpgsrIy7ZfVAMh0DHpsb4J9qQk4uAFXvefLnaAKZOJV6eaSWVoCjCmZ8OBNrkPD8oFLr+tQ0+GcRKCzJb2Ken+BMLk2RS49WvuKNgTjsra0RWKmwPgzWM68HS8B0o+VKMmyIXERDEfGtPiFUamP03lh9Hc4A7kat/M2cvcItn9XcdHhaxt6jVls90hB3wTRSqw8bNzMD0=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 10762180002
+X-HE-Tag: 1792048239-288727
+X-HE-Meta: U2FsdGVkX1/KQdFdgQmH/AHlT5VVncOP6K+iSpKhE+QBgYuGkn0ytmC+MTsJmQUh/dVxraIcdfEJCBko94PCARphRxqX0M39RYrdguWObPJ8cL4/Knt7NTKGHM4v6eRFR7eiBo0xwYBphvhSefLuYkpiIB5EIs5fvSXmxyKGxOuBZTe+OPELFT3tzCoWtam+dH07DJgWDjsr9XwH8tX5BaNgy7YDaJNt2qrsGD3hGvTNwhRdg/51cxbRFrWaeVDuVg4PIAdmDRxVH68UIl5uSha8CKLaIYXoTQy5CX3voUnv2YTDbBvHDOFCpbIMibO1Z8LbsgyNWB4TGwpSe61xywAwk2BYlRe41vx2TYkEfr02F1kf4r22PJYb1xopmAetd4svBZjGlRxwPCMqj3uhtQcF8DqlSG1tsJsRqeze5L1NX/rCGrydE8143ccDcoUW1SkhDMP6NJQwDfvBuihT/ZXU9r8scB2f9LXSzh4vQA4Euadw61KDhUtXahssJcNg56GBWRMPOi47AsIN+tposeGKNIn8Htcl9JhUjtfO11pU0KMq43Ki9IInbpzsyKS3aKrJvsbHzZHL8cO1r/8ulCB/uvif8D9kNXOzAW00TuE4doHyZiGFV+V2uV29zl2sM3T7MUe0K/pX0WHTNubgngUL19LRjnqVuudyLDLVrp2RhyJoPMzRg9CFYgTrj3jFgXotFGVexCyazHMiTG5iy02Pt0NgAL1qevJL6lUmrchVQbqUP4VDF5lV7YO4qrRHusmu32KwByctjYRxndwhul7rCns8Wi1O9P/97VIf4AsNrx+qluJZF1pgeKTVYfG8pfxx9zmuLnxjHIxxE0rZVLFxzTm7/Esf4gL66TIrmZhzCqHmQvSJg5UJn7NKGEtuC3YYsudzvy61hGyM2j58Ud0pOgaIqx4Kpk00Tzn1x2ZgfYmFHBWm5vzx3QBeD6H7l9fhoUPDbEQ/Feoxm3N
+ gkwS/hoo
+ p+mHMgmKXeZEzQhMrlZCfxWju4FI7wbCr0VbTZHdSDh2u2i9keQcqwZrBwINHKmaNFatlkcbF3xD6iElLQlKNjpCg58CKteMJfPgS0n1VkdiUiTd2DHK77jpaOraelvNHum/tiP+qMvu11pm744fbaAnrvP+MGdImdUwPEuKy/uoQRZ1BY4lm7LWcSuoyUgSSCOSaIRqQlvZUXrxaRLzbw1enMM0H3hukaHhGXYSOGSFtgp0RR+cRpmpPpSP/20QqvzTe0+MJTK7kjAyblzn2znszCSFVxM498jGBSc7eYuoTxPe59zmD9UaPOl8o8oNJpmwsxKJVVjb+2+1WwFVqzwZuyuNBdSGDuwJ7tHSMQw6HnzPco3Y4CNIK+bNTUBwAfF1WUz1EISOy3+8WcwzYQZ0tYPLdybBLN2sx2h8Zfdizy50=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,20 +145,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 14-10-26 21:58:52, Alexis Bouzigues wrote:
-> On Wed, Oct 14, 2026 at 09:50:30AM +0200, Michal Hocko wrote:
-> > > Set MMF_OOM_SKIP in the NOMMU exit_mmap() once the VMAs are freed, as
-> > > the MMU version does.
-> > Is this a real problem that you can actually hit?
+On 10/14/26 16:08, Nimrod Oren wrote:
+> min_free_kbytes is recalculated on memory hotplug and on THP sysfs
+> writes. The new value comes from calculate_min_free_kbytes() or, while
+> THP is enabled, from set_recommended_min_free_kbytes(). A value written
+> to the vm.min_free_kbytes sysctl is replaced whenever the new value is
+> higher, so a lower value does not stick. This matters most when THP is
+> enabled on configurations with large pageblocks, where the new value
+> can be excessive [1].
 > 
-> Yes, without this change the oom killer can fail to make progress to
-> resolve a global oom.
+> Stop recalculating min_free_kbytes once a value has been written to the
+> sysctl. Systems where the sysctl is never written keep the current
+> behavior.
+> 
+> Link: https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/ [1]
+> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Link: https://lore.kernel.org/r/d202dcc3-d7d7-4e98-a9a5-3137cfbfd041@kernel.org/
+> Signed-off-by: Nimrod Oren <noren@nvidia.com>
 
-Are you really looking into the code or just relying on an LLM?
-Go and check to learn that the oom reaper is only compiled in with
-CONFIG_MMU=y
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
--- 
-Michal Hocko
-SUSE Labs
+Thanks!
+
 
