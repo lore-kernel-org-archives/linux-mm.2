@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F366FCCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 07:16:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C0F2CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 07:17:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D25CC6B0088; Fri, 16 Oct 2026 03:16:10 -0400 (EDT)
+	id 2E7666B008C; Fri, 16 Oct 2026 03:17:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA75A6B008A; Fri, 16 Oct 2026 03:16:10 -0400 (EDT)
+	id 2BF6A6B0092; Fri, 16 Oct 2026 03:17:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B70736B008C; Fri, 16 Oct 2026 03:16:10 -0400 (EDT)
+	id 1D53D6B0095; Fri, 16 Oct 2026 03:17:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BE706B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:16:10 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95DC74033D
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:16:09 +0000 (UTC)
-X-FDA: 85327630458.02.AD7F9EA
-Received: from mta0.migadu.com (out-217.mta0.migadu.com [91.218.175.217])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6CD3FA0006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:16:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Gh+C1jE5;
-	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792134967;
-	b=nUZHgu9vgiGevp0jqb2oYHeinrynNF77iKjHV6TaiM3HlD9JqDLKwWNTnwgG3TovZby1Ow
-	mHNTYR4AYxmhdwDZADRsmRecrMK1Z1os0Dr5k9fQX7qu2ustvv2BkTzERmY9+0KNp7l09a
-	QVx70IFu6rbLCA7lLIKPxYKxgGfSHlQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Gh+C1jE5;
-	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EF4CD6B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:17:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4F42A7CEE
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:17:20 +0000 (UTC)
+X-FDA: 85327633440.13.E05A38D
+Received: from mta1.migadu.com (out-228.mta1.migadu.com [95.215.58.228])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 46592140005
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:17:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uDmM0CGp;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.228 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792134967;
+	s=arc-20220608; t=1792135039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RMpimNJHBwVzdkbh0sG7nuKXhKgLFZjybYL4MeVlE4Q=;
-	b=BZqBE9iyA5GVzR290F/WEM+c3WzYrztDIo6ySOQ85439hmCLwasPMGqOW5+HgRCiOOaBzL
-	bLY/sjHa0+n1fhd+tSo7tt/eJ4pgT/CeLzRaR8jVC3roWG50w2HkNs06s3lL5zjmigQr1e
-	p5D2ldZ1eAJnRkxQoX1A/CFNxUH+9+Y=
+	bh=S8upW1tRfvAox06fThrU8ca8rWxA0cOvzPAcdpCrqFk=;
+	b=n56Os410RtoEniU5wXqGJ484wyAXQmxrf2UpirJRYM4V+U+vsfFYREwN39I/028wevbzAx
+	1JnFM7Fzsy5taDcuK+pujcGpmU3z4QQ/uIBkW8RamAmnLl+ciILTkShrkDw+cpB/c45q6X
+	9b1BcgYTbgJmP/Mbtogh0N0TBFaMRBU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uDmM0CGp;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.228 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792135039;
+	b=Vk/HG57L/9+nR7gt7unq/PadLxMQ+VWq3b0DfLBdrH0sbi5KfMy1WRy1+5JXlfVtAol53G
+	ZuxZwUIIRv7T8fqZANPbAtbYAJ36uWm/RVN4fn+nB3EH6XP0FYqe3Z1tn8cKouP6P0loNW
+	kB9ZkyShbv1Kiln17U3bVyHGhTNOzbo=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xgR1cjGY6ygGqvZie7u+u7EotdvcRJPIfh8Sp0piRWA=;
+DKIM-Signature: a=rsa-sha256; bh=fGHOWXbRTwGx7Yxv23lsiLlvnmkHusi5Yy0Lxv5YfdA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792134966; v=1; x=1792739766;
- b=Gh+C1jE5wn1ZarWB5JQV5xiMzm8445W0lzudkTz3wslMuSkdchSOteQiYbBTMPuEinwJNEyQ
- TNtaNC8dz+GxI8cPoLvenIPip8P+IGUnqnLHjAEKTJUdGF6wjW0ti4NKVkuWm2MzWcIxtRlsrps
- 7rlNqFFBGDJxeBFwbcLfnT5c=
+ t=1792135032; v=1; x=1792739832;
+ b=uDmM0CGpVpoUfiHpJnARnrntdDQdeGzhLbYbIe+gvvE7Nj0TqOkNOe9fk9AjsZl+09VXbc3e
+ VIUFeVkqHNFMxOY/1NginI4otivraK4Ox3AVpkWeeFs0ng5vREno/QlMxJ7bxfI94yiJRblTyDq
+ /lYlwN2s5O7Vyaic3HDQczcA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 1ef1cef91026e4e4;
-	Fri, 16 Oct 2026 07:16:05 +0000
-X-Mizu-Trace-ID: 1ef1cef91026e4e4
+Received: by mta11.migadu.com with ESMTPS id b663a7f23a3f7381;
+	Fri, 16 Oct 2026 07:17:11 +0000
+X-Mizu-Trace-ID: b663a7f23a3f7381
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 00/10] mm: various (urgent?) fixes
+Subject: Re: [PATCH 02/10] mm/hugetlb: fix use-after-free of a new anon folio
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
-Date: Fri, 16 Oct 2026 15:15:44 +0800
+In-Reply-To: <20261015-urgent_fixes-v1-2-42796911043b@kernel.org>
+Date: Fri, 16 Oct 2026 15:16:54 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>,
  Lorenzo Stoakes <ljs@kernel.org>,
@@ -87,21 +87,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Josef Bacik <josef@toxicpanda.com>,
  linux-mm@kvack.org,
  linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- Chris Mason <mason@kernel.org>
+ stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <A061083A-3A02-4ADB-9CFB-7CF6C731A872@linux.dev>
+Message-Id: <370ADC80-F15F-40FA-A71E-8D641D060138@linux.dev>
 References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
+ <20261015-urgent_fixes-v1-2-42796911043b@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Queue-Id: 46592140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6CD3FA0006
-X-Stat-Signature: tmkw3i4q43fae4ret848joa8amatsp1g
-X-HE-Tag: 1792134967-322837
-X-HE-Meta: U2FsdGVkX1+p6uJbPR55cjQ3NPK0YrKNTEJw8nneplD2zpw5oOHcz+Fxe/gR0BDTIFwRMW+rVBIhYvZwtk2sNVu76M+RKnTmHhKdLD5zi47XIrSP8Ydl4wbAw0iA7kAR+7hPcMSktA0p9fyTFL/bULyzi8HOPbhkefM205O3pQlJNmNAPl+BeuQzPs1CSAbTE+WC2KV70YoBDyQqgrPLV/HVwf9Mm2xgjJxlrjIL6RACw2+awCqhq0FowH8jU8EV1KWFSOuMJoBQgrSWySML67pAuWBOfw6Id0ASQA83SmAz+QDfpgbz7jqExrZ+fGD+uIBU2iYppnXoRML/0LnCbOiwI9C79tUqHxv/Q2fmwpLru4513n7jQshrh5hkNgz1vc9oGAx+o+mdADzbMx8lvMjzGB26ZXCjoAtgnanTDJU82e/aAPxJfcbJEVFeyPhZGjyZ+o4ZlyZSCYABUfCo+Mz1FN/cZsFKZk9C2/Z/KWJzetLStjKiUdAIGdh5hY7o4vz/s7zbl3zT55LwL22jlTm/PVPOtJpQe9OzZc7gGkeauHDBJd0nL8njgzGe0rDIovRxv+72tKpuDU9X5a4JMSsI1gNY86jeJ7/YoGLl4VSkDtx2T7KGW/W2+3yjGuqXhyIGZ+3H3hbRO+ctH7adKA1krGpSJ32xsYdtQ5a+X8vIM2746t1dNHpYVWUo/7c+hMhOtf4aRa+ApBo6z4qDQnQAlXdkrQwOPsujFouis96AiLAMvOBru2YbZHqA+35ODOMSJhfPQ8EGq4nywJ8P6ZWqpp8VLi26/5v+B9+gTWV6znJgrfCsNSfXkHhGn8LvmWJYs1DzFjJy39rvIoOV0tX5ut3ucAv/b+5IkHPw2wPBYpH3FhGBMHVjJAz/xwlgI4clZaJ9x0rs0JN7dklNvGqMmLvEubOYG2Guz6e6Nr94ka+WVw9jIHcLtIrhfWdF5qHIIsVpx1jSudXftoW
- /nhl545u
- PR44F9JrdmLiC3XaJ4IrGpFRo5YS8uv9lriJyYbicCUWFQrcT2mR5yJjHbj7IckNSE00KbgTTAkp1MeV+kW92pijAFt+67kpxvHFgHYrdoytzPbPemRp0ANrUobTeaNQfJrBTSe0fg+6G4EluzYhhSC2uJ/lNkDC0n23VHzSVWAqLAAwrT9UX4D9CX+6NfK6WvBrh5DfQCwkz4oL6Jy3ZTCDY85pnnHfdL9VMprXpnjx+Wp/mAV+TbgtJiB7jFmLjFH5pkREvY30DLIh231YB9B4rD4qfG1zvmkdZjt8Kl5spq/D468+700CCWhWzxHq9FX55z+Wz4H7TY1RwcU5paEZ2kjwOBoWa4oXyUSdy263Yjam8qyXsikHEGWvAwkxPNfY17TlgYvVx0mEq4Kg1kaxWZA==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: b1x1wpaqo4dmd7hgxnqqq9mfpcptur9h
+X-HE-Tag: 1792135036-460971
+X-HE-Meta: U2FsdGVkX18D3h/eViMb6qYWdu4MDR3CFOtyKmVzY6gYcLZEhNmxjdCpTExLhAxXeYbCyEcoTTBd5yTyz8ZSgdEo4geAyUZljOzVv9rAfsZGiPw50g+c8HhAKaQAs5QBx8EJHSrkkjbMLkA+p+y5VNjprAhgXDVljlcFhBWlGvdlzg4Rgkp9u2s68oXWIsnoY+JgL6ZdZ0siK2rMwj8EwmuaVWRY4EqMKH5Lzm7ZnegWrkdsof68T1lz/tOLXbjFpGpSd4lkKh3AX5l0cnHwGIqG/gdh1/P1beWOWo9y7Dv/TeIireZV6vzM4fXlQIFq0wSPM0kbZaVP9K7fpli4LaEjrNln443Dp1MtmfWZvxoffonVKHHE0oOyPjEZCK7C3mAF2z1GX6Fb7QJdJygXnC/+amntuQH76WdeEiL/hx2gz5SQpW+WCnhOhKvSdfO39I0lcVDCiZMa/2sJtfMBHjRkHwcGDAdlLifcB29ibyzrqz+zz9WO/GgGKogXN5v3njmOkE/OgFt6KN1zL09r42MJHX0Mgiwhyp0Ef3nqFDi8AbuTTyfQlV9emzhocz6naxslnZpsjb0np2c/xq9U1mmETd596fgtaeQdDHmd/Xz//wy3WqesGZKk0k0Fnmj2RFOuPZqTiLMbUdwD3Umg67DNo5sHx1OX5PD95l5ls93cSms1rdOHcqOPduaJio3FaSIdg9Xgg5zbzoYo27zY9clfVf4U7fq0c1xaj37N4/6HgO5OzGdBQJLFqSDvGSwajcWhbYZPhn0e38Gow0lLrtdxLILRoAo7atTPQeKqPHR6iebwxD88ipNGQ6XrhZ6iAnN+d06MzoFB9Yt26Crndji7bp0TXtkJSdAFuMarqqAYUfzWLb/8L80xC9cNj3WlXogtoz5Zi1HI7elLQl5iT0yHGVAor5iy6BDK/m1RmLG9u6gYS1jQbYHM7+EPLQdPheO+EUZ60XdR/pF3w/4
+ uFqoOvLn
+ ua7P6gFwmxQV4lfZqK8LKLxdiKYWN5RSpPTmItH0cO0NUiQnmJSwo5+sW3l4PruggOPqryw0UwlSjWws4iH2TJxpbkMxzyHJC80ZNLi3nQoVqUisHiYvTp4UJF44dF7aGPbXcKmfUyrB7lS+26pUQmAWHm733QoX8DfLJTpWZUCUhlajjdCfRSBJ0HKjCtuisYvUK2CmYnOR7PgbiNVuFq+fHpAQgiYWPVoXKz84I6vinmmI1kgfmiD5hWmCvo3gpIBbWcJKduoEwlbMOikrBp5l5of1c+qIIf3Ak/Of74f7NwBgnXK/MSwTE91bPM3dCSlpKqmEfECiuPRImGHph0mVvQ9IjDYSBAAlmjNRGuKfvH6naWtUAB6n90mE0bfAzwp2IKqzzZnoU0CDEIjLBag0sluPCq/Ho+eyD60X5iN6U0Pw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,81 +114,76 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 > On Oct 16, 2026, at 00:07, David Hildenbrand (Arm) <david@kernel.org> =
 wrote:
 >=20
-> Hi,
+> From: Josef Bacik <josef@toxicpanda.com>
 >=20
-> here are various MM fixes. The majority was reported by Josef at
-> Anthrophic, the remainder was found while reviewing/overhauling them.
+> For a fault in a private mapping with nothing in the page cache,
+> hugetlb_no_page() allocates a folio, locks it and maps it.  The folio =
+has
+> one reference, which belongs to the page table entry from then on.  =
+After
+> dropping the page table lock the function still sets the migratable =
+flag
+> of the folio and unlocks it.
 >=20
-> Two issues/fixes reported are not included, as we are discussing
-> (better) alternatives on the list already.
+> Whoever zaps the entry in between frees the folio.  The fault holds =
+the
+> fault mutex and the lock of the vma.  MADV_DONTNEED and the first =
+unmap of
+> a hole punch, hugetlb_vmdelete_list(), do not take the fault mutex, =
+and a
+> private vma only has a lock if it owns a reservation map: not with
+> MAP_NORESERVE, and not in the child after fork().
 >=20
-> I left most of the original commit messages as schloppy as they are: I
-> don't particularly care as long as the code is in good shape and as =
-long as
-> they are not actively wrong. But I (and Mike) could not be stopped =
-from
-> overhauling at least some of them.
+> Then the flag is set in, and folio_unlock() is called on, a folio that =
+is
+> free or has a new owner.  A surplus page goes back to the page =
+allocator
+> while it is locked:
 >=20
-> While I don't think there is anything too critical in here, I think =
-this
-> is a good opportunity to see how fast we can get =
-pre-screened/pre-reviewed
-> fixes upstream that might be security-related.
+>  BUG: Bad page state in process init  pfn:108e00
+>  flags: 0x200000000000059(locked|uptodate|dirty|head|node=3D0|zone=3D2)
+>  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
 >=20
-> The majority are hugetlb + uffd issues, that are not actually that
-> relevant for most installations. But all things that should just get
-> fixed. Some uffd fixes need proper follow ups to fix some more of the
-> root causes of leftover UFFD PTE bits (or proof that there are none
-> remaining).
+> A page of the pool can be given to the next user, of any file, who =
+locks
+> it and loses the lock to the late folio_unlock():
 >=20
-> I ran some MM selftests and nothing popped up.
+>  kernel BUG at mm/filemap.c:1532!
+>   hugetlb_no_page+0x111b/0x23e0
+>   hugetlb_fault+0x3a9/0x14a0
 >=20
-> So let's try to get these upstream in a timely fashion.
+> An unprivileged process is enough: threads that write to a MAP_PRIVATE =
+|
+> MAP_NORESERVE hugetlb mapping, threads that call MADV_DONTNEED on it, =
+and
+> one that takes the freed pages for another file.
 >=20
+> Until commit 3a47c54f09c4 ("hugetlbfs: revert use i_mmap_rwsem for =
+more
+> pmd sharing synchronization") the fault held i_mmap_rwsem for reading,
+> which everybody who zaps takes for writing.  The lock that commit
+> bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private VMAs") =
+gave
+> to private vmas closed the window again, but only for those with a
+> reservation map.
+>=20
+> Be done with the folio before the page table lock is dropped, as
+> hugetlb_wp() is with its copy.  The function already unlocks page =
+cache
+> folios under that lock.
+>=20
+> Original fix generated by an LLM and sent in private by Josef.
+>=20
+> Fixes: 3a47c54f09c4 ("hugetlbfs: revert use i_mmap_rwsem for more pmd =
+sharing synchronization")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> [ david: simplify+move comment ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-> David Hildenbrand (Arm) (4):
->      mm/hugetlb: fix use-after-free in hugetlb_mfill_atomic_pte()
->      mm/hugetlb: tolerate uffd bits set without uffd for PROT_NONE =
-PTEs
->      mm/hugetlb: tolerate UFFD_WP markers outside uffd-wp VMAs
->      mm/mremap: fix calling fixup_hugetlb_reservations() on the wrong =
-VMA
->=20
-> Josef Bacik (6):
->      mm/vma: don't leak the commit charge on mmap failure
->      mm/hugetlb: fix use-after-free of a new anon folio
->      mm/hugetlb: unmap the page where the other VMA maps it
->      mm/hugetlb: don't clear the resv_map of a VMA whose lock is held
->      mm/hugetlb: fix endless write fault on a leftover uffd bit
->      mm/hugetlb: don't leave a uffd-wp marker when zapping an RWP =
-entry
 
-HugeTLB is really nasty, while no new features are landing, we have a =
-steady
-stream of bug fixes coming in.
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-Thanks,
-Muchun
-
->=20
-> mm/hugetlb.c | 70 =
-++++++++++++++++++++++++++++++++++++++++++++++--------------
-> mm/mremap.c  |  2 +-
-> mm/vma.c     | 11 ++++++----
-> 3 files changed, 62 insertions(+), 21 deletions(-)
->=20
-> ---
->=20
-> base-commit: 0fcb05b72344f40806cbe810de8872f1698bf053
->=20
-> change-id: 20261015-urgent_fixes-7112629346eb
->=20
-> --
->=20
-> Cheers,
->=20
-> David
->=20
+Thanks.
 
 
