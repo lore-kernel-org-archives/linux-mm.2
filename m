@@ -4,142 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D85C7CCF2C3
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 19:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28038CCF2C2
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 19:53:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9314E6B008C; Fri, 16 Oct 2026 15:28:42 -0400 (EDT)
+	id C6B8D6B0088; Fri, 16 Oct 2026 15:53:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E18A6B0092; Fri, 16 Oct 2026 15:28:42 -0400 (EDT)
+	id BF6876B008A; Fri, 16 Oct 2026 15:53:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D4406B0095; Fri, 16 Oct 2026 15:28:42 -0400 (EDT)
+	id ABE3D6B008C; Fri, 16 Oct 2026 15:53:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 436B46B008C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:28:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8E224A0391
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:28:41 +0000 (UTC)
-X-FDA: 85329476442.13.2AA2E05
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf31.hostedemail.com (Postfix) with ESMTP id AF8B720003
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:28:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Scjqun/J";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B80E6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:53:18 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 11D8D16061C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:53:18 +0000 (UTC)
+X-FDA: 85329538476.14.9DDC14F
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4F7271A000D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:53:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PdkNRkrL;
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792178919;
-	b=tmjR3ypA89f2MLiJLQJrFfKWMRb0EZr6WjcgvftlGlJM4jrrZabhHhb6uSq35ZomQOmwrS
-	zfm8XEMqDHlAVRUj2wLwCwzEQhW4Kw8vvmF7cBoiq7mVGbSQBHynKUMpCqRYPufSaR5yMe
-	sNriqLZCgrhkZ0ShDuVcIAbTq/Wjv2U=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Scjqun/J";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792178919;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792180396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gTm2vhKjxaNKyr2bSUGCE5oU0QWQpVTbCRBZYWrgf1M=;
-	b=TRziESnw2+lHbgypahQYUttXekH/ubA+vHChJP290J30WLv1CGb9zNbeRSpEPlDEZ3APoI
-	HxQK0/JQp8K01vZeDfuR1Z5fe/VJkgM3xtVp5NDastwpyBaX2Ct1KyxThsJGR2KpeM0W0e
-	hGmGRZaP3vq/fbmiESZLKWlD8c2Q0K0=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48c4649b35bso151995f8f.3
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:28:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792178918; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SAAGb8/jDknjjEBenMO9rtPBmVSUKQREaeI0JEQLLRH76RUt5Y25L77T81pdP7X0RC
-         aDKLIIrkIWp3n9c+Q8Nmj3DIiyqPKbiBTs06F4WgMUWQEo1voBaDz2KS1pGOkoEUvjVf
-         We3ql8UzLHJuI+b9AGt3q3+/0CPrKmciTiDGKN+c1l3qIKSlApWrmnVUjFbhrOJbz4W8
-         2NzMP8wKGx3XaljwIqkoTctCPCh9moE/UNaaKdO464NvEZheYkW4PeFU6z7MC3B9vLuo
-         hsTEASVE7ea3MqocAaPv1jjx9dGpFIt4AE++wx8LlHdH7eQ+MPhYX1xmzmRvHl9bN0qw
-         xAlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gTm2vhKjxaNKyr2bSUGCE5oU0QWQpVTbCRBZYWrgf1M=;
-        fh=d+IojjZfeaKwqKtrZB8dQd8r4Lz2TYT/2BVZqzCSxjc=;
-        b=fkCtsc46vUhy8XcAdGuIfp5notnaL8HdSExk9EFVBDXD5MoGPufeLbmMour0oEpXa1
-         likFilwEzD/wNCAuHyZ0celzQZwRwcTax5GRsNSYOIUQ9di2VH7GcCJ8jXo50y2Ntkdu
-         aQHro+rMKqkHwr8X6zct7vGtacj0ydnZMdCNmJ8QHQqFyaxkB+DnJ1HwobF29A7cY159
-         zYYiBVixymYW2wZzTNSU6a3Mh+EW8Rg8w/bel/Zsq9eC6xa9sZTNCZ1H0a7eXftAemyX
-         91iJqXqr36nswfC4WDIPUZ8jbrrXV24pHQcG2eMImaTQTyc6UkS/iyaTpqV/bA28iJfA
-         uDiA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=f/z+gmg3ANTK0WEq9y6k4IA7I1dnFgvIT+G3bbMJhDg=;
+	b=4pwWZWUqw2ZR+jATRs/QBm9G41fFUN47fPUJfum+vs/tUCR5muU546ZtMI9CGuPCt8feHH
+	t7AkTyBEItn/w+4QR0JvMqrzR9U1UM1GOfD94r7ZI7FpWpfYjJruMbHv06d6UU8mJT8e+F
+	DoSJUM1kdDhEvoc/uMoNDE1TfDg/smc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792180396;
+	b=yUc8q0oyVy95yFn5y218cYSBkIS4LEScITorLBETteJyhpV0rY0pnKpItTnmxTjBy9jDrk
+	B2Ghyxk/zDW2xpFA2SyRjYpbTwsXiCO/pJRDfV+D+Hx2j+ASqH0540p5Qdl3dP8bn+oHqZ
+	LwghLlLnzxM3erqQV8FykbDWLBM1TMg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PdkNRkrL;
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-16079d54c17so548269c88.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:53:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792178918; x=1792783718; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1792180395; x=1792785195; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gTm2vhKjxaNKyr2bSUGCE5oU0QWQpVTbCRBZYWrgf1M=;
-        b=Scjqun/Je4F7I7JP5WrIWGdcshp88upS6qRsqvUAu3h8HSJyfX2Ezg6v38Q8xyosZY
-         CzpvP0hWYOnlSOL6DPlY+SV9/fHC0Q9QigrMiAHtx3LYVgB63fzCTK9lc5nWzPORq9Ax
-         M915VQRwMq6SEziBRlp6P3p8qag0LqnXosP53GO6QgXp4U5qqff1EImeEMtRgF7AhfTF
-         v2YYaRAimxf3GBihYK20Yo6WNzFxKeIj5ooSmQWrZ7+cgELKHjeSs07t03thB1CO7eJL
-         bEaxuASJF6iw3+UXhHz3nn067bgjQt6JhX0aRXqqzXnCCxkO/Og4PtacZvybLbJpZbVS
-         jINA==
+        bh=f/z+gmg3ANTK0WEq9y6k4IA7I1dnFgvIT+G3bbMJhDg=;
+        b=PdkNRkrL8ofB9+BcrX15M0e8tUQGpKZrIYgw9CsRD4YsQcDw6zfxmBgLOJ4m+icRnf
+         3RPvM4K6f7UMNxTyxAtPqtC55Y1cEgV8fWbU2C7g51nR7ULhm7tya/s81KrNhfODft+U
+         ywy3vNRUQsS3871DKx51Lelo0PI2KJ+EbP8TLidJy90KaArdkXrOHvzAAzYGRgaBvc8x
+         datS1/u9b0HpvJK/HUPIWSuqRWcxRExYyMZQ4qOorx1xkbz0AxZOXG/HAM7ZP7qzdvIT
+         qvNyrgzqIIpjAuXqnNc3xO3tKnJ0pxqzyJowlew896l/Fa9HjWdH9L7UQi2PTmflKzzJ
+         3YGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792178918; x=1792783718;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1792180395; x=1792785195;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gTm2vhKjxaNKyr2bSUGCE5oU0QWQpVTbCRBZYWrgf1M=;
-        b=HBrwx/LLzJrseDT2OgVhNcH+nyBAdcQlA4mh5DVzmKdFbsMKYJOzOvIiCiGxIC3n+I
-         a5EyMKn/LbdOJyEh2SB29AkVCNpGvt25EezhUEqSGc80InGhGRhH462rhfMmMUFf9yuy
-         ++UeeygQXhG3ykZeWMZEaDUnZZz/HsNc0mb2onjNtBTCql15mYJXep32I/M6SGysNJ5O
-         UH9v08UBis9xqTQiPFi+fujc9kNRymPg1845SObQ2xt9i12F5Q6a8CxhZga+IW8MdIdI
-         T2OOKvkHbmpdFRCV5wOh2aCZqC1q91rrVswnv4G9OBbg3Q4usu/d1k06A+xZlwuO+Njp
-         RCzg==
-X-Forwarded-Encrypted: i=1; AKwUvByPugV6baEvVzAQMm+Egawqloezn7GMtilbOs9eRQZqlKtvFsUgdzi8UWzDNypAzfH1WcMjP8bTMA==@kvack.org
-X-Gm-Message-State: AFq9FYIWJdLHGew47vTSz+2Gld7C4G/ns/9vTMhnBMmHVUy2ueE0PhkX
-	Ys11cK3QIvQ7wf+WZVWHe99/y4sLJ0GPVhZES//POX/1k5UQ8vv3bXdU6yL/oHIRElde7n1OGLj
-	m4Hc/6QvMxJ4fe05pv2HKQpaHXTyQzQ8=
-X-Gm-Gg: AYBFou0hPAALIMtul+caf4FWhq/XbSWuP7Rsw2LM+pL8hjlDbKV30mltUEUv+yAokjS
-	ujte0PFLi+KCJ8rhdrDHdi3S0VQUJQVl5KcU6mWp38lgw1hVA5BuOA0aPqpCQDSX0oeI0rlIaPE
-	+4Ef/T5XljAt01LQy+CNQ5OLzHBvidZtjou2liXgfyBWBWR2AmkllQlmw3DMMcEqRuw35+I+3Qk
-	V/BgcPFQNlRmfsFKMaLkvvb7+dpCRn4TMZnhCboVRAbcGw8qeT32gTL4XWyVhiFnJUTUjIdC582
-	1NV/V1xRCkOjpTTc/QBOt2usC+8cCuRjgJ7gGllWOAihyUyD5iXb6kPXVa+h69EewVzO3tx7Mwn
-	2WhMP3JX07nxVCHAFG4SSbk2/pgYS86v6zurBFSI5TzSFDVys9yfRttr/FzW6YHtba87Ry9dAAv
-	9wcflYbg==
-X-Received: by 2002:a05:6000:40cc:b0:48d:f5c6:1a0d with SMTP id
- ffacd0b85a97d-48e07bb5600mr1302929f8f.15.1792178918026; Fri, 16 Oct 2026
- 12:28:38 -0700 (PDT)
+        bh=f/z+gmg3ANTK0WEq9y6k4IA7I1dnFgvIT+G3bbMJhDg=;
+        b=xJXaPV9c+ruVHcOWSTy3VJT7xGc5B1T3fmEIx+2IRvBsda3QschtiMyqLXjFigHLQp
+         RmYPiHsAALnRcFtP8grc1ZLBAHddfQirj5ThGYo0WiexxzH5XE40MnF1LAgxVE0IRBW5
+         01P3MJDzE/GFT7SuHYwvfRcjxI5mYATMD9OhqGF31VNcJq+In5AQI2B9tjhcN0fxTxHs
+         fbV3GBJQo5uJ7JbAoP8qFpI0AyRxQ6Z2ouWv2Nr/+rOwW4nhgsakLLD0xINaWa3TB6yV
+         oQ7uhpNmI2chP1Qv/GTqeXqHlu8GTQFMJ4kcBmRMkFICWHLbXKL2aJ40PlIe8xwBVeTZ
+         Kwiw==
+X-Gm-Message-State: AFq9FYK2gXQiId4Z2ZdYo0EMGy26WBkXH54Hu1plrhoaznYOapzFxnge
+	s7XPO69AZ4LArrzDOUZkiZvJ5C6Y/nVVKDdSnbHIhz0Icu7ue6KF7LTI
+X-Gm-Gg: AYBFou1WFcZfD2aWBVCSpyq1y5dtrqL+BOEXIbbKr+TDBPgSKrCnxzS2cDhOTmRTiCx
+	CIN9G+aw8so49FV9kpbmX7LXCLl6vl1T1AyUFgoB4Las96+swUWweGklGEGq/n2ZARy0c2NeIH8
+	GdxQtFyBA+2vtsxHfGrw7FltXGZadsS9lDb0rRvrkhXx5rA5/SYhxc0ktSHsCYBO0NA0HzxTakg
+	gNk1DGMxH/IhMgmD3jE9hr94eYBQs9kbxoKrC0LppstYM12txAduIf5QBAX3QV9TOzWMd07xCpX
+	3EmLv9KxwXVXPMfxaql+shzS4UhXR5ZkZ7u1fOBMZROj1ZuLafOZXnM4HwVX+E9BBDGL0JC0Yws
+	bdzsg3t8N0aa8ePkmBHBG0Aq1PPLx+mSW7lb61TtgQx1ylrxYwpJVn+rKJsORFtVoYouiLqnd1v
+	Ted35+I2PqCEBWJXD+yiLghqq7CvyqLg/lD4pKsfCz71cl3Z4heg21z9phXm/XUfxTzE2rqcpgV
+	7+8ATgxoDG/viBrYPJwgmD3HBNo/8nCpz4DMkHSntY9lh4Uw9w3MJ4D5XHpPcTFIZY732j2E1c+
+	ZYfjpRED/fw5evsUoxzHuA==
+X-Received: by 2002:a05:701b:2608:b0:183:4719:5c01 with SMTP id a92af1059eb24-18513e7c69fmr962623c88.35.1792180394710;
+        Fri, 16 Oct 2026 12:53:14 -0700 (PDT)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-185aaea8b24sm174511c88.19.2026.10.16.12.53.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 12:53:13 -0700 (PDT)
+Date: Sat, 17 Oct 2026 03:53:08 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Baoquan He <hebaoquan@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, baohua@kernel.org, 
+	kasong@tencent.com, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, david@kernel.org, rostedt@goodmis.org, 
+	mhiramat@kernel.org, hannes@cmpxchg.org
+Subject: Re: [PATCH v2 3/4] mm/mglru: skip cold PUD subtrees during aging
+Message-ID: <atJwMRHXzXc57qpu@KASONG-MC4>
+References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
+ <20260901063755.1519710-4-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
-References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
- <CAMgjq7D50X47JFsTnF2-jYGv7i-Nd3WhQLK-TJGy4XkhMQU4OQ@mail.gmail.com>
- <62d17959-d695-4fec-a87b-8eadaaf995a8@linux.dev> <CAMgjq7CJ+bwKgwUmCzO9Hr7TrL68bDjgAsLx-4AGuXo6zowh9g@mail.gmail.com>
-In-Reply-To: <CAMgjq7CJ+bwKgwUmCzO9Hr7TrL68bDjgAsLx-4AGuXo6zowh9g@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 16 Oct 2026 12:28:26 -0700
-X-Gm-Features: AclHuK_hp_b8zp120YCuqjyWWJ8sGDHX6zBYEepjMwfG9dhLe1x58p6Tgmfo-f8
-Message-ID: <CAKEwX=O4sPx5MtGL4-JwLzD4TWm7fNycFMiuOqLk4ADFUUipNg@mail.gmail.com>
-Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
- up on
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, 
-	Jiayuan Chen <jiayuan.chen@shopee.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901063755.1519710-4-hebaoquan@kylinos.cn>
+X-Stat-Signature: eujpxiwy3az4bm1c3u4n3oiicqqz487e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF8B720003
-X-Stat-Signature: njy4wuin65p5ftcepwescbkjfqaq4kkt
-X-HE-Tag: 1792178919-598703
-X-HE-Meta: U2FsdGVkX194D/3hi23OG/xujbqTEoBCtSRGf0yd/ivtLwxtdh6rRGvNBUJmhDsMdFDFeChYZYSSxKiVJf25P2m4I5YwJHw9WhJb80Y2rhphV794L8CrHKMm8F8Zur1oVrkpMjLyYy2kKociz09/Wp/MLDwyp5VHrYXl8/czTFPlWXCVkvv6aAttAguco6LQilri0QThITC6xc243QGuha+nbIZgdPv8Ok0VuD9Upy8YKxsFoRS+MNecDrQzzCWrc/vuSGRk185AWThA7eA3gHbYeaterk0pSOHWNlLDYHeNzhIw+Xht+sx0VPE5NYqd9G8S+yPrQ0Uk/Tb2OGtZvKUCGXuB1MeZLisx9giiCAs1oGi4hObHq5emy7AcWT7hR6PYX08U5ixnlIznVy3ILlxKI4mUedAMuuMdisHRBvQNsqMkzVf5lL3gGTllhYKDCZQ+ENnyuxRd/APYpjLS75fLZBNIBqLEKj766LNG8DRIGJeWsNlIkw34NKQ+FWZ7S9Q0tW8hpXBwuOj93+9NpxhWrSUXRP2X1fnt8C6abF/gqsIbImDcNTwZ5AhlLAa+fdaIl5HXbCSeH0mYFaGHu4YmsW5IbqfSznM/Rp5Nz19HcGVO8w5Bv2uL/x6VMIzhGR6QbX3Q3oKMKze4YXphr7/ikYcmgg7Y/Gpk+FFJcrcnfU5OJguiKit95PWbVwkSp1kdAT1lAFZox+Eb74yk3Yf2ql4cOWH/96xn6ZGe2C7l9cP++xVHwR4UIe297nSdfovFSQHkhrqm5v3thcimKGycUo/ZPfX5N9O812Zm5c6BI+QiHa0bVTxPVgxrg3bz9cukpftxVLRlMsL12VRp9KERD6z2C8PViJO47u8+i3y4FzZuPnDDAf6+Ax9GHkJnHk/MZO0jfSjN9PViAuXHWH2GapBUO2X2KNcuVykayzKS5SHhqCeTy4GZm9AC9VxF7+hsM8/GUPbUezEMmGh
- LyNoIl34
- G/zERzbML6u+UFY5BXIxEnLnbQRzhNYv9pst6qKKCpoAHqIyXIhfC4VI3hB/fbrCzwtQTu4uVgJFdsE7uxj7J/vgtMZ6UiBR5zy+JtuiR5zwBlOpBE3dVXFPk+iOu54FXE+8wmuk4poeexpf1/9iSsTsuAGGuxG0sWIfs4LWGluTtkvR8PFivpW0b99rHZCG/0qbie4NBi6oNxVfr6a+J5RUdht5R+j0bVeZczbLOPy+t+dpTTCUBTdwVQ5ue38xQrlQ5M4dEVcmU7F/mZWP06nXdz8/LTIHadKtVkVNoofwoLu38x2Wu0WaLh9SxghvsI8t6EN2cqspOneLLxQYKC8CGD1u+cHBZpZ5yZ9Rzn4hA6MEiUdiA6JIiSIa9CHQBf6q/T8jPqGhVBg7t+dfoDLIlFwoqhKW17QfJmj8/S1oDQarWOFv67Y6W2uzbXyZ2a+OKc+7qu9TEBws3s9rWbgqhxG9r/rpnuIqasdbgLpVVE/c=
+X-Rspamd-Queue-Id: 4F7271A000D
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792180396-798559
+X-HE-Meta: U2FsdGVkX19gbmdavX/0Z3/F8aazVOjnrKoM362rG8UxqxCtiZW0K5HYdxTv1urPA/zO7vbV7xUu2HJcil/uV1oW/8rvwaatEX7VPY/585JXYvCsWqOmVy3QdspiWwVVO+bREC9Op7VmKvn6Lw3eiMnBBSqC7EhvkipzwPx0GiqjX9B1ejQilff8uS0QSEqvrhCTwbxjBt4CK0QYiJiG3yXWp9rPHHEmTvchAST9l5AftFM398Y6RPlpHdGzRS5oSHIOtB4c+gxsw1Ywoo3a9GlWytSauxrpDxFrvsqPUoGIgJDvcesD/h7oNn3rUFn0xonnMvb8w3sjRKVlgzLTiU+4Fk3SjXS+Fbz7I1Untg/9KGcW+GfZlV8FRIvoOiTnscwFLTO9O5ait3H0FDCzpcWkyHKXh4CJyAV/0KWo9xIPpFVZu+v4z+uHvDIEhWe9qMnpFN7ywuLvLAAfxqhAjLu8gYiinu95UA6T36nipMOV9ZGUZXG8dh+74ZRdB6fbodk5qVeUgnrLAJ8JvcuHAwQ8vKT8wGtIQoFod+FniNGyzppK6/FO4aCoYSzI7pSqQo8JL6Mi++aA9YuWqO+C2QqiD7EVml5B0OWnxmes9VCvpcx2L4GHUBEOmwEZQpR3Wk090RGUIDbrkXOcq2NlyRokcJytutwpNY5dHLGR0qbzRGq0GZjgI6N9CjujXLynvmgO3m7NQANg5FxkgxrZCAPDdytMhS956M/YDM8GvQ4+6X9WGN7KbFeBhrUn9ou9Bxl/oI9ns8CtxOnM6Pjw1zLyLHdjKC9ePyTd/gCTsHZscIHXe0ffvQcxyBZUVHwBfMCoHOoXlteP7OcFJFKKURAzHyP5l2SCMFkPq/4CSLf/+gYK5wjmxClpEz5ozhlfV43c37GDs9WREEepbhLNsneVlfJ3DTpRM8KMPVwzo05uEJr5/IPZuw2Fmk5RbPt/LMBxKTnEmqVvD8uNPtC
+ zgwdGh1s
+ 4pQH+IcfFWi4s4b2l4CVQZw4D1eFnz0chdjrDCLk0bC9pKzQ7eiIr/ct18QfwGlxReRbouQF/Raa1rE49akZXfTZ7mZyTcwR+XHGwzboLTDdzy0r1tF8ePgjWlTkPUB799VABYTahZ+YGaByRuEzMqw0ANpy/IFWrEnYZrJfcK6CrrhSGk0qEahp1X0kP5yWrymxvUk52XQYI9QITlCf7YObdCkw0IMYGO4kS/21ioTHVB9BSyE1NLFmmqQYRfIc/gWPYYFwhy3DqIrodPSwg80gixxQyluT8xweca5LFIgnmWAb/ZST/1dSOF+xtMVTHDEoMMWVFd5xyCd0kaT6Y8QbUh/7M0ue5flsaQy8sQGQJ2IWkMKayEImKb7+yIDgH0fb6Hw9LXbLigLX2pvw5ue/Hn7zKJw41sIQvdxCs/ILKLZ2pmzVvkvbBbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,176 +122,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 11:24=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> On Fri, Oct 16, 2026 at 4:42=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.=
-dev> wrote:
-> >
-> >
-> > On 10/16/26 11:05 AM, Kairui Song wrote:
-> > > On Wed, Oct 14, 2026 at 5:10=E2=80=AFPM Jiayuan Chen <jiayuan.chen@li=
-nux.dev> wrote:
-> > >> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> > >>
-> > >> On our production hosts we saw swap cache only pages keep growing fo=
-r days:
-> > >> on a box with a 500 GiB swap partition, 250 GiB of RAM and 250 GiB o=
-f
-> > >> swap slots were held by folios that no process mapped any more, char=
-ged
-> > >> to cgroups whose workloads had long exited. The only way to get them
-> > >> back was swapoff, and with other services actively swapping on the
-> > >> same host that is not an option.
-> > > Hi, thanks for the report.
-> > >
-> > >> Such a slot has swap count 0 and an unmapped folio pinned in the swa=
-p
-> > >> cache, left there after a process exited or did MADV_DONTNEED. No pa=
-ge
-> > >> table holds its swap entry any more, so nothing comes back for the
-> > >> slot; LRU reclaim drops it eventually, and the allocator only reclai=
-ms
-> > >> such slots once swap is half full. The growth stopped exactly there:
-> > >> at 50% of the device, where vm_swap_full() becomes true.
-> > > Hmm, I think this indicates a much cleaner fix is available.
-> > > vm_swap_full is inherited from the old allocator, we can instead just
-> > > let the allocator reclaim the slot if the slot have a count of 0 and
-> > > ignore vm_swap_full at that point.
-> > >
-> > > Will this work? (Just a minimal implementation for reference, will be
-> > > even better if we can avoid the overhead).
-> > >
-> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > index c3288910b3e3..94670fe82f31 100644
-> > > --- a/mm/swapfile.c
-> > > +++ b/mm/swapfile.c
-> > > @@ -212,6 +212,9 @@ static int __try_to_reclaim_swap(struct
-> > > swap_info_struct *si,
-> > >          nr_pages =3D folio_nr_pages(folio);
-> > >          ret =3D -nr_pages;
-> > >
-> > > +       if (folio_mapped(folio) && !vm_swap_full())
-> > > +               goto out;
-> > > +
-> > >          /*
-> > >           * We hold a folio lock here. We have to use trylock for
-> > >           * avoiding deadlock. This is a special case and you should
-> > > @@ -903,8 +906,6 @@ static bool cluster_scan_range(struct swap_info_s=
-truct *si,
-> > >                  if (swp_tb_is_null(swp_tb))
-> > >                          continue;
-> > >                  if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(s=
-wp_tb)) {
-> > > -                       if (!vm_swap_full())
-> > > -                               return false;
-> > >                          *need_reclaim =3D true;
-> > >                          continue;
-> > >                  }
-> > >
-> > Hi Kairui,
-> >
-> > I tried it on our box (224 CPUs, 931 GiB swap partition). It doesn't
-> > help there: after 100 rounds of the reproducer the leftover is 291 GB
-> > with it and 309 GB without, and both stop growing at the same place,
-> > 488 GB, half of the device:
-> >
-> > # cat /proc/swaps
-> > Filename                Type        Size        Used Priority
-> > /dev/nvme1n1p1                          partition    976561148
-> > 489006260    -1
-> >
-> > # cat /proc/meminfo | grep Swap
-> > SwapCached:     489006260 kB
-> > SwapTotal:      976561148 kB
-> > SwapFree:       487554888 kB
-> >
-> > cluster_alloc_swap_entry() picks clusters from nonfull_clusters first,
-> > then free_clusters; it looks at frag_clusters only when both are empty,
-> > and at full_clusters only when vm_swap_full(). A cluster gets onto
-> > nonfull_clusters in partial_free_cluster(), that is when
-> > __swap_cluster_free_entries() frees a slot in it; after
-> > alloc_swap_scan_cluster() has used it, relocate_cluster() moves it to
-> > frag or full.
-> >
-> > A leftover slot has count 0 and a folio, so __swap_cluster_free_entries=
-()
-> > never runs for it. Once the live slots of a cluster are gone, nothing
-> > calls partial_free_cluster() on it again, it stays on frag or full, and
-> > cluster_alloc_swap_entry() doesn't pick it until the device is half
-> > full. That is what the swap table looked like after the run:
-> >
-> > list      clusters   leftover slots
-> > FULL        106415       54484480   (all 512 slots leftover)
-> > FRAG         44822       18471614
-> > NONFULL          1              0
-> >
-> > Making cluster_alloc_swap_entry() revisit those clusters means changing
-> > the list policy.
-> >
-> >
-> >
-> > > Or, from the LRU's side, put swap readahead folios at the tail. I'm
-> > > actually trying to do that and it's not very easily doable at the
-> > > moment but will soon be easy to do.
-> >
-> >
-> > That helps the RAM side under pressure but doesn't give the slots
-> > back.
-> >
-> >
-> > >> Options considered:
-> > >>
-> > >> 1. Fix it on the readahead side: after the read, check the swap coun=
-t
-> > >>     and free the slot. Covers the lock, not writeback, and the
-> > >>     asynchronous read path unlocks in the bio completion where the s=
-lot
-> > >>     cannot be freed. Two places to patch, neither clean.
-> > > In fact, readahead checks the count before starts the read. It should
-> > > prevent some of the problems but seems not enough.
-> >
-> >
-> > Right, the count is still 1 at that point. The zap drops it to 0 while
-> > the read is in flight, after the folio is already in the swap cache.
-> >
-> >
-> > > And another idea, what if we just add dropbehind flag or rotate the
-> > > folio, if folio_try_lock failed in __try_to_reclaim_swap?
-> >
-> >
-> > dropbehind would work for readahead and writeback if the read
-> > completion honoured it too; today only folio_end_writeback() does, for
-> > zswap writeback folios, and swap_writeback_dropbehind_folio() expects
-> > the folio off the LRU. It still misses other lock holders (migration,
-> > split, ...). Rotating only helps under memory pressure.
+On Tue, Sep 01, 2026 at 02:37:54PM +0800, Baoquan He wrote:
+> The aging walks into every PUD and runs the PMD-level Bloom filter
+> on each PMD. Add a coarser PUD-level filter (pud_filters) one level
+> up:
+>  - walk_pmd_range() now reports whether it found any young leaf entries,
+>  - walk_pud_range() records that in the PUD filter, and
+>  - on subsequent generations, skips the whole 1GB subtree when the filter
+>    says it had none last generation.
+> 
+> The double-buffered filter flips with each new iteration, so newly hot or
+> migrated-in pages are re-checked promptly rather than suppressed
+> indefinitely. force_scan walks bypass the PUD test, so manual aging and
+> newly added mm's always rescan and re-populate the filter.
+> 
+> To keep hot regions marked, also report the covering PUD from the rmap
+> feedback path (lru_gen_look_around()), so regions whose hotness is only
+> observed by eviction will be re-scanned.
+> 
+> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+> ---
+>  mm/vmscan.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 47 insertions(+), 5 deletions(-)
+> 
 
-Yeah might be worth trying. You'd have to modify readahead and zswap
-load logic to check folio_mapped() etc. I suppose...
+...
 
-I'm not sure how reliable it will be FWIW. There is still a race
-window right? Albeit a bit smaller - the readahead thread might check
-the dropbehind flag before __try_to_reclaim_swap() sets it.
+> @@ -4397,8 +4431,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+>  	lazy_mmu_mode_disable();
+>  
+>  	/* feedback from rmap walkers to page table walkers */
+> -	if (mm_state && suitable_to_scan(i, young))
+> +	if (mm_state && suitable_to_scan(i, young)) {
+> +		/* the PUD entry covering the young PTEs scanned above */
+> +		pud_t *pud_p = pud_offset(p4d_offset(pgd_offset(vma->vm_mm, pvmw->address),
+> +						     pvmw->address), pvmw->address);
+> +
+>  		update_pmd_bloom_filter(mm_state, max_seq, pvmw->pmd);
+> +		update_pud_bloom_filter(mm_state, max_seq, pud_p);
+> +	}
 
->
-> Right.. But I think it will be much better to avoid such folios from
-> hunging in the swap cache in the first place instead of having a
-> worker to reclaim them. I'm not strongly against adding a reclaimer if
-> other approaches are too difficult at this point though.
+I saw the discussion from Barry about the concern about the overhead
 
-Also, IIRC, dropbehind can only be handled in task context, right?
-We'd need to make readahead bios to complete in task context
-(BIO_COMPLETE_IN_TASK). I wonder if this has any perf implications.
+I think we can drop the PUD ptr walk entirely. The filter only
+needs a stable identity for the range walk_pud_range() is iterating,
+and (mm, PUD-aligned address) gives that on both sides:
 
-Another idea: how about, in swap_read_folio(), where we are guaranteed
-to have the folio's lock, we check if folio is mapped. If it's not,
-invoke folio_free_swap(), unlock, put, then drop that folio from the
-submit batch? That takes care of the readahead race. Seems safe to me
-(I assume if a folio is not mapped and swap count =3D=3D 0, then it's a
-pure readahead artifact, but maybe I'm missing a case).
+   walk_pud_range(), test and update alike:
+      (void *)((unsigned long)args->mm ^ (addr & PUD_MASK))
 
-The write direction already tries folio_free_swap() before submitting
-the writeback, FWIW. So that takes care of both directions. But who
-knows - maybe we still have a small race window, and that's bad
-enough.
+   lru_gen_look_around():
+      (void *)((unsigned long)vma->vm_mm ^ (pvmw->address & PUD_MASK))
+
+Will this work? Also I took a look at the hash algorithm of this too:
+
+static void get_item_key(void *item, int *key)
+{
+	u32 hash = hash_ptr(item, BLOOM_FILTER_SHIFT * 2);
+
+	BUILD_BUG_ON(BLOOM_FILTER_SHIFT * 2 > BITS_PER_TYPE(u32));
+
+	key[0] = hash & (BIT(BLOOM_FILTER_SHIFT) - 1);
+	key[1] = hash >> BLOOM_FILTER_SHIFT;
+}
+
+And hash_ptr is actually hash_long, 64 bits if we use hash_32
+will it be even better?
 
