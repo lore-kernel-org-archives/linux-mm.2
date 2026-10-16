@@ -4,39 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60B92CCA464
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5529BCCA464
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:17:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CBA06B009D; Fri, 16 Oct 2026 08:17:02 -0400 (EDT)
+	id B1C566B009B; Fri, 16 Oct 2026 08:17:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 991F36B00A1; Fri, 16 Oct 2026 08:17:02 -0400 (EDT)
+	id AEF796B00A0; Fri, 16 Oct 2026 08:17:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E2376B009F; Fri, 16 Oct 2026 08:17:02 -0400 (EDT)
+	id 8CE7C6B009B; Fri, 16 Oct 2026 08:17:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D98F6B009B
+	by kanga.kvack.org (Postfix) with ESMTP id 4E9116B009E
 	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:17:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B76F8A7F21
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC1EE140392
 	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:17:01 +0000 (UTC)
-X-FDA: 85328388642.03.16B23FD
+X-FDA: 85328388642.29.515206D
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DE5BA80007
+	by imf09.hostedemail.com (Postfix) with ESMTP id D1497140008
 	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:16:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=E0HohYgw;
-	spf=pass (imf02.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ZTo5mWEv;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1792153020;
-	b=OfiTnV3VCs8pBi/HOzNTPl5sM05431CBXiYRKJdSnAZqNWDnrpapd/e9fmQqADHttqk51q
-	cmO6DhKpFs7Jmg7z9xBmsFG4ZI+uxtepRkDWEgnb99C3EBEpQSgfOxz+Kt7+wO21+IWzJv
-	r01+sjwmI+YKjmMlKQot1k4sGSv5eO0=
+	b=xcKsCVbb9tMyr1yPsXgBJLTF2YTzz8EQj4lTE7HuvbcmMUTGkFAl8f/4o20Qgli1Cinx9Z
+	U+ECraaoT1SsrGrYU8JzM9y02VcMpe1GxmstpilmJTdwSmMOnppU1CqO3pJK/6rlQUwvKm
+	D6089/bTjErwOOdd6keUZdjKu4BXoVA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=E0HohYgw;
-	spf=pass (imf02.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ZTo5mWEv;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1792153020;
@@ -45,34 +45,34 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j5WlAhqdTw51jsZEU9Iyw0h5ziY3yj6B04AcJcwRWsQ=;
-	b=Q2QEu8KU7BpYbZUpCMmn0ein3st+2xDzY2GCaXY4kefXX31MmAUL7bYctejo796fG1kw4u
-	pTuAjpfJbeoffbGZZVGOpPZ2C0oKDnvd7JBhh02WNxsYsygpc997Tyffc/pCaTOchqsQYx
-	VFmuT08axayRNay+HzZ4Ln1OI3lmET8=
+	bh=Uv2fkg6W4JOnKV+pKEj31JYcVvr5f+LNYb10Ih+u5Fs=;
+	b=6pRjJv8W7/bGsLVyFBvmbA/1QNXSuhRPy5px87wD6f0NXgKsR5ogDUyJaZ8ITaVoITCkJl
+	K5tM45t/uHDnmq2LVPCLjDR5RkxDQGCGRR4//c9LVVpqUiQl/wQaYfMvGMvOHNcwqZDpnd
+	2ZQkSQJmF9xyfqKxprDSyQRJC0FE/sI=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=j5WlAhqdTw51jsZEU9Iyw0h5ziY3yj6B04AcJcwRWsQ=; b=E0HohYgw5ujnAplsuyMYLRHFDE
-	60AWIkqF2yvNNrQugsfhZt2HYxEg7gWKMI+M+rF8WAQCr6+7E/3Oj9yEcqWFIh5dYsI1pE6LbPPuz
-	O1DGBOErtRRx3QXC8ZRYMDwGnFT8+KbNrXAQaIV61lA+QNMt9kkDlbW97WT+Fidh2KDDsJsOYFg6h
-	iaCEJP2maS5YZfYX44WTpsQH0m9h9WQmBV9WMhPDsog+orgplCrLWlIcMffYasO5qAN+UcsOAvNvI
-	j5xPPK34LJs/6sCupscoWlHcJIASSKC9xDjlLXgvZs82DqsPkWgZqW0bXL+EFhyyimEjLykVJWgqt
-	ZMjCUmhA==;
+	bh=Uv2fkg6W4JOnKV+pKEj31JYcVvr5f+LNYb10Ih+u5Fs=; b=ZTo5mWEvIkHofgKGsuQIBpmIyS
+	RoONLcl9qrEhZabuu1MUvkzUaVcEnZInDBq7bNHJQ0w0dcRidnHwdYMpVMyVgiEmmxFqXEwJUjxHK
+	4/SWA7d6v/1qOM6S+dS0JyOA/JwjfjyCO0LGrSslgAmnXxcGCBCAOY++gHhxhAr3jBIXfw38FOmZI
+	wijMa8R4UzsVdUAfrIBnH6lxFKF8rKdQZfIKngH9qL93yTlr6She1otcRIOdkdxDAjVDzWWq/oMD6
+	62N5ByAQLtL2LP16zO9Dy8GhNmUzhNn8Wt7Y/KrPpnV0tpc3MuVNbc33tKwi16eFMljAwjW7204WN
+	8cathcpg==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1xHgrM-005xTU-0o;
-	Fri, 16 Oct 2026 12:16:28 +0000
+	id 1xHgr6-005xSl-26;
+	Fri, 16 Oct 2026 12:16:13 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 16 Oct 2026 05:15:44 -0700
-Subject: [PATCH v6 4/7] mm/memblock: add a reserved-region flag for
- poisoned frames
+Date: Fri, 16 Oct 2026 05:15:42 -0700
+Subject: [PATCH v6 2/7] mm/memory-failure: libstub: install the
+ poisoned-memory EFI table
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-hwpoison-kho-v6-4-f304255147da@debian.org>
+Message-Id: <20261016-hwpoison-kho-v6-2-f304255147da@debian.org>
 References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
 In-Reply-To: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
 To: Ard Biesheuvel <ardb@kernel.org>, 
@@ -99,31 +99,31 @@ Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, rmikey@meta.com, riel@surriel.com, 
  Breno Leitao <leitao@debian.org>, harry@kernel.org, kernel-team@meta.com
 X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7042; i=leitao@debian.org;
- h=from:subject:message-id; bh=1Gz6lnJ9jCEh+Kk8x+u/AGj+TPZOj2wnVXg46SHamPY=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq0hV08vEVvFeWRabaDAQScb6RPo6JT8sn2h7BQ
- RIiwfePyl+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCatIVdAAKCRA1o5Of/Hh3
- bR6VD/9O6KCng9ZkpKqc8pPLBw+L56WCgwopttow90n2D7auR9dm6jAeNh7rxGnx24E5T06au2y
- Y+qR5Xz4DpxdAGZJzl29FGHCSzBXR+mX0I+mQBr8TRdfYhgkV1RrKPl69IMwBm8ZuS6wbi4Zc3V
- Xv5mQ+mdcKXNa1/wy/mYLJrtWaOFTvQKn52rvYxJQt2NhakISGJ6w2pa8bwiTlxvI5VfxeATvtR
- SDVfIX+YQJRJPdeKTaLpeuIveioDr3D2Uv29PeZe5VasnfPNNlQ1Jig1rYC+TZ0fjY2BT7bTEwW
- 6BlzDcymHLE05Rw9G5389PUXC1znR0f3P4opZ2+oFVLI6h4G+yM5OsixP6t50Pl0Q/5K+FOaviH
- BqA2ogubvD9F3dgY0pO/jqd+tA+beX8bsihH5IUUpU69HaxI2hFLuedZeo5lmIxClJEq9csgtxB
- DoCa4JedObIu8JDqlZjB7Z5nVud/0lkgbz8Le7g4vvp5G2Lt72r+K+6ZGdN+igOLetWc3Go1fdV
- IB+umGeEkFI/bM51eEe49AbUSuTcJyeW45rKDlmnK/6s6ixq3wdmqddmHXHzp++YVpl9V413A68
- v/8MDLKIyGxESyybAfrSr3v8eUhu1qjiy6CNBbHiN8KoQLiM6t6jNQHXz1hx3mpDdNC30MdaqtZ
- MYqQMCTDkgdarNg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6920; i=leitao@debian.org;
+ h=from:subject:message-id; bh=44uh6luSjYURm81ATMeQ8CuGW+KPhB42p/Yp34Nf+y0=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq0hV0H/OJ5LwSLvug8tVPpUaxdCGvg9G3lhtcN
+ q7pJUx7ecOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCatIVdAAKCRA1o5Of/Hh3
+ bWbVD/9hzDYAjz4Dg5YFIjIa4vqZInz1Tm+DJIuD8JXzez95iNgGz53KW0Fx4Lnf8U456YuxW+z
+ GpIAxfOa4FdfkG9UDsxylAfpDJVhAMtml2LxA+yr0oSUo7jkb1VHRuTbGmzTvJQaoBeLdIZq8c+
+ pxLl2u4ziH6Oof2lHwBiQa/QEGIsdHkoRV7VZklAALlxkCAPLCVr2SjnBf0T9qO8M1Zz0PzXLSv
+ lPNO+OR1U5fZerYVR4FLQg8rgS67vSr7f7+Gfdl79DLYz8XTIbWxd7LqSf+i6UpVC5xWbgicDZv
+ NuEdxlO4k+ewHkp2HbM/vdBIxManJQWqx6tYC3wsyOlBX6CvdBmqrcADAUOmVVGQfs7xqUze0b1
+ r43ymQ/5ZQ35vPrYgL2HF7Yr5BqTStQK06tBHb6Vg39Le0klVPKMmUplpfe+JAWbDGLO+jfIInr
+ fzdqaXaVOBIrjw+/14YPwyuYKCv3E/E8JQq01MugSu8lbZYdIFubPWpVrawgLcPjFsJQYt5wLxJ
+ d7vXoKc+VdO/OrycjYULiH+C2LGXrGhTOceDVs32nQGiNysJhrqzLUzvy95TJupkPEQkwECgzv4
+ hvXWw1KjE75sBIQHZRlPQHddPRxqDICh3qFMvj14suYNj4eyieCzda6Lx2iWTMhuwB4gCzp/3rp
+ UxSAKBfzT9UTukw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DE5BA80007
 X-Rspam-User: 
-X-Stat-Signature: d89xs8wptc9i67dzbqc8fsmsosqesrah
-X-HE-Tag: 1792153019-276851
-X-HE-Meta: U2FsdGVkX18N6fNn9EATCgIRUeo9LHnKvde6i2xqOJXhNzrzU7qjnZFpGPLeq0n6btCtqfzHp5Xa+IVfnpcD5X8waMPNIV7DkyYgWbPzgkD4AfTfpKrD/zLFWYqONmxXpALFOfA2AWUbHmy993Q7VVNFqUSG8wwCzNIi9jLWglieqciJlGJY87DG83C8L58U4JqQXMPQz2vOP9kaUBCvk7FcPCvNTsnxjTs5ncnTtHeUHj4DZ9tmHHimTOSJLDCgiNFsrn3wqZ637SGlg8Y3ZOfljLbM1iVMMQshVsyfaVpJ63CgMFu6CZXJYWex1hh0KVjaOff/fv8EUQtbWV2rbfvr0YhmPtYQGPqQTUsVWEyE3LzAgew71mc9ntvpUnHj6aNNJpGy/cgDtrjgaK+if3O4KAZdMq9W7ythJ99PDW4BBNsva7CcFqGXgQObRUqWeqFY8iK5buQvg52s3+ZbIweUG1cwJSbX+3+7sCQlZpF9Qc8jz9r47AP+ezjpCpN0r2rZxjr6yRCLVdECimoxzND/isZ4Gp9jU7wgUqPB+qMVURlLw17ROOOYftK7+KQYyvXfM9Y/GdFwGzIV7GnFSJDgvBCAygUzJ5UboI+/z0lRjluc5TdY15My7lFoybaQIwMIbkg3HZ/a+wbd56dZz/Hj3TlMiUtUQkSSmnxwUO0voJpvoWGPvDC0EeMU4QjNlvBPxmh8QB24GSyElioC2mMusEteVU+jUok3u+IULndx9IZI4/Skv1Lj3G0c0VnfezMS8QF7vy0Al6WnCXMUtoIz5ZRr7Emd/tjFeJUebTYm+FAvisUgtzhv7LFONJugI5JKv9e/6eE7niwlnxZ29CB7Ve5IAmMzFFB/Z9l8ksAarXoXIfWMVzH31isP0LysvrVQOc6pTmH6XU0vSO4bYG5NnerTNBCVYU1/VZJCc8SUHzHJyJoTm4E/pLyTztrUtBrZrzImZYwBub/wNCY
- CTusaSeE
- udq6D7LE7oEctDnpkvCGcglRPSOQcnk+xFTwI4xnAIi8KbLM1MRZ+cM+zUopj3S3a6C7apFgTsLyssJpYJ7eiM0gCMol3nN97mJi5RPKMf9lwOxWoN1I+5dXkA8z6iJyZSSaeC4jOLf4YDgb6FZvp4qLrRp+/SrTiqHdB1oP4mSJwMjWPcNbwe9M34uPO7eJ9Q7QPIblJIrhJhgXYEF2aYtwV0DYIsvBJieOZb2Lg/5tdWeq5Zg4jUe5KyJwBUslQtflrsGNQWBif61R/Wpa+GyYQOCLodja997cDUu4730hwbJOVlRUCAMdpLLS6wCWc6TgaoZttusfNmhArC+adJbTRSjLFK6kxN/W9dkXR7vlv7qaX9H270tqRNlJLsfREHO7v8ZuouYJeJbU=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D1497140008
+X-Stat-Signature: 8hjrrxrsifwnqth57ijfjs4emtbm36yi
+X-HE-Tag: 1792153019-376041
+X-HE-Meta: U2FsdGVkX18+TIB6/n4sUOQ1uIyDA0ac4i0DHDEsm3h+LWFXyBd4PsTAp/CVsnEpOkCkrCfAqBswNxpFECI5ygZWqtHMCcl3U/3XSdEiMJz+jaiTgObfXmH75ci/pcT2WexJYFi8N7MY/WF5ZzbVKVfwNZ1rJ5nrgHViC6AF8I1iwLEIdsGvX2lDKhCy87GCfkez4LPJkd6lMuftd50hVhfJsfm89NTWvZ4g4JxsdG339LqBEPVRxHxr3ta2bPt4BviE+3pvGMBDLT7re/tTOoY7BqLB92rdEJEc00uTLELdFT3P0+O0WqC8SZePWCjm2Xx5ajw/QwoaNKNjmtwDhTEMBLUofOupOluPtXdVLHayAgFSGzhgdPXYSrGXf6QiTpLYg1dlBF40adgHni7UTG3ZYaV8jcIx0w8DNej9mJ8S0jKuSv/ZCQraqQ5oX58xeq03wNr9o8NDgkqdelMMgLUT9DNT8XrY+scRW4/nzepHKwPFb0MkOe3we3xf7dl/KOX5QnfXY3Mm/RmA/vBEWhjh6P71d7Z4GW0TyVzHPgW7nvlYjMiMBqt762xKfSDo6Zbacik/dP75n2igbWY2S4AJgGDCI9zYqe8EBqP3nvi0cV7zOAey/It1Me5oWwZt5KEHF77LuSdNHRScwQg9tCV73Osjm2vP+kMnJSKl66S5Abscgxdt19vRwgsUBzhDEIciF1/35wZv5pPPzSTeC+DrOZwjvltm/Fh1y1gmhthIB42KGwLUzdpXcvC+Cwhqe2UMj05kfknKFQ/ulzJA+gj3EHOco+fjnYH8bKaShnnPsFEqwmXVI3OihtX6YjMzETzYZRAn5QzZ6jK1zMr0V76gq/FilHUhjbKd3EpYbX7qSVVdtaJ1UyOImFxkp2LkDbU35Fvvl5e6QHNoPKWA5eU7pnjY5bcEL97eFtAN72Q8vAUISJNE+iIjZR5z2JK9N1FEtoDF5pC1nr3+l1m
+ Hi0Kn3P+
+ 0Io1hwYjCD7p4xMvhhynSqtl31VPONA1CSvoLTTMn22QvuX9sVbDSr9Q6sP8pkWON4CkA5muKKjV8gtebhbbTXGcyjJ41BBq2zwy9A5yDzxtlxrEuE0u5O/It/n1t2rJaJw5X8K+Y2eX03M6dtGz/bZcC8plMRjyVrqVR9IjA5ZOD8yjxanjpI7PZdKBSVJ5PWqSjz4Hotasi45KKjGnnqBJSTK1EySaZnqblFRCTE3pohq77pB77NXTYEhxEG2KREDXWBTtk9VZ1I6cbHoUrC/5IuJVcSBq68LbIk/uEmzwQQfmKlLlabUYj5nfM1ladmpKoCPQ5vzCIe3MpE3piyH+VfJi1wD0L1sSgR7xkY+l5fSM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,205 +131,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memblock allocates from and frees to buddy whatever is not reserved, and
-knows nothing about frames an earlier kernel found hardware-poisoned.
-Such a frame can back the memmap, a page table or a percpu area before
-any hwpoison code runs, and otherwise reaches the buddy allocator like
-any other free frame.
+A EFI config table can only be installed while boot services are still
+up, so the stub has to create it; the running kernel can only flip bits
+in a table that already exists.
 
-Add MEMBLOCK_RSRV_HWPOISON for a reserved range holding those frames.
-memblock neither allocates from a flagged range nor frees it to buddy.
-memmap_init_reserved_pages() initializes its struct pages like any other
-reserved range, including above first_deferred_pfn, but flags the RAM
-frames PG_hwpoison instead of PG_reserved. That is the state of a frame
-poisoned by this kernel. Holes in the range stay reserved.
+Size the bitmap from the span the UEFI memory map describes, which
+efi_get_ram_range() walks since the stub has no max_pfn. Bit 0 covers
+the bottom of that span, recorded in phys_base, so a machine whose RAM
+starts high does not pay for the hole below it. Memory the firmware
+hot-adds later sits outside the span and is not carried across a kexec.
 
-PG_reserved is left clear on purpose. page_is_unmovable() treats a
-reserved page as unmovable but skips a counted PG_hwpoison one, so a
-memory block holding an inherited frame can still be offlined.
+One table has to serve every architecture, so the bitmap spans from the
+lowest to the highest descriptor that is write-back cacheable or
+unaccepted memory, as discussed with Kiryl. That leaves out the MMIO
+apertures, which sit high enough to stretch it far past the RAM it needs
+to describe. arm64 makes the same cut in is_usable_memory(); x86 sorts
+descriptors by type instead, so a RAM descriptor without the attribute
+would sit outside the span and not be carried across a kexec.
 
-memblock_reserve_hwpoison() is the entry point. It is best effort. Until
-the reserved array can be resized it keeps spare slots for the
-reservations that must not fail. It flags only what no earlier
-reservation covers, a kexec segment for one: that was placed around the
-bad frames, and memblock_add_range() would warn about the overlap. A page
-shared with such a reservation stays with it, so no page is flagged
-twice.
+At one bit per 2M that is 64K per TiB, and 256M at the 4PB x86
+architectural maximum. The 2M granule is called "unit" here, and the
+table carries it so the granule can change later without breaking the
+kernels already reading it.
 
-It returns 0 only when every free part of the range is reserved. If any
-part cannot be reserved it returns an error, even when another part was.
+Allocate it as EFI_ACPI_RECLAIM_MEMORY so the next kernel does not take
+it for free RAM, and install it empty.
 
-Name the flag in the debugfs flag table. MEMBLOCK_RSRV_HUGETLB gets a
-name too: it has none, and would be left as a NULL slot below the new
-flag, which memblock_debug_show() passes on to seq_puts().
+Reuse a table that an earlier stub run in the same firmware session already
+installed.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- include/linux/memblock.h | 10 ++++++
- mm/memblock.c            | 80 +++++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 89 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 103 +++++++++++++++++++++++++
+ drivers/firmware/efi/libstub/efi-stub.c        |   1 +
+ drivers/firmware/efi/libstub/efistub.h         |   6 ++
+ drivers/firmware/efi/libstub/x86-stub.c        |   2 +
+ 4 files changed, 112 insertions(+)
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index aa845f488327f2..86755be249666d 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -52,6 +52,8 @@ extern unsigned long long max_possible_pfn;
-  * kernel that we know is good to use. It is the only memory that
-  * allocations may happen from in this phase.
-  * @MEMBLOCK_RSRV_HUGETLB: memory is reserved for hugetlb pages
-+ * @MEMBLOCK_RSRV_HWPOISON: reserved memory region holding frames an earlier
-+ * kernel found to be hardware-poisoned.
-  */
- enum memblock_flags {
- 	MEMBLOCK_NONE		= 0x0,	/* No special request */
-@@ -63,6 +65,7 @@ enum memblock_flags {
- 	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
- 	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
- 	MEMBLOCK_RSRV_HUGETLB	= 0x80, /* memory reserved for hugetlb pages */
-+	MEMBLOCK_RSRV_HWPOISON	= 0x100, /* poisoned by an earlier kernel */
- };
- 
- /**
-@@ -142,6 +145,8 @@ static __always_inline int memblock_reserve_kern(phys_addr_t base, phys_addr_t s
- 	return __memblock_reserve(base, size, NUMA_NO_NODE, MEMBLOCK_RSRV_KERN);
- }
- 
-+int memblock_reserve_hwpoison(phys_addr_t base, phys_addr_t size);
-+
- #ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP
- int memblock_physmem_add(phys_addr_t base, phys_addr_t size);
- #endif
-@@ -295,6 +300,11 @@ static inline bool memblock_is_reserved_noinit(struct memblock_region *m)
- 	return m->flags & MEMBLOCK_RSRV_NOINIT;
- }
- 
-+static inline bool memblock_is_reserved_hwpoison(struct memblock_region *m)
-+{
-+	return m->flags & MEMBLOCK_RSRV_HWPOISON;
-+}
-+
- static inline bool memblock_is_driver_managed(struct memblock_region *m)
- {
- 	return m->flags & MEMBLOCK_DRIVER_MANAGED;
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 31961ed628b0ad..d20d99972a4db0 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -36,6 +36,9 @@
- # define INIT_MEMBLOCK_RESERVED_REGIONS		INIT_MEMBLOCK_REGIONS
- #endif
- 
-+/* Reserved slots memblock_reserve_hwpoison() leaves free until a resize. */
-+#define MEMBLOCK_HWPOISON_SPARE			32
-+
- #ifndef INIT_MEMBLOCK_MEMORY_REGIONS
- #define INIT_MEMBLOCK_MEMORY_REGIONS		INIT_MEMBLOCK_REGIONS
- #endif
-@@ -1015,6 +1018,55 @@ int __init_memblock __memblock_reserve(phys_addr_t base, phys_addr_t size,
- 	return memblock_add_range(&memblock.reserved, base, size, nid, flags);
- }
- 
-+int __init memblock_reserve_hwpoison(phys_addr_t base, phys_addr_t size)
-+{
-+	phys_addr_t end = base + size;
-+	bool reserved = false;
-+	int err = 0;
-+
-+	while (base < end) {
-+		phys_addr_t next = end;
-+		struct memblock_region *r;
-+		bool covered = false;
-+
-+		for_each_reserved_mem_region(r) {
-+			if (r->base + r->size <= base)
-+				continue;
-+			if (r->base >= end)
-+				break;
-+			if (PAGE_ALIGN_DOWN(r->base) <= base) {
-+				base = min(end, PAGE_ALIGN(r->base + r->size));
-+				covered = true;
-+			} else {
-+				next = PAGE_ALIGN_DOWN(r->base);
-+			}
-+			break;
-+		}
-+		if (covered)
-+			continue;
-+
-+		if (!memblock_can_resize &&
-+		    memblock.reserved.cnt + MEMBLOCK_HWPOISON_SPARE >=
-+		    memblock.reserved.max) {
-+			err = -ENOSPC;
-+			break;
-+		}
-+
-+		err = __memblock_reserve(base, next - base, NUMA_NO_NODE,
-+					 MEMBLOCK_RSRV_HWPOISON);
-+		if (err)
-+			break;
-+
-+		reserved = true;
-+		base = next;
-+	}
-+
-+	if (err)
-+		return err;
-+
-+	return reserved ? 0 : -EBUSY;
-+}
-+
- #ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP
- int __init_memblock memblock_physmem_add(phys_addr_t base, phys_addr_t size)
- {
-@@ -2394,6 +2446,27 @@ static void __init memmap_init_reserved_range(phys_addr_t start,
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 48f93f7758e9e9..21569fe82cb514 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -774,3 +774,106 @@ void efi_remap_image(unsigned long image_base, unsigned alloc_size,
+ 			efi_warn("Failed to remap data region non-executable\n");
  	}
  }
- 
++
++#ifdef CONFIG_EFI_POISONED_MEMORY
 +/*
-+ * Frames an earlier kernel found poisoned end up as a frame poisoned by this
-+ * kernel would: PG_hwpoison, not PG_reserved. Holes in the range stay reserved.
++ * Find the base and top of the memory, so, we can create the bitmap for
++ * the full range.
 + */
-+static void __init memmap_init_hwpoison_range(phys_addr_t start,
-+					      phys_addr_t end, int nid)
++static efi_status_t efi_get_ram_range(u64 *base, u64 *top)
 +{
-+	unsigned long pfn;
++	struct efi_boot_memmap *map __free(efi_pool) = NULL;
++	u64 ram_base = ULLONG_MAX, ram_top = 0;
++	efi_status_t status;
++	int i, nr_desc;
 +
-+	for_each_valid_pfn(pfn, PFN_DOWN(start), PFN_UP(end)) {
-+		struct page *page = pfn_to_page(pfn);
++	status = efi_get_memory_map(&map, false);
++	if (status != EFI_SUCCESS)
++		return status;
 +
-+		init_deferred_page(pfn, nid);
++	nr_desc = map->map_size / map->desc_size;
++	for (i = 0; i < nr_desc; i++) {
++		efi_memory_desc_t *d;
 +
-+		if (memblock_is_map_memory(PFN_PHYS(pfn)))
-+			hwpoison_boot_page(page);
-+		else
-+			__SetPageReserved(page);
++		d = efi_memdesc_ptr((unsigned long)map->map, map->desc_size, i);
++		if (!(d->attribute & EFI_MEMORY_WB) &&
++		    d->type != EFI_UNACCEPTED_MEMORY)
++			continue;
++		ram_base = min(ram_base, d->phys_addr);
++		ram_top = max(ram_top,
++			      d->phys_addr + d->num_pages * EFI_PAGE_SIZE);
 +	}
++	if (!ram_top || ram_base == ULLONG_MAX)
++		return EFI_NOT_FOUND;
++
++	*base = round_down(ram_base, EFI_POISON_UNIT_SIZE);
++	*top = round_up(ram_top, EFI_POISON_UNIT_SIZE);
++
++	return EFI_SUCCESS;
 +}
 +
- static void __init memmap_init_reserved_pages(void)
- {
- 	struct memblock_region *region;
-@@ -2438,7 +2511,10 @@ static void __init memmap_init_reserved_pages(void)
- 			if (!numa_valid_node(nid))
- 				nid = early_pfn_to_nid(PFN_DOWN(start));
++/* The size of the bitmap */
++static u64 efi_poison_bitmap_size(u64 span)
++{
++	u64 bytes = DIV_ROUND_UP(DIV_ROUND_UP(span, EFI_POISON_UNIT_SIZE),
++				 BITS_PER_BYTE);
++
++	return round_up(bytes, sizeof(unsigned long));
++}
++
++static struct linux_efi_poisoned_memory *efi_poison_alloc(u64 phys_base,
++							  u64 bitmap_size)
++{
++	struct linux_efi_poisoned_memory *pm;
++	efi_status_t status;
++
++	status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
++			     sizeof(*pm) + bitmap_size, (void **)&pm);
++	if (status != EFI_SUCCESS)
++		return NULL;
++
++	pm->version = 1;
++	pm->unit_size = EFI_POISON_UNIT_SIZE;
++	pm->phys_base = phys_base;
++	pm->size = bitmap_size;
++	memset(pm->bitmap, 0, bitmap_size);
++
++	return pm;
++}
++
++/* This needs to be done while boot service is still active */
++void install_poisoned_memory_table(void)
++{
++	efi_guid_t poisoned_memory_table_guid = LINUX_EFI_POISONED_MEMORY_TABLE_GUID;
++	struct linux_efi_poisoned_memory *pm;
++	u64 ram_base, ram_top, bitmap_size;
++	efi_status_t status;
++
++	/* An earlier stub run in this firmware session may have installed it. */
++	pm = get_efi_config_table(poisoned_memory_table_guid);
++	if (pm) {
++		if (pm->version != 1)
++			efi_err("Unknown version of poisoned-memory table\n");
++		return;
++	}
++
++	if (efi_get_ram_range(&ram_base, &ram_top) != EFI_SUCCESS) {
++		efi_err("Failed to size the poisoned-memory table!\n");
++		return;
++	}
++
++	bitmap_size = efi_poison_bitmap_size(ram_top - ram_base);
++	pm = efi_poison_alloc(ram_base, bitmap_size);
++	if (!pm) {
++		efi_err("Failed to allocate poisoned-memory table!\n");
++		return;
++	}
++
++	status = efi_bs_call(install_configuration_table,
++			     &poisoned_memory_table_guid, pm);
++	if (status != EFI_SUCCESS) {
++		efi_bs_call(free_pool, pm);
++		efi_err("Failed to install poisoned-memory config table!\n");
++	}
++}
++#endif
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index 235c9738da2d63..22a315e2814a1a 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -179,6 +179,7 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+ 			 EFI_RT_SUPPORTED_SET_VIRTUAL_ADDRESS_MAP);
  
--			memmap_init_reserved_range(start, end, nid);
-+			if (memblock_is_reserved_hwpoison(region))
-+				memmap_init_hwpoison_range(start, end, nid);
-+			else
-+				memmap_init_reserved_range(start, end, nid);
- 		}
- 	}
- }
-@@ -2874,6 +2950,8 @@ static const char * const flagname[] = {
- 	[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
- 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
- 	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
-+	[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
-+	[ilog2(MEMBLOCK_RSRV_HWPOISON)] = "RSV_HWPOISON",
- };
+ 	install_memreserve_table();
++	install_poisoned_memory_table();
  
- static int memblock_debug_show(struct seq_file *m, void *private)
+ 	status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
+ 
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index fd91fc15ec810b..44436869c4efe1 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -1169,6 +1169,12 @@ efi_enable_reset_attack_mitigation(void) { }
+ 
+ void efi_retrieve_eventlog(void);
+ 
++#ifdef CONFIG_EFI_POISONED_MEMORY
++void install_poisoned_memory_table(void);
++#else
++static inline void install_poisoned_memory_table(void) { }
++#endif
++
+ struct sysfb_display_info *alloc_primary_display(void);
+ struct sysfb_display_info *__alloc_primary_display(void);
+ void free_primary_display(struct sysfb_display_info *dpy);
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 0bae0f06b6763a..3136132b9628ab 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -1024,6 +1024,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 
+ 	setup_unaccepted_memory();
+ 
++	install_poisoned_memory_table();
++
+ 	status = exit_boot(boot_params, handle);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("exit_boot() failed!\n");
 
 -- 
 2.53.0-Meta
