@@ -4,115 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E41B1CCF2C1
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 13:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19820CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 13:23:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 002896B008A; Fri, 16 Oct 2026 09:22:16 -0400 (EDT)
+	id 35E566B008C; Fri, 16 Oct 2026 09:23:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEDA76B009B; Fri, 16 Oct 2026 09:22:15 -0400 (EDT)
+	id 32FF46B0096; Fri, 16 Oct 2026 09:23:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDD7E6B009D; Fri, 16 Oct 2026 09:22:15 -0400 (EDT)
+	id 245F56B009E; Fri, 16 Oct 2026 09:23:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BC63C6B008A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:22:15 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 42A3E1A02C8
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:22:10 +0000 (UTC)
-X-FDA: 85328552820.15.8C1D524
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7064E14000B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:22:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AjBFXF9Z;
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EFF046B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:22:59 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 767F8A6571
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:22:59 +0000 (UTC)
+X-FDA: 85328554878.11.564DA44
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8721E180002
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:22:57 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=uLkw9qnM;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792156928;
+	s=arc-20220608; t=1792156977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4rfnRKC0dnb7v2Iwowqo7DeL++H/auk/eHigU5I5UgE=;
-	b=1tXx+Cs5VIVQB7CbehhW+inj5y/wFfXGUh7Odohmmke0AY60gwEhGcNgQT1r8Eqv23TfJ/
-	kIOfO9XxuOIPYLHGgeSiDbpBM6L9L5O7rEWKRsadpeaoJPUoA9v8I+ktjwjgYi4omcLGpF
-	iEFeFnImRSfpBmkcz+xr3XNhVnmdsqQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AjBFXF9Z;
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	bh=UZ+jg+YnV/4Rx7SNrmGuegpLMiyUs48QsBYMqR/oF7c=;
+	b=Hc3fVMpgbV8pBBgF2YL5qv/hfn3JVO5Zmso+WVPS4fJ8NX3TqxU7UdytCJQIZWuMVZO1Hz
+	LFoNbMeWq7P3h0+/knsNR8PoxAuV0nygQwmTcrNLF+mYZyksYKm0CiQ2hv73q3DZeJ8iUK
+	RFsbd4iI3tXLx9ON3CuQf0+bTVegPxE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792156928;
-	b=Jn64cWmlWFS8EFrU+/OQ3VsoE+FIP11rI1WbLjSvBjiBfHCrA7b3IMeq6OqDt1EP2ERrJK
-	AjMe94s79UT0pgZckVlgBGtaW7tqzhmiMSZnd82R0EEursnSOex5yuMdTOEvMEXK20l67j
-	5JYe+XVozyRjfwqNjuy+Zep539KQm0U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792156928; x=1823692928;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A7txyVYnucQ+mXIF45spbjwttKKlMtGxt+1t/z8ssrA=;
-  b=AjBFXF9Zlv1st+vCmMS9rT6OGzi58sNO/53ZhYR81mBpds54THKpSkvO
-   Q/+O8pnQHTUCaZlpTjUbXN/VSOwTP3sy8nQNKnvDWUNo0YBdlZPjEhTDr
-   O+rTMnWFZRMg/cKjHSYFRrfKfB6NVfCm29OaLTumjPlIFC0ZG3h0fsU8D
-   jQ1my+6sSDgyWPJDomSrHCi6beVOq1tEfRMM8aiHVCE71Rq+QFl+9TvA8
-   rhXG6B11Amb6L+n4H/hn2TOo/M2xJE/976R/Hg+CERQdxKUnc7WHaPZlk
-   zidGiWNgGP+v3qycK0r14yBsXUIDuCiSvf5wHp+drYcsY/VcxBv1JdvGm
-   Q==;
-X-CSE-ConnectionGUID: I7a+h3kHSLSQwwhAQytbjA==
-X-CSE-MsgGUID: IMvtjUp3S9Wvs3jfO1rhbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="820268"
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="820268"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 06:22:06 -0700
-X-CSE-ConnectionGUID: NG1UJPDCSDKpNOKt4UMv+A==
-X-CSE-MsgGUID: 7F3DT3sORvSDv1o3mBLYiA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="1831994"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 16 Oct 2026 06:22:03 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xHhsl-00000000IAU-1WH4;
-	Fri, 16 Oct 2026 13:21:59 +0000
-Date: Fri, 16 Oct 2026 21:21:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Rae Moar <raemoar63@gmail.com>,
-	Ryota Sakamoto <sakamo.ryota@gmail.com>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Kir Chou <note351@hotmail.com>, Petr Mladek <pmladek@suse.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Guan-Chun Wu <409411716@gms.tku.edu.tw>,
-	linux-kernel@vger.kernel.org,
-	"(open list:KERNEL UNIT TESTING FRAMEWORK \\(KUnit\\))" <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH] lib/tests: kunit for associative array
-Message-ID: <202610162123.hSusVMnq-lkp@intel.com>
-References: <20261014160144.1835860-1-jarkko@kernel.org>
+	t=1792156977;
+	b=Camyssy1g9LJR4WZIo4waq3fAwmZurdev4wkuIPaYXyHD6VVHavJ+tedbKLvn2iFMwNqRe
+	265ccUmBEDCr/kbi3TPTiu7ndHJ13o3vbcxAbfOZv2mlMujlLRTTiV0U0xGBMC1kesrNyR
+	CD5RryGbgBtIM1aWEMLSgVt5CEcIFrQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=uLkw9qnM;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-917a20e9efeso90154336d6.2
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792156977; x=1792761777; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UZ+jg+YnV/4Rx7SNrmGuegpLMiyUs48QsBYMqR/oF7c=;
+        b=uLkw9qnMWz4B0BiK3/7dQME1Ujx0Om+q0g7B/0dni72V0b/H564O4imiTHvsgyJYEP
+         1DbQlBR/bV0s1eeAsEf5gPz64ugt492OHB0gLRi+18Fr+LzHhO2Nig1uaZGUjDGk4R23
+         HWYFtjhoFuUpMMjOoE1u3o8ElzAFVI3LsD2qX1Fwpig/aUFtHAXZoQ7e96wURalYtBxE
+         dJtslZYhrzTXE+nUETnn3xfVVoXInwkuCj1hfVAEmjBbJ4VyIjzb8FeVNEUvsZTRb1LK
+         LNu9cm/Z6ixF0e9bW6P47K81FN7V09el2hPxMvVV3SArmXqDvgr9n7l2sYvO6GcX3uU2
+         hdiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792156977; x=1792761777;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UZ+jg+YnV/4Rx7SNrmGuegpLMiyUs48QsBYMqR/oF7c=;
+        b=Vj8hFNN8H5I6JttitGLwcGlROwjZwmNA+GjYYrm3/MxloOaR2Tv4CiJXb3RJTnPT/+
+         vhJEuc7gIpmwLqRBJlp3RBHPU4Jy9YMOQlBWAU/3C9vsCOlrEZEdeNjhUKMG8ZWlKWzE
+         aRzzAJ+4qK3tC9uM6pieVRsh7zjzU95CVIYnY87YFCIAkk4H2g5DQ1ihWDw8T15FkJd2
+         Ie7DBRlyJL2TeewYKtoPJCrjyCXEuvsBQpwXzPGwDD5coWIf/UtKkef8cr25snluII+B
+         05KARsEoBpwPmydne6ORqGp7aBti332JllXez2jdGou/V5R5HB2Vgpa4yrSmP7sqYEVs
+         cWsw==
+X-Forwarded-Encrypted: i=1; AKwUvByf8klGkVAMjoslDmb5xu2RUbEsgnkbn+ytrcfs0QrcegJn0pf5PmBsoPP2OgQbgSzI6AW07W0VkQ==@kvack.org
+X-Gm-Message-State: AFq9FYJU5nf76bkZJdxB45LvNXCY6F0S4JXaPUcOxHQTfpsVbp9Ga2mn
+	EV7X42vPh5T2S+ybhTVI5WFaZBviII9JKv1B3nn2J90GgDX8NMiWM9oD+TC+DP5t644=
+X-Gm-Gg: AYBFou0mb6caUHIzzTqWJoFSLtIiYS3sQO67ZLZZQK1v6iomOZEZB3WagKmXErDCeyB
+	c1t788TR+QGdxH14IbiZNS7iHRXe63nNc4+D2v/vt13vq8KV8TqH9eF4IDMFaTUgMTof3qfm8W1
+	woGmZ4xgN1wB8RfHcRwruXM2wr9BK0EFzNa1JISRZIbpriOr9kzNsH/LLZQ8UmhQsA+Nm1WTmC4
+	hebCusnyJdB229OXk4Y2pIXyIDP57BQvUBXu2BaPUuM6kNEk0jIDSx+1++fIz8+kOXlwcxY/ycD
+	qC9JZ6vONRdPKx9kxe0OCiP+z3z6MrcpvGkaMVj0BGliERTzjTIKbkYzDuS44v9hP3ML8dCozHt
+	v7fk94CJL3eea4yKgMtfwulO7nXmK+n74lH+DGnhslKd7C1LgXXrCnnunKhLDoJVVQFtfhJs9xQ
+	SRYxh/0iSNVSVVPXrQrnaJsrFkod93jlGItBMjsIGVvPvS0saoez/3lgZjBgFLi8XvaX82Vl3uf
+	3JykRWXBreLHsLb5JUPwkQLaNrcHBwtCgk0EPEfG91E3QfpRNJPYh0=
+X-Received: by 2002:a05:6214:4808:b0:917:8b5a:8e81 with SMTP id 6a1803df08f44-91b55564619mr403547436d6.29.1792156976561;
+        Fri, 16 Oct 2026 06:22:56 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcbb756fcsm22569936d6.42.2026.10.16.06.22.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 06:22:56 -0700 (PDT)
+Date: Fri, 16 Oct 2026 09:22:54 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Subject: Re: [PATCH 3/8] selftests/mm: check MADV_COLD and MADV_PAGEOUT range
+ handling
+Message-ID: <atIkDw9r6CVDJaG7@gourry-fedora-PF4VCD3F>
+References: <20261014175756.2035176-1-gourry@gourry.net>
+ <20261014175756.2035176-4-gourry@gourry.net>
+ <73c55ce6-67a5-471d-811c-facf712b2fe9@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261014160144.1835860-1-jarkko@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7064E14000B
+In-Reply-To: <73c55ce6-67a5-471d-811c-facf712b2fe9@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: ok38yn8yrstifpydjywixs9chgkokd68
-X-HE-Tag: 1792156927-404068
-X-HE-Meta: U2FsdGVkX1++Dj966zMI8nhaNErjyULjs/Ug1DINLge2PlWM5hvqk/1D8IFpvgiexqeAgPg/z9oXgWOuVtBhxPWZllD6SEU/D1qik/3cKg05YLmF9IJ9btkZRlxoF4JkFtq0bFkKvF6x/k1Bby42mgVxvrTkthBVH8EOZiGku/mguwhzj1zXRtUgoRuE9eS08awqKv+eu3WJqxMvRMdSSOxpD8/g30K5EJWqcm15H4Gu5xp5RmWEZ25Nv7rUyet0liw6qwddvT64oZ4FjN+57XGuJ9zD87tgBkKtALxCjMcS71MHdLdAEWpg5FBsbdmDB794xbgRqY7l4c1tfXWZl+vfYDQPh4pjLq2iA+oohvDvBrw3jH3S/wr1sOFUgRfoACfNivRMRPNUMvwcUnRBXlybecOmgEAIbDQrVljaE6IRcu+YZvCnwzdveI7cTm6BjGLp/BF75iM/roB18yfeEH/JgOEQ5rmWkdCiMmrPHGEUvF01IguczfHaUSSKbSr9dcUChmBiEQd72dvGuYX8yw7aGAr4U0JY/VZM4mr7HUjg/semmTXBz6OUmHuzK++R0MnkS9JrnSTNkU7WpJL8EsHP5RAreQ7W5D79EV8lOIlgTIyW153Xr+UgvhdatmJb4HXAHEsMo5iYAFhYZYUsK9PYGPuIRrgy8utU37j8qfUrCW/4Uya5mRfBV/TNR+tbs/Q3NTccnKqKNk6VWC881IrDTVmRWgM8AUd9ZZ7i2F+XcgoMiokEAzE6pUG8xmOIMpT45w4TlytX0UHWeQ+9qpAfusrxjlwOs/R/vPcsXL7pX6rsx/l2c7UXLbrSvLTH+3C4FOIVqVpRMKpktH9cHvcI/RS9lsGn2qZv+Atm4DGwvD9f6oVWJ0hYlQZ88wCXwE+E3s/xwgOn5AoyMQm36NCYciuXtRzNuvixK4i6V+JwyjcPi1YxwzthvXq97WNZjNELCy5nXPvF8Vy8Rpt
- MinN8xFa
- 1cEO2CX4ENZmivHkg8jU7NJuTxMhYJpn9E9b0IG+ziEhKhyKubRbd7IZdsMNG7I+ME4Z3hTTai3jh0ZebY5vLJHJhHkfblpmaPZJGZIcXNVVOULrKJT8mlAyhqJitQe9AH2yiND8WouSEGL86vHwo1CDGad4KUNwZwR+n+Fow2yfXTJlijk3qePG9OWDAEBjAF30Rfs4tQOurPYB/neoYq1tfoc1rjpw8Bh0PrbCDlLTdiRM3DnYdRHC5/Ih0g/ajneTlygxSv6kV7glOUAIuCYr2nWZLNK8//XkxsBmIawyQvp3Qr/4xNOuntcRKl4iLFNtK1wwzfmDdJi5uelStak4o3ePy8+yHDgfcGJuylgC5CG63RJowmFLbKzy5vVfG7IOVCfOoPTi3aUneiu0MqRI32eozzPwWSy7/W/aMPAY6+rE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8721E180002
+X-Stat-Signature: ubi58o6s8gbh4kumeqcysmai8ikpqc6c
+X-HE-Tag: 1792156977-744057
+X-HE-Meta: U2FsdGVkX1+tb6G3orNGWsKDUCrNXUQyrRVs+20aPM6IkHunafkfFZqxonjz9fKl395JCt4Yy1pUTADljGDp4zJRwAuR1lrdw2wMnSYBW4KmeZ3rbd+kBLePfPxa7Kq464w2JCkZNBUzbd0reiVdY/PR1pzm4K9uEpq2bt6CSESVNc4hbtlhGBXdqUS8tmYTIjwdu+DNxjDyTw/YTgXVov6o+Wch5z8VgKaPi5O4AUnabRAZ4fHydAKQU01KZastpwWt7sjdc3SVdjiNYs9oFRFjSk29NJslTJronbsKlnlpJWj8QdW+FD32MvpDWHdsHE4PuOKDoCAGrFmr/kHlu/YUP7Nd7rV5ieeczP2+V35CaARG5kXxCR48+2gSCyCIeUlzVvi3qqyhEFQOCjZC6ZyMmeKrZtmsc1WddHkg49evlVu2HhygtHTR0yPFR8f5AHzyNbXb7d9TOfwBV0bpmMteL9vdOHX+zWSvkxkEiiGldMwWyUj2L6BW5OoZlRr+b1NjEwDbptusY20Is6+DvIsHWAt0jjVHK/PyqMhcXfhVNA529VtQqqpJ0hhjxN8HYg8mFvnzUyf5D2iNdVpYncd1jsYozsknYM9DTbFcCKcMH6xa9HzsRhANWLzmhGUHp5tFdUUsk2Oto+5UsE6Z/PzZ7Ci/J+/BmaRVWeXuwZuzwZ9xj6yIgMJSUahCTLUeKoFRjBcXBZnyr/rLu//tmVLb1SpagUQAKGHVo8VeE9dMedheR/oBmDfEYXzQPG4vfjPpi/5IG8jLKU9a0IzcVcmPyuX6UCuh3SdxBmOlOSkHMtEZLqWJDJ1+N6WQ3EZzPPLZ1Q6Y/cnvzlzoa97uI4FuGbvo2lKF7G+MLnxO0WC2A0wIRtraJ0yK8ZNaAhBdjIdSuJ1P3kcupU1R1Yj/U1+dxHuFZoM9BYO9ksyd3JWYePZHgUc5GQi1Y0CSKiR7h+MeAIzUg4f8o94hkw5
+ ezue5AIA
+ jhnT7n/4R+uvri3etKt2l4Qg7mZ9wASc1/syWMQqv7F1/p6QeAMES86ZDA65fzs1cTirsK2Qohio7HbDpF6nT40bonTG354I/H/JyW4HAxeflopouWBdUHK4xy32gUaXJxIFPqdgF9n1Q98nILoW46llVg6EvV7kXZLn5kJ0UBFh9FnYtsZBYA9B9+ctyO/IgsXtDfiu7BZPKjWW8aGbw3gpMlA4vgCjvoBVdcACwCkyib24fNOQYC/hWHgSCboCV4AO1KRmxukWoJlxwUMY6pWgP0Bk+wHM1YXi4c28pHEmGPhCoqd5qgmBqenp1srUtuNc9KOQbqEKcv5z5gDzn91btgyg6693TMdBjUglcPEi4JnRuNtPzpQyf0Kjqq1WWdtDh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,43 +124,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jarkko,
+On Fri, Oct 16, 2026 at 05:47:57PM +0530, Sarthak Sharma wrote:
+> > +/*
+> > + * An unmapped gap in the range makes either hint fail with ENOMEM, after
+> > + * advising the mapped pages on both sides of the gap. Only MADV_PAGEOUT has
+> > + * an effect on those pages that the test can observe.
+> > + */
+> > +TEST_F(madvise, unmapped_gap_fails_after_advising)
+> > +{
+> > +	char *mapping, *control;
+> > +	bool swapped = false;
+> > +	int retry;
+> > +
+> > +	pin_to_current_cpu(_metadata);
+> > +
+> > +	/* Make sure MADV_PAGEOUT can swap at all before relying on it. */
+> > +	control = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
+> > +		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> > +	ASSERT_NE(control, MAP_FAILED);
+> > +	control[0] = 1;
+> > +	if (!pageout_until_swapped(_metadata, control, page_size,
+> > +				   self->pagemap_fd))
+> > +		SKIP(return, "MADV_PAGEOUT did not swap the page");
+> 
+> This test is checking for both MADV_COLD and MADV_PAGEOUT. So if we skip
+> here because we couldn't pageout, then we don't test for MADV_COLD
+> behaviour at all. Do we want it this way, or should the tests for both
+> of these be separate?
+> 
 
-kernel test robot noticed the following build errors:
+If swap is off, the behavior of COLD and PAGEOUT look pretty much the
+same, and we can't actually test them meaningfully.
 
-[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
-[also build test ERROR on linus/master v7.3-rc7]
-[cannot apply to next-20261012]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+We check that madvise(COLD) returns -1, but that's also largely
+meaningless if this initial pageout_until_swapped() call fails.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jarkko-Sakkinen/lib-tests-kunit-for-associative-array/20261014-190138
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20261014160144.1835860-1-jarkko%40kernel.org
-patch subject: [PATCH] lib/tests: kunit for associative array
-config: i386-randconfig-1010-20261016 (https://download.01.org/0day-ci/archive/20261016/202610162123.hSusVMnq-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261016/202610162123.hSusVMnq-lkp@intel.com/reproduce)
+At least that's my thought.  If you think I should split it, I can.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610162123.hSusVMnq-lkp@intel.com/
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_iterate' undefined!
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_gc' undefined!
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_insert' undefined!
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_cancel_edit' undefined!
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_delete' undefined!
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_clear' undefined!
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_apply_edit' undefined!
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_destroy' undefined!
->> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_find' undefined!
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+~Gregory
 
