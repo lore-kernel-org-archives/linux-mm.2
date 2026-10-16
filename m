@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B039ACCF2C4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 21:31:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ECC2CCF2C4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 21:48:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57B726B0092; Fri, 16 Oct 2026 17:31:26 -0400 (EDT)
+	id 2B5A26B0088; Fri, 16 Oct 2026 17:48:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 552956B0095; Fri, 16 Oct 2026 17:31:26 -0400 (EDT)
+	id 267626B008A; Fri, 16 Oct 2026 17:48:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48F2B6B0096; Fri, 16 Oct 2026 17:31:26 -0400 (EDT)
+	id 17D376B008C; Fri, 16 Oct 2026 17:48:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FCDD6B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:31:26 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFB1B40138
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:31:25 +0000 (UTC)
-X-FDA: 85329785730.09.C0FC745
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3BF99A000C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:31:24 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELUOrHbZ;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DE2746B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:48:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A04FC0134
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:48:37 +0000 (UTC)
+X-FDA: 85329829074.23.F18430E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 78CE8C0008
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:48:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVuTTWsY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792186284;
-	b=DURJTERzsJtTizf5YhSkk9z5RJU+imV6nTGqJkKUNlL3PLZ3jsMaDcK8k02k4KgMrmBxoj
-	VP+IiwGNTLOZ65asjIZvGe59G4Abkc1x4qYFddtBGYbHkAqyteocSYcUdx66BfdeHeON61
-	I6YquwVp3LM7HrGWm9lZBF2XpM3daLY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELUOrHbZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792186284;
+	s=arc-20220608; t=1792187315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6xXCI1y+KIL4EzZd1UBU0Rx2a4JShmZFF+y9QS0NW0s=;
-	b=cDBZjn8OdpnVMj4mhIhfHUSv7+bCsZHsIlI/VpTksc+3nC3xFO7V7T6OT3wXvDjyYfdEYZ
-	iN0CMX3gfcRMZl+XRVCPAOn50dil7F0dfRrBmK6j1s3BgYLq5efoQbE3XnQk31wMcJ2NNI
-	g3Dd7r0/Pt4NPa9+mYXU8T3VU6jRNm0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ylh7TTsoBZmvoxuSRMyoR3bwQNz2SMz21EvQ30zmx9A=;
+	b=Q2We1O1CdbOUOcD1lQvkz/ZbIq1pxgaKPbDehJj6G+G+kkhpUjm+lyRfA8nPlATTg49qEC
+	Aoc0j6wLj+1exToJC1Rh81/wGnTqZxzlN4LceHiYchp8Iozo/0iUxYS09IpNMbblakj1Gx
+	e0FbC14SOmA/Q+v2FOMYsnYv7t+WARU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792187315;
+	b=Mra8rnZRlpWBM6MAVsRBFqqkgW4h35QciBIhn6HWzVABiY3NbovJdW2797Ny3xgWvCnNYl
+	eOTqaTLczhVmACiBIp+Fd1P1H2oKil/q2UgJvR5SP/tAGyAQzMVxEg18Ab/x77S1e9nAFv
+	u4lv2zDLUfunEpG0OtXcqARhmTOi7Wo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVuTTWsY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AED8560230;
-	Fri, 16 Oct 2026 21:31:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB52D1F000C4;
-	Fri, 16 Oct 2026 21:31:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B086F411C3
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:48:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931241F000C6
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792186283;
-	bh=6xXCI1y+KIL4EzZd1UBU0Rx2a4JShmZFF+y9QS0NW0s=;
-	h=From:To:Cc:Subject:Date;
-	b=ELUOrHbZ/x6S19d8SFb6r93LmJRMj8w8VM7M0XrgbI5tqbBF8NAzMi7O6GsYQENqb
-	 vOxC/Ra8idG//RrWiFTSy3mTZosZ9ME6EwO7kRhKJi+pgN1P/e3G2WZ1EI7csRy6U2
-	 Ii/2uLoE4qTdNk4t16BUBvRXr0i3Fz8DZT/vIR0e6wYnToK51qtCAAcovCPhHjqMeU
-	 qRglTLYlT9UJ4yhJLXJ1yTtMsre4IAeUKLlIFR+su9q+TSg3NoJ9nBdT9jwfBjG5GT
-	 YeFA5WXgKj16/BhQ26sF+HC/a6XNFNWQe7jCCh4Nns/Y42zQXWsixmNVKj36zUK/qD
-	 VvXefLWmItnew==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: ehab.ababneh@intel.com,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	kasong@tencent.com,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	weixugc@google.com,
-	yuanchu@google.com,
-	yuzhao@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/mglru: fix using folio_mark_accessed to replace folio_set_active
-Date: Sat, 17 Oct 2026 05:31:15 +0800
-Message-Id: <20261016213115.70515-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	s=k20260515; t=1792187314;
+	bh=ylh7TTsoBZmvoxuSRMyoR3bwQNz2SMz21EvQ30zmx9A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LVuTTWsYz6W76Thi1YXgOVaDYQM2FTrz/ArcFuNiQTA0ZvQEDAJNpG0BBWxa86LeD
+	 LIkLjWb6G/CpviF/y/xZdhoRDWIe8lbPQaINDtJPy4VdxpGO4ZByUAhR2gLK5ipTjF
+	 W74FyAZQ4sgzUkyu+2tVhebb/4ymzRPh7ywDEoGCDUMx8qfD6yDQSCVaZt3QEwviMI
+	 FBVocAahARGfvkTUOOPujFfCGQ1mP03pJacvOiNL1CJEuqQn+86kY2jbKCdaf2NQAj
+	 7knsfLzMWukW4TNSwbuD797GMNG7AcfsAWWbie4s5qP2LEToK9Xk2/nmJ9CJmxWNbe
+	 9LvY+aEbOOIHA==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c263415982eso44498766b.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:48:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwVLHOJosqIXOMU+QLoa9in97WWJJJCfhYoAvnAa6JeP4Na5wHgIoPSXBQRgKZbfXPmCTaSyvCLlw==@kvack.org
+X-Gm-Message-State: AFq9FYKWMJmDJopg0pi/tNhy9YnYNMVzD0tBqLlm9hIzrDvZLYyEVKei
+	e9AJk/PfIXTjytjngfhzxgKm7Jt+iB9QA93+7+SFcjJrvPxJQNyyu8ZIXpo6tINHwGGrIJgXXJL
+	LWpyNnVlCQKwRvH44mFO3ge+mr4SO6kw=
+X-Received: by 2002:a17:907:868a:b0:c40:aa04:18d0 with SMTP id
+ a640c23a62f3a-c419da41336mr78750666b.17.1792187313507; Fri, 16 Oct 2026
+ 14:48:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3BF99A000C
-X-Stat-Signature: rnoaqp3fc37th5nzksjkweiyy6jrp3h1
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+ <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com> <CACpmpofN-JfCgJtW9D0wNu0_pL1pRWGfNphUQnE9Bse-P5tHpQ@mail.gmail.com>
+In-Reply-To: <CACpmpofN-JfCgJtW9D0wNu0_pL1pRWGfNphUQnE9Bse-P5tHpQ@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 16 Oct 2026 14:48:21 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
+X-Gm-Features: AclHuK_zAfaGRUrzaXzEs4qzNQZy6mar-GxIugKXPKJjvgPfBJdYRUyLH6KYsfc
+Message-ID: <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 78CE8C0008
+X-Stat-Signature: 8cwdjnb34fem3qrzarbuci8dnnnynu8g
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1792186284-774978
-X-HE-Meta: U2FsdGVkX1/FQNiSTNggxSvOwrWpU0z/9xAJcJBxN5pbBMiGjmPCidEp9l+u3cTrQ/5bSpJBvJW6yCJFNIokhYhqQZcN3Ethlk87/aRw4mW/uKN9gWHzQ3/T1N6HqzHCm0PR1JTHNJm7TFLCFZjlS6pzMFAWdV/kJAc5DJpqgYnKMddFhDoZQHCEfm1snTnIFf8zwQpe22b2CRCbsN2QC4erO11o2xBnbhDMOMaLK3vlOFUeRTd3fDcP9UhWFfVJ4RkTM3xhyW97maj7O0Dn82M1HZGX2r9lLzIiupe5X8EHBLUO5kRhye88kcwVYWl1h3t47aSea1riY1rLRVZCNeZcB+x78xJjyjz6QyevHVcpH9PEwfAEEES8K6v9T1UZgdbrSS+gKh5Q5eCZUKq4DOj0uZJOUXXIGRjT5mJ4HSiWjMXgP+NvvJVbGnYnwC4km5gnxPwyRfeUdefUYdlBt5GyhTKUqJSbszSV1Dp6+inlhJUUiW6wEIGmJZzOF3B/dxJFIeES68U7GGlK8vF4m9TXtwd74jm5VJnkb7gMJzjRSKxDBRQgnaCQrqqsi9lk0Bh99rZJg0xCmaFRk96LX+71ZDD1cjq1CO72Oy9WUrlYyb28LV8ckX5Cgm5L5MQ8zvIx0v93rx7Qge9J0kZ/CtAdn1HypQqMXzwxiSQehwAt32ez7DOKY7HiPXK8jAU0EsCmwL9UIeFSuKH5ZEjd/0JvaSB9M2440qRcE9SD0tUwbJ36St3DhpW8btUIR/Ku5BJ9aQLG48AMoDAqFfjfeWkh9VKngjCboAc0JB4axUI6xcnlf3FgcEYz8rjnFRHEM5jyl0YelIkbroXbTBMQGSG5ilkB7P8j5hD84d/WVJOpXPBYJw14tAbK9ssAbeqqeBh4aM3UMg00Jo9JOULNd1mO3Mthk/qAslLsxgAKW7TzacBThKePyrBnKS904gD9uiE/gP0ZJdJfGoLOjz9
- Gbru6a4m
- zsou+bowU/ZeAkwmpXxxzjA4uYlaw3VgqoD+01DEQCgJZWRSnXFJrqkOiXpB5ewzMNB0GVJM6Wp7uxBPDe3HshPHEH4w4XtFJpqH6JBm8EHeB+CHRjtT/1/+vH2ta++abQ2ePPai2+GVl/WqLkiCWF2HJMrtXYm4ubevUlaQ6v5hI1UeYMglvd78eE/Mm6BOgfvMtS2U3nRgqT/CUqLpoZ2+6VnhtdunhdoI2kiB87x0mDtSESSykHY9JUrYrlD2xT0eOadLAM+2It0TNiH4Lt64657Z5adgkpc/odqwWts2WXSRgqJeobpwS+8qNY8RTfR+2EKdUczcIADU=
+X-HE-Tag: 1792187315-482923
+X-HE-Meta: U2FsdGVkX19Tvt8w3xyHu+iMHFjwEsmFCTJkG7/ZuNqYRlSNax+llggiKB4j5QoHAdXlnY2bWMTJPHwLBhlpJLBv+oC14sT5xm/XPNnJQvHuKSnhifFIksxGXK4PqZJUZDrpOjbrlv4q+b5Xk5gsO6vBMfK//ZNNHyA+G+qRWPnCdnQ7AH/uxJTxGBmAZcCHxUPQFE4FI06WLL5Hroqxc48kKX8gdfxX4q07pmEC12jLuJNV6TUOW+s15t9R2twUc/8+MxOxV4fHyznbJOffEcRKAaEjWuUgo6FmKNAP+D4wg5fcRR7BNur1ahoVbpx8WQscpIl0KYbpZTzTxZ4LwLUeMsymEb/3Xcz/FqbvM5Da8owbs61EEMlLKLmPI8PJWoJwLvTZu7MDdzQON93BerfFYlbNKGdqHHHHRKvBakbEQ/FTSoLaKsefC/ERKaq0jq3EC16TcR++iu/nIumcBeB9mbjAyECXqYKWqmBODerr0vI6swiBVnZnotMeokpDToc7idaEBVJ2tNhCWGu+16IY5qeNBURCtNSYxeMhji5PttkbI8T4a6XlcR9tOULOAJPsFDpIs/Cvtqck4+mxIg18VpFNkYtuB4FeQIwbOBheub+uDCjVej7/3z0DMRPKKMXf2Yryi4tEv5KXst2NG0t/5103eOPW9k9luDGBXg9SsKDCLh6/+kReyc8ilCHqpskQAHxKLE3GUdYRiPGM2LHXPIzirnXQlUKfDcaKBfTfNbrG+wIFoeYECohKybWIdVFLtXPyODUjW5LhmN8ydswhi01cnQOUB27TEoefFZOPduYU2A9lcrJ12YEEk8TfD9dH9bxgNz9w8XvsBzjp5KsXeXtzf+zNcRpj3EEyVTTVsC+XTmGij2lb7fCWUcpFufaIHbEoQLtzHIya8vuVpwWzLatbj48sMEG6C0PBj4LCENk0rzP8vCR7LRtgvbsVpjRK3qyfRZfAPqA7H5l
+ 0MT+ZS6f
+ RFJ02K7cApDYk9wFA522kBvzv3EYCX8Hpqiv/X/UqJYjVV/cDC24dWpEc3vN6gvRUIYSGnJ8BhunTkQzpZtxyqFqMULY858fN4hkvmKNQvOtDI7lOAePVE7lE0dHGyR4r35Iwe3dU+7mNctm6Yk7+pKoh+IGu3EpOEEi3s3J9xMSdWZ1wTGkcT3Z8u23iR6G7jsbgbo3JWML/5W+NZeDQs/edfAD8nr6trR/Cse0oqYVKWQ07l0q4wR8zObKylaA0IwRrvseZnLWKLjTnhbkEWT4rWAmztcVB3MBUAmy4YlE0xcW+3nGIhU2BnmUrh36mKmytDQCRV1oXe/Dx7Yk/i2cJfZgWSlM3NVm2ToeBiCKLsC1tpj3zdb/HA/raK9JVFu2DcyaagTPe71rA7Qix6QZixg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,184 +106,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
-replace folio_set_active") attempted to avoid over-protecting
-in-fault read-ahead file folios by placing them in the
-second-oldest generation rather than the young generations.
+On Fri, Oct 16, 2026 at 12:05=E2=80=AFPM Kanchana P. Sridhar
+<kanchanapsridhar2026@gmail.com> wrote:
+>
+> On Fri, Oct 16, 2026 at 9:14=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Thu, Oct 8, 2026 at 11:28=E2=80=AFAM Kanchana P. Sridhar
+> > <kanchanapsridhar2026@gmail.com> wrote:
+> > >
+> > > v1: Batched zswap_store() with compression batching
+> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+> > >
+> > > This series is a spin-off of "v14: zswap compression batching with op=
+timized
+> > > iaa_crypto driver" [1], and focuses on the generic crypto_acomp and z=
+swap
+> > > compression batching enablers. Resuming work on this series following=
+ a gap
+> > > since v14 (January 2026). Please note that my email address and affil=
+iation have
+> > > changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@gma=
+il.com. I
+> > > have retained the original Intel sign-offs on prior patches for histo=
+rical
+> > > attribution while signing off v1 of this series with my current addre=
+ss.
+> > >
+> > > To summarize the main contribution of this patch series: Batching is =
+introduced
+> > > in zswap_store() of large folios: we carve out a large folio into bat=
+ches of
+> > > ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store ea=
+ch
+> > > batch. Moving the fundamental operations that need to be happen to st=
+ore a page
+> > > to now work at the granularity of a batch offers opportunities to opt=
+imize them
+> > > from these perspectives:
+> > >
+> > > 1) Utilize existing kernel API that minimize obtaining locks for bulk
+> > >    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
+> > >
+> > > 2) We keep the working set for each of the core store functionalities=
+ (alloc
+> > >    entries, compress pages, store pages in zsmalloc) to be focused on=
+ a
+> > >    batch, thereby minimizing cache evictions and benefiting from cach=
+e
+> > >    locality.
+> > >
+> > > 3) Along the lines of (1), the main zswap_compress() batching routine=
+ obtains
+> > >    the acomp_ctx mutex lock once per batch, and releases it after it =
+has
+> > >    processed all pages in that batch.
+> > >
+> > > 4) Any zswap store functionality that works on a batch can potentiall=
+y be
+> > >    parallelized as a next step, to further improve performance.
+> > >
+> > > Performance data: usemem with 60% over-commit:
+> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > Validation was done with mm-unstable as of 10-3-2026 (Baseline) and w=
+ith this
+> > > patch series.
+> > >
+> > > Testing was done on a Chromebook with a QEMU "vng" VM running in Cros=
+tini.
+> > >
+> > > Chromebook Diagnostics reports:
+> > >   Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
+> > >   RAM: 16GB
+> > >
+> > > vng setup:
+> > >          Memory: 7G
+> > >            Swap: 3G
+> > >     Pinned CPUs: 4 (E-Cores: 4,5,6,7)
+> > >
+> > > zswap compressor:
+> > >   ZSTD
+> > >
+> > > mTHP enabled:
+> > >   64kB
+> > >
+> > > vm-scalability/usemem setup:
+> > >
+> > >   cgroup memory.high: 3G
+> > >   4 usemem processes, each allocates 1200M anonymous memory, reads th=
+e
+> > >   Silesia dataset [2] from a pre-fork-allocated buffer into the 1200M=
+,
+> > >   writes to each unsigned long in the 1200M, sleeps for 10 sec, then
+> > >   frees the memory and exits.
+> > >
+> > >     usemem --read-silesia -w -O -b 1 -s 10 -n 4 1200M
+> >
+> > What is --read-silesia? Is this a local change you made to usemem?
+>
+> Yes, this is a local change I made because I wanted to get compressed
+> lengths besides 565, which is the only compressed length of data
+> swapped out from the original usemem.
+>
+> To replicate my setup:
 
-However, it repurposes `PG_referenced` on in-fault read-ahead
-file folios for this purpose, potentially coupling their
-handling with that of regular file accesses through syscalls,
-which also use `PG_referenced`.
+Thanks for sharing the details. I am having trouble reproducing the
+results, mainly because the standard deviation seems to be too high to
+make conclusions. What is the standard deviation in your runs?
 
-This could regress some workloads, as reported by Kairui Song[1]
-and Ehab Ababneh[2]. Many thanks to both for reporting these
-issues!
-
-The long-term fix is Kairui's MGLRU-FG, but in the meantime,
-we also need a quick fix that can be backported to stable.
-
-This patch reverts the original commit's abuse of `PG_referenced`
-while preserving its goal of avoiding over-protection of
-in-fault read-ahead file folios by adjusting only
-`lru_gen_folio_seq()`.
-
-Specifically, in-fault read-ahead file folios with `PG_active`
-set but `PG_workingset` clear are placed in the second-oldest
-generation (the third-youngest generation). Activated file
-folios and refaulted workingset file folios remain in the
-youngest generations.
-
-Kernel build tests in a memcg show that this approach not only
-preserves the original patch's benefits but also further
-improves performance.
-
-w/o fix:
-
-real    1m49.094s
-user    25m31.484s
-sys     3m40.959s
-pswpin: 662112
-pswpout: 2504415
-pgpgin: 4424336
-pgpgout: 10355273
-refault_file: 359626
-refault_anon: 670724
-
-w/ fix:
-
-real    1m48.913s
-user    25m31.639s
-sys     3m30.875s
-pswpin: 689815
-pswpout: 2689894
-pgpgin: 4422659
-pgpgout: 11043464
-refault_file: 326566
-refault_anon: 697138
-
-Revert original patch:
-
-real    1m50.044s
-user    25m37.137s
-sys     4m4.493s
-pswpin: 1349087
-pswpout: 4317933
-pgpgin: 7083597
-pgpgout: 17602735
-refault_file: 337676
-refault_anon: 1368542
-
-[1] https://lore.kernel.org/linux-mm/20261003-mglru-fg-v3-0-cbd4546a5bd9@tencent.com/
-[2] https://lore.kernel.org/linux-mm/20260901180704.168106-1-ehab.ababneh@intel.com/
-Fixes: 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace folio_set_active")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- * An earlier discussion can be found here:
- https://lore.kernel.org/linux-mm/20261016084256.12955-1-baohua@kernel.org/
- Thanks for Kairui's comment on it.
-
- include/linux/mm_inline.h |  5 +++--
- mm/folio.c                | 16 +++-------------
- mm/vmscan.c               |  9 ++-------
- mm/workingset.c           | 10 ++++------
- 4 files changed, 12 insertions(+), 28 deletions(-)
-
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index ab69b9930893..97f157aafd58 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -319,7 +319,8 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 	 * |<---------------------------- MAX_NR_GENS ---------------------------->|
- 	 */
- 	if (folio_test_active(folio))
--		gen = MIN_NR_GENS - folio_test_workingset(folio);
-+		gen = MIN_NR_GENS - folio_test_workingset(folio) +
-+		      (type ? !folio_test_workingset(folio) : 0);
- 	else if (reclaiming)
- 		gen = MAX_NR_GENS;
- 	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
-@@ -327,7 +328,7 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
- 		gen = MIN_NR_GENS;
- 	else
--		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
-+		gen = MAX_NR_GENS - folio_test_workingset(folio);
- 
- 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
- }
-diff --git a/mm/folio.c b/mm/folio.c
-index 35e242b48870..2af724cecb31 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -474,20 +474,10 @@ void folio_add_lru(struct folio *folio)
- 			folio_test_unevictable(folio), folio);
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
- 
--	/*
--	 * For refaulted workingset folios, set PG_active so they
--	 * can be added to active generations.
--	 * For prefaulted file folios, folio_mark_accessed() sets
--	 * PG_referenced so lru_gen_folio_seq() places them into
--	 * the second oldest generation.
--	 */
-+	/* see the comment in lru_gen_folio_seq() */
- 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
--	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
--		if (folio_test_workingset(folio))
--			folio_set_active(folio);
--		else if (!folio_test_referenced(folio))
--			folio_mark_accessed(folio);
--	}
-+	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
-+		folio_set_active(folio);
- 
- 	folio_batch_add_and_move(folio, lru_add);
- }
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index daa7e37c2236..e82ba737c028 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -952,13 +952,8 @@ static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
- 		return false;
- 	}
- 
--	/* Promote on second access */
--	if (folio_lru_refs(folio) > 1) {
--		folio_set_workingset(folio);
--		folio_set_lru_refs(folio, 0);
--	} else {
--		folio_mark_accessed(folio);
--	}
-+	folio_set_workingset(folio);
-+	folio_set_lru_refs(folio, 0);
- 	return true;
- }
- #else
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 1504f91cdca5..10d4ce202cca 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -319,13 +319,11 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 
- 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
- 
-+	/* see folio_add_lru() where folio_set_active() will be called */
-+	if (lru_gen_in_fault())
-+		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
-+
- 	if (workingset) {
--		/*
--		 * see folio_add_lru(), where folio_set_active() is
--		 * called for workingset folios
--		 */
--		if (lru_gen_in_fault())
--			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
- 		folio_set_workingset(folio);
- 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
- 	} else
--- 
-2.34.1
-
+Also, I tried measuring the latency of zswap_store() itself through
+bpftrace, and it doesn't seem to change much throughout the series.
 
