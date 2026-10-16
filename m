@@ -4,137 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2042CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 15:14:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2C18CCA46C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 15:16:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D022B6B008A; Fri, 16 Oct 2026 11:14:41 -0400 (EDT)
+	id E3DC96B0096; Fri, 16 Oct 2026 11:16:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDB826B0092; Fri, 16 Oct 2026 11:14:41 -0400 (EDT)
+	id E16496B0098; Fri, 16 Oct 2026 11:16:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCCA96B0095; Fri, 16 Oct 2026 11:14:41 -0400 (EDT)
+	id D54266B0099; Fri, 16 Oct 2026 11:16:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 96E426B008A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:14:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 169D4A8079
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:14:41 +0000 (UTC)
-X-FDA: 85328836362.09.EA0DA1A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3B05E100003
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:14:39 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LE03XN4r;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A03046B0096
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:16:30 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1EA321C3CAA
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:16:30 +0000 (UTC)
+X-FDA: 85328840940.25.CD763EF
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6ADA2C0004
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:16:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FDCNVmSK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 3yj_SagYKCO8jVReaTXffXcV.TfdcZelo-ddbmRTb.fiX@flex--seanjc.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3yj_SagYKCO8jVReaTXffXcV.TfdcZelo-ddbmRTb.fiX@flex--seanjc.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792163788;
+	b=0iEDxBCLSXgzP0NOD89xPnhdEdnvlmtgACwsdWs8aSeAHm6uWYtWgD+OhRYJjmRuVyS3R+
+	FB7F/T8IMThAIVV2oWEtwJhdvAo9vDjgG1E5cVqrdSI3beH/44xT+wZ0vM4ohXLqW+MXMe
+	kKIbJVe44gkzTAW5FVbpKixhjhm1ERQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FDCNVmSK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 3yj_SagYKCO8jVReaTXffXcV.TfdcZelo-ddbmRTb.fiX@flex--seanjc.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3yj_SagYKCO8jVReaTXffXcV.TfdcZelo-ddbmRTb.fiX@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792163679;
+	s=arc-20220608; t=1792163788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5v3J6WKP+bHQTvLWIIelf/Yrhn+GxWTc6CC2vGMgLRc=;
-	b=EWfMwgpCx40I3yT/9g1MEhQ1kLwvijGSnDDnkQw5aKLfsX0+ypEe1aBl/nxnH+SlANuNVI
-	jjIncQ32AEfC8E/GAevIcvnA1okWyTihiREpgCmuSNRdDyXCfrf7qoV7Xwkytj4A5VGHtj
-	csYt23TEQB3cDzV0r4Ew5JS+uKM6/YU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LE03XN4r;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792163679;
-	b=ljMid5uNqxRE/2ZBeEY4DzgKY2hS7DjvQ1ASYgXVu3HKiCRrY6zi9X0vM08S8ANPfSEg81
-	mDn8SwIug39UcgEZFzykmWx1NFMny+EfGItLV0Elp0ascc3YE8XYkgJOA2HbaEBumu5V+k
-	om2KEE5wEM3FCxXQvLocqRUKnawbY08=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 28D0C401EE;
-	Fri, 16 Oct 2026 15:14:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895321F000C4;
-	Fri, 16 Oct 2026 15:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792163678;
-	bh=5v3J6WKP+bHQTvLWIIelf/Yrhn+GxWTc6CC2vGMgLRc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LE03XN4rEVcp7wnxG0PrnjlUqFydFo3JZdPbDyihq74fSLSK3hhifkR7kEAr/RDRy
-	 +dYgIf3llk1dFjn3QPsishW8AlpPi1OmuYsFxR4G2oP5tRPEwbUWCMDtJEFiNXPklb
-	 r+eSQf4ZGIFgRo3CJ5L84/TkoOvxH6/9da83AFC6+KPulonX9kkPgH2s+lR/o6HpQH
-	 AznufVTctKJgt0XqtEut1qTg3/Y+v6VkeLJg5anI/8bnmgqAHUWHUdV4iZzWvQgqgq
-	 XYEgJq1PQ+2OZxVeJDQJ7u6T/7Td2y3tNKMhml/K7NQUYyzHBw1Z152IzHe3fKOOhi
-	 2OUZps1SUKd2w==
-Message-ID: <e91e6388-633b-4ddd-b498-d03c7aa0fdb7@kernel.org>
-Date: Fri, 16 Oct 2026 17:14:32 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Improve page refcount scalability
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Ilya Gladyshev <ilya.gladyshev@linux.dev>,
- Matthew Wilcox <willy@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, "Paul E. McKenney" <paulmck@kernel.org>
-References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
- <atI0edrmeiRuRtNQ@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <atI0edrmeiRuRtNQ@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3B05E100003
+	bh=kkz9qwzhE2sRNisNmhNGoIxw2/sntbeBAljOSEpieUM=;
+	b=fsBXz9HQTH0hSuQeKadsEWQ/6PNXfb8VDy9hn37GzJ2W0CcmP6QKczoVHFo89YAyCmvwzO
+	eEOInzYU3/8OXwzFFZlNDQNKBigFpgFm1gBxCNYTBUnhPTIj+fhnQ0t3kkXHZx/INh9iez
+	u5gAB33rwl8gMxfBte5RzKJdgsV1GiE=
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3a470ead068so132502a91.3
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:16:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792163787; x=1792768587; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kkz9qwzhE2sRNisNmhNGoIxw2/sntbeBAljOSEpieUM=;
+        b=FDCNVmSK5qRAAekuDJdGMplZxSGtGCC8OtGgFknBGQIhLPmpMoMgN2Gpd2AV22xcxg
+         hgd5hE7wtKOe9n/hJ/mT3mmK8kqZh47sb2TI5UNgZ1+8gklE9i79aMSQEanL0Y3R6pOL
+         CHZl1EWjO+exQN2AnB/FaJ9mtzgHaGZKpxtd7wIAl41ERd/zVcVrAhBalZokpa3n2Drr
+         F4B/s2bh+8JH56WzNJXt2QLxM1iPqphaLM4XWlkhauj3IYhjikFoo/RfcRnaFGdHl6UH
+         AAAckQZMq/Slp2A673de6cgO97LQzCNmY6VwPwk8hapsgIhqGGrfGiS4nln7KfS9gwvh
+         h0AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792163787; x=1792768587;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kkz9qwzhE2sRNisNmhNGoIxw2/sntbeBAljOSEpieUM=;
+        b=GCR4cJqUhaRRElkRtVLRwbxtQFg9dOtHPGUdW+89qnjwo1xysXYDRxfXcHE+azvuG5
+         zhES6D2JmV20zMypbqfgCvc9pxRaRi1WGD5hcSRHBU3qljh4HtKwVgVH0QLTkGDmnl7K
+         b8tMdsKoeFVf0aNCy1a+ET6ZGgu27J3E/igWTLZwo6mL4L138NDUgY11G1AsPfDcaTPG
+         twzH/z2s3+ZJ/KzHCekwjeR4EL+5PRnANkf30KOHwrrY4VstEXCRvONY6tDqEImKfatE
+         p7NWi3MmgDSOnlL0CtGSh6ur9t1GwDSWnHRLA2SgNPaOW4WR2PlTviThfpL58P1pmr6o
+         9+3A==
+X-Forwarded-Encrypted: i=1; AKwUvBxUz60T4uxkwW7dMMghWdn/+NmYS2n4l9f0fKJ0HGXyCvlo6rIPywoN9LtsbwFqVnOHsi+rEuureg==@kvack.org
+X-Gm-Message-State: AFq9FYLyUd/EIw9k0vC5JZHf8qOGPzuSKyplenGMZh0KDqyYMyi+9i+I
+	TZskRD6XLtxSl8OzAefL58jFhRe3q+6FBZkn7ssC7HOHoySDzuL4iMLecd4tH4w5yG1H00Cf4UN
+	qMia0/Q==
+X-Received: from pjyp8.prod.google.com ([2002:a17:90a:e708:b0:3a8:8e16:d986])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b90:b0:3a7:9045:fe29
+ with SMTP id 98e67ed59e1d1-3acee2796e7mr161252a91.4.1792163786755; Fri, 16
+ Oct 2026 08:16:26 -0700 (PDT)
+Date: Fri, 16 Oct 2026 08:16:26 -0700
+In-Reply-To: <20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local>
+Mime-Version: 1.0
+References: <asP5xK4axiUk7jun@pcnci.linuxbox.cz> <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
+ <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local> <20261009090042.39ba9c06@pumpkin>
+ <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz> <20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
+ <20261015172820.7961d2c0def74d41cc6c4b0c@linux-foundation.org>
+ <20261016031242.GDatGWKo98YSOhEOOn@fat_crate.local> <20261015211832.45d87fab15bb3e0bbc2f47cb@linux-foundation.org>
+ <20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local>
+Message-ID: <atI_yuCc4BiweBQP@google.com>
+Subject: Re: hunting memory corruption bug in 6.18.x
+From: Sean Christopherson <seanjc@google.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Nikola Ciprich <nikola.ciprich@linuxbox.cz>, 
+	David Laight <david.laight.linux@gmail.com>, Rik van Riel <riel@surriel.com>, ljs@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, david@kernel.org, 
+	Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>, luizcap@redhat.com, 
+	pbonzini@redhat.com, Tal Zussman <tz2294@columbia.edu>, 
+	Matt Fleming <matt@readmodwrite.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: 1znbaomtdzow8n8t9qsoik7ke4s6anfy
 X-Rspam-User: 
-X-Stat-Signature: j86hmkiwhgz16cd3dk3skgc994yckqeq
-X-HE-Tag: 1792163679-941182
-X-HE-Meta: U2FsdGVkX1/smYXyVg8PRibBUXjRdvEBL+6CcshfEZy5lYMVGjx/NaA65CJ5Zp+vTaju9pjtOnMGpId9SXTSEnbf9ssPh2hBESv+SBFP6Ryhd9R+uA0M8slza7A57i3XT/U47GjT8opBXewLaNmdvBdN1fEgWc3EhU14vcPSnd47hIWpT0KqmaMzYH2wUFl0rJwoKLriZtgJZzM7TXAkY5iRebloCoyiE91LiCvLXJcsb0eO+T9MFI70XHLB20XxdiDBP9q6hHcNWm9Ck7NJInINNBYbpgovbOu07UxpNJe5eXM0LeGtn6aqCnWz9p0PQhBRnJ/8qmAR7CHGcbplEyZAxmsVbkd0NdtBBVpueY0pbTwljRpkKkgt2ED6z1um4CleXzyJba0TDsLCaqErkvqSsJQYv8er0U7KeAadOqYc1XYtxyGwReGpAHPydsc7vA7+bUHs1cxCehEAIzweyfPc3/zsEUpx7gF02xsZ05KiFys9p/BR51nDVmTfHfRcJBodBMf+xPW8SJM4OPvChQkvCuu0mr7Ig8OlVMZ5AzooIfG8tax2YjILYmVxf/Hw4x9HGrJJHU7lRyfMGEcZ/xH2PNxCmXozQXEf6REvnmJfxitKMtszOE6UvyDTMuUBTgLYOwZjTcIG2dLUa9dyrCE/x7JehqVmofEdRaNqIuGwkvffanD2gx5tIAFFqyhXp8LEnqn2nDMEC5qjWcAi7HCR322M5cBdFJIk2TpaUX4Bo9NimD2UMjR7h6rEDXvhj1WMNxuBkky5yvN/t5z52dtjDnsLBIJAyP+r4ZnxeBVdVBedbG39MQfM3lShF+3b8btSFSwgaQc3Drrv8kIUDihJqPsyrbhQ/362MCNfw0L4cdaUOubYCDL+2lGpCyLHG6KhTN3eZrIaGvDy2mowv+CV+Z1zAbVo0vXwf/ryYb0yeDyZtFLW/Qt9Uh0BFXnMnAXEiTsWiSJlCJ9fLHx
- zNmutDmc
- 6S4bznJYhAvjhHPkps+w5FOWyPate1G3c1SbXHcPcISpXZoHbNaTvpwdZer9OQxQ3tFuXdB3iwUmVgRe1K1MMUh7PFGVFT3mPbWG2OOJnHwtGkW/bKhZJ9IKkWmBp856FjxjJhbKJbUbbhTln8VFgNDvUoRgg7n6OxCzhuxxLwMZIgpiaUNxcDAfT6nILQD0l05L9Sx493ZrbkOUaxSxpITQIpjQI9yne3Xwj33OHl94QTaGrRIjFyvYv2rLFM8y0f53eNQU/Jv1JR65OVRuw1sBQCg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6ADA2C0004
+X-HE-Tag: 1792163788-527718
+X-HE-Meta: U2FsdGVkX1/mNj+/5EGi3W+Ae6+k9PVMBtZnkJrYQHiS0RG7+x0K7KKFdiQLCXr1CLUUxvrrFTk7eZf4rGWqFrJNcK0W/65DUP9/UO1/hhQorI9PiN7BZHyov+DyJtnnZOgfULI2yLvlki9ngkKZpDOOPSABF5zBke0nT1CdVMLImauVTBlcFf0w93ZQFGSBVtV87qiAM61FvxSAevdYOxKDYwSi7HzcB+JZtMxWldsef0uDmD3J9sbpXhEfGrfqUH3SpOMTbIsG6TFSEqCy9DrLL6yIvCJZx+5mrG+hPo/3A6onejZvKUpAzF1thor9TsrDF+XQzC8vZNNYALBT74H4bYN5190VMPIYSCLPQ4KJJwjkfyfZsnLOo4C93jTEyeCvDZqUxO7G6rGRbz/HgDrLmBQwhiNsOrzcbvye6Cy6kJCwY/51JbtiCNVrdfDH/gKY+2+y+ZkhHZHz7er9cW4Oc2kXV9aRrjZ2XShHCy9uzQryV0PL6Le7X8O9ybjAolKFiHJvyQjYD7l8CS53It2VoXOWqm4jpEHqadicBiByAx5pesANL9LZQY8s/1PCbKVSp3scEMvvRwoZK7fcplsumdXRDcFqcQiCHfe4pT8Nv56rH6Up448CFt6Rt4fOX3tq5ryvasTDn08CJm8QSBce8jou91ggRdAEm6Ptpuhs+gn+HpUlMAUWq8+BHELuLubCGvWwut9ffDZhpyWVaNSFITQ27oKR40iRmohfhymW3ji5cuBEGLrZikrHq/KEV4nwoWo9JmrpoVakPMknm78Qf+85r7KPdO++JKodm9k3wT4i++2pP5jsZqvP9mfvfdVB1+DbHeeW9WbrXhEfbOJ3ut4r7kqZFUq/jnPJ33JiFwfZAyA0r8Yli6xDVWK4pKMvE8uwgCr6mnWWFk64KSfuGvLR+vR9TVr6GHrUiL5YDONL8z9X6XX2NObHnvXHSbSI7P7cBEeMPWX2fC4
+ 6+I9C1WW
+ 4Jtqu/U2cervgHXuHCqgZayONt6wR5EFWaSHn3EfZc0Qda0DIGyi4mhUf2LcTZD2P8Bv6eV/+uWzoBjlD5aZklXoWJPMV7sjjDyHbB0d/HV4AOK5FSm3P68Kk1IalHHpz/uOpqglTFLeS1tVlgwDelLsFmdN/HPqRpJrTGqoetei96uX6excwt+aP20U3UHkLCbomlk053hmOEjb3EBzuZ9r1ANG4JeL13CxIqmESwTMZci24Myi0DqDZk5tlUQwliJW6r+nGPnrwny24QxTk4N1bo5qaAdfez1qvU3dXXjyetArzvAuvVS+w2SinGRltJCJEKLsNfjfCvy9VU7ZxYSTMfr4mSkGpP7CPjOvqGwpwHaJN1bZUlclO8gqTQg4daZ3BOcTypkTYorI38PN2bPQu3IWNA6ogHUWwrZS7TByNACP4KDH95kUp/qBr1gf0B4zGfdPlYbukqcKThZkFhNurKXYYEhJKo+dVu31xaznuVGgtGEGhaUbWIQrfvVsRku62sRNvzXZBKPaQPCOg3FaNwQatJfjjPraDMSO6nTpEeJbG+wJnXi9MNsIfz4znuxJJ8dlXPIsQgPMO/JTVlWW1KviH12e2hYx/pRXNomKRNgcusX8xeO8Aq/LDMu2U6OO/hPTG5Rk58MAs489BPBbwd+vaq5Sh2vQp8Kqq8OqUjwY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,58 +118,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/16/26 16:40, Kiryl Shutsemau wrote:
-> On Tue, Oct 13, 2026 at 11:43:14AM -0700, Linus Torvalds wrote:
->> Comments?
+On Thu, Oct 15, 2026, Borislav Petkov wrote:
+> On Thu, Oct 15, 2026 at 09:18:32PM -0700, Andrew Morton wrote:
+> > The corruption patterns strongly resemble AMD VMCB state, particularly
+> > FS/GS segment data appearing at the expected VMCB offsets in unrelated
+> > host memory.
 > 
-> There's a regression: the lockless read loses on large reads from large
-> folios.
+> Aha, ok.
 > 
-> In a 64-vCPU guest on a Threadripper 7975WX, 1 MiB reads of a cached
-> ext4 file are 9% slower from one thread with rcu-free-v3 than without
-> it, 64K reads 4% slower.
+> > This suggests that a VMSAVE operation may have written to
+> > an incorrect physical address.  Ordinary KVM performs VMLOAD/VMSAVE
+> > without nested virtualization, so Boris's objection doesn't eliminate
+> > this possibility.  However, the relevant assembly is essentially
+> > unchanged between 6.18.55 and 7.3-rc6, and I haven't identified a newer
+> > commit that convincingly explains why the corruption apparently stopped
+> > reproducing.  The earlier candidate 55780d8a1dcc remains poorly
+> > motivated without evidence of nested virtualization.
+> > 
+> > Two investigations look worthwhile.  First, test 6.18.55 with both the
+> > KVM TLB-flush fix (26505e1b5b54)
 > 
-> The reference path looks a large folio up once and copies it in one go.
-> The lockless one walks i_pages from the root and calls
-> copy_page_to_iter() for every 4K page.
+> Pff, we've been looking at that one recently too, trying to figure out whether
+> it was really necessary.
 > 
-> I've added a cutoff to the lockless path: if the folio is large and the
-> read covers more than four of its pages, leave it to the slow path,
-> where one reference covers all of them.
+> > and tlbi=ipi;
 > 
-> 		if (folio != prev) {
-> 			if (!filemap_read_rcu_can_copy(folio, index, *last_index))
-> 				break;
-> 			/* Many pages of a large folio: one reference is cheaper */
-> 			if (folio_test_large(folio) &&
-> 			    min_t(unsigned long, folio_next_index(folio) - index,
-> 				  DIV_ROUND_UP(offset + iov_iter_count(iter),
-> 					       PAGE_SIZE)) > 4)
-> 				break;
-> 			prev = folio;
-> 		}
+> Yeah, we checked that, it ain't that.
 > 
-> With it, ext4 1 MiB reads match base and 64K reads are within 2%. Small
-> reads do not change. The cut is on the folio, not on the read size, so
-> files in 4K folios keep the gain on large reads: 1 MiB tmpfs reads from
-> one thread are ~30% faster than base.
+> > the existing results don't conclusively establish whether that combination
+> > was tested.  Second, examine the vmcore to determine whether the corrupted
+> > host pages contain complete FS/GS state matching a legitimate VMCB, rather
+> > than merely a few matching values.  If they do, inspect the VMCB's
+> > VMLOAD/VMSAVE interception and virtualization-enable bits.  That could
+> > establish whether a hardware VMSAVE was allowed to write to an unintended
+> > physical page.  The successful 7.3-rc6/rc7 testing is encouraging, but it
+> > doesn't yet prove that all the reported corruption symptoms share one cause
+> > or have been fixed.
 > 
-> Sounds reasonable?
-> 
-> I've pushed my tree here:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git rcu-free/rfc-v1
-> 
-> I'm thinking of posting it as an RFC to make it easier to review.
-> Objections?
+> Hmm. I guess looking at and around VMSAVE handling wouldn't hurt...
 
-Yes please. I spent 6 hours today fixing all sorts of bugs after wanting to get
-something rather trivial fixed.
+@Nikola, as very long long-shot, can you try running with the below?  I don't
+expect it to help or flag anything, but this is eerily similar to a known bug[*]
+where KVM writes to user memory in the wrong address space (wrong process) when
+tearing down a VM after migrating the VM.  But that bug (well, bugs) only affects
+Intel, and I don't see any similar patterns on the AMD side.
 
-I need the patch in my inbox to not get distracted by all the other stuff :)
+[*] https://lore.kernel.org/all/20261001202234.3794060-1-seanjc@google.com
 
--- 
-Cheers,
+diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
+index df1d0cf769475..fc0ae4727793b 100644
+--- a/arch/x86/kvm/vmx/sgx.c
++++ b/arch/x86/kvm/vmx/sgx.c
+@@ -63,7 +63,7 @@ static void sgx_handle_emulation_failure(struct kvm_vcpu *vcpu, u64 addr,
+ static int sgx_read_hva(struct kvm_vcpu *vcpu, unsigned long hva, void *data,
+ 			unsigned int size)
+ {
+-	if (__copy_from_user(data, (void __user *)hva, size)) {
++	if (kvm_copy_from_user(vcpu->kvm, data, (void __user *)hva, size)) {
+ 		sgx_handle_emulation_failure(vcpu, hva, size);
+ 		return -EFAULT;
+ 	}
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index f65081330c8a4..2dec1463b596c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -3902,16 +3902,16 @@ static int init_rmode_tss(struct kvm *kvm, void __user *ua)
+ 	int i;
+ 
+ 	for (i = 0; i < 3; i++) {
+-		if (__copy_to_user(ua + PAGE_SIZE * i, zero_page, PAGE_SIZE))
++		if (kvm_copy_to_user(kvm, ua + PAGE_SIZE * i, zero_page, PAGE_SIZE))
+ 			return -EFAULT;
+ 	}
+ 
+ 	data = TSS_BASE_SIZE + TSS_REDIRECTION_SIZE;
+-	if (__copy_to_user(ua + TSS_IOPB_BASE_OFFSET, &data, sizeof(u16)))
++	if (kvm_copy_to_user(kvm, ua + TSS_IOPB_BASE_OFFSET, &data, sizeof(u16)))
+ 		return -EFAULT;
+ 
+ 	data = ~0;
+-	if (__copy_to_user(ua + RMODE_TSS_SIZE - 1, &data, sizeof(u8)))
++	if (kvm_copy_to_user(kvm, ua + RMODE_TSS_SIZE - 1, &data, sizeof(u8)))
+ 		return -EFAULT;
+ 
+ 	return 0;
+@@ -3946,7 +3946,7 @@ static int init_rmode_identity_map(struct kvm *kvm)
+ 	for (i = 0; i < (PAGE_SIZE / sizeof(tmp)); i++) {
+ 		tmp = (i << 22) + (_PAGE_PRESENT | _PAGE_RW | _PAGE_USER |
+ 			_PAGE_ACCESSED | _PAGE_DIRTY | _PAGE_PSE);
+-		if (__copy_to_user(uaddr + i * sizeof(tmp), &tmp, sizeof(tmp))) {
++		if (kvm_copy_to_user(kvm, uaddr + i * sizeof(tmp), &tmp, sizeof(tmp))) {
+ 			r = -EFAULT;
+ 			goto out;
+ 		}
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 3c4e2401de072..13f44961e6e7d 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1341,13 +1341,35 @@ int kvm_write_guest_offset_cached(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+ 			      gpa_t gpa, unsigned long len);
+ 
++static __always_inline __must_check bool kvm_can_do_uaccess(struct kvm *kvm)
++{
++	return !WARN_ON_ONCE(current->mm != kvm->mm ||
++			     !refcount_read(&kvm->users_count));
++}
++
++#define BUILD_KVM_COPY_USER_WRAPPER(fn, to_user, from_user)				\
++static __always_inline __must_check unsigned long kvm_##fn(struct kvm *kvm,		\
++							   void to_user *to,		\
++							   const void from_user *from,	\
++							   unsigned long n)		\
++{											\
++	if (!kvm_can_do_uaccess(kvm))							\
++		return n;								\
++											\
++	return __##fn(to, from, n);							\
++}
++BUILD_KVM_COPY_USER_WRAPPER(copy_from_user, , __user)
++BUILD_KVM_COPY_USER_WRAPPER(copy_from_user_inatomic, , __user)
++BUILD_KVM_COPY_USER_WRAPPER(copy_to_user, __user, )
++BUILD_KVM_COPY_USER_WRAPPER(copy_to_user_inatomic, __user, )
++
+ #define __kvm_get_guest(kvm, gfn, offset, v)				\
+ ({									\
+ 	unsigned long __addr = gfn_to_hva(kvm, gfn);			\
+ 	typeof(v) __user *__uaddr = (typeof(__uaddr))(__addr + offset);	\
+ 	int __ret = -EFAULT;						\
+ 									\
+-	if (!kvm_is_error_hva(__addr))					\
++	if (!kvm_is_error_hva(__addr) && kvm_can_do_uaccess(kvm))	\
+ 		__ret = get_user(v, __uaddr);				\
+ 	__ret;								\
+ })
+@@ -1367,7 +1389,7 @@ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+ 	typeof(v) __user *__uaddr = (typeof(__uaddr))(__addr + offset);	\
+ 	int __ret = -EFAULT;						\
+ 									\
+-	if (!kvm_is_error_hva(__addr))					\
++	if (!kvm_is_error_hva(__addr) && kvm_can_do_uaccess(kvm))	\
+ 		__ret = put_user(v, __uaddr);				\
+ 	if (!__ret)							\
+ 		mark_page_dirty(kvm, gfn);				\
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index ba09b1dabc4b7..aa1564d41e7ff 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3207,8 +3207,8 @@ static int next_segment(unsigned long len, int offset)
+ }
+ 
+ /* Copy @len bytes from guest memory at '(@gfn * PAGE_SIZE) + @offset' to @data */
+-static int __kvm_read_guest_page(struct kvm_memory_slot *slot, gfn_t gfn,
+-				 void *data, int offset, int len)
++static int __kvm_read_guest_page(struct kvm *kvm, struct kvm_memory_slot *slot,
++				 gfn_t gfn, void *data, int offset, int len)
+ {
+ 	int r;
+ 	unsigned long addr;
+@@ -3219,7 +3219,7 @@ static int __kvm_read_guest_page(struct kvm_memory_slot *slot, gfn_t gfn,
+ 	addr = gfn_to_hva_memslot_prot(slot, gfn, NULL);
+ 	if (kvm_is_error_hva(addr))
+ 		return -EFAULT;
+-	r = __copy_from_user(data, (void __user *)addr + offset, len);
++	r = kvm_copy_from_user(kvm, data, (void __user *)addr + offset, len);
+ 	if (r)
+ 		return -EFAULT;
+ 	return 0;
+@@ -3230,7 +3230,7 @@ int kvm_read_guest_page(struct kvm *kvm, gfn_t gfn, void *data, int offset,
+ {
+ 	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+ 
+-	return __kvm_read_guest_page(slot, gfn, data, offset, len);
++	return __kvm_read_guest_page(kvm, slot, gfn, data, offset, len);
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_read_guest_page);
+ 
+@@ -3239,7 +3239,7 @@ int kvm_vcpu_read_guest_page(struct kvm_vcpu *vcpu, gfn_t gfn, void *data,
+ {
+ 	struct kvm_memory_slot *slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+ 
+-	return __kvm_read_guest_page(slot, gfn, data, offset, len);
++	return __kvm_read_guest_page(vcpu->kvm, slot, gfn, data, offset, len);
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_read_guest_page);
+ 
+@@ -3283,8 +3283,8 @@ int kvm_vcpu_read_guest(struct kvm_vcpu *vcpu, gpa_t gpa, void *data, unsigned l
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_read_guest);
+ 
+-static int __kvm_read_guest_atomic(struct kvm_memory_slot *slot, gfn_t gfn,
+-			           void *data, int offset, unsigned long len)
++static int __kvm_read_guest_atomic(struct kvm *kvm, struct kvm_memory_slot *slot,
++				   gfn_t gfn, void *data, int offset, unsigned long len)
+ {
+ 	int r;
+ 	unsigned long addr;
+@@ -3296,7 +3296,7 @@ static int __kvm_read_guest_atomic(struct kvm_memory_slot *slot, gfn_t gfn,
+ 	if (kvm_is_error_hva(addr))
+ 		return -EFAULT;
+ 	pagefault_disable();
+-	r = __copy_from_user_inatomic(data, (void __user *)addr + offset, len);
++	r = kvm_copy_from_user_inatomic(kvm, data, (void __user *)addr + offset, len);
+ 	pagefault_enable();
+ 	if (r)
+ 		return -EFAULT;
+@@ -3310,7 +3310,7 @@ int kvm_vcpu_read_guest_atomic(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 	struct kvm_memory_slot *slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+ 	int offset = offset_in_page(gpa);
+ 
+-	return __kvm_read_guest_atomic(slot, gfn, data, offset, len);
++	return __kvm_read_guest_atomic(vcpu->kvm, slot, gfn, data, offset, len);
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_read_guest_atomic);
+ 
+@@ -3328,7 +3328,7 @@ static int __kvm_write_guest_page(struct kvm *kvm,
+ 	addr = gfn_to_hva_memslot(memslot, gfn);
+ 	if (kvm_is_error_hva(addr))
+ 		return -EFAULT;
+-	r = __copy_to_user((void __user *)addr + offset, data, len);
++	r = kvm_copy_to_user(kvm, (void __user *)addr + offset, data, len);
+ 	if (r)
+ 		return -EFAULT;
+ 	mark_page_dirty_in_slot(kvm, memslot, gfn);
+@@ -3466,7 +3466,7 @@ int kvm_write_guest_offset_cached(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+ 	if (unlikely(!ghc->memslot))
+ 		return kvm_write_guest(kvm, gpa, data, len);
+ 
+-	r = __copy_to_user((void __user *)ghc->hva + offset, data, len);
++	r = kvm_copy_to_user(kvm, (void __user *)ghc->hva + offset, data, len);
+ 	if (r)
+ 		return -EFAULT;
+ 	mark_page_dirty_in_slot(kvm, ghc->memslot, gpa >> PAGE_SHIFT);
+@@ -3504,7 +3504,7 @@ int kvm_read_guest_offset_cached(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+ 	if (unlikely(!ghc->memslot))
+ 		return kvm_read_guest(kvm, gpa, data, len);
+ 
+-	r = __copy_from_user(data, (void __user *)ghc->hva + offset, len);
++	r = kvm_copy_from_user(kvm, data, (void __user *)ghc->hva + offset, len);
+ 	if (r)
+ 		return -EFAULT;
 
-David
 
