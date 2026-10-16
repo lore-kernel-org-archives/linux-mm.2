@@ -4,140 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B71D2CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:19:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FC3ACC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:24:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA4046B008C; Fri, 16 Oct 2026 12:19:39 -0400 (EDT)
+	id 45A4C6B0088; Fri, 16 Oct 2026 12:24:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7D7D6B0092; Fri, 16 Oct 2026 12:19:39 -0400 (EDT)
+	id 4129D6B008A; Fri, 16 Oct 2026 12:24:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6BE96B0095; Fri, 16 Oct 2026 12:19:39 -0400 (EDT)
+	id 2D4DE6B0095; Fri, 16 Oct 2026 12:24:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 85FDE6B008C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:19:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 258F2A04EA
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:19:39 +0000 (UTC)
-X-FDA: 85329000078.11.228A45A
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3D7EE40004
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:19:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Nd8pEUB8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792167577;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D65F6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:24:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F27CAA7EF0
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:24:18 +0000 (UTC)
+X-FDA: 85329011796.01.FF50CBF
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 83DF04000C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:24:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="WE PhCVq";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792167856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sknvcXuzW07rbGsF6fwWjmew1+2afMy70Rv4vHSfSpA=;
-	b=DykJkxdZAZppNeU73JI0caqpHxmRLmJZr+2z2tly8siWRGJHf4Q6dWeo74Jb8xSRlgFhSv
-	GRAzRapj4EnttxeEKDygZnaud9x1I9AuiP/BSSrTh8eIPiY4e4PMcVquZcKQwJzQbibOEF
-	kllWwNbh4gFg8RpFGIrLBEDjF+tGjNc=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Nd8pEUB8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792167577;
-	b=Waz+Uef6HNs8snHe1i9tGh5ZQ+kePZmX9/qm9NZJ4Y436QLyLuqwtMtOVx/HHjNebgTfNc
-	JiPM+IeHFpztSrEcw3VyxQYw5lac0RvaLeYgYr3+1bZgcG6WVBcUWsQ5AwsEzJ5/iLYlSC
-	saZH4VIInVOocOHvU57gWCcC6+d3s9U=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49fbb2acc90so1298345e9.2
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:19:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792167576; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hN5fZN+35AbLFJHEWjOfOBgTAFpPm8nSZCvBo4NmKieeP362MvxMY9rwv5XFcVcM7q
-         s5J0xvhY1SmezW3q5VPw1W35XHfRo0DxgNXKGDVKPoaqCVZPb1MBKkBc6wnxdearuy7V
-         T+K3+k6P7fTm1Rkh2LPlmKuJ8iqEwOWynZn5ksQ3Kbp0G79RtSRITLo1CAlv8su7NTgV
-         jRTJh0+157LVWxPW3mf77S+o2ekaCKECntAvFGFF4dyvHx0AW+SjpCbVcJUEVXQ6oA7R
-         n4GI3jkPjUXIRK4ndr8lFPigM+93+gNbt+CS7Cmz579LKsJDNUW8o/oGLC3MvOx/CypJ
-         cM0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sknvcXuzW07rbGsF6fwWjmew1+2afMy70Rv4vHSfSpA=;
-        fh=7U47J9EzYgTBK22yVQyHLfa7mVUhzHCNmqfivOCopTw=;
-        b=XlnNRRKGwLrmV1J9UkKJO+8puBU5FdPNZl+zWQFX8j7Z66RRWgQqanllIcM5cZ8uOA
-         bPCq3tIV5whyHW41udpfA0EraRHtiQ9bfLKHWms7mcyibZ6uE+pN06UwmaD2aI03jqy7
-         zdGy1gIxVQ8rhBXhkspDls8/SviEorbdvjhSzmADz4vShX8cRGm4CUWQSAzNjX2irLj7
-         /WwYQpYnD7eiBgdNwOqYQcJx7bS7fTtB8rLFZg+4oOZqW3Liw1BQhI7VAF3x66nwx2Fo
-         nxGsQyirxeQBlqE9NXTJdo9lraqiXUvb9nTPri0gyqr2u4U3tbIjEODFZnDrP6joeF6q
-         bbeg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792167576; x=1792772376; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sknvcXuzW07rbGsF6fwWjmew1+2afMy70Rv4vHSfSpA=;
-        b=Nd8pEUB8JTnYy0Qn2gea5u1f2pw8Nzy2VCPPdLvidlMEgpmvyr4i1FBq1mdFlCssYw
-         dLxeJVVyMT0Mo7eoUp81f/UmOWfU0wWCPesFS1vtG05sHWj0tUj88BTaw+RKlEliR7Ol
-         PD+ZYIN3fjHRrbYn76vVjcmpQd07s0aHmENMcwWR8hkvs6pH0IA+QjEJ4tzXGcqZVjO9
-         qSYLhv5CW+cpofY9gIPzHnrqKdLCv0/L3NPMnxHIUYfi2OMkGrdckzCOjHwcwxbeYfwd
-         Wtk4ZdgIdLV8BUOKvvrhEYFXJMdQnnrNqgPFhw0dUGDklABpnamRAdkRRZcHswy/MSkP
-         4WAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792167576; x=1792772376;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sknvcXuzW07rbGsF6fwWjmew1+2afMy70Rv4vHSfSpA=;
-        b=rYUxHV7uRiN2+RZpIBWoPgS3aUXv4BlW0ic35+gi2c8+0lmoix7/1dH6AuC79wo3HI
-         xBTtkdT+Y4B8zbEeI5L5lDWeeAYwVoPXkh/iQ/h9TDZq4rBGxlkqJ3cC3jbruEnV3/VH
-         zYB0R6lD4x7kA5mP05W5WSqsnPrGfszcRX+pVGQFj8T2rfpOp+o/hVYrkIAG0AWWnk1J
-         ydx9MsL+uXJYGaOG4oofj58bnB4cZG/lpIVMsFPxLGkAYroejefxuoeQYcGesJRQilT3
-         Ffcr71ca1xuuI4QwluLi9A0rgM2+it4q4fiMlMMszFiChNi4kq3NXv2dVcbF9mXjnUP/
-         pu3A==
-X-Forwarded-Encrypted: i=1; AKwUvBzVvR8o2V3IgDb3DSBwjjyJ2QWMgxendU+m9YXFShum0CWCaweu84fYWk38owwjFJj9arGHOjr5rg==@kvack.org
-X-Gm-Message-State: AFq9FYK1RXtOu8CRfuX3M00+KM6ZhwCflR5Z/cjirUys2+wN5ZLQhuiV
-	Tn/PK1FGDrDxEDCS4bWeWKkQi0s7kAR6tswk89cXmy49NtoyslsvPtjOohNGadsxnox17YeDeYV
-	11fY3CZGr9rpfPLsNfSNr8rixgji9VaY=
-X-Gm-Gg: AYBFou0XAc/dFU2F1zLI0J6PrL7tgj4F6zJ7s7DcppLae96gYD1/+EbDMlgMR2QQs06
-	T/HYGrzMaENLSw8vr5M7QLx4200xYCdYkTfY//6zFqf8nhZW6LpnRTxYk/kvLxUmPNuzBdAl41m
-	JGPRS3KNZUqGpfbGcl7JwWPFcJCX8uHPJIeZetjJY1fK71pEVXmMyTQ8HYPxYfu3sEh3LIzIbxN
-	8i8GUyaVwniFvKHlfc1R8POSSObKfTirPnzxli2kKfiFLp/JOySyf5+FU3WKtbROXpI7TMLIsPG
-	dfObeZXMoVq6LWMjzRlX7TXFl9L1q8jlSsJUYsZk1HqwBsGPU01eoEShs4vHuHvnryYAwhWOYkl
-	DmxHzegDHF3hb+ANZz0Yxiaf3xLTd6Hg832D+KCJ/16U6hJRJXzP+WUC4BIL6BSB9j8dFkYE=
-X-Received: by 2002:a05:600c:8219:b0:4a0:108:3b48 with SMTP id
- 5b1f17b1804b1-4a1d760746amr7046915e9.7.1792167575523; Fri, 16 Oct 2026
- 09:19:35 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=PctlGfnjnOkrY4m3yhTfahJhe981R8/UVToXJo783RI=;
+	b=x/u9mX/qNwfMPzH5Xj1nivG7HTEvFR7v72RyvHdZJKwIy5uXBQpfdv54aWUoZt+uj2poqD
+	6wh9nfdWFOEQYnb7eHKOCSbmqyXqm5hhumK0Yzi7TKIH0WTXejsr8Aom8CwRhqWD2YsU9E
+	KKVjNxgBgIxdf5U0YtSI64miRa9rKH4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="WE PhCVq";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792167856;
+	b=ojRF6lLDM4aIrmpmMzhva/9da9mtm2wjLj8ROY0PspPpsGIdmwW/YedH91LSAO9jBmHJbA
+	8FC2b3ySs+Z6xvZTiKaTV+cIILzQt1SNpBqDjJ/8adiAdt9jZF+3QFqEDvJdb4ghL65p5S
+	xj/0gQWx7CyzD4OE357CNm/TsQlMa+E=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References; bh=PctlGfnjnOkrY4m3yhTfahJhe981R8/UVToXJo783RI=; b=WE
+	PhCVq7Oo6d4nfXjLLjKaPYSJVQdKxUhUXREhIyrepDpOhSoCpKcRUMcO9htwCBev4HSTS0iXr7fEV
+	XebkoZTs05aUxw8oNrhpb5pZZMk0i2p+hfxZKnarDXKrqsnWCU+n79giGrLDB/Rdu3AALOSy3ayrL
+	Tl6HIyjrOVE1imjffl0ONmiGIU0eSZimzZYzKNuSVEo2FsDtpo04GN3diAlzssoyCDJBfCMPhwnVs
+	1lGKt5mZXoyJlmA7PRklJ5cpHwa0up0uipiXY/cE9dnVRFp5/G7wBIqZlkhO5Li+7BQShNnmqrwQf
+	heujZ5DjTacX2C74Jeh0WUQJMq6RHWOQ==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219] (helo=fangorn)
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xHki5-00000008odn-34kZ;
+	Fri, 16 Oct 2026 16:23:09 +0000
+Date: Fri, 16 Oct 2026 12:23:04 -0400
+From: Rik van Riel <riel@surriel.com>
+To: linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ fvdl@google.com, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Kairui Song <kasong@tencent.com>, Qi Zheng
+ <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-mm@kvack.org, Baoquan He <baoquan.he@linux.dev>, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain
+ <dev.jain@arm.com>, stable@vger.kernel.org
+Subject: [PATCH] mm/page_alloc: count guard pages as free again when their
+ buddy merges
+Message-ID: <20261016122304.5b1eba8e@fangorn>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr>
-In-Reply-To: <20261007153915.53429-1-alex@ghiti.fr>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 16 Oct 2026 09:19:24 -0700
-X-Gm-Features: AclHuK_qydqamMBdCBeNyLTJ-3vLIcUmGK3v6Myyg5hV89s6EoTGIQhr4IJjhWo
-Message-ID: <CAKEwX=M6G3NPOrGJg7Sz68BDSjzrF4R-tTjcX07L9oZ0GK4Upw@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, yosry@kernel.org, 
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
-	chengming.zhou@linux.dev, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, kasong@tencent.com, ryncsn@gmail.com, chrisl@kernel.org, 
-	baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3D7EE40004
-X-Stat-Signature: kmfi579h9j8yuwkkqfrm41gphimn5hcf
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 83DF04000C
+X-Stat-Signature: k565p4ugfxkaonuq34t5n5kquhzda5wc
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792167577-494105
-X-HE-Meta: U2FsdGVkX1+zfi0Zy5tUNHTmY0vVi9htaCsXfunGYd2LzXBcUBLur92ZQ0+hyq9P9mZ1tFoi6J2CzgCiKqU3Z2IKf59PHCE0+EnTMXtUgS5oCSiAnum+KhtrjfE3iyT5LlDtq3d552JrDQJSFSKFu+mkyknigG35RF8SMawJCMe+YZLc07ZSj1+YDWUHXxepdVZxHEzh+vw7yf5VNwj5C3edFL/5U3Pg8XbIXnes02SkarUw8aXn/BVXzNk84hRdkW22w7SsczDEEWyolgi2ygr/6HRF0LKqq+LaRKLVFDuCa1EoPRCmzp12iwD7rkSV2Ld+pcSDiipr3Al9Klu97pGktNdRiGKKsyQTZi6plhoHgRLgAIjgwjqQgaTkmrNq5rlu1+dnzFzg3NbBQNQHYideQv6+trU7AwfGhp8bL2Dng5wtzek6x5L7cEPtlLg1+HYy8QYuWx88yCKsa8XaaHV2AtvDJG5wMqIb4VBHByci+snasMRJgT9O52mTlO/96KdALRTplfjBCl3aPPO/5owtb8Uo2EeJG59IS7I8QhrbmIt4QJ0zt4VAorayHtt9rgi+3bdE6plOjX3SlSkXUjKS8wZMB4p/uL178bzQ+UYAdWyqXXWiLnb6Rjvt7BEXD2BetPPNanBj7UIupICXg+9KMnp1kHj/1q3vfG7GvWDvm3P5u3rKT4+YCfGu8I6EYfQkSk1Z6Lsa8yPhV74ux5Kcmqhm5AGP1u9VynFvxrkHVVgaWbmTOPuue6MYieETJQgF99DjQmY8BffUabsFBH/XF9ybzNFKJsL+quxLPTCevP4/lFW9nXo8+oAlxfFGQf9Lh84Di7HnqOwK+IS++AgUgre7x9TJv6iLlCyRzDjSMIW2mQqlZW8vPw0GjCfThpLmOXdZPDQe83jR2A7JHvceqCZyY2miJSkyRt7dKh4jGqBsDgFkWaK457b1pYkeswzvoKf9t6YcbHzHKpK
- DlS6KbkD
- nh5MFEP6QV6sT0JMM8qtd/ya6zdWcgvN5PHT/bQhjTjwWuU4FXHwEiJBK2ACct4kF7fBw7Cs5215DbLRQo6VpxcOQvJGEKW6z1q8mJa9QmbZZNsMdeGy8GDJaUq+Vn6EramiMDcsBt6G1utS1fscx7nwjiCFGbbxZ43lxFhdgCf9yTUE2GCSCBFZRFeRup+WdEDq9xqoQ/PtVrEffKkELUxEhJN5eLzXJ3st/TJ8MrwXq0QDpUZRf6mtLVszNEUZKwFH/YMWT1L7DrSYfBWky6cP4+Q8MpF5IwlJri+Bghzc/d/ES802q8gG6b7oLlR4CjXEP41FxFC8bPz9vVfioFJYXBiap3Ejd+RcDe5aEZLfFgPda4Sqd2J3fPphUD376EMiSgo0RcxXqyews44sIFJTxZQ==
+X-HE-Tag: 1792167856-629357
+X-HE-Meta: U2FsdGVkX182IkP+EhzVXGhm8G0jKCWhQGVsloKQGWDhJZFIsmUkufqqdT5K00NyHIJU51PodiLkq8SdxKuvcw0JCb4mv6TliNaeul+2ZIHmqUNzpef3d7dqgX3sJXlxgH7NoRFnP+r+FtPOLTgq/R19KFyD4MfBbUkV7SpSQuAchTwNbJ554LfGytpnnv+9rTiTUuwCpyMAxhK3O2GgpWYYdaeWGEVemCafJRa2eleQF+ZTSml4nozGAar/ErThJsjLkpnkO0H8AZhPomW9xmo/hAOT6y53gCKxuPcRRpw9AFbyP+WZ46rGocs3O5VqOYO5hBalZfb+K/XJtzr4F8uc5eOnPQ3TjnmYMGUhajApFoCjFrAEIA/jADEyWUyq99iJQYwihMhRoSOo92p3QLzty9RRhXX1Fp65JK1aTeJz92DpHAXE9xIp2e3yjFJbQeI2Ysn2bEciZR4R9cnW4MWeaDqOF0NLoGNmVgC1mSX9rXt4u1cBcHt53DkJ/dNwGJZ+D2ZlYqaOuI+chNFmulE42yioACTcjb+V8NdSoB7p7iLSC5Q4TXVgkPvvxP+Rnh6QM5JR0zBFfQRsihrdKfAmkQ7N0Ut60uTdELV1KaCP50TrJHmp0Xtf3QNxZi6hQuRN94+Smjsp2WJHdKDymH2FHrZz8GiSPY8Tan9EGugZouizWeqTBvwpK8EEipv6YmcTIZYrNEf149I77abZVvvRJWWXJRksw5Lgk0dhHJcl47O8zoJkPR1Ww/wjwha8sbupyrgp7l+B6AEPUWOqjhj2CnZq2/pWD8TJ27qUhq5I7uf/FDdPPi4NKVVMduCePW3n5YHe/VBg22zkdapXxvSOnNdSahv6wFZoKWZkvUJpna2bAPcJww3hwiW4qVkQQKb33XN3FYO7wcoktvWTk+ILh7hcB9zyyAaZG9ghtw/XANkiqPTeqSl/2V87cHOSdBi9nmSqachAydPL+0d
+ JEfovdYy
+ gEhyGkGmVrxCk4zNoE40z7kW2pGRjLAoA+hxv90guSBWvJ5bdqim/a1TnZvoWFDw/DVKY6wNCSfxHtQet6BJpav4bvW2TGEh9XFkde3ft3ja+kxfBWfaJfwQpkeV5gAdb8uvVXUoH0m6srga3uc4B9LWaFqVzukUhGPkLl6YdDyBazs5BPeBagwD+gMC90jtAhV9A0DIPgjEUcMkPZUWkvPT6xm7/N7TCQkGQ5Xo15P86HJF4crKlxh3/ja3pSzxMV7t75VdSItMr8DVfhHvc1LHVpXoNM9q4zxL++d3OwFHkug35gZKgef2ZjOFi2lVmx1LW1NGRuf9v5LmjZz9brUn2RYBFBSg/8WEsbHDsJnjACb35nNfC/ghPTvZrnclEKILiTBtOXZf2Anrd2EH6Ma0zg8bc/7diT2+nVwAenetwXDG5Gr1UVX3O5T0gSnPX5W3wH1n8r9TOFpavMElIYUV91P6TyF/S579MvEGjnFOHdVY+Da/ean2Cluwys8LbgxDF2HEh2WzvOudnLw4Q1Pr+UWRjXqSIdF+4md7/L/ONhHw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,53 +98,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 7, 2026 at 8:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wrot=
-e:
->
-> Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
-> device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
->
-> zswap is the same kind of in-memory, synchronous backend as zram, not a
-> swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> swapin_readahead().
->
-> Here are the results from bypassing readahead for zswap too: it was
-> measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shrink=
-er
-> off, on Sapphire Rapids and 3 iterations.
+With debug_guardpage_minorder set, expand() turns the unused halves of a
+split into guard pages, which page_del_and_expand() leaves out of the free
+counts. Freeing the allocated half credits only that half, and
+__free_one_page() then merges the guard buddy with clear_page_guard(),
+which no longer touches the counters.
 
-Would there be regression with shrinker on, when we have mixed zswap
-and disk swap backends?
+The merged block goes on a free list with the guard pages never counted,
+so NR_FREE_PAGES falls behind the free lists by every guard that merges.
+Before commit e0932b6c1f94 ("mm: page_alloc: consolidate free page
+accounting"), __set_page_guard() and __clear_page_guard() adjusted the
+counts themselves; that commit dropped both adjustments but kept the
+subtraction implicit in expand().
 
->
->   768M memcg (sustained swap thrash):
->     metric                 mm-new    + bypass    delta
->     build time (s)          405.0       341.7    -15.6%
->     zswap-in (GB)            79.5        53.0     -33%
->     zswap-out (GB)          144.8       115.6     -20%
->     swap readahead (pages)  6.79M       0.45M     -93%
->     swap_ra hit (%)          72.1        89.9     +18pp
->
->   1G memcg (light pressure, build not memory-bound):
->     metric                 mm-new    + bypass    delta
->     build time (s)          177.7       176.0    ~same (no regression)
->     zswap-in (GB)            10.2         7.5     -26%
->     zswap-out (GB)           27.7        25.1      -9%
->     swap readahead (pages)  1.07M       0.08M     -93%
->     swap_ra hit (%)          68.6        87.2     +19pp
->
-> Similar gains were observed on an AMD EPYC 7D13 host.
->
-> The gain is from no longer prefetching pages that are pointless for an
-> in-memory backend: readahead inflates anon residency and thrashes the
-> page cache (file pages get evicted and re-read), lengthens each fault by
-> synchronously (de)compressing a cluster of neighbours, and adds
-> compression traffic when those extra pages are reclaimed.
->
-> Bypassing swap readahead for zswap therefore makes sense.
->
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+Count the guard pages under the merged block's migratetype when the
+buddy is cleared. account_freepages() skips an isolated block as it does
+for every other free page, and moving the block off the isolated list
+counts it then.
 
-Code looks solid to me otherwise! Nice job.
+Booting a 16GB VM with debug_pagealloc=on debug_guardpage_minorder=1,
+check the difference in free pages reported between /proc/vmstat
+and /proc/buddyinfo.
+
+At three points (idle, after a read and file-creation load, after
+a second load), check the difference between nr_free_pages and the
+buddyinfo numbers in the normal zone, as a number of pages:
+
+                idle   after load   after second load
+    unpatched   -130        79205               99121
+    patched      -16           45                   0
+
+The small remaining difference seems to be due to the numbers
+not being read at exactly the same time, and is also seen
+without guard pages.
+
+Fixes: e0932b6c1f94 ("mm: page_alloc: consolidate free page accounting")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+---
+ mm/page_alloc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c483..4658af97be010 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -988,10 +988,12 @@ static inline void __free_one_page(struct page *page,
+ 		 * Our buddy is free or it is CONFIG_DEBUG_PAGEALLOC guard page,
+ 		 * merge with it and move up one order.
+ 		 */
+-		if (page_is_guard(buddy))
++		if (page_is_guard(buddy)) {
+ 			clear_page_guard(zone, buddy, order);
+-		else
++			account_freepages(zone, 1 << order, migratetype);
++		} else {
+ 			__del_page_from_free_list(buddy, zone, order, buddy_mt);
++		}
+
+ 		if (unlikely(buddy_mt != migratetype)) {
+ 			/*
+
 
