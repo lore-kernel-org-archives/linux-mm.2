@@ -4,100 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1FC3CCA46C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:29:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B84E5CCA46C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:35:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3BA26B0088; Fri, 16 Oct 2026 10:29:32 -0400 (EDT)
+	id AE1B16B0088; Fri, 16 Oct 2026 10:35:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A13576B008A; Fri, 16 Oct 2026 10:29:32 -0400 (EDT)
+	id AB9E56B008A; Fri, 16 Oct 2026 10:35:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94FDB6B0095; Fri, 16 Oct 2026 10:29:32 -0400 (EDT)
+	id 9D0C26B008C; Fri, 16 Oct 2026 10:35:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7414D6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:29:32 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 02CA6404EE
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:29:31 +0000 (UTC)
-X-FDA: 85328722584.04.FB032D2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6291B80012
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:29:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q65In81g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 80B036B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:35:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F668160510
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:35:07 +0000 (UTC)
+X-FDA: 85328736654.29.708794A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 33DBB40002
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:35:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nrPNjHrN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mMNOoK6G;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nrPNjHrN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mMNOoK6G;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792160970;
+	s=arc-20220608; t=1792161305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5HSzrUk8F8TN6B6+DOgVOUSWwHPV0RhSwS1OfeQB0K0=;
-	b=Q3oR+sEvr36i2coF9G5cFquMc6C8PZM5Eio4c4jIkXFiLvki7ysQpvn1cnTc31g7F5TiaD
-	JpJkfCZg8gDngWFhUheWWjg6I07w8vPhRTEVqaRg+3g8dNjfcY6h4y6OOSd4ql5Et8v9md
-	ERXdc4wOcQ6v1E3rkq9SpCevIMb6peI=
+	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
+	b=GWavVKZTawvlWAj4P9iGUAfrIj3nV3Rkkxz0aXpQHZI4axkHfQ+Jg3InrLorlVEjzrZHiJ
+	1ab15TVn5f8/rHXCccGBDqvjKHKKo2IMnqR9CNm3ukJR6T81x4WJerz0yRnigbNdxy6+dg
+	AIHjdhlcnXhU1HHOpPYuUXRO/YHFw08=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q65In81g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nrPNjHrN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mMNOoK6G;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nrPNjHrN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mMNOoK6G;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792160970;
-	b=65LZKfar4lq4xKhQ3eC36CerJfMbZf7pIMxCHixanF65or1y8LC/OieXB9zkbdBgb42VIX
-	3pIbl5o8ZEaxQgjt5VoNYCWOfAx9ez+1NTWZCO6y6ZlGf7+ttJFS9wYE+5CAqDpXmqNtrA
-	2y/S/LNPXjWZNUlADTp2DHbsa38+rqM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA67360008;
-	Fri, 16 Oct 2026 14:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62371F000C4;
-	Fri, 16 Oct 2026 14:29:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792160969;
-	bh=5HSzrUk8F8TN6B6+DOgVOUSWwHPV0RhSwS1OfeQB0K0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q65In81gZDrVrtW5aeohcJVJLJobQ9C8yQuS2wcMlNBqD1FSgQ5ZjZswj5VFjEIhV
-	 Uj3NJt5OF30kEGcVXt3+OijWD8/DJBwmwsVbLwDKW2TF8NWbmYfIBEKbj2O7sejVvG
-	 +RSSLoAh3RIWYDA7pX6RCZ53f38uknskqpEXSpGwbaojB979hqlX4WK1wHRTxDeUjl
-	 fCkunetpfr9SnSdoWyXIUOzbMYjOtJCc8R2NDlPyY2OOn8tBJwwHR+YgK8IZBflwOS
-	 yHACdqKGG/K2PLFWfm9XS3S4Anf7UblSAKrhhiULhHwKm2lUEGosBhMHe5l3FqY53c
-	 iJC2HQzQ0cVqA==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Manuel Ebner <manuelebnerli@mailbox.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/reclaim: improve grammar and style
-Date: Fri, 16 Oct 2026 07:29:21 -0700
-Message-ID: <20261016142921.126622-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179215409165.864368.11903228864381211337.b4-reply@b4>
-References: 
+	t=1792161305;
+	b=2bHsMaOEgaYkR8DIAPswozrsWFvdiXt6vsdHgo3GCWfXL30vNaWQTaf3jLxoAFYs4f9w1L
+	lfi7emvKa9yULzbhgbYiJ2XluuJd+4xjc+akK4I3IByK/oUxY9pdJJnENTfgzRZGufsJfu
+	+TdHQ6jnMSle++EvjKV3KDGL3xUIXN0=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CF34B1F445;
+	Fri, 16 Oct 2026 14:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792161303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
+	b=nrPNjHrNIwZqSdnT+S2HVu9fYo8T+GCugireiC7KlLuJP4f+ehAQRuLl6pePQ6dJaIC1q2
+	GNSYj3MEl4wuGijoCWZjAUn/twscjJOIeaosYj9t/XVS7rCZs/weJfF1y23VfbBljJx1oh
+	5Z14GJ8axXI09jlYiKHygstCBYqeAVw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792161303;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
+	b=mMNOoK6G6Ocet99MnO8c8h594dYsTr4U2fP4oNNKJ3SNRHni99cmls3pXJoxSDUf/SaCBm
+	NOQl+0z/7m2KJnDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792161303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
+	b=nrPNjHrNIwZqSdnT+S2HVu9fYo8T+GCugireiC7KlLuJP4f+ehAQRuLl6pePQ6dJaIC1q2
+	GNSYj3MEl4wuGijoCWZjAUn/twscjJOIeaosYj9t/XVS7rCZs/weJfF1y23VfbBljJx1oh
+	5Z14GJ8axXI09jlYiKHygstCBYqeAVw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792161303;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
+	b=mMNOoK6G6Ocet99MnO8c8h594dYsTr4U2fP4oNNKJ3SNRHni99cmls3pXJoxSDUf/SaCBm
+	NOQl+0z/7m2KJnDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD7C61378C;
+	Fri, 16 Oct 2026 14:35:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MNLIJBY20mr7JAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 16 Oct 2026 14:35:02 +0000
+Date: Fri, 16 Oct 2026 15:35:01 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, Kuniyuki Iwashima <kuniyu@google.com>, 
+	linux-hardening@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/2] ipc, msg: Account msg_msg allocations with
+ GFP_KERNEL_ACCOUNT again
+Message-ID: <atI1-HjSgPkLCNQT@pedro-suse.tail5790ac.ts.net>
+References: <20261014052338.nothing.279-kees@kernel.org>
+ <20261014052344.384723-2-kees@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bczx4zd35a5ugq5fnxjzma7wzba35odr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014052344.384723-2-kees@kernel.org>
+X-Rspamd-Queue-Id: 33DBB40002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6291B80012
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1792160970-567623
-X-HE-Meta: U2FsdGVkX19YCI8HGByse0kFGpP4uznZoGkNFM21/TjKHzst/Tpiryra9VD5FEHk5avhzMq3dK4V/F+EagpVINaU59elbDufzlfIl/6QadaIqLQ5fHB89sLN9KGFIOK0/T5EA2xT+pUqI0f7Uj89OQS6MHn+cqSrDv3LuAgJdmyGbixj9Va+Z7FMChVVy/3T3+FDBzYfwpclnjhhLQXegIr1IiA1F/k+DOXs8WueSUrugI8CNGZrCjAdCq2AK3SwJdZgPejrrEbSaOdC+NuDZlXuKVkw4NjQuVJOB384OdFptErpmVtgVhHWiWpcI/u/rbR1xytYT9cbTVUJn8wEozrgZkQO2Bh33D2XZP+mCiJCfNg8vwBrCPp0DgWqivFZ9ovtgRAqmiD+tNZ6YMmgPeWNcTxXCoJFgkDDSH4O/mEA3RMRfKi/r9lw/indM1O/MkYEsgOZ0gWB8XpURhMcabsP0sUVSgPr+Zis5i+93fRYXKmB9haiWYbTinJlDVsCf7SzkuDdCZPYzedS5nN2G1KgYo29wFiUmJST9+38m26+8IpCZf7QgH3cbXG9vHRNYb4pOL1N5zmo9CVwCZbnzfO8JC52B7VSY45LX8Dh0ldbKs9/KYhO1AfDvVz1BC/dOaGQZ0dyofsg+svOwiljPSn6yKzt4IVc34KXx4ksApbFVxu0xyYTsEYGziNoT7TGn1RqR5DE/CtzxIhRi5AaeuMBuygHlNfrvM/j7PSNIIYe6flzOv2by5MmJszbB3MRHo7pGYPO7UGiopzb/zeeB9eULa9XvDyYRt3Dl1UNtkqgWYcaRdVq6o/u7PSlvYH+iA347fIGi6QTuLpt/NvdV8PXgHYWohVRIc7H7a4Cio+CVyZtHg/UsM7phWT1OxP1d4XuDJfCXwQm/+4npW0kM2K4i5WA0WK+ffASPMK73GK5vSCr0apHXfvj2L3hNIdLEcdhmMo7vo51zC/+oQF
- 3lPFINf8
- SSKdEz/2n+28R9cZMX6u6Vyb4MD/yrsSOH5Q5Q8Po4ii8u24z880VTrsZOIG/gUAc4bgwolTyoHmaXU33bQSy26YnfaDgI1P2zkBiS15uAT45gcmDdRmM0ZexF4LFxXt2GuXeEM+idURqD+YozH0ppIqI0IEvHGFWP8h/9JWp+8V2Cq95g9IxNoHIY6gW/2JTJgrb7R0oJ+B6W4JZr3p66SvRZcC5tR0GSXBqry9UHyn89fw=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8k4wyftkbxh83gi7rbuwdwg3wkj3gogr
+X-HE-Tag: 1792161305-712488
+X-HE-Meta: U2FsdGVkX1+3DN5kPMouzEPlh4Jps9lX8DPGH5LV8+wXdKw096xqJ8M+n9dzP25Nc13dJfhi/YIJI03D1qzZCn8GnybPcvnpklxrcSgo1n5wKcQ66SyPwYa4PVLQL5FEbDxslDKJYJHoGcIpZA8KtPQhHM/8K5YIoC73EFjbBHHxbThY1GW5XvHDaSPgVnhsdMxX6SLfJcGgljlTaj4lEot+KFooQ/FUMmpGeu2463z8gkrv3EtwFpemYA8jZ2m2P/No/GTWxz5o5VNqZrpkIWkgI6V8J8PtOUHNeRqQTLjxq8qLVY7z2vyg3WEGpmt6Kuy03B3JK/Mmv6seFZUsApX1V7o2y6COSb0BHOyPRLXdzyrC+8mN/n2qi8SEl04gDRH0wOcmG/NaV1VLQKZxepuW8psf48WBrnc3g0alhs0J6PtjcI1DEU75LZGOTHZ1Zx4vEG+LkKIFYfpm2rbwDmYD2MA1ZNRM0NWt+/o7zKZGl776QPy6FwvpDrWm7TBWSdThWZVcD/cnrbvXp370SRl0W6DT2xCs842WyTq56lU8YOM6yChGKBfUcHZGGOaX/c83Dv/AwUCrsKUp2dLGJtqfGTpWDWmWxJTY1Rpf176A2kJdKWENsqKQ6ODodKYlDQWTf/pBkByAT+jCvwqoTTFLFEkZ+TqDejTmnRJNNKsChMCXgyByKXnaQCQFeI0o69SgSr+lPmzZiFZAmT9r5jZmdxJzkOVRLGt7LGnMoWWAVy16xyZ75PawdF4GdAT/MQ3BGH/JAK1Ay0I/HM/Ot7FHW114jLRwXauAsx655pAb3xjB4c6Inik37u0f745TO+XcDfC5SM9IbfHMPxuSdwTBdL61uKeyKl3m0hN8KTYGAxbnX+p3OHjspxwotutceCENS4BmBCsu1YEUo/l3wHt+GEiDzlPuZgmeravqOILteif0PbG2bF6rQ7yfGtXJuQFb4WMjapgR1D36Bzl
+ Jrmw3Zi0
+ k7Bc/M/lfz2ER822ralW1DCbuACUNObSBxas5q1xGd6RCnvQQlwP235xhCjnIwTz0IdNw4ybcxcORB15qLq9rWc+HyW7Pa3n0INVd9/88bVviRRaCXmgd18d0C/mVUn+fvK03q223CnQWjs86uTJ4e6cLgsY/et3lrLP4SFyjrxtfqHQOpPMgi8Zr1gfwzCVJKWIVOveYXt0LVejGaL38Ww5gzUvE1Kf1/nqNCf91zQdarM/JC38vUTEIkKC/pzlbGZx6e7/CXxvVQ95u7/aN2J+BDW6rLLfbUta+HIlNUAa/jb+l5ZlVX8bkFzFAaC2slTkbmGSLjKS2Uvc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,89 +136,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Oct 2026 20:34:51 +0800 Aveline Noir <jm5905938@gmail.com> wrote:
-
-> Hi Manuel,
+On Tue, Oct 13, 2026 at 10:23:43PM -0700, Kees Cook wrote:
+> Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
+> alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
+> accounted only through SLAB_ACCOUNT on its bucket caches. With
+> CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
+> kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
+> which do not account it; the same happens when kmem_buckets_create()
+> fails. Either way, the allocation is not charged to the sender's memory
+> cgroup.
 > 
-> A few suggestions from my view for you here :)
+> Allocate with GFP_KERNEL_ACCOUNT again, as before that commit, so the
+> allocation is charged whichever cache serves it.
 > 
-> On Thu, 15 Oct 2026 10:06:23 +0200, Manuel Ebner wrote:
+> Build tested ARCH=x86_64 defconfig with GCC 16.2.0, with
+> CONFIG_SLAB_BUCKETS as y and n.
 > 
-> > @@ -30,12 +30,12 @@ guests could mitigate this problem.
-> > -DAMON_RECLAIM finds memory regions that didn't accessed for specific time
-> > +DAMON_RECLAIM finds memory regions that weren't accessed for specific time
-> >  duration and page out. To avoid it consuming too much CPU for the paging out
-> 
-> "weren't accessed" fixes the grammar, but "page out" still doesn't
-> agree with the subject. How about "DAMON_RECLAIM identifies memory
-> regions that have not been accessed for a specified period and
-> attempts to reclaim their pages.".
+> Fixes: 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for alloc_msg()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
-That's entire sentence rewriting.  We could consider doing that, but maybe
-that's better to be done via another patch.  Let's focus on simple grammar and
-style in this patch.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+ 
 
-How about simply 's/page out/pages out those/'?
-
-> 
-> >  operation, a speed limit can be configured. Under the speed limit, it pages
-> > -out memory regions that didn't accessed longer time first. System
-> > +out memory regions that weren't accessed longer time first. System
-> >  administrators can also configure under what situation this scheme should
-> 
-> "weren't accessed longer time first" sounds a little strange to me.
-> Maybe "Within the configured speed limit, it prioritizes regions
-> that have been idle longer for reclamation." would read better?
-
-Let's do such rewriting with another patch.
-
-> 
-> > @@ -88,11 +88,11 @@ identifies the region as cold, and reclaims it.
-> >  sampling and aggregation intervals. The auto-tuning aims to capture meaningful
-> >  amount of access events in each DAMON-snapshot, while keeping the sampling
-> > -interval 5 milliseconds in minimum, and 10 seconds in maximum. Setting this as
-> > -``N`` disables the auto-tuning.
-> > +interval to 5 milliseconds in minimum, and to 10 seconds in maximum. Setting this
-> > +to ``N`` disables the auto-tuning.
-> 
-> Maybe "between 5 milliseconds and 10 seconds" would read more
-> naturally here.
-
-I concern if readers could confuse if the range is inclusive or exclusive.  I'd
-prefer the current sentence.
-
-> 
-> > @@ -113,8 +113,8 @@ quota_sz
-> >  Limit of size of memory for the reclamation in bytes.
-> >
-> > -DAMON_RECLAIM charges amount of memory which it tried to reclaim within a time
-> > -window (quota_reset_interval_ms) and makes no more than this limit is tried.
-> > +DAMON_RECLAIM recordes the amount of memory which it tried to reclaim within a time
-> > +window (quota_reset_interval_ms) and stops when this memory limit is reached.
-> 
-> Agree with SJ that "charges" fits better here, since this is quota
-> accounting. 
-
-Makes sense to me.  What do you think, Manuel?
-
-> 
-> > -While keeping the caps that set by other quotas, DAMON_RECLAIM automatically
-> > +While keeping the caps set by other quotas, DAMON_RECLAIM automatically
-> >  increases and decreases the effective level of the quota aiming this level of
-> >  memory pressure is incurred.
-> 
-> Maybe "While respecting the limits imposed by other quotas," would
-> be another option I think.
-
-I feel like that's out of the scope of this patch.
-
-If both of you agree to my abovely suggested/agreed changes ('s/page out/ pages
-out those/' and 's/records/charges/'), I will update this patch in damon/next
-tree with those changes.
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Pedro
 
