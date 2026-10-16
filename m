@@ -4,99 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13EDBCC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 04:18:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF00CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 04:38:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 762A76B0088; Fri, 16 Oct 2026 00:18:37 -0400 (EDT)
+	id 0D0046B0088; Fri, 16 Oct 2026 00:38:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 712A86B008A; Fri, 16 Oct 2026 00:18:37 -0400 (EDT)
+	id 081826B008A; Fri, 16 Oct 2026 00:38:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 629086B008C; Fri, 16 Oct 2026 00:18:37 -0400 (EDT)
+	id EB2C06B008C; Fri, 16 Oct 2026 00:38:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D4EC6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:18:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD84D14028A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:18:36 +0000 (UTC)
-X-FDA: 85327183032.18.D1DE62C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DEB8A100006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:18:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=E4Dct8Vk;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792124315;
-	b=P7J9qOzZv24mm/3C8Qgan8KvGDfDI7Jr7B7HhtIBUKziKtI07PIr3qX5j4MJ/XzBLE3Sw6
-	+vh+QUcV+ACCHrwZjooBjGKdy/AeYpsG6ZNFxQ5iy922+fcqN+oFkG4Hbjyu42IAR5q8TE
-	de+AaxfAngSdtboJ5gYReLTxigbRPFE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=E4Dct8Vk;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C1C8C6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:38:34 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD12B1C2FAE
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:38:33 +0000 (UTC)
+X-FDA: 85327233306.06.2FA1C47
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2348D1C0009
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:38:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=cBFadL0t;
+	spf=pass (imf18.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792124315;
+	s=arc-20220608; t=1792125512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QbDnuNasrWjaITOnoYmeUW3ewMNkOQ1kcGgALUd7mpQ=;
-	b=H+8UUoDgkRd2B3djJsmhmndh2vgdi/l1e6dnHZoQlKoBXFKCV3qs+Vmv6+lKjguTKMhvQk
-	sod2mf3JMGydMBCM4Y70XNj+A4/drpjTdyF/2Vn7/RFMTZcjDtHYxzUtvw/5GDx/bgGX3M
-	4uobhuixXWzR3Sto3I5oSQ661cudpdI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A5472600D4;
-	Fri, 16 Oct 2026 04:18:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D286A1F000C4;
-	Fri, 16 Oct 2026 04:18:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792124313;
-	bh=QbDnuNasrWjaITOnoYmeUW3ewMNkOQ1kcGgALUd7mpQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=E4Dct8Vkz+SkJCejpYR4oJW6gZTakV7zWa0h8ODzWS48qDXN2E1XzVmUEqGwRKBp6
-	 TraIq7ebzd27NoSIfORpuGISEved2+C9w2L9gqxnQs/MGyr49s9rS+pkz/lUoj9cL8
-	 I8LuLAasSR4327SGNDjGiYoyP+jZRj+Rf4oqk/BQ=
-Date: Thu, 15 Oct 2026 21:18:32 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Nikola Ciprich <nikola.ciprich@linuxbox.cz>, David Laight
- <david.laight.linux@gmail.com>, Rik van Riel <riel@surriel.com>,
- ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- david@kernel.org, Mike Rapoport <rppt@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Pedro Falcato <pfalcato@suse.de>, Kiryl
- Shutsemau <kas@kernel.org>, luizcap@redhat.com, pbonzini@redhat.com, Tal
- Zussman <tz2294@columbia.edu>, Matt Fleming <matt@readmodwrite.com>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-Id: <20261015211832.45d87fab15bb3e0bbc2f47cb@linux-foundation.org>
-In-Reply-To: <20261016031242.GDatGWKo98YSOhEOOn@fat_crate.local>
-References: <asKdhWiJb3qXeopz@pcnci.linuxbox.cz>
-	<bd8e9b01ad88cafb12da33331f32a1ce315f590b.camel@surriel.com>
-	<20261005132113.43548696@pumpkin>
-	<asP5xK4axiUk7jun@pcnci.linuxbox.cz>
-	<aseMsMGpGPT/G548@pcnci.linuxbox.cz>
-	<20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
-	<20261009090042.39ba9c06@pumpkin>
-	<aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
-	<20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
-	<20261015172820.7961d2c0def74d41cc6c4b0c@linux-foundation.org>
-	<20261016031242.GDatGWKo98YSOhEOOn@fat_crate.local>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=akUKtCOOrlEpH/rN6LN5UUaba4wuzZss1jd/DErEyE0=;
+	b=taGBpB0ecymgy66r1GuZUuCIKfDHEqJgmuwmjguey/PNw896OKoQ/mt7IKJfVU2Bgh20XT
+	VlJpXLhPrHeBvgcEsyBlYuamBAJ0cy6UJ0R8mdU2vaX3f7plKNys5/xP4Ss9NLGzCOolAG
+	M3OmZSjbS8dSQbemknlR9pmLrTh4v48=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=cBFadL0t;
+	spf=pass (imf18.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792125512;
+	b=cuPpcPBMpUwNVmvVsJSo3JqejRV0scyJ2tjP2N2iwqvmLRGkVNEeQeb+IK9vjdNzbaghD/
+	gKm7aBGv8OkLDqtdQCyHuvhJfIzmRqjUQyuu2lYValJd+seyDKv1Hws0TCEAvOLwmbfRz8
+	OurycP8NjkZL1v/iukFjKpvNADZkNd4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=akUKtCOOrlEpH/rN6LN5UUaba4wuzZss1jd/DErEyE0=; 
+	b=cBFadL0t4yG1/WfEDOQ8wKVQA5t1kSkWJ6i8c/fYSi6+wTEDmU9DwCigIsKPEGwiXfxQUzXBhf5
+	t2q1l8jhTKeBxdnxvKNIqyLKiG4iG1V0U5c/OtXIMST64/XMoV0VfS21DblRAuqaWehexRdx2ZMiO
+	OGav94vPTkoU8lYH4yw4AR0qKpKvCXf79ZiXX7cIVr1fPgW54RMyZddGEasZ3Q2g4JasxGq2wfPpf
+	e3hVUyEYtRHsfqmhCDqe5qoVOKWTp2DpBjMfJIfO28SCOhWEDm6bRGdXYKWdXWmSu3pioMDG1jpaP
+	WRqh8ngI9o49wRgKMNSC+EFBH53QMGcNar/w==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xHZi0-00000004QCB-1BxB;
+	Fri, 16 Oct 2026 12:38:21 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 16 Oct 2026 15:38:20 +1100
+Date: Fri, 16 Oct 2026 15:38:20 +1100
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, hannes@cmpxchg.org, nphamcs@gmail.com,
+	chengming.zhou@linux.dev, akpm@linux-foundation.org,
+	linux-mm@kvack.org, davem@davemloft.net,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+Message-ID: <atGqPIpUfX0LDokV@gondor.apana.org.au>
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+ <as-jZopKRfuYAiTE@google.com>
+ <CACpmpoeS_cvXRWJXqiYZV9oykk=91efv8KtZgK2Pi-QwHnQH3A@mail.gmail.com>
+ <CAO9r8zN5n=9v4K+OtEEODg=e0kcFW99PreUcZm09q9CUMQc+ew@mail.gmail.com>
+ <CACpmpofdoeVbbw7izCDeJ7eS+XpWj+3sp3teKEQWywyRB75jYQ@mail.gmail.com>
+ <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
+ <CACpmpoecz4tjr-qvFRy22CGuF+4NBWbE7HVjdTGFqQOheK3CLg@mail.gmail.com>
+ <CAO9r8zOAcf4=TscCXjMYvowUx-_u9qLGqY2-p7cK-z5CUU_x8w@mail.gmail.com>
+ <CACpmpofYXDMviE6FS-BZdVntmQFvS+_xvfmOnJ2caZFerz6vyg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACpmpofYXDMviE6FS-BZdVntmQFvS+_xvfmOnJ2caZFerz6vyg@mail.gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2348D1C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DEB8A100006
-X-Stat-Signature: rooxbrh753gnjzousb8ibdq9c5mwrqe3
-X-HE-Tag: 1792124314-930830
-X-HE-Meta: U2FsdGVkX196RcL9eCq83Q9LvTl9ULs6/tp8TF92sj2dWuFTL7GAvWoPRZeIeE9cH4Z/AJXBP8ljymrFKXvbHXCp/kH+gcoqSFzJqNg4zSLx1176s9bCTOcQXb9UcUCN9Q6EyN7KzRqbKHNNUfAoXL9o9WPJeBi2oc4FfTSau6RE1lQu0ar4wSCisSTA0jl+yRvkeebAYQP0tQxvNFY8A+diNdYmbris0kvB5VgUZZePxcvlbn8BiK8Y1DBA6Y/mk4p/FLk5qGXLLJPRzq3FzxzERdNEpNzGl+ivz1H1uYA+0ppqKF3AP07AYPWxQB+U0s4lU9n6dPIwnv2fP3Mqev6pkKjenNPhGeZyWhof4MxPs7WE5oQftSycBkPicOj4wGYjYmir/5DeDmVYDXBRgoXvm8ZVidtcQr3vkbPNgBKW7ljBTw3kVvWrx88NATGcNkWWYMWMptlq5dM21phcUqrCKi8+EZVzT6zM9Wk2RZppHoodM+eq5rZkE+jvW9+sVWpZPtPVHdw6gfzyEkVB7ODAFRv+dciI8r4NszPIGc69CLhyHEYR3ITkBw9dMcAlkWnv+YWd0X4AEHzsSKxSNq9DduBqUJt3SKvqQRayocjoVzdOhaFiZcdG13gDqsHrjACQOKCPO+aF7aCx5WBEVJjznjmGXC24rJ/dwlL/SMvDfnYwu5C7xHaEZRG80Fgc/SOz5qQQLhmCHju2MBC4ZwxQdh0KLvz1xhaEwBSmEC/JoPaGx4MH9uJDsyAHAOvIyPDz2Ut335gUQHKEkGs/u43eSsZm6I9RFmm+HLXd3ZTUTQeTjtGkUCm8Lt9InqnMxBU/xUP+4KW0hc8APl3b8aLoFHv9da72gV2a5/xpBI4G9BJymNtxtOJkFLwkuM4Ci2IJV2aLlyQWY/YDAr7GM7EOHyc0UgJjZGFK8KPYBipt3AyI1EzfPZ+juSnzWe/LSlqaR6CyjgaB2OegFP3
- zsc8lKqa
- 42mhvWm3SZhis+H93FuRQJzZmk/cC5IH/tlaHSDpfS//+2nD8af1F7YZ7wGK5kTgDgMJSW4bwQVdruhytzvvcngNzz5Ze/MydTQ8pxeBbKy9VPJJ4AvzKxlpyw1T0e3nglaQXKSDgQ04BAX3eQ93jIesMcAwWfD+Y/PHPA4KqUqUQywsjZNdwWJ5GxwQNyIqgBTwWj89pqwehKif+ZuoMbIsmDAXQpH0rGvJkwcqW1rU+XubiVomJ4uXFoW0WQxN7EHAa92NJnQXICOcIu3plR4LXuXXC7uLvl2M898ddVnxuyntJjpyz0oiYzhE/nJM9PlH21KTPRDvFV1c=
+X-Stat-Signature: bb37mizcf8rdmopp1gm8q3hrob68um49
+X-HE-Tag: 1792125510-69754
+X-HE-Meta: U2FsdGVkX19GStYswAjuP/AmsbcA7Z1Jgoe96xOCN7trGzrpjB+EhByr3QBR3xFuDBGSaYtNzTXmC1BJJarq1jfg+RfUjf79eMaP+BItU8wrGq+VJxzM6Yuu8iFRoUJHZM2LKj69Jwo56Jr+a69u9CmH229+Lh4nJdv3AunMIqMMz40MsC+zdMJbG0FW+ECS5H+zEfcl/fNdOXVo32jBVH2ZRWQiTYgoMq8OJzpZ2b9ibG5f8c1ZKvTJ/jMpqP3ERsqSu4PPa8Re6hwCsBiXEA3EQqD49QE+qmICCTryZwnQmCxO+RpXc88M5HAPI/XJg2ja6kSiIpGoXMU04pK4jJ6PYMK7zWLVkAxd7h4bP3c6Wc5SNsmBQXXDwLpReziiuXuDKC3Wk+gLGZ86669mMWYfUCQed/Tkb2p4HHw6o7YwiDhQWTAkiLyJ1Dl2DkQVoLgkBn4t5udDMcexYr8YUY5eH2BrJ/p5wxb/6JYajL2UcXRs1WlxEsxEyIhDi4o32cQVlDZY9263wbtrgDvY+Uw8JHf3pEUbzMDuKlE9nzaNR/3Yc/z8qO/U4Cb4sgstzXSAxxB4xKZNvzu+RUqItRU3YLcZD/ytUkP6hfe/hjcHI9lW4zEG7w222WNHkV63dDpz5jv82a0GH2bQlbmUAEDGuushxpAahjKZL56hVVmaJaZtdn5tbwnZ4Uwstd2Zfy0vjXIeyeYdKmXptR0EIqqJ1Ek2efvVyheHeLosd0tm++xmv+5CovJE2WMeCwUCjroWVtOK1/b52sMNqmY4vA0GD/o2Xo11mHa+dmTL6eNk8lQdyNBALAj6oMAR7OyvTtvrNiobkekNvl3fhqc+c4ns86hkl02ObbhL+IkXeHjV23ZnnQufKhP5gCSqh1cpUjlVWjmcLvkVVGRMqo90y+94ydciG6/uTIx96/KEoS8/2ik7yRN+F5INFCq5OSz+bxguzmhxBe91XzjZW5L
+ ewEJn39y
+ eDlZjYbk3I6FonVxaVp5pMIMzqUma9tAU3YtpBq8Td/B1yMyoNdFamjWbdlnTZ0McKhjOcDgilB9UXUh3HOI36YakfFHNYj8ZtLUluSPvIF4LsTa+z3QvQs27dfpeAxVWNuSt1NyyBB1g0kpDrGpZJpzxwmt3hQYcLu8seanZU/zm46hnAQTwHJtRdCSl8cXcHAd7ZKLuZWp/iVXagsCASsewFu2FK/V5YifqxvnHig8XmblZGEhm/TgG0/OZml3Th/TPwzWFJZ4tFV52JW+R9pzYz4ksDADkUz00Pt+u8aEYP+Yh7IGW/GmbSFEv3yA29+i6MiK2radJUHU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,38 +100,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Oct 2026 20:12:42 -0700 Borislav Petkov <bp@alien8.de> wrote:
-
-> > If that sounds sane then testing 55780d8a1dcc on that 6.18.x kernel
-> > would be useful.
+On Thu, Oct 15, 2026 at 08:32:21PM -0700, Kanchana P. Sridhar wrote:
+>
+> If you are Ok with all this, we will need Herbert's Ok for this change
+> in patch 3:
 > 
-> Hmm, dunno if that LLM sent you into the weeds. Because I ain't no virt guy
-> but if vmcb01 and vmcb02 and "L2" in that commit message refer to nested virt,
-> I don't think any of those crash dumps do nested virtualization.
+> diff --git a/crypto/acompress.c b/crypto/acompress.c
+> index 192ea996e779..db8e4c82b900 100644
+> --- a/crypto/acompress.c
+> +++ b/crypto/acompress.c
+> @@ -293,8 +293,12 @@ int crypto_acomp_compress(struct acomp_req *req)
+>                 return -EAGAIN;
+> 
+>         if (likely(req->unit_size && acomp_request_issg(req))) {
+> -               if (!crypto_acomp_req_seg(tfm))
+> -                       return acomp_do_req_chain(req, true);
+> +               if (likely(!crypto_acomp_req_seg(tfm))) {
+> +                       int err = tfm->compress(req);
+> +
+> +                       req->dst->length = unlikely(err) ? err : req->dlen;
+> +                       return err;
+> +               }
 
-LLM said "oops, my bad".  Then
+What if you put this short-circuit into acomp_do_req_chain instead,
+does it still give you the same performance boost?
 
-
-The corruption patterns strongly resemble AMD VMCB state, particularly
-FS/GS segment data appearing at the expected VMCB offsets in unrelated
-host memory.  This suggests that a VMSAVE operation may have written to
-an incorrect physical address.  Ordinary KVM performs VMLOAD/VMSAVE
-without nested virtualization, so Boris's objection doesn't eliminate
-this possibility.  However, the relevant assembly is essentially
-unchanged between 6.18.55 and 7.3-rc6, and I haven't identified a newer
-commit that convincingly explains why the corruption apparently stopped
-reproducing.  The earlier candidate 55780d8a1dcc remains poorly
-motivated without evidence of nested virtualization.
-
-Two investigations look worthwhile.  First, test 6.18.55 with both the
-KVM TLB-flush fix (26505e1b5b54) and tlbi=ipi; the existing results
-don't conclusively establish whether that combination was tested. 
-Second, examine the vmcore to determine whether the corrupted host
-pages contain complete FS/GS state matching a legitimate VMCB, rather
-than merely a few matching values.  If they do, inspect the VMCB's
-VMLOAD/VMSAVE interception and virtualization-enable bits.  That could
-establish whether a hardware VMSAVE was allowed to write to an
-unintended physical page.  The successful 7.3-rc6/rc7 testing is
-encouraging, but it doesn't yet prove that all the reported corruption
-symptoms share one cause or have been fixed.
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
