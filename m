@@ -4,150 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13E36CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 00:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32EABCC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 00:15:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5BCC6B0095; Thu, 15 Oct 2026 20:14:55 -0400 (EDT)
+	id CF5FC6B0096; Thu, 15 Oct 2026 20:15:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E5B36B0096; Thu, 15 Oct 2026 20:14:55 -0400 (EDT)
+	id CA6876B0098; Thu, 15 Oct 2026 20:15:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 887016B0098; Thu, 15 Oct 2026 20:14:55 -0400 (EDT)
+	id BBCBF6B0099; Thu, 15 Oct 2026 20:15:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 566686B0095
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:14:55 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0E19C022B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:14:53 +0000 (UTC)
-X-FDA: 85326568866.28.7D56126
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D13DC14000C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:14:51 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=ivrWLP1+;
-	spf=pass (imf09.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.175 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D9796B0096
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:15:35 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12487160284
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:15:35 +0000 (UTC)
+X-FDA: 85326570630.25.C0069C9
+Received: from mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 926E5A0004
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:15:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kHwhn3TT;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792109691;
+	s=arc-20220608; t=1792109733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V2saNd2pf5xXpmgizEGMG+P83blHZRupazL/vtIJhv4=;
-	b=pmg6pzRddn0WwEWyvkuBvQwB+cfTHKbOYs6sQBkMfy59C6SSwDkJVNIxZFOEXeM5SaL4cI
-	CtNlKJm2EXMLihlMmN8EjjIEM45REXO0Z//LY1PXglhIrD2DlYxzt9Z7a7XGniJPJecqVB
-	6lpAPIm6KDi4qA+nEfEdy74+hALEvIc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792109691;
-	b=bk9J7I9e6aF+i8TpboNAeGSk4YIbwN/BePgEIyLcz+hLm8C+SdZXcROWEqTIYSbj+jDU+s
-	JFoyRlSuXRcufpXlWX+Y51XtsXXgcJR+Hsj/9YaE/wWGygcQxYyth4EWAdlyud0FjGzWC9
-	YjnzTASKE16EdxzNz7yhAtUPqy3WwGY=
+	bh=Wd1Wxj5QPAszadD/w66JNWguamzlLyv1NQgm/n3YS0w=;
+	b=XUz+0BPcKxSHFTP9/qFqApl0qhBf1jyE8p9i2Ibo6Mc1bO5Wlix7+EUFppnY0DUOWfZ8ki
+	HUaCOR+dPbUHrZKABdiu/i91LJ5KyW6Nb7rG77mdmcV9LtD+5PJr+m1HlZ8ftZhrs5rxUp
+	iQx6PeWKcIJDFWoKCmqU2u02u5f1ya0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=ivrWLP1+;
-	spf=pass (imf09.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.175 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-535d60d850cso5463551cf.0
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 17:14:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792109691; x=1792714491; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=V2saNd2pf5xXpmgizEGMG+P83blHZRupazL/vtIJhv4=;
-        b=ivrWLP1+CK8rFALiKepNg8WV2PKeU+Rj0QT+3qAdPNaRPv+b5l9Wgh6i0WzkHM35ZQ
-         b0ZgzfU4flfxVKYlxPhH/yLEc+eExEg7vFoxu5mE84yNngviSmq/+lt6SMtOr2Pi8rz9
-         fXrDhX3OdyrcG4svgHd8EKBtkqMj5Vd3dr4vlPGxd6o+ZHiU8DE+iPW0Ia777Qok5+IQ
-         5ksB1x2IntrPvNHdnMsUptIgTIER/CIWsfa6hnZA/yZAUDNNK9e0W+dm9FkSh0ABtK7o
-         vu8hxaV1NMRfkQ7ADe4WfE6H45XoNsK9/gkLbN+oA4BU8Rr8aPzmgMlqRJoBCAlwPXN6
-         K3mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792109691; x=1792714491;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=V2saNd2pf5xXpmgizEGMG+P83blHZRupazL/vtIJhv4=;
-        b=y1JH4sS9xn+vy7mR7vKT31Oi/sEtVmwCnJYpdLELSMB9r4TopVK92CMwHkr79s0Jee
-         aNxfHpLtboISDfbryXF4qVfBeqk3iiGrEXTU2fWp0BUlklt/Zwk72aPh2kV4z/BvTlEC
-         ilj64tW+CIentG/kdWwBpRoFl0/LDRNr5Avu4Mry2U5KtbeyeWd+veYnpFTCfKofLFE7
-         FXsxvrr5rgmazefR4jiojlOAAM647bBXyFg2LQiVKyaT9eFosnSaPxKoUQBjB63xFbiJ
-         sx9dhKNAx0cjcXz/K0d3JhQwZmr4sTC4JkyfY0WhxF4CwYn/ZkO8G6zghjOe87h+T+y7
-         gtRA==
-X-Forwarded-Encrypted: i=1; AKwUvByadzynmaoaCtLLWetItY7UGMdsVC0lBzMmuAOV56bWnSq9v5ISAm+PNlBxvqZtlHiq9pygImZjhA==@kvack.org
-X-Gm-Message-State: AFq9FYIGt0yOQFqFmrYsDOTzD4iRep/OBBxu6MJ9OpdQl/uGCl1Y14af
-	UjPGxY0C+4fEegdH/6L5s8cktW4pOD5BbLtYh6SA8fnXfU352IxH/cj5PhblmINU+k8=
-X-Gm-Gg: AYBFou1ZQbBkXQsU9gEQDzpkCM2lbz4Df2c1t2W7YUgs9h3Js+fA6KPh8lei+CJ5vPz
-	eI+XIEca9GmfCi0kAC3w3tHTYBfl+chX5u8tPy6AKtKR1/UtqUmXhsgnA56FE6EqQd3Yh5iUaMA
-	z3OSOYInN4TRbMAWE8yH1bxJW/+arNVPL3ED0QIkcPgRwCxXccGrISi3ZwcTscsZTdusi7lXgsL
-	lZvPRiX2zGLn2tZ9AWzbYcd68+hgKwh5eZKcsf1UbBuOPR/b5WSw4c+jVNYzvbDkJ/7wb1AOkRM
-	t+2d7xtTsGxrnKAGX7aCPBm2xKzzwos8TjktnZaUc+2Ing1whb8jpjLVd4D3GUop8n2ERX0EfYF
-	GrCjUeX7gPdgWJkRoAp6etVWiTbX/6gNmW+JVQr1Q3K9CMZkP4IItcyQbsqq0oG5V860t7Og5lR
-	XWeZ9l26idyNfNpZGSc3qwpcVFa5cGCOOraSBIbFQ9oWgLSYjZYebCtyS6BGA6UzQh/1VtuoKA6
-	5H79w7L+/6jX1pA4KNdt18Ih/H5REI4A39f/bpbICfOLuYNfCG2r9id
-X-Received: by 2002:a05:622a:990:b0:535:ba01:d95 with SMTP id d75a77b69052e-536272c2d55mr30900421cf.19.1792109690637;
-        Thu, 15 Oct 2026 17:14:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362aa57106sm7257071cf.28.2026.10.15.17.14.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 17:14:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xHVay-00000000IxD-2c33;
-	Thu, 15 Oct 2026 21:14:48 -0300
-Date: Thu, 15 Oct 2026 21:14:48 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Fred Griffoul <griffoul@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH v2 07/11] iommufd: Use large IOMMU pages for provider
- mappings
-Message-ID: <20261016001448.GC14213@ziepe.ca>
-References: <20261014093733.90312-1-griffoul@gmail.com>
- <20261014093733.90312-8-griffoul@gmail.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kHwhn3TT;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792109733;
+	b=NrlW9QMlYbQPlNyjvLzyX5YuewseuzQLckJqO9YMlfL+svWy6L6SjNceU0dLwCI1Xa/0Y1
+	oumK068H7ft+FpnzTjrwC3KTPzsG1IXDzwoI+99Zps9KV/MgBvUv/suGFQaGSDJiKSzrs1
+	qlQp5aKePMaIiYVtyWHIKez4uMtjzdk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=fRHNta5IWp2UqpYEmjHZX4ckr3pgslqTuleelR2tINY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792109730; v=1; x=1792714530;
+ b=kHwhn3TTRDrw8hijKmGdfPWF3KhtAP+PxC6H7P6jjvvQpMqk9QJhblmeBaiE3T2jlzh2i7iN
+ psWGAw3gKVKrikamzn3xWxj6N3eRHyR5J98myY2Q9EULsWFPXlBMYPcLZuK4qt7HgR1pruYm3ex
+ IJn2LaWAc+Tk7VXNmkVrVorI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 04647efe529ff507;
+	Fri, 16 Oct 2026 00:15:17 +0000
+X-Mizu-Trace-ID: 04647efe529ff507
+X-Migadu-Flow: FLOW_OUT
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,  "linux-mm@kvack.org"
+ <linux-mm@kvack.org>,  ackerleytng@google.com,  akpm@linux-foundation.org,
+  chriscli@google.com,  hannes@cmpxchg.org,  harry@kernel.org,
+  jack@suse.cz,  liam@infradead.org,  muchun.song@linux.dev,
+  shakeelb@meta.com,  ziy@nvidia.com,  "Lorenzo Stoakes (Arm)"
+ <ljs@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Vlastimil Babka
+ <vbabka@kernel.org>,  Matthew Wilcox <willy@infradead.org>,  SeongJae Park
+ <sj@kernel.org>
+Subject: Re: Sashiko change proposal
+In-Reply-To: <CAO9r8zM_TfD82vZ23zwsd_pPLMpe11_XQhPEp5NDyhoPKDizag@mail.gmail.com>
+	(Yosry Ahmed's message of "Thu, 15 Oct 2026 15:38:34 -0700")
+References: <5eae44a6-06c3-445c-9508-58b372c01b2c@kernel.org>
+	<CAO9r8zM_TfD82vZ23zwsd_pPLMpe11_XQhPEp5NDyhoPKDizag@mail.gmail.com>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Fri, 16 Oct 2026 00:15:07 +0000
+Message-ID: <7ia4bj8ufqlw.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014093733.90312-8-griffoul@gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D13DC14000C
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: un6z1h48d6p5reg8z7ntcj5fgfes89tn
-X-HE-Tag: 1792109691-682495
-X-HE-Meta: U2FsdGVkX18esrS6GEAFv0VLM+T4g1B2UqWwKXYynlB0GTVJ1ij7EjYcI5nplxduct9K/7q76vCgg3GPRpN9HPTJlE4jHLraUiM6gFkTAxbBQeiTeaYg181hSMiFtoL9eQnjZXG1B8IgNafoun29rOQC/xo2QDrFrYpdsMREb4Pl3Bi4uyz/4UnmVmHehVieqcyUpxXqUDE3YKgsagewz28F5bbosSm5pZQfBrmE3hHfK/144TR5mvSJGzkIuCSykiK+SSd8+m2DvO8vH8xLLMHCSDOrkwg84vOeYuTfoUqgm5UdEt5+HFwyXrpffea/W3wKkuQltSc4TbUE2A+SKLJ15PyjNTq0HrPs6OtqlAvp75FPjSg9IOppAYvppZjG1vz99BorKfXFGU9YE2BY+5vpSDmatiG8iMJDbhPmeBshnp5aLMIOsOUIxlZuNUnHDq+QyH1mnFW9bV0ObY8MwU9RnklPGN2OusjM1b+NpY6dPOSBWJPCY3MmBDJl7o7hL3nEGqeO1hvuU+iisNkM0SHBeljysH4bol5ERErTIvTas1S9LPA9My4RlNkA9N4N8GPO8CnPN652sHRh+Xa6meqyVympfOiQyd0sBW8+SK7OrFqBxHsW7Hx9RM4gIojzJjJOcNBAzOgyznTsvUtbv/XSaQZPr1oFXWS/8ted3IXt/CPIL6u6AVbwGknamwZdTYELPVVZwLuNyUBhvb56BAF8KWQdppHbPr5AoYj/IcqdVpMYbuZlfSxii1ziD6myKSxne5uixtxMkVZJOewyXT+Ity4FNC90Tieag4v+A7csygzjLME/O6j52vKi5+LbgrTttw7guN/6xIbdeRVmiKKJe7MNK6MarHcEt/A5BCdQ4WxVLR2PsDYs4IRJFNYkA5mwcevvNvvi7/O7GyzbxfvIxZb6xBcFvfjeFXQnquURgrMtlr2jaJbOd7uSNdZEanrrdrpDzeQjyvEZ9Zz
- FF3qwkz7
- 6Lwo0qP6PEOonbjIx314O4OUQTq1gSbZUxVqHKspVB4pgwn/WOgQULG3bPe9iXP1Jvemq1o3e/H6yxNHJLjITxX2/Bg5hwisPl1Z8X08wtrMPh1oiiXfMz/suH5SfHQhFzpERYP8RpCp9EhOu4g3WgCtz8Wuo7ga58RPQAZdHJAR1sTyWG7NBDxlUmMZb8ht/ClzOZL4RyhlEQDmlW94EAHp78B0E38Ct2p2G5YD/i70oAjAisGg68YGteQS39/X0Ut7/nRHVyqRNM/JtSyzHzR3e9/9iGdxUxcWvQGFq79q57t008hdujRAZPA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 926E5A0004
+X-Stat-Signature: ixhz98nptqjm8cj7jt1resyk6ywxqb1w
+X-HE-Tag: 1792109732-17111
+X-HE-Meta: U2FsdGVkX18HhqUebeOhX0OBf7XSGGN5l54q7cStCR0Up04CFeIHa+cwx0FNNTd8BKipSncjlxIn37IsV4DMCZU/tKIEC2DQmUC+bm7fme+P+HgcLeJ8usuz6r3i8Qo49GIYE/9x0BAmCrB0GUVZstU30IXxFSO2vBvtJYFJhYV9uVob3HhPXqBuuJpyFrb6hRcNd7i155Qpp25c/7zK81tYNbi5crqGOMAdUFYb4L7//9wgrtWX7SmRylP/ZnEaZdb2PRLod3e6lTOrowBHKfHvxtZt69X5XUZ/aI+mN6nQ88vIzMhjNzYWi+EtiuS00q7wiDQl9I6zWK8dZQvd0sRYr5VRSbfJ6/t0g2APF5Y8J/v37OC5Ebm1s/aQ86vJrYfp6oF8PLGkJusFXhUGyhghpQPHoJilCR4BwtMQJw3d/TtUsWVrwJgzBO50Ygnxadldl80Arse5OAUubVOpAG/X+XXFycLdCOjiYhbuUce6FSqEmN+VTMBkyFs8KiDZaFI0pBlONcPKAMcEz7v0N4IKiN1js7I12KvB5TbuEJUsNv9BgZerNSWXXW7C9saICmoZr2J16KprJ4xJ9AYaSDEYk/mnnknV8l1OuSLuZQ5fDsquyWDr5Y4wzAYaLKQDcMc0DFfS4VKhYKZzbuA8Qn3G+mA80Q6P2XqwhTmoJlYQftNqsMbpNK6qmv9mkeJgtqfpkL/3lAcX11vBSKHJt8VbBsgZS8b89yYlwS14owWKJEOTnAvMpdalEKxhZULEKeEt8IZpTxSHCUCqvpf4jfV5yLFtcr4PPaL+TnR3lXH5ZVopakhiuskLfM1SsP4ic0YnWaUQhsdLNO2dGu0RgMcBrlluBL9WoyLukl9D3VuI5bsee6RBTmIVDSt0B9Cyk0vpwUBNXAu2XkvSH/7ibeIj50ri2HoUeZu8gKsDB3XI6JIBLgdj5oL6iQE1XLBSf04Qr7lEyufnG2VrcY+
+ tB/ufw7X
+ kdYbmG7fUYUe/luoRmwvoV+m6pd9FPbwCSWoFJcllLzX3Gg0ggFlQ8RclGV15IVx1CMBVE15RrtJ3JO1/EEUw8E9yJh/21thdcfJyp/+hAFG43G/XOZVAGbX0Mll8OqhmVgm3D8dGssXMo01cAWKJ9hd+t7KBr51zZtWT8Ty2lz+4g4/f71lwJaDQknuiLRziDB644rXRAgcY0NdeuFlAlDajaiMvyxTZyqYUYKOyrTvvDtyv1XzIIch7xQjC9UVh2yp1TFufj6bBVNI7C1l42uE0zt2N/geZuIILqsyFs3jAyjxQ7ImNe3+B7GbMTc3iwlTA+/jakJ09V3QWdHVq1EtQ9mmB86ghr9Kd6IxPpT2YunhTPUZQWux7wBRT1kGMjVttBMlyLbJdUAwYV2GQ7+zKf3dYux8P8KwpgXlU2jimKFT3WYmO6lMp1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,37 +98,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 09:37:29AM +0000, Fred Griffoul wrote:
-> From: Fred Griffoul <fgriffo@amazon.co.uk>
-> 
-> Provider pages are mapped with one PAGE_SIZE entry each. A device that
-> uses a large provider block then misses in the IOTLB on every page, and
-> the IOMMU needs more page table memory than the block requires. A
-> revoke also flushes the IOTLB once per run of pages it unmaps.
-> 
-> Map each block that the provider reports with large IOMMU pages where
-> the IOVA and the frames are aligned alike, and with smaller ones where
-> they are not. Only the pages of the block are mapped, as before.
-> 
-> A large IOMMU page can only be unmapped whole, so a revoke that cuts
-> one widens its range to the whole page. It maps back what the provider
-> backs now, and a device may also fault on the rest of that page while
-> it is remapped. The widening finds the page with iova_to_phys():
-> pages that only look like one large page make the revoke remap more
-> than it must, which is harmless.
+Yosry Ahmed <yosry@kernel.org> writes:
 
-You are going to need to go into generic_pt and implement cut and a
-more suitable unmap to make this stuff work properly. We can't over
-unmap on conversions.
+> On Thu, Oct 15, 2026 at 1:38=E2=80=AFAM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> (CCing all people attending the mm-next call)
+>>
+>> Hi,
+>>
+>> After talking to Roman at MS, he just informed me that sashiko now has a=
+ new
+>> feature combination:
+>> - "embargo_hours": hours before review is public + emails sent
+>> - Mechanism for signed-in maintainers to lift embargo immediately
+>>
+>> That solves the key issue I had with sashiko: people/agents re-spinning =
+stuff
+>> too fast before a human at least had the chance to jump in first.
+>>
+>> I suggest the following sashiko change for linux-mm:
+>>
+>> diff --git a/projects/linux/mailing_lists.toml b/projects/linux/mailing_=
+lists.toml
+>> index a9198de..ba123da 100644
+>> --- a/projects/linux/mailing_lists.toml
+>> +++ b/projects/linux/mailing_lists.toml
+>> @@ -46,7 +46,6 @@ ignored_emails =3D ["patchwork@emeril.freedesktop.org"]
+>>  ["linux-integrity@vger.kernel.org"]
+>>  ["linux-kernel@vger.kernel.org"]
+>>  ["linux-kselftest@vger.kernel.org"]
+>> -["linux-mm@kvack.org"]
+>>  ["linux-nvme@lists.infradead.org"]
+>>  ["linux-omap@vger.kernel.org"]
+>>  ["linux-pm@vger.kernel.org"]
+>> @@ -315,3 +314,7 @@ reply_to =3D ["author", "list", "recipients"]
+>>
+>>  ["fsverity@lists.linux.dev"]
+>>  reply_to =3D ["author", "list", "recipients"]
+>> +
+>> +["linux-mm@kvack.org"]
+>> +reply_to =3D ["author", "list", "recipients"]
+>> +embargo_hours =3D 24
+>>
+>>
+>> Which means:
+>> - Embargo 24h
+>> - Mails sent to everybody (author, list, CC list)
+>> - No positive-review ("looks great") mails (default)
+>> - No other static email addresses that receive a copy (default)
+>> - No additional ignored author email addresses (default)
+>>
+>> I'd say we start with 24h and see how it goes.
+>>
+>> Thoughts?
+>
+> Thanks for doing this, it's much more convenient to notice and respond
+> to the review when Sashiko replies to the patches.
+>
+> FWIW, I prefer no 24hr embargo, seems to work well on the KVM side --
+> but I will take what I can get :P
+>
+> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
 
-> iommu_unmap() may not split the range of one map call either, and
-> virtio-iommu refuses to. Map each IOMMU page with its own call: the
-> widened range ends on IOMMU page boundaries, so it also ends on map
-> call boundaries.
+Is it time for me to pick up the change? David, I'll let you decide when
+the discussion is done or just send me a PR, up to you.
 
-Also please don't write commit messages with AI. WTF is this even
-trying to say? The subject is "use large pages" and this text says
-"map each page with its own call"
+Btw I hope to deploy the new Gemini 4 Argon model really soon and I
+expect better review quality. Also a big prompts rework is in the
+process with a simpler way to put in subjective things. It will be
+called maintainers notes. For stuff like "don't send me typo fixes
+patches" or "don't use struct page outside of X".
 
-Jason
+Thanks
 
