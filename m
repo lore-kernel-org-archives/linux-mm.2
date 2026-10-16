@@ -4,81 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB45ECCF2C4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 21:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B039ACCF2C4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 21:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 798CF6B0088; Fri, 16 Oct 2026 17:28:28 -0400 (EDT)
+	id 57B726B0092; Fri, 16 Oct 2026 17:31:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 749F86B008A; Fri, 16 Oct 2026 17:28:28 -0400 (EDT)
+	id 552956B0095; Fri, 16 Oct 2026 17:31:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 667026B008C; Fri, 16 Oct 2026 17:28:28 -0400 (EDT)
+	id 48F2B6B0096; Fri, 16 Oct 2026 17:31:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 437B86B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:28:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD0D61C1115
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:28:27 +0000 (UTC)
-X-FDA: 85329778254.20.52629EC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3CD1FC0003
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:28:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bhK5CACk;
-	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FCDD6B0092
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:31:26 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFB1B40138
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:31:25 +0000 (UTC)
+X-FDA: 85329785730.09.C0FC745
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3BF99A000C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:31:24 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELUOrHbZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792186106;
-	b=rGy4ZaUSWu9CBcIOOthMOoEWoDQzJPpRis0XoU5403gBt58zgOxgc0Q6JZGSgB4zdkd/dT
-	Z0r08uz8w4N7HbNOXE3swPuYcMku1tkEY0EPtMgj6r3YFk5fnhs6iWuTKMBNxo6IQgPH3U
-	owJoy//NNoihHayJIPFErTJeV3LNDeQ=
+	t=1792186284;
+	b=DURJTERzsJtTizf5YhSkk9z5RJU+imV6nTGqJkKUNlL3PLZ3jsMaDcK8k02k4KgMrmBxoj
+	VP+IiwGNTLOZ65asjIZvGe59G4Abkc1x4qYFddtBGYbHkAqyteocSYcUdx66BfdeHeON61
+	I6YquwVp3LM7HrGWm9lZBF2XpM3daLY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bhK5CACk;
-	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELUOrHbZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792186106;
+	s=arc-20220608; t=1792186284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=YL8v3ikz/W8u+Qt9X03/iAXSAmcRvygnsgXdC5kGQwQ=;
-	b=AQfzAlw+e+A57wDxnF9SHu45Oy00Fc+9ASVoEGwAIKT3CYIZ2A/ZJ93OWfbJb1hnAeP1xf
-	xEuc2E5lQSF4sWlae5ekkQmYEsXCKdEPgZVLXLcMzxQMxops8MZJo42BrBqHHfrzZPDz+o
-	THn5qWRgi2FCLgwO2gFEn9Q8j1cWI0I=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6xXCI1y+KIL4EzZd1UBU0Rx2a4JShmZFF+y9QS0NW0s=;
+	b=cDBZjn8OdpnVMj4mhIhfHUSv7+bCsZHsIlI/VpTksc+3nC3xFO7V7T6OT3wXvDjyYfdEYZ
+	iN0CMX3gfcRMZl+XRVCPAOn50dil7F0dfRrBmK6j1s3BgYLq5efoQbE3XnQk31wMcJ2NNI
+	g3Dd7r0/Pt4NPa9+mYXU8T3VU6jRNm0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B6C2418A7;
-	Fri, 16 Oct 2026 21:28:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F8E1F000C4;
-	Fri, 16 Oct 2026 21:28:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AED8560230;
+	Fri, 16 Oct 2026 21:31:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB52D1F000C4;
+	Fri, 16 Oct 2026 21:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792186105;
-	bh=YL8v3ikz/W8u+Qt9X03/iAXSAmcRvygnsgXdC5kGQwQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bhK5CACkCHQDF66EDC8C2pABK4CFbYwJawdxJRRT3/v6QK1aLVKO+9lIN7vy4Z2pA
-	 PQpGUx1JRAQOh4Sk1x98fZuPu7U3alrLDAMglVo077+b7R3JWIHvvtrnagJXXVSDgP
-	 zNmSiXjqu4MWnj+UDkMBE/ZNGCY974pVR9pOccNupA4QGF8KKo3F777YSClX1cNHF6
-	 ekKkbFdHbFpcZWn4mzly4QAn52eanzAZ+cu7su5MG3XFiK37Wg+SgjX9lHsez7fqO/
-	 K87QMoeOKB4hqBGKX16vjjWoLNfRoR63BJAf7rG3xAQxjOAZepRXSWVTIlho1A2+lt
-	 OIa1G1c5NFUIg==
-Date: Fri, 16 Oct 2026 11:28:24 -1000
-Message-ID: <29b280c82730b879e5f3ccdb35639ead@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Liz Fong-Jones <lizf@honeycomb.io>
-Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, "Patrick Lu (Anthropic)" <perf.patrick.lu@gmail.com>, Roman Gushchin <roman.gushchin@linux.dev>, Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, ian@honeycomb.io
-Subject: Re: [PATCH] writeback: keep cleanup_offline_cgwb()'s scan out of syncs
-In-Reply-To: <20261015114307.1041273-1-lizf@honeycomb.io>
-References: <20261015114307.1041273-1-lizf@honeycomb.io>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3CD1FC0003
+	s=k20260515; t=1792186283;
+	bh=6xXCI1y+KIL4EzZd1UBU0Rx2a4JShmZFF+y9QS0NW0s=;
+	h=From:To:Cc:Subject:Date;
+	b=ELUOrHbZ/x6S19d8SFb6r93LmJRMj8w8VM7M0XrgbI5tqbBF8NAzMi7O6GsYQENqb
+	 vOxC/Ra8idG//RrWiFTSy3mTZosZ9ME6EwO7kRhKJi+pgN1P/e3G2WZ1EI7csRy6U2
+	 Ii/2uLoE4qTdNk4t16BUBvRXr0i3Fz8DZT/vIR0e6wYnToK51qtCAAcovCPhHjqMeU
+	 qRglTLYlT9UJ4yhJLXJ1yTtMsre4IAeUKLlIFR+su9q+TSg3NoJ9nBdT9jwfBjG5GT
+	 YeFA5WXgKj16/BhQ26sF+HC/a6XNFNWQe7jCCh4Nns/Y42zQXWsixmNVKj36zUK/qD
+	 VvXefLWmItnew==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: ehab.ababneh@intel.com,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	kasong@tencent.com,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	weixugc@google.com,
+	yuanchu@google.com,
+	yuzhao@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/mglru: fix using folio_mark_accessed to replace folio_set_active
+Date: Sat, 17 Oct 2026 05:31:15 +0800
+Message-Id: <20261016213115.70515-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3BF99A000C
+X-Stat-Signature: rnoaqp3fc37th5nzksjkweiyy6jrp3h1
 X-Rspam-User: 
-X-Stat-Signature: 17b4ji6j1iw8tz1tbg5ez37admiemap4
-X-HE-Tag: 1792186106-360971
-X-HE-Meta: U2FsdGVkX1+WDn1vLSY3Jcnh3hXJ1hNrEXCDAZXv10LylX7NF92I97D3p8aRtfEhbgU7g6avzrjaO9BwB1Fqiw7Cpjeugz0I+b1kta8jyS8ufSrdV5eSkMFE7lxte827NwA1yaLD/WiV771UAUajMsay4p0c3tgXDbNCqe2aw1YxKG9yK/9uk2T6vM2vHHAW2JR1xCR6vsQGrfaV+pmSYJEaIKwsU5vXG+YGo4G6qTjZRAcJexBALgHyEbipR4FGwzGhzJEWCrN80ffMnPrBsvUJaUgoL7H9ODgjuvgH08b1lL14qc8nJc7HHmtLkSGPC46VEKUKzUOwGmA6z1uxrAPi3j44JPYZSKoHOfhFOiBGmROy5jSshm3gDWeKdWB8KYN86wAJc6zK8vJcOPty0UDDKo6cEvsSVP2Hd5voWCcRiTpRY1rhVjx6p/ZWU2Xy4mUwF5oH10gAzjRnyOzdBheA/iTA9/Lf6MOZC8+eyIA8PXQEGQv5ochkvRCTx5HNA/Y4emfVuil8A7R7M+n1oDrPr0mBRlR00y+wxl/9qWoyGVtER5u1EQZwAfbAVTvKBvquQFQTAA78Z+ldEGNKkn0VPstjGJmmZ76Rezd70trZnsSRM9TnBmVWTpfsxEIDH8DSGRV3RZC4eN1KiaWffV74j0Sh969CT/SFZH6cjWBYl3w97glGiWk+EvhUUR1dofr/lBk0GM1jrZBRphsiU+h3bDsYxcvRvnSiOEOHg8Mly44srZBWMNRMawt9PcsCfDYndoSvQL31g/KubRwOJFkkSRf44NCwdYMJ8TUqpYgGuyQr41oEDZegTSrjbjrou37QmNPrSVPbRNd3v0obXjGsEj3usQOY0LT8FPIde8nNvFSpn0KjIBJhgNIyP/nhAqNNtEiSPPA2HBgCJuGQMzAkUgTsD+zpMqr/VyxWJprTBf14bY+xjayjZjy2p8KXLznkkiCxakf5Et16T1G
- bSXAKQ3a
- XV0fAvjXkWVXRHcia6DvK3lX4MliQBfxqgEi6kdAT4q+ocex5DxhQD+ZX01yLHs/Ra/8nvzx2TCgpAkHR9TaAJoTTQcJ3mbGvyvp3QGYv00W6xNYDDI2ULe8dcn+GXY0pnpnsJ9yw9/f2TbB36CLUUB9Tmc1ZVJcXGraTRCD8p9CDtrtk4IBAZl3aZ52M1oioAhIQYXXxH8s63QbT6IWPKSa7zsAX6olONunLv5rR1IS+doNTho1oqqK4WzIqEV5Tg58jQ95cTyHxENsudlHJweY8/L8TVY/zFzmwQ4ngxray3v0lhj1KwIpx+GvNQPS2Z/sRc9hL2/C2M6v8wBgkP+QPnSlQG2d96zntAggIOAmo498so6u6/ckg6FQT9sXRUh852MPvBVl3ELQ=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1792186284-774978
+X-HE-Meta: U2FsdGVkX1/FQNiSTNggxSvOwrWpU0z/9xAJcJBxN5pbBMiGjmPCidEp9l+u3cTrQ/5bSpJBvJW6yCJFNIokhYhqQZcN3Ethlk87/aRw4mW/uKN9gWHzQ3/T1N6HqzHCm0PR1JTHNJm7TFLCFZjlS6pzMFAWdV/kJAc5DJpqgYnKMddFhDoZQHCEfm1snTnIFf8zwQpe22b2CRCbsN2QC4erO11o2xBnbhDMOMaLK3vlOFUeRTd3fDcP9UhWFfVJ4RkTM3xhyW97maj7O0Dn82M1HZGX2r9lLzIiupe5X8EHBLUO5kRhye88kcwVYWl1h3t47aSea1riY1rLRVZCNeZcB+x78xJjyjz6QyevHVcpH9PEwfAEEES8K6v9T1UZgdbrSS+gKh5Q5eCZUKq4DOj0uZJOUXXIGRjT5mJ4HSiWjMXgP+NvvJVbGnYnwC4km5gnxPwyRfeUdefUYdlBt5GyhTKUqJSbszSV1Dp6+inlhJUUiW6wEIGmJZzOF3B/dxJFIeES68U7GGlK8vF4m9TXtwd74jm5VJnkb7gMJzjRSKxDBRQgnaCQrqqsi9lk0Bh99rZJg0xCmaFRk96LX+71ZDD1cjq1CO72Oy9WUrlYyb28LV8ckX5Cgm5L5MQ8zvIx0v93rx7Qge9J0kZ/CtAdn1HypQqMXzwxiSQehwAt32ez7DOKY7HiPXK8jAU0EsCmwL9UIeFSuKH5ZEjd/0JvaSB9M2440qRcE9SD0tUwbJ36St3DhpW8btUIR/Ku5BJ9aQLG48AMoDAqFfjfeWkh9VKngjCboAc0JB4axUI6xcnlf3FgcEYz8rjnFRHEM5jyl0YelIkbroXbTBMQGSG5ilkB7P8j5hD84d/WVJOpXPBYJw14tAbK9ssAbeqqeBh4aM3UMg00Jo9JOULNd1mO3Mthk/qAslLsxgAKW7TzacBThKePyrBnKS904gD9uiE/gP0ZJdJfGoLOjz9
+ Gbru6a4m
+ zsou+bowU/ZeAkwmpXxxzjA4uYlaw3VgqoD+01DEQCgJZWRSnXFJrqkOiXpB5ewzMNB0GVJM6Wp7uxBPDe3HshPHEH4w4XtFJpqH6JBm8EHeB+CHRjtT/1/+vH2ta++abQ2ePPai2+GVl/WqLkiCWF2HJMrtXYm4ubevUlaQ6v5hI1UeYMglvd78eE/Mm6BOgfvMtS2U3nRgqT/CUqLpoZ2+6VnhtdunhdoI2kiB87x0mDtSESSykHY9JUrYrlD2xT0eOadLAM+2It0TNiH4Lt64657Z5adgkpc/odqwWts2WXSRgqJeobpwS+8qNY8RTfR+2EKdUczcIADU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,61 +101,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Liz.
+Commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
+replace folio_set_active") attempted to avoid over-protecting
+in-fault read-ahead file folios by placing them in the
+second-oldest generation rather than the young generations.
 
-On Thu, Oct 15, 2026 at 11:43:09AM +0000, Liz Fong-Jones wrote:
-> Trigger: a wb has lazytime-dirty inodes on b_dirty_time when a sync
-> starts, an inode on it gets a timestamp update after the sync's cutoff,
-> and then its memcg (or, if the wb is already dying, any memcg) is
-> removed, which runs cleanup_offline_cgwb() on it before the sync work
-> queues inodes.
+However, it repurposes `PG_referenced` on in-fault read-ahead
+file folios for this purpose, potentially coupling their
+handling with that of regular file accesses through syscalls,
+which also use `PG_referenced`.
 
-The late inode has to be one without a pending lazytime update. One
-already on b_dirty_time keeps its position and dirtied_when.
+This could regress some workloads, as reported by Kairui Song[1]
+and Ehab Ababneh[2]. Many thanks to both for reporting these
+issues!
 
-cleanup_offline_cgwbs_workfn() skips wbs with anything on b_dirty, b_io
-or b_more_io. So the scan has to land between wb_writeback() fixing
-dirtied_before and taking list_lock for the first queue_io(), which is a
-few instructions. The exception is a multi-pass drain that started
-before the wb got dirty IO, as the loop doesn't recheck. Maybe say that
-the window is narrow so that stable can weigh it?
+The long-term fix is Kairui's MGLRU-FG, but in the meantime,
+we also need a quick fix that can be backported to stable.
 
-> Once an isw fills before the scan reaches a newer inode, or a later pass
-> walks past it, older inodes land in front of it on b_dirty_time.
+This patch reverts the original commit's abuse of `PG_referenced`
+while preserving its goal of avoiding over-protection of
+in-fault read-ahead file folios by adjusting only
+`lru_gen_folio_seq()`.
 
-A pass keeps the inodes it walks in order, so the only reordering is
-between the walked inodes and the ones a filled pass didn't reach. "or a
-later pass walks past it" doesn't seem to be a separate case.
+Specifically, in-fault read-ahead file folios with `PG_active`
+set but `PG_workingset` clear are placed in the second-oldest
+generation (the third-youngest generation). Activated file
+folios and refaulted workingset file folios remain in the
+youngest generations.
 
-> Tejun spotted this reordering racing with a sync on b_dirty in a patch
-> under review and suggested holding wb_switch_rwsem for read across that
-> scan [1]. cleanup_offline_cgwb()'s scan of b_dirty_time needs the same.
+Kernel build tests in a memcg show that this approach not only
+preserves the original patch's benefits but also further
+improves performance.
 
-The description is pretty long for a six-line fix. Maybe drop this
-paragraph, which Suggested-by and Link already cover, move the test
-details below ---, and tighten the rest?
+w/o fix:
 
-> +	/*
-> +	 * The scan reorders b_dirty_time.  Keep it out of a sync's way, which
-> +	 * could otherwise miss timestamps moved past its cutoff.
-> +	 */
+real    1m49.094s
+user    25m31.484s
+sys     3m40.959s
+pswpin: 662112
+pswpout: 2504415
+pgpgin: 4424336
+pgpgout: 10355273
+refault_file: 359626
+refault_anon: 670724
 
-The inodes' dirtied_when doesn't change. What moves is their list
-position. Maybe something like:
+w/ fix:
 
-	/*
-	 * The scan moves walked inodes to the newest end of b_dirty_time,
-	 * past ones it didn't reach. If one of those was dirtied after a
-	 * sync's cutoff, the sync's queue_io() stops there and misses the
-	 * moved ones. Exclude syncs as process_inode_switch_wbs() does.
-	 */
+real    1m48.913s
+user    25m31.639s
+sys     3m30.875s
+pswpin: 689815
+pswpout: 2689894
+pgpgin: 4422659
+pgpgout: 11043464
+refault_file: 326566
+refault_anon: 697138
 
-None of the above is blocking.
+Revert original patch:
 
-Acked-by: Tejun Heo <tj@kernel.org>
+real    1m50.044s
+user    25m37.137s
+sys     4m4.493s
+pswpin: 1349087
+pswpout: 4317933
+pgpgin: 7083597
+pgpgout: 17602735
+refault_file: 337676
+refault_anon: 1368542
 
-Thanks.
+[1] https://lore.kernel.org/linux-mm/20261003-mglru-fg-v3-0-cbd4546a5bd9@tencent.com/
+[2] https://lore.kernel.org/linux-mm/20260901180704.168106-1-ehab.ababneh@intel.com/
+Fixes: 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace folio_set_active")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+---
+ * An earlier discussion can be found here:
+ https://lore.kernel.org/linux-mm/20261016084256.12955-1-baohua@kernel.org/
+ Thanks for Kairui's comment on it.
 
+ include/linux/mm_inline.h |  5 +++--
+ mm/folio.c                | 16 +++-------------
+ mm/vmscan.c               |  9 ++-------
+ mm/workingset.c           | 10 ++++------
+ 4 files changed, 12 insertions(+), 28 deletions(-)
+
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index ab69b9930893..97f157aafd58 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -319,7 +319,8 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
+ 	 * |<---------------------------- MAX_NR_GENS ---------------------------->|
+ 	 */
+ 	if (folio_test_active(folio))
+-		gen = MIN_NR_GENS - folio_test_workingset(folio);
++		gen = MIN_NR_GENS - folio_test_workingset(folio) +
++		      (type ? !folio_test_workingset(folio) : 0);
+ 	else if (reclaiming)
+ 		gen = MAX_NR_GENS;
+ 	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
+@@ -327,7 +328,7 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
+ 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
+ 		gen = MIN_NR_GENS;
+ 	else
+-		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
++		gen = MAX_NR_GENS - folio_test_workingset(folio);
+ 
+ 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
+ }
+diff --git a/mm/folio.c b/mm/folio.c
+index 35e242b48870..2af724cecb31 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -474,20 +474,10 @@ void folio_add_lru(struct folio *folio)
+ 			folio_test_unevictable(folio), folio);
+ 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+ 
+-	/*
+-	 * For refaulted workingset folios, set PG_active so they
+-	 * can be added to active generations.
+-	 * For prefaulted file folios, folio_mark_accessed() sets
+-	 * PG_referenced so lru_gen_folio_seq() places them into
+-	 * the second oldest generation.
+-	 */
++	/* see the comment in lru_gen_folio_seq() */
+ 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+-	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
+-		if (folio_test_workingset(folio))
+-			folio_set_active(folio);
+-		else if (!folio_test_referenced(folio))
+-			folio_mark_accessed(folio);
+-	}
++	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
++		folio_set_active(folio);
+ 
+ 	folio_batch_add_and_move(folio, lru_add);
+ }
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index daa7e37c2236..e82ba737c028 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -952,13 +952,8 @@ static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
+ 		return false;
+ 	}
+ 
+-	/* Promote on second access */
+-	if (folio_lru_refs(folio) > 1) {
+-		folio_set_workingset(folio);
+-		folio_set_lru_refs(folio, 0);
+-	} else {
+-		folio_mark_accessed(folio);
+-	}
++	folio_set_workingset(folio);
++	folio_set_lru_refs(folio, 0);
+ 	return true;
+ }
+ #else
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 1504f91cdca5..10d4ce202cca 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -319,13 +319,11 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+ 
+ 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
+ 
++	/* see folio_add_lru() where folio_set_active() will be called */
++	if (lru_gen_in_fault())
++		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
++
+ 	if (workingset) {
+-		/*
+-		 * see folio_add_lru(), where folio_set_active() is
+-		 * called for workingset folios
+-		 */
+-		if (lru_gen_in_fault())
+-			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
+ 		folio_set_workingset(folio);
+ 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+ 	} else
 -- 
-tejun
+2.34.1
+
 
