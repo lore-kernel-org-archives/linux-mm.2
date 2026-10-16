@@ -4,121 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACB58CCA46C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:35:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E1D3CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:36:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C907B6B0099; Fri, 16 Oct 2026 10:35:26 -0400 (EDT)
+	id 937716B009D; Fri, 16 Oct 2026 10:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C67BF6B009B; Fri, 16 Oct 2026 10:35:26 -0400 (EDT)
+	id 8E7136B009E; Fri, 16 Oct 2026 10:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7D9A6B009D; Fri, 16 Oct 2026 10:35:26 -0400 (EDT)
+	id 7FD6E6B009F; Fri, 16 Oct 2026 10:36:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ECA66B0099
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:35:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F88E1A0480
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:35:24 +0000 (UTC)
-X-FDA: 85328737368.17.1279DCB
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B961840012
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:35:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HDNusMyX;
-	spf=pass (imf11.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792161322;
-	b=yjZbR7uHUbjSUJ74hlJhLRicBkaznPM9Xm7b9T9JTMkV7RKXsUvBuWQnbUz2Q5uMswtvWp
-	FyeOFuSrM3R8pY+vnlTNGvB4DM5TucxqGoDgWXmSLD/hqOF8H0R8HLwrvFuZEiil7ymlxm
-	Cqi+oKbUwjh8XgPK5z2GoaGH8S0aTHo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HDNusMyX;
-	spf=pass (imf11.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 57BDF6B009D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:36:06 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E99B2A0455
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:36:05 +0000 (UTC)
+X-FDA: 85328739090.11.8045960
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 31A021C0004
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:36:04 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NFBr7CAW;
+	spf=pass (imf18.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792161322;
+	s=arc-20220608; t=1792161364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G6Q8gG4c/qnKlMaH5pfvOOdUUEduyYXPZR3420tP37o=;
-	b=Vfr7w1JiaDtMFgQoZ0NHmptaTVIfahdtHZKeS+FdaNwHzM/gSO9NCGFDn6kYn5gCz22LOr
-	gnLgzPztbNpqrDXNFcaIc2twqWyrT2cB9RGab4yB3k+wGYv2vnkYkOnctUOT5C9qf75zXI
-	TWIWYt70cXYGQqiji8IHD67C6YVrpW8=
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-35c76e9614aso4997860eec.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:35:22 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IOU8844GqP3uZYexY7of/ok6QlMe41LHb7kZwENMy4Y=;
+	b=W/iUK/5e9O8ByTm9Cnk/BcyeuM56ChMhvAhFpabOlBEBL7z/4SjE4FaKxUby8TiHQVd6yD
+	6Hb4c7wQF51sIRNuMaaE0R3NibmIJg2UeXvbJC9Mfq5Bcx8+dz7plMPY7LHzYsTQIxWWnX
+	yKD/DmSeihyUUu8vlugwEdfZxluqnaQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792161364;
+	b=d70DUuTqdtI2y+NriXZs8vf11hIDLKZ0zMKJzKvw9hQfMp6mFTevh34YoS8pK8QkqT8+HI
+	bC1DUVW9lE2xj4VZ8RAJBtfRJfcEFz6C7mKsBhZ5kWcSaDhdolC8ePnwMEDGfZQyaQf8vy
+	yHAdSalGdoKjhlzO8A6DYtjQGH6ay1g=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NFBr7CAW;
+	spf=pass (imf18.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e87c66e556so5699825ad.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:36:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792161322; x=1792766122; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G6Q8gG4c/qnKlMaH5pfvOOdUUEduyYXPZR3420tP37o=;
-        b=HDNusMyX1HWhH5hmESx7EUWeff8IkbL1a4f7QvWIVJe4Cp1gbrv7PWnHyrf2X0Tqzv
-         0zBkDl3vdRi409KVDFLXRBzCMwsOdA3QvCjMWhrOWnJqoT3GCnygCfPPdCINu2R2MQG6
-         VeepXc7XmblpFDQMmPMlBB41OsXXosNHsOdZvrQeefTTBMHuv7gNug7tk91zKymZjKhI
-         Pyrk8NQex9k7GdNO8H/7uMqkj0NyzReBzoUQCxr6xKsNvVfZEAQ7KRQv8DNnqzBd/2dT
-         DVhZ64rB7xIyKgTNF5TuAmbBH2HQgA+OAxbnVQqvB+kFG1bMr6sVLxvlg5M7b7l/ZhKk
-         HfRw==
+        d=gmail.com; s=20251104; t=1792161363; x=1792766163; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IOU8844GqP3uZYexY7of/ok6QlMe41LHb7kZwENMy4Y=;
+        b=NFBr7CAWL/ce9O0X9wj0pZCDXT/xTXYNGolvt4gOKh0juMBX75ZpmOjtISJi3dyw+/
+         iJUub90l0Nc2JMZuZ2cuDC015lz02a4OJ3qAXGDDdmDSbWw9cT7SbBZkPqCObE0Zcu3w
+         +DAzwrdYXGo+sv9RsZQ4X/fMOw4IIg9AX83baol11zKAWSV0Kwel+dKqNoUX10Rv8LiW
+         LrHCHoBPrJwLMwYlVvZgR2+oiX84mSs342g5+t+El4rEhOXgVT6rdUjWKCKVrRpFwcW0
+         YS+F/QZqeqJTrxo8ctw6k9vKY3DeW8Y81g8FtGaGlJJI/wj1WW4i8ust4V2rwHclt20b
+         ZD+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792161322; x=1792766122;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G6Q8gG4c/qnKlMaH5pfvOOdUUEduyYXPZR3420tP37o=;
-        b=Zlw+ZTn7Ax5RhqO71ExVBQ/PuLQBG1o47+kpnAp7rTYYEJ+WUPAF6a6umO9BUs26xJ
-         23CoVEYoIjS64Y7zenrMFQPOQlUi2mxMQODtYHVHMn3jTEQRv0JxaMXErCa59GZm8kO0
-         I5w4NgiCMdkIre8GE+lf74wESV1qogbQ9HOKRSdvXN9mxQlWjfd6YgFEGhyps/kfWD0C
-         bEIRz9/sW5o6zjKfGRuGl0yW+PkZ3Q5AC5+P/+1qWtMk3RA+eXBFLVOwCAjs8GOeRay+
-         Oo0s2sQp4om+ebqtkpm/fv1Yu8LW7Dh5VJncgdNSkeZxYc5EGs1gS4965AbLeExzqeZe
-         dKKA==
-X-Gm-Message-State: AFq9FYKr9r8nwU3n+5fun8UB/zjcDCSx8D+qgGMGUfLuM/VNcfNT2xF7
-	Sivdq6L769xT5YdFUHSkITyz/4eYgHoypN5ZpB45nuq+kRjRYyDtM+c6
-X-Gm-Gg: AYBFou3kLyQ6FN/y9ddE7zG0gKXeoesViT5mjIIz4TV3Oid5romWVCzI7azshuZQdbU
-	rYSztI4L0oXgkPvwkpyDupc2+yeUWYtHCboLisU2HbVJ97RsUngX68lIC/cC9ewwdp7A4/tyJru
-	J7dCOM1NKFBOWCjt0HNj3nDhJn4eB6eKMT3GfO9rOVUuzPvz/LJ2qYG5LgHA/jcUN6YrIw37R9H
-	RUq1bmFtBb6WlY5k8z5nYSDpog8arYj+l8VbWii9Y4XFu9O8jEjUE4xjMF9yXBRWNNMfkFwoqvh
-	Bzp5FgQVS1nwWTfI1XsQ2Dt+a/2MPWxpzm2UdytSez3X+UKp6U6+ECwENcW7sUY0izH8SfbNoEO
-	wcBYbr/qL+NnMctvp7bLc5N+Y9MT7HNDuMzd4GwG1Wa5u2z8+KZ+cY2uhQdywO9fIbkFQ7hoDqW
-	enVvht4ARVBcQSTUOObMplyNt3LbVY6sx9xEZ9uQX5NjBXQbNBbYJ1Z7sYb82I3qn3Mw==
-X-Received: by 2002:a05:7301:da84:b0:35d:3370:d8e7 with SMTP id 5a478bee46e88-3619ed12158mr57587eec.2.1792161318630;
-        Fri, 16 Oct 2026 07:35:18 -0700 (PDT)
-Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3608297f4f7sm7611812eec.23.2026.10.16.07.35.13
+        d=1e100.net; s=20260707; t=1792161363; x=1792766163;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IOU8844GqP3uZYexY7of/ok6QlMe41LHb7kZwENMy4Y=;
+        b=gEm5NpolgFmXlFqGdHsbmSfeUb13n97aaOJ4ydyB5xtKTTPKrNVRKG342uFPxnVdk2
+         edKlbqmXFonIu7LMSJxySXAZsRhiDP/TzhGIttegz5uaDYxalqpwwtZ2euXaT0d0EFMc
+         UweFtO8m2S8HAW44lHig1tHribyh9eDzONrMaccsNnzImq7RhzM1OW497xgArbC3yu0L
+         bgma1NQZZQbKV3n8Akbqjdflv96XpMd23fwarlxu4Q9MDSXCdr3XK1SGlXWwTFXcUFLL
+         dATnsIvkIZyvKY5H99u84DTYriE9q/K2RiaW01rVLgeQVgT5Te9HomPezXf8h/P4iAxI
+         VOFg==
+X-Gm-Message-State: AFq9FYIllw5sTp8IVN0h2uEEth/3LfWizuym3YmQZO6lgcAoCSyC6Zvt
+	9gnHxnVYRvyvDgC4cepIdTc0yAmFwLC1u3WZ0g188/SqbTnlkQSGdVkI
+X-Gm-Gg: AYBFou394mkGhSCl4/hK9I5RSJnpxntEgweB2xLIE09/QZib01qzPeUeoaOW5nqbz7b
+	8Nj5F2PE0Wgvum9MOHwjcNj7vvbDOnKJ3bXEZ9/QqmZ25PbnWg9Xnce7/3N10B0boPw7vT6Vmkt
+	Gxxw18nF1TeD9mp0DXD81b8OKjxanKTOlhAZ0otaMFUs9TfyrpBQVl1zHc9QJnPpwhfp0toxazC
+	l5ITAZCejgjSOE4YlUeO73lRdmZ7S77Uk/WC/Otko++vR83RQE6Ll4VYM9FT9QFRySIJWhyCa4M
+	pqjnwUpoFCcPrFtK86xTpvAaQ+7OrJgUXxJzAvOMlu97T776ohzGw0YoS5bUyu9tMrk28Yl2R1G
+	foiJZb0JFp/1hJcJSR1zzICLEeDwLR/HTRrI58wEqpP0ryuUc9t98wSB6BTY1eERuEzb4+AaPe5
+	lBmuKcWUIOSShVyKxJRfWV1A9duP+P0yRx7TXEMOpbYn4+gPSvUF4s8TZ8xGXRCmv6yld+UW6wx
+	zV1wv8XImuG2OnlQA1rgwYJ
+X-Received: by 2002:a17:902:d587:b0:2e5:41d6:178c with SMTP id d9443c01a7336-2e9a6d24de5mr1094065ad.33.1792161362826;
+        Fri, 16 Oct 2026 07:36:02 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e83498csm11170095ad.35.2026.10.16.07.36.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 07:35:18 -0700 (PDT)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Fri, 16 Oct 2026 22:34:57 +0800
-Subject: [PATCH 2/2] selftests/mm: cover merging KSM pages aged by smart
- scan
+        Fri, 16 Oct 2026 07:36:02 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [PATCH] arch_numa: remove redundant nodes_empty() check in numa_init()
+Date: Fri, 16 Oct 2026 23:35:56 +0900
+Message-ID: <20261016143557.307080-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-bug-mm-ksm-smart-scan-align-skips-v1-2-2f91d76416be@gmail.com>
-References: <20261016-bug-mm-ksm-smart-scan-align-skips-v1-0-2f91d76416be@gmail.com>
-In-Reply-To: <20261016-bug-mm-ksm-smart-scan-align-skips-v1-0-2f91d76416be@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
- Chengming Zhou <chengming.zhou@linux.dev>, Stefan Roesch <shr@devkernel.io>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B961840012
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 31A021C0004
 X-Rspam-User: 
-X-Stat-Signature: ebreb7sqs3xgtwqaga7rnoooppr61hbr
-X-HE-Tag: 1792161322-739953
-X-HE-Meta: U2FsdGVkX1/6KDnJMEuocI46QObSThFnNFJl5Aw74ipNQa4sbPGf8CL5n97RkCMO2el4qSIUZppb9aT/bI++z1Kac00tI8ZleGnT6JteMfXPqu2Nq9WrTixC/XnaJuLawE7qoMLTdpJZNJKRwKUsYRBjOywKHeNGXNxsGvg6p1BAkPrmJAndvw5FCV9jtVoau3EEq47Ll2vTz+yu7XYHiyloCBJIy6K9jcV6jViw8kcED5F7vyYtvbkTq2k2ngRQhtLfkjBpplG5qa9FRouIB2I2P9bAh5kLgNEJAEchK9HkC0IsmcFZC5yq0XDFpw0oRy/FElOsXfoqOc7olVKie1/IIMaz0kEntUpmvH0vD9ABwyka1rLfzFpZsr5O1xRRVRqLMl7QAU9s/6Y8Jp76h+b1DtoyR+nqGSylIB6dV7w5lX9Bw4YDmIDUAMykJYH3wb7ef8b2GRm0hS79G3MzBuPntp6Wo0FAi4rH2Y7ePsjd6c/ryV2Yb/W/5dijn93EButQUxIB4U2g5LBReICA3Lxy8Uj4mJFKY0ZS0zS0iJF6nI4ChA6t91dzlYr3q5sBI5dKCnh2+BT0T8yWbPofvj1cMEahjX0PaICGbZdeSAmoc8hhx6/iSpAo+xwCtUKtUB61VFUIlX/GSo87AJf7T6axH6qX2JNkHv2QyrdNrBSqo07EeYBvvuhtYie4U0W/1FSBPJLv8b1ZkFw8Ftfrv1DvE5LJDJTDKADdVsHQlg5SuWbSiWh46hKzUWt9c0+xbmzMsS3HZKI+UyFXODaZkt+DTOlqTX3yl0166C76gIYwhDSbTw2opWCQL138uZOyjjd0tLZKViTMG0pceRxzmAnjI5Vm3N6qFtUQ9/vQiKCQmepcBeKi2Fa/SVasqQ3uKW7kRzM5nUevR8jgmJvrKvnAYDVrtlfnufK6DVJ5XCgxU48U3KaAoN6Bw//1hfkV5CIytXnk/oGIHzglsL/
- 5reYoStb
- eZAWhwiYjuio6UIJbFeJSzBLeak7YNcHhnql7VNG3XVFoN4P90bDkJebO8iy1jWe+ODuy3Phz9yvXIH9olOv9A+OxCIA857kQyexyqkemImkos2AHN+lxZ1MH2Af6Gm3NWm7fREsinkJnlMXuZNMYnHcONKsUONlCSAda3zndzJaqTToSEaA93bT4vuDWvbm51BKeDKM/X+HzE/wTjnyTs1gz28JNm2zDX//O8vZ4UUfDlaswPGgFhZlRa4eijoGVlrLjttwsbVQDWsPzVmTLVMqprFDzLYv8OdzyXJV/iBN2WdU8PHao7IrgcNZTHmEM0i7O9/Phw2IiOGtu11CdChGg0ylVdrAZF1/zLbx3tgyfGVq5ciSjy9A5NqdV5ocjPxFWpKMjlsuGMuKFgI9lKm7aLHjxK+b+7A20prU9VQ3s8cTFm0Aa5xTGWqkQIwH1FrmolX7jWbsFQllmtZksiK139Mvmoi8J1LH+MM93EcfSuobK3GFoSGEOEgmn7OacAk5EUf/JeWT+wOY=
+X-Stat-Signature: hpbbd6113zhtt3g5wxbrr79zoyjjet11
+X-HE-Tag: 1792161364-559849
+X-HE-Meta: U2FsdGVkX1+P4joS7Lvt9c/GKsqH40GRvINCvQK0Fq/IqELfM14qqD4D1YLRhoCnkl/TKuZkfyvd8RtJADYQggvO23UQsASgwRYAM/65UAK0DrU9G59ExQmJIQc9NUCF5utz1Zqx/2etJw6b14Iw5yF6Bwpgo6XT2TWCDoKnKcS7zAAeyx0VmOleW2nl6afgExAuzpi4746z/VKEuNF35Xa6UYMEGdoTKdI+joCLsT8tAHI3jrrAx04epg9nuXHhR0pqf7r6JQ/4kLUNeo/QxTUBz6krOWQs9xLABkzQ0Sluj01ibT11dKzJlFmoIa5MCEj6RSI5cO52N3sYX/SlOCa2CMG+ukwaWvvTusd+8Vlhu1+kgrU+bgJ2uJy9ZckURIb1mE0R3EnMg1ye9JJxXP44t8qdAVRFhMRr3cdRM7PK4+c+tsvnX93CgMStf2CMnMZF16Xb712AKtjQSFHsFuo4Ey4a0lYDnuwM+2T/IIyoxfFRrqmLvBFWxktycpujdXI1mJIzbeWnhCv0cxH9+Zdy6KPsqLnsjK9NgcYgGn7LLUYqjAhSlUocpsJ7LSaq1ywN7Sph0ni0nirSmFtG6QRgJHQuDIS2iXowPtyup+QAiFcY1tjfOcPoA8aqsKbv/4G4P0wWx6tJZJ8n144c1OA+ZASk9YNLDbZLBKin75ySrETQN2iRUY8CAY6y7EhzqSVsSVjZjEcXEGAIy67L7oQbRUljmlt4w8u1FOgEvucAWP6vQYmAMmSuSR+3BY2/0yP4gg4N+jt7kB9WtZpvmFs06xaDPlX5r10D0Qp8Mx2t9gM1TP9Sqz4vghMDX8Rz/NhBi6dUMRywCjo0QOc+9Ph+2u3POgk6eBiRvz1rWU9D5ZWwFsBSMsxN57V5YelrD1YvcTQ2hf3mXfvRrl9nkUOuSOYfXetey9CywJCfuFJYoGYUkUA7x9r/zc6+I/AFCTAEUODkGdSn3LVB8LJ
+ KeRTjmZF
+ TAEZ2IB1tGMxNO3QXc8Kr5wQa1fwLjOP1kFXolAA64dccdhJnWeMs19aYfZSX6DWvsL3O1EOYouDRj+o+xIHSH9b5irXiHEnxrHEHwe+q3kGheRKfC3ZfH4Y4htCX/mIlZCqhSUbDAQEsCOFn+O4f8pqfoogknqxzqa5eOPlc3zSvC/pmrf0ZzQBL34AtUMNNu+hieEDdYVWdYThOMbrtksvV8eqQpL+75xU8IwJH4/zKU8gvYGGO0qMC7hDkdgYPE/iyWVMOcc1zBv4OuKABRiN77WyVj1QqxQEbuEa1CX48mVdlm+fKW3L/oKEmdTRcyXWZYc68OeURCSlViWa5Ls5KeZE6GcULfSbnpvHV49MXLz7vHalxGYTG2mhVPtokngzKafSVxilm1HLmXZd7ujm2wXJmWyrmdsM51mfrWmpgF9TvI7WY8rRqfnm8vDkJrzQ+Ow9ordaYRyo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,162 +114,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ksm_functional_tests checks merging and unmerging with ksmd's default
-settings, but nothing there exercises smart scan, which skips pages KSM
-has failed to merge for a while.
+numa_memblks_init() returns 0 only if numa_nodes_parsed is not empty,
+so the nodes_empty() check after the call in numa_init() is always
+false.
 
-Smart scan used to time those skips per page, so two identical pages
-that became mergeable some scans apart could end up never being looked
-at in the same scan, and were never merged. "mm/ksm: align smart scan
-skips with the scan number" fixed that.
+So remove the check.
 
-Add a case that lets sixteen unique pages age for a dozen scans, then
-makes a duplicate of each mergeable one scan apart, and expects every
-pair to be merged 32 scans later:
+No functional change.
 
-  kernel               failures
-  before the fix       20/20
-  with the fix          0/20
-
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
- tools/testing/selftests/mm/ksm_functional_tests.c | 108 +++++++++++++++++++++-
- 1 file changed, 107 insertions(+), 1 deletion(-)
+ mm/arch_numa.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-index 31c06c72203fd..71d9b3cbdb8c1 100644
---- a/tools/testing/selftests/mm/ksm_functional_tests.c
-+++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -695,6 +695,111 @@ static void test_fork_ksm_merging_page_count(void)
- 	munmap(map, size);
- }
+diff --git a/mm/arch_numa.c b/mm/arch_numa.c
+index a4b1732274fa..60218d422118 100644
+--- a/mm/arch_numa.c
++++ b/mm/arch_numa.c
+@@ -244,12 +244,6 @@ static int __init numa_init(int (*init_func)(void))
+ 	if (ret < 0)
+ 		goto out_free_distance;
  
-+static int ksm_wait_full_scans(long nr)
-+{
-+	long start, cur;
-+
-+	start = ksm_get_full_scans();
-+	if (start < 0)
-+		return start;
-+	do {
-+		cur = ksm_get_full_scans();
-+		if (cur < 0)
-+			return cur;
-+	} while (cur < start + nr);
-+
-+	return 0;
-+}
-+
-+static void test_merge_aged_pairs(void)
-+{
-+	const unsigned int pairs = 16;
-+	const unsigned long size = 2 * pairs * pagesize;
-+	char *map, old_smart_scan = '1';
-+	int smart_scan_fd;
-+	unsigned int i;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	smart_scan_fd = open("/sys/kernel/mm/ksm/smart_scan", O_RDWR);
-+	if (smart_scan_fd < 0) {
-+		ksft_test_result_skip("smart_scan not supported\n");
-+		return;
-+	}
-+	if (pread(smart_scan_fd, &old_smart_scan, 1, 0) != 1 ||
-+	    pwrite(smart_scan_fd, "1", 1, 0) != 1) {
-+		ksft_test_result_fail("Enabling smart_scan failed\n");
-+		goto close_fd;
-+	}
-+
-+	if (ksm_stop() < 0) {
-+		ksft_test_result_fail("Disabling (unmerging) KSM failed\n");
-+		goto restore;
-+	}
-+
-+	map = mmap(NULL, size, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANON, -1, 0);
-+	if (map == MAP_FAILED) {
-+		ksft_test_result_fail("mmap() failed\n");
-+		goto restore;
-+	}
-+	if (madvise(map, size, MADV_NOHUGEPAGE) && errno != EINVAL) {
-+		ksft_test_result_fail("MADV_NOHUGEPAGE failed\n");
-+		goto unmap;
-+	}
-+
-+	/*
-+	 * Page i of the first half and page i of the second half form a
-+	 * pair with content no other page shares.
-+	 */
-+	for (i = 0; i < pairs; i++) {
-+		memset(map + i * pagesize, i + 1, pagesize);
-+		memset(map + (pairs + i) * pagesize, i + 1, pagesize);
-+	}
-+
-+	/* Let the first page of each pair age without a duplicate. */
-+	if (madvise(map, size / 2, MADV_MERGEABLE)) {
-+		ksft_test_result_fail("MADV_MERGEABLE failed\n");
-+		goto unmap;
-+	}
-+	if (ksm_start() < 0 || ksm_wait_full_scans(12) < 0) {
-+		ksft_test_result_fail("Running KSM failed\n");
-+		goto unmap;
-+	}
-+
-+	/*
-+	 * Make the duplicates mergeable one scan apart so that each pair
-+	 * starts out with a different distance in scans.
-+	 */
-+	for (i = 0; i < pairs; i++) {
-+		if (madvise(map + (pairs + i) * pagesize, pagesize,
-+			    MADV_MERGEABLE)) {
-+			ksft_test_result_fail("MADV_MERGEABLE failed\n");
-+			goto unmap;
-+		}
-+		if (ksm_wait_full_scans(1) < 0) {
-+			ksft_test_result_fail("Running KSM failed\n");
-+			goto unmap;
-+		}
-+	}
-+
-+	if (ksm_wait_full_scans(32) < 0) {
-+		ksft_test_result_fail("Running KSM failed\n");
-+		goto unmap;
-+	}
-+
-+	ksft_test_result(ksm_get_self_merging_pages() == 2 * pairs,
-+			 "Pages aged by smart scan got merged\n");
-+unmap:
-+	ksm_stop();
-+	munmap(map, size);
-+restore:
-+	if (pwrite(smart_scan_fd, &old_smart_scan, 1, 0) != 1)
-+		ksft_print_msg("Restoring smart_scan failed\n");
-+close_fd:
-+	close(smart_scan_fd);
-+}
-+
- static void init_global_file_handles(void)
- {
- 	mem_fd = open("/proc/self/mem", O_RDWR);
-@@ -720,7 +825,7 @@ static void init_global_file_handles(void)
- 
- int main(int argc, char **argv)
- {
--	unsigned int tests = 9;
-+	unsigned int tests = 10;
- 	int err;
- 
- 	if (argc > 1 && !strcmp(argv[1], FORK_EXEC_CHILD_PRG_NAME)) {
-@@ -753,6 +858,7 @@ int main(int argc, char **argv)
- 	test_prctl_fork_exec();
- 	test_prctl_unmerge();
- 	test_fork_ksm_merging_page_count();
-+	test_merge_aged_pairs();
- 
- 	err = ksft_get_fail_cnt();
- 	if (err)
+-	if (nodes_empty(numa_nodes_parsed)) {
+-		pr_info("No NUMA configuration found\n");
+-		ret = -EINVAL;
+-		goto out_free_distance;
+-	}
+-
+ 	ret = numa_register_nodes();
+ 	if (ret < 0)
+ 		goto out_free_distance;
 
+base-commit: 5728d3523f12826a2b180c1c5738f74e33197e14
 -- 
 2.43.0
 
