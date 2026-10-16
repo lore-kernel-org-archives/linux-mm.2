@@ -4,117 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0C80CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 18:39:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E648ACCF2C3
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 18:41:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B94336B0088; Fri, 16 Oct 2026 14:39:39 -0400 (EDT)
+	id 0756D6B0095; Fri, 16 Oct 2026 14:41:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6ECB6B008A; Fri, 16 Oct 2026 14:39:39 -0400 (EDT)
+	id 025C96B0096; Fri, 16 Oct 2026 14:41:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5A026B0095; Fri, 16 Oct 2026 14:39:39 -0400 (EDT)
+	id E5CF76B0098; Fri, 16 Oct 2026 14:41:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B7EB6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:39:39 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01D8F120575
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:39:37 +0000 (UTC)
-X-FDA: 85329352836.05.155D5F0
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3D61318000C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:39:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="dktfUnJ/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C17626B0095
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:41:48 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57BC514051E
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:41:48 +0000 (UTC)
+X-FDA: 85329358296.22.7E07093
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0C4B920006
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:41:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="ll17q/ S";
+	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792175976;
+	s=arc-20220608; t=1792176106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ALkQQ5/x3zBWgVdEQUNbbeYhHmt5oOIu1VaCcylLTPI=;
-	b=KIyyRFK975wBhtLDK1ugaLT4PHkQsQfizCcd8zM0ca/xIO4O29uqvQ7+mVHTJvsd6J2/gf
-	LEdaFKPv6GGeeH8PHzTlIwDCfN/24niHSLyHBYeCmPqHWg1470lzGHWpEXOqT6Ao/zlcJ9
-	klgLusniHd/r++BFAOrTtyqoi4IiImg=
+	bh=83NAm7qyYkwEXRavft5LK4xqvjJEBZGzlvRTDtXgSbU=;
+	b=EmvRN+jrOc2lcEFzknmHDLGEJMDLYXmKgHVbbnmp6gg0Iik7I5385NL7uP2ctd6HtkE94v
+	ERjuf7m8WtA9eZDFwotmEhZbKv6FPvMzrSkQXWsn3KYq6SccpFC6K65NQcxl7YSyamWfL5
+	eNhAOdgIf5xpi9rxcc5pKTTq8uKKIww=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="dktfUnJ/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="ll17q/ S";
+	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792175976;
-	b=eR4sDrFKaQyhCxeDs89AavtYdk4UR21Q0uNiR/el6PwUhAyRGoUrbLMffh7JDR7WU5uyc5
-	zRVht7hjiT8jQoOk81yzAF751zILaOm96DPRmbupo41eDjsFwIA+VIR8or4hRmgIZVNE92
-	9hoF7guCEmOc/aj6s1TEQv8iOM1+0uE=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e8b20a899fso913915ad.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:39:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792175975; x=1792780775; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ALkQQ5/x3zBWgVdEQUNbbeYhHmt5oOIu1VaCcylLTPI=;
-        b=dktfUnJ/tcVSKL/t71BDfttQ5qqq3/VW4Y/TQw9PZz5KzSkNM5FM76+L+gDJ2b5rtu
-         EWqKnWQc+VLB5BKUSyx5Xb0S2uAPaVXuW58ipUqr3pvskq9TQfX+nVS0WTv5A9Is+46G
-         WzDj1nRK1G940VPYMctYFnP9SxdYjIrAVSqbkVJvMZzG93olji7UubyYAkBxGvs1G7iU
-         ID1K3oVaadOQ73KlSZNYL8RQPQyZaHyAZ/PLJU6oHXYyD6xn4Lb0RfQMznR7UHJFE7VS
-         QH4tnZj+r3nyqhrbfu9Q+6wF8b+GWIe9jdpXFAgg2UE/dKrNrM0bCKYjxz7T2epNCgMu
-         cyBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792175975; x=1792780775;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ALkQQ5/x3zBWgVdEQUNbbeYhHmt5oOIu1VaCcylLTPI=;
-        b=TUoEZavapL/3kPAP8+e1xqULdBW5pIbRdG1Cs9wdAtQEep8Q3VoJNUdd8GKj2uqN3f
-         2xNRmaNrV1kDXTO2YedRVeQc25NckcoDgPCvK9VvC0IUrZ1obT3cty0Ptxsz4C29pu50
-         9xfXKEvdz3z8P+7nquZ6DVKibdLO6Yu5wEiRyYYi0SeHRUKYFBPGhsyJbw8bykdZAA00
-         oRkX7yZLzp2/m3ycmpprCqAiCjmtt0Q/d9vUoRsIH8b26+abRudjsjFDpG4BGEbgiiRx
-         SgdiKKHW8dZE+Hcm0ocEPIsQ37NbsjBbNJjiBcCFYlpz6S4ssCD0DR65z8RofEYQftmw
-         0jYw==
-X-Gm-Message-State: AFq9FYKeWKCDDFtg9M5zl32S2T08wzT2ep2S9Be6hSr7skh+nAN74EEx
-	anaXib2VTAdlDjY9tdDNRe6KRPIO8gtW+Avqi/4P/4BoNO/bSSOJCzRi
-X-Gm-Gg: AYBFou2Uc56zCRy9fCfbmfIY3AVNP+sRjhYkhOzhKJUfFcXUVOLBuMcWJaSRbYMC4cV
-	/qgt2k19e0hRa45qBbkys4uMniFPySDbzB7XhOPqAqTgjTCTEnq7U+Um/MXRgItGD5scXG330Zn
-	1YzYa1CTSyigj3v209ryZ4YU1IKsxckWLgCWITZMHPRft48puyNuyQtcn34wyxLwi2SwPXZPhvd
-	zYygfKyDcsrtyIkodvTCCdpZi8VTmgVfptsPCpEckLadaTcR50AgUedLuxaC378EblOFWWpsvus
-	EpwWSe5hAI6XwjLnVQuQNkiuEZ8KW7RoBhIKwIlp0E3gXWTKWlesye8YGVIDscimoy1OchZ+0AU
-	YyAJSzCoN9rygK137NQ9Pgl5dFf2ccS8KDqnVSXlmdBL5GAO7XwCT1xsjEG4KAIKvO3/uA8KK7h
-	+LR9IUo0hMsCbB5GeI973AM4rmcH+e084qhngiawHJ5ShmEz+YFVe35BycXFy3SEBlN1gTjBtUz
-	8uhrsirWw2sKSQn5NBeeMmd0tHSsfmOuB/tHvhK
-X-Received: by 2002:a17:902:ce83:b0:2dd:c100:b2c8 with SMTP id d9443c01a7336-2e9a6d3e4f7mr7793835ad.51.1792175974877;
-        Fri, 16 Oct 2026 11:39:34 -0700 (PDT)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e305f1dsm15091075ad.0.2026.10.16.11.39.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 11:39:34 -0700 (PDT)
-Date: Sat, 17 Oct 2026 02:39:26 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, baohua@kernel.org, 
-	kasong@tencent.com, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, david@kernel.org, rostedt@goodmis.org, 
-	mhiramat@kernel.org, hannes@cmpxchg.org
-Subject: Re: [PATCH v2 2/4] mm/mglru: add PUD-level Bloom filter state and
- generic helpers
-Message-ID: <atJuDwflq95pU14L@KASONG-MC4>
-References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
- <20260901063755.1519710-3-hebaoquan@kylinos.cn>
+	t=1792176106;
+	b=b3fN1BmLLIpNE74/u7ibha8LSOf4F3y3ZtGGn13PPNjqVC13UBMwjDvAS37gPhb5+dLDJz
+	M6TsgKzlvLurPG313eGdyBXgkgnliejp58tdIvb5hmFvcuj8EGjU43K9HkQjEz6a73QLLD
+	MBr6x4gh3rnQMd/Ay56vmqpRMlroo98=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=83NAm7qyYkwEXRavft5LK4xqvjJEBZGzlvRTDtXgSbU=; b=ll17q/
+	Spyeis3hxTUzKQGrNrPge49yGL8fmcE52SurQhbwl2OYsT26/b/D8cVjYgHHmq8Eu9N/Kn6RfriXu
+	jxbs4tbB8uV9jNWZMEyEMsMhs/c+LftyU5gc3pe3XtcDR0jTiOzPLObsB/Yasyi5jIL1iytMj9alh
+	IG57U+TeEheaOce/P6hHLHNZtj1R9Sh5IMGQwEyPByWWBVUkOBLlN0DQskBQbzElsMruIdug6XSHn
+	iVI2QO46EFABPhxBRXC+OR5gwD0ohKk6Ty8z4JqzsCWj8bukFTLTHHb7nkaxzyMb68nf4Stn1a1Yx
+	UTbNDtiG+obYG3M5Xt58fk7Ff1iA==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xHms3-00000008q1b-2vDt;
+	Fri, 16 Oct 2026 18:41:35 +0000
+Message-ID: <8e352038e02e274aab69cd2cfe5820a2734e7f3b.camel@surriel.com>
+Subject: Re: [PATCH] mm/page_vma_mapped: continue past nonmatching huge PMDs
+From: Rik van Riel <riel@surriel.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Kyle Zeng <kylebot@openai.com>
+Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes	 <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka	 <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Jann
+ Horn <jannh@google.com>,  Lance Yang <lance.yang@linux.dev>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Fri, 16 Oct 2026 14:41:35 -0400
+In-Reply-To: <20261015192020.5336a49bc516219e8254dfdf@linux-foundation.org>
+References: <20261016011549.61146-1-kylebot@openai.com>
+	 <20261015192020.5336a49bc516219e8254dfdf@linux-foundation.org>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901063755.1519710-3-hebaoquan@kylinos.cn>
-X-Rspamd-Queue-Id: 3D61318000C
-X-Stat-Signature: 6nuskku4s68naxdca8h679j43m5n3dif
+X-Stat-Signature: 93115zzd3hj1e7gez1kfseiiqe6jm3ko
+X-Rspamd-Queue-Id: 0C4B920006
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792175976-973475
-X-HE-Meta: U2FsdGVkX1/4azxbDr1eZ5Oy0sOJwPpWnFhlCbm3A6YBDgPThSIvcQC+Y+ZdiOfuvpq0eMOTIvMYXWlkzoFzop0X3m4jBwk8RVrEQaoBg2HLuyWfx/xYyn4RQdGtPBqc78hG7s8YmWTGGSzzdDbD7it8SWEM6TimmWUd8QPHcmI8layHfELu3ZdRKf2wT/IktY5tnU+q+kLCI6Dtvft5bOhKdzHFX8eF31AL/iih8m3D/TdBnF2ddQT/ItUw7Ab8Br8WDjBy/ArxaPaYDx8Uycc8Qnl+Ph237BRYhjyLrkfDmu0Rq6O1bLWyStNojRY806TL5S1QrwglyNjMc4I3dqcJILRdstgohJm6Gg4jkgJIUMc8pWdxlMElc9I17X+HVUcGNiPNrRclpBZegfQugKSW23sHV3qTzRoRENE9+ErzqO61Y8+AJAS0OjTo36bULCGvNvcwdz4qJATq+0WAjqLo615dpC/jnWTCV+5ivEqfChoXzAb9I6e7SKYvlnd9MtpDo08Gu83r5YlKpzcBLzdxmJ2QNsSbDYRGFHgjBO7KYAtP2qNwXiZUrG6qEb4lg/wmVArSauNLDjCZWmAtFPaX35wKLBZCN+6qR89jxdlWefSR9KI6fwsvwhM0NFmvUwWz9Xdcibk/nuhX4SgPt42MfH8VnNuD3+gz0zy/EWzAwIUOyQzsFU2D6hHUDeNPvhOHB+Sw9qAHJyqa77fRASRY2GEQeEAwo4Uu0dMsYFTNHBaVrcn1fD5uGibXh+uGFf5Ok/SatWaexcvj3BOX9zw4yBMEMEFJs6nQbVzx8w5kZB9GliEptCJ+Q3+BC+1STPgSwpOQ+x3akRJ5FFsGp7HULcGE4vuFDOIzEuLb2092TUc4vJYphbz3QxW+CIRcCNMeJGb2H8vHusflRkI6XKT9E+feyFsWo0p538iXurOtLtj/RIZQnYONNJeRzMgckWuLZMuBZEmdCk0HSNS
- kCt/ps54
- 7N3Bg5reN2EMHRXwDcIZOoUj8KucEHv+BCHer2G7ty0ADvEP/iVLjRSBeYazRveQxnckzcgcfLxX5j5RqMecFDxXRGX9s9YMQTyhwWUwTSZrr5f0mwsJ80oJI7qCgLuQcNMDxh+Om1FyL+MOVsmgrJst7cm1fSrWvp2jvW5fUARdwj9xPAWnwpLfHcY7l/nN5XpPI27gvr8pE8CC+jD3LVpBuluEE3Riui8C1etE9KUDVYvDk6Lw2f/GVU56dAGV4Txh+ljD5FikOIGJ9L1C6pnGdRYpyp+6lYpSmY5w7AupIZ+PLFYXrdPsjwZSVCts5/Gr9b4ZSyy1KcwpHHta1O9R3/luuaP/sVGNbas3xsaIqiJG4F+3QIQb9LBXUGjoTkHGeAyTSbvQDR/oArMqnNWbH9iH3/sckRaGfwgvHsmkUvgZjzBR5zfQV5Q==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1792176104-67269
+X-HE-Meta: U2FsdGVkX19gXR2tRAXYtIsk5Hq2pdPhxC4ML29/rdjojwBGX3Z71QuXg9wL2hhLMw+zrpyK3y/WLn+g7GCazbRsXOQ01GMbXNrvgxIvY5X5Pjn+VUmerZQperO/lpcGjxCcyEITRyQUWHelP9idNXTOBNLFekV5CiPNGwoonib/lEb+K8NFApCSb4NOkYzhe15/7t5hbCjvCkn7xM4yA+A89ayFUBgNqDQp/wO3TaWdg2+OHaVDIIu/jmp5O5kCCh2SI4J4jK1cgZFTIf2iH/u7LaWBrCB0Mhx0P4KJhLKh8pvZBbxuozF/gv6HpabnacMCIDISu+fa9ZM7vMZxEAltO2dSd6F4D8FgXxxfibnF92Pf2Dntk6LOUuSOsb4qJNH3a3WEmKGbPiFQLDG0y+mjWb7hhPm3CZdOxwReczs4IX4iMHnaEvapHTiTX74YN6zE+U5U7QYXi92J1bcTbEms1OqaJ87XgT1qopV1KaBpBAa9Ctc4r4EP/rws6nqREqK3FUOVuSXWIG+0Sl926KwbW+v44ZJraw39xDICcaw6WGyBbKMhuQxmXzyQeJ55EnmFT8zwydn4/iI7APwyjFpXUmsweVAYxFLODssrBDrgYoWRLqwCHJI34WwvToE6MRP9HEvB0PVMkLZwTFD9KOpQKhtERZDiGPBktofgTSOb1Ek0+g+5pY1c3LzvFdNZfTGzu3b4yIAyt+rMw7OL7vVTZTZa3NdhJ8LEr7vlpHrLJP5IzQgfEL4lVvsIfEe5bNKJ20Fm589Q3gbtnWiXjt4B3ITNHKzkq7JwWGrpyUuJ8MYcY8WOB18ezowbgL/ZRaCUpCUrGwCRncwyZDQEezQhYeOtts7ZO6pN9vRWQMEroGUc6SwjMrxZvSoegf08bQneYQPaEJ0uiwtlLFEvJx/uxiYa76l/ylieTRTF3S+JYSZD6DHptKKCv9Kt3I2HP/hn3Kla5hu/7m3+7cm
+ aii4cPUX
+ wsDWs+6Fu9X3syo5JLTfirPGFcfne5myZM10taMzGn937YbTaooymnK8qYHnDWchn/NO0yl7wHmh6oYgKKT2LuCdiZTLdr+JknTvK4aQHuRZnspfmvtUMa2T1tjuGY+Qpv5je0TcurNT7rMeAckWmuDnAfc34iNj4L6Ae2UEeJUgs4KoQYl93or8WZG3wth0P+g5BffgUo+XAr0Ae5MDJZBXkwOWewpAEHHCRg5PGAaHxKVPfOF7QmsXezTAGgU7TQWnyMI6tUZA/h7NhSxF2NlzDW6ODI7BeImVRUpYnVZUsJZJbp8fMkvX4uDHe8mCd/l4fWallbKUC5i/VHNEjOECdtAPlBfe1mUcG2Kanxn9nAYkFDTDiEiWVQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,120 +121,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 02:37:53PM +0800, Baoquan He wrote:
-> Rename the existing PMD-level filter array (filters -> pmd_filters) and
-> add a second, coarser pair of PUD-level Bloom filters (pud_filters).
-> The PUL filsters operate at 1GB (PUD) granularity, whose 512 PMDs would
-> all fail the PMD-level filter - a general suppression of unnecessary page
-> table walks. Cross-node empty walks are the most visible case: a foreign
-> mm's PUDs have no young entries for this lruvec, so the entire PMD
-> iteration is pure waste.
-> 
-> Generalize the Bloom filter helpers (test/update/reset_bloom_filter ->
-> __test/update/reset_bloom_filter) to operate on a generic filters array,
-> and add thin wrappers (test/update/reset_pmd_bloom_filter) that pass the
-> PMD-level array, so the PUD-level pair can reuse the same hash,
-> double-buffering and reset.
+On Thu, 2026-10-15 at 19:20 -0700, Andrew Morton wrote:
+>=20
+> As always, when fixing a bug please describe the worst-case
+> userspace-visible effects of the bug.
+>=20
 
-Hi Baoquan,
+> But you have an LLM too!=C2=A0 So please never again send a bugfix withou=
+t
+> this info.
+>=20
+> Also please explain whether there's a reproducer and if so, at least
+> describe it and confirm the before-and-after results.
+>=20
+I've been working on automating that for the past
+few months.=C2=A0
 
-This is really nice idea, thanks! And sorry for the late response.
+The changelogs, comments, and code have needed fewer=C2=A0
+and fewer edits as the rules got adjusted over time.
 
-> 
-> No behavior change yet; the PUD filters are populated and used by later
-> patches.
-> 
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
->  include/linux/mmzone.h |  6 ++++--
->  mm/vmscan.c            | 45 ++++++++++++++++++++++++++++--------------
->  2 files changed, 34 insertions(+), 17 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index f75daa6cd02d..faf28d35065d 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -612,8 +612,10 @@ struct lru_gen_mm_state {
->  	struct list_head *head;
->  	/* where the last iteration ended before */
->  	struct list_head *tail;
-> -	/* Bloom filters flip after each iteration */
-> -	unsigned long *filters[NR_BLOOM_FILTERS];
-> +	/* PMD-level Bloom filters flip after each iteration */
-> +	unsigned long *pmd_filters[NR_BLOOM_FILTERS];
-> +	/* PUD-level Bloom filters flip after each iteration */
-> +	unsigned long *pud_filters[NR_BLOOM_FILTERS];
+https://github.com/rikvanriel/kernel-style
 
-Or could we have macros like:
-BLOOM_FILTER_LEVELS 2
-BLOOM_FILTER_PUD 0
-BLOOM_FILTER_PMD 1
-
-(just personal flavor).
-
->  	/* the mm stats for debugging */
->  	unsigned long stats[NR_HIST_GENS][NR_MM_STATS];
->  };
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 55d43ab54459..cd09c5b8af8c 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -2842,14 +2842,13 @@ static void get_item_key(void *item, int *key)
->  	key[1] = hash >> BLOOM_FILTER_SHIFT;
->  }
->  
-> -static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
-> -			      void *item)
-> +static bool __test_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
->  {
->  	int key[2];
->  	unsigned long *filter;
->  	int gen = filter_gen_from_seq(seq);
->  
-> -	filter = READ_ONCE(mm_state->filters[gen]);
-> +	filter = READ_ONCE(filters[gen]);
->  	if (!filter)
->  		return true;
->  
-> @@ -2858,14 +2857,13 @@ static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long s
->  	return test_bit(key[0], filter) && test_bit(key[1], filter);
->  }
->  
-> -static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
-> -				void *item)
-> +static void __update_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
->  {
->  	int key[2];
->  	unsigned long *filter;
->  	int gen = filter_gen_from_seq(seq);
->  
-> -	filter = READ_ONCE(mm_state->filters[gen]);
-> +	filter = READ_ONCE(filters[gen]);
->  	if (!filter)
->  		return;
->  
-> @@ -2877,12 +2875,12 @@ static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
->  		set_bit(key[1], filter);
->  }
->  
-> -static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
-> +static void __reset_bloom_filter(unsigned long **filters, unsigned long seq)
->  {
->  	unsigned long *filter;
->  	int gen = filter_gen_from_seq(seq);
->  
-> -	filter = mm_state->filters[gen];
-> +	filter = filters[gen];
->  	if (filter) {
->  		bitmap_clear(filter, 0, BIT(BLOOM_FILTER_SHIFT));
->  		return;
-> @@ -2890,7 +2888,24 @@ static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
->  
->  	filter = bitmap_zalloc(BIT(BLOOM_FILTER_SHIFT),
->  			       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
-> -	WRITE_ONCE(mm_state->filters[gen], filter);
-> +	WRITE_ONCE(filters[gen], filter);
-
-So the helpers will be something like
-test_bloom_filter(mm_state, level, ...), seems a bit cleaner?
+--=20
+All Rights Reversed.
 
