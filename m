@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076E9CCA464
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 10:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 454DDCCA464
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 10:25:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03A8F6B009F; Fri, 16 Oct 2026 06:08:41 -0400 (EDT)
+	id 16BB66B0088; Fri, 16 Oct 2026 06:25:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 014B36B00A0; Fri, 16 Oct 2026 06:08:40 -0400 (EDT)
+	id 0F5AE6B008A; Fri, 16 Oct 2026 06:25:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6A466B00A1; Fri, 16 Oct 2026 06:08:40 -0400 (EDT)
+	id EFFF76B008C; Fri, 16 Oct 2026 06:25:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B7BB56B009F
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:08:40 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0359C1402FD
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:08:38 +0000 (UTC)
-X-FDA: 85328065158.04.52054ED
-Received: from mta1.migadu.com (out-135.mta1.migadu.com [95.215.58.135])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0F1C91C0007
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:08:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hw6pwTfK;
-	spf=pass (imf21.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.135 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792145317;
-	b=X+nb99JxcjRzJgSVlQuQ/2ZCxamX4G+OS6BznzzQ13M38zoff7Nh7f07gVovZSN9YW4Qm/
-	3nwZDmSF6kMOWChDfmKiBvztDa8iqL0DTxwKJXlkpYqomVdC2IigPn1vJJOu1FbPDtlLbf
-	cmj0wSrthEwDjihDadkRmxXbrDohgBE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hw6pwTfK;
-	spf=pass (imf21.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.135 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B4F5C6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:25:29 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86CCC1603DA
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:25:27 +0000 (UTC)
+X-FDA: 85328107494.09.AAA1429
+Received: from mail-43170.protonmail.ch (mail-43170.protonmail.ch [185.70.43.170])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6CF6540005
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:25:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=karaolidis.com header.s=protonmail3 header.b=T7r9Bx03;
+	spf=pass (imf01.hostedemail.com: domain of nick@karaolidis.com designates 185.70.43.170 as permitted sender) smtp.mailfrom=nick@karaolidis.com;
+	dmarc=pass (policy=quarantine) header.from=karaolidis.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792145317;
+	s=arc-20220608; t=1792146326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lWVcxDlFcv2lmm2MeBhkxt3evnF7lknPB7nxdvr1eLo=;
-	b=1gVOa4KQqh2Y+nEeyfknTglY5hnDCisOIU70sGpxGnb69Z4nBS7oYJYjhH09basd1WqAFI
-	8UKqcv1n6XRw0gGgU6tVqmbE5Q3DakHVRzU+g1Pmx7UuQsd5Lz757COp0K59O/swiE41De
-	m9nC1ahdUR7uJPishYkBTzhOOCr52LQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4DSBl484xVrRS4yCKPYIq3uyqzNZ4TiuHGnnf3lGWuw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792145315; v=1; x=1792750115;
- b=Hw6pwTfKgvUYpkEnS0YXuaBouiprMw4XaREIt2XLE6abnsZQpUU4J+Oha2k1dMPlINNJGivU
- m8tIfU6DbRqjXWxJDX2X/94qNfvmuZO8suo3DiWaCDsa7ATmxJu+VQZNcmc0pyJGAHOSd+hypRu
- tCvUER0/y9QGdY9eX2/XkDBE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0dae0c1d7400b4cc;
-	Fri, 16 Oct 2026 10:08:35 +0000
-X-Mizu-Trace-ID: 0dae0c1d7400b4cc
-X-Migadu-Flow: FLOW_OUT
-From: Qi Zheng <qi.zheng@linux.dev>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
+	 in-reply-to:references:dkim-signature;
+	bh=b04DOe8vmbq+QEfUbmjT3IlS1rtxforJbJCVtR4UErk=;
+	b=krg9N+kGK4yF0PrOx5Anoa5R01dSuMgM56OlmZTxnGAdGZxmhVnxOgtc+VT6bPrStiXqYG
+	d4/3193pX6qwfu21r7R5sAYD6Tqk+ADYPgMqHida2EO/b5/m73ha8Gz7e2t/GfxTzRVOo9
+	yZrVWdZNfQuDnDZPVUC2eg6y6nuFHpk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=karaolidis.com header.s=protonmail3 header.b=T7r9Bx03;
+	spf=pass (imf01.hostedemail.com: domain of nick@karaolidis.com designates 185.70.43.170 as permitted sender) smtp.mailfrom=nick@karaolidis.com;
+	dmarc=pass (policy=quarantine) header.from=karaolidis.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792146326;
+	b=whZ9q60k90q4VkoNlHeGgypYHwHx8rQ8r6O0F2UwwjEQucddaHw+vUBbFCdSdmIwGN2il2
+	YvFyArkSxTE3wtm2LzEPBvZPmtPDGL9j0AbG14vSZfF1v4deC0bdOOLESziDEOIx2AAEqq
+	fu2+KQ8BGTwsoz57b0QFWF2jNfa1zB4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=karaolidis.com;
+	s=protonmail3; t=1792146321; x=1792405521;
+	bh=b04DOe8vmbq+QEfUbmjT3IlS1rtxforJbJCVtR4UErk=;
+	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=T7r9Bx03kZ1obL008QSpYAKFDmkSk37XBbQHx4AvZCIaA9xbTeoEXhc/cB3SMlI57
+	 MezU9GsTh0X2puV8/EOcBKYReV9Q0Si//bRYSnPbL1TcjaRYoTjnNgeVCaWCY1cVuK
+	 i0NDQkC539QboKy9GsknWUco5yAc/uayQ+OUsRMiUt4AiZlP5C9ARhF+WYL/nmv81S
+	 ZxQB5w17SwmyKQ1rAO3+8EVTWuE8LSrLytrXUjkwV3tKsFbCUSs8BIla7JbG1YM4+R
+	 d4C2VMC8QarJWifr87HQrFiLP5Coy2SvrrGakMNysf0RdIurfMPUjvoU/kLVO04JQM
+	 6rwEEXp/bHUpQ==
+X-Pm-Submission-Id: 4j5h0F5p8Zz1DDKp
+From: Nikolaos Karaolidis <nick@karaolidis.com>
+To: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Jan Kara <jack@suse.cz>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH 5/5] mm: hugetlb: enable CMA allocation for PMD-sized pages
-Date: Fri, 16 Oct 2026 18:07:36 +0800
-Message-ID: <df6eee954b62f41d65c4d087d17a7a7cf60da791.1792136742.git.zhengqi.arch@bytedance.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1792136742.git.zhengqi.arch@bytedance.com>
-References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
+	Nikolaos Karaolidis <nick@karaolidis.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs: rotate inodes whose page cache could not be dropped
+Date: Fri, 16 Oct 2026 10:25:15 +0000
+Message-ID: <20261016102515.111285-1-nick@karaolidis.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0F1C91C0007
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6CF6540005
 X-Rspam-User: 
-X-Stat-Signature: c5s8w8whswsydwijquyacfaqfu5w8qs4
-X-HE-Tag: 1792145316-476822
-X-HE-Meta: U2FsdGVkX1+kpqDLwMDbY4tCdkruBVj63fuWlwGcizWa9oooxGpV9HOX5GoJ4TDbPCKyKUeJlMlEnoPWzghr2WcvUPFlc3E10OYhrp7JE5Sd3TdsFiWvvoi0+Qa1EVub8C15IDmCkrdqTPkjLs1T667LgZRPKmTUs9bWoF4X2VL+JFkJ2NKfg9SSnvcyg2+hwwawoJxqGfwFuAyU0oLMssaj0EVz4GURKU0firww0jD+DwzrElhh0KNo82+78ZOzpeafATJAvBsN0+vHc+v1VxKVWCsAMzinJM1dyNPXZzM3N2AP1rKb9ljLbka7SODJlc3+/S892nnvE5dAM8Ss2jjCwNVskK5KgxbAFzq8shg+JLwRRyHfCmR/MqN/K4ywVY3HPdLmGk3uINvHRhCTYrF9vP0jFdZrA3nZQN3fzInP/wPffJ3VwXXxf68tltXyENMAQ+IQg/G/akJ3Dov9raFzE1+5kpy2MXhq/vd9++ZdQ2ci8cw5QRgwegzT7dMOvh6WotOIaf31BW0ksc7sX4oa+NztJPY4PmKYIL/kPDh87cVGFGsF3qavi5Ji1nFTavSHUKVbB+pRRLGPrUJSe6+l/BA48P///DGKWcLdrDtWLfdPjF/PKbi1UvaCHm32yLohZfoBvJpc9VcCMCa1cuEH79yZijCc0+bQLdRwrGSBBC4smT9s/A7fBcqlYfN47hvDpw+drJVgHQWHTBdl+L6elHOvZTeba/Owdocr/z492agRlqOXZYEnCpZUhn0c5tMBdDXxHqx50V7uUMaQ7DHvANnLBERhm0g2f7hgdaX8S0atdmu2U5uGaJRchSQXEfJD7YEvnM7GnpAeleZIbfv/IHOkQOjsDEzxi2cYmAHVtRjuMgV6F/z/09bgaBYJFCFO9zpPHwpxh8fdfmRp2G7SLuGZ2k4iaw/z0t7G5IHvINWiiUE3AmtvjFM7tZgz9wWHHTXL5GBsoaGuUIB
- wneGYaUw
- QXpLmIW1fuwgMs3mrOoLkBxOCsqASCbJHQUPY7xRE84WJAzZFG+L6gpiwbnIno6ds4+4K1/PTyRhEsJLYXJ+hLkF4EvxXgLhaJySe83/wU6N1mFCSMF8yjPuUIRnVT3hKuheB+hrSDhOBTNAbivY2w7t6s4fJWgWOO60NQeEtpB+xBbTqGbsxhtkdtBUwNMAFB2Uo4ESPJWgJIxaqRgTMS45weg==
+X-Stat-Signature: y7dsst6dizeajwn5b47wecsw6tqdhood
+X-HE-Tag: 1792146325-444367
+X-HE-Meta: U2FsdGVkX1/9eLIIr4ovFdxmtpgi20QniyeYyOnpsweD0LCP1ARzIgK+hJalHhbwuLD4ZHkNU0snKZoGCHd1sJ5MQrmSGE/q+d2D/2kNypSF9qRk4H1+Wzh4ZdyKnbaJfh7dLv53rSxYPgi57D9n0C2jIElb1VVpQKTG56Rl7lsuLERBP3QkHBWKUqqsmSaDp0FNmT/rD/FKyt5ep0qpvDLZ6o3ktVTLRvXdOeU6YLy+n35+8wXusabixLxVVDh8fadlumRsDx2DDK0fAbD+77Q8ipFwPvrBFItVeF3LPo6vmkLa9JLJeR7By2BgKb+yarFeVHOBbUwoaKflziS0zMTW/E3OQCeIcTaQly7KGM9l3T0U4dFD3lqwKX9TN7EdndwuizIQdT1aEEFlVJNwH9LA+c6E2SCx8k6cpwdACBoTZbcNGuKwigoajwr6FFSZfqV/7iqft5S7nv/UwhuP7pDLlaUhhxlyY9z72/mx4zlW1DsfPoWeIvetmMx8e4gAjwWZ36PzQVKPgnCbwE1jSwM8N7MfnN+7PO2DnWkXu3ML84y59nZm3wOzCi1lkpJQlN7GRoo5ZnpYZ8tXKi6Jki9F0LFMeRf1pNZKHNvNTiLALoVrHxbRE6sgDseRgvY/KGg9UZwQzAnexlzfj40V66JKmiiipU0kQNuUfb0PZxW6R9dC4L/jaBXLXq8w8VSwe6LoSCn+vy6HJFTPp3s5uCzFchyD7uXd5tHNH+aua0bcONerDDwUIMBB766RZxsiZ+rZGt5Xq44IWG5Gj2wAEzAKfNu8OnxDeBbGoBYo2uSCeGOZmGrHKUI5rhOvMgAHkzdESyp36ELUlMRj3j00UNTG7z79V45OTvKuCoBS7+vDgHDuzH8wnVDrX5BgPWvTMpQ7TdGw5v/2ICIEiud/ZJXeepI7VeWhoAG6MaJEikHVXeqKQv7dulNgNo1N8k1++3b+Rz9UD+5f6Nv0iTn
+ EnB8DXYv
+ bu9h8fs+o3VVcIKLXu7ulGRskkB9R/8Emn+7+bE6J+FWs2G2zv6UyfUnY+mE+Ap22O/Zn8H9oUo8hrJLZAwuZsmDjfzJ1I7m27Yn111kTM3EL1ugzlZods+EvaCHBV8nvKo0dlywunZzuk2+ySEOj3nRY+TP0rxwwUDnjQv5hrDRkeoeKunl5cgmo0ICGr4kpSWEBlDf3CxspCgATJ/OAkFDs0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,214 +92,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+When inode_lru_isolate() drops the page cache of an unused inode, it
+has to unlock the list, so it returns LRU_RETRY and the walk restarts
+at the head of the list, where the inode still is. If
+invalidate_mapping_pages() could not empty the mapping, the restarted
+walk strips the same inode again, and so on until nr_to_walk runs out.
+Every walk of that list then ends on this inode, and nothing behind it
+is reclaimed for as long as its cache stays.
 
-Allow hugetlb_cma=<capacity>@<page-size> to select the architecture's PMD
-size in addition to its existing CMA size. PMD pages are 2M on x86-64 and
-2M, 32M or 512M on arm64 with 4K, 16K or 64K base pages.
+Before commit 2a0629834cd8 ("vfs: Don't evict inode under the inode lru
+traversing context") the walker pinned the inode with a reference, and
+dropping it in iput_final() set I_REFERENCED, so the restarted walk
+rotated the inode to the tail. Set I_REFERENCED again when the mapping
+is still populated after the invalidation, in the same i_lock section
+that clears I_LRU_ISOLATING. inode_unpin_lru_isolating() now expects
+i_lock to be held, like inode_pin_lru_isolating().
 
-Give PMD pages their own pool without changing the original pool's sharing
-among other gigantic sizes. On arm64 with 4K base pages, 32M and 1G pages
-continue to use the default 1G-aligned pool. Unsuffixed arguments and an
-explicit default size still configure that same pool.
+On CONFIG_HIGHMEM kernels this can happen to any unused inode: a folio
+is left behind if it is locked, under writeback, spliced into a pipe,
+or still in another CPU's LRU-add batch after being read. Without
+HIGHMEM it happens to DAX inodes whose only entry is at index 0, which
+mapping_shrinkable() lets onto the LRU and invalidate_mapping_pages()
+never removes.
 
-PMD requests use only the PMD pool, even when their order is gigantic.
-Other gigantic requests use only the original pool. Apply this mapping
-consistently to allocation, CMA-only policy and boot-time accounting.
-
-Move CMA allocation into the common fresh HugeTLB allocation path so
-non-gigantic pages can use CMA. Align reservations to both the selected
-page size and CMA's minimum alignment, and use a bitmap granularity no
-larger than the selected order. Keep the original CMA area names and give
-PMD areas distinct names. Document the syntax and pool selection.
-
+Fixes: 2a0629834cd8 ("vfs: Don't evict inode under the inode lru traversing context")
+Cc: stable@vger.kernel.org
 Assisted-by: LLM
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Signed-off-by: Nikolaos Karaolidis <nick@karaolidis.com>
 ---
- .../admin-guide/kernel-parameters.txt         | 39 ++++++++++++-------
- mm/hugetlb.c                                  | 31 +++++++--------
- mm/hugetlb_cma.c                              | 26 ++++++-------
- 3 files changed, 52 insertions(+), 44 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index e3f25e805fea6..71cd431f07fe2 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2065,31 +2065,42 @@ Kernel parameters
- 			Note that this parameter only applies to non-gigantic huge pages.
+Found while working on reclaim of inodes pinned by page cache in
+ZONE_MOVABLE.
+
+Tested in QEMU/KVM on master af32da41b032 (v7.3-rc6-232), with lockdep
+and KASAN enabled. A small init program makes one unused inode whose
+page can't be invalidated, lets it reach the head of the inode LRU,
+opens 2000 other files, does one "echo 2 > /proc/sys/vm/drop_caches"
+and counts the inodes left via umount; kprobes count the
+invalidate_mapping_pages() calls:
+
+                              without patch           with patch
+  i386 HIGHMEM, file read     2000 of 2000 left,      none left,
+  on another CPU              10300 strips, 1 inode   4 strips
+  i386 HIGHMEM, page          same                    same
+  spliced into a pipe
+  x86_64, ext4 -o dax,        same                    same
+  file mmap()ed
+  controls (no leftover,      none left               none left
+  shadow entry at index 0)
+
+2a0629834cd8^ behaves like the patched kernel, 2a0629834cd8 like
+master. On 5.15.y x86_64, where every unused inode with page cache is
+on the LRU, the read-on-another-CPU case blocks the walk as well.
+
+With "echo 64M > /sys/fs/cgroup/memory.reclaim" instead of
+drop_caches, the i386 pipe case does 262450 strips and frees nothing
+without the patch, 40 strips and frees everything with it. In the DAX
+case that write takes ~400ms with the patch instead of ~4ms:
+invalidate_mapping_pages() counts the DAX entry it leaves behind as
+reclaimed, so unpatched, the 64M are "reclaimed" by re-stripping one
+inode in a tight loop while nothing is freed.
+
+The reproducer is a single C file; I can post it.
+
+An LLM was used to check the analysis against the code, write the
+reproducer and draft the changelog; I have reviewed all of it.
+
+ fs/inode.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/fs/inode.c b/fs/inode.c
+index a9d37be390a1..1614a97ce953 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -593,12 +593,11 @@ static void inode_pin_lru_isolating(struct inode *inode)
  
- 	hugetlb_cma=	[HW,CMA,EARLY] The size of a CMA area used for allocation
--			of gigantic hugepages. Or using node format, the size
--			of a CMA area per node can be specified.
-+			of hugepages. Or using node format, the size of a CMA area
-+			per node can be specified.
- 			The size can be an absolute value (e.g., 2G) or a
- 			percentage of the total memory or node memory (e.g., 20%).
- 			Percentage-derived sizes are rounded down to a multiple of
--			the architecture's gigantic hugepage size and may become
--			zero.
--			Format: nn[KMGTPE] or nn% or (node format)
--				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]] or
--				<node>:nn%[,<node>:nn%]
--
--			The size must be a multiple of the gigantic page size.
-+			the larger of the selected hugepage size and CMA's minimum
-+			alignment, and may become zero.
-+			Format: nn[KMGTPE][@<page-size>] or nn%[@<page-size>]
-+				or (node format)
-+				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]][@<page-size>] or
-+				<node>:nn%[,<node>:nn%][@<page-size>]
-+
-+			An optional @<page-size> suffix selects the architecture's
-+			default CMA hugepage size or a supported PMD size. If
-+			omitted, the default is used. For node format, append
-+			the suffix after the entire node list. Repeat the
-+			parameter to configure the two pools independently.
-+
-+			The size must be aligned to both the selected hugepage
-+			size and CMA's minimum alignment.
- 			When using node format, this applies to each per-node size.
- 			Missaligned values are dropped with a warning.
- 
--			Reserve a CMA area of given size and allocate gigantic
--			hugepages using the CMA allocator. If enabled, the
--			boot-time allocation of gigantic hugepages is skipped.
-+			Reserve a CMA area of given size and allocate hugepages
-+			using the CMA allocator. For gigantic page sizes with a
-+			reserved CMA pool, normal boot-time allocation is skipped.
-+			With hugetlb_cma_only=1, early CMA allocation is used where
-+			supported.
-+
- 
- 	hugetlb_cma_only=
- 			[HW,CMA,EARLY] When allocating new HugeTLB pages, only
- 			try to allocate from the CMA areas.
- 
--			This option does nothing if hugetlb_cma= is not also
--			specified.
-+			This option only affects page sizes with a CMA pool
-+			reserved by hugetlb_cma=.
- 
- 	hugetlb_free_vmemmap=
- 			[KNL] Requires CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 218fbaee6f7e5..8c00fd9d0658d 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1362,18 +1362,8 @@ static struct folio *dequeue_hugetlb_folio(struct hstate *h, gfp_t gfp_mask,
- static struct folio *alloc_gigantic_frozen_folio(int order, gfp_t gfp_mask,
- 		int nid, nodemask_t *nodemask)
+ static void inode_unpin_lru_isolating(struct inode *inode)
  {
--	struct folio *folio;
--
--	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nodemask);
--	if (folio)
--		return folio;
--
--	if (hugetlb_cma_exclusive_alloc(order))
--		return NULL;
--
--	folio = (struct folio *)alloc_contig_frozen_pages(1 << order, gfp_mask,
--							  nid, nodemask);
--	return folio;
-+	return (struct folio *)alloc_contig_frozen_pages(1 << order, gfp_mask,
-+							 nid, nodemask);
+-	spin_lock(&inode->i_lock);
++	lockdep_assert_held(&inode->i_lock);
+ 	WARN_ON(!(inode_state_read(inode) & I_LRU_ISOLATING));
+ 	inode_state_clear(inode, I_LRU_ISOLATING);
+ 	/* Called with inode->i_lock which ensures memory ordering. */
+ 	inode_wake_up_bit(inode, __I_LRU_ISOLATING);
+-	spin_unlock(&inode->i_lock);
  }
- #else /* !CONFIG_ARCH_HAS_GIGANTIC_PAGE || !CONFIG_CONTIG_ALLOC */
- static struct folio *alloc_gigantic_frozen_folio(int order, gfp_t gfp_mask, int nid,
-@@ -1849,11 +1839,18 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
- 	if (nid == NUMA_NO_NODE)
- 		nid = numa_mem_id();
  
--	if (order_is_gigantic(order))
--		folio = alloc_gigantic_frozen_folio(order, gfp_mask, nid, nmask);
--	else
--		folio = alloc_buddy_frozen_folio(order, gfp_mask, nid, nmask,
--						 node_alloc_noretry);
-+	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nmask);
-+	if (!folio) {
-+		if (hugetlb_cma_exclusive_alloc(order))
-+			return NULL;
+ static void inode_wait_for_lru_isolating(struct inode *inode)
+@@ -981,7 +980,13 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
+ 		else
+ 			__count_vm_events(PGINODESTEAL, reap);
+ 		mm_account_reclaimed_pages(reap);
 +
-+		if (order_is_gigantic(order))
-+			folio = alloc_gigantic_frozen_folio(order, gfp_mask, nid, nmask);
-+		else
-+			folio = alloc_buddy_frozen_folio(order, gfp_mask, nid, nmask,
-+							 node_alloc_noretry);
-+	}
-+
- 	if (folio)
- 		init_new_hugetlb_folio(folio);
- 	return folio;
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index 9f1dfe6c2af67..9dd376979e345 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -42,8 +42,8 @@ static struct hugetlb_cma_pool *hugetlb_cma_pool(unsigned int order)
- {
- 	unsigned int i;
- 
--	/* Gigantic sizes share the architecture's original CMA pool. */
--	if (order_is_gigantic(order))
-+	/* PMD pages use their own pool; other gigantic sizes share. */
-+	if (order != PMD_SHIFT - PAGE_SHIFT && order_is_gigantic(order))
- 		order = hugetlb_cma_default_order;
- 
- 	for (i = 0; i < hugetlb_cma_nr; i++) {
-@@ -177,11 +177,13 @@ static int __init hugetlb_cma_parse(char *p)
- 			pr_warn("hugetlb_cma: invalid parameter %s\n", p);
- 			return -EINVAL;
- 		}
--		if (!order || page_size != (PAGE_SIZE << order) ||
-+		if ((page_size != PMD_SIZE &&
-+		     page_size != (PAGE_SIZE << order)) ||
- 		    !arch_hugetlb_valid_size(page_size)) {
- 			pr_warn("hugetlb_cma: unsupported page size in %s\n", p);
- 			return -EINVAL;
- 		}
-+		order = ilog2(page_size) - PAGE_SHIFT;
++		spin_lock(&inode->i_lock);
++		/* The walk restarts here: don't retry leftovers right away */
++		if (!mapping_empty(&inode->i_data))
++			inode_state_set(inode, I_REFERENCED);
+ 		inode_unpin_lru_isolating(inode);
++		spin_unlock(&inode->i_lock);
+ 		return LRU_RETRY;
  	}
  
- 	if (!order) {
-@@ -340,14 +342,7 @@ static void __init hugetlb_cma_reserve_pool(struct hugetlb_cma_pool *pool,
- 	if (!pool->size)
- 		return;
- 
--	/*
--	 * HugeTLB CMA reservation is required for gigantic
--	 * huge pages which could not be allocated via the
--	 * page allocator. Just warn if there is any change
--	 * breaking this assumption.
--	 */
--	VM_WARN_ON(order <= MAX_PAGE_ORDER);
--	hugepage_size = PAGE_SIZE << order;
-+	hugepage_size = max(PAGE_SIZE << order, CMA_MIN_ALIGNMENT_BYTES);
- 
- 	if (config->percent) {
- 		unsigned long orig_size = pool->size;
-@@ -438,14 +433,19 @@ static void __init hugetlb_cma_reserve_pool(struct hugetlb_cma_pool *pool,
- 			size = min(per_node, pool->size - reserved);
- 		}
- 
--		snprintf(name, sizeof(name), "hugetlb%d", nid);
-+		if (order == hugetlb_cma_default_order)
-+			snprintf(name, sizeof(name), "hugetlb%d", nid);
-+		else
-+			snprintf(name, sizeof(name), "hugetlb-%lukB-%d",
-+				 (PAGE_SIZE << order) / SZ_1K, nid);
-+
- 		/*
- 		 * Note that 'order per bit' is based on smallest size that
- 		 * may be returned to CMA allocator in the case of
- 		 * huge page demotion.
- 		 */
- 		res = cma_declare_contiguous_multi(size, hugepage_size,
--					HUGETLB_PAGE_ORDER, name,
-+					min_t(unsigned int, order, HUGETLB_PAGE_ORDER), name,
- 					&pool->cma[nid], nid);
- 		if (res || !cma_validate_zones(pool->cma[nid])) {
- 			pr_warn("hugetlb_cma: %s: err %d, node %d\n",
+
+base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
 -- 
-2.54.0
+2.55.0
 
 
