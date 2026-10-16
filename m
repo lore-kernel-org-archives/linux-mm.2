@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9767ACCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 08:11:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 749C9CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 08:19:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 944BD6B0088; Fri, 16 Oct 2026 04:11:43 -0400 (EDT)
+	id 3FD4B6B0088; Fri, 16 Oct 2026 04:19:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91C2F6B008A; Fri, 16 Oct 2026 04:11:43 -0400 (EDT)
+	id 38DD56B008A; Fri, 16 Oct 2026 04:19:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80C0C6B008C; Fri, 16 Oct 2026 04:11:43 -0400 (EDT)
+	id 24ED56B008C; Fri, 16 Oct 2026 04:19:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 65E816B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:11:43 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC0431C0B2C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:11:42 +0000 (UTC)
-X-FDA: 85327770444.20.40692F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4ADF61A0006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:11:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y9Qc3KBd;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BAB1C6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:19:23 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3BE6C14024D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:19:23 +0000 (UTC)
+X-FDA: 85327789806.27.B41BF3B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 964E1140009
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:19:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ev09OFLL;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792138301;
-	b=U+6NKTOpDMz7gqIBIQ32MbhJnHcL0j2ZQNbadsnTTDTveKWjfUZv0n5DRFkIYLFBhOIc8Z
-	qWtAqdGPawPQCFfvQxg5aQoWZNdxGK5mSCblWMi3HDsJWozi6G7eW0LM7C+k8o3Hr6MnPt
-	td9bVbBEFzG2FYQ3cFtYwvp50+Z8tqs=
+	t=1792138761;
+	b=TsOW6JwP4lnTzSWCfgQUmZMRaU+kYEz0Rt0TZArBvcDB5dCc+2NzER55Sf0xO3nw5qVfWg
+	pOb03tPowWUyggQ3l1uapRa04Dy9GvLZMfHfkPqniPaT6rBIJhjZqixtMxOF7CyALCWykZ
+	PAB+3EFd+4ACzTI9x+Wnw3q6AWwFhfc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y9Qc3KBd;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ev09OFLL;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792138301;
+	s=arc-20220608; t=1792138761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BBGAT7ue9VgHZMuu5dAb/6oFafAsXIvH9NDdySY61DU=;
-	b=p2fNfqSmXSSxhDbHnL5GeqSHMKIFhRuyVEeqsn8A30//giD9by7mxq10dnEudn77MlogCb
-	rHh2Yh9XQmNxWvYq5bj1q0iHBumy9BMakUOO8chSaYAQYSj5WIA9gNcnTzR0elOJgrHN5H
-	2H6MxkkyYc4gP6gEiyO1Y9f2EaT12ME=
+	bh=JN5TVC//3O1ip10wW+8mi89WV09HEjoNN46Wit82ehw=;
+	b=xxkjFryQ914iEhvYvz6KQ/C4K9eouewm1npzJNb83N0NmYG4D3mWFfyQAChcqxpSIA7jkA
+	5JRog51O4vz+hBcMFyt7AguX+kdqEnJkmb2VF/O4Ge3eiqu/cRr1BpvNyddrGOBLktjy8x
+	L8ewjFG3+guVfvnc2vW8vba11i+ikXI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7F8444048F;
-	Fri, 16 Oct 2026 08:11:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886951F000C4;
-	Fri, 16 Oct 2026 08:11:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 63CC960018;
+	Fri, 16 Oct 2026 08:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB111F000C4;
+	Fri, 16 Oct 2026 08:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792138300;
-	bh=BBGAT7ue9VgHZMuu5dAb/6oFafAsXIvH9NDdySY61DU=;
+	s=k20260515; t=1792138760;
+	bh=JN5TVC//3O1ip10wW+8mi89WV09HEjoNN46Wit82ehw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y9Qc3KBdcZWgZjWsaAYnSgSER1uaz+BaIQ2eo8wOVW2XevFfSrviKphX0IpLqNOQU
-	 J3rNGys0fEfxFxyjD6NGhqth8kxZet5yd4j+UsdTVoDsSdZuH5UcQuNWzG+QRh8swv
-	 egdH5IAmn6eWndutGah39BCtH0vUezekNLRCZ/vEUFLRL0T+VyKxINBN8U8s7r7QoL
-	 3wBKxEC7c6UUQPYd9jPvqWr8zcYJY9m+RumfPmgmejL/Q6Fnj+lTXXDJjsOwGOZJbn
-	 jdxy1IRC7v4xAjsIrHPzHSTtR+yWxvhHddNJlK4RSEzryGAgYkHiU9392IxR1qvkkX
-	 GGXM7I2+M3iDA==
-Date: Fri, 16 Oct 2026 09:11:30 +0100
+	b=Ev09OFLLtBq9nlj0KDPf9/IRstqtsFz6Ma9lLNEXCK2KFDc8mIwCsD6RkeuW1o9Pn
+	 L1tsgKuXM3Vc4nO+qGqC/yRqr/LgVTCxJ8JTrRCv80wO74W4u0WZCzTFCeNH/KCsuz
+	 Ej+tFS73V67Vigzz5INsrTgs/0GbW9IJRGhER7LjpjNaTh2qF/RErjWDwFIj3wZDMC
+	 4600l59QruiRbPJR1xEsyvCpDEgAM7wwLwfQe4XQB0nBqP0WDW7iIQLn9+kLdCx3NC
+	 DLUbbWC4bn4uBpjd8S1NyvsLr695f0/LN/geC7Ni3tVb2iTM2ZoRUzHk8W4YChP+e+
+	 7cDw+MENd6qTw==
+Date: Fri, 16 Oct 2026 09:19:13 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nimrod Oren <noren@nvidia.com>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: stop recalculating min_free_kbytes once set by
- userspace
-Message-ID: <atHcD0azFKNLvPN0@gremlin>
-References: <20261014140859.1006967-1-noren@nvidia.com>
- <20261014144823.8c89da26c547fa95936a2fe5@linux-foundation.org>
- <26103c38-7b22-4176-8bc3-63e4b8fc6bbb@nvidia.com>
- <20261015173826.e7ffb7333fb84f5be927ae88@linux-foundation.org>
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Daehyeon Ko <4ncienth@gmail.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vma: avoid spurious write locks when mm->mm_lock_seq
+ overflows
+Message-ID: <atHa3-KlMPg6oy8v@gremlin>
+References: <20261015-fix-vma-lock-overflow-v1-1-01beb245d9da@kernel.org>
+ <f5548d05-5aec-42d0-b9d9-c14fb575dec9@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261015173826.e7ffb7333fb84f5be927ae88@linux-foundation.org>
+In-Reply-To: <f5548d05-5aec-42d0-b9d9-c14fb575dec9@gmail.com>
+X-Stat-Signature: ggay7ktkstepfuuzf9kmqaiddrsyc4rg
+X-Rspamd-Queue-Id: 964E1140009
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4ADF61A0006
-X-Stat-Signature: w6iozujk986kyi4fbfpp57pq6imjha5r
-X-HE-Tag: 1792138301-809383
-X-HE-Meta: U2FsdGVkX19Y7rcOCt2aTu2z9z6uCILuLp+hCZAoPJgtm6MPJRg7Olao2FY4wFlwaCEPlS+BmTOGdGLzus6eI3XOtrcaTDasZIqbEG794cYJECcBRA7GJWjjjZOsA1VCGjPPt5ccHwxb+KmdM6d8FBR6fJmEsurqIOylTdjv8X4EoYSeVxWnr+yvKkiZlXTQjhCLEoFsmyfMFSNt9axUFzdM+ZkS5eafyfVtKicw6O6AuMAboFcMvpGC69wpsKw3FvC1HID98nQ3pIK4YznDRoBuGrpas4MzEbQ1uMao1Vk/cKRpUVMLHf1e6l6jK5qRXK25ELQogSJnApraqWXBw0nVHgF1jFQc8tVhrGyEvjNBvtJmRUpOHshR/UfSxHcMPr1tYxrgwAxnQ2I3T0vEliBu3YUMCwzc5dWUbqaPjLXjbmaJ+Ozjfiocfy7pcn+IOurg73QzTzJL9dPgA4AJpcwuDyfndTIjGpxFfNjkl4rNEdlutdmO+7IvZrBiQGkTSEBir+UZ3IMo+5DSZC0KhwoQ+RjI1TO7f4YKRORgahlE7xTFa5l86evJDLlsSC4GrUxKyB6rFVnYy0Mo1CiLsJ1UzOMg9eiKT/1VAlfAmj0FyVa6sLXlTHfEf6kCgk3jMo/htfl4tBX40AiqrM3qrNTN2KtY0q2jC9uFJJnJRu0eUoBnUt+wmjoRIx9quomWQtJqexfma4pqbEk+Y3tbQ82qBHa5JgumSmDSp9tzD95up9pW3zn4Pz1IWt+o39MpfHsfTb2J0RycSl40t8Gm0RJPV3EYYGLZIhuVYs7j4ztjsm356dS7oHRrrQ1H7fkYJ/MyIijEkvwu0kwkQ/soFijWngAVRnX+TZ4N2sEIVnABlDaA1Li/F7UxEjhlI5v9Oo/LqEL7l2fjbERpixOr05G1j17B5ecnsYxy+2UlxDClfnx9FhV2HsnGl0bxf4m3pfEHJe4y10JxYG5og52
- zagYEhSv
- J2YCfLio7vghU1QbYTu/P4yM6bSu0TEIhRq4ehomP1+Toi2xB2qEZgzUlAKNbG5d3ekDWkir/KFq/5kQv4XYU3d3VvFX5T6Cm4aLcx1hZx39mXJUFW3Y9PxkqP0DOotMi6gaYBpBwkQs3evSBlMEB/qx/jrQXPaGN1RCRjykDfHQT8W/A4lAmItOMQTZFJ+1sa1w/+zYG376wFnlTOXlQWyTt8hzCuvN3iuoj0cl+Fi5S5Ph2/xvBsHn7WzHMQqdL59y3jezh5uGXpyCl60vps224LkHekYBcgkiqWCFPqcuZ6bPnDjnHaGEIzA2CUY0O1kKrAAKE66H36pyBVtRKPmvAzZcG+g5S03AdDuHhq8fLZsdVwaSohgaEqg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1792138761-756673
+X-HE-Meta: U2FsdGVkX1+CPMcf53zchTdG3IoNHqbnpZjMtOVZfb3WbwdUaoAW37PsvR+MqRamb2ZvgHBVsUabAXl0COIFxftU9S8FjIBqRY993uPz/tWzuc9L1yMlSrnZizyjQznUas4zZ8csCYoO13BZE3bstMFYMevCf2hvoRXqU/sPBDy5tDcond3WYlC6nkn60IulZ5ytq/fwTk7g5xxi/F463dn2hQAMuuoWB7xRTiXsHGLU7s/N04WyzIyjN58D4kUB+KYvQQ0wLly3p4v4TIynYaoV6Rb7FOZATw223muV2M6vPom1vVEzCCoOysU+29yFCK86j5ml2C/eHWQIneTUPSa675q1R3VhRe62OlMQJRwBTgzj3gkEf5EmM34NMKEM1YNHGZ6OU5hZ/pdKVPfU4hNKlxVaUpUE6pICg73lWdCQfpSO5TSIIPFuM3iMJCnEx7rQeG64tiK2ZHhO462f6RwEuEh1as7fLmni/Vz9iyBjCM5mJbK1bhoV0sFrvc/AFhcc4uMmctHl+Rb95tld4OWyqhX2RQ79X1lfMTI554RGVogCQlTKnigtTdDq00Mr1c0mxeSzKx6c835LKV5VgCWdbEF0jp4J/eTZevdTahrtrKcI4PTUzozDoLRPrsWBfQGhisgLb79mIOl+RLauaeaG8fAae0Q3wP6SK1Up9vLDjPc7fcu3MFyoFGAdF1vxjilnlCdKfzd73hAkECkp/9Nrg0hVczAgqHh8kAQRFpLdLW8kCCNBDmDHoxTAq4qT5TR11IXbbzkC1L7iVBNpeZSSoh2+27Kd82c1b6B/Jcz4jOy4iQkSCx12TPSD5ZBfSHLNJHetRhVhwvmBhyzhkGYo/Wys/32011T/Fks3xKACCxVLSBGrAG4ttCEGVh+aZ+jXZ5WQnBA0tHw1YloiDo/o+VGhnE+WQxl0BghFf4jAwPo/hGtx7TrD69VshxaSsp+iJ2VdhrdaHQ4f3Or
+ OUTpw6n2
+ mpkIC8fOP5os513cMbtvJrHjArhJOzoOAIQrd+prNK+A5sRVzur8SeCwAX/I3JMIJhguJ7BA9dPsL45OKN/fgFiAzTkB7+MPEE6WLF1F6pY5briMXnFCl7XxlOVVd7xvg+FNXwJvb2EMTDXjyul1N3AsFVgdfzl7eepmPkc2C3LEW5NJpsr6fmDg0Uclm4ky63zVvschTKGZszZsW+4j5LxKdiSB5CE5mwkNKDEkE1yAtYL/Cycq/1NHT63y/Y8TSfCLsArfcb7WrwYXz0/eEGUJHLxoF4YLfXw1TG2LJCZwQeILtYdMHqWSEMXdTCwR/OaP9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,16 +98,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 05:38:26PM -0700, Andrew Morton wrote:
-> Do you (and others) feel that we should backport this?  Or is it just
-> not applicable to real-world users of older kernels?
->
-> If we expect there to be non-zero users of 64k-page kernels on older
-> versions then I think "yes, our users will benefit from this".
+It seems likely that you're using AI to generate these review points. Please do
+say if you're doing that, thanks.
 
-This is a functional change, so I don't think a backport is appropriate. We add
-useful stuff in newer kernel versions all the time :) users who wish to benefit
-from them need to update their kernels.
+Normally that'd be totally unwelcome, but both Sashiko + local AI missed these,
+and I have made mistakes here I need to fix, so this is actually useful...
+
+On Fri, Oct 16, 2026 at 09:41:28AM +0200, Jose A. Perez de Azpillaga wrote:
+> On 10/15/26 10:31 PM, Lorenzo Stoakes (ARM) wrote:
+> [snip]
+>
+> > The reset, performed in reset_vma_seqcounts(), only needs to WRITE_ONCE()
+> > the value. The stores follow the smp_wmb() in do_raw_write_seqcount_end(),
+> > so a reader observing a reset value also observes the VMA modifications
+> > made under the write lock.
+>
+> the writer side looks fine, but what orders it on the reader side?
+> raw_read_seqcount() is just an smp_load_acquire() since d0dd066a0fa2,
+> not the smp_rmb() the comment mentions, so the earlier
+> READ_ONCE(vma->vm_lock_seq) isn't ordered against the later vma reads.
+> couldn't a reader on arm64 see the reset 0 with the old odd
+> mm_lock_seq, pass the parity check and read stale vma fields? would
+> smp_load_acquire(&vma->vm_lock_seq) be enough?
+
+Yup that's a mistake, will fix on respin.
+
+>
+> [snip]
+>
+> > Cc: stable@vger.kernel.org
+>
+> the parity check relies on e5e7fb278e59. before that, mm_lock_seq only
+> increments on unlock, so locked values can be odd or even. should this
+> be limited to 6.14+, with a note that older trees need a different fix?
+> a straight backport of the odd check would ignore write locks taken on
+> even cycles.
+
+I have a plan for older kernels (just make the value 64 bit...)
+
+>
+> [snip]
+>
+> > +	/*
+> > +	 * The VMA seqcount is always odd if locked. An even value can only be
+> > +	 * the zero stored by reset_vma_seqcounts(), never a write lock.
+> > +	 */
+>
+> vma_lock_init() now stores 0 too, so this isn't quite true, is it?
+
+Yes it is true, because as the commit message and I think even comments say, the
+VMA is not visible when detached, but it is visible when attached, at which
+point a write lock will have been acquired by definition, hence non-zero.
+
+I guess I could add a point about attached here.
+
+>
+> [snip]
+>
+> > -static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+> > -						    struct vm_area_struct *vma)
+> > +static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+> > +					     struct vm_area_struct *vma)
+>
+> is dropping the inline intended?
+
+Yes. inline in C files is useless.
+
+>
+> [snip]
+>
+> > +EXPORT_SYMBOL(reset_vma_seqcounts);
+>
+> since it has to be exported for the inline mmap_write_unlock(), would a
+> __ prefix make sense, so nobody calls it outside vma_end_write_all()?
+
+Yup, that's fair, will update.
+
+>
+> I tested it on x86 in qemu with KASAN, lockdep and DEBUG_VM on top of
+> mm-unstable and saw no issues, but I'm hesitant about the points above.
+> happy to give a Tested-by on the next version :)
+
+Thanks!
 
 --
 Cheers, Lorenzo
