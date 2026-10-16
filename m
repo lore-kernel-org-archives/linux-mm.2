@@ -4,122 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EC18CCF2C3
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 18:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27164CCF2C3
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 18:42:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 160FA6B0098; Fri, 16 Oct 2026 14:42:06 -0400 (EDT)
+	id 4462A6B009B; Fri, 16 Oct 2026 14:42:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1384A6B0099; Fri, 16 Oct 2026 14:42:06 -0400 (EDT)
+	id 41EFC6B009D; Fri, 16 Oct 2026 14:42:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 050FF6B009B; Fri, 16 Oct 2026 14:42:06 -0400 (EDT)
+	id 30E9B6B009E; Fri, 16 Oct 2026 14:42:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D42BF6B0098
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:42:05 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D43361A0581
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:42:04 +0000 (UTC)
-X-FDA: 85329358968.29.A555CAC
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E205514000B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:42:02 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iFz277i6;
+	by kanga.kvack.org (Postfix) with ESMTP id EF7546B009B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:42:11 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 89A831A057D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:42:11 +0000 (UTC)
+X-FDA: 85329359262.01.0A4F27E
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8FCEA4000A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:42:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="e/Bcq3Od";
+	spf=pass (imf07.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tjmercier@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf26.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=tjmercier@google.com
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792176122;
+	s=arc-20220608; t=1792176129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4MGdpuHW/L5Zmmr4IQf9JmPKDG4lNfOLKsaZahdnDXI=;
-	b=MIxijox9E1gG2uCMU6+zwjiYQvfBeJB7rlbnJsmWJincxRlPqlQoOgCnnI8CC3yGumyE9Q
-	nBKi4SKCC5SvLzDnSyWCZ/uviPlXM38HkLYg9sxiub0r044Mw1J7UoAZcMclK/qaAqEZkk
-	Pu9Iq68lyuiAp2e9jBP5vgUuqNPYaeM=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iFz277i6;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf26.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=tjmercier@google.com
+	bh=l1xjoNmScVM7o+Z3W17w/ZXE10zFAZ2XykabI7Wb19Q=;
+	b=xqOuo+drxWUsWTE4bW9ZyhEfJzCTgx+MtWLLZgKHvMvKTPDYhxxGRPXPphF7U3fYs73H7u
+	qcrkEgOuA5D1/kLhENmSCk+5Aad7Kt55mQ3qnA+i5KPtgduR8xaISRbgRh1oRQ1v1vHbl9
+	Prbt2Css9hbWDrNrFqu8PqoFMsCeiJo=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792176122;
-	b=uYNrNF9cNrlR6qxqwlrPllRrl6GoRmoYsF9FAELHWu7RJKbMkhOBNQwypgmIUBdqrZ4Fjg
-	RCOrk6uSQ6IoXy+fE4hMpg0UG44+ask+sugeXMLy2SKUmDzHNBCvBalgZGFGiSauxfO7Df
-	jpK9Gp84pkDrD9jtVBKwUTERWUXW/ew=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a021c28046so5575e9.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:42:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792176121; cv=none;
+	t=1792176129;
+	b=xQieJiVatK1vNklwI7y0uNxxQdv2NSXB5fLCtgMZ0w5c37NrWROVKWoEx2F3PqbFpB39QF
+	ExjXy+Qr2tAf8EOIHKGrK6u/C8CZdCRBOfLloWCQ04pTOVW6CjbJQSycN2TF/FLWXtoHVd
+	9IYzM2LAbwy7REhJrD8i59tN+wekuLc=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="e/Bcq3Od";
+	spf=pass (imf07.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a021c28046so5645e9.1
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:42:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792176128; cv=none;
         d=google.com; s=arc-20260327;
-        b=HoJ/gQE0E7M1t8AU0eJnmaD+dTLTT0g/EOKfYOSTA+lWKnZhEtVrM05U2dxcBLGZNH
-         oD1txQSLJNZgotnC00NrAmtqJSyY6OglK+hY0HlmY6NN5viwrpaAp4oG63cM/XdaYlyC
-         bgGfnPrNn5gCI5RM2iQLOthNHzJR+R8BSwSC41C1pK8LQqic/EiuOUrhN9R7HFyvw8ia
-         rhinOXyYxnsAVQE5LQmpVY4JnwuDK66X8likH9WkZbylSe+qy/yfVs+R57gBlkTpVgCC
-         ixia3aRv1prW66wjPXrXVbkIbXLUe0P/11s49b5mebjpej2EMlC/VCnfb/uRBrGEnbi9
-         o5/Q==
+        b=fYFR2W9Cpj0nCmL9uI6pqVf5sBCK6wboz5ktbHPCkRIAM/4APIYo2qTEZLahW1EDb+
+         5qSZJcoMPPygUyEWYhQTk0dWdg7qeoHuugqBdH3sUYVCrQ7QggaVwpf3B+9pRqFTVxCK
+         hOprcp+LRqd4biW6dZULA152MIplr7KFHLQBMLna8pJQNIyTcxNBISzVbY7Msg2VGRn8
+         O5/nLlt0RNEvwQwFfCi9ezk89wARKDH0XBgFdU2CJPpp54qGnCF/9EqZV/7lt7VmUGab
+         9Z+ZM50TQUgHakEbbslsSbt2qOuhC+FVusjy+MI1vYM3FAiva4hJ1wttCKudIPSAdS5D
+         3n8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4MGdpuHW/L5Zmmr4IQf9JmPKDG4lNfOLKsaZahdnDXI=;
-        fh=6oLasEdJod0WmwVvBbDxgHTi0d0xXj1IBs3VJuJ94Zg=;
-        b=JRUSDmEhlxfkZqAPS3aBORDvvqvCqqslaAc+nfNhMMMoHc2F5TfPN0sD2HlzbHZLmt
-         CJxHl2VcVIcJPqKmYgnwYRVi1BrcxwNYPkk2GYNaDxBvsUbADkKf11qdvly3YwIQUUhY
-         GkMfPV6gdVwY3DXH3+kdSDAPvyKtICCZAp3K8k/MctqAc4ZTf0GhcQhl3F/ByEl+aJOE
-         nx/wKDVCuK4FvP1t6vAgVvIk0KS9cq/ZYbloNn0M+3QZVrvj+kqtOh8SSa/PPclMywa1
-         2Dq5R9YDexh2btWkp9hl6KPltyGjChi4Fyhol/cNqMK1hAEz9OQ2jA+ihCL6ZXOPB0Ue
-         n7ig==;
+        bh=l1xjoNmScVM7o+Z3W17w/ZXE10zFAZ2XykabI7Wb19Q=;
+        fh=uVSbaY/2mM48sqz/DuBZY0MJZI8FLEY8XT7mXCclwEM=;
+        b=YRlVvTssK0z+OOSHntijDmZkb0nkzvh2svE1o1crLoQ1t5H5ntt4fCmtHOl0BNROTK
+         x3ZNje/9hzzlVsihC3ijRuaNvq1DBB9mUcdmd6iJiRiDvt5EWJOcOAUQLhfb3rSHLyUU
+         m2aNUyAMrESNGBx7SXU7gmH33U7XAGa2NNbUiLhr9vs5E/s5tP6S3T4a38ffQu9RJ96L
+         clO/yVQ3QWYaMinQTvxEDhXw27EDLEuxApYc4u9/7lK/6F8Q00RGy8V/erYM54CvOPzh
+         4wPoyp5iGCYiHzDDFxZuUkJ7p865yX92AzoAHtv6PcRxBRV5pQCVgNRf9Zva1sMetb25
+         +Suw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792176121; x=1792780921; darn=kvack.org;
+        d=google.com; s=20251104; t=1792176128; x=1792780928; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=4MGdpuHW/L5Zmmr4IQf9JmPKDG4lNfOLKsaZahdnDXI=;
-        b=iFz277i6uIof8va8piLT1m54Gs7/x+F6JP1PRqyUyXUM/mcY5qGnI+D5jS/hwxtvw8
-         c43NP4+s2zyYRbv/V2mPBkfnsVHfRaESfs1fDFqLiJSr0qjfwhzHIySdGSvVIQh8UoRn
-         bTfbKxumCwxDLpOQY3JXaG8q1T3o34iFhW25u5311Jupjy2PzXs637E8U+nWPbpi5c9f
-         570FqO37aDwsGrleC/7byF7JtqZ9WHpmo8XFVLOBm+BIBYhmhgEflZfliYkTyFjUKVu+
-         pvIVLUVKAzIxVmraaWUvPuCgkDV4DXru4Ied7NOqc7ujeBvtAwz3Egyl455S6LRFTAxW
-         CPhQ==
+        bh=l1xjoNmScVM7o+Z3W17w/ZXE10zFAZ2XykabI7Wb19Q=;
+        b=e/Bcq3OdFqNHpsCPH/6mmSUhS2Co6z7/pErg6XDiLPQBm4s5ODhWniGoru61p1MJfI
+         XO/UNnFTtCEOLGWaMgJffSTFOa2yKxKCex95saTz5HzPFZsX71wALkni6Y8LC7QBMPRd
+         uEXnc4NzZEdNnZO20hFp3mRhT8RNy9VfChMdbjnimz8ibxP1HT5FrEjOMQhkag+X9VgX
+         1Ctvo5dHy12KgiXmoruCgqdU9VektJBOR0X3rMGcIuEiwoBo9DHGexdZcmGVdYaDvaav
+         tBMDr1D/AdIkDPi9KMAWJTMmBVtW7QAihjttKeBWLSXXPem+lNn6NH9d7I6qQEsWrcMi
+         k4Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792176121; x=1792780921;
+        d=1e100.net; s=20260707; t=1792176128; x=1792780928;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4MGdpuHW/L5Zmmr4IQf9JmPKDG4lNfOLKsaZahdnDXI=;
-        b=C4/Gpj5QY/+i20j9EwbX0aavUgArz1NvzrWYCjWocB7ewEI3f7E7G38PqKv71TCIri
-         gxIBEIxd7JwjUqEO4L/P5ny6wNKReUFj+iTfDHPNaTQsyQkc2cHTLvH+Vf25PSA7auhV
-         QOf7K20z1uefu4a8Nza1eQcCYFRfitBGPvOOUlQRwuUutQQSa+1Cn4ZR1EElpKhWbkEN
-         Ca/x1r2t55bAKtcJdkNvY9+Rx3erg/rkN1/xrnH6vWo5bJMNwex6Qv4CTgogYeameEvB
-         Ta83Sp7DsQktjJdNAfKfm94YvmVSttWfteylaPIyFmQpLZB1UnW/7sbud/6Ma2wU/NTz
-         ip/A==
-X-Forwarded-Encrypted: i=1; AKwUvBzG53yo7wRaf/TukpclDjRE5CZLabBaV/66Uxo/mHxRSx93nUPxp5tdovPZPkpf/uW30B7SqsK6Bw==@kvack.org
-X-Gm-Message-State: AFq9FYJM9cIpWzdnN0V0r2m7YJXpXMHBynGp7eKP7hmubmq3mMZP82oT
-	i/PmcmRswO/Yc+wihSYqNEq3RGyuNK2yN49BVOc/xnjyiwdcY6XsITQD6d+lF7fHp58WvcTKJum
-	pERyxF69gsJc7aWac/L81WnUC41kO6GeE4P9Yj9Le
-X-Gm-Gg: AYBFou0nOY7G0trFx6CR8PQN6uHMRdHi6POcqdMhpc4pNnz8D9lhTF+HUCI0kdZeJiv
-	N1T57s62CrzxuDgkJfGoWlZ8WWzHGt5xVprXeEswuB9ngD0ZO8B7qHbTwlE8Xb2jZOAd9DDde5Q
-	+4aP6MVBPaW/MzKoaCK9UjfyxnERvghm9ghvlRDxN8hj0qloF/9K+PRVgyZpX6aCHfcjb9tSzmN
-	83TJm2PZdIg/loX+bWbWos4oXV9nQ8qnMX766k+YoJy2JklrZvxNEutg6Pe6xI/jGF82ADztS26
-	pwH8lq3mALbFU0mP8SaCZy8MsVIYiI9wvdtDLdEhIe39zdOG3OSLbnYaeFwmANcsx8QgpYF2+JI
-	c9KZq4KgdCP5FdMB8hVGhCc7MufeGWywJbs8Hl3UqMw==
-X-Received: by 2002:a7b:c3d1:0:b0:4a1:d373:5759 with SMTP id
- 5b1f17b1804b1-4a1d89362c4mr66215e9.8.1792176120903; Fri, 16 Oct 2026 11:42:00
- -0700 (PDT)
+        bh=l1xjoNmScVM7o+Z3W17w/ZXE10zFAZ2XykabI7Wb19Q=;
+        b=Rk1xYcnylYv1SPY4z67+IbSiilpR7rmDp8tPm9Ie26unDoIfrrf3uw9JoF0IGQKNCG
+         GWgqxdcr9FOSZh7r3eEQR5mfFKad+IWkp9xC+LwzArVqd9V93GlS8PFhO9lNoolzX1dO
+         dxLEGvGeps7f9d9n5C4IbETqkh1cbkz9Smd+jnpze4XocTPwM/hTGauyNuGohYOnCAp4
+         APG6rQSGdUvcAoQfWO+JsRiOU6tgW1G2AWq1gGD8p1bqdmeaTkHZAMLRwM5K4wMnFOo7
+         UZ2V1lVXb53ChH/e7vSP4GLnmbDEF8UNNOCkBmRU6xQ2R5pCAt08j+AFqWd0E5Y/DoEn
+         1ZYg==
+X-Forwarded-Encrypted: i=1; AKwUvBwna740mCIPpaWm+fT9gI3F9+B0ckGR9updFZVi769TBVZXJlsXJYyQ2E4WlJGFB6gxprOfn9Q8xg==@kvack.org
+X-Gm-Message-State: AFq9FYLCwmIPp6NSKQS5v4/kkfeGTQuJMSErI2XIhkCRa2IGK07F2yVI
+	u2feE/NdYLOxkXtrfBIkXR7EkWfSMOJOLPOBvdJGCQdH/tvJew8lS5rBa+GmdEEKZJZ7K3LW8Oo
+	GaVoAXmEV7BKGxpuERbugSfU+OjyCn4jFnRnS+f2y
+X-Gm-Gg: AYBFou2Ey3TsPWZiw+5V3EHMlNXI11vUCjRyTQzJyuhfZrm43Etu6rkTkv0z9PGxu4S
+	iFkpBf8AZR1ftI1hkO15X6v8gHp6LhVD71IrhclqH8SWrjGVZJUjGM7RY3lwXU9czKCLegUaap9
+	4h8GEGQnjG1MQQR4vIa+tqiNwSHBqfSzP+3iyz7NQgtNiJgzxz9QySPwjgKfK5qIMwtcGZjsYl1
+	9rWkrM5SgqAyE1nXOyhz9QU/zMRGToXNMQ9Q/Ng3z5QAhz7spi2MqcwAd8dosukRjjF0HbmVeFA
+	x1HuOkTe3Bs34wAve1a6n3qex3rWQVht0X08tFrh5BBdS2leN1ACbbR9uPW2d8FsrJWT+Pti95+
+	EcEnN8xRHi642IDRRcj88SgW1wUoWVZvaaVa3OJ3IkS6Up41yDybexPwUy8LL1dcCLQLPVMxNB1
+	qtikiFo9aSb5WZyiUzf3J1mK7m7WefMLRzZlZZ5wqrt1M2
+X-Received: by 2002:a05:600c:5249:b0:49e:b733:7277 with SMTP id
+ 5b1f17b1804b1-4a1d8942d80mr134455e9.2.1792176127813; Fri, 16 Oct 2026
+ 11:42:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20261016-binder-memcg-v1-0-d659b8ae088b@google.com> <20261016-binder-memcg-v1-1-d659b8ae088b@google.com>
-In-Reply-To: <20261016-binder-memcg-v1-1-d659b8ae088b@google.com>
+References: <20261016-binder-memcg-v1-0-d659b8ae088b@google.com> <20261016-binder-memcg-v1-2-d659b8ae088b@google.com>
+In-Reply-To: <20261016-binder-memcg-v1-2-d659b8ae088b@google.com>
 From: "T.J. Mercier" <tjmercier@google.com>
-Date: Fri, 16 Oct 2026 11:41:47 -0700
-X-Gm-Features: AclHuK9APEBKrgB4cPVdNX9-JhNjIO32BvrHhv1beJHZa-WfokICUu6lsS8CM-4
-Message-ID: <CABdmKX1L36W0aZmhmOgTJTJwoMA+t4PG4ok3++G6Ggfg-RvfFA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: page: add Page::alloc_page_memcg()
+Date: Fri, 16 Oct 2026 11:41:55 -0700
+X-Gm-Features: AclHuK88AWrWkzvJx0KAHsGzJXLD0z9tLNjEcqb2uVEbpJmeuWX5FgW7WUISGzs
+Message-ID: <CABdmKX1fLKvC_TnO3g_DkPjcfoXiU2rM-Fa+ZjriYctVQPkFTQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust_binder: charge allocated pages to memcg
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -134,14 +135,14 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@goo
 	Shakeel Butt <shakeel.butt@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E205514000B
-X-Stat-Signature: mpjk6cyzxo656ekh1ip1ecpb7sn1dtjx
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792176122-797218
-X-HE-Meta: U2FsdGVkX198XWahJKQKa+IJOGG1I9KJpAQsTqghrLLmr0ba+EVcc5fZUd2II/GJ7yf5oufWetIpOR6f160BuGkMPYeiX/KIs8YIuPloIljV01r1ovCfmDuEOxxiW4uXdna8Dy2hZohY34lJ23sbzzxO4zRKsfXn0uxbSzbMeDMqqPwU32NU3N+j+x7uKthLcHAJsCG45HUd6uaMu5ifahDpmEdnGQFUA9VRVj4QCu35YszsCSFphEFwfLpS+CyRVNhQJBgdA8rB+vQEj6yvJjJDE8PsFpOSQXtPWy0c5kMmp4kyrR7S/OgU7xq3lZqzSw3vWWDX5R/2Ac0dBwpXgQ/GIhM68Em+tW1nI6RSDOpMOjGqlDqwy/mTZ/OXZl3Vz20DEEdEKeJmrpMyt3+/BsiyzMO6lLBfVDwUfa4rngAWZBySZBo/7hTe22OD31y7l2Qa11kTSKVUqUuuYDnEVQ3Ow2Azsv8uFFPIPLFrRdzCmrl0CWJmYqnObxiXGWGJSOZofDZ9DnymBjjvK7SER5hTiePGb+u0BPS2iVv1EFjSPNk+stsh7xEJZyU2EzWMs9DVeOsrvivGN0qZUUQGF7JKhEIZoTYitiFfjM9EfvD+HuUcokEGeQ4HztFYssS1IHn9vafN8ry5nmjxDHfEy6RH73MeeAVbrrNo72RX9Ag6BQknJ1D+0Lq3AR0mmVtkAAXCrbCRXY5YHZLndGbR8cG4Ss8rQcXoNmE4/sieBnK9ZNYB5ZNrp3jYMODdqb9zdg0lD65Gki0zVOeu3Assi2uqbhfAzjjADT4No7s4uhf74vGHZyNQY/GO/eaovNns8ZX7Tj07ACTmeG+qN/qanZxHpGsGHVQQnjkyv6OH18n04BR607jsvtpzoRFyDZiQukArcvoKmMfDEMSXpci+3gyyQ+mf+ZFSq5sJexuDCd5YuPqmQwaRofDagneXXXxPFHxqC5KU77gQq1dp//b
- 7ODH2/ao
- 3c9r0zQ/94WrS59lQwPESP3nwnddJoNUbm/BklT3LhOdUn9KkzpM/tNypnMR+HahVNkFM8ZoYKuDHaqufpiVeKlxs54EqFi8GjEapQLDwMQt0V2D/8teLEmv9ooJvRg8aScMSgX7ofzu2MpzmfSCVi7Av3+bTqovcGTEt/nChtZ8zwmFIhLnQ4R/ifza2HRr49pzMcn45SOLK7QN7Wj91lLBfWo0p9nMlObT29vG+sQ8fQDM5OlDRbBKyeorN527ozLe38iM1cYw+WoOlHpOKBMHNC23QWX+v0al1JOGjZUhSgZF0qMwNXBiAbaWlA+Ta37F6LqtaXLxuYQ707xKIa7MssCdY3XK8O4Lm
+X-Rspamd-Queue-Id: 8FCEA4000A
+X-Rspamd-Server: rspam08
+X-Stat-Signature: siinmybdmar8a5hx11skj8q3q6jtwd99
+X-HE-Tag: 1792176129-159191
+X-HE-Meta: U2FsdGVkX1/uoTgVBTvF/0AVavOfJRziSiNcAqFyyub3f12dRq9ZteACq18pEdj1+FsfF/ePVTXRTN0J5kwCv/CRgcXRRIPBfVaa9stQWhmqUASd/agpwY81ZFi04+moUsm2gHfYusesZ0/qyQQlrfpMv+FNjayD/V+ffUkbDtfw1YPepYIEffk0L4yIR/JBiVKHFp+9YsHMuQHgnmCQV7pcU8CWV0BlL7OG3cOKMKvPia//OT0QUL7sZUJrbuAPW9PqeEgPebDi/B1MlPRQpNi/Ec/DF0PKgN3yAS9zqyoVbozQNB22PsLSnMrn4U6Xwf8HiopbcMwuWe2fYCHRFWoaUHzh8q/N2ZHpne4j5dSLxKWADOZvDfVPYPDd/1QI8/Fb5COIg2h7kN/0ENCFW4DUBbn7N6O2OjUVbKNIEV3tEpsCd1KbY5A3Ymo6TcCyKv2UUADDu99noNdzzPxP37hDOLzR9KYM5JkOEYFSiX1MQ7OX/+JoSqMZUlbboloSFXAjZOf43KXf4Gnsxiq5OdroI0/Hoq1KJpdN9eT4rlEsRcGuAY1iqIF0kwKYzo4qHimbr5rWQMgzds9gy3ZUI9Iofb7ulotPWduz6IAXuwgvT9rE1zpr/vi4pq/o/4lD9cOvpJv7NJAxg0WZQxS6h3NwHFOH/YtXg80K4bXX9w10Oh45x77E0/DOhllcvADDUv8lRwPIxMtRNhvO20goecgwZCMSviMmphbYQqVWma7JtQm1XTI09iaw61sLtEgeGUjG2uaUIq6HQnM+Dn+L6yTwqCvDCvZK7fcS8gnibuzM6chKLuCsTr34JQVW7WDBOgUowY/ejoVLqX6GlriH0PAfdRpGIt2MDgwWJlLvcWhDSv9XPeknGjoBGi5SdZeE8Mcw0lhs1uesu6mKAA6TBlcjml13aHggf/i7axMltoOlE9OXBam+8TICca8A3FEofkjQLYcizmWUfE3ULuw
+ 4u+vGZKO
+ qc1cP1SsV+8lcerwFf0njH7MzVK9ut1GdwV/Ouvr0Mnl7EE0kOyvaDKk42GKkrjc7CfvNImIF3zbLSVt9RU1j2V573yH71qBoW8P8v+vum7tSFZGVQtjMpz6Z1hqyCC7p8FEaF1/zKjqDbEJ3OzUjqDuRtJ5cLFKKE9+31oo80p+F/6Rr8qr+PKDqRr1dkX5mqPYDAiUEW+SB8CLdVDUsNJ7gd5n1rewWh+sZOFjaUBudf8zclvtt//nkEqDiCLkPnfFoZx/B90cPXMWsh5zf6Ac46CA6IfMlJ9j1B46kH42Ky/IT5YRa4J1KcwKHf7b2wBR6s2Ttkt0wTMw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,153 +153,66 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Fri, Oct 16, 2026 at 6:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> Pages allocated on behalf of a userspace process and mapped into its
-> address space should be accounted to the process's memory cgroup. Thus,
-> add `Page::alloc_page_memcg()` to charge newly allocated pages using
-> `mem_cgroup_charge()`, and switch `Page::drop()` from `__free_pages()`
-> to `put_page()` so that charged folios are uncharged when freed.
+> Pages allocated for a binder VMA are currently not charged to any memory
+> cgroup. Thus, use `Page::alloc_page_memcg()` to charge them to the
+> owning process's `mm_struct`.
 >
+> Suggested-by: T.J. Mercier <tjmercier@google.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/helpers/page.c | 17 +++++++++++++++++
->  rust/kernel/page.rs | 50 +++++++++++++++++++++++++++++++++++++++++++++++=
-++-
->  2 files changed, 66 insertions(+), 1 deletion(-)
+>  drivers/android/binder/page_range.rs | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
 >
-> diff --git a/rust/helpers/page.c b/rust/helpers/page.c
-> index f8463fbed2a2..145758a8a954 100644
-> --- a/rust/helpers/page.c
-> +++ b/rust/helpers/page.c
-> @@ -2,6 +2,7 @@
->
->  #include <linux/gfp.h>
->  #include <linux/highmem.h>
-> +#include <linux/memcontrol.h>
->  #include <linux/mm.h>
->
->  __rust_helper struct page *rust_helper_alloc_pages(gfp_t gfp_mask,
-> @@ -10,6 +11,22 @@ __rust_helper struct page *rust_helper_alloc_pages(gfp=
-_t gfp_mask,
->         return alloc_pages(gfp_mask, order);
->  }
->
-> +__rust_helper void rust_helper_put_page(struct page *page)
-> +{
-> +       put_page(page);
-> +}
-> +
-> +__rust_helper struct folio *rust_helper_page_folio(struct page *page)
-> +{
-> +       return page_folio(page);
-> +}
-> +
-> +__rust_helper int rust_helper_mem_cgroup_charge(struct folio *folio,
-> +                                               struct mm_struct *mm, gfp=
-_t gfp)
-> +{
-> +       return mem_cgroup_charge(folio, mm, gfp);
-> +}
-> +
->  __rust_helper void *rust_helper_kmap_local_page(struct page *page)
->  {
->         return kmap_local_page(page);
-> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> index 1c0796ea229f..7a36b7dd6c9c 100644
-> --- a/rust/kernel/page.rs
-> +++ b/rust/kernel/page.rs
-> @@ -10,8 +10,10 @@
->      bindings,
->      error::{
->          code::*,
-> +        Error,
->          Result, //
->      },
-> +    mm::Mm,
->      uaccess::UserSliceReader, //
->  };
->  use core::{
-> @@ -195,6 +197,28 @@ pub fn alloc_page(flags: Flags) -> Result<Self, Allo=
-cError> {
->          Ok(Self { page })
->      }
->
-> +    /// Allocates a new page and charges it to the memory cgroup of `mm`=
-.
-> +    #[inline]
-> +    pub fn alloc_page_memcg(flags: Flags, mm: &Mm) -> Result<Self, Memcg=
-AllocError> {
-> +        let page =3D Self::alloc_page(flags)?;
-> +        // Note: Charging the folio with `mem_cgroup_charge()` only work=
-s because `Page::drop` uses
-> +        // `put_page()` (which uncharges the folio before freeing it) ra=
-ther than `__free_pages()`.
-> +        //
-> +        // SAFETY: `page` was just allocated, so we hold the only refere=
-nce to it and it is not
-> +        // yet charged to any memcg. `mm.as_raw()` is a valid pointer to=
- an `mm_struct`.
-> +        let ret =3D unsafe {
-> +            bindings::mem_cgroup_charge(
-> +                bindings::page_folio(page.as_ptr()),
-> +                mm.as_raw(),
-> +                flags.as_raw(),
+> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binde=
+r/page_range.rs
+> index 52ffbf3504e7..57da47243967 100644
+> --- a/drivers/android/binder/page_range.rs
+> +++ b/drivers/android/binder/page_range.rs
+> @@ -27,7 +27,7 @@
+>      ffi::{c_ulong, c_void},
+>      mm::{virt, Mm, MmWithUser},
+>      new_mutex, new_spinlock,
+> -    page::{Page, PAGE_SHIFT, PAGE_SIZE},
+> +    page::{MemcgAllocError, Page, PAGE_SHIFT, PAGE_SIZE},
+>      prelude::*,
+>      str::CStr,
+>      sync::{aref::ARef, Mutex, SpinLock},
+> @@ -399,7 +399,16 @@ pub(crate) fn use_range(&self, start: usize, end: us=
+ize) -> Result<()> {
+>      /// Assumes that `i` is in bounds.
+>      #[cold]
+>      unsafe fn use_page_slow(&self, i: usize) -> Result<()> {
+> -        let new_page =3D Page::alloc_page(GFP_KERNEL | __GFP_HIGHMEM | _=
+_GFP_ZERO)?;
+> +        let new_page =3D Page::alloc_page_memcg(GFP_KERNEL | __GFP_HIGHM=
+EM | __GFP_ZERO, &self.mm)
 
-I wonder if we should we mask out __GFP_ACCOUNT from flags? It's not
-provided by the new caller in the next patch, but it could be included
-inadvertently in a future call elsewhere. The VM_BUG_ON_FOLIO that
-checks if the page would be double charged only happens when
-CONFIG_DEBUG_VM=3Dy. Without it on production builds, folio->memcg_data
-just gets overwritten. We'd probably catch that eventually in a
-CONFIG_DEBUG_VM build, but not sure if we should rely on that. I don't
-feel strongly, just
+Not related to this change, but I think it might be better to ditch
+GFP_KERNEL | __GFP_HIGHMEM and use GFP_HIGHUSER. We're already mapping
+this into userspace (and now charging the memcg for it).
+
+Is current the sender here? If memory.high is exceeded, current gets
+blamed for it in try_charge_memcg()'s done_restock section. So if it's
+the sender, that's not exactly what we want since the sender would be
+throttled for it. So I think this depends on
+https://lore.kernel.org/all/20261010210957.1350874-4-shakeel.butt@linux.dev=
+/.
 
 
-> +            )
-> +        };
-> +        if ret !=3D 0 {
-> +            return Err(MemcgAllocError::Memcg);
-> +        }
-> +        Ok(page)
-> +    }
-> +
->      /// Returns a raw pointer to the page.
->      pub fn as_ptr(&self) -> *mut bindings::page {
->          self.page.as_ptr()
-> @@ -376,7 +400,31 @@ pub unsafe fn copy_from_user_slice_raw(
->  impl Drop for Page {
->      #[inline]
->      fn drop(&mut self) {
-> +        // We need to use `put_page()` instead of `__free_pages()` to pr=
-operly handle memcg
-> +        // accounting.
-> +        //
->          // SAFETY: By the type invariants, we have ownership of the page=
- and can free it.
-> -        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
-> +        unsafe { bindings::put_page(self.page.as_ptr()) };
-> +    }
-> +}
-> +
-> +/// Error returned by [`Page::alloc_page_memcg`].
-> +#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-> +pub enum MemcgAllocError {
-> +    /// Allocating the page failed.
-> +    Alloc,
-> +    /// Charging the page to the memory cgroup failed.
-> +    Memcg,
-> +}
-> +
-> +impl From<AllocError> for MemcgAllocError {
-> +    fn from(_: AllocError) -> Self {
-> +        Self::Alloc
-> +    }
-> +}
-> +
-> +impl From<MemcgAllocError> for Error {
-> +    fn from(_: MemcgAllocError) -> Error {
-> +        ENOMEM
->      }
->  }
+
+> +            .inspect_err(|err| {
+> +                if *err =3D=3D MemcgAllocError::Memcg {
+> +                    binder_debug!(
+> +                        FailedTransaction,
+> +                        "page allocation for message to {} was blocked b=
+y memory cgroup limits",
+> +                        self.pid,
+> +                    );
+> +                }
+> +            })?;
+>
+>          let mm_mutex =3D self.mm_lock.lock();
+>          let inner =3D self.lock.lock();
 >
 > --
 > 2.56.0.212.g129ede20d9-goog
