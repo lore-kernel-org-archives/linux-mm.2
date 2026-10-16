@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5AA1CCA464
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:17:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3934ECCA464
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:17:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5263F6B009F; Fri, 16 Oct 2026 08:17:04 -0400 (EDT)
+	id 8D17C6B00A2; Fri, 16 Oct 2026 08:17:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 504CA6B00A0; Fri, 16 Oct 2026 08:17:04 -0400 (EDT)
+	id 8A88D6B00A3; Fri, 16 Oct 2026 08:17:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4148C6B00A2; Fri, 16 Oct 2026 08:17:04 -0400 (EDT)
+	id 7BE696B00A4; Fri, 16 Oct 2026 08:17:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 174996B009F
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:17:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 95E3C14039A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:17:03 +0000 (UTC)
-X-FDA: 85328388726.16.561DC0A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA0CB6B00A2
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:17:11 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DC7D4041B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:17:11 +0000 (UTC)
+X-FDA: 85328389062.25.C32FB8F
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E4BD01C0006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:17:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=P+m4W8Pk;
-	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 78D40140009
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:17:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="f/AdlHhW";
+	spf=pass (imf23.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792153021;
+	s=arc-20220608; t=1792153029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WxZBoPVq89DlzEuXI3J15DiLUSM8TLChgH6sUBQbat0=;
-	b=Hn+IwAb/6nhH1onf0YrjzdIURxy5+CGTwGgA/FmaEcsi/DY1plCNPAuA9KE17ekmUUXl5E
-	iba6QjvS9ZxKZtPMYebH+V6ukr3TYzRSOmSP+tBmhaej7Dnx+SgdKxM65yC3ocfUIRv1iz
-	in+o4BJwS2/7dr5G9un2s0eD9ExP+sE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=P+m4W8Pk;
-	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	bh=kTUm7qXbyCgsHTfv9HEJxOPBCHA1vThvC9ghrXwjpTY=;
+	b=ldTOz52XKMgTPFdKcKmnmkHrdMMbM5/cBGpET56v1Fv5xUNCD5OfIcUoUn1dFH5C9kPF9e
+	uQ71P6Mc4DK3M6SMH8IzgdaQ5QFLv0VuNMR/6XTcFD1so1AbuM9ofKQeOq3LMICHXuwmGn
+	lGIRUxYrHyJ1MITWgw1d77//XYxhQZo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792153021;
-	b=8Q25d9D+6Wiuex3VJtP61vr5yLdDmQBtabz+x0JX8wIXeXwRxdfmC8QeiPwawZ1Emn+Jgy
-	S7iqQSCGdTE13VAEJfeTKEqr7iNQ7nqxurtYyDXs6CiGRFo6JfXYB5jXLbzbf9vbWSR6YV
-	vkVhLZGJiu5zLSglwxjz4ECXp45UtxE=
+	t=1792153029;
+	b=1jFwAlGwkFoxQkxFS3/pI9LmjGuLoGtEsPCpuVbnqfR3tOsV4zDJy1Prz/spnAfgpOMPdx
+	iVM+mOkO3PUMUHIBApt/eanP1xKa8ePbzaDv7IpXw/LjTD7EI2neDZXfRZfieJaBUW68Xe
+	WCMzdIerZw6PXLuR70bJMjdT23j/6g0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="f/AdlHhW";
+	spf=pass (imf23.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=WxZBoPVq89DlzEuXI3J15DiLUSM8TLChgH6sUBQbat0=; b=P+m4W8PkqhARrQ5Brokl80avXA
-	84uyde890m+wCCwjwGq0R3LSAoSAAILFQbSR3NX93ZwLKJvzzR5O+0ywfy53kR6V/8uF9L3es4frX
-	KCtukA6GfvdcxsV8f0+KnP6EEMd/utle+7sfi+IzenpFbh5P+5JtP0qMKfG73wmE+OXTxNSurAiBu
-	zAfK9gqOLyMfe5Ns2kzDh0mfRWpZmKO9fdRux/pJ87OXpwLRAExovKSeRM34ggjVsayuqF+rQ1mAa
-	YVUcLsU1z3kTyUuogpMYhgUwhTuAXYjQ/e/H+3qKUqqjoCus8kJFul5iZGh5GpGxF1XBmX/RImuEo
-	LZG90Bzw==;
+	bh=kTUm7qXbyCgsHTfv9HEJxOPBCHA1vThvC9ghrXwjpTY=; b=f/AdlHhWVl7/iGMWhkaixUOCvf
+	tkB+Ae+Jqyu8J2924KvdguVieG47XfGceFxrFOouqEQenHCCn43BJ/hTQG5aIccUIRY6Q8JMYx3Kn
+	C/b0AmbMY7ySg9aPXWGIrEYp59DuNW+o1Inkts3akjT2sUDagIxPorWDx4N9v/I82uCGa3gqf9wrY
+	6XLF4WYbBJsAmwpG2u1dngQVExer5a+rvbhj+xm+Mpiyu4Q6qNFeNjbTV2FEjFL+truux3/p1F2dB
+	ZZcfbVCvG+H3LbhDOirC8oPLzFaK4F30Yb/GlgnpvR3NmVP72Zm/lsR7f9Ttca9yMptimFv289H37
+	Ki0Y7GlQ==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1xHgrU-005xTu-0O;
-	Fri, 16 Oct 2026 12:16:36 +0000
+	id 1xHgrb-005xUR-2S;
+	Fri, 16 Oct 2026 12:16:44 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 16 Oct 2026 05:15:45 -0700
-Subject: [PATCH v6 5/7] drivers/base/memory: count the poison a block
- already holds when creating it
+Date: Fri, 16 Oct 2026 05:15:46 -0700
+Subject: [PATCH v6 6/7] mm/memory-failure: efi: reserve the inherited
+ poisoned-memory units
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-hwpoison-kho-v6-5-f304255147da@debian.org>
+Message-Id: <20261016-hwpoison-kho-v6-6-f304255147da@debian.org>
 References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
 In-Reply-To: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
 To: Ard Biesheuvel <ardb@kernel.org>, 
@@ -99,31 +99,31 @@ Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, rmikey@meta.com, riel@surriel.com, 
  Breno Leitao <leitao@debian.org>, harry@kernel.org, kernel-team@meta.com
 X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2711; i=leitao@debian.org;
- h=from:subject:message-id; bh=Bu/VoZNuiEdhEWGo00Kj5rCUiRZTVHSpLXvx6jo2EaU=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq0hV0/dx08nW5bcNGpUjsilj8UAtstZQu4E9fx
- 64pXp49b1mJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCatIVdAAKCRA1o5Of/Hh3
- bZjxEACogEk9bO3cK/jZkbLp0V62/KsgOz02SBwb5bR4Q1zqslmB7ZV+Ye0+X4h2hv93nOg1AZ+
- GmqOFkuuXv2Z64THfDAkVy+4hp+NDhgNZrABLVx9FRMvUj0VqbLzNMJPPuthfKFicEX7mdiGRBX
- WzMdSKrjz6HNxxlMKVnFejtUVrV14u0bbvUGzJGPzhE8FtHWZW5+P8K15Dg6VZWLH/mmwlKALd6
- vDO/r4z1t5hO/AZ9XKC3mXDDubJYi112HNKdbUrV3rlxayVV1q5a0Fk8CNDCXmzIr6sNqJCCI87
- Uv2CPeO0fOaXI9RjKqjxFaRfB8njgaHeUiBaSoKwY9HPressp8iADlgiW4emNdSWloY0F3sKYso
- UBcRwTDn3bXvJYQNLG8iQTnxL/I25Vx0DDHeOf7zDabsXmT1XtkEHwFuaHzIP099QPgUzc8zT9a
- bEkarLJr/TPOEk7KTkIZhwqoLz5B6XA2C83WSNyCa2qF1onO590TRvOuczMOXXDiWwwkBW9xbmW
- 7u4Qd1qBdARcWAnFdd0rnu7Ie9Hk6kElo5fpK9/CbKFjjR8ckT+P8r8Zat0Y01fRFk7mRtIRVO/
- L6Znz9VCFGUYJsIt9ZFenxE82EDy5/csFeVMCmLV4T6WbDK/6HONT/h7flHstR45VHE19/R4FBv
- 0smWVjFM1HCVK0Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10257; i=leitao@debian.org;
+ h=from:subject:message-id; bh=7/Mb5ZDQ3fdWOMz9QRVgdFVPWnvwUVfW55lYAEasddU=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq0hV0inb/er21jKoWgmCa5saxpAqyVkQC7njpK
+ fYkeff0BOmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCatIVdAAKCRA1o5Of/Hh3
+ bX6gD/4nSUwvF7C2f21LaU8RRSKN4G17EGdVT1EpWIydo8B+jSJuQrWWwRi7LuIxAyc1EWL8XNZ
+ 8oltwPMd5Bkki1UqGkZ4hTtRkyyvUWHiKlMcb4zcLyAMPgSrWsaMXaUCZxNeJ+jgEveRFkh7O+1
+ qLVyQakFYs/uI8P/Xj11P9SoWJL1awNNED4TmjYrdqnpdRGVvCH0in4lwoWGpvA73q5LAjugN2Z
+ iQGq5hSpq0DeWcrxwnQc4CS8+V7G+9pR0AkER8xr8UQQJ/LOypgN5wYgmimGBGFlNTsOIgkfHVj
+ t0kf86HzycHVJGeXWy2iViKCN6PMIiMICz9WDdqzNg1NDUSCXzLFD2sJ1rzrRPoQHmEgqZx1Vn6
+ NbhDxvDR+k+0pNQU1Beb6+kveJuaDsRLefuhDVIFuoC+3sHd+7C6lUDEp4i8hwmqszSEMZGIQ4/
+ Yh47BQ05MnEbOZd7I6q5LtUDsSgC0je6L0R2F3KWxMTB/MKFGm6NjgVyzydYXeL3L8JoQdCNcy5
+ TWlsKk49UCzX/yR5bzh1qnTlN5yW8FxtyOSlCqAXAaDvL7zP/a6aWuUEu4eQ3dhKZbT07zIgm3g
+ mGFGWozHhasyvLCpohJpAKr8DjU0HPax4HvYiEF6uSmvXLyYDgkbEp9+GTO0i4/KBZfG/ieV6GU
+ UZUpRg+3CLqkAjw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E4BD01C0006
+X-Rspamd-Queue-Id: 78D40140009
 X-Rspam-User: 
-X-Stat-Signature: g5jm1mb9rtcpysqfu5y9j6ekfwjodjtr
-X-HE-Tag: 1792153021-797950
-X-HE-Meta: U2FsdGVkX1/9tP+vZo2zcod64ws9Jh6K4qOuZSuRFRJqZZ6/gwOUC728tCbiM2Mp9FhkLYQtUE6p8akxRSarGP6GwIlx/xNdyoJMtjvbeZTPiocDcK4MWwaGuwHBJ7Z007nqp4lvc/6riXhGBfrrS6wTxhuc62NlYAFdlvmWbVAt61zDT2bqur1p2soNB5CRfyotU6q31Vjkf1236h6kDaUr8JxkzTQ44bgOz0fffYiwTqK3JcPVslpPvg1wz5CDHYBUbr7ORsGGviF9LOTWKB1p2GmcigOjK7JogHeMk9HBRcl4unp17567qa432XESc3PrYQ4GEkKApxF7i4ADvdOgIxJwp3wbkZbLYCumUe2K+q8ui2pW0G6WlBLN7FTHw8LSBti4zUk5iBbVZ3VffGtWapXV3mwWXJRohigi8ZJ1DpeoouAuru2JmotGHiEBTPSu/PfqAXyZPx0PssVwxBDkCxwuBC+QlBnv8a6TK3Ecq5YREh1gLkDBkMFvTBO5Jd4QJPlS4ifUBVBUZ44uPDZcjb31TzAqx1Kw6AQm73TfjhSwpoMkkYTpjmeEEnU1cweioEesSvrLCENvR8iQ+ZMquSLYeNZujyeJgELKHPt4KWmMnMzh9jeZzQY6owx3+uFIeyjtOLFa6Q4Lj0fN23JnwLPz4AKIaVZn0vdBVfnMcN0zRRW0ehxkSLG6WxREKcg9llj92TSwXuHjXJXWMLBhIF81AaznKimGOimvqxpMKJITws+lZrJMi1oiKVTI4lMnQfpPKx2kevrT68mnr6uCRx3nzg4NmZ6zXfbb2DKv6ppQpFMHFjNbNj6DJgcpfHuGhhhmXkJ2I9g1uxmueuRuadYrvr1hoME0O5f9CZzrKgAejkkMK3nFSyqX6gaMGN2YtcHDOooN5lOtElbJUmcSfqZcAverB1WkiP4F9MFDoGGnL1RWLog1yFzcohVk5tWuGiD3YaSFJwfIYEv
- X6oONpMV
- MTV3xRv6KKxJ5HzAnCTbfCK5aI+wCHjbY4G/lqTx9h/VgL7MynInuENOk7E+GOsalZuub949RewhINyuviOadvDXA75C3NpsPvEye/U3hPYfEqPclLXxAqGc1ht9pSolGaefDm5bCoDY4fzUMDYbRXq7dum7nv8VgOIsU1ppkbXajbkYJDfHusTx4U+nEvWWP0ee3wODoPQRSxA/Jpaa/OhteNyEvTc3FltxrEfEtSirJ0rQdzEXd+FZSDd5mrgL7Uhs8WGS3EPljppaZN9qwE5hqYfqJ8DGTOix+DmFKHe1xpXC5yICb+8bjGOSQZugn/QVqEkai8vxiYN5A53bl32k0JLNgy4hG3bhfhVzQT6zJO7PXRP5YAI/kaMU7RJdEqLX4UdhyEnMv4w8=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4o5k9yy7d6pf1mwu8b73ck8cn17w1m3w
+X-HE-Tag: 1792153029-741000
+X-HE-Meta: U2FsdGVkX1/0NdEVzdSBZNwSBwX6Cshc6AQ99FH1qJKugYH10bwf9mSLRObaxLfr7Is5NEA8e50by+2JLUlVdw1lmpf/LmJLSmny9uXEF6HPET+Wj0c9vFK8Ri9m5lOA1qOvmRir5jb6b1agtARf1A6YP+pBs+J/0EaJTy2zyYuJlmgZDK8/NJykel/iySLlMbHe2IS1l5i7wz4DzW7jzIeTarUC3onEFmibvJ5obZoOkaInkd7qwovYtuyLKV/juXiHHEgEtvEsLJ8O0rPLVxeN2Ko9sBus4IKxOi8rjgfq78YGjWLLpDly5Jb8dqJVoA9kxCvT5lfYnFe/2XgJn1EoExW5hh9i3LFoaN29ls49A/aOWBFVa+8QyC1d2q01BwUs13TZ8gZF9S2NNHetFWv46KJD1skwafrOmfUrtpXhYJ9Tp25ouSZfp6LDwrohqdL5xWghx0YD9g8CEePL/fuP03cuhqRoRQImBoXru1vSetTAIesKNiF7XkRImetW1WtYzptgiQ6ZW/j+3UQWeAa9d4GzF+DAQcgZSup8VpvFi9Pw8wO7+Kf0hSSt+Hb+pVHDSU+i35eLwZsYOvw4ZSQODXLAQ0aiq/JJPL7idQRv28m4KGSOjzht+0+sgYhZ2iWdY7Vb5ZctVWwMQ9Jbu3Ncxswg1mEF/jcHlHiKVizrXYXdqjg+m809agBE6CPRMQWGpEpClCFdybeIYaHY/93pdEMhv92nVTt0vdiwTpsu0ZTlWY8cOCXizAPRwApk9RAkYMdMaW4hXyUKonGXtDPjeVMwK9Led/mxJujdhtBVQROb01nbQ6WNO0jigDMOYJriQC0IeQ+sTra/TUBk6TtH5ELiW6oSL6r1RpcVtGpw4zM/HEr7k3Y7istDuRBZtawNqfc5CpwOs5fz/w8nOUTBftTP5rbso8M7IxS+JSNKitbmLuZ+qPPIaeyzIBQXufUuWq8HA0eZqNUteQL
+ MVxMq6bG
+ dIfMUNPVsj/fIJu11p88llk9Rqe503qXF/qiVozcsQwXqsYngSqMYmw0mm0IQ+GU86uUeX1rrec6NbJftg/1angB6ciTWH+7tpBmmEo+EW5B/g41BZL2WBQJUAM2WVk7/4AsZo9hctI/DAl7Bs3PAuxMmy3KbvPrdXAWx2os4U73JRM08MualnMcAQNRKHSAYzYSZr1NriUeTJyivmF2vZ+K7c4XvSkgMKvSGb4tvOsh0+Oyypj5SKhWEQPil0sj9mtQixKMgaq/Ix1ZkD/aBcDnMnyFY47rkoOD4qaXf6WBuNGlR6doBkp1xSNBOnrmYD9aBZ4hbT63+JZtnhzVHzJHnzmVVm6a5k3NNtRFQGOw5Fv+S9BTYwRwhC/5W187j0hiE6g3L1LItOFI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,84 +131,304 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A frame flagged poisoned before memory_dev_init() runs cannot be counted
-on its memory block. memblk_nr_poison_inc() divides by sections_per_block,
-which memory_dev_init() sets, and the block does not exist yet. The block
-is then created reading zero, however many of its frames are poisoned.
+A table installed by an earlier boot rides the EFI system table into
+this kernel, but nothing looks at it yet.
 
-Until now nothing could poison a frame that early. It becomes possible
-once a kernel flags the frames it inherits from the one that kexeced into
-it, as it initializes its memmap.
+Take it into use from efi_config_parse_tables(). The table can come from
+any kernel further up the kexec chain, so vet the header first: the
+version, a whole-word bitmap size, a bit count and a footprint that can
+be taken without wrapping, a power-of-two unit the base is aligned to,
+and units that stay inside the address space. A table that fails any of
+those is dropped rather than trusted.
 
-memory_block_online() refuses a block that holds a poisoned frame, and a
-counter stuck at zero lets one through.
+Reserve the table's own pages so that nothing allocates from them, but
+do not add them to memblock.memory. They are EFI ACPI reclaim memory,
+which x86 leaves out of it.
 
-Count what a block holds when it is created at boot. The walk sits behind
-num_poisoned_pages, so a machine with no poison does not pay for it.
+With mem= trimming RAM, adding them would leave an island of memory far
+above the rest. A CONFIG_DEBUG_VM kernel then warns while it initialises
+the reserved ranges that share the island's memory section.
+
+Then read the bitmap once and reserve every unit whose bit is set with
+memblock_reserve_hwpoison(). That has to wait until the kernel image and
+the initrd are reserved, or their frames would be flagged poisoned. The
+architecture calls efi_poisoned_memory_reserve_units() for it: right after
+efi_init() on x86, which reserves them earlier, and at the end of
+arm64_memblock_init() on arm64, which runs after efi_init(). Both are
+before the page tables and the memmap are allocated, so memblock never
+hands those units out, and memmap_init_reserved_pages() flags their
+frames. Nothing reads the bitmap after this.
+
+The reserved array cannot be resized yet, so a unit that does not fit is
+skipped. One that overlaps an earlier reservation, such as the kernel
+image or a kexec segment, is flagged only where that reservation leaves
+it free, and skipped if nothing is left.
+
+Log the number of units skipped and the number that overlap, as a
+recorded frame inside the overlap stays in use. An overlap is expected
+when a kexec placed its segments around the bad frames, so it is logged
+at info level.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/base/memory.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ arch/arm64/mm/init.c          |   3 +
+ arch/x86/kernel/setup.c       |   3 +
+ drivers/firmware/efi/Makefile |   1 +
+ drivers/firmware/efi/efi.c    |   2 +
+ drivers/firmware/efi/poison.c | 174 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/efi.h           |   8 ++
+ 6 files changed, 191 insertions(+)
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 5eead3346f1e32..77481f375c2206 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -220,11 +220,16 @@ int memory_notify(enum memory_block_state state, void *v)
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index fbf215ecc7d061..6f74020a92be1d 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -298,6 +298,9 @@ void __init arm64_memblock_init(void)
+ 	}
  
- #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
- static unsigned long memblk_nr_poison(struct memory_block *mem);
-+static void memblk_nr_poison_init(struct memory_block *mem);
- #else
- static inline unsigned long memblk_nr_poison(struct memory_block *mem)
- {
+ 	early_init_fdt_scan_reserved_mem();
++
++	/* Poisoned units go last: the reservations above keep their frames. */
++	efi_poisoned_memory_reserve_units();
+ }
+ 
+ void __init bootmem_init(void)
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index cda6adb9f69c42..2a84b5c7db7063 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1007,6 +1007,9 @@ void __init setup_arch(char **cmdline_p)
+ 	if (efi_enabled(EFI_BOOT))
+ 		efi_init();
+ 
++	/* Poisoned units go after the image, the initrd and setup_data. */
++	efi_poisoned_memory_reserve_units();
++
+ 	reserve_ibft_region();
+ 	x86_init.resources.dmi_setup();
+ 
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index 8efbcf699e4ff9..05d0a490923e56 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -43,4 +43,5 @@ obj-$(CONFIG_EFI_EARLYCON)		+= earlycon.o
+ obj-$(CONFIG_UEFI_CPER_ARM)		+= cper-arm.o
+ obj-$(CONFIG_UEFI_CPER_X86)		+= cper-x86.o
+ obj-$(CONFIG_UNACCEPTED_MEMORY)		+= unaccepted_memory.o
++obj-$(CONFIG_EFI_POISONED_MEMORY)	+= poison.o
+ obj-$(CONFIG_TEE_STMM_EFI)		+= stmm/tee_stmm_efi.o
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index af1fa443839c4d..55b2ee53fc2688 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -883,6 +883,8 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+ 		}
+ 	}
+ 
++	efi_poisoned_memory_reserve();
++
  	return 0;
  }
+ 
+diff --git a/drivers/firmware/efi/poison.c b/drivers/firmware/efi/poison.c
+new file mode 100644
+index 00000000000000..fa84df55aeb469
+--- /dev/null
++++ b/drivers/firmware/efi/poison.c
+@@ -0,0 +1,174 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Kernel side of the LINUX_EFI_POISONED_MEMORY table: one bit per
++ * EFI_POISON_UNIT_SIZE, set as frames go bad, and turned into memblock
++ * reservations by the next kernel.
++ *
++ * Copyright (c) 2026 Meta Platforms, Inc. and affiliates.
++ * Copyright (c) 2026 Breno Leitao <leitao@debian.org>
++ */
 +
-+static inline void memblk_nr_poison_init(struct memory_block *mem)
++#define pr_fmt(fmt) "efi: " fmt
++
++#include <linux/bitmap.h>
++#include <linux/efi.h>
++#include <linux/io.h>
++#include <linux/log2.h>
++#include <linux/memblock.h>
++#include <linux/mm.h>
++#include <linux/overflow.h>
++
++static bool __init
++efi_poison_geometry_valid(const struct linux_efi_poisoned_memory *pm)
 +{
++	const u64 max_end = PHYS_ADDR_MAX - PAGE_SIZE;
++	u64 nbits, span, top, end, len;
++
++	/* Whole words, and a bit count that can be taken without wrapping. */
++	if (!pm->size || !IS_ALIGNED(pm->size, sizeof(unsigned long)) ||
++	    check_mul_overflow(pm->size, (u64)BITS_PER_BYTE, &nbits))
++		return false;
++
++	/* And a footprint that can be page aligned without wrapping either. */
++	len = sizeof(*pm) + pm->size;
++	if (check_add_overflow(efi.poisoned_memory, len, &end) ||
++	    end > max_end)
++		return false;
++
++	if (pm->unit_size < PAGE_SIZE || !is_power_of_2(pm->unit_size))
++		return false;
++
++	/* Every unit has to lie inside the address space. */
++	if (check_mul_overflow(nbits, (u64)pm->unit_size, &span) ||
++	    check_add_overflow(pm->phys_base, span, &top))
++		return false;
++
++	return IS_ALIGNED(pm->phys_base, pm->unit_size);
 +}
- #endif
- 
- /*
-@@ -807,6 +812,7 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
- 	mem->state = state;
- 	mem->nid = nid;
- 	INIT_LIST_HEAD(&mem->group_next);
-+	memblk_nr_poison_init(mem);
- 
- #ifndef CONFIG_NUMA
- 	if (state == MEM_ONLINE)
-@@ -1251,4 +1257,28 @@ static unsigned long memblk_nr_poison(struct memory_block *mem)
- {
- 	return atomic_long_read(&mem->nr_hwpoison);
- }
 +
 +/*
-+ * Frames poisoned before the block existed were never counted on it. Count
-+ * them now, or the first unpoison takes the counter below zero.
++ * The table came from an earlier kernel, check version and geometry,
++ * otherwise bail out.
 + */
-+static void memblk_nr_poison_init(struct memory_block *mem)
++static bool __init
++efi_poison_table_valid(const struct linux_efi_poisoned_memory *pm)
 +{
-+	unsigned long pfn = section_nr_to_pfn(mem->start_section_nr);
-+	unsigned long end = pfn + PAGES_PER_SECTION * sections_per_block;
-+	unsigned long nr = 0;
-+
-+	/* A hotplugged block is created before its pages are online. */
-+	if (mem->state != MEM_ONLINE || !atomic_long_read(&num_poisoned_pages))
-+		return;
-+
-+	for (; pfn < end; pfn++) {
-+		struct page *page = pfn_to_online_page(pfn);
-+
-+		if (page && PageHWPoison(page))
-+			nr++;
++	if (pm->version != 1) {
++		pr_warn("Ignoring poisoned-memory table with version %u\n",
++			pm->version);
++		return false;
 +	}
 +
-+	atomic_long_set(&mem->nr_hwpoison, nr);
++	if (!efi_poison_geometry_valid(pm)) {
++		pr_warn("Ignoring malformed poisoned-memory table\n");
++		return false;
++	}
++
++	return true;
 +}
- #endif
++
++/*
++ * Reserve every unit the table records, so that memblock allocates nothing
++ * from it and memmap_init_reserved_pages() flags its frames. The bitmap is
++ * read through early_memremap(): the table is not in the direct map yet.
++ */
++static void __init
++efi_poison_reserve_units(phys_addr_t table,
++			 const struct linux_efi_poisoned_memory *hdr)
++{
++	const phys_addr_t bitmap = table +
++		offsetof(struct linux_efi_poisoned_memory, bitmap);
++	const u32 unit_size = hdr->unit_size;
++	unsigned int nr_units = 0, nr_overlap = 0, nr_skipped = 0;
++	u64 off;
++
++	for (off = 0; off < hdr->size; off += PAGE_SIZE) {
++		u64 chunk = min_t(u64, PAGE_SIZE, hdr->size - off);
++		u64 nbits = chunk * BITS_PER_BYTE;
++		unsigned long bit, *map;
++
++		map = early_memremap(bitmap + off, chunk);
++		if (!map) {
++			pr_warn("Could not map poisoned-memory bitmap\n");
++			break;
++		}
++
++		for_each_set_bit(bit, map, nbits) {
++			u64 unit = off * BITS_PER_BYTE + bit;
++			phys_addr_t base = hdr->phys_base + unit * unit_size;
++			bool overlap;
++
++			overlap = memblock_is_region_reserved(base, unit_size);
++			if (memblock_reserve_hwpoison(base, unit_size)) {
++				nr_skipped++;
++			} else {
++				nr_units++;
++				if (overlap)
++					nr_overlap++;
++			}
++		}
++		early_memunmap(map, chunk);
++	}
++
++	if (nr_units)
++		pr_info("reserved %u poisoned unit(s) of %uK inherited across kexec\n",
++			nr_units, unit_size >> 10);
++	if (nr_overlap)
++		pr_info("%u poisoned unit(s) overlap an earlier reservation, only their free frames are flagged\n",
++			nr_overlap);
++	if (nr_skipped)
++		pr_warn("could not reserve %u poisoned unit(s)\n", nr_skipped);
++}
++
++/* The vetted header of the inherited table. */
++static struct linux_efi_poisoned_memory efi_poison_hdr __initdata;
++
++/*
++ * Vet the inherited table and reserve its pages. Called from
++ * efi_config_parse_tables(); the units it records wait for the architecture,
++ * see efi_poisoned_memory_reserve_units().
++ */
++void __init efi_poisoned_memory_reserve(void)
++{
++	struct linux_efi_poisoned_memory *pm;
++	phys_addr_t table = efi.poisoned_memory;
++	phys_addr_t start, end;
++	u64 len;
++
++	if (table == EFI_INVALID_TABLE_ADDR)
++		return;
++
++	pm = early_memremap(table, sizeof(*pm));
++	if (!pm) {
++		pr_warn("Could not map poisoned-memory table\n");
++		efi.poisoned_memory = EFI_INVALID_TABLE_ADDR;
++		return;
++	}
++
++	if (!efi_poison_table_valid(pm)) {
++		efi.poisoned_memory = EFI_INVALID_TABLE_ADDR;
++		early_memunmap(pm, sizeof(*pm));
++		return;
++	}
++
++	efi_poison_hdr = *pm;
++	early_memunmap(pm, sizeof(*pm));
++
++	len = sizeof(efi_poison_hdr) + efi_poison_hdr.size;
++	start = PAGE_ALIGN_DOWN(table);
++	end = PAGE_ALIGN(table + len);
++	memblock_reserve(start, end - start);
++}
++
++/*
++ * Reserve the units the table records. The architecture calls this once the
++ * kernel image, the initrd and its other early reservations are in memblock,
++ * so that a unit sharing frames with them leaves those frames alone.
++ */
++void __init efi_poisoned_memory_reserve_units(void)
++{
++	if (efi.poisoned_memory == EFI_INVALID_TABLE_ADDR)
++		return;
++
++	efi_poison_reserve_units(efi.poisoned_memory, &efi_poison_hdr);
++}
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index efaf63f9a54edd..396e0d61112205 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1286,6 +1286,14 @@ struct linux_efi_poisoned_memory {
+ 
+ #define EFI_POISON_UNIT_SIZE	SZ_2M
+ 
++#ifdef CONFIG_EFI_POISONED_MEMORY
++void __init efi_poisoned_memory_reserve(void);
++void __init efi_poisoned_memory_reserve_units(void);
++#else
++static inline void efi_poisoned_memory_reserve(void) { }
++static inline void efi_poisoned_memory_reserve_units(void) { }
++#endif
++
+ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
+ 
+ /*
 
 -- 
 2.53.0-Meta
