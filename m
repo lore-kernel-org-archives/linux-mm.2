@@ -4,138 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74383CCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 03:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C090CCA463
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 03:09:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CD8D6B0095; Thu, 15 Oct 2026 23:06:24 -0400 (EDT)
+	id 620FF6B0088; Thu, 15 Oct 2026 23:09:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57DD86B0096; Thu, 15 Oct 2026 23:06:24 -0400 (EDT)
+	id 5F89B6B008A; Thu, 15 Oct 2026 23:09:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 494126B0098; Thu, 15 Oct 2026 23:06:24 -0400 (EDT)
+	id 50DB06B008C; Thu, 15 Oct 2026 23:09:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E0B06B0095
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:06:24 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 92E78C028B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:06:23 +0000 (UTC)
-X-FDA: 85327001046.20.D0E8766
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B5F6AC0006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:06:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Nf99ZRPy;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 20E276B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:09:16 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF38AA0223
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:09:15 +0000 (UTC)
+X-FDA: 85327008270.23.EA8DE59
+Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F35F21A0006
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:09:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="mh/KNTct";
+	spf=pass (imf19.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.134 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792119981;
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792120154;
+	b=aX1ex0Wf3hrDkJUCzP48VirHogqxMyUjtMzzoKaUqOF4KTdVjbQvYhRJZrKFxLBo0d6kbt
+	U/UjzD8q+S+6Cx1UCCxVVtHVR0zhppmZMMtrIrRpbm3qki6heC8kG8kM3Ps8L6PxToQHa8
+	MlSFwQ3zNqtnT0cFmtAVDV4TiTr3nMo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="mh/KNTct";
+	spf=pass (imf19.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.134 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792120154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oJ5h2DXsBgi+drliVf0SasZjdtc6E51DgIAS0CDk42Q=;
-	b=1yoxN0bsIglJ1Y9oqxe35YEQz08M5MqkigvM5GxS4hBNY/LgfuJHzR01YZCYbu0OShctZy
-	7B6/LLjyerYvY3qICPFMdJwKp2BYtYNJmy5VwW/foRvHta2LhiM50gaCNdpni96FP50kzs
-	tJDLM/VIdmumRcUq5WiHSTfSWdRqi8c=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Nf99ZRPy;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792119981;
-	b=Ag2ZYHoUdTGF1e+43f3i3YJCFubaCj1cybPv1d3oRiqghsE40LUpskDT3FpT+ZCrZ+t+fr
-	jXHbqNvrw1ysOICwAFEPvPX3dEz9J0HRtscLvwvhKdGjbOhcnj0Op6zx5jmn9/tsFtRLLE
-	XQ9DRMWQzdnic3kyZ+0WvGaQEffgjCg=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b1aa377c61so7280386a12.3
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:06:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792119980; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EC63E4ATdw3uymDgscdCByi+VK8znSn34f58podFbaIX3f8D0LR4SIQcVa6jgMV34H
-         RmcBqMpg/TRr1GoLcwrncAsfDyffEtqHUzp9r7Ik7D95eHJ88H3yF8IVmKzsEaFPOIN6
-         on++lA3pBjRXcTUO+lcLRi0kzBpnl3HH6viQCJTSOccB+m96TWMuMazcS+n82hKQ7HaY
-         5UQNvfMGSy3LgrdJMjhzTOh70Agizfrl4uc38OLSL3gh5IAuNdaTwk4gIF2NAKUgLdeR
-         xLtt1OYaqNt5QctuHqPJw/lmiCQy+QMOWxMsP8wDMyr5rObRd9iPoAxZJ9HvuN+ZQDRl
-         Spyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oJ5h2DXsBgi+drliVf0SasZjdtc6E51DgIAS0CDk42Q=;
-        fh=pYWVRDA79s4loiPF82nyEGOto5jww/yicL5o4JtV36s=;
-        b=LsUNxCquSSxrcmpJxISKBa7w/w9QhTkpTvRNbNgYaCBH1u7qNcdxN9MAcsPbbljk/M
-         J3AVKe2zBIBR0r/SJ8BxEK9X4c1+KipqNG9OqMtFB5C6Uo6s5so5MTqDeuGUfUXTzgAu
-         hPaE+wk/3lqYBSqk27uITw+RuCrFYp2gZnYAM9hRefxPKcPCCUpTIufQV15+/H+TRRTd
-         1VMJusibO5nU6pgtgcBD+GFES3emUiCjHISCSthbGXfMLltFKUdrYqxVeWfXDUehe2Mn
-         fWDZlZ4rQst/7GNZ2heXJCWlnsxKauQhLpb2E1KVVxqEYghjp4uxCDFymmzGTQjnNrdR
-         sR7A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Ed5L209SneTzZcWvCiPDVyFxWV1jqEY6cKUsalB6bvY=;
+	b=SHy+iK5F/lMDNogm8QJbcC9vjCtLd9XrqyCA/JcLGsL7msqLTj6Fwy+i+s7AWKFBioQb2T
+	1nrysJAgfQoHXYnvRVrKgRELf2XedVI3+To26R8z6bT/W08WdFs7fjyxg718jVydTHyc6s
+	rIzwi9PG5CF0KejspJ3aqkEja22rwQM=
+Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-3acc610014eso196355a91.0
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:09:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792119980; x=1792724780; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oJ5h2DXsBgi+drliVf0SasZjdtc6E51DgIAS0CDk42Q=;
-        b=Nf99ZRPytMT7rE/Cvu6eOKazNxOin5JTllhyy1T21emWaCEXgMi2DeuiX3CCE2UhPO
-         Dq3bHGRf4cKScOkDFXZ6JdnTI5e/0dgKQLigFBeRCQSR+MluB5ojxqDUBUpmM2JZLxrc
-         mBpUTy16QmPQKEHd1nwnpYYSK9UrWr4ed1TOlrbBm4Rv3PDobVLrke+PQsGzeZvqs+97
-         ZemE18Mr5aOkEEp9xd8SC7sLcOlU4cHsDg26llLfSpa1S6HKTIErmmIcRIzSB7oJiO38
-         1CSAGU/fYyYjjWy9mfkqGFLV3MECkhQcokX/W/pLFmVmTlFP9wCDiyXZrBvqMvj61sra
-         r0yA==
+        d=gmail.com; s=20251104; t=1792120153; x=1792724953; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ed5L209SneTzZcWvCiPDVyFxWV1jqEY6cKUsalB6bvY=;
+        b=mh/KNTctsemrRTCBfSchr5x0oW+Z+cYrY7TrAUBMHk0yYIlqQFdL1gP5PjMMhMaMN+
+         iTD9YiKcKLm+VCO4dEt2VlpcRzZG/nY5Il3nSBTlrDAGNq8/H0gi5bTASo0cKrDrcNn1
+         JIaXab69uE3BtwfN5Q3HHynWPGyLLlXSkpXmXMj4E+cST8+763yLI3y2hwxlkdivQo0z
+         CUPtf6Jw/YmYlV350a6i3RTPbzeWDdm1iCgs6Ly+QU5J136j8kgilOzY5h6bYNwaLNEN
+         q7EbW2NsgxaDgivch1BEr1hMtnsvHfbfV1BG9bpNVZrHT8Vccn5wtH4pIWb9UlOtoU/s
+         UUhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792119980; x=1792724780;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oJ5h2DXsBgi+drliVf0SasZjdtc6E51DgIAS0CDk42Q=;
-        b=YEXZnK4OjFDF3EInqqaPg1h7QZsHcncXr2xciNxpt9Tv3ocPq/n406r+uwf/jLV4ai
-         cs/kB7t+db/RQdRNg39UX3iL7Zd8ewp/QY9iOLSzODKJbhemgb+byW2CGVr9V87ztXBH
-         LHoYxwGGr4UDVbXmgw7mSVQh42tz9d4ZyhZZeXz82DaRuDsoFlWhqUDKqwHZKkR9H17b
-         7QF6IWv6XwNAykWxgLgVCQNYDdpJ+p6YcjafdZF25wqYNE1NSwq+3x/KpV39m9DvBkHO
-         oLs/6tQR6XzRtV0UKzPu8J3noEQ3JHT+Gow6HMQGfUL9YNGs5nNXDz0dhnL9ME9CHajy
-         bGeA==
-X-Gm-Message-State: AFq9FYKrOILmge+xez0FE6d8vcH8Cui/b+EANTgYLGcE77+svUw9MXdA
-	2fnPw2885BxZc6ttejihbWsJN2YLpMdfOx/nBhBDzhnbNaDGtvh3Qhw4Zqe1Qh9Amueqh1ev5e6
-	kqs+fqSNkrLFoqVbWuZG2HwqZlPN69vc=
-X-Gm-Gg: AYBFou38bjbnjxGpUxRjavttfqRtM3p8xeYeM4glek8IQllcvkarHryTr/Zpb62X7b9
-	7R+7jlHW4SMLOCtiOgYGBddmHURUQHwhtdRWHnBWBHVCyj7us0KqEbFaFxFXfqn03P7gv4tsd2n
-	TBhXIlerSMq76hUSTbhYdtWm2+4M029cNrclpIBGcFhI8ZxzjXo5WHVJzT4quEIlgJkTqI4xdrs
-	5b3Ph4u+MYvupQwzChCBY4EPxfdoJBwOhRn9gK8zlDPDeBsa+v7WgCHw56ZRifRWTHJ7t3IiGkf
-	bkznAXsLse9qXG9gGB7RVvF42GzteSsJbUzvtVH/6ToXr92Lq0znMruaAOH0T4Vzohd1EVQDwRw
-	6S7fERLybYUiS
-X-Received: by 2002:a17:907:9801:b0:c29:4fcb:2886 with SMTP id
- a640c23a62f3a-c31a9fd831emr1921004966b.39.1792119980088; Thu, 15 Oct 2026
- 20:06:20 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792120153; x=1792724953;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ed5L209SneTzZcWvCiPDVyFxWV1jqEY6cKUsalB6bvY=;
+        b=GvgAmYWVfBLN2I37I9fX+pZClzyRDz7PUaBuACAoWSdG3wKwEU//u8/13GTjcrSjcd
+         RoD0jzA/Ow6pKl7WP08/gJwKROopMYzeyQko/71hr5YOd9132LQJqCwN2xu/hOJ7J6kw
+         iprLmYU2MJOQlItdkS0JAluEAQ1XUXJyPt+NSfQ+wgMniE9iM6n5Zf+WJfa0+USnMY7c
+         ZPP9LFZnQDowk+9VdFiViQJgnbQHLW3PBjDsTADdcs2f9cWscXbGXFquu2OGc/k+NoYc
+         fSIJOS/A1W64jqLVLpWvSIA9iaFj3Pj3up/nQuHFs1VAHHOPJXr2ODcmDHsw8e+zzE5z
+         ZJ+w==
+X-Forwarded-Encrypted: i=1; AKwUvBxMOc/+H6zYWFVARaNibw0ze2ZQKpDwqRmuiMtNP/uboQTLCkukL0PBcfvYQauKspfIq9tc/OVqiA==@kvack.org
+X-Gm-Message-State: AFq9FYJZDXKPOCfYCMnu/hjGV1QbKuweYGDaJarCwN2D0wulGujPBMG9
+	cWGW/6MGQbpt08S/pDAC4CcpEfd9g+pMT2BkE3tPrZXCgPGNsf592Zh1
+X-Gm-Gg: AYBFou1mRKHiBa9JNC3eREfTSYnt3qDIkBR4WG7sckduXHeLjWpFOLfFhKTBwADekOV
+	cK+b1S1L2Z3BGRSVTXayiBuZwXjuXcQnZyuVOZt693xLQsM1LEDE1zm4gzV6/tPvw6PvI9wA7s0
+	GpKoXHFelaurxdyDbrmVoWC5rr2oe6zkbGcsCX1GOETFIuvJyP5WC33dnRikzx2QBEoedbcDS0z
+	Ok/yYTvKdzW6j4t9+t6japhPTjlFbNbnOk2hU7IWzUBKNE8yDvSSrh4bRfrGhXp18Ha5wzfKX8b
+	T8S3v7GP05TefjeHKePb0NGWz+DmHc3inQdXNw9fYQwJsgx/dS8tJrqF+gLWxMJ1TppB0wwRkeu
+	DHUQ7hpBlvawhSmAFJICLvqpytuWrCvUAi02kc5Xq/hk1igMeegp4EktpD7TwSuUQlPJvtC4sJV
+	CDryzF37xuUHODO600bKEmDCLG1Q8IyhBdstR1sRyZLVMBW5MxeyqVuHA2QtYYc83g+q6go1nhi
+	hm2q9JVS18XNMW1iRaxiA==
+X-Received: by 2002:a17:90a:d44d:b0:3a4:b0f3:6597 with SMTP id 98e67ed59e1d1-3ab39fea5c6mr19481452a91.0.1792120152572;
+        Thu, 15 Oct 2026 20:09:12 -0700 (PDT)
+Received: from intel.company.local ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd3cc73c7sm370085a91.4.2026.10.15.20.08.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 20:09:11 -0700 (PDT)
+From: Wandun Chen <chenwandun1@gmail.com>
+To: robh@kernel.org,
+	baoquan.he@linux.dev,
+	rppt@kernel.org,
+	m.szyprowski@samsung.com
+Cc: catalin.marinas@arm.com,
+	will@kernel.org,
+	mark.rutland@arm.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	saravanak@kernel.org,
+	akpm@linux-foundation.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	ruirui.yang@linux.dev,
+	robin.murphy@arm.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	iommu@lists.linux.dev
+Subject: [PATCH v8 0/8] kdump: reduce vmcore size and capture time
+Date: Fri, 16 Oct 2026 11:08:47 +0800
+Message-ID: <20261016030855.4062882-1-chenwandun1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
-In-Reply-To: <20261014090821.227366-1-jiayuan.chen@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 16 Oct 2026 11:05:43 +0800
-X-Gm-Features: AclHuK_e-lCNsmM0w1PY2ZD39crP8DWlyZW3Ur3Jggt8rHloT5AJAjERE4NO-1M
-Message-ID: <CAMgjq7D50X47JFsTnF2-jYGv7i-Nd3WhQLK-TJGy4XkhMQU4OQ@mail.gmail.com>
-Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
- up on
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: nd4m5fjddc485se8msuuc46hcs5ib979
+X-Rspamd-Queue-Id: F35F21A0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B5F6AC0006
-X-Stat-Signature: 5bp8b4aagioc4icznfmcx3eg8ywdrca3
-X-HE-Tag: 1792119981-942866
-X-HE-Meta: U2FsdGVkX18OJQeMB2qU1Lk7uB1FMCmunqdtqN4UfUbBm68O4ploXpBQAi29ZN+xVrqtZl0rjRqiQfJEM5pXRkFcnWRR89ey94/ugR766mGIIndpfP996n7190mAeZZv5NjQYVpWRJ8yt4ehrIiswGgur1JUnPoTeeQisnbDFBPk2HQoyGL2Oej75KTUyH2x82flyOOTq642V7SPYrPEI8sNOjylh6oe65QhbeidFF9H7d2icuTV6x4Y1F2pM1VrXBw84AK3iowxKhoDLr16q0WOqfd1qzEvKV+sYIA1QZP5BOTKiKf/jTMcssfwBz3hh/tzU2X2Sa7ls0Dx6YOBxzpbgpdosf/LP4i2guECa90OuvD0OPVTEbXAtHVRD0eEfULMg30doZgRKGO7cW3XubXKRy8DNr7raD0yhI8oPZ2BPdhp9mdV3rcLb/9xJU44m0k/C8i/NlidEPRvXrY8swcel72UOXnjTlMeXL0FZ29CiKgevM+f5W+WCaGvl09w6ha0+SWHL/YUazdp+USw1k6pIqzlOHOCX+SZhJSPAAjXcXCv7UiRfO0V1ypbzrvMwLn+q+mHzGYMDPxv8Lg8q+qtR958dwFekdXmwcKm2XBW+xP+lI1DWVsfbYVDtD6B3kOr3lLo+59bMH3kPe9km7ZbE2CTWYpYiczF15gRrZntFk1EJ2vc46Zv1cyrJoBBk+FlR4m4mDQhRQZdGCNaqQAD3bN1O5aSNmrZVZJPuWwb6N+jK8v5I8UWg1eCWKZbSiER29XGVzP2+WnI4bpvAyygciFVd1uWfD7qxcIPu0ezNf1qBhSdVcaN66IjX0BtTKgbwSFASn38vlOB8l9Ri5lIxNpdsC52uc/iUcX06ZodY7U3p5n9YtFzM/4qJaNLcUgu/a9FSFT0Z5vNqSKaUUBIFf5NpPCIX6yvBwbK/JhxviYK0fMmszHyFA5RWv/FajC8BzyXC7VoTYjZU5a
- G9qEzZMf
- YmGcBEtOj+EL6DDabbLcYYXpRjKmHUq3TzCxOgyYSr2nc6X2bmlNewFSfqieSfDA6JBLco2JitNPnP8IK/EZbpL2uvwLc3kQZGk4UoRfSdnYgI/kKc3gF7qylbXS1Rd9q3OMkzPIisxWJyUhGwX94+Mogbe4RKHfZ5AKb2MeBrETDwf39V0FXca9D0n5aihMZrcEzFvegSoqp4ClrzXV3OPkXXKbWT2JggS8D+EyezUOqMQaXiCQ3f1ggKw+5Z6Qc/XpeSCO4tXLZXQc9cJ9RyL6ulFKFcdE1wWRYkOBdaZL8iDtr6QziwayS2AfbgY50wahauZdwND45FthHdPEoeTU9wd1m+TORO7dk4cvjThM9aIN13mfThbsD9GNQSGD2dHRcFYxGxwhAk1oeO+WlQTH8z3rQYiHu9DvwMWiDqgQyXs+dPPAlo6oa+yv1yNhRaIyqA/XZPYmNots=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1792120153-378710
+X-HE-Meta: U2FsdGVkX18ola0FwZh/h+LzG0g+xP9rkwf3b7op4Aeo5Q+oGqsk5ahswUWZJVJrtaOb9dr0Q+a1BPCZl+gTYYJseI3toL1VKyYoSAxwG1HEVA3QWSSUgrDA+zCIQdPLohF8KG8sW0aYl56b0ZSNixfAtbilePqbsJZ0qUt45RNV9hoQX0z1k+c+cbqSSdNQgRuQ9lBF8I6WWLR+gltz8m7NzuJ/CgGlF4CiaWPbBMF/osKd/Db4vRlt0IM3vnj1HaJtPtzJs1D1B7X8oYXh8v9LsIj/wStnHlPQFe1xhqmAADNKT6zWyyIgjploBTYyzwNwMi5IfYu1VjBHWA6SRLjg7jSPrrtQgbxiP01c2x23iwn1mo+bHaNIUjx2ABxPpMk9L9MLjcpgFEok+VW8agNyjirU/nrqQiIVQ14t7H2cOjaKb/Wo2XThC5GCSxpU6i5e0Q+YfLuPa6bQ2ov+iNJYt7fhbtGJgFbmPH6SR6CWmCKriU9OzPSNTt3pMlMEvwVdTNAUJc1bIZzSrVuYQSYkxqf5tPkexDyBedd5HgyLLDpVxA7wcC0OsqC41PnYpzEFxjkYFVRWQrump0XGpdeK+LowslvI/QDgBuUKAuaeLZl5YPNaGWBYI3WRzvg2CwFakLC2jh06gaJECbzbubM0/QVqcdTPGw1YOiv6EPm2OyjckJ2oURlxT0HTARbt1iCHuCmuxxr1DU9LQ1DGachVM6hfvdxS4KjHLnOUyeTw/jsLjGb4QGwaYoToz4exR4R1nNNkkbaFfebPzaek7NtEE2YZAp44doJhFP2/0oj7CIOlZ0fEMf7EZNhe8CXvhZ7sJGgHMNPHbspnzCSF8XC7GZplOz6kaAEBWEzyWoWeTFkPxo14W6+qN+Cvyswkho+EgSqOj14uuJMgtPWZ5CDGeC0d4HiTvcMoPmlXKawp0AS/f22Wouqu/5QeKD9jG71/HqZhVpKf3HPAdd7
+ orYUbhEq
+ 38RfhDkTZJ/cKztRJjeYrAWU3rgyc4YsG+axDDlb3r/ksUumDq7NCCY48SsJyG3rWAtpaPvqv4ln9LQfLmaxPgyGfSTX/cGAnsa0Qr2ap2sn15hfHE4Jx78nJ1ZHSMRUxi8CjdK1UJNWKLpx0So2ZAutrv1LNvD/+XnRhdKpLqK4fkH/PJ3fhhrUEDOTo0OG3XwCgsyTz8KPnS/MJdcyA3F9KtBb+APJP+xoK8RMZKg7KHCTMWzcwReKlmJoign1md3HUxpztlVrSH5O+nCwnlczuvB193MVOMrnqJ3zlvcqQHZ9RUZRtJeFAhIqsschaesJ+h1UqVDKUVjQagJSyQ4z/AhL7rd7dTdgK2M8SxQG/S6xnFffChbvezltmZI5oIPONNMQl9B++JU6W6bCy+uyxnkP0x/uJCiT4l+eNAT5X42wWzrO8mW429dVc5oYUeCjK9YQAnb073vzqLsKTbzDl4De05lNoFkT0RyCQnu8V+NsxAV/H/KA2+V2gBtVEvz0JXJ4lV4KkVXA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,78 +145,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 14, 2026 at 5:10=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.de=
-v> wrote:
->
-> From: Jiayuan Chen <jiayuan.chen@shopee.com>
->
-> On our production hosts we saw swap cache only pages keep growing for day=
-s:
-> on a box with a 500 GiB swap partition, 250 GiB of RAM and 250 GiB of
-> swap slots were held by folios that no process mapped any more, charged
-> to cgroups whose workloads had long exited. The only way to get them
-> back was swapoff, and with other services actively swapping on the
-> same host that is not an option.
+From: Wandun Chen <chenwandun@lixiang.com>
 
-Hi, thanks for the report.
+On SoCs that carve out large firmware-owned reserved memory (GPU,
+camera ISP, ...), kdump currently dumps those carveouts as part of
+system RAM even though their contents are firmware state that is not
+useful for kernel crash analysis.
 
-> Such a slot has swap count 0 and an unmapped folio pinned in the swap
-> cache, left there after a process exited or did MADV_DONTNEED. No page
-> table holds its swap entry any more, so nothing comes back for the
-> slot; LRU reclaim drops it eventually, and the allocator only reclaims
-> such slots once swap is half full. The growth stopped exactly there:
-> at 50% of the device, where vm_swap_full() becomes true.
+ACPI systems already filter reserved memory out of the vmcore through
+their existing path: firmware reports those carveouts as unusable in
+the EFI memory map, they get MEMBLOCK_NOMAP set in memblock.memory
+(is_usable_memory(), efi-init.c), and the ELF header builder has
+always skipped nomap regions; only DT-based systems currently fail
+to filter these regions, which is what this series addresses.
 
-Hmm, I think this indicates a much cleaner fix is available.
-vm_swap_full is inherited from the old allocator, we can instead just
-let the allocator reclaim the slot if the slot have a count of 0 and
-ignore vm_swap_full at that point.
+This series introduces a MEMBLOCK_NODUMP flag (suggested by Rob) in
+memblock to filter reserved memory on DT-based architectures. A new
+flag is needed because MEMBLOCK_NOMAP can only express regions without
+a linear mapping, while MEMBLOCK_NODUMP can filter regions that are
+linearly mapped. Reserved regions are marked MEMBLOCK_NODUMP by default
+so kdump omits them; reusable CMA regions are different because their
+pages are handed back to the buddy allocator and may carry crash-relevant
+data.
 
-Will this work? (Just a minimal implementation for reference, will be
-even better if we can avoid the overhead).
+Since the reserved memory regions are filtered out, the vmcore is
+smaller in size and faster to produce.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index c3288910b3e3..94670fe82f31 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -212,6 +212,9 @@ static int __try_to_reclaim_swap(struct
-swap_info_struct *si,
-        nr_pages =3D folio_nr_pages(folio);
-        ret =3D -nr_pages;
+The series is based on linux-next and is organized as follows:
 
-+       if (folio_mapped(folio) && !vm_swap_full())
-+               goto out;
-+
-        /*
-         * We hold a folio lock here. We have to use trylock for
-         * avoiding deadlock. This is a special case and you should
-@@ -903,8 +906,6 @@ static bool cluster_scan_range(struct swap_info_struct =
-*si,
-                if (swp_tb_is_null(swp_tb))
-                        continue;
-                if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(swp_tb))=
- {
--                       if (!vm_swap_full())
--                               return false;
-                        *need_reclaim =3D true;
-                        continue;
-                }
+Patches 1-3: Preparation and bugfixes: switch riscv crash_mem to
+             memblock, fold the duplicated per-arch memblock walks
+             into the weak defaults, and serialize crash header
+             preparation against memory hotplug.
+Patches 4-7: NODUMP infrastructure: switch crash_core to
+             for_each_mem_region(), introduce the MEMBLOCK_NODUMP
+             flag, add a dumpable flag to struct reserved_mem, and
+             mark /reserved-memory entries with MEMBLOCK_NODUMP.
+Patch 8:     Skip MEMBLOCK_NODUMP regions when building the vmcore
+             ELF header.
+
+v6 --> v8 (v7 mainly tried to fix the initrd issue on release in v6,
+that approach is superseded here):
+
+1. Stop marking /memreserve/ regions with NODUMP. v6 marked
+   /memreserve/ regions with NODUMP. But a bootloader may specify
+   a /memreserve/ entry for memory that the kernel later frees
+   (e.g. the initrd), and those pages would then be wrongly
+   filtered out of the vmcore after being reused as normal memory.
+   The v7 fix (clearing the flag in free_reserved_area()) caused
+   a lockless runtime mutation of memblock.memory [1]. Better solutions
+   exist but need extra preparation, so they are left out to keep
+   this series simple in v8.
+
+2. Fix a build failure in patch 2 with both ARCH_KEEP_MEMBLOCK and
+   MEMORY_HOTPLUG are unset. There the memblock arrays live in
+   .init.data, and the weak defaults referencing them create section
+   mismatches, which turn into build errors when SECTION_MISMATCH_WARN_ONLY
+   is also unset.
+
+3. RISCV recently gained crash hotplug support, so adapt its handler
+   like x86 in patch 3: use __crash_prepare_headers() instead of
+   crash_prepare_headers() to avoid self-deadlock.
+
+4. Update the cover letter per review feedback: describe how ACPI
+   systems filter reserved memory and why a new flag is needed
+   instead of reusing NOMAP.
+
+Every patch in this series now carries an Acked-by or Reviewed-by tag.
+Patches 2 and 3 have changed since v6, but the changes (a build fix and
+a riscv hotplug adaptation) do not alter the logic the tags were given
+for, so their tags are kept. If any tag should not be carried, please
+let me know and I will drop it.
 
 
-Or, from the LRU's side, put swap readahead folios at the tail. I'm
-actually trying to do that and it's not very easily doable at the
-moment but will soon be easy to do.
+v6 --> v7:
+1. Fix a stale MEMBLOCK_NODUMP flag issue [2]. Memory reserved and
+   marked as NODUMP may later be freed (the initrd, for example),
+   so the NODUMP flag must be cleared accordingly. Since the fix is
+   part of the NODUMP infrastructure introduced by patch 5, it has
+   been folded into that patch.
+2. Drop the "generic" related description in the cover letter.
+3. Collect the Acked-by and Reviewed-by tags received during the v6
+   review (thanks to Baoquan, Mike, Rob and Marek). Patch 5 is the
+   only one without a tag, as its Reviewed-by was dropped when the
+   fix was folded in.
+4. Drop patch 1 of v6, which has been merged separately.
 
-> Options considered:
->
-> 1. Fix it on the readahead side: after the read, check the swap count
->    and free the slot. Covers the lock, not writeback, and the
->    asynchronous read path unlocks in the bio completion where the slot
->    cannot be freed. Two places to patch, neither clean.
 
-In fact, readahead checks the count before starts the read. It should
-prevent some of the problems but seems not enough.
+v5 --> v6:
+1. Serialize crash header preparation against memory hotplug to avoid
+   out-of-bounds or use-after-free issues.
+2. MEMBLOCK_NODUMP marking is now done after memblock allows resizing,
+   avoiding a panic from too few regions before resize is permitted.
+3. Reordered the patches, put pre-existing bugfixes earlier in the series.
 
-And another idea, what if we just add dropbehind flag or rotate the
-folio, if folio_try_lock failed in __try_to_reclaim_swap?
+[1] https://lore.kernel.org/lkml/20260922090252.B01541F000FF@smtp.kernel.org/
+[2] https://sashiko.dev/#/message/20260917220750.GA4013814-robh%40kernel.org
+
+v5: https://lore.kernel.org/lkml/20260806093519.2907771-1-chenwandun1@gmail.com/
+v4: https://lore.kernel.org/lkml/20260630074715.4126796-1-chenwandun1@gmail.com/
+
+
+Wandun Chen (8):
+  riscv: build crash_mem ranges from memblock instead of resource tree
+  crash_core: fold duplicated memblock arch hooks into the weak default
+  crash_core: serialize crash header preparation against hotplug
+  crash_core: replace for_each_mem_range() with for_each_mem_region()
+  memblock: introduce MEMBLOCK_NODUMP flag
+  of: reserved_mem: add dumpable flag to opt-in vmcore
+  of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
+  crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF
+    header
+
+ arch/arm64/kernel/machine_kexec_file.c     | 29 ------------
+ arch/loongarch/kernel/machine_kexec_file.c | 27 -----------
+ arch/riscv/Kconfig                         |  2 +-
+ arch/riscv/kernel/crash.c                  |  2 +-
+ arch/riscv/kernel/machine_kexec_file.c     | 33 --------------
+ arch/x86/kernel/crash.c                    |  2 +-
+ drivers/of/fdt.c                           |  1 +
+ drivers/of/of_private.h                    |  1 +
+ drivers/of/of_reserved_mem.c               | 15 ++++++
+ include/linux/crash_core.h                 |  2 +
+ include/linux/memblock.h                   |  9 ++++
+ include/linux/of_reserved_mem.h            |  1 +
+ kernel/crash_core.c                        | 53 +++++++++++++++++++++-
+ kernel/dma/contiguous.c                    |  1 +
+ mm/memblock.c                              | 16 +++++++
+ 15 files changed, 100 insertions(+), 94 deletions(-)
+
+-- 
+2.43.0
+
 
