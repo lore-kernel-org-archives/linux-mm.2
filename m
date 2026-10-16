@@ -4,120 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55031CCA464
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACFACCA46C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:55:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C0826B008A; Fri, 16 Oct 2026 08:54:49 -0400 (EDT)
+	id 59E096B0098; Fri, 16 Oct 2026 08:55:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56F3E6B0095; Fri, 16 Oct 2026 08:54:49 -0400 (EDT)
+	id 56DA66B0099; Fri, 16 Oct 2026 08:55:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45D256B0096; Fri, 16 Oct 2026 08:54:49 -0400 (EDT)
+	id 484DA6B009B; Fri, 16 Oct 2026 08:55:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D1556B008A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:54:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 921921403B0
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:54:48 +0000 (UTC)
-X-FDA: 85328483856.02.A528EEE
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CEF31100002
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:54:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LrIA+nrJ;
-	spf=pass (imf05.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 237936B0098
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:55:03 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A4B0F14038D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:55:02 +0000 (UTC)
+X-FDA: 85328484444.12.C05D5F2
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C01444000B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:55:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="F62l/+zZ";
+	spf=pass (imf07.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792155286;
-	b=J6RKdsESu7BXdqI0difkXsCip43oNJ9mQAYKtxB3frPCVpGHSdLHNgLBNKmXwtd+RoZgKJ
-	yuQQCdTygIOCICO3cDtrjgVimp3hCUM/VcYSe5M3ekJxqu1dlA847Fa0lWiPsIQAohdFJ8
-	OBuixzlAk8/4Z5LcD/MKo8KZKzz+Ofk=
+	t=1792155300;
+	b=nwjG7BYRkSHYE9P/wH0NM5xkCBckk4a2+3Hrazxsyn/wAEXja79Thzk3n1R2pz63YUXJr+
+	sZbbJvIQeMrtKe+qTGKu4UBQZiztJ+JppJUrGbeNvJddubHm8mOUq1Dn2UEcH+Lly0CdDf
+	J0NADQs5sO977iKNvBb/iJXqiSXOaGE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LrIA+nrJ;
-	spf=pass (imf05.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="F62l/+zZ";
+	spf=pass (imf07.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792155286;
+	s=arc-20220608; t=1792155300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=47xwNbLDV/wYZSE2wpX2Ena+RjFR2X+u3FxDomSqYmQ=;
-	b=lZIVd/GaL9w8hsbvsP0lTK2Ic0kGwxS86zMhjT9+XOuhGCOF1ty22V4E2NfpGyJ1InOl7T
-	jyrpjQjfcvamcQs6s9TCcfijdY+xpg2nCFYsE93+LiLTzPoS9Xzz4jYu2alqZLhbY5WX0B
-	C39kevSDAhEZIobtn+ZBuw0nkCAeDQk=
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3514b90bb89so5895069eec.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:54:46 -0700 (PDT)
+	 references:dkim-signature; bh=E95YYQwjstxiJyP2LILlZnMWy7pjKVcdUHQn5hEnhWY=;
+	b=sFvl0LHCNfUV5vpkr705xhIsHYrbL78zJQSr9xb9b0fZacOe+R2wP5gLC+gEpTZRtiVECi
+	im3kX01IuH28tKcuQSHuNmoUUmMJeloK/tIEqmCjghsSe97X2zjA28K9ftf69T3zJbCMdY
+	pSnCZLLgTw+qRleVzR0ygrUSllj/yS8=
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35c76e9614aso4863036eec.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:55:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792155285; x=1792760085; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792155299; x=1792760099; darn=kvack.org;
         h=cc:to:message-id:content-transfer-encoding:content-type
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=47xwNbLDV/wYZSE2wpX2Ena+RjFR2X+u3FxDomSqYmQ=;
-        b=LrIA+nrJR4d1hNxMOMvjJPG+B0u5gkqe9Mse3xr83wE7PrwdBT07HHqTpLOroqLwVL
-         JvyLa/U42h/ep6d7GBE+A2xM8OfJvdbkQNfj9ywHI8hGIHexTcaeSZp4lwIDsNUvEP6P
-         nQ4Fl5z4mUfO++IkNknFiGOkQPSu9KBZ1BvPi46d05YKgKY6W/WKQbEERcToFIjHkCZn
-         LfxJHLDb51pC80z4dmsjOriK3Kb9M3IAm+ibccH1gvwjULMHFIkMlFSnBzAm6AcRm9sz
-         tOlFOo1QVl5h0eVN1zpi5ATGgBGZJC/sJs0x7TTCklJucQnjHyACm9AZPTV9T9aBc2Ej
-         JuMQ==
+        bh=E95YYQwjstxiJyP2LILlZnMWy7pjKVcdUHQn5hEnhWY=;
+        b=F62l/+zZCkQwnpRVisnHTVjrMbgybhC8spEeMX37zWumtV/Ah3uZmaI4viSR+U06Wn
+         uceVpWaqSPnbMMM5ZGWUQ3aY+Cm1Nx5g7jG4ppdOoh41izmrs70EA+/cZvRbkXeIV4oW
+         YrXlkM2HYXGkSI3A943o2e1MsVWR6Cyai9bLclAQfp2G1guaJjaTyrK9nMWGfxafxgGR
+         MVkJWkzF02R1tZMW+XZHG4JlbT40P+Az4wNGWl3ZopK3q0uveg3sxJwqaVE2U+76iCP4
+         9faPftE6kWnanX03IoZ5xlFFrE4hmgknLwlLN7TX4RRQzIaPgprofvfxQ1z4uAkI1TPG
+         kprQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792155285; x=1792760085;
+        d=1e100.net; s=20260707; t=1792155300; x=1792760100;
         h=cc:to:message-id:content-transfer-encoding:content-type
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=47xwNbLDV/wYZSE2wpX2Ena+RjFR2X+u3FxDomSqYmQ=;
-        b=ZrTe94R8wreQ+vcwsAUeuSaNQ2AOL9k8oV10+j77OaJO2CmhwnmrDdCne385tbJ763
-         N6iJ5od7XexmoFhmD01NwfuzjnPfHFcDkuI01rPodE9oimBFYlZcR+2NaMvJX0HFxpbF
-         ZtKM4n/Gnu9NqGAWSKqotFldGQATkCj3F1U7OWnLdpzrJLm4toZhWzqIvViSSFZVg/Hg
-         UEyD3SAVdNHKOE4uYZvZHeARNGWle9ph+D6zGaHKTOPR4CdOr8Z+BXueQfpHnFDawpGh
-         7/4wCFgZq0x00SclJ5xX7+WW5RdHwQjvgCmlJNSnvL76QuWyz2DqhldORYyi24QKZo9m
-         BzvA==
-X-Gm-Message-State: AFq9FYJPeBpxU2iDNTXo7ZdPe8F9HsEZ3pLqUprhWF+PCAATheNh9nF9
-	I0TFrgPmgIE1lBF/j3UC1JJ21PQ431+vioVrxMAzA6YCvhjtfBZJNbvo
-X-Gm-Gg: AYBFou3gSyOOx9BtFqWrR6IQwr0kxd3c5DZThoCFCjfj+k1D7OQadReImGFJJBsszTA
-	/1RbW0XBGBReGSATxNfZn3HoSTR2tq3sr2vBsfuZ6HRkE7p3PH+GzsxncF3RBS98zj/7/xSSfti
-	fM72jRolleRwuv6E/yMAPB0dQWiPURqj8ZgEDESuBBXjHNU9lDJhNgzO0TSjvdIAx+sqs2jg+Wz
-	5y7PrXRdis/m5ItgzNP07K8PS921isq6Hu1JxYYLVhHMdN/YTRdwU755qHGeWnNdS1RMfS7b1Zs
-	VnkhSERhx8ua1Qh9INSBaD0Oyy8bW44LQvwiAgwx4/XvuGhHATryNflA6Sbh/rW4Sb+opesxA1U
-	hAJIZ5btBsWDGKjLb+Ksdqi8+/YyIiA6XCkLao/wXivkYXEM6mkubKplVLZQHx6bMmp2pTCoqkK
-	qBLyNmZPo6SSE+wXMNwAoz7JKFzU1YqBqT2D+pqqrxiehOmPlOYl4yJo+fCVH4r4I024YXKjJ8/
-	ECd
-X-Received: by 2002:a05:7300:6d23:b0:35c:6ffd:e91b with SMTP id 5a478bee46e88-35c6ffdf3b6mr20435005eec.40.1792155285484;
-        Fri, 16 Oct 2026 05:54:45 -0700 (PDT)
+        bh=E95YYQwjstxiJyP2LILlZnMWy7pjKVcdUHQn5hEnhWY=;
+        b=yvnqBffEnlB/XsXw5a0GAG6T2qfdTjq7urziu7eoA6CDC7JTS1WsKpmF6oFwoegNeG
+         u7/CRwFjmeqnqT1EiPKFuwTfPbtpqaIVJWf6VqUeWLzZekLffZ5N+boEBxYna0hoFZjN
+         PXhFGdDAJZ4aoiD2CT56fOUwzh32Q853K1lduyHuPA9k2Wf1uAlbKSHJB8/vA8j4/t5f
+         EhvcynmeE/sP6VjLkulX/H0L1Aia3LQi32lAbwpzrBAFL6ubKvBnJP7ikmQpm95GYR/D
+         t5inhNs1T215dmkSQQdEjZED8rhBwYhU2mVIU45CcpNFnoKV4TV04SoLJ3UCCImS24vm
+         +/9A==
+X-Gm-Message-State: AFq9FYIS/cQSbtJNsxy0GDfweZ18G4Ls2KhpWpQBl8YsHeGalHA+p5/N
+	VhbUmq9p3FriZ9irj5cs2v+/j8iqEn8eHLYSp08Cy9Uaekm5wkIT2Yn7
+X-Gm-Gg: AYBFou0AIwaZJ8JXFHrXGMgq4S2svGQ9qrEwZkGGZIikGrJANF9VpcCqYV/DlwhlFaB
+	NBA6eCHGAZ8b/aQwKCPwZviBH5xVp1CVaGRTgOHHL1eL7bn8FmqT6tT2v7pJ4QwwJqQD5ngM9lw
+	KwE6l8L0/qamCCAekho8Cf91HiEPE5Ff/MBHh7cRqE+oIf/wIIRxsHrZvuJmahj5uciVFIuHUc6
+	cPLj1F1W9b2TogWdo26q0Q5MZJ+/rXOrJgJCypB3ZM7gTjuxpYBta5ilJtUc/tZHmJdmv+DUdT6
+	UfNduou9sR7VVvx3l59Gyl3IjBCjU0a6KofffRvvqEQ3xiTiL7ua+mvxQ/fv3HOgG3wZuST3K7l
+	FeAWPg6EKquN+hIDCtN53wDcYjfyULU7RZCDmPDbFBaJbX7MGwZRe9Kivq6q6cbJV403K6sHAQe
+	TJa+uVvyDi9KZ5g0fPPA9gfR4G9lZkjBNLRz06GeQ7FfKcfYs+KnsMg7zmlPORKJ0s4e/K2VP9/
+	Weo
+X-Received: by 2002:a05:7300:d58d:b0:360:73dc:1e13 with SMTP id 5a478bee46e88-36073dc22cdmr3045198eec.17.1792155299332;
+        Fri, 16 Oct 2026 05:54:59 -0700 (PDT)
 Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3607ee0e5e6sm6829118eec.1.2026.10.16.05.54.40
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36081fa5a6esm6974508eec.16.2026.10.16.05.54.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 05:54:45 -0700 (PDT)
+        Fri, 16 Oct 2026 05:54:58 -0700 (PDT)
 From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Fri, 16 Oct 2026 20:54:37 +0800
-Subject: [PATCH] selftests/mm: load xfs before checking for it in
- run_vmtests.sh
+Date: Fri, 16 Oct 2026 20:54:48 +0800
+Subject: [PATCH] selftests/mm: skip hugetlb cgroup v2 tests without the
+ needed controllers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-bug-selftests-mm-run-vmtests-xfs-modprobe-v1-1-b97dfc79e97a@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAIwe0moC/yXNwQqDMBCE4VeRPXchEUmxr1J6qGZiA00iuyqC+
- O6G9vj9h5mDFBKh9GgOEmxRY8kV9tbQ+HnnCRx9NbWmddZYx8M6seIbFuiinBLLmnlLf+6hpuJ
- nKQPYw7j+7ruxQ091bxaEuP++nq/zvACD1dWgewAAAA==
+Message-Id: <20261016-bug-selftests-mm-hugetlb-cgroup2-skip-v1-1-7c78883a67b4@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJce0moC/x3NTQrDIBBA4auEWXdATbGhVyldJHY0Q/7E0RAIu
+ Xuky2/z3glCiUng3ZyQaGfhba3Qjwbc2K+BkH/VYJSxWmmLQwkoNPtMkgWXBccSKM8DupC2Eg3
+ KxBFf3qlW22dnvYHaiok8H//P53tdN27F2oZ3AAAA
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
  Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- Zi Yan <ziy@nvidia.com>
+ Mina Almasry <almasrymina@google.com>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
 X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CEF31100002
+X-Stat-Signature: yj3fxqjg9ssspp93kbyfr6boyuxk1axy
+X-Rspamd-Queue-Id: C01444000B
 X-Rspam-User: 
-X-Stat-Signature: cfmr8obtyjihhr9e6zjgsm1wphhnx8uc
-X-HE-Tag: 1792155286-923316
-X-HE-Meta: U2FsdGVkX18dPGnz761XmzUR95n7AQaQa2+Ql1NikSYY/UVZm0ytmXbcOKl+A90kDF80HQrROnaEq7tdJj2lJ+SHQ+ncwgAZf1gKGlQBUCxG1yuJMAlS+sfRiEhzEx565d8RHWoueWwbC5sjyhUHvanb+vVF5MGgkh3sXeKb9qmrP1twoI8dXHlh0IIFNvTpTKPtXUt875BcD/OWwvIB5Yiwn4Z79a4sIPOleg3qY+nddLVPuTJ0fLv8SMy0Rjdp0p41FRbx5LN6Y6fJ2hWg+cfBXc2fQaN2uhRNIJsQt9e+Lpi3XIhH2EHTNerBCaTJ4/nB8LEBhcdbBzLnwPB/68wlkc9PBwbTbGwFvhwbzuRT6BwhmpjhV7+3IB5gZzoaiavBaaaukZeUWrqlyzIQWr4bnmAfDaBCpNoPQG5bgrX7dHXn+XQjtjNnV9aOFkO+Gp+fMinjVQWQv3RFDsY0TAH0cdEhcBt4x8BT7stMwkmW8Z0QzAyB4CAhs1l7DLP4FQLNI/yXJn3Q0ujBj5txwFBpydOx7m9YBR4YtKo9JgEFRrt4Z/yD/4shtz/1vxV6z40gdM9a7Y+VDEfvoLPDjZ1rgWB1Y0AuGevlpc48ZUNaoRwTT4W17NV/P6pTBZO/5FqvarT3R9p50YXjllXfc6eCEwS0rDkGTt9KiJVcSejcmSCM/nipWsn/AjgQOWJT1U1nHp1J1ZvD3l3x9FZ6nBtYQAe6ce/mpK2zEm+9jcg3X7flagWviIlEx8bmHWvspcUVOJy5BswmZahQV5kD/h1f5S6ZnOQdbrwBT9EB2onRc3XjjBpGQjs3udBZIS+8894+8QtrQd4grsQlcd7kOjy7r//qoMt0uHqyGQvemTsLOetRYfRQWcQB1jVWoP8tlZ0lgGquTzhish+1eWIqYAW3jlp93IBC3zGNq6gjdr+wTNx9lxKO6VVdSnm4QuUh1ACPzSrIrY6k+lmD6G2
- VwGMxQsH
- +1G4U+yGkMWqPeujXl9cMEqUtUKNGYXi2+m5TY34dLOrBMsXesu45WFsjC8kdziUKPHKNekbbKIgtHyszpJU8/IFKettL87myr5NKdGImP6mTkEJIMgmkPASJEBUnJisKX6EE6s/n3IyskOCZ6WZGAeVWdrZeDblGlh/gmr5SSUkbAFWTy+zZOxPo8PLWr7gYgj2RYpSrTUsD4cvXjmpGQZLCYNT7jCx8xjiqLAKRXSYxOuV+BRmRjY6EAfx0C7Der89s08vcJ0CEOlhVMI0BVb6viJ/BS+4eA0j3wnccrY/a1o7ytE+91XCRfvVZEjhobg1AUkkGbWon43y7wUFUGqknBKO4KkpIT2oNKSyPaJ2yad5cQ0+Moyv1itgTelh8e6eRdOIaJa/pXDSSnNZc2unwx209IURPggNJ6Idw6a5xjCG4c05zSrZ/HqJscRwxBXXU+Ck7PQouJtrm9WVlYcJ9hlPIXafyALXK6gSUL9vN0p7O7fxsx0bAHZ0zA/uCc4wpOGBWUVVu2mSXFHcFH0gVSJflqVzHIWhQon8JzQrrM78=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1792155300-8566
+X-HE-Meta: U2FsdGVkX18Za357z4ltm1lXvjOxw9tx2gC8kvOWDJ4bJLH+gQe/IMBKlePDp3XNxX5bqiz0kw7EdN5KSL747GJRI7NiacSzz9Av+ySEHbVkDHmZnbgqqq6EBEZbYOS8r16Wb3Se/GaHEb8fPdIszPadskHMOkyaAWU1DhTB/yCyHWOOfkAo8fljpYqPJ0DljML8aKsRayzEBAMxeujRcUiw/0BQ0fAa4+Y63ibo3u5M5oS0+Dbz2TG1v86JhhD7GSgAj52oTJ/OAuKLgvbWCadggkMCXTSl6+QJx6yUSTNBZQhXw5/yKNVqj+mvkRXGxtdZxIpnUBciAzjO4rIMQ5Fbyh3NjtKnvTZEbwVwDhjCXPKj21XAE8UltjRWJ4i6do/X+Bg+TACCVu4GHQjNf84sR5kXFyBEzzMy2Zo+ypfqdV8PP1Ij8tws9q8dYjwwfCSAR6sHeya48XOINgqgXkPd86HwD8W3tkakNNMyxtDBrPTandSf8CsY58c+oX2jx4q5OwZOhOnZwpXg1VGwbJReZmRqtge6FfNqiw+ZFuE+s+gjAxeFEx2u46jdcCvaF2L3nVaaf7ukE12DTWfZhmqBqIOJYKuds9VQtAoouYY8w/OkGVGKfDumP6uVUW8F/LZ6/3uElgtsIyyJ4ONgsBhgxH/VYtclOi3ZUnKq+jOyq9E039RahVB5EhNfv5xa1V4baMUljxw28e/F7SlKjc/J2KIRZnkjq5/9cEB2wIuHp1cN6yzrz6UKvXhP2CINCes3XrcDxs81SQqGNw8EwxxcooDnu4Isy6u24RWzNWh3SaMQ44xS61CDUC7TzEd6poqNqPG93tyEXfUE2nboB5R4D0Q5zde+Z8/+8FyansWw3T8mc/AJQfz/JmqqwSnhFwwN0q26ETWNg9377yj4DrgPIInz2dWckEBxibbFQZLrVBFnfbcJfw3Mk2Gszt/6MrD0S9mhtBaNEVJpw8J
+ a8bTrWPK
+ SOiGbDoi78LPJHDL2Yd9NazUuXtD4gYbaXdJ/ftGVDrKzmS9Vd8wIxefnzw54EoguGjGtb2wWo+x2JS6gRt687anc8E7G8FT/HJpYbzSsI1DFHCu8dnVBSJVByEV4LTZ8W2alPtK3MeqW9sh0PMDkFqM26C2ERFh50VKrY6rBOJS5SLC/ucnIijh6f/3ZtbX/979E8G7M5L4afF1VprVnHVaISW0Yl8mf1vFj4Ua1oPZkJOtPEuuchZ3WQ1Q34zybtne8BVOMHJbQATnhEScPDE2QLp3zd7t6DlN9GQwAt9Xo8Li7Jaq5NZloogUF5f4uOJuQ3CaQ6Ohw+Kl7QBJN6x/N8KNlKUhFzr0QhPu8npZ9yALvKoRsMfwSgjhMRJZZFEMDV9wZQeKWWTgCAqo5wZFkd+awlSYsDiuykc36Q1RYlzIG12+qswu71HBSov/I2ohqkdflE8pn8RPp0WCLR4pMsKmY4RnP3V1qSdQE/N4uXLmKrl2TZBMoTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,47 +126,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-run_vmtests.sh creates a loop-mounted XFS for "khugepaged all:file" and
-for the pagecache folio split cases of split_huge_page_test, since
-tmpfs does not give them large pagecache folios.
+With -cgroup-v2, charge_reserved_hugetlb.sh and
+hugetlb_reparenting_test.sh mount a cgroup2 hierarchy on a temporary
+directory when none is mounted and enable the hugetlb controller
+(hugetlb_reparenting_test.sh also enables memory) in its
+cgroup.subtree_control.
 
-It only does so when xfs already shows up in /proc/filesystems. When
-xfs is built as a module that is not loaded yet, the check fails, no
-XFS is created, "khugepaged all:file" is reported as skipped and every
-pagecache folio split case of split_huge_page_test is skipped with "No
-large pagecache folio generated".
+On a system that still binds these controllers to cgroup v1, they are
+not available in the new hierarchy. Writing to cgroup.subtree_control
+fails with ENOENT, "set -e" aborts the script, the test is reported as
+failed, and the temporary cgroup2 mount is left behind.
 
-Try to load the module when xfs is not registered yet.
+Check cgroup.controllers first, and skip the test when a controller is
+missing, after unmounting the hierarchy and removing the directory the
+script created.
 
-"run_vmtests.sh -a -t thp" with xfs built as a module and not loaded:
+With hugetlb and memory bound to cgroup v1, per script:
 
-                                   before    after
-  skipped tests                         1        0
-  skipped split_huge_page_test cases   43        0
+                                before      after
+  result                        fail        skip
+  cgroup2 mounts left behind       1           0
 
-Fixes: fc4d182316bd ("mm: huge_memory: enable debugfs to split huge pages to any order")
+Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
 Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 ---
- tools/testing/selftests/mm/run_vmtests.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh  |  8 ++++++++
+ tools/testing/selftests/mm/hugetlb_reparenting_test.sh | 10 ++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index a1b45a3dedaee..6b754555d5734 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -399,7 +399,7 @@ CATEGORY="thp" run_test ./khugepaged -s 4 all:shmem
- # Try to create XFS if not provided
- if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
-     if test_selected "thp"; then
--	if grep xfs /proc/filesystems &>/dev/null; then
-+	if grep -q xfs /proc/filesystems || modprobe -q xfs 2>/dev/null; then
- 	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
- 	    XFS_DIR=$(mktemp -d /tmp/xfs_dir_XXXXXX)
- 	    truncate -s 314572800 ${XFS_IMG}
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index a1cfd3a349db6..65065b1377b24 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -39,6 +39,14 @@ if [[ $cgroup2 ]]; then
+     mount -t cgroup2 none $cgroup_path
+     do_umount=1
+   fi
++  if ! grep -qw hugetlb $cgroup_path/cgroup.controllers; then
++    echo "hugetlb controller not available in cgroup v2. Skipping..."
++    if [[ $do_umount ]]; then
++      umount $cgroup_path
++      rmdir $cgroup_path
++    fi
++    exit $ksft_skip
++  fi
+   echo "+hugetlb" >$cgroup_path/cgroup.subtree_control
+ else
+   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+diff --git a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+index 95f517c3bd167..811912ae7d975 100755
+--- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
++++ b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+@@ -29,6 +29,16 @@ if [[ $cgroup2 ]]; then
+     mount -t cgroup2 none $CGROUP_ROOT
+     do_umount=1
+   fi
++  for ctrl in hugetlb memory; do
++    if ! grep -qw $ctrl $CGROUP_ROOT/cgroup.controllers; then
++      echo "$ctrl controller not available in cgroup v2. Skipping..."
++      if [[ $do_umount ]]; then
++        umount $CGROUP_ROOT
++        rmdir $CGROUP_ROOT
++      fi
++      exit $ksft_skip
++    fi
++  done
+   echo "+hugetlb +memory" >$CGROUP_ROOT/cgroup.subtree_control
+ else
+   CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
 
 ---
 base-commit: 437a7e839def0f505277022622fc59a8b071d6cf
-change-id: 20261016-bug-selftests-mm-run-vmtests-xfs-modprobe-de0697d4c4e9
+change-id: 20261016-bug-selftests-mm-hugetlb-cgroup2-skip-7fc0316486f2
 
 Best regards,
 -- 
