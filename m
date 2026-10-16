@@ -4,120 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FB0DCCF2C3
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F8BCCA46C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:09:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B5A66B0088; Fri, 16 Oct 2026 10:07:26 -0400 (EDT)
+	id 580536B008C; Fri, 16 Oct 2026 10:09:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68E996B008A; Fri, 16 Oct 2026 10:07:26 -0400 (EDT)
+	id 531916B0092; Fri, 16 Oct 2026 10:09:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A3B06B008C; Fri, 16 Oct 2026 10:07:26 -0400 (EDT)
+	id 447726B0095; Fri, 16 Oct 2026 10:09:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 301956B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:07:26 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8D7712048F
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:07:25 +0000 (UTC)
-X-FDA: 85328666850.12.FF0EB21
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CF51E40008
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:07:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tAx0XQSh;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 23D316B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:09:11 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A6041404DB
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:09:10 +0000 (UTC)
+X-FDA: 85328671260.05.120EEF3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 131024000B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:09:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGe+v27p;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792159643;
-	b=hqItFl8AtXmD/VmM+m+8oPukfd1pLGRcNsrxswtK9xrrmYldxbc+nlkTdR44NyWQnn81NL
-	E9+kgz47DNQfrXv2af6Tjg69/+mqFvQ3WlvdxDt+XgSZYbbqf++SqRtpRAYuLNXziqAxey
-	9j7dE1fRlsWQGVrZwaZpOh4jf5Xugas=
+	t=1792159749;
+	b=7SkjpSoeebxGWgCuqNm8+W1fkL1FwkHAbUx5+mIJ70ZZoveyr7H83S0VyvI4Jkw5q4Fcg8
+	0wB+r61Rx9/vX7O1lWmdJWsnyi8XO10lL8SxQaeZIIQVt5MbfwRIpyXGEzqQpTaf1X6sRv
+	5Hd9ec5ryNRYkiOUMdOYbBgfGELZf8Q=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tAx0XQSh;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGe+v27p;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792159643;
+	s=arc-20220608; t=1792159749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QayzQmhnTMuUa2ajrFbaahJ0XP47WZ2WayG+9I0E9kQ=;
-	b=rnwnQy9IoKnXvHeHAWHooLiXyTs8L8GWaUyP9GRedImsVMq/2Uzp2gPTRO5yxTLjyMU7e8
-	5EcZU8UGeftxYNogRlUBcCWVp6UiT61LtYY0K25+HLj5ck8DhDZnrI7wAYEYrZV9xD6Jfi
-	lqbxPGtjm8yDqdQWeOMLS1Nbc0lYWpM=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-917b78dfe30so406386d6.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:07:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792159643; x=1792764443; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QayzQmhnTMuUa2ajrFbaahJ0XP47WZ2WayG+9I0E9kQ=;
-        b=tAx0XQShG7bHN8cqijh7TZDrUavPbElwS25HCFzaUxhphsMODXcgaXjHdCm5qn32lx
-         unzDd6jdWpyiNzquSCcsF7PUz/3xcnkbhxKncwoOhlDKt1AeH76VpfL6UyF7F4ICWkoe
-         0arQ/9jaP3kiaJZkfeacqe2shsYCIHRfk4bCue27LCDBObk6NkcNaeswq/P0XdJ1iBdC
-         vMRZ9bztHc/46BJGk3SXLHmu2ob5AUd3C4UA7mBpobCLl6md9R1fqJoDAx8nIbLvRM9N
-         4bEgAF+RYfDL7GM4GPGmZDcHcCIBme3Ea4hFklERtdILhqibLJXkSeQlDsuO/DaJPSnj
-         KXOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792159643; x=1792764443;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QayzQmhnTMuUa2ajrFbaahJ0XP47WZ2WayG+9I0E9kQ=;
-        b=fbBpyWydPVC73QussnhFFVfUkI7hq4hxvC1YOTSDEhSef5fHBqr3Vp7dsJpw+afiFx
-         7tPH24xDL2KtdB6CsU6qRI3k+H0AnNvtU8rvEbi02t5aG1Yw1C16RKdWlJCu9IKEqv2u
-         iCSeFffMuVBEidG+IacvvbPM8kubUOYgZzR0Q5XYrNwl1BQPyysCPr8iV2EozVdwvLhz
-         lXRfJDxRuHfqWLZP26r+SuyJ3q19mlB8XBI2ZxZqZcTqMPiZ15adcUYEXXK64NjiSWCd
-         AymWJWTbkUalo6QlR11zwpMm4g/keVcBE/J8ZnnHB9c0JGSWjWO0du0q5e2WwIK58iEw
-         yQMA==
-X-Forwarded-Encrypted: i=1; AKwUvBy7Ha30Mn8sXj4moYunRy8Uacpejgh0rlR8MRlLAKAmW2xQS+p8cyNNJIu7YM8onUWAkHwE49SKjg==@kvack.org
-X-Gm-Message-State: AFq9FYIoje6tkfwUCllLjkBgsOyl7X++w9LAkTOaFM2EBa//fPKlUbGq
-	8tFostt55+37AFpqFj4tq03007Y9jTFRoW9IbshLkhgkdwtdtNp7yjC6zYkWH5db+F8=
-X-Gm-Gg: AYBFou1rI/GwLjfJxrtX44kDNOx1UIDePQ4K71rc7xFlRekqZxgKAopyTf/4EQccYTX
-	vwErZKk8gME9RIroTEV3PhCcZdqLndo9zS5E7IyFXCu5HIzra+2pbqI7Upox8NqiXoRKoA+8PTk
-	Q9pTis3LiAcqJt4wfTWCQuGfNuFKFD7stR787j+pJiLbb02U+LrKVowJKot20UaAw4Qmdsj5miU
-	HHDFcxHRHNLPIp0K3nPhegygM6HpF+dUdf7wlPtKdg8S6+U4kZaraIPNLbonTgZ2R17NJWAo72U
-	h0vrbXOBtEB0QaiHDWwbVu7UZDmAZtfasqBrotXscHgfWyC3wZhB4ANp53taQehS5lf0gdErzHV
-	7vCs7pPMOM36Ey5dFTPSo4svdEjYkajLykiXLPSJ+8v4VAvAKHydBfc/vsmunwSTRYYXpEwtCa6
-	EyZgA2QTkpFyHlAppe10iNUWWO+85aV1kVE915hqqKZVeJF958aVcaxEggr1QnvfGEMujHvCXI0
-	LKlugu/wS5ooBYQ46M3fOn8dZGqhK82LTlL+R7cmpLfsD/gH/rP27M9jMXUaoXTaQ==
-X-Received: by 2002:a05:6214:3a8a:b0:917:a1a7:6369 with SMTP id 6a1803df08f44-91bdf07e362mr1076226d6.22.1792159642853;
-        Fri, 16 Oct 2026 07:07:22 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcbb75af3sm23592056d6.40.2026.10.16.07.07.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 07:07:22 -0700 (PDT)
-Date: Fri, 16 Oct 2026 10:07:20 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Sarthak Sharma <sarthak.sharma@arm.com>
-Cc: linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
-Subject: Re: [PATCH 3/8] selftests/mm: check MADV_COLD and MADV_PAGEOUT range
- handling
-Message-ID: <atIvbzEGUcyCqdC7@gourry-fedora-PF4VCD3F>
-References: <20261014175756.2035176-1-gourry@gourry.net>
- <20261014175756.2035176-4-gourry@gourry.net>
- <73c55ce6-67a5-471d-811c-facf712b2fe9@arm.com>
- <atIkDw9r6CVDJaG7@gourry-fedora-PF4VCD3F>
+	bh=/rY+da4gZ/gT6x5YDiZjxmuF5eCELrbiaY4rx2johDE=;
+	b=LJlzS2ZqOuBjb47oFv7dIpmIPmdoufD0xmdInotL5JETwvTMwaw7RdHBUrHqFa8VNM6zaX
+	yTgSsQH0ptEKON+gzUhxOOaBWstVGxpXdUdtz/oW4Hbs5g58KWehh5SKtU4cs2Eg/QfkiR
+	gnY8/8/2nJsomZrRqhzW3aC/xaJbww8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 03451416D9;
+	Fri, 16 Oct 2026 14:09:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEBA1F000C4;
+	Fri, 16 Oct 2026 14:09:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792159747;
+	bh=/rY+da4gZ/gT6x5YDiZjxmuF5eCELrbiaY4rx2johDE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UGe+v27p90GzDxWWTa5dWIjd7PcDB2ayLWfH/O8Pnfw2ZQl1W6mNxyXCSMa9WOhyX
+	 nbSo/WYdZbmdS02R3+6eiI8Uw5iYDt5WynvXdf7qVpVFMMjvTlqecHl8Yz5pMYFM8l
+	 DeVjAvJ3YnE+W/u4AkDZkIB3IEaXeeslVPTczncGkMjsrHqkKqYySJuA0M/myrVNRM
+	 p7u/1JzWgh39EI7wWAwWtVKAKXnlJHjhMLx+HrCcZm4iR39ddN1kBEwd3Xqnie5TyC
+	 Oto7KE3HDp/jXN9a+4EDGbxN8eMxI8HFISKckDQEWXKmVy9qo5UwS/hQj3laK/G6QM
+	 szuTh7q0wRHvQ==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/stat: avoid 32-bit overflow in idle percentiles
+Date: Fri, 16 Oct 2026 07:09:00 -0700
+Message-ID: <20261016140900.125937-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179214257862.2.17756454862637555633@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atIkDw9r6CVDJaG7@gourry-fedora-PF4VCD3F>
-X-Stat-Signature: 5jqm9kc7wju7qwe14rrjouoo5awdpxdc
-X-Rspamd-Queue-Id: CF51E40008
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1792159643-259599
-X-HE-Meta: U2FsdGVkX18uBoLONiV/SUmEQRQ3acTABhIHxEUtuo3RqrH62hQq3iSUss80/9Oh5HdbIsMz0PkFC2rMCTR100eJEkiZbyKM7/4FQvLl8HzcXPTnRNxXunYehWkVqBshbjUH8cnqueh3LG9U6tap2ZnBOoY6//WQcSCWlABL2iu32fxA7lLyntDhDt2JfZiYTk58tFdmEXrHDCNTINUPyfFmMk3/0zq8suN+/4ewag9s6J6039Rgr2ZSO+ru6EsM0cao4NVXu+bMzN412rH8sWNC5wsLhSun+9bmcpTvacIo709c4C0o8M8FJNn184Xc0/XfViOn+kIpPHEGZHjckuoj/wC39GbgGfy/hWxJfUhYkNb/Jtp5r1mOzM+qTsSpSJTAFO7+1ZCyJY2o8t9icYBxom24CAzYFNIJljGiVnS5pXCULx2KEIc5Xe9mNgeaCmrigoPSTgYWSe9EwPLSxTDQO70AwNAQSc1slXmlnUuTsux6ag1GhyBlecpKjyCxgNbxKAs2wYY/I6IWOJARSadUVWn8oKvFfxLlZRsvaEgebVRj13GYp4z8Dysc6birARdhXlJLYyfQ5f+rLLmWff7aGtEXPexEU1Ed4MA+nP6LLPb5qKCRfNdVS2HJIpOEiUSB9yaQk7mj6bm1MOunrbA3WnsV3WTctHYUr6DczBffvCoyiJbJctrv9Y/gWYJ5JiSwlrfzIQ5VX0VFmOLKF1y3w8C4iBNS0AISi4m7KIZ9eY4+5pM6+QZV8VqGz+IkQPJttKjGka3h0Ismwce66aW0Xu8RAm/IULOhb1IhuV/R510ACLZhPsr+GJFyngLw8T88mkCs4e5Zc7Shs1ZUzWq/BzByrgTLUkxG+utLJ9RFT7RN8SQ3xVVV58vcNWj1GTogF7nieM6wegJG5vWOnqmVoEmw8mo+NkJIlas/rrtZH9UZhNv5OswNijoCbDle6yEmpfkl/zYZj9wC9ud
- 9aZKZAoM
- KglkyDI+VuN3fq3wrrDPP1OspsbCjJMHx8jH52V5SI8phHLxqf/56mJgq4OsCMbaToruZwumIygwWlqgmmG0Tm4Q7ZWFZ5wQKhtDyax+JN2tYFqTtlafMnY5F4HwR7SP4TPZEbfw3oWymajtMLBi6nAtvhxsX5M2Y0QTSs8ipvgauiFeZ4V5Y7pOLYAfg8Ava/6PcoC+orZlpGwVxKeCGFWc/LBHVj5/OXmVF+2nAHZF3UzCE0lTF4xR3rVO/7g1rkfZdh4PNvQaZrxkRhemlltpkupRgOgfrHDHkLnxJU4wciP4HfnyzyZ6ZWt0P1dVHw+nrslCxV8OIXu6XvVose3vNd71qorsBF1zT1E7HjF+bij8IozU3CPLdUujxQiagePRG
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 131024000B
+X-Stat-Signature: r8ae7pqdpwh3w7frmepd6nhbqrm6nqn3
+X-HE-Tag: 1792159748-700731
+X-HE-Meta: U2FsdGVkX1+ByY6Vmluyjrpxn/EEVzFb3zC28ccgqvDhBa/UVXIU4k4AhjzfRTuL5Zhm0iyVnFYN94KL+aDZdNXvjKvAQ/rrFfn0YKdreB2sl00teAC00FCLCUFtTbYsf84T70/+L8hYCeS08+Dh6VXSDsXw7wFYkGIxiylitSJ55PyRmuEZaYRnmJl0dLl4ekrddd25NGZpzhtmRFhhikPMXkt1heMA90EhiEIpdmaDuZ7eksDKaCV+0aF8o61x6JJk7VRRDLTgzxJlULzxXnIuMhJ7ZB5vi2Ukews5cVTJk7fTRjqS5Jihjy8dLdpuqPEYS/izYBHpL9AKVys8Dh6UY+7cZT1a++vqeQ/2klDR3jALJLudVrXbhegsN3NEO6E9YdHlGlMXVVZ97eHpVxwj5vWlCz0gsdws/6lCCPWHgvLGvJc8i99mYDpVxQCrIBXuhdb82EhASg87u4Mol7msq352eLqc4YcH0Gqp/bvJADf+FgIia9bhSVyR8sxqXibdM6yfUS6cBoYgfp/HZk5kg4PWiqRLaIgUvBIQmUyEZq+fjNSXSAFFFCLxRkczj7cm5UlLwmBGiUD1TFpWXVH5Q2b5drgEPWfg3cde63Kfb1FoSevGZF8Lv8xkihKBIVzVe5WPWlJBfUYZW7CnBOuilA/89c4WUD/NSKpGtXhmAbauebf1Q3GGRYrxTYkPD5n4T51Gut+xJPaE31nZ+36/W3dcpUoichYqJAixTvBv1M38iGAUTfj8rVjGtenxoSpMKPabH2b4K2PfBFzQeEMPY+Z5vHluEobFyHgctl10O4nVVYL6g6UMEWZ5J6DN5PTo6uVroLdN4zshAa2tvMVCi4PBmEJ62qQXvNUMWSSS+2zK4Z0WLbm24qyg3ZKGWDRJb/IB8w7IOpYu8+kOpJhzfGIChlKLNO+h7LqHLjeh6L9FwIg/vue4hOJVxkurG8AOpurDqgI7Dxr7SFy
+ b45csLpY
+ nitnzcJ2hv3luI9x2YjrViZxxOsp0w3S/5Fiz8mDYGsXjPaVTr2r/QNNzjjp7wlVprYbOMXXrt88QWXm72uGJc2i5LL6nLkDC/0lyORPcpEyxlrdB92o2aAA3fQIzIqWipEsjvA+rIFUOP9SMmPNxM1xOyEIuSwFpolOnvU/iVHAtGXb9VRPKVbp0iVal3tblWt3RV8aDq0iCZBl8K3WmaKY5SJ2j6UCvMEfcmeWVtN8mfh0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,50 +93,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 09:22:54AM -0400, Gregory Price wrote:
-> On Fri, Oct 16, 2026 at 05:47:57PM +0530, Sarthak Sharma wrote:
-> > > +/*
-> > > + * An unmapped gap in the range makes either hint fail with ENOMEM, after
-> > > + * advising the mapped pages on both sides of the gap. Only MADV_PAGEOUT has
-> > > + * an effect on those pages that the test can observe.
-> > > + */
-> > > +TEST_F(madvise, unmapped_gap_fails_after_advising)
-> > > +{
-> > > +	char *mapping, *control;
-> > > +	bool swapped = false;
-> > > +	int retry;
-> > > +
-> > > +	pin_to_current_cpu(_metadata);
-> > > +
-> > > +	/* Make sure MADV_PAGEOUT can swap at all before relying on it. */
-> > > +	control = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
-> > > +		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> > > +	ASSERT_NE(control, MAP_FAILED);
-> > > +	control[0] = 1;
-> > > +	if (!pageout_until_swapped(_metadata, control, page_size,
-> > > +				   self->pagemap_fd))
-> > > +		SKIP(return, "MADV_PAGEOUT did not swap the page");
-> > 
-> > This test is checking for both MADV_COLD and MADV_PAGEOUT. So if we skip
-> > here because we couldn't pageout, then we don't test for MADV_COLD
-> > behaviour at all. Do we want it this way, or should the tests for both
-> > of these be separate?
-> > 
-> 
-> If swap is off, the behavior of COLD and PAGEOUT look pretty much the
-> same, and we can't actually test them meaningfully.
-> 
-> We check that madvise(COLD) returns -1, but that's also largely
-> meaningless if this initial pageout_until_swapped() call fails.
-> 
-> At least that's my thought.  If you think I should split it, I can.
-> 
+On Fri, 16 Oct 2026 17:22:58 +0800 Aveline Noir <jm5905938@gmail.com> wrote:
 
-on second look, i will just move the cold checks above the rest, since
-they're mostly checking failure paths.  those are mostly unchanging
-regardless of swap status.
+> Hi SJ,
+> 
+> On Thu, Oct 15, 2026 at 05:21:29PM -0700, SJ Park wrote:
+> > This patch is sent as a followup of your previous bug report, right?
+> > Unless it is very urgent, please make sure the previous discussion is
+> > completed before making a followup action like sending this patch. As a
+> > rule of thumb for DAMON, I'd suggest waiting for ~10 hours after the last
+> > comment on the thread.
+> 
+> The patch was already prepared and additional tests were underway when
+> your reply to the bug report arrived, so I went ahead and sent it.
+> I'll leave more time for discussion before sending follow-up patches.
+> 
+> > What is 38?
+> 
+> 38 individual VM runs, forming 19 before/after pairs. The 20 same-image
+> runs formed 10 control pairs.
+> 
+> > Do you have a plan to run more tests to be able to tell that?
+> 
+> I've run longer VM tests, but even same-kernel runs vary substantially,
+> so the overall patch effect remains unclear. In a fixed-input 32-bit
+> userspace test with 10 regions over 256 MiB, the median increase was
+> 227 ns/call (+42%). The old code updated 15 entries, versus 101 with the
+> fix. I haven't separated the extra updates from arithmetic cost.
+> Maybe we could record region counts and sizes alongside VM timings to
+> check whether both versions are doing comparable work.
+> 
+> > Any reason to use div64_ul() instead of div_u64()?
+> 
+> total_sz is unsigned long. div_u64() would truncate its divisor on 64-bit
+> systems if it exceeds U32_MAX. div64_ul() preserves that width and maps
+> to div_u64() on 32-bit.
 
-so basically no need to split, just a mild reorder.
+All answers make sense.  Thank you.
 
-~Gregory
+
+Thanks,
+SJ
+
+[...]
 
