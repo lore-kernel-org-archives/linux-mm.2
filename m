@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E01CCA490
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:55:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D91CCF2C1
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:59:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F3946B0088; Fri, 16 Oct 2026 18:55:43 -0400 (EDT)
+	id BA8806B008C; Fri, 16 Oct 2026 18:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A54F6B008A; Fri, 16 Oct 2026 18:55:43 -0400 (EDT)
+	id B595C6B0092; Fri, 16 Oct 2026 18:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BA736B008C; Fri, 16 Oct 2026 18:55:43 -0400 (EDT)
+	id A6F136B0095; Fri, 16 Oct 2026 18:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A04A6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:55:43 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BEF68019F
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:55:43 +0000 (UTC)
-X-FDA: 85329998166.29.AAD22A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6D39C40005
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:55:41 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 87E7F6B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:59:09 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 17B23401A3
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:59:09 +0000 (UTC)
+X-FDA: 85330006818.17.61D3D81
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5ACCB40007
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:59:07 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drmmTrUJ;
-	spf=pass (imf17.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792191341;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r+fjZAA8UGKYXICmEmHMmO2IajMcg2qwTMJzf+lYDvo=;
-	b=E97AKGr4VRUBHI8k5VFr6IVjejgOgzcWgjuN4gxt1gnzMqPZealXfPL/yR8k2iWky8KTR6
-	XZDSn9J+mrcuWxzlKZcyR2snxwcY40r7aNwfrx0LyIWKKFDJttWsZd7hv99NX2gs9E292e
-	JydiN72E4X06xQbC733KOdGmfpYQqkw=
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K0iehqGc;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792191341;
-	b=gk/rLOYsAmmYDfBXX9MANCnEp/dUzNuIccXuQnx9vHv3Qfq4vKSYzt118Orgh9JoZmPOro
-	yykWbkVxjqFx4w8KYUJ1juuQyJ4TTFVbKDeO7keOob9QROmCAPcT4Q3MoE9vHd1FaLViOY
-	5qwlQOasgfN8S9P6JKrKT9i6oxL41RE=
+	t=1792191547;
+	b=ZB94Sy/c3DEBc2X5bNa/edphDlRzyOth+Ny8EKc4qxtF3boXkUpjtypYU0JKXN/Ie1jbqu
+	aldUberMMjgVyE9Zc3QR82/RL50aXt2TqtGgm+lsftJxyIRGYuMWrj4eWvJMEqHAJ8GFVG
+	00NLTSrWzgHfHrflJ7C7Wg5ZiY9MYEI=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drmmTrUJ;
-	spf=pass (imf17.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K0iehqGc;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792191547;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2XIZw4yIu0sI+8wa1+fQEbc6VQXsqxREgHYBNQYWVKI=;
+	b=LVkJCnNMOV1tpByF19dg8FlKX+EUUDIwXK1KsIikoiftvvCZBc7ACAhTYKuT8Dq0dvyYoM
+	Nk6wkDnCQzhS6Cy+hdumj8KqFB2mnnKDMy4vv5Nn9afuVVvNgIXVY6ZWA1XvcPgDvXSW3y
+	KcVbgBH855JPZfc9dpswzuFm9uVcKB0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99BB541788;
-	Fri, 16 Oct 2026 22:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D411F000C4;
-	Fri, 16 Oct 2026 22:55:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792191340;
-	bh=r+fjZAA8UGKYXICmEmHMmO2IajMcg2qwTMJzf+lYDvo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=drmmTrUJ8iWi865TABSjtQJ9sJU0X1ucWOZmcbbFlVromL4oRSkfQnK+vqE2SGeHU
-	 ANYRmOXzK0XCc74VOaBQOj0uYXzU2MWSShhuzhgDcUNw3lobZ15xl0SPVG7K5OhHVh
-	 DOiS+M8n01gTzcOAo7DNt7Tm6P70gsnjwF/zdnPm1VMzTqcDBCneVdwYKPF6I7bZ/G
-	 9QHUCYt41VoxCuQABUNzjja3lz9arKIVLgLNd6AimShaLvDw4Due7NWo+Xoy8niIjL
-	 12McuF8dO36y2gwjxSja1Nt1AM8ih46v+w7JplqmyiGmb4HC89Q7YUukk8D51P6hWU
-	 4YdShyNew+6Zg==
-Date: Sat, 17 Oct 2026 00:54:33 +0200 (CEST)
-From: Imre Kaloz <kaloz@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
-    Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, Jann Horn <jannh@google.com>, 
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-    "Jose A . Perez de Azpillaga" <azpijr@gmail.com>
-Subject: Re: [PATCH v2] mm/slab: sample slab_state once in
- kmem_cache_destroy()
-In-Reply-To: <atDCYwNfKW3m6YXh@thinkstation>
-Message-ID: <ff8d44d0-d27f-2766-85e9-ce91b8e8e944@kernel.org>
-References: <20261014150844.8536-1-kaloz@kernel.org> <d966f16a-a2be-48c7-b31a-a2c7d3ef6d5c@kernel.org> <atDCYwNfKW3m6YXh@thinkstation>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+	by tor.source.kernel.org (Postfix) with ESMTP id B7F0D6022E;
+	Fri, 16 Oct 2026 22:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B501F000C4;
+	Fri, 16 Oct 2026 22:59:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1792191546;
+	bh=2XIZw4yIu0sI+8wa1+fQEbc6VQXsqxREgHYBNQYWVKI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=K0iehqGcH6OaYxRdNrNEpl3rtaVqerqvgIjRBbpdxMovHc2N5nmd5gk9tKrViP3B+
+	 CVCq3cr9444LCA25tUNknkzy+Gm2THEOSPkIVShx18Q3s7BRkV6c/EuTXDzecbAv+6
+	 2CwNsL4Eu6qrnPjbXX8WPiP+LUgzjNiLytIU2bIg=
+Date: Fri, 16 Oct 2026 15:59:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Wang Yingjie <x-professor@outlook.com>
+Cc: Alexey Gladkov <legion@kernel.org>, "Eric W. Biederman"
+ <ebiederm@xmission.com>, Manfred Spraul <manfred@colorfullife.com>, Vasily
+ Averin <vasily.averin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "cgroups@vger.kernel.org"
+ <cgroups@vger.kernel.org>
+Subject: Re: [PATCH] ipc/sem: account enlarged sops arrays to memcg
+Message-Id: <20261016155905.2a659b7bb7d61f33467a3263@linux-foundation.org>
+In-Reply-To: <20261016152609.2528805-1-x-professor@outlook.com>
+References: <20261016152609.2528805-1-x-professor@outlook.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D39C40005
-X-Rspamd-Server: rspam08
-X-Stat-Signature: b1o7gy8a5u7hukhspgh98wexexkygx7d
-X-HE-Tag: 1792191341-364547
-X-HE-Meta: U2FsdGVkX18kHEAXQyDOEIDui3v37I6/gOl0eFK8AjDPgFTnGEkdJv40y5D4HkJrzr2TEQ4TKMn00JiAtRMn4EFlcoZIoiZ3ZyWzWaIHokNHYs/nHYjuma7XUIZMiXe3pfne/MnjtA+LLlNeZ3bE2UN88VFaM1+pt1zLrlprPfBJDpkDZ4mPSwscv9YmUfrh8K0IS9V4D4UEfMIlPOuCXzCZsdA/wyz+ufhkz642eAADgpcUxYAdBSN8i41gfh5ibem4V/0SX0ytf1tlK/eV6OLtCvubc6bJRYmYeuZgULii3Hz9qXD6QBKRkx6lsekBB+wqlGTS5C1PT5J5N930pVui8cRCVoQfrJqKBvAyWZUOpVOZIJDM5ZtWcBwU6iPOdP0JBALOyI9RVngFL+s5FjzXvhtljoOflh9HPuuQOTOvez7zO9JJhCsER/N5DkxV/yIEC1mw8hA1PNqizSveFAbCMsj2Gh5+31VMIfzXggWpfdSyloq+MbTcjtKySyd9daTMH00WicQn2bqWxw5PTZZsYtJ/WPE2M2uYqYRz3QplFRZIb5R/tChLjkd/fXV3fl7V66CK2IVUvaGSoPKrp0kPSo1rzG/3AkMgUrY/Ge6hjP7zblucqseaG4NufOPMhSIC+k+cHonXYBDQWr43IftOtBVoZIXuGugTS4HGGroghs+Yhw2iLziE7F3JYEzTDk0zsAyMO+myU/2FhJR3G/T2pjP2Bq0PqX1FK4v7V5mCRq6ChkgOG1ZgVcqUa1agtlHLfsDHVCAdYruuOig1IBEgAZmzCkjB3wAYUnkkwHTz2aqDuVH1mfwX/ujwNuf79Aje5Kcze9ClXoJ6N28T74m5fGSUWuS9zdV4gN2L95+ZtVyqpZCXXu90lVGkZxqrcm+mS8RjoTTfcQW5Mz+JmLtEU53SvyeHEQjr6fmTpHJc1lNrCW2s5dmnnRYYLUjtVdior9hdApScCLrIY0B
- 29yrA3r1
- bcqVY3VwFCNjq4nR19DuZGhB9eAecgqQzZiXZJ4CWBX3XOUXUoVtwU9cRucqqXhcybZx+HxFkDE1h2I0MGiCMK3/XS8pZzooKOI9nGbDXWJ3TljYCIXWUBL953QEsx+UuHCfYi7tYcSmOgjV0wd86ESFjOjjQmrMD/4DNdNidzd3cr6t4yOwLapPwAZqVtyX29QaGy4wN04oTNcIlu9cwXrODeG+JF3pHjWkQO0AVFGrawSUGZpe9s2u6IZnegCBGjNxmYq5aLOM885CKtJBgudw+aUM/k2eJHtmDjVVbBa9i0f8iLQ5vDeBsqPilJELA/5B4wIijqGGxVow=
+X-Rspamd-Queue-Id: 5ACCB40007
+X-Stat-Signature: q7e7cmindt3d84e1nbhwcinhhgcfm1rh
+X-HE-Tag: 1792191547-402711
+X-HE-Meta: U2FsdGVkX18N0hvAThIp4u2bBeREu1bt0t+s7TPKuLf/GVTixXzbOsS371JfeQdgMdrRwxjyFGJ91EjgQQ5Udd8cNyc79du8Z7dh8fqWfCa7BNydeKSBKFA10oRl1D23VBJMK/ccNzhYWSCSNsGp5hu30J/dXqPLwrXwP59rRcWp2NdRpi4DRyPxJzNy3G9fToVti/esT9O+6x8JoWNxkp+EEoxpkot6V3SXO4d0X9YmXdc/huh9vUOcIMU050JfzYpKJkpWu0qqagzJR+T+Y0CZZnrgzcOZCSRg5RjSaxvrO60PF+1h1NY6vtSSKOy8FkQPU+2RapTSvlqNm+Ef6YVS7xy3TUeJryEG5NgXNJKylFtXY98O+KuaGDEG9ZiHYgwS8QZERRT99Q2ItDV15uhX0CoHzxjPDBn6mWkXxxxzo2Ap7CfJVVyI9w3OtzEDNGLo5L/7DXfyjFvOibNQrgBY3+OWl0SSWc2+k6nCb6a/SF1AGs/21NC5pgxGX8cD8J9ihUxWguDK/rsghVSY86uRiAR6MeD8TrJ9wDQCoc03fNZxsFS785fG4AaE4uxvBqzLWV5bJ84DfqE8MxYpIdRpxsW3RW0DpoxhXkhtq2nNBdHzSvKQhNZD1dIZYpOcImMugg49B+dwjwhjWt5MJt4ENNyuTc+tKIAplNcyete6tcsQCpLh3tDADz5aru4XoJMpCgqN81BsemEhngNOwPCgy9pJ2rprwWtuAipxEBc7Ptwh/qLTtgVE+9t03IWbq3RuebYEjVEMacLYRXFBfmQs7o02IZBFfp/k6kQPm+faY2pARqmGEcqNw+E0sd97h6Kbc47yr2YOiu7ZHfkiWIUzuosVveU/LstQwWdEhD99tC5zRg9GGSsp6XW4aXwF84hMYQCoyr0xX8hsNR4tKZiMDRmnhz4Pue5AsffXlFnR1wwalzG/CnnEPnW577RsprB1egT+n39VX2KejRl
+ fM1Dr8s5
+ WD3jcCQxlcEGXg7bfddHS2eDLmOakCbSK6IX34Ho8+CUZiOmsLbE9kZu3y/Vn4ot3T3INZ1iMF0bRwI1sYdROREq1xj9DaRLrbPK4VLLriPDVnwuxucXU9stfh1cP6m8/ZsR5uFHN7PGDp+FYkCK748z66/xc/T+/RRmbsJwmCAu1pYpDNHQXainYMIG3pg23NsDbc9X9T9Ly2VQa4XGKof5LM/E108XbdRPy6/rIPwwSW9PySQHsP2R9CAOqo2r/c72X6Qp4+AhF/6/1Aq48EmvFXHfEV5F2SM3IiplMPyHqB5AecVyauWE17w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,75 +93,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry,
+(Alexey, Eric, others: please weigh in)
 
-On Thu, 15 Oct 2026, Harry Yoo wrote:
+On Fri, 16 Oct 2026 15:26:11 +0000 Wang Yingjie <x-professor@outlook.com> wrote:
 
-> On Thu, Oct 15, 2026 at 09:21:43AM +0200, Vlastimil Babka (SUSE) wrote:
->> On 10/14/26 17:08, Imre Kaloz wrote:
->>> kmem_cache_release() tests slab_state >= FULL after kmem_cache_destroy()
->>> has dropped slab_mutex and unlinked the cache, and for a
->>> SLAB_TYPESAFE_BY_RCU cache after rcu_barrier(). If slab_late_init() runs
->>> before that test it sets slab_state to FULL but skips the unlinked cache,
->>> which never got a sysfs entry, so sysfs_slab_release() calls kobject_put()
->>> on a kobject that was never initialized:
->>>
->>>   WARNING: lib/kobject.c:734 at kobject_put+0x64/0x2c0, CPU#1: kworker/u8:3/55
->>>   kobject: '(null)' ((____ptrval____)): is not initialized, yet kobject_put() is being called.
->>>   refcount_t: underflow; use-after-free.
->>>   kobject_put+0x64/0x2c0
->>>   sysfs_slab_release+0xc/0x20
->>>   kmem_cache_destroy+0x104/0x1e0
->>>   bioset_exit+0x13c/0x1e0
->>>   disk_release+0x54/0x140
->>>   put_disk+0x18/0x40
->>>   floppy_async_init+0xbec/0xd10
->>>
->>> The release-time test has run outside slab_mutex since at least v4.4 for
->>> SLAB_TYPESAFE_BY_RCU caches, and since v6.0 for the others. Since v6.12
->>> the unlink-time test in kmem_cache_destroy() is a separate read of its
->>> own, also after mutex_unlock(), so the two can disagree. Both tests ask
->>
->> It would be useful to mention the commits here along with the versions. Also
->> this suggests 3 commits but there's only 2 in Fixes.
->
-> Agreed.
->
-> At second look I think we should improve the changelog a bit....
-> And the history of this race is really... messy.
->
-> I'll just rewrite this part a little bit with specific commits and
-> add Fixes: tags for each commit that introduced for re-introduced
-> the commit, along with some history so that people* can decide whether
-> they* should pick this up.
->
-> *who may maintain downstream stable Linux kernels
->
->>> the unlink-time test in kmem_cache_destroy() is a separate read of its
->>> own, also after mutex_unlock(), so the two can disagree.
->
-> This part is unnecessary because reading slab_state outside
-> slab_mutex is what we should fix. As long as it's read under
-> slab_mutex, reading it once or twice doesn't really matter.
->
-> (See full changelog at the end of this email)
->
->> I would guess the 6.0 change is not a crucial one?
->
-> Uh, I thought the Fixes: was 6.0 one, not 6.12 one :/
->
->> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->
-> Thanks!
->
-> So... below is my suggestion. What do you think?
+> Commit 50ec499b9a43 ("sysctl: allow change system v ipc sysctls
+> inside ipc namespace") lets an IPC namespace owner change kernel.sem.
+> The SEMOPM field defaults to 500 but has no semantic range check.
+> 
+> do_semtimedop() allocates nsops * sizeof(struct sembuf) with
+> GFP_KERNEL. A blocking operation retains that buffer, so a user can
+> raise SEMOPM and hold large attacker-selected amounts of host kernel
+> memory without charging the calling task memcg.
+> 
+> On the current mainline base, one 10,000,000-operation call retained
+> 60,936,448 bytes while a 32 MiB cgroup peaked at 909,312 bytes and
+> reported no limit event. Sixteen 1,000,000-operation calls retained
+> 100,860,416 bytes while the cgroup peaked at 1,310,720 bytes.
+> 
+> Commit 6a4746ba0619 ("ipc: remove memcg accounting for sops objects in
+> do_semtimedop()") removed accounting on the premise that the buffer was
+> at most two pages. Preserve that default-sized path, but account arrays
+> larger than the default SEMOPM value.
 
-<snip>
+OK, I think. But...
 
-Looks good to me, thanks for untangling all of that history.
+> With this change, both test configurations reach the 32 MiB cgroup
+> limit and the caller is terminated by the memcg OOM killer before it
+> can retain the enlarged arrays.
 
+Only if memcg is enabled and the task's memory cgroup has an effective
+limit.  Otherwise we can end up handing out idiotic amounts of kernel
+memory.  Memcg accounting isn't a substitute for limiting the
+allocation size.
 
-Best,
-Imre
+> The sysctl also accepts negative SEMOPM values. Since nsops is unsigned,
+> SEMOPM=-1 bypasses the intended operation-count check.
 
+Let's fix this first. nsops is unsigned int, whereas ns->sc_semopm is
+int. In the comparison nsops > ns->sc_semopm, a negative SEMOPM is
+converted to unsigned, so SEMOPM=-1 effectively sets the limit to
+UINT_MAX.
+
+I'm thinking:
+
+- Permit init_ipc_ns.sc_semopm to be set to any value from 1 to INT_MAX.
+  This preserves the existing ability of host root to configure larger
+  limits.
+
+- For all other IPC namespaces, permit values from 1 to 1000. The
+  documentation has long recommended 1000 as an upper limit, although
+  it hasn't been enforced. This would be a new restriction, so the
+  changelog should explain why we're introducing it.
+
+- Validate the new values before installing any of them.  The current
+  proc_ipc_sem_dointvec() updates the live array directly, and
+  rejecting an invalid value afterward would leave a window in which
+  other tasks could observe it.
+
+- Update the comment in include/uapi/linux/sem.h. The warning about
+  physical memory fragmentation is outdated now that the allocation
+  uses kvmalloc(). Document the new 1000 limit for non-initial IPC
+  namespaces instead.
+
+Ideally, a new IPC namespace would inherit its parent's configured
+limit, but currently every new namespace starts at SEMOPM=500. I don't
+think we need to change that as part of this fix.
+
+Then please redo your memcg-accounting patch as a separate followup,
+with suitably adjusted changelogging. That would provide additional
+protection for legitimately enlarged allocations in the initial IPC
+namespace and for allocations between 501 and 1000 operations elsewhere.
+
+Thanks.
 
