@@ -4,90 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 354C3CCA463
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 01:19:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00703CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 01:25:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F8BE6B0096; Thu, 15 Oct 2026 21:19:01 -0400 (EDT)
+	id 141D96B0095; Thu, 15 Oct 2026 21:25:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A9EA6B0098; Thu, 15 Oct 2026 21:19:01 -0400 (EDT)
+	id 1198E6B0099; Thu, 15 Oct 2026 21:25:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BFF86B0099; Thu, 15 Oct 2026 21:19:01 -0400 (EDT)
+	id 0567A6B009B; Thu, 15 Oct 2026 21:25:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA2336B0096
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:19:00 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA02880265
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:18:59 +0000 (UTC)
-X-FDA: 85326730398.26.D119499
-Received: from mta0.migadu.com (out-209.mta0.migadu.com [91.218.175.209])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B53FFA0006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:18:57 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vVA1DGE6;
-	spf=pass (imf25.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D7D936B0095
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:25:06 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6CAC91C288B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:25:06 +0000 (UTC)
+X-FDA: 85326745812.16.4D6890D
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BADA31C0003
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:25:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792113904;
+	b=btK20TrBpu8ZCpv+JkpvJd7wbt2I1oEFbARNuKorD9msxStta+m0RvFpbu9i71IvocP8vS
+	g/Vu19o6+rN07d1UFNyQVNr2URK8+WQR5GCvawlO6NPRd4PiS0qjBxYHjk2WkN3eBlhvfv
+	f7R+jG3NWeZ/cIN/vy0o7pWDsoojR9A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792113538;
+	s=arc-20220608; t=1792113904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NxPk9aRtT/LaDfFpNvz28i/BOb4aylT5MfYUs/cLe/4=;
-	b=wGe7NnyCKE2sOSTPYLIDSXpEs1H943UXHIeog9yazrMcTCi8jHzPLo+FUVcxN9cQ1uJEUf
-	oEyVL8T+TI7B6YHH3hkeqdI7AhnY926MwkMYJ5nQiucDLAgbJJrD+TOJdWBmFqzD/qkfJa
-	AGfdWNFqOqQsHgOxuiGbLHn+NAXpNlk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vVA1DGE6;
-	spf=pass (imf25.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792113538;
-	b=r+ZzJOwQRAkXrUhlCj4g6Mr4xnsf3oKtxkarD6n5kwYZi/TZ3h6xqJ4kj3cj2w1feKUKXM
-	F6zbRyHjR0YjBYhphe2td+vYbelvjgk2V0aH59G+t5/j6PIP50LWnVNRTGEUQLvoNJhcs8
-	ekLc9tygA2kIbA3TMrxBfMxxh5+LLbI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NxPk9aRtT/LaDfFpNvz28i/BOb4aylT5MfYUs/cLe/4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792113534; v=1; x=1792718334;
- b=vVA1DGE6z7zJ5BhKa/mNtq9e6uO0u0T6FlUBS+zUIpt2/TTAmboKzma9dFfPdAamb7Mktjpr
- YKmoVvC+aTzoCFFMmrpz+mc4m5FQjxXU1zGfnQWwQ/M84i5mDaY8k/jrzV3poPCDRlPSDwCg+sA
- q0+k+8Di+ZDpoC64SOAoYd0Y=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 307f89d17423c902;
-	Fri, 16 Oct 2026 01:18:54 +0000
-X-Mizu-Trace-ID: 307f89d17423c902
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d58ea78a-98b8-4d0c-946c-8632b64aa0a9@linux.dev>
-Date: Fri, 16 Oct 2026 09:18:48 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
- up on
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
-References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
- <CAKEwX=NE51ko2U0-TCd9+sAm8NKeGeT61HFXTnnU_q2Tn75rCQ@mail.gmail.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <CAKEwX=NE51ko2U0-TCd9+sAm8NKeGeT61HFXTnnU_q2Tn75rCQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B53FFA0006
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7ImDDYOheW50p3xtIBMH3kXzz7Eu57kAvuyHHkxIOnk=;
+	b=C1Mq/g5APNI5lnPx7fvHZc1qramG2DZ0rmXwZT9wD5+MQbOTGV1lsDlhcNA+NRPFwlu476
+	9Fpnj99jFbEQB3LQs2we100U5HNX5+qXP6rxxij1aNbKwvl1XSTeXltp+RfuXkVs2NnKOH
+	r13rO2+mUZUEfoVyXUbzP0eln1d/HG0=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4j5S0q4mfvz8XrrJ;
+	Fri, 16 Oct 2026 09:24:59 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 69G1OrPZ066351;
+	Fri, 16 Oct 2026 09:24:53 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Fri, 16 Oct 2026 09:24:54 +0800 (CST)
+X-Zmail-TransId: 2af96ad17ce6809-7b4dc
+X-Mailer: Zmail v1.0
+Message-ID: <20261016092454394HJ4ACd4Qd8oKYogL2CB7H@zte.com.cn>
+In-Reply-To: <20261010203906.93156-1-kmehltretter@gmail.com>
+References: 20261010203906.93156-1-kmehltretter@gmail.com
+Date: Fri, 16 Oct 2026 09:24:54 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <kmehltretter@gmail.com>
+Cc: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>,
+        <kmehltretter@gmail.com>, <hao.li@linux.dev>, <cl@gentwo.org>,
+        <rientjes@google.com>, <roman.gushchin@linux.dev>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gbW0vc2x1YjogaW5pdGlhbGl6ZSB0aGUgZnJlZSBwb2ludGVyIG9mIHRoZSBib290c3RyYXAga21lbV9jYWNoZV9ub2Rl?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 69G1OrPZ066351
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Fri, 16 Oct 2026 09:24:59 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AD17CEB.000/4j5S0q4mfvz8XrrJ
 X-Rspam-User: 
-X-Stat-Signature: 41wteahbgrdbrywdrhqngg9rqe6uodb6
-X-HE-Tag: 1792113537-334465
-X-HE-Meta: U2FsdGVkX1/96IITUP+qCBVwIM+uwxi07wLh1SWQfx/Q6qrHxKG9bVPWSSOb1hzGLJFV7DZQGEbgBFDrwc5j0goYPaKe7+zq4HJRKU6jc2St7F85WV0SHQbanJA9URFAv3SgNHLa5oD7H6J0XpRKzahUAKqPx/B4GXRRbk/x23DVmM+B7H4jB8kjJIVpy1OLPaaE5jllzEX7kgzqF2U8qTNCLCN2tnVnvjEf/vP4YpMJe/FzTRtDLNBg4Cbh6WEkVak/3KsqQvxZIpsg8zxhMtj+6KPDnIZy8NMtLN8Ko8P8XctzvoUlwxG4yM5cQOO8lNO41K6RGaHxzXdty1xSO5+V1ImsSCTjhrkdONwYKW7zApdM3pBlg6QF9fFwzJ78naDcKmXVg0SO8iUa/w7XV4lvtvAsEvI6okF9VrJtHq4n5ywN7zDY+IfAmQkOkCc73TF+6j2wFCgT5rWHElR9KemORIdbYtrlJSx8q5xBPKIkAMwVDB3oHjCH+bd6vWzkWGEUjeUFrs7UZdDSnft2EXG3/BqwFeVI4Yd+ldjA8tz9eUsK8duiwbHRDwGt6ef884ctaMz0daw/PmJcYBLkBUWm0ovbQ+CQd0MZ6Iv1Ej3PGsg1X6ETcH7QObBUiuqP9q1JEd7bVjUhAQxfTv4aoo3ssGIrAlhpu1H6br8TOVj/DpsaRKuiORndVphJo576Qz0QZCqi7qZGPSjQF4fHEyQw07hAEGL/XCeBHYF/ldMi1ImpN0Im1LNNXLqirX5Aj6kwFgkTGhUtjnlLUrl7Fuxu1RvaRvn00TsgioqJrz4J079zCN8pfg9VRhOzVpYNhLC/3VoLzxzQnPWWfouTDjF2NhIAg8aOg5g9IiddT1hZgaEhOauoLGkLymxqTwwo0xGH7Q8kMIN3Cm0Yomn3Is0/P/lNGUokCVrpAEEr0DfFnHNUiutZ2isiSNeCzM0gKhIElnnMTQVBLV1n8bq
- VT6lPypf
- 4Yi6K5IYLCdz9uq3qRdJYcj1cHVFZ9g9Rc17q/KOLh/3DfOtJME4v7zvpBIOSNOD6KujKXhEPUxVoj+YQNK/Tbhj1FLzqM8axi/51c2K1mL+32G95XsY99/nhlO7cY/TF3Bixi8H7/qP3y4sOsuxD4CKYC4NZR0sGopJiwZL1/fuOaJv+u5XgxopVZ8y40lvyiaI2s6QpXC+Hp6jlIJDoFz+VoGw7xd12UlQ+ljm0HkVxzfLXEZ/h5XjaxHm9xb0C+CFds7tbqnwIcJIaXBl5TASBphwWEq2z6xB5TB3JlmwojbyEs+CgG1ug6Fn7bPWjtx/QUJOxkt5IkW3T4Remym/Ff7NWwIVDgBWK69f/Bjyb62MS7c9EBeezuEwShFhCp4Hde0kEcC+IN4A=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BADA31C0003
+X-Stat-Signature: j6wrqh616ek7ugpqxxrxsdx6z3caj3w5
+X-HE-Tag: 1792113903-415094
+X-HE-Meta: U2FsdGVkX18cWv8rvnOEbxN8f/FlcjxcOdTHK3Ta72PpUpqBJjoyCiDbvSXox8YHYA49281aPCI7KNMKSmVDjWTeh5NV4YcceXo0J06TrzMw9wFNGJXEHC/Zql8o1/lqxDiQRKx7auHYIs5EkRZ9jvliP5aZ7Q3y8a/wmNzoxE2LNNK+pPmtfl97l8A2XZ4+DYSAOeXiJm84x8NFlzxSuX5VNCWc4SJK4l4quTillc7LNot66TVCK6CYxQf5mZuoYgdJsIx/c8lIRUcb8RkkMvuhYaw2XBIy9jf2wkGUOjv61Xzlwculej9T40GD0QLC7L5cREpmLgFwtocl63i9XYjBREuZSyVxzB1BlICdjKCWSqQ4d5cd/XL1FtlKai61Bl8If69uT5JUJRr2/hAN7F506gQLSNVMacvcT5pqqVKOO/ZQml7Oaxy48OeNBLyFUR1KScc5w8Vkfy/9++RgeP0Fdj2jczvEPPGWjtUWEgPUIvtR8lchCCyespquPKqODFHgVGg/SSrKN65zey7Q/9QxlgEROTdd4bDZk5n7cBWJd7NeXfzerKA9jeTHRTgu7oui4gzbHO1Z92HFwEewK/wkwnO7Oeyqa2PDkN7/scr+FzvQbulN6LpGDDEcnxDvmluq2tor+OGC7Nmt6QUFTH1s8CnmBR6+GRVcTdgiskI+kyG4lYOZKoSWEROuIih8pexXn/h9oYIFBuoR27+c/fB6uetw+9ZwMvg6LcMFiODi8wVGl2bd5mPpdyzY95J2L2QE67zowsiSbkWVx3PlM+La7VvCMjZVSBKKKiGs4FESBGKnjfibtt1l6+lExOeI3Fm2cb9yv4kOYkVl9hd62qH1eEILtQCg0VyPVqI+eiQ0TL7eYOOPnXbHAFoWIU/BmcT9UvR68jUwxEjszECyInBN1LEtB2uKSpHb/f+F+66J+NObJn1j1dTjchcI2WY3tXhmJYNN3xfdS3PvcZz
+ Av9nOH2W
+ CosEsTAb4mImP8u26FdPt0LX3ZLSJ3XaDktGJvWL2RS9HDNtxam+d3ydrODt7R5dsm6iAya+8hWWs2Vr+c+dA2j82oa/XhFnxSVgzJKZItLBPe0KtC3dtiE8S1H4+mI0kqrfqqHJ8x2EcU4Yhf4VJAtPPbyZiu7N6GLS3FpafKZ/RIN1s0FsbN42lmoeE/M4gfkuDfI/51mUxHREfgEZSMUIZH8AyzdkcO4BK4bSvyAYmvZtMMA9JsGBBkDjltgRpgWHlcKEQY91AF40+lhH5GtkPvrJknSLkVHM/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,49 +99,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+kmehltretter@gmail.com wrote:
+> With slub_debug=FZPU, validating kmem_cache_node reports
+> 
+>   BUG kmem_cache_node (Not tainted): Freepointer corrupt
+>   Object 0xffff888000140040 @offset=64 fp=0x5a5a5a5a5a5a5a5a
+> 
+> and taints the kernel. Poisoning places the bootstrap object's free
+> pointer outside the object, where check_object() checks it even while
+> allocated.
+> 
+> early_kmem_cache_node_alloc() previously took this object from a
+> freelist with an initialized pointer. It now takes it from the slab
+> iterator and builds the freelist only for the remaining objects,
+> leaving its pointer filled with POISON_INUSE.
+> 
+> Initialize the bootstrap object's free pointer to NULL.
+> 
+> Fixes: dc795d4c0282 ("mm/slub: defer freelist construction until after bulk allocation from a new slab")
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 
-Hi Nhat
+Thanks for the patch, LGTM!
+Reviewed-by: Shengming Hu <hu.shengming@zte.com.cn>
 
+--
+With Best Regards,
+Shengming
 
-On 10/16/26 1:11 AM, Nhat Pham wrote:
-> On Wed, Oct 14, 2026 at 2:08 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
->> From: Jiayuan Chen <jiayuan.chen@shopee.com>
->>
->> On our production hosts we saw swap cache only pages keep growing for days:
->> on a box with a 500 GiB swap partition, 250 GiB of RAM and 250 GiB of
->> swap slots were held by folios that no process mapped any more, charged
-> That's a really nasty situation.
->
->> to cgroups whose workloads had long exited. The only way to get them
->> back was swapoff, and with other services actively swapping on the
->> same host that is not an option.
-> Is it not similar to cold file caches?
-
-
-Not quite. A cold file cache can still be hit later. These folios
-can't: no page table holds the swap entry any more, so nothing will
-ever look them up again. They also hold swap slots, not just RAM, and
-the allocator skips those slots until swap is half full.
-
-
-> The recommendation for these kind of scenarios (for both file and
-> anon) is to adopt a proactive reclaimer (in the same vein as senpai).
-> That's what we do internally.
-
-
-Proactive reclaim does free them, but it works around the leak rather
-than fixing it. In our case they were charged to cgroups that had
-already been removed, so there was no cgroup left to reclaim from, and
-reclaiming from the parent pushed out live anon first
-
-
-
->> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
->> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-> Code looks solid to me otherwise. Maybe include some numbers from your
-> testing in the cover letter to verify that the swap cache usage drop.
-
-
-Thanks, will do in next version.
-
+> ---
+> QEMU x86_64 and custom QEMU SH7785LCR model, slub_debug=FZPU:
+> validation reports "Freepointer corrupt" before the fix, clean after.
+> 
+>  mm/slub.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 54ec125033571..9a20aa820bb0f 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -7777,6 +7777,7 @@ static void early_kmem_cache_node_alloc(int node)
+>  
+>      n = next_slab_obj(kmem_cache_node, &iter);
+>      BUG_ON(!n);
+> +    set_freepointer(kmem_cache_node, n, NULL);
+>  
+>      slab->inuse = 1;
+>      build_slab_freelist(kmem_cache_node, slab, &iter);
+> -- 
+> 2.53.0
 
