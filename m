@@ -4,106 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4592FCC6B2D
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 05:28:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AFCACC6B2D
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 05:37:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE9DB6B0096; Fri, 16 Oct 2026 01:28:22 -0400 (EDT)
+	id 250036B0088; Fri, 16 Oct 2026 01:37:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E74606B0098; Fri, 16 Oct 2026 01:28:22 -0400 (EDT)
+	id 227336B008A; Fri, 16 Oct 2026 01:37:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D38896B0099; Fri, 16 Oct 2026 01:28:22 -0400 (EDT)
+	id 13E496B0098; Fri, 16 Oct 2026 01:37:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C4246B0096
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:28:22 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74D9BA7B93
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:28:21 +0000 (UTC)
-X-FDA: 85327358802.10.B6A65FF
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C6E5F80005
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:28:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="SqiQ/Tet";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of 38rXRagYKCAMnxql1xjrrjoh.frpolqx0-ppnydfn.ruj@flex--kuniyu.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=38rXRagYKCAMnxql1xjrrjoh.frpolqx0-ppnydfn.ruj@flex--kuniyu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792128499;
-	b=WrutkYMtzpx/QanoCZZ2i7jqqHyYyuAS8sHL/JDTLgkTprBRYWRfYylL3noKLpt93zf9j/
-	rZ9ISOiSuQ60JFa5Rw3jfDvkthfJUfjASPS12YBjmZM5sMuOhJWLk0P0R1X9gYtcOLchpt
-	cbsahc3H9nDmMR/GN2GjPpgq2RJ1+d0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="SqiQ/Tet";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of 38rXRagYKCAMnxql1xjrrjoh.frpolqx0-ppnydfn.ruj@flex--kuniyu.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=38rXRagYKCAMnxql1xjrrjoh.frpolqx0-ppnydfn.ruj@flex--kuniyu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DE2816B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:36:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76B28160347
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:36:59 +0000 (UTC)
+X-FDA: 85327380558.24.002F077
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B57A7A0006
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:36:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="PcrygCc/";
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792128499;
+	s=arc-20220608; t=1792129017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TOfi1okJuHw6W2fuigoKRfdJ0OT44tx1YKA+g69VlhU=;
-	b=RzBfGXK9+ZV1OzqYtBur9sh7cAa12Y0EoQufGsvllHFSFFOxF7/r0phmBtqoUS9N28habT
-	JiHEDHNySTt0zPl9xH+RIVm+mwfvwP2dfF2lYZW1NBY0c81iLz3vU9FuRiWIlBpkQGuaup
-	+wXWWjLQGICivs1SDk14BdYH8+95/80=
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89fecbd142bso732b3a.3
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:28:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792128499; x=1792733299; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TOfi1okJuHw6W2fuigoKRfdJ0OT44tx1YKA+g69VlhU=;
-        b=SqiQ/TetM6ifl5KJMvpAbfCxwtIWdRDWdaGdc4E2AXyrjkcsZNEMripoKYih+audWP
-         /7uurLRW3I1/evIZWTmHzMsgClpIGLkYN2cxH+6e5TqJYdH8dNRf+3yCtcFCn6RXXDV9
-         T9Xu61zKZsLjdOllbLjbtUL3pxuiU0FK85pNNppeLJ41lH5ZAfY1l0Z5Ui9/qKJCZLlZ
-         B0h/eYmZGSGmMk4oK6VQDdhhD0koRVkXeYs/HOdDgvelOaGLwxDBRxWaKI/bLcPWLHSs
-         jPIkVoFbK2GuFQbTPjomiL0Jb32FOwV+zv6cTm4xiRqO3SEeMkX2e1MOP4KTZ4YIqqZP
-         lHWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792128499; x=1792733299;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TOfi1okJuHw6W2fuigoKRfdJ0OT44tx1YKA+g69VlhU=;
-        b=myYCNIUbq4kskQfTjDYEhZEtqRVfi9RcdzwALw1xBCWKXatagmR3NoBEk/bccLkZjp
-         uioElGjRVn4hZYbplB8mfsg1Sy0opGSOUCobsAu1ZUYhXDMIPje/jKBao8Md+nCMZmxR
-         GmuWE3Vf6UinO41KimHrmj1oxBUnbJDbgH6GNWL1jLaToT6TdyzIchKez9Gfv7SRqdce
-         Sd2GtCruVl4jxY9VUqUTZIZHVodU5mM/YbjWVlkKUS+yFyqyh8/Bgi85C+k9vWt6NqRB
-         huwroB1W9ThASOrr+xqcdmBZ9bCASYoY+wfd7NPJC1wzVRbc3mAXnGZBTmIgdEqsukDD
-         My/A==
-X-Forwarded-Encrypted: i=1; AKwUvBzcDluwHQxEPDNKINnPW7ifdAy2FruR1V4/K1aRJSBGlSAYXl+DQoWX7kOX6kR8hnUnmLO4Si+rhg==@kvack.org
-X-Gm-Message-State: AFq9FYLbm1GtXd8lHwr1vJiQZisdJPjs1wLOe4yUACH7nVCczOrOc+aB
-	dtDb49EDXRbG6AU3YI3FySQfEjTJtMGFiKI1BaR/pK68zhiFiLlTYSxpqmA1g9AjRKhOtskEXfP
-	AewLYNw==
-X-Received: from pfblu4.prod.google.com ([2002:a05:6a00:7484:b0:886:3bc7:1fbf])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:c2cb:20b0:899:9267:3abc
- with SMTP id d2e1a72fcca58-8999267426bmr10023508b3a.41.1792128498428; Thu, 15
- Oct 2026 22:28:18 -0700 (PDT)
-Date: Fri, 16 Oct 2026 05:27:49 +0000
-In-Reply-To: <20261016052811.3085635-1-kuniyu@google.com>
-Mime-Version: 1.0
-References: <20261016052811.3085635-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261016052811.3085635-6-kuniyu@google.com>
-Subject: [PATCH 5/5] selftests: cgroup: Deflake test_memcg_sock() in test_memcontrol.c.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: tkyy4i6ntj4nu1b8sscueho4iuak9sxz
+	bh=2JHaII94y4H6LxYPcudoto4QHK24tsT/E+ez0xaLBV4=;
+	b=zcR6yzgxp2fWv+i8poVDmyEnnHfnfNcwMGZD6E0LOkKmkLJCm3PN13iWeTffZSG4OMGvJg
+	FSCdio1SQPX4hnXGfsfCJ3GFs3jqlbgyDdAk2zVGyBi05A6EaWSecAV5on5ErE1uFIMTrs
+	/11gfW11cMNWEb4ii4HIKCfCXbuQSUI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="PcrygCc/";
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792129017;
+	b=zY5TOvzSrjw0KWUnAdQlYrgKFZuBaUKIDKeYzz3jL809sdoiaX9J+H6f5WDdhqVw5DI7JQ
+	5S/avjrVHwOELSDi+8v1RNhYZpccgQmoU1EI39CYCq3SwsOURz8/OyRg0TTAE4heEsPVHS
+	B+Vlw0FklP7S2ZywUBRE0ZSV31p2R2c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792129018; x=1823665018;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OxsimB+IRUojLvT+hziSkxVdTCzcdvyp81HuqPLZG/s=;
+  b=PcrygCc/uFHRj3mLXNXFgEaCO3hihAxTqTmkUYklvObUUEPISOjOMUL0
+   4Ehx5mGVbu31oEV9JOPm3xHEhYnnHrofOMCt7h07nltvt9hiUJampQKTI
+   OmAPi0Dx2EHA1XrAIGrv29AI5ITvGW8bMOFRv2MtPEPP8Ht8rASFKyVcR
+   sdEU6kqNaOprjUO8kH6T8+5+ZYtwwrmEbFSAn56hC17GMDfoxSRqJH2aO
+   TV5Z5brTxywhnZ39Sub8QTvyEriWMUNEGx556pZIrLmtMS5sbqoBj1Sdi
+   OXe41PnebEhi1stRGBQOij+lo44A5Zzt/Dy4WuVUmATy6KBOdsQaakzf0
+   g==;
+X-CSE-ConnectionGUID: qjaTZo35RgiM7gUlBrs/NQ==
+X-CSE-MsgGUID: qNFfMjRnRnaJL1KlGHnZ1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="915289"
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="915289"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 22:36:56 -0700
+X-CSE-ConnectionGUID: cV+8eTvqSQ2EgdgT1mW2lg==
+X-CSE-MsgGUID: jlVQO0VBQtCYTbTBdJ3bkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="2236954"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 15 Oct 2026 22:36:51 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xHacZ-00000000Hfu-0y6G;
+	Fri, 16 Oct 2026 05:36:47 +0000
+Date: Fri, 16 Oct 2026 13:36:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <david@davidgow.net>
+Cc: oe-kbuild-all@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Rae Moar <raemoar63@gmail.com>,
+	Ryota Sakamoto <sakamo.ryota@gmail.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Kir Chou <note351@hotmail.com>, Petr Mladek <pmladek@suse.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Guan-Chun Wu <409411716@gms.tku.edu.tw>,
+	linux-kernel@vger.kernel.org,
+	"(open list:KERNEL UNIT TESTING FRAMEWORK \\(KUnit\\))" <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH] lib/tests: kunit for associative array
+Message-ID: <202610161338.iIHVeJyP-lkp@intel.com>
+References: <20261014160144.1835860-1-jarkko@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014160144.1835860-1-jarkko@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C6E5F80005
-X-HE-Tag: 1792128499-902015
-X-HE-Meta: U2FsdGVkX18nQu7tOk52nXXWNvHm9A6hLTgN2ya8voVksaaqg0srdKYo2OjxBFLL2DhnsMya7a0tpUtKpoV1OzmoRFMlVGcfpVvKteNPKPdlctF0n2RBxuMhsnk9pZoF70dg8icJflsnImg3tS07JNBzI2erzK6ZIUvYW9I1n6i6wB5lnvHa/3EubOOSCkVvHGV+DLShoCozezqx7d0OO3JUs9J3NFfnIuQjLIlgVFmZm0oZ8urox6CNAm8oQkc50DsbfvayYnFCMQ4i654+lYW6pyvrN9+cS4U3KBaGBMXrVsje0cg0DJiyAJ5+fbr5rrG6FF9uduzjTTNZ0w8Vd26ZU3dBSfuS2Px1yDunItZ2LVPijt3kCpCln50vaOqkL5xgCEVIWmQUWpvuL1NYpGgKVX/KJTAcH5xSBsiJphSynzQnTTsAmMXNyu4YSpKD10h1EMVvDesg7ZgX+jBvFHixM+kC0qzUzmfekrc1jj6mld+cXzTDfB7J2dknr/AovxgaOZ4z02sos+WhammRiTeRvl6NO9qpJOmKrl8w9WXc3GblW3b/QqRuTLvupTaWZb7mgN/UE6U3eys80z3Xzdctx1qzPsyikkLbmNyhzwa+K/9BV1VNp1Cwt5hu3sWLy+Rg0fWii3DBcN75xJmgGIJrDa7f6Nowefc4i5GCK/rEBkBEu1uPNaM8WmTpwgRFt/lk9xlg5ydRLz5HLQFqg4UXzi35GSz7XegDgN9sMhW6OPhXmAPeeop+4ZWBSMYXIgbj5RWrH6o15UGMx51x4P56+x6O3RTxLuKFR8+odiUbblKXCIKq84NwFfG9KGq1Ju/wP3OOj8Jpx52JpTDfdpaHLVTRSiXgssvj2f2jRKdj+2TIJJiUBq0L1roQjQFUEo/zkVb4K4GP2J6d+DmVtYkHEmyd4Mfrto5cG0QXK7UJUncfVCgrxRTYwgJ8XXJVFG/ipmhy8rOtDPWIrzZ
- iewjUKGz
- QnHeW4TTA2rHSe43tDnqXGAP7asTqXQyZgwI/cMZIQsLiquMr1EaPULHZVROCKg3GDfRBioH98QmBdCs1hBZ2SapF2RjnOgTPE3fp2+0v799G2cvWZ0elfnfpbbBCCCi9Xs88fKaRgCpqwI3nKjfz2HVwangJi+LQGYvr7Th3gJpezihIO90BP5pPOBSF+29xdOJ2Yeidpf/AvsC3LnW+uwGWYupsDi6DgCYSQSqwdvY30MPKBslfoBWtloLoM+m9ROSSTegBbLIf1PpwbqRKeYaScPwn8n7VhL7U3fFts+SJsmQksdZLsxoYriVivlPH5TLwq67tXtTYYl+XwP7ZiQdrllSKKZr99taAvCYgxAolOarqo3VYSvsUD/J0t903f4cd8r1JlqkYYg1R2SimqElpRUd6YcWVW4WgJIdTu3PS0K95i+6DIiVIN+qgYFezbM9QQw1Y1Wjg6zTlDqvHdj22I3VC4LyngSx4JkgR05PExt0TrwlN/VzjMq//MjXPRNmIlUV//5t9wQiBsur+OfI+t2ckyxwtwUPAheNEQ0hgKpMaR29v8mlCoLr+1zPGgES1LwXCKFNXn17LT5e2dRe6cHpZyETNmSp66Uf8bAJKxWYzdhs8kk5gYKYp9BY1bVbO4dozrePiRG6yklywq+dmA73ZGkr70nzA
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B57A7A0006
+X-Stat-Signature: zim7dr375u9d8jckn8o1tosqapag3pa6
+X-HE-Tag: 1792129016-971866
+X-HE-Meta: U2FsdGVkX1+Mexuo9pNN8EltS0mFoKbJk80hqugW6A+wFKsygA3kSeBbQ5EK3oJDMowSuYzwkHjRKwUSADSy4/hBD8Ww0tso36BHTtV3nlv0fPQebJO5tKTYEjncLAVWou8xaUyqAd5gkfrTFEvWR19nwo3gIQ+lraEyohHEV65X1T/uFJyo306HVgUUr16qrGs9YgIXdY2kqCZlR0fDW/qo3qM8PjIT83JMhbJKS9CvhcihRL4KsOKOU5sG3hjE4M1TOuc5AppotmOCpzDLQhYVxyMPCZmx1a3pN3op/kLHHNK9qLWS9NkonNryQtqYb5kdnDhksT2z+IYn2MLyZZI2+FalVeketi0zSnK8zefLbdOng9zP92PqQV7CGhRh8lxkPqZa4rSmXRR4C62o6P31kzaKCu917F8Zht9R+ZDGQ2W+ja4UVHovfJL7Ko4Re2pcCwo+chZb2NdKrZ0eW7KCqpjuLV5Na6AyoMmzltQqwdkgx1CO04xxjYkF3UPKGf8aiTB9/V8QHyENK3U/u+cfINKFWWl1uO6+OSMYOGm1sxXaCumT/GCSn/XKCW577ELTXCw3qpLLd5CikvIkKoniyVhqGEaD65vGS/1/Ic1108Mp5PEQjYW9zhpdVkvb9xFTfml/puGyHK59r4NLf+tPoapR4WDCvQABObx8bhoNGaNiogbsFd0WowfPp4xeiahbyE4700S9FlBUOfCuneX/KiGVpzKXG8jaA8fELEXD6zwoAlgYjOcqKx5sA75xiudFh8a3DttM5tKmWbSErbC5ABBM3BXCkaROftvIpyGXFZim/+lfbASob7wrkNSnpxgD2Gk5ogALLxzNPLamLTh/wb4LhQ/bk3JYB4pJPIfygSBpXh2GMCns4G1dRdIE8+a9Cb5RvyMBscx930iAmFTfdPVmoeVXUvBUISt0Ip4mH5R9oiX8EAsjsXpoaKgybDuKJDKuunjdC6Sd7gH
+ ewUxw6Ws
+ Av3ZTw7oLHUMeX56aLch68SqOVtKiC62Ns0nSdO29gjpr0I3E23MhPCNIATyHBWzxcFz5ZW1J/cr94lydt6YDMdn63irYC/X0xhRe0fFTQgyQv+x1j9Dcc/w+QPNiP/4BguZI/XkbPBXrYxrtkDkboc6d0VZa59M/zI6mCd7xD9INBBuqKmIYX5YqbRx+b7y6qdFIrJJ1PKVgsazAfNOo9AU6xa/6tDdLltIqp2TYL60c375p9Yh16jpw3eobocjOp+I4g47qb6IA5dXdL42oxa/nttTVDbRUiUgHyGCviDAHXaijrSrwCOYZWUEZ1svIIckNX/qX9jM70xcT1ACHP9Oy108tTZugrnNsXcbgqT5afFBJVMY7lYwrAUCJx+7shrChOD0qPU5K02DDWxkzQ2Z0HQcSqx2x4Amnp0GKpGFLLeA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,64 +119,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With MEMCG_SOCK batched in per-CPU memcg_stock, test_memcg_sock()
-can fail in two places:
+Hi Jarkko,
 
-1. In tcp_client(), reading memory.stat only flushes rstat
-   synchronously when vmstats->stats_updates exceeds
-   MEMCG_CHARGE_BATCH * num_online_cpus().  Because mod_memcg_state()
-   is now called less frequently, 16 read() iterations (0x10) on a
-   64-CPU system can finish in a few milliseconds before
-   stats_updates reaches the 4096-page threshold or the 2-second
-   periodic flusher (FLUSH_TIME) runs, leaving "sock " at 0.
+kernel test robot noticed the following build warnings:
 
-2. After the TCP connection is closed, up to MEMCG_CHARGE_BATCH - 1
-   pages of MEMCG_SOCK delta can remain cached in per-CPU
-   stock->nr_sock[] (e.g. when the initial charge published +n via
-   try_charge_memcg() and mod_memcg_state(), while the uncharge was
-   absorbed into stock->nr_sock[] as -n without overflowing
-   stock->nr_pages[]).  Since the periodic rstat flusher does not
-   drain memcg_stock, "sock " in memory.stat can stay non-zero across
-   cg_read_key_long_poll().
+[auto build test WARNING on akpm-mm/mm-nonmm-unstable]
+[also build test WARNING on linus/master v7.3-rc7]
+[cannot apply to next-20261012]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Let's increase retries in tcp_client() from 0x10 to 0x40 and write
-"0" to memory.high before polling memory.stat at the end of
-test_memcg_sock() to trigger drain_all_stock() and flush
-stock->nr_sock[].
+url:    https://github.com/intel-lab-lkp/linux/commits/Jarkko-Sakkinen/lib-tests-kunit-for-associative-array/20261014-190138
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+patch link:    https://lore.kernel.org/r/20261014160144.1835860-1-jarkko%40kernel.org
+patch subject: [PATCH] lib/tests: kunit for associative array
+config: arm-randconfig-1001-20261016 (https://download.01.org/0day-ci/archive/20261016/202610161338.iIHVeJyP-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261016/202610161338.iIHVeJyP-lkp@intel.com/reproduce)
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- tools/testing/selftests/cgroup/test_memcontrol.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610161338.iIHVeJyP-lkp@intel.com/
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 0ed82347044e..1311aa5bc522 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1333,7 +1333,7 @@ static int tcp_client(const char *cgroup, unsigned short port)
- 	const char server[] = "localhost";
- 	struct addrinfo *ai;
- 	char servport[6];
--	int retries = 0x10; /* nice round number */
-+	int retries = 0x40; /* nice round number */
- 	int sk, ret;
- 	long allocated;
- 
-@@ -1447,6 +1447,13 @@ static int test_memcg_sock(const char *root)
- 	if (cg_read_long(memcg, "memory.current") < 0)
- 		goto cleanup;
- 
-+	/*
-+	 * Drain per-CPU memcg_stock so cached MEMCG_SOCK deltas in
-+	 * stock->nr_sock[] are flushed to vmstats.
-+	 */
-+	if (cg_write(memcg, "memory.high", "0"))
-+		goto cleanup;
-+
- 	/*
- 	 * memory.stat is updated asynchronously via the memcg rstat
- 	 * flushing worker, which runs periodically (every 2 seconds,
--- 
-2.56.0.212.g129ede20d9-goog
+All warnings (new ones prefixed by >>):
 
+>> lib/tests/assoc_array_kunit.c:62:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000010UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:63:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000020UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:64:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000030UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:65:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000040UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:66:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000050UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:67:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000060UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:68:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000070UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:69:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000080UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:70:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000090UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:71:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x00000000000000a0UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:72:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x00000000000000b0UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:73:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x00000000000000c0UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:74:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x00000000000000d0UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:75:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x00000000000000e0UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:76:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x00000000000000f0UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:77:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000100UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:78:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000110UL,
+     ^~~~~~~~~~~~~~~~~~~~
+   lib/tests/assoc_array_kunit.c:79:2: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '16045690984503098046' to '3405691582' [-Woverflow]
+     0xdeadbeefcafebabeUL, 0x0000000000000001UL,
+     ^~~~~~~~~~~~~~~~~~~~
+
+
+vim +62 lib/tests/assoc_array_kunit.c
+
+    19	
+    20	/*
+    21	 * As a quick remainder, these are the basic building blocks of an associative
+    22	 * array:
+    23	 *
+    24	 * - struct assoc_array_node: a tree node representing a nibble of the search
+    25	 *   key.
+    26	 * - struct assoc_array_shortcut: a tree node representing a sequence of nibbles
+    27	 *   shared by multiple search keys with no divergence among them.
+    28	 *
+    29	 * The keys in array will be created in order in tests, and is a constructed in
+    30	 * a way that splits reach the level 8:
+    31	 *
+    32	 * - 0..16:  Share prefix 0x21 at levels 0 and 4.
+    33	 * - 17:     Splits root shortcut at level 4.
+    34	 * - 18..34: Share chunk 0.
+    35	 * - 35:     Splits shortcut at chunk boundary.
+    36	 * - 36..46: Share prefix 0xbeef at levels 0..12.
+    37	 * - 47:     Splits shortcut at level 8.
+    38	 * - 48..63: Distinct leaves at level 0.
+    39	 *
+    40	 * The numbers were picked partly based on trial and error, and partly trying to
+    41	 * find smallest possible numbers reaching the level 8.
+    42	 */
+    43	static const unsigned long assoc_array_test_keys[ASSOC_ARRAY_TEST_NR_KEYS * 2] = {
+    44		0x0000000000000121UL, 0x0000000000000000UL,
+    45		0x0000000000000221UL, 0x0000000000000000UL,
+    46		0x0000000000000321UL, 0x0000000000000000UL,
+    47		0x0000000000000421UL, 0x0000000000000000UL,
+    48		0x0000000000000521UL, 0x0000000000000000UL,
+    49		0x0000000000000621UL, 0x0000000000000000UL,
+    50		0x0000000000000721UL, 0x0000000000000000UL,
+    51		0x0000000000000821UL, 0x0000000000000000UL,
+    52		0x0000000000000921UL, 0x0000000000000000UL,
+    53		0x0000000000000a21UL, 0x0000000000000000UL,
+    54		0x0000000000000b21UL, 0x0000000000000000UL,
+    55		0x0000000000000c21UL, 0x0000000000000000UL,
+    56		0x0000000000000d21UL, 0x0000000000000000UL,
+    57		0x0000000000000e21UL, 0x0000000000000000UL,
+    58		0x0000000000000f21UL, 0x0000000000000000UL,
+    59		0x0000000000001021UL, 0x0000000000000000UL,
+    60		0x0000000000001121UL, 0x0000000000000000UL,
+    61		0x0000000000000001UL, 0x0000000000000000UL,
+  > 62		0xdeadbeefcafebabeUL, 0x0000000000000010UL,
+    63		0xdeadbeefcafebabeUL, 0x0000000000000020UL,
+    64		0xdeadbeefcafebabeUL, 0x0000000000000030UL,
+    65		0xdeadbeefcafebabeUL, 0x0000000000000040UL,
+    66		0xdeadbeefcafebabeUL, 0x0000000000000050UL,
+    67		0xdeadbeefcafebabeUL, 0x0000000000000060UL,
+    68		0xdeadbeefcafebabeUL, 0x0000000000000070UL,
+    69		0xdeadbeefcafebabeUL, 0x0000000000000080UL,
+    70		0xdeadbeefcafebabeUL, 0x0000000000000090UL,
+    71		0xdeadbeefcafebabeUL, 0x00000000000000a0UL,
+    72		0xdeadbeefcafebabeUL, 0x00000000000000b0UL,
+    73		0xdeadbeefcafebabeUL, 0x00000000000000c0UL,
+    74		0xdeadbeefcafebabeUL, 0x00000000000000d0UL,
+    75		0xdeadbeefcafebabeUL, 0x00000000000000e0UL,
+    76		0xdeadbeefcafebabeUL, 0x00000000000000f0UL,
+    77		0xdeadbeefcafebabeUL, 0x0000000000000100UL,
+    78		0xdeadbeefcafebabeUL, 0x0000000000000110UL,
+    79		0xdeadbeefcafebabeUL, 0x0000000000000001UL,
+    80		0x000000000001beefUL, 0x0000000000000000UL,
+    81		0x000000000002beefUL, 0x0000000000000000UL,
+    82		0x000000000003beefUL, 0x0000000000000000UL,
+    83		0x000000000004beefUL, 0x0000000000000000UL,
+    84		0x000000000005beefUL, 0x0000000000000000UL,
+    85		0x000000000006beefUL, 0x0000000000000000UL,
+    86		0x000000000007beefUL, 0x0000000000000000UL,
+    87		0x000000000008beefUL, 0x0000000000000000UL,
+    88		0x000000000009beefUL, 0x0000000000000000UL,
+    89		0x00000000000abeefUL, 0x0000000000000000UL,
+    90		0x00000000000bbeefUL, 0x0000000000000000UL,
+    91		0x00000000000000efUL, 0x0000000000000000UL,
+    92		0x0000000000001000UL, 0x0000000000000000UL,
+    93		0x0000000000001001UL, 0x0000000000000000UL,
+    94		0x0000000000001002UL, 0x0000000000000000UL,
+    95		0x0000000000001003UL, 0x0000000000000000UL,
+    96		0x0000000000001004UL, 0x0000000000000000UL,
+    97		0x0000000000001005UL, 0x0000000000000000UL,
+    98		0x0000000000001006UL, 0x0000000000000000UL,
+    99		0x0000000000001007UL, 0x0000000000000000UL,
+   100		0x0000000000001008UL, 0x0000000000000000UL,
+   101		0x0000000000001009UL, 0x0000000000000000UL,
+   102		0x000000000000100aUL, 0x0000000000000000UL,
+   103		0x000000000000100bUL, 0x0000000000000000UL,
+   104		0x000000000000100cUL, 0x0000000000000000UL,
+   105		0x000000000000100dUL, 0x0000000000000000UL,
+   106		0x000000000000100eUL, 0x0000000000000000UL,
+   107		0x000000000000100fUL, 0x0000000000000000UL,
+   108	};
+   109	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
