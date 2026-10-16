@@ -4,116 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3CACCCF2C3
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 20:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB45ECCF2C4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 21:28:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB13E6B0088; Fri, 16 Oct 2026 16:52:43 -0400 (EDT)
+	id 798CF6B0088; Fri, 16 Oct 2026 17:28:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A65506B008A; Fri, 16 Oct 2026 16:52:43 -0400 (EDT)
+	id 749F86B008A; Fri, 16 Oct 2026 17:28:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9791D6B008C; Fri, 16 Oct 2026 16:52:43 -0400 (EDT)
+	id 667026B008C; Fri, 16 Oct 2026 17:28:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 78B616B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:52:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F1681160111
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:52:42 +0000 (UTC)
-X-FDA: 85329688164.03.FF54ECF
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4472D40003
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:52:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LwceT9XL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of kanishkasolanki456s@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=kanishkasolanki456s@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 437B86B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:28:28 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD0D61C1115
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:28:27 +0000 (UTC)
+X-FDA: 85329778254.20.52629EC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3CD1FC0003
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:28:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bhK5CACk;
+	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792183961;
-	b=jZrB2fYuWpUd9MRXb03ANTc0hywe04gsKrHJ5/8tE00g9D6E+Yj+46T8nn776Y9b6NuKgq
-	+zWVoCcgoby19Huq5/3q5C99IhstC2PcbL3HaRcMvomxrKr5z80c9y+eRgWqZ0kqBDr1kh
-	aVqW9Qp734tqDTZ0lQLUd3ckDU1yV5k=
+	t=1792186106;
+	b=rGy4ZaUSWu9CBcIOOthMOoEWoDQzJPpRis0XoU5403gBt58zgOxgc0Q6JZGSgB4zdkd/dT
+	Z0r08uz8w4N7HbNOXE3swPuYcMku1tkEY0EPtMgj6r3YFk5fnhs6iWuTKMBNxo6IQgPH3U
+	owJoy//NNoihHayJIPFErTJeV3LNDeQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LwceT9XL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of kanishkasolanki456s@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=kanishkasolanki456s@gmail.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bhK5CACk;
+	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792183961;
+	s=arc-20220608; t=1792186106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pL4I5GTbfGzy7AcdZoTCof/41Zcw3NVIXltEeJBzdLc=;
-	b=8RUjGgrENBNMdwEvAKTm2ny1jhI16JdMKVteTsopIEuDjtc5U60xJb61t15TJ75GLgsPQT
-	SwPmaHByCkC3yobeM/62f0+68pwaAmnkpDcz8QzRTU0PqQVu2i9nUklJsfS/91jhJWDrxb
-	c3qq7ro8h+xYgtITYgZ8EuvPnfETBwM=
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-35f1f76ea84so499166eec.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:52:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792183960; x=1792788760; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pL4I5GTbfGzy7AcdZoTCof/41Zcw3NVIXltEeJBzdLc=;
-        b=LwceT9XLWJY/J4AwKngi/KcSj3wC+bGHxRWDD5sWVhUKEd07T9FnCL/okQMzhkQRdi
-         3uVrP1GI1AGH0V1ywAhM4/3FV1S5jwfhZxC2C3UHSub5whCJEIn0Qw4IxZ60yZeIUkuE
-         YpOI4W9ZK/s1TTMFDsGyauoJSDU/DEsXA5mHOl3/blAMibFL0tQigSZ8wv5dY60fcH+1
-         oI8Iu5aOYj6qv4eaLq5gwuTWvjTPRx4LVyD0JlTOTKNpqUp86mxnRLLhSrdQgBr4v/zw
-         ZoYaTDJeCAXYCewY90rsjrxYJTNdduNZQy2aRZ+mw3Nzn0J/75DOYdbHZlrISfHdV92+
-         qQ9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792183960; x=1792788760;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pL4I5GTbfGzy7AcdZoTCof/41Zcw3NVIXltEeJBzdLc=;
-        b=HmIz6l8vPk0vsNaE/itUYdNGoGGzB30q2yi/Au4qlIXbORMXu03qiJcN8bF/wVuuJx
-         pYwKEDD8YwlLPjMczb904dXrCTgbcz0p1mm0+owsqigsGaWMwd/liGRiMViiPEcNxCHr
-         0MhNZsZJiLG0lvrryW9EcJDM3nhg1LvpHUtuUT9a7TeDCxtRIDDWu5iRvS1Cdw7Hl8+g
-         DyiF8r02s3dPWy0SwQjmPnv9U6mPLHerPTMI925FFfipQxJSnUDPqxB/wBN0n1CpMIDT
-         HtbNYHRY2kTYdGxuGkArKIpA1GllMksotjFTOZxc5YK18Ieo+V27Lo9U9DfnvtyUyfvE
-         1gEw==
-X-Forwarded-Encrypted: i=1; AKwUvBx3+UZxfMob/AvhGzk7np2jp2odYvblON0xgYk+BqzhFeieg3/syTj+3ruA+eLNJwNI1A+AHuu1eA==@kvack.org
-X-Gm-Message-State: AFq9FYIhEUXVOUzNQv+TOYu92j4cuscMjRPzOLHHCGeGNycfiPZVIrr6
-	tsWSheT6dqjGDNqdVfFt7VkpWx79q2023aCNLV5JKPmPHXGKaM7Uvt3pB6VlFGLCsns=
-X-Gm-Gg: AYBFou0zTzTzkdMH96VujDDYumpXaZ0yEja0LyGSQ2Pmt0Iu748MtBkit95emjx37E+
-	LDGABkh5ebzkuODmkwP50r9nzTuqnb7JK+CF4BL1kfe3IhmUN56nJljhwWNjP8kt/bgYt2f21v7
-	J593/2q4v6Up6Cir3osVGP6ROwhBHMTJaPg65Fk+5k8hwr2dVl3c+RRrLp5EzKiI2gee+nNmn31
-	oJrSA8/dc/sO1nspo+gK2DYes3lFAfNp5t1b0bAWKwCKYRHBOypXBpMluOhpuXAd0bE1fuJ6uv8
-	8G7yTZDe1t1Xfz/ec3LEBFaefC0zFriGnfpGY/8Vak/de5gooC+fuCv2CSVPdSn30I/alX1ukeA
-	zvvldEnkWjaBk/WMKo8HDBAJyeBz/4ilWb8l5fumB9Ik+ch3Stvu4+jK0xEOU9W0gEbhzrK2mo4
-	as1uWZ8Bpp7u6QgmVQyb40nW7jsQFyzybHp5YvUGy+8dQO5atvvwE58EqwQU+ZhhBgQwtHTnChy
-	AAkKoVn9Xth5pyUKN62Ta/+kN1KdvtWlf2Qif0q4Clm6rzfNz/++dsbq1Hm1gQzvjLA8BVnkQ==
-X-Received: by 2002:a05:701b:4546:20b0:16a:8ffd:4977 with SMTP id a92af1059eb24-185136cd2e2mr1206833c88.17.1792183959586;
-        Fri, 16 Oct 2026 13:52:39 -0700 (PDT)
-Received: from kanishka-Inspiron-15-3530.kiet.edu ([59.145.191.142])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831b75ac0fsm8054828c88.15.2026.10.16.13.52.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 13:52:39 -0700 (PDT)
-From: Kanishka Solanki <kanishkasolanki456s@gmail.com>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC] mm/page_owner: Use per-CPU temporal storage for saving stack trace
-Date: Sat, 17 Oct 2026 02:21:33 +0530
-Message-ID: <20261016205134.54436-1-kanishkasolanki456s@gmail.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=YL8v3ikz/W8u+Qt9X03/iAXSAmcRvygnsgXdC5kGQwQ=;
+	b=AQfzAlw+e+A57wDxnF9SHu45Oy00Fc+9ASVoEGwAIKT3CYIZ2A/ZJ93OWfbJb1hnAeP1xf
+	xEuc2E5lQSF4sWlae5ekkQmYEsXCKdEPgZVLXLcMzxQMxops8MZJo42BrBqHHfrzZPDz+o
+	THn5qWRgi2FCLgwO2gFEn9Q8j1cWI0I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2B6C2418A7;
+	Fri, 16 Oct 2026 21:28:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F8E1F000C4;
+	Fri, 16 Oct 2026 21:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792186105;
+	bh=YL8v3ikz/W8u+Qt9X03/iAXSAmcRvygnsgXdC5kGQwQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bhK5CACkCHQDF66EDC8C2pABK4CFbYwJawdxJRRT3/v6QK1aLVKO+9lIN7vy4Z2pA
+	 PQpGUx1JRAQOh4Sk1x98fZuPu7U3alrLDAMglVo077+b7R3JWIHvvtrnagJXXVSDgP
+	 zNmSiXjqu4MWnj+UDkMBE/ZNGCY974pVR9pOccNupA4QGF8KKo3F777YSClX1cNHF6
+	 ekKkbFdHbFpcZWn4mzly4QAn52eanzAZ+cu7su5MG3XFiK37Wg+SgjX9lHsez7fqO/
+	 K87QMoeOKB4hqBGKX16vjjWoLNfRoR63BJAf7rG3xAQxjOAZepRXSWVTIlho1A2+lt
+	 OIa1G1c5NFUIg==
+Date: Fri, 16 Oct 2026 11:28:24 -1000
+Message-ID: <29b280c82730b879e5f3ccdb35639ead@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Liz Fong-Jones <lizf@honeycomb.io>
+Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, "Patrick Lu (Anthropic)" <perf.patrick.lu@gmail.com>, Roman Gushchin <roman.gushchin@linux.dev>, Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, ian@honeycomb.io
+Subject: Re: [PATCH] writeback: keep cleanup_offline_cgwb()'s scan out of syncs
+In-Reply-To: <20261015114307.1041273-1-lizf@honeycomb.io>
+References: <20261015114307.1041273-1-lizf@honeycomb.io>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3CD1FC0003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4472D40003
-X-Stat-Signature: qww988t7jj83cw7ky7dd5iup39jh7aua
-X-HE-Tag: 1792183961-81591
-X-HE-Meta: U2FsdGVkX18JE7IyKO1eBaCOXqmo81C2xQtHKufJPIPHLD1CcTqjrP7ZteUxe8bzl4Uujtn1vbCQrxosyd5Cw9MJs1BrhyrihoTSJIyL5xJU6E9sRM1t2SdrzncNoicsRohGi9180SmSKbIzV1fXggNTbYEh5gmqwCqc8fYsq3jySejHQrHww8GP3GTGmSx5LDLhp6K88mUYxL1vtnI5fwRSoiICbjEweiB+eHYBax1DD2e2AGkUCOVCWJLQYMxShj60Kv0HoHzRtszoxTs5jyD/+YhtMu/SeMxFnMmy8f8aD9aoJWqUm2qXsOlgF5+ZpmvGr1ycLbdFd1pyof/aoMnfSYH9Wll7rmViXv5HcIaGrcVbArt/NE7TP0fqnP4DBF2pcJbXbbUc4uxGQqEU7kLKd6dxxoUNSacJHiuoton0IQwBMclpeaBsrUSibwnU4A3pULM7nm7YI9OF1ZHsm5vnafpOxkwp/WvGIkOhQ0qAARTa3QphLJElkSbQQpLJz8fuigs230/mBZyKoRy+glyBazXbViws16SuZ+f/EV9PC6kd20hppsU2AldbesM+NMJ1YLt8OpYSUmEfRTGwFfpS8xsw61/+kNN1eYutlTCLnuoxxcvmWIFYp0badUSQ6vCqn4hA4ioRBg+W7ms4bj2L4Y6823g5ymsgrAmK12gAqyDJVt8KTC5oTAkVuFn37ulFJ+lxFd3eYl6rZwnVNraXOvlS9/BXGrjVsmdZbp2HkJ6t62LeLH20SHTh+PfmlGmQ5kw9qnaN26R5NBJTB3XNo7hBt/rE8oTSgbWCObLDlgZp/aln38v5M+y4AJzVU8uOHwG05Xxr7bAEOdDIwbEYG3EVk8zR/J5elF3NKmM4bCBxW6NOQjaogHd8v8k0EM2K6ZstN4LSjpGHYfdO7uICdkKLeAyNWVUe5/CSBJZBQkdOhGxrN0EHnJjOSa/NsSVf27/US6v3WMdFe+Q
- pkxNwqw3
- umsIISk3g1GuKQUG40F4cro+j4+9eV8yROoI2mVmRhE7SJBhWiEIMtlvNgRryDPzLOH/alpK/4GjIXwVcfRK1pqPnTpKoaS5HTfcFTjNflhIr5uDz/TmBdU7oDrgDiNM6j50p909k1N3Wit4j0tPeCPeDjiyJ6bag+ZS2uZBq+/x899ULFHHyXJvWUsXdkB+qoj/lOwJpw/eSl34z85nR/1BcRbsXzmwC6+D6kApwXmqUrZ3oOhQ0qCFSawFbSO31rbIQfF1HUwYmhxIenAyrmOx2LTdqp21yb4SUdkxn9+onX6wHMbjpa++cErOzdfrysYzebtZRFTh3cGl9NCkKRnnFQ0y9fEbbEBxttWlhFPReE1jm8gKovdgI8o+tui7xS6y/y/uWm12LYzbOl2y/IEaI3AgUX6KXq4nvtCGr2BPakb3DDvYgFMt8haTFOgpQff4F8dp4fmSVcK2wX5PT7DN/SYJ3Yj6T0etFmLXVQfpQ5u5wbDshI+vA/ApYDeF+L4c85nqn3rPyxrL1aDWDvbbyJ3cqjpazHdOqq+xlmOdCDHQ=
+X-Stat-Signature: 17b4ji6j1iw8tz1tbg5ez37admiemap4
+X-HE-Tag: 1792186106-360971
+X-HE-Meta: U2FsdGVkX1+WDn1vLSY3Jcnh3hXJ1hNrEXCDAZXv10LylX7NF92I97D3p8aRtfEhbgU7g6avzrjaO9BwB1Fqiw7Cpjeugz0I+b1kta8jyS8ufSrdV5eSkMFE7lxte827NwA1yaLD/WiV771UAUajMsay4p0c3tgXDbNCqe2aw1YxKG9yK/9uk2T6vM2vHHAW2JR1xCR6vsQGrfaV+pmSYJEaIKwsU5vXG+YGo4G6qTjZRAcJexBALgHyEbipR4FGwzGhzJEWCrN80ffMnPrBsvUJaUgoL7H9ODgjuvgH08b1lL14qc8nJc7HHmtLkSGPC46VEKUKzUOwGmA6z1uxrAPi3j44JPYZSKoHOfhFOiBGmROy5jSshm3gDWeKdWB8KYN86wAJc6zK8vJcOPty0UDDKo6cEvsSVP2Hd5voWCcRiTpRY1rhVjx6p/ZWU2Xy4mUwF5oH10gAzjRnyOzdBheA/iTA9/Lf6MOZC8+eyIA8PXQEGQv5ochkvRCTx5HNA/Y4emfVuil8A7R7M+n1oDrPr0mBRlR00y+wxl/9qWoyGVtER5u1EQZwAfbAVTvKBvquQFQTAA78Z+ldEGNKkn0VPstjGJmmZ76Rezd70trZnsSRM9TnBmVWTpfsxEIDH8DSGRV3RZC4eN1KiaWffV74j0Sh969CT/SFZH6cjWBYl3w97glGiWk+EvhUUR1dofr/lBk0GM1jrZBRphsiU+h3bDsYxcvRvnSiOEOHg8Mly44srZBWMNRMawt9PcsCfDYndoSvQL31g/KubRwOJFkkSRf44NCwdYMJ8TUqpYgGuyQr41oEDZegTSrjbjrou37QmNPrSVPbRNd3v0obXjGsEj3usQOY0LT8FPIde8nNvFSpn0KjIBJhgNIyP/nhAqNNtEiSPPA2HBgCJuGQMzAkUgTsD+zpMqr/VyxWJprTBf14bY+xjayjZjy2p8KXLznkkiCxakf5Et16T1G
+ bSXAKQ3a
+ XV0fAvjXkWVXRHcia6DvK3lX4MliQBfxqgEi6kdAT4q+ocex5DxhQD+ZX01yLHs/Ra/8nvzx2TCgpAkHR9TaAJoTTQcJ3mbGvyvp3QGYv00W6xNYDDI2ULe8dcn+GXY0pnpnsJ9yw9/f2TbB36CLUUB9Tmc1ZVJcXGraTRCD8p9CDtrtk4IBAZl3aZ52M1oioAhIQYXXxH8s63QbT6IWPKSa7zsAX6olONunLv5rR1IS+doNTho1oqqK4WzIqEV5Tg58jQ95cTyHxENsudlHJweY8/L8TVY/zFzmwQ4ngxray3v0lhj1KwIpx+GvNQPS2Z/sRc9hL2/C2M6v8wBgkP+QPnSlQG2d96zntAggIOAmo498so6u6/ckg6FQT9sXRUh852MPvBVl3ELQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,30 +86,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Hello, Liz.
 
-I am looking into resolving the following TODO comment in mm/page_owner.c:
+On Thu, Oct 15, 2026 at 11:43:09AM +0000, Liz Fong-Jones wrote:
+> Trigger: a wb has lazytime-dirty inodes on b_dirty_time when a sync
+> starts, an inode on it gets a timestamp update after the sync's cutoff,
+> and then its memcg (or, if the wb is already dying, any memcg) is
+> removed, which runs cleanup_offline_cgwb() on it before the sync work
+> queues inodes.
 
-/*
- * TODO: teach PAGE_OWNER_STACK_DEPTH (__dump_page_owner and save_stack)
- * to use off stack temporal storage
- */
+The late inode has to be one without a pending lazytime update. One
+already on b_dirty_time keeps its position and dirtied_when.
 
-Currently, save_stack() allocates a local array on the thread stack to temporarily hold instruction pointers before passing them to Stack Depot:
+cleanup_offline_cgwbs_workfn() skips wbs with anything on b_dirty, b_io
+or b_more_io. So the scan has to land between wb_writeback() fixing
+dirtied_before and taking list_lock for the first queue_io(), which is a
+few instructions. The exception is a multi-pass drain that started
+before the wb got dirty IO, as the loop doesn't recheck. Maybe say that
+the window is narrow so that stable can weigh it?
 
-unsigned long entries[PAGE_OWNER_STACK_DEPTH];
+> Once an isw fills before the scan reaches a newer inode, or a later pass
+> walks past it, older inodes land in front of it on b_dirty_time.
 
-Keeping this array on the kernel thread stack risks stack exhaustion.
+A pass keeps the inodes it walks in order, so the only reordering is
+between the walked inodes and the ones a filled pass didn't reach. "or a
+later pass walks past it" doesn't seem to be a separate case.
 
-To move this scratchpad off the thread stack, I am considering using a per-CPU buffer, similar to how kernel/trace/trace.c manages ftrace_stacks:
+> Tejun spotted this reordering racing with a sync on b_dirty in a patch
+> under review and suggested holding wb_switch_rwsem for read across that
+> scan [1]. cleanup_offline_cgwb()'s scan of b_dirty_time needs the same.
 
-struct page_owner_stack {
-	unsigned long entries[PAGE_OWNER_STACK_DEPTH];
-};
-static DEFINE_PER_CPU(struct page_owner_stack, page_owner_stacks);
+The description is pretty long for a six-line fix. Maybe drop this
+paragraph, which Suggested-by and Link already cover, move the test
+details below ---, and tighten the rest?
 
-Is a per-CPU scratchpad the preferred design for this off stack storage in page_owner?
+> +	/*
+> +	 * The scan reorders b_dirty_time.  Keep it out of a sync's way, which
+> +	 * could otherwise miss timestamps moved past its cutoff.
+> +	 */
 
-Thanks,
-Kanishka
+The inodes' dirtied_when doesn't change. What moves is their list
+position. Maybe something like:
+
+	/*
+	 * The scan moves walked inodes to the newest end of b_dirty_time,
+	 * past ones it didn't reach. If one of those was dirtied after a
+	 * sync's cutoff, the sync's queue_io() stops there and misses the
+	 * moved ones. Exclude syncs as process_inode_switch_wbs() does.
+	 */
+
+None of the above is blocking.
+
+Acked-by: Tejun Heo <tj@kernel.org>
+
+Thanks.
+
+-- 
+tejun
 
