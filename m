@@ -4,109 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96D85CCA46C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:10:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A78CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:14:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D7E16B0092; Fri, 16 Oct 2026 12:10:27 -0400 (EDT)
+	id 531A46B0098; Fri, 16 Oct 2026 12:14:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68A2C6B0095; Fri, 16 Oct 2026 12:10:27 -0400 (EDT)
+	id 50AC96B0099; Fri, 16 Oct 2026 12:14:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 578866B0096; Fri, 16 Oct 2026 12:10:27 -0400 (EDT)
+	id 447836B009B; Fri, 16 Oct 2026 12:14:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 333516B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:10:27 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C94EA04B0
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:10:26 +0000 (UTC)
-X-FDA: 85328976852.19.2254727
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B54DEA000D
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:10:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B8f3itCi;
-	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792167024;
-	b=rspRCOMPi280uvjkSKe+OP37gSse5Y7Zql+CjMV0+fpJTZyUtKO/Ht092y9bf8Z5mQI7pt
-	pba0sU7W/qTeubQ3ZsbNWF+ho3a+URHkhyllw23WY2qhs7cu4W+7Oiw1oF12Si3aLvycEb
-	HWMrv6Ujoe746NAViEyAVNd9g2fdOy0=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B8f3itCi;
-	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 166296B0098
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:14:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F3721C3540
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:14:19 +0000 (UTC)
+X-FDA: 85328986638.05.0E52087
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C54451A0007
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:14:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ce2iQ+aN;
+	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792167024;
+	s=arc-20220608; t=1792167257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7Ne54ApzWtKcjZmsIH0xxINmhG2VcxhXAgHz6gJ0SdI=;
-	b=MuYI/C988DXfmmO/OE252Uosu93eBeC8dxl+21BIuD/JidOC2ExOY85swv6p9t8u73L2RL
-	D2YPv/CD1GNfkJ3QFBxPafRyShoBgMmdeV3BB2HcoTIuUy0NU0lGrL0Nk+3slTPKaMovKB
-	q0tP1pYOaB942QuWryHcZGC+Cx7V/sg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=7Ne54ApzWtKcjZmsIH0xxINmhG2VcxhXAgHz6gJ0SdI=; b=B8f3itCi/Pi0gVLvfWlDPqImwg
-	l6UMLH4ZkeRNnv6Q7cMEzYoT9nfa8O4lxhq8YlKgrJMyZDuT1bh751FFwGZU19whQhf54z9o8mMgW
-	iva2zoDygswl8EmyeSSfcXZx00490erp8x8hX93nJUeFhfXBFE2nleMyZffv8IQpJ2/WMcm4UI0FX
-	7M/OsE5QZ/kbNGNfzDSB1nvWcUUJDStgeQdcMl4ql5SJiw61g4K9jyY62HLil6z/rdvDjBAR80MVc
-	rJKL6gncAKJhhan05tJMK7tSTjf4gKZ3VtX6ip9/s+YH1bvf8nRnxJkm3qwK4UPvPlfMQjwwibKCq
-	J11QTzNw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xHkVZ-0065QZ-2U;
-	Fri, 16 Oct 2026 16:10:14 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 16 Oct 2026 09:07:24 -0700
-Subject: [PATCH] mm: kmemleak: scan modified objects as soon as they are
- grayed
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Dn+zQ94Xx5nbXHRqVu2X2ak1EC4Zynh6vHRjEPrbNFM=;
+	b=WkUFzznPhy6LYHsWTpv87gxkQRUHP1tIrKCobVIa8AFNy7dFeC/skncQMCZ69hMruvG8fy
+	cNiiWyUH/IfEk6wVyKOA6W15CtWjkvL3+0GSl/PVOaGF/NR6D+i7uibqobpmUmH0ocIcFj
+	wmA3ead4UeYBfea/tfoF02liU3HVDgI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ce2iQ+aN;
+	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792167257;
+	b=yeEZZbUGJ/CTl9Rh+fyeOgWMsYzLzhcvUrlWqSyPc+6cYhKfLNvQEYfITNMb7kwE/GhXL+
+	OgtkYAAyil81b7u0lZHS4/ObVa8Cg8yIQxXnzTyLASN6w0s3cLdrl/Y+zExcxPZRU+fkJN
+	NcotEdhjkRO7ocztolsi15gNg6OSF0E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 50D2B602D4
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:14:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B481F000CB
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:14:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792167257;
+	bh=Dn+zQ94Xx5nbXHRqVu2X2ak1EC4Zynh6vHRjEPrbNFM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Ce2iQ+aNWDa3bNAHmS+VFScdYtMvOZUU12Ia3m21vTFFw6XVN/tklXYG1bX4+2X+y
+	 k/63DtKhqTyKvJ8SnUvR5bs+7rWzwPH/j2jfYzPZmSHrW499daGHRt+/ZMYm3LwhLX
+	 TY7cE0YeUZauHk5fbEFqH7s4m7nYKwpAAP0RV3A1qW0W2wDh7wwzbAEEU1cLuxDUm7
+	 oOjM5zPgBSZfGMc3l4PVGhb4xN4+0TGJCPjyb7OGvAffKJVeVfGpZbAodk8yCM0xgm
+	 s4XopY+7vjcZ3PagXHVppWtm5mHfsR718FyeLi6/18ox3d4BUzVJThVQ6IPvy20fwc
+	 TuMUjEowDwiCg==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b1ec41d8e9so22457a12.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:14:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzyt8kiZicIOQmulZVM6xr1Nq6BRnOR0/bnjIMdVFgpu+77orzeF8wwwtpLrQtzuQDJTsx+6NsYtQ==@kvack.org
+X-Gm-Message-State: AFq9FYLdHehsmdp+L8OObsuCTEerpP8lsNY1i3ZDRSKXMmk+4iRgEf5T
+	e8O8hsxL4fJbkhmzb6eZq++BShWkupnbz+8ZFNr1sHlBuvmuzx2PMMXAjf6/u1xDZYmxvmN+Xhd
+	jJv8+g6B8FdKs3OEHW49THMTKrzcup6E=
+X-Received: by 2002:a17:906:9f86:b0:c40:560a:45e with SMTP id
+ a640c23a62f3a-c419f416b79mr22483966b.35.1792167255917; Fri, 16 Oct 2026
+ 09:14:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-kmemleak-gray-drain-v1-1-3270256fdc8e@debian.org>
-X-B4-Tracking: v=1; b=H4sIALtL0moC/yXMQQqDMBBA0avIrB1IxIbqVcRFaiZ2qkaZWGkR7
- 95ol2/x/w6RhClCne0gtHHkOSToPIPuaUNPyC4ZClUYrfQNh4mmkeyAvdgvOrEc0Lu70kZ5V5U
- GUrkIef5c16b9O74fL+rWcwXH8QPfxje7dwAAAA==
-X-Change-ID: 20261015-kmemleak-gray-drain-fd80160fd946
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4234; i=leitao@debian.org;
- h=from:subject:message-id; bh=Z1cqtisYX6gOlcbJiiMBLdLFeDVcLISg5aP0QdLPLFs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq0kxieXIBMRG2C8FoRD+dfhGLD59VRKYz1Wwx3
- kdsAEk1m9eJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCatJMYgAKCRA1o5Of/Hh3
- bTvED/wJr0gBmtXSoX7kSl0kTe3SR1UmPv3y0OCX3Nfb9KG2dUT6w8jCOZG5+USu4Uuln8i9+Bw
- 0AEIZOym4nJXAOI5OKzWLfw2eMfqZmbrpuVpkKyhtfqreotlPuDwZMKjK5n5ZSV5Cxww4jhI7Ke
- 7okmbfnlJvg4taMIEFmYMRwBkrPRvJcaqoH+gPqy3G89Jffb7u/2JQb2pzK+2qyQZUKe5NyYnGW
- 0uuzsuPzxRB50LHrG0mSYta/q5GHqp/eCj3sevdeUhrYicKVC2pHkGxK/0eYEXe3MZM08g0I7O6
- GYzmPyeOw4Ok57mQFr7JZVGoFq0E67gGViOsbcIqDJFj651KE5cfuijyluIugyxgRXzsz0ofba8
- DmjkeNY62XdR9ilqAeCs1UbEkx0OYFXW6bMPlMRJDJP1nw3Lyx54D4aLaZdCYt/uOEJMx7TGy11
- Vni8bc7b/G/wD3gp0aM6zuJsSe2hP4BJXBoDjoNfsRcU9gYW1JlAFBoB0Ni2oFBuk1UJ7oneajp
- 4MUg+l8kextpUOdH0FxschMStFSQz5tC6Kwl8yrw3KJegqSatgbWvK74Bq3ee5XHVx9oLkMZh3d
- nmaHNJQHUJf3DyLL5kiJ4Xl9/XwwnexchWNeiJQCCiR9hvGg31N1rmFjg1xsVVVi05wD+5W2p2m
- qZWlaYB0lDXgxRw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B54DEA000D
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+In-Reply-To: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 16 Oct 2026 09:14:04 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com>
+X-Gm-Features: AclHuK-wTWiI_HWFi3__wF5R0bm5SgzhJD-59mYqegifCIi_SvzEA4blKihevCg
+Message-ID: <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C54451A0007
 X-Rspam-User: 
-X-Stat-Signature: kaxf77g43oyhcn3o9jfdoqekrqindqia
-X-HE-Tag: 1792167024-243272
-X-HE-Meta: U2FsdGVkX1/EEwPAIkh2N/zPiVHJD0PAFRw3aRRNdepPMtfaR5kDKegYZKTz651+k3UfZ1j2wvfO/gllB1DSLN5GrNpbbjDs+PRjNXcJ5MUA12WHx/I06gqw9p2AKQPYE1+PLfMVWeCltokO80T1WS4N1f36o2pdamCGEh2LE59ec1jotpcEeprWmlIvMca5Z1f8JeFiIjkOPaJohPFFtBRG2W4wHQHR9Hzo8kYfPv5q23NTU9IVadpDM9QVTQ5NsQ33537GiD9ZJKIv2FzWeUbJ9XrbS5cERyWYeesZYAaNZuLOY2K2ojbeZMsN/cGQLpWFSokI9QRHpMVBDpY+OYbYoPxrmUMEmWuON1ZmyqzCB4haE6aGJQ3/ppdfjYoJf++uBhxeZPURACdVJMKawtuBIrFbLqjWFCwwEpFv3IKntLAnU41yoCCinlzv3D7htK/JJ9oSPJgpS70632EJjH8yhvIaHS51RJb2qLTqvw8X0FqHUDPNbMzSYFz0TvzgdjvrYxHCDOr0wSmG368MNUJz+rpC/OtL+gicfpoyhJTX1hzXyY5vBdAFTpbUHkWtsbuErQUDVdwMnYXnRo6n9xbF8+Nb5aRG0dAZUALRF/ydjWveOTpdIobwQe+MXS6anlngszndqr7UEmyKzOPgF9Rwus0UR0Ufax3RSv6GplnA3l8RXhBYB682K2WO8ys+VixDkyya1SdxOohypz2lS3q28ysWyLwSLOOL7bu7PU+hE0AXpbKylZuNDsqr5z/7IM2zZr/ReKieoeHOyjRW2q/2mxYaByeAMLAdSf7uaVC5NHwMz+0xc2iEQyjVCztgmemeth4aUmQBCSnSo5DqLEh1uPlVlQZGOhOFdead3eb6jwO4LohFzEJ9C8u5uQLbPHO5Rx70wPmvpfNznC5I2sf1zdz2um7R3fO75oeAC4Xz2bQkcYWkzDVihw7ybZq9W9rZSapQl1ngbkY4QEY
- GBO/puus
- +QvyHhSaBk9D8iuqlE1uv3sP6x21FDzcELQZuz7EjLlDq5M9DoNNu7zRjRbMvNmSmTUVtk6MbuO+QA1I3rt/moECgS/1U86ivQUMTdDZaLsaSdMacrXySn354OVlha8/FMokClqB+rV7IjgzMFm6AsLyTEW3zz8K8EgXGQWvV8uPdZqw0felhK472KbikKLyIpXWM+Y/EysrWT4xaB/l1rF8s6NEZArLzmjA+h93MQAdYlJsq1A0HBM5FVQQeOI70T7b1q97GjstNzSMDzYq4/5UhtzluFND3Uv+qYZAKWB8qn8VN9VIvqPQYeQ==
+X-Stat-Signature: pw61dprzp6m9to54t6ak3sd3xecczynu
+X-HE-Tag: 1792167257-130080
+X-HE-Meta: U2FsdGVkX19ejdKoW+i4HjabES46jTSZRBfwD3qrNu/rZa5MaLFp93F14qCVigKWeEXv+JuMPlv0SbQCGe6uslz3M6EH452FAsQmOVROW8miOlrvtekRKPsqtI99FX3MuQh480NU8YfUDyXvCPf0r3+iaGymNq78Teb87Z6GUjdHAbUyNbFHFxkmS439yBWWw0epEk3GOi9oRl3SsN1F3RW1SVzyuuyigCOLqN/rXD1uvM0xXRE7/syytzVINsMzdU2Ml1Oza5CrduOAPHoEqmYuJSlIwwk857TirqHsNxirHq3JDidhenZUT6EoOQtPGkozqY2hOKErTSS8EpsdcsJHN7IqeVrxSmEIyKxAiJfElgXzoGk8SISVd93IVT0SQgH3IrWSlOc5Xc1l9ou8cdSF3otj7SLY8wVxDgWMNqskl4+JTMP6uYUplwXGoGkcU5CzOCrO9eO0EFDUUPEQJcy080D1sbhhgPQS0KZsGZQj55w0L0p8TbcxaKlwQII+NAi5FDrkfG+zzCMJVQNgJ5KZMQDdYtl9lyoeIaZwPo+ApvVEJfMhboQGp4PyZ4ethuJkWlIaKPapI3xLEJf2mWcSNBzPoplAlaxU/xkFzuQi54fbpKit0E8WUa6JmK1k0PTzwuORnn6quPNuWaZMeWz5Bbm8h89lbUPCFpbMRGa2mSKdmMAwbimgXuTr1X/rzO6I3/n7XvwEzMjyXiFihGZngI+y4PjREpxcyViWOxaq4IuI/K5MADOBtEaRSJuVVWBzm9dprxqMX0JAINbfZ970fH9mMEURQfpAvVpNS87BrLh3o6Cjb0685CvuewWfZAaN0zNSPenLk42rtq4ybFYRozwwF5Oqrhfp7+lvvFnrsk0BsXBt2amOKV+ld5wLmWVIgejpE2D/F1Ep6J4Z0P4Hyl8Shj9fy/zhmLAYCMYSAwxtmpx9qhYE9GN9wzZzdkHZnPFKQryd0nemRZf
+ XeQ2uDCX
+ iMYNY5z2sbNkSavWmHbQa0/8LpGYxgfpCUAEKYulmDQwdKIzUp6PsDIt/c5PpCoSFVnIfuBt1lec0LLnIhYeouI5/iGjFaMcUppZj1B8y7K/BDcCxXWFSVKiSjhi+l2/oJePlY8SQZ0n+6Rjd5YQDaZ1IQbauo78ewZftuUueoQTB7ZtUVzIihvLONo/ufOknSFuruXWjrgsE4jZvkPsFnIExxzY+q1KciZUVoSB9HYwa/ozplsbkE5Gz+FlXmML/N1k8JgJTi8VYeyiBC3sKwk0HekO/J4mQgtku7MirHXn8HbdGZQUCIQyna82jPqbL5aDNrVzf6LKgWWqKpyNAj75bQRDkQ8H08BTZSIyC2VqOjHzcI0F4FkdrSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,118 +105,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmemleak keeps reporting the guard page of a systemd-journald thread
-stack on Meta's debug kernels, even with min_unref_scans set:
+On Thu, Oct 8, 2026 at 11:28=E2=80=AFAM Kanchana P. Sridhar
+<kanchanapsridhar2026@gmail.com> wrote:
+>
+> v1: Batched zswap_store() with compression batching
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+>
+> This series is a spin-off of "v14: zswap compression batching with optimi=
+zed
+> iaa_crypto driver" [1], and focuses on the generic crypto_acomp and zswap
+> compression batching enablers. Resuming work on this series following a g=
+ap
+> since v14 (January 2026). Please note that my email address and affiliati=
+on have
+> changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@gmail.c=
+om. I
+> have retained the original Intel sign-offs on prior patches for historica=
+l
+> attribution while signing off v1 of this series with my current address.
+>
+> To summarize the main contribution of this patch series: Batching is intr=
+oduced
+> in zswap_store() of large folios: we carve out a large folio into batches=
+ of
+> ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store each
+> batch. Moving the fundamental operations that need to be happen to store =
+a page
+> to now work at the granularity of a batch offers opportunities to optimiz=
+e them
+> from these perspectives:
+>
+> 1) Utilize existing kernel API that minimize obtaining locks for bulk
+>    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
+>
+> 2) We keep the working set for each of the core store functionalities (al=
+loc
+>    entries, compress pages, store pages in zsmalloc) to be focused on a
+>    batch, thereby minimizing cache evictions and benefiting from cache
+>    locality.
+>
+> 3) Along the lines of (1), the main zswap_compress() batching routine obt=
+ains
+>    the acomp_ctx mutex lock once per batch, and releases it after it has
+>    processed all pages in that batch.
+>
+> 4) Any zswap store functionality that works on a batch can potentially be
+>    parallelized as a next step, to further improve performance.
+>
+> Performance data: usemem with 60% over-commit:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Validation was done with mm-unstable as of 10-3-2026 (Baseline) and with =
+this
+> patch series.
+>
+> Testing was done on a Chromebook with a QEMU "vng" VM running in Crostini=
+.
+>
+> Chromebook Diagnostics reports:
+>   Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
+>   RAM: 16GB
+>
+> vng setup:
+>          Memory: 7G
+>            Swap: 3G
+>     Pinned CPUs: 4 (E-Cores: 4,5,6,7)
+>
+> zswap compressor:
+>   ZSTD
+>
+> mTHP enabled:
+>   64kB
+>
+> vm-scalability/usemem setup:
+>
+>   cgroup memory.high: 3G
+>   4 usemem processes, each allocates 1200M anonymous memory, reads the
+>   Silesia dataset [2] from a pre-fork-allocated buffer into the 1200M,
+>   writes to each unsigned long in the 1200M, sleeps for 10 sec, then
+>   frees the memory and exits.
+>
+>     usemem --read-silesia -w -O -b 1 -s 10 -n 4 1200M
 
-  unreferenced object 0xffff88829a30ae40 (size 256):
-    comm "systemd-journal", pid 961, jiffies 4294814590
-    backtrace (crc 49b3881c):
-      kmem_cache_alloc_noprof+0x2ee/0x630
-      vm_area_dup+0x36/0x750
-      __split_vma+0xef/0x7d0
-      vma_modify+0x11c3/0x18a0
-      vma_modify_flags+0x1ea/0x2a0
-      mprotect_fixup+0x249/0x630
-      do_mprotect_pkey+0x531/0x820
-      __x64_sys_mprotect+0x7c/0x90
-
-The VMA is still mapped. It was never faulted in, so it has no anon_vma
-and no file, and the only pointer to it is a slot in a maple tree leaf.
-The mm tree runs in RCU mode: every write replaces the leaf with a copy
-and frees the old one after a grace period. journald rewrites its tree
-every couple of seconds, while a scan on a large debug host takes many
-minutes, so the leaf kmemleak queued is freed before its turn, and the
-copy that replaced it was linked after its parent had been scanned.
-
-The pass over modified objects is meant to catch such moved references,
-and the new leaf, being a new white object, does get grayed there.
-
-But the gray list is only scanned after the whole object_list walk, and
-by then that copy has been replaced and freed as well. The confirmation
-scan has no such pass, so the miss repeats round after round no matter
-how many consecutive scans are required.
-
-Scan the gray list as soon as an object is grayed, from
-kmemleak_cond_resched(), which already pins the current object while the
-RCU read lock is dropped. The live leaf is then read right after the
-walk reaches it, before it can be freed.
-
-I was able to come up with a reproducer that reproduce these false
-positives most of the time:
-
-https://github.com/leitao/linux/commit/1291579c487303c5ffbea2cf532649d26329c8a9
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- mm/kmemleak.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 8fa409a4f9fb26..6e12bcd95312d2 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -1696,8 +1696,10 @@ static void scan_gray_list(void)
-  * Conditionally call resched() in an object iteration loop while making sure
-  * that the given object won't go away without RCU read lock by performing a
-  * get_object() if necessaary.
-+ * If @scan_gray is set, also scan the gray list while the RCU lock is dropped.
-  */
--static void kmemleak_cond_resched(struct kmemleak_object *object)
-+static void kmemleak_cond_resched(struct kmemleak_object *object,
-+				  bool scan_gray)
- {
- 	if (!get_object(object))
- 		return;	/* Try next object */
-@@ -1709,6 +1711,8 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
- 	raw_spin_unlock_irq(&kmemleak_lock);
- 
- 	rcu_read_unlock();
-+	if (scan_gray)
-+		scan_gray_list();
- 	cond_resched_tasks_rcu_qs();
- 	rcu_read_lock();
- 
-@@ -1910,7 +1914,7 @@ static int __kmemleak_scan(bool full)
- 		raw_spin_unlock_irq(&object->lock);
- 
- 		if (need_resched())
--			kmemleak_cond_resched(object);
-+			kmemleak_cond_resched(object, false);
- 	}
- 	rcu_read_unlock();
- 
-@@ -1981,8 +1985,13 @@ static int __kmemleak_scan(bool full)
- 	 */
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(object, &object_list, object_list) {
--		if (need_resched())
--			kmemleak_cond_resched(object);
-+		/*
-+		 * Scan newly grayed objects now, not after the walk: one may
-+		 * hold the only reference to another and be freed by then,
-+		 * like a maple tree node that keeps being replaced.
-+		 */
-+		if (need_resched() || !list_empty(&gray_list))
-+			kmemleak_cond_resched(object, true);
- 
- 		/*
- 		 * This is racy but we can save the overhead of lock/unlock
-@@ -2082,7 +2091,7 @@ static void kmemleak_scan(void)
- 		bool dedup_print;
- 
- 		if (need_resched())
--			kmemleak_cond_resched(object);
-+			kmemleak_cond_resched(object, false);
- 
- 		/*
- 		 * This is racy but we can save the overhead of lock/unlock
-
----
-base-commit: 587858367581b9c55c3690f4e63382ad622719d4
-change-id: 20261015-kmemleak-gray-drain-fd80160fd946
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+What is --read-silesia? Is this a local change you made to usemem?
 
