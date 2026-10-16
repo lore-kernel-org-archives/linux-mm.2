@@ -4,142 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 400E3CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 15:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E467CCA46C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 15:26:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F0316B0092; Fri, 16 Oct 2026 11:23:24 -0400 (EDT)
+	id 17ECC6B008A; Fri, 16 Oct 2026 11:26:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C7A06B0099; Fri, 16 Oct 2026 11:23:24 -0400 (EDT)
+	id 157F66B008C; Fri, 16 Oct 2026 11:26:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0915D6B009D; Fri, 16 Oct 2026 11:23:24 -0400 (EDT)
+	id 01F0E6B0095; Fri, 16 Oct 2026 11:26:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C745B6B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:23:23 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3F1791204B6
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:23:23 +0000 (UTC)
-X-FDA: 85328858286.26.0CA82A6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5C34820010
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:23:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cvrIM64l;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792164201;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CBC046B008A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:26:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 30F26C039B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:26:16 +0000 (UTC)
+X-FDA: 85328865552.06.A9F0D22
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazolkn19011007.outbound.protection.outlook.com [52.103.1.7])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6787C100007
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:26:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=blqLWh+D;
+	spf=pass (imf05.hostedemail.com: domain of x-professor@outlook.com designates 52.103.1.7 as permitted sender) smtp.mailfrom=x-professor@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792164373;
+	b=jqLXBrUezfT0uVyMIGdrgSdf4MT9vqk9sWfPlHVWOshBuqlXOYM9Ei9SbfUpAX0gnyHPB6
+	yAx35XIgmfsnZ3I8aJXWiZlPLjEg+gGHCoWMS03CxhWENLD+xwtZ9oxvMjGU/cR73z0e8H
+	0WiGQLnNR258VCuiPLtKdR/k0UcwjJo=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=blqLWh+D;
+	spf=pass (imf05.hostedemail.com: domain of x-professor@outlook.com designates 52.103.1.7 as permitted sender) smtp.mailfrom=x-professor@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792164373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UA1AKU2jr/zm6iXEf2Or98UUowG4+W7IPNcWufZi/l4=;
-	b=eby+5LDjx7En4IfFvRIrVbA0j72b6FyzXpf9i2aLyaxP7F7P6l1fqz8t/55tCpF41ODF6g
-	SSm4mrYXaMm2nPn4Tb8YwSryH+ckkSb6/zCsfFtuVTk9FaVncT1bok/0PKQEWOW2rXnfRX
-	e5enjSwwaFxzhJhTPeOUptGVfOlC9+c=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cvrIM64l;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792164201;
-	b=Mp+R4KRHSX9e1s6LHbYd/TqhJV+o6yVe7SS3ZHXlwXWZ52FaFfG4yGSk1A1M/gKEHHfHb3
-	pf7R3XMavYqIbshiYqqCc/OulIw4Vd0LvJhcnNiFRz30A5M/5GzhTDb10pjd+qFX3FEfyL
-	jrIeJTrmkW7SwQYHAegxNdELIMZagTo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7EF0540660;
-	Fri, 16 Oct 2026 15:23:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF211F000C4;
-	Fri, 16 Oct 2026 15:23:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792164200;
-	bh=UA1AKU2jr/zm6iXEf2Or98UUowG4+W7IPNcWufZi/l4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cvrIM64l/BpmapZ+pURl8DBfFZ1+2TSv2r5LWFlbEEfosCCkUSSVnS8Fqs1u0+GnE
-	 43272nNS9bGq7v3Urv6AD/+h/3mL8a4oCf6iunoczp94FSxuXGttjPhHaQnXhtIF8q
-	 AX6JNV096ejXczcdr/JADU9YNdBFICZzyzrBa5VlKW6X21AGfB/AmUcFyxu5ty1sEW
-	 qX9smuqm2yFs0Grb26V0m0XAnDz6X66P1cKzwSb7/fjXWI9ziI1RwriNiH8dR36djv
-	 4WNFffh1/Isw5/932YyqaD4GUc6s/bhnAy0sgMMadR18tTZHJ/VEPCamivBFFy41tH
-	 pyhuuqN5FCh+w==
-Message-ID: <bb72cc2c-a46a-44f8-99a2-b036abfdbd26@kernel.org>
-Date: Fri, 16 Oct 2026 17:23:15 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: avoid recursive i_mmap_rwsem in PMD sharing
-To: Li Zhe <lizhe.67@bytedance.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- akpm@linux-foundation.org, muchun.song@linux.dev, osalvador@suse.de,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260930064308.58159-1-lizhe.67@bytedance.com>
- <arzVaC2IYkqSb0_U@gmail.com>
- <9a7c026e-f5f2-40e0-84aa-919c988cc136@bytedance.com>
- <2b4571c5-8e51-4c91-9d88-11929f200875@kernel.org> <asjVUa6XBZ8ti-0_@gremlin>
- <70ea8ee6-6fc5-4209-8cee-362da37f5035@kernel.org>
- <86de1ee5-be14-4123-b372-b4691cea8e67@bytedance.com>
- <fedff1b6-0522-4398-a0d4-d4111a570159@kernel.org>
- <98d4a305-51e4-4374-b09d-7d251dbf166d@bytedance.com>
- <33e26c40-45f4-44a4-bfea-1ae7ff74e4cf@kernel.org>
- <f529ea30-2e93-4862-9642-21dc1b233e0c@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=QxJiCccMo6h1D4qVDJ9ZsZ2MLLlMZU6RFAQlrxBi5lo=;
+	b=ruE5Mt6ZYC2M/cYFNMXw7yYDu+o1EVIf3IbEIqMwVcsdvOFY/9LvxZKSeb7ShC8+9Qkxa8
+	DdSB7LpWQznsIIuoSa8wzvCFZwGhwLADDCsto38b8/dwGi2f3lJmOG8LxAjH3LvRvg0/Hc
+	NkokHIuV5PgzolfrOGJbobMr4PJ8Tcg=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZU1rttdwN1E5C5aVppDrQAL29biE8mawQqQvXIT3b/fmqwTYnirDK7FbrRkY0iMkKSJ+F48SUhRGi1JIB8YePA+/YjfYVMyO+oi1zo4kTeiEj8wsXTjUOaUESIWyjFCpm4RIn8xEFCW7VUnAML1l1fFVcEz5EaK2nCIKoek/mOC8PuRlfQmMB2qqUPhn9u3FJSdcMJLSU7Q/gC5mbMRlHdUd+8yPMm6U/YWxHgmlSTAwhTxcJMDkSBzfanaC2wSIjJy8tr8c5KEjjafzB5hCD55cytple9C5oAirCYl02yqOR5LVtsJ4JBeLg5tXQPXT9SM7xu4fGWp/zNvGiBL/GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
+ bh=QxJiCccMo6h1D4qVDJ9ZsZ2MLLlMZU6RFAQlrxBi5lo=;
+ b=t3sX+k63zbOmx3oNoxvFrPgnlKYvGcEZMAdTBYSXwwWFp5UBgiSWPjY4TAEInFTuYEEStz0TLKMVGdlVL2eQ0ms89qgh3nZ3bVixIebmYRuYjBPi79mXsT2qts1kCWU+WRnMMIo4aRpbJyRNV6pL2tnnh+XLOwXfee3SUAFP8TTcuXZDLLZ5Ggl1pr4Su0H6pK3zkdxR5BehLD7XnnmOatv5ch0MPpmEpBo4yZijTlAQGGWJ5qFgCTDSm4aNGyytfDkCAlp+5eitFIH17Pk1OvhzW0N2T/vpSUUPlBJzyam5/6mFCn2ysY6KXHeZPuff+xN/FjP2vdKph6PLZyp1iw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QxJiCccMo6h1D4qVDJ9ZsZ2MLLlMZU6RFAQlrxBi5lo=;
+ b=blqLWh+Dv+lv3EF/J2Yp3CqU8eLsrCI+ubddWhgFOjoRyqbbskQ0Ct2CgGbh4YhYdry6SsDWlVy7fSFCnuA3rkrJFUaNL9a/SJ8rxQ7JjVwUceerctFsPIn2yRVy12M6U5gE59TEj8AU5q8fzcB8x8ZnYNXbvvzIH/A0slGpGKeBasYKv9IYSFy622qz+i57TbuuWDAyD0/momPG2rr3sF0co1gwphORx2VpP99S2XCIzsjIU2Ed1xvUaGP0Ya7OAATRgsElr9opLoVbna0RCrmMpJ089DJjviqKmA8JjAuQSk3rbDs1sBpP0YzVgfhUyHOHYQFvmPT15kZDJwh22Q==
+Received: from SA3PR05MB10385.namprd05.prod.outlook.com
+ (2603:10b6:806:39d::17) by PH0PR05MB999059.namprd05.prod.outlook.com
+ (2603:10b6:510:42e::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.17; Fri, 16 Oct
+ 2026 15:26:11 +0000
+Received: from SA3PR05MB10385.namprd05.prod.outlook.com
+ ([fe80::e22f:a0f5:fcb0:9b0d]) by SA3PR05MB10385.namprd05.prod.outlook.com
+ ([fe80::e22f:a0f5:fcb0:9b0d%6]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
+ 15:26:11 +0000
+From: Wang Yingjie <x-professor@outlook.com>
+To: Alexey Gladkov <legion@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, "Eric W. Biederman" <ebiederm@xmission.com>
+CC: Manfred Spraul <manfred@colorfullife.com>, Vasily Averin
+	<vasily.averin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "cgroups@vger.kernel.org"
+	<cgroups@vger.kernel.org>
+Subject: [PATCH] ipc/sem: account enlarged sops arrays to memcg
+Thread-Topic: [PATCH] ipc/sem: account enlarged sops arrays to memcg
+Thread-Index: AQHdXYKsJFm8JcYiG0umhbOnIRhIBw==
+Date: Fri, 16 Oct 2026 15:26:11 +0000
+Message-ID: <20261016152609.2528805-1-x-professor@outlook.com>
+Accept-Language: zh-CN, en-US
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <f529ea30-2e93-4862-9642-21dc1b233e0c@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5C34820010
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA3PR05MB10385:EE_|PH0PR05MB999059:EE_
+x-ms-office365-filtering-correlation-id: 65e01733-d5da-4f55-9c14-08df2b99cf10
+x-ms-exchange-slblob-mailprops:
+ 7qh87CJt6y1mqZO6407WRLxlypE3k+ejUdHeIAqpRx7/7eIE1LAo7Zq0zal1dh59oecMLyIoY0XMQnRlOh//u0753S91fBFxDqba4Ga5hNes3lGPaYFwLil9viWBBdIRvzJAjh2XNbrzftp9JOQF3qvUTgRdYL4Livh5e5UvAApOq8fUtCL8YjHjqGXptrz8LoGwVx1C/T3zmxGMDMoTHm9id+fWwPPFOqUcviV0X66OU4zUScgtQKlnJ6AQUPRb+jVHG3qOBkw8PFl/mZ9Ls3lPDj0BrAhur4ZKpwWaI3E228PrtcfxKtvFBk0A2szljjHUYeiYtdLfnss3ATlNuEjvtkFYqLhRwsvgRyKuJUINKj0Kpd2Q60WUpOZ1CTdDEJZd8TlIeV0WwQ6spcub6v1MQUnvSOtT6GQM6Ve+yFsj+QnSqof9VogZIByNcCntxlVcrQ6l6NdHQ+SCQH05DLGQXD+AW97i4o2Ew5BHBI/mmkY88XkDH1A1HFDuot3mKTWWisvtk2kkAbk1nXJIs5A8qdIjdrOEET0BiZM6hByD8y91FSCTaaHEuXL2aAFRZH8kcYMpUwjFTcSAUqAN4xnB/c7GPI/1tzyVLg5Iq0kqh+bHLfGx2hwNYUmNBVfW17Q6ffBIe7q803D2XP2tWxNC2AP9N587MfPTzlfm9A0JrvHIch+IR9JbdIa4OFwEEhfTT8fEYN1Cv1K34pyj+CQ9c3esWZivIEIaeS+R5nFBwyMzdYjeYmjbND7/GJYs
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|24121999003|22091999003|8060799015|15080799012|31061999003|8062599012|19110799012|12121999013|24021099003|21061999006|4140399003|11091999009|6050399003|38102599003|41001999006|3412199025|440099028|102099032|40105399003|52005399003|26121999007|3430499035;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?U2w5dEZZbjJwdDZ1ZFgrT2VUSldvWFpkbWtvdnhMVCtZbUNJWGkzMGlIOS9j?=
+ =?utf-8?B?UUl3MS8zeExldDF0WTdValJNdE9kd3R3aHNyZDhMOSt4bks4eTJzL01WbVls?=
+ =?utf-8?B?cW16amQ2a0Y3Sm93R2Zlb1c3dU41eS9QSDNZR2VtZXZIbHZubUwvL3dLcDdO?=
+ =?utf-8?B?QWFCNnlRbVluY3VacUhxWjVvbjJFblc4UlJpaHRpKzhsZm12OEEzQ3JuazVS?=
+ =?utf-8?B?a3NDNlhzQ1BzcTA0dTRCaHJKQUQwS2FUemdVZFcxME9wbnhBVlFDRDFQNDFE?=
+ =?utf-8?B?N2o2NE9WcDdaZk1XZk4xbXg0citWMVlGdDNkUHJVRzBqUDZ6eGk5WURuNlVh?=
+ =?utf-8?B?ZmxWVzBVN01YMHdvWGNNVXJsU3JmeVp6eTVvdmRNSUlLdHFPc0g0SWJnNFdt?=
+ =?utf-8?B?U1VkN0FoSXBTYWNTUDY1eDI0dWhyUU1UMDBkNkh6djJFU3o0RDhVdjA4V2FV?=
+ =?utf-8?B?U3d1VmFBRCt5bTRhelJUa2JQVlVGeGlHVW52L3ExRHE2NDdhZnM4b3hVK3Y4?=
+ =?utf-8?B?RDBKdVY0OHg0bExlNlV3RytnQ3RkeEVHdHpqZzNPK2NtdFpMdGRlcVRCS2Rh?=
+ =?utf-8?B?V0Qwd0NYYXBPam5CQmUycVFadTUrRUM0TkdSalZqamdQeG9sK0s5R1U3TDJt?=
+ =?utf-8?B?RDU1UVQ4eWxpamJPRzh6NEhrb0RJSzFOZ3lTOW93OXpvdUVMRjFjTUNkSmFW?=
+ =?utf-8?B?Sy8rbkpKdGwwYStDL0ZFTXZUNlkwT0lsRFRzd3ZlbjB0VksvbUFEN1RYT2E3?=
+ =?utf-8?B?WHAvTTBreG11S0RORnl5SHVianA3Qjd2bWFJcWhXMTNpZEY4Ukl3YjRZSitq?=
+ =?utf-8?B?L2JUeTZBUFB2Z2Z6WTNjUGlYZXVRWlo0R3B2d3NEV3dxTnFkTkxYaG9FTy9X?=
+ =?utf-8?B?a3BQM2E5R05ZeFFKMlVneWgreXZ3YjczeG5jNGdVOURFMTgvL1FsUXFzTFlD?=
+ =?utf-8?B?M3lySmFhNno3RnJxT1RGTGlxQVpvR3JmUG81QzNLc2lmbXAvdDBMcmYyR3V4?=
+ =?utf-8?B?bEtZQ2VLNTl5c0ZIbThVb3RWQ21PS3prYTlUVjNwMDVVMHdYdjlaS3dhMnox?=
+ =?utf-8?B?ZWFLTldqSDB0QTZYb0pZdG16d3lLUXZTV3o5Q29EN1h0bzNTVk5PdnY2cHlY?=
+ =?utf-8?B?T3I5RDVJNUp1ejc4VGlBTC9CcVNqOVBIS0lvVzErTklVRTUxKzZLSlVkcWYx?=
+ =?utf-8?B?dU1xUkR6cFNhWUxud2FXcGMrLy82dEk0QzhGZXZMU3BlQzlnZXNGN3NOVE9X?=
+ =?utf-8?B?SEc3Qkx1Z3JyNnp5TnRUS1c5Q1JtRDBTS1cwNGNRL0VONFVjdk1QTjlWU3pH?=
+ =?utf-8?B?cG1vSDB5Mjd0aVB6cHVFRkhFZUl6bFNNRjdyYmNVaEQ3WStPYThMV3lueFZY?=
+ =?utf-8?B?UlpQMjlMVFV1R282RUtLbGlWQmM1VHVncEdMeVM4MGNXTXN4U1EycnJtZnNa?=
+ =?utf-8?B?UjZMSjZIT3hYaUpEWmM2cElaTzlMYWExUGZBQkpKVFFDZDRvS3hoUXIyTENa?=
+ =?utf-8?B?VnNqZHFaeldRL0w3NHNsQVRQdGM4TjRDRWJvM0I1Q1huTkxhbFY1cWxrelht?=
+ =?utf-8?Q?PhK5HvFRx6FjBg2EagWnA/WzgOTd6pLzHtXmwVZMcNhCoF?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?bHdWT3BEMXB5cUJ3eXF1bUN3TlVPSHJJdnBQR0s4UEVEOUlwWGo0djJnRFgv?=
+ =?utf-8?B?R0dRczBkekFRM1Z0cVFnWjJXK09IdFZ1ZzJNWFkzTjBlWkdtTnlkK3A4ZE1U?=
+ =?utf-8?B?Q2E2clBBYk9FVjdGV09NWGRQUXFLYUs4MFMrZjh4NWtBWElJSEdZK2o2ejFk?=
+ =?utf-8?B?NWIvcS8vWTE5b05pNnMzV013ZEpJY1k4akJzUzNNbVZGVHNoQVVGUjRrWkJO?=
+ =?utf-8?B?aUNUQXRRVGxoMTBVdWg0M25nRUczTnVpcjVWZW9salBVK1NaTGQxR3dDSWVv?=
+ =?utf-8?B?QkMrTDRCSnpEdG55WTJ0S2F3YkZWTjd2d2xQVmxkWkFGYVRYN0x0amhQTkZk?=
+ =?utf-8?B?YkdWcnFKdzZWMUQyY0lOamZOWHFzYUZTbFJmV3ZiY296dGM5WFdDU2EwTldj?=
+ =?utf-8?B?V0VMaW8xTElWV3NKNU5XUnkzaWR6aUltZXp0Y3pmdW5DaUxLUzhBTTNXbE9K?=
+ =?utf-8?B?a09NNWNTOGZBUDlSZzZzQnRiS1VuajAySUllWWZ0UHFBNWhuMnJ3eGI0NGNS?=
+ =?utf-8?B?MHl2ZFVMdi8xUXlPTzU5ZFV2UjVtREVYVmRFazBtQlJNTEZOSXJseWFqaHNt?=
+ =?utf-8?B?eUJwb3ByT1YrVkpqays2eTJxN2VPcXdZaVRia21QelBNVVhHUVhmWUxiMFU3?=
+ =?utf-8?B?RUREKzc3U1huWWlUSjZDeEJLRVg1bDBmYThqdC9xQVpHSjkrVjJscTZ5YWhH?=
+ =?utf-8?B?MFVuTWV1b08yZlpGczFHY2VVdFdhcm9Pbzk5NjBFZ3VIRG1OZzVRdmUrVmdW?=
+ =?utf-8?B?eTBrVTkwNCtORHZaZ1Z1R1hDbXVvTld0MDVPK1luSDV1amt3NFdLcE5ybEk1?=
+ =?utf-8?B?L3IweEJ0ZlBNZmt2VGlodlFzN21VdzU3Y1dMdWt3ek1tYmxFSjVmMHhGNitW?=
+ =?utf-8?B?NkdZK3VwbXNCN0thY2N2MWxmUXd0YjNyektENTV0dzZrMjJFd2N4akFVdGFC?=
+ =?utf-8?B?YlpSSkxVWVZYS2RvNnRaUklwM1J4TmRINFBJNGdzb3JvSURKVW1UV2NxWGcv?=
+ =?utf-8?B?VHQxMU1FZnF4b25ZeDBzTmZyMlMvc05UOFN2NVg5d251QlNLQ1VPT0Yyenl6?=
+ =?utf-8?B?VVNRZjczd2ZDSHZsNmhhOWFrU09RYUV0bUhwWm1VZURpVXpYQzkrY1JzY29D?=
+ =?utf-8?B?NkdmV2lnTWdSYW5PK2Q1WjFweHNkZ3luc0hHUGxrWGlnL0NIUjZjclEvYkll?=
+ =?utf-8?B?UklGdnZYazdjNmhrZ1l5RGV1dU41RDJ6OSs0NFhNYWdJL01ySFErUDJGSlF1?=
+ =?utf-8?B?TFd1R0d4TGpTdW1wamdyU0RLYXZ4d2NvNllRNVdCd0Q1WFE0b0xOZjZoMmdD?=
+ =?utf-8?B?b000SGE1VmVZM1NCVnhhd08xUHQ4ek9ZSGNCeVJOc01tV2lQcnVnZEI2L3Ry?=
+ =?utf-8?B?WVRiOVduK3pKWUpjS2htMU15YlZIdkpuSlNybHg4eG93QTg1TFdtYjMwWEFG?=
+ =?utf-8?B?bUVKdGtGWnRvSHV4S3RlUVhZUFNVazY4MUdnWWlnUm1IRGx1SDh1VFd3Q3dH?=
+ =?utf-8?B?ZjhyUUtCUjMrSWVaTlBUalVpdnByek8yNysxaDE3Q2VVRDJaV0NaNGhSeTdS?=
+ =?utf-8?B?dWZHZml4NTI0c0RkOUpVdGpVMzVkdXdjSkw3Q2R4WU5EVTRiV09jL01ZTnU2?=
+ =?utf-8?B?Q0tMdGVRZ3BVNHpZUlEySUF2YUdGSjFCREN5VTQvdHM3ZjJUeXlPenIvTkxo?=
+ =?utf-8?B?aDJZbytlN29TS2wya1ZXa3c5TGJsckdXQnlxb2kzUHo1K01hbHNYSWVhSHlr?=
+ =?utf-8?B?NGo3RmdLNW9yRGoxOEljbXQwaWN6ZWQ5RlB3T2tPbjdCRjU5bTBLbGFnY1p2?=
+ =?utf-8?B?QmlVdDNXcHdJMGFmZmxkRW1wUDdzTEdvU2JHZngvK1BSYS9pVVhCaUY2NHRV?=
+ =?utf-8?Q?9JBeKvBXlLL2i?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR05MB10385.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65e01733-d5da-4f55-9c14-08df2b99cf10
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2026 15:26:11.3283
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR05MB999059
 X-Rspam-User: 
-X-Stat-Signature: sk6aerbtd3bx193trnikfiiynxfhszih
-X-HE-Tag: 1792164201-95757
-X-HE-Meta: U2FsdGVkX196UzlyU9DWdHrEFGCKJyVX1Nu3HWgT8GEMrnXo/idis+4xAPnyTnNpB3tIk7XJl9ZZXldBtdf27sbWi7oPsIqc6qrL2bLxP80IllnyFXtFr97e0QGj0tVZ7sjgfmrQJCP1WsAYr3SRyFqMqsFp4ceyAaIKASG9b52c7RBrAdwqrlFz4kPwMJjKVx6rUSuRWHIGKTzDTeqyP8p6LuFizMwYxyRQL0NJqQak7exdVXS+MlCia5F4YHFDGM2IYcpl/FvM0fX5S1ozMdbCftJDNS7OukkfpN/lq0Q6ws3ZJtIhzTE9NLxRBbdpmuGLUhLOUzitLZIfHmNOiBOYoGxOuVZDdHxu9mHqKD141qD9yZfe7uEJEWGFa8ZWEbnW07H/v2n/L2Q5F72XeEPm40bKyoj6/srkDNhfECxDdMNbZdi2Q2z1oHcbJI8TVTsLugBLU98wJOaNueQ1kB+vl8eLWofLHINYf0p7vr+8Wa1cEoRnZrg5QRFBUM/cNaUllAUS1YkcVuCrFAa6/ph4qSld05NBLq4liWTT13dN7cR0FlLOFuM+n0WfPPTct4uMju6i6yv+mo1vgDPcj/JiH4WwFqTehB/Y9mlQSwYNq2ame//aCKpNwV1co9deh9Bl524kCwHA45ExDLKVO4FjDgBXjNLAzo6GaHS4Z2iMuSphk6R//dVCc15GY1L5ktHfQ9LXEEVolYEwykkbIdIhs+TR1kHEV6nO0M12ARwCu581o7n7CkowZ3zdgbJtt0q+mfxV1VfNGiv8ADAsniO5Ol/4ud1SdejeFmzUuwLCXeTyBHlQ744dCHzcGLjrAMUvbDoxNCecR8fcDTvNbeJGQz5oZz6SWMYpJHd7HBDooiWHeFwz/izbGux0jriD8iV2FJEtDZJCtX9lm2QQnlfih/BvJyb9oCHGXa9NNN82ORuyU4Tl+SnxaM6xx1Uub91Pl6fdhdLLXPqLgqS
- RTewRtr3
- Fy4Y7bBZguzpLIfKdMEPagTSQDy2pvJOuoJ7zyGcLD7g9SomoSkqFqtuP1bpRAyTmkuai4GdDfYzwze1Dy2PSeoSqWovbHGHNC495RVyXXO2SR4dTNcX/iJgXgqrCleSk56a9ShuZy8HQQTpxeEuc37q5BIHjdj6XIKrrvRJSknJRCmPxKE0dsutQNpu1RhooD/h3C+tjkrF2yQE1od1hpo08BXs3WiPTH2ICg14Okyxj8j4LQIAhsk4cakoOQQ1YJHzI/Mkg6aZ1aunkCYEsfWOD1b7gvkaKnTkIdaZhnbAwo9coVrzxDxFqzOSYA2GwgKWYstNHhy78idWbClGFNOk5APrJXQ6giQAJq6WdSGkXnNJn9YzV+iD+0mdw796O2emq
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6787C100007
+X-Stat-Signature: d9kfqdmshf5fodq57j4gqmw1kb1hbfak
+X-HE-Tag: 1792164373-705424
+X-HE-Meta: U2FsdGVkX1+9DgTLgHLGjd6OGNSI4mu6vNVM64ePhKaPRTj5BB4M55srgZRncfga6PKddPHNiqgrw3BGxLBjPw2IbuC3Zs9m52h6KT20dpq/lEDabDdUmrfW3Q5uG72++dUpuwsvKwvQxmGwwOKMnQjxSB23nePH/q/8s1FaJ1nm4sYKNd+ZS1JWDLu8sOza65Fsk30hr4YCrclyjzokhrs/xJLFVPvm5ByCk5MjqkFUSr4DroVak6ErUtWSMKLYAFAuPwiCbr3c9VcLwbyj9Vr7tZZhkGs8O2PHiKFEk2DM6T7OGHawjgMBYgrVI92UI4DZ6c+/UUZ1tleQNCnmB+F0KxORU2XM9vF8OSJ6xR88j86myEIWQi8DJGhTZCh2fE5csAv1RynrF6RV+YI4PoNOY28BDTZxevTaW2QMmjZTWAIb5YZOqvC9h4RbTc35ZU+FXNgcMF+TWHnxgpZP2EN2tDEOrnZB502B1i3B/+Bp/M4n9Pyl/rw8+2sxuaVZEUvf8ThYBggJ9wyCCsO+S+HHByjYQ6M/tD9gFN4S2FR5jCGhvApBEFBxqCiq+toJBgFIz3jefjXN4KZ/i9NXMGknsCn8QWfkzgMQ5yv6R4tn7UNDwGm1hGOqj1/QtV/Zp7nSJBd7uh3bThQyGsBURdIm20WGaBmz6vj5oEcl/JwI+c5T2KR1qhxXucOJ1ShCZrg9GcLTOhFIPLI2EKfXUvnz05gJrOXLb9jgfdpOQjCNZaV0pnbSnjF8IUqNEsSxTyDmwkktweh0LpMLh0cIv6iT6hUbRNJXssj+sKXRvJCsdwsLYaoQRiyGjN+H3qCbMZ4juLH2IHuwSP1+PZz9jrJ8aAlT+OLQbcwxOJRIzH5lxZDFoawD+TUFseWUC6BuXDATDJfT8lxDW6gUg4yg+Qx4uZ2lrDxgrMICXUGpn2FGX7qm3mBOkKn2v1TJk5YJTj8KlWtsgxS7+UtqqFl
+ csnVHEzu
+ CxHv6W+ybFeDfCh8nr2IxFRP6HIwDwKanXjloarIqBV2HyOINeAOoRMxxBhth9pdGg+ssMQdBBz+rHfsfU/J81yXP9rGtWpoYVvNvTmywUfu0LSM0+Y5cf3COqslSy6OPpwqSrRu1fviTeKkOAv93CjA/zqVJOwc3HQe8oCodw8RQUxMM7PTei8Nkqn1v+iOVx5dKEK8YpNCgtQp6dgk7Lqw5HzNRP7H/o7r3m6DnVhV/FAHHonp41Ojw1HcLHVgV+57A13Z7+/zUF5AtY4auoizLTAo6GnWugwxVF3zeV8NKcfoNmDzcHqD8cnF4dgLdkNcYjHpwudz/UkHbf5Rx0Dt/dLYsFnei0t7nEwhF654Iyi4318FRISEoM+U/CetzyDYdesqYMld8kPImAgpn7uCVXFlAv2HUjcL2joW/M+KTgb/QUWDDmODC4QT1/TrZUFeMTE9uMyaaGTJxUdw9WRm6KId707uFs86lkRMYYm5ekpTcsIk0vDTT6IenyzIPcVPPyRhwB+dYJxRASYa+jLX0LeIgUdoUsGLc84RTAkr5s1DuiyXJX6Hn2OO1x0uH39PS02xq38mNip4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,256 +187,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/16/26 10:56, Li Zhe wrote:
-> On 10/16/26 3:33 AM, David Hildenbrand (Arm) wrote:
->> On 10/15/26 04:40, Li Zhe wrote:
->>> Yes, mostly.
->>>
->>> If the source PMD table is shared, huge_pmd_unshare() already drops that
->>> shared PMD table from the source side and we skip moving individual PTEs
->>> from that table.
->>>
->>> If the source PTE is not in a shared PMD table, but the destination PTE
->>> is in a shared PMD table, then I think we should not install the source
->>> PTE into the destination page table. The destination mapping is already
->>> represented by the shared PMD page table.
->>>
->>> However, move_huge_pte() still has to handle the source side as an
->>> unmap: clear the source PTE, record the TLB removal, and update the
->>> source-side hugetlb accounting/rmap state. Otherwise the source mapping
->>> is removed from the page table without the matching source-side
->>> accounting. I was able to reproduce this as:
->>>
->>>     BUG: Bad page cache in process init
->>>     page dumped because: still mapped when deleted
->>>
->>> when keeping the preallocation approach but dropping the special handling
->>> for a destination PMD-shared page table.
->>>
->>> So my current understanding is:
->>>
->>>     1. source PMD shared: unshare it and skip the PMD-sized range;
->>>     2. destination PMD shared: do not modify the destination PTE, but
->>>        still clear and account the source PTE removal.
->> Yes, I think this makes a lot of sense. Given that this issue has been
->> in the works for more than one month without a fix I tried to see how to do
->> it cleaner than your version:
->>
->> This is what I came up with quickly, using existing helpers by refactoring them.
->>
->> Is this what you had in mind? I didn't actually test this yet. If it makes sense,
->> could you test it and possibly clean it up further?
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index fb51f7d02cebf..0c3aebea7a2f8 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -124,6 +124,9 @@ static int __huge_pmd_unshare(struct mmu_gather *tlb,
->>   		bool check_locks);
->>   static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->>   		unsigned long start, unsigned long end, bool take_locks);
->> +static void hugetlb_unmap_range(struct mmu_gather *tlb,
->> +		struct vm_area_struct *vma, unsigned long start, unsigned long end,
->> +		struct folio *folio, zap_flags_t zap_flags);
->>   static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
->>   
->>   static inline bool subpool_is_free(struct hugepage_subpool *spool)
->> @@ -5172,6 +5175,8 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
->>   		const unsigned long offset_to_last_entry =
->>   			(old_addr | last_addr_mask) - old_addr;
->> +		const unsigned long offset_to_last_dst_entry =
->> +			(new_addr | last_addr_mask) - new_addr;
->>   
->>   		src_pte = hugetlb_walk(vma, old_addr, sz);
->>   		if (!src_pte) {
->> @@ -5188,6 +5193,23 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   			continue;
->>   		}
->>   
->> +		/*
->> +		 * Don't try to install a shared PMD table and move stuff into
->> +		 * them. Instead, just zap the source PMDs and share the PMD
->> +		 * table later lazily.
->> +		 */
->> +		if (sz == PMD_SIZE && want_pmd_share(new_vma, new_addr)) {
->> +			const unsigned long unmap_size = min(old_end - old_addr,
->> +							     offset_to_last_dst_entry + sz);
->> +
->> +			hugetlb_unmap_range(&tlb, vma, old_addr,
->> +					    old_addr + unmap_size, NULL,
->> +					    ZAP_FLAG_DROP_MARKER);
->> +			old_addr += unmap_size - sz;
->> +			new_addr += unmap_size - sz;
->> +			continue;
->> +		}
->> +
->>   		dst_pte = huge_pte_alloc(mm, new_vma, new_addr, sz);
->>   		if (!dst_pte)
->>   			break;
->> @@ -5207,9 +5229,9 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>   	return len + old_addr - old_end;
->>   }
->>   
->> -void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->> -			    unsigned long start, unsigned long end,
->> -			    struct folio *folio, zap_flags_t zap_flags)
->> +static void hugetlb_unmap_range(struct mmu_gather *tlb,
->> +		struct vm_area_struct *vma, unsigned long start, unsigned long end,
->> +		struct folio *folio, zap_flags_t zap_flags)
->>   {
->>   	struct mm_struct *mm = vma->vm_mm;
->>   	const bool folio_provided = !!folio;
->> @@ -5227,13 +5249,6 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>   	BUG_ON(start & ~huge_page_mask(h));
->>   	BUG_ON(end & ~huge_page_mask(h));
->>   
->> -	/*
->> -	 * This is a hugetlb vma, all the pte entries should point
->> -	 * to huge page.
->> -	 */
->> -	tlb_change_page_size(tlb, sz);
->> -	tlb_start_vma(tlb, vma);
->> -
->>   	last_addr_mask = hugetlb_mask_last_page(h);
->>   	address = start;
->>   	for (; address < end; address += sz) {
->> @@ -5362,6 +5377,15 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>   		if (folio_provided)
->>   			break;
->>   	}
->> +}
->> +
->> +void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->> +			    unsigned long start, unsigned long end,
->> +			    struct folio *folio, zap_flags_t zap_flags)
->> +{
->> +	tlb_change_page_size(tlb, huge_page_size(hstate_vma(vma)));
->> +	tlb_start_vma(tlb, vma);
->> +	hugetlb_unmap_range(tlb, vma, start, end, folio, zap_flags);
->>   	tlb_end_vma(tlb, vma);
->>   
->>   	huge_pmd_unshare_flush(tlb, vma);
-> 
-> 
-> Hi David,
-> 
-> Your patch looks good to me.
-> 
-> Sashiko pointed out one corner case around UFFDIO_POISON.  In the
-> destination-PMD-sharing path, the patch zaps the source range and lets
-> the destination fault path populate or share the PMD lazily.  That works
-> for normal hugetlb mappings, but if the source PTE contains
-> PTE_MARKER_POISONED, the marker is not copied to the destination. The
-> source zap uses ZAP_FLAG_DROP_MARKER, so the marker can be dropped, and a
-> later fault at the new address would see an empty entry instead of the
-> poisoned marker.
-> 
-> One possible way to avoid this is to make VM_UFFD_MISSING participate in
-> the existing uffd_disable_huge_pmd_share() logic, because UFFDIO_POISON
-> can install PTE_MARKER_POISONED and the poison state is stored in the
-> PTE, similar to the existing UFFD-WP/RWP per-PTE state.
-
-Okay, things escalated a bit and I feel like I ended up prototyping fixes for half the kernel ;)
-
-So, we can as of today:
-
-1) install POISON marker into shared PMD tables. Either using ordinary marker
-   installation or using mremap(). Bad.
-
-2) Lose POISON markers during fork(). Bad.
-
-3) Lose POISON markers during retracting of pgtables. Bad.
-
-
-I have prototype fixes for everything, but it depends on other fixes/infrastrcture that would make it all hard to backport.
-
-So my thinking is that likely we should do what you suggest:
-commit ed299abf3922678d2293072ee5d7bddc22b4e9a1 (HEAD)
-Author: David Hildenbrand (Arm) <david@kernel.org>
-Date:   Fri Oct 16 13:22:43 2026 +0200
-
-    mm/hugetlb: disable PMD sharing for UFFD missing mode
-
-    For UFFDIO_POISON to install a poison marker in a hugetlb mapping, it is
-    sufficient to have the VMA registered for missing mode.
-
-    However, UFFD missing mode does currently not block PMD table sharing, so
-    installing the marker will be visible to everyone using the shared PMD
-    table, which is wrong as UFFDIO_POISON must stay local to the process.
-
-    To fix it, include VM_UFFD_MISSING in uffd_disable_huge_pmd_share().
-    Add a debug check on the marker installation path.
-
-    The existing registration path will then unshare PMD tables, and subsequent
-    faults will not share them while the mapping remains registered.
-
-    The alternative would be to unshare PMD tables selectively when
-    installing poison markers, which results in way more complexity. Or
-    alternatively, simply failing the marker installation, which might break
-    some use cases.
-
-    This effectively disables PMD sharing for missing-mode registrations that never
-    use UFFDIO_POISON.
-
-    Suggested-by: Li Zhe <lizhe.67@bytedance.com>
-    Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
-    Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index a14b8a9ffb7b1..607f012b33849 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -168,7 +168,10 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
- }
-
- /*
-- * Never enable huge pmd sharing on some uffd registered vmas:
-+ * Never enable huge pmd sharing on the following VMAs:
-+ *
-+ * - VM_UFFD_MISSING VMAs, because UFFDIO_POISON may install markers and we
-+ *   want PMD tables to be unshared when installing these markers already.
-  *
-  * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
-  *   tracking information is per pgtable entry.
-@@ -181,9 +184,10 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
-  */
- static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
- {
--       return vma_test_any_mask(vma,
--               mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
--                                       VMA_UFFD_MINOR));
-+       const vma_flags_t uffd_flags = mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP,
-+                                                              VMA_UFFD_RWP, VMA_UFFD_MINOR);
-+
-+       return vma_test_any_mask(vma, uffd_flags);
- }
-
- /*
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 76f4d2a5e0206..fc42be0274603 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6376,6 +6376,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
-                        return -EEXIST;
-                }
-
-+               VM_WARN_ON_ONCE(size == PMD_SIZE && hugetlb_pmd_shared(dst_pte));
-                _dst_pte = make_pte_marker(PTE_MARKER_POISONED);
-                set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte, size);
-
-
-Followed by my fix here.
-
-We will at least no longer be able to install poison markers into shared PMD tables or deadlock.
-
-Yes, we might lose UFFD_POISON markers in some odd mremap() situations, but it's all
-very broken already, and likely we should just fix that later and not backport it.
-
-It's unlikely that people depend on it.
-
--- 
-Cheers,
-
-David
+Q29tbWl0IDUwZWM0OTliOWE0MyAoInN5c2N0bDogYWxsb3cgY2hhbmdlIHN5c3RlbSB2IGlwYyBz
+eXNjdGxzCmluc2lkZSBpcGMgbmFtZXNwYWNlIikgbGV0cyBhbiBJUEMgbmFtZXNwYWNlIG93bmVy
+IGNoYW5nZSBrZXJuZWwuc2VtLgpUaGUgU0VNT1BNIGZpZWxkIGRlZmF1bHRzIHRvIDUwMCBidXQg
+aGFzIG5vIHNlbWFudGljIHJhbmdlIGNoZWNrLgoKZG9fc2VtdGltZWRvcCgpIGFsbG9jYXRlcyBu
+c29wcyAqIHNpemVvZihzdHJ1Y3Qgc2VtYnVmKSB3aXRoCkdGUF9LRVJORUwuIEEgYmxvY2tpbmcg
+b3BlcmF0aW9uIHJldGFpbnMgdGhhdCBidWZmZXIsIHNvIGEgdXNlciBjYW4KcmFpc2UgU0VNT1BN
+IGFuZCBob2xkIGxhcmdlIGF0dGFja2VyLXNlbGVjdGVkIGFtb3VudHMgb2YgaG9zdCBrZXJuZWwK
+bWVtb3J5IHdpdGhvdXQgY2hhcmdpbmcgdGhlIGNhbGxpbmcgdGFzayBtZW1jZy4KCk9uIHRoZSBj
+dXJyZW50IG1haW5saW5lIGJhc2UsIG9uZSAxMCwwMDAsMDAwLW9wZXJhdGlvbiBjYWxsIHJldGFp
+bmVkCjYwLDkzNiw0NDggYnl0ZXMgd2hpbGUgYSAzMiBNaUIgY2dyb3VwIHBlYWtlZCBhdCA5MDks
+MzEyIGJ5dGVzIGFuZApyZXBvcnRlZCBubyBsaW1pdCBldmVudC4gU2l4dGVlbiAxLDAwMCwwMDAt
+b3BlcmF0aW9uIGNhbGxzIHJldGFpbmVkCjEwMCw4NjAsNDE2IGJ5dGVzIHdoaWxlIHRoZSBjZ3Jv
+dXAgcGVha2VkIGF0IDEsMzEwLDcyMCBieXRlcy4KCkNvbW1pdCA2YTQ3NDZiYTA2MTkgKCJpcGM6
+IHJlbW92ZSBtZW1jZyBhY2NvdW50aW5nIGZvciBzb3BzIG9iamVjdHMgaW4KZG9fc2VtdGltZWRv
+cCgpIikgcmVtb3ZlZCBhY2NvdW50aW5nIG9uIHRoZSBwcmVtaXNlIHRoYXQgdGhlIGJ1ZmZlciB3
+YXMKYXQgbW9zdCB0d28gcGFnZXMuIFByZXNlcnZlIHRoYXQgZGVmYXVsdC1zaXplZCBwYXRoLCBi
+dXQgYWNjb3VudCBhcnJheXMKbGFyZ2VyIHRoYW4gdGhlIGRlZmF1bHQgU0VNT1BNIHZhbHVlLgoK
+V2l0aCB0aGlzIGNoYW5nZSwgYm90aCB0ZXN0IGNvbmZpZ3VyYXRpb25zIHJlYWNoIHRoZSAzMiBN
+aUIgY2dyb3VwCmxpbWl0IGFuZCB0aGUgY2FsbGVyIGlzIHRlcm1pbmF0ZWQgYnkgdGhlIG1lbWNn
+IE9PTSBraWxsZXIgYmVmb3JlIGl0CmNhbiByZXRhaW4gdGhlIGVubGFyZ2VkIGFycmF5cy4KClRo
+ZSBzeXNjdGwgYWxzbyBhY2NlcHRzIG5lZ2F0aXZlIFNFTU9QTSB2YWx1ZXMuIFNpbmNlIG5zb3Bz
+IGlzIHVuc2lnbmVkLApTRU1PUE09LTEgYnlwYXNzZXMgdGhlIGludGVuZGVkIG9wZXJhdGlvbi1j
+b3VudCBjaGVjay4gVGhpcyBjaGFuZ2Ugc3RpbGwKYWNjb3VudHMgYW55IGFkbWl0dGVkIGFycmF5
+IGxhcmdlciB0aGFuIHRoZSBkZWZhdWx0LCB3aGlsZSBsZWF2aW5nClNFTU9QTSByYW5nZSBwb2xp
+Y3kgZm9yIHNlcGFyYXRlIHJldmlldy4KCkZpeGVzOiA1MGVjNDk5YjlhNDMgKCJzeXNjdGw6IGFs
+bG93IGNoYW5nZSBzeXN0ZW0gdiBpcGMgc3lzY3RscyBpbnNpZGUgaXBjIG5hbWVzcGFjZSIpClNp
+Z25lZC1vZmYtYnk6IFlpbmdqaWUgV2FuZyA8eC1wcm9mZXNzb3JAb3V0bG9vay5jb20+Ci0tLQog
+aXBjL3NlbS5jIHwgNCArKystCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRl
+bGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvaXBjL3NlbS5jIGIvaXBjL3NlbS5jCmluZGV4IDVlYzQx
+ZGU3ZTg1YjJiLi44YzllZGVjYzE2MDc2MyAxMDA2NDQKLS0tIGEvaXBjL3NlbS5jCisrKyBiL2lw
+Yy9zZW0uYwpAQCAtMjIzNCw3ICsyMjM0LDkgQEAgc3RhdGljIGxvbmcgZG9fc2VtdGltZWRvcChp
+bnQgc2VtaWQsIHN0cnVjdCBzZW1idWYgX191c2VyICp0c29wcywKIAkJcmV0dXJuIC1FSU5WQUw7
+CiAKIAlpZiAobnNvcHMgPiBTRU1PUE1fRkFTVCkgewotCQlzb3BzID0ga3ZtYWxsb2Nfb2Jqcygq
+c29wcywgbnNvcHMpOworCQlnZnBfdCBnZnAgPSBuc29wcyA+IFNFTU9QTSA/IEdGUF9LRVJORUxf
+QUNDT1VOVCA6IEdGUF9LRVJORUw7CisKKwkJc29wcyA9IGt2bWFsbG9jX29ianMoKnNvcHMsIG5z
+b3BzLCBnZnApOwogCQlpZiAoc29wcyA9PSBOVUxMKQogCQkJcmV0dXJuIC1FTk9NRU07CiAJfQoK
+YmFzZS1jb21taXQ6IDJmMmY3ZWVlZjhiMGExYTliOWNhOTk4MjMxNDE5ODczY2NhZThkNGUKLS0g
+CjIuNDMuMAoK
 
