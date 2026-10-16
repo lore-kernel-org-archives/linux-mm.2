@@ -4,117 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28038CCF2C2
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 19:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B777CCF2C4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 20:42:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6B8D6B0088; Fri, 16 Oct 2026 15:53:18 -0400 (EDT)
+	id BFF856B0088; Fri, 16 Oct 2026 16:42:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF6876B008A; Fri, 16 Oct 2026 15:53:18 -0400 (EDT)
+	id BB0C76B008A; Fri, 16 Oct 2026 16:42:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABE3D6B008C; Fri, 16 Oct 2026 15:53:18 -0400 (EDT)
+	id A9D5A6B008C; Fri, 16 Oct 2026 16:42:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B80E6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:53:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 11D8D16061C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:53:18 +0000 (UTC)
-X-FDA: 85329538476.14.9DDC14F
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4F7271A000D
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:53:16 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PdkNRkrL;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8093C6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:42:18 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01595A7E09
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:42:17 +0000 (UTC)
+X-FDA: 85329661956.03.3411093
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4B3CF40002
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:42:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhygUXGE;
+	spf=pass (imf11.hostedemail.com: domain of jic23@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jic23@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792180396;
+	s=arc-20220608; t=1792183336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f/z+gmg3ANTK0WEq9y6k4IA7I1dnFgvIT+G3bbMJhDg=;
-	b=4pwWZWUqw2ZR+jATRs/QBm9G41fFUN47fPUJfum+vs/tUCR5muU546ZtMI9CGuPCt8feHH
-	t7AkTyBEItn/w+4QR0JvMqrzR9U1UM1GOfD94r7ZI7FpWpfYjJruMbHv06d6UU8mJT8e+F
-	DoSJUM1kdDhEvoc/uMoNDE1TfDg/smc=
+	bh=b9ItKggHrdTjoEiMSmWZ6gKU2fiPh6BVkzTuELhbA2k=;
+	b=thmpL3XLGE6ELhQDhMBuFSQg6UEcdfxrUqmSbO5uw0hmHH5V91JbUU12gceEkFmwctMjEa
+	zAdI0mqDpb74DxQl+QnZQRwwTlQSgFEHPG3Q7n2eWww7SC5DhmilbusRN77cczC7JTesXx
+	7LrgLZivv0VyUNf/RBs20QydSfrxYRw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792180396;
-	b=yUc8q0oyVy95yFn5y218cYSBkIS4LEScITorLBETteJyhpV0rY0pnKpItTnmxTjBy9jDrk
-	B2Ghyxk/zDW2xpFA2SyRjYpbTwsXiCO/pJRDfV+D+Hx2j+ASqH0540p5Qdl3dP8bn+oHqZ
-	LwghLlLnzxM3erqQV8FykbDWLBM1TMg=
+	t=1792183336;
+	b=FsxPmqO5BJH/QoPt7VBX4hxo3hwF4vKpojDFVXG4xsklSIl3jIs3KsRSXyLxt1twRQAUd8
+	o/rBZsMAQ6FQf4s6w5yQiaIIu35Oan2pfKsho9rx0cUv3juO6Ldhpn8Sct2disVMn2x7DH
+	w1+lG4mXUpkp5UKpUlD8J5xZRwLDOBw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PdkNRkrL;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-16079d54c17so548269c88.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:53:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792180395; x=1792785195; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=f/z+gmg3ANTK0WEq9y6k4IA7I1dnFgvIT+G3bbMJhDg=;
-        b=PdkNRkrL8ofB9+BcrX15M0e8tUQGpKZrIYgw9CsRD4YsQcDw6zfxmBgLOJ4m+icRnf
-         3RPvM4K6f7UMNxTyxAtPqtC55Y1cEgV8fWbU2C7g51nR7ULhm7tya/s81KrNhfODft+U
-         ywy3vNRUQsS3871DKx51Lelo0PI2KJ+EbP8TLidJy90KaArdkXrOHvzAAzYGRgaBvc8x
-         datS1/u9b0HpvJK/HUPIWSuqRWcxRExYyMZQ4qOorx1xkbz0AxZOXG/HAM7ZP7qzdvIT
-         qvNyrgzqIIpjAuXqnNc3xO3tKnJ0pxqzyJowlew896l/Fa9HjWdH9L7UQi2PTmflKzzJ
-         3YGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792180395; x=1792785195;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f/z+gmg3ANTK0WEq9y6k4IA7I1dnFgvIT+G3bbMJhDg=;
-        b=xJXaPV9c+ruVHcOWSTy3VJT7xGc5B1T3fmEIx+2IRvBsda3QschtiMyqLXjFigHLQp
-         RmYPiHsAALnRcFtP8grc1ZLBAHddfQirj5ThGYo0WiexxzH5XE40MnF1LAgxVE0IRBW5
-         01P3MJDzE/GFT7SuHYwvfRcjxI5mYATMD9OhqGF31VNcJq+In5AQI2B9tjhcN0fxTxHs
-         fbV3GBJQo5uJ7JbAoP8qFpI0AyRxQ6Z2ouWv2Nr/+rOwW4nhgsakLLD0xINaWa3TB6yV
-         oQ7uhpNmI2chP1Qv/GTqeXqHlu8GTQFMJ4kcBmRMkFICWHLbXKL2aJ40PlIe8xwBVeTZ
-         Kwiw==
-X-Gm-Message-State: AFq9FYK2gXQiId4Z2ZdYo0EMGy26WBkXH54Hu1plrhoaznYOapzFxnge
-	s7XPO69AZ4LArrzDOUZkiZvJ5C6Y/nVVKDdSnbHIhz0Icu7ue6KF7LTI
-X-Gm-Gg: AYBFou1WFcZfD2aWBVCSpyq1y5dtrqL+BOEXIbbKr+TDBPgSKrCnxzS2cDhOTmRTiCx
-	CIN9G+aw8so49FV9kpbmX7LXCLl6vl1T1AyUFgoB4Las96+swUWweGklGEGq/n2ZARy0c2NeIH8
-	GdxQtFyBA+2vtsxHfGrw7FltXGZadsS9lDb0rRvrkhXx5rA5/SYhxc0ktSHsCYBO0NA0HzxTakg
-	gNk1DGMxH/IhMgmD3jE9hr94eYBQs9kbxoKrC0LppstYM12txAduIf5QBAX3QV9TOzWMd07xCpX
-	3EmLv9KxwXVXPMfxaql+shzS4UhXR5ZkZ7u1fOBMZROj1ZuLafOZXnM4HwVX+E9BBDGL0JC0Yws
-	bdzsg3t8N0aa8ePkmBHBG0Aq1PPLx+mSW7lb61TtgQx1ylrxYwpJVn+rKJsORFtVoYouiLqnd1v
-	Ted35+I2PqCEBWJXD+yiLghqq7CvyqLg/lD4pKsfCz71cl3Z4heg21z9phXm/XUfxTzE2rqcpgV
-	7+8ATgxoDG/viBrYPJwgmD3HBNo/8nCpz4DMkHSntY9lh4Uw9w3MJ4D5XHpPcTFIZY732j2E1c+
-	ZYfjpRED/fw5evsUoxzHuA==
-X-Received: by 2002:a05:701b:2608:b0:183:4719:5c01 with SMTP id a92af1059eb24-18513e7c69fmr962623c88.35.1792180394710;
-        Fri, 16 Oct 2026 12:53:14 -0700 (PDT)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-185aaea8b24sm174511c88.19.2026.10.16.12.53.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 12:53:13 -0700 (PDT)
-Date: Sat, 17 Oct 2026 03:53:08 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, baohua@kernel.org, 
-	kasong@tencent.com, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, david@kernel.org, rostedt@goodmis.org, 
-	mhiramat@kernel.org, hannes@cmpxchg.org
-Subject: Re: [PATCH v2 3/4] mm/mglru: skip cold PUD subtrees during aging
-Message-ID: <atJwMRHXzXc57qpu@KASONG-MC4>
-References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
- <20260901063755.1519710-4-hebaoquan@kylinos.cn>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhygUXGE;
+	spf=pass (imf11.hostedemail.com: domain of jic23@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jic23@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E71FE60230;
+	Fri, 16 Oct 2026 20:42:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C1C1F000C4;
+	Fri, 16 Oct 2026 20:42:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792183334;
+	bh=b9ItKggHrdTjoEiMSmWZ6gKU2fiPh6BVkzTuELhbA2k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=RhygUXGED6Rk+K4BdFKEzl2HSC8ahJGwA3Z4GIeY8VIio3eIyCs78m0pU1NDz5JwD
+	 mLYiB1LesmLHU8oVr7ha6GLlaR4QPl9uJfgAal5eGbOMQXdEVEM3lIQbIrwjYPtr0W
+	 7pKm/kGmrFXRA4seypLN27hUY5wRloD1L+cJzJWgyfPuKUwQfl3GK9ByxJ+aU83DOu
+	 t5srCWUNEBh+NMFVz4Q/EVGWG9xOop7XpIjEVvcE7QQuB4gkzhQv+cFMcUCoxpM6pT
+	 lANl1U//TGjv8C8Mcjpv8NoK428tT7d2mHvP762ve1ONp0gAnuTyfBzsn5m46bj7Ni
+	 len/bpDRahSuA==
+Date: Fri, 16 Oct 2026 21:42:06 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>, Vishal Verma
+ <vishal.l.verma@intel.com>, Dan Williams <djbw@kernel.org>, Miaohe Lin
+ <linmiaohe@huawei.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Breno Leitao <leitao@debian.org>, Ira
+ Weiny <iweiny@kernel.org>, Li Ming <ming.li@zohomail.com>, Richard Cheng
+ <icheng@nvidia.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
+ Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, David Hildenbrand
+ <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Kiryl Shutsemau
+ <kas@kernel.org>, Harry Yoo <harry@kernel.org>
+Subject: Re: [RFC PATCH 0/5] cxl, mm: Keep device-reported poison out of the
+ page allocator
+Message-ID: <20261016214206.1dc8484a@jic23-hlaptop>
+In-Reply-To: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901063755.1519710-4-hebaoquan@kylinos.cn>
-X-Stat-Signature: eujpxiwy3az4bm1c3u4n3oiicqqz487e
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F7271A000D
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1792180396-798559
-X-HE-Meta: U2FsdGVkX19gbmdavX/0Z3/F8aazVOjnrKoM362rG8UxqxCtiZW0K5HYdxTv1urPA/zO7vbV7xUu2HJcil/uV1oW/8rvwaatEX7VPY/585JXYvCsWqOmVy3QdspiWwVVO+bREC9Op7VmKvn6Lw3eiMnBBSqC7EhvkipzwPx0GiqjX9B1ejQilff8uS0QSEqvrhCTwbxjBt4CK0QYiJiG3yXWp9rPHHEmTvchAST9l5AftFM398Y6RPlpHdGzRS5oSHIOtB4c+gxsw1Ywoo3a9GlWytSauxrpDxFrvsqPUoGIgJDvcesD/h7oNn3rUFn0xonnMvb8w3sjRKVlgzLTiU+4Fk3SjXS+Fbz7I1Untg/9KGcW+GfZlV8FRIvoOiTnscwFLTO9O5ait3H0FDCzpcWkyHKXh4CJyAV/0KWo9xIPpFVZu+v4z+uHvDIEhWe9qMnpFN7ywuLvLAAfxqhAjLu8gYiinu95UA6T36nipMOV9ZGUZXG8dh+74ZRdB6fbodk5qVeUgnrLAJ8JvcuHAwQ8vKT8wGtIQoFod+FniNGyzppK6/FO4aCoYSzI7pSqQo8JL6Mi++aA9YuWqO+C2QqiD7EVml5B0OWnxmes9VCvpcx2L4GHUBEOmwEZQpR3Wk090RGUIDbrkXOcq2NlyRokcJytutwpNY5dHLGR0qbzRGq0GZjgI6N9CjujXLynvmgO3m7NQANg5FxkgxrZCAPDdytMhS956M/YDM8GvQ4+6X9WGN7KbFeBhrUn9ou9Bxl/oI9ns8CtxOnM6Pjw1zLyLHdjKC9ePyTd/gCTsHZscIHXe0ffvQcxyBZUVHwBfMCoHOoXlteP7OcFJFKKURAzHyP5l2SCMFkPq/4CSLf/+gYK5wjmxClpEz5ozhlfV43c37GDs9WREEepbhLNsneVlfJ3DTpRM8KMPVwzo05uEJr5/IPZuw2Fmk5RbPt/LMBxKTnEmqVvD8uNPtC
- zgwdGh1s
- 4pQH+IcfFWi4s4b2l4CVQZw4D1eFnz0chdjrDCLk0bC9pKzQ7eiIr/ct18QfwGlxReRbouQF/Raa1rE49akZXfTZ7mZyTcwR+XHGwzboLTDdzy0r1tF8ePgjWlTkPUB799VABYTahZ+YGaByRuEzMqw0ANpy/IFWrEnYZrJfcK6CrrhSGk0qEahp1X0kP5yWrymxvUk52XQYI9QITlCf7YObdCkw0IMYGO4kS/21ioTHVB9BSyE1NLFmmqQYRfIc/gWPYYFwhy3DqIrodPSwg80gixxQyluT8xweca5LFIgnmWAb/ZST/1dSOF+xtMVTHDEoMMWVFd5xyCd0kaT6Y8QbUh/7M0ue5flsaQy8sQGQJ2IWkMKayEImKb7+yIDgH0fb6Hw9LXbLigLX2pvw5ue/Hn7zKJw41sIQvdxCs/ILKLZ2pmzVvkvbBbw==
+X-Rspamd-Queue-Id: 4B3CF40002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: m4ysbdzqofrhbbxowzuc6ykj6j6y91jt
+X-HE-Tag: 1792183336-667318
+X-HE-Meta: U2FsdGVkX1+XHL8TFKSeQ8Sx9WMJW+WpST6ECyE70sxnmj8tvDtCjxwAgZbjs5fs/t8aStVcHcJjQVmc84PwY8ML1tvHA+qKU9uEW+UZsi5vJBv+ArxePld6wXixi00xCjkb+YpSrqbNAtqzVaG4fn9sup7AiXo3ej5emecbGgBJEsPMv0PZBoNJp7MH5WHlJmczhmawgHXIOpPqVKiO5NEV4cAEoYnxEzkpSZ4qgMqAyRa3soTuYzbnCmTOeIdDhnLYTOXe5vG8WTmigJ+SDUeFqMkcn9U6cP0xUhMFgD5nYFk7XRc6pC3pf/TiHenakj5iE52HjLf0nmo4jn+wSyGGpPEcJnrHQl33dxneFcMVeMiAeSnaf9ZV5peX9RaXIqbB7JQ9VPOrJ/zDE1zUAzdFhdi9bCpCI3AN9DK3MGY4/yCOeKRu1a3wacV8FkYLnKJzm2yuCozsPEMOlq4APsiNDZtbzDYXazzTM7xWGTivAERbhSuUQqO1kxt1i5KmPuQotrQPWduJv2saw+chOAaPddGMLHRrK6ug5x+gdzT6HyjMMDb6kXI9q5Eaij8irWweBBeEoiG0bRzMsooMSyIki2MvvJsI+ZZ/ZLMyCdNIQwSaZX1HHKGPw3R6r3HmEPgLRc5vQtF18Yg819mSLzlEq3NKiA21nbr35n1dGC07IjlGpSEr8pgaR1HtysHhB92fwp1+gwyh9ACJbS9mn/svXKasHiFVYCu9pIuX/4vAsug1msFXZ/dRkceAmefmIwg9OugwdARXhcaNdGn2iCzWI3j/EwIVphdqf/RBAnLhMQALGWoQ8q5ttCo1QvzHqsUeIxm7iiMtOHflIfh91NdSlrcFdN4W+b7dDuQqzwUNLpy3UiBXrqxcUQ4zTxvNGuRuNNc9O+TzuFqpgkgfXAtxvJ9ZZgosGknRh9VYIh97AWL2WVcZw42eVJw9ale5XkNvk5Ip6jBrt9MAVlh
+ CmpZgl4b
+ LeEmaHYkS6giicoNXn6wMS+OTX5jamqOEXxSKguEiPOdBvVV0yVut/ZlOfEpXH+s7JTUjpjAG3Lw7V8dsKyaQk0Hxhv9r4ggHiGcWrEXrbpy8eMV8j9ddhngKzA6HKhbvsfSbY6nI1tEautlrjVWzeh3D2/S+3o6TkngJWGO4TugVPXqtjidtsnSxxHhOvBD7/8966xEMqO20K0lT+/NV47ucGAoKigzOkSQ2ThX/6HtvXXaygb0iCVVmzj9UhtTlsMFhVehfYqkbZVzbR88ysRU7oRrvgfgigIClhdozxIIBxovhqhPKkZeV1IyCJTq1bTel
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,70 +104,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 02:37:54PM +0800, Baoquan He wrote:
-> The aging walks into every PUD and runs the PMD-level Bloom filter
-> on each PMD. Add a coarser PUD-level filter (pud_filters) one level
-> up:
->  - walk_pmd_range() now reports whether it found any young leaf entries,
->  - walk_pud_range() records that in the PUD filter, and
->  - on subsequent generations, skips the whole 1GB subtree when the filter
->    says it had none last generation.
+On Sat, 10 Oct 2026 21:50:08 +0530
+Shaikh Kamaluddin <shaikhkamal2012@gmail.com> wrote:
+
+> A CXL memory device keeps its own poison list: the DPAs it knows to be
+> bad. The list lives on the device, so it survives a host reboot, a power
+> cycle, and moving the device to another host.
+
+That is a bit too general + needs backing with specific spec references.
+I'm not sure for instance if there are any guarantees around poison
+lists for volatile as some errors detected by local ECC will be intermittent
+anyway.
+
+I may have forgotten it but I don't recall the CXL spec talking at all
+about any long term tracking of errors in volatile memory across power
+cycles.  There are interfaces to test memory to detect stuck bits but
+I don't think there is any requirement to run them at device boot (and
+we haven't enabled them in linux yet as on demand things).
+
+
 > 
-> The double-buffered filter flips with each new iteration, so newly hot or
-> migrated-in pages are re-checked promptly rather than suppressed
-> indefinitely. force_scan walks bypass the PUD test, so manual aging and
-> newly added mm's always rescan and re-populate the filter.
+> Linux reads that list only when user space writes trigger_poison_list.
+> Nothing reads it when a region is assembled, so with a device that
+> already has poison:
 > 
-> To keep hot regions marked, also report the covering PUD from the rmap
-> feedback path (lru_gen_look_around()), so regions whose hotness is only
-> observed by eviction will be re-scanned.
+>   1. the RAM region is assembled and dax/kmem onlines it;
+>   2. every frame enters the buddy allocator, including the ones the
+>      device would have named had anyone asked;
+>   3. a task is handed one and reads it: machine check, memory_failure(),
+>      SIGBUS.
 > 
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
->  mm/vmscan.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 47 insertions(+), 5 deletions(-)
+> This series reads the poison list at region probe, before the range is
+> onlined, and keeps the frames it covers out of the allocator. Nothing is
+> unmapped or signalled, and no runtime path changes: the frames never
+> enter the allocator, so this is not forwarding latent poison to
+> memory_failure().
 > 
+> Dependency
+> ==========
+> 
+> This is built on Breno Leitao's hwpoison series [1], which keeps frames
+> poisoned before a kexec out of the next kernel's allocator. The approach
+> here, withholding frames as they are onlined rather than taking them
+> back out later, follows [1]. [1] hooks __free_pages_core(), splits a
+> block around its bad frames, and marks them with hwpoison_boot_page().
+> Patch 4 adds a second source to that hook.
+> 
+> The two cover different cases. [1] records frames in a bitmap spanning
+> the RAM the EFI memory map describes. Memory hot-added after boot sits
+> outside it, and CXL region memory is hot-added after boot. [1] also
+> carries its record across kexec only, while the device's list survives
+> reboot and migration.
 
-...
+The CXL region - may be hot added after boot.  Whilst I like that model,
+on many existing systems the CXL subsystem is just identifying what
+was already there.
 
-> @@ -4397,8 +4431,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
->  	lazy_mmu_mode_disable();
->  
->  	/* feedback from rmap walkers to page table walkers */
-> -	if (mm_state && suitable_to_scan(i, young))
-> +	if (mm_state && suitable_to_scan(i, young)) {
-> +		/* the PUD entry covering the young PTEs scanned above */
-> +		pud_t *pud_p = pud_offset(p4d_offset(pgd_offset(vma->vm_mm, pvmw->address),
-> +						     pvmw->address), pvmw->address);
-> +
->  		update_pmd_bloom_filter(mm_state, max_seq, pvmw->pmd);
-> +		update_pud_bloom_filter(mm_state, max_seq, pud_p);
-> +	}
+> 
+> Applies on next-20260908 plus [1] v5. The num_poisoned_pages_inc()
+> change agreed for v6 [2] does not touch these patches. Patches 1, 2 and
+> 5 touch only drivers/cxl; patches 3 and 4 touch mm.
+> 
+> Design
+> ======
+> 
+> Which records are withheld. A corrected error never reaches the poison
+> list, so every record is uncorrectable. Only records with source
+> Internal, a failure of the device's own media, are withheld. External
+> poison was written by the host into healthy media and a rewrite recovers
+> it; Injected poison comes from the Inject Poison test command. Withholding
+> either would make a recoverable state permanent.
 
-I saw the discussion from Barry about the concern about the overhead
+At best a detection of an ECC error in local media is a hint that it
+might not be cleared by a suitable full cache line write.
 
-I think we can drop the PUD ptr walk entirely. The filter only
-needs a stable identity for the range walk_pud_range() is iterating,
-and (mm, PUD-aligned address) gives that on both sides:
+> 
+> No host-side storage. The device is the source of truth and is re-read
+> on every probe. When a location is repaired (sPPR, sparing, hPPR) the
 
-   walk_pud_range(), test and update alike:
-      (void *)((unsigned long)args->mm ^ (addr & PUD_MASK))
+It might well be repaired just fine by a host write assuming the CPU
+arch supports clearing poison that way. Ideally we'd poke it some to 
+find out whether it is recoverable.
 
-   lru_gen_look_around():
-      (void *)((unsigned long)vma->vm_mm ^ (pvmw->address & PUD_MASK))
+> device drops it from the list, and the next probe onlines the frame
+> again. A record persisted by the host could not learn about the repair.
+> 
+> Volatile ranges. CXL r3.2 8.2.9.8.4.1:
+> 
+>   If the device does not support poison list for volatile ranges and any
+>   location in the requested list maps to volatile, the device shall
+>   return Invalid Physical Address.
+> 
+> A device that returns it, or that has no Get Poison List at all, is
+> onlined as today with nothing withheld. This is also the reason for the
+> RAM -EFAULT tolerance poison_by_decoder() has carried, without a comment,
+> since f0832a586396 ("cxl/region: Provide region info to the cxl_poison
+> trace event").
+> 
+> Incomplete lists. If the device reports overflow, the host stops at
+> max_errors with more records pending, or a media scan is in progress,
+> region probe fails rather than onlining on a partial list.
 
-Will this work? Also I took a look at the hash algorithm of this too:
+This bit needs shout more about as you just stopped region probe
+on regions that previously probed (but would potentially return poison
+on some memory).  I'd put a Note: Will stop regions probing if poison list
+has overflowed. right at the top of this cover letter. 
 
-static void get_item_key(void *item, int *key)
-{
-	u32 hash = hash_ptr(item, BLOOM_FILTER_SHIFT * 2);
+I'm not necessarily against this. I need to think a bit more on the impacts.
 
-	BUILD_BUG_ON(BLOOM_FILTER_SHIFT * 2 > BITS_PER_TYPE(u32));
+Certainly an interesting patch set.
 
-	key[0] = hash & (BIT(BLOOM_FILTER_SHIFT) - 1);
-	key[1] = hash >> BLOOM_FILTER_SHIFT;
-}
+> prerequisite-patch-id: a23fe88ab4529b6a6669a991e15cf1631311391c
+> prerequisite-patch-id: 111c69880ed0e148cdda285896c006e8d1fc98a8
 
-And hash_ptr is actually hash_long, 64 bits if we use hash_32
-will it be even better?
 
