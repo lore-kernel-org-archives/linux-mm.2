@@ -4,171 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F41FCCCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:27:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1D57CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:35:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB1236B0088; Fri, 16 Oct 2026 08:27:42 -0400 (EDT)
+	id EC0166B0088; Fri, 16 Oct 2026 08:35:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E88D46B008A; Fri, 16 Oct 2026 08:27:42 -0400 (EDT)
+	id E97C06B008A; Fri, 16 Oct 2026 08:35:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D77866B008C; Fri, 16 Oct 2026 08:27:42 -0400 (EDT)
+	id DACAD6B008C; Fri, 16 Oct 2026 08:35:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B380F6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:27:42 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 358FD1203A6
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:27:42 +0000 (UTC)
-X-FDA: 85328415564.01.CD6AC39
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020106.outbound.protection.outlook.com [52.101.69.106])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2873E40002
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:27:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=C0xxYPSx;
-	spf=pass (imf27.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.69.106 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792153659;
-	b=XCd+sTDm0esZX8Pum3xANHHKUpByuPalWbSM7SGYZLYWSDH1ZKN95Hg9lAorFwYjppwFwM
-	uS5Zud93kFv168/j9JflQufTi2ObUIwf8e/uhloDsUKR3k9Wk5Ed+7aRyDGHBL+JlJ6Aut
-	HckWdEH4w+TLOA5ktjbBuwDCyIjTL5g=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=C0xxYPSx;
-	spf=pass (imf27.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.69.106 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792153659;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B03FF6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:35:18 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 432B7160466
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:35:18 +0000 (UTC)
+X-FDA: 85328434716.18.8FA2D77
+Received: from mail-pz2-f8.google.com (mail-pz2-f8.google.com [74.125.228.8])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 47E0E1A0009
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:35:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UYKNZUpo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.228.8 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792154116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sDs8yymC7kt1hu+CCj3hvfDmSkC9LcuDYb+F/NTbs2A=;
-	b=Qrej2CwJPxVP1Swchc4AMRwCMymjfdUEbIws7+YsimDxsp8/5l2ZtdXC6xMcRGQ0bMYuGY
-	MhqnYs0ZWHilHj/Tl8NdAX8cNKHiAgn6ygTvq9QxbGcZdYzkBKOP9NKv9W3aoghIMzRP80
-	nhLIzRRMdpI23C9Lm/95Dsj7PwBVeZ4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bZR/f2o4wxGr8L4xq8x//EjkogGoQBFk4qlkGK/iEUYP47a7n8zaOWVUhBVyeZ90famWJ86miEpKmLdJLoNVEusBzj7QOTWQ/uQJnch8u1BsB0sJ1WTvWyKl0Ryn5FF0jhcbkMvVd3xcrpB1VOrGH6KbuSuwz46wk3l2VsAIzJz9Leqp+P4TAF4NqRPxEx5nXLqhrng2grbtl9m8gVq9IjVXCEU+Xm3mLnemaguQh7T5mJ9sO4TYBFVKDcnN+o2C4j1LJPTb+SCk2AJ/F51pBWGKvD/XAjps2Viwe6jThw6ga6jJpOPUS0/KhcNC/jdU/PjQy8UjdnoeDlBcGr67sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sDs8yymC7kt1hu+CCj3hvfDmSkC9LcuDYb+F/NTbs2A=;
- b=FPUefpTwhlcqvui1vsywN6IHkskL1Q34gGHl5/GbA7+5gUXTYhz0PcoQvL3ZCOsQRi+u3VvosIghg86EGO8IMZt4Crz7d3nnw9EcMD2x3jEblkrFM41QV4TYBLXRiLQMsVmbUo2r+MIJ1mf6e6etzu0FxYbAEa/n4RWvN8cGiWOZQjQz9K/JGjPVpaTfWu7e8h5JI/ilRozVVEdyaH/5tnCW4zbMnJMDqwBAI8slZWYgBpw3TiDTAIkbWqefGxWnCKNAL2vYLFfiuPp8XARKw6sG8/W0M3doA1ZJsKMk1tkPOah55pzwkK6IC3z3rNsmtoJoRIMHo4lFavJTrd2Zpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sDs8yymC7kt1hu+CCj3hvfDmSkC9LcuDYb+F/NTbs2A=;
- b=C0xxYPSxJJYEbxmaJLv51VLOjfnkgq2rV/o8YlWuZYU9TdvOY2GYqKZ4uAJIYfpDcaIBQ6LtWrZs/04Vhp4mgdgV2hJeGHkNuedAbDffRi4T7ckugaJUfiz/ZcvUH3BNRnAA98VShb2L9KRk2ZAbR7YUtvyI2In2UYca5JmkKDPEyAOOwYofswSfVLm4jbUxZsIVK4gpiYhBQUr4nyZwlHjSyQKwsTrP0GEl+Vh7Xv4+htWE+dfdqrk7qBdXXhQFisrUuNr4n4VWQtYJb8a+4g1xPbYhHwsqiYSEqbKhZil54XA3Zh/mUZmTxyFpSXtlNL1LWG+MLw3Vz+MZ5IOU4w==
-Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
- (2603:10a6:102:3c7::20) by PAXPR08MB7395.eurprd08.prod.outlook.com
- (2603:10a6:102:2bb::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.7; Fri, 16 Oct
- 2026 12:27:34 +0000
-Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
- ([fe80::1999:c6db:dc55:494a]) by PA6PR08MB10708.eurprd08.prod.outlook.com
- ([fe80::1999:c6db:dc55:494a%5]) with mapi id 15.21.0546.006; Fri, 16 Oct 2026
- 12:27:34 +0000
-Message-ID: <79c1246f-8c9e-4e2a-adbf-e730732b33b1@virtuozzo.com>
-Date: Fri, 16 Oct 2026 14:27:32 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] mm/shrinker: make per-memcg shrinker units cheaper
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20261014-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v2-0-51af2aedbe6c@virtuozzo.com>
- <20261014135046.7b13252ce99d918ffcdb1f49@linux-foundation.org>
- <84c9e97b-67c0-4c9b-bb7d-81811af8a16b@virtuozzo.com>
- <20261015175836.efc93cf9de01306402da61f9@linux-foundation.org>
-Content-Language: en-US, ru, sr
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <20261015175836.efc93cf9de01306402da61f9@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P195CA0007.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e2::7) To PA6PR08MB10708.eurprd08.prod.outlook.com
- (2603:10a6:102:3c7::20)
+	bh=HVfYgQsMCF8Qw1/e6sPegSr7q8k8sKUP9Wx/2uIXt/8=;
+	b=QblI0d324lJcAHBfPF2vKqbw9dAN3doPpfX67mrw3cMmilVhCJHZKTgeIw+BrF/oZUniD8
+	EssFUEDpKHACBHd//IqS5uQixAKJMjQvX8mALUdHgHxsaD/4/et5X/wHsK0s1gu6D+NyOn
+	t6BP8XHfesLWnUACyJ+z7+0zwnlFrnU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UYKNZUpo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.228.8 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792154116;
+	b=mxgG1cD6d5WKWaXtzqQIdx5xbR7cKlURAJtGDcA6ws37hq50pvN3q+pQAFQO5zNiGXOvjZ
+	ctN26SISJPmrFqYkjrEeMHh92xBiq5MvmLXt15EejEqi/tC7/XK9G6bsU0KCYzZGjHi3W7
+	lFVbQME63ecK9EaECgb7pxl6T3Lpb0w=
+Received: by mail-pz2-f8.google.com with SMTP id 41be03b00d2f7-cd1da63bff6so229441a12.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:35:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792154115; x=1792758915; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=HVfYgQsMCF8Qw1/e6sPegSr7q8k8sKUP9Wx/2uIXt/8=;
+        b=UYKNZUpor0bbMF1e5sf0Ysxq+VHehx2bmtsHqHbYheHKB/1U5vXo9/HEUOOP36hmsN
+         Njs6bI2wWMIJ8+jgTk4djesUSq//XlkGoZoOGtNjT+ASbmVFQpNQJWRskzy61PXIHkTW
+         saR0vqWhfydDWfabJ0P0oeVhlTZ0lQi3prLuk/pZjzwENOkZsqfSj/CI1iTrD4W/XAgl
+         w3LuCo35tr90tdn5vXW6OArPHDEVYFwzQZHrYbch8Pil3qfvIXbJb9QBf2/WMBF3A89M
+         ZIGFDF7PHXYcPbb4v1vwE2BEjhSi6/D57vGNujcl5fE/RpnXphxne/NR35gX4n1rUy3W
+         dqpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792154115; x=1792758915;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HVfYgQsMCF8Qw1/e6sPegSr7q8k8sKUP9Wx/2uIXt/8=;
+        b=Ffdp3vv4g4tFoqwaaogYbO9GUNk7BZkXNUc4k4zjMyQRwP8yxSNYwHPQch59sySPLq
+         y38pjkJTNsaBoAD8OyHl59rqSPfTyPeDvRRsNegTYt7wYntSWF1kbtjinFnO9hUdp5uE
+         D9VghTM6KuArncXdgNivMLZYcwBpcArEc+iNrrZom69f5BxcF3OLU+U7FFYAQe1ugdI6
+         /wLR8omjwHLYa404U39B5fEUJbiqnAmSf6ced5Ruf0H6SmdnIIlQB0RSzJi7GIMiSqDe
+         NVnBtC+xYFTKP7O81DKMkFWcp09GGhOqUSa6VDXaMVx1QXksRPsLQ9tEyVIz5NQ2Hr0l
+         YF/Q==
+X-Forwarded-Encrypted: i=1; AKwUvByPX44o85RqxO2WAstFKWdk4cxVWGx2gsH4gXqId85Si7iRB1g+OdJc7vtAk3USjl7MZhZydJ20kg==@kvack.org
+X-Gm-Message-State: AFq9FYLx1A9byFl7fcbNDszWM7JbyanUNPJVSUnwqiHVUzpdylgFSTeu
+	eTRrK6JjnU+y0KOyyy8B2woBpWzDRkBqDPD3S5Z5/yBUMCBudeKjrgOk
+X-Gm-Gg: AYBFou1+y7fTwe2wNX+Z1HxrEMCEVYSI86uCnbDeimllYsdkeJdC8Q8dMip77pCcF1Z
+	Us3kwkjYibxcytfgxLSgXzVUhyrLKA0GIxttnCUWr4KkUzS2Io3dLuj5lK6A6mxz/rcT9U8WDwY
+	GNUvEzEfC2ZEAS+pWeVPBaqCmX2DLon0hgvviJoljj9r7syQduDrCetAY6OF7UzvEgg/7w7MRei
+	0OCxUx1kFScK9HQghtYk46/mcldLN3Pacz6PUeVo7dz5c3zDazWdlP2QXN9aRr9jT+AZs3b/dLs
+	oLxTZgsSEUVQ0QoCn9cTbdAOMu1M4jwHGdUkMw+LOy27Kgub+EcOpz2svyxc1paESgM+RmSmdEO
+	so+SmcdOGdue36sbxLKbn8h3u2Pr+CNicAFoe4kSzT6EH8w2hAVi2XRgIfyOlXTKdxGOAUgaYKo
+	aya5/DIR0s54m/fm6y1+GXP/tN9iOU0dZrdCRPn0HunD3eK5EvcYhfhIXKEVFHAATWMn6D9nEAi
+	UD4EjlDd3vw7fb1iXjiITU2bN1kR9CfE/AurDCCgotSL5nOR5pNY0mhqZqFtyVNWsnAOuX/LWDi
+	5g==
+X-Received: by 2002:a17:90b:4d8e:b0:3a8:786a:cfed with SMTP id 98e67ed59e1d1-3acbb8bf8cfmr2230412a91.37.1792154114934;
+        Fri, 16 Oct 2026 05:35:14 -0700 (PDT)
+Received: from [172.20.10.4] (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc4972fe6sm4162850a91.15.2026.10.16.05.34.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 05:35:14 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA6PR08MB10708:EE_|PAXPR08MB7395:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2603f1b-55ef-457d-86ac-08df2b80daee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|23010399003|5023799004|56012099006|4143699003|261009223027099003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	8BsWWbn50ZUrAqCq/i7O+qHMqUl2zbnJsAoVTqUyXt0z4aczlpMmsweqOF65/vaRpe84Du3xfhaSVlZ+KsdgC/NUn2iHE8fhRH44jNpa/yIMpi2HdugnzEWHHztFDGWAPr/AS54ADb3fJQlxc/lRxJGWwv/YxNSD+s0L66HBoES3b34YXbvBAaejzSrsa5rc/ASmBt/brevjGfnrIW8fZbqi0MFV6ebSN9SPIFqIVB8y7tpxm1US2YOzE32W6IJo6gCXUm07+UaVQDRFXAsJ21tqij8mlTjKFZQI5PzkDzsCPjG056yG0d4O6vblVIZCqG1IgXORhtQeKG/KZO+50s+SNDkSOr5WbQf+yLGe1AQ3ebzSXbDKYEnDaqmBa7fUHCb8sevtLLC4BYAeVBVZQTT0N06k0uEaU4GBvaJtFd/GFsso190I/axKWJpPpFHaEX70ajAO+tMsVMJR9K691aLy6AJRVCVsTJ+CqezRIhHlVGNXa2l5UJLg3ql/9huM5PZMrtYu4kOzM15PosDY2tsr6RanAS8m+qvvMcU4UYFcHTXrtGjsjnA6yLdoZ6ilnZbq9kJUVZ+6HCHXQj6O3oSagV4kHdmOcuwibYgs/kO+Zz6E/NJzct/avtrD7NxMd3Szlszfphcx7L8DxJVNAwROF+UiKB/e3bS9FcQBlrs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR08MB10708.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(23010399003)(5023799004)(56012099006)(4143699003)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjBhOUNaUDNkUTY4OWdUcEU0MThXWE9peTVoS3lPVW9JRkVRdU1mK2hHcXVJ?=
- =?utf-8?B?Ulp1eGxOMFp5VjFkUUlVRURRQkZ2UXRwUHU3OC9MaXZHTUVpeXdOaUM2Sm9Q?=
- =?utf-8?B?R0ZxVTNYSjNjTDgvWUlzZU9vZTliT0hxTVo1eCtTZjhjd2g4enhOd202OVVt?=
- =?utf-8?B?MWFWNXd6SjltMXlVLy9tdXcwMlNJZkptTk9tU3luengzckJieEYzbHdWeUdE?=
- =?utf-8?B?TDRWY01uVDBWdHFmK2g1VHhUVXZVWWl2cVhEV3FvRnhHWEpRemxYL2xEQ2ZN?=
- =?utf-8?B?R1lDM0J4Q3MyYUlUMkZPbzhNeUIzUGVDcTVkb2Nic3pOWnlTck0rU0tpbkVu?=
- =?utf-8?B?eFVKRW1sYldMRStnM3NWYnFpRWV2bEZUcFl0RWhnb0lJUDF5Vmcva2hKUjFY?=
- =?utf-8?B?dDFYVXlRbGUrWit1Y3BJeTN1M0VjUWROMDJvRVAvQVhZS0JOYXJlWXZRT05X?=
- =?utf-8?B?allJdFFhUE9HREhSckIrY2VFSzhLaVhyMXlwQ1pLYkxKaDA2bDhmNTRjcGtF?=
- =?utf-8?B?ajJKaWR6czRiS1BtakRNSVhlaEpzRlFJdGhkbHI5MGM5VmJMQUNSV1Z0QzJV?=
- =?utf-8?B?Zk8ySysrMm5xSnFIYjRqL2Z3WUZqdlV2dHdjVGE3djNMcUd5YWVPeUttdWs1?=
- =?utf-8?B?dEVoMWthd0NaWjlBd2JRMzV2YVRjaXNCSGZYbTJxTUxoUWUrY3VLNjhab0Nr?=
- =?utf-8?B?WEJuRE5RUk80cXRRclZSKzVLOTZWWDhCK3pRemhLWTU3OFlaNkMvMmVQM3Qz?=
- =?utf-8?B?NDArZXBRbSsxYkp4ZjN1U0pqMjlIL2hNTjZpRC9IQlJaQzZ2R2NhcCsyYzhE?=
- =?utf-8?B?YVlhL2ZGRHRkcUcxdCt3VzNReGQ2NVhqZmhkNEs4MUJqVWRmWnFVZnNhN1pX?=
- =?utf-8?B?ZXBUL1lYaGJWWVR0NVpUd3lkTUh2cElMbmVNVU1Ib1R2b0Q1THkwdXU3Q1pH?=
- =?utf-8?B?QWFIZjVZTGxsZzlIRUI3OFJuTW9zelZKYURyVE5ubFdxSFVoQk9aQlhqajFv?=
- =?utf-8?B?K1JsK3YrbWdwVEt6eHhzaUU5U01KNXZ0bHQ3VEo3dFpYMjE5elh1dVZXaUVm?=
- =?utf-8?B?T1grYmdPT2NaOHZMSUl2eFRPS2FzVm0xZHBtV3ozTWhzaXdTZEZ5RVNsSzR5?=
- =?utf-8?B?SjA4YXNZV2tlMW5SbGNEd0pCQlVVaGU2RUsvL3V4OHowTXkyd0U0aDNoNVRX?=
- =?utf-8?B?OTFXVi8xMlhJWGt2ZUtmY2Y2WHM2WS9aWFcwTmI1cmY2L3pFMHlGVkJiSXhC?=
- =?utf-8?B?WThyRnZsWG5uTmtFSzhPNW1ZQ0RUTnBWTkxWbjl0SFFGaTRmejVKMmE3dEFk?=
- =?utf-8?B?bEdJV0h3MEVLNXppSkgrL2Zuam9oWUdieGVaSVdqME5PR3Z3azdmbHhBalNP?=
- =?utf-8?B?ZXV5dEY1RHNuREU4ZjdwYnhDS3d6ODY2dUlWZ3pyMFByeFhyaDVJTnFtNS9x?=
- =?utf-8?B?SWt3ZXNzd1o3blBsOXlNdTlzb0EvQzRJMkRtTTlqbEp1Qk9CU1FZQ3FUQmt6?=
- =?utf-8?B?YTJQelZHamRnMHJsVGNtUFlxbW9YZG1VeERMZWV4RVFOZFI1L3hEWGpzUEJx?=
- =?utf-8?B?M2tBZHNZK1pnY0t0amlHWTd6azRNbExyVjh1eTgyV201MFM0QXg2cUVETDdF?=
- =?utf-8?B?bitOTE1BVm5FQ3BTWVdRaG5XdDJ1U0ZrQ3dyVXgxYzRCYSswd1F1SmNFUi85?=
- =?utf-8?B?WEhSK2NEczZzalVoRXZxTGd4SFAvM1B1MXlKaDlWRVlwSTdhU2NId2J0MGdo?=
- =?utf-8?B?dUUyTThJVUFrQTZUWmhCOUVISUFZbWViaVBoZWF0aHo0NkNXTHNycm81a2Jr?=
- =?utf-8?B?RkYySVNTMWJCU2luMm9LcExjWnVGZWhoTFVYdEtmZ2VXQzJpTzhhUUVXWENK?=
- =?utf-8?B?akhQa2pKK2pSM2NNcXRxNzd5OFFQZUdYcWt6TFdpNHFYcU1UbWpVQ3ZVL3N2?=
- =?utf-8?B?c3RlcHVGL0ZvVUVyTE81SkJINUNKTTkyU29vL1RMSko3NGtRR1VGZmxISlVE?=
- =?utf-8?B?TDlWaEFWcUlDZE54aVlvajI0ZEVLcnJpWnRLK2hqT2lRYWxlVGVIMWJxelVX?=
- =?utf-8?B?b3NWNTZIV21Va3JDRjdoUUhNanhlMHVJbEJMS1dhT2pCeUVEbG9US2toR2U0?=
- =?utf-8?B?VDNhRHRqbUFhV0N2dWhTRkxvT2RMcEJJQmJhUTFJYm1nTHBNSGc2SHBXZkQ1?=
- =?utf-8?B?Y09ZWU1PekZ5TUt4MU1nNUZ2VTE3K1RhQmhyY1pMR3V5R3A5NTdaRjlNRmFD?=
- =?utf-8?B?ZGtSMGRPRUhpNjVJZTkrdGJGY01mS05VMUNwYzErSi94V2hERG1RbE13Tk1E?=
- =?utf-8?B?cmU0cXpYcnNvSVRhZFpISFU5dldhOVJ3cTZaZ29FTEZxbG5TUmlJUT09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2603f1b-55ef-457d-86ac-08df2b80daee
-X-MS-Exchange-CrossTenant-AuthSource: PA6PR08MB10708.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 12:27:34.0482
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UhIOew/mGYn/q94KmTj49zkCDDS9D3c8JlPoz2OW/eDEwekEtZ9iLx1Lm7/fhAF8g8pyM69tCSFIVwaYqo9rlA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB7395
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2873E40002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/damon/reclaim: improve grammar and style
+From: Aveline Noir <jm5905938@gmail.com>
+To: Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, damon@lists.linux.dev, 
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261015080623.808458-2-manuelebnerli@mailbox.org>
+References: <20261015080623.808458-2-manuelebnerli@mailbox.org>
+Date: Fri, 16 Oct 2026 20:34:51 +0800
+Message-Id: <179215409165.864368.11903228864381211337.b4-reply@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openssh-sha256; t=1792154097; l=2627;
+ i=jm5905938@gmail.com; h=from:subject:message-id;
+ bh=cXn/JAAY5QHO7gSOwDgZG/1D2SkKrfxhPsylIeP28zI=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgboJ0y2WZIrQV0H4HJI1WEQ5sxS6pM
+ Nc/XEYGLW8ee6wAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QLmlhrl3kquPOrFE+xeC/g7LLIxZBSwDp24vLbGOb7+M1Qt1DRDethJgmuvu9LttDVtPsNydeRW
+ aZIKr2ijYEAE=
+X-Developer-Key: i=jm5905938@gmail.com; a=openssh;
+ fpr=SHA256:oSxqik6Pl1M8EjQW1QXKHoylm1jy0sguOWFFJlA9zf0
+X-Rspamd-Queue-Id: 47E0E1A0009
 X-Rspam-User: 
-X-Stat-Signature: rkiyoheeg1c5qbtcebfwg3atgetamdfj
-X-HE-Tag: 1792153659-577552
-X-HE-Meta: U2FsdGVkX182rrazW+Z4esfl8+0yKRFnPoX4afSXidoFGcDS8I7bNoLb/2wVpw4mJiQO9onQyO4HNwNBrAAjYzgcSE9UiuRMlsB63ZYgn0nw2fCBOOjJCbgm/jd+8foOvimj2R2l0ROUjzwTh2jpCwh9R0afgRe7cxthooX5wTiKE94+YMDrdc/X6ueyNy3pyqVmLTHeZu5uSqtBEk05/b6Hht6ZZowzFMnOT/qCFa7IPcmKp9X8wXyPVqR6NsKxtZilyU+5EoUMlaZ8q0B76oGer6+SSTtw4U9PgmexJr9q7S6Sao+Guv9c8nytUvkZdSsYBEWhfZhx21W+TaMhyk9e/cNnrjVjnUqSH6l2CAn4dWI25vfPOmTpQx8UD4GZ2RR/GZIJpvWTM8wE66MVbDG4d8F6322EXZuvChZUHjTETcokrw5NyRX1trg194QGft/rdG6WDq9tKv//ggz68adJ9LbV0MrgrDaBcXpPdNx723bdZWY0rTkUVx1ebhfEkn2GA1tz2jwp2f4ktn23Lzgi3AyQ7h2s5x+5+OIgkXAymTJ5Y8uZe6316Oh3rFJUwLd9GNbgtNRhtmjm36QFX5hzE996dgsizV2/fSWi5cTMpWhgEGkpM92otAzxufTieuwliPNHpoI5ONuHMJjexYtrZ6lMERCfzKQTCLJK0KOxV4IklRmtYlTJGb/eC9+XKPe9qyOApc8Z49SgNNG0nOMN3HkHUIFskjzmKAra9oGpTp0JLYe8wwelqTscpPi9ksTsB91bIv0gndQll9wbl1pJrZ+aQtO6vtk2g5ZJsakalSzdlvvCdJXBSh3kZNnlCFZciFCDuoY9sjyLluJAlFUK+yMfzL64aKfX0gVEwU1OXisMJIrN4BPvDm6+Xy3108kGL3ujZYkjBgnejie5MGqKiWmfPKlWxrzjhu3t3uwNHkQHUbr9H5iB1dsE1q3W2ZRAZTgTYi+6KpjMubh
- yyp0pCjo
- gvUqWMyWqXsXYET9F7230/0d47IzaWG0M0TJ9Lk31d0xQ4cGl3sDl0Kh4kybyLEMNl7f8M3LyU1ruJlphoogCJNrIsb2+70f2B3kZ32gR51DXGnM9N0MZEgtnnJITI1LW3xaicKUX4PeNr/hVl6iutF19tT6m8hktQ1gRf/VXHHByZJ+DMB8n+hJjLLMx32SDOxYcU+DfNJyNI+c9sTL2Fp5LIryb64pDUFlFLKrlnahnYpR1NwyZYANUh/ffiaLUqVPnXanaB0HXm2pgTsQ29O/jGZjUcKnY0hEPxbnsgSv8OXdeKxTZRKOx+kc1PhDQz6FmRl0lQTR1u+H1KCdaTV0MGiHgEiOMf3MOgWEIw5Qb/8ZhWpoJUpUVYIdXpYK8JHJjqFltB3EJPVw+YwSe1JbGcWhTddFdPWq7ysfj9+7RnoRvXNY+legfN/Zj64ZMtJy0u2sK1pNU4brbQ1ml+mWJG0q1QpZkIlvY8bCU5F2BUcU=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: o99cm7rm6ekzk48dwdfxq6xbecimpukd
+X-HE-Tag: 1792154116-704986
+X-HE-Meta: U2FsdGVkX1/9QOK4ECwhlUn0aflL8QgQvSY21NWu/1RvWEw6tcBNe9yjbIbaRvoCd0ZMrlfV14MySKN9pwG2kKEzOfnya4pcjm0Q4nfoVpzbzyhIStqcDfLLRKpCkqTLGvFWHI4Fh5304SU/LZ8Mb3ik8Rz+ULbskde1YF1OqGySQVOTSOifr3BLaMtnaeRcY7gqff1i3wm22zz0YKDe4g47WHy/K5RuptBHcYUkyEsEElH03bK3sS3jqWA7oZ6IDqcqROv7+SJgOhBb9kKbhz2LI3d4+1YvN6mcqe9Pt5gh3ZAhgbOTNN8aTh4fDexZvU51dMPeO9tNILOD3a5b5OkoAZyGWyhGXXM23RkD3fgSkQOHeOxEbwQj+yPRGfcOEl1eFpN3yUmHxr8uKcCJbKmAATE3us8sEh5/ZTQhcF8NSTVGiOi76e++mJl7Kl838tzgP31MunCTM0vBdBWfuzQ+Geral0kCl4BFDn5DC5g5/KQvsndLNEUQ0SfBYEPaKvLuttBTdWOoWk3OqODvRGfkr7lAyoQHU9d5YIrCYrOG+DAfeGV9opl8ZrjtEMQcxteMg8yOUDWLRZ6pcKjAIXvMwlD7MrsbnSnK5lb0DqPkvJdFn5T8RdpEMgrebKWKoljyjgLdGbVtH8qL/7JHiBpiex3c7c8y2MjI+Up9sSvrTrxiuYr3mDt2yRod1wVu6u/GOGJwVqk5+ylSCl/JD+vhhCIe+6A+AkWB0MgsKeoAhR7pau7w0AVXNqWi7hEd9n48Sw6cTVZMIXiXJoOk4XRR4ssEHOmtxleQ0yYH7krQknII8/2j/Di2KWmgHaBYMcLucIS9QXXiJp136JUQHbLW7wVK4zMvNYgcVgyc7D7ZvNu92AsBbuIJaSq5gI/zamp67DidM0Pamin4GahaMGOEXKYBCy2AWBaZuxxujSsCQOSMGXSSewluZy3xT5RSrnabP1m0CXLgj/w5rMy
+ LyfF7MYR
+ 3EtNqjihqA+x3p9NeJB1aMLoTKAq0UORl1+gktHVnmlxdclcGVh+C4JWVhR92VGgdB/2JJnz+ZUnIb/pREBMIe7xTYSWcMloYB17NAb6GWn3qUvyWpHH5IgUMMGrAYe4qjYaAgqNClZYrrlIzNmbsYzvXNYNKbJwEgbCtyzfxl8WFTR7JneK51gXsutZfYi9yPH7bi+pybW7NKjpjkX0qjskj3T2+gl6uASgMeG0vXMqcBC1dnHoD51n/ynWYz2PC5GA3zMyy6MXa6qZhePg+EMxq74E3aWGh1D2Gv+e+Ztiserh+xQX0cpAeVrpHutOSt8kjhKuW7P/vq3COmsWBhtoQUyBHTJ7fAJiZ8hVraPzrUXwWdnpr9cdXJd9Dfvw9bRAZt6T+gxc69tPXCO+QPtQthA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,109 +137,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/16/26 02:58, Andrew Morton wrote:
-> On Thu, 15 Oct 2026 13:42:41 +0200 Konstantin Khorenko <khorenko@virtuozzo.com> wrote:
-...
->> If you prefer the cache, I'm happy to redo patch 1 that way.
->> Patch 2 does not care about the unit size.
-> 
-> OK, thanks.  Yes, using a kmem_cache is a simple no-brainer.  Let's get
-> that done first and then let's look at additional optimizations on top
-> as a separate activity.
+Hi Manuel,
 
-OK, no problem. I'll redo patch 1 with a dedicated kmem_cache and send
-it separately.
+A few suggestions from my view for you here :)
 
+On Thu, 15 Oct 2026 10:06:23 +0200, Manuel Ebner wrote:
 
-> But a tweak which reduces 145GB of bloat to half of that is lipsticking
-> the pig, and what a pig it is.
-> 
-> Why the heck is memcg allocating so many of these things?  What sort of
-> rip-out/rethink/start-over can we do to reduce this by 99.x%?
+> @@ -30,12 +30,12 @@ guests could mitigate this problem.
+> -DAMON_RECLAIM finds memory regions that didn't accessed for specific time
+> +DAMON_RECLAIM finds memory regions that weren't accessed for specific time
+>  duration and page out. To avoid it consuming too much CPU for the paging out
 
-That is what patch 2 does:
-  [PATCH v2 2/2] mm/shrinker: allocate the per-memcg shrinker units on demand
+"weren't accessed" fixes the grammar, but "page out" still doesn't
+agree with the subject. How about "DAMON_RECLAIM identifies memory
+regions that have not been accessed for a specified period and
+attempts to reclaim their pages.".
 
-Today every memcg allocates, on every node, a unit for every 63 shrinker
-ids up to shrinker_nr_max, whether or not it ever has an object on those
-shrinkers. Patch 2 allocates a unit only when the memcg gets a list on that
-shrinker's list_lru, so a memcg pays for the shrinkers it uses, not for
-every superblock on the host.
+>  operation, a speed limit can be configured. Under the speed limit, it pages
+> -out memory regions that didn't accessed longer time first. System
+> +out memory regions that weren't accessed longer time first. System
+>  administrators can also configure under what situation this scheme should
 
-In the synthetic test from the cover letter (8000 tmpfs mounts,
-shrinker_nr_max 8064, 2000 empty memcgs, 4 nodes):
+"weren't accessed longer time first" sounds a little strange to me.
+Maybe "Within the configured speed limit, it prioritizes regions
+that have been idle longer for reclamation." would read better?
 
-                     units               slab per memcg
-  base               1011518 x 1024 B    548 KB
-  + patch 1          1023787 x  512 B    289 KB
-  + patches 1-2          136 x  512 B     42 KB
+> @@ -88,11 +88,11 @@ identifies the region as cold, and reclaims it.
+>  sampling and aggregation intervals. The auto-tuning aims to capture meaningful
+>  amount of access events in each DAMON-snapshot, while keeping the sampling
+> -interval 5 milliseconds in minimum, and 10 seconds in maximum. Setting this as
+> -``N`` disables the auto-tuning.
+> +interval to 5 milliseconds in minimum, and to 10 seconds in maximum. Setting this
+> +to ``N`` disables the auto-tuning.
 
-So patch 2 removes 99.99% of the units, not half. These are the numbers
-of a synthetic test, of course. The 42 KB left is the memcg's own
-structures plus 8 KB of shrinker_info pointer arrays. A memcg that uses
-two filesystems gets 8 units (4 KB) on top of that.
+Maybe "between 5 milliseconds and 10 seconds" would read more
+naturally here.
 
-On the host from the cover letter I'd expect the 145 GB to drop to the
-pointer arrays plus the units the memcgs really use. The arrays are
-about 1.4 GB there (45000 memcgs x 4 nodes x 8 KB at shrinker_nr_max
-52480). That is an estimate, not a measurement.
+> @@ -113,8 +113,8 @@ quota_sz
+>  Limit of size of memory for the reclamation in bytes.
+>
+> -DAMON_RECLAIM charges amount of memory which it tried to reclaim within a time
+> -window (quota_reset_interval_ms) and makes no more than this limit is tried.
+> +DAMON_RECLAIM recordes the amount of memory which it tried to reclaim within a time
+> +window (quota_reset_interval_ms) and stops when this memory limit is reached.
 
-What remains is the pointer array: it is still dense in
-shrinker_nr_max, per memcg and per node. We can finish that path, or
-do something different.
+Agree with SJ that "charges" fits better here, since this is quota
+accounting. 
 
-One option is to replace the array with an xarray of units per memcg
-and node, indexed the same way.
+> -While keeping the caps that set by other quotas, DAMON_RECLAIM automatically
+> +While keeping the caps set by other quotas, DAMON_RECLAIM automatically
+>  increases and decreases the effective level of the quota aiming this level of
+>  memory pressure is incurred.
 
-Pros:
+Maybe "While respecting the limits imposed by other quotas," would
+be another option I think.
 
-- An empty memcg pays nothing, and a memcg that uses a few units pays
-  one or two 576-byte xa_nodes per node. The worst case is about what
-  the array costs today: a leaf covers 64 units, i.e. 4032 ids, so at
-  shrinker_nr_max 52480 a memcg that touches every leaf needs 15 nodes
-  (8.6 KB) against an 8 KB array.
+Thanks,
+Aveline
 
-- expand_shrinker_info() goes away. Today a mount that raises
-  shrinker_nr_max past a multiple of 63 reallocates and copies the
-  array of every memcg on every node under shrinker_mutex: 180000
-  allocations with 45000 memcgs on 4 nodes.
-
-- shrink_slab_memcg() walks only the units present, with xa_find(),
-  instead of every index up to shrinker_nr_max / 63.
-
-- The shrinker_unit_lock that patch 2 adds to order an install against
-  the copy in expand is no longer needed, the xa_lock does that.
-
-Cons:
-
-- The install can run under the i_pages lock with interrupts off
-  (__filemap_add_folio() -> xas_alloc() -> memcg_list_lru_alloc()), so
-  the xarray needs XA_FLAGS_LOCK_IRQ and its nodes are allocated with
-  the caller's gfp. That is one more allocation on that path that can
-  fail. A failure fails the list allocation, as a failed unit
-  allocation does today.
-
-- set_shrinker_bit() and the nr_deferred accessors do an xa_load(), a
-  two-level walk at these sizes, instead of an array index.
-  set_shrinker_bit() runs when a list goes from empty to non-empty,
-  not per object, so I don't expect it to show.
-
-- Root still needs its units up front for the deferred work of global
-  reclaim. They would be installed when a shrinker registers instead
-  of in expand.
-
-Size: it would replace patch 2 with two patches. The first turns the
-array into an xarray, with the units still allocated up front, and
-removes struct shrinker_info and the expand path. The second allocates
-the units on demand, without the lock and the expand handling patch 2
-needs now. Together I expect about the size of patch 2 today, around
-170 changed lines, mostly in mm/shrinker.c, with fewer lines in total
-than now.
-
-Which way would you prefer: patch 2 as it is, or the xarray version in
-its place? Or something else?
-
-
-Cheers,
-Konstantin
 
