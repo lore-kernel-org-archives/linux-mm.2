@@ -4,95 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1B60CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:40:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2233CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:40:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2C46B00A1; Fri, 16 Oct 2026 10:40:00 -0400 (EDT)
+	id CC0C26B00A3; Fri, 16 Oct 2026 10:40:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 063406B00A2; Fri, 16 Oct 2026 10:39:59 -0400 (EDT)
+	id C4A936B00A4; Fri, 16 Oct 2026 10:40:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBB7E6B00A3; Fri, 16 Oct 2026 10:39:59 -0400 (EDT)
+	id B38D56B00A5; Fri, 16 Oct 2026 10:40:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA8436B00A1
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:39:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A723404E7
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:39:59 +0000 (UTC)
-X-FDA: 85328748918.25.6FD497E
-Received: from mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E333CA0012
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:39:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="dZ3/7o2P";
-	spf=pass (imf15.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792161597;
-	b=qQ4lvmbYJTifkZ+LOotWEr979auRSpeiyog1yNO/Pr8GBd/ih1vda0CIbt5w/He5C3zkO6
-	oBrjhl0ahOzxqRbrXeoYimpzzmVS/O0xa+I5V6yIC8B9EAiYgNlF8+9hiHjZgQHpjzT3X7
-	GVOM3vTBCAwZIk+tY0yvRQUMTCt7M+o=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="dZ3/7o2P";
-	spf=pass (imf15.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 890916B00A3
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:40:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BF341C37B4
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:40:18 +0000 (UTC)
+X-FDA: 85328749716.16.DAC9190
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	by imf22.hostedemail.com (Postfix) with ESMTP id ED8CFC0004
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:40:15 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Q 9FZH+y";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=myyfzQVq;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792161597;
+	s=arc-20220608; t=1792161616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EXE03LuaQZrNVFEI2+EGmoWbCN8J7g9e7qIgkzPUYkc=;
-	b=o94mHll1YaEAg0iw4xQ3Wxnj48ktbsPZ1fkGhX+PtWI4e/eyy1vFIUGBceZuf6u7Q1q4xY
-	8YI5zRIEr4dGV+EnB42i2vgDqdb3uA0tutWqItrbTfhCu7/KYrl3kstPHhs6wpFDFnKlRO
-	bASNSpyrZXmW68ODcmhwM97yyyj7jck=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QFV7iPIFlCYUFODBqtdHCjoAJvOnecuzp3xttussARk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792161594; v=1; x=1792766394;
- b=dZ3/7o2Pq54lLneMqvwlaE/oXBR133ruUsozkb+85/ocfAVDYqPN7aZh0P8iu4gklBJcgHU6
- kh4yRZEHtCrWpIThHiBhTiVnD3ITIAw11jqkIsrwahJaJTeh1C1GHbUYBk7LZmHqfVtulmamuUp
- a6eC/kzOt8MX1f2YRDxbVDQQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id e9d4d2c52d348429;
-	Fri, 16 Oct 2026 14:39:54 +0000
-X-Mizu-Trace-ID: e9d4d2c52d348429
-X-Migadu-Flow: FLOW_OUT
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yosry Ahmed <yosry@kernel.org>,  "linux-mm@kvack.org"
- <linux-mm@kvack.org>,  ackerleytng@google.com,  akpm@linux-foundation.org,
-  chriscli@google.com,  hannes@cmpxchg.org,  harry@kernel.org,
-  jack@suse.cz,  liam@infradead.org,  muchun.song@linux.dev,
-  shakeelb@meta.com,  ziy@nvidia.com,  "Lorenzo Stoakes (Arm)"
- <ljs@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Vlastimil Babka
- <vbabka@kernel.org>,  Matthew Wilcox <willy@infradead.org>,  SeongJae Park
- <sj@kernel.org>
-Subject: Re: Sashiko change proposal
-In-Reply-To: <97dcba80-40bb-4b2c-a8bb-8a98b82e7d2a@kernel.org> (David
-	Hildenbrand's message of "Fri, 16 Oct 2026 09:56:32 +0200")
-References: <5eae44a6-06c3-445c-9508-58b372c01b2c@kernel.org>
-	<CAO9r8zM_TfD82vZ23zwsd_pPLMpe11_XQhPEp5NDyhoPKDizag@mail.gmail.com>
-	<7ia4bj8ufqlw.fsf@castle.c.googlers.com>
-	<97dcba80-40bb-4b2c-a8bb-8a98b82e7d2a@kernel.org>
-User-Agent: mu4e 1.12.15; emacs 30.2
-Date: Fri, 16 Oct 2026 14:39:49 +0000
-Message-ID: <7ia4o6ct7lqi.fsf@castle.c.googlers.com>
+	bh=ZWJBtz7FZxAJXDEKnJv7+8CcY24QkoJWm0ZykJIucZs=;
+	b=IVPSdwobSG0fZfIulZVf6hFGyBGNmIpgalmrHB23mWj2eNO+STmI20JG4wz+AleUWAO94H
+	psDEKuuHs7YGLcWguqorEWHJaP/Ijl29DcFiBBmTCNqstv+3QjJbLo0ZhC5QRYdsBzpPSl
+	a1wPohlQm7ioV9C0J1QFjw8VnlEkAcw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Q 9FZH+y";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=myyfzQVq;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792161616;
+	b=DO2J7IYJu+5lwHMKxAsmmIxiZR0B2eij1dpffgFt17btR8yF1WKJH2/DXTNknMVJqEtpMu
+	2j3KRsAJpFpYnnmAoVyv80DTxlU553EyKh1e8QiPdH++Zqy88KDuK8JSFuoYq81qC4Gyy/
+	QkTBerE0pyEOBbyTJGAvCGgaU5N+YlQ=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 754B5EC01DE
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:40:15 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 16 Oct 2026 10:40:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1792161615; x=
+	1792248015; bh=ZWJBtz7FZxAJXDEKnJv7+8CcY24QkoJWm0ZykJIucZs=; b=Q
+	9FZH+yD7MuFwdoFP0q7bS2B5y1K7jmGy9QSkXc6YvgLux99zG/SqiVFf74x/R21N
+	RTQfgB38znZWhmzPfmLAQyXT6FqAE6Yo+ZLstHOJCmj1OnJwshAvPrE4I13Jt4TL
+	LR7kQohxMP2SpszDO03ZS0fBQy+Oo2tbdHJcIZk9K/yikS7mdBLd7EWgbdt7nixw
+	KToj6mExZ4qllEJ5+FC0WaldDgn0l36kWK3kvWARd8OvP48wlvwFn5jjo/Kwp6+6
+	0eMJ/BbWE0tE5W2hJOYKBx8OwpCYdDTxBxPm+ofxXTwczMgt3SmVB93zhjjoknYO
+	CYjFO2IFIr+fmScTPVq7Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1792161615; x=1792248015; bh=ZWJBtz7FZxAJXDEKnJv7+8CcY24QkoJWm0Z
+	ykJIucZs=; b=myyfzQVqzEtnh1e6ODhMMaNcTy9+9K5S3b+q6//7ozZcF52VlMI
+	k+WdXQMlc67KLDYinFT/VeQ9BVqNebKnd7L4/+1mOkSbJKibOG8etk8zWkcFEBIq
+	xlFtgXsAFEhba0IsnS/Yi3hn5Dy46q/0Ag3uxeFx5A5JUyUWQNxSpmbSw9h2hTKw
+	CJiNSlbsHsPCWiZklg7SdIqcRDa4fAJ/NDjZWjG2AoNPWo1Pi0FaQb8MELqOqbAT
+	Kl+hY5WObMVPiLEyRbmI0/uXwwIGSpyiyj56ijrHIIjRcUx/BsbH2BczCZarDULI
+	XzRkc9dxmMrZ1vaWALYNvPHJOeYDgM8atDg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792161615; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm3:rsa-sha256:Vx7O9CnCLgxFziYF0MKcT+IdCB5zDqL0djqGQ6uOtgPuAI7
+	HxS9ZhL7UunTNSGFzi8glMDlgBaavwZ0AqyDX26g1ajS+dKIiSPQauqxXYwQh7o4
+	T6VCBzjh7hdIutcpf2gT4asol1ZFaJXyyslgx5oBivfNuvLDLN++ue2NfVNvEwSp
+	4vYZQxOqmkEWQNWLTqSSeYZ8xxWtPhk5Z/lp3WuG75RsrA7/IdOD+2l3FFyX6W+o
+	uDzm1i6e2WPVVBHd4Wbc+fLyWYUOqgLNHSnp3vJDm8x8AOsiFqGXF9MUttkA0IEa
+	eouW4JxrO1aYzBN3a7u21O534ZSIJuu9NN6u5lw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:qyErXaUNoSfBuFl6tl6flP9cK8g9RJSj/ZR/bKAkC40=:0OINjBzUgfq3udtQxoCTHXGH+jsqc7bmQ47D4WpdvIk=;
+X-ME-Sender: <xms:TjfSam0YbROYPNVfP7ecFpRYKYgYiKUWWWGZtWh3Mab-XrfHTQUvFQ>
+    <xme:TjfSalATJp080vU3JdEPV55Unk55iZxUM86zlh031lef0YsOuTQpq1x8S5BUQiHs_
+    opxpqK0AHN8BkOwfEVeRytSkAilxeT9xXDbij1pOjqkNTVlxFq5GJ0>
+X-ME-Received: <xmr:TjfSalC1MQ9AnIT7otAxtCymFb7NsLwMFC0A567Sufm7SFMArzf6VBPjV20>
+X-ME-Proxy-Cause: dmFkZTGXHfcSLLQdNmUBrh8iVg0mYe5Otx4TEolme1BT3Ui+/AiTgIVzb4+TEe6FzVwFQj
+    psr4zEC5sqQkXAzY8D5ZGT5LvAg88fz6e4MY2ys09QnxzyG6IrSYcTsBWki0MGy23JhK2q
+    zl+K8zxFdWYC1+i/B2TZYNHE3MFgG37Jwgbmr8qXYQjDs3jKlZFpNY4SIXQ0NlyexYUvBG
+    lBepFWZBqfzPSL720Ucz0JOnCApwGFq1Tk5AdO2eUEDRl2jY4/QzDI8itJ16lamREZmZAi
+    fdTOq4JHhsam1qQOyJYdmyQaSQJvgHb5axgJGoPYWDiShD54RmB5DkXZlLVfYNFa7Nvcfd
+    4nBZeeYUw8+ckhzo5dL4ZWEI5R+go4pvNaytqcEZ/I8LcnPwz9e7d8izoiiX9dWYoI61b8
+    9tKSOShgnZ5EFgnxe2jVSWsxY6t4tUV664w/XkscSTgI+sRrSRXnnHOMD/vf5BJ8RuQrxR
+    Yi9iIoYITD6sLJKDIfk+6rVGVBVYIIR6PCGtt5zR5jJBXaLX++Ex1EH3I67bFM6NvG6KIp
+    CDuBmPbBeStRlP9edKBOXakJ2UPV+cYu3s+6UD9R3JaQOlR+9aWAsPxazFtG0ZHcpc0dUt
+    ejhfEPX2+oJtg5VeVb/xrXx2jb6g6iWXYmP6/2wk7FPq7TwHd7bsSa5aJO3A
+X-ME-Proxy: <xmx:TjfSauPrdclSOysNh5lPcHwPFpu-AgIq8N4ZFrXNV-qMxLtC1b4afA>
+    <xmx:TjfSanMUJxXDfOXS57dWhl3osncdfoR6X8wpuQDlL-Q08UZWFXFW6Q>
+    <xmx:TjfSaquiL09tv7G0rx1DbzB38LVDLgd_v8dBg9h4DyCf8THjBoxk9Q>
+    <xmx:TjfSak8EsQ2QXHxyD15RbhDDDqYVFBKUP8S_i6s3b_mUa_BN_a-3Ag>
+    <xmx:TzfSaoBPvS7c6nIP5WWGSbmkkhBCMFeCdo9EGpZCzf2ynBIGkUAZ78aE>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 16 Oct 2026 10:40:13 -0400 (EDT)
+Date: Fri, 16 Oct 2026 15:40:12 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Ilya Gladyshev <ilya.gladyshev@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: Improve page refcount scalability
+Message-ID: <atI0edrmeiRuRtNQ@thinkstation>
+References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E333CA0012
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+X-Rspamd-Queue-Id: ED8CFC0004
 X-Rspam-User: 
-X-Stat-Signature: 34c75cahifoc6fyys6gucq314ahafbss
-X-HE-Tag: 1792161596-443949
-X-HE-Meta: U2FsdGVkX19ajY5bNuPDPBtB+kN4tJbQnZXbxDRbWb4O92/WMZ2COkRIhAKzlND9fmD5TtUMY3NA72MT6jtkAeE/1UCUM5uJBlv18grRcQHti8bXMwfLPCtPqob23araJU6gSsQS++pM9YUS5YwQ51lgVpvEXy/knTL/qK4iEuqLDDcvVdakzBfaNsIDFEUGsykUX2GmXkYGPhTNDTiCraSZYtE13AWryEcXRj4qux+RGAICm3pttcSx0ZYYRv04+03lTsqN2gRvbblsuDtf0jICjPXvOmJsk1EkvYdOCqQacDz04VJUSlxcHH5RBIUlZDzhlGbG7/OIO1TjlxLi6b70pF0/pNW7DH4E5s+nMW7LAvzv5irbTYKNeDpMzBBdVlBFicYQrta07bIebNHOMgZI7EMrPRHop2r5QQ1Yg0s1KOfduG+O3GoIDKt/sGjr3puSuTRSIOGMgc4Uib2NMspKQEGAXr7+NY8TsUIcHvoxjQRTltePuzMd64EYcPFrPpEORX/qfppKm72KLd55vcpUPCOmNUKpFqlaFQg+8Loy4ZabsrFM6OI5/vuTMaBAsOqts98ISVO8YigATmAKeahkeow7GD7pQTqj29B66yJSrzetgoLVBAylTaPZ0sFq4/C8EHchFFFs2vZT9z6gVZnh4aRahOGNbrYjv5PUiY0sNmMpyzjZ2R/Y7bAbU+SVUaRNJ6dib2AoJF1TbP77Y8LrjEqqOt9OxRLKTpYTxWRpSQK4ZY4i5eJQMbL5kYVyJ1gLdvQfYN6maUVbAUy2/hQi9aRhx7V1ivYRqPmcVDLkfDlxN0wCL+539q7WS48i1O0hq31F52XMouSSPwJXkjKpjcJVBqhm4PxVR+zJ/zW/KIOsl5oXsY9JgvmKyaifj85jW0jvxl//1u0H3g66GFuJlceh33TGMY1Lr2DO+AB63pDhsNUSC3bsCtQgM5wza6pmgXagSkD7nxErEjZ
- WzmqVqQ+
- 35E4V7eaNn6HxIwuH0i+ubIcUFX77lddfBiz3N5jAQ4XTA39eM59O+OQqjvgwdRdoibu8uChMxMVoSTfwYNNB/XZM0Ireu24cTJ4rB8xpbtyr6VJUj0GozqPehqzYxeg1+w3TddUWfZ8V3Y4q8a0jmkFpy06XclOLpq/qwK7805/fCMHXpfvgykS7VOjTVXhrYIAaJwYOiHNPCd43DCY+6kT36xNeEq0eB+SSyWwtQWMxZF0jAvBWAeRopEMT+ZUC3wPL7upiVSKRn7Eb5bT5qXXAguVYnO+jO1DPl+YQhE7Pm3uprbWvzWNdnW5R03t/hzMnXXlGRTbhnQr8/hUcMPJww5/X/GWl75Kz3AQDeAv1Cfa1razX53zUbJv697boJ4AEEibuwtyEsj2lstm0k5IcFadjrxvjY696qsXRW66/3lluw5Dd+f/t3FSYPWOe0oUpzKDC37WentvRoyBK7vFr9A==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: dt5nxc4k186m3wjucmh7zhsqmmex5is7
+X-HE-Tag: 1792161615-374138
+X-HE-Meta: U2FsdGVkX1+FKU/xy9BfkxOsHUQl0YUlXkzSa3eVUgJrZ3Q4sLIluo9IBde02/5lgy9hkBaruJ1oDRAFykPK+DHN4ATaZGYoF/6JETndesKEKlWwih8Att43eGkzsb6G81wwy9YKYl4JtAKNNgRQq5sIqG9Agw1KUMXV5hPl6UQsA6o55XGCSjtJdHkDiKCUGUaeeusW/VUMI+hxA/36ExrWqbxprO6Up5w+5lol9ystgEI7Yeud86hVdG5n//qS2JF1Tzhojry9PeWbCJShutYcTzQfNhGh0VGldOUMgntbKyox7c4s+QZU34FPkbRLsELA/cggKm3g5bEb1vRoDFSE8cCZcZxpJk9sMeuQ/19uRRZOkk/QOVfPhjxoUg8kCzBjRooG04L3tARE32L8/TLRnJGmiRIr7cPcdsXRoUfDV0pg9XnPYsYFwLILiiYOMfa9Tu5j6nrBGxPqhFb2/EFwzjHX22/iEJbLSohpLF77bUqr/eyssRhF8FlgsQ0YMTF7Qa8AZHjKV8IsuzN9EyTqwoFSVN2DcGVkBiqRn5R12nz0fEkQQJEo/fjTlk/G+DhZqXmyKgHzIyAC5NuiZCbqche4vSUkhR18iP4ii4IEWj7rGjRO/qiKTCHGJ7nOu9iOnbqbH1ow28QSq2Ow1XuHl7myBxSEGztH562covTPb+4NZQw/YRuJEeqeNnt014nV7G96OGNVB4pFTscn2wLrt/rJEAKdMcL6RqWeLLUVyy6Jlqc6pRdUJkCSF7mXhvPVI1Y7sTZn5uc7BouwyIlehCZ2FHbovMiNYdCoP3gRO1pH2K6sePYVDY4EYnIy2ybE0KQm5sDl2ki41nUYeJuUbHB3o60DrOcpU/D5yP0yTo67oJgTVgwKKD0f5uZ19qb+1tLVcHN35TBi48Wc+P/1+VMWZhWMC5HplApFSC5A+XCG449UNKUc+Q7n6nWKXoeg/Cdl8NtK8dpxb4x
+ /1nlDyqL
+ KUmZm8toPg45aEki1XWI0vamz3ljs2o9wxBPM4NoXrQUFBOYpmtXmgXosmaU8KlrXbXTDI3JtKVIXDEbwgDhGDvr5w+iGFs4Tl2PjkiiXVUoS95pRYiTG0RKrtWE5jKgyYD2L1O6paMWR4qZG+HCxgLV8dq+Fv6P00XCPd0y3sdezwi6aPSm8zFjTfYiKJnEw+nr48tn3dLfWqmt/3op4tPVGUP3BljWaWHbZJQnB5+IGIT9M9iZmczjCDziECCavLeDVFyhJYnqo9oDer9AKudw+ZIIth2pHB7WkaDc/SPBi2/rM54amKbouVEETXjnfXVx6NqWQQHQl8FCoiLzNONiaX4zJFDZXFNnVpqUK4GqbGFzx4tdfFGOeY+n7FerrjEbcpp0xxB1GyG86jzkXSclTOOfYOpgD6UeGNyPURZ5qVs/GdAyjTCPNjAIFZIEI7TrI6MybuJgefLPVlPpj0PN7Prm78/n48cDvWdI6utbdLDXCK6ttQZd8lB43lFjxGZuFhqIQhOqmwZSF/LBv5bv5Sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,83 +148,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+On Tue, Oct 13, 2026 at 11:43:14AM -0700, Linus Torvalds wrote:
+> Comments?
 
-> On 10/16/26 02:15, Roman Gushchin wrote:
->> Yosry Ahmed <yosry@kernel.org> writes:
->>=20
->>> On Thu, Oct 15, 2026 at 1:38=E2=80=AFAM David Hildenbrand (Arm)
->>> <david@kernel.org> wrote:
->>>>
->>>> (CCing all people attending the mm-next call)
->>>>
->>>> Hi,
->>>>
->>>> After talking to Roman at MS, he just informed me that sashiko now has=
- a new
->>>> feature combination:
->>>> - "embargo_hours": hours before review is public + emails sent
->>>> - Mechanism for signed-in maintainers to lift embargo immediately
->>>>
->>>> That solves the key issue I had with sashiko: people/agents re-spinnin=
-g stuff
->>>> too fast before a human at least had the chance to jump in first.
->>>>
->>>> I suggest the following sashiko change for linux-mm:
->>>>
->>>> diff --git a/projects/linux/mailing_lists.toml b/projects/linux/mailin=
-g_lists.toml
->>>> index a9198de..ba123da 100644
->>>> --- a/projects/linux/mailing_lists.toml
->>>> +++ b/projects/linux/mailing_lists.toml
->>>> @@ -46,7 +46,6 @@ ignored_emails =3D ["patchwork@emeril.freedesktop.or=
-g"]
->>>>  ["linux-integrity@vger.kernel.org"]
->>>>  ["linux-kernel@vger.kernel.org"]
->>>>  ["linux-kselftest@vger.kernel.org"]
->>>> -["linux-mm@kvack.org"]
->>>>  ["linux-nvme@lists.infradead.org"]
->>>>  ["linux-omap@vger.kernel.org"]
->>>>  ["linux-pm@vger.kernel.org"]
->>>> @@ -315,3 +314,7 @@ reply_to =3D ["author", "list", "recipients"]
->>>>
->>>>  ["fsverity@lists.linux.dev"]
->>>>  reply_to =3D ["author", "list", "recipients"]
->>>> +
->>>> +["linux-mm@kvack.org"]
->>>> +reply_to =3D ["author", "list", "recipients"]
->>>> +embargo_hours =3D 24
->>>>
->>>>
->>>> Which means:
->>>> - Embargo 24h
->>>> - Mails sent to everybody (author, list, CC list)
->>>> - No positive-review ("looks great") mails (default)
->>>> - No other static email addresses that receive a copy (default)
->>>> - No additional ignored author email addresses (default)
->>>>
->>>> I'd say we start with 24h and see how it goes.
->>>>
->>>> Thoughts?
->>>
->>> Thanks for doing this, it's much more convenient to notice and respond
->>> to the review when Sashiko replies to the patches.
->>>
->>> FWIW, I prefer no 24hr embargo, seems to work well on the KVM side --
->>> but I will take what I can get :P
->>>
->>> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
->>=20
->> Is it time for me to pick up the change? David, I'll let you decide when
->> the discussion is done or just send me a PR, up to you.
->
-> I was under the assumption that I would have to open a PR on github, but =
-if you
-> could just perform the change yourself, that would be great.
+There's a regression: the lockless read loses on large reads from large
+folios.
 
-https://github.com/sashiko-dev/sashiko/pull/699/ , landed.
+In a 64-vCPU guest on a Threadripper 7975WX, 1 MiB reads of a cached
+ext4 file are 9% slower from one thread with rcu-free-v3 than without
+it, 64K reads 4% slower.
 
-I'll roll it out later today.
+The reference path looks a large folio up once and copies it in one go.
+The lockless one walks i_pages from the root and calls
+copy_page_to_iter() for every 4K page.
 
-Thanks
+I've added a cutoff to the lockless path: if the folio is large and the
+read covers more than four of its pages, leave it to the slow path,
+where one reference covers all of them.
+
+		if (folio != prev) {
+			if (!filemap_read_rcu_can_copy(folio, index, *last_index))
+				break;
+			/* Many pages of a large folio: one reference is cheaper */
+			if (folio_test_large(folio) &&
+			    min_t(unsigned long, folio_next_index(folio) - index,
+				  DIV_ROUND_UP(offset + iov_iter_count(iter),
+					       PAGE_SIZE)) > 4)
+				break;
+			prev = folio;
+		}
+
+With it, ext4 1 MiB reads match base and 64K reads are within 2%. Small
+reads do not change. The cut is on the folio, not on the read size, so
+files in 4K folios keep the gain on large reads: 1 MiB tmpfs reads from
+one thread are ~30% faster than base.
+
+Sounds reasonable?
+
+I've pushed my tree here:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git rcu-free/rfc-v1
+
+I'm thinking of posting it as an RFC to make it easier to review.
+Objections?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
