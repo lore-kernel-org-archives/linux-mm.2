@@ -4,127 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1789CCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 08:57:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F50ECCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 08:57:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE2EF6B0098; Fri, 16 Oct 2026 04:57:26 -0400 (EDT)
+	id 77AF36B009B; Fri, 16 Oct 2026 04:57:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBAC26B0099; Fri, 16 Oct 2026 04:57:26 -0400 (EDT)
+	id 72B426B009D; Fri, 16 Oct 2026 04:57:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF7996B009B; Fri, 16 Oct 2026 04:57:26 -0400 (EDT)
+	id 668956B009E; Fri, 16 Oct 2026 04:57:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A81D56B0098
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:57:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 337906B009B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:57:50 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A2AE4036E
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:57:26 +0000 (UTC)
-X-FDA: 85327885692.15.8136907
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 50B0440005
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:57:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LbQdULI9;
-	spf=pass (imf01.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B4924A025B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:57:49 +0000 (UTC)
+X-FDA: 85327886658.15.5D6E41F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A8EFC140005
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:57:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="h/Wumc78";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=27Sy7gqD;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="h/Wumc78";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=27Sy7gqD;
+	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792141044;
+	s=arc-20220608; t=1792141067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x/q2L7BS45aTpoyNh7m1QrG5eRubgbrBzhsyuMzS0/Y=;
-	b=kLZji2JSrzjDpA+CefpZxRQl1O4t3i9mKhVyfAvilyo3oOZMzIO538HI/b62QbSiDyn1SY
-	8dTqMb+6wv12LEwUPKcxUqQFcMNGQqQfLdt8930lJWH2p4lH4vXlR0N15ZOVUhx9wQjJSD
-	08s2XHgyl6K0+c5RxnH+Gaw8JV9bmxU=
+	bh=hTHE59qFKdXlGzm4a4lQOx7/fPFo6UGzecCpWrMgCi8=;
+	b=X49l4StoTt7oa5YvdRxn/IBwes4t9+7WvY2f3R80xxbuyMLavDLJSKlnK2ehRTWBMDB66o
+	KL1akdmHFw6jrO4WQPiFM/hJb6gJ2w0jhJTV7pPZRUJND/FtX4qtA+nR8+l2W4/FURU08g
+	1v8r4F1nN+6wTH7kPa5GMMBE7Yy47hM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792141044;
-	b=EMeTLBHT1/uYfT5Be3E4zoI5m3zijuDDMgH3tpRww8YsQNbZ9qnHXR86xCfi0DEcrghDEA
-	+ltP6StlmpL0PX14XoyescwPh+04xzx66MUbCQlPppPjQsLloJqC6tLsRuhLbFBMcBQ2RX
-	Lr6+8CY/z3lZfCvmI4xYblwL6j2OSQM=
+	t=1792141067;
+	b=Z0uy3wKmk6vankCvz5dAyPy5DC9tjKjANrmiyygjjvmnlM6NNr7YnKst8Bak/V/L1na5ED
+	NTN31nkjvCK9GrcZDdtepX/1XL+zxeOxut6cSQbs0JgkJGEI95GXUSxGLOESdURe5UMNon
+	R0WcLTXTSzJx8EvHyW2jNSP66eE517k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LbQdULI9;
-	spf=pass (imf01.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-487049569b6so4284474f8f.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:57:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792141043; x=1792745843; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x/q2L7BS45aTpoyNh7m1QrG5eRubgbrBzhsyuMzS0/Y=;
-        b=LbQdULI9dZPA7fs+MG954Gve/7AMXIjnmm/68/L876D9+LsZARG3LpEH6fIicEVt2/
-         nXAyL1NDAaw9Ps3zQfYJRsoRuOASbri1Xv0wh4Lj1FjOU5JqAxeyDftwEWEzk0DtKKVN
-         t/Ej8PB9+Fexn7oBu8WrvkkZa/xdwUkjyHef3fo1lylzeL2uAecDI1ks6PVVWsYE7JK0
-         781Kh47KSA6wTYrrvDEqn2b8ziMbEIdVb6sgkNV41XebzjUuAiFbZbZNI2Iyp/lVCYLn
-         Qmgh399KhWSB09YAGmluUYbaDC5pkwng/ouKzI2k9i6r31D6bMoMPmyNhzPeJNWqA+5s
-         jMJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792141043; x=1792745843;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x/q2L7BS45aTpoyNh7m1QrG5eRubgbrBzhsyuMzS0/Y=;
-        b=owMmh4o4tHLxjjrRhRrOv/F7qP3v//Eg8eOcQzjmGlq32pfkdeNV5tQA7Y4gxSbipY
-         Z6VP//o+piva/90HFJlc5x4XF/gGNQhw55zZklk/gocKV8TZJPVHqDoQAIpkQPHAQdRS
-         RO7jM2BxH9DS3yKg2WhP9Gm29BAB5nv0hvpwiEJ8x1u7lE69SKT+ObNWgqweVr1PXz2F
-         dD3gD0jzMawA6stBeWkFQvyO/JskMESpAQ69iXMLJKwFqN+0V1BTwJhPNuqPdiEhEYYJ
-         sDm8LUurnsdjv5jSuqCN8xgmQ7P7ZUXmPJDLexa04Qmh8BAI1eiYeNqueAhl/oeHwJOo
-         gDIg==
-X-Forwarded-Encrypted: i=1; AKwUvBz9Rd6y+pgpNSXHbwm3sPq3C/SG9F21Bbz7SEDm6XoxfBn0khAWs8n+i862agfkBwRFMJtKjU9tzQ==@kvack.org
-X-Gm-Message-State: AFq9FYKdvEsR+eGGazOOKRiQrdU++Wn5gYzyPhiNHRGLiTvkXXXOIB2/
-	T5pIHCD2tGSMp7bjE5XMiThWAc5YwzEpK8lVUxxNL/fApeXgNi2tMnF8
-X-Gm-Gg: AYBFou00O+IGZHeQK/uIzBLRwtYWVrNsU4ae/WKvfsrn8HjXfFijkSdaIpyDnYFy6Zl
-	gZpp2VXCLG61QhmtI2QHYVr0sWg1N1j7X6d+9ceyU/fNSOkdks2Fykyh6+zjBYRrsAax/RMKNjS
-	3GrN88oHSMDKlZHcYS5+sFR+WNeiXupnB+z4cALRoPOlVgpDePSrSZ/9Ivlpw0wrSOFFOQbV4ck
-	cl3C/pBGlwy4tdbzK0MR+ELm/z7zL5PMskwv6PpI5MHvQl+yYd/vYrY/Ivl4bgMzvMmKucp2kTY
-	FSZLJnpbTovkAvsHQ5m46m9RCaWY7bJRS9aM5vIXPCodZF57DKR/IrspGP8X0XA86E8lcAUgIY3
-	AnrTVWFSK+E9txermJ6fczDMgxTIuv2kbc6Mvos+gS4ayonGRfUsxbsSsYJfKqlZO2sU8yOv7oq
-	DQpatOGGkx5Vbx8yncmSCtHWErNZNT24a8oM3USb1gyYWEvJzMSLquPGKXaXGQXYCdlHtVY+57h
-	S4XjeiRJBMw1p7icyFzHKghssc8kPot9dRzXrKO8eYoZi68Vtk=
-X-Received: by 2002:a5d:5e8d:0:b0:48d:f7ef:721f with SMTP id ffacd0b85a97d-48df7ef72e4mr8636884f8f.11.1792141042620;
-        Fri, 16 Oct 2026 01:57:22 -0700 (PDT)
-Received: from [192.168.1.18] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfdcc0f20sm3509146f8f.11.2026.10.16.01.57.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Oct 2026 01:57:22 -0700 (PDT)
-Message-ID: <eaeeaecd-f51a-4c2e-8439-36c7b8f6721b@gmail.com>
-Date: Fri, 16 Oct 2026 10:57:20 +0200
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="h/Wumc78";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=27Sy7gqD;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="h/Wumc78";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=27Sy7gqD;
+	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 393B71F444;
+	Fri, 16 Oct 2026 08:57:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792141066; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hTHE59qFKdXlGzm4a4lQOx7/fPFo6UGzecCpWrMgCi8=;
+	b=h/Wumc78Ru80QESHNjTTcEJO785CmYuTkuT125HJa/pU+5kD1btkF6PK76g2g1hxz3AHui
+	chRxam58glQPmxc7dcKU7CNkTrDis3Fn3XNaRWggJHkVNhE+hTBEuwVVvaoaxbGabPPCpm
+	L0ZdRe/BEMWiNoJTEVEwRCo3Vuhzp9A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792141066;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hTHE59qFKdXlGzm4a4lQOx7/fPFo6UGzecCpWrMgCi8=;
+	b=27Sy7gqDeqUeA4H8viYb/lq0RsS7KbG2FHNZqTMB10CXpvDPS1qToRmpwFzFq/9bG0v99C
+	kAaIhf4Ie7u5TDCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792141066; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hTHE59qFKdXlGzm4a4lQOx7/fPFo6UGzecCpWrMgCi8=;
+	b=h/Wumc78Ru80QESHNjTTcEJO785CmYuTkuT125HJa/pU+5kD1btkF6PK76g2g1hxz3AHui
+	chRxam58glQPmxc7dcKU7CNkTrDis3Fn3XNaRWggJHkVNhE+hTBEuwVVvaoaxbGabPPCpm
+	L0ZdRe/BEMWiNoJTEVEwRCo3Vuhzp9A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792141066;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hTHE59qFKdXlGzm4a4lQOx7/fPFo6UGzecCpWrMgCi8=;
+	b=27Sy7gqDeqUeA4H8viYb/lq0RsS7KbG2FHNZqTMB10CXpvDPS1qToRmpwFzFq/9bG0v99C
+	kAaIhf4Ie7u5TDCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2CD841339F;
+	Fri, 16 Oct 2026 08:57:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HXRvOwjn0Wo3eAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 16 Oct 2026 08:57:45 +0000
+Date: Fri, 16 Oct 2026 09:57:43 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz, ayushr@modal.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: memory: fix truncation removing mapped folios
+Message-ID: <atHm7pTzdQKhKptk@pedro-suse.tail5790ac.ts.net>
+References: <e2f76ed117b0c22a26b7688fd46a38c9d035336e.1792114445.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vma: avoid spurious write locks when mm->mm_lock_seq
- overflows
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org
-References: <20261015-fix-vma-lock-overflow-v1-1-01beb245d9da@kernel.org>
- <f5548d05-5aec-42d0-b9d9-c14fb575dec9@gmail.com> <atHa3-KlMPg6oy8v@gremlin>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <atHa3-KlMPg6oy8v@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 50B0440005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e2f76ed117b0c22a26b7688fd46a38c9d035336e.1792114445.git.baolin.wang@linux.alibaba.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: j7x9xadsbsen4dz939zzzi55xjggwfu6
-X-HE-Tag: 1792141044-56469
-X-HE-Meta: U2FsdGVkX18mZSDsRdxYxPpPQG6qXJNuoIDngD5xctPmZnPbO6CHX/scEyJRwfCBJfXBDOLhhZDdhK6MkeqRRUcrFU9LdtAOPSKeNeZQV74mGlcqLJZUgYm5x6zesWrLizIhP4tD83Nus7RHXzCs/92g8SNjDfkH2nnqGxRbB5mUHr0IsmqMFMgmgRccVRrPaFoWnNO/Akx0kzJ2jDRq4MOXe6omc8opjjBAiJDm1YJ1VV2qVh8FWT3DaZnXiVg3dDY6bFhpN4wF6wn9/uPPDTYXklAx8xW6V+GUOqGp6+4D/JLJOSNk5J3jOXd6GrW90ar4nqakQf6EH3Hk63XRSY21SO8K4gFhlXRdpcS2aRRrdtI8xWMbr+IgldGEchjULcMyLgfYaSfRv7P6GQ6DEwGPzfoBk8l9Q4xVukjgt6HNACQRk1hdfziwKHcw+u264+4ssD1qPXoGvOeKAPb3OHDxK8ZwG9fE3CELNxPMx7Q0pCI7nbndwvRv/zgZ9L0YScbKD/oLM9NGpzl5LLX6F8cUNqzNf+CdiCcIenD9lX3QH0LE2kUJn4ldXKd1HCEPZBw2DXDTUQrwCIGRuiN9JJjAPpB6FJ8YwUIylGqaIojZZRo/Ya4T66K7xfvrlNKE1GrwyaqWKnRVvKLCyymy9W9t+DhMsDA9osMQJEtNHcqI7Ehq9ucfCfqVl+Ek2t1joPDLxHAGWREF4sigLWPq3fES1Ex62k3kIWrxC0YqeevOW4AeQLBF9//9hR/nadgyNbDGEDvblal4Ag3T7fd22qthBbkrqLJvV8V0a23dXWzca19txKGued4vZc3yEnsFSe0yMckwb5jKkQkkt4dR6l02zCUsqnNh3k5jA63wUHxDVL0fTNIrzZXL2OFOncg7UM7Gx94iyvpURwxykWFz/tI18NzlDUmT+OQXl/drf0AJJLs7lFmpASUOx8F4pJNKlfblPzsWdePR4x7eYsi
- K6BzNIPe
- OQasU/weGtIRvlC+tT1kG8yG8iVuhd8uyUW/N8sWl0bbaBzBXAbggmoxYvx8iVMR4701b3QqD9jzFE40QXMf5Ue6D1tawWWEZTK1OsW4d5Zb4NawVdDNSCsPry837nqoea3lEBoLj3sPeMy+mu0jmZNW49uY+/OIrTecU4zyfuhs/OjJ8jl8gt6zpljhSAlXP/F4EiehUXQ3q52q6lRqNkd5Jd4Bp1/sm1g1l6RiZbF8DuntzFD9uoZZ+lP3H/LwBnw2/RGVGORo3vCV6be9VMHoOCC33PUY5JErGqPvap3kZO6RKRAWPaNnIVc6pKcLwZ9qv2QrEVzaBQaJAi+Kg/11n0x1u/qmzKXak5xO0x2o5P64RUsxGFGqvwWiRYgv0POClr7R9dNwOlfQM0X8smMYMcJ3XEWJnOyaVgYxzE7kSPltSVX2WxQMz/Y5aGH3pTvu+d+nomAz/BG6azP5s/J0GahRuf7JYEp/9urDgOHlk0q+0wBF/0a0v6Fx0zwhcBesq7yoBrROiZ5BKHq2ghJUdSg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A8EFC140005
+X-Stat-Signature: ajmbofro8mh3u78coj3sgm1g1jjeu5fs
+X-HE-Tag: 1792141067-989082
+X-HE-Meta: U2FsdGVkX1/gS+Udd+N7pNblSGdAVALrZzenZM2bM15MO5qLdwyo3hVHhicdKGVgYoG9J9/iHOCaZXHei5BEwLUyyRUoZOvI+JmsYlzB4UtT/sCaADZuVLEmxYd622UEYoSmAJwVXhnRUPpTTAkDZIuedrm8nYHs7EpGz/4k7tc4rV9qCQFHuHgtSiqQMCFFoc5q826rYBlQGz4+IoSjxZMbSXtjRRD9dhDzr531Ecyy0Ck729wfPGrnJiZpgY9t3aBzqWNI8JeVYimgHQR0jKAtXj+A9YTnfPkIgro7CsJ2YfhmGsmjmb+YzGnE2u4SyFXakp9XiYY++sCvlEmkUWXwl17Uy4FqbmYNogw7qwV50RfLiUXZWsusa2XQX4xzTu8FcSEwNZG4vvJrNymFgcvfVObYr/KGrsmzPTqzJFroMjgy0PO/0tV0k3TuQhKQWWjZKXq/lPIAgyoaIAjMC8h8U0HQoMf9W4Av3f44G/XWIAr+WI51n1uUui5BNcTEeziLeD3YRzUmWyufrRF9hFRt9ermsnzGd6vZxqvaLRH7hFIUrxF0nBp+38+Xg6ZXyzdB7DU+nVtm8v9GWCw+IrYJHO5K+HAZMojTUbDwa3mgsSJo1A2TgCqmusR5OzoqJlqcG+Hn5B3sx3aln1m2aoAKvSSb56rFsnjTR95p+mIyfxVBiqcjSp1JIDEFLvkw8ev95I7WLjrsJ9+PttDPbNBBu+FNOQsnqh1BuEfHGpU1Bl1ak0XAm/OE/i4Z12lGyJ8XSJjlxw3zAuRIPDdoMbDCEiuYxuwWlDgTILxxTfNfoRx3NS08ML+OR+FObMMz6QPQp9IxtADcdMSv+2YhChA0xoiFP2/K0BjxuVEb0KBfG4bEHHiTfk5fR/0TxoQOagI4lNkPuMC4XRrBrA0zZAs6U0kqAbAnE+KW//eVNlOFWS/CENGeaojFaWt2SUSVIAfFblq2hZInG0GNWbp
+ KoqTYzij
+ 5ikxImih8Py1U8muM8i8drpu3NtKHX01Tz5DiLr9UFx8g8U7uSLscYUoqFdIgr/VzYoz+F4jQPgbhGUY+70z0s6Hbw+VIWKxuZcKQzbG2k4KYv34iNxzG4UV657P2jfFCiwrrl46c6VbHgTCf7JijvV3lE5gJ7iVgH8g4av84b1DJODQ3ML/dHO245u7qzv4wwmZDGLPzVxMFO82oTYrYmU6++G2uCUorJWTcZ20LTvoGeeXCJltpy+JlWdPluAoyoar6JsTBLJwPkW+tXj/pcsJPBN0hKXHfeeQNPo+z4FSTb1KEhHrmtdE9xVpFxwhmt0+/TnCPJ0+0t9Elx9PcFvMte8IfxkRHGzPoIlUHJnB00Vot1PtdCoaD+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,29 +131,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/16/26 10:19 AM, Lorenzo Stoakes (ARM) wrote:
-> It seems likely that you're using AI to generate these review points. Please do
-> say if you're doing that, thanks.
-
-yes, I used an LLM to find the commits I pointed out and check if my
-reasoning was correct. my bad for not mentioning it. anyway, I reviewed
-everything and checked that it was correct.
-
-[snip]
-
->>> Cc: stable@vger.kernel.org
->>
->> the parity check relies on e5e7fb278e59. before that, mm_lock_seq only
->> increments on unlock, so locked values can be odd or even. should this
->> be limited to 6.14+, with a note that older trees need a different fix?
->> a straight backport of the odd check would ignore write locks taken on
->> even cycles.
+On Fri, Oct 16, 2026 at 09:48:08AM +0800, Baolin Wang wrote:
+> Ayush reported an issue that shmem/tmpfs folios are still mapped when
+> truncating them on production:
+> "
+> BUG: Bad page cache in process ...  pfn:...
+> page dumped because: still mapped when deleted
+> "
 > 
-> I have a plan for older kernels (just make the value 64 bit...)
+> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
+> branch, and I got the following crash info. From the dump message, we can
+> see that truncate_inode_folio() is really trying to remove mapped folios,
+> which is incorrect.
+> 
+> "
+> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
+> index:0x3880 pfn:0x191647
+> [  189.171995] memcg:ffff0000cc073d40
+> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
+> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
+> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
+> .......
+> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
+> [  189.172026] ------------[ cut here ]------------
+> [  189.172027] kernel BUG at mm/filemap.c:155!
+> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+> .......
+> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
+> 7.3.0-rc4+ #277 PREEMPT(lazy)
+> .......
+> [  189.183986] Call trace:
+> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
+> [  189.184391]  __filemap_remove_folio+0x34/0x160
+> [  189.184633]  filemap_remove_folio+0x4c/0xb0
+> [  189.184859]  truncate_inode_folio+0x34/0x58
+> [  189.185087]  shmem_undo_range+0x220/0x658
+> [  189.185308]  shmem_fallocate+0x2f0/0x470
+> [  189.185527]  vfs_fallocate+0x128/0x328
+> ......
+> [  189.187078]  el0t_64_sync+0x184/0x188
+> "
+> 
+> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
+> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
+> MADV_DONTNEED synchronously releases the pagetable page before calling
+> tlb_flush_rmaps(), this could cause another thread's truncation to skip
+> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
+> as non-zero. A possible race scenario is as follows:
+> 
+> CPU 0                           CPU 1
+> shmem_fallocate                 madvise_dontneed_single_vma
+>   unmap_mapping_range            .......
+>   ......
+>   (filemap_map_pages() remap folios)
+> 				  zap_pte_range
+>   truncate_inode_folio		    zap_empty_pte_table(pmd clear)
+>     unmap_mapping_folio
+>     ......
+>       zap_pmd_range (saw pmd none, skip)
+> 
+>   filemap_remove_folio
+>     BUG_ON(folio_mapped)
+>                                     tlb_flush_rmaps(remove rmaps)
+> 
+> To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
+> to after tlb_flush_rmaps() and use sync_with_folio_pmd_zap() to sync with
+> concurrent zapping, so that when we find a pmd_none() while unmapping a folio
+> without holding the PTL, the folio's mappings are guaranteed to have been
+> removed via tlb_flush_rmaps().
+> 
+> [1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
+> Reported-by: Ayush Ranjan <ayushr@modal.com>
+> Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
+> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-okay, I didn't know.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
-cheers,
-jose a. p-a
+Pedro
 
