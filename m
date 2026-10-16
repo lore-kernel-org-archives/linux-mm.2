@@ -4,125 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E97F7CCA464
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:10:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25BBFCCA464
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:12:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9A2D6B008C; Fri, 16 Oct 2026 08:10:08 -0400 (EDT)
+	id 284F46B0095; Fri, 16 Oct 2026 08:12:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1D656B0092; Fri, 16 Oct 2026 08:10:08 -0400 (EDT)
+	id 226C26B0096; Fri, 16 Oct 2026 08:12:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A96936B0095; Fri, 16 Oct 2026 08:10:08 -0400 (EDT)
+	id 0B0886B0098; Fri, 16 Oct 2026 08:12:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D9416B008C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:10:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC7D6160442
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:10:07 +0000 (UTC)
-X-FDA: 85328371254.12.4A268E8
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 090E640008
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:10:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q1Apfr4b;
+	by kanga.kvack.org (Postfix) with ESMTP id C9E6F6B0095
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:12:12 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5CFCB1C3A3D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:12:12 +0000 (UTC)
+X-FDA: 85328376504.04.55EA720
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 64565100002
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:12:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VirRytr2;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of chenhongfeng0212@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=chenhongfeng0212@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792152606;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792152730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qX4T5VNEZDCvos4GslZo2eKv8+vc1OatU8zENizVPSM=;
-	b=cyp0dCJQKYi4nqQCBEw3y10VEbIAn/VBxTpfke/8YkU2NiI08Fa4zckZI6Rj2YBQdxjqDo
-	QPiOsCRN3ojVo68JNqIOKNk3KActueH8mNLIvC1FYistuL3fEgURRXfFWBhzkiJb+W2P9h
-	7Ueo9GU7piySJJEcLD+GattiL8sTcp0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q1Apfr4b;
+	bh=6t2J8EE3L3nlE7G0BZMfNQxPefv2h/6dn0nY1OvRibM=;
+	b=kt5X2GSo1r0LWK1FpmTipahRF7KG8a1e5hXZiJUj6w5ZlIrJ2fRiJ9Di1jj7WMIDG9DVbY
+	l/O6LZ5Sdm1nQ3y4qci2RD3zaWr7UUfJc7mqTjLx6CvdU5OY8IAvjkIGVe9Jzkz2Qqes/U
+	04kgwo3AgrQe/yDaiYF4kCCDNLo+7Lc=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VirRytr2;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of chenhongfeng0212@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=chenhongfeng0212@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792152606;
-	b=5u8OEhaAn4EaLTJzeqGRgOdqO5DupLlLKX7dgBuedvbiM6AG1ZTTnL5m8Jinbl3ogPMlBl
-	zsnSZE5LXwQ00UMemk8437nJf8f8AxaRhErFbyHYkUmwAgmLXA6Yu2omAzDQIPT/lcaLtn
-	iM3tYBZNbr+kCMDMD9HangIxQfTVHVo=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3ac5b090d16so636847a91.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:10:05 -0700 (PDT)
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792152730;
+	b=LU+mlBQyb4cBO8U/ulnk2UA2L/FShu0MKwXT5744ANFTLEuy9ibliXWWYq2npR6NgotNHY
+	0aBBLox8/2HhGH+HbibiVJw4242wLe1MB7xNq8q87/AnNHZRiSe05zirIoV1mgSSafHkvb
+	VZ8Q6Zxl5HSfto+zH9Axw3AgWynifno=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c2e69aa07c3so472716766b.1
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:12:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792152729; cv=none;
+        d=google.com; s=arc-20260327;
+        b=klNw6B+8FZtXgDLEJTK4us2nhsSLMj5AyfnFPnlbeZaMXI7gjEeGSuA35iE998z0yl
+         uKUvnZOquKSnNLNq6zfS1CAKrIqIVvvwgd1vIw5+4FevC7FytGQ7TmEy+VO9gO3UG+Uq
+         yL746X+5VonTg124AvNLbcBjIls3nagikJ5Ct1Xp7fl1ZZ05YD/RfHsoO2hmOPa83C5f
+         gVDIdLzc8zVLbd379kPndTG0w+o9oIDHVNZY2umTApsSIvyt1JTaNUG97FFEoV0ZZdVE
+         AE4JFQdOWo6NqkTLc8fOwgHVh5GalzYlTk377gx8KiR4SNpnRk7HmcBmmxNCvb/raiDZ
+         ci5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6t2J8EE3L3nlE7G0BZMfNQxPefv2h/6dn0nY1OvRibM=;
+        fh=PgNtgxP/SX5VjCwudyYGoax+86hhuBdUIf/IRhtEjlk=;
+        b=eVugnaBml5PH8C2LgArvHnnquoml/8SWgy4YCg5gcjx6lJbYBJA1BctYXjY5bvGJLt
+         bMoPMCZviQ1YhJL771fS7CEtAa0AJWgKPIRxbyZz2p+GKkX/vUUHCtlh9NQlifi4MXlC
+         yibwB/5WMxeR3tgfq9tgamzhoLlNWhv+PnBOYjh6j2qh6QFd3duKr7hCJv00HNWiHbI4
+         41uviyuYjQcij8YHCZF41JHPOz/fJrto2ozo1AH82OMeXDKnmr0hTA5/oWUdM/XuHR0V
+         n/D94RhSaYCcyZgcmPZvAyfWSFBLBN6/XVTzecg0MVwDBsz+kkT+glVwbCwOGyhwwdM1
+         hbLg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792152605; x=1792757405; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qX4T5VNEZDCvos4GslZo2eKv8+vc1OatU8zENizVPSM=;
-        b=Q1Apfr4bWdQ8MXMB4oU5BsJ1ZrjJGYS4NR3n/2oM838k+hgxFwQHNDOnDdvDFdK64C
-         h9D2YeOWTuW+dYVrGHtQdbo8D19PUCwir41t6JXueC9gdWy/TP+FXmdRyB222m1h4Ohj
-         1lz0Auz/w5n2O/KhS0lE5yy100i+VxsgIcZz2v6VMAt2I05OQtWOzwvVJv4nOKVVI/LM
-         iYYfQY+Q0e9x/LPQXhk6prfzVJZXGuE4ib/PrcxBkO1VifCjUADegzwUccQbbdp6498d
-         6EDulaWSYAXI1gHvHdqawRrnbFBbAAR7qvsmRraC67y7MyXncYOw3M4QgNkrh9wluHfx
-         EZ4A==
+        d=gmail.com; s=20251104; t=1792152729; x=1792757529; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6t2J8EE3L3nlE7G0BZMfNQxPefv2h/6dn0nY1OvRibM=;
+        b=VirRytr2rM0WLH2+XORvxFo4hDxqelVvNSTahYaCXedW6nbf687S63v+P3owPuoRpT
+         NE8iSM2lZoKyWZCKX0uSsAstJOJaOrum8Bv5QhPchfGnIWQQblCXoAwNAWJFLYi1fbWp
+         eF+27RHznw0nlOldMYAz1HWiM0i6NdCV/WDsAsNcVvSR/956WloljR/j2hbenUQXSHPP
+         xVcpZQRpOTv3+tVY3jFelz1vdEPZMi3gFKymuLzNX77hLYxFq/2dbCAnL2AYc+VzEvYG
+         GYXQMPfq0rj2zuG2SA2QE02odclj26vXYFZzskxlGkfGiB3KhOazAfcVswWPrQDQEch8
+         ROeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792152605; x=1792757405;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qX4T5VNEZDCvos4GslZo2eKv8+vc1OatU8zENizVPSM=;
-        b=cCPQKzWGXqFgRWlIrAH+aZF2lRDwLozSEfi1aDSPWZyWzueIAzkcLLV5s9RyaDl6vg
-         jkPeXzje6LH61F6kA/9DcCSWzH+Fq9bJgx8XUsVsqB1Vq2Iqd7bAsviG5TR+qEL9uEjz
-         lRe3MkXNRz4XWmRt2LhYvkd+donxda2MIr21KTL5mBRsoVMQcWO5PAcvgF1irFrPLoN5
-         gCub13wz76gh1jBC5rOTcEvPe4ZEYhvfKaGlZADUTjI6sFyL0YnhXqVsHLCE9PQ3mseO
-         96E93pdbUPwHTl0ZSDT59/5CwUwG4XHEyRufAK3HyS14P8eB7xO1aTNclcU7w29uOKp3
-         OWvg==
-X-Gm-Message-State: AFq9FYIv146DknfgwcSdvrjyzA4ecJoytQuFNDKV5TqljkOc+LUCgKVw
-	4BQMzAYryDxCNoLvlFTUEuBKzMnr3kngyqISshQqi4+xrL1k5RaTTYoy
-X-Gm-Gg: AYBFou0r67/1HXXsDVdNhL6mcKpTHsDyHGBLb1shaoW+w69dd2f0Hg8gSUSLeIBhWZw
-	OqsXxkpjjaFzcVHdgOGqH5gGanETZPi36VRhSCRV8jxpYIX3vvseSTnk56w9r4eiCLsuc5gVNpo
-	4lGvZBsEHsKTQJR0eCiZCwiJ/6MNSna3u/VNvJXylBLHxIM8WZQ3cf1KGNrAohUHcavf1Fulfxa
-	SMW2etY9UmEZCbfnOrZ3/L0FtkUxcGLN+wdvNsG6Ki6aUPwKjEUuFWJQYePbarCB3jbY9R1gWbE
-	u/WcMX38wf3L1VZIK0YIRTDztV+ysNOPtkDVg5STE9jkFGYFFdnMt/EtWCNRQqOhYzgt4BfFnI4
-	UZpgsjV+CnGcEqZPDCJjXlGlZpfCUYCpplM2CRQc8S4xratsSsctPa/iWeSkuh8J1L8Vde6upU9
-	f3VBUXQ+bebcahNS7WnYOcxlb8u6bhIP1JFFIvcVcI1dAbRXbGMfW7ZL6I64aXlcU+nbVDtRii8
-	R8elnQVF3E=
-X-Received: by 2002:a17:90a:2cc4:b0:3ac:36c7:c144 with SMTP id 98e67ed59e1d1-3acbb86e111mr1340061a91.28.1792152604741;
-        Fri, 16 Oct 2026 05:10:04 -0700 (PDT)
-Received: from hongfeng.mioffice.cn ([43.224.245.240])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc48f4cadsm3908912a91.12.2026.10.16.05.10.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 05:10:04 -0700 (PDT)
-From: Hongfeng Chen <chenhongfeng0212@gmail.com>
-X-Google-Original-From: Hongfeng Chen <hongfengchen@xiaomi.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <baohua@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Wenchao Hao <haowenchao@xiaomi.com>,
-	Wenchao Hao <haowenchao22@gmail.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	Hongfeng Chen <hongfengchen@xiaomi.com>
-Subject: [RFC PATCH v4 1/2] mm/zsmalloc: defer object free to per-cpu batches and a drain worker
-Date: Fri, 16 Oct 2026 20:09:26 +0800
-Message-ID: <20261016120927.3191690-2-hongfengchen@xiaomi.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
-References: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
+        d=1e100.net; s=20260707; t=1792152729; x=1792757529;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6t2J8EE3L3nlE7G0BZMfNQxPefv2h/6dn0nY1OvRibM=;
+        b=BpAx/4gURaAK5IrGNB0vVkwZpD90f6CibMVyGbrwZ7QXPDi6oZNWGJpQMgaGQHIFta
+         d4CPxItAIUPxwwJ1YcBqf8tw+8kI0tFFzTu8DGdOmJQUZRE5aWRRKeHkfY3sWWpL3FhK
+         CuBD+rRPHSdFdet/b2vZxYksH0CEvM+wQ0hED5h2l19u3wdqmQlI6HGfsohvdgij4ohQ
+         aZxYsaBH658bkfUVcvYuFoASXqjPQ9kMhvdsejkBl7eykLBXlAXg8flwGgV8G03wzgJw
+         bXZwXcnJIruG94YoUvrLN7+LliGcaQH9+gJ2nHX6oVsLreu64TCAWWekP6AMWKNhtNGh
+         zbgA==
+X-Forwarded-Encrypted: i=1; AKwUvByfC+WVjfDg8rmkcZY/PQF2iNVoFlYyLJwsY33K1Frsbvdm8g0/NUYn9gS3C1R2azhDftbMsc7Dkw==@kvack.org
+X-Gm-Message-State: AFq9FYLo2b/s1F5GxDNHVkEE2/8QNPTrJOxXYZSQLn0G0iJg4DGN1BJR
+	/7h3G+Adqr/sKRIFYIZWqRe2UZtsRw+hLFg4iZxIV+uffvLb0bstppJ0u0nhEE9LIJydP1Y9C4x
+	F1lN4fYnkqAO06TeNbuiSTcRMUr/5Yiw=
+X-Gm-Gg: AYBFou1STYDM0onc5IXVX9QB6RFNjIhVmgGU/WmIgwDOkCaqd9yRXXnm/xxc7cejxRV
+	jnsIw0WM40eTZVs02N7WhN/ERuY8cwf6Xjg1BHHPdFEGKyHBqFvm4u0Iky3qibShbrrqMqu85m+
+	N8kt7MuoK8KOaRNSQGxcpmFd23KgH2d/m64sryFbTwBZxHYiBad4rTI0pUyS+VICfk2Fzb185dk
+	4tHEKnlV2vR+pqShFFX3Tn9J0UTtT2T1sqD4+TUjP4FgbhTyLvLQFNrzz2gVRAzqrETYgP9AMH9
+	0LFnjSyKwsT1URMu8k8PU6ke2A6RLFT4llo/1qwCpZNiXAQBKauc1Ds5R+KnrusmWJeWkAyUtsx
+	1M9TxwaczCJpZ
+X-Received: by 2002:a17:906:ba90:b0:c41:1e13:4ba9 with SMTP id
+ a640c23a62f3a-c411e1365e0mr83342566b.6.1792152728681; Fri, 16 Oct 2026
+ 05:12:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 090E640008
+References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
+ <20261016084256.12955-1-baohua@kernel.org> <CAMgjq7AtuK22FsuqvGRLVZ2eWrp-N4qQ_MHoXsXDkVBprekdDA@mail.gmail.com>
+In-Reply-To: <CAMgjq7AtuK22FsuqvGRLVZ2eWrp-N4qQ_MHoXsXDkVBprekdDA@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 16 Oct 2026 20:11:32 +0800
+X-Gm-Features: AclHuK-z6qzMGmKAbzLQtij7nv772LAigQWhuT7JqlQxVqOPHcB0PjAQdUtEGDA
+Message-ID: <CAMgjq7Ao-1q5r7KtwV-UyvuP3hSazkfr3BbmKL+fv=dSDaU2Cg@mail.gmail.com>
+Subject: Re: [PATCH v4 00/17] mm/mglru: frequency guided promotion (MGLRU-FG)
+ and flag cleanup
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: devnull+kasong.tencent.com@kernel.org, akpm@linux-foundation.org, 
+	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, 
+	cgroups@vger.kernel.org, chenridong@xiaomi.com, chrisl@kernel.org, 
+	damon@lists.linux.dev, david@kernel.org, dev.jain@arm.com, 
+	ehab.ababneh@intel.com, gourry@gourry.net, hannes@cmpxchg.org, 
+	hughd@google.com, kunwu.chan@gmail.com, lance.yang@linux.dev, 
+	liam@infradead.org, lianux.mm@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, liuxiang.277@bytedance.com, ljs@kernel.org, 
+	mhocko@kernel.org, muchun.song@linux.dev, nico.pache@linux.dev, 
+	nphamcs@gmail.com, qi.zheng@linux.dev, rientjes@google.com, 
+	roman.gushchin@linux.dev, ryan.roberts@arm.com, shakeel.butt@linux.dev, 
+	shikemeng@huaweicloud.com, sj@kernel.org, surenb@google.com, 
+	tz2294@columbia.edu, usama.arif@linux.dev, vbabka@kernel.org, 
+	vernon2gm@gmail.com, wangzicheng@honor.com, weixugc@google.com, 
+	willy@infradead.org, ying.huang@linux.alibaba.com, youngjun.park@lge.com, 
+	yuanchu@google.com, yuzhao@google.com, zhaozhengzhuo@uniontech.com, 
+	ziy@nvidia.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 1595wh34fufeyewcozxumpqna544r5gq
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: y4o613rnf3f1grhfknzz4fto1itrx5qr
-X-HE-Tag: 1792152605-555416
-X-HE-Meta: U2FsdGVkX1/MTnlyONHGk4JQw0URGOgpLtueDcr5NNcnfl49RSTD7DTzlMa9aP1OHl7ep6GAdqrAWWAhaYaBKb4n1ZUVl/wgmi6fRxfoVeCKAycF7+SSPA7crmDnjYcMzhV/7HQzMTZfz/waBTCAA5mdpB4u29ezl6X39VsivdejiaRv9LEKfNbv8RH5ZuYZyZWEZMF9GC30buW24saFV/ojZIBT1L3RyM2aUb5AWiy3H20c3rhQRU0Gd7SW/Utml9JfFY6uA87isTszN2SgB4bhVI6BPhFEOGXtqjspkL6OLZ8WAJk5WxYGKNHsOf4hQD81B1uw9l8yJcunfxx/kcntt6nLMnnKfHVC7/kjZacLk9hAD8+utn3c7Z4dquoDcZfblzaVcDErfBTZpGO+EcV1CKSgrMZ4h0X1joNx8nJ4YyI11fKTcm6Bq75kkWcAs0iWvWyE9hxvtGJ3Mid2HvjV1WXiKF9QPUJZUjP7jZqh2sm8UfL2dhn/taGfmE+NtLZcKSBuqTb6126EniRYm1YOF04VsLU7EYzLIZNpOCMaslYV1RwiloifIAGuP6xNpHUrYiVjEq88aU+26N3ezmUXdVnulc7qTJDkzorEo2z8NgaOB5nWC67IzIYf3PP8rMiRtjpqn4xMs21jq0NTZTep5d/E8tsNZV55eh71+fyJH40UUNCYFsdv0av94i3YRjUGSJDCsK2xtduDu//+bRn3f8drFtPKmwodhkb2DlzUKs1kT5EEqVzfblbjKPEuTmCbQikWyxAboFhznNXQbFCWMAijlMjlXdSjDco/WpWVqhsxyyk5q/V3dcZfoIMGINSfh2czjOTdYDlw8imc4IwbpVWqSLcBaOq6nFgM01VIXP4K2SzUvc60BZUMhg+47zKY+V61o9KxoAZVlgFrZw1MPc9jAEP5gL1FObkOeR+6e/8Bscj/uCEFqjuf7v26HFA3LC6Fdxwariaw6ju
- OVZjYSxV
- O6+1jzFvZQ0EPfsENvW84yGN+IfAzqcaqDIdNCcqzczFmne0HmH6IOsC85N0XICQgvrix/hiWmOyJpQZMAJzJhoace7y1W5BIiA0DD0vLwbkKVVsJ1BXXKWo+mKEar+B/xaOm/HWOvo3OWpLDQJujZH4GNOxMjQaYUbOq4aKrwPXEHz5iUplJtUucf8Js1Ro0xemLFNd8XeoYzmOf0mono0L4/m+a38sUBt9On6eyTldzQyM7R10ncdJQDDtcyygufd4xwApGf6LJzKIQvot+U8iquPNXIIJ+53NoER0JqIh/GaP8YKJTUVw/h+o9suPv4NJSleGaXfAjeM+5/KQNXtRWapf74FOBPZgANNmVS5/8W/0G3ELMNOOLJQ==
+X-Rspamd-Queue-Id: 64565100002
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1792152730-791206
+X-HE-Meta: U2FsdGVkX1+U+6M0jBnCbTgLQMX47oaH0R4MWc1XiUZOmPhok4wyoUvQ5REi3LRW0HYduClWmJLAnEdx/EQRJpqXOFtF6G0NjMdiwyKUtVFfDOKruU4V1ZMlQJMaGLu/AdqFzP6woWCPVkedo1c15+dob8tFTgKhGu78LznHEwZ7dF509ENTuzygIbZYFQYfSmJjhK/H2iX9cF+eJumcCwdCAi0yVJXOXikKOSMUZLMx+ATz1C7Zimu4EnJb8rVsLDKNNsNw9aENIZ9r2yqTTcF+HS+/XapqImTnsaeBHJCbp8eA4zVA4AbXcLBZeQ0c3MmK725YPFMS0PnmenoGRQF+faLrkspj8j9NlSXCRqjUmjLzvIOVSZeN8HnYBEswg4Xnsi7DmPTIicT668afs9vOp1XPNGEUrj5LcOTpD7PCz/1zEzP3S8teFeh6+Iu/dm+3QnbLUP6IbuOgq+9rQXZ+lLhm4ZPn0Dwb7asQVHa8yPpNK8Rtd9VxiX4SWGTjey1miSxYuOpZJQCNOAyJe4GcBqZK64snDuXn7LWMmoKakEiR5wFXZNyPKJPIxMcaLwb2i8BunFO2jN2rj7M+673aJEbDY/3W9zYg0eUohI1qGDVtJmzHqzOfvZ0iZ+G9ohGcV1MLQffezPJbtu5lvrAw7CXa1X5Fo9GEkrMmu8wPDLua7C1rQN7O+xrq3uzi0c2BUBRrv7v9L/G1OsejMm9zVOQufpjmVbNwG3NIFBFFFGVsPgwtPz5DIuN8WTGVLP2Xx5o1yhF+kt69+otLsO5/J496x7W0IJZKcimuxzkjD/LmlwM94WaOkjKHWkUdTqQds9WzVdqvEBP79fAKTxS9c092Xqxw1kbvjgSoE272wlI92JTk1fQB2FnJJAGSRyQbqDEisZnzyNbgJMDY8qB/JD+WRQu/hPzgMk1vlyRW5A+0u+kK37/9QGka/8TSbNYLGd/2ixtl/CG32vN
+ 1aZ2YgRr
+ 5LrVkWGvMpH9fKKxparKNGPMSKHkDGWqWibCgSNxxidwUxfzrQW7L+oNAM34L01XXr5EMihR+3sfNI74OBsA6wd73Zt0oASWhmiOLPw5A6Y+VG4bdwVevpTCM3DOOASOzz88E4nbYc/88l8E3Lu643qecoLBa8vWkp+/euqSelsGp3GRlIZVCCvljnym6t7gVEx0vk1Vq0N9P6hxX93jj7lUazYmvV5twTbf7dkIqUYdN7QzrU7vM/uS82dbkfErMjuiN8mqy0zQ4jPnwEoFV7jT7ItN9UW+fuM1Rog88DZGT6C7pvN5qvpFnNEsC9vvaO/f2zatonZN4DGDDwiahP/VTKRJz0+lZz+0mZp7rrjvZsqCMcwZBfx9Tv12RcyNOKQ5ALgmQfnf8Zl6PSm+nR99sSfINX3K/54OBCD1pBeQcC1n47w9rNkOBJpbM7cqfz1BvJxh4UliDQSsrohQ1sn31vjPfxcdVbh2c/kcSEjXT3uLuiLs+nwyP1SVPXlw4tbi/Cy3EYFphfRNOXfGOsKNJT9SuBflNsGvhpyYE4KyQAw2rQXeVOW0dE4RbQ7ENEGk1LYwww0mff1ejlVIH4NOQW6UFiAYziXrwhLxbnbPkVCX+EkU3lsmNVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,349 +157,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Unmapping a VMA full of swap entries makes the unmapping task free every
-compressed object itself, one zs_free() call per page. On Android this
-slows down the exit of a task killed to reclaim memory.
+On Fri, Oct 16, 2026 at 7:43=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Fri, Oct 16, 2026 at 4:43=E2=80=AFPM Barry Song (Xiaomi) <baohua@kerne=
+l.org> wrote:
+> >
+> > On Fri, Oct 16, 2026 at 2:15=E2=80=AFAM Kairui Song via B4 Relay <devnu=
+ll+kasong.tencent.com@kernel.org> wrote:
+> > [...]
+> > >
+> > > LevelDB Scan/Get
+> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > I also retested the LevelDB benchmark from the cache_ext paper [5].
+> > > Interestingly, mainline MGLRU already beats CLRU on this one after a
+> > > recent change in lru_gen_folio_seq that bumps new folios with refs =
+=3D=3D 1
+> > > to the second-oldest generation as discussed. That change accidentall=
+y
+> > > gave random reads a higher hotness level while making sequential read=
+s
+> > > much colder as described before [14]. However it's unreliable and
+> > > incorrect because it depends on LRU drain timing, and hurts some work=
+loads
+> > > as reported, or where the sequential part is actually hotter (any wor=
+kload
+> > > involving hotter large file and many small cold files will be affecte=
+d)
+> > > which is reproduced below.
+> > >
+> > > This series improves it while covering ordinary workloads too and sho=
+uld
+> > > fix regressions:
+> > >
+> > > LevelDB Scan / Get, Throughput Total:
+> > > CLRU:         4708.3 ops/s
+> > > MGLRU:        5026.9 ops/s (faster than CLRU, but hurts other workloa=
+ds)
+> > > MGLRU After:  5179.2 ops/s (even better in all cases, and no regressi=
+on)
+> > >
+> > > The hot-sequential and cold-random workload can be easily reproduced =
+with
+> > > SQLite and grep. SQLite continuously scans and looks up a small hot
+> > > portion of a DB file, while grep iterates over a set of small files m=
+uch
+> > > larger than RAM [6]:
+> > >
+> > >          SQLite scan & lookup time:       Grep iterate time:
+> > > CLRU:                       14.51ms               13281.37ms
+> > > MGLRU mainline:            567.05ms               13694.47ms
+> > > MGLRU After this series:    10.58ms               12930.43ms
+> > >
+> >
+> > Thanks, Kairui. I'll do a thorough review of the whole patchset over
+> > the next two weeks.
+> >
+> > BTW, do you think we need a quick fix patch like the one below
+> > for the above problem before this patchset, so that it can be
+> > backported to stable? I assume your patchset is too large to
+> > backport?
+>
+> Hi Barry,
+>
+> Good question, I think we can patch it first.
+>
+> > From f9683205d2ab6e3b185022d7d5af3496dfe5f35f Mon Sep 17 00:00:00 2001
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> > Date: Fri, 16 Oct 2026 11:48:06 +0800
+> > Subject: [PATCH] mm/mglru: fix using folio_mark_accessed to replace
+> >  folio_set_active
+> >
+> > Commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
+> > replace folio_set_active") tried to avoid over-protecting
+> > fault-around read-ahead file folios by placing them in the
+> > second-oldest generation instead of the youngest generations.
+> >
+> > However, it abuses `PG_referenced` on read-ahead file folios
+> > for this purpose, potentially coupling their handling with
+> > normal syscall-based file accesses that also use
+> > `PG_referenced`.
+> >
+> > This could regress some workloads, as reported by Kairui Song[1]
+> > and Ehab Ababneh[2]. Many thanks to both for reporting these
+> > issues!
+> >
+> > The long-term fix is Kairui's MGLRU-FG, but in the meantime,
+> > we also need a quick fix that can be backported to stable.
+> >
+> > This patch reverts all of the original commit's behavior that
+> > abuses `PG_referenced`, while preserving the semantics of
+> > avoiding over-protection of fault-around read-ahead file
+> > folios by adjusting only `lru_gen_folio_seq()`.
+> > Specifically, fault-around read-ahead file folios with
+> > `PG_active` set but `PG_workingset` clear are placed in the
+> > second-oldest generation.
+> > Activated file folios and refaulted workingset file folios
+> > are still placed in the youngest generations.
+> >
+> > Build kernel cases in a memcg shows it not only perserve
+> > the benefit of original patch, but also even improve
+> > performance further.
+> >
+> > w/o fix:
+> >
+> > real    1m49.094s
+> > user    25m31.484s
+> > sys     3m40.959s
+> > pswpin: 662112
+> > pswpout: 2504415
+> > pgpgin: 4424336
+> > pgpgout: 10355273
+> > refault_file: 359626
+> > refault_anon: 670724
+> >
+> > w/ fix:
+> >
+> > real    1m48.913s
+> > user    25m31.639s
+> > sys     3m30.875s
+> > pswpin: 689815
+> > pswpout: 2689894
+> > pgpgin: 4422659
+> > pgpgout: 11043464
+> > refault_file: 326566
+> > refault_anon: 697138
+> >
+> > Revert original patch:
+> >
+> > real    1m50.044s
+> > user    25m37.137s
+> > sys     4m4.493s
+> > pswpin: 1349087
+> > pswpout: 4317933
+> > pgpgin: 7083597
+> > pgpgout: 17602735
+> > refault_file: 337676
+> > refault_anon: 1368542
+> >
+> > [1] https://lore.kernel.org/linux-mm/20261003-mglru-fg-v3-0-cbd4546a5bd=
+9@tencent.com/
+> > [2] https://lore.kernel.org/linux-mm/20260901180704.168106-1-ehab.ababn=
+eh@intel.com/
+> > Fixes: 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace foli=
+o_set_active")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+> >  include/linux/mm_inline.h |  8 +++++---
+> >  mm/folio.c                | 16 +++-------------
+> >  mm/vmscan.c               |  9 ++-------
+> >  mm/workingset.c           | 10 ++++------
+> >  4 files changed, 14 insertions(+), 29 deletions(-)
+> >
+> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> > index ab69b9930893..7aaff4e06e80 100644
+> > --- a/include/linux/mm_inline.h
+> > +++ b/include/linux/mm_inline.h
+> > @@ -311,7 +311,8 @@ static inline unsigned long lru_gen_folio_seq(const=
+ struct lruvec *lruvec,
+> >          * | Accessed through page tables and  | Accessed through file =
+descriptors |
+> >          * | promoted by folio_update_gen()    | and protected by folio=
+_inc_gen()  |
+> >          * +-----------------------------------+-----------------------=
+------------+
+> > -        * | PG_active (set while isolated)    |                       =
+            |
+> > +        * | PG_active (set while isolated)    | PG_active (files|     =
+            |
+> > +        * |                                   | fault-readahead)|     =
+            |
+>
+> This comment is not correct I think, faulting file folios are not
+> access through fd, we may just better leave it uncommented.
+>
+> >          * +-----------------+-----------------+-----------------+-----=
+------------+
+> >          * |  PG_workingset  |  PG_referenced  |  PG_workingset  |  LRU=
+_REFS_FLAGS |
+> >          * +-----------------------------------+-----------------------=
+------------+
+> > @@ -319,7 +320,8 @@ static inline unsigned long lru_gen_folio_seq(const=
+ struct lruvec *lruvec,
+> >          * |<---------------------------- MAX_NR_GENS -----------------=
+----------->|
+> >          */
+> >         if (folio_test_active(folio))
+> > -               gen =3D MIN_NR_GENS - folio_test_workingset(folio);
+> > +               gen =3D MIN_NR_GENS - folio_test_workingset(folio) +
+> > +                     (type ? !folio_test_workingset(folio) : 0);
+>
+> This looks a bit hard to follow. Does it mean that for active but
+> non-workingset files, they are put into the third newest generation?
+> It creates more divergence of file / anon but if it work for now, I'm
+> fine with it.
+>
+> >         else if (reclaiming)
+> >                 gen =3D MAX_NR_GENS;
+> >         else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(fo=
+lio)) ||
+> > @@ -327,7 +329,7 @@ static inline unsigned long lru_gen_folio_seq(const=
+ struct lruvec *lruvec,
+> >                   (folio_test_dirty(folio) || folio_test_writeback(foli=
+o))))
+> >                 gen =3D MIN_NR_GENS;
+> >         else
+> > -               gen =3D MAX_NR_GENS - (folio_test_workingset(folio) || =
+folio_test_referenced(folio));
+> > +               gen =3D MAX_NR_GENS - folio_test_workingset(folio);
+>
+> This is a nice change, but meanwhile the LevelDB and cerain workload
+> gain are gone too, we will again have a ~40% regression for similiar
+> workloads, I just double checked it. But that's fine, though, it was
+> never meant to be optimized that way, and the long-term fix can be
+> done later.
 
-Instead of freeing the object right away, zs_free() appends its handle to
-a per-cpu batch of 64 handles. A full batch goes to an unbound drain worker
-through a lockless list, and the worker frees the objects. This batches the
-release and moves it off the unmapping path, and the change stays within
-zsmalloc.
-
-Freeing empty zspages is left to the worker too: it does that directly when
-it can take the page locks, and reuses kick_deferred_free() to free them
-asynchronously when it cannot.
-
-Failing to allocate the per-cpu state is not fatal: pool->defer stays NULL
-and zs_free() keeps its old path.
-
-Signed-off-by: Hongfeng Chen <hongfengchen@xiaomi.com>
----
- mm/zsmalloc.c | 182 ++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 154 insertions(+), 28 deletions(-)
-
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 7ef80e0da626..eacd771bd542 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -43,6 +43,7 @@
- #include <linux/zsmalloc.h>
- #include <linux/fs.h>
- #include <linux/workqueue.h>
-+#include <linux/llist.h>
- #include "zpdesc.h"
- 
- #define ZSPAGE_MAGIC	0x58
-@@ -267,6 +268,21 @@ struct link_free {
- static struct kmem_cache *handle_cachep;
- static struct kmem_cache *zspage_cachep;
- 
-+#define ZS_DEFER_BATCH	64
-+
-+struct zs_defer_batch {
-+	struct llist_node node;
-+	unsigned int count;
-+	unsigned long handles[ZS_DEFER_BATCH];
-+};
-+
-+struct zs_defer_percpu {
-+	struct zs_defer_batch *active;
-+	struct llist_head pending;
-+	struct work_struct drain_work;
-+	struct zs_pool *pool;
-+};
-+
- struct zs_pool {
- 	const char *name;
- 
-@@ -282,12 +298,12 @@ struct zs_pool {
- #ifdef CONFIG_ZSMALLOC_STAT
- 	struct dentry *stat_dentry;
- #endif
--#ifdef CONFIG_COMPACTION
- 	struct work_struct free_work;
--#endif
- 	/* protect zspage migration/compaction */
- 	rwlock_t lock;
- 	atomic_t compaction_in_progress;
-+
-+	struct zs_defer_percpu __percpu *defer;
- };
- 
- static inline void zpdesc_inc_zone_page_state(struct zpdesc *zpdesc)
-@@ -428,13 +444,11 @@ static bool ZsHugePage(struct zspage *zspage)
- 	return zspage->huge;
- }
- 
--#ifdef CONFIG_COMPACTION
- static void kick_deferred_free(struct zs_pool *pool);
- static void init_deferred_free(struct zs_pool *pool);
-+#ifdef CONFIG_COMPACTION
- static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage);
- #else
--static void kick_deferred_free(struct zs_pool *pool) {}
--static void init_deferred_free(struct zs_pool *pool) {}
- static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage) {}
- #endif
- 
-@@ -684,7 +698,6 @@ static inline void zs_pool_stat_destroy(struct zs_pool *pool)
- }
- #endif
- 
--
- /*
-  * For each size class, zspages are divided into different groups
-  * depending on their usage ratio. This function returns fullness
-@@ -1293,7 +1306,6 @@ static unsigned long obj_malloc(struct zs_pool *pool,
- 	return obj;
- }
- 
--
- /**
-  * zs_malloc - Allocate block of given size from pool.
-  * @pool: pool to allocate from
-@@ -1371,7 +1383,6 @@ static void obj_free(int class_size, unsigned long obj)
- 	unsigned int f_objidx;
- 	void *vaddr;
- 
--
- 	obj_to_location(obj, &f_zpdesc, &f_objidx);
- 	f_offset = offset_in_page(class_size * f_objidx);
- 	zspage = get_zspage(f_zpdesc);
-@@ -1447,7 +1458,7 @@ static inline void obj_class_get_and_lock(struct zs_pool *pool, unsigned long ha
- }
- #endif
- 
--void zs_free(struct zs_pool *pool, unsigned long handle)
-+static void __zs_free_one(struct zs_pool *pool, unsigned long handle)
- {
- 	struct zspage *zspage;
- 	unsigned long obj;
-@@ -1455,9 +1466,6 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
- 	int fullness;
- 	struct zspage *zspage_to_free = NULL;
- 
--	if (IS_ERR_OR_NULL((void *)handle))
--		return;
--
- 	obj_class_get_and_lock(pool, handle, &obj, &zspage, &class);
- 
- 	class_stat_sub(class, ZS_OBJS_INUSE, 1);
-@@ -1483,6 +1491,78 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
- 	}
- 	cache_free_handle(handle);
- }
-+
-+static void zs_defer_drain(struct zs_defer_percpu *defer)
-+{
-+	struct zs_pool *pool = defer->pool;
-+	struct zs_defer_batch *batch, *n;
-+	struct llist_node *first;
-+
-+	first = llist_del_all(&defer->pending);
-+	llist_for_each_entry_safe(batch, n, first, node) {
-+		unsigned int i;
-+
-+		for (i = 0; i < batch->count; i++)
-+			__zs_free_one(pool, batch->handles[i]);
-+		kfree(batch);
-+		cond_resched();
-+	}
-+}
-+
-+static void zs_defer_drain_work(struct work_struct *work)
-+{
-+	zs_defer_drain(container_of(work, struct zs_defer_percpu, drain_work));
-+}
-+
-+static bool zs_defer_push(struct zs_pool *pool, unsigned long handle)
-+{
-+	struct zs_defer_batch *new_batch = NULL, *batch;
-+	struct zs_defer_percpu *defer;
-+	bool queue = false;
-+
-+	if (!pool->defer)
-+		return false;
-+
-+	defer = get_cpu_ptr(pool->defer);
-+	if (!defer->active) {
-+		put_cpu_ptr(pool->defer);
-+		new_batch = kmalloc_obj(*new_batch, GFP_NOWAIT | __GFP_NOWARN);
-+		if (!new_batch)
-+			return false;
-+		new_batch->count = 0;
-+
-+		defer = get_cpu_ptr(pool->defer);
-+		if (!defer->active) {
-+			defer->active = new_batch;
-+			new_batch = NULL;
-+		}
-+	}
-+
-+	batch = defer->active;
-+	batch->handles[batch->count++] = handle;
-+	if (batch->count == ZS_DEFER_BATCH) {
-+		llist_add(&batch->node, &defer->pending);
-+		defer->active = NULL;
-+		queue = true;
-+	}
-+	put_cpu_ptr(pool->defer);
-+
-+	if (unlikely(new_batch))
-+		kfree(new_batch);
-+
-+	if (queue)
-+		queue_work(system_dfl_wq, &defer->drain_work);
-+	return true;
-+}
-+
-+void zs_free(struct zs_pool *pool, unsigned long handle)
-+{
-+	if (IS_ERR_OR_NULL((void *)handle))
-+		return;
-+
-+	if (!zs_defer_push(pool, handle))
-+		__zs_free_one(pool, handle);
-+}
- EXPORT_SYMBOL_GPL(zs_free);
- 
- static void zs_object_copy(struct size_class *class, unsigned long dst,
-@@ -1671,7 +1751,6 @@ static int putback_zspage(struct size_class *class, struct zspage *zspage)
- 	return fullness;
- }
- 
--#ifdef CONFIG_COMPACTION
- /*
-  * To prevent zspage destroy during migration, zspage freeing should
-  * hold locks of all pages in the zspage.
-@@ -1714,6 +1793,8 @@ static void lock_zspage(struct zspage *zspage)
- 	zspage_read_unlock(zspage);
- }
- 
-+#ifdef CONFIG_COMPACTION
-+
- static void replace_sub_page(struct size_class *class, struct zspage *zspage,
- 				struct zpdesc *newzpdesc, struct zpdesc *oldzpdesc)
- {
-@@ -1866,6 +1947,18 @@ const struct movable_operations zsmalloc_mops = {
- 	.putback_page = zs_page_putback,
- };
- 
-+static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage)
-+{
-+	struct zpdesc *zpdesc = get_first_zpdesc(zspage);
-+
-+	do {
-+		WARN_ON(!zpdesc_trylock(zpdesc));
-+		__zpdesc_set_movable(zpdesc);
-+		zpdesc_unlock(zpdesc);
-+	} while ((zpdesc = get_next_zpdesc(zpdesc)) != NULL);
-+}
-+#endif /* CONFIG_COMPACTION */
-+
- /*
-  * Caller should hold page_lock of all pages in the zspage
-  * In here, we cannot use zspage meta data.
-@@ -1904,7 +1997,7 @@ static void async_free_zspage(struct work_struct *work)
- 
- static void kick_deferred_free(struct zs_pool *pool)
- {
--	schedule_work(&pool->free_work);
-+	queue_work(system_dfl_wq, &pool->free_work);
- }
- 
- static void zs_flush_migration(struct zs_pool *pool)
-@@ -1917,20 +2010,6 @@ static void init_deferred_free(struct zs_pool *pool)
- 	INIT_WORK(&pool->free_work, async_free_zspage);
- }
- 
--static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage)
--{
--	struct zpdesc *zpdesc = get_first_zpdesc(zspage);
--
--	do {
--		WARN_ON(!zpdesc_trylock(zpdesc));
--		__zpdesc_set_movable(zpdesc);
--		zpdesc_unlock(zpdesc);
--	} while ((zpdesc = get_next_zpdesc(zpdesc)) != NULL);
--}
--#else
--static inline void zs_flush_migration(struct zs_pool *pool) { }
--#endif
--
- /*
-  *
-  * Based on the number of unused allocated objects calculate
-@@ -2127,6 +2206,48 @@ static int calculate_zspage_chain_size(int class_size)
- 	return chain_size;
- }
- 
-+static void zs_defer_destroy(struct zs_pool *pool)
-+{
-+	struct zs_defer_percpu __percpu *defer_pcp = pool->defer;
-+	int cpu;
-+
-+	if (!defer_pcp)
-+		return;
-+
-+	pool->defer = NULL;
-+	for_each_possible_cpu(cpu) {
-+		struct zs_defer_percpu *defer = per_cpu_ptr(defer_pcp, cpu);
-+
-+		cancel_work_sync(&defer->drain_work);
-+		if (defer->active) {
-+			llist_add(&defer->active->node, &defer->pending);
-+			defer->active = NULL;
-+		}
-+		zs_defer_drain(defer);
-+	}
-+	free_percpu(defer_pcp);
-+}
-+
-+static int zs_defer_init(struct zs_pool *pool)
-+{
-+	int cpu;
-+
-+	pool->defer = alloc_percpu(struct zs_defer_percpu);
-+	if (!pool->defer)
-+		return -ENOMEM;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct zs_defer_percpu *defer = per_cpu_ptr(pool->defer, cpu);
-+
-+		defer->active = NULL;
-+		init_llist_head(&defer->pending);
-+		defer->pool = pool;
-+		INIT_WORK(&defer->drain_work, zs_defer_drain_work);
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * zs_create_pool - Creates an allocation pool to work from.
-  * @name: pool name to be created
-@@ -2151,6 +2272,10 @@ struct zs_pool *zs_create_pool(const char *name)
- 	rwlock_init(&pool->lock);
- 	atomic_set(&pool->compaction_in_progress, 0);
- 
-+	if (zs_defer_init(pool))
-+		pr_info("deferred free unavailable for <%s>, freeing synchronously\n",
-+			name);
-+
- 	pool->name = kstrdup(name, GFP_KERNEL);
- 	if (!pool->name)
- 		goto err;
-@@ -2253,6 +2378,7 @@ void zs_destroy_pool(struct zs_pool *pool)
- 	int i;
- 
- 	zs_unregister_shrinker(pool);
-+	zs_defer_destroy(pool);
- 	zs_flush_migration(pool);
- 	zs_pool_stat_destroy(pool);
- 
--- 
-2.54.0
-
+Here I mean the "optimization" of 6cbdd9726fb5 is more like a side
+effect, and not reliable, that is simply not the goal of 6cbdd9726fb5.
+So I think it stands well as a fixes for 6cbdd9726fb5.
 
