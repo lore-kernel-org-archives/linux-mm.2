@@ -4,100 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D824DCC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 06:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F366FCCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 07:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADD7C6B0092; Fri, 16 Oct 2026 02:59:35 -0400 (EDT)
+	id D25CC6B0088; Fri, 16 Oct 2026 03:16:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8E796B0095; Fri, 16 Oct 2026 02:59:35 -0400 (EDT)
+	id CA75A6B008A; Fri, 16 Oct 2026 03:16:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A2DE6B0096; Fri, 16 Oct 2026 02:59:35 -0400 (EDT)
+	id B70736B008C; Fri, 16 Oct 2026 03:16:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76BF86B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:59:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E67631402CA
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:59:34 +0000 (UTC)
-X-FDA: 85327588668.03.93CA272
-Received: from mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C94F640004
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:59:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PJIEvhgd;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792133973;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/Nsl5X+ErWymdOhOdGEVIGmAnGXxBUu6QHrflXVx2BY=;
-	b=PqXZVPUyp2a+1TRJZ4FZJ8nhrg0WHLr/uZyDVxOOBHGXOCw/LeriRwZQTafFaAuYm/iY+o
-	jX7Qa3RjvRsJrMoMYTiGEN6vDtDp8WgM+U9Z0oOO77ARs/I3E3okgTFwLwLHLZhC7WFwZF
-	W9ts0iAvUkRMXRz6baCbyHHz51sfiT8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PJIEvhgd;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BE706B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:16:10 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95DC74033D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:16:09 +0000 (UTC)
+X-FDA: 85327630458.02.AD7F9EA
+Received: from mta0.migadu.com (out-217.mta0.migadu.com [91.218.175.217])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6CD3FA0006
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:16:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Gh+C1jE5;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792133973;
-	b=20D8/Ydn1LvsRwjRMzeyYwID3WJeiDjanoP6ai34BLycitKRVnI6soyFJSAB8uS6DlpIIs
-	182n0OmRwf0wkkNxKAMRfLGnhddxg75ZSLHl0Dcz7XKk3fgmQmQ0/l7tt9LVX/ckVv/p/F
-	eHUCAmPGrktKCOB72G6eFSA7vyRjNPU=
+	t=1792134967;
+	b=nUZHgu9vgiGevp0jqb2oYHeinrynNF77iKjHV6TaiM3HlD9JqDLKwWNTnwgG3TovZby1Ow
+	mHNTYR4AYxmhdwDZADRsmRecrMK1Z1os0Dr5k9fQX7qu2ustvv2BkTzERmY9+0KNp7l09a
+	QVx70IFu6rbLCA7lLIKPxYKxgGfSHlQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Gh+C1jE5;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792134967;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RMpimNJHBwVzdkbh0sG7nuKXhKgLFZjybYL4MeVlE4Q=;
+	b=BZqBE9iyA5GVzR290F/WEM+c3WzYrztDIo6ySOQ85439hmCLwasPMGqOW5+HgRCiOOaBzL
+	bLY/sjHa0+n1fhd+tSo7tt/eJ4pgT/CeLzRaR8jVC3roWG50w2HkNs06s3lL5zjmigQr1e
+	p5D2ldZ1eAJnRkxQoX1A/CFNxUH+9+Y=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=YBk76f/Ysfi12pI6VBVZpEi5qvewc/wR/esNF7jDIek=;
+DKIM-Signature: a=rsa-sha256; bh=xgR1cjGY6ygGqvZie7u+u7EotdvcRJPIfh8Sp0piRWA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792133969; v=1; x=1792738769;
- b=PJIEvhgdnZ0e7C84i83ESLZLLPkWdSIND9qyqkOJz7Z+T7Yf9+cgAP9qohOAKm/cOdEKacAP
- FY73ShLvzZf6gqjzguDaWodXkl5GEqM4VUhLudHSoQl6gT1J9R4GBbvjsCtnF+mO0hEsbRc6NGz
- R0Y6mm7+DfPpVptzQ0kE0i9o=
+ t=1792134966; v=1; x=1792739766;
+ b=Gh+C1jE5wn1ZarWB5JQV5xiMzm8445W0lzudkTz3wslMuSkdchSOteQiYbBTMPuEinwJNEyQ
+ TNtaNC8dz+GxI8cPoLvenIPip8P+IGUnqnLHjAEKTJUdGF6wjW0ti4NKVkuWm2MzWcIxtRlsrps
+ 7rlNqFFBGDJxeBFwbcLfnT5c=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1616bc7e3c73b510;
-	Fri, 16 Oct 2026 06:59:29 +0000
-X-Mizu-Trace-ID: 1616bc7e3c73b510
+Received: by mta12.migadu.com with ESMTPS id 1ef1cef91026e4e4;
+	Fri, 16 Oct 2026 07:16:05 +0000
+X-Mizu-Trace-ID: 1ef1cef91026e4e4
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	jack@suse.cz,
-	djwong@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	hch@lst.de,
-	syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
-	ngocthang2710.1999@gmail.com,
-	willy@infradead.org,
-	rppt@kernel.org,
-	ljs@kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in collapse_file()
-Date: Fri, 16 Oct 2026 14:59:20 +0800
-Message-ID: <20261016065920.4153-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C94F640004
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 00/10] mm: various (urgent?) fixes
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
+Date: Fri, 16 Oct 2026 15:15:44 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ Oscar Salvador <osalvador@suse.de>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Adam Litke <agl@us.ibm.com>,
+ Mel Gorman <mel@csn.ul.ie>,
+ Rik van Riel <riel@surriel.com>,
+ Peter Xu <peterx@redhat.com>,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Josef Bacik <josef@toxicpanda.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ Chris Mason <mason@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A061083A-3A02-4ADB-9CFB-7CF6C731A872@linux.dev>
+References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
 X-Rspam-User: 
-X-Stat-Signature: yfpkodxka8nko3uhmofghpd4seninecw
-X-HE-Tag: 1792133972-110233
-X-HE-Meta: U2FsdGVkX1+mXiPtpKf/Ti97cqfdNXgxuhZxeOvDqi59xDGOUvq2lP4aPLY6ZylnQHfE8nWlQ8Kcu3d3eCeczEIDu1ZAYCqPMWxP2pXEaQ+nlKr9NPU6PNPgaDrnfmsvsrh/yp8n6Xy9wpSFDBsNI1/eXQ5x7UyIKT3lcUgTqSJHR7+xHJzKeniU/qNPSjUMAyzjQJTm/lLs4b2LBYZcyUCaDD5FNHl8vKWTw/xRwM4xBzk3QqdYEOJcv9JfbV/vLHxXOTKwk6YFXwoKyohYVwCylgVmNU/JJeyOxboSkfJVuPmKWgh076JEYYtMPbEUiPWIgmF/e9ZhBi8rQJJCKb+7Q4w72+1CLh/5DvtiebTTOiN2bo8tJw+2PRpxZIK4xRSZPqR/soM+yImAgnI1XabJwUBmAgcPgh91jhLc77LDnJORi383keHRCih9HFo/FXZS1e9gAIbxD/p8oN31Nm0dKoCS4yYa1i3s6MVRzm94Swhcj0neOKOgD05JTGrntbjvs+ezSMGr67+SmaHQNm5c7q+8lgo+UMDG0qjVwt8BRcnCPqmT4W3JTiDs16FubWPxus3p7V3AMEq0SqlS0R/y7v61+J17COKrUYPghL1F/zVdgmSTcKpgkPJ2JFw2MomY1XlFRGYjvSjPsw4eKhGCV/QzitDXiPapZlxulj/do+/IlOcOAB/pFZTmajV7BjiUFzpYGA9sE/+CWorMzE6KAiBbLAqXPFu7C32t0UySvDSfYKl2zDJ8vp+EgweeFboyBSWLGRphcIT4w+ca4qixG/cIB21884o4MTvbIM7btAwpWJAZGJJn4B2S/Qp0qALYlmhGFkqMA8PeC2uB80o7Wao7fGE9vJiHoDkaXZ+asMRepqlyFGSRaFsHlZcEvmX3yP+owjmtt6TCRHVzfrEs/KcUNuV2Mci8sthHJ0hXeMJ2ZrmZSej+0au5BZiM4Vl8FR7xz4gF9ogqjml
- ho1Jjzl/
- YxaE81ZxNuL+Be9twTrYjRYwWX0hthDCdLYHEHVJTposJ/iSPzJqI5vgCazB54Lmjb8SqmTzvtkhy7Ds/KHmfvgAQEy4rrTYI1d67gPopdNRTqWBYoNoCbgWl9+I5She8Yp63OSSYHbrZCCIy34shCI8EC/btVYDU6tInP8fpXc/1wuvZfQB9ZdVLOhLPyLAcjVucxJwsUcHyDz6xfbiLzJ46SjoTokz7c4Q1AmotBcsO3AVrpBI6UjAk/3QthVlGwpEhbCovjjDIl8Uv1A55gkLguVE9x9627NU1mhdZ/Z6P6w24sTuVk+F7rlB2dnMiMfyg7gfSPIa9yR0nsNhm86VxuxtkiqyjRBvPNXOPHO5UmgYsQmkK0fV4homcpu1UF+EbMlJoFbNVju30tKSbF0BYP5OXZsEod+NfsIDRie6bBAmP4iF20ki9DDGxCwCndvwjsdy6wDnLW/6tbwdYLxSYd/x4zUCDlFVpJmkxuXEqkcKlAbq+q5L/klJx/zJSEaUIOgbB3cGYuG7/c2xEdgifYIlVz3xw/qFR9IVQTRx0UxygknSD5qRXISEFk7bBNj/msUZuuI+97P72+jozhUS8oD4/WYDDDdhT2CsN1vGvUsM=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6CD3FA0006
+X-Stat-Signature: tmkw3i4q43fae4ret848joa8amatsp1g
+X-HE-Tag: 1792134967-322837
+X-HE-Meta: U2FsdGVkX1+p6uJbPR55cjQ3NPK0YrKNTEJw8nneplD2zpw5oOHcz+Fxe/gR0BDTIFwRMW+rVBIhYvZwtk2sNVu76M+RKnTmHhKdLD5zi47XIrSP8Ydl4wbAw0iA7kAR+7hPcMSktA0p9fyTFL/bULyzi8HOPbhkefM205O3pQlJNmNAPl+BeuQzPs1CSAbTE+WC2KV70YoBDyQqgrPLV/HVwf9Mm2xgjJxlrjIL6RACw2+awCqhq0FowH8jU8EV1KWFSOuMJoBQgrSWySML67pAuWBOfw6Id0ASQA83SmAz+QDfpgbz7jqExrZ+fGD+uIBU2iYppnXoRML/0LnCbOiwI9C79tUqHxv/Q2fmwpLru4513n7jQshrh5hkNgz1vc9oGAx+o+mdADzbMx8lvMjzGB26ZXCjoAtgnanTDJU82e/aAPxJfcbJEVFeyPhZGjyZ+o4ZlyZSCYABUfCo+Mz1FN/cZsFKZk9C2/Z/KWJzetLStjKiUdAIGdh5hY7o4vz/s7zbl3zT55LwL22jlTm/PVPOtJpQe9OzZc7gGkeauHDBJd0nL8njgzGe0rDIovRxv+72tKpuDU9X5a4JMSsI1gNY86jeJ7/YoGLl4VSkDtx2T7KGW/W2+3yjGuqXhyIGZ+3H3hbRO+ctH7adKA1krGpSJ32xsYdtQ5a+X8vIM2746t1dNHpYVWUo/7c+hMhOtf4aRa+ApBo6z4qDQnQAlXdkrQwOPsujFouis96AiLAMvOBru2YbZHqA+35ODOMSJhfPQ8EGq4nywJ8P6ZWqpp8VLi26/5v+B9+gTWV6znJgrfCsNSfXkHhGn8LvmWJYs1DzFjJy39rvIoOV0tX5ut3ucAv/b+5IkHPw2wPBYpH3FhGBMHVjJAz/xwlgI4clZaJ9x0rs0JN7dklNvGqMmLvEubOYG2Guz6e6Nr94ka+WVw9jIHcLtIrhfWdF5qHIIsVpx1jSudXftoW
+ /nhl545u
+ PR44F9JrdmLiC3XaJ4IrGpFRo5YS8uv9lriJyYbicCUWFQrcT2mR5yJjHbj7IckNSE00KbgTTAkp1MeV+kW92pijAFt+67kpxvHFgHYrdoytzPbPemRp0ANrUobTeaNQfJrBTSe0fg+6G4EluzYhhSC2uJ/lNkDC0n23VHzSVWAqLAAwrT9UX4D9CX+6NfK6WvBrh5DfQCwkz4oL6Jy3ZTCDY85pnnHfdL9VMprXpnjx+Wp/mAV+TbgtJiB7jFmLjFH5pkREvY30DLIh231YB9B4rD4qfG1zvmkdZjt8Kl5spq/D468+700CCWhWzxHq9FX55z+Wz4H7TY1RwcU5paEZ2kjwOBoWa4oXyUSdy263Yjam8qyXsikHEGWvAwkxPNfY17TlgYvVx0mEq4Kg1kaxWZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,107 +109,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_file() can end up calling page_cache_sync_readahead() with
-source folios from earlier in the range still locked. If truncate already
-holds mapping->invalidate_lock exclusively and is waiting for one of
-those folios, readahead blocks on the same invalidate_lock and neither
-side can make progress.
 
-Do readahead in a separate pass before we start holding source folios
-locked for collapse. Keep page_cache_sync_readahead() and its existing
-policy, and drop each folio's lock and reference after checking that it
-is uptodate. If truncate or reclaim removes a folio between the two
-passes, roll back instead of doing readahead again with source folios
-locked.
 
-Shmem handles swapin and fallocated folios through shmem_get_folio()
-without taking mapping->invalidate_lock, so it isn't affected by this
-lock inversion.
+> On Oct 16, 2026, at 00:07, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> Hi,
+>=20
+> here are various MM fixes. The majority was reported by Josef at
+> Anthrophic, the remainder was found while reviewing/overhauling them.
+>=20
+> Two issues/fixes reported are not included, as we are discussing
+> (better) alternatives on the list already.
+>=20
+> I left most of the original commit messages as schloppy as they are: I
+> don't particularly care as long as the code is in good shape and as =
+long as
+> they are not actively wrong. But I (and Mike) could not be stopped =
+from
+> overhauling at least some of them.
+>=20
+> While I don't think there is anything too critical in here, I think =
+this
+> is a good opportunity to see how fast we can get =
+pre-screened/pre-reviewed
+> fixes upstream that might be security-related.
+>=20
+> The majority are hugetlb + uffd issues, that are not actually that
+> relevant for most installations. But all things that should just get
+> fixed. Some uffd fixes need proper follow ups to fix some more of the
+> root causes of leftover UFFD PTE bits (or proof that there are none
+> remaining).
+>=20
+> I ran some MM selftests and nothing popped up.
+>=20
+> So let's try to get these upstream in a timely fashion.
+>=20
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+> David Hildenbrand (Arm) (4):
+>      mm/hugetlb: fix use-after-free in hugetlb_mfill_atomic_pte()
+>      mm/hugetlb: tolerate uffd bits set without uffd for PROT_NONE =
+PTEs
+>      mm/hugetlb: tolerate UFFD_WP markers outside uffd-wp VMAs
+>      mm/mremap: fix calling fixup_hugetlb_reservations() on the wrong =
+VMA
+>=20
+> Josef Bacik (6):
+>      mm/vma: don't leak the commit charge on mmap failure
+>      mm/hugetlb: fix use-after-free of a new anon folio
+>      mm/hugetlb: unmap the page where the other VMA maps it
+>      mm/hugetlb: don't clear the resv_map of a VMA whose lock is held
+>      mm/hugetlb: fix endless write fault on a leftover uffd bit
+>      mm/hugetlb: don't leave a uffd-wp marker when zapping an RWP =
+entry
 
-Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
-Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-Thanks to Nguyen Ngoc Thang for v2. David asked for volunteers, so I'm
-happy to take this over.
+HugeTLB is really nasty, while no new features are landing, we have a =
+steady
+stream of bug fixes coming in.
 
-Some older stable trees lack the folio infrastructure used here, and the
-code will differ for each stable tree, so each backport will need quite a
-bit of rework and its own review. I'm not sure whether to Cc stable here.
-Once we agree on the fix, I'll send a separate backport for each maintained
-stable tree except 5.10, which isn't affected.
+Thanks,
+Muchun
 
-v2 -> v3:
- - Replace the scan-wide invalidate_lock and page_cache_ra_unbounded() with
-   a preparation pass using page_cache_sync_readahead().
- - Roll back on a new page cache miss during collapse.
- - https://lore.kernel.org/all/20260913163644.122133-1-ngocthang2710.1999@gmail.com/
-
- mm/khugepaged.c | 42 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 31 insertions(+), 11 deletions(-)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index ef5cd6fda34f..b3f67617caf0 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2262,6 +2262,34 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	new_folio->index = start;
- 	new_folio->mapping = mapping;
- 
-+	if (!is_shmem) {
-+		/*
-+		 * Populate the range before accumulating locked source folios:
-+		 * readahead may block on invalidate_lock.
-+		 */
-+		for (index = start; index < end;) {
-+			folio = filemap_lock_folio(mapping, index);
-+			if (IS_ERR(folio)) {
-+				page_cache_sync_readahead(mapping, &file->f_ra,
-+							  file, index, end - index);
-+				folio = filemap_lock_folio(mapping, index);
-+				if (IS_ERR(folio)) {
-+					result = SCAN_FAIL;
-+					goto rollback;
-+				}
-+			}
-+			if (!folio_test_uptodate(folio))
-+				result = SCAN_FAIL;
-+			index = folio_next_index(folio);
-+			folio_unlock(folio);
-+			folio_put(folio);
-+			if (result != SCAN_SUCCEED)
-+				goto rollback;
-+		}
-+		/* drain lru cache to help folio_isolate_lru() */
-+		lru_add_drain();
-+	}
-+
- 	/*
- 	 * Ensure we have slots for all the pages in the range.  This is
- 	 * almost certainly a no-op because most of the pages must be present
-@@ -2320,17 +2348,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 			}
- 		} else {	/* !is_shmem */
- 			if (!folio || xa_is_value(folio)) {
--				xas_unlock_irq(&xas);
--				page_cache_sync_readahead(mapping, &file->f_ra,
--							  file, index,
--							  end - index);
--				/* drain lru cache to help folio_isolate_lru() */
--				lru_add_drain();
--				folio = filemap_lock_folio(mapping, index);
--				if (IS_ERR(folio)) {
--					result = SCAN_FAIL;
--					goto xa_unlocked;
--				}
-+				/* The range changed after the preparation pass. */
-+				result = SCAN_PAGE_LOCK;
-+				goto xa_locked;
- 			} else if (folio_test_dirty(folio)) {
- 				/*
- 				 * This page is dirty because it hasn't
--- 
-2.49.0
+>=20
+> mm/hugetlb.c | 70 =
+++++++++++++++++++++++++++++++++++++++++++++++--------------
+> mm/mremap.c  |  2 +-
+> mm/vma.c     | 11 ++++++----
+> 3 files changed, 62 insertions(+), 21 deletions(-)
+>=20
+> ---
+>=20
+> base-commit: 0fcb05b72344f40806cbe810de8872f1698bf053
+>=20
+> change-id: 20261015-urgent_fixes-7112629346eb
+>=20
+> --
+>=20
+> Cheers,
+>=20
+> David
+>=20
 
 
