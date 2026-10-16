@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02661CCA463
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 01:26:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD3ECC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 01:40:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB21A6B009B; Thu, 15 Oct 2026 21:26:32 -0400 (EDT)
+	id 668766B0095; Thu, 15 Oct 2026 21:40:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E88DB6B009D; Thu, 15 Oct 2026 21:26:32 -0400 (EDT)
+	id 618576B0096; Thu, 15 Oct 2026 21:40:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9F676B009E; Thu, 15 Oct 2026 21:26:32 -0400 (EDT)
+	id 52EFF6B0098; Thu, 15 Oct 2026 21:40:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B82676B009B
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:26:32 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 413F840298
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:26:32 +0000 (UTC)
-X-FDA: 85326749424.04.FD05036
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A97E91C000B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:26:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PN2TqF7m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EBD86B0095
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:40:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9781B1C21CB
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:40:18 +0000 (UTC)
+X-FDA: 85326784116.24.EC0B90A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B7B841C0006
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:40:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uheqztBX;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792113990;
+	s=arc-20220608; t=1792114817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3bd81Hi/rmFImpkTrd3Z6omZvXbyOiJ0Rex3nfosaXM=;
-	b=m39PFS+SK8bwLWOaQX5s6lzfLCziOgGyIvYngYuEvsoJYAcgxRQlNpetyTvnVKLzCDvxJv
-	Rs+s534rSpjIcCwiHfPk/3ZbIpXNN0uDen+M+SZfQVy41zL+KZ4tJuZQWrKW/ui+th/Dsg
-	ERNHhFUV8P6aPI3GrteQFnGxCTfa3m0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PN2TqF7m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=OqA+IMC6CUvEx2INsJZJI6SA5Kzqwelaql3bEKHklyk=;
+	b=7PLtnkMw9acbrL78A1CQaOxoCZ31enGml78cXba+zCpRHaPjAKykwGOjBf6Qrg++KeHKPi
+	52n7zfifq+YAWUiVlTmD3If1eedQ87RDXjeBLl/ZCMKRFhIpvOE8PK7thSun1AvCPKasJ+
+	lYvmqhOo84VfX35S/XeHpZFIA0ersmw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792113990;
-	b=Hyb7+xe6ODAoof+7iqhfwDpNmIvy512+vHHpoXGO4nxYQGE3aEHJbFxdlWPSft3MW/ehNV
-	+nkzUamJcTfnq3JyhyFeJMzBwSpmfTMiXWZWVr5x0twGIa0S6i0/6GNvWmpLODlmoiabqC
-	386DLuPvWjQZ9/Gr/Qc0KaLcQCAQTco=
+	t=1792114817;
+	b=6A8WlecqRgfaISjQIYKiqbIzYyMpgy/+4twj1EV3kaUeZ80bXC4ovCU9gho7X0inb4Wgcb
+	NLNpVEknuBm8q+81nAnSk3f8nN5RjgG7MjhVqvbhsCHpf1xRRzO09W29JxbNqzL348r8VU
+	uU7jZqDgP9LOx6c63L24utqPV44bJkk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uheqztBX;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB05060A74;
-	Fri, 16 Oct 2026 01:26:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B86F1F000C4;
-	Fri, 16 Oct 2026 01:26:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792113989;
-	bh=3bd81Hi/rmFImpkTrd3Z6omZvXbyOiJ0Rex3nfosaXM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PN2TqF7mywsldtZ/1r+qhAFjnHWy5d5K9e9jGU+IoYRUIj3HuzIEbmujFw4NtvAAa
-	 9zB7ARDDYylKUH0hna69orBn5qin2E/UaDci7PATib5CfeZcdiPX4C1ouP8gmEzgiZ
-	 bEL0fMJ62GXrGkiViEihf9T3EI7WIYlJxOVM1kq6vzdO+4Xhz4lwxsf6Z5/CP+xkBb
-	 w6Xo3K06b0bw2A69f73unc7GtDhOwaVjBAtr72KCU3Whxo2JS3ddEKscgQyBJlxgLe
-	 9M0aQErBMRi4faekAGL8Sl+w0xi7yfXmzw8nsf+dbNyAhxd15oXYDDlR7mi/FEKZhX
-	 eBfh0Wm+LGOXg==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] DAMON sysfs: failed update clears tried_regions snapshot
-Date: Thu, 15 Oct 2026 18:26:21 -0700
-Message-ID: <20261016012622.114496-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CANOyQmHhCJEbHpHUZ2P0hui+We7wxWkEde-Vh4k2rRXWovRYrQ@mail.gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A97E91C000B
+	by sea.source.kernel.org (Postfix) with ESMTP id 68494447D7;
+	Fri, 16 Oct 2026 01:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ACD1F000C4;
+	Fri, 16 Oct 2026 01:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1792114815;
+	bh=OqA+IMC6CUvEx2INsJZJI6SA5Kzqwelaql3bEKHklyk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=uheqztBXAXmG9qw9vDm3YiF69UyyJRc8UyD8oZ/QJCGiWUlESf3T5A6EZIGVHIl3v
+	 xIyts3pqh187rqqiyrQMYwSn96WnREf9JT70qJEtQxry1kL8gmoIIFmIjfIHAIcUf5
+	 59w11rC4mmi44ykUtuRfqBlUBIYtzcdUOX7xWA5o=
+Date: Thu, 15 Oct 2026 18:40:14 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, Chris Li
+ <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park
+ <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/swap: fix swap_cache_get_folio() returning a folio
+ that left the swap cache
+Message-Id: <20261015184014.715dcdd3a25e18fd4df49e95@linux-foundation.org>
+In-Reply-To: <20261015060528.302634-1-jiayuan.chen@linux.dev>
+References: <20261015060528.302634-1-jiayuan.chen@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: pcu3rx4wa39d1ccamx5sijkui4exf98t
-X-HE-Tag: 1792113990-16135
-X-HE-Meta: U2FsdGVkX18bSgVHC0Zxnky32TbRxXhJWcGxbqi+wvnqzhk4unTYkq6eHqawvBwFHyf8K31vX3SIgG95Vxn5YvGE8y0Q5rXBBgj8HbgG2/ZC5eQpoNgIODoP7ffVZ92ztP6D7Zk8wdB/gCpYVhmYCmOMX8qI2U3rY7qnsHNRKPZ409BDB4O4sLUot7nSvVJNnqNtAZar/f6m9x5H8i7nhVA6QjP+GYo8HtaXmFTRiEyiV5Uh6/pQNd+k3rAQSAwOV83d2eN4hSqPt5zshDO+onm83043I5z1R3vaNy+ZG5ypq/nw+sPlOq3owMQEfxBnmUKvsNi0NfKzOt4KdKja1Fwv/kSJjrNJJUED89An4srCG06IFz9LBB6AKdErSOG0dVtnNzsS54g7xJ+7RFwSIEbe4uzVvp0O1pc/lxW4IPW9ZbF69V8BiD1A3uxCSHK4ukZbwnyeY5u+ktOZfne6TdGN+tC8rwwqTB1hUAgHqGGaFgeBQtZ3OdOXhA0ZqUs2CkahYsI571bGWRVXemGbxtwlKb+qBl7NhPGgavdAlwvirYLXw6wPE3tlzVtFM+WVI3SwK8danNio4YJOnYzMKtj66cgZ01Fh5amtGQNjotvKqqNbzKgv1zv5KhgTUqvKzyV+kSU5psQLOKATTJ9GbUXeV8ojxTkcKdIR5A2zeBlcMor4GHrwkDyEdSV4rdk5MX2NMerEzRf8y7ySe+2ql5iFMFA2BcH75Ywti/oqMLwpvH8nsbWic0+jq0uLhZzRtYf5O77OARKEJh2SZk37rNBptvn1CDNUvcSFKU6QZt5PIQQWvZfBpA5VSwwecnPpkvlM3nrOKT8LIbLnN98T0opH9rVSSLVDrh2QPgEW8J5cjTiDnyurH0azp6a9B65MYxvQSmyVa6c5QcwasGaYmMI6lFFmKK2+XTAz8eVQYA33ZFIqOjpbiDEGYV8eQlUQ7lUP8LKQS6EGPZgVi2+
- 6ljsU265
- y6+uQX6/mZwsGJLd4RVFRDRTDOXcKuMbzQp5LXl/1e1F+JOKyCYgaYbxtLgH9KzTtZeYkxatOVTNoENepyzgNQQNstCKnq4GSuXtW17WotP3TOmz0lKii4SRW1kXBeID+6mjwmts4ZmYAdQPhu7AHzIkiYXV0rJcM9e9tAvVC/CIvlHSWIc9S9P8ajzDGcvAA6kztWbl7aVY/VociZXe9t43XPODywdHMFtcCdBpuo0Mx/BMKdcyMLczCaepGs2+8kDZk9jDvgecTpMbUl2nHe3oxMZ0zcc5LLoHuMKa6/eMmTb/nUOa69HQ9fRvj6Xo7/qg2
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B7B841C0006
+X-Stat-Signature: 4goibyzki996n63ac156wbt5u8ejd8dm
+X-HE-Tag: 1792114816-826919
+X-HE-Meta: U2FsdGVkX19ap5x5PfvgWKGu4hK21txjklxRpexeQF3/Yh8FT3VN02Wq3uYVC5KB1lLLT0188nP4IwAw8Gm1wA8C5QUmtz+dOTb58YyQ/ZM/qdw3zP0vAm6CDZrYKnr6qiN9waqSt+yv+A1NhWjaeun98YAgu05H0DlnydXxD4RAVcKARr1HgXZbdLKRbQRHEfIn+s2twS3JIQbcVuHHRCqCbLzCMnWlSWk6rDjr3BQ6SeHGcSItp5b5xe4QSdfyIpxLCK0lF4SyPfutpiQo8hHoGmSPrKrBo0vqQ5gAfDE603C5HYxlgqDnqpnccDrjGKELZl51aHCkIQf7HhxuRvcgap6MTeI5/6pydEOVCQKDnLHlC9qwoCEIqg9+ISKINwo7u3cneU57YqbhSB0hbJdVAam/9fyxqIDec8q36iDQIudX4RckJSMCxFElJ/WXCTexQxu8jvBoOzxjjjr6S0lBeDQ/kR/xCAP2g7xwOcGZ29j7Iyyq+iqa76gwWQTQLpYnL7fBsX1D6hKtkF0gMZAKdV9UFb8YE46TrVPC7URQnIw3DL+RiYe3Wj4lubtxBEmcIMOycTYTjXcOiXk5T1r1QZYoVZzcN1s7AvmWdmrcC08CisuzwTF2sWdJX4fIe24nmOpUXkN7wY/0+n56APmSo6J+Wc1lLYlKoN6qnPUvBIiskHtx/M/vnyj4tZQuGRVyIe5Onw5pwI5L5LxDXVTXtVnFEuYmTzDROMUiXSzmQUkbC79e8AOcgnvskBMZ/l4I4zLwwP1jR1puoASvU9k3psZv2pKxZ4J8QZyehWYk4OpaunG2dl0xzM/utubCEATO1TtT+P7Z7enSXMiv/P5zS6EbNvx2HNLZHG6p2DEz/JYQt91FONDMynxcLnrU0RwGch7QjNP+lg9PSxGtmuZ+ILI4Qr/KUr356FdH6bfikxSL/uzRoorLEnQlgL07rfX7WEX1votP0C8APvo
+ m2qQGyn+
+ af+cFrcl2UyL4KIGzYB2pmqNsLx2H4isM2jFzbGCHSXnofP4ATF6tQPPOCRC1hoppNcEv/4IAxLRN63fCVnn5lM0JzgMGfUX5HAFpQp5rRWj+qTalobSJA0eQbM4C1QkQ1Qs7SVnu53LmWqP52dEZOaqnAaL/KaF65q9wkIm/YGRDih4hKoQ0nnsQC4/yCTqTFmDAWhcimGyGF/cPcIWxHE2spVJYjKj6K236vCIT9UU6yBzxYfal3DXaOtDrOnauMg4h5xg3LGCv/Y/HpGHlvpHi0GWTYj7W2jwKXK1h0ZcNrxKF8UesFb+xcjldEC4h9kwbOkc9Bmu9a6GFXMsOVfrlvLJGHkrx5ba7fvAFwsBhkGh/+haOyIM2poalpfFoqvQwPNYySNt6uSI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,43 +93,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Aveline,
+On Thu, 15 Oct 2026 14:05:27 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
 
-
-Please do not "top-post" [1].
-
-On Thu, 15 Oct 2026 10:17:05 -0500 Aveline Noir <jm5905938@gmail.com> wrote:
-
-> Hi SJ,
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
 > 
-> I haven't seen this affect a real workload. I found it while testing
-> the DAMON sysfs interface.
-
-You shared 4 bug reports in very short time.  Three of those are from 32 bit.
-Could you disclose the purpose of the testing and how you are doing the
-testing, finding bugs, and reporting those?
-
+> swap_cache_get_folio() reads the folio from the swap table and takes a
+> reference with folio_try_get(), without any lock. If the folio is
+> removed from the swap cache and freed in between, and its memory gets
+> reused, folio_try_get() still succeeds and we return a page that has
+> nothing to do with the swap entry:
 > 
-> If a tool tries to refresh after monitoring stops, the failed request
-> can delete the last snapshot. The tool then has no previous result to
-> fall back to.
-
-Why would the tool tries to refresh the regions after the monitoring is
-stopped?
-
+>   CPU 0                                  CPU 1
+>   do_swap_page()
+>     swap_cache_get_folio()
+>       swp_tb = swap_table_get()
+>       folio = swp_tb_to_folio(swp_tb)
+>                                          madvise(MADV_DONTNEED)
+>                                            zap_nonpresent_ptes()
+>                                              swap_put_entries_direct()
+>                                                swap_put_entries_cluster()
+>                                                  __try_to_reclaim_swap()
+>                                                    swap_cache_del_folio()
+>                                                    folio_put()   <- freed
+>                                          page reused, e.g. as an anon
+>                                          folio of another task
+>       folio_try_get(folio)               <- succeeds
+>       return folio
+>     swap_update_readahead()              <- may clear PG_readahead on it
+>     folio_lock_or_retry()                <- locks it
+>     folio_matches_swap_entry() fails, unlock and put
 > 
-> I built and tested 66178e4ec30a and its parent cce0b334c310 with the
-> same config and reproducer. In three runs each, the parent kept the
-> 4 MiB snapshot after rejecting the refresh; 66178e4ec30a cleared it.
-> Both returned -EINVAL.
+> filemap_get_entry() does the same lockless lookup for the page cache,
+> and after folio_try_get() it rechecks the xarray, because the folio may
+> have been freed and reused in between. swap_cache_get_folio() lost
+> that recheck when the swap cache moved to the swap table.
+> 
+> So CPU 0 writes to a folio it doesn't own: it may clear PG_readahead and
+> takes the folio lock of someone else's page, before
+> folio_matches_swap_entry() finds out the folio is not ours.
+> 
+> Recheck the slot after folio_try_get() and retry if it no longer holds
+> this folio.
 
-Is this an answer to my bisection question?
+Thanks.
 
-[1] https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying
+As always, when fixing a bug please fully describe the worst-case
+userspace-visible runtime effects of that bug.
+
+I asked $LLM for this and was told
+
+: When the race occurs, a swap fault can acquire a reference to a
+: physical page that has been freed and reused for an unrelated purpose,
+: potentially by another process.  The fault handler may then clear that
+: page's PG_readahead/PG_reclaim flag, wait on or acquire its folio lock,
+: and potentially attempt to remove it from an unrelated swap cache.
+: 
+: These operations can interfere with unrelated workloads and may cause
+: unexpected stalls, impaired reclaim or writeback, and potentially
+: system hangs.  The subsequent swap-entry validation normally prevents
+: the wrong folio from being mapped into the faulting process, and
+: neither data corruption nor a kernel crash has been demonstrated.
+
+Do you agree with this?  OK with me adding this to your changelog?
+
+> Fixes: 8578e0c00dcf ("mm, swap: use the swap table for the swap cache and switch API")
+
+Given the above, I suggest adding cc:stable.
+
+Do you and maintainers agree?
 
 
-Thanks,
-SJ
-
-[...]
 
