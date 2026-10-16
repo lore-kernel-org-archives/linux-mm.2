@@ -4,131 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B84E5CCA46C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF91ACC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:35:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE1B16B0088; Fri, 16 Oct 2026 10:35:08 -0400 (EDT)
+	id F009C6B008A; Fri, 16 Oct 2026 10:35:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB9E56B008A; Fri, 16 Oct 2026 10:35:08 -0400 (EDT)
+	id ED83C6B008C; Fri, 16 Oct 2026 10:35:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D0C26B008C; Fri, 16 Oct 2026 10:35:08 -0400 (EDT)
+	id E16C06B0092; Fri, 16 Oct 2026 10:35:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 80B036B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:35:08 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F668160510
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C3E6B6B008A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:35:09 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 36923C0398
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:35:09 +0000 (UTC)
+X-FDA: 85328736738.18.35B18F1
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 76C6F2000D
 	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:35:07 +0000 (UTC)
-X-FDA: 85328736654.29.708794A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 33DBB40002
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:35:05 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nrPNjHrN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mMNOoK6G;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nrPNjHrN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mMNOoK6G;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pfNUX2ci;
+	spf=pass (imf31.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792161305;
+	s=arc-20220608; t=1792161307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
-	b=GWavVKZTawvlWAj4P9iGUAfrIj3nV3Rkkxz0aXpQHZI4axkHfQ+Jg3InrLorlVEjzrZHiJ
-	1ab15TVn5f8/rHXCccGBDqvjKHKKo2IMnqR9CNm3ukJR6T81x4WJerz0yRnigbNdxy6+dg
-	AIHjdhlcnXhU1HHOpPYuUXRO/YHFw08=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nrPNjHrN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mMNOoK6G;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nrPNjHrN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mMNOoK6G;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yc3ap3MWdlDha/MVHspUrtH+yCZz2kVrPVlYau2goN0=;
+	b=ZX8oOcfp4Ga/UlRV2XF9riQNMleGO+OxTtCUVqV0B4LUISRZH4qLz/d71zJWfEBVjO+qo+
+	9+2Klyix80UxJDRZxPwxWxsDgyZu+CofLZ0jnXb3tO+WEJFO5EiRCo43B1L0YVDEJDmwYI
+	TvLwit8VIuDf6bHzQ//HbXeThN7FqCE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792161305;
-	b=2bHsMaOEgaYkR8DIAPswozrsWFvdiXt6vsdHgo3GCWfXL30vNaWQTaf3jLxoAFYs4f9w1L
-	lfi7emvKa9yULzbhgbYiJ2XluuJd+4xjc+akK4I3IByK/oUxY9pdJJnENTfgzRZGufsJfu
-	+TdHQ6jnMSle++EvjKV3KDGL3xUIXN0=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CF34B1F445;
-	Fri, 16 Oct 2026 14:35:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792161303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
-	b=nrPNjHrNIwZqSdnT+S2HVu9fYo8T+GCugireiC7KlLuJP4f+ehAQRuLl6pePQ6dJaIC1q2
-	GNSYj3MEl4wuGijoCWZjAUn/twscjJOIeaosYj9t/XVS7rCZs/weJfF1y23VfbBljJx1oh
-	5Z14GJ8axXI09jlYiKHygstCBYqeAVw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792161303;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
-	b=mMNOoK6G6Ocet99MnO8c8h594dYsTr4U2fP4oNNKJ3SNRHni99cmls3pXJoxSDUf/SaCBm
-	NOQl+0z/7m2KJnDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792161303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
-	b=nrPNjHrNIwZqSdnT+S2HVu9fYo8T+GCugireiC7KlLuJP4f+ehAQRuLl6pePQ6dJaIC1q2
-	GNSYj3MEl4wuGijoCWZjAUn/twscjJOIeaosYj9t/XVS7rCZs/weJfF1y23VfbBljJx1oh
-	5Z14GJ8axXI09jlYiKHygstCBYqeAVw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792161303;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DvevIo56gnD9RKfRjHMCZAoapMkclUhhZLXxXNOsKFw=;
-	b=mMNOoK6G6Ocet99MnO8c8h594dYsTr4U2fP4oNNKJ3SNRHni99cmls3pXJoxSDUf/SaCBm
-	NOQl+0z/7m2KJnDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD7C61378C;
-	Fri, 16 Oct 2026 14:35:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MNLIJBY20mr7JAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 16 Oct 2026 14:35:02 +0000
-Date: Fri, 16 Oct 2026 15:35:01 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Kees Cook <kees@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, Kuniyuki Iwashima <kuniyu@google.com>, 
-	linux-hardening@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 2/2] ipc, msg: Account msg_msg allocations with
- GFP_KERNEL_ACCOUNT again
-Message-ID: <atI1-HjSgPkLCNQT@pedro-suse.tail5790ac.ts.net>
-References: <20261014052338.nothing.279-kees@kernel.org>
- <20261014052344.384723-2-kees@kernel.org>
+	t=1792161307;
+	b=69K9m7mICLM1ovB83N15RS1zkc2pHK1VLHrt5XpRNFw2rhAeVuTbCZXluDBmZA+E9EvmJT
+	Jpmo7slvjA8E/pkfWG3774D4v+g3CUcgfww9h3XFQn8gAhzws/msmxW9dttmOn01ZJFZ37
+	KUHuUwq6M1N/RveZdflfi5pfFXNo/fU=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pfNUX2ci;
+	spf=pass (imf31.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-30b6dad2382so15816124eec.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792161306; x=1792766106; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=yc3ap3MWdlDha/MVHspUrtH+yCZz2kVrPVlYau2goN0=;
+        b=pfNUX2cik0hUpFnYxBJJ0HRQ1ZzXcJ8BjjMakyglW6I0DZijaen6J8r/OjcnDCk/Bc
+         wlMU6Q3RfLqzgkjKn/VSljNszZbE91N9d3O1ge3EathQnvWbI/GsH0PljMpydVnh5gNh
+         nsxI95lc7IXM2UFmwpveYJqRECvLCinXqlZspF8gXnyjT+J4KE3Byx02VjWsnWFnYlty
+         AegkAjxqTYz2gR2jAi+rO9G5lxP+pgRLPevPR7z/x44BY0wZ8ibJvDAk8Dkh1+OGwoWi
+         hWI9VixjAmHppgi82a5DBQu81QU92ZVNt4ztvX8rmPS9wBh4WlApAX1qjpB/h7dKNmV/
+         GBxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792161306; x=1792766106;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=yc3ap3MWdlDha/MVHspUrtH+yCZz2kVrPVlYau2goN0=;
+        b=Chqyn2oQv00slB6PiH3uD6LaVZl4lUElUKzgTRh10m/mIkxjtH3+zMbbyMHCsKWLnh
+         BW1430EmMv6HQSW5QPaHX6vIitkFpmoEgcLwBeIPK4odE9mFotATddymWRk6MYaQdzn4
+         SmXgtMppRs4Q/l4is0zkdSVp20KhjIy5/UCnpC4CvGiuDLSErU1zUlFjiSuEfDcyZ+WL
+         efBU45r+KhgviuTkBs/fNPyH4wNdIxxA+w4TfIoB7MHNyY/JMESLYmId4RdjDh/XbTgo
+         7mgnWAE5+EsfRJwym/8R37TKeI3bjjuwGKsM6wAGmozIv7j3SbgFUVdRcL9yGg1mIbLw
+         tJMQ==
+X-Gm-Message-State: AFq9FYIR8XU3iKw31icDDxvPnTxCsLCYO2vwEIxOYzxqdvsZ+W+VAb1F
+	eBDStSx/YbPumnGh/KGJZM+f/HzdhlqnAwCXWJ6Tif2B8FBExnVsouKk
+X-Gm-Gg: AYBFou0QYfNJC0uKgvSnSDC+NhDnk2OIde6CMqq7fBCjcq6uYGXh5pEZrS27nBMXlL8
+	nk4M217cusnr2CiOr9Hq8v6OFK3djmIjXxPiOVOP5OOooyHCmAWMdxmyYJ/WNfS+Hl2s1EjdRV4
+	8d3htBxX9SKK8orG4PcbthXkIkhcL+yVKf60VC1Rqk3so29WUrHyAYrvlhKzlota+BPw2kEERZ5
+	6pj4kOiFVDQaJS9N5eJhHLK2sldgQvTXhJtzj8UhHEHCubr1aigk0IPXn2BQrIK/hddn2Bb171+
+	sYf8nx8/d6GWylgaf+jtc8S0aaKSpu4YiE07CfYPA8q0J4IWd8ir3NR5/G8XM/jNbrn7kXMljOJ
+	yDuWqsS4/CpC5YtPDjAoc9EJmc8wF5HpM70WqdsxqimV8vE8Xmt3ypu7vOWEB2naDNFmZCzWCII
+	5N1ZNamhW5JtvpeivOzYvk1l1t2sdqOR7LU0pBhd48MyTWDOw7KFn7Hv9Y0r7vWJKJxyrKXKn1D
+	+7SYw==
+X-Received: by 2002:a05:7301:424a:b0:35b:9bd:1435 with SMTP id 5a478bee46e88-3619ea236e5mr34190eec.2.1792161302290;
+        Fri, 16 Oct 2026 07:35:02 -0700 (PDT)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3608297f4f7sm7611812eec.23.2026.10.16.07.34.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 07:35:01 -0700 (PDT)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+Subject: [PATCH 0/2] mm/ksm: keep smart scan from losing duplicate pages
+Date: Fri, 16 Oct 2026 22:34:55 +0800
+Message-Id: <20261016-bug-mm-ksm-smart-scan-align-skips-v1-0-2f91d76416be@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014052344.384723-2-kees@kernel.org>
-X-Rspamd-Queue-Id: 33DBB40002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA820moC/x3NQQqDMBBG4avIrP0hESraqxQX0zhNB5tUMm0pi
+ Hc3uPw2721kUlSMrs1GRX5q+s4Vvm0oPDlHgc7V1Lmu9873uH8jUsJiCZa4fGCBM/ilMcMWXQ1
+ hdl4uPA7DyFQ7a5GH/s/Hbdr3A9Hmhv9zAAAA
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, Stefan Roesch <shr@devkernel.io>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
+X-Mailer: b4 0.13.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 8k4wyftkbxh83gi7rbuwdwg3wkj3gogr
-X-HE-Tag: 1792161305-712488
-X-HE-Meta: U2FsdGVkX1+3DN5kPMouzEPlh4Jps9lX8DPGH5LV8+wXdKw096xqJ8M+n9dzP25Nc13dJfhi/YIJI03D1qzZCn8GnybPcvnpklxrcSgo1n5wKcQ66SyPwYa4PVLQL5FEbDxslDKJYJHoGcIpZA8KtPQhHM/8K5YIoC73EFjbBHHxbThY1GW5XvHDaSPgVnhsdMxX6SLfJcGgljlTaj4lEot+KFooQ/FUMmpGeu2463z8gkrv3EtwFpemYA8jZ2m2P/No/GTWxz5o5VNqZrpkIWkgI6V8J8PtOUHNeRqQTLjxq8qLVY7z2vyg3WEGpmt6Kuy03B3JK/Mmv6seFZUsApX1V7o2y6COSb0BHOyPRLXdzyrC+8mN/n2qi8SEl04gDRH0wOcmG/NaV1VLQKZxepuW8psf48WBrnc3g0alhs0J6PtjcI1DEU75LZGOTHZ1Zx4vEG+LkKIFYfpm2rbwDmYD2MA1ZNRM0NWt+/o7zKZGl776QPy6FwvpDrWm7TBWSdThWZVcD/cnrbvXp370SRl0W6DT2xCs842WyTq56lU8YOM6yChGKBfUcHZGGOaX/c83Dv/AwUCrsKUp2dLGJtqfGTpWDWmWxJTY1Rpf176A2kJdKWENsqKQ6ODodKYlDQWTf/pBkByAT+jCvwqoTTFLFEkZ+TqDejTmnRJNNKsChMCXgyByKXnaQCQFeI0o69SgSr+lPmzZiFZAmT9r5jZmdxJzkOVRLGt7LGnMoWWAVy16xyZ75PawdF4GdAT/MQ3BGH/JAK1Ay0I/HM/Ot7FHW114jLRwXauAsx655pAb3xjB4c6Inik37u0f745TO+XcDfC5SM9IbfHMPxuSdwTBdL61uKeyKl3m0hN8KTYGAxbnX+p3OHjspxwotutceCENS4BmBCsu1YEUo/l3wHt+GEiDzlPuZgmeravqOILteif0PbG2bF6rQ7yfGtXJuQFb4WMjapgR1D36Bzl
- Jrmw3Zi0
- k7Bc/M/lfz2ER822ralW1DCbuACUNObSBxas5q1xGd6RCnvQQlwP235xhCjnIwTz0IdNw4ybcxcORB15qLq9rWc+HyW7Pa3n0INVd9/88bVviRRaCXmgd18d0C/mVUn+fvK03q223CnQWjs86uTJ4e6cLgsY/et3lrLP4SFyjrxtfqHQOpPMgi8Zr1gfwzCVJKWIVOveYXt0LVejGaL38Ww5gzUvE1Kf1/nqNCf91zQdarM/JC38vUTEIkKC/pzlbGZx6e7/CXxvVQ95u7/aN2J+BDW6rLLfbUta+HIlNUAa/jb+l5ZlVX8bkFzFAaC2slTkbmGSLjKS2Uvc=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 76C6F2000D
+X-Stat-Signature: 5z6em1gaj481auw65c6q994xqoymdcct
+X-HE-Tag: 1792161307-851554
+X-HE-Meta: U2FsdGVkX19IM7Tq/bRLXwFsfIhNYF82qO33LN2MmzUNYwkirUysQD9Vhf0VvKL/hgQLq65pGwp/oDLzmT90guXUdkI2he2XKT9N9uth1JDywmYcBms8KADtm7K91NdmdfyNeYNGeojv9wbBkH2tzZ/xUp3ZBAmLkFLk/QCdNDzfTzt8s8xzCNLdW/RYlIZJIYmo8E2u/yJ99R1MLHsS8ibq6jyYh5F87qvG/atwqe3UvTNDSth9viV+Ba4BO5sysoEzrcAydCGkJWR2IkoUgVXa5ltLHldqEdaXwn5rnf+U0ayYkPlPk2S6npYRZfleBqkJ+umqz7wcnLZuQbxYfjpaN5KbwkD6F1KUWXPeJCt7K0qE6LxCOBbbnW3prAlEkR4hrDRAkbQyWKL4u5AsN7Xm63WLd01Sh0SDfOG5G5c8g1pRjPFB2RkkWi1flwbcbj5Kmjwcr/D1E0pnqyDtmmb++DiW/ejrCsyx3Lb2U+lNPUOy0izdx047mMccvq1qmsSI4gZefzYKIHN5wFXH0ghni+ZL6Tw/0GPwykfnRSNV1RsBeqXjjQviYyqLIFrkZf+UmkU7k4TYUPMt733Qjj7BE/YgYIn7YpqMpVHCsctVaW4P6nCzs+8rfpMDzHZOJiJyLX3OjIR5WD9L1db9U7EvndnPHkEjPyirUJFQx22rXc6KZ8wCBE+g9uvw4+QMjlogs4bN8nOEftZFY8LBxvvxKyHd95Zbm+Asdzo+IDHlBHQzRoTQwpdE/vk4AQRMUjmuG5gh1HU1Ra0Hiq1lnJ6DFec6O5WM76c5ykOAfZQk5sevaJEriGCv1F4ELD+6TXfNwtkvtALtnC5U/GuRXV2upugdut79RdeYtDzN1O0uTFTMxdOHkDKDKQ/dTuiT15MnyDbTYzum+kRDppzY1RzD3GaS4GuUh3LboDbSK7sQQfCG+AVrXtD5N4oo8SrK6fBuCiOXXSMYbhJpP0x
+ yElzqjf1
+ XhLBqKuhB+anp9PxVMAKHAsyjH15OkFRlzxwyah+X3xy2iq5FEiTC77mwb7tgSjN/+EL9shRbAeCbeCUTsIZU8iygDfUP80pyOSg3fgJrnXAz2U3vlkdFrpbtpShPQv/C5CF72pG6yuMZ38BLebGrOelXBgwNlcOVPGR6S5SIk2f/xeuyv6rgvqjfV4M6NCbMfedNuKrML/A0klfLYYTh5ht2kx6cdlEZXli5fP8l7Kwp8K2f2ev95nglBB9zZGy89HoRHpRSJqLCIksJ8VdF6Mf0VaWgTVXk66S2nehcBe35vLv8hMaLKz2O7mjo10p9jcH/Gw8m+9Bu473X3Tul4Sdyajyw5OC+LwidYhp16ZuMVDcelybCNY+ur1Qsy2mAFiugm0CkAuqO0o1r88HR1g4/yH+1fLB0lKRQFF2I+Fw1JQX/hNeSgeGBr/UkhdmVbU3swqJ+xQqsgfPZRG7lpjiGP1d7V4Q270mE5tlGvnTgsvFTuOgLu9qEcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,29 +125,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 10:23:43PM -0700, Kees Cook wrote:
-> Since commit 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for
-> alloc_msg()"), alloc_msg() allocates with GFP_KERNEL, and a msg_msg is
-> accounted only through SLAB_ACCOUNT on its bucket caches. With
-> CONFIG_SLAB_BUCKETS=n, kmem_buckets_create() creates no caches and
-> kmem_buckets_alloc() is a GFP_KERNEL kmalloc() from the general caches,
-> which do not account it; the same happens when kmem_buckets_create()
-> fails. Either way, the allocation is not charged to the sender's memory
-> cgroup.
-> 
-> Allocate with GFP_KERNEL_ACCOUNT again, as before that commit, so the
-> allocation is charged whichever cache serves it.
-> 
-> Build tested ARCH=x86_64 defconfig with GCC 16.2.0, with
-> CONFIG_SLAB_BUCKETS as y and n.
-> 
-> Fixes: 734bbc1c97ea7 ("ipc, msg: Use dedicated slab buckets for alloc_msg()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kees Cook <kees@kernel.org>
+With smart scan, which is on by default, two identical pages that become
+mergeable some scans apart can stay unmerged for as long as they live:
+each page times its skipped scans on its own, and once both are old they
+may never be looked at in the same scan, which merging through the
+unstable tree requires. This showed up as intermittent failures of
+ksm_tests "KSM NUMA merging" in run_vmtests.sh.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
- 
+Patch 1 picks the skipped scans by the global scan number, so all old
+pages are looked at together every eighth scan. Over 420 pairs made
+mergeable 0 to 20 scans apart, 317 merged before and all of them after,
+at the cost of about 7% more ksmd time on memory that never merges.
 
+Patch 2 adds a ksm_functional_tests case that fails 20/20 without patch
+1 and 0/20 with it.
+
+Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+---
+Qiliang Yuan (2):
+      mm/ksm: align smart scan skips with the scan number
+      selftests/mm: cover merging KSM pages aged by smart scan
+
+ mm/ksm.c                                          |  24 ++---
+ tools/testing/selftests/mm/ksm_functional_tests.c | 108 +++++++++++++++++++++-
+ 2 files changed, 117 insertions(+), 15 deletions(-)
+---
+base-commit: 437a7e839def0f505277022622fc59a8b071d6cf
+change-id: 20261016-bug-mm-ksm-smart-scan-align-skips-cd01e5a9889a
+
+Best regards,
 -- 
-Pedro
+Qiliang Yuan <odys.yuan@gmail.com>
+
 
