@@ -4,88 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7FACCCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FB0DCCF2C3
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:07:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 969B16B008C; Fri, 16 Oct 2026 10:01:17 -0400 (EDT)
+	id 6B5A66B0088; Fri, 16 Oct 2026 10:07:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91A9A6B0092; Fri, 16 Oct 2026 10:01:17 -0400 (EDT)
+	id 68E996B008A; Fri, 16 Oct 2026 10:07:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82FE86B0095; Fri, 16 Oct 2026 10:01:17 -0400 (EDT)
+	id 5A3B06B008C; Fri, 16 Oct 2026 10:07:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CBE26B008C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:01:17 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E949E1C3C3B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:01:16 +0000 (UTC)
-X-FDA: 85328651352.23.EECF435
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 25923C0013
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:01:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WDL9W2ud;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 301956B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:07:26 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8D7712048F
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:07:25 +0000 (UTC)
+X-FDA: 85328666850.12.FF0EB21
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CF51E40008
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:07:23 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=tAx0XQSh;
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792159643;
+	b=hqItFl8AtXmD/VmM+m+8oPukfd1pLGRcNsrxswtK9xrrmYldxbc+nlkTdR44NyWQnn81NL
+	E9+kgz47DNQfrXv2af6Tjg69/+mqFvQ3WlvdxDt+XgSZYbbqf++SqRtpRAYuLNXziqAxey
+	9j7dE1fRlsWQGVrZwaZpOh4jf5Xugas=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=tAx0XQSh;
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792159275;
+	s=arc-20220608; t=1792159643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pnjLVyf6myQJUuaqwlYmu6gwLwBU3rB08827vgARd+U=;
-	b=FoUi3M7y+NoziWe5P8OuQd+7QC/7X8DyVccwZAiRNU7ArkNKSqt99V8VJ+tTSF9ucmbMaX
-	LTa5gt1B3RLybRhiqV2fuMNfau00Ar6OY8Kkml7NOhY6gL0UBnw1p1RoCWmf9ZOy0Yej5E
-	QyF1WBw9ra/kZL3YHuRXwAgAp3o6jIg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WDL9W2ud;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792159275;
-	b=PoGmo+hez2aHompzASRVwx9PZlUqSVLnQrXj8evQ0s3dwZySV+UYvp69/QkZ78Fjw5LRB3
-	ho+aG+pybOkFwTnX/HEByUIBjES6t+63ETmTpG8ZJaEUNGr7cxRNmcDo0H6qyY3/PcP/i9
-	bcLTVAUETcTk9lCo0g1a3jrlewFHN68=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F054E41E90;
-	Fri, 16 Oct 2026 14:01:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47001F000C4;
-	Fri, 16 Oct 2026 14:01:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792159273;
-	bh=pnjLVyf6myQJUuaqwlYmu6gwLwBU3rB08827vgARd+U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WDL9W2udIs5FpN86pee9VwvNSEcCwiRcEJhZjtShWYoXLWqigbOI3aCi+1gF6/39B
-	 18Bq2/AqbZy6AYPsUmhAzCwOMrlqZNN2VnISfElelz8dVVvKo1DMwJooELZk8rYjIc
-	 EOqdw6Y6kWcJA+Br/3AE+8v6urwSIHfV3CVi4Bl2a+XOjDXS4UHKuT2ossucN7Evbh
-	 aqrMJf+xnwJlwpagI0CiK3dYX53QWU/mu91bHtwtEpvF9QgCfyUvVxxYydMUT8JSFy
-	 ctrF7QokwqjJU/PGB05ORjgxEfU1+la6y2kgTph5GEXG+Rm2LZbXNQqohoT497XgvW
-	 jU3GJM+z4V96w==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] DAMON sysfs: failed update clears tried_regions snapshot
-Date: Fri, 16 Oct 2026 07:01:06 -0700
-Message-ID: <20261016140106.118283-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CANOyQmHMRh6Sa=6N=hM8VzO0HRaFL0FxQB7An8=Y-X5GX36kmg@mail.gmail.com>
-References: 
+	bh=QayzQmhnTMuUa2ajrFbaahJ0XP47WZ2WayG+9I0E9kQ=;
+	b=rnwnQy9IoKnXvHeHAWHooLiXyTs8L8GWaUyP9GRedImsVMq/2Uzp2gPTRO5yxTLjyMU7e8
+	5EcZU8UGeftxYNogRlUBcCWVp6UiT61LtYY0K25+HLj5ck8DhDZnrI7wAYEYrZV9xD6Jfi
+	lqbxPGtjm8yDqdQWeOMLS1Nbc0lYWpM=
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-917b78dfe30so406386d6.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:07:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792159643; x=1792764443; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QayzQmhnTMuUa2ajrFbaahJ0XP47WZ2WayG+9I0E9kQ=;
+        b=tAx0XQShG7bHN8cqijh7TZDrUavPbElwS25HCFzaUxhphsMODXcgaXjHdCm5qn32lx
+         unzDd6jdWpyiNzquSCcsF7PUz/3xcnkbhxKncwoOhlDKt1AeH76VpfL6UyF7F4ICWkoe
+         0arQ/9jaP3kiaJZkfeacqe2shsYCIHRfk4bCue27LCDBObk6NkcNaeswq/P0XdJ1iBdC
+         vMRZ9bztHc/46BJGk3SXLHmu2ob5AUd3C4UA7mBpobCLl6md9R1fqJoDAx8nIbLvRM9N
+         4bEgAF+RYfDL7GM4GPGmZDcHcCIBme3Ea4hFklERtdILhqibLJXkSeQlDsuO/DaJPSnj
+         KXOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792159643; x=1792764443;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QayzQmhnTMuUa2ajrFbaahJ0XP47WZ2WayG+9I0E9kQ=;
+        b=fbBpyWydPVC73QussnhFFVfUkI7hq4hxvC1YOTSDEhSef5fHBqr3Vp7dsJpw+afiFx
+         7tPH24xDL2KtdB6CsU6qRI3k+H0AnNvtU8rvEbi02t5aG1Yw1C16RKdWlJCu9IKEqv2u
+         iCSeFffMuVBEidG+IacvvbPM8kubUOYgZzR0Q5XYrNwl1BQPyysCPr8iV2EozVdwvLhz
+         lXRfJDxRuHfqWLZP26r+SuyJ3q19mlB8XBI2ZxZqZcTqMPiZ15adcUYEXXK64NjiSWCd
+         AymWJWTbkUalo6QlR11zwpMm4g/keVcBE/J8ZnnHB9c0JGSWjWO0du0q5e2WwIK58iEw
+         yQMA==
+X-Forwarded-Encrypted: i=1; AKwUvBy7Ha30Mn8sXj4moYunRy8Uacpejgh0rlR8MRlLAKAmW2xQS+p8cyNNJIu7YM8onUWAkHwE49SKjg==@kvack.org
+X-Gm-Message-State: AFq9FYIoje6tkfwUCllLjkBgsOyl7X++w9LAkTOaFM2EBa//fPKlUbGq
+	8tFostt55+37AFpqFj4tq03007Y9jTFRoW9IbshLkhgkdwtdtNp7yjC6zYkWH5db+F8=
+X-Gm-Gg: AYBFou1rI/GwLjfJxrtX44kDNOx1UIDePQ4K71rc7xFlRekqZxgKAopyTf/4EQccYTX
+	vwErZKk8gME9RIroTEV3PhCcZdqLndo9zS5E7IyFXCu5HIzra+2pbqI7Upox8NqiXoRKoA+8PTk
+	Q9pTis3LiAcqJt4wfTWCQuGfNuFKFD7stR787j+pJiLbb02U+LrKVowJKot20UaAw4Qmdsj5miU
+	HHDFcxHRHNLPIp0K3nPhegygM6HpF+dUdf7wlPtKdg8S6+U4kZaraIPNLbonTgZ2R17NJWAo72U
+	h0vrbXOBtEB0QaiHDWwbVu7UZDmAZtfasqBrotXscHgfWyC3wZhB4ANp53taQehS5lf0gdErzHV
+	7vCs7pPMOM36Ey5dFTPSo4svdEjYkajLykiXLPSJ+8v4VAvAKHydBfc/vsmunwSTRYYXpEwtCa6
+	EyZgA2QTkpFyHlAppe10iNUWWO+85aV1kVE915hqqKZVeJF958aVcaxEggr1QnvfGEMujHvCXI0
+	LKlugu/wS5ooBYQ46M3fOn8dZGqhK82LTlL+R7cmpLfsD/gH/rP27M9jMXUaoXTaQ==
+X-Received: by 2002:a05:6214:3a8a:b0:917:a1a7:6369 with SMTP id 6a1803df08f44-91bdf07e362mr1076226d6.22.1792159642853;
+        Fri, 16 Oct 2026 07:07:22 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcbb75af3sm23592056d6.40.2026.10.16.07.07.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 07:07:22 -0700 (PDT)
+Date: Fri, 16 Oct 2026 10:07:20 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Subject: Re: [PATCH 3/8] selftests/mm: check MADV_COLD and MADV_PAGEOUT range
+ handling
+Message-ID: <atIvbzEGUcyCqdC7@gourry-fedora-PF4VCD3F>
+References: <20261014175756.2035176-1-gourry@gourry.net>
+ <20261014175756.2035176-4-gourry@gourry.net>
+ <73c55ce6-67a5-471d-811c-facf712b2fe9@arm.com>
+ <atIkDw9r6CVDJaG7@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jhdnzaosqhnru5ctt5n99ib4uq788qbn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atIkDw9r6CVDJaG7@gourry-fedora-PF4VCD3F>
+X-Stat-Signature: 5jqm9kc7wju7qwe14rrjouoo5awdpxdc
+X-Rspamd-Queue-Id: CF51E40008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 25923C0013
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1792159274-584437
-X-HE-Meta: U2FsdGVkX1+RKb00z1uyPgbDuPg28/W2tQzWZCjELz7uvY3my9/rg4uycoPv+wSJ57BRJPMc9Os8X2hV7dfXt7mF2yZWWEW7HKT99cAQHkUujwhwobLJrR8KqEEo7beXK6pg5rBCt/w6sVKJkWKtcDCIVENcAOsMCMiC/Nqc/JFAwFZcWAk1D1Rqz5NoV4iYJO9bharjODmnwUG6IE8qAlCYFUR7k91CxKIxuVaipJgVYa2TQ+eZ0elWBvVJwliQ5Ydwke46T4YLbAEGC9eWkWfRg/X2K6ItrL1YWpN7v3e3qwvW7QsbXOduHSj5DLXMFxJkvYfLcx9CO0j8q9C3joL/s65g94z2Km1b2HCNSzddK7HgX1AkMDFul/TGzqsBvV96Yfs0lrKn0UyLBGa5WLVCamAhBOPBR1qZXF9GpS6pPRCg0BDBidou9lnh2YpgHs93UKbLzu7ka8YkkEr2AfBeUQLQp2Ja3P7aG0V32n1uJIUNODJihQJzsNDgp04z+7C+hUR44c0YmvDK4ZNu9XzlNzosgVbJh+SBiaEuLozslFJ3/MOfK9Pj+3nY3N/nimOjMYRzwOvMlw8niNAAxE5CkgZuIYDDBcV3P/KuFahF59XVxyTqIexDWzaRLfI/GuFQxQwxNB/CFd8F3fkVsrVIqbuca262HIewbjojLLwH2YP7WBEKi+GTCrjrXNBW+0iAdK25T6yJLjcAE3ZynCbhtyPpC1ba8tkZCEfmsUWtG03s34m3qgogwS6BQfhLNXQWzzh/et3jJ+fm9E6HtSeY5L5z3gRhhCz0Nkp3jsp8IXnX+7vBtOB1i0qETdCXI1AFq82TsOqUcr3ngxn/pAjJmps3XfEM63oF8ig48AVmC/nvPlGaWKu2ITbusNNjZu+KX0DALbyYekm0A88511LVmvrOCIKdE2XJQ4J/mdSkh/OMCuVyJ3ZlE5Sdx+1CikSuCUlKwYGHcw8xvdC
- NZW3+xn9
- 4UaJnxWTk6TNsZe7/lcTEuaOWw2jhURnOYH34MJxD2xpNUEq0lMmEJmwvLNvcFoKLde+SWMdYARqduGZLdmckUB42jsL3GFPaiaEMi9XjtIxtAMnzH8rVOL9r2s/BOXGChIeEKTbc+6z0P75JHry8lA6A3ubHPBckURgFJp372WUqDdwKwP0K+s+a14ekz3LMoeMuogwB/KIieE3+xrSyqcVzDh3twGd8v+6MycILLQvhW0ehE7n8hzthkTHQff37X0T84RIzvtX+RmV8S+q25klwig==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1792159643-259599
+X-HE-Meta: U2FsdGVkX18uBoLONiV/SUmEQRQ3acTABhIHxEUtuo3RqrH62hQq3iSUss80/9Oh5HdbIsMz0PkFC2rMCTR100eJEkiZbyKM7/4FQvLl8HzcXPTnRNxXunYehWkVqBshbjUH8cnqueh3LG9U6tap2ZnBOoY6//WQcSCWlABL2iu32fxA7lLyntDhDt2JfZiYTk58tFdmEXrHDCNTINUPyfFmMk3/0zq8suN+/4ewag9s6J6039Rgr2ZSO+ru6EsM0cao4NVXu+bMzN412rH8sWNC5wsLhSun+9bmcpTvacIo709c4C0o8M8FJNn184Xc0/XfViOn+kIpPHEGZHjckuoj/wC39GbgGfy/hWxJfUhYkNb/Jtp5r1mOzM+qTsSpSJTAFO7+1ZCyJY2o8t9icYBxom24CAzYFNIJljGiVnS5pXCULx2KEIc5Xe9mNgeaCmrigoPSTgYWSe9EwPLSxTDQO70AwNAQSc1slXmlnUuTsux6ag1GhyBlecpKjyCxgNbxKAs2wYY/I6IWOJARSadUVWn8oKvFfxLlZRsvaEgebVRj13GYp4z8Dysc6birARdhXlJLYyfQ5f+rLLmWff7aGtEXPexEU1Ed4MA+nP6LLPb5qKCRfNdVS2HJIpOEiUSB9yaQk7mj6bm1MOunrbA3WnsV3WTctHYUr6DczBffvCoyiJbJctrv9Y/gWYJ5JiSwlrfzIQ5VX0VFmOLKF1y3w8C4iBNS0AISi4m7KIZ9eY4+5pM6+QZV8VqGz+IkQPJttKjGka3h0Ismwce66aW0Xu8RAm/IULOhb1IhuV/R510ACLZhPsr+GJFyngLw8T88mkCs4e5Zc7Shs1ZUzWq/BzByrgTLUkxG+utLJ9RFT7RN8SQ3xVVV58vcNWj1GTogF7nieM6wegJG5vWOnqmVoEmw8mo+NkJIlas/rrtZH9UZhNv5OswNijoCbDle6yEmpfkl/zYZj9wC9ud
+ 9aZKZAoM
+ KglkyDI+VuN3fq3wrrDPP1OspsbCjJMHx8jH52V5SI8phHLxqf/56mJgq4OsCMbaToruZwumIygwWlqgmmG0Tm4Q7ZWFZ5wQKhtDyax+JN2tYFqTtlafMnY5F4HwR7SP4TPZEbfw3oWymajtMLBi6nAtvhxsX5M2Y0QTSs8ipvgauiFeZ4V5Y7pOLYAfg8Ava/6PcoC+orZlpGwVxKeCGFWc/LBHVj5/OXmVF+2nAHZF3UzCE0lTF4xR3rVO/7g1rkfZdh4PNvQaZrxkRhemlltpkupRgOgfrHDHkLnxJU4wciP4HfnyzyZ6ZWt0P1dVHw+nrslCxV8OIXu6XvVose3vNd71qorsBF1zT1E7HjF+bij8IozU3CPLdUujxQiagePRG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,82 +125,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Oct 2026 19:12:25 -0700 Aveline Noir <jm5905938@gmail.com> wrote:
-
-> Hi SJ,
+On Fri, Oct 16, 2026 at 09:22:54AM -0400, Gregory Price wrote:
+> On Fri, Oct 16, 2026 at 05:47:57PM +0530, Sarthak Sharma wrote:
+> > > +/*
+> > > + * An unmapped gap in the range makes either hint fail with ENOMEM, after
+> > > + * advising the mapped pages on both sides of the gap. Only MADV_PAGEOUT has
+> > > + * an effect on those pages that the test can observe.
+> > > + */
+> > > +TEST_F(madvise, unmapped_gap_fails_after_advising)
+> > > +{
+> > > +	char *mapping, *control;
+> > > +	bool swapped = false;
+> > > +	int retry;
+> > > +
+> > > +	pin_to_current_cpu(_metadata);
+> > > +
+> > > +	/* Make sure MADV_PAGEOUT can swap at all before relying on it. */
+> > > +	control = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
+> > > +		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> > > +	ASSERT_NE(control, MAP_FAILED);
+> > > +	control[0] = 1;
+> > > +	if (!pageout_until_swapped(_metadata, control, page_size,
+> > > +				   self->pagemap_fd))
+> > > +		SKIP(return, "MADV_PAGEOUT did not swap the page");
+> > 
+> > This test is checking for both MADV_COLD and MADV_PAGEOUT. So if we skip
+> > here because we couldn't pageout, then we don't test for MADV_COLD
+> > behaviour at all. Do we want it this way, or should the tests for both
+> > of these be separate?
+> > 
 > 
-> > Please do not "top-post" [1].
+> If swap is off, the behavior of COLD and PAGEOUT look pretty much the
+> same, and we can't actually test them meaningfully.
 > 
-> Sorry about that. I'll avoid top-posting from now on : (
-
-No worry, nobody knows everything from the beginning, and we all learn from
-mistakes.
-
+> We check that madvise(COLD) returns -1, but that's also largely
+> meaningless if this initial pageout_until_swapped() call fails.
 > 
-> > You shared 4 bug reports in very short time. Three of those are
-> > from 32 bit.
-> > Could you disclose the purpose of the testing and how you are
-> > doing the testing, finding bugs, and reporting those?
+> At least that's my thought.  If you think I should split it, I can.
 > 
-> I've been trying to understand DAMON in more depth with help from
-> an LLM, not deliberately hunting for bugs. It spotted a few possible
-> problems as we went through the code. After checking the code and
-> reproducing them in QEMU, I thought they were worth reporting.
 
-That makes sense, thank you for sharing the context.
+on second look, i will just move the cold checks above the rest, since
+they're mostly checking failure paths.  those are mostly unchanging
+regardless of swap status.
 
-> If that wasn't the right way to go about it, please let me know :)
+so basically no need to split, just a mild reorder.
 
-That's the right way.  Nonetheless, disclosing this kind of information is very
-helpful.  Particularly nowadays, use of AI-like tools is nearly always better
-to disclose.  It is not because maintainers hate AI.  It is because AI-like
-tools are still something new that sometimes good but also do mistake, and
-therefore maintainers are still learning the tools.  I'd suggest disclosing
-this kind of context in your future contexts, not only for DAMON, but for
-kernel works in general.
-
-> 
-> > Why would the tool tries to refresh the regions after the monitoring
-> > is stopped?
-> 
-> That's probably not something normal users would do. The test
-> deliberately called the update after monitoring stopped and found
-> that the failed request cleared the old snapshot. It looked
-> unexpected, so I reported it to ask whether that's intended.
-
-Makes sense.  So I think this is not DAMON implementation problem.  Tools
-should aware this and do not try refreshing when the kdamond is terminated, or
-remember old snapshot.
-
-If this behavior is not documented, that's documentation issue that we shold
-fix.  Please feel free to send a patch for documenting, if you don't mind.  If
-DAMON user-space tool is not aware of this and give users unexpected results,
-please feel free to send a PR for fixing it, if you don't mind.
-
-> 
-> > Is this an answer to my bisection question?
-> 
-> No, that wasn't a `git bisect` run. The suspect commit,
-> `66178e4ec30a`, came from code review. I tested it and its
-> parent `cce0b334c310` with the same setup. The parent kept
-> the snapshot, but the newer commit cleared it.
-
-Ok, that makes sense.  Thank you for letting me know this.  So, this is a
-behavior that changed from that of the past.  But I still feel the current
-behavior is not a real problem.  In a sense, if the kdamond is terminated, it
-has no region and therefore showing no region makes sense to me.  Please let me
-know if I'm missing something or you have other opinions.
-
-> 
-> Thx for your time, and sorry if I've caused any trouble:(
-
-No worries.  I'm also sorry if you felt you are suspected or not welcomed.  I
-believe now we are all good and you are welcomed.  Thank you for kindly
-answering all my questions.
-
-
-Thanks,
-SJ
-
-[...]
+~Gregory
 
