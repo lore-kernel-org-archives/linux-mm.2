@@ -4,90 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8311CCA464
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 08:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E03CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 08:43:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D78FC6B0088; Fri, 16 Oct 2026 04:42:52 -0400 (EDT)
+	id 6C2E06B0092; Fri, 16 Oct 2026 04:43:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D50AE6B008A; Fri, 16 Oct 2026 04:42:52 -0400 (EDT)
+	id 674056B0095; Fri, 16 Oct 2026 04:43:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C68986B008C; Fri, 16 Oct 2026 04:42:52 -0400 (EDT)
+	id 562C76B0096; Fri, 16 Oct 2026 04:43:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 98C906B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:42:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0E0C712027C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:42:52 +0000 (UTC)
-X-FDA: 85327848984.30.2434D1A
-Received: from mta1.migadu.com (out-34.mta1.migadu.com [95.215.58.34])
-	by imf11.hostedemail.com (Postfix) with ESMTP id ED40C40003
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:42:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="N/8jteUS";
-	spf=pass (imf11.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.34 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C4DD6B0092
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:43:11 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ADAA1140304
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:43:10 +0000 (UTC)
+X-FDA: 85327849740.18.CD20ED5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 073E7100006
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:43:08 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mK5F7RTu;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792140170;
+	s=arc-20220608; t=1792140189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zm/vQhJcensdMKuEIAgiofMk7UmG18KsVxwa8A3YTfI=;
-	b=FKeE5TS9+YK+bT3BMs/2bLuRAnxFakiGsM5bWJHDtjqeWiILq5vgNWBsEhTxUvB1zG9Xpm
-	iJyT75fENWhISzS2rJZScUmtJpCiO+eYG0MMdXr17rq0sJkVgdKI8Bue2FpeAeymJeESTg
-	wzXH7LVCKcrE9EQlPrSOi0ULZr+UHOU=
+	bh=uuyYLjc88NlqPqUJ8TG17oI3ayh7MbBbcx6eKptcvgM=;
+	b=S7h36yoNORfaUQh8uuLv9glVpCS8b1bXrRFCRpCoxDSctegFVDow4LFVuLlIN0s4EOuQRT
+	npMx0sZzgk21+CO9Duy3c4hCvEcT1lO0WR3uWB693fdCHABBqEnk63m8kicnMR+BE+1q0A
+	I41GSSHXNoKtgKWIzbXAWGD0CvSuf3Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792140170;
-	b=kxnYLgenk2nYe8emqHN2pv1Q1URU9anyDzkHh0APnHuXf6dJp43D7JWrBFSDxE1HKxXa6a
-	qqsg0yILjJWIfSjKZhxW/LgIVas3GL6EN9vWxK/GazzEyqEIWWprkxSOkRFWlR/db1kXPh
-	Q/10UUaRDQZLcoEuaaBqTEiehsROSOU=
+	t=1792140189;
+	b=NR5etDj4qh9FbIRazAiBJpaKHvKgaUnVLGxvJQ8CZo4zbr0eoXfLSkO7dAMkmvF53Yl6cd
+	U54TcJdjFUpb6ftQiBO8CGkZbFGT4S01/wCjQFWAyhYmAW/JHp9qlmHb05koq2jXK1IOQ9
+	jsVYVqCN0H8jRlwYgUy0Bh6AaSEt/vY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="N/8jteUS";
-	spf=pass (imf11.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.34 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RaqzrXtafggiA6Vtw0Bb+3qEZqwTeX7kkg/munQcgtU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792140166; v=1; x=1792744966;
- b=N/8jteUSYLggGuggM9L9I0nFUtkGtWOZ0WssG0EGV+8tYO1BU7Itoe6op9w47M/uHvvLEPpF
- fpsF6bUevSpYr1pDIKHtPy0Ht8no21J0mYHn3uVloAxXfiEwHwP6mdysw0+vR7AJrZ/f6MPeBHm
- xyb/yUPLfr1MEG7cvBawhn9Y=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 88eda0bda127cae6;
-	Fri, 16 Oct 2026 08:42:46 +0000
-X-Mizu-Trace-ID: 88eda0bda127cae6
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <62d17959-d695-4fec-a87b-8eadaaf995a8@linux.dev>
-Date: Fri, 16 Oct 2026 16:42:40 +0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mK5F7RTu;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3519740719;
+	Fri, 16 Oct 2026 08:43:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31DE1F000C4;
+	Fri, 16 Oct 2026 08:42:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792140188;
+	bh=uuyYLjc88NlqPqUJ8TG17oI3ayh7MbBbcx6eKptcvgM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=mK5F7RTuDashr/9tLlHIbBsWn89AqnBSS/stQsnZFK0udCKKJwwx0mXZQaQ6y0/mL
+	 v7mGlbkHWvwzlsaxzGgTYFMZenluZzn+ThpKvxfT1FQwf36UkwlkhVENj2wBZxT6cs
+	 Oa73yOwEZyWaWTtUMKIkWXdzfEtYmHJhKqUn83wmEv5Y9Nr09h6UQgTdLpZXLBsi7T
+	 BcJoBYPrSNER1hYyvdrJ3OG1NANEuudau4hCEy8QMvdL5eSFm1HA0gqGHf6uV6haqE
+	 H7kcsX+z4rgxil/LicfKzRXo4ZkbGiIH/R/Cu4kTDkLTAUpEZrSf+0BJA/cTdijfKW
+	 IT70BEsYqnSLA==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: devnull+kasong.tencent.com@kernel.org
+Cc: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	cgroups@vger.kernel.org,
+	chenridong@xiaomi.com,
+	chrisl@kernel.org,
+	damon@lists.linux.dev,
+	david@kernel.org,
+	dev.jain@arm.com,
+	ehab.ababneh@intel.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	kasong@tencent.com,
+	kunwu.chan@gmail.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	lianux.mm@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	liuxiang.277@bytedance.com,
+	ljs@kernel.org,
+	mhocko@kernel.org,
+	muchun.song@linux.dev,
+	nico.pache@linux.dev,
+	nphamcs@gmail.com,
+	qi.zheng@linux.dev,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	ryan.roberts@arm.com,
+	ryncsn@gmail.com,
+	shakeel.butt@linux.dev,
+	shikemeng@huaweicloud.com,
+	sj@kernel.org,
+	surenb@google.com,
+	tz2294@columbia.edu,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	vernon2gm@gmail.com,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	willy@infradead.org,
+	ying.huang@linux.alibaba.com,
+	youngjun.park@lge.com,
+	yuanchu@google.com,
+	yuzhao@google.com,
+	zhaozhengzhuo@uniontech.com,
+	ziy@nvidia.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 00/17] mm/mglru: frequency guided promotion (MGLRU-FG) and flag cleanup
+Date: Fri, 16 Oct 2026 16:42:56 +0800
+Message-Id: <20261016084256.12955-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
+References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
- up on
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
-References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
- <CAMgjq7D50X47JFsTnF2-jYGv7i-Nd3WhQLK-TJGy4XkhMQU4OQ@mail.gmail.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <CAMgjq7D50X47JFsTnF2-jYGv7i-Nd3WhQLK-TJGy4XkhMQU4OQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ED40C40003
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 073E7100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6itmiqxnybmcn8d46rwdegmrktrmyuu5
-X-HE-Tag: 1792140169-452300
-X-HE-Meta: U2FsdGVkX1+qunSbSIGgmiiaGHLiYte8+YS4OqWEA11+eXPLTxJWS9qFMYMB2UW1oCW+2Os1dMLvPvF3O0bvbcbqr6q6QR64qrClD48l/WQX9Aw2AuZdcapP28mzYY9+7/xHnxyPc+DF78svlUe8qqeNozxpFLPPaJKFeA+Xd3vI87ZeJ5iHNNcraZ8X9K9I5FvPLuOdnsXECKc2yMaXhgXkmARtg+1USFgFhLyJ93bNImg6cBRsJ1mmoShefrSeOO6rguLPsSA8eoz4vtxJMuKuRMdtFQUcgZ1VGPCnqH9QaN3R/8MJO55N6PPTrUd31IdCLAwYj9bhrqMshYidw6IIIbUm+nNjJ78VP58eFxKzdt1cJbHGGC3ZL74MKhUAzYA0C7VNWpZ6hF626j5oPXtxiykec5SlCYgJTHVCturnOKObnYOxBg2jckoV1gjON7+9SLo5FyRmx5S1Ch1gQ8tjAn74Yy9ac8ihkVKZgKiRvXNgjPhsPcTp6A3tXr16ZQ0EcX+hmu9ok/JgL9QuIUchRmVmkbi1+Gc/CyuwqZS0d8aasCgkWNAX8x0Fvl0oNInKfUKhB/tZOO7aznRtNaI8aGaZrp7QA/vTElqO11WjiGpwpnCa7AofGHsQ0clN03ERIq5Zl3GXyjbsZjE1/OiPFsPGfanbkMQQUmasLEmYISBXRMzDEw2ueskIThjAJ/syVyAemTkDm6rD0FW2ngxWP4rfNdzwnbz8+XJwOer5+llkagv6lyc666RFS8CpdyMEAmpk4jHfVDoooVC1Ja18c0fWidkvDFnnV80bG4KS1vdxfdR/C1gLG1A1FH95+8e+R3kb8+6Jsf/rCyt9gIcefzN5jKBlTYT2T/bc1vlZLmqWfUa/aB2P2NBaYIrs1/rAJgOVtgNOgmuBWgkNe5xM3ZVJbsbrgNzMlIuMmRqsr2aay5r6iuUjIxA8Lw4GUw8mxSr/76jhjI35pVI
- nftpjS3d
- B2r+aQK/A9dHTWPGXKamZcrYRp73Xamz8jDc+XooV5Bh3BhMHuWocmBzU8V2ODMkTaug8pCcQttAnf6gq4NAyWwNEr7i/3dA1BlRnpjo8JjgjbQm/TtD0XKa5zxdt69f1OFdiZxnywWoXgcrxzmw263rUpgvWLQ2EIg49Jn3F4jbv16+U/xP3vQMKIqmmqZ54L6rvYdO6NiBmvz6kzcuSK0sfcIXNGKzamcPMZDKllh6cutmGQXU0pHSFmfuGcE4Dehd+ee+8thXnJ4FAc3+NHmzvyCb1rjcyxr7dZnAQnGwrgnBYD8Sjb2mLrwuYgDwjkNn6MG/Z0oDgIPngFUxkV1DBmFu8D4s9pfbrjBw9dlR5DmU=
+X-Stat-Signature: e4mr1rtrpuhck41no7ta3fm6pgfjjncx
+X-HE-Tag: 1792140188-535844
+X-HE-Meta: U2FsdGVkX1+HRpdFOMTZSHc0UmUdJ0/d1cF1aCtzS2re+01dboC15tk2RpwlQZTE2XhpzOJkLZKyqlH4eaM71/AmBiB3tPToh2dX/OIvdg2zrM2AeABp2BJwJxULCey32gE6nWj4JSvyUP66MbOhHwXyR6AMiE4S8luollGLJViia1IfdV7IrArZbPI5bLrKFqgvGApT7gVS9fxurk1REJdjpu4sZ7sJhwQ+yCDY0w9m5+Up8+SjgdyxU7oM+gxatY8gInMxYIAagR6yDj1JJivtdn0vjvhyYaZAg4/kAEdcRvoPW6KH7EXMp2tNzKxZvda5Sh96NFtEF1ff1/FhyyG8aF1YPuT4zPAhlbjdHvHbAYrcFG5CfzTeAHALuD/4uG9NRb5kGrkDKud0q31qFkTVVKk3mdzSN6/XXgtcUAA9v8I+ofk5j88HUFPlwuEZLDSQ8+FJ4gj9/DHYsXqmFIz3JgOBmJuiDJJPSMrddjvYDHG4jVfUNh8LZBJioq5np6LFe3O7bbUyncEhFMfZMyJJytfsdGHl7AYxFPR5284XTb6SptNlksY/K2IOAzFOGo/mEUKD00FDX85jGobjp+uJmNJW20vLUhDR7QOWfdS0VCsGpwlrIKJNvCNeoTSj2FCjhIaOaHfSE5xy94khAQ6qbT4NI0nRLz5P3DMeGZWy4Veqr6VfSklFfcklL0hT3rI2H70Y23WHwfPwVGnZDv6MsRVHZssm5NHQYLlv8h3Hlo2qK9sGNXxjq9sIgIcfHvHGmHtvqhEfmcTSNfMiGUytqvJlQ4I+iDV39wu6FENlnXkWcurQ9lPH6Z1OfjWvyIj7/5zETgeAKt4//8eOCkEXEfQOeQ15k3W6QoEv46JQGwHUp00ERoUPLWF0vrQIYfEvs8wgtGlgPdL4dBKdphAsJbRLaoglVqdu2dMkIzbInZojQjpkZ3EzeWfqWJy0IcQ1KIO/J4QAI6XRMwh
+ ANjlpPdl
+ Tm5VsSkmxgaCEkaTczudu/iYgGWqlQptRuLeLLpYzSxoWhBMl80mlYfOY7r5JazuSeEPX8ylBXTMb1R+8UrVSMoFPEq4yrvWqP6OVDeVsvopl5W5RKWcc/81gBpN0B+zd7L3dZwSua8xdC7KCplYOhyLBbIgqq1v6tyJvRSZYrYQobE9BnE0PhT2XcfRTvHMZJQ81sGW/EtAvp4TXlVAF60GmIgpSKilr4std1e2P7kEGOrsahJIpZYr02PuoJ3FY8YkhQfwYvkxOj3mOuzRN3yJj/r73DzbNIR/UEilYy55cytEqP5X18bqCLe1jSgzPQ2i1MAqM/dVpzMJOhFgBCh4p7UciUyZpbUP2bydQW7zudkbIaFpv76sUww1pEkiesZRBBk159H8UALyvUJJ47ROT2RAhV6Sr9VR2iZ5bH2ANy8n7hnojEOTo80EulZDH8nk7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,130 +141,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 10/16/26 11:05 AM, Kairui Song wrote:
-> On Wed, Oct 14, 2026 at 5:10 PM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
->> From: Jiayuan Chen <jiayuan.chen@shopee.com>
->>
->> On our production hosts we saw swap cache only pages keep growing for days:
->> on a box with a 500 GiB swap partition, 250 GiB of RAM and 250 GiB of
->> swap slots were held by folios that no process mapped any more, charged
->> to cgroups whose workloads had long exited. The only way to get them
->> back was swapoff, and with other services actively swapping on the
->> same host that is not an option.
-> Hi, thanks for the report.
+On Fri, Oct 16, 2026 at 2:15 AM Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
+[...]
 >
->> Such a slot has swap count 0 and an unmapped folio pinned in the swap
->> cache, left there after a process exited or did MADV_DONTNEED. No page
->> table holds its swap entry any more, so nothing comes back for the
->> slot; LRU reclaim drops it eventually, and the allocator only reclaims
->> such slots once swap is half full. The growth stopped exactly there:
->> at 50% of the device, where vm_swap_full() becomes true.
-> Hmm, I think this indicates a much cleaner fix is available.
-> vm_swap_full is inherited from the old allocator, we can instead just
-> let the allocator reclaim the slot if the slot have a count of 0 and
-> ignore vm_swap_full at that point.
+> LevelDB Scan/Get
+> ================
+> I also retested the LevelDB benchmark from the cache_ext paper [5].
+> Interestingly, mainline MGLRU already beats CLRU on this one after a
+> recent change in lru_gen_folio_seq that bumps new folios with refs == 1
+> to the second-oldest generation as discussed. That change accidentally
+> gave random reads a higher hotness level while making sequential reads
+> much colder as described before [14]. However it's unreliable and
+> incorrect because it depends on LRU drain timing, and hurts some workloads
+> as reported, or where the sequential part is actually hotter (any workload
+> involving hotter large file and many small cold files will be affected)
+> which is reproduced below.
 >
-> Will this work? (Just a minimal implementation for reference, will be
-> even better if we can avoid the overhead).
+> This series improves it while covering ordinary workloads too and should
+> fix regressions:
 >
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index c3288910b3e3..94670fe82f31 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -212,6 +212,9 @@ static int __try_to_reclaim_swap(struct
-> swap_info_struct *si,
->          nr_pages = folio_nr_pages(folio);
->          ret = -nr_pages;
+> LevelDB Scan / Get, Throughput Total:
+> CLRU:         4708.3 ops/s
+> MGLRU:        5026.9 ops/s (faster than CLRU, but hurts other workloads)
+> MGLRU After:  5179.2 ops/s (even better in all cases, and no regression)
 >
-> +       if (folio_mapped(folio) && !vm_swap_full())
-> +               goto out;
-> +
->          /*
->           * We hold a folio lock here. We have to use trylock for
->           * avoiding deadlock. This is a special case and you should
-> @@ -903,8 +906,6 @@ static bool cluster_scan_range(struct swap_info_struct *si,
->                  if (swp_tb_is_null(swp_tb))
->                          continue;
->                  if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(swp_tb)) {
-> -                       if (!vm_swap_full())
-> -                               return false;
->                          *need_reclaim = true;
->                          continue;
->                  }
+> The hot-sequential and cold-random workload can be easily reproduced with
+> SQLite and grep. SQLite continuously scans and looks up a small hot
+> portion of a DB file, while grep iterates over a set of small files much
+> larger than RAM [6]:
 >
-Hi Kairui,
+>          SQLite scan & lookup time:       Grep iterate time:
+> CLRU:                       14.51ms               13281.37ms
+> MGLRU mainline:            567.05ms               13694.47ms
+> MGLRU After this series:    10.58ms               12930.43ms
+>
 
-I tried it on our box (224 CPUs, 931 GiB swap partition). It doesn't
-help there: after 100 rounds of the reproducer the leftover is 291 GB
-with it and 309 GB without, and both stop growing at the same place,
-488 GB, half of the device:
+Thanks, Kairui. I'll do a thorough review of the whole patchset over
+the next two weeks.
 
-# cat /proc/swaps
-Filename                Type        Size        Used Priority
-/dev/nvme1n1p1                          partition    976561148 
-489006260    -1
+BTW, do you think we need a quick fix patch like the one below
+for the above problem before this patchset, so that it can be
+backported to stable? I assume your patchset is too large to
+backport?
 
-# cat /proc/meminfo | grep Swap
-SwapCached:     489006260 kB
-SwapTotal:      976561148 kB
-SwapFree:       487554888 kB
+From f9683205d2ab6e3b185022d7d5af3496dfe5f35f Mon Sep 17 00:00:00 2001
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Date: Fri, 16 Oct 2026 11:48:06 +0800
+Subject: [PATCH] mm/mglru: fix using folio_mark_accessed to replace
+ folio_set_active
 
-cluster_alloc_swap_entry() picks clusters from nonfull_clusters first,
-then free_clusters; it looks at frag_clusters only when both are empty,
-and at full_clusters only when vm_swap_full(). A cluster gets onto
-nonfull_clusters in partial_free_cluster(), that is when
-__swap_cluster_free_entries() frees a slot in it; after
-alloc_swap_scan_cluster() has used it, relocate_cluster() moves it to
-frag or full.
+Commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
+replace folio_set_active") tried to avoid over-protecting
+fault-around read-ahead file folios by placing them in the
+second-oldest generation instead of the youngest generations.
 
-A leftover slot has count 0 and a folio, so __swap_cluster_free_entries()
-never runs for it. Once the live slots of a cluster are gone, nothing
-calls partial_free_cluster() on it again, it stays on frag or full, and
-cluster_alloc_swap_entry() doesn't pick it until the device is half
-full. That is what the swap table looked like after the run:
+However, it abuses `PG_referenced` on read-ahead file folios
+for this purpose, potentially coupling their handling with
+normal syscall-based file accesses that also use
+`PG_referenced`.
 
-list      clusters   leftover slots
-FULL        106415       54484480   (all 512 slots leftover)
-FRAG         44822       18471614
-NONFULL          1              0
+This could regress some workloads, as reported by Kairui Song[1]
+and Ehab Ababneh[2]. Many thanks to both for reporting these
+issues!
 
-Making cluster_alloc_swap_entry() revisit those clusters means changing
-the list policy.
+The long-term fix is Kairui's MGLRU-FG, but in the meantime,
+we also need a quick fix that can be backported to stable.
 
+This patch reverts all of the original commit's behavior that
+abuses `PG_referenced`, while preserving the semantics of
+avoiding over-protection of fault-around read-ahead file
+folios by adjusting only `lru_gen_folio_seq()`.
+Specifically, fault-around read-ahead file folios with
+`PG_active` set but `PG_workingset` clear are placed in the
+second-oldest generation.
+Activated file folios and refaulted workingset file folios
+are still placed in the youngest generations.
 
+Build kernel cases in a memcg shows it not only perserve
+the benefit of original patch, but also even improve
+performance further.
 
-> Or, from the LRU's side, put swap readahead folios at the tail. I'm
-> actually trying to do that and it's not very easily doable at the
-> moment but will soon be easy to do.
+w/o fix:
 
+real    1m49.094s
+user    25m31.484s
+sys     3m40.959s
+pswpin: 662112
+pswpout: 2504415
+pgpgin: 4424336
+pgpgout: 10355273
+refault_file: 359626
+refault_anon: 670724
 
-That helps the RAM side under pressure but doesn't give the slots
-back.
+w/ fix:
 
+real	1m48.913s
+user	25m31.639s
+sys	3m30.875s
+pswpin: 689815
+pswpout: 2689894
+pgpgin: 4422659
+pgpgout: 11043464
+refault_file: 326566
+refault_anon: 697138
 
->> Options considered:
->>
->> 1. Fix it on the readahead side: after the read, check the swap count
->>     and free the slot. Covers the lock, not writeback, and the
->>     asynchronous read path unlocks in the bio completion where the slot
->>     cannot be freed. Two places to patch, neither clean.
-> In fact, readahead checks the count before starts the read. It should
-> prevent some of the problems but seems not enough.
+Revert original patch:
 
+real	1m50.044s
+user	25m37.137s
+sys	4m4.493s
+pswpin: 1349087
+pswpout: 4317933
+pgpgin: 7083597
+pgpgout: 17602735
+refault_file: 337676
+refault_anon: 1368542
 
-Right, the count is still 1 at that point. The zap drops it to 0 while
-the read is in flight, after the folio is already in the swap cache.
+[1] https://lore.kernel.org/linux-mm/20261003-mglru-fg-v3-0-cbd4546a5bd9@tencent.com/
+[2] https://lore.kernel.org/linux-mm/20260901180704.168106-1-ehab.ababneh@intel.com/
+Fixes: 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace folio_set_active")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+---
+ include/linux/mm_inline.h |  8 +++++---
+ mm/folio.c                | 16 +++-------------
+ mm/vmscan.c               |  9 ++-------
+ mm/workingset.c           | 10 ++++------
+ 4 files changed, 14 insertions(+), 29 deletions(-)
 
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index ab69b9930893..7aaff4e06e80 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -311,7 +311,8 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
+ 	 * | Accessed through page tables and  | Accessed through file descriptors |
+ 	 * | promoted by folio_update_gen()    | and protected by folio_inc_gen()  |
+ 	 * +-----------------------------------+-----------------------------------+
+-	 * | PG_active (set while isolated)    |                                   |
++	 * | PG_active (set while isolated)    | PG_active (files|                 |
++	 * |                                   | fault-readahead)|                 |
+ 	 * +-----------------+-----------------+-----------------+-----------------+
+ 	 * |  PG_workingset  |  PG_referenced  |  PG_workingset  |  LRU_REFS_FLAGS |
+ 	 * +-----------------------------------+-----------------------------------+
+@@ -319,7 +320,8 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
+ 	 * |<---------------------------- MAX_NR_GENS ---------------------------->|
+ 	 */
+ 	if (folio_test_active(folio))
+-		gen = MIN_NR_GENS - folio_test_workingset(folio);
++		gen = MIN_NR_GENS - folio_test_workingset(folio) +
++		      (type ? !folio_test_workingset(folio) : 0);
+ 	else if (reclaiming)
+ 		gen = MAX_NR_GENS;
+ 	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
+@@ -327,7 +329,7 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
+ 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
+ 		gen = MIN_NR_GENS;
+ 	else
+-		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
++		gen = MAX_NR_GENS - folio_test_workingset(folio);
 
-> And another idea, what if we just add dropbehind flag or rotate the
-> folio, if folio_try_lock failed in __try_to_reclaim_swap?
+ 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
+ }
+diff --git a/mm/folio.c b/mm/folio.c
+index 35e242b48870..2af724cecb31 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -474,20 +474,10 @@ void folio_add_lru(struct folio *folio)
+ 			folio_test_unevictable(folio), folio);
+ 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
 
+-	/*
+-	 * For refaulted workingset folios, set PG_active so they
+-	 * can be added to active generations.
+-	 * For prefaulted file folios, folio_mark_accessed() sets
+-	 * PG_referenced so lru_gen_folio_seq() places them into
+-	 * the second oldest generation.
+-	 */
++	/* see the comment in lru_gen_folio_seq() */
+ 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+-	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
+-		if (folio_test_workingset(folio))
+-			folio_set_active(folio);
+-		else if (!folio_test_referenced(folio))
+-			folio_mark_accessed(folio);
+-	}
++	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
++		folio_set_active(folio);
 
-dropbehind would work for readahead and writeback if the read
-completion honoured it too; today only folio_end_writeback() does, for
-zswap writeback folios, and swap_writeback_dropbehind_folio() expects
-the folio off the LRU. It still misses other lock holders (migration,
-split, ...). Rotating only helps under memory pressure.
+ 	folio_batch_add_and_move(folio, lru_add);
+ }
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index daa7e37c2236..e82ba737c028 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -952,13 +952,8 @@ static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
+ 		return false;
+ 	}
+
+-	/* Promote on second access */
+-	if (folio_lru_refs(folio) > 1) {
+-		folio_set_workingset(folio);
+-		folio_set_lru_refs(folio, 0);
+-	} else {
+-		folio_mark_accessed(folio);
+-	}
++	folio_set_workingset(folio);
++	folio_set_lru_refs(folio, 0);
+ 	return true;
+ }
+ #else
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 1504f91cdca5..10d4ce202cca 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -319,13 +319,11 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+
+ 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
+
++	/* see folio_add_lru() where folio_set_active() will be called */
++	if (lru_gen_in_fault())
++		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
++
+ 	if (workingset) {
+-		/*
+-		 * see folio_add_lru(), where folio_set_active() is
+-		 * called for workingset folios
+-		 */
+-		if (lru_gen_in_fault())
+-			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
+ 		folio_set_workingset(folio);
+ 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+ 	} else
+--
+2.34.1
 
 
