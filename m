@@ -4,164 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16792CCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 11:18:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49712CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 11:34:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 137266B0088; Fri, 16 Oct 2026 07:18:21 -0400 (EDT)
+	id 1F0D16B0088; Fri, 16 Oct 2026 07:34:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E71B6B008A; Fri, 16 Oct 2026 07:18:21 -0400 (EDT)
+	id 1A99D6B008A; Fri, 16 Oct 2026 07:34:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F09346B008C; Fri, 16 Oct 2026 07:18:20 -0400 (EDT)
+	id 06A496B008C; Fri, 16 Oct 2026 07:34:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C56D86B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:18:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 57A908037D
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:18:20 +0000 (UTC)
-X-FDA: 85328240760.25.6C0E26A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0EE36B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:34:50 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 542131A03A3
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:34:50 +0000 (UTC)
+X-FDA: 85328282340.27.BAB6CD5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AD19540004
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:18:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lGun4XNF;
-	spf=pass (imf04.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 97FAA1C0007
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 11:34:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gDoFnZAo;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792149498;
+	s=arc-20220608; t=1792150488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aQmVzZIVo4Cy0sgPzXllYD8IK37O7VSIcN/u0dlrwMg=;
-	b=zPU1piqBaHnBLYuVaSiM5b2Ob+XA/uxwxFeP48aAs0pwWDSGtrh66ZxfRfEhByr+ernnIi
-	HW1JOPMFOYLrlGTI5sEuvkaOrIWXvNIdkuqpZvcI9Jb87kzGoTxOr9ZiIo3Qn8VJ3+Jj+H
-	ByNKsc7zjDWq79z43/G+eckU6P+Y5Q8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792149498;
-	b=QJiMU+Udmcc/PP54zpmROqUJisnGZrZFudby9pooDiKrMsT6p7sjU4bJlx6TZ/yG3PqCz9
-	pEQsyMj/3zi7IDrss0NSjy3SCnIYHRhsSX3mDmYOcMTejImaREEd6sAvsjL56ILrwDQBAZ
-	HfZ0+9+oD3IUicQCy/kVMprsWTRH45w=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=J4Pzmcqwh2wHRFsEx+8XafyiGzh+G+LbFBMq6o7e9ag=;
+	b=IrnCCrget1V6wQ1OHrqKaVHfpi69tMIyJEmVxQW790hCezvMvSDxvcyK/LV4GKoXk8An10
+	0gsZY1BzGo68mafMtsA7eqRPsbWewKpFWB9KigOojUxJszpQ8WzWE6izEWJvUAKATWIzfN
+	hv3ZgE505ey9Jf2jsDHSaoomtU7aPPw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lGun4XNF;
-	spf=pass (imf04.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gDoFnZAo;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792150488;
+	b=Yqfk3o7rEI29xE9VizcpVpCN1hy1hOTlJwcYLYPRJqXQUHD/ZD07ec2jq1Up/kUtm9VMjk
+	1oZgMdOTv0Tw/rfTTxKhqkD2qzGiXFWzHzPFMv+w4gahxdXwAJrDgfENKAkGVEfkSjWIHB
+	X7K8Ff7g5ZdmU8gZRQKg3zi1iVGQk7I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B1ECF60008;
-	Fri, 16 Oct 2026 11:18:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887B51F000C4;
-	Fri, 16 Oct 2026 11:18:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F291E60018;
+	Fri, 16 Oct 2026 11:34:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20311F000C4;
+	Fri, 16 Oct 2026 11:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792149497;
-	bh=aQmVzZIVo4Cy0sgPzXllYD8IK37O7VSIcN/u0dlrwMg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lGun4XNFnUSytMvv4V3VHsZlLlnPY2nQJPm8i8Ukvi4yKZwFX3EwZI7U8jBNJ6yaT
-	 iyKM3XA3nbK99GFd1bBFLjIwP6y8jeOmUWDDVp+r7bxUJaULB1yBO+Ol8wY8Lp6HeX
-	 /wTdfC0UB5PXhh+QW5olgD1O6+1Zq9VCQIlGfH3QJQMZYepjq1RZdbHHEhdo4B3K/R
-	 ZkPUmZ0890ZZEP2owXaIUnbOa73MtWTq4F/ZmgG+98PWGNR123oc481BrHWHDbMHk1
-	 pVoRVjvUSWXsJEzl3CR+7D2EwI8b5U6D2N3Pz7yzcOmdm7mozYfxva/T4jtr0DFGYl
-	 HaSFoqXrNnTWA==
-Message-ID: <224b94f6797ab29cde44f37b4145778829bc41c8.camel@kernel.org>
-Subject: Re: [PATCH v4 00/10] NFSD: keep direct-mode I/O out of the page
- cache
-From: Jeff Layton <jlayton@kernel.org>
-To: Mike Snitzer <snitzer@kernel.org>, Chuck Lever <cel@kernel.org>
-Cc: linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>, Olga
- Kornievskaia	 <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom
- Talpey <tom@talpey.com>,  Christoph Hellwig	 <hch@lst.de>, Jens Axboe
- <axboe@kernel.dk>, Matthew Wilcox <willy@infradead.org>, 	linux-mm@kvack.org
-Date: Fri, 16 Oct 2026 07:18:13 -0400
-In-Reply-To: <20261015233309.42999-1-snitzer@kernel.org>
-References: <20261015233309.42999-1-snitzer@kernel.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	s=k20260515; t=1792150487;
+	bh=J4Pzmcqwh2wHRFsEx+8XafyiGzh+G+LbFBMq6o7e9ag=;
+	h=From:Date:Subject:To:Cc;
+	b=gDoFnZAom0CpAkjudsJ5NDD8RkMV/eTr6vMsXxScp4qE6pmhIxyhKusBf9XFiITRA
+	 slrSZQ40Xs0pSJobQpvZYeuWeJMilqSVUxQP7VHiG8q1ei9lX7x6bq6g4Ud3hkQasJ
+	 OZ3MsI5wd6gtbQuuWtkuaCceApqqJ+14mGIyIzNp3PAidke9kh82Sga7ZIpndu3WFH
+	 gXhQjgO7LApxVL2mWiZsIZNHrv1g2L02MrCvahFMG45dRm9QIpbKUTDWflD8fQvt2B
+	 DJLnd2dEfdnpLVdP9Y7Fz2I2oTEgvVIdnqJW6ZmU2xye9j0/tzsH6UMrayncDCSgrs
+	 hHKw3I1lOvhQg==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Fri, 16 Oct 2026 12:34:33 +0100
+Subject: [PATCH v2] mm/vma: avoid spurious write locks when mm->mm_lock_seq
+ overflows
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0Jm7ZhOI0RceQ/DorQDNFRqpqZqC
+ He3cgGX7+f/91dILJ4TXKoVhLNPPi4F9KECO5llZPSuMGilG1JU4+DfmO8GQ7QzxswyhPhCHhy
+ drekb5hbK9iFcirv31hWefHpG+ew3mX7pP2MmJFTUc69PtWuduc4sC4djlBG6bdu+HuzIdbsAA
+ AA=
+X-Change-ID: 20261015-fix-vma-lock-overflow-efd18cab6ee9
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, ljs@kernel.org, 
+ Daehyeon Ko <4ncienth@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=17211; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=di3crQpqffVZ11P1HYYwBI3VJ7kjI4iXi6Edj023gHg=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIucV9OcFRvVpvjql1/qcXjnlrAYyX50DP/RPVvHQnjW
+ 320J7i0o5SFQYyLQVZMkeX5F/H9QSJh8zov+LvBzGFlAhnCwMUpABNRzmH4p10fk6m1dWdksnXz
+ +vhskWqdX3P/X85/IVHtIxvWfHHuSkaGXzePVTKflXXtun/vYNgrpXNyWbMvrQq+UVb7evtbG/M
+ CVgA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AD19540004
-X-Stat-Signature: 4e5oifgmb4qy9ptnt97qsshhq4e1434p
-X-HE-Tag: 1792149498-233559
-X-HE-Meta: U2FsdGVkX18raNTTc3qaTszIA0X/ShVynXMEgbZzSw84k7jX2XDOzNM868Jo1YwQUXhsXcmnPkbeJt652lyR48LJQ2Av4NSk2kaZTNwEq0XlwgjpNKMsdbtdne5Da7MgYfhbfluOhaB/e3cb57ub8Pj5U0wlirOj38cLf8S7a7XGIQnLiy2Vf1lHaADbGUwHV2B4qzByKYeoVJUTC55kQidj/xI46iSt/3YIlpnQJ5RVikqNF3W13UW+GVf7w9pzglRncC6XOl/7IadDjYpv8f0nCCIPHCZ9lTe5fekZDrkuT+1CU70MNhmfYmv7BVZF00kOW1faYV+E8Bljn/GQDPble9EiTB2Tfg9d6sP46D3S/SdNyJECCDdY6seEPjXP3AwzeDyqxOnnSKZOOCQL4z4oZx1Jw1q5QhAjWR1Rb25mPeYFQA+7ZQc7HZh8zcLQdukknVK3y24gDaRAPJTdUk/ATvt1NEX9Cq3ItUebLjmRD9par/lvTGNwUd+eG2aycZuDrWOuuodjW79HoivkOTUrc9UkcKK1Z7KhNsx48gj5vt5r+8n6DpQqgTd7G8NBRx54CgM7Ja56qbc3idJXs5Ate9izUZJKkGMnRKE9WEe+fNFnAleoV8QcdS0Dt/4LTQngW0SJltbxiQ0pyu7B1/1tbok8ceyg95cYfeAO4PoVWPHAVa29ntTngjWEMXpY31rgIxPHHcYYm9LIAjNDDiUujJ4XZv6hn+23eLEZWGhkKZy9lnfowrLAfV/wC9VmRf4aHNfLFgdyI+I458q7ffCTY+bdVtd7gKsnlZCHyBA2gC55ubn1FPrPra0A6364ZZ7i/SQRT+3/axg+guJkKHW8i2ZZchXnAB7InuZ1yKCfp1Ia9wOtI9i0nSA39IYkWnrk9+uoJXVWBtaAYtzUvs+xMG9N3DIPUcNb8KJQvXYqs/TwKS4D18pRTY08O0wytBmjbm5qDwOBOX8tzm4
- DaPHusyK
- xF9cHacoSCyqQbS/yRtOLSYHPs33FlG2OPA/La3r11G92wlOgxjN45bQsrbx40Fx4g7Z7bA4Bm6VOnO+TQCn4TgxVX9UEl3R74UM5AVx46EB5OBWVbQGMnKXpbFpY3UxyaBYjJ07nX/J0hIxNPKPjyJCwaUbmjIyvYRhORikOjj4kD8iKAomoS+NTmv78VRj7iqOKPjkdfS6RiynT0frMcXCa0uifV4ioUL3D9UxD8q2MNwX3L0VwdRiB+PokH/xFMrrstaQto7lWBSLJk5NEBcH+ZzHshgmZNJlWurfiwkcdVYk+4rXGUXp/Awzo627zmk+p
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 97FAA1C0007
+X-Stat-Signature: md71q1qw1um7ttmgmtxf84as51z88jaq
+X-HE-Tag: 1792150488-637078
+X-HE-Meta: U2FsdGVkX193tVviqLi4GNTCOoBZKNxigvTbYJZrHnHRUUMDC9jQhlQhiyqzXIkKZ3Hp372DKlQ7nSrM+BYS4MP0B8W8gf2oOtJtKRST1c4ys9OTqFLB4lr/ysBr7KEtHgd9mc1iP5szGpXBUhzlu/5f33dL4fx8AMUO/xtDIgJecemhHZLimwwnflkzwXBjKtOFjvFArAKyDBLt9koB4rLjdxszSb3ZqwCSxoQijTsQs/r6oBPecx3kTuYVwSYejhwiLZhCK6Ko9JTzeLEioKBCuyvpOk2DK8d6ylunCbWp7ZSgMMqgAaoTG/lCBuqRD9yZPSql3v4bG/OZxuH+Ynw8hFQLY/4CL9IGbVu/xbA1612vBN9H7M0seFRVTopLo/RkPIOK9kOHfS5lSwJmVmQ1BJRU4tg5mv8UydrraT9+jNlXmbnnaavLiOX4MXI1BP4/p11DLmj3TdfUKlJwBbaf9ZGvMd1tDMAXoti97sf13/iP5RwyX/+XCIRmtNuaDpaw59v311IH6IHpXjt2Cp/or/V81juPgU7Z5QP3k/ojry6sFtfeAI7Ij+NOq014CZ2kRPGLL15Qkwb36Fp548oeshsi4ML8H0H7hVmzGX4qcck7K/QLC1CEGbfKFdKnht8aiVnEGtMLWuCgVJHJGfvru5HCKCvrWc83UEMDjPYK2XTZzUv9n//uQlUYuF3kw3tuf9SIlPBTlqv6K2vGoWMKCiHOZ+PXuziOYKZjyRQ+/z1hQEhAbWo/WLGRWSuJPf50Q0MoN8pzmCp7ZAOIMGSYrqFGHQjuljuP1iKhh6ZXb1eWDwOHHFnIXZFuVY9cAtUWz71lJMMiHtghH+RE5Z8pPlw8xETX8IVKzqvSNnU8uLGQieqWEbVCOYHAe/5+NU+uLVqKotLKybeWKZ+TtxZoffcf/p/x0mZs4drT/C5Y/5Wax/zYIqYIaRx2rBdUTqW2Q7c5+/pVgAdMZWp
+ RUJbyO7N
+ GNzb5fvNQa02GorNIo1RvLsKzDzPXg56dRFH2JyIVOQNu5SE4kz73pi05AYxisiRSe8fPRxqKxeAsWy3fFLg+B5lFktbI7SCEcDbprJIqKMJhQnp3u3KuEpa7dmhJJIGhGEkgIS1lEOjYdzxc6X82y7rPyKG15T6+3k5sHkNUBPu4aHi/tY/wvZS9DKeBUIocFLLIfJM/siyjd386mSiiNv/IQh9pKaKneSnopOCtxpEobyCaNGqoRwgMQt5OWv46AyKgCLp1zJY3R8XaTJC6GGYg/UNeWjL/sfCjlWW7UcraxoyBiGZGkXq2IqLJiRTLADax
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,196 +111,410 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-10-15 at 19:32 -0400, Mike Snitzer wrote:
-> Hi,
->=20
-> This series refines the heuristics NFSD_IO_DIRECT already uses, mostly
-> on the WRITE path and in one corner of the READ path: the io_cache_write
-> and io_cache_read modes where an aligned request goes to the filesystem
-> as O_DIRECT, with DONTCACHE for the parts a misaligned WRITE cannot issue
-> directly.
->=20
-> It does not knowingly undercut anything the existing upstream code is
-> built on.  An aligned WRITE is still one O_DIRECT write and an aligned
-> READ is still one O_DIRECT read.  A misaligned WRITE is still split into
-> a direct middle and buffered ends, and by default those ends are still
-> DONTCACHE where the filesystem supports it.  io_cache_read and
-> io_cache_write mean what they did, and nothing new is asked of the
-> filesystem.  What changes is where the split is cut and when it is worth
-> making, which READs are worth expanding, how often a synchronous WRITE
-> is persisted, and what happens to the page two misaligned WRITEs share.
->=20
-> 1/10 is a stable fix.  A misaligned WRITE is split into a direct middle
-> and buffered ends, and the middle was cut at the filesystem's DIO offset
-> alignment.  Where the page is larger than that alignment (16 and 64 KiB
-> pages over 4096-byte blocks, or 4 KiB pages over 512-byte blocks) the
-> middle then starts or stops inside the page a buffered end writes, its
-> invalidation drops that page, and whichever of the two neighbouring
-> WRITEs comes second reads it back from the device.  A misaligned end is
-> now cut at a multiple of the larger of the alignment and the page size.
-> An end that is already DIO-aligned gets no buffered segment and stays
-> where it is, so a DIO-aligned WRITE is still issued direct on every page
-> size.  Such an end can share its page with a buffered neighbour, but
-> NFSD's direct WRITEs are synchronous and XFS holds its IOLOCK across
-> iomap_dio_rw(), the page cache invalidation after the write included,
-> so the neighbour cannot dirty that page in between and make the
-> invalidation fail.
->=20
-> 2/10 also marks the direct middle IOCB_DONTCACHE, for when XFS
-> re-issues it as buffered I/O (-ENOTBLK) because something else has
-> dirtied page cache in its range, such as a local process writing the
-> exported file through mmap, which XFS's IOLOCK does not keep out.
->=20
-> 3/10 splits a misaligned WRITE only for a direct middle of at least
-> direct_misaligned_min_bytes (debugfs, default 8192), and moves the
-> segment flag decisions into nfsd_write_dio_iters_init(), both from
-> Christoph's suggested diff.  The threshold counts bytes: with 1/10 a
-> split WRITE's middle is whole pages, and a threshold of two pages would
-> demand a 32 KiB middle on 16 KiB pages and 128 KiB on 64 KiB pages.
->=20
-> 4/10 (Jonathan) adds direct_misaligned_dontcache (default Y), which
-> selects whether the parts that are not O_DIRECT are DONTCACHE or
-> cached.
->=20
-> 5/10 stops expanding a READ smaller than its alignment into one or two
-> whole aligned device reads.  The check sits in nfsd_direct_read_ok(),
-> beside the last-operation-in-COMPOUND check now in nfsd-testing.
->=20
-> 6/10 persists a FILE_SYNC or DATA_SYNC WRITE that is split, or issued
-> buffered, once after all of its segments, instead of once per segment:
-> one fsync where there were up to three.  A WRITE issued whole as
-> O_DIRECT keeps IOCB_DSYNC, so iomap can still complete a DATA_SYNC
-> overwrite with FUA writes.
->=20
-> 7/10 is an mm patch: folio_mark_dropbehind() marks an existing folio
-> dropbehind and keeps WB_DONTCACHE_DIRTY balanced when the folio is
-> already dirty, as folio_mark_dirty() does for PG_dirty where
-> folio_set_dirty() only sets the flag.  Marking an already dirty folio
-> with folio_set_dropbehind() instead drives the counter negative, and
-> the DONTCACHE writeback kick then stops writing anything back for every
-> writer on that bdi_writeback.
->=20
-> 8/10 is also mm: it reports WB_DONTCACHE_DIRTY in the bdi debugfs stats,
-> as BdiDontcacheDirty and per bdi_writeback as WbDontcacheDirty, summed
-> over the per-cpu batches since the flusher targets the summed value.
-> The counter drives the DONTCACHE writeback kick but was not reported
-> anywhere; this is how the balance 7/10 keeps was observed.  It carries
-> Fixes: for the commit that added the counter.
->=20
-> 7/10 and 8/10 are Cc'd to linux-mm and need an mm ack.
->=20
-> 9/10 calls folio_mark_dropbehind() to keep the page two misaligned
-> WRITEs share until both have written it, with no state in NFSD: 704
-> device reads for 42895 WRITEs where there were 45144 for 45664
-> (47008-byte records, 32 interleaved writers, 4 KiB pages), and on a
-> four-server pNFS flexfiles rig 0.003 device reads per record instead of
-> 0.014-0.015, about 2.9 GiB of page-cache growth instead of 11 GiB, and
-> 2.4% to 4.9% more write throughput.
->=20
-> 10/10 adds tracepoints for how each direct-mode READ and WRITE was
-> serviced, and why a WRITE was not issued direct.
->=20
-> The series applies to cel/nfsd-testing (78c334bc5ae6) and each patch
-> builds with W=3D1 with no warnings.
->=20
-> Changes since v3:
-> - Dropped "NFSD: Enable return of an updated stable_how to NFS
->   clients" and "NFSD: add direct-mode WRITE settings that persist each
->   WRITE" (v3 8/9 and 9/9).  The rest of the series does not depend on
->   them.
-> - New 1/10, NFSD: cut a misaligned direct-mode WRITE at page
->   boundaries (Cc: stable).  v3 cut the direct middle where the DIO
->   offset alignment falls, which is a page boundary only when that
->   alignment is the page size.
-> - Rebased onto the current cel/nfsd-testing.  5/10's size check moved
->   into nfsd_direct_read_ok().
-> - Descriptions, comments and nfsd-io-modes.rst corrected throughout,
->   among them: 2/10 says what can still make XFS re-issue the middle
->   buffered once 1/10 keeps it off the pages the buffered ends share;
->   3/10 says why a WRITE misaligned in memory is not split; 4/10 no
->   longer misstates what the split threshold decides.
-> - 3/10: the threshold is direct_misaligned_min_bytes (default 8192)
->   instead of direct_misaligned_num_pages (default 2).  On 4 KiB pages
->   the default is unchanged.  The debugfs file is renamed with its unit,
->   so a value written to the old name is not read as bytes.
-> - 6/10: a WRITE issued whole as O_DIRECT keeps IOCB_DSYNC; v3 turned a
->   DATA_SYNC overwrite into a plain write plus an fsync.
-> - New 7/10, mm: add folio_mark_dropbehind().  v3 marked an already
->   dirty folio dropbehind directly; the clean that follows subtracts it
->   from WB_DONTCACHE_DIRTY, which never counted it, so the counter
->   drifted negative and stopped the DONTCACHE writeback kick for the
->   whole bdi_writeback.
-> - New 8/10, mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats.  Reports
->   the counter 7/10 keeps balanced; Fixes: Jeff's commit that added it.
-> - 9/10: claims a page only where a buffered segment covers it partly, at
->   either end of any segment, so a multi-page start or end segment and a
->   sub-page WRITE are handled; claims for a split WRITE at any DIO offset
->   alignment, since 1/10 keeps the direct middle out of the claimed
->   pages; does not claim when the mapping's minimum folio is larger than
->   a page; allocates with __GFP_WRITE; does not mark a page a short
->   write did not reach; a FILE_SYNC or DATA_SYNC WRITE marks its shared
->   pages after its own fsync, when they are clean, so they are not
->   counted as DONTCACHE dirty and do not wake the writeback kick.  The
->   description no longer says marking must not be accounted or that the
->   kick targets marked folios.
-> - 10/10: the DONTCACHE state is its own tracepoint argument instead of a
->   bit ORed into the disposition (nsegs is dropped; it follows from the
->   segment sizes); the redundant #include "vfs.h" is gone;
->   NFSD_WRITE_DIO_NO_ALIGN is renamed NFSD_WRITE_DIO_NO_ALIGNMENT to
->   match its string; mem_offset is 0 for a WRITE with no payload.
->=20
-> v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kern=
-el.org/
-> v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kern=
-el.org/
-> v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kern=
-el.org/
->=20
-> Thanks,
-> Mike
->=20
-> Jonathan Flynn (1):
->   NFSD: add direct_misaligned_dontcache debugfs knob
->=20
-> Mike Snitzer (9):
->   NFSD: cut a misaligned direct-mode WRITE at page boundaries
->   NFSD: mark the direct middle of a split WRITE IOCB_DONTCACHE as well
->   NFSD: only split a direct-mode WRITE for a worthwhile direct middle
->   NFSD: do not use direct I/O for a READ smaller than its alignment
->   NFSD: persist a synchronous direct-mode WRITE once, after all of its se=
-gments
->   mm: add folio_mark_dropbehind() to mark a folio dropbehind and account =
-it
->   mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
->   NFSD: keep boundary page of a split direct-mode WRITE until both writer=
-s complete
->   NFSD: add tracing for how direct-mode READ and WRITE are serviced
->=20
->  .../filesystems/nfs/nfsd-io-modes.rst         |  93 +++++-
->  fs/nfsd/debugfs.c                             |  25 ++
->  fs/nfsd/nfsd.h                                |   2 +
->  fs/nfsd/trace.h                               |  77 +++++
->  fs/nfsd/vfs.c                                 | 265 +++++++++++++++---
->  fs/nfsd/vfs.h                                 |   9 +
->  include/linux/pagemap.h                       |   1 +
->  mm/backing-dev.c                              |  11 +
->  mm/filemap.c                                  |  31 ++
->  9 files changed, 473 insertions(+), 41 deletions(-)
->=20
->=20
-> base-commit: 78c334bc5ae61d23ca1cc2e43079c620f1d40866
+So far the assumption has been that mm->mm_lock_seq overflow is benign,
+resulting only in readers spuriously falling back to the mmap lock, however
+it turns out that this was an unsafe assumption.
 
-I think this all looks good and should be good optimizations.
+If a VMA can be spuriously considered write locked that means read lock
+exclusion does not take place, and thus a VMA can end up write-locked with
+concurrent readers.
 
-I take back what I said earlier about splitting the mm: patches out --
-you do need the new helper for the later patches in the series. It's
-fairly self-contained though so maybe it's not a big deal to carry #7
-in the nfsd tree. Note that sashiko has some comments about a potential
-race there too. #8 seems like it should go via mm tree though.
+Since overflow only occurs every 2^31 write lock/unlock cycles, resolve the
+issue by resetting every VMA's vma->vm_lock_seq each time such an overflow
+occurs.
 
-The other thing we should consider is whether to make the new controls
-you're adding to debugfs into netlink controls instead. I see no reason
-not to do that and it'll save us from having to convert them later.
---=20
-Jeff Layton <jlayton@kernel.org>
+This is done in vma_end_write_all(), which is called when the mmap write
+lock is released, i.e. in mmap_write_unlock() and mmap_write_downgrade().
+
+Care must be taken, as resetting the sequence count at overflow means
+changing the seqcount of VMAs which are already attached and observable.
+
+The mm's seqcount is guaranteed to be odd when a write lock is held, and
+thus any write locked VMA will have an odd seqcount assigned.
+
+Therefore resetting to an even value prevents spurious write locks, since
+these can only occur with the mmap write lock held, at which point the mmap
+seqcount will be odd.
+
+However, vma_start_read() also checks vma->vm_lock_seq == mm->mm_lock_seq,
+bailing if so (indicating a write lock).
+
+This would cause any even reset value chosen to prevent VMA read locks from
+being taken - avoid this by also checking whether the VMA seqcount is odd
+before bailing on the read lock.
+
+So far, vma->vm_lock_seq has defaulted to UINT_MAX, but this has been
+unnecessary since commit e5e7fb278e59 ("mm: convert mm_lock_seq to a proper
+seqcount"), since this is assigned when the VMA is still detached, and
+cannot be observed.
+
+Therefore perform both reset and initialisation of vma->vm_lock_seq by
+simply setting vma->vm_lock_seq to zero.
+
+The reset, performed in __mm_reset_vma_seqcounts(), only needs to
+WRITE_ONCE() the value.
+
+However the read of vma->vm_lock_seq in vma_start_read() needs to have
+acquire semantics to pair with the smp_wmb() in do_raw_write_seqcount_end()
+so a reader reading a reset value also observes VMA modifications made
+under the write lock.
+
+Since all VMA write locks were just released and the mmap write lock is
+still held, there are no concurrent VMA writers.
+
+Concurrent VMA readers are unaffected. New VMA readers observe either zero,
+never a write lock, or the prior seqcount, behaving as before the reset.
+
+Since this only occurs every 2^31 write lock/unlock cycles, the time taken
+to update all VMAs is considered to be acceptable.
+
+Also update comments, documentation and VMA userland tests to reflect the
+change.
+
+User facing effects are - dangerous races that could cause memory
+corruption or NULL pointer derefences (especially on page table traversal)
+are avoided.
+
+Reported-by: Daehyeon Ko <4ncienth@gmail.com>
+Closes: https://lore.kernel.org/all/20261015143735.1630957-1-4ncienth@gmail.com/
+Fixes: 5e31275cc997 ("mm: add per-VMA lock and helper functions to control it")
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Andrew - no stable tag please.
+
+I will do the stable backports manually, they can be solved with a different
+approach.
+
+Also, since, we're so close to the merge window I'm applying this against
+mm-unstable.
+
+So I think it's fine to just send it (early :) in the merge window.
+---
+v2:
+* Updated comment in vma_seqcount_is_write_locked() to mention the VMA
+  being attached.
+* Renamed reset_vma_seqcounts() to __mm_reset_vma_seqcounts().
+* Used acquire semantics in vma_start_reads() to avoid race with reset -
+  there is another acquire immediately after this one so it should just be
+  noise perf-wise.
+* Removed stable tag, will do the backports manually (just make the value
+  64 bits...)
+* Updated comments to reflect changes.
+* Added user-facing effects as per Vlasta ;)
+
+v1:
+https://lore.kernel.org/r/20261015-fix-vma-lock-overflow-v1-1-01beb245d9da@kernel.org
+---
+ Documentation/mm/process_addrs.rst | 14 ++++--
+ include/linux/mm_types.h           | 12 +++--
+ include/linux/mmap_lock.h          | 24 +++++++---
+ mm/mmap_lock.c                     | 89 +++++++++++++++++++++++++++++++++-----
+ tools/testing/vma/include/dup.h    |  2 +-
+ tools/testing/vma/shared.c         |  8 ++--
+ 6 files changed, 120 insertions(+), 29 deletions(-)
+
+diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
+index 78231995e490..04b649818cc1 100644
+--- a/Documentation/mm/process_addrs.rst
++++ b/Documentation/mm/process_addrs.rst
+@@ -819,9 +819,17 @@ All this is achieved by the use of per-mm and per-VMA sequence counts, which are
+ used in order to reduce complexity, especially for operations which write-lock
+ multiple VMAs at once.
+ 
+-If the mm sequence count, :c:member:`!mm->mm_lock_seq` is equal to the VMA
+-sequence count :c:member:`!vma->vm_lock_seq` then the VMA is write-locked. If
+-they differ, then it is not.
++The mm sequence count :c:member:`!mm->mm_lock_seq` is incremented on both mmap
++write lock and unlock, so it is odd while the mmap write lock is held. If it is
++equal to the VMA sequence count :c:member:`!vma->vm_lock_seq`, and that value
++is odd, then the VMA is write-locked. If they differ, then it is not.
++
++A VMA's sequence count is not updated on unlock, so after 2^31 write lock/unlock
++cycles the mm sequence count would wrap and match stale VMA values again. To
++prevent this, when the mm sequence count wraps to zero,
++:c:func:`!vma_end_write_all` invokes :c:func:`!__mm_reset_vma_seqcounts` to
++reset every VMA's sequence count to zero, an even value which can never
++indicate a write lock.
+ 
+ Each time the mmap write lock is released in :c:func:`!mmap_write_unlock` or
+ :c:func:`!mmap_write_downgrade`, :c:func:`!vma_end_write_all` is invoked which
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 0dead656d3e3..1ed35d258d2e 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -992,15 +992,19 @@ struct vm_area_struct {
+ 	 * Can only be written (using WRITE_ONCE()) while holding both:
+ 	 *  - mmap_lock (in write mode)
+ 	 *  - vm_refcnt bit at VM_REFCNT_EXCLUDE_READERS_FLAG is set
++	 * The one exception is __mm_reset_vma_seqcounts(), which stores zero
++	 * (an even value, which can never indicate a write lock) under the
++	 * mmap write lock alone once the mm seqcount has wrapped, so a reader
++	 * holding only vm_refcnt may observe the value change from odd to zero.
+ 	 * Can be read reliably while holding one of:
+ 	 *  - mmap_lock (in read or write mode)
+-	 *  - vm_refcnt bit at VM_REFCNT_EXCLUDE_READERS_BIT is set or vm_refcnt > 1
++	 *  - vm_refcnt bit at VM_REFCNT_EXCLUDE_READERS_BIT is set
+ 	 * Can be read unreliably (using READ_ONCE()) for pessimistic bailout
+ 	 * while holding nothing (except RCU to keep the VMA struct allocated).
+ 	 *
+-	 * This sequence counter is explicitly allowed to overflow; sequence
+-	 * counter reuse can only lead to occasional unnecessary use of the
+-	 * slowpath.
++	 * Assigned the (odd) mm seqcount on write lock and not updated on
++	 * unlock, so a stale value would alias the mm seqcount again 2^31 write
++	 * lock/unlock cycles later. The reset described above prevents this.
+ 	 */
+ 	unsigned int vm_lock_seq;
+ 
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index e5553f4a414c..11b3ffef3966 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -154,7 +154,7 @@ static inline void vma_lock_init(struct vm_area_struct *vma, bool reset_refcnt)
+ #endif
+ 	if (reset_refcnt)
+ 		refcount_set(&vma->vm_refcnt, 0);
+-	vma->vm_lock_seq = UINT_MAX;
++	vma->vm_lock_seq = 0;
+ }
+ 
+ /*
+@@ -229,8 +229,9 @@ static inline void vma_refcount_put(struct vm_area_struct *vma)
+ 
+ /*
+  * Use only while holding mmap read lock which guarantees that vma lock is not
+- * contended (nobody can concurrently write-lock the vma). vma_start_read() should
+- * not be used in such cases because it might fail due to mm_lock_seq overflow.
++ * contended (nobody can concurrently write-lock the vma). vma_start_read() need
++ * not be used in such cases, as the mmap lock already excludes VMA writers so
++ * its sequence number checks are redundant.
+  * This functionality is used to obtain vma read lock and drop the mmap read lock.
+  *
+  * VMA can't be detached while we are holding mmap lock, therefore in practice this
+@@ -252,8 +253,9 @@ static inline bool vma_start_read_locked_nested(struct vm_area_struct *vma, int
+ 
+ /*
+  * Use only while holding mmap read lock which guarantees that vma lock is not
+- * contended (nobody can concurrently write-lock the vma). vma_start_read() should
+- * not be used in such cases because it might fail due to mm_lock_seq overflow.
++ * contended (nobody can concurrently write-lock the vma). vma_start_read() need
++ * not be used in such cases, as the mmap lock already excludes VMA writers so
++ * its sequence number checks are redundant.
+  * This functionality is used to obtain vma read lock and drop the mmap read lock.
+  *
+  * VMA can't be detached while we are holding mmap lock, therefore in practice this
+@@ -552,6 +554,8 @@ static inline int __must_check mmap_write_lock_killable(struct mm_struct *mm)
+ 	return ret;
+ }
+ 
++void __mm_reset_vma_seqcounts(struct mm_struct *mm);
++
+ /*
+  * Drop all currently-held per-VMA locks.
+  * This is called from the mmap_lock implementation directly before releasing
+@@ -564,6 +568,16 @@ static inline void vma_end_write_all(struct mm_struct *mm)
+ {
+ 	mmap_assert_write_locked(mm);
+ 	mm_lock_seqcount_end(mm);
++
++	/*
++	 * VMA seqcounts are not updated on unlock, so once the mm seqcount has
++	 * wrapped, any VMA still carrying a sequence number from before the
++	 * wrap would satisfy __is_vma_write_locked() when that number comes
++	 * round again, and readers would not be excluded. Reset every VMA's
++	 * seqcount so that no stale value survives the wrap.
++	 */
++	if (unlikely(!mm->mm_lock_seq.sequence))
++		__mm_reset_vma_seqcounts(mm);
+ }
+ 
+ static inline void mmap_write_unlock(struct mm_struct *mm)
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index 2f94ee0fdee2..83b7d3ded0dc 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -194,21 +194,38 @@ void __vma_exclude_readers_for_detach(struct vm_area_struct *vma)
+ 	WARN_ON_ONCE(!ves.detached);
+ }
+ 
++/* Do the VMA, mm seqcounts indicate the VMA is write locked? */
++static bool vma_seqcount_is_write_locked(unsigned int vma_seq, unsigned int mm_seq)
++{
++	/* VMA and mm sequence numbers must match for a write lock. */
++	if (vma_seq != mm_seq)
++		return false;
++
++	/*
++	 * The VMA seqcount is always odd if locked. For an attached VMA an even
++	 * value can only be the zero stored by __mm_reset_vma_seqcounts(),
++	 * never a write lock.
++	 */
++	return vma_seq & 1;
++}
++
+ /*
+  * Try to read-lock a vma. The function is allowed to occasionally yield false
+  * locked result to avoid performance overhead, in which case we fall back to
+  * using mmap_lock. The function should never yield false unlocked result.
+- * False locked result is possible if mm_lock_seq overflows or if vma gets
+- * reused and attached to a different mm before we lock it.
++ * False locked result is possible if vma gets reused and attached to a
++ * different mm before we lock it.
+  * Returns the vma on success, NULL on failure to lock and EAGAIN if vma got
+  * detached.
+  *
+  * IMPORTANT: RCU lock must be held upon entering the function, but upon error
+  *            IT IS RELEASED. The caller must handle this correctly.
+  */
+-static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+-						    struct vm_area_struct *vma)
++static struct vm_area_struct *vma_start_read(struct mm_struct *mm,
++					     struct vm_area_struct *vma)
+ {
++	unsigned int vma_seq;
++	unsigned int mm_seq;
+ 	struct mm_struct *other_mm;
+ 	int oldcnt;
+ 
+@@ -220,7 +237,9 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 	 * we don't rely on for anything - the mm_lock_seq read against which we
+ 	 * need ordering is below.
+ 	 */
+-	if (READ_ONCE(vma->vm_lock_seq) == READ_ONCE(mm->mm_lock_seq.sequence)) {
++	vma_seq = READ_ONCE(vma->vm_lock_seq);
++	mm_seq = READ_ONCE(mm->mm_lock_seq.sequence);
++	if (vma_seqcount_is_write_locked(vma_seq, mm_seq)) {
+ 		vma = NULL;
+ 		goto err;
+ 	}
+@@ -246,17 +265,26 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 		goto err_unstable;
+ 
+ 	/*
+-	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
+-	 * False unlocked result is impossible because we modify and check
++	 * False unlocked result is impossible because a write lock sets
+ 	 * vma->vm_lock_seq under vma->vm_refcnt protection and mm->mm_lock_seq
+ 	 * modification invalidates all existing locks.
+ 	 *
+-	 * We must use ACQUIRE semantics for the mm_lock_seq so that if we are
+-	 * racing with vma_end_write_all(), we only start reading from the VMA
+-	 * after it has been unlocked.
+-	 * This pairs with RELEASE semantics in vma_end_write_all().
++	 * ACQUIRE semantics are required for both reads.
++	 *
++	 * __mm_reset_vma_seqcounts() might reset vma->vm_lock_seq to zero
++	 * after an overflow. A reader observing that zero must also observe
++	 * the VMA modifications made under the write lock which just ended, so
++	 * the ACQUIRE pairs with the smp_wmb() in do_raw_write_seqcount_end()
++	 * that precedes the reset stores.
++	 *
++	 * The ACQUIRE semantics for the mm_lock_seq read is required so that,
++	 * if we are racing with vma_end_write_all(), we only start reading from
++	 * the VMA after it has been unlocked. This pairs with the RELEASE
++	 * semantics in vma_end_write_all().
+ 	 */
+-	if (unlikely(vma->vm_lock_seq == raw_read_seqcount(&mm->mm_lock_seq))) {
++	vma_seq = smp_load_acquire(&vma->vm_lock_seq);
++	mm_seq = raw_read_seqcount(&mm->mm_lock_seq);
++	if (unlikely(vma_seqcount_is_write_locked(vma_seq, mm_seq))) {
+ 		vma_refcount_put(vma);
+ 		vma = NULL;
+ 		goto err;
+@@ -466,6 +494,43 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+ 	return vma;
+ }
+ 
++/*
++ * Called with mmap write lock held after mm->mm_lock_seq just overflowed (and
++ * therefore zero), with all VMA write locks now released.
++ *
++ * The stores below follow the smp_wmb() in do_raw_write_seqcount_end(), so
++ * a reader that observes a reset value also observes this cycle's VMA
++ * modifications (ordered by the ACQUIRE on vma->vm_lock_seq in
++ * vma_start_read()).
++ */
++void __mm_reset_vma_seqcounts(struct mm_struct *mm)
++{
++	struct vm_area_struct *vma;
++	VMA_ITERATOR(vmi, mm, 0);
++
++	mmap_assert_write_locked(mm);
++	VM_WARN_ON_ONCE(mm->mm_lock_seq.sequence);
++
++	/*
++	 * Failing to reset means stale vma->vm_lock_seq values could result in
++	 * those VMAs becoming spuriously write locked when mm->mm_lock_seq
++	 * happens to match their values.
++	 *
++	 * This is problematic, as it causes the VMA write lock to not exclude
++	 * readers, which can result in concurrent readers while a VMA write
++	 * lock is held.
++	 *
++	 * Avoid this by resetting to an even value (indicates no write lock
++	 * held).
++	 *
++	 * Readers will either observe zero (not write locked) or the previous
++	 * value, so this is safe.
++	 */
++	for_each_vma(vmi, vma)
++		WRITE_ONCE(vma->vm_lock_seq, 0);
++}
++EXPORT_SYMBOL(__mm_reset_vma_seqcounts);
++
+ #ifdef CONFIG_LOCK_MM_AND_FIND_VMA
+ #include <linux/extable.h>
+ 
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 718132580fac..f449129ea97a 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1225,7 +1225,7 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
+ 	vma->vm_mm = mm;
+ 	vma->vm_ops = &vma_dummy_vm_ops;
+ 	INIT_LIST_HEAD(&vma->anon_vma_chain);
+-	vma->vm_lock_seq = UINT_MAX;
++	vma->vm_lock_seq = 0;
+ }
+ 
+ /*
+diff --git a/tools/testing/vma/shared.c b/tools/testing/vma/shared.c
+index 8c4826499f40..c1e0c2280101 100644
+--- a/tools/testing/vma/shared.c
++++ b/tools/testing/vma/shared.c
+@@ -65,7 +65,7 @@ struct vm_area_struct *alloc_and_link_vma(struct mm_struct *mm,
+ 	 * begun. Linking to the tree will have caused this to be incremented,
+ 	 * which means we will get a false positive otherwise.
+ 	 */
+-	vma->vm_lock_seq = UINT_MAX;
++	vma->vm_lock_seq = 0;
+ 
+ 	return vma;
+ }
+@@ -97,13 +97,13 @@ int cleanup_mm(struct mm_struct *mm, struct vma_iterator *vmi)
+ 
+ bool vma_write_started(struct vm_area_struct *vma)
+ {
+-	int seq = vma->vm_lock_seq;
++	unsigned int seq = vma->vm_lock_seq;
+ 
+ 	/* We reset after each check. */
+-	vma->vm_lock_seq = UINT_MAX;
++	vma->vm_lock_seq = 0;
+ 
+ 	/* The vma_start_write() stub simply increments this value. */
+-	return seq > -1;
++	return seq > 0;
+ }
+ 
+ void __vma_set_dummy_anon_vma(struct vm_area_struct *vma,
+
+---
+base-commit: 5ba29027115bc6717b8d6dc3296aae0240933811
+change-id: 20261015-fix-vma-lock-overflow-efd18cab6ee9
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
