@@ -4,100 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 455CACCF2C1
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FB7BCCF2C1
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:27:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF5BC6B0088; Fri, 16 Oct 2026 18:21:15 -0400 (EDT)
+	id 1A1CA6B008C; Fri, 16 Oct 2026 18:27:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA5706B008A; Fri, 16 Oct 2026 18:21:15 -0400 (EDT)
+	id 17AF06B0092; Fri, 16 Oct 2026 18:27:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A73C16B008C; Fri, 16 Oct 2026 18:21:15 -0400 (EDT)
+	id 0BB3F6B0095; Fri, 16 Oct 2026 18:27:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 867426B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:21:15 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 299F81A018D
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:21:15 +0000 (UTC)
-X-FDA: 85329911310.06.CD725C7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7AA14A0008
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:21:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLutAh9h;
-	spf=pass (imf15.hostedemail.com: domain of jic23@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jic23@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D048E6B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:27:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 487D21601BF
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:27:38 +0000 (UTC)
+X-FDA: 85329927396.30.234D54D
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	by imf26.hostedemail.com (Postfix) with ESMTP id ABFEF140004
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:27:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf26.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792189656;
+	b=5wOvk6B/lba7sYGm/092zq01zJrMnVQnBNpWx6DJfrJngvZxcT4OXZbJKGZLijjiNtbtlc
+	22s3aID6pA/Br+RjHbqZVuZwlrvioT/87WbjrsJ7Rm0ouv4mVYepDYUGMhKA7Mh9RqsfwI
+	HC+bBz9qWA8oGVRV4BcHCcafbyHyenM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf26.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792189273;
+	s=arc-20220608; t=1792189656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JbtA90jSYbvjWaAUht/ufzHaPdDcdPFD56WPRraPHlE=;
-	b=e9HIRLXQBCNXcey0uATY/vIaulXsU54x982SmnAH1UkhBnupST4SW4flQSirYT3N2LAcNN
-	GO4S6DB/dIDlAtmBBhjuWec3Za8OOrouMrtg21qNOxfAOnt5EZGlMiuW9P2tjaOl2jbWEc
-	nLqOhlxDXC1dIMzWo7cByVFI7dMQ9GE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792189273;
-	b=hGKBhcekOPlhOZPxfFu6ps4/tOWqOe3bGej1gMrCA21ArRbUKRz7gjgRg2Rb1peS7JyS8w
-	zEimSDo5BtkVAGbJuny1oC8jNVxkxd+QBgOxvfBbHfd7NnGMMK1kTjihBfz9yMoSUFmdPe
-	gxpLD9qntjCXGfsAgHuZIQtjbzsOr3o=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLutAh9h;
-	spf=pass (imf15.hostedemail.com: domain of jic23@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jic23@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B2C916022E;
-	Fri, 16 Oct 2026 22:21:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B971F000C6;
-	Fri, 16 Oct 2026 22:21:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792189272;
-	bh=JbtA90jSYbvjWaAUht/ufzHaPdDcdPFD56WPRraPHlE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YLutAh9hSCOh6gtplRHRSIQlgjQ3k26KGbWzUG4uFVnvCToVBjgeiOCUZGpysnN5C
-	 +w4WXEJTJ1BNR9Vr2u6wXhbiy6Oq9ama6WongS/4PHUrwyPRWFFH/FCirjbC1heIgK
-	 /o7VsuTXuC5gSDJzRdKLq9PNqqWoa2LItHW0crT8mOIP4Y6WK/Nf34xKU73xB6UaJ+
-	 SywUNWx1sOSxrE8zMfgbCuWlZ8bwzx8IVBp4ytcApMSBmLjMmY5uB4PaFMmtqv589h
-	 J4ANggi93+r9PZAPBIIpK9dvAEjnoYbgNB1+3CPxyXsAbnX8+ksOHVZZLMVehAjeJ/
-	 RVS/DaVoujrOQ==
-Date: Fri, 16 Oct 2026 23:21:03 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>, Vishal Verma
- <vishal.l.verma@intel.com>, Dan Williams <djbw@kernel.org>, Miaohe Lin
- <linmiaohe@huawei.com>, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Breno Leitao <leitao@debian.org>, Ira
- Weiny <iweiny@kernel.org>, Li Ming <ming.li@zohomail.com>, Richard Cheng
- <icheng@nvidia.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
- Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, David Hildenbrand
- <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Kiryl Shutsemau
- <kas@kernel.org>, Harry Yoo <harry@kernel.org>
-Subject: Re: [RFC PATCH 2/5] cxl/region: Factor decoder poison-list
- retrieval
-Message-ID: <20261016232103.6497bbb2@jic23-hlaptop>
-In-Reply-To: <20261010162017.62506-3-shaikhkamal2012@gmail.com>
-References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
-	<20261010162017.62506-3-shaikhkamal2012@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=lWB7SP9Ylu5CW89gIfFc8zRLHEI5ZOd9LCo0tU+Tql8=;
+	b=d8j+D8y97BVoOB0ouR5lkcJ5jWL6de4JV9yWPkKtzkIFpKxSZl02SP2VcklK3z+VkiMXki
+	mYp6TVhxUgvHsHhksxLa/BQTwocwpJvKlFXV5nH6KCQSBbIS8fgLxXr8a+QsuHBV9FBpRc
+	3wmtx4fRjo8URT/4gXT+wOuP6rtpuj8=
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xHqOX-00GiQ4-G4;
+	Fri, 16 Oct 2026 18:27:21 -0400
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Brian Foster <bfoster@redhat.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v1] mm/truncate: fix the zeroing end of pagecache_isize_extended()
+Date: Fri, 16 Oct 2026 18:27:21 -0400
+Message-ID: <20261016222721.791785-1-nickolai@csail.mit.edu>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7AA14A0008
-X-Stat-Signature: sjnchketgjmxsfgwm354hyskbhk45sq6
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1792189273-849249
-X-HE-Meta: U2FsdGVkX182/2+gL063kq2ApAc/gNNwHMP+m+Pym8X8L1QB+L19ZN9wPf7iyAXVt5/Cw6mo/d/9S/lbL9HqJvTeQx/g1HBgBE2srjS0wxD08h8cu0HClUXlaQJAaZLq1dC6UYtXQI+m3E0PpnoXLYUv2qMlf0/QAEHbOVN3PZRU3SfLsBnDa7ANFN6PiBfBq325Bp2/d+ZrA98hwbB6AY5w/QTFgU27jkV4vGLkUeui2xPx9PHZjrK8NVpYraIAs0r/S7Evn/DgU71qKendixTDXNp+odHVvAm1UI6f1Yje8kyFgE+CnpfyHt2NST/wgsTEPkkguNdgD2npz/lb8qFawGMcYdU/nCAMgQleeUoIx9oBbGCcXUO0ocSQrzH+UGqZAmwuARhVuoz79Pzw3wcGDjzHGwNTKQ3k/7clxtXJ5ZLa1IlXTSyd+CSJbmDvCzqKa9Z5oYrlqc1XsMEcONoSBagQ49sdMFGMT8O1dQpjt9JrbdBpsL2/GIulhzW9R0esIQ5Ug4M4iIp0rx47N/pw0fOSEJLkAorFUN8YC4e3ntG1thikGm/QQYeOiNt93UeWxfzriTwGCKBmZ5YlccUNqHTuc6RM6wFtMRroQ4RgzT6PJmrCqCSUHlPdNKi4AF0VRRp0cOEIkZ+KxYwHn+szqhkkw+mPcRyGpH/hZTtbdQ6Pbz2j67DkmR4+sApUru3HgncL4zsIKikLVL/HlZDsTlULwmVDP+dBSTkOaHsbR2hvg//K8YpjvJt3ubNQ873/zgbc1cEFwkQrHqZC3/hCCxwvzJGAfzyhhilbDtnRo182eGmHHYTxpwhA0lrwVA83HddFTHwZt/nCbGfbOygFm0TEbGeyEgM1xjr3y57iXEJN3jB5aA0w4IQk1lw7pPmBtpEKWz9iJyhhzHpMuaQAr2eAZOB91K/wRB79w3jCodvJB7ipyKv6C2215RkQj8NIt/F88GxDA/+hlgu
- NKAdIqMC
- uUZQny35GhzyPjt2w1AGrYtV3PcAIMdcxzo98Us6ECwbDi5Xj3u+fZKj8d9I/8P18uExxtGdhPZ0T+1VXPO7e2hSdI1kEhUsPb7u1/hVTYSxjzPZ8mfBvQ8RpnRJw7aqj22jSZLJZcFAMJQrD07wMVTKdAXTbiDzMQe0Glhli42mC1tizsFuhv2JIT1lpw0n2xCIsj/coTYtT2WZCuwL5dlXuLjzC1KIXxFA1e+14VfXx6U1U4zVDHOZjwdtqCYjz+d89Fxqpv6NRXgB+yyOVDYWORypLt+Ya9rmV971ruUFcnVyZVuZwEQHuSPs3cdK68NlC
+X-Rspamd-Queue-Id: ABFEF140004
+X-Stat-Signature: 9w75usixqbc5uhz3yy4osixc5bxta7pt
+X-HE-Tag: 1792189656-695095
+X-HE-Meta: U2FsdGVkX1/bGeXM2dUU8c5j0U5IbyXAx1BzxMeuTNLdlfqc1oUt/Ysy07iVQF9Z091JFCRLN1LRJwsS2l+2TxcMMq9lPqdIV5GhAbF4X34lhxsRrRZDIHNmlLvk2XlWGBmAbaE85uRq2Fe79RPfvTHo9vCPQgxt2wdvEbs5MN9XptIFx76e3nVQaWRA5xaVqXXxPEn5rNrSIsC9IHtXQSmWYDwkq9/wD+9VKdLrHoCip3UjAMEsJ/sAmtpybE/4uyBuWrCYXTNi+2Mick+NJ2uixrUuyvT3SLrHbYNs6f94NOpqa1slF7Z+WWYwmHzg0+72Zi7cA8/rwtMxCqgYjxXIA48OVW+rOax6oesMmve4jiIjoxr3iB2nU5t4V8IWqbU70xJWd/SlyIpffZ/Is29jxNhQAG7tkZOixJ2Y7v2ASvVMvNzoufOslR5RGJh0l0EV0cf/eF+vcMAqGWGK6qn9/fPUA6+5cO0hcVXUzFtrtJ0/QtlDKAi7Qm5DwBYyTFdh+bBOp7XB/iI5eC7kDp88BBgFnje1894E2ZTBgR8LAGUxh+lv6EbskEhQttb5Tk8vKTXcuaLtgaaasrW1Vuw0h/nKUVzMTQXyetRp3jW0JHoeonj/GBSBhaY8yTYwyKFSC4CVdjJ69u3bQjHmjGnS+BVPC5swD1r5rWOPMRIZS5opXYacn+ymS6nJMvealyeQrD30MONiAZ47nNDUtF07vkEO5UwmULJQ33nTUw+8jKybIOvTqV+BlVR2PjUym1wCvpr/jEEAhQGsqin692SWtQYC7AGsAJZ7lLvPyJrjd9wzm+s2kxe3V5C24yS/z/HSeBvD9NgfQueZKBasSu9exNNtEr/iw7dCTVGtif/iY8XCOjhPXXuRzfH9ZJhUEa7zgTJZJUrNOUmibnmC9l+/s/OGp6QUPyRtThjplkrbMlouTgiSUefRty8FzDO/44I6Dg65abs1KT6xqE8
+ F38oUzmO
+ DYOMxGJXtFfhZjSun7RZvEj1HxkaDnmPE+gp45m0j0rtVO61D1S5l8JUQ2PoChvOvyH5fDByyegsA3XiFn3998Axos/HHhvGaY9x2niuwlsrh6yY07e2pRY/0ggHpgJq6M1WC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,90 +83,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 10 Oct 2026 21:50:10 +0530
-Shaikh Kamaluddin <shaikhkamal2012@gmail.com> wrote:
+A process that extends a file by 4 GiB or more past a dirty folio, on a
+file system whose block size is smaller than the page size (ext4 with 1k
+blocks), reads back the bytes it wrote through a shared mapping beyond
+the old end of file instead of zeroes, and a later write into that block
+carries them to the disk. With the example of commit 52aecaee1c26 ("mm:
+zero range of eof folio exposed by inode size extension") and the
+truncate taken 4 GiB further (pwrite 2k at 0, mmap the first page and
+write 'X' over [2k, 4k), truncate(2) to 4 GiB + 2k), the read of
+[2k, 4k) returns the 2048 'X' bytes, and a pwrite of 16 bytes at 3k
+followed by fsync() and a remount leaves 1008 'X' bytes on the disk in
+[3k+16, 4k). No privilege is needed, and every size extension of 4 GiB
+or more reaches it: truncate(2)/ftruncate(2) through truncate_setsize(),
+writes beyond the end of file through generic_write_end(), ext4, iomap,
+btrfs, exfat, ntfs, afs and orangefs. Affected since v6.13.
 
-> poison_by_decoder() performs two different operations: it queries an
-> unmapped DPA gap preceding an endpoint decoder, then queries the DPA
-> resource assigned to that decoder and its region.
-> 
-> Factor the second operation into cxl_get_poison_by_decoder(). Give the
-> helper an optional snapshot so a later region-probe caller can retain
-> records from exactly one mapped decoder. Keep the existing endpoint
-> walk, skipped-DPA queries, partition-tail queries, -EFAULT handling, and
-> trace behavior unchanged.
-> 
-> Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-> ---
->  drivers/cxl/core/region.c | 41 ++++++++++++++++++++++++++++++++++-----
->  1 file changed, 36 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 75b8092e6dc2..c72524923b38 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -2940,6 +2940,40 @@ static int cxl_get_poison_unmapped(struct cxl_memdev *cxlmd,
->  	return rc;
->  }
->  
-> +enum cxl_poison_query_policy {
-> +	CXL_POISON_QUERY_DIAGNOSTIC,
-> +	CXL_POISON_QUERY_PREONLINE,
+pagecache_isize_extended() zeroes the part of the dirty folio straddling
+the old end of file that the size extension exposes, from the old size
+to the new size or the end of the folio, whichever comes first:
 
-For now, perhaps focus on flags defining what you want done, not when the
-query is happening.
+	end = min_t(unsigned int, to - folio_pos(folio), folio_size(folio));
 
-> +};
-> +
-> +static int cxl_get_poison_by_decoder(struct cxl_endpoint_decoder *cxled,
-> +				     struct cxl_poison_snapshot *snapshot,
-> +				     enum cxl_poison_query_policy policy)
-> +{
-> +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-> +	enum cxl_partition_mode mode;
-> +	u64 offset, length;
-> +	int rc;
-> +
-> +	if (!cxled->dpa_res)
-> +		return 0;
-> +
-> +	mode = cxlds->part[cxled->part].mode;
-> +	offset = cxled->dpa_res->start;
-> +	length = resource_size(cxled->dpa_res);
-> +	if (snapshot)
-> +		rc = cxl_mem_get_poison_snapshot(cxlmd, offset, length,
-> +						 cxled->cxld.region, snapshot);
-> +	else
-> +		rc = cxl_mem_get_poison(cxlmd, offset, length,
-> +					cxled->cxld.region);
-> +
-> +	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM &&
-> +	    policy == CXL_POISON_QUERY_DIAGNOSTIC)
+min_t() converts both operands to unsigned int before comparing, so the
+loff_t difference to - folio_pos(folio) is reduced modulo 2^32 first.
+When the file grows by 4 GiB or more past the folio, end is that residue
+instead of folio_size(folio): below offset nothing is zeroed, above it
+only [offset, end) is. The bytes beyond the old end of file stay in the
+dirty folio and, now inside i_size, are file data.
 
-This is becoming odd enough I'd add some comments saying why
-we are eating the error return.
+Compare in loff_t; the result is at most folio_size(folio) and fits end.
 
-> +		rc = 0;
-> +	return rc;
-> +}
-> +
->  static int poison_by_decoder(struct device *dev, void *arg)
->  {
->  	struct cxl_poison_context *ctx = arg;
-> @@ -2971,11 +3005,8 @@ static int poison_by_decoder(struct device *dev, void *arg)
->  			return rc;
->  	}
->  
-> -	offset = cxled->dpa_res->start;
-> -	length = cxled->dpa_res->end - offset + 1;
-> -	rc = cxl_mem_get_poison(cxlmd, offset, length, cxled->cxld.region);
-> -	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM)
-> -		rc = 0;
-> +	rc = cxl_get_poison_by_decoder(cxled, NULL,
-> +				       CXL_POISON_QUERY_DIAGNOSTIC);
->  	if (rc)
->  		return rc;
->  
+Found while formally verifying pagecache_isize_extended() against the
+kernel binary.
+
+Fixes: 52aecaee1c26 ("mm: zero range of eof folio exposed by inode size extension")
+Assisted-by: LLM
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+---
+
+Notes:
+    Tested on a 64 MiB ext4 image made with mkfs.ext4 -b 1024 and mounted in
+    a QEMU guest, with the program below followed by umount, mount and a
+    read of [3k+16, 4k). Unpatched 70dd4ee72eb2 (x86_64 and riscv64
+    defconfig): 2048 of 2048 bytes non-zero ('X') after the truncate and
+    1008 of 1008 'X' bytes on the disk after the remount. Patched: 0 and 0.
+    The same sequence with a truncate to 8k reads zeroes on both kernels,
+    which is the case commit 52aecaee1c26 fixed.
+    
+    The 32-bit conversion is visible in the riscv64 binary as a subw on the
+    loff_t difference before the compare; with the patch it is a sub.
+    
+    Reproducer (ext4 with 1k blocks, mkfs.ext4 -b 1024):
+    
+    truncate -s 64M img && mkfs.ext4 -q -F -b 1024 img && mount -o loop img /mnt
+    gcc -O2 -o isize_extended isize_extended.c
+    ./isize_extended /mnt/f    # exit 1 and a non-zero count on an unpatched kernel
+    
+    /*
+     * Stale post-EOF data after a size extension of 4 GiB or more on a file
+     * system with a block size below the page size (ext4 -b 1024): [2k, 4k)
+     * must read as zeroes after the truncate.  Exit status 1 when it does not.
+     */
+    #include <fcntl.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <sys/mman.h>
+    #include <unistd.h>
+    
+    int main(int argc, char **argv)
+    {
+    	const char *path = argc > 1 ? argv[1] : "/mnt/f";
+    	unsigned char buf[4096];
+    	unsigned int i, nz = 0;
+    	char *map;
+    	int fd;
+    
+    	fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
+    	memset(buf, 'A', 2048);
+    	if (fd < 0 || pwrite(fd, buf, 2048, 0) != 2048) {
+    		perror("open/pwrite");
+    		return 2;
+    	}
+    	/* 'X' beyond EOF, inside the first page; the folio stays dirty */
+    	map = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    	if (map == MAP_FAILED) {
+    		perror("mmap");
+    		return 2;
+    	}
+    	memset(map + 2048, 'X', 2048);
+    	munmap(map, 4096);
+    	/* 4 GiB or more past the folio: to - folio_pos(folio) >= 2^32 */
+    	if (ftruncate(fd, 4294967296LL + 2048)) {
+    		perror("ftruncate");
+    		return 2;
+    	}
+    	if (pread(fd, buf, 2048, 2048) != 2048) {
+    		perror("pread");
+    		return 2;
+    	}
+    	for (i = 0; i < 2048; i++)
+    		nz += buf[i] != 0;
+    	printf("[2k,4k) after truncate to 4 GiB + 2k: %u non-zero bytes of 2048\n", nz);
+    	/* allocate block [3k, 4k): [3k+16, 4k) shows what reaches the disk */
+    	memset(buf, 'B', 16);
+    	if (pwrite(fd, buf, 16, 3072) != 16 || fsync(fd)) {
+    		perror("pwrite/fsync");
+    		return 2;
+    	}
+    	return nz ? 1 : 0;
+    }
+
+ mm/truncate.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/mm/truncate.c b/mm/truncate.c
+index b58ba940be47..5c444812f37a 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -878,8 +878,7 @@ void pagecache_isize_extended(struct inode *inode, loff_t from, loff_t to)
+ 		unsigned int offset, end;
+ 
+ 		offset = from - folio_pos(folio);
+-		end = min_t(unsigned int, to - folio_pos(folio),
+-			    folio_size(folio));
++		end = min_t(loff_t, to - folio_pos(folio), folio_size(folio));
+ 		folio_zero_segment(folio, offset, end);
+ 	}
+ 
+
+base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
+-- 
+2.53.0
 
 
