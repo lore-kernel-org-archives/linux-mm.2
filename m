@@ -4,116 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF491CCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 02:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9700BCCA463
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 03:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD5616B0088; Thu, 15 Oct 2026 22:56:46 -0400 (EDT)
+	id 377AF6B008C; Thu, 15 Oct 2026 23:00:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5F2F6B008A; Thu, 15 Oct 2026 22:56:46 -0400 (EDT)
+	id 301CB6B0092; Thu, 15 Oct 2026 23:00:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A74716B008C; Thu, 15 Oct 2026 22:56:46 -0400 (EDT)
+	id 1CA1F6B0095; Thu, 15 Oct 2026 23:00:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6CD6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:56:46 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05461A0205
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:56:46 +0000 (UTC)
-X-FDA: 85326976812.30.D56DB8B
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 32311C0003
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:56:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b="cuiSy/zN";
-	spf=pass (imf10.hostedemail.com: domain of kylebot@openai.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=kylebot@openai.com;
-	dmarc=pass (policy=reject) header.from=openai.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D93996B008C
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:00:28 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F667A7B45
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:00:27 +0000 (UTC)
+X-FDA: 85326986094.26.672A74B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BA058160008
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:00:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dUFq5q6m;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792119404;
-	b=zAMO/J0SFS8opIUtLhdbnWNO7Z+5cgcS5XeelGIKL7Dltwpg058GZRIDcw5r//j62Nv6aT
-	kbkGKPbS2p2Qp9S2+sfW1eHqxqjWqPu0haHfG/G1/UvMVTC95FJESrdLStTIeQ1siKSr7S
-	sFtm93SdXanDbENAthlzLhDbJd4zEv0=
+	t=1792119625;
+	b=VO/OP/miazeiz9OrsCOcuCb/xiZGV8AfIJC5E8oyi2p9fpYJZbyC5GM5Dudl1qwKHsNaL3
+	f6x8+2/0w9uOxhrSQm9QJqSaELKTQe/uwDk7cUOhpA4KkQItQhikgnTQn2Dn2aGRZv/bRb
+	NUmNMmsqiReJGoRU2pj5ewFES4PPNX4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b="cuiSy/zN";
-	spf=pass (imf10.hostedemail.com: domain of kylebot@openai.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=kylebot@openai.com;
-	dmarc=pass (policy=reject) header.from=openai.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dUFq5q6m;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792119404;
+	s=arc-20220608; t=1792119625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KoU7NlRc2WHo1VRPn8/Lg64nT3xPfPjPfg5kvwFTx1I=;
-	b=Cq2C7X1o9yWx/aZVmyCDxmKDFFlz0eENTklRaiFI+dGlHyy5cHOgc8Zp6x17+/HPlIG/N3
-	wlnlgIjU7LC7FlvzChx0UXYQlxKrfovE7L8J7xQNY64PNkgicsCjri6eYjNT/MqCxWxZq3
-	gFrWR4ywE52BaHsMM+QxB6dR8J61Z9A=
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4932b13c4ccso1326180fac.3
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:56:43 -0700 (PDT)
+	bh=9GkQXqNuCXyuXNoJMzMidl3PLgLW9/DoYWi7RsIGJVc=;
+	b=Vg1ApXS17rtIh3lny4YMNATTtnHNdmFAJJLZZTEwE8FEQQ0LLBuAFn9KPSztjcUooggrYD
+	ThCwqvVilfLsQZobhoBd9tVeF83FNfe2jilPBQB0X1KRDT5k5VAamVBdcOUickh/kzU/Ug
+	GSwRcYmjSCETIK3lPMpB/BtfNgkx3EY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 52463600D4;
+	Fri, 16 Oct 2026 03:00:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8741F000C4;
+	Fri, 16 Oct 2026 03:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1792119403; x=1792724203; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KoU7NlRc2WHo1VRPn8/Lg64nT3xPfPjPfg5kvwFTx1I=;
-        b=cuiSy/zN8WU3+IOFnCExBnSh3shSKYapefFNP47Q3gkrxTqAeWGls4hW0syAPj5cOp
-         HckiK7rYxyWahtHEHVnlJi5S4FDIzkW3/uIvxGZFvKhDvX4QqCUF//UuU411ngUBKtv9
-         y35kmNrYMcn7giJe1Rb4Dwbuq5mj+Wxa4D2Hw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792119403; x=1792724203;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KoU7NlRc2WHo1VRPn8/Lg64nT3xPfPjPfg5kvwFTx1I=;
-        b=GJXmZUlycSnuglaO2q9pDvVe5FR3VBejYqmQZ8bBpYY8EPseqSpOxJgpsi1HMy5bhL
-         T/3iYLogDKrYKHmLzIgf5weBFbVW/n3Gcc0soiTZ5NbcNuQYlyTp6w4pQLzxUenerMVy
-         968u4OTqBRcHaDBUEXoAYRLuyNu1b/Kuy/t65zKEk0q1N1QobATbc6Bnt0u9uGo0Kxqf
-         v1zSybFodj3klfwn8NSY6AoON6Ce2bDCMgttjN/GWPyunX4sK3sfJ3T4LS7Spl+nbXeb
-         STrJHBXAjZVweTe1bsBrT9RzrD4Y7IURBNMJO9D6pr5MQA4yApDnQcU5YixGzyda/Dv+
-         lb5w==
-X-Gm-Message-State: AFq9FYKOGtZZb9GA4PyIg0U687Ch3Hb9hft31w4I7c/2dcE6SLzRBkE5
-	MYNPqowvvFxueV5OXLeB9X9FxJvzaTGBssVDZ08TFsMrIfLIoov8DTcbAGrSKobY0uk=
-X-Gm-Gg: AYBFou1/7ICPxDR4Ge6MfaI4lM5WZrRW6KynIAQS4+WdvMuZcE5844aLoCSViOWYZsG
-	EB43kS3xt500RhvgxHb+6+6h9y/j2hsLUBKcUC8jlrHrXKc2CNu2nRpLN4mfXDtz9aSNlYfHzHJ
-	0+mnPFLO9vJsGr0JUo36j5bpPsoSuSY8h9CTErlQQfiW48HgnpXCQoMjnhjdflnoOoSX+mD5Nsm
-	rJeNohZ76p54e9nJhTxmzEK+tifDm6Lo0Nc5hI0WGpgLJyF5vYOjKdFKo8hnnacWYVRjmZ3zrL2
-	qH46BkbFn4c7lSVi1Hr+TWy1D93JoN7Y7LWst/GC8iDwyq4cCr6j6cOhv91fKIPfqde+ZMdwuFb
-	Y6NhTYep/PB3FFLwa9TTN2roeYrTfGvLXEOQ84QpL6KPUyUOYIUPT+rp/PPf9Wzg+yEI5p0K3CM
-	Q1A4Ja+SL80akD1rkxy5J1WUIrtaTXapBMY9gD35JYiXHwO2dVhQ+x/YUfgzUZJeXdAn5DHWUm+
-	KfxLuTvqijw+BIUzKE61epz1hOUQ39VrkTjr6URAcM/9t5XUkxK58GIAk1N1MgbjtyVvQzrZ3+Q
-	zgqwsAMQDlYSzGaCMzJQud69zyC4wJ6hUh1XQo/R62c1J6aW93WvbdjS
-X-Received: by 2002:a05:6808:4f24:b0:4bc:be93:3506 with SMTP id 5614622812f47-50c415e0b76mr18984605b6e.3.1792119402912;
-        Thu, 15 Oct 2026 19:56:42 -0700 (PDT)
-Received: from com-75606 ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-5388c16d862sm537575b6e.9.2026.10.15.19.56.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 19:56:42 -0700 (PDT)
-Date: Thu, 15 Oct 2026 19:56:38 -0700
-From: Kyle Zeng <kylebot@openai.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_vma_mapped: continue past nonmatching huge PMDs
-Message-ID: <atGSZkBHtsnJ4k1A@com-75606>
-References: <20261016011549.61146-1-kylebot@openai.com>
- <20261015192020.5336a49bc516219e8254dfdf@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015192020.5336a49bc516219e8254dfdf@linux-foundation.org>
-X-Stat-Signature: ertycjn5gxjstfgc9jqzsgyybky1pcc3
-X-Rspamd-Queue-Id: 32311C0003
+	d=linux-foundation.org; s=korg; t=1792119624;
+	bh=9GkQXqNuCXyuXNoJMzMidl3PLgLW9/DoYWi7RsIGJVc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dUFq5q6mtNryr/WDRuojfUOLSENM4RFeSK9Dof4XhD7rt9BLpHW2NVYyerHAid1qW
+	 UqAymulNpZ+2lPmdD2YgL4iOOQYj7Blv8GicM/+0VG5wPj8QsWuOTEy8vIofhHEvND
+	 IX7kVUMEOBi/7tH1fUhEBrQ6b42PralDlPbkmKKA=
+Date: Thu, 15 Oct 2026 20:00:23 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, Jiayuan Chen
+ <jiayuan.chen@shopee.com>, Chris Li <chrisl@kernel.org>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park
+ <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/swap: fix swap_cache_get_folio() returning a folio
+ that left the swap cache
+Message-Id: <20261015200023.49685b4cba9d514d1f3ac374@linux-foundation.org>
+In-Reply-To: <CAMgjq7AGRP3B0UZ9-wJKtz8D-ayivhV0gn2WxsrJ1Q=Qm4TVWQ@mail.gmail.com>
+References: <20261015060528.302634-1-jiayuan.chen@linux.dev>
+	<20261015184014.715dcdd3a25e18fd4df49e95@linux-foundation.org>
+	<b2f925b6-93e6-4b44-bc18-c94a34b381eb@linux.dev>
+	<CAMgjq7AGRP3B0UZ9-wJKtz8D-ayivhV0gn2WxsrJ1Q=Qm4TVWQ@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: psd8tmak459xaupp6fgxzoynqimpnxua
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1792119404-781647
-X-HE-Meta: U2FsdGVkX19YeC4ioBtJ4IszSDdVLquxII5og/oCNDcWAD8IO8aEzWBhuNv/Vv0cQWvHho5ZbcgTaybrJYlVR/jDL2HsHWFS4vcyY1or7iKDWEuAORVS+fbC5idOHIIUyfW1rsNlXub1APtpq0q53A+UPW+W0bbIEQe8BPy6rsbz2nsKrMQNqXNQHWZJpbf4pIo/Rw+3YMWXUfL9oGwGH9+b7yayFWbU1D1UUVYm9IqLBejIkkcM8Yb4UQKAMENhxcXcJXO0VRaMCJncmjbEVNwHkX+s8ioR7l/Tjs6qwkuQJYXztyMv0QXLnPF9g9M0b1mphhBRQvkJwDupvvmUAPm9Kz5SNEvONqH/G1owSmXhCCR5OxVuXrHqXBVWSX+EXbGL2z0cnPYyAErdotv3EAmCrhf62jWTfIYnjAXeqVcJTUt3iubsKSwIGYLq7LNGeLQJqaP6Oc3NvdGIS+cAgJv4odPC7gpMLPnrw+jaR0gIwFm4ifSZFfOfl/kCT5+VO0ChdtlkbeXeJdlaN8fgN4tOXxlMfWVhTPAlQAuUZcat5gZ7x4JjAtdUwTYV9PspBA+5P1+/Z5N94sR02A68HIn0gsCkXc4SMOYBZPL03Oo4Mq71D8xDP6ZpFZ09bTyP04ADnveeyYWCL/dob8SQiFlAd+yhYcBp+8M1SUbu7IiAYEtlErQyljpLw+HU4/pNoGyciTnr04QN1KcKvgz2eo6w8WSOrt76uBLHoCpcgh1GHMp7o5G5NXekNffG1nKZONhjlBM5FTXSO7oy+LJUvlrTBFdxMj7GTvLPNtHv+P8tlRqg/tDP45tGYnnIjrhQs1v8mNqSsP5+e3mMm+HSnwYEs2im+RbhBIhcebP8+LAcPvVyRJgV7UWPEAuuuiAUbRyuKSMkCKSRpfAnq+XkHkPH0JcdmJeOjyEkKe9XbBNEfctVwwgJJUfs1l2CIKQ6cFbbGC9mczM2n/r4c2U
- srdQc6ey
- 4fJx2Y8njHjtRSj+BWYAfWzyfwgeR4Wj49kfamalJbgEYuoAHA7ovJUEUpJXT33sreZciVWWTzDHWq0DdXLhVcklAoAr0QGQzkTYWHAO6hMmmmXJ9LmM43qJKA+6MxsITiYFAy47pt/UkFZDbA0xTbcosbWg21Bu9in8d4IAOlSMWJKHDmUB0asxCW7Xmrw1JNTlYvt/25l0QxypXX9fqIfyvfvXHAuBRNkJ78Ljxdz2q2wogBuNZuabljorEubCCBFnmOva0OsDgidtvcPRyiItIYxbIS9sUJ+QKbh/P3aJOlidSH42cyqEeEpjNy0kSmmefnt3ISNgbd8TDV03rikwJ1/ltyp2z4W/+rV/37+DasesV7XCGUDQyw8Dv2QmDt33H
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BA058160008
+X-HE-Tag: 1792119625-302486
+X-HE-Meta: U2FsdGVkX18YctDMuyh6voce0vl7mD4kHQleKydfrhNGV1h+76X5CqZlulJmzKrVy0P2piJmEZZni5VPGtLrZ6t0zqi2/BORSeE8MBCcW6bhd0ngURJdZ3wQ9BRS9jxR0fvxywHWfy7PzH0LXYHmWtQlzA2o9N+u95uxdf7/NOSu5n40zb2suVspX02BotU9Fm9qL9yEZC/wJ2Ir0rpBqgoh66rmawkrG4B+2Pme2MdzIHYKes3pow6zaaweaSlEUAEzrkzoYhiROuuqwirhV2C5bqLCebKuRljGM6lfg+e2Y6onXEmucDyH+ES90/Ew0q4vJZ2LFAK0Tr2i0fhds712SbNXpW2NSGLxpCPZzOAqG01COP/tSQ0Ie/ij3DeXndfZRf0cAsveAL/WGt1J9V7LQdEuAiihchyWXTZfnrwJRMvRMy6ZlEjpCI7AaDOSGW6HBRit4C/MZFyqdI2icTkEL43Nk5ch7Mx4mZBbforr1BYm5xqI7Rak/e/kfA1SSjUPoakwqUANZMhxPX+4olczsJiuj3Em4yEYb3VQV0zc+XwXqkIfHR7qh36s20tLK9pJPmt0PFKOJOZxedI5gWuQ2mYqqFsix9tjspKeSilOEJehj0I5jv6KQ3kPWx9n5pioxBtZIiHVSsZ2hTlAmgF6yHrX1D7QumGgE6spTEOGwDpdzmrHSsTLlETNJf8xyzla5lnEwCqNlfxcClQurPQ11DqpdIcCSoJSMGmpxNKHF1SeTDBJU/57gfLw9WNYvoPDB4ndkWu07tw+CoJUEGv0kfhPEzY+SJil8UtFM+bD8sDxA5eAuuRobJ2zou3j0+arP77rZ4ucGzwTZ0DVEvxGyYfq3Ve2h88ZYDKziehookoSEq8nmRxS/slGMH54cEm6v4jKBzqxjVu09rpBB2bcIMbPK0VwnqSYDYt5FXw80w6wz3UW8R2b7j3KkQoj6yu6REHWFFSWwe6rN+N
+ f38Strbn
+ JRO/Vr9O/JLaINDxJfN058jiIWW3w6eYD+alVuTAk0eM6TVe/s1t3NwzT/Fexh5TClykhx6EUZdi/Hk9ODum5Y2t0hdOBNMpZZljHe1KJozMy9Mv2ZDT+jWRaZuV/45mTVbctPVfgy3IkxGnyPvl+RsSlSVXYUIaos/wsMkHRpYHejmaZz2orubmGVjq9XCz743moN3pvF8VUlb3hC0G2uPSyCPm6VSRU+Os5lwqj94rWNpDfts7G9YzCQDOCha80rt7FaFYLbaVUuoqoiLTnNcTSOia/IO2fHe12eW8sPpSEAbjQmIoCYfZsJdsiJtPSDjoKTKDaY2xWFGOaIBc7AhPt7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,52 +96,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 07:20:20PM -0700, Andrew Morton wrote:
-> On Thu, 15 Oct 2026 18:15:49 -0700 Kyle Zeng <kylebot@openai.com> wrote:
-> 
-> > A PTE-mapped large folio can straddle PMD boundaries after an unaligned
-> > mremap().  If the first part is discarded and replaced with an unrelated
-> > huge PMD, page_vma_mapped_walk() stops instead of looking for the rest
-> > of the folio in subsequent PMDs.
-> > 
-> > This also affects migration entries.  A walk that stops at an unrelated
-> > huge PMD can leave migration PTEs behind when migration or an anonymous
-> > folio split restores the mappings.  Those entries do not hold mapping
-> > references and can outlive the source folio.
-> > 
-> > Skip the current PMD rather than ending the walk on a flag or PFN
-> > mismatch.  Do the same if the PMD became nonpresent before the locked
-> > recheck.  Release the PMD lock, clear the per-PMD state and advance with
-> > step_forward(), so the existing range limit controls termination.
-> > This covers present, migration and device-private huge PMDs while
-> > preserving the matching-PMD and split-to-PTE paths.
-> 
-> As always, when fixing a bug please describe the worst-case
-> userspace-visible effects of the bug.
-> 
-> I asked $LLM and was told
-> 
-> : The worst credible effects are permanent application hangs, kernel
-> : crashes, and potentially system-wide denial of service.  Stale
-> : migration entries can refer to freed and reused physical pages, causing
-> : page faults to access unrelated folio metadata.  Memory corruption is
-> : possible but unproven; cross-process information disclosure has not
-> : been established.
-> 
-> But you have an LLM too!  So please never again send a bugfix without
-> this info.
-> 
-> Also please explain whether there's a reproducer and if so, at least
-> describe it and confirm the before-and-after results.
-> 
-> Thanks.
-> 
+On Fri, 16 Oct 2026 10:22:20 +0800 Kairui Song <ryncsn@gmail.com> wrote:
 
-Hi Andrew,
+> On Fri, Oct 16, 2026 at 10:16 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+> >
+> > Hi Andrew,
+> >
+> > On 10/16/26 9:40 AM, Andrew Morton wrote:
+> > > On Thu, 15 Oct 2026 14:05:27 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+> > >
+> > [...]
+> 
+> Hi all,
+> 
+> > >
+> > > So CPU 0 writes to a folio it doesn't own: it may clear PG_readahead and
+> > > takes the folio lock of someone else's page, before
+> > > folio_matches_swap_entry() finds out the folio is not ours.
+> > >
+> > > Recheck the slot after folio_try_get() and retry if it no longer holds
+> > > this folio.
+> > > Thanks.
+> > >
+> > > As always, when fixing a bug please fully describe the worst-case
+> > > userspace-visible runtime effects of that bug.
+> > >
+> > > I asked $LLM for this and was told
+> > >
+> > > : When the race occurs, a swap fault can acquire a reference to a
+> > > : physical page that has been freed and reused for an unrelated purpose,
+> > > : potentially by another process.  The fault handler may then clear that
+> > > : page's PG_readahead/PG_reclaim flag, wait on or acquire its folio lock,
+> > > : and potentially attempt to remove it from an unrelated swap cache.
+> > > :
+> > > : These operations can interfere with unrelated workloads and may cause
+> > > : unexpected stalls, impaired reclaim or writeback, and potentially
+> > > : system hangs.  The subsequent swap-entry validation normally prevents
+> >
+> >
+> > I don't see a way to a system hang: the folio lock waiter is woken when
+> > the real owner unlocks, so the worst case is a stall. I suggest
+> > dropping "and potentially system hangs".
 
-This issue can lead to memory corruption and I have a reproducer for it.
-I can update the description and send in a v2 if you think it is proper.
+Yes, I think it's assuming the other-owned folio never gets unlocked.
 
-Best,
-Kyle
+> >
+> > Writeback itself is not affected, only the PG_reclaim hint on where to
+> > put the folio after writeback. So "impaired reclaim or writeback" ->
+> > "impaired reclaim".
+> >
+> > So I'd suggest:
+> >
+> >    : When the race occurs, a swap fault can acquire a reference to a
+> >    : physical page that has been freed and reused for an unrelated purpose,
+> >    : potentially by another process.  The fault handler may then clear that
+> >    : page's PG_readahead/PG_reclaim flag, wait on or acquire its folio lock,
+> >    : and potentially attempt to remove it from an unrelated swap cache.
+> >    :
+> >    : These operations can interfere with unrelated workloads and may cause
+> >    : unexpected stalls and impaired reclaim.  The subsequent swap-entry
+> >    : validation normally prevents the wrong folio from being mapped into
+> 
+> It's documented that caller always double checks the folio so this
+> part is harmless from the aspect of data corruption or crash.
+
+OK, thanks, adjustment made.
+
+> > >> Fixes: 8578e0c00dcf ("mm, swap: use the swap table for the swap cache and switch API")
+> > > Given the above, I suggest adding cc:stable.
+> > >
+> > > Do you and maintainers agree?
+> >
+> > Agreed for me.
+> >
+> 
+> This is more like a optimization than a bug fix, but it's clean and
+> easy to follow, Cc'ing stable is fine to me.
+
+Was that an ack ;)
+
+
+Here's what I now have:
+
+: swap_cache_get_folio() reads the folio from the swap table and takes a
+: reference with folio_try_get(), without any lock.  If the folio is removed
+: from the swap cache and freed in between, and its memory gets reused,
+: folio_try_get() still succeeds and we return a page that has nothing to do
+: with the swap entry:
+: 
+:   CPU 0                                  CPU 1
+:   do_swap_page()
+:     swap_cache_get_folio()
+:       swp_tb = swap_table_get()
+:       folio = swp_tb_to_folio(swp_tb)
+:                                          madvise(MADV_DONTNEED)
+:                                            zap_nonpresent_ptes()
+:                                              swap_put_entries_direct()
+:                                                swap_put_entries_cluster()
+:                                                  __try_to_reclaim_swap()
+:                                                    swap_cache_del_folio()
+:                                                    folio_put()   <- freed
+:                                          page reused, e.g. as an anon
+:                                          folio of another task
+:       folio_try_get(folio)               <- succeeds
+:       return folio
+:     swap_update_readahead()              <- may clear PG_readahead on it
+:     folio_lock_or_retry()                <- locks it
+:     folio_matches_swap_entry() fails, unlock and put
+: 
+: filemap_get_entry() does the same lockless lookup for the page cache, and
+: after folio_try_get() it rechecks the xarray, because the folio may have
+: been freed and reused in between.  swap_cache_get_folio() lost that
+: recheck when the swap cache moved to the swap table.
+: 
+: So CPU 0 writes to a folio it doesn't own: it may clear PG_readahead and
+: takes the folio lock of someone else's page, before
+: folio_matches_swap_entry() finds out the folio is not ours.
+: 
+: When the race occurs, a swap fault can acquire a reference to a
+: physical page that has been freed and reused for an unrelated purpose,
+: potentially by another process.  The fault handler may then clear that
+: page's PG_readahead/PG_reclaim flag, wait on or acquire its folio lock,
+: and potentially attempt to remove it from an unrelated swap cache.
+: 
+: These operations can interfere with unrelated workloads and may cause
+: unexpected stalls and impaired reclaim.  The subsequent swap-entry
+: validation normally prevents the wrong folio from being mapped into the
+: faulting process.
+: 
+: It's documented that caller always double checks the folio so this part
+: is harmless from the aspect of data corruption or crash.
+: 
+: Recheck the slot after folio_try_get() and retry if it no longer holds
+: this folio.
+
 
