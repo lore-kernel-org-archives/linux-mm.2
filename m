@@ -4,136 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E03CCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 08:43:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A28D2CCA464
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 08:54:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C2E06B0092; Fri, 16 Oct 2026 04:43:11 -0400 (EDT)
+	id 972286B008C; Fri, 16 Oct 2026 04:54:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 674056B0095; Fri, 16 Oct 2026 04:43:11 -0400 (EDT)
+	id 9212C6B0092; Fri, 16 Oct 2026 04:54:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562C76B0096; Fri, 16 Oct 2026 04:43:11 -0400 (EDT)
+	id 837326B0095; Fri, 16 Oct 2026 04:54:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C4DD6B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:43:11 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ADAA1140304
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:43:10 +0000 (UTC)
-X-FDA: 85327849740.18.CD20ED5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 073E7100006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:43:08 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 5B3A86B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 04:54:34 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE2F0140302
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:54:33 +0000 (UTC)
+X-FDA: 85327878426.29.795CA69
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1DA84100003
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:54:31 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mK5F7RTu;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=chromium.org header.s=google header.b=k66YsBl5;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.47 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792140189;
+	s=arc-20220608; t=1792140872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uuyYLjc88NlqPqUJ8TG17oI3ayh7MbBbcx6eKptcvgM=;
-	b=S7h36yoNORfaUQh8uuLv9glVpCS8b1bXrRFCRpCoxDSctegFVDow4LFVuLlIN0s4EOuQRT
-	npMx0sZzgk21+CO9Duy3c4hCvEcT1lO0WR3uWB693fdCHABBqEnk63m8kicnMR+BE+1q0A
-	I41GSSHXNoKtgKWIzbXAWGD0CvSuf3Q=
+	bh=tm0sQY97x/sO1vfolLCcmx0x50wapUOdk8gJkzj/4Rc=;
+	b=Qq/1pQlv3hS5fDDu7pz8o4crqU6WrJ2tmN49JK8niQ7HvFEDCTFdPaWjboRLJDJ9Jnz0LJ
+	ougKu/V3yPIJPf74Ar+bHUw/4THlrTyzLZvSzcZDcWuxDYTavS2PUf7bhQD1AlVUKn+5Cl
+	TfXbrcTtoKJBbUr/eXC354e+SS50KeE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792140189;
-	b=NR5etDj4qh9FbIRazAiBJpaKHvKgaUnVLGxvJQ8CZo4zbr0eoXfLSkO7dAMkmvF53Yl6cd
-	U54TcJdjFUpb6ftQiBO8CGkZbFGT4S01/wCjQFWAyhYmAW/JHp9qlmHb05koq2jXK1IOQ9
-	jsVYVqCN0H8jRlwYgUy0Bh6AaSEt/vY=
+	t=1792140872;
+	b=A0GMfOE+VUxTubg/CEb7TIsDpQk97gHaJNchI/icr6ZbIoHSHBoVtLOfxu59/vM+xOaJAQ
+	DbW7G2d7QhhuLgI0ayCsLfUb+8sMhjn+AtMGHUZmwNcou0Ig6HZIe3ZDiIVbm/BnD9xE4m
+	Vj3FEknuKSybIZWrP9/tAYPIf9NksQ0=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mK5F7RTu;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3519740719;
-	Fri, 16 Oct 2026 08:43:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31DE1F000C4;
-	Fri, 16 Oct 2026 08:42:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792140188;
-	bh=uuyYLjc88NlqPqUJ8TG17oI3ayh7MbBbcx6eKptcvgM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mK5F7RTuDashr/9tLlHIbBsWn89AqnBSS/stQsnZFK0udCKKJwwx0mXZQaQ6y0/mL
-	 v7mGlbkHWvwzlsaxzGgTYFMZenluZzn+ThpKvxfT1FQwf36UkwlkhVENj2wBZxT6cs
-	 Oa73yOwEZyWaWTtUMKIkWXdzfEtYmHJhKqUn83wmEv5Y9Nr09h6UQgTdLpZXLBsi7T
-	 BcJoBYPrSNER1hYyvdrJ3OG1NANEuudau4hCEy8QMvdL5eSFm1HA0gqGHf6uV6haqE
-	 H7kcsX+z4rgxil/LicfKzRXo4ZkbGiIH/R/Cu4kTDkLTAUpEZrSf+0BJA/cTdijfKW
-	 IT70BEsYqnSLA==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: devnull+kasong.tencent.com@kernel.org
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	cgroups@vger.kernel.org,
-	chenridong@xiaomi.com,
-	chrisl@kernel.org,
-	damon@lists.linux.dev,
-	david@kernel.org,
-	dev.jain@arm.com,
-	ehab.ababneh@intel.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	kasong@tencent.com,
-	kunwu.chan@gmail.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	lianux.mm@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	liuxiang.277@bytedance.com,
-	ljs@kernel.org,
-	mhocko@kernel.org,
-	muchun.song@linux.dev,
-	nico.pache@linux.dev,
-	nphamcs@gmail.com,
-	qi.zheng@linux.dev,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	ryan.roberts@arm.com,
-	ryncsn@gmail.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	sj@kernel.org,
-	surenb@google.com,
-	tz2294@columbia.edu,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	vernon2gm@gmail.com,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	willy@infradead.org,
-	ying.huang@linux.alibaba.com,
-	youngjun.park@lge.com,
-	yuanchu@google.com,
-	yuzhao@google.com,
-	zhaozhengzhuo@uniontech.com,
-	ziy@nvidia.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 00/17] mm/mglru: frequency guided promotion (MGLRU-FG) and flag cleanup
-Date: Fri, 16 Oct 2026 16:42:56 +0800
-Message-Id: <20261016084256.12955-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
-References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
+	dkim=pass header.d=chromium.org header.s=google header.b=k66YsBl5;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.47 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso8938a91.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:54:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1792140871; x=1792745671; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tm0sQY97x/sO1vfolLCcmx0x50wapUOdk8gJkzj/4Rc=;
+        b=k66YsBl5nq4frWobmZRnSWx+FanrUGHixmf/FoO3K6f9CcPPbYaifYj74/v+TVKHtf
+         3vVdl2N/bJk0azKkiDAo5o2gLxjEMqq2ZuLPtj3D77uVrg022TIYY5lZgoTSgy0dstSY
+         rS4Tm3mj4OQqFv6iHzBZr02qvMLa59gSTo3Zk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792140871; x=1792745671;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tm0sQY97x/sO1vfolLCcmx0x50wapUOdk8gJkzj/4Rc=;
+        b=Zzzo0k0G0hGEPQjlB1+9YT11PWitar9bBsEydGCEAQaDRfhvY+uw2En0FGf0hzSUJb
+         BNIV/TDEiiDUwQiD3bvseFUdUenEXZ3GjcqtzmUWnq5TdgBGc0DPjyKCsJlU0/s6brqx
+         1PiB+0HphenDoZKH4UHwl1Z/SsuzPXqzqMij/KH6f3dTAIuZ75UKk5lxIKbOI/HSwIkQ
+         rzS9026M3wOjrZnWnoOmuAYB2DkAUOx8qFDMQtzzm6h9y9mmScJaGo6CNk4wCpiXVc8+
+         r6c6nRXdJ095b6fy33op5bScUCsjFrb/kNc3hYAJeEdjCQK4gdUPyA0np7jaPWTGfTIH
+         J4Eg==
+X-Forwarded-Encrypted: i=1; AKwUvBzhAMPG3536NFjENKexmA7Ctqu//9U3eOKfZnLBwxTe3B1RFnqHvmYLd3CMEWXwAtc7kQtbpZ66AA==@kvack.org
+X-Gm-Message-State: AFq9FYKaGLlywne05yTokYVqozxo/BLtzCOnlBIwEsOkr7fJK8gCjW5o
+	Jzmfhaj33Ve6oE+0whvBFasYoPJOalrsKP9GDUSXnmxe0m6ptJdPJKm0j7y8z7KPMg==
+X-Gm-Gg: AYBFou1xh+AGMg5HqEmN3Jg1L61DKt8hQTOGaHWwWCPho52Q8fahW1oVr5RHzI2D8Qc
+	aMhe4heXIfNJUmEAFLb57lQJRQ7Ca/VLI4O9tcA84X/vYJooBxLj2XMjkLYQVGAhJtOgJ+4UsxQ
+	ERt5//w6UkUjggG1XWfe6XJTerhLFln1TIXduML6WK6eCbu/JWLBmKlz5WSoA+c1p/0IxftSfYI
+	7EKV+r/1GeGJ/M6KrDz/KXYuaANzRk1TJOtFZi2BNocRGCOoeR8Ei6kwANBp1ANrt1iu+L0J5Ns
+	ZhYJJ6Kj7+TnrFYyDsgkAr1hK4nBgJ4gM8F/LGSHVYoaNiugsCzEsNjhCKYIOL0pMJ3SURcJP6W
+	tBYCCfTGXcm8M6/X0ak9zZ0JJe/sCzcTGqGLjFWBv/PZJDJvDRZwUNJ41U/rXQA5ftKrYHzaYsc
+	+FKnejxMst2BLqOAMAzl11I5TkAbvlTUG7ncaFjmwZOww+AMtzBbd/ZPa3c2E5RMCgmIP+j53qs
+	/q0yOT8cT0r8dF17x7qKzE+hf82T7t6sCKPvqr+37crQA8UZNAEyu+Gpkzl3a4ZOnLT//v7Sh6j
+	+ClNWVYXglLpPtr29ALTuUeD7Q7FoxWSNn4aZTVshg==
+X-Received: by 2002:a17:90b:3a48:b0:3a7:f4d:b23d with SMTP id 98e67ed59e1d1-3ab3ac790dfmr19469341a91.52.1792140870404;
+        Fri, 16 Oct 2026 01:54:30 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:a579:8b87:8304:7ac2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac945e74bcsm8425589a91.3.2026.10.16.01.54.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 01:54:29 -0700 (PDT)
+Date: Fri, 16 Oct 2026 17:54:25 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Bo Zhang <zhangbo0325@gmail.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	akpm@linux-foundation.org, baohua@kernel.org, bgeffon@google.com, minchan@kernel.org, 
+	richardycc@google.com, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 10/11] zram: use rw_semaphore for decompression streams
+Message-ID: <atHftz13hWzGludk@google.com>
+References: <atBh9xfpOji_A7A_@google.com>
+ <20261015112440.1491168-1-zhangbo56@xiaomi.com>
+ <atGPwJL6XzlRaMva@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 073E7100006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atGPwJL6XzlRaMva@google.com>
 X-Rspam-User: 
-X-Stat-Signature: e4mr1rtrpuhck41no7ta3fm6pgfjjncx
-X-HE-Tag: 1792140188-535844
-X-HE-Meta: U2FsdGVkX1+HRpdFOMTZSHc0UmUdJ0/d1cF1aCtzS2re+01dboC15tk2RpwlQZTE2XhpzOJkLZKyqlH4eaM71/AmBiB3tPToh2dX/OIvdg2zrM2AeABp2BJwJxULCey32gE6nWj4JSvyUP66MbOhHwXyR6AMiE4S8luollGLJViia1IfdV7IrArZbPI5bLrKFqgvGApT7gVS9fxurk1REJdjpu4sZ7sJhwQ+yCDY0w9m5+Up8+SjgdyxU7oM+gxatY8gInMxYIAagR6yDj1JJivtdn0vjvhyYaZAg4/kAEdcRvoPW6KH7EXMp2tNzKxZvda5Sh96NFtEF1ff1/FhyyG8aF1YPuT4zPAhlbjdHvHbAYrcFG5CfzTeAHALuD/4uG9NRb5kGrkDKud0q31qFkTVVKk3mdzSN6/XXgtcUAA9v8I+ofk5j88HUFPlwuEZLDSQ8+FJ4gj9/DHYsXqmFIz3JgOBmJuiDJJPSMrddjvYDHG4jVfUNh8LZBJioq5np6LFe3O7bbUyncEhFMfZMyJJytfsdGHl7AYxFPR5284XTb6SptNlksY/K2IOAzFOGo/mEUKD00FDX85jGobjp+uJmNJW20vLUhDR7QOWfdS0VCsGpwlrIKJNvCNeoTSj2FCjhIaOaHfSE5xy94khAQ6qbT4NI0nRLz5P3DMeGZWy4Veqr6VfSklFfcklL0hT3rI2H70Y23WHwfPwVGnZDv6MsRVHZssm5NHQYLlv8h3Hlo2qK9sGNXxjq9sIgIcfHvHGmHtvqhEfmcTSNfMiGUytqvJlQ4I+iDV39wu6FENlnXkWcurQ9lPH6Z1OfjWvyIj7/5zETgeAKt4//8eOCkEXEfQOeQ15k3W6QoEv46JQGwHUp00ERoUPLWF0vrQIYfEvs8wgtGlgPdL4dBKdphAsJbRLaoglVqdu2dMkIzbInZojQjpkZ3EzeWfqWJy0IcQ1KIO/J4QAI6XRMwh
- ANjlpPdl
- Tm5VsSkmxgaCEkaTczudu/iYgGWqlQptRuLeLLpYzSxoWhBMl80mlYfOY7r5JazuSeEPX8ylBXTMb1R+8UrVSMoFPEq4yrvWqP6OVDeVsvopl5W5RKWcc/81gBpN0B+zd7L3dZwSua8xdC7KCplYOhyLBbIgqq1v6tyJvRSZYrYQobE9BnE0PhT2XcfRTvHMZJQ81sGW/EtAvp4TXlVAF60GmIgpSKilr4std1e2P7kEGOrsahJIpZYr02PuoJ3FY8YkhQfwYvkxOj3mOuzRN3yJj/r73DzbNIR/UEilYy55cytEqP5X18bqCLe1jSgzPQ2i1MAqM/dVpzMJOhFgBCh4p7UciUyZpbUP2bydQW7zudkbIaFpv76sUww1pEkiesZRBBk159H8UALyvUJJ47ROT2RAhV6Sr9VR2iZ5bH2ANy8n7hnojEOTo80EulZDH8nk7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1DA84100003
+X-Stat-Signature: 8ezfjh5p8rx1sermyb64xn4c6qwi63nk
+X-HE-Tag: 1792140871-177424
+X-HE-Meta: U2FsdGVkX19PxFUtAiAQWYAKyzF/QOVNFtfnCRur4ggJA45r44TOIi+nSRoTipIV8XB1k7seDWJwzccxMVYjsdJFxMxOoAZtIcOHWkNfSZCNY7TgpdFNvMThVdsUq5tGE6HH0p1yuhXf8ElZsn5JOlBghMFdigaGxoopRUKf0uXiufyB3axrIj5v+pqvINOyYTWFUX3GVWQRtX75Il7Hpz94LilyYglC3dbvHaaOsQF4qysR6xYLbK5r5975PEqkywz5zv8lsQva5R35TdGoRy8I0xIA95Ns3ZoGuK040RWit+PBFqhP4PXaRch9X6UvG8mI0yxYw4z9CeeR+KxgW8GtMDUee9JeApNAhrVqaeml9wTBzGQf3W0S+Q+GEgg9Gwjn+72EyZsrq3xmcuCAsAyjlFosyAHvMNvdolkkQ6/hTRDEpdBlye0FZ6+7RPiEWG8hCYXNi1bhG2KsgnSPPS1h3iu+/QqRmyqSZnVyasRbbgsqCYixCyIWUJaS5PDha8vhYfKh0eCJmzUoAOYKRxtJEwwVy83ZqM8LFUiWTAXYStuUW5dUCOzYDnoGBmCW/dqvRuzkVJbfYRrieHhR04esCOYB8oBR2DjJc7V2GHYzVFH940N8KpSmjr6/pIFfnTYXIrmV4OESqUvgxjsYEohVSeSBgRUTitmAOb6ZCyEaOzNQ5+NQ/rfwHyc+e6ccz6p3NpFqODiiGLxSE/uNWSxj4iODnaB5vwjoo6/qIlJdlr3q6HW113A4JyCw3tMf8OCI2p6ufKv/mL+eSp8C2E7XBA+SoKcYLakndpVTpUEnH9sIVL3dqQMA8I5Avswzm8Nwq8KUI5zTfpo0jv/z/gDzLZRpBOtLt6V2TU0GtlBaqxA8gMjqjgbqG8rpJcfubIJ8yIKNzkBpHjkbCgfAjM7PDOb4c0wUN918b2lKjaiwBdaOhbLw85EV/fW13WJdFDtblESAiWGfQEfbC9U
+ GcF3p72X
+ 040a7pkhdwUUAd62YTt0V8ZKNyAlqMIuSax626k8r3FVJ0NiMa2ZiV3PqGlYY1cJDMem96gz+e6wfGvZgI7+Hdd9Cwe3u2raopQzbY/HvA5tF8U59tOcHPvdCcs0oATQyxZYqy1GgUUvjurP60bcXPKnyg/I3oMRbvsY/LgwXXQLBF+l8v/7pKa3L3sm9LxMQ+L81SIo44BdBXdIhV68IedPXO6dF4haR7CNQ2vN7O/DDD2ja5xP2sv6xRepXUFfbPzfCfabxKOOWHqGRU0mXfdSEKLa1Pjn0kfbqhyA3oi6aCwAscnqdptWQU8IdQD54KVBhl9hyDTGMy7c0csidawbZtOAanjy9Ya8QZgxh8n8Qo7lF8loZzSpyzD0eWAID8JYBA2k2yy3FVuTDL+JSSLlNPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,238 +121,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 2:15 AM Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
-[...]
->
-> LevelDB Scan/Get
-> ================
-> I also retested the LevelDB benchmark from the cache_ext paper [5].
-> Interestingly, mainline MGLRU already beats CLRU on this one after a
-> recent change in lru_gen_folio_seq that bumps new folios with refs == 1
-> to the second-oldest generation as discussed. That change accidentally
-> gave random reads a higher hotness level while making sequential reads
-> much colder as described before [14]. However it's unreliable and
-> incorrect because it depends on LRU drain timing, and hurts some workloads
-> as reported, or where the sequential part is actually hotter (any workload
-> involving hotter large file and many small cold files will be affected)
-> which is reproduced below.
->
-> This series improves it while covering ordinary workloads too and should
-> fix regressions:
->
-> LevelDB Scan / Get, Throughput Total:
-> CLRU:         4708.3 ops/s
-> MGLRU:        5026.9 ops/s (faster than CLRU, but hurts other workloads)
-> MGLRU After:  5179.2 ops/s (even better in all cases, and no regression)
->
-> The hot-sequential and cold-random workload can be easily reproduced with
-> SQLite and grep. SQLite continuously scans and looks up a small hot
-> portion of a DB file, while grep iterates over a set of small files much
-> larger than RAM [6]:
->
->          SQLite scan & lookup time:       Grep iterate time:
-> CLRU:                       14.51ms               13281.37ms
-> MGLRU mainline:            567.05ms               13694.47ms
-> MGLRU After this series:    10.58ms               12930.43ms
->
+On (26/10/16 11:50), Sergey Senozhatsky wrote:
+> > zstd backend, same A/B workload, on top of 9+10+kmalloc:
+> > 
+> >                        9+10+kmalloc   + preempt-disable
+> >   cwrite_contended     14,880         48          (-99.7%)
+> >   cwrite_wait_ns_total 137 s          0.32 s      (-99.8%)
+> >   cwrite_wait_ns_max   243 ms         43 ms       (-82%)
+> >   dexcl_contended      15,919         54          (-99.7%)
+> >   dexcl_wait_ns_total  109.6 s        0.68 s      (-99.4%)
+> >   dexcl_wait_ns_max    145 ms         34.6 ms     (-76%)
+> > 
+> > zstd stays 100% exclusive either way; the win comes purely from the
+> > holder no longer being preempted/migrated, so the hold time stays short.
+> > It's the same mechanism that took lzo-rle read contention from 24,749 to
+> > 406 earlier. So the two are complementary: shared reads remove
+> > reader-vs-reader queuing for stateless backends, and preempt-disable
+> > covers the exclusive/write serialization that stateful backends can't
+> > avoid.
+> > 
+> > Quick and dirty, for discussion only - Patch below.
+> 
+> Yeah... I need to think about it, before I can join discussions
+> in a meaningful way.
 
-Thanks, Kairui. I'll do a thorough review of the whole patchset over
-the next two weeks.
+A quick and dirty patch, as usual, just to play around with.  This
+attempts to improve the reader side, because the reader is side
+much more sensitive.  Tested only with zstd.  We probably can do
+something for the writer side as well, but I'd prefer to postpone
+that, until we actually have to do something.
 
-BTW, do you think we need a quick fix patch like the one below
-for the above problem before this patchset, so that it can be
-backported to stable? I assume your patchset is too large to
-backport?
+A quick thinking-process dump:
+Our shared dstrm-s are almost non-pCPU at this point (we have a
+fall back bounce buffer in pCPU), so we can have any in-flight
+number of those.   Doing something similar for exclusive dstrm-s
+is more complicated, because those dctxes are beefy - zstd dctx
+sits at ~100KB.  And this rules out the "pool of idle dctxes"
+approach.  I decided to keep them pCPU, and implement exclusive
+dstrm borrowing (from remote CPUs) instead.
 
-From f9683205d2ab6e3b185022d7d5af3496dfe5f35f Mon Sep 17 00:00:00 2001
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Date: Fri, 16 Oct 2026 11:48:06 +0800
-Subject: [PATCH] mm/mglru: fix using folio_mark_accessed to replace
- folio_set_active
+A quick (and a bit extreme) synthetic fio test for Reader vs Reader
+inversion on 24 CPUs (preempt=full, zstd, 48 low priority (nice 19)
+bg readers, 24 normal priority (nice 0) CPU hogs and 24 high priority
+(nice -19) fg readers).
 
-Commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
-replace folio_set_active") tried to avoid over-protecting
-fault-around read-ahead file folios by placing them in the
-second-oldest generation instead of the youngest generations.
+fg reader results (average of 3 runs):
 
-However, it abuses `PG_referenced` on read-ahead file folios
-for this purpose, potentially coupling their handling with
-normal syscall-based file accesses that also use
-`PG_referenced`.
+    Metric           Base               Patched
+    ----------------------------------------------------------
+    Read IOPS        396k               1,064k        (+2.7x)
+    Read clat avg    48.32 us           9.66 us       (-5.0x)
+    Read clat stdev  7,571.00 us        31.92 us      (-237x)
+    Read clat p99.99 5,707.10 us        2,233.68 us   (-2.6x)
+    Read clat max    3,555,300 us       6,287.57 us   (-565x)
 
-This could regress some workloads, as reported by Kairui Song[1]
-and Ehab Ababneh[2]. Many thanks to both for reporting these
-issues!
+A quick note (the last one) - happy Friday!  Time to logoff for me.
 
-The long-term fix is Kairui's MGLRU-FG, but in the meantime,
-we also need a quick fix that can be backported to stable.
-
-This patch reverts all of the original commit's behavior that
-abuses `PG_referenced`, while preserving the semantics of
-avoiding over-protection of fault-around read-ahead file
-folios by adjusting only `lru_gen_folio_seq()`.
-Specifically, fault-around read-ahead file folios with
-`PG_active` set but `PG_workingset` clear are placed in the
-second-oldest generation.
-Activated file folios and refaulted workingset file folios
-are still placed in the youngest generations.
-
-Build kernel cases in a memcg shows it not only perserve
-the benefit of original patch, but also even improve
-performance further.
-
-w/o fix:
-
-real    1m49.094s
-user    25m31.484s
-sys     3m40.959s
-pswpin: 662112
-pswpout: 2504415
-pgpgin: 4424336
-pgpgout: 10355273
-refault_file: 359626
-refault_anon: 670724
-
-w/ fix:
-
-real	1m48.913s
-user	25m31.639s
-sys	3m30.875s
-pswpin: 689815
-pswpout: 2689894
-pgpgin: 4422659
-pgpgout: 11043464
-refault_file: 326566
-refault_anon: 697138
-
-Revert original patch:
-
-real	1m50.044s
-user	25m37.137s
-sys	4m4.493s
-pswpin: 1349087
-pswpout: 4317933
-pgpgin: 7083597
-pgpgout: 17602735
-refault_file: 337676
-refault_anon: 1368542
-
-[1] https://lore.kernel.org/linux-mm/20261003-mglru-fg-v3-0-cbd4546a5bd9@tencent.com/
-[2] https://lore.kernel.org/linux-mm/20260901180704.168106-1-ehab.ababneh@intel.com/
-Fixes: 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace folio_set_active")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 ---
- include/linux/mm_inline.h |  8 +++++---
- mm/folio.c                | 16 +++-------------
- mm/vmscan.c               |  9 ++-------
- mm/workingset.c           | 10 ++++------
- 4 files changed, 14 insertions(+), 29 deletions(-)
+ drivers/block/zram/zcomp.c    | 75 +++++++++++++++++++++++++----------
+ drivers/block/zram/zcomp.h    |  5 ++-
+ drivers/block/zram/zram_drv.c |  4 +-
+ 3 files changed, 59 insertions(+), 25 deletions(-)
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index ab69b9930893..7aaff4e06e80 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -311,7 +311,8 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 	 * | Accessed through page tables and  | Accessed through file descriptors |
- 	 * | promoted by folio_update_gen()    | and protected by folio_inc_gen()  |
- 	 * +-----------------------------------+-----------------------------------+
--	 * | PG_active (set while isolated)    |                                   |
-+	 * | PG_active (set while isolated)    | PG_active (files|                 |
-+	 * |                                   | fault-readahead)|                 |
- 	 * +-----------------+-----------------+-----------------+-----------------+
- 	 * |  PG_workingset  |  PG_referenced  |  PG_workingset  |  LRU_REFS_FLAGS |
- 	 * +-----------------------------------+-----------------------------------+
-@@ -319,7 +320,8 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 	 * |<---------------------------- MAX_NR_GENS ---------------------------->|
- 	 */
- 	if (folio_test_active(folio))
--		gen = MIN_NR_GENS - folio_test_workingset(folio);
-+		gen = MIN_NR_GENS - folio_test_workingset(folio) +
-+		      (type ? !folio_test_workingset(folio) : 0);
- 	else if (reclaiming)
- 		gen = MAX_NR_GENS;
- 	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
-@@ -327,7 +329,7 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
- 		gen = MIN_NR_GENS;
- 	else
--		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
-+		gen = MAX_NR_GENS - folio_test_workingset(folio);
-
- 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
+diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
+index 81f21bad787e..af1aaa1f9e9b 100644
+--- a/drivers/block/zram/zcomp.c
++++ b/drivers/block/zram/zcomp.c
+@@ -190,38 +190,66 @@ bool zcomp_shared_decomp(struct zcomp *comp)
+ 	return !comp->ops->create_dctx;
  }
-diff --git a/mm/folio.c b/mm/folio.c
-index 35e242b48870..2af724cecb31 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -474,20 +474,10 @@ void folio_add_lru(struct folio *folio)
- 			folio_test_unevictable(folio), folio);
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
-
--	/*
--	 * For refaulted workingset folios, set PG_active so they
--	 * can be added to active generations.
--	 * For prefaulted file folios, folio_mark_accessed() sets
--	 * PG_referenced so lru_gen_folio_seq() places them into
--	 * the second oldest generation.
--	 */
-+	/* see the comment in lru_gen_folio_seq() */
- 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
--	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
--		if (folio_test_workingset(folio))
--			folio_set_active(folio);
--		else if (!folio_test_referenced(folio))
--			folio_mark_accessed(folio);
--	}
-+	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
-+		folio_set_active(folio);
-
- 	folio_batch_add_and_move(folio, lru_add);
- }
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index daa7e37c2236..e82ba737c028 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -952,13 +952,8 @@ static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
- 		return false;
- 	}
-
--	/* Promote on second access */
--	if (folio_lru_refs(folio) > 1) {
--		folio_set_workingset(folio);
--		folio_set_lru_refs(folio, 0);
--	} else {
--		folio_mark_accessed(folio);
--	}
-+	folio_set_workingset(folio);
-+	folio_set_lru_refs(folio, 0);
- 	return true;
- }
- #else
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 1504f91cdca5..10d4ce202cca 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -319,13 +319,11 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
-
- 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
-
-+	/* see folio_add_lru() where folio_set_active() will be called */
-+	if (lru_gen_in_fault())
-+		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
+ 
++static bool zcomp_dstrm_excl_trylock(struct zcomp_dstrm *zstrm)
++{
++	/* Cheap pre-check: don't touch a busy stream's cachelines */
++	if (mutex_is_locked(&zstrm->excl_lock))
++		return false;
++	/*
++	 * Pin the stream.  The write side of ->lock is only taken by
++	 * zcomp_cpu_dead(), which also sets ->local_copy to NULL.
++	 */
++	if (!down_read_trylock(&zstrm->lock))
++		return false;
++	if (zstrm->local_copy && mutex_trylock(&zstrm->excl_lock))
++		return true;
++	up_read(&zstrm->lock);
++	return false;
++}
 +
- 	if (workingset) {
++static struct zcomp_dstrm *zcomp_dstrm_excl_tryget(struct zcomp *comp)
++{
++	struct zcomp_dstrm *zstrm;
++	unsigned int cpu;
++
++	for_each_online_cpu_wrap(cpu, raw_smp_processor_id()) {
++		zstrm = per_cpu_ptr(comp->dstream, cpu);
++		if (zcomp_dstrm_excl_trylock(zstrm))
++			return zstrm;
++	}
++	return NULL;
++}
++
+ struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
+ 				    enum zcomp_dstrm_mode mode)
+ {
+-	for (;;) {
+-		struct zcomp_dstrm *zstrm = raw_cpu_ptr(comp->dstream);
+-
 -		/*
--		 * see folio_add_lru(), where folio_set_active() is
--		 * called for workingset folios
+-		 * Pin the stream.  The write side of ->lock is only taken
+-		 * by zcomp_cpu_dead(), so this never contends with other
+-		 * decompression requests, regardless of their mode.
 -		 */
--		if (lru_gen_in_fault())
--			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
- 		folio_set_workingset(folio);
- 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
- 	} else
---
-2.34.1
+-		down_read(&zstrm->lock);
+-		if (!zstrm->local_copy) {
+-			/* The stream has been destroyed, re-try */
++	struct zcomp_dstrm *zstrm;
++
++	if (mode == ZCOMP_DSTRM_SHARED) {
++		for (;;) {
++			zstrm = raw_cpu_ptr(comp->dstream);
++			down_read(&zstrm->lock);
++			if (zstrm->local_copy)
++				return zstrm;
+ 			up_read(&zstrm->lock);
+-			continue;
+ 		}
+-
+-		/*
+-		 * Exclusive requests additionally own ->local_copy and
+-		 * ->ctx and hence can only wait for each other.
+-		 */
+-		if (mode == ZCOMP_DSTRM_EXCLUSIVE)
+-			mutex_lock(&zstrm->excl_lock);
+-		return zstrm;
+ 	}
++
++	/* wait_event() checks the condition first before touching the waitq */
++	wait_event(comp->dstrm_waitq, (zstrm = zcomp_dstrm_excl_tryget(comp)));
++	return zstrm;
+ }
+ 
+-void zcomp_dstrm_put(struct zcomp_dstrm *zstrm, enum zcomp_dstrm_mode mode)
++void zcomp_dstrm_put(struct zcomp *comp, struct zcomp_dstrm *zstrm,
++		     enum zcomp_dstrm_mode mode)
+ {
+-	if (mode == ZCOMP_DSTRM_EXCLUSIVE)
++	if (mode == ZCOMP_DSTRM_EXCLUSIVE) {
+ 		mutex_unlock(&zstrm->excl_lock);
++		up_read(&zstrm->lock);
++		if (wq_has_sleeper(&comp->dstrm_waitq))
++			wake_up(&comp->dstrm_waitq);
++		return;
++	}
+ 	up_read(&zstrm->lock);
+ }
+ 
+@@ -294,6 +322,8 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
+ 	mutex_lock(&zstrm->excl_lock);
+ 	ret = zcomp_decompress_buf(comp, zstrm, sg, zstrm->local_copy, &req);
+ 	mutex_unlock(&zstrm->excl_lock);
++	if (wq_has_sleeper(&comp->dstrm_waitq))
++		wake_up(&comp->dstrm_waitq);
+ 	return ret;
+ }
+ 
+@@ -385,6 +415,7 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params,
+ 		ret = -ENOMEM;
+ 		goto cleanup;
+ 	}
++	init_waitqueue_head(&comp->dstrm_waitq);
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		struct zcomp_dstrm *zstrm = per_cpu_ptr(comp->dstream, cpu);
+diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
+index 6764818d2a9f..39efefc43a13 100644
+--- a/drivers/block/zram/zcomp.h
++++ b/drivers/block/zram/zcomp.h
+@@ -5,6 +5,7 @@
+ 
+ #include <linux/mutex.h>
+ #include <linux/rwsem.h>
++#include <linux/wait.h>
+ 
+ struct scatterlist;
+ 
+@@ -96,6 +97,7 @@ struct zcomp_ops {
+ /* dynamic per-device compression frontend */
+ struct zcomp {
+ 	struct zcomp_dstrm __percpu *dstream;
++	wait_queue_head_t dstrm_waitq;
+ 	struct zcomp_cstrm __percpu *cstream;
+ 	struct zcomp_cstrm *recomp_cstream;
+ 	const struct zcomp_ops *ops;
+@@ -118,7 +120,8 @@ void zcomp_cstrm_put(struct zcomp_cstrm *zstrm);
+ bool zcomp_shared_decomp(struct zcomp *comp);
+ struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
+ 				    enum zcomp_dstrm_mode mode);
+-void zcomp_dstrm_put(struct zcomp_dstrm *zstrm, enum zcomp_dstrm_mode mode);
++void zcomp_dstrm_put(struct zcomp *comp, struct zcomp_dstrm *zstrm,
++		     enum zcomp_dstrm_mode mode);
+ 
+ int zcomp_compress(struct zcomp *comp, struct zcomp_cstrm *zstrm,
+ 		   const void *src, unsigned int *dst_len);
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index e608769bfad5..079f3723db31 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1382,7 +1382,7 @@ static int decompress_bdev_page(struct zram *zram, struct page *page,
+ 		copy_page(dst, zstrm->local_copy);
+ 		kunmap_local(dst);
+ 	}
+-	zcomp_dstrm_put(zstrm, ZCOMP_DSTRM_EXCLUSIVE);
++	zcomp_dstrm_put(zram->comps[prio], zstrm, ZCOMP_DSTRM_EXCLUSIVE);
+ 	slot_unlock(zram, index);
+ 
+ 	return ret;
+@@ -2135,7 +2135,7 @@ static int read_compressed_page(struct zram *zram, struct page *page,
+ 	dst = kmap_local_page(page);
+ 	ret = zcomp_decompress(zram->comps[prio], zstrm, sg, size, dst);
+ 	kunmap_local(dst);
+-	zcomp_dstrm_put(zstrm, mode);
++	zcomp_dstrm_put(zram->comps[prio], zstrm, mode);
+ 	zs_obj_read_sg_end(zram->mem_pool, handle);
+ 
+ 	return ret;
+-- 
+2.56.0.176.g3575e65682-goog
 
 
