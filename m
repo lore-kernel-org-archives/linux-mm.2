@@ -4,141 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F8ACC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:09:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96D85CCA46C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:10:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8E666B0088; Fri, 16 Oct 2026 12:09:33 -0400 (EDT)
+	id 6D7E16B0092; Fri, 16 Oct 2026 12:10:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3F4E6B008A; Fri, 16 Oct 2026 12:09:33 -0400 (EDT)
+	id 68A2C6B0095; Fri, 16 Oct 2026 12:10:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2D4F6B008C; Fri, 16 Oct 2026 12:09:33 -0400 (EDT)
+	id 578866B0096; Fri, 16 Oct 2026 12:10:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CCF06B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:09:33 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 199CF1A04F1
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:09:33 +0000 (UTC)
-X-FDA: 85328974626.01.4F32AC7
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 30F411A000F
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:09:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZUsKTZir;
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792166971;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 333516B0092
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:10:27 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C94EA04B0
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:10:26 +0000 (UTC)
+X-FDA: 85328976852.19.2254727
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B54DEA000D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:10:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B8f3itCi;
+	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792167024;
+	b=rspRCOMPi280uvjkSKe+OP37gSse5Y7Zql+CjMV0+fpJTZyUtKO/Ht092y9bf8Z5mQI7pt
+	pba0sU7W/qTeubQ3ZsbNWF+ho3a+URHkhyllw23WY2qhs7cu4W+7Oiw1oF12Si3aLvycEb
+	HWMrv6Ujoe746NAViEyAVNd9g2fdOy0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B8f3itCi;
+	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792167024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=01clFvS8PqYDYJUml8Ul3JDl8oOLRSNhVNdWYi0v5ig=;
-	b=mupu1cHXl2KwPIbAc/jbAFBYrpQWbYniLvAFFt0HPaqlOnOxvpq79CGdjSgUtpPCWgYN0F
-	nXAWiQeDpJ9zl3av/rX9DkdLfFd39o4EH61B7PbAQ9EtfKCPidMpjva7ilOk8NkNhygRYT
-	x+cEvs6it4r8CdLgc92eGSkpB53hW9Y=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792166971;
-	b=D2WkieYTWaMiFbIjAGUi7rqxmZaZmSSPGBqW2ynRzC+R3Y+glN1vZHmHifZnE7aKDYiHsD
-	UlRwIJTQmUzVLcKREt9FvX+xXh6e2zuzFztRhimPsm+C00bfpXhMErR5Oq+qYqmDM3QaQ6
-	QI+v5nkbKnf02tDw+EQ5X90YwD8avAQ=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZUsKTZir;
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a1d484b4a9so1707755e9.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:09:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792166970; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CcXeV/SLCN2mYaELkVJFpqeR34qZGGPwd4eExJ/vVgeSJ1d7xsIEfpmMwCemrpYMcM
-         wTgeWnoPkraZh9brWWsKYPnD76yhft00ZjZYaHM+oPWAl4EpidSg6+ACT9TH6oOr8rt9
-         5smLDkEOuZ49w+w26rHALAjZ5KJypitC/eLu5V+KxCYfUz4DYc9dWWaaXnGT/viggIk6
-         m8t4h5cJxmoU/gXjRSgTNkU0ycZy84kkv5zKeSsc/B1acr+2gPyE3AVD1vz4NQZsPn/2
-         iF7/EIEppdOJUqLsGPkgiXvemf4b1HxbZkpAndnv1ND0/vKCtrfejS9kAwsCkPXJdHcC
-         rzjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=01clFvS8PqYDYJUml8Ul3JDl8oOLRSNhVNdWYi0v5ig=;
-        fh=JI4Rb70QuLyh9dowYaXDPWzSxr2xn3/cKnqdtGnI/LM=;
-        b=k1luhC+9i+uFgX7rJVQ0F3KGPF8o/eZurXXdzp0N5nGZHEuuOuZysgALuXZ6DI+aqM
-         fQP0TUhXhJd3xh4dnj/lrlJOejBAVo9CFiOmwo7cqhoNSnT3Z5KF4zKt+gbflsRVRTbm
-         5fYPTWrCoyXKU+ZsR9TYSayMyT+5FjVvekI1jiIknod5I6zvxYfu63/p0irNdN8h9rFj
-         2BbiFPYmHBj70WY3fU0OO8MhSIxYthvoBXBkARtloiRy1JNQbKGjgqtH4TIrEwcWGZpb
-         5M8li82E3MbFpjSO8J8+twtpFenzggAENNjIC8iQsdWRm9+C936l1OiXscjy/nKE4cI+
-         NCRw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792166970; x=1792771770; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=01clFvS8PqYDYJUml8Ul3JDl8oOLRSNhVNdWYi0v5ig=;
-        b=ZUsKTZirS5ZkU88ofBbjTkzi74RDkqxE3igSquMnM5VxUO0VwuRquhees/Y4zT+kVV
-         Aifow8I7hNiJ2bYX3NcdIvyS3H85XzhoYFQBE4MKiQJet5njLJM+we6zG9jtpt8WqoFm
-         9otHmcDRHNN9U7fUwctHfrvhVoOs8VK2ElzQj+kQkCGP+j3Y8mYk3hF5EUQddfuAspFZ
-         f3ehQ2kS9K7aEamOv/NtjKXS4+1wOzbHsFxkWmJxedcRxHravHBkNlvM1sqrRGu3lfsz
-         /qCX2QGgpbk88JDVsM9NfwoMywnWA29JIl0HL5E4x13HazPEsmZo44bVdxJJQIoLZxnQ
-         hATg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792166970; x=1792771770;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=01clFvS8PqYDYJUml8Ul3JDl8oOLRSNhVNdWYi0v5ig=;
-        b=v9yc/9Zt/ukCV7ydoZX1fmPrfoNLIy7dQxp1Cmyj6qmxkib4o+n3ET9IOQeXxiNBdZ
-         gJH9BJWaRENeL5lDc663kYI8vHeXMzoZtAtZaISWmuGhHJB3DdnMIOSAkNvZ/tH32tkD
-         axiouyOiFrOkOLJXVBIxMej3fXAWDuxOyYEjZokyzmT7atE9XyasobRkl1fom+dWQXeu
-         119rEgStua28xC+i2EBRUbyg8U8LryMbr12RSvUk5lKENqy5ENYa0ELFLgSjYlbjCUwG
-         P66dIFJQ6fSxk8U7Yx+NjIn9v2V3qfPnkny62Uud8Cb3KEhO62oeLks5dG1r0/UJEJq8
-         yFxw==
-X-Forwarded-Encrypted: i=1; AKwUvBxKG/DfMoIVJv3LOO0wP9zifW+dE1wr/mAeB25+BzlxdW9070Gym86kcZRbuDgVLIYxy8MsW1INhQ==@kvack.org
-X-Gm-Message-State: AFq9FYLjKaJxvqR3S/Do0+yL2oLLksmWchFdfjppT9W/nuleDoHbZZpM
-	S5Y7sIvStdF0Zp2bN6EZUO3uHukp409Tl8mQQl9XXcdoFs3syI3YyKoYCIV+8Qug5/ikg59+IBx
-	UFJub9zFymbBTwfqHcdemavUx7K1m2V8=
-X-Gm-Gg: AYBFou0K0JeN5Ps6E+P2aqaqKm9iHRVKjghQCVmf6pwTJJ7v1oLW4nlAPISwG7BTwTI
-	jwW3Iw+rA92TmRFhCD4s0fJbQfz4GG4SWlr0d/29mVy0B5+s6vXxWplysTXiE1J6PM0gyl0tE+e
-	oL7EVf7CPCwwSJkJF80UVGFhR3KZmOjlz2JNkH8bK1dhfNqLYA2hsBy/fMlStnJ8/fI7nHdrEqy
-	+AWTvNDvOwRJyMOGiJBOlvapNn3Deva3TQP2PVJxdkyVayOn7RHpSaAW3hQTMYKzVwx5tyTBlpR
-	JcqQTu20N4829Ns8DkMuksL7sONgblraoS/8W7Pw0TVDxxqtO9OABu6gdsiSnp44QA0fSyBuB7L
-	Ls7IkMibsopo30kOcz7cp0wrAGsi+j2ZWk7/jhRzg0LhhfLNx7L0UzaY0cVmnbdbN072RtOU6g0
-	AmNh6ubg==
-X-Received: by 2002:a05:600c:6215:b0:4a1:d41b:5060 with SMTP id
- 5b1f17b1804b1-4a1d762b705mr4918205e9.22.1792166969428; Fri, 16 Oct 2026
- 09:09:29 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=7Ne54ApzWtKcjZmsIH0xxINmhG2VcxhXAgHz6gJ0SdI=;
+	b=MuYI/C988DXfmmO/OE252Uosu93eBeC8dxl+21BIuD/JidOC2ExOY85swv6p9t8u73L2RL
+	D2YPv/CD1GNfkJ3QFBxPafRyShoBgMmdeV3BB2HcoTIuUy0NU0lGrL0Nk+3slTPKaMovKB
+	q0tP1pYOaB942QuWryHcZGC+Cx7V/sg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=7Ne54ApzWtKcjZmsIH0xxINmhG2VcxhXAgHz6gJ0SdI=; b=B8f3itCi/Pi0gVLvfWlDPqImwg
+	l6UMLH4ZkeRNnv6Q7cMEzYoT9nfa8O4lxhq8YlKgrJMyZDuT1bh751FFwGZU19whQhf54z9o8mMgW
+	iva2zoDygswl8EmyeSSfcXZx00490erp8x8hX93nJUeFhfXBFE2nleMyZffv8IQpJ2/WMcm4UI0FX
+	7M/OsE5QZ/kbNGNfzDSB1nvWcUUJDStgeQdcMl4ql5SJiw61g4K9jyY62HLil6z/rdvDjBAR80MVc
+	rJKL6gncAKJhhan05tJMK7tSTjf4gKZ3VtX6ip9/s+YH1bvf8nRnxJkm3qwK4UPvPlfMQjwwibKCq
+	J11QTzNw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xHkVZ-0065QZ-2U;
+	Fri, 16 Oct 2026 16:10:14 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 16 Oct 2026 09:07:24 -0700
+Subject: [PATCH] mm: kmemleak: scan modified objects as soon as they are
+ grayed
 MIME-Version: 1.0
-References: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
-In-Reply-To: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 16 Oct 2026 09:09:16 -0700
-X-Gm-Features: AclHuK_3q4fgvpP3PqMsH4m0BzcVF-oc6GrjQvM0hL6t6dEcQtFu56enbmqvAPg
-Message-ID: <CAKEwX=ONniSwdiZAe_8NT5XwVj=Mmc-WJs_rWE4Y5snjFg2=Eg@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 0/2] mm/zsmalloc: defer object free to per-cpu batches
-To: Hongfeng Chen <chenhongfeng0212@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Barry Song <baohua@kernel.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jens Axboe <axboe@kernel.dk>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Wenchao Hao <haowenchao@xiaomi.com>, Wenchao Hao <haowenchao22@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	Hongfeng Chen <hongfengchen@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 30F411A000F
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261016-kmemleak-gray-drain-v1-1-3270256fdc8e@debian.org>
+X-B4-Tracking: v=1; b=H4sIALtL0moC/yXMQQqDMBBA0avIrB1IxIbqVcRFaiZ2qkaZWGkR7
+ 95ol2/x/w6RhClCne0gtHHkOSToPIPuaUNPyC4ZClUYrfQNh4mmkeyAvdgvOrEc0Lu70kZ5V5U
+ GUrkIef5c16b9O74fL+rWcwXH8QPfxje7dwAAAA==
+X-Change-ID: 20261015-kmemleak-gray-drain-fd80160fd946
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4234; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Z1cqtisYX6gOlcbJiiMBLdLFeDVcLISg5aP0QdLPLFs=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq0kxieXIBMRG2C8FoRD+dfhGLD59VRKYz1Wwx3
+ kdsAEk1m9eJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCatJMYgAKCRA1o5Of/Hh3
+ bTvED/wJr0gBmtXSoX7kSl0kTe3SR1UmPv3y0OCX3Nfb9KG2dUT6w8jCOZG5+USu4Uuln8i9+Bw
+ 0AEIZOym4nJXAOI5OKzWLfw2eMfqZmbrpuVpkKyhtfqreotlPuDwZMKjK5n5ZSV5Cxww4jhI7Ke
+ 7okmbfnlJvg4taMIEFmYMRwBkrPRvJcaqoH+gPqy3G89Jffb7u/2JQb2pzK+2qyQZUKe5NyYnGW
+ 0uuzsuPzxRB50LHrG0mSYta/q5GHqp/eCj3sevdeUhrYicKVC2pHkGxK/0eYEXe3MZM08g0I7O6
+ GYzmPyeOw4Ok57mQFr7JZVGoFq0E67gGViOsbcIqDJFj651KE5cfuijyluIugyxgRXzsz0ofba8
+ DmjkeNY62XdR9ilqAeCs1UbEkx0OYFXW6bMPlMRJDJP1nw3Lyx54D4aLaZdCYt/uOEJMx7TGy11
+ Vni8bc7b/G/wD3gp0aM6zuJsSe2hP4BJXBoDjoNfsRcU9gYW1JlAFBoB0Ni2oFBuk1UJ7oneajp
+ 4MUg+l8kextpUOdH0FxschMStFSQz5tC6Kwl8yrw3KJegqSatgbWvK74Bq3ee5XHVx9oLkMZh3d
+ nmaHNJQHUJf3DyLL5kiJ4Xl9/XwwnexchWNeiJQCCiR9hvGg31N1rmFjg1xsVVVi05wD+5W2p2m
+ qZWlaYB0lDXgxRw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B54DEA000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: hgm5iw7xs83zmwb5akeczbd65t9xe9i8
-X-HE-Tag: 1792166971-478513
-X-HE-Meta: U2FsdGVkX1+7dZ7lckevsUML1ZkkvLPlSAasRZ7M7RELu4qogx1JN5S+f/AxGAv1Wxljn5nFXqf/Rn+6MOA7KzyfdopC4b/7NZQ0GsAem3o95fkBzF8laubJc/9kXgpMGCbrgB8C3leVOnU9Jp/372TNZmRE5b5MoYEcgmofmGr0Y+ISARwtYxKicAp98xWGYLa+CHQgBt8dplabtFkRWvcMO8TTBZLPGeF+fegZhtb4dGNDJ7rw/Wgii3bqWznAZm1sIs5B4W9ZNN1IlK/IXzxnPVhMB7MHnnTpu3iDDMI8EfIax1PUr7I0GTgYviaJUThf4qoP9yBAfFOrY3AoR7STPMJIFe/0S6Fta9s3QdGqxhIM7ujqdw7bVvgyTJ7MhpLfcgui7JHPiGihWACt+wbd03NFOABmmRXFfNDRgIIl/TC3BynaT5ApUtwKzaG/N/zuhXPqGqLp2/N5sE2IhMhZZ1TF4ocIOM17Kg8+WQfK4D7Z5Tbvz3UL/xjM65IC6IGNixCMDLvIViSSVHm+H8lfVX+ylWSNu+hTh7Zp9dk04PVgwYQSxKQtTHZteDDmUyy/72EstV5U3SRGCPK6B/aHIKVUnkMBOSIANPYYXMkD1W0p+54doelB6xM+yiRMr+nRSI3AkMSMetpx0f6627h/zPDFVIKbqOwdwMb0HSWOvbU4lZMCMyzD8k4M2V9VS+6gq/dMQ+SC+1FcHxknFKmwmlkJnAEI5x127JHXm9qakWe9Nv6II8L7wCCsfRlrE0TldkOZ9FLVye6AgmnBGZYDPwFnty5zp1e63owrDoznLw+yxrPYawZ6J6TOc+XVx/oYlw697tOA48r31aNc7Qfs7GSvxGYlr7T3FnOCZNzjp6caj69yGk2IE1e3qQUkbpX4lQ51oLGPTPdebAPcszZwNLqBEMxBBawoKbLhlg/WJ6g9Mpx1c1sR2GsWZGxU6cFTMD92UxnS9A8m5UE
- J54n+Eck
- OXk27vsuxPgRX8lGOgMhCEta4WkUcTM/ieC92n+653OBUCqJEqRzbi6+Qf/ubB4GXZ9Xr3ExZ9m9Bjwcz+xFxvJw1zDLoScrblYFpRrcRPKQ1QDdvKs4jq+e1cyKtEN8f+6x2MVy0OfBq088i486lfeS/u3Uwpt8qWHY/uLpPjdics5zeE6N8igVhnrXZiagvv4A7oDoLhboopqJvFgb++N+susLoE515HscJu2YbJjJTjzv926Y8i8i/AJ3wU4aoUJE/jEPL0awIbNAtJlf8Q38vTXvcs7O+g6YWmHcAaEa59BXNu1ibBGmp4hNOYFfzjhHDTNnkcv6eQG2Yzp8rZfCChcfUyW95wyXZblEoWpTylXOyILvi5Hm5JQ1b1xtgCDwCcrMNshDaau63Ng2iUC5t8O8eEDV+gcTLt0p8PC8bVRLlmdcQ8szVMrPnt6NP6Omp7zrUEYVRLkeBvpy935LIqw==
+X-Stat-Signature: kaxf77g43oyhcn3o9jfdoqekrqindqia
+X-HE-Tag: 1792167024-243272
+X-HE-Meta: U2FsdGVkX1/EEwPAIkh2N/zPiVHJD0PAFRw3aRRNdepPMtfaR5kDKegYZKTz651+k3UfZ1j2wvfO/gllB1DSLN5GrNpbbjDs+PRjNXcJ5MUA12WHx/I06gqw9p2AKQPYE1+PLfMVWeCltokO80T1WS4N1f36o2pdamCGEh2LE59ec1jotpcEeprWmlIvMca5Z1f8JeFiIjkOPaJohPFFtBRG2W4wHQHR9Hzo8kYfPv5q23NTU9IVadpDM9QVTQ5NsQ33537GiD9ZJKIv2FzWeUbJ9XrbS5cERyWYeesZYAaNZuLOY2K2ojbeZMsN/cGQLpWFSokI9QRHpMVBDpY+OYbYoPxrmUMEmWuON1ZmyqzCB4haE6aGJQ3/ppdfjYoJf++uBhxeZPURACdVJMKawtuBIrFbLqjWFCwwEpFv3IKntLAnU41yoCCinlzv3D7htK/JJ9oSPJgpS70632EJjH8yhvIaHS51RJb2qLTqvw8X0FqHUDPNbMzSYFz0TvzgdjvrYxHCDOr0wSmG368MNUJz+rpC/OtL+gicfpoyhJTX1hzXyY5vBdAFTpbUHkWtsbuErQUDVdwMnYXnRo6n9xbF8+Nb5aRG0dAZUALRF/ydjWveOTpdIobwQe+MXS6anlngszndqr7UEmyKzOPgF9Rwus0UR0Ufax3RSv6GplnA3l8RXhBYB682K2WO8ys+VixDkyya1SdxOohypz2lS3q28ysWyLwSLOOL7bu7PU+hE0AXpbKylZuNDsqr5z/7IM2zZr/ReKieoeHOyjRW2q/2mxYaByeAMLAdSf7uaVC5NHwMz+0xc2iEQyjVCztgmemeth4aUmQBCSnSo5DqLEh1uPlVlQZGOhOFdead3eb6jwO4LohFzEJ9C8u5uQLbPHO5Rx70wPmvpfNznC5I2sf1zdz2um7R3fO75oeAC4Xz2bQkcYWkzDVihw7ybZq9W9rZSapQl1ngbkY4QEY
+ GBO/puus
+ +QvyHhSaBk9D8iuqlE1uv3sP6x21FDzcELQZuz7EjLlDq5M9DoNNu7zRjRbMvNmSmTUVtk6MbuO+QA1I3rt/moECgS/1U86ivQUMTdDZaLsaSdMacrXySn354OVlha8/FMokClqB+rV7IjgzMFm6AsLyTEW3zz8K8EgXGQWvV8uPdZqw0felhK472KbikKLyIpXWM+Y/EysrWT4xaB/l1rF8s6NEZArLzmjA+h93MQAdYlJsq1A0HBM5FVQQeOI70T7b1q97GjstNzSMDzYq4/5UhtzluFND3Uv+qYZAKWB8qn8VN9VIvqPQYeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,84 +114,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 5:10=E2=80=AFAM Hongfeng Chen
-<chenhongfeng0212@gmail.com> wrote:
->
-> Performance results:
->
-> ROCK 5B+ (RK3588: 4x Cortex-A55 at 1.8GHz, 4x Cortex-A76 at 2.4GHz,
-> performance governor), single process munmap on A55:
->
->   times in ms, speedups over base
->               Base       Patch1       Patch1+2
->   size        time    time speedup   time speedup
->   64MB       13.81    3.62   3.81x   3.28   4.21x
->   128MB      28.50    7.18   3.97x   6.49   4.39x
->   192MB      42.19   10.71   3.94x   9.69   4.36x
->   256MB      56.06   14.26   3.93x   12.89  4.35x
->   512MB     109.50   28.43   3.85x   25.66  4.27x
->   1024MB    217.10   56.70   3.83x   51.15  4.24x
->
-> Same machine, single process munmap on A76:
->
->   times in ms, speedups over base
->               Base       Patch1        Patch1+2
->   size        time    time speedup    time speedup
->   64MB        5.59    1.58   3.54x    1.49   3.76x
->   128MB      11.86    3.16   3.75x    2.95   4.02x
->   192MB      17.18    4.72   3.64x    4.45   3.86x
->   256MB      22.89    6.29   3.64x    5.87   3.90x
->   512MB      45.15   12.52   3.61x   11.64   3.88x
->   1024MB     89.16   24.75   3.60x   23.12   3.86x
->
-> x86 (Intel Core i7-14700HX, P-cores locked at 2.1GHz with turbo off),
-> single process munmap:
->
->   times in ms, speedups over base
->               Base       Patch1         Patch1+2
->   size        time    time speedup    time speedup
->   64MB        2.87    1.50   1.92x    1.14   2.53x
->   128MB       6.00    2.93   2.05x    2.21   2.71x
->   192MB       9.33    4.35   2.15x    3.33   2.80x
->   256MB      12.51    5.78   2.17x    4.38   2.85x
->   512MB      24.96   11.39   2.19x    8.62   2.90x
->   1024MB     50.19   22.78   2.20x   17.05   2.94x
->
-> 1-4 process munmap of 256MB each:
->
->   times in ms, speedups over base
->               Base       Patch1        Patch1+2
->   mode        time    time speedup   time speedup
->   1p         13.18    5.78   2.28x   4.35   3.03x
->   2p         25.83   14.41   1.79x   4.57   5.65x
->   3p         35.70   22.14   1.61x   4.68   7.63x
->   4p         44.25   28.71   1.54x   4.75   9.31x
+kmemleak keeps reporting the guard page of a systemd-journald thread
+stack on Meta's debug kernels, even with min_unref_scans set:
 
-The numbers look nice, but I think it's a given that if we measure the
-process whose work is offloaded, we'll see a speedup.
+  unreferenced object 0xffff88829a30ae40 (size 256):
+    comm "systemd-journal", pid 961, jiffies 4294814590
+    backtrace (crc 49b3881c):
+      kmem_cache_alloc_noprof+0x2ee/0x630
+      vm_area_dup+0x36/0x750
+      __split_vma+0xef/0x7d0
+      vma_modify+0x11c3/0x18a0
+      vma_modify_flags+0x1ea/0x2a0
+      mprotect_fixup+0x249/0x630
+      do_mprotect_pkey+0x531/0x820
+      __x64_sys_mprotect+0x7c/0x90
 
-But would this come at a cost?
+The VMA is still mapped. It was never faulted in, so it has no anon_vma
+and no file, and the only pointer to it is a slot in a maple tree leaf.
+The mm tree runs in RCU mode: every write replaces the leaf with a copy
+and frees the old one after a grace period. journald rewrites its tree
+every couple of seconds, while a scan on a large debug host takes many
+minutes, so the leaf kmemleak queued is freed before its turn, and the
+copy that replaced it was linked after its parent had been scanned.
 
-1. Would memory freeing be slowed down? Could you compare the host
-memory usage over this period of time etc.? Hopefully the parallelism
-would cancel out the extra overhead of setting up the work offloading.
+The pass over modified objects is meant to catch such moved references,
+and the new leaf, being a new white object, does get grayed there.
 
-2. Would this introduce isolation issues, especially when this work is
-not properly accounted? Say you have a busy-ish host, with multiple
-tenants. One of them is killed. With this new mechanism, would this
-affect the performance of other tenants? (for e.g if we need more
-cycles for the async overhead, or if memory is released slower overall
-as stated above, etc.)
+But the gray list is only scanned after the whole object_list walk, and
+by then that copy has been replaced and freed as well. The confirmation
+scan has no such pass, so the miss repeats round after round no matter
+how many consecutive scans are required.
 
-Some more benchmarking to show this would be nice!
+Scan the gray list as soon as an object is grayed, from
+kmemleak_cond_resched(), which already pins the current object while the
+RCU read lock is dropped. The live leaf is then read right after the
+walk reaches it, before it can be freed.
 
-Another thing I wonder is, how much of this slowed down is because of
-zsmalloc's own inefficiency, and how much is because we just have a
-larger logical footprint because compressing memory allows us to
-allocate more. If it's the former, we should dedicate more time
-towards improving zsmalloc. If it's the latter (or if fixing zsmalloc
-is just not possible) then yeah maybe parallelism/work offloading is
-the answer. An interesting setup would be, turning of zsmalloc, but
-allocate just as much memory (logically-speaking), then kill the
-process and sees if you observe the same slow down.
+I was able to come up with a reproducer that reproduce these false
+positives most of the time:
+
+https://github.com/leitao/linux/commit/1291579c487303c5ffbea2cf532649d26329c8a9
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/kmemleak.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 8fa409a4f9fb26..6e12bcd95312d2 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1696,8 +1696,10 @@ static void scan_gray_list(void)
+  * Conditionally call resched() in an object iteration loop while making sure
+  * that the given object won't go away without RCU read lock by performing a
+  * get_object() if necessaary.
++ * If @scan_gray is set, also scan the gray list while the RCU lock is dropped.
+  */
+-static void kmemleak_cond_resched(struct kmemleak_object *object)
++static void kmemleak_cond_resched(struct kmemleak_object *object,
++				  bool scan_gray)
+ {
+ 	if (!get_object(object))
+ 		return;	/* Try next object */
+@@ -1709,6 +1711,8 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
+ 	raw_spin_unlock_irq(&kmemleak_lock);
+ 
+ 	rcu_read_unlock();
++	if (scan_gray)
++		scan_gray_list();
+ 	cond_resched_tasks_rcu_qs();
+ 	rcu_read_lock();
+ 
+@@ -1910,7 +1914,7 @@ static int __kmemleak_scan(bool full)
+ 		raw_spin_unlock_irq(&object->lock);
+ 
+ 		if (need_resched())
+-			kmemleak_cond_resched(object);
++			kmemleak_cond_resched(object, false);
+ 	}
+ 	rcu_read_unlock();
+ 
+@@ -1981,8 +1985,13 @@ static int __kmemleak_scan(bool full)
+ 	 */
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(object, &object_list, object_list) {
+-		if (need_resched())
+-			kmemleak_cond_resched(object);
++		/*
++		 * Scan newly grayed objects now, not after the walk: one may
++		 * hold the only reference to another and be freed by then,
++		 * like a maple tree node that keeps being replaced.
++		 */
++		if (need_resched() || !list_empty(&gray_list))
++			kmemleak_cond_resched(object, true);
+ 
+ 		/*
+ 		 * This is racy but we can save the overhead of lock/unlock
+@@ -2082,7 +2091,7 @@ static void kmemleak_scan(void)
+ 		bool dedup_print;
+ 
+ 		if (need_resched())
+-			kmemleak_cond_resched(object);
++			kmemleak_cond_resched(object, false);
+ 
+ 		/*
+ 		 * This is racy but we can save the overhead of lock/unlock
+
+---
+base-commit: 587858367581b9c55c3690f4e63382ad622719d4
+change-id: 20261015-kmemleak-gray-drain-fd80160fd946
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
