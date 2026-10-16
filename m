@@ -4,132 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED8DCCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 13:18:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E41B1CCF2C1
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 13:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 245AD6B0098; Fri, 16 Oct 2026 09:18:52 -0400 (EDT)
+	id 002896B008A; Fri, 16 Oct 2026 09:22:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 216326B0099; Fri, 16 Oct 2026 09:18:52 -0400 (EDT)
+	id EEDA76B009B; Fri, 16 Oct 2026 09:22:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12CE56B009B; Fri, 16 Oct 2026 09:18:52 -0400 (EDT)
+	id DDD7E6B009D; Fri, 16 Oct 2026 09:22:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D29246B0098
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:18:51 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 68CAA1C3B76
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:18:51 +0000 (UTC)
-X-FDA: 85328544462.20.DA638DF
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 50A431C0004
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:18:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UnmfVm1t;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ev1VyZ7c;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=w5tKgH8+;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4eNxa2jk;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC63C6B008A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:22:15 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 42A3E1A02C8
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:22:10 +0000 (UTC)
+X-FDA: 85328552820.15.8C1D524
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7064E14000B
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:22:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=AjBFXF9Z;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792156729;
+	s=arc-20220608; t=1792156928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mvOXCsd43Usn/ts9ZeDzJEb232W8k5UHTWzvCgsNFXk=;
-	b=rCAY5a3YEjwLgwiLCXYTemEmsZavzI/Kiq21cDB5Li/HJ2Pe0H4ZBt11AXg962OcJRbwjc
-	ELKPy532CrKUB93TbEGLlbF3JKl9hakzIgv+LlYW7prJ+P4Wtye0KpMZ5Pt7j9BCATHLGF
-	mdP2hX2QDbKRYnrug9d+5NI9Mybm1Kw=
+	bh=4rfnRKC0dnb7v2Iwowqo7DeL++H/auk/eHigU5I5UgE=;
+	b=1tXx+Cs5VIVQB7CbehhW+inj5y/wFfXGUh7Odohmmke0AY60gwEhGcNgQT1r8Eqv23TfJ/
+	kIOfO9XxuOIPYLHGgeSiDbpBM6L9L5O7rEWKRsadpeaoJPUoA9v8I+ktjwjgYi4omcLGpF
+	iEFeFnImRSfpBmkcz+xr3XNhVnmdsqQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UnmfVm1t;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ev1VyZ7c;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=w5tKgH8+;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4eNxa2jk;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=AjBFXF9Z;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792156729;
-	b=chKuBcNmNcdIFeOghM+zZyb2y/4FbDQEvqWGq2sPmrFxTlDecAaN8iVsZaIYVsJZ1SmbCV
-	0WPCM2xdsm3rfiWOUmWfs4+n+n1zT3qHwNZNQyDSPh6NpZ8jTI0FiSZG3JpVhMN+uU+Inz
-	ra34V7t2XfK5UiiHUIXki/7MDKLqEDI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 92BE921C64;
-	Fri, 16 Oct 2026 13:18:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792156727; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mvOXCsd43Usn/ts9ZeDzJEb232W8k5UHTWzvCgsNFXk=;
-	b=UnmfVm1tqwplPFdONtyFvTQ1AS5VP5cTD3qAq7xlctd+CFRVtHCsgbhkCMx9uSzccqMWsN
-	3q4cKvYz4btr6MgHhN7ES/xZ1Q7FEzw60UOuYHFuWX1O2iBY1g7ZVXTwc0kgnR2/sx3dBB
-	XBctDAKpjnkQLXYobhahIMgRTICUFYg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792156727;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mvOXCsd43Usn/ts9ZeDzJEb232W8k5UHTWzvCgsNFXk=;
-	b=ev1VyZ7cv3eveqXi+jJAUUTkN9NMMWx5zYAdiOWV4c6zddfHkO0DgBV9/Tt8SL/eGsPU6Q
-	IE+x/Fg39ceYm+Dg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792156726; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mvOXCsd43Usn/ts9ZeDzJEb232W8k5UHTWzvCgsNFXk=;
-	b=w5tKgH8+hN6tM6f+SHj3du8Q1iln5C1HSTlEC76yTb/PPnf6Ntbd67FFRlPvNuzWQGJifd
-	vvonu/hW2hUYbfTfWV819LHbEAsv9Bs9RXv3k1NNmpBCE8IbWqFvVXbQAl3czQrJdrGNd/
-	N+H87JUNigQsOnP/0AhRsOa1tQxLYTc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792156726;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mvOXCsd43Usn/ts9ZeDzJEb232W8k5UHTWzvCgsNFXk=;
-	b=4eNxa2jkwB9wPUj6ps1INqFC8cCFqBjjGltQCxyfJ6ZCOSlq2/OSdWhNviZc8iz/lFt9na
-	RQ4TsTKuYa1RHNCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 189E11339F;
-	Fri, 16 Oct 2026 13:18:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mn7RNTQk0mqLAQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 16 Oct 2026 13:18:45 +0000
-Date: Fri, 16 Oct 2026 14:18:43 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
-	david@kernel.org, ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, 
-	kas@kernel.org, jack@suse.cz, djwong@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, hch@lst.de, 
-	syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com, ngocthang2710.1999@gmail.com, willy@infradead.org, 
-	rppt@kernel.org, ljs@kernel.org
-Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in
- collapse_file()
-Message-ID: <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
-References: <20261016065920.4153-1-lance.yang@linux.dev>
- <27e5aadc-2d68-428f-a958-308e4a75c058@linux.alibaba.com>
- <atICp2NL8j2z7UFM@pedro-suse.tail5790ac.ts.net>
+	t=1792156928;
+	b=Jn64cWmlWFS8EFrU+/OQ3VsoE+FIP11rI1WbLjSvBjiBfHCrA7b3IMeq6OqDt1EP2ERrJK
+	AjMe94s79UT0pgZckVlgBGtaW7tqzhmiMSZnd82R0EEursnSOex5yuMdTOEvMEXK20l67j
+	5JYe+XVozyRjfwqNjuy+Zep539KQm0U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792156928; x=1823692928;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=A7txyVYnucQ+mXIF45spbjwttKKlMtGxt+1t/z8ssrA=;
+  b=AjBFXF9Zlv1st+vCmMS9rT6OGzi58sNO/53ZhYR81mBpds54THKpSkvO
+   Q/+O8pnQHTUCaZlpTjUbXN/VSOwTP3sy8nQNKnvDWUNo0YBdlZPjEhTDr
+   O+rTMnWFZRMg/cKjHSYFRrfKfB6NVfCm29OaLTumjPlIFC0ZG3h0fsU8D
+   jQ1my+6sSDgyWPJDomSrHCi6beVOq1tEfRMM8aiHVCE71Rq+QFl+9TvA8
+   rhXG6B11Amb6L+n4H/hn2TOo/M2xJE/976R/Hg+CERQdxKUnc7WHaPZlk
+   zidGiWNgGP+v3qycK0r14yBsXUIDuCiSvf5wHp+drYcsY/VcxBv1JdvGm
+   Q==;
+X-CSE-ConnectionGUID: I7a+h3kHSLSQwwhAQytbjA==
+X-CSE-MsgGUID: IMvtjUp3S9Wvs3jfO1rhbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="820268"
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="820268"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 06:22:06 -0700
+X-CSE-ConnectionGUID: NG1UJPDCSDKpNOKt4UMv+A==
+X-CSE-MsgGUID: 7F3DT3sORvSDv1o3mBLYiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="1831994"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 16 Oct 2026 06:22:03 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xHhsl-00000000IAU-1WH4;
+	Fri, 16 Oct 2026 13:21:59 +0000
+Date: Fri, 16 Oct 2026 21:21:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <david@davidgow.net>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Rae Moar <raemoar63@gmail.com>,
+	Ryota Sakamoto <sakamo.ryota@gmail.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Kir Chou <note351@hotmail.com>, Petr Mladek <pmladek@suse.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Guan-Chun Wu <409411716@gms.tku.edu.tw>,
+	linux-kernel@vger.kernel.org,
+	"(open list:KERNEL UNIT TESTING FRAMEWORK \\(KUnit\\))" <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH] lib/tests: kunit for associative array
+Message-ID: <202610162123.hSusVMnq-lkp@intel.com>
+References: <20261014160144.1835860-1-jarkko@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <atICp2NL8j2z7UFM@pedro-suse.tail5790ac.ts.net>
-X-Rspamd-Queue-Id: 50A431C0004
+In-Reply-To: <20261014160144.1835860-1-jarkko@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7064E14000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: gz3fpnfyfstpnaukkr7h491erugjtwtd
-X-HE-Tag: 1792156729-287263
-X-HE-Meta: U2FsdGVkX18Swe0hjBV5SRSGzp6GODc5Y1UOBhhk6hlhF7mJqsGg/Lrv28ezRlJg+GfNQwdibe/dXAVOGZ067/LcHeL/RgzJinr9Bx4T9phtV4Q5dj0afFVA0Hv+PJh8jWgS8nURQtfNzjfd02n6K0sttgiYxh4vOIrR9WJrZX0DGgMNDgxuMPvIKVIqbV0FKK0e/xU0eZVWhnE9R/38WUCoM32ixmMzuZ0vWetqrBPHcALr/3+qPsyK1ymTiUjjjla3T0wTfhsQ9oc8izWvVbTqWZWlOlroEdfLpBG6i/HPkIKAyflffInKJilxOUKyXl1r7mByvXyANQUXJ+1WmaKjKnu9B098JEN8YPQ9IaQYTgHQ63/k+ExeoX7V7L5+kY2AhN2iwvWWfZgIRewwiyUi7Bp0TO++NSseDlBxMXthwMLGMuHPpiUnG/9hvyBZyiZt6bf6a+PWUcbHL0tj4/5NPTR23kJNCj9wgyTrtk+ENWLjwrrTnwS34swNApGV9epAWp+p1owsaAw/+FBNA67Y4Bw8D2diF7Zow/nPppxkrBLQzcDGRBisfu0qdsGXiVCFOMtuAi/cr3OqK7Ao0ncfPaGNBlUrlVS01HIW/YcHXSY8NMg71ecwMzNPCbUJvlD5GD2SFnpZ1WAzj2qQe9KUzeYCbAuQ4Qnf8Ramud6RuKyCIKHGSZ8Fc7TFJHlk0J0G97J9gGrnuK8Fs/Srt/T2gPoWzeYqV3511Sr/sX5liduJ9eIT+RyOoADsBE76RafIoEkKOy44ClCAtWPwo8AX/uygk9cDaKh/0I13u5qpwDWIanpdIYjvvHfXkFUdPypJqrgzPNBT/XxF3fAkMjjTKKz4TjBndDZiUT5OWv1AlMP0wkicVhc/FPamiM/Ku3BcxlMvBivpHSUjlDIRbee9Rbqzz5MYqmz3th6tHEuO5sAW1IMM8V/wa4fJP1vQKHMWlp1Borm/X2lKq7r
- apvm3IAi
- r6vYBZWVHMqaRM5x9cHUucH0A06YWo7LwnWNDGR3BtLYx/NOxXCQnPCKbBkz8h15a6Qm+0FzhkGtF4JM1F5Ab5mGwkosvm0dbQjSFRM6v0RS4Gcyg5eMMekix4os59L2fjIzPWnfe8FRxyaQqszFnbUhK+P3K1Qi47oHSqbpW5D5wZE69NORiXSbDGoZFMdqj6WmX1RjQnmPx5RN8v7gOJqkTQVV3H3jQ4OqMWtSwC+7RllE6eRPUfeDCX17ZTg7x1vHFW0MFNangclQYFdJSKNR0sa8UniV288PTH9YdqC+M+4rZwOPN3iZFUO6ZLJ26eXYtr+SmiFgmbsaK6RVUw+YEfugsOOx+iXCVL1mZDdn9kSwfTdlJhQTxEbdphinMd8BmzyxaVlN+xOXxujlxvbkE9qMyuV4LqucRPzyqZptx/fI7yZ4N0a14LpYdIU6Z81x6UBGw87wa8iGWya4N67WnsJ+TazFjV+/aNPM3On+OR+5U64+wFxE1kKfXfy94jLvT4Tpi1Vj1Ku0J8jC5M5IMr3ri/2k00f7YY+C4f3i4q/We0m8Z/I4VH//vQ0FU5aY/eFrg2hCZSShnXJtfjFaVsRFCAy7jaKj1B86UeRHsWBA=
+X-Stat-Signature: ok38yn8yrstifpydjywixs9chgkokd68
+X-HE-Tag: 1792156927-404068
+X-HE-Meta: U2FsdGVkX1++Dj966zMI8nhaNErjyULjs/Ug1DINLge2PlWM5hvqk/1D8IFpvgiexqeAgPg/z9oXgWOuVtBhxPWZllD6SEU/D1qik/3cKg05YLmF9IJ9btkZRlxoF4JkFtq0bFkKvF6x/k1Bby42mgVxvrTkthBVH8EOZiGku/mguwhzj1zXRtUgoRuE9eS08awqKv+eu3WJqxMvRMdSSOxpD8/g30K5EJWqcm15H4Gu5xp5RmWEZ25Nv7rUyet0liw6qwddvT64oZ4FjN+57XGuJ9zD87tgBkKtALxCjMcS71MHdLdAEWpg5FBsbdmDB794xbgRqY7l4c1tfXWZl+vfYDQPh4pjLq2iA+oohvDvBrw3jH3S/wr1sOFUgRfoACfNivRMRPNUMvwcUnRBXlybecOmgEAIbDQrVljaE6IRcu+YZvCnwzdveI7cTm6BjGLp/BF75iM/roB18yfeEH/JgOEQ5rmWkdCiMmrPHGEUvF01IguczfHaUSSKbSr9dcUChmBiEQd72dvGuYX8yw7aGAr4U0JY/VZM4mr7HUjg/semmTXBz6OUmHuzK++R0MnkS9JrnSTNkU7WpJL8EsHP5RAreQ7W5D79EV8lOIlgTIyW153Xr+UgvhdatmJb4HXAHEsMo5iYAFhYZYUsK9PYGPuIRrgy8utU37j8qfUrCW/4Uya5mRfBV/TNR+tbs/Q3NTccnKqKNk6VWC881IrDTVmRWgM8AUd9ZZ7i2F+XcgoMiokEAzE6pUG8xmOIMpT45w4TlytX0UHWeQ+9qpAfusrxjlwOs/R/vPcsXL7pX6rsx/l2c7UXLbrSvLTH+3C4FOIVqVpRMKpktH9cHvcI/RS9lsGn2qZv+Atm4DGwvD9f6oVWJ0hYlQZ88wCXwE+E3s/xwgOn5AoyMQm36NCYciuXtRzNuvixK4i6V+JwyjcPi1YxwzthvXq97WNZjNELCy5nXPvF8Vy8Rpt
+ MinN8xFa
+ 1cEO2CX4ENZmivHkg8jU7NJuTxMhYJpn9E9b0IG+ziEhKhyKubRbd7IZdsMNG7I+ME4Z3hTTai3jh0ZebY5vLJHJhHkfblpmaPZJGZIcXNVVOULrKJT8mlAyhqJitQe9AH2yiND8WouSEGL86vHwo1CDGad4KUNwZwR+n+Fow2yfXTJlijk3qePG9OWDAEBjAF30Rfs4tQOurPYB/neoYq1tfoc1rjpw8Bh0PrbCDlLTdiRM3DnYdRHC5/Ih0g/ajneTlygxSv6kV7glOUAIuCYr2nWZLNK8//XkxsBmIawyQvp3Qr/4xNOuntcRKl4iLFNtK1wwzfmDdJi5uelStak4o3ePy8+yHDgfcGJuylgC5CG63RJowmFLbKzy5vVfG7IOVCfOoPTi3aUneiu0MqRI32eozzPwWSy7/W/aMPAY6+rE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,99 +120,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 12:00:24PM +0100, Pedro Falcato wrote:
-> On Fri, Oct 16, 2026 at 05:57:48PM +0800, Baolin Wang wrote:
-> > 
-> > 
-> > On 10/16/26 2:59 PM, Lance Yang wrote:
-> > > collapse_file() can end up calling page_cache_sync_readahead() with
-> > > source folios from earlier in the range still locked. If truncate already
-> > > holds mapping->invalidate_lock exclusively and is waiting for one of
-> > > those folios, readahead blocks on the same invalidate_lock and neither
-> > > side can make progress.
-> > > 
-> > > Do readahead in a separate pass before we start holding source folios
-> > > locked for collapse. Keep page_cache_sync_readahead() and its existing
-> > > policy, and drop each folio's lock and reference after checking that it
-> > > is uptodate. If truncate or reclaim removes a folio between the two
-> > > passes, roll back instead of doing readahead again with source folios
-> > > locked.
-> > > 
-> > > Shmem handles swapin and fallocated folios through shmem_get_folio()
-> > > without taking mapping->invalidate_lock, so it isn't affected by this
-> > > lock inversion.
-> > > 
-> > > Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
-> > > Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
-> > > Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
-> > > Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> > > ---
-> > 
-> > Thanks for the fix.
-> > 
-> > > Thanks to Nguyen Ngoc Thang for v2. David asked for volunteers, so I'm
-> > > happy to take this over.
-> > > 
-> > > Some older stable trees lack the folio infrastructure used here, and the
-> > > code will differ for each stable tree, so each backport will need quite a
-> > > bit of rework and its own review. I'm not sure whether to Cc stable here.
-> > > Once we agree on the fix, I'll send a separate backport for each maintained
-> > > stable tree except 5.10, which isn't affected.
-> > > 
-> > > v2 -> v3:
-> > >   - Replace the scan-wide invalidate_lock and page_cache_ra_unbounded() with
-> > >     a preparation pass using page_cache_sync_readahead().
-> > >   - Roll back on a new page cache miss during collapse.
-> > >   - https://lore.kernel.org/all/20260913163644.122133-1-ngocthang2710.1999@gmail.com/
-> > > 
-> > >   mm/khugepaged.c | 42 +++++++++++++++++++++++++++++++-----------
-> > >   1 file changed, 31 insertions(+), 11 deletions(-)
-> > > 
-> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > > index ef5cd6fda34f..b3f67617caf0 100644
-> > > --- a/mm/khugepaged.c
-> > > +++ b/mm/khugepaged.c
-> > > @@ -2262,6 +2262,34 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> > >   	new_folio->index = start;
-> > >   	new_folio->mapping = mapping;
-> > > +	if (!is_shmem) {
-> > > +		/*
-> > > +		 * Populate the range before accumulating locked source folios:
-> > > +		 * readahead may block on invalidate_lock.
-> > > +		 */
-> > > +		for (index = start; index < end;) {
-> > 
-> > why drop xas_unlock_irq()?
-> > 
-> > > +			folio = filemap_lock_folio(mapping, index);
-> > > +			if (IS_ERR(folio)) {
-> > > +				page_cache_sync_readahead(mapping, &file->f_ra,
-> > > +							  file, index, end - index);
-> > > +				folio = filemap_lock_folio(mapping, index);
-> > > +				if (IS_ERR(folio)) {
-> > > +					result = SCAN_FAIL;
-> > > +					goto rollback;
-> > > +				}
-> > > +			}
-> > > +			if (!folio_test_uptodate(folio))
-> > > +				result = SCAN_FAIL;
-> > 
-> > Do we need to check PG_uptodate after locking the folio? If we successfully
-> > lock the folio, doesn't that mean the read I/O has completed? The following
-> 
-> Yes, you do; a read can "complete" without the IO having completed successfully,
-> and in those cases PG_uptodate is not set, but the folio is unlocked.
-> 
-> Either way, why are we checking for uptodate here? We only care for starting readahead.
-> Anyway, I would possibly recommend we do this as post-processing, not pre-processing.
-> The current loop is a little overhead-happy.
+Hi Jarkko,
 
-To clarify: I would do this kind of RA as an error path if isolation failed.
-Namely, at the end of rollback, after unlocking folios. It doesn't make sense
-to me to do this kind of checking upfront. I don't think it's particularly
-realistic that, starting RA upfront, you'd see uptodate completed folio reads
-when doing the actual isolation.
+kernel test robot noticed the following build errors:
 
--- 
-Pedro
+[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
+[also build test ERROR on linus/master v7.3-rc7]
+[cannot apply to next-20261012]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jarkko-Sakkinen/lib-tests-kunit-for-associative-array/20261014-190138
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+patch link:    https://lore.kernel.org/r/20261014160144.1835860-1-jarkko%40kernel.org
+patch subject: [PATCH] lib/tests: kunit for associative array
+config: i386-randconfig-1010-20261016 (https://download.01.org/0day-ci/archive/20261016/202610162123.hSusVMnq-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261016/202610162123.hSusVMnq-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610162123.hSusVMnq-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_iterate' undefined!
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_gc' undefined!
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_insert' undefined!
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_cancel_edit' undefined!
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_delete' undefined!
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_clear' undefined!
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_apply_edit' undefined!
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_destroy' undefined!
+>> ERROR: modpost: lib/tests/assoc_array_kunit.ko: symbol 'assoc_array_find' undefined!
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
