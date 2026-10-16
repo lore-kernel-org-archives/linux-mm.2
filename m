@@ -4,137 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE3B4CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 02:12:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60279CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 02:19:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 876E96B0092; Thu, 15 Oct 2026 22:12:30 -0400 (EDT)
+	id EC4876B0088; Thu, 15 Oct 2026 22:19:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84EAB6B0098; Thu, 15 Oct 2026 22:12:30 -0400 (EDT)
+	id E4DFB6B008A; Thu, 15 Oct 2026 22:19:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 764FF6B0099; Thu, 15 Oct 2026 22:12:30 -0400 (EDT)
+	id D3D1F6B008C; Thu, 15 Oct 2026 22:19:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F1FA6B0092
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:12:30 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE7C01C2C35
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:12:29 +0000 (UTC)
-X-FDA: 85326865218.15.C2A0012
-Received: from mail-oi2-f10.google.com (mail-oi2-f10.google.com [74.125.231.202])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AA2F0C000A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:12:27 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=msGW2Qcd;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.202 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792116747;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 99C3D6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 22:19:22 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 29EE4A7AAE
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:19:22 +0000 (UTC)
+X-FDA: 85326882564.08.C00D121
+Received: from mta0.migadu.com (out-190.mta0.migadu.com [91.218.175.190])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 20B6B40005
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:19:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HAqVD7YH;
+	spf=pass (imf01.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.190 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792117160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NbuCv0ryWYiDtygGwn5WS0AeqhHnfIiKGVCd6AYwWkM=;
-	b=sRnOagCmtMFOn3gDFrayDiMqJakrN3fAhN61sTt2Dx35KLnzIHp7eJNVjVqKpPmz/fdDt9
-	trGj3/apIhwkAs/gFRMrMxcqnHk5MYvgX2gnD4YtNZcq4l9/o9s3JWi8vlmGsqRZILozMr
-	Wg1wKuAUe+mMtsyL5k3k6Olo+ygBwGE=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=msGW2Qcd;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.231.202 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792116747;
-	b=Y9N0qCV+w9b179M7Sci6eKuyL0cseTwtIcq2cO76GniaQTVhXF5DHf+zk+2ofTZbmyT0kk
-	9jgkd2BhzYXyVRfn1hzAp4UVpIWodu2KvMDFt/e+6SiAEWD3+/IQ6ayDpHYNsIkX+a8WbY
-	UP7cCk6NZy3B6J7naYGnduvgPx08rdI=
-Received: by mail-oi2-f10.google.com with SMTP id 5614622812f47-5179f3beaedso2203085b6e.0
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 19:12:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792116746; cv=none;
-        d=google.com; s=arc-20260327;
-        b=d7gHXJYct0km6QEYUAV92HFaKpCoHpvQUvodCexextR6/COuSDH15gJpNEkOFbvkLh
-         kM+omibIKv8nE7Vie0z6Ww/wD6axeW/bTukOuzHiH45S14LQ3kFMpwndRllKz53Cg0St
-         bCxBxUn6WIagZzaZUe340iPZYXk+P93T0unKEQVc5PPSGl62q6OCEYtygOHdLnlOzB0f
-         TgMJpNNmSC6fC60P8+IbOLoqwwKA3bPKd30JuLDbTAb25Ff3x9F5xP0KxWx6jZasxyHY
-         Ms7uX8ySTbwBU7KirETfgg+45WL7VZwKqpv7ZrIqhaF5Ldeh6yXub+B82jyIm1F2Sd3f
-         XXkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:references
-         :in-reply-to:dkim-signature;
-        bh=NbuCv0ryWYiDtygGwn5WS0AeqhHnfIiKGVCd6AYwWkM=;
-        fh=q9rmAsZ0o8/8kSahiKZxczQNMp0nz9rGF9FXSrfzwDk=;
-        b=ilPX48TErdWgN7vf/nax6uXWywiU+YN8C9c5kHRFdFCxP6kM7uhD0MXZKgNeCyyEiK
-         oFrxEgLwrCg8T0PAIKLVpgdT+pqbzp5kL44YAfHnN+pShjaXKThhr7dDazb4/3yHHaNL
-         oPg4yAD+ekaOM6fvOLwkkGvQqgijUwR8i2bOB5QpNENpU4mYM5hB/LYAX/iuejrEVsQb
-         PLpJ8Wa2a9k9LqwWUK6OEQJnx0/xTwlDZlh+kv0XtOdf7fQLtylnA1RASfKNlb/rClor
-         Zuc3RwC1aEc2QHgCoXavql3HshXgxNkEtDkERlDdGzS1srcMIZvTzreKsHVET+Wm7AK7
-         DHNw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792116746; x=1792721546; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :references:in-reply-to:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NbuCv0ryWYiDtygGwn5WS0AeqhHnfIiKGVCd6AYwWkM=;
-        b=msGW2QcdvKGbeoJBF9qyCQHtpXMmufH2ZdYgux6D15ckcx3vO6aVr4Ayeh5rSmYAW3
-         9s30KyXPWSTTkShbsilDHABzjgbBIaG7uTh8+Nk69YomfxSauFkD0PXAFb4xvck6jmP3
-         jtaPquw1lUY0Kogh9YMBbquJYCjhiBJL7GaWdxwCUaovv0wRCfNczMKqeqdn217F6p2M
-         KOoa50u9GyIAkU2ZpMyng3iHjhKyFGOBc8Ow6K8g9fMbpb9Gvp5BIk02g90ft6oSqLIg
-         8tFmQFNInnjXMNQ1a/KJ5CmdzthAYUJnVU3ipu9cGK3Pw5sGngeT3TN0mR3PN3KHpJ/C
-         5upQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792116746; x=1792721546;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :references:in-reply-to:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=NbuCv0ryWYiDtygGwn5WS0AeqhHnfIiKGVCd6AYwWkM=;
-        b=EMqoZgr+OMIcSMcE3S6Nr0sm0YXClA6kLUmZYAJM83h9VsGKKt2FmCYBP5fsAkQc7E
-         0+wJZffFYEnkrCFJYBdQ5JDKg0EeXuyCaWDxeCt72rC04po/zfAFaS7XdSctnBfX8Mo/
-         tirVW7JECnJwDTBtXGymNDfsJCHTPjauead2JQWiWZNVJdIkhjHFqH2stzo7/ChannRS
-         7p6NBkvxnke0uhVIr4/lKlFTDNV+ZkLPMjIxLnu6Dzl0cioBEG4q8nKNNAaCZ/+EGrXA
-         zDx5vOB3f3Ws8tTBSNQp2ZACYLl7Adn2j1goY6g/T5OXCcOutrRD6e+3+F4uIFFX8qHw
-         ilig==
-X-Forwarded-Encrypted: i=1; AKwUvBxFpGcTBEIn4LZMfrDOCzfC74z5OAf3FhwCy51LeEg/n08JapKTMGhyMfz7vVeTebP753U6zc1bWA==@kvack.org
-X-Gm-Message-State: AFq9FYJnvkKiqN87NyI08VH2WSORSDQlnSFRDncpi+EzkQYIwXa96VaP
-	AsPRFUWOnK1x1NTYxHr+yUFAyY8Mfuj++2OiO2TBxDlZl8KshGhBeWHwuALNqCvxObGfnLzGDzU
-	zlyYFL9s4LhPObo3wjSfWTwgikb8H1jA=
-X-Gm-Gg: AYBFou3N3bRV3yjyyqsLEdHnf7HoISF5VBNkkzCvcAdCXfsDZTNuuEaUqISSCa5sw1X
-	5gn1k90e0MIGTUhzIjOgRG82luAvdtNelCRae2BeG1cxT7uZ57pge/vA2vbssKX4ENCbBvL/MAG
-	+q9vxSxxocckAQNh4J16kWRno4dhrHZ+JgFBBZu4PSlYETUbRctUQ/DK6Bd/2I06ERoJaQoXTzR
-	WJxpRBRIRSLxJ2DuWxAtkFguw/zhfU2+t+UGeUtE6jd9jHIbrvJvj8Rfn6YvrtKcQZO8RsEMwWu
-	F9UOB+7tT+jvDQMTYpWG1kKWeZPtGU9wXFIYqmGeed4rJqE2wVDS09ThZjCR4CmEQKhY4HTVoOd
-	lqLC+6pw=
-X-Received: by 2002:a05:6808:c110:b0:4cb:26a3:a0dc with SMTP id
- 5614622812f47-50c4c7a5193mr21039421b6e.20.1792116746586; Thu, 15 Oct 2026
- 19:12:26 -0700 (PDT)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 15 Oct 2026 19:12:25 -0700
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 15 Oct 2026 19:12:11 -0700
-In-Reply-To: <20261016012622.114496-1-sj@kernel.org>
-References: <CANOyQmHhCJEbHpHUZ2P0hui+We7wxWkEde-Vh4k2rRXWovRYrQ@mail.gmail.com>
- <20261016012622.114496-1-sj@kernel.org>
+	bh=hevrjN9Z5/gE0w1T80DtiqCW7nEPAv4GEWYnL+LWVBg=;
+	b=muFCJTIYDCbJBmFiSY8LcvQzos9pQ0f0XKjeNYunBvMmMqZqumdzs0ZTiY/5P9o8HCZTln
+	T57pfj4dCdfjOnEj3ytF+9HeXMOW3CWbtEGCy9t0dIycCVcfhZrHCt+LWmW4NpwV8Hk73W
+	npmtOBVwez+K/jyOfytb5QNJk/CUIRs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792117160;
+	b=jVfUGn/MAtiqlHErNC2g8efZNred+xPF/jBgbI2rkpIdy3ozPzgUIeXmAjwthZpDeSWMFC
+	Mu3yNZdhWWY8QQKK1aw79BNIBv9ogp914FjFRn47POV/9d6LNzpQULIU6MOUmep0WmaFbW
+	RDGa1L14BfsAgtMvwAyd7ohH9yyh8uc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HAqVD7YH;
+	spf=pass (imf01.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.190 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=17KKcw8hwoNEkFzjNMvkidkGWg1lqcGVBB0m+8zSDac=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792117152; v=1; x=1792721952;
+ b=HAqVD7YH4u6rac3COdiFarB5/WOPRtrdu5lNAyC6snglHFYDhaki7GyDScZwMYGVIRfazLMe
+ A6s2zUaIisdt697oDLbCxyB0PNnH11fNMc06lyrkMqJJ6ZaIcr/SpLtFjNABJHePq9vHhm1WJkS
+ BCL2ZWUtL06aMQ05v+vc9l9k=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9117b98bd5139204;
+	Fri, 16 Oct 2026 02:19:10 +0000
+X-Mizu-Trace-ID: 9117b98bd5139204
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <37f1af42-9788-4552-86a4-516299241ee8@linux.dev>
+Date: Fri, 16 Oct 2026 10:19:01 +0800
 MIME-Version: 1.0
-From: Aveline Noir <jm5905938@gmail.com>
-Date: Thu, 15 Oct 2026 19:12:25 -0700
-X-Gm-Features: AclHuK9Igmqn1XI8cem-R3h2TrMyNOe057Rl7_ZSLpCcuX45h7PRoh-LpcSd8JU
-Message-ID: <CANOyQmHMRh6Sa=6N=hM8VzO0HRaFL0FxQB7An8=Y-X5GX36kmg@mail.gmail.com>
-Subject: Re: [BUG] DAMON sysfs: failed update clears tried_regions snapshot
-To: sj@kernel.org
-Cc: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AA2F0C000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/swap: fix swap_cache_get_folio() returning a folio
+ that left the swap cache
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
+References: <20261015060528.302634-1-jiayuan.chen@linux.dev>
+ <20261015190619.deccb92624e356bf81084a24@linux-foundation.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261015190619.deccb92624e356bf81084a24@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: dsowwxhrhh7x65bywj1hknmuo3ms7dhd
-X-HE-Tag: 1792116747-737858
-X-HE-Meta: U2FsdGVkX183QjuzzFuM8cIsYKkkH6tlt95pE9YzPciji3abgTb38gVmJ7tCuTOBd7rteGEwOUnRtIOc/0HHmmDMCbbVZty+RN2eBn4j/v8ExuHDXmsqmUPdUir21DB928hO7UY+jzO82d02SJij/d7fXfAiKuCT2eWxptJXAYNS36VyPL/dV3vvvVVpFclZAZM/qQxL+ABjnFeXZ+97v42zAT4KXwIAHhZ+Q4jJrXGPml2tEasRCy+c2K97l07+t4YgUvR/zIRV7RpHHPXOx8PghTbk8K8peea+yNjWVto5425m2o914QXW13SQ99LKFuH1fLddKghm/fygNfHkbWT+FJVxUiBlArq0Nq9R0S1sY8NvOjmZEmk5ad6IO91b1d6nKar73OnRx5M+KaIU6XTxC6le7YNPF64yTb2amExSUs6Qu2ukDqVocgtlpbDIN5TAheRtCTrV1xxRWKmkmOjBsF5HDk6zKMP4PArFSoD2BljkTEC2agsv7O6fVc0pbcq0nz29zBBJBIqLkHzv6T9gqkI8F9VUdscam+LdvRX/J4gOIGzhW+1cZ7nYAiquvd1ntQK9iDhuDYmdsHbO2OfoFopw8fJLVl3cokAtA+NPmjaGtGm2pKr7AloSwYzZ5WdFyuWBP0yJfCcXt+3Ce5RsdTeP0+ZkU854xQx8Kd7DKO+syNcpNyHUMtTMU7GcYSUFv9M13Yt/3yBgbcZPUiHm/w2gpiTT4ktu8e4jBRkmRKli11SzGU3hZYN44cLkTevWRSC44T+xJkVto1uzSkAVio3udZLewjwBcwkj/tfm6387KRsnv3i6/Y9r67lfLa+TZso08tEXI0ZD38f8mFqHbP0hhUCDKAiVYjZf2r6ry5KkOX8fYO7piKWkzlXcMAALMUD2NjQN2QfWokUuVXXdHpswsrAwVQdMsHEeqYBy1hSCt1bBkMfS750cFNsVMeWpL0GHYaBRCbB0aEP
- gShMoyfV
- AafnsYPeEIG22EXiJ7xRUU57WbQM9T9zorIuFyWmTEj+vYGxzVditGP5AFH+KJkyFh0LBUgA8Pxe0ea2J9TJ8BqMQgVTqlVoju/cMYuJZTw9zidHrHWwtksgEgIUh+LsLf8/wFZtHC96m6AZTIrkJ/N6nO2+/FCnVaQSvSyxClrcVaHeAkxNOc6T1XCZvvn48p3DPAOF9fYuy0uX1uLZj1uBRrFrOOZarzc6zrKkOXx8JMBKh7ffdw/aHTrq9XEwe71sOshNkEtDxGixt1EGdn1GKs//qYEN5/up7nmwUqkfhNkWvq8l/7tv/AXhMpVZsdOzQqSba54dcjRWS35cDxDM+DhpLBFPuEapk8F6ECQ8QHj6FswCyY+c4z9sEuDF+tRBPyJ9ynX+wjxhILcEMcEAwVuZ8VLSkKvqoH06BiHY5YGU/t3ffD13qwIgupQ22Hq5hDdQOLqhx1PueE8hpqCV//rgg279gGGSk0S77DoQKSF4ljnPam8ZIgT9mR8ikMsKN
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 20B6B40005
+X-Stat-Signature: san3wisra9pnmabweh7ihuynr6cdz3p1
+X-HE-Tag: 1792117157-784934
+X-HE-Meta: U2FsdGVkX19yYykVfVkvBS9wziYzw/rjFiv2z1VmMo9Ck813PdbIxGrFEm8ggo7ammPOfWR0VSMJUnh1flc0BifoWU053ny5NWD3dcHJMawZCkiCco4Kt03ETbZK3VmrpcdxVwGCllYbjeN6f2iu/JhM35VulxfNa9lvbJ3heUV2PNH42yN8xHlPoDUJZ0KuFkJ7ZZdM9mjfb3kc6OIlFl1lRzOmY8pGakOitIYph4RXN7dSyZCG7rQaqqUKL6vhkYsTymIIooS2LK/DLOv8pD1X0EJfXRSa/x12EtXH8f+uapoz9j7KvPKtH1WaDP7nttRzUODKeycRQPnaEnpQkcjQPx36UXSaaO9884b7aM2h9PeDMaYyDWpkOVLdUDkPPsOFPjphoowIpwEuoVPoVqu5qM5iwh/8d0FAjZHT3M/OMNK5MWwKjV5HuVSUD44W6CNIP99eSpXhaNZTLTVRFSh6wA/uXFgsICtbvBkw9Eml2LMTZ6K+QC7tj05xDL8quEpQ4h5Xb8qj3ADN519UbXeTYyCJvvVLVm6O2ymdTU6ytWPEgVuyPQeexG3Tjay/q74kVbUVk5XpITcZa0jHTdpMa1P/pQluu2ZA1zPS1pY6UH3fqkcrrucDlDpUIhGBOf1boMyOQfv0gf+zp4J3FqAD0KQJ/B1mVxhB5drpva5rJJDMQvc15eX6V2qMol5uizD0l5d3RJDkwzs1CP4Gv753jnWLzyRKSpvkLVhXNTyV2tOty9KcDcOQKrfzJ08uuwAM1scotoqXhpDcPti/GrM9mpUse12zTz7g5qCZoIwtFmTSlbcoCGWofn3JQbodDQw6z1voeJgzdYnl2UfQiFeIqV6tZn4TOEN4hg9OkwXoIPWQdcKv2f/ksY5nwm3XtDlX6Wl5XwuVzPQtkmaXtTYtq9rMuidIy+RewjyTMMHZ4VzgVVh5z65fMT3tCeWV4pmkxAQ9zvwQ+Ic5z58
+ z3bW5P9D
+ o9u5pKEtCbqbqO2gakgBFCxRIQXgu1npSxZJnQIP6T4aevhFJVZmPZIGh7M8nJAcUIoo25PCQljDTZzTA8CWacq5dLlPs7M2aBp/1Xk/OdGBylfxUWyN3RorWMbdgZ5dBScZUmbRmjjXPk3s53w3S56qPr3bgahD2/cRzGT/uR+kUTenuohEpF/pq4o0iBHbegC/pafR5cz2wgt7HzM355gjTvfUnCAsZZw30B8S1hwJrXmVneB3uHopfdawBWryiyb9C5FEA00PjuNTD0rqKOJVkoOG/3mxPFLCuOweryDNRTwCh9iJptaFEMx7R72AzFQBgi5Z/gj4YAO4lRu8gDzsZthLJi8aIptbe/FgMImjOkIEG3DyobOq1Lx9b6ZGV/jHFshwdF5K0NKJr9OxXm4jdMROwB08bkYnOTMfqBvsDHh4VQJHx7/0kxWFh+9ifqGAM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,40 +95,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+Hi Andrew,
 
-> Please do not "top-post" [1].
+On 10/16/26 10:06 AM, Andrew Morton wrote:
+> On Thu, 15 Oct 2026 14:05:27 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+>
+>> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+>>
+>> swap_cache_get_folio() reads the folio from the swap table and takes a
+>> reference with folio_try_get(), without any lock. If the folio is
+>> removed from the swap cache and freed in between, and its memory gets
+>> reused, folio_try_get() still succeeds and we return a page that has
+>> nothing to do with the swap entry:
+>>
+>>    CPU 0                                  CPU 1
+>>    do_swap_page()
+>>      swap_cache_get_folio()
+>>        swp_tb = swap_table_get()
+>>        folio = swp_tb_to_folio(swp_tb)
+>>                                           madvise(MADV_DONTNEED)
+>>                                             zap_nonpresent_ptes()
+>>                                               swap_put_entries_direct()
+>>                                                 swap_put_entries_cluster()
+>>                                                   __try_to_reclaim_swap()
+>>                                                     swap_cache_del_folio()
+>>                                                     folio_put()   <- freed
+>>                                           page reused, e.g. as an anon
+>>                                           folio of another task
+>>        folio_try_get(folio)               <- succeeds
+>>        return folio
+>>      swap_update_readahead()              <- may clear PG_readahead on it
+>>      folio_lock_or_retry()                <- locks it
+>>      folio_matches_swap_entry() fails, unlock and put
+>>
+>> filemap_get_entry() does the same lockless lookup for the page cache,
+>> and after folio_try_get() it rechecks the xarray, because the folio may
+>> have been freed and reused in between. swap_cache_get_folio() lost
+>> that recheck when the swap cache moved to the swap table.
+>>
+>> So CPU 0 writes to a folio it doesn't own: it may clear PG_readahead and
+>> takes the folio lock of someone else's page, before
+>> folio_matches_swap_entry() finds out the folio is not ours.
+>>
+>> Recheck the slot after folio_try_get() and retry if it no longer holds
+>> this folio.
+> LLM says to me:
+>
+> : The original folio could conceivably be freed, its physical page
+> : reused, and the same PFN inserted into the same swap-table slot before
+> : the second lookup.  That would pass the check.  However, the returned
+> : reference would then belong to the newly inserted folio, and the later
+> : swap-entry validation would still be required.  I don't see that as
+> : invalidating this fix.
 
-Sorry about that. I'll avoid top-posting from now on : (
 
-> You shared 4 bug reports in very short time. Three of those are
-> from 32 bit.
-> Could you disclose the purpose of the testing and how you are
-> doing the testing, finding bugs, and reporting those?
 
-I've been trying to understand DAMON in more depth with help from
-an LLM, not deliberately hunting for bugs. It spotted a few possible
-problems as we went through the code. After checking the code and
-reproducing them in QEMU, I thought they were worth reporting.
-If that wasn't the right way to go about it, please let me know :)
+I had the same worry at first, data corruption or something worse, but
+after thinking it through I agree. Passing the check there is fine:
+the folio we return is the one currently in the slot, which is what
+the function promises, and callers still check folio_matches_swap_entry()
+under the folio lock before using it. That's why I didn't mention it in 
+the changelog.
 
-> Why would the tool tries to refresh the regions after the monitoring
-> is stopped?
 
-That's probably not something normal users would do. The test
-deliberately called the update after monitoring stopped and found
-that the failed request cleared the old snapshot. It looked
-unexpected, so I reported it to ask whether that's intended.
+>> --- a/mm/swap_state.c
+>> +++ b/mm/swap_state.c
+>> @@ -92,17 +92,27 @@ void show_swap_cache_info(void)
+>>    */
+>>   struct folio *swap_cache_get_folio(swp_entry_t entry)
+>>   {
+>> +	struct swap_cluster_info *ci = __swap_entry_to_cluster(entry);
+>> +	unsigned int ci_off = swp_cluster_offset(entry);
+>>   	unsigned long swp_tb;
+>>   	struct folio *folio;
+>>   
+>>   	for (;;) {
+>> -		swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
+>> -					swp_cluster_offset(entry));
+>> +		swp_tb = swap_table_get(ci, ci_off);
+>>   		if (!swp_tb_is_folio(swp_tb))
+>>   			return NULL;
+>>   		folio = swp_tb_to_folio(swp_tb);
+>> -		if (likely(folio_try_get(folio)))
+>> +		if (!folio_try_get(folio))
+>> +			continue;
+>> +		/*
+>> +		 * The folio may have been freed and its memory reused before
+>> +		 * we got the reference. Make sure it is still in the slot.
+>> +		 */
+>> +		swp_tb = swap_table_get(ci, ci_off);
+>> +		if (likely(swp_tb_is_folio(swp_tb) &&
+>> +			   swp_tb_to_folio(swp_tb) == folio))
+>>   			return folio;
+>> +		folio_put(folio);
+>>   	}
+>>   
+>>   	return NULL;
+> This return is now unreachable...
 
-> Is this an answer to my bisection question?
 
-No, that wasn't a `git bisect` run. The suspect commit,
-`66178e4ec30a`, came from code review. I tested it and its
-parent `cce0b334c310` with the same setup. The parent kept
-the snapshot, but the newer commit cleared it.
+Right, and it never was reachable, the loop has no break. It should have 
+been dropped earlier...
 
-Thx for your time, and sorry if I've caused any trouble:(
-
-Best,
-Aveline
 
