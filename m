@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32EABCC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 00:15:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EFB8CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 00:21:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF5FC6B0096; Thu, 15 Oct 2026 20:15:35 -0400 (EDT)
+	id 9CCD36B0095; Thu, 15 Oct 2026 20:21:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA6876B0098; Thu, 15 Oct 2026 20:15:35 -0400 (EDT)
+	id 9A55B6B0096; Thu, 15 Oct 2026 20:21:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBCBF6B0099; Thu, 15 Oct 2026 20:15:35 -0400 (EDT)
+	id 8BC266B0098; Thu, 15 Oct 2026 20:21:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D9796B0096
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:15:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12487160284
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:15:35 +0000 (UTC)
-X-FDA: 85326570630.25.C0069C9
-Received: from mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 926E5A0004
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:15:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kHwhn3TT;
-	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 658056B0095
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:21:40 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF5A480254
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:21:39 +0000 (UTC)
+X-FDA: 85326585918.30.9B57D99
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5DD9F1C0007
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 00:21:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eOf9YA9n;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792109733;
+	s=arc-20220608; t=1792110098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wd1Wxj5QPAszadD/w66JNWguamzlLyv1NQgm/n3YS0w=;
-	b=XUz+0BPcKxSHFTP9/qFqApl0qhBf1jyE8p9i2Ibo6Mc1bO5Wlix7+EUFppnY0DUOWfZ8ki
-	HUaCOR+dPbUHrZKABdiu/i91LJ5KyW6Nb7rG77mdmcV9LtD+5PJr+m1HlZ8ftZhrs5rxUp
-	iQx6PeWKcIJDFWoKCmqU2u02u5f1ya0=
+	bh=9N4EN6ZvO3a8sKtIt1Gi15YCcaB7qMrfMy0PcLy9QgU=;
+	b=W/IQgAxw76caUWwMxYzHIfy4LcapYC6GU9TgqLzTVosJmjlD1ahnXWFbt3svVyJpLpuan3
+	r2LaOSxVbe/MKPNhRJCnJxr4IgREOl7q1i1oTnwJgIzQ/XCRu0OnrEm/+sKJ1CmdX5TOUy
+	e7ppgjOiXGgeHxGwOhQQesxLcRJeS34=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kHwhn3TT;
-	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eOf9YA9n;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792109733;
-	b=NrlW9QMlYbQPlNyjvLzyX5YuewseuzQLckJqO9YMlfL+svWy6L6SjNceU0dLwCI1Xa/0Y1
-	oumK068H7ft+FpnzTjrwC3KTPzsG1IXDzwoI+99Zps9KV/MgBvUv/suGFQaGSDJiKSzrs1
-	qlQp5aKePMaIiYVtyWHIKez4uMtjzdk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=fRHNta5IWp2UqpYEmjHZX4ckr3pgslqTuleelR2tINY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792109730; v=1; x=1792714530;
- b=kHwhn3TTRDrw8hijKmGdfPWF3KhtAP+PxC6H7P6jjvvQpMqk9QJhblmeBaiE3T2jlzh2i7iN
- psWGAw3gKVKrikamzn3xWxj6N3eRHyR5J98myY2Q9EULsWFPXlBMYPcLZuK4qt7HgR1pruYm3ex
- IJn2LaWAc+Tk7VXNmkVrVorI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 04647efe529ff507;
-	Fri, 16 Oct 2026 00:15:17 +0000
-X-Mizu-Trace-ID: 04647efe529ff507
-X-Migadu-Flow: FLOW_OUT
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,  "linux-mm@kvack.org"
- <linux-mm@kvack.org>,  ackerleytng@google.com,  akpm@linux-foundation.org,
-  chriscli@google.com,  hannes@cmpxchg.org,  harry@kernel.org,
-  jack@suse.cz,  liam@infradead.org,  muchun.song@linux.dev,
-  shakeelb@meta.com,  ziy@nvidia.com,  "Lorenzo Stoakes (Arm)"
- <ljs@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Vlastimil Babka
- <vbabka@kernel.org>,  Matthew Wilcox <willy@infradead.org>,  SeongJae Park
- <sj@kernel.org>
-Subject: Re: Sashiko change proposal
-In-Reply-To: <CAO9r8zM_TfD82vZ23zwsd_pPLMpe11_XQhPEp5NDyhoPKDizag@mail.gmail.com>
-	(Yosry Ahmed's message of "Thu, 15 Oct 2026 15:38:34 -0700")
-References: <5eae44a6-06c3-445c-9508-58b372c01b2c@kernel.org>
-	<CAO9r8zM_TfD82vZ23zwsd_pPLMpe11_XQhPEp5NDyhoPKDizag@mail.gmail.com>
-User-Agent: mu4e 1.12.15; emacs 30.2
-Date: Fri, 16 Oct 2026 00:15:07 +0000
-Message-ID: <7ia4bj8ufqlw.fsf@castle.c.googlers.com>
+	t=1792110098;
+	b=wudA3oQ72dB0ofio0H+2+xuChl0P/ckf4QinC5B+tTXjiWdrltAeqbLQV2MrwgvgIkets5
+	luO7Cn281XezCnTYhsM7fxUO+CVovnvYKpl93xTWURULbeH7liWibJXfTDIMEBGs5FTlHR
+	TDZuRBI1K11P/mNr+e/rPMqq2lxLXmI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DFCFD60A74;
+	Fri, 16 Oct 2026 00:21:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B2C1F000C5;
+	Fri, 16 Oct 2026 00:21:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792110097;
+	bh=9N4EN6ZvO3a8sKtIt1Gi15YCcaB7qMrfMy0PcLy9QgU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=eOf9YA9nhtK2H+psZ+z21uyPW8H2c8MJseLVkbscqczuYzGIWACbY7HHHKSrpn6F7
+	 k3NysYP9IIPV5MJ4Ig2ytACBT8lSMnaeVx52RxK4fz28xyKrOG9fivE5i91gmmIu+l
+	 fi0gbNz5bimbzZwojC+Tf5y1PTZ7slGz25YTd2YS0dI7yWNi4Vgvv75f2fUQhdwGWc
+	 j+N7h6qpFQ5kNIsHYRb+kJx/ROqZe1Fu0Xg+WNL0V+DyewIuiukcU+sqbi5kndyP9L
+	 p5wfFiFcFAMhEaiNU5TNzQ7MdzA70IHm8Qwoicg3KGlMfewyj+SgOC0n5ZDrbeWgc8
+	 6DYuAuzhTODyA==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/stat: avoid 32-bit overflow in idle percentiles
+Date: Thu, 15 Oct 2026 17:21:29 -0700
+Message-ID: <20261016002130.113813-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179207592479.3.11595453180868898703@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5DD9F1C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 926E5A0004
-X-Stat-Signature: ixhz98nptqjm8cj7jt1resyk6ywxqb1w
-X-HE-Tag: 1792109732-17111
-X-HE-Meta: U2FsdGVkX18HhqUebeOhX0OBf7XSGGN5l54q7cStCR0Up04CFeIHa+cwx0FNNTd8BKipSncjlxIn37IsV4DMCZU/tKIEC2DQmUC+bm7fme+P+HgcLeJ8usuz6r3i8Qo49GIYE/9x0BAmCrB0GUVZstU30IXxFSO2vBvtJYFJhYV9uVob3HhPXqBuuJpyFrb6hRcNd7i155Qpp25c/7zK81tYNbi5crqGOMAdUFYb4L7//9wgrtWX7SmRylP/ZnEaZdb2PRLod3e6lTOrowBHKfHvxtZt69X5XUZ/aI+mN6nQ88vIzMhjNzYWi+EtiuS00q7wiDQl9I6zWK8dZQvd0sRYr5VRSbfJ6/t0g2APF5Y8J/v37OC5Ebm1s/aQ86vJrYfp6oF8PLGkJusFXhUGyhghpQPHoJilCR4BwtMQJw3d/TtUsWVrwJgzBO50Ygnxadldl80Arse5OAUubVOpAG/X+XXFycLdCOjiYhbuUce6FSqEmN+VTMBkyFs8KiDZaFI0pBlONcPKAMcEz7v0N4IKiN1js7I12KvB5TbuEJUsNv9BgZerNSWXXW7C9saICmoZr2J16KprJ4xJ9AYaSDEYk/mnnknV8l1OuSLuZQ5fDsquyWDr5Y4wzAYaLKQDcMc0DFfS4VKhYKZzbuA8Qn3G+mA80Q6P2XqwhTmoJlYQftNqsMbpNK6qmv9mkeJgtqfpkL/3lAcX11vBSKHJt8VbBsgZS8b89yYlwS14owWKJEOTnAvMpdalEKxhZULEKeEt8IZpTxSHCUCqvpf4jfV5yLFtcr4PPaL+TnR3lXH5ZVopakhiuskLfM1SsP4ic0YnWaUQhsdLNO2dGu0RgMcBrlluBL9WoyLukl9D3VuI5bsee6RBTmIVDSt0B9Cyk0vpwUBNXAu2XkvSH/7ibeIj50ri2HoUeZu8gKsDB3XI6JIBLgdj5oL6iQE1XLBSf04Qr7lEyufnG2VrcY+
- tB/ufw7X
- kdYbmG7fUYUe/luoRmwvoV+m6pd9FPbwCSWoFJcllLzX3Gg0ggFlQ8RclGV15IVx1CMBVE15RrtJ3JO1/EEUw8E9yJh/21thdcfJyp/+hAFG43G/XOZVAGbX0Mll8OqhmVgm3D8dGssXMo01cAWKJ9hd+t7KBr51zZtWT8Ty2lz+4g4/f71lwJaDQknuiLRziDB644rXRAgcY0NdeuFlAlDajaiMvyxTZyqYUYKOyrTvvDtyv1XzIIch7xQjC9UVh2yp1TFufj6bBVNI7C1l42uE0zt2N/geZuIILqsyFs3jAyjxQ7ImNe3+B7GbMTc3iwlTA+/jakJ09V3QWdHVq1EtQ9mmB86ghr9Kd6IxPpT2YunhTPUZQWux7wBRT1kGMjVttBMlyLbJdUAwYV2GQ7+zKf3dYux8P8KwpgXlU2jimKFT3WYmO6lMp1Q==
+X-Stat-Signature: 5gb5i7mjsq7ddofpptge8857tbn89994
+X-HE-Tag: 1792110098-250907
+X-HE-Meta: U2FsdGVkX18l+3JeZXOXL7fRhIMwbqQGZdOXjhVLj3oMBSHk57O0ykmhG3rTFyHdh+zR9x3uiKtVLBxYqUjHXD4IUWbShhCkCbQWpjen9JBFIMcqcjOf6kORrQcHJRok+8isJPWfreW1BCkY2xw58pvWJ0WGQRmWtjGWpkFHm3IUTJiaY3NsAU+xLPhE/LuI9zWHpsp1mUvcot79kDiwf0ZtweGrlXMFoZN5PsEQywTQHOJ8aqrB0PhF265LTdvCC3HmqKGX9xJ+lCxtss6WKW/MDrUCkXxKbP2YSLPLrtxxEyIJGr486qqnM0s9797EudpbDMM0qv2a2DKe5Tf23uRgRKQzORXZ6WVjsvSdcn/BfOoQeQ5iNgczV6UV7jeydiGH23gCQ/PPkZd/yoBVwsvFeKKC170yZ6gUCQ7hmRWsdT0q3ObZx9LpD2dmEocQTE3+XfNr46CiMjxvaWd7mGiUPNmg3CstHIwV0+H4vlT5b1APQBESndVcQ3+jnfdKT+2oo5c/5B/mD7Nq3Ij2fJ/PG3YX+NRpXXEg+MnGWTgZ9v0PfrCahLwZxpstSJhZNK+8XlmDf7nOZ59dJxq7yFpR/rSc5ywpcwelckKy6C7yN9e9tvM7IL8b7JYbtVvfsWAEn44Ivc+DjkeGJbA3l5n5kdktZF/+Nlia6HWbl2CwJ4NEsdwr5k0sbLwbHpDYhfcdQkFm/IJLc8rUJ0cvZqEnNwD9asaBQDfGIW7e9x+eSju1Xu6z3wRVVoQpzXkhGsqEEGMEyyrapg3/VXzJq+Bl4sBKj/IPQfIrx+coAcSFXjL3dD8rWg8sD4/xQ59JDY0d33D/RvD4r8C9J/nndA39bhkLPi4fyM/e2JgiB45KgdtdxT+sT969qu1Y3fPtgaWcQLD7BjRP1tWZnE/n9lv5I+/2hj9EKVLNyxg4Pz/pqXRMXWXIV10K3P8o0YAnVq2gn/+PeUlBIsbiD8O
+ Vy59J7bR
+ RBufcSQQ2LN3IARLSw8I16UMRMK55/xkEV+yOGqVM1TnEgeKLZJpov37nKMLtTQSg0xt67SUQ3n+Ng/I9nNmcdu7Yu4+JfQDM8XfzPzyPxXUxD+R5B4xL60Hby03cwJtbluIgyeNlIw7fuqTx+uMO0rSr5yHJrWe1QGUrp6hHd1bmDEcuAWcXsWJru6SY9YuSEkehkQOgxLcFzJMo/yFTB8xGdkz/uqwCSCPWFYmhA9SEXGQ7Pa1BAd+qF/rpNZui06Ka
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,77 +93,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yosry Ahmed <yosry@kernel.org> writes:
+Hi Aveline,
 
-> On Thu, Oct 15, 2026 at 1:38=E2=80=AFAM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> (CCing all people attending the mm-next call)
->>
->> Hi,
->>
->> After talking to Roman at MS, he just informed me that sashiko now has a=
- new
->> feature combination:
->> - "embargo_hours": hours before review is public + emails sent
->> - Mechanism for signed-in maintainers to lift embargo immediately
->>
->> That solves the key issue I had with sashiko: people/agents re-spinning =
-stuff
->> too fast before a human at least had the chance to jump in first.
->>
->> I suggest the following sashiko change for linux-mm:
->>
->> diff --git a/projects/linux/mailing_lists.toml b/projects/linux/mailing_=
-lists.toml
->> index a9198de..ba123da 100644
->> --- a/projects/linux/mailing_lists.toml
->> +++ b/projects/linux/mailing_lists.toml
->> @@ -46,7 +46,6 @@ ignored_emails =3D ["patchwork@emeril.freedesktop.org"]
->>  ["linux-integrity@vger.kernel.org"]
->>  ["linux-kernel@vger.kernel.org"]
->>  ["linux-kselftest@vger.kernel.org"]
->> -["linux-mm@kvack.org"]
->>  ["linux-nvme@lists.infradead.org"]
->>  ["linux-omap@vger.kernel.org"]
->>  ["linux-pm@vger.kernel.org"]
->> @@ -315,3 +314,7 @@ reply_to =3D ["author", "list", "recipients"]
->>
->>  ["fsverity@lists.linux.dev"]
->>  reply_to =3D ["author", "list", "recipients"]
->> +
->> +["linux-mm@kvack.org"]
->> +reply_to =3D ["author", "list", "recipients"]
->> +embargo_hours =3D 24
->>
->>
->> Which means:
->> - Embargo 24h
->> - Mails sent to everybody (author, list, CC list)
->> - No positive-review ("looks great") mails (default)
->> - No other static email addresses that receive a copy (default)
->> - No additional ignored author email addresses (default)
->>
->> I'd say we start with 24h and see how it goes.
->>
->> Thoughts?
->
-> Thanks for doing this, it's much more convenient to notice and respond
-> to the review when Sashiko replies to the patches.
->
-> FWIW, I prefer no 24hr embargo, seems to work well on the KVM side --
-> but I will take what I can get :P
->
-> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
 
-Is it time for me to pick up the change? David, I'll let you decide when
-the discussion is done or just send me a PR, up to you.
+This patch is sent as a followup of your previous bug report, right?  Unless it
+is very urgent, please make sure the previous discussion is completed before
+making a followup action like sending this patch.  As a rule of thumb for
+DAMON, I'd suggest waiting for ~10 hours after the last comment on the thread.
 
-Btw I hope to deploy the new Gemini 4 Argon model really soon and I
-expect better review quality. Also a big prompts rework is in the
-process with a simpler way to put in subjective things. It will be
-called maintainers notes. For stuff like "don't send me typo fixes
-patches" or "don't use struct page outside of X".
+On Thu, 15 Oct 2026 22:52:04 +0800 Aveline Noir <jm5905938@gmail.com> wrote:
 
-Thanks
+> On 32-bit, accounted_bytes * 100 can wrap before division by total_sz.
+> Some entries in memory_idle_ms_percentiles then keep their old values
+> instead of being updated.
+> 
+> For example, a 256 MiB i386 QEMU guest reported p0=19200 ms, but p50 and
+> p100 were both zero.
+> 
+> Cast accounted_bytes to u64 before multiplying and use div64_ul() for
+> the division. Compute the percentage once per region.
+> 
+> Link: https://lore.kernel.org/r/CANOyQmHad1vamnZT12M5yPrJ69==Pt1U0+MGw6u0MuNtr-DRCw@mail.gmail.com
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> ---
+> This is against mm-new ad9f2d463666. With the fix, the original test
+> reports p0=p50=p100=19200 ms. The i386 kernel build, x86_64 W=1 stat.o
+> build and external arithmetic checks passed.
+> 
+> I also ran 38 before/after VM tests and 20 same-image controls. Throughput
+
+What is 38?
+
+> was close overall, but median kdamond CPU rose by 0.0053 and 0.0221
+> percentage points of one guest CPU for stream and sparse, respectively.
+> Some pairs had 5.91% lower throughput or 15.49% higher scan P99. So I can't
+> yet tell whether these differences come from the patch.
+
+Do you have a plan to run more tests to be able to tell that?
+
+> 
+> 
+>  mm/damon/stat.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+> index b05b68f73e10..eccd372810d0 100644
+> --- a/mm/damon/stat.c
+> +++ b/mm/damon/stat.c
+> @@ -114,7 +114,7 @@ static void damon_stat_set_idletime_percentiles(struct damon_ctx *c)
+>  {
+>  	struct damon_region **sorted_regions, *region;
+>  	int nr_regions;
+> -	unsigned long total_sz, accounted_bytes = 0;
+> +	unsigned long total_sz, accounted_bytes = 0, percentile;
+>  	int err, i, next_percentile = 0;
+>  
+>  	err = damon_stat_sort_regions(c, &sorted_regions, &nr_regions,
+> @@ -124,7 +124,8 @@ static void damon_stat_set_idletime_percentiles(struct damon_ctx *c)
+>  	for (i = 0; i < nr_regions; i++) {
+>  		region = sorted_regions[i];
+>  		accounted_bytes += region->ar.end - region->ar.start;
+> -		while (next_percentile <= accounted_bytes * 100 / total_sz)
+> +		percentile = div64_ul((u64)accounted_bytes * 100, total_sz);
+> +		while (next_percentile <= percentile)
+
+Any reason to use div64_ul() instead of div_u64()?
+
+
+Thanks,
+SJ
+
+[...]
 
