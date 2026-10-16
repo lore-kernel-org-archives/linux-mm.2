@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F8BCCA46C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:09:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F107CCA46C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:17:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 580536B008C; Fri, 16 Oct 2026 10:09:11 -0400 (EDT)
+	id 6A0E46B0088; Fri, 16 Oct 2026 10:17:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531916B0092; Fri, 16 Oct 2026 10:09:11 -0400 (EDT)
+	id 62A826B008A; Fri, 16 Oct 2026 10:17:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447726B0095; Fri, 16 Oct 2026 10:09:11 -0400 (EDT)
+	id 51F096B008C; Fri, 16 Oct 2026 10:17:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 23D316B008C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:09:11 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A6041404DB
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:09:10 +0000 (UTC)
-X-FDA: 85328671260.05.120EEF3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EDEF6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:17:07 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B615CA0459
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:17:06 +0000 (UTC)
+X-FDA: 85328691252.06.80AAE60
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 131024000B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:09:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGe+v27p;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792159749;
-	b=7SkjpSoeebxGWgCuqNm8+W1fkL1FwkHAbUx5+mIJ70ZZoveyr7H83S0VyvI4Jkw5q4Fcg8
-	0wB+r61Rx9/vX7O1lWmdJWsnyi8XO10lL8SxQaeZIIQVt5MbfwRIpyXGEzqQpTaf1X6sRv
-	5Hd9ec5ryNRYkiOUMdOYbBgfGELZf8Q=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGe+v27p;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9523718000A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:17:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EAXAfP9E;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792159749;
+	s=arc-20220608; t=1792160224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/rY+da4gZ/gT6x5YDiZjxmuF5eCELrbiaY4rx2johDE=;
-	b=LJlzS2ZqOuBjb47oFv7dIpmIPmdoufD0xmdInotL5JETwvTMwaw7RdHBUrHqFa8VNM6zaX
-	yTgSsQH0ptEKON+gzUhxOOaBWstVGxpXdUdtz/oW4Hbs5g58KWehh5SKtU4cs2Eg/QfkiR
-	gnY8/8/2nJsomZrRqhzW3aC/xaJbww8=
+	bh=b2VQkAftmXnblL7IeVaeDeAnYYS9mQ6ICu4SlOn3GcU=;
+	b=c1EjM+DxeQWwIAtupnSv3NolZLQfImoLxZpxE2pQ2hNQIi8tjLCnT98CLU15h54czlxqgI
+	shdTgRH+bTVXQx78R2gbX6ODSxiE5zUFxb0/C3q2syq/va38HIfKB7ASCCNXrIWBlC3BFr
+	OQspcq6HN6V/unVFbaEvMnZ+xWazAMs=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EAXAfP9E;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792160224;
+	b=7MTxzeH6BLD9mm927sQv0SxJaU9eAPsp3seE69p9xUqpi+ffh7vMLDgfGV+eTkagHFn6aJ
+	4qHkaOi5cCuAcc91XFr3Rhbx8shhysZCBq+jeMXbtVEKZc86piL+Hoaq3FCcn28BWLYfyP
+	j4VFdn0zCmstoMqQfjN7KD+tMl06EmU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 03451416D9;
-	Fri, 16 Oct 2026 14:09:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEBA1F000C4;
-	Fri, 16 Oct 2026 14:09:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C6BAB40F3C;
+	Fri, 16 Oct 2026 14:17:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE571F000C5;
+	Fri, 16 Oct 2026 14:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792159747;
-	bh=/rY+da4gZ/gT6x5YDiZjxmuF5eCELrbiaY4rx2johDE=;
+	s=k20260515; t=1792160223;
+	bh=b2VQkAftmXnblL7IeVaeDeAnYYS9mQ6ICu4SlOn3GcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UGe+v27p90GzDxWWTa5dWIjd7PcDB2ayLWfH/O8Pnfw2ZQl1W6mNxyXCSMa9WOhyX
-	 nbSo/WYdZbmdS02R3+6eiI8Uw5iYDt5WynvXdf7qVpVFMMjvTlqecHl8Yz5pMYFM8l
-	 DeVjAvJ3YnE+W/u4AkDZkIB3IEaXeeslVPTczncGkMjsrHqkKqYySJuA0M/myrVNRM
-	 p7u/1JzWgh39EI7wWAwWtVKAKXnlJHjhMLx+HrCcZm4iR39ddN1kBEwd3Xqnie5TyC
-	 Oto7KE3HDp/jXN9a+4EDGbxN8eMxI8HFISKckDQEWXKmVy9qo5UwS/hQj3laK/G6QM
-	 szuTh7q0wRHvQ==
+	b=EAXAfP9EuBjp2chpB8buw2ql+T/nNSCBvWeodlkEX1c0xKLO05HH6nVmzSZ0ckXoM
+	 7ixtf6cBxqV2F4XjtO0nDq/LrOwREGst5oNVKujYyBK4o80v6zXeCd0WrgXKAlB3wG
+	 U9DkTHD7hz/Us3hNuORN3cJghgiZad8Z2kzh+O5x/EQApZKqUnAyTkx+Xgm9lDuT6v
+	 jI9e0dqvrE9gLdxD6l7wIxWn48RqlU+RVGqx7PwMRC/nR1JdIDSzApL71IedVSk9HV
+	 9uU9wfiboBGpPHijAN2efJK2CoiW8+4S8lHJeC7HrAuR5Lb5sitBRIKPjzRgEEcESu
+	 5CYoHfhgUE8jQ==
 From: SJ Park <sj@kernel.org>
 To: Aveline Noir <jm5905938@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
@@ -71,21 +71,21 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] mm/damon/stat: avoid 32-bit overflow in idle percentiles
-Date: Fri, 16 Oct 2026 07:09:00 -0700
-Message-ID: <20261016140900.125937-1-sj@kernel.org>
+Date: Fri, 16 Oct 2026 07:16:56 -0700
+Message-ID: <20261016141656.126278-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179214257862.2.17756454862637555633@gmail.com>
+In-Reply-To: <179207592479.3.11595453180868898703@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: durq1nd3zz7g7zerxi4fqihqn7ggpcex
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 131024000B
-X-Stat-Signature: r8ae7pqdpwh3w7frmepd6nhbqrm6nqn3
-X-HE-Tag: 1792159748-700731
-X-HE-Meta: U2FsdGVkX1+ByY6Vmluyjrpxn/EEVzFb3zC28ccgqvDhBa/UVXIU4k4AhjzfRTuL5Zhm0iyVnFYN94KL+aDZdNXvjKvAQ/rrFfn0YKdreB2sl00teAC00FCLCUFtTbYsf84T70/+L8hYCeS08+Dh6VXSDsXw7wFYkGIxiylitSJ55PyRmuEZaYRnmJl0dLl4ekrddd25NGZpzhtmRFhhikPMXkt1heMA90EhiEIpdmaDuZ7eksDKaCV+0aF8o61x6JJk7VRRDLTgzxJlULzxXnIuMhJ7ZB5vi2Ukews5cVTJk7fTRjqS5Jihjy8dLdpuqPEYS/izYBHpL9AKVys8Dh6UY+7cZT1a++vqeQ/2klDR3jALJLudVrXbhegsN3NEO6E9YdHlGlMXVVZ97eHpVxwj5vWlCz0gsdws/6lCCPWHgvLGvJc8i99mYDpVxQCrIBXuhdb82EhASg87u4Mol7msq352eLqc4YcH0Gqp/bvJADf+FgIia9bhSVyR8sxqXibdM6yfUS6cBoYgfp/HZk5kg4PWiqRLaIgUvBIQmUyEZq+fjNSXSAFFFCLxRkczj7cm5UlLwmBGiUD1TFpWXVH5Q2b5drgEPWfg3cde63Kfb1FoSevGZF8Lv8xkihKBIVzVe5WPWlJBfUYZW7CnBOuilA/89c4WUD/NSKpGtXhmAbauebf1Q3GGRYrxTYkPD5n4T51Gut+xJPaE31nZ+36/W3dcpUoichYqJAixTvBv1M38iGAUTfj8rVjGtenxoSpMKPabH2b4K2PfBFzQeEMPY+Z5vHluEobFyHgctl10O4nVVYL6g6UMEWZ5J6DN5PTo6uVroLdN4zshAa2tvMVCi4PBmEJ62qQXvNUMWSSS+2zK4Z0WLbm24qyg3ZKGWDRJb/IB8w7IOpYu8+kOpJhzfGIChlKLNO+h7LqHLjeh6L9FwIg/vue4hOJVxkurG8AOpurDqgI7Dxr7SFy
- b45csLpY
- nitnzcJ2hv3luI9x2YjrViZxxOsp0w3S/5Fiz8mDYGsXjPaVTr2r/QNNzjjp7wlVprYbOMXXrt88QWXm72uGJc2i5LL6nLkDC/0lyORPcpEyxlrdB92o2aAA3fQIzIqWipEsjvA+rIFUOP9SMmPNxM1xOyEIuSwFpolOnvU/iVHAtGXb9VRPKVbp0iVal3tblWt3RV8aDq0iCZBl8K3WmaKY5SJ2j6UCvMEfcmeWVtN8mfh0=
+X-Rspamd-Queue-Id: 9523718000A
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1792160224-298757
+X-HE-Meta: U2FsdGVkX1/k1LS5DshNbkw3cL8aS7Fqv6nsxOKu5rthExhtIXYaoIJoE21iW/lH9SlJOUOW80VIPwhYYuhVtGtT9ci8kuNcDRBxpEk3l2LKt85LIR0l51LX8UXsq9uaLTKD4/cfnmP8aaP5TEd6GBu5yvcNiFg+GCo7daX7g6DDcq9Z38lCdPl6sBPj2Z98rUlOSN5T6SfXvs/z7rF7fQkSmgOsMenPVeDp05RhjA/sW8q1n7f8fz53AoVwjj/jvfHHANmaaFWEnSYgoxSEB3ehPCuGYCHMnviZzksuhBInIcKK2zMOnjMUAdaCdM/mLx537ReJIZlraQAzcWPkJfDTeGMNZlTYJg+JP+PkmJ/m+vMG7HORz2T4+22owHSSaCIMri+MT5ddzQajAQ4UX3fJYcSH/aTGG2f1y53MgSmJKFAgsfRw/8ZN2n6mzNgKkPOAnFuLl7L/UC3TRrrPeFumkz/7XW31F79FzinmvYSOEhXAM1RybUQsWR1jlTBjXui7IeahTJjGZZdierjpTuncTY0pFfIVubzTUyhW9DcQJs4ls0buHdRrTvA2VKOqBUiNVPJlVV5EphYZa/rTdwr9mQ31r+FDRQu38QZNX2pPqjnQ6AlUgdM1qArMCkqk34xdENXlLcxZftS/ucD+o2r+qe4HaCS9NNH1bEWxg3qWRsuQBAJs+2fNNSdJWcBSBZrUvnkoA7bGwFSxX0g17sDYrCZZzL3Z/KNmtkCXggHO9CaNJGHf45UQRzTKixZsHCkWv3x/6qHln2Cbddjmi5BX+9Vz5Q0+jM6AYJY9vxqaA2vyF/wjpqPp5bNKi6UgwmewppUWyBw0/YNP6sEkx9K14a+brpnWI4ZFpySyAVltI7tpLV5/qqPLEOCI8u0fDASncDvmsWbwn/ugl9b0w5k+H+EZ598Qs+LZFqOL0gZ2SpEm7pPac7DQoGBG/R/nib9t5qB1oz6SGz8FNLa
+ NdlKGTjB
+ erwgWyKkTmGcyvcAX3y01aIzv7qer2JUx25ZJ+lhfIuxcbmdKvMLg9dA4usE47EcDkEaYhAclUimQqnouGqX98UY+YC+UFcacFY4Fi1GsjvEEx2eAqtU8eVPZetQtYEQmrudmAhn3yni6cc1vBDvxXkShdokEc17EaOMRI6kL7eZiN52paCDAU9dx0B+aWFwWd9bbWF5tPoS9Rii2fj3eN6PJ1DZK+IdXUzNsJvjVMU5RmOqVRN5nvJoiGT4AgiZOxvI0RAGChntoORraEa8KsGTI1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,43 +93,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Oct 2026 17:22:58 +0800 Aveline Noir <jm5905938@gmail.com> wrote:
+On Thu, 15 Oct 2026 22:52:04 +0800 Aveline Noir <jm5905938@gmail.com> wrote:
 
-> Hi SJ,
+> On 32-bit, accounted_bytes * 100 can wrap before division by total_sz.
+> Some entries in memory_idle_ms_percentiles then keep their old values
+> instead of being updated.
 > 
-> On Thu, Oct 15, 2026 at 05:21:29PM -0700, SJ Park wrote:
-> > This patch is sent as a followup of your previous bug report, right?
-> > Unless it is very urgent, please make sure the previous discussion is
-> > completed before making a followup action like sending this patch. As a
-> > rule of thumb for DAMON, I'd suggest waiting for ~10 hours after the last
-> > comment on the thread.
+> For example, a 256 MiB i386 QEMU guest reported p0=19200 ms, but p50 and
+> p100 were both zero.
 > 
-> The patch was already prepared and additional tests were underway when
-> your reply to the bug report arrived, so I went ahead and sent it.
-> I'll leave more time for discussion before sending follow-up patches.
+> Cast accounted_bytes to u64 before multiplying and use div64_ul() for
+> the division. Compute the percentage once per region.
 > 
-> > What is 38?
-> 
-> 38 individual VM runs, forming 19 before/after pairs. The 20 same-image
-> runs formed 10 control pairs.
-> 
-> > Do you have a plan to run more tests to be able to tell that?
-> 
-> I've run longer VM tests, but even same-kernel runs vary substantially,
-> so the overall patch effect remains unclear. In a fixed-input 32-bit
-> userspace test with 10 regions over 256 MiB, the median increase was
-> 227 ns/call (+42%). The old code updated 15 entries, versus 101 with the
-> fix. I haven't separated the extra updates from arithmetic cost.
-> Maybe we could record region counts and sizes alongside VM timings to
-> check whether both versions are doing comparable work.
-> 
-> > Any reason to use div64_ul() instead of div_u64()?
-> 
-> total_sz is unsigned long. div_u64() would truncate its divisor on 64-bit
-> systems if it exceeds U32_MAX. div64_ul() preserves that width and maps
-> to div_u64() on 32-bit.
+> Link: https://lore.kernel.org/r/CANOyQmHad1vamnZT12M5yPrJ69==Pt1U0+MGw6u0MuNtr-DRCw@mail.gmail.com
 
-All answers make sense.  Thank you.
+From the next time, please give context about what the link is.
+
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+I applied  this patch to damon/next [1] tree, after slightly modifying the
+commit message for the abovely mentioned small thing.  We are now quite close
+to next merge window.  It may better to focus on making mm.git more stabilized
+and therefore ready for the next merge window, rather than adding more changes
+that are not really urgent.  I understand this series is not really urgent.
+Hence, Andrew might not add this patch until next -rc1 release.  In the case, I
+will request adding this to mm.git after next -rc1 release.  So, no action from
+your side is needed for now.  Let me know if you think this is really  urgent.
+
+> ---
+> This is against mm-new ad9f2d463666. With the fix, the original test
+> reports p0=p50=p100=19200 ms. The i386 kernel build, x86_64 W=1 stat.o
+> build and external arithmetic checks passed.
+> 
+> I also ran 38 before/after VM tests and 20 same-image controls. Throughput
+> was close overall, but median kdamond CPU rose by 0.0053 and 0.0221
+> percentage points of one guest CPU for stream and sparse, respectively.
+> Some pairs had 5.91% lower throughput or 15.49% higher scan P99. So I can't
+> yet tell whether these differences come from the patch.
+> 
+> 
+>  mm/damon/stat.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+
+The above empty space before 'diff --git' line was making 'git am' of this
+patch fails.  I manually fixed it.  Please do not add such empty space or
+something that could make 'git am' fails, from the next time.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
 
 Thanks,
