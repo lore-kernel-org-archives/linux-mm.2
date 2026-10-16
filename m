@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ECC2CCF2C4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 21:48:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 455CACCF2C1
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:21:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B5A26B0088; Fri, 16 Oct 2026 17:48:38 -0400 (EDT)
+	id BF5BC6B0088; Fri, 16 Oct 2026 18:21:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 267626B008A; Fri, 16 Oct 2026 17:48:38 -0400 (EDT)
+	id BA5706B008A; Fri, 16 Oct 2026 18:21:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17D376B008C; Fri, 16 Oct 2026 17:48:38 -0400 (EDT)
+	id A73C16B008C; Fri, 16 Oct 2026 18:21:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DE2746B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:48:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A04FC0134
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:48:37 +0000 (UTC)
-X-FDA: 85329829074.23.F18430E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 78CE8C0008
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:48:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVuTTWsY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 867426B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:21:15 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 299F81A018D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:21:15 +0000 (UTC)
+X-FDA: 85329911310.06.CD725C7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7AA14A0008
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:21:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLutAh9h;
+	spf=pass (imf15.hostedemail.com: domain of jic23@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jic23@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792187315;
+	s=arc-20220608; t=1792189273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ylh7TTsoBZmvoxuSRMyoR3bwQNz2SMz21EvQ30zmx9A=;
-	b=Q2We1O1CdbOUOcD1lQvkz/ZbIq1pxgaKPbDehJj6G+G+kkhpUjm+lyRfA8nPlATTg49qEC
-	Aoc0j6wLj+1exToJC1Rh81/wGnTqZxzlN4LceHiYchp8Iozo/0iUxYS09IpNMbblakj1Gx
-	e0FbC14SOmA/Q+v2FOMYsnYv7t+WARU=
+	bh=JbtA90jSYbvjWaAUht/ufzHaPdDcdPFD56WPRraPHlE=;
+	b=e9HIRLXQBCNXcey0uATY/vIaulXsU54x982SmnAH1UkhBnupST4SW4flQSirYT3N2LAcNN
+	GO4S6DB/dIDlAtmBBhjuWec3Za8OOrouMrtg21qNOxfAOnt5EZGlMiuW9P2tjaOl2jbWEc
+	nLqOhlxDXC1dIMzWo7cByVFI7dMQ9GE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792187315;
-	b=Mra8rnZRlpWBM6MAVsRBFqqkgW4h35QciBIhn6HWzVABiY3NbovJdW2797Ny3xgWvCnNYl
-	eOTqaTLczhVmACiBIp+Fd1P1H2oKil/q2UgJvR5SP/tAGyAQzMVxEg18Ab/x77S1e9nAFv
-	u4lv2zDLUfunEpG0OtXcqARhmTOi7Wo=
+	t=1792189273;
+	b=hGKBhcekOPlhOZPxfFu6ps4/tOWqOe3bGej1gMrCA21ArRbUKRz7gjgRg2Rb1peS7JyS8w
+	zEimSDo5BtkVAGbJuny1oC8jNVxkxd+QBgOxvfBbHfd7NnGMMK1kTjihBfz9yMoSUFmdPe
+	gxpLD9qntjCXGfsAgHuZIQtjbzsOr3o=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVuTTWsY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLutAh9h;
+	spf=pass (imf15.hostedemail.com: domain of jic23@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jic23@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B086F411C3
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:48:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931241F000C6
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:48:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B2C916022E;
+	Fri, 16 Oct 2026 22:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B971F000C6;
+	Fri, 16 Oct 2026 22:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792187314;
-	bh=ylh7TTsoBZmvoxuSRMyoR3bwQNz2SMz21EvQ30zmx9A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LVuTTWsYz6W76Thi1YXgOVaDYQM2FTrz/ArcFuNiQTA0ZvQEDAJNpG0BBWxa86LeD
-	 LIkLjWb6G/CpviF/y/xZdhoRDWIe8lbPQaINDtJPy4VdxpGO4ZByUAhR2gLK5ipTjF
-	 W74FyAZQ4sgzUkyu+2tVhebb/4ymzRPh7ywDEoGCDUMx8qfD6yDQSCVaZt3QEwviMI
-	 FBVocAahARGfvkTUOOPujFfCGQ1mP03pJacvOiNL1CJEuqQn+86kY2jbKCdaf2NQAj
-	 7knsfLzMWukW4TNSwbuD797GMNG7AcfsAWWbie4s5qP2LEToK9Xk2/nmJ9CJmxWNbe
-	 9LvY+aEbOOIHA==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c263415982eso44498766b.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:48:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwVLHOJosqIXOMU+QLoa9in97WWJJJCfhYoAvnAa6JeP4Na5wHgIoPSXBQRgKZbfXPmCTaSyvCLlw==@kvack.org
-X-Gm-Message-State: AFq9FYKWMJmDJopg0pi/tNhy9YnYNMVzD0tBqLlm9hIzrDvZLYyEVKei
-	e9AJk/PfIXTjytjngfhzxgKm7Jt+iB9QA93+7+SFcjJrvPxJQNyyu8ZIXpo6tINHwGGrIJgXXJL
-	LWpyNnVlCQKwRvH44mFO3ge+mr4SO6kw=
-X-Received: by 2002:a17:907:868a:b0:c40:aa04:18d0 with SMTP id
- a640c23a62f3a-c419da41336mr78750666b.17.1792187313507; Fri, 16 Oct 2026
- 14:48:33 -0700 (PDT)
+	s=k20260515; t=1792189272;
+	bh=JbtA90jSYbvjWaAUht/ufzHaPdDcdPFD56WPRraPHlE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YLutAh9hSCOh6gtplRHRSIQlgjQ3k26KGbWzUG4uFVnvCToVBjgeiOCUZGpysnN5C
+	 +w4WXEJTJ1BNR9Vr2u6wXhbiy6Oq9ama6WongS/4PHUrwyPRWFFH/FCirjbC1heIgK
+	 /o7VsuTXuC5gSDJzRdKLq9PNqqWoa2LItHW0crT8mOIP4Y6WK/Nf34xKU73xB6UaJ+
+	 SywUNWx1sOSxrE8zMfgbCuWlZ8bwzx8IVBp4ytcApMSBmLjMmY5uB4PaFMmtqv589h
+	 J4ANggi93+r9PZAPBIIpK9dvAEjnoYbgNB1+3CPxyXsAbnX8+ksOHVZZLMVehAjeJ/
+	 RVS/DaVoujrOQ==
+Date: Fri, 16 Oct 2026 23:21:03 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>, Vishal Verma
+ <vishal.l.verma@intel.com>, Dan Williams <djbw@kernel.org>, Miaohe Lin
+ <linmiaohe@huawei.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Breno Leitao <leitao@debian.org>, Ira
+ Weiny <iweiny@kernel.org>, Li Ming <ming.li@zohomail.com>, Richard Cheng
+ <icheng@nvidia.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
+ Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, David Hildenbrand
+ <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Kiryl Shutsemau
+ <kas@kernel.org>, Harry Yoo <harry@kernel.org>
+Subject: Re: [RFC PATCH 2/5] cxl/region: Factor decoder poison-list
+ retrieval
+Message-ID: <20261016232103.6497bbb2@jic23-hlaptop>
+In-Reply-To: <20261010162017.62506-3-shaikhkamal2012@gmail.com>
+References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+	<20261010162017.62506-3-shaikhkamal2012@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
- <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com> <CACpmpofN-JfCgJtW9D0wNu0_pL1pRWGfNphUQnE9Bse-P5tHpQ@mail.gmail.com>
-In-Reply-To: <CACpmpofN-JfCgJtW9D0wNu0_pL1pRWGfNphUQnE9Bse-P5tHpQ@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 16 Oct 2026 14:48:21 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
-X-Gm-Features: AclHuK_zAfaGRUrzaXzEs4qzNQZy6mar-GxIugKXPKJjvgPfBJdYRUyLH6KYsfc
-Message-ID: <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
-Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 78CE8C0008
-X-Stat-Signature: 8cwdjnb34fem3qrzarbuci8dnnnynu8g
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1792187315-482923
-X-HE-Meta: U2FsdGVkX19Tvt8w3xyHu+iMHFjwEsmFCTJkG7/ZuNqYRlSNax+llggiKB4j5QoHAdXlnY2bWMTJPHwLBhlpJLBv+oC14sT5xm/XPNnJQvHuKSnhifFIksxGXK4PqZJUZDrpOjbrlv4q+b5Xk5gsO6vBMfK//ZNNHyA+G+qRWPnCdnQ7AH/uxJTxGBmAZcCHxUPQFE4FI06WLL5Hroqxc48kKX8gdfxX4q07pmEC12jLuJNV6TUOW+s15t9R2twUc/8+MxOxV4fHyznbJOffEcRKAaEjWuUgo6FmKNAP+D4wg5fcRR7BNur1ahoVbpx8WQscpIl0KYbpZTzTxZ4LwLUeMsymEb/3Xcz/FqbvM5Da8owbs61EEMlLKLmPI8PJWoJwLvTZu7MDdzQON93BerfFYlbNKGdqHHHHRKvBakbEQ/FTSoLaKsefC/ERKaq0jq3EC16TcR++iu/nIumcBeB9mbjAyECXqYKWqmBODerr0vI6swiBVnZnotMeokpDToc7idaEBVJ2tNhCWGu+16IY5qeNBURCtNSYxeMhji5PttkbI8T4a6XlcR9tOULOAJPsFDpIs/Cvtqck4+mxIg18VpFNkYtuB4FeQIwbOBheub+uDCjVej7/3z0DMRPKKMXf2Yryi4tEv5KXst2NG0t/5103eOPW9k9luDGBXg9SsKDCLh6/+kReyc8ilCHqpskQAHxKLE3GUdYRiPGM2LHXPIzirnXQlUKfDcaKBfTfNbrG+wIFoeYECohKybWIdVFLtXPyODUjW5LhmN8ydswhi01cnQOUB27TEoefFZOPduYU2A9lcrJ12YEEk8TfD9dH9bxgNz9w8XvsBzjp5KsXeXtzf+zNcRpj3EEyVTTVsC+XTmGij2lb7fCWUcpFufaIHbEoQLtzHIya8vuVpwWzLatbj48sMEG6C0PBj4LCENk0rzP8vCR7LRtgvbsVpjRK3qyfRZfAPqA7H5l
- 0MT+ZS6f
- RFJ02K7cApDYk9wFA522kBvzv3EYCX8Hpqiv/X/UqJYjVV/cDC24dWpEc3vN6gvRUIYSGnJ8BhunTkQzpZtxyqFqMULY858fN4hkvmKNQvOtDI7lOAePVE7lE0dHGyR4r35Iwe3dU+7mNctm6Yk7+pKoh+IGu3EpOEEi3s3J9xMSdWZ1wTGkcT3Z8u23iR6G7jsbgbo3JWML/5W+NZeDQs/edfAD8nr6trR/Cse0oqYVKWQ07l0q4wR8zObKylaA0IwRrvseZnLWKLjTnhbkEWT4rWAmztcVB3MBUAmy4YlE0xcW+3nGIhU2BnmUrh36mKmytDQCRV1oXe/Dx7Yk/i2cJfZgWSlM3NVm2ToeBiCKLsC1tpj3zdb/HA/raK9JVFu2DcyaagTPe71rA7Qix6QZixg==
+X-Rspamd-Queue-Id: 7AA14A0008
+X-Stat-Signature: sjnchketgjmxsfgwm354hyskbhk45sq6
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1792189273-849249
+X-HE-Meta: U2FsdGVkX182/2+gL063kq2ApAc/gNNwHMP+m+Pym8X8L1QB+L19ZN9wPf7iyAXVt5/Cw6mo/d/9S/lbL9HqJvTeQx/g1HBgBE2srjS0wxD08h8cu0HClUXlaQJAaZLq1dC6UYtXQI+m3E0PpnoXLYUv2qMlf0/QAEHbOVN3PZRU3SfLsBnDa7ANFN6PiBfBq325Bp2/d+ZrA98hwbB6AY5w/QTFgU27jkV4vGLkUeui2xPx9PHZjrK8NVpYraIAs0r/S7Evn/DgU71qKendixTDXNp+odHVvAm1UI6f1Yje8kyFgE+CnpfyHt2NST/wgsTEPkkguNdgD2npz/lb8qFawGMcYdU/nCAMgQleeUoIx9oBbGCcXUO0ocSQrzH+UGqZAmwuARhVuoz79Pzw3wcGDjzHGwNTKQ3k/7clxtXJ5ZLa1IlXTSyd+CSJbmDvCzqKa9Z5oYrlqc1XsMEcONoSBagQ49sdMFGMT8O1dQpjt9JrbdBpsL2/GIulhzW9R0esIQ5Ug4M4iIp0rx47N/pw0fOSEJLkAorFUN8YC4e3ntG1thikGm/QQYeOiNt93UeWxfzriTwGCKBmZ5YlccUNqHTuc6RM6wFtMRroQ4RgzT6PJmrCqCSUHlPdNKi4AF0VRRp0cOEIkZ+KxYwHn+szqhkkw+mPcRyGpH/hZTtbdQ6Pbz2j67DkmR4+sApUru3HgncL4zsIKikLVL/HlZDsTlULwmVDP+dBSTkOaHsbR2hvg//K8YpjvJt3ubNQ873/zgbc1cEFwkQrHqZC3/hCCxwvzJGAfzyhhilbDtnRo182eGmHHYTxpwhA0lrwVA83HddFTHwZt/nCbGfbOygFm0TEbGeyEgM1xjr3y57iXEJN3jB5aA0w4IQk1lw7pPmBtpEKWz9iJyhhzHpMuaQAr2eAZOB91K/wRB79w3jCodvJB7ipyKv6C2215RkQj8NIt/F88GxDA/+hlgu
+ NKAdIqMC
+ uUZQny35GhzyPjt2w1AGrYtV3PcAIMdcxzo98Us6ECwbDi5Xj3u+fZKj8d9I/8P18uExxtGdhPZ0T+1VXPO7e2hSdI1kEhUsPb7u1/hVTYSxjzPZ8mfBvQ8RpnRJw7aqj22jSZLJZcFAMJQrD07wMVTKdAXTbiDzMQe0Glhli42mC1tizsFuhv2JIT1lpw0n2xCIsj/coTYtT2WZCuwL5dlXuLjzC1KIXxFA1e+14VfXx6U1U4zVDHOZjwdtqCYjz+d89Fxqpv6NRXgB+yyOVDYWORypLt+Ya9rmV971ruUFcnVyZVuZwEQHuSPs3cdK68NlC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,117 +105,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 12:05=E2=80=AFPM Kanchana P. Sridhar
-<kanchanapsridhar2026@gmail.com> wrote:
->
-> On Fri, Oct 16, 2026 at 9:14=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > On Thu, Oct 8, 2026 at 11:28=E2=80=AFAM Kanchana P. Sridhar
-> > <kanchanapsridhar2026@gmail.com> wrote:
-> > >
-> > > v1: Batched zswap_store() with compression batching
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> > >
-> > > This series is a spin-off of "v14: zswap compression batching with op=
-timized
-> > > iaa_crypto driver" [1], and focuses on the generic crypto_acomp and z=
-swap
-> > > compression batching enablers. Resuming work on this series following=
- a gap
-> > > since v14 (January 2026). Please note that my email address and affil=
-iation have
-> > > changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@gma=
-il.com. I
-> > > have retained the original Intel sign-offs on prior patches for histo=
-rical
-> > > attribution while signing off v1 of this series with my current addre=
-ss.
-> > >
-> > > To summarize the main contribution of this patch series: Batching is =
-introduced
-> > > in zswap_store() of large folios: we carve out a large folio into bat=
-ches of
-> > > ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store ea=
-ch
-> > > batch. Moving the fundamental operations that need to be happen to st=
-ore a page
-> > > to now work at the granularity of a batch offers opportunities to opt=
-imize them
-> > > from these perspectives:
-> > >
-> > > 1) Utilize existing kernel API that minimize obtaining locks for bulk
-> > >    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
-> > >
-> > > 2) We keep the working set for each of the core store functionalities=
- (alloc
-> > >    entries, compress pages, store pages in zsmalloc) to be focused on=
- a
-> > >    batch, thereby minimizing cache evictions and benefiting from cach=
-e
-> > >    locality.
-> > >
-> > > 3) Along the lines of (1), the main zswap_compress() batching routine=
- obtains
-> > >    the acomp_ctx mutex lock once per batch, and releases it after it =
-has
-> > >    processed all pages in that batch.
-> > >
-> > > 4) Any zswap store functionality that works on a batch can potentiall=
-y be
-> > >    parallelized as a next step, to further improve performance.
-> > >
-> > > Performance data: usemem with 60% over-commit:
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > Validation was done with mm-unstable as of 10-3-2026 (Baseline) and w=
-ith this
-> > > patch series.
-> > >
-> > > Testing was done on a Chromebook with a QEMU "vng" VM running in Cros=
-tini.
-> > >
-> > > Chromebook Diagnostics reports:
-> > >   Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
-> > >   RAM: 16GB
-> > >
-> > > vng setup:
-> > >          Memory: 7G
-> > >            Swap: 3G
-> > >     Pinned CPUs: 4 (E-Cores: 4,5,6,7)
-> > >
-> > > zswap compressor:
-> > >   ZSTD
-> > >
-> > > mTHP enabled:
-> > >   64kB
-> > >
-> > > vm-scalability/usemem setup:
-> > >
-> > >   cgroup memory.high: 3G
-> > >   4 usemem processes, each allocates 1200M anonymous memory, reads th=
-e
-> > >   Silesia dataset [2] from a pre-fork-allocated buffer into the 1200M=
-,
-> > >   writes to each unsigned long in the 1200M, sleeps for 10 sec, then
-> > >   frees the memory and exits.
-> > >
-> > >     usemem --read-silesia -w -O -b 1 -s 10 -n 4 1200M
-> >
-> > What is --read-silesia? Is this a local change you made to usemem?
->
-> Yes, this is a local change I made because I wanted to get compressed
-> lengths besides 565, which is the only compressed length of data
-> swapped out from the original usemem.
->
-> To replicate my setup:
+On Sat, 10 Oct 2026 21:50:10 +0530
+Shaikh Kamaluddin <shaikhkamal2012@gmail.com> wrote:
 
-Thanks for sharing the details. I am having trouble reproducing the
-results, mainly because the standard deviation seems to be too high to
-make conclusions. What is the standard deviation in your runs?
+> poison_by_decoder() performs two different operations: it queries an
+> unmapped DPA gap preceding an endpoint decoder, then queries the DPA
+> resource assigned to that decoder and its region.
+> 
+> Factor the second operation into cxl_get_poison_by_decoder(). Give the
+> helper an optional snapshot so a later region-probe caller can retain
+> records from exactly one mapped decoder. Keep the existing endpoint
+> walk, skipped-DPA queries, partition-tail queries, -EFAULT handling, and
+> trace behavior unchanged.
+> 
+> Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+> ---
+>  drivers/cxl/core/region.c | 41 ++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 36 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index 75b8092e6dc2..c72524923b38 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -2940,6 +2940,40 @@ static int cxl_get_poison_unmapped(struct cxl_memdev *cxlmd,
+>  	return rc;
+>  }
+>  
+> +enum cxl_poison_query_policy {
+> +	CXL_POISON_QUERY_DIAGNOSTIC,
+> +	CXL_POISON_QUERY_PREONLINE,
 
-Also, I tried measuring the latency of zswap_store() itself through
-bpftrace, and it doesn't seem to change much throughout the series.
+For now, perhaps focus on flags defining what you want done, not when the
+query is happening.
+
+> +};
+> +
+> +static int cxl_get_poison_by_decoder(struct cxl_endpoint_decoder *cxled,
+> +				     struct cxl_poison_snapshot *snapshot,
+> +				     enum cxl_poison_query_policy policy)
+> +{
+> +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
+> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+> +	enum cxl_partition_mode mode;
+> +	u64 offset, length;
+> +	int rc;
+> +
+> +	if (!cxled->dpa_res)
+> +		return 0;
+> +
+> +	mode = cxlds->part[cxled->part].mode;
+> +	offset = cxled->dpa_res->start;
+> +	length = resource_size(cxled->dpa_res);
+> +	if (snapshot)
+> +		rc = cxl_mem_get_poison_snapshot(cxlmd, offset, length,
+> +						 cxled->cxld.region, snapshot);
+> +	else
+> +		rc = cxl_mem_get_poison(cxlmd, offset, length,
+> +					cxled->cxld.region);
+> +
+> +	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM &&
+> +	    policy == CXL_POISON_QUERY_DIAGNOSTIC)
+
+This is becoming odd enough I'd add some comments saying why
+we are eating the error return.
+
+> +		rc = 0;
+> +	return rc;
+> +}
+> +
+>  static int poison_by_decoder(struct device *dev, void *arg)
+>  {
+>  	struct cxl_poison_context *ctx = arg;
+> @@ -2971,11 +3005,8 @@ static int poison_by_decoder(struct device *dev, void *arg)
+>  			return rc;
+>  	}
+>  
+> -	offset = cxled->dpa_res->start;
+> -	length = cxled->dpa_res->end - offset + 1;
+> -	rc = cxl_mem_get_poison(cxlmd, offset, length, cxled->cxld.region);
+> -	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM)
+> -		rc = 0;
+> +	rc = cxl_get_poison_by_decoder(cxled, NULL,
+> +				       CXL_POISON_QUERY_DIAGNOSTIC);
+>  	if (rc)
+>  		return rc;
+>  
+
 
