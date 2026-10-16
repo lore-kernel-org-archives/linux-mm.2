@@ -4,138 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A4F7CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 19:05:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7AF6CCF2C3
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 19:17:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0DF26B0092; Fri, 16 Oct 2026 15:05:07 -0400 (EDT)
+	id 54ADF6B0088; Fri, 16 Oct 2026 15:17:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC1C16B0095; Fri, 16 Oct 2026 15:05:07 -0400 (EDT)
+	id 4FBD26B008A; Fri, 16 Oct 2026 15:17:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB2556B0096; Fri, 16 Oct 2026 15:05:07 -0400 (EDT)
+	id 3EBC06B008C; Fri, 16 Oct 2026 15:17:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A0A6B6B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:05:07 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A860B8058F
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:05:05 +0000 (UTC)
-X-FDA: 85329416970.21.A2EFBD2
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B71CCA000C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:05:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GU1m5xrc;
-	spf=pass (imf25.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792177503;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F2CB56B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:17:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66FB5C056D
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:17:51 +0000 (UTC)
+X-FDA: 85329449142.06.74992DD
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9D30340009
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 19:17:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf12.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792178269;
+	b=V27B6RUI9fQ8rE7LLYhGuulZ/+igQcka65QYULXfWvDjChIJRrnPLcReDPkzhKTMk0U7rV
+	sNOEPo4iwWbYgPgAzFfF5NfgW9rywyG5U6pR1mUjmeywolLyRN2+bb7bwe6l09HuLkLGMk
+	r8QJd4BwdtgWcPl4Aj3bLjaO0QtZaE8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf12.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792178269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eFr5a0FeYIfPj3OlM5ijOjEBoPrB3ZZlxk7SDs3PmPw=;
-	b=NGqrLrJD4/l9b+9DAXg4iAr+WnFSNZZgDfZIu+7CTifSZOT0jiVNNpOYRLSkx7MZdQ9m+D
-	rcIwAKYJ2MgPyRJa9X/9NjNh30FTY7pSaJsluqk7JLfiiVaQrD5h56ACAmIMWOnj1b4BBT
-	CLoGcWRX6toAmlVIaV8FrI51DHskv/M=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792177503;
-	b=YiJ3kF1GMMbCz83Nm4XCQ360wp0E67IL0A6qAsm0scN4nRoGSnDwbW0H+NhZUuc/s8GlPq
-	2CLNHYa/48KnrclnXkrW05+KSZFtN5+uKkNrIQ+bVcaWDDQp5yG+x0HXKN2hk9Usv8q0or
-	iQaPFzdydsdoRaaa+t9AY6mzuDsb0Z8=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GU1m5xrc;
-	spf=pass (imf25.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5bb7c6980f1so229479e87.2
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:05:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792177502; cv=none;
-        d=google.com; s=arc-20260327;
-        b=K9CJe4dsLFkHRyPBnbKSqmrQ94Ypuez3i84mfcToWRhU4/9+GWwXbxA0R7+X67m4Kw
-         yuHwOzCq27DYhnCXKAQjIwj3LdUv0pLy8krhI4tXGFjRZAX8Q22QUU51e93MQtsA0shP
-         KgX2NfB3M/5FnOKGBoBaBoHEceGvXrzwRuvChLQ6ayg/egNRq5VEKtON/219ZuP2mUt0
-         Ve9zTPqdY8tHZY10vYMFJlXIvXt7OXiEzteSlMp6NirCft84h7Oale9iVORSqkKKl+9O
-         zy43yS/Entv0XpEHJDBlYxrmXhWU4IlCDlG9DIXK3PT/0gFSJYAyHqabNsrTzsoHTdI0
-         3Kug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eFr5a0FeYIfPj3OlM5ijOjEBoPrB3ZZlxk7SDs3PmPw=;
-        fh=HRT5Yxnf5V8mKR8HkaSXvIGu9hsNVDdH7Uz2huWVAFM=;
-        b=ngdVbtMmh5jFHOkdpKwhMJGIEPpD+C7l8dTq9daJhiQua1twECwdojKmJVDoitoSoe
-         URuB4NoRm/HpbVRc8l4vEr21oPuJXJLuIpF6w/DGOY1J4Xfl/sHFu+Al/dXxUIJ/piwE
-         gPJZxOo3rztBi+kjTBdDi/cc2HfWcMQ8CZFMR2tCr9OtgsrwksHDoBtcblLIFfEoNhyt
-         bnuSJGCUzSBzxM5hfO8ZECnCdSDTusUGkKoaPL+GNAbqO3Alk3rV6x3whAF9x8pOMX+n
-         qgR8GD3sxQjnFmuAPAcx0umhdPE/X9qFF1i/7MPIC7Mij+7W4k+ysKxIWO38QMRS6Hza
-         u1VQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792177502; x=1792782302; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eFr5a0FeYIfPj3OlM5ijOjEBoPrB3ZZlxk7SDs3PmPw=;
-        b=GU1m5xrcTUE3FzRW4eIqWaM5tQH6plORWeTf3KBLKvTgjrUqi/PCvzmMbjWwcJ//ha
-         pPwKyb6PbCO5RmF3AtpH1CYbLNOcyZmzvi703lezGpyKVJzy7L1g2E5FMvowH4IF8/Cx
-         J+X0KxxPJQJ2L5FGSyznyis5CPA1eaMKja1Vlh/aoKZBeTuIuaTlQH90xOcAOKqxH3Jp
-         fpQQ0oFZXvAsxemgH2wtgF5zZdVbRZ6FALSj227LCcMNclyfXEGtfeF7SBggmjJBUq/D
-         JeiSmcPOW0rYp5NnQ03RHzozthE5660SJ69PrsRi+dxmd+zbnNEaPv/WrQG3bV1HZklC
-         agbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792177502; x=1792782302;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eFr5a0FeYIfPj3OlM5ijOjEBoPrB3ZZlxk7SDs3PmPw=;
-        b=HgPNCEFbpn3Pqm0fMpMpRbvuw2yrVRM5sxGNrUbMU3VykpwGAxn9kqLya8iUwTJ+Mo
-         p9rPuIPSnHWjmzH8iUJJ1YaWgwvKSH1O+eQy9gAKeGgcWTh8X3IezSGJGTFMZWmfp/MZ
-         VF/0IhPJO4i0qiSce2TGd3brFTTVTOJiwiv/HCgSESz39A/sxPdHr0GL2rlA9C9zT4hd
-         g0yvNBQHf8d4tgUP+RxSY8yVqSbY99cSx1Kkq8mpqpBhdzm5TmjbdBCJHCfDVqLzOvbb
-         7G3IUJR7mR/YyULOZCdyo5vs8SOCKgs5YkgkGwmUcWbQHRZYByrHp+IuJd7u0EOKMdCr
-         pJXQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzANZp1kSOCVk2LBQXaVFew3HjWcdTZ0YXaJSaJbi4jOtytwnWGKJ+dFPPN7HWG2uKH9M3AW7RCvQ==@kvack.org
-X-Gm-Message-State: AFq9FYINpvITT7jjmQB3Vog8/q2UWyO9Nay+K6GmmrYkMn9ZQe/RjSRD
-	eA8ThshbYH3Q+j8MWk/Ae8eaMChkUgzHWoF2nBbXTElw6AE8aGmO0gJgG2nRjehLQbF5p9V8RKY
-	BIMZnnv9M4TBFpSxBeW1827HugG55UWk=
-X-Gm-Gg: AYBFou0aCceTpv2xb5rgV+9ABeOGmm0qvjxgrQIGmjlGD+PYuJLbntDeZp74215fQw+
-	/6EeIweXeNCfmFrp0TRU1a3KcMmmIOpShZoquTRSrvdYQNhZ5+g8ycWtHkuPtI5avKodX4aQ4Pu
-	wZwONj8K56hRcF7pdA9D3K64gEzVhR6Ei5lgQouOGIiHuFYKs9usheuEGigTm8C30f3+eHRcOme
-	PGzNzIbaKHyLnFy3BTrTcOmRx4o+o6ZRc3Yu9W4nU4/Q5Pwe/DjFnXN+m0FontzuiZqg9dEE2tE
-	wR8BfK5X6d/exNvJ8QovRlYnqSnoS1ohFaX4eCgIJgQWQRNKVYqd0Bg=
-X-Received: by 2002:a05:6512:3d1e:b0:5be:4d3f:bcb with SMTP id
- 2adb3069b0e04-5be509f6406mr140553e87.6.1792177501725; Fri, 16 Oct 2026
- 12:05:01 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=tYDMWR3Kgu96vBoKt1AdwRKY1qaTCGCHODIMs4nqg5w=;
+	b=hDTI7b9V3fEdO497pBv3jnPI15spNbS5We+RQfynaCuPRUc4bH3po9l06LTpy8Zfg673DG
+	grNVHJlv7nqGVMc4UErFMbW6b4014oTb/h+hoecHIZwORpCzfvwtO4AeFyRokRITR8A2uz
+	ZQlPFzuC1mXTkJ4OznPVcAE6+b8WMU8=
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xHnQw-00G6ng-OX;
+	Fri, 16 Oct 2026 15:17:38 -0400
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>,
+	Deepak Gupta <debug@rivosinc.com>,
+	Zong Li <zong.li@sifive.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-riscv@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v1] riscv: mm: Make ptep_set_wrprotect() atomic again
+Date: Fri, 16 Oct 2026 15:17:38 -0400
+Message-ID: <20261016191738.791061-1-nickolai@csail.mit.edu>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com> <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com>
-In-Reply-To: <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Fri, 16 Oct 2026 12:04:49 -0700
-X-Gm-Features: AclHuK9MIvQEnJq535pIpXHoDNUv0NJGjcL6pnvPWj57xwMyrngG-QJeAgr-Nsw
-Message-ID: <CACpmpofN-JfCgJtW9D0wNu0_pL1pRWGfNphUQnE9Bse-P5tHpQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B71CCA000C
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 614744phmmbcfx3ij9yccozx4oxfxnds
-X-HE-Tag: 1792177503-460521
-X-HE-Meta: U2FsdGVkX182951CDGjNJOwx/Cjp4a2inv9VIQ30NUs59xA3/ljpTur462pS5NhrH4yEFFEgM9HORxGYADBuyOv328D8sukh+PgMyytzVozLYeeBT5PpNYdNNCpe6d19GNbFcoxplfr2vG+Do6n8YcIMonXtO0mKxEBHdNHGaj4QJAPv1/R8YYriJ5e9vWrUO4dAMTcDPSd7cDrpZs3TlIp1xJ6omHRJ2dzObri9rCbLbIbOK5+DCgYh7VmCxj/rMgRhZFIqo1e4rhOErtWwaLkppVlf9jqNdtfCiogPDKfLq8BFBosRmB4z5Rui7ngj5xSdYMjHGfVTVF+rJ0JIqOimo0kmOO91yg+4pxm/9Nt70ET6R6tByd8SRfBlTMIzgrE2Dpc34/UAsjI1vub6B/rmdxSZSao+T+nvtOvQiKrBMSBhBO5fWgZDrbNgIdS1UTJqoFI1yy+zD/z+5sTyZyq5ORZ/Z0YNOi5waE8lW7/u5kgvCTYnk3quTkIcyKXHGLfoFXtMjZ4ONta9IzReYTz320x1SsVE2dxx46AWRCmiBeIYsXkL8M/WeSRur+MJA5mIVoeDzyoq/csIf4NHTM0BX/qqGSDeQgR8AQI7XoehetvmGOcAbmmJCf4audIqeFCkut2DopFXVU1Hn/MIEjDPKzCB5DQj9/dlCZsZt0P5txzo7lzVMxtoeutHbsEUIwwqKaswNtyxjr6SIfjAMWxf4bxlzd3fCCCzM5BAaTOt0sy83ZqUD7PgY6FNAX4ngyMABxJrBAKP7aUtHXY2HPWeLITg4/YvexigtzGx0tCDEHgvtmbZJIXzKN7DXmmc1z8vuRRjk71KjV/qjC+OoQKTgl9CsNZLvCVyX8inXt6PfJTM7YxIwKhxdyVuiPW2rdUHvm10wGEtsJ1vyk4lD/2P8yvC4rXvCIqdo/cG1j6wKJoGnlronMhRJgYkrQdMVcDozNMeFl3RHk4PgHi
- PykuiS5c
- lgj/FtGx91ryjoaApmcYR2Q78D6HkP7n6fkPAbRSPrmPrfITCAg/uvrCbfZWpqjLbnX5NbnR7EWUTmXvI09D4OAh1WJTa4XGPSuqk+vKM561cchYrUDiS4qghbpgfS8h08wqXx7y/ERTv9pnv8r4HiloDXs7EzXPZlXG0lsKtS77ZwJtijvLcH6wtzvRyyYUUKbO3JkGOcA/iHLC48biHqEqS6u3C9dnh7uv4iQQdz1gRSqOF2ThiUZ308wEgsoOFmLU+W+ilFajvLJqVFKON3HCfdKGp9zmcjqjlUXGphiaZKihd7wpEtQIs3HOn32Lk+b15vLYrX1zX4sX+TgL32oYdYQbJBPSGjoE+kN14B1J70bkjrAorS8gicExRQMSQnuTaJty5Y3kcLzP/zMSVQolg6ksFG4HLP6uV7rX5MJu2nLuNYnG1HBuAC3tMciyex1+km6mW1/bBceAT4h7lfmJVWpR8SI8pcNI8h7JOSbD5hOuTcxfAj7/hi5MnxMWscvqS/DvhFZTC2BN/5TezoIG035DSese3TQuEOnNZAugSsxG+dsMrCLP9TQ==
+X-Rspamd-Queue-Id: 9D30340009
+X-Stat-Signature: 1xtb35b1gwk59zeyqo1j7eraxd5fknab
+X-HE-Tag: 1792178269-682970
+X-HE-Meta: U2FsdGVkX1/Qnhw6dXF7+REzsygRt0rpaj5g8pwOOLZNH99+Ep4c68l4vvFXyqzGh50vFtL/FQHCAjC8VmpVnuOOFfaFAJpHVo5vPGXLaUjTsEnYYN5YkMPjh0GkEWjP11qwbm7b4VNDXdHZ4VkldmquR6s6J1fnZU8WHr/LgI+jFUq+/QpXlJlBXS4y/Ko+H3X6Mt5LEmN5zcSWSLlDyVBOf0NUft9Qd0idbrmMmsPg8FSE9yCriZ2p5zT4Qpxs9/GhsU/ZuVQ7HbAgz1wBrGCJ0ECwDTLLFilc0OywNgCcgKnsGQYOFsfEYHhZmqCiDkUZiQigK8hvnaFWqs8DXNB9wRSrj3mI9G80bjqLGEYeYbBgezL/GGALGENbxSXN5s0EvFrkJnDwXSbkDs+D+BXZ5kH/OPKVSc3jfgbjoZ/pH21si+cG3IJPHgWoKYJkCSZChMW9SRZdgFxDgYaJQn1mA3jsISqVp61ilJiqPyIfo0X1JCnhe2ZbqghoTmvXJw0PUTMuNjXXYxPVudxV7Edna6WSehMKCbD1cpQD7hePzLgL61STTlW2FlzImZWAdNqq8810KjI2BgykjcThUcnPOojUkDEMY1s3YWdGbZXLrvF5unCuPFs75mp/UHXOETYyM3l5feKF/AYhdtFYp0ANr23XgpeHTNBgx12rIwigAekWpcU4XkdcSdqkfWZr/X4ADHJIubJ90OLCBNUbzusY8p8BTyl5uaLt4OCemNpHqQms0STpuevI+WnmgjwxCYRD2X6emgxBz1Uavnm27Dfbu0Zp8WAADOc1/zzTCzZmZ1+5vF1SsWArSH+EhLqp3isgUq6AL/Usp8cv2wxd0lYivJtMHUcjk7Gr0m6rOAKXVsQuG+J03qW2LOGvBQytnoXzV5nZ9/5ASLvwgtmNUivPZ/lGPeyXqaEGoNlBLGvt6Cz5WEro63mSLijzOdEJr7weac8j7GlY2C5uvDL
+ qKRYaFHS
+ 84StsDHFTi5O0qi+O9te0nT1aGTJolS4N3USMxyCND/S2AuMN+mzgz8H2nSgoo89RPcelqZbQ1FCxeW0B2DTtiUf9/GLpyjy7GzGwa6BkqBDeLYMERnndmKcG+1J6Fpp35vIq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,187 +85,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 9:14=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Thu, Oct 8, 2026 at 11:28=E2=80=AFAM Kanchana P. Sridhar
-> <kanchanapsridhar2026@gmail.com> wrote:
-> >
-> > v1: Batched zswap_store() with compression batching
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> >
-> > This series is a spin-off of "v14: zswap compression batching with opti=
-mized
-> > iaa_crypto driver" [1], and focuses on the generic crypto_acomp and zsw=
-ap
-> > compression batching enablers. Resuming work on this series following a=
- gap
-> > since v14 (January 2026). Please note that my email address and affilia=
-tion have
-> > changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@gmail=
-.com. I
-> > have retained the original Intel sign-offs on prior patches for histori=
-cal
-> > attribution while signing off v1 of this series with my current address=
-.
-> >
-> > To summarize the main contribution of this patch series: Batching is in=
-troduced
-> > in zswap_store() of large folios: we carve out a large folio into batch=
-es of
-> > ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store each
-> > batch. Moving the fundamental operations that need to be happen to stor=
-e a page
-> > to now work at the granularity of a batch offers opportunities to optim=
-ize them
-> > from these perspectives:
-> >
-> > 1) Utilize existing kernel API that minimize obtaining locks for bulk
-> >    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
-> >
-> > 2) We keep the working set for each of the core store functionalities (=
-alloc
-> >    entries, compress pages, store pages in zsmalloc) to be focused on a
-> >    batch, thereby minimizing cache evictions and benefiting from cache
-> >    locality.
-> >
-> > 3) Along the lines of (1), the main zswap_compress() batching routine o=
-btains
-> >    the acomp_ctx mutex lock once per batch, and releases it after it ha=
-s
-> >    processed all pages in that batch.
-> >
-> > 4) Any zswap store functionality that works on a batch can potentially =
-be
-> >    parallelized as a next step, to further improve performance.
-> >
-> > Performance data: usemem with 60% over-commit:
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > Validation was done with mm-unstable as of 10-3-2026 (Baseline) and wit=
-h this
-> > patch series.
-> >
-> > Testing was done on a Chromebook with a QEMU "vng" VM running in Crosti=
-ni.
-> >
-> > Chromebook Diagnostics reports:
-> >   Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
-> >   RAM: 16GB
-> >
-> > vng setup:
-> >          Memory: 7G
-> >            Swap: 3G
-> >     Pinned CPUs: 4 (E-Cores: 4,5,6,7)
-> >
-> > zswap compressor:
-> >   ZSTD
-> >
-> > mTHP enabled:
-> >   64kB
-> >
-> > vm-scalability/usemem setup:
-> >
-> >   cgroup memory.high: 3G
-> >   4 usemem processes, each allocates 1200M anonymous memory, reads the
-> >   Silesia dataset [2] from a pre-fork-allocated buffer into the 1200M,
-> >   writes to each unsigned long in the 1200M, sleeps for 10 sec, then
-> >   frees the memory and exits.
-> >
-> >     usemem --read-silesia -w -O -b 1 -s 10 -n 4 1200M
->
-> What is --read-silesia? Is this a local change you made to usemem?
+ptep_set_wrprotect() reads the PTE with READ_ONCE() and writes the
+write-protected value back with atomic_long_set(): a plain load and a
+plain store. Commit 540de7ade1e1 ("riscv/mm: update write protect to
+work on shadow stacks") made it so, replacing the atomic_long_and()
+that cleared _PAGE_WRITE in one AMO, because a shadow stack PTE
+(XWR = 010) also needs _PAGE_READ set when its write bit is cleared.
 
-Yes, this is a local change I made because I wanted to get compressed
-lengths besides 565, which is the only compressed length of data
-swapped out from the original usemem.
+The page table lock the callers hold only orders the kernel's own PTE
+updates. With Svadu (the firmware sets menvcfg.ADUE) the hardware sets
+A and D in the PTE itself, atomically with respect to other accesses
+to the PTE, when a hart accesses the page through a valid PTE whose A
+or D bit is clear. Such an update between the load and the store of
+ptep_set_wrprotect() is overwritten:
 
-To replicate my setup:
+  fork(): copy_pte_range(), parent's     another thread of the parent,
+  page table lock held                   another hart
+  ptep_set_wrprotect():
+    old = *ptep              (V=1 W=1 D=0)
+                                         store to the page: the walker
+                                         sets D=1 in the PTE
+    *ptep = (old & ~W) | R   (V=1 W=0 D=0)
 
-1) Setup Silesia dataset to be read by usemem:
+The store has reached the page, but its PTE now says the page is
+clean. The parent's writable TLB entries are flushed only after the
+whole page table has been copied (flush_tlb_mm() in dup_mmap()), so
+the window is open for every PTE that fork() write-protects. The same
+function also write-protects PMDs (pmdp_set_wrprotect(), used by
+copy_huge_pmd()) and non-NAPOT hugetlb PTEs (huge_ptep_set_wrprotect()).
 
-wget https://wanos.co/assets/silesia.tar
-tar -xvf silesia.tar
-# concatenate the 12 binary files into one
-cat * >> /tmp/silesia.bin
+A valid, writable, clean user PTE is what MADV_FREE leaves behind:
+madvise_free_pte_range() clears D and keeps W (clear_young_dirty_ptes()),
+and the next write to the page is meant to set D again so that reclaim
+keeps the page. When that D bit is lost here, try_to_unmap_one() finds
+the PTE clean and does not mark the folio dirty, and
+ttu_anon_lazyfree_folio() discards the page: the data the other thread
+wrote is gone and the next access to the page reads zeroes. An
+anonymous page in the swap cache whose PTE lost D is likewise reclaimed
+without writeback and the next fault reads the stale copy from swap. A
+lost A bit only misleads page aging.
 
-2) Modifications to usemem:
+Hitting this takes a multi-threaded process that forks while another
+thread writes to such a page, on hardware that implements Svadu (or
+QEMU with svadu=on) with firmware that enables it. Without Svadu a
+write to a clean PTE faults and the fault handler sets D under the same
+page table lock, so there is no race. A program that applies MADV_FREE
+to a 16 MiB private anonymous mapping, forks while three threads store
+to its pages, and then reclaims the mapping with MADV_PAGEOUT loses
+the stored data on an unmodified kernel under QEMU (-cpu max,svadu=on):
+107 pages read back as zeroes in 105 of 3000 iterations.
 
-usemem_orig.c is
-https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git/tree=
-/usemem.c.
+x86 (ptep_set_wrprotect(): "Use cmpxchg() to prevent races with the
+hardware setting Dirty=1") and arm64 (___ptep_set_wrprotect(), against
+DBM) use a cmpxchg loop for exactly this. Do the same here: compute
+pte_wrprotect() of the value read and install it with try_cmpxchg(),
+retrying if the PTE changed in between. pte_wrprotect() is the same
+"& ~_PAGE_WRITE | _PAGE_READ" the function computed by hand, so the
+shadow stack encoding is preserved; ptep_get_and_clear() in the same
+file already updates the PTE with xchg(). With this change the program
+above loses no page in 3000 iterations, nor in a test build with a
+delay inserted between the load and the cmpxchg, where the unpatched
+function loses pages in more than half of the iterations.
 
-diff usemem.c usemem_orig.c:
+Found while formally verifying copy_page_range() against the kernel
+binary.
 
-75,76d74
-< unsigned long silesia_bytes =3D 211938580UL;
-< char *silesia_dataset;
-103d100
-< int opt_read_silesia =3D 0;
-166d162
-<       "    --read-silesia      write memory with data from
-Silesia.tar to allocate the pages from Linux kernel after
-malloc/mmap\n"
-209d204
-<       { "read-silesia", 0, NULL,   0 },
-352,373d346
-< static void fill_buffer_from_silesia(char *buf, size_t length, const
-char *silesia_path)
-< {
-<     size_t bytes_read =3D 0;
-<
-<     int fd =3D open(silesia_path, O_RDONLY);
-<     if (fd < 0) {
-<         perror("Failed to open Silesia dataset");
-<         return;
-<     }
-<
-<     while (bytes_read < length) {
-<         ssize_t res =3D read(fd, buf + bytes_read, length - bytes_read);
-<         if (res <=3D 0) {
-<             /* Loop back to beginning of silesia.bin if allocation
-exceeds ~210MB */
-<             lseek(fd, 0, SEEK_SET);
-<             continue;
-<         }
-<         bytes_read +=3D res;
-<     }
-<     close(fd);
-< }
-<
-613,623d585
-< static inline void copy_silesia_to_buffer(char *from, char *to, size_t le=
-ngth)
-< {
-<       size_t nr_bytes_copied =3D 0, remaining_bytes;
-<
-<       while (nr_bytes_copied < length) {
-<               remaining_bytes =3D min(silesia_bytes, length - nr_bytes_co=
-pied);
-<               memcpy(to + nr_bytes_copied, from, remaining_bytes);
-<               nr_bytes_copied +=3D remaining_bytes;
-<       }
-< }
-<
-638,642d599
-<
-<               if (opt_read_silesia) {
-<                       copy_silesia_to_buffer(silesia_dataset, (char
-*)p, (size_t)bytes);
-<               }
-<
-1053,1054d1009
-<                       } else if (strcmp(opts[opt_index].name,
-"read-silesia") =3D=3D 0) {
-<                               opt_read_silesia =3D 1;
-1263,1268d1217
-<       }
-<
-<
-<       if (opt_read_silesia) {
-<               silesia_dataset =3D (char *)allocate(silesia_bytes);
-<               fill_buffer_from_silesia(silesia_dataset,
-(size_t)silesia_bytes, "/tmp/silesia.bin");
+Fixes: 540de7ade1e1 ("riscv/mm: update write protect to work on shadow stacks")
+Assisted-by: LLM
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+---
+
+Notes:
+    The reproducer below needs no privileges: a 16 MiB private anonymous
+    mapping, MADV_NOHUGEPAGE, is written and MADV_FREE'd each iteration
+    (valid, writable, clean PTEs); the main thread then forks (the child
+    exits at once) while three threads each store once to every third
+    page, sweeping down from the top of the mapping into fork()'s upward
+    sweep of the page table; afterwards MADV_PAGEOUT reclaims the mapping
+    and every page is read back. A lazyfree page whose PTE lost D is
+    discarded and reads as zeroes. Each page is written exactly once per
+    iteration: a second store would take the write fault after fork()
+    protected the page and set D again, hiding the lost update.
+    
+    Runs on 70dd4ee72eb2, riscv defconfig built with LLVM=1, under
+    qemu-system-riscv64 10.2.1 (-M virt -cpu max,svadu=on -smp 4 -m 1G,
+    the bundled OpenSBI fw_dynamic, which sets menvcfg.ADUE), reproducer
+    as /init in an initramfs:
+    
+      unpatched:   122 pages lost in 120 of 3000 iterations
+      patched:     0 pages lost in 3000 iterations
+    
+    Reproducer (needs Svadu: qemu -cpu max,svadu=on):
+    
+      riscv64-linux-gnu-gcc -O2 -static -pthread -o lost_dirty_min lost_dirty_min.c
+      ./lost_dirty_min      # prints "N pages lost in 3000 iterations", exit 1 if N > 0
+    
+    /* fork() vs hardware dirty-bit updates (Svadu): a store whose D-bit update lands
+     * between the load and the store of ptep_set_wrprotect() has D cleared again;
+     * MADV_PAGEOUT then discards the lazyfree page and it reads back as zeroes. */
+    #define _GNU_SOURCE
+    #include <pthread.h>
+    #include <stdatomic.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include <sys/mman.h>
+    #include <sys/wait.h>
+    #include <unistd.h>
+    
+    #define ITER	3000
+    #define PAGES	4096UL	/* 16 MiB */
+    #define PAGE	4096UL
+    #define WRITERS	3	/* needs WRITERS + 1 CPUs */
+    
+    static char *region;
+    static atomic_long gen;
+    static atomic_int done;
+    
+    /* store once to every WRITERS-th page, sweeping down into fork()'s upward sweep */
+    static void *writer(void *arg)
+    {
+    	unsigned long id = (unsigned long)arg, i, spin;
+    	unsigned int seed = id + 1;
+    	long it, seen = 0;
+    
+    	for (;;) {
+    		while ((it = atomic_load(&gen)) == seen)
+    			;
+    		seen = it;
+    		for (spin = rand_r(&seed) % 1000000; spin; spin--)
+    			__asm__ __volatile__("" ::: "memory");
+    		for (i = PAGES; i-- > 0;)
+    			if (i % WRITERS == id)
+    				*(volatile long *)(region + i * PAGE) = it;
+    		atomic_fetch_add(&done, 1);
+    	}
+    	return NULL;
+    }
+    
+    int main(void)
+    {
+    	unsigned long it, i, lost = 0;
+    	pthread_t t[WRITERS];
+    	pid_t pid;
+    
+    	region = mmap(NULL, PAGES * PAGE, PROT_READ | PROT_WRITE,
+    		      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    	madvise(region, PAGES * PAGE, MADV_NOHUGEPAGE);
+    	for (i = 0; i < WRITERS; i++)
+    		pthread_create(&t[i], NULL, writer, (void *)i);
+    	for (it = 1; it <= ITER; it++) {
+    		unsigned long bad = 0;
+    
+    		memset(region, 1, PAGES * PAGE);		/* writable, dirty PTEs */
+    		if (madvise(region, PAGES * PAGE, MADV_FREE))	/* now valid, writable, clean */
+    			return perror("MADV_FREE"), 2;
+    		atomic_store(&done, 0);
+    		atomic_store(&gen, it);
+    		pid = fork();
+    		if (pid == 0)
+    			_exit(0);
+    		waitpid(pid, NULL, 0);
+    		while (atomic_load(&done) != WRITERS)
+    			;
+    		if (madvise(region, PAGES * PAGE, MADV_PAGEOUT))	/* clean lazyfree pages are discarded */
+    			return perror("MADV_PAGEOUT"), 2;
+    		for (i = 0; i < PAGES; i++)
+    			bad += *(volatile long *)(region + i * PAGE) == 0;
+    		if (bad)
+    			printf("iteration %lu: %lu pages lost\n", it, bad);
+    		lost += bad;
+    	}
+    	printf("%lu pages lost in %d iterations\n", lost, ITER);
+    	return lost != 0;
+    }
+
+ arch/riscv/include/asm/pgtable.h | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 40b1ed4f3ea8..7bce81244ddb 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -685,15 +685,20 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+ static inline void ptep_set_wrprotect(struct mm_struct *mm,
+ 				      unsigned long address, pte_t *ptep)
+ {
+-	pte_t read_pte = READ_ONCE(*ptep);
++	pte_t old_pte, new_pte;
++
+ 	/*
+ 	 * ptep_set_wrprotect can be called for shadow stack ranges too.
+ 	 * shadow stack memory is XWR = 010 and thus clearing _PAGE_WRITE will lead to
+ 	 * encoding 000b which is wrong encoding with V = 1. This should lead to page fault
+ 	 * but we dont want this wrong configuration to be set in page tables.
++	 *
++	 * Use cmpxchg(): with Svadu the hardware sets A and D in the PTE concurrently.
+ 	 */
+-	atomic_long_set((atomic_long_t *)ptep,
+-			((pte_val(read_pte) & ~(unsigned long)_PAGE_WRITE) | _PAGE_READ));
++	old_pte = READ_ONCE(*ptep);
++	do {
++		new_pte = pte_wrprotect(old_pte);
++	} while (!try_cmpxchg(&ptep->pte, &pte_val(old_pte), pte_val(new_pte)));
+ }
+ 
+ #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+
+base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
+-- 
+2.53.0
+
 
