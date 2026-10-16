@@ -4,143 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2233CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0527CCCA46C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC0C26B00A3; Fri, 16 Oct 2026 10:40:18 -0400 (EDT)
+	id 17C1C6B00A6; Fri, 16 Oct 2026 10:43:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4A936B00A4; Fri, 16 Oct 2026 10:40:18 -0400 (EDT)
+	id 12CED6B00A7; Fri, 16 Oct 2026 10:43:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B38D56B00A5; Fri, 16 Oct 2026 10:40:18 -0400 (EDT)
+	id 01AE26B00A9; Fri, 16 Oct 2026 10:43:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 890916B00A3
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:40:18 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BF341C37B4
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:40:18 +0000 (UTC)
-X-FDA: 85328749716.16.DAC9190
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	by imf22.hostedemail.com (Postfix) with ESMTP id ED8CFC0004
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:40:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Q 9FZH+y";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=myyfzQVq;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792161616;
+	by kanga.kvack.org (Postfix) with ESMTP id D11536B00A6
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:43:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 52CEC1604C3
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:43:04 +0000 (UTC)
+X-FDA: 85328756688.17.1F0DD32
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 503841C000A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:43:02 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iAD7ZIVI;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792161782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZWJBtz7FZxAJXDEKnJv7+8CcY24QkoJWm0ZykJIucZs=;
-	b=IVPSdwobSG0fZfIulZVf6hFGyBGNmIpgalmrHB23mWj2eNO+STmI20JG4wz+AleUWAO94H
-	psDEKuuHs7YGLcWguqorEWHJaP/Ijl29DcFiBBmTCNqstv+3QjJbLo0ZhC5QRYdsBzpPSl
-	a1wPohlQm7ioV9C0J1QFjw8VnlEkAcw=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Q 9FZH+y";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=myyfzQVq;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792161616;
-	b=DO2J7IYJu+5lwHMKxAsmmIxiZR0B2eij1dpffgFt17btR8yF1WKJH2/DXTNknMVJqEtpMu
-	2j3KRsAJpFpYnnmAoVyv80DTxlU553EyKh1e8QiPdH++Zqy88KDuK8JSFuoYq81qC4Gyy/
-	QkTBerE0pyEOBbyTJGAvCGgaU5N+YlQ=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 754B5EC01DE
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:40:15 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Fri, 16 Oct 2026 10:40:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1792161615; x=
-	1792248015; bh=ZWJBtz7FZxAJXDEKnJv7+8CcY24QkoJWm0ZykJIucZs=; b=Q
-	9FZH+yD7MuFwdoFP0q7bS2B5y1K7jmGy9QSkXc6YvgLux99zG/SqiVFf74x/R21N
-	RTQfgB38znZWhmzPfmLAQyXT6FqAE6Yo+ZLstHOJCmj1OnJwshAvPrE4I13Jt4TL
-	LR7kQohxMP2SpszDO03ZS0fBQy+Oo2tbdHJcIZk9K/yikS7mdBLd7EWgbdt7nixw
-	KToj6mExZ4qllEJ5+FC0WaldDgn0l36kWK3kvWARd8OvP48wlvwFn5jjo/Kwp6+6
-	0eMJ/BbWE0tE5W2hJOYKBx8OwpCYdDTxBxPm+ofxXTwczMgt3SmVB93zhjjoknYO
-	CYjFO2IFIr+fmScTPVq7Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1792161615; x=1792248015; bh=ZWJBtz7FZxAJXDEKnJv7+8CcY24QkoJWm0Z
-	ykJIucZs=; b=myyfzQVqzEtnh1e6ODhMMaNcTy9+9K5S3b+q6//7ozZcF52VlMI
-	k+WdXQMlc67KLDYinFT/VeQ9BVqNebKnd7L4/+1mOkSbJKibOG8etk8zWkcFEBIq
-	xlFtgXsAFEhba0IsnS/Yi3hn5Dy46q/0Ag3uxeFx5A5JUyUWQNxSpmbSw9h2hTKw
-	CJiNSlbsHsPCWiZklg7SdIqcRDa4fAJ/NDjZWjG2AoNPWo1Pi0FaQb8MELqOqbAT
-	Kl+hY5WObMVPiLEyRbmI0/uXwwIGSpyiyj56ijrHIIjRcUx/BsbH2BczCZarDULI
-	XzRkc9dxmMrZ1vaWALYNvPHJOeYDgM8atDg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792161615; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm3:rsa-sha256:Vx7O9CnCLgxFziYF0MKcT+IdCB5zDqL0djqGQ6uOtgPuAI7
-	HxS9ZhL7UunTNSGFzi8glMDlgBaavwZ0AqyDX26g1ajS+dKIiSPQauqxXYwQh7o4
-	T6VCBzjh7hdIutcpf2gT4asol1ZFaJXyyslgx5oBivfNuvLDLN++ue2NfVNvEwSp
-	4vYZQxOqmkEWQNWLTqSSeYZ8xxWtPhk5Z/lp3WuG75RsrA7/IdOD+2l3FFyX6W+o
-	uDzm1i6e2WPVVBHd4Wbc+fLyWYUOqgLNHSnp3vJDm8x8AOsiFqGXF9MUttkA0IEa
-	eouW4JxrO1aYzBN3a7u21O534ZSIJuu9NN6u5lw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:qyErXaUNoSfBuFl6tl6flP9cK8g9RJSj/ZR/bKAkC40=:0OINjBzUgfq3udtQxoCTHXGH+jsqc7bmQ47D4WpdvIk=;
-X-ME-Sender: <xms:TjfSam0YbROYPNVfP7ecFpRYKYgYiKUWWWGZtWh3Mab-XrfHTQUvFQ>
-    <xme:TjfSalATJp080vU3JdEPV55Unk55iZxUM86zlh031lef0YsOuTQpq1x8S5BUQiHs_
-    opxpqK0AHN8BkOwfEVeRytSkAilxeT9xXDbij1pOjqkNTVlxFq5GJ0>
-X-ME-Received: <xmr:TjfSalC1MQ9AnIT7otAxtCymFb7NsLwMFC0A567Sufm7SFMArzf6VBPjV20>
-X-ME-Proxy-Cause: dmFkZTGXHfcSLLQdNmUBrh8iVg0mYe5Otx4TEolme1BT3Ui+/AiTgIVzb4+TEe6FzVwFQj
-    psr4zEC5sqQkXAzY8D5ZGT5LvAg88fz6e4MY2ys09QnxzyG6IrSYcTsBWki0MGy23JhK2q
-    zl+K8zxFdWYC1+i/B2TZYNHE3MFgG37Jwgbmr8qXYQjDs3jKlZFpNY4SIXQ0NlyexYUvBG
-    lBepFWZBqfzPSL720Ucz0JOnCApwGFq1Tk5AdO2eUEDRl2jY4/QzDI8itJ16lamREZmZAi
-    fdTOq4JHhsam1qQOyJYdmyQaSQJvgHb5axgJGoPYWDiShD54RmB5DkXZlLVfYNFa7Nvcfd
-    4nBZeeYUw8+ckhzo5dL4ZWEI5R+go4pvNaytqcEZ/I8LcnPwz9e7d8izoiiX9dWYoI61b8
-    9tKSOShgnZ5EFgnxe2jVSWsxY6t4tUV664w/XkscSTgI+sRrSRXnnHOMD/vf5BJ8RuQrxR
-    Yi9iIoYITD6sLJKDIfk+6rVGVBVYIIR6PCGtt5zR5jJBXaLX++Ex1EH3I67bFM6NvG6KIp
-    CDuBmPbBeStRlP9edKBOXakJ2UPV+cYu3s+6UD9R3JaQOlR+9aWAsPxazFtG0ZHcpc0dUt
-    ejhfEPX2+oJtg5VeVb/xrXx2jb6g6iWXYmP6/2wk7FPq7TwHd7bsSa5aJO3A
-X-ME-Proxy: <xmx:TjfSauPrdclSOysNh5lPcHwPFpu-AgIq8N4ZFrXNV-qMxLtC1b4afA>
-    <xmx:TjfSanMUJxXDfOXS57dWhl3osncdfoR6X8wpuQDlL-Q08UZWFXFW6Q>
-    <xmx:TjfSaquiL09tv7G0rx1DbzB38LVDLgd_v8dBg9h4DyCf8THjBoxk9Q>
-    <xmx:TjfSak8EsQ2QXHxyD15RbhDDDqYVFBKUP8S_i6s3b_mUa_BN_a-3Ag>
-    <xmx:TzfSaoBPvS7c6nIP5WWGSbmkkhBCMFeCdo9EGpZCzf2ynBIGkUAZ78aE>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 16 Oct 2026 10:40:13 -0400 (EDT)
-Date: Fri, 16 Oct 2026 15:40:12 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	Ilya Gladyshev <ilya.gladyshev@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: Improve page refcount scalability
-Message-ID: <atI0edrmeiRuRtNQ@thinkstation>
-References: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
+	bh=nJtgmZrmor3FIwfdZIg6Zf/PH5vjzxmpZb34dCGZXac=;
+	b=HLe+ugp9lXwV4kvKfK1c3Xo97K4MZjnxHcMbCpGSGctHQKcc89GCHuCPnbWmOEc0JqQifx
+	Z9cLZvY3bCPRVEyyfEjqSYAzPCa2Qk0uQ/J1K+juL8Cpdaf6vQ36K/Hr99LpY47W9tJFGW
+	hxpY3kwrSkU++p9gQ3yjBu0o82YRGhM=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iAD7ZIVI;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792161782;
+	b=vhRmTOSyWpVF9ZZBVrAYNYAgezt7Sj/+KMIK+tsKGLfwSrj8+Er0TnRrQDn34BL1BPYdVU
+	3UQsIqZcm5zzRzmqZWi6scEAj+eazrIGK63aA3d6Q9M8cdC1oYCaSs87HUJ8md0H8k9AT1
+	bQr9APv/19SFYah0VFr9z/Zu9+aAbhA=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-673504236d7so8603d50.2
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:43:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792161781; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QC6RYz39cF2wuhOfZvU0qudYK003VOf/N3YRgk/Vr9lSCNvY6b16ZpvWrgZ63Xun91
+         5hNrsYSYQ8ijIF96mu/zZHcyfLW6BJyrlRCi8yX//UQbPiupHQy0vw6vzxaSbzBbuuhp
+         JzOgZYAAxM3Yq2F0dytkESL8mx9DvT7CK17DTAIcCwzKaORdUyICrYelm+I9rg9W7iaf
+         CxSfkSZTSol2s69w/04ZUUgPjFS1v76TwXXD7zu2JzubRJVcS3m7lkuHwko3Fwa57vF0
+         r+rlphOqpfNO2ZXRkywmvcJ/inZXArLMXvA6NqLnibKGB9FM+QyRFHUFotoCJOSxlFhx
+         jw0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=nJtgmZrmor3FIwfdZIg6Zf/PH5vjzxmpZb34dCGZXac=;
+        fh=YaskPFwzSsNm4vrOsoSx8+VMjxF33zBbTvnXGsIKL0w=;
+        b=Uy+kYnXmeoxV439e+WtuvMPMoK9lnOfEepapF2B16TNf62qHXKjPdTWSaf3CqAey/M
+         NcgHdZsLbT23omTl6csnPIRvdF4sSdfOaAnZj+6w6+0kcsuH/dg5hE7GAIHZXB4edS+m
+         U0worwlOwIurrZpIMbAQkSZ09BVhd0xOuN2fdL/I+ly5vsuQ1qwqrUiHrtsqEXjQPPsZ
+         SlR1PL8gQTywPhqhu7fCuWU3g2bv0rTNkYUyStCfwaO/JxfNXOMf8z93oInQObXLRD/c
+         yUN3e7FOenq7gxX4dPJC6N56bkgkXB4lXEqxv+0nfVNMWb59uYRr1yHivQJdcJK011OW
+         FxZw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792161781; x=1792766581; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nJtgmZrmor3FIwfdZIg6Zf/PH5vjzxmpZb34dCGZXac=;
+        b=iAD7ZIVIMbKhbNZ8Y56xfXmuY1K6+LCRoHTQad89ck+Nrg3C9EUiWSAyUkSTG/z0TW
+         13p+l2ARqS2QjRxdYch3nL+Nh4aKH59OvMtcoXH60GrTLFqd1+ngG/WQRpQT4YBwqjGM
+         20l7It0D5xHJkmvVT7vo9SeHS06RLlCYochOJVBvSWL9xJXzQxCOG3bhI8kY+gU9m/vd
+         ghYedNaUC915g+hz8sZPCUZe2hf0sfwEVjZlOnHVXZyHt/Q3LHHWw6TFPY20P+mo/Suq
+         OgjUkhz4J4qgdsu0oWkBWlRhJ99NWLzTbRXvVwCHt2mRDkm8oSoW2daZNselgYHpx7wQ
+         ZBcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792161781; x=1792766581;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nJtgmZrmor3FIwfdZIg6Zf/PH5vjzxmpZb34dCGZXac=;
+        b=KZ2HAt/DPjNYBG8f8JHp890LBv7SAYMlxpaOU9Fdt3syOEQSG1dnCnsBVYHs1VxnlG
+         UQyjDDB8UbAKJcqDEmo0s2DwUG1rKJJrQB8ltwhlMSdxbyX2CIe1GZHgG7p4gDixpL+7
+         48/IIqcNKu81k1i2683gp9klWb31ou1G8sU7PeXUduf5tkDCyGLGRfnu5Pd3yHDCfXkl
+         2rkG65nUkkf/NIYcmyOzWuktMGLyHjz29sC8l2zsTHxkOaNnA7eCHSAQlZJh1ubKWG2Y
+         8AT8EfvE93HIVSA0NOzcASOSBF9FVz3MtiVl+P8aw1RO/McIn3iSVpPpSusStGFNjxK0
+         +wdA==
+X-Forwarded-Encrypted: i=1; AKwUvBzvYl1ktgaZ6Xkv8tQr1O2PASvczJF14K7K93qELO4rNMqqZ0fI9VskXusYhitYFBuKCDBJYXEkew==@kvack.org
+X-Gm-Message-State: AFq9FYLDghfqUg/knTKWX3W9B2mC0SYzRuU2jZh3FdLMv1R1HiHWq6ft
+	SG+XWMB+WwSFHtJoprGE7vHO8ci1dVfXpMnMs0Hxj+FDsSpc6zbiww3NzeW2ob9dtSpAErEOaBv
+	RdtW7jlGWMI9zgkXmzYzx7+ibfr49tOw=
+X-Gm-Gg: AYBFou0HxTRlSWeTBLxS+bFYN6h4bDBpXMp7gaxM4e0a3MqWfdkQsLLYsxAi+OZoK11
+	XJQYKzFJNdjC4u4fLt3bi3WpVSschu21gkpkgZd+c3Wx663T+8dQ4XCv01SQgfddPeOMl8ubyJr
+	CITHY06fswtlCe25PQTleKdP8vYQcFpmeZK+BYxlBayVyQGM5/OL+sF5Wq1ahhK1Cwu1vRyj9f3
+	HpSSk184UtC2EQ/y9azu/jsqSJhy1wkrrO5j0VPCiUsOubBFx1/3AWfABTTjqyUHfxKQ9aYr3FR
+	v4x/kqn1ekYfIQu9ZeHZGa2U27J/tZzeVkI8llbjI+LsCgJ67Tab9w==
+X-Received: by 2002:a53:ac86:0:b0:679:bf13:c02c with SMTP id
+ 956f58d0204a3-679bf13cd2cmr835137d50.0.1792161781303; Fri, 16 Oct 2026
+ 07:43:01 -0700 (PDT)
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Fri, 16 Oct 2026 09:42:59 -0500
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Fri, 16 Oct 2026 09:42:59 -0500
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <20261010133751.46807-1-songmuchun@bytedance.com>
+References: <20261010133751.46807-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjLjgfwgSZ1RDk4YdNFcV0ntosMO5AmBoHD76Zb3HFY7Q@mail.gmail.com>
-X-Rspamd-Queue-Id: ED8CFC0004
+Date: Fri, 16 Oct 2026 09:42:59 -0500
+X-Gm-Features: AclHuK8b5Saw62oROYWx_NReQFrlF0sxRRr84kcTA0PC8A8ZSdrqwWS_5T0zMZs
+Message-ID: <CAPAsAGyDqG0_JPB3c-4bY9jwdQ7eTxGJT0Ce-NowKiJ44T3LsA@mail.gmail.com>
+Subject: Re: [PATCH] kasan: fix runtime shadow page table synchronization
+To: Muchun Song <songmuchun@bytedance.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Dan Williams <djbw@kernel.org>, linux-mm@kvack.org, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, muchun.song@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 503841C000A
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-Stat-Signature: dt5nxc4k186m3wjucmh7zhsqmmex5is7
-X-HE-Tag: 1792161615-374138
-X-HE-Meta: U2FsdGVkX1+FKU/xy9BfkxOsHUQl0YUlXkzSa3eVUgJrZ3Q4sLIluo9IBde02/5lgy9hkBaruJ1oDRAFykPK+DHN4ATaZGYoF/6JETndesKEKlWwih8Att43eGkzsb6G81wwy9YKYl4JtAKNNgRQq5sIqG9Agw1KUMXV5hPl6UQsA6o55XGCSjtJdHkDiKCUGUaeeusW/VUMI+hxA/36ExrWqbxprO6Up5w+5lol9ystgEI7Yeud86hVdG5n//qS2JF1Tzhojry9PeWbCJShutYcTzQfNhGh0VGldOUMgntbKyox7c4s+QZU34FPkbRLsELA/cggKm3g5bEb1vRoDFSE8cCZcZxpJk9sMeuQ/19uRRZOkk/QOVfPhjxoUg8kCzBjRooG04L3tARE32L8/TLRnJGmiRIr7cPcdsXRoUfDV0pg9XnPYsYFwLILiiYOMfa9Tu5j6nrBGxPqhFb2/EFwzjHX22/iEJbLSohpLF77bUqr/eyssRhF8FlgsQ0YMTF7Qa8AZHjKV8IsuzN9EyTqwoFSVN2DcGVkBiqRn5R12nz0fEkQQJEo/fjTlk/G+DhZqXmyKgHzIyAC5NuiZCbqche4vSUkhR18iP4ii4IEWj7rGjRO/qiKTCHGJ7nOu9iOnbqbH1ow28QSq2Ow1XuHl7myBxSEGztH562covTPb+4NZQw/YRuJEeqeNnt014nV7G96OGNVB4pFTscn2wLrt/rJEAKdMcL6RqWeLLUVyy6Jlqc6pRdUJkCSF7mXhvPVI1Y7sTZn5uc7BouwyIlehCZ2FHbovMiNYdCoP3gRO1pH2K6sePYVDY4EYnIy2ybE0KQm5sDl2ki41nUYeJuUbHB3o60DrOcpU/D5yP0yTo67oJgTVgwKKD0f5uZ19qb+1tLVcHN35TBi48Wc+P/1+VMWZhWMC5HplApFSC5A+XCG449UNKUc+Q7n6nWKXoeg/Cdl8NtK8dpxb4x
- /1nlDyqL
- KUmZm8toPg45aEki1XWI0vamz3ljs2o9wxBPM4NoXrQUFBOYpmtXmgXosmaU8KlrXbXTDI3JtKVIXDEbwgDhGDvr5w+iGFs4Tl2PjkiiXVUoS95pRYiTG0RKrtWE5jKgyYD2L1O6paMWR4qZG+HCxgLV8dq+Fv6P00XCPd0y3sdezwi6aPSm8zFjTfYiKJnEw+nr48tn3dLfWqmt/3op4tPVGUP3BljWaWHbZJQnB5+IGIT9M9iZmczjCDziECCavLeDVFyhJYnqo9oDer9AKudw+ZIIth2pHB7WkaDc/SPBi2/rM54amKbouVEETXjnfXVx6NqWQQHQl8FCoiLzNONiaX4zJFDZXFNnVpqUK4GqbGFzx4tdfFGOeY+n7FerrjEbcpp0xxB1GyG86jzkXSclTOOfYOpgD6UeGNyPURZ5qVs/GdAyjTCPNjAIFZIEI7TrI6MybuJgefLPVlPpj0PN7Prm78/n48cDvWdI6utbdLDXCK6ttQZd8lB43lFjxGZuFhqIQhOqmwZSF/LBv5bv5Sw==
+X-Stat-Signature: fcqstnc1edumz5uymetfk66zudb5wpwd
+X-HE-Tag: 1792161782-731088
+X-HE-Meta: U2FsdGVkX1+Un5CM5IPZv2R7Ab/G2gpsMw6cgn0/JlmbmOWe1B7j6vlhnY0gwjda5pUojgyrERk8U+cYFp3rpaceNGIujAVtWvUuORYUmxRLhPMUo1UvvNH/A5G2Ss3An6AoCHluO4wUU8Fa7x1LDb6N99qqugtTP8hZvLmdlWrz8LwR4AlMPCY7mAbQnwV7+blhd8+AoN16Q0NL8Ygw9J6/kPpGYNyS8J1s8wxzB7+6rX1FiPMFei1GBUrHkZTVwSgnpZF9+7yejEwvPGJg5TtnpXspvbpbfjOl7xA6gXuoorkqqw+j0v5haFBGgZGSn57cf1Ssq8PoEHti+jYe/9b6k/wtIAYMOuFQLKKQwDcz1LDDXze5kk7U3M/HE3Vtlbq5/tL7kGUU6a5ZDC6PuBzCvCGsJ4Hb2a5So+yoHqjEh4+TFc2ks9B5HlxP5Oe0Gfy+5kQBiKfyfxuEpa4lIRkiBEk9wiKVEm1p3+MOJjHyfF2h4tzntp0TOwapG/wT4HK+loyDZrErWmpOj/QPapDupqzdDbLvdbVamTkqK6P2Aq6Id18pAJhpLHeBh6L0QbYLaFqaQ5IkvuzGm3Gx4i0Qk9Gap0twTD4YlNv4gHlQrslY3mP8f7DpRKB2RN0MvRnHsQq2QgGJCrmBzcILTVPmjlXQhsynZnetKuRWNHDe7a59ChhSFeziJxzBuhQPEKzr1fiSN9l8AYbyigYk4VP2R7GL8Xkzm4+aFN0ZYJw8q2VbDrQUz9C160AAflKzgRN3USypyCwtIq12tODY6ibRMpWRUYpUp4TGD85vtjeAd39LNlg8hirURnhfYGKIzFqyD6HZ+1zPKre/1y4yVK9c3FeObDGbBN2Xd1+AOx3wOcZBfu48c2otoI369QKbhSyAzrXLPyCYn8hiz4WPDX2kcd4LJAEFa/nvN8uZCvpbAm5ymT5Aejuyha1Xb69MuVHehaw+FTormx9I3S5
+ AchoUeA3
+ PggGL22ycHnkkz1T30yMKc3pxyjFYZuIcg5zK/ZkKFh+ClnXu5rnelhM8kfWMoQoEByv1ByImwH3LG23QH/fRha48VgeT7scpKt3RFB44Uilp45PHq/a86YByIM5vZjdPEhw6irPC/Ko1xbDNQUo7d43lApcBVCN5XeOjN59mOsjvisNjUXV64ygR9YGn1BYReGYU+dNvYHuRxzvK1JY2moR82GvxgjwpRpyH3frysinhCqoyByBNPPMXpMlXz8A8/Nq6y3g6IY3K6z8ZYhvDzG+NfLQ6708bBIGCtOO1U8owUba4ZWiICkMyuuogpaQ/o1WIJXi+6SxQGCtiZxopnPKRF6uVLBzSYczk78811hjWbonoCvbd9WAmS70c/jK4Rueo9PwxDlyi6Bso9/cWG5QmveFB9YmmBx0m8gNDRLZ3yzw036deaY7IhYluK1QiMV6f9vdzPL62sEEUcArI6CvtGgTS/RUehu4wL2vpKZVrFzl7mCN32PapTDKKKcQxNLRmJsPoFlnGnL8+ceNpu9W3dEMfI0qqk8+G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,50 +146,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 13, 2026 at 11:43:14AM -0700, Linus Torvalds wrote:
-> Comments?
+Muchun Song <songmuchun@bytedance.com> writes:
 
-There's a regression: the lockless read loses on large reads from large
-folios.
+> kasan_populate_early_shadow() is also used after slab becomes available
+> to install shadow mappings for hot-added memory. When this path
+> allocates a new P4D or PUD table, p4d_alloc() and pud_alloc() publish it
+> only in init_mm.
+>
+> On x86-64, runtime kernel mappings that add a top-level entry must call
+> arch_sync_kernel_mappings() so existing process page tables can see it.
+> Without this synchronization, the KASAN shadow mapping can remain
+> unreachable and fault when the hot-added memory is accessed.
+>
 
-In a 64-vCPU guest on a Threadripper 7975WX, 1 MiB reads of a cached
-ext4 file are 9% slower from one thread with rcu-free-v3 than without
-it, 64K reads 4% slower.
+Did you actually hit this crash or it's just LLM's/code inspection finding?
 
-The reference path looks a large folio up once and copies it in one go.
-The lockless one walks i_pages from the root and calls
-copy_page_to_iter() for every 4K page.
+> Add p4d_alloc_kernel() and pud_alloc_kernel() to perform the required
+> synchronization, and use them for runtime KASAN shadow population.
+>
+> Once copied, a top-level entry remains in other process page tables.
+> Clearing only init_mm and freeing its target table during teardown would
+> leave stale pointers behind. Retain these shared levels instead. On x86,
+> this keeps PUD tables with four-level paging and P4D tables with
+> five-level paging, while lower-level tables can still be freed.
+>
+> Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>  include/linux/mm.h | 24 ++++++++++++++++++++++++
+>  mm/kasan/init.c    | 10 ++++++++--
+>  2 files changed, 32 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 5cca90fc1df6..5453d3e42780 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3855,6 +3855,18 @@ static inline p4d_t *p4d_alloc(struct mm_struct *mm, pgd_t *pgd,
+>  		NULL : p4d_offset(pgd, address);
+>  }
+>
+> +static inline p4d_t *p4d_alloc_kernel(pgd_t *pgd, unsigned long address)
+> +{
+> +	if (unlikely(pgd_none(*pgd))) {
+> +		if (__p4d_alloc(&init_mm, pgd, address))
+> +			return NULL;
+> +		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
+> +			arch_sync_kernel_mappings(address, address);
+> +	}
+> +
+> +	return p4d_offset(pgd, address);
+> +}
+> +
+>  static inline pud_t *pud_alloc(struct mm_struct *mm, p4d_t *p4d,
+>  		unsigned long address)
+>  {
+> @@ -3862,6 +3874,18 @@ static inline pud_t *pud_alloc(struct mm_struct *mm, p4d_t *p4d,
+>  		NULL : pud_offset(p4d, address);
+>  }
+>
+> +static inline pud_t *pud_alloc_kernel(p4d_t *p4d, unsigned long address)
+> +{
+> +	if (unlikely(p4d_none(*p4d))) {
+> +		if (__pud_alloc(&init_mm, p4d, address))
+> +			return NULL;
+> +		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)
+> +			arch_sync_kernel_mappings(address, address);
+> +	}
+> +
+> +	return pud_offset(p4d, address);
+> +}
+> +
+>  static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
+>  {
+>  	return (unlikely(pud_none(*pud)) && __pmd_alloc(mm, pud, address))?
+> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
+> index 66a883887987..93a74a1fcdec 100644
+> --- a/mm/kasan/init.c
+> +++ b/mm/kasan/init.c
+> @@ -206,7 +206,7 @@ static int __ref zero_p4d_populate(pgd_t *pgd, unsigned long addr,
+>  			pud_t *p;
+>
+>  			if (slab_is_available()) {
+> -				p = pud_alloc(&init_mm, p4d, addr);
+> +				p = pud_alloc_kernel(p4d, addr);
 
-I've added a cutoff to the lockless path: if the folio is large and the
-read covers more than four of its pages, leave it to the slow path,
-where one reference covers all of them.
+I think it would be better to reuse pud_alloc_track() here.
+Pass a pgtbl_mod_mask through zero_p4d/pud/pmd_populate(), and call
+arch_sync_kernel_mappings()
+only once at the end of kasan_populate_early_shadow()
 
-		if (folio != prev) {
-			if (!filemap_read_rcu_can_copy(folio, index, *last_index))
-				break;
-			/* Many pages of a large folio: one reference is cheaper */
-			if (folio_test_large(folio) &&
-			    min_t(unsigned long, folio_next_index(folio) - index,
-				  DIV_ROUND_UP(offset + iov_iter_count(iter),
-					       PAGE_SIZE)) > 4)
-				break;
-			prev = folio;
-		}
+>  				if (!p)
+>  					return -ENOMEM;
+>  			} else {
+> @@ -268,7 +268,7 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
+>  		if (pgd_none(*pgd)) {
+>
+>  			if (slab_is_available()) {
+> -				if (!p4d_alloc(&init_mm, pgd, addr))
+> +				if (!p4d_alloc_kernel(pgd, addr))
 
-With it, ext4 1 MiB reads match base and 64K reads are within 2%. Small
-reads do not change. The cut is on the folio, not on the read size, so
-files in 4K folios keep the gain on large reads: 1 MiB tmpfs reads from
-one thread are ~30% faster than base.
+Ditto
 
-Sounds reasonable?
+>  					return -ENOMEM;
+>  			} else {
+>  				pgd_populate_kernel(addr, pgd,
+> @@ -322,6 +322,9 @@ static void kasan_free_pud(pud_t *pud_start, p4d_t *p4d)
+>  			return;
+>  	}
+>
+> +	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)
+> +		return;
+> +
 
-I've pushed my tree here:
+With 4-level paging the PUD table is now kept here after it has been
+synced to every pgd. A later kasan_add_zero_shadow() call can overwrite
+it in init_mm only. This might cause a problem, because the aligned
+shortcuts in kasan_populate_early_shadow() and zero_p4d_populate()
+don't check whether the entry is already populated:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git rcu-free/rfc-v1
+mm/kasan/init.c:kasan_populate_early_shadow() {
+    ...
+                if (IS_ALIGNED(addr, PGDIR_SIZE) && end - addr >= PGDIR_SIZE) {
+            ...
+                        p4d_populate_kernel(addr, p4d,
+                                        lm_alias(kasan_early_shadow_pud));
+    ...
+}
 
-I'm thinking of posting it as an RFC to make it easier to review.
-Objections?
+So sequence of kasan_add_zero_shadow(), kasan_remove_zero_shadow(),
+kasan_add_zero_shadow(), arch_sync_kernel_mappings()
+might trigger the BUG_ON() in sync_global_pgds_l4():
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+arch/x86/mm/init_64.c:sync_global_pgds_l4() {
+    ...
+                        if (!p4d_none(*p4d_ref) && !p4d_none(*p4d))
+                                BUG_ON(p4d_pgtable(*p4d)
+                                       != p4d_pgtable(*p4d_ref));
+    ...
+}
+
+Perhaps the aligned populate paths should skip an entry that is
+already populated.
+
+>  	pud_free(&init_mm, pud_start);
+>  	p4d_clear(p4d);
+>  }
 
