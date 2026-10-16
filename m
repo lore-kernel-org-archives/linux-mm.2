@@ -4,119 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0892CCF2C1
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:35:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEDF5CCF2C1
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:43:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97B856B0096; Fri, 16 Oct 2026 18:35:55 -0400 (EDT)
+	id 8C89D6B008A; Fri, 16 Oct 2026 18:43:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 954356B0098; Fri, 16 Oct 2026 18:35:55 -0400 (EDT)
+	id 853586B0092; Fri, 16 Oct 2026 18:43:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86A896B0099; Fri, 16 Oct 2026 18:35:55 -0400 (EDT)
+	id 718DD6B0095; Fri, 16 Oct 2026 18:43:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E62486B0096
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:35:54 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3B9D1C1C65
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:35:53 +0000 (UTC)
-X-FDA: 85329948186.06.FB8DD71
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1473F40003
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:35:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IIxQ2iky;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 489516B008A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:43:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 478FE1C1CBD
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:43:08 +0000 (UTC)
+X-FDA: 85329966456.05.DFAD215
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8DA9F40005
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:43:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiEujQYp;
+	spf=pass (imf17.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792190152;
+	s=arc-20220608; t=1792190586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w/LiGROU1CbrwlWaE/oFd62FdockjDAPnXKwkB36OcQ=;
-	b=sKX8Ht72yGqrp3K1G7a9W7odxMgr1zCk+/alLR/NB3SY3sSenZic/fa9WGh1xUWeinPgjc
-	+LHtftx+I71dFCPGjxNN8BDY03Trhvt7bkBFTWlUVc5QzWbkNEw1cNrxhBgnQalEZj+0pm
-	10wh1yCisWCGDLvbC1EyigQklU9gOqk=
+	bh=/hZbe7RB6+Bi29L6udyhEOuf33yUa63JOrb9nCRpHA0=;
+	b=X8vFbONkDdJZdxVpmO+hmgQlbLB3iGndFHVhu9caH0S+VxeJ+xLabs0Mha62bPw2GfOLJf
+	bzd10llIBjd9Fv9lMliqsVK/4rOijcJzSPtZF3SMmxnLS+9y4GVQcwI8WRR6ryKi8pbC1C
+	USbWcmFp9jbkDeeKh/maO2SG5jnpa58=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792190152;
-	b=JTkw7UIMCL6laxZfKe84eYQyJ1uaq+hhPbNV365g8gP3ZZsDMDq1fmuE9kcF2pHi+nUKjN
-	MpFIlCDZRJ8LPo+2H22Hx+TuigUh+vjRJ183TmfbmGMDw+QwuGCH+53pyHRAdUi53q3Wca
-	sf0ReV0zpSm40oACe1jjD/0vhJIfx04=
+	t=1792190586;
+	b=6KEkR9CoFItM+eZEbTjG5dbKUtlhma5PqIH085RtXTLbDd/RbZY98cYKWJtuYzdMnUooBK
+	gD+JVSk84dcpqfUST8zctTmcKZnqt1gPOjDvk54RQ21yIJ9f0AkHVJVcegEiry2PUNGHx4
+	haKcOpJWYMiSgb+vHdLkBVeXuQP82Oo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IIxQ2iky;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so8385ad.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:35:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792190151; x=1792794951; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=w/LiGROU1CbrwlWaE/oFd62FdockjDAPnXKwkB36OcQ=;
-        b=IIxQ2ikyxE1TcIGJgXtz5NFVc2t+NhaFtlWodxcwHudYRJ7xhLTjtEQWbOWJMoTP5f
-         JJAXTBBos3Lt7I9EtSrpx575VP+dNvlgMVSRAj6GXtZ9gOeC0Uyy/hOu7DsJ6IUestux
-         wKz8qTwsBpVoYEJ2Wiq+qMwbQQH4ZYYJgwpKRl5roNrcTQJYZ9i59KpQzcrJYwg5hhgZ
-         wbMyjP44YG/f9JRCV6iSSfrznF+ghf/XQ4gAxH4Jtk9bOd2ukjkfTFK65+jQjSVDOnp1
-         IrgoViFl6GWTeQCEfbtP+QHZLXeDzrK0L8V0JbcZuRNfrImBVe1UVg7Gme+uv4Qwt8ED
-         cKpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792190151; x=1792794951;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=w/LiGROU1CbrwlWaE/oFd62FdockjDAPnXKwkB36OcQ=;
-        b=rZ3R0h/eFrf8WwI9oAR6lQ+YknoycKijm0ETpls2m3TX0o4FBxK/PhmYxzgoFP/BML
-         30QaFciwMU9qRhwQDiblmta30UlvKr9YaSdJ1Gf9EtPeOKxpQT92Z9xxXw2Vepya1TDN
-         HVh55TZvkr5oa+ELDDGi2WOd4Nco1/ZONZJ8oNR/x8TbsnC1SbLxSFJrfkSgrIOJtsrq
-         nQ558eMEukrDSCHIwpJxNrLntNZ+WeWw3zOmNMechSMU2MQF5ReBiwAwDxwipb32qunP
-         6aTQZMKOH6thiSZRH72Vw87ll5F/+nCYh3ECP4mycgwQSXfa1Fhlds8roeSR0VquMU1D
-         IQDg==
-X-Forwarded-Encrypted: i=1; AKwUvBwv3Xv8OFShVKNkzLd1rB3aRvY/AJgN0WzbQJOH+AROyejmnZ1VRETp8JdjrNCWjZKufWbCKGdNTA==@kvack.org
-X-Gm-Message-State: AFq9FYKFqHvFBm4EI1PM9+Q2Y6OXNWfK1zlYWx6UP7UQvt2n3T79x5rG
-	5CCVBOPvGKR++Ag0MH5E3GNU7rZDk/y1bimnD5UiUvuQK1uAGDtRISuRgUFKiZ1dMQ==
-X-Gm-Gg: AYBFou2hxpT9GJxY+aqEWpzrgqCWHEYss5l4goJBoVtzyxXIjmyGz0003J90VWMD02n
-	dM4qYPcHQbZ3tDtB0h4ukC4jPO9jkGA1wXjQV7E/HRrdgrsPGVulxOFe91NLbvwGqPOxnfdyj9P
-	CzafyR1S4LS/etNU0CT+nrQf+tZLGK3PleuE9XZzBjdM37WCz/50xHKOxvG8luqIEtu1JhK07fk
-	jDWg+eRAAwm8Q9PTkHya7LXxed/u05hDLUP+iFO2c7Wzaj83v2zaXFaCxnTmCvwerD0GvSDBviJ
-	slK/rmjyOck9WTH85qK7p0MiMYMquY17gR8+FJAVU7S9Q9Q28PuEqBtJ25ReGCa5z+tYKGWINjb
-	+3hIpGH9yLN5Qt677hdkX5GYEpXQMsTrlnpxnWJV7sDoh7iw/eoG2W+O0d5TiAXQvxLCfqkGRAf
-	b4oEUSozuaLsZb8jqW/04nQdgKWXzw6/behFA+RT0JjKSBe1KnM02iRm2/FKjwKJ0t6++/vR1YN
-	VPR0Q4VodL08oGuyhNMUszJan8MJnxj3beYrKxLaNXUk17M4gOKVwZFpms6he1elsmMOyk5Fo6Y
-	jvjYsKIQYJkA2MMAc7yQ4azHA8O6ByEzn1PdxzzMSx0lCcmUJkHw9tprq0tloO04Yf/NZlgekVI
-	DgviF+fo=
-X-Received: by 2002:a17:903:2447:b0:2e9:8c2b:979f with SMTP id d9443c01a7336-2e9b3252d32mr704095ad.8.1792190150274;
-        Fri, 16 Oct 2026 15:35:50 -0700 (PDT)
-Received: from [2a00:79e0:2eb4:9:17ee:cb47:3ad4:ee3c] ([2a00:79e0:2eb4:9:17ee:cb47:3ad4:ee3c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc98139ccsm3148060a91.0.2026.10.16.15.35.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 15:35:49 -0700 (PDT)
-Date: Fri, 16 Oct 2026 15:35:48 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, 
-    Shengming Hu <hu.shengming@zte.com.cn>, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slub: initialize the free pointer of the bootstrap
- kmem_cache_node
-In-Reply-To: <20261010203906.93156-1-kmehltretter@gmail.com>
-Message-ID: <3284bb03-6c23-611c-872c-19954a7f3381@google.com>
-References: <20261010203906.93156-1-kmehltretter@gmail.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiEujQYp;
+	spf=pass (imf17.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BB72140AEF;
+	Fri, 16 Oct 2026 22:43:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759871F000C4;
+	Fri, 16 Oct 2026 22:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792190585;
+	bh=/hZbe7RB6+Bi29L6udyhEOuf33yUa63JOrb9nCRpHA0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YiEujQYpBQlsJbuSzPmj1eHQzFwASacSFLqspUDQfuGBomyDFTF6yeOvLbe23tcoY
+	 IlTTCXTUid1xqaP3KqVpUaidLGlF1o5isUFYE90qUG95Hd/b/EbY9KL0DpcG1BnAth
+	 hPwdkPC1Y60vW2KIxTIFox/PqXwVBfGHcaAAQeeRNUBvpkOV7Jtb87HnOm4/TL1BgS
+	 F6mQZm0XbqeN6vsjKKp3YAOYVcRJwaFVQlSZSV/XOtz9KDiL/v1EX6W1Fk5tm9tL+B
+	 zmF0lWKFVetyjRqk0im1FD6ObKpRD98kBZN4rGXoJ+EjUR4EL24DAhIPZXDFRomxTn
+	 s/9xa0XIQifPQ==
+Date: Fri, 16 Oct 2026 12:43:04 -1000
+Message-ID: <97f9db644113ce22a7e302d1b79bcfd3@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Liz Fong-Jones <lizf@honeycomb.io>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Xin Yin <yinxin.x@bytedance.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ian@honeycomb.io
+Subject: Re: [PATCH v7 3/3] writeback: switch a replaced cgwb's inodes to its successor
+In-Reply-To: <20261015-wb-dying-cgwb-flush-v7-3-9278d9ebaf5d@honeycomb.io>
+References: <20261015-wb-dying-cgwb-flush-v7-0-9278d9ebaf5d@honeycomb.io>
+ <20261015-wb-dying-cgwb-flush-v7-3-9278d9ebaf5d@honeycomb.io>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1473F40003
-X-Stat-Signature: 656xfy4ifuzae65wakxoomh975ttyufk
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1792190151-338077
-X-HE-Meta: U2FsdGVkX1/4V8gIzyu053Od5KHhtadjKPOEiZ8xQeGEKmlDRTXxnz3vm1SrC2/cW4mCcvBYBPNqIrG0G720KOq/VacHnW3z7xScReaxf7+6N4VLje1OyOyFnG/r6rXE6Vs6xXSbMk7ykmTehuxhqK8fLJhP1V0SBGLwFHguxlJuVeFFk+5jXXEGsszfvtcsyAVzuKUI8IVTkk16ckt9aLSj2PmchepQwCBo67m7tW6LQHisNhnQod7T656NODv3IWdLpnqbb8EMcBK/jKgU4touBM7xquD7QHr7nkYRAMN+EAUKPBDDieEykCGVgh1VzyIWuApSmHIMI3uXqTUEDJTXcXc+zgJY9cvrWvv/SvTn2keH50tD6yhuRBsD4s8nxkpD8orJhZqnXnlbYNvsoEzZG5r8Wr+ana1MLjYeG2SULifBChayesn++4WtPYS+zgrY730hvJdN6bX6hkTRZP1qz0x2CaM9tL+m2rvlQwhnt88Ng4NetJch9ZdGBB3+qtytR4qNnaJRekM15cbhsvl6OiKvVivmFear+1rFIA18vmB9b1zVndvZ4Szp85xUGajKG8b+mfYBdDoibAuXVbOivwuZkf+UlAq1DjkJvWZomm6Sb3G9yD8ILeZ5UKkSVrR1turl5jbb88ZioXbcasFElDPrk01upfQ0JvZ0IImNLt1Rm1dNHCK+EFI0j9DiV5Eg0l6uXxaUyVHXKK49q1VlIsnDe5mCHqE7zGZnVrdAgI2zLG4Gqy2/0kbtgJMAb6IBKLgE+HfkOEGGLJbSLmjTfsqGJ3HaMZ3+C6A11PjNQFN4IVqBtDpjer9EIckrkRFtqulGhHU6AjWWL/Aj/e5IY7YG5xoSBxkJuK6gHS6bvk7kogaZHf7PxrKFSMg44buPzhtPG/JDInljnqibBRjaoU8UNZsfqFKUL2pQMcNiXx7bl3XtshKWtzC0kDP8RI6/FsTOqxhM6GI2Zqf
- naNNI/kl
- ks9tQvWaK8Vimx5GikqbVluWwrn7LpfO74Jq/xmb/9E+Qi9J8clr51lgsLmr+GMgGtpQmL9dKXg5PX+9Jxe3/jAXg8xZKOk3TNwhUBXQWX3cBPl/0wZ/X4Jg2VLGOsUgr19BjJAJEGihZvPfTrKYAn8nX7XUf+wiZcSuMGE5Yw/wsDIUpr0RPhGIDYSgkfEKPriG2R99M6E1BcoKeLZ+QrDw0CPAcXNT1vfgWcZusxeqetbSxROeaieFdRbFaA9ndNuhjq4Pbr8BV0rT8R1hWHAhnEf+Jq+1OXXu1OoxNxX03i5pnAEJTpuAilfDCDrtNKZFqZJF+OVwedOi6wCpFvKwbiJSTzfAG/brfjwdwo5u3CsjUCWGRnPZWqAH7Y2phoy90TYPHgBrYwndRLMIk5TMIJkbKZX+vDmT2pA6OFGENapo=
+X-Rspamd-Queue-Id: 8DA9F40005
+X-Stat-Signature: bhg39o8hwboy7e1zumyi4rzz4ik5e55w
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1792190586-328295
+X-HE-Meta: U2FsdGVkX1//YLnoNRDmHX/NdSlec/jwp0vKSs3iINB+BJGplJm9Ascn3y9/r+NLZ4+EgWsi9c+RTF1hb0AwDJmR9O+t5m823TD+GWOoJnTlZApTJewyEgSnI8V5xcR3LgVrWP6P3Cb17gsQ3XIadMjCVZv0gxu0xM+b6KUwhmPMbvaQfGIs0BxQBt8vWi7KesDled01nHOjs437XGMDFHl21+r7GHeeXRESvxzYZfnOPwE/OlRL7vu+CQhnlZ0ItMYBWoHWVZ4AfLfsWSvMNT0RnqeufoKSF+/U9SJBtAdUeqtpnB9bnb/WX2pttBKu8tNE3UitEntBWyv4qGSNDt3FVjivBQXwb7AdLU96WSstqGIor+QpkwbZYd9BGIej323N5A39MUTAMkrnOgX2LdWWkTBsV1rQG4ocx48DB+A2V0tgaW4ESapqlMNUWGXM4Kl7/jxWw+yi2gDu3lPdnGHr4rBWHBNNCeSKjfnoNEvzd6h0Bx10Oss/5+9wM8rnI7uEA1Y6ICTJDEwG5Qs9YIS6y6E+KtJXCaO0R1/unHmgddNp9igNbLWPJsiAW3eFBUhVxmnM/nvc1X0I1B4gO+ukWjmpfZAbd+o8KABZYUKFr1TK3wG/Wn05UuwJCucojbJsp27c55H4ziOQkffICAG4ze0aGt7yCr8s4RdwCTSVmVwk5vDg7bcmaYAmK5AP+Ea99eBYiwaM8gZMWMf++0yoSYaBYE79DXzERCaU3MZe/rvOIhvBPUuaqaPPRr18tReILPJboLj9I+skRBXF6yhseX7mi9Vjol/48+rX9C0FNbqKv3rnrtPsgCLwENpMsfS4V7+i1fF8FP9X9ee+IJM7117YUL92E6/UG91YfEiUMZ+u8MV3K40cZZK2gRENIOn/ZVsZRv08lJQBF1zV8VQKnRIojEzmIrq7fxZb0d5yLhg0RtRKmnPJnihLzvli4OJRP00Sq0ImERsn3ZB
+ GEtn3HDj
+ VfnAOP8N49CLkdMWhdBgWDrMw1J+PJashlgxYj/PBM4/extv4YO4kOZA829tFvWoZXXZAwahcMH0jWkdna6vOAxDiAV25A2tI5PVcGhgNiTLV5QnX6dhBbggPw0Cg4gs+t5H4n+PR5qsyyj5OdTlLSDJCUcUsLlVCnmBUPhjezSaY44EvG2uUoEwUECcBZivxVZzk37Fu173cGdjH9MWfT8s2wsUrFgt20aRmFYtV+z7WgjufiN5pQxOymadjMxXOrzWDicjNLOQNwyNLyuyXdwgcLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,27 +104,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 10 Oct 2026, Karl Mehltretter wrote:
+On Thu, Oct 15, 2026 at 11:40:49AM +0000, Liz Fong-Jones wrote:
+> When a live memcg's blkcg association changes, cgwb_create() replaces
+> its killed wb in bdi->cgwb_tree. Foreign flushes for the memcg then
+> find the new wb, but the inodes, dirty or not, are still attached to the
+> old one, and they only move over as they are written back (see
+> wbc_attach_and_unlock_inode()). Until then, other memcgs appending to
+> those inodes stall in balance_dirty_pages().
+>
+> After the takeover, queue a work item that switches all inodes on the
+> old wb's lists to the wb foreign flushes now find, like
+> cleanup_offline_cgwb() does for b_attached and b_dirty_time, but
+> including b_dirty, b_io and b_more_io. The switch carries the dirty and
+> writeback page counts, so nothing needs to be written back first.
+> cgwb_create() can run with interrupts disabled (folio_account_dirtied()
+> -> inode_attach_wb()), so it only queues the work. A switch to the old
+> wb that was queued before it was replaced can land after the work ran,
+> so inode_switch_wbs_work_fn() queues the work again when the wb it
+> switched inodes to is dying and no longer owns its slot. Inodes attached
+> to the old wb but on none of its lists, such as one attached as the wb
+> is replaced (see __inode_attach_wb()) or a clean one switched over from
+> the root wb, still move over only when written back. If the successor is
+> already gone, fall back like cleanup_offline_cgwb() does, to the nearest
+> live ancestor's wb or the root wb.
+>
+> Since commit f6988c90671e ("writeback: bound cleanup_offline_cgwb()
+> rescans by rotating scanned inodes"), the scan moves the inodes it walks
+> to the newest end of each list, so hold wb_switch_rwsem for read across
+> it, like the switches themselves. Otherwise a sync that has fixed its
+> cutoff but not yet queued inodes can find older dirty inodes moved
+> behind a newer one on b_dirty and return without writing them.
+>
+> Test: a live cgroup appends to 5000 files on XFS at 250MiB/s, io is
+> disabled on its parent so its wb is killed, it creates a file (the
+> takeover), and a sibling keeps appending to its files under a 4G parent
+> limit. Worst lag of the sibling behind schedule over 30s, in three runs:
+>
+>   without this patch    9.1s   4.0s   1.0s
+>   with this patch       1.7s   1.3s   1.0s
+>
+> Without this patch, moving the old wb's inodes over took up to 11s,
+> first switch to last; with it, all 5001 were switched in a 23-35ms
+> window, with up to 98MiB of the old cgroup's pages dirty.
+>
+> Suggested-by: Tejun Heo <tj@kernel.org>
+> Assisted-by: Claude:claude-opus-5-5 checkpatch sparse
+> Assisted-by: Claude:claude-fable-5-1
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
 
-> With slub_debug=FZPU, validating kmem_cache_node reports
-> 
->   BUG kmem_cache_node (Not tainted): Freepointer corrupt
->   Object 0xffff888000140040 @offset=64 fp=0x5a5a5a5a5a5a5a5a
-> 
-> and taints the kernel. Poisoning places the bootstrap object's free
-> pointer outside the object, where check_object() checks it even while
-> allocated.
-> 
-> early_kmem_cache_node_alloc() previously took this object from a
-> freelist with an initialized pointer. It now takes it from the slab
-> iterator and builds the freelist only for the remaining objects,
-> leaving its pointer filled with POISON_INUSE.
-> 
-> Initialize the bootstrap object's free pointer to NULL.
-> 
-> Fixes: dc795d4c0282 ("mm/slub: defer freelist construction until after bulk allocation from a new slab")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Acked-by: Tejun Heo <tj@kernel.org>
 
-Tested-by: David Rientjes <rientjes@google.com>
+Thanks.
+
+-- 
+tejun
 
