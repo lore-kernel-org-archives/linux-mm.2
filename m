@@ -4,100 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5A67CCF2C1
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:35:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0892CCF2C1
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:35:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFDA26B0092; Fri, 16 Oct 2026 18:35:46 -0400 (EDT)
+	id 97B856B0096; Fri, 16 Oct 2026 18:35:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7106B0095; Fri, 16 Oct 2026 18:35:46 -0400 (EDT)
+	id 954356B0098; Fri, 16 Oct 2026 18:35:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C14916B0096; Fri, 16 Oct 2026 18:35:46 -0400 (EDT)
+	id 86A896B0099; Fri, 16 Oct 2026 18:35:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B04F6B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:35:46 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C42F12016F
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:35:45 +0000 (UTC)
-X-FDA: 85329947850.13.0ED64B1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B1989180004
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:35:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EbOApN5v;
-	spf=pass (imf06.hostedemail.com: domain of jic23@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jic23@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792190143;
-	b=sGZe+NtX+A3e7otMpzQForVumR/ZTaBZGd1dI5nfZiFytTToEeFCNZMG0mtH6QfZg30v50
-	MI08sN6gp8xhUgJSyo5hrClgqpradrFA+yVtksQ84baXIT0tk6pJrGoXLj+C8ytrtJGkgl
-	vVFom9ksuXSJhBS5h6DlZQKQrmaHAmA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EbOApN5v;
-	spf=pass (imf06.hostedemail.com: domain of jic23@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jic23@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E62486B0096
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:35:54 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3B9D1C1C65
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:35:53 +0000 (UTC)
+X-FDA: 85329948186.06.FB8DD71
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1473F40003
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:35:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IIxQ2iky;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792190143;
+	s=arc-20220608; t=1792190152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=koD97Vv2RYamT9rN9MXKPLQgXJvKwvWeT6gBi9Nqxq8=;
-	b=lQ/IN0P6Y5MF4QVsh71q/ZQLUkfGx7zDTOXxo0Dnc6arfCp6tHztXvwPnwEQWxhw4Vhue3
-	py0LdsbnXcglS2qcWy5i/Kv/DMxIUdyytrv/ivy9PiVn7HRKvo6VX2TxQmP4rKhSljDNOj
-	Ug25YGhJUnWn8/fzlhXrGxWnhqVCI3k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AD1E240E16;
-	Fri, 16 Oct 2026 22:35:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00861F000C4;
-	Fri, 16 Oct 2026 22:35:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792190142;
-	bh=koD97Vv2RYamT9rN9MXKPLQgXJvKwvWeT6gBi9Nqxq8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=EbOApN5vLmmkI7IJZpButnxPBgRf4rcgdHycHn1yb6VzYpakZNKZr4veISSzhcWrD
-	 S8LQmXccykbzt9guSeCWWbChQIfsR9qRfYQ5MfpKwn4yVJVN8wJUzVc6aHNLskoQg5
-	 RDBcjWjP8HJaqnUEjZXYTdQfbzaHAZvE2BFdxC6XI25aviqlrj4kL4xlJx4HiSKRo/
-	 3JkFWV02BIw6dpfnvZrbLhs7q6DLcMcVB+eLTx/dfD0oUlZUlF904gpCdwCxFRsfQt
-	 vy9pCudmdvohqYbuN/UjF4pxhlQtVQarfshkOFHomb9cj/ThG7etT6xH9ussq8j2YW
-	 wOufjIoqa/wCA==
-Date: Fri, 16 Oct 2026 23:35:32 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>, Vishal Verma
- <vishal.l.verma@intel.com>, Dan Williams <djbw@kernel.org>, Miaohe Lin
- <linmiaohe@huawei.com>, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Breno Leitao <leitao@debian.org>, Ira
- Weiny <iweiny@kernel.org>, Li Ming <ming.li@zohomail.com>, Richard Cheng
- <icheng@nvidia.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
- Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, David Hildenbrand
- <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Kiryl Shutsemau
- <kas@kernel.org>, Harry Yoo <harry@kernel.org>
-Subject: Re: [RFC PATCH 5/5] cxl/region: Register device poison before
- exposing RAM
-Message-ID: <20261016233532.51766fc4@jic23-hlaptop>
-In-Reply-To: <20261010162017.62506-6-shaikhkamal2012@gmail.com>
-References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
-	<20261010162017.62506-6-shaikhkamal2012@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	bh=w/LiGROU1CbrwlWaE/oFd62FdockjDAPnXKwkB36OcQ=;
+	b=sKX8Ht72yGqrp3K1G7a9W7odxMgr1zCk+/alLR/NB3SY3sSenZic/fa9WGh1xUWeinPgjc
+	+LHtftx+I71dFCPGjxNN8BDY03Trhvt7bkBFTWlUVc5QzWbkNEw1cNrxhBgnQalEZj+0pm
+	10wh1yCisWCGDLvbC1EyigQklU9gOqk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792190152;
+	b=JTkw7UIMCL6laxZfKe84eYQyJ1uaq+hhPbNV365g8gP3ZZsDMDq1fmuE9kcF2pHi+nUKjN
+	MpFIlCDZRJ8LPo+2H22Hx+TuigUh+vjRJ183TmfbmGMDw+QwuGCH+53pyHRAdUi53q3Wca
+	sf0ReV0zpSm40oACe1jjD/0vhJIfx04=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IIxQ2iky;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so8385ad.1
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 15:35:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792190151; x=1792794951; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=w/LiGROU1CbrwlWaE/oFd62FdockjDAPnXKwkB36OcQ=;
+        b=IIxQ2ikyxE1TcIGJgXtz5NFVc2t+NhaFtlWodxcwHudYRJ7xhLTjtEQWbOWJMoTP5f
+         JJAXTBBos3Lt7I9EtSrpx575VP+dNvlgMVSRAj6GXtZ9gOeC0Uyy/hOu7DsJ6IUestux
+         wKz8qTwsBpVoYEJ2Wiq+qMwbQQH4ZYYJgwpKRl5roNrcTQJYZ9i59KpQzcrJYwg5hhgZ
+         wbMyjP44YG/f9JRCV6iSSfrznF+ghf/XQ4gAxH4Jtk9bOd2ukjkfTFK65+jQjSVDOnp1
+         IrgoViFl6GWTeQCEfbtP+QHZLXeDzrK0L8V0JbcZuRNfrImBVe1UVg7Gme+uv4Qwt8ED
+         cKpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792190151; x=1792794951;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=w/LiGROU1CbrwlWaE/oFd62FdockjDAPnXKwkB36OcQ=;
+        b=rZ3R0h/eFrf8WwI9oAR6lQ+YknoycKijm0ETpls2m3TX0o4FBxK/PhmYxzgoFP/BML
+         30QaFciwMU9qRhwQDiblmta30UlvKr9YaSdJ1Gf9EtPeOKxpQT92Z9xxXw2Vepya1TDN
+         HVh55TZvkr5oa+ELDDGi2WOd4Nco1/ZONZJ8oNR/x8TbsnC1SbLxSFJrfkSgrIOJtsrq
+         nQ558eMEukrDSCHIwpJxNrLntNZ+WeWw3zOmNMechSMU2MQF5ReBiwAwDxwipb32qunP
+         6aTQZMKOH6thiSZRH72Vw87ll5F/+nCYh3ECP4mycgwQSXfa1Fhlds8roeSR0VquMU1D
+         IQDg==
+X-Forwarded-Encrypted: i=1; AKwUvBwv3Xv8OFShVKNkzLd1rB3aRvY/AJgN0WzbQJOH+AROyejmnZ1VRETp8JdjrNCWjZKufWbCKGdNTA==@kvack.org
+X-Gm-Message-State: AFq9FYKFqHvFBm4EI1PM9+Q2Y6OXNWfK1zlYWx6UP7UQvt2n3T79x5rG
+	5CCVBOPvGKR++Ag0MH5E3GNU7rZDk/y1bimnD5UiUvuQK1uAGDtRISuRgUFKiZ1dMQ==
+X-Gm-Gg: AYBFou2hxpT9GJxY+aqEWpzrgqCWHEYss5l4goJBoVtzyxXIjmyGz0003J90VWMD02n
+	dM4qYPcHQbZ3tDtB0h4ukC4jPO9jkGA1wXjQV7E/HRrdgrsPGVulxOFe91NLbvwGqPOxnfdyj9P
+	CzafyR1S4LS/etNU0CT+nrQf+tZLGK3PleuE9XZzBjdM37WCz/50xHKOxvG8luqIEtu1JhK07fk
+	jDWg+eRAAwm8Q9PTkHya7LXxed/u05hDLUP+iFO2c7Wzaj83v2zaXFaCxnTmCvwerD0GvSDBviJ
+	slK/rmjyOck9WTH85qK7p0MiMYMquY17gR8+FJAVU7S9Q9Q28PuEqBtJ25ReGCa5z+tYKGWINjb
+	+3hIpGH9yLN5Qt677hdkX5GYEpXQMsTrlnpxnWJV7sDoh7iw/eoG2W+O0d5TiAXQvxLCfqkGRAf
+	b4oEUSozuaLsZb8jqW/04nQdgKWXzw6/behFA+RT0JjKSBe1KnM02iRm2/FKjwKJ0t6++/vR1YN
+	VPR0Q4VodL08oGuyhNMUszJan8MJnxj3beYrKxLaNXUk17M4gOKVwZFpms6he1elsmMOyk5Fo6Y
+	jvjYsKIQYJkA2MMAc7yQ4azHA8O6ByEzn1PdxzzMSx0lCcmUJkHw9tprq0tloO04Yf/NZlgekVI
+	DgviF+fo=
+X-Received: by 2002:a17:903:2447:b0:2e9:8c2b:979f with SMTP id d9443c01a7336-2e9b3252d32mr704095ad.8.1792190150274;
+        Fri, 16 Oct 2026 15:35:50 -0700 (PDT)
+Received: from [2a00:79e0:2eb4:9:17ee:cb47:3ad4:ee3c] ([2a00:79e0:2eb4:9:17ee:cb47:3ad4:ee3c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc98139ccsm3148060a91.0.2026.10.16.15.35.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 15:35:49 -0700 (PDT)
+Date: Fri, 16 Oct 2026 15:35:48 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Roman Gushchin <roman.gushchin@linux.dev>, 
+    Shengming Hu <hu.shengming@zte.com.cn>, linux-mm@kvack.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slub: initialize the free pointer of the bootstrap
+ kmem_cache_node
+In-Reply-To: <20261010203906.93156-1-kmehltretter@gmail.com>
+Message-ID: <3284bb03-6c23-611c-872c-19954a7f3381@google.com>
+References: <20261010203906.93156-1-kmehltretter@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B1989180004
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1473F40003
+X-Stat-Signature: 656xfy4ifuzae65wakxoomh975ttyufk
 X-Rspam-User: 
-X-Stat-Signature: bibupd9a711jhmah6ksxi3kybjxkrpa1
-X-HE-Tag: 1792190143-813457
-X-HE-Meta: U2FsdGVkX19+lK41Mf3J8q4XXFas/6E7+caKHR8bkCnNqoZhyY93Z8pKh7ObrMlxG3rq+fKmMEXzakGiX8HC4mTmMmWnuYOuC2haholrn54R/rna9EUJPhwYgDHzbJA0lNDhpEmuMm+xbrl1V7x2W9z3Z/wcOQNKhcpXSmY2Nku4+m54hF6DEPag9BdIDfTmHSseHSJACFQ/ia3R0hnoPFAWozEIw2LkMqInIZ9W3C53Dt2E8Q+WMZ+bgFEYhVDuAUokx/NEXkNAnwu91EscawU0UOwIDzPODsxWBj+nCZg7FPeMCLPOa71exP/iU0PTc+SFMpHDOkzCU2S9bvV1xER1HAgzVSdTPsihxBdGLl1RwS0Fz/9VxhMv4qMYpzMnkZZTdeZ459ncsdo9IPs5EiFV68b9Vlc+n0HPucB+uRLhP8yRnrg6xfdH7WdwtHVtXJgM0woXk+aYuAhovSQGKwvaCHtLjHXfqEqiRu6EJvNPFoU8D8ez4HLMsW+RIfUIE2BUGRSTJxj+M8GnBnXnXdjQsT7bdDZ1+H3jxkwHg/+ICoX9qx6yRwBtykLZtHJ0PPewd5bLFIShwnzYiTgxbByda7y/8qdWaL+fiKgiiligbeGrczZ3Sj/py7FiWtFemMFUNOlLwarMBAW0REsOVzNlwDaISc3cO539nMfagD7JscDT4Ge/J0xelcI61uEa8yUw/39YGuuo1+GOeSvXb5yyxNwulWvN4RLLXFblA/v0fNqtV66rUzlonhy5OJQPQkdxOWo1yHFLJujz2OgBEnxRjymcpFmvQsofy7kr9Krxift1DM8VJTnEFCu/zM5O9GkfXNaiHojp5rWKD0Tnior8lpihq709+DY5fKkphHF3fZj72rjFSC5660bpgC9bE7hi63EE3d/Alrdat1debRxeMnI5gM1rGU2vOA7dlRzKkq9ErbJFAQ9pUORtNE98J8cAywnMUIM8FjxJLNv
- xMk0ijcp
- Yk0d+E8VG5ZaNSqmsPgbuBAYBBkssdZk5j4/xjbkBLEzUzHSEY5xoEZXQPqPRIi/MgOU1EbW+Ojt594MJZkCT4ii9K5AFWcQnY2aqXtgY1PU8y1e7zcFbsInkGeSEdpHnv95yRY9InwVjVEaupcqpzVwZ78Rwgyrub8CVbnE4y+hEMmIeVeHbomOE47XvBnWVRl5B0DWqh/udDRH/XPSCbGoJlS5IXouWHcegSRix9KW5q5NA/KogfZKErRe1yxBL79/avdtbXdHrmcgaYBnPv/dHWytEYVt7EWBWl5oK2SbWL9pskrnBWKCVw6ZFt6LE7Ohxj6l08iHe87Lqs5KSNEFBjEMPM60TBTq1
+X-HE-Tag: 1792190151-338077
+X-HE-Meta: U2FsdGVkX1/4V8gIzyu053Od5KHhtadjKPOEiZ8xQeGEKmlDRTXxnz3vm1SrC2/cW4mCcvBYBPNqIrG0G720KOq/VacHnW3z7xScReaxf7+6N4VLje1OyOyFnG/r6rXE6Vs6xXSbMk7ykmTehuxhqK8fLJhP1V0SBGLwFHguxlJuVeFFk+5jXXEGsszfvtcsyAVzuKUI8IVTkk16ckt9aLSj2PmchepQwCBo67m7tW6LQHisNhnQod7T656NODv3IWdLpnqbb8EMcBK/jKgU4touBM7xquD7QHr7nkYRAMN+EAUKPBDDieEykCGVgh1VzyIWuApSmHIMI3uXqTUEDJTXcXc+zgJY9cvrWvv/SvTn2keH50tD6yhuRBsD4s8nxkpD8orJhZqnXnlbYNvsoEzZG5r8Wr+ana1MLjYeG2SULifBChayesn++4WtPYS+zgrY730hvJdN6bX6hkTRZP1qz0x2CaM9tL+m2rvlQwhnt88Ng4NetJch9ZdGBB3+qtytR4qNnaJRekM15cbhsvl6OiKvVivmFear+1rFIA18vmB9b1zVndvZ4Szp85xUGajKG8b+mfYBdDoibAuXVbOivwuZkf+UlAq1DjkJvWZomm6Sb3G9yD8ILeZ5UKkSVrR1turl5jbb88ZioXbcasFElDPrk01upfQ0JvZ0IImNLt1Rm1dNHCK+EFI0j9DiV5Eg0l6uXxaUyVHXKK49q1VlIsnDe5mCHqE7zGZnVrdAgI2zLG4Gqy2/0kbtgJMAb6IBKLgE+HfkOEGGLJbSLmjTfsqGJ3HaMZ3+C6A11PjNQFN4IVqBtDpjer9EIckrkRFtqulGhHU6AjWWL/Aj/e5IY7YG5xoSBxkJuK6gHS6bvk7kogaZHf7PxrKFSMg44buPzhtPG/JDInljnqibBRjaoU8UNZsfqFKUL2pQMcNiXx7bl3XtshKWtzC0kDP8RI6/FsTOqxhM6GI2Zqf
+ naNNI/kl
+ ks9tQvWaK8Vimx5GikqbVluWwrn7LpfO74Jq/xmb/9E+Qi9J8clr51lgsLmr+GMgGtpQmL9dKXg5PX+9Jxe3/jAXg8xZKOk3TNwhUBXQWX3cBPl/0wZ/X4Jg2VLGOsUgr19BjJAJEGihZvPfTrKYAn8nX7XUf+wiZcSuMGE5Yw/wsDIUpr0RPhGIDYSgkfEKPriG2R99M6E1BcoKeLZ+QrDw0CPAcXNT1vfgWcZusxeqetbSxROeaieFdRbFaA9ndNuhjq4Pbr8BV0rT8R1hWHAhnEf+Jq+1OXXu1OoxNxX03i5pnAEJTpuAilfDCDrtNKZFqZJF+OVwedOi6wCpFvKwbiJSTzfAG/brfjwdwo5u3CsjUCWGRnPZWqAH7Y2phoy90TYPHgBrYwndRLMIk5TMIJkbKZX+vDmT2pA6OFGENapo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,349 +124,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 10 Oct 2026 21:50:13 +0530
-Shaikh Kamaluddin <shaikhkamal2012@gmail.com> wrote:
+On Sat, 10 Oct 2026, Karl Mehltretter wrote:
 
-> The trigger_poison_list interface may retrieve poison after CXL memory
-> is already online, which is too late to prevent known-bad frames from
-> entering the page allocator.
+> With slub_debug=FZPU, validating kmem_cache_node reports
 > 
-> During RAM-region probe, retrieve a poison-list snapshot for each
-> participating endpoint decoder. Validate each record against the
-> decoder's assigned DPA range, translate its poisoned DPA units to HPA
-> and PFN, and collect the affected PFNs in an xarray. Coalesce consecutive
-> PFNs and register the resulting ranges with the pre-online hwpoison
-> registry before creating the DAX region.
+>   BUG kmem_cache_node (Not tainted): Freepointer corrupt
+>   Object 0xffff888000140040 @offset=64 fp=0x5a5a5a5a5a5a5a5a
 > 
-> When Get Poison List is supported, abort region probe if the list is
-> incomplete, malformed, or cannot be translated. If volatile poison-list
-> retrieval is unsupported, preserve the existing behavior and warn that
-> poison cannot be withheld before memory onlining.
+> and taints the kernel. Poisoning places the bootstrap object's free
+> pointer outside the object, where check_object() checks it even while
+> allocated.
 > 
-> Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-A few comments inline.  I wouldn't rush to revise this though as I think
-the whole concept needs more input from others.
-
-Jonathan
-
-> ---
->  drivers/cxl/core/region.c | 322 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 322 insertions(+)
+> early_kmem_cache_node_alloc() previously took this object from a
+> freelist with an initialized pointer. It now takes it from the slab
+> iterator and builds the freelist only for the remaining objects,
+> leaving its pointer filled with POISON_INUSE.
 > 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index c72524923b38..e3ffa77927df 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -14,6 +14,7 @@
->  #include <linux/string_choices.h>
->  #include <cxlmem.h>
->  #include <cxl.h>
-> +#include <linux/memory-failure.h>
->  #include "core.h"
->  #include "mce.h"
->  
-> @@ -3038,6 +3039,323 @@ int cxl_get_poison_by_endpoint(struct cxl_port *port)
->  	return rc;
->  }
->  
-> +/*
-> + * Device-reported poison is gathered at RAM-region probe, before the range
-> + * reaches dax/kmem, and registered with the pre-online registry so the
-> + * frames it covers are withheld when the memory is onlined.
-> + */
-> +static int cxl_poison_store_pfn(struct xarray *pfns, u64 hpa)
-> +{
-> +	return xa_err(xa_store(pfns, PHYS_PFN(hpa), xa_mk_value(1),
-> +			GFP_KERNEL));
+> Initialize the bootstrap object's free pointer to NULL.
+> 
+> Fixes: dc795d4c0282 ("mm/slub: defer freelist construction until after bulk allocation from a new slab")
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 
-Fix alignment of the line above. Right now it isn't visually clear
-which function call the parameter is for.
-
-> +}
-
-> +static int cxl_poison_record_to_pfns(struct cxl_region *cxlr,
-> +				     struct cxl_memdev *cxlmd,
-> +				     const struct cxl_poison_record *record,
-> +				     struct xarray *pfns)
-> +{
-> +	struct cxl_region_params *p = &cxlr->params;
-> +	u64 raw = le64_to_cpu(record->address);
-> +	u64 units = le32_to_cpu(record->length);
-> +	u64 dpa = raw & CXL_POISON_START_MASK;
-> +	u8 source = raw & CXL_POISON_SOURCE_MASK;
-> +	u64 length, end, step, cur;
-> +
-> +	if (!units ||
-> +	    check_mul_overflow(units, (u64)CXL_POISON_LEN_MULT, &length) ||
-> +	    check_add_overflow(dpa, length, &end))
-> +		return -EPROTO;
-> +
-> +	/*
-> +	 * A corrected error never reaches the poison list, so every record
-> +	 * is uncorrectable. Only a failure of the device's own media is
-> +	 * withheld: External poison was written by the host into healthy
-> +	 * media and a rewrite or Clear Poison recovers it, and Injected
-> +	 * poison is a test artifact. Withholding either would make a
-> +	 * recoverable state permanent.
-
-This reflects back to the comment I made in the cover letter.
-Device discovered poison can be ephemeral.  I'm also not sure for volatile
-where any poison record would come from if you are doing this for newly 
-powered up devices - they might scan whilst initializing but might not as
-that is very very slow to do.  Typically poison is found much later by
-patrol scrub (or synchronous read).  This may be more interesting for
-persistent memory where the persistence is used, but you aren't addressing
-that as far as I can tell.
-
-> +	 */
-> +	if (source != CXL_POISON_SOURCE_INTERNAL) {
-> +		dev_dbg(&cxlr->dev, "%s: dpa %#llx source %u not withheld\n",
-> +			dev_name(&cxlmd->dev), dpa, source);
-> +		return 0;
-> +	}
-> +
-> +	/*
-> +	 * Translate once per unit of HPA contiguity rather than per 64
-> +	 * bytes. Consecutive DPAs within an interleave granule map to
-> +	 * consecutive HPAs, and a granule no larger than a page lies within
-> +	 * one page, so stepping by min(granule, PAGE_SIZE) from an aligned
-> +	 * start reaches every page the record covers.
-> +	 */
-> +	step = clamp_t(u64, p->interleave_granularity, CXL_POISON_LEN_MULT,
-> +		       PAGE_SIZE);
-> +
-> +	for (cur = ALIGN_DOWN(dpa, step); cur < end; cur += step) {
-> +		u64 hpa = cxl_dpa_to_hpa(cxlr, cxlmd, max(cur, dpa));
-> +		int rc;
-> +
-> +		/* Not mapped by this region; nothing here to withhold. */
-> +		if (hpa == ULLONG_MAX)
-> +			continue;
-> +
-> +		rc = cxl_poison_store_hpa(cxlr, pfns, hpa);
-> +		if (rc)
-> +			return rc;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int cxl_region_collect_decoder_poison(struct cxl_region *cxlr,
-> +					     struct cxl_endpoint_decoder *cxled,
-> +					     struct xarray *pfns)
-> +{
-> +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-> +	struct cxl_poison_snapshot snapshot;
-> +	int rc;
-> +
-> +	rc = cxl_poison_snapshot_init(cxlmd, &snapshot);
-> +	if (rc == -EOPNOTSUPP) {
-> +		dev_info(&cxlr->dev,
-> +			 "%s: no Get Poison List support, nothing withheld\n",
-> +			 dev_name(&cxlmd->dev));
-> +		return 0;
-> +	}
-> +	if (rc)
-> +		return rc;
-> +
-> +	rc = cxl_get_poison_by_decoder(cxled, &snapshot,
-> +				       CXL_POISON_QUERY_PREONLINE);
-> +	if (rc == -EFAULT) {
-> +		/*
-> +		 * The device keeps no poison list for volatile ranges, which
-> +		 * CXL r3.2 8.2.9.8.4.1 permits. Online the region as today.
-
-Use latest available spec for references (they don't make old ones easy
-to download!)
-
-> +		 */
-> +		dev_info(&cxlr->dev,
-> +			 "%s: no volatile poison list, nothing withheld\n",
-> +			 dev_name(&cxlmd->dev));
-too noisy.
-
-> +		rc = 0;
-> +		goto out;
-> +	}
-> +	if (rc)
-> +		goto out;
-> +
-> +	/*
-> +	 * Withholding from a partial list would online the region on the
-> +	 * belief that every bad frame had been named.
-> +	 */
-> +	if (snapshot.truncated ||
-> +	    (snapshot.device_flags & CXL_POISON_FLAG_OVERFLOW)) {
-> +		dev_err(&cxlr->dev, "%s: poison list incomplete\n",
-> +			dev_name(&cxlmd->dev));
-> +		rc = -EOVERFLOW;
-> +		goto out;
-> +	}
-> +	if (snapshot.device_flags & CXL_POISON_FLAG_SCANNING) {
-
-That one seems wrong. We don't prevent memory from coming online because
-there might be poison to be found.
-
-> +		dev_err(&cxlr->dev, "%s: media scan in progress\n",
-> +			dev_name(&cxlmd->dev));
-> +		rc = -EBUSY;
-> +		goto out;
-> +	}
-> +
-> +	for (u32 i = 0; i < snapshot.nr_records; i++) {
-> +		rc = cxl_poison_record_to_pfns(cxlr, cxlmd,
-> +					       &snapshot.records[i], pfns);
-> +		if (rc)
-> +			break;
-> +	}
-> +out:
-> +	cxl_poison_snapshot_destroy(&snapshot);
-> +	return rc;
-> +}
-> +
-> +static unsigned int cxl_count_poison_ranges(struct xarray *pfns)
-> +{
-> +	unsigned long index, previous = 0;
-> +	unsigned int nr = 0;
-> +	void *entry;
-> +	bool first = true;
-> +
-> +	xa_for_each(pfns, index, entry) {
-> +		if (first || index != previous + 1)
-> +			nr++;
-> +		first = false;
-> +		previous = index;
-> +	}
-> +	return nr;
-> +}
-> +
-> +/*
-> + * The xarray holds each PFN once and xa_for_each() walks them in ascending
-> + * order, so runs of consecutive indices are exactly the sorted,
-> + * nonoverlapping ranges preonline_hwpoison_register() requires.
-> + */
-> +static int cxl_pfns_to_ranges(struct xarray *pfns,
-> +			      struct preonline_hwpoison_range **ranges_out,
-> +			      unsigned int *nr_ranges_out)
-> +{
-> +	struct preonline_hwpoison_range *ranges;
-> +	unsigned long index, previous = 0, run_start = 0;
-> +	unsigned int nr_ranges, nr = 0;
-> +	void *entry;
-> +	bool first = true;
-> +
-> +	nr_ranges = cxl_count_poison_ranges(pfns);
-> +	if (!nr_ranges) {
-> +		*ranges_out = NULL;
-> +		*nr_ranges_out = 0;
-> +		return 0;
-> +	}
-> +
-> +	ranges = kvmalloc_array(nr_ranges, sizeof(*ranges), GFP_KERNEL);
-
-kvmalloc_objs()
-
-> +	if (!ranges)
-> +		return -ENOMEM;
-> +
-> +	xa_for_each(pfns, index, entry) {
-> +		if (first) {
-> +			run_start = index;
-> +			previous = index;
-> +			first = false;
-> +			continue;
-> +		}
-> +		if (index == previous + 1) {
-> +			previous = index;
-> +			continue;
-> +		}
-> +		ranges[nr++] = (struct preonline_hwpoison_range) {
-> +			.start_pfn = run_start,
-> +			.nr_pages = previous - run_start + 1,
-> +		};
-> +		run_start = index;
-> +		previous = index;
-> +	}
-> +	ranges[nr++] = (struct preonline_hwpoison_range){
-> +		.start_pfn = run_start,
-> +		.nr_pages = previous - run_start + 1,
-> +	};
-> +
-> +	WARN_ON_ONCE(nr != nr_ranges);
-> +	*ranges_out = ranges;
-> +	*nr_ranges_out = nr;
-> +	return 0;
-> +}
-> +
-> +static void cxl_unregister_device_poison(void *data)
-> +{
-> +	preonline_hwpoison_unregister(data);
-> +}
-> +
-> +static int cxl_region_register_device_poison(struct cxl_region *cxlr)
-> +{
-> +	struct cxl_region_params *p = &cxlr->params;
-> +	struct preonline_hwpoison_range *ranges = NULL;
-> +	struct preonline_hwpoison *handle;
-> +	unsigned int nr_ranges = 0;
-> +	unsigned long nr_frames = 0;
-> +	struct xarray pfns;
-> +	int rc = 0;
-> +
-> +	lockdep_assert_held(&cxl_rwsem.region);
-> +	lockdep_assert_held(&cxl_rwsem.dpa);
-> +
-> +	/* The region may have been decommitted while the lock was dropped. */
-> +	if (p->state < CXL_CONFIG_COMMIT)
-> +		return -ENXIO;
-> +
-> +	if (test_bit(CXL_REGION_F_NORMALIZED_ADDRESSING, &cxlr->flags)) {
-> +		dev_info(&cxlr->dev,
-> +			 "normalized addressing, poison not translated\n");
-> +		return 0;
-> +	}
-> +
-> +	xa_init(&pfns);
-> +
-> +	for (int i = 0; i < p->nr_targets; i++) {
-> +		struct cxl_endpoint_decoder *cxled = p->targets[i];
-> +
-> +		if (!cxled->dpa_res || !resource_size(cxled->dpa_res))
-> +			continue;
-> +		rc = cxl_region_collect_decoder_poison(cxlr, cxled, &pfns);
-> +		if (rc)
-> +			goto out;
-> +	}
-> +
-> +	if (xa_empty(&pfns))
-> +		goto out;
-> +
-> +	rc = cxl_pfns_to_ranges(&pfns, &ranges, &nr_ranges);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = preonline_hwpoison_register(ranges, nr_ranges, &handle);
-> +	if (rc == -EOPNOTSUPP) {
-> +		/* No poison tracking in this kernel; nothing to withhold. */
-> +		rc = 0;
-> +		goto out;
-> +	}
-> +	if (rc)
-> +		goto out;
-> +
-> +	for (unsigned int i = 0; i < nr_ranges; i++)
-> +		nr_frames += ranges[i].nr_pages;
-> +	dev_warn(&cxlr->dev,
-> +		 "withholding %lu frame(s) reported poisoned by the device\n",
-> +		 nr_frames);
-> +
-> +	rc = devm_add_action_or_reset(&cxlr->dev, cxl_unregister_device_poison,
-> +				      handle);
-> +out:
-> +	kvfree(ranges);
-> +	xa_destroy(&pfns);
-> +	return rc;
-> +}
-
-
+Tested-by: David Rientjes <rientjes@google.com>
 
