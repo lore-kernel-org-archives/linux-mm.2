@@ -4,143 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 031DACCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 03:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D344CCA463
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 03:11:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEB306B009F; Thu, 15 Oct 2026 23:10:31 -0400 (EDT)
+	id 7AAA26B00A0; Thu, 15 Oct 2026 23:11:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2686B00A0; Thu, 15 Oct 2026 23:10:31 -0400 (EDT)
+	id 781B46B00A1; Thu, 15 Oct 2026 23:11:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD8AD6B00A1; Thu, 15 Oct 2026 23:10:31 -0400 (EDT)
+	id 6BE386B00A2; Thu, 15 Oct 2026 23:11:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A8C996B009F
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:10:31 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2B1A38028D
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:10:31 +0000 (UTC)
-X-FDA: 85327011462.05.23C7FE8
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4FC8880006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:10:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rGsj3NLC;
-	spf=pass (imf30.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BB1A6B00A0
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:11:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2517A0223
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:11:01 +0000 (UTC)
+X-FDA: 85327012722.01.5214F2C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E8B75140009
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:10:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cu+pJStA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792120229;
+	s=arc-20220608; t=1792120259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EXuyqgfiF9x7HO7+fbFxeGIrd5nFUV6QECR0sZa4nrg=;
-	b=19UnX5sfy9dyZ0s/LFe1+7qB/B9CFs0xyv0X13556qHq5xHT7Q/WWYkOkFDXZygDMGro0h
-	MfABtUVLXRg4n8vjqvlv92AGgV0xcG++YQLMxSjCEQU6hQ24mZm8drDSHbhntOb6pW7Her
-	o6B0CPDQTdImMnI2aHN503lQ3C2QMF4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792120229;
-	b=yJlOo42RzVohOW97svilozz/jArxe7oQLkuG2Skvvuc+ZwWGoEvqzmMY8x+CJBq/53B3Qh
-	iVNAMyQ1OHv0IZy3+ldMIWqyPSS0vT3gkySjqMrk1ndA9zOnMK0g6pk/uJNWy48vKHCIdW
-	PfroaUVyk/PuLd5iu/cdMu1+TR62Tr4=
+	bh=1fiKC2aTmvE0OeIcVC/v1BvJFGUG2CBHWahegQLQaL0=;
+	b=v3IlHkNieTauNhkSmmdGwa52LGj8krpCQ/UHNR+/wfKpBZrbcfvkqJctCu2wZo/YS7O8Is
+	rjtGeqidm4YYmKR5fGiK8276VbHSpVTQjbqxzyMZSBv1YUmB2G+vqCnef4mDWGV7OS1TAH
+	84xgkuWQ+lUiojPyciFd91jonHR/TEU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rGsj3NLC;
-	spf=pass (imf30.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-39569e136f9so1779515a91.0
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:10:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792120228; x=1792725028; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EXuyqgfiF9x7HO7+fbFxeGIrd5nFUV6QECR0sZa4nrg=;
-        b=rGsj3NLCcaavwZ5coOgjlP+7Ss5ETWIChq241w7xISfFK1xmqj0R9/LbrPgjwlpXCP
-         KBQ5ZILY/faTsgNMoJQG8D+bydMd82xHZ5BTMGd6SHlbzs50klGCHbG3cqm1J942bOJh
-         czvk5InReHzcjzbL0lyRl17ELX54vM1J13TBQeKMkHHPNLQgn14nt4fIBmSA4eWSyAlZ
-         czXhvcH+VOaFOVV6nBhbpd9S9ok21VIk5StPUBeRMMu26d4Q6fANo5OQF7wDj29xQhIZ
-         +leT+L1+vBfFdHuOuqQbBfi6/RzySGA0mcCW+oReSLU+QoSq5ckfWuDvGECxEP4y1vFb
-         9Mzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792120228; x=1792725028;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EXuyqgfiF9x7HO7+fbFxeGIrd5nFUV6QECR0sZa4nrg=;
-        b=Kcdnn1BcZNhDvmZJdczS4OV7xWbXXPK6Z8jRmOXMNgQxFyU6ipxyTysqSORpyKpdnN
-         zOqDmikTwPi7XjxJ425pXGEBZ+lMKO9g+6h+sKAHr+O9PUc9PB4fzZ+04LM6gbI7Jyco
-         dg9CFAlT3g/h61pW5zaHPfjd9IClcLVdpr8orkUugm8PNhEEzaIt3jfzA95LdfKwHMqO
-         B8y6CEcYLOma5T7Mku/QuJOdwned+WkrqXhArNhMGNHq7uA6gGcyiMLH8uhHjWFHMZGt
-         pehPmqHZpTXSSpcyF25nqvbKwlsaM5iexNoStNrqY7vs85jdrEXvbu85vTdpd0DoF9so
-         yz2A==
-X-Forwarded-Encrypted: i=1; AKwUvBy5yikfYkVN/O3+JOkcuLwBhlyTthd0lxDVOFaY6JDktooqP+T3w//gVrR+5esr0bVY8w2drsBsjw==@kvack.org
-X-Gm-Message-State: AFq9FYIOKgHUctFcguDRyAokeGVrpX6H1Wig5bRhwiU7xFYyiNYEUggC
-	XAW/XplWZcviDQL8TI3N7wCBaizMdL0AYvM5zzsro4QTp8G5FYtwwkD2
-X-Gm-Gg: AYBFou16vyojJ1kBYmT6HKkvZ2ktXePzcPTcEavrqRezXuMpYol7UUQd7hyP5BZEfcc
-	PJuO5/6WMfSfNJmvkPH+6+LYchKW4EO4QXbCAf58zNrmA4IMoAWeJ/b/NoFYh228Ursc+bWR7ZJ
-	mGdvchTvG2vd5dxgIxal1iL6DeXwRncAn7+lfPRGLBWHScUtq+Bp3G1Ah7wMBfcjiItWZCwmKVA
-	id6dWv1YGd/ngCkoWq87osyDSUCcWEBfEzQvuauuTTFiUSKn26yYHSt7UtX/lTkNo9coKf3/j9Y
-	2jtFvsupT8QgnBfQbsVKN8nm1aWruENeQQudV7e3neTo1z6CjsrEk37aK4xstsb+YhM4ZWSOybS
-	IdDQEAFqGRFkhQeksxN70z6RHqiHjcKT4strzBfgPfXS1BuFxOsP6lw4OcZ6UGybFJqWOn83+M+
-	U94gmoN1KXwNmYgQOXIc54crkaTpu2ogR0jXl/ZwVh0w7+P7XMJyWUipP9j5AqeNFxH7q3QLFKS
-	JmUD7OrSyURzhUiFDYf1Q==
-X-Received: by 2002:a17:90b:2d86:b0:3a7:d2b5:2e99 with SMTP id 98e67ed59e1d1-3ab3a60d1eamr16967413a91.20.1792120228159;
-        Thu, 15 Oct 2026 20:10:28 -0700 (PDT)
-Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd3cc73c7sm370085a91.4.2026.10.15.20.10.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 20:10:27 -0700 (PDT)
-From: Wandun Chen <chenwandun1@gmail.com>
-To: robh@kernel.org,
-	baoquan.he@linux.dev,
-	rppt@kernel.org,
-	m.szyprowski@samsung.com
-Cc: catalin.marinas@arm.com,
-	will@kernel.org,
-	mark.rutland@arm.com,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	saravanak@kernel.org,
-	akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	ruirui.yang@linux.dev,
-	robin.murphy@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	iommu@lists.linux.dev
-Subject: [PATCH v8 6/8] of: reserved_mem: add dumpable flag to opt-in vmcore
-Date: Fri, 16 Oct 2026 11:08:53 +0800
-Message-ID: <20261016030855.4062882-7-chenwandun1@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261016030855.4062882-1-chenwandun1@gmail.com>
-References: <20261016030855.4062882-1-chenwandun1@gmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cu+pJStA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792120259;
+	b=FNVNS04IgMZuUL390TyVh/UJWLt8BOErJp7HfR5DaZ3celNVj19tgL2ayxKaBRqjy1xcCg
+	h/wvoWV+Y2oZyOrqOslxRVadway0SuUDRdmAz0K5GZb/yYTtyafyBgIuVHm1MEFypGT8EC
+	UPjoolH/yFUJg43uC0bEIXxpMSSJjm4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 60602600D4
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:10:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195011F000C4
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:10:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792120259;
+	bh=1fiKC2aTmvE0OeIcVC/v1BvJFGUG2CBHWahegQLQaL0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Cu+pJStAFWrWfCf4ssC/P2a0EtKOC4/+S3a0tNA5nXaYOvxLTt9v4plEc6J+6qwW5
+	 iVq7RyouyPT8s/NXzp9pibDhmdN0xBD0XaLf2rJxEm8T6xppg39/+QeYjqSpw0261b
+	 5SyTnHtWEt13zgvscJV8LhCloJiMaRcUM6HZ3eDyvWbgSTCQv3zDXrf7ZBfEt8QjGS
+	 uc/7J/a0v15TZmnedQZBIxj775TpTERTQRX5CdMdHuEThaQicyqbrbDP5JrD3m25zc
+	 v+MAdgZzItFdZLnKNoKvc4/VS+mbjLKBMmFFyKjGqg6kN0M8jctvfxNk7Xz5VGjFOF
+	 SxUldGBydgiZw==
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93ef1a2948dso472064585a.3
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 20:10:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzdxmqVkxrqPecyxefEP/Z90mfm8Nv3MpyNZtzz8Ed7//iKNzlvnsxWadKzsyEtAw5AL2Cd4GmhmQ==@kvack.org
+X-Gm-Message-State: AFq9FYLrhaKHTLi6PLOhG85DlwVY9fraYDoG/4THz8U4g1TXQG1x5BK+
+	ZwDQiY4PZ9wrDh8Wnqtk8F/YH2m/B6CU72O5sV5chwuZQPqgaT+GTd7EQs5RaFKYM27CqkjVyBa
+	ktw3FfDhpHVly8nWKQFk7WWGgj97KWDw=
+X-Received: by 2002:a05:620a:6606:b0:93e:bcbf:4ad with SMTP id
+ af79cd13be357-93ebd24d7acmr3486164085a.33.1792120258517; Thu, 15 Oct 2026
+ 20:10:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4FC8880006
+References: <atBh9xfpOji_A7A_@google.com> <20261015112440.1491168-1-zhangbo56@xiaomi.com>
+ <atGPwJL6XzlRaMva@google.com>
+In-Reply-To: <atGPwJL6XzlRaMva@google.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 16 Oct 2026 11:10:46 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4weqqSGH2JCh5EThtU8N3e96kRnhLtd9Fotia1t+7YqxQ@mail.gmail.com>
+X-Gm-Features: AclHuK8Cdg4eD67RhRhItOTBH5o8vU5ld-ttYECyihZqBeuSHj7hg8nJiSsejkE
+Message-ID: <CAGsJ_4weqqSGH2JCh5EThtU8N3e96kRnhLtd9Fotia1t+7YqxQ@mail.gmail.com>
+Subject: Re: [PATCH v3 10/11] zram: use rw_semaphore for decompression streams
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Bo Zhang <zhangbo0325@gmail.com>, akpm@linux-foundation.org, bgeffon@google.com, 
+	minchan@kernel.org, richardycc@google.com, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E8B75140009
 X-Rspam-User: 
-X-Stat-Signature: oxbu56ak9t3ae9e7z8yg58mi1ummwebe
-X-HE-Tag: 1792120229-39176
-X-HE-Meta: U2FsdGVkX1+QsZSujAbumYIalf1vkL9pejJBVtxMc4FOLqJBxMWpfPUYwVKnZddH5YWzAEfr8SPOgEjMDUuh4rWCs/t0384SlaF4N97cN/58mIx09mr27d1xS8OrYS1bqUjRpRQR9YSHI0fko5b5a5T1Cha1e7kDZG3Oj8HAl0a7E1k2rhjdSzFiMBzK4Fxpm2bSzJ3fGBk1BA95C8RufeVxrPk9RxsgZfFXq5c7QcS6pz2jrvpZtr092wjcrQkA+BuVhIzlyNEDnfcm4/E93d9TPF7cG2VoPJmXeE7XQRVThp8PPtpHo/NauFHSb5C5IM8O0hLWLCspky2Ousls84Vf0mLwnLLNO+pcIT207TQ9pt/laBLb388vRk2OGUxM7EMfgkwa5gz+cFa0HeDCNZfXKr0mjf1FB88EYgCePwO6DDbOFVhsMHZnOXaH+0ELfvzqza/sVaRVzzvvVUWMiFIzcLpg3sQMaSasfp4y47tWH46/s47kasHMCMMBhnQ5jY/ScMbMKywTfS0f6sP+xhp8y52WL9TVG3yJ65Ue/tUQ4rqLcpDG3xThwcGeWNfi+kyZN2bEh/1CVC3seP1l4UNSnaAm2ZqsfoUM/LMZOOXmP1N/dSk3j1tDpoCZibP8lySynrI6q5A6/RGKH+2N8Pz1HhCozF4NTJdP1F0QV3UtPY/AWj6R0mmGIueAVOxXHzywuAZ434yQdjGiuTo1105G4pDJwFNKjRX21S1zL5acUBvfT8no0V4cDxwk0TyxYPiMaBit2guFMsZhHaTL4bRWpc0Cp6IdM2LN656tEQGl4Rbm48rCbXh3kM53LnIQ4xVsxWAiNsm9DBk17AZWDYyzj0tOvf2n7VNW36yR/IpqIt985Uil89zKrVhGiSTZ0qwrM47nWd3QwJZ/vySRuHyGbM6ttGZeWVAHgmXGDPRXTKOzUYJ7XeRqRbCexmNqyBiLnFm9nu4eWTrbCy0
- RgruQv1V
- KvtvsPQMgc+kF6Jb83jMTnd7wOpqNg24+4WW9f8C2CfEmlgZK1p1Dg/KF3sLk//bfIgzRBRu6taWLi/wabwpFbKVP2EONRMSP0gjsXItNj+dA9SzjoZJbttdTjo9gCz6O7PfAdJDyxRLeMjAt4HSFjIQMQy2c9Zk+x0RctWMwZazudEfX/kbZHaUKrxnFKnZPo+Cut/xgmAFbVo4LVdDyDTRr3W95TEZfpWqjBlGZc/yk7pA14GpNLRcz/V/PnmEgy6t/gsJgqQPJKZ2JJ0UlhFlOpN9K56cL0Jnx/SINR9+482qFhcPXpiYr3z+sdN+S6im+5Q52Rx4nFnE6RjU5vwiNCzTaBaLFJGEMJqz3P4leaRvIXPLDsPjUm74cojmmVytox5OaJ3oJ940GTwdGbc8cQTVnNb0w9bLBxv5SLbHS2PgZmE7nHHZU5NQETJSMHjSDHCtppfqwVIyOGA3pymDeB8b4N/j+ofmLnzFA5o1XX3sqNl9QSa46nFIrPEuN2n/qsD6U0yslANcaQbphPr57kARs9/sDHTHC
+X-Rspamd-Server: rspam12
+X-Stat-Signature: wy61srqmzgene9hidsjozaq9gi6o1msk
+X-HE-Tag: 1792120259-325197
+X-HE-Meta: U2FsdGVkX1+p5fWn41FZdtfrgRGPIeX+eme8xs2Egxvkh/t2U3bg9T+r1mJCSaxrajhdYccNxZ7hBUhLUwOxZX2TLyBVG3pPrMsFnEH3cFVQuIUzQvgSuNuK2ixWYQ0L+TiqP7HqOo3kcJqG6APtYCRTAhO/bvqTpiQeojVPM0col2lS41oyiNiUcygAfefOCeB6R1+b/D3hPhE+xjlhdS+HlP7sV4mxBAe1hvWg6n4nc7TF7vpgZvo4jKkWYePwJ+VEcChE9tERWIqzk97H9hlFpgfjXpvhzHDJdKb1usfr/TCSd2mL21bPRmwsHI4+JZg6En6Okls1kIgGCHNFA9fneiM7J60duEw5OvtJJVxacC1hezvTJCjS2FL+O3e8UaUWlZIYpRSSenYOrbAv16MxYoRLSoHGkVfLslpKHV5ru4K2j6Yucob/6c3XLAqTD+h1l5GuLJOB5XFAmwVzWIf8EmAVdH5NhQJQBcPioasHurW2CyeNSmsANpLIciLx4on+4fuQxpMQ23Xsf0GRuv4dHu2QwUCUqG1yCjvDwKGgzBx0dRZi8elRYVRsxWnqqGABhhT5hUiY3xOK7y1svSxsptgza57+cG/3B7i/bT7nKGIZrsqnyxsDska4itVYtvrhd/SwA1LTIoVVpXZqw8/1PZjZI6Y0R5PplyiBy06M+LF1iGwDSz0Dn2d3Ut4Nfcf/Kn5sJ1aCRTinQeeQi2wABq2CmzYNukuqSPlw31/ANI7L6eEFF3mowYofqms6aQjGk6IaggLP9r5gv4l5BgeMUoZt3M/jTaXf49SbtQIxUFgBu/WF6vemH1vnQyHfXV8HkFnbw3c4ROI+pDZ6P/jmdmjA5OP5r0sXrTVd/8HVrlrSK8Al8OiO5a1w54cer0vLId6teE9QkXdBKBCE9dyza7zX20yqlm23wbNpeHfxwlcJDwoz+zdbSSVM2NMO7nf8Y7AO28COCDF+aT4
+ QcACLQny
+ hLKdj73OSKGMFSpZBj3pyOKmHI9jYFehRxsL4Da2hz8FhF3zu7fp3cD+9CZZyCIVrab7FUgxtavEFAvTVQa3TodkZytdAzeyzHOfIgO+QYz4z2zzNfR9m2cbvMpwm3aFSOZzIclrzT9vgNx5I5akXtEEDFyLBiP5GteXn/KxIznMzvIR0CN14G+iXtBythvoBZ01jhLshVrJIwtbx0KV5ZPEf9YVU+sR9IwvaMcPxa1GI/hjVzGaJiUMbY4NDdk/LminXPHIj8jYUUlv6P8zxE+WCMbr6iaCDwGtECjOsY1p/TWKvp6y4z7gyXoinTZloT1XvWOqxVJ8ThDsOOme2xBMwYmsN8NRho2dEz3sFb421s6GEWIP3A/VAVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,54 +104,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Wandun Chen <chenwandun@lixiang.com>
+On Fri, Oct 16, 2026 at 10:51=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> On (26/10/15 19:24), Bo Zhang wrote:
+> > On Thu, 15 Oct 2026 12:19:49 +0900 Sergey Senozhatsky <senozhatsky@chro=
+mium.org> wrote:
+> > > Or perhaps we can avoid vm_map/unmap.  A slightly different approach.
+> > > kmalloc on fast path + memcpy (zsmalloc objects are strictly less tha=
+n
+> > > PAGE_SIZE bytes)
+> >
+> > I applied the kmalloc+memcpy variant on-device and re-ran the same
+> > Android A/B. It removes the exclusive path entirely in our workload.
+> >
+> >                       9+10       9+10 + kmalloc fastpath
+> >   read contended      ~1,959     0
+> >   read wait_ns total  ~12 s      0
+> >   read wait_ns max    72-96 ms   0
+> >   shared              76.7%      100%
+> >   exclusive           23.3%      0%
+> >   dpin_contended      0          0
+> >
+> > Every decompression now takes the shared (down_read) path, including th=
+e
+> > cross-page objects that previously had to go exclusive. The ~1,959
+> > residual contentions on the exclusive path are gone, and pin contention
+> > stays at zero, so the full read side runs concurrently with no stream
+> > contention.
+> >
+> > Read-side contention end to end:
+> >
+> >                  baseline   9+10      9+10 + kmalloc
+> >   read contended 24,749     ~1,959    0
+> >   shared         0%         76.7%     100%
+>
+> Thank you.  I'll include kmalloc patch to v4 of the series.
 
-Add a 'dumpable' flag to struct reserved_mem to decide whether a
-reserved area should be included in the kdump vmcore. Non-dumpable
-regions are later marked MEMBLOCK_NODUMP; the filtering itself happens
-in memblock, keeping the arch kdump code independent of the DT API.
+Hi Sergey, Bo,
 
-Most reserved regions are owned by devices and do not contain data
-useful for kernel crash analysis, so dumpable default to false.
-Reusable CMA regions are different: their pages are handed back to the
-buddy allocator and may contain key data for crash analysis, so set
-dumpable to true in rmem_cma_setup().
+I assume when Sergey sent v4, could tag for the patchset with
 
-Suggested-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
----
- include/linux/of_reserved_mem.h | 1 +
- kernel/dma/contiguous.c         | 1 +
- 2 files changed, 2 insertions(+)
+Tested-by: Bo Zhang <zhangbo56@xiaomi.com>
 
-diff --git a/include/linux/of_reserved_mem.h b/include/linux/of_reserved_mem.h
-index 49da515859f2..99c0f3ccc297 100644
---- a/include/linux/of_reserved_mem.h
-+++ b/include/linux/of_reserved_mem.h
-@@ -15,6 +15,7 @@ struct reserved_mem {
- 	phys_addr_t			base;
- 	phys_addr_t			size;
- 	void				*priv;
-+	bool				dumpable;
- };
- 
- struct reserved_mem_ops {
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 90937dc7c627..d7bfc38ac762 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -567,6 +567,7 @@ static int __init rmem_cma_setup(unsigned long node, struct reserved_mem *rmem)
- 		dma_contiguous_default_area = cma;
- 
- 	rmem->priv = cma;
-+	rmem->dumpable = true;
- 
- 	pr_info("Reserved memory: created CMA memory pool at %pa, size %ld MiB\n",
- 		&rmem->base, (unsigned long)rmem->size / SZ_1M);
--- 
-2.43.0
+?
 
+also, Bo's data can be put in cover-letter?
 
