@@ -4,155 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80A7FCCA464
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 06:16:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39160CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 06:16:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9787A6B0096; Fri, 16 Oct 2026 02:16:42 -0400 (EDT)
+	id 3F8E16B0099; Fri, 16 Oct 2026 02:16:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94FD86B0098; Fri, 16 Oct 2026 02:16:42 -0400 (EDT)
+	id 3AA496B009B; Fri, 16 Oct 2026 02:16:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83E9A6B0099; Fri, 16 Oct 2026 02:16:42 -0400 (EDT)
+	id 2C0026B009D; Fri, 16 Oct 2026 02:16:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E5BE6B0096
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:16:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D565A02E7
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:16:41 +0000 (UTC)
-X-FDA: 85327480602.17.C1D9A72
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8FCD6120007
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:16:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tKPhks3d;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792131399;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 068886B0099
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:16:46 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 73B70160354
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:16:46 +0000 (UTC)
+X-FDA: 85327480812.13.607D67A
+Received: from mail-pz2-f8.google.com (mail-pz2-f8.google.com [74.125.228.8])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A38C940002
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:16:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sYInpT6t;
+	spf=pass (imf27.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.8 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792131404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nw95ViH0murspGBeVdDuR7/ikIvvt0nVUNuA1BMwLqs=;
-	b=s5p0OFeiP6HLyN8YlTCsL5ZaGlnzYdo/CBiVqWphF7urcAWMw+RojezAjVmkm6vLmI07oP
-	Pji2j00W/cFXlfX/+3Kp9on84AGQDmtxN697Yizzj7mDH6g66m3OKAN1cNaEUEou6nalUl
-	z2RIQHmvJFx+p9NOh6KEP1npwe+TrSo=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792131399;
-	b=plvTgNLXZ6q41tSmh6pBZr6p75K85shenx+mSNnWJ/I1gRDaUunAFcfpymXmP89w8mYNwd
-	Ue44QjU/HohRzP/M3CrrSrsvz8f2jGCqygJEHPKTl5Ll7R1PUx9sU/ooKmyU8nQTUYGgLV
-	uGQ1AZoKPyJssSDRtcUsROb7nA36YRs=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tKPhks3d;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-88bd2b44f3aso3066180b3a.0
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:16:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792131398; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nc8wPpk4052uH1KOFhBHj2sKMk48mDMLBo3pjAjVvXDxr0M/7Z/DoKSbviUZbvl+n4
-         ngkE9Uf6JHntShIvgj9KV/CDVJxChopZo1kyrwBde9PTPidd06QZ8X2kVvvcWhduVhkg
-         FfKpR8giekFTCyLalWXpfG2xN0ABDGLaQIZoRP2Q/GaKkRO74Uz4Ju8Bj6tJwZynkCf9
-         wnzuuCRVtwsHrBejyBPwj2FMxpcXlOIQQ3DPUh0zptkjuXamWeNz7Yy6uohFaoqtKPhr
-         upJtKyj/20k+/UMHnh1Gl9js6UYIEflMnqA+wtuMi9Yajb/t8mbYonVsid1KhD816gCo
-         1H1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Nw95ViH0murspGBeVdDuR7/ikIvvt0nVUNuA1BMwLqs=;
-        fh=FDhno6SWazzoUY3gNTGMkNQO2IgvyU9Q5a15pAqlUM4=;
-        b=R1cRwSjUQWbOqXpSuW1K24RfvL/rAYparryencDdzitH5mJnK37Jjo9mU8j9W6bvfl
-         cKSNb0b8HdRPZbUO087gkvK1MC95QzI2Ui+A9yF8cYq6NJIM8lJ1wWS/nVPch3FiO7dq
-         a8MIzNQViikHeAl/1VIabivS1QDJJeXsGnv6ioGTFSezYvHWbOUegq0tVIjpUvcTL9ua
-         jwOYaCBoNRz7xZEnzAHi86AjaX/qqO6yfEKjId7/tT9P2TGv+P/QB5EedSLZAlviaHGe
-         yfY7k0WDC9ICDUiLakgP+Ne8zKswalRz11PnIcj04/p0ZaVoJltGBFp1NKpaybKPadwg
-         3m5A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=4koY4BOyWDff98SibzubYxzBLIkRmqVVsOccvbFql8c=;
+	b=uPt94iQcS4tbLoAvJau8LLqZNTD1PsLZuoBiqoxGHw7QFwIF+wRoFFin4ufrb0O85Yng4V
+	zLtzGdmILGC3dZeGEv9VOY86UA1qj69gzxW778ug1v1F9x42KRjveEEWepD0746jLwtpTk
+	pvBTTlgVz+42BfgCywnsMVT9ydKDyuM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sYInpT6t;
+	spf=pass (imf27.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.8 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792131404;
+	b=W8IODvJnK536j8q2vWJTUeUjiopbwL9HcNaV1/CITvO3gFUs2rYQR1zMsUl72FvdtCzB8W
+	oKcSdBpvA3xqd2P3ypqo4bkxrOkEjFfKRi4sXcxy9I3xCq4vx0rdNeT2uEMhl9iTqWakXQ
+	k+gJpjFFULm6rXQUvmYUC794jQVpME8=
+Received: by mail-pz2-f8.google.com with SMTP id 41be03b00d2f7-ccb794ce92fso507497a12.1
+        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 23:16:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792131398; x=1792736198; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Nw95ViH0murspGBeVdDuR7/ikIvvt0nVUNuA1BMwLqs=;
-        b=tKPhks3dWVzuLN9lS3ts9mtlatL1joOLQjm35Oejpx56G0Py0tBYMXmb9uNUoFQAqB
-         YLZUtE2HvPveKfqiovdS+b/KnoQ21QfcVCIXF9zFjuzRRYD2O+y2rfYR8gMAou+ptwrK
-         IkwcmTdDO181Mn/AkNnPGjYqquNO4NvOaLz7SdkO4IsxDTS6yx5TArGTm5AGOdOVh3XH
-         EeCb+TqcUxrTLZ72tQ7pAJ4Y2Fy3U50Nz/v/lQ+7uHydvXssv1LKt9khECPmAuXbuISw
-         85o4ysSp2cACNMNjGqaKFKFZGrF3En1qO3tLBGgCyjEO1agKIPt+e5Btor4XAdLbmcrj
-         0tgQ==
+        d=gmail.com; s=20251104; t=1792131403; x=1792736203; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4koY4BOyWDff98SibzubYxzBLIkRmqVVsOccvbFql8c=;
+        b=sYInpT6tQUbhfUNSjztENu4k4STWuFOa0x1aTfZK9PAZjunM4jfKR4DlePF/I2oAlh
+         oY3dQyQpHSeq2HAyT32J60VGPIrsrNAD5fragktxP4A1R0UDXn9nuWUgwn7wkj7eCCKX
+         ywKWzGy5iHzIUk7u7PZktmjJS3hNu5RvyDV+Pq5qu+EaQbNVzE2JxTcNu6pEdGN6VECf
+         MuELwFYjEbL/e7Vra1ZQOE1/F0OFjJQ+uPB0E59S0XifESCYDXgtM3fVGZsUXqXM84K1
+         VUNvKa3vLSOLMCOvmQ3lZm0YnIQqXhpGB661FCq0Ykyi66kfCeDsJghR/U3Vx0hWFXwn
+         SfNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792131398; x=1792736198;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Nw95ViH0murspGBeVdDuR7/ikIvvt0nVUNuA1BMwLqs=;
-        b=fDIvv5Au5KLdmM4nTO8HQDjLYABKfRkdTPJhWM5wk2tVTxuNKBgJwYid+8veyfkeRs
-         a+/wGja/VFgkHFAHe3CgLjeRnaNhB0fmjX5IGvnair2Fld+LtVnzztbU8Tc+VlaMYynR
-         2qBzWJN58bQqrVWNfLUOhWtUFlyCREMDMIip8I0r0a8V9ej1unJ+67iIriK/CH3xnLVG
-         a4RNmFMB60ltkVMKc8cbLh62MWQ3ogQ3LeQSgT7mWN+zkZZwmayAIMsKoweUNXaRTqm3
-         dVB2waFWC/qZEvWczo435nqgwAF0ctnMyVJLkBfanh95/DVCzhuoblfvXrFiHCCkLqAb
-         WJhQ==
-X-Gm-Message-State: AFq9FYI/q7ZhfhjrNK4z17xe/AvPOztqLhTkNG2fpuHozBx253e3sksa
-	4XVvI1/SJM1bWxSXJcsrFH+SiGMNCQMb/qNkSIZn5kEGjxPQkydlB+QR4DxwhTwxN+o7Duknl6b
-	ZRRqWfZ1YbzilIN5g8nFyvaJFiRiXSDk=
-X-Gm-Gg: AYBFou0OB6mudryCuzw8M66nn+1HEhXv0CeY+rVKgCh08gb693HUrf6EtC4P0+e1AQW
-	9+XNIQxX5Lwet8HfWaxXQw56mNJ45zKMiFSacG1zX4Ln/bJ3uShL7Hr46OP3d/XNwaoWOfVXOHz
-	u2h7Tz+qQB1a5TIJK3QEtvcoiFTsK5b3GGvooAZ4JZRP2apP91VA5JNI9u1h6fO8MVKN9kjEZPs
-	M5MKlf22RMLWZxr6kM6b2tMjXOH72kn8zpEWm7M0hwK2JbAloak8w9YFRtiyQeBnU6PTe4613DN
-	/OeofqyWSFj8tdSGIqVighOzRUKru5teOq9CZXcAPaKbkCFZE9boGYghwN623YlozHF3dOyoIBA
-	1s3DeqWn42Wm0GgpjsHMgm19H99U/aVMzeoMwbmkSlj1LWwX8eOAe8nocCr2piFLDP44e6A==
-X-Received: by 2002:a05:6a00:3d11:b0:88f:9fd9:3779 with SMTP id
- d2e1a72fcca58-897c65410bemr19217680b3a.19.1792131398279; Thu, 15 Oct 2026
- 23:16:38 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792131403; x=1792736203;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4koY4BOyWDff98SibzubYxzBLIkRmqVVsOccvbFql8c=;
+        b=NJmjwXO/vuEwoEzw7tNnjDeb5VLF6AO0KZHSxN0/K8emyw+mXth5o2of29bBAYFKhV
+         n0ja9urRGq/nrljTyCIQwiG7WRYfp2CZv1JCoLnR8tgXGLxRFMztTJxI3FnB4nj211bC
+         U8J5wzO77YB3g1UyqtYPBQoQjIRYVooYpvH8Gitr9rZ3Qbmxg8+NGsfN7hxhEwb59/bw
+         mCm1yHkDofchJKR595RjPAoO9mlJx7boxDvtVEZ7qNdlgMBVFqO6vqj7XkhyNQFwrIa5
+         DJgfPFaC/cgap9+xQ2CaLOB05XQHPJYcb7AUtOKjxqTnqFsmsiVXfXAoPJNHSBIbM7ot
+         DNAw==
+X-Forwarded-Encrypted: i=1; AKwUvBxA0jUMIcYYQaOtzVmgxuAkVXJYpVs2xBy8nq+nwyG7VsupMGYwoBSUjlK1DAAK0PzHu5guh/P/JQ==@kvack.org
+X-Gm-Message-State: AFq9FYJD+zOZ8aGdTdOymi3hDP9374pcZL+OKs5cnOOfwh5BcFHl5gSQ
+	YbnV5YIBfeHjjk9ffqL5gATezh/LYT+e9CuPlNe3zuBwVDdO9pixslRu
+X-Gm-Gg: AYBFou0gFCV78FPsDmT3Qth/MXIqMqzHT1Exsr0imyfMLPgigYC1WL9CyDfBhLYhQWb
+	T+rQl861U+mqfAM8KCP3QW22HRECWqXQUpMfsFg0wBkyGdeSqryD6C/Z5pvM3rttdD8a+MbdYHm
+	HRCVZAqQwhiMYBuZzcZm0WHkQ3GN9bC1aDlpMhHLlanW8Xdo46kdCiekYbF0F2wAgS46RR8rXj8
+	OfBc4h3IbQ+jmUjGKD6aVOsSiHBcJXsRUPCS50RCIh4iyoJ5MEhvI3GikrCHKvfhmQTY18VnFut
+	LUb13D7m4+FU1LwzokrP8P9X02QvKOUyqrASmmZcNFLE/C1wyNARf5ZH2cKp1MhHND/yn/JaNt2
+	k8rpjZMbKkVgQm/PT1FG8cuVDLggCFssx0dk06nGEuptV973oOoCqRxdV2fSgJjhm+FifwnEpm0
+	GpjwD1PZn/hvx3zM83gEedmMC5l21F3eWsSYN50mENT3/0HzuOqNnTr9PP7SSDToHEgcuH3MNKV
+	44ru6RUMQY=
+X-Received: by 2002:a05:6a00:2e87:b0:881:c881:96e8 with SMTP id d2e1a72fcca58-897c6a340eamr18515355b3a.23.1792131403430;
+        Thu, 15 Oct 2026 23:16:43 -0700 (PDT)
+Received: from intel.company.local ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89f57b334e6sm586375b3a.42.2026.10.15.23.16.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 23:16:42 -0700 (PDT)
+From: Wandun Chen <chenwandun1@gmail.com>
+To: robh@kernel.org,
+	baoquan.he@linux.dev,
+	rppt@kernel.org,
+	m.szyprowski@samsung.com
+Cc: catalin.marinas@arm.com,
+	will@kernel.org,
+	mark.rutland@arm.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	saravanak@kernel.org,
+	akpm@linux-foundation.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	ruirui.yang@linux.dev,
+	robin.murphy@arm.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	iommu@lists.linux.dev
+Subject: [RESEND PATCH v8 3/8] crash_core: serialize crash header preparation against hotplug
+Date: Fri, 16 Oct 2026 14:15:44 +0800
+Message-ID: <20261016061549.4181390-4-chenwandun1@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261016061549.4181390-1-chenwandun1@gmail.com>
+References: <20261016061549.4181390-1-chenwandun1@gmail.com>
 MIME-Version: 1.0
-References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
- <20261016-mglru-fg-v4-3-2106750c0bfa@tencent.com> <atEkfmRFgXJCbJuK@thinkstation>
-In-Reply-To: <atEkfmRFgXJCbJuK@thinkstation>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 16 Oct 2026 14:15:59 +0800
-X-Gm-Features: AclHuK9suf2MtgpJ8U-2R0dSol8SG-UyxjWNOAi7XM84G6vCwX9BAPJIIlEtxbI
-Message-ID: <CAMgjq7A6Yom=dHDMXk+mpYm3dotgOaVRjPHgUsOryjJ1VjPC6Q@mail.gmail.com>
-Subject: Re: [PATCH v4 03/17] mm/memcg: add folio-based lruvec live helper
-To: Harry Yoo <harry@kernel.org>
-Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, SJ Park <sj@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
-	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
-	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
-	Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8FCD6120007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: bafics3x5nq8rmyy476mfk8qj9xrfg9u
-X-HE-Tag: 1792131399-963546
-X-HE-Meta: U2FsdGVkX1+jFf26dRpd3SBTp+XXU10Lrz7DxB3ujgImdGffx1Hou7nhrXTFyROd66JZiOLy2dfpCufhmKJkcC/HHqiDSAATXY6vRAltPHMSeVpk5Xgetc1hIB9kHhP7pVnELWG4+xaN5O9qfO7CPxfb9zzb8I6zVn9CIWp6uYi/cqA4RB8Ah9id33cG3ObBYZHqNw2dcfgomTgkkCth+HnrZnaSjaracj45NN+UiEfSIRxzdpTvnXyfOiBH4+F02gyXGR2iqZiVT+UbHXhFgOhxIlOTpamspIh3abSMGwieCSv3KxxQHRVL9Pj3obqWGpML3qauwuCnraL+hDcoKmRRXkO2appzcLaLgvGemKDikRnccoLOZCaoqJvYHSAmmT92yX+1+1bMldeQF3r0muF1lyvBqXZy4DNnPxM11YVyarWlQVkHMZXSw32BoIVrvgPqFINTSNYasyy09fgWgrmUYbUQL5px+AG2nR2Uk03V3vp8OfrJwmFNb5L6J4W/VYZF+lXPH7HFuoRBXqVU1EJAEnn3Jsu1YDBaClvfQAr8zKdabtjvXntv+br40X+U0VM6MoMffD/XQMYPoTmOWoHEjf0e8T6beiW+q/GuCcbtLhrU2dt0FxbOd6DCHIA4MQgKJHhh/G4ri5s/XzRUx0blNulnwiDk4fuW6NniKAKUkdgXL/KWXYgzRwNIcBdJbMXMk07oDL8Me292hppXMCTtEn2n6R0R9wBJqQ+pCYldkYI85+5XN4jka5EMeeqwSHLo+gLss8UlbL2DdHy/C3IP9K8F2wnnFSFKQreKmBFS4pgrfdEBxs223+N8fjFrCF1Q/Bi2HS8Pi1LvSOLUupf89FbXS9PSRcaW8AAowUk3BPGBplrMii00dJmzKwh2G3bLX8Xbu0sae6rBTqNbO8VP8Cetz4ZBygAE/3xNeM2DH2ucXTLQQ4NT5fmBckYOUj5WuTzykrLjO1lgVpz
- t9COdI3h
- +aQ87izwnxPlFf3nEKGr1q1JgsRA1SiVROq/PwPUispgfKC/MPzlSF7Z8Kxge5q6igsbrpBzWb/EzmG5y+tu9NEkujANdl/8zGsmwlRz/tp74v0+FY1QGbxAYfvS3RL8Zy/oAR1TAjo89qm6IypS1k9fhuvK8Z8PRM169qxmTqguUGjRGc0kX95+r8niN3QrAz9HBf3kVhxalNOJwTJxONQ+pe23GpyBKcR2bF+m6rDhjPpZDcRlTxrfkvVGj+Fq0hKI28nIEyn32g5VFofY+ZSPHwilr7XQI5L0OUf91zRuJSjb5MqySqIoHX5PpNvB/FvOiFMAuDmyIeIR6iyEcjy4jjKir8IVsSEZNy97NfxDFy4zuv8XrHiWSwAu/UawjsMGHGnZnjtKWPA1NOqE1gPCJlvPautlfiHfCq+YFF5LY7u5owYr8DDfOwJZpe2EMwRZMvfL47eleB0fIDJSoZKXpZwqVx3pKMlQPDsWDHcahgWJNwUdKo4slcaNyTWD8KT3UytwzUBKDq0avIEQSMRHIIf0PACKkTVTZmdpGA1euQxigb97GQop4hF7NNInkhKrcIbQdEtaQCh0=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A38C940002
+X-Stat-Signature: 6wnb84edhfmea1c71466wbz6qjap5h7o
+X-HE-Tag: 1792131404-480474
+X-HE-Meta: U2FsdGVkX1+mWK6crcRiD2DBC4TBNZNb9aRatpUsTW22gbo6BAFuCwiBOyOQMLw7thyMQzfhiRyfl8W9p+qmWYxBbRaz+8wHzdKI9c11hUExlwnajhHHosTGpMpUJsaUY7vbpww9whIP7bC9mLqBBlA05+gz3JSUiUkHmFp2g214iZDbOwZJyrvck167FLO/yKIrhtb/i1CaCTDSPAaSjgxfY3zFlGbn72g+MwrEiakBQVUqEjYyyXtv5/QeFf6T6m/XWeU1U43cCnlbeSWj6GIS9iLgo8IQtaDpSFK7vcmz3kGc35VvfkU8qURnyG+ekSSjbHRhh8BDGB2VzQ3nSVI/PnbYA92HKKHIJZB2z28fq8gXm+NyD8o9QWRWUMSCxwGvr7ly5UmPxXa6pya6+mzj9hHxaYBP4JFVXp1/oQp/x+TBpkW5qgxzssL2ZRtf4k3omHwo/XEgbwmpvIXYeiA/1r+rpEeqJheKAt42S2DXFoDoSm1Xr2oNTepIfybHDDrtEahA1kE4dINdf8GFFj9IyMr4gnUs41wyWZQHTp/sSLU2gaZQu5b/jRsSNIF38unAiolXKLEjtvj2aIjAPBJvYgFZ5wAL8lP3/vhrWgQcCaPN0cQsGYaKxEkFrsHUp+xfSIp8vSxTdqBN8wjlcjGY7IfyJjTfVsug0R1b4mKe8bSTvh5d2xMktIOb12bNfj3M92FFEhXLtU6+RyTVzVJJ1e8n720VyBMa5ZiywSVr9tkfZiGTbzpMkkwG6Aiu00dTXN0zNKY2J+IvGwjh/GDijs5QDq1O8jqS8OmBQLSdmY/y97hZOm1Iw1oPQYjyT6aRrt08LRybS58UB7p0Z/qq9KpFpGQx9P5eqHO/UJAQiphj5hwHQ0kZH1W2ZaEYvhs+EjoGTjv0C2FrPO4lupdpW+Hi6rZ9w2FLs5h4tkJUbfy69cVhdBjtd1LRDA1aRdjtN6p5QH4ibLvwhyI
+ ynyEMvb/
+ IdZ2Wb7V1mbJ+02hOA5tKnrLfq7ffGy2asxjfU0NH9quHDwjnZPfGWu+uKPj2utW/XVV8hquBGpIsW1dpatcVACBW7Z7+3wxzWGsWzjccovmr4axfTvgjU+iU0SKSiig0ygms37T6Il18kFqripP+AiYjyD8eVpG3fHJuQb8MsT3yo20FdW9aKpi5yL+MYivHY26fD/1rMCMKPOVTANh2jPk6jw17ON1bG+kUTbl2+WV+bSdlGcgxrm/HKEcLn2X84V4gbOpmIG8DTALmf1mv/NBwIEYAwhRlAC2ev42CgAyZP8Nq8IxdFv8Q82Qgg9Ua86l+4tvtKNqVoeqRLhKq8Dfk1ftEfJk2dKHHZYzj+eLqnOgwMiotTtWGRT3ArH5iCv4BYJ3+UNPZFtmpglMr5oUAWF2bNkl3YrdpaqbQoAfJNoK2dbuOGg2FxiIKjmRC8ZdG7FRlvUdk5ifsskldWjzRYxgmAnhU9U8BTxAjMn3sMLyGlP97bBr4EF3r/cJGcib7GotmzYk336jZ+6g1p3J29Ztk/kvDs9WMIySTpQmgBe12nLW9esgSDkG7lcYAOvEhPOFw1Rh1IPWXSvDLvux3GSN01A3ow7DwAzQx5kwryFfMtvAYqVlpJOWWap4N2qUIFNHimL2SHgKxlD7SuTytHKWQKS/exCc7MpaCuetB2G8k7fDk0aVC9CfQBfqY3ZFik/m9wUbc22I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,33 +148,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 3:11=E2=80=AFAM Harry Yoo <harry@kernel.org> wrote:
->
-> On Fri, Oct 16, 2026 at 02:15:52AM +0800, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Add a helper that resolves a stable lruvec for a folio under RCU
-> > without taking the lruvec lock.  It takes a folio directly so the
-> > lruvec lookup happens inside the RCU read-side critical section,
-> > which a lruvec-based interface cannot guarantee.
-> >
-> > No functional change.
-> >
-> > Tested-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
->
-> This new helper is doing the the same thing as what
-> get_non_dying_memcg_start/end() do.
->
+From: Wandun Chen <chenwandun@lixiang.com>
 
-Hi Harry, thanks for letting me know, I wasn't aware this helper
-exists, this series started before the re-planting work, so I missed
-it.
+crash_prepare_headers() counts memory ranges before populating the
+allocated crash_mem array. The weak implementation used by ARM64,
+RISC-V and LoongArch walks memblock.memory, while x86 performs the same
+two-pass operation over system RAM resources. Concurrent memory hotplug
+can change range source between the two walks and make the populate
+pass overflow cmem->ranges.
 
-But it's a bit different though, get_non_dying_memcg_start assumes the
-caller holds a reference to memcg, while folio_lruvec_live_get only
-assumes the caller holds an reference to the folio.
+Take device_hotplug_lock when preparing crash headers during
+kexec_file_load(). The x86/riscv memory hotplug path already takes
+device_hotplug_lock, so call __crash_prepare_headers() directly
+to avoid recursive locking.
 
-I'll check if I can deduplicate it though.
+Sashiko reported this issue in [1].
+
+Fixes: 3751e728cef2 ("arm64: kexec_file: add crash dump support")
+Fixes: 1bcca8620a91 ("LoongArch: Add crash dump support for kexec_file")
+Fixes: 8acea455fafa ("RISC-V: Support for kexec_file on panic")
+Fixes: dd5f726076cc ("kexec: support for kexec on panic using new system call")
+Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+Link: https://sashiko.dev/#/message/20260806101002.1F84E1F000E9@smtp.kernel.org [1]
+Acked-by: Baoquan He <baoquan.he@linux.dev>
+---
+ arch/riscv/kernel/crash.c  |  2 +-
+ arch/x86/kernel/crash.c    |  2 +-
+ include/linux/crash_core.h |  2 ++
+ kernel/crash_core.c        | 17 +++++++++++++++--
+ 4 files changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/arch/riscv/kernel/crash.c b/arch/riscv/kernel/crash.c
+index fe5a4b306aae..ac8df2edf2a7 100644
+--- a/arch/riscv/kernel/crash.c
++++ b/arch/riscv/kernel/crash.c
+@@ -70,7 +70,7 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
+ 	 * Create the new elfcorehdr reflecting the changes to CPU and/or
+ 	 * memory resources.
+ 	 */
+-	if (crash_prepare_headers(true, &elfbuf, &elfsz, NULL)) {
++	if (__crash_prepare_headers(true, &elfbuf, &elfsz, NULL)) {
+ 		pr_err("unable to create new elfcorehdr");
+ 		goto out;
+ 	}
+diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+index e6f23933a6df..bef008a0cb22 100644
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -465,7 +465,7 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
+ 	 * Create the new elfcorehdr reflecting the changes to CPU and/or
+ 	 * memory resources.
+ 	 */
+-	if (crash_prepare_headers(IS_ENABLED(CONFIG_X86_64), &elfbuf, &elfsz, NULL)) {
++	if (__crash_prepare_headers(IS_ENABLED(CONFIG_X86_64), &elfbuf, &elfsz, NULL)) {
+ 		pr_err("unable to create new elfcorehdr");
+ 		goto out;
+ 	}
+diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
+index bc087124cd78..28e7a81cf263 100644
+--- a/include/linux/crash_core.h
++++ b/include/linux/crash_core.h
+@@ -61,6 +61,8 @@ extern int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_ma
+ 				       void **addr, unsigned long *sz);
+ extern int crash_prepare_headers(int need_kernel_map, void **addr,
+ 				 unsigned long *sz, unsigned long *nr_mem_ranges);
++int __crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
++			    unsigned long *nr_mem_ranges);
+ extern int crash_exclude_core_ranges(struct crash_mem **cmem);
+ 
+ struct kimage;
+diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+index faa0f22dbb41..8a861a946e26 100644
+--- a/kernel/crash_core.c
++++ b/kernel/crash_core.c
+@@ -16,6 +16,7 @@
+ #include <linux/mm.h>
+ #include <linux/cpuhotplug.h>
+ #include <linux/memblock.h>
++#include <linux/device.h>
+ #include <linux/kmemleak.h>
+ #include <linux/crash_core.h>
+ #include <linux/reboot.h>
+@@ -344,8 +345,8 @@ int crash_exclude_core_ranges(struct crash_mem **cmem)
+ 	return 0;
+ }
+ 
+-int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
+-			  unsigned long *nr_mem_ranges)
++int __crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
++			    unsigned long *nr_mem_ranges)
+ {
+ 	unsigned int max_nr_ranges;
+ 	struct crash_mem *cmem;
+@@ -382,6 +383,18 @@ int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
+ 	return ret;
+ }
+ 
++int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
++			  unsigned long *nr_mem_ranges)
++{
++	int ret;
++
++	lock_device_hotplug();
++	ret = __crash_prepare_headers(need_kernel_map, addr, sz, nr_mem_ranges);
++	unlock_device_hotplug();
++
++	return ret;
++}
++
+ /**
+  * crash_exclude_mem_range - exclude a mem range for existing ranges
+  * @mem: mem->range contains an array of ranges sorted in ascending order
+-- 
+2.43.0
+
 
