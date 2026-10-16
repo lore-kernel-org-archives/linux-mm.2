@@ -4,134 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E51CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ADBBCC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14CBE6B0088; Fri, 16 Oct 2026 12:46:02 -0400 (EDT)
+	id 1D1BF6B0088; Fri, 16 Oct 2026 12:54:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FE496B0095; Fri, 16 Oct 2026 12:46:02 -0400 (EDT)
+	id 1A94B6B0092; Fri, 16 Oct 2026 12:54:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2F156B0096; Fri, 16 Oct 2026 12:46:01 -0400 (EDT)
+	id 0BF566B0095; Fri, 16 Oct 2026 12:54:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D3CE86B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:46:01 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D937C6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:54:38 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65D96C04B0
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:46:01 +0000 (UTC)
-X-FDA: 85329066522.15.CB123CB
-Received: from mail-pz2-f8.google.com (mail-pz2-f8.google.com [74.125.228.8])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7BFDA100002
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:45:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jrnc1BA2;
-	spf=pass (imf05.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.228.8 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792169159;
-	b=0P5xiVzFD5wVAi9V9hhFfw5FYu0U4TQYkJDgMeou5fk4FWOumLGc1UKvjSKtl3Op1G5wNH
-	onXVEPZNCPwc1lvS8N+cQE+hOYuFCP1R+mtcm2J/SDl8FLYDTjjT7va6IPrHx9kum1DRh1
-	wiIV27Q8SWrbYYsIAfSBYHr+g9MiIY4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jrnc1BA2;
-	spf=pass (imf05.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.228.8 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792169159;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 743DE1C274F
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:54:38 +0000 (UTC)
+X-FDA: 85329088236.15.262BFB2
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7C09F14000E
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:54:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YX9o41U3;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of elver@google.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=elver@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792169676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yWna3LGyk7AO4Z3H58l7fcPnAfl+aPw+asBmvCYoCyI=;
-	b=GZpcNTS62mil5xXp8J4G0JncXD3pvNpmGAwVQurKZ6P6JnmJwyMQpHDqYyz6cpfjU0BcjF
-	XwXTD7nFhOo1bzXivzGrUUJ/9iqjP4BNMh505o3A2lzIDwYesyIKH/APl5Kh5Dx8LrHUO3
-	INhepN/CZk14hRDU39J8h1Su+JleqEM=
-Received: by mail-pz2-f8.google.com with SMTP id 41be03b00d2f7-cd5cd8e8104so38799a12.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:45:59 -0700 (PDT)
+	bh=KNk+lPAYmreHNBvy4VSXM9whOEM/ui2VVdodl4iXdms=;
+	b=JllHql5+Z+3gEN52xg+ENyMseK64f7+nKNJeO5NBnr3wBrHQB98Pz0auBSsI66bw9/01rS
+	vNrd+m+bwCHkHDpo1VnS9iP7/M9+I0q3rGt0N1CL20LEO0H69KNycLAv5s2n/JeBDLXyj9
+	gK200WwsrhdPHQBwyrxgxyaiRHUvL+M=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792169676;
+	b=oXCoWF1VvpX82LQYaDxIzbk46vgogSy4UEB93hgzMG/SPwdozdPy1MYknV/4tvl74g2359
+	bDxcui1skTbpjsTPiRJgaqiug7ibZLugaztnCDWrGle0jB0qP4EV8iJNBwSB/OLT3v7rVQ
+	rbHw7WITdFwB5t/Mf61Bh3b2x6rNpl8=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YX9o41U3;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of elver@google.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=elver@google.com
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-3514b90bb89so187153eec.1
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:54:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792169675; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gh6BqDYJt7MQGTEzla9oneYEFdIzSDR4vk6mRBbKvMCytoKtKvGEaF8Zh2KsRp05Db
+         Yt44UjOaxMHfnZF2Xcc4Is5OfZ8rDnizGj6zyiyuBbiwa6CSP6iI2PKu6nkR1Pl/JJb0
+         ZX6vJo+rKHrvSGGG5dkbqtNdfJ7vLzZyPEtaWyMsVAF5Rg2nOq2D4sFYERQpfkjZ+r8l
+         O8BJA6fFaAy9Q1cz8mn3QgHKSHtbq8ULBpJgVZeOu9lXYYSsJ0wD6iZfAJZ2jqbWJdVi
+         qqEry19RUez9shq4RomrsmJCwbPtIDJ442SfmKkUPsTPgYTTuHXCzpfUKErUOdcXYwyQ
+         unVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=KNk+lPAYmreHNBvy4VSXM9whOEM/ui2VVdodl4iXdms=;
+        fh=+e093DU+vdqgSpT4/1mnlCJGIIfFRzfBerJ4WsVjwOM=;
+        b=HSsgHoveOHB0i+7ms0KrQuDv5NH+fN/l1M37BvdddAVHJi8kULwcL33QFrbWvK6Ipq
+         6f6RUwK9wOWyiN8yYTMhmGE79jsHAD4ENWfHxaZu7JTbeP1+m2suL+tyBzLGOamIjiSe
+         lRTSADBgo3bDfh1yOsZi+tLTGwWArqJ+OGaAO2I1MHZsMA6PR+qK5+jz/SBokkO/iKoV
+         /vnW27MFXyh2UzBFf2NjDJPyUML+kia57m1s785rLo7l886CqqH+SxWDFDRc4eTUmpxr
+         XFcPcmoAh10rZ2hPR4ZibRst1Uol3a8deUzX3OpNxvR/iy7madssgJOBCVMiNHu80rQn
+         zc6Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792169158; x=1792773958; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yWna3LGyk7AO4Z3H58l7fcPnAfl+aPw+asBmvCYoCyI=;
-        b=jrnc1BA2OMfTm7Bpze3LJox7YTBoKeSHOc2ezBlQdsuPaZwbNqVS+eOgJ7u8eqTQxd
-         fSPr1TYe52bycyfXyBuz/8x+gFLNPELwD15kLw/O6hcFHSMFWOFZ99YG4lFA1Zkj2Gzp
-         kNsIv24Tm2Z31gH1ZF84CJFsz4S8wqOgO0CoAMDANMht1L+myxNABRBafqLnA0EUTgCv
-         fW5rVZGPie/UDYoxH7WDZrzPgeaS8J+cHam18AxIWLbKUVfnOecIWiNX6PSW+Rf8M7vW
-         0kFCYk8yd7l6qDccCL0TsjF61b9HpCfHTQZZB27Kc+X5xOG61xMwx7EvVw33ysNIcKSH
-         uaBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792169158; x=1792773958;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792169675; x=1792774475; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yWna3LGyk7AO4Z3H58l7fcPnAfl+aPw+asBmvCYoCyI=;
-        b=WSiUgBBYBTLjYayIKJZ2D65z/y6Ytn0zDsgtpK0TS2ISD/2nFtqIueUx6GGCVlzqTw
-         /oGi40PKMwf6gHoRjq1zWnMuqcOmjN6s1ou42S+drM77bWLh2lVQ3efsLCegWSb1RywP
-         4CmrMKVegcZ76sLJbKScKzcPTXgmfSYtUMYHJQKQi2vV59R+IN9qYjJELv0p6DtKd5PC
-         Zkji7l74k1sqTnWGW5ZiyKe560Pvqy3qKYz3F4C4g56K2QSwqOzmAO92jJ3McF9vz4gb
-         SENl6E3eJLHikOjbSGeN7gqX+H8NMA3OH0wwnmQ6butscu2ODjzKmY4nJjN5mkr9GmJM
-         swzQ==
-X-Forwarded-Encrypted: i=1; AKwUvByt9G/1Ecwgp0k7J+woZxZCoGBBgnTU6lpDbKeQcJ3LYYvE5xFhnnZ1bNd+dvHfvgdtEcFQ1Xoa4A==@kvack.org
-X-Gm-Message-State: AFq9FYKY+rWST8E3lP+fHei6iz8oWMXKuS9LhwOeZDlVI7Wr3vo9XMzB
-	IlJT6673mBwYIVYUtkkRGhpgrFrBz4yALWCDlaPUl/B0Bzuqsl1Kp4y/
-X-Gm-Gg: AYBFou1Pq+NHPj83F4g/lPO8pVDN5gUhA6VM0E7sUsfXD3SJKWW+6Nvz3ug4eVtxtF2
-	YnN9KhsHGNjpdpJKodW51OEEXlxPNwgOgzQkEATlk+sRwMYKrTIvhFYWg41FD2GrOBohJdaSBG/
-	Ldz+ACkj04UMpwLx5u2IUJsMVxvL6qvoARGiivCPOOkxPLVQJeGZwr05JCwfYrgawrhNL05ttTs
-	mb2JocLv4aA8K0vZ1XeFxzlvm0r8l7RD2wtlSrmTZwOQ5Pj017Fqk4Je2sUWCU+OKMZ5I4vAc1z
-	iX/hPRBqp+lsA3BKFZLVrv+Ts/jcoqFLI4moH+XWktoPn3oF1e0pGIFXqcfHbe0mjzSf9zYhUxF
-	DuxVx4ffZhUWcOn6zoIFPDct2Yx0bXfWSzqOwYuvoWj6MQm+QoIJri57YhWfWvGrMDvAw6T+k4x
-	G184S0dlWmcfhWXPWuft5pu94Dg3Vze0U/pT511vdeh/nfGRA3r/LPtI45EqchShdd3gcT70o0H
-	Ws/2IsuRTfQ464D+7d8gBlZ6SZql7M1CnTNjA2aahXtTvDfJti3FctJFbhx29DKCX5umKRFlls6
-	zgk=
-X-Received: by 2002:a05:6a00:2355:b0:89e:3742:3e16 with SMTP id d2e1a72fcca58-8a04ba36f4amr135378b3a.18.1792169157872;
-        Fri, 16 Oct 2026 09:45:57 -0700 (PDT)
-Received: from [192.168.50.20] (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a010b39a37sm648600b3a.4.2026.10.16.09.45.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 09:45:57 -0700 (PDT)
+        bh=KNk+lPAYmreHNBvy4VSXM9whOEM/ui2VVdodl4iXdms=;
+        b=YX9o41U3MY3FZhISeQa87WDq5ERReCvRs+B706JLf4mbIvcyG4qPHMKMUoK/4lqbRQ
+         UXCz6y6hfHhiWfIFMkSa1uXpAVdSOF3FOYcksWLs6O38+tSViJBeyCFPsz5tWcSqBfdn
+         DyyGzhhu6nRitRRrSsePqM2H6nA0U72gGrGRaLIK2XRvD8WsF0bzkWz1xH987CREotjY
+         Sc7/LpH5UpqgyTcZacfdFuxH2OhkrTJS7KikJcPcxd3JNkGOqrfLMr/HiWLLURsd+/bo
+         LKRpmmz/5JIUcWNU+GSkQErpGmQ4DkwuYGF2FDwwdAzBwh03Db0SND8oAAnFUPE31nbg
+         44dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792169675; x=1792774475;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=KNk+lPAYmreHNBvy4VSXM9whOEM/ui2VVdodl4iXdms=;
+        b=oI6RXZiATGzQHTr28Az280wsu0zUoSeRY6tmBbNN6sQPqX2Gw/eyV1oJXJVQVmoBNp
+         OO8CA7P2246g+Ub+BUUXGAXqXfgZlGpr9PScQxNaLHQ+BhbKIP7NlaJHNX2fhjBjaxNq
+         lJv7138NMq0geGkP6FxjiTyfzW12QZ0Uo6LYjx2MbHMx+fH4vjyB6MzjLH2jsTu81yld
+         /HKxnIMNAeDk8hfG7w8LF8Rm5KIK503JRXDT1ElxghbHuqF65asy8IQJ91PQZcpUAaqJ
+         n4hjSihk1CuCB9T1avUU/32FYznCAlX2Tj9zAkUE5JjMitLIZel5gi210uYdgBx5cRvL
+         4VKQ==
+X-Forwarded-Encrypted: i=1; AKwUvByZd8xG0KVU9wKcUwMB1u74wJvFxxG+bK7lnYGdWaL0t63TeOtqVSN1b6/aYO/VQv8Yw1qz7/3qjw==@kvack.org
+X-Gm-Message-State: AFq9FYKXUDW/OAvZ6DliuXJQZeUyAmgczpljBAswyg5kObPAKoXhdWFy
+	jxyqoklAwGe61pK7J6ZmMxFhqF/RVJ2jOKCXFWxT8X8rhwWdbc5Ok6ZfOh+7OAatDpXW63Ox3PZ
+	36ObzOq4P4KcMhtD8kEXO9RA90iGpIRs5VmoaPrDn
+X-Gm-Gg: AYBFou3nbT/OJ1TRs5Q2X7FW5qe9QSgxhyz/yZTrRxCbI/yxapytpZkd9njnk6DcgAc
+	YdVX/svmfkaHXYMKHxATw52/2u0Pw5Pjm5i4airNdQaVXKIdJ6AmjGwtUhdCcf4tKVEPsZxanpy
+	OSVjzWNOV+0F8kg2xbCKnKZTYdYhmp2Jfhqyyo/L3qDqtPegejJqZ8uUhVJkR9W44u1HlA1qEuE
+	5lpHr7MtRRM64nZzGeDgxXp8uWVqG/6W0mdRDJ2KhFARJdhkpcgqVxHmSy02ihj+NTAzvNCsUSo
+	Yd/O5UVOO+M8mjHIV16FPE7pKS0zxGDwralGRYHc442CmsKhOy9pj9Vp7LjzpLHOTUlZDKPoSCG
+	H8BtpXEgZ9lo=
+X-Received: by 2002:a05:7022:fa06:b0:181:8948:f017 with SMTP id
+ a92af1059eb24-18513b9aed5mr734680c88.41.1792169674334; Fri, 16 Oct 2026
+ 09:54:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm/damon/reclaim: improve grammar and style
-From: Aveline Noir <jm5905938@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Aveline Noir <jm5905938@gmail.com>, 
- Manuel Ebner <manuelebnerli@mailbox.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, damon@lists.linux.dev, 
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261016142921.126622-1-sj@kernel.org>
-References: <20261016142921.126622-1-sj@kernel.org>
-Date: Sat, 17 Oct 2026 00:45:43 +0800
-Message-Id: <179216914308.58773.4774391289742300524.b4-reply@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1792169146; l=369;
- i=jm5905938@gmail.com; h=from:subject:message-id;
- bh=yWna3LGyk7AO4Z3H58l7fcPnAfl+aPw+asBmvCYoCyI=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgboJ0y2WZIrQV0H4HJI1WEQ5sxS6pM
- Nc/XEYGLW8ee6wAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QLauXbEbo1Z6pn5MzDJimI+ZcqaQ2pweWmRLgCUWN9HvAatbqa+C2vTY/zHaGewbHARInlDH+zY
- 6fx0IcRSlJws=
-X-Developer-Key: i=jm5905938@gmail.com; a=openssh;
- fpr=SHA256:oSxqik6Pl1M8EjQW1QXKHoylm1jy0sguOWFFJlA9zf0
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7BFDA100002
+References: <20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com> <20260908-stackdepot-trie-v2-1-1996d5cef732@cloudflare.com>
+In-Reply-To: <20260908-stackdepot-trie-v2-1-1996d5cef732@cloudflare.com>
+From: Marco Elver <elver@google.com>
+Date: Fri, 16 Oct 2026 18:53:56 +0200
+X-Gm-Features: AclHuK_WxF5EESzu0hGJdibTwB6wHoZiUHQsU4A86X5DIragIIphY4_fzhWq1Ec
+Message-ID: <CANpmjNPGWC06f+gCu9gwjnBQfJigVyK94HOFOT=en4t3Pz2r9Q@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 01/11] stackdepot: stop preallocating after the
+ final pool
+To: Caleb Kan <calebkan1106@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	Vlastimil Babka <vbabka@kernel.org>, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Caleb Kan <ckan@cloudflare.com>, kernel-team@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7C09F14000E
+X-Stat-Signature: 4g5qiz54jmk5gbua6qb7gojicq8zhafm
 X-Rspam-User: 
-X-Stat-Signature: 5etr7qdspfqz48yi74mp7gwbx8mywa7r
-X-HE-Tag: 1792169159-157557
-X-HE-Meta: U2FsdGVkX1/acQpRSJaifUBP0+5kDbaGBudRaB1cF17/DknSuQ/FDQty6P3BjvvnRFDFZGnHGLlothYc+5Mu2R2C0bHvWgP5wvegOLp+qd21urXS7OZupf16g2HxAdTkui9jS+Yq8bJwO2QSR52zOammWLgr8XnU1coVW482d507Fkg7cCZWsFTQFuucIz0M6zfE9XvC3cQZ7zq4Rbpri3iM28jrqvK8FUVFvcKnTw8EYzVUC90pQDCHyXJBAkePwS4z0E7KQRCpxnsUiu4G6bUhifrNAelN6+qrtGVahMd0QDTfz3qM432COJxnNb9h2arC6bnMRD0RF0FJfeII6F5ZopmM5l57pFJV+Dp5eMxmUtAiFk5/Q0cP+J0+RRgIr4tT/5W6ESw7aVUJpl5PA+VpKH4nI5Nj+IoWDz43i6W8ogYYjwqy9uggaRR09hmhwAKDsuHTlqWqhkJZ1Fzi8zaDYHg9+la+j9ZXxGQlurcT8EKk5siCQuB2W2Qv3g4BJbRmJcdrHLqP/JPIr/dDvaewCFoR5YfTC4WQDrRrYy469of8tIbRhOGiyNVnVhziPEB9QnkdnL8/3e/+Dm226468GywatqbYQlWAHrptnICiN01QOaXMgdh9lOlyI6z/JEgaxz1ITuqlJFfJ/FMd7fqxuL5lmn9pv4zhweSzxH5oIPpW7jdVqbY12VguCJ3JrlBZc/e/S56z5Px1pJBWzAziIkFwZdAqpIUc2dT7Z6QdnfU02CM5kmF05YTlP6rPjUUjFbjOl6oYPriUI4iK3hYiXbyEexM9PAbpEhDFjWl/ONkSNMyxNKr2m1cIG4p1wPJBQrLPSo0peARnWCRqi5KDl13ABxjI9XMiD//L5Khvs0e9JuAeNvYKARJ5uKEw3DtVXvf6JAytkWJxf26NCz7Y8ZFQ9hYrLUTCgXay6IrlEv6/YDLEkGk/uPHxwH81NT4fvIziKa1bmASZ4PJ
- /Bx2eU/w
- TPe+bI5gFfP6uGoMJsXG8cUkGY1mW20QVqv2RejJteZ4kLalqHweAJWAEk2PedcSSFuLaE8euDIjwb4KvA32xygQzwlht5soTe8wYL3ova8g7cZMRuTGy9rb/LcLS/K7ACFsiDC6pPag1iWk0SW53asP1z0NZZl83PS35xGXtwbDrRe/t2us66ewkioWAbTBgReiZUvxMjeIYQBg3VLbBkdL0u76vJnF5MyWO/KWb2J+bqNl+ybxXgl94wWzC3e07CPj0x5I4/S1Uz4Xsxc5sQyYTrzrI+LuF9hQyQwruGQXiPFTlIeScby5uA+A1IgUPLcdJ8QmSsrAGP3aSQRkBFinYXQhZsp+Hx/aekFwTCX5luDUQ4gZ2nXU+hIdGVMJsX2rkcrISsKeID8ZKe5ElZS0Hsw==
+X-HE-Tag: 1792169676-975549
+X-HE-Meta: U2FsdGVkX19kdXKruO5QxMo+9lEpNxs15asW3U/xneIId9eY9sEsWlIpOXiWg7MvE/k9T8qWboFF6bcGNl4e5bAFKsauTQqGy7GRJ/zZT3ZUGtL4o68rwlFXE8I6rsrZ0dzma9o0dNgIHq+0iWbfAM7VNdWS3JdirGmK5U5InK28hY9qKbG+0ALmbGAUkmzoptu3Z4e4jOluLCAigPVX2hYWPwh0QCS64QyFOX8lnrndczFYgfl6pNB91zSu3/1PWr7kjR02jlrs9GKhOLmQ0lWfNJtS5BS1WbwfVS16YC0kWp7oDaqRiwX/4ySNUzpqUY3rA7VbynFNXcU6e/aSxKZ3aePdk9GzYj4Sk94VAt37fZB/tXD93Z9LMgHxb3cl0kD46de/R7RfQEauUWVmiJZJ0hqgPFL2ZxCxZ3ATmpzgMNL/CJgFnW6Gex5mQo7c3k1Rr1+Tuib6eXcNER7B7ZFjIFOP7IvdmhQKmzonXFL0hJOnqLK5isNRzeD1VrBseub1h4pv2ZqSx/3eEdr/MWnhWTb7U3hGodyEqUm2q2MZ6NPnZVJThzTgJuL9PpbqJ0klG01Jdm1jFhwkVrWEGaiUN9gyRUABosZMgp7GOWZFwu1JLrbfc+tvqJ3pL1+c8Ym3pgvaKgT1GtRy8czj0bbtFj/8q3YmlJwn5wh3+tvEKtN9qiwY17UEVb228zXskFAN5H6bdyN8+cMclF0qn9XpGdm5ezaCoftLR33ZRX1WUldIFAamOaOuiqge+kze7zAiMRxduKUXOAfI6f2lXEGaax/XxD7lymaZLINLUQ++MGrsOGeaPaoSPQpRXPdC8xYLQBYOUrJ3Anwa2q+phHJnXEHbUP1mPJBoAOyWsILYqh1w2YquE3a0dfZVZe/HseJg+0I5nYIWU610ww2rM4RXvRDRqApQWRXhMqKn1ns/WQB2h8vhcvRPOkDJuycbn4oCXj2pKJTXY4BNYoJ
+ zLLm20LS
+ tLM6kfOV2wQj9rarU8G0wnEOLQ5xkcu30P/rs1wOkntBn3en7mujBKZ03No3yw84iRjmVwpqeHZAsY6llAveta7gSVoEORhWynS8umZOwkcClH0fkzpHwIXFAKe26WzpL/batsrcu4DedWf8LuCSqNM/bsW3Yji89D4xczXLubX52aVf7YaIl1EFF/okgX1cIvJ7jVOY0spUTx9gNllH+kcYb75UoKKA9W4Gs2K0jJ6thYkWmXgCF7o2nrC3z5iq2gJlGSpEcazbs7+R1cHc71EO4HXTfw5Jd0gqk8bVnqXy3UV+qQ1YsheLYBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,18 +141,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+On Tue, 8 Sept 2026 at 15:13, Caleb Kan <calebkan1106@gmail.com> wrote:
+>
+> From: Caleb Kan <ckan@cloudflare.com>
+>
+> depot_init_pool() decides whether another pool is needed before it
+> increments pools_num. When it registers the last allowed pool, pools_num
+> is still one below stack_max_pools, so the existing comparison clears
+> new_pool.
+>
+> With new_pool cleared, stack_depot_save_flags() can allocate another
+> order-2 pool after a lookup miss. depot_keep_new_pool() retains its pointer
+> in the global new_pool, so the allocation is not lost. However, pools_num
+> has already reached stack_max_pools, and depot_init_pool() rejects every
+> attempt to register the pool. It remains allocated and unusable until
+> reboot. The non-NULL pointer prevents later saves from allocating more
+> spare pools.
+>
+> Account for the pool being registered in the limit check so registering
+> the final pool installs STACK_DEPOT_POISON and prevents the extra
+> allocation.
+>
+> Fixes: 31639fd6cebd ("stackdepot: use variable size records for non-evictable entries")
+> Signed-off-by: Caleb Kan <ckan@cloudflare.com>
 
-On Fri, 16 Oct 2026 07:29:21 -0700, SJ Park wrote:
+Reviewed-by: Marco Elver <elver@google.com>
 
-> If both of you agree to my abovely suggested/agreed changes ('s/page out/ pages
-> out those/' and 's/records/charges/'), I will update this patch in damon/next
-> tree with those changes.
+Please send this separately.  I hope to find time next week to comment
+on the rest of the series.
 
-Both changes sound good to me. Keeping this patch focused makes sense.
-
-Thx for taking a look :)
-
-Aveline
-
+> ---
+>  lib/stackdepot.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/lib/stackdepot.c b/lib/stackdepot.c
+> index dd2717ff94bf..90c52f2e0d3f 100644
+> --- a/lib/stackdepot.c
+> +++ b/lib/stackdepot.c
+> @@ -323,7 +323,7 @@ static bool depot_init_pool(void **prealloc)
+>          * NULL; do not reset to NULL if we have reached the maximum number of
+>          * pools.
+>          */
+> -       if (pools_num < stack_max_pools)
+> +       if (pools_num + 1 < stack_max_pools)
+>                 WRITE_ONCE(new_pool, NULL);
+>         else
+>                 WRITE_ONCE(new_pool, STACK_DEPOT_POISON);
+>
+> --
+> Git-155)
+>
 
