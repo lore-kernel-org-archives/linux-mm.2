@@ -4,115 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C9E0CCA46C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:38:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1B60CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 14:40:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6068F6B009F; Fri, 16 Oct 2026 10:38:36 -0400 (EDT)
+	id 0B2C46B00A1; Fri, 16 Oct 2026 10:40:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 590096B00A0; Fri, 16 Oct 2026 10:38:36 -0400 (EDT)
+	id 063406B00A2; Fri, 16 Oct 2026 10:39:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4587C6B00A1; Fri, 16 Oct 2026 10:38:36 -0400 (EDT)
+	id EBB7E6B00A3; Fri, 16 Oct 2026 10:39:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 210D66B009F
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:38:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9EB1EC049D
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:38:35 +0000 (UTC)
-X-FDA: 85328745390.05.E349BF0
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DF8CA100005
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:38:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CWSFsjoz;
-	spf=pass (imf05.hostedemail.com: domain of adrianhuang0701@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA8436B00A1
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:39:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A723404E7
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:39:59 +0000 (UTC)
+X-FDA: 85328748918.25.6FD497E
+Received: from mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E333CA0012
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 14:39:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="dZ3/7o2P";
+	spf=pass (imf15.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792161597;
+	b=qQ4lvmbYJTifkZ+LOotWEr979auRSpeiyog1yNO/Pr8GBd/ih1vda0CIbt5w/He5C3zkO6
+	oBrjhl0ahOzxqRbrXeoYimpzzmVS/O0xa+I5V6yIC8B9EAiYgNlF8+9hiHjZgQHpjzT3X7
+	GVOM3vTBCAwZIk+tY0yvRQUMTCt7M+o=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="dZ3/7o2P";
+	spf=pass (imf15.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792161513;
+	s=arc-20220608; t=1792161597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=VzZTNMyuwZMv2FtdIQag5FG4n3GogIS30Eq+umwptRE=;
-	b=wk9jHT3dM/ePmuRoxje/P0nUVIcHYnU9YZuDFIL3K0SxyS4+xFTDNUjbN1JWFWylJRca6q
-	zIeDuzrQnYtYtz9sTgBirHa0Z/gy3C6FrzLeT15dtvEE+E91Cw20X370IWv4oAGDhi21rt
-	32W9+59IFIaV/aRLoW7sbukpRiTjW/I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792161513;
-	b=TI708s1ERsbyEvYbp8Jgw7WCAdbgyI1x1lTRBS+MNH8aj/IiBgB0yaUHKbFl0okLJFfMGO
-	IqrDAb+MhXW9RjjvmopoHWX7dHBxp675EwwdiKQU2k2s+LkQQ8Br05g1PzEmoGaBcBtzrO
-	EP+cjM6iP4g5bRsUo0NmY04ElQ68FUY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CWSFsjoz;
-	spf=pass (imf05.hostedemail.com: domain of adrianhuang0701@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-35aa0cf7c40so6915630eec.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 07:38:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792161513; x=1792766313; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VzZTNMyuwZMv2FtdIQag5FG4n3GogIS30Eq+umwptRE=;
-        b=CWSFsjozqPKZVLlTPMy5hq3iZy2pygPqhtjxHR5y9+Wa5M2y85teCOEupyzFnSf4sn
-         a0oldvWV+yWajC6X5XQlV6i+I0JYI4ivTiM8W43DwVUhkVsiotQLdpNExiR4UNqcm0/z
-         hFgLDlgKscAnqW3b/6GlYv5opuiyQSJgAY0dvtYiNQKKNS+2m7MFtZz+PXuhz/Gi51eK
-         bsN6xnixKim5MYkkFjzZZibuUdt6hEydOoaUZOE5EcdTmwCVSlwekP/QOSyH6FqhSVUs
-         Xh4psAWyM1OyeOq9Va7m0cIX2NmfaXzrymCBdR6mg9Yap882WYPo2DpdGlIwQUwOd8N+
-         xurQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792161513; x=1792766313;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VzZTNMyuwZMv2FtdIQag5FG4n3GogIS30Eq+umwptRE=;
-        b=E+Xs40wDMidqinFa/LB6EGqIFut6NfW9IfJGe1k1i+OgXvPytS3SfifHd0XGHim3Ya
-         p6fW3hz5aNLgV3+YzeJ2SyPQk+upaFsGIZUMgNGwRetOvKdmrckFsrpZLUwKhinq3bLl
-         svNPvNRnSldxIYd2e0+o7LRVFG43Nxh996qWrjyCAyLTphi19x76tOaM0Xbnjf+kqg2r
-         PSUwxJVFZ5FMZ4GLA33BEaTM5ilbjPt2DbLoFZPH/EIbCb0REGmVRKlJ3CyhDaAnVI8I
-         UF8W6lqeFAb3M7pjzojVpTYoZ0s2DvjBV3A4PvKnAYJMFDpR3xBtwOF8EK2mVmK6INp0
-         ddkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxcr/JsmUlPk3wLai3+cn6C+QaCSiFeWRPc8dqz+8lIdAAgYIlQqNgGXZq5XgyD5FGxUBNDdcBsYA==@kvack.org
-X-Gm-Message-State: AFq9FYKgncJHUNRnB+iAcSOa9pBoXPBT4KCIDtdjUgueV+Br/59VgNT5
-	TwjeRKwmv6aqBMiMAfjbMuECVybU9kUvIvcAxC2Er7sfd/wUNKBbPtz6
-X-Gm-Gg: AYBFou2+1/FQQYlPUktvPMWISGNYVP3dUTZmkZReQ+e++5AGnC0PXomFzoBw1uDzAyB
-	EFlojks9izNqhzjhtl5AfGNr6qvRecmdWEIXJwe6/4rV8CTVSvRptlPP8B289dKMQ7Ib1eQ8kW4
-	DOJArS4tKV8Qt1oxx8lnU69GY8zO/oOei/XfIHN7lg/EVEiPkGwnWTsKSTieqzsqxfjTMYLfsU0
-	dHDqtlcY6rfEV01pMNaUo9lic/nZp7bl7oMh7wfnS110Uf0ot17X5C12TM64gHQIGH4AttjxyAh
-	HY/Kz7PAPdTljNa+lEKyjQlqGlliuNOwfKUx+UHtHfjeTYLdV1806lCPAirnyWdz9v0rox3PMHt
-	GUWFIGEys963QbTi0FGklX2KATZTCk3hc6EsJr2rcs+SFyhUWGEmbl0XMkDF8T0tUHd6RUWQoJM
-	Hwbqd1wL6h35kkim7BqXL2598v2GKus6aZ6zplHlScW+WHjR3M2AexwSiV79U3DAcumg9FgABT+
-	J9ElrLCalDim81YYt44sD7ZudSXY2KYFhJRTUDr9f3CgzPYotfjja9FoGAGUUo6ZVJn09/d8Ovd
-	/9trhdoDeEiT1+0egQ==
-X-Received: by 2002:a05:7300:7aa4:b0:35e:43fa:eea3 with SMTP id 5a478bee46e88-361a137072dmr28441eec.8.1792161497077;
-        Fri, 16 Oct 2026 07:38:17 -0700 (PDT)
-Received: from AHUANG12-3ZHH9X.lenovo.com (61-221-208-111.hinet-ip.hinet.net. [61.221.208.111])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36081ea7e5csm7069382eec.15.2026.10.16.07.38.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 07:38:16 -0700 (PDT)
-From: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ahuang12@lenovo.com,
-	"Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
-Subject: [PATCH 1/1] mm/damon/core: Remove unnecessary zero-initialization in damon_new_ctx()
-Date: Fri, 16 Oct 2026 22:37:33 +0800
-Message-Id: <20261016143733.320-1-adrianhuang0701@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EXE03LuaQZrNVFEI2+EGmoWbCN8J7g9e7qIgkzPUYkc=;
+	b=o94mHll1YaEAg0iw4xQ3Wxnj48ktbsPZ1fkGhX+PtWI4e/eyy1vFIUGBceZuf6u7Q1q4xY
+	8YI5zRIEr4dGV+EnB42i2vgDqdb3uA0tutWqItrbTfhCu7/KYrl3kstPHhs6wpFDFnKlRO
+	bASNSpyrZXmW68ODcmhwM97yyyj7jck=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=QFV7iPIFlCYUFODBqtdHCjoAJvOnecuzp3xttussARk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792161594; v=1; x=1792766394;
+ b=dZ3/7o2Pq54lLneMqvwlaE/oXBR133ruUsozkb+85/ocfAVDYqPN7aZh0P8iu4gklBJcgHU6
+ kh4yRZEHtCrWpIThHiBhTiVnD3ITIAw11jqkIsrwahJaJTeh1C1GHbUYBk7LZmHqfVtulmamuUp
+ a6eC/kzOt8MX1f2YRDxbVDQQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id e9d4d2c52d348429;
+	Fri, 16 Oct 2026 14:39:54 +0000
+X-Mizu-Trace-ID: e9d4d2c52d348429
+X-Migadu-Flow: FLOW_OUT
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yosry Ahmed <yosry@kernel.org>,  "linux-mm@kvack.org"
+ <linux-mm@kvack.org>,  ackerleytng@google.com,  akpm@linux-foundation.org,
+  chriscli@google.com,  hannes@cmpxchg.org,  harry@kernel.org,
+  jack@suse.cz,  liam@infradead.org,  muchun.song@linux.dev,
+  shakeelb@meta.com,  ziy@nvidia.com,  "Lorenzo Stoakes (Arm)"
+ <ljs@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Vlastimil Babka
+ <vbabka@kernel.org>,  Matthew Wilcox <willy@infradead.org>,  SeongJae Park
+ <sj@kernel.org>
+Subject: Re: Sashiko change proposal
+In-Reply-To: <97dcba80-40bb-4b2c-a8bb-8a98b82e7d2a@kernel.org> (David
+	Hildenbrand's message of "Fri, 16 Oct 2026 09:56:32 +0200")
+References: <5eae44a6-06c3-445c-9508-58b372c01b2c@kernel.org>
+	<CAO9r8zM_TfD82vZ23zwsd_pPLMpe11_XQhPEp5NDyhoPKDizag@mail.gmail.com>
+	<7ia4bj8ufqlw.fsf@castle.c.googlers.com>
+	<97dcba80-40bb-4b2c-a8bb-8a98b82e7d2a@kernel.org>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Fri, 16 Oct 2026 14:39:49 +0000
+Message-ID: <7ia4o6ct7lqi.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DF8CA100005
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E333CA0012
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 736p6thtdh4j6tfeyodxz15bw37iw1tu
-X-HE-Tag: 1792161513-242298
-X-HE-Meta: U2FsdGVkX1/tsQr2UaNqdRRn/cF7JCydB58bSR6AQfNGuvN+a992OQHAiS3xEB2ADb9TSC0cOSXm6QxW4NkBcCeVzzTMyTfk7tBE85pG5necAX+RkwXeV6UHn55WyI6Y+L64t7SAUpnBnCWOBdqCPP7C9GmYrmnBcO2Pxp7kBYehFhAv+lMwWkE8vpN6mnE0Z/zmceyE70BhPnaA7nmmpNEA5Es3xyelqzAkUTQ82ZlCJHVGcRfmpdjALzAISK2jGpUJd5Nt7afvUxyaPMYRzZyofHoAL53DkXumjMlRpJE+jE4QEDl3MTLY+eU58aLjU8gRPG3OEbe05MB7CioL2DBDHzeLgronmDH7BJJ0jo5U43DgWZSgzuOBwWpIzhBujwdM0FBNH2iD/FsQiR7Eir6K2/VJYAzQcI0HKhqJ0V1TIyicriUFyFDj7IOVLVg9vbGXvM4gxlqxP/jYEi8xuWvBFxbRNNI8FZNwfi4CXUJgYDe+ZvuGHz47+u48LLmx6LBSbiH2e1KHC7Ddrb8Ruh6htPrX9EHY17+XNF7Y45yr9+ZrOI2x8ncI7vwAIhoje94cyN51g3Vf12puowAi8XrSRTe1lOVIaXRelURKHa5CjEIwODR+Qkhu5o2KubDvZ3ZVXSqxhrgVWmJQZJrrWqMYycxTO+3vcNtnCuhkY+/GYWjO5hc8rsNLBxntIn/o9fCUbZ5gatadvB4GmKAhIGhImcKnw6AdmzapDC2+coiF3Jis5EOZpXRsYhzVHwfQcbIlBOkB7MG6/T6KpfLJuh96cbXdZVVgqVkLrFgKNjP6kh5xa+x+xPKNY2NrvhCrgVZuGICRlyHIG2sfMENlNpN4N8K6A8OA+GKtJ4YlS9ahHNfvBm1ggDKeMfDsP7d9WH2NjZAuAkfbzxenHwmM+gCnVtUD5CHCtoutPvbvahriNQWJONh8ddicpWqewoQ1De5xAAAJe3BXkuMqaZa
- O9FsfUDb
- oclBVOhcxaqvGqjIlND2M/e+B4khHcPjvyLh7Nuxu3ESrz+ytakdTSt6VEVoy4wuKkJ+EHNdfQTQvysU2tUu2yzCRcnQhJsjD6m7HNt9pWrb5BN47WvOgnehYy/rXDy09P3Sp6cO6cNDbzT9m8UPOVoHz1Yzfo9fQv2AXMxewdjFd4MxnqJarRGbT2XPKvZ/GrVAPw51mkthNRxWqDoCDOHtk/h5li3/01wAcD/YneowkG9FVyXc5ODy1qM0OsGopuadR5D93LVFm2mzJ2w39zIdFDyI0fdAwkqWqJuE3OdYglljEEPrq1IKVVB+ac67BJS0Nd8+C2bo729gcUBpJ6MYZIJlZYzanwGixk+XTEPPHgRZVZz8kEELU3h53L1BJHwlPwxE4BoEpBAtXVEk3tcv0juxc2Do2mSnqQr+ZE/GskzqHjQ+YA21W5P8q2rwHeIHNwsMk+x0/mFo=
+X-Stat-Signature: 34c75cahifoc6fyys6gucq314ahafbss
+X-HE-Tag: 1792161596-443949
+X-HE-Meta: U2FsdGVkX19ajY5bNuPDPBtB+kN4tJbQnZXbxDRbWb4O92/WMZ2COkRIhAKzlND9fmD5TtUMY3NA72MT6jtkAeE/1UCUM5uJBlv18grRcQHti8bXMwfLPCtPqob23araJU6gSsQS++pM9YUS5YwQ51lgVpvEXy/knTL/qK4iEuqLDDcvVdakzBfaNsIDFEUGsykUX2GmXkYGPhTNDTiCraSZYtE13AWryEcXRj4qux+RGAICm3pttcSx0ZYYRv04+03lTsqN2gRvbblsuDtf0jICjPXvOmJsk1EkvYdOCqQacDz04VJUSlxcHH5RBIUlZDzhlGbG7/OIO1TjlxLi6b70pF0/pNW7DH4E5s+nMW7LAvzv5irbTYKNeDpMzBBdVlBFicYQrta07bIebNHOMgZI7EMrPRHop2r5QQ1Yg0s1KOfduG+O3GoIDKt/sGjr3puSuTRSIOGMgc4Uib2NMspKQEGAXr7+NY8TsUIcHvoxjQRTltePuzMd64EYcPFrPpEORX/qfppKm72KLd55vcpUPCOmNUKpFqlaFQg+8Loy4ZabsrFM6OI5/vuTMaBAsOqts98ISVO8YigATmAKeahkeow7GD7pQTqj29B66yJSrzetgoLVBAylTaPZ0sFq4/C8EHchFFFs2vZT9z6gVZnh4aRahOGNbrYjv5PUiY0sNmMpyzjZ2R/Y7bAbU+SVUaRNJ6dib2AoJF1TbP77Y8LrjEqqOt9OxRLKTpYTxWRpSQK4ZY4i5eJQMbL5kYVyJ1gLdvQfYN6maUVbAUy2/hQi9aRhx7V1ivYRqPmcVDLkfDlxN0wCL+539q7WS48i1O0hq31F52XMouSSPwJXkjKpjcJVBqhm4PxVR+zJ/zW/KIOsl5oXsY9JgvmKyaifj85jW0jvxl//1u0H3g66GFuJlceh33TGMY1Lr2DO+AB63pDhsNUSC3bsCtQgM5wza6pmgXagSkD7nxErEjZ
+ WzmqVqQ+
+ 35E4V7eaNn6HxIwuH0i+ubIcUFX77lddfBiz3N5jAQ4XTA39eM59O+OQqjvgwdRdoibu8uChMxMVoSTfwYNNB/XZM0Ireu24cTJ4rB8xpbtyr6VJUj0GozqPehqzYxeg1+w3TddUWfZ8V3Y4q8a0jmkFpy06XclOLpq/qwK7805/fCMHXpfvgykS7VOjTVXhrYIAaJwYOiHNPCd43DCY+6kT36xNeEq0eB+SSyWwtQWMxZF0jAvBWAeRopEMT+ZUC3wPL7upiVSKRn7Eb5bT5qXXAguVYnO+jO1DPl+YQhE7Pm3uprbWvzWNdnW5R03t/hzMnXXlGRTbhnQr8/hUcMPJww5/X/GWl75Kz3AQDeAv1Cfa1razX53zUbJv697boJ4AEEibuwtyEsj2lstm0k5IcFadjrxvjY696qsXRW66/3lluw5Dd+f/t3FSYPWOe0oUpzKDC37WentvRoyBK7vFr9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,37 +100,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_new_ctx() allocates the context structure using kzalloc(),
-which already initializes all fields to zero.
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-The explicit initialization of passed_sample_intervals,
-next_aggregation_sis, and next_ops_update_sis is therefore redundant.
-In addition, they are later initialized by kdamond_init_ctx() before use.
+> On 10/16/26 02:15, Roman Gushchin wrote:
+>> Yosry Ahmed <yosry@kernel.org> writes:
+>>=20
+>>> On Thu, Oct 15, 2026 at 1:38=E2=80=AFAM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
+>>>>
+>>>> (CCing all people attending the mm-next call)
+>>>>
+>>>> Hi,
+>>>>
+>>>> After talking to Roman at MS, he just informed me that sashiko now has=
+ a new
+>>>> feature combination:
+>>>> - "embargo_hours": hours before review is public + emails sent
+>>>> - Mechanism for signed-in maintainers to lift embargo immediately
+>>>>
+>>>> That solves the key issue I had with sashiko: people/agents re-spinnin=
+g stuff
+>>>> too fast before a human at least had the chance to jump in first.
+>>>>
+>>>> I suggest the following sashiko change for linux-mm:
+>>>>
+>>>> diff --git a/projects/linux/mailing_lists.toml b/projects/linux/mailin=
+g_lists.toml
+>>>> index a9198de..ba123da 100644
+>>>> --- a/projects/linux/mailing_lists.toml
+>>>> +++ b/projects/linux/mailing_lists.toml
+>>>> @@ -46,7 +46,6 @@ ignored_emails =3D ["patchwork@emeril.freedesktop.or=
+g"]
+>>>>  ["linux-integrity@vger.kernel.org"]
+>>>>  ["linux-kernel@vger.kernel.org"]
+>>>>  ["linux-kselftest@vger.kernel.org"]
+>>>> -["linux-mm@kvack.org"]
+>>>>  ["linux-nvme@lists.infradead.org"]
+>>>>  ["linux-omap@vger.kernel.org"]
+>>>>  ["linux-pm@vger.kernel.org"]
+>>>> @@ -315,3 +314,7 @@ reply_to =3D ["author", "list", "recipients"]
+>>>>
+>>>>  ["fsverity@lists.linux.dev"]
+>>>>  reply_to =3D ["author", "list", "recipients"]
+>>>> +
+>>>> +["linux-mm@kvack.org"]
+>>>> +reply_to =3D ["author", "list", "recipients"]
+>>>> +embargo_hours =3D 24
+>>>>
+>>>>
+>>>> Which means:
+>>>> - Embargo 24h
+>>>> - Mails sent to everybody (author, list, CC list)
+>>>> - No positive-review ("looks great") mails (default)
+>>>> - No other static email addresses that receive a copy (default)
+>>>> - No additional ignored author email addresses (default)
+>>>>
+>>>> I'd say we start with 24h and see how it goes.
+>>>>
+>>>> Thoughts?
+>>>
+>>> Thanks for doing this, it's much more convenient to notice and respond
+>>> to the review when Sashiko replies to the patches.
+>>>
+>>> FWIW, I prefer no 24hr embargo, seems to work well on the KVM side --
+>>> but I will take what I can get :P
+>>>
+>>> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+>>=20
+>> Is it time for me to pick up the change? David, I'll let you decide when
+>> the discussion is done or just send me a PR, up to you.
+>
+> I was under the assumption that I would have to open a PR on github, but =
+if you
+> could just perform the change yourself, that would be great.
 
-Remove the unnecessary assignments to simplify the code.
+https://github.com/sashiko-dev/sashiko/pull/699/ , landed.
 
-Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
----
- mm/damon/core.c | 5 -----
- 1 file changed, 5 deletions(-)
+I'll roll it out later today.
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index b63e60ef8990..74e6022ca137 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -918,11 +918,6 @@ struct damon_ctx *damon_new_ctx(void)
- 	ctx->attrs.aggr_interval = 100 * 1000;
- 	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
- 
--	ctx->passed_sample_intervals = 0;
--	/* These will be set from kdamond_init_ctx() */
--	ctx->next_aggregation_sis = 0;
--	ctx->next_ops_update_sis = 0;
--
- 	mutex_init(&ctx->kdamond_lock);
- 	INIT_LIST_HEAD(&ctx->call_controls);
- 	mutex_init(&ctx->call_controls_lock);
--- 
-2.53.0
-
+Thanks
 
