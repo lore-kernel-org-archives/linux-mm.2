@@ -4,111 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C0BCC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 17:23:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06DB6CCF2C0
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 17:36:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC75F6B008A; Fri, 16 Oct 2026 13:23:53 -0400 (EDT)
+	id F3F146B0088; Fri, 16 Oct 2026 13:36:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D79336B0092; Fri, 16 Oct 2026 13:23:53 -0400 (EDT)
+	id EEEC86B008A; Fri, 16 Oct 2026 13:36:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB4FD6B0095; Fri, 16 Oct 2026 13:23:53 -0400 (EDT)
+	id DE1186B008C; Fri, 16 Oct 2026 13:36:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A53476B008A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:23:53 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1DABBC0504
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:23:53 +0000 (UTC)
-X-FDA: 85329161946.09.5518EC4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0A5BF18000A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:23:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=np2EcwB3;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B69CA6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:36:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3FFA5A811C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:36:29 +0000 (UTC)
+X-FDA: 85329193698.28.7B72833
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id AB8922000E
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:36:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cgnED+Me;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792172187;
+	b=zi3fKHkFwKjMNQFsPWngBXKr6UVw5d6z5+0+swQXoY0eS9jjvukpO3oAMQzropkyikCAbe
+	Q3YoqZ7rm/w73F9lM94sY0wJQogR5fiJ3AlvFsBFmm4HF8q1i/7gYWwdU0ZKBB7jWuQ4VJ
+	q+gCShFT5746eobYmgGC96JSOAO4GeM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cgnED+Me;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792171431;
+	s=arc-20220608; t=1792172187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZsk8rYIK+XFI7MAmldYNUD8oXy7bvpm0tJmA3DoohI=;
-	b=iGkiyEILxTZ0GPYW7kdgFnfczBjZSHO/utpZRys0w4d3GrZfaU8DF442Hpw5dykb/sCepd
-	eI0NDZik4JDs9Gdb9A2miy4V6iC9gg8lsmTa3PsuORaRWr/4nBqZvFlj6yYA0nUCg+TfVx
-	NBEhNHCw3eMclm4USPyuivlk3PCX164=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=np2EcwB3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792171431;
-	b=xVhwwgwqpkoDeSSqx1U5GLr0waR2OfDuYFhpvFRzExLHU7o1mKM9lTU3wU6CnXV69w+Yn3
-	U6Y9NX0oCNJnKbZTitcSehgyMCZr7CZHA4fEvFZseZzJoc+1tQWV6wXSnf054VqphGnFFl
-	n0nWCkK5pbYtM5jLl1B+TkDBBtxMNqI=
+	bh=YMbJwCRP8ZZxt3NEiXPg55lY8UcPeUjTprnohFKVbL0=;
+	b=A54oyPAyoQEPJxbIlhkZW8/UPBzLM2+cLN42DA1jy8TSvLWNzN/5YMIq8BG+TVOAuDVx+h
+	7upFYvpZVXQKc6zc5G+CpZ4niqah6F957rt9WFPand+ej6Qe56SUsq092kqlwUttImdWDQ
+	jhonbB9ICmvCNuoYqJAYP1MebipfNNs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C10C44084
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:23:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AEC1F000D2
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:23:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D4B4260219;
+	Fri, 16 Oct 2026 17:36:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277BA1F000C4;
+	Fri, 16 Oct 2026 17:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792171429;
-	bh=LZsk8rYIK+XFI7MAmldYNUD8oXy7bvpm0tJmA3DoohI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=np2EcwB3EQET3neT6c6PTkPUbbo2osvqx3a7yGUdgCX/5tF4knSxL9qRqJEqEMrvt
-	 vQp/lgSwRl6KqSK0/Gfi+iHB94CAZMRr4Rcime3eaT4qNl5p6bbHMAxZGkAT290Mg2
-	 ELTiL95MGGcwJk8uT0wSNXJi/EOs5VYWPvr0nUQV2whCweSFKBmY4GQufcRNX9PORe
-	 SeCVmlUw5daQRTDZot0Snxd+dszDqQdsQ5ZwsEjixyhm66CmtJwJ50eXa4F5CY81dA
-	 Twoo71347hfy/LuORVaAtsvyOK8o9r5QneXle39bN57nURvSz1gq3Ype/Lsq/zrrnP
-	 fd9k04nOmTwWQ==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c2e5e090746so14822866b.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:23:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwCd3f9tMSPUPBNDjOdZGsJVp00bs7FynjbkrkSD/ramM0bicFCwxnJNQhN87PgLd8dBml+w0bWUw==@kvack.org
-X-Gm-Message-State: AFq9FYLmqm16ejljZ8II7M1JJYqgMWECF79PUxY9I5md0sXfr+xmj0Es
-	bUX29ROz9yfqB1gw2AczJHuAE0tDK+sEIPkR00nVVSwtRGK8CPXuWK98erSGooK8Y+5cj8csyLv
-	tuRuAncIQXuyoi5CB81bz8hCw6mOp0Bc=
-X-Received: by 2002:a17:907:3e20:b0:c3f:ab0a:3674 with SMTP id
- a640c23a62f3a-c419f122f0emr38428766b.34.1792171428095; Fri, 16 Oct 2026
- 10:23:48 -0700 (PDT)
+	s=k20260515; t=1792172186;
+	bh=YMbJwCRP8ZZxt3NEiXPg55lY8UcPeUjTprnohFKVbL0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cgnED+MeE+BVnu7FMkB11A2u5LnsuWVHRNtqiFCCMnmKPvj8sMTGZjS0v+3mPwCSI
+	 niostZ9UZKpPxZKiwSvov01qUzA051EHLue12Qaz9nnjlodsaXO0GhIWvf+tabHYZ7
+	 fKNytXo1Ce9IzWEvHcsQS0WKjt7T1D2WXOgmDLTMIckEmYPHNiVEXZGgg2QF9zoUqt
+	 e3PhTFI/cQYx/ApyBEMCqyGsbXmlXz/x0cZT68S2ReUvo1athbOrAZMTK0tp4KDG5Y
+	 y8qDdfJx/rzehmzWSVOFXti9Ri1uSjcz7bqubQ3FuVgxomyIQU0/ojQ9GqlISbchR1
+	 rU4l3ipSOs8Uw==
+Date: Fri, 16 Oct 2026 18:36:15 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	qi.zheng@linux.dev, jack@suse.cz, pfalcato@suse.de, ayushr@modal.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: memory: fix truncation removing mapped folios
+Message-ID: <atIsNGVDcWtznMKi@gremlin>
+References: <e2f76ed117b0c22a26b7688fd46a38c9d035336e.1792114445.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-References: <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
- <anpsLy_pCanocgS1@google.com> <CAJnrk1Yoj7fqbzurmHkbA-vegpQu3cf-_dfvKor_VxuNhPR-AA@mail.gmail.com>
- <CAO9r8zPLipVW6bvyDK1ypSawbo=LHKvmLqWH0xA6WMR9GYNJpg@mail.gmail.com>
- <CAJnrk1ai-TqcudPoK-qFRYAJnUjBmg1kVa6Vxg3eDm5w5ivqSA@mail.gmail.com>
- <CAO9r8zNJ=Fpc0pZExrttVTDCM3yzSmLPCAU=+RS0k5Pm+hY96w@mail.gmail.com>
- <CADrL8HV7_f68qfd6hG=xCTqzupPqr77ynbwdz8jm0hzjdgDVeg@mail.gmail.com>
- <CAJnrk1aHdBm4CofvKfx7B3H-uF2xRXZUQs47J_4xeRmRZ4hcZg@mail.gmail.com>
- <CAO9r8zOkBVgxdb3pCyHs-ZQTxhwBmA1_+aH0snV7dzbVaVsPsg@mail.gmail.com>
- <CAJnrk1ayOhrFY8LOMYxqEMYZvhK10zjTTyOK93VzMgxpV5W5sA@mail.gmail.com>
- <as-fG4VB_4xnAI8n@google.com> <CAJnrk1ZezmmzrYdf8KP6re_a76izMS=qGPeC8ZZXiteHyZZC-Q@mail.gmail.com>
-In-Reply-To: <CAJnrk1ZezmmzrYdf8KP6re_a76izMS=qGPeC8ZZXiteHyZZC-Q@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 16 Oct 2026 10:23:36 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOVhHw1E23ejrc+A+VLLQpDGHZ5E_zxFxP=v-UWXKStSw@mail.gmail.com>
-X-Gm-Features: AclHuK_tugv7BYry5ury_b5ZFzWEgqxIcYk59lnfN3VZh-EULn7KZxcp-LDnRUE
-Message-ID: <CAO9r8zOVhHw1E23ejrc+A+VLLQpDGHZ5E_zxFxP=v-UWXKStSw@mail.gmail.com>
-Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, James Houghton <jthoughton@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
-	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>, Song Hu <husong@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0A5BF18000A
-X-Stat-Signature: jwuyu5y416tygr1b7wiwxrfq4bcbfor3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e2f76ed117b0c22a26b7688fd46a38c9d035336e.1792114445.git.baolin.wang@linux.alibaba.com>
+X-Rspamd-Queue-Id: AB8922000E
+X-Stat-Signature: 988k9oizqti4zg4j5kyxfyc7x8yhszrw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792171430-264406
-X-HE-Meta: U2FsdGVkX1/CHCBIjbQa/WJx19nx29ukfIy1F75R2TplLb1AA8KFuOoTkIfwLf70u69q/qLK7TiHTH66P+rpsyFFWwH8vfO6kbBOTPxzd5srt7kZogse5s+erKKv41/d3Wn1KwyyvZk0T3tGod1DYDDhZlImZh4fZAdw35nX7pwbUAT+NEpnkzha6dmRb9Sia6d6LBDzFfQfP+eFXy0ZSQyXl/DH7QbGr13GO6vOoiPzLfH5Th9zMkdztPKthAwJI5f9ZWGSZYZXIUCZ8Ka8ZRuw1CiCnm41uRiTM7Wta+exOj+Flbhc5EJ2zCUiHXnKAPe3xtODIbQvs8FA/BlzyVk9jbd6dvkQCFDAu7dyOT+W0BL/RPTWpNb48JtzmO6MVbkwGu2xK5Qgb3OpYdmA48ldZ1cXokmuD4UBKfgbqmpAtoysa/sj9H5cYCo4eZ9Z4Mai9+vxqOX/VbwE9cet9JegsYSKEpTWCvowONN1SBtd5xfYV5qYbRV5RbGW5us5lfQBwrjJBDT44LX2c15/9R/PXtoBy99pZEDQvP7yDZWpMFtVAMCFI/UaW1s/HPHhRLGGlKihImsgoJZwBMy6ucY7+A4Kx2vtDAvwYYRGBllLBkzJldvznHbtyTiYOPVXSNNaEXBRVQuDBXGmiunYWMv8aBLftjSIjM90Kbn2JdenP7tJBbDY2R+AEYMg1X9Ip5xzynElV/VL2EsPI3067ZmUEXBd/otB81TTItRiLHgpA3jI4txDinLUQ6eVEiOSQlAj2KtiH+d2AjfMLUiDLb//7htg4DbANy6eLOwafRaQXLGGdVIzVltDg1VbLCiW9hKKqKDomwQN9UlN8pMQCzPCMS3qlG27bJCxPqLM7iAlL8i2QVYyJ92TOE/oR5N+y/5hIaSA/ZVb0zA+eNE0rWmukCmrD0T2ClMwoehHvXClho8I2p2LmM0bseQW9XpoG8Eo0fR0MAKRAmZa2ZM
- llPPqr/E
- HbPxs1eruLCUF512usWUbqzQt/ws866Tk+TwkeZIhaAHoWPXZTVtE5SHjK4R2b3lFFzWOO74EYsIZC3eFxDCLdXdC/hRee1JLYT7LMBSabsL1wku9xJO3ATU7ZM9zUVlI25u/9JXM1yYKUAU+NCA0Cxq1X30JK+Bv+2rQjzEu/A+u2lABQZWNGU8NC/mT9EvC1+lo9+ych2QO24QT+IESwF7WVRVDdops7yC2N5HnG9sLwfj8djgtnIlZjot1CH2WE6RhFmnaOnQTJi7FaDovyStZosrIlkNhAWOtDKeFnVleodRVcS26TMrHFwECqts+exTosv9GwvLCDq3hX3DYHKwfA8r5gZba+Au9yFs89K/jerc=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1792172187-141699
+X-HE-Meta: U2FsdGVkX18+CdgwRgsPSaVWp21oFKLKj+/FVa5ZgItsERh/crxjzUPOjAgNYvbQkgGgVRHke1VOuGhpmJxYTjgwEL3xOGpzF7pGjlvi1YTTgUF5hioePDDGOIyjA+c4g80S2Lb8afmQvq1HK7fRfpi3ZI7WhL6Ev/tbDFAdLrXS2Q+Flzv5QJAPEkaPhFgaDAuUsMULaqtE/q/SRuAJnYcSzwajgQoCmIk9UzhPKbEPqT+HysUXHikyFYnELpZ2G+PZEUNLtpmeDzxbUDRcZOjRbejWkm8s5PsMlrC0ghKfy0wBXEa4d7pC5zneq662IEi9BjWzROaI5K+ErJAIvSAVjC4XBnODW+jV6PSDXwlaes+XBMkmf7TbpQEmU/CSZrVEWK4f+n2Q9C71tRBuBWnUZ3nPZ7uMWU31YsrkDRvlUa12do3V1aQv55SGlro6Uolbp+XXaeGMbR3I97TQj/puVnBnz+PdQWb6MDY5FOcwzNtxpDW3U9b1Wmucz8Njh2Kysx3q1Wjl1ws5GpyNCzSF9Lmk1zXBssQ7UKHnGeJyzDbh3aLwy+IBDf3YAD9Y6UkfV7cXAiNP0u5jksBFHI9JB8WmA5pUeTPAUqFmiWH+LLtxaIsWl31ovl3Y9CssH9JoGOlw9YqFhTxgKuvnUVatqWiVoR67iDNGcHZ6ndO4u4ip8Z5UhTwTmMfLHDveXNJr6Ro6sOUKnqa6VPZdTc8ltKG7t6bO0uHYsehKWLadi5CtKeN2QVGA9W5deURkucO0JwtMM5z8gYcUlcG0+MYLDZVcFn8LKIM0nn/pe/8IzzLymb/Xz3C455s5zEehyPqIW/tTFnHu33TvxOT5nCIL6T+WgBbPraxvtwkjvzAO+PMXRx2gHe/wAZYvuKuTO8fIzmB+9SG3v2jpq5UFYJozDD7KvqZdLxn/AgW/7fGlQF3dfFHEYmDZs6b2A7stZyXlHPv/4w7CyGQjmpG
+ 8l9oWhwW
+ vVuQNYRxepfNyJSMb5bL8ANf6dQYqthOM4xWCD4SuqHuT+I2ZNACcBbzzbBl0Miahc8LOgdD7+Woebli3rq0yGXWzxVhIR2JI7OrxPu7IcCaeF7AnGEp0yq2/UFpe9Fu6lSTONTgml7+rx80XirPXIPMpYWTeNqwSPYjOmHmN0Ei7qTzfDXNNvkSTsV2xtFLHYap6kOo05ypyZ2d0qssnmpkVDGRlVatzvwF5Fd2XNhXnG50VFmMKy5pfTf17uVh5AmlrN+hQ/GjN91vsEAqEUX41OqtRObCvxQ3RT1wy1QhQweeIuax9Is0jBBOLkRbtC+Rur5V43i1Q8pNj3AJQT8y/GDZAajb9HlOEzWdWZ49oDVA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,197 +92,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 6:41=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
-m> wrote:
+On Fri, Oct 16, 2026 at 09:48:08AM +0800, Baolin Wang wrote:
+> Ayush reported an issue that shmem/tmpfs folios are still mapped when
+> truncating them on production:
+> "
+> BUG: Bad page cache in process ...  pfn:...
+> page dumped because: still mapped when deleted
+> "
 >
-> On Wed, Oct 14, 2026 at 8:34=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > > Thinking some more about how stats are used... I think there's two
-> > > categories the stats fall into: a) hot in-kernel ones (eg LRU sizes,
-> > > workingset counters, dirty/writeback, zswap) which are read very
-> > > frequently from the reclaim, refault, writeback and zswap paths and b=
-)
-> > > userspace-only ones (everything else) that are read through
-> > > memory.stat / bpf / etc and much less often. The hot in-kernel ones
-> > > are a small subset (~20 of ~80). Most of the stats fall into category
-> > > b). However right now, a flush always aggregates *all* of these stats=
-,
-> > > even when the caller only needs / cares about the hot in-kernel ones.
-> > > Flushing does all the work for the stats in category b), which the
-> > > in-kernel flushers don't need. With the per-node lruvec copies, a
-> > > flush goes through 100+ counters per cgroup per CPU vs ~30 for just
-> > > the hot in-kernel ones (on a single-node machine).
-> >
-> > I didn't measure this before, but I did tree adding a bitmask to check
-> > which stats have updates and that actually made flushing more expensive=
-.
-> > It could have been the case that hot stats were distributed enough that
-> > all the cachelines were being fetched anyway and the bitmask was just
-> > added overhead.
-> >
-> > I think you should do a simple experiment first about how much flushing
-> > gets faster if you skip the stats not used by the kernel. It may or may
-> > not matter, depends on prefetching (conversely, I wonder if explicitly
-> > prefetching the entire stats array on each CPU would help).
-> >
-> > I think it would matter less if we manage to completely get rid of root
-> > flushes (except for userspace stat reads).
+> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
+> branch, and I got the following crash info. From the dump message, we can
+> see that truncate_inode_folio() is really trying to remove mapped folios,
+> which is incorrect.
 >
-> I ran some benchmarks on the split rstat trees idea. On an x86 80-cpu
-> 2-node machine, it makes in-kernel flushing around 40% to 45% cheaper,
-> but for the userspace flushers, reading two rstat trees adds ~25%
-> overhead. I think this could be remedied though by just keeping the
-> existing tree as is for userspace flushers (eg hold all the stats, not
-> just the ones in-kernel flushers don't need) and adding a "slim" tree
-> with just the hot in-kernel stats for the in-kernel flushers. Reading
-> memory.stat would then just behave the same as it does now and the
-> in-kernel flushers would just walk the slim tree. This would add a bit
-> more overhead (and complexity) when updating hot stats though, but I
-> haven't yet benchmarked this "extra slim tree" idea nor pursued it
-> further. For the prefetching idea, when I ran some experiments with
-> prefetching the entire stats array on each CPU, I saw it made flushes
-> around 1% to 7% slower every time.
+> "
+> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
+> index:0x3880 pfn:0x191647
+> [  189.171995] memcg:ffff0000cc073d40
+> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
+> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
+> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
+> .......
+> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
+> [  189.172026] ------------[ cut here ]------------
+> [  189.172027] kernel BUG at mm/filemap.c:155!
+> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+> .......
+> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
+> 7.3.0-rc4+ #277 PREEMPT(lazy)
+> .......
+> [  189.183986] Call trace:
+> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
+> [  189.184391]  __filemap_remove_folio+0x34/0x160
+> [  189.184633]  filemap_remove_folio+0x4c/0xb0
+> [  189.184859]  truncate_inode_folio+0x34/0x58
+> [  189.185087]  shmem_undo_range+0x220/0x658
+> [  189.185308]  shmem_fallocate+0x2f0/0x470
+> [  189.185527]  vfs_fallocate+0x128/0x328
+> ......
+> [  189.187078]  el0t_64_sync+0x184/0x188
+> "
+>
+> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
+> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
+> MADV_DONTNEED synchronously releases the pagetable page before calling
+> tlb_flush_rmaps(), this could cause another thread's truncation to skip
+> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
+> as non-zero. A possible race scenario is as follows:
+>
+> CPU 0                           CPU 1
+> shmem_fallocate                 madvise_dontneed_single_vma
+>   unmap_mapping_range            .......
+>   ......
+>   (filemap_map_pages() remap folios)
+> 				  zap_pte_range
+>   truncate_inode_folio		    zap_empty_pte_table(pmd clear)
+>     unmap_mapping_folio
+>     ......
+>       zap_pmd_range (saw pmd none, skip)
+>
+>   filemap_remove_folio
+>     BUG_ON(folio_mapped)
+>                                     tlb_flush_rmaps(remove rmaps)
+>
+> To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
+> to after tlb_flush_rmaps() and use sync_with_folio_pmd_zap() to sync with
+> concurrent zapping, so that when we find a pmd_none() while unmapping a folio
+> without holding the PTL, the folio's mappings are guaranteed to have been
+> removed via tlb_flush_rmaps().
+>
+> [1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
+> Reported-by: Ayush Ranjan <ayushr@modal.com>
+> Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
+> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-I think separating the in-kernel stats is sound in principle, but
-implementation and maintenance wise it's not great (especially having
-the same stats in two trees). That being said, I didn't see the code
-yet, so perhaps I am wrong :)
+With nits addressed LGTM, so:
 
-This is why I think we should measure the improvement after
-eliminating root flushes if possible.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
+> ---
+> Changes from v2:
+>  - Use use sync_with_folio_pmd_zap() to sync with concurrent zapping (Per David).
+> Changes from v1:
+>  - Add an smp_rmb() to pair with the smp_wmb() (Per Lorenzo and Pedro).
+> ---
+>  mm/internal.h |  9 +++++----
+>  mm/memory.c   | 25 ++++++++++++-------------
+>  2 files changed, 17 insertions(+), 17 deletions(-)
 >
-> >
-> > >
-> > > What do you think about splitting the stats into two rstat trees, one
-> > > for each category? In-kernel flushers would then only flush the hot
-> > > tree (~30 counters). memory.stat would still flush both (eg userspace
-> > > would see the same thing as it sees today). Each tree would have its
-> > > own lock and its own stats_updates threshold.  I can run some
-> > > benchmarks but I think this would make flushes a lot cheaper, and
-> > > since flushes would hold the lock for less time, it should also reduc=
-e
-> > > the contention we see between concurrent flushers right now. Together
-> > > with using node counters for root readers, hopefully this will make
-> > > the non-ratelimited flush cheap enough for all non-root in-kernel
-> > > readers and ideally let us get rid of the ratelimiting variant
-> > > altogether.
-> > >
-> > > Do you think something like this makes sense?
-> >
-> > We have to consider the update side of things as well. How many code
-> > paths will need to update both trees? That could be a problem.
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 0434dfcfc36f..6d8f494296a4 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -585,14 +585,15 @@ void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
+>  void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
 >
-> When I tried to measure the update cost of the split rstat trees (not
-> the slim tree variant), I was seeing a lot of inconsistent / noisy
-> numbers I couldn't get rid of even across boots of the same kernel and
-> even between memcgs on the same boot, which seemed weird. I ran perf
-> stat and that showed that the slow runs were executing the same number
-> of instructions but had a lot of extra stall cycles. The variation
-> between memcgs on the same boot pointed to maybe cacheline contention
-> being an issue and when I ran perf c2c, it showed that the most
-> contended cacheline between cpus was the first 64 bytes of
-> mem_cgroup_per_node, which is strange since those are only read on
-> stat updates and not written to.
->
-> That struct already has cacheline padding (_pad1_) to keep the memcg,
-> lruvec_stats_percpu, etc fields on a different cacheline from the
-> lruvec but apparently Intel/modern cpus do "spatial prefetching" that
-> pull in the adjacent cacheline (the Intel manual [1] says "This
-> prefetcher strives to complete every cache line fetched to the L2
-> cache with the pair line that completes it to a 128-byte aligned
-> chunk"). So I think basically every time we read lruvec_stats_percpu
-> (read on every per-node stat update), this pulls in the cacheline
-> holding the lru list heads. The lru list heads are constantly getting
-> written to by different cpus, so when the stat update happens and
-> pulls in that cacheline, that ends up introducing a lot of extra
-> overhead because it has to fetch that from another cpu, but also even
-> worse, whichever cpu holding lru_lock has to now invalidate that copy
-> before its next write and wait for all the acknowledgements to come
-> back, which adds extra latency to the lru critical section and
-> delays/hurts everyone who's waiting on the lru lock. I saw these same
-> results on the baseline kernel even without the split changes.
->
-> I think having the update path find the per-cpu counters through the
-> memcg instead of mem_cgroup_per_node fixes this. On a multi-threaded
-> fault benchmark in a single memcg, it improves shmem throughput by
-> ~35% at 20 threads. I saw also that the inconsistent/noisy numbers I
-> was seeing across reboots / memcgs on the same boot disappeared too,
-> though I'm not sure yet why that fixed that issue. I'll clean up the
-> change in my tree and send that out as a patch.
+>  /**
+> - * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
+> + * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
+>   * @mm: The mm_struct.
+>   * @pmdp: Pointer to the pmd that was found to be pmd_none().
+>   *
+>   * When we find a pmd_none() while unmapping a folio without holding the PTL,
+> - * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
+> - * indicate that it's unmapped. Skipping the PMD without synchronization could
+> - * make folio unmapping code assume that unmapping failed.
+> + * zap_huge_pmd() or zap_empty_pte_table() may have cleared the PMD but not
+> + * yet modified the mapped folios to indicate they are unmapped. Skipping the
+> + * PMD without synchronization could make folio unmapping code assume that
+> + * unmapping failed.
 
-This is an amazing finding! I am surprised that the CPU would prefetch
-a contended cacheline to be honest.
+'zap_empty_pte_table() may have cleared the PMD but not yet modified the mapped
+folios'
 
->
-> But with that fix applied and with another series of local changes
-> that move LRU stat updates to outside the lru lock (I'll clean up and
-> send out this series as well, as it also applies to the base kernel
-> regardless of the split changes), I didn't see the split changes added
-> any update overhead that wasn't within noise. The lru stat updates
-> changes to move it outside the lru lock are necessary though, as
-> without that, there was around 2% increase in update overhead, since
-> it added more latency to the lru critical section. But after that was
-> moved out of the lru critical section, I didn't see any degradation
-> anymore.
+Is that accurate after the patch?
 
-This also sounds amazing :)
+You run tlb_flush_rmaps() before zap_empty_pte_table() now, and thus
+folio_remove_rmap_ptes() ran for every folio by then.
 
->
-> >
-> > From a code perspective, it would also be a bit annoying to maintain. I
-> > would check if we can eliminate root flushes first tbh, then check any
-> > other potential optimizations on top. Subtrees should me a lot smaller
-> > than the entire tree.
->
-> Will do.
->
-> >
-> > > Separate from this but also kind of semi-related, I noticed
-> > > css_rstat_flush() takes the rstat lock for every possible cpu, even
-> > > cpus that have nothing to flush for the subtree. Maybe another
-> > > improvement is to just first check locklessly whether there's any
-> > > updates and then just skip the cpu if there aren't any. I can send a
-> > > patch out for this.
-> >
-> > Only the updated cgroups are on the update tree, not their ancestors,
-> > not until the flush time. We used to put the ancestors on the tree on
-> > the update side, but we don't anymore.
-> >
-> > So we can only check the if the per-subsystem list is empty, not the
-> > subtree specifically, right? Can we walk the per-subsystem list without
-> > holding the lock or deleting first?
->
-> My thinking was that on machines with hundreds of cpus, a good number
-> of them would likely have no memcg updates since the latest flush so
-> even the per-subsystem list would be empty a lot of the time. I can
-> try to find some data though on how often that actually happens in
-> prod.
->
-> I think maybe walking the per-subsystem list locklessly could be
-> slower in a lot of cases than just acquiring the lock? It seems like
-> we'd have to walk the whole list to know for certain if it's a
-> negative or not.
+Maybe something like:
 
-IIUC, llist can only be walked locklessly if you first move it to a
-local list. But yeah the question was rhetorical, I don't think we
-should walk the list to check if the cgroup is there or not.
+	"zap_huge_pmd() may have cleared the PMD but not yet updated the
+	 folio mapcount, and zap_empty_pte_table() clears the PMD only
+	 after the rmaps for the table have been removed, but nothing
+	 orders the pmd_none() read against later mapcount
+	 reads. Skipping... <etc.>"
 
+>   *
+>   * Wait for concurrent zapping to complete by grabbing the PTL.
+>   */
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 6a8e7772b8d6..8f7ba427371b 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>  		}
+>  	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
 >
-> My plan is to clean up and send out the changes I have in my local
-> tree this next week (the cacheline fix, switching root readers to node
-> counters (getting rid of root flushes), updating stats outside the lru
-> lock, removing ratelimited variant of flushing (and then if needed,
-> more experimentation on the slim tree idea)).
+> +	add_mm_rss_vec(mm, rss);
+> +	lazy_mmu_mode_disable();
+> +
+> +	/* Do the actual TLB flush before dropping ptl */
+> +	if (force_flush) {
+> +		tlb_flush_mmu_tlbonly(tlb);
+> +		tlb_flush_rmaps(tlb, vma);
+> +	}
+> +
 
-That sounds great, thank you a lot for all your work here!
+Maybe worth a comment here about ordering?
 
+>  	/*
+>  	 * Fast path: try to hold the pmd lock and unmap the PTE page.
+>  	 *
+> @@ -2046,15 +2055,6 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>  	 */
+>  	if (can_reclaim_pt && direct_reclaim && addr == end)
+>  		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
+> -
+> -	add_mm_rss_vec(mm, rss);
+> -	lazy_mmu_mode_disable();
+> -
+> -	/* Do the actual TLB flush before dropping ptl */
+> -	if (force_flush) {
+> -		tlb_flush_mmu_tlbonly(tlb);
+> -		tlb_flush_rmaps(tlb, vma);
+> -	}
+>  	pte_unmap_unlock(start_pte, ptl);
 >
-> Thanks,
-> Joanne
+>  	/*
+> @@ -2102,12 +2102,11 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+>  				continue;
+>  			}
+>  			/* fall through */
+> -		} else if (details && details->single_folio &&
+> -			   folio_test_pmd_mappable(details->single_folio) &&
+> -			   next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
+> -			sync_with_folio_pmd_zap(tlb->mm, pmd);
+>  		}
+
+I think David's getting at (correct me if I'm wrong) doing:
+
+	} else if (details && details->single_folio && pmd_none(*pmd)) {
+		sync_with_folio_pmd_zap(tlb->mm, pmd);
+	}
+
+Here, rather than folding into the below?
+
+I think that's neater also.
+
+> +
+>  		if (pmd_none(*pmd)) {
+> +			if (details && details->single_folio)
+> +				sync_with_folio_pmd_zap(tlb->mm, pmd);
+>  			addr = next;
+>  			continue;
+>  		}
+> --
+> 2.47.3
 >
-> [1] https://www.intel.com/content/dam/doc/manual/64-ia-32-architectures-o=
-ptimization-manual.pdf
-> (bottom of page 62/800)
+
+--
+Cheers, Lorenzo
 
