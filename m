@@ -4,105 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22483CCA46C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BCFACC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 16:44:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D92F46B0088; Fri, 16 Oct 2026 12:33:56 -0400 (EDT)
+	id 430BA6B008A; Fri, 16 Oct 2026 12:44:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D44096B008A; Fri, 16 Oct 2026 12:33:56 -0400 (EDT)
+	id 3BA6F6B008C; Fri, 16 Oct 2026 12:44:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C59AD6B008C; Fri, 16 Oct 2026 12:33:56 -0400 (EDT)
+	id 282776B0092; Fri, 16 Oct 2026 12:44:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A46006B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:33:56 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0DF6FC04D0
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:33:56 +0000 (UTC)
-X-FDA: 85329036072.05.6B0947B
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E798E40002
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:33:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=epxzLxC0;
-	spf=pass (imf17.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F36D46B008A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:44:38 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E9EE71604C4
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:44:36 +0000 (UTC)
+X-FDA: 85329062952.21.B2E6F64
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 29611C0008
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 16:44:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UwgfNm7j;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792168434;
-	b=AxJjhaCUbueXy3AoT7PLo7m8CGdnJB5E0Dey/fOCB1e7aBsUATn3OG+Xxh5EpYhfdJO3p2
-	2FoKNHbbi+ne7yQVTVsh75Wauxoc6NyUvsr2lp5roE65FcgJNOQHykmytRtm5tKDM/po7n
-	hokcO+x4MT4Df/FpbIjrQ8E4His4se0=
+	t=1792169075;
+	b=CQ/RQoH+JzVn2ONt0lCGPykWTT2tWJLbzBNgWLSfcW6mLiEDzITt13AgxhsjTlZRR06pDU
+	0RgCZucuA9a0o5F6sckBDMiPUYksCTOqMaE+GydLLYyG2a+eBiY6iUXpUBWdeIPrlELNxH
+	CyfrEnCCa229HOsmyhvH58RLgIEX65A=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=epxzLxC0;
-	spf=pass (imf17.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UwgfNm7j;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792168434;
+	s=arc-20220608; t=1792169075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fJKrUMd1G0IBo0I8qT/dKyrOBSwsrbO7w6cKV5h30LQ=;
-	b=6QXc4IIT346jtlI6ChdQdC6RUfu1IGR/p4Kx9giS9wB4ow9JiMNL8ldXUT5dvCcaQ8Y5By
-	o1VtdILOuq0BXAukVOEO+sX4xns4UCG1xa0rqhhno7TYxBo/20g2r83dVkw5XpbVaBRCfk
-	TZGlHJkGhDFeEH16ybnNTM+G/7kwK3w=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=outgoing.csail.mit.edu; s=test20231205; h=Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=fJKrUMd1G0IBo0I8qT/dKyrOBSwsrbO7w6cKV5h30LQ=; t=1792168433; x=1793032433; 
-	b=epxzLxC0XR2kvRg0hyD59e9mBdGcft60t12ej13FnqH/O0yDTbUWQcVIbpdh2ofCSxHF7b+VFfR
-	eQCB/cpv6qtEhuH+B3JFnyyJgjsg5bfdqY+2TKsv2rlyzjBcM7xokwXcsje7Gd2HRkBupp9+SiuJ/
-	Uc8D9/a9oGxA3VH/CVne/v34CUAWSBCcshIXcTrEs6rgm2gcgIN4z8cglqmJmSAo871x7pnYGfj8a
-	cHCUj44ztfXWn85eJq4wFUtfUg3uvcqnAoyjRh5Sg1k7aYsdqcvc6ItXsIl1k01kBjuztngAvHvyU
-	tH/zUXeyeheFi7FTJw5bl4o+A3yLIFOIHFTQ==;
-Received: from mail-ej1-f42.google.com ([209.85.218.42])
-	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xHksR-00Fand-T3
-	for linux-mm@kvack.org;
-	Fri, 16 Oct 2026 12:33:51 -0400
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c411e139259so8801566b.2
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:33:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxY3f4YsNxZjEQOqkiEw24PqM+fPOR2mt6lfMxXn0ex/jPYntwzTPB6eGcCySZvfO9UIwBraKkklQ==@kvack.org
-X-Gm-Message-State: AFq9FYLLd7Kx+XBnhe/5b6Ue6lcBuhcoz0yjEDYDcvQwNr8SZytEzT8V
-	U5oqHdX0+ZrxbehKnH7A1zvnNWBaRyaUWyR/f+RYnk/c913TRjdKzXl8cX7CRMAzKlNrnW1zCzZ
-	hLrmw1LrZw4C/aO35h7zTrClk9TtVkAg=
-X-Received: by 2002:a17:907:c00d:b0:c40:80eb:c541 with SMTP id
- a640c23a62f3a-c419a05d6d0mr30053166b.2.1792168430981; Fri, 16 Oct 2026
- 09:33:50 -0700 (PDT)
+	bh=wEVFUYbKAFDbpMze0BDiWYsy7fzEm9zY0vOk13vTjGQ=;
+	b=chg+RV/QqcowLv2DLAUhIfvQSUMNv3jT+V+HvdYeqsdF7cjmPfkcCQAdjIGtds4Kw4KXuP
+	+glz6jES7MDbGw8xjl9eKqCNGrHZvk+yx1gL9hOBTEy6R8ZL32ncQsAOuz/8rzXbr2iO+U
+	NzMBNIi6CNTSruv10tbNgCvgNNe8nAk=
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93e76469b93so11141685a.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:44:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792169074; x=1792773874; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wEVFUYbKAFDbpMze0BDiWYsy7fzEm9zY0vOk13vTjGQ=;
+        b=UwgfNm7jIfG2ceO4aZ3Y9r/7JvqeMtxGvUPQnAGQFwVgi1xKjzQW6sBlE4Rt74MtIY
+         DGB0GkeUdg0ru2halTxezsv9o4pSer622QZr7cdMpRauMPytPGmi3SecKLJMQuPFY9+z
+         Spp6PuBxiCh8Z6cnhvo8sgQfyt0BKID6juDK6eBOTMyz1mDZYmEojJS7I02nVxux0zUY
+         AMs0U/Rs+/r+YGFET2ab10IyWuu7FxKm9W4Rt1uC5lkbUcICZEmiUN6KlCcqjZdL0oKW
+         pkiv1DyNhkMf6nm5guiV+JevdVJwrge67XLbX0yvphufmOsbvqQynsM3C63oj6wa2OJZ
+         3vYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792169074; x=1792773874;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wEVFUYbKAFDbpMze0BDiWYsy7fzEm9zY0vOk13vTjGQ=;
+        b=eRwIVhnXoNQ0ShsoFdKxhFSceH1kWjlfIcTnY6XZJVWOwhdwj3qLYqrVZR6VSgbkS5
+         MXdr7GIW1HW+pVYUUo8dhgwLoTBlZJygOGuFQ5ZrgT1FR4lBfa72sSUhzIEqnnFPf48u
+         fhQ4XDMpwseyUdDE8L8EBdr08vdDQ6A6B4M4WpAxRmcmb4YJJLD0YRXTYWX4hL4dSN+L
+         6KvAvDpkVBV8i9lADA8T3HhDI3DGLmRKu+QkR20HwLncybDthkFyrfAqYBOG2aH8ys6H
+         Yk6eY1EGkp2k1+1Wh9z4dZPsFEeKD46i8t9Te+7xPGBLWxSst3W2GRtNrbDPUSJujrnR
+         KXjg==
+X-Gm-Message-State: AFq9FYLZkAxy/Evw8mvsboOYje1tHvNZvtqNPv1xTutz0XLDAL9nBN7x
+	EW4p4u3e6kPkL6L9vRhQvh2LgL5Z3Ef87MCJnW2DWZ39zKou9tWrVrrXJaw5yQYMDoh6wVQPS7/
+	0Rct2iDQ=
+X-Gm-Gg: AYBFou3fuIywEy/DRulgbaJSN3+fP8eqDNWTv9tnD8Cz2t5Ck4TKpKdyiIyWFvJkzk1
+	rnbaAWteEmb2+8lsoKidDiwHvfhFwCJm+2lEy8zff8afBFo7fRLbRycAdvXyFpYaS+k0wg/f/Xz
+	LRb6pzsYjgKLrtcb+zKikp5qn97obKLFvvkacD2wZOqkuFbPWyCVwEebCQtt2bPc8hxgKUEF7GU
+	jcCVAIAcDw6MIMjsVF6KO0n9EnM25DjFQfCw+Scgl1ZWve6y3mk3+IE9LWnig3aWkKqIWTDhFm7
+	wUgdqCLyfuRMF6qQ/lHhSZlGdZcdmSoTo8OuALZNDRXDwtLqxTNfgesI4gJmPt0l1sp6fZJ8HO/
+	XX0KgbJ3x36VDNqpphE4PW4/28H02eFApHWuyCtEA4XgTPs+zD716NrJz6358fRiOQ+5E57o2rT
+	HIS1UCnXYQRENf5Wa+SVS1D3bln2a8uaFzOfvZd0VLuGF7Cl/c4FFPgv1sez9rl93LRt9MWoiVL
+	Ra3irVOfPIsgvG4tyieLdNeH70MiKHETkWJ/0gl1yYS8bp5MR1gdR/5
+X-Received: by 2002:a05:620a:269a:b0:93f:26e7:844 with SMTP id af79cd13be357-93f29d68b94mr65782485a.55.1792169074078;
+        Fri, 16 Oct 2026 09:44:34 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcb8b69f3sm27054236d6.3.2026.10.16.09.44.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 09:44:33 -0700 (PDT)
+Date: Fri, 16 Oct 2026 12:44:31 -0400
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org, cgroups@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, longman@redhat.com, 
+	ridong.chen@linux.dev, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, 
+	akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, 
+	brendan.jackman@linux.dev, ziy@nvidia.com, david@kernel.org, mgorman@techsingularity.net
+Subject: Re: [PATCH 0/2] mm: fix two allocator races with zonelist and cpuset
+ updates
+Message-ID: <atJUCRRcgRkTPigw@gourry-fedora-PF4VCD3F>
+References: <20261014222456.2318284-1-gourry@gourry.net>
 MIME-Version: 1.0
-References: <20261016132510.789715-1-nickolai@csail.mit.edu> <atJBK6hWYh2AqXwK@thinkstation>
-In-Reply-To: <atJBK6hWYh2AqXwK@thinkstation>
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-Date: Fri, 16 Oct 2026 12:33:36 -0400
-X-Gmail-Original-Message-ID: <CADGQE7F2nLDe=emG0qVMRHSPGtqDMRB3_313C9sQHoiSRUTQFA@mail.gmail.com>
-X-Gm-Features: AclHuK-ldb28rC0chx7CFiWEZ5xqOK-MBV-RXV0XASoMu-7VUmiEbSreuv-EtaY
-Message-ID: <CADGQE7F2nLDe=emG0qVMRHSPGtqDMRB3_313C9sQHoiSRUTQFA@mail.gmail.com>
-Subject: Re: [PATCH v1] mempool: fix min_nr exceeding the elements array after
- concurrent resizes
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Christoph Hellwig <hch@lst.de>, Vitaly Wool <vitaly.wool@konsulko.se>, 
-	Vitaly Vul <vitaly.vul@partner.samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E798E40002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014222456.2318284-1-gourry@gourry.net>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: ntnz1s7tk4dcu7fd8o99o387mnq1my7g
-X-HE-Tag: 1792168433-972199
-X-HE-Meta: U2FsdGVkX1/u83vl1souGWLCVJ02qDEITUCCB5u/mTqf7BWq5WJ/ROaQPVyet4rZw8mcZfFqrJmM0D2JbW1BUnT2uvftst2eVmV2w304+rm3z5LzyEnzfgzjluCiOLBZ8f4yi2+VVpsjyRaw1w16MWC/6sARCtYKQB5mWZnKwC42Ti5sD1AcM26K8W+1ix9OQofFIJYVkWVkTyEE2mqzobuJ8KeEp8mVUQbpX0f/jA4k4AvzxB9V19QdHq+x+2yEK8+h057Wx9kHJQa8N9sf8uihwNZVrNuf8UfpZ5rT+aqqwFzZ1EbeMFKZ2gSwlR/+xa8et9gE4rrJhuu0sBAmiBbpAaq13c4479daHrqI+kO72X4ys+O61iJ35cv6F8LLkN7Ih+Z0skgcUy+z2HF9zECONYORfe3FNgKfhhHC4uZZMYaWpQqtodcX1clwwdQ5ox4VY8i/9Bo/jlK0i7dBxklG9XqOVEAjkGfee5koJrv7JwBvwTkwv4YxZ8Z/xzA1ViOumYwHJ6nzAJAo7K5mQ5QeelFaSWWsLvLv3GCZTXKum0DaRmOI/eBEqNXdfr8R86iWcyVKsWeaizOLEzmIgtYoPJCuyUmHXx20IupFr81qXFhJkyGboTpcTvneJn8paS6FxhnL5q6SdFPhuRNFJUICGxcNysza3iSTG5KxdxHHkmr0TDKnMVhI4n3b0UWI6nHADWM+/2CbeEVR5z3ruwsDcN01Zeyz7fgFlrrHnWEL8lui3BOHbDiycinBH7EiBpqkK6PSkDKB7ZSywgTZgriE33aNZ6wMowDhei+nB5UV9l7Y6rBH9QBBP/1vdco+oX5ab+TJQNNTzLskw20cGtA4xwhzfON5yNtQX3dAcmYJDVbSoXoWsFGPqascGTOPCi9MQdLQZ+gZDHYuYBRxBAE00WGEK1gTyF0xS8Rs+hqe2Q1MPu+N4d2elI6pixFlXAgVeLSKVInMjXdz9Mv
- VG3X104v
- ovdMRoo/TTlVjPEiJiNZATNbLDUcnLzxcGyPoqAeWY5LiTaSJAhjXiGLUP35P6en6j/jUyu+Woj0Ev1/FntSN6H55stq4MXr8YmlBQfje8VPwfTM6Ppb9EO4gDgCN0FmuKUMxYZKJvOiE6MRADx4T/5m4pTkXK8wYzuimGGFpm0CG3RCO3DAzfOLdZGy7+GunXgN93165stqYkvOTSLk9mM6Il0tEGoIZ8/lNeQZO14MqQkgwQphZLzDtz/d6zFoVjFmE59OfDjWC/axR5HuRYUkb94fF8F2lBd+C1Q6PVQMdJ8LJg/vT7bvaYC8b4ktHngU1qqwZCl4HNJcSkjJZ+WBJW2ckFTdC8gBSzUedZVDkvCgm0Bc7fPZdOg==
+X-Rspamd-Queue-Id: 29611C0008
+X-Stat-Signature: wcyo9b1ki8dibngg6k6babm4faqer5i8
+X-HE-Tag: 1792169074-959970
+X-HE-Meta: U2FsdGVkX1+ZCV8pndKSoeCZGcwfySfa/ctgJY3a08ANrTlFtk+LqP0Jg0AzzXU1XxqUK9u1CQaUdSAwW8RR+9DIo0e+mtMVVO4cerdKQaUqhqZ+qmgQWhXooKx2qNSp4x75VQz4nIPbtB4NKCGjeW1Gz9CBAmWFGF7IknTnaVAT2sv6r+xFHrqn7rr4B3qlykdvg6QlsQ3IUq1mA8uIMUnuBcjdZ2PsSYgH8iHSmrwDRD+/PxLoMAmknpy4QlX/f+drKTrKcIOuvypAZ9XU8a++KAtQ9aQrE+D4nsY6z/5Lb/KNdP+v4ptUgCVCfV4AX92lq+Qp/E3h5D6hjhLpTfq5zQgrNhhWQxrtzSlOGopDFE0yJDouRxdmCG/6PN0PpqHsvZdpU/V4q0PKpwZIt6L0KrRZmqRuNk7I7EwNvKxLTwG9NRqax07XsacXD3RxiSUJL6Zh3lFrZ7M5tyjSCWNKP/w+T9naf9B4RSnwzAstN4RtsjGJQoulY+lfwoDQz40M2xfSFsKLAIrFoABmywIwdYQ5QvwuKMVKKj9GhpO/NR0/hpmTD8roNjPQhhMxRT56U6VfcGDo9z2xy9lVtiRljq/fxfibWz6fX3cZ/TsTLVHSVZN1vG10Swp+/xlK+gQvV7Y907bc6t575iT49dVRTSqAVBXdkMn/hwIA6S8igK/sbo5aBIjhurKoDzlXcZC/fPyVJGCLVqze1Nev4xiQPwWMYJPXf5QrNmk+AE1/zjq7pd6O+9PscW2WqBbpEWAYU4zJ/LRkQxGDi0s6iINXVIfwo/Fjqpasr+yN5gm6h7iE0l+BdSdZzJRSBrRyA5nND1lK/SIlwP2YrbPjXJ0zF7RaxMcWBTT/twgtpBV2baA9lCD9QlASYuPH+Tr8Z63m1xeID2H/Qxyg3OR1xkhUF02c8Ti+Vqy/smA0HmSNZeM22OWlMqA0o1V0lP4bByyFf8Rjvq2anhOV0oP
+ dbxk/MLw
+ NnBMppAH8jZalVKL7bXzf7M7WvxTatXMfBAx/3JUiqS5bY+bjOXjRuL+6zEDvzBhVqkrjIh/ZSv3yLbP583QL/IDHdzlzsqW9ytV57GHea6MlV6CA1TbarFz3fmV5h5k9TKNjiXA9aQ7dt29pnPJo5Hq3TCNBbdejBg5aVRfoQE+/wbZ+jxLWwZLCHlMv+OKxNckghsxaPhE1UUhwy+bAyU2JjjzFYk6DCpkanlfzhwY27rNdPZPdrAYrnhJIcO/OmTpY31MJFtIcOthjw6rnCSiL1xyR6Vqj9jzK72sgNQgqw6hB83fOfWGCgnSi3O7oCLohvTHkvvybBvSdnrD5bAguPAnjQu8WXdNS082G7n+3dv8d3EDd+7MkvpKF9PnfbKsrKaY+JST3hRttwjHRfvEB+6/zwpPJWvVC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,21 +122,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 11:46=E2=80=AFAM Harry Yoo <harry@kernel.org> wrote=
-:
-> The bug looks valid in theory, not sure if how easily it can be
-> reproduced in practice as resizing should be quite rare.
+On Wed, Oct 14, 2026 at 06:24:54PM -0400, Gregory Price (Meta) wrote:
+> Two small fixes for lockless allocator checks that can act on an
+> inconsistent view of state another CPU is updating.
+> 
+> Neither of these are stable-worthy.
 >
-> (A bug is a bug and should be fixed, but no need to hurry in this case)
 
-I agree; seems unlikely to happen, but might as well fix it at some point.
+I'm going to need to repackage this with some additional race fixes:
+https://lore.kernel.org/linux-mm/20261015210539.3243563-1-gourry@gourry.net/
++ 2 others not posted yet.
 
-> So it's Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2") ?
+There's some mild conflicts with the CONFIG bits that make the entire
+series worth backporting for ease.
 
-Yes; I didn't think it was useful to include this "catch-all" tag, but
-technically, that's correct.
-
-Thanks,
-
-Nickolai.
+~Gregory
 
