@@ -4,121 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACFACCA46C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 12:55:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D278CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 13:05:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59E096B0098; Fri, 16 Oct 2026 08:55:03 -0400 (EDT)
+	id 051EC6B008C; Fri, 16 Oct 2026 09:05:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56DA66B0099; Fri, 16 Oct 2026 08:55:03 -0400 (EDT)
+	id 002FD6B0092; Fri, 16 Oct 2026 09:05:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 484DA6B009B; Fri, 16 Oct 2026 08:55:03 -0400 (EDT)
+	id E0C6A6B0095; Fri, 16 Oct 2026 09:05:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 237936B0098
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 08:55:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A4B0F14038D
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:55:02 +0000 (UTC)
-X-FDA: 85328484444.12.C05D5F2
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C01444000B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 12:55:00 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="F62l/+zZ";
-	spf=pass (imf07.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792155300;
-	b=nwjG7BYRkSHYE9P/wH0NM5xkCBckk4a2+3Hrazxsyn/wAEXja79Thzk3n1R2pz63YUXJr+
-	sZbbJvIQeMrtKe+qTGKu4UBQZiztJ+JppJUrGbeNvJddubHm8mOUq1Dn2UEcH+Lly0CdDf
-	J0NADQs5sO977iKNvBb/iJXqiSXOaGE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="F62l/+zZ";
-	spf=pass (imf07.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792155300;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B852F6B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:05:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49196C03FE
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:05:28 +0000 (UTC)
+X-FDA: 85328510736.06.F7AED50
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023139.outbound.protection.outlook.com [52.101.72.139])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2BB481C0007
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:05:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=fAAZRWQ+;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.72.139 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792155925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=E95YYQwjstxiJyP2LILlZnMWy7pjKVcdUHQn5hEnhWY=;
-	b=sFvl0LHCNfUV5vpkr705xhIsHYrbL78zJQSr9xb9b0fZacOe+R2wP5gLC+gEpTZRtiVECi
-	im3kX01IuH28tKcuQSHuNmoUUmMJeloK/tIEqmCjghsSe97X2zjA28K9ftf69T3zJbCMdY
-	pSnCZLLgTw+qRleVzR0ygrUSllj/yS8=
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35c76e9614aso4863036eec.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:55:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792155299; x=1792760099; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=E95YYQwjstxiJyP2LILlZnMWy7pjKVcdUHQn5hEnhWY=;
-        b=F62l/+zZCkQwnpRVisnHTVjrMbgybhC8spEeMX37zWumtV/Ah3uZmaI4viSR+U06Wn
-         uceVpWaqSPnbMMM5ZGWUQ3aY+Cm1Nx5g7jG4ppdOoh41izmrs70EA+/cZvRbkXeIV4oW
-         YrXlkM2HYXGkSI3A943o2e1MsVWR6Cyai9bLclAQfp2G1guaJjaTyrK9nMWGfxafxgGR
-         MVkJWkzF02R1tZMW+XZHG4JlbT40P+Az4wNGWl3ZopK3q0uveg3sxJwqaVE2U+76iCP4
-         9faPftE6kWnanX03IoZ5xlFFrE4hmgknLwlLN7TX4RRQzIaPgprofvfxQ1z4uAkI1TPG
-         kprQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792155300; x=1792760100;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=E95YYQwjstxiJyP2LILlZnMWy7pjKVcdUHQn5hEnhWY=;
-        b=yvnqBffEnlB/XsXw5a0GAG6T2qfdTjq7urziu7eoA6CDC7JTS1WsKpmF6oFwoegNeG
-         u7/CRwFjmeqnqT1EiPKFuwTfPbtpqaIVJWf6VqUeWLzZekLffZ5N+boEBxYna0hoFZjN
-         PXhFGdDAJZ4aoiD2CT56fOUwzh32Q853K1lduyHuPA9k2Wf1uAlbKSHJB8/vA8j4/t5f
-         EhvcynmeE/sP6VjLkulX/H0L1Aia3LQi32lAbwpzrBAFL6ubKvBnJP7ikmQpm95GYR/D
-         t5inhNs1T215dmkSQQdEjZED8rhBwYhU2mVIU45CcpNFnoKV4TV04SoLJ3UCCImS24vm
-         +/9A==
-X-Gm-Message-State: AFq9FYIS/cQSbtJNsxy0GDfweZ18G4Ls2KhpWpQBl8YsHeGalHA+p5/N
-	VhbUmq9p3FriZ9irj5cs2v+/j8iqEn8eHLYSp08Cy9Uaekm5wkIT2Yn7
-X-Gm-Gg: AYBFou0AIwaZJ8JXFHrXGMgq4S2svGQ9qrEwZkGGZIikGrJANF9VpcCqYV/DlwhlFaB
-	NBA6eCHGAZ8b/aQwKCPwZviBH5xVp1CVaGRTgOHHL1eL7bn8FmqT6tT2v7pJ4QwwJqQD5ngM9lw
-	KwE6l8L0/qamCCAekho8Cf91HiEPE5Ff/MBHh7cRqE+oIf/wIIRxsHrZvuJmahj5uciVFIuHUc6
-	cPLj1F1W9b2TogWdo26q0Q5MZJ+/rXOrJgJCypB3ZM7gTjuxpYBta5ilJtUc/tZHmJdmv+DUdT6
-	UfNduou9sR7VVvx3l59Gyl3IjBCjU0a6KofffRvvqEQ3xiTiL7ua+mvxQ/fv3HOgG3wZuST3K7l
-	FeAWPg6EKquN+hIDCtN53wDcYjfyULU7RZCDmPDbFBaJbX7MGwZRe9Kivq6q6cbJV403K6sHAQe
-	TJa+uVvyDi9KZ5g0fPPA9gfR4G9lZkjBNLRz06GeQ7FfKcfYs+KnsMg7zmlPORKJ0s4e/K2VP9/
-	Weo
-X-Received: by 2002:a05:7300:d58d:b0:360:73dc:1e13 with SMTP id 5a478bee46e88-36073dc22cdmr3045198eec.17.1792155299332;
-        Fri, 16 Oct 2026 05:54:59 -0700 (PDT)
-Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36081fa5a6esm6974508eec.16.2026.10.16.05.54.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 05:54:58 -0700 (PDT)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Fri, 16 Oct 2026 20:54:48 +0800
-Subject: [PATCH] selftests/mm: skip hugetlb cgroup v2 tests without the
- needed controllers
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8qwltEA+LdaFLY9jWzx3NBsq/jKxvBN588c+pmAnkFo=;
+	b=p3njUVm5l35Nooqv3eN8/4NxjJJrbBT5CKrpnak0apMEB+oMPmqJnU4ydAETDiT3H5Yi/E
+	JYT7tsMB89bh3a+vtA/9JECTU7VheHdEakBuKWgWXflt0tUpcICRzP9gw+Zg74o0Nw/YnA
+	YX5MRr6XwsU9wcSdTPU2IoNc3O6AA0s=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=fAAZRWQ+;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.72.139 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792155925;
+	b=ZVIDykxIkq1J6PzFn7JezvQu+Vcvhne9dMygXgwrSalE8Ll/zbQGfd67tVHKW2tBvuTrPC
+	YZBU+TE28jRWu0RuEGzT97D0kg6OdSwZtbG1/CYmYv/EbV996h4jCuZulPeyfecGA5pAT3
+	oMKn0YG5IObggQTv1rEg6gWzBo9rIHQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xxDp/6U72eDhmpp4yBJQh3WS/HOXwFZE4Dg9uy1nzpz6qzj6zARunwnq2izxwnwEQdQkwhY/GGEOO0ggvMyfq1nqj3bqk0bygGqnMHPIZtpZ2xtEyWXKGBRtVmLlLLJXxm1HZsM5SwD/8uUueNfn5RR52423XrLZRXuMqL644ccNIcmubHqvYeY+ktTz83hqy/TtNfXxDbGh3GmvgUGCtxp/YnpYPxQWqAFUyM8MeXwRMKYxGIBJ2DMVz5avMvhrNOY+TgCeuXGKTauc10Ac9qVklbM++VsFUsdJa4Q4QH7P8im2k6tzT1tTyAl80d/c+XGmxdCHp8u0YpZI7YMXvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8qwltEA+LdaFLY9jWzx3NBsq/jKxvBN588c+pmAnkFo=;
+ b=s2RIgFgPdAN3Eikea8zJezdf5rfYeWdFvayw75gP2hxRV8g7CozkxEcJB1EShZ3zu6OAtSFnO4UJfYSQkyUYx1ias6is3yTTwR9w3qtW5seDVhBUiPzybI9lDFi5sAQ41FjX17rVr/oIsnfuVY4bv17Uf3ofzEXjK+K4N4UvbYevk7Tsv6/KcUcusaN7yTmb6IUSpzDjRZTPHQJaLl2kIPCKuiPOuJfSA8sBLqQTvh9j9x7VeuXOIEyobsIM2q68WS2/fMc0jbwMoHpxq5e9PKtQkD4EuYWbXsfBXxIEY6gWTGbsaKOs0rWVTt5KPfpEWWNmPbvOQDxPBPYhY4MEuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8qwltEA+LdaFLY9jWzx3NBsq/jKxvBN588c+pmAnkFo=;
+ b=fAAZRWQ+EG9llF3zMeswlJ96b3Wbb2hbAiEE5OF8arT2qnww+ae11SVWz+vanSuccjwnAx4YAGi8X6ouK9LzZ+eQA7cG6n3yC8iw3Vc/FBDT5exzLOtVfwh7jWZROfAZXDMxgB/gLLkH+EdyFEMoZ3YJhapSoQ70H8XGJV3/NBxiTrHIHEMLlTYTnolfnGWmOuhmRRe3hphCbpfvnMIr7A0EX68N69AL+RWcZeqpdbmSyTXJ6kZxCrDHWBDVvva6FkyzBkUU8Iy72L5WJbX42hXHsetCtbwWrHDdYyBadZ+4kqokcfe+GEY59m3nLij+WYO7U3rL3CJ/b0QttbqfFA==
+Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
+ (2603:10a6:102:3c7::20) by AM0PR08MB644083.eurprd08.prod.outlook.com
+ (2603:10a6:20b:7fd::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.11; Fri, 16 Oct
+ 2026 13:05:21 +0000
+Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
+ ([fe80::1999:c6db:dc55:494a]) by PA6PR08MB10708.eurprd08.prod.outlook.com
+ ([fe80::1999:c6db:dc55:494a%5]) with mapi id 15.21.0546.006; Fri, 16 Oct 2026
+ 13:05:21 +0000
+Message-ID: <03a10e8e-f14e-4612-9c23-70f94137a29e@virtuozzo.com>
+Date: Fri, 16 Oct 2026 15:05:18 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/huge_memory: recheck a special PMD under the
+ lock in copy_huge_pmd()
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
+ dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ stable@vger.kernel.org
+References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v3-0-85eaec8417f6@virtuozzo.com>
+ <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v3-1-85eaec8417f6@virtuozzo.com>
+ <5800bc6e-7671-41eb-bb09-7fbc8f2d085c@kernel.org>
+Content-Language: en-US, ru, sr
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+In-Reply-To: <5800bc6e-7671-41eb-bb09-7fbc8f2d085c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-bug-selftests-mm-hugetlb-cgroup2-skip-v1-1-7c78883a67b4@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJce0moC/x3NTQrDIBBA4auEWXdATbGhVyldJHY0Q/7E0RAIu
- Xuky2/z3glCiUng3ZyQaGfhba3Qjwbc2K+BkH/VYJSxWmmLQwkoNPtMkgWXBccSKM8DupC2Eg3
- KxBFf3qlW22dnvYHaiok8H//P53tdN27F2oZ3AAAA
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- Mina Almasry <almasrymina@google.com>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.13.0
-X-Stat-Signature: yj3fxqjg9ssspp93kbyfr6boyuxk1axy
-X-Rspamd-Queue-Id: C01444000B
+X-ClientProxiedBy: AM9P192CA0009.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21d::14) To PA6PR08MB10708.eurprd08.prod.outlook.com
+ (2603:10a6:102:3c7::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR08MB10708:EE_|AM0PR08MB644083:EE_
+X-MS-Office365-Filtering-Correlation-Id: de8ddfb5-f6df-4cee-67dd-08df2b86222b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|921020|56012099006|4143699003|261009223027099003|10067099003|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	YjlHwmXJs7lL3lqZQfueXROKTu6rLm9F68uG0SnigR9ntYSIq0Ai380uc4wiu27KGSQIQrucprrzPvWLnpJwTv0gDLdpCeKAFsAwJrmSgUAudT1tD97NCwa/xTFZNn++YY9jmA07uqN90e2fe1hKWqrzEF+GFemO/aM3RHBQuzcM9UswAdz06sTmVwyDUe1z5h2KcRbQqaY4UjD4bLhocB2GmSLIFnlF1uo3sHlwuE//DghDHPeIBRO7RXxk1+4nmHpv4kWinblsPVGhDMcJt+QjBLHUrWG9O/nQNVVW9QeywGapHiSkQ+dYm+jinywc2KHHpeqsMusjp3jMaXEbkt6M0L2nvkDA8AjGQNbiVQMB4bs0QQIwaZJWcDASoyoa4CfMJ0yxAivvg2B5nC4nhu6ZEBPGWZ43FLw1SzfOWuZA7UJ8lyVhMaK2s0FUv/WWGhQXkCLnd7uJad2uith8J9oZtzc3mfeRRBlODAs+uhrEAyOjsU4u/oMxBPe8ts4fdfoq9T56lUvwXeriQY2CkcOGK68FZJ9FCowZ92YflVO9G4jaFjrz+ipHp1CaAfDuJj7hubo8bWPtQRWsiovbWc1SDZG4hWddKw4cNqZF0yzn+deTz8pwTAreQwECgsAJX2OYeeI0fSltKvEuCIt4kriqo4/YuH+DbTTN8suNP10+bDAaE/m5FjWOMrEsG65srUjfGq/sEXbbGxpskHD/WQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR08MB10708.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(921020)(56012099006)(4143699003)(261009223027099003)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Z00rMzNUbG5ZeDNCbHhjOWFTUnVBMm9qN1JwdkNJbCs3RmZqYSs4U2NVcUN2?=
+ =?utf-8?B?T2lrbjVQQnFhMmVlRURzS1gydFJBa3A3SDdqcjhaUlg3WkwxWHNxYTJDODc0?=
+ =?utf-8?B?bUFKNllwVDIvSllieGRsRGFQVkRpSkNQOUhaNDFvRlF0NTV5TFphcXRua2da?=
+ =?utf-8?B?Q3FrUHpsS3l6YkQ2SXNSdWNaVnZMQnNyc1d3c3NIZFlXSk1pc0lxY21FeldH?=
+ =?utf-8?B?U1NkSFlyOGdveTJXSDhhNnpFbXlJYTNLRHJ0UStYb1dWQ2x1Z2xwVjZIR3Yw?=
+ =?utf-8?B?dlVHazU2cW4vc3R2SFpMUWZDR2FVR05ycjJIdDhPdHJNbDM5ZTdORGRFUUNt?=
+ =?utf-8?B?UDB3Wmt1Mnl3cHBQb25tUUV3UVc0bEJUcGY2WDUxZU51ZVR3bUIzUGpiU3Vk?=
+ =?utf-8?B?ME1QMHBtVlladDhHalBCTjZDQ0FsR2V2WlRJcUJ3NHN2ODIvT3p1VkZUa0FX?=
+ =?utf-8?B?WlhsVFZCQXN0U1NPekNKTzFodG1pZmJYUkZFNVRlVVFMc1BzUXhvbVBpRThz?=
+ =?utf-8?B?aUl3b0RQQzgzZWVwRkxiM1J6ZjE3VTRsd2NvbjBySGU0ZGdoR1d5dGh3anli?=
+ =?utf-8?B?NXlUY3pvUzY5UGdXWlBsd3JOYVpGN0JGOCtUdVg3VGJyUklUbHBNK2MvcVNu?=
+ =?utf-8?B?L0pxTGd3OXdlclV2ZHJFeE1Xc093akZNVXE2SWJYOEl0T2xqekNHdFJ1blRj?=
+ =?utf-8?B?cmNlRG5zMEFLNW4rODVrczU4M0piL2dUU29XQ1dMckZsMXpqSVc4OVZoNWpF?=
+ =?utf-8?B?WWFvUTR4WnNjaFg1QjJtQkdrYTBtZE5adklkMnZLN2c2K3ZTandKamZKVmxD?=
+ =?utf-8?B?SjRIZm1xWGdHL1FydVdGM0xGU0NyM3JnUlg5dzJQL0p3WGt3NEQyRDMySDBX?=
+ =?utf-8?B?MjNSSkxkZVNCRm9udXZXZXZYZVVud0k4MWdBVktvUXgrTUovcTFVV3E0Tk9J?=
+ =?utf-8?B?SVR0dXJid2M5QUJMemx0aTNBTFhLM296UkdFc0RQdGpoNEFYb0pYSHplSHdX?=
+ =?utf-8?B?a2p1bEJLazQwaVpSN0FNVndLUmh6MUxNbGY3c1VrQkJuZm1sT0sxcHVuRTE5?=
+ =?utf-8?B?VVFZenIrSGd5VGdodDloTUNpbi9HUDlpNi9PMDc0Z1JJczJxcmN6OTYvWE5k?=
+ =?utf-8?B?U1lNWnRsaHF3Zk5qVkNubWdGUFpnekIvYlFTcTUzd0JUTDYvamhXTjFoc3pq?=
+ =?utf-8?B?TXNzRmNFUnNXd1hMUjVRSWhYMmJoc1Z4QzZaQkJXUjlqMzlDeDdlOGVmYkRs?=
+ =?utf-8?B?b0U5UTdKREJ6N0I5QXV3bjJxTnROSS8yMXBxNGVtTE9LU1pGS2VxaWJGM1l2?=
+ =?utf-8?B?T0E5WCtXYmprNGJRZ1h6a1pmTGVrMXFkMTQxY2FGRkRLTWdPVkJIbU10UVhy?=
+ =?utf-8?B?ME9icmdBektTMUEwcmNPeVVFQUhVN2VjRGpGdjJsWGJwM1U1K3J2NnJCKzY3?=
+ =?utf-8?B?TktVbEU5bUYrN1RFSUh4VFRLNmpvTHpTdlBibkZWdGM5Mm8wTk9TbitPeXRk?=
+ =?utf-8?B?TFl0eUJIanh1akpWU283Z25pWVZKTE4raW00UFVoVEdYeEZMSSs0cnFmOUpE?=
+ =?utf-8?B?TXJObG1FV2pQaVhnVW4xcTFlMVgzbGh0bXFSQmUzYXNZUyt2SWorNHRIaXJ4?=
+ =?utf-8?B?NmZTZ21VQlcrK0FWYnBQSXNNam9YQTVmdmRYRi9VTkxUWVRVRUQ2dU1jWXV5?=
+ =?utf-8?B?NjVHK2FUNlBoU1Bkd0Q2VzdacG9iOGZnQTREMFE2a25NM3IxZzAvK3o2WXFM?=
+ =?utf-8?B?cjExZUlJT1h1ZzIxbE9jWVNlejRjb3M2akNQcWtVVGpkUGY4SURUMCtPYTkw?=
+ =?utf-8?B?anF3Vk9nUVNGZHJMdmJMU2NsN0tIcGxYTU5Tckd0enJlM2w5T3FuUWpJMHd3?=
+ =?utf-8?B?aC9GZjhyQ2lKM0huOEc0L1dmVVBobHp2Y2N5Si9leWlmU2IrYkdGck1HSm01?=
+ =?utf-8?B?ejRXZnQ1TWVmakRwQUEzWVF5ZWR1c2JWUjNZdWhVcmpobzVpeng1VUxxa1Yv?=
+ =?utf-8?B?SmZBelBEb1Bra3JJM2YrUlBPalk2M2o5RXNqU1pncmZnKzB1MUJ3SVErMnlk?=
+ =?utf-8?B?REQxMlp5RUJzeXVFTW5MVW1MbUFYdm1PWlQ5QUZDTjFNODdiRkRQSEd1dDNM?=
+ =?utf-8?B?SWVCVlJELysyVlBYZE5Rc0ZzWVdoNWwrTWFlWCt5cDJuUDJyTUQvMnBKVXM2?=
+ =?utf-8?B?YkNyWkxFRWw5UHhiMW42OVVtaWQwb21VYWpxVXBZVzNiaGIyRVNwVGJTVlVk?=
+ =?utf-8?B?TFNjMHphOERVU2pTcjlpdEhSOGhOTk9PT3RsaVlweXZCeFNQNjd1alNVSk50?=
+ =?utf-8?B?T0hXek9wU3JJQm1JK3g2d0hIdXMyOTNhaU85MGtTWi9KcEhlWlU3Zz09?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: de8ddfb5-f6df-4cee-67dd-08df2b86222b
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR08MB10708.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 13:05:21.0554
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G8JBA2rEgGR4ilCt7G5NvslYlUpsRfoTgGFalXVK+SnVMW55QEGNQIVAbXmQg32yPLkr1E3plBmRhbJwjL/w5w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR08MB644083
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1792155300-8566
-X-HE-Meta: U2FsdGVkX18Za357z4ltm1lXvjOxw9tx2gC8kvOWDJ4bJLH+gQe/IMBKlePDp3XNxX5bqiz0kw7EdN5KSL747GJRI7NiacSzz9Av+ySEHbVkDHmZnbgqqq6EBEZbYOS8r16Wb3Se/GaHEb8fPdIszPadskHMOkyaAWU1DhTB/yCyHWOOfkAo8fljpYqPJ0DljML8aKsRayzEBAMxeujRcUiw/0BQ0fAa4+Y63ibo3u5M5oS0+Dbz2TG1v86JhhD7GSgAj52oTJ/OAuKLgvbWCadggkMCXTSl6+QJx6yUSTNBZQhXw5/yKNVqj+mvkRXGxtdZxIpnUBciAzjO4rIMQ5Fbyh3NjtKnvTZEbwVwDhjCXPKj21XAE8UltjRWJ4i6do/X+Bg+TACCVu4GHQjNf84sR5kXFyBEzzMy2Zo+ypfqdV8PP1Ij8tws9q8dYjwwfCSAR6sHeya48XOINgqgXkPd86HwD8W3tkakNNMyxtDBrPTandSf8CsY58c+oX2jx4q5OwZOhOnZwpXg1VGwbJReZmRqtge6FfNqiw+ZFuE+s+gjAxeFEx2u46jdcCvaF2L3nVaaf7ukE12DTWfZhmqBqIOJYKuds9VQtAoouYY8w/OkGVGKfDumP6uVUW8F/LZ6/3uElgtsIyyJ4ONgsBhgxH/VYtclOi3ZUnKq+jOyq9E039RahVB5EhNfv5xa1V4baMUljxw28e/F7SlKjc/J2KIRZnkjq5/9cEB2wIuHp1cN6yzrz6UKvXhP2CINCes3XrcDxs81SQqGNw8EwxxcooDnu4Isy6u24RWzNWh3SaMQ44xS61CDUC7TzEd6poqNqPG93tyEXfUE2nboB5R4D0Q5zde+Z8/+8FyansWw3T8mc/AJQfz/JmqqwSnhFwwN0q26ETWNg9377yj4DrgPIInz2dWckEBxibbFQZLrVBFnfbcJfw3Mk2Gszt/6MrD0S9mhtBaNEVJpw8J
- a8bTrWPK
- SOiGbDoi78LPJHDL2Yd9NazUuXtD4gYbaXdJ/ftGVDrKzmS9Vd8wIxefnzw54EoguGjGtb2wWo+x2JS6gRt687anc8E7G8FT/HJpYbzSsI1DFHCu8dnVBSJVByEV4LTZ8W2alPtK3MeqW9sh0PMDkFqM26C2ERFh50VKrY6rBOJS5SLC/ucnIijh6f/3ZtbX/979E8G7M5L4afF1VprVnHVaISW0Yl8mf1vFj4Ua1oPZkJOtPEuuchZ3WQ1Q34zybtne8BVOMHJbQATnhEScPDE2QLp3zd7t6DlN9GQwAt9Xo8Li7Jaq5NZloogUF5f4uOJuQ3CaQ6Ohw+Kl7QBJN6x/N8KNlKUhFzr0QhPu8npZ9yALvKoRsMfwSgjhMRJZZFEMDV9wZQeKWWTgCAqo5wZFkd+awlSYsDiuykc36Q1RYlzIG12+qswu71HBSov/I2ohqkdflE8pn8RPp0WCLR4pMsKmY4RnP3V1qSdQE/N4uXLmKrl2TZBMoTQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2BB481C0007
+X-Stat-Signature: 7pxmjwx3ofbc37jaqmuymwx4ieq7558p
+X-HE-Tag: 1792155925-307969
+X-HE-Meta: U2FsdGVkX1/bqrdcs2Ifbo8W1IgyxBJELX8Hd0HO2mNoTEJmuJY7i+omi8tmIjPGSUId/+pbojN/eta8cOS2Q//oCvus5se4DSbkJBfA7qIsSqxRbKjwl3WKZMRAfywt6lzd0Mlutq2/8uG4pup7ivVMsNt3RP33ybjdkvglncsB6lvkblc95RSsn4dHVh8ZXPl97F6WyEuX8K8gXFaNBV1GhwYJ38nbfWpt3iaJxjCenOyHNDvCOhpY3XWIko1X8K8wFoo40GJzPDfQw9chFPtRfWTCBB56PE8ZnXXkSBFnIRjPq9gti42UyiBDbgtnKIssgI5zEB3FgZGLiDABtxgM6epXBjGE9HYSf0Fguu5Tn+iA+uRGcKbzqo7excfSWzczxIcw2WJbM34wv2/cr7PgSlAsFV0WuuosDD2zwfJcVLqosxRAsZk7i93zR3TVzNv0bZMzWfI+PoutTg81PJpVYpuSDzSedZ1VBgaFurU+iV02MBVu5+7MP6Khckh2wpj+yBCInvaaLd1LJKrpItUxaadirdbbawQQpnz+3MPGjnNsPH9aION8zbvVg+5Tz8XsGVAp6cR35iO7p+s1GrmXESoBK5kXlAnkMwtvEECfJVjE/UipZjX8hiytoUr7Ee4kLZhWeSQXXYJWmWrbSd8txEB/ixzfSSbcAaO9H8xVjAS9z+7c6zRoeeFI0aCaG9QPi8kkN6zvpVpdbP3tBVjC/yRwOfFLSjnWF58oUQO/RLll26YCvK4SWcOdwAjE2EWOAtbQNRn8aemZBZO+1pYWYGZYm14Da8DiV212wQ7zBqmcHT+oBC7Rp8BvQB7KqjZ8jNha3kw9zxIkO/3MNurRzLU/nNkodJAE1wAXgZ7Z9jwX10HV9/UVtCbYhN1Hz4gt5UGe9hF/fh0OUOtRLD0ZtyolhNk0NJddhn0IC6InGoQmbLFSLqg679gB6O6bl9Waa4Bi5fZL2SjU0aS
+ fLt+782r
+ afd80suACOlwUeH55NdULCexK3DI5g57Z8RE0+jqtcmGMvUTaedumdv95zja7x/y71Ofzak/RzZltkpc+K9Q1cdXcafbxMIhKPneM6iN1sQm9BdoqSIM30TY4/KhI1NNycFtl8wrm96t8SevXrIThVzAerqMIcZjtM2QSxDXdCix/Xdqhxq10xtS41FZpf4lVixL/ummAPPGSSWqnvRfREOKD/tzWsHfWPNTp+PAzh5/I+A1lPNSZVO83BR7At91HaL1uszDzXw3uknDumgutKP2JtifxHiSXFnVlPzjSMcSl/XB3Su3Na076hjbpXMJN5tvVQZyM6lRuBAwQXN+B50AzAatRsEqxpsD5hUvlG4Uvf78NwCw79WPu7ffRPvPpQE7Ufh16iWaaNykhbxA7khiC1J3c4WArxpoQVU2kjOMADY9ORjgx28UCs0wGB7QYgOLz+m79voIvaMrZfTataZ6I7P8l0UKTOTPI0pg3A17NHOc+SnC3FY3I9/arT19FM+8uRNTBhZqmCu/JKed/cx7d1GlcK+/U/LT95469Y1pVgvef8lVizRO9iHW+RQ772+lUAl+W+dKm7Ps=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,81 +185,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With -cgroup-v2, charge_reserved_hugetlb.sh and
-hugetlb_reparenting_test.sh mount a cgroup2 hierarchy on a temporary
-directory when none is mounted and enable the hugetlb controller
-(hugetlb_reparenting_test.sh also enables memory) in its
-cgroup.subtree_control.
+On 10/15/26 16:14, David Hildenbrand (Arm) wrote:
+> I would have thought that unmap_mapping_pages() is only called in
+> corner cases when we would have concurrent fork().
+>
+> Like vfio_pci_zap_bars().
+>
+> But yeah, likely there is a theoretical race.
 
-On a system that still binds these controllers to cgroup v1, they are
-not available in the new hierarchy. Writing to cgroup.subtree_control
-fails with ENOENT, "set -e" aborts the script, the test is reported as
-failed, and the temporary cgroup2 mount is left behind.
+Agreed, it needs a zap such as vfio_pci_zap_bars() racing with fork()
+of the mapping owner. I only hit it with a delay injected into the
+window.
 
-Check cgroup.controllers first, and skip the test when a controller is
-missing, after unmounting the hierarchy and removing the directory the
-script created.
+> TBH, I think we can drop this comment entirely. That's just simply
+> the right thing to do?
 
-With hugetlb and memory bound to cgroup v1, per script:
+Will do. I kept the comment on the CoW warning below it, which is
+about something else.
 
-                                before      after
-  result                        fail        skip
-  cgroup2 mounts left behind       1           0
+> But why do we do this early copy dance *at all*? I think I
+> complained about this vma_is_anonymous handling in the past.
+> vma_needs_copy() is the one deciding whether something should get
+> copied or not.
+>
+> So, can't we just get rid of the vma_is_anonymous() handling and
+> perform the weird special-pte check (that I hate entirely) when
+> already holding the PTL?
 
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
----
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh  |  8 ++++++++
- tools/testing/selftests/mm/hugetlb_reparenting_test.sh | 10 ++++++++++
- 2 files changed, 18 insertions(+)
+I tried exactly that first, see "try 1" below. The early
+vma_is_anonymous() return is gone, the locks are taken for every huge
+PMD, and both the special check and the skip of non-anonymous VMAs
+run on the value read under the lock. The lockless read is gone, and
+the race with it. The skip itself has to stay, as the anonymous path
+cannot copy a file THP.
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index a1cfd3a349db6..65065b1377b24 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -39,6 +39,14 @@ if [[ $cgroup2 ]]; then
-     mount -t cgroup2 none $cgroup_path
-     do_umount=1
-   fi
-+  if ! grep -qw hugetlb $cgroup_path/cgroup.controllers; then
-+    echo "hugetlb controller not available in cgroup v2. Skipping..."
-+    if [[ $do_umount ]]; then
-+      umount $cgroup_path
-+      rmdir $cgroup_path
-+    fi
-+    exit $ksft_skip
-+  fi
-   echo "+hugetlb" >$cgroup_path/cgroup.subtree_control
- else
-   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-diff --git a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-index 95f517c3bd167..811912ae7d975 100755
---- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-@@ -29,6 +29,16 @@ if [[ $cgroup2 ]]; then
-     mount -t cgroup2 none $CGROUP_ROOT
-     do_umount=1
-   fi
-+  for ctrl in hugetlb memory; do
-+    if ! grep -qw $ctrl $CGROUP_ROOT/cgroup.controllers; then
-+      echo "$ctrl controller not available in cgroup v2. Skipping..."
-+      if [[ $do_umount ]]; then
-+        umount $CGROUP_ROOT
-+        rmdir $CGROUP_ROOT
-+      fi
-+      exit $ksft_skip
-+    fi
-+  done
-   echo "+hugetlb +memory" >$CGROUP_ROOT/cgroup.subtree_control
- else
-   CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+That makes fork slower when it walks a VMA full of huge PMDs that it
+then skips. vma_needs_copy() sends such VMAs here, for example a
+MAP_PRIVATE file mapping with an anon_vma. fork() of a process with
+4 GB of shmem THPs mapped MAP_PRIVATE and an anon_vma on the VMA
+(2047 PMD-mapped THPs), median of 2000 forks, 4-vCPU KVM guest:
 
----
-base-commit: 437a7e839def0f505277022622fc59a8b071d6cf
-change-id: 20261016-bug-selftests-mm-hugetlb-cgroup2-skip-7fc0316486f2
+  v7.3-rc7     86-87 us
+  try 1       131-148 us
 
-Best regards,
--- 
-Qiliang Yuan <odys.yuan@gmail.com>
+That is about 25 ns per huge PMD, spent taking and dropping the two
+PMD locks only to skip it.
 
+So "try 2" keeps the early return, but decides it from the VMA flags
+instead of a lockless read of the PMD: a non-anonymous VMA without
+VM_PFNMAP or VM_MIXEDMAP cannot hold a special PMD other than the huge
+zero one, as vmf_insert_pfn_pmd() requires one of the flags, and the
+flags cannot change under the mmap write lock fork holds. Everything
+else is decided under the PTL, as in try 1. fork() is back at
+86-87 us.
+
+I also tried vma_is_special_huge() for that check, but its
+vma_is_dax() test on every huge PMD made fork cost about 17% more
+kernel instructions than v7.3-rc7 here, against about 1% for the
+flags test.
+
+Both diffs are against v7.3-rc7 and leave out the deposit fix from
+patch 2, which goes on top as before. If try 2 looks right to you, v4
+will be try 2 plus the deposit patch.
+
+Try 1:
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1958,39 +1958,36 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+        pgtable_t pgtable = NULL;
+        int ret = -ENOMEM;
+
+-       pmd = pmdp_get_lockless(src_pmd);
++       if (vma_is_anonymous(dst_vma)) {
++               pgtable = pte_alloc_one(dst_mm);
++               if (unlikely(!pgtable))
++                       goto out;
++       }
++
++       dst_ptl = pmd_lock(dst_mm, dst_pmd);
++       src_ptl = pmd_lockptr(src_mm, src_pmd);
++       spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
++
++       ret = -EAGAIN;
++       pmd = *src_pmd;
++
+        if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
+                     !is_huge_zero_pmd(pmd))) {
+-               dst_ptl = pmd_lock(dst_mm, dst_pmd);
+-               src_ptl = pmd_lockptr(src_mm, src_pmd);
+-               spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+                /*
+-                * No need to recheck the pmd, it can't change with write
+-                * mmap lock held here.
+-                *
+-                * Meanwhile, making sure it's not a CoW VMA with writable
+-                * mapping, otherwise it means either the anon page wrongly
+-                * applied special bit, or we made the PRIVATE mapping be
+-                * able to wrongly write to the backend MMIO.
++                * Make sure it's not a CoW VMA with writable mapping,
++                * otherwise it means either the anon page wrongly applied
++                * special bit, or we made the PRIVATE mapping be able to
++                * wrongly write to the backend MMIO.
+                 */
+                VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
+                goto set_pmd;
+        }
+
+        /* Skip if can be re-fill on fault */
+-       if (!vma_is_anonymous(dst_vma))
+-               return 0;
+-
+-       pgtable = pte_alloc_one(dst_mm);
+-       if (unlikely(!pgtable))
+-               goto out;
+-
+-       dst_ptl = pmd_lock(dst_mm, dst_pmd);
+-       src_ptl = pmd_lockptr(src_mm, src_pmd);
+-       spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+-
+-       ret = -EAGAIN;
+-       pmd = *src_pmd;
++       if (!vma_is_anonymous(dst_vma)) {
++               ret = 0;
++               goto out_unlock;
++       }
+
+        if (unlikely(thp_migration_supported() &&
+                     pmd_is_valid_softleaf(pmd))) {
+
+Try 2:
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1958,32 +1958,16 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+        pgtable_t pgtable = NULL;
+        int ret = -ENOMEM;
+
+-       pmd = pmdp_get_lockless(src_pmd);
+-       if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
+-                    !is_huge_zero_pmd(pmd))) {
+-               dst_ptl = pmd_lock(dst_mm, dst_pmd);
+-               src_ptl = pmd_lockptr(src_mm, src_pmd);
+-               spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+-               /*
+-                * No need to recheck the pmd, it can't change with write
+-                * mmap lock held here.
+-                *
+-                * Meanwhile, making sure it's not a CoW VMA with writable
+-                * mapping, otherwise it means either the anon page wrongly
+-                * applied special bit, or we made the PRIVATE mapping be
+-                * able to wrongly write to the backend MMIO.
+-                */
+-               VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
+-               goto set_pmd;
+-       }
+-
+        /* Skip if can be re-fill on fault */
+-       if (!vma_is_anonymous(dst_vma))
++       if (!vma_is_anonymous(dst_vma) &&
++           !vma_test_any(dst_vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT))
+                return 0;
+
+-       pgtable = pte_alloc_one(dst_mm);
+-       if (unlikely(!pgtable))
+-               goto out;
++       if (vma_is_anonymous(dst_vma)) {
++               pgtable = pte_alloc_one(dst_mm);
++               if (unlikely(!pgtable))
++                       goto out;
++       }
+
+        dst_ptl = pmd_lock(dst_mm, dst_pmd);
+        src_ptl = pmd_lockptr(src_mm, src_pmd);
+@@ -1992,6 +1976,23 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+        ret = -EAGAIN;
+        pmd = *src_pmd;
+
++       if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
++                    !is_huge_zero_pmd(pmd))) {
++               /*
++                * Make sure it's not a CoW VMA with writable mapping,
++                * otherwise it means either the anon page wrongly applied
++                * special bit, or we made the PRIVATE mapping be able to
++                * wrongly write to the backend MMIO.
++                */
++               VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
++               goto set_pmd;
++       }
++
++       if (!vma_is_anonymous(dst_vma)) {
++               ret = 0;
++               goto out_unlock;
++       }
++
+        if (unlikely(thp_migration_supported() &&
+                     pmd_is_valid_softleaf(pmd))) {
+                copy_huge_non_present_pmd(dst_mm, src_mm, dst_pmd, src_pmd, addr,
+
+--
+Cheers,
+Konstantin
 
