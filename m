@@ -4,87 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 454DDCCA464
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 10:25:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA119CC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 10:35:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16BB66B0088; Fri, 16 Oct 2026 06:25:30 -0400 (EDT)
+	id D3D096B0088; Fri, 16 Oct 2026 06:34:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F5AE6B008A; Fri, 16 Oct 2026 06:25:30 -0400 (EDT)
+	id CEDAF6B008A; Fri, 16 Oct 2026 06:34:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFFF76B008C; Fri, 16 Oct 2026 06:25:29 -0400 (EDT)
+	id BDCA16B008C; Fri, 16 Oct 2026 06:34:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B4F5C6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:25:29 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86CCC1603DA
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:25:27 +0000 (UTC)
-X-FDA: 85328107494.09.AAA1429
-Received: from mail-43170.protonmail.ch (mail-43170.protonmail.ch [185.70.43.170])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6CF6540005
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:25:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=karaolidis.com header.s=protonmail3 header.b=T7r9Bx03;
-	spf=pass (imf01.hostedemail.com: domain of nick@karaolidis.com designates 185.70.43.170 as permitted sender) smtp.mailfrom=nick@karaolidis.com;
-	dmarc=pass (policy=quarantine) header.from=karaolidis.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F8966B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:34:59 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3239D1A0380
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:34:58 +0000 (UTC)
+X-FDA: 85328131476.06.5026AC9
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 703FF180007
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 10:34:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fbmIGd6W;
+	spf=pass (imf24.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792146326;
+	s=arc-20220608; t=1792146896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=b04DOe8vmbq+QEfUbmjT3IlS1rtxforJbJCVtR4UErk=;
-	b=krg9N+kGK4yF0PrOx5Anoa5R01dSuMgM56OlmZTxnGAdGZxmhVnxOgtc+VT6bPrStiXqYG
-	d4/3193pX6qwfu21r7R5sAYD6Tqk+ADYPgMqHida2EO/b5/m73ha8Gz7e2t/GfxTzRVOo9
-	yZrVWdZNfQuDnDZPVUC2eg6y6nuFHpk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1UJk2cXtDpU5Tf17byKlHtWDaHy883nGoAa8Twsmlx4=;
+	b=WTQJFNHX8ObsEofOMjRMs/0xGgZv04gDa4Hy8Yp/TKqVx1of9LluegPLIc7Upu3Xi6dscD
+	/C2HNlqlT4t0GRoHh28B0qnY2N4QLcdHQuTt2KzS2iUJHNfmHxIfK7pJsV7KmMy2tK/mlQ
+	PrDKt7oT8ifKNaKn78yP1sBSCt9F/Cg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=karaolidis.com header.s=protonmail3 header.b=T7r9Bx03;
-	spf=pass (imf01.hostedemail.com: domain of nick@karaolidis.com designates 185.70.43.170 as permitted sender) smtp.mailfrom=nick@karaolidis.com;
-	dmarc=pass (policy=quarantine) header.from=karaolidis.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fbmIGd6W;
+	spf=pass (imf24.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792146326;
-	b=whZ9q60k90q4VkoNlHeGgypYHwHx8rQ8r6O0F2UwwjEQucddaHw+vUBbFCdSdmIwGN2il2
-	YvFyArkSxTE3wtm2LzEPBvZPmtPDGL9j0AbG14vSZfF1v4deC0bdOOLESziDEOIx2AAEqq
-	fu2+KQ8BGTwsoz57b0QFWF2jNfa1zB4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=karaolidis.com;
-	s=protonmail3; t=1792146321; x=1792405521;
-	bh=b04DOe8vmbq+QEfUbmjT3IlS1rtxforJbJCVtR4UErk=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=T7r9Bx03kZ1obL008QSpYAKFDmkSk37XBbQHx4AvZCIaA9xbTeoEXhc/cB3SMlI57
-	 MezU9GsTh0X2puV8/EOcBKYReV9Q0Si//bRYSnPbL1TcjaRYoTjnNgeVCaWCY1cVuK
-	 i0NDQkC539QboKy9GsknWUco5yAc/uayQ+OUsRMiUt4AiZlP5C9ARhF+WYL/nmv81S
-	 ZxQB5w17SwmyKQ1rAO3+8EVTWuE8LSrLytrXUjkwV3tKsFbCUSs8BIla7JbG1YM4+R
-	 d4C2VMC8QarJWifr87HQrFiLP5Coy2SvrrGakMNysf0RdIurfMPUjvoU/kLVO04JQM
-	 6rwEEXp/bHUpQ==
-X-Pm-Submission-Id: 4j5h0F5p8Zz1DDKp
-From: Nikolaos Karaolidis <nick@karaolidis.com>
-To: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Jan Kara <jack@suse.cz>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nikolaos Karaolidis <nick@karaolidis.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] fs: rotate inodes whose page cache could not be dropped
-Date: Fri, 16 Oct 2026 10:25:15 +0000
-Message-ID: <20261016102515.111285-1-nick@karaolidis.com>
-X-Mailer: git-send-email 2.55.0
+	t=1792146896;
+	b=OTN845h0XHngDoAyb5txlbOe1FicmhWN16IGxvWBIlYPRqyINZraE1LIL0efLzVOaRDJXj
+	N21eKBoZVzqN4LQhzc++Dd+ufTxLad5GnS06TfLYh265AwbstmI4auvva7zbpxmSxA63qZ
+	yMOJrHnPAWMjAHqXyBdGp+1b+K3vbCY=
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2e934c6c20aso15620665ad.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 03:34:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792146895; x=1792751695; darn=kvack.org;
+        h=message-id:date:content-transfer-encoding:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1UJk2cXtDpU5Tf17byKlHtWDaHy883nGoAa8Twsmlx4=;
+        b=fbmIGd6WovXLHRdLglTZuvLug1Y3z9WYmxCuyp9MyEShbAqZZjsgnT8u815/wzNAk5
+         slBAQ2ugmmYvfJZu+cUEvG6zmyVgMg3+m0aQlJA2aCjnoVsdE3tWrZBI+hA1hB8h6gmx
+         C19mckP5xqd/7AkvHXOFQttcor3GtcchlZ7WrQ233zPR6kPNdXUvCpGva6AP/tM5w7Tg
+         WubXd0OFrSNWxGy/MGjbHtbWpTC5uC+2DIIdjefXR1NQJ7y6IqrCP6lxKhNQ4t4jL4lI
+         YfylmWumym8kvGr5pJlxK4Ekl0tfksvwKf9KF3wMh+Xb2GBSeKGYuyHJk0Oui81Obn4X
+         +I9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792146895; x=1792751695;
+        h=message-id:date:content-transfer-encoding:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1UJk2cXtDpU5Tf17byKlHtWDaHy883nGoAa8Twsmlx4=;
+        b=gjS+X1kiom3H61+HLY6U7RgN2+MVzviqBRWbNdD/K/uPcgMdZxpKNtm+0i/qE1VgQS
+         lo7AY+3YTYfiBejew5gU0YPu4fTIt0FkE9Qc9SkrSe81jHkit8YXJNkUL4O40Uq+Opoz
+         OhS2O2pH8CbyBrluhYIUs4+GiFrWS27CIhKFXRIC2Gc3ze1tAXjrjE7eamT5pqrQKqf+
+         KARTVh9nPJ0mGTfrwhjSlW7BQ+0kpdQLANvMphwDHI7p4BFulRFNrv83DmY8co/XWuoj
+         dqXY/uIG7/IYYlwu49H2wyz2O5o9C/C+tiNKyuRY132M1HdttbVQuoa0mnXGVjafUuXE
+         epQA==
+X-Forwarded-Encrypted: i=1; AKwUvByUFUILjCKuIkrFOa7Qv92s1rboW9NsErAIv8RgOL7EdLtje33b3lDt9UNhnSatatEi+lSoNxwCgA==@kvack.org
+X-Gm-Message-State: AFq9FYL9i135kc+I99r1h07oOjhnMk/4OP9bvYUOLbdBZUzwl8I8pw86
+	FUCweyea+cUtcVOubDTfG1lHOxHigmM6/Nume/89rFdV3erK8UYUzSp+GVE6s+lY+pfGEK0g
+X-Gm-Gg: AYBFou3p8FCoLV8i+cU3xHXWcJTpB1t47zHDHdAmL8b//eULaw84RY/DODjqDz/S+o9
+	ajUcTOo8gYOEvN6jYB7cwaA9KA2cU4OiXLcMB1MCEPkq5hKXvAwV9+UiSltz3Xb7OWujJRNCCRP
+	F9rjWOgUVx/MF8LCloInP4ZR1J/7NoDq2ynB9VhEIYTP0mfyxsL7ivc3VQaiHni6M/UXt/Q5Tf4
+	41H5336WSJzXsqTP4/OJbhPip+9Mk4g+0mY/3LZDADYrp03/oMpHUYiSU2EXqtdchsuj1DU+G00
+	2ME8D5QvKkyyKd3muauSZNJHkrAmHIvDpPateR3ypO3kFKx6cFUPwrE2mgdRbo/U73j5pbRvduK
+	N9xquKjozCNfmrNcD12UQC2GIAX9GtBSWn/G/YGGraf5ktHYgKgqCL9jUXem+pKDi42e8GLg/IY
+	5xY1V8MtDgiwyoANkQrDCYAYk1YJqTH1gVJIMOGc7X6uKoV8bgutPivM+Pc2sb1KLa72cHfAIO5
+	zGlUmo9aNPTEdHKMiEYO5cJ3EndJtNH
+X-Received: by 2002:a17:902:f601:b0:2e9:5772:9ab2 with SMTP id d9443c01a7336-2e95772a81fmr57548795ad.41.1792146895099;
+        Fri, 16 Oct 2026 03:34:55 -0700 (PDT)
+Received: from [172.20.10.4] ([183.137.20.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e87891bsm8239915ad.48.2026.10.16.03.34.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 03:34:54 -0700 (PDT)
+From: Aveline Noir <jm5905938@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/stat: avoid 32-bit overflow in idle percentiles
+In-Reply-To: <20261016002130.113813-1-sj@kernel.org>
+References: <179207592479.3.11595453180868898703@gmail.com>
+ <20261016002130.113813-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6CF6540005
+Date: Fri, 16 Oct 2026 17:22:58 +0800
+Message-ID: <179214257862.2.17756454862637555633@gmail.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 703FF180007
 X-Rspam-User: 
-X-Stat-Signature: y7dsst6dizeajwn5b47wecsw6tqdhood
-X-HE-Tag: 1792146325-444367
-X-HE-Meta: U2FsdGVkX1/9eLIIr4ovFdxmtpgi20QniyeYyOnpsweD0LCP1ARzIgK+hJalHhbwuLD4ZHkNU0snKZoGCHd1sJ5MQrmSGE/q+d2D/2kNypSF9qRk4H1+Wzh4ZdyKnbaJfh7dLv53rSxYPgi57D9n0C2jIElb1VVpQKTG56Rl7lsuLERBP3QkHBWKUqqsmSaDp0FNmT/rD/FKyt5ep0qpvDLZ6o3ktVTLRvXdOeU6YLy+n35+8wXusabixLxVVDh8fadlumRsDx2DDK0fAbD+77Q8ipFwPvrBFItVeF3LPo6vmkLa9JLJeR7By2BgKb+yarFeVHOBbUwoaKflziS0zMTW/E3OQCeIcTaQly7KGM9l3T0U4dFD3lqwKX9TN7EdndwuizIQdT1aEEFlVJNwH9LA+c6E2SCx8k6cpwdACBoTZbcNGuKwigoajwr6FFSZfqV/7iqft5S7nv/UwhuP7pDLlaUhhxlyY9z72/mx4zlW1DsfPoWeIvetmMx8e4gAjwWZ36PzQVKPgnCbwE1jSwM8N7MfnN+7PO2DnWkXu3ML84y59nZm3wOzCi1lkpJQlN7GRoo5ZnpYZ8tXKi6Jki9F0LFMeRf1pNZKHNvNTiLALoVrHxbRE6sgDseRgvY/KGg9UZwQzAnexlzfj40V66JKmiiipU0kQNuUfb0PZxW6R9dC4L/jaBXLXq8w8VSwe6LoSCn+vy6HJFTPp3s5uCzFchyD7uXd5tHNH+aua0bcONerDDwUIMBB766RZxsiZ+rZGt5Xq44IWG5Gj2wAEzAKfNu8OnxDeBbGoBYo2uSCeGOZmGrHKUI5rhOvMgAHkzdESyp36ELUlMRj3j00UNTG7z79V45OTvKuCoBS7+vDgHDuzH8wnVDrX5BgPWvTMpQ7TdGw5v/2ICIEiud/ZJXeepI7VeWhoAG6MaJEikHVXeqKQv7dulNgNo1N8k1++3b+Rz9UD+5f6Nv0iTn
- EnB8DXYv
- bu9h8fs+o3VVcIKLXu7ulGRskkB9R/8Emn+7+bE6J+FWs2G2zv6UyfUnY+mE+Ap22O/Zn8H9oUo8hrJLZAwuZsmDjfzJ1I7m27Yn111kTM3EL1ugzlZods+EvaCHBV8nvKo0dlywunZzuk2+ySEOj3nRY+TP0rxwwUDnjQv5hrDRkeoeKunl5cgmo0ICGr4kpSWEBlDf3CxspCgATJ/OAkFDs0g==
+X-Stat-Signature: cm7msyg5ff6mk1zyatmgr9mjo1bnfnra
+X-HE-Tag: 1792146896-440764
+X-HE-Meta: U2FsdGVkX1+42HWxt6S6R4HsHI6sGiYOMhtCjGoLmnFGuBARYaT5FS6OJahUFCx+Vd6V0TViKpNwMkg34khvooZ6lp/jlyxJbwORArkZJG+05RbFQIFFgWxlC5a7JM4X+Vq85xFYYPPbZS2Q4RIKifzG49Y4TDDybS+nkorujwK08uhYIUpWWId0ljQ69pyQ5p2Jv0sWyThx6l8wNm7eCvsti8p/SeKvN1G6HWGFjyOiCtxMAfktJZmnrgUViQ0HL0z1Flvv2XDRX/3yI/Blqbuh1KBSu+Cb3F7vZzX8mAQFjRHHAjZm6vZtxPucGoxueIydE6jT50ZgwCO7rB97YaunR49fZy9c0pNY0bWu+DFzyzUL6PFOr49qWQSyT7ESSZm50YFIBEpQGC0U0GMWXumMmt5BlAPWX8Kwv8sLjOedaFCw1BgNZFF0Iwo4Z2iI5y0yBRDUgmyRBjeDz+ZBTdFhFonW+GZSXd+sdndyyy8CuRmyr/8OfZGUFhN+23RAvXzGEmmKZ2J1QrPYHk8GNyGZIbTcRKBo0KLyypjLJr7Dza9UQt383UHqPpvsYSTSNsrK9kw9cEPV9Tnnwhh2xvF6kNY6rXgu7XGv/dGqo73dRfGAToLLSwvlXl94la9FMrKpn8YfEflyo0JgyrkkZGuBXmiYp1hUADNhqX448Amq4XwZnRBYJn5KCfxcOJjzTisCsKx/329qWA3vAaautXBOPgTVS+4nVf75vOOW4Li+Xz0TDECKTxQ1EhP8rtELAl2go5kyTDbX4clQvjhOGoji6LB26t1deuQ1VSV1DQ7BXQ0GjPMW9iYugCiCqh7z8v34RWisLJDaIqYetEvDF30IRwtznKYImZxehMS4ustmSZxH8yKiSBKTHIJcbpV+DfRgshIYmDs1HTlC4gC9uWq/BbGX25QwmYVLXDyfQqJbCWtrht18sbiP9zQHh8VBOEF+n4wLq3TXFcoR8qP
+ viumGIxc
+ jCavfj9rBQJ5wvCiO5FhgY+3B6e5zedglwBmL/pp5wyvKLN/JPN+YODK6XaMrdG6XMcqg9poW4zjFPrhHk3PH3Zlr59XzRwlCoHO54zVA9Hq4agEJK9wkNgeDOQrxVrvvF/EEE0Ey2NwCoP/kdTgJniiZENc913D9ZNSqp0sKxXxhmdcgEKQDA4onq03y1nn7RRBU9QeCi/LFbPvdDfbrCnvG49i+BnvfFtyXgNuKyhj9RQaIC0rM5DGVpIUzaMAahdSfqwVpGrNIg50o2cVeg5gSX+Y/QK2XqFqHIZz9ZaeuMyg6NXpsuQSy5z1mKV7bhfDCBVO7a8apJZ2/EX8z30EtXzEtTxkVXasVS3eJsovU7auOsnK0mLeSC9eb2h1M+UgmraP+XfrqvxVXGAJigJJxWEjTe6t0Df14qLOPxztqQKntwwry9iozfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,110 +121,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When inode_lru_isolate() drops the page cache of an unused inode, it
-has to unlock the list, so it returns LRU_RETRY and the walk restarts
-at the head of the list, where the inode still is. If
-invalidate_mapping_pages() could not empty the mapping, the restarted
-walk strips the same inode again, and so on until nr_to_walk runs out.
-Every walk of that list then ends on this inode, and nothing behind it
-is reclaimed for as long as its cache stays.
+Hi SJ,
 
-Before commit 2a0629834cd8 ("vfs: Don't evict inode under the inode lru
-traversing context") the walker pinned the inode with a reference, and
-dropping it in iput_final() set I_REFERENCED, so the restarted walk
-rotated the inode to the tail. Set I_REFERENCED again when the mapping
-is still populated after the invalidation, in the same i_lock section
-that clears I_LRU_ISOLATING. inode_unpin_lru_isolating() now expects
-i_lock to be held, like inode_pin_lru_isolating().
+On Thu, Oct 15, 2026 at 05:21:29PM -0700, SJ Park wrote:
+> This patch is sent as a followup of your previous bug report, right?
+> Unless it is very urgent, please make sure the previous discussion is
+> completed before making a followup action like sending this patch. As a
+> rule of thumb for DAMON, I'd suggest waiting for ~10 hours after the last
+> comment on the thread.
 
-On CONFIG_HIGHMEM kernels this can happen to any unused inode: a folio
-is left behind if it is locked, under writeback, spliced into a pipe,
-or still in another CPU's LRU-add batch after being read. Without
-HIGHMEM it happens to DAX inodes whose only entry is at index 0, which
-mapping_shrinkable() lets onto the LRU and invalidate_mapping_pages()
-never removes.
+The patch was already prepared and additional tests were underway when
+your reply to the bug report arrived, so I went ahead and sent it.
+I'll leave more time for discussion before sending follow-up patches.
 
-Fixes: 2a0629834cd8 ("vfs: Don't evict inode under the inode lru traversing context")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Nikolaos Karaolidis <nick@karaolidis.com>
----
+> What is 38?
 
-Found while working on reclaim of inodes pinned by page cache in
-ZONE_MOVABLE.
+38 individual VM runs, forming 19 before/after pairs. The 20 same-image
+runs formed 10 control pairs.
 
-Tested in QEMU/KVM on master af32da41b032 (v7.3-rc6-232), with lockdep
-and KASAN enabled. A small init program makes one unused inode whose
-page can't be invalidated, lets it reach the head of the inode LRU,
-opens 2000 other files, does one "echo 2 > /proc/sys/vm/drop_caches"
-and counts the inodes left via umount; kprobes count the
-invalidate_mapping_pages() calls:
+> Do you have a plan to run more tests to be able to tell that?
 
-                              without patch           with patch
-  i386 HIGHMEM, file read     2000 of 2000 left,      none left,
-  on another CPU              10300 strips, 1 inode   4 strips
-  i386 HIGHMEM, page          same                    same
-  spliced into a pipe
-  x86_64, ext4 -o dax,        same                    same
-  file mmap()ed
-  controls (no leftover,      none left               none left
-  shadow entry at index 0)
+I've run longer VM tests, but even same-kernel runs vary substantially,
+so the overall patch effect remains unclear. In a fixed-input 32-bit
+userspace test with 10 regions over 256 MiB, the median increase was
+227 ns/call (+42%). The old code updated 15 entries, versus 101 with the
+fix. I haven't separated the extra updates from arithmetic cost.
+Maybe we could record region counts and sizes alongside VM timings to
+check whether both versions are doing comparable work.
 
-2a0629834cd8^ behaves like the patched kernel, 2a0629834cd8 like
-master. On 5.15.y x86_64, where every unused inode with page cache is
-on the LRU, the read-on-another-CPU case blocks the walk as well.
+> Any reason to use div64_ul() instead of div_u64()?
 
-With "echo 64M > /sys/fs/cgroup/memory.reclaim" instead of
-drop_caches, the i386 pipe case does 262450 strips and frees nothing
-without the patch, 40 strips and frees everything with it. In the DAX
-case that write takes ~400ms with the patch instead of ~4ms:
-invalidate_mapping_pages() counts the DAX entry it leaves behind as
-reclaimed, so unpatched, the 64M are "reclaimed" by re-stripping one
-inode in a tight loop while nothing is freed.
+total_sz is unsigned long. div_u64() would truncate its divisor on 64-bit
+systems if it exceeds U32_MAX. div64_ul() preserves that width and maps
+to div_u64() on 32-bit.
 
-The reproducer is a single C file; I can post it.
-
-An LLM was used to check the analysis against the code, write the
-reproducer and draft the changelog; I have reviewed all of it.
-
- fs/inode.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/fs/inode.c b/fs/inode.c
-index a9d37be390a1..1614a97ce953 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -593,12 +593,11 @@ static void inode_pin_lru_isolating(struct inode *inode)
- 
- static void inode_unpin_lru_isolating(struct inode *inode)
- {
--	spin_lock(&inode->i_lock);
-+	lockdep_assert_held(&inode->i_lock);
- 	WARN_ON(!(inode_state_read(inode) & I_LRU_ISOLATING));
- 	inode_state_clear(inode, I_LRU_ISOLATING);
- 	/* Called with inode->i_lock which ensures memory ordering. */
- 	inode_wake_up_bit(inode, __I_LRU_ISOLATING);
--	spin_unlock(&inode->i_lock);
- }
- 
- static void inode_wait_for_lru_isolating(struct inode *inode)
-@@ -981,7 +980,13 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
- 		else
- 			__count_vm_events(PGINODESTEAL, reap);
- 		mm_account_reclaimed_pages(reap);
-+
-+		spin_lock(&inode->i_lock);
-+		/* The walk restarts here: don't retry leftovers right away */
-+		if (!mapping_empty(&inode->i_data))
-+			inode_state_set(inode, I_REFERENCED);
- 		inode_unpin_lru_isolating(inode);
-+		spin_unlock(&inode->i_lock);
- 		return LRU_RETRY;
- 	}
- 
-
-base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
--- 
-2.55.0
-
+Thanks,
+Aveline Noir
 
