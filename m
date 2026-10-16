@@ -4,121 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C25FCCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 13:13:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6144BCC6B38
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 13:17:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 320A66B0088; Fri, 16 Oct 2026 09:13:56 -0400 (EDT)
+	id 08E786B0092; Fri, 16 Oct 2026 09:17:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AB186B008A; Fri, 16 Oct 2026 09:13:56 -0400 (EDT)
+	id 040C56B0095; Fri, 16 Oct 2026 09:17:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 171D56B008C; Fri, 16 Oct 2026 09:13:56 -0400 (EDT)
+	id E71356B0096; Fri, 16 Oct 2026 09:17:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E6C486B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:13:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D75851403EC
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:13:53 +0000 (UTC)
-X-FDA: 85328531946.15.E239E99
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 65D71A0004
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:13:49 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Fyd9t7Z7;
-	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C26826B0092
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:17:48 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3ACC7C01D1
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:17:48 +0000 (UTC)
+X-FDA: 85328541816.25.2FE7B50
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 580991C0006
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 13:17:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=c9KALmch;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792156430;
+	s=arc-20220608; t=1792156666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=bq/LpBxXTW0ASsexzlAoQoBY+9bpCrcejtfW5Dqw6Do=;
-	b=BPkZO0mLrYTzJCYwoiu+JsKntEM+21MdQr7Xku0TNUi+wInfjAyw7XKjEx5i4sf1kIeghD
-	87fmJyEgTVG19ykxbQxithPCNJe7tYQcoI6NVGI/yvjsuo59IC5pwmrt/JBnwOq1gO0D+s
-	sJIsm+A2XzfdDZ89qe1NdkrCCosi0Ro=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eCoaTxM/vxVZVMtWCyBRil1iHn0bt6ZcqZozloqgfQ0=;
+	b=Nj5aJ5U6hv7hRuy4hmJohZKpMcXogevqEcAquf3AoOeagtqTyWQQviyFXfsCNpuxdWZaJ8
+	vA+yw7Zdlz5Z1vrny8YGVZmalIqea9NtujOXhtmah8DX36O+iDsBUcbvX1w4s5rj8zNIaq
+	EeGR5eDu5IVcIw99YLj+0DnxfTEZhwE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792156430;
-	b=WrcZaZAmdfehC2OHbdNqgJEH/sjPcuZb+hsxWJFvCcFw4N8dkJc1MHQK69U1ZhjjoKXdfa
-	tureD/22q5MBnhQ+/hempVsHfQQXjJM8D4ai0ECJ8CmG6Wrn9COl5jAFmhI7Hfz0cc/XLv
-	Bv94Iz1nsbfnKQKPlDhqGZFA/ke2JLc=
+	t=1792156666;
+	b=ureIwRPdH6domU9ThakOsoACrdlXztdSjWCx2xGdCi8SHxkEbitMc0lL/gaMdCViNkvfFA
+	NZUH+FIYTx5ke59svddXAdJeH29OTzu/lmhyPQMUVSmE5WmDMLSEh6xoZaT54qvTlh+8V+
+	lMM+LGG0MtgntvHyAYuIU8aF5pFgM18=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Fyd9t7Z7;
-	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cd5c9e52398so2905685a12.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:13:49 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=c9KALmch;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91ba702cceaso28327186d6.0
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 06:17:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1792156428; x=1792761228; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bq/LpBxXTW0ASsexzlAoQoBY+9bpCrcejtfW5Dqw6Do=;
-        b=Fyd9t7Z7Ec4+CcALAaygindEK4g4ZRY2JcvBdNUI87EGg+mziDOgS6OHmPGziVT+c9
-         5NdV+L44ktqJZ+Xqlg2dadYSbR60grtgSBRfHjm1dd+kviI7Uae/D8fKIRDXyPhODo/A
-         DORpQtYH8ek9MeOADmWBZMm/eyTiqL4A4++s9QC3NHWt+hSJHDunM3V6Iobd5q3DUB09
-         zl27kUG7PbpxHIP/oeKfVCiwoURWt1+i+H4G6KxBPBSMeifbp+0TIgZq2jPXYyFmueAW
-         3CgtMQPILqRx1Dy5wT0+cE+DNh2WKJiHEqb1go+houq/PusEBAz0kcA8g70XupyQjbK5
-         pjlg==
+        d=gourry.net; s=google; t=1792156665; x=1792761465; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eCoaTxM/vxVZVMtWCyBRil1iHn0bt6ZcqZozloqgfQ0=;
+        b=c9KALmchQ2s8sG4Rt2P5Q/oKo5F1HrT5KzKJIUgc1nFXEyR0QUBPu/wnDYWdvcSskt
+         LegosRt+veJe+GmikSB74EPYY+sYdCn2DL1kRELiUG19NKOelmHtz/KNM196HQkA4hE3
+         zKxangccNhewS2cbK7YiniqHYcJVfGO/9z+bFzFmJLdIwc9eOSb7BNd6ofzJyEwu2s3D
+         4FwKu93iVw2JRQS/FesD1UrwOkHvL0Apj0xFOMwEM0HdAO5TzZ0OdzWbuX1b2MqYbOay
+         UIP3iaayR+JyLwVw0TjB2fnc4UVeKI53QSqqwtnMnYGu5Bh/19qec7ovblM+joP0W41O
+         X9OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792156428; x=1792761228;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bq/LpBxXTW0ASsexzlAoQoBY+9bpCrcejtfW5Dqw6Do=;
-        b=kQc4R4Mdb2bjqBjkkud41SYuOdCC1/rc9lYjBQ88URVhRUQ4GgSpaMooFQ5RCto2SN
-         t0dAiTolocKi+n9HxTfZ/RnOMiDabwacUc18+xA4ZnfO5nA/847g4B6hLZrghmR/8SDA
-         s8F0h/PFIa4ys8vkKBrnGWamBFp30ok9bYxauI0c83adYgp7ZvdlCoDmc1lhjsctlrxs
-         SKcqQBgPjZVY5J6+dWvsSyGkGTQgNXvrIkpZO2faLLLgTAiDafD1fgWNxAp/7XdLOlX8
-         ZvZepwzijQG6juu8l3JnwezykoehIOhB0Q5+jlRXGlrFlhA6Ni7HBpV/dEjqidNZWx+T
-         r2gQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxdxQVn7vx6s9X5rpV8D9JLg3f6eGxRNUAgeZIp+2GFTSQWXj2v2X3xIorkp5Vfp925bj/fxFULnw==@kvack.org
-X-Gm-Message-State: AFq9FYLiFrKfO+WqAbXpkbByHRhDdgLk+aW15qclBO5OVAnVUwJPjuHk
-	KzyQrQWZNrKhkC8SbSKb4h1oU9f6KWSukf8S7ISDzs57doomMYNiLHn8mVRyx78CjK0=
-X-Gm-Gg: AYBFou1clLPpyof/m9AFlu59qerqcWXuhuXcliHLSEKdcggN4jna8vDp/IFDSi2Q8As
-	fgDw4i8cPeiZXH8peKey0i+CJxd3sSEDXmzKGWmeKLqA+KvNWzwHGJGQ5irpSvCSIsk7qJODTHv
-	V+OmR5nbGYfSEfc9aqc3ZqPYdbK50wgEOfS0UJJJK5sCkd1+J6SJnvaetg295NZbFXrauVky3rF
-	gggL+46bfzvOW+CfyNBI8k+syaA2aAoIhYbLyfv7R9dmuJsVswDuTHakQDuSRb4xIrU9nL0dZtK
-	VGn7Gv7+fkFoT5OAFs38XrF1YIxA4+GKGmTzpVf5rQB/DyuaUGCE1narPNw6LZZN/JXdGucTQ29
-	cD4bzBrPd3lpHf9S65HC78LAYLV2PXFZ2LuR2U51BphaTWzLfcnxe63KzkVh8DdbzWGr6yilJaU
-	NBjkNio+a1COhFyx3NuLUqeEXuADcPjb7sDud2b1ZzA04YjZBcia2Bntmv0j6SHRChJrkWCnIV6
-	mAcoa9fhv/FEEcRVRc=
-X-Received: by 2002:a17:90b:134e:b0:3ac:9259:122c with SMTP id 98e67ed59e1d1-3ac9259151cmr5507879a91.40.1792156427018;
-        Fri, 16 Oct 2026 06:13:47 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.98])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc487cccdsm4240433a91.8.2026.10.16.06.13.41
+        d=1e100.net; s=20260707; t=1792156665; x=1792761465;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eCoaTxM/vxVZVMtWCyBRil1iHn0bt6ZcqZozloqgfQ0=;
+        b=0P4m8lc3mEPpg2Ja95YRXmqU8W8YRuMhRhl8ZtgBhtM1x6lQXqemCMfYHo8gQngDjn
+         HuiNO452FsEUxXCPF7ZdYNM6RHahpxrQ3IsnfSESmaI7b8hwLhLJFLgVo4SVAJRJZIsA
+         9rCds1io95WTLXgad96lSz0N7VVLZolOoDVtrNjkycP0C9BEC6dQIMCh78rCbpncvtJL
+         /R1NVd4Hz5rXCzbxdmXicRgHApiyYPPKxmtNIX/GmQCydFLzSL4UJtzt9aE7gnVjl1C8
+         aovaSDAyk8YuyANqn6KCQDJiGPNxznCIP9Ky/L88kqQXRInsEeOfbeiEIJbgQSRKIdoe
+         bsfQ==
+X-Gm-Message-State: AFq9FYIMsnUWFU4rkxy9iz+VOWUOPW/Vh68sLb849XbKFKC0jp9KN58Y
+	M7yr3OG0y9ufuS2wOMKequ6r885XBzYuEYeIsefpYWDICumo6U4kwYsyq5EfNNSkZQ8=
+X-Gm-Gg: AYBFou1/weViA/NOx0nzwrW8PzoZTfirifdd005XcxSyMN3+bivHYoNRZ/PRzLTgBCh
+	gdVejsdQnrhe0Wtj3juLsL6gBmWucTEGeRnLsld8tnLtOVsqmVzPuNxHyOioYFDwrMoVx5TwMbP
+	bjUm59/2Fh//cmRFUVkk6hmH9ThpRHaMWMRy8UFfoc7OBl9hcPTNTsCezaPZ100Sm37IIgn/1LT
+	OhSNxyZITMftsFsvjH2df0jooI8vABXZOcEkk4EGNVS5g4bWUmqytRMlm4RzrzwDtxx36JvVKVp
+	2LHw61FXiXFiR6HddfdNwVFA2jCho5ov55NyIqy5IDabj8dvN2eZ+Un8koXBNTPsUXc4PNp7zkz
+	DZA32QUOFp7bcO/Up+0JEJBiYQ6a2CJLi0huTi2yyRYcPXoF1rkyMktc+uQnpq7Ams/rwI3MBjV
+	eEBNDTSrz2kKjpajElTOeoZZ5rmhyZvEST5fnVNYA0XwdzY0sNRMk3h3tEz53p+XMhHM2G/Ca2Q
+	dHIsxxEnfnzKrc4yY8swwuZsnI2w6MZ4bT/RiAeH3BgOZlN15TGoiFyOH09Z8FyMQ==
+X-Received: by 2002:a05:6214:2b8b:b0:917:a253:4f8f with SMTP id 6a1803df08f44-91b55577090mr362058926d6.40.1792156665348;
+        Fri, 16 Oct 2026 06:17:45 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcbb0961csm22365796d6.30.2026.10.16.06.17.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 06:13:46 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org,
-	nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH] mm: warn on unaligned compound zone device ranges
-Date: Fri, 16 Oct 2026 21:13:34 +0800
-Message-ID: <20261016131334.3419393-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
+        Fri, 16 Oct 2026 06:17:44 -0700 (PDT)
+Date: Fri, 16 Oct 2026 09:17:42 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	ying.huang@linux.alibaba.com, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] mm/mempolicy: convert mempolicy refcnt to refcount_t
+Message-ID: <atIj60f_iMYCl7I6@gourry-fedora-PF4VCD3F>
+References: <20261015231322.3392551-1-gourry@gourry.net>
+ <b64e2b5d-d880-4ea9-ab2c-c04a0963427f@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b64e2b5d-d880-4ea9-ab2c-c04a0963427f@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 580991C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 65D71A0004
-X-Stat-Signature: yatmtbqhpctznbpuk5em3s75e4mq36y4
-X-HE-Tag: 1792156429-897219
-X-HE-Meta: U2FsdGVkX19VVgSoQDwpAYo/5OnCjPXiZKUqD0+vHIQfMPcar336LRsxgXKrbGm+WBinPGDjgKZ0c7uegF5YtIpd+qZXAGdM2a6cod00W/wbcNTCFofzgmNlOivbTr6k5w4meBG109AjC2jm873ZCQyKth/Id+Rrr4+HBv8I7dROjh2ANelZtpwDfgM6HOB47zOUdNXOZJBM04HcXXFtADmH+k2d25spxoMFnw1MnxrndO+nS2zYJiIs/3VM+0pVOl5AglcfE+O38MXWILuJcv97+gBf8KfV/tyyLsqmubU+hnAPrFyYx8f5Z94eq1LAo5lSd2Uw2wWcuCVQvXgE39zpBmetKIgMukxTI8abTr0EbraTHjolBBSOsmFV2qjjjl1QF9nPuW4To7aruwEcaV8GKfGtiDEiScTQOoHaJAd3e26NanNgZSL4jNCJG0+4c3syMtQRukX4WPJSvQ2kiC6NrgXQuUxXYYlHuHMFZX9xLC6/pfMpSPcCQZ5PepR3d/RnDzXyfPfnGEXBkDSWNaqvFyo5Fj3/qJzvQhQONSfIad/uRCIgg1qwm3MnVlKmOiTNspD9+layHvQqLaqEecHwEBsBuINvxzMpRBw88exXaFqUYkUgVoz0uIVUF08dFP4YzbdtD2/+YYCjfboMx0rrci1XeHV5uEIGBDnR9/wNj6mFmc/Jq4CKT3hh2imFqu4TNJCJAZ+eHZQquAvNayVdB/9ZGxIX6685eh3l23tITkDOM5uXWuU/t2Tt45mUUjsl9aElrGK061TPDoTa4WaERB505nB4hKpO5MXCSZBNRZclQyu+4PQ9BXrVnRaLkxG6QEYIusCULRbAhR8SVkES+3ky6g2l/UguZWYC/9yQpt3Qz/qBX3g01qLzRuRz9xsmPcCKOJXGffTXRI+6TvsXaz5lZfidGw2i8pWzb+aq/o48XIpC7DO8+70RDTW9vUuMra4jzu9lHDX95J1
- +rkTZFh0
- LNk/NYtpRZLQqxg1+C5W3JpJuuVjDA15bi5MV0vxQsPAJylXqLgV2kl+b+50wanoRHuJ4y3JX67YOPpaYqkqBpQ4tbmm747JZGoaFYSrvthiAEAlIPWtNwMPydsf+7BcgBYgU+Y1/uijD/u57l37qrzAoPo1Qmdn9dA7tSdTDGvW8r6mWFwTiv6vU34kbeij4MAjKWYUd+UbpETXhvuXiueORLUCwZyuzoMIApdwVeqY5ZGuu1Gtny7Cvg7BRjDzNq8OflSEgkCVMATeNdyGeHNNB7b2HDVKwMGYH1h8gEpY6d1CBzKY/5eEd0GooGceRBnnfQgi9J+sYvnZM7HzImGbbOGs8Isf6HBr0Xx5rGCk3K4h14X1rFldmHwz2OwN8llWkz5xZDRxCujkSfXLbqbI2fX9tmkk0Ssmb
+X-Stat-Signature: fgoq3gthth7young8jz4doq5zhpirrfs
+X-HE-Tag: 1792156666-940746
+X-HE-Meta: U2FsdGVkX18CvlPfy36mh+euyLLRA/b8e6sMxrVmojDMAmEMrAWKG90aI5X1/fAtCXu10HKtnw0s71AlkDAiKLx0U97cfoDK5QUDUsz+x7LqHUdgXqh6rm1odfgZog+TphAZLGLzJfRDdA57bHTL/73kr1yTpKzfPmj5e9hcAE9oIPBQffXld610hxfFFHE8g6iwURcOdpo4Q6Q2yblETPbYCSFQRSW6l2lcvkX88LW64R5/u8dgCBFVey7NoEgPfKvmS3iWLx8FCVfMtbebcXpfEpOzQBcvRbvIziqAsplsYJOLBFtHV7soSzPe/dRGF7o8IJuJol7evtz+jPMYc9rAucA36H5ZZUeWbKnEAq73/ojl3javiqihaujdOLa1hzASG8rt1+5Qoa38LV+uUxeeHcwUgSdY0ABHLCJX4NIsfve6nlRUuvcBxVmpltBI+UpbrMgd8PI6JuX+2QFbkq0ml6w/DdRRPdSPirvDV++EagGtFWxDRDNukH2yQ5SmOlnFx/TB6st4dAlBru5soH8ygDJ5t5rmug3ohige60Ot9OYqt350KXRorRhgQ8kfsfboJY1v+Us2gVscj9AiWwua3TS6CReIi/0Dn3J+R99X/esANN+kP7Iqxn68b+K67737VrPmB7cNJw36Z74rYwyX8jOAweHMlN/PR451uGLEnUIY83OztV6e/onpjSEsT/5t8coVKh6I4v0I+BVCck1hlW4GpZ8p+Lyza/BFPDfam5IkBNMI+50X16CKu/LXq0NfGm9mF8SHYMLR5Ighwt3BZnChqHlR6Iw456jVyau4XhQv7djH9Gv5cEtjjsARr5cLBUhq99HJiA/5Ic0fdU5rucjTeGNicNZHa1/Yhi1AOFGdjctN9kCyib1F+HN+TuzmJJNTbENgQ6wvsJFFlqANRvLClBHGI4ZixzqixpRKkTsvbcWwqxnDvPctl7dAsc2WmrbWpa4aAqH0nyv
+ mULYLJZZ
+ d2Z9CVgjQoM91qDq5Jxhe7gulGCoR94MSRkUGM4lKxjaoIv+nknoUnwf2gi3MMGBFR30K0ncxoqXP/2MTULIzc12p/4SES/0pmyk4ha3RjyT03+gGrmY0DMr2c2FbAPAb1J1SOswtCrBu7EiGcNXjluxgChuybjK0cbk2Fc0eDgmfT6zLiGiEaQbqibeRejhzViL31+kmBRgE6niSd7m3deG1CQ44GkjQ7fyIk+A8yrVqj+uxwLey5SDTEwqby4oGfxwIda8rfpox/jNsD24LaPId3aouufaGYXfe7qvTkqZa8a0D5ZLvyp7oVM0vRN3qhv5RqlrVD8UuKRY/Uo/E3T7GS3NP2GoyMvfytsT/hN1yjt9xb0mQX+mxJTX80yJ1gttsgPGNpaNabyTJsaIuqBrEX6Z9rVKb7J9rubV5TJz6I15vnr3UEQqsbagw7WhI+9eW0cLg/Ec9tNcPTVDAH05yoyQprha1we3vm+UEXR29rIRrByoto3t3cBTQ8JTMUXP+NeXrFfDJpJw2JqjR1jOPpu29bUgIrF2FeKGQ+RFlh4Pf4anrLM0m9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,40 +120,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A compound page of order N must start at a PFN aligned to 2^N pages.
-Therefore, a range used to initialize compound pages must start on a
-compound-page boundary and contain an integral number of compound pages.
+On Fri, Oct 16, 2026 at 09:54:33AM +0200, David Hildenbrand (Arm) wrote:
+> On 10/16/26 01:13, Gregory Price (Meta) wrote:
+> > struct mempolicy uses an atomic_t as a pure reference counter.
+> > 
+> > Convert it to refcount_t so that overflow and underflow are caught
+> > by the refcount saturation checks.
+> > 
+> > This silences the atomic_as_refcounter.cocci warning, which started
+> > matching __mpol_put() when it switched kmem_cache_free() to kfree_rcu().
+> > 
+> > No functional change for correct callers.
+> > 
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Closes: https://lore.kernel.org/oe-kbuild-all/202610061946.Bx22ZFrw-lkp@intel.com/
+> > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> > ---
+> 
+> Wondering if we want a Fixes? If this only fixes cocci warnings I guess not.
+>
 
-Two recent Device DAX bugs were caused by ranges that violated this
-invariant, but neither was detected by memmap_init_zone_device().
+That was my thought.
 
-Warn if the adjusted zone-device range violates this invariant so future
-violations are reported when the compound pages are initialized.
-
-Link: https://lore.kernel.org/r/20261016053944.2579541-1-songmuchun@bytedance.com
-Link: https://lore.kernel.org/r/20261016054914.2601510-1-songmuchun@bytedance.com
-Assisted-by: LLM
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- mm/mm_init.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 4c17a892924d..01ced0553ce9 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1142,6 +1142,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 	if (!nr_pages)
- 		return;
- 
-+	VM_WARN_ON(!IS_ALIGNED(start_pfn | nr_pages, pfns_per_compound));
-+
- 	/*
- 	 * Seed the reusable head-page template from the first real struct
- 	 * page. The normal page-init and refcount helpers must operate on
-
-base-commit: 63562804f25cb5b6f5e4f5e3a9f0d1c3c6868596
--- 
-2.54.0
-
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
