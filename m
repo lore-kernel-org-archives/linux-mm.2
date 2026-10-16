@@ -4,117 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BA04CC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 01:16:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 354C3CCA463
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 01:19:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21A436B0095; Thu, 15 Oct 2026 21:16:00 -0400 (EDT)
+	id 1F8BE6B0096; Thu, 15 Oct 2026 21:19:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A4A46B0096; Thu, 15 Oct 2026 21:16:00 -0400 (EDT)
+	id 1A9EA6B0098; Thu, 15 Oct 2026 21:19:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 093E66B0098; Thu, 15 Oct 2026 21:16:00 -0400 (EDT)
+	id 0BFF86B0099; Thu, 15 Oct 2026 21:19:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C16036B0095
-	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:15:59 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 31E061C282A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:15:59 +0000 (UTC)
-X-FDA: 85326722838.09.15167BC
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7598740006
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:15:57 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b=QfNwJ0lx;
-	spf=pass (imf12.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=kylebot@openai.com;
-	dmarc=pass (policy=reject) header.from=openai.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DA2336B0096
+	for <linux-mm@kvack.org>; Thu, 15 Oct 2026 21:19:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA02880265
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:18:59 +0000 (UTC)
+X-FDA: 85326730398.26.D119499
+Received: from mta0.migadu.com (out-209.mta0.migadu.com [91.218.175.209])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B53FFA0006
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 01:18:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vVA1DGE6;
+	spf=pass (imf25.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792113357;
+	s=arc-20220608; t=1792113538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6NehW30zqnjXf2BZQWCFKMsNatcoAA2i6XIIUsdpRco=;
-	b=Q5dBUQheB4PDqQjYcnNu4oTHPEhFEa0uDkz0Mq7n1FqMJs2kow+qogUu34koPCQQ1faIfW
-	vXtcEMnYxWmkXSD+NfWX3NdGZEo3RPp/fUZMdKnn5LZzdVFeo/maCBgOJsXbX7EPFbGBla
-	/ou8VeeNfo+7YIIP/BZ+ZX2FN5ZEXp0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792113357;
-	b=IgvubxKZRe5su/ggyMGK+XSfJiy2q/8lfp9dZLnnv/2j5rCixl/3m0yPRxk1X/0mDn3pYw
-	dmqh+VbDFrTNFr34w8bKZktx2NLsMjzfgMSRn8tULFh6dMIf0XoQ1eNyikgM4d6mieu2bL
-	J/yyTlQ06IhOwE7v8SqyGdKUu3e68zY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NxPk9aRtT/LaDfFpNvz28i/BOb4aylT5MfYUs/cLe/4=;
+	b=wGe7NnyCKE2sOSTPYLIDSXpEs1H943UXHIeog9yazrMcTCi8jHzPLo+FUVcxN9cQ1uJEUf
+	oEyVL8T+TI7B6YHH3hkeqdI7AhnY926MwkMYJ5nQiucDLAgbJJrD+TOJdWBmFqzD/qkfJa
+	AGfdWNFqOqQsHgOxuiGbLHn+NAXpNlk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=openai.com header.s=google header.b=QfNwJ0lx;
-	spf=pass (imf12.hostedemail.com: domain of kylebot@openai.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=kylebot@openai.com;
-	dmarc=pass (policy=reject) header.from=openai.com
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-8244537ab76so2698037a34.2
-        for <linux-mm@kvack.org>; Thu, 15 Oct 2026 18:15:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1792113356; x=1792718156; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6NehW30zqnjXf2BZQWCFKMsNatcoAA2i6XIIUsdpRco=;
-        b=QfNwJ0lxhlC4POXeBj+RjSZOvAWz0+yuC6palm54YqzEoW86ivwpWKvV2Kej+2giyl
-         uaSnuJFayrLV4vudqcZwLKjVKdxJztNlNJWy0lAeNwzO/Mm2UntdOonTXfEziS0APFvA
-         eDbdxL9oaNN1lrl/6gCaQW6MUdQqpilz/6fZY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792113356; x=1792718156;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6NehW30zqnjXf2BZQWCFKMsNatcoAA2i6XIIUsdpRco=;
-        b=uk1dqJZKc0QQM+2gsTy6QbQQOCAxqFx5UL++YDw5wYrdDbUXoGsOi2KNjVPFGD7HQG
-         p8YbBOq+/2sT53tvz4wDhkQIU3mTPOPpNNRMvfDPlCA7hztVPCDwGe1xcQoGTLZA0p2Z
-         gYAmmKmxxzD0feIJL14U334LUyDJvJvJZ44FD/mRSgqUK7zMIztzcpPERwtxhmwj91oM
-         PjLE/nJwXIghG+bmQXdFJYqRHmFTpuqmFAPAhCNgGzToXPdZDNnTb5Sdymzx46qV8T5I
-         dDbCHonc55zBGTRaoM3YN8axODTRj3rOJTV1MhqS2Dg69ohSqLZp3o2zkBJto4BPthxu
-         Q/Sw==
-X-Gm-Message-State: AFq9FYKYJKI1TSLNFtui0GDPHuppsMr+ZlwnQb4znK06ybdhb9PGx/++
-	Qc+viKNLP4EP8SFRmHVFeiqM/bQ4wH0+R4R8jq8hi2ChuvBZrUS51dawnarJy5yB3oro6VzGFP1
-	wC4q/rAo=
-X-Gm-Gg: AYBFou1nP0VT6JuGP13nUC87B75K1l53lcpnQ1tQ7b6OahM+QlTvBWw0XzO4p1q1hBm
-	8P2QY8A5V7xYab79g1mYwmsImRcILZtRdDRy5AMqpcStk+c+Q7NnVbjrOfiHKqDCbRj4qrnVRk0
-	SBA+tQ99KzXOvzwLuzwjdgp18t2kcuu6h0yTCV59hB1kVPXx3G8RS+VcCWDMxfWGzmiTcoISoBq
-	eiYQ6Jn46faVuice63t9luQUQb7zJ5Jz7llTnbc5rpScF1FNyqg3vIzNAPe1UD99tmAvxDmqGkF
-	nuF85tPnlJdM8Stg+aUTTgt2/psuDUHtGPSCONpTGwZGKVG7+Z+tkpW4o6pMrOh6pQgKVqHOIK7
-	upbdvDnYcOr4M8Xs+4B9YlDgRZzTQlXH1S7WbJ6/QhwafbbYZVjuqeRhRibd8OKH7pjj2dg7Gal
-	r4NNqOmGDwAh9QgZHBP9rDB+IGXzg85ElpKlHlz5TOw+u1BpwQS9h1fs64jYOxq00RzIEFE3SmY
-	VagPx6MoIkdJG5WFhmmRolRmkBgyvX49gAOjrikwcL0z0RN213tXMd4aa0Lie5jKvdy/P6B7qk=
-X-Received: by 2002:a05:6830:67d6:b0:829:9992:2106 with SMTP id 46e09a7af769-830984475fcmr20639981a34.22.1792113356354;
-        Thu, 15 Oct 2026 18:15:56 -0700 (PDT)
-Received: from com-75606.corp.openai.org ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-842a4a01f56sm547197a34.7.2026.10.15.18.15.55
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 15 Oct 2026 18:15:56 -0700 (PDT)
-From: Kyle Zeng <kylebot@openai.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/page_vma_mapped: continue past nonmatching huge PMDs
-Date: Thu, 15 Oct 2026 18:15:49 -0700
-Message-ID: <20261016011549.61146-1-kylebot@openai.com>
-X-Mailer: git-send-email 2.55.0
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vVA1DGE6;
+	spf=pass (imf25.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792113538;
+	b=r+ZzJOwQRAkXrUhlCj4g6Mr4xnsf3oKtxkarD6n5kwYZi/TZ3h6xqJ4kj3cj2w1feKUKXM
+	F6zbRyHjR0YjBYhphe2td+vYbelvjgk2V0aH59G+t5/j6PIP50LWnVNRTGEUQLvoNJhcs8
+	ekLc9tygA2kIbA3TMrxBfMxxh5+LLbI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=NxPk9aRtT/LaDfFpNvz28i/BOb4aylT5MfYUs/cLe/4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792113534; v=1; x=1792718334;
+ b=vVA1DGE6z7zJ5BhKa/mNtq9e6uO0u0T6FlUBS+zUIpt2/TTAmboKzma9dFfPdAamb7Mktjpr
+ YKmoVvC+aTzoCFFMmrpz+mc4m5FQjxXU1zGfnQWwQ/M84i5mDaY8k/jrzV3poPCDRlPSDwCg+sA
+ q0+k+8Di+ZDpoC64SOAoYd0Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 307f89d17423c902;
+	Fri, 16 Oct 2026 01:18:54 +0000
+X-Mizu-Trace-ID: 307f89d17423c902
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <d58ea78a-98b8-4d0c-946c-8632b64aa0a9@linux.dev>
+Date: Fri, 16 Oct 2026 09:18:48 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
+ up on
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
+References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
+ <CAKEwX=NE51ko2U0-TCd9+sAm8NKeGeT61HFXTnnU_q2Tn75rCQ@mail.gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CAKEwX=NE51ko2U0-TCd9+sAm8NKeGeT61HFXTnnU_q2Tn75rCQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7598740006
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B53FFA0006
 X-Rspam-User: 
-X-Stat-Signature: pf7tq5m6o3bmdif6rz4gyfb5iacymnru
-X-HE-Tag: 1792113357-644073
-X-HE-Meta: U2FsdGVkX1+etCxfc4+isKkmDOQJvArHGA2rmbXxXOa6OmSB+0e/eIgSiM8JWx+K16qSg3dgJ05l8vuX+/kfsv4XnPxmwDQJ0Vk2WZRMPp4fR/9/D65hLQtTir3XFeMbJDRV+BKKnByqIHE367rWSopMo90oKjiPzydq3Kf6QiWlpRKYNsrZai0hnepfZQm47tOQ+Vjrnangktdoq7VA4nfUbnXdvC/OrHrnsvN8/fTUPltPBFmFa2nq6PyYTtmdgzsf8JRfy6mp7CgzNygRMCstAOkuEwF3TADHhNGFny5cZVwHXixqIVZ2+6xTAzDYDcBoCGTm1Zz40ToRbXzObtS1qcu+cNKLcfKFwEGNc+2wjJGoJiHd2fE0LYZVyf5VL5QZtqSGBeMaXR/D+I+slxhmsUZXkI+b4wNSGaW3qeG51YB0IL/cZG+qEDsCdtHE+MgozxytORH6nQrs7wzouOtAeFedpdD94KnVYdByduOdpcaMuR5jlZ3SgLaiJxuXHDYhNyObsR16WhKzlUaZJLdQOC6GFzzaVnHfrwQHB690aU1L8RIv9NGp5iWpyEx5+aFwFL9TenD6/utO47CUjYMd5BLJH5byqueBpJjck4Sxn8reUvTG6rchervgdb/VgFaeDmIx9XxlkdX4msTY92Rl5p0wfozFzISFc9FfwPhBC2dI8v/FZhyOq3ii1+PZbbpt2At2qHSZxTwvFs6WX7XqQeJGX5URJN6yG3vvOzZq0zfOLTAfi9+N/VTUP0ttC9rymzJ1irNWz+ezmHX0S1/WbEQ8bQZBwFdPgNe3HgHTeHZeo31tppCOWNe89Zi+kYqlq6VpJLLePL5A8qxrqAiDrcybPdKbfo+ICCe+FMM50Zh8/E9QFyMxlJa+kMmAkv6neSMW3i9ZR8O1qagAtsbB6qIHceqLajsGYDNtQHdEvdKE/CZtp9L1pweK9FO+bAYEDDlXppnkfwjO2a+
- 0zW74vTM
- ns6h6eCGb9dN6/XIlhCBPIt1OuIZBG9ZEBHrzlPyq1K8YCXy85Op0jxu89S+yHedDRyzIzFkV0BNoOlQaovTiUW0oFDvvwn0m8MG/3P+GDiR3RWrAAuwYn2JN7R6tXrDjoivtZaXOXuOLXbcDrYryfOblrmJCt4T3Yq+DkLZUmFnTnxz0q7TQt6meXQqdg/9rkmiU3UyzjwyJ6JrFBtLQAr0jAmmQ+e6QcJxt4PpdU6v2iwONec79i9EuZIg93v+5LXmZ1umYfbr7oDf/TZNpKHz0NsOhkoR9UgzrilHsVsQx1z/9BAQk7YEEvtpltRwGiwpE/87qYGskI7H3FBcfVABBwlNyK3ReCcsz4XruSFe5sEY=
+X-Stat-Signature: 41wteahbgrdbrywdrhqngg9rqe6uodb6
+X-HE-Tag: 1792113537-334465
+X-HE-Meta: U2FsdGVkX1/96IITUP+qCBVwIM+uwxi07wLh1SWQfx/Q6qrHxKG9bVPWSSOb1hzGLJFV7DZQGEbgBFDrwc5j0goYPaKe7+zq4HJRKU6jc2St7F85WV0SHQbanJA9URFAv3SgNHLa5oD7H6J0XpRKzahUAKqPx/B4GXRRbk/x23DVmM+B7H4jB8kjJIVpy1OLPaaE5jllzEX7kgzqF2U8qTNCLCN2tnVnvjEf/vP4YpMJe/FzTRtDLNBg4Cbh6WEkVak/3KsqQvxZIpsg8zxhMtj+6KPDnIZy8NMtLN8Ko8P8XctzvoUlwxG4yM5cQOO8lNO41K6RGaHxzXdty1xSO5+V1ImsSCTjhrkdONwYKW7zApdM3pBlg6QF9fFwzJ78naDcKmXVg0SO8iUa/w7XV4lvtvAsEvI6okF9VrJtHq4n5ywN7zDY+IfAmQkOkCc73TF+6j2wFCgT5rWHElR9KemORIdbYtrlJSx8q5xBPKIkAMwVDB3oHjCH+bd6vWzkWGEUjeUFrs7UZdDSnft2EXG3/BqwFeVI4Yd+ldjA8tz9eUsK8duiwbHRDwGt6ef884ctaMz0daw/PmJcYBLkBUWm0ovbQ+CQd0MZ6Iv1Ej3PGsg1X6ETcH7QObBUiuqP9q1JEd7bVjUhAQxfTv4aoo3ssGIrAlhpu1H6br8TOVj/DpsaRKuiORndVphJo576Qz0QZCqi7qZGPSjQF4fHEyQw07hAEGL/XCeBHYF/ldMi1ImpN0Im1LNNXLqirX5Aj6kwFgkTGhUtjnlLUrl7Fuxu1RvaRvn00TsgioqJrz4J079zCN8pfg9VRhOzVpYNhLC/3VoLzxzQnPWWfouTDjF2NhIAg8aOg5g9IiddT1hZgaEhOauoLGkLymxqTwwo0xGH7Q8kMIN3Cm0Yomn3Is0/P/lNGUokCVrpAEEr0DfFnHNUiutZ2isiSNeCzM0gKhIElnnMTQVBLV1n8bq
+ VT6lPypf
+ 4Yi6K5IYLCdz9uq3qRdJYcj1cHVFZ9g9Rc17q/KOLh/3DfOtJME4v7zvpBIOSNOD6KujKXhEPUxVoj+YQNK/Tbhj1FLzqM8axi/51c2K1mL+32G95XsY99/nhlO7cY/TF3Bixi8H7/qP3y4sOsuxD4CKYC4NZR0sGopJiwZL1/fuOaJv+u5XgxopVZ8y40lvyiaI2s6QpXC+Hp6jlIJDoFz+VoGw7xd12UlQ+ljm0HkVxzfLXEZ/h5XjaxHm9xb0C+CFds7tbqnwIcJIaXBl5TASBphwWEq2z6xB5TB3JlmwojbyEs+CgG1ug6Fn7bPWjtx/QUJOxkt5IkW3T4Remym/Ff7NWwIVDgBWK69f/Bjyb62MS7c9EBeezuEwShFhCp4Hde0kEcC+IN4A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,100 +95,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A PTE-mapped large folio can straddle PMD boundaries after an unaligned
-mremap().  If the first part is discarded and replaced with an unrelated
-huge PMD, page_vma_mapped_walk() stops instead of looking for the rest
-of the folio in subsequent PMDs.
 
-This also affects migration entries.  A walk that stops at an unrelated
-huge PMD can leave migration PTEs behind when migration or an anonymous
-folio split restores the mappings.  Those entries do not hold mapping
-references and can outlive the source folio.
+Hi Nhat
 
-Skip the current PMD rather than ending the walk on a flag or PFN
-mismatch.  Do the same if the PMD became nonpresent before the locked
-recheck.  Release the PMD lock, clear the per-PMD state and advance with
-step_forward(), so the existing range limit controls termination.
-This covers present, migration and device-private huge PMDs while
-preserving the matching-PMD and split-to-PTE paths.
 
-Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
-Cc: <stable@vger.kernel.org>
-Assisted-by: LLM
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
----
- mm/page_vma_mapped.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+On 10/16/26 1:11 AM, Nhat Pham wrote:
+> On Wed, Oct 14, 2026 at 2:08 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+>> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+>>
+>> On our production hosts we saw swap cache only pages keep growing for days:
+>> on a box with a 500 GiB swap partition, 250 GiB of RAM and 250 GiB of
+>> swap slots were held by folios that no process mapped any more, charged
+> That's a really nasty situation.
+>
+>> to cgroups whose workloads had long exited. The only way to get them
+>> back was swapoff, and with other services actively swapping on the
+>> same host that is not an option.
+> Is it not similar to cold file caches?
 
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index 4e964545e5e8..67c8039e9d28 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -258,28 +258,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 				softleaf_t entry;
- 
- 				if (!(pvmw->flags & PVMW_MIGRATION))
--					return not_found(pvmw);
-+					goto next_pmd;
- 				entry = softleaf_from_pmd(pmde);
- 				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
--					return not_found(pvmw);
-+					goto next_pmd;
- 				return true;
- 			} else if (pmd_is_device_private_entry(pmde)) {
- 				softleaf_t entry;
- 
- 				if (pvmw->flags & PVMW_MIGRATION)
--					return not_found(pvmw);
-+					goto next_pmd;
- 				entry = softleaf_from_pmd(pmde);
- 				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
--					return not_found(pvmw);
-+					goto next_pmd;
- 				return true;
- 			} else if (!pmd_present(pmde)) {
--				return not_found(pvmw);
-+				goto next_pmd;
- 			}
- 			if (likely(pmd_trans_huge(pmde))) {
- 				if (pvmw->flags & PVMW_MIGRATION)
--					return not_found(pvmw);
-+					goto next_pmd;
- 				if (!check_pmd(pmd_pfn(pmde), pvmw))
--					return not_found(pvmw);
-+					goto next_pmd;
- 				return true;
- 			}
- 			/* THP/device-private pmd was split under us: handle on pte level */
-@@ -292,8 +292,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			    (pvmw->nr_pages >= HPAGE_PMD_NR))
- 				sync_with_folio_pmd_zap(mm, pvmw->pmd);
- 
--			step_forward(pvmw, PMD_SIZE);
--			continue;
-+			goto next_pmd;
- 		}
- 		if (!map_pte(pvmw, &pmde, &ptl)) {
- 			if (!pvmw->pte)
-@@ -336,6 +335,17 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			pvmw->ptl = ptl;
- 		}
- 		goto this_pte;
-+next_pmd:
-+		/*
-+		 * A large folio can be PTE-mapped across PMDs, so a
-+		 * nonmatching PMD does not end the walk.
-+		 */
-+		if (pvmw->ptl) {
-+			spin_unlock(pvmw->ptl);
-+			pvmw->ptl = NULL;
-+		}
-+		pvmw->pmd = NULL;
-+		step_forward(pvmw, PMD_SIZE);
- 	} while (pvmw->address < end);
- 
- 	return false;
--- 
-2.55.0.openai.911.g06873a30d2f3
+
+Not quite. A cold file cache can still be hit later. These folios
+can't: no page table holds the swap entry any more, so nothing will
+ever look them up again. They also hold swap slots, not just RAM, and
+the allocator skips those slots until swap is half full.
+
+
+> The recommendation for these kind of scenarios (for both file and
+> anon) is to adopt a proactive reclaimer (in the same vein as senpai).
+> That's what we do internally.
+
+
+Proactive reclaim does free them, but it works around the leak rather
+than fixing it. In our case they were charged to cgroups that had
+already been removed, so there was no cgroup left to reclaim from, and
+reclaiming from the parent pushed out live anon first
+
+
+
+>> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+>> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> Code looks solid to me otherwise. Maybe include some numbers from your
+> testing in the cover letter to verify that the swap cache usage drop.
+
+
+Thanks, will do in next version.
 
 
