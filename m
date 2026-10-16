@@ -4,105 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAED4CCA462
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 09:53:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70B59CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 09:58:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 881546B009B; Fri, 16 Oct 2026 05:53:45 -0400 (EDT)
+	id 41CF26B008A; Fri, 16 Oct 2026 05:57:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8328C6B009D; Fri, 16 Oct 2026 05:53:45 -0400 (EDT)
+	id 3F49C6B0092; Fri, 16 Oct 2026 05:57:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 749FC6B009E; Fri, 16 Oct 2026 05:53:45 -0400 (EDT)
+	id 30B126B0096; Fri, 16 Oct 2026 05:57:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 581CF6B009B
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:53:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA18C1A0343
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:53:43 +0000 (UTC)
-X-FDA: 85328027526.24.25C3D37
-Received: from mta0.migadu.com (out-230.mta0.migadu.com [91.218.175.230])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0188240008
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:53:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h9ug+C9q;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.230 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 05E016B008A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:57:58 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71C45C0342
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:57:57 +0000 (UTC)
+X-FDA: 85328038194.04.1BAF62D
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 685D5100002
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:57:54 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nhFnmMHD;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792144675;
+	b=cJJfcQPwT7A/KO3ak+TBzyLKCQuCBwMVBlFbEZOMPwfht4ndbEKdwzFmlgs79QzEIu89VP
+	ruZ45jGW2l5q7UMonIQjiV9JwBFxIY6kWAkC867C+z1IVk1xQvPsHD9/pdqoEEdXnvbO4K
+	Y6eKOiu8b8dQr3FpOJ2H7GQ5RLgwt8g=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nhFnmMHD;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792144421;
+	s=arc-20220608; t=1792144675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AdcwzOjotHxE19RLxZFm3OWWctumeLKS1NSG9llBa2k=;
-	b=cnByLTnFvG+QrHpknFl+yeCSbhqkZl8Q1Fi+ADTrjlrK/xe/tzieaxxpY5HDX55YbmDuFe
-	f4X37w3mAIg1PzLiz814sIj8JSDxFwQBUvyPlNntK49dQxuz7wZa1DPya/pN2u9TWeex3q
-	1bLAnyUXzIBCtDgSlANZEiod+jueNFo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792144421;
-	b=dlmM24fBJoUiDv76SMB3j0FfIuCnlIknbG1JhvVSICV3KBfCiy80Fo72quRrb8dfG5Vf7R
-	QWOq/8KLEHrNAOEWTgkGheqSW8n0RHneK1iUlgubF/+qPlrln31QIx77aZb/YHRaK7roTY
-	r5mt+nQ6Qd8cCDSSFQPRLfiZEg3XEBc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h9ug+C9q;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.230 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=AdcwzOjotHxE19RLxZFm3OWWctumeLKS1NSG9llBa2k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792144418; v=1; x=1792749218;
- b=h9ug+C9qaUfR5JSkmmWi910MYY9+pSkIEish8X2qfNLh6R2Wpgx182XL9Jp8qySJu7Dk48Ch
- 9CPHaTAhJGKYSz+2PW6exFcFghXyfp80Su2BrTbdLACymOvtbiqVoIgL53WiWJE29O5+hztCC8Y
- W45eoDfaDMlSpb8PJdC1hp4w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 2c46a001e07853f7;
-	Fri, 16 Oct 2026 09:53:38 +0000
-X-Mizu-Trace-ID: 2c46a001e07853f7
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 10/10] mm/mremap: fix calling fixup_hugetlb_reservations()
- on the wrong VMA
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261015-urgent_fixes-v1-10-42796911043b@kernel.org>
-Date: Fri, 16 Oct 2026 17:53:20 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- Oscar Salvador <osalvador@suse.de>,
- Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Adam Litke <agl@us.ibm.com>,
- Mel Gorman <mel@csn.ul.ie>,
- Rik van Riel <riel@surriel.com>,
- Peter Xu <peterx@redhat.com>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Josef Bacik <josef@toxicpanda.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <73BE5C1E-5F2E-4F1D-BC8A-24CC8E9F9D34@linux.dev>
-References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
- <20261015-urgent_fixes-v1-10-42796911043b@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Queue-Id: 0188240008
+	bh=hAt144Vk7k8qMXgrEGhDpPZonayJjWzttOQo4WX8s+E=;
+	b=VrGkK9FbyXcPSjtks1zqV1FyKQFEqHLauGg3oTbe4mJsmwF7Nzy3yW8+KlcFeAnn/GexEQ
+	xFF/nyzQPqyWV3mN26dnyo3hcW3IS9JEv2UbZld88McEp1XhTVNUZbNRW2QNKWjQDW3jC5
+	mQZsBKEeDL9I+RBbrOHexRg728ej2fU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792144671; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=hAt144Vk7k8qMXgrEGhDpPZonayJjWzttOQo4WX8s+E=;
+	b=nhFnmMHDHnjzq15dBktsdEUzJpEBg53m0WsPLhpDlfwb9mes4Ng/rWHE1BU8oLjj9emUb07NZGam9r1x3o5mQ4shq9z4yTVacziYB7VgbNR9g/U1hCTeK3yfSp4V7HObsQmzctSEWR0+Ry+ADdF0NyoodURLTsk7pYMWwpvPjvI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R481e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XCuU.YY_1792144668;
+Received: from 30.74.144.163(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCuU.YY_1792144668 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 16 Oct 2026 17:57:49 +0800
+Message-ID: <27e5aadc-2d68-428f-a958-308e4a75c058@linux.alibaba.com>
+Date: Fri, 16 Oct 2026 17:57:48 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in
+ collapse_file()
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: david@kernel.org, ziy@nvidia.com, liam@infradead.org,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, jack@suse.cz,
+ djwong@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ hch@lst.de, syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
+ ngocthang2710.1999@gmail.com, willy@infradead.org, rppt@kernel.org,
+ ljs@kernel.org
+References: <20261016065920.4153-1-lance.yang@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261016065920.4153-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ptzt3gjjhdimh1j6ozxnsai3yzxh7qdu
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 7asnyqo6hrsjkbht9acbd54asbun19tt
-X-HE-Tag: 1792144419-71901
-X-HE-Meta: U2FsdGVkX19LwQtVp1qaudrpHWFmBfj/6PRFvZqFRDe/k5/m3rNVJaH3IZkeOGlKqHdyOOnndQz7r/jhx+7lzfrTLufYVeYyxDLzVOqk0aU3ENd99eyucrS6/ZzbY1i+4HZDZgOAhtD3pCLriw9XjkgsK3CcQdFnapD0JKreeAcX55JEzg8Ly+5YfU1robWxJTUhY+1i8+ailtxgtThYEb8KyrFCEI7I69P50ErTuK7QCIYaDd4c4qBheGs8I8wDsaqtxIrykfbEu8PAGnux9HdSzD0yALNalotbH59yK83NlIY7ZI7xDZJxu3oTYhB7gblqExT1zl2MBUW8+8CXTeGqa792zlbcleWRt6tODXafwJ6RB70WGcLTWcUV8jJr5g/fvFvGHgjk1MNNgt2dzdsCPUYO9876J7R3Y6qqk34n9lVB3/hKFgUCCjDDytOixA1EHhmP+/OqmCrLE1IkM7PK38u99MuTBbHVFQfbD3L35sj/mGSEXyZZ6ckfJPZeGfeMyXdVl9WsCiiZU/lOozGVFGQcW8IW1E945vA6cWCBAgkHfBb9IaEepbiozQjZ+hlb52+2rkVuGmuMgmOuIRFSCjCUl0sTzHpaM0b+k+vnUL2oMSEjhUdwAwGsKcRgGTwG583VyX9QWS6HSpVuBuLwOSahOzwmes6DxPgm+TxYYy0FWmdhRwda+V9iPyqAtEiylL6fWz3S4uZ3Csa3vMs/R931r40RHLYbXdvI453NRPl9BkKdJWVQqFxmfI2JXBszc6S0NTAhzYmF2JAQVRzfYMgQk60saofAUZ/AHeGEmfQvJVwJAdRTLzzCvhdghxu5PNI8K76y6BuH+ayrE4Uex08zjPHu3zRDVXZlkLyGN3x7cBKGYxxfTqi/b3MeXW/LeFb6Cjt3sVNC222Ro3n/hiulkPTgSb6DwZL1TneFTninPXQe/r2fqAE6MNVRymfYBmORtGQXkrRBzIN
- msYIApuU
- H8bW/d9o9ihn3MwGhSp96MIAVb1PQvRaiVTDFU2VxU513zNUr/0Oo/Il28X3jZl91b51C4eMImRYIEhWfgqPnYtmhDFdPAIiWwlUJqumMAzYiXJ3e3Hv8nHFqsbsseZSBOrkpmJKXvp3YebDwZFp63IhoIG+z3xFEzb6Ly/d1eSmErlO5yozc8dWsMwde+i/1YqQuAzD+JWApBwMWKgDviFEkCMl6DQIBqXUqp1Tf7/1BTTpfa5erfPvUpDxTAVXU8pvSLfLjxYVeZCxZzZI+TtGLu0u6mfqb36bF8fgZY72JHD9yNt3/ROk4BAEvLrE9bHAypU+Hw5QQ7WZBCoIQAhSyg3zUsxpDRl1iZYCp8hFZkgIwhQ74SXauwN1bC29NKGhFJw7xPRmgidEFjzVb8Vp9DfPmn+o8SmSU71Uk6UNSuvWJW1B9tDFDStkxgQM+GcJ+
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 685D5100002
+X-HE-Tag: 1792144674-269946
+X-HE-Meta: U2FsdGVkX19fiKQp4CWiK0MfMOtyj5+ycsZm8KC0JYFVjJ5p2XPxYGkb5t3QyMN78oxcNxNdzLthuSb9pg5EzhXpN1E7w7hmOI/Bq3ImgAZ7Whl0Mm+0Rf7hUowkiLZ0/3Xf9hcd4FV2Li+kT3nLq9gslGWlTvqnWNptxXMjbpfDUYphLHXHg/MwnVLV5YpSZF9ppBHBSbghC1EptnY9Sf0uycOJNC5Jj9/oBkwypwyG463wDDsPVovG5nR9dv5ED4TY/XmHOmX0Ao0Pb0EcfKn+jjnKdduymEMZ+kPkdjcj4JIIZiso80PM+cMuu2ixPg70xB+NUq8amkw0/EFVtMBJxdrFLsv6udONCi4D4G2f4wcnbsQ7qNjsbYOLBBM582lCyFLVZJF25eG/ILl1UTvtFHKu8u27yzEcidkcD76L7wlAt/9PvCc5dnqD0MbPcEU5NBLGSwDANIL6gA1WdI++V5zfGpcA0CGi6zxriSm+gi0uhvIaXo73DzC6XTnLbaXo7v+oMvYMUFDXOsCwrY5agnd7cAyBHHc9ZZq2gkIfCDL/Tth0ENVO1kjvXmjmRJTjjzOeJZhbH+mvDnk3zQo+jVJpN7wtBNEp3Ut3uq+TYpmRWdW9x60a2w7qIw58C33p01dR+rshY19j09mnsdLvKbrKKKlpj2XVjLpyglvBRL/qexBXpvfJgkjk8NCsBPK4u4Q96DfisMkcbNzWvozZuB8yUivuwkYkK1xPSmB9eWeMNjqZNljDGBSiYvoqjZn9h2XEfkvrTtCwpq3ylbtYLvS7GFuYv1xT6ktTuvWnriMRdDh7szveFLP2G9hlkVN2Ri2lp776E77/t5vh2HrhAI/gxbvHqh0dN4H6sPQLorPQ/T7Bvet+eiw+I/P/VOzTo+OtIlakKkaVie6bA+5dbsQDD+W0hiD9HnWfk0cUXxU42oeztOeqVKLX45MUPpdi34Phz7ckIEJzXny
+ uMQh58Ub
+ bhbw0cLuELbPflVok2ezxQV5DufipMxTf0ziJLKDiW9wYwZxLh+f3o2QXx5OFL+jA9QwNNCvi9JnUPtMsrivOa288ZuFZCBlUGXY6sLpC2geYziArwF1LxE5vxyME5D8VqdyRu0t7/dgDPLR1t8BAcrApxGjOMANyqRPgtFdTWxIC4VZrxFAxNcQ1mhg06z6yPxctfgA+nch+uDjuxkIygAXl8xFtebsVlqMkf2LZG5zDDy+PVkBleD7hFGmDY0NO36KJn3sAsClZvettISEgOleI3uDUl72vICOdO14OWgGL8pbA4YTTir74PBeHBz6xKg39AOACsN88fCC/4ZLdh+QVDjLMJhtI6Esc174h/WAc/GR+m76vsE8BjcSU3NHV0AqI1bifnxw9055m1Qhl7J+5XQjHxm5u7QVp2T7RyHk2mnJp4j032epvKOKvbHSezacPIDF5JPbHqg6t4kvlv+c88+hpn+JPFSeBgiuPJLN/SiahxjUO+MszmDCRXZbTZyg6P9eRFH/Qi7iNZ6em0+aTh6aewcahgBpsoYyhkkIxnJDCoXqn32Q2nbHPC/i8YGgX/Kz0yCuu81Mz/f4A/VbpAM6Exh37rETbmWVjYzfOSZ5DO0VzhAZbRQluInWgHZB2xmM79+8W+KdGo4DNra3su2H5tck62lDRfLqXqa31qTYxtlRdcmf2VLKR4rqSag7XC/jVJPUGN2g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,29 +94,121 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Oct 16, 2026, at 00:07, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> In case we fail to move the page tables, for example, because we fail
-> to allocate a page table, we actually keep the old VMA.
->=20
-> Calling fixup_hugetlb_reservations() on the old VMA is wrong. Fix it
-> by just calling it on the VMA that will be removed.
->=20
-> The user-visible impact is that the VMA loses its reservations, =
-meaning
-> that the existing reservations get stranded (leaked) and new hugetlb =
-folios
-> that are getting allocated in the VMA cannot make use of the
-> reservations, failing these allocations.
->=20
-> Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On 10/16/26 2:59 PM, Lance Yang wrote:
+> collapse_file() can end up calling page_cache_sync_readahead() with
+> source folios from earlier in the range still locked. If truncate already
+> holds mapping->invalidate_lock exclusively and is waiting for one of
+> those folios, readahead blocks on the same invalidate_lock and neither
+> side can make progress.
+> 
+> Do readahead in a separate pass before we start holding source folios
+> locked for collapse. Keep page_cache_sync_readahead() and its existing
+> policy, and drop each folio's lock and reference after checking that it
+> is uptodate. If truncate or reclaim removes a folio between the two
+> passes, roll back instead of doing readahead again with source folios
+> locked.
+> 
+> Shmem handles swapin and fallocated folios through shmem_get_folio()
+> without taking mapping->invalidate_lock, so it isn't affected by this
+> lock inversion.
+> 
+> Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
+> Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+Thanks for the fix.
 
-Thanks.
+> Thanks to Nguyen Ngoc Thang for v2. David asked for volunteers, so I'm
+> happy to take this over.
+> 
+> Some older stable trees lack the folio infrastructure used here, and the
+> code will differ for each stable tree, so each backport will need quite a
+> bit of rework and its own review. I'm not sure whether to Cc stable here.
+> Once we agree on the fix, I'll send a separate backport for each maintained
+> stable tree except 5.10, which isn't affected.
+> 
+> v2 -> v3:
+>   - Replace the scan-wide invalidate_lock and page_cache_ra_unbounded() with
+>     a preparation pass using page_cache_sync_readahead().
+>   - Roll back on a new page cache miss during collapse.
+>   - https://lore.kernel.org/all/20260913163644.122133-1-ngocthang2710.1999@gmail.com/
+> 
+>   mm/khugepaged.c | 42 +++++++++++++++++++++++++++++++-----------
+>   1 file changed, 31 insertions(+), 11 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index ef5cd6fda34f..b3f67617caf0 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2262,6 +2262,34 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>   	new_folio->index = start;
+>   	new_folio->mapping = mapping;
+>   
+> +	if (!is_shmem) {
+> +		/*
+> +		 * Populate the range before accumulating locked source folios:
+> +		 * readahead may block on invalidate_lock.
+> +		 */
+> +		for (index = start; index < end;) {
+
+why drop xas_unlock_irq()?
+
+> +			folio = filemap_lock_folio(mapping, index);
+> +			if (IS_ERR(folio)) {
+> +				page_cache_sync_readahead(mapping, &file->f_ra,
+> +							  file, index, end - index);
+> +				folio = filemap_lock_folio(mapping, index);
+> +				if (IS_ERR(folio)) {
+> +					result = SCAN_FAIL;
+> +					goto rollback;
+> +				}
+> +			}
+> +			if (!folio_test_uptodate(folio))
+> +				result = SCAN_FAIL;
+
+Do we need to check PG_uptodate after locking the folio? If we 
+successfully lock the folio, doesn't that mean the read I/O has 
+completed? The following code also checks the writeback flag, so the 
+uptodate check seems unnecessary to me.
+
+> +			index = folio_next_index(folio);
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +			if (result != SCAN_SUCCEED)
+> +				goto rollback;
+> +		}
+> +		/* drain lru cache to help folio_isolate_lru() */
+> +		lru_add_drain();
+> +	}
+
+Could we factor this code out into a small helper?
+
+> +
+>   	/*
+>   	 * Ensure we have slots for all the pages in the range.  This is
+>   	 * almost certainly a no-op because most of the pages must be present
+> @@ -2320,17 +2348,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>   			}
+>   		} else {	/* !is_shmem */
+>   			if (!folio || xa_is_value(folio)) {
+> -				xas_unlock_irq(&xas);
+> -				page_cache_sync_readahead(mapping, &file->f_ra,
+> -							  file, index,
+> -							  end - index);
+> -				/* drain lru cache to help folio_isolate_lru() */
+> -				lru_add_drain();
+> -				folio = filemap_lock_folio(mapping, index);
+> -				if (IS_ERR(folio)) {
+> -					result = SCAN_FAIL;
+> -					goto xa_unlocked;
+> -				}
+> +				/* The range changed after the preparation pass. */
+> +				result = SCAN_PAGE_LOCK;
+> +				goto xa_locked;
+>   			} else if (folio_test_dirty(folio)) {
+>   				/*
+>   				 * This page is dirty because it hasn't
 
 
