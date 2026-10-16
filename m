@@ -4,160 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE12DCC6B38
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 09:46:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EBE9CCA462
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 09:50:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C10C6B0088; Fri, 16 Oct 2026 05:46:18 -0400 (EDT)
+	id 526376B008C; Fri, 16 Oct 2026 05:50:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 872D46B008A; Fri, 16 Oct 2026 05:46:18 -0400 (EDT)
+	id 4CF826B0092; Fri, 16 Oct 2026 05:50:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 739666B008C; Fri, 16 Oct 2026 05:46:18 -0400 (EDT)
+	id 397156B0095; Fri, 16 Oct 2026 05:50:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 493FE6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:46:18 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5393D1C3661
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:46:16 +0000 (UTC)
-X-FDA: 85328008752.04.BFF2B6C
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7C9AC140002
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:46:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sPG0U0rK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of griffoul@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=griffoul@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792143974;
-	b=VvfpyRMqdjs0Qw53hJSxIpLEuEs+52PKPmp/CVD7XFqRWEpx1CEquGSfkXXzO7EaZww4VN
-	ZAGlkxlPM82lgcJeIGQek5Fj605SKfTWVFa0JHuLunxvCJQQXARr4lgFNfI5hPy3ml3vd9
-	H8c8VD67/JkxfPl+/gm/VrwO8v0/AHI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sPG0U0rK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of griffoul@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=griffoul@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 13EC76B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 05:50:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 827EC140263
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:49:58 +0000 (UTC)
+X-FDA: 85328018076.01.CC6EA48
+Received: from mta1.migadu.com (out-252.mta1.migadu.com [95.215.58.252])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6261DC0004
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 09:49:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cP8evNw9;
+	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792143974;
+	s=arc-20220608; t=1792144196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WBdGcxWiDrcVKqaT6IjY7dlU/wWj/hMB+CXmv51CihE=;
-	b=PVRc5rkd0q/R6U7oaM5FAp1Q5zHZqX1LUn3IwuOPwBmMmD8k4VeTUcasFah+MSgDeadw9L
-	OTEW8KfgCHgW12DXbKY4jwKMsJig1O4rTrlXyZ1SbKFnwg9QHUl8s0Qbc1VtaIMQrbpCj9
-	+B+sZXBAtDq+b7IVy/RbUFSdK8g9Uyo=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a01933b584so52872875e9.0
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 02:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792143973; x=1792748773; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WBdGcxWiDrcVKqaT6IjY7dlU/wWj/hMB+CXmv51CihE=;
-        b=sPG0U0rKljh1EDDuLI7sMBHTOaxe3N5WDpjCVIsYwGN81CFU9Jh5avUt7ivJASqbLA
-         ESMKJpvoeipFlFJjUGG0nb959eg3bx48bzSnvdS7563tcs5SSZdD6bDvH3UROhDvxki3
-         mHnZM31lkM++LghPpcru9JVLe45SeS74zwRlYx8n1vA2EfkX0lPFV0ZNHohrUvIZVh1y
-         PxV/OhvJCvc4EXmU+e3NfEEeBlVurq0mnfhW62z0N+a6UhKTf/xIgAiwKILB0D/c8kQK
-         8z5diGnNFu+YGw7Jt9eHEuTVRHbQKl4abLcBQ9HMgm0x91h9VEpd3hIx0kHY3kX4sxTh
-         1CFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792143973; x=1792748773;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WBdGcxWiDrcVKqaT6IjY7dlU/wWj/hMB+CXmv51CihE=;
-        b=gAecoRczov4CO6zmRTPLuYReWrcCBHquZ6o0YEw1vXya+4NbhC+wavn1hf89rjTk2m
-         n3t6byvvB8dnUYQ3vnsgd7XPFkF8f5F4nhx+IbIZLEBRhvMQ9t2YYYV3T+H8qCF91tgU
-         BWosVKbc2GEb+QnX4FD2HLUT29WWqvsuQWPeh+GnSdVlCaft+ftb3Lj613Mecbn8RgsT
-         Ew6Iw8HCIgs/A1y6xzIQVLEF/PoRGQOHO18ozlfRyyywnP8EB0nOcJIem2OiZmMi8mHx
-         Oz2YgDQicw/sfM01OCkpeKIBBpnjoMtYmGV22Nu0w3VaAOeYyKi4uet/S4DXQ/nG8ANR
-         lFTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxWQy7OWrzbnUvkyIAVgk5le6fMLQm3IW+sg3iqyaCfAptrS8KagJPzOH8XPg+HZISVOlixkGvpQA==@kvack.org
-X-Gm-Message-State: AFq9FYK8bA6i3lDwnyjp7ZX0tnapLKY2VxDS0df4ym4FvONDgzkKFqwj
-	SnMK5TqHvKCje+7IPFCy+vfcDsmnyD3YtyWx+2Uz4gNit46kt8otoKWe
-X-Gm-Gg: AYBFou1u4lynvea1VTIABzKC3hjVNWobxIgKFXs9lTPP35+e3FG/qXrUqZmJEr3ausK
-	SkVXkIglfImwSDk3kjeNrRWm7Bs038KVoB921IAPPJgwUyytKmanECYn+03fsyiRLHGB42zXeiz
-	4xvaylGUCZOLzW1npJ6PleGbad7cZkj/349Sy/Deao8hLeScO+EMPCLoIwfZ3YND5C8kyjueo2w
-	BNolJnJvLCW/LawleNoZdsuCovrlVFkpcR4jfYEAHbDzXio7tGDds+arEEu9wJgEy5fmBK+NvPC
-	uJLQXXtA73NaBp/oTz7LBk4DlfHMRoZ9j8wctqHikjWRn4+ZbVNYE+ubDg0uDCh9yKpdb4h+dmn
-	A1i9BftoPTbczV5pjQZqzQiR3Y7QQ7Y/gDwe527/9pgUxe/XX7xsax3vlFkF3Hmau8SePCeysaQ
-	WLbHHmqV1tCp58kJBhssE5ri49YZ/lbBjbA3cfXX0jaxDGzVUVHLUDhERLvGeEO49tjBnjotaSx
-	MEUgAd0NZ/r0O+/szs1UKO2/TYiRk1F9JQJS5BZcfmnLfYp93kML6wNeS5ntvPOXXxgcP8DU1AX
-	UpmCPaqQtRQ9Oo0/kp8c0p7Bg1PT+orTWmw=
-X-Received: by 2002:a05:600c:83c6:b0:4a1:7093:40c7 with SMTP id 5b1f17b1804b1-4a18e493048mr406737735e9.8.1792143972697;
-        Fri, 16 Oct 2026 02:46:12 -0700 (PDT)
-Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1cca43012sm17041055e9.3.2026.10.16.02.46.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 16 Oct 2026 02:46:12 -0700 (PDT)
-From: Fred Griffoul <griffoul@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH v2 07/11] iommufd: Use large IOMMU pages for provider mappings
-Date: Fri, 16 Oct 2026 09:46:10 +0000
-Message-ID: <20261016094610.57849-1-griffoul@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261016001448.GC14213@ziepe.ca>
-References: <20261014093733.90312-1-griffoul@gmail.com> <20261014093733.90312-8-griffoul@gmail.com> <20261016001448.GC14213@ziepe.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5gwje8bkcoijcxkk67fab4tdp4faf1d5
+	bh=DSApHwyzEVdqPFNQhIuV3PUIPgNeW9IbBah/kIyzaWE=;
+	b=mOShgegAKSmluGz/wvkhkpWSLwHsE7akwpbU+jf2xcDYdHsfrfafrtbZGUuJz0TGnTBlv3
+	fonszUTttF6sWYs3PvICeWFyS0FtOncE3CyXM7lmCbC9flH5S6BtAtzBt4OWw3aLZmoQqG
+	XbvXYd6zGvQZ8s4w02yL+gS6Ut+LtQE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792144196;
+	b=QqUVq1s4xOaFPcB1PlCsa+zuLDAnVpe4TtJwO89FDauyc86B4quzHz+NuhrYDDvVWB4fGa
+	UawkV4h6pfx9EjVmsNeLoKUUfG55C+/o145mIn3ej4FcwOZh9P38VtUrWqzjqwumwMe8FJ
+	apl++fDNp8H1AT6CPDbHzy+askeyQSE=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cP8evNw9;
+	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=W4HZiu6j/Fq+Mee4Nsti7eqNIF7myNqYt9HBvlfMVI8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792144194; v=1; x=1792748994;
+ b=cP8evNw9fEiqcVbs73gA+44NHIPMRHIyeMGW3C38L4FSGSudrXAt4RJMvXp0EQXO90oYRiSI
+ xbHnooH2CtTT8XAF37T3cUkx5AbS0lDfrUvo4/MAa/eV5j4YnD4gKrlFHexDf/0U66HyWTvBiqc
+ iRt17m0WsF6OQhU5k1CeAxgg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id c8ab28ede6a5f938;
+	Fri, 16 Oct 2026 09:49:54 +0000
+X-Mizu-Trace-ID: c8ab28ede6a5f938
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 04/10] mm/hugetlb: unmap the page where the other VMA maps
+ it
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261015-urgent_fixes-v1-4-42796911043b@kernel.org>
+Date: Fri, 16 Oct 2026 17:49:37 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ Oscar Salvador <osalvador@suse.de>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Adam Litke <agl@us.ibm.com>,
+ Mel Gorman <mel@csn.ul.ie>,
+ Rik van Riel <riel@surriel.com>,
+ Peter Xu <peterx@redhat.com>,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Josef Bacik <josef@toxicpanda.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BAB2117B-1197-4D6C-953B-31F9C33BDD42@linux.dev>
+References: <20261015-urgent_fixes-v1-0-42796911043b@kernel.org>
+ <20261015-urgent_fixes-v1-4-42796911043b@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7C9AC140002
-X-HE-Tag: 1792143974-744888
-X-HE-Meta: U2FsdGVkX1/f5YMcNR4W19qPBHgRIHLS+fNJpcgt0CkKNiHrFzZ4LaGhrI7ZVJTPfNFQmipoEFMna2sjEP+4kjXspPbJehwMLxRraC+IVsLKda8IWSVI7uo3m9Vtg2Ckp0zlc8dKeClAWT6/K0503ENSJ5QmTZqMYRd//toAMiOVbaN1Yf7szE5X1eSUo7stzPr7FHRoKpPpEN5RShFfQaQoCF3ahzSpINS6EgO7FO3enxhyBH8gKiBCy2TpXocZFvhlX6TdWraHL4cjz/RwD/bBTa0F3535I/Cw8e1IHlmE2up70B5r0I8KxgTLysxiPS2CpDcQtIzIVCHBVSHGhzL+Yhr+DalArrKp1zgsfSnlSPZrbOTgUea2ujCaJ09AGr676KZaMWE4an7dm/TfxfCWo6NnKb91D8dCnTF9qvsFJ/9WW6uYmH6pV9DcxbK8HOTIyA9BZ+3qG80eXzErX2/YCGfmqm+S8BS779pw9KkZExsbSIe7NLuoPD5QSISPi9XtWHEbxnAEcajyIfyw83DTAseIycL+sp7PSI7lTHG5gYYA5su6s6XVT162iDLqXTMfoU01/cK/Bjrg63tIFeUDDM07pu+w68t74uSByS1XCPZus7N8+QZE6o5yRDCey6JEA36eeKumRxuHBX5AYoT9oDrxwpzOwleeKxy6SY+gf/h3o6TLZlfLXECxzC4crPtWBXHZ/oDaQf4oGJm3yZkx/QT5yCHr90aMknnB79UNhwsgIGjefek16qhoVbQc4RJ4mczQcThCqHqpzjxlcrbmJq3GY+vEgy1b05HfbiBGEf6qfScE3BWIy1dwn0u+rVYJCmbz7fOqDol9TdD2P/7ftGicP/P3tPmwjC9zAHAMLvJWXM/W7lI8QEFw9Ttgg2H09kSGqaYe5bdW1OJGNqTKIdIlrK786WPlUHu31VTe1kJFRxCWessXXhsjiFh9IU88Pd5+MAisEZ6OZCq
- 2G5xzhfz
- 9ajnrU+yyIWc9d/nTC4uBXLlkqKHfzxdhmtfeMLKfL6sKZVAvEF81jq4Xo4XPl4xGOJADTprG6dqo2UkLfY5Jz/belIMzdfSRq2bt3tj0y+w4N8YZXPthqYF4MGn0+NkJSgobtz/47BFwnCsqojUC/QW3utD1rJsT0w8/7hX1gPhrTthurMeRhD1gx9i4E0VgQyXX93ziGBAZQeN0HDvkcshphkMh7TDD1dRids+cHBRFobeceWQGHNNzEYmbwxAqU3Lf97laF0hT/G3e9JNZAk7l2LcHo87gu+2ksxd5/ezxq9pNyF4+ry5z8y87qpxTKdGklvNjxZqXTo/oww/mZ0dPMaBDm7hEyXz8d3RcB1Lx2kw4TAOZVVwWxQjwjCUyzZCE/vfgPVTxfzSorHsK5mdoKClSyHgw2D0HjEWstGUfDaGQlxJ+gQFojgWuAm7gkstGN5dywL2kfVAIsxT8jpJETOzNDMH5ZAdAIHsyMceZcVIZw+ihM0VQ/Q==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6261DC0004
+X-Stat-Signature: 3r9qjrzhnwycemzs859mze5tt66hgg85
+X-HE-Tag: 1792144196-37293
+X-HE-Meta: U2FsdGVkX1+9MVeJbf/IOzEsf1O3337tA5XI7ROvJmEI3sutczz5Dhdlw3PnhRkJnuqvRXJTXbvtLQIh9wiOvbu5q7MZ8AYbakw+J7xL/pmmJuaT9BvWuDV0IbLutx2/JyOzB240OWXJljUGApou6TRoAbZvYQ11BtS8zoJlB3sLG9vwajTRfzo3LCMURBaOTiouIE8qvT+FVomBr9TDairmAZmg29pnD+5QXm9dEB2t4wvZ+RKQC4/OHRmmbnM0lIGyl/jmDPjVckEeIqZMWaDbih7I9CveOy9+LQr9WLFLqzBpACcOMiK4VQyWE5Wi10NEUaDGtJAG3Fa4UpIMdAS731EXRTHI5rSlsPF3U8XcISH1b459cJx05z2guUuvohnIskqbexXY9ZHzPq6upr+nVwENJYlPCYPnhdKkWGjrOTXvFceDlS78EBOBVs4njd4QQaKdPJ5ujFiuJJ/lECc9syZNemJtf2LXBQi6nHXulsDd9mB8EbGGl9mow3e3LoWE80w/wuODrNxCUEDhW5hYhNX9lXhxg5EwN44fIXk+0t0bNdM0ztHHwRAs6ptwChagnBrrSiUoeuyRHk6aMK89HduNnc1onLRRCvOPWLCCqnki6H52v1u8ra9pRRePOzeVFA//C+u4Yg0lDNzqIYBMYwiapoA0v1uKWvmQtJbab9l0hfk9BssGZ/pTgAV98l+kf2MLErUF5kwFYt7kxDCWN0Mpw8tvjY0v7RWJUPiS2YCOyfR4bz6eHdIKdAhf9Szxbl4lHnXFK1JbACCBpnM1kryJt5UQ1utFevaLk60jGdZyN9m7OWVOF2Gaa8j3I2+gGviDnZxbU8dg2duP+eftRyteYztSTWzqt37L5OULA7RbGMJTsaTP7OtlJr1BCCjPBGwbQ3whzj8CKA5v57EnJ64SO/T/rNSU/KMqCPrgLWG7e1QpOER0+FAIrhvG9ra5S8KmKbOTaqxPIE9
+ JNPhR7ZV
+ xbApJaPXRMjtUt9bDeQ/ty0Xm9VCG2fcq8BZI+dvE3TCWqjfiLwoMgO4ebZHjl33D2KcW1/lVH4xfVuMBevL0qljpF+Bf1vhE8vkADJhr7DM+M75QAqC71mlFwtcU2uHdIk9aS+FcHT8QBD6QUiBTP3CSj+MWnZwsxZPVx4r9nzqBcpcLjgvZHDED+sicdvueP0+MGzX58WFf7ypmNBvGa4TDW7KQ2ecpJF/BRR2B+fUOjMhJEmAyKIh/QDgHmTxTHAOBYEPdpuwFhjrWPoJYnSN25v2k2cx1cEfJQsbrk5B4+x1UWBgd1e2tiY0yR4od0DXzdpGSS8LmeTZ4hO5Fm5NOva54xqCGgrIk5IoRGO++ZvM5Qb8t34dL1xTQhNcKFrzRnTHUgi0BpWPHDvbIpv7e7Sp3NleenvkoaXEIpuptqFl5XxCE1elZt6JsqYRKV0ntwze0nu5JDfZtYlxjqO03Wc7w1rTkEtQdacGUAyT8b1IJx4Psk/qV7PRd2wYM+Y54
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,24 +111,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 09:14:48PM -0300, Jason Gunthorpe wrote:
-> You are going to need to go into generic_pt and implement cut and a
-> more suitable unmap to make this stuff work properly. We can't over
-> unmap on conversions.
 
-Agreed. I'll drop this patch from v3 for now.
 
-Just to check I understand what you have in mind: a cut operation in
-generic_pt that splits a large entry in place into smaller ones, so
-that the revoke unmaps exactly its range, and iommufd uses large pages
-only on domains that support it?
+> On Oct 16, 2026, at 00:07, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> From: Josef Bacik <josef@toxicpanda.com>
+>=20
+> If the owner of a MAP_PRIVATE hugetlb mapping fails to allocate a page
+> for CoW, unmap_ref_private() unmaps the old page from all other =
+private
+> VMAs that have no reservation of their own.  It finds them by the =
+offset
+> in the file, but then zaps each of them at the address of the faulting
+> VMA.  Nothing says that another VMA maps the offset at that address: a
+> child can have moved its copy of the VMA with mremap(), and a second
+> mapping of the file is wherever mmap() has put it.
+>=20
+> So __unmap_hugepage_range() walks the page tables of the other mm at =
+an
+> address outside of iter_vma, where i_mmap_rwsem of this file protects
+> nothing and where anything can be mapped, and the page stays mapped =
+where
+> it really is.
+>=20
+> All of the following was seen on v7.3-rc6+ (g6c377d19d4a5) in KVM =
+guests,
+> as a user without any privilege.  It takes a pool of 2 MiB pages with =
+no
+> free page that is not reserved, so that the allocation fails: the user
+> can take or reserve what is free itself.
+>=20
+> - The child moves its VMA away.  The page is never unmapped, the
+>   mapcount stays 2, and the owner goes round retry_avoidcopy in
+>   hugetlb_wp() until the child is gone or a page becomes free.  =
+SIGKILL
+>   to the owner does not end it.  5 of 5 runs.
+>=20
+> - The owner's mm has a second private mapping of the offset, made with
+>   MAP_NORESERVE.  The owner zaps its own entry and reads zeroes where
+>   its data was.  5 of 5 runs.
+>=20
+> - The child moves its VMA away and maps a 1 GiB hugetlb page at the =
+old
+>   address, so this one takes a pool with a 1 GiB page as well.
+>   huge_pte_offset() for the 2 MiB size steps through the PUD
+>   leaf, so the "PMD table" is the 1 GiB page itself and its "page =
+table
+>   lock" is folio->private of that page, which holds 2.  Kernels with
+>   lock debugging oops in __unmap_hugepage_range(), 7 of 7 runs.  =
+Others
+>   spin on that word for ever with preemption disabled, 5 of 5 runs:
+>=20
+>     watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [u_det3:130]
+>     RIP: 0010:queued_spin_lock_slowpath+0x8a/0x290
+>     RAX: 0000000000000002 RBX: ffffea0001000028
+>     Call Trace:
+>      __unmap_hugepage_range+0x154/0x6d0
+>      unmap_hugepage_range+0xc1/0x140
+>      hugetlb_wp+0x55c/0x700
+>      hugetlb_fault+0x5f3/0x8f0
+>=20
+>   RCU stalls follow, and killing all tasks of the user changes =
+nothing.
+>   Four such owners, whose children share a single 1 GiB page, took =
+down
+>   the whole guest with its four CPUs, 2 of 2 runs: one reported soft
+>   lockups on all four, the other gave no sign of life any more.
+>=20
+>   i_mmap_rwsem stays write locked.  With a MAP_PRIVATE mapping of a
+>   hugetlbfs file that belongs to another user, and that the attacker
+>   can only read, the next mmap() of that file by its owner sleeps
+>   uninterruptibly in __mmap_region(), 4 of 4 runs.
+>=20
+> Compute the address from the offset for each VMA.  The tree walk =
+returns
+> only VMAs that cover pgoff, and vm_start, vm_end and vm_pgoff of a =
+hugetlb
+> VMA are aligned to the huge page size, as pgoff is, so the whole range
+> lies inside iter_vma.  Its page tables can not go away there, since =
+the
+> VMA is unlinked from the file under i_mmap_rwsem first.
+>=20
+> With the right address the page is unmapped from all VMAs but the
+> owner's, so the retry in hugetlb_wp() finds a mapcount of 1 and reuses =
+the
+> page.
+>=20
+> A child that has moved its copy of the VMA now loses the page, and =
+gets
+> SIGBUS when it faults on a missing page of that VMA.  That is what the
+> comment above the function has always promised to those who do not own
+> the reservation, and what already happens to a child that has left the
+> VMA in place.
+>=20
+> The address has been wrong from the start, and the second case needs
+> only mmap() and fork().  mremap() of hugetlb VMAs, which the other =
+cases
+> use, came with commit 550a7d60bd5e ("mm, hugepages: add mremap() =
+support
+> for hugepage backed vma") in v5.16.
+>=20
+> Original fix generated by an LLM and sent in private by Josef.
+>=20
+> Fixes: 04f2cbe35699 ("hugetlb: guarantee that COW faults for a process =
+that called mmap(MAP_PRIVATE) on hugetlbfs will succeed")
+> Reported-by: Chris Mason <mason@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: switch to vma_filebacked_address, add VM_WARN_ON_ONCE, refine =
+comments]
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> Also please don't write commit messages with AI. WTF is this even
-> trying to say? The subject is "use large pages" and this text says
-> "map each page with its own call"
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-Sorry about that. It goes away with the patch, and I'll check and
-rewrite the other commit messages for v3.
+Thanks.
 
-Fred
 
