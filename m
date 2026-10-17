@@ -4,129 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B463CCF2CC
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 21:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 607A7CCF2CC
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 21:31:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17376B0088; Sat, 17 Oct 2026 17:16:35 -0400 (EDT)
+	id 3207F6B0088; Sat, 17 Oct 2026 17:31:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC8C86B008A; Sat, 17 Oct 2026 17:16:35 -0400 (EDT)
+	id 2D1B36B008A; Sat, 17 Oct 2026 17:31:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB66B6B008C; Sat, 17 Oct 2026 17:16:35 -0400 (EDT)
+	id 1E7206B008C; Sat, 17 Oct 2026 17:31:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 870546B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 17:16:35 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F6B214027B
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:16:34 +0000 (UTC)
-X-FDA: 85333377108.26.906E9A0
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 80175180004
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:16:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ipAjdVtE;
-	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792271792;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qguhYArQk/KW+dhlWzdBW+K99B5MVDRdS3H3exN/DQM=;
-	b=IEIQBHEW7qGEMX4X4vh0K5GFL5/YOSWxYYtXijUy2BYkHnn44nE6warxHtN5jPv2KsgyLo
-	HKHw4WtVOMYcbEEHXiyG8FxIFm1NoaSINsDjPUtXoWtfQeZsMxiLBNTaVSsQw0MUDH+SNW
-	IRiSOA1uHOPM2owuahkv91ypx2VWaWw=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C76596B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 17:31:41 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 94DAE40339
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:31:39 +0000 (UTC)
+X-FDA: 85333415118.08.E984994
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 03A61120007
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:31:37 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cp/cX3FE";
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792271792;
-	b=iSyjzv8fle+07ZLaIqJHzv3aVZJbW0ahX66Wh6ycqbtMHcdQCzBRPnmzGERRdOACnglRYP
-	/a9TwdNsZcM9U5eCWTvdogy0hlMdMHhpWPRnG14XHj2FxA8/St4RaP/0gFFbKx6gyEEPu+
-	c/e3UJTzDUsqPHEKTorZmycoSt9TgGA=
+	t=1792272698;
+	b=xHjndreieh/xzJyOj1SmT94UD55n5PUibp8rmw+ZQK032KCeotX696MstfqIiiBUZR8PB6
+	ji96VzUHi24esHtPWArvECFNlBYAm00id8dN4MqLZoZA0ujOBYzcnrRcZG0UH4F3sdtx1U
+	0Zz2yW6v2SXXl3oHkzd5TOPM1/mQiB0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ipAjdVtE;
-	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-89f28c3ac7bso303906b3a.0
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 14:16:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792271791; x=1792876591; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qguhYArQk/KW+dhlWzdBW+K99B5MVDRdS3H3exN/DQM=;
-        b=ipAjdVtEsyhJZax3feaem6WLz3ESgdm+gpmVVWFe6q8wswhlwW687JjD9/Z+w/2Y/E
-         31bZsRUsEHJL2+8RXfKZ5hkKrgANF4evfFm5gUdPIsrmVTv8CBp66zNFaWHeDq9L6OOa
-         eaMm1YiCHutg/M1kItIUHkLk27j02X5gOhCbynebno2DafHFhUZv9CjasQN0YSEMKDTj
-         f9ESXyjbk/NFUk5593x6cr0fOYHp8uHErzzUXXM8zVEcR3EXZpF1HPlQtR6aREi1IIEA
-         p/DL4zQuxQH5H4uiPxx/M1y3lSvVm+JXYAsZbUio6VcMhHB6SKVvWiGXqerZbFaOgywD
-         oQ5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792271791; x=1792876591;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qguhYArQk/KW+dhlWzdBW+K99B5MVDRdS3H3exN/DQM=;
-        b=lEQ1uRQSyivaxNqaCxn9J2hKDY3/s5QOoDqFH2fk7Ogfh7wO2dVBwEnAZg9CVB5Y+k
-         6nF8A1mx2/WyD5b4Hy/eEgVfAOmnS2yCIqYMlHQdApaAc8UvnwReidmuSlhmYcnkpLOq
-         DibyAZqed+wQnoJBHORttMYZ4MEimF/W6nah3061P5t+p8lO2Op68vNSikv5zb0yA4dP
-         RprvkoSVF4x8JlfG5S6m04jLo7/dGMtGhjbibGNxJRY3bESi7fznYw+Hq8EBKYy2HQSc
-         Wf7wg/dyqpNiScb5d6iMSABXd3uyOKRP3R4ZzrfLQOrWlQfYNDO7Wv34d1Gx2tZdZf0L
-         p1Lw==
-X-Forwarded-Encrypted: i=1; AKwUvBzJs2uY44rIwvMZC9QlsWq78WsaFNsWs2u+QVUdV3LxV2pufOlN4+JwJSMbFbbKxhEdnk6oNGlu1w==@kvack.org
-X-Gm-Message-State: AFq9FYJBMXUwD67IV+N0vihv05sb/mgLclH2MU0scOBWW5d/g7RHIko1
-	HrzaViNwFJCMyaTPIhUceJUM7igVZ9IffDw1gfYwY0VvuNlb+CBn41qV
-X-Gm-Gg: AYBFou3ebcWCDNcNP0qD844fLSWtK7gY409JMEfSuSmGFvK37Bfcgc18tCJDeWXZ8I8
-	r0UyOoN8L0o7GpW4LIyJamy2LSKkQ1ge/oxoPGRrL16ZqNuBfBplFwN1/6rkFPTECQlXQoyHiWQ
-	2JtJqPk2jBcUOjdL+iXL2aLSm+KfkudwxrYHclSAc9ilFSkks6b+EGBHoFou2dL3f47iNwUrX5O
-	IZfsY2tHjasqbWqPUYNoH2wVocFYsvyZ4ZEGuFNCHlBwaFeO5QEZ6p9m9CEiXIC6jaKiJodxqrW
-	GP0q+aZ0YHHmRwnBGm8JHMI0B2z4+xPrFSDpve5oSvZsozICSWOosyhgX4Z+5KefAbovXb30KWy
-	l7eyLHYs9NrdNIp1ECdjSpxnGaDfmrsk02Offb/y0y+x5kTxtmKxhqqMv8Bn5qa+IQV0lEh1pvH
-	PpoQY1Stj82nVwOI0On7sDT+b/rYDMD+j/6zM4ziLCR8AQtOXspcKDWvp1o1RYDlG/JVXPfxvQT
-	Q5hPrj/60keefQUslHVZXVpUA==
-X-Received: by 2002:a05:6a00:1394:b0:898:9b2:605b with SMTP id d2e1a72fcca58-8a04d23d89amr2331468b3a.56.1792271791111;
-        Sat, 17 Oct 2026 14:16:31 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:8954:498:18c1:c1ef:4268:7168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89f56c8b922sm2460239b3a.11.2026.10.17.14.16.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 14:16:30 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: Liew Rui Yan <aethernet65535@gmail.com>,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: Ajay Joshi <ajayjoshi@micron.com>,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bijan Tabatabai <bijan311@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	damon@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Honggyu Kim <honggyu.kim@sk.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Lian Wang <lianux.mm@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	David Rientjes <rientjes@google.com>,
-	SJ Park <sj@kernel.org>,
-	Wei Xu <weixugc@google.com>,
-	Yunjeong Mun <yunjeong.mun@sk.com>
-Subject: [RFC PATCH v4 0/9] mm/damon: hardware-sampled access reports
-Date: Sun, 18 Oct 2026 05:16:13 +0800
-Message-ID: <20261017211613.16456-2-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261017071120.4628-1-aethernet65535@gmail.com>
-References: <20261017071120.4628-1-aethernet65535@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cp/cX3FE";
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792272698;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LfcIRZkzNhVBYriP+PkLhm3GnpAehPIIrwSuJbYsqto=;
+	b=XUKYVdm0Svw3OV6WphyH7ntSmjPa31e4FjDE5JhT7Ec+ObDyOqoX0YdcsgEq3ugOLlO9Lb
+	jXNGaBgOPcXfqo1TrAnKKcqfU3LRDIoNOBwA1RLOSAT/KeUF1sKwszFa4YEno8xGNyk3fR
+	M8cWRUfKno+LReHIoVflIhH1Dh9Ev6c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C34D460142;
+	Sat, 17 Oct 2026 21:31:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBBCB1F000C4;
+	Sat, 17 Oct 2026 21:31:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792272696;
+	bh=LfcIRZkzNhVBYriP+PkLhm3GnpAehPIIrwSuJbYsqto=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cp/cX3FEBTQXco9fsDQ5QLELoeGq95PbcOWg1JmO+BT+XWWMR1hmJPB3nWJMMXwFv
+	 oMr4NIJ3c8X3KT4/WYhW6GbGPrC6czpaev0yNWFYcxa+roMj6mwYvKAvB9k+9nuG9U
+	 k1H44QwTy+8OrFSgk0wY1ioXPoJhuMQzMCqxQAgZMuHcgl6ymPXiXjNNR21KGpnda+
+	 GPZ8ASmsn6IBniEZ2TVJepIVIgTgIZkxx6VRiggJgYIZztNTfSviB72sTVIY88HB3V
+	 9k+gAL+QASl+B6x0Nas6qaunRudRSA+VdDDTbbIzegX+eQxDfOMASKvj97nUS/CCfH
+	 jOVT0QRjND+Cg==
+Message-ID: <sashiko-outbox-175822@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/mglru: fix using folio_mark_accessed to replace
+ folio_set_active
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?QmFycnkgU29uZyAoWGlhb21pKQ==?= <baohua@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org
+Cc: ehab.ababneh@intel.com, axelrasmussen@google.com, kasong@tencent.com, lance.yang@linux.dev, qi.zheng@linux.dev, shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com, yuzhao@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com
+In-Reply-To: <20261016213115.70515-1-baohua@kernel.org>
+References: <20261016213115.70515-1-baohua@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 17 Oct 2026 21:31:35 +0000
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 03A61120007
+X-Stat-Signature: agyd4bgtyjdjhwhex6jd1crip5frtppi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 80175180004
-X-Stat-Signature: 6erzzdquyjtxrmedmeksrnrkejtpupyj
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1792271792-593777
-X-HE-Meta: U2FsdGVkX1/d8R/Fn9eJZjSC60RdPFMc594qBFmQVz9Xqto/dHabUfQWrVQIhCohEexGJkz6QmdbY7mebNhy33ayrw+2os4aFvkGrnYMK0fVa0/xY/ruXpeBAtucRqcLSSu6+JHFYrTvGYxjuds7jAIoIYFk6ozOwDK1wG7YfgV2aPAx0zlcSRaMjYEphSkeuTbS8qblNM1Uop83NagGrIy4QFxByKQXdt60kjDpofMOImokG3aIdmikEPalPzKkZZmahRVjBCugPaXGeNBDkIcy91NkOaxsXtsRO38USWRhge292f3gSggKQvsizRWWajUvAR/DmQDvTql8SvvZImIP1OYTpdIcXhR2/dls0QmPynDkQkfpL53VvxJ+cGa8FYibOhXXA16X6Hl4aqpJpNPxc3MaoLyyzFRmpJnBN1vSEisXTLzSlq5fm4E7nYq8TygB8FUS7bRBvqcJB2nzX0xmAY/rGja0aL8n1S5xnmZcT26NFe0x5MREqsLzcUGhB62T6i5C82djwO5SYfV/9WO14zw+a6OiJfcoIGf2ni5Adg9/j3+0Y94DY3PjnAreaNp5X5csGWke77U2FNnFuSnI6IWYPUxTcYmUbKrMNIAUxgqZwdIrRvKJjO6lyJ+2zxoJYP0neoaXmfjP8q8bLqyUPVLT7Tz4y5e5zTRltE+pvVd4dJznBGnjhfaVoMeo9tTdnxz3h6uwmcB/QwQI/iw7neQMWS2aM+WE4ucOalB8i3Lh/OTBbnCRR8aGplCN0ENyuuV8187JZ3+e2KHSasBej/ISwE4bcpp0QTLYSqcFsafkPojJD+qzjAVZvf7d/3J57IHaPcCAeOLMHPWrQlUNaOs7be40xvIb6ul7ENDSdAGZfAGxm4ct5NDGkP2TFNI60sY5Z6lYTy8cqbnQU3ecvFApyFywN5vCE1vuHk7A5LZ3ZDAokNyfMhnhmJkhZJ3JxiwNWh6P88g0jsZ
- INu8F/87
- 9ZrAuZWVwc75bhgWhndc4O6a1g1D5K5Pn6WNGYK2+93qUIuTyn5ftk0mcg0Us2YKD5Ei6q0xEWp5IIykgYUSv9H6Dbu+GzDXHwVDlq/Kgunlnvqzd4/IxcGMAIX56ISJ6TZBQuODlByw/+hO2eG14nfzUtWkeNlyVlT4JyBkAKFNX8Ir1eFHtSKuRpNkBL9V2aNfbte+R1cHTDCKW/jdFKHjK1E5Oo2KT4ucX21wYU84kwpS2QuolmV88Tb7TYrf5L0N91a31MdYGvMm09es0bNO+Xh6Gq7g9TelXOYa271Jpfu46gFIg/BdDKVTin0lV+zzAb/BA9HiUtT7Bg4AQVoNJZomx6fouIYjsxJp8EeUDBjXWrLdb9k8X5HG9pFZ6o9qzqzutw45f1+t2FBzTCdavW6WryhYtC/7f6fJj/lrublO21PcYuqcwNnfTxH9gAKVk3YJyNvCPY7S/F89AX9cJ40zBZKpfMsO54NCHLfT5/uISalCZQOFUjM+v0IDAcqHsNPuwk7k0vFA=
+X-HE-Tag: 1792272697-320202
+X-HE-Meta: U2FsdGVkX18hQYtsIVcbJu4ZGqOIacxfLxbEj+ylThOtsFsaPWRxTgH6EYgwPea8Nthl/xdmmr0+EfNiArhe8P3vpZLTpkoEzaMpKtMFZ5blf4DXtcWd+/afUtPB3wzyley0ejeDW4VtbzXQ6uKbqUxEbfsY7d5toDKDKvCxPhW/iNnhD5tJC3FUG798YG5SgOhbynAvvKOGxea0oF2cYahIf05fP4NwF2feeyVxW++Eh8AueBxx3jEEHNATE1lmTuTcLWtj/0QsGnbp4HleEYPDAgf6vLNAA8vtz88K3AZ6PgFCfsGn8wRORKVLapTBaRZIJJpbNut4KITFtdIfvFWye97D3OCzWXIM204OJsbyCyOg30ufVKUiatZbXbn2AAnkl4mHf6cmQlm76rRRuKCVJIGO4uYhz/w9aBWmgK4HnLXaIbUH22GX7K6nb34khLvdsqvdsn3KaAliknGgFVMBj4JM9OxcfnON0rk2z8g1sB0dcOlKA9wKBRlYzo7la9SDgnIC/r8L3T4brdt1cx3ECFOY04l2+x3qrK6T7Kl2ozBGdtc3BCA8Okg2tZhZoGHGLQhj6nryt1ZlZmhDlCfMf1N2hE6lx5fZe16A8bKNp176c6mUe05Z1xMRKxOgWwIzdTmJ7Sqg/lJeSd+j7InyYFpxYlP75XuEQ3mjQfMV4jvZLW3TcEJ3FVYU76fk466EsYstaK8kvP/x18zTbqX6fMlP2lAXm0G8tHZepiuaMnxlrHHqPFYy0Hzbcbyl1altTI+ugi6wno1LAxi1qMGpnk1HGbWS5FSR1ZaJ0Ij1Cs6Algkjd2FREuBMH8dB7K3Ucg+0fCFz1mnjiYkpU7KCw77Dy305aQysqT+Hwi6Noo3pAax9cdn71R++CvLExC1zP5Uv6+B8sL+i59MkbHZeVLenNXD/8w+vjWQ3Sdst3yn5Jo/BTlrVOMehwAM0mquMpRl+YxIW1Kx6ej9
+ P2rpjnmB
+ oa/OOZTHDdWFze2BOySSPv1fMYMJ7r50cO0p5YhfWSe7R5RqNYkbps6ZTatd8LqvRAQjzYFX7WhmjPvNeKa7zaTMBSRXN4EBiCnOuaPYxrzarr8trA+mZESbWwx+hS/qoDkJQMjw4/jBmJg2SwRU4C0P5L/LXAhBcI5co6esXAW6kJKwOrlkQVYtrUj+af6aHr5I0Rsmb11K/6UO1FCRqSRr7yqg4Owr+ljWqCAPfn4koyibiE+gjm8G1KQgXM/lD7vUugQKIMloI9vdueTZlgMU5U0Sq3y4qWyJQMUOnBQm8fLW0/UNdDGA3LzIPkJs5P2Qx3zOARhJhi7/VsIWl3b/fUsiXQWNbHjXWTzFZzLD0sUnEdTGZ/XQ5um7yvlsyJIh0yCMXbFu0Ks3cLmgm2N+lqEgGZOi+OJkdLNXzls0ZquwxgtNbeFC9YmskZZUpCrH7oBJYX9efc0tq4Zob2zPomFiidBpOpRyqArWg8ykwDGgLytp+uf05oIoe3tTmV662d+YD8CLl9eivE2Vbm5b0XRjaMOGV02nmAJ7cUtNOiqPFYMsWCs3+LNqPKKSPPgclAWbo3cZHm5hGnm5N4IWp+Lo5vq2dPNC7QUcsWz2b1jPYE/PToUOpwy1yhK6UW/Ek6BdTBe68sOIyBZQ/G4B7KnSEU/XjKkE5fQJm5j+gdz0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,229 +90,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 17 Oct 2026 15:11:18 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] mm/mglru: lru_gen_folio_seq() demotes non-workingset active file f=
+olios
+- [Medium] mm/mglru: lru_gen_refault() miscounts WORKINGSET_ACTIVATE_FILE
+--
 
-> Hi Ravi,
-> 
-> 
-> TLDR
-> ====
-> 
-> I have noticed that there might have an issue with this patch or my CPU.
-> I am not sure.  I have provided some details below.
-> 
-> On Mon, 05 Oct 2026 01:46:44 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
-> 
-> > This series lets DAMON monitor a hardware-sampled data attribute -- the
-> > addresses a PMU saw accessed -- through the data attributes monitoring
-> > (probe) interface, and run DAMOS schemes on it in data attributes-only
-> > mode.  Patches 3, 5, and 6 are co-developed with Akinobu Mita, building
-> > on his earlier perf-event proposal [3].
-> > 
-> 
-> I expected it to monitor regions in the same way as PTE sampling, that
-> is, if the system has hot memory, DAMON should be able to detect it, or
-> at least with some probability.  However, it is not always work like
-> that.  After I starting DAMON about 10 minutes, the DAMON cannot found
-> any hot page, even when I am running 'stress-ng --vm 6 --vm-bytes 6G':
-> 
->     snapshot time: [0 ns, 100 ms] (100 ms)
->     |0000000000000000000000000000000000000000| size 1.461 GiB   access 0      age 3 m 3.200 s  
->                                    |000000000| size 1.465 GiB   access 0      age 3 m 1 s      
->                                           |00| size 2.922 GiB   access 0      age 3 m 0.500 s  
->                          |0000000000000000000| size 1.471 GiB   access 0      age 3 m 1.700 s  
->                     |000000000000000000000000| size 1.462 GiB   access 0      age 3 m 2.100 s  
->                                           |00| size 1.470 GiB   access 0      age 3 m 0.500 s  
->                                            |0| size 2.926 GiB   access 0      age 3 m 0.400 s  
->                                           |00| size 1.544 GiB   access 0      age 3 m 0.500 s  
->     memory bw estimate: 0 B per second
->     total size: 14.722 GiB
->     record DAMON intervals: sample 5 ms, aggr 100 ms
-> 
->     Note that this is my own fork of damo [1].
-> 
-> To ensure this was not a bug in my damo fork [1], I adding a tracing
-> statistic [2] to DAMON to confirm whether this was indeed a DAMON issue.
-> 
-> TLDR for new tracing statsistic: 'seen' means how many times
-> damon_perf_overflow() was called.
-> 
-> Later, I noticed that about 10 minutes after starting DAMON, the 'seen'
-> stopped increasing:
-> 
->     I am running 'stress-ng --vm 6 --vm-bytes 6G' during recording this
->     statistic.
-> 
->     Start Time: 19:25:42 | End Time: 19:42:18
->     Time Unit: 1 step = 1.81 minutes
-> 
->        Seen (Delta)
->             ^
->             |
->       100k  |  *
->       36k   |      *
->       18k   |                      *           *
->       17k   |          *
->       15k   |                  *
->       4k    |                          *
->       453   |                              *
->       106   |              *
->         0   |                                      *
->             +--+---+---+---+---+---+---+---+---+---+---> Step
->                1   2   3   4   5   6   7   8   9   10
-> 
->     Note: Zero delta from 19:42:18 (step 10) till 20:00:00 (I close my
->     machine after that).
-> 
-> My DAMON Perf Config
-> ====================
-> 
->     K=/sys/kernel/mm/damon/admin/kdamonds/0
->     C=$K/contexts/0
->     P=$C/monitoring_attrs/probes
-> 
->     echo 1 > $P/0/preps/nr_preps
->     echo perf_event > $P/0/preps/0/prep_action
->     cat /sys/bus/event_source/devices/ibs_op/type > $P/0/preps/0/type
->     echo 0 > $P/0/preps/0/config
->     echo 0 > $P/0/preps/0/config2
->     echo 0 > $P/0/preps/0/sample_freq
->     echo 100000 > $P/0/preps/0/sample_period
->     echo 1 > $P/0/preps/0/sample_phys_addr
->     echo 0 > $P/0/preps/0/exclude_kernel
->     echo 0 > $P/0/preps/0/exclude_hv
->     echo 1 > $P/0/weight
-> 
->     Note that this issue can also reproduce even when
->     'kernel.perf_cpu_time_max_percent=100'.
-> 
-> My CPU Specification
-> ====================
-> 
->     CPU(s):                                  12
->     On-line CPU(s) list:                     0-11
->     Vendor ID:                               AuthenticAMD
->     Model name:                              AMD Ryzen 5 5600H with Radeon Graphics
->     CPU family:                              25
->     Model:                                   80
->     Thread(s) per core:                      2
->     Core(s) per socket:                      6
->     Socket(s):                               1
->     Stepping:                                0
->     Microcode version:                       0xa500012
->     Frequency boost:                         enabled
->     CPU(s) scaling MHz:                      48%
->     CPU max MHz:                             4280.9849
->     CPU min MHz:                             412.6250
->     BogoMIPS:                                6587.34
-> 
-> I am trying to figure out if this is a CPU issue, or if there is an
-> issue with this patch.  I would be happy to provide more information.
-> 
-> [...]
-> 
-> [1] https://github.com/aethernet65535/damo/tree/probe
-> [2] Trace patch diff
-> '''
-> diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
-> index 4dfc9467ea4b..290d3ee2d836 100644
-> --- a/include/trace/events/damon.h
-> +++ b/include/trace/events/damon.h
-> @@ -199,6 +199,23 @@ TRACE_EVENT(damon_aggregated,
->  			__entry->nr_accesses, __entry->age)
->  );
->  
-> +TRACE_EVENT(damon_perf_source_stats,
-> +
-> +	TP_PROTO(unsigned long seen),
-> +
-> +	TP_ARGS(seen),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(unsigned long, seen)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->seen = seen;
-> +	),
-> +
-> +	TP_printk("seen=%lu", __entry->seen)
-> +)
-> +
->  #endif /* _TRACE_DAMON_H */
->  
->  /* This part must be outside protection */
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index bae4569f0ab3..73988ce82b1a 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -4927,6 +4927,8 @@ static void kdamond_check_reported_accesses(struct damon_ctx *ctx)
->  	if (damon_drains_ring_perf(ctx))
->  		__kdamond_drain_ring(ctx, tbl, ctx->perf_rings,
->  				&ctx->perf_pending);
-> +
-> +	trace_damon_perf_source_stats(damon_get_perf_seen());
+commit fa50b3cc1b1d64cb457afbbf37dc545c6d4e06f1
+Author: Barry Song (Xiaomi) <baohua@kernel.org>
+
+mm/mglru: fix using folio_mark_accessed to replace folio_set_active
+
+This commit reverts the use of PG_referenced on in-fault readahead file
+folios from commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
+replace folio_set_active"), and instead adjusts lru_gen_folio_seq() to place
+file folios with PG_active set and PG_workingset clear into the
+third-youngest generation.
+
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index ab69b9930893f..97f157aafd581 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -319,7 +319,8 @@ static inline unsigned long lru_gen_folio_seq(const s=
+truct lruvec *lruvec,
+>  	 * |<---------------------------- MAX_NR_GENS -------------------------=
+--->|
+>  	 */
+>  	if (folio_test_active(folio))
+> -		gen =3D MIN_NR_GENS - folio_test_workingset(folio);
+> +		gen =3D MIN_NR_GENS - folio_test_workingset(folio) +
+> +		      (type ? !folio_test_workingset(folio) : 0);
+
+[Severity: High]
+Does assigning gen =3D 3 (lrugen->max_seq - 2) for all file folios (type =
+=3D=3D 1)
+that have PG_active set and PG_workingset clear break other MGLRU paths that
+set PG_active expecting the folio to land in an active generation?
+
+First, in mm/vmscan.c, evict_folios() promotes folios rejected by
+shrink_folio_list() out of min_seq[type] by clearing LRU_REFS_FLAGS and
+setting PG_active:
+
+mm/vmscan.c:evict_folios() {
+	...
+		folio_set_lru_refs(folio, 0);
+		if (lru_gen_folio_seq(lruvec, folio, false) =3D=3D min_seq[type])
+			folio_set_active(folio);
+	}
+
+	move_folios_to_lru(&list, false);
+}
+
+When 3 generations exist (lrugen->max_seq - lrugen->min_seq[1] =3D=3D 2),
+max(lrugen->max_seq - 2, lrugen->min_seq[1]) equals min_seq[1]. A rejected
+!PG_workingset file folio (for example, a mapped file folio spared via
+FOLIOREF_KEEP on its first rmap scan in lru_gen_set_refs(), a DMA-pinned
+folio, or a folio failing try_to_unmap()) has its PTE accessed bit and
+PG_referenced cleared, and move_folios_to_lru() -> lru_gen_add_folio() puts
+it right back into min_seq[1] instead of promoting it. Even when 4
+generations exist, evict_folios() clears PG_referenced and puts the folio in
+lrugen->max_seq - 2, so the next rmap scan in lru_gen_set_refs() sees
+!folio_test_referenced(folio) && !folio_test_workingset(folio) again and can
+never promote it to PG_workingset.
+
+Second, in mm/vmscan.c, shrink_folio_list() sets PG_reclaim on dirty or
+writeback file folios and jumps to activate_locked, which sets PG_active:
+
+mm/vmscan.c:shrink_folio_list() {
+	...
+		if (folio_test_dirty(folio)) {
+			if (folio_is_file_lru(folio)) {
+				node_stat_mod_folio(folio, NR_VMSCAN_IMMEDIATE,
+						nr_pages);
+				if (!folio_test_reclaim(folio))
+					folio_set_reclaim(folio);
+
+				goto activate_locked;
+			}
+	...
+activate_locked:
+	...
+		folio_set_active(folio);
+}
+
+Because lru_gen_folio_seq() checks folio_test_active(folio) before the
+PG_reclaim && (folio_test_dirty(folio) || folio_test_writeback(folio))
+branch (which assigns gen =3D MIN_NR_GENS =3D 2), won't setting PG_active o=
+n a
+!PG_workingset dirty or writeback file folio downgrade it from gen =3D 2
+(active) to gen =3D 3 (inactive, or min_seq[1] when 3 generations exist)?
+
+Third, when a !PG_workingset file folio is explicitly activated via
+folio_activate() -> lru_activate(), or when it is isolated from the active
+generation lrugen->max_seq - 1 for migration/compaction via
+lru_gen_del_folio() (which sets BIT(PG_active) when !reclaiming &&
+lru_gen_is_active(lruvec, gen)), re-adding it via lru_gen_add_folio() now
+places it into lrugen->max_seq - 2 (LRU_INACTIVE_FILE). Doesn't this demote
+activated and migrated active file folios into an inactive generation?
+
+>  	else if (reclaiming)
+>  		gen =3D MAX_NR_GENS;
+>  	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
+> @@ -327,7 +328,7 @@ static inline unsigned long lru_gen_folio_seq(const s=
+truct lruvec *lruvec,
+>  		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
+>  		gen =3D MIN_NR_GENS;
+>  	else
+> -		gen =3D MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_refe=
+renced(folio));
+> +		gen =3D MAX_NR_GENS - folio_test_workingset(folio);
+> =20
+>  	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_=
+seq[type]));
 >  }
->  
->  /*
-> diff --git a/mm/damon/perf_source.c b/mm/damon/perf_source.c
-> index 4baa8aebcfa8..e8365dbe1744 100644
-> --- a/mm/damon/perf_source.c
-> +++ b/mm/damon/perf_source.c
-> @@ -27,6 +27,8 @@ struct damon_perf_probe_state {
->  	struct perf_event *single_event;
->  };
->  
-> +static DEFINE_PER_CPU(unsigned long, damon_perf_seen);
-> +
->  static void damon_perf_overflow(struct perf_event *perf_event,
->  				struct perf_sample_data *data,
->  				struct pt_regs *regs)
-> @@ -40,6 +42,8 @@ static void damon_perf_overflow(struct perf_event *perf_event,
->  		.cpu = smp_processor_id(),
->  	};
->  
-> +	this_cpu_inc(damon_perf_seen);
-> +
->  	/*
->  	 * Teardown NULLs event->ctx (with a release barrier) before releasing
->  	 * the per-CPU perf events, so an in-flight overflow racing the
-> @@ -84,6 +88,16 @@ static void damon_perf_overflow(struct perf_event *perf_event,
->  	damon_report_access(&report);
->  }
->  
-> +unsigned long damon_get_perf_seen(void)
-> +{
-> +	unsigned long sum = 0;
-> +	int cpu;
-> +
-> +	for_each_possible_cpu(cpu)
-> +		sum += per_cpu(damon_perf_seen, cpu);
-> +	return sum;
-> +}
-> +
->  static enum cpuhp_state damon_perf_cpuhp_state;
->  
->  /*
-> diff --git a/mm/damon/perf_source.h b/mm/damon/perf_source.h
-> index 12ca61be7243..49beca6e3189 100644
-> --- a/mm/damon/perf_source.h
-> +++ b/mm/damon/perf_source.h
-> @@ -50,6 +50,7 @@ int damon_perf_probe_setup(struct damon_ctx *ctx,
->  			   struct damon_perf_probe_event *event);
->  void damon_perf_probe_teardown(struct damon_ctx *ctx,
->  			       struct damon_perf_probe_event *event);
-> +unsigned long damon_get_perf_seen(void);
->  
->  #endif /* CONFIG_DAMON_PERF_SOURCE */
->  #endif /* _DAMON_PERF_SOURCE_H */
-> '''
 
-I found that if I enable the kernel NMI watchdog, this issue can be
-fixed.  So I think this is not issue of this patch.  What do you think?
+[ ... ]
 
-[...]
+> diff --git a/mm/workingset.c b/mm/workingset.c
+> index 1504f91cdca5f..10d4ce202cca4 100644
+> --- a/mm/workingset.c
+> +++ b/mm/workingset.c
+> @@ -319,13 +319,11 @@ static void lru_gen_refault(struct folio *folio, vo=
+id *shadow)
+> =20
+>  	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
+> =20
+> +	/* see folio_add_lru() where folio_set_active() will be called */
+> +	if (lru_gen_in_fault())
+> +		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
+> +
+>  	if (workingset) {
+> -		/*
+> -		 * see folio_add_lru(), where folio_set_active() is
+> -		 * called for workingset folios
+> -		 */
+> -		if (lru_gen_in_fault())
+> -			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
+>  		folio_set_workingset(folio);
+>  		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+>  	} else
 
-Best regards,
-Rui Yan
+[Severity: Medium]
+When a file folio (type =3D=3D 1) refaults in a page fault with workingset =
+=3D=3D
+false, should WORKINGSET_ACTIVATE_FILE still be incremented here?
+
+With workingset =3D=3D false, PG_workingset is not set. Although folio_add_=
+lru()
+calls folio_set_active(folio), lru_gen_add_folio() clears PG_active and
+lru_gen_folio_seq() now maps a file folio with PG_active and !PG_workingset
+to gen =3D 3 (lrugen->max_seq - 2).
+
+In include/linux/mm_inline.h, lru_gen_update_size() only accounts
+lrugen->max_seq and lrugen->max_seq - 1 as active:
+
+include/linux/mm_inline.h:lru_gen_update_size() {
+	...
+	/* addition */
+	if (old_gen < 0) {
+		if (lru_gen_is_active(lruvec, new_gen))
+			lru +=3D LRU_ACTIVE;
+		__update_lru_size(lruvec, lru, zone, delta);
+		return;
+	}
+	...
+}
+
+When 3 or more generations exist, the folio is added to LRU_INACTIVE_FILE,
+so moving the mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type,
+delta) call outside if (workingset) counts an activation for a file folio
+that is placed in an inactive generation.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261016213115.7051=
+5-1-baohua@kernel.org?part=3D1
 
