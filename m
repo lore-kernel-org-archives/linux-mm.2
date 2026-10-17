@@ -4,99 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB352CCF2C9
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 18:51:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 417FBCCF2C4
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 18:54:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0C456B0095; Sat, 17 Oct 2026 14:51:35 -0400 (EDT)
+	id E82156B0098; Sat, 17 Oct 2026 14:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE3266B0096; Sat, 17 Oct 2026 14:51:35 -0400 (EDT)
+	id E32FE6B0099; Sat, 17 Oct 2026 14:54:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD29B6B0098; Sat, 17 Oct 2026 14:51:35 -0400 (EDT)
+	id D22056B009B; Sat, 17 Oct 2026 14:54:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A9776B0095
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 14:51:35 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DDC8B160382
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:51:34 +0000 (UTC)
-X-FDA: 85333011708.02.355A085
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2818F80005
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:51:33 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jm+M18Hk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of jic23@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jic23@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE2736B0098
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 14:54:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2AF62C02DF
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:54:26 +0000 (UTC)
+X-FDA: 85333018932.22.9081F77
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 53D7FC0002
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:54:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RuJnkUrd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792263093;
+	s=arc-20220608; t=1792263264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7p2v8cd8Piqf2r8JBIYxKwNid9G5UEqcxbvv8thHaUg=;
-	b=SJ1fKwMLS91H8RzoxJ82g/iLrFuYRWISEe7TJyijz9Du4NTCv9/SEoQL4AiiJoUpoYaB2Y
-	6Izsg1mCbtW2EcN4NkGB6+aAT2Cko1KwDi6zoM5KP8EBKopYe6dlA2EPXc0LpvRAmI+toQ
-	eHJgJdWDAWoHWZGGCXHHpleqHhtPdLM=
+	bh=f1fNOsVKAAab4WI8wQjcXQIXucd9FPacs7g4minaeJs=;
+	b=6ECHFJVYhx2hWRFVJVxPDL1dsl+JKruY3HpQVydzf20w1h0+WnKlCljQ+6q5ZX8nJY+JtO
+	b9PiJK2Y+8XtC9gMTp5dePR5cjK/Tm1ipJW3sbuPFpaa7xo8qr9wAKDuw6ubb4H7RH/JO9
+	mdLCh2s/lVd3aE40UiAFABex+jqGdyI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jm+M18Hk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of jic23@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jic23@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RuJnkUrd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792263093;
-	b=WvjHGAYoMTBVDIr5iOBYHcOZBl+P9o+lH/1U5j5d3wsbn1E/cpLj/wzeIV30SvpXKzYT/i
-	NGSsgytTy5fdXqhGufaRTntJHhjrrTCbE5jSoOpqTARznz7bft0+MeFmghAaM9fiXJCWxr
-	LYvz7FDyOfsEDrGnBSvK3EMdehPvkys=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78AF0435E1;
-	Sat, 17 Oct 2026 18:51:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD12E1F000C4;
-	Sat, 17 Oct 2026 18:51:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792263092;
-	bh=7p2v8cd8Piqf2r8JBIYxKwNid9G5UEqcxbvv8thHaUg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Jm+M18HkZppQqg/RREcrWCrGXHylE+GKhzJrKgu4eSkw+4c31hXYZ2PhX+qwGC8xc
-	 eqm2gtYAO8klRIZE95rlvV4LHqITWTVKQFF2hP/Uv5XHKIe5OyQf1Ia3KVA0Kh5hwb
-	 Hhp6QGzws/nXpRj2gMUj2yEseWibGecmuURxzTyTV0UU+TFroIQDwwZivTcpcrnAeR
-	 5+CpOfbPN1RJ+CIZg1O9ffWRS1dRCImzvmeoIe6nNeDLTnDDfqq1GHbgwBfNe+Ir5p
-	 rqWGQIEPfXlgMciqlPdovRGsyLC8NoXW0fWwli9l3JPhBrzl2hg/pzcFamxmP5LXUg
-	 DEtpYO7DKUb2Q==
-Date: Fri, 16 Oct 2026 23:18:27 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>, Vishal Verma
- <vishal.l.verma@intel.com>, Dan Williams <djbw@kernel.org>, Miaohe Lin
- <linmiaohe@huawei.com>, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Breno Leitao <leitao@debian.org>, Ira
- Weiny <iweiny@kernel.org>, Li Ming <ming.li@zohomail.com>, Richard Cheng
- <icheng@nvidia.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
- Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, David Hildenbrand
- <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Kiryl Shutsemau
- <kas@kernel.org>, Harry Yoo <harry@kernel.org>
-Subject: Re: [RFC PATCH 1/5] cxl/mbox: Add Get Poison List snapshot support
-Message-ID: <20261016231827.074e0326@jic23-hlaptop>
-In-Reply-To: <20261010162017.62506-2-shaikhkamal2012@gmail.com>
-References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
-	<20261010162017.62506-2-shaikhkamal2012@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	t=1792263264;
+	b=GnnbexjKEJAFyWCAzLIIQwq5TZZziIsknT1e2qb78oup8GrAwrlqPOd6wpWLJsN0vhxYNp
+	NYVtPqC8zsOfuHRYeyoB4kqYPzMNJiygKz9oyxaNp+5940pV3XOr9egtqk2X8LQrdUDr+f
+	bs4MvShawozmJdMqzQb9d912UD1Y0Z8=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a1dec056ddso2930795e9.1
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 11:54:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792263263; x=1792868063; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=f1fNOsVKAAab4WI8wQjcXQIXucd9FPacs7g4minaeJs=;
+        b=RuJnkUrdGdloop8jpNCzw5bL9jV9GyFocSsGnnuSYibGxlOxY7r+8NRsi7YthpU4oO
+         v+UhcKBQU/kaD9xans29LJ5un/Y7cturWESbVFXv3knYIJiNGUEuG/qAKH8eEmePNUL1
+         mRyfGjT+WWAFEJXch7UqCchC2HZbkPlnPAEXfKtcixzmOhxmzqqKvVqzmoqN0VI6/0Gq
+         ihLz4f8P5gpuL3k3s53k7SIhAHBCTxuwih5wyR+FtCzOxpB/RDGGbfQxD8hpNUb7OG0J
+         fTMNN2sZpZO6ezIArEW41eZ19kSU2XRTziFMz5VsbwiCiS3b/nNAJlj/kkYA/JcUNmrQ
+         C2kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792263263; x=1792868063;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f1fNOsVKAAab4WI8wQjcXQIXucd9FPacs7g4minaeJs=;
+        b=odhHlor+ebrcOQsqrK9iK/sV8ws0S2YDKh7udaTXVj5JoPo61d2xR2y1Gp8xQWdXD+
+         i2b76NpKLoo66qoWVYeiqIrnciBGE3xvnnMZ2UgMHdTW9dtsuFLmlntmzEn8n6c8sObT
+         KFo7qMHS/0WRcS/2EYOXfUG5xxA9pll9EX0je69QFcOILDID+Zrnfz+em3WnXKeb5T6U
+         NLkK+zxGxPsT9N7AYdusecPTxt20J2z6ofbzjDnaciXAk/djKUR8iP69kp+XUt1NStNx
+         kKbIR+eqFIjcFJy7ab0ubdn66CyuVrNyOd1vgYYP2e734mlOtQYplsuff+mofVMbjICW
+         i/2Q==
+X-Gm-Message-State: AFq9FYJeM9PLBxLEloeYs9n/D6TDyCCnYXM10rzeoTYqvJeFmIezg0gX
+	JHOaOD4pHvIB32ycofcmvsMTcC67mW1iRFfEjiIYAuRVeQrtWdjyNgN2
+X-Gm-Gg: AYBFou1pZ20Percw5wzGjUEnsBy+U08K97VypSbJBNHgN7dVpGcjvCfTfb9LLeS3V0e
+	8VvGJDIr4gT6twtEJf+kp9pyRrfz9XoZ6sojNF6/veUho7FrlMaPk/YE/oh9wSoSj03hjDxSnQk
+	1n0u5hNw0RRsEsx4dPdWbX35507f+MbanGfxo9WPmsqRaXRoM/0/6gFT7U1j0Iy5srFJWzbxDfu
+	6uEThkQpeSUkqmPF9dXyUospM0UcKazDviFEeHzdfKLFYWtS/G6PotfDJLmTJoUT3ODrCCnX5vM
+	49N+lHEOvAruiqVgwxp/lmrPY1uN4XqDDMSCARWMrosac9qyitbhOV7d45gO0ttWJh0u0SmURgz
+	6iVDtokg+QmX6491jQ5I/adNSWlowF1jVjt2IL+Osj2Ee690zzt3wLL7x5XmPPzJIGdE3thv0VO
+	ya/1IQOYPtJLLBqLZt/wEVV8a3W2TjC4R8L1lBmx7dlMBuHCgFRczgaIplp0ToDPfINA==
+X-Received: by 2002:a05:600c:3b17:b0:4a1:7c7d:8881 with SMTP id 5b1f17b1804b1-4a1d76139ffmr71111935e9.13.1792263262725;
+        Sat, 17 Oct 2026 11:54:22 -0700 (PDT)
+Received: from [192.168.1.18] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4e28bcsm12739567f8f.23.2026.10.17.11.54.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Oct 2026 11:54:21 -0700 (PDT)
+Message-ID: <fe58f891-7752-4691-9e67-b5a4a5c125a7@gmail.com>
+Date: Sat, 17 Oct 2026 20:54:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] mm: hugetlb: avoid recursive CMA allocation during
+ migration
+To: Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev, osalvador@suse.de,
+ david@kernel.org, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
+ <d145aeb815b318ddd4dd9058d20038acfe5dc1bb.1792136742.git.zhengqi.arch@bytedance.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <d145aeb815b318ddd4dd9058d20038acfe5dc1bb.1792136742.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2818F80005
-X-Stat-Signature: bcg5u8acjethd6g5szw6g3mdeho6rzms
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 53D7FC0002
+X-Stat-Signature: tdw83p59cn81a4uukc9pdjor59txpbbi
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792263093-904743
-X-HE-Meta: U2FsdGVkX18klazAyYh2Zn/1VBRmsZfobCYkSX89ZgOpUC03pKPCUaOz5nFDqp4Xwoe+QCo9nKls86KVOMIMW/oaHUg8njNPzaFXZG0DwY/FL08qAaa126xeZJ46xthPssRYindQab+ovqW/JTpikZryOyCSsI8sCOSYVhILeLrn/2VuE3bHRyetf7hg4wRNiTfefZfpEF3SKhH35MIOyubjAeYcJdVkQizPvNpMbaMbjhksKAeB8D9lUfyhh4P5k6TsUR7mXuNeO8Rjtj37meX3Ge8+mtmKMcV6pZxPXg29gP2Vlr68hSCo1Zw+6NtQKSJYTcVfNblFvJdFqAvN7tGVxL8+OA5FNoN9YWEoFkfgNuF22klc0cP6VEsIx4w+swuwVloXBQL4IswLwzdJZox1h+empRMX2Gmusk6EQ43mD+fkJhk2fh+hkGRvz4xqCKZ8gR8d1BEC3w7fCwsoi4GFW61F+JMwc75vzIxUpmr8AWJd4i5QIKf7PNZ0nQKVvBXGvUw48S7y67Q89YHr+rTbNuj7Gtm1RTo2Rv2HA03Dm8b9hjAA6rDRBSbIsmvaQ90QXjM3zUer/oXjbJGU03TGJ8++MOF14lhkfeVRD+10A/EFpYznUTDlDL05ST9fjE9PzXEJqw3XUGntgmMb48yCKy219qsY7qGtfheMj7dkzoVH7yZR5jbI4QS7TrnwpBDbITsNXSeyUa5rEun24PH7ywJRBOkh1AAtnE57AgIjs3OGe6ldpI0T6P+C4h/qsTh+uGXu1lwTHn24mK+UfCF3wzXNDFzda7P5CFFIcEjd0yEEIm74dCtecedALOm6qtG6M7dbw4dZzMHZewAE1tLjlFuxXK35YN/gewEnz0CWRBNAx0Sz7j02DGD8/f2pfj3PTL+MXJ7GbEP5UBhttg1aQSuz7Yj/FcpKkxsc6wIO7DKd+668dlSptteYg/XYdpYQg0I7NHHQ9cUv+QF
- 8vtj9Jvl
- zgVNzyF9U5TcFsPifGZW+K2Ydmhq7KlpI5tv4LUkO2JoBrkEZdSdZvczpuOkDDD+esaGOOZRQh9Ayl0HGEJD0JwodHbipuWN7M9W9lyP05pCpbcofHSQ1PSt6iQeHeMqz8GX9/Kg6C06/zDg477qT8sLsYFrDpVpHPWhpAEa19hSY2dP/LjRIsj2fAgrkD4gtGToRku2ntQNyzI/BM9L8Yev+bMF0lNrmQNaBrojl9x3bpDxuZ73LmivtZScOxioIusOsjG+C/NfzUvi6b8Q+ZAMQFT76WTRSexRDU/bSTn4NRnGnTydr738MwHF5EoilSrOv
+X-HE-Tag: 1792263264-16638
+X-HE-Meta: U2FsdGVkX18KnVf2E1VdIK88ZcPbzBUv9R2SVbmNc+aU4iXhLXLOVjID70PU4TJaJgEKq2nqmn6TV85HWDl0aKxkXjq6AeyP6SN2u9tODpTibzhhploVLL5UZmkX+93/OEvth/iXWZwp+UszkQ58TYKEtM20XKgJybwuG4OdZIgAZhbdvtWGIIGDGDHotaJ0kvjH1bzsqvXZRJ4vRMvy231EWhyj1DUCweGJgPspNrXEs/2EeIJvxJma+ReOlTul3Fu12J+2s/ikGbwslQnouEAag9ExeTI4d6uqd3JJhm6yrT2bhsR2HXnIn31nzfM8g01jV7vHo0LUlEZzFX4uyrdcqZu03ZuYC3YXruIF8PdXyUC75ELlBo1F9Gygx/nokloc3+Q2fkCOmM6B44c50F3bcZ1Mx1KJO5goAPiJYVHg30qSynCphGkS0HljIrWiMOtp0uzPMSLKwUw31jiImeHU8WbdCoyAuYRuqUMfmJlcuCIXZFavqtq/8hus6FEewtlTeA/SBdBvRspSoCSUQJFir04FcivE4Zwey9H90Egch0VjdkDbm1TIKY8glxGCWbJqwkVlXoAVvW1iN3Vm8eIGM9GuN8c8ci8Fba8TcnYICeSiy9HWPqx15OGxTUNWAr57U/Ow7N7Enjl5pBYqgLAdWWhKy+ConarZboy8y51SJzvJWzrMzoA1/xbe+jmUVX+G8Ey6jiDmQrfXg6hefWtizAXFHSBIE08N1kjqdOCWqZh2HjhuFo+c+iEc/zdeqRyPDDlIthJqKA2zfn98O36DI16m19/QS2cUmOjIeVz99PoEvlvRI6LMvI2aywwk88uLpDKL4kFlhCbROevDebwK66abt0CZorwZjGYnbc7z6xIlYmKTCYLSATzQv4OTMSCyQfnOrS/DLdlP0WhG7+kyVSssfYyioeQrdVKbIWEDEbuwqlq2SFQgaafFYg1WoGi8aJ5652Yqke3/EAX
+ fv9F/Oo3
+ wt4GI8rNqN8XLgTQgj0/UIPXjMxFxFiRiFpapp5EcP/aFd5z7myfWLhepwM65gVnBofCB0U/ymPpqc8nhQjRBqyp7p+Ekemg8iN/AzqQYwbFQASylrL12AYNq9NXi1N/9YEuam5P7at8J9TaySYHDE4xVfUQfwhLERlKQKSeemtGPPNemNEGkuFLi1lWlzKXIWOgaCBfvvLewyC3azWIbKnVn9IojV72qXaXqWQjuFQFaFKnDTYc6fQkgUQqVJusxgf5Fj9tS07daQ9PjkLnyYuJ1O+6Hl8/PgI6ZFW2y1f6Qv0hUofMm93lZHbefkqFAFPnTokFMCA9zs79qT5Ffk7WuFWlsNZ9UhDJZmqVEuF0tbPUrntEIDzfMhjySVh5wV8oulE6HKs5MRmNEkQN5Bi3tADZcM36gi2EeFAQUpmIpnPdAVGVd2T4xqRbg+VuLpDBtL21AMpedvuvHmyi3NcnDVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,273 +124,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 10 Oct 2026 21:50:09 +0530
-Shaikh Kamaluddin <shaikhkamal2012@gmail.com> wrote:
-
-> cxl_mem_get_poison() uses a device-owned output buffer for each Get
-> Poison List response. It traces the records before issuing the next
-> command, which overwrites that buffer when the device sets the More
-> Media Error Records flag. A caller therefore cannot inspect the complete
-> set of collected records after the function returns.
+On 10/16/26 12:07 PM, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Add a caller-owned snapshot and copy each validated mailbox response
-> into it. Preserve device overflow and scan-in-progress status, and
-> indicate when the host stops collection before retrieving all available
-> records.
+> Contiguous allocation can migrate allocated HugeTLB folios or replace free
+> HugeTLB folios while holding a CMA allocation mutex. Allocating a
+> replacement through CMA would recurse into that allocation path once
+> non-gigantic HugeTLB pages can use CMA.
 > 
-> Keep cxl_mem_get_poison() as the existing trace-only wrapper so its
-> current callers, including trigger_poison_list, retain their behavior.
+> Add a fresh allocation helper that bypasses CMA, and use it for free folio
+> replacement. Pass an explicit allow_cma argument through the migration
+> allocation API and disable it for MR_CONTIG_RANGE. Honor hugetlb_cma_only
+> by failing fresh allocation when the corresponding size requires CMA.
 > 
-> Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-> ---
->  drivers/cxl/core/mbox.c | 137 ++++++++++++++++++++++++++++++++++++++--
->  drivers/cxl/cxlmem.h    |  25 ++++++++
->  2 files changed, 156 insertions(+), 6 deletions(-)
+> The existing gigantic migration restriction is unchanged.
 > 
-> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> index 55828a836c01..2752b46ffee2 100644
-> --- a/drivers/cxl/core/mbox.c
-> +++ b/drivers/cxl/core/mbox.c
-> @@ -1376,14 +1376,91 @@ int cxl_set_timestamp(struct cxl_memdev_state *mds)
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_set_timestamp, "CXL");
->  
-> -int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
-> -		       struct cxl_region *cxlr)
-> +int cxl_poison_snapshot_init(struct cxl_memdev *cxlmd,
-> +			     struct cxl_poison_snapshot *snapshot)
-> +{
-> +	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-> +	u32 capacity = mds->poison.max_errors;
-> +
-> +	if (!snapshot)
+> Assisted-by: LLM
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-That seems like a buggy use of the interface, so not sure we need
-that defence.
+[snip]
 
-> +		return -EINVAL;
-> +	memset(snapshot, 0, sizeof(*snapshot));
-> +
-> +	if (!test_bit(CXL_POISON_ENABLED_LIST, mds->poison.enabled_cmds))
-> +		return -EOPNOTSUPP;
-> +
-> +	if (!capacity)
-> +		return -EPROTO;
-> +
-> +	snapshot->records = kvmalloc_array(mds->poison.max_errors,
-> +					   sizeof(*snapshot->records),
-> +					   GFP_KERNEL);
+>  /*
+> - * Common helper to allocate a fresh hugetlb folio. All specific allocators
+> - * should use this function to get new hugetlb folio
+> + * Common helper to allocate a fresh hugetlb folio.
 
-kvmalloc_objs()?
+couldn't allow_cma be passed down to alloc_fresh_hugetlb_folio() instead
+of adding a second copy of it, so this line can stay?
 
-> +	if (!snapshot->records)
-> +		return -ENOMEM;
-> +
-> +	snapshot->capacity = capacity;
-> +
-> +	return 0;
-> +}
-> +
-> +void cxl_poison_snapshot_destroy(struct cxl_poison_snapshot *snapshot)
-> +{
-> +	if (!snapshot)
-> +		return;
-> +
-> +	kvfree(snapshot->records);
-> +	memset(snapshot, 0, sizeof(*snapshot));
-> +}
-> +
-> +static int cxl_poison_snapshot_append(struct cxl_poison_snapshot *snapshot,
-> +				      struct cxl_poison_record *records,
-> +				      u32 count)
-> +{
-> +	u32 available;
-> +
-> +	/*
-> +	 * Existing cxl_mem_get_poison() callers request tracing only and
-> +	 * pass no snapshot.
-> +	 */
-> +
-> +	if (!snapshot)
-> +		return 0;
-> +
-> +	if (!snapshot->records)
-> +		return -EINVAL;
-> +
-> +	if (snapshot->nr_records > snapshot->capacity)
-> +		return -EOVERFLOW;
-> +
-> +	if (!count)
-> +		return 0;
-> +
-> +	if (!records)
-> +		return -EINVAL;
-> +
-> +	available = snapshot->capacity - snapshot->nr_records;
-> +	if (count > available) {
-> +		snapshot->truncated = true;
-> +		return -ENOSPC;
-> +	}
-> +
-> +	memcpy(&snapshot->records[snapshot->nr_records], records,
-> +	       count * sizeof(*records));
-> +	snapshot->nr_records += count;
-> +
-> +	return 0;
-> +}
-> +
-> +static int cxl_mem_get_poison_common(struct cxl_memdev *cxlmd, u64 offset,
-> +				     u64 len, struct cxl_region *cxlr,
-> +				     struct cxl_poison_snapshot *snapshot)
->  {
->  	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
->  	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->  	struct cxl_mbox_poison_out *po;
->  	struct cxl_mbox_poison_in pi;
-> -	int nr_records = 0;
-> +	u32 nr_records = 0;
-> +	u32 count;
->  	int rc;
->  
->  	ACQUIRE(mutex_intr, lock)(&mds->poison.mutex);
-> @@ -1408,29 +1485,77 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  		if (rc)
->  			break;
->  
-> -		if (!le16_to_cpu(po->count)) {
-> +		count = le16_to_cpu(po->count);
-> +		if (!count) {
->  			dev_dbg(&cxlmd->dev, "Poison empty payload!\n");
-> +
-> +			if (po->flags & CXL_POISON_FLAG_MORE) {
-> +				if (snapshot)
-> +					snapshot->truncated = true;
-
-Count of zero and yet more? How would that happen? This smells like
-a hardware bug.  Maybe we defend against it, but that's a separate
-question from the rest of this patch.
-
-> +				rc = -EPROTO;
-> +			}
-> +
-> +			break;
-> +		}
-> +
-> +		if (struct_size(po, record, count) > mbox_cmd.size_out) {
-> +			dev_err(&cxlmd->dev,
-> +				"invalid poison record count: %u\n", count);
-
-Also looks like broken hardware. I don't necessarily mind that sort
-of defense, but not in a patch doing anything else.
-
-> +			rc = -EPROTO;
->  			break;
->  		}
->  
-> -		for (int i = 0; i < le16_to_cpu(po->count); i++)
-> +		for (u32 i = 0; i < count; i++)
->  			trace_cxl_poison(cxlmd, cxlr, &po->record[i],
->  					 po->flags, po->overflow_ts,
->  					 CXL_POISON_TRACE_LIST);
->  
-> +		if (snapshot && (po->flags & CXL_POISON_FLAG_OVERFLOW)) {
-> +			snapshot->device_flags |= CXL_POISON_FLAG_OVERFLOW;
-> +			snapshot->overflow_ts = le64_to_cpu(po->overflow_ts);
-> +		}
-
-I'm curious. What use is the overflow_ts in your scheme?  Lets keep things
-minimal unless there is a reason to add data to the snapshot.
-
-> +
-> +		if (snapshot && (po->flags & CXL_POISON_FLAG_SCANNING))
-> +			snapshot->device_flags |= CXL_POISON_FLAG_SCANNING;
-> +
-> +		rc = cxl_poison_snapshot_append(snapshot, po->record, count);
-> +		if (rc)
-> +			break;
-> +
->  		/* Protect against an uncleared _FLAG_MORE */
-> -		nr_records = nr_records + le16_to_cpu(po->count);
-> +		nr_records += count;
->  		if (nr_records >= mds->poison.max_errors) {
->  			dev_dbg(&cxlmd->dev, "Max Error Records reached: %d\n",
->  				nr_records);
-> +			if (snapshot && (po->flags & CXL_POISON_FLAG_MORE))
-> +				snapshot->truncated = true;
-> +
->  			break;
->  		}
->  	} while (po->flags & CXL_POISON_FLAG_MORE);
->  
->  	return rc;
->  }
-> +
-> +int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
-> +		       struct cxl_region *cxlr)
-> +{
-> +	return cxl_mem_get_poison_common(cxlmd, offset, len, cxlr, NULL);
-> +}
->  EXPORT_SYMBOL_NS_GPL(cxl_mem_get_poison, "CXL");
->  
-> +int cxl_mem_get_poison_snapshot(struct cxl_memdev *cxlmd, u64 offset, u64 len,
-> +				struct cxl_region *cxlr,
-> +				struct cxl_poison_snapshot *snapshot)
-> +{
-> +	if (!snapshot || !snapshot->records || !snapshot->capacity)
-> +		return -EINVAL;
-> +
-> +	if (snapshot->nr_records > snapshot->capacity)
-> +		return -EOVERFLOW;
-> +
-> +	return cxl_mem_get_poison_common(cxlmd, offset, len, cxlr, snapshot);
-> +}
-
-Blank line here
-
->  static void free_poison_buf(void *buf)
->  {
->  	kvfree(buf);
-> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-> index c401e3a1af06..1d6f8d958bd2 100644
-> --- a/drivers/cxl/cxlmem.h
-> +++ b/drivers/cxl/cxlmem.h
-> @@ -812,6 +812,31 @@ int cxl_set_timestamp(struct cxl_memdev_state *mds);
->  int cxl_poison_state_init(struct cxl_memdev_state *mds);
->  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  		       struct cxl_region *cxlr);
-> +
-> +/**
-> + * struct cxl_poison_snapshot - Aggregate Get Poison List result
-> + * @records: Copied Media Error Records from all mailbox responses
-> + * @nr_records: Number of valid records stored in @records
-> + * @capacity: Maximum number of records that @records can hold
-> + * @overflow_ts: Timestamp associated with a reported device overflow
-> + * @device_flags: Persistent device status observed during collection
-> + * @truncated: Host stopped before collecting all available records
-> + */
-> +struct cxl_poison_snapshot {
-> +	struct cxl_poison_record *records;
-
-__counted_by_ptr() seems likely to apply here.
- 
-> +	u32 nr_records;
-> +	u32 capacity;
-> +	u64 overflow_ts;
-
-As above. I'd like to ensure this only stashes what we actually need.
-
-> +	u8 device_flags;
-> +	bool truncated;
-> +};
-> +
-> +int cxl_poison_snapshot_init(struct cxl_memdev *cxlmd,
-> +			     struct cxl_poison_snapshot *snapshot);
-> +void cxl_poison_snapshot_destroy(struct cxl_poison_snapshot *snapshot);
-> +int cxl_mem_get_poison_snapshot(struct cxl_memdev *cxlmd, u64 offset, u64 len,
-> +				struct cxl_region *cxlr,
-> +				struct cxl_poison_snapshot *snapshot);
->  int cxl_trigger_poison_list(struct cxl_memdev *cxlmd);
->  int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa);
->  int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa);
-
+-- 
+cheers,
+jose a. p-a
 
