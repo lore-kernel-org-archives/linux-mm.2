@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAAA9CCF2C7
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 10:05:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E0C0CCF2C1
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 10:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 080A66B0088; Sat, 17 Oct 2026 06:05:11 -0400 (EDT)
+	id 9F7086B008C; Sat, 17 Oct 2026 06:05:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 031856B008C; Sat, 17 Oct 2026 06:05:10 -0400 (EDT)
+	id 9CDC66B0092; Sat, 17 Oct 2026 06:05:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAF9C6B0092; Sat, 17 Oct 2026 06:05:10 -0400 (EDT)
+	id 8BCC56B0095; Sat, 17 Oct 2026 06:05:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C34006B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 06:05:10 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3C429A0261
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FBF46B008C
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 06:05:11 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E29D14023A
 	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 10:05:10 +0000 (UTC)
-X-FDA: 85331685180.13.5D04650
+X-FDA: 85331685180.20.AF2E857
 Received: from mx.itxnorge.no (itx-kvm-14.itxnorge.no [91.189.121.228])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9537C4000A
+	by imf11.hostedemail.com (Postfix) with ESMTP id B7C5040009
 	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 10:05:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=fkNO9mgm;
-	dmarc=pass (policy=reject) header.from=itx.no;
-	spf=pass (imf12.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=oO56X0+1;
+	spf=pass (imf11.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
+	dmarc=pass (policy=reject) header.from=itx.no
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1792231508;
-	b=iTGvlwQdfWjHYlRCmPfezgj9BaiBDcVm0T9MadDD059UWGDhcd07evN6WQGbfb4Swv1TRO
-	W09b0jWiyaUA3Qj8d/UBL9/K4kI1AK6mAx0y37DefBUxn0TG8akGUJnn/uyFjLTBBdO7ha
-	5x4lMksrFUKfDZQlMPyjuHogJlCx6tc=
+	b=mkvZwYCYgI/pwRJEqwT4uXnMTgoNPdlTyW0JBvbKob7KEHnsQOl5vSVWX2u0pJTD+y4Dkd
+	+NtVIJHnz7q8PbCAWQG33RkI35taE+7Ir9lo0U044XxL7hBcwtw2ojF4ktJGkaDfLJwnN6
+	eKPgf6v2ZCPsvsCL7GHA5hZ7nSE/EVY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=fkNO9mgm;
-	dmarc=pass (policy=reject) header.from=itx.no;
-	spf=pass (imf12.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no
+	imf11.hostedemail.com;
+	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=oO56X0+1;
+	spf=pass (imf11.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
+	dmarc=pass (policy=reject) header.from=itx.no
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1792231508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rT54bwXR0RkT/QOli/8iX9p1hf/Ll8/Tyy05zQ30IMw=;
-	b=1dHoACuRitF12HgO7tmeNv4+2HeM+Av+/O3mOXghi8gPd+48bOAs5GKWDqSfPhnOSB4M2z
-	c+h7qJG4MAzEySz9furIDTnxZg3YbA6WkKc4S2Wg3QhP72lzyQceA8vBgCs1DqfowMeZdE
-	Q/BRVE2OUhutF7cRd7xtuFDLfNJd0mQ=
+	bh=ijHdyvgjkTozfCUmxF87O//t2rILUVcJInxAFYQhzOg=;
+	b=vblKRKeOTFvz0B720KHD/T74yeW3c9T5U64wo/ABlgo2BuNLn+q8JVxJo7wllnrIwPzUxP
+	pTTvToj8koRtGmn1Jcob2eW3IeCv+nbp4zQyHowtpBciBmPT16dh2Gmsr0LsDpY59VJyA3
+	Moe1uUVY3/FWOt+SyvSEOw8g4CZjoZg=
 From: Stian Halseth <stian@itx.no>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
 	t=1792231506;
@@ -55,10 +55,10 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rT54bwXR0RkT/QOli/8iX9p1hf/Ll8/Tyy05zQ30IMw=;
-	b=fkNO9mgm5puVGBeVviBnR8oced7WC6Sl5MiuLui8A8qLs7wXeGPAaU5R7EHrPhOefcJLOO
-	rnhHPh3yLTbgOmOdjQgjpo2SFTO+8j/UO/A4LP3NVarvaQWxkMma42cnFjO003on18sZTu
-	ssjOw6xQtQ8yFzM0is8KC2gG++H9yE0=
+	bh=ijHdyvgjkTozfCUmxF87O//t2rILUVcJInxAFYQhzOg=;
+	b=oO56X0+1KSBelw+ynjRvG7iw1Gd6NSuf0/MAz50TKvcchGq8u0b2+xeWZY1ktqFCTkQEZ/
+	lMo2P4Ja3hUatKjN+fg3KvhnY+oLWkhMSEy3qv0dgem5YjVVYUZX4iXjihcwB8t40ea7LZ
+	ABWdCwtJObooesEEeXOHmEfnUmiLFgw=
 To: Andreas Larsson <andreas@gaisler.com>,
 	"David S . Miller" <davem@davemloft.net>
 Cc: Kees Cook <kees@kernel.org>,
@@ -66,23 +66,22 @@ Cc: Kees Cook <kees@kernel.org>,
 	sparclinux@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Stian Halseth <stian@itx.no>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] sparc64: Start bottom-up mmap searches at mm->mmap_base
-Date: Sat, 17 Oct 2026 12:04:50 +0200
-Message-ID: <20261017100451.2266781-2-stian@itx.no>
+	Stian Halseth <stian@itx.no>
+Subject: [PATCH 2/2] sparc64: Randomize the load address of PIE executables
+Date: Sat, 17 Oct 2026 12:04:51 +0200
+Message-ID: <20261017100451.2266781-3-stian@itx.no>
 In-Reply-To: <20261017100451.2266781-1-stian@itx.no>
 References: <20261017100451.2266781-1-stian@itx.no>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B7C5040009
+X-Stat-Signature: ccrhzgk88ccdh4cpbba9bkaepj1ytsi9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9537C4000A
-X-Stat-Signature: eqpd4pra85qk787ejpjczt8jq88x4bhx
-X-HE-Tag: 1792231508-533584
-X-HE-Meta: U2FsdGVkX1/HJ89gcoKBgnQOn71ZtIwtNIcJzUYl6us/n/lxeg5piGjwBONk1YxCUzzTHax+PVGCIOOJz5WFj3fVMgyII7iJZRFikgGjWNWWTG9XZeWImPKIcF5b0WoW0lP6p8ACaKlWTEPLLQufH7NrbGaBgMMmKgNAe8yadiAqrhuspAGkklMRRAF3ZkkBrmXv96+ha6A9S/C/qSwxQLiaYDmzUiF+3WVEa+HoVVnK7zAy7iTZrTWtwsmzrgSJy9ONmacRbo00ygHEOp2S9TfNK8/vZdhGP03XV+Ow5YchL1db+ouqK8LVqxsjtcBusIdb/u7Ts9CjCMqMMTf2dBNQvHa43RfHqnrqV2rbq+V/Zzoham1ZkQUdGxih1pVjXBYhmHi10GsUGzCADU5ehC62qwSB2BzxBpRuT7ThiDithhdIQO/9P8wefIn7IqoMySMRKb4wVw1rmFgScT+z0XE/txvfTy54LZXFsfm++ayp9xOcTgAwTCZUCHnyaWWeZWzyb6t7RKTSrbnAMjujTDDbs5ahLcviOqoMG1hvrlQiAj116HkhWoUwfWyH25StHACul7gpKcBEVWun4BDOzD8d2zeqdMJnmSaHmdDjjL8f60y6wFYusmaaPvWdItaCkqqtkVwhusmpscMAf1bNhfVejMvHiJfQL6JdvAf4Ly5LKu3KuCnerUD0Q8vp6EYictg39g1bSOtoFfeMtTJuuVhg8Uw8Zjl9WVHsBnoPLdfq4dCHmutUmyxQ22uDvyVJYLWPN0YFyyPSYaMbzvn7XjHnhzWMYasDLVXBEUt82RBn2MC/UYCeirCO+T22Muh1rHAobG0Hpt42URsvCgFEctE0mWsHLdaEpJPYHbEkrGkSt/QtmowLIHuH6iQNXkfWEGwKR6QVy/1sGV41f0M9zV7dyPrNLaGj8YNbk0FqSFWMzuj6cCfR1qADsrROpN5D8ny+P8p+o/1Zx5PAVRM
- R+VNyPYy
- DrHomFkrqieFeLE3v6A5/w85TxAwmCu3ewk5YgisDwABHK/smIQQZs9yxpGKeIlPAuQUWU4z4g+UIBBqW1hNNc3dCwrPk+TY4YwSRupggXfEBbV4DpkBhEiKcqFCC8nloYsfRO5+0OGtyKpwiLGjV2b/hQjykb/UGQYvufu+una/0CidbQ3puhlA+rhHMzuD/oPDx6XbT7k4WIbcAdBmNw1drT1NrWRqXmLeg
+X-HE-Tag: 1792231508-740756
+X-HE-Meta: U2FsdGVkX1/AfZcu8NLXSXKIgc7GBvGu+fIqrCj3MRkYkRQGqXR97c8C+j5WHIuIskL3A8MZqSGuVRBqrG/i9KP36gfKizvmHpkltbWjvhnBTcrmvkLFXnji9yEBGd/TeJ6YCpDQI5AfEXoA6vvn9uBI9fhV0VcDuXm/hGzVK3n0FtE32H2loIL77vkrTePecpByoeP9Qy3x8NptDO00pDabl5/fko0gpb/eM+65758y3sxkhtuuaaps6RWEyD6KgADuvo+zTZKHaxoMbnxaVopn3zgIBPcxpYGXtJJmKwQwEhU8ELq8DW1GhIAdhd2JsKsKth8bADuLE5/7ILGsuPL7kyQlfk2NBRVwG5k/53RnrgWIYA3hsz1IDzLoDlH4POb2+P+M3J7ff9ocOARezcvrjwakulEts3qIBpd/fo0eEVcqPb9Ik7nl2qrQ1JynAusJrQif7mos6xPFjbP/UJbcHuN/j43iJMQL374mPeJIQu4ugEbOQQhkZNarLajHtG5utomXC2bnRFFUmgQLBqSnkdTfnPACP0i2NwUul7GlHHe2jLMfM7YDNKTpawS65l4XUlLZ2dmJBqLpctzSrMJCOx8+uDxOS+yj3tNIxtH8RuJhxBxj8XdEDRvU+ldFUZ4pvwwjzh0XFvZj4IFdt2CskQdT6B/8cxr8xB1+sUqLFmD+elzUEhJodHQFVAVceMA9J2i/2kJwY5EGs3GvGqaeofpFpyhsEElQTB8gF0tt7R1/f3AJHAoPn7LFwYj8FX/wPeL054L+rPvpfBG7CrYk338m5oQCqhlsSuS9QBL36XdtkcV0g5uU3ClHZdLZviLuREetJpi64aK03Mb47Ig+tvbQ6AkD4s3uKp0bmgwOuTCzVwVpjX+6Fz3CG6LMJmLyCnHJWz+JearsszIag7kNXnOgoYc/9PhMwi39YifyNCc2ko+q4F77VG//qxXVIjRkYJqUutBpcs+KdQa
+ wlLNVu6P
+ AeB6B+7bQLq5aFkghUzPwH9vKfyAee3ffASnSAr1lX5ZHWvQX+QHGZD9IVdH1uLv3YpAGaMSJYB+FKQIztH2doN9uSaD/cJMXLSur0oU5kUhh7zm6mp2LIgWUoIK9Ub2cdjFGqYwzHYR0rNSflP/sZn+JHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,47 +89,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-arch_pick_mmap_layout() randomizes mm->mmap_base for the bottom-up
-layout, which every 64-bit task uses, but arch_get_unmapped_area()
-starts its search at TASK_UNMAPPED_BASE and never looks at it. Shared
-libraries and anonymous mappings of 64-bit tasks therefore land at the
-same address on every run; only the stack is randomized.
+On sparc64 every PIE executable (ET_DYN with PT_INTERP) is loaded at
+exactly ELF_ET_DYN_BASE, with its brk heap at a fixed offset after it.
+The stack and the mmap base are randomized; the program image and brk
+are not.
 
-Before the conversion to vm_unmapped_area() the search started at
-mm->free_area_cache, which binfmt_elf set to mm->mmap_base. Use
-mm->mmap_base as the low limit again, as generic_get_unmapped_area()
-does.
+load_elf_binary() adds arch_mmap_rnd() to the load bias and calls
+arch_randomize_brk(), but without ARCH_HAS_ELF_RANDOMIZE both are
+no-ops. sparc64 already has a suitable mmap_rnd() for the mmap base.
+Rename it to arch_mmap_rnd(), add arch_randomize_brk() with the ranges
+x86 and the generic version use, and select ARCH_HAS_ELF_RANDOMIZE.
 
-Fixes: bb64f55019c7 ("mm: use vm_unmapped_area() on sparc64 architecture")
-Link: https://github.com/sparclinux/issues/issues/119
-Cc: stable@vger.kernel.org
+Closes: https://github.com/sparclinux/issues/issues/119
 Signed-off-by: Stian Halseth <stian@itx.no>
 ---
- arch/sparc/kernel/sys_sparc_64.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../features/vm/ELF-ASLR/arch-support.txt          |  2 +-
+ arch/sparc/Kconfig                                 |  1 +
+ arch/sparc/kernel/sys_sparc_64.c                   | 14 ++++++++++++--
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
+diff --git a/Documentation/features/vm/ELF-ASLR/arch-support.txt b/Documentation/features/vm/ELF-ASLR/arch-support.txt
+index 57406c0d53531..d4a34c9fbae86 100644
+--- a/Documentation/features/vm/ELF-ASLR/arch-support.txt
++++ b/Documentation/features/vm/ELF-ASLR/arch-support.txt
+@@ -24,7 +24,7 @@
+     |       riscv: |  ok  |
+     |        s390: |  ok  |
+     |          sh: | TODO |
+-    |       sparc: | TODO |
++    |       sparc: |  ok  |
+     |          um: | TODO |
+     |         x86: |  ok  |
+     |      xtensa: | TODO |
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index ab77d3f2536e1..82c989b9e7831 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -71,6 +71,7 @@ config SPARC64
+ 	def_bool 64BIT
+ 	select ALTERNATE_USER_ADDRESS_SPACE
+ 	select ARCH_HAS_DELAY_TIMER
++	select ARCH_HAS_ELF_RANDOMIZE
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_KRETPROBES
 diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
-index ecefcffcf7b10..087595fa43081 100644
+index 087595fa43081..2948d5769e768 100644
 --- a/arch/sparc/kernel/sys_sparc_64.c
 +++ b/arch/sparc/kernel/sys_sparc_64.c
-@@ -142,7 +142,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
- 	}
+@@ -26,6 +26,8 @@
+ #include <linux/ipc.h>
+ #include <linux/personality.h>
+ #include <linux/random.h>
++#include <linux/elf-randomize.h>
++#include <linux/sizes.h>
+ #include <linux/export.h>
+ #include <linux/context_tracking.h>
+ #include <linux/timex.h>
+@@ -280,7 +282,7 @@ unsigned long get_fb_unmapped_area(struct file *filp, unsigned long orig_addr, u
+ EXPORT_SYMBOL(get_fb_unmapped_area);
  
- 	info.length = len;
--	info.low_limit = TASK_UNMAPPED_BASE;
-+	info.low_limit = mm->mmap_base;
- 	info.high_limit = min(task_size, VA_EXCLUDE_START);
- 	info.align_mask = get_align_mask(filp, flags);
- 	if (!file_hugepage)
-@@ -151,7 +151,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
+ /* Essentially the same as PowerPC.  */
+-static unsigned long mmap_rnd(void)
++unsigned long arch_mmap_rnd(void)
+ {
+ 	unsigned long rnd = 0UL;
  
- 	if ((addr & ~PAGE_MASK) && task_size > VA_EXCLUDE_END) {
- 		VM_BUG_ON(addr != -ENOMEM);
--		info.low_limit = VA_EXCLUDE_END;
-+		info.low_limit = max(mm->mmap_base, VA_EXCLUDE_END);
- 		info.high_limit = task_size;
- 		addr = vm_unmapped_area(&info);
- 	}
+@@ -294,9 +296,17 @@ static unsigned long mmap_rnd(void)
+ 	return rnd << PAGE_SHIFT;
+ }
+ 
++unsigned long arch_randomize_brk(struct mm_struct *mm)
++{
++	if (test_thread_flag(TIF_32BIT))
++		return randomize_page(mm->brk, SZ_32M);
++
++	return randomize_page(mm->brk, SZ_1G);
++}
++
+ void arch_pick_mmap_layout(struct mm_struct *mm, const struct rlimit *rlim_stack)
+ {
+-	unsigned long random_factor = mmap_rnd();
++	unsigned long random_factor = arch_mmap_rnd();
+ 	unsigned long gap;
+ 
+ 	/*
 -- 
 2.43.0
 
