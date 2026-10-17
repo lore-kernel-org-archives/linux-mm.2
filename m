@@ -4,94 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37262CCF2C7
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 09:18:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 064DBCCF2C1
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 10:05:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 221C16B008C; Sat, 17 Oct 2026 05:18:44 -0400 (EDT)
+	id CDCCD6B008A; Sat, 17 Oct 2026 06:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D3366B0092; Sat, 17 Oct 2026 05:18:44 -0400 (EDT)
+	id CBB5E6B0092; Sat, 17 Oct 2026 06:05:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C1D46B0095; Sat, 17 Oct 2026 05:18:44 -0400 (EDT)
+	id BF0FB6B008C; Sat, 17 Oct 2026 06:05:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D20FD6B008C
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 05:18:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63F411C2532
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 09:18:43 +0000 (UTC)
-X-FDA: 85331568126.07.78ACF0E
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3B27B100007
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 09:18:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=UqxkiEmf;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (imf14.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 98AA76B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 06:05:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A17112025F
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 10:05:10 +0000 (UTC)
+X-FDA: 85331685180.01.3901F2C
+Received: from mx.itxnorge.no (itx-kvm-14.itxnorge.no [91.189.121.228])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8F76A140006
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 10:05:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=UuKUJYUC;
+	spf=pass (imf09.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
+	dmarc=pass (policy=reject) header.from=itx.no
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792228721;
+	s=arc-20220608; t=1792231508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AJNqfW0ioAwXAyHgrrMYr3i85p2JVBdKUXfKlT6Pido=;
-	b=3ViLKLxJYaq010jnFaT0eyNqHoXBBcB80vJXlCpH1x1+xUN1MU5ZUMhaQT4ZVJC5z3uAYt
-	3r/cdlBbjTp9IEled6joXRTr2/SAphZ4N9eHlxZhcD2yF7NpqrtcPXM7bDkYzyJt7Kc8bb
-	4zQZgP6tpXjl1D3X9BxmdTIpUNa5hh8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792228721;
-	b=HmirN2Kt0KMM8PJ61owfzPFWO7qFngHWytmUAE2YsAajv9kG5vOWXGFnothJkD69iEeDKJ
-	BA0P/d7G7ZzXJ1kSWCga/n98s0jKT1Y5MpfAmmRpqgxgbBsvwnFmo+fNCawBzltUBGUJO3
-	y3qjCtXOexgvkZ8hMB29O0PkxK0akRo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=yRhFdLBL4t8sg9K3bLI8rm4y+3N0uLfoGZpRMgEEt3g=;
+	b=CJW1BIO8+pf91hN078ZoWZVnfqqHCIrytvV+sOwrjxbXIZfy7sqAKGMuFMIB6wi+Gcyqpu
+	F1acdpCbYydcwSw/zjW7i6+l0ac4n4fceX2NU1UzHmvQHjWjERTvm6TEK9x9wNzmyEJjWf
+	yPZWrFWJIzK6UQGKCxpxcCFJ5jLtz/Y=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=UqxkiEmf;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (imf14.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4j6GSs6Ct8zKnTY;
-	Sat, 17 Oct 2026 11:18:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1792228717;
+	imf09.hostedemail.com;
+	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=UuKUJYUC;
+	spf=pass (imf09.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
+	dmarc=pass (policy=reject) header.from=itx.no
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792231508;
+	b=gJymBVppZFY72OtowfFRkW0iDxWlp/0MkjPj7gDFqnCen/D9JDRU2M6+M7SOFaAFjjekQ1
+	JEhhIQ/WlaTKwN1xPfiqQOTSKlZB9X2HZ0GCq/sny5Q7d8X/dvocWzjNxWG/EI8IsHxnX1
+	XRUHF/t4rpxsaYi44/BgSM2i1/BvDBU=
+From: Stian Halseth <stian@itx.no>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
+	t=1792231506;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AJNqfW0ioAwXAyHgrrMYr3i85p2JVBdKUXfKlT6Pido=;
-	b=UqxkiEmf8ArLdQmOp8pJzr16B+51FF6wd4VGNwPO/FNzS9wMD4L7/Bw1W9+HrxX4DFJBCi
-	KqL8s8ND8VeJOTdFwRlJFsG5Ixw6fkR9jChBnm7cE/8TwGKdjtyzWSJ2F5xskI94RkLHjJ
-	DD942aHIEMFTwtPKU6CmFWoWSUvbQH/cBml5Ja36Nigncb2r92fmRxBQRlNl4+QwSPe8+G
-	MK/DhOJEWw2tK3SL0FvP3hyxhKOSu+O20vHcHkEw+LrfF7hoW+K4KFha1rIHQpt0FHfmkk
-	c3kRrkpvLs89UAhUewPF+EFadAunu790rbD7e9wWaNL5R7PWwZ7DR0zUGEPt2Q==
-Message-ID: <c575314d3e52d5fcff3d6fc47d12dc118a24bd63.camel@mailbox.org>
-Subject: Re: [PATCH] mm/damon/reclaim: improve grammar and style
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: SJ Park <sj@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>,  Randy Dunlap <rdunlap@infradead.org>,
- damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Aveline Noir <jm5905938@gmail.com>
-Date: Sat, 17 Oct 2026 11:18:34 +0200
-In-Reply-To: <20261015140122.87808-1-sj@kernel.org>
-References: <20261015140122.87808-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yRhFdLBL4t8sg9K3bLI8rm4y+3N0uLfoGZpRMgEEt3g=;
+	b=UuKUJYUCnz1kmck6qfdZGwFxsrBF00gCwHJ1BFU1WVvodz6uT0e/v/1jXfn8doksv3Mor8
+	0cSWrsXT2AgoxZ7tZEqZEsZr6UTJZLo/N8GB8Pzt2DnSznmYiPsDjqtsY6ZYRPoCewGF2/
+	kzfogMZoA+Yws/vpgXkg2KXQjqJJB10=
+To: Andreas Larsson <andreas@gaisler.com>,
+	"David S . Miller" <davem@davemloft.net>
+Cc: Kees Cook <kees@kernel.org>,
+	Michel Lespinasse <michel@lespinasse.org>,
+	sparclinux@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Stian Halseth <stian@itx.no>
+Subject: [PATCH 0/2] sparc64: Randomize mmap base and PIE executables
+Date: Sat, 17 Oct 2026 12:04:49 +0200
+Message-ID: <20261017100451.2266781-1-stian@itx.no>
 MIME-Version: 1.0
-X-MBO-RS-META: 1hapjjy6635khx6ean1i9pxm4mypfzp9
-X-MBO-RS-ID: 3cc1a3b206adc544abb
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3B27B100007
-X-Stat-Signature: bnu9aedn88pn7dcpncipsujhhj78wogb
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: copokc3jczetrgkc8rz6iockjgn9km3p
+X-Rspamd-Queue-Id: 8F76A140006
 X-Rspam-User: 
-X-HE-Tag: 1792228721-833836
-X-HE-Meta: U2FsdGVkX1/sxL6zWF416kUtMf67HUEtG/R7LI0ppa4XQ4i+lXBMqiCGArSsu477f5CWjmdpxEIZZSO4ERVWyaT9+2LmCmICR5mQ+oLSxHWaRgc+Ll6Losx+rIzUyCIsD7drhSdaemZBYm6v8FH0xcXSY4N4KGk0twjurhI5NIQEtGAOt4xsJevLspreTENqzqZRpib1jv/a23yXheSLwzp/MNIuPB61SgywMzTTk85c6AySFpvA5YMib+JqOJJ9sis4g1U4r8/I1Rufl6HFwfRSV029ZUBJpGWrcTQ0v806m/bhrCz4nNaJosiSi/5rfTEWxLCAIlvweq3BBmfRzWlxbZIeegGz+wxyS5cOvMcTdzEvTqytKiMSJiTWsEj0BLpTiKS6pep5yHKEUjk/UR1cFGL/seJrL5khACiUjKi9Vjp8nH1VWXQok8vcwHmylhiTJM3e9Hn5xNh1HAzAH7SPHDDI1hx/RjuDKsyqcNDdyQsav7KneWxMhpxqZc1MJjhpaIHGtQz9g9EvnrkftXL8YkQl3345Nn8RyHftYGEvu08rjxliHu5MnMVGs7Om+hN1rnu9Fl6+OpK8SMYC2rxtSSWdqvMPZLEPazkAweVwBakb+uI2VwoeyrddL/P3djZbM053LgGKvWwGAYyDgoW+Zikfy/SxyU2cYTVMox2/BcIT5xootBhTHF7ihk4CrcUMDbZg6mKXH0V7JX4iNtkhrdiYc4O1KbipJLGTJVZVQ893SJeHW5P6lEY+iMrUjROq0dwGal0jB65zLoEm44kpK1vnhAu6us4Yt5KlwAIWOZ4Z5/RP2ML/gHwaFDsc99Nb5/+tBKW2lc2MYfdBmaKQCEj4fFasEWQ8m3AcSz7r5gi/XWayXKDXSdqJSG+Z1bRIWo8IJhejeDtfUSzl8AGqaUKGwik9DaCWAeCONrNjRW9HpcY4Tz8mgBs+AhvmDq8TuYHDpAy0lE9lz+p
- 31Sab5KK
- Hhp5wyli+QYmDZDq4sR+PrdNXlttYHbGmsP24h00nc0n1Q1WCm7SPBP2TW2MUnaU9gouKMFo1TZ6qywg/PadjlqunDs8lFhuDcU+880hdHbHAs6aI5CimRJGiIHOYmkhb4zFDIiphWXnl1DnsUhXAJsI15xMipRq2uXZ5M9yFnND2y4DpsqCkcJUrQ9CN7rwhB9Ib/kS9A0rybKagOIJC89KBZ8yzjYGdY5D6mAAm/y4514WniNIa3OkTn0VkSuT6yvdhdkl1J0pfBNZ/7aYeHu/ADIruZNkUpVxyz5t9fCiypAR5wpnwrQR4LWDOsVXMl2seU5li+QkxWOI=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1792231508-183013
+X-HE-Meta: U2FsdGVkX19aP3uHlre5+1nr0s3lbd81L9FxcxfDtttlHvOSuQW3PMBPZb9p8R0KByL/WsR+RwQmBdgz0fe8aK9dBPBK9pGL6ugXdl99iJBVnUEjev9+7dp9CDX2xNnNxBXTgmWiLEhitMyccMOZt4hznoZ+L9KNyhoEdRQPQWPHmq/rqKNjSIt0sFLifFJe+3EXfMwjXUZQAwHOeMs5RzZmPdbwNNdHOZ/cEiprSn86eGTD4QVzCKMBBncMYFjDudlhk2ANmHbsaLEXmzwDevIQFnWOTIxXpW0c9IZ5foI/U9x3hBXaFWe2gdzv/HhnMDr7ko5vNRp1MRDX1PVw0irqg/AQzOrD2xgkoo859ekN5FJKpIPPF9HJfBypahXl3H9ssLcWfDotWV/Isat6j1enSHweCZVCdX8NpFQCqryiLsP856/gEr202zT7utPnEvbB+oPuJEeZhTXjZemUDQAr9/XF8V7gI3z64Fx2xsfc7xxV0ewIYB5a/AFK1QV/oNH8p2VnzNSsQLLlCaPtPLr2OmRwUxFMe7mgduwPeSG0Wc1NHHPskJj38Nh2s/aDHmnxQLlVYd33KPJXmqX9W484eff8Tl2TgSDYdwQKtbBGLkaNO+3MIgzXrePNsunA0Ol/XTDa7qnwzU+4Yp2errkNJuMHVamAHJbTpfn7BgoNrsoIHAS0jN0qfH5vXllcMWBkUzIDTNIDfhdJZEGWLYi9gKkhm6CS59vi6+a+J/VUqAgor+fH0rZHtbvt5R/r7hH/2xZPVOyiyAgN5cACVXAZKGIMVViccOBr57GXhDvGI8RkkAqnz66h0Q+iLIM6pOVqGmYXxqebaMnu9wuLGYcBHvl50Wi4OpaFvO/Caqzl7PFJr++ZmOA4wYWfEn8LMFDLyEBGX1796iBcIJHDV7co7ZxSYqHmpKA9f9Bsz3186OKIeZPFtnCeTXpKb6mNVaT3NcV/VUsKE6URaJa
+ QHjQN7Vv
+ Xad3ILGeW/T7w7GoVFXflacFtyoCzvTj5bzS41ktzR+EWF1AFf0Sb2VciYlmQD63XxCFiHvDCiiLJKFU5rgBUs5WJjwKF4VprO0H/3Odr5Ln6a7DA+85hvFDFGCb9G0722WtUiJcMofFu64EiBZc8IXrTyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,126 +86,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+On sparc64 a 64-bit process gets little address space randomization:
+the stack moves, but shared libraries, anonymous mappings, PIE
+executables and the brk heap land at the same address on every run.
 
-On Thu, 2026-10-15 at 07:01 -0700, SJ Park wrote:
-> On Thu, 15 Oct 2026 10:06:23 +0200 Manuel Ebner <manuelebnerli@mailbox.or=
-g> wrote:
->=20
-> > Fix tenses. Replace 'set as' with 'set to'.
-> > Rewrite complex sentences.
->=20
-> Let's put two sentences in one line, while breaking it for the 75 column =
-limit.
+Patch 1 makes arch_get_unmapped_area() start at the randomized
+mm->mmap_base again, which it has ignored since v3.8. Patch 2 selects
+ARCH_HAS_ELF_RANDOMIZE so that PIE executables and brk are randomized
+as on other architectures.
 
-Will do.
->=20
-> [...]
-> > @@ -113,8 +113,8 @@ quota_sz
-> > =C2=A0
-> > =C2=A0Limit of size of memory for the reclamation in bytes.
-> > =C2=A0
-> > -DAMON_RECLAIM charges amount of memory which it tried to reclaim withi=
-n a time
-> > -window (quota_reset_interval_ms) and makes no more than this limit is =
-tried.
-> > +DAMON_RECLAIM recordes the amount of memory which it tried to reclaim =
-within a time
->=20
-> s/recordes/charges/=C2=A0 or s/recordes/records/ ?
+Found while adding PIE support to the sparc64 Go port:
+https://github.com/sparclinux/issues/issues/119
 
-For me charge is such a weird word exepct in 'charge a battery' or 'charge =
-a fee'. And
-'recordes' is a typo. Does this work:
+Tested on a T4-1 and a T7-1 (sun4v) and a V240 (sun4u), with 64-bit and
+32-bit userland. With the series the program image, brk, shared
+libraries and mmap base move between runs, and with
+randomize_va_space=0 or setarch -R the layout is the same as before.
+The exec and mm selftests, glibc's elf and nptl tests, the Python test
+suite and a kernel build give the same results with and without the
+series.
 
-DAMON_RECLAIM records the amount of memory which it tried to reclaim within=
- a time
+Stian Halseth (2):
+  sparc64: Start bottom-up mmap searches at mm->mmap_base
+  sparc64: Randomize the load address of PIE executables
 
-I could do this in a second patch aswell.
+ .../features/vm/ELF-ASLR/arch-support.txt      |  2 +-
+ arch/sparc/Kconfig                             |  1 +
+ arch/sparc/kernel/sys_sparc_64.c               | 18 ++++++++++++++----
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
->=20
-> I'd prefer charges, but my English is definitely bad, so looking for your
-> suggestion.
->=20
-> > +window (quota_reset_interval_ms) and stops when this memory limit is r=
-eached.
->=20
-> I feel like readers might wonder what is stopped.=C2=A0 How about "stops =
-trying
-> reclaiming memory when ..." ?
 
-window (quota_reset_interval_ms) and stops trying to reclaim memory when th=
-is limit is reached.
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+-- 
+2.43.0
 
->=20
-> > =C2=A0This can be used for limiting consumption of CPU and IO.=C2=A0 If=
- this value is
-> > =C2=A0zero, the limit is disabled.
-> > =C2=A0
-> > @@ -125,19 +125,19 @@ quota_reset_interval_ms
-> > =C2=A0
-> > =C2=A0The time/size quota charge reset interval in milliseconds.
-> > =C2=A0
-> > -The charge reset interval for the quota of time (quota_ms) and size
-> > -(quota_sz).=C2=A0 That is, DAMON_RECLAIM does not try reclamation for =
-more than
-> > +The quota reset interval of time is quota_ms and of size is
-> > +quota_sz.=C2=A0 That is, DAMON_RECLAIM does not try reclamation for mo=
-re than
->=20
-> I think this change is just wrong?=C2=A0 quota_ms is not quota reset inte=
-rval of
-> time.=C2=A0 Which part of the original sentence was difficult to read?
-
-'charge' again, and I think there is the verb is missing.
-
->=20
-> > =C2=A0quota_ms milliseconds or quota_sz bytes within quota_reset_interv=
-al_ms
-> > =C2=A0milliseconds.
-> > =C2=A0
-> > -1 second by default.
-> > +1000 (1 second) by default.
->=20
-> Isn't this (1 second in milliseconds is 1,000) easy enough to infer for
-> readers?
-
-Ok.
-
-> > =C2=A0
-> > =C2=A0quota_mem_pressure_us
-> > =C2=A0---------------------
-> > =C2=A0
-> > =C2=A0Desired level of memory pressure-stall time in microseconds.
-> > =C2=A0
-> > -While keeping the caps that set by other quotas, DAMON_RECLAIM automat=
-ically
-> > +While keeping the caps set by other quotas, DAMON_RECLAIM automaticall=
-y
->=20
-> How about "caps that are set by ..." ?
-
-Yes, this was my second choice.
-
->=20
-> > =C2=A0increases and decreases the effective level of the quota aiming t=
-his level of
-> > =C2=A0memory pressure is incurred.=C2=A0 System-wide ``some`` memory PS=
-I in microseconds
-> > =C2=A0per quota reset interval (``quota_reset_interval_ms``) is collect=
-ed and
->=20
->=20
-> Thanks,
-> SJ
-
-I messed up the subject line, should be:
-Docs/admin-guide/mm/damon/reclaim: improve grammar and style
-
-I'll follow up with a [v2], including Aveline suggestions.
-
-Thanks,
- Manuel
->=20
-> [...]
 
