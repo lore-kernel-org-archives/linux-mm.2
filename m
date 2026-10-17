@@ -4,99 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDCFBCCF2C4
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 16:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 027E9CCF2C1
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 16:19:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07E286B009E; Sat, 17 Oct 2026 12:13:15 -0400 (EDT)
+	id CE7726B0088; Sat, 17 Oct 2026 12:19:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02FCF6B009F; Sat, 17 Oct 2026 12:13:14 -0400 (EDT)
+	id C99136B008A; Sat, 17 Oct 2026 12:19:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E87566B00A0; Sat, 17 Oct 2026 12:13:14 -0400 (EDT)
+	id BADE86B008C; Sat, 17 Oct 2026 12:19:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9A616B009E
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 12:13:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 729471C3530
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 16:13:14 +0000 (UTC)
-X-FDA: 85332612708.29.6EBECB4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CB6BB140003
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 16:13:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="La6ZcW/U";
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 937A46B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 12:19:46 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0EEDA02CA
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 16:19:45 +0000 (UTC)
+X-FDA: 85332629130.25.5DA6383
+Received: from mail-244122.protonmail.ch (mail-244122.protonmail.ch [109.224.244.122])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AE68740008
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 16:19:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail2 header.b=ubyZ2Wrq;
+	spf=pass (imf01.hostedemail.com: domain of BernardoGV@proton.me designates 109.224.244.122 as permitted sender) smtp.mailfrom=BernardoGV@proton.me;
+	dmarc=pass (policy=quarantine) header.from=proton.me
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792253984;
+	b=24g5zAstvNSK7Sup1zxP5YxyqT6XIVwRUfOBY2Ay+MPynnCVdaW+K5IU8LLCh5yG5cLRU1
+	zbyFQ+8u9VTbbaeQUryn3X+0aLVWF17I08fgHUnViuyyvtYvcw/xHAVn/THOAo/lJ/prg1
+	Ggj8f03qJpL0dNa3KdrexHaEMc8vANw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail2 header.b=ubyZ2Wrq;
+	spf=pass (imf01.hostedemail.com: domain of BernardoGV@proton.me designates 109.224.244.122 as permitted sender) smtp.mailfrom=BernardoGV@proton.me;
+	dmarc=pass (policy=quarantine) header.from=proton.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792253592;
+	s=arc-20220608; t=1792253984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rxnIxgjhHPOhNba69hG5CN7WDYZeGiFPLDt2bgf14ck=;
-	b=Gcyo64NI0CPr9Prrvqbp1T4GoQdOIWS7e+8cfkMIoeP5G7GtxkVKdT/37fVwioeukXwUwX
-	6R8mysUrI/EU/AiVol50QQDORLjj9xFz73cOZXy40Dtl+7MMQ/7FOBSXXiBSd47oI2xkkY
-	BOIL5jTE24VBOxUIgkn51idW2kSCTzE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792253592;
-	b=gz8UYIU3FVIGG+CEAerxWe/OLHbVYjXvYvUUQglBPoazv99WN6f8cP+EckzPn7gTD9aksr
-	k59iUt8ue+p2FMBHHF1JmQOEM7JUIYedfdhDNFhJppP6Cw//p19TwS7Q0U8eDzUSEwrqCI
-	LntLhmoXlqMbAy8fEuN2US4suXzeaSQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="La6ZcW/U";
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B7D7F4062D;
-	Sat, 17 Oct 2026 16:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAAD1F000C4;
-	Sat, 17 Oct 2026 16:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792253591;
-	bh=rxnIxgjhHPOhNba69hG5CN7WDYZeGiFPLDt2bgf14ck=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=La6ZcW/Uhu8NVTIoeLjexdfAzN4hdC8y+79OaFNQ38HYguBGwUNMaDBCNLwg5hAUz
-	 JsEjETx5AaTp5HY5lntp8yJ01siNMTUqyr4NiDjXw1/ft5x1MYooNWihv9BqmkGxf6
-	 WX6Y94NstW4bOMsxeJuDyHPUFDX7ex94SishA2sP/6ZMSjEgLGvQqZnLmbgaes2fCe
-	 CVQECjwZ1Qj/fNYoVxgq2XgHQHfM21Cn8NUMPx3+xxLH1Pns2d5QXnvm4H9s+2+oGV
-	 tuc5FAxYGAkVjFUiDw52ylUbR5EkDWD19/9DqggngB8Ih1Ryo+PrV4Sg/WbpTbnbtU
-	 WSuU5it07fMlw==
-From: SJ Park <sj@kernel.org>
-To: Manuel Ebner <manuelebnerli@mailbox.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
-Date: Sat, 17 Oct 2026 09:13:03 -0700
-Message-ID: <20261017161304.103620-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261017083535.1261388-2-manuelebnerli@mailbox.org>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yaDAKbPnX3HpuNTDLAnNxcR/jGoyDFB1q+z6ycJjZa0=;
+	b=xgS2IMyiMFl2YxP0CNbjJgW/jQIFVs5p0aUsQIkU1EWATupMmEbLA6jyKhv9eAPkDQgIL5
+	6jyotw9WV6b4ojENaGWVGKfs/W/BsN+07MsBeowZsT7w8K+bC6UuAE6xU3LTZSaRWGUsXi
+	BP91rEfNhV8CZHyq1RqpFM4ZkS5F/zA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1792253980; x=1792513180;
+	bh=yaDAKbPnX3HpuNTDLAnNxcR/jGoyDFB1q+z6ycJjZa0=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=ubyZ2Wrq4LqZ5/7guNFCrqMzJvxMK8RL1PM5Vyn+aJD/wnUfKHsvu3qY30yjfCtsc
+	 ZJgPhlX4eGlz+YCTHrfY9wN4q6M5wegRj6Gj/jS8fRSdTQ+ndNX6BzXKDTsZ8JGH70
+	 z1LVnkCD0HzH/Y9r8/Z7GKAfZywq1aSau2iG5Ns2AbDcCkTcYX3EtwZmAu41iCodNS
+	 LsnD8wlB/PXH9bzbrYOc34BGNTw+MUMrPvCfbGqERv1q0HIN1vXUDjjX6IA4kJ9UNk
+	 Y7cRl8abz+ychT2UCfOeTZa6IyXfSIE12CtGNi76uYO9qBaZNdRyJcmYp/jslqe0Wy
+	 NgcP1cXzTvOyA==
+Date: Sat, 17 Oct 2026 16:19:31 +0000
+To: rppt@kernel.org
+From: BernardoGV@proton.me
+Cc: sourabhjain@linux.ibm.com, pratyush@kernel.org, graf@amazon.com, akpm@linux-foundation.org, guodongtai@kylinos.cn, pasha.tatashin@soleen.com, ritesh.list@gmail.com, kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kho: fix global scratch size calculation
+Message-ID: <d4c253f3-d36f-0253-f22d-43c9f397f6ad@proton.me>
+Feedback-ID: 60703638:user:proton
+X-Pm-Message-ID: 38ba154f675276b492e436a3eb2d748b1c610ceb
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CB6BB140003
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 3jkcwrufy6c5qjyx78itm6hcu861iy17
-X-HE-Tag: 1792253592-177965
-X-HE-Meta: U2FsdGVkX19c//79zy/ZXAfeZ/xnqPC9Gr9XHolTX+pbuQFim3NEnIFewOoVbrrHHNdiozzhgHXhX7ZffbB7wjqyLS8ICjcG7D3Q1OAt7kZdTC5BOS3fvS+yznXZDtjqKDgG8RT+SkOptxD7UOajeZxhlGm5d0Yqu0oMAuZwHTlG9YZDHL4LZkiCAaL9HHARnY/uCWFU9aZQFBoiyZehsyquiHs2f7iu7U8kHiNIRycHo+wgJKG7oLgMEmtwXUYIa03K3a3XWiZc2NOYBdvMKjL0YOpyjA23b/ZWeipP2xWxEzIONSfPmTi3t9BAMB754wz+4SOyrVyBQDowJnWpjuykQ+wZbnlQqi027NPHVfoJmUw/CPGpAEkniLUUVI9/dexaETUAUcw2a8OJqKH0wtgZMZ+celVIL1iRzpKyuyCX+KUF3uVmllFI6rlJEUrNC8zyCm1SEEma3sIOPQR2dKRkfiABHJr6PVWQTw1dc3bygbZDYa7pjoykQfxEcTgesIx4YMA9JkdD6qna0PXsp7d13nEzwllUCqhuqVmSxJbNBYiZsY44UjfqLv8TU+PA+ftIDCl5h3hPEbYoesx8Vf1ZxNsIVM+YlKtsYIvSmNfQvXPcmIzO1uM/uZMpKZF2xCaMjNJAIB0pXYbqMrQ74q48ThyAc+kNy6BdAmaIexdKrs9K3oqNmUTwmSwGITZw2VTWyTPgOo+eSvuzmv9JCw57h5X9Fug0z1WGZLg9GEmQhsEJ5lMvnv+y++UwxOhHGocmgQfFd+wU8LqyXlE/r4uQxiKnhGfLaG+aoKUYRS6izP/Pqyi/kUx/WA5//7hfRbwAUwwTWO/U+iDch3+2i/NneSDGW7g7JtdPCsLDoM1sKsjverUur4xvyj3G0tZ4UrLtnSafQvQXpqB0CD77wlMpg5KlRlPqC+Axcj7s0gX7PKyumeYuvdjNInkXpmIzJS59zeusmRgdx+aFO0p
- 9dm0msFc
- 1EC8hGupuc5DDxpIyTjehA3tilvJFJUPz+lNVCIbuh3M/Es5BDuYqtKRzu9nR/Xb0FUQ1KpOQqvUlqn1KXcB/0KAHzuaY16yibQa+0OEUaekeLqjyWJDJCCJuesMcAsaec+vZGZcUuBV4y6sMeFpRB9RbJxIaGDdoLbzFPL1gyC1a8d3ViAK1QEFPzJHyS3zJcesExa0jbkilfYIxGxQBgU1Wzs6pdFydJSJZEIBe6IdE1VJAMdKs8tQ1G5tRsZuO8b85vOsTB9B9hGSc+RnaOhFAdLshxyAwwQIskRtvtPPEkzXs+MDFHhsv+CY1vk5OgZq9sCCKneI8czjmxrCL0cfMkA==
+X-Rspamd-Queue-Id: AE68740008
+X-Stat-Signature: 7j5564qxrhr1k8bdaxr3oik99x4e1hw8
+X-HE-Tag: 1792253983-774931
+X-HE-Meta: U2FsdGVkX19BI1lSm3MFpq1CY0NQ6CXUeWGcd4CKwCM0KlWrSqWorhjrt6zKuPpTBYINxoImz21SQB9wGCcdOUOK+kO+21D4Ibue3uL5NOPSl7GMnaAI/Fw37DbgnbkzwZzp9ZyQYXVGF/cXofNoTpRz+dntmaB/rHGirWe+nuG7AzXSK+zuZse603hnQjznwX7xM890IfmgJCpH9RS74q1gLMnVDMfTVm0lQe+YMPMYQGthfaElOIZevFdvQockagLUjgEXIHKqqI1ur6tMh2HKU1ETgd+VT/wtzhus3vV0N/fpWcUvM9I+dPSNFb2lHAYB0YzPBkE1kyQJVghKKaFlEzCV11ikXebdQplzE/YucNxv0/JGJfx9epSgYGaSZzGA3KzI2Fv1KtI+yhR9Xn0Pv3FeVoiY8E6zs0V6Z7JnbjZVPVwQSQRU+l27EDxVdAROavYttnJXynVPU31eBqwTJQKNtYPVjGIVKb373r9Sb08udlzYCs4M4bvEkGmC91Xv3bHQL+VUm4O9JdDCsWyLVWT7bfZ9A/uVbVm0pFfJ70VTq3m0GjAL2Zbi7zql8FcMFqbUwke01Onj9KQ33x7wJpwTOYyKdPYTq6y3MC+P5g5mkUoI2scKkUCIHz7JT5sttrq6RN9EA5IOcPDyYZQeu8YuNbl6GRN3t/T/FEkOuqOW6fAcZoPUdht3y63a3F7NlxyyDpToX9PBGFq1qW0Bk8+VAXdUgqDVUdO3hb8EqlGdFEX/1t9oC6vIq3XaiwqLR2QF+drEngLPIJ2WrYtXav5UPjstHwmtF60tDFDnSWAasITDKb2CfwBG+rD3TcUwpNJdS7kNXkJ6NA1on3mplXLaRy8XVNBk3glRjk586feeZ9Sg6mNX3y92uLhUO7+s8QraOZ+NQH/RIRCa+Gnr8OLr+tFikefTWHJJVnHd7wLfuRZu6L363HJAyz2QqJ7T/PHzFBmRVSRl8w3
+ UQrrdWCI
+ KFFhF9Y+0fw8rlwn54Om0DXyLpxYdy8oHcWDjjGzxXLE2FCrhKyuv+PveqCSrg6Sn30UoFcldnB3HXKOS5C4Hprl/UmHcEjitrMkAOVEAY3teQrqHQTh9V9ZXo9gFynglXqveKzE07Lmx780iEuEUeHWfUwR/bpiRHE0gexDwUKCPzpCoIRRxPVu2oHrnru146EbEldb+hFh5E9YYwhUlRClxmwWyMq5VbcgJSrMV0+rzVhf8wd6SybdOtaBDlaDT07gHygUXZwBj/Dcn13vVhyqHbQwOLs+xP6sXOzyc3VsWEBwNw3cdlHGWGYw6Ng31TMGds4gbH+ZLncMZ3zkZzj/fmbe8/+gZMVOncAlh82LoKqd60ke2FIcVEmDsZstsIDZJanhFrrvOy0gLT5M+mHNM/N2ng64T5tVTk9DHv4myVNmE419P3cow/VHSRkMCNilNUDx3Y2kSkDx7XIK5qnXvFu1NAVnUsINK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,22 +85,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 17 Oct 2026 10:35:34 +0200 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
+On Mon, Oct 12, 2026, Mike Rapoport wrote:
+> I mean more fundamental code refactoring that takes into the account all
+> cases (and I could miss some)
+>
+> - NUMA vs no-NUMA
+> - systems that have global scratch containing lowmem scratch vs those tha=
+t
+>   don't
+> - and of course fix global scratch over-allocation
 
-> Fix tenses. Split long sentences thereby imporove readability.  Replace
-> 'set as' with 'set to'. Replace [] with () to make the file uniform.
-> 
-> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-> Reviewed-by: SJ Park <sj@kernel.org>
-> ---
-> SJ, could you please replace 38b3709936fa ([v2] 'mm/damon/lru_sort: fix
-> grammar and stlye') with this patch? I messed up the path in the subject line.
+One more case for the list: reservations made before KHO sizes scratch
+that are never served from it. HugeTLB is already excluded. crashkernel
+is the other big one. Sourabh mentioned it in the powerpc thread. Here
+are x86 numbers from a machine that never asked for KHO.
 
-Thank you for fixup.  Done.
+Ubuntu 26.04's generic kernel (7.0.0-38-generic) ships
+CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=3Dy, so scratch is reserved on every
+boot. (26.10 has since turned the default off. I've asked for the same
+in 26.04 [1].) The machine is a single-node Ryzen AI Max+ 395 with
+128 GiB and no hugetlb. kdump is set up the stock Ubuntu way, which gives
+crashkernel 2048M high + 256M low.
 
+Three cold boots of the same kernel, KHO on by default:
 
-Thanks,
-SJ
+  kho/out/scratch_len   crashkernel   no crashkernel   delta
+  lowmem                   760 MiB         248 MiB      -512 =3D 2 x 256
+  global                 8,510 MiB       4,414 MiB    -4,096 =3D 2 x 2,048
+  per-node                4,338 MiB       4,338 MiB         0
+  total                 13,608 MiB       9,000 MiB    -4,608 =3D 2 x 2,304
 
-[...]
+"Memory: ... reserved" goes from 18,849,832K to 11,771,924K. The
+difference, 6,912 MiB, is exactly the crashkernel plus 2x crashkernel of
+scratch. With kho=3Doff it is 4,915,232K.
+
+Both problems show up here. Without crashkernel, lowmem + global is
+2 x 2,331 MiB and per-node is 2 x 2,169 MiB, so on a single node about
+2,169 MiB of reservations get counted twice. That is the over-allocation,
+and the total comes to roughly 4x what was reserved. crashkernel is
+allocated with NUMA_NO_NODE, so it lands only in lowmem/global, at 2x.
+If I read Sourabh's patch right, it would count NUMA_NO_NODE only for
+global. On this machine that leaves crashkernel as nearly all of the
+global scratch (about 2 x (162 + 2,304) MiB).
+
+The cost is not only boot memory. Scratch ends up MIGRATE_CMA, so
+anything that pins can't use it. Here that is amdgpu GTT on an APU. A
+single process tops out at 107 GiB of a 120 GiB GTT limit with KHO on,
+and at 117 GiB with kho=3Doff.
+
+Happy to test patches on this box.
+
+[1] https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2171297
+
 
