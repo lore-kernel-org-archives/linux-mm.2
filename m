@@ -4,92 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23E2BCC6B2A
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 03:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B285CCA463
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 03:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E27E6B0088; Fri, 16 Oct 2026 23:12:13 -0400 (EDT)
+	id C5C7F6B008A; Fri, 16 Oct 2026 23:16:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 094CC6B008A; Fri, 16 Oct 2026 23:12:13 -0400 (EDT)
+	id BE6D56B008C; Fri, 16 Oct 2026 23:16:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEB266B008C; Fri, 16 Oct 2026 23:12:12 -0400 (EDT)
+	id AD6996B0092; Fri, 16 Oct 2026 23:16:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C37296B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 23:12:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CBBF401B5
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:12:12 +0000 (UTC)
-X-FDA: 85330644504.11.B24B382
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6EC1EC0004
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:12:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1NOOALiy;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DDD86B008A
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 23:16:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F4EC1601DE
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:16:38 +0000 (UTC)
+X-FDA: 85330655676.21.A0D3F2E
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5652AC0002
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:16:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=SucYKug5;
+	spf=pass (imf10.hostedemail.com: domain of chenhongfeng0212@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chenhongfeng0212@163.com;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792206729;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1792206996;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gzd6R4kXyaI9HHxLjr1N3XSpTiCwIBCoqOgIfzXjZTE=;
-	b=BPhWicgzLBG3jrjohCm2d+tqp4+J1buRIuxGCw8OPGKmZz9DL8czWjPFfSBD6VZBWQm2bo
-	888Ys4hyfDginAMpXvFd8bbBhHW1oNpuL5ItXbtK4ELTT+MjSfsHUTJvRouXH5vBIOuouT
-	hGd9+XjOpVZkWRNN/PEPDr0zo59uPrw=
+	bh=rYeujvCf6NprmQgfrv6xnLcyR5lzfeAJ0jKIJm9Zn+E=;
+	b=qwFfJpZUOpqsQU2pxO74CkD/aKUiaVjy4pq2nQiK9D7M6tGRLe3irTCoKgmOVe8H4xDXUx
+	VQvbVP5vjoFT8sMa8leutaMR/AlNo1ro94xkkENgZKmRcsTRSLSaIi3kuQzU4y5lZOA/4k
+	LvNO1DjmjPAth9zTdz7miVSZfvAfE5c=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1NOOALiy;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=SucYKug5;
+	spf=pass (imf10.hostedemail.com: domain of chenhongfeng0212@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chenhongfeng0212@163.com;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792206729;
-	b=WJ0NxK0sl0ZY0sPnPcVyhjFipzj/6oBSbNBpZ09QE5IZuLN3U8a59kMPTkHj/5iB8CDJnF
-	KC4AEa4uDvTBpOhkGG6EjpeKRu2FV5yW90jBJzIWeN7AHspfRO7lpJ8VvLtz5AucvsfmMK
-	a1QxhMRvaOCz8PuJ+JJBez0tsfHR1LM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BEB026022E;
-	Sat, 17 Oct 2026 03:12:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72731F000C4;
-	Sat, 17 Oct 2026 03:12:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792206728;
-	bh=Gzd6R4kXyaI9HHxLjr1N3XSpTiCwIBCoqOgIfzXjZTE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=1NOOALiy3mqY+yAiTp5t+cV2XykkM0Q53+883i9ROQbvGIqJBYaYnc4fpngT4X/XQ
-	 yP86WlnY0bZJg6va2xK2tJmnKD6bbWgVblISYHmd85mWLIe8s4tiAvppPQl8/kQl0C
-	 USfftFje4AVWndWWFQZZo1zjF+0btHvt6W2s15qA=
-Date: Fri, 16 Oct 2026 20:12:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet
- <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, Daehyeon Ko
- <4ncienth@gmail.com>
-Subject: Re: [PATCH v2] mm/vma: avoid spurious write locks when
- mm->mm_lock_seq overflows
-Message-Id: <20261016201207.c122f6a7e0607c31a9d9634f@linux-foundation.org>
-In-Reply-To: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
-References: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6EC1EC0004
-X-Stat-Signature: zgmqir1wehdn6f3xdq17csf4pxjnq158
+	t=1792206996;
+	b=ttUeeQNWwSv8Du1F/t+FbmbLQ32LAN4GYEETCMIrukF8GTf4jOOPAt0aVei/KrY4lUla5+
+	lMZY2LwNM8yBTLDiJLxSmak+u26UUeJ7dhgV0RKHB4+L01MJO3DheHJ2Si8azu5E+7ieFk
+	1akRtn5tzRrgaFLaMRymqkFqEl64xYw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=rY
+	eujvCf6NprmQgfrv6xnLcyR5lzfeAJ0jKIJm9Zn+E=; b=SucYKug5Ko8/q75pd+
+	T59xqkR123hm/O5nMROdtZwAZjbtcE8QTcQx68lNLOz8vDBu3Uu6IadgHyfe5ECf
+	QKGicLv5/NOZD9e2RFNvRuhod064ig5leyUGuWAq7C64kj8yKOoxYXmYZK1q1QAV
+	h+6L2A4C/ln1vwdpM31FwhszM=
+Received: from hongfeng.mioffice.cn (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3YQl46NJq+Fg1AQ--.37596S2;
+	Sat, 17 Oct 2026 11:16:09 +0800 (CST)
+From: Hongfeng Chen <hongfengchen@xiaomi.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <baohua@kernel.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Wenchao Hao <haowenchao@xiaomi.com>,
+	Wenchao Hao <haowenchao22@gmail.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	Hongfeng Chen <hongfengchen@xiaomi.com>,
+	chenhongfeng0212@gmail.com
+Subject: [RFC PATCH v4 2/2] zram: keep the hot statistics per cpu
+Date: Sat, 17 Oct 2026 11:15:42 +0800
+Message-ID: <20261017031542.3504947-1-hongfengchen@xiaomi.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
+References: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgD3YQl46NJq+Fg1AQ--.37596S2
+X-Coremail-Antispam: 1Uf129KBjvAXoW3Zr4UWw43KFW5XFWfCr4kWFg_yoW8Wr1UZo
+	WxJFsxW3WrG345Gryvk345t3WY93WDWrn3Ar4rWFs8X39xuw1Yq3W3Gr15X3W7JFWYqFWS
+	y3savr1Iqrs3tayrn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUSs2-DUUUU
+X-CM-SenderInfo: hfkh0xxrqjwvtqjqjiqs6rljoofrz/xtbC7RmnwGrS6HkjsgAA3r
+X-Rspamd-Queue-Id: 5652AC0002
+X-Stat-Signature: y191jhejowhxseuzmoroj811ebcaob7w
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792206729-588109
-X-HE-Meta: U2FsdGVkX1+ws4iu5joy3QtBIHut8cRwA3HFIpFpL6hTZqWnOJYCBE0JxlLhmQQKYdZfGtkLS7dtQZPbh2FfKU3QsEJmz1hiIuxeU4Tm1fTeYUaIRJg2Sy5A33HKyZREQDZInRLM9ILzleomwxAwwxEvbSQ28rfaAa7kmJtggJ9zan7q7pzEGjYpzq4LWApH0kSyNi/8ORRWoNb137kjmYLv6tFqwdYCNzIMKEUYNWpIikiIJPit0Wop6mh6t0slaWQ3pfZhzqDisSvnnFrnvZyu4qqrA6+mArIwG9UjAVIZUngRmglCQC41k7WqvYmIZtPOdl/G+Iy6P2zxWC9JpJJp3ldt6Zb+iJRnWirg76M0IXUktXTQ1s+zL3xXOxo5lBrXrU57v1Z/bUbLifo1W0J6wV2jjX+888p5PJDQiyCXIaSwuOZ9F3blsDi+ZiuJqw+r11rW0hrFA2Ka5OhTAOdJvrH7FSatK8uM7vlXQv4Nj6ZoNrX/skbjyLABpOpMFmJe51GYiEupU5JH0DTLMGXp/bXHRkibAsbfPKCH5JIAKisdy1whsqttp19B0jDcLR/uDIccYlvSIVldq7NxR8USYKk+IjEg1aZveC+2KMmmoa7O5iiyVDuPdp54NaUrzVorraMm2QKuIm1lficAHeOQr71zIgs7BjgiYFwBnzUdRET85qF3yZDajwBdtCIDEyv+vET1adTSxdELza7FLtphFmInBCFSpcJqa6lvfB/F3r9Wu70biDkPVqwVgIgc2ACAZ3TT2bgWRq8k3Yk2gxENMEvBeroTZVXwpAv7NArR7Ru+9Ndsh8v34yEyFJddxwn0XpgdegnySip6kZqRg3jdbI8h8AdhJewMr2vEDzAiSBPFnov77w61uXDhgjIi6iy4LivG2I7w2QjE8HoximGxTG0kEKd9spC7FoQkms2myAHQV+rft85sByLoucR8x7Kfza3AC949eNSG3/+
- neUW0x7I
- rdCRJp3+wZ/nXzydm7kr3m5O7vVHOe8yvhtMDnTYUbgC9RKZ4dIgN/i6VVw3ZdjUp27N5O0p36nzHys6QzKDtamID+sHA7S8gbiMOL6Q9L1VoGXDY4aAHjtXXEtxikxZd2dkDqwGo8GkR+tEpQUauDe1giweiikl7/lHZgiDr2/mffgNRDP1CMLp9Qybn5+ewMoUPJ0w1aRSXLNQIXokfcDw4DW6ZjETx98xexOrXFe8cm/zxK/V6k695Suzep9iKWVTrM6XkCneORJ+bzpmwUJtvvp90qVWF6MNBJdnJ355GuHHqFi5JzVNM7uHFn0yjy9XY
+X-Rspamd-Server: rspam06
+X-Rspam: Yes
+X-HE-Tag: 1792206994-665627
+X-HE-Meta: U2FsdGVkX1+Fkm3LNt58i1XuCKfiqXLrb6+s8RJbyZuFN8rUH03x4vfJ+O/uxTYjJgchKloocfVv0J3oS9uSD5H8m44afZdI3udElhZOhUu/L7GchJ/fvyMpt60QQEuyzFXOcZbP4Fm6EI8PgRIUosv2JEE8XXdcHoPM5h5LnmlVrPX4zxvdzqCAWptNvvWbqcpI9QPhXNCvu+No9OTeh+nsW33JJOjvDbwERii3qtRQt5T6fU3uMgNwtFg/NUqLG93yiakGS7nBqzqOT3t9D720O1r+hItjPKaxl3iVpdfX9DWtjJCGxl/aB/sY2OosO0PjPrcGisrAeZmtx7Nd5EYMERA3aqAET515Man5TvYQKcntBzrRm+UtDGKtTgIfZ4unhwgHd3AA+3236ZDeQgTO4B8WMjwr7vEVxdTyzIbfU4RWQMUQLgh1AjJ0olGuZqFRjCrFacNLs+TM1o03XucLKgNj+i2jQUNkeTr2x3p3mHsu8ASVOyFmzWIn34vdq22JFWgRJ6DssFNHsMg7HZfq/8IZvjgHSnmhdjSbmWl6op0bE5pBIw5e4axvDeecYu0KKvoAqBFn3j/uo2iwGDeMKTxfA+Z7E5xZDgLmqZ0urjcC7nZJXg2pfhju2CyoimParRK76gFctzTKJ5o8SOBgnLnMHBdc8KXM1HZPF9fhQg07UI3VY9jlH7ccpFvagMZ71fvYzfLXtphJAAnjaW3EzYl/A1nCbyEbRZDzIhaHDVEVhJSZn20Fo/e/qEd8WbOW6ArJObyAhTt6uLzdjeCBtj8LBvC4P0Jy017+VLjXadSf2w4u7JGMjsPLKm9ulbyin1OBdqJKP2PDAlfGt6RO2QDL48IgC5EAKiRyRU/FJh+y3TNIMswS1LL5gg8lYfvuPRaA/xjt2COlEN+Zv9icwoQyi7j0lpDFFsNIlR0iPyXkmGq79dqSBUk3GWqYmUVml7nWLd2u9Y/qlbS
+ RpOlzaGy
+ KbLwdkHn854E5islxl1MqGmOB/tgwt0u8twMPIQ65oYwNWXfiSIJnIfBno9VgAY/a4VlKoVSGLCv9lMZ0LZCtZ1hyWYoxk5D4+G8J8nGNCgeKbYBo0+ewJ9CmmOGgknhvfFZW7LkiX7qljLrdGfNJGF7jiQPRy7k/4QvNXQeuE6DiK1sCssI7eIhFypbNi+oygZQiNb0mG8Z3liD8Q4RRYPaveQU+6Ht21RkgQZAVukGZmQtebyf0EbT/2FikIsddQL8Uz3hoYQD8f3KbRVZocAkoMkK6ToU1N8hjUU1URQN5AkOOMUDMTN+un7Ab4p6qJgaEkknktWZbsiBjSmJIPlmAU0pcqgqSbg8AKTb18WLd+nbtAPQm3v1iVvp9SunbxnQwkk0vQcUHmGutam1etOwHOotxgF0ViK3Sj7c/0QAGXpQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,186 +107,458 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Oct 2026 12:34:33 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+From: Hongfeng Chen <hongfengchen@xiaomi.com>
 
-> So far the assumption has been that mm->mm_lock_seq overflow is benign,
-> resulting only in readers spuriously falling back to the mmap lock, however
-> it turns out that this was an unsafe assumption.
-> 
-> If a VMA can be spuriously considered write locked that means read lock
-> exclusion does not take place, and thus a VMA can end up write-locked with
-> concurrent readers.
-> 
-> Since overflow only occurs every 2^31 write lock/unlock cycles, resolve the
-> issue by resetting every VMA's vma->vm_lock_seq each time such an overflow
-> occurs.
-> 
-> This is done in vma_end_write_all(), which is called when the mmap write
-> lock is released, i.e. in mmap_write_unlock() and mmap_write_downgrade().
-> 
-> Care must be taken, as resetting the sequence count at overflow means
-> changing the seqcount of VMAs which are already attached and observable.
-> 
+pages_stored, compr_data_size, same_pages, huge_pages and notify_free are
+updated on every page that zram stores or releases. When several processes
+munmap() swapped out memory at the same time, all cpus update these
+counters, and the cacheline that holds them bounces between cpus.
 
-Updated mm-unstable, thanks.
+Move the five counters into a per cpu structure and update them through
+zram_pcpu_add(), which disables preemption and adds to the value of the
+current cpu. All writers run in process context, so disabling preemption is
+enough. The store is WRITE_ONCE() and the remote reads are READ_ONCE(),
+since a reader on another cpu can see the value at any time. A sysfs read
+sums the per cpu values without a snapshot across cpus, so a sum can be
+briefly negative and is clamped at zero.
 
-> Fixes: 5e31275cc997 ("mm: add per-VMA lock and helper functions to control it")
-> Andrew - no stable tag please.
-> 
-> I will do the stable backports manually, they can be solved with a different
-> approach.
-> 
+slot_free() and the write, recompression and writeback paths update all of
+their counters while preemption is disabled once. Disabling preemption and
+finding the per cpu data has a cost, and this way it is paid once per slot
+instead of once per counter.
 
-Wilco.  It's a little unusual - we'd normally add the cc:stable and
-wait for -stable people to say "hey this needs rework".  But if the
-upstream patch happens to apply to the -stable tree then yes, that
-would be a problem.
+u64_stats_sync keeps 64-bit reads from tearing on 32-bit systems and is
+empty on 64-bit systems.
 
-> Also, since, we're so close to the merge window I'm applying this against
-> mm-unstable.
-> 
-> So I think it's fine to just send it (early :) in the merge window.
+Signed-off-by: Hongfeng Chen <hongfengchen@xiaomi.com>
+---
+ drivers/block/zram/zram_drv.c | 171 ++++++++++++++++++++++++++++------
+ drivers/block/zram/zram_drv.h |  16 +++-
+ 2 files changed, 155 insertions(+), 32 deletions(-)
 
-Yeah, I'm adding late-arriving backportable fixes into the second-week
-pile.  21 cc:stables in there so far...
-
-> v2:
-> * Updated comment in vma_seqcount_is_write_locked() to mention the VMA
->   being attached.
-> * Renamed reset_vma_seqcounts() to __mm_reset_vma_seqcounts().
-> * Used acquire semantics in vma_start_reads() to avoid race with reset -
->   there is another acquire immediately after this one so it should just be
->   noise perf-wise.
-> * Removed stable tag, will do the backports manually (just make the value
->   64 bits...)
-> * Updated comments to reflect changes.
-> * Added user-facing effects as per Vlasta ;)
-
-Here's how v2 altered mm.git:
-
-
- Documentation/mm/process_addrs.rst |    6 ++--
- include/linux/mm_types.h           |    6 ++--
- include/linux/mmap_lock.h          |    4 +--
- mm/mmap_lock.c                     |   33 +++++++++++++++------------
- 4 files changed, 27 insertions(+), 22 deletions(-)
-
---- a/Documentation/mm/process_addrs.rst~a
-+++ a/Documentation/mm/process_addrs.rst
-@@ -827,9 +827,9 @@ is odd, then the VMA is write-locked. If
- A VMA's sequence count is not updated on unlock, so after 2^31 write lock/unlock
- cycles the mm sequence count would wrap and match stale VMA values again. To
- prevent this, when the mm sequence count wraps to zero,
--:c:func:`!vma_end_write_all` invokes :c:func:`!reset_vma_seqcounts` to reset
--every VMA's sequence count to zero, an even value which can never indicate a
--write lock.
-+:c:func:`!vma_end_write_all` invokes :c:func:`!__mm_reset_vma_seqcounts` to
-+reset every VMA's sequence count to zero, an even value which can never
-+indicate a write lock.
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 024402438bd1..affe758a9543 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -488,6 +488,56 @@ static ssize_t idle_store(struct device *dev, struct device_attribute *attr,
+ 	return len;
+ }
  
- Each time the mmap write lock is released in :c:func:`!mmap_write_unlock` or
- :c:func:`!mmap_write_downgrade`, :c:func:`!vma_end_write_all` is invoked which
---- a/include/linux/mmap_lock.h~a
-+++ a/include/linux/mmap_lock.h
-@@ -554,7 +554,7 @@ static inline int __must_check mmap_writ
++struct zram_stats_sum {
++	s64 pages_stored;
++	s64 compr_data_size;
++	s64 same_pages;
++	s64 huge_pages;
++	u64 notify_free;
++};
++
++#define zram_pcpu_add(zram_dev, field, val)					\
++do {									\
++	struct zram *__zram = (zram_dev);				\
++	struct zram_pcpu_stats *__stats;				\
++									\
++	__stats = get_cpu_ptr(__zram->pcpu_stats);			\
++	u64_stats_update_begin(&__stats->syncp);			\
++	WRITE_ONCE(__stats->field, __stats->field + (val));		\
++	u64_stats_update_end(&__stats->syncp);			\
++	put_cpu_ptr(__zram->pcpu_stats);				\
++} while (0)
++
++static void zram_pcpu_sum(struct zram *zram, struct zram_stats_sum *sum)
++{
++	int cpu;
++
++	memset(sum, 0, sizeof(*sum));
++
++	for_each_possible_cpu(cpu) {
++		struct zram_pcpu_stats *stats;
++		unsigned int start;
++		s64 pages, bytes, same, huge;
++		u64 notify;
++
++		stats = per_cpu_ptr(zram->pcpu_stats, cpu);
++		do {
++			start = u64_stats_fetch_begin(&stats->syncp);
++			pages = READ_ONCE(stats->pages_stored);
++			bytes = READ_ONCE(stats->compr_data_size);
++			same = READ_ONCE(stats->same_pages);
++			huge = READ_ONCE(stats->huge_pages);
++			notify = READ_ONCE(stats->notify_free);
++		} while (u64_stats_fetch_retry(&stats->syncp, start));
++
++		sum->pages_stored += pages;
++		sum->compr_data_size += bytes;
++		sum->same_pages += same;
++		sum->huge_pages += huge;
++		sum->notify_free += notify;
++	}
++}
++
+ #ifdef CONFIG_ZRAM_WRITEBACK
+ #define INVALID_BDEV_BLOCK		(~0UL)
+ 
+@@ -919,6 +969,8 @@ static void zram_account_writeback_submit(struct zram *zram)
+ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+ {
+ 	unsigned long index = req->pps->index;
++	struct zram_pcpu_stats *stats;
++	s64 huge, size;
+ 	int err;
+ 
+ 	err = blk_status_to_errno(req->bio.bi_status);
+@@ -947,9 +999,14 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+ 	}
+ 
+ 	clear_slot_flag(zram, index, ZRAM_IDLE);
+-	if (test_slot_flag(zram, index, ZRAM_HUGE))
+-		atomic64_dec(&zram->stats.huge_pages);
+-	atomic64_sub(get_slot_size(zram, index), &zram->stats.compr_data_size);
++	huge = test_slot_flag(zram, index, ZRAM_HUGE) ? -1 : 0;
++	size = get_slot_size(zram, index);
++	stats = get_cpu_ptr(zram->pcpu_stats);
++	u64_stats_update_begin(&stats->syncp);
++	WRITE_ONCE(stats->huge_pages, stats->huge_pages + huge);
++	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size - size);
++	u64_stats_update_end(&stats->syncp);
++	put_cpu_ptr(zram->pcpu_stats);
+ 	zs_free(zram->mem_pool, get_slot_handle(zram, index));
+ 	set_slot_handle(zram, index, req->blk_idx);
+ 	set_slot_flag(zram, index, ZRAM_WB);
+@@ -1919,14 +1976,16 @@ static ssize_t io_stat_show(struct device *dev, struct device_attribute *attr,
+ 			    char *buf)
+ {
+ 	struct zram *zram = dev_to_zram(dev);
++	struct zram_stats_sum sum;
+ 	ssize_t ret;
+ 
+ 	guard(rwsem_read)(&zram->dev_lock);
++	zram_pcpu_sum(zram, &sum);
+ 	ret = sysfs_emit(buf,
+ 			"%8llu %8llu 0 %8llu\n",
+ 			(u64)atomic64_read(&zram->stats.failed_reads),
+ 			(u64)atomic64_read(&zram->stats.failed_writes),
+-			(u64)atomic64_read(&zram->stats.notify_free));
++			sum.notify_free);
+ 
  	return ret;
  }
- 
--void reset_vma_seqcounts(struct mm_struct *mm);
-+void __mm_reset_vma_seqcounts(struct mm_struct *mm);
- 
- /*
-  * Drop all currently-held per-VMA locks.
-@@ -577,7 +577,7 @@ static inline void vma_end_write_all(str
- 	 * seqcount so that no stale value survives the wrap.
- 	 */
- 	if (unlikely(!mm->mm_lock_seq.sequence))
--		reset_vma_seqcounts(mm);
-+		__mm_reset_vma_seqcounts(mm);
- }
- 
- static inline void mmap_write_unlock(struct mm_struct *mm)
---- a/include/linux/mm_types.h~a
-+++ a/include/linux/mm_types.h
-@@ -992,9 +992,9 @@ struct vm_area_struct {
- 	 * Can only be written (using WRITE_ONCE()) while holding both:
- 	 *  - mmap_lock (in write mode)
- 	 *  - vm_refcnt bit at VM_REFCNT_EXCLUDE_READERS_FLAG is set
--	 * The one exception is reset_vma_seqcounts(), which stores zero (an
--	 * even value, which can never indicate a write lock) under the mmap
--	 * write lock alone once the mm seqcount has wrapped, so a reader
-+	 * The one exception is __mm_reset_vma_seqcounts(), which stores zero
-+	 * (an even value, which can never indicate a write lock) under the
-+	 * mmap write lock alone once the mm seqcount has wrapped, so a reader
- 	 * holding only vm_refcnt may observe the value change from odd to zero.
- 	 * Can be read reliably while holding one of:
- 	 *  - mmap_lock (in read or write mode)
---- a/mm/mmap_lock.c~a
-+++ a/mm/mmap_lock.c
-@@ -202,8 +202,9 @@ static bool vma_seqcount_is_write_locked
- 		return false;
- 
- 	/*
--	 * The VMA seqcount is always odd if locked. An even value can only be
--	 * the zero stored by reset_vma_seqcounts(), never a write lock.
-+	 * The VMA seqcount is always odd if locked. For an attached VMA an even
-+	 * value can only be the zero stored by __mm_reset_vma_seqcounts(),
-+	 * never a write lock.
- 	 */
- 	return vma_seq & 1;
- }
-@@ -268,17 +269,20 @@ static struct vm_area_struct *vma_start_
- 	 * vma->vm_lock_seq under vma->vm_refcnt protection and mm->mm_lock_seq
- 	 * modification invalidates all existing locks.
- 	 *
--	 * The only other writer is reset_vma_seqcounts(), which stores zero
--	 * (even, so never a write lock) after the mmap write lock's seqcount
--	 * has been released and before any new write lock can be taken, hence
--	 * the READ_ONCE().
-+	 * ACQUIRE semantics are required for both reads.
- 	 *
--	 * We must use ACQUIRE semantics for the mm_lock_seq so that if we are
--	 * racing with vma_end_write_all(), we only start reading from the VMA
--	 * after it has been unlocked.
--	 * This pairs with RELEASE semantics in vma_end_write_all().
-+	 * __mm_reset_vma_seqcounts() might reset vma->vm_lock_seq to zero
-+	 * after an overflow. A reader observing that zero must also observe
-+	 * the VMA modifications made under the write lock which just ended, so
-+	 * the ACQUIRE pairs with the smp_wmb() in do_raw_write_seqcount_end()
-+	 * that precedes the reset stores.
-+	 *
-+	 * The ACQUIRE semantics for the mm_lock_seq read is required so that,
-+	 * if we are racing with vma_end_write_all(), we only start reading from
-+	 * the VMA after it has been unlocked. This pairs with the RELEASE
-+	 * semantics in vma_end_write_all().
- 	 */
--	vma_seq = READ_ONCE(vma->vm_lock_seq);
-+	vma_seq = smp_load_acquire(&vma->vm_lock_seq);
- 	mm_seq = raw_read_seqcount(&mm->mm_lock_seq);
- 	if (unlikely(vma_seqcount_is_write_locked(vma_seq, mm_seq))) {
- 		vma_refcount_put(vma);
-@@ -496,9 +500,10 @@ fallback:
-  *
-  * The stores below follow the smp_wmb() in do_raw_write_seqcount_end(), so
-  * a reader that observes a reset value also observes this cycle's VMA
-- * modifications (ordered by the smp_rmb() in raw_read_seqcount()).
-+ * modifications (ordered by the ACQUIRE on vma->vm_lock_seq in
-+ * vma_start_read()).
-  */
--void reset_vma_seqcounts(struct mm_struct *mm)
-+void __mm_reset_vma_seqcounts(struct mm_struct *mm)
+@@ -1936,6 +1995,7 @@ static ssize_t mm_stat_show(struct device *dev, struct device_attribute *attr,
  {
- 	struct vm_area_struct *vma;
- 	VMA_ITERATOR(vmi, mm, 0);
-@@ -524,7 +529,7 @@ void reset_vma_seqcounts(struct mm_struc
- 	for_each_vma(vmi, vma)
- 		WRITE_ONCE(vma->vm_lock_seq, 0);
- }
--EXPORT_SYMBOL(reset_vma_seqcounts);
-+EXPORT_SYMBOL(__mm_reset_vma_seqcounts);
+ 	struct zram *zram = dev_to_zram(dev);
+ 	struct zs_pool_stats pool_stats;
++	struct zram_stats_sum sum;
+ 	u64 orig_size, mem_used = 0;
+ 	long max_used;
+ 	ssize_t ret;
+@@ -1948,19 +2008,20 @@ static ssize_t mm_stat_show(struct device *dev, struct device_attribute *attr,
+ 		zs_pool_stats(zram->mem_pool, &pool_stats);
+ 	}
  
- #ifdef CONFIG_LOCK_MM_AND_FIND_VMA
- #include <linux/extable.h>
-_
+-	orig_size = atomic64_read(&zram->stats.pages_stored);
++	zram_pcpu_sum(zram, &sum);
++	orig_size = max_t(s64, sum.pages_stored, 0);
+ 	max_used = atomic_long_read(&zram->stats.max_used_pages);
+ 
+ 	ret = sysfs_emit(buf,
+ 			"%8llu %8llu %8llu %8lu %8ld %8llu %8lu %8llu %8llu\n",
+ 			orig_size << PAGE_SHIFT,
+-			(u64)atomic64_read(&zram->stats.compr_data_size),
++			(u64)max_t(s64, sum.compr_data_size, 0),
+ 			mem_used << PAGE_SHIFT,
+ 			zram->limit_pages << PAGE_SHIFT,
+ 			max_used << PAGE_SHIFT,
+-			(u64)atomic64_read(&zram->stats.same_pages),
++			(u64)max_t(s64, sum.same_pages, 0),
+ 			atomic_long_read(&pool_stats.pages_compacted),
+-			(u64)atomic64_read(&zram->stats.huge_pages),
++			(u64)max_t(s64, sum.huge_pages, 0),
+ 			(u64)atomic64_read(&zram->stats.huge_pages_since));
+ 
+ 	return ret;
+@@ -2027,6 +2088,8 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+ 
+ static void slot_free(struct zram *zram, unsigned long index)
+ {
++	s64 pages = 0, bytes = 0, same = 0, huge = 0;
++	struct zram_pcpu_stats *stats;
+ 	unsigned long handle;
+ 
+ #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+@@ -2044,7 +2107,7 @@ static void slot_free(struct zram *zram, unsigned long index)
+ 		 * ZRAM_HUGE flag for deferred decompression path.
+ 		 */
+ 		if (!test_slot_flag(zram, index, ZRAM_WB))
+-			atomic64_dec(&zram->stats.huge_pages);
++			huge = -1;
+ 		clear_slot_flag(zram, index, ZRAM_HUGE);
+ 	}
+ 
+@@ -2060,22 +2123,32 @@ static void slot_free(struct zram *zram, unsigned long index)
+ 	 */
+ 	if (test_slot_flag(zram, index, ZRAM_SAME)) {
+ 		clear_slot_flag(zram, index, ZRAM_SAME);
+-		atomic64_dec(&zram->stats.same_pages);
++		same = -1;
+ 		goto out;
+ 	}
+ 
+ 	handle = get_slot_handle(zram, index);
+ 	if (!handle)
+-		return;
++		goto stats;
+ 
+ 	zs_free(zram->mem_pool, handle);
+ 
+-	atomic64_sub(get_slot_size(zram, index),
+-		     &zram->stats.compr_data_size);
++	bytes = -(s64)get_slot_size(zram, index);
+ out:
+-	atomic64_dec(&zram->stats.pages_stored);
++	pages = -1;
+ 	set_slot_handle(zram, index, 0);
+ 	set_slot_size(zram, index, 0);
++stats:
++	if (!(pages | bytes | same | huge))
++		return;
++	stats = get_cpu_ptr(zram->pcpu_stats);
++	u64_stats_update_begin(&stats->syncp);
++	WRITE_ONCE(stats->pages_stored, stats->pages_stored + pages);
++	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size + bytes);
++	WRITE_ONCE(stats->same_pages, stats->same_pages + same);
++	WRITE_ONCE(stats->huge_pages, stats->huge_pages + huge);
++	u64_stats_update_end(&stats->syncp);
++	put_cpu_ptr(zram->pcpu_stats);
+ }
+ 
+ static int read_same_filled_page(struct zram *zram, struct page *page,
+@@ -2237,14 +2310,20 @@ static int zram_bvec_read(struct zram *zram, struct bio_vec *bvec,
+ static int write_same_filled_page(struct zram *zram, unsigned long fill,
+ 				  unsigned long index)
+ {
++	struct zram_pcpu_stats *stats;
++
+ 	slot_lock(zram, index);
+ 	slot_free(zram, index);
+ 	set_slot_flag(zram, index, ZRAM_SAME);
+ 	set_slot_handle(zram, index, fill);
+ 	slot_unlock(zram, index);
+ 
+-	atomic64_inc(&zram->stats.same_pages);
+-	atomic64_inc(&zram->stats.pages_stored);
++	stats = get_cpu_ptr(zram->pcpu_stats);
++	u64_stats_update_begin(&stats->syncp);
++	WRITE_ONCE(stats->same_pages, stats->same_pages + 1);
++	WRITE_ONCE(stats->pages_stored, stats->pages_stored + 1);
++	u64_stats_update_end(&stats->syncp);
++	put_cpu_ptr(zram->pcpu_stats);
+ 
+ 	return 0;
+ }
+@@ -2252,6 +2331,7 @@ static int write_same_filled_page(struct zram *zram, unsigned long fill,
+ static int write_incompressible_page(struct zram *zram, struct page *page,
+ 				     unsigned long index)
+ {
++	struct zram_pcpu_stats *stats;
+ 	unsigned long handle;
+ 	void *src;
+ 
+@@ -2282,10 +2362,14 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
+ 	set_slot_size(zram, index, PAGE_SIZE);
+ 	slot_unlock(zram, index);
+ 
+-	atomic64_add(PAGE_SIZE, &zram->stats.compr_data_size);
+-	atomic64_inc(&zram->stats.huge_pages);
++	stats = get_cpu_ptr(zram->pcpu_stats);
++	u64_stats_update_begin(&stats->syncp);
++	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size + PAGE_SIZE);
++	WRITE_ONCE(stats->huge_pages, stats->huge_pages + 1);
++	WRITE_ONCE(stats->pages_stored, stats->pages_stored + 1);
++	u64_stats_update_end(&stats->syncp);
++	put_cpu_ptr(zram->pcpu_stats);
+ 	atomic64_inc(&zram->stats.huge_pages_since);
+-	atomic64_inc(&zram->stats.pages_stored);
+ 
+ 	return 0;
+ }
+@@ -2293,6 +2377,7 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
+ static int zram_write_page(struct zram *zram, struct page *page,
+ 			   unsigned long index)
+ {
++	struct zram_pcpu_stats *stats;
+ 	int ret = 0;
+ 	unsigned long handle;
+ 	unsigned int comp_len;
+@@ -2348,8 +2433,12 @@ static int zram_write_page(struct zram *zram, struct page *page,
+ 	slot_unlock(zram, index);
+ 
+ 	/* Update stats */
+-	atomic64_inc(&zram->stats.pages_stored);
+-	atomic64_add(comp_len, &zram->stats.compr_data_size);
++	stats = get_cpu_ptr(zram->pcpu_stats);
++	u64_stats_update_begin(&stats->syncp);
++	WRITE_ONCE(stats->pages_stored, stats->pages_stored + 1);
++	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size + comp_len);
++	u64_stats_update_end(&stats->syncp);
++	put_cpu_ptr(zram->pcpu_stats);
+ 
+ 	return ret;
+ }
+@@ -2449,6 +2538,7 @@ static int recompress_slot(struct zram *zram, unsigned long index,
+ 			   u32 threshold, u32 prio)
+ {
+ 	struct zcomp_strm *zstrm = NULL;
++	struct zram_pcpu_stats *stats;
+ 	unsigned long handle_old;
+ 	unsigned long handle_new;
+ 	unsigned int comp_len_old;
+@@ -2545,8 +2635,12 @@ static int recompress_slot(struct zram *zram, unsigned long index,
+ 	set_slot_size(zram, index, comp_len_new);
+ 	set_slot_comp_priority(zram, index, prio);
+ 
+-	atomic64_add(comp_len_new, &zram->stats.compr_data_size);
+-	atomic64_inc(&zram->stats.pages_stored);
++	stats = get_cpu_ptr(zram->pcpu_stats);
++	u64_stats_update_begin(&stats->syncp);
++	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size + comp_len_new);
++	WRITE_ONCE(stats->pages_stored, stats->pages_stored + 1);
++	u64_stats_update_end(&stats->syncp);
++	put_cpu_ptr(zram->pcpu_stats);
+ 
+ 	return 0;
+ }
+@@ -2724,7 +2818,7 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
+ 		slot_lock(zram, index);
+ 		slot_free(zram, index);
+ 		slot_unlock(zram, index);
+-		atomic64_inc(&zram->stats.notify_free);
++		zram_pcpu_add(zram, notify_free, 1);
+ 		index++;
+ 		n -= PAGE_SIZE;
+ 	}
+@@ -2825,7 +2919,7 @@ static void zram_slot_free_notify(struct block_device *bdev,
+ 
+ 	zram = bdev->bd_disk->private_data;
+ 
+-	atomic64_inc(&zram->stats.notify_free);
++	zram_pcpu_add(zram, notify_free, 1);
+ 	if (!slot_trylock(zram, index)) {
+ 		atomic64_inc(&zram->stats.miss_free);
+ 		return;
+@@ -2866,6 +2960,8 @@ static void zram_destroy_comps(struct zram *zram)
+ 
+ static void zram_reset_device(struct zram *zram)
+ {
++	int cpu;
++
+ 	guard(rwsem_write)(&zram->dev_lock);
+ 
+ 	zram->limit_pages = 0;
+@@ -2877,6 +2973,16 @@ static void zram_reset_device(struct zram *zram)
+ 	zram_meta_free(zram, zram->disksize);
+ 	zram->disksize = 0;
+ 	zram_destroy_comps(zram);
++	for_each_possible_cpu(cpu) {
++		struct zram_pcpu_stats *stats;
++
++		stats = per_cpu_ptr(zram->pcpu_stats, cpu);
++		stats->pages_stored = 0;
++		stats->compr_data_size = 0;
++		stats->same_pages = 0;
++		stats->huge_pages = 0;
++		stats->notify_free = 0;
++	}
+ 	memset(&zram->stats, 0, sizeof(zram->stats));
+ 	reset_bdev(zram);
+ }
+@@ -3083,15 +3189,23 @@ static int zram_add(void)
+ 						  BLK_FEAT_SYNCHRONOUS,
+ 	};
+ 	struct zram *zram;
+-	int ret, device_id;
++	int cpu, ret, device_id;
+ 
+ 	zram = kzalloc_obj(struct zram);
+ 	if (!zram)
+ 		return -ENOMEM;
+ 
++	zram->pcpu_stats = alloc_percpu(struct zram_pcpu_stats);
++	if (!zram->pcpu_stats) {
++		ret = -ENOMEM;
++		goto out_free_dev;
++	}
++	for_each_possible_cpu(cpu)
++		u64_stats_init(&per_cpu_ptr(zram->pcpu_stats, cpu)->syncp);
++
+ 	ret = idr_alloc(&zram_index_idr, zram, 0, 0, GFP_KERNEL);
+ 	if (ret < 0)
+-		goto out_free_dev;
++		goto out_free_pcpu;
+ 	device_id = ret;
+ 
+ 	init_rwsem(&zram->dev_lock);
+@@ -3133,6 +3247,8 @@ static int zram_add(void)
+ 	put_disk(zram->disk);
+ out_free_idr:
+ 	idr_remove(&zram_index_idr, device_id);
++out_free_pcpu:
++	free_percpu(zram->pcpu_stats);
+ out_free_dev:
+ 	kfree(zram);
+ 	return ret;
+@@ -3182,6 +3298,7 @@ static int zram_remove(struct zram *zram)
+ 	zram_reset_device(zram);
+ 
+ 	put_disk(zram->disk);
++	free_percpu(zram->pcpu_stats);
+ 	kfree(zram);
+ 	return 0;
+ }
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index 7a55d751417e..482e1c28ca1c 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -17,6 +17,7 @@
+ 
+ #include <asm/byteorder.h>
+ #include <linux/rwsem.h>
++#include <linux/u64_stats_sync.h>
+ #include <linux/zsmalloc.h>
+ 
+ #include "zcomp.h"
+@@ -90,15 +91,19 @@ struct zram_table_entry {
+ 	};
+ };
+ 
++struct zram_pcpu_stats {
++	struct u64_stats_sync syncp;
++	s64 pages_stored;	/* no. of pages currently stored */
++	s64 compr_data_size;	/* compressed size of pages stored */
++	s64 same_pages;		/* no. of same element filled pages */
++	s64 huge_pages;		/* no. of huge pages */
++	u64 notify_free;	/* no. of swap slot free notifications */
++};
++
+ struct zram_stats {
+-	atomic64_t compr_data_size;	/* compressed size of pages stored */
+ 	atomic64_t failed_reads;	/* can happen when memory is too low */
+ 	atomic64_t failed_writes;	/* can happen when memory is too low */
+-	atomic64_t notify_free;	/* no. of swap slot free notifications */
+-	atomic64_t same_pages;		/* no. of same element filled pages */
+-	atomic64_t huge_pages;		/* no. of huge pages */
+ 	atomic64_t huge_pages_since;	/* no. of huge pages since zram set up */
+-	atomic64_t pages_stored;	/* no. of pages currently stored */
+ 	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
+ 	atomic64_t miss_free;		/* no. of missed free */
+ #ifdef	CONFIG_ZRAM_WRITEBACK
+@@ -134,6 +139,7 @@ struct zram {
+ 	unsigned long limit_pages;
+ 
+ 	struct zram_stats stats;
++	struct zram_pcpu_stats __percpu *pcpu_stats;
+ 	/*
+ 	 * This is the limit on amount of *uncompressed* worth of data
+ 	 * we can store in a disk.
+-- 
+2.54.0
 
 
