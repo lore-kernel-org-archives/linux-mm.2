@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D91CCF2C1
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Oct 2026 22:59:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF06CCA490
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 00:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA8806B008C; Fri, 16 Oct 2026 18:59:09 -0400 (EDT)
+	id 2875E6B0088; Fri, 16 Oct 2026 20:00:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B595C6B0092; Fri, 16 Oct 2026 18:59:09 -0400 (EDT)
+	id 238EA6B008A; Fri, 16 Oct 2026 20:00:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6F136B0095; Fri, 16 Oct 2026 18:59:09 -0400 (EDT)
+	id 126F66B008C; Fri, 16 Oct 2026 20:00:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 87E7F6B008C
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 18:59:09 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 17B23401A3
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:59:09 +0000 (UTC)
-X-FDA: 85330006818.17.61D3D81
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5ACCB40007
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:59:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K0iehqGc;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792191547;
-	b=ZB94Sy/c3DEBc2X5bNa/edphDlRzyOth+Ny8EKc4qxtF3boXkUpjtypYU0JKXN/Ie1jbqu
-	aldUberMMjgVyE9Zc3QR82/RL50aXt2TqtGgm+lsftJxyIRGYuMWrj4eWvJMEqHAJ8GFVG
-	00NLTSrWzgHfHrflJ7C7Wg5ZiY9MYEI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K0iehqGc;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E9DB76B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:00:23 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4ECC81401AE
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:00:23 +0000 (UTC)
+X-FDA: 85330161126.05.5733F88
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9DFEC4000C
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:00:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YT/Kniwn";
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792191547;
+	s=arc-20220608; t=1792195221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2XIZw4yIu0sI+8wa1+fQEbc6VQXsqxREgHYBNQYWVKI=;
-	b=LVkJCnNMOV1tpByF19dg8FlKX+EUUDIwXK1KsIikoiftvvCZBc7ACAhTYKuT8Dq0dvyYoM
-	Nk6wkDnCQzhS6Cy+hdumj8KqFB2mnnKDMy4vv5Nn9afuVVvNgIXVY6ZWA1XvcPgDvXSW3y
-	KcVbgBH855JPZfc9dpswzuFm9uVcKB0=
+	bh=ShCsr8VpmfSVrYE38tsQnynm8VtQ88LG2PyXK4mEIVw=;
+	b=EL0etntrPtHPdUKirmtIt0/sZUWzamyG5ZtKQ9QqrwAAmoZOly8xPoVueV+vYAl4FaOxZn
+	evrbYO06+u2odJfm3qS5HWS77yLLKc+F8kAQvmyZ3wIgDBOAU6OxHZRoPPMxrk2uJiw6Rd
+	YndosxZAqsegEkBx25n8Olbsn3ID8PQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792195221;
+	b=udSbonCOa9a4Ozp+exWmTqBgSXS9w1Kps/qj1QKgttgBXIm0Dg47IXLa431YRU4dBE1CQk
+	6XybjG0bjUjPYULJy4Hks67mzRAjCgbCHsItQEUvSHc2NJiRxrNuzqv1yZDfz4jX4y/P/f
+	npAriOSEd6iEZc6XHGT7wVKZduwFINg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YT/Kniwn";
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B7F0D6022E;
-	Fri, 16 Oct 2026 22:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B501F000C4;
-	Fri, 16 Oct 2026 22:59:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792191546;
-	bh=2XIZw4yIu0sI+8wa1+fQEbc6VQXsqxREgHYBNQYWVKI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=K0iehqGcH6OaYxRdNrNEpl3rtaVqerqvgIjRBbpdxMovHc2N5nmd5gk9tKrViP3B+
-	 CVCq3cr9444LCA25tUNknkzy+Gm2THEOSPkIVShx18Q3s7BRkV6c/EuTXDzecbAv+6
-	 2CwNsL4Eu6qrnPjbXX8WPiP+LUgzjNiLytIU2bIg=
-Date: Fri, 16 Oct 2026 15:59:05 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wang Yingjie <x-professor@outlook.com>
-Cc: Alexey Gladkov <legion@kernel.org>, "Eric W. Biederman"
- <ebiederm@xmission.com>, Manfred Spraul <manfred@colorfullife.com>, Vasily
- Averin <vasily.averin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "cgroups@vger.kernel.org"
- <cgroups@vger.kernel.org>
-Subject: Re: [PATCH] ipc/sem: account enlarged sops arrays to memcg
-Message-Id: <20261016155905.2a659b7bb7d61f33467a3263@linux-foundation.org>
-In-Reply-To: <20261016152609.2528805-1-x-professor@outlook.com>
-References: <20261016152609.2528805-1-x-professor@outlook.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+	by sea.source.kernel.org (Postfix) with ESMTP id 8ABB0406F6;
+	Sat, 17 Oct 2026 00:00:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44CE1F000C4;
+	Sat, 17 Oct 2026 00:00:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792195220;
+	bh=ShCsr8VpmfSVrYE38tsQnynm8VtQ88LG2PyXK4mEIVw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YT/Kniwnli+s29yW9eREh6MrxOIb3XDAYCRJjjRU3iAFlX4Oax5cV3OHzXWrGRey4
+	 bFO67sh6yb+zwA2ElR6CrK26oeD8wD2nT0urKNWD4Yw7YjlVS+Oh4Dtc96+PXgWhEG
+	 rI5oltlo7G2B2tfYJdEdBZwS+Ys1Or4rMvJYUcgzSYxi7n4zo4ain6IDRw5/LdYAeL
+	 G5Myn5WbJzSFWUYa67ozwJpjnK6syDV+TdXK1RQY4pv8gzKAxxzfjGc3MkpH8CIq5N
+	 6IgcpXVJq5pRsI49kaMj/czV0hdUb18bzlaq4y32H+PQAki3gGlItpIdpaVT+cC9lc
+	 E6Zrqu8at65Dw==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Manuel Ebner <manuelebnerli@mailbox.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/reclaim: improve grammar and style
+Date: Fri, 16 Oct 2026 17:00:12 -0700
+Message-ID: <20261017000013.97300-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179216914308.58773.4774391289742300524.b4-reply@b4>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5ACCB40007
-X-Stat-Signature: q7e7cmindt3d84e1nbhwcinhhgcfm1rh
-X-HE-Tag: 1792191547-402711
-X-HE-Meta: U2FsdGVkX18N0hvAThIp4u2bBeREu1bt0t+s7TPKuLf/GVTixXzbOsS371JfeQdgMdrRwxjyFGJ91EjgQQ5Udd8cNyc79du8Z7dh8fqWfCa7BNydeKSBKFA10oRl1D23VBJMK/ccNzhYWSCSNsGp5hu30J/dXqPLwrXwP59rRcWp2NdRpi4DRyPxJzNy3G9fToVti/esT9O+6x8JoWNxkp+EEoxpkot6V3SXO4d0X9YmXdc/huh9vUOcIMU050JfzYpKJkpWu0qqagzJR+T+Y0CZZnrgzcOZCSRg5RjSaxvrO60PF+1h1NY6vtSSKOy8FkQPU+2RapTSvlqNm+Ef6YVS7xy3TUeJryEG5NgXNJKylFtXY98O+KuaGDEG9ZiHYgwS8QZERRT99Q2ItDV15uhX0CoHzxjPDBn6mWkXxxxzo2Ap7CfJVVyI9w3OtzEDNGLo5L/7DXfyjFvOibNQrgBY3+OWl0SSWc2+k6nCb6a/SF1AGs/21NC5pgxGX8cD8J9ihUxWguDK/rsghVSY86uRiAR6MeD8TrJ9wDQCoc03fNZxsFS785fG4AaE4uxvBqzLWV5bJ84DfqE8MxYpIdRpxsW3RW0DpoxhXkhtq2nNBdHzSvKQhNZD1dIZYpOcImMugg49B+dwjwhjWt5MJt4ENNyuTc+tKIAplNcyete6tcsQCpLh3tDADz5aru4XoJMpCgqN81BsemEhngNOwPCgy9pJ2rprwWtuAipxEBc7Ptwh/qLTtgVE+9t03IWbq3RuebYEjVEMacLYRXFBfmQs7o02IZBFfp/k6kQPm+faY2pARqmGEcqNw+E0sd97h6Kbc47yr2YOiu7ZHfkiWIUzuosVveU/LstQwWdEhD99tC5zRg9GGSsp6XW4aXwF84hMYQCoyr0xX8hsNR4tKZiMDRmnhz4Pue5AsffXlFnR1wwalzG/CnnEPnW577RsprB1egT+n39VX2KejRl
- fM1Dr8s5
- WD3jcCQxlcEGXg7bfddHS2eDLmOakCbSK6IX34Ho8+CUZiOmsLbE9kZu3y/Vn4ot3T3INZ1iMF0bRwI1sYdROREq1xj9DaRLrbPK4VLLriPDVnwuxucXU9stfh1cP6m8/ZsR5uFHN7PGDp+FYkCK748z66/xc/T+/RRmbsJwmCAu1pYpDNHQXainYMIG3pg23NsDbc9X9T9Ly2VQa4XGKof5LM/E108XbdRPy6/rIPwwSW9PySQHsP2R9CAOqo2r/c72X6Qp4+AhF/6/1Aq48EmvFXHfEV5F2SM3IiplMPyHqB5AecVyauWE17w==
+X-Rspamd-Queue-Id: 9DFEC4000C
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 93516d58o7f4oreyo7om9z8yacqppss3
+X-HE-Tag: 1792195221-120702
+X-HE-Meta: U2FsdGVkX19gC6M1oFgREnI/3PiW/JoOZdTQ9cX3W/du8DsCmdQtKoJd1ByCmIqHfNK59WofB0Aai/2cfIscYN6q4FKYzqevLtCiobDvKo4OKQbth0RhuGHzOu1pXWSRiDmAf7/LxBQjgEbmdVE8MfZChz6+6INS0hgwO/H/xYbx2cIt4SXWFhl4shHYkPXEx4U+RnqsCthDr/alrmaqIoU8AV8Og63zJv0rfqSvIRiraUtSsq9JAn7JFrBner8NYhT/VJ/68OB+GdYH58KGsqiW6ZY24yk9ToCq7sEzK9yRKDil/+zpjkDqdnbxNP7cU1Ghq1joRi5B1hLEzHjYp+4Ik1Ij9QYVMj1EowxP69C995gGwNdU7V5yz+qKuAg8GPmsO7FKzYX71K6X8T4YJI4vz52aCUfs0dw9fuvF0S3bOL9qbrAMblGkVSg43O4GOJOPxd/OsFmKmQQCZveQlVP3THWsifSpgPyEsPKG8zMYPr+O3ZOrCLLc2kgC6MEE6R3+TQH+uamHhyGSEnN+UIppqbuyU7FapokM0ntUbnubQfqoI4SulHlNN7CnNhPw1VN5BffSqxG99HUm9DyaE9oHGrHnqa+snmIPA9Qrr0eqCuzxvzI9MCHlF05y1XFQxKcK1MtCQVuk6B8isv5lriD50o2VNu7yGc44S6z3rwj6KK6z0A5gHndSS7tbiqeD2VKmdRnmrcoVT/cKPGKIXMq22gmHsvGAgrJhfHRMscuJu9fMm3SywiBrTgqw7C5h87Woch1Bo79w26o2C+C4ZTZVyW9cz7W21kvQBnmHh13somnNlpfqPHP1cPQgDW67CwjH9c1OvO8wCMoKeJQ3mWZpIKwemuHkg1bk/K9pjtbg5JOQWs59qbtDmX8YitXW7hKwljMnoDE+21ERn47mJSVSxDrM6nZIli1XDtW4Rr9fiq3ZLEYmAPwC3naRGKKTJKfbFovFB90C8lKKhn0
+ u0k6Pv9N
+ 0FTiOTojY/OaYtdNeBf4ss5jgFte0hUBIrPUcYPQgc9UbUrh1p1CEXrZ3xkFtePQU6Oa8HRjeN9lTm+dw37FLN2Xzm6lKekBHr56WtvmeQc1gWat7WsQRrxHLmZWG7xk9maEtKSn+AZUhULbnMtD7Jt/JD+0EzdOtHmEiZQYTXuXALrthHZ9nxHSHkXyzBKG1EB+VT66YB7TvkJJC3TE7pB2fk4p4C2hrMbzS6lfxRbxb1uE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,77 +105,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(Alexey, Eric, others: please weigh in)
+On Sat, 17 Oct 2026 00:45:43 +0800 Aveline Noir <jm5905938@gmail.com> wrote:
 
-On Fri, 16 Oct 2026 15:26:11 +0000 Wang Yingjie <x-professor@outlook.com> wrote:
-
-> Commit 50ec499b9a43 ("sysctl: allow change system v ipc sysctls
-> inside ipc namespace") lets an IPC namespace owner change kernel.sem.
-> The SEMOPM field defaults to 500 but has no semantic range check.
+> Hi SJ,
 > 
-> do_semtimedop() allocates nsops * sizeof(struct sembuf) with
-> GFP_KERNEL. A blocking operation retains that buffer, so a user can
-> raise SEMOPM and hold large attacker-selected amounts of host kernel
-> memory without charging the calling task memcg.
+> On Fri, 16 Oct 2026 07:29:21 -0700, SJ Park wrote:
 > 
-> On the current mainline base, one 10,000,000-operation call retained
-> 60,936,448 bytes while a 32 MiB cgroup peaked at 909,312 bytes and
-> reported no limit event. Sixteen 1,000,000-operation calls retained
-> 100,860,416 bytes while the cgroup peaked at 1,310,720 bytes.
+> > If both of you agree to my abovely suggested/agreed changes ('s/page out/ pages
+> > out those/' and 's/records/charges/'), I will update this patch in damon/next
+> > tree with those changes.
+
+I was wrongly thinking this patch is already in damon/next.  It is not.  I am
+waiting for Manuel's replies to my review.  So I will not do the update of this
+patch on my own but wait for Manuel's answer and revisioning.
+
 > 
-> Commit 6a4746ba0619 ("ipc: remove memcg accounting for sops objects in
-> do_semtimedop()") removed accounting on the premise that the buffer was
-> at most two pages. Preserve that default-sized path, but account arrays
-> larger than the default SEMOPM value.
+> Both changes sound good to me. Keeping this patch focused makes sense.
 
-OK, I think. But...
+Thank you for confirming.
 
-> With this change, both test configurations reach the 32 MiB cgroup
-> limit and the caller is terminated by the memcg OOM killer before it
-> can retain the enlarged arrays.
 
-Only if memcg is enabled and the task's memory cgroup has an effective
-limit.  Otherwise we can end up handing out idiotic amounts of kernel
-memory.  Memcg accounting isn't a substitute for limiting the
-allocation size.
+Thanks,
+SJ
 
-> The sysctl also accepts negative SEMOPM values. Since nsops is unsigned,
-> SEMOPM=-1 bypasses the intended operation-count check.
-
-Let's fix this first. nsops is unsigned int, whereas ns->sc_semopm is
-int. In the comparison nsops > ns->sc_semopm, a negative SEMOPM is
-converted to unsigned, so SEMOPM=-1 effectively sets the limit to
-UINT_MAX.
-
-I'm thinking:
-
-- Permit init_ipc_ns.sc_semopm to be set to any value from 1 to INT_MAX.
-  This preserves the existing ability of host root to configure larger
-  limits.
-
-- For all other IPC namespaces, permit values from 1 to 1000. The
-  documentation has long recommended 1000 as an upper limit, although
-  it hasn't been enforced. This would be a new restriction, so the
-  changelog should explain why we're introducing it.
-
-- Validate the new values before installing any of them.  The current
-  proc_ipc_sem_dointvec() updates the live array directly, and
-  rejecting an invalid value afterward would leave a window in which
-  other tasks could observe it.
-
-- Update the comment in include/uapi/linux/sem.h. The warning about
-  physical memory fragmentation is outdated now that the allocation
-  uses kvmalloc(). Document the new 1000 limit for non-initial IPC
-  namespaces instead.
-
-Ideally, a new IPC namespace would inherit its parent's configured
-limit, but currently every new namespace starts at SEMOPM=500. I don't
-think we need to change that as part of this fix.
-
-Then please redo your memcg-accounting patch as a separate followup,
-with suitably adjusted changelogging. That would provide additional
-protection for legitimately enlarged allocations in the initial IPC
-namespace and for allocations between 501 and 1000 operations elsewhere.
-
-Thanks.
+[...]
 
