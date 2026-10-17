@@ -4,101 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F02FCCF2C7
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 09:12:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37262CCF2C7
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 09:18:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A01D6B0088; Sat, 17 Oct 2026 05:12:10 -0400 (EDT)
+	id 221C16B008C; Sat, 17 Oct 2026 05:18:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 151166B008A; Sat, 17 Oct 2026 05:12:10 -0400 (EDT)
+	id 1D3366B0092; Sat, 17 Oct 2026 05:18:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 067BA6B008C; Sat, 17 Oct 2026 05:12:10 -0400 (EDT)
+	id 0C1D46B0095; Sat, 17 Oct 2026 05:18:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6686B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 05:12:09 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DEE1A0231
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 09:12:09 +0000 (UTC)
-X-FDA: 85331551578.27.4BFE152
-Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 07B0F1C0008
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 09:12:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=fDfiYByx;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=Pqd8QaO2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D20FD6B008C
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 05:18:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63F411C2532
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 09:18:43 +0000 (UTC)
+X-FDA: 85331568126.07.78ACF0E
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3B27B100007
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 09:18:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=UqxkiEmf;
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf14.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792228327;
+	s=arc-20220608; t=1792228721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UU3pr7YlPujtztfaD5rEaSu3Gsw2VOPeWtM6bSVkPs8=;
-	b=IeQfUTFMDndwdncHmBB9qAmt8f5oFKdhykJ32t7rBhWCfAmYzjNxDreZ5xxYOaTIk8TVem
-	JWqrOHB8NmCxOm7YpYnuHPxDQVTELHV3a4K6kesjHFxEfcUETKGlyugB3sGUYeoiG7AHy9
-	Tr6VnUOrK2qn0/m9dtvMp2NdxVntWSk=
+	bh=AJNqfW0ioAwXAyHgrrMYr3i85p2JVBdKUXfKlT6Pido=;
+	b=3ViLKLxJYaq010jnFaT0eyNqHoXBBcB80vJXlCpH1x1+xUN1MU5ZUMhaQT4ZVJC5z3uAYt
+	3r/cdlBbjTp9IEled6joXRTr2/SAphZ4N9eHlxZhcD2yF7NpqrtcPXM7bDkYzyJt7Kc8bb
+	4zQZgP6tpXjl1D3X9BxmdTIpUNa5hh8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792228327;
-	b=Y+X0+q5p9PQUDHmo5W5Sjm/P9dP9jfZFj2guQQyYAwNJ4b5ikG75gjs66jQjYCFaWIGicQ
-	AoQqxnSRc/RELg9KjeZ0theUiamDlwfe7VVdgWl/Yd44zYbxmrI67R6NrHi8KgqDm9pger
-	ihP8HSCq4tBq3tPwAUtSAWa6+7ZmT5Q=
+	t=1792228721;
+	b=HmirN2Kt0KMM8PJ61owfzPFWO7qFngHWytmUAE2YsAajv9kG5vOWXGFnothJkD69iEeDKJ
+	BA0P/d7G7ZzXJ1kSWCga/n98s0jKT1Y5MpfAmmRpqgxgbBsvwnFmo+fNCawBzltUBGUJO3
+	y3qjCtXOexgvkZ8hMB29O0PkxK0akRo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=fDfiYByx;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=Pqd8QaO2;
-	dmarc=none;
-	spf=none (imf20.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.211.244) smtp.mailfrom=vitaly.wool@konsulko.se
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792228324; x=1792833124;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=UU3pr7YlPujtztfaD5rEaSu3Gsw2VOPeWtM6bSVkPs8=;
-	b=fDfiYByxn7BKxdtzcZP0RauvFkLWvt3oaWHOmoJ3kaB3ljcKi5MNUqAsLi+DPEgMD3PlWDOJeeH65
-	 mzORubIgvS/ur80grURXjG5BuDfXb01cEqzVSrHJoANR9FWEZeDDTlic61ysbunIMUEUcDJ6bD09CK
-	 JEpKmorhpfgSUhAl0tzZb5RnbpjqH6EpUzeyruRHcXbV/n41zqSeAIGPC10+yIOQKMYipBGQyS9/t0
-	 HdgePQQ2qINzHz1bAHo4Mbtj2q7+bLxnhM8aXvvyChaXOLnIh6GtmZ6iqpnd+1ggSEzHg2gvN8E91K
-	 JlzV9Y8PpeBOWMLTr4UJ1/xi30YI2ig==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792228324; x=1792833124;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=UU3pr7YlPujtztfaD5rEaSu3Gsw2VOPeWtM6bSVkPs8=;
-	b=Pqd8QaO2poBfgaYIAQczbKMpKMUWowQreCw5yPVWOLhhNPk1Q6AMk9mVYP3opIDkRr5WDGBPPTyYQ
-	 UYxBMW0Aw==
-X-HalOne-ID: d10c5096-ca0a-11f1-b1da-7d3e33f7de26
-Received: from localhost.localdomain (c213-102-77-204.bredband.tele2.se [213.102.77.204])
-	by mailrelay1.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id d10c5096-ca0a-11f1-b1da-7d3e33f7de26;
-	Sat, 17 Oct 2026 09:12:03 +0000 (UTC)
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Harry Yoo <harry@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	David Rientjes <rientjes@google.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	Hao Li <hao.li@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	vitaly.vul@partner.samsung.com
-Subject: Re: Re: [PATCH] mempool: optimize mempool resizing
-Date: Sat, 17 Oct 2026 11:08:02 +0200
-Message-Id: <20261017090802.1423681-1-vitaly.wool@konsulko.se>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20261014130301.GC15407@lst.de>
-References: <20261014130301.GC15407@lst.de>
+	imf14.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=UqxkiEmf;
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf14.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4j6GSs6Ct8zKnTY;
+	Sat, 17 Oct 2026 11:18:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1792228717;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AJNqfW0ioAwXAyHgrrMYr3i85p2JVBdKUXfKlT6Pido=;
+	b=UqxkiEmf8ArLdQmOp8pJzr16B+51FF6wd4VGNwPO/FNzS9wMD4L7/Bw1W9+HrxX4DFJBCi
+	KqL8s8ND8VeJOTdFwRlJFsG5Ixw6fkR9jChBnm7cE/8TwGKdjtyzWSJ2F5xskI94RkLHjJ
+	DD942aHIEMFTwtPKU6CmFWoWSUvbQH/cBml5Ja36Nigncb2r92fmRxBQRlNl4+QwSPe8+G
+	MK/DhOJEWw2tK3SL0FvP3hyxhKOSu+O20vHcHkEw+LrfF7hoW+K4KFha1rIHQpt0FHfmkk
+	c3kRrkpvLs89UAhUewPF+EFadAunu790rbD7e9wWaNL5R7PWwZ7DR0zUGEPt2Q==
+Message-ID: <c575314d3e52d5fcff3d6fc47d12dc118a24bd63.camel@mailbox.org>
+Subject: Re: [PATCH] mm/damon/reclaim: improve grammar and style
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: SJ Park <sj@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>,  Randy Dunlap <rdunlap@infradead.org>,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Aveline Noir <jm5905938@gmail.com>
+Date: Sat, 17 Oct 2026 11:18:34 +0200
+In-Reply-To: <20261015140122.87808-1-sj@kernel.org>
+References: <20261015140122.87808-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: 1hapjjy6635khx6ean1i9pxm4mypfzp9
+X-MBO-RS-ID: 3cc1a3b206adc544abb
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 07B0F1C0008
-X-Stat-Signature: ndaz5cxofkxb8bhkef37be8ad1o886mx
+X-Rspamd-Queue-Id: 3B27B100007
+X-Stat-Signature: bnu9aedn88pn7dcpncipsujhhj78wogb
 X-Rspam-User: 
-X-HE-Tag: 1792228326-228471
-X-HE-Meta: U2FsdGVkX19Ta9j301zy3qYsvz3u6dbkJYAOCmhlDoJpEjALxLO1HtWfSNpiN5wDzf/zyd7BOtuRxKJK4IBNc/a96cI4kyRu+J460mH4vcNtBIISN6tK2Ve68z6N0UbDN4AGjfW2JA3nyDZQsZqMxJB+e0otqAdhy4Ndo6oZQtAv2LrjpA/5EdoxxnBXS3QgLd0L5bXe2Osx2cKbEVg/4jfflPinJtTVog0LQE8esSfry/LwgDg1Uxh+jnK+NOlCp9++nsgJ9w/XvTw6ps8EXamwFXyQrIBFCFOO8ppLCMdcgIzgOvBUkM+JCh7Vuooz4/u4QgfeGzCOKqFwWFLV6IeQhXSjvhCbw/iZIfCfSzGnLoOiLq3vPMLNg5OiaXzNVvR6uSvwokS7tINQ4x/T+ge/zfwx2+TuGEVYWQnfpmJSJJhOTNQjuRlDSQ9xRlZQMpA+YbgKPnaIZlq36HOU3lxJ0bYTQ23cP2FtXlf/JvHC+prVqLQ9S0npawLm/OTYfxLMMuBH4XMDaZVnWTjXePJ0CFOzWa6wJB90ZO94NZbg5ccB+AlGxtc1n/B2ZAZYRdS5sCw9Vb/w1mT/t/8LwqvEiJSsvLdBG9k1VIM5usrgAdV/HjnxLCQ93kYJv5LNiGl/AQabuqxS7J24OEG9cPg/5LTmvyxEpK19dWJk5Z+g9RzhCjusD/yqEUNrk6+h5bZU1v2yV5n+mOm3TRjFUtKLaEfeILQraHLjBFdcMF2ICujt1tI7S1GaC+oh0CF+IywoNSHGMby9YaG6ycW9TMaP08QHodGrT8nlMrVCTWcf1fQOF+vRjrdQVD3xVKXS1bwyDQKPT3MnSVifpXBcn/ZJ/OItRb0au/VSvbF1a6UfckZpwjZ0s8dlsC8Qy3TT6YCS7BzgrImLIQTjc4g8MglUN1NMSehNFas2MfrpQsMASZjCVEbm9O0MMtddpmCrnEFnkkAhGAg0a45z0GE
- DXnjhOCZ
- MftVmCfv/fncvzpRj0Cj1q+tZPqbrM/X4ZUGX40oCN2F+tzXeiwLS3pE0Ps7LQxu14xwCXKL9HPMdSzTp3dO9VzTEKlrLi2SRSP7HuFQbAWZNW7GC62bHMDfmI7ohM4nsWFsn3W70rxc5e+L8B7xF1COD6SKgt9pwG34BjBPCoqupMAI8QxdPo6WOD0ICVue0J/EHqT0YfRRBRVsQZww3nSplqT6PJRrkudWgSEYKfMCHhH7/rICXaxoeyi7bYP2cwFFv
+X-HE-Tag: 1792228721-833836
+X-HE-Meta: U2FsdGVkX1/sxL6zWF416kUtMf67HUEtG/R7LI0ppa4XQ4i+lXBMqiCGArSsu477f5CWjmdpxEIZZSO4ERVWyaT9+2LmCmICR5mQ+oLSxHWaRgc+Ll6Losx+rIzUyCIsD7drhSdaemZBYm6v8FH0xcXSY4N4KGk0twjurhI5NIQEtGAOt4xsJevLspreTENqzqZRpib1jv/a23yXheSLwzp/MNIuPB61SgywMzTTk85c6AySFpvA5YMib+JqOJJ9sis4g1U4r8/I1Rufl6HFwfRSV029ZUBJpGWrcTQ0v806m/bhrCz4nNaJosiSi/5rfTEWxLCAIlvweq3BBmfRzWlxbZIeegGz+wxyS5cOvMcTdzEvTqytKiMSJiTWsEj0BLpTiKS6pep5yHKEUjk/UR1cFGL/seJrL5khACiUjKi9Vjp8nH1VWXQok8vcwHmylhiTJM3e9Hn5xNh1HAzAH7SPHDDI1hx/RjuDKsyqcNDdyQsav7KneWxMhpxqZc1MJjhpaIHGtQz9g9EvnrkftXL8YkQl3345Nn8RyHftYGEvu08rjxliHu5MnMVGs7Om+hN1rnu9Fl6+OpK8SMYC2rxtSSWdqvMPZLEPazkAweVwBakb+uI2VwoeyrddL/P3djZbM053LgGKvWwGAYyDgoW+Zikfy/SxyU2cYTVMox2/BcIT5xootBhTHF7ihk4CrcUMDbZg6mKXH0V7JX4iNtkhrdiYc4O1KbipJLGTJVZVQ893SJeHW5P6lEY+iMrUjROq0dwGal0jB65zLoEm44kpK1vnhAu6us4Yt5KlwAIWOZ4Z5/RP2ML/gHwaFDsc99Nb5/+tBKW2lc2MYfdBmaKQCEj4fFasEWQ8m3AcSz7r5gi/XWayXKDXSdqJSG+Z1bRIWo8IJhejeDtfUSzl8AGqaUKGwik9DaCWAeCONrNjRW9HpcY4Tz8mgBs+AhvmDq8TuYHDpAy0lE9lz+p
+ 31Sab5KK
+ Hhp5wyli+QYmDZDq4sR+PrdNXlttYHbGmsP24h00nc0n1Q1WCm7SPBP2TW2MUnaU9gouKMFo1TZ6qywg/PadjlqunDs8lFhuDcU+880hdHbHAs6aI5CimRJGiIHOYmkhb4zFDIiphWXnl1DnsUhXAJsI15xMipRq2uXZ5M9yFnND2y4DpsqCkcJUrQ9CN7rwhB9Ib/kS9A0rybKagOIJC89KBZ8yzjYGdY5D6mAAm/y4514WniNIa3OkTn0VkSuT6yvdhdkl1J0pfBNZ/7aYeHu/ADIruZNkUpVxyz5t9fCiypAR5wpnwrQR4LWDOsVXMl2seU5li+QkxWOI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,14 +99,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > Imagine you have a mempool with 10000 elements, and you have to reduce it to 3000. Then
-> > if you at some point want to go back to 10000, you'll end up reallocating the elements
+Hi SJ,
 
-> Who is "we" and where is the code?  This is a highly unusual, not to
-> say most like broken usage of mempools.  If you need changes to support
-> such a use case you should include a link to the intree user (or bundle
-> it with the submission of the new code).
+On Thu, 2026-10-15 at 07:01 -0700, SJ Park wrote:
+> On Thu, 15 Oct 2026 10:06:23 +0200 Manuel Ebner <manuelebnerli@mailbox.or=
+g> wrote:
+>=20
+> > Fix tenses. Replace 'set as' with 'set to'.
+> > Rewrite complex sentences.
+>=20
+> Let's put two sentences in one line, while breaking it for the 75 column =
+limit.
 
-This situation may well happen in the block layer (zoned). The numbers will
-be different but they were arbitrarily chosen in the example above anyway.
+Will do.
+>=20
+> [...]
+> > @@ -113,8 +113,8 @@ quota_sz
+> > =C2=A0
+> > =C2=A0Limit of size of memory for the reclamation in bytes.
+> > =C2=A0
+> > -DAMON_RECLAIM charges amount of memory which it tried to reclaim withi=
+n a time
+> > -window (quota_reset_interval_ms) and makes no more than this limit is =
+tried.
+> > +DAMON_RECLAIM recordes the amount of memory which it tried to reclaim =
+within a time
+>=20
+> s/recordes/charges/=C2=A0 or s/recordes/records/ ?
+
+For me charge is such a weird word exepct in 'charge a battery' or 'charge =
+a fee'. And
+'recordes' is a typo. Does this work:
+
+DAMON_RECLAIM records the amount of memory which it tried to reclaim within=
+ a time
+
+I could do this in a second patch aswell.
+
+>=20
+> I'd prefer charges, but my English is definitely bad, so looking for your
+> suggestion.
+>=20
+> > +window (quota_reset_interval_ms) and stops when this memory limit is r=
+eached.
+>=20
+> I feel like readers might wonder what is stopped.=C2=A0 How about "stops =
+trying
+> reclaiming memory when ..." ?
+
+window (quota_reset_interval_ms) and stops trying to reclaim memory when th=
+is limit is reached.
+
+>=20
+> > =C2=A0This can be used for limiting consumption of CPU and IO.=C2=A0 If=
+ this value is
+> > =C2=A0zero, the limit is disabled.
+> > =C2=A0
+> > @@ -125,19 +125,19 @@ quota_reset_interval_ms
+> > =C2=A0
+> > =C2=A0The time/size quota charge reset interval in milliseconds.
+> > =C2=A0
+> > -The charge reset interval for the quota of time (quota_ms) and size
+> > -(quota_sz).=C2=A0 That is, DAMON_RECLAIM does not try reclamation for =
+more than
+> > +The quota reset interval of time is quota_ms and of size is
+> > +quota_sz.=C2=A0 That is, DAMON_RECLAIM does not try reclamation for mo=
+re than
+>=20
+> I think this change is just wrong?=C2=A0 quota_ms is not quota reset inte=
+rval of
+> time.=C2=A0 Which part of the original sentence was difficult to read?
+
+'charge' again, and I think there is the verb is missing.
+
+>=20
+> > =C2=A0quota_ms milliseconds or quota_sz bytes within quota_reset_interv=
+al_ms
+> > =C2=A0milliseconds.
+> > =C2=A0
+> > -1 second by default.
+> > +1000 (1 second) by default.
+>=20
+> Isn't this (1 second in milliseconds is 1,000) easy enough to infer for
+> readers?
+
+Ok.
+
+> > =C2=A0
+> > =C2=A0quota_mem_pressure_us
+> > =C2=A0---------------------
+> > =C2=A0
+> > =C2=A0Desired level of memory pressure-stall time in microseconds.
+> > =C2=A0
+> > -While keeping the caps that set by other quotas, DAMON_RECLAIM automat=
+ically
+> > +While keeping the caps set by other quotas, DAMON_RECLAIM automaticall=
+y
+>=20
+> How about "caps that are set by ..." ?
+
+Yes, this was my second choice.
+
+>=20
+> > =C2=A0increases and decreases the effective level of the quota aiming t=
+his level of
+> > =C2=A0memory pressure is incurred.=C2=A0 System-wide ``some`` memory PS=
+I in microseconds
+> > =C2=A0per quota reset interval (``quota_reset_interval_ms``) is collect=
+ed and
+>=20
+>=20
+> Thanks,
+> SJ
+
+I messed up the subject line, should be:
+Docs/admin-guide/mm/damon/reclaim: improve grammar and style
+
+I'll follow up with a [v2], including Aveline suggestions.
+
+Thanks,
+ Manuel
+>=20
+> [...]
 
