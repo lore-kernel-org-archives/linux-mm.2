@@ -4,119 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36414CCF2CF
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 19:07:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B342BCCF2C9
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 19:16:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C9116B0088; Sat, 17 Oct 2026 15:07:39 -0400 (EDT)
+	id B9C236B0088; Sat, 17 Oct 2026 15:16:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 152C96B008A; Sat, 17 Oct 2026 15:07:39 -0400 (EDT)
+	id B4D1A6B008A; Sat, 17 Oct 2026 15:16:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01ABA6B008C; Sat, 17 Oct 2026 15:07:38 -0400 (EDT)
+	id A3C046B008C; Sat, 17 Oct 2026 15:16:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CCDD06B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:07:38 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46D52C02DF
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:07:38 +0000 (UTC)
-X-FDA: 85333052196.07.B767CE1
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5E2DC80007
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:07:36 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NS6BCoY+;
-	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792264056;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 748456B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:16:25 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0559280310
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:16:24 +0000 (UTC)
+X-FDA: 85333074330.28.23AB2C1
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 114B6120004
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:16:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H0Fi8Mwm;
+	spf=pass (imf29.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.161.41 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792264583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+E8a2PvgIUCT1IDNK7mru3JGGIez7qd+preTii2J3LQ=;
-	b=5pe1jtBX0aLCnVlryVaU+FZl3ekoSWj+r4teOJ0Dr8wKDvvtl33LjnWqBXJgP2wojS+1k0
-	aTd+bLc9z2z9wL2CnBt+vDtl8wMY7/pbhm1sAnMVpzjNhzHRUvFgze9gvyInKWRWK/PV+p
-	W67g00DkMKVk832Pq8WPl117E7GoZHY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792264056;
-	b=kUIPl3oHxRYTsnk44Np/BIb0l5PaHzvuhiGn9huqaPJ0liK9Ml5Ub2/2yYyk19mXwDdtO3
-	tzyoJxGeSoL/MfpGfEt1LunXBT0FwkgCCI7Vqc077SMaV1TB5K4jAj71Y8YOapBQoggCPV
-	90VN6CnegocB9q64cjZmAfoB3Qz7XEw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NS6BCoY+;
-	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e0d1da913so373357f8f.1
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 12:07:36 -0700 (PDT)
+	bh=3kpX1qw8aI9g0XRNJfIyX0LLMiylk567EvCY0vBBCeU=;
+	b=gZ2oaElLZiL7sxqNZARO+2uGQfH4gZULJZqPlXd9FIDIEE90ncue+cgJAxPkjYBYwm6NNP
+	YsQm9ByFBhcpcDpwjBeza9WI3oUO0fjroOvG3+1AfNe2p6pHo/uE/08weJvK2IEY1RgOzt
+	KCbiixWAiNmlv1CU22AxgVz+LG0Qvh0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792264583;
+	b=Wo5VL0Duz4+YrwhGv3JJzyGovoNpIVh3OodsyDHMpIQC7mWq0g4r4HEWssy1iRU9Uvx8GV
+	ih8Tyi5VVNJSOMC8cT81mkzISSuf3L9cxpEx9XeFJcvG9qctGugbhYexUFrOqiMN2Uzi6V
+	fMC09oKeZYwkTlL+0RuICV4J2ELudag=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H0Fi8Mwm;
+	spf=pass (imf29.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.161.41 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6cfed5dd083so652617eaf.1
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 12:16:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792264582; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ObIryIc0ctpCSvKfHQfTlx2QdTzjQjC38VDegEQzi+DbXEA+F7IzdGWF0C+q4BRNzm
+         Y5PA59u6DR8r9kXxBtgKcvQxOZvqUSssGS5GzRXXD++2sMUJm8jVmAuWYYDLewZn4yKL
+         3H/1CDiVPbna2dzS1xEKhuAFkiXlNP6maDpCrdR8aeA4J/SMuGRjVDFJIxOedwP0Wu4r
+         QCes9k+xVv71a7djNwUn9sU+FAxt3fB0rLZGPUKyMZovFQFmimfEbFrOO8p/nrNxP/QE
+         QRXg9/G+EhVvhHCeQfZgifeUmazhmHqhvF/S6Ip76d/XSK4L1kvuS1CYqx5ZZG75qMr3
+         q9ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3kpX1qw8aI9g0XRNJfIyX0LLMiylk567EvCY0vBBCeU=;
+        fh=VB8nzna+4of9eoXXaswHD5o4HbRcQbRS5WjMevpkgbs=;
+        b=OvP7ml2i862VczhNbs+FL/FvCzx4FWoNbLhnjiPPMg2LS3ObyPkXilm0PJiAKXLIsb
+         MtMq/7ddUFRk/ysemCbZRAynl1yyrZxkHCs2nNYLXNxHH3C/9kkjWI7g+SLLN3S6/JMm
+         9ysDiy1kDkRRMgs803k0li6Uq+LI6vgkqnW+rh0MwJOc9rRvsPqs6I/re+fG+a74htVo
+         fwCQ+/DtZtJZfblMWxfEu9DzS7h3IJSrw49LniM7KuZLNqn4EvEigpLoz+WqEWwDtIo7
+         pEAymeLpFk9UKvNgUtGkBLU0OkGfEj73R2vlKU7vVnT6KaSfm0V4oCv3ZM3KBOH8rK4J
+         JDZA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792264055; x=1792868855; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+E8a2PvgIUCT1IDNK7mru3JGGIez7qd+preTii2J3LQ=;
-        b=NS6BCoY+bp/Hao7dVO8B5Zk9wBeBP3kG7qd72lkAdxuOQzlz/mhRB+Zh1mDbF+N3We
-         uyIWr5B2JSMVTuH/ZBnjx0A3kly+oBGu3SIxwoaCfvHyVhQjUejTLQ8yD7ZXfJNRcH6Q
-         7esV7POinJqFElbTd7X9usXODEuVV6W2orhjoSOFGG/D5WoU0dMrazmSO2Sx/JdxrAT4
-         5VeO4EXLPv3WO8Il+1/rpDd7RKmydeHHYvAtacnJnVo9XBeNMZH3y7iLhWo2oBBklBXR
-         hixzaXAS6W9sNBVzOYTiVchtyPmB7XYTh6BvK/b7kQRC3JPR3ZFCQx2CvXxYP/z3kynr
-         hEbw==
+        d=gmail.com; s=20251104; t=1792264582; x=1792869382; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3kpX1qw8aI9g0XRNJfIyX0LLMiylk567EvCY0vBBCeU=;
+        b=H0Fi8MwmP++ytCs+8IQUUwUFcWMYQ5vaXkNiwGNX7/WnZkdIE32SkCaaJc+IpKYJop
+         NFpK8S/lsj6QsC0HyCX1Wv14MlrBip+AjT1ast1qHk+1vc9caLlUpcWPFEg35GT5c8r4
+         3DuBTEIypa8k0aHiNqHgNmxDCmh9Odt2nMrGdQ7hO6OSZ/vpKEzE25WMEiIzDFa/rFfy
+         aG/buLe/ZkfPIE4cW12RVDdbMvzyl/ik5nnXwY4F71NRJlOJBMc9jrARZa6PnHG3B3lw
+         uVcjfHhDObve23E2vb0W6Dkvs+nFV66EKn9HURGQo3ty4H2nfZJai3YSXjQl78cwpT0F
+         CQJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792264055; x=1792868855;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+E8a2PvgIUCT1IDNK7mru3JGGIez7qd+preTii2J3LQ=;
-        b=B09GxJJlWapPa06sokB7su2MpycQrb0zTanRIke85Ivib0bnbo7jUTemdC4OM6bC7z
-         Y1fpEZGHqb0sCkvGTZZWYSKatv4bVN8TAez5w/1/jja1MaS5YGkaANQJAHWwS0ZTj+AV
-         mHbHWUmNgMByP9owUxrv+PV4zGMG1wIlruoN6LK+JiiYthfykgLBq7K/zVIIaRzkqbff
-         r7jPUPuWMjri+4V22P8o1LEOtIX22vyi+XezAEAkIWLlF4QW68LlGzUNPWMF06jFLiAL
-         s/B2fW3Ei/Cf0T0/L3rsWbK+pR8Nw+/r1n/0Es8khEHYbghuHi9y16Q4WUG5oTwqd3Pb
-         adHA==
-X-Gm-Message-State: AFq9FYI9Az98W7PiZ0Stu0nyRUj4a8div2FcVf5WR5Zt4wb7vaLoKxe7
-	2eJTMeB3AKI9GPh2rbmkvCAQmEyZGf1eyEQQ1l4ZHtn6cIydyOJNkQvF
-X-Gm-Gg: AYBFou0GwFqXMCzjvGirfI3+j1S/DIBeJMlMv3L5ZzTZPDU0k7sGtBya9INrzKVeFqg
-	xsco3ac9AKbzN2Ts9ao9vyv0iewNYPsAfP2LYfdz/8xHnoLnEMVkRxiCecGHYnQ5hPeVHeXRk+X
-	haLYJoHcVVmIQOu6aQixcC/gQUDJw0BtO8RWxOYCS8lOQyJp4rc04RPlW00SkFztUmsWOjUNATq
-	X3kcwRAJ+0ellBiaAKB5jGkIu7f2MHYuG/X4i7ra0+df3cb7BsWL9+vwFsZ/jhk7uejdWqvACbR
-	QUeQloVM/r8TPoAZq0hMHIXdTNXCy15AfJg3fJUpzIvJpByl8qFc+bBt6GJtdzAfri1fRZBPI9R
-	zghB7/oyw1aDoOxqoqQkyRSyT3UB1OlZHZzMq9tTald4QVYT2rog1oqsIvKucdHBvbRb5AQV0ll
-	QlKsfPWOL4AbyfPBLrrMw2qhRS4Qwpxxe4iQGJtrVQorBkB/fqUhz5VeMFhMkFvfZ2tqg=
-X-Received: by 2002:a5d:5d08:0:b0:48d:efcb:1fea with SMTP id ffacd0b85a97d-48e07911cf3mr7339685f8f.0.1792264054717;
-        Sat, 17 Oct 2026 12:07:34 -0700 (PDT)
-Received: from [192.168.1.18] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4ee183sm12491778f8f.29.2026.10.17.12.07.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Oct 2026 12:07:33 -0700 (PDT)
-Message-ID: <ddb1e84f-2cfc-4a99-85c4-9a8c6415dbb1@gmail.com>
-Date: Sat, 17 Oct 2026 21:07:32 +0200
+        d=1e100.net; s=20260707; t=1792264582; x=1792869382;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3kpX1qw8aI9g0XRNJfIyX0LLMiylk567EvCY0vBBCeU=;
+        b=aBTKFxurbyfsWspYbe9nBgouw17KL+dvw1RuXFxmFLgpaclrIq2vWpClip05XY72e+
+         lukuqUaxqHNfgs5TcLoNojBkLsGIw7ACsi/JMSewfJTJRMHf9ctBHej4VsmZ3PIXSR6R
+         aMkBKsY8r/R3evVfZK44stfwEfPeGkklHWTQFGfw/PGg35hw87gfFRq+AL9Cn/QoKqBh
+         FydfQkAzVB0/LWEz8O1TIurouRVs9A2KSWS2jIx2hIhSc4BY0sQfKGKRk3/BdNt9Yr4Z
+         HYilCp2PzPCbWrnoJMWyJ0TBqqcpmlJz4Yloq91QexQYNF7eUggfMcv7wvkq0nZRSVUs
+         cMJg==
+X-Forwarded-Encrypted: i=1; AKwUvBwzDFMGGrVlp+SAt6BSN/PasI7HRYWDDY9GGlYZ36fPmtHVwUVWfqsDCM2GIlKoW5iTFuJMVu6JVw==@kvack.org
+X-Gm-Message-State: AFq9FYI0WAjBgn65yzYc+4WcXfUBWZAFkm2MjNjLABztxMkyX20G2Hy3
+	+3z663ItkzOErBtLY88/MPhZqAAQJ3lZCGkcP2Bkg9yFe15crxq5pEJc/4/qWHbksNyoXwjOM6P
+	IvY1xd3v3/bFk1BxfGAknzO5lrn0ixZM=
+X-Gm-Gg: AYBFou3MowCjZPBVA6ojsh7frhsuqThTfu2gEMaHTGE6ZUT11Go/h0FJUO1wYwjrx11
+	zO6d1jrd+1t6lSssw/FOj/SJbOYu5bu4vEP4UGv6zrAumy6CA8YZTZwYQBWXdUiietUs05McldM
+	mkgTjHMy1v5zGz64JHIscYEt6gS1JgilRXwhi/BFDd2mDclYjo8DfoDnXAKqaDY/IS4S/sLd6EM
+	FguCECLFFn2k/cIhppAxSnqTM4bOZc/SYRRJx9EDir8DXsbmSaxC3vZt5qLJdVJnqAZZMORbOPS
+	LsgEVhPANGiItuWwaUolaM6R9hUcQyF3JU2ntilLYTjmsw+COUiK5mA=
+X-Received: by 2002:a05:6820:208d:b0:702:96cf:69ae with SMTP id
+ 006d021491bc7-70357f996a6mr2222268eaf.73.1792264581908; Sat, 17 Oct 2026
+ 12:16:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] mm: hugetlb: enable CMA allocation for PMD-sized
- pages
-To: Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev, osalvador@suse.de,
- david@kernel.org, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
- <df6eee954b62f41d65c4d087d17a7a7cf60da791.1792136742.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <df6eee954b62f41d65c4d087d17a7a7cf60da791.1792136742.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6wp944f5gdm4bhm46h5c8ghtiq7hhdou
+References: <20260726212812.89266-1-shijujose2008@gmail.com>
+ <20260807055952.GIanV0WDlB9-eP9VdV@fat_crate.local> <CAG4KcRJcpLREkbmOEEw7nGD+_PNOd+fWHkODqfWo1M8hmxA_Bg@mail.gmail.com>
+ <20261017042204.GAatL37AhysV7BZBod@fat_crate.local>
+In-Reply-To: <20261017042204.GAatL37AhysV7BZBod@fat_crate.local>
+From: Shiju Jose <shijujose2008@gmail.com>
+Date: Sat, 17 Oct 2026 20:16:09 +0100
+X-Gm-Features: AclHuK9ltyMIoKi-tNdGjK3uKrWCnIWl5RP71EvNz5XG4osLNZC_K9K1LqvUxuM
+Message-ID: <CAG4KcR+9mHBBOpAw=_kN5Smd+KNCA=5-Fd5nkFgVRi5XC7Yf-A@mail.gmail.com>
+Subject: Re: [PATCH v23 0/2] ACPI: Add support for ACPI RAS2 feature table
+To: Borislav Petkov <bp@alien8.de>
+Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
+	dferguson@amperecomputing.com, linux-edac@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	tony.luck@intel.com, lenb@kernel.org, Yazen.Ghannam@amd.com, 
+	mchehab@kernel.org, ashok.raj@oss.qualcomm.com, jic23@kernel.org, 
+	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com, 
+	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, 
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com, 
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com, 
+	gthelen@google.com, wschwartz@amperecomputing.com, wbs@os.amperecomputing.com, 
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com, 
+	wanghuiqiang@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5E2DC80007
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1792264056-435044
-X-HE-Meta: U2FsdGVkX1/X5bCkIjAq/oLyYO/uGnil39xrUO3WyNQUsV6llv4MeKcjfk04EVoQ7udFtUTnQ53Hh23mwhPjBNqtX9Ee5qwyzpH4jsxb5UHYUbswdK063KITrGZF5gZK3uGxW3XI1rGbuk9d2wT/OB3UxjvW/0/rnqarlbFw8uquZ3priSMO6r71GIHE8/IxR3znSLyv3lwVGawJ2N8paeHiELME2/ot5gFniLNbdIpadiQDAZhcuSuoFI2TbvPTVO04sUD7PhtkFwbMaNlSfqr/K/94kC+Jl47vAVxasLE/a/XmwFg0DURMC74ci3Oyp3bKRmUF20Dl9N78XOu+2Bm52wdtLWqh36WkoI9/wUzPzxA9Ey2EdiyqhcHhGy5gNrAnBNs7l4tuIw/J2JPBkQVIaeYG04w3sVT/77ddBW7PM9f9pmwd7scUsWyvoRyWeQETuAlHazQgLjjSWZCe3mulRqDmOTqdMW4Wnm+kPLCtQ0TeaTPrlyhfKVqrT9YuyzEsTS50vV4RHn2Q+kiFx+gZafyO6fDW3nhxlH3fAZUl7OE3o4LMBUdykycK/Jx2eDT8ZjeS9Q/4yYMi+pgAT6z/tLgcztGiWM28ZRmv8Dirz8NvwfUt4/4S4eXRPlR6u2lVRxf5KEyBzTea93FVmXR4LKsaxlcdqwgWaHlmBJUeP87jGSA/TKbgZq52ItTAqIBZLFXIB3T35AouMPmdxgOGU3q+Lt+UvOOkDRIN3P1gGIIPG5Mus+TciLHj3udUhrFCVp8Lt+HDbDyXUQjnxzvEPu9k1WPaT9MIutcn4kGhL2R/VSefJDrJYT+YKwO9KH84v+tJRl8R/vT1jdOmgWGqsGcuVZa9mJ+IEKUfonS2k06udWiYcBAFauH7A4D2lfd/pgzA6eD/OEY2sYZ+YNCkPPZyv1048u1IMkkCZYCVcDDGxqZP042SaezQ7AyxOHCoy8tgjlflJAq8v5N
- 0wQWNtT3
- RYOqD9dCi/q2TzJIym6heFGpXF4S2hW1xKrF9Vg0phiwlCO02CyFUYVEe+40hTh2brAcNqLDLN6HPKf0JFTuFdVsXvcgveuSXw2lRaaLq79asu4BJFthhfzjdaqVxF4WTNYSt56cykJqnrsTH/oPhSi1EEturebpw8MiOAuma+1/9Se5dUmVWJSTKtAV7EAQWB28qtmpl/huGYTEYXwzspJ/T3coKL408QyUVApFJxrQUj3TZx3jBV99wKJEkv1hmJ1bxb8cq1J2XZtVISmoF9XgvfcLOf+lFDalnL2V3iHgCcDBfe0u5+J5hW1MpXjZ/8WmO3bXAZ2Urom1a8/nFI+dd3vllcPy2lVJk59O31FThgdLsnValJutMgpUKgsQ/UOW0Ql6czNlsYpnCG+KbGSC5GIpQRwbjwYc7WtESGSGwYeNryabOpLF2xxI2Q9LMg3OkSx6YFzTqwnFTZOVefUu6sIapZuSL3h1Ph+kyW1HWazPFKpRSis8s0w==
+X-Rspamd-Queue-Id: 114B6120004
+X-Stat-Signature: s3kksu771yrwss5b4fui7pdysqcyydpg
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1792264582-965515
+X-HE-Meta: U2FsdGVkX1/wsnWoMTjHyKVD4N9WXxZzj0KXkLJkmDX9kOyV+EIv8Ox3rWhpY5Yps1At6TX2eNS9ffl2Yg9UWjdczCd/0ZfZqriKPK3WAnbUNhXurCAJbTlOVR9M/Ui8DtQNwIwpB22fa69iBm1UlIbkQXfgRsI+SBMp4XGAC+Y3DxnOu0YeslVWlx3uMgnDrL9lIXrKmlfJq1ZwN0Me4V5RB2SScYcIB61uoKfQqktbkXC9Zpi5ZMalBg21ar+qxaEqOC5YrovD/6mwTqTPF7FPNtmINY3Ufu+XGWWSyVV5pfR1wf261SiiHl+ty196+8BQvh47BDzpsTOXa/9Oi6LwFQq7EkmC26aDPdiiU5EFJplpvUM7W3QGHT1da9qK5o47rh+ZLTxKPQrVEsXWIPp7qDKYUljSULpgaDS3Cv02przJb29pdIFEyMLkD3M0HXOhQtTsdSHxFaEU4yQk2Xj/8hXDh9DmnPXIyfJduxMzYyDM1HuB3aDPv+qfIaKYW07v6AFVF0KoLCy380Z2iitB8Hvc/BV5nXkgLK+++ARhutoHflbf46ufb/yq2iNCveWAWlNbhejyYZPDlFGpaWTPs63Gc9XCpSNbP9dz86E1OmqmaIgXgxe6ucx1nY454g3+IJJhji/tsAK1J/UDdBBQGIfSqQ6ldbHNYXAFNeOW0XKw3mjPIujDxCPU3cqbfrwFBz52tZPmNE/OXun/ubdO6ADikgXOuqoO5Q/0lOYPzDmgUdlJyBBQj/36czACPf5ewMX0YP2K+owmApbJnawsrL6X/AIZPKX6xC+QfqCNeYrZWRgHXsKXFb5an/F0RIm5xlY90pW43ZBgPNcOwNP8Tifuf23LVVgxs505BqCoyUSFoJK5o/lQe3FhN2hcSLcOMmmzBUiIzcS+V4rJ/NHNDqokQ8eWp0NlTeL45DnY2NsrL4THowN1sR7CoprXruiMqA6yii0Z0ZetzpO
+ ucjZGOFN
+ 8p8+7mrLlle3LiX/m73girooIoPXTq9VnGXwNmNKW/Cs+j29xkopyy1g3xpN9AJZb/EwHRf3WqHz45zcpmjyjimdHKmfcPmKMzzKj+gEy7ZSUPtugWLl27eVsqZwe9l5CHubvPDjx3JCd9ZLoXMQIUVXo65yCMSAWnHprACV1q70I8ZFRBvQ3//sbNTKKqKTP+V/Q0tHtAEjQjwu8O5QlKKoPj/SfFojGKAhSCDSTQbubptzXJql4i/7mwLIUiyMpneQdqWiEUcp/xK8IViCiXoUW8VxT4ZPBSC2+F+kqExYFyjbO4FMyurQUWKMV3nTGuQTEe/OwtMby+ed+L3Kk8ebw+/ZtlxkcsOKVkwnzBVeG7aBs+XtgIb0rDVzq5Ff0N4QiFP5Dvv5+QiY6lAb6dWHUFrudTPhs7ihZsFtAbirSlS0enkb1xj6el4jC75CUwetISpgns66RjBIc5bjKpmMCk+x8WqyK+HXe8W85EHbGsnyhovzEThy0bg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,53 +152,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/16/26 12:07 PM, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> Allow hugetlb_cma=<capacity>@<page-size> to select the architecture's PMD
-> size in addition to its existing CMA size. PMD pages are 2M on x86-64 and
-> 2M, 32M or 512M on arm64 with 4K, 16K or 64K base pages.
-> 
-> Give PMD pages their own pool without changing the original pool's sharing
-> among other gigantic sizes. On arm64 with 4K base pages, 32M and 1G pages
-> continue to use the default 1G-aligned pool. Unsuffixed arguments and an
-> explicit default size still configure that same pool.
-> 
-> PMD requests use only the PMD pool, even when their order is gigantic.
-> Other gigantic requests use only the original pool. Apply this mapping
-> consistently to allocation, CMA-only policy and boot-time accounting.
-> 
-> Move CMA allocation into the common fresh HugeTLB allocation path so
-> non-gigantic pages can use CMA. Align reservations to both the selected
-> page size and CMA's minimum alignment, and use a bitmap granularity no
-> larger than the selected order. Keep the original CMA area names and give
-> PMD areas distinct names. Document the syntax and pool selection.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+On Sat, Oct 17, 2026 at 5:22=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrot=
+e:
+>
+> On Sun, Aug 09, 2026 at 05:21:35PM +0100, Shiju Jose wrote:
+> > > +static int ras2_update_patrol_scrub_params_cache(struct ras2_mem_ctx=
+ *ras2_ctx)
+> > > +{
+> > [ ... ]
+> > > + if  (ioread32(&ps_sm->params.flags) & RAS2_PS_FLAG_SCRUB_RUNNING) {
+> > > + ras2_ctx->od_scrub =3D true;
+> > > + ras2_ctx->base =3D ioread64(&ps_sm->params.actl_addr_range[0]);
+> > > + ras2_ctx->size =3D ioread64(&ps_sm->params.actl_addr_range[1]);
+> > > + } else {
+> > > + ras2_ctx->od_scrub =3D false;
+> > > + }
+> > > +
+> > > + return 0;
+> > > +}
+> > Does this logic misidentify a pre-existing background scrub as a demand
+> > scrub?
+> > If the platform firmware has background scrubbing enabled prior to driv=
+er
+> > initialization,
+>
+> First of all, when and how can that even happen?
+>
+> How can it happen that the platform has enabled background scrubbing befo=
+re
+> the driver loads?
+Firmware can start the background scrubbing before the driver loads.
 
-[snip]
+>
+> And if that behind the driver enabling is legitimate, the driver should l=
+oad
+> and ask the hw what scrubbing is currently enabled and mirror that in its
+> internal structures tracking those settings, right?
+Yes .This is done in the ras2_mem_drv_probe() by calling
+ret =3D ras2_update_patrol_scrub_params_cache(ras2_ctx);
 
-> +	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nmask);
-> +	if (!folio) {
+>
+> I haven't looked in detail yet so perhaps you're doing it already. I need=
+ to
+> clean up that code first, though, because it is very hard to read.
+>
+> > ioread32() will read RAS2_PS_FLAG_SCRUB_RUNNING. Because
+> > the driver's internal bg_scrub state is initialized to false, this assu=
+mes
+> > the active scrub is a demand scrub and sets od_scrub =3D true.
+> > Would this prevent the user from controlling hardware memory scrubbing =
+via
+> > sysfs, since writing to enable_background might return -EBUSY and
+> > writing to enable_demand might return -EOPNOTSUPP?
+> >
+> > Shiju:  This is not a valid comment.
+> > Please find a description from the spec.ACPI spec 6.5 RAS2
+> > Table 5.87: Parameter Block Structure for PATROL_SCRUB:
+> > Flags (OUTPUT) : The platform returns this value in response to
+> > GET_PATROL_PARAMETERS:
+> > Bit [0]: Will be set if memory scrubber is already running for address
+> > range specified in =E2=80=9CActual Address
+>
+> Which memory scrubber? The background one?
+Hi Boris,
 
-boot-time hugepages= goes through here too, so hugepages=128 with
-hugetlb_cma=512M@2M already uses half of the pool at boot. would buddy
-first and cma as fallback make more sense for PMD?
+demand scrubbing. Please see the reply below for more details.
 
-[snip]
+>
+> > Range=E2=80=9D.Bits [31:1]: Reserved, must be zero.
+> >
+> >  ioread32(&ps_sm->params.flags) & RAS2_PS_FLAG_SCRUB_RUNNING
+> >  ACPI spec 6.5 RAS2 Table 5.87: Parameter Block Structure for PATROL_SC=
+RUB
+> >   Field: Flags (OUTPUT): bit[0] - returns status for demand scrub only,
+>
+> You lost me here. Where is that stated in that table 5.87?
+>
+> Confused just like the AI :)
+Please see three fields in the ACPI spec 6.5 RAS2 "Table 5.87:
+Parameter Block Structure for PATROL_SCRUB"
 
-> +	if (order != PMD_SHIFT - PAGE_SHIFT && order_is_gigantic(order))
->  		order = hugetlb_cma_default_order;
+"Requested Range(INPUT)"  & "Actual Address Range (OUT-PUT)"  -
+(Description) "If OSPM requests default scrubbing through Bit 0 of
+the Configure patrol scrubbing (background scrubbing) field, then
+"this field must be ignored" by the platform".
 
-doesn't this take gigantic PMD-order pages out of the default pool even
-when no PMD pool is set? would trying the exact order first and then
-falling back to the default pool work?
+Note: This states that both "address range" fields are valid for
+demand scrubbing only.
 
-I tested it on qemu and saw no issues, but I'm hesitant about the points
-above. I can give a Tested-by tag on the next version :)
+Flags (OUTPUT) - (Description)The platform returns this value in
+response to GET_PATROL_PARAMETERS:
+Bit [0]: Will be set if memory scrubber is already running for address
+range specified in =E2=80=9CActual Address
+Range=E2=80=9D.
+Note:  This states that  Bit [0]: of the "Flags" field is valid for
+demand scrubbing only.
 
--- 
-cheers,
-jose a. p-a
+Thanks,
+Shiju
+>
+> The rest later.
+>
+> --
+> Regards/Gruss,
+>     Boris.
+>
+> https://people.kernel.org/tglx/notes-about-netiquette
 
