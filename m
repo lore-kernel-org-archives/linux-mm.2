@@ -4,102 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2CDCCF2C4
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 23:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F15CCF2C7
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 23:35:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CBD06B0088; Sat, 17 Oct 2026 19:26:16 -0400 (EDT)
+	id EB9966B0088; Sat, 17 Oct 2026 19:35:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A37B6B008A; Sat, 17 Oct 2026 19:26:16 -0400 (EDT)
+	id E90A76B008A; Sat, 17 Oct 2026 19:35:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B8AB6B008C; Sat, 17 Oct 2026 19:26:16 -0400 (EDT)
+	id DA6616B008C; Sat, 17 Oct 2026 19:35:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 40DBE6B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:26:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE15514032D
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 23:26:15 +0000 (UTC)
-X-FDA: 85333703910.14.9607C0F
-Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C0B2F140003
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 23:26:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b="wzZ/6EHB";
-	spf=pass (imf23.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B1A636B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:35:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F2A8A03BF
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 23:35:37 +0000 (UTC)
+X-FDA: 85333727514.05.5196F72
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A7052160002
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 23:35:35 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792279574;
+	s=arc-20220608; t=1792280135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5+ChxQruMtybdrIxH4Oe8hOrLdCEmzhndPHUNt+XKPE=;
-	b=vss085Y07orw1ag4ZyKuUv2U0mcR1bRQojSDITecdtgicqyBGSkdrQBrUJdRy7OauyMLr8
-	nhxbtbAUdYVeVOgYL73pNQWfHaLPifi0OLMLpyHWJxMXpAIyHw+tKNnwqKqgXWwjHwTFjm
-	YKm0f09wfvmiI/0KteDkFIxQ5YDpMic=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=zKL5iMZAAsqjmjsRtzrlAfIvZSVlleicrZ7dYrErAqA=;
+	b=m18tB4o4YpqyvbCZyI4KATnlwRTtt8qQTVHSVzADFOIjh+8uK2uvNiN6x0/2tnurtBgDcS
+	RitvVunVSomkXqBbt6pntAu5t+Ff6t8y5wRwvTIblfiQ48c+PX/O6hKEbpZlITMmzeXGjA
+	/yDAaHI/+KNG1JtnLtzFSFjgx5s5E64=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792279574;
-	b=mEuZefIrTbz3sRtHB0WKDr+KHSXQBFlu51DaHKawQ4J+uDyy9pRb4YGZgTb693h8v1nmkH
-	nfB66HkVpIYOB7fNzr19C+ghNjKrAjgutqtoJaJCo5MZUFZ7rCKg6wK2Azy9cJXBtbrdzM
-	/i3+J0HMLKIFARngeAOANKEGuZm8UpY=
+	t=1792280135;
+	b=ofPMYVrn4yWhNMPoVkAyNPkqLBvAMt1MYjSy9iwGEe3LztGWVUbx+hjz/UyIB3uznjzi1J
+	19YjjIw6OHzOBjnkjVMNDp2NIa91lYhCFYQQKNl58THHbp+saJyWHHtEwNmGthO8uv1n8j
+	eVOfeNnNHK8veKZISAxdSHHRpGGKq8c=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b="wzZ/6EHB";
-	spf=pass (imf23.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
-	h=from:subject:date:in-reply-to:references:mime-version:to:cc:
-	content-type:content-transfer-encoding:cc:content-type:date:from:subject:to;
-	s=s1; t=1792279572;
-	bh=5+ChxQruMtybdrIxH4Oe8hOrLdCEmzhndPHUNt+XKPE=;
-	b=wzZ/6EHBiigs8/TQYNjoDCs/bWZhBQxV0oRv+5YMCJCot3fU2FYd14whwZFUYDLrpys3
-	kZlYEeQH/bQTabrsz58OVISF2LFeixWETRaWwZKJNS0bpwZbV3qzxg1GJVA+6gpY4P8aWp
-	nUh/rCk5wI+tB5+966TTp9MOzLesKXbNHI0vV0FnmGXVIDE1txhlWWy3FG/ZqHQkfZVR0y
-	AsN32Yox8zgMV/3++bTYWWkls1ddzl1Esxw1wcFgrYDcL8f5RdIDUN+TAemb3wXQQ8AeSx
-	oKFM/1JsiluDALnxZSNCfdUudaJMqAmnvRpXnoDi54KBOm7SDYo1mw5mfWVWAFFw==
-Received: by recvd-567c5c9644-whh6j with SMTP id recvd-567c5c9644-whh6j-1-6AD40414-60
-	2026-10-17 23:26:12.752423817 +0000 UTC m=+1578342.782868143
-Received: from daisy.dens.ffj.family (unknown)
-	by geopod-ismtpd-142 (SG)
-	with ESMTP
-	id BqvlJyNgSimQIUNJgrYm1A
-	Sat, 17 Oct 2026 23:26:12.534 +0000 (UTC)
-From: Liz Fong-Jones <lizf@honeycomb.io>
-Subject: Re: [PATCH v2] writeback: keep cleanup_offline_cgwb()'s scan out of
- syncs
-Date: Sat, 17 Oct 2026 23:26:12 +0000 (UTC)
-Message-ID: <20261017232610.58733-1-lizf@honeycomb.io>
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xIDvz-003oqe-5T;
+	Sat, 17 Oct 2026 19:35:27 -0400
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v1] mm/mremap: do not charge a shrinking move twice
+Date: Sat, 17 Oct 2026 19:35:26 -0400
+Message-ID: <20261017233527.797191-1-nickolai@csail.mit.edu>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261017040710.1174009-1-lizf@honeycomb.io>
-References: <20261015114307.1041273-1-lizf@honeycomb.io> <20261017040710.1174009-1-lizf@honeycomb.io>
 MIME-Version: 1.0
-X-SG-EID: 
- =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
- =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeZBE29le3x4T?=
- =?us-ascii?Q?AizvtRpU7VP809D=2Fmwb1shMNqfUcvGTQsx53Zse?=
- =?us-ascii?Q?L=2FBtvuK5SBXStd+Nht40iPrZhf4f+iwfv6L4xO+?=
- =?us-ascii?Q?tx=2FgyVkcqEq0DIVvfS8GRUpXHwkVT5VCn5dFeRY?=
- =?us-ascii?Q?BuIHBFnNpBLo+XXnXblxIE=3D?=
-To: Christian Brauner <brauner@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>,
-	"Patrick Lu (Anthropic)" <perf.patrick.lu@gmail.com>, Roman Gushchin
-	<roman.gushchin@linux.dev>, Alexander Viro <viro@zeniv.linux.org.uk>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
-	<lizf@honeycomb.io>
-X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C0B2F140003
-X-Stat-Signature: h863wabpinwwzc977xzkcsxzw6ky3uk3
+X-Rspamd-Queue-Id: A7052160002
+X-Stat-Signature: smx3jhac3odgr7jefm8wpyn5i5x31uds
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1792279573-958154
-X-HE-Meta: U2FsdGVkX19n3vcoeaFeAUjqLtBF1/2drm8XH3QJm+cANQ8WArSRENQPvoG2psH7OpIxVMHSO+Dprxlkur0zQOsutGVMQNPU+ZdXlSQzHxwAbQsu9MR+GnBrdTFnVvRDmn9crYNCmyp7MbMY1hSp1o9uP6W/a8grjbs957Jj1k62LaV/WyFHUkXjyRRXjaQDBo4objcuaKZX0VJVmNYzWTP3h25Xgt+Gzj5HU68ioWRnVippzNaH0qHU09ISJ2Pkk1EteRp3hzAv/+yjgHMtnVSuLJUOyZdR2fXWIdrgD5/o/GuQFYhXqA+ZoRJbYwJ+7VXTHd6BfvGAgvKops0L83IdLWM53zUOVbRMKrqG20faXGGlPUo5BVtO30z3cMTYXpcErBZGfUMxetGY+5vtWylLVGcukO9tWsN3Bc5WapUIt2zyKajAGY2bG5WpkRR6hMAcNMAwmdyQLNcBVN07qJtgfpXNzmAEtiRhgs1zIbUc5GJk8LqNod218nKrUQbd3PS7X4+F883RrpTfE51BDjM1bbaidFU48pupZfIuN3eVdwEUG9ftL5g6CpeErojILZ47dqF+sCMMpo74wu9lXGq+/ZaeuIlU8L1Wtgf7FhjQp1fMWsewA/w306LZSnWJQpqtK9Ara883qZ01W1AvqIv8WGYY/YQ2P2z7vW0eYefBM2sVxfno8h3Zg0W8gZ5dD7z3P4sFoFvp7UZW7+OmfFozjyHf8rJ1Ra9pw/ni9ouln2BrqIb9tsp9RepQ8DzCbUjvVIh0TBnMnME/deGXN0KflLtAWSusETh8wKWpKvqYukHifqavOGgSb2yo9v2+NWrNInbpiIpvQGVt71W/xtGmbDMjIZhJ4DcQjL/Gs0skVFNPQKe03s4RO9zG20RrBwreW/Fy0pk98OcrN85NmvhX50MGmYitrIlMokijV9nzw4c5kQ1iq23bLSFeynTDt/lAwmq3JI6InaypuJW
- GiYUfM67
- oyNWMUdeRM7klS6K/DK9Pa95paxqIzL0l5d3I3QBjiYG3Y0m5wARCxqarsA1QF61roDdVUU+NorzZ4IrH97qmH6zzcUKlGu/z0LhICkDD4b7IuznjeEwE/cgwcqL17l3BVkott6S81E8rO6XuOfPBztR+H8E3rIoZEmlEBERlOS9tb5i/IMAcf0kklDsQSGNr5Ki6b9Iv7WB+36nuM2aYg3LhRugpTSPRttdEndkdQ2JwNVrYCNDJEvy14kNAL0cgoe/31orpScuvzNep61XfZxuywlAYXA9rnHkgWLdIxqr/cw5MtopvSUn05aXkvnFSeukj7PijAaWcgNSthk9vVhcZm3dkjMZHLtJ9I0n/t00jR+t6Qup68K/ANfHI1Rw24Uhq+4SDlLNYg117rtCJjJ7dv0IF33k8cLMU7LsSk8HK5cBmUtNqevIloXKsw7RyuOWgLBYr/JRp8iNXNRNzW95SWnKdvqE84aF3kn+WGSUY+ItC8P2OVXNcZohmeMiAYOyNtjAQAtn9oV8KpSM9frJMeGUHK/idxbn43iYm1q29f87amVvQIr7lzOyMKk7/xc000IyHjlkojwYPLbSKpz69NH2/9Q/lDzDbgM2Ul8i3Fqw416IFNJZ859PuvXZGeAlJwBMaonoIpDiI5VIFZuDkzg==
+X-HE-Tag: 1792280135-872533
+X-HE-Meta: U2FsdGVkX18xXQaeXCqKOXxpeZlAyvDvbKrh552JQSx0Kx/wJMTzqXnxmtSKPDaOCD+JPggUaGfEx6wh14oGh4ICIvnO6M5Hyt9cfCsFS9+SOP+KS5qtpWfH/MO2vAW1MytlagfveblSS/4IWZDaTB2Mku9NghplYYbrBt4RnqEWDy3NalY/ITFn+bNiUlUOXlGmIgGc4xNuNm92ZUdem7zfeUlDsGXVokUnZaOMREecImXBVBa58avKCQ+OLJ6aj1wvR/n2NasrNbn/U/fBznBrxj9YLVNi/2ZQZ45eXMPMzcrcPubBBjWwvbGHWdc3jegqGobwVnrs4XXs9l+BB7/nCWa09/kxtvqZFOQePEbaauQQ6+/4kudxMUwVrp6nqG4FQF0Xdiu5WdG5blhpON0RgrDWQp2KdNhsATCRDnpu65q/m/rC0hc1knP7CJeZwtq0a/h+9ist+GKrF8G1IBqayoJNr1UBXH2knDla+XBkRke/Ipk3sfmBEpuEdKxqbMW0pILHtRe2cDjkO+I9Y7Xq72yVoEudC+OtfE6qrhqsN0y0uJMG4UrpWOHt73Flbh3EnCImm0o/PWqcuf1Cwd/HZ2aHNaXQ//hod2TPx7RaPP7pP0shYnyLm+SwH1EkE+b+kZa34LaDyNtLXXR3GNILXk9VVzGbEdkO/uQ/xynRGHGKolIwrPvEuoUYOQraZNfmJ3j8uGR9AtNpyEx2tcdhNzWWIjvNNq6sYGWQL0FPQWwWyc92Qbn/cmSPO2+dNEfZrf3JDAIm33Xk/UonBZPQ/c4U0M8SuzLwX0KIy42YVTbF1nqeGDpY77I1VLnnedbdWks/QV2d69FRpHFijOUgXbQKJY/51nifeOi3H/ZIhCvkXF2491ij1P0AHBaaZxXXZlNyz4Z/45WOX5Pzl4Gom0CfFCHxJo/vOfYHOPJrKXW+4tM/h2krpaqz7ucGpUepNA5adJCKaHn4vvB
+ jT72XI8a
+ F4l3/4BDjcsdO0GewJoI7FI+FbNnuzWrT0+QY1KZikj2UyXINfD5OQFn+TGl/Pba2Hu/6aQX+EO0QLMs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,18 +83,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Christian,
+Since v6.15 every mremap() that shrinks an accounted mapping and moves
+it with MREMAP_MAYMOVE | MREMAP_FIXED leaves old_len - new_len bytes
+charged to vm_committed_as for good.  An unprivileged process that
+repeats such a call keeps raising Committed_AS in /proc/meminfo; with
+vm.overcommit_memory=2 it reaches CommitLimit, after which every
+accounted allocation in the system (private writable mmap(), brk(),
+fork()) fails with ENOMEM until reboot.  A loop of 1000 calls moving a
+2 MiB private anonymous mapping to a 1 MiB fixed destination raises
+Committed_AS by 1 GiB.
 
-This fixes f6988c90671e, which went into 7.3-rc5, so the regression is
-new in this cycle, and f6988c90671e is already tagged for stable. Could
-it go into vfs.fixes before 7.3 is released? Tejun has acked it:
+mremap_to() first unmaps the tail of the source with shrink_vma(),
+which uncharges it, and then sets old_len to new_len so that the move
+looks like a same-size one.  vrm->delta, the absolute difference of the
+two lengths computed in do_mremap(), is not updated, and
+vrm_calc_charge() charges delta pages for the move.  For a move that
+does not unmap the source the charge only has to cover the growth from
+old_len to new_len, which here is zero; nothing ever releases the extra
+charge.  Before the vma_remap_struct conversion move_vma() charged
+new_len - old_len with the updated old_len.
 
-  b4 shazam 20261017040710.1174009-1-lizf@honeycomb.io
+Recompute delta after the shrink.
 
-Separately, the wb-dying-cgwb-flush series now has Tejun's ack on all
-three patches and Jan's Reviewed-by, for whichever cycle suits:
-https://lore.kernel.org/all/20261015-wb-dying-cgwb-flush-v7-0-9278d9ebaf5d@honeycomb.io/
+Tested with the program in the notes under QEMU (x86_64 defconfig):
+Committed_AS grows by about 1 GiB per run without this patch and stays
+flat with it.
 
-Thanks,
-Liz
+Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+Assisted-by: LLM
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+---
+
+Notes:
+    Reproducer (any accounted private mapping; watch Committed_AS):
+    
+    #define _GNU_SOURCE
+    #include <stdio.h>
+    #include <sys/mman.h>
+    
+    static long committed_kb(void)
+    {
+    	char line[128];
+    	long kb = -1;
+    	FILE *f = fopen("/proc/meminfo", "r");
+    
+    	while (f && fgets(line, sizeof(line), f))
+    		if (sscanf(line, "Committed_AS: %ld kB", &kb) == 1)
+    			break;
+    	if (f)
+    		fclose(f);
+    	return kb;
+    }
+    
+    int main(void)
+    {
+    	const size_t old_len = 2 << 20, new_len = 1 << 20;
+    	long before = committed_kb();
+    
+    	for (int i = 0; i < 1000; i++) {
+    		char *src = mmap(NULL, old_len, PROT_READ | PROT_WRITE,
+    				 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    		char *dst = mmap(NULL, new_len, PROT_NONE,
+    				 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    
+    		if (mremap(src, old_len, new_len, MREMAP_MAYMOVE | MREMAP_FIXED,
+    			   dst) != dst)
+    			return perror("mremap"), 1;
+    		munmap(dst, new_len);
+    	}
+    	printf("leaked %ld kB\n", committed_kb() - before);
+    	return 0;
+    }
+    
+    $ gcc -O2 -o mremap-shrink-charge mremap-shrink-charge.c && ./mremap-shrink-charge
+    before: leaked 1024000 kB   (every run; Committed_AS 3744 -> 1027744 -> 2051744 kB)
+    after:  leaked 0 kB
+
+ mm/mremap.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 444f37d7cd28..2dd41c611fdd 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1523,6 +1523,7 @@ static unsigned long mremap_to(struct vma_remap_struct *vrm)
+ 
+ 		/* Set up for the move now shrink has been executed. */
+ 		vrm->old_len = vrm->new_len;
++		vrm_set_delta(vrm);
+ 	}
+ 
+ 	/* MREMAP_DONTUNMAP expands by old_len since old_len == new_len */
+
+base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
+-- 
+2.53.0
+
 
