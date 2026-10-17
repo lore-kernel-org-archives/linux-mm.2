@@ -4,131 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC47CCA490
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 00:04:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F038CCA490
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 00:48:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F12B26B0092; Fri, 16 Oct 2026 20:04:58 -0400 (EDT)
+	id 15C356B0088; Fri, 16 Oct 2026 20:48:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC4906B0095; Fri, 16 Oct 2026 20:04:58 -0400 (EDT)
+	id 0E5AE6B008A; Fri, 16 Oct 2026 20:48:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D64E46B0096; Fri, 16 Oct 2026 20:04:58 -0400 (EDT)
+	id EEED86B008C; Fri, 16 Oct 2026 20:48:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE0CB6B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:04:58 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF7A66B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:48:14 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 440BB1A01CE
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:04:58 +0000 (UTC)
-X-FDA: 85330172676.12.EC98C71
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 886E71C0005
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:04:56 +0000 (UTC)
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44C0FA74BB
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:48:14 +0000 (UTC)
+X-FDA: 85330281708.12.F304016
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9C5261C0003
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:48:12 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Z/jA4ioQ";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IyI5lHpH;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792195496;
-	b=35KpvpleRBsV/EKfA7HLr7EN30H7OYVHl5rVG+pkiA/zgo7GJFqYcKZ+qhkk9nEvytLlsx
-	obW6yZJkcL2YmXzM/buXmXxLur9zIzgJwnjPARMCqZujCuNZmd0LzgtFEUYxZhMx/GYknF
-	xhwIGIGZcobQabg6wwZQHXtHImuDOuk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Z/jA4ioQ";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com
+	spf=pass (imf21.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792195496;
+	s=arc-20220608; t=1792198092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=lBiMjT8ldL7Ky1jQPlUb8oCa4/bnIv7ADJeJybOOjZ4=;
-	b=lML/bd/KLaynInldyalUFMcgZW5i5hG2fKC4OKV83pfzACry6g/Nedtc2xWrn4cKSLSK00
-	PScVT/3KCTlZ/FN61wGxWcoZ4PnbAmGV1wKg6U41B2j534YZtl4FvMPOp6NJarFOQ3+9cH
-	f2cXxet5zv13oUcGBHwxpQjLAPtLs04=
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc50ad2d650so331011a12.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:04:56 -0700 (PDT)
+	bh=9LzMb59cyBGnEfMp22f67zI9ONykL0xzCkuzFl5P5Qs=;
+	b=icxuuAMh0ZmyBWM8jdCOTbPkMRXHUdpW39iyh/5e8smTTSRNBiJkS/Y7Mzf15g481xQPs8
+	dkpuEmHoB4plWGC5gGAE6ZOhNNUlJnD/azSTsolE7was4jmPgpzpaZw0ZMRZT2TtBsDClc
+	Iocet/4mnkgHsyAiQnCnNk0kowiljx8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792198092;
+	b=CFvOeALFbptpDE46XHgwG1bUsc0IWHLgWMbBX1Ulzb5QXOCcW+p59tfhLiqtIh7O/KIi+7
+	1nFQHurr5SaIKncmYn0xhxx8HoDgcC9qGLp5dzRYDMXlaa1c4NQANDMOqtUt2tR0BIjQf+
+	p923ejMH9YfYyuWiYeedIoLs8AeO1LU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IyI5lHpH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-8446af403b5so200113a34.2
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 17:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792195495; x=1792800295; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792198091; x=1792802891; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lBiMjT8ldL7Ky1jQPlUb8oCa4/bnIv7ADJeJybOOjZ4=;
-        b=Z/jA4ioQFmxK4nIGVExaxROb3M7iLiVj2iX+wnHkgj3ku7p0ayXdDy1UQF8mMMMZbR
-         rLNw09iZAteC848Le+JLJ4dOXr/7MhR1pUsk9i6OYd/P68RqhvKGk0BF5HRKKuaQyT0U
-         IZcP9yB8c2xRKEzG+B3ep1K0ZaGdlub3sba0kObOyFGZqmwQiflhe8UuOmN2I5ne6+xd
-         JITum7zphpIh42gAAy2aNrYMwqchPmbxXaGdRCet7y0eFwiGyq556Kzm1/XiTN+GkP2f
-         SLQETcfznDq/3KksjvThS7Ap+smizF+rPEWXLj/7dRhpERfUNtXKIDl/5k/jrAjJPup6
-         e8gw==
+        bh=9LzMb59cyBGnEfMp22f67zI9ONykL0xzCkuzFl5P5Qs=;
+        b=IyI5lHpHNhvZAc6onjRjwCyXIZTpsude54y7Np8lmcRofXegeCzI0k0cAgCplzfxlk
+         kB3IND6Id16V3zzRy+DJhr4MECDWrHUmO9NcX2+d9DZY5jWgxDodvW9jyIMe26QAkNbk
+         1oJb9wQzsyYPW8X8sZYKdp091kE+RLcU4Reapkt4v5B+598S148wqMZYZIijRNM33v48
+         +EN2jvc4CH/evT0t13M6BTLxYUZvdhOYWfq+21ukZBFI5E5AGqmOuHLdn28FcmytS1lD
+         1WfqfRMVxPyUxaPaGwyed8p6t2+vXBf2V5wxackQDcA+lgrLYoKGMymP0fzicb+3819W
+         4n8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792195495; x=1792800295;
+        d=1e100.net; s=20260707; t=1792198091; x=1792802891;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lBiMjT8ldL7Ky1jQPlUb8oCa4/bnIv7ADJeJybOOjZ4=;
-        b=lke0jyJvLTytyCjSlreNaENHYBkq0jZGB3+CQ8fWtIMR/geRlw5uBAj9ifH3jQCPJA
-         xjcuoU7crhPPC1Xn9jnxyAjSG5yL4BfNo457e+wkEb9i29invUZNDNPNEumg6rXy+UPf
-         bMwgPFv/0UJeHpxPqPpO50nabwMMekd0oUcUgdJ2aGdztspCB7fyU7XaBvda7O0mcP3E
-         LwVlgn1ITrG9OeceQF2XlCGBMExnUbkD+3A7NP9NM3bfQvQrrf/GOhjXpmgnpzkZKln4
-         B7G27KMBOvrYsTZNMAmD16WSkMH60X6pwQqRoE9T3QulnsJLiKZC2udYfQHdaGhWcuSH
-         E+EA==
-X-Forwarded-Encrypted: i=1; AKwUvBx6JFRzP6WJiTgw/KA9RPqJttzS/s9FM6ROx06Hv3aCXNPJM6mLzFV1+gnNcLwqzd8komp5bl6RAA==@kvack.org
-X-Gm-Message-State: AFq9FYKlF9Bt0hjSewaXpy1wNRukzT/68lGQrePiZ464C5B+g8iQf1rK
-	lkXt0K5vrR6qtxvTL5SHpV6tEBKF7E6TZi1lwKynhb3tx61CYPSI9+5R
-X-Gm-Gg: AYBFou0j3Yw66n+fNSQr7uthbBeGiSXxD96GU50elljEUpqt4sd5g1wIVO3/2fyK9to
-	Q2GykQPmb8azQhsEF4XMEyjVLHfrJZCbbt19TPUx6ebDfMmX4iKXkim0t/3ISVLANTjMGJJykmX
-	DqBuRgPibOxoH2esVOdGXni71clc0JwZ9k8ZelSRtWRtr/RubNBO89sYAm+utNN1nIvKOQFJajG
-	MjEJ++fhELp70wfcYWxSJKRbRN+CtRNPswVZRGj4p5E7xh5P8Pk/84Li2XtDcWXQPRC2tjBldN7
-	+EtcqpO4+Dc6t8NUJvUnjusr+bMbFQd8e2TCuWzFQYVkxnKNC7onQa9OKlS8fNrpQwY2VDXSjcr
-	9qSvcYkdcJIa6kgItxRGWkUQvq/bBeFG1KPZImQgBAUL0szYV6f8sc6XKhf4F/h4VdayDbgw/Hp
-	HqXIaebaKusXLWSp/6SEL1LWI+nkcN4K2ZvfpSzDFjQC9TeYl7gyJ4x/uzTRgcrEPKuaDWOV1Lp
-	0PeRne+nEEB3U7hcoltE52eKvdo11UCtkXdcRFUrkak5PMgK7ySQISaLWEFTPzKYcrZzg9yeZD9
-	ETunYzSgnKKD44j9n/amD8TBn3kUJKxI5qetRr+dhTnR7dm8NoKq2LX6MrisslX0lqn2xftR9Ua
-	CRHdYyZPAvQ==
-X-Received: by 2002:a17:90b:2e46:b0:3ac:9e76:aa9e with SMTP id 98e67ed59e1d1-3acee276f13mr1245594a91.3.1792195495154;
-        Fri, 16 Oct 2026 17:04:55 -0700 (PDT)
-Received: from sid-dev-env.cgrhrlrrq2nuffriizdlnb1x4b.xx.internal.cloudapp.net ([4.155.54.158])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc98139ccsm3284963a91.0.2026.10.16.17.04.53
+        bh=9LzMb59cyBGnEfMp22f67zI9ONykL0xzCkuzFl5P5Qs=;
+        b=uBAfFegMhnuT08gQv40w9awokjzIMO7rPAPvn99sLD5BmQtVX6zfLpbBiDh+9cU7aF
+         wAVnyBAEHm4SHSZOdL5/sIL8WrGuTh1xaHteHAXubcr/5qXGb9tuV798KKYjz+E93QWP
+         3DOfStDIskcYUhQXg1fA13BV4LHWc6BjatTkBrejNGGWp+BKGzPsF59+FutR6XCAoNyA
+         RWrwAnigPmXw0E9Erx1n3vAbRZeYWRTSSf8muQX3lqPP3xQrwdY/iuZqHADsCGaEYa+o
+         IBxplnJCoFgGY8sA3gyFPsO9bDq9I9MRRSILnTaG8Zqe/syf3yNpWhNSMD4ykyKj06dV
+         mHiQ==
+X-Gm-Message-State: AFq9FYJOWPEM0mQ4IGeKhY8RY0FVEZQgXgNwLrA3/IgWNUdQX90HKOXr
+	BI8XGuzDlhZm1H5/VIGhxlKzfc8EfnFelOKBhbkEBKtJzYWo6wK4wTy+
+X-Gm-Gg: AYBFou3uUNgt101eF9T5Yi2Zki4ur8kmg+60MG4aYbVdZkYPtIyeFMe/cSnJYBPOK0c
+	mmuMwlT3BOJSj6MRaUk17TtsIKaBUq8wlVLbiSLS5nz21Nx5zj2/1wlgesv6X50Lup6ffmGfwzZ
+	tjQDS1hS8cdjm9k/UUCi7PxBI65zc4JQNLC2fAAeh0tuEajgkgpOjl+ITKfXxtCdy4fKlsk9Rua
+	Y3ZdrEQ9jkq5MqFARAis+pfcFktNbOrETaL8noQ57xQNZixgFutpzmYljzvzHZISnCdbokmmd1u
+	N+f/Nu8Shju+thrA+QSNJDqquwxefDNYsi6HD77N57Hb+M84TnxOK/F4MGevQf418NuHf3h7Ie+
+	D/rz7uPLZomha6Sd6hs4oXXkcV/jaR2syuAWueDfkdg3d9/ITeKcXWRgmkpIirQvIsQd+YhYAkU
+	SgUjsHdbgkxm0XtHpQqa9+dEYtSg8sNnzYorirHHfulp34BjAq/vPe1Zcr7aDmBOFHN19qteoLX
+	0lNx6pMl6QYhGUpKSwWWZhr35CGDckNrCJXGEV/ZdyAWBNrH8c=
+X-Received: by 2002:a05:6830:4acb:b0:7f4:d1aa:2f32 with SMTP id 46e09a7af769-84500595526mr1670876a34.11.1792198091605;
+        Fri, 16 Oct 2026 17:48:11 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:4a::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-842a0f31614sm3090730a34.3.2026.10.16.17.48.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 17:04:54 -0700 (PDT)
-From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org
-Cc: david@kernel.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	yuzhao@google.com,
-	linux-mm@kvack.org,
+        Fri, 16 Oct 2026 17:48:10 -0700 (PDT)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	apais@microsoft.com,
-	rlmenge@gmail.com,
-	Siddharth Chintamaneni <sidchintamaneni@gmail.com>,
-	stable@vger.kernel.org,
-	Hardik Garg <hargar@linux.microsoft.com>
-Subject: [PATCH v1] mm: multi-gen LRU: fix NULL lruvec->pgdat deref with memcg disabled on cmdline
-Date: Sat, 17 Oct 2026 00:04:51 +0000
-Message-ID: <20261017000451.89536-1-sidchintamaneni@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>,
+	Hugh Dickins <hughd@google.com>
+Subject: [PATCH v2] mm: unqueue deferred split folios outside the lruvec lock
+Date: Fri, 16 Oct 2026 17:45:55 -0700
+Message-ID: <20261017004555.2890038-1-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9C5261C0003
+X-Stat-Signature: mijjmk4ctpqb6x1c37arfnrjsrikzh9p
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 886E71C0005
-X-Stat-Signature: dgfi7r8d84mcqnb5n8h49bbt31oiyc3w
-X-HE-Tag: 1792195496-355467
-X-HE-Meta: U2FsdGVkX1/gkL0x8v/YdC9N5HG6fZxxjuQK6i4Y7pPAonFScFhU8pDaDuHadYjKL8uNib28bZmqPq10L3LHfB9CPvrW5d3tBFJGNReF+nc2xeKFNBOzItyyZw72cBkY92JurTTCiVrYwnrbzwfFUZD480HoPuYUJFwq/Vcg1rInSDNYyXiC5RmLVJv0+OcVZ0b5QoqcvNoDtLVw5umNPypwERFEOErGoM9Jirh6j19PXLv6xrL9WYERWKy8ZkBz8QOazbxv7s7HNPdgVw8kGCOh361OXne4M+e2+1Gvak9KwHbqVhjCjqpZfcBr+ZHZjWnqdGAsrmCo4nnEpr23S/vVPlRn1uJykm8OUipCgceZfRbcRWK44nnyYx9ZOmc68WkMWqKTElDmi1NAW/zrhT6cDDgwG91xO0Ssf7zUUSCUrKNAYGzhgB9wG+1V3M3lAUchSTe2fLLtcch/YiWS6iPeYnmCHgZ2s2tDiEhhmBtqVFuuYIGnWUiXPn0cyBGDXh1OxoBpevwJcZFwGKeiOJY7RqOPxMao67NGN+H5hEWq0O5TOPeTw4VvkORXMtq3bRfOWQqO8kcbrF5iQhm5bl4ObgVe53cHNFH53oNqChnV3PnExQrykB3O7zArqDF7YiORxIeZLXbnnAV/ZqrOLGqF7nTQBzQ03mD5dxlzwP6234LXTd4cyw3GQVMgdpzlc///0NHWjYZjgTBWJNAsOvEoK88HGifWQ24gdBToG/0at5iznTCCiVvME66EfvIZs5icSqkizJY7wzwhLJWkhObXe+fQwcqp/SRU0+1UDnDmKeKIsu8kdYW4ng3SRKWy5zVNyLaxCZtgr3S1lvtA3pF/VIu+qSl3BPn+J5l7QEzayXeJkgW/QchEx6LZ1WHDqg8fpBmbC1XOFlSBZ+kZ0txqEytUPS3XGwo7G/T4IeENRTyMbFpYQD91pQQUPCpKhXoVqU9Im8HWRL999ii
- 8oOVe5kY
- StBbA8lqvtMr9BjD++a2u1T9MK67UkgfDJNpK6SjGVFBckYroYL/dAtWw0UtDfXFd/b/QwIrPSOsUJdYLzpDXlLrj01WLzVSxz00KmyjaiKpI2lQKdKrSW9GhR6LE4jibvauJQuD0LGQ9W0vlMIDCrYdQEoD9xL5rB8vW4RUHmOEcSqfOGH+tYx8ozExPcKdj30jt1AF59EtdcGnVo8MJSf8ZM7g7p1OWa4ZSUQ8zFixlRvuWvO0KD4hrDC9sxvFLuFDXSmA8g4fuH2apPi///rdmspMOag2uRQP23zp4WGaCPEpubNYWc2EpG3siQZIxiOz3FsX7UWIKQv9NiR2aJBvT79cp+yUrAvjDV2JsnQHqzBw1DRemC+pIBynr5qK2Wf/DxVOPfzkterij12tMFox+mc6R343oQrL2RkFToGBXFmyhGKSXQ773I5bhkRq1/POEiXgW+deSE5U=
+X-HE-Tag: 1792198092-678215
+X-HE-Meta: U2FsdGVkX1/nO20j2FswSDIB2F9tRyid+NLQzml2qY7m2PKJqJAaBifdn6pcsNXYjQrb1m56XQRuWOjJ+mwGpKI4y8xmBcMJbO1amfiC7wZya+SFilzhtBZbYZtQt0ed03K+2DhZUSwqBIjdeOAGTDs/YO7ehJLR8XPkrKrnZZfRzS2LWvacKj4yagqFt2Dqky6b8a7RmHKEJFjv09LOWEpYbDcBa6oUOVwaB46uSRFE91iOAWVH6ujnhyQhboMDQFoRboGNbs1pvBi+FJV//9cIUuMWr2fSxv29FzM8hc3OJzFC9w4kdgwbttHucFoZBzbLCGlM9nHG2Py3nX7Ue6UxaKR2B1llpED8VZML/rD6YMGOPJkYRllDTKSMHRxD3dZNaaxcE4XpnhuiXCFYcNbsQIPDBhIL0QAAaLbEvBx36/gZwwpCjrLxWkHj3b5vB3Hm0429nbyaXHsCOGgq/xwyXYtDNXYKPtzJ0Qb+18+lXm7UvTATrjW6CxagBYQ000/D6M9hlIRLij/K932nghc+uS3g3R4FKwOhI4vd240scbM/mXZEwehDjdiGVuUp9ZsaqZ5aUyqBMf8d2BTqh911X/uPmR4z/wayXQE6N3lGHCXWJ0I0ukqtAYEI2x1owh5i/W8VXacYqwdCngm3tISeF1ecdjrftaNnaAi0N+dwFxdoRriQM1x8133r8h/kQ0fmZU4CHf1qGEBEDS96CSw1ws98ca2wNAmnIVh4SVZt45dk/qnaTQIdne+wmqrkv0mGQuwCo7knR1wMSxKEfuCIphwLj8Y3a+n4Ei/g2kDXpj2VAL1cvHF/YlEyxhaJP8gO0KFSng1vrEVQFPjwPBdKHRKTwIqCahzH3tOasFXwKdVJBWhLXXp/Qmfiozma1qMDBntjIJbAu63xAWDM7oFEr4x65ZAeDrXPRBbWW/fAcNNIT8E+pQA+rw8KnmrGRbCAQlyIOJaB2VUu6z/
+ VXUNbFHT
+ X3OKYOlZzJNZXQzuTvhhvG8t6vrZQk3zbgypdbq9TgE+kFB7vFEVfH8k2rYoa+7jad8kJ/gZuN5qRMhCLk0crmw2YRm5u/k9aNnBrRDwwMdAWxa6b4lOsCXuaw3poLxIR3WK7h7fYPrSeLxJ2bhT1BJ2AKjlnIIwQwy1lJb9Ts0lT8arV3dvCi/38dep8Y406VminBWy1O+FzJMeTetgy2XNoEK3Odhh5CoWSOh5L5oNzaZd9ji+PMsmmqSf2OSgF5QBzwSpX95cPmMER+9IulaohhHx9VYBf6FINh0z3412+gfgw6Lxpx8bJ5EhZ+R3EVZr22EC1qDeePApWQKVCdeH+SIHiO8pzOyBTXIQVmru9tDNDlvyxDT5dgsLrh+QS7cg29J2w7kRRb4SXqhp1HPAEs5NDziHknFzBRMxAQlU1ZMlrSNtwgiBIJJWh2aDd2a25Bxp1DVh2XKs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,95 +133,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_MEMCG=y, lruvec_pgdat() returns lruvec->pgdat, which for the
-per-node pgdat->__lruvec is left NULL by lruvec_init() and only filled in
-lazily by mem_cgroup_lruvec(). Normally that happens early, e.g. on the
-first folio_add_lru().
+move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
+folio_unqueue_deferred_split() on folios where the refcount has dropped
+to zero. In these paths, folio_unqueue_deferred_split() is called with
+the lruvec lock often held (move_folios_to_lru() always holds it and
+folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
+in the batch except the first). However, it's not needed to hold the
+lruvec lock.
 
-With cgroup_disable=memory, lru_gen_shrink_node() passes &pgdat->__lruvec
-directly to shrink_one(). If direct reclaim runs before anything has
-called mem_cgroup_lruvec() for the node, which can happen during early
-boot under memory pressure (e.g. a kdump kernel), get_swappiness() ends
-up dereferencing a NULL pgdat:
+The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+the deferred split queue lives on folio->_deferred_list in
+deferred_split_lru. The deferred_split_lru is a list_lru with its own
+per-memcg per-node lock.
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000005040
-  pc : get_swappiness+0x68/0xb0
-  lr : try_to_shrink_lruvec+0x54/0x2c0
-  Call trace:
-   get_swappiness+0x68/0xb0 (P)
-   try_to_shrink_lruvec+0x54/0x2c0
-   shrink_one+0x8c/0x240
-   shrink_node+0xc6c/0xe08
-   do_try_to_free_pages+0xdc/0x570
-   try_to_free_pages+0x124/0x278
-   __alloc_frozen_pages_noprof+0x6e8/0xf78
-   alloc_pages_mpol+0xc4/0x1c0
-   alloc_frozen_pages_noprof+0x54/0xe8
-   alloc_pages_noprof+0x1c/0x40
-   atomic_pool_expand+0x98/0x300
-   __dma_atomic_pool_init+0x58/0xd8
-   dma_atomic_pool_init+0x154/0x170
-   do_one_initcall+0x64/0x350
-   kernel_init_freeable+0x214/0x430
-   kernel_init+0x2c/0x208
-   ret_from_fork+0x10/0x20
+There are already other existing callers that call
+folio_unqueue_deferred_split() without holding the lruvec lock (eg
+__folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
 
-The classic LRU path and MGLRU before per-node lru_gen_folio lists
-obtained the lruvec through mem_cgroup_lruvec(), which sets
-lruvec->pgdat.
+Add folio_batch_unqueue_deferred_split() and use it in
+move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+unqueue each batch of zero-refcount folios from the deferred split list
+after the lruvec lock is released and before
+mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+critical sections, which run with IRQs disabled and are highly
+contended.
 
-The above was hit on an arm64 kdump kernel (6.18-based) booted with
-cgroup_disable=memory nr_cpus=4. It also reproduces on mainline on an
-arm64 VM with CONFIG_ARM64_64K_PAGES=y, CONFIG_MEMCG=y,
-CONFIG_LRU_GEN_ENABLED=y and:
-
-  mem=160M nr_cpus=4 coherent_pool=512M cgroup_disable=memory
-
-These options only serve to force direct reclaim early in boot; with
-160M the boot eventually ends in OOM regardless. On mainline the first
-LRU reclaim happens while unpacking the initramfs, and faults the same
-way:
-
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000005040
-  pc : get_swappiness+0xd4/0x150
-  Call trace:
-   get_swappiness+0xd4/0x150 (P)
-   try_to_shrink_lruvec+0x44/0x2b8
-   shrink_one+0x80/0x1a0
-   shrink_node+0xd98/0xea8
-   do_try_to_free_pages+0xf4/0x4b0
-   try_to_free_pages+0x110/0x360
-   __alloc_frozen_pages_noprof+0x8b0/0x1718
-   ...
-   __filemap_get_folio_mpol+0x2ac/0x548
-   simple_write_begin+0x44/0xf8
-   page_symlink+0x178/0x198
-   ...
-   do_populate_rootfs+0x13c/0x200
-
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Cc: stable@vger.kernel.org # 6.3+
-Assisted-by: LLM
-Signed-off-by: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 ---
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This patch came out of a discussion about splitting underused mTHP folios [1],
+where queueing small mTHP folios on the deferred split list was found to
+regress Barry's fault microbenchmark. The cost turned out to be the unqueue
+running under the lruvec lock rather than contention on the deferred split
+queue itself. Testing this patch on top of the series in [1] with the same
+microbenchmark, queueing every 16k folio went from a 15% runtime cost to
+noise, with lruvec lock wait dropping from 491 seconds to 38 seconds (most of
+that contention then moves to the deferred split list_lru lock, but runtime
+still drops back to the unqueued baseline).
 
+[1] https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1MaU9bXs99w@mail.gmail.com/
+
+v1 -> v2:
+- Reword comment in folio_batch_move_lru() (David)
+v1 link: https://lore.kernel.org/linux-mm/20261013221307.850803-1-joannelkoong@gmail.com/
+
+ mm/folio.c    | 24 +++++++++++++++++++-----
+ mm/internal.h |  1 +
+ mm/vmscan.c   |  3 ++-
+ 3 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/mm/folio.c b/mm/folio.c
+index 35e242b48870..45c814f3857b 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -109,6 +109,19 @@ EXPORT_SYMBOL(__folio_put);
+ 
+ typedef void (*move_fn_t)(struct lruvec *lruvec, struct folio *folio);
+ 
++/*
++ * Unqueue a batch of folios from the deferred split queue. This must be
++ * called after the folios' refcounts have dropped to zero and before they
++ * are uncharged (see comment above __folio_unqueue_deferred_split() for why).
++ */
++void folio_batch_unqueue_deferred_split(struct folio_batch *fbatch)
++{
++	unsigned int i;
++
++	for (i = 0; i < folio_batch_count(fbatch); i++)
++		folio_unqueue_deferred_split(fbatch->folios[i]);
++}
++
+ static void lru_add(struct lruvec *lruvec, struct folio *folio)
+ {
+ 	int was_unevictable = folio_test_clear_unevictable(folio);
+@@ -177,14 +190,10 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 		 *
+ 		 * We're bypassing normal cleanup. Clear flags that are not
+ 		 * applicable to dead folios.
+-		 *
+-		 * Since the folio may be part of a huge page, unqueue from
+-		 * deferred split list to avoid a dangling list entry.
+ 		 */
+ 		if (is_lru_add && folio_ref_freeze(folio, 1)) {
+ 			__folio_clear_active(folio);
+ 			__folio_clear_unevictable(folio);
+-			folio_unqueue_deferred_split(folio);
+ 			fbatch->folios[i] = NULL;
+ 			folio_batch_add(&free_fbatch, folio);
+ 			continue;
+@@ -201,6 +210,11 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 
+ 	/* Cleanup filtered dead folios. */
+ 	if (is_lru_add) {
++		/*
++		 * Unqueue any large folios from the deferred split queue to
++		 * avoid a dangling list entry once the folios are freed.
++		 */
++		folio_batch_unqueue_deferred_split(&free_fbatch);
+ 		mem_cgroup_uncharge_folios(&free_fbatch);
+ 		free_unref_folios(&free_fbatch);
+ 	}
+@@ -1020,7 +1034,6 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 			free_huge_folio(folio);
+ 			continue;
+ 		}
+-		folio_unqueue_deferred_split(folio);
+ 		__page_cache_release(folio, &lruvec, &flags);
+ 
+ 		if (j != i)
+@@ -1035,6 +1048,7 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 	}
+ 
+ 	folios->nr = j;
++	folio_batch_unqueue_deferred_split(folios);
+ 	mem_cgroup_uncharge_folios(folios);
+ 	free_unref_folios(folios);
+ }
+diff --git a/mm/internal.h b/mm/internal.h
+index d497c35ee783..33ae388feb33 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -761,6 +761,7 @@ static inline bool folio_unqueue_deferred_split(struct folio *folio)
+ 
+ 	return __folio_unqueue_deferred_split(folio);
+ }
++void folio_batch_unqueue_deferred_split(struct folio_batch *fbatch);
+ 
+ static inline struct folio *page_rmappable_folio(struct page *page)
+ {
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f11491ee9ed5..0c57e4f1eb15 100644
+index daa7e37c2236..9c71a50309e8 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -5253,7 +5253,7 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
- 		sc->nr_reclaimed = 0;
+@@ -2007,9 +2007,9 @@ static unsigned int move_folios_to_lru(struct list_head *list, bool do_rotate)
+ 		if (unlikely(folio_put_testzero(folio))) {
+ 			__folio_clear_lru_flags(folio);
  
- 	if (mem_cgroup_disabled())
--		shrink_one(&pgdat->__lruvec, sc);
-+		shrink_one(mem_cgroup_lruvec(NULL, pgdat), sc);
- 	else
- 		shrink_many(pgdat, sc);
+-			folio_unqueue_deferred_split(folio);
+ 			if (folio_batch_add(&free_folios, folio) == 0) {
+ 				lruvec_unlock_irq(lruvec);
++				folio_batch_unqueue_deferred_split(&free_folios);
+ 				mem_cgroup_uncharge_folios(&free_folios);
+ 				free_unref_folios(&free_folios);
+ 				lruvec = NULL;
+@@ -2041,6 +2041,7 @@ static unsigned int move_folios_to_lru(struct list_head *list, bool do_rotate)
+ 		lruvec_unlock_irq(lruvec);
  
+ 	if (free_folios.nr) {
++		folio_batch_unqueue_deferred_split(&free_folios);
+ 		mem_cgroup_uncharge_folios(&free_folios);
+ 		free_unref_folios(&free_folios);
+ 	}
 -- 
-2.45.4
+2.52.0
 
 
