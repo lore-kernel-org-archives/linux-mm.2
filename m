@@ -4,78 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70F27CCA46C
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 01:36:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50F3DCCA490
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 02:21:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55BDD6B0088; Fri, 16 Oct 2026 21:36:46 -0400 (EDT)
+	id 823366B0088; Fri, 16 Oct 2026 22:21:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50CCB6B008A; Fri, 16 Oct 2026 21:36:46 -0400 (EDT)
+	id 7D4386B008A; Fri, 16 Oct 2026 22:21:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 422476B008C; Fri, 16 Oct 2026 21:36:46 -0400 (EDT)
+	id 6EA1B6B008C; Fri, 16 Oct 2026 22:21:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EC02E6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 21:36:45 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6B591C1DB6
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 01:36:44 +0000 (UTC)
-X-FDA: 85330403928.19.26C2FFC
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 45B47180004
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 01:36:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B5BB6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 22:21:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3E15A01F0
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 02:21:15 +0000 (UTC)
+X-FDA: 85330516110.07.03AB416
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EECA780005
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 02:21:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oHkyY+Z5;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792201003;
+	s=arc-20220608; t=1792203674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=jVyH8NTPHMphwzzq8kFluBrhgfFXhROpmfg+vYPAzzQ=;
-	b=e+5Pd8zy+iOBbmHek/23GVAh+GdZo3304tv2T3PcefYC8gy2YAUVPvNxjlfyK+giu7Uh4e
-	f7lc4mfMkHGnNtZx8bM5UGoYgBEnCi41aIZ6FzdD0ag3TG+uJAw5/4rUsjVN8xcnR9mZO9
-	mwTVTvyx5mg3FNeMHzd8UGLt5HJr6Cs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9kRCw0sKehKRxmnkhA1oEqDkBNynw9yxGSEEeZ/1H6s=;
+	b=TnhCaIBAeUOXsHDfsvPXSp7cJj3Sya0tm86dvm7XqRfcgHPSfEKRxfOD4YweqgcdArV/fu
+	eforqSgGRhyGWkqRl7HwTwE2Y6983En1sMhwlGydabUwEJuYQmW3YR7xD5AtPcebBQxJR7
+	I9HOYrGke3sEok13jAPMe3hFLT5q5N8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792201003;
-	b=tTCDzN2Z+MFBynLU2TVPpvSg4o0XtXX8c2nRUV529kNuas+2Tt7KTjolC7t+QFIXaSBhnc
-	OLjDH4pJHf/bJiHBIZbooiETe+lh6XmmmMag5d5I59pRIvFP33Zskp4wU9dNoKiqa11c6f
-	VC0F3m+GD3EJSfnfapzyS6/IcavCWUQ=
-Received: from escalante.csail.mit.edu ([128.52.128.198])
-	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xHtLe-00HJES-F9;
-	Fri, 16 Oct 2026 21:36:34 -0400
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-To: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Waterman <andrew@sifive.com>,
-	linux-riscv@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: [PATCH v1] riscv: mm: Skip the icache flush for special PTEs
-Date: Fri, 16 Oct 2026 21:36:34 -0400
-Message-ID: <20261017013634.792220-1-nickolai@csail.mit.edu>
-X-Mailer: git-send-email 2.53.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cn596itx1iznmo3sitzxmuhj48yso9zm
-X-Rspamd-Queue-Id: 45B47180004
+	t=1792203674;
+	b=c0+6WqFcrhff+luCzmSQghjvAts9Rv6fWFM80dX+AaM/nytiiWW26cvq5yDNkdPGYstyst
+	tNioQZs1s7YGhvKS+BfkGmqRH9gaj9p7sco2yF8GQDOmSZcm1Gfe1x7Lt/r7nKG5N4YSDv
+	zNsTD9MACWVmXvHPDGkm+EznxPYAkVg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oHkyY+Z5;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CC2BF40A91;
+	Sat, 17 Oct 2026 02:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6271F000C4;
+	Sat, 17 Oct 2026 02:21:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1792203672;
+	bh=9kRCw0sKehKRxmnkhA1oEqDkBNynw9yxGSEEeZ/1H6s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=oHkyY+Z5Ymkq1XEoRDrm1unXQCYkIsRZyIk+AFZSJ8WFcZ2jRLLrTtiAYqX2wxxBf
+	 /C9TjfiWVK5xpPlN2RPaq31PQTQZL3VsQxjp6HCa9nbL/STbOluZD+QFrFEDROKFfP
+	 BuP+8UW1QgrBoxAXEEkjw7vavuoZzfdjbz1hrznI=
+Date: Fri, 16 Oct 2026 19:21:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Dan Williams <djbw@kernel.org>, Vishal
+ Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Alison
+ Schofield <alison.schofield@intel.com>, Joao Martins
+ <joao.m.martins@oracle.com>, Ritesh Harjani <ritesh.list@gmail.com>, Muchun
+ Song <muchun.song@linux.dev>, linux-mm@kvack.org, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: warn on unaligned compound zone device ranges
+Message-Id: <20261016192111.cf4b6477a13a711248a8a079@linux-foundation.org>
+In-Reply-To: <20261016131334.3419393-1-songmuchun@bytedance.com>
+References: <20261016131334.3419393-1-songmuchun@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EECA780005
+X-Stat-Signature: e9wmt8wewmgcoffpjom4xifuq1fwkacj
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1792201003-771585
-X-HE-Meta: U2FsdGVkX19rmi2D38h0KbMyFN+ZPBXiaTZsoFqJz1DP95cyzMsRUD38yyluvkOvxKmYzelExZN4w6N1HvK7htdNqlWfs4JmhQ6Q/KA2kEa8fyPD3ewT44fSt2BMBA8W5/GRykUjbPK5ezu0vfkK6WfJnSgL7izFPwKOF+3H5h9KY4Kxtri96kZZ0U9ENMPlIdU2vV1ZNqwwzyoBKTaElI1yrsl5Ygt6tstyUo6TLt2M9aWx3Cm2ImPsN4f4QWrgitPqu9/1pRS+b/a2MhgzZCsQCtun1cwBmeS9Ulzc+X9vVKVI5DbGD5L1oclx4bbP70ZYqlnGPkAAybUuqNmjh7Vj4WPaY9Y6d5+l3WfwlPL/sMGQjmYdm/Cc113xrq85IkF3L/knIm2uIX1Q5pwKSH+mDOOi1AFRcVKijkrNStxpsegKK9CDd2QOi6y5K92zRwvz22uq2eGwZmT70rX+BK550adZkpn++gDhiKTnA9+qGT3t3PfU7ZpHfjLOy7RbMdPzEROXab48EvrKfwAhJlVNjmTut0COD1VsKDpOOMKiCt5RbjdsFzmPwgCmnQ7Z1FSNhmRHYeqLTErqACScipHTBVCjqBTZ7KnVkBzJIhX8dfS/NcI+4xHpU+ASOCg8zM2nL2+HERTVQF6pNH61s0EfksEI873ELF/puEES6qtkqCbkXcNWebspMLMuWnq47GthiUCJyyLCfW/rBwQWriBhJT5kmRb/sUmo+GG67zCQarVpQ9MQp7Cqu5t4S6Lk/7UhhpksGI2rgQDbUi8i65MriM/oInT3KHLGrnCcykRVCVoMuQQUYNGeWCObwKmjFZ4OL8DLuxSrEdlXFVhji3uJ0mXaV+IQ361K0Peex1/lJPKJW3M1mzRdDaWZdAzR/hy86tlXBcoe1pxAmktDzeUp4eFQm6xXCnNTo/+NZpWdoZrMndCi/Q8FLOQoBd/Bk4J7HRbIgPk4zD1WwW1
- xypUa1LP
- FmoE3NDL8Oi2/AtZIo/6wd3M0z3zde/nfUoZ422ffArI/zqXfiGjod7PI7HqIk4nnNvdkWOggDX1ZVFMwPETejaz6NLhyT1zfuIYFTA2cDJkGNq0=
+X-HE-Tag: 1792203673-736355
+X-HE-Meta: U2FsdGVkX1/V3+UFjgCUMTUOk+dSgpRk0FLM3ND1kPbxYFdPEDQk+MJ7DtjdYQrMPDKEuNUMGMVlk21ot1S+YGOLncUkN3dj46bdqQJvFV6nZT/J+r37pqpLs6qg+9z7xQ0f7xxlcRfE3sgOuknDWEN6K+Ff44lRGD05Hebas86qqiHETfGPPKr698w8mylOksbju6E98TYiPNl6cH713h2hdiGz5DOVluPchyXTlvefplFvCxNn3cDQVM7aNBiMwxRwJb8bcq7D4N2RCgEQlYwR05lNjU1Eu4ZvdvdDYuisl2OuH3jhyc88Ym74yI+EWKO1e9+UN3T7wadxVQ+tiSiJzrRpwnJ3CKtceNxJ07yIYZbe//1DqySw93Z5euGivXikvW2wovUQ/xWk0zUDTypNd2URAWiJXZ3phxdPFiZM59jF2PwZ3ww+dZNSb3o6qzwab8mD7qx1ElPfzxyHQpBuk2ZY24ZQHjegLk7ZHf8idWZSDBfwZoKpLEhHZwhCSJ4D35oj4DOJj6npT120dztFr+oZmucCNgLGwyKLiZDUiijuBROokV/SdNEdYmgPmZmAPjS161NlAt9GNnb67HBjJVVS/N7klq8Vh5lNeOJwL0FkC7F3NC3uCt9RSpqV97GmNEtezodRb7FxyQHI0cqyloBU7AvNxRayFGqqVPzrcpmednmugnfeayMn6KcRtCE8OKWaHRM7HDPpOjV6j6/Gg+JrxjIlNxfN/6gv4vAPr2ILraSTiZtzpId5PHTSw1+uARdWN1pjd3ROY7gaFQ093cBXarbah9c8AUgBuXGfx6zUp1/FBelHLMnuAoNdzEdNYntrhz0/wrIjSFc4Y8AyemwIy0HFQcGm8L6zi+xQmkUGajRJQb0Lj6K6vlpAyFTADrUVZ51VIDxAgpOrXP4pU8rKFSfHjiIorOGwHFUOXh91Ly8hXF/8/vl7s148tYBK7HprLTfj/BCK3rP
+ a66zJfXa
+ tHmW+6iqxYlFofoXDvONlhuten/XseVPgGKSH9C95jWhqEqa92VdqI9tLHVyzbeM8rNNgK57iWDZGlpLFu5YJ0TvRdp+K/6qQ5i11zHU7eeGkL6F6xaKJOxXqunh+F35yCLC1/cmG6I/aKgtJFb9+rYXCJNJpHqetX6PLX6IM7C0WfRo9fQmpAPSc2/dF7yipm/J9EsaZwcoAorhbFmQPxtT1AnLL7mBmK6lSrluBIDJZNWIMT+bk2Oc0wBzTy52U2dBct70iZB7PaFJN/fPi0W71rTZlnl8BXKiPuUWFJJe5a+FdPRDfjgIr7sXHnGtYMaqO4bWOWvY7uqR+y/oE/4T/sOH7HtpJHJ2e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -83,133 +93,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mapping device memory executable crashes the kernel: an mmap() with
-PROT_EXEC of a physical range outside RAM, from /dev/mem, from a PCI
-BAR's sysfs resource file, from a frame buffer or from any driver whose
-mmap() uses remap_pfn_range(), io_remap_pfn_range() or vmf_insert_pfn(),
-oopses in flush_icache_pte() with the page table lock held; the task
-never completes its exit and its parent's wait() hangs. On QEMU virt
-with the riscv64 defconfig of v7.3-rc7, mapping the PCIe ECAM window
-from /dev/mem:
+On Fri, 16 Oct 2026 21:13:34 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
 
-mmap(/dev/mem, phys 0x30000000, PROT_READ|PROT_EXEC, MAP_SHARED)
-Unable to handle kernel paging request at virtual address ff1c000000c00008
-Oops [#1]
-epc : flush_icache_pte+0x74/0xa0
- ra : do_remap_pfn_range+0x2b2/0x3ee
-...
-note: test[52] exited with preempt_count 2
+> A compound page of order N must start at a PFN aligned to 2^N pages.
+> Therefore, a range used to initialize compound pages must start on a
+> compound-page boundary and contain an integral number of compound pages.
+> 
+> Two recent Device DAX bugs were caused by ranges that violated this
+> invariant, but neither was detected by memmap_init_zone_device().
+> 
+> Warn if the adjusted zone-device range violates this invariant so future
+> violations are reported when the compound pages are initialized.
+> 
+> ...
+>
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1142,6 +1142,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  	if (!nr_pages)
+>  		return;
+>  
+> +	VM_WARN_ON(!IS_ALIGNED(start_pfn | nr_pages, pfns_per_compound));
 
-With CONFIG_FLATMEM (32-bit, or a 64-bit configuration without
-SPARSEMEM) nothing faults: pte_page() of a pfn outside RAM is a pointer
-outside mem_map, and flush_icache_pte() tests and sets a bit of whatever
-memory it lands on. The privilege needed is that of the device file
-(root for /dev/mem and the PCI resource files). Present since the port
-was merged (v4.15).
+Would VM_WARN_ON_ONCE() suffice?
 
-__set_pte_at() calls flush_icache_pte() for every present executable
-PTE. flush_icache_pte() does the flush once per folio: it takes
-page_folio(pte_page(pte)) and tests and sets PG_dcache_clean. A special
-PTE (pte_mkspecial(), what remap_pfn_range() and vmf_insert_pfn() write
-into a VM_PFNMAP mapping) maps a frame the kernel does not manage as a
-page: there is no struct page behind it, so pte_page() returns a vmemmap
-address with no memory section, or with FLATMEM a pointer outside the
-array.
-
-Skip the flush for special PTEs, as arm64 does since
-commit 71fdb6bf61bf ("arm64: Do not synchronise I and D caches for
-special ptes"). These mappings are device memory or buffers the kernel
-never wrote code into on the user's behalf; a user that writes code
-into one and executes it has to flush with the cache flush system
-call, as for any memory it writes itself.
-
-Found while formally verifying remap_pte_range() against the kernel
-binary.
-
-Fixes: 08f051eda33b ("RISC-V: Flush I$ when making a dirty page executable")
-Assisted-by: LLM
-Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
----
-
-Notes:
-    Every pte_special() PTE goes through this path: remap_pfn_range() and
-    io_remap_pfn_range() (remap_pte_range() writes pte_mkspecial(pfn_pte())),
-    vmf_insert_pfn() (insert_pfn()), and the huge variants through
-    set_pmd_at()/set_pud_at(), which also land in __set_pte_at(). The
-    pte_special() bit is _PAGE_SPECIAL (RSW bit 8) on every riscv
-    configuration; ARCH_HAS_PTE_SPECIAL is selected unconditionally.
-    
-    Non-special PTEs are unchanged: anonymous, page cache and
-    vm_insert_page() mappings keep the per-folio flush. A RAM-backed
-    VM_PFNMAP mapping (dma_mmap_coherent() of an allocated buffer, /dev/mem
-    over RAM) loses the flush it used to get; nothing in the kernel writes
-    instructions into such a buffer for userspace to execute, and the
-    PG_dcache_clean state of those pages was never maintained for that use.
-    
-    Reproducer (QEMU virt, riscv64 defconfig, as /init with /dev/mem c 1 1
-    in the initramfs; the PCIe ECAM window is at 0x30000000, any non-RAM
-    range does):
-    
-      riscv64-linux-gnu-gcc -O2 -static -o test exec_mmio_mmap.c
-      qemu-system-riscv64 -M virt -cpu max -smp 2 -m 1G -nographic \
-          -bios /usr/share/qemu/opensbi-riscv64-generic-fw_dynamic.bin \
-          -kernel Image -initrd initramfs.cpio -append "console=ttyS0 rdinit=/init"
-    
-      unpatched: Unable to handle kernel paging request at virtual address
-                 ff1c000000c00008, epc : flush_icache_pte+0x74/0xa0,
-                 ra : do_remap_pfn_range+0x2b2/0x3ee; the task never exits
-      patched:   mapped at 0x7fffab55d000, first word 0x00081b36
-                 (the host bridge's vendor and device ID)
-    
-      #include <fcntl.h>
-      #include <stdint.h>
-      #include <stdio.h>
-      #include <stdlib.h>
-      #include <sys/mman.h>
-      #include <unistd.h>
-    
-      int main(int argc, char **argv)
-      {
-      	unsigned long phys = argc > 1 ? strtoul(argv[1], NULL, 0) : 0x30000000UL;
-      	volatile uint32_t *p;
-      	int fd;
-    
-      	fd = open("/dev/mem", O_RDONLY | O_SYNC);
-      	if (fd < 0) {
-      		perror("open /dev/mem");
-      		return 2;
-      	}
-      	printf("mmap(/dev/mem, phys 0x%lx, PROT_READ|PROT_EXEC, MAP_SHARED)\n", phys);
-      	fflush(stdout);
-      	p = mmap(NULL, 4096, PROT_READ | PROT_EXEC, MAP_SHARED, fd, phys);
-      	if (p == MAP_FAILED) {
-      		perror("mmap");
-      		return 2;
-      	}
-      	printf("mapped at %p, first word 0x%08x\n", p, p[0]);
-      	return 0;
-      }
-
- arch/riscv/include/asm/pgtable.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 40b1ed4f3ea8..7a4d60ccabb0 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -628,7 +628,8 @@ void flush_icache_pte(struct mm_struct *mm, pte_t pte);
- 
- static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
- {
--	if (pte_present(pteval) && pte_exec(pteval))
-+	/* A special PTE has no struct page for flush_icache_pte() to track. */
-+	if (pte_present(pteval) && pte_exec(pteval) && !pte_special(pteval))
- 		flush_icache_pte(mm, pteval);
- 
- 	set_pte(ptep, pteval);
-
-base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
--- 
-2.53.0
-
+> +
+>  	/*
+>  	 * Seed the reusable head-page template from the first real struct
+>  	 * page. The normal page-init and refcount helpers must operate on
+> 
+> base-commit: 63562804f25cb5b6f5e4f5e3a9f0d1c3c6868596
+> -- 
+> 2.54.0
 
