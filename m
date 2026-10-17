@@ -4,145 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0778BCCA46C
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 03:03:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89032CCA463
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 03:06:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDBE56B0092; Fri, 16 Oct 2026 23:03:24 -0400 (EDT)
+	id 62FD96B008C; Fri, 16 Oct 2026 23:06:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB43D6B0095; Fri, 16 Oct 2026 23:03:24 -0400 (EDT)
+	id 607906B0096; Fri, 16 Oct 2026 23:06:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA2CF6B0096; Fri, 16 Oct 2026 23:03:24 -0400 (EDT)
+	id 5438F6B0098; Fri, 16 Oct 2026 23:06:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 980186B0092
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 23:03:24 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F374401BC
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:03:24 +0000 (UTC)
-X-FDA: 85330622328.05.F70A797
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 369E940003
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:03:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=T4PsQ5yr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792206202;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 175AB6B008C
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 23:06:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 088111601D3
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:06:34 +0000 (UTC)
+X-FDA: 85330630308.22.11C4805
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 71345C0003
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:06:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf28.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792206392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ITlG7B4NPmKc5iTiQo1+RWMGxf3FDyH5p5Xf+trlVM=;
-	b=pE8LErYU9H5ylqqfrxu294+QA/9SUvbyw2eYp0gTGq/PKX3OVuQXRtpyd8sxbcSVAiqmO0
-	4+Ejeg6bR9YdkQkCxKKqV/Te7X+HR8fED+dqz8c7555nmdBgZPnKdjPIlQLu6vmHN948Bs
-	RKXXDk6u3jaJ2gTPH9UYiRcLnv7w6ds=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=T4PsQ5yr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792206202;
-	b=rjugP+I59NNmPBTV8re1MGS0jLLqcA5ag/6pBtrVHZUQTqvmJPtnSwoz066cDQrdVV8iCn
-	Sk89wHh3UdeWBPAkgNMM7zsK1UcfOgIFNegCjmslNVLbNnaO35pu112fTUSe328Wc4QaGC
-	kr7zsU51V5FTJhqbCp9oQevvozMYOwA=
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be3ea5a7adso452509e87.2
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:03:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792206200; cv=none;
-        d=google.com; s=arc-20260327;
-        b=F+qk6bs0BRJVtvf7grq5b7FpUwtWHp+a4/cSM9jAN5EqbS85fIiqYPP7WmF9pZo0YG
-         5bj4xDcVNLGPku/1FOyFOPE4dveqzRbjH1JBHHdQEPP/clp1ez5VBJJyh4h4VmfL/Oqs
-         nzZurT7JyHvsZNbOtecy2b/jaj5kRwLLjrPAqjdjC5G8oIb89chAm5Cb6FnxO51VDM3t
-         S9eOxJtq2T8aXnPhPxy7gGxXCEIodKAO4/vBVxmVDxSaEaumIORHjUW3mvw+l6sPIhCV
-         3R5ta1dqUz0wt8QKwBaKmT4BNtYTROISFFCHyfx+GjvWFsbEYA0wbCONShW1whODV7bO
-         +FjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2ITlG7B4NPmKc5iTiQo1+RWMGxf3FDyH5p5Xf+trlVM=;
-        fh=vUdgPtHcjeUk18kEcX5/whqdtiUicM3z2Fy1zfaDdyc=;
-        b=nkphZ6HPF3/5TZ6HfwfJOhJ0CuZtQ3OQraRwweu3jy0Ry3yxHoIbjo/nr7aY2bY4Pp
-         JSg2c5ybQsRCEh0AE4NyMoUFCm//n4zzFblsXy1cW47/6wIuxcMDnHVb29nqh85oCEKk
-         2Jiz7+fvXG3YOdKEc1QlgC0N8DUZtDgSv9CIJBL13aMXH5HbgtArw7CiaYsXCjMMuboP
-         xkvJKVPdruKzOUYELjBTKDQHS1nuhx4Yu9ch0d/ddyjp/q4dzHfyCNKBnNjEt6UUnL/k
-         bJX+6yHN4tliKpy//uv60cOpaBLVdHm1C99UscFVty2l8QnU6tkQO+CnhYIh2+1/NB97
-         6EhQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792206200; x=1792811000; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2ITlG7B4NPmKc5iTiQo1+RWMGxf3FDyH5p5Xf+trlVM=;
-        b=T4PsQ5yr/i10Fqn2Wy21wYgFi0rhcBqYmFIJevyClU7KGswOI66fY4TSN9dZuWYFO5
-         5ZPfFv89M0zBQ5zp2vC93TOK5xlalXiTJnkY+3iq+3UZb+71jL3nuUgsNEJf+qBFhKDi
-         IAed+IMO5AbaIYFGjZ4kdvPvlYf4OsvaTkf6M8FAoXvNtVgjzSXiIZEtBu7JiwXsGoKM
-         R7GK9U/6GwzzaauQOOYoPy1s8O/eJ4SDcFmFMSGH6XhjBkAqoMg7GN+PNfGDFVLe01Rz
-         mw69I7T8y3U84eZzj0Nh1az9Cyn/+g4DPxpRJ73N8KFco8qYsP6M4CcyTS4F4IHEkV5e
-         A34g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792206200; x=1792811000;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2ITlG7B4NPmKc5iTiQo1+RWMGxf3FDyH5p5Xf+trlVM=;
-        b=i1rMQLpBk4T4VEtpxJzQYv0liVHgtsspl0rzL8dXK7rYOgV56kaTuYxF0QR9egMNFT
-         Q3HXS8ICvMi/2EiZCC/meI5d9ZINaMJb1l3JzviWQt1huB37vc//v80RxhrmFYiPsKSr
-         NBlaMpX5aHt4Y04FTK4DhJmJcJpigi+iXQY1q2eL3JLmWWkVirt87PXJOa75urWhN3KX
-         5J8pzEXAKOuVMAj3bj6HZGQMKCJu7uowYT5fh2uglFIRAU5ta1GdLfPrge2mFrJoiEXD
-         nKJyt4Lb7evRSY+r7Ibk/+kLx+BmD0593D4KfC/59DL4fBYOIhgUm/cUI6ZkEaZW1LHK
-         YHMg==
-X-Forwarded-Encrypted: i=1; AKwUvBwyhJ8eadSb54t/Z7cekIQNLqPVwz0TJNo29QyAkLIHvBMxE9wjyHhUHRDbVA6dskf4Nvl4fqKezg==@kvack.org
-X-Gm-Message-State: AFq9FYIITdj0UoUpOFENcBgUK6lzC9PkgnglZFZN2D3gFIUXiZwkAMye
-	W5IX6xaImWO4IfyOcq6nwLImzO1HDTPAHLUQvc9i52fhwvCCiTCi2Hx0VgjaHjSlVQtxJFcNnUh
-	Yk73xCbmubtAbMx6eoc1w9lkHKJtyM/8=
-X-Gm-Gg: AYBFou2V+2bDh5VPPxJL6brUhsg7278CW/yWDhfpJ8Z0jnHnbIZxeojVuIPpxy2l8js
-	JEfB3Szjgukp3FwVhpMv26od+J1cetD7bLN8ZFIl/NXM5nZgpl+YIFbSM92b3ZOA/bUAk9vSS3Y
-	QKoSxCzat3NG163oBaJwFzf6d/RFPP6EaxP5qgr6n5som+StGYc3SG0REdb6wlXhmwHY4KMTDCi
-	O3VBqS33olqVxD2nOYYZ3tlXdyrzYLZVbvUhVaQV7o67RcxoXNaRBcj/W9wEaEcTEErz4a5bpv4
-	MGRqlWUoBhiTrCcEm9h/snhsr0QWmykQEECPp4p2GEXHxWeexhHEbVw=
-X-Received: by 2002:ac2:5691:0:b0:5bc:e13b:3922 with SMTP id
- 2adb3069b0e04-5be509a6de1mr460213e87.0.1792206200169; Fri, 16 Oct 2026
- 20:03:20 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=XwN4z2P4MTZor5+C32HAWzZ6rrCCPwudbqof/0jK1Cc=;
+	b=ev7ppu+CaP1XEBG7UFTpHpuWokb+S6En6OtDCaBcoPgA5nyLTOD0bONQLBf1pMK15h/zyu
+	dwfqK92iDThmGSEDszLx0ayb4L31b4548YBKSwT5cxA6aDJoINTy0lmCMdutAk9wtMNEkV
+	R/Wt3zT+fQe/84P4i7FSpgEfPXvxHqA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792206392;
+	b=CPH7xeXEWOe+p3nbh1qT5yXI9x6KGwYj7x+urgkTgwur0P/35dptrAVjEl9hMsCF3A6VJg
+	Vj3MVdcT27jtIJXBNjGswCBQpaPDDJ/yA1cznHjVHTr6QuMOprpT/PDf7TGe6dKcast3Dm
+	PNsvLjEfLV/hb7VuTigwkXdZvfEecBw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf28.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xHukW-00HaXh-Vp;
+	Fri, 16 Oct 2026 23:06:21 -0400
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Manjong Lee <mj0123.lee@samsung.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v1] mm: bdi: reset min_ratio after the sysfs attributes are gone
+Date: Fri, 16 Oct 2026 23:06:20 -0400
+Message-ID: <20261017030620.793108-1-nickolai@csail.mit.edu>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
- <as-jZopKRfuYAiTE@google.com> <CACpmpoeS_cvXRWJXqiYZV9oykk=91efv8KtZgK2Pi-QwHnQH3A@mail.gmail.com>
- <CAO9r8zN5n=9v4K+OtEEODg=e0kcFW99PreUcZm09q9CUMQc+ew@mail.gmail.com>
- <CACpmpofdoeVbbw7izCDeJ7eS+XpWj+3sp3teKEQWywyRB75jYQ@mail.gmail.com>
- <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
- <CACpmpoecz4tjr-qvFRy22CGuF+4NBWbE7HVjdTGFqQOheK3CLg@mail.gmail.com>
- <CAO9r8zOAcf4=TscCXjMYvowUx-_u9qLGqY2-p7cK-z5CUU_x8w@mail.gmail.com>
- <CACpmpofYXDMviE6FS-BZdVntmQFvS+_xvfmOnJ2caZFerz6vyg@mail.gmail.com> <atGqPIpUfX0LDokV@gondor.apana.org.au>
-In-Reply-To: <atGqPIpUfX0LDokV@gondor.apana.org.au>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Fri, 16 Oct 2026 20:03:07 -0700
-X-Gm-Features: AclHuK9xQKLEm9ED0FPrZSYZivJi3qifBTa2ucE7flkZGwWDvl2MosDfqLg1aQY
-Message-ID: <CACpmpofyLW5z1DYEY2YAty0VOAhRR+Leic8O-B0N9hrzdW_=Ew@mail.gmail.com>
-Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Yosry Ahmed <yosry@kernel.org>, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 369E940003
-X-Stat-Signature: katkxirmmduqc38zaxof9xnk9fwmuwmy
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 71345C0003
+X-Stat-Signature: dmzdri9dzp184sma845nuc6wmc6mi489
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792206202-320858
-X-HE-Meta: U2FsdGVkX1/WADa5hHdoa7wOQkaneM5h1CzALKQOOwxt4aQC5sL71+1QPICwkOu/IlwgKnPKdflk13aBdq55iXzffGfKknZ8FAOFyTwOao3tuqtLfuD5V1r/uUZE4s4mHAKnVWI+AQlDFjHZ97RTXeuwTYJDh+A1QAqZrFvZ5ACy5ICpK1cel752mb1nEVX7U66r2EgVAIPGhv5sQAkiTCLa5nfzy4u6U50CrlfuCwoz1n12m4u1qOaK0QaDAk+3m8io1juFkJmzwxXWVnPOx6uXRv78R4KUERbTtpNdImJQkDPDUPAsDfqrn8c1OwIB5qFrI3+bOPrlA1dg63GmYttWCXyQHWvUzI42bbZQBVleK3JQeVARSymxfa73Js85EXKlO55sYuw3t35JqM6hlaQq2iU0avbrjuXrBRBhZyRXDg3MUuKmojC/bc8qvJI82jh0l3dqNvMgxrLr9P3gjr44BtAi/PiWyixYlqayGonpS7RJjCemZQVgy8SQoUsdUcuoNxd/xbWWLE1uwlKDyFZb6j4Z9DXorVUBP/gfHnc8ukgi4rDsgPtCTtvFjfbL0ZwWkp9vX0vtEj2iOvmdXfpp2bvi88/cSUgGqNjuk3CcghJr7lDCtlhBYkzZFlByPAkZnVPCoBfJn3KlRTowFpjhagLI3QsWmwCkIfUvSScjUib1VlfTm91bz+FX6Go3adNT6TfEiD2ytLMkYpwJLAx7NsugPBmG0/uDOryFmWvANkiRa4ieZ/kAoBd1uBiT7uWlR+O6sWTCzVHwEfNViOOZMhqIRvbxcY38EcoM9Uf1fUxLqrY0hf/OM4Yn1Mu0/raH6Wnb9WZVoWgsadr1/RYiUkYGW6a1aRBRnwVLOHxub/DQLVi7Q6WcKewoUSX0Rk1dx6ckNBCK/3HaxEyvX7gjLr/btHBiWRxp2KIPI2HEl5mS+lcETqz0AXdgsd2BqGrPR4X9klWKMmn+iMl
- KIE6iAmK
- S91MCkMOBa1GXRVmsgBrILAhR+czcmtWLt24fm/O9H/09kUvKBp2vKgRcqZBTCdxqoYCcQUHRRoOwm+lg54QRDUJ3+i56lSOom5eWkiMNQg3tE/DQ8ZhDPlfGPhSeCEmc0dynashVhJbGQgSGVn7J+TbN0+pnWYn4glAEdTSgwVdjYij5AT0wDUYUIM9VlnsGI07E74pkOU8Nk76YifGLMZEi718cH2uPA3iL62TCpEOtuSmw+06gg0j9Bvpg9Ve4EeiEhxZlPAWmtcZLahSBM6yjakuKaRq4MjuX4mnYtUOfBcqW+j4lSit35VkhTeVlXOvls2zvMqhWp067H4QfKmBy+Lou8L68co0LiHruX85Le94pD0+LIaCimFPG0sgRdpkhb/6FPuzVNE2O4IsCy7ulTx/WXYx0xm4NGww2l5kD+SkR45zTeSnAHjc9L2SIX1SfqCgukPCyuAixpOLFBlY/cg==
+X-HE-Tag: 1792206392-88534
+X-HE-Meta: U2FsdGVkX1/8vrxyLd0jStE1MM+Qynyt33B9o/sIWcIlzX6B3huG/ulZIU/4WBEL/wBcAFs9ai/SThkNZIJmTcCvXkHiVF+SuGQdgkoXVBxiHEyKqLaQPyaIWA/cx2nl0Z6XpRvpRvxYiayOXzrcvbpeKO+wkngnm+b/98mQGWbqh+U0s2ViUejg7ElcW/dvKipx1d79hNIDNQlEJhrBPNLmrtGmoPK5I872Nfe3tRSqx9atsfdVfmeby6KsIUU2gKKyfVRtD/QBqX7WBzX5J8wb2LHiFqamAK0YdUR6js1rlbKCQQQpup43W+0z2fhiLlTwq1Z6HpuK4Kel7HK8YVPDVnSP1tRh3s/di4QOREB735HyBens8skJlYnR70DfcyTRlYXxLu6MTSlc4y+/vUbNGgPRRLmJdpdCj0Lb6/atTVTGo/8JOaqpTP9Iab0yfIAdvItSWFT5vDO2QPluqBSmdzRHLjKiLXtl2LsUaWdiJiDEa1OgVFj42S1lNVYgGg634ohBVNj8gHImUXArBDJzffaWL91XLe7FxgsNCxmWF1we2ITAzyXRUxhS0OHmZUgR868HwPRFt4UYGB7W7kZgJH1gxivru68XBS5DNKZPdf3VKtm700iFNwJnOy03mL8r35h69mp5eQc9g02E6w3PQZ3t4Ad5jGeWslqAl2mBBpZzXVWKjWsm7iZCyovnyjAUf06prgTUDhDTcdVUM9NwXTEwEQt8bbiCz5qHVSSQyNuYXUivStiQgwweQqFp1sDwo8gPXbQ1detqhgwDbr0ViLcUXRb2hhLG8VuAK2UneBTW1sQuTNpTtq5rbJvWQXlaa8q4ZfOfIIDBDbeaJ7ikMrXyI1HlWB2hoRoS9b7wR9hp95ijAxtDTc9pz5BIK7Acr+2JffDlQ+XAQ/sT6AyjzaeNNKeR+ZXswiNKkH4BONNRPwbD9AwmqvSucwXn0twcwhFA8QfkYTSUNFi
+ P49MkgIM
+ XJuV1IerQDmA1OKUIZN8zb7txD9iFMgeDeNCKkdvw4Eogz+fLJNc+iyy3yBGq9PX4VpRjDJ1Ekf+1M6osoRCLE8q5qzz7XXg1lPCa4jPus2dX6bnzoYLYIIe43ba4jPYf7slH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,88 +88,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 15, 2026 at 9:38=E2=80=AFPM Herbert Xu <herbert@gondor.apana.or=
-g.au> wrote:
->
-> On Thu, Oct 15, 2026 at 08:32:21PM -0700, Kanchana P. Sridhar wrote:
-> >
-> > If you are Ok with all this, we will need Herbert's Ok for this change
-> > in patch 3:
-> >
-> > diff --git a/crypto/acompress.c b/crypto/acompress.c
-> > index 192ea996e779..db8e4c82b900 100644
-> > --- a/crypto/acompress.c
-> > +++ b/crypto/acompress.c
-> > @@ -293,8 +293,12 @@ int crypto_acomp_compress(struct acomp_req *req)
-> >                 return -EAGAIN;
-> >
-> >         if (likely(req->unit_size && acomp_request_issg(req))) {
-> > -               if (!crypto_acomp_req_seg(tfm))
-> > -                       return acomp_do_req_chain(req, true);
-> > +               if (likely(!crypto_acomp_req_seg(tfm))) {
-> > +                       int err =3D tfm->compress(req);
-> > +
-> > +                       req->dst->length =3D unlikely(err) ? err : req-=
->dlen;
-> > +                       return err;
-> > +               }
->
-> What if you put this short-circuit into acomp_do_req_chain instead,
-> does it still give you the same performance boost?
+A write to /sys/class/bdi/<dev>/min_ratio (or min_ratio_fine or
+min_bytes) that races with the removal of the device leaves the global
+sum of minimum dirty shares charged for a bdi that no longer exists.
+Until the next reboot, that share of the dirty threshold is withheld
+from every other bdi (__wb_calc_thresh() scales by 100 % minus the
+sum), and a later min_ratio store on any bdi that would push the sum
+to 100 % fails with EINVAL although every bdi reads 0. Root privilege
+is needed for the store; the removal is any del_gendisk() (a disk or
+loop device going away) or the unmount of a filesystem with its own
+bdi. On an x86_64 defconfig kernel (v7.3-rc7), 2000 rounds of
+LOOP_CTL_ADD/LOOP_CTL_REMOVE on one loop device with a second thread
+writing 50 to its min_ratio leak the share on the first round the
+store lands in the window; afterwards `echo 99 > min_ratio` on another
+loop device fails with EINVAL. With the fix the same run keeps the sum
+at 0 and the store succeeds. Affected since v5.16, when the reset in
+bdi_unregister() was added.
 
-I made the suggested change as follows:
+bdi_unregister() gives the bdi's share back with bdi_set_min_ratio(bdi,
+0) and only then calls device_unregister(), which removes the sysfs
+attributes. A min_ratio_store() that gets its kernfs active reference
+before the removal runs to completion after the reset:
+__bdi_set_min_ratio() takes bdi_lock, sees bdi->min_ratio == 0, adds
+the new value to bdi_min_ratio and stores it in the bdi, which
+bdi_put() then frees. Nothing gives that share back.
 
-diff --git a/crypto/acompress.c b/crypto/acompress.c
-index 192ea996e779..6697cf5944a3 100644
---- a/crypto/acompress.c
-+++ b/crypto/acompress.c
-@@ -271,11 +271,19 @@ static void acomp_reqchain_done(void *data, int err)
+Move the reset after device_unregister(): once the attributes are gone
+no store can run, and bdi_set_min_ratio() needs nothing from the
+device.
 
- static int acomp_do_req_chain(struct acomp_req *req, bool comp)
- {
-+ struct crypto_acomp *tfm =3D crypto_acomp_reqtfm(req);
-  int err;
+Found while formally verifying bdi_unregister() against the kernel
+binary.
 
-  if (unlikely(req->unit_size && req->slen > req->unit_size))
-  return -ENOSYS;
+Fixes: 3c376dfafbf7 ("mm: bdi: initialize bdi_min_ratio when bdi is unregistered")
+Assisted-by: LLM
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+---
 
-+ if (likely(acomp_request_issg(req) &&
-+   !crypto_acomp_req_seg(tfm) && comp)) {
-+ err =3D tfm->compress(req);
-+ req->dst->length =3D unlikely(err) ? err : req->dlen;
-+ return err;
-+ }
+Notes:
+    The window is between the reset and kernfs draining the attribute's active
+    references in device_del(): bdi_debug_unregister() and the device
+    removal (uevent, bus and class teardown) sit in it, tens of microseconds,
+    so a tight store loop lands in it within a few hundred add/remove rounds
+    under QEMU TCG. A store that lands there also fails every later min_ratio
+    store of 50 with EINVAL, which is why the unpatched run shows few landed
+    stores: the leaked 50 % plus a new 50 % reach the limit. The same window
+    exists for min_ratio_fine and min_bytes (same helper), and for the
+    per-superblock bdis unregistered from generic_shutdown_super().
+    
+    Reproducer (x86_64 defconfig, root, loop devices 20 and 21 free, QEMU
+    -smp 2):
+    
+      gcc -O2 -pthread -static -o bdi_min_ratio_leak_short bdi_min_ratio_leak_short.c
+      ./bdi_min_ratio_leak_short
+      before: min_ratio 99 on loop21: Invalid argument   (exit 1)
+      after:  min_ratio 99 on loop21: ok                 (exit 0)
+    
+      /* loop device add/remove racing a min_ratio store; root, CONFIG_BLK_DEV_LOOP */
+      #include <errno.h>
+      #include <fcntl.h>
+      #include <linux/loop.h>
+      #include <pthread.h>
+      #include <stdio.h>
+      #include <string.h>
+      #include <sys/ioctl.h>
+      #include <unistd.h>
+    
+      static volatile int stop;
+    
+      static int store(const char *path, const char *val)
+      {
+      	int fd = open(path, O_WRONLY), r;
+    
+      	if (fd < 0)
+      		return -1;
+      	r = write(fd, val, strlen(val));
+      	close(fd);
+      	return r < 0 ? -errno : 0;
+      }
+    
+      static void *storer(void *arg)
+      {
+      	while (!stop)
+      		store("/sys/class/bdi/7:20/min_ratio", "50");
+      	return NULL;
+      }
+    
+      int main(void)
+      {
+      	int ctl = open("/dev/loop-control", O_RDWR), i, r;
+      	pthread_t th;
+    
+      	ioctl(ctl, LOOP_CTL_ADD, 21);			/* the control bdi */
+      	pthread_create(&th, NULL, storer, NULL);
+      	for (i = 0; i < 2000; i++) {
+      		if (ioctl(ctl, LOOP_CTL_ADD, 20) < 0)
+      			continue;
+      		while (ioctl(ctl, LOOP_CTL_REMOVE, 20) < 0)
+      			;
+      	}
+      	stop = 1;
+      	pthread_join(th, NULL);
+      	r = store("/sys/class/bdi/7:21/min_ratio", "99");	/* sum must stay < 100 */
+      	printf("min_ratio 99 on loop21: %s\n", r ? strerror(-r) : "ok");
+      	store("/sys/class/bdi/7:21/min_ratio", "0");
+      	return r != 0;
+      }
+
+ mm/backing-dev.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index 18e999053bae..fad1495d3b20 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -1162,19 +1162,20 @@ void bdi_unregister(struct backing_dev_info *bdi)
+ 	wb_shutdown(&bdi->wb);
+ 	cgwb_bdi_unregister(bdi);
+ 
+-	/*
+-	 * If this BDI's min ratio has been set, use bdi_set_min_ratio() to
+-	 * update the global bdi_min_ratio.
+-	 */
+-	if (bdi->min_ratio)
+-		bdi_set_min_ratio(bdi, 0);
+-
+ 	if (bdi->dev) {
+ 		bdi_debug_unregister(bdi);
+ 		device_unregister(bdi->dev);
+ 		bdi->dev = NULL;
+ 	}
+ 
++	/*
++	 * If this BDI's min ratio has been set, use bdi_set_min_ratio() to
++	 * update the global bdi_min_ratio. After device_unregister(): the
++	 * sysfs min_ratio stores can no longer run and set it again.
++	 */
++	if (bdi->min_ratio)
++		bdi_set_min_ratio(bdi, 0);
 +
-  acomp_save_req(req, acomp_reqchain_done);
+ 	if (bdi->owner) {
+ 		put_device(bdi->owner);
+ 		bdi->owner = NULL;
 
-  err =3D acomp_do_one_req(req, comp);
-@@ -293,7 +301,7 @@ int crypto_acomp_compress(struct acomp_req *req)
-  return -EAGAIN;
+base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
+-- 
+2.53.0
 
-  if (likely(req->unit_size && acomp_request_issg(req))) {
-- if (!crypto_acomp_req_seg(tfm))
-+ if (likely(!crypto_acomp_req_seg(tfm)))
-  return acomp_do_req_chain(req, true);
-
-  return tfm->compress(req);
-
-The Average throughput of 10 iterations usemem is 19,058 KB/s. IOW, I
-don't get the same performance boost as making the localized change in
-crypto_acomp_compress(), likely because of added computes per compress
-call (one function call, two conditionals).
-
-I think the localized change in crypto_acomp_compress() looks a bit
-cleaner as compared to the special-casing for "comp" in the generic
-acomp_do_req_chain().
-
-In any case, please let me know if the above data helps.
-
-Thanks!
-
->
-> Cheers,
-> --
-> Email: Herbert Xu <herbert@gondor.apana.org.au>
-> Home Page: http://gondor.apana.org.au/~herbert/
-> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
