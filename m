@@ -4,89 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 987A0CCF2C4
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 18:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36414CCF2CF
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 19:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 890B26B0088; Sat, 17 Oct 2026 14:55:06 -0400 (EDT)
+	id 1C9116B0088; Sat, 17 Oct 2026 15:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 868096B0092; Sat, 17 Oct 2026 14:55:06 -0400 (EDT)
+	id 152C96B008A; Sat, 17 Oct 2026 15:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A8216B0099; Sat, 17 Oct 2026 14:55:06 -0400 (EDT)
+	id 01ABA6B008C; Sat, 17 Oct 2026 15:07:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 33C8C6B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 14:55:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A5281C36E9
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:55:04 +0000 (UTC)
-X-FDA: 85333020528.12.3A75B8A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 67087140004
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:55:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lt2f4VAq;
-	spf=pass (imf23.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CCDD06B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:07:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46D52C02DF
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:07:38 +0000 (UTC)
+X-FDA: 85333052196.07.B767CE1
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5E2DC80007
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:07:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NS6BCoY+;
+	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792263302;
+	s=arc-20220608; t=1792264056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cKxpaQfh387ep6bwtRUlH/CimaMVl6PpvksVwuLcWUk=;
-	b=p3KO1m3Aho2nIq2ONEIUMb+lMUHfqUELW755RjyJb+VhswTzLK0QAQLp7c9qTqHKbX2/EH
-	PmaGfqvCi+Jcsk5QQcSwlQXwYOeaZmvOU8Uxn1AkqY/7EaKFlpIzc5Ouo6vNjaQtVA1KCb
-	DBFWp0bbI7mXmVYWvI9/AsEzg1L9yQg=
+	bh=+E8a2PvgIUCT1IDNK7mru3JGGIez7qd+preTii2J3LQ=;
+	b=5pe1jtBX0aLCnVlryVaU+FZl3ekoSWj+r4teOJ0Dr8wKDvvtl33LjnWqBXJgP2wojS+1k0
+	aTd+bLc9z2z9wL2CnBt+vDtl8wMY7/pbhm1sAnMVpzjNhzHRUvFgze9gvyInKWRWK/PV+p
+	W67g00DkMKVk832Pq8WPl117E7GoZHY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792263302;
-	b=zGrqO9Q8DgNJeG4ykHKFV6ZYDu+96eLWp6/vnNhMCCZHmViW4DaJajNYw3+xYDKuETsOM2
-	/6WRaOuHfo0gJmtZ6me0x7UxTNS6Ys87/fVXcu1/3i4yO2h1MilbJIQm9gVyCtJSmTb3Gs
-	jzZJXoMb2tenzbjHaysSwt9eVsbfc0s=
+	t=1792264056;
+	b=kUIPl3oHxRYTsnk44Np/BIb0l5PaHzvuhiGn9huqaPJ0liK9Ml5Ub2/2yYyk19mXwDdtO3
+	tzyoJxGeSoL/MfpGfEt1LunXBT0FwkgCCI7Vqc077SMaV1TB5K4jAj71Y8YOapBQoggCPV
+	90VN6CnegocB9q64cjZmAfoB3Qz7XEw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lt2f4VAq;
-	spf=pass (imf23.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A35284478A;
-	Sat, 17 Oct 2026 18:55:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544701F000C5;
-	Sat, 17 Oct 2026 18:55:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792263301;
-	bh=cKxpaQfh387ep6bwtRUlH/CimaMVl6PpvksVwuLcWUk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lt2f4VAqT4wGUjU5xZg71nJ5FKO1ZqMxYrtzylD/VIvyqYQyGjqTVFqYjGw6ED1cP
-	 9SldIG/QtoVx4TbU3PA7vlOkcbkxfZWFWeSt89oR8nj7+e0CeKrnchzy6Q4V6mwk8r
-	 HuT5auXhxbgWsf/VUQOIPPZQ/a2phzDt7nhY1xuIOy7fU8snI5alohrD9Los093ypa
-	 FQijii2eD4BBwy19St7b4zTZ7gj15fjY4ulXNcsmLuvvdEk1fH3u3kxSHmokcyxzar
-	 ayCxEWOgQCykTZVB/iWvme8XN4EHliG5r+Plt2VYozlyfGLSC+cfQWDWsX6Henu2dk
-	 Ahn2rO5DQUQug==
-Date: Sat, 17 Oct 2026 14:55:00 -0400
-From: Mike Snitzer <snitzer@kernel.org>
-To: Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>
-Cc: linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org
-Subject: [PATCH v4 11/10] NFSD: mark a shared boundary page only once the
- other WRITE has written it
-Message-ID: <atPEhOdHqV7momDw@kernel.org>
-References: <20261015233309.42999-1-snitzer@kernel.org>
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NS6BCoY+;
+	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e0d1da913so373357f8f.1
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 12:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792264055; x=1792868855; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+E8a2PvgIUCT1IDNK7mru3JGGIez7qd+preTii2J3LQ=;
+        b=NS6BCoY+bp/Hao7dVO8B5Zk9wBeBP3kG7qd72lkAdxuOQzlz/mhRB+Zh1mDbF+N3We
+         uyIWr5B2JSMVTuH/ZBnjx0A3kly+oBGu3SIxwoaCfvHyVhQjUejTLQ8yD7ZXfJNRcH6Q
+         7esV7POinJqFElbTd7X9usXODEuVV6W2orhjoSOFGG/D5WoU0dMrazmSO2Sx/JdxrAT4
+         5VeO4EXLPv3WO8Il+1/rpDd7RKmydeHHYvAtacnJnVo9XBeNMZH3y7iLhWo2oBBklBXR
+         hixzaXAS6W9sNBVzOYTiVchtyPmB7XYTh6BvK/b7kQRC3JPR3ZFCQx2CvXxYP/z3kynr
+         hEbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792264055; x=1792868855;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+E8a2PvgIUCT1IDNK7mru3JGGIez7qd+preTii2J3LQ=;
+        b=B09GxJJlWapPa06sokB7su2MpycQrb0zTanRIke85Ivib0bnbo7jUTemdC4OM6bC7z
+         Y1fpEZGHqb0sCkvGTZZWYSKatv4bVN8TAez5w/1/jja1MaS5YGkaANQJAHWwS0ZTj+AV
+         mHbHWUmNgMByP9owUxrv+PV4zGMG1wIlruoN6LK+JiiYthfykgLBq7K/zVIIaRzkqbff
+         r7jPUPuWMjri+4V22P8o1LEOtIX22vyi+XezAEAkIWLlF4QW68LlGzUNPWMF06jFLiAL
+         s/B2fW3Ei/Cf0T0/L3rsWbK+pR8Nw+/r1n/0Es8khEHYbghuHi9y16Q4WUG5oTwqd3Pb
+         adHA==
+X-Gm-Message-State: AFq9FYI9Az98W7PiZ0Stu0nyRUj4a8div2FcVf5WR5Zt4wb7vaLoKxe7
+	2eJTMeB3AKI9GPh2rbmkvCAQmEyZGf1eyEQQ1l4ZHtn6cIydyOJNkQvF
+X-Gm-Gg: AYBFou0GwFqXMCzjvGirfI3+j1S/DIBeJMlMv3L5ZzTZPDU0k7sGtBya9INrzKVeFqg
+	xsco3ac9AKbzN2Ts9ao9vyv0iewNYPsAfP2LYfdz/8xHnoLnEMVkRxiCecGHYnQ5hPeVHeXRk+X
+	haLYJoHcVVmIQOu6aQixcC/gQUDJw0BtO8RWxOYCS8lOQyJp4rc04RPlW00SkFztUmsWOjUNATq
+	X3kcwRAJ+0ellBiaAKB5jGkIu7f2MHYuG/X4i7ra0+df3cb7BsWL9+vwFsZ/jhk7uejdWqvACbR
+	QUeQloVM/r8TPoAZq0hMHIXdTNXCy15AfJg3fJUpzIvJpByl8qFc+bBt6GJtdzAfri1fRZBPI9R
+	zghB7/oyw1aDoOxqoqQkyRSyT3UB1OlZHZzMq9tTald4QVYT2rog1oqsIvKucdHBvbRb5AQV0ll
+	QlKsfPWOL4AbyfPBLrrMw2qhRS4Qwpxxe4iQGJtrVQorBkB/fqUhz5VeMFhMkFvfZ2tqg=
+X-Received: by 2002:a5d:5d08:0:b0:48d:efcb:1fea with SMTP id ffacd0b85a97d-48e07911cf3mr7339685f8f.0.1792264054717;
+        Sat, 17 Oct 2026 12:07:34 -0700 (PDT)
+Received: from [192.168.1.18] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4ee183sm12491778f8f.29.2026.10.17.12.07.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Oct 2026 12:07:33 -0700 (PDT)
+Message-ID: <ddb1e84f-2cfc-4a99-85c4-9a8c6415dbb1@gmail.com>
+Date: Sat, 17 Oct 2026 21:07:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015233309.42999-1-snitzer@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] mm: hugetlb: enable CMA allocation for PMD-sized
+ pages
+To: Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev, osalvador@suse.de,
+ david@kernel.org, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
+ <df6eee954b62f41d65c4d087d17a7a7cf60da791.1792136742.git.zhengqi.arch@bytedance.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <df6eee954b62f41d65c4d087d17a7a7cf60da791.1792136742.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6wp944f5gdm4bhm46h5c8ghtiq7hhdou
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67087140004
-X-Stat-Signature: 4kfo56dbur5jo93wjpazxt6mker5sxyh
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1792263302-419991
-X-HE-Meta: U2FsdGVkX18PZeUo7IzcSfVmmugUOc8UsA2d/QGTHpoNL6SXdMcatP1Qsb5trbIQGE7rolcgn1cNKCGCD7qrBdnr+nNDe/rpy1Tf8b9Ktej5aOCGK3FSHAdiyfvTWpZHo27rf1ioAE8gZ7Mz+gI4IF5op06/9Ce8nv4lxggwZaiWCW1H4tHyC8S5sY4iGKdbtymh0TKf8ouz9Z3bRlHeJ2otzwkwva3kPtcTmAcCOz9equ3uDdnvXR5MlDlLZnxrXWgg6c66yuYpqubNWJ7DrOdxA4d0rC1S2TwC5195KlXklwmQw+r0TTOVh8J9yEi3g1uNSeuAuMOPwBTzyCE1HCelLs9IbSPhggd0KAsNlWgdp4dpcdubeXN04aVBMhbvs2DPpTGFCzZAJGZge5ciUTIRAGCCllaWd0GWJKE85bkelcwkZyJ3xxxkwD7PDA+Qn8uysu8oDMxnQ0wUunXAzy6GQGqikSZDBA9t5majieQd31TGkZ2SRgJwfsCX+K3rRJ+/s5CjcFpbMZNVzxT1gqm9RHjZLhQw82Cvjz5tLXXRQce5D+6b+2svQRQC5nZzY4CGoAV8N5sZRJfESBbDdp2rla77n+F+558kL04QHJyoAL91XaYarWDzIBawfxLnXR2DJSexRpqtRMogb9/e8EyJJCxICemzyRQdLKH/rWUn5/D+pFnY6voQGK2SefYC44YIzkSb48lDx4RetYsSKo5sRAQZfwz6tn057OwI94Cjt/GIsYQeOWd9A1H/13ALHMTelrsRLR/Kfs0fi9pq6/qcSSjdPgqN0vvcbP3JaELyVICc80u5Ek4/AxPKtsduhmpgL0OPxUMe1ACz3uKSDYVj9rhLcFp6ldfFVsNRtD/FPO5MHeNT0+VBdEJS3utl8TaRFEpj072clk4/EeJltsfxT7SyAoyy0wO7aU7ffbBijSb++aSyk6GJYFujLOa/UsL/ysLSL2bQde38RIa
- GGRrryiD
- VqQG3arYMp/wzntBn6q7ZWdHpKc5s4GU4g4knDgSrbC+/RM609W60SNHabWogRbFW+MXJI9aILJT7iS3ukGYIDV6/SCPL0vbO3bUtWVMrovls++B+8Ewqxc6ldldyMkFqnpjzg9D493g7KTJJAn6w8rpjOoxngwCkLB18OIU7dw4jr8IfMySksNY23O5VpfDKacprlmMD3zAPbVxJZ8/eoGR0FDkQQt/EoTcKE46a/bX+NLujJe0oRUElz/dOmC5t7MyBby27uTQ7fxrDLBcAPGBvSZoDeoRNZpezn3t2UwZHUlr30H+9E2zAFhcUfFiH9OYT59jzJSy98KM6v4tywqACW0pauI9wv9RC
+X-Rspamd-Queue-Id: 5E2DC80007
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792264056-435044
+X-HE-Meta: U2FsdGVkX1/X5bCkIjAq/oLyYO/uGnil39xrUO3WyNQUsV6llv4MeKcjfk04EVoQ7udFtUTnQ53Hh23mwhPjBNqtX9Ee5qwyzpH4jsxb5UHYUbswdK063KITrGZF5gZK3uGxW3XI1rGbuk9d2wT/OB3UxjvW/0/rnqarlbFw8uquZ3priSMO6r71GIHE8/IxR3znSLyv3lwVGawJ2N8paeHiELME2/ot5gFniLNbdIpadiQDAZhcuSuoFI2TbvPTVO04sUD7PhtkFwbMaNlSfqr/K/94kC+Jl47vAVxasLE/a/XmwFg0DURMC74ci3Oyp3bKRmUF20Dl9N78XOu+2Bm52wdtLWqh36WkoI9/wUzPzxA9Ey2EdiyqhcHhGy5gNrAnBNs7l4tuIw/J2JPBkQVIaeYG04w3sVT/77ddBW7PM9f9pmwd7scUsWyvoRyWeQETuAlHazQgLjjSWZCe3mulRqDmOTqdMW4Wnm+kPLCtQ0TeaTPrlyhfKVqrT9YuyzEsTS50vV4RHn2Q+kiFx+gZafyO6fDW3nhxlH3fAZUl7OE3o4LMBUdykycK/Jx2eDT8ZjeS9Q/4yYMi+pgAT6z/tLgcztGiWM28ZRmv8Dirz8NvwfUt4/4S4eXRPlR6u2lVRxf5KEyBzTea93FVmXR4LKsaxlcdqwgWaHlmBJUeP87jGSA/TKbgZq52ItTAqIBZLFXIB3T35AouMPmdxgOGU3q+Lt+UvOOkDRIN3P1gGIIPG5Mus+TciLHj3udUhrFCVp8Lt+HDbDyXUQjnxzvEPu9k1WPaT9MIutcn4kGhL2R/VSefJDrJYT+YKwO9KH84v+tJRl8R/vT1jdOmgWGqsGcuVZa9mJ+IEKUfonS2k06udWiYcBAFauH7A4D2lfd/pgzA6eD/OEY2sYZ+YNCkPPZyv1048u1IMkkCZYCVcDDGxqZP042SaezQ7AyxOHCoy8tgjlflJAq8v5N
+ 0wQWNtT3
+ RYOqD9dCi/q2TzJIym6heFGpXF4S2hW1xKrF9Vg0phiwlCO02CyFUYVEe+40hTh2brAcNqLDLN6HPKf0JFTuFdVsXvcgveuSXw2lRaaLq79asu4BJFthhfzjdaqVxF4WTNYSt56cykJqnrsTH/oPhSi1EEturebpw8MiOAuma+1/9Se5dUmVWJSTKtAV7EAQWB28qtmpl/huGYTEYXwzspJ/T3coKL408QyUVApFJxrQUj3TZx3jBV99wKJEkv1hmJ1bxb8cq1J2XZtVISmoF9XgvfcLOf+lFDalnL2V3iHgCcDBfe0u5+J5hW1MpXjZ/8WmO3bXAZ2Urom1a8/nFI+dd3vllcPy2lVJk59O31FThgdLsnValJutMgpUKgsQ/UOW0Ql6czNlsYpnCG+KbGSC5GIpQRwbjwYc7WtESGSGwYeNryabOpLF2xxI2Q9LMg3OkSx6YFzTqwnFTZOVefUu6sIapZuSL3h1Ph+kyW1HWazPFKpRSis8s0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,100 +124,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[incremental fix to v4's 9/10 which will be folded into it for v5]
+On 10/16/26 12:07 PM, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> Allow hugetlb_cma=<capacity>@<page-size> to select the architecture's PMD
+> size in addition to its existing CMA size. PMD pages are 2M on x86-64 and
+> 2M, 32M or 512M on arm64 with 4K, 16K or 64K base pages.
+> 
+> Give PMD pages their own pool without changing the original pool's sharing
+> among other gigantic sizes. On arm64 with 4K base pages, 32M and 1G pages
+> continue to use the default 1G-aligned pool. Unsuffixed arguments and an
+> explicit default size still configure that same pool.
+> 
+> PMD requests use only the PMD pool, even when their order is gigantic.
+> Other gigantic requests use only the original pool. Apply this mapping
+> consistently to allocation, CMA-only policy and boot-time accounting.
+> 
+> Move CMA allocation into the common fresh HugeTLB allocation path so
+> non-gigantic pages can use CMA. Align reservations to both the selected
+> page size and CMA's minimum alignment, and use a bitmap granularity no
+> larger than the selected order. Keep the original CMA area names and give
+> PMD areas distinct names. Document the syntax and pool selection.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-nfsd_write_dio_boundary_claim() treats finding the shared page already in
-the page cache (-EEXIST) as "this WRITE is the second of the two", and the
-second marks the page drop-behind once its own segment is written.  But a
-folio already there says only that the other WRITE has claimed the page,
-not that it has written its part.  WRITEs that arrive together -- the RPCs
-of one O_DIRECT write larger than the client's wsize, which the client
-sends at the same time -- both claim before either writes, so the "second"
-can mark the page, and have it dropped, before the other WRITE's data is
-in it.  That WRITE then reads the page back from the device.
+[snip]
 
-Treat the page as written by the other WRITE only if its folio is uptodate
-when this WRITE finds it: an empty claimed folio becomes uptodate only once
-a write fills it.  When it is not, neither WRITE marks the page, and it is
-an ordinary cached page.  It is written back like any dirty page, by the
-WRITE's fsync, the client's COMMIT or the flusher, but that writeback does
-not drop it, since only a drop-behind folio is dropped, and it is not
-counted as DONTCACHE dirty, so it does not wake the DONTCACHE writeback
-kick.  It stays in the page cache, clean and reclaimable, until reclaim,
-truncate or a later direct write over it removes it: one cached page per
-concurrent pair instead of a device read.
+> +	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nmask);
+> +	if (!folio) {
 
-Measured with 32 interleaved writers of 47008-byte records, NFSD DIRECT,
-4 KiB pages, device reads per WRITE before and after this change:
+boot-time hugepages= goes through here too, so hugepages=128 with
+hugetlb_cma=512M@2M already uses half of the pool at boot. would buddy
+first and cma as fallback make more sense for PMD?
 
-  WRITEs per record      halves arrive     client      before   after
-  1 x 47008              -                 FILE_SYNC   0.0102   0.0014
-  32768 + 14240          one, then other   FILE_SYNC   0.0021   0.0011
-  32768 + 14240          together          FILE_SYNC   0.0401   0.0030
-  32768 + 14240          together          UNSTABLE    0.0944   0.0082
+[snip]
 
-In the concurrent cases 90% (FILE_SYNC) and 95% (UNSTABLE) of the pages
-read back before the change were the page where a record's two WRITEs
-meet.  After it, 14993 (FILE_SYNC) and 22549 (UNSTABLE) of the 90615
-boundary pages, 59 and 88 MiB of the 2 GiB written, were still cached at
-the end of the run, against 484 and 403 before; with
-direct_misaligned_dontcache=N every boundary page stays cached.
+> +	if (order != PMD_SHIFT - PAGE_SHIFT && order_is_gigantic(order))
+>  		order = hugetlb_cma_default_order;
 
-Assisted-by: LLM
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
----
- fs/nfsd/vfs.c | 30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+doesn't this take gigantic PMD-order pages out of the default pool even
+when no PMD pool is set? would trying the exact order first and then
+falling back to the default pool work?
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index e30c50b9b518..424fa3b05705 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1330,9 +1330,22 @@ nfsd_write_dio_seg_init(struct nfsd_write_dio_seg *segment,
-  * DONTCACHE write marks only a folio it allocates, so neither WRITE marks
-  * this one and no writeback drops it before the other WRITE has written it.
-  *
-- * Return: true if a folio was already there.  This WRITE is then the
-- * second of the two and calls nfsd_write_dio_boundary_complete() after
-- * writing the page.
-+ * A folio already there says only that the other WRITE has claimed the page,
-+ * not that it has written its part.  Two WRITEs that arrive together -- the
-+ * RPCs of one O_DIRECT write larger than the client's wsize -- both claim the
-+ * page before either writes, and a page marked now would be dropped before
-+ * the other WRITE's data is in it.  This WRITE completes the page only if the
-+ * folio is uptodate, which an empty claimed folio becomes only once a write
-+ * fills it.  Otherwise neither WRITE marks the page, and it is an ordinary
-+ * cached page: written back by the WRITE's fsync, the client's COMMIT or the
-+ * flusher like any dirty page, but not dropped by that writeback, which drops
-+ * only a drop-behind folio, and not counted as DONTCACHE dirty, so it does
-+ * not wake the DONTCACHE writeback kick.  It leaves the page cache when
-+ * reclaim, truncate or a later direct write over it removes it.
-+ *
-+ * Return: true if the other WRITE has already written the page.  This WRITE
-+ * is then the second of the two and calls nfsd_write_dio_boundary_complete()
-+ * after writing the page.
-  */
- static bool
- nfsd_write_dio_boundary_claim(struct file *file, loff_t pos)
-@@ -1354,7 +1367,16 @@ nfsd_write_dio_boundary_claim(struct file *file, loff_t pos)
- 	if (!err)
- 		folio_unlock(folio);
- 	folio_put(folio);
--	return err == -EEXIST;
-+	if (err != -EEXIST)
-+		return false;
-+
-+	/* FGP_DONTCACHE: a plain lookup would clear a drop-behind mark. */
-+	folio = __filemap_get_folio(mapping, pos >> PAGE_SHIFT, FGP_DONTCACHE, 0);
-+	if (IS_ERR(folio))
-+		return false;
-+	err = folio_test_uptodate(folio);
-+	folio_put(folio);
-+	return err;
- }
- 
- /*
+I tested it on qemu and saw no issues, but I'm hesitant about the points
+above. I can give a Tested-by tag on the next version :)
+
 -- 
-2.52.0
-
+cheers,
+jose a. p-a
 
