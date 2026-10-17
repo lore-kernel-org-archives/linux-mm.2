@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF25FCCF2C4
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 15:07:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62C27CCF2C1
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 15:07:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFF8A6B008A; Sat, 17 Oct 2026 11:07:29 -0400 (EDT)
+	id 707166B0092; Sat, 17 Oct 2026 11:07:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAF2B6B008C; Sat, 17 Oct 2026 11:07:29 -0400 (EDT)
+	id 6DE6E6B0095; Sat, 17 Oct 2026 11:07:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EBEF6B0092; Sat, 17 Oct 2026 11:07:29 -0400 (EDT)
+	id 5F5A36B0096; Sat, 17 Oct 2026 11:07:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 774D66B008A
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 11:07:29 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 2A25E6B0092
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 11:07:36 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 821BB1402F7
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:07:27 +0000 (UTC)
-X-FDA: 85332446934.06.A32162D
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9E8F1A0004
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:07:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YVBdb94M;
-	spf=pass (imf25.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.176 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792249645;
-	b=CsnFY4cDlpulbVGqRx5KHDEX5rTV+4oryFN0rfnCjjnnV2VoPIY1DeaXuMJynCBck+V+Kc
-	CLhUnVcRrEEqtFzH/imp1/mGPY4oV6uE2Hjyras5Kk4Tm5eRI4SAs9H9TEnI/R783eLpSn
-	hkP5T8X2PthePPXkPlhWvK0/UlrvbuE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YVBdb94M;
-	spf=pass (imf25.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.176 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D390C8031A
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:07:34 +0000 (UTC)
+X-FDA: 85332447228.06.25FA8D3
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 04CD2180006
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:07:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y8BknUFX;
+	spf=pass (imf16.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792249645;
+	s=arc-20220608; t=1792249653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QiCRhwHnJeO8E2bgX4UvDZxJcOrRqOmEG3KFmXJoYDM=;
-	b=VWOvkN9QgWMbnJMVzIybicY4YaVT2d1yLlJMYRkeROgF81dWJMzYYWRrThzc+ftfYW47tu
-	tUYVLaW/RZhDCh57lK95cs6Ish17vfXGACYroEN4VxjSXi1+tLk6qMAfAM97DX5P1irkCs
-	AJOC+v5TO+9qIGJqqKRDAtekXit2zjY=
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-35f036b17easo798722eec.1
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 08:07:25 -0700 (PDT)
+	bh=RBQ7X2jkYefaXYnnpfuBlQ4cNKv2piH6HTiOHbSZfNQ=;
+	b=dQ157yTm5vPohZkhtGa1fcnYyarM6I2I/bCo/NjV8NSejQf/W6GK/VbESqzqjm5uvGRiDD
+	AVjk1/rtZErmZoPXPOyxTlXgigZ9aw2OvcJ/FCjFRBHqamBIzOMXaCmeqL1LvxOclvLRTk
+	TVGFHoa4bFUwcLgpYedSg/CS6Mdm3L4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792249653;
+	b=pUB36l3sHj5Av6f/ZtJPofGyJF23tLrlUt3+lj9oUc7zb847ZaDoXmfoJ2eKXxy3NYA+++
+	Tp1Amk2Lk6g8z6kErDLK2Il6Y3Y/Y+1b15L/pq2Z+0dQr139HiruPwvESI9rGUD4+IZXus
+	sIv/PPF2UOWJhbAKu8ytlfRkVHFepnM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y8BknUFX;
+	spf=pass (imf16.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-15943c9c005so619354c88.1
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 08:07:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792249644; x=1792854444; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792249652; x=1792854452; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QiCRhwHnJeO8E2bgX4UvDZxJcOrRqOmEG3KFmXJoYDM=;
-        b=YVBdb94MQpqsAklN9+sp0XlWIAsh/5PWJ1LJFgmD6bjD2pkXdbsPm1hCMVyY3hiWnJ
-         GHUB4ECy3ipUh/DRE1cXkLbOnd0eWxDaBfzFAAI4BFkeXaF4bcbuPFwhzH4waFIVfGs+
-         hFWuiRiq66NVUjuENpiSQaqHCuuEA4Iyz5sSw78up1tBr58BvsA4tTu8ygYw0GXIHrPM
-         v6fFo+Z4zxiXv5jskDYFWL2zZxTRaYinqmKlqFpaOyLOeKzSfPW4hi8bo8nP4rykKoE2
-         AETLxcAkauWKUdztzoLuerdoWUK6eqZOOD12hLw/U8nuQNKmEKPyLSIhpf5z8GJkZJ/i
-         dEkQ==
+        bh=RBQ7X2jkYefaXYnnpfuBlQ4cNKv2piH6HTiOHbSZfNQ=;
+        b=Y8BknUFX4Uhv4Bi86gYFAkh/vjRnZRWU3IQ8ORs0I0kaYcM49rGSOHq2O633kH/ijH
+         kzl7rOLITfFZ6975s+Bbet4MvEDuR2OZOY6+vffhbJrtAtfKLw4BbTC6srU/lrYBkCh2
+         kKZb8H5/407ArGXq8gGiKzto6Ti+VkEBYy/LxAgcRABUh06EfJRvgK95N5uRvusNIIFJ
+         ZPhYq73Z8lCIhwOUbp4kwQ/qIYokyBeMqdj9rDw+KQJtvFmg3g6y5EwbH0TYg15mH3Q8
+         /vcvVanQjT2CjPfBkESbcVBAcE046D74mPAR6jYTlkJC8x3SkaY4bpSMsRDmWw1P/fVy
+         f2CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792249644; x=1792854444;
+        d=1e100.net; s=20260707; t=1792249652; x=1792854452;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QiCRhwHnJeO8E2bgX4UvDZxJcOrRqOmEG3KFmXJoYDM=;
-        b=PwWvTXVhuQDa9SxEd616VtXQ9Er1UQHWc5psK5ykgC5W5lwIBSY3YpOXTlP8arT5iO
-         AjBHgFVmIP+c5noX54t6WvgXux9g/uEqB7CVXMc3W7EzGTzxOaiEaAr+qHyCNL6dOLDn
-         TNFcdTrZlqzUNsdILONFQ61f88BpNAOe1g7vn+7NSvCtQk4P8qvkg2NBXIhCQWr0B1rY
-         mHlRWG6rMSDq+teNyUMe1BdKeYtJKVSEVlH2aRTf/dCZBizEQE+dAmps/HlfpDzjdEiD
-         kdAEHHPGDd/Js+CFDa/zLwnuJLTPIcyMHLXWDSa9FkqrDkMH6qBStYTVF8bQf8OWzBjq
-         Gl1A==
-X-Gm-Message-State: AFq9FYIaCwfgYyVLJcj/VGIHJyvdSSpT5lGUMiOYMqmZvC2uCoUI5uwd
-	Ad7piMqiVFEMrBYo0T3OFFq+ge5pH0n4xrQtOeCBDcAtlYSLz9CXfLj5qVVivU6b8vc=
-X-Gm-Gg: AYBFou2ySCDol/q1XPf7jlJTxQaHJNMVHyml9Zta34JWyRJb2h7tgybGPbLus0OBHHM
-	w6HUezGWAO3SiejuEiUQpBLtv5UmXNiCWLp/NP9KiprGgDZUIJx4/85nw9CH4ozuRf6ITJ9C39I
-	qx3aLUQm0hFhNFB/MujDCNQRFgJVn7LUseuCH8PNX/9BY8uyhr3+n86EfxGrmljeJ7Lku7kgoru
-	39LyKhd4h3BoXcvKO3ImuFXgiorgdRyK/bpTeNX0aaNIllbTUiqjXZs98yq+2e6yfyI8s6Fp7/n
-	uaq+FCGLYr+ZN2g0QtRvTd1Y4CBFcm+utZDUW4XDDse702v6hecvI1wEa2RgQ1H4fKu4vpeGy5z
-	nqGkVfvpVjel9JQg52rDsYvK19MDGRABTESHvjKWCWbymne/6Gb4ifQw21C6AdjiIRwg4KvyVbq
-	C8dk4kTV/Wxx4DWYfje/KV4/frF3VoNaQb5Snbis8nSD2xSVcrceZCGO5uwuXQpMsc9w==
-X-Received: by 2002:a05:7023:a5b:10b0:165:aced:1fde with SMTP id a92af1059eb24-185079fd5b8mr4343118c88.0.1792249644367;
-        Sat, 17 Oct 2026 08:07:24 -0700 (PDT)
+        bh=RBQ7X2jkYefaXYnnpfuBlQ4cNKv2piH6HTiOHbSZfNQ=;
+        b=SlkXRDnR7EFZYv/JLe2OQF+ErGd7xvabo7MGhTMuy7fVdWiS8OTPTuTCqKxE8M5SXx
+         T0/uG7FNWWzrDA911z0LkcESxo6BdR8ofPYNwZoiAKuelJI6t/jU8nxylmpoOLjqqISa
+         NyBooBqn8Z9nRQexzKUgTcxW5fmVafIpXb4zkLuj1G+EWOfnR6dOHsIUusPFv/oVTASo
+         dKAZX8yI+V9qXRPeiaZwv1gsIwLA3mbDRPRF6GtJlvKInykPE5d8XgEPpDyEvHPdq3ov
+         ZMUYBcZwrv1vjow1d2+HQu9SadPKL8Vzac0JoyvgcLfX/ef/oPxxgNS1lttP5FTd1BCZ
+         BQ4g==
+X-Gm-Message-State: AFq9FYLqJnPkds6BAhaT469AKrvd3EUtgYjmpwLIRP49uyYWnficQoUC
+	BFB8L9xfI434qd+zmxtzQWe0VuR/+P4+Ui56c2Fed5X3RgcqH+NA6fPDJCX1mg4q5fo=
+X-Gm-Gg: AYBFou3f3vSzaCTaJWmVCTjzsjtYegfaEgD6u0SoEFRVE8IP8viwqMQ6e6zQH6dsIRo
+	2YdGQd5WV9Lim+uYNKeIV758BesJBtcYQu67YmsxDVVCT87Cnaf0p/MMAFHWeeGjFcR4DC9OdAH
+	cTpBut8t5Rqptk82NZvqkO5ORV6yE4LNDVzro0M7Y7d9Qot1/OLx+h/KCRFcHB057VaolNgC4t+
+	hgLgrbSBdSnkgywYesdY2anqp+FoAGKK9O89TIfM+zopvUVvNsl0tfpkufkQAtlQ1unYScJK60p
+	z1GBN5JWk89CBRoq1REWtF3S0zSmIJfH2f4Xabm6Z+q29RPQtYL5sZDNmq3HbOikr020H/S/MMp
+	rWiqFvKCO8wmYj4tUJtWt4gyauYffRkyNvxALVY97uO4Zw3lbosOMizx4MMMIXIZJqbgrYZUTSb
+	K4CmRlUwdTfgBQ3VjAMLiHGBA4EPy8xQ+HLqpKjaHDo/8wg40TNPjkY8M6tqZfFlH7Gw==
+X-Received: by 2002:a05:701b:455a:20b0:168:3243:c910 with SMTP id a92af1059eb24-185120a88cemr4732337c88.13.1792249651516;
+        Sat, 17 Oct 2026 08:07:31 -0700 (PDT)
 Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa3ebsm13170977c88.8.2026.10.17.08.07.19
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa3ebsm13170977c88.8.2026.10.17.08.07.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 08:07:23 -0700 (PDT)
+        Sat, 17 Oct 2026 08:07:31 -0700 (PDT)
 From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Sat, 17 Oct 2026 23:07:12 +0800
-Subject: [PATCH v2 1/2] selftests/mm: track the modules run_vmtests.sh
- loads
+Date: Sat, 17 Oct 2026 23:07:13 +0800
+Subject: [PATCH v2 2/2] selftests/mm: load xfs before checking for it in
+ run_vmtests.sh
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261017-bug-selftests-mm-run-vmtests-xfs-modprobe-v2-1-cbb36b014322@gmail.com>
+Message-Id: <20261017-bug-selftests-mm-run-vmtests-xfs-modprobe-v2-2-cbb36b014322@gmail.com>
 References: <20261017-bug-selftests-mm-run-vmtests-xfs-modprobe-v2-0-cbb36b014322@gmail.com>
 In-Reply-To: <20261017-bug-selftests-mm-run-vmtests-xfs-modprobe-v2-0-cbb36b014322@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -110,14 +110,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
 X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9E8F1A0004
-X-Stat-Signature: rn443wyft98jporkpa9d6fn37sekq47p
 X-Rspam-User: 
-X-HE-Tag: 1792249645-638329
-X-HE-Meta: U2FsdGVkX1/g1e6ceTflzzLqCFBLHqmIhAMEzx5eOc0YOfMlBHYhzQSUIFb2pZFAAPp6C4AMjvwvZFhP/x8d6S3Xi3yt6Au2tnGZqoTJUZm7Xa6Wk4/zU1YlFpzN2RiJGd47DpCfEBc/uP55qCJ85yE/ivEtcb7lQ/cBQ+jTAUZ/N7Nt+SPeAMVc3twfItzjmyH+LdZy8lAlyLjnjOOjfWqEvYmn3eYiKvVzjvhmy8nH+rTm81B2Cdgz50XB9JKpYa0NNzOms4QlkKnlUwwAZnluU8Zh5R8KkMa0K6tVzSzoF+x8MHfH/HfOf88wigHt4ljZvv1rBafMgw+Qs0Ui6O3FkSgYaajevojPPxfhsDMaGZ9Sci9tKoQQiZzqiEFNmU7Ruex2lCMhZ6Oi25B0WfACIR4XyBfRCi4c/C8bYl5iXCbTdWhQtf3437tA9L3YMLl+gzk0QfqMxa7tbBQKFU297/DjdjRTjDclQZTvLaPgP3jLIlae8gQh2GkzRRDAoQqvtBEcdBvcw1cHbk64KcqDfQ8Dv8fieWUifhXH86XxsFt/1E6EWoxMQjS5sumcLkqlLxNBEjzj2zqWKB5b+vQChfZ21QA+d2roQcjLYHuwA7CnRRm4sk6T7l6WwdYPxiYwLYiHOutNP6x/WpJBBvDmbK+NDuHbiLsSDXOSPg+icyHyolAEISB7yvY1JwRGOo4ycNk0g+e7N113ufcjcEjczEheO3AS34cWWcDJnikvBZ+5nqPdIUKC75Q66FllO9Ux8x1434UXWLXgrFtPRUVOEadrg7DqkKcadPi/nWJ57QRPF8MAt5miw+lbdqi7rWZnU6Rjmw/4QZQy7ZVHliieCZN5fQl6wyLe0QCjLWRAJpClKs1zklPVN22sXP21qD2QoMwbapXmAXMI74zfdo0J2RBFZwjHOkkMQOsWl4Xe7ETpibCAf7Rh5/vU89Npe5aiRFcdFzMOPTC1bEj
- jQCHyesf
- BR2RJJVln6xj7eO5bwAKNdyQwgXBe9+/QsDORnGt3Omcfi0gUN9bsMh5le96Pdek8/lJPdBy0supG/JLEugoS+5w5HjJnG2Zs2O3OVvgEUrKtYW0d4SoZ8659VQ7oB/R1Fgeao5MWaIkQjxRwk/Rfok1GHRt6sgKuBr/4uYMMMo/KHYpoh5eurddJbDsF8IYMgiOABzOYW0GXszYxT4W5LuHWPKjd2RAwk8PxUXHpr1Fhy/KCOjoogVc7aumIpPHUm8y6xhQxQQSrMfeOYm3pbHNod19PpfEnZ+tFHffEpbOBekRPGpiJpp722+DhN41bRvSHme6K+qwWdzhdpkYiZSfatcKctUqtPS5xKsywuZI76g1tZeff5XPufcSHZ+wRetnJK7DK4VciHLazLTfjSDAQHCQZaXR2PfHeB21Pq9Ti5S7WWjnec3LFsqi6qWEKvfAgUblPWpMhVTEAxVfVir8+Fng92Tli9ga3ERpnIJda285iPL3itcwN600jBWJZe77DEMAnQSY7SPhAujFc3ofx0kZ7jIZDIYyizlTYgks88ok=
+X-Rspamd-Queue-Id: 04CD2180006
+X-Rspamd-Server: rspam08
+X-Stat-Signature: adacny6dx8nb3mkrygkebudas5dj4h5z
+X-HE-Tag: 1792249652-489389
+X-HE-Meta: U2FsdGVkX19CsbzuKo+wPPwKgBjVbAwcEMd4corm064VxINAOcyI9rdMRXX16j13NKYMu/GNk3iYxCggDEzQE6ygNgWJyqA3iTrAuIgRcL4ilz8L1sS99faRKlzx2fNVD3aZ9xYtWbWe6SGvI2mzgskCqDWBMXBwyszVGIbI6suXbRUeszn9cACNlNlQevmjl75tpRsbH2s91LFXnnN0vL0i7L7RqaQpnZ/pMTagyq9F8BKd0jUxLePR7RFUIgqRZwDVvcZFQ6MtLt3+qvNGT0Gh4Xhlw/g3QxZXVMwgIkL0PN1iuFMxlGF98YVZ6PHxP/k3Kp6gH2tsVXsRpUN+tRtj6nicfIKFq4YOdVutFUkUdNDDqPbbcMiLz4rmKwfR6F5iF9qHvOP93b5YDLTN4SNG/xHFDsFx47nYxfr6NUO78sqQFqk1Fi+IbFMbsKttddm9ZyX+TthE9m7gXrvHD1CJqDS9r2siuHc5ZoPOXzreIAoZMRhkIMeM45S31SMJ6DC1D4y99cbD37B3HSpDZ1jY+/RwqKK5byBJGHlv5FLf5m/erQGPjSCEqE1rn5Ml/L7be0cEEumsuX6xuL6VGSodK6/MkS0SzkOQY24jAYHU3UgQxorUcgnz4YcP0jtz+n6y6eJuxfWgaW51IeRjcDBz5xC8VdNgvM9B8ZLX6plNubjm+TO8pwXVyMYi/LpJZ0puhgWM85zCpaD3dXw4BHy6A7CKJz6JZWgXsgzmyJ1mJkUm86/8aNpMuWrEPEloEtgG8tjGdJUuyI52AUDVqTVlqbM8lXgv4K8u66zPBGtCbR1z1DBNe5ZGZ0y+rnRXe2u83KlqkwOq4Im2mYpOxOKRw1zvacOOxdMWNk+uUXu5b+nz3nAnGscLOOdAzNcPP/76kC2mZtV1b7CpaRbKvKdNX/K5s9qaDIP0sUxJBtWbXNNvT1UaCSk2HPSNimBdebMPGKsATDLdBDjB1ao
+ g0KPqR5j
+ HEm6DEWWRiRLWa1AtQLJ8wk3PDOBvyvIuwXZQ0NV5G4GmOlzT3AfGzdc5HF92eMh9rvuNMgduKvPNuOVqOHu7YI+RRb9PpEYGq2Dx/60a+9LwG5aa9dSkgZJO8cqiQhIxdnBxyrDM0Ya7+aEo4S0uZSUp+thtR/VgWuCHZmd8696U8HUV4d4t+5AM7YhNdmLfWD6CgdnoKyCJnKWC5vbYlIGuynJbtNZ/0k6Jys73SCLSHf1Ec7Ez/xtc3HMwLvTpzAfHY56WRf8kp/4Ho8bRRE5Xm09FRYKSHkDLmqTCVq4XQ9p9Yuqo3xPENXZvPYE7TS+13B+2j6frgnC5oxwJXGALjLu5R7MR5SoHd4W0nQsSmjdz8wPjXN+Hbx0jEwLsuTixJbSZyw5j40SCudcb9y6waRd3SChQhHhJPq6jKsJkK49Uscmb4By3Ywp9mq7+w5lSB3EB2aM8At1BBdB0oLY6ShwrV+NDG8W8nGHhhahLo4Pvq7rH4EGzmWd5RlpK/KqGTGA0UGB+gC239ALSZN3ce7mAOa3HiKTBdN8K9nsFDKo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,88 +125,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-run_vmtests.sh loads hwpoison_inject for the memory-failure test when it
-is not there yet, remembers that in a variable local to run_test() and
-unloads the module right after the test.
+run_vmtests.sh creates a loop-mounted XFS for "khugepaged all:file" and
+for the pagecache folio split cases of split_huge_page_test, since
+tmpfs does not give them large pagecache folios.
 
-The thp tests need xfs loaded in the same way, and repeating the load,
-the bookkeeping and the unload for every module that some test needs
-does not scale.
+It only does so when xfs already shows up in /proc/filesystems. When
+xfs is built as a module that is not loaded yet, the check fails, no
+XFS is created, "khugepaged all:file" is reported as skipped and every
+pagecache folio split case of split_huge_page_test is skipped with "No
+large pagecache folio generated".
 
-Add load_module(), which loads a module unless it is already present
-and records it, and unload every recorded module, in reverse order,
-before the script exits. Use it for hwpoison_inject.
+Load xfs with load_module() when it is not registered yet, so that it
+is unloaded again once the script is done. "run_vmtests.sh -t thp" with
+xfs built as a module and not loaded:
 
+                                   before    after
+  skipped tests                         1        0
+  skipped split_huge_page_test cases   43        0
+  xfs loaded after the run             no       no
+
+Fixes: fc4d182316bd ("mm: huge_memory: enable debugfs to split huge pages to any order")
 Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 ---
- tools/testing/selftests/mm/run_vmtests.sh | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d09f9f6a384ee..56f5416681da7 100755
+index 56f5416681da7..ba77fae5df4f2 100755
 --- a/tools/testing/selftests/mm/run_vmtests.sh
 +++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -177,11 +177,30 @@ pretty_name() {
- 	echo "$*" | sed -e 's/^\(bash \)\?\.\///'
- }
- 
-+# Modules this script loaded, unloaded again before it exits
-+LOADED_MODULES=()
-+
-+# Usage: load_module [module]
-+load_module() {
-+	if [ -d "/sys/module/$1" ]; then
-+		return 0
-+	fi
-+	modprobe -q "$1" || return 1
-+	LOADED_MODULES+=("$1")
-+}
-+
-+unload_modules() {
-+	local i
-+
-+	for (( i = ${#LOADED_MODULES[@]} - 1; i >= 0; i-- )); do
-+		modprobe -r -q "${LOADED_MODULES[i]}"
-+	done
-+}
-+
- # Usage: run_test [test binary] [arbitrary test arguments...]
- run_test() {
- 	if test_selected ${CATEGORY}; then
- 		local skip=0
--		local LOADED_HWPOISON_INJECT_MOD=0
- 
- 		# On memory constrainted systems some tests can fail to allocate hugepages.
- 		# perform some cleanup before the test for a higher success rate.
-@@ -207,8 +226,7 @@ run_test() {
- 						| tap_prefix
- 					skip=1
- 				else
--					modprobe hwpoison_inject > /dev/null 2>&1
--					LOADED_HWPOISON_INJECT_MOD=1
-+					load_module hwpoison_inject
- 					if [ ! -d "$HWPOISON_DIR" ]; then
- 						echo "hwpoison debugfs interface not present" \
- 							| tap_prefix
-@@ -231,11 +249,6 @@ run_test() {
- 			local ret=${PIPESTATUS[0]}
- 		fi
- 
--		# Unload hwpoison_inject if we loaded it
--		if [ "${LOADED_HWPOISON_INJECT_MOD}" = "1" ]; then
--			modprobe -r hwpoison_inject > /dev/null 2>&1
--		fi
--
- 		count_total=$(( count_total + 1 ))
- 		if [ $ret -eq 0 ]; then
- 			count_pass=$(( count_pass + 1 ))
-@@ -465,4 +478,6 @@ CATEGORY="memory-failure" run_test ./memory-failure
- echo "SUMMARY: PASS=${count_pass} SKIP=${count_skip} FAIL=${count_fail}" | tap_prefix
- echo "1..${count_total}" | tap_output
- 
-+unload_modules
-+
- exit $exitcode
+@@ -428,7 +428,7 @@ CATEGORY="thp" run_test ./khugepaged -c 4 mthp_khugepaged:anon
+ # Try to create XFS if not provided
+ if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
+     if test_selected "thp"; then
+-	if grep xfs /proc/filesystems &>/dev/null; then
++	if grep -q xfs /proc/filesystems || load_module xfs; then
+ 	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
+ 	    SPLIT_HUGE_PAGE_TEST_XFS_PATH=$(mktemp -d /tmp/xfs_dir_XXXXXX)
+ 	    truncate -s 314572800 ${XFS_IMG}
 
 -- 
 2.43.0
