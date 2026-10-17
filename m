@@ -4,88 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4017ECCF2CF
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 18:39:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01AF8CCF2C9
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 18:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB53B6B0092; Sat, 17 Oct 2026 14:39:27 -0400 (EDT)
+	id DA69E6B0096; Sat, 17 Oct 2026 14:41:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8D4D6B0095; Sat, 17 Oct 2026 14:39:27 -0400 (EDT)
+	id D571A6B0098; Sat, 17 Oct 2026 14:41:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA4A06B0096; Sat, 17 Oct 2026 14:39:27 -0400 (EDT)
+	id C6D326B0099; Sat, 17 Oct 2026 14:41:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B83F36B0092
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 14:39:27 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53CF01202BB
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:39:27 +0000 (UTC)
-X-FDA: 85332981174.07.125C47F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CFDE01C0004
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:39:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TstxZChG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792262365;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=j1Sq7gj02Y/fsM3Bj+ujep5VUm++/+h+05QAs23TGuc=;
-	b=h3vnyTQ1XbCMsTrTFRFDFS4mm+ENTf7sTwWFl7/eJULwQk9phjQfNjTYPDuQBrnqIbGK5t
-	h4Gwi6/YihdV+s0tbtggmKX4eCu0aUqJRu0mZLaJj8RMWMrrrIkH5IsuSpDgO9gMhgmvK0
-	FOwqbX2Wk+OaJo6HCbQACwGrDBAEKks=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 927546B0096
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 14:41:14 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F0B9F1A0290
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:41:13 +0000 (UTC)
+X-FDA: 85332985626.06.32F44F9
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 17C7C140005
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 18:41:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pONYI30m;
+	spf=pass (imf09.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792262365;
-	b=hWSk03KFe3WTN1sFZyiIlnE6Dx+fRamog7/uS+mRTnxG5suZghvfvgha4PgHtw0TGesvyp
-	kJGpqH1htHt1+fcFnZ6SaJwIRQvF7Kuus+hPtsGXzpyGNih1/nftuDhmsiI1H01g4HMYGL
-	RjOockRm45CfbzDPP/O5YoNAHa7/Nls=
+	t=1792262472;
+	b=sUZRFPQAClxVgmQz3/cmXYtOQdbS/o/6dtAkhDvNgDNQVmiZogaxJjT9ZHbTYFFkRsTh3d
+	uqdtPlvgI+aTGMDFg2J/vsWU32DvQBApjlhWT48vX8uHe6R63y0lpxsS55dLFIErYHLEWA
+	ezAECqiNew352e2wirNZ+9b//g62T9o=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TstxZChG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2D0E7413FD;
-	Sat, 17 Oct 2026 18:39:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD601F000C4;
-	Sat, 17 Oct 2026 18:39:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792262364;
-	bh=j1Sq7gj02Y/fsM3Bj+ujep5VUm++/+h+05QAs23TGuc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TstxZChGQhlAuN6Vej9C86VmeJrYsg6BGTkCv6R0i0K3kqID3y+bag3dhJce+nGQH
-	 ODj7UFvSgACiwPEL1V2lXbM3HvQt116JhVq3iTZpDzgklsAI96nyqRIZwQaGKTD9BC
-	 8iytmUz8y8rfqy0kLxRKpBhXoUOgwl4ewJuFnxylRQoqr0W/LrtB4QXX5C2cX608wl
-	 hdyuNckobaYMHxvEeEROYyekawL451BiQrTfaOIWoBOdTXFT3vPmGGTt8IEZ5Ui1lT
-	 y+g2jNZHceecB7wy9xllu1qZSRqPAPaF90JpJbzPRvArfa2BGQtN6J2JD2nIT5g7vf
-	 DzeDRtAFsALNw==
-Date: Sat, 17 Oct 2026 08:39:22 -1000
-Message-ID: <39c61e6b4d8064bc10440e6fbb00ce05@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Liz Fong-Jones <lizf@honeycomb.io>
-Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>,
-	"Patrick Lu (Anthropic)" <perf.patrick.lu@gmail.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ian@honeycomb.io
-Subject: Re: [PATCH v2] writeback: keep cleanup_offline_cgwb()'s scan out of syncs
-In-Reply-To: <20261017040710.1174009-1-lizf@honeycomb.io>
-References: <20261015114307.1041273-1-lizf@honeycomb.io>
- <20261017040710.1174009-1-lizf@honeycomb.io>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CFDE01C0004
-X-Stat-Signature: gmx39d3k6pzyhhgwtzeh8emn5c1pjhgz
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pONYI30m;
+	spf=pass (imf09.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792262472;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=k5FNedh0SyvKi+ARXY2mJft6/hxvUajq1URxM9wpjPw=;
+	b=XyltVB10+nrW/X9in+IeIAEBJnDPgOreJTTSkFeov62/AbtrOdvKl7CjdUqozIasje0n2K
+	y4IdiaU4TIdOfwSLIIerKCU4tHGFkKYQg8smDSS5JSLdesaf9O/S63lf7iy/L0SSRsn83H
+	nXAl9QtWayt1YnW8F034PwYcPkXsJWc=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a1e1dade31so245575e9.3
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 11:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792262471; x=1792867271; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k5FNedh0SyvKi+ARXY2mJft6/hxvUajq1URxM9wpjPw=;
+        b=pONYI30mvAF0Vaehv91wqcdQ14gLmw49FZg/VlbYM7uSXWMCVB27Rtu+vbu1cXKQbK
+         8YgcC+YhWQVM+k/w26OTkTFrK85casTa8W/OELVYV4kZdB8GYSuZHxsSvZl+8orvmk0w
+         MSw/2pejZ2vqCektBK1VR/1vjJaEnuvMsApEWKe5nRdvPQ+abaU6Iu4oAwdQmxubwPUO
+         4MK8Y5gbK2SCFC3zLayUMFdQT73DYXcePGNdLBGIfFwP+UHzSiyU0ifQBqo+wu7IPTha
+         ZyLI2x3VxEwb15U4qx2kAGhBP0Y74SoOFtWg8kYEh3Xat2zgOuu1w/J5BLEmWEJync2r
+         TDDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792262471; x=1792867271;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=k5FNedh0SyvKi+ARXY2mJft6/hxvUajq1URxM9wpjPw=;
+        b=gzh5kliQAzGNx6YQFFugC2AYpX635bfSvXjXwxeMHbx/I5L34M4sxb6hYrj3Q3Oprc
+         hhWyIwppLApUzmbfYzNPPjTTaNZxLtcu8XoAh+lJ7xAx4jI4BDRyy0azkpcvBSj6Di91
+         oi1btJa/wY0HZhLOuqZ8nXWaakTIM0jgTK/7g6SaoQK7YzducEmxm47AtZsjepCE0tjO
+         Z10rHNkDoSUhsObfnAc9DOweFI3Yevp32LxnMKkIVz5sJ1tdlrct/HLsFMnJGQcXveRi
+         wcj5KdQ8J3YDOkoXD2hVqhcjGw8FD15cgs4HXu6CELWyWaLRd7TK0qNv/WpwcfYbamRi
+         ZnLA==
+X-Gm-Message-State: AFq9FYJ6Eo/zQNWbTzmyN88RjasPaW5L/Kguw11nO7lS7V3ehdJR43Am
+	GR5y8p1Q6Tc7LAadnPtc0IptKh6ACUXkOl/1JjLLm5paH766L7DVrZ69
+X-Gm-Gg: AYBFou3WihMBvAWCP5MM1FYE/PYZvJplcTA0tAxoCM8V4CRf/KuBKQSP2bohPDmDai7
+	p+3Z6xjY7G3e8g+v0+mwODsxnr4+3L80Jz4eNDmIZ0V1eUqZ0jPMfK1bOiJ9rPLY/APTqqeoOqN
+	8hKUR3j8itANrOIraw+a91s6680t7PLzNEvofoOReM9IjQy90Fn1OOjhTw231b89A+6xs62s4JW
+	7T87ybvSa+QO8gJpyYAR5Qdmo517F6bOhmpe1xGg37SVyDbd+8RdX63MmQdS5espuX+XYPKfwZ0
+	Ib/4dBpqn3NLyVEokGJTupjBq+tnLdWCYSlMc+susUPNDsM21gzGcxssO1bxGuWpF9BdwjUY8e6
+	q1d3EyW0w3T34A8nzg4idiRbVD9DyyLBPoE3vpIvuIs+4dfRWJdvxMS/XQlC89ELO8jVItTKsMu
+	xUcsTY2kW9QuUhiCwDWIiU4XIqIz6r47uAF49ftSRfQSVxBCNdDqymCQDcU3EUzuhGYQ==
+X-Received: by 2002:a05:600c:1f8d:b0:4a0:1b14:d00c with SMTP id 5b1f17b1804b1-4a1d75ab306mr81479515e9.3.1792262470338;
+        Sat, 17 Oct 2026 11:41:10 -0700 (PDT)
+Received: from [192.168.1.18] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1df164777sm49895585e9.5.2026.10.17.11.41.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Oct 2026 11:41:08 -0700 (PDT)
+Message-ID: <ac34f212-2e51-4298-a281-9380fb0d073c@gmail.com>
+Date: Sat, 17 Oct 2026 20:41:06 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] mm: hugetlb: track CMA reservations by page order
+To: Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev, osalvador@suse.de,
+ david@kernel.org, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
+ <57cd5cac5e2749cba24c502bcd9682ad8b9f2bcd.1792136742.git.zhengqi.arch@bytedance.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <57cd5cac5e2749cba24c502bcd9682ad8b9f2bcd.1792136742.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 17C7C140005
+X-Stat-Signature: f9kro96d84ouj3mcnoi1qi8146fzmks9
 X-Rspam-User: 
-X-HE-Tag: 1792262365-155936
-X-HE-Meta: U2FsdGVkX18oCERyVmHk1iftp+PRuUTGKEDI1rsFD3ZFa4v6geW5seXqQNrCjZHM+YbJNu/FefGvxcG9By6A+CoAmYk5wYVgstWLrlZkQOA+ivwq45Fn5+AwBEZq14VVwwu0Nn6ExARBpkFp9MaT9joDPD5paXhEkMBeRAcbpxLgxTxlBkDVyoWxzfr6GKy2r8NlBS783LZsIkbwRtXMh946PLbRF9D/s3Jl4QzfvmNQpHTF9JAO7a5YjmO2w98bW8h3hEUKKw2eMnmFAjD4rsKtNUkiIxJjz3uyk/4yLemETtDauq2XXNOgvWPTB19navlMV6Onq4EMaIjm4RSozB4qD03VBaQOCmC2/HCvenUXZ3DLZuyxZI1RXkgjO0Z2vdt6uT43ob+BdJTAfO6pfFy/isIjLAN5qHTOY5Vv3mnlXIOuKnyLcba2MZ3UAl460vTX3zBSkpuZ6JJds9LuBo/iU3/5t/JZtYi1J705dc7dzGZQfRAkTpqHdrkd152XO4GXwBgN7aO1nTxcrtUcoZ9M0/uYIwim6SMfPaugaqeEMR2PdLvj5YjADF4Nt/8U35UUnrwRuUlTPSMTpA/wl99JDzQI47+t1Hasvde1cHRtUAB7NkbH1t+OQcnOUXtkiLq48EYqjHEqbT3cF95TIlkzArQXXkGQT1Fo7gmCKH0AeoZRHhubX2ifbjmrtPXRbubbmApTmehoM0yrdXTZOayBxTg14PU1Bpe/wKP6i4VX6UB+ErIY4NWd0xrwUxKWpjPstYsh+uiRtFmxgGWV5RVxb2IAsGfwxRAORyRXJTccjEwe5Vxy9L6cbtlW8UPOS8KEm6JbL0RbK+zAQ0EtFaVvdfAxwDObwci1BCUSGghQpSJYrz4Q7BlnY6b7w0w93XCZWjcDtOI0SzitkoRiMW19LAoY6+ZQI39lvtp9Q4wc2RrZZURvddo4zXoeHZr6kZE1WzKcX2tuQf6TVhH
- O9pEaopW
- uFCFrTp7bd6s3cr0ZeQ+r5rU989pZbM6CK+5o9ra4LylYcolbDulylmIBMSRTTJCYlasiHpxmOSTFgLIxzC7xPtxw9ql07XE0VhQ1I65tTGz6g+DMYnkHQAER8M55FsMmE/smcFfbWcvf/HNbOKDNMMF3VsFmCX03X198yIH9tzKccZEJuTqWO7uOHKVHjrxiYIihME6KqcOd0FndVrcuviJuGCqBXKhvco3h1RCh5vjv5aHtrCh2m3bVOwfyxLlObvksclglJBYycoSx+RRWwIDm7OfJFnebpgeY9Wv3QspsRAMmpfh7mRUxWOYYprkc86YmW/jxCf0kU+Lrr6b+6AI88aNWMLS8JL9eH8YfslYjpuqAbn+6MBElWNn3Fh1Sr+sTZZyapCArgmc=
+X-HE-Tag: 1792262471-702773
+X-HE-Meta: U2FsdGVkX1/4CR2ryvbio+cOg1Nuyb/iTtWCBSpVmM1j8TxEe2LzglbS7gFV+YI6ltvbM4P/EUHfVIIfN/39OMVlfUS3na4hn1kmnNi6lTgnpet27lrOdBCY647NIpJbZ2joblV8Hr3u9O/VFq1KxPmUbYoKuCUo4FExKMcrLsaXKEtV/eIYWeBjotL8r9Znf4Yj5DGduzqei+Yc5u+Cwo5Jk87Cvhf9rOUSKfqRWZ9kgluCWyARMq95wWxQei7pq9Esj4l/AXhKBhbCqnzQolWPEgfdREhvIicZPZhF3lqP9cqLR3zB+Orggr/h37k0nM2X62CedZJoJZhDA3J3o+sRW3a5tYXiieDjhfeuo8AT9rkXqWvADe6SS2VChiR/glZAIPieWBLXla4kdjpXf/1vLKNJ1lMFom79iSU/0eBFHanhInk61GfzzIdEwAN4iCebgn5Vi/8VxrKZnWmrwpepLz7zRBBUd83bmkcNxQq2lo2mCmsEkiRX83ckZwJGlbGw2/s38/evsAPMteeoNyYFXlEzEK8VUCdNPot3RDm+wQc5j2jWZS1dlKSLjtx29GfvGHsfwry0nqHFfPH1wJDT3c05GDUOAKRFKlwglfrSRE/gaxnEUxKjwcrvQbxAUGxkM7RAwba/vFo3NoNtJdcMDC/xqnVR0U82PGwPQEAdHu0D4SOmI4+dEPHYJbby4zvQhGXxgDt8OsnbDLz3Dc/Dtenndt/iK8AiL9RABN+n2rTkoYqpyDpgu+ZnzCKlNtELLMP+CvAXY1ecEgJoz2PnBUZxiPLLBxji759/+J0oUr06dZQbExOyDsR3h0ozDzQluQNQw11Kg24yDyGS24iroYjSDuuhaO7UBRewkYkTGzoqBwcg6wvWqjhpziBAORLkqf6VUorJlO4O5mlhAxI9gnmN7Y0+DodILcPhKH/MOxxAcUuEHTHt/x04hTaVreeTuVIqcoqKYMVq9iW
+ c0mIBqyq
+ Ql3NelgXJI1wdahbbc/PT1ffrCD2cS4Z+D3LoJu01KuzIIrzr/5PjhDh4dHEqmaQ4L6N76L+/inP3NJIzLzOH1yQc2G7ZS1sn2m1a40l+zXItHllO6Lh7k2T35TeClOTK7SbrwPkMlGebj9EJPHpN8ZA3+DlrSIBvA9TFeXoklLplS+qIPXL/Dnip/SRrVqNbzr7+KP8/u5JFM0/BigrLu4yuvN3hoW/bhFFQ+wTBOpQsIfulbgn4AEKcN1owUUHMq5GRy/XL2PZhdx7OIOM0U/5KL/fXvA4ySAbSVQAkbgrS6WjEFmrGiDPD7HQwsLM5+bbuQ6SIie749DFuJtw/DpbKbLPg9H8FPnh6NzgRooeZvu4p88KJGApSyJHCqlxjMsrJ2fPyIRZcY8B60T1IHSHUA6BrxV7/hClHiB30R4XkLpMsnlNzHWCpq12y0r21U0d2xA39Ka6HqVsZw15KfP86uQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,43 +123,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 17, 2026 at 04:07:11AM +0000, Liz Fong-Jones wrote:
-> On a filesystem mounted with lazytime, sync() and syncfs() can return
-> without persisting timestamp updates of inodes attached to a dying
-> cgroup wb, so a crash after the sync loses them. File data and sizes are
-> not affected.
->
-> Since commit f6988c90671e ("writeback: bound cleanup_offline_cgwb()
-> rescans by rotating scanned inodes"), isw_prepare_wbs_switch() moves the
-> inodes it walks to the newest end of the list. When a pass fills its isw
-> before reaching an inode that got its lazytime update after a sync's
-> cutoff, the walked inodes land past it on b_dirty_time, and the sync's
-> queue_io(), which stops at the first inode dirtied after the cutoff,
-> misses them. The late inode has to be one without a pending lazytime
-> update; one already on b_dirty_time keeps its position.
->
-> The window is narrow. cleanup_offline_cgwbs_workfn() skips wbs with
-> anything on b_dirty, b_io or b_more_io, so the scan has to land between
-> wb_writeback() fixing dirtied_before and taking list_lock for its first
-> queue_io(), unless a multi-pass drain started before the wb got dirty
-> IO.
->
-> Take wb_switch_rwsem for read across the scan, as
-> process_inode_switch_wbs() does for the switches.
->
-> Fixes: f6988c90671e ("writeback: bound cleanup_offline_cgwb() rescans by rotating scanned inodes")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Tejun Heo <tj@kernel.org>
-> Link: https://lore.kernel.org/all/0bc5d58533f10b4841807be3025daa11@kernel.org/
-> Assisted-by: Claude:claude-opus-5-5 checkpatch
-> Assisted-by: Claude:claude-fable-5-1
-> Acked-by: Tejun Heo <tj@kernel.org>
-> Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
+On 10/16/26 12:07 PM, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> Prepare for a separate CMA pool for PMD-sized HugeTLB pages by organizing
+> CMA areas and reservation parameters into pools identified by page order.
+> 
+> Select the corresponding pool for allocation, CMA-only checks and
+> boot-time allocation decisions. Release folios through the CMA area that
+> owns their physical memory, including after demotion.
+> 
+> Record each pool's successfully reserved capacity. Remove
+> hugetlb_cma_validate_params(), since the per-pool CMA-only check already
+> handles missing or empty pools.
+> 
+> Continue accepting only the architecture's existing CMA page size and
+> preserve the default pool's use by all gigantic sizes. PMD-sized pool
+> support will be added in a subsequent patch.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Acked-by: Tejun Heo <tj@kernel.org>
+[snip]
 
-Thanks.
+> +static struct hugetlb_cma_pool hugetlb_cma[HUGE_MAX_HSTATE] __ro_after_init;
+> +static struct hugetlb_cma_config hugetlb_cma_config[HUGE_MAX_HSTATE] __initdata;
+> +static unsigned int hugetlb_cma_nr __ro_after_init;
 
---
-tejun
+the commit message prepares for one more pool, the PMD one, and
+hugetlb_cma_pool() folds every gigantic order into the default pool.
+would a fixed pair work instead of an order-keyed array?
+
+-- 
+cheers,
+jose a. p-a
 
