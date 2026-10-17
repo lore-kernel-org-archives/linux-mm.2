@@ -4,102 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B285CCA463
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 03:16:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77414CCA463
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 03:53:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5C7F6B008A; Fri, 16 Oct 2026 23:16:39 -0400 (EDT)
+	id 1CB1E6B0088; Fri, 16 Oct 2026 23:53:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE6D56B008C; Fri, 16 Oct 2026 23:16:39 -0400 (EDT)
+	id 17AF06B008A; Fri, 16 Oct 2026 23:53:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD6996B0092; Fri, 16 Oct 2026 23:16:39 -0400 (EDT)
+	id 06AA06B008C; Fri, 16 Oct 2026 23:53:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DDD86B008A
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 23:16:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F4EC1601DE
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:16:38 +0000 (UTC)
-X-FDA: 85330655676.21.A0D3F2E
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5652AC0002
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:16:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=SucYKug5;
-	spf=pass (imf10.hostedemail.com: domain of chenhongfeng0212@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chenhongfeng0212@163.com;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792206996;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	by kanga.kvack.org (Postfix) with ESMTP id BD1FA6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 23:53:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B7F61C26F6
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:53:43 +0000 (UTC)
+X-FDA: 85330749126.04.35EC4BA
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 44B9D40005
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:53:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ft5IqvGm;
+	spf=pass (imf11.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792209221;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rYeujvCf6NprmQgfrv6xnLcyR5lzfeAJ0jKIJm9Zn+E=;
-	b=qwFfJpZUOpqsQU2pxO74CkD/aKUiaVjy4pq2nQiK9D7M6tGRLe3irTCoKgmOVe8H4xDXUx
-	VQvbVP5vjoFT8sMa8leutaMR/AlNo1ro94xkkENgZKmRcsTRSLSaIi3kuQzU4y5lZOA/4k
-	LvNO1DjmjPAth9zTdz7miVSZfvAfE5c=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=SucYKug5;
-	spf=pass (imf10.hostedemail.com: domain of chenhongfeng0212@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chenhongfeng0212@163.com;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792206996;
-	b=ttUeeQNWwSv8Du1F/t+FbmbLQ32LAN4GYEETCMIrukF8GTf4jOOPAt0aVei/KrY4lUla5+
-	lMZY2LwNM8yBTLDiJLxSmak+u26UUeJ7dhgV0RKHB4+L01MJO3DheHJ2Si8azu5E+7ieFk
-	1akRtn5tzRrgaFLaMRymqkFqEl64xYw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=rY
-	eujvCf6NprmQgfrv6xnLcyR5lzfeAJ0jKIJm9Zn+E=; b=SucYKug5Ko8/q75pd+
-	T59xqkR123hm/O5nMROdtZwAZjbtcE8QTcQx68lNLOz8vDBu3Uu6IadgHyfe5ECf
-	QKGicLv5/NOZD9e2RFNvRuhod064ig5leyUGuWAq7C64kj8yKOoxYXmYZK1q1QAV
-	h+6L2A4C/ln1vwdpM31FwhszM=
-Received: from hongfeng.mioffice.cn (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3YQl46NJq+Fg1AQ--.37596S2;
-	Sat, 17 Oct 2026 11:16:09 +0800 (CST)
-From: Hongfeng Chen <hongfengchen@xiaomi.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <baohua@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Wenchao Hao <haowenchao@xiaomi.com>,
-	Wenchao Hao <haowenchao22@gmail.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	Hongfeng Chen <hongfengchen@xiaomi.com>,
-	chenhongfeng0212@gmail.com
-Subject: [RFC PATCH v4 2/2] zram: keep the hot statistics per cpu
-Date: Sat, 17 Oct 2026 11:15:42 +0800
-Message-ID: <20261017031542.3504947-1-hongfengchen@xiaomi.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
-References: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
+	bh=c0xww6zOl66Izqr/6HsQKYJXypZK9pMb27w+but6MD0=;
+	b=M/CoTLUbiiF2H8LblwlroisWGuoUF93EcLecpoD1ZE6zuwEUCMhE52fhu1z11Je0b26Y6z
+	wAeeXNBtZrGgnaaDbW9tdilcwLlh0UTs45JXA/9ZFS60L0W3Mph6OTq+POHEFGeFPbss+h
+	Ju8NUnFHyCelbRVe1BwLr6wE94Rw310=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792209221;
+	b=n6r2wBlrgNKoaC0CMH3YmUgUiUWyUcSYzBf0vnUQ1nu5BvZ7DwWaVx9PbfuCrNsX1Z7XMg
+	QKbDekKw2HhOSgULHSRvqL/XPKCW8P/yRB11e0DtJC3PXDbvgxK9if4Mb71CG/MIg9HjrE
+	MSH4JTLu1UK3St4qjFobv/FBxuWPBcI=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ft5IqvGm;
+	spf=pass (imf11.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bccecba199so482674e87.1
+        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:53:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792209219; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RslL9BtthjyLb351EAA4JY9xmKlRuKCTY6G+Gb0nT80EcxKmhMKRjOu7PKrZskLiEg
+         B4HiAKFmG3O3skQGgLzF8NPzc0edTxEouxOPgGLjdf8SJAhPtRNruLHSCUQ91Oj2Uj31
+         3G4JJO+10Qw2WYcPBFkJJ703RR0wWzT0/s3lU8KkWjo79WndtQt5qY6253m5lCf4kVy2
+         j+Klmf5OTpyOeMQEtp/SPSG1kFLsEj/dWZN8a3/Fncu2q6r6JrFxzzGKioP4v0YCqZp/
+         coiO/eypIq1SJmi6JTk54zZRfUxVQw/7kBRLt74I/h2P5a6/CxRjTDlzBAyNp4Mgpxj4
+         jr/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=c0xww6zOl66Izqr/6HsQKYJXypZK9pMb27w+but6MD0=;
+        fh=GEjt+j5HVlUa36knRXRq7LEoIXx96n0GtAbNWh26bEI=;
+        b=IPuckQrJa04FgDpbeIKctqR4N5d0qIiRWTeVYnC1LqJlIa4JljvEsSVoPYbpYOPMnY
+         eWxIbAR2++NClg6Y/NDcdMhA02HrEtgtem7RxYvmxdLtwnOIJIZM+whlOacd5dT54A2N
+         xiy/3evJZDqMGOc5H7vxprvpY6bPgubrSAjEXpgLG47O7QXiFcmqS+MJHGCflqTYbXcr
+         V/bgjDksjKTKcGqqP3TmapqXE3fQfboiytGZ5pwborTrbvL+52Bw2ZmRqRl/WZDulv1F
+         tY9ohPbfgHdrorK5q4XLyXcMhEeRIJInycTdd1jFv9Nh1GBP9cfoub8FSR9jbLCg0pya
+         q2GQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792209219; x=1792814019; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=c0xww6zOl66Izqr/6HsQKYJXypZK9pMb27w+but6MD0=;
+        b=Ft5IqvGmPWOyptr9oCwlaj6d9yVeoyz0ivSSzE04pvdVg5Pw51vY24DT1kgEOmSIfd
+         LL7MwFfi9uLZ3SkKYhRmR7h1CFD7CQNI3M7cKUKNSwT7R+LHWyIWAv1Fn01/vPaXKfKN
+         Up+HI8mHltHNdFeWUhXylhxGa0latr+r4F+VriAgmq03F9iVSgzfrV5dmsuujjJ7MawY
+         C4Tj1NbFDaXnTPYY7g1EoBqQbrOnshPFi+w1YsqXP44V6qYsYbpEMfFMp0PofSGADWUv
+         yILMfS9EhpQH4kekg89CCfpriL7oJjzgTR/MoROFc/NG53QcQ1NEnfHmu0Tdcqtj22E/
+         pHkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792209219; x=1792814019;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=c0xww6zOl66Izqr/6HsQKYJXypZK9pMb27w+but6MD0=;
+        b=vvvHSrRXEYXYuQc1FeCWy1K9KNoD0epf7NE3okSSQf8IBdHwm718eQQqg3JoegtkL4
+         Kp4JetIaji3BnSz5UBrHF39Mqul5FvkD9X50R/iT4vsatQ57Z65wyWd6Asl86l0ZM7sW
+         WRvK+kieIn3Ap7EmguKyRdgXuQ+ZGuM69JyhJ9hGXnz1pOnNLCARJwf7NyDsOWet4u6k
+         G9s6nPJkAseeVJR4TNqQ/oZj74o5Doz55QEH0IIxJeYPFYkst7F04JrV+4lwy1SVLAek
+         5bZ1skYqnvHa4U/huIBnxwVIznpRha92GIAZkUnPtSS8stujmAwlX+HEQPVST8IE50tn
+         2VKA==
+X-Forwarded-Encrypted: i=1; AKwUvBwCbEFUbXwe6zHyHHqzYNoWnKjwlrfQerPLCBEtx25iX5fRhKmDtBNaNDz5lEbtBHsJJeMUJ67LIA==@kvack.org
+X-Gm-Message-State: AFq9FYLuXbX9Y3o2mi7sXaubG2q7GBK00GoWxZjV2wzHRaSTfvnA2SJq
+	yYZBOGLLhqB1p/wSXzmwu1xSeGeovLx1CwjHUei1Hy8o+fQCLBCfkLZJOu3+9Xyfdb1R3j+R+v4
+	baYxWIg17jW1m8I0ZoQqm4Jv6H7Frd5U=
+X-Gm-Gg: AYBFou3NXonOzCLVyrF2hny8nqrP3gscKfINx61hkhB9RoaFsQaNHzLBFBK4eEtFOyf
+	TmkgtwFlwOEImyKrD40Xmp6gXh57exVdqwy6Eyu1B4u5MqQOV2WKaOQQeHDxTglgOLrHwWEUrud
+	JMTjqerE4CHvwdRlhUTxL1SHNEtgEmCAN8SMHqQa4V00uzkP1iShyOYAM9TK+jkpL5EOBR1r2i7
+	oFQXp19o27yrwnTniPNn/f8f6sAi4PZ0pZk5Rv5pwupFO2RhCBhpH7+kIVzo9Zb9dFS85VMgRbV
+	jRzvKCbOdyF1mDYZ3m1AmfhnpcSOQhl0JBwR5ck9w6w5m/aSyuzlSS4=
+X-Received: by 2002:a05:6512:3993:b0:5be:5220:3db2 with SMTP id
+ 2adb3069b0e04-5be52203f96mr217853e87.26.1792209219390; Fri, 16 Oct 2026
+ 20:53:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgD3YQl46NJq+Fg1AQ--.37596S2
-X-Coremail-Antispam: 1Uf129KBjvAXoW3Zr4UWw43KFW5XFWfCr4kWFg_yoW8Wr1UZo
-	WxJFsxW3WrG345Gryvk345t3WY93WDWrn3Ar4rWFs8X39xuw1Yq3W3Gr15X3W7JFWYqFWS
-	y3savr1Iqrs3tayrn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUSs2-DUUUU
-X-CM-SenderInfo: hfkh0xxrqjwvtqjqjiqs6rljoofrz/xtbC7RmnwGrS6HkjsgAA3r
-X-Rspamd-Queue-Id: 5652AC0002
-X-Stat-Signature: y191jhejowhxseuzmoroj811ebcaob7w
-X-Rspamd-Pre-Result: action=add header;
-	module=dmarc;
-	Action set by DMARC
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+ <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com>
+ <CACpmpofN-JfCgJtW9D0wNu0_pL1pRWGfNphUQnE9Bse-P5tHpQ@mail.gmail.com> <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
+In-Reply-To: <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Fri, 16 Oct 2026 20:53:26 -0700
+X-Gm-Features: AclHuK9PwGYFMZLK4QolgvssL7tX2S8kM-FVLNspgBd1JKDsPP-LcKfChdsn8JU
+Message-ID: <CACpmpoe+krnso-b1h_g_Q=HzV5x8xpu=Ke9==+4PfWF0ZcAUgQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ajzgpcuebf9jff9ore1bbt8yq7j8e4r4
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspam: Yes
-X-HE-Tag: 1792206994-665627
-X-HE-Meta: U2FsdGVkX1+Fkm3LNt58i1XuCKfiqXLrb6+s8RJbyZuFN8rUH03x4vfJ+O/uxTYjJgchKloocfVv0J3oS9uSD5H8m44afZdI3udElhZOhUu/L7GchJ/fvyMpt60QQEuyzFXOcZbP4Fm6EI8PgRIUosv2JEE8XXdcHoPM5h5LnmlVrPX4zxvdzqCAWptNvvWbqcpI9QPhXNCvu+No9OTeh+nsW33JJOjvDbwERii3qtRQt5T6fU3uMgNwtFg/NUqLG93yiakGS7nBqzqOT3t9D720O1r+hItjPKaxl3iVpdfX9DWtjJCGxl/aB/sY2OosO0PjPrcGisrAeZmtx7Nd5EYMERA3aqAET515Man5TvYQKcntBzrRm+UtDGKtTgIfZ4unhwgHd3AA+3236ZDeQgTO4B8WMjwr7vEVxdTyzIbfU4RWQMUQLgh1AjJ0olGuZqFRjCrFacNLs+TM1o03XucLKgNj+i2jQUNkeTr2x3p3mHsu8ASVOyFmzWIn34vdq22JFWgRJ6DssFNHsMg7HZfq/8IZvjgHSnmhdjSbmWl6op0bE5pBIw5e4axvDeecYu0KKvoAqBFn3j/uo2iwGDeMKTxfA+Z7E5xZDgLmqZ0urjcC7nZJXg2pfhju2CyoimParRK76gFctzTKJ5o8SOBgnLnMHBdc8KXM1HZPF9fhQg07UI3VY9jlH7ccpFvagMZ71fvYzfLXtphJAAnjaW3EzYl/A1nCbyEbRZDzIhaHDVEVhJSZn20Fo/e/qEd8WbOW6ArJObyAhTt6uLzdjeCBtj8LBvC4P0Jy017+VLjXadSf2w4u7JGMjsPLKm9ulbyin1OBdqJKP2PDAlfGt6RO2QDL48IgC5EAKiRyRU/FJh+y3TNIMswS1LL5gg8lYfvuPRaA/xjt2COlEN+Zv9icwoQyi7j0lpDFFsNIlR0iPyXkmGq79dqSBUk3GWqYmUVml7nWLd2u9Y/qlbS
- RpOlzaGy
- KbLwdkHn854E5islxl1MqGmOB/tgwt0u8twMPIQ65oYwNWXfiSIJnIfBno9VgAY/a4VlKoVSGLCv9lMZ0LZCtZ1hyWYoxk5D4+G8J8nGNCgeKbYBo0+ewJ9CmmOGgknhvfFZW7LkiX7qljLrdGfNJGF7jiQPRy7k/4QvNXQeuE6DiK1sCssI7eIhFypbNi+oygZQiNb0mG8Z3liD8Q4RRYPaveQU+6Ht21RkgQZAVukGZmQtebyf0EbT/2FikIsddQL8Uz3hoYQD8f3KbRVZocAkoMkK6ToU1N8hjUU1URQN5AkOOMUDMTN+un7Ab4p6qJgaEkknktWZbsiBjSmJIPlmAU0pcqgqSbg8AKTb18WLd+nbtAPQm3v1iVvp9SunbxnQwkk0vQcUHmGutam1etOwHOotxgF0ViK3Sj7c/0QAGXpQ=
+X-Rspamd-Queue-Id: 44B9D40005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792209221-41071
+X-HE-Meta: U2FsdGVkX1/VzOTvUOT4kBSVhq2gft2fRb9XV3py8OW2b+dHbq94deo0rTzTozWW8SKWKxV3hw71rxgYwW0os/wN1PduoTQ8AzNPoQnVptkwEScPYuNfmtnX+LP0uWmnKUpRRd7gPyi7wChG1e/nWP223KmebUBG2mbOphUHYhglwGDy6u6v35u/WnKajQNYZMwK0prIuHdd27Q+dqriG/hiOHCbxd5d/ogtzOYlpPLr3K3FdVjPQVDZ/CklEKJoFzmZiQ76q3V8x3O6CnrQ7eYXFlbIhNRFN0Fp49KzYwe8rkqyl8T9JwKfAdWTIqsAru3Z7IdP88i/OpPdX4i5UuwStTwqrL/2AE/QBRl9JMz/xN3AEyAgD2Ktdmnt9yG5vQ12wgvCOTFxMHcpph2sIXvct8ORPZCVjlCtCnNukc8AYStuUy7Q7q4UqkKv3j2mZ88+D4lRoSqBM06stmu9giKqBiIaUiBp8V+Mn7qr9m93CB2g/rYEyxn+H2zLezRyutcr50+5byPOP4ZvQ5lQlDrtXtTRwcHgTgFjna5MFwJY6bYvr12Z/cm9mecEikP5KV5+H1BdPMrvyw4XL/nu+3Ey/jWIyHS32Y/mQD80VByMy221iVKqezxHwA89NbyKE3x1Na9F+DPKavwNVMFTJrPWCdOwqgzb1CxcqKi+2D3ESP2Q/l3MEhmi7JL5UqtNSn7a4B5nSQPJrz7CrkflC9UdnfZc/r0itpHu67YonJ0ABlifjtl81n5kcZ2voK5/15bIy3OWravS85E2Y4ILbMsFhuWeDXPTQGh5Upwb8Tc/6TeFNQr5VozulWg1dwJr/xxnThecf8eq7TCNrU6EfVoZDV8eQSZ9Wk6D2Z58PApK6xrvucC1eXJCnI8CwPGy6spqGx/Usb7b9G9FCYIcAO5WAFKgfb52uSq6bLcD3NW/T8/WILu/yMHfMrt3WjwAXrvesrrSA28NmTxUovv
+ Z/pWstDW
+ f3UweNjYWMb53bHTC/fD0RZsDeng9V3Io5tbXViB3XuLtNgYF3++ilETuSUaP4MkNilrpmPbIfAvB3T2Wv9hPpYO3cKuNupSxfs5S93UJYAGt6KAp4WphG09k7y8421lZMoQF/WVj0+EyxjVZEemtKG96qhptsE3J1MsKtfE3Gz2LJbyAG0T236yKRPJQKoNA4y5sjqPfV/mqqS0kCnEACRrcKyqAP9onRpO999cos4LMdioScGU9ceKc0EWVscKcgMtO4zcZfVG+J+VXMOhsrE9AZ+CyFgECsO7WZnrFfLxCJQqIVYH5sSS+yqQjy6hEmfB2n/8Ky8+u/x+CjXsxSg8EZI8sAkq/ehpnGdlqXd6YbOUqwcX9Xa+BdOQFGuw5bXn/XkMvGKodLSpoVfnSWyu2OLeanjslTbb9xxZ98nsp2L5TOfGSFFf/bFMzmGMwV7OGzH9i2uFF4FhN3UN4p1VYKwQIoX5fUrYlQPEdZy06GoXWNZfVDYlhL/Z9tRBsfe7UHy4EfkYI3FU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,458 +145,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hongfeng Chen <hongfengchen@xiaomi.com>
+On Fri, Oct 16, 2026 at 2:48=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Fri, Oct 16, 2026 at 12:05=E2=80=AFPM Kanchana P. Sridhar
+> <kanchanapsridhar2026@gmail.com> wrote:
+> >
+> > On Fri, Oct 16, 2026 at 9:14=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> =
+wrote:
+> > >
+> > > On Thu, Oct 8, 2026 at 11:28=E2=80=AFAM Kanchana P. Sridhar
+> > > <kanchanapsridhar2026@gmail.com> wrote:
+> > > >
+> > > > v1: Batched zswap_store() with compression batching
+> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+> > > >
+> > > > This series is a spin-off of "v14: zswap compression batching with =
+optimized
+> > > > iaa_crypto driver" [1], and focuses on the generic crypto_acomp and=
+ zswap
+> > > > compression batching enablers. Resuming work on this series followi=
+ng a gap
+> > > > since v14 (January 2026). Please note that my email address and aff=
+iliation have
+> > > > changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@g=
+mail.com. I
+> > > > have retained the original Intel sign-offs on prior patches for his=
+torical
+> > > > attribution while signing off v1 of this series with my current add=
+ress.
+> > > >
+> > > > To summarize the main contribution of this patch series: Batching i=
+s introduced
+> > > > in zswap_store() of large folios: we carve out a large folio into b=
+atches of
+> > > > ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store =
+each
+> > > > batch. Moving the fundamental operations that need to be happen to =
+store a page
+> > > > to now work at the granularity of a batch offers opportunities to o=
+ptimize them
+> > > > from these perspectives:
+> > > >
+> > > > 1) Utilize existing kernel API that minimize obtaining locks for bu=
+lk
+> > > >    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
+> > > >
+> > > > 2) We keep the working set for each of the core store functionaliti=
+es (alloc
+> > > >    entries, compress pages, store pages in zsmalloc) to be focused =
+on a
+> > > >    batch, thereby minimizing cache evictions and benefiting from ca=
+che
+> > > >    locality.
+> > > >
+> > > > 3) Along the lines of (1), the main zswap_compress() batching routi=
+ne obtains
+> > > >    the acomp_ctx mutex lock once per batch, and releases it after i=
+t has
+> > > >    processed all pages in that batch.
+> > > >
+> > > > 4) Any zswap store functionality that works on a batch can potentia=
+lly be
+> > > >    parallelized as a next step, to further improve performance.
+> > > >
+> > > > Performance data: usemem with 60% over-commit:
+> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > > Validation was done with mm-unstable as of 10-3-2026 (Baseline) and=
+ with this
+> > > > patch series.
+> > > >
+> > > > Testing was done on a Chromebook with a QEMU "vng" VM running in Cr=
+ostini.
+> > > >
+> > > > Chromebook Diagnostics reports:
+> > > >   Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
+> > > >   RAM: 16GB
+> > > >
+> > > > vng setup:
+> > > >          Memory: 7G
+> > > >            Swap: 3G
+> > > >     Pinned CPUs: 4 (E-Cores: 4,5,6,7)
+> > > >
+> > > > zswap compressor:
+> > > >   ZSTD
+> > > >
+> > > > mTHP enabled:
+> > > >   64kB
+> > > >
+> > > > vm-scalability/usemem setup:
+> > > >
+> > > >   cgroup memory.high: 3G
+> > > >   4 usemem processes, each allocates 1200M anonymous memory, reads =
+the
+> > > >   Silesia dataset [2] from a pre-fork-allocated buffer into the 120=
+0M,
+> > > >   writes to each unsigned long in the 1200M, sleeps for 10 sec, the=
+n
+> > > >   frees the memory and exits.
+> > > >
+> > > >     usemem --read-silesia -w -O -b 1 -s 10 -n 4 1200M
+> > >
+> > > What is --read-silesia? Is this a local change you made to usemem?
+> >
+> > Yes, this is a local change I made because I wanted to get compressed
+> > lengths besides 565, which is the only compressed length of data
+> > swapped out from the original usemem.
+> >
+> > To replicate my setup:
+>
+> Thanks for sharing the details. I am having trouble reproducing the
+> results, mainly because the standard deviation seems to be too high to
+> make conclusions. What is the standard deviation in your runs?
 
-pages_stored, compr_data_size, same_pages, huge_pages and notify_free are
-updated on every page that zram stores or releases. When several processes
-munmap() swapped out memory at the same time, all cpus update these
-counters, and the cacheline that holds them bounces between cpus.
+Sure thing! Let me know if it would be useful to upstream the
+--read-silesia option to the vm-scalability tree.
 
-Move the five counters into a per cpu structure and update them through
-zram_pcpu_add(), which disables preemption and adds to the value of the
-current cpu. All writers run in process context, so disabling preemption is
-enough. The store is WRITE_ONCE() and the remote reads are READ_ONCE(),
-since a reader on another cpu can see the value at any time. A sysfs read
-sums the per cpu values without a snapshot across cpus, so a sum can be
-briefly negative and is clamped at zero.
+Yes, standard deviation is considerable, which is why I run usemem
+consecutively for 10 iterations and report the mean Average
+throughput. I could also report the median going forward if that
+helps. The cover letter vmstats are after 10 iterations. The last set
+of data I reported in this thread after applying patch 8 [batched
+version of zswap_compress()], had a mean of 20,946 KB/s, standard
+deviation of 5,391 KB/s and median of 22,477 KB/s. For reference, the
+stddev for the baseline mm-unstable was 5,397 KB/s.
 
-slot_free() and the write, recompression and writeback paths update all of
-their counters while preemption is disabled once. Disabling preemption and
-finding the per cpu data has a cost, and this way it is paid once per slot
-instead of once per counter.
+I have found this methodology to be reliable in drawing conclusions
+because as zswap_store() performance improves, the outliers are fewer
+and the data is more clustered near the mean.
 
-u64_stats_sync keeps 64-bit reads from tearing on 32-bit systems and is
-empty on 64-bit systems.
+>
+> Also, I tried measuring the latency of zswap_store() itself through
+> bpftrace, and it doesn't seem to change much throughout the series.
 
-Signed-off-by: Hongfeng Chen <hongfengchen@xiaomi.com>
----
- drivers/block/zram/zram_drv.c | 171 ++++++++++++++++++++++++++++------
- drivers/block/zram/zram_drv.h |  16 +++-
- 2 files changed, 155 insertions(+), 32 deletions(-)
+I ran bpftrace today to gather zswap_compress() latency per-page,
+before and after patch 8. It shows a clear performance improvement
+with compress batching for the reasons mentioned before:
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 024402438bd1..affe758a9543 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -488,6 +488,56 @@ static ssize_t idle_store(struct device *dev, struct device_attribute *attr,
- 	return len;
- }
- 
-+struct zram_stats_sum {
-+	s64 pages_stored;
-+	s64 compr_data_size;
-+	s64 same_pages;
-+	s64 huge_pages;
-+	u64 notify_free;
-+};
-+
-+#define zram_pcpu_add(zram_dev, field, val)					\
-+do {									\
-+	struct zram *__zram = (zram_dev);				\
-+	struct zram_pcpu_stats *__stats;				\
-+									\
-+	__stats = get_cpu_ptr(__zram->pcpu_stats);			\
-+	u64_stats_update_begin(&__stats->syncp);			\
-+	WRITE_ONCE(__stats->field, __stats->field + (val));		\
-+	u64_stats_update_end(&__stats->syncp);			\
-+	put_cpu_ptr(__zram->pcpu_stats);				\
-+} while (0)
-+
-+static void zram_pcpu_sum(struct zram *zram, struct zram_stats_sum *sum)
-+{
-+	int cpu;
-+
-+	memset(sum, 0, sizeof(*sum));
-+
-+	for_each_possible_cpu(cpu) {
-+		struct zram_pcpu_stats *stats;
-+		unsigned int start;
-+		s64 pages, bytes, same, huge;
-+		u64 notify;
-+
-+		stats = per_cpu_ptr(zram->pcpu_stats, cpu);
-+		do {
-+			start = u64_stats_fetch_begin(&stats->syncp);
-+			pages = READ_ONCE(stats->pages_stored);
-+			bytes = READ_ONCE(stats->compr_data_size);
-+			same = READ_ONCE(stats->same_pages);
-+			huge = READ_ONCE(stats->huge_pages);
-+			notify = READ_ONCE(stats->notify_free);
-+		} while (u64_stats_fetch_retry(&stats->syncp, start));
-+
-+		sum->pages_stored += pages;
-+		sum->compr_data_size += bytes;
-+		sum->same_pages += same;
-+		sum->huge_pages += huge;
-+		sum->notify_free += notify;
-+	}
-+}
-+
- #ifdef CONFIG_ZRAM_WRITEBACK
- #define INVALID_BDEV_BLOCK		(~0UL)
- 
-@@ -919,6 +969,8 @@ static void zram_account_writeback_submit(struct zram *zram)
- static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
- {
- 	unsigned long index = req->pps->index;
-+	struct zram_pcpu_stats *stats;
-+	s64 huge, size;
- 	int err;
- 
- 	err = blk_status_to_errno(req->bio.bi_status);
-@@ -947,9 +999,14 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
- 	}
- 
- 	clear_slot_flag(zram, index, ZRAM_IDLE);
--	if (test_slot_flag(zram, index, ZRAM_HUGE))
--		atomic64_dec(&zram->stats.huge_pages);
--	atomic64_sub(get_slot_size(zram, index), &zram->stats.compr_data_size);
-+	huge = test_slot_flag(zram, index, ZRAM_HUGE) ? -1 : 0;
-+	size = get_slot_size(zram, index);
-+	stats = get_cpu_ptr(zram->pcpu_stats);
-+	u64_stats_update_begin(&stats->syncp);
-+	WRITE_ONCE(stats->huge_pages, stats->huge_pages + huge);
-+	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size - size);
-+	u64_stats_update_end(&stats->syncp);
-+	put_cpu_ptr(zram->pcpu_stats);
- 	zs_free(zram->mem_pool, get_slot_handle(zram, index));
- 	set_slot_handle(zram, index, req->blk_idx);
- 	set_slot_flag(zram, index, ZRAM_WB);
-@@ -1919,14 +1976,16 @@ static ssize_t io_stat_show(struct device *dev, struct device_attribute *attr,
- 			    char *buf)
- {
- 	struct zram *zram = dev_to_zram(dev);
-+	struct zram_stats_sum sum;
- 	ssize_t ret;
- 
- 	guard(rwsem_read)(&zram->dev_lock);
-+	zram_pcpu_sum(zram, &sum);
- 	ret = sysfs_emit(buf,
- 			"%8llu %8llu 0 %8llu\n",
- 			(u64)atomic64_read(&zram->stats.failed_reads),
- 			(u64)atomic64_read(&zram->stats.failed_writes),
--			(u64)atomic64_read(&zram->stats.notify_free));
-+			sum.notify_free);
- 
- 	return ret;
- }
-@@ -1936,6 +1995,7 @@ static ssize_t mm_stat_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct zram *zram = dev_to_zram(dev);
- 	struct zs_pool_stats pool_stats;
-+	struct zram_stats_sum sum;
- 	u64 orig_size, mem_used = 0;
- 	long max_used;
- 	ssize_t ret;
-@@ -1948,19 +2008,20 @@ static ssize_t mm_stat_show(struct device *dev, struct device_attribute *attr,
- 		zs_pool_stats(zram->mem_pool, &pool_stats);
- 	}
- 
--	orig_size = atomic64_read(&zram->stats.pages_stored);
-+	zram_pcpu_sum(zram, &sum);
-+	orig_size = max_t(s64, sum.pages_stored, 0);
- 	max_used = atomic_long_read(&zram->stats.max_used_pages);
- 
- 	ret = sysfs_emit(buf,
- 			"%8llu %8llu %8llu %8lu %8ld %8llu %8lu %8llu %8llu\n",
- 			orig_size << PAGE_SHIFT,
--			(u64)atomic64_read(&zram->stats.compr_data_size),
-+			(u64)max_t(s64, sum.compr_data_size, 0),
- 			mem_used << PAGE_SHIFT,
- 			zram->limit_pages << PAGE_SHIFT,
- 			max_used << PAGE_SHIFT,
--			(u64)atomic64_read(&zram->stats.same_pages),
-+			(u64)max_t(s64, sum.same_pages, 0),
- 			atomic_long_read(&pool_stats.pages_compacted),
--			(u64)atomic64_read(&zram->stats.huge_pages),
-+			(u64)max_t(s64, sum.huge_pages, 0),
- 			(u64)atomic64_read(&zram->stats.huge_pages_since));
- 
- 	return ret;
-@@ -2027,6 +2088,8 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
- 
- static void slot_free(struct zram *zram, unsigned long index)
- {
-+	s64 pages = 0, bytes = 0, same = 0, huge = 0;
-+	struct zram_pcpu_stats *stats;
- 	unsigned long handle;
- 
- #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
-@@ -2044,7 +2107,7 @@ static void slot_free(struct zram *zram, unsigned long index)
- 		 * ZRAM_HUGE flag for deferred decompression path.
- 		 */
- 		if (!test_slot_flag(zram, index, ZRAM_WB))
--			atomic64_dec(&zram->stats.huge_pages);
-+			huge = -1;
- 		clear_slot_flag(zram, index, ZRAM_HUGE);
- 	}
- 
-@@ -2060,22 +2123,32 @@ static void slot_free(struct zram *zram, unsigned long index)
- 	 */
- 	if (test_slot_flag(zram, index, ZRAM_SAME)) {
- 		clear_slot_flag(zram, index, ZRAM_SAME);
--		atomic64_dec(&zram->stats.same_pages);
-+		same = -1;
- 		goto out;
- 	}
- 
- 	handle = get_slot_handle(zram, index);
- 	if (!handle)
--		return;
-+		goto stats;
- 
- 	zs_free(zram->mem_pool, handle);
- 
--	atomic64_sub(get_slot_size(zram, index),
--		     &zram->stats.compr_data_size);
-+	bytes = -(s64)get_slot_size(zram, index);
- out:
--	atomic64_dec(&zram->stats.pages_stored);
-+	pages = -1;
- 	set_slot_handle(zram, index, 0);
- 	set_slot_size(zram, index, 0);
-+stats:
-+	if (!(pages | bytes | same | huge))
-+		return;
-+	stats = get_cpu_ptr(zram->pcpu_stats);
-+	u64_stats_update_begin(&stats->syncp);
-+	WRITE_ONCE(stats->pages_stored, stats->pages_stored + pages);
-+	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size + bytes);
-+	WRITE_ONCE(stats->same_pages, stats->same_pages + same);
-+	WRITE_ONCE(stats->huge_pages, stats->huge_pages + huge);
-+	u64_stats_update_end(&stats->syncp);
-+	put_cpu_ptr(zram->pcpu_stats);
- }
- 
- static int read_same_filled_page(struct zram *zram, struct page *page,
-@@ -2237,14 +2310,20 @@ static int zram_bvec_read(struct zram *zram, struct bio_vec *bvec,
- static int write_same_filled_page(struct zram *zram, unsigned long fill,
- 				  unsigned long index)
- {
-+	struct zram_pcpu_stats *stats;
-+
- 	slot_lock(zram, index);
- 	slot_free(zram, index);
- 	set_slot_flag(zram, index, ZRAM_SAME);
- 	set_slot_handle(zram, index, fill);
- 	slot_unlock(zram, index);
- 
--	atomic64_inc(&zram->stats.same_pages);
--	atomic64_inc(&zram->stats.pages_stored);
-+	stats = get_cpu_ptr(zram->pcpu_stats);
-+	u64_stats_update_begin(&stats->syncp);
-+	WRITE_ONCE(stats->same_pages, stats->same_pages + 1);
-+	WRITE_ONCE(stats->pages_stored, stats->pages_stored + 1);
-+	u64_stats_update_end(&stats->syncp);
-+	put_cpu_ptr(zram->pcpu_stats);
- 
- 	return 0;
- }
-@@ -2252,6 +2331,7 @@ static int write_same_filled_page(struct zram *zram, unsigned long fill,
- static int write_incompressible_page(struct zram *zram, struct page *page,
- 				     unsigned long index)
- {
-+	struct zram_pcpu_stats *stats;
- 	unsigned long handle;
- 	void *src;
- 
-@@ -2282,10 +2362,14 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
- 	set_slot_size(zram, index, PAGE_SIZE);
- 	slot_unlock(zram, index);
- 
--	atomic64_add(PAGE_SIZE, &zram->stats.compr_data_size);
--	atomic64_inc(&zram->stats.huge_pages);
-+	stats = get_cpu_ptr(zram->pcpu_stats);
-+	u64_stats_update_begin(&stats->syncp);
-+	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size + PAGE_SIZE);
-+	WRITE_ONCE(stats->huge_pages, stats->huge_pages + 1);
-+	WRITE_ONCE(stats->pages_stored, stats->pages_stored + 1);
-+	u64_stats_update_end(&stats->syncp);
-+	put_cpu_ptr(zram->pcpu_stats);
- 	atomic64_inc(&zram->stats.huge_pages_since);
--	atomic64_inc(&zram->stats.pages_stored);
- 
- 	return 0;
- }
-@@ -2293,6 +2377,7 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
- static int zram_write_page(struct zram *zram, struct page *page,
- 			   unsigned long index)
- {
-+	struct zram_pcpu_stats *stats;
- 	int ret = 0;
- 	unsigned long handle;
- 	unsigned int comp_len;
-@@ -2348,8 +2433,12 @@ static int zram_write_page(struct zram *zram, struct page *page,
- 	slot_unlock(zram, index);
- 
- 	/* Update stats */
--	atomic64_inc(&zram->stats.pages_stored);
--	atomic64_add(comp_len, &zram->stats.compr_data_size);
-+	stats = get_cpu_ptr(zram->pcpu_stats);
-+	u64_stats_update_begin(&stats->syncp);
-+	WRITE_ONCE(stats->pages_stored, stats->pages_stored + 1);
-+	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size + comp_len);
-+	u64_stats_update_end(&stats->syncp);
-+	put_cpu_ptr(zram->pcpu_stats);
- 
- 	return ret;
- }
-@@ -2449,6 +2538,7 @@ static int recompress_slot(struct zram *zram, unsigned long index,
- 			   u32 threshold, u32 prio)
- {
- 	struct zcomp_strm *zstrm = NULL;
-+	struct zram_pcpu_stats *stats;
- 	unsigned long handle_old;
- 	unsigned long handle_new;
- 	unsigned int comp_len_old;
-@@ -2545,8 +2635,12 @@ static int recompress_slot(struct zram *zram, unsigned long index,
- 	set_slot_size(zram, index, comp_len_new);
- 	set_slot_comp_priority(zram, index, prio);
- 
--	atomic64_add(comp_len_new, &zram->stats.compr_data_size);
--	atomic64_inc(&zram->stats.pages_stored);
-+	stats = get_cpu_ptr(zram->pcpu_stats);
-+	u64_stats_update_begin(&stats->syncp);
-+	WRITE_ONCE(stats->compr_data_size, stats->compr_data_size + comp_len_new);
-+	WRITE_ONCE(stats->pages_stored, stats->pages_stored + 1);
-+	u64_stats_update_end(&stats->syncp);
-+	put_cpu_ptr(zram->pcpu_stats);
- 
- 	return 0;
- }
-@@ -2724,7 +2818,7 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
- 		slot_lock(zram, index);
- 		slot_free(zram, index);
- 		slot_unlock(zram, index);
--		atomic64_inc(&zram->stats.notify_free);
-+		zram_pcpu_add(zram, notify_free, 1);
- 		index++;
- 		n -= PAGE_SIZE;
- 	}
-@@ -2825,7 +2919,7 @@ static void zram_slot_free_notify(struct block_device *bdev,
- 
- 	zram = bdev->bd_disk->private_data;
- 
--	atomic64_inc(&zram->stats.notify_free);
-+	zram_pcpu_add(zram, notify_free, 1);
- 	if (!slot_trylock(zram, index)) {
- 		atomic64_inc(&zram->stats.miss_free);
- 		return;
-@@ -2866,6 +2960,8 @@ static void zram_destroy_comps(struct zram *zram)
- 
- static void zram_reset_device(struct zram *zram)
- {
-+	int cpu;
-+
- 	guard(rwsem_write)(&zram->dev_lock);
- 
- 	zram->limit_pages = 0;
-@@ -2877,6 +2973,16 @@ static void zram_reset_device(struct zram *zram)
- 	zram_meta_free(zram, zram->disksize);
- 	zram->disksize = 0;
- 	zram_destroy_comps(zram);
-+	for_each_possible_cpu(cpu) {
-+		struct zram_pcpu_stats *stats;
-+
-+		stats = per_cpu_ptr(zram->pcpu_stats, cpu);
-+		stats->pages_stored = 0;
-+		stats->compr_data_size = 0;
-+		stats->same_pages = 0;
-+		stats->huge_pages = 0;
-+		stats->notify_free = 0;
-+	}
- 	memset(&zram->stats, 0, sizeof(zram->stats));
- 	reset_bdev(zram);
- }
-@@ -3083,15 +3189,23 @@ static int zram_add(void)
- 						  BLK_FEAT_SYNCHRONOUS,
- 	};
- 	struct zram *zram;
--	int ret, device_id;
-+	int cpu, ret, device_id;
- 
- 	zram = kzalloc_obj(struct zram);
- 	if (!zram)
- 		return -ENOMEM;
- 
-+	zram->pcpu_stats = alloc_percpu(struct zram_pcpu_stats);
-+	if (!zram->pcpu_stats) {
-+		ret = -ENOMEM;
-+		goto out_free_dev;
-+	}
-+	for_each_possible_cpu(cpu)
-+		u64_stats_init(&per_cpu_ptr(zram->pcpu_stats, cpu)->syncp);
-+
- 	ret = idr_alloc(&zram_index_idr, zram, 0, 0, GFP_KERNEL);
- 	if (ret < 0)
--		goto out_free_dev;
-+		goto out_free_pcpu;
- 	device_id = ret;
- 
- 	init_rwsem(&zram->dev_lock);
-@@ -3133,6 +3247,8 @@ static int zram_add(void)
- 	put_disk(zram->disk);
- out_free_idr:
- 	idr_remove(&zram_index_idr, device_id);
-+out_free_pcpu:
-+	free_percpu(zram->pcpu_stats);
- out_free_dev:
- 	kfree(zram);
- 	return ret;
-@@ -3182,6 +3298,7 @@ static int zram_remove(struct zram *zram)
- 	zram_reset_device(zram);
- 
- 	put_disk(zram->disk);
-+	free_percpu(zram->pcpu_stats);
- 	kfree(zram);
- 	return 0;
- }
-diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
-index 7a55d751417e..482e1c28ca1c 100644
---- a/drivers/block/zram/zram_drv.h
-+++ b/drivers/block/zram/zram_drv.h
-@@ -17,6 +17,7 @@
- 
- #include <asm/byteorder.h>
- #include <linux/rwsem.h>
-+#include <linux/u64_stats_sync.h>
- #include <linux/zsmalloc.h>
- 
- #include "zcomp.h"
-@@ -90,15 +91,19 @@ struct zram_table_entry {
- 	};
- };
- 
-+struct zram_pcpu_stats {
-+	struct u64_stats_sync syncp;
-+	s64 pages_stored;	/* no. of pages currently stored */
-+	s64 compr_data_size;	/* compressed size of pages stored */
-+	s64 same_pages;		/* no. of same element filled pages */
-+	s64 huge_pages;		/* no. of huge pages */
-+	u64 notify_free;	/* no. of swap slot free notifications */
-+};
-+
- struct zram_stats {
--	atomic64_t compr_data_size;	/* compressed size of pages stored */
- 	atomic64_t failed_reads;	/* can happen when memory is too low */
- 	atomic64_t failed_writes;	/* can happen when memory is too low */
--	atomic64_t notify_free;	/* no. of swap slot free notifications */
--	atomic64_t same_pages;		/* no. of same element filled pages */
--	atomic64_t huge_pages;		/* no. of huge pages */
- 	atomic64_t huge_pages_since;	/* no. of huge pages since zram set up */
--	atomic64_t pages_stored;	/* no. of pages currently stored */
- 	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
- 	atomic64_t miss_free;		/* no. of missed free */
- #ifdef	CONFIG_ZRAM_WRITEBACK
-@@ -134,6 +139,7 @@ struct zram {
- 	unsigned long limit_pages;
- 
- 	struct zram_stats stats;
-+	struct zram_pcpu_stats __percpu *pcpu_stats;
- 	/*
- 	 * This is the limit on amount of *uncompressed* worth of data
- 	 * we can store in a disk.
--- 
-2.54.0
+Sequential_zswap_compress  nr_samples     p25     p50      p75
+p95       p99
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+zswap_compress_ns_per_page  1,722,489  43,947  57,791   88,489
+130,165   323,961
 
+Batched_zswap_compress     nr_samples     p25     p50      p75
+p95       p99
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+zswap_compress_ns_per_page    339,088  42,081  52,633   63,185
+118,461   191,710
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+ Latency saving (ns)                   -1,866  -5,159  -25,305
+-11,704  -132,251
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+
+Hope this helps. Thanks!
 
