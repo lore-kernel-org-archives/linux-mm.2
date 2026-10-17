@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E36CCCA462
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 08:36:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F02FCCF2C7
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 09:12:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 110966B0088; Sat, 17 Oct 2026 04:36:45 -0400 (EDT)
+	id 1A01D6B0088; Sat, 17 Oct 2026 05:12:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C1766B008A; Sat, 17 Oct 2026 04:36:45 -0400 (EDT)
+	id 151166B008A; Sat, 17 Oct 2026 05:12:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF2666B008C; Sat, 17 Oct 2026 04:36:44 -0400 (EDT)
+	id 067BA6B008C; Sat, 17 Oct 2026 05:12:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BB6CE6B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:36:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1849C014F
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 08:36:43 +0000 (UTC)
-X-FDA: 85331462286.21.85A0C6B
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D3D1540005
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 08:36:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Dc2HkLmZ;
-	spf=pass (imf11.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.151 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792226202;
-	b=15i2JiIq7yLSD2Ntssl9/Pe1WR/ar6h93rinJdkdQbDBwzy3L8dZQkx91+Ad9C0nrD/eTm
-	C9VLonWv+U4AUaJo9RnqOko2nCmdsCd+9wODmTQtoEzu8PAnllcG4a29z7OIjQ9urrpVoc
-	WZJ9PFoaRuZEs+Y8c1jbT/S8RNxPijs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Dc2HkLmZ;
-	spf=pass (imf11.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.151 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DD6686B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 05:12:09 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DEE1A0231
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 09:12:09 +0000 (UTC)
+X-FDA: 85331551578.27.4BFE152
+Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 07B0F1C0008
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 09:12:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=fDfiYByx;
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b=Pqd8QaO2
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792226202;
+	s=arc-20220608; t=1792228327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=daD3WZTzmfa4KXrJR0YhoGudN1Nbz0tk7iqpRXDolW0=;
-	b=ADJLTReLMCz8hW57634omihxg0rgIytdbxYd6Y67RMiEExYhE/wCthFYVDFDtZbxlXGdIg
-	KsD+acOVxuJUss0JAZcd0X5sMIgg1bGfwbMbef9lKRtkF6pst1HZDk4UsiMcO6BRzhT15u
-	IE27MxDoMcG+ZK/11XRAJfxkRLoB7vQ=
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4j6FXQ0pgcz8t2h;
-	Sat, 17 Oct 2026 10:36:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1792226198;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=daD3WZTzmfa4KXrJR0YhoGudN1Nbz0tk7iqpRXDolW0=;
-	b=Dc2HkLmZUEX3jqyRHuvtVm5AB1f9xOguV/lBqT3hQMxeFhxoUQjObGYfhcBFI96gpaaq3I
-	dpCv26hfqDcV14U/hRPNyIlUaOiLRMv1EBnMWhHDnVZqZJJ25TRQStQXeQQcUUvlZiW4or
-	TxMnv21HtuoGkcBnLmCp4wP1zkrPlKvsDRKfkNZjuaCtZUl1wrFlg7TnLI6Tm6t1LGyd5J
-	eAns+A86qi+NyaPvsx+CowrB/CWsQjD3ZjwXm9+mSsuk7VPq2P0IFPG1KJfRZ/VbupYuu/
-	/KVSL0wZlhI674swou5UZPy/dHLjbV31mZuGmXMjkj3fnzERX7dMnjwg8W/4PA==
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	damon@lists.linux.dev,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UU3pr7YlPujtztfaD5rEaSu3Gsw2VOPeWtM6bSVkPs8=;
+	b=IeQfUTFMDndwdncHmBB9qAmt8f5oFKdhykJ32t7rBhWCfAmYzjNxDreZ5xxYOaTIk8TVem
+	JWqrOHB8NmCxOm7YpYnuHPxDQVTELHV3a4K6kesjHFxEfcUETKGlyugB3sGUYeoiG7AHy9
+	Tr6VnUOrK2qn0/m9dtvMp2NdxVntWSk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792228327;
+	b=Y+X0+q5p9PQUDHmo5W5Sjm/P9dP9jfZFj2guQQyYAwNJ4b5ikG75gjs66jQjYCFaWIGicQ
+	AoQqxnSRc/RELg9KjeZ0theUiamDlwfe7VVdgWl/Yd44zYbxmrI67R6NrHi8KgqDm9pger
+	ihP8HSCq4tBq3tPwAUtSAWa6+7ZmT5Q=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=fDfiYByx;
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b=Pqd8QaO2;
+	dmarc=none;
+	spf=none (imf20.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.211.244) smtp.mailfrom=vitaly.wool@konsulko.se
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792228324; x=1792833124;
+	d=konsulko.se; s=rsa2;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=UU3pr7YlPujtztfaD5rEaSu3Gsw2VOPeWtM6bSVkPs8=;
+	b=fDfiYByxn7BKxdtzcZP0RauvFkLWvt3oaWHOmoJ3kaB3ljcKi5MNUqAsLi+DPEgMD3PlWDOJeeH65
+	 mzORubIgvS/ur80grURXjG5BuDfXb01cEqzVSrHJoANR9FWEZeDDTlic61ysbunIMUEUcDJ6bD09CK
+	 JEpKmorhpfgSUhAl0tzZb5RnbpjqH6EpUzeyruRHcXbV/n41zqSeAIGPC10+yIOQKMYipBGQyS9/t0
+	 HdgePQQ2qINzHz1bAHo4Mbtj2q7+bLxnhM8aXvvyChaXOLnIh6GtmZ6iqpnd+1ggSEzHg2gvN8E91K
+	 JlzV9Y8PpeBOWMLTr4UJ1/xi30YI2ig==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792228324; x=1792833124;
+	d=konsulko.se; s=ed2;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=UU3pr7YlPujtztfaD5rEaSu3Gsw2VOPeWtM6bSVkPs8=;
+	b=Pqd8QaO2poBfgaYIAQczbKMpKMUWowQreCw5yPVWOLhhNPk1Q6AMk9mVYP3opIDkRr5WDGBPPTyYQ
+	 UYxBMW0Aw==
+X-HalOne-ID: d10c5096-ca0a-11f1-b1da-7d3e33f7de26
+Received: from localhost.localdomain (c213-102-77-204.bredband.tele2.se [213.102.77.204])
+	by mailrelay1.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id d10c5096-ca0a-11f1-b1da-7d3e33f7de26;
+	Sat, 17 Oct 2026 09:12:03 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Harry Yoo <harry@kernel.org>,
 	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
-Date: Sat, 17 Oct 2026 10:35:34 +0200
-Message-ID: <20261017083535.1261388-2-manuelebnerli@mailbox.org>
-X-Mailer: git-send-email 2.55.0
+	linux-kernel@vger.kernel.org,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	David Rientjes <rientjes@google.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	Hao Li <hao.li@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	vitaly.vul@partner.samsung.com
+Subject: Re: Re: [PATCH] mempool: optimize mempool resizing
+Date: Sat, 17 Oct 2026 11:08:02 +0200
+Message-Id: <20261017090802.1423681-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20261014130301.GC15407@lst.de>
+References: <20261014130301.GC15407@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: 5d8c7knged71kbud9uke1omjmz5jwanr
-X-MBO-RS-ID: 1717f57581f65708ba3
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D3D1540005
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 07B0F1C0008
+X-Stat-Signature: ndaz5cxofkxb8bhkef37be8ad1o886mx
 X-Rspam-User: 
-X-Stat-Signature: pagoapyy671a69kbufxrd7ez7hx9yb7q
-X-HE-Tag: 1792226201-799277
-X-HE-Meta: U2FsdGVkX19KS1Wfgob6nJvi2ae/XmynRA1NsMphSYr4t0thVt8wMq0pQs3st0UeVaFzfLqyE8RME83IHJkiXEAZq388af8CXP+pSKxs5uK+krJYXoM6lJIU2cW4q2hpkPyZsxYbRA0VFLGqfV0jR5P8JQdrn4L4dPry4nmlDHAI7t3Qyvmxd/LTpQemPamvT6aqEcPorSHxfbmPZFVgR66vxc92tY8dMrsu+45coEMvRaKlF1NPUlNMHUi18F994WwNVC4XTuZK5LFZslyKslZ5vTQJR7WCKqm8898Ru9XLmjj/BEMgBWVfKP3b2U3V7WbP1xdCGWco71slCjDlg1frQCbbY4axtQYOFZjJmzvnVHPSHvVKQcY+UhoFGCnc+qqAXZJbjkqGAhc4J0hYqu0IsiKWl5ILui6UV/gC/PyTjwqJxu3vkfYVtTSGN00XLj2ryRkoSjwxTFj7aM3jlg5NwLTnYIZ1mblFq3bbOkgdxgi/Kr/JlksEWkXcCJPspOtFiA0n8YkKRbpQ2f2XfLshInbuJUHZ9sj+x2LMlaFdnQ9sjChEUaLVoiMMcYIAZiBFBf8+Iyifo7ah8xRYNUiPUnYOJFDymI8KFQLYkwHMgdf2WWf6qFmKDGv5y4zpL1EuDyAzfHNLJXKaJfJKc0E5cgxdPfybqUKK55Fe8m1mU7CdiRRLFQsC//oeiClQUdG2HgI1pcwKWFv1OuOwZ6ELsCWyG0UgtDoYfW6X9hRqoHO25/Lrzk/SD4EOSWwSRC95XfWyk1jSt3PtO28SI3wchcwyM0gEypTKbstJjEqc5oo+h/WvHRL8ItowxfUJ93i4wPyhQHudFlHb2muvPS6g1ZPr9XvqCzK4rhQmwN2dWKA2EGXA4jrU+fk5TlxCPDI1d25w6vSJuG2fzaaJPMdaPCK78B0DkhPaJ83VOfMRYSYuAXD+3vR54IS7dI6m/80L7vxX22RZoF5STTF
- z7eK+GTD
- SfJkazv2PDrldCy4OaFCw+HoLi4m0v8ltSBL9IwQ6OKRJqPFpKycyj38CTunGbiB43Yg3vdv/ODXzKcJHngeVzfUnoqLPff18RHm+RaxfDmrChSPt9yhWYnNLRcKGGuJALHMBb+JY9gPexU6u7wGyzUBt7+oT80nA36jsTjSFDHmgn9XBfjDd+oCcF81ruv6oo9uCMgXemuO/sPwKRLXgafIjatNNtBXoMqJJEQbAVdeDaCauRS2tN1SVqYG5JYo/K23PXl1WSi4+Luwh/BDvbuP32zrteKIlNoyIC9o2l+ucjeX0BwBmAbzvL6PrJPpTwROxl0kipfKgoG1fJr+/em4lRN86eQAkJg2ot6hiIpOMDRMkeU2UiP9NDg==
+X-HE-Tag: 1792228326-228471
+X-HE-Meta: U2FsdGVkX19Ta9j301zy3qYsvz3u6dbkJYAOCmhlDoJpEjALxLO1HtWfSNpiN5wDzf/zyd7BOtuRxKJK4IBNc/a96cI4kyRu+J460mH4vcNtBIISN6tK2Ve68z6N0UbDN4AGjfW2JA3nyDZQsZqMxJB+e0otqAdhy4Ndo6oZQtAv2LrjpA/5EdoxxnBXS3QgLd0L5bXe2Osx2cKbEVg/4jfflPinJtTVog0LQE8esSfry/LwgDg1Uxh+jnK+NOlCp9++nsgJ9w/XvTw6ps8EXamwFXyQrIBFCFOO8ppLCMdcgIzgOvBUkM+JCh7Vuooz4/u4QgfeGzCOKqFwWFLV6IeQhXSjvhCbw/iZIfCfSzGnLoOiLq3vPMLNg5OiaXzNVvR6uSvwokS7tINQ4x/T+ge/zfwx2+TuGEVYWQnfpmJSJJhOTNQjuRlDSQ9xRlZQMpA+YbgKPnaIZlq36HOU3lxJ0bYTQ23cP2FtXlf/JvHC+prVqLQ9S0npawLm/OTYfxLMMuBH4XMDaZVnWTjXePJ0CFOzWa6wJB90ZO94NZbg5ccB+AlGxtc1n/B2ZAZYRdS5sCw9Vb/w1mT/t/8LwqvEiJSsvLdBG9k1VIM5usrgAdV/HjnxLCQ93kYJv5LNiGl/AQabuqxS7J24OEG9cPg/5LTmvyxEpK19dWJk5Z+g9RzhCjusD/yqEUNrk6+h5bZU1v2yV5n+mOm3TRjFUtKLaEfeILQraHLjBFdcMF2ICujt1tI7S1GaC+oh0CF+IywoNSHGMby9YaG6ycW9TMaP08QHodGrT8nlMrVCTWcf1fQOF+vRjrdQVD3xVKXS1bwyDQKPT3MnSVifpXBcn/ZJ/OItRb0au/VSvbF1a6UfckZpwjZ0s8dlsC8Qy3TT6YCS7BzgrImLIQTjc4g8MglUN1NMSehNFas2MfrpQsMASZjCVEbm9O0MMtddpmCrnEFnkkAhGAg0a45z0GE
+ DXnjhOCZ
+ MftVmCfv/fncvzpRj0Cj1q+tZPqbrM/X4ZUGX40oCN2F+tzXeiwLS3pE0Ps7LQxu14xwCXKL9HPMdSzTp3dO9VzTEKlrLi2SRSP7HuFQbAWZNW7GC62bHMDfmI7ohM4nsWFsn3W70rxc5e+L8B7xF1COD6SKgt9pwG34BjBPCoqupMAI8QxdPo6WOD0ICVue0J/EHqT0YfRRBRVsQZww3nSplqT6PJRrkudWgSEYKfMCHhH7/rICXaxoeyi7bYP2cwFFv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,198 +106,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix tenses. Split long sentences thereby imporove readability.  Replace
-'set as' with 'set to'. Replace [] with () to make the file uniform.
+> > Imagine you have a mempool with 10000 elements, and you have to reduce it to 3000. Then
+> > if you at some point want to go back to 10000, you'll end up reallocating the elements
 
-Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-Reviewed-by: SJ Park <sj@kernel.org>
----
-SJ, could you please replace 38b3709936fa ([v2] 'mm/damon/lru_sort: fix
-grammar and stlye') with this patch? I messed up the path in the subject line.
-Thanks
- Manuel
+> Who is "we" and where is the code?  This is a highly unusual, not to
+> say most like broken usage of mempools.  If you need changes to support
+> such a use case you should include a link to the intree user (or bundle
+> it with the submission of the new code).
 
-[v3]
- Split long line
- Fix path in subject / One-line summary
-
-[v2]
- https://lore.kernel.org/20261015072947.802821-2-manuelebnerli@mailbox.org
- Collect R-b: from SJ.
-
-[v1]
- https://lore.kernel.org/20261013191327.663331-2-manuelebnerli@mailbox.org
- Wordsmith commit message.
- Fixup a few trivial wording.
-
-
- .../admin-guide/mm/damon/lru_sort.rst         | 61 +++++++++----------
- 1 file changed, 30 insertions(+), 31 deletions(-)
-
-diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-index 0c04d238ed..aa4cc90ca5 100644
---- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-+++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-@@ -5,20 +5,19 @@ DAMON-based LRU-lists Sorting
- =============================
- 
- DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel module that
--aimed to be used for proactive and lightweight data access pattern based
-+aims to be used for proactive and lightweight data access pattern based
- (de)prioritization of pages on their LRU-lists for making LRU-lists a more
- trustworthy data access pattern source.
- 
- Where Proactive LRU-lists Sorting is Required?
- ==============================================
- 
--As page-granularity access checking overhead could be significant on huge
--systems, LRU lists are normally not proactively sorted but partially and
--reactively sorted for special events including specific user requests, system
--calls and memory pressure.  As a result, LRU lists are sometimes not so
--perfectly prepared to be used as a trustworthy access pattern source for some
--situations including reclamation target pages selection under sudden memory
--pressure.
-+As page-granularity access checking overhead could be significant on huge systems,
-+LRU lists are normally not fully nor proactively sorted but rather partially
-+and reactively sorted for special events.  These events include specific user requests,
-+system calls and memory pressure.  As a result, LRU lists are sometimes not
-+suitable to be used as a trustworthy access pattern source.  These situations
-+including reclamation target page selection under sudden memory pressure.
- 
- Because DAMON can identify access patterns of best-effort accuracy while
- inducing only user-specified range of overhead, proactively running
-@@ -28,9 +27,9 @@ pattern source with low and controlled overhead.
- How It Works?
- =============
- 
--DAMON_LRU_SORT finds hot pages (pages of memory regions that showing access
--rates that higher than a user-specified threshold) and cold pages (pages of
--memory regions that showing no access for a time that longer than a
-+DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
-+rates that are higher than a user-specified threshold) and cold pages (pages of
-+memory regions that show no access for a duration that is longer than a
- user-specified threshold) using DAMON, and prioritizes hot pages while
- deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
- CPU for the prioritizations, a CPU time usage limit can be configured.  Under
-@@ -63,10 +62,10 @@ enabled
- 
- Enable or disable DAMON_LRU_SORT.
- 
--You can enable DAMON_LRU_SORT by setting the value of this parameter as ``Y``.
--Setting it as ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
-+You can enable DAMON_LRU_SORT by setting the value of this parameter to ``Y``.
-+Setting it to ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
- no real monitoring and LRU-lists sorting due to the watermarks-based activation
--condition.  Refer to below descriptions for the watermarks parameter for this.
-+condition.  Refer to below descriptions of the watermarks parameter for this.
- 
- commit_inputs
- -------------
-@@ -74,9 +73,9 @@ commit_inputs
- Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
- 
- Input parameters that updated while DAMON_LRU_SORT is running are not applied
--by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
-+by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
- of parameters except ``enabled`` again.  Once the re-reading is done, this
--parameter is set as ``N``.  If invalid parameters are found while the
-+parameter is set to ``N``.  If invalid parameters are found while the
- re-reading, DAMON_LRU_SORT will be disabled.
- 
- Once ``Y`` is written to this parameter, the user must not write to any
-@@ -86,37 +85,37 @@ violate this rule, the kernel may exhibit undefined behavior.
- active_mem_bp
- -------------
- 
--Desired active to [in]active memory ratio in bp (1/10,000).
-+Desired active to (in)active memory ratio in bp (1/10,000).
- 
- While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
- increases and decreases the effective level of the quota aiming the LRU
--[de]prioritizations of the hot and cold memory resulting in this active to
--[in]active memory ratio.  Value zero means disabling this auto-tuning feature.
-+(de)prioritizations of the hot and cold memory resulting in this active to
-+(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
- 
- Disabled by default.
- 
- autotune_monitoring_intervals
- -----------------------------
- 
--If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
-+If this parameter is set to ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
- sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
- amount of access events in each DAMON-snapshot, while keeping the sampling
--interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
--``N`` disables the auto-tuning.
-+interval to 5 milliseconds in minimum, and to 10 seconds in maximum.  Setting this
-+to ``N`` disables the auto-tuning.
- 
- Disabled by default.
- 
- filter_young_pages
- ------------------
- 
--Filter [non-]young pages accordingly for LRU [de]prioritizations.
-+Filter (non-)young pages accordingly for LRU (de)prioritizations.
- 
- If this is set, check page level access (youngness) once again before each
--LRU [de]prioritization operation.  LRU prioritization operation is skipped
-+LRU (de)prioritization operation.  LRU prioritization operation is skipped
- if the page has not accessed since the last check (not young).  LRU
- deprioritization operation is skipped if the page has accessed since the
- last check (young).  The feature is enabled or disabled if this parameter is
--set as ``Y`` or ``N``, respectively.
-+set to ``Y`` or ``N``, respectively.
- 
- Disabled by default.
- 
-@@ -235,7 +234,7 @@ max_nr_regions
- Maximum number of monitoring regions.
- 
- The maximum number of monitoring regions of DAMON for the cold memory
--monitoring.  This can be used to set upper-bound of the monitoring overhead.
-+monitoring.  This can be used to set the upper-bound of the monitoring overhead.
- However, setting this too low could result in bad monitoring quality.  Please
- refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
- defaults.
-@@ -268,7 +267,7 @@ This parameter is for setting and getting the :ref:`address unit
- 
- ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
- unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
--``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
-+``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
- Then DAMON_LRU_SORT will work for 10 KiB length of physical address range that
- starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
- 
-@@ -291,22 +290,22 @@ If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.  Else,
- nr_lru_sort_tried_hot_regions
- -----------------------------
- 
--Number of hot memory regions that tried to be LRU-sorted.
-+Number of hot memory regions that were tried to be LRU-sorted.
- 
- bytes_lru_sort_tried_hot_regions
- --------------------------------
- 
--Total bytes of hot memory regions that tried to be LRU-sorted.
-+Total bytes of hot memory regions that were tried to be LRU-sorted.
- 
- nr_lru_sorted_hot_regions
- -------------------------
- 
--Number of hot memory regions that successfully be LRU-sorted.
-+Number of hot memory regions that were successfully LRU-sorted.
- 
- bytes_lru_sorted_hot_regions
- ----------------------------
- 
--Total bytes of hot memory regions that successfully be LRU-sorted.
-+Total bytes of hot memory regions that were successfully LRU-sorted.
- 
- nr_hot_quota_exceeds
- --------------------
--- 
-2.55.0
-
+This situation may well happen in the block layer (zoned). The numbers will
+be different but they were arbitrarily chosen in the example above anyway.
 
