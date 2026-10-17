@@ -4,101 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7357CC6B2A
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 04:07:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88DC6CC6B2A
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 04:12:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73B806B0088; Sat, 17 Oct 2026 00:07:15 -0400 (EDT)
+	id 411FC6B0088; Sat, 17 Oct 2026 00:12:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ECA96B008A; Sat, 17 Oct 2026 00:07:15 -0400 (EDT)
+	id 3C2D86B008A; Sat, 17 Oct 2026 00:12:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 628806B008C; Sat, 17 Oct 2026 00:07:15 -0400 (EDT)
+	id 2D86A6B008C; Sat, 17 Oct 2026 00:12:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 06F5B6B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:07:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 415A91A0200
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:07:14 +0000 (UTC)
-X-FDA: 85330783188.14.D11C3B5
-Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 29729100007
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:07:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=RIok+owk;
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
-	spf=pass (imf14.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792210032;
-	b=lqlbb6AXQbWUBQABTSucVE3+OLBB9nj8WlVUsSSbDWeQ/EginDjZBbArxoQLqL1iPhpw6w
-	AHGg2rQzdpKAELHCTEH8uWwRkf9K0AkU1inHrpcevAg7dnq4xQaG5i4HxAKyCypbXWPgss
-	0L+m4UUjrUnSWr2zT/YpBmf13WF0e7A=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=RIok+owk;
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
-	spf=pass (imf14.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E56C86B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:12:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2C42A712D
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:12:39 +0000 (UTC)
+X-FDA: 85330796838.16.E20CC09
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8176F40002
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:12:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=AKAwiVPA;
+	spf=pass (imf11.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792210032;
+	s=arc-20220608; t=1792210358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vmoqsEUaflaluKIcotOa0bF0phf2HZlStSKylP4A7kA=;
-	b=QNLpV1efR0Rj0Xht6tUCO6IWmevips85C1/DcK6yM47alOJTfatgSfZlhQulSYSzuuDlPA
-	rQ6opbpyiSYay7t6GaK7XAyKw6rgio+2BXSzxSIp8Sm9slzqKFICI25RXxZieC7AYawY0M
-	LCasg0t9h38rm4OxaP4FlzF8EP+uUH4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
-	h=from:subject:date:in-reply-to:references:mime-version:to:cc:
-	content-transfer-encoding:content-type:cc:content-type:date:from:subject:to;
-	s=s1; t=1792210031;
-	bh=vmoqsEUaflaluKIcotOa0bF0phf2HZlStSKylP4A7kA=;
-	b=RIok+owkUkDTUdDOw52vTX1SqJKmm8h9Tg1GCpuJxWMAzeJHTHhhg7Ym/Q06670vcf1e
-	o6DU/Cfpyw0Nnvli9OXDjWSyaVBSqYJCymjFhtXdpGqGHqlA94VSwqoI+2RSVIttdwAKs7
-	rFe3ed/2wtPF5TJcK31bkD+sJ5h+ECZTPDbAMuiYxo0hnZ09p7e+fXnyvvxi3f1r8QD11f
-	0fJLhDUhLK32t906GZiNaFuI6DJVxJBBke1rgP1D0JCS+Wfi8JBHYaGAnQm4jvJI943nZW
-	Df0os7/S+AHK73xH67JyfxKRvDOF05D52uUvnuUNJhupzo6oezObwduZKSZ18LaQ==
-Received: by recvd-canary-8465b4c48c-2zgt8 with SMTP id recvd-canary-8465b4c48c-2zgt8-1-6AD2F46F-5
-	2026-10-17 04:07:11.103999751 +0000 UTC m=+1508805.732609009
-Received: from daisy.dens.ffj.family (unknown)
-	by geopod-ismtpd-19 (SG)
-	with ESMTP
-	id VZBbDvTlT0KW3V3gToMmBQ
-	Sat, 17 Oct 2026 04:07:10.996 +0000 (UTC)
-From: Liz Fong-Jones <lizf@honeycomb.io>
-Subject: [PATCH v2] writeback: keep cleanup_offline_cgwb()'s scan out of syncs
-Date: Sat, 17 Oct 2026 04:07:11 +0000 (UTC)
-Message-ID: <20261017040710.1174009-1-lizf@honeycomb.io>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261015114307.1041273-1-lizf@honeycomb.io>
-References: <20261015114307.1041273-1-lizf@honeycomb.io>
+	bh=5S3nqzH7nV8QrVGtHVrTGOi4+HwJ/Mlo6RAYYB4naZA=;
+	b=KrbQ5Ax3DWFVbG7XWCcp0fz2tsCt4FUF0LhBW7H1d9XuHmF2Bggw3h3bL5EM0sRiQqqGKI
+	Mo6AMRoxc1YAPTf7lkrShNwPKemqPN7yPWVA8wsRjH+akixCrcTWx1g5KPrMyLNhqMQXOC
+	eCRluMgpnBZwJtTYKqnjIFbLzZtMjRk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792210358;
+	b=vdO9vle09q33FOPcjpMkLuG4qVISjeb3MpDSvcFpNbVMM39T0s4lQm2n3OEsuq1LYd/5y5
+	mN9EIPUdROo5km5aQGyS2yQDweSD98WQdlg2fp7GJbioSz3C7VmaOYyjmtCYT5eqJm30fW
+	3a3lU+6+tulpMKYnle8KckimVZT/cVQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=AKAwiVPA;
+	spf=pass (imf11.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=5S3nqzH7nV8QrVGtHVrTGOi4+HwJ/Mlo6RAYYB4naZA=; 
+	b=AKAwiVPAeyCRzMo1jbBEYWbcgi1nQZ11Fo9O8DFd+t64ZwueOITZYYZoHQ9IaiJtvZVS/1b2N4c
+	7ynyb/zeAwr6JXRi5RVn/npdykazsiPYSZwGFZ3i1NZBAyTcmu7HoD8PuPExQ5J2UfnFC7FCXUGkA
+	y1q4yfstfvcniYpNRl1lgxIh3sVRiRhGFV9PQXBQDHLHfAZfO2RFr3sMskMqz/x2NXBs/IeYjmtX6
+	5Wp71LrcREBfTNNgbUHh5+gXwdmk7JuM8V6Ou7XDvDhU60kqqxKR8hoHfrGT3JHbQHqSKpsSPQZ6g
+	6gCNf3jTFvcpi4+U6gTrjuX4oxfuTRn2uhfA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xHvmM-00000004mbD-3wqW;
+	Sat, 17 Oct 2026 12:12:20 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 17 Oct 2026 12:12:18 +0800
+Date: Sat, 17 Oct 2026 12:12:18 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, hannes@cmpxchg.org, nphamcs@gmail.com,
+	chengming.zhou@linux.dev, akpm@linux-foundation.org,
+	linux-mm@kvack.org, davem@davemloft.net,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+Message-ID: <atL1ok1YkHbA4AaI@gondor.apana.org.au>
+References: <as-jZopKRfuYAiTE@google.com>
+ <CACpmpoeS_cvXRWJXqiYZV9oykk=91efv8KtZgK2Pi-QwHnQH3A@mail.gmail.com>
+ <CAO9r8zN5n=9v4K+OtEEODg=e0kcFW99PreUcZm09q9CUMQc+ew@mail.gmail.com>
+ <CACpmpofdoeVbbw7izCDeJ7eS+XpWj+3sp3teKEQWywyRB75jYQ@mail.gmail.com>
+ <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
+ <CACpmpoecz4tjr-qvFRy22CGuF+4NBWbE7HVjdTGFqQOheK3CLg@mail.gmail.com>
+ <CAO9r8zOAcf4=TscCXjMYvowUx-_u9qLGqY2-p7cK-z5CUU_x8w@mail.gmail.com>
+ <CACpmpofYXDMviE6FS-BZdVntmQFvS+_xvfmOnJ2caZFerz6vyg@mail.gmail.com>
+ <atGqPIpUfX0LDokV@gondor.apana.org.au>
+ <CACpmpofyLW5z1DYEY2YAty0VOAhRR+Leic8O-B0N9hrzdW_=Ew@mail.gmail.com>
 MIME-Version: 1.0
-X-SG-EID: 
- =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
- =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeX7GlhsjZ8PC?=
- =?us-ascii?Q?Bz=2FZXm+aVDXju7NjTKrzoAAjIB+x+EO1=2FK2pA=2Fl?=
- =?us-ascii?Q?bVTzaKDdCTENpW=2Fe+wlK3vnOG5PPz5q0KKgxjIn?=
- =?us-ascii?Q?OR0=2FNUOvFyAvJg9F0LGTtsRec2WImXQyCdSDAjp?=
- =?us-ascii?Q?Idn0DL8ux8Vb4LVkGcUI962W7tWp11OTylvGqNP?= =?us-ascii?Q?QrkJ?=
-To: Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, Christian Brauner
-	<brauner@kernel.org>
-Cc: "Patrick Lu (Anthropic)" <perf.patrick.lu@gmail.com>, Roman Gushchin
-	<roman.gushchin@linux.dev>, Alexander Viro <viro@zeniv.linux.org.uk>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
-	<lizf@honeycomb.io>
-X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
-Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset=us-ascii
-X-Rspamd-Queue-Id: 29729100007
-X-Stat-Signature: pwfbtemxxk4nzbs8gh9w4jageo865kri
+Content-Disposition: inline
+In-Reply-To: <CACpmpofyLW5z1DYEY2YAty0VOAhRR+Leic8O-B0N9hrzdW_=Ew@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1792210031-703725
-X-HE-Meta: U2FsdGVkX19IXMPc3dqr/sCCyZD1xczQceYCpjfwqsbB4r2GqhRsUGyIBZuci2FRvO91Ehy47l4xXYb3B4JUmcooiGotwvFWhJFkwphNcPrNickTrwnvCWfZvLn3tqFM6S+01yV+JPvKdhYXeSFBmaGFwhe6puoZgwdiECFaqnxC/t+vRnonQCpEL0GtxuQH+ymdVz+Th6NpTSqQkC2fp1KgvB0d9DbhCdBKtuir/LRjDW1hcBFKTDb3Mx0wOqck3HJXZpTR4NI4GPygitq45O8iAZPUglDib3XmaEs4Ao1K+5n+xDDiHzh0iUPB7ESKfV6x9KYPSTEfKFnrEyBMVU96/RUbeg2flAGYasiWlnxWJcF+SmbJqBQpT+JJ9iF7uowRBvlWOUOMPOELJ/PS8yUJQymGhLKgYrjfWaE05Z23myHHgc/eLUJX6nnCGRCQ3/DEMb3sc7azzYlqpTBtzICKC3AlsPPE5ObZT3y2XDFoo1ZW63HZ59efUIGLJK4iYJizXREf6SZ57YmQ19vA7EotH9vZ9V3f5SI0Zbi8kfJDU2aQvkHddjARxmenBsCBuCHvohYjPjVrFeS4ZZ39V3trWTsIt06n5K7gOm2yTLyu6+YO2oYuEKAZKzx7yQJliYIkwflYAZz12NyXbOCEAlNw5y/N0ViEgaRpSA0cRbPTQvlZr5r6YYz++EBc4OvYQDUH2IK9ZNN+0qZ6gEH2L/XHaV2zApi6Vn8UjS/PBocQKh+qFQZdwDLED+CRT09zBo56/BYl2l7Nfyjr90qNmtTIBJE4tqBT5cXq3IuCImKyG2N4vQIra1YN2dFK3k9KqvKlNNIWRfHR47aPwfKr4m+4QCzWTYy3RykV+7AAEEHobs9FRkmFEr4K4pMSSMv579udrtwIta49oSffWZKmuQD4YkJNYqcsFYQTlR4iHks3OKj5EqhbJ2L46+X70Iz7ClSqurnicE7XPmduRCM
- tIyUkVYu
- aY3rikg7ZDIKf1lwzBJFxDR1axBTUXLmAXx1x79aXTkrAclfaMoB0wgnR1+8Sp0kdbwNfNU6gqrKkrSXIeKiv6UYxPfcLUBKuhbEVEHV7ca54+Y+0hb+tR/YsYCO/0zLb0tvIOUmkhUaenD7V4e/iScGoDhhH6q5dV+8cJXE9kAl6eLZitD/h3pDwYCdvvXfS1BdbyZcUovXo/q73Y9TWK81e7iCBSV+T7NvR7G9Q5iVwVtTc6uZolRVOgGGltGnboqLTu2sqCUN/LnS+f27v2Q34ud7MMX5yY2v0AU7YvJsg+EP+Ywre0xEJ/CTECQuuxhR6utjMxD5BJJO+mbiTQyCvpVfkwBIkG4K103X3JQqLf15p5clk+RZRSv8w1gtEonyH/3RWsq3b4/Ia84FhPXATQrEH6RmwokPGU+//B8nKwAM880ivFZ6iVoOI+4o4Dii0JoUsPXVwqT1JMIJlxpxH5BKnfZePwylEGbVzXIzxCgr7dF7PeFQlc+tGHuD+FaBdEX5MiwoJ3+4T9GnNbT2IHTALPd3lxaR14a741gvm9QQqY993Hb1IMXtAqAZhOypqg1g2DCn3cNycQyTJ89QDlz1JFBSOdZk4UOnEt0zJJgiPI3lmzaUP1/sNHjF+Bm/BiPAn2Gv8kus2PkfXkjoyvQ==
+X-Rspamd-Queue-Id: 8176F40002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 99xw5xxixc7whmq5518rcw6ik461db9y
+X-HE-Tag: 1792210357-646979
+X-HE-Meta: U2FsdGVkX19KUim6blqQ+4IYUcF2hhDTtQwRMuUW5FOg5RKx+b1poHWesPexW0Rvs8nbnKW8oTe5Tnhzg9ZnfsMQGd+c6cs26mz6heTi6NtgbSKKdwMZbO34BEgDTtLvrWDPq9aQjT4ZyBLLmKUZD7XOK9L5SH178/fmBYBXMrYegpcXHyfidwLNJPFkSFIL5d91OmZQjm8qn9S+k0gmscETKHtYbvo4k8l7WxNDlrbUbpNXdJHA0JzknSxvA2GXclH1jvmw8nQ+U/rOrYQ2v1yAM23m0T2YfzE1GuEyu2iiA8Uym5/+L2mYDcMlDdLuDc82hfDgc9KbS0RYqoM1a1mPYy4nIvPTvsaBOFCxY4kKZbXu9P8uvgx940canNkISRACqdKJuuHXIPtEf9QdeZOeoam4BWqtYILBt+Zq0Rl4IIdSDvrP4BSCjBmVI2eCeV+xvdSHbHwDpKhOLfrdiWUSAEQ2GQQCPwKKHYTkAnYy0RRCUBc2f0rSt6QQSBYogXfNSQIprZKWisWZmNbJLKB9gGl+G2FHurMk8OjJTDfE9+htYJppfRrcH+SiWYmKTpB5eMDyOB8hmGid0yhUbR5XtCcHoBFELzXGKzebwtRsVlyzGhZ6Q0+e/a9nWOqpSN/bX8QOrJn6wHnyv1z7BFN8mPhUiDKFAeYnwQxXbB9YhKj3/srXZan/no3wfCIGhfsng9pVHZZudX8M6TbTZgKTxM4nh4dm4F1lIoIFkEpQn223erD/WXQT91YXGQqK5iq3NRfGLM2AxRpI3QWOtaldGqZlzOX+uLDExF9kqG/XPoYd9xmQwrIZ10JY73rAjK3FjrXRFEMn44ioDYl4+TjV+jLRUTtVSvBA9Kd3tzH88bRj8GKp8MPN3Ws1NGLX6967Bb41tA5AVNiWPIYLizstDM7ML+c+sp9iQYlkXCEZmd6wHwjmCU1V54mph0swkr0yIfxKduHeOsHKYo3
+ Pf2i5qnJ
+ TQDBcyB+UEtVccZ44vnj94M2PYJjLDiST6KQ/S2V/b5yyrYv3qzbIYirfDuGuWX+ZNnsBYca0SzHg9+aq/r4eTz6SBhSfzQGUORg8GYyrp2Qlual/NWmjN+DZeERP0P8I39iCiJqDAM2+NIGQSNtf+RjkM1rv+Z+1AtVWp0ANDJ6Za0beFyGEt+qN5PqP5vL6fM6rdhL6o60RMqZaQxgWoCx5WhQ6COggtjU2MovnjMRLujZIcwtcaKGDCPWQZV6epTQcxGg8ke70Z6YcB74M+rjz87A2UAug5k2vvyuaN5LOGsPA+iMZf/zeSDouyGehMupfikX4mi4EO1g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,87 +101,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On a filesystem mounted with lazytime, sync() and syncfs() can return
-without persisting timestamp updates of inodes attached to a dying
-cgroup wb, so a crash after the sync loses them. File data and sizes are
-not affected.
+On Fri, Oct 16, 2026 at 08:03:07PM -0700, Kanchana P. Sridhar wrote:
+>
+> The Average throughput of 10 iterations usemem is 19,058 KB/s. IOW, I
+> don't get the same performance boost as making the localized change in
+> crypto_acomp_compress(), likely because of added computes per compress
+> call (one function call, two conditionals).
 
-Since commit f6988c90671e ("writeback: bound cleanup_offline_cgwb()
-rescans by rotating scanned inodes"), isw_prepare_wbs_switch() moves the
-inodes it walks to the newest end of the list. When a pass fills its isw
-before reaching an inode that got its lazytime update after a sync's
-cutoff, the walked inodes land past it on b_dirty_time, and the sync's
-queue_io(), which stops at the first inode dirtied after the cutoff,
-misses them. The late inode has to be one without a pending lazytime
-update; one already on b_dirty_time keeps its position.
+What are we comparing against?
 
-The window is narrow. cleanup_offline_cgwbs_workfn() skips wbs with
-anything on b_dirty, b_io or b_more_io, so the scan has to land between
-wb_writeback() fixing dirtied_before and taking list_lock for its first
-queue_io(), unless a multi-pass drain started before the wb got dirty
-IO.
+The thing is that the conditional will have to be there at some
+point as otherwise this becomes pointless.
 
-Take wb_switch_rwsem for read across the scan, as
-process_inode_switch_wbs() does for the switches.
+What if you just do the conditional and short-circuit in
+crypto_acomp_compress?
 
-Fixes: f6988c90671e ("writeback: bound cleanup_offline_cgwb() rescans by rotating scanned inodes")
-Cc: stable@vger.kernel.org
-Suggested-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/all/0bc5d58533f10b4841807be3025daa11@kernel.org/
-Assisted-by: Claude:claude-opus-5-5 checkpatch
-Assisted-by: Claude:claude-fable-5-1
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
----
-Changes in v2, all from Tejun's review:
-- Correct the trigger and the reordering description, and note how
-  narrow the window is
-- Reword the code comment
-- Move the test details here and trim the description
-
-Test, with a debug-only delay holding a syncfs's work on the wb between
-its cutoff and queue_io() to widen the window: 300 files on a cgroup's
-wb with lazytime atime updates, one more read after the cutoff, then
-the cgroup removed so the cleanup ran. Without this patch, syncfs()
-queued 48 of the 300 and after a crash 252 atime updates were lost, on
-ext4 (-I 4096, so neighbours' timestamps are not written along) in 3 of
-3 runs and on XFS in 1 of 1; with it, none were lost. arm64 KVM guests,
-7.3-rc7.
-
-v1: https://lore.kernel.org/all/20261015114307.1041273-1-lizf@honeycomb.io/
-
- fs/fs-writeback.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index ea3eb40bf828..372ac9785e03 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -789,6 +789,13 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- 		new_wb = &wb->bdi->wb; /* wb_get() is noop for bdi's wb */
- 
- 	nr = 0;
-+	/*
-+	 * The scan moves walked inodes to the newest end of b_dirty_time,
-+	 * past ones it didn't reach. If one of those was dirtied after a
-+	 * sync's cutoff, the sync's queue_io() stops there and misses the
-+	 * moved ones. Exclude syncs as process_inode_switch_wbs() does.
-+	 */
-+	down_read(&wb->bdi->wb_switch_rwsem);
- 	spin_lock(&wb->list_lock);
- 	/*
- 	 * In addition to the inodes that have completed writeback, also switch
-@@ -803,6 +810,7 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- 		restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty_time,
- 						 &nr);
- 	spin_unlock(&wb->list_lock);
-+	up_read(&wb->bdi->wb_switch_rwsem);
- 
- 	/* no attached inodes? bail out */
- 	if (nr == 0) {
-
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+Thanks,
 -- 
-2.53.0
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
