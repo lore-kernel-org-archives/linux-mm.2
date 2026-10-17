@@ -4,140 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77414CCA463
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 03:53:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7357CC6B2A
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 04:07:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CB1E6B0088; Fri, 16 Oct 2026 23:53:44 -0400 (EDT)
+	id 73B806B0088; Sat, 17 Oct 2026 00:07:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17AF06B008A; Fri, 16 Oct 2026 23:53:44 -0400 (EDT)
+	id 6ECA96B008A; Sat, 17 Oct 2026 00:07:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06AA06B008C; Fri, 16 Oct 2026 23:53:44 -0400 (EDT)
+	id 628806B008C; Sat, 17 Oct 2026 00:07:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD1FA6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Oct 2026 23:53:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B7F61C26F6
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:53:43 +0000 (UTC)
-X-FDA: 85330749126.04.35EC4BA
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 44B9D40005
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:53:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ft5IqvGm;
-	spf=pass (imf11.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792209221;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 06F5B6B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:07:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 415A91A0200
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:07:14 +0000 (UTC)
+X-FDA: 85330783188.14.D11C3B5
+Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 29729100007
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:07:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=RIok+owk;
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
+	spf=pass (imf14.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792210032;
+	b=lqlbb6AXQbWUBQABTSucVE3+OLBB9nj8WlVUsSSbDWeQ/EginDjZBbArxoQLqL1iPhpw6w
+	AHGg2rQzdpKAELHCTEH8uWwRkf9K0AkU1inHrpcevAg7dnq4xQaG5i4HxAKyCypbXWPgss
+	0L+m4UUjrUnSWr2zT/YpBmf13WF0e7A=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=RIok+owk;
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io;
+	spf=pass (imf14.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792210032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c0xww6zOl66Izqr/6HsQKYJXypZK9pMb27w+but6MD0=;
-	b=M/CoTLUbiiF2H8LblwlroisWGuoUF93EcLecpoD1ZE6zuwEUCMhE52fhu1z11Je0b26Y6z
-	wAeeXNBtZrGgnaaDbW9tdilcwLlh0UTs45JXA/9ZFS60L0W3Mph6OTq+POHEFGeFPbss+h
-	Ju8NUnFHyCelbRVe1BwLr6wE94Rw310=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792209221;
-	b=n6r2wBlrgNKoaC0CMH3YmUgUiUWyUcSYzBf0vnUQ1nu5BvZ7DwWaVx9PbfuCrNsX1Z7XMg
-	QKbDekKw2HhOSgULHSRvqL/XPKCW8P/yRB11e0DtJC3PXDbvgxK9if4Mb71CG/MIg9HjrE
-	MSH4JTLu1UK3St4qjFobv/FBxuWPBcI=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ft5IqvGm;
-	spf=pass (imf11.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bccecba199so482674e87.1
-        for <linux-mm@kvack.org>; Fri, 16 Oct 2026 20:53:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792209219; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RslL9BtthjyLb351EAA4JY9xmKlRuKCTY6G+Gb0nT80EcxKmhMKRjOu7PKrZskLiEg
-         B4HiAKFmG3O3skQGgLzF8NPzc0edTxEouxOPgGLjdf8SJAhPtRNruLHSCUQ91Oj2Uj31
-         3G4JJO+10Qw2WYcPBFkJJ703RR0wWzT0/s3lU8KkWjo79WndtQt5qY6253m5lCf4kVy2
-         j+Klmf5OTpyOeMQEtp/SPSG1kFLsEj/dWZN8a3/Fncu2q6r6JrFxzzGKioP4v0YCqZp/
-         coiO/eypIq1SJmi6JTk54zZRfUxVQw/7kBRLt74I/h2P5a6/CxRjTDlzBAyNp4Mgpxj4
-         jr/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c0xww6zOl66Izqr/6HsQKYJXypZK9pMb27w+but6MD0=;
-        fh=GEjt+j5HVlUa36knRXRq7LEoIXx96n0GtAbNWh26bEI=;
-        b=IPuckQrJa04FgDpbeIKctqR4N5d0qIiRWTeVYnC1LqJlIa4JljvEsSVoPYbpYOPMnY
-         eWxIbAR2++NClg6Y/NDcdMhA02HrEtgtem7RxYvmxdLtwnOIJIZM+whlOacd5dT54A2N
-         xiy/3evJZDqMGOc5H7vxprvpY6bPgubrSAjEXpgLG47O7QXiFcmqS+MJHGCflqTYbXcr
-         V/bgjDksjKTKcGqqP3TmapqXE3fQfboiytGZ5pwborTrbvL+52Bw2ZmRqRl/WZDulv1F
-         tY9ohPbfgHdrorK5q4XLyXcMhEeRIJInycTdd1jFv9Nh1GBP9cfoub8FSR9jbLCg0pya
-         q2GQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792209219; x=1792814019; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c0xww6zOl66Izqr/6HsQKYJXypZK9pMb27w+but6MD0=;
-        b=Ft5IqvGmPWOyptr9oCwlaj6d9yVeoyz0ivSSzE04pvdVg5Pw51vY24DT1kgEOmSIfd
-         LL7MwFfi9uLZ3SkKYhRmR7h1CFD7CQNI3M7cKUKNSwT7R+LHWyIWAv1Fn01/vPaXKfKN
-         Up+HI8mHltHNdFeWUhXylhxGa0latr+r4F+VriAgmq03F9iVSgzfrV5dmsuujjJ7MawY
-         C4Tj1NbFDaXnTPYY7g1EoBqQbrOnshPFi+w1YsqXP44V6qYsYbpEMfFMp0PofSGADWUv
-         yILMfS9EhpQH4kekg89CCfpriL7oJjzgTR/MoROFc/NG53QcQ1NEnfHmu0Tdcqtj22E/
-         pHkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792209219; x=1792814019;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c0xww6zOl66Izqr/6HsQKYJXypZK9pMb27w+but6MD0=;
-        b=vvvHSrRXEYXYuQc1FeCWy1K9KNoD0epf7NE3okSSQf8IBdHwm718eQQqg3JoegtkL4
-         Kp4JetIaji3BnSz5UBrHF39Mqul5FvkD9X50R/iT4vsatQ57Z65wyWd6Asl86l0ZM7sW
-         WRvK+kieIn3Ap7EmguKyRdgXuQ+ZGuM69JyhJ9hGXnz1pOnNLCARJwf7NyDsOWet4u6k
-         G9s6nPJkAseeVJR4TNqQ/oZj74o5Doz55QEH0IIxJeYPFYkst7F04JrV+4lwy1SVLAek
-         5bZ1skYqnvHa4U/huIBnxwVIznpRha92GIAZkUnPtSS8stujmAwlX+HEQPVST8IE50tn
-         2VKA==
-X-Forwarded-Encrypted: i=1; AKwUvBwCbEFUbXwe6zHyHHqzYNoWnKjwlrfQerPLCBEtx25iX5fRhKmDtBNaNDz5lEbtBHsJJeMUJ67LIA==@kvack.org
-X-Gm-Message-State: AFq9FYLuXbX9Y3o2mi7sXaubG2q7GBK00GoWxZjV2wzHRaSTfvnA2SJq
-	yYZBOGLLhqB1p/wSXzmwu1xSeGeovLx1CwjHUei1Hy8o+fQCLBCfkLZJOu3+9Xyfdb1R3j+R+v4
-	baYxWIg17jW1m8I0ZoQqm4Jv6H7Frd5U=
-X-Gm-Gg: AYBFou3NXonOzCLVyrF2hny8nqrP3gscKfINx61hkhB9RoaFsQaNHzLBFBK4eEtFOyf
-	TmkgtwFlwOEImyKrD40Xmp6gXh57exVdqwy6Eyu1B4u5MqQOV2WKaOQQeHDxTglgOLrHwWEUrud
-	JMTjqerE4CHvwdRlhUTxL1SHNEtgEmCAN8SMHqQa4V00uzkP1iShyOYAM9TK+jkpL5EOBR1r2i7
-	oFQXp19o27yrwnTniPNn/f8f6sAi4PZ0pZk5Rv5pwupFO2RhCBhpH7+kIVzo9Zb9dFS85VMgRbV
-	jRzvKCbOdyF1mDYZ3m1AmfhnpcSOQhl0JBwR5ck9w6w5m/aSyuzlSS4=
-X-Received: by 2002:a05:6512:3993:b0:5be:5220:3db2 with SMTP id
- 2adb3069b0e04-5be52203f96mr217853e87.26.1792209219390; Fri, 16 Oct 2026
- 20:53:39 -0700 (PDT)
+	bh=vmoqsEUaflaluKIcotOa0bF0phf2HZlStSKylP4A7kA=;
+	b=QNLpV1efR0Rj0Xht6tUCO6IWmevips85C1/DcK6yM47alOJTfatgSfZlhQulSYSzuuDlPA
+	rQ6opbpyiSYay7t6GaK7XAyKw6rgio+2BXSzxSIp8Sm9slzqKFICI25RXxZieC7AYawY0M
+	LCasg0t9h38rm4OxaP4FlzF8EP+uUH4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
+	h=from:subject:date:in-reply-to:references:mime-version:to:cc:
+	content-transfer-encoding:content-type:cc:content-type:date:from:subject:to;
+	s=s1; t=1792210031;
+	bh=vmoqsEUaflaluKIcotOa0bF0phf2HZlStSKylP4A7kA=;
+	b=RIok+owkUkDTUdDOw52vTX1SqJKmm8h9Tg1GCpuJxWMAzeJHTHhhg7Ym/Q06670vcf1e
+	o6DU/Cfpyw0Nnvli9OXDjWSyaVBSqYJCymjFhtXdpGqGHqlA94VSwqoI+2RSVIttdwAKs7
+	rFe3ed/2wtPF5TJcK31bkD+sJ5h+ECZTPDbAMuiYxo0hnZ09p7e+fXnyvvxi3f1r8QD11f
+	0fJLhDUhLK32t906GZiNaFuI6DJVxJBBke1rgP1D0JCS+Wfi8JBHYaGAnQm4jvJI943nZW
+	Df0os7/S+AHK73xH67JyfxKRvDOF05D52uUvnuUNJhupzo6oezObwduZKSZ18LaQ==
+Received: by recvd-canary-8465b4c48c-2zgt8 with SMTP id recvd-canary-8465b4c48c-2zgt8-1-6AD2F46F-5
+	2026-10-17 04:07:11.103999751 +0000 UTC m=+1508805.732609009
+Received: from daisy.dens.ffj.family (unknown)
+	by geopod-ismtpd-19 (SG)
+	with ESMTP
+	id VZBbDvTlT0KW3V3gToMmBQ
+	Sat, 17 Oct 2026 04:07:10.996 +0000 (UTC)
+From: Liz Fong-Jones <lizf@honeycomb.io>
+Subject: [PATCH v2] writeback: keep cleanup_offline_cgwb()'s scan out of syncs
+Date: Sat, 17 Oct 2026 04:07:11 +0000 (UTC)
+Message-ID: <20261017040710.1174009-1-lizf@honeycomb.io>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261015114307.1041273-1-lizf@honeycomb.io>
+References: <20261015114307.1041273-1-lizf@honeycomb.io>
 MIME-Version: 1.0
-References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
- <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com>
- <CACpmpofN-JfCgJtW9D0wNu0_pL1pRWGfNphUQnE9Bse-P5tHpQ@mail.gmail.com> <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
-In-Reply-To: <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Fri, 16 Oct 2026 20:53:26 -0700
-X-Gm-Features: AclHuK9PwGYFMZLK4QolgvssL7tX2S8kM-FVLNspgBd1JKDsPP-LcKfChdsn8JU
-Message-ID: <CACpmpoe+krnso-b1h_g_Q=HzV5x8xpu=Ke9==+4PfWF0ZcAUgQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ajzgpcuebf9jff9ore1bbt8yq7j8e4r4
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
+ =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeX7GlhsjZ8PC?=
+ =?us-ascii?Q?Bz=2FZXm+aVDXju7NjTKrzoAAjIB+x+EO1=2FK2pA=2Fl?=
+ =?us-ascii?Q?bVTzaKDdCTENpW=2Fe+wlK3vnOG5PPz5q0KKgxjIn?=
+ =?us-ascii?Q?OR0=2FNUOvFyAvJg9F0LGTtsRec2WImXQyCdSDAjp?=
+ =?us-ascii?Q?Idn0DL8ux8Vb4LVkGcUI962W7tWp11OTylvGqNP?= =?us-ascii?Q?QrkJ?=
+To: Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, Christian Brauner
+	<brauner@kernel.org>
+Cc: "Patrick Lu (Anthropic)" <perf.patrick.lu@gmail.com>, Roman Gushchin
+	<roman.gushchin@linux.dev>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
+	<lizf@honeycomb.io>
+X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+X-Rspamd-Queue-Id: 29729100007
+X-Stat-Signature: pwfbtemxxk4nzbs8gh9w4jageo865kri
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 44B9D40005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1792209221-41071
-X-HE-Meta: U2FsdGVkX1/VzOTvUOT4kBSVhq2gft2fRb9XV3py8OW2b+dHbq94deo0rTzTozWW8SKWKxV3hw71rxgYwW0os/wN1PduoTQ8AzNPoQnVptkwEScPYuNfmtnX+LP0uWmnKUpRRd7gPyi7wChG1e/nWP223KmebUBG2mbOphUHYhglwGDy6u6v35u/WnKajQNYZMwK0prIuHdd27Q+dqriG/hiOHCbxd5d/ogtzOYlpPLr3K3FdVjPQVDZ/CklEKJoFzmZiQ76q3V8x3O6CnrQ7eYXFlbIhNRFN0Fp49KzYwe8rkqyl8T9JwKfAdWTIqsAru3Z7IdP88i/OpPdX4i5UuwStTwqrL/2AE/QBRl9JMz/xN3AEyAgD2Ktdmnt9yG5vQ12wgvCOTFxMHcpph2sIXvct8ORPZCVjlCtCnNukc8AYStuUy7Q7q4UqkKv3j2mZ88+D4lRoSqBM06stmu9giKqBiIaUiBp8V+Mn7qr9m93CB2g/rYEyxn+H2zLezRyutcr50+5byPOP4ZvQ5lQlDrtXtTRwcHgTgFjna5MFwJY6bYvr12Z/cm9mecEikP5KV5+H1BdPMrvyw4XL/nu+3Ey/jWIyHS32Y/mQD80VByMy221iVKqezxHwA89NbyKE3x1Na9F+DPKavwNVMFTJrPWCdOwqgzb1CxcqKi+2D3ESP2Q/l3MEhmi7JL5UqtNSn7a4B5nSQPJrz7CrkflC9UdnfZc/r0itpHu67YonJ0ABlifjtl81n5kcZ2voK5/15bIy3OWravS85E2Y4ILbMsFhuWeDXPTQGh5Upwb8Tc/6TeFNQr5VozulWg1dwJr/xxnThecf8eq7TCNrU6EfVoZDV8eQSZ9Wk6D2Z58PApK6xrvucC1eXJCnI8CwPGy6spqGx/Usb7b9G9FCYIcAO5WAFKgfb52uSq6bLcD3NW/T8/WILu/yMHfMrt3WjwAXrvesrrSA28NmTxUovv
- Z/pWstDW
- f3UweNjYWMb53bHTC/fD0RZsDeng9V3Io5tbXViB3XuLtNgYF3++ilETuSUaP4MkNilrpmPbIfAvB3T2Wv9hPpYO3cKuNupSxfs5S93UJYAGt6KAp4WphG09k7y8421lZMoQF/WVj0+EyxjVZEemtKG96qhptsE3J1MsKtfE3Gz2LJbyAG0T236yKRPJQKoNA4y5sjqPfV/mqqS0kCnEACRrcKyqAP9onRpO999cos4LMdioScGU9ceKc0EWVscKcgMtO4zcZfVG+J+VXMOhsrE9AZ+CyFgECsO7WZnrFfLxCJQqIVYH5sSS+yqQjy6hEmfB2n/8Ky8+u/x+CjXsxSg8EZI8sAkq/ehpnGdlqXd6YbOUqwcX9Xa+BdOQFGuw5bXn/XkMvGKodLSpoVfnSWyu2OLeanjslTbb9xxZ98nsp2L5TOfGSFFf/bFMzmGMwV7OGzH9i2uFF4FhN3UN4p1VYKwQIoX5fUrYlQPEdZy06GoXWNZfVDYlhL/Z9tRBsfe7UHy4EfkYI3FU=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1792210031-703725
+X-HE-Meta: U2FsdGVkX19IXMPc3dqr/sCCyZD1xczQceYCpjfwqsbB4r2GqhRsUGyIBZuci2FRvO91Ehy47l4xXYb3B4JUmcooiGotwvFWhJFkwphNcPrNickTrwnvCWfZvLn3tqFM6S+01yV+JPvKdhYXeSFBmaGFwhe6puoZgwdiECFaqnxC/t+vRnonQCpEL0GtxuQH+ymdVz+Th6NpTSqQkC2fp1KgvB0d9DbhCdBKtuir/LRjDW1hcBFKTDb3Mx0wOqck3HJXZpTR4NI4GPygitq45O8iAZPUglDib3XmaEs4Ao1K+5n+xDDiHzh0iUPB7ESKfV6x9KYPSTEfKFnrEyBMVU96/RUbeg2flAGYasiWlnxWJcF+SmbJqBQpT+JJ9iF7uowRBvlWOUOMPOELJ/PS8yUJQymGhLKgYrjfWaE05Z23myHHgc/eLUJX6nnCGRCQ3/DEMb3sc7azzYlqpTBtzICKC3AlsPPE5ObZT3y2XDFoo1ZW63HZ59efUIGLJK4iYJizXREf6SZ57YmQ19vA7EotH9vZ9V3f5SI0Zbi8kfJDU2aQvkHddjARxmenBsCBuCHvohYjPjVrFeS4ZZ39V3trWTsIt06n5K7gOm2yTLyu6+YO2oYuEKAZKzx7yQJliYIkwflYAZz12NyXbOCEAlNw5y/N0ViEgaRpSA0cRbPTQvlZr5r6YYz++EBc4OvYQDUH2IK9ZNN+0qZ6gEH2L/XHaV2zApi6Vn8UjS/PBocQKh+qFQZdwDLED+CRT09zBo56/BYl2l7Nfyjr90qNmtTIBJE4tqBT5cXq3IuCImKyG2N4vQIra1YN2dFK3k9KqvKlNNIWRfHR47aPwfKr4m+4QCzWTYy3RykV+7AAEEHobs9FRkmFEr4K4pMSSMv579udrtwIta49oSffWZKmuQD4YkJNYqcsFYQTlR4iHks3OKj5EqhbJ2L46+X70Iz7ClSqurnicE7XPmduRCM
+ tIyUkVYu
+ aY3rikg7ZDIKf1lwzBJFxDR1axBTUXLmAXx1x79aXTkrAclfaMoB0wgnR1+8Sp0kdbwNfNU6gqrKkrSXIeKiv6UYxPfcLUBKuhbEVEHV7ca54+Y+0hb+tR/YsYCO/0zLb0tvIOUmkhUaenD7V4e/iScGoDhhH6q5dV+8cJXE9kAl6eLZitD/h3pDwYCdvvXfS1BdbyZcUovXo/q73Y9TWK81e7iCBSV+T7NvR7G9Q5iVwVtTc6uZolRVOgGGltGnboqLTu2sqCUN/LnS+f27v2Q34ud7MMX5yY2v0AU7YvJsg+EP+Ywre0xEJ/CTECQuuxhR6utjMxD5BJJO+mbiTQyCvpVfkwBIkG4K103X3JQqLf15p5clk+RZRSv8w1gtEonyH/3RWsq3b4/Ia84FhPXATQrEH6RmwokPGU+//B8nKwAM880ivFZ6iVoOI+4o4Dii0JoUsPXVwqT1JMIJlxpxH5BKnfZePwylEGbVzXIzxCgr7dF7PeFQlc+tGHuD+FaBdEX5MiwoJ3+4T9GnNbT2IHTALPd3lxaR14a741gvm9QQqY993Hb1IMXtAqAZhOypqg1g2DCn3cNycQyTJ89QDlz1JFBSOdZk4UOnEt0zJJgiPI3lmzaUP1/sNHjF+Bm/BiPAn2Gv8kus2PkfXkjoyvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,173 +106,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 2:48=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Fri, Oct 16, 2026 at 12:05=E2=80=AFPM Kanchana P. Sridhar
-> <kanchanapsridhar2026@gmail.com> wrote:
-> >
-> > On Fri, Oct 16, 2026 at 9:14=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> =
-wrote:
-> > >
-> > > On Thu, Oct 8, 2026 at 11:28=E2=80=AFAM Kanchana P. Sridhar
-> > > <kanchanapsridhar2026@gmail.com> wrote:
-> > > >
-> > > > v1: Batched zswap_store() with compression batching
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> > > >
-> > > > This series is a spin-off of "v14: zswap compression batching with =
-optimized
-> > > > iaa_crypto driver" [1], and focuses on the generic crypto_acomp and=
- zswap
-> > > > compression batching enablers. Resuming work on this series followi=
-ng a gap
-> > > > since v14 (January 2026). Please note that my email address and aff=
-iliation have
-> > > > changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@g=
-mail.com. I
-> > > > have retained the original Intel sign-offs on prior patches for his=
-torical
-> > > > attribution while signing off v1 of this series with my current add=
-ress.
-> > > >
-> > > > To summarize the main contribution of this patch series: Batching i=
-s introduced
-> > > > in zswap_store() of large folios: we carve out a large folio into b=
-atches of
-> > > > ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store =
-each
-> > > > batch. Moving the fundamental operations that need to be happen to =
-store a page
-> > > > to now work at the granularity of a batch offers opportunities to o=
-ptimize them
-> > > > from these perspectives:
-> > > >
-> > > > 1) Utilize existing kernel API that minimize obtaining locks for bu=
-lk
-> > > >    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
-> > > >
-> > > > 2) We keep the working set for each of the core store functionaliti=
-es (alloc
-> > > >    entries, compress pages, store pages in zsmalloc) to be focused =
-on a
-> > > >    batch, thereby minimizing cache evictions and benefiting from ca=
-che
-> > > >    locality.
-> > > >
-> > > > 3) Along the lines of (1), the main zswap_compress() batching routi=
-ne obtains
-> > > >    the acomp_ctx mutex lock once per batch, and releases it after i=
-t has
-> > > >    processed all pages in that batch.
-> > > >
-> > > > 4) Any zswap store functionality that works on a batch can potentia=
-lly be
-> > > >    parallelized as a next step, to further improve performance.
-> > > >
-> > > > Performance data: usemem with 60% over-commit:
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > Validation was done with mm-unstable as of 10-3-2026 (Baseline) and=
- with this
-> > > > patch series.
-> > > >
-> > > > Testing was done on a Chromebook with a QEMU "vng" VM running in Cr=
-ostini.
-> > > >
-> > > > Chromebook Diagnostics reports:
-> > > >   Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
-> > > >   RAM: 16GB
-> > > >
-> > > > vng setup:
-> > > >          Memory: 7G
-> > > >            Swap: 3G
-> > > >     Pinned CPUs: 4 (E-Cores: 4,5,6,7)
-> > > >
-> > > > zswap compressor:
-> > > >   ZSTD
-> > > >
-> > > > mTHP enabled:
-> > > >   64kB
-> > > >
-> > > > vm-scalability/usemem setup:
-> > > >
-> > > >   cgroup memory.high: 3G
-> > > >   4 usemem processes, each allocates 1200M anonymous memory, reads =
-the
-> > > >   Silesia dataset [2] from a pre-fork-allocated buffer into the 120=
-0M,
-> > > >   writes to each unsigned long in the 1200M, sleeps for 10 sec, the=
-n
-> > > >   frees the memory and exits.
-> > > >
-> > > >     usemem --read-silesia -w -O -b 1 -s 10 -n 4 1200M
-> > >
-> > > What is --read-silesia? Is this a local change you made to usemem?
-> >
-> > Yes, this is a local change I made because I wanted to get compressed
-> > lengths besides 565, which is the only compressed length of data
-> > swapped out from the original usemem.
-> >
-> > To replicate my setup:
->
-> Thanks for sharing the details. I am having trouble reproducing the
-> results, mainly because the standard deviation seems to be too high to
-> make conclusions. What is the standard deviation in your runs?
+On a filesystem mounted with lazytime, sync() and syncfs() can return
+without persisting timestamp updates of inodes attached to a dying
+cgroup wb, so a crash after the sync loses them. File data and sizes are
+not affected.
 
-Sure thing! Let me know if it would be useful to upstream the
---read-silesia option to the vm-scalability tree.
+Since commit f6988c90671e ("writeback: bound cleanup_offline_cgwb()
+rescans by rotating scanned inodes"), isw_prepare_wbs_switch() moves the
+inodes it walks to the newest end of the list. When a pass fills its isw
+before reaching an inode that got its lazytime update after a sync's
+cutoff, the walked inodes land past it on b_dirty_time, and the sync's
+queue_io(), which stops at the first inode dirtied after the cutoff,
+misses them. The late inode has to be one without a pending lazytime
+update; one already on b_dirty_time keeps its position.
 
-Yes, standard deviation is considerable, which is why I run usemem
-consecutively for 10 iterations and report the mean Average
-throughput. I could also report the median going forward if that
-helps. The cover letter vmstats are after 10 iterations. The last set
-of data I reported in this thread after applying patch 8 [batched
-version of zswap_compress()], had a mean of 20,946 KB/s, standard
-deviation of 5,391 KB/s and median of 22,477 KB/s. For reference, the
-stddev for the baseline mm-unstable was 5,397 KB/s.
+The window is narrow. cleanup_offline_cgwbs_workfn() skips wbs with
+anything on b_dirty, b_io or b_more_io, so the scan has to land between
+wb_writeback() fixing dirtied_before and taking list_lock for its first
+queue_io(), unless a multi-pass drain started before the wb got dirty
+IO.
 
-I have found this methodology to be reliable in drawing conclusions
-because as zswap_store() performance improves, the outliers are fewer
-and the data is more clustered near the mean.
+Take wb_switch_rwsem for read across the scan, as
+process_inode_switch_wbs() does for the switches.
 
->
-> Also, I tried measuring the latency of zswap_store() itself through
-> bpftrace, and it doesn't seem to change much throughout the series.
+Fixes: f6988c90671e ("writeback: bound cleanup_offline_cgwb() rescans by rotating scanned inodes")
+Cc: stable@vger.kernel.org
+Suggested-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/all/0bc5d58533f10b4841807be3025daa11@kernel.org/
+Assisted-by: Claude:claude-opus-5-5 checkpatch
+Assisted-by: Claude:claude-fable-5-1
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
+---
+Changes in v2, all from Tejun's review:
+- Correct the trigger and the reordering description, and note how
+  narrow the window is
+- Reword the code comment
+- Move the test details here and trim the description
 
-I ran bpftrace today to gather zswap_compress() latency per-page,
-before and after patch 8. It shows a clear performance improvement
-with compress batching for the reasons mentioned before:
+Test, with a debug-only delay holding a syncfs's work on the wb between
+its cutoff and queue_io() to widen the window: 300 files on a cgroup's
+wb with lazytime atime updates, one more read after the cutoff, then
+the cgroup removed so the cleanup ran. Without this patch, syncfs()
+queued 48 of the 300 and after a crash 252 atime updates were lost, on
+ext4 (-I 4096, so neighbours' timestamps are not written along) in 3 of
+3 runs and on XFS in 1 of 1; with it, none were lost. arm64 KVM guests,
+7.3-rc7.
 
-Sequential_zswap_compress  nr_samples     p25     p50      p75
-p95       p99
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-zswap_compress_ns_per_page  1,722,489  43,947  57,791   88,489
-130,165   323,961
+v1: https://lore.kernel.org/all/20261015114307.1041273-1-lizf@honeycomb.io/
 
-Batched_zswap_compress     nr_samples     p25     p50      p75
-p95       p99
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-zswap_compress_ns_per_page    339,088  42,081  52,633   63,185
-118,461   191,710
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
- Latency saving (ns)                   -1,866  -5,159  -25,305
--11,704  -132,251
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
+ fs/fs-writeback.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Hope this helps. Thanks!
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index ea3eb40bf828..372ac9785e03 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -789,6 +789,13 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
+ 		new_wb = &wb->bdi->wb; /* wb_get() is noop for bdi's wb */
+ 
+ 	nr = 0;
++	/*
++	 * The scan moves walked inodes to the newest end of b_dirty_time,
++	 * past ones it didn't reach. If one of those was dirtied after a
++	 * sync's cutoff, the sync's queue_io() stops there and misses the
++	 * moved ones. Exclude syncs as process_inode_switch_wbs() does.
++	 */
++	down_read(&wb->bdi->wb_switch_rwsem);
+ 	spin_lock(&wb->list_lock);
+ 	/*
+ 	 * In addition to the inodes that have completed writeback, also switch
+@@ -803,6 +810,7 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
+ 		restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty_time,
+ 						 &nr);
+ 	spin_unlock(&wb->list_lock);
++	up_read(&wb->bdi->wb_switch_rwsem);
+ 
+ 	/* no attached inodes? bail out */
+ 	if (nr == 0) {
+
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+-- 
+2.53.0
+
 
