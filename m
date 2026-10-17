@@ -4,105 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB16CCF2C4
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 04:50:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ED6FCC6B2A
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 04:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F25C6B008A; Sat, 17 Oct 2026 00:50:47 -0400 (EDT)
+	id 76BBA6B0092; Sat, 17 Oct 2026 00:52:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A3EF6B008C; Sat, 17 Oct 2026 00:50:47 -0400 (EDT)
+	id 71C336B0095; Sat, 17 Oct 2026 00:52:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 592536B0092; Sat, 17 Oct 2026 00:50:47 -0400 (EDT)
+	id 631226B0096; Sat, 17 Oct 2026 00:52:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B4A06B008A
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:50:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E4E16B0092
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:52:31 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D05DA781C
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:50:46 +0000 (UTC)
-X-FDA: 85330892892.03.F3C56B0
-Received: from mta0.migadu.com (out-150.mta0.migadu.com [91.218.175.150])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 48AF740002
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:50:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ivdsxJSQ;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.150 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A60D8A0210
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:52:30 +0000 (UTC)
+X-FDA: 85330897260.03.58339E8
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 69237100002
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:52:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Eug3PI9c;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792212644;
-	b=1cdURSXY5VljqHrIExlsuxKxhL0vaauL8qjR5+MFkFi6nFfYPz7FpSPnP42Z6CQu77jrRh
-	n+RsfPVua9BPkRcQXq2Zsq6UWItjUCU2IKNBnk2vfpAi5Z+ZJ/+dcceLFpusxIFLeydyO4
-	tOJsgp8dwlgZ74pcWMgKhT8gsL1RKss=
+	t=1792212749;
+	b=QTqS+cpvFTbwgUArSjPx5q7S0nOsDzS+i+d4rBANwO8QSVpaxb2VkkZKZ4UmrTB+P5A9/9
+	SpzZW1aTyyv8zSbddQDecdfauXpB6RMSb8VQ/Zv0zCYlZB1mkFzQ2jBXH5mLBPjWR2JDAZ
+	D5sCiNSA557Qp/fcg55a6GCrZSvnNZc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ivdsxJSQ;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.150 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Eug3PI9c;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792212644;
+	s=arc-20220608; t=1792212749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w12QpfnhKL3Xam3li02IGjWhFMu8ayu2lF0NUVNihLo=;
-	b=sWnZHmpmFw5H2gUlLcj/uRygY7fHJII2xWhUp3BwFbVztlBqBm5EEgKXLOAY7ourQ3SmZo
-	hFTiHUb1nGsSFZOi2yxScdE5So/2xq6M5JGwwKIcSQ1rNPizbpS8w5Qhontvbz84VGwkLF
-	MMqkaTOGVzMysjZljMUTVfhXUtkdLLM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=DariwmLPp7xJOYKPqVbT4bqPHAX4FpqWRkGiDxZp0g4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792212642; v=1; x=1792817442;
- b=ivdsxJSQPaqSUqZ9H/c87QzRiOuGMFexGZ0syHQ1YODe5yjB5P8tK030iiN/hfRnmxuRwOhs
- E2WBJxN0va5bNnFTrjFqeMo5rXMgLTAxKE1rk7YzASK2PAmqV59q79f64totFiskn25feZv0eyL
- UFmxpguJ3wtLlZCWE40VcLzQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 80e13a89da7f5256;
-	Sat, 17 Oct 2026 04:50:42 +0000
-X-Mizu-Trace-ID: 80e13a89da7f5256
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: pfalcato@suse.de,
-	baolin.wang@linux.alibaba.com
-Cc: lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	jack@suse.cz,
-	djwong@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	hch@lst.de,
-	syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
-	ngocthang2710.1999@gmail.com,
-	willy@infradead.org,
-	rppt@kernel.org,
-	ljs@kernel.org
-Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in collapse_file()
-Date: Sat, 17 Oct 2026 12:50:30 +0800
-Message-ID: <20261017045030.80989-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
-References: <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
+	bh=gJEDBL4BEKtkKheS+/j1A4lhBNqndMdblxr/ngjfYmk=;
+	b=U0FJxdYvGvNbaChnkwh2gl+a+/5wsN26yh0y9TrFOyk29u7e9JzFFYV1lfoUxvyz3u1qxj
+	FNRY8Re1xz82dmizrt4rCPkFrPU3arA+i2dMrGjvNubqHyk+PFPVqrPxxGJ5mvfyKCCESm
+	74xjfaw3jzFks5PjJAqOGryQqC6Ra1k=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792212743; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gJEDBL4BEKtkKheS+/j1A4lhBNqndMdblxr/ngjfYmk=;
+	b=Eug3PI9cmlOhVSxjNCHLaiy5AY6MvUOcfplY5C+LEyitevaQGkTP+EIx4wAi1TeyZdZMbduFVisGgxN7PyGKHtMEh+65TMOBp/EJFezh2H/vcF9mgtoV90UZWRU3FN/+ZD27EED1OEtdaKvMbPOoW7RdmomxiBs8jIYLIyJa88I=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R241e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XCwX0Vf_1792212739;
+Received: from 30.42.72.158(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCwX0Vf_1792212739 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sat, 17 Oct 2026 12:52:20 +0800
+Message-ID: <179c26ed-1764-4e5b-a7ee-047ddabbfea1@linux.alibaba.com>
+Date: Sat, 17 Oct 2026 12:52:19 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: memory: fix truncation removing mapped folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
+ pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <e2f76ed117b0c22a26b7688fd46a38c9d035336e.1792114445.git.baolin.wang@linux.alibaba.com>
+ <094c9af9-3ade-420d-87d1-976730a5079a@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <094c9af9-3ade-420d-87d1-976730a5079a@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 69237100002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 48AF740002
-X-Stat-Signature: npsmjyu49yzmzhmb6ratzf6hxi1gmn6f
-X-HE-Tag: 1792212644-275645
-X-HE-Meta: U2FsdGVkX1/RXUA00zifv67hO9S5GTyuuFUDbNz+MSWTSwHrS8HeqPKpuJi0p+al/VikZ2+vSyqf39Ygopac0akY2kJXCQu4CFvT7mrA+ynPl7kDa3/Jz1lYKGR/5BuJb/uP1W7sQam9HbGZ7C7WAsqw18Ejz1vKGSRbTvG01ZQur+1YQoCnd17oMrg8/iFIRCl3IfCY85BaqF6GSuiRDRTOTlFHXxGjK4khZV0z0ytmzRu/VzEBdJ6lcYYcwLvzgkbfkfGigjHpS77+FOX0glbxb69H5me6I5z5/d/vMP4Vb8G3BO4JAgnHWyo35lsydTWPHNgUbmIh3BAzzDGiXYxb+89dBzRfH90x1tsrvm4KE/fzggzva9egAXtm3KqMGklmQbwzlJpGn4awSBICNQQ121dWFmnpoeovVz2kW6lExYnjSedHJg8yluv9/jz8z0s2rEY9PMl/4jzbdW1vs2+dwBA4Cac5Q1kibM0TzmVrGqy2XG4KC+d9o6hj4tKsQWyLaCz5asqXVpvi0PNVtaf4qWTyvHn03dNx6eF+4t1hFJa+pBKCZQJXdyBU23wexX134bRRTJSpduWbzBXPX9PlKBuCZg9D8TbIrw5KtC5sJtKygA2EH8OvMXqgckVLUqsI7ZfrslMU7ogOlHb82Ack8VgwLaRt7rac0MKq4LBggMWS5Fc/VSyur4mAprpNzq7rtfFxIZwpKt5k2qqGQCWKki62mmNY0RaCd5Lb1jPyVJEk71lM8T1bSF9lLcITC8d5W8KheGC/oKqjW//vf8Xmp6YeG6s+hWO7ScCmKQyWWjtFFNqDxbXs+XDHbMQ0aoBBm4ripXxuEQUlz6lsHaM4nKNkPpmazyTrzZ7Q6ziG4TgcU4IcKBcebw26AFl5sUPkHj4uv64otBpFzFz4/kP+815AlNDVW2IDA4HIc6mpYh3Js+8uYIFm6Qhi7mMAjNFFrtqbkNiqKZzYwRv
- W5SuLcru
- G2D6c9MUBclt0vNwrG93mOCi7fMuoO7BcV+wnSP+LHHxJW3i6xK+e/4UbzrXEusxuvSeUn9ZbwxcTX8DyRiRey931/UJ3oRLYDBhLYKRHKApZdz9mdT4PHfJWtNSUuSl6FDKP6/LO9V4PHARsOzRNEG0N20lwpFllOwZOTiRGQFviq/hj+AX/ymRZYpOp3yoZiACE+mIO1oHP/l6l+s/TbNdNfzq9MKz3z5h0vy+l4w4ZIp5BzNmYumNR0mi9T4uauNMkraFGc+p9vpNLDWP1qAOMXNcwdRPRoBO78bgitBOGGleQX88WfY8J8x7RznlHyaksZsrwtuHmzDneopoxO69J+mSMi5ONv9pR2x1LLWyuN6MLweJATWkrDnMeSup08CWnYJazBDGyiIghMTdAD/pSR9RGFeQ3aIVrBrJb9wd6hAmtxs0Ocns6iiCgYoMzv3x2gDLpSKTxT7nh++d6olaWQNWdCiE2iDGaIPUWFCFBUprqFwtQs7pFs6y94F+3HhEZ6koe3gIVe1xHx/qVa6Rzq8gWyGFIEqjX7toa2GjfAy+2rzqu6I4nzgQqalB8B0LLeoOqflRLDkU=
+X-Stat-Signature: 3u9yp5ebruuj8x5a91dywhrhptep1kjk
+X-HE-Tag: 1792212747-871849
+X-HE-Meta: U2FsdGVkX1/wdKG/sCeO9iY4ilJUwmx8reW2XRylY+LEG9qs7haUfQGU8JWWx/fpjMOIv0qLvHCf3hmjc3GZs/khbK5k9Zt4WdUE7bFBZT+OUMD099sKHns5DWRYdUDqIVX43/izt8vcMGkO6GRYVq0JibbL9DZNibf+YKxWbbK2uTfAbQfJmKwrA6qTRr/uXZdI6uDGDuIzG+PmPGZjIu3wZpIA4OcaihGnxgzkWKbi+2fsBohpuNcC/QdhjeSYXTfrDnLHviFbYeCOf/aQsz/MveL2Ws929I6I2oqmO24vaNXCLLjeLuAGPZ0nHabv20/Al4d/RMrl3kxxNcLfDRrBei3+y7sVo9Wpi7zjvctSdnNkcA8LAoluXftAUDcAc2pbtFcp2944Hc7og7fGdED794b3nAawfnR1opPwqI9raHLsI8qJCeptBwmoSJlMgoIfyMsxsssL3iDr/o6T4bs0mb032lm56O9FVZR5D1PvOTxoafAc75MmWiNLv2GqmZHtFCRRCm/txnl6ZcioFNg4IDd81sft23rSMjs+yrgMF1MZGldw990ubwMlIP5TWoQ19TR6Qcmqf0p+emg1+quNcgFyuJbBdsjxLG7H0H6kVILNlBVBI9QbWGjXexfWqNSK8qLSo+TidJaWIQVwJq2+WzGpnSmFHCVc+pO/2EiD6D4fRoJz0gtsGtOe/nfWE5eQW2Wa2s2syYz6OUlnRUMuUZuSNPBBXHodHFRmxY8GIykRcx00x4bvsW73oBGfQDUULtIRnoAFt5pZqv3PN97A0ZCg+4fEA4dhAS579MDrSU/0VNk9xqMYA/tLCvVUB3RFj/oEJmqGKh+2VhPUqURRRISBc+WwO9H93kZkwetNLTZgSwkzyuy4dkFabs5qroh23ofv/PyDwt6Wr2fMzw3YesdBKZkGjMxrfrikCB/yxZv2ovS84oc7v8cNpGfDUF927rPOFZ7RrTlnhY+
+ PRTOf/l/
+ JWrBzNoue+PDvmwJjBVdM1XzpdJOfkRlrdP1HVBDzozK6Fistknaueu8hVsec1qO4GMocZfWMxPhIZtxXOpfW059iGXXorSjFQhB85D7aOShF/9N8vDQq+6hv5c7uAAlB6tIjnEdmN2lC0CrgN3J43lwrvc7h6Peyf/+ZTwL6tjYj3DiPZnFY+YDsrke+fA/5g4tl/UcveaiuOhoANBBJMNe36a6E8TTwt223tL1BPoNRsL45rBAJ7H3RS/JhV82g6CZD+HT9/5qX2RbTtVqlkt0DO6oFm07LDLuyhb8w5viLGVFWaDVNxHzgpSVadVAzxRu0aDH+oGjaVqby+VXevPX2Gagk1GviDyh4CprSK7VqP473EkcG74bnOnhn36sX4jb9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,183 +90,194 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Fri, Oct 16, 2026 at 02:18:43PM +0100, Pedro Falcato wrote:
->On Fri, Oct 16, 2026 at 12:00:24PM +0100, Pedro Falcato wrote:
->> On Fri, Oct 16, 2026 at 05:57:48PM +0800, Baolin Wang wrote:
->> > 
->> > 
->> > On 10/16/26 2:59 PM, Lance Yang wrote:
->> > > collapse_file() can end up calling page_cache_sync_readahead() with
->> > > source folios from earlier in the range still locked. If truncate already
->> > > holds mapping->invalidate_lock exclusively and is waiting for one of
->> > > those folios, readahead blocks on the same invalidate_lock and neither
->> > > side can make progress.
->> > > 
->> > > Do readahead in a separate pass before we start holding source folios
->> > > locked for collapse. Keep page_cache_sync_readahead() and its existing
->> > > policy, and drop each folio's lock and reference after checking that it
->> > > is uptodate. If truncate or reclaim removes a folio between the two
->> > > passes, roll back instead of doing readahead again with source folios
->> > > locked.
->> > > 
->> > > Shmem handles swapin and fallocated folios through shmem_get_folio()
->> > > without taking mapping->invalidate_lock, so it isn't affected by this
->> > > lock inversion.
->> > > 
->> > > Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
->> > > Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
->> > > Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
->> > > Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> > > ---
->> > 
->> > Thanks for the fix.
->> > 
->> > > Thanks to Nguyen Ngoc Thang for v2. David asked for volunteers, so I'm
->> > > happy to take this over.
->> > > 
->> > > Some older stable trees lack the folio infrastructure used here, and the
->> > > code will differ for each stable tree, so each backport will need quite a
->> > > bit of rework and its own review. I'm not sure whether to Cc stable here.
->> > > Once we agree on the fix, I'll send a separate backport for each maintained
->> > > stable tree except 5.10, which isn't affected.
->> > > 
->> > > v2 -> v3:
->> > >   - Replace the scan-wide invalidate_lock and page_cache_ra_unbounded() with
->> > >     a preparation pass using page_cache_sync_readahead().
->> > >   - Roll back on a new page cache miss during collapse.
->> > >   - https://lore.kernel.org/all/20260913163644.122133-1-ngocthang2710.1999@gmail.com/
->> > > 
->> > >   mm/khugepaged.c | 42 +++++++++++++++++++++++++++++++-----------
->> > >   1 file changed, 31 insertions(+), 11 deletions(-)
->> > > 
->> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> > > index ef5cd6fda34f..b3f67617caf0 100644
->> > > --- a/mm/khugepaged.c
->> > > +++ b/mm/khugepaged.c
->> > > @@ -2262,6 +2262,34 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->> > >   	new_folio->index = start;
->> > >   	new_folio->mapping = mapping;
->> > > +	if (!is_shmem) {
->> > > +		/*
->> > > +		 * Populate the range before accumulating locked source folios:
->> > > +		 * readahead may block on invalidate_lock.
->> > > +		 */
->> > > +		for (index = start; index < end;) {
->> > 
->> > why drop xas_unlock_irq()?
->> > 
->> > > +			folio = filemap_lock_folio(mapping, index);
->> > > +			if (IS_ERR(folio)) {
->> > > +				page_cache_sync_readahead(mapping, &file->f_ra,
->> > > +							  file, index, end - index);
->> > > +				folio = filemap_lock_folio(mapping, index);
->> > > +				if (IS_ERR(folio)) {
->> > > +					result = SCAN_FAIL;
->> > > +					goto rollback;
->> > > +				}
->> > > +			}
->> > > +			if (!folio_test_uptodate(folio))
->> > > +				result = SCAN_FAIL;
->> > 
->> > Do we need to check PG_uptodate after locking the folio? If we successfully
->> > lock the folio, doesn't that mean the read I/O has completed? The following
->> 
->> Yes, you do; a read can "complete" without the IO having completed successfully,
->> and in those cases PG_uptodate is not set, but the folio is unlocked.
->> 
->> Either way, why are we checking for uptodate here? We only care for starting readahead.
->> Anyway, I would possibly recommend we do this as post-processing, not pre-processing.
->> The current loop is a little overhead-happy.
->
->To clarify: I would do this kind of RA as an error path if isolation failed.
->Namely, at the end of rollback, after unlocking folios. It doesn't make sense
->to me to do this kind of checking upfront. I don't think it's particularly
->realistic that, starting RA upfront, you'd see uptodate completed folio reads
->when doing the actual isolation.
 
-Good call! I should have thought of that :P We can do this on demand after
-rollback rather than walk the range every time :)
+On 10/16/26 5:30 PM, David Hildenbrand (Arm) wrote:
+> On 10/16/26 03:48, Baolin Wang wrote:
+>> Ayush reported an issue that shmem/tmpfs folios are still mapped when
+>> truncating them on production:
+>> "
+>> BUG: Bad page cache in process ...  pfn:...
+>> page dumped because: still mapped when deleted
+>> "
+>>
+>> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
+>> branch, and I got the following crash info. From the dump message, we can
+>> see that truncate_inode_folio() is really trying to remove mapped folios,
+>> which is incorrect.
+>>
+>> "
+>> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
+>> index:0x3880 pfn:0x191647
+>> [  189.171995] memcg:ffff0000cc073d40
+>> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
+>> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
+>> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
+>> .......
+>> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
+>> [  189.172026] ------------[ cut here ]------------
+>> [  189.172027] kernel BUG at mm/filemap.c:155!
+>> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+>> .......
+>> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
+>> 7.3.0-rc4+ #277 PREEMPT(lazy)
+>> .......
+>> [  189.183986] Call trace:
+>> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
+>> [  189.184391]  __filemap_remove_folio+0x34/0x160
+>> [  189.184633]  filemap_remove_folio+0x4c/0xb0
+>> [  189.184859]  truncate_inode_folio+0x34/0x58
+>> [  189.185087]  shmem_undo_range+0x220/0x658
+>> [  189.185308]  shmem_fallocate+0x2f0/0x470
+>> [  189.185527]  vfs_fallocate+0x128/0x328
+>> ......
+>> [  189.187078]  el0t_64_sync+0x184/0x188
+>> "
+>>
+>> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
+>> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
+>> MADV_DONTNEED synchronously releases the pagetable page before calling
+>> tlb_flush_rmaps(), this could cause another thread's truncation to skip
+>> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
+>> as non-zero. A possible race scenario is as follows:
+>>
+>> CPU 0                           CPU 1
+>> shmem_fallocate                 madvise_dontneed_single_vma
+>>    unmap_mapping_range            .......
+>>    ......
+>>    (filemap_map_pages() remap folios)
+>> 				  zap_pte_range
+>>    truncate_inode_folio		    zap_empty_pte_table(pmd clear)
+>>      unmap_mapping_folio
+>>      ......
+>>        zap_pmd_range (saw pmd none, skip)
+>>
+>>    filemap_remove_folio
+>>      BUG_ON(folio_mapped)
+>>                                      tlb_flush_rmaps(remove rmaps)
+>>
+>> To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
+>> to after tlb_flush_rmaps() and use sync_with_folio_pmd_zap() to sync with
+>> concurrent zapping, so that when we find a pmd_none() while unmapping a folio
+>> without holding the PTL, the folio's mappings are guaranteed to have been
+>> removed via tlb_flush_rmaps().
+>>
+>> [1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
+>> Reported-by: Ayush Ranjan <ayushr@modal.com>
+>> Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
+>> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>> Changes from v2:
+>>   - Use use sync_with_folio_pmd_zap() to sync with concurrent zapping (Per David).
+>> Changes from v1:
+>>   - Add an smp_rmb() to pair with the smp_wmb() (Per Lorenzo and Pedro).
+>> ---
+>>   mm/internal.h |  9 +++++----
+>>   mm/memory.c   | 25 ++++++++++++-------------
+>>   2 files changed, 17 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/mm/internal.h b/mm/internal.h
+>> index 0434dfcfc36f..6d8f494296a4 100644
+>> --- a/mm/internal.h
+>> +++ b/mm/internal.h
+>> @@ -585,14 +585,15 @@ void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
+>>   void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+>>   
+>>   /**
+>> - * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
+>> + * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
+>>    * @mm: The mm_struct.
+>>    * @pmdp: Pointer to the pmd that was found to be pmd_none().
+>>    *
+>>    * When we find a pmd_none() while unmapping a folio without holding the PTL,
+>> - * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
+>> - * indicate that it's unmapped. Skipping the PMD without synchronization could
+>> - * make folio unmapping code assume that unmapping failed.
+>> + * zap_huge_pmd() or zap_empty_pte_table() may have cleared the PMD but not
+>> + * yet modified the mapped folios to indicate they are unmapped. Skipping the
+>> + * PMD without synchronization could make folio unmapping code assume that
+>> + * unmapping failed.
+>>    *
+>>    * Wait for concurrent zapping to complete by grabbing the PTL.
+>>    */
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index 6a8e7772b8d6..8f7ba427371b 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>>   		}
+>>   	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+>>   
+>> +	add_mm_rss_vec(mm, rss);
+>> +	lazy_mmu_mode_disable();
+>> +
+>> +	/* Do the actual TLB flush before dropping ptl */
+>> +	if (force_flush) {
+>> +		tlb_flush_mmu_tlbonly(tlb);
+>> +		tlb_flush_rmaps(tlb, vma);
+>> +	}
+>> +
+>>   	/*
+>>   	 * Fast path: try to hold the pmd lock and unmap the PTE page.
+>>   	 *
+>> @@ -2046,15 +2055,6 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>>   	 */
+>>   	if (can_reclaim_pt && direct_reclaim && addr == end)
+>>   		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
+>> -
+>> -	add_mm_rss_vec(mm, rss);
+>> -	lazy_mmu_mode_disable();
+>> -
+>> -	/* Do the actual TLB flush before dropping ptl */
+>> -	if (force_flush) {
+>> -		tlb_flush_mmu_tlbonly(tlb);
+>> -		tlb_flush_rmaps(tlb, vma);
+>> -	}
+>>   	pte_unmap_unlock(start_pte, ptl);
+>>   
+>>   	/*
+>> @@ -2102,12 +2102,11 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+>>   				continue;
+>>   			}
+>>   			/* fall through */
+>> -		} else if (details && details->single_folio &&
+>> -			   folio_test_pmd_mappable(details->single_folio) &&
+>> -			   next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
+>> -			sync_with_folio_pmd_zap(tlb->mm, pmd);
+>>   		}
+>> +
+>>   		if (pmd_none(*pmd)) {
+>> +			if (details && details->single_folio)
+>> +				sync_with_folio_pmd_zap(tlb->mm, pmd);
+>>   			addr = next;
+> 
+> By keeping it in the else path above you avoid re-taking the lock if you just
+> sync'ed already when you saw pte_present() and resulted in pte_none().
 
-I played around with it a bit, something like:
+If I understand you correctly, you want something like below?
 
----8<---
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 85ea095906fb..ce5d89ff47b3 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2290,6 +2290,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	enum scan_result result = SCAN_SUCCEED;
- 	int nr_none = 0;
- 	bool is_shmem = shmem_file(file);
-+	bool do_readahead = false;
-+	bool readahead_done = false;
+	} else if (details && details->single_folio && pmd_none(*pmd)) {
+		sync_with_folio_pmd_zap(tlb->mm, pmd);
+	}
 
- 	/*
- 	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
-@@ -2307,6 +2309,10 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+	if (pmd_none(*pmd)) {
+		addr = next;
+		continue;
+	}
 
- 	mapping_set_update(&xas, mapping);
+But this doesn't fix the race, because CPU 0 could see the first 
+pmd_none() return false and the second pmd_none() return true, in which 
+case no sync would happen at all.
 
-+retry:
-+	result = SCAN_SUCCEED;
-+	do_readahead = false;
-+	xas_set_order(&xas, start, HPAGE_PMD_ORDER);
- 	__folio_set_locked(new_folio);
- 	if (is_shmem)
- 		__folio_set_swapbacked(new_folio);
-@@ -2371,17 +2377,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 			}
- 		} else {	/* !is_shmem */
- 			if (!folio || xa_is_value(folio)) {
--				xas_unlock_irq(&xas);
--				page_cache_sync_readahead(mapping, &file->f_ra,
--							  file, index,
--							  end - index);
--				/* drain lru cache to help folio_isolate_lru() */
--				lru_add_drain();
--				folio = filemap_lock_folio(mapping, index);
--				if (IS_ERR(folio)) {
--					result = SCAN_FAIL;
--					goto xa_unlocked;
--				}
-+				do_readahead = !readahead_done;
-+				result = SCAN_FAIL;
-+				goto xa_locked;
- 			} else if (folio_test_dirty(folio)) {
- 				/*
- 				 * This page is dirty because it hasn't
-@@ -2704,6 +2702,30 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	new_folio->mapping = NULL;
+Moreover, if you mean the sync already happens in zap_pte_range() via 
+pte_offset_map_lock() (because the PMD is none), note that in this case 
+zap_pte_range() returns the start address, meaning we'd recheck the PMD 
+when we get back to zap_pmd_range(). So even with 'keeping it in the 
+else path', we'd still call sync_with_folio_pmd_zap() to sync this none PMD.
 
- 	folio_unlock(new_folio);
-+
-+	/* Readahead may take invalidate_lock; source folios are unlocked. */
-+	if (do_readahead) {
-+		for (index = start; index < end;) {
-+			folio = filemap_lock_folio(mapping, index);
-+			if (IS_ERR(folio)) {
-+				page_cache_sync_readahead(mapping, &file->f_ra,
-+							  file, index, end - index);
-+				folio = filemap_lock_folio(mapping, index);
-+				if (IS_ERR(folio)) {
-+					result = SCAN_FAIL;
-+					goto out_put;
-+				}
-+			}
-+			index = folio_next_index(folio);
-+			folio_unlock(folio);
-+			folio_put(folio);
-+		}
-+		/* Drain the local LRU batch before retrying isolation. */
-+		lru_add_drain();
-+		readahead_done = true;
-+		goto retry;
-+	}
-+out_put:
- 	folio_put(new_folio);
- out:
- 	VM_BUG_ON(!list_empty(&pagelist));
---
+	addr = zap_pte_range(tlb, vma, pmd, addr, next, details);
+	if (addr != next)
+		pmd--;
 
-Cheers, Lance
+Please correct me if I misunderstand your point. Thanks.
 
