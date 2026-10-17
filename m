@@ -4,76 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C46C4CCF2C4
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 15:41:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 883A7CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 15:54:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 808C26B0088; Sat, 17 Oct 2026 11:41:31 -0400 (EDT)
+	id 5891B6B0088; Sat, 17 Oct 2026 11:54:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BAB96B008A; Sat, 17 Oct 2026 11:41:31 -0400 (EDT)
+	id 53A756B008A; Sat, 17 Oct 2026 11:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CFE56B008C; Sat, 17 Oct 2026 11:41:31 -0400 (EDT)
+	id 450F06B008C; Sat, 17 Oct 2026 11:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 452816B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 11:41:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D296A40294
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:41:30 +0000 (UTC)
-X-FDA: 85332532740.27.6F20320
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 467E0180006
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:41:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792251689;
-	b=zrFj8yNsAkXSnMM9hjegqv2ot5+h5W18J344inv/iLDF7IX/PFpuNZAo54UxZjMckWCNqe
-	WdqObkFcAxAPR0rrOlikrMzX2TlI0O6BSzdCAQ3yhruYK2eK25Tqm/DL2FnAMqeBX93jJH
-	X4D++WNqHw7wq947OU/U33GBr6nd91A=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DEE36B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 11:54:14 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE547A7A65
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:54:12 +0000 (UTC)
+X-FDA: 85332564744.29.A31A20D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 56F2A100003
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 15:54:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hPlOkLY3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792251689;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=HXjCdSTSw8tkdXl8pfePmVTrTVApqz3VyVQTrGwKdJs=;
-	b=lplNn0yw6s4PePePnj/KzX28MPmooFVsVpB7Jbq4V2KoX1ToBXldodIrVoDCpCGPiNbxyc
-	gq+XqIb8RSaZ2sKZi1BNe6SEovvGn3ZHkCkfDwi3A/ew7+14jleQ9C3EgSf8ZJHKJL+Ioy
-	IkdC9OIXQ5ObHgr/bV0Bx3LDZHW4LJY=
-Received: from escalante.csail.mit.edu ([128.52.128.198])
-	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xI6XA-002Lfu-P6;
-	Sat, 17 Oct 2026 11:41:20 -0400
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>
-Cc: Baoquan He <baoquan.he@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: [PATCH v1] mm/vmalloc: read vm_map_ram block regions from the requested offset
-Date: Sat, 17 Oct 2026 11:41:20 -0400
-Message-ID: <20261017154120.795844-1-nickolai@csail.mit.edu>
-X-Mailer: git-send-email 2.53.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 467E0180006
+	s=arc-20220608; t=1792252451;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zR54dX5mGu1eslkqUMjenGYBFjPvHaWyaxWS+T8+F8A=;
+	b=1b9W3JJizRYbZ/dBVr4gHWlNxGR3gZXLt4ApOzHhciImljGn5lOq7NCXgx4G2m+qLfn7FW
+	/NHpuLXTCk9A3j0edHiYbcAKu9AxMg/sYBS472mb2klUBdPufTI20np/JOSlWXkGrt1Wvc
+	dICgq3fvcTD0cwrGL15NN+nArJdnlAg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792252451;
+	b=wSbqVHkIi2G6H7a9rF7CPl2q5WMIqlb7bx1CfkBgxp/ctur4Oq/iTJXxszNYuyTFGYHB+s
+	4q2mYaSuiRIhe9lMrya6vmB30YJ0ePvUHdmeJGGvjJGaOMdNZ7A1Oo+NhXKUI/acJw8i1N
+	ZIVeu1+iKQr6qpJTPMPFm0LBVHL0lzU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hPlOkLY3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8EDCF602BA;
+	Sat, 17 Oct 2026 15:54:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EB01F000C4;
+	Sat, 17 Oct 2026 15:54:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792252450;
+	bh=zR54dX5mGu1eslkqUMjenGYBFjPvHaWyaxWS+T8+F8A=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hPlOkLY3drAbSzxoixpsfbX+/90+C91WbIUKsdvpmRCXqChJck060CdGxWd53JAeW
+	 avl16jlf/Wk/+SsZ7OhCN8avfGuLTo9TQUOaYto2vnncJ2tnZALkRDJpQ4kPj+gTtd
+	 J5s5k4c+xEKgrPu2YuJArn3qynMR6As8UarLIlJTRmEWOZZEDL8M+RGMHFROs36HfZ
+	 yIYQ+ZCMh0FA6+WB2y5oraOHffhPZRzxlV5p8zyTaDTDJQh88z4LzNQLXW0V3Xs+nK
+	 3zyePagoIJwbjnW5t05EvYGDGjIpjxOtJwAFnI98HrFTq2Vup69VE7CP+XSEFyULOw
+	 QXgoSKDbP0UzQ==
+Message-ID: <sashiko-outbox-175617@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/slab: Call call_rcu() directly from
+ __kfree_rcu_sheaf() in any context
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Puranjay Mohan" <puranjay@kernel.org>, linux-mm@kvack.org
+Cc: "Vlastimil Babka" <vbabka@kernel.org>, "Harry Yoo" <harry@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>
+In-Reply-To: <20261016155340.3304319-1-puranjay@kernel.org>
+References: <20261016155340.3304319-1-puranjay@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 17 Oct 2026 15:54:09 +0000
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 56F2A100003
+X-Stat-Signature: zriza7rirdf95ggggh8rnzz9r7jz37ap
 X-Rspam-User: 
-X-Stat-Signature: ka44m94saz9b3hf3po7zixrwhbew18ag
-X-HE-Tag: 1792251689-278891
-X-HE-Meta: U2FsdGVkX1/wuEcj9w/9KwsyNvxLGExVBTzhVyt25izTDykuKklcx59GZFuIGViCQvLSOOQ54xRujRFErxmeTUAl3ML5Nwf1Rku+4HFmzmQhNik/IngtSUX6+r9DUYxtz4uSTw1yNDSQscuG0EFfranf/dzyQS7M8xUY13P0j8n5e7g2FdRdBhBv1w2ww+Q+CbvTZ535XIEQg6Z6oR+6abM6AmEpxIRXzWcijYtKoCLw6XqVH3gkSEjDOJ2P1mC7oB1nneJh8Phe9cuRsN38XNhHodr+vFBJNQoeH3boC8vcO//jMcoxw96Qh9oUNTSOzic0hUrk/RlFw6X7ilkrmREFdkaWieyDgVg7xSVYGsk1sQqR6ueYNZEJ36Vpbl7AtNW+m031kHJv2re0ebgV/nCp2cFdo4KgZ8YaT4cO44f9ecrkyquPz5kZEfmkFP9TsbD9dX94LtNoIMwskKY9+7co3yiTiIupRH90zQoZ8eKL4ywf59TsTfd2+xWI1FVdB4J0LIqsoYN06+qnjlxT5Tm7My7CYyVNj1+ToDIhm5yOhlrKK4s4gncNyWAHqExr+iTreQj8HLsEu7iYQjnCP0s3RP8blnUJY4mS+b6a/HOfHa0k9TTDp9cLscovHD7+/ZUqRG8cik3F7ScMJ0uUdzFS6xqnmmVt6OmXBPi3GbItJwMd00ORh949h04lYK1db1RNh6UPMnT0cC6CYgdGjpP/VqI98nkurkwJYzWnHjQJOFb6TVy8kKXO8ow0Or61fU98pHlt90zRl8PDY9Nvs9oY8HYY/iUb0vv6yYCQ46UAVuAatPY3NZABJaJittZshlfFXuttm8Tn7sYwvIA4r5LopMPWgagzA8mHAX0QQkWD73t0qSr9oLP5nU54yAQjklfjWETtGsznX9l4TGMctfR0urCnuT79J2F36bhYDAOgycOED3MckjuXkng0yA5upGSfEXWXqD9Xs3l0NlX
- /f8/708m
- 61z3ag5pI5PpJKkLsixvdGFF4kX5QVXUR+UcvsAvnOVq150AvYyb/bkBtcXkWOxNze0762pYDsMbmi6O336UPbEyE8rZDKrycd9HO2o/cQjS5K+ThBls6Ie9HH9wzFTAvdt7O
+X-HE-Tag: 1792252451-137797
+X-HE-Meta: U2FsdGVkX1+U2hqvTwuNHBPUU+YyEk0Y663czfYHXsMUVkx78j47C2PjrtHj9P/6ATYxI0FplsSRd/ZrurE2f+Y7Yfj6gC6XNvUFCuu48jHt2FZw+q6U0aEmcjUQ711us12DrWGp4ikZDU0ei/8NJgLOLAMJ1i5oQOaoNvBC+tIhUHUyhXhmlRvsjK2pGqt31uvnwIaYnhU4go39ZBvvdoBhufvKgHhphqfI5SIoX96bnJKWSXgo+vU7hiJlKyr3X+7dTgOtiwatet33La/pGdqOP4wDx7vx4DV7NWcDh5M/RKuTLSvLNVNaXvfqSu4sswrR82cLXdQc9ugsJVAsWdzF85EmZzb5H0I0LOKgvbRyT0YJUOGYis1WHpRPLT2oA16sy+m4Ev2VGJ6Lmf0EtCPN7NeGKrmvS12CiamcOk1vuuIPB7A4tcY5IPoyTeAQ4rTulZ2xD6dZdD3zRCN2uekzMiufobTo4ZuqmUE1GVvKvdusEEPtxdQcFOx6/VfvTlMuYeJftCnBmp9VO7rUPdLZA1l0/jDBwVvoEUZRH1HPKLuCaTBFBpRM3wlhAcdOVIpKyH3g/BciOd6Bd8pOOMnKshW0gEUfYsXu5JzdyLip5hA0oROYKxWEDTCLnVKMARyrf76F0fs2v23D4/vm1PRuq+/wx5LEj08rypwl/ZtHEEVypC4bSLxoE4JMhsC1Xeww5JxV1SWD8rp1M431jDJlIR5aFZcri1PM3h3SHzWMgs2eFdDmSbAYp2Knad9c/HlhexWn51hGqZE2YSIwVqOyK683q3dgZq7DUUnAGL1HxVV/sFdrjvsD+Bnxh4cgUMhkN/AdHqXH9ZN/erHZM93+MnmqjU8vtQWu3BDB+Az5Xn4bixu0RYojIKbSgK5RUBf28/fLN1RLAb3QicrbaoTvDHGqy+0G6N2MNnoE3otm8jjSJvd9oNhRPYvGOKfCGfx0pbzzgiQSSGGVM4G
+ bSmcucFV
+ qGnw2mJmxd31ZYWgwFAvmylHizZ6ZFkKowhWZFbPQgbcsqKHrWUWyUEU4ShFLJ6iIpMlfRpqGFMoDXv1kMYSf6qgW2wBVDIYFCd1NPK71xByzIJvO8SpK7hEa2Suvb9wniquQQQVbILaayvwX9XBK6a6Fx3xEajPy4YU2GivReu3bMLDygjNezz7KFt6WINCJg/vYaoSGGEVs/D1vHjW2PRSITnk37LTkbiVdNvRLg3guY4Pzg4ezEjUE8nWnKloBNskq+oUQFb2+wNmtpmAzqsurYygKPw/JnT0UB8zL2nZOoL/MmMcigGmNyNUbOPBSYv2X3P2/4PqDiWh8pmMcuRAlGrgw1YgY48waWt8mcCeXbdQX6rHsrFvNpBWzhMaw9mSt/spSKPYeH9g2/m3q9ZdhxjsV+/uHChOCvNGrlivW9jY+8IkN8TzhlcIbeYBcb2l/e2zq/sYLbFkvJDZrEc0+2VYMGx8rSgs86dWZl+UxdLZYxlHCRe+eX7sTKyxsPeUL7SANDSCMQAjox0zH+7hr3bKAYwMA2UuItryp4DPCBfvfYNrQ7leFt9puPv2ESWC4m9yXcZkcItXoD6Rs9cDZX3ID40kY2wzVetly6s++b6Y+h67XxdMUTfMEpdA5AXKU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -81,159 +91,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Reading a vm_map_ram() mapping through /proc/kcore returns the wrong
-memory for every page except the first page of the first used region in
-its vmap block.  read_kcore_iter() calls vread_iter() one page at a
-time, so a root user reading a live system with drgn, crash or gdb gets
-that first page in place of every later page of the mapping, and in
-place of the zeroes of the unused pages after it.  This affects every
-vm_map_ram() mapping that fits in a vmap block (up to BITS_PER_LONG
-pages): erofs and f2fs decompression buffers, videobuf2 vmalloc/dma-sg
-buffers, udmabuf vmaps, fuse readdir pages.  Kernels since v6.3 are
-affected.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] mm: call_rcu() list corruption due to reentrancy from NMI
+- [Low] mm: unused llnode field in struct slab_sheaf
+--
 
-vmap_ram_vread_iter() walks the used regions of the block and, for each
-region, zero-fills up to its start and then copies from
-start + offset_in_page(addr).  A read starting in a later page of a
-region therefore copies the region's first page, and a read starting
-past the end of a region still copies from that region.
+commit 81da114bf5411864e59d873df170399156acac6d
+Author: Puranjay Mohan <puranjay@kernel.org>
 
-Skip regions that end at or before addr, and copy from addr itself,
-i.e. use addr - start as the offset into the region.
+mm/slab: Call call_rcu() directly from __kfree_rcu_sheaf() in any context
 
-Tested on x86_64 by queueing a 29-page V4L2_MEMORY_USERPTR buffer on a
-vivid capture device, which videobuf2-vmalloc maps with vm_map_ram(),
-page i starting with "userptr page i", and reading every page of its
-vmap block through /proc/kcore.  Before, all 1024 pages of the block
-read as page 0.  After, pages 0..28 read back in order and the rest of
-the block carries no tag.  With a second buffer in the same block and a
-100-page buffer outside the block path, reads at unaligned offsets,
-across page and region boundaries, into and within the unused part of
-the block, and of the whole block return the true contents.
+This patch removes the deferred irq_work fallback for rcu_sheaves and
+instead calls call_rcu() directly from __kfree_rcu_sheaf() in all contexts.
+The commit message states that call_rcu() now natively handles reentrancy
+from NMIs.
 
-Fixes: 06c8994626d1 ("mm/vmalloc.c: allow vread() to read out vm_map_ram areas")
-Assisted-by: LLM
-Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
----
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 8fbc6bf8ebc51..6c44f4495db5a 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4145,7 +4145,6 @@ static void flush_all(struct kmem_cache *s)
+>  struct deferred_percpu_work {
+>  	struct llist_head objects;
+>  	struct llist_head objects_by_rcu;
+> -	struct llist_head rcu_sheaves;
+>  	struct irq_work work;
+>  };
 
-Notes:
-    Reproducer (CONFIG_PROC_KCORE=y, CONFIG_VIDEO_VIVID=y or =m, root):
-    
-      /* short.c: argv[1] = vivid capture node */
-      #include <elf.h>
-      #include <fcntl.h>
-      #include <linux/videodev2.h>
-      #include <stdio.h>
-      #include <string.h>
-      #include <sys/ioctl.h>
-      #include <sys/mman.h>
-      #include <unistd.h>
-    
-      int main(int argc, char **argv)
-      {
-      	struct v4l2_format fmt = { .type = V4L2_BUF_TYPE_VIDEO_CAPTURE };
-      	struct v4l2_requestbuffers req = { .count = 1,
-      		.type = V4L2_BUF_TYPE_VIDEO_CAPTURE, .memory = V4L2_MEMORY_USERPTR };
-      	struct v4l2_buffer b = { .type = V4L2_BUF_TYPE_VIDEO_CAPTURE,
-      		.memory = V4L2_MEMORY_USERPTR };
-      	static Elf64_Phdr ph[64];
-      	static char buf[4096], line[256];
-      	unsigned long lo, hi, a;
-      	int fd = open(argc > 1 ? argv[1] : "/dev/video0", O_RDWR);
-      	int kc = open("/proc/kcore", O_RDONLY), i, n, np, c;
-      	Elf64_Ehdr eh;
-      	FILE *f;
-      	char *p;
-    
-      	ioctl(fd, VIDIOC_G_FMT, &fmt);
-      	fmt.fmt.pix.width = 320;
-      	fmt.fmt.pix.height = 180;
-      	ioctl(fd, VIDIOC_S_FMT, &fmt);
-      	np = (fmt.fmt.pix.sizeimage + 4095) / 4096;	/* 29 for YUYV */
-      	p = mmap(NULL, np * 4096, PROT_READ | PROT_WRITE,
-      		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-      	for (i = 0; i < np; i++)
-      		sprintf(p + i * 4096, "userptr page %d", i);
-      	b.m.userptr = (unsigned long)p;
-      	b.length = np * 4096;
-      	if (ioctl(fd, VIDIOC_REQBUFS, &req) || ioctl(fd, VIDIOC_QBUF, &b))
-      		return perror("QBUF"), 1;	/* buffer now vm_map_ram()ed */
-    
-      	f = fopen("/proc/sys/kernel/kptr_restrict", "w");	/* raw %pK */
-      	fputs("1", f);
-      	fclose(f);
-      	if (pread(kc, &eh, sizeof(eh), 0) != sizeof(eh) || eh.e_phnum > 64 ||
-      	    pread(kc, ph, eh.e_phnum * sizeof(*ph), eh.e_phoff) < 0)
-      		return perror("/proc/kcore"), 1;
-      	f = fopen("/proc/vmallocinfo", "r");
-      	while (fgets(line, sizeof(line), f)) {
-      		if (!strstr(line, "vm_map_ram") ||
-      		    sscanf(line, "0x%lx-0x%lx", &lo, &hi) != 2)
-      			continue;
-      		printf("%lx:", lo);
-      		for (c = 0, a = lo; a < hi; a += 4096)
-      			for (i = 0; i < eh.e_phnum; i++)
-      				if (ph[i].p_type == PT_LOAD && a >= ph[i].p_vaddr &&
-      				    a < ph[i].p_vaddr + ph[i].p_memsz &&
-      				    pread(kc, buf, 4096, ph[i].p_offset +
-      					  a - ph[i].p_vaddr) == 4096 &&
-      				    sscanf(buf, "userptr page %d", &n) == 1 &&
-      				    c++ < 32)
-      					printf(" %d", n);
-      		printf("%s (%d pages carry a tag)\n", c > 32 ? " ..." : "", c);
-      	}
-      	return 0;
-      }
-    
-      $ gcc -static -o short short.c
-      # modprobe vivid; ./short /dev/videoN     # N = vivid capture node
-    
-    Before:
-      ff32776280800000: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... (1024 pages carry a tag)
-    After:
-      ff636d6c00800000: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 (29 pages carry a tag)
+[Severity: Low]
+This isn't a bug, but since this patch removes the rcu_sheaves list and all
+its associated logic, should the llnode field in struct slab_sheaf also be
+removed?
 
- mm/vmalloc.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+It appears the llnode field in struct slab_sheaf was only used to defer
+this call_rcu() invocation.
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index bea9f76ed7e7..34340c2490b8 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4588,7 +4588,7 @@ static size_t vmap_ram_vread_iter(struct iov_iter *iter, const char *addr,
- 	struct xarray *xa;
- 	unsigned long offset;
- 	unsigned int rs, re;
--	size_t remains, n;
-+	size_t remains, n, size;
- 
- 	/*
- 	 * If it's area created by vm_map_ram() interface directly, but
-@@ -4622,6 +4622,10 @@ static size_t vmap_ram_vread_iter(struct iov_iter *iter, const char *addr,
- 			goto finished;
- 
- 		start = vmap_block_vaddr(vb->va->va_start, rs);
-+		size = (re - rs + 1) << PAGE_SHIFT;
-+
-+		if (addr >= start + size)
-+			continue;
- 
- 		if (addr < start) {
- 			size_t to_zero = min_t(size_t, start - addr, remains);
-@@ -4635,8 +4639,8 @@ static size_t vmap_ram_vread_iter(struct iov_iter *iter, const char *addr,
- 		}
- 
- 		/*it could start reading from the middle of used region*/
--		offset = offset_in_page(addr);
--		n = ((re - rs + 1) << PAGE_SHIFT) - offset;
-+		offset = addr - start;
-+		n = size - offset;
- 		if (n > remains)
- 			n = remains;
- 
+[ ... ]
 
-base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
--- 
-2.53.0
+> @@ -6308,22 +6306,8 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void =
+*obj, unsigned int free_flags)
+>  	 * we flush before local_unlock to make sure a racing
+>  	 * flush_all_rcu_sheaves() doesn't miss this sheaf
+>  	 */
+> -	if (rcu_sheaf) {
+> -		/*
+> -		 * With !allow_spin, we might have interrupted call_rcu()'s
+> -		 * IRQ-disabled critical section. If IRQs are not disabled,
+> -		 * we know that's not the case.
+> -		 */
+> -		if (unlikely(!allow_spin && irqs_disabled())) {
+> -			struct deferred_percpu_work *dpw;
+> -
+> -			dpw =3D this_cpu_ptr(&deferred_percpu_work);
+> -			if (llist_add(&rcu_sheaf->llnode, &dpw->rcu_sheaves))
+> -				irq_work_queue(&dpw->work);
+> -		} else {
+> -			call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
+> -		}
+> -	}
+> +	if (rcu_sheaf)
+> +		call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
 
+[Severity: High]
+The commit message states: "When it is called with IRQs disabled (from NMI,
+or re-entered from instrumentation), it stages the callback on a per-CPU
+list and re-issues it from irq_work."
+
+Looking at the implementation of call_rcu() and __call_rcu_common() in
+kernel/rcu/tree.c, it disables IRQs and synchronously manipulates the
+callback list. It does not appear to contain an NMI/irq_work fallback.
+
+If __kfree_rcu_sheaf() is called from an NMI or tracing context (such as
+from bpf or perf) while the CPU is already executing call_rcu() or
+rcu_do_batch(), could this direct call to call_rcu() re-enter the list
+manipulation and corrupt the RCU callback lists?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261016155340.3304=
+319-1-puranjay@kernel.org?part=3D1
 
