@@ -4,149 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7326CCF2C4
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 17:12:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF42CCF2C1
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 17:31:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88E016B0088; Sat, 17 Oct 2026 13:12:09 -0400 (EDT)
+	id 1D5AB6B0088; Sat, 17 Oct 2026 13:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83F146B008A; Sat, 17 Oct 2026 13:12:09 -0400 (EDT)
+	id 186466B008A; Sat, 17 Oct 2026 13:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72E116B008C; Sat, 17 Oct 2026 13:12:09 -0400 (EDT)
+	id 075026B008C; Sat, 17 Oct 2026 13:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 49DAF6B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 13:12:09 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D865C6B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 13:31:15 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6CA7A034D
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 17:12:08 +0000 (UTC)
-X-FDA: 85332761136.22.6C235F6
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DEFB0100002
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 17:12:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=seYo85+J;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lrizzo@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792257126;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78112A7CC0
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 17:31:15 +0000 (UTC)
+X-FDA: 85332809310.22.D7C159B
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 79821C000A
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 17:31:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lp8N6QZy;
+	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792258273;
+	b=fh13njCNToCkI5+Of1XmmMzmbDyu8BJdxMBzEdFCdeHow3Zz1Be3AYxgxD+WjQQyBAX01T
+	p+OrWmCNoWR25QOQcbIENzA7Cic1LqbZkIW4KybNoV7s6WFJfN1MJ0muyC8yYmnvtZo7ak
+	Fv/ByYRzEpjZZilVOHgG5ST6w9uCuRU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lp8N6QZy;
+	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792258273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
-	b=TNmH4xFXFvotD9IWfUG1xLSRMBCRIsVm5rkeyGBnY8GPurOonOxIJxNUj+qHZwwDMtwD3X
-	L2sxjOJ65p++bX0KJM4HY47Lv8Z+ZpDue5EUpGwi/jGykhqBS29Rc6aRlktIxrDzFQBDv3
-	lFJa2Wzfqy2ZTeJBZRP+5UUGQ7tGHR0=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=seYo85+J;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lrizzo@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792257126;
-	b=F3vIAfnBHIuM+Ylxds6d+Ou2Nx0ESNzCTRsU5RYBXjPey6fdZ4XaxfXmIjYPsyi8TkBKNe
-	Af4FTWdSB3qCOMGjt0k5yaa/W2D4o4hQas8dj3gj3lVCW71TKkyjLhnEGLB0ZPH3wOfi9u
-	CgeXPUcV8ozS2kuXEfS7r5z349zwbcU=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so24845ad.1
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 10:12:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792257126; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gZeXY5pl/THEFl65bEyjw2ndz0AU6U+qLibU4FmZr9J+Je1DVuw+4DRWzGgGbkTBM4
-         Kn2ev3SkR3qeiOip+VKV/c6rdcjfgCVc6jRvsdMeb7T2E8ViALzizqy7iGuIOoF3VcUr
-         CTMR38/cpGusKiADTkiESZOKB0tXeILeQzFpn5Wdn1KZaweyibc/QqIasnDfoJXc4Msp
-         IXZ88s60/q94PD9LZYMaP6+UahRwhi+sOFfMO6/gTFW6FvymgReBtGUT4COVTzOIrXMb
-         33PODl6aO+seVKBo65bv5iL3jiUcu90XbZaamOEsIFPMN4N4h4k+WE8Cf2If4Ok8Hp7u
-         VMbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
-        fh=b/HeXeWSkKhrBTcNfZwCJT0S8SkvqNwb6uMI2ok9tU8=;
-        b=QgIwikr+GL5O96ev9IJruC47dKUnRUDwIRBMEUO2aDUBs6yjaXW4jsZWHSHrnJkY06
-         Q2/ANbuzTxJUbs51kDaJDO00JFCElWNf4PlkKf1a8zpuM+gkPSGnuCaELqZcuWYRxprJ
-         SKjyNUuqcGWQcmKEiwDyyPN3/FSDGNEepYETiwA1zPMY3aUlOfAQKKlYG7dAAv+NX8Yl
-         +Vt2p/v6OjlZRsAxxdG1mXWJDqT7Sovz+ahxdzmKS9ppdIPsQ5SC/2V1HEeOTV13kBlh
-         gA4Yu7gTfeiqSjNeoD0cZxd6l5+NUP8huee9ikLDWbwuRfbR3chcfKYf+iDBGJr9ZlLZ
-         ykSA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=746x5o1XAfb2RKvAoprpp2XG5c9g1cO4ICwQpVICiVk=;
+	b=HknUuRD6i2EqBqUZvMy63cY7Zj0FVFU48u0OIinzk8/Npe8XgleJZLaFLgHyScA3VUr1Aj
+	+iT0UC5fiaSTmTpIADolC6gskS5M7mheil2nxmcpqTYVG1h7RF+n1pjsHlvhhk5QMmTXB4
+	fhRCHQ7ni0v7essVnf3o/EmO9u0FCoA=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48441a2ba1bso406676f8f.1
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 10:31:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792257126; x=1792861926; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
-        b=seYo85+Jynx/hcJzMMG1qfTLahUiR0HGWBCErYASaEnr635DqbyUoB9kSZM2HqoxJ1
-         HYsap64d2S3Xn5kwuTp5ECe0LhA4WAIKGKL2ptJimDNcHf1duwfNBW08/8RLmlm5M7PI
-         N/YS2BXjG+NcgROL7F950fw5W+692ro2J0xaOjdE4nhMm5CoHwieCQ+WJnZMULuJ2MIQ
-         W2DtjFJgOKNs9CwvED43JDqRWHwCxyF5tSBXtbBEgI0blq6JeJ2i5nLfVDCQjlfjee1r
-         n97R905tH8ZWAa2ZdjVmd6zrN6rKop74VGw6T3/jeCve4J4VjGCOunO7niEdliKNZYc0
-         kI4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792257126; x=1792861926;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1792258272; x=1792863072; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
-        b=LG1PrmH5bm8Scs9QyhgjesYvl+0FjFj731tXjbk8DnuvqnOfUsr8Irx0lpBoROweR3
-         LiFuqmYPDgzTPIOIzA9lKlkAotbTPpdnmf29EbAt0DnXJi8D2h2LxZv3uCWCYvm5/6kV
-         VhY/KsBGESDW0nskgd2XDV3XXYsXF/gyEQYqyWOtGceQm8nfc9URrwcEhIm76ExWvZIQ
-         w1tR4fnyjsJoBiM3Ok+47IHf91BvmqWJQu/kFq+U8BoBd3wPxJBtyfkoLdJy0ykWRyLZ
-         rSsowF1BbridWrtg6mSAQx5Hq3Yibc6mWkArBOlR4+0D+wEEona/r2dwmo7ks3DOdTld
-         4URg==
-X-Forwarded-Encrypted: i=1; AKwUvBxxRDmPxDL5ifxHw4NInc6hNujA98He5rW7oquLJ9I7br25G+QvCm+o+pVLajKmug7GqJR/WtuzKg==@kvack.org
-X-Gm-Message-State: AFq9FYL4GbDAYogKNNzlbDr/l4c/Z8vFWEBfdYneQvXs7L8KGlhxlq8J
-	GBLk/wP24qP0coPgPIKXhNTCZHGdSzVeKm8JDqUwp39vfmYio0nimpI1z35X2wRcsXKRfnoYCma
-	90SjnOVGW2zE3b5VAv8o7eWNTh7kNmA6wK/AQXGWO
-X-Gm-Gg: AYBFou06Y6w0HITPZx36Ub1fxNiNjrl3/f+uSmylyQskq+hw6limLeoFw8T/p0OVRDA
-	Gv5tL/t0V6ymlg5Gyu3p3fOB5thFsE19njj1C+Q/yWUA5+fbZHApydmB/8ejMWFHdm3KYh3XWTs
-	zZocRFOUeePcFkvzot3YQ4Zs1clgq+fpKU8c04cO3/0i3p4yLZi16afzrKXTmwA9vlAyLOJ9Cyc
-	eOUzYGov4FhywGV0PQqKZw14GzMhHDqC26a8wYqsFFFxS4KYGvZbH6q9lHm1Vc3deFYnjmyveiC
-	hffgr9ijlAGjicwxlSzB+g10UlhAAP3kRfjgWKmDZ/slBceBgEnPitp4
-X-Received: by 2002:a17:903:144e:b0:2e3:981:4cc4 with SMTP id
- d9443c01a7336-2e9b3252cdbmr3330175ad.9.1792257125060; Sat, 17 Oct 2026
- 10:12:05 -0700 (PDT)
+        bh=746x5o1XAfb2RKvAoprpp2XG5c9g1cO4ICwQpVICiVk=;
+        b=Lp8N6QZyxVsTM9D5GNKOnMVzWmPCJU61O/ySlJFNR0aORoiscpwpMhcM8VBP4Tao56
+         wqpd7qr4cbFmUF2UV9+1nAcCYuP3vvudGvDTgoCSXZSI7P5CnF5uJO9MkF7zXgN25L7p
+         ENSTmM/O1N23djssc8gq/fpzKJ068HwXP1PPs3TzQGMpgsOpjNiF08ViOX74+hcH4Kjz
+         DcAJbsrcrC/BO0p7u1hb182V3BWotLTh2hgfu/jQGzQIqDRUtlTPEfR2mDAedkBU6Mvk
+         TeC1FArp+D7o1MqCeBdfwudceNYY6Gh4HB5pdh+PTdPJ80wXaWXWBQt7bkIV94I8CPsT
+         3h1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792258272; x=1792863072;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=746x5o1XAfb2RKvAoprpp2XG5c9g1cO4ICwQpVICiVk=;
+        b=gCrfWtq1vOKyAnXR5ETG1M3SkpUW1jifwRCv4eJD2+tn8UZaCIbpahq2U6OBnbtlc/
+         ibuLNH1EyjEWUSKvKmjuhz06CU4h9rAyEdxmfwcsjc0uaPs5MUkXY9adh1ufMCYNh+1I
+         1SREh8bMlNIPUXWNEK2DXu/mQ5W/CksZYZxhpuB5VtPxGpYAKtgVFhnPkRIjdBi+RCsn
+         7dC0V08KBjYOZVwq1/dlku6lip4jEuFbarSCGjTbACmUVg/IHO65kQRIzC110Vjo8eZr
+         bgpPoX7HdJYcryB6YBvgIGgJXipUx9Qrrex9PEbevq/1f/u+S9+UpKidEcIjRnk3Qhom
+         UHyQ==
+X-Gm-Message-State: AFq9FYKJclKuNDQgr/H6V6oDkFcCofiZwLWnMkCEJ+hP9VJ7M5knt4p0
+	JynzROlVDINQ6X3/DWHb1dRhsl/vZxXVUGs5rUpLvDPtTMHF7bBgyhUJ
+X-Gm-Gg: AYBFou2vw4p2Vt9HMb5C8+3P/QhnWOgCKdNjM5NmHM79ZmTqf6vDVG0zBbr41ZJJPhP
+	G7l1iB2XiJwKUxlFhRaXMdpppW5pkJUnDM1yFLsp0xxDMTbAi9ecv6dBxc73zukHiLqt8B+YoHp
+	/6rPNQWwwhCsQ9WyW2XzBQaAm/9qLwUqHkmeTT1eb/EWg5AIZmdnbwaW0Ic0caMIurCDXZdN+iD
+	0m0nSI5bWAc4SWlSoi4jQKroW5lvhqMpPZFovdFOFsXZ+2BEsg00ZERSz81LjM5WAMaNp1S9P2X
+	CZoWmBMT3E7KrZdsio/vzSNLr8S0xdjpR+81IlSBOKDu4vFojohNDOp/qR9l7wEQZo0QS308LNN
+	KSqe5IXcPHFaP49vdW4EB4dieByRhfnM4k9Lo2rw3ZzUcAKqNqoQY6Uj1Y9QpVp5TN5aX+gpl/S
+	Xyt71yrMyZaSF3b2PDdAcdDPv9PnSfOFFyCmKGK7j8kMVOheR4aagJv2AhTagPDsUWMqWFUsYf/
+	ntP
+X-Received: by 2002:a05:6000:2313:b0:48e:b8f:f7d9 with SMTP id ffacd0b85a97d-48e0b8ff983mr3535275f8f.6.1792258271710;
+        Sat, 17 Oct 2026 10:31:11 -0700 (PDT)
+Received: from [192.168.1.18] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd5008e7sm12164710f8f.43.2026.10.17.10.31.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Oct 2026 10:31:11 -0700 (PDT)
+Message-ID: <d9182d0d-408b-4ba8-b3af-173ea397f0d0@gmail.com>
+Date: Sat, 17 Oct 2026 19:31:09 +0200
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com> <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
-In-Reply-To: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Sat, 17 Oct 2026 19:11:28 +0200
-X-Gm-Features: AclHuK8222c3YwWa2EndazmJS8Umg9HTADwML-hsKq06OdSigMokkN9A-iBy5wE
-Message-ID: <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DEFB0100002
-X-Stat-Signature: 55sct8ca859ezofy98tquojzu9dekfur
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] mm: hugetlb: add explicit page size to hugetlb_cma
+To: Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev, osalvador@suse.de,
+ david@kernel.org, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
+ <fd905db7e48354ad139cc68b66fe776cd7f2dd8c.1792136742.git.zhengqi.arch@bytedance.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <fd905db7e48354ad139cc68b66fe776cd7f2dd8c.1792136742.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 79821C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792257126-185177
-X-HE-Meta: U2FsdGVkX1+mFxlKySQ055sk99ZuVi7rvlFohPx2JWWDZVjGk633zOnWeBMrokSBfZoKGCBa1jWywMR1PKDLrTOx9K4mXRBG9l7Nq4i367Hgx+vgqwjI0qBocDnuFLCwGvgOfIazVwhO01OlbRlr8oC7KCkd6GR4gyrXvN7ee0zP6QaPghxqDVViEErJaIpzMYq3JTa8hTOt6H/JX1etPBmq4fTkdTa6T14o/tlTNUrtOZ/OOoN9HK3vYd6W9WOaTtfewSuef5QZQn2lcEW8Inb/+mHz0QBdJTsS4v6XyYrFiUDyZlTcO5Mc8tRLljKFuq1o5DSNwNw7JkrMK762MN3dWzYl48j/bzce8B2KBnLNWVluhc6kvcY0YNqkkJP9oEdfvCld/LVYbcUeO/hvi3GockvmEecfX1L2aq7A4wSJoHj2qTjUoOxAqyusucGBIWbOFcFp2Dfv2kC7nyNXnQ7h0qj15I4+NbUquKHYh60CqWT5+ZHI2KcD/zEROIpUvoIV/v3PlDIPGciSA5nC4n+neHVlM3DgUN3gZWH4fHg9nmtFXN3Ib4HAVX/18TIPfO5uWhr+zjGa3yIM2sIHPyCKQOz0fp7gnEJViZFyoy3Pme140UiusuRDjIRtyOX0Cabbaa4fO1ZjGuHEW/+Sso+g+Kr99WJmR5x1jgov5XOfsqiYcMOcCmIXWOT+jHY9OBg3hy9wcAbdQx0q12qS2oEJx+ri0u4gzKQHtAk8iI25SbiMd8IdTEAPr+FkC9mh+zkDov/Jg1qM/dkRn3xoGJU7cXksQD0q8XVixOGzfh4sEVUTD4faUnxE6zVrHtI/kIpi9gCTbepszrLAbB0k1z8TNS2OQu8ty4HN/Kx55jOi6opcROfAebI4UVFQUZbbz8vxJcSTs2GxAuVnTydcBDsITF3iZ/btu1CzZ5r0+8LCdn05SU1Z2eaYNCsh/UNfk2ph2ncgLRjpBxf6qD7
- TtXrMF/Q
- 7TIjE71f88uJLA2nTCdG9GAOOHAJfCp60cqO1239Fw3VaAhI5O3wbQqX08biM+RwoRCkTxeZuyjVgbu1SAux7iS3OYu6vIH/WPylNBwRLYz4XlWdFDqUQB1tX8J6RnWMyqmCg7lX99kLYcta4Tmer0+8MfC2HsJiTvfcWiERphU+jNJs/ZKia5ZRNwrkrW3EU4V0TRIzAeYlRFPfWUeugJj5O/BHeFoWavmi+nVBEHvpny7wRtDcuItdCVjiQBz7IO0N/kJRL7YHMkTLzC2ExfXwR4jzwb2aLHOOlu1NIHjI88riPipZnL192mN/JR2EnDYUdtu5S9KFX4ZZ0qV5Rgrs/qA30PjfLaSv1feXN8dm/HQc57wv7LZRvnnE/aJK1yvtt
+X-Stat-Signature: 3jcnytgzsmrw4kwsumjbp1tezwieosnx
+X-HE-Tag: 1792258273-449344
+X-HE-Meta: U2FsdGVkX1/e0CN4RFN7413dOOfY73QKRsbOWgwilUChBz703qs26KfOozdr4eA55llZjqWNQLAoNWD+r8EiKiSnwgRh/pSFVcJ7ljIrq1A8TZ+cw9iqI7RBz8PqMZMRqtJLtnmNE1d1Kp3ioELqNHR2mona1TXlPNN6Lc7BrwD9jmJBZaB+cNf0O1V3+0TI8G85CfddQ5kL4i6xn9D2a4KFSLzUdenL9IAy6ooLyWmxJ+Y925RZFl6KLDpbZJg4CAk11rWvvV8KuAHnBd/QML6w80m6r2CeoBQbFe3Ys1i46g8g1ItUzPXLhlYUbrk6h65quVMrV0MNuV6Egxiah0iDXWkp7VMZ+LBLZrnk9ojY/Jf7OOOEI/V5J9QkrrmBi0MiJO9XtE+P717IWzFrmopAxCfD3ivw/Yog1OPjflyHIHYyYEFQd9Ns+uJJPWVhTuKtBL6JB3bDqG2qxl+L7qEklV7Nl+bWMSPu5qoChhK4JCWyX2WygolUDFuChSw1LnA9u3SHb7CDrMEn8Kz18FLpszOpZvvnNn2S6Mz0jqylfXGw6ro0wPLyUiCmNy1SFOy8u9nfWE6FELcPcLCN6J8iyGDx/goRb0+bL6kHq93omfnTApi+JS8WgdlS31jhHHzpkDY8C9/SH6CV8m35+aDHxq3LJNtyoAiRS5LMiFgmZvImt/eTeQM/rw7z7Km18+QYv5PnWQRg/LK3fHRbzFJ+bwGnoGjFxP4ve0Dh5vRANDsqYzSwWhTxbUmUWAIQyi0RJRpwa4iShgBJP3Owm2X65G+PokgD3u7W5jVt/RGY7Lep+UQYJjoUIHkNwMcOaWeb7MyjQWcLj5e0vv/fIemlGbs85b0tNmAqow9qQjl3zJ3tIIQMKcE/3GxWZK82oYwEOFHlpZ8a4KIXeua56vIrlZGYLqLimxBfxb3DOVerB7LPRguPmdQmFqla8QFfUaMUzRnZN7o0DHoyTC+
+ bszuAIky
+ b+IRCrUZKIhv6g3O2xHszuKpP3Dhi7NYJ+Vzz1IqIqR+PO0wNLPnSsEUBNiShmzMR4W8laCZW+Gf9QWZKRs7aNn4oxAwrsV/zGbXg4etY0X41Pf5K58OvRDPDiNbmx21zqTORKO5MUk4WLiIwJzbs43IhCcO6ffWBXufcyJstVOTap4WxdAzS2nu3EJ0AGWq6VYi0tPrJ8AV1ID73tFcmKkmGFIiNao/Qqjf0RZOg4c2YPkjpNIxNfS0o+3nIyoUtoskUbFLrc7ieP3Ac91ISxnctFMAzGkzHIJhbvDIZOwyO4qFhDNq5Jg89GSfcgCLrfa4MBR/U1XBPQBeWPMSEs5+D4UwQoRty3GaVyF8GvxbFMgcJzhMQuDU06KSEEeJDp29CCJHGQJw0ZIeOaFi0WlEGsddJNcgzwyuNLK+uZiOuh0sGktn9Rn9mjZoKN36uRVm8YMgvqWt5Ll5uCe4QYubNGtwYuJOSg2PBWSdlo2WPRux4a8T5Vffwv7T0tS8jhCFxELSm6HjQI3W/eIlH4I2uQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,59 +124,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 12, 2026 at 9:44=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 10/12/26 16:45, Luigi Rizzo wrote:
-> > On Mon, Oct 12, 2026 at 3:51=E2=80=AFPM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> >>
-> >> On 10/3/26 23:22, Luigi Rizzo wrote:
-> >>> Here is a subsystem called DMA_PMD on which I would like feedback on
-> >>> architecture, possible enhancements, or kernel components that could =
-be
-> >>> reused to avoid duplication.
-> >>
-> >> Here is a feedback to a subsystem called DMA_PMD ;)
-> >>
-> >> Why is basing this on PMDs (and embedding it in the name) the right ap=
-proach?
-> >>
-> >> On architctures with large PMDs (512 MiB on arm64 with 64k), would we =
-really
-> >> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) t=
-hat might
-> >> possibly also have TLB benefits (cont-pte)?
-> >
-> > I had to call it something... an earlier prototype used the name IOMMU_=
-2M,
-> > but I didn't want to suggest that the design was limited to 2M (it is n=
-ot).
-> >
-> > Aside from the name, the _current_ prototype restricts to 2M allocation=
-s,
-> > exactly because too large units are expensive and wasteful.
-> >
-> > In the code, decoupling the allocation size from the PMD size is trivia=
-l.
->
-> Yeah, we should do that.
->
-> We should probably just find a way to describe that this is a POOL that f=
-ocuses
-> on physical contiguity in some configured granularity.
+On 10/16/26 12:07 PM, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> Accept an optional @<page-size> suffix for hugetlb_cma. Initially accept
+> only the architecture's existing CMA page size. Preserve the behavior of
+> unsuffixed arguments and the existing hugepagesz/hugepages options.
+> 
+> Validate the suffix before applying the existing capacity, percentage and
+> node-list parser.
+> 
+> Save the arguments during early parsing and process them at reservation
+> time, after architecture-specific page-size information has been
+> initialized.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Before embarking in a global renaming, I would like to get opinions on
-acceptable alternative names (possibly with a short prefix usable for
-identifiers in the code). I could think of the following
+this LGTM so:
 
-DMA_PMAP (for PreMapped or Persistent Mapped)
-or, ahemm...
-DMA_PISA (Pooled IOMMU Superpage Allocator)
-both using dmap_ for internal name prefixes
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-Other suggestions ?
-
-cheers
-luigi
+-- 
+cheers,
+jose a. p-a
 
