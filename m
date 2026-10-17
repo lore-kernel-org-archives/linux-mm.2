@@ -4,128 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA7A4CCA463
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 07:12:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 664A5CCA463
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 07:42:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 780BA6B0088; Sat, 17 Oct 2026 03:12:50 -0400 (EDT)
+	id 3BC6E6B0088; Sat, 17 Oct 2026 03:42:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 731D66B008A; Sat, 17 Oct 2026 03:12:50 -0400 (EDT)
+	id 36E1A6B008A; Sat, 17 Oct 2026 03:42:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 620416B008C; Sat, 17 Oct 2026 03:12:50 -0400 (EDT)
+	id 282E06B008C; Sat, 17 Oct 2026 03:42:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EB696B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:12:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9661EA6C88
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 07:12:49 +0000 (UTC)
-X-FDA: 85331250858.30.4E01B5D
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C19EC40008
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 07:12:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gvK54lRG;
-	spf=pass (imf04.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 037B86B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 03:42:07 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B515160267
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 07:42:07 +0000 (UTC)
+X-FDA: 85331324694.05.78911DC
+Received: from mta1.migadu.com (out-28.mta1.migadu.com [95.215.58.28])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C02DF160003
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 07:42:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TsC+TMYs;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792221167;
-	b=zjGm1zOYm5XSvgJ21XAoK+WoPk8OvRAQYTE7TGx71KT2i0UlGxa2RqlKv8SCY2Z7Gk6qlq
-	Zjzc1WJsUzKgQ8B3f2gLH7/14XE+owoAgws3lmM0u2fPfjhx0Q6tgL07zeGoVBSmVhEe4y
-	xh8ngfkzoaP2f4F+Aw9SedyrrwWEB2o=
+	t=1792222925;
+	b=Uu5WtQ6sVUMxr0j3jF1v9E2NlRU3WUtw9Uo6dpeyPsjLKVp6FxouJ3ziACfxKp0exlB0Ti
+	jKfLsX1C+5obu1Q+eDxPzIWaUY3lA25w0Y7hO+BWZONz9tKR6/ZdFLiylXzn0Nv8G5q7xr
+	SXSFUAM5lVdHOp7r8nsF5yRydhnvM2k=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gvK54lRG;
-	spf=pass (imf04.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TsC+TMYs;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792221167;
+	s=arc-20220608; t=1792222925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cJH8UNyjh46J8FjQdq/QYU7fitJ1+CWgYhgsIWlIMTo=;
-	b=Lm5SpIbNCwNROeUvF9cMjSCcSq/3soyB5fCDTfCTGQXvFpfxcpTmb7GfZWiPd7CW0suIi7
-	z3xLxUmXtTG5XUmaIAs7jtNH/TxeB6vLp6FweziYWrBzDekRS8T7T+mpKNx6e0tM8SDhv7
-	T0Q+bSyB8asRDRLEkMtIEoL+hHwpuJU=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso440733a91.0
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:12:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792221167; x=1792825967; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cJH8UNyjh46J8FjQdq/QYU7fitJ1+CWgYhgsIWlIMTo=;
-        b=gvK54lRGe1MaSJOBPR9A7alu9zqkvn3dXI222C4zp0kG8VhU62+JzWrrT2rJoNx29F
-         T2PnXBYvs2WDYHvqz4sUQ4JfzMLWFnfHQZTIRARcKF43hDRfW3tjMWhEh28f3zvsAhyq
-         9/NAhOUApWo31YCpNToMcKhJOmhySVEKTtai2Inblb8kuAaZDhJc+MycM/whyB5H5NbM
-         ckOWnJ4CNltufZPzaZfpmW2jMOea3BmLAD2cWBAiAiiMHeTIgi9DUBILSEEdZeIH7/om
-         CsroypTbdRs79Dp7dkN5/iz3yxKdUzEkmt/As1qEC8NQE4oSp2kzqXTDlVR8vfYz/WSW
-         qYVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792221167; x=1792825967;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cJH8UNyjh46J8FjQdq/QYU7fitJ1+CWgYhgsIWlIMTo=;
-        b=YAMEHWn7oy5dy8rhEklOw/twRNzkp4EBP357QJHNVHEJBRWNB5DVDR+TblfqjCrDK2
-         w3qzifb4srRPLNi27CpT+96AbUb0lSq8lC6shdhmfHBiAyQLQDkcvKKi9I8l9L1OpKO/
-         wRO1JfsS26twVTTY8I5wQPpTG9fNk50fcS76LSMnM1Tv41/9eVpt0BQhmj+sm3qiamVt
-         gJxO0sPlXmtgcgV+8Zsk85QX+H3zTDB9h/N/AN5Sv4Gryp0IZmWhCu3AgT1GUPh6ON4O
-         nKZ57IjeFnyc+mAlP/EVk+J14K77r69VnUzxl19WwiLW6jIyfmzrnp7sPS1PGqTDqscc
-         qlyw==
-X-Forwarded-Encrypted: i=1; AKwUvByQkqUGqxinNnkEJX+sUu7zwF5KG6/+pQt/URAKXAhAmX95pyxmHMDlDutbIL0eEwBeUEVxvUHX2g==@kvack.org
-X-Gm-Message-State: AFq9FYLsmx69ZuiEJYH8M/g0CNGNSGO/P4EtPUOKtm1EZtbvteysVlKR
-	/TGr45aHUfckucaLaK6jyTQ1zkwMVVjfPc9UqQzCP4x9KbMik2haFmA8
-X-Gm-Gg: AYBFou2ytJeOh/wtbOCdd04V0f2kzaoYyQRtRsxv3eqJTt0oBEDt9U28PHjb80gQQ7+
-	Hx9Tgbm+bZG5m0yGLWyEr904ROl27JMIc1GY5gB6E8hI3Dgk/WDFy2jXIPCbee6VDWXP05NRLZc
-	9z+MCAqtylbuGNhv93S0mvT8aGC+o4IhWkMpfsNM4OQb7sxuc8dJd9b/pSFOX48M/tQZivMVtnB
-	r2Jar7VJeMZmInPNOB5SvpxGBEMd+cyCL7eaLQHyeX7QOCjLTgQFhKcJ7C7p36GQZZPjDF14r5T
-	Sn3vi6zH4K+l/bfLBqQsDYWUNTqV9XPYZSeIIfEyi5F2KPFSmkydHeoFFtap06lFkBKJcV+1kiH
-	2m73h3nkan1CVSNxbU7BF370D2PmmprTrOHgOn0I/lL5l2slqFXRGxxOfCOFL7o/7N4K9wquNbG
-	CFUxlDU2YgdQY2Z0rLteOPgUgIKlv2FBtgHiGStR3A6NVYAcb/tcm/DGMP84TJb5Dz1cpMjlfWJ
-	LFsgK/fY/lCmupVFETvylVhqQ==
-X-Received: by 2002:a17:90b:28c5:b0:3a7:9e3d:b3 with SMTP id 98e67ed59e1d1-3acef667162mr1425497a91.66.1792221166557;
-        Sat, 17 Oct 2026 00:12:46 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:8954:498:18c1:c1ef:4268:7168])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd0aa3c24sm3788644a91.4.2026.10.17.00.12.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 00:12:46 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: Ajay Joshi <ajayjoshi@micron.com>,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bijan Tabatabai <bijan311@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	damon@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Honggyu Kim <honggyu.kim@sk.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Lian Wang <lianux.mm@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	David Rientjes <rientjes@google.com>,
-	SJ Park <sj@kernel.org>,
-	Wei Xu <weixugc@google.com>,
-	Yunjeong Mun <yunjeong.mun@sk.com>
-Subject: [RFC PATCH v4 0/9] mm/damon: hardware-sampled access reports
-Date: Sat, 17 Oct 2026 15:11:18 +0800
-Message-ID: <20261017071120.4628-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261005-damon-perf-rfc-v3-send-2026-10-03-v4-0-b03452e137f3@gmail.com>
-References: <20261005-damon-perf-rfc-v3-send-2026-10-03-v4-0-b03452e137f3@gmail.com>
+	bh=OyH/IxB4zQyxD81qVP2Y2wIsWvKd7K+H9f36oouGofg=;
+	b=8R4dVN5IHHkq9sksEqTDTTmlI0vPVIwAA06PpsIiJCcvXhzVFMbghxbNxhXC84/w7wm/2b
+	NyyPDKzQF9CiZkDUUA+6wBTPdjRer8kn5P3lncqa84//2mPuh5osG/eP2hsFaiMN03Vtlo
+	hOQbrM4AB5Sotetu2qxHI+FSBdojLlI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=cTmbWpIBmFSm4lFwnUIH2uqFavf981pVZQE+4xBkCvg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792222923; v=1; x=1792827723;
+ b=TsC+TMYsEi+Hn8G9fawH3emMTlVT+1BkS3/mdmZqzQ2ZoXJk6Sa7Vz3BxX3GcLiKso3t8OBU
+ 9ILWDRU172KSQ2NRNBgMaLF6Hc/o+DWOHHt/JQzR/ZFuAyfc+Sl11abni2eFF1x68x8EH3myGlc
+ MN+wnqBA226O+RHcJpww4rLQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 822507f423bfaa6f;
+	Sat, 17 Oct 2026 07:42:01 +0000
+X-Mizu-Trace-ID: 822507f423bfaa6f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <cd6637db-7b30-4cbc-b07f-c2a2b32480fa@linux.dev>
+Date: Sat, 17 Oct 2026 15:41:49 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in
+ collapse_file()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
+ liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org,
+ jack@suse.cz, djwong@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, hch@lst.de,
+ syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
+ ngocthang2710.1999@gmail.com, willy@infradead.org, rppt@kernel.org,
+ ljs@kernel.org
+References: <20261016065920.4153-1-lance.yang@linux.dev>
+ <27e5aadc-2d68-428f-a958-308e4a75c058@linux.alibaba.com>
+ <atICp2NL8j2z7UFM@pedro-suse.tail5790ac.ts.net>
+ <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
+ <6a005d89-df5b-4524-a4b9-c637cb15f1ee@linux.alibaba.com>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <6a005d89-df5b-4524-a4b9-c637cb15f1ee@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C19EC40008
-X-Stat-Signature: mpirqgymejyftqxyyacgeokxt9dxqk4n
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1792221167-395944
-X-HE-Meta: U2FsdGVkX19dpdWAcbrTCMf7J8lOqJ0eAQkeplE7I9u9h9nv+2hjdUFLjKVrfTqT09IphQXpRBFKxS66qPkcprlKcV2wZbUoQoXZFrqmWtHKSQADITZtVx+6SnTQcFA1psxCMppbX0DC+qFmEqZ8g0ZLEpnjkB/5+LE1IqIT7icAYODleo1Nk21YOPnTHfcJQ2kn+3a8Z/IDtNNmtJOMKwPX33jEgGARRlqgCD3gXAzxFT0kG9d2lodsgR7wT70FzJP+HrPZtiFrAcKjMEingE3C0yzRgcYVOaLJ4x5fUSv2sgzwOfBfukNm8ZoIKN4fD7B4qanFmCsuGIbEQBcLX9gd2wsIy/ZPMOlaBBXM80Nh/iRELLfqYscq4EQIFv8nO+S1sFL3sdvg8X+SeOD9/ro+JOj1heRU5DycFCVFFgJgP+xnxyU7Bm76TQ2QBOh7P6FSQmeWchyzV8UhQwT2CLrowiojXSoBRKZTk15HLILnrTd+sBlOWyOOW+UXw0LoZnSlRT8u//mtLIkkgw7YqZIfP5+cC1PG/30WNuE/UGawfvGsb2m7Pyr+Ht2lhzERUb4numvtXZJWunRHn6e2EaBear9AgTatYYOwclourQa5rvHLakykiKiTYQ1MlufIZX0To9s+tmPO5K4m57bqLEO7rfgORePLCpIdWiDzWkRJBmsJSfTmfapoNLAaqMgty2ZdXFWmuu2syvSvtik4qPsU/aXqUhKseVJj+7TKPMjfx7TcWsTcBgARi36r+SpceCBfG9B/fLiR4YYMs8KkfWqxtLwkGUhO9WliKTE9kf6QuOc72qDG6x0RP9T8jhGTDtHsmIC6YDcRdCF50YCRGBNKEOqDf3KOSZ9hbaXAU+gmBtngLQYa/pVjCcWHoKWydSb05qxxfXx2QZ7ieBx8ZEXmagdTYqNUzjPKOUorFy/FbTd1l09UE/LbZJropSBhwIhj5FB7+MvZchXWnFE
- 3PfHXIuB
- dFhaveSicNzplr7TkUKR6WtLsw/cWQ/6aTQ0ndAQBKj8we2arM/a9BtQHM0kXO0uExi3REMT8Pepxw/ZFceJK853XPnXwuLloB8SEzoOcHPo86ap4+tEI9IBKaojbOVF/nvJilDVZOQYv2AejDqzF68XB5q24ngddDGxp9jrvFPKjT1l6Zf6P5IZsEPK6VSgpB207etzxRc7M9IC286gOk4v8QEwTQmRx/UA7B4dt7RYfDerHf8WgBz7RrFh4snq4vtn4HODUjGgPkVxUesypyzEknqwn6QhB6xQE7Rj9IvvKORlIXnkNEKJAJOwUJNVu5860XQR6iWg5KIcCYnKvoKk01Wu4/JesDMRed5GMqKwyDazNrsy+EMEe7CMirRJFJtuTl5RRywRe0VElJaJSCAkjc4A6OoILKo7J1GNsslJH2AsQtElsjOOnaPErW3lDsIfg9DA4QcB76c96ozTX7NtpEfVr9xyeRg/sKaFYV6UyHmZnOt1HpGuJqHtLJG3K0iKuugNNagxARKo=
+X-Rspamd-Queue-Id: C02DF160003
+X-Stat-Signature: uh3hruaafq9riuj7prs3p5c74nxi487e
+X-HE-Tag: 1792222924-403058
+X-HE-Meta: U2FsdGVkX1+xpzrHqdgk6RPghAyqoOeexgXmCPOHyk6T+6hcg2QWG1zw8Ro3WlGjQeEl/QMYZVoLXYXTbPkCqoq6MuxrmzPvtG+BdTnE9tT92PEM5F8KehDN4OQQmy90wo8lk+B0j7VEOJtnBdjC5WEu9f89EizVvPOHkOuBBTgv79++3sU2tGSDJe707Q3uJ9gdegzUODll+orMOJqc6uoOuG6vYkVJZvplYY5PRtSOdK+4p6Aq4r/IR+d2SAx1GqsXiWsf+8WAJemMUr39wfJ8930AK33robaxF9sbtrUonLhcfkvP3XxRpg3Dz9CYj6Klyl/AU3CZ6KskHoczAyU+4DjMGSc6sJ9hipgXhGHVyjAjkKnX546OAUlyqqI3sJH0apzkNSIGYgMOz5hhS8SFYL758N2aEAlXDacsODEQNYacYxUkU3q6VL42xe4bBPSKmnrbjAxr06YJ80A+cBiBJF2DB3MwmaaHljQmvCARnsYnfZMunKQR7unvGu+9lR2Z+1m73fST8nhpqLcrnMlwOTNNomEwXt9GKCVoAXYTknDrrH3WA10+Wpqx/b7uwwZ6FNoL/TxtpB++aUkSPufJ04L8RI4n/8jiLqmrAHBTrtthgXR7yqnjhZbwlVFu6ZV11l3qM7dClgHXYlCmqupqrhRv96gPw5tildTAahEPgPdhtJOzViy5BmhpT104ixO3S82ZuFP2hlOSkAaCHjpjGXyhgOF90x9NcDtXcHhOBYaETIyO3OMz4t9wBcV4/R61l+QuE0PL7faoOMOtIvNn54WiIWBF2PpRh89K3NDQyOtV75700EhQ8XZ7sWbUsfrIPhhowhNs/tRRTdm50jANrMwn9kKhIOcS3m9iXa4WXlL80XQwShsNk5gDmGbgqQwbshgCeFDKvMB/2Xf69SwPZsHGdqhIP1Od5+KkaVb/6TwmsqNRDZoM4WYuR9ikqXP9EWd/fecoN3g+cW2
+ VDa6WW7I
+ Qg9BNdk7p6eFef9TxwNn+T1Rr3RZPXLO1I+sj46ykK6sVyStpJah9wN//jnrpksI/7X5v5Yp+ZHiumVjA2nyfdzvmac3cpttV6DyxM+mI0/useFTGt/YEGo0KEqw5KRsNMD+jc5CCZcnLvaGbz9dNVNL0woBwejgB7ByP+uUUSKtgdTHyO0oEiR98Vi2dqW4+7JMbUZ/bXXtU6YAB9cgYkkp0Iusog9D0KIb+UPT0OYJijigdeBObpwcNAQbam1ESfGYnHL4EYTpjpEYK7iowhRt27fmnv2+oQGcHhLtg+wWplzlBJWTK2UX87E/BY+iNl8+8QXkx0VDa3/bZw3+Goc+50ONAD4mpufQgcKBFa/bYfszGqHRe2XrNc1ug1eVU+pbNKbDay7CdysBLBi+CPzoD16/bqYra/7U0zi2+0ILsaL5cJema5FF8v5pogQCPMXNqxe8QFXHBCnu66Fl558mEIBvojRMQol6VHWTRP2qjjRyHs/2kDXFqDuz9nWtNinfot66HguVHDYIAlbRVjDmhMyw50YxO93ZljJPyVCrb/T2Xq1cd0WMjDkVYU1hikOEeQFxXEwsQSmlS3MWXOuMa2SjHTYVVQlvEg6cbngfavcI/ghaj2LM0KWdRpMJ0gQJ+Jl3n+74qZVA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,222 +103,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ravi,
 
 
-TLDR
-====
-
-I have noticed that there might have an issue with this patch or my CPU.
-I am not sure.  I have provided some details below.
-
-On Mon, 05 Oct 2026 01:46:44 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
-
-> This series lets DAMON monitor a hardware-sampled data attribute -- the
-> addresses a PMU saw accessed -- through the data attributes monitoring
-> (probe) interface, and run DAMOS schemes on it in data attributes-only
-> mode.  Patches 3, 5, and 6 are co-developed with Akinobu Mita, building
-> on his earlier perf-event proposal [3].
+On 2026/10/17 13:43, Baolin Wang wrote:
 > 
+> 
+> On 10/16/26 9:18 PM, Pedro Falcato wrote:
+>> On Fri, Oct 16, 2026 at 12:00:24PM +0100, Pedro Falcato wrote:
+>>> On Fri, Oct 16, 2026 at 05:57:48PM +0800, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 10/16/26 2:59 PM, Lance Yang wrote:
+>>>>> collapse_file() can end up calling page_cache_sync_readahead() with
+>>>>> source folios from earlier in the range still locked. If truncate 
+>>>>> already
+>>>>> holds mapping->invalidate_lock exclusively and is waiting for one of
+>>>>> those folios, readahead blocks on the same invalidate_lock and neither
+>>>>> side can make progress.
+>>>>>
+>>>>> Do readahead in a separate pass before we start holding source folios
+>>>>> locked for collapse. Keep page_cache_sync_readahead() and its existing
+>>>>> policy, and drop each folio's lock and reference after checking 
+>>>>> that it
+>>>>> is uptodate. If truncate or reclaim removes a folio between the two
+>>>>> passes, roll back instead of doing readahead again with source folios
+>>>>> locked.
+>>>>>
+>>>>> Shmem handles swapin and fallocated folios through shmem_get_folio()
+>>>>> without taking mapping->invalidate_lock, so it isn't affected by this
+>>>>> lock inversion.
+>>>>>
+>>>>> Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
+>>>>> Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
+>>>>> Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page 
+>>>>> cache with invalidate_lock")
+>>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>>>> ---
+>>>>
+>>>> Thanks for the fix.
+>>>>
+>>>>> Thanks to Nguyen Ngoc Thang for v2. David asked for volunteers, so I'm
+>>>>> happy to take this over.
+>>>>>
+>>>>> Some older stable trees lack the folio infrastructure used here, 
+>>>>> and the
+>>>>> code will differ for each stable tree, so each backport will need 
+>>>>> quite a
+>>>>> bit of rework and its own review. I'm not sure whether to Cc stable 
+>>>>> here.
+>>>>> Once we agree on the fix, I'll send a separate backport for each 
+>>>>> maintained
+>>>>> stable tree except 5.10, which isn't affected.
+>>>>>
+>>>>> v2 -> v3:
+>>>>>    - Replace the scan-wide invalidate_lock and 
+>>>>> page_cache_ra_unbounded() with
+>>>>>      a preparation pass using page_cache_sync_readahead().
+>>>>>    - Roll back on a new page cache miss during collapse.
+>>>>>    - https://lore.kernel.org/all/20260913163644.122133-1- 
+>>>>> ngocthang2710.1999@gmail.com/
+>>>>>
+>>>>>    mm/khugepaged.c | 42 +++++++++++++++++++++++++++++++-----------
+>>>>>    1 file changed, 31 insertions(+), 11 deletions(-)
+>>>>>
+>>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>>> index ef5cd6fda34f..b3f67617caf0 100644
+>>>>> --- a/mm/khugepaged.c
+>>>>> +++ b/mm/khugepaged.c
+>>>>> @@ -2262,6 +2262,34 @@ static enum scan_result collapse_file(struct 
+>>>>> mm_struct *mm, unsigned long addr,
+>>>>>        new_folio->index = start;
+>>>>>        new_folio->mapping = mapping;
+>>>>> +    if (!is_shmem) {
+>>>>> +        /*
+>>>>> +         * Populate the range before accumulating locked source 
+>>>>> folios:
+>>>>> +         * readahead may block on invalidate_lock.
+>>>>> +         */
+>>>>> +        for (index = start; index < end;) {
+>>>>
+>>>> why drop xas_unlock_irq()?
+>>>>
+>>>>> +            folio = filemap_lock_folio(mapping, index);
+>>>>> +            if (IS_ERR(folio)) {
+>>>>> +                page_cache_sync_readahead(mapping, &file->f_ra,
+>>>>> +                              file, index, end - index);
+>>>>> +                folio = filemap_lock_folio(mapping, index);
+>>>>> +                if (IS_ERR(folio)) {
+>>>>> +                    result = SCAN_FAIL;
+>>>>> +                    goto rollback;
+>>>>> +                }
+>>>>> +            }
+>>>>> +            if (!folio_test_uptodate(folio))
+>>>>> +                result = SCAN_FAIL;
+>>>>
+>>>> Do we need to check PG_uptodate after locking the folio? If we 
+>>>> successfully
+>>>> lock the folio, doesn't that mean the read I/O has completed? The 
+>>>> following
+>>>
+>>> Yes, you do; a read can "complete" without the IO having completed 
+>>> successfully,
+>>> and in those cases PG_uptodate is not set, but the folio is unlocked.
+> 
+> OK.
+> 
+>>> Either way, why are we checking for uptodate here? We only care for 
+>>> starting readahead.
+>>> Anyway, I would possibly recommend we do this as post-processing, not 
+>>> pre-processing.
+>>> The current loop is a little overhead-happy.
+>>
+>> To clarify: I would do this kind of RA as an error path if isolation 
+>> failed.
+> 
+> Sounds good.
+> 
+>> Namely, at the end of rollback, after unlocking folios. It doesn't 
+>> make sense
+>> to me to do this kind of checking upfront. I don't think it's 
+>> particularly
+>> realistic that, starting RA upfront, you'd see uptodate completed 
+>> folio reads
+>> when doing the actual isolation.
+> 
+> But why not add RA logic in collapse_pmd(), as we do for 
+> SCAN_PAGE_DIRTY_OR_WRITEBACK? There's already retry logic there, and 
+> this would also simplify the long collapse_file().
 
-I expected it to monitor regions in the same way as PTE sampling, that
-is, if the system has hot memory, DAMON should be able to detect it, or
-at least with some probability.  However, it is not always work like
-that.  After I starting DAMON about 10 minutes, the DAMON cannot found
-any hot page, even when I am running 'stress-ng --vm 6 --vm-bytes 6G':
+That would be cleaner, yeah. Some older stable trees don't have that
+outer retry loop, though ... I'd prefer to get the fix backported first,
+then move the RA/retry logic out in a follow-up, wdyt?
 
-    snapshot time: [0 ns, 100 ms] (100 ms)
-    |0000000000000000000000000000000000000000| size 1.461 GiB   access 0      age 3 m 3.200 s  
-                                   |000000000| size 1.465 GiB   access 0      age 3 m 1 s      
-                                          |00| size 2.922 GiB   access 0      age 3 m 0.500 s  
-                         |0000000000000000000| size 1.471 GiB   access 0      age 3 m 1.700 s  
-                    |000000000000000000000000| size 1.462 GiB   access 0      age 3 m 2.100 s  
-                                          |00| size 1.470 GiB   access 0      age 3 m 0.500 s  
-                                           |0| size 2.926 GiB   access 0      age 3 m 0.400 s  
-                                          |00| size 1.544 GiB   access 0      age 3 m 0.500 s  
-    memory bw estimate: 0 B per second
-    total size: 14.722 GiB
-    record DAMON intervals: sample 5 ms, aggr 100 ms
+Cheers, Lance
 
-    Note that this is my own fork of damo [1].
-
-To ensure this was not a bug in my damo fork [1], I adding a tracing
-statistic [2] to DAMON to confirm whether this was indeed a DAMON issue.
-
-TLDR for new tracing statsistic: 'seen' means how many times
-damon_perf_overflow() was called.
-
-Later, I noticed that about 10 minutes after starting DAMON, the 'seen'
-stopped increasing:
-
-    I am running 'stress-ng --vm 6 --vm-bytes 6G' during recording this
-    statistic.
-
-    Start Time: 19:25:42 | End Time: 19:42:18
-    Time Unit: 1 step = 1.81 minutes
-
-       Seen (Delta)
-            ^
-            |
-      100k  |  *
-      36k   |      *
-      18k   |                      *           *
-      17k   |          *
-      15k   |                  *
-      4k    |                          *
-      453   |                              *
-      106   |              *
-        0   |                                      *
-            +--+---+---+---+---+---+---+---+---+---+---> Step
-               1   2   3   4   5   6   7   8   9   10
-
-    Note: Zero delta from 19:42:18 (step 10) till 20:00:00 (I close my
-    machine after that).
-
-My DAMON Perf Config
-====================
-
-    K=/sys/kernel/mm/damon/admin/kdamonds/0
-    C=$K/contexts/0
-    P=$C/monitoring_attrs/probes
-
-    echo 1 > $P/0/preps/nr_preps
-    echo perf_event > $P/0/preps/0/prep_action
-    cat /sys/bus/event_source/devices/ibs_op/type > $P/0/preps/0/type
-    echo 0 > $P/0/preps/0/config
-    echo 0 > $P/0/preps/0/config2
-    echo 0 > $P/0/preps/0/sample_freq
-    echo 100000 > $P/0/preps/0/sample_period
-    echo 1 > $P/0/preps/0/sample_phys_addr
-    echo 0 > $P/0/preps/0/exclude_kernel
-    echo 0 > $P/0/preps/0/exclude_hv
-    echo 1 > $P/0/weight
-
-    Note that this issue can also reproduce even when
-    'kernel.perf_cpu_time_max_percent=100'.
-
-My CPU Specification
-====================
-
-    CPU(s):                                  12
-    On-line CPU(s) list:                     0-11
-    Vendor ID:                               AuthenticAMD
-    Model name:                              AMD Ryzen 5 5600H with Radeon Graphics
-    CPU family:                              25
-    Model:                                   80
-    Thread(s) per core:                      2
-    Core(s) per socket:                      6
-    Socket(s):                               1
-    Stepping:                                0
-    Microcode version:                       0xa500012
-    Frequency boost:                         enabled
-    CPU(s) scaling MHz:                      48%
-    CPU max MHz:                             4280.9849
-    CPU min MHz:                             412.6250
-    BogoMIPS:                                6587.34
-
-I am trying to figure out if this is a CPU issue, or if there is an
-issue with this patch.  I would be happy to provide more information.
-
-[...]
-
-[1] https://github.com/aethernet65535/damo/tree/probe
-[2] Trace patch diff
-'''
-diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
-index 4dfc9467ea4b..290d3ee2d836 100644
---- a/include/trace/events/damon.h
-+++ b/include/trace/events/damon.h
-@@ -199,6 +199,23 @@ TRACE_EVENT(damon_aggregated,
- 			__entry->nr_accesses, __entry->age)
- );
- 
-+TRACE_EVENT(damon_perf_source_stats,
-+
-+	TP_PROTO(unsigned long seen),
-+
-+	TP_ARGS(seen),
-+
-+	TP_STRUCT__entry(
-+		__field(unsigned long, seen)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->seen = seen;
-+	),
-+
-+	TP_printk("seen=%lu", __entry->seen)
-+)
-+
- #endif /* _TRACE_DAMON_H */
- 
- /* This part must be outside protection */
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index bae4569f0ab3..73988ce82b1a 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -4927,6 +4927,8 @@ static void kdamond_check_reported_accesses(struct damon_ctx *ctx)
- 	if (damon_drains_ring_perf(ctx))
- 		__kdamond_drain_ring(ctx, tbl, ctx->perf_rings,
- 				&ctx->perf_pending);
-+
-+	trace_damon_perf_source_stats(damon_get_perf_seen());
- }
- 
- /*
-diff --git a/mm/damon/perf_source.c b/mm/damon/perf_source.c
-index 4baa8aebcfa8..e8365dbe1744 100644
---- a/mm/damon/perf_source.c
-+++ b/mm/damon/perf_source.c
-@@ -27,6 +27,8 @@ struct damon_perf_probe_state {
- 	struct perf_event *single_event;
- };
- 
-+static DEFINE_PER_CPU(unsigned long, damon_perf_seen);
-+
- static void damon_perf_overflow(struct perf_event *perf_event,
- 				struct perf_sample_data *data,
- 				struct pt_regs *regs)
-@@ -40,6 +42,8 @@ static void damon_perf_overflow(struct perf_event *perf_event,
- 		.cpu = smp_processor_id(),
- 	};
- 
-+	this_cpu_inc(damon_perf_seen);
-+
- 	/*
- 	 * Teardown NULLs event->ctx (with a release barrier) before releasing
- 	 * the per-CPU perf events, so an in-flight overflow racing the
-@@ -84,6 +88,16 @@ static void damon_perf_overflow(struct perf_event *perf_event,
- 	damon_report_access(&report);
- }
- 
-+unsigned long damon_get_perf_seen(void)
-+{
-+	unsigned long sum = 0;
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu)
-+		sum += per_cpu(damon_perf_seen, cpu);
-+	return sum;
-+}
-+
- static enum cpuhp_state damon_perf_cpuhp_state;
- 
- /*
-diff --git a/mm/damon/perf_source.h b/mm/damon/perf_source.h
-index 12ca61be7243..49beca6e3189 100644
---- a/mm/damon/perf_source.h
-+++ b/mm/damon/perf_source.h
-@@ -50,6 +50,7 @@ int damon_perf_probe_setup(struct damon_ctx *ctx,
- 			   struct damon_perf_probe_event *event);
- void damon_perf_probe_teardown(struct damon_ctx *ctx,
- 			       struct damon_perf_probe_event *event);
-+unsigned long damon_get_perf_seen(void);
- 
- #endif /* CONFIG_DAMON_PERF_SOURCE */
- #endif /* _DAMON_PERF_SOURCE_H */
-'''
-
-Best regards,
-Rui Yan
 
