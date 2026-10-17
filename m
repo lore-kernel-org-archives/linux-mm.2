@@ -4,96 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DCECCCA463
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 04:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB16CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Oct 2026 04:50:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F8956B0088; Sat, 17 Oct 2026 00:48:59 -0400 (EDT)
+	id 6F25C6B008A; Sat, 17 Oct 2026 00:50:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A9AE6B008A; Sat, 17 Oct 2026 00:48:59 -0400 (EDT)
+	id 6A3EF6B008C; Sat, 17 Oct 2026 00:50:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BE706B008C; Sat, 17 Oct 2026 00:48:59 -0400 (EDT)
+	id 592536B0092; Sat, 17 Oct 2026 00:50:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E26F26B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:48:58 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B577C01F0
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:48:58 +0000 (UTC)
-X-FDA: 85330888356.17.DCF75C3
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 720E620002
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:48:55 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Fkz0cG8I;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B4A06B008A
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 00:50:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D05DA781C
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:50:46 +0000 (UTC)
+X-FDA: 85330892892.03.F3C56B0
+Received: from mta0.migadu.com (out-150.mta0.migadu.com [91.218.175.150])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 48AF740002
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 04:50:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ivdsxJSQ;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.150 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792212536;
-	b=2oo9u0BRqkjAcmVxvHNk5aeLCbS1AoRXsdP1fzItmmsyHCg9XPYanj9h6qz9fwDd7h6Bf5
-	buCZr8A4p19C+N6xQuWHAt+mQ9GvRcMBtIy5W9ZUbru8oHizv5t8FY6z3ThnAxMt0OZz8X
-	yUEkowGk9uRivXJQUo36hsub0gIHxpM=
+	t=1792212644;
+	b=1cdURSXY5VljqHrIExlsuxKxhL0vaauL8qjR5+MFkFi6nFfYPz7FpSPnP42Z6CQu77jrRh
+	n+RsfPVua9BPkRcQXq2Zsq6UWItjUCU2IKNBnk2vfpAi5Z+ZJ/+dcceLFpusxIFLeydyO4
+	tOJsgp8dwlgZ74pcWMgKhT8gsL1RKss=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Fkz0cG8I;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ivdsxJSQ;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.150 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792212536;
+	s=arc-20220608; t=1792212644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=JVqBcQEWrR3PWF3eLKOjVv1wuEn5WkmhjwTmnoh9YVg=;
-	b=ATgOQGNzlnyHICHP0OTHlFlcI2seKXyVH+ZnjFUOc9JFTtkFFPopaZZujwhUhphj4virY1
-	E3VCimsYWDSi4UIduRHdEtbkQx6+eNWhDj9oxlXza9RP36r++1H4UOo/yakyZCUExVtzBf
-	IzR6682zh3nT/L99I4N+T7tl8U1gexM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792212535; x=1823748535;
-  h=date:from:to:cc:subject:message-id;
-  bh=HVd8tdMh5dhzSM/X5GKlsuTzCDoCoiY75TaGCL9NKtg=;
-  b=Fkz0cG8I8rgunxJLgP3jnfSHqwB1X/9Y3Ozb/H9Q6Dp8Nc9exPsO0zzU
-   Q5B6UX10QAV5MwUUt/ERTEMkIuNL0zfE4fKloaiFxcwEomvAV8kaWThs3
-   PkTi2IXgtLF/XrCDN6WfKAgz2XBTqqSSsTFaQidu9apLWVy4/Yqw1Lp7x
-   wco/0pTol0YpXw8GgNZgc9irbJERiYJcG6Ps2NHUNKBisWch/1wiW/Xbg
-   B8AqeuUGtx8da4N2p/fm+bb0C67uaIs529iTIQxvhje+vReFzUe5xuvyM
-   +0XarKDFSp9xKuaB19t/CwNAR6T+mxNpmXkVnrdDUDdKrtnoWVJGNnrgu
-   w==;
-X-CSE-ConnectionGUID: Qhek90ThTSqE2WpexhZVqg==
-X-CSE-MsgGUID: 3lgQcHsARXOXALntfbeuHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11937"; a="1093011"
-X-IronPort-AV: E=Sophos;i="6.27,163,1787036400"; 
-   d="scan'208";a="1093011"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 21:48:54 -0700
-X-CSE-ConnectionGUID: eHPr95KsQMqtELS29EAPgQ==
-X-CSE-MsgGUID: LRAbWGcnR6eXxRujQ9x8rw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,163,1787036400"; 
-   d="scan'208";a="2087867"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 16 Oct 2026 21:48:53 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xHwLi-00000000J5K-0FDD;
-	Sat, 17 Oct 2026 04:48:50 +0000
-Date: Sat, 17 Oct 2026 12:48:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 2efb7a11f1aa4d2dc285fe2680cca22cb9f72f64
-Message-ID: <202610171209.XxIxXdsn-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam07
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=w12QpfnhKL3Xam3li02IGjWhFMu8ayu2lF0NUVNihLo=;
+	b=sWnZHmpmFw5H2gUlLcj/uRygY7fHJII2xWhUp3BwFbVztlBqBm5EEgKXLOAY7ourQ3SmZo
+	hFTiHUb1nGsSFZOi2yxScdE5So/2xq6M5JGwwKIcSQ1rNPizbpS8w5Qhontvbz84VGwkLF
+	MMqkaTOGVzMysjZljMUTVfhXUtkdLLM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=DariwmLPp7xJOYKPqVbT4bqPHAX4FpqWRkGiDxZp0g4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792212642; v=1; x=1792817442;
+ b=ivdsxJSQPaqSUqZ9H/c87QzRiOuGMFexGZ0syHQ1YODe5yjB5P8tK030iiN/hfRnmxuRwOhs
+ E2WBJxN0va5bNnFTrjFqeMo5rXMgLTAxKE1rk7YzASK2PAmqV59q79f64totFiskn25feZv0eyL
+ UFmxpguJ3wtLlZCWE40VcLzQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 80e13a89da7f5256;
+	Sat, 17 Oct 2026 04:50:42 +0000
+X-Mizu-Trace-ID: 80e13a89da7f5256
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: pfalcato@suse.de,
+	baolin.wang@linux.alibaba.com
+Cc: lance.yang@linux.dev,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ziy@nvidia.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	jack@suse.cz,
+	djwong@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	hch@lst.de,
+	syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
+	ngocthang2710.1999@gmail.com,
+	willy@infradead.org,
+	rppt@kernel.org,
+	ljs@kernel.org
+Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in collapse_file()
+Date: Sat, 17 Oct 2026 12:50:30 +0800
+Message-ID: <20261017045030.80989-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
+References: <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 720E620002
-X-Stat-Signature: 4erqjisqnt1fte4rt1f6q4ab36wycb1n
-X-HE-Tag: 1792212535-54715
-X-HE-Meta: U2FsdGVkX1+Wbi/hzXoQc75I8PpnD92bc9F7Lq3VyLwtDzax1htozhBjfwUBFz0MbDin7OxGggg4Vf/CLWrHPi3x5IHJwV43CF/ehuO2esTG7wQm/IlnJ2nbtYdmMGdDWXPe0cfZgFz2TdZY4R9cA0uLIyjxPfFsmnZbleSjIsoZhyuAFr5FR13uDYnRn3JOO2AbuI9VDDv0WyqdnFPND5Atyn6eh8Cmt/FVNPnuf+Agb3V+M5qA/ETeDgI7j/v4mCSnseXea6coWON9SZuwR19Xi1SphAW0MVYBbBl0ZHdozOcrPMh0KYbBNEoKKCxoeTDrSd4rQjcPzq7gunus0QLWMTSmqc/FqM5bZHYqZbJFLnzO4104ckgIIXAi0wMYHr/jvRhgXdgyhYAST97pCOjpvI9gfI747ZXjXN+T91f7QBZm1WaZkAYLPgPsUhHApRtIgksF35rGzQbqrhlx4DmLM5SQ8kFskyc0jgqzwKCygbmwh7PT5V6ELkOsCbIVNt7b9C6m85lrhQqu1OwfFeCdFKcx0YVv2ldVYf3AbvYZ7Iqyuj6WU5mnVBUwZEwI12Ze3cQdIRsz55NhCrOVE1PMgnMiuPwOpLA4VSKWd4GBYdj3prj+GBvAU3i51fgJOUkv6Df441TPUzBtGugrmXjNhP9vtn3VxczqLFcsYWJ2RHi8z9XRPPtb7OHEUGBPYcjOo7ZMWzEACgr4xY/ucMGaSJ7Ooju855Km7o2tXyCXIKSDAu3SKqx1pKxaO6S+tWdTQ1e3js/W7MNyLMZuUlfbLe2l3i6QsdVd1ecqkBtfsnl8XaW0DcQVdchEz4EiQsrrx7ohPQ31S+6GuFiCZHsmNVIX0wqtIWFyA6j1/cjpcWUrBOXclawDsX1E6sptaQQ8hB5x48t4UJFsWn9J0GXYx3Fl7pTJ5dfV8820156jcZKuRVyU/Jeo5/wnPropZAOrh6AFArjUKZFBtR5
- 7XN4GSe1
- /TN/JRKiGWx0Qz5ilOYBXdK0mB3VlNq4PYzD6558WVVfllOgqmmxvx0pf9Y/+uQ0T7PON3i8hK1x/2dSgx4uzVngZJjrv+QUnf3bx+V6bfw2M9LRAOzYgY5XKL8GFhIovxXhYibo0h/2vVxPenDZpmMboQm2ePPTNxlJU/1I0c8OAYOoeSJf1Fbj4QaRN4XAaoOvRB3wvPh6gijM=
+X-Rspamd-Queue-Id: 48AF740002
+X-Stat-Signature: npsmjyu49yzmzhmb6ratzf6hxi1gmn6f
+X-HE-Tag: 1792212644-275645
+X-HE-Meta: U2FsdGVkX1/RXUA00zifv67hO9S5GTyuuFUDbNz+MSWTSwHrS8HeqPKpuJi0p+al/VikZ2+vSyqf39Ygopac0akY2kJXCQu4CFvT7mrA+ynPl7kDa3/Jz1lYKGR/5BuJb/uP1W7sQam9HbGZ7C7WAsqw18Ejz1vKGSRbTvG01ZQur+1YQoCnd17oMrg8/iFIRCl3IfCY85BaqF6GSuiRDRTOTlFHXxGjK4khZV0z0ytmzRu/VzEBdJ6lcYYcwLvzgkbfkfGigjHpS77+FOX0glbxb69H5me6I5z5/d/vMP4Vb8G3BO4JAgnHWyo35lsydTWPHNgUbmIh3BAzzDGiXYxb+89dBzRfH90x1tsrvm4KE/fzggzva9egAXtm3KqMGklmQbwzlJpGn4awSBICNQQ121dWFmnpoeovVz2kW6lExYnjSedHJg8yluv9/jz8z0s2rEY9PMl/4jzbdW1vs2+dwBA4Cac5Q1kibM0TzmVrGqy2XG4KC+d9o6hj4tKsQWyLaCz5asqXVpvi0PNVtaf4qWTyvHn03dNx6eF+4t1hFJa+pBKCZQJXdyBU23wexX134bRRTJSpduWbzBXPX9PlKBuCZg9D8TbIrw5KtC5sJtKygA2EH8OvMXqgckVLUqsI7ZfrslMU7ogOlHb82Ack8VgwLaRt7rac0MKq4LBggMWS5Fc/VSyur4mAprpNzq7rtfFxIZwpKt5k2qqGQCWKki62mmNY0RaCd5Lb1jPyVJEk71lM8T1bSF9lLcITC8d5W8KheGC/oKqjW//vf8Xmp6YeG6s+hWO7ScCmKQyWWjtFFNqDxbXs+XDHbMQ0aoBBm4ripXxuEQUlz6lsHaM4nKNkPpmazyTrzZ7Q6ziG4TgcU4IcKBcebw26AFl5sUPkHj4uv64otBpFzFz4/kP+815AlNDVW2IDA4HIc6mpYh3Js+8uYIFm6Qhi7mMAjNFFrtqbkNiqKZzYwRv
+ W5SuLcru
+ G2D6c9MUBclt0vNwrG93mOCi7fMuoO7BcV+wnSP+LHHxJW3i6xK+e/4UbzrXEusxuvSeUn9ZbwxcTX8DyRiRey931/UJ3oRLYDBhLYKRHKApZdz9mdT4PHfJWtNSUuSl6FDKP6/LO9V4PHARsOzRNEG0N20lwpFllOwZOTiRGQFviq/hj+AX/ymRZYpOp3yoZiACE+mIO1oHP/l6l+s/TbNdNfzq9MKz3z5h0vy+l4w4ZIp5BzNmYumNR0mi9T4uauNMkraFGc+p9vpNLDWP1qAOMXNcwdRPRoBO78bgitBOGGleQX88WfY8J8x7RznlHyaksZsrwtuHmzDneopoxO69J+mSMi5ONv9pR2x1LLWyuN6MLweJATWkrDnMeSup08CWnYJazBDGyiIghMTdAD/pSR9RGFeQ3aIVrBrJb9wd6hAmtxs0Ocns6iiCgYoMzv3x2gDLpSKTxT7nh++d6olaWQNWdCiE2iDGaIPUWFCFBUprqFwtQs7pFs6y94F+3HhEZ6koe3gIVe1xHx/qVa6Rzq8gWyGFIEqjX7toa2GjfAy+2rzqu6I4nzgQqalB8B0LLeoOqflRLDkU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,185 +110,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 2efb7a11f1aa4d2dc285fe2680cca22cb9f72f64  Add linux-next specific files for 20261016
 
-Error/Warning (recently discovered and may have been fixed):
+On Fri, Oct 16, 2026 at 02:18:43PM +0100, Pedro Falcato wrote:
+>On Fri, Oct 16, 2026 at 12:00:24PM +0100, Pedro Falcato wrote:
+>> On Fri, Oct 16, 2026 at 05:57:48PM +0800, Baolin Wang wrote:
+>> > 
+>> > 
+>> > On 10/16/26 2:59 PM, Lance Yang wrote:
+>> > > collapse_file() can end up calling page_cache_sync_readahead() with
+>> > > source folios from earlier in the range still locked. If truncate already
+>> > > holds mapping->invalidate_lock exclusively and is waiting for one of
+>> > > those folios, readahead blocks on the same invalidate_lock and neither
+>> > > side can make progress.
+>> > > 
+>> > > Do readahead in a separate pass before we start holding source folios
+>> > > locked for collapse. Keep page_cache_sync_readahead() and its existing
+>> > > policy, and drop each folio's lock and reference after checking that it
+>> > > is uptodate. If truncate or reclaim removes a folio between the two
+>> > > passes, roll back instead of doing readahead again with source folios
+>> > > locked.
+>> > > 
+>> > > Shmem handles swapin and fallocated folios through shmem_get_folio()
+>> > > without taking mapping->invalidate_lock, so it isn't affected by this
+>> > > lock inversion.
+>> > > 
+>> > > Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
+>> > > Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
+>> > > Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
+>> > > Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> > > ---
+>> > 
+>> > Thanks for the fix.
+>> > 
+>> > > Thanks to Nguyen Ngoc Thang for v2. David asked for volunteers, so I'm
+>> > > happy to take this over.
+>> > > 
+>> > > Some older stable trees lack the folio infrastructure used here, and the
+>> > > code will differ for each stable tree, so each backport will need quite a
+>> > > bit of rework and its own review. I'm not sure whether to Cc stable here.
+>> > > Once we agree on the fix, I'll send a separate backport for each maintained
+>> > > stable tree except 5.10, which isn't affected.
+>> > > 
+>> > > v2 -> v3:
+>> > >   - Replace the scan-wide invalidate_lock and page_cache_ra_unbounded() with
+>> > >     a preparation pass using page_cache_sync_readahead().
+>> > >   - Roll back on a new page cache miss during collapse.
+>> > >   - https://lore.kernel.org/all/20260913163644.122133-1-ngocthang2710.1999@gmail.com/
+>> > > 
+>> > >   mm/khugepaged.c | 42 +++++++++++++++++++++++++++++++-----------
+>> > >   1 file changed, 31 insertions(+), 11 deletions(-)
+>> > > 
+>> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> > > index ef5cd6fda34f..b3f67617caf0 100644
+>> > > --- a/mm/khugepaged.c
+>> > > +++ b/mm/khugepaged.c
+>> > > @@ -2262,6 +2262,34 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>> > >   	new_folio->index = start;
+>> > >   	new_folio->mapping = mapping;
+>> > > +	if (!is_shmem) {
+>> > > +		/*
+>> > > +		 * Populate the range before accumulating locked source folios:
+>> > > +		 * readahead may block on invalidate_lock.
+>> > > +		 */
+>> > > +		for (index = start; index < end;) {
+>> > 
+>> > why drop xas_unlock_irq()?
+>> > 
+>> > > +			folio = filemap_lock_folio(mapping, index);
+>> > > +			if (IS_ERR(folio)) {
+>> > > +				page_cache_sync_readahead(mapping, &file->f_ra,
+>> > > +							  file, index, end - index);
+>> > > +				folio = filemap_lock_folio(mapping, index);
+>> > > +				if (IS_ERR(folio)) {
+>> > > +					result = SCAN_FAIL;
+>> > > +					goto rollback;
+>> > > +				}
+>> > > +			}
+>> > > +			if (!folio_test_uptodate(folio))
+>> > > +				result = SCAN_FAIL;
+>> > 
+>> > Do we need to check PG_uptodate after locking the folio? If we successfully
+>> > lock the folio, doesn't that mean the read I/O has completed? The following
+>> 
+>> Yes, you do; a read can "complete" without the IO having completed successfully,
+>> and in those cases PG_uptodate is not set, but the folio is unlocked.
+>> 
+>> Either way, why are we checking for uptodate here? We only care for starting readahead.
+>> Anyway, I would possibly recommend we do this as post-processing, not pre-processing.
+>> The current loop is a little overhead-happy.
+>
+>To clarify: I would do this kind of RA as an error path if isolation failed.
+>Namely, at the end of rollback, after unlocking folios. It doesn't make sense
+>to me to do this kind of checking upfront. I don't think it's particularly
+>realistic that, starting RA upfront, you'd see uptodate completed folio reads
+>when doing the actual isolation.
 
-    arch/openrisc/include/asm/page.h:50:29: error: request for member 'pgd' in something not a structure or union
-    arch/openrisc/include/asm/page.h:54:25: error: incompatible types when initializing type 'int' using type 'pgd_t'
-    include/asm-generic/pgtable-nop4d.h:9:18: error: unknown type name 'pgd_t'; did you mean 'pid_t'?
-    include/linux/mm.h:3639:22: error: pointer/integer type mismatch in conditional expression [-Wint-conversion]
-    include/linux/pgtable.h:1544:13: error: implicit declaration of function 'pgd_none'; did you mean 'pud_none'? [-Wimplicit-function-declaration]
-    include/linux/pgtable.h:1546:22: error: implicit declaration of function 'pgd_bad'; did you mean 'pud_bad'? [-Wimplicit-function-declaration]
-    include/linux/pgtable.h:167:38: error: implicit declaration of function 'p4d_offset'; did you mean 'pmd_offset'? [-Wimplicit-function-declaration]
-    include/linux/pgtable.h:167:38: error: passing argument 1 of 'pud_offset' makes pointer from integer without a cast [-Wint-conversion]
+Good call! I should have thought of that :P We can do this on demand after
+rollback rather than walk the range every time :)
 
-Error/Warning ids grouped by kconfigs:
+I played around with it a bit, something like:
 
-recent_errors
-|-- csky-allmodconfig
-|   `-- fs-nfs-flexfilelayout-flexfilelayout.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-`-- openrisc-allmodconfig
-    |-- arch-openrisc-include-asm-page.h:error:incompatible-types-when-initializing-type-int-using-type-pgd_t
-    |-- arch-openrisc-include-asm-page.h:error:request-for-member-pgd-in-something-not-a-structure-or-union
-    |-- include-asm-generic-pgtable-nop4d.h:error:unknown-type-name-pgd_t
-    |-- include-linux-mm.h:error:pointer-integer-type-mismatch-in-conditional-expression
-    |-- include-linux-pgtable.h:error:implicit-declaration-of-function-p4d_offset
-    |-- include-linux-pgtable.h:error:implicit-declaration-of-function-pgd_bad
-    |-- include-linux-pgtable.h:error:implicit-declaration-of-function-pgd_none
-    `-- include-linux-pgtable.h:error:passing-argument-of-pud_offset-makes-pointer-from-integer-without-a-cast
+---8<---
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 85ea095906fb..ce5d89ff47b3 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2290,6 +2290,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	enum scan_result result = SCAN_SUCCEED;
+ 	int nr_none = 0;
+ 	bool is_shmem = shmem_file(file);
++	bool do_readahead = false;
++	bool readahead_done = false;
 
-elapsed time: 844m
+ 	/*
+ 	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
+@@ -2307,6 +2309,10 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
 
-configs tested: 142
-configs skipped: 8
+ 	mapping_set_update(&xas, mapping);
 
-tested configs:
-alpha                              allnoconfig    gcc-16.1.0
-alpha                             allyesconfig    gcc-16.1.0
-alpha                                defconfig    gcc-16.1.0
-arc                               allmodconfig    gcc-16.1.0
-arc                                allnoconfig    gcc-16.1.0
-arc                               allyesconfig    gcc-16.1.0
-arc                                  defconfig    gcc-16.1.0
-arc                   randconfig-1000-20261017    gcc-12.5.0
-arc                   randconfig-1001-20261017    gcc-10.5.0
-arm                                allnoconfig    clang-17
-arm                               allyesconfig    gcc-16.1.0
-arm                                  defconfig    clang-24
-arm                   randconfig-1000-20261017    gcc-8.5.0
-arm                   randconfig-1001-20261017    clang-20
-arm                   randconfig-1002-20261017    gcc-10.5.0
-arm                   randconfig-1003-20261017    clang-22
-arm64                             allmodconfig    clang-24
-arm64                              allnoconfig    gcc-16.1.0
-arm64                                defconfig    gcc-16.1.0
-arm64                 randconfig-1000-20261017    gcc-11.5.0
-arm64                 randconfig-1001-20261017    gcc-13.4.0
-arm64                 randconfig-1002-20261017    clang-24
-arm64                 randconfig-1003-20261017    gcc-8.5.0
-csky                              allmodconfig    gcc-16.1.0
-csky                               allnoconfig    gcc-16.1.0
-csky                                 defconfig    gcc-16.1.0
-csky                  randconfig-1000-20261017    gcc-16.1.0
-csky                  randconfig-1001-20261017    gcc-14.3.0
-hexagon                           allmodconfig    clang-24
-hexagon                            allnoconfig    clang-24
-hexagon                              defconfig    clang-24
-hexagon               randconfig-1000-20261017    clang-21
-hexagon               randconfig-1001-20261017    clang-21
-i386                               allnoconfig    gcc-14
-i386        buildonly-randconfig-1000-20261017    clang-22
-i386        buildonly-randconfig-1001-20261017    gcc-14
-i386        buildonly-randconfig-1002-20261017    clang-22
-i386        buildonly-randconfig-1003-20261017    gcc-14
-i386        buildonly-randconfig-1004-20261017    clang-22
-i386        buildonly-randconfig-1005-20261017    gcc-14
-i386                                 defconfig    clang-22
-i386                  randconfig-1007-20261017    gcc-14
-i386                  randconfig-1008-20261017    gcc-14
-i386                  randconfig-1009-20261017    gcc-14
-i386                  randconfig-1010-20261017    clang-22
-i386                  randconfig-1011-20261017    clang-22
-i386                  randconfig-1012-20261017    gcc-14
-i386                  randconfig-1013-20261017    gcc-14
-loongarch                         allmodconfig    clang-19
-loongarch                          allnoconfig    clang-20
-loongarch                            defconfig    clang-24
-loongarch             randconfig-1000-20261017    gcc-15.2.0
-loongarch             randconfig-1001-20261017    gcc-16.1.0
-m68k                              allmodconfig    gcc-16.1.0
-m68k                               allnoconfig    gcc-16.1.0
-m68k                              allyesconfig    gcc-16.1.0
-m68k                                 defconfig    gcc-16.1.0
-microblaze                         allnoconfig    gcc-16.1.0
-microblaze                        allyesconfig    gcc-16.1.0
-microblaze                           defconfig    gcc-16.1.0
-mips                              allmodconfig    gcc-16.1.0
-mips                               allnoconfig    gcc-16.1.0
-mips                              allyesconfig    gcc-16.1.0
-nios2                             allmodconfig    gcc-11.5.0
-nios2                              allnoconfig    gcc-11.5.0
-nios2                                defconfig    gcc-11.5.0
-nios2                 randconfig-1000-20261017    gcc-11.5.0
-nios2                 randconfig-1001-20261017    gcc-10.5.0
-openrisc                          allmodconfig    gcc-16.1.0
-openrisc                           allnoconfig    gcc-16.1.0
-openrisc                             defconfig    gcc-16.1.0
-parisc                            allmodconfig    gcc-16.1.0
-parisc                             allnoconfig    gcc-16.1.0
-parisc                            allyesconfig    gcc-16.1.0
-parisc                               defconfig    gcc-16.1.0
-parisc                randconfig-1000-20261017    gcc-10.5.0
-parisc                randconfig-1001-20261017    gcc-8.5.0
-parisc64                             defconfig    gcc-16.1.0
-powerpc                            allnoconfig    gcc-16.1.0
-powerpc               randconfig-1000-20261017    clang-17
-powerpc               randconfig-1001-20261017    gcc-15.2.0
-powerpc64             randconfig-1000-20261017    clang-20
-powerpc64             randconfig-1001-20261017    gcc-8.5.0
-riscv                             allmodconfig    clang-24
-riscv                              allnoconfig    gcc-16.1.0
-riscv                             allyesconfig    clang-24
-riscv                                defconfig    clang-24
-riscv                 randconfig-1000-20261017    clang-19
-riscv                 randconfig-1001-20261017    clang-24
-s390                              allmodconfig    clang-24
-s390                               allnoconfig    clang-24
-s390                              allyesconfig    gcc-16.1.0
-s390                                 defconfig    clang-18
-s390                  randconfig-1000-20261017    clang-24
-s390                  randconfig-1001-20261017    clang-24
-sh                                allmodconfig    gcc-16.1.0
-sh                                 allnoconfig    gcc-16.1.0
-sh                                allyesconfig    gcc-16.1.0
-sh                                   defconfig    gcc-16.1.0
-sh                    randconfig-1000-20261017    gcc-16.1.0
-sh                    randconfig-1001-20261017    gcc-10.5.0
-sparc                              allnoconfig    gcc-16.1.0
-sparc                                defconfig    gcc-16.1.0
-sparc                 randconfig-1000-20261017    gcc-16.1.0
-sparc                 randconfig-1001-20261017    gcc-14.3.0
-sparc64                           allmodconfig    clang-20
-sparc64                              defconfig    clang-24
-sparc64               randconfig-1000-20261017    gcc-8.5.0
-sparc64               randconfig-1001-20261017    gcc-15.2.0
-um                                allmodconfig    clang-17
-um                                 allnoconfig    clang-17
-um                                allyesconfig    gcc-14
-um                                   defconfig    clang-24
-um                              i386_defconfig    gcc-14
-um                    randconfig-1000-20261017    clang-17
-um                    randconfig-1001-20261017    gcc-14
-um                            x86_64_defconfig    clang-24
-x86_64                             allnoconfig    clang-22
-x86_64      buildonly-randconfig-1000-20261017    gcc-14
-x86_64      buildonly-randconfig-1001-20261017    clang-22
-x86_64      buildonly-randconfig-1002-20261017    gcc-14
-x86_64      buildonly-randconfig-1003-20261017    gcc-12
-x86_64      buildonly-randconfig-1004-20261017    clang-22
-x86_64      buildonly-randconfig-1005-20261017    clang-22
-x86_64                               defconfig    gcc-14
-x86_64                                   kexec    clang-22
-x86_64                randconfig-1000-20261017    gcc-14
-x86_64                randconfig-1001-20261017    clang-22
-x86_64                randconfig-1002-20261017    clang-22
-x86_64                randconfig-1003-20261017    gcc-12
-x86_64                randconfig-1004-20261017    gcc-14
-x86_64                randconfig-1005-20261017    gcc-12
-x86_64                                rhel-9.4    gcc-14
-x86_64                            rhel-9.4-bpf    gcc-14
-x86_64                           rhel-9.4-func    gcc-14
-x86_64                     rhel-9.4-kselftests    gcc-14
-x86_64                          rhel-9.4-kunit    gcc-14
-x86_64                            rhel-9.4-ltp    gcc-14
-xtensa                             allnoconfig    gcc-16.1.0
-xtensa                            allyesconfig    gcc-16.1.0
-xtensa                randconfig-1000-20261017    gcc-14.3.0
-xtensa                randconfig-1001-20261017    gcc-8.5.0
++retry:
++	result = SCAN_SUCCEED;
++	do_readahead = false;
++	xas_set_order(&xas, start, HPAGE_PMD_ORDER);
+ 	__folio_set_locked(new_folio);
+ 	if (is_shmem)
+ 		__folio_set_swapbacked(new_folio);
+@@ -2371,17 +2377,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 			}
+ 		} else {	/* !is_shmem */
+ 			if (!folio || xa_is_value(folio)) {
+-				xas_unlock_irq(&xas);
+-				page_cache_sync_readahead(mapping, &file->f_ra,
+-							  file, index,
+-							  end - index);
+-				/* drain lru cache to help folio_isolate_lru() */
+-				lru_add_drain();
+-				folio = filemap_lock_folio(mapping, index);
+-				if (IS_ERR(folio)) {
+-					result = SCAN_FAIL;
+-					goto xa_unlocked;
+-				}
++				do_readahead = !readahead_done;
++				result = SCAN_FAIL;
++				goto xa_locked;
+ 			} else if (folio_test_dirty(folio)) {
+ 				/*
+ 				 * This page is dirty because it hasn't
+@@ -2704,6 +2702,30 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	new_folio->mapping = NULL;
 
+ 	folio_unlock(new_folio);
++
++	/* Readahead may take invalidate_lock; source folios are unlocked. */
++	if (do_readahead) {
++		for (index = start; index < end;) {
++			folio = filemap_lock_folio(mapping, index);
++			if (IS_ERR(folio)) {
++				page_cache_sync_readahead(mapping, &file->f_ra,
++							  file, index, end - index);
++				folio = filemap_lock_folio(mapping, index);
++				if (IS_ERR(folio)) {
++					result = SCAN_FAIL;
++					goto out_put;
++				}
++			}
++			index = folio_next_index(folio);
++			folio_unlock(folio);
++			folio_put(folio);
++		}
++		/* Drain the local LRU batch before retrying isolation. */
++		lru_add_drain();
++		readahead_done = true;
++		goto retry;
++	}
++out_put:
+ 	folio_put(new_folio);
+ out:
+ 	VM_BUG_ON(!list_empty(&pagelist));
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+Cheers, Lance
 
