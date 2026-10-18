@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F711CCF2C9
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 06:06:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AF41CCF2C9
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 06:16:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C391C6B0088; Sun, 18 Oct 2026 02:06:30 -0400 (EDT)
+	id EE02E6B0088; Sun, 18 Oct 2026 02:16:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE9256B008C; Sun, 18 Oct 2026 02:06:30 -0400 (EDT)
+	id E91746B008C; Sun, 18 Oct 2026 02:16:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD7A56B0092; Sun, 18 Oct 2026 02:06:30 -0400 (EDT)
+	id DA6F96B0092; Sun, 18 Oct 2026 02:16:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A2BF6B0088
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:06:30 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01E1F8048E
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 06:06:29 +0000 (UTC)
-X-FDA: 85334712540.14.2C58704
-Received: from mta0.migadu.com (out-8.mta0.migadu.com [91.218.175.8])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B9E3040007
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 06:06:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r2yw0M3D;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.8 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC5A96B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:16:41 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 348A240484
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 06:16:41 +0000 (UTC)
+X-FDA: 85334738202.10.E5D0542
+Received: from mta0.migadu.com (out-63.mta0.migadu.com [91.218.175.63])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0082D120007
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 06:16:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=svOFuxEq;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.63 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792304199;
+	b=2Ck+IR7uXDM4eAFG0C6K5TO7PhVnkRRP0CUjQOi9nw0VZDWRGiRE+5lE6Y657rX+Vt19+H
+	qipn2vhsAuY3gZljfg7JZMTcobMBg4qL36gdlgkVOfABtg36gMJs2YaCTBBZbK9C7pcmCD
+	yKAoTgHEmRZj4aWoovgziektIlyMpVQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=svOFuxEq;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.63 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792303588;
+	s=arc-20220608; t=1792304199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1muDN6GiSgYXQ/VZo3E7DKlQxGLCpvFE95jsLDz5R0w=;
-	b=5BLWxgHE/rVf6uJL44jIEb/1uD+GXWoGXGD830O/uzTxw1RWNAGNjNaWa4eKhYXXdqlkJo
-	ZSNnJFsKnYreymTs0l7Hv5W1ykCNye4fsHeigtICeYqXUUUqN8VJjUn4fRO692ZYCmhlyu
-	NgmvuX3VqOHHvggo1QYtm27fqGp7MrY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792303588;
-	b=oPkOVQ0FblVffDRp521OzkFxKcv+QFsmi9b2R80JNtXdmBLSb62ioaoLkPUQA/rNd+tZYh
-	ewTRIpBDM7Y3SZ60MYE9nfwButOj6ndPrZeAUEKfNsdBtkqpa+EmVKpcXV5mqyjTuOTz9l
-	gANz+CjRhzMzR10uX91ymueoVkm307c=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r2yw0M3D;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.8 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	bh=APlrRZOJFR9cUjMoEjPxwlvYOWuC2+es2fBySPBRQQY=;
+	b=ln1vr4coLJprZ/MydqxiQQ/FcRkPRs86MuYWlIp7sMMdGr5GRSIRcKHyipgsW2/euif6ax
+	T7FpbfaKMW4ukjllGtBwl9wHT4+OHYuzqtNBrnH7Ux7XlhBZEvkKqYji1J/s2G6zgz7kIB
+	MaR4rF1HFc6VPWEo7c/XqfGfFAITWis=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=E4jhTrD/yvx1o3PE+1enlxeStAvJ4cEvw0ge3yfhvfY=;
+DKIM-Signature: a=rsa-sha256; bh=B7Gw/wiYK21i/cMa7GU1UmN3hJqv1WC6YvEMSTJM0Ps=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792303585; v=1; x=1792908385;
- b=r2yw0M3DR0o5thzvP1Tg3WKI8ZBsbx7wKg4Zn/Bx2owQHrcPOL5dcAKrBlynblT5g/f6lhKf
- EpqxHd9ZLRMpHVzr9zTqBfe0XQJ/7QQG1aoPolOE+3tjVBQ8tNr/RAN9IRqFhd5ZVkobCF6LQOa
- eIaRpZ2Tu5YHWu3N8YvE+n3k=
+ t=1792304197; v=1; x=1792908997;
+ b=svOFuxEqWf6TmVMdnsN1mZk98lR9tnesVti+KOrfgctxjpv8rBn12cxqNLDbHUyl+Rttw4Uy
+ YA4lWw/9Qjlf9VWwziulrNT54f2eRyGnVA5cK41UhvKt5+6gNMuOUrAYCEmwdCUj8EoAzdj5nSU
+ kH4lQrOX8B0Qk2jckfVlZGRU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 294eb343e70a89c9;
-	Sun, 18 Oct 2026 06:06:24 +0000
-X-Mizu-Trace-ID: 294eb343e70a89c9
+Received: by smtp.migadu.com with ESMTPS id 8a974899a536c980;
+	Sun, 18 Oct 2026 06:16:37 +0000
+X-Mizu-Trace-ID: 8a974899a536c980
 X-Migadu-Flow: FLOW_OUT
 From: Lance Yang <lance.yang@linux.dev>
 To: david@kernel.org
@@ -84,23 +84,23 @@ Cc: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 01/10] mm/vma: don't leak the commit charge on mmap failure
-Date: Sun, 18 Oct 2026 14:06:19 +0800
-Message-ID: <20261018060619.12762-1-lance.yang@linux.dev>
+Subject: Re: [PATCH 02/10] mm/hugetlb: fix use-after-free of a new anon folio
+Date: Sun, 18 Oct 2026 14:16:32 +0800
+Message-ID: <20261018061632.14622-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261015-urgent_fixes-v1-1-42796911043b@kernel.org>
-References: <20261015-urgent_fixes-v1-1-42796911043b@kernel.org>
+In-Reply-To: <20261015-urgent_fixes-v1-2-42796911043b@kernel.org>
+References: <20261015-urgent_fixes-v1-2-42796911043b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B9E3040007
-X-Stat-Signature: 9nejjwba3erw8c19t8yint1prwugzqjx
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0082D120007
 X-Rspam-User: 
-X-HE-Tag: 1792303587-751072
-X-HE-Meta: U2FsdGVkX1+PIver9T2DfF3leon2iupZt6sA+1vfSyQnDs9FtuwyMotjSefm9XgrYjrgmQCcUTvRDZA/GA1bQlrbDNEAGo+1l0k8Sh2NCixtyKP4c6vfroHynywyjnJj9xLUd5fZhcoWOgdrZP78xD78v9PWrMEf9ZCPV0FZIQ1yLk3cf2LcktnJ8/evNsorvwAWf3YCQxyqE34FGghhQa4+eVm42bxR89boSsQokr4jGAYtH0Tc5V9oSw8R0r2cOQ2VV0ef77ytt4JRec4dagO0Rf8YZavgWd4R/ZjNlzgEwbqe+bSJFRtZEXr/16zEtjl0qH+Ry66+azo7Qr7qqLdWhphVH6+2nN9RstEOid034IoWC7FCel6eMNLuFDjO52bZI/oBkGHwLBy0B1sng0LYPeaX5FBxXDJTuy//LLT/NoK46c6T7jlgAieJ2ayyj88dPus2Zq5BhFOXOMDSmQ0Q/7kSxcm1SISvU8KNQJ1UhWV3n0jJ+tkAStYuc1a/d3ZOkO2tyFU0tFa1sVw1bbvUwVb1xE7yTAXaZRu4gr1NJz+MHhBqGEIcajN1QwTr1+hTzeRQC3inGgWgAF1Nyi2UgRzG26DkmAHmz3m42yHDOqXIDNTpqa9lKuZSwYq1RZkeIeaW36Gf1pPKMxQ6urqpBWcYf20104Emk6Vg7Q7qgKfnMQNnXkGcv5UVM7Xr6HPQRGy9aYtxDL2rIMehg/tFOBm+utIJ+sdl7mqKI05N9iuAEzcuG2V0/LzAWzD5YpDinpyPxwCQn+eH9iJsjL9GeL4wgRaqVQVwahRTvTETDRHT4DT7wEOSLpaRGdJKDaPLZWGta2sLy3OMzbc5yLjSAGAV9rCBKWnkTBphrFK9FvzFKXjG0KJOPNOYjIxXsxA8AY3ufKUJHpKynNjWkVQ0frAoDdqZ2Gf49vTNmYb7cWvz/6Z7UT8BzovRb/sj7ZcGHNiKQQnpPr032R+
- I68foMCZ
- b7lAwVF+KO2cwgpH8oHHmshUV9AFwDTLHXhhwoMUFdJeoMLANp4UUdKSyJh826H/BS7TTUmub7rYnS3A4Xnd+Gz/R4OZoXDejHQIZY5YmeGqoVtJhMCosMwoZOSVf8I8I8R80fo3y0atep4dViJ0YJ4C5s8hrOCl8EmvKnZ7P+4FWseTXjs/3+h4DU20xH2CekbTQ+zTlKOr2gEmENNWJL8zJczqxWnEMrgC4DNXdqNqDjNJXE4VmiiROU+NtStX4/9Tm2g7Lipn2kAc0i/he4p0Vj8/qQbGnymdApt5yLR7Nnp1zUQ1vt7WlT9dPvnI44yn74c1blXbHlS2NGeo7q1r0SbdhqsYNzAVnL3FpINm3btEDP8V5gyCW6jSEni2IhQxZ2bOWKJylFbw=
+X-Stat-Signature: nnhe18ssnw6berdkxdekebzga5tkzffw
+X-HE-Tag: 1792304198-887000
+X-HE-Meta: U2FsdGVkX1+9tz5G6mcHvxPWZFDzV8XYV+iwKBMRNT6TTJ9A1Arz5Gfzq4LpUOcdcNo3/zzwQZuW3XD/EotP3w7vgGegwGX75h3XnZryogkEMvWvUSVMm8jk9qiuVSwNCTboSMUUeEFpaWOZ6SXea8tRDICXmlRbHYO4ZkDp5TmsUF4vIhHWa+gQgSFzl23yKa/r/LZRD1sTA8NXfrK1Mt++DO23QACzdb+vYJGjGE+/LoYszbiDgaPaQJIMqnRqxORdUz3H7vg5ejeD4sTSv7cWAWLnF6Nn7eXsR/R/fZJtcabmcyI+cFx8m3tI37GitL2aSjdJC6jPYlE/OV8lVWFyJTlEw5xQEVFqrOqeSqK6a1DZ535SvChwQZAVdDZp5Er/xn2EQWW00cqkxoHdyDX5U1rEUonoZMVnuB/LTJyUJ7X81/L79YcRNfd7LX6kfol9EJq7xTHm0j8isUD+JVd3+8ZfzplyiMiC0zRP+4DgBeFZ5e64Wr48ELX2/4NoA9NyQ1In/Rv/siTN30UKkbqi4k9kuC/3LEpoIrqTarQOgDit+JRdmceRp8oqlRKbF2nJ/Yr0pS/Ry3jU5MFqOh2jQ00vwTrTKjenu5zE387KwWMWRpi5l5PjYR8Qgm9dx5iVVsfX2OGCoDgA63iXy6w4q6w4nuIwjpGOUWgk+Dl66eN5babr1WwSRDL9cunhj6hwqKRmvpW5UwqZ+qtcDQgBlPRuN0aAPQRX/jy5VZav4SSN+yzebORcsTBVnESCTw/S+avbl0XWGcN18sgNbKh7My7kXOdXWHj1O7pT+iwj+aaDFwRiQvfoMEvsEXra4cT7qJGxjCv4RSWnp8Hsk6qKRw5I4KBq+DNftgrtyD1OYd8jDklFxMTfFmaYUQXM09vDgLOyyWiSqY06j9ngdcexEfwKcytI1iXMFAgMOKVkS4/RcK9MSXa9YQWuAAOBusAfQqNHKYWc7oxFEwQ
+ RBxr2HMI
+ AunRioGCBLIkPfJRbdniMLcaffkVoxd4V2OSHpZE3AKHJ4KCdUGQV638MB37nfOewhW9AMNuaYhO9NWbcvfTwJoDpUgligiQ22L/mDupMXo0S/80L1Cy6IqQr39Defpyq/DzORPtL5U6cPidx/L4DC3UAgMsQjHhVWKLYcgZ+zbTAMgWx60IcxewcdAXSZhVCwPFJTk2svuz/rkDHeHtTd3OIIFZ4f092TaM0QCO5n6NufKFakkfNMGTYHQ83q9l567r6GE7hcngQ6DH5n0YbFlkk7gSF8TsxRZfXU13l1WuSbuW1FRlDHTq3AKknBnltcTGYnyDV33urCFioDG9wqX8KHQ1uWKZq/1dYM59IfUHNaCJHRCTT6yZUCi1cTovf53UwCbs8kt/9WIk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,53 +109,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Thu, Oct 15, 2026 at 06:07:07PM +0200, David Hildenbrand (Arm) wrote:
+On Thu, Oct 15, 2026 at 06:07:08PM +0200, David Hildenbrand (Arm) wrote:
 >From: Josef Bacik <josef@toxicpanda.com>
 >
->When an accountable mapping replaces existing mappings (MAP_FIXED),
->__mmap_setup() only charges the difference between the size of the new
->mapping and the VM_ACCOUNT pages it replaces. It then zeroes
->vms->nr_accounted so that unmapping the old VMAs does not return their
->charge, which now backs the new mapping.
+>For a fault in a private mapping with nothing in the page cache,
+>hugetlb_no_page() allocates a folio, locks it and maps it.  The folio has
+>one reference, which belongs to the page table entry from then on.  After
+>dropping the page table lock the function still sets the migratable flag
+>of the folio and unlocks it.
 >
->If the operation fails after that point, the error path returns
->map->charged, i.e. only the difference. By then vms_clean_up_area() has
->zapped the page tables and closed the old VMAs, so
->vms_abort_munmap_vmas() cannot reattach them. It leaves a gap and
->finishes the unmap with vms_complete_munmap_vmas(), which uncharges
->vms->nr_accounted == 0 pages. The old VMAs are gone, the new one was
->never created, and the charge of the old ones is never returned, not
->even when the process exits.
+>Whoever zaps the entry in between frees the folio.  The fault holds the
+>fault mutex and the lock of the vma.  MADV_DONTNEED and the first unmap of
+>a hole punch, hugetlb_vmdelete_list(), do not take the fault mutex, and a
+>private vma only has a lock if it owns a reservation map: not with
+>MAP_NORESERVE, and not in the child after fork().
 >
->No privilege is needed to hit this, only a file whose mmap hook fails,
->for example a socket (sock_no_mmap() returns -ENODEV):
+>Then the flag is set in, and folio_unlock() is called on, a folio that is
+>free or has a new owner.  A surplus page goes back to the page allocator
+>while it is locked:
 >
->	p = mmap(NULL, len, PROT_READ | PROT_WRITE,
->		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->	mmap(p, len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_FIXED,
->	     socket_fd, 0);
+>  BUG: Bad page state in process init  pfn:108e00
+>  flags: 0x200000000000059(locked|uptodate|dirty|head|node=0|zone=2)
+>  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
 >
->Every iteration adds len to Committed_AS for good. With
->vm.overcommit_memory=2 this lets any user make all further accountable
->allocations in the system fail with -ENOMEM.
+>A page of the pool can be given to the next user, of any file, who locks
+>it and loses the lock to the late folio_unlock():
 >
->Once the new mapping has taken over the charge of the mappings it
->replaces, it owns the charge for all of its pages. Record that in
->map->charged, so that the error path returns all of it.
+>  kernel BUG at mm/filemap.c:1532!
+>   hugetlb_no_page+0x111b/0x23e0
+>   hugetlb_fault+0x3a9/0x14a0
 >
->A failure in __mmap_setup() itself is not affected: it happens before
->the charge is taken over and the old VMAs are reattached with their
->charge intact.
+>An unprivileged process is enough: threads that write to a MAP_PRIVATE |
+>MAP_NORESERVE hugetlb mapping, threads that call MADV_DONTNEED on it, and
+>one that takes the freed pages for another file.
+>
+>Until commit 3a47c54f09c4 ("hugetlbfs: revert use i_mmap_rwsem for more
+>pmd sharing synchronization") the fault held i_mmap_rwsem for reading,
+>which everybody who zaps takes for writing.  The lock that commit
+>bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private VMAs") gave
+>to private vmas closed the window again, but only for those with a
+>reservation map.
+>
+>Be done with the folio before the page table lock is dropped, as
+>hugetlb_wp() is with its copy.  The function already unlocks page cache
+>folios under that lock.
 >
 >Original fix generated by an LLM and sent in private by Josef.
 >
->Fixes: 4f87153e82c4 ("mm: change failure of MAP_FIXED to restoring the gap on failure")
+>Fixes: 3a47c54f09c4 ("hugetlbfs: revert use i_mmap_rwsem for more pmd sharing synchronization")
 >Cc: stable@vger.kernel.org
 >Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 >Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->[ david: call variable "uncharged" and make it const, adjust/simplify comments ]
+>[ david: simplify+move comment ]
 >Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 >---
+
+Nice work! Nothing jumped out at me, so:
 
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
