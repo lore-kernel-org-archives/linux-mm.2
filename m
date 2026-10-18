@@ -4,136 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B9CCCA490
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 04:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDD23CCF2C9
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 04:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 018186B0092; Sun, 18 Oct 2026 00:52:44 -0400 (EDT)
+	id 4FBEA6B0093; Sun, 18 Oct 2026 00:53:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0A816B0093; Sun, 18 Oct 2026 00:52:43 -0400 (EDT)
+	id 4D2866B0095; Sun, 18 Oct 2026 00:53:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF9C76B0095; Sun, 18 Oct 2026 00:52:43 -0400 (EDT)
+	id 40FF76B0096; Sun, 18 Oct 2026 00:53:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC5206B0092
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 00:52:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2BB3580353
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:52:43 +0000 (UTC)
-X-FDA: 85334526606.06.C20CD82
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 40FB480008
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:52:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Xyx1ibDx;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792299161;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E8DCE6B0093
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 00:53:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B10B716045E
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:53:31 +0000 (UTC)
+X-FDA: 85334528622.15.5CADA49
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 01D3A40005
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:53:29 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j6bnptqf;
+	spf=pass (imf07.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792299210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/j83INDW+E0oYwL7EQYpoQA+T4KbuWW9MUJmzBfXlTw=;
-	b=THGtLaVkWRg4+gNL0YY2yZKHFGrMa6p+VN+GFlYSozclOTAfvUdUp3ya1U67o1c97fP0D7
-	mR3kpyIyL1A7OECzLPlXF1+6AyPW1IXa1fJiocZ8JhFtkVp35Fwm+BeEoBpocqB/tCRXD9
-	ssJyd2MLa4AMt2yRlhz33p25LXypmGk=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Xyx1ibDx;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792299161;
-	b=7Cbq6AGWeS0qgXVK/051LDuuUuf8jObaQn3PWnc19iW8rkwmVITae2np2ObHQyRR1YuFbu
-	qbEZxp0elaN96XVr2J3sOYpDn2gmw9AwtuC5HJ2uluv/Czu6e3JmHk9Gi6WwtFLUTgx+H7
-	OTMEducVmFcloY49WsJ4Y/W0mLd4qr4=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-533202fe429so237121cf.0
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:52:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792299160; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gRk/Zj5zOmEXp9MT73z8dOOliMMGCNfBcqOzkmIvGEllckIAlAICwFTlD8ifSOAXxb
-         tws/koOSMomVfa4aD84YT+HYVXUtL5YttXyOaC/MIydZ9LJIUqI7IlKzWole5MjlZ1EW
-         0iImfxrPmpzrM/3rc3sRYCuUXp3vKi8S85HcpZcK+qTxjJq4RRlUCvjNFvK5dre8Ns25
-         +dXLGi4FOlFETGHXRkuGNWevCljflW6CqQmfgu4XGutq8BWtSMwwIyl6rmCl6BBFfo1G
-         ZKiVVsWG2KHVyZLa/oKY+SzcyRKoU7/xIMCfCtA1Qv5zYTNSFyhzsqw/pjTk9aEfMWMf
-         i+7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/j83INDW+E0oYwL7EQYpoQA+T4KbuWW9MUJmzBfXlTw=;
-        fh=SijFgeq37n94g2N+eMLs7lI78g5n6J842n+LOfDv0BM=;
-        b=NNUSHozLumlDjPkBSQKqLdk2qeiQAbCXNm8sTskjzmqkpGPYxBN5Q1/Bz0zqryUc9/
-         0CkIYrOevrUy+WdY6yFi/oyupyi9uqPTpi4haUrrObRXohN0MiKMZBn5eiuFzQUmvqHz
-         N5FYyz+6x3SW0w1PA20AixBSzQtw5blymfpqfpR6Fu+uBfyu80aezIxfIwWWyJb73h7D
-         X4224pyOJo/+nGDqQ+6yaU5f4CJ5e6fYeBKfRyuD5jHqGGBEznUJt4wFN1XgWnrmXbLV
-         pzSrKiFQgUvltU0zYqto/7/dM0LBZHbFNiEvNiJP0dIMqysJ9KaP4Nt4yM7aqMDI51FS
-         tuvw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=NL6FeozJTfgi7BCvp1Y94ucO1gEoaYL+GaN20Lo4AzI=;
+	b=SyUzNf1f9S+JJmmLRWtbn6tMvk7GuNihYVt2NzBNGXx5pzEoGnJ7GoT3I/PNwXIkXRCOWE
+	cTf6qsyNsaW7HmJyeapzz79Mlxw9XmznPrmhZr43BTRMtwrbcdrWU7qtviU++6f0yLtEdi
+	tXL6TIufWqUcRGjOs2fpdA9zGTpla5I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792299210;
+	b=gQErLzWCvEu9o5Dk4A3C/V1djj5QrloSxCpXPKGqWpjtzKvm8yGt2cXBkAvQeFVCt1q9Y5
+	+RUuCecJR15HisTw6jbx1OrUzqdXVZJHcanD5IT+cdZu8bbuj6Jk3Zsu8slYNWzmblwP4+
+	dRtrhymg6+UmRCVaQRzBdCgrOEQWcGE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j6bnptqf;
+	spf=pass (imf07.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-35943f55c06so1558027eec.0
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792299160; x=1792903960; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/j83INDW+E0oYwL7EQYpoQA+T4KbuWW9MUJmzBfXlTw=;
-        b=Xyx1ibDx0Y0pgCXKv0WRo73v0JZokxVmNNjoKPbwZSvvoeeqF50D4F7sakdKXQZFHP
-         YpvNGWib+FEcNv+G1oFnvOdwCNKFVIlqkq37urcyyQuK443BkDO4WNh+qEk/QJZyEnx6
-         vzhL7HMuy0+BFuCJ01AsDisA5g0Uu6YgHA6PgS8tkq9D+wnEoNhWFjTwotvUWBRcFjan
-         XhJ9L8zpNdHP577W86dSQDFCy9cmPKNJ4JmlX5cAE8uVj3isagv035OvYk9th3zSgJrL
-         gL6NF0JDdWEBU2vHxsWL2SVUSOqhjNdLDZRiOfBWLsxb3z3GZViNuXpy4E2I2Uc2pBXd
-         duOA==
+        d=gmail.com; s=20251104; t=1792299209; x=1792904009; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=NL6FeozJTfgi7BCvp1Y94ucO1gEoaYL+GaN20Lo4AzI=;
+        b=j6bnptqfb/FNIoSVUUHDLQUkKSymmDVFTuhE5u7fKaBUZDLNA5vyE6H2/RAPhm2omA
+         FYgFRZM7m73dBadrL8ujuCyKUJ6RS3bn4j1AC+oTCbAQNvpGP/rAG0GMsDFmqDfQFWjJ
+         UZcYY+kRyecrX1E0sz0eapdUX5ryskf92DzBD+VI2jB33xY0qSAKgNEFTz8IsxIjm7OV
+         DYD9mENiavekLGaBHNVd3rzV0Xe/yWrR10a2d/+i3y9LoLzhgQNzWrWrfhuNIb8waTV9
+         Ll54n3GogkpZydweZMlHbMMYlRIq8GCkYvkddPeL/EnhRQbBy0l+sHVhqeM+RlYrUAC4
+         Gx1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792299160; x=1792903960;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/j83INDW+E0oYwL7EQYpoQA+T4KbuWW9MUJmzBfXlTw=;
-        b=POfAObZPQ6U7XFn/O17u+mFBMFl3TUUcxLcQqloeeWQj1085DrR0Tq7LNpn3KuxES+
-         h28nQQOMN8DqQMRtFPcu6y3L3jmsNsGDahc7j4g+ekLh5R/zETfMx+9ZWBLhXoYYxmVs
-         JWNwMDlam3fBguhAQznmGo8msvgCfMhYuK9RFpNjKpvmLkWNRYFcSQn3NzU0Rvj8VOH4
-         +GBdgAMhEV1agldXA4lc3mZdNNQLymCtBV7EeDOwoKHPluG1KqpzEh7ujuxLFxMeYE3r
-         aFF7Ox4Agg0KzOxQsHmbvct9xFjLDeUyXoJ99Ua9fElPqjImVBDGnLaQ97W4xhVygVK2
-         axUg==
-X-Forwarded-Encrypted: i=1; AKwUvBz1fp2G93G9+QwQd4XUmMiPdaUp6UwpZ4GtOz+q64aKzGMvebXz1NEFvRg5JK7NPG8Y6lIGxpSrKw==@kvack.org
-X-Gm-Message-State: AFq9FYJotF6z4pP2byugltw5Wz0gYmZKXrZPz2W2qobppSuZMfaCbv0v
-	gNU4J70jBkMDegT48KU56ThKaY+dwd9mW0sXFeDX3H0D8GkLVCRNIj7506cTu25G8GHC/spMjB4
-	uJ66RRcayZWj4jSwP9GtZh3o474zpW3EAWxk7Y9xG
-X-Gm-Gg: AYBFou0dBErTs+kd2H0UQWk8ouJ+v4nvL5oyO9b9e6KKLiz2J3VDYutVHO0cqy3j2Cd
-	vBfLYnkUEFG3M6S8cymQtbechEzrz8IsfeyT7berYZAaf3OPGDKVD7BjIPNIyamJSgiNQT1UcI5
-	N7I/bHkZW79hhqrjq/x2XTiZg6/2wZ9LdGl+cevYgclix3DIiflZUvNieKQ0KG7o6b2Uz20adLV
-	V6F9hsX6so6VCbmBARBRmqK0LJKhUFeDlncomHjpxnlX2LGZlq91gplLC0pqae/E48jkPVpuuZg
-	Jbbavo/I7VsVSXyjEUBlNkPI/5y1nNMOLUyUyTYCxTl0yWTuKu7+b0LzesXBUDsgx5FY
-X-Received: by 2002:a05:622a:15c2:b0:534:d386:c3f1 with SMTP id
- d75a77b69052e-53646271decmr19987131cf.9.1792299159704; Sat, 17 Oct 2026
- 21:52:39 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792299209; x=1792904009;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=NL6FeozJTfgi7BCvp1Y94ucO1gEoaYL+GaN20Lo4AzI=;
+        b=CMcUHBVdo3CnhpM6XlIACysvOkE62LgOTi49pjQVLmgcsMCJiBxEG93QXXvGdhX7T3
+         qJRIKn7xR0Wm/xsW6i2ofc0T0CIshlTVO1OUsVIxS2hAwpSiGkuUJLRZV8wwlYSC42lC
+         uHbE7bNEabQLZjMeB4JuT0pC1d+mibUnQCwpd5yQC19ABWn2RIyh+sQ5RN9qjnuWIYs3
+         vKWGVNzq4+izhvEvj++w0WwgkokreLQnTJ0iUl3C/CkDhwAfPtJVaqydCQeqZPPlhgBl
+         gXH1MpPzxCiqplTfoRTS6xOjlk+kkFXDMzEc048Z5SfKxEnC0UkpO62mqNLLAs1yRcls
+         JyuA==
+X-Gm-Message-State: AFq9FYIsR0nq9mz4ogF3cAXR++7m1MKw90MK2VrS2OCOt6jU94Q0VBAj
+	jjYoGwETSB+1MkY4bxjFEbGcut/dzlgQ2ZXIBWkD0cMF7TGOQbTTZ2Vf
+X-Gm-Gg: AYBFou0JvGJM0pRp+MFCWrun/c6qu5RFMCC2ofGd31ksWPkm4MQcZNwzwtHSSFa9ehZ
+	AHyePAuufTdT91T5Uq6SFf5Idcniac8EvHvsKA6gx2/otwKWNK3ZLUZ5cjn24hX66u5gA28z1Gw
+	0UZeizNTU5qOWGxQDOyUpU4i84mXMj6DX5VlJATGXGTJXuKpahFTFZP6/Fcinw4SmwsCSE2fjXI
+	f0hpzKiMlEFSPuRZuB0CPPOPFipBcFUuWYOIPEI795KqwNzpvWFXQTkHb2o/yWpIkq48UChvdIL
+	pZCGTcPRjo3JElXh08ZixLL6+nVE7SxPcWCUYB76Tag8smKfPNl2j4ZhbYvqz6Bv2arV/or3+5q
+	9tPsBK3GsOja532ftmRVSbMNDkN86X/9/Na85uBK+Ixk0L9pi9tsHNeJSDJ8KUltThohkgXhVAd
+	AlVlA+rMwGFBSKT1R5CbqGk/T70yKrPA6tpfVfnZpJbw27idJxTMSq4pPdo9On/7bE0QLfpUS7a
+	arJ
+X-Received: by 2002:a05:7300:3aa9:b0:360:aeee:9b8a with SMTP id 5a478bee46e88-360aeee9f90mr7930486eec.8.1792299208567;
+        Sat, 17 Oct 2026 21:53:28 -0700 (PDT)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360826875b3sm21621460eec.21.2026.10.17.21.53.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 21:53:28 -0700 (PDT)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+Date: Sun, 18 Oct 2026 12:53:22 +0800
+Subject: [PATCH] selftests/mm: keep ksm_tests on small pages
 MIME-Version: 1.0
-References: <cover.1791410885.git.abhishekbapat@google.com> <aae089a81ea891e1bc7e3ad171064d37d800ad1a.1791410886.git.abhishekbapat@google.com>
-In-Reply-To: <aae089a81ea891e1bc7e3ad171064d37d800ad1a.1791410886.git.abhishekbapat@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 18 Oct 2026 08:52:27 +0400
-X-Gm-Features: AclHuK-Wl1wHq9C6FbkV2z85b221S8kRzKVDRSqQmdSzTuR5W-gPJA5u6SMeDIA
-Message-ID: <CAJuCfpF+kVSa0Rb0pW2gSwkBF57u-JC0J6gwFk62iGUpXVNwSw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] alloc_tag: Extend allocinfo_filter to support
- tracing queries
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ojayn93benzuo46gjwdcrjuzn4furmwf
-X-Rspamd-Queue-Id: 40FB480008
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261018-bug-selftests-mm-ksm-tests-nohugepage-v1-1-55ed54bdad35@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAMFQ1GoC/yXNwQqDMBCE4VeRPXchKxKkr1J60DqJS5soWS0F8
+ d0b2uN3+GcOMhSF0bU5qOCtpkuukEtDj3nIEaxTNbWu9eLE87hHNrzCBtuMU+KnJf4jL/MesQ4
+ 1kk663vfT6BCobq0FQT+/n9v9PL9GwPhqdwAAAA==
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+ Usama Arif <usamaarif642@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
+X-Mailer: b4 0.13.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1792299161-226405
-X-HE-Meta: U2FsdGVkX1/Il+zS+GFjSZOnFjeJOZoQTzxrJqa+Ox2HhBxXBNqhjqWu9sLqLwDn01w5eWEksXGqvdm6lA4q+Vlw1mZLrzJxDLNr3agQL7s6boWjMgglQZnO67xElIjGvHZthBGfX/SHgcNGYlxaXtqwDygwLRyMlzwTWVLz/JMVIniC1SVJB9iDe1h+hS9n0esMrHucauSK6ywDx/XMj5NF0O3tZDoTYg1WCyv7JYcOHobezrNElX0OZHTnl0ZK4yU1jw1tdodsQOevXa0ivYCceH7DnADIWvUemF9xYDPBl8uPG1Gfn+OMUDrepIZ8XiSnWlSD+90BWRami8dFVVEpp77NtQ4+FEcblAfU5URGplpsAq3E2F4bmYLOnqGlRIac8i9xgNLyQ+QV4jQIE0KwPpEwocs5XY1p5r1vZbARnu0JBNyrAB++OeiZK8+k04auvCuYnuTWFzwFSun2QPWuNXaFYDeIA2EP2rgZ724qz3RhffAVqynpXzL9tWsPwaslmqzFBtG3fZOHeW7Kc1BRarbo5AXlzArUXXRN1wl3yKtCGnsbgBywxokZhkn+J5Kxvkp3gTyTPogJppbNO9pgJGbwBVDRyWkysxpZhs/xVI2a+Bfk0x0HksfylWPNy1fW2JL8vJo0tK06g01dPIOUfT8OOoBI5maJg9CdnySwlfjicOzwXULP1QoMb1w+1Ad2j/LZKfSiHHEr/7kJftrjpoUB/H349iwKuoUw2vdNKrkAUYh9yN94r0xtI62OedJ1VJFoe8Q0MvPg1TLzoljW+qZgKX7PsWMl7Wt6A8qu7qvJgzRjV4vciLgv9cytCmyz6YeaBpy4qjugi9G7UHxPyZHnQ662HSyDf8d4vdFyKeLpPlv5Ehyd7x/N3csYH2jAmK6+NEi4B+1XTeZXdRGkz3Leo4OFRu4afDV2Z2Dh8GxbiaVsAubuqktDrIYrfsNY+GK1FCcIwE/Ghid
- XVJ1bIfZ
- y0J8VlCnfF97E3YzxpPze1z8WAiKczdzN/KN8zaFQuom5L8+sgYYgidVrTi/OHrGZRM1wmrq6a7UPjrMnGGfnHrdqrb0c1fDGkjPST5yNTNJvvIzKRzZHQigGD2NbfjrV8L+jw53aK++2JSCUBPoq/uIGo5M25ZSeXPzG5ZHoWluIqfOHjNMze+t+KlBh6bJv2d435IQH+bDpWcfMj1k9GtuZ0incM8sQw7LRauep3SFEvkO43n+GK5xYgryJF6p0y+o9meBr+9eOMwxdbFlhRgNqgnF5Kisz7rtcXtJYUCrzCq9qW1emX1mejw==
+X-Rspamd-Queue-Id: 01D3A40005
+X-Rspamd-Server: rspam08
+X-Stat-Signature: c1g6z6z764zchdcqatk5441w7rrsrhu3
+X-HE-Tag: 1792299209-378323
+X-HE-Meta: U2FsdGVkX1/JPjInIlCFIChpt8AarcTL3TZAhwPmm7VaqvhlVl2jE7FCOAL9pQv8wymPdHLG7lUb11bJ59ZLk4DHHA3JqrdeOdqTyeWh/njOxX43HeDf0RE+DGDK22wqwq7cjrtuwnLMG7fb0mhAhGCHGxbJeXIZvSKbRS/tZAKXjkXz7yMxMsQ4jTxsCT05vxScsb3/BkZic26Dc3vIDxVedNo8zooOPdinW5H151YaZBDDHohLho9N4mn/KlI2uzR8aRyQYI3qIkGP5lRZ4cuPXMC7YHDk09EE2A1DMi1txfmu6TevfrT9o+uXMS4p5z9902ERjLW7hi8pniE1o286oSmdakIareMKk5YpMNd4i+mLcj3EzSH721J2RP7UKhb+2SEPB2CWLswsekCovpz5BgctVGkOiWcqv3MkwxCNUBixLahXXf6XQOgD8+gsMLabH/dv5WSxjigNiq+DOcACcd73T/2HsxEZ0tf6Q82Pk7V95U0iE4jE8hnftw7FvHs1WBlA83EsH5/p/6F5fv2fcgv0AU3iYXEZKHVFnLeaJ3ujgi9lEpv3CYNZxO5YD+D5HCig5nqAztxyGdrD1aWzMVqojd10eBc1LlRq5cct8Faa0MhQNFukiZKnQCWyK5yyEMTc5dXxtzGSTt2KORe3mxucthGzLw6Q3Qw9mQyIG4PKcbou181j9MB5akh+96nZmzuraS3Wf46Bi/Jfo2767D7xA+zhQPidEhMSQltGLJ2zmV2MipGF9Y0j22b7GxCTNoR+1iDnJiuL6R+Cx446K2SxgAXJ5ASdjuX7q9pXnWHs0jRzC0IaFoaWJLOtWrK42oHyC5GDwtanR2bQa1EK0tSFTF0w9NMgk37nkzbkcbRV6W0c+VVEBRtQSRIfQFSTJBB6plKAAGNx9bsWiCSrgcZ05i+9Y41QyEF6xbKg2rGw1kMUePrpzznjR0Y2R79tuAhvfReSlhIU/6Y
+ 8lg7+Yio
+ T7jqu0w74Y6eBHd0L5DOg1BEssPl1roC8WHUkgqrj2//LPduGHgz3Hy9zAzuGZkZWhY1KPOnXR6KqC51is4g4FUGybFY+uwyhHHp/KK7QqrSQ+0uiZqaF29+MjPPPmdG1Qg9xiFC0nwrCAmBhvwy87SRsl4reLLtOH41kanRRCp9vJBO8oaVwMiC7QvgyKrIGsgDdrqPJfZQ4sCZLX8OvsJfFC64nXJFSWqP0VJyL96EH7OaPMWwy9wjl5604AUCLjwBiRFU6S0I3ZWEMv/UoJvqfHC5wSJEtPPr/bq6W4NV3If2GDD65MwZD1QFxOX2yV+/cEV8jpi+Mqi20IoyTSVc+2i4zD5FxTIJs9ShLSisOaTGef3G7R56avE5ykKoPqFeu7LkzeOnGBqSbD5GymMH856FmsLjulp7X5vNHt0KnG+coUe0RloBi5aqx80pXX5GuXqMKiIVsDMCJ8ZxHhqtqSgW7EzPYC1kKMptLWCxHW/2PT/ihH7h8DXlb79R4Df1jqZDmZPi8iPSsRuUCXuERQVKwnbjgr07IHuBFHq1TeAM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,102 +125,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 8, 2026 at 2:40=E2=80=AFAM Abhishek Bapat <abhishekbapat@google=
-.com> wrote:
->
-> Extend the allocinfo filtering mechanism to allow users to filter tags
-> based on their trace state.
->
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+ksm_tests fills regions with identical data and checks KSM's counters
+after merging them. allocate_memory() maps these regions without any
+THP hint.
 
-Acked-by: Suren Baghdasaryan <surenb@google.com>
+With mTHP enabled the regions can be backed by large folios, which KSM
+splits before merging. Splitting an anonymous folio maps its
+zero-filled pages to the shared zeropage, so with use_zero_pages=0
+those pages never become KSM pages and "KSM zero page merging" fails
+its count. "ksm_tests -Z -p 10 -z 0", 20 runs:
 
-> ---
->  include/uapi/linux/alloc_tag.h | 8 ++++++--
->  mm/alloc_tag.c                 | 8 ++++++++
->  2 files changed, 14 insertions(+), 2 deletions(-)
->
-> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_ta=
-g.h
-> index dafcba2f7e2c..a96054ac2237 100644
-> --- a/include/uapi/linux/alloc_tag.h
-> +++ b/include/uapi/linux/alloc_tag.h
-> @@ -38,7 +38,8 @@ struct allocinfo_counter {
->         __u64 bytes;
->         __u64 calls;
->         __u8 accurate;
-> -       __u8 pad[7];
-> +       __u8 trace_on;
-> +       __u8 pad[6];
->  } __attribute__((aligned(8)));
->
->  struct allocinfo_tag_data {
-> @@ -54,7 +55,8 @@ enum {
->         ALLOCINFO_FILTER_INACCURATE,
->         ALLOCINFO_FILTER_MIN_SIZE,
->         ALLOCINFO_FILTER_MAX_SIZE,
-> -       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
-> +       ALLOCINFO_FILTER_TRACE_ON,
-> +       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_TRACE_ON
->  };
->
->  #define ALLOCINFO_FILTER_MASK_MODNAME          (1 << ALLOCINFO_FILTER_MO=
-DNAME)
-> @@ -64,6 +66,7 @@ enum {
->  #define ALLOCINFO_FILTER_MASK_INACCURATE       (1 << ALLOCINFO_FILTER_IN=
-ACCURATE)
->  #define ALLOCINFO_FILTER_MASK_MIN_SIZE         (1 << ALLOCINFO_FILTER_MI=
-N_SIZE)
->  #define ALLOCINFO_FILTER_MASK_MAX_SIZE         (1 << ALLOCINFO_FILTER_MA=
-X_SIZE)
-> +#define ALLOCINFO_FILTER_MASK_TRACE_ON         (1 << ALLOCINFO_FILTER_TR=
-ACE_ON)
->
->  #define ALLOCINFO_FILTER_MASKS \
->         ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-> @@ -75,6 +78,7 @@ struct allocinfo_filter {
->         __u64 max_size;
->         /* filter criteria only; see allocinfo_counter.accurate for actua=
-l accuracy */
->         __u64 inaccurate;
-> +       __u64 tracing;
->  };
->
->  struct allocinfo_get_at {
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 262f00f2bba9..8e63f347657b 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -250,6 +250,7 @@ static void allocinfo_to_params(struct codetag *ct,
->         data->counter.bytes =3D counters->bytes;
->         data->counter.calls =3D counters->calls;
->         data->counter.accurate =3D !alloc_tag_is_inaccurate(ct_to_alloc_t=
-ag(ct));
-> +       data->counter.trace_on =3D alloc_tag_is_traced(ct_to_alloc_tag(ct=
-));
->  }
->
->  /*
-> @@ -323,6 +324,13 @@ static bool matches_filter(struct codetag *ct, struc=
-t allocinfo_filter *filter,
->                         return false;
->         }
->
-> +       if (filter->mask & ALLOCINFO_FILTER_MASK_TRACE_ON) {
-> +               bool tracing =3D alloc_tag_is_traced(ct_to_alloc_tag(ct))=
-;
-> +
-> +               if (tracing !=3D !!(filter->tracing))
+  THP setup                     before    after
+  default                         0/20     0/20
+  every mTHP size "always"       20/20     0/20
 
-nit: Compilers are smart enough nowadays to convert u8 to bool without !!
+Map the regions with MADV_NOHUGEPAGE, as ksm_functional_tests does.
+ksm_merge_hugepages_time() maps its own THP-backed region and is not
+affected.
 
-> +                       return false;
-> +       }
-> +
->         return true;
->  }
->
-> --
-> 2.56.0.385.gd3acb90ef8-goog
->
+Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+---
+ tools/testing/selftests/mm/ksm_tests.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
+index 5fd7792a0d479..140ea833353b6 100644
+--- a/tools/testing/selftests/mm/ksm_tests.c
++++ b/tools/testing/selftests/mm/ksm_tests.c
+@@ -178,6 +178,16 @@ static void  *allocate_memory(void *ptr, int prot, int mapping, char data, size_
+ 		ksft_perror("mmap");
+ 		return NULL;
+ 	}
++	/*
++	 * Splitting a large folio before merging maps its zero-filled pages
++	 * to the shared zeropage, so keep the pages small. Ignore EINVAL on
++	 * kernels without THP.
++	 */
++	if (madvise(map_ptr, map_size, MADV_NOHUGEPAGE) && errno != EINVAL) {
++		ksft_perror("madvise");
++		munmap(map_ptr, map_size);
++		return NULL;
++	}
+ 	memset(map_ptr, data, map_size);
+ 	if (mprotect(map_ptr, map_size, prot)) {
+ 		ksft_perror("mprotect");
+
+---
+base-commit: 90201351a862182bdabfc1ad1c97b1e1b6ed5931
+change-id: 20261016-bug-selftests-mm-ksm-tests-nohugepage-1414868db0ef
+
+Best regards,
+-- 
+Qiliang Yuan <odys.yuan@gmail.com>
+
 
