@@ -4,80 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B203FCCF2C7
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 02:46:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBF29CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 02:47:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 742AA6B0088; Sat, 17 Oct 2026 22:46:12 -0400 (EDT)
+	id A7A156B008C; Sat, 17 Oct 2026 22:47:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 719FD6B008C; Sat, 17 Oct 2026 22:46:12 -0400 (EDT)
+	id A51A56B0092; Sat, 17 Oct 2026 22:47:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 656746B0092; Sat, 17 Oct 2026 22:46:12 -0400 (EDT)
+	id 98E3F6B0093; Sat, 17 Oct 2026 22:47:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 373976B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 22:46:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 33F141A03DC
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:46:11 +0000 (UTC)
-X-FDA: 85334207742.21.EE7BECA
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 91839A0008
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:46:09 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A6A06B008C
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 22:47:43 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E6AD41C3AAD
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:47:42 +0000 (UTC)
+X-FDA: 85334211564.30.1546793
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AF392140004
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:47:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AUjG3K+Q;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792291569;
-	b=gSfz6/A/p2sGy/p7AeX6o/V1kutloECX6Cn/KgcXozcPheTmxdrDfrgx6wOlrQm1HVA2d2
-	0BLE7sqowMYplj8bftABnT9zyN/xUvevJZdnH/7pTAWcKIFuDdRTPc5IPhk7KONWW+y8wW
-	nu2aTiRM8GVm0/8xIT+zAsuqktXdT9w=
+	t=1792291660;
+	b=EsiVjZKn7084dBRqrR1JOrcE+vG7uMWxELrnR46PxbPOhiRWeyxzL6udzJ9ilmrUkKKjJG
+	BjC4DiVRn2Edfa1dKN3b5Z0jb44DxvoZsbDngyk+kJMAb8HqvpLMyItKtYXLqDPJoBw2M1
+	Vr5zj0f+nQ0+jku9mwxlCdjjpYXIvhA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AUjG3K+Q;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792291569;
+	s=arc-20220608; t=1792291660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=Q85bPn8ynG+ajc+JvwspCPwJu454JKRtvF7HFrWNUHs=;
-	b=ra8+n24kHuU02LR9rFy3boORZSt95/oqf9fm7Spy16cJkEs/RumTNdPbsZCPpy8yanWQjL
-	jg3oYWeUdu0JAEsyOeQ97J/B+FxM/MHHqsEyImB0o9CqHcD1hWdSDBhmo20CMRndrPin9r
-	gDt124+bW7ZD/hvrYcWbivocGrUq7zc=
-Received: from escalante.csail.mit.edu ([128.52.128.198])
-	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xIGuD-004PQI-7m;
-	Sat, 17 Oct 2026 22:45:49 -0400
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-To: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Jan Kara <jack@suse.cz>,
-	Chuck Lever <cel@kernel.org>,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Hugh Dickins <hughd@google.com>,
-	NeilBrown <neil@brown.name>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: [PATCH v1] libfs: end the readdir walk when no entry is left at or below ctx->pos
-Date: Sat, 17 Oct 2026 22:45:48 -0400
-Message-ID: <20261018024549.798968-1-nickolai@csail.mit.edu>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Z6vhl9H/bI+MfnZt/1kQc+tu5ODLFIoF8c4dyDq9S+M=;
+	b=o1d3c04Cu0OqXhgl5FpkE6Lrbj8exUZJZta/h8reB1pk9SsPOyHNqH2nWfQV+MHBfwxZGf
+	TPg2pRM5OcMbrYjsXJgpjNZXLZCHSj8wsHiobdEb9kS7N7s2nKdYiHmXEYn92pm8X7N4V9
+	HYO73bbWp4fGLxyv2mWuNPTyO02Qhck=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792291655; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Z6vhl9H/bI+MfnZt/1kQc+tu5ODLFIoF8c4dyDq9S+M=;
+	b=AUjG3K+Q8z8QJCWy4QkcC8p8F7xau0Is1yDOvCdt407JXoZRO2GEzhX3iHC7qLslEye8lTCaeuVGhsZmT1gkZK2epDSIMIyUeqeddoLF4dKLDUZLQ7zH4fuEP9FFT6BMU3Tv7gg0NFlJcTR6aQmEy+iP966vaia82WUWDPvGSrQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R471e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0XCyL-xi_1792291651;
+Received: from 30.42.72.158(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XCyL-xi_1792291651 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 18 Oct 2026 10:47:32 +0800
+Message-ID: <b1b3d8d7-7201-4b75-a0f0-af383d854279@linux.alibaba.com>
+Date: Sun, 18 Oct 2026 10:47:31 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in
+ collapse_file()
+To: Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
+ liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org,
+ jack@suse.cz, djwong@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, hch@lst.de,
+ syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
+ ngocthang2710.1999@gmail.com, willy@infradead.org, rppt@kernel.org,
+ ljs@kernel.org
+References: <20261016065920.4153-1-lance.yang@linux.dev>
+ <27e5aadc-2d68-428f-a958-308e4a75c058@linux.alibaba.com>
+ <atICp2NL8j2z7UFM@pedro-suse.tail5790ac.ts.net>
+ <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
+ <6a005d89-df5b-4524-a4b9-c637cb15f1ee@linux.alibaba.com>
+ <cd6637db-7b30-4cbc-b07f-c2a2b32480fa@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <cd6637db-7b30-4cbc-b07f-c2a2b32480fa@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 91839A0008
-X-Stat-Signature: 8b8d67br3gidb6taig4gpd1kie363hje
-X-HE-Tag: 1792291569-140508
-X-HE-Meta: U2FsdGVkX181xwnKXL4RcH+aRgHg/Wt7S2KPNGiZGqafBfZe/N+P2zZx8UQQKOZPv+ririjoyfFwZ7BSlXp2ikLmXyyXsmQoZ1Z0W7gaz1+jEq6JNNbHyn3QnpxodWj+Z9QAB/3B9EaCEZGfZ0GXwdm1lC5EtQJsq+g1TNfJD2NmO6/Oext8P9r+9MXhdA4sqfOdd7o0j8DcA9v4YNa+v2raJwENKiaBh7nh7tKuf6J7nSxANnNK/0ZMhmrmhNxkpHqwwwN+zDje7UA46711Ii7WzhV3QxHcfN+8J9rq+alAoy7p1qYf5ZA3mCzFF6FJUh15+n8RertBVfvReZe/ITC0iKLb+UIJExMIjQSXjeV2CYgvkqr2X5VO2k+SSx6nz7sQnFUw3u1glTFa+iV5mammF2cpTCKJI9XB2riEUqTum0i29bMaf5elFQKgO1B2XckzYersR9AXmUAby1ldRLDhPn5/Vaaje69ZPj6hh7KpvYjkvzMPWNea4GuEiaB1JiwjX/LNrwf5FdSRkzGCTRDc1qrVfgJkqpf79CCajO12n7E8T+jNqddiaZ2wCnPpGlVQVP7O1bcZNhhCGeU0j2KVn0hdHH/mv62eWnDegWULw3YRV+l+ZCzsDtsi+kbjJSOJQKuqwDjLsHolKNpTbktaJwjh3ZAbiaNxzMR5m/Cf9NZGKOtXgIrmug3MP+gclUObIkSafIzsm6tAe/K7nlskk1PhUK4oET+j8QKCuvmWadKvFuB6hDwHkSMLMcLV14QAaN89PfOdAPYFIPjPPQ+41vyCVZaLN0dq+hTZlw9YszQF8QHv8pl4s5G5q6WnoaD5bPFC3pWNN0of6y9Zcz2h7JcGquGMtndEL33PoFD3w1weocTXaL7aj0WH7F7lKKe/4/CLB1T4yA5uAd8SXz0Z+1iBO2uqUmfUkF4VagmxsnmLYyw3zHp1Xf0y02LYTo5VaQfRWDNMRoabfYN
- U9PjSCy4
- Em5saG+OjspFobENdF8aQzU+X3ndtH8hT7HObXXOjEFyogXJnIdZj2EWh6mreAbbpG4k1A+jabV7iDiZg183/V0V/ig==
+X-Rspamd-Queue-Id: AF392140004
+X-Stat-Signature: fckdyjuo8rdpbupenptrqtdkqn64yagq
+X-HE-Tag: 1792291658-380474
+X-HE-Meta: U2FsdGVkX1+oLg6ohSJxl78dstEkw7zbhFgoRw200318OjEF4iYl9/9X5EqYHyk14gkPbH2G4VPazhEq2iNEJPIpj9x6ZGjuSlrAw0va0frW1mWMF2/IE5uIx1sO6YojgxvU9qh7gNCWdI1f7DCCZBVAhRXNnI7ptYd9SeX3UXcHkwQV7GH4LXH99BBcS7wDeWOakzawYiVRu21FgiIey6e1rDPbTy/u/hURnBckyFP4ITxS+yUS3Ytes6DV5gdgo5ld63/mj3plpHEOdt5TiOAEjcTUr2H3ToIibHVk6hElkRuTW33IQzCHt339c0n4S11BSc5z+Dog9hlQemue5fEnmYkHJufkjL4GrQZMW8u8oDsdkgO+4dv+AUmw+slmq5Zw8BF6unSgrbjdRhOKx/ozgwOZ7MlH6AvhT+aamh9u59yCA+OWFxNe8d6kadX2c+p12YgbKv9Rb9hD0aOHSM15Wznp4X24yEipxAuyFzLqVk9V6ZtX4nev/HOjhM7VAboNrZLJnFAHbrLANBy7U9swzZg5N9MWfY+oxEFf2cyzNdSFp1VqBShp0apbMDoVfnj9j+b5Ft2T6Bs4esenQQ5Cqp5Z1xFKH6T9ScaUAOqRYKgX9Gzc8EuQImGvi15bxRsDkulgfBQzvaOIGkwGhNqXM37dkwiWQ4rZTf0cwo3YufXYAt9WLnXEcI8YIqBpBf8/RkBnRbjoDP60ws+bcUIG7cBg4H3YagmynC9TZ0+FcttgGZgIHqiQhgHo7JwrqtChQX61fWS3bKqtxhcwukXDkKxeTcc6eTFkQLa9lQT+jHpVhZovxr2JoRvGXUq3qtj1JJfxkW0DU1+Jh6ehiotiBPR1rf0hlMChwHt1Dex94mCIn615dM340cWiFvl3v1i3C+CnzKttfMybXESrIZPLT7m6PJYLhvoFanhFfKx3Nlp0xjCxQkgU+rP1EDVZKMtkFHzEuWjBoew1tZF
+ qpTjAxYP
+ RqBGi5ZMOfY0f234lWlnPKE0DqiYvvPecQWizst/UE3NwxW8vBIsp+2NFBAFVvZWZfvbUrnxEg2qxm7KvXZ+YSVLB9683am1XYQhwY0A/pOOVjsIDN7qdyE9FlRBl2180lCsmA0q2c0Pq4FtZMJnLycNzfBf/ij/awlCkNUXycJEBnwIiJn4JeHAXyfjDZNI0OlPfwPSgroLuJZ536c918+wKRwn4DmtB1MICsFwV3Hx0bmyzDCZw/ttN+LHi5uNxLgTzaKTC1IONwpMV7geBES9f+wUVnXRLOEOsj4QFbAP0w1iwmnd2nGjHBxFoU20sq9czA9Jqz7G7tXhfcCu+tl2hWh0tmPNbDlrFcOgY4NsLctuyAcdI67pDIRuF8mr0+YAjQZfOQAhrvRi6OjBTvf7AttrcId7RazsQCPwk3Dnxm+xhEzUncptjqiaLdb5wFiYNPZuKEPl9dekS143fxMXhhENfbBV3Vo2uwYIwRv5eBt6T4YYrt3lyDtyIuOGjBVzXHGND3uDb6RJaMpE9egH1JNhRFU5uAe8emC3RKDQlDKTV8yIW0Gqff/1dAx8u/Aq7N9QeoKz5znO/e/mjpjMtTw4qGBcViB/pjRlV7qKFDCkQidCmBAtsMO3A83ena1E+z+BaoPWhSb90D2fnYQC9KmkugQ1Be10ZDjNj9nLUP0qRPqi/bpwaNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,158 +98,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On tmpfs, a getdents64() call that continues a directory listing
-returns the whole directory again if the entry it was due to resume at
-has been unlinked and no entry with a lower offset is left.  "ls" or any
-other readdir loop then reports every name twice.  It is enough that the
-oldest entry in the directory is removed while a listing that has
-returned all the other entries has not yet reached the end: create five
-files, read them one getdents64() call at a time until only the oldest
-is left, unlink it, and the next call returns the four newer names
-again instead of 0.  No privilege is needed beyond write access to the
-directory.
 
-offset_iterate_dir() walks d_children from the newest entry towards
-the oldest and leaves ctx->pos at the offset of the next entry to emit.
-On the next call offset_dir_lookup() maps ctx->pos back to an entry
-with mas_find_rev(), which returns the entry at ctx->pos or, if that
-one is gone, the next older one.  When nothing is left at or below
-ctx->pos it returns NULL, and find_positive_dentry(parent, NULL, false)
-treats NULL as "start at the first child", so the walk restarts at the
-head of the list.
 
-mas_find_rev() came in with commit f70681e9e606 ("libfs: Fix
-duplicate directory entry in offset_dir_lookup"); with the forward
-mas_find() it replaced, NULL meant that nothing had been emitted yet and
-restarting at the head was right.  With the reverse search NULL means
-that every remaining entry has already been emitted, so return NULL and
-let offset_iterate_dir() report the end of the directory.
+On 10/17/26 3:41 PM, Lance Yang wrote:
+> 
+> 
+> On 2026/10/17 13:43, Baolin Wang wrote:
+>>
+>>
+>> On 10/16/26 9:18 PM, Pedro Falcato wrote:
+>>> On Fri, Oct 16, 2026 at 12:00:24PM +0100, Pedro Falcato wrote:
+>>>> On Fri, Oct 16, 2026 at 05:57:48PM +0800, Baolin Wang wrote:
+>>>>>
+>>>>>
+>>>>> On 10/16/26 2:59 PM, Lance Yang wrote:
+>>>>>> collapse_file() can end up calling page_cache_sync_readahead() with
+>>>>>> source folios from earlier in the range still locked. If truncate 
+>>>>>> already
+>>>>>> holds mapping->invalidate_lock exclusively and is waiting for one of
+>>>>>> those folios, readahead blocks on the same invalidate_lock and 
+>>>>>> neither
+>>>>>> side can make progress.
+>>>>>>
+>>>>>> Do readahead in a separate pass before we start holding source folios
+>>>>>> locked for collapse. Keep page_cache_sync_readahead() and its 
+>>>>>> existing
+>>>>>> policy, and drop each folio's lock and reference after checking 
+>>>>>> that it
+>>>>>> is uptodate. If truncate or reclaim removes a folio between the two
+>>>>>> passes, roll back instead of doing readahead again with source folios
+>>>>>> locked.
+>>>>>>
+>>>>>> Shmem handles swapin and fallocated folios through shmem_get_folio()
+>>>>>> without taking mapping->invalidate_lock, so it isn't affected by this
+>>>>>> lock inversion.
+>>>>>>
+>>>>>> Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
+>>>>>> Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
+>>>>>> Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page 
+>>>>>> cache with invalidate_lock")
+>>>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>>>>> ---
+>>>>>
+>>>>> Thanks for the fix.
+>>>>>
+>>>>>> Thanks to Nguyen Ngoc Thang for v2. David asked for volunteers, so 
+>>>>>> I'm
+>>>>>> happy to take this over.
+>>>>>>
+>>>>>> Some older stable trees lack the folio infrastructure used here, 
+>>>>>> and the
+>>>>>> code will differ for each stable tree, so each backport will need 
+>>>>>> quite a
+>>>>>> bit of rework and its own review. I'm not sure whether to Cc 
+>>>>>> stable here.
+>>>>>> Once we agree on the fix, I'll send a separate backport for each 
+>>>>>> maintained
+>>>>>> stable tree except 5.10, which isn't affected.
+>>>>>>
+>>>>>> v2 -> v3:
+>>>>>>    - Replace the scan-wide invalidate_lock and 
+>>>>>> page_cache_ra_unbounded() with
+>>>>>>      a preparation pass using page_cache_sync_readahead().
+>>>>>>    - Roll back on a new page cache miss during collapse.
+>>>>>>    - https://lore.kernel.org/all/20260913163644.122133-1- 
+>>>>>> ngocthang2710.1999@gmail.com/
+>>>>>>
+>>>>>>    mm/khugepaged.c | 42 +++++++++++++++++++++++++++++++-----------
+>>>>>>    1 file changed, 31 insertions(+), 11 deletions(-)
+>>>>>>
+>>>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>>>> index ef5cd6fda34f..b3f67617caf0 100644
+>>>>>> --- a/mm/khugepaged.c
+>>>>>> +++ b/mm/khugepaged.c
+>>>>>> @@ -2262,6 +2262,34 @@ static enum scan_result 
+>>>>>> collapse_file(struct mm_struct *mm, unsigned long addr,
+>>>>>>        new_folio->index = start;
+>>>>>>        new_folio->mapping = mapping;
+>>>>>> +    if (!is_shmem) {
+>>>>>> +        /*
+>>>>>> +         * Populate the range before accumulating locked source 
+>>>>>> folios:
+>>>>>> +         * readahead may block on invalidate_lock.
+>>>>>> +         */
+>>>>>> +        for (index = start; index < end;) {
+>>>>>
+>>>>> why drop xas_unlock_irq()?
+>>>>>
+>>>>>> +            folio = filemap_lock_folio(mapping, index);
+>>>>>> +            if (IS_ERR(folio)) {
+>>>>>> +                page_cache_sync_readahead(mapping, &file->f_ra,
+>>>>>> +                              file, index, end - index);
+>>>>>> +                folio = filemap_lock_folio(mapping, index);
+>>>>>> +                if (IS_ERR(folio)) {
+>>>>>> +                    result = SCAN_FAIL;
+>>>>>> +                    goto rollback;
+>>>>>> +                }
+>>>>>> +            }
+>>>>>> +            if (!folio_test_uptodate(folio))
+>>>>>> +                result = SCAN_FAIL;
+>>>>>
+>>>>> Do we need to check PG_uptodate after locking the folio? If we 
+>>>>> successfully
+>>>>> lock the folio, doesn't that mean the read I/O has completed? The 
+>>>>> following
+>>>>
+>>>> Yes, you do; a read can "complete" without the IO having completed 
+>>>> successfully,
+>>>> and in those cases PG_uptodate is not set, but the folio is unlocked.
+>>
+>> OK.
+>>
+>>>> Either way, why are we checking for uptodate here? We only care for 
+>>>> starting readahead.
+>>>> Anyway, I would possibly recommend we do this as post-processing, 
+>>>> not pre-processing.
+>>>> The current loop is a little overhead-happy.
+>>>
+>>> To clarify: I would do this kind of RA as an error path if isolation 
+>>> failed.
+>>
+>> Sounds good.
+>>
+>>> Namely, at the end of rollback, after unlocking folios. It doesn't 
+>>> make sense
+>>> to me to do this kind of checking upfront. I don't think it's 
+>>> particularly
+>>> realistic that, starting RA upfront, you'd see uptodate completed 
+>>> folio reads
+>>> when doing the actual isolation.
+>>
+>> But why not add RA logic in collapse_pmd(), as we do for 
+>> SCAN_PAGE_DIRTY_OR_WRITEBACK? There's already retry logic there, and 
+>> this would also simplify the long collapse_file().
+> 
+> That would be cleaner, yeah. Some older stable trees don't have that
+> outer retry loop, though ... I'd prefer to get the fix backported first,
+> then move the RA/retry logic out in a follow-up, wdyt?
 
-Reproduced on x86_64 under QEMU with the program in the notes: before
-the change the call after the unlink returns file4..file1 again, after
-it returns 0.
+IIRC, the approach to bug fixes is to fix bugs properly and cleanly for 
+upstream, without being constrained by backporting requirements.
 
-Fixes: f70681e9e606 ("libfs: Fix duplicate directory entry in offset_dir_lookup")
-Assisted-by: LLM
-Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
----
-
-Notes:
-    Reproducer (root, mounts a tmpfs on /t; any kernel since v6.14):
-    
-      gcc -O2 -static -o offset_eod offset_eod.c && ./offset_eod
-    
-      /*
-       * List a tmpfs directory one entry per getdents64() call until only the
-       * oldest file is left, unlink that file, then call getdents64() again:
-       * the directory must be at its end.
-       */
-      #define _GNU_SOURCE
-      #include <fcntl.h>
-      #include <stdio.h>
-      #include <string.h>
-      #include <sys/mount.h>
-      #include <sys/stat.h>
-      #include <sys/syscall.h>
-      #include <unistd.h>
-    
-      struct d64 {
-      	unsigned long long ino;
-      	long long off;
-      	unsigned short reclen;
-      	unsigned char type;
-      	char name[];
-      };
-    
-      #define NFILES 5
-    
-      int main(void)
-      {
-      	char buf[40], path[64];
-      	int fd, i, n, seen = 0, dups = 0;
-      	long r;
-    
-      	mkdir("/t", 0755);
-      	if (mount("tmpfs", "/t", "tmpfs", 0, NULL))
-      		perror("mount tmpfs");
-      	mkdir("/t/d", 0755);
-      	for (i = 0; i < NFILES; i++) {
-      		snprintf(path, sizeof(path), "/t/d/file%d", i);
-      		close(open(path, O_CREAT | O_WRONLY, 0644));
-      	}
-      	fd = open("/t/d", O_RDONLY | O_DIRECTORY);
-      	/* newest first: file4 .. file1, file0 still to come */
-      	while (seen < NFILES - 1) {
-      		r = syscall(SYS_getdents64, fd, buf, sizeof(buf));
-      		if (r <= 0)
-      			return 1;
-      		for (n = 0; n < r; n += ((struct d64 *)(buf + n))->reclen) {
-      			struct d64 *d = (struct d64 *)(buf + n);
-    
-      			if (d->name[0] != '.')
-      				seen++;
-      			printf("listed %s\n", d->name);
-      		}
-      	}
-      	unlink("/t/d/file0");
-      	printf("unlinked file0\n");
-      	while ((r = syscall(SYS_getdents64, fd, buf, sizeof(buf))) > 0) {
-      		for (n = 0; n < r; n += ((struct d64 *)(buf + n))->reclen) {
-      			printf("listed again %s\n", ((struct d64 *)(buf + n))->name);
-      			dups++;
-      		}
-      	}
-      	printf("%s: %d entries after the unlink\n", dups ? "FAIL" : "PASS", dups);
-      	return dups != 0;
-      }
-    
-    Before (master 70dd4ee72eb2, x86_64 defconfig, QEMU):
-    
-      listed .
-      listed ..
-      listed file4
-      listed file3
-      listed file2
-      listed file1
-      unlinked file0
-      listed again file4
-      listed again file3
-      listed again file2
-      listed again file1
-      FAIL: 4 entries after the unlink
-    
-    After:
-    
-      listed .
-      listed ..
-      listed file4
-      listed file3
-      listed file2
-      listed file1
-      unlinked file0
-      PASS: 0 entries after the unlink
-
- fs/libfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 27d7dc16fcb0..6ebffad7c028 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -485,7 +485,9 @@ offset_dir_lookup(struct dentry *parent, loff_t offset)
- 	else {
- 		rcu_read_lock();
- 		child = mas_find_rev(&mas, DIR_OFFSET_MIN);
--		found = find_positive_dentry(parent, child, false);
-+		/* nothing at or below @offset: no entry is left to emit */
-+		if (child)
-+			found = find_positive_dentry(parent, child, false);
- 		rcu_read_unlock();
- 	}
- 	return found;
-
-base-commit: 58161ead29e50d70a317ea26b472e0c7508e69da
--- 
-2.53.0
-
+Anyway, I don't have a strong opinion on this. Let's also see what David 
+prefers.
 
