@@ -4,137 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 701B3CCF2CA
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 21:02:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 884FDCCF2C9
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 21:02:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E2416B00A0; Sun, 18 Oct 2026 17:02:11 -0400 (EDT)
+	id 2CDAE6B00A1; Sun, 18 Oct 2026 17:02:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 192BA6B00A1; Sun, 18 Oct 2026 17:02:11 -0400 (EDT)
+	id 2A55E6B00A3; Sun, 18 Oct 2026 17:02:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 082036B00A2; Sun, 18 Oct 2026 17:02:11 -0400 (EDT)
+	id 1E1CC6B00A4; Sun, 18 Oct 2026 17:02:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D268F6B00A0
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 17:02:10 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1918C057F
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:02:08 +0000 (UTC)
-X-FDA: 85336969536.11.7B892A0
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DE436C0002
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:02:06 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="ZdW/sFnw";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.217.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792357326;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E1B4E6B00A1
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 17:02:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F296140561
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:02:29 +0000 (UTC)
+X-FDA: 85336970418.22.5A46C52
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A066340005
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:02:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="dn+nZa K";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf27.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792357347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qy/eUVeUOjsCzAJiN1MNGTJCTNknQERtyP6Ddh4oOBI=;
-	b=QJothq0BDyqFm0uu3xlXZicmqv17oO7JAVtbyoqKIAD5/fH49aAVIq00rkW3r6ejOx3+UQ
-	eYieFedn8gnjwCplYACXRHDmTxjKX+qBE4bxhbxuhAEm9MFdLst3+915Z1PURyOn/7m8g7
-	vBBdDOB/dh7bSF1xkhj9MQQpXS+S5mM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792357326;
-	b=kO5O2kY5k7cDcvuDjPq1k6zYv+x+f4IUUuEA6HjtMpZhSxOEkO4tuBAvMT/cr906trzytB
-	or9PqUvQDkjWDC3hrw7kq1jszfs25XiLPzBeea6t+P4TzqjOrg15OSMCyrR4BoDpmAx7iM
-	RzHEZhYJ7nD2/SwYlHulE2Wb0su3VEU=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="ZdW/sFnw";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.217.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-74ab6c88052so352300137.2
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 14:02:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792357326; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Rr10Wfwm096u/0xeLftAMjh9beIbliKKLa5udZBuljCm2xZMDE7P+0JPoxoj35wqJE
-         NQx3hmoQRZlvXAh1pGwNElruG1670M3HlvD/J5emMxZJGhuJBx0/2XzRS56ZL1Sf92T5
-         x7jZE5Q6l99EQ2W6ysiQ6/i6KDhuGw897O6fmWC2NBhbzLhxnyRFrEgnE4yAvto5l+C2
-         VEx0zrjv9yTw4hN4bfwZyKoQq0GC+ofPpkbVeNd4igJFQaPo3xeqH6OixvFr2dKv7SVn
-         BNPaQt32X816Tz1MbSiUSlWdXjiEZjE3Lyu0Xv5qAglDWnUwheiMxRMwN8iycygmV5XE
-         tgyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Qy/eUVeUOjsCzAJiN1MNGTJCTNknQERtyP6Ddh4oOBI=;
-        fh=1rz3Kj8HFY1jwGDvPBNjQ41YcDi0cg7oUjHfGeI8YHw=;
-        b=dr+7CLhlo6r0kqCR6NX+NYMEZw/G3K8Q1GJK+y5piqjEov+6Q+0cwaL+SOn1kHNGAm
-         Mjk/73qZp6jefBIi0u4lIOk1jrAHvtyzPCX8ZEhR16HSaROSwHS6YX27gzG5vDLLytPe
-         ribTMR4gO45ysif+DMNOstQ0MisRp39pxJGjeyNwHrPMUjLr96tucpXJotX/H/bazq8x
-         AL8xN76H3D1fjY/qdCednZIKi30ayGHQF9aMfcTOBZBbQbss+P2nsrEPrdSoXVOiKkpT
-         6PD7BnG1xYEdobDNT1daI5rXZk5DBDarsDySRh/V4zc1Zp2BAKoma4pVe2fJWX+DUt2c
-         Znew==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792357326; x=1792962126; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Qy/eUVeUOjsCzAJiN1MNGTJCTNknQERtyP6Ddh4oOBI=;
-        b=ZdW/sFnwm118TZN1Odlvkj+j8M83+gikbTb+oFSWv6+lSo9tSbTZmwcB09/73YTw7K
-         vGW/YioRJiag9Q/l6w2flByQK4l7TU51TkduKRKVBvrOlXyGnpcvlKBJCMew4umx8z8s
-         594zrgaYAhccWaqdBBw1Fb+uHpK12Igo+wSnFXZWYSkayqbHKe8GffDP3sDlstPXGS4h
-         4Yun4xB3ySj27U5VcByfxyoicRMK0BiJhpi4LsPNbuLice0+zZcmE1BFw28VhS66Ixh9
-         R1NOQeqr+8oFx6oxFvROXiJ0xSN6t4mk4HPK298eGmYnfnWNyXulc844mHJINdDmUhsw
-         DkVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792357326; x=1792962126;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Qy/eUVeUOjsCzAJiN1MNGTJCTNknQERtyP6Ddh4oOBI=;
-        b=qS/xAKKZPxyu3fJnwr2YoznUjnTRH/1+A9gF1Q0ZQ4l9hdmTKxxrDpDybaCV4HlEZd
-         4/gilnI/Km3Ig/g7kolZ2NscQCuPgtFnvOvIoQtKEQStrHhB6x2gPUs4YiVRPF8RbsG2
-         zY5//keh+A7hWErowEZ2UroeYRYmMBNnul9tQ4IkZEI7B9hOvYv3kAUx8RQMcnvNLleR
-         CDV8hD9Cukx6u7S6EkMcNMvV3Ze4968wNYlVTRP1uf7vwhd/NxiOKWBhFiL2FGx4EuyG
-         7Y8TXs71NTscsekXbDbbcfolAPH8BjTRbEgdqyC4jO5LIScnVAkTS4wou8a8hYcK5f2F
-         6tjw==
-X-Gm-Message-State: AFq9FYJ50AkgrUbKVLJn4Aa16zmc2TDlJ4r0//NnYKItXU/2cshkiAk3
-	8LZ2bEd5AGdPr3Jp/vJ/CPmCVq11SJH54GKYZ3K8pxeL6QkCsqV+hrOgHr516m33BP4+sJl8lOf
-	/kXB+p7ObYVfr5WeG075Y43V8y41kK00=
-X-Gm-Gg: AYBFou2D0gOdU7qBa2QncMUPZzUi2kGt9oypXqXF+iQ8WGL9DVm83I3KtlvWZ8WSOq5
-	EiyEUoqghFETX3fH6osnvKUXwBDAO9E3itQqNDDfHYp5hwRqwHXERodgS4fD5Akq1YLWdSshvsq
-	u2ucEPY9NgNLUYY01xvuzjEue9oo4h1hJ3SxrOVvxeNolFgvfqsL77649RWWVOcsdU2y+4MhII+
-	f1A97kVmBiEhTAN04J/v/x7s0yrnI81Vd89oAlA+ifvGQo0jKyNHJSxo9IYq7mRjY5+OQxJvUyd
-	N2BU33E8qppcWWf/sS4mKM36PqckS3Z+bi9VlWgjHcSzyRaPHafjeL8BAmfOe7XksvjALl6wMkM
-	e5k52NuMKukJtp+qiOzoiP9wouptiUzKvSAHhENtg4sMSUw==
-X-Received: by 2002:a05:6102:548b:b0:7c3:c0b9:9031 with SMTP id
- ada2fe7eead31-7cc36b17a5fmr1262224137.36.1792357325888; Sun, 18 Oct 2026
- 14:02:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20261018023349.1697434-1-gourry@gourry.net>
-In-Reply-To: <20261018023349.1697434-1-gourry@gourry.net>
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Sun, 18 Oct 2026 17:01:55 -0400
-X-Gm-Features: AclHuK_otQGVJnFH3of7l6giChtEJc7SlCr0xXb-9-VAKMTt98ua1SNqHcfLZJE
-Message-ID: <CAN+CAwMJZ929StJF3=5pJ8uO97u6pK+XrF3LwmhHia-rUO+dUg@mail.gmail.com>
-Subject: Re: [PATCH] mm/mempolicy: apply bind policies against the scoped
- allocation zone
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, rakie.kim@sk.com, 
-	ying.huang@linux.alibaba.com, pasha.tatashin@soleen.com, mhocko@suse.com, 
-	stable@vger.kernel.org
+	bh=83wOCRK/bwy9L660WV5b1gU76W+7QPnUrUylFYSXBl4=;
+	b=AGriI3YvEgVaI8TbkZzbSJl3tdVUhUNQNXmWAvg1qw6HwruApFiCDCFVG7+3ngfxRUgimT
+	B5z32bSa3fecn4TqaQFfB/7FJsru9puYvxcSFTi9g/UQ5HFRr7Q04KvbYd/ci/0xILBTl2
+	U+aGgwLsVSQ0dJJdPDmcMPrJewyo5nM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="dn+nZa K";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf27.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792357347;
+	b=YBm6P2nzGWkP6t23jSRf9+X0oPteibE3nIPai85bAO/IC4MUazetJrt8e1QkFx6KORvWvW
+	PrFNltwfRvCdw0N2gWLTlzK1i6N2cuSXOscc4RdAiU+GSWVRKb7uhWIETJPbtBAnV+fcVx
+	h5dMuuvQadYB8SlnagRnOYVW7uZ2UCo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=83wOCRK/bwy9L660WV5b1gU76W+7QPnUrUylFYSXBl4=; b=dn+nZa
+	KTAD2bYgUXJJit3XHbUO8Jg08g4kgGjLThBoD0kanK7RzYhOjD7dqpAZxsKN6zWV++BwW7XC92P1B
+	3pb7wPODWSfepqP/DyBATP1044B/S2zcAKunKRrTsbxZAEVdsCiZWt3/Tz5HcWgiOWtAiUBUiYnC3
+	IyL759dijGI84iTjbhsQGsQEV7xXlUU5E85Hc5PC8dGDssa2Q8ElmPK6E4zEXBVSFFjMSdqK1y8N8
+	CLX41qRACRXu5jiyInar6erpneDSzsMFHOPxepf6tdiFZ4GueHmt/O7+7i3+9alWFgXFzNr0QEz4q
+	zR4giyVz/QTDo7s8E4QdftwoVP9g==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xIY0v-0000000Doky-2uO5;
+	Sun, 18 Oct 2026 21:01:53 +0000
+Message-ID: <c155b536e79ebfc9eb384dc8046cf31865d08843.camel@surriel.com>
+Subject: Re: [RFC PATCH v3 8/8] mm/gup: batch contiguous same-folio PTEs
+ into one refcount grab
+From: Rik van Riel <riel@surriel.com>
+To: Yuan-Hao Hsu <aa9736195201@gmail.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, Andrew Morton	
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Jason
+ Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+ <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
+ linux-mm@kvack.org
+Date: Sun, 18 Oct 2026 17:01:53 -0400
+In-Reply-To: <20261018182652.691-1-aa9736195201@gmail.com>
+References: <20260811025157.1632867-1-riel@surriel.com>
+	 <20260811025157.1632867-9-riel@surriel.com>
+	 <20261018182652.691-1-aa9736195201@gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DE436C0002
-X-Stat-Signature: ibccom1g6ogufakz8b3584a6dkoxoszd
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: A066340005
+X-Stat-Signature: w65f3awywzyh73jj9w8juo6kszqru6kb
 X-Rspam-User: 
-X-HE-Tag: 1792357326-100948
-X-HE-Meta: U2FsdGVkX18HqByAC1Vyae4bvUQ3J6/nLQwS62nypaf/zcxHSvzaMaRcDSr+wDh1qf33cSug2+GRfzVMpSjxTFdR3kX3343Tja/K5R/seIUZhzY631TzMyxvIQiGY4UUnidvPTqSnuMtUHusToAWRbUGnTE/BBgiVQ8k3fUwjZjrRkXSwBGlL0t5a4zmE1YUC2PE66pqnm5KY5yJ2CrJuHo1cb5gUB5WCcK/C4K3Zf684kCo63nOATGBm4k4URf+JWYUf8De9e7Lx+gSKY/AAB3GSSDTsZ+MciuGxNVRKAN3AsNp1pk8CqSlTytteLZJ0OV/pfJAY4hgS59ChArakvmcJTbd909GpHf95Fy2K3G9nR+I7V74BsFMJ1govpcllJhmrZQfeqI2i5pPalz2ic6bRxpN38gKgOHFdz0ZB9Fc2RxTZKgiPOHm6EHDqTxNudewiSl77tlOrOmQzPvbuiG5+uVLm+3mMS3oKpLMTP+W+B1gnk8d1PlxaCHjbZnYXSBxg7tNvw8Rtt941kEC0grk/VMbaZGMhY3A/T/wHCSdvTx7LyJsp0m+u0pRG2f3p02dWbt0ygfzmR5/4YryrcQlrBxwVz+qLBTWg4Z0sJ/grA0rBt5kyRaMtqdw8ZbAeA9fV0i9SO2Af9LvmmvUto8sdOuqRtSU1DiMpXr+rJAz+d01/rMh982QBlpQXRlyZXzxcJ4ges3ewnEaH8c73bkJ7LYIz5GYApCjNK2PeiG76EEpY1MwWF5mJnRg71b0rstIQiXUmgz1OblQ+wl/XtjI97CaF7UNghKodZ/TODAF/SmRjSN7irm8f2Nm4m0tIkySRn932xatQhbe0KQV9l9kRdtbRxw2vXyFEr5CTtJdhJXOHuR2Gc1FIdajwQn1h8KyPUfXhAeGoEGSDFw1YhDGrOL5tQtJTw91bYfb3Bm+sWFA0GX4Rzmig54kBOXIH0eHzDOd79ZOJ+e1J2k
- Z8yn1KGP
- RVRPBSERstwfbjEK9FiefncKQUd+PTRmwPm/tUEjytPV8KGFfnLqjL6r6r+w2vNeOR8BaHjfjc0Rp3cdsUiYe11Qta/5SP2wPxb+xCg8XX0keAKbZr4ZZdMpDVaRCV6tpJ34wSsH1TI9o73CHnIz0KT4wcPE/fT4DOJYyQ6g4KCRc610Dr2esXS+z9/teL7Cfs0vBWAMqSgpZGobX5/yJ/7TUSCTcpX7WdXnioKCGknHrLcfaxYqyNB9cq9avQL022PxGClDDyH5uYijScPXhDNnMnHrEHFSk6ACGUHIrsG2FH1BY29ipKMop8qvsXT7FzFgBl1VQDrY+CBgXsuV5jcvfdy4SoTPnN4K9mIgNs4TB+TtfDF/1gjODArE51ZhomdZq1SVjJmoxWEReeR0FmfIACNWKQjxscSf2Ad2ZfiFy7vNSwAqbSEi4MXjUSNzlv/opdbF84MvUCbCMiELM2pjN6MMRXDGargbFTul7ZpsPBs1GoAeRZ/NWYhXQjmYafC3xG4ST1A9zaKNrWdoVJ/dJcYf4n925a7U7
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1792357346-630445
+X-HE-Meta: U2FsdGVkX198qCHaHdg9AIK4jyjlv/6on2R7hR6UCNy/iDWjZABaD+ThhWFy2NxevNjYi0dMOxyBJ9YD8YS0dFRbAroq8hq3fH9WyHvYGeGQo8LvQb1IhzBwNf0sAuXZPopuYDKdcOpx/5uQw+9fRjSn3HCqM3niMmIrC6rzwjlyj1RbtK16tiimzlxTkQYTaUEgEt1SvyFhYUspYfFhrCZgbKXtsqRlRHt6qz5C5sLs2tuICGgUleOurGeKCPudm+WpvRKlhyHmDWe7F3fQDuOhsoTVUHGJH+478IaWP+dgziOv3sTj8yRnpbv5QNtioOC9n/dBe7+uTB/FOpTuE/8TqDYhmFx0Zh2qsM0dW2h2kVnEK6o82wlmUXoGtpLTyFR/uJIA1ieieASNM/7PNVOphw0zEdYw7XREkD7nUE+9yM/GU/fHMgG53LFQCP+z6ybkCSsSylgtKRz6oO1VV2I+H3EQ43poX1yM5lGOQE5Ie6+1uW45TkrPYas2cyHNsf70wcq3wLcrHsoYJhzmVr6GtlpNPJ+7IFDftkm5eHyHSujMQm5d1/Yxeolx0zSf1n0krdajwGf8rK/SmgEBBuvJQoGuyAWXk6NIFRwztTwSP65k98ZluC2T13CaX0koBGsoCz36GlKOjjnipEuHFDDQINx02dcJOwSgsWBxYAw6gMXCN3KXSpFSnfqJ4/wHAvldpkh6w/uBEWn8Ph5P7nzYB9Dtd+sooMXg+B+ljQLJPNm7xVn5Hdp5x/INtIvLluzMRE6VCl5Wv0DB4wV45RWN+qfNASlEGov+Mz6chgCwQ7jS31JxzPZa/+TZSWA0FKURIYRl7B0NwwGbRVCpujWb1BK7xAo2bNOB0sgg2jNrEdZdnUCnRKuKRJ7+YHkeZh+V7yELK7qz+ImMuPymX74zISc3lCquThrymroyhPZYyYGtqC97pAQNO04SSWO89hxw5zPayerZjkh8UTl
+ JcdaWKib
+ GeAjwItNE3d7cSMfaUuKDZyu0fNS8QkfR/F+o6DJQedolaDuYfcoaVrBtIhaiPuNNUcV2d18n3jYBMtAhQYRtS9hcAzSWvGK+e3GngPkpEs39cAyGu35CuoV8gKhTcaO9MLWS/cZbawvovpttg0ujB3cRo3jQxiSMChM1OqsK3VbZq/u43Ws3wd4pjd1EVawlxD4sfHkdv+JyzNsKtfftzW/z3N2SSaxCzG0VRQJ0kdBPP2WKy2QxQvgPiUuAZcFNZ+x7yh6Kw6TbemlrExEzdxh19A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,87 +123,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 17, 2026 at 10:33=E2=80=AFPM Gregory Price (Meta) <gourry@gourr=
-y.net> wrote:
->
-> QEMU fails to start a guest with a VFIO device when guest RAM comes
-> from a memory backend bound to a movable-only node:
->
->   vfio_container_dma_map(0x55b1b1317800, 0x0, 0x10000000,
->                          0x7f39a2200000)
->     =3D -12 (Cannot allocate memory)
->
-> VFIO pins guest RAM when the device is realized, and the pin faults
-> the pages in. io_uring fixed buffers fail the same way. Faulting the
-> range in before pinning lets the same pin succeed, since resident
-> pages are migrated off the node instead.
->
-> A long-term pin faults under memalloc_pin_save(). PF_MEMALLOC_PIN makes
-> current_gfp_context() clear __GFP_MOVABLE, but policy_nodemask() tests
-> apply_policy_zone() against the caller's gfp.
->
-> The bind keeps its movable-only nodemask, and the allocation finds no
-> usable zone:
->
->   page allocation failure:
->       order:0,
->       mode:0x140dc2(GFP_HIGHUSER|__GFP_ZERO|__GFP_COMP),
->       nodemask=3D1,cpuset=3D/,mems_allowed=3D0-1
->
->   Call Trace:
->    warn_alloc+0x136/0x150
->    __alloc_frozen_pages_noprof+0xed8/0x1720
->    alloc_pages_mpol+0xaa/0x170
->    vma_alloc_folio_noprof+0x65/0xd0
->    __handle_mm_fault+0x137b/0x1ac0
->    handle_mm_fault+0xa0/0x270
->    __get_user_pages+0x250/0xfd0
->    __gup_longterm_locked+0x116/0x870
->    gup_fast_fallback+0xcfc/0xdf0
->    pin_user_pages_fast+0x47/0x60
->    io_pin_pages+0x9a/0x110
->
-> Base page faults fail with -ENOMEM.
-> hugetlb faults fail with -EFAULT.
->
-> Check the policy zone against current_gfp_context(gfp), so a pin-scoped
-> fault falls back off the movable-only nodemask, like any other
-> non-movable allocation under the same bind.
+On Mon, 2026-10-19 at 02:26 +0800, Yuan-Hao Hsu wrote:
+> On Mon, 10 Aug 2026 22:51:57 -0400, Rik van Riel wrote:
+> > Add follow_pte_batch() and give follow_page_pte_commit() a run
+> > length.
+> > Each run starts with a full per-PTE resolve, then
+> > follow_pte_batch()
+> > finds how many more PTEs extend it with a pte_same() scan rather
+> > than a
+> > re-derivation of each page, and the run is committed with one
+> > refcount
+> > grab. Runs stop at folio boundaries, so plain base pages are
+> > unaffected.
+>=20
+> One side effect worth a sentence in the changelog: with FOLL_TOUCH,
+> folio_mark_accessed() now runs once per run instead of once per page.
+> On the classic LRU the first call only sets PG_referenced and the
+> second one activates the folio, so the old per-page loop activated a
+> PTE-mapped large folio from its second page on, and a run now leaves
+> it referenced but inactive.
+>=20
+> Measured with one get_user_pages() call over 2 MB of freshly faulted
+> 64 kB folios (kprobe on folio_mark_accessed(), flags from
+> /proc/kpageflags):
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 before=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 after
+> =C2=A0 folio_mark_accessed=C2=A0 512 per call=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 32 per call
+> =C2=A0 after 1st call=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 32 folios activ=
+e=C2=A0 32 referenced, 0 active
+> =C2=A0 after 2nd call=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 32 active=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 32 active
+>=20
+> That matches what the other two paths already do (follow_huge_pmd()
+> only calls touch_pmd(), GUP-fast only calls folio_set_referenced()),
+> so it looks like the right outcome.=C2=A0 It is still a visible change in
+> aging for anything that reaches these folios through get_user_pages()
+> rather than the fast path.
+>=20
+Nice catch.
 
-Hi Gregory,
+You are right that this should be in the changelog!
 
-LGTM, thank you for making it so easy to review!
-I wonder if other places are missing current_gfp_context as well.
+I'll get that in for v4.
 
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-> Tested in qemu with a dax/kmem movable-only node 1. io_uring and VFIO
-> pins of unfaulted base pages and 2MB hugetlb pages now succeed and land
-> on node 0 (correct). QEMU now starts with the same backend binding.
->
-> Fixes: 8e3560d963d2 ("mm: honor PF_MEMALLOC_PIN for all movable pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
->  mm/mempolicy.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 70298fded1b4a..0884c629670dd 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2302,7 +2302,7 @@ static nodemask_t *policy_nodemask(gfp_t gfp, struc=
-t mempolicy *pol,
->                 break;
->         case MPOL_BIND:
->                 /* Restrict to nodemask (but not on lower zones) */
-> -               if (apply_policy_zone(pol, gfp_zone(gfp)) &&
-> +               if (apply_policy_zone(pol, gfp_zone(current_gfp_context(g=
-fp))) &&
->                     cpuset_nodemask_valid_mems_allowed(&pol->nodes))
->                         nodemask =3D &pol->nodes;
->                 if (pol->home_node !=3D NUMA_NO_NODE)
-> --
-> 2.53.0-Meta
->
+--=20
+All Rights Reversed.
 
