@@ -4,86 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D19D1CCF2C9
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 15:41:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60156CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 16:07:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C07566B0088; Sun, 18 Oct 2026 11:41:42 -0400 (EDT)
+	id ED15A6B0088; Sun, 18 Oct 2026 12:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB8EA6B008C; Sun, 18 Oct 2026 11:41:42 -0400 (EDT)
+	id E823D6B008C; Sun, 18 Oct 2026 12:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA82F6B0092; Sun, 18 Oct 2026 11:41:42 -0400 (EDT)
+	id D979B6B0092; Sun, 18 Oct 2026 12:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 84D686B0088
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 11:41:42 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 050071A0553
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 15:41:41 +0000 (UTC)
-X-FDA: 85336162044.22.4CE9F6F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E796FA0003
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 15:41:39 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1176V34;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792338100;
-	b=amhCADhrAo7xgRPJEBeBXRete2Wb+P1PF+5l5T+WeaB5nRm2MsdlTNhv7b2thEo5YoJPse
-	8XWQyE93EuzgZd64CErl+PLfh+91VvlXuvkuzJplnT5Rt58tFfKneoEWo6Ftgsj2JiqW3D
-	TqkYUXe2VaMP09LoB7n02xPm6JT7mw4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1176V34;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B90506B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 12:07:21 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3FF6F1A055A
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 16:07:21 +0000 (UTC)
+X-FDA: 85336226682.28.69FBF47
+Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 189C0140008
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 16:07:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=X7mUxzzG;
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b="Zo6n1lH/"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792338100;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1792339639;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uglyp32hrBI+mISzWFe7c9mM59cwP0mKFb7avVVaC88=;
-	b=xp+ahYqMrcLUxRdiD7tl01opnZdzypk8uIMQ1IJJ3Yq0Wbu98VwoIRCBmqag34Eka4/dff
-	tzgdBuCfUafmPKkICloDzYCVMV3VK77wxya2X55Si+BQRxEUtCTKbL6L2h/uqbwjUkmjuS
-	fZE7Z7ouxGuKJ9Ah/y5UhV1ERttrTFo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D63A42E04;
-	Sun, 18 Oct 2026 15:41:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E101F000C4;
-	Sun, 18 Oct 2026 15:41:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792338098;
-	bh=Uglyp32hrBI+mISzWFe7c9mM59cwP0mKFb7avVVaC88=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=U1176V34VrUIygXi70+hVY0FRS5RikaakgGM6CbuRDUp5KMLH2rf9TZTrk5rt+rJB
-	 PIzORDtgDD0Ccgt6DHzZ9pANKJJ+rGc4UwQBcZM2pN2A57AZfisZecu4yN9Rj32Zum
-	 EZddOXWHus5RgJpqkCQsUeJ0vmlk8uOC1HX4wkGk1zGjzJoafDSzTmYfUHrFNEu/mo
-	 7LlOHz3nvnjXgekKu3F6JIiGBIIo+7/lP1964c1ZVQ9/xA7t3Vm5TgpL7uhwgLc4ot
-	 yTxK7Zm2mkIvz54jUx0t4zcabvDecCo6bdA3UwUG4hcklzmQRiSWpwLr6oMChBttiy
-	 W646UU2UkG1gw==
-Message-ID: <sashiko-outbox-176238@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1] mm/vmalloc: read vm_map_ram block regions from the
- requested offset
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Nickolai Zeldovich" <nickolai@csail.mit.edu>, "Andrew Morton" <akpm@linux-foundation.org>, "Uladzislau
- Rezki" <urezki@gmail.com>
-Cc: "Baoquan He" <baoquan.he@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, linux-mm@kvack.org
-In-Reply-To: <20261017154120.795844-1-nickolai@csail.mit.edu>
-References: <20261017154120.795844-1-nickolai@csail.mit.edu>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 18 Oct 2026 15:41:37 +0000
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E796FA0003
+	bh=PF7sploXZKUksNVu2vBA7Q/K83btVNBj4zu783ro08Y=;
+	b=HnKw8/CyTBXvXIp5WH1gjx56gr5aK3L9VuTIm+24Zno9kEPVS9oax2jq+RN+Fq07KvFG3P
+	/OOQktkLpliS1sdwpdSKDykSDzNPz3GzrkQ22Hl1QTG+DKpJzWCBmyjsO3C3TtETXda/lu
+	o+WDO0RlrpFG4VZBqPOKXWiMhdC6ci4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792339639;
+	b=spS5AmhZezJt+G1J346dreMqTV44GKIOnRl5XBLxE0wMjwfS3KBaySeZIFb2HMaDf89l73
+	coXcJPRRh3Mjx1zWY2dTzqvl2wdGx/DOvlqDaH9/vW+fGfCLTxrAlylJvZQM01DjBkki04
+	lQki2Rr4skMhkLl9LYFL55mpp+ySIsQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=X7mUxzzG;
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b="Zo6n1lH/";
+	dmarc=none;
+	spf=none (imf26.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.211.244) smtp.mailfrom=vitaly.wool@konsulko.se
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792339636; x=1792944436;
+	d=konsulko.se; s=rsa2;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=PF7sploXZKUksNVu2vBA7Q/K83btVNBj4zu783ro08Y=;
+	b=X7mUxzzGpMgIXeXta8T3QM7r5oTn2SVxPFka4nW+gYehm8wYlZiu/5B4wR4TUXCI+fimkasBxauHR
+	 loaODBO6aedIAUBWbJsRnvtMoEH7MCZTt3hkvRgXCGaoZcf5uM80dvWT6H/vP5nI6JaAcfUqWmIrtB
+	 7gNssFIRuotBLh7dUDkZHIdlu0xdwOG3k4CGvy6BfUD/LO/zzVtbNvedL3sN34QUB1ytJD28jf2R2x
+	 zdLwUPeO4vpzVuyObfYVTu1YiW297d3C1WN+M5iEDqAKOPQFcOZfZzTFlB6uQ8hCUJNLipADWf3AFa
+	 7Ews5+wHo3ybU6WwlxRyKNyR3DiXtag==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792339636; x=1792944436;
+	d=konsulko.se; s=ed2;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=PF7sploXZKUksNVu2vBA7Q/K83btVNBj4zu783ro08Y=;
+	b=Zo6n1lH/O7fHr5Di7LPgOH3OQMp3Zc3EhFairyTVgUzHY4cZqORMGVI72yjIweltKuN3m5We8GPWg
+	 1j7UYuDAQ==
+X-HalOne-ID: fc234faa-cb0d-11f1-97ec-1db1c303b0c0
+Received: from localhost.localdomain (c213-102-77-204.bredband.tele2.se [213.102.77.204])
+	by mailrelay3.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id fc234faa-cb0d-11f1-97ec-1db1c303b0c0;
+	Sun, 18 Oct 2026 16:07:15 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: harry@kernel.org
+Cc: akpm@linux-foundation.org,
+	cl@gentwo.org,
+	hao.li@linux.dev,
+	hch@lst.de,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	nickolai@csail.mit.edu,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	vbabka@kernel.org,
+	vitaly.vul@partner.samsung.com,
+	vitaly.wool@konsulko.se
+Subject: Re: Re: [PATCH v1] mempool: fix min_nr exceeding the elements array after concurrent resizes
+Date: Sun, 18 Oct 2026 18:03:15 +0200
+Message-Id: <20261018160315.1465504-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <atTh-yyVIPQ-zNWJ@thinkstation>
+References: <atTh-yyVIPQ-zNWJ@thinkstation>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 189C0140008
+X-Stat-Signature: o3f5b81csj3rdugn1qe4onc7iy7y45fb
 X-Rspam-User: 
-X-Stat-Signature: a7pm96k8ppdjyrx7c3xhk9jga8kp3qf7
-X-HE-Tag: 1792338099-567026
-X-HE-Meta: U2FsdGVkX19T/sQEohQswF3mgxXs8ZqmmKGvXU9rZEjp0AgjLV5hxRoYcSpk3DmF1o6QVlnFtZphcvNgPO3RFbBBpSKKyTuNMAy9hy7U9U1N6LrPIpw4JyC+6QJBdIUz4AIqcyepRQmVB2N5MjLweVlfd+J6DYUa6CfjJK82YZ3k4qMhlY8kuz2ol1BxAeC+zMiZzdktKge79DR0lSKL7r+fZszYfVr7yLjf0v138pOJzkWGrWiB8YpJOd0yJBe0Y+itdBlG9ZasTYso/RJED3qAlsZ4ZuuLFIUGo4TM605wYxqY52OyYRgk71DlIWDNL+qIL07zaJgusMRc60Z8h8LDXweixqolg1QWzOAXwbRn3hnI8Qm9GtIhaGm+XufXCKBwq39YWB3GM4Y7k3vy/HWGJLDuLGEFrdAwSp7tVuJWHjdsGYujbrMH8fxsrt+WkzhvzDIDKYH9hOnd3Xe6Rla/RuGqlAOHAehS26GASsMTeujk3EHc4pCXgnMbLvrSZMdRZn76jy+eufoIIWZvl/9+1qg0ou2RHDlQkJPszQACV7X52bBIRvGjspxhm+VGzfT4IXsL+/+aggZPHG9Um7Uanlm7xsu8pEVtiM+AHZDXky+vnlfvKFTSxRTAAxkqrMTnQQBE88wBNVhVEM3fUCVhSu4MFTFSEkGKdg4gxTCLSC7iDL/mz4bJhhCFy+RZnzAa8lWVU6gFpuEevC4o6XxkxG73Gh1cSrdGdsA2UjSblQYBlue42S3Q4RST9vA13PrhXPaKCJzJ5SClPJPWa419R/OO9T0EjBYJs8UEFpzhuokb8ytEkLw8EORMtk84yrb0YbM/wCt35sF4gGL3XVAjNcW5k0tqWtegCWWEjUbvWUTfVRcAAehdfb3ICgpGSRSZCTcLeKMZtk67tULy0mUKg7a3BChDdzq9Igy3TY6QvS/9EzXNapHs72dnOPPm3oIrfgH4sZBjb5G+4mz
- MUefmGPy
- YXjo5lXTKJg0BRFXLqqXs+YSstT5VJK1MX1uUnevTDfufqvp1p163CDJt3+FlhHcGew3vRpfqpKHMPwCPSYpkPVLkdfiTkeausSpCCfGPMOJHgpoxlA8vJ2+FENInSAyjl7VewgQv9Y43i4XdbUKxH0hWGcndsGPDBmWkgvp5Nm6rApd/hN1vFme/i+Dzb51pherOYe3XYcUMUZx1jAmL/MQcMv2Ud4McIgs9ZQqSc3VoSln6QX+FbhTOjRUMrTF4RZhedv6mBz1/PS3NeuN3t1MZMvbsBvsAGvl7OQ3km60pkatrPmX4nhd8OhGNZZxq3hmtQ6YEv5mO5tJs6pdK7ivjIVFgekJLobGvkcvbuTaD9xSXyiecly/GkOSEYtV3WuKroomeVLfKNiqz3NkmoJUW6rUUO8DdJy/MJ0qdzgzUq2fVV9yoQ1PXaEU18sz2db7toX2WctH2aVK+Ne8HQ5yZGtJc2hL/EdOpWRnniPbYYuixi3esMhLKMYYotFVWt5MJzzNiM5vdWRmwBsiRI6rzDWDIFwLJ3hrc5UenK4JlTJXCsl9YV11CQgM7UInRmztHueUQGLkrEFiL2Xo/kXE/Q/iXXzimh31St9GQYmts7tE=
+X-HE-Tag: 1792339638-186690
+X-HE-Meta: U2FsdGVkX1/3CDFSQKbwMKEVpHmGalPZDE18fYjD5DPbvQMo7tBsQTtKNviKoQAlDLBQIYwEDiHPGoeFgvza7KuEz8PU7p0S89faIuqG1/NpcUJlcsWUxpX49oNugwiEFWfGxNfRHQrHE3fSzNZ4rJzv7Ezt+2ZHR0c5Wj8pm2hPUzm+L9qNANooT1ZQC0ikKGHu5Okc8CjtAFGkOq76ot7g5X86pTINnKVh+HvZSSm68u2YJfEHelQccpqVSXUL2ch2XibklIXicEAn6jxSiDK6bwMP1x+n81F29Z0PxevG+oguFn6Nfjqe3kugAJ0yeeZvU1nZYzJZevrMUEJ87/xZNgjCSakorabJ1h8LbrFiukoj2Y/5ukVmfLUZu2hvRq4p3N16VqJvq8FmNkh3NitMYSIZZxyUNNABSUgIgoAf7on0lc98CBpgrmHow23tDIy3xJdC6nJoa6XDdbZOj9fSn+sL77Fku/TO+C92UPdr627bM3U9wOXlfRG6Xv/6+zCyp0joGz3xdIhlN7gbbaWQ4LRL0/fPB6x1EGVTK2q8fu3S6U2gI9YRI2d+IeWq/ShsB8IMW8+/+k1iKU7V6MHOhYLhNB5zVXFEWTQ0Z14qo0wllG5/4yl5Wxi/aGd6tDLRC7x6DXkrf3jGXCVaD1HV7YP+hpXtsYE/dzpm03+qtQS+Z9jlrHvmnhh5i6LGeadbZlH/dmFkM4+cny8ahZvfm4Cw40dCdiE2n4pZyfhfwQA7YUIKvI4cEVMbeOGeVcsNF8HV3JXgXy8pHvo8rACsOjF8BdvI2vcpArJTuu0UeUEpH/SoEoa9RitX3tAzlvekWYbABRiIqcG2/TqJdUAd/AbyLXjECfSqaaIY45yIrpOhhjA4j2q5zaNpFIMFmRFLQ9z9tP5tFT+vGSmpJG0u4PgY9hnfght1iXEKddEMXPDU+TwINOjJxkqFkHdqvOhkviKVAMMHriC49oC
+ YG3OqTG9
+ bd99+YdxciS6OZG/91RxIWRrYplW1vBQ0pYyFtQO1pYnvPPMUyBkJNYM6Y4dojMDNQKN8D2QkP8kWYX+xwv8EXnjAlwlDa8/7l4ru3qSK/9lyiI9V2+17xPvRvobASXAbFJMuwq2HhK22NJmLnvLsvl6ebGLcgI9CRlom7WNuCwXtGHD73QbKgJnLMJBMRI/MKlb5QSgSZ7wodWh87z4qc1wXAFXhe2IiB5jYk916OG+t3jKktbfF06kwgJoO1LQqeVh78ejqPiYe4O+CFAfgMztSFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,98 +107,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] mm: off-by-one region size in vmap_ram_vread_iter()
---
-
-commit 5892fe6e95a3367f16e7bc56c39b500d0294baac
-Author: Nickolai Zeldovich <nickolai@csail.mit.edu>
-
-mm/vmalloc: read vm_map_ram block regions from the requested offset
-
-This commit updates vmap_ram_vread_iter() to skip vmap_block used regions
-that end at or before the current read address and to compute the read
-offset relative to the start of the region rather than the page offset.
-
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index bea9f76ed7e74..34340c2490b82 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4588,7 +4588,7 @@ static size_t vmap_ram_vread_iter(struct iov_iter *=
-iter, const char *addr,
->  	struct xarray *xa;
->  	unsigned long offset;
->  	unsigned int rs, re;
-> -	size_t remains, n;
-> +	size_t remains, n, size;
-> =20
->  	/*
->  	 * If it's area created by vm_map_ram() interface directly, but
-> @@ -4622,6 +4622,10 @@ static size_t vmap_ram_vread_iter(struct iov_iter =
-*iter, const char *addr,
->  			goto finished;
-> =20
->  		start =3D vmap_block_vaddr(vb->va->va_start, rs);
-> +		size =3D (re - rs + 1) << PAGE_SHIFT;
-> +
-> +		if (addr >=3D start + size)
-> +			continue;
-
-[Severity: High]
-Is size off by one page here?
-
-In include/linux/find.h, for_each_set_bitrange() sets the end index using
-find_next_zero_bit():
-
-#define for_each_set_bitrange(b, e, addr, size)			\
-	for ((b) =3D 0;						\
-	     (b) =3D find_next_bit((addr), (size), b),		\
-	     (e) =3D find_next_zero_bit((addr), (size), (b) + 1),	\
-	     (b) < (size);					\
-	     (b) =3D (e) + 1)
-
-Because re is the index of the first unset bit after rs (an exclusive upper
-bound), the number of allocated pages in the bitrange [rs, re) is (re - rs)
-rather than (re - rs + 1).
-
-With size =3D (re - rs + 1) << PAGE_SHIFT, start + size points one page past
-the end of the used region. When read_kcore_iter() -> vread_iter() ->
-vmap_ram_vread_iter() reads across the end of a used region or starts at
-the first unset page at index re, addr >=3D start + size does not skip the
-preceding region, and page re is passed to aligned_vread_iter() instead of
-zero_iter().
-
-In mm/vmalloc.c:vb_free(), vb->used_map is cleared under vb->lock before
-vunmap_range_noflush() tears down the PTEs outside the lock:
-
-	spin_lock(&vb->lock);
-	bitmap_clear(vb->used_map, offset, (1UL << order));
-	spin_unlock(&vb->lock);
-
-	vunmap_range_noflush(addr, addr + size);
-
-Could treating the unset bit at re as part of the used region cause
-aligned_vread_iter() to read a page that is concurrently being unmapped and
-freed, or read one page past vb->va->va_end when re =3D=3D VMAP_BBMAP_BITS?
-
-> =20
->  		if (addr < start) {
->  			size_t to_zero =3D min_t(size_t, start - addr, remains);
-> @@ -4635,8 +4639,8 @@ static size_t vmap_ram_vread_iter(struct iov_iter *=
-iter, const char *addr,
->  		}
-> =20
->  		/*it could start reading from the middle of used region*/
-> -		offset =3D offset_in_page(addr);
-> -		n =3D ((re - rs + 1) << PAGE_SHIFT) - offset;
-> +		offset =3D addr - start;
-> +		n =3D size - offset;
->  		if (n > remains)
->  			n =3D remains;
+> > How about we take my patch [1] instead since
+> > it isn't prone to this bug and is a nice optimization to the existing
+> > mempool_resize() at the same time?
 >
+> It is not a good idea to squeeze a bug fix and an optimization
+> into one patch.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261017154120.7958=
-44-1-nickolai@csail.mit.edu?part=3D1
+Generally speaking, yes. But that patch had been submitted before the fix
+popped up, so there was no sqeezing per se. It's just a better way of doing
+things.
+
+~Vitaly
 
