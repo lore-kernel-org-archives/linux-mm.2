@@ -4,86 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BE7FCCF2C7
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 01:04:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10FE1CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 01:50:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0FEE6B0088; Sat, 17 Oct 2026 21:04:17 -0400 (EDT)
+	id A35206B0088; Sat, 17 Oct 2026 21:50:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C99B86B008A; Sat, 17 Oct 2026 21:04:17 -0400 (EDT)
+	id 9E5296B008C; Sat, 17 Oct 2026 21:50:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B621B6B008C; Sat, 17 Oct 2026 21:04:17 -0400 (EDT)
+	id 8FA7C6B0092; Sat, 17 Oct 2026 21:50:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E1B36B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:04:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BFFB6B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:50:54 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DF8D9A7F24
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 01:04:16 +0000 (UTC)
-X-FDA: 85333950912.15.85C2A2D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 31B37120006
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 01:04:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rQpNBk6P;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5387A03FD
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 01:50:53 +0000 (UTC)
+X-FDA: 85334068386.15.48EEF90
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4502BC0003
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 01:50:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792285455;
+	s=arc-20220608; t=1792288252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yBzg1XnqQp2xTgPKm6aEo7hheg/CtG2kAo70FRWV5Qw=;
-	b=sLM1QdNU7ksm7euyqgpb4PdRgiT+0erDIfeWrxsbfHoQUH7FvOpHgArL6r142+6jehJkf7
-	j+ocL6rQTqBOgtAMrZpgRzvgJIGuZYd/E/Umg4po44dPTnlSxb2F3/NaXEAhESATHSOWbx
-	0uoUMi4QH+u2AY7JdJzovTS4eJPTnkY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rQpNBk6P;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=euB/eC4XKH3g/ecdjvIYd1eR/RZFsa9KOzMywNqhWtg=;
+	b=u+rq0vHRUf6bQ5cDu5YQn7DmNfHBL4lMbM1RNkS/lX39Z9By+dgOF3HfXDHEz2ShgK/BVs
+	uKLNADEdbCe6huviWUBI7xO4u6DcpvuLN8HGPcq+pX1h/2hw8OTZD3KlC236B4zjRgmE4X
+	et3p+tTV9bLr18kbbUjENNViCj1vEXI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792285455;
-	b=sGoSezAZkeNJGoQSNAHckS6LL+ojzsX9OWjdA6BmIXXE8o6ChuLgoteU7QhtIeoFfZXYfI
-	Mp3aDfAXI5sxL6xbgtFWBzdJ99c0CbRqhPNfvBWgWehq7fgp2ew+9rdbjxEt6MCtfv/hiW
-	AsAsBnHRHytVN6Mw+oWi/Yh8dYqtDnQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CEABE60258;
-	Sun, 18 Oct 2026 01:04:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3131F000C4;
-	Sun, 18 Oct 2026 01:04:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792285453;
-	bh=yBzg1XnqQp2xTgPKm6aEo7hheg/CtG2kAo70FRWV5Qw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=rQpNBk6PIcbBYEEtVcMCyzy80nO9U+u4EV/iOS1fliNGnoTGiXg0V252S8AWxZsPp
-	 3q/U+l5BlcKB9IibCRC4lVptDnbNoPCXsbT5riniSZD/gGa6hiibfTBZ1ms3t3f5t1
-	 IwdJmCFc6rir3HRCpwCMKJEhgm90/Lem6T6/EFVo=
-Date: Sat, 17 Oct 2026 18:04:12 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Nickolai Zeldovich <nickolai@csail.mit.edu>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/mremap: do not charge a shrinking move twice
-Message-Id: <20261017180412.a79a36e873c5268df126cde1@linux-foundation.org>
-In-Reply-To: <20261017233527.797191-1-nickolai@csail.mit.edu>
-References: <20261017233527.797191-1-nickolai@csail.mit.edu>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 31B37120006
-X-Stat-Signature: 7ecwjzw8zm5nyxhhn1z1y9kxqrt91puh
+	t=1792288252;
+	b=Pnu5yFAK7ejQ4aRC3v5oYP/Ik0phl66IXW6Q+lY5ZQRZlyTbobETziuXCVYXJrsdsUHrNS
+	stq500uvq6QKckxoiCYJs0nRTk1da94nwXxq75xCS2eitZGJvxbp0bP70hn9U9ymrE01WB
+	krAefZcwTgPmo1yPnQvw7OHnwotndVY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xIG2u-004Ekp-RQ;
+	Sat, 17 Oct 2026 21:50:44 -0400
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v2] mm/mremap: do not charge a shrinking move twice
+Date: Sat, 17 Oct 2026 21:50:44 -0400
+Message-ID: <20261018015044.798412-1-nickolai@csail.mit.edu>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261017180412.a79a36e873c5268df126cde1@linux-foundation.org>
+References: <20261017180412.a79a36e873c5268df126cde1@linux-foundation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: o4wijazr4cocfufksr8tkjnqsgkhhy9q
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792285455-968727
-X-HE-Meta: U2FsdGVkX1+wtMKw76Epr3MNBx7A/ghxI7HuteKm7+kZm5RT7X448SdKDGnQVQdkXwTQsFaTXHB3nvg7aV0H+c2PELK2gLSgwmS8bhYX7bmpPAC406Gez5/tWcHKQyGJsJoroCcN4nRkRuOlLjfupTxXabO2o0woQMg2sHvrUiFdWDW/CaUZcIsw6HHHQ3i3mncxyO0v7QqNRrx5zdJV+ya9nWziT2/RbCZIegjogkrP1JAQD6IoKoQHK+ad+5XqdmqfYnlwVo5v8zMHYFg0YZfuaZglOg8PqvOAfvVicIMG7UGoihN4jqLLPtuXztjOpt/7P8s7fAORd3zBMliw6nGtFLj0tECOhJmrRiQrMsbRQDpmQw21UtbudOlLJfqK+M/7b7hLnDJdYTRruaC3eyCphJeC9kzmqI8LBbng/ceOzixHurXgSAEdhwqeM64E1dy9aTBLPQyCmgJzGBCvLRUcHUSawH9YI6mGbAWOe6ndqc8ffe47MjPw2sqK/MwNfsIneedJ1Q6GqHqunKPlx7o7mQY8QKWJOKK9aEyUJT8L6Yhk4mL45Qi1GCrXFPv9Vn147Yo0+efAfJVJE00H75ApB+tKeu+MalqSpuPujqPR5+senn5iOtNqk6dYYbqJmvKj9qvZdJkpLUVkIp5pnkT2hqFkQteFJ/jMBjz2IC96GA7QlJoQQln7QrXlUPKQRo4g3dDrsxsFENBu7CatOAuER0HNNkIuE+Q3f3Gt9FXkhbQPy17Y3GXQe0j8+QmtcY9eax8Q0mQhs/9etCBbDMS3XtqY/2azMoxeJXs/oFf16VdBycQ628o0ffWF8fHT8OtkCzCBUjQI43GjjT0RQ7VXwDz1V25BpWeZbzCDr4YZeT0hmx2b8EapS3GzpnRvJg57hDMSxUrrRncsE0ZzR5DqPtHZ7k/cGkdl6SYNfU7WXQ+uiP/XGQrgNtilb+bvN9VEAmoVUBQ59gKyIvL
- Nf6VWOxN
- M4w5PscPsD8waOwQUYYIWNDuvGG1VuDRjk65OmBwiat5DH7SrKgh0zaz8FENNacp+CFY+HqF3DRlMYZkU4RwjwvZNYGi+Q6zaj/I2baLV9MPgy1fDu7vSa3bOmkhPAWBBDUYlC+G0+bb3RTdKPE4AolGZ1U9XaScIZM2p24kLDlRXmA/Zlce6BImtJ0ntTagaw8aYVaHfg860aX+ccCFyVEGmRfoN0pbpdEW8Imd57M2hctt3ENOCzRO7mg==
+X-Rspamd-Queue-Id: 4502BC0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792288252-667337
+X-HE-Meta: U2FsdGVkX1+8zdB+OEiZfBb9aIry7DuwiptjUZD/kdApshQdLPTdsCB7kzXB2osawAoRH/UNeAMFBb8bt6I6BA1WohHBKgIDz55JQUXg+Hwl8WZxp//JPqlxdv9JOUEui+OZNavzS/TlGr/jIXmNWfR6P1aO5GlMViIwyrr0wAfkb2clpqOQhO5EXpWe5kVKffDGMjRUACZ1Z9EC5EPg+QjheqUO5RH0L3D74dVaDYxHj+8/r/7tu7ntFqWJS02TIbrTZprWr6sWBjjyHcyB2qONdldBak5NxRKv3cGHI+6ax82TSarokYmOkHooEzFwZZjMR+PE3C182bIRBy2HpU5/Ses6fbHCSajCjuvbJuWNz5PSZt+rH9Qeq7oVNXqoFcMOglLR8zvjkEyUbJQc60QGAEbhjk8kuQVPINqQQEPGMfE1O+NvXIkaSkITWpZ6nqNOeI0lJNwjp4pn41gYhmKZG5OwTh7e0uC8Ywnldx/6WLpiIGw83Fngz4EhBv1sVzR8kiTZrqvFa5/f1wcX3qxpeN0CjuFCEsVIPsspVcvqYuFkDJ6X6T1LsrOQquLXw0tD12OB3vQNffCoALfhXa2zqtyY9R6Asidg7GiUTgU+0zQdq0+y8laBT6O48BFN/LG0rhveh2Sg2JS71MxXd6sN14AsC0h2bCo+/WzRn9ToQlEVhcTlGUFdniTdU112CV9612aJL6jkMNKiwNHQoROWd1aTndeKTZopc6qAK7oT4jm0EBVlKpGbK+DFqUFJ4XvS4djzWl4JTkNd6VHw0IDML3oDiJBNbzLIwN4syLs6lKQ0F63WMxtwyZk10IdKYN/67kt1Cpt6vgwscccI/HEO7Y4s/FXjVUq1RihHWUThTOvjHMawz4zQG1PYYG79U+g3m34EBOf308DH3GnCIOfGFp6ZvyeciFtJUueg3keBK4QGz88ikMdi1KIlUoeiNPGMv7w8K4HbsTiymr2
+ knT29mYP
+ Ff5sfVCwDdS3oFzhCMul72I21xew2pS7xyKdq5O7a0FAMqqfmiBcPPhiEdsFLaTEieK+ZapDphKsA+q6vME6dkJ2sS6CDRm5rpA+HqeRqAm99JDc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,87 +87,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 17 Oct 2026 19:35:26 -0400 Nickolai Zeldovich <nickolai@csail.mit.edu> wrote:
+Since v6.15 every mremap() that shrinks an accounted mapping and moves
+it with MREMAP_MAYMOVE | MREMAP_FIXED leaves old_len - new_len bytes
+charged to vm_committed_as for good; the charge outlives the process.
+An unprivileged process that repeats such a call keeps raising
+Committed_AS in /proc/meminfo.  With vm.overcommit_memory=2 it reaches
+CommitLimit, after which every accounted allocation in the system
+(private writable mmap(), brk(), fork()) fails with ENOMEM until other
+processes release enough committed memory; the leaked charge itself is
+never released.  A loop of 1000 calls moving a 2 MiB private anonymous
+mapping to a 1 MiB fixed destination raises Committed_AS by 1 GiB.
 
-> Since v6.15 every mremap() that shrinks an accounted mapping and moves
-> it with MREMAP_MAYMOVE | MREMAP_FIXED leaves old_len - new_len bytes
-> charged to vm_committed_as for good.  An unprivileged process that
-> repeats such a call keeps raising Committed_AS in /proc/meminfo; with
-> vm.overcommit_memory=2 it reaches CommitLimit, after which every
-> accounted allocation in the system (private writable mmap(), brk(),
-> fork()) fails with ENOMEM until reboot.  A loop of 1000 calls moving a
-> 2 MiB private anonymous mapping to a 1 MiB fixed destination raises
-> Committed_AS by 1 GiB.
-> 
-> mremap_to() first unmaps the tail of the source with shrink_vma(),
-> which uncharges it, and then sets old_len to new_len so that the move
-> looks like a same-size one.  vrm->delta, the absolute difference of the
-> two lengths computed in do_mremap(), is not updated, and
-> vrm_calc_charge() charges delta pages for the move.  For a move that
-> does not unmap the source the charge only has to cover the growth from
-> old_len to new_len, which here is zero; nothing ever releases the extra
-> charge.  Before the vma_remap_struct conversion move_vma() charged
-> new_len - old_len with the updated old_len.
-> 
-> Recompute delta after the shrink.
-> 
-> Tested with the program in the notes under QEMU (x86_64 defconfig):
-> Committed_AS grows by about 1 GiB per run without this patch and stays
-> flat with it.
+mremap_to() first unmaps the tail of the source with shrink_vma(),
+which uncharges it, and then sets old_len to new_len so that the move
+looks like a same-size one.  vrm->delta, the absolute difference of the
+two lengths computed in do_mremap(), is not updated, and
+vrm_calc_charge() charges delta pages for the move.  For an ordinary
+move, which unmaps the source, only an increase in mapping size
+requires additional commit accounting.  Here shrink_vma() has already
+unmapped and uncharged the tail, so the remaining same-size move
+requires no additional charge.  Before the refactor move_vma() charged
+new_len - old_len with the updated old_len.
 
-So I'm training my LLM to do better reviews.  It sucks in Tejun's
-review prompts which suck in Chris's prompts (which Sashiko also uses).
-It also incorporates some of the prompts which Sashiko overlays on
-Chris's prompts.
+Recompute delta after the shrink.  vrm_set_delta() now also runs after
+old_len has been adjusted, so its comment no longer calls the
+difference user-specified.
 
-And now rather than just checking code I'm getting it to step back and
-take a broader, more architectural/design view.  Scan the lists for
-similar changes, look into the revision history to understand why
-things are as they are.  Study comparable code sites.  One way I'm
-doing this, which might be innovative, is to feed it some of the more
-impressive human/maintainer reviews I see and ask it "what rules can
-you set in place to make your reviews more like those people's".
+Tested under QEMU (x86_64 defconfig) with a program that repeats the
+call 1000 times: Committed_AS grows by 1 GiB per run without this
+patch and stays flat with it.
 
-I'd like to start using it on people so I can also obtain
-author/maintainer comments on its reviews.  I can then feed those
-reviews-of-reviews back into it to get it to learn and improve.
+Fixes: d5c8aec0542e ("mm/mremap: initial refactor of move_vma()")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+---
 
-It's a work in progress. Here's what it said about this patch:
+Notes:
+    Changes in v2, after Andrew Morton's review:
+    - The sentence on which move needs a charge had it backwards; an
+      ordinary move unmaps the source and is charged only for growth,
+      MREMAP_DONTUNMAP keeps the source and is charged the whole new
+      length.  Reworded as suggested.
+    - The ENOMEM state lasts until other processes release committed
+      memory, not until reboot; only the leaked charge is permanent.
+    - Comment on vrm_set_delta() updated, since it now also runs after
+      old_len has been adjusted.
+    - Fixes: now d5c8aec0542e, the commit that replaced the new_len - old_len
+      charge in move_vma() with vrm->delta; b714ccb02a76 only reorganised
+      that code.  The reproducer leaks on d5c8aec0542e and not on its parent.
+    
+    v1: https://lore.kernel.org/all/20261017233527.797191-1-nickolai@csail.mit.edu/
 
+ mm/mremap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Hi Nickolai,
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 444f37d7cd28..479befed1b2a 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -887,7 +887,7 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc)
+ 	return pmc_progress(pmc);
+ }
+ 
+-/* Set vrm->delta to the difference in VMA size specified by user. */
++/* Set vrm->delta to the absolute difference between old_len and new_len. */
+ static void vrm_set_delta(struct vma_remap_struct *vrm)
+ {
+ 	vrm->delta = abs_diff(vrm->old_len, vrm->new_len);
+@@ -1523,6 +1523,7 @@ static unsigned long mremap_to(struct vma_remap_struct *vrm)
+ 
+ 		/* Set up for the move now shrink has been executed. */
+ 		vrm->old_len = vrm->new_len;
++		vrm_set_delta(vrm);
+ 	}
+ 
+ 	/* MREMAP_DONTUNMAP expands by old_len since old_len == new_len */
 
-The code change looks correct to me. After shrink_vma() has unmapped
-and uncharged the tail, resetting vrm->delta to zero correctly avoids
-charging again for the remaining same-size move. I checked the other
-delta consumers and error paths and found no introduced problems.
+base-commit: 58161ead29e50d70a317ea26b472e0c7508e69da
+-- 
+2.53.0
 
-One changelog correction:
-
-> For a move that does not unmap the source the charge only has to
-> cover the growth from old_len to new_len
-
-This is backwards. MREMAP_DONTUNMAP retains the source and charges
-the entire new mapping. An ordinary move unmaps the source and
-requires additional commitment only for growth.
-
-I'd suggest:
-
-"For an ordinary move, which unmaps the source, only an increase in
-mapping size requires additional commit accounting. Here shrink_vma()
-has already unmapped and uncharged the tail, so the remaining
-same-size move requires no additional charge."
-
-Two minor points:
-
-- "Until reboot" is too strong: other processes can release
-  committed memory, although the leaked charge itself persists.
-- The vrm_set_delta() comment says "difference in VMA size specified
-  by user", which is no longer quite accurate when called after
-  adjusting old_len.
-
-The Fixes: tag looks correct. Given the potentially system-wide
-ENOMEM failures under strict overcommit, Cc: stable seems appropriate.
-
-With those minor changes, I think this is ready to go.
 
