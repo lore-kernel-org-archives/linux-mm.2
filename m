@@ -4,120 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E981CCF2C4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 02:34:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B203FCCF2C7
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 02:46:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C2A16B0088; Sat, 17 Oct 2026 22:34:00 -0400 (EDT)
+	id 742AA6B0088; Sat, 17 Oct 2026 22:46:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 073926B008C; Sat, 17 Oct 2026 22:34:00 -0400 (EDT)
+	id 719FD6B008C; Sat, 17 Oct 2026 22:46:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA4436B0092; Sat, 17 Oct 2026 22:33:59 -0400 (EDT)
+	id 656746B0092; Sat, 17 Oct 2026 22:46:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B41556B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 22:33:59 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81BA71403B2
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:33:58 +0000 (UTC)
-X-FDA: 85334176956.09.3FB7D62
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BDFFD180004
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:33:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=raohCYNg;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 373976B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 22:46:12 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 33F141A03DC
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:46:11 +0000 (UTC)
+X-FDA: 85334207742.21.EE7BECA
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 91839A0008
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:46:09 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792291569;
+	b=gSfz6/A/p2sGy/p7AeX6o/V1kutloECX6Cn/KgcXozcPheTmxdrDfrgx6wOlrQm1HVA2d2
+	0BLE7sqowMYplj8bftABnT9zyN/xUvevJZdnH/7pTAWcKIFuDdRTPc5IPhk7KONWW+y8wW
+	nu2aTiRM8GVm0/8xIT+zAsuqktXdT9w=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792290836;
+	s=arc-20220608; t=1792291569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=HeSnSeSZP+b+6MzP6ewtTRyYSL3RxjlUFlHftt5R+jo=;
-	b=RaoSslEBay341/JHhnGhhpcPgwmbXe8mJtIMtfjU7b89UfCbHMMLvK1LMhdgT/gOSMUViX
-	LabQ5UhcIwaiYKjV9Py7bxDdOVlILCulrFqjFK0au53gcPWPTaa3pBAbcXbg2amI5sHMeD
-	Mo+os3f02RX3vX7WqSgWfRGYquRUvYU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=raohCYNg;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792290836;
-	b=YlIY/aFU7iriFVZubMbO4DaIkgyBP2rOXZAe2Y8CS3mTjp58gXhxvNjHOHBO5iZJk8hUrs
-	ii32oKBkC3pfy+jv0eTopyg+kCw1zwywhyNVkNnM9ZasbVt5caikYvC257hQ/9YG0Dy2ga
-	U8zHL+UWAt4tNqJG5P2DBbWd9Z7AB5M=
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-91b8306b9f8so17001396d6.3
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:33:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792290836; x=1792895636; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HeSnSeSZP+b+6MzP6ewtTRyYSL3RxjlUFlHftt5R+jo=;
-        b=raohCYNgU0Rbu2btEno57kLM9oEZYOmCRG5pka6frUQKSFg7QXJ+6Lvi01RBzytHke
-         1NuNPRszNEJv0tI0sjumnDO/eVlUBH+xTZtQWOORMD6lQJs1ccaKGdFkKxSYWnfZADhx
-         8Ywc+EbFrHQ0nPjCDpUbf9RKmTZGHtbzmugetfrBpGLJMBXaUS1v64M6ssu+AgP7SrWd
-         jUQj1M9iqHEtxzWxUvKgc92CiTb7anvkGQ7HteoYdZdnAYw2TzduxI2zLCtlws4NQT0k
-         gD2C5g5f0C0jTg+pEiFy5QJjoIS3FaMQ4IExZAUyR7JTqG4g3VQ9NMJg+Ika0aQkOxYB
-         lq+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792290836; x=1792895636;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HeSnSeSZP+b+6MzP6ewtTRyYSL3RxjlUFlHftt5R+jo=;
-        b=p23y8FbFQ2h2iJJ0xsCwMurmj+Ico0jdmUQtQCzfRhQbcacbTt3ieB/Tcm8YXZcy1C
-         G+l6Uy8p/+Xqn6+dLm2tQbD2xExxaDun5asVZmXZWLi/UfFkBXCuGyraaFOz6L429o6d
-         eGIYCaVWYkJUCQX29h023GiuRlC1cd+iSlbsgALTazmp37HutnpvxTXB31VO5r/x0I5M
-         TtfjcFk7gknQ1cH8JAj/t3TXkVBgp36w/tptKH+JukvcMLq8fTC/Imkm4e7u2oQwe8X8
-         Jov1wL9pGcb1drCPLwWJ5BZjzMPQBfcxgoZ1R/v01ltKd7krux1Xc5q0yZro46cuEuK1
-         S5Qg==
-X-Gm-Message-State: AFq9FYJcIKxts2ij5a5OefG+j+jUWEw3GGJ09UChKdfEWmd49nzgZbMb
-	K/TEGBBPEvMIsUlysiA3fIUVp2q+ghXlfkZRCW4PkcY7LlTSI6zJdRgYuovVb0q0gpFyI2GF6vL
-	Cw0Rnv94=
-X-Gm-Gg: AYBFou1GgfkndjQhmRKkeW2I29rCZMpIrTlj7+D3S7vVxiRL6W8u/wCW9ooNLn4vDSb
-	Nk2VwF/x+8OZwYWXFXzxI0bgo1euzwAhmNgFNuZ5DFthPb3UNi6POjTuNI0BazGtuYl1Cw8Lx4g
-	gdIAWEaVo5h7nr79DSnf5H0lA5Yk5F+sWe8vI5JWj+WcGZvW3LaJihVhpJE73NCtLvISoCetSLq
-	AZ5o7lVABNykS4lS5dmQ5OvJqquA+l6lbRAP1n6bu+0nJAgAJTSX3CAE66MHbaK/hDi0pAxz+le
-	y6nCdVcBFLdtp2mXPZpD/fn0iA+4iJzk4ajGTwbXn9JGeP9O0A1IUYe46247Ch5VD89Bpn65bE3
-	GAoK9+K6QwxokUhJ8HYBSwGKJFn4jo0NxFMbiHT0p0uQgOvtTCfeF7DcoW1dglq5iKa8FiLeT9m
-	UF0GzbGZpu7Wu9/7rtY7V2CKPujsL2tMLrRsGy/kNm8UdiZ9dtP+aRlxElgTJr0IELZU7O4GKAS
-	Sg0+0aphEowLjcICMOdqi5sgRjaqEhU11tQ8uFDu0Bql4XQVeEua1CLDcsi
-X-Received: by 2002:a05:6214:2a4d:b0:91b:5d39:e13f with SMTP id 6a1803df08f44-91bdf517971mr74943116d6.52.1792290835889;
-        Sat, 17 Oct 2026 19:33:55 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcba473easm61705926d6.17.2026.10.17.19.33.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 19:33:55 -0700 (PDT)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	gourry@gourry.net,
-	ziy@nvidia.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	pasha.tatashin@soleen.com,
-	mhocko@suse.com,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/mempolicy: apply bind policies against the scoped allocation zone
-Date: Sat, 17 Oct 2026 22:33:49 -0400
-Message-ID: <20261018023349.1697434-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.0
+	 in-reply-to:references; bh=Q85bPn8ynG+ajc+JvwspCPwJu454JKRtvF7HFrWNUHs=;
+	b=ra8+n24kHuU02LR9rFy3boORZSt95/oqf9fm7Spy16cJkEs/RumTNdPbsZCPpy8yanWQjL
+	jg3oYWeUdu0JAEsyOeQ97J/B+FxM/MHHqsEyImB0o9CqHcD1hWdSDBhmo20CMRndrPin9r
+	gDt124+bW7ZD/hvrYcWbivocGrUq7zc=
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xIGuD-004PQI-7m;
+	Sat, 17 Oct 2026 22:45:49 -0400
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Jan Kara <jack@suse.cz>,
+	Chuck Lever <cel@kernel.org>,
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Hugh Dickins <hughd@google.com>,
+	NeilBrown <neil@brown.name>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v1] libfs: end the readdir walk when no entry is left at or below ctx->pos
+Date: Sat, 17 Oct 2026 22:45:48 -0400
+Message-ID: <20261018024549.798968-1-nickolai@csail.mit.edu>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BDFFD180004
-X-Stat-Signature: bm88hmjpqu3b4s7n8ztjitred5awyfus
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792290836-791673
-X-HE-Meta: U2FsdGVkX18vg1dDhFEUcZTLAS68hWUvM930F8ZQ+O/Atqvd1lO9dKcOT1qbIn8A2+EyafLxqtXqshzR98Ky/gYY3razzow8+xUbEqpzz6CQH5ZH2IMzjg3uxCbhH+SCAs+kgO4wAzVFC7MSHdDcq+kX2U5cFJA8QKhPxO5fGaaTg7lYIz2ftsykDdz2YiXDx+w/ndnAW8quPHVojiVfU2mE6l9QIn54FzMAC3J9pkzop1Mtvfaz7ATlZTkiKGXu8LGe/xE4yECYREND4Id8SJq2OLB+pXPm+vcYtsADsPlH8yknTlfPDHHorDdSOOa2AIXYUMR8blUdzICfp2ktFxde62TmMp4+9RxiZZAoR9Y6nD9sEhVv85qWfkTzXgmfKs2FSzVcykTp+5rPFNMYKUNp61IRD9kwzS07cpAHyieaDLc6odty50xio/qwTPg8IgwiYq8U+R7i9SLi4I7Q/+tzXcxbs0q5WWU4z+v4IC1P1csPP/LnKTlZVLpGRYIjcYLpgnrw7YCcOxGEo9wJ5JSQDcPdrqzYCwsGCNHFvnlhyN29xAANwdHHT6AhLZtGmg5ZEPh8R69togoLRAX2Jlq0XaTEssz98J3tnDZLbjWjIAOd6R5AdT98uoEI23GWk7GIdCroAtHlC7S4WtqKd1RgryfOi1iY8EjTBcVR7qTJ9q+xheROgzWzR530uwVsvcNZ1fT87t5ihO2wwkkfg1o7wEVZ6ZgrGYip9z142djxFkYsOFyJExr9rgg58zjhoBF5o9BcU7WyisFLWzF8EZKPOykKWSKegpWyeUdeODxnXh14YEFsX+m19F1QDqJoRPhslEjtfxjoARVasgVEzNfM40GBrbdqMZ+KPDJSCpiXbCXqoF/Car+zYWSB/L25SpjUfxah5jPc0VDla3VXvSAysw/4FFcJQqfWjrnCP0sYAhZKTvAw1KhcUZWVDZ2cmOV44o+iEPZlSdcQvBw
- lj/ErIwP
- MeTU45JbWuXGJAhWTrmgTij9yz4lrKdTjzMn3Av2rTDzh7NuIch6+/L5JSopudBnTFPDF51YGfr9v8R+J+6k6ptk9z25uT3lOkXHQP0roDYEXpxtasLuFo6Ywk+JpyeoKfKhm8kLuMNdsi7EVASbe60KisoXWp89mOoH0s18EJjdC12yUdfHmaVs1XtXlkn4Aceptw+k828FKZ8bF+IHpD7il4z9Ykr+6TBsE+WBTZWpz7kK0QoqmZLaIKRAwt6dZ9BLUmcAUgX4bP2gLbSjMjbhBcUnjGRiCGed33uZp5waZCMRngq3ylNhbJwXhE2ELe7aM+H0Tq8IZMY6Cb2b6UyEaRb+X+4EzHFFzLVM++pFX78MKcrl8MtvqGSDdky2CTNbJd0cdbbcVMjlGP77heCLK0Q==
+X-Rspamd-Queue-Id: 91839A0008
+X-Stat-Signature: 8b8d67br3gidb6taig4gpd1kie363hje
+X-HE-Tag: 1792291569-140508
+X-HE-Meta: U2FsdGVkX181xwnKXL4RcH+aRgHg/Wt7S2KPNGiZGqafBfZe/N+P2zZx8UQQKOZPv+ririjoyfFwZ7BSlXp2ikLmXyyXsmQoZ1Z0W7gaz1+jEq6JNNbHyn3QnpxodWj+Z9QAB/3B9EaCEZGfZ0GXwdm1lC5EtQJsq+g1TNfJD2NmO6/Oext8P9r+9MXhdA4sqfOdd7o0j8DcA9v4YNa+v2raJwENKiaBh7nh7tKuf6J7nSxANnNK/0ZMhmrmhNxkpHqwwwN+zDje7UA46711Ii7WzhV3QxHcfN+8J9rq+alAoy7p1qYf5ZA3mCzFF6FJUh15+n8RertBVfvReZe/ITC0iKLb+UIJExMIjQSXjeV2CYgvkqr2X5VO2k+SSx6nz7sQnFUw3u1glTFa+iV5mammF2cpTCKJI9XB2riEUqTum0i29bMaf5elFQKgO1B2XckzYersR9AXmUAby1ldRLDhPn5/Vaaje69ZPj6hh7KpvYjkvzMPWNea4GuEiaB1JiwjX/LNrwf5FdSRkzGCTRDc1qrVfgJkqpf79CCajO12n7E8T+jNqddiaZ2wCnPpGlVQVP7O1bcZNhhCGeU0j2KVn0hdHH/mv62eWnDegWULw3YRV+l+ZCzsDtsi+kbjJSOJQKuqwDjLsHolKNpTbktaJwjh3ZAbiaNxzMR5m/Cf9NZGKOtXgIrmug3MP+gclUObIkSafIzsm6tAe/K7nlskk1PhUK4oET+j8QKCuvmWadKvFuB6hDwHkSMLMcLV14QAaN89PfOdAPYFIPjPPQ+41vyCVZaLN0dq+hTZlw9YszQF8QHv8pl4s5G5q6WnoaD5bPFC3pWNN0of6y9Zcz2h7JcGquGMtndEL33PoFD3w1weocTXaL7aj0WH7F7lKKe/4/CLB1T4yA5uAd8SXz0Z+1iBO2uqUmfUkF4VagmxsnmLYyw3zHp1Xf0y02LYTo5VaQfRWDNMRoabfYN
+ U9PjSCy4
+ Em5saG+OjspFobENdF8aQzU+X3ndtH8hT7HObXXOjEFyogXJnIdZj2EWh6mreAbbpG4k1A+jabV7iDiZg183/V0V/ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,75 +85,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-QEMU fails to start a guest with a VFIO device when guest RAM comes
-from a memory backend bound to a movable-only node:
+On tmpfs, a getdents64() call that continues a directory listing
+returns the whole directory again if the entry it was due to resume at
+has been unlinked and no entry with a lower offset is left.  "ls" or any
+other readdir loop then reports every name twice.  It is enough that the
+oldest entry in the directory is removed while a listing that has
+returned all the other entries has not yet reached the end: create five
+files, read them one getdents64() call at a time until only the oldest
+is left, unlink it, and the next call returns the four newer names
+again instead of 0.  No privilege is needed beyond write access to the
+directory.
 
-  vfio_container_dma_map(0x55b1b1317800, 0x0, 0x10000000,
-                         0x7f39a2200000)
-    = -12 (Cannot allocate memory)
+offset_iterate_dir() walks d_children from the newest entry towards
+the oldest and leaves ctx->pos at the offset of the next entry to emit.
+On the next call offset_dir_lookup() maps ctx->pos back to an entry
+with mas_find_rev(), which returns the entry at ctx->pos or, if that
+one is gone, the next older one.  When nothing is left at or below
+ctx->pos it returns NULL, and find_positive_dentry(parent, NULL, false)
+treats NULL as "start at the first child", so the walk restarts at the
+head of the list.
 
-VFIO pins guest RAM when the device is realized, and the pin faults
-the pages in. io_uring fixed buffers fail the same way. Faulting the
-range in before pinning lets the same pin succeed, since resident
-pages are migrated off the node instead.
+mas_find_rev() came in with commit f70681e9e606 ("libfs: Fix
+duplicate directory entry in offset_dir_lookup"); with the forward
+mas_find() it replaced, NULL meant that nothing had been emitted yet and
+restarting at the head was right.  With the reverse search NULL means
+that every remaining entry has already been emitted, so return NULL and
+let offset_iterate_dir() report the end of the directory.
 
-A long-term pin faults under memalloc_pin_save(). PF_MEMALLOC_PIN makes
-current_gfp_context() clear __GFP_MOVABLE, but policy_nodemask() tests
-apply_policy_zone() against the caller's gfp.
+Reproduced on x86_64 under QEMU with the program in the notes: before
+the change the call after the unlink returns file4..file1 again, after
+it returns 0.
 
-The bind keeps its movable-only nodemask, and the allocation finds no
-usable zone:
-
-  page allocation failure:
-      order:0,
-      mode:0x140dc2(GFP_HIGHUSER|__GFP_ZERO|__GFP_COMP),
-      nodemask=1,cpuset=/,mems_allowed=0-1
-
-  Call Trace:
-   warn_alloc+0x136/0x150
-   __alloc_frozen_pages_noprof+0xed8/0x1720
-   alloc_pages_mpol+0xaa/0x170
-   vma_alloc_folio_noprof+0x65/0xd0
-   __handle_mm_fault+0x137b/0x1ac0
-   handle_mm_fault+0xa0/0x270
-   __get_user_pages+0x250/0xfd0
-   __gup_longterm_locked+0x116/0x870
-   gup_fast_fallback+0xcfc/0xdf0
-   pin_user_pages_fast+0x47/0x60
-   io_pin_pages+0x9a/0x110
-
-Base page faults fail with -ENOMEM.
-hugetlb faults fail with -EFAULT.
-
-Check the policy zone against current_gfp_context(gfp), so a pin-scoped
-fault falls back off the movable-only nodemask, like any other
-non-movable allocation under the same bind.
-
-Tested in qemu with a dax/kmem movable-only node 1. io_uring and VFIO
-pins of unfaulted base pages and 2MB hugetlb pages now succeed and land
-on node 0 (correct). QEMU now starts with the same backend binding.
-
-Fixes: 8e3560d963d2 ("mm: honor PF_MEMALLOC_PIN for all movable pages")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+Fixes: f70681e9e606 ("libfs: Fix duplicate directory entry in offset_dir_lookup")
+Assisted-by: LLM
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
 ---
- mm/mempolicy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 70298fded1b4a..0884c629670dd 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2302,7 +2302,7 @@ static nodemask_t *policy_nodemask(gfp_t gfp, struct mempolicy *pol,
- 		break;
- 	case MPOL_BIND:
- 		/* Restrict to nodemask (but not on lower zones) */
--		if (apply_policy_zone(pol, gfp_zone(gfp)) &&
-+		if (apply_policy_zone(pol, gfp_zone(current_gfp_context(gfp))) &&
- 		    cpuset_nodemask_valid_mems_allowed(&pol->nodes))
- 			nodemask = &pol->nodes;
- 		if (pol->home_node != NUMA_NO_NODE)
+Notes:
+    Reproducer (root, mounts a tmpfs on /t; any kernel since v6.14):
+    
+      gcc -O2 -static -o offset_eod offset_eod.c && ./offset_eod
+    
+      /*
+       * List a tmpfs directory one entry per getdents64() call until only the
+       * oldest file is left, unlink that file, then call getdents64() again:
+       * the directory must be at its end.
+       */
+      #define _GNU_SOURCE
+      #include <fcntl.h>
+      #include <stdio.h>
+      #include <string.h>
+      #include <sys/mount.h>
+      #include <sys/stat.h>
+      #include <sys/syscall.h>
+      #include <unistd.h>
+    
+      struct d64 {
+      	unsigned long long ino;
+      	long long off;
+      	unsigned short reclen;
+      	unsigned char type;
+      	char name[];
+      };
+    
+      #define NFILES 5
+    
+      int main(void)
+      {
+      	char buf[40], path[64];
+      	int fd, i, n, seen = 0, dups = 0;
+      	long r;
+    
+      	mkdir("/t", 0755);
+      	if (mount("tmpfs", "/t", "tmpfs", 0, NULL))
+      		perror("mount tmpfs");
+      	mkdir("/t/d", 0755);
+      	for (i = 0; i < NFILES; i++) {
+      		snprintf(path, sizeof(path), "/t/d/file%d", i);
+      		close(open(path, O_CREAT | O_WRONLY, 0644));
+      	}
+      	fd = open("/t/d", O_RDONLY | O_DIRECTORY);
+      	/* newest first: file4 .. file1, file0 still to come */
+      	while (seen < NFILES - 1) {
+      		r = syscall(SYS_getdents64, fd, buf, sizeof(buf));
+      		if (r <= 0)
+      			return 1;
+      		for (n = 0; n < r; n += ((struct d64 *)(buf + n))->reclen) {
+      			struct d64 *d = (struct d64 *)(buf + n);
+    
+      			if (d->name[0] != '.')
+      				seen++;
+      			printf("listed %s\n", d->name);
+      		}
+      	}
+      	unlink("/t/d/file0");
+      	printf("unlinked file0\n");
+      	while ((r = syscall(SYS_getdents64, fd, buf, sizeof(buf))) > 0) {
+      		for (n = 0; n < r; n += ((struct d64 *)(buf + n))->reclen) {
+      			printf("listed again %s\n", ((struct d64 *)(buf + n))->name);
+      			dups++;
+      		}
+      	}
+      	printf("%s: %d entries after the unlink\n", dups ? "FAIL" : "PASS", dups);
+      	return dups != 0;
+      }
+    
+    Before (master 70dd4ee72eb2, x86_64 defconfig, QEMU):
+    
+      listed .
+      listed ..
+      listed file4
+      listed file3
+      listed file2
+      listed file1
+      unlinked file0
+      listed again file4
+      listed again file3
+      listed again file2
+      listed again file1
+      FAIL: 4 entries after the unlink
+    
+    After:
+    
+      listed .
+      listed ..
+      listed file4
+      listed file3
+      listed file2
+      listed file1
+      unlinked file0
+      PASS: 0 entries after the unlink
+
+ fs/libfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 27d7dc16fcb0..6ebffad7c028 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -485,7 +485,9 @@ offset_dir_lookup(struct dentry *parent, loff_t offset)
+ 	else {
+ 		rcu_read_lock();
+ 		child = mas_find_rev(&mas, DIR_OFFSET_MIN);
+-		found = find_positive_dentry(parent, child, false);
++		/* nothing at or below @offset: no entry is left to emit */
++		if (child)
++			found = find_positive_dentry(parent, child, false);
+ 		rcu_read_unlock();
+ 	}
+ 	return found;
+
+base-commit: 58161ead29e50d70a317ea26b472e0c7508e69da
 -- 
-2.53.0-Meta
+2.53.0
 
 
