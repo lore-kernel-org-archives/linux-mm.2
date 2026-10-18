@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D851ACCF2C9
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 13:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73301CCF2C9
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 13:38:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5282D6B0088; Sun, 18 Oct 2026 09:33:40 -0400 (EDT)
+	id 0EC396B0092; Sun, 18 Oct 2026 09:38:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D8D26B008C; Sun, 18 Oct 2026 09:33:40 -0400 (EDT)
+	id 09BCD6B0093; Sun, 18 Oct 2026 09:38:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EEDB6B0092; Sun, 18 Oct 2026 09:33:40 -0400 (EDT)
+	id EF2D06B0095; Sun, 18 Oct 2026 09:38:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FA3E6B0088
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 09:33:40 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9EF99A0546
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:33:39 +0000 (UTC)
-X-FDA: 85335839358.07.C993B85
+	by kanga.kvack.org (Postfix) with ESMTP id D33516B0092
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 09:38:15 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C62B4A054A
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:38:14 +0000 (UTC)
+X-FDA: 85335850908.29.BB926F8
 Received: from mx.itxnorge.no (itx-kvm-14.itxnorge.no [91.189.121.228])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0C730140003
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:33:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=BiS4kDin;
-	spf=pass (imf26.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4939BC0003
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:38:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=QQaIQZeZ;
+	spf=pass (imf22.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
 	dmarc=pass (policy=reject) header.from=itx.no
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792330418;
+	s=arc-20220608; t=1792330693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AQQHc8mqQwzEWaZJKjdUsWnAkv2Pj7ElJzu+1c/Y+0s=;
-	b=cFQhvySvmSGZRbbQzu3FDGeWggtfmVoJGzMwmuSj/uZ6Wer7eB/TqdPXX5NEb9erJjkTW/
-	OGaPAi/GhT4AwxXmXbPY7xH3zS3zd4ICK/HNWth4MemnwUULhoyg7hW/1Veb1Ez+kQfPuk
-	aMIg+9ehnPNOYx/zFaAwv4tlbmEb4HI=
+	bh=O3PNJs4NiGtilEQpWdRqiG+quBu7ASA7JyGTHSsV4qc=;
+	b=c6ccuw/1gqRsPLXqy+bK2nTqSSHxeleWr9IuC2fAgVFg9CUhXFC8YY5aPjqMm6Vb+3YCnV
+	xFFg0lS9G/H2WREY1KCRZK0moPXugcU8untfrO5xZSBAdAtUW9rwj4Bvu42WO0qU2R3tLf
+	7C5AUU734cfYgRTCF67JucSDbXsQUic=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792330418;
-	b=ims6+vrPgj5+z/VuktDU+MhSTs7NZPf4w3Nnqmr8+LX430g4ZGlaI4dG60ZyZQ9eiezP9v
-	TqFS+drqPNQjxpKR9yhf6PLRUjn3SK74eIOfxLmqYuRark0/5snQslrhZKF9r7fEyAFpQm
-	Mce0VlLIcTH4Xh0n4i2jPWN0/31ba6A=
+	t=1792330693;
+	b=DVVnsbWQvzfmU+EmWKhswmrZU/H2z8nZ7UTgqrPzm8IFfUyVjqqz9oS3Iw39mSUrBF2oCy
+	Zpv7UppCcddDCyYY7tYZTF/ahhMyzKxXZjBW2hFVctgFhsL5qMLTBob64MS3Ym0+dhfDU2
+	qh7DPLpVuzBxG2YM9y6nRRRGfkBnny4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=BiS4kDin;
-	spf=pass (imf26.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
+	imf22.hostedemail.com;
+	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=QQaIQZeZ;
+	spf=pass (imf22.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
 	dmarc=pass (policy=reject) header.from=itx.no
-Message-ID: <6e2d2b2b7aa4029c261831016d8b6c40bc335341.camel@itx.no>
+Message-ID: <4f7dacd9b4cf0a43209be84f2408e6f7e033fd3d.camel@itx.no>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
-	t=1792330416;
+	t=1792330692;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AQQHc8mqQwzEWaZJKjdUsWnAkv2Pj7ElJzu+1c/Y+0s=;
-	b=BiS4kDin0j8DjT8+hG7vAf4x5wPII63Po2he4KcBSryhUiXa5G20MxsgjOMRqulB3rq9yW
-	vcx3yVrlzrFOkx2P5nqG+ihL/r30eWeGeZ9TV0ajYl6ANaQcheFjI/8ImujmrA1EoRbK1K
-	aHDUXh2nSuCmdFKIcyhkDiMquf4tQgw=
+	bh=O3PNJs4NiGtilEQpWdRqiG+quBu7ASA7JyGTHSsV4qc=;
+	b=QQaIQZeZxo16u7UdAOq4kPy1bHh5wCdCBH3QZYCg5PimPB58GI9wTdfFUotn+h0Z6v2BVp
+	u1poagQVYS3BGkVyq/Md3JtwjPxUGO4tWjKXdDBlmhiq53uFEsv4XbrV1lGHtHYHOXUfLl
+	cIxyUDqNWLy862uBUKeV5H2v+UifeUU=
 Subject: Re: [PATCH v2 0/3] sparc64: Randomize mmap base and PIE executables
 From: Stian Halseth <stian@itx.no>
 To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Andreas
@@ -66,21 +66,22 @@ Cc: Kees Cook <kees@kernel.org>, Michel Lespinasse <michel@lespinasse.org>,
  Jan Engelhardt
 	 <jengelh@inai.de>, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 15:33:34 +0200
-In-Reply-To: <e3068b5c97884032e7cbd12c78f6b5534d75e30c.camel@physik.fu-berlin.de>
+Date: Sun, 18 Oct 2026 15:38:11 +0200
+In-Reply-To: <6e2d2b2b7aa4029c261831016d8b6c40bc335341.camel@itx.no>
 References: <20261018122734.2594904-1-stian@itx.no>
 	 <e3068b5c97884032e7cbd12c78f6b5534d75e30c.camel@physik.fu-berlin.de>
+	 <6e2d2b2b7aa4029c261831016d8b6c40bc335341.camel@itx.no>
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-bIu7sUj6+qWNPVLdLyj3"
+	protocol="application/pgp-signature"; boundary="=-PHAaQr8Laoy3OBzen5hN"
 MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0C730140003
-X-Stat-Signature: 4dhcc5ic1o51nf59idz5by4ki6zfx4wt
+X-Rspamd-Queue-Id: 4939BC0003
+X-Stat-Signature: 58bjb7hxw93xy3xem7ni1oxxoauz79iq
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1792330417-432732
-X-HE-Meta: U2FsdGVkX182xFYaUv3JuZp0fY4+OgwIf50M+YKoFzsVfUaNg68y/txbZi3I1VfRTBS0Bk0j5lKB8Fo/+kg/uliCwaY5IliaeOMghYFw9WyzIHD1zm3/C/0e5p6GWMQcJ4cse3ztP3Izw3CvsmgKQoI7ZB1AkAhPiVEQtDqVcvvxGteTqvQcO7bwDxFglpRv3e8SfpTpp95Gm4P8UH2G/RU4tuJM8PmnMdVg4iWqGYLuejCSk1QOn9XZpIJQ8I/cuxtZAGpxiwObehvzeT54ClNMg2Wpx/NwOu/j8Y2CsGlj1cEM6L+eC5KsQ4rwxAQPiBzKgYvsWFdRb10l894apeP7fAj2BTF8Fe+l0WA8jTRDdoiYHmemXkgqxrod7XEQ5255hJ08drzvs8ayh4187FkUQk/V050v78W5seeMd492Uk0nIIRR4x2LUZLgkSSZLC9kSqwITIoRIUtctzErRWX7L2AfYzafx3BbfieibJljeHMHvR8cBXaYKCuDIj1lAOofLhUjE9MOJOH6W9PDz8UFyQYDMaA70F16CHg75B3xmtsa4sAFW4yY6NNLe2Ku+IcaSC+JLH9AFpgHBWW3Xx/RCM/k+PQZ+sRnIybIpmY2azJbjUJCQ3kn2iLO+eCs/GYnIQX8x6azDn5HhlYpmTsB7g7T5d9LxCMrmQzYCfSABHgU4Tp2scpMqf3Eg8OXwVMeIp6oU/dpAjP3YtsC0wJvDHNxxoiBXiyH0wzIl/CND0Bm81yiwBB6ocFxOLeb3g+iZmBwnwa22MO18lEqGTEXcBHM1et8awyJz/40JFcpIIR+f5uAw6uE25dcrGiOEetzVeQQNnsqzNWNeOeuq2PK3jDtbPpeJAoJciUeAtCL+KVrqugI8wTmpCPIa2K9QIQ6EXulAslkgIjjA2TFAsSQeALPyowO5NsZurzW5WlAhXaB+bnpc79PzTfxykogxIxgbFKefzGz86YbCOn
- 4VA066XO
- yHN6eRS4gyrOL9gYU2XwltJH/zf4y4D1qYzZHRSdnx8Gk1Auu5Hf8yeYarKxvox9oshuN4lUREecCt8eIWiTmi5DQp+E0SPsJnKIJQJnqGD/z0NLoecvEx6te0QiyUOTFFybZZLw16UKIZMoD5m99uMpc7z3+JGsui2vKDn21iC0C6hh8JRuaUGwNhT76Iztf//GAsYx0pehjCdfoxwXSrFDs57PmzGL58aipjcyCqeRWINUiRrx1nL3JnA==
+X-HE-Tag: 1792330693-228575
+X-HE-Meta: U2FsdGVkX18CLHvZQckfzM66XRQpxHfF3l1KqDa1t2YgSk2iSZuwFNv2TLieEYE7rEVshF5hge/6lAMwQCgRtaPjajCat8Jr8ShWDSaZfS4sHcyuITQYVO70gaa/gZTbGsp9xBYr+OjYkoCDObf0wuETfRnlPXxnzEwZhoWRgcUlfloXkTh0i/B/qx+q3M/jXRginhg+KREZy1OMtC07qVLn4LDB519GvKeNKh+qoqSZvteRjyam8CD0ggXp4OfMQNkhQ4MA6buuS/0hnnCfqP8wJw7QZdKeZT1TUPavNwNnFLsF/y75NIO1joOJhflLjkoMKJOGkVqHEPTrsDJI+t6+L4QeMTZcrbo4ND6i4LxMTZQeieUuPf6RpH/woXhV/kmWIN+PckYKDW/uKMUHpbGtj3SH81MLXdjSe0jMEKIMq/B3CC4SUXXNebRQcZYYMurN/J4xQGSzfaokLZxNjV65iNxsozOhawA5n1xGTKrTFpwZs+ptQButbQuDx+Tk7QI9PjLcBpJ66pOU2Cg3fXFIm1vypn3KIy4VAk8Mp+K36wUix/m1xtJRngVKZugT0qa84L74GI3AAhE6MjqH+TXR7o8p2xOC4vOLnAPtW0InMfSS3UtOsRYYt7o2n/KvolBcQoaVgY3W3j/UdDBBj0bKQU/KnNBSpXC/qRBb+MaSBiU2cNyTVZ33k85bvhSWNPHTMmZdZzpb8PsWbRvBaRVXH99SZAGmjbVVDKS09BTzaLZrRM0dF+MILxsZ90g7zqpd1V/E7gaDS3RKSN5DmMITW1HabjTeh9xoUaSlkfuKC3+Ic/5xoZgMwHt5UyiegmkK1bwSDS7g3knOIXHuNFcGHVkgbIgKT5n01CDWX2qTGwRuFjUQgRZa5nNjt214514/wFt8zH+vUbevek+AhRdl8iQga/LZ0vngKIT2A7wLsQ4LfEtzJrzHZXEkqpmErVpH2tmSw+iuTj93exZ
+ +oeJ3Ts+
+ dcY5M6s0izgq7O0PHILXmZflRAUImNcC8kqih/1U/ep96GVJCzekgyghB0mWhW61Fcl9mcaWdvJgJFAT4MkNkhvSUQy3tAsVBo49beQbLbkct8K3b7yzc44JERBbV0W7vLOz24U8Ucl5GYWVbpTTi61J0bVr6+jLHDhrS6fl0UwJ7Z8rR5FFZwKEGC7t//2mW+ADPnwJJsV3F47xXy7uU5Evo9DC56M4hmNgEhOqT0F9X0BBFBtIaBO0iLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,38 +90,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---=-bIu7sUj6+qWNPVLdLyj3
+--=-PHAaQr8Laoy3OBzen5hN
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Adrian,
 
-On Sun, 2026-10-18 at 15:09 +0200, John Paul Adrian Glaubitz wrote:
+On Sun, 2026-10-18 at 15:33 +0200, Stian Halseth wrote:
+> Hi Adrian,
 >=20
-> What about sparc32? Does it use address base randomization at all?
+> On Sun, 2026-10-18 at 15:09 +0200, John Paul Adrian Glaubitz wrote:
+> >=20
+> > What about sparc32? Does it use address base randomization at all?
+> >=20
+>=20
+> sparc32 is at the same state as sparc64 was before this series. Only
+> the stack moves.
+>=20
+> I've only tested 32-bit programs on sparc64. The same approach will
+> probably work, but needs testing on real sparc32. Could be possibly
+> be
+> added as a follow up, if someone with sparc32 hardware can test it.
+>=20
+> /Stian
 >=20
 
-sparc32 is at the same state as sparc64 was before this series. Only
-the stack moves.
-
-I've only tested 32-bit programs on sparc64. The same approach will
-probably work, but needs testing on real sparc32. Could be possibly be
-added as a follow up, if someone with sparc32 hardware can test it.
+Additionally, outside of qemu testing, I'm a bit worried about sparc32
+machines with virtually indexed caches. I've heard those can be fun,
+and I wouldn't feel confident about implementing it without testing on
+the "real thing".
 
 /Stian
 
-
---=-bIu7sUj6+qWNPVLdLyj3
+--=-PHAaQr8Laoy3OBzen5hN
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTK1ph9OaYoND1R57zoeAEuJe36VgUCatTKrgAKCRDoeAEuJe36
-ViR/AP9tapuPdb5PXwlCO57ZKvq0FZAci5TKBLwYZdBFllCb5AEAj6ZOxLutAtOH
-qbE2uywIGrfhHh3lY+nx1C7LstUqPwI=
-=x5yr
+iHUEABYKAB0WIQTK1ph9OaYoND1R57zoeAEuJe36VgUCatTLwwAKCRDoeAEuJe36
+Vl7RAP48VGMJlbwWIQ7VHqi25QkjzG+Eh44RA0bTgOXyVfzwmgEA8nOr9l4i+AbW
+Ux5a921hTL1xjAjla4+mWeEC5nU7dwY=
+=2Xlx
 -----END PGP SIGNATURE-----
 
---=-bIu7sUj6+qWNPVLdLyj3--
+--=-PHAaQr8Laoy3OBzen5hN--
 
