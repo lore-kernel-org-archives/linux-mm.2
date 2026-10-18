@@ -4,124 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB6FCCF2C7
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 02:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A490CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 03:51:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 363C26B0088; Sat, 17 Oct 2026 22:59:15 -0400 (EDT)
+	id AA2466B0088; Sat, 17 Oct 2026 23:51:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33B4D6B008C; Sat, 17 Oct 2026 22:59:15 -0400 (EDT)
+	id A7AAE6B008C; Sat, 17 Oct 2026 23:51:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 250DC6B0092; Sat, 17 Oct 2026 22:59:15 -0400 (EDT)
+	id 9B6556B0092; Sat, 17 Oct 2026 23:51:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F296F6B0088
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 22:59:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E9AAEA7D24
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:59:12 +0000 (UTC)
-X-FDA: 85334240544.10.F56EB72
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 264B4C0003
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 02:59:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="W2deLgk/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=devnexen@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 63AA36B0088
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 23:51:37 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA29B120402
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 03:51:36 +0000 (UTC)
+X-FDA: 85334372592.07.49469CB
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 132DE160003
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 03:51:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Vyqrrhn0;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792295495;
+	b=ND1kbUxEw/RYV+DA9zmbGyKEEgnt/7j6FAbVM2QKKDa2Cw4H4rYlq5jpSduVGcpjmVXrNp
+	5sswGNFF6cmsT8wku5NkHx/8QizrS8o42ZeeG4XjVOJq3WvhnT1qpGh79b32hUxIr2WLwW
+	Bm8uUCswaULd5a6QR55GoXhyF5euun8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Vyqrrhn0;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792292351;
+	s=arc-20220608; t=1792295495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xOT2xhgG4HvHxboNomCCB8zMtEcw47CfY+5UMisvHbk=;
-	b=gCY8UM3jGbZCb7No/Tfn7TyJU315tuXbl85YwVgG5cjVTnvHXexf3cSpMVWT7aoNoyw3BU
-	s78NgwzkhaBSj4NSdQS6Km4GoZJOelOfnI0hesf3Ls/d8B6Ii0WcxlXWNZa/0eFcA4YMxa
-	8zY2MZtvX/srPcMKEIN164ZsCIrpro0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="W2deLgk/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=devnexen@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792292351;
-	b=YloaR7qviKG2w/3lSCvJoK+6+aNlHqPwcuOCUw5sbAHSHJYXpaeUnyjAMghijKuU4Dbn/g
-	pZncKWEXE8XGofuGR+lvpooexRvM9DkupUPZFhUiC5ebRRfzNRTB+6Nu/afPlOzG5ZpEE6
-	Th68E5mzyP9SkVMn28hqlJ5ikVX2gGc=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48c4d99c32bso839157f8f.1
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 19:59:10 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=0b/AV3Wg+kLtcKm2wiFJRuBM+/NR2XvgAzeP+zBe6ow=;
+	b=5M2ktwz2LAIW7xbRDX4aDUfF7CyEEy0Scz2Y66/PY30eHxV+KW5E967Y+FJElssgeDdD+H
+	UdDW69eA3Rm8ot3amtLF2V5wlFC8KFgbe1wRJQ6qlawAQCwaT3Jd2JQWD28g+c3JaDfLDO
+	FtvDp+60BSb8tLmrVQtMevxItzQ8jzI=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3ab2cb8d577so990051a91.1
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 20:51:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792292350; x=1792897150; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xOT2xhgG4HvHxboNomCCB8zMtEcw47CfY+5UMisvHbk=;
-        b=W2deLgk/ZQHZTX1NzwtvG666ZUVaBt0QzGO6W7Leu0qyUPO6+qdGzvgtgEdfePE6RN
-         69+orjLaVzr26qTnWP8uw0RmKbtXPSkQpezskqabDqYApLJZ8n9IX+854GaIBv/oxzGS
-         dbnA1oJXNNx5moduVeZwU+2yxD8oDXtYrJxhlNPyzo41V3D1Q+5YigfMwUtxk9WNrKMV
-         rpR4C04OPALkaNY57DagaKLHdQaPYNoShP+NoXXOnvOegF7LhEE3uKFgI0IhSZuVnRw5
-         HsQOv/O1LW42lGvnzMhFZhgKtinJ0bef1aN25/MJPKw2urD6Cpc0jy2BlCKAHIyA8DCl
-         N7dA==
+        d=chromium.org; s=google; t=1792295494; x=1792900294; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0b/AV3Wg+kLtcKm2wiFJRuBM+/NR2XvgAzeP+zBe6ow=;
+        b=Vyqrrhn0KFBtbTHRuITgVnHj0njZ23g0XTzDoSwSgb2xOw8EInJfHkalBFn/7wW9zz
+         tbobRXIY99MN/rV6Ac7HCcmbiUePwK3SrbRFYR4kMdK8pSArBJlyaWh0lLC3ERw94SI6
+         4GgleFwQo0ghij2gdRCvQI1NQmIQrNgkltro0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792292350; x=1792897150;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xOT2xhgG4HvHxboNomCCB8zMtEcw47CfY+5UMisvHbk=;
-        b=x3G+FuhoiOBfz1Y07iz2WHljnbyN/nu6IkSS0yf2LsoxUbzGgbfE7QmEfmMbLhesEq
-         eJZAPDFV7zwql+eOl0CcGJHmCbONKpUbcc6pNYJq+pyEAKQIOU1jZjFbLgD4sM4gW6dW
-         RUU1ujUHqPvztyA+njmekpAZLsA0XemtbJF8w8vsQm679wlFSYQ5TQ4iXzh7+NJMq35q
-         D7ZiWQhKaQLokaKxVPHTyf9TFHztLqhuHF/ogITx/CXJxRTLNX7tYUcrOyIsDyCJRfLf
-         fq7ILFGZ06pnGTyODqCjb3F/dzeEad2YPrcGPvsqYwEm2J14G2Ipi1vgvG6R+EzsWptl
-         kmmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx9grNlypGPHskQjn3U0ztlWSs6uGkccGExbmmK8yZgdnHrM0K0Hq9w7tNl6ToAdSAR986XxY+LSw==@kvack.org
-X-Gm-Message-State: AFq9FYIeL1qJrXsaduacGUuO4RA8OYoSjWVjPKmBnLetxqraT+U8d/SL
-	AKSsA7M/DnyShd4nxanBDTYTcvghakoWw9Ln01J8LKnhc+at6IBg7gxPOZO+eg==
-X-Gm-Gg: AYBFou3JbaGHcJC5/NFm1DqUJIwtoivWj9fyyfk0NaxSvagbqllRJS5Jy5NFRAFFxm7
-	Hh2ONllgN/AgaQxjzKj+q79xutdjyiF9jX+U4Qxdd3qqJ5RkIcy53W/fRKbq2HwlpHwo/8NjwP3
-	mxhfHxdqoPjO+jjQ3g+3MHwPPfrPfOnZrFjoAASpgq/lAMn7u3HO7w2SClxKxyGE3gvnFCbURQ+
-	Eu6FMW5/V5qNWvh0A9ZXq1qhmqGQIPwel4H+egXWxuxFTJPXOHbkECay6UFYv86dplwLcEZSjpv
-	HTeEDDdhsKX90D99Gox+DU8JbMlY3IPNO5Ma1lsU322UGysFbyMNpmX4U3zb3os+/xhZd55YCNl
-	BfOeXWe7mg0XpJ9hh6G0o1d1ZOicLfGT0kh1rc3c3c9tWfB7jzKLHZU0slOE6NiXWFAQ40G+Dxl
-	mDuGSszR+0SIFicS5wb7w8LSsD1HkhIeYyIqQU7XQNm3oNK0pEWJl959Yrf52yxTfGHqbtp4iln
-	VkwRdobe9+6TeDCp02E4ZGv1g36mkDdQVjbfD1hfGdlfxvPzfIUgwKRQlDo7lMzML6W5w==
-X-Received: by 2002:a05:6000:2c0b:b0:48a:f3c6:7bfa with SMTP id ffacd0b85a97d-48e07fbd825mr6459320f8f.52.1792292349489;
-        Sat, 17 Oct 2026 19:59:09 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4f8bd9sm14785161f8f.35.2026.10.17.19.59.07
+        d=1e100.net; s=20260707; t=1792295494; x=1792900294;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0b/AV3Wg+kLtcKm2wiFJRuBM+/NR2XvgAzeP+zBe6ow=;
+        b=otOiI7oqOKly6dLmAJOB4pwndFWsgCamjxKG7eJwZd2aQNGFYEstTBJ727xAyDZuO0
+         jhrcqlh2zQQJcwuHHEtRiptkgFjNXuFe1rmlAUwAyuZTvxe0NUFiD8FXS+w5GYqspxbE
+         0LVe7TmqpL7dscXKhKxkgNWdzUL6FWwCcsbxRI2UcxOV+QoNzNmjewUaf8nbK8bMPlj+
+         +MR29etFz2GLb36AJBr98DjHpfL8jBDg+9l23RcFd6G9yaB+1WTTDpBcjfXuTWITRLHo
+         dJySTXHEDi4nNw7opIjnGJt/OKWTBjtvGtUTxEgy2nT9jcivZLNyPKHC0JgTjDBBRQHv
+         yOlA==
+X-Forwarded-Encrypted: i=1; AKwUvByBm/Biq+W9BcGP4sDUxsT2M1LzQ0Nb81ANSV6z7EZtmMtO2rQQvZZwKNnADgEit9A4qXDx/fwUAQ==@kvack.org
+X-Gm-Message-State: AFq9FYJvy0CNuKFlI7eTpVafud/ww9iTyCRKR/xcTYEzIEVSra90VUcg
+	O8m6XgKGoS4sfPDcerLRzlQEn5vn9WMhL5eWWlPY34jWPxhxq6Rj0QRyUf+R3wmZ6g==
+X-Gm-Gg: AYBFou0alqiC1FgqfGfqSzEsBPaCyHtYoLoALkLDSaGyNVOo3YPLusCgb2cnbRYv/hO
+	nQkKAWMVv3mRGKncHFEh0PCXr5VwL3Cei+sYKuzcPA7Cw7dcCGeK6D3myLovS4udRGldbma27JI
+	fyTYiwfk7++YsmLHtqZiuU+RkyYJLU6hN2Y9jc84WDi3X31LOq5hQjNce00T+Y2Ra/Be5Pgf50/
+	EAPQIsauqeivlnu8UrUpQBrIjzjVwvzsOexqMBbyWT86XYKT2WFTrw4qzdXnZoQgWGB3m4StkJs
+	6Q51D/jtCPdGRvqYWotIw0yKU2XuKi4/hB+Xyz+e8JaDawby/cU0W5ucdDyz4RBsgBIGj9aUTLf
+	h95nxs5Fvl5lPcJv7DANlGfZZHsGmkUt+qCFCY7JviFvXc9hzLgwqP1HuqaSbyjTIs8GFwXePRn
+	hdRIi1mXaCC2VwaxJzf+SKMRBBobtI7DTbtrBpHi1nX2kfqLJ0qjyayPWqSDjdUf+tpWhhOXO13
+	y26bdK6feB5EI36uP5YEsOSF3WurGL11bAZiVegFsxeLhMUUfF25HEgsMHq2uwHCIjEQ/Q7tLpW
+	JU4yhfIh829LrxJI8CRG2JXFhXy0ks1O4HNKTO6X7QjM
+X-Received: by 2002:a17:90b:28c7:b0:3ab:27f0:c90b with SMTP id 98e67ed59e1d1-3acef3c3662mr3992376a91.53.1792295493775;
+        Sat, 17 Oct 2026 20:51:33 -0700 (PDT)
+Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:4569:b311:f3ea:5f8d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad25d5d1b4sm253024a91.16.2026.10.17.20.51.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 19:59:09 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Kazuki Hanai <hnkz.64@gmail.com>,
-	linux-mm@kvack.org,
-	linux-sound@vger.kernel.org,
+        Sat, 17 Oct 2026 20:51:32 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Brian Geffon <bgeffon@google.com>,
+	Barry Song <baohua@kernel.org>,
+	Bo Zhang <zhangbo0325@gmail.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Richard Chang <richardycc@google.com>,
 	linux-kernel@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>
-Subject: Re: [PATCH v6 16/39] mm/vma: only allow mmap to clear VMA_MAYWRITE_BIT if not mm-managed
-Date: Sun, 18 Oct 2026 03:59:05 +0100
-Message-ID: <20261018025905.201296-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-16-1aa3c9b139f9@kernel.org>
-References: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-16-1aa3c9b139f9@kernel.org>
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH v5 00/13] zram: redesign zcomp and rework backends
+Date: Sun, 18 Oct 2026 12:51:02 +0900
+Message-ID: <20261018035125.3120704-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 264B4C0003
-X-Stat-Signature: mbjwk5n1yis6dh3ggu1edpt6366nmo94
+X-Rspamd-Queue-Id: 132DE160003
+X-Stat-Signature: ao5qgmux8957eghcmqf1brxh18ag1njg
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792292351-340660
-X-HE-Meta: U2FsdGVkX18hZuuUz7pLDEQ0+Zk817pGowC/RLkKw5pCp6LVrdmSS/dimCQRa71hNeFlQGoBHgLFJqE4qnJiLgfFn/3s+Uwnc3ipsxnCWe4K+uMXXwKHUALxycIZ/olvWKM5+HbXxWlUFWNBKYha8umbu+KgIaoNq/UY0z8Nhvgh2vPC0cg75gJah1Ti85g2NSzpOM6wDkDRiDKcj+Y/mtzF15pQlUlXanjUbrZefPOyqcy0PkcMKp9IbxRp1haFY7B4g4JYVKN0zZeETU6oiwZxCPUMw/gzVuPzgV/RfQKVfUnzfYVVgMLvW7Wlg1VUXj/JeQ6E/pUio2BYQhwfKZ5G6S3uI2b6OtWYKn7HVqGIlaLJ7e0IB0mOlLehR6hw8j6n5BIGFecng0iNMOCttO7gQHyKDJli9D4MrlEy9ksZbaPGxg6O30lXzB0S7VkojQ3ztf6Qi2zgi43e3v24L6QF1u9pcUmawoWtq4m00CAeMAJ8miBwIUYuXgz4BiZODwJ+NBzadsJMVUmKQVr54EHbaZxp5zqPZKSfPtfTU8A0zRwmLkQdrIxozd+c0wBmlI/8M3Rc/2SDXzEpC6kcLr4DTsnEy15NjhQDQTohLC1sMa+5Ry2WQ0ophOgWmcLmMqmk1VZT1yHHas+phCBNfWvp82NJdBiNUqyjakhxLWFudz6sDwb+/6eLQGpsEZJNIGu1TUy6TEJO9WjdlL1zcbx/zbVPM8jedHijXfJr8GQX7akrkHzX1CVeMVPS0dozQ5fXR5sUJJBPcUhL+GaUglaWyFNF7HaU9wbUhlEvHVJ9jYKvIg7T6LKcKSif9MM16hu4w5Wf1Y4gaGA+XcVt+nuxDS1uZ5LqqWJcymkrQSAbCGv12sKVPsQWJ9HzDvVZsc9dTunNK4xuyU11ozVB97m5RUGz3ffhAcqVjZQKWZcQAiBr29Uas+8J2y2Nj3APCTVf52pxwOqfKiSq2E/
- 3k13MLML
- +oCKXW+8X12Uj8SWLFITf24r0HTJ68DFO/jvEj/Of2DAXbBbmY+zR8QM2seIrPOWlam3n+pQkaBTAQpZYDn3iwF6oJm2csio70EBMd4HYagh8ErIUk1CiUW7q4dqfkbap9vT4Kz54sG3OYfL6DT+MhV9wIOFxgBa3RSBvVe0QdND4oSMsgh3c+HN7RdFouA9T/nG+gwxLJ7Td0ZPlCDqi8iPL7ADtcAZaKFe5D8c2M855xkGB3rTi4NfjC4cQm1WXmpEuDCgDxZnbOE0tzsUQRzZxbiqmjcidweePMV8MMfHbeU5PjKA/09p2PoHToTMno4LWwkLW2CecM8n7WIIU5GcFeZuOrCRRi4i5BCxYwIkSHrCrrJC8WbpYwnvzACe9hXqRTYckXpTCk/eHNyzm2cmHYIMWWTBNC2ikfLt04cY14ktrX80kROK1+qBkwOCMp5fwhGhZTdTedQ83zK/57qzDRVmi/vnRLUwf83R8/7UuspiCiZMA1PTd56RBVxGjXEigswlJiKulnsawaSLXCmv+Ku129xl/A9cI
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1792295494-124937
+X-HE-Meta: U2FsdGVkX19/RxZjHK/PRgtiqXBYRet8RfIfDp0nU9IFrMhvrI9wrJNYHLKYZ9RlwP0dbbXNLp0v/3gA88uWcFme3NZf6EUUDf0c7UbENmME6PElxTZiHEitX4Nz9SWprejxZmgBCHFhhhEZMa2DeswORlSVXXJgQ16njaCMm5+OaTfGm4OICoI5z6tBHZAt1TmIIpPxZ+b00hoBVsgf6NfaO+D2lA2w7bJYbDflXTflaEJWYv8ufBCdR/XUzaiXseM3R2c0gSNSAkRXtq5O5ztlJgvhn2TjU1cnP8iCQvs4hH63CtYpwqDbJrnzNBksMFJVVtxL8gHwgzNRS/U6YWvhoNlsDcfYMbJBr2NFyMYJT9ukIusC5ofUNmvkzRQ21E+JFpj1Wg6ca5zsh24cHSH3z8/6la3gniW0rPfGjyoAqt8L0BnoWDJLkKJNGfW4QRK1ah16donWrsn11n+gYFZo1jLsq+w3OwzxnukgFQU48Sv405XEz6qiYVmDiiAiGmiW+Lq00G4hcPe8zdN6D3vkNsjl7Qt7yobWMXf8XbR8nyGAvov8gFFNydJiRywNNwVqxAHXHrjK6UFt7uL7jyc6Q0SfacKxM2b3I2hghXvkOzyN1shvqllzyWoLXRumSxczlgtmI3ciURjbSoZWI46r+OOEYochaGE1KZ1WC6UHul+HvRxs5xDeTR9SMhqH+4j3HRHgvsQxV2U3VouSCf/otZlMrQORQqrl3h7i60Gm1XVLyv2+8GHhdQwYuDCGWphN2aNqODkwHOqG1Oh0A5bcgLo7AnWX6eyDiz2WSkdxnnQMR1itSTQOCfaGGgTSw/ka0F1a15Li/BzQHmqQg5VNvt0wjALmJ6czUQXbW4qZEq60C1Z5TclQWV0ldG1EjBm/CmrbbqnvGVLGs8+KcnDNdexRMneGGhV6XNFCNuPyjlCwWJ6LBsMr2DE/vO/tPlLb3ZzwrwArM5tX8Gx
+ nizAe7g9
+ 6RLWm36v7tuKPO4MnUKxELVpmEy4moM/aUgsAt/CiVmqcDnJe4eci2A5ZAV1ogSQQHtBcJMWY8OaAfM/3ieugJCUa+2R+tQQhMB6wY61sR1w1CBQ4TwHXUjj8bgqU6RLmTvPU0x1O9ABAfkmr2ARTqqvU0BiPrJ12siXksUyBXYtSB801fHtDXHEAcoXOXJjiO383WLZ/66LQjCzVZmRgaHBWceTW5+svPPeoGzhs2Zn9CYprwKJl6fFq9DcFOd+ebUjMBjtl1kqLlkb+kIVZeyIvBAWYGN58RJV76Fw06FFqW/xhp2OM278Q0gQ9dB6Pv41W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,22 +120,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+The series has a number of memory usage optimisations and fixes
+that result in savings from double digits KB to triple digits
+KB per-context/per-CPU, depending on backend and its configuration.
+More details are in the corresponding commit messages.
 
-I think one site was missed: usb_stream_hwdep_mmap() in
-sound/usb/usx2y/us122l.c clears VM_MAYWRITE on the read buffer since
-71c610aeb177 ("ALSA: us122l: Prevent write upgrades for read mappings"),
-but sets neither VM_PFNMAP nor VM_MIXEDMAP (pages come from .fault via
-vmf->page, like the PCM status page in 13/39).
+The zcomp redesign and backend rework happen in the final three
+patches.  zcomp part, basically, attempts to address the priority
+inversion problem, that is seen on some setups.  In zcomp, we have
+always kept Read and Write contexts together in per-CPU streams.
+With preemptible zram this becomes a bit of a problem, as a higher
+priority Reader can preempt a Writer, which may hold a stream
+lock, but since the compression stream is locked by the preempted
+Writer, the Reader gets blocked on the very same stream lock.
+However, we don't have any reasons to have Read and Write contexts
+share and compete for the stream, because Read (decompression) and
+Write (compression) paths are completely independent, they never
+touch each other's buffers.  Thus, we can split compression streams
+into per-CPU Read streams and per-CPU Write streams (Barry Song),
+so that Readers and Writers don't block each other anymore.
+Decoupling Reads and Writes results in noticeable performance
+improvements on synthetic tests.  The Reader vs Reader priority
+inversion is still possible.  To attack this problem we introduce
+shared decompression stream (Brian Geffon) which can be used when
+decompression is stateless.  There, however, stateful backends (zstd,
+deflate) that cannot have shared decompression contexts.  For those
+backends, we introduce a remote CPU borrowing of idle exclusive
+decompression contexts, if an exclusive Reader get preempted on
+current CPU.  We also now allocate a per-request (Read) bounce
+buffer for linearisation of spanning zsmalloc objects, so stateless
+decompression contexts do not block each other.
 
-So a MAP_PRIVATE mapping of the read buffer, or MAP_SHARED on an O_RDWR
-fd, now hits the WARN_ON_ONCE in mmap_validate() and fails with -EINVAL.
+Reader vs Reader priority inversion tests:
 
-The VM_MAYWRITE clear is a security fix, and the VMA must stay
-expandable for mremap(), so converting it like 13/39 or setting
-VM_MIXEDMAP seems the way to go.
+  exclusive zstd (fg reader, average of 3 runs):
+  Metric           Base               Patched
+  ----------------------------------------------------------
+  Read IOPS        391k               1,064k        (+2.7x)
+  Read clat avg    49.07 us           9.68 us       (-5.1x)
+  Read clat stdev  7,179.16 us        30.64 us      (-234x)
+  Read clat max    3,208,867 us       5,880.87 us   (-546x)
 
-Found by code reading, not tested on hardware.
+  shared lz4 (fg reader, average of 3 runs):
+  Metric           Base               Patched
+  ----------------------------------------------------------
+  Read IOPS        972k               1,466k        (+50.9%)
+  Read clat avg    11.56 us           3.29 us       (-3.5x)
+  Read clat stdev  2,738.84 us        16.57 us      (-165x)
+  Read clat max    2,204,467 us       6,442.50 us   (-342x)
 
-Cheers
+Writer vs Reader priority inversion tests:
+
+  lz4 (fg reader, average of 3 runs):
+  Metric           Base               Patched
+  ----------------------------------------------------------
+  Read IOPS        642k               1,472k        (+2.3x)
+  Read clat avg    23.97 us           3.28 us       (-7.3x)
+  Read clat stdev  4,303.64 us        14.85 us      (-290x)
+  Read clat max    2,393,767 us       5,710.53 us   (-419x)
+
+The final patch builds atop of decoupled Read and Write streams and
+reworks the way secondary streams are handled.  Secondary compression
+streams are only used from recompression, which is serialized by
+device lock, IOW it's single-threaded.  However, we still allocated
+secondary streams per-CPU (we needed to permit concurrent Reads
+of recompressed objects).  Because we now have dedicated R/W
+streams, we can allocate a singleton compression context (for
+recompression) yet still have per-CPU decompression contexts.
+This saves a notable amount of memory with some backends and
+configurations (e.g. zstd, deflate, lz4hc).
+
+v4 - > v5:
+-- borrow idle decompression streams in exclusive mode from remote CPUs
+   when exclusive reader is preempted.
+
+Sergey Senozhatsky (13):
+  zram: prefix backends printk-s
+  zram: remove debugfs entry on init failure
+  zram: zstd: do not allocate empty C/D-dictionaries
+  zram: lz4hc: pre-initialize dictionary stream in setup_params
+  zram: lz4: use LZ4_decompress_safe_usingDict()
+  zram: lz4hc: use LZ4_decompress_safe_usingDict()
+  zram: zstd: do not use kvzalloc() for zstd allocations
+  zram: reset writeback state in zram_reset_device()
+  zram: split zcomp into separate R/W streams
+  zram: introduce shared decompression streams
+  zram: allocate bounce buffer for spanning objects
+  zram: borrow idle decompression streams in exclusive mode
+  zram: use a singleton compression context for recompression
+
+ drivers/block/zram/backend_842.c     |   6 +-
+ drivers/block/zram/backend_deflate.c |  98 +++++----
+ drivers/block/zram/backend_lz4.c     |  85 ++------
+ drivers/block/zram/backend_lz4hc.c   | 105 ++++------
+ drivers/block/zram/backend_lzo.c     |   6 +-
+ drivers/block/zram/backend_lzorle.c  |   6 +-
+ drivers/block/zram/backend_zstd.c    | 133 +++++++-----
+ drivers/block/zram/zcomp.c           | 298 +++++++++++++++++++++++----
+ drivers/block/zram/zcomp.h           |  53 ++++-
+ drivers/block/zram/zram_drv.c        |  55 +++--
+ 10 files changed, 542 insertions(+), 303 deletions(-)
+
+--
+2.56.0.176.g3575e65682-goog
+
 
