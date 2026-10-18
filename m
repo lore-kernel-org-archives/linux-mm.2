@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE40ECCA490
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 03:52:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E206CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 03:52:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C02546B0095; Sat, 17 Oct 2026 23:51:53 -0400 (EDT)
+	id DFF4D6B0099; Sat, 17 Oct 2026 23:52:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8C026B0096; Sat, 17 Oct 2026 23:51:53 -0400 (EDT)
+	id D88A66B009B; Sat, 17 Oct 2026 23:52:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC9386B0098; Sat, 17 Oct 2026 23:51:53 -0400 (EDT)
+	id C504A6B009D; Sat, 17 Oct 2026 23:52:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 133426B0095
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 23:51:52 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 420F9C037C
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 03:51:52 +0000 (UTC)
-X-FDA: 85334373264.08.8E4B8A7
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7E26F140003
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 03:51:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AKWx4WuC;
-	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.41 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EBC46B0099
+	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 23:52:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3451A0413
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 03:52:03 +0000 (UTC)
+X-FDA: 85334373726.26.08361D1
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1B3E820005
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 03:52:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=gmrCgQXa;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf03.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.50 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792295510;
+	s=arc-20220608; t=1792295522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XtS1/0M01UFrLXwpgPFi8UFASC0cpcznpCMgk29ij1I=;
-	b=8AJw1Pu3a8E7oTTaNnvE+xkm95wMziauDMlNs8ZbVZKfv8gAbuPSfnlA4JQEruErDT3Lbx
-	HXrJE4gP/CQg5H8eTNGAx5UvfA0XWZ/1msjefP3Owel2fk/iUohZFn/W7iVZiDeQUJckU4
-	cljCO9Z7MPnMZjmavSogwZqNIhsKRRw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792295510;
-	b=OSAgcyQJCK/8ZjwWsBmnEM6GXlAeZsmQ44lfmB54Y8RLGuRK6U/lfdzHvVzHwEGHWSZsLT
-	iEpjI8ke2y2b1o7f7E9u6G4/n8JfVik5+CRyXCJ4W9dmAtKDOo6K9ZJIoKSbNQvlIyBi5G
-	bzNUxB4UmDDnMIybtlhKjYE9FXS7A8s=
+	bh=GJFVSgny9QpsatjBhIUNhY0HvYxuqclO1o6tI9EiK6E=;
+	b=zI97cqPPSxLj0VCvkvw80Vg+fQZ9mnPIv1CU5FVJzj2olRKvhjaBGu87qPAHSMYVPGCwRf
+	OaLN+B2d4l3OGH+uUN8zAi5OXgNJqN0BRSLYBtCX5imKacTv/HuMnNCnz+6gWgCHbkA3vE
+	qFcJpFQdm01dn5rLGtlI8SIdUZFwl2E=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AKWx4WuC;
-	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.41 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ace9e6e1a5so763210a91.0
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 20:51:50 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=gmrCgQXa;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf03.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.50 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792295522;
+	b=7rkc7EG2QoPpZwzBnw8x8o6IlfmBPnlWpaLGH6KwPE3KWJypD/y7iGSaq/njNPjOF3/c7F
+	zXFP/SJPHQY0IzDuM22diQQLJbwZzVroGgdGkFNW+MKCRrSQbqKCgRHnHJ3dxxME5ZLtqt
+	JT6dhwNy+uHJSuibJ94nCMWY3PR+8eM=
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3ab98332238so855397a91.3
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 20:52:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792295509; x=1792900309; darn=kvack.org;
+        d=chromium.org; s=google; t=1792295521; x=1792900321; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XtS1/0M01UFrLXwpgPFi8UFASC0cpcznpCMgk29ij1I=;
-        b=AKWx4WuCiP2gigqFMSpJXWfbejqURSGEX21YpjyQjxq/jaePkp0JlVY/gemqaihpBA
-         Wy0JQGUaXl6B6Ai2B9BWMtA2T8gsgynxvj9v8gaQAdIJvrje/iY+ZOrXBqJG/smwcYA+
-         vtPDuw1oJ6pQ21O18tOCirvo/5pQNKvxJjzsY=
+        bh=GJFVSgny9QpsatjBhIUNhY0HvYxuqclO1o6tI9EiK6E=;
+        b=gmrCgQXaPSVQWMV42mk8+6KBQDMwANV63gYUh5r2WoSOkVvWcCaeBwr54zIfu2htzc
+         klkxHckDSMncFLgsQ3WluXdnd9Vuym8vySHeEQA3/U3nJfqrXoVQCp2vR4LTtSoBQDuy
+         IIPGbe1bgjGC0cQ1U5nKjBFcYNiLcTD1R+w/0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792295509; x=1792900309;
+        d=1e100.net; s=20260707; t=1792295521; x=1792900321;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XtS1/0M01UFrLXwpgPFi8UFASC0cpcznpCMgk29ij1I=;
-        b=Yp74j6cWsr1oOPijxBswvPjovWdsh8BuFKejwBVhrN9A/E2ZVGkKgc2n3D9ZT5nG68
-         L0VFZ/2fbGgrzIcp9gyHb7N611VrrpVAUASrgJtsrjRmlIfx8pAKmqUFQ5AvwxxlN4mj
-         ZgcUj2L98Suj8PQj3ufI957xp1Cay5D5B2v1E7wV5b6D3Uf1RTmmXWg0WC9+hfPdPHw7
-         dFH7PNg7yugM6VyVRgWryrXKCzkm+8SyMp4VcrXvIcvFTi5Myy0kN+kB3seDCQRLGfvB
-         7MuUA8lLlLol2R2lnGgYOJ+MYS3U9mrxanT2B+zJSSQjqa5G//iUDNtde3of86ORZ60P
-         PwwA==
-X-Forwarded-Encrypted: i=1; AKwUvBxWcJYZ+Mw8at0p5FoIn82NH85FJetzkNz+JNxiIuAauVby+rlyqgyFrya6TecYDWylCSX6/XcaZA==@kvack.org
-X-Gm-Message-State: AFq9FYLWT8rua59+1dkK3Q0A/vtoMVLySO/N7jPcgADBXL9CNxv+Tvoj
-	ZrMKmrsVv7G/HHYrOO1i1L8IniC2aXvRh8KvnJfARj+kksPaceb39nNjrJF4oN6oWA==
-X-Gm-Gg: AYBFou08moONQcMgkCrMQJ4K8B87/3U5wtOwF+eljDQnSg2ncjgTiOn0cSOy6io/Uya
-	Y1sTbI5Fi4vS9/aUkVbtNuetvtlTAqRiIl3kzrooIDp68QhdMjj43+wn0MBEY76zjocysPSPqDk
-	NmIZDYuO5yPjOgSdd+EjXzgBYmzG980PV7iuk0LXntm8/NjSRzS58CFqJv7Oue4X9ThtaxkqC24
-	w/8Q8KRRiIvQp2ap3W5pKqTgqk2kMKm04XCIIvtkif6zD3VtWOMJf9qpd4pyG+U3+3weRdjqmGx
-	2tNtD/bJf9JM/qzntSHxzoZPH1LQ5ufe1r+oHrwoVSBkIQFCOfAws0bxhTcTJ5Y4VuvENQjING0
-	DaD7vnRcgUhjxEhSyM8ixCYwcGTIfaqmP3FAl+YncpVL0itntJeaqRp2O3YvFK3ujCvoqQcKbxC
-	gHYDoafaHWWMPDbuhv4698fE50Cst21odVeClW/LdcopC2giF30ulms0F+QX7OQMa6TnZhikH13
-	NJLdjFj2x36u7E5dbSTu7P8u9/8c+UEGY8yYQ4GV98yUgORatDpMz9SprIvmcw=
-X-Received: by 2002:a17:90b:4406:b0:3a0:295e:6e61 with SMTP id 98e67ed59e1d1-3aceefbf3c8mr2482928a91.12.1792295509334;
-        Sat, 17 Oct 2026 20:51:49 -0700 (PDT)
+        bh=GJFVSgny9QpsatjBhIUNhY0HvYxuqclO1o6tI9EiK6E=;
+        b=HZQ2ST81DW5sXzAs1dcCnRHF6b55wSsZiHhSTi4rhTlvL5QtptR8rEPfLMDSte4MgK
+         yb2s7q25NwHkSiu/66aVs7uegLdHOxUqy+PW7aK4Uk0HIWC7p/B4IzgVj5iQ8gReWmVW
+         5moF/KXNziYrfxsGqZ53rTZm7VAVTR+B1zKsp7Zh2hztLXxBp6adCZZP/9Yf3t1ofVs0
+         WFbPTULn0ctOIloEJa0ZDOAP/TRZ4SQn1J7HQUfyMhYb2li1rdS6h6ZuneQzW6lREUPr
+         rUKv1fMlzwskbLKtjg5mxUUIE1j7BjWdQ5emVdRLyZ9PUnleLmo1fMJ2ohLj/R0PI+UL
+         JDaA==
+X-Forwarded-Encrypted: i=1; AKwUvBwmiuZqjv6YYz9ftxdlzG0B38GDdRb6LVB6ZQ6xaUlXq582at9LUUjQOr9Jdv3W3cGMnwPyTv6Nlg==@kvack.org
+X-Gm-Message-State: AFq9FYIB1tsL1eogVJvo9tRhosy6yot6PqVUWh5e/mtFf/1HMapdMVyz
+	dRLgLtRwTgFZbzOCNIl1H1BJ7yld4M3HMk6unRIjFFutmWWTlqFjHZm//ATHaSnG/Q==
+X-Gm-Gg: AYBFou33+uG89WH2pIrY6+7p548jjEBbkzyYETNwVPsx52oyizvenfTLk+FRsCV1gjG
+	Lo+SywccrskuMT1gre0qaImlzvFi0DxnKHhlb2yB6Tr4AGFGY38V6ffSfQst0BSDyqoBMnlyF22
+	IgM7Nx9bNWjR3aztKy6Zn4TFuCuU1xtd4UbdcdlxlXV+TdwaOB2pqXFJB0rmxk6LeJNB8WA+qIY
+	7uFRAis7RIUhSP0pJTXFmM5E5nG22cYTQp8a9utaOkoMQ683ny/U4KAHMUoGuApN5XUb5SfBODQ
+	Kj0n1ZssqVeog3csVwBALFY8fIDDCeySaEByVLnm4B/pGHf7D52ONNDfPfG7CJhPT71YeXhsvv3
+	HaMIsQZAQPL4l6p7zkdhwszb4Oq0mUtcq+x0lhG/yMMXenXVUn8w9KxsRzJ5NFKnGmI+Sl4Ja8C
+	HPI/83PpG+vvENYqvFxXUPH8Ccqkjw7lbNm2oJ+deX+FIzxUw5Q3LanyR9RT29jW9+XE8C/D60X
+	uVSRRsIc7nDwP8uswMp8zl3T6ztLvBZoSn8RT/Swl2i95p+Ki/RdIwEtdNOdWvmVEh99xWVYnt8
+	qeUdCVlvWmf4Ase1argR1IC6rjuCBW7Ez1xz/aArNoT3eJfEYjnDrctIw6iWxNOOSA==
+X-Received: by 2002:a17:90b:380b:b0:39e:59a0:46b5 with SMTP id 98e67ed59e1d1-3acef14451fmr3787204a91.24.1792295520991;
+        Sat, 17 Oct 2026 20:52:00 -0700 (PDT)
 Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:4569:b311:f3ea:5f8d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad25d5d1b4sm253024a91.16.2026.10.17.20.51.44
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad25d5d1b4sm253024a91.16.2026.10.17.20.51.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 20:51:47 -0700 (PDT)
+        Sat, 17 Oct 2026 20:51:59 -0700 (PDT)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Brian Geffon <bgeffon@google.com>,
@@ -99,22 +100,22 @@ Cc: Brian Geffon <bgeffon@google.com>,
 	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v5 04/13] zram: lz4hc: pre-initialize dictionary stream in setup_params
-Date: Sun, 18 Oct 2026 12:51:06 +0900
-Message-ID: <20261018035125.3120704-5-senozhatsky@chromium.org>
+Subject: [PATCH v5 07/13] zram: zstd: do not use kvzalloc() for zstd allocations
+Date: Sun, 18 Oct 2026 12:51:09 +0900
+Message-ID: <20261018035125.3120704-8-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
 In-Reply-To: <20261018035125.3120704-1-senozhatsky@chromium.org>
 References: <20261018035125.3120704-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3xpdrh54huu3kq955iwe398hy6mcodnx
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1B3E820005
+X-Stat-Signature: rjdkzcc1hdyfn3w8got6f9yf6gzfgfw4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7E26F140003
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1792295510-164957
-X-HE-Meta: U2FsdGVkX1/WUWOc0/1e49HuPDSM4rW33sxzghbte2yFO+F1l3vK3wxVd2HMqxj6kvduwXyt12v8j/rwF8mmYVkvn8/BXCiJ8oFAb8Ny7kkmX2/8bJ386whJ5MJuWfNwF14cXxRFVXo0JbGyRogXV05gpqgYyXvgR2BY/xQkH5Kod1Po54MXfQ3OY35Ig6U9eC5wvwsKCCtqTEcA2n7fQRlxOB7r/NJ7NSCHKaaIOEy+NSJhx+hbC/9lx2sRNgPtx70N3VwNa0AVEFfJY1fUbKnBKsZKiuRRRNrnfWXRUp6sfK4gjtDIgB0pYmXr4/nD+95i5CIlv7nxvvjLoKvlWLz3fDsUyNJSO1TTHT+1iFW4GZ9C5riqrfe+whLryQp9fbtyhj2cQY/uCwVCY/B6/F3wg82uw/LwRMuEEIbSocoqiXvHlyHTFr5AxXEN7e6JXSKw7EgGQMTAAZL47yZumomZrYCX7ZbzajfjUwUhS4YPVRaqu6Y9idPlpPp8PJQXXguFfYx8S0INGkYuIsMTpIGFvSf7kIOJ0Ka5rjYZ9qJhUUew+VHmZXb1xcCVUHMIc4WGaAB3UI9OrH9jufeY71JxOpTLDskDcbmXQvjKOjbE2rkahUn+Q3XeIOgNa5kV9kpQKXz84oDi+HxZoMnJAGOmU0uX19rq/X9F2+lNEtCxLDEzznEqemAjPHNjXnYux+qdOxIqxD8cWm3UkoivE2Ii6y8XVUR/oRfjuaGVu1BmQX/4zdHLz1jPRcnIcCmRkNK5CWwEMI1pnNEK+CAg9ycL21nTCjgyzujlU1It+Y0YViL/A3ffuD4t2K0yJn2OsUY2MpgJwhIObIudE3rFSmJAmUH7jTdqV0bc30ZIg9MPyiRtQug61WWuenESIQTI2cPeZNCgEJSQGKYR2dN574Y87yNnLW0IQpJ66dBbl5Yv3Hb0k+92OW+T3sD3lZue0cOeode2LowA48Xicwe
- fZggJBP/
- shY291hcXiqC951NS3zjL9LOfEQ05f7OiqwnFrzniKv1PLOfnTwipTfC75fFTREdGjhWb0DS7WOT1KRgJ4iL6usj0y52xhae+0S8A3bNmzzoiqr26VnEgXnGdGiV12x3cftBksIqbqnQqOFGEQEeZGOyhJ8O1bJosHNJq4xD4fSop/7Td5FNT6w1zlMWCxi50zNJjVOlWDILu+Pp8tJSG0kY4VYc98hcwGFJ8D4Ve3GQJx35PNj0QHkNrNnh5E92KyYuBDbK98aisIn12GrD0NBeCvO1ttMZIOxmy49YDR3nQ0Fy7jjqNBI2lgwWLTXEz1J8fevwjoAxxnxZTFWxvdicdGtvdjlZ3Ypf+
+X-HE-Tag: 1792295521-439015
+X-HE-Meta: U2FsdGVkX18+aW/0ZKXxqRAcq8MElkzWpiM8MYrKCjYTnYfFDd407ur4dMio/eJzy+HLKedJWnGrSgPDxCAFJcE3SriX+uMsjIkFlR0qECDmdOlQQ31R8lKWHmTVWePP3tNjD29/saxvnctA+C5ygcW5FkVcAN+YYOypz/smIBZ5L+ovltk39kf6zjMXWEzUUXHsXgoN67LMiRXSgZoTaOub0XUr6I89WXG6MR/CmzIE2JpBzhjeJjnZkcXQNGKYPCI3TzvvouwluG+Pzo8qJp6QVBpbF+rpxYMSdlBQPTj2BJad9WZdCbzfvEc9urmsJorhtt9uCP3r+yDAHmK+osTHzALV6c6pU/zr9eEfcY7rmV86oD2nloWDDz5oymr2ekZpKEtogiI1hxXD8EIlDS3WLVh1JHRni4MsL1B4qiK2kUNI+2UTrlcR3cYCvfMBfwi0U4NIFXzHPKTnjVUW0TAFAzV8/dhhqJ3qdjQ7zr0EArL/QYcGjhKugV6gRYQ+wT8wGNdfYExDWRxVqsDwoNhUwy58CuEblAyn9UEYsYgjqgVrBY01iAkuQbWZE9gfnq0lKvrUNDAqeoQ0/hQjhpqTu/EKawNcvcegescnhnF6dRH/ABCh48606UGmFu+FvNGnPNwl1i4QgQYS+7u8YTWKF4HATdzUY8V2XW/gHuX7GPQBlCgUHgjrbCVxgTAYQKq50Y0EdJJDjZGE9i68xoIyZu1kpvrJSRmPG5yKNLdt7Nbom2U+AK/JMt1yonP9McV0DJ9+KagrWAhYa0l5s4aCp9k1qqLvQD3j967pdfAaDOk5HAhLmIV/75zXRdYl6RBrlcT89nDDulgqp3rNEbSEX62Y5gcvPNW9fRoeCxLnZ9ZlI6Pra51SyQHS1bUv4NZ1rRr4Nz2flLVyZtt7/AoosmOy0loqO/zmnK+MhvjEpxwGPVb9ja9bG3dbK+Fr8Cubz6/BPDLbXdZLsfb
+ QH7W0uYz
+ 0H0vuRUZCZ2ws5Yd3migrPxPrZbGJ6a9WHOhAzjHeoLr1RyunjQyPF8E8lxGaFfhQYIjQNSc1v2ekGTzBkma2RVnjUQKzOni/oZChiEcNdutVt6NbJSuBNW4xhyBP7cJ/65y8tRXOf2e8mb/0ZqNn3iVyut4FkE3f4PcGB3GEs7drOOO5Gw/E75dj36fx9DU1j060dgG95yfBNoMUjN5cTqRec/OvGT2gbTeTc5AADu2afSp1Ulb4I50jq3UkYaaJGOxW8eAD2KdqqcVe3SDy3kMPVrQzJJ2mqMXBHrz1Hz1IOldghzSKKUJjbvf0FZZhApRdeyAeCUGW4+4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,80 +123,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pre-initialize the dictionary stream once in lz4hc_setup_params(), store
-it in params->drv_data, and memcpy() it into the per-CPU stream before
-LZ4_compress_HC_continue(), matching backend_lz4.  This avoids resetting
-and hashing the dictionary on every page compression.
+When a dictionary is configured, zstd allocates all of its memory (C/D
+dictionaries, compression and decompression contexts and compression
+workspaces) via zstd_custom_alloc().  zstd_custom_alloc() uses
+kvzalloc(), which falls back to vmalloc() only when kmalloc() fails,
+and kmalloc() rounds such sizes up to a power-of-two number of pages.
 
-This also rejects dictionaries larger than 64 KB at device init time
-(matching backend_lz4), instead of failing every page compression with
--EINVAL.
+For example, on x86_64 with a 110K dictionary, switching from
+kvzalloc() to __vmalloc() reduces allocations from:
+- CDict (level 3):            512 KB -> 400 KB
+- CDict (levels 12+):        2048 KB -> 1552 KB
+- DCtx (per-CPU):             128 KB -> 96 KB
+- CCtx workspace (level 3):   128 KB -> 84 KB (per-CPU)
+- CCtx workspace (level 14+): 1024 KB -> 764 KB (per-CPU)
 
+Use __vmalloc() for allocations larger than PAGE_SIZE (and kzalloc()
+for smaller ones), which is also how zram allocates zstd workspaces
+when no dictionary is configured.  zstd_custom_free() already uses
+kvfree(), which handles both.
+
+Acked-by: Brian Geffon <bgeffon@google.com>
 Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 ---
- drivers/block/zram/backend_lz4hc.c | 31 +++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+ drivers/block/zram/backend_zstd.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/zram/backend_lz4hc.c b/drivers/block/zram/backend_lz4hc.c
-index 5c009835a684..f3656c27af21 100644
---- a/drivers/block/zram/backend_lz4hc.c
-+++ b/drivers/block/zram/backend_lz4hc.c
-@@ -18,10 +18,20 @@ struct lz4hc_ctx {
- 
- static void lz4hc_release_params(struct zcomp_params *params)
+diff --git a/drivers/block/zram/backend_zstd.c b/drivers/block/zram/backend_zstd.c
+index b367049f131d..7a8b5ff186f2 100644
+--- a/drivers/block/zram/backend_zstd.c
++++ b/drivers/block/zram/backend_zstd.c
+@@ -26,10 +26,17 @@ struct zstd_params {
+ /*
+  * For C/D dictionaries we need to provide zstd with zstd_custom_mem,
+  * which zstd uses internally to allocate/free memory when needed.
++ *
++ * zstd allocations (C/D dictionaries and contexts) are large and
++ * long-lived.  Don't use kvzalloc() for them: when enough physically
++ * contiguous memory is available it serves them from kmalloc(), which
++ * rounds them up to a power-of-two number of pages.
+  */
+ static void *zstd_custom_alloc(void *opaque, size_t size)
  {
-+	LZ4_streamHC_t *dict_stream = params->drv_data;
-+
-+	params->drv_data = NULL;
-+	if (!dict_stream)
-+		return;
-+
-+	vfree(dict_stream);
+-	return kvzalloc(size, GFP_NOIO | __GFP_NOWARN);
++	if (size <= PAGE_SIZE)
++		return kzalloc(size, GFP_NOIO | __GFP_NOWARN);
++	return __vmalloc(size, GFP_NOIO | __GFP_NOWARN | __GFP_ZERO);
  }
  
- static int lz4hc_setup_params(struct zcomp_params *params)
- {
-+	LZ4_streamHC_t *dict_stream;
-+	int ret;
-+
- 	if (params->level == ZCOMP_PARAM_NOT_SET) {
- 		params->level = LZ4HC_DEFAULT_CLEVEL;
- 	} else if (params->level < 1 || params->level > LZ4HC_MAX_CLEVEL) {
-@@ -35,6 +45,21 @@ static int lz4hc_setup_params(struct zcomp_params *params)
- 		return -EINVAL;
- 	}
- 
-+	if (!params->dict || !params->dict_sz)
-+		return 0;
-+
-+	dict_stream = vzalloc(sizeof(*dict_stream));
-+	if (!dict_stream)
-+		return -ENOMEM;
-+
-+	LZ4_resetStreamHC(dict_stream, params->level);
-+	ret = LZ4_loadDictHC(dict_stream, params->dict, params->dict_sz);
-+	if (ret != params->dict_sz) {
-+		vfree(dict_stream);
-+		return -EINVAL;
-+	}
-+	params->drv_data = dict_stream;
-+
- 	return 0;
- }
- 
-@@ -93,11 +118,7 @@ static int lz4hc_compress(struct zcomp_params *params, struct zcomp_ctx *ctx,
- 				      zctx->mem);
- 	} else {
- 		/* Cstrm needs to be reset */
--		LZ4_resetStreamHC(zctx->cstrm, params->level);
--		ret = LZ4_loadDictHC(zctx->cstrm, params->dict,
--				     params->dict_sz);
--		if (ret != params->dict_sz)
--			return -EINVAL;
-+		memcpy(zctx->cstrm, params->drv_data, sizeof(*zctx->cstrm));
- 		ret = LZ4_compress_HC_continue(zctx->cstrm, req->src, req->dst,
- 					       req->src_len, req->dst_len);
- 	}
+ static void zstd_custom_free(void *opaque, void *address)
 -- 
 2.56.0.176.g3575e65682-goog
 
