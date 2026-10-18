@@ -4,117 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 088F4CCF2C4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 03:53:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7DFECCF2C9
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 04:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2FBA6B00A2; Sat, 17 Oct 2026 23:52:30 -0400 (EDT)
+	id 768EB6B0088; Sun, 18 Oct 2026 00:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DFD16B00A3; Sat, 17 Oct 2026 23:52:30 -0400 (EDT)
+	id 7194A6B008C; Sun, 18 Oct 2026 00:31:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A7036B00A4; Sat, 17 Oct 2026 23:52:30 -0400 (EDT)
+	id 65B2E6B0092; Sun, 18 Oct 2026 00:31:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3120C6B00A2
-	for <linux-mm@kvack.org>; Sat, 17 Oct 2026 23:52:30 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8493F1A0309
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 03:52:29 +0000 (UTC)
-X-FDA: 85334374818.09.DA823E3
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C094640002
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 03:52:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=DMq+CKA8;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.45 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C22C6B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 00:31:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D61716046B
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:31:35 +0000 (UTC)
+X-FDA: 85334473350.18.CBCCFC8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C432E100003
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:31:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mb9BXWxt;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792295547;
-	b=xoYsXTpK8b/TqU489iDz3LFx3SrLN34vDOzVLxOhqPqefkbydsDFI9krkp0UaDdWXIxMId
-	/ZOjXZdldpQw7XjyEO+38+bV7Sykzz4wCT1bJ7UuzAREduLGTvuGZ+B3v5quqCzN87VRSt
-	MOQq6pHnKAusJz74PdEQoEqMr04e3Wk=
+	t=1792297893;
+	b=Fe+37fDJU4TaytgB/ZQXvVL4eDt/ZoY/g83oCuPRkzxTQJv6aa7jC3LTC0Exqktuo5eeTX
+	CwFKP76o2JhofuM2NuLtP6JMB0Rj0QzIBuR2mLD3eivBdxQo/xeNGdnGeAJl0n7EPSJMoo
+	n5CpRu5XGJ9Mm3G5tRtveBCNp8Dp7tA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=DMq+CKA8;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.45 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mb9BXWxt;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792295547;
+	s=arc-20220608; t=1792297893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M55JStFe4+ywWFb/Lnl0qjUNokQckie0nywOU4qhi9c=;
-	b=WlKcLY4jnjmxMDkzzBeivV+lqZ1Wru8OeUS6ulG9WL244PMgfrjhzZaGhkY/BrrYLh3+61
-	eutYsEF8JDbHst7BW97eEtsVax8rQXRqLHvL2/912nIBobnzcTjZf3fbCuGqFeoZWpj2nj
-	CENHkTg+PAHl/OFQObpOBgBSJNB4L+g=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso501855a91.1
-        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 20:52:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792295547; x=1792900347; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M55JStFe4+ywWFb/Lnl0qjUNokQckie0nywOU4qhi9c=;
-        b=DMq+CKA8GTKaVQb9tfv+b1iVl+fFU8lR31ot8d9h7H5qBaeevSgW5KER15duLnqDll
-         UaqzUlrfMYMFknFy5L9MBkM6/wocv3Ho6mN8lyxg3ytgmOFqxRFczVFCypmJt5gDRDpv
-         oPdmpsbTvhRJq9acM3/R4QOUhU1IlK9PS7RI4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792295547; x=1792900347;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M55JStFe4+ywWFb/Lnl0qjUNokQckie0nywOU4qhi9c=;
-        b=C2j+ixlFGge2zkXqrqQ8QAAHuZibXvm+y+fnaAscJImY1LxGZ6VQBxwUkidaSECt0i
-         bYGL0eWMJcQzuwU126taurXHOLxWD1r2/CUOp6w3JiyeMXNwqh+AKGRd+n1eSHtSSXv0
-         6DrUXbnkDiB0Ip0e9Bk55on0qBeylKWdS4ijUWIdZJraoyhKdtiROIl2rdpHiBArai3D
-         WH1Pq1CHUxtCgCtkHaJ/ShG7mMUeF13q13ivtFesexvLZz1hTjd2gFrPlBnRvqueziPi
-         //P0g9ranEu+o0wy+7LltHH/nHFIGw7rRYZUOf0BL2m532P9+AbmappbV6308VENy1SJ
-         9iPQ==
-X-Forwarded-Encrypted: i=1; AKwUvByv1FNqZk6VH0q/9rUVJ8uN4LbAIGpMrb/QO5Hfuc9q0ZpAmwUdlZjy/n9eeWItwn9JUWMlrsx6sA==@kvack.org
-X-Gm-Message-State: AFq9FYLebJHUO7O0aNVZvVtrHc8mNGhWTO0Ig3VJXF3dCnAh4pIYxzoJ
-	P2seGOgDw1TshSJO5E1xC3gqjIfTdd8BDP2UWf+GwNidae3RbeUTdEiT2jRVyzesTQ==
-X-Gm-Gg: AYBFou2Y6+WHdnAioQklI1bf8utaVeOZQZv3WcTUgQThTJEk+GyFkwDvpouS+1zN/OK
-	ljKR0ZYCHOoBwdmr7IBMAGZkCJjSB7fMRCYN5uSg//RdXulOI/YpIdB02h1CQ11bH3TO0c46NGv
-	S4vC4wkm94yl42a6F+OR/wn0RcP3BLg6d0uy4y9Gwgz9wD0Wu4aZiyUXzFxwpnLHMMej1IpvfTp
-	BUY5ykdqBWhKd81hI6BbIj3+DVBzP/7yBh7nrBSyg683YLDFdKFOWAQdPbKLs7IaC6zT/2+wXbZ
-	ktYP1Z6z+sW/iYiwko3rTkDJpEKEp8T+Rh8N4rvLNV5ZqJKWT3Q8X+geBpYELeEZbKRrcJqD632
-	4BKN53Id5uap3djlVyHMvz5FeynKiB/SiLuDsM6X8hwXHTEv64ShFCkNa3kFNz7nOh4hgM534WS
-	wqSN/aA86hSajB4RNjXvPP8IXoFEjOLB06IPWiMpEoEJsZDNFx1e2TevXMrBZ/aORMOFp3Vvp0u
-	DL3ifRCx5f7oXgnMIYS8Pg02y/1P5/BDdY/SwpKORRIoT2dtYNAUOVIwSadhTo=
-X-Received: by 2002:a17:90b:28ce:b0:3ac:d17c:2a70 with SMTP id 98e67ed59e1d1-3acef5dcc7dmr3685875a91.62.1792295546657;
-        Sat, 17 Oct 2026 20:52:26 -0700 (PDT)
-Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:4569:b311:f3ea:5f8d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad25d5d1b4sm253024a91.16.2026.10.17.20.52.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 20:52:24 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Brian Geffon <bgeffon@google.com>,
-	Barry Song <baohua@kernel.org>,
-	Bo Zhang <zhangbo0325@gmail.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Richard Chang <richardycc@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v5 13/13] zram: use a singleton compression context for recompression
-Date: Sun, 18 Oct 2026 12:51:15 +0900
-Message-ID: <20261018035125.3120704-14-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
-In-Reply-To: <20261018035125.3120704-1-senozhatsky@chromium.org>
-References: <20261018035125.3120704-1-senozhatsky@chromium.org>
+	bh=DYBq7xeKvEEfhwWtcg1/NmSK9WIDoGWbifeYKQ6iaPU=;
+	b=EgKkoeiEOIoHfXK1FCcmkR4oUH3ISMIpN4DBadfHO/81Xtnhr2P4NzyY0fBsik8GMGh0cY
+	nO+bXU61g/YkqJJBXVjkEXjeQxAjWN/8Bh0nGgiwEcJYwTp1mEjK3cuC/YQLWYTQnsJWFJ
+	veatqid3rfVDfbiF6KfMgKqYn6icA9A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9610A423BF;
+	Sun, 18 Oct 2026 04:31:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750251F000C6;
+	Sun, 18 Oct 2026 04:31:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792297892;
+	bh=DYBq7xeKvEEfhwWtcg1/NmSK9WIDoGWbifeYKQ6iaPU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mb9BXWxt88MpB9qYnzbH95e1QrRQzxEiEgi7/2F/8hxj4Nvv6oj2/BHBk3Qm4gqWL
+	 GWeQP4oq2b0cRa2vq/YWt+VON52QmcgZEKdFhblV4sG21cPhx+3wEiJL7g1rSNBGWZ
+	 DOZEbwSUVAdSZaOr+LHmaj0c+P27fOkNdwnZBKUVKBPukBo5ykBFnYtk4P3++breFR
+	 YZGcdhdHz4Cl+8ot9hRaARiYvlfxC5HqpAX3YTCviIkNyGZ8iborIKNboR1PAQKiyL
+	 zuVTGaL39gigLDweKWhWXmrbSyUlNv6nhWP+3qMkdZIIEuciRIZYaqsahz6mAOn8+W
+	 LWEfQ2qVRcwDw==
+Date: Sun, 18 Oct 2026 07:31:25 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Federico Parola <fparola@amazon.de>
+Cc: stable@vger.kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	nh-open-source@amazon.com
+Subject: Re: [PATCH 6.18.y 2/2] kho: free phys_bits bitmaps using free_page()
+ in __kho_abort()
+Message-ID: <atRLncxeTcA2dRD6@kernel.org>
+References: <20261015144529.76911-1-fparola@amazon.de>
+ <20261015144529.76911-3-fparola@amazon.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C094640002
-X-Stat-Signature: r8hqrfetm8w9o8ck9p76xz69wjmzbdhi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015144529.76911-3-fparola@amazon.de>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1792295547-698181
-X-HE-Meta: U2FsdGVkX19OpqyrDjgzyacZbs6Pf500pZTD7WNppdKY3kED9+SgttHLUEwQuyWwe+qk4E5vutY/ukM8via7l3rB/WXbSpUDGljNgaO21JYaf8DxtZxeowNw6GCuZSBlT1mnkLmxAqrkCqPO5TYjU41IJpkjzQXbbk3QOteJmEDhHk2tF1XsuaJ5KSbCRC+ZdAdfAavImrCruFyQNh1tih+WLUD8k2/WcClcvjtsBlsJcxFoxBQSSRaIfnpyx/LeL+iXJaA8vwH2uyTIgY2NM4z6pSvEajs81zexjoi2pVjCM9ucuGxt/PnwCYwTFIeQfUSfj/bU4fYZvZzMryQ10+DeVwojs02K31ZgNGuQDsnQQDyZiHxAuSVMv02tilgjM5Hu+mk/kNvu5G4uG2dnzwKrQ6RaZcnWd1uFUVWkF4smbjOf2muFtL0BpHAmY+hJ0BhXrs+70gmxmkjUgh3865jDyDKK0AAY6g1wEN9MVYyfEBwXiuALsMpzJPTBX79PJ+rDh5bTaBSyKIctNPsVTOyFEwVIyge0KJ+ulp6CTyf9DexckX+TfcKROdFsk6+KA9inXh4VJ5jt2V3IjFhlnee5bkVBHzQkl4WLqzlTYa4tAK7KLiFYAhEjt7jMOZ8c/L1pm8xGJ1ZvHXcGeyDitLF7k9UEVpzFeJX+eBAu8w6i3i+9+uiHIKUjHR2tBRCM2xR5eawEWboFfTIRxOtkyDzBvMfnA56cZ3STF4JEjEZ4SOhHadD1FVyx8njfz4a5Dmj6xL1/HQOvn4ifKNraaGadFKeWzXlET3Mnbw1O5glwjHcN6F5fOrzjIKOSo2lo0MECZ01Mydi0O7qn20VKeTFWFKHJ2ltjfoFWu81gHxGVo6RdEkB1e9T1xJM6heVOj4q6xFqU0WuVOuB2JaH8hYdGWoWx0A6ZTA30iBVfHLFblpKWdt+HlQ5ccSAlNQU59LKwjVE4PY91R4XNhyB
- HsQqO3rG
- RtljYEaR9QBpqiu/5SLKy9TKkXlFSTyTYM5O5DmEDxCiguqFK22y8JFz6mpHq9BokiQ4SqF/134n1RWp99Y6BD5NGW7/AbBbQpZsZLCZWHN/XkOTs0A310Jyew+9F7YCuGV1uRGJpMXWHVGj3NjUHVRjW11yA2mBU6kPJ/eZNC20qqfE5IWxErO4oCRURT9vwq2XscmXrTK+rTNuzUzlVb3n0Kr+uEiTrht2t+Kbhyz0VHtpO+BD/qnzvC3WJVxZw7P1KHO/zPf/GSknNC2Fi07zbfPX1bsennY89sLXVoMqmsFlCCmj5XNwBiQ==
+X-Rspamd-Queue-Id: C432E100003
+X-Stat-Signature: ckp516s7pujuyxdwky3ktopa3ikbprzs
+X-HE-Tag: 1792297893-345795
+X-HE-Meta: U2FsdGVkX1+rEkfWEVOdGqrJPZAq7NEW86vK9b+pM/+rKTz8/S7D/7MyaluFZm1ZC14gZ5dm60ZeGfw9XJJS05XAp0DZfri+86Jsw963iQYpgaOqw26/i8PwU01YPHb3loSeYOoy2PlIbDipCCv1Tszv34KnKhy2dfaGSHyI4XQfad/mTOvUzADTlCuTdae3k6B94at3ePeXEGffEDKfXr1RkLTaG9QE62CfTrL5wfc/+Nf+Aaf8vw5YioJddbmY3wOczy+nJr2weuKbQhkXYj4G9J3Hz2JoqUotoKXARlMwedFsXesiNzeG5nt3VjsKuB4afXxVm3WtsIXkkE1PVB/bA0nuZ6iuaz2YM/uBxv0Wj9lCsBkZ8brOWHW3rCF/YaqcOPvFAwWL4YZvx0t1OMhUpimp6hm6NIe/hj7vewX2CSvzh5vbiUS/FuDG5Vnf5cpEgP6Ap02zEOQfQUb7dZQ+OYMTDeUenjgyQkphj/4rUcCZO8qC/A9iCA8NPtFxcTl6zDkNaOijzWQw7qoWXJ0ZDgF0p2EsIdPmacWvob7KUJcqZ2YDOYX/Sr8Z/VkhlUJJANvZnBfV2cW+rgFOQPV/hH68hZMbtKabPTEUVaKru/LXlKtX6hN2b0W66fMSPIXCQklfq2cXlMONjpbYZiHPBs2f/1rUmhcERHjLc0lLDvgFWPO1rqWn0PbDb8gVvYBtSyzXQRYPEcYuhDMwZ2pOA3OTpNm+Gw6SdN4rDTRyW8VcMy63TWAv9wl5QPwgpKUClrj+stTsK1/k+2sObgLXkQAdQghoaOyTmXms3U/j2a+VZiMCRjWf2mqTVhUfeKZYgp/yd9u6qF+tiqmWvcShyu6RCY8qM6UiZQ6h7a/CfAnq4m2p8ocBdIcIyq1U0FGD9Yhpw1KaPQftZFXY+k/eNZcgtIbN1E84ZptTtP8dFXVEalELj2VjLgwScT0MuzAnINI/3bDJzKMgTY7
+ S8r+RAWg
+ Op2JJH20MOfr6AR8ZdIOqPSyGhFpBBcyqXXrNZGp3jun8lSibCm39aHPcEyoDTPsyrIlid+zLma2mnRXZyWrvl7FKmsZHIRX32/ea3vDhN0IuU3cyZuwn7FW/ISEM9Fj97Y4jWsvPD3AWjj02popu3723ZlvFqfvwMWNJm4psGTkfFEdWjpmAyGrls7/rDciyWhUX5DfYIl3fridFIRIEO0fehZFnnFJ3FqS+lZrX8Z8/huZUVG/hrW5FVDqIxmlAtoZq585B4R3w94SUTsuVUnC0mE7nFj6L0tjVBKHYiN/UPzbiCJ/DNXIyeKYqbSCiLhFv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,249 +96,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Secondary compressors are only used by recompress_store(), which is
-serialized under zram->dev_lock, so we only ever use one secondary
-compressor at a time, yet we still allocate them on each CPU, which is
-just a plain memory wastage.  However, we do need per-CPU decompressors
-in order to support concurrent reads.
+On Thu, Oct 15, 2026 at 02:45:29PM +0000, Federico Parola wrote:
+> Commit fa759cd75bce ("kho: allocate metadata directly from the buddy
+> allocator") switched the allocation of preserved memory bitmaps to
+> get_zeroed_page(), but __kho_abort() still releases them with kfree().
+> kfree() on a buddy page that is not a large kmalloc allocation hits the
+> WARN_ON_ONCE() in free_large_kmalloc() and returns without freeing it,
+> so every aborted finalization leaks all bitmap pages.
+> 
+> Free the bitmaps with free_page() instead.
+> 
+> This is a stable-only patch. Upstream fixed it as a side effect of
+> commit 99cd2ffac697 ("kho: don't unpreserve memory during abort"), which
+> removes the tracking teardown from __kho_abort() altogether. That change
+> builds on commit 36f8f7ef7fd2 ("kho: add interfaces to unpreserve
+> folios, page ranges, and vmalloc") and commit 70f9133096c8 ("kho: drop
+> notifiers"). In 6.18.y, KHO users still preserve memory from the
+> KEXEC_KHO_FINALIZE notifier and have no interface to unpreserve it, so
+> the teardown on abort is the only way their preservations get dropped.
+> Backporting that commit would make preservations outlive every abort,
+> so keep the teardown and fix only the mismatched free.
+> 
+> Fixes: fa759cd75bce ("kho: allocate metadata directly from the buddy allocator")
+> Signed-off-by: Federico Parola <fparola@amazon.de>
 
-Now that Read and Write contexts are split, we can allocate just a
-single compression stream (recomp_cstream) for secondary algorithms
-instead of per-CPU streams, avoiding unused per-CPU compression
-contexts and 2 * PAGE_SIZE buffers.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-For example, on an 8-CPU x86_64 system (4K PAGE_SIZE), this saves:
-- zstd (level 3, default):        ~700 KB (~100 KB/CPU)
-- zstd (levels 12-22, no dict):   ~1.91 MB (~280 KB/CPU)
-- zstd (levels 14-22, 110K dict): ~5.33 MB (~780 KB/CPU, lazy)
-- deflate (winbits=-11, default): ~1.04 MB (~152 KB/CPU)
-- deflate (winbits=15):           ~1.86 MB (~272 KB/CPU)
-- lz4hc:                          ~1.84 MB (~269 KB/CPU)
+> ---
+>  kernel/kexec_handover.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> index 9fe5d14f1ec54..9691f6bc2fba7 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/kexec_handover.c
+> @@ -1054,7 +1054,7 @@ static int __kho_abort(void)
+>  		unsigned long phys;
+>  
+>  		xa_for_each(&physxa->phys_bits, phys, bits)
+> -			kfree(bits);
+> +			free_page((unsigned long)bits);
+>  
+>  		xa_destroy(&physxa->phys_bits);
+>  		kfree(physxa);
+> -- 
+> 2.47.3
+> 
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zcomp.c    | 75 ++++++++++++++++++++++++++---------
- drivers/block/zram/zcomp.h    |  9 +++--
- drivers/block/zram/zram_drv.c |  5 ++-
- 3 files changed, 65 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
-index c6d2fd23c6f6..ce94dd96cc98 100644
---- a/drivers/block/zram/zcomp.c
-+++ b/drivers/block/zram/zcomp.c
-@@ -151,6 +151,11 @@ ssize_t zcomp_available_show(const char *comp, char *buf, ssize_t at)
- 
- struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp)
- {
-+	if (comp->recomp_cstream) {
-+		mutex_lock(&comp->recomp_cstream->lock);
-+		return comp->recomp_cstream;
-+	}
-+
- 	for (;;) {
- 		struct zcomp_cstrm *zstrm = raw_cpu_ptr(comp->cstream);
- 
-@@ -326,22 +331,25 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
- int zcomp_cpu_up_prepare(unsigned int cpu, struct hlist_node *node)
- {
- 	struct zcomp *comp = hlist_entry(node, struct zcomp, node);
--	struct zcomp_cstrm *cstrm;
-+	struct zcomp_cstrm *cstrm = NULL;
- 	struct zcomp_dstrm *dstrm;
- 	int ret;
- 
--	cstrm = per_cpu_ptr(comp->cstream, cpu);
--	ret = zcomp_cstrm_init(comp, cstrm);
--	if (ret) {
--		pr_err("Can't allocate a compression stream\n");
--		return ret;
-+	if (comp->cstream) {
-+		cstrm = per_cpu_ptr(comp->cstream, cpu);
-+		ret = zcomp_cstrm_init(comp, cstrm);
-+		if (ret) {
-+			pr_err("Can't allocate a compression stream\n");
-+			return ret;
-+		}
- 	}
- 
- 	dstrm = per_cpu_ptr(comp->dstream, cpu);
- 	ret = zcomp_dstrm_init(comp, dstrm);
- 	if (ret) {
- 		pr_err("Can't allocate a decompression stream\n");
--		zcomp_cstrm_free(comp, cstrm);
-+		if (cstrm)
-+			zcomp_cstrm_free(comp, cstrm);
- 		return ret;
- 	}
- 
-@@ -354,10 +362,12 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node)
- 	struct zcomp_cstrm *cstrm;
- 	struct zcomp_dstrm *dstrm;
- 
--	cstrm = per_cpu_ptr(comp->cstream, cpu);
--	mutex_lock(&cstrm->lock);
--	zcomp_cstrm_free(comp, cstrm);
--	mutex_unlock(&cstrm->lock);
-+	if (comp->cstream) {
-+		cstrm = per_cpu_ptr(comp->cstream, cpu);
-+		mutex_lock(&cstrm->lock);
-+		zcomp_cstrm_free(comp, cstrm);
-+		mutex_unlock(&cstrm->lock);
-+	}
- 
- 	dstrm = per_cpu_ptr(comp->dstream, cpu);
- 	down_write(&dstrm->lock);
-@@ -367,7 +377,8 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node)
- 	return 0;
- }
- 
--static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
-+static int zcomp_init(struct zcomp *comp, struct zcomp_params *params,
-+		      bool recomp)
- {
- 	int ret, cpu;
- 
-@@ -376,10 +387,28 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
- 	if (ret)
- 		goto cleanup;
- 
--	comp->cstream = alloc_percpu(struct zcomp_cstrm);
--	if (!comp->cstream) {
--		ret = -ENOMEM;
--		goto cleanup;
-+	if (recomp) {
-+		comp->recomp_cstream = kzalloc_obj(*comp->recomp_cstream);
-+		if (!comp->recomp_cstream) {
-+			ret = -ENOMEM;
-+			goto cleanup;
-+		}
-+		mutex_init(&comp->recomp_cstream->lock);
-+		ret = zcomp_cstrm_init(comp, comp->recomp_cstream);
-+		if (ret) {
-+			/* zcomp_cstrm_init() cleans up after itself */
-+			kfree(comp->recomp_cstream);
-+			comp->recomp_cstream = NULL;
-+			goto cleanup;
-+		}
-+	} else {
-+		comp->cstream = alloc_percpu(struct zcomp_cstrm);
-+		if (!comp->cstream) {
-+			ret = -ENOMEM;
-+			goto cleanup;
-+		}
-+		for_each_possible_cpu(cpu)
-+			mutex_init(&per_cpu_ptr(comp->cstream, cpu)->lock);
- 	}
- 
- 	comp->dstream = alloc_percpu(struct zcomp_dstrm);
-@@ -393,7 +422,6 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
- 	for_each_possible_cpu(cpu) {
- 		struct zcomp_dstrm *zstrm = per_cpu_ptr(comp->dstream, cpu);
- 
--		mutex_init(&per_cpu_ptr(comp->cstream, cpu)->lock);
- 		init_rwsem(&zstrm->lock);
- 		mutex_init(&zstrm->excl_lock);
- 	}
-@@ -405,6 +433,10 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
- 	return 0;
- 
- cleanup:
-+	if (comp->recomp_cstream) {
-+		zcomp_cstrm_free(comp, comp->recomp_cstream);
-+		kfree(comp->recomp_cstream);
-+	}
- 	comp->ops->release_params(comp->params);
- 	free_percpu(comp->dstream);
- 	free_percpu(comp->cstream);
-@@ -414,13 +446,18 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
- void zcomp_destroy(struct zcomp *comp)
- {
- 	cpuhp_state_remove_instance(CPUHP_ZCOMP_PREPARE, &comp->node);
-+	if (comp->recomp_cstream) {
-+		zcomp_cstrm_free(comp, comp->recomp_cstream);
-+		kfree(comp->recomp_cstream);
-+	}
- 	comp->ops->release_params(comp->params);
- 	free_percpu(comp->dstream);
- 	free_percpu(comp->cstream);
- 	kfree(comp);
- }
- 
--struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params)
-+struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params,
-+			   bool recomp)
- {
- 	struct zcomp *comp;
- 	int error;
-@@ -443,7 +480,7 @@ struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params)
- 		return ERR_PTR(-EINVAL);
- 	}
- 
--	error = zcomp_init(comp, params);
-+	error = zcomp_init(comp, params, recomp);
- 	if (error) {
- 		kfree(comp);
- 		return ERR_PTR(error);
-diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
-index ca1ebc70ad0a..39efefc43a13 100644
---- a/drivers/block/zram/zcomp.h
-+++ b/drivers/block/zram/zcomp.h
-@@ -40,7 +40,8 @@ struct zcomp_params {
- /*
-  * Run-time driver context - scratch buffers, etc. It is modified during
-  * request execution (compression/decompression), cannot be shared, so
-- * it's in per-CPU area.
-+ * it's in per-CPU area (except for recompression, which uses a single
-+ * per-device compression stream).
-  */
- struct zcomp_ctx {
- 	void *context;
-@@ -95,9 +96,10 @@ struct zcomp_ops {
- 
- /* dynamic per-device compression frontend */
- struct zcomp {
--	struct zcomp_cstrm __percpu *cstream;
- 	struct zcomp_dstrm __percpu *dstream;
- 	wait_queue_head_t dstrm_waitq;
-+	struct zcomp_cstrm __percpu *cstream;
-+	struct zcomp_cstrm *recomp_cstream;
- 	const struct zcomp_ops *ops;
- 	struct zcomp_params *params;
- 	struct hlist_node node;
-@@ -108,7 +110,8 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node);
- ssize_t zcomp_available_show(const char *comp, char *buf, ssize_t at);
- const char *zcomp_lookup_backend_name(const char *comp);
- 
--struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params);
-+struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params,
-+			   bool recomp);
- void zcomp_destroy(struct zcomp *comp);
- 
- struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp);
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 52341f05da83..079f3723db31 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2526,7 +2526,7 @@ static int recompress_slot(struct zram *zram, unsigned long index,
- 	}
- 
- 	/*
--	 * We are holding per-CPU stream mutex and entry lock so better
-+	 * We are holding compression stream mutex and entry lock so better
- 	 * avoid direct reclaim.  Allocation error is not fatal since
- 	 * we still have the old object in the mem_pool.
- 	 *
-@@ -2928,7 +2928,8 @@ static ssize_t disksize_store(struct device *dev, struct device_attribute *attr,
- 			continue;
- 
- 		comp = zcomp_create(zram->comp_algs[prio],
--				    &zram->params[prio]);
-+				    &zram->params[prio],
-+				    prio != ZRAM_PRIMARY_COMP);
- 		if (IS_ERR(comp)) {
- 			pr_err("Cannot initialise %s compressing backend\n",
- 			       zram->comp_algs[prio]);
 -- 
-2.56.0.176.g3575e65682-goog
-
+Sincerely yours,
+Mike.
 
