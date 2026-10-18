@@ -4,103 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB685CCA490
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 22:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 601A0CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 22:56:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62DDB6B00B3; Sun, 18 Oct 2026 18:48:53 -0400 (EDT)
+	id 309546B00B4; Sun, 18 Oct 2026 18:56:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DECD6B00B4; Sun, 18 Oct 2026 18:48:53 -0400 (EDT)
+	id 2BA776B00B6; Sun, 18 Oct 2026 18:56:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F4F36B00B5; Sun, 18 Oct 2026 18:48:53 -0400 (EDT)
+	id 182366B00B7; Sun, 18 Oct 2026 18:56:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 228E36B00B3
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:48:53 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00E5E4021E
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:48:50 +0000 (UTC)
-X-FDA: 85337238462.19.5CC004B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 57DEF1C0005
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:48:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4peT3hN;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792363729;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D50FB6B00B4
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:56:36 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3BB4B8058F
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:56:36 +0000 (UTC)
+X-FDA: 85337257992.04.AE3266A
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 463FCC0004
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:56:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="rqDrR/Gx";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792364194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kTS+377+qfH82v/tIU4D9gzx0DSVopZH/Ul399TkRyQ=;
-	b=0FdJ6hK9K4kR2x5BZpOz1ZfLs8kVmlsNSyF1MiUpWRLWUzs6U2B02f1dWvNk9T8x3XY6+J
-	MyR7pAPLqCcaNsfo5OQyAVweAV2pe1+P1nB0msLCuRfecDmq3zmnskwqVMCIO+gyAZvZMT
-	AiLUwCxMkOBU3iqTr+Uz7tyB98y+aWE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792363729;
-	b=02FE0zInjQ/q/uXJEkmRJ1NO8/aMblWeyn1esbUvuCqBVlymhnrrYrpFkfTkla9v9IdpxW
-	GaP7QUOWnsG8ESDaSTijjj9cuhyQXmQXhHTbOlODF31XLFEnqpDMFIZSFSi0lOhx6fmuuf
-	62/8Wjg/CFv5hc5jDugx9edUh0vLNMs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4peT3hN;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C4BCB60D9F;
-	Sun, 18 Oct 2026 22:48:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEC01F000C4;
-	Sun, 18 Oct 2026 22:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792363728;
-	bh=kTS+377+qfH82v/tIU4D9gzx0DSVopZH/Ul399TkRyQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C4peT3hN5dydzeV1t8d8epwshIEUPWDe7/XOXLQ/+5OVZFlpMWPlVPtV22dRExIIh
-	 XOTdd1S4+xgul771MVmuJH3hjGduYKyKj5yyv5JHBbVjfaEe/SV/ZFw32urkIBFNLo
-	 Fp7uj6IEslvL2SRVWG1BjgWdi43ZEiiuHLoTcDe/ww53qanka6K5OjQEFafyWOMPg8
-	 E82IgVUvpxNmJvv60LYM2xOHcQ6hh1LoFcNy2Chve2MvTAjsuE/ytYb7LpylP30PYb
-	 mLObRFfe2KyAZx91MR7PMPW/WyrK1cMqyxQ/sbzn3zT2mVX0oPuFUI/erXRQWuE8zj
-	 /b69vl0C2KmsA==
-From: SJ Park <sj@kernel.org>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	ackerleytng@google.com,
-	akpm@linux-foundation.org,
-	chriscli@google.com,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	jack@suse.cz,
-	liam@infradead.org,
-	muchun.song@linux.dev,
-	shakeelb@meta.com,
-	ziy@nvidia.com,
-	"Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: Sashiko change proposal
-Date: Sun, 18 Oct 2026 15:48:28 -0700
-Message-ID: <20261018224830.160147-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <7ia4o6ct7lqi.fsf@castle.c.googlers.com>
-References: 
+	bh=ejS/LpjqoYagtCx8wF4IBCZ5sMYQJivNYsQq5fSIx44=;
+	b=onSaHOlMkPotrxPoWV/4oagBQ+l1BkcpDrr9R7AcNPneYTWEqN1Zbay7GB4VEE+lyvmDYE
+	vd86aqPReHrbGCij9zg1e6cIigs4qxO8vX4X523ELJ9vucpxD1wc5giT5IiQhnMsVG9VSB
+	g1NnBDeMcIu9fleJwFUvfqyFta1asjI=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="rqDrR/Gx";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792364194;
+	b=a4LBdYmx6g7GmXVWqh+dtn/GOkHTr07MtIm43zYZy0/AWo0VIwJZtt9MCtTQUSWgcB2PhQ
+	+x8qjGGKd48CGi/HvR7+1HAgvzeAcSGRXUuZtZUDiUAkO2/Dj4YzNRfoa0YiMazWXIeQMe
+	CqvM41ty2y4644ACgXUJe+lxA1kp9yM=
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-81ba09a5d23so1204303a34.3
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 15:56:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792364193; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LWpEaEtRVlp96fyFw5/UFXextYirOGT4LoZzm106V0LJwTzp/LYhku1gTArYQKy8A5
+         BmBJvI3MKHVfAXfxrCo3LuQJd7YrsCa0VqTA9oIRz1toxuWiQEYpbDQxqjv750khTDLN
+         j071MtLN8k/6VFqyRaF7my6Dfv9qtr0mGmV45zkZrC6HXNGgDmjrV+c5cZsgKnGVLecZ
+         7eHJxtprjy+zx/tntxpDe6duZWlsxpawvi051NxWUA7bflZEfUABpcZ1pfdzeu4bxrRG
+         9oCoQTZnQl5AiDE5aQeRqwRvdMfLh8WyuL9AA5E0gFRgjIOuugAdSHbsCyKiLzeS9Q8m
+         HRmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ejS/LpjqoYagtCx8wF4IBCZ5sMYQJivNYsQq5fSIx44=;
+        fh=aOGHaxcnIeXsHCbTolS+Z+pNJkTPDB+XNvZB8SbgH6U=;
+        b=UDK5qwhvZ0Ji72LWZrae612n23sIzSYpgMIC6rcDN64bDCIq1vUXjnkdfeiQ2sOrBu
+         BH1tbqFBmc3TX2owabzlDAULcTfcOGYQLi7EdrOw7TNj3697s4jJkvxOsk6KQ6hLB5t4
+         LTyVaOxijb7/J/nBvJwH+Q6FI/eMcEGPCIroiWnDUzSwQmfa41H22Q+wpDDUR75va3Qv
+         dd3o2Hrh6/WIuKHksPksPNpgzfhxIaQjSNouMycZTqRnsxiqZeugFc28s5FOXBzlJdbZ
+         fpgaXzXRkB1VBpKRvC2cTLSutW2Q9j5izFel0B7U6UaESSK4VRGw6ZvB54KcFOeo9qRS
+         ucvw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792364193; x=1792968993; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ejS/LpjqoYagtCx8wF4IBCZ5sMYQJivNYsQq5fSIx44=;
+        b=rqDrR/Gx5MRoprvJobBiaIQeELQk3gyN85Co3K6+xAyfXlFOmeeiE+lgClMwzzgMrq
+         u2xu0omMqt0Dm3vRJsY9ieCUhSYXRKU5rT/0HkANZVWIOL0R7/wN5dDtyhaou3S2gJ+l
+         moze2Wwv+8GCYiW0MnN60yxrWaCwjAZr9rPTYCphSCkoCnb6mHz+J/xZcGdyR+9WVMFv
+         njOjD5yOLKG9tsMBGw7v71jpv32y3AA3KPRNLWnVrddBLy9v4CXB/FOlFE43IoDqjd01
+         j35LBC6QUP7E53CCk8bn/3nGlIByRgEAuk+V4BwsYd+GfghUSXTx9b5IBiyAyznqTFlF
+         cfQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792364193; x=1792968993;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ejS/LpjqoYagtCx8wF4IBCZ5sMYQJivNYsQq5fSIx44=;
+        b=t/GbaPfa7n6urOt0uxlfM5eMtcokkNDqeR8tOOFrdt4mJU8IWsoKE8odmCScTRDZyt
+         5zcr65pOGRpi6lUA/xQjiOQzEHkGavs+NRTPQVKtzYo2rW7oLV/KihhkHtH1evy9e2w8
+         bhS5RGrO8yL4aF05VJxM5/OkXhPQlBjy2xCOyy96g7K8tJ4h/MRVI8U2MtxgXdvlThV/
+         alKgnHYhjBHXPcNqVhduxAI39HjTqKtQvcZgm865Mny1yh4T7OBQxoMg3jNFKdIpjOO8
+         qKTyE2jDO0cNYXPULB7MwN/ju3laCrde24XBCyK5GTl/B8FJ8j1KN4C4lx/mC6LA6YM9
+         vqSA==
+X-Forwarded-Encrypted: i=1; AKwUvByAYOAaSKREI7f+9AnEPwWHMZ/qB2pWwwDJIWmHnHCJkamxuIFqnSfXOCGygVuZumO6oS/ckgmLvg==@kvack.org
+X-Gm-Message-State: AFq9FYKtRbz5wwLqdW5arlYHfNKPDtR0voNuJ1AJozycPTonG6GVezjT
+	OPw3yzQPBxyHq5avWDxxsRNBD+ruQ04x6z57KhXLR2dNlvNukt2Mck2tP87rpC82wDEJ2bp7KHk
+	X6kuKYU0Ql2Todb6L2QHB5IclTcL92aY=
+X-Gm-Gg: AYBFou3SH4sedbdstdMbndKwjMCF6vu9FBNUeYl39YM8s/cXyXzYYKsVjeOZsSJlIyi
+	tUIZFLY2ucyDunDOQzxwE5Tr/TPclsxRX/pd2GZMW5OqQijacdmOUz9gordpyQElyieXoTkoSHa
+	x4515137FkxCEgPRkGCod8Dfkfe0EXHiL6N75n53dM2zcRxVWFKzbgiSt4Vd5+MD+8tg1jZ3kVS
+	o8vodjmA2c7ShYINYBWod3AX+z9NrM7dacqkbNxWJro9/ABlkTDme8Yq4SCtrfJNlmixwkABIEF
+	WNvdGaE/VByXZjgi6c2GZL2FMMEmzSnpEeJx7aNnt/hl9lmgbz8Hdy8=
+X-Received: by 2002:a05:6830:4128:b0:81d:8057:9b7f with SMTP id
+ 46e09a7af769-84500f4d898mr5770027a34.28.1792364193081; Sun, 18 Oct 2026
+ 15:56:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qd77jzk6i5ajwzq14dfpf9fwhtmog7tc
+References: <20260726212812.89266-1-shijujose2008@gmail.com>
+ <20260726212812.89266-3-shijujose2008@gmail.com> <20261017055852.GBatMOnEl66YObvU5k@fat_crate.local>
+In-Reply-To: <20261017055852.GBatMOnEl66YObvU5k@fat_crate.local>
+From: Shiju Jose <shijujose2008@gmail.com>
+Date: Sun, 18 Oct 2026 23:56:22 +0100
+X-Gm-Features: AclHuK-FL-g-dxxplQ9WjTqpUo6LUA2zDPurgO-FQV-GA5RtzvuribE1sLlFWfg
+Message-ID: <CAG4KcR+NOKHNzg6FN-oLLHgUxeitZHKXg9cN7dz24+Ap=RrwSA@mail.gmail.com>
+Subject: Re: [PATCH v23 2/2] ras: mem: Add ACPI RAS2 memory driver
+To: Borislav Petkov <bp@alien8.de>
+Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
+	dferguson@amperecomputing.com, linux-edac@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	tony.luck@intel.com, lenb@kernel.org, Yazen.Ghannam@amd.com, 
+	mchehab@kernel.org, ashok.raj@oss.qualcomm.com, jic23@kernel.org, 
+	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com, 
+	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, 
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com, 
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com, 
+	gthelen@google.com, wschwartz@amperecomputing.com, wbs@os.amperecomputing.com, 
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com, 
+	wanghuiqiang@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 463FCC0004
+X-Stat-Signature: rf6c7b9wnyu4nbf56bx6d8d515tg58b4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 57DEF1C0005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1792363729-105013
-X-HE-Meta: U2FsdGVkX18jlt3upKb84DcGXLNLklNjTqfDqhyHdQhqZlGp8V4ZrbO0LYD9FJ5K5rbLXb7yU2sj0Euw2MJkxqObMdTOpmC1gS6GirureYLkrR8hrU9Zu1qf1NSVvAeUmHjjBxVaLDoIWhW8W5rXdcTjMDnzSWl7lrcejUCLcSG3f6YB+FnWIyaOn/zjMRES286d5FrC4ysQJ75SrQtxhr4I3i2k/4WtZe0dXeDopZTw8FWXvEsN92qzELaQynoW7U4lJk6aK3xwcqb1w3C4wc+Gy2b1A0mgn32DVuo0lvX71/+jBG28aAi8geLpX3PgMw5ncMpvKrKax8Y3qtF1qMBcODeze/PHblii5FmzN9tbokDw4guMYZ/ngV2ViacKwSV3UP+7DupVv2ye7vZVjiqAj7vlPzKTcD0fZaMDvs8HGVcvM3aDOUzNFZQ0g4SZHDzG6/XHjO2bTwhCVtPxqpM3QcfSOWaza1gh8GdpBO3adgqWWOSHgewf3cd5sIAsLGIbL/JZRpSLrfY8/J5T48kWxn10G4lvxDBw7OXuuewayLqZJ/GramyuOJYHdhw5BR7lA+4v6mHVoGT7OtQNpjsIRpaB6cMkZcSyd14GOtQ4tRlnQ0KGfPwmPL9/MHR2y/S/mmspDYHZiax7K2pLZp1bPE7amc3o0yv9H+ahNdwoJEr7T2ZkDYZdr4yUlPTGYjOJv41gLZktdNnsUavwvifRHTGNgRHr9fNasQc6jyuvJMc2nUHr3LdDTG4jHM81jRnxpEL7VKb/V7GES1W1QTosWWenZHgy9aB7i+uL/V5/6lTpvWXdVQJMrudfMEysyZ/yvNflajHL6ivapmW2eD8dCTt1h+zN/yFyJTbSFRcv/a86i0Fy4e9lo7/DnBzSyp0N5d81B3LbEiAGoSzyD5ktrhfiL2eFrrac2xl+VMSl4vKDoWnua3zUR/u6K1zztwm5hDsN9gxmAYlD3ia
- zu9WIntV
- xy3TzIKCbxiOhxfm7wGVN1A6RNVAtA5DL13AlMtMsF5d3BAq5+MYKb0x8TU02kfOWsnAjHG7c9glK2iLShXKs+j0l4sCCy30/8fEwf5VJt47iP2kcTBn4dayxmlOu5W5uygb7X4HadQ026lJgIEfC7QxmZBxQXcifFfAOMbEAvgImq41A5xndCMJHXbBvKlv0I0nm1w5B03tOfuSW1DZKNp9UZ+oJduv6HcWjJqk46+Q09UZxKG0TO9gnBZwQ3AgqsuJSG+LOUT0gZ3FfPF0OnkWwogH32O9x12gRckAws0AdtH0n5YojUcpB0AHMasI6XXgwzZm7ZTum8GqdgHcDfbnWCHV0U/+CKTA8gw4V4sdwHtKSwFON2uLgAOgJhILNDmdnzBYP9v5Tvi7KD3JCnAuqEDIRAm2/REY+JAeHnQLOKASY+P56rzvclY8EZPV+fdiYaGBRuUlFEmnaZgvqw3GgvSl4D0xqke0omBhf/jqDXAr7tZN/4kIU38bkhT+k/WDR
+X-HE-Tag: 1792364194-749266
+X-HE-Meta: U2FsdGVkX1+z1WFP9YypdVU9LYhvQb0y1Yb3xOqAIEgkmaMSKQjc+w2RKmhb1/QkQpq87EljLrOtzByXkUFppSuDl9aB5tRIDxFRfd3bduQ9Wg9ycBkNrC+iLrp4X71Il19/l1P97P3z65eV5pYF8AYkEvrXvoleJQj9AGQ+n1Gh5Wl8MN5zS9iBJ1f04+dSMWpVDAO2C4x+9J024f5YKi6Rd4IW/+uzgBYS/BT8m/ih+NaOG79gJtb/4eZP+66kzDasQEzouRF0RRxgftcWjN6TbQ3l2dRGUNBu3+Yai7WmSWydpRl9rY5LEKLi92OClXbc4v/nmQxFJiXxnMpLD2xUY8hVamqzIVLP9+yXvZXTFk2aeaSJBQINZK/nye5yn1dI6+XPVvDT78Xk9nUTkyTM5xI95CvslN8NOZCU56/180lbYD8MbKC/1wcqr8OPz118ZbZ3QDQRNVfl1QTeW7sukK/G1hacEJK7EbeEuaE26SefEOSXbI9TOggAk+CW5vqcQlEjlu+Qpz7RgCPEDqizqYUqd87KfNJDJtSiuwcBsc8gDb8n81m1wCSAOQPLcHOKrV8lXqIif29vfpB29lQkPr/bHyMzBKSkX112d53jIGE4bR9e8jDzntdFqCbD9R4qqKuRsICZI4RvuxT47e9Ruyz7zXqzWZ5oumnYl3XVfjWQxzwjkzhFZtM/fXvcafVXf8yIvV+l3IzJS0DUPxcqpXkU5e8fL47aT/JVQ3ReAMHV90VllY8ZuHoejgdqOtN9+cDl/NVFOAA9Ha2p/2gHcb191j+g2/gdTq11mS9LaZFSKAYOpqEddecdtvRH7I3HTYuJ5WbDiegRFg98myMWGe9jP6aB6aAETdEQ/XTAUu2t415eLKFneOS0Is6gwPxL2kPYXyKqO0McJEx8joCuk7hZEvtElf8ds2sPXvEvRORF64FyjD598ZdwXo44u951PPRB+rr7ldssf2h
+ 23VhvMUQ
+ TiWyWMCQTNaDiZiaroKV3IU1vbIVGgdqyYXVdnkuQGDNxB6vArsqKOJXiipdtfo/1zpl6OBrOrCzpsRa3wrpu/tbspmUBrdwyP3nB/B7nFw9vVOuHkP4q7lcgQG8qOwJLjG5BKYIUbAYn5by5j6RLVb8wshhJ3wdiEWj78Xgnv6LhT/p3EC4R3yojEl/NSrCqP4YqPXVehRCbgpmOBWZWIoSKChVpuoOYnVqmdo44SQPYH803RJJ3pP1C8f+jT4UOLboKHfm73tMiwDEkWSY+718fhj0iRq4g88UQk4VAFtpYvySh3T3/CbCZ7m4lolvp/VV5BS95CU4uD/8RFKpjb54eNL9PDtHbgyOuIqlHF0VKEL24KcpTUYzWSajR78yPP9PI4FaEzielRIPusUBKrHVOhCGDsAfy0v8ll8WVOYuAYD3S5o2OfVYlD/tLJ67acnhEH84A2oWgRDiEkuGIBUljObk0eHyDDpHbranVVFdcstoaJ+cC/7YLXKpTuGL6knzn4IY4WlSdN7Ne1rtzAi/KqI+QSuDdqoPaDLbsGJAsVsvJqHzDcmam8GB1xxlYJIB3dELkRQBq6dLzl2FDcxFXJ3ARt8BFCn94v64nDMW0S2NsrV3zi6RPFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,80 +151,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Oct 2026 14:39:49 +0000 Roman Gushchin <roman.gushchin@linux.dev> wrote:
+On Sat, Oct 17, 2026 at 6:59=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrot=
+e:
+>
+> On Sun, Jul 26, 2026 at 10:28:12PM +0100, shijujose2008@gmail.com wrote:
+> > From: Shiju Jose <shijujose2008@gmail.com>
+> >
+> > ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS=
+2).
+> > Driver adds support for RAS2 feature table, which provides interfaces f=
+or
+> > platform RAS features, e.g., for HW-based memory scrubbing, and logical=
+ to
+> > PA translation service. RAS2 uses PCC channel subspace for communicatin=
+g
+> > with the ACPI compliant HW platform.
+> >
+> > ACPI RAS2 auxiliary driver for the memory features binds to the auxilia=
+ry
+> > device, which is added by the RAS2 table parser in the ACPI RAS2 driver=
+.
+> >
+> > Given the address range provided to the userspace may be the lowest scr=
+ub
+> > address range in the presence of disjoint address ranges, skipping addr=
+ess
+> > ranges that are from other NUMA nodes but happen to lie within this ran=
+ge.
+> >
+> > Driver retrieves the PA range of the NUMA domain and use it as the
+> > 'Requested Address Range', when send RAS2 command GET_PATROL_PARAMETERS
+> > to get parameters that apply to all addresses in the NUMA domain.
+> >
+> > Device with ACPI RAS2 scrub feature registers with EDAC device driver,
+> > which retrieves the scrub descriptor from EDAC scrub and exposes
+> > the scrub control attributes for RAS2 scrub instance to userspace in
+> > /sys/bus/edac/devices/acpi_ras_memX/scrub0/.
+> >
+> > Add 'enable_demand' attribute to the EDAC scrub interface to start/stop
+> > the demand scrub, which is used in the RAS2 demand scrub control.
+> > When a demand scrub is started, any background scrub currently in progr=
+ess
+> > will be stopped and then automatically restarted at the beginning when =
+the
+> > demand scrub has completed.
+> >
+> > Co-developed-by: Jonathan Cameron <jic23@kernel.org>
+> > Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+> > Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
+> > Signed-off-by: Shiju Jose <shijujose2008@gmail.com>
+> > ---
+> >  Documentation/ABI/testing/sysfs-edac-scrub |  20 +-
+> >  Documentation/edac/scrub.rst               |  70 +++
+> >  drivers/edac/scrub.c                       |  12 +
+> >  drivers/ras/Kconfig                        |  13 +
+> >  drivers/ras/Makefile                       |   1 +
+> >  drivers/ras/acpi_ras2.c                    | 624 +++++++++++++++++++++
+> >  include/acpi/ras2.h                        |  29 +
+> >  include/linux/edac.h                       |   4 +
+> >  8 files changed, 768 insertions(+), 5 deletions(-)
+> >  create mode 100644 drivers/ras/acpi_ras2.c
+>
+> Was this supposed to build on x86?
+>
+> drivers/ras/acpi_ras2.c: In function =E2=80=98ras2_update_patrol_scrub_pa=
+rams_cache=E2=80=99:
+> drivers/ras/acpi_ras2.c:68:9: error: implicit declaration of function =E2=
+=80=98iowrite64=E2=80=99; did you mean =E2=80=98iowrite32=E2=80=99? [-Werro=
+r=3Dimplicit-function-declaration]
+>    68 |         iowrite64(ras2_ctx->mem_base, &ps_sm->params.req_addr_ran=
+ge[0]);
+>       |         ^~~~~~~~~
+>       |         iowrite32
+> drivers/ras/acpi_ras2.c:99:34: error: implicit declaration of function =
+=E2=80=98ioread64=E2=80=99; did you mean =E2=80=98ioread32=E2=80=99? [-Werr=
+or=3Dimplicit-function-declaration]
+>    99 |                 ras2_ctx->base =3D ioread64(&ps_sm->params.actl_a=
+ddr_range[0]);
+>       |                                  ^~~~~~~~
+>       |                                  ioread32
+> cc1: some warnings being treated as errors
+> make[4]: *** [scripts/Makefile.build:290: drivers/ras/acpi_ras2.o] Error =
+1
+> make[4]: *** Waiting for unfinished jobs....
+> make[3]: *** [scripts/Makefile.build:551: drivers/ras] Error 2
+> make[3]: *** Waiting for unfinished jobs....
+> make[2]: *** [scripts/Makefile.build:551: drivers] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+>
+> .config attached.
 
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
-> 
-> > On 10/16/26 02:15, Roman Gushchin wrote:
-> >> Yosry Ahmed <yosry@kernel.org> writes:
-> >> 
-> >>> On Thu, Oct 15, 2026 at 1:38 AM David Hildenbrand (Arm)
-> >>> <david@kernel.org> wrote:
-[...]
-> >>>> I suggest the following sashiko change for linux-mm:
-> >>>>
-> >>>> diff --git a/projects/linux/mailing_lists.toml b/projects/linux/mailing_lists.toml
-> >>>> index a9198de..ba123da 100644
-> >>>> --- a/projects/linux/mailing_lists.toml
-> >>>> +++ b/projects/linux/mailing_lists.toml
-> >>>> @@ -46,7 +46,6 @@ ignored_emails = ["patchwork@emeril.freedesktop.org"]
-> >>>>  ["linux-integrity@vger.kernel.org"]
-> >>>>  ["linux-kernel@vger.kernel.org"]
-> >>>>  ["linux-kselftest@vger.kernel.org"]
-> >>>> -["linux-mm@kvack.org"]
-> >>>>  ["linux-nvme@lists.infradead.org"]
-> >>>>  ["linux-omap@vger.kernel.org"]
-> >>>>  ["linux-pm@vger.kernel.org"]
-> >>>> @@ -315,3 +314,7 @@ reply_to = ["author", "list", "recipients"]
-> >>>>
-> >>>>  ["fsverity@lists.linux.dev"]
-> >>>>  reply_to = ["author", "list", "recipients"]
-> >>>> +
-> >>>> +["linux-mm@kvack.org"]
-> >>>> +reply_to = ["author", "list", "recipients"]
-> >>>> +embargo_hours = 24
-> >>>>
-> >>>>
-> >>>> Which means:
-> >>>> - Embargo 24h
-> >>>> - Mails sent to everybody (author, list, CC list)
-> >>>> - No positive-review ("looks great") mails (default)
-> >>>> - No other static email addresses that receive a copy (default)
-> >>>> - No additional ignored author email addresses (default)
-[...]
-> https://github.com/sashiko-dev/sashiko/pull/699/ , landed.
-> 
-> I'll roll it out later today.
+Hi Boris,
 
-Now linux-mm@ and damon@ has slightly different configs.  damon@ has no
-embabrgo but send mails to only the author and the mailing list.  It is a
-faster but narrower-scoped delivery setup.
+I have got an arm64 setup only, did not try to build for X86 recently
+after adding the following change
+of using iowrite64 and ioread64 as suggested by
+https://sashiko.dev/#/patchset/20260325165714.294-1-shiju.jose%40huawei.com
 
-I was assuming linux-mm@ side change will not make any change to damon@ side,
-but apparently it is not.  DAMON patches Cc linux-mm@, and seems it results in
-applying linux-mm@ side setup.  For example, this patch [1] got a sashiko
-review, but it was marked as embargo on sashiko.dev.  I found and clicked a
-button for releasing it.  It resulted in sending the review mail to all
-recipients, not just the author and damon@ mailing list.  Correct me if I'm
-wrong.
+Following change is required to build for X86_64 build when using
+iowrite64 and ioread64, while it was
+fine for the ARM64 build.
+Note: I'm not sure whether RAS2 is needed for the 32 bit build or not
+and the result of the 32 bit build.
 
-Could we keep the old behavior for DAMON patches?  For example, let damon@
-setup to override linux-mm@ setup for DAMON patches.  After a second thought, I
-realize this would be not very simple.  Identifying if a given patch is for
-DAMON or not is implicit.  Maybe we could see if the subject contains "damon"
-keyword...?  Still not perfect but maybe work for most cases?
-
-For now, I will release damon@ patch reviews as soon as I find.  I don't mind
-clicking the button multiple times, but I'm slightly concerned if someone might
-be distracted, because DAMON patch review mails will be delivered to not only
-the author and damon@ list but all recipients.  Please let me know if that
-really distracts you.  Let's find a way if that's the case.
-
-[1] https://lore.kernel.org/20261018220253.158238-1-sj@kernel.org/
-
+diff --git a/drivers/ras/acpi_ras2.c b/drivers/ras/acpi_ras2.c
+index 51adfcddfa99..cb389ae6a3fa 100644
+--- a/drivers/ras/acpi_ras2.c
++++ b/drivers/ras/acpi_ras2.c
+@@ -12,6 +12,7 @@
+ #include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <linux/edac.h>
++#include <linux/io-64-nonatomic-lo-hi.h>
+ #include <linux/kthread.h>
+ #include <linux/platform_device.h>
+ #include <acpi/ras2.h>
 
 Thanks,
-SJ
+Shiju
 
-[...]
+>
+> --
+> Regards/Gruss,
+>     Boris.
+>
+> https://people.kernel.org/tglx/notes-about-netiquette
 
