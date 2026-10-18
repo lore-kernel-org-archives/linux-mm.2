@@ -4,126 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91E5DCCF2C9
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 08:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0E9CCF2C9
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 08:57:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B49A6B0088; Sun, 18 Oct 2026 04:48:32 -0400 (EDT)
+	id C0A3B6B0088; Sun, 18 Oct 2026 04:57:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33E736B008C; Sun, 18 Oct 2026 04:48:32 -0400 (EDT)
+	id BE4886B008C; Sun, 18 Oct 2026 04:57:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 206CC6B0092; Sun, 18 Oct 2026 04:48:32 -0400 (EDT)
+	id AF7A56B0092; Sun, 18 Oct 2026 04:57:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E6AC46B0088
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:48:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 63CE81204D5
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:48:31 +0000 (UTC)
-X-FDA: 85335120822.13.C0C1EF9
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 82ADC100004
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:48:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VbaFIZUe;
-	spf=pass (imf05.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792313309;
-	b=W85mE9yp7qB1j1mzADqo8vcWek7zK3Gs/Wpmf258l45DSeM0YvW2jDzYCLeFHZLjCu9n7L
-	v4FKaBvZNzfGWUYhgzjGWAViNs4oL4kDl7XW5cPFcUXuLMfQA7i+YUeUKfFRDOvijnIEe2
-	vrZrs9dVk2/BYfD3+g3jzZVPwIZ3Ahk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VbaFIZUe;
-	spf=pass (imf05.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 874BC6B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:57:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE55A1604C2
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:57:38 +0000 (UTC)
+X-FDA: 85335143796.22.42F718B
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C85E4100003
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:57:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=colorfullife-com.20251104.gappssmtp.com header.s=20251104 header.b=ItiloNFm;
+	spf=pass (imf14.hostedemail.com: domain of manfred@colorfullife.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=manfred@colorfullife.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792313309;
+	s=arc-20220608; t=1792313857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KN/6iLwfCQ//2avSJv9DQ5CIOHPByLS1SPM2UhK/GmE=;
-	b=I1BAAn6Wfjul3tCccgrU1oi34sSbS5Bg1O1qw9mZ/VliF4LeDwK+5tR3GHaVSVhbeUxMrj
-	MkRA0/Vx6UGGWaPLPgpGF9Ov40un2ZVYWkz1vNHq7k3NowxVidMfHt6Nt/0ieO6egFrY14
-	xrTsnzZaQsZw6LSay59RShfuTehYJk8=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a1dede3c2cso9533855e9.2
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 01:48:29 -0700 (PDT)
+	bh=pRpMKu16Q/46x/JCsK9hFw+qY2y44myLhR4+B4ycuBg=;
+	b=cyZGENk0vmre4JUmLJFc+fJ8NxdYNgsl2xJ5e8HRejAuPtqkx2+F2PpK+sPeVPjsAx4T/c
+	tEzdR6zvS64VBtfWGRdv462elZKNIR0A1tP0wZQbCUq8e6VH0CnnNHwxHZ5RJ7h6WOVa0I
+	E18qbMpfus4lOLs5xvO1EOxexDDLmrI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=colorfullife-com.20251104.gappssmtp.com header.s=20251104 header.b=ItiloNFm;
+	spf=pass (imf14.hostedemail.com: domain of manfred@colorfullife.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=manfred@colorfullife.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792313857;
+	b=eAJDA0iXsTuzfZC4F5O+cujbJc82vqOSoUQH1mrtHoCOF1oErRQ8dIE5alKKRGPrPPo05i
+	P9gUTCBBkH06fNdWHxbjOBaWMQhbpVPPJtcQck4KR3CpwjSXFwgLYxZYg9R/Jmdcs6eik1
+	Giy+XPyihwlWd1wmCtdHgdXHOZrEZko=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1dede3c2cso9576995e9.2
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 01:57:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792313308; x=1792918108; darn=kvack.org;
+        d=colorfullife-com.20251104.gappssmtp.com; s=20251104; t=1792313855; x=1792918655; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KN/6iLwfCQ//2avSJv9DQ5CIOHPByLS1SPM2UhK/GmE=;
-        b=VbaFIZUeKuCWQ6dCA3Fh0+EyHidtaloocJA3enc/eL1mK6dKwchBkwj3/qvfMtzktz
-         8GZmXr6pKHkdzYs/Txp9W7PfDs4mBG/PbpodS3KaEA1XWpzDxQn+0b72Gf2bzDdSdmif
-         v/+p1sum2QBai6lR/gzeoMIurMpQdDL3uIWbgcJsJDojNyPaE+8Hr1SFy8j7voCYlkcy
-         ICa4YZVvMi4eAMTL0Lb/rEXlUraYrMJmtgGUK674+WKJX9ZCPJGaO99K9a1/U3t2yzsF
-         rNdt+5LvFb6c8i/58A4ULpWu9KGSeA+kzeEmSsnFiKNMSWh6tHLfIxDp9G0fuxYpyAf7
-         Duyg==
+        bh=pRpMKu16Q/46x/JCsK9hFw+qY2y44myLhR4+B4ycuBg=;
+        b=ItiloNFm82JArPJfTp6KT8PHG5Ple4ngz01e7YiPtnyfLWQ4kxcIc58P0x1z8eAWlk
+         MI3ozGfQQfUPX6i57DzTtaLjp7+Eh52kPyH014sWOPsLAVk0gdzLkpl0jxrWSpcxTCeD
+         7JeyTYSc3+hdkGbefKq1c3A8Vhw7DmABBqtnE9lQCFQguWWltuA262cz8gxuyakxaSMi
+         nd4LMaxQaVQ7AFo8+ZnvTodGiQto4WITHJgphFa5MdOJvDOQZ2AQ5eGo7KwsQOCk4xut
+         UOjvOdJPfwY6nuvhcLLH0tZirwvgiWSu8x0P+R8wXsR4zRQbwDquF9cXsuxDRGzzIG3L
+         aGXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792313308; x=1792918108;
+        d=1e100.net; s=20260707; t=1792313855; x=1792918655;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KN/6iLwfCQ//2avSJv9DQ5CIOHPByLS1SPM2UhK/GmE=;
-        b=WEPHJIQeDTxSKKak+bomsjq41FsDa/3+yn9jtA4WS+eeOO7dyJK+6on5HEWQ6bsDaf
-         FqxN5Pp7yDF5l1BXBxh20o7tLRAo8mPZAqFp+gE6FDsQTwl/Ij89I13w92pXvXsO4y14
-         xEVpl11upefkW3CCGpW4My0VOQ5e4+3jTgFDk/HOfmZjesyF3icTSylYWRtoqQ6zZ4VQ
-         VmRJrLYuEbkFOWC90Pdo6qSptbiZ+Zy2YoaSKpky+msNJl5wNHubCJ45rYP1F9h02GQU
-         /e3iI9bJfWUhlbDz+SgKxOWNpJRzNkc9jr3gNN2HPf4u6mmdR180vifs0yMbx+K/oMIF
-         mZOA==
-X-Forwarded-Encrypted: i=1; AKwUvBzMW4d1fvMxeGFyNIctCNwP1TW1Lig5XXff9eDwETJc7P08oGirsFhcAo79sDrjNJwUaRk1kmfKfw==@kvack.org
-X-Gm-Message-State: AFq9FYIELQusd735pGsbycyXj6b7mdKj3HplrASelMo92N8ReNwKZPH8
-	NILfcTqiNmNhW2Eug4soOYiuVJou/MRDnrUMGY5eX17LnORVpPqlDEA4
-X-Gm-Gg: AYBFou1ujc0lNnmGPi4glggo/QBGsFgq5eVtUIV3AoJpLQnHprOuEbQyggyzDETDWAC
-	LFG5d719RRikMn3oSQHRfRPZ2lPmTE3gyIxDeB/Do26ny/bKiEw4vKGA4ws6sI6L6XzwAbN1IWu
-	1t7zxZSrggeTchoFK408EsHqsnlrXHwHdYogRKbLmM/FnadFa6BTDEEBSQ4pu4ImPmbCJ0nFpmc
-	KBD7Bz/5jdA34sjEG3G7SJAHdbBXqNDoy8W/8ciZDzS9AwTDJLYi/KhjzF7ORgoNttJGwkjJ0ox
-	CN/3WS7m3PGAyfKNlQ3Iel96UDZjarNywDkaq1MUCvRbr906Sk5ci0i4c761PhnzLuPyEs4kS2V
-	LE1KdfmDHLpP/CcOo5FveMDwrrHN1LcCaMqoRH8Mz41EoKUKut1N3YsRJNSvcVDGp6Cg34UhxDu
-	5wcER7k+aZHBTmpidE45JeunwuMw+v5YIiNzLXIyoBjU8OgNOPO0ttSLfPFTAjLZ91AcI=
-X-Received: by 2002:a05:600d:8643:10b0:4a1:e00b:a10b with SMTP id 5b1f17b1804b1-4a1e00ba2fdmr28805675e9.7.1792313307895;
-        Sun, 18 Oct 2026 01:48:27 -0700 (PDT)
-Received: from [192.168.1.18] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1c10fe9d3sm248499795e9.13.2026.10.18.01.48.26
+        bh=pRpMKu16Q/46x/JCsK9hFw+qY2y44myLhR4+B4ycuBg=;
+        b=HNSUI5XtBJg5qc40hp7z41oCaxrvIpVgjhgl7uv5vB5a4e691tFm5UErvqTzT11mJ8
+         1ObZBR51Gh+4hljQoP8GXI4LS1IJaq8bpwi5Iv7SozCUoEsxRJO5JsqMxBCIQCxU07m8
+         GQY07vyeEcCYXbCIIxYar7my9ejszEUh3Ug9b8RiFlZUTZBAVIiHFDS0cJozipdQwgoH
+         o64ctQm2mrjW8dPUMiQqqj9J/8zYkpBIM+qysobnWpTeYpuTaHE7l4spdDmX994SsWIo
+         bmXmfXi5vyi+5vuzjjinqaKxWhn7AnxXcAsH+C55n/D3dqR+Maq+nF10gIq5H72/TwQz
+         l0gg==
+X-Forwarded-Encrypted: i=1; AKwUvBwdz9VH9Xg6XUycv4w7+Tc0qgc0JiXuzUhUceJr2Q7MslQCY2/psvrU87mP9rU9mK9D3/MQ0KdESQ==@kvack.org
+X-Gm-Message-State: AFq9FYL1ilVX2C83lmUErGzhh8ymdEFQ3Px5Lb+UngkOyz5lOx6/64jA
+	avQF54daJdGjaCzbcb0Szxfw1RpUbQYIHOWbhjgacBbfnrd2qfCZP0EfOF86fhSQWw==
+X-Gm-Gg: AYBFou20ou0LbNaFE7G92XmnPZv+DMWNdUyTXhhJ+RmTRGiTsw1T6YBWOnvlAZbQT4s
+	wZeapdzIRnXCtxpASZRxcpaRAj7RIWCOweq01uCpHA0TGy5nQWPg/Lp/xcBzi/b1qUCXbvvfzBa
+	ji9xpQEtAKO1j7a4FazGV+Hwe/LWokyjDbkIjDWll4RvjjPpDh/LM5d+4lBGM9zr2XQnoK9/gWv
+	SJDbDhTpXkAMHlWZVK/OPUyCP18l99fq8+9yiLCUMGpUGZZ30c6A24wxjm4lefKDG0uCmVJerFK
+	heHROVvAIyBEOKVCBuHO8o76Nx/hIk2uJFQwXJurae6cXQt8K103m/U9gCAvc6/bdyMlhRTyXZn
+	zGiY+BHa9jsN0C1QmYtO9sDipd65utRUUHZdx7/Dl1+arYxrQep6W0eJOMX35UGEgekDtq2mOw/
+	OrrlSV4365IFdQ0G3shb6PuflqdH5c6uPLrtci7FrBxzVzUYxLl63r65MOW2d/1tjKy/RbX/0X1
+	OHTuZ+GMTlKyNONH8+GVDacWQsWxytnfTZUryvriz9fdHTHoLZ55MQUw0TFqQYoa93v/RxJ9kz4
+	dMcQ4vMAdtpeOEavy2h9+LEkhooSSa7nJKz60A==
+X-Received: by 2002:a05:600c:8219:b0:4a1:85d9:13be with SMTP id 5b1f17b1804b1-4a1d76031bfmr97737755e9.20.1792313855253;
+        Sun, 18 Oct 2026 01:57:35 -0700 (PDT)
+Received: from ?IPV6:2003:d9:9733:4d00:46a9:a5ac:4915:e68f? (p200300d997334d0046a9a5ac4915e68f.dip0.t-ipconnect.de. [2003:d9:9733:4d00:46a9:a5ac:4915:e68f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd9a88bbsm282747915e9.3.2026.10.18.01.57.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Oct 2026 01:48:27 -0700 (PDT)
-Message-ID: <6b17c6a5-5164-402f-8d97-2b25f4f9ae8d@gmail.com>
-Date: Sun, 18 Oct 2026 10:48:25 +0200
+        Sun, 18 Oct 2026 01:57:34 -0700 (PDT)
+Message-ID: <51c93c19-f1dd-455f-8698-6b1ee30eb630@colorfullife.com>
+Date: Sun, 18 Oct 2026 12:46:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] kasan: fix runtime shadow page table synchronization
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Dan Williams
- <djbw@kernel.org>, linux-mm@kvack.org, kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, muchun.song@linux.dev
-References: <20261018043501.3257632-1-songmuchun@bytedance.com>
+Subject: Re: [PATCH] ipc/sem: account enlarged sops arrays to memcg
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Wang Yingjie <x-professor@outlook.com>
+Cc: Alexey Gladkov <legion@kernel.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Vasily Averin <vasily.averin@linux.dev>, Johannes Weiner
+ <hannes@cmpxchg.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>
+References: <20261016152609.2528805-1-x-professor@outlook.com>
+ <20261016155905.2a659b7bb7d61f33467a3263@linux-foundation.org>
 Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261018043501.3257632-1-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
+From: Manfred Spraul <manfred@colorfullife.com>
+In-Reply-To: <20261016155905.2a659b7bb7d61f33467a3263@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 82ADC100004
+X-Stat-Signature: ttwgbt9rc67u9yaipxzz3cnn3tg3yu8s
+X-Rspamd-Queue-Id: C85E4100003
 X-Rspam-User: 
-X-Stat-Signature: i58uxbm3yfx11ayq58z1cifazxhxyr93
-X-HE-Tag: 1792313309-10912
-X-HE-Meta: U2FsdGVkX192Vj1S7+LjFFf18IhG0Jr5Rrhg1r1aMeLiE2Az97HBBjSxjXtQua+cwZg7s3YWhwk008xMxNq8SgIDQc7QUuplJS/xub8y6W7KPyKaweU/fpTmNXjVhTs2fVIsj3AXGZLl/k8GyTsteggB+J3cq+zu32r0k5udhvW9jcruhJY9q7daMB1MbwBpXMbjl5VifcZHzMMPVT4TfDVQgku0WHFL2S/pkZ+6alMAa6IDX1Nw37neXyHEvzYFUOzJ2MF1r2A8Qx0jCjYcwJ5cn6fARmxMqw1sAzoSyWSk7Q7xCzECLarFICb9Bz6CjdQEFVyeV36Y2eDIOTTO1J/Uhky83K5KxSrcwkdOGlM0b2/9OZceepiw3xYVJuxiyTmQc8nPUwu3B+hqPIzcWe7zDUhDdVo6bNXwvB8fTKNVwdSdv3qSZofkepPCbJE0xW/JDUWW3H6TbYmevS3YI8ikBiVtIdjMSLcKYuaL/OrAJHztuIfwlotJxpx3w6idm4yhqQvrt5yFmhz98PLgXELKcytpdExsPp8BEV5iWMgM8o/tqC/42ijKP1XfX8NyWj/HNuR4Jyabl9s2yk0Q84w79Q7GB5pQGlflWdDu2zn/QDVHvHduj4LN0kTyC2Znf9Juhj+mnhr7wL1trwxw36UWTCuPKsCIqT53Bo5Wucxo4M0cjIXkfV5mQ0O3gbUiHPFpO+m535mkvVyOnmghJsVk0BVt94J1UcTK43ZkJtds27AvoP6UZXdT92vQwUyMJ9kGANgSU4WiKRaYdb2LDh5ngnjKKvx7ysO2rGBh5zQ2bbpRThgxAONUKMFdbwxqWX9H/jOmH6rM/DliXFYtIAMWnb9VCHTY75PhBLY/7NtjvLF9lOnvR45wFvq2GFg5VH9EvhcXnyvfMfLmeVpk32BtQRSmUKiSMtF2Vx7Y1ky8lFvO6DKvuWkXyy0XntvwD3dytxbqgmLcSngKwJq
- 3ZLK6kWT
- mk1beoOjz7QJkNJjDdOF0Asg85JYEcvRByo5bXi+nLIO7lxbZt8UNnO+hX+ELUHkmqyay9PnE0cbvHFpGryssC5mYXv+2uHAOcOZErhuwK0z3r+2QAlnqkSpmm8M4/TJ1lF0B8TBWH1+5z1SKyWeX1P8CgesBVoNums/4g8v7sbS21nHvOzDqbWcX0vtijR3a4+8nMK5xRWqyBShqqENl+RcyziyyRRBGQVzDFea6SJNbMyG7+xmfJsscNeVpjdPyVRvkplEbcmPMRitzU4tyCInXDtJ39r+ClFQi3SGAw8JbY8mMLw8FIjx4BXhvkmkNiHtyRgJR2N5BvRfK3NdEXTq9ZxEFYlvf1VWugHvA3aKGGLlVjF5COzUGDAZs+PiuAQyGBafqxlqbvCIRV5+1gMcvY7NFVEtA9JXiBDYi0eQakqZfKgWzU8y1ElbMKbzgqSBq8RuHt0FyGHpU3/Ma/R4NGTPvK2ymQ+cXP74164w3nzjdtF+UPHMtCGe6+eclnf6J8bQgU0c1d2HeHOpC74Knd1VWBCJVWIwL
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1792313856-227948
+X-HE-Meta: U2FsdGVkX1+p62SHWFTgigHt8Df4mXcCznn52IpTdV8BeR7hIDD5lPMDUd0LYtZpwwCTv/RMTThwseYBsyTYSYyMNMA0RaM+iiBTUawb4Or+8dCba0SgFnc2s/A6S06r6GTC3yZejWf4S3zYoySpFR3quHLHaHz7HDyThE2JBEpkyixlh00cHgpd6Mo3+NDCGeDweD4ge3RoSKpdn4vXgSEwBGOjNHmnx6QHbRgL+WSRcpe81zlxJnFFTjt9MJOn3TgfzRoIMajzx3vdlRGkT+h86BHxvUaMW0vlBlgPGZ+sjkXbdk62DGT3Acc1F827gy+cVhL3XcVUwrT5sOKiowP72LYevNpiO33p7owdmD49qN+j1C47CGmYTKfzx573RO8TzbA8sumZPYwDT0o3Esa2FiGQuoT/mUSvflGUeLRFzSa1P+wBeeVF1sNU6i2eb1q0LmpbUkN97SEM+EWDhK6uP20x4U9Hqlto7mec7sOw3YQHOPUxrfHS02roeqMJwUc2ApIba5NeUrgg3Mo84S3KBO3N6V/EDMwRN2QF+jcVJIEIJOhCh9VPsfTSXMTugfcu8jbEGhTM/NcITkdiLgvWNfReT1zqvYxCQBQxYnUJTQ2NQ0UyCfycAsjtujyqL2x7RpFUA7M3NWJ0QB7mTcxnhEOtgmJ/x5iQjYw/bhNFbzIj/lPj0giIPkZ/eAKwbSIT5aBII4wstowWZeauIyPL4qt8GTWFkGI2OoTOC8K8WaO4kj4nPjE9YDajA+P1+KScUu0yJUHheSySwP4T8vm4YE+Lmci1Jjf94bwvCsGhDMKaVDqX0AA2C9+SCMKadrhh2R2uNo0jRjcUQHMVKO6AHQF05yUDtn5Z91tEd5XwfQaXrSs7XxITajEye/IsAMCD5Cq11fW7meHBDrxIPGPKAxBGkr6wzctN9Ow7MbZP/8PVM+UTTFPuDINGuzIOMvK2PJJcXtIRhGP5/AG
+ Yepj9LFz
+ 97C33VwHu7P1ItApxX648J7LPbATN1MOUHlXyKSYXberrH+i4C9Eqv27oSdmXnJ3BtZAAjLeefUYg9SlpQZ3r11GVElglmcpK6zG7Gl+Jj51Ohcttihx5hoHAJRav2OOvPtmbj8bAOH3fkdjiT0fyEauS3ePzltvCaLoYUpa+quvu87hjU4hBKHZzJyjZsjcJGUczAHFKFbJ+k8GLWh4kGhutcJePARxyBHskYF9klP1oNOKr5Q2AUK8WyEI5ZJ7taoG7yAsmTJJ7tDYRm1DhUD+PoIMO8/x7QAsqlG/hrQKN3Fa26yAMa3YSErIzC02rPLzM0Q5o3m7BLE/ht70DMdz8Kz7kblxO/KVaYssTwrXDIUla1AqNlh2SyB6I9YPBPzN6qSQno6y6UEogxGl9DcNLcjdV0Dbc6y2f8FJAXoJ3rgzTBxB2JRIonqkSvlAbpQgMSXal1DxYn6bYPQwI/9W536Qn84sovnHEIMODx4/vCDigVUVBJuR0OgHC5ZZaRfrb24c9yAHEvSmNHhKRkVDs4qldIWT42MkRRZYPv1FyQZ+tf51IKJd0BqorlK96D8+kKEDUotLEEfMD2Z9OMno0xPYB0qpxuV+ORYi2Tc+lncjvouO3iOuVKRTdiqT0NNFeP0IxSX854nL0dzh53vmoApMDbDqAPAHCuLtCL9K/1Nfi8fTQMQBavN2huWlsGL8d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,37 +131,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/18/26 6:35 AM, Muchun Song wrote:
-> -		if (IS_ALIGNED(addr, PMD_SIZE) && end - addr >= PMD_SIZE) {
-> +		if (IS_ALIGNED(addr, PMD_SIZE) && end - addr >= PMD_SIZE &&
-> +		    pmd_none(*pmd)) {
->  			pmd_populate_kernel(&init_mm, pmd,
->  					lm_alias(kasan_early_shadow_pte));
+Hi,
 
-what if the entry already points at the early shadow table? this walks
-down into it then, which loongarch does on every boot.
+On 10/17/26 12:59 AM, Andrew Morton wrote:
+> (Alexey, Eric, others: please weigh in)
+>
+> On Fri, 16 Oct 2026 15:26:11 +0000 Wang Yingjie <x-professor@outlook.com> wrote:
+>
+>> Commit 50ec499b9a43 ("sysctl: allow change system v ipc sysctls
+>> inside ipc namespace") lets an IPC namespace owner change kernel.sem.
+>> The SEMOPM field defaults to 500 but has no semantic range check.
+>>
+>> do_semtimedop() allocates nsops * sizeof(struct sembuf) with
+>> GFP_KERNEL. A blocking operation retains that buffer, so a user can
+>> raise SEMOPM and hold large attacker-selected amounts of host kernel
+>> memory without charging the calling task memcg.
+>>
+>> On the current mainline base, one 10,000,000-operation call retained
+>> 60,936,448 bytes while a 32 MiB cgroup peaked at 909,312 bytes and
+>> reported no limit event. Sixteen 1,000,000-operation calls retained
+>> 100,860,416 bytes while the cgroup peaked at 1,310,720 bytes.
 
-[snip]
+Just for understanding:
 
-> -		zero_pmd_populate(pud, addr, next);
-> +		ret = zero_pmd_populate(pud, addr, next, mask);
-> +		if (ret)
-> +			return ret;
+Each sleeping thread (within do_semtimedop()) can use 60 MB, assuming it 
+triggers a 10 mio semop() call.
 
-isn't this a separate fix? it's not in the changelog.
+It could be a bogus 5 mio times "increase by 1, decrease by 1" semop(), 
+or a valid semop() on a suitably large array.
 
-[snip]
+>> Commit 6a4746ba0619 ("ipc: remove memcg accounting for sops objects in
+>> do_semtimedop()") removed accounting on the premise that the buffer was
+>> at most two pages. Preserve that default-sized path, but account arrays
+>> larger than the default SEMOPM value.
+> OK, I think. But...
+>
+>> With this change, both test configurations reach the 32 MiB cgroup
+>> limit and the caller is terminated by the memcg OOM killer before it
+>> can retain the enlarged arrays.
+> Only if memcg is enabled and the task's memory cgroup has an effective
+> limit.  Otherwise we can end up handing out idiotic amounts of kernel
+> memory.  Memcg accounting isn't a substitute for limiting the
+> allocation size.
 
->  		if (kasan_pud_table(*p4d)) {
-> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)
-> +				continue;
-> +
+The previous assumption was the other way around:
 
-doesn't this leave the range on the zero shadow, which memory onlined
-there later then keeps? would always allocating a table at the synced
-level once slab is up avoid that?
+ipc is full of legacy users.
 
--- 
-cheers,
-jose a. p-a
+Thus any hard limit risks to break existing setups.
+
+If I remember it right, either SHM or MSG had code that tried to split 
+the permitted allocation, i.e. if someone creates a new namespace, then 
+each name space inherits half of the limit.
+
+This was removed, since memcg would be the better substitute.
+
+Old discussion: https://marc.info/?l=linux-mm&m=139639755705736&w=2
+
+But I can't find right now the code that tried to split the limits.
+
+>> The sysctl also accepts negative SEMOPM values. Since nsops is unsigned,
+>> SEMOPM=-1 bypasses the intended operation-count check.
+> Let's fix this first. nsops is unsigned int, whereas ns->sc_semopm is
+> int. In the comparison nsops > ns->sc_semopm, a negative SEMOPM is
+> converted to unsigned, so SEMOPM=-1 effectively sets the limit to
+> UINT_MAX.
+>
+> I'm thinking:
+>
+> - Permit init_ipc_ns.sc_semopm to be set to any value from 1 to INT_MAX.
+>    This preserves the existing ability of host root to configure larger
+>    limits.
+> - For all other IPC namespaces, permit values from 1 to 1000. The
+>    documentation has long recommended 1000 as an upper limit, although
+>    it hasn't been enforced. This would be a new restriction, so the
+>    changelog should explain why we're introducing it.
+
+This would mean workloads with higher SEMOPM values cannot run in 
+containers, correct?
+
+According to commit e4243b8062c1 "ipc/sem: play nicer with large nsops 
+allocations", values up to 1000 are recommended.
+
+And 
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/5/html/Tuning_and_Optimizing_Red_Hat_Enterprise_Linux_for_Oracle_9i_and_10g_Databases/sect-Oracle_9i_and_10g_Tuning_Guide-Setting_Semaphores-An_Example_of_Semaphore_Settings.html 
+recommends to set it to SEMMSL, i.e. 5000 in the given example.
+
+> - Validate the new values before installing any of them.  The current
+>    proc_ipc_sem_dointvec() updates the live array directly, and
+>    rejecting an invalid value afterward would leave a window in which
+>    other tasks could observe it.
+>
+> - Update the comment in include/uapi/linux/sem.h. The warning about
+>    physical memory fragmentation is outdated now that the allocation
+>    uses kvmalloc(). Document the new 1000 limit for non-initial IPC
+>    namespaces instead.
+>
+> Ideally, a new IPC namespace would inherit its parent's configured
+> limit, but currently every new namespace starts at SEMOPM=500. I don't
+> think we need to change that as part of this fix.
+>
+> Then please redo your memcg-accounting patch as a separate followup,
+> with suitably adjusted changelogging. That would provide additional
+> protection for legitimately enlarged allocations in the initial IPC
+> namespace and for allocations between 501 and 1000 operations elsewhere.
+>
+> Thanks.
+
+
 
