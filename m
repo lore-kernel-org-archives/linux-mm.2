@@ -4,88 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD2F6CCF2C9
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 04:37:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED9E4CCA490
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 04:49:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 997986B0093; Sun, 18 Oct 2026 00:37:25 -0400 (EDT)
+	id D31746B0088; Sun, 18 Oct 2026 00:49:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9211E6B0095; Sun, 18 Oct 2026 00:37:25 -0400 (EDT)
+	id CE1896B008C; Sun, 18 Oct 2026 00:49:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E8A26B0096; Sun, 18 Oct 2026 00:37:25 -0400 (EDT)
+	id BF7796B0092; Sun, 18 Oct 2026 00:49:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 439F46B0093
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 00:37:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A8A8B1403BC
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:37:24 +0000 (UTC)
-X-FDA: 85334488008.30.F3D7E76
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E49D740002
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:37:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kA3anhgn;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792298242;
+	by kanga.kvack.org (Postfix) with ESMTP id 88CA46B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 00:49:26 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 064E6A7E9A
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:49:26 +0000 (UTC)
+X-FDA: 85334518332.29.DC20E14
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 00883180002
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:49:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EzZW6EXt;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792298964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X9BtmiPUdXaKyy1Yxwr/J43UplsvVeIhpbcLZE0ZH2o=;
-	b=pUj0Gr8VR+PoZ/7GMnb+wRiPuqyn28Gqzo6ovbOTO+vkZC77+XoXZ7CMGe7z1tTBEjQxFS
-	slGR85OwHJ5zEUr51bBdec0HSiPYuo7r8I9M/6CLLLvJ4k51xFTczvTjArze5IknGo3er0
-	ezkWjx2eqL6uqcLptSHsoTDSpo2VuRs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kA3anhgn;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792298242;
-	b=oUWVR975g/u7YGhlNd3U4DVhqD3KRDMenjln+THCJmgIKIRUNqwhtNNwPczrvIVOtSq/FC
-	0DjIUEyaIFXNnobMHOQHg7JUqrnAnf5FNspEFo7zPAt3+Tz26wImH8PpSnxDnDskV0SMTc
-	vmMXQVVN4bBET2ZUZFj+W+RIOMwTbEA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E08860142;
-	Sun, 18 Oct 2026 04:37:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DEF1F000C4;
-	Sun, 18 Oct 2026 04:37:20 +0000 (UTC)
+	bh=DbA6yEaZjrf3fffhOQxM5ImzQvm0SaTSnQV8IjXbQzQ=;
+	b=AO/PAk6WC6WGnui9Ub+GM8IU7HMJzV8APVZjVFQMF/K0txQyuDg0rgcf1eQOQTxTFB1jPg
+	8knJshSGV6Cnhl+EZghLCq47uDKdZIemxiWg9+vQhk3sYJlUWGDNjUB2SzaYwp4VNyqw7p
+	djTfCpGeeH3q6HFRMZfYeporjXYEVIg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792298964;
+	b=foALIN6dtsHhx+YuF0r8EH5mKwXuD2fVHnuBNJhX/eiAf6n707rAnIagn+ygGN5ybKEANe
+	Xb1CSiY92jJwBhtiM4JUCLb7RoHXZya5kIkWrWEOe2B6ngtd6qc3sLZFTG2EqB6R8nLe+T
+	lvV1kRpY0bcNIF9kRbcrY9Xk0XiMp2A=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EzZW6EXt;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-535f598d126so153391cf.1
+        for <linux-mm@kvack.org>; Sat, 17 Oct 2026 21:49:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792298963; cv=none;
+        d=google.com; s=arc-20260327;
+        b=K94gV0akPspNnpARiDRhMJDxMeQmw8JZlfogOvOgvdZ0WRXCjpnYkbkufybfZpvx3/
+         wUT2xEV74PyK62HwBhHzSVTGJbqi4W5aMOxj1LWNy70BcWJyyi1+yxL2P26615h8QW5D
+         50vxioIsv/YL8UM/NUkMVdcnCnj3vfuW4dLYhIqp6/qZR83/OBC1bwXaYnrvx6vx0GtT
+         dhxTphZIZrJTbxWVSr6ofVngzWNAxS+tM5Z/3Gk9AC3+Opr58zwZ1h0+7mJQ6BcaPuZr
+         qfkYSJNsQVUdPKHTIY0jQfIuCarKHmPZeWsoX3+FsCCPJufmrXa6ht+VZQJDEfIFHhFR
+         fDEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DbA6yEaZjrf3fffhOQxM5ImzQvm0SaTSnQV8IjXbQzQ=;
+        fh=1hgo9A9otDc83I44H72lSB4Ql/24d7nuDftqhrnsUaQ=;
+        b=O9uncTPMOFC/FGa99FaKCXnJ8bJg7BDGpHIr7puTacB/3H1SOdUB3U5GdjE9GX8iDR
+         ICGG9Ze0dMYHWXZfYGjTvPMXlBTqLOZauIBHhpVX5qk6Mvzy9h99x2FNMuZ39piK2JM0
+         MQPJfRqw6pt0SYZEsr+9G476Tu945sfjYsqJXoq8kXl1wYln8q4x39DUsaRL8IlQJisO
+         csltl3t9zefFrefgjsjMMnH8283b72qdsy4FxHIUq6dESLULqbX6eJTkSurPiqToGuSy
+         gSNfVDfe+Xgp/qQHkurnTdIZNfSVg8t+W/URfCsJeAlDn2qee4ApLwxpKfBG2us1gZRS
+         iH2g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792298240;
-	bh=X9BtmiPUdXaKyy1Yxwr/J43UplsvVeIhpbcLZE0ZH2o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kA3anhgnIbg8huv8B+zi9XeS9ph1nKGLhlku8EvIXLFMJ2JBxs7t94mE5wJa8QOy+
-	 1pHVBECkOGC39HNNw8cZ8VFbuhKt92jrL7b7BieMeFAYoXyWjQUaO+Nsz8DeYmsEfJ
-	 +mUGDScckDLtFEl5d3D4WWIm3ZCosyMH37636els=
-Date: Sat, 17 Oct 2026 21:37:20 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+af37a78f810994eae641@syzkaller.appspotmail.com>
-Cc: cgroups@vger.kernel.org, hannes@cmpxchg.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org,
- muchun.song@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in filemap_fault (4)
-Message-Id: <20261017213720.4f529d19d625743bba7a0e85@linux-foundation.org>
-In-Reply-To: <6ad407e5.6814cce4.34c49f.00a4.GAE@google.com>
-References: <6ad407e5.6814cce4.34c49f.00a4.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: i7uafcoxk5sutn7n36ijun713aaoju8u
-X-Rspamd-Queue-Id: E49D740002
+        d=google.com; s=20251104; t=1792298963; x=1792903763; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DbA6yEaZjrf3fffhOQxM5ImzQvm0SaTSnQV8IjXbQzQ=;
+        b=EzZW6EXtaZCwX3SomPfNjzUto4VWBJqBZqYo3DttXjIOrSdxxGZtzFkgW8LRlUqRiG
+         VbM2ZTLzSI8FJRgyOC4TuclP3X5ZZfXsG+IsdiRHY5VQbbsHRVGBb9UJdXzp97yMLZTD
+         KTSX+oVisJ2eC5hG7AeQXcvdDKkP1My9nZmgcdIGjtn7fyYwlD2cT+gmLZse7Dsyj1gD
+         91LEIvzGh2hBkYPi8Ndut+Rw5QhNq+lzpG4HeBh23eVkws8vhVk8aybD9FWMhE/vB+2Y
+         d+332/AZNTOJtgOd95SPp6w9E+L31n0VIDf6Nhd7exxEytzpRj0qjIe4/PzrTEy+781d
+         /mgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792298963; x=1792903763;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DbA6yEaZjrf3fffhOQxM5ImzQvm0SaTSnQV8IjXbQzQ=;
+        b=CJbpX9YJNT5CkHrvnYOPTdWgLSHX/ITAVGOj/InSh+jJUsTiCcdrlLO0NNmWWIBCdk
+         fsh/Ogh8ZgSqCwwQlUlMTyc+UsoaicEVOmIryoKwz4OxnbKhmB26/R1ngg0l5oOfmejv
+         GS4m87M+9pLuvXaJoEwST7raM7bS244lXM9AvXn+njRUXYP4lR+sijun6GBC0ni/omxg
+         vqPXxBnFvXXbFfezB8zBjE/06PsEUqL3OjOdt04ibI4bo4bU3Szlesdn8M+FOxJHjsXq
+         Csvy8ibnJsxNXAKoWmYZrI/nRxBHD8x66GyNrb//PbGqFhh/NJU9coj7M8uczYqlT4aO
+         CvCQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxX2IaOpoZrYyGkJXEl37ZAxIO6VJclZoJYHuDCNhiRn7Vhi6dXBvVW1i5y6AD9NgUze1C653jpRA==@kvack.org
+X-Gm-Message-State: AFq9FYL1nNZ5/cYuSwgyVyUbNaJ0pkIPWUfZcQU45i4NADxCUKlB1fTK
+	tiDFutdkA3RTOZvCexKxJFb9SXQ8aDKNe7P3IIbqOg1JSx2yT8s343XS8HVIaOlOKzNe7b69KTJ
+	RXH6OfynlCBwZMTPhM70GkJN/X59H1393CIhgGEfp
+X-Gm-Gg: AYBFou1pl1O7q5e9tpNuKjEnp7jORhNpc9S3XvAwOA/a4nU2vQB59+WSl/FrGxwL5tT
+	2kt4dtG+mECpfYc3Fo3zMEoToCGtOJGNJdxEc8C+jweR23dzgTcO2XI08v8BS4YaWGqg+TNqxue
+	wcbNUIwXaYW44CERvfkUlSzkPtlj0TW66TzCI1RzZuDqGHEDtWkI8n/4/Jb4JE5JN0NX6Aw7VAB
+	8ksQ2BJpuzFqDS0P0R16O6UVxWUS90xdx8lidvdXP3LVSJYP8k45dLC7cDH1ldoUFdGiY7hqobs
+	tVccdxeiEMAQPB/YzCo9Dj0UGgMs1Zwe7TIbG7cl5cT8ufHLhOhnJweWPSVwKKjQRa+d2o3w/eZ
+	rXxjiv1yqsnlmTy7TxwaG8zZd7TWhmBDLeFrEFQ==
+X-Received: by 2002:a05:622a:5a17:b0:532:9003:35b1 with SMTP id
+ d75a77b69052e-53649abbe44mr16409831cf.2.1792298962267; Sat, 17 Oct 2026
+ 21:49:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1791410885.git.abhishekbapat@google.com>
+ <1f77364a04d0ae20cf07efaca779756f92ec39f6.1791410886.git.abhishekbapat@google.com>
+ <ed833aa7-90fa-4c44-a423-c5b689ede379@linux.dev> <CAL41Mv6Kp9qLtPum36WaMpOtrmTG3LZoEXyD=s78DH+9ruKO7g@mail.gmail.com>
+ <7473d6e6-cbcd-40f5-9b48-e2cac9c926f1@linux.dev>
+In-Reply-To: <7473d6e6-cbcd-40f5-9b48-e2cac9c926f1@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 18 Oct 2026 08:49:09 +0400
+X-Gm-Features: AclHuK8Bgw5pdULwObzqzfnyRpCU37dJNp3J_a4l9O7nErF5gZdd0YKnivN-Yrs
+Message-ID: <CAJuCfpFN6YuBjFA+YzyEujs1G7Vn-BHG8jJ6_ffx9vKOPUr4qw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] alloc_tag: Introduce IOCTLs to toggle allocation tracepoints
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Abhishek Bapat <abhishekbapat@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1792298241-832115
-X-HE-Meta: U2FsdGVkX18MIWjH8mYAFCabR2NehPhfZxWNgVk7kVjgd5Ka11h4687Sh9JA/b37bFAJ56fbX3FWFlmW3TDQKPrZSozcxf64vkRupvRi6rZ15lOL0gKTNeZ3wX5VLDrGP/uSsoTTRQtkSbbjppTO8Uzhlw2qRb56Sl3ekm3EpBW77SZ3VjxruAm13nGSSUYWI4SqH86jcvVlrSC8p9x8cYGx8NMonsk50vXCDvPNU2EzbKzmAuWQiLMJMJxTMa2vHRX6ncnjBTBUClhQNEdQom1IBrK1mSNsVh9euvzITzM9xOUBMkyRCFoRkX2n3mAvbXpYu7j2CrgMy0inBtmVjcSykWEw5GrxtSRkvSS81ZTHVLom3cxzt98IsBXx8OLftKVckoSBPT90MQRFFC7WWsK5B9cDciy0Q3epauvX/vRyuOE0MEO+MiWuKcylqtXbLNgj4NicLw6Cl+6KsrIo8VrR3CY/XQjqUq6UeJz2VuBFatxMLAbMtNH0cTY2CtzmpQe7yDjXwvjCDGLu1MjUi2Q0IomoXl1s2ZirbIujJ5tLnJxL/EZpM3z2ZAv2Qim0jp97MmYDN6WZjEiapswd/Zm/94fN9LjZcTGYutp7ubgzlmbloie72oGf2IWKfehYDNkQ906FWK1EXLjEGI7r+o0507v43fVOYgtKOimTXqi63G31x5n6SrX0Se++ez3itFUgxWybiTPxi6Myryq3uQTMAzTHsjY7JFevcMIGt8z0uv2U/rMInpi2IRzb+OJ8bGotxdka3YS+y+mnuWPL52waq35h6dh+bIrNyr1zRKqsVx+tRN5pXbZsttOtrzuX0T31CL90XYoazNl/4Z1vctkPot7BLbQn+cXMCcuTAa8le57dcMFLEzTmagnTNy48QILhMlBSwog6kUkMXyJZWFHypiqAKzr4oyvO7lfhXvDX6ncKfqYpQdksYfHcVemMcRKx5hffWsi6NrrZr6B
- 281xvplj
- I3/r0BThVbP+jyoI6l692CGqN+xLzJ66pG8JJ3eqACIrsr4ClxF9CHMTIF3PupkhyP7+itxXCpBJ6zQ2Xi1BjVzAtswy2Ytqfcv69AQuqUXQf88szLDFXMtDGkj499xyom/WYo8Zcm9YP9nTdsvj0qIDJ1RxeSFHvhmufuBccq4Yl+vGRIhCYS/4myEq2R5ECkESegQ43fZm8u9tWBBUAWYuAsrG8vg1q59wG5kL/mtYxMmgp77fgk81wfATmkV0pXmH9jjTIYVS1xHTGIPN3tWSbzjC/Kd/XUz+CxhOXijSXQ80wG4N98Mi195x9Kwik9yL1Aq1O66P/Sh08q9yuC+uCCTsC6EtYbhj9xyzAg+nXDD0uOl2pjyWBef15nfDfKINAMYwNuNTzvd1gjwHz8yTPzlJPvhxP+d+nLWUROKBxfHCorIRMRcYGwCp9iX20pg1YMUOQ21kCmDuvo8tZR7GJtxGNf84eeQ+PkpZpCt3lhJu8xyTBfKmV1V5s+PfXU9gcZcrrCIRuRMiEITjuL2dQ4xlW0D6foJF9qt2zPH323MtqXEBaVDZ+7j0jFPmWWlVOGPj22MsHmNbhXgVTY7qGuV0gNuBDm2lEQW9BJn6Yo5lyj4DVl+j7krGQxZekJo+BKtuMt94Uv3WD81zNldYgne+fyaVxno08utbHPv098F9I+qs14NnkGoU/K+NJBsnuSMTUYeZOz/rmxh7uD1OwMhR1757CteqQlgEwvkF5/oY/aX8phPc8CDgKewDq/aNDbef0SFXtk5h7t1uk/RNJBKR6LC8yau+Nu4fUnXwNp2s65Sr/mG4JDxKmzQbOGSQfhBk2XyZkbCCyBlAqhVN+S1dYBXAzy9Lnt9O5EMOoVHusdz6E9wuKs8Fjd3ZLxdOPpYEzKqpPZGrZB7Yfj1GO3reMfZg3hq59mbo/DIJffrO5mGx5C3NARZUKPb61RV0PSaX8mrocgsWUJc5IxllUGJyb
- Wj3/WK0Q
- T6qtYVqO+5HhbosG2uy0Muq/CzmKwmz4uLr8G4BQxs8QeYr7S5v4ng3Fm5sJdHB0UtovU09VIb9YvDm6jSKID9x/gplMh+PZKwD1LVJj5PAaeifK1VhtIGrzQTuLD62ISL6QRXor0/wb7G4J2YWPljYAxwxAc573U76bljdl5yu/U90lvPa2MSN+f0ZJSoqBxHgmkoccgdJAuab0e97x/g==
+X-Rspamd-Queue-Id: 00883180002
+X-Stat-Signature: eyef7574awghpo3b81y1end8gqx813ra
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1792298963-479853
+X-HE-Meta: U2FsdGVkX1+yznxd/xK47dhmanNiYQU1DymGMFDfOX2/NbEvEILoW3Muz050BWESGdPDWBt+Qb3gFBHhIqAJiBXlRjOcWmmHuN94fAALCSp2EybNLnbgiKItuHze7u1Osg/8+wfFuTIhfiE0j0KqA5dMO0ek6vuxZGOrW4iV+U7aoeES7TAa21agSuoCaO3zJTk2reTaOtTd35Mjg6Lg8k+tUUW4k1u4cS6Olj/Jt1fcZjnaZu5BBLwo66yTzKPDDrMVdPTsNg/PfTtkJ9cujgH8jywBVGjImhAnu+SrsJabPQ2Izb0uqdon4pcE4cD3JiGiJhBgaYxT45O4a4OIDcNxympekJ5pOp1SDol2mCfxppC5SRX7lTvmaY3RrFxxFKoPkaVfSucYAA+MNibX+Vzuo91v85tFYuXVK6BOmydO+AFR1ssQg6B/v6QFILeG6KCL4gbu6zDlc1w14mt3Vxycbw3CmJpoi2IZts6BNTogax0xw4qZ9U04bsQfbipXzLHkvyUAd5R7pya9bRCM19gLN4MRkEjqEev0NXDFFfWaTlJGXwpZps9XzJ9JKDnFL6t27SZaSpuwaOxr32kFQJpOEpblN/FBu9q57SrZZ8EE3sak7ts8NlVuot1+tY4WUP7iDNw9vIY4l1bv18HW5iG8suEeB8aL423Z4vDemx1N5Ft3uxWjT6FFtcfxcrqE0TB13dMDY2FioXbZdniWrJJ3S1owwUjWTUgGUlr5nR2XZzrJfbj3T2Pyo1+4BPhTJpjNmoK/GPwD6CCUd9YlNMbKuA0jFzqAZm9IpDx8QLhnXC4G9ulvHJADYUhbQh10tRNjm0O/yuZ8seeNpkNuv9SGuhyphlJgqdDPTA47gFjcYnUZgLCSxLdznIADEHEWQYyYgg7TaDUJZIqQFDiCGRfLIRauutdYU960345CvxkCxv8CYOabFzxB3nd8UtlB4q9fgAhIFCa/NYsvV4l
+ 8h+/36+Y
+ /Dohtv5eGZuVJ8wLzhvAhB+H6UNXiYxz/z7CUIGqH32SRHrIjEpWZSbNygMj8QZuHVVCDLE88+FuK9MBn5jEQKGZm4YuO1TLUsFAzwhVMzEt1YJoYtnG4Px2kjU7DK/nf24T4UzytJkECkCxXTCGY1t8XyTEYSS7AJPRet8N8YGT8LpcW+h7dwJCMUEvEdqdqajpBK6mjFekv1v3eJJs+Dqk7v+ZCK/RlNA+k0sx7N7RjC2+XF2PeE0zFkyi+sFeUR38aH4qIwBvtmJX8sgC5TzbjJN8Bmm9bpiqV42biQqgF6nwKcm8ZALRP6w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,204 +144,529 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 17 Oct 2026 16:42:29 -0700 syzbot <syzbot+af37a78f810994eae641@syzkaller.appspotmail.com> wrote:
+On Thu, Oct 15, 2026 at 7:54=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> Hi Abhishek
+>
+>
+> On 10/15/26 01:18, Abhishek Bapat wrote:
+> > On Tue, Oct 13, 2026 at 12:41=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrot=
+e:
+> >> Hi Abhishek
+> >>
+> >>
+> >> On 2026/10/8 06:40, Abhishek Bapat wrote:
+> >>> Introduce a new IOCTL (`ALLOCINFO_IOC_TOGGLE_TRACE`) to selectively
+> >>> toggle tracing on allocation call sites. Userspace tools can use the
+> >>> existing filtering mechanism to specify the set of tags to toggle
+> >>> tracing for.
+> >>>
+> >>> To facilitate low overhead execution for non-targeted call sites, add=
+ a
+> >>> new `CODETAG_FLAG_TRACE_ON` flag to `struct codetag` to track per-sit=
+e
+> >>> activation. Protect these conditional branch evaluations using the gl=
+obal
+> >>> `alloc_tag_trace_key` static branch and an inline static key check
+> >>> pattern in the allocator hooks (`alloc_tag_add`, `alloc_tag_sub`, etc=
+).
+> >>> This ensures that the trace events are entirely skipped when no
+> >>> allocation call sites are being actively traced, leaving only a NOP o=
+n
+> >>> the allocation fast path.
+> >>>
+> >>> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> >>> ---
+> >>>   Documentation/mm/allocation-profiling.rst |  20 ++++
+> >>>   include/linux/alloc_tag.h                 |  47 +++++---
+> >>>   include/linux/codetag.h                   |   5 +-
+> >>>   include/uapi/linux/alloc_tag.h            |  13 +++
+> >>>   mm/alloc_tag.c                            | 128 +++++++++++++++++++=
++--
+> >>>   5 files changed, 187 insertions(+), 26 deletions(-)
+> >>>
+> >>> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentatio=
+n/mm/allocation-profiling.rst
+> >>> index b241450394df..63b668466342 100644
+> >>> --- a/Documentation/mm/allocation-profiling.rst
+> >>> +++ b/Documentation/mm/allocation-profiling.rst
+> >>> @@ -149,6 +149,26 @@ expose the full call stack and the lifetime of i=
+ndividual allocations:
+> >>>   - slab and percpu: the address of the object's `codetag_ref`
+> >>>   - page allocator: the `struct page` pointer of the head page
+> >>>
+> >>> +Events are only emitted for tags that have tracing turned on and whi=
+le profiling
+> >>> +is enabled. When no tag is traced, the hooks are behind a static bra=
+nch.
+> >>> +
+> >>> +Enabling Tracing
+> >>> +----------------
+> >>> +
+> >>> +Tracing is toggled on and off per tag with the `ALLOCINFO_IOC_TOGGLE=
+_TRACE`
+> >>> +ioctl on `/proc/allocinfo`. It takes the same filter as used by
+> >>> +`ALLOCINFO_IOC_GET_AT`; an empty mask selects all tags. Size limits =
+in the
+> >>> +filter are checked once, against the tag's size at the time of the c=
+all. Tags
+> >>> +already in the requested state are skipped and a -ENOENT is returned=
+ if no
+> >>> +tag matched.
+> >>> +
+> >>> +Tracing is turned off for a module's tags when the module is unloade=
+d.
+> >>> +
+> >>> +Memory allocated before a tag was enabled has no alloc event but wil=
+l still
+> >>> +produce a free event. Likewise, memory alive when tag is disabled wi=
+ll not
+> >>> +produce a free event. Tools should expect unmatched frees after enab=
+ling and
+> >>> +missing frees after disabling.
+> >>> +
+> >>>   Correlating the events
+> >>>   ----------------------
+> >>>
+> >>> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+> >>> index 49825177d8c8..94697b28053a 100644
+> >>> --- a/include/linux/alloc_tag.h
+> >>> +++ b/include/linux/alloc_tag.h
+> >>> @@ -136,9 +136,36 @@ static inline bool mem_alloc_profiling_enabled(v=
+oid)
+> >>>                                   &mem_alloc_profiling_key);
+> >>>   }
+> >>>
+> >>> -static inline bool alloc_tag_trace_enabled(void)
+> >>> +static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
+> >>>   {
+> >>> -     return static_branch_unlikely(&alloc_tag_trace_key);
+> >>> +     atomic_or(CODETAG_FLAG_INACCURATE, &tag->ct.flags);
+> >>> +}
+> >>> +
+> >>> +static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
+> >>> +{
+> >>> +     return !!(atomic_read(&tag->ct.flags) & CODETAG_FLAG_INACCURATE=
+);
+> >>> +}
+> >>> +
+> >>> +static inline void alloc_tag_set_traced(struct alloc_tag *tag)
+> >>> +{
+> >>> +     atomic_or(CODETAG_FLAG_TRACE_ON, &tag->ct.flags);
+> >>> +}
+> >>> +
+> >>> +static inline void alloc_tag_clear_traced(struct alloc_tag *tag)
+> >>> +{
+> >>> +     atomic_andnot(CODETAG_FLAG_TRACE_ON, &tag->ct.flags);
+> >>> +}
+> >>> +
+> >>> +static inline bool alloc_tag_is_traced(const struct alloc_tag *tag)
+> >>> +{
+> >>> +     return !!(atomic_read(&tag->ct.flags) & CODETAG_FLAG_TRACE_ON);
+> >>> +}
+> >>> +
+> >>> +static inline bool alloc_tag_trace_enabled(const struct alloc_tag *t=
+ag)
+> >>> +{
+> >>> +     if (static_branch_unlikely(&alloc_tag_trace_key))
+> >>> +             return tag && alloc_tag_is_traced(tag);
+> >>> +     return false;
+> >>>   }
+> >>>
+> >>>   void alloc_tag_trace_mem_alloc(const void *ptr, struct alloc_tag *t=
+ag,
+> >>> @@ -151,7 +178,7 @@ void __alloc_tag_trace_hit(struct alloc_tag *tag)=
+;
+> >>>
+> >>>   static __always_inline void alloc_tag_trace_hit(struct alloc_tag *t=
+ag)
+> >>>   {
+> >>> -     if (alloc_tag_trace_enabled())
+> >>> +     if (alloc_tag_trace_enabled(tag))
+> >>>                __alloc_tag_trace_hit(tag);
+> >>>   }
+> >>>
+> >>> @@ -225,7 +252,7 @@ static inline void alloc_tag_add(union codetag_re=
+f *ref, struct alloc_tag *tag,
+> >>>        if (likely(alloc_tag_ref_set(ref, tag))) {
+> >>>                this_cpu_add(tag->counters->bytes, bytes);
+> >>>
+> >>> -             if (alloc_tag_trace_enabled())
+> >>> +             if (alloc_tag_trace_enabled(tag))
+> >>>                        /* Trace successful allocs with their unique p=
+tr */
+> >>>                        alloc_tag_trace_mem_alloc(ptr, tag, bytes);
+> >>>        }
+> >>> @@ -249,23 +276,13 @@ static inline void alloc_tag_sub(union codetag_=
+ref *ref, size_t bytes, const voi
+> >>>        this_cpu_sub(tag->counters->bytes, bytes);
+> >>>        this_cpu_dec(tag->counters->calls);
+> >>>
+> >>> -     if (alloc_tag_trace_enabled())
+> >>> +     if (alloc_tag_trace_enabled(tag))
+> >>>                /* Trace frees with their unique ptr */
+> >>>                alloc_tag_trace_mem_free(ptr, tag, bytes);
+> >>>
+> >>>        ref->ct =3D NULL;
+> >>>   }
+> >>>
+> >>> -static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
+> >>> -{
+> >>> -     tag->ct.flags |=3D CODETAG_FLAG_INACCURATE;
+> >>> -}
+> >>> -
+> >>> -static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
+> >>> -{
+> >>> -     return !!(tag->ct.flags & CODETAG_FLAG_INACCURATE);
+> >>> -}
+> >>> -
+> >>>   #define alloc_tag_record(p)  ((p) =3D current->alloc_tag)
+> >>>
+> >>>   #else /* CONFIG_MEM_ALLOC_PROFILING */
+> >>> diff --git a/include/linux/codetag.h b/include/linux/codetag.h
+> >>> index a25a085c2df1..f728295d50c0 100644
+> >>> --- a/include/linux/codetag.h
+> >>> +++ b/include/linux/codetag.h
+> >>> @@ -18,6 +18,7 @@ struct module;
+> >>>
+> >>>   /* codetag flags */
+> >>>   #define CODETAG_FLAG_INACCURATE      (1 << 0)
+> >>> +#define CODETAG_FLAG_TRACE_ON        (1 << 1)
+> >>>
+> >>>   /*
+> >>>    * An instance of this structure is created in a special ELF sectio=
+n at every
+> >>> @@ -25,7 +26,7 @@ struct module;
+> >>>    * an array of these.
+> >>>    */
+> >>>   struct codetag {
+> >>> -     unsigned int flags;
+> >>> +     atomic_t flags;
+> >>>        unsigned int lineno;
+> >>>        const char *modname;
+> >>>        const char *function;
+> >>> @@ -71,7 +72,7 @@ struct codetag_iterator {
+> >>>        .function       =3D __func__,                     \
+> >>>        .filename       =3D __FILE__,                     \
+> >>>        .lineno         =3D __LINE__,                     \
+> >>> -     .flags          =3D 0,                            \
+> >>> +     .flags          =3D ATOMIC_INIT(0),               \
+> >>>   }
+> >>>
+> >>>   void codetag_lock_module_list(struct codetag_type *cttype);
+> >>> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/allo=
+c_tag.h
+> >>> index 7d4618bea043..dafcba2f7e2c 100644
+> >>> --- a/include/uapi/linux/alloc_tag.h
+> >>> +++ b/include/uapi/linux/alloc_tag.h
+> >>> @@ -85,9 +85,20 @@ struct allocinfo_get_at {
+> >>>        struct allocinfo_tag_data data;
+> >>>   };
+> >>>
+> >>> +struct allocinfo_toggle_traces {
+> >>> +     /* inputs */
+> >>> +     /*
+> >>> +      * Tags matching the filter are toggled; an empty mask selects =
+all tags.
+> >>> +      * Size criteria are checked once, against the tag's size at ca=
+ll time.
+> >>> +      */
+> >>> +     struct allocinfo_filter filter;
+> >>> +     __u64 enable;
+> >>> +};
+> >>> +
+> >>>   #define _ALLOCINFO_IOC_CONTENT_ID    0
+> >>>   #define _ALLOCINFO_IOC_GET_AT                1
+> >>>   #define _ALLOCINFO_IOC_GET_NEXT              2
+> >>> +#define _ALLOCINFO_IOC_TOGGLE_TRACE  3
+> >>>
+> >>>   #define ALLOCINFO_IOC_BASE           0xA6
+> >>>   #define ALLOCINFO_IOC_CONTENT_ID     _IOR(ALLOCINFO_IOC_BASE, _ALLO=
+CINFO_IOC_CONTENT_ID,     \
+> >>> @@ -96,5 +107,7 @@ struct allocinfo_get_at {
+> >>>                                              struct allocinfo_get_at)
+> >>>   #define ALLOCINFO_IOC_GET_NEXT               _IOR(ALLOCINFO_IOC_BAS=
+E, _ALLOCINFO_IOC_GET_NEXT,       \
+> >>>                                             struct allocinfo_tag_data=
+)
+> >>> +#define ALLOCINFO_IOC_TOGGLE_TRACE   _IOW(ALLOCINFO_IOC_BASE, _ALLOC=
+INFO_IOC_TOGGLE_TRACE,   \
+> >>> +                                         struct allocinfo_toggle_tra=
+ces)
+> >>>
+> >>>   #endif /* _UAPI_ALLOC_TAG_H */
+> >>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> >>> index ca2412a67312..262f00f2bba9 100644
+> >>> --- a/mm/alloc_tag.c
+> >>> +++ b/mm/alloc_tag.c
+> >>> @@ -60,6 +60,15 @@ DEFINE_STATIC_KEY_FALSE(mem_profiling_compressed);
+> >>>   DEFINE_STATIC_KEY_FALSE(alloc_tag_trace_key);
+> >>>   EXPORT_SYMBOL(alloc_tag_trace_key);
+> >>>
+> >>> +static atomic_t alloc_tag_trace_cnt =3D ATOMIC_INIT(0);
+> >>> +
+> >>> +/*
+> >>> + * As `codetag_lock_module_list` is a read lock, we need an addition=
+al mutex
+> >>> + * to protect against the race conditions involved in the alloc tag =
+trace
+> >>> + * toggle path.
+> >>> + */
+> >>> +static DEFINE_MUTEX(alloc_tag_trace_mutex);
+> >>> +
+> >>>   struct alloc_tag_kernel_section kernel_tags =3D { NULL, 0 };
+> >>>   unsigned long alloc_tag_ref_mask;
+> >>>   int alloc_tag_ref_offs;
+> >>> @@ -296,7 +305,7 @@ static bool matches_filter(struct codetag *ct, st=
+ruct allocinfo_filter *filter,
+> >>>                return false;
+> >>>
+> >>>        if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+> >>> -             inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
+> >>> +             inaccurate =3D alloc_tag_is_inaccurate(ct_to_alloc_tag(=
+ct));
+> >>>                if (inaccurate !=3D !!(filter->inaccurate))
+> >>>                        return false;
+> >>>        }
+> >>> @@ -317,6 +326,23 @@ static bool matches_filter(struct codetag *ct, s=
+truct allocinfo_filter *filter,
+> >>>        return true;
+> >>>   }
+> >>>
+> >>> +/*
+> >>> + * Checks that a user supplied filter only uses known fields and tha=
+t its size
+> >>> + * range, if any, is not inverted.
+> >>> + */
+> >>> +static bool allocinfo_filter_valid(const struct allocinfo_filter *fi=
+lter)
+> >>> +{
+> >>> +     if (filter->mask & ~ALLOCINFO_FILTER_MASKS)
+> >>> +             return false;
+> >>> +
+> >>> +     if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+> >>> +         (filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+> >>> +         filter->min_size > filter->max_size)
+> >>> +             return false;
+> >>> +
+> >>> +     return true;
+> >>> +}
+> >>> +
+> >>>   /*
+> >>>    * Seeks the ioctl iterator to the specified 0-indexed tag position=
+, reads its
+> >>>    * profiling data and returns it to userspace.
+> >>> @@ -333,12 +359,7 @@ static int allocinfo_ioctl_get_at(struct seq_fil=
+e *m, void __user *arg)
+> >>>        if (copy_from_user(&params, arg, sizeof(params)))
+> >>>                return -EFAULT;
+> >>>
+> >>> -     if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+> >>> -             return -EINVAL;
+> >>> -
+> >>> -     if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+> >>> -         (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+> >>> -         params.filter.min_size > params.filter.max_size)
+> >>> +     if (!allocinfo_filter_valid(&params.filter))
+> >>>                return -EINVAL;
+> >>>
+> >>>        priv =3D m->private;
+> >>> @@ -443,6 +464,75 @@ static int allocinfo_ioctl_get_next(struct seq_f=
+ile *m, void __user *arg)
+> >>>        return ret;
+> >>>   }
+> >>>
+> >>> +static void alloc_tag_trace_toggle(struct alloc_tag *tag, bool enabl=
+e)
+> >>> +{
+> >>> +     if (enable) {
+> >>> +             if (alloc_tag_is_traced(tag))
+> >>> +                     return;
+> >>> +
+> >>> +             alloc_tag_set_traced(tag);
+> >>> +             if (atomic_fetch_inc(&alloc_tag_trace_cnt) =3D=3D 0)
+> >>> +                     static_branch_enable(&alloc_tag_trace_key);
+> >>> +     } else {
+> >>> +             if (!alloc_tag_is_traced(tag))
+> >>> +                     return;
+> >>> +
+> >>> +             alloc_tag_clear_traced(tag);
+> >>> +             if (atomic_dec_and_test(&alloc_tag_trace_cnt))
+> >>> +                     static_branch_disable(&alloc_tag_trace_key);
+> >>> +     }
+> >>> +}
+> >>> +
+> >>> +/*
+> >>> + * Toggles tracing on every allocation tag that matches the user sup=
+plied
+> >>> + * filter. An empty filter mask selects all tags, same as for
+> >>> + * ALLOCINFO_IOC_GET_AT. Tags already in the requested state are not=
+ an error.
+> >>> + */
+> >>> +static int allocinfo_ioctl_toggle_trace(struct seq_file *m, void __u=
+ser *arg)
+> >>> +{
+> >>> +     struct allocinfo_toggle_traces params;
+> >>> +     struct codetag_iterator iter;
+> >>> +     struct codetag *ct;
+> >>> +     struct alloc_tag_counters counters;
+> >>> +     bool fetched_counters;
+> >>> +     int matches =3D 0, ret;
 
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    70dd4ee72eb2 Merge tag 'pinctrl-v7.3-3' of git://git.kerne..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=15b2320d580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=4ccb65e03706547e
-> dashboard link: https://syzkaller.appspot.com/bug?extid=af37a78f810994eae641
-> compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10de5da9580000
-> 
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-70dd4ee7.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/f1d9bae25289/vmlinux-70dd4ee7.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/d8b2b9fc2571/bzImage-70dd4ee7.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+af37a78f810994eae641@syzkaller.appspotmail.com
-> 
-> rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+One variable definition per line please.
 
-Thanks.  AI tells me "Yeah, this happens.  Don't Do That":
+> >>> +
+> >>> +     if (!capable(CAP_SYS_ADMIN))
+
+This CAP_SYS_ADMIN requirement should be documented.
+
+> >>> +             return -EPERM;
+> >>> +
+> >>> +     if (copy_from_user(&params, arg, sizeof(params)))
+> >>> +             return -EFAULT;
+> >>> +
+> >>> +     if (!allocinfo_filter_valid(&params.filter))
+> >>> +             return -EINVAL;
+> >>> +
+> >>> +     codetag_lock_module_list(alloc_tag_cttype);
+> >>> +
+> >>> +     iter =3D codetag_get_ct_iter(alloc_tag_cttype);
+> >>> +
+> >>> +     /* Toggle tracing on all codetags that match */
+> >>> +     while ((ct =3D codetag_next_ct(&iter))) {
+> >>> +             fetched_counters =3D false;
+> >>> +             if (matches_filter(ct, &params.filter, &counters, &fetc=
+hed_counters)) {
+> >>> +                     matches++;
+> >>> +
+> >>> +                     mutex_lock(&alloc_tag_trace_mutex);
+> >> Could we grab and drop alloc_tag_trace_mutex outside the loop?
+> > Well, that is possible. But I did it this way to minimize the critical =
+section.
+> >
+> > Since this mutex is specific to the trace ioctl, I'm comfortable doing
+> > what you recommended too. It would just mean that one thread would be
+> > blocked until another thread fully finishes its loop, which is not too
+> > bad. I'll let Suren comment on this as well.
+>
+>
+> Hmm, sorry, I misread this part of the code. (sorry for this) . Putting
+> |mutex_lock| outside the loop is not a good idea.
+>
+> It greatly increases the critical section.
+>
+> My original concern was that we need to mutex_lock and mutex_unlock
+> every time we get a match.
+>
+> As the function comment states, An empty filter mask selects all tags,
+> that means we need a
+>
+> mutex_lock / mutex_unlock for every alloc_tag.
+>
+> Let's see what Suren thinks.
+
+I think doing mutex_lock / mutex_unlock outside of this loop would
+yield more predictable results. If you consider two threads executing
+this operation concurrently with different filters (one enabling
+tracing and another one disabling it) and preempting each other, the
+final result might be non-deterministic (will depend on how these
+threads preempt each other while they execute this loop). Locking
+outside of the loop makes this case more deterministic. It will run
+one of the operations completely and then the other one without
+interleaving them.
 
 
-This looks like real-time scheduler starvation rather than an MM bug.
-
-The reproducer contains:
-
-    prlimit64(0x0, 0xe, ...={0x8, 0x8b}, 0x0)
-    sched_setscheduler(0x0, 0x2, ...=0x8)
-
-These enable SCHED_RR at real-time priority 8.  The reproducer
-runs six processes on a single-CPU VM.
-
-This can starve normal-priority tasks, including tasks preempted
-inside RCU read-side critical sections.  The report also explicitly
-states:
-
-    rcu: rcu_preempt kthread starved for 1643 jiffies!
-
-This failure mode is specifically described in the RCU stall
-documentation:
-
-    https://docs.kernel.org/RCU/stallwarn.html
-
-The documentation explains how CPU-bound real-time tasks can
-prevent preempted RCU readers from running, indefinitely delaying
-grace periods.
-
-The task in mem_cgroup_from_task() was interrupted by the timer
-interrupt and preempted.  There is no evidence that it was stuck
-in that function.  filemap_fault() appears to be an innocent
-bystander.
-
-Could we rerun the reproducer with sched_setscheduler() and
-prlimit64() removed?  If that eliminates the stall, it would
-strongly support the scheduling-starvation explanation.
-
-I don't see evidence of an MM bug here.
-
-> rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-0): P5320/1:b..l
-> rcu: 	(detected by 0, t=10502 jiffies, g=61125, q=864 ncpus=1)
-> task:syz-execprog    state:R  running task     stack:22864 pid:5320  tgid:5314  ppid:5313   task_flags:0x440040 flags:0x00080000
-> Call Trace:
->  <TASK>
->  context_switch kernel/sched/core.c:5533 [inline]
->  __schedule+0x17db/0x58f0 kernel/sched/core.c:7284
->  preempt_schedule_irq+0x4b/0x90 kernel/sched/core.c:7606
->  irqentry_exit_to_kernel_mode include/linux/irq-entry-common.h:539 [inline]
->  irqentry_exit+0x14f/0x920 kernel/entry/common.c:167
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-> RIP: 0010:task_css include/linux/cgroup.h:548 [inline]
-> RIP: 0010:mem_cgroup_from_task+0x8f/0x120 mm/memcontrol.c:1134
-> Code: 38 48 c7 c7 58 c8 d9 8f be ff ff ff ff e8 a9 1a a8 09 85 c0 75 23 49 83 c6 2c 4c 89 f0 48 c1 e8 03 42 0f b6 04 38 84 c0 75 6e <41> f6 06 04 75 09 e8 76 f7 68 ff 85 c0 74 28 48 83 c3 20 48 89 d8
-> RSP: 0018:ffffc9000e0ef610 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffffffff8fd9f0c0 RCX: 0000000000000046
-> RDX: 000000009a0f617f RSI: ffffffff8e6f5004 RDI: ffffffff8c6dec80
-> RBP: 1ffff110061db463 R08: ffffffff8242ae78 R09: 0000000000000000
-> R10: dffffc0000000000 R11: ffffed10070f1e47 R12: ffff88803878f230
-> R13: dffffc0000000000 R14: ffff888000f525ac R15: dffffc0000000000
->  get_mem_cgroup_from_mm+0xd6/0x290 mm/memcontrol.c:1187
->  __mem_cgroup_charge+0x15/0x80 mm/memcontrol.c:5226
->  mem_cgroup_charge include/linux/memcontrol.h:662 [inline]
->  filemap_add_folio+0x140/0x4e0 mm/filemap.c:965
->  page_cache_ra_unbounded+0x46d/0x9d0 mm/readahead.c:293
->  do_page_cache_ra mm/readahead.c:348 [inline]
->  page_cache_ra_order+0xb47/0xee0 mm/readahead.c:558
->  do_sync_mmap_readahead+0x75e/0x990 mm/filemap.c:3443
->  filemap_fault+0x7d9/0x13b0 mm/filemap.c:3597
->  __do_fault+0x138/0x2a0 mm/memory.c:5565
->  do_read_fault mm/memory.c:6000 [inline]
->  do_fault mm/memory.c:6134 [inline]
->  do_pte_missing+0x2215/0x34b0 mm/memory.c:4700
->  handle_pte_fault mm/memory.c:6558 [inline]
->  __handle_mm_fault mm/memory.c:6707 [inline]
->  handle_mm_fault+0x1a53/0x3750 mm/memory.c:6876
->  do_user_addr_fault+0xa4f/0x1340 arch/x86/mm/fault.c:1343
->  handle_page_fault arch/x86/mm/fault.c:1483 [inline]
->  exc_page_fault+0x6a/0xc0 arch/x86/mm/fault.c:1536
->  asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
-> RIP: 0033:0x46fe0e
-> RSP: 002b:000010e09c0a5178 EFLAGS: 00010216
-> RAX: 00000000015e4970 RBX: 000000000173a820 RCX: 0000000000000000
-> RDX: 000000000001a058 RSI: 00000000015ca918 RDI: 000000000041db80
-> RBP: 000010e09c0a51a0 R08: 00000000015ca918 R09: 00000000015cb3b8
-> R10: 0000000001911ec0 R11: 0000000000000000 R12: 0000000043fdf3b9
-> R13: 0000000000000000 R14: 000010e09c078960 R15: 000000000000012a
->  </TASK>
-> rcu: rcu_preempt kthread starved for 1643 jiffies! g61125 f0x0 RCU_GP_WAIT_FQS(5) ->state=I ->cpu=0
-> rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-> rcu: RCU grace-period kthread stack dump:
-> task:rcu_preempt     state:I stack:27496 pid:17    tgid:17    ppid:2      task_flags:0x208040 flags:0x00080000
-> Call Trace:
->  <TASK>
->  context_switch kernel/sched/core.c:5533 [inline]
->  __schedule+0x17db/0x58f0 kernel/sched/core.c:7284
->  preempt_schedule_common+0x7f/0xd0 kernel/sched/core.c:7463
->  preempt_schedule_thunk+0x16/0x40 arch/x86/entry/thunk.S:12
->  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:211 [inline]
->  _raw_spin_unlock_irqrestore+0x76/0x80 kernel/locking/spinlock.c:221
->  debug_object_assert_init+0x20d/0x380 lib/debugobjects.c:1072
->  debug_timer_assert_init kernel/time/timer.c:803 [inline]
->  debug_assert_init kernel/time/timer.c:848 [inline]
->  __mod_timer+0x4b/0xed0 kernel/time/timer.c:1025
->  schedule_timeout+0x14d/0x2c0 kernel/time/sleep_timeout.c:98
->  rcu_gp_fqs_loop+0x30c/0x11f0 kernel/rcu/tree.c:2122
->  rcu_gp_kthread+0x9e/0x2b0 kernel/rcu/tree.c:2330
->  kthread+0x38b/0x480 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> rcu: Stack dump where RCU GP kthread last ran:
-> CPU: 0 UID: 0 PID: 5761 Comm: syz.2.24 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:get_current arch/x86/include/asm/current.h:25 [inline]
-> RIP: 0010:__sanitizer_cov_trace_pc+0x8/0x80 kernel/kcov.c:212
-> Code: 8b 3d 34 de ab 0c 48 89 de 5b e9 93 fc 66 00 cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 48 8b 04 24 <65> 48 8b 0d c8 9d ce 12 65 48 8b 15 c8 9d ce 12 f7 c2 00 01 00 ff
-> RSP: 0018:ffffc9000d3278e8 EFLAGS: 00000202
-> RAX: ffffffff8be56f10 RBX: 1ffff11006b094a2 RCX: ffff888034c90000
-> RDX: ffff88803584a508 RSI: ffff88803584a508 RDI: ffffc9000d327ab8
-> RBP: 1ffff11006b094a1 R08: ffff888034c9001b R09: 1ffff11006992003
-> R10: dffffc0000000000 R11: ffffed1006992004 R12: ffff88803584a508
-> R13: ffff88803584a508 R14: ffff88803584a508 R15: ffff88803584a510
-> FS:  00007f0baa9bd6c0(0000) GS:ffff88808b0b4000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000200000000058 CR3: 000000004004c000 CR4: 0000000000352ef0
-> Call Trace:
->  <TASK>
->  __list_add include/linux/list.h:172 [inline]
->  list_add_tail include/linux/list.h:206 [inline]
->  plist_add+0x420/0x580 lib/plist.c:111
->  __futex_queue+0xed/0x160 kernel/futex/core.c:866
->  futex_queue kernel/futex/futex.h:333 [inline]
->  futex_wait_setup+0x424/0x590 kernel/futex/waitwake.c:695
->  __futex_wait+0x15f/0x400 kernel/futex/waitwake.c:717
->  futex_wait+0x121/0x390 kernel/futex/waitwake.c:750
->  do_futex+0x3e7/0x4e0 kernel/futex/syscalls.c:133
->  __do_sys_futex kernel/futex/syscalls.c:210 [inline]
->  __se_sys_futex+0x3a8/0x450 kernel/futex/syscalls.c:191
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f0ba9b9e559
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f0baa9bd0e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-> RAX: ffffffffffffffda RBX: 00007f0ba9e25fa8 RCX: 00007f0ba9b9e559
-> RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f0ba9e25fa8
-> RBP: 00007f0ba9e25fa0 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f0ba9e26038 R14: 00007ffe158db450 R15: 00007ffe158db538
->  </TASK>
-> 
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-> 
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
+>
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
+>
+> >>
+> >>> +                     alloc_tag_trace_toggle(ct_to_alloc_tag(ct), !!p=
+arams.enable);
+> >>> +                     mutex_unlock(&alloc_tag_trace_mutex);
+> >>> +             }
+> >>> +     }
+> >>> +
+> >>> +     if (matches =3D=3D 0)
+> >>> +             /* Nothing matched the filter */
+> >>> +             ret =3D -ENOENT;
+> >>> +     else
+> >>> +             ret =3D 0;
+> >>> +
+> >>> +     codetag_unlock_module_list(alloc_tag_cttype);
+> >>> +
+> >>> +     return ret;
+> >>> +}
+> >>> +
+> >>>   /*
+> >>>    * Entry point ioctl function for /proc/allocinfo routing requests =
+to fetch the
+> >>>    * layout content ID, seek to a specific tag, or read sequential ta=
+gs.
+> >>> @@ -463,6 +553,9 @@ static long allocinfo_ioctl(struct file *file, un=
+signed int cmd,
+> >>>        case ALLOCINFO_IOC_GET_NEXT:
+> >>>                ret =3D allocinfo_ioctl_get_next(file->private_data, a=
+rg);
+> >>>                break;
+> >>> +     case ALLOCINFO_IOC_TOGGLE_TRACE:
+> >>> +             ret =3D allocinfo_ioctl_toggle_trace(file->private_data=
+, arg);
+> >>> +             break;
+> >>>        default:
+> >>>                ret =3D -ENOIOCTLCMD;
+> >>>                break;
+> >>> @@ -492,8 +585,6 @@ static const struct proc_ops allocinfo_proc_ops =
+=3D {
+> >>>
+> >>>   void __alloc_tag_trace_hit(struct alloc_tag *tag)
+> >>>   {
+> >>> -     if (unlikely(!tag))
+> >>> -             return;
+> >>>        trace_alloc_tag_hit(tag);
+> >>>   }
+> >>>   EXPORT_SYMBOL(__alloc_tag_trace_hit);
+> >>> @@ -1031,6 +1122,24 @@ static int load_module(struct module *mod, str=
+uct codetag *start, struct codetag
+> >>>        return 0;
+> >>>   }
+> >>>
+> >>> +static void unload_module(struct module *mod, struct codetag *start,=
+ struct codetag *stop)
+> >>> +{
+> >>> +     struct alloc_tag *start_tag =3D ct_to_alloc_tag(start);
+> >>> +     struct alloc_tag *stop_tag =3D ct_to_alloc_tag(stop);
+> >>> +     struct alloc_tag *tag;
+> >>> +
+> >>> +     /*
+> >>> +      * Turn tracing off for the tags of the module being unloaded. =
+Without
+> >>> +      * this, `alloc_tag_trace_cnt` would never reach zero and traci=
+ng would
+> >>> +      * stay enabled forever.
+> >>> +      *
+> >>> +      * `alloc_tag_trace_mutex` is not needed here as this code path=
+ is
+> >>> +      * protected by a `down_write(&cttype->mod_lock)`.
+> >>> +      */
+> >>> +     for (tag =3D start_tag; tag < stop_tag; tag++)
+> >>> +             alloc_tag_trace_toggle(tag, false);
+> >>> +}
+> >>> +
+> >>>   static void replace_module(struct module *mod, struct module *new_m=
+od)
+> >>>   {
+> >>>        MA_STATE(mas, &mod_area_mt, 0, module_tags.size);
+> >>> @@ -1357,6 +1466,7 @@ static int __init alloc_tag_init(void)
+> >>>                .alloc_section_mem      =3D reserve_module_tags,
+> >>>                .free_section_mem       =3D release_module_tags,
+> >>>                .module_load            =3D load_module,
+> >>> +             .module_unload          =3D unload_module,
+> >>>                .module_replaced        =3D replace_module,
+> >>>   #endif
+> >>>        };
 
