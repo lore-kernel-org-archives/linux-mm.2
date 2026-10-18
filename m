@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1E03CCA490
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 18:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8DCACCA490
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 18:29:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A3096B0088; Sun, 18 Oct 2026 14:27:04 -0400 (EDT)
+	id B97176B0092; Sun, 18 Oct 2026 14:29:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 353C76B008C; Sun, 18 Oct 2026 14:27:04 -0400 (EDT)
+	id B47F66B0093; Sun, 18 Oct 2026 14:29:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 246DA6B0092; Sun, 18 Oct 2026 14:27:04 -0400 (EDT)
+	id A35F86B0095; Sun, 18 Oct 2026 14:29:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA8AE6B0088
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 14:27:03 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 65B844005F
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:27:03 +0000 (UTC)
-X-FDA: 85336578726.08.39C6065
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 91826A0008
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:27:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WW8jGoly;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E2D06B0092
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 14:29:13 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E0E8FA05B1
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:29:12 +0000 (UTC)
+X-FDA: 85336584144.17.674A0E7
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1D7EC40002
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:29:10 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="OvtNjj/T";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of aa9736195201@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com
+	spf=pass (imf17.hostedemail.com: domain of aa9736195201@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792348021;
+	s=arc-20220608; t=1792348151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8nNlgkcX4wMrSryMAB7DXxwINAkHdxw6jSwpiwjtPcY=;
-	b=javsesfSuWR48wUb94a/0CwenATlIj+ZEf4G+pg05TkSw7HTZ7gnPvWgRF0gf75xZypTSc
-	a7shly3qR/NM3uiCbpe092FSWQWdziCeKMao6Psbhlu16f6dTaNBpGLLk3C+EOG4BVNh8X
-	sxqa6KqM8Fc+Fhgr0vjp2WyAM2+lLBw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792348021;
-	b=isO7rjZKdNswTyj2CSVS9BlIe2cFT4tWvpwlZuXDc1FjbSkR9oNQqM/Io/TcCvaUJVoEB+
-	SgOa6QBBielnL5m2lUdTtkJ09SYbTbFO2eRu9ah3QKjvkp/QXjhRXtiQWGS4qnqGFKWez/
-	UpWRvi5nyIrqL1yCHZ3lC9T8gF1xgJw=
+	bh=qhL7iYYfEcNdbRQqdb6S37zX0Ja75Am4y9nFDdcH8xg=;
+	b=XP3lyE6oWXwIX+UoNcpCpHcb7Y2yN5ayC+JQmrg4F+JZ9XpDKnDZXAJHsqJynVvrab9qfd
+	zhw3krkMBoAZIAEDTOY9nJd07nOLafeShEviFBDIrCD9b+5ku2eUB7fwYaqdGI4zXzZtg0
+	4aDljJsaqj82WFupGDmU9eltMUlVQLk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WW8jGoly;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="OvtNjj/T";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of aa9736195201@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e8246b13cbso10910195ad.2
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 11:27:01 -0700 (PDT)
+	spf=pass (imf17.hostedemail.com: domain of aa9736195201@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792348151;
+	b=tXfsSz0YKRDeOXoWWSbo3Yg26vnZmJcDcetJGMqzcoG+DlUiEuHcyyqISfNkO6IDURK+Id
+	r/vn3jymWoBIKKSRWqemE7xq8aAt5K09PUCmRgkIwzwmBFK5Y0/IG9Q1TOVxGIhu5AqWrK
+	Bsx0oIsKSjdNPs3D5r+IYqRvbaaQSpk=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e977109392so5528765ad.0
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 11:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792348020; x=1792952820; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792348150; x=1792952950; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8nNlgkcX4wMrSryMAB7DXxwINAkHdxw6jSwpiwjtPcY=;
-        b=WW8jGolyyFwO2zBScFd20giHmo+VTRg6uXfG3sirCkldyDVy8RFfGJR/h/2xovWj4d
-         sm6ozF9Ox6aKXXvH/AOvjXPDQwfBS7TWwiGEuDXv8N+iu4lzW0sXFE6BW9n6ok8NEjgv
-         KR9RTR+SjgjA3Yn3wkGmlYlSKhdv/0mazaomfx+IzXT3b0g38lF2LFSgo9atmyMjuwTk
-         +7zSYwvBV91x5QB99Xstic/LHVLeMa4kawyZ5HmnIDhqBns3qT4L5/q2uFkP1VrHfelD
-         mOB8P+HrgMqfdcNKEFGCPCNgU0xxPaKga7qcW9k8zbTi/aGq0pDgbQv/M2lEjpKK2e4s
-         3Iiw==
+        bh=qhL7iYYfEcNdbRQqdb6S37zX0Ja75Am4y9nFDdcH8xg=;
+        b=OvtNjj/TCRMj/F5PP6fLMmfBw3exFqhywGnqAOXnfHQ193AvfjQXVkEsjKnAly8Rof
+         GJESX9o7XF49zGGE/+dLENoyEwMT+ctOOwpr6mUH8JGkpIckkyA4VDgYHIlBDM3CxIP7
+         vtZSFD+zJsM0RidIkVvnx4aiuQqwimFIM0oR8C3ujJC8UBE8L2SEqmuV1XTN38gm0Y+0
+         qsWH2SvoljJi+XCHQXDJ+jKojixbeNYy34jpE5l7R/0dNYHogbYdNcSlLuqlvH+t/3Ul
+         7m4zOfNsQ6Y7JvADgt9hYfe/C1XrXbMWjK+0V8U1t49TXEa7hJkzEHygNxLelLs924WP
+         PkdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792348020; x=1792952820;
+        d=1e100.net; s=20260707; t=1792348150; x=1792952950;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8nNlgkcX4wMrSryMAB7DXxwINAkHdxw6jSwpiwjtPcY=;
-        b=WfE1N4KYJo6Xn+RWfTFweEPD87Em4gOHUd3WfwnjvfDNhFcvnR4yJAHsce7rz2cFt8
-         rwttcsAW1Q+jHFy+PrFDgg0ry7vKhSH5hplotsTC4NcS7Zct4GPy6fNKJEW6GmSZ3Dpp
-         moxaHfjNMOLdMtVw2uMq0XQT15GqcTFQvwNxyLwDLrWaWbzGSdLjtgJqdpH58+zzRfqu
-         zVe5G0fJgNWeT2i5uQKkp2Q5o5egpbXnxTZUt3qGlsmIO9ksdB80Uvk4BGLxz+jYnvjS
-         zJUJEqE7heJciLsSNiH7iOkOruHO3zc91xdWb2tsqFz6UYUq6586t9jB7UQDrlVZbBr5
-         X1dQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwrrgoHNOivnCG3Vyc88OKxKS8BlPXwR2BBGHkr9FabsKfHThAhipI+rl4T1pyaJQvW6YKuhA8pXQ==@kvack.org
-X-Gm-Message-State: AFq9FYL6v/vFwI0liVT08lq6WlFYhmjGcf0bCzNq/4CaBNcsv1xGcOZa
-	Gj3WqF1qE+xgsDglUCayPgeD8LcTq46rHdEhkdwXabiAMakQ0dWXqPSF
-X-Gm-Gg: AYBFou2cbV2TEGIW1tCpAg1GJZaQE17g1pyZP2ckEXiJhOls7rLstvN/IoHFKo4Miql
-	7dV9jQ5ZgfVQkSnqbDHxb1Urf/PlNMQ18xR4++IW4ISvAG3GmStREQ6DrpnHNOWkpZ1T8rKNyyN
-	nrg5eVr7yK8mfW+lFDDtjPNHdIhvBqgvY3IXbQ4oNOHmPocnz3beds9AAoxjdJO8vZDhm6CpDot
-	S6arwArfjGwFSj3nnt4EJvT0IMIFO0xQJYqZo/mBdLZ+oe/XbMEItgsVpANrT1MTBq+5OsyG/u1
-	ta+hrRdLRLuwzmgZvlFEp+z1InvjQ6bxwj0QEES11wdqA23JANVsbkFWwmi0JagI/8201W9Ru+M
-	TjC/e/NSSeOXtbelmhWkqkMiJwuiUmaMQh5LtMgQmnasSnSXnWSXqmE0HeOZTDP7GtDro0sRE31
-	BLHSrOUomgArWZ2VQ6ZnGKj1kTqT+cMoRdkEX5pti5heweX/l2JzQvngyKjsWrecBBYVg0aOLWa
-	WaZnsOWex2QTnnPDUSmvZ5Ha7G/Qoy1ACRlWBPtEI/COr8tMHSG0EZG0KlQLLrJDqILlZmRDwYy
-	7j/Qcv7tsQ/hXQzZflZpkb+gYYDTrabpoMR2ug/uq4UG6k3yCeOAyTTg0q9HDL053P+D4Diz0Og
-	BX4T6Rjo=
-X-Received: by 2002:a17:903:fad:b0:2e2:c602:2072 with SMTP id d9443c01a7336-2e9a6c0275emr48223185ad.36.1792348020411;
-        Sun, 18 Oct 2026 11:27:00 -0700 (PDT)
+        bh=qhL7iYYfEcNdbRQqdb6S37zX0Ja75Am4y9nFDdcH8xg=;
+        b=qgPAYDi7qz/YbGHHEnNVmuPQGPTIa5h3/YfzdZBpif3olGlizwLyU1kIaBXJ3ROCf2
+         50RH7FmKd2M19S7EZ9fu3l94Pg0rOrNhFIUfmqQtcgp4b2rKJxUVoh3pyaOs2fC4TNSY
+         IlWgFTfwf32SsUgqtQkx+CyJVoobM9nv4thvWMMd1bO1tXDQ39cwl1DpDSBr0EhubhBF
+         TXV3jGTww4vaNxSbADyaIYWlBXstjilm1z6XWZerXwbL+HrZBmhBx25HJpQ/XqrMSUqR
+         rUpQJbLYgAZILqfcVdZzqiwgLtZDL88xI63K2TV3YJ/ps4FBAKM8Y+znhfD3UWJtz5WE
+         w9AQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwZ2H0eJZvrW5WEoyyUcQjQSWLQryvh6TemRIT5Ty4K8k5KZmPbThTVYnI3ujdupSfp+dANfmj3gg==@kvack.org
+X-Gm-Message-State: AFq9FYLBYfRkgp/O/qHx3HGabSz1ovg9vuZaC1kSuuCyZkwxBttyZWVT
+	6QLCzyIVfnOXp8V/A/uH/Cxp3zTqVghDcXIdszWAubQfXM7BT4Q1neit
+X-Gm-Gg: AYBFou1V6V+gFEY99tIHJvJuK4AkPeVUBzWbo/rhlqflElZmtzz1ZOmnqXdYjWF9tr4
+	qP5fP91mfv5+q1v97GbkT2NllFyTeR6tLE0cRGs3Mh+iqqXtywj/6hNXKk+l/Iv2Y0zaCBMVS/F
+	M+7bVcY1HM5864wLqXef3ohgV4gGlYYGGZiBZCJxMOfbF+mVSMSGTmocl6GDb42MILmn8xDAIBH
+	zaPBKZKb02p5msYZG+Vblz2gUWzJeaEMMpJuRpFGaRH4VKITZ69Xvg89ag4y9hpSnWRB62E5GJr
+	kg6H0PoChC+Vtq0qt9+stK+8INhDHmRohJjI4lXr0D3KWX+dcml0WcNmlrhgIbloH6TxKtib9s7
+	w4gDCCEem+s3pKnov5bdyB9LyzOtb11wePz/PsHfT4Ln6fFQqY8Z3lE4HuCos9yHvde3Ifk9ZAU
+	rOwGutZmxz00iJ3Wufe8Kvg8XVBqVmFqa8v916y2Ckov4W78bZMiNNT0NNLFyDlYp57g9rUT60q
+	FvDZuQUeBW8C7LRhOuLyjLk1JiEv7F/72NPd3JhuSpqKU2aHNIQel9Y4gRm9zRjcs3a0HCp4esN
+	7oh/RgxNg6Lz1ei3JV4gx2ZOAQ==
+X-Received: by 2002:a17:902:ea03:b0:2e9:7719:4104 with SMTP id d9443c01a7336-2e9a6834bdemr43504965ad.8.1792348149928;
+        Sun, 18 Oct 2026 11:29:09 -0700 (PDT)
 Received: from DESKTOP-TJS95SS.tail460ce2.ts.net (114-38-149-183.dynamic-ip.hinet.net. [114.38.149.183])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e83498csm30202765ad.35.2026.10.18.11.26.55
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e5d4e51sm29796255ad.1.2026.10.18.11.29.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 11:26:58 -0700 (PDT)
+        Sun, 18 Oct 2026 11:29:06 -0700 (PDT)
 From: Yuan-Hao Hsu <aa9736195201@gmail.com>
 To: Rik van Riel <riel@surriel.com>
 Cc: linux-kernel@vger.kernel.org,
@@ -104,22 +103,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Peter Xu <peterx@redhat.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 8/8] mm/gup: batch contiguous same-folio PTEs into one refcount grab
-Date: Mon, 19 Oct 2026 02:26:52 +0800
-Message-ID: <20261018182652.691-1-aa9736195201@gmail.com>
+Subject: Re: [RFC PATCH v3 4/8] mm/gup: break out follow_one_pte() helper
+Date: Mon, 19 Oct 2026 02:29:00 +0800
+Message-ID: <20261018182900.671-1-aa9736195201@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260811025157.1632867-9-riel@surriel.com>
-References: <20260811025157.1632867-1-riel@surriel.com> <20260811025157.1632867-9-riel@surriel.com>
+In-Reply-To: <7ba9d2e6370d6134ad34cdffcff5cc79b9192df1.camel@surriel.com>
+References: <20260811025157.1632867-1-riel@surriel.com> <20260811025157.1632867-5-riel@surriel.com> <CAJuCfpF47Mpi40=8yujBNruCDvY-Ezk0WFEacCqxcdRjmUqt4g@mail.gmail.com> <7ba9d2e6370d6134ad34cdffcff5cc79b9192df1.camel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 91826A0008
-X-Stat-Signature: c8dz8trfs9czqr89mtq8ucbmyjmghggb
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1D7EC40002
+X-Stat-Signature: 7p6efjtrhy6dxc4sg677y3x15jiwckxs
 X-Rspam-User: 
-X-HE-Tag: 1792348021-540947
-X-HE-Meta: U2FsdGVkX19EcnCsU2ElB0HGmQeMz3LpxjVq9/uxBq95/tmiFbJ1ShEVq7Bov+LPPc4jskvzBrcEqIqDifA9vqn4FlHdHKjBSn6qAnUaLYFoZUZGnW18yKRRa7ehyI8/MnEdNky6hq1GZjyQYy+Sm3nqnV1O0kDzfGeSsL3M2yYGaSklzg5ZoxgY2jgllKka48wQiJ7YSnoVIOvykaZgRm3DhVmceM40wWirsZURjtFy2AND3YfF5Dv9j90vWNqCx+U9hee7JjbqBeNDeTXrqjLdjToVEGM1yuFVN5pPPeo6yZ/lfd+3dZeL+pEkqu7NqkDU1yNigaoAijOxLnKAH1x31oahWerudoVwer0yavPc/iHT6iuqrw44AvVPRCR4cHMEMvzqjm5Fr3AyEVVBGa8D1/oliRvXmgOadDIOUTt0+GZNLpv//HTkoyQtc/+WYuhJHkjcbaVdwPm43PB9R3keDjz5XA2Th0jwYwnz6Na2YLdkgSwu509sL/p67R4U75JtnOYYC8uF+Tm/Nz30/cm7S3ZXxF99GBcRqWDDbEzKunBrOFV+nM+18YdNSe/CL2nkl4+uXD87WF2lic9l7/Z5XD85QRjEMkCGVwnEWlHmJLQzptq+GaDjSvkNawb0XBvdlKjGSpdTUNzhafo3k6QZTNg2uhQP7VunKpv6bFxIdH/iywOxyCaFHXXtGfc7zzgIa3J/OMuAB7uo3dB1JeGV2iGTAJFAKIKxqkU8mSrXyZpQpipaCrnUsY2cD/gVbPpbAC51Rdt/TAmCLTMDv7IfMwh1Nt6y3T+2coKjypYL9ehLxCzpA8Oz4W4Thog25M1T/r0f7O7kjXNyfMxYs98GtCdeltDJLlX5bCRJ0N5rD6Ah/viz7Q+wjDtqG3rukCWG/cnSEOoGChehyfqa0Jgiwfc8kV2FcqEIAJoQN9zSZU/ETxhw7/Irtqfr9eBg6n8MAAoSNzrz5JcYCn8
- p6OLd/Rz
- XRcuowJyZrnrbeSWnmEnlniE+8AlvytYQ/e0TAc5Z1Zl9bGvlQft7Y1xFWf0nyISmPcf/DR78TC/Ubu0nAl0UGz8247vF8/1QUK1iWTtEjSc/WqsUjTxyW0Ka2AaChXOc0kCFylPljVub1kCptJp7fjHKGeRiC07pwa/HbL2i1jICH5ilmnjg7XfpqvxzmdGYq11MnCIB5//YHltWEJyyz7r5HGD8/NC1Ca1FmVXlMrP3lfqzVlGNPPS32r4z0uJdCNHQGrXRFDsBNsooYt4FqRBI5JxRbfRJr34wOELQsicluTxEu6oOQN9BXGryc0UvBCr66cZXE5+QcSvrY+iiZhcpzdbdXvlHKi11Ma5GQ8eRmEsNFqmI8OGB/1Cs5K8IQ/T+zDlTyY8Jwyo=
+X-HE-Tag: 1792348150-984059
+X-HE-Meta: U2FsdGVkX1+7m2zMVuDBYH6l/Har6gxs+zXbUOspJd/0rbvYx+3A1E90qLN0jgZWLtbYr8mym0bsatwlJ6IDm+OPpm4AH9+O6EKtbys41XC+mFxHU1U8mvRgpL710RLt+uq5MUsHI7H2PXaLM1jT7RH1G6BefCLVuW3u3eJ8Ifx1LM1ol1KUVvV3bXFyXdqOd4rY9Oszm/ShuXXjyYI6ZSVzZOQoGgS5ah4KbAYOvxw/V+PjA2BagYJaykUPk7v66a3TW7/PISuzIIbxpE08DQiVNNT6aAdE87eLobgrDZsmxsXPB+fLEzVR/5ESD1kQncioAY3+fLPL0rOyjm0aiIDmjMiS0JKfuGwvf+gWnNhy9S/gvtr6fALH3baBpbetAXyG1Wx2xBIC4MwZG6nk1E5gMo6bBEAh6xmc7BZNWjGPbgSL0yjfmhQcwWxyp5XN0ahKbkTo7uy2zv6bIaeKrEuh7qcZNUOFxNyclWQz6Q6ZjUHWn9Ix0a2Y/16C3NJv6Go82PrN4ojjnqiqSkD7amBSbcXliTyM9mKJEkPWeA6J1fySa03ekBVpIp1UQVI21vQ+sads0ujMayp7s0GQSOfOZ3xdEk3m06B44L9czUUB6frb72Tf7RmGlzCE+Kpo+0Fq0Jn5p9mDUnwpuqxcOF9N1OVFQg+qgjojeyXJfsKKMeEHUbCOnfIZD64e55qwnJd+2QLameyunoS7fDHw51St61ntZ2pGI49NB/Zlug3Y1iM6HKvmac3bwnqAxb4yvo4kzKBenjQh6JPFV4PZ0GWHy24yQFVGytJI25v2+Q0KzQVufDthri34lU9NBhUE69H0+6Tlhsh/gSE0tVy04TxtVaBaUNSWFc+m/Q0E8fC3TDzGzXj2Z/RuXx3aZP3hcESLA8NKDVFTdhCzIzLFMDuhO2IezwBMVWcUAsekKwJDwxBOnlydlolt5c7Fp0Nmbc0KYF34lM14aDMAbBg
+ JmzBysS6
+ D0q4Yl0EiyjON/ikeTItOXCelsFsRdobON0mMmhWgUmdSM+Ue8sigTtypBWwG0Qn0hP4/LjzvMltCJEdbUKHTC4jerT87Q04o9EyfWeitp04k43oY0ItMIbyooEP+5iPqT0eszQUEkMmAKIQDnVi2Chtk+YZ2TfaM3d5NuT+mP/rGuNMGYBBGqAkAAvxndFM2uwJuG3cV/QUZ+ar6i6Gn73VES8Nrc/YAy7fW/qKFLYqiTcW1Ozddre70rNnhhxaax5dcI5k2Rstl73cvztDdNjV7/PEIxM+O/Oo3Hu+0udDnlFcZ9V1zPr5140DLA6xeRbDrHf5pvmGylu4piy3yugtsqex+c719rS720NZMH/bJYd+fASRQnOTs9CIAPu2bPW/SAOPrwGsQ6igDtol0bJpWLH5tCiFFThcBFaABK4ryrtE5ageZbhmaQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,34 +126,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Aug 2026 22:51:57 -0400, Rik van Riel wrote:
-> Add follow_pte_batch() and give follow_page_pte_commit() a run length.
-> Each run starts with a full per-PTE resolve, then follow_pte_batch()
-> finds how many more PTEs extend it with a pte_same() scan rather than a
-> re-derivation of each page, and the run is committed with one refcount
-> grab. Runs stop at folio boundaries, so plain base pages are unaffected.
+On Fri, 28 Aug 2026 22:11:07 -0400, Rik van Riel wrote:
+> On Fri, 2026-08-28 at 16:47 -0700, Suren Baghdasaryan wrote:
+> > Before refactoring in the above case we would "goto out" and
+> > no_page_table() would not be called even if pte_none(pte). Now I
+> > think
+> > you will call it if pte_none(pte). I'm not sure if this does not
+> > matter but this seems like a functional change.
+>
+> Good catch, now we may end up calling no_page_table()
+> on a VMA where we are not allowed to write, for a
+> FOLL_WRITE access, while before we did not.
+>
+> That might turn 0 into -EFAULT in some corner cases.
 
-One side effect worth a sentence in the changelog: with FOLL_TOUCH,
-folio_mark_accessed() now runs once per run instead of once per page.
-On the classic LRU the first call only sets PG_referenced and the
-second one activates the folio, so the old per-page loop activated a
-PTE-mapped large folio from its second page on, and a run now leaves
-it referenced but inactive.
+That exit is reached with a present PTE: follow_one_pte() has already
+returned 0 for !pte_present() above it, and pte_none() is false for
+any present PTE.
 
-Measured with one get_user_pages() call over 2 MB of freshly faulted
-64 kB folios (kprobe on folio_mark_accessed(), flags from
-/proc/kpageflags):
+So "!ret && pte_none(pte)" in follow_page_pte() can only be true on
+the !pte_present() path, and the old "goto no_page; if
+(!pte_none(pte)) return 0;" sent exactly that case to no_page_table()
+as well.
 
-                       before            after
-  folio_mark_accessed  512 per call      32 per call
-  after 1st call       32 folios active  32 referenced, 0 active
-  after 2nd call       32 active         32 active
-
-That matches what the other two paths already do (follow_huge_pmd()
-only calls touch_pmd(), GUP-fast only calls folio_set_referenced()),
-so it looks like the right outcome.  It is still a visible change in
-aging for anything that reaches these folios through get_user_pages()
-rather than the fast path.
+The can_follow_write_pte() and pte_protnone() exits still end in a
+plain return 0, as before.  No functional change here, so nothing to
+fix for v4.
 
 Yuan-Hao Hsu
 
