@@ -4,119 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A35F4CCA490
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 12:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83DD5CCF2C4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 13:09:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C34A86B0088; Sun, 18 Oct 2026 08:32:31 -0400 (EDT)
+	id 4FBE36B0088; Sun, 18 Oct 2026 09:09:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0A506B009D; Sun, 18 Oct 2026 08:32:31 -0400 (EDT)
+	id 4D2FC6B008C; Sun, 18 Oct 2026 09:09:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B47666B009E; Sun, 18 Oct 2026 08:32:31 -0400 (EDT)
+	id 410956B0092; Sun, 18 Oct 2026 09:09:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AAA26B0088
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:32:31 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 10D651C3B40
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 12:32:31 +0000 (UTC)
-X-FDA: 85335685302.05.3A31202
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 557B81A000B
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 12:32:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=owJbsEyP;
-	spf=pass (imf19.hostedemail.com: domain of samarth.colleges@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=samarth.colleges@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 176136B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 09:09:34 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B915A6D82
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:09:33 +0000 (UTC)
+X-FDA: 85335778626.23.9CF9606
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4BFC8120005
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:09:31 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=kigMjTXk;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf29.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792326749;
+	s=arc-20220608; t=1792328971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FHebQQxZTBF8VhHuKubJ7Ol2fYKgzc9t878DoxD9tRs=;
-	b=7i94iaC+m1Hu0et9yLftIChIBA9tNFs4EBmvYDG30Dw5LBjSFWqWl4C5VOeEaXKDfSijZp
-	T+iWOaqCSSJ+zgHGth2ZB9N3UJAqQK9ajLGDFzy66l35c0q8SgFC0GMu+54aonSTX+esAE
-	7ZaGdy+UxkmTqfrAdoTrdxhKyaUsHXo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792326749;
-	b=q55ygr5lGA93mi5CtFB/KAb05KD+Bvq2970JEGjVsBqpz0gW5MRQGqpq1y8YbICmo3VNUn
-	spgSGEQO80dqZo4inZigfxbH6uBi6hrztXIaLuJZehq3sSctdiR+sNuuV9B1MoAOZvJu+8
-	eISeOrg9UmxeyHqOn1SQvVcBQwVuGbk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ad+KRCeiTeq89I8EAoLhJ8IoqMcKydtjkjF0jccydEg=;
+	b=qEH/rpwubRRI4T5kwa/Cb+dcUjfKFfad7Zqxrr54l8K0eilK43fDQwCrsf51jeuJ7rK3UN
+	sgSCeg04CGJob7znB0WlkvTC1qeBFHCfuQDGpgfbCtdT77kOMOro/h8gNXGRkse0K7Lddb
+	IEUCC64Mq4Xppo9Z7snrpWcKFR6RuX4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=owJbsEyP;
-	spf=pass (imf19.hostedemail.com: domain of samarth.colleges@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=samarth.colleges@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-33fb4680717so1351475eec.1
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 05:32:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792326748; x=1792931548; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FHebQQxZTBF8VhHuKubJ7Ol2fYKgzc9t878DoxD9tRs=;
-        b=owJbsEyPod5VVvgiJ+SYw5WGMY+EbdT8oDVwtTZjyRiAUVeQdrs75t3yMBwZ98bPSf
-         1pEIdp4YbAUCRLHjIyfSMMLOW8hPAFKSJCPMF59SsMEMEXBCibq2q95CKTUKyGOcwTf+
-         mrWTUGZebMKYRebb7ud+7CIXz1w/qPCi344xLy0XKd8gu8k08o0OQcNyqQAz0g/qOuoM
-         p2+yQxUeccsJ1jiSPBnOoBwdEtoZGueJrznUjHVbQUurFxcbPiIzZDmhX/rgSBRN3P/u
-         4OLV5hgkrg5Ao0ag7nK9lQctYMPr79kIkCTVxmqx8X1pUI3p1z3tvxl3NgEsQxUP0Och
-         KeUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792326748; x=1792931548;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FHebQQxZTBF8VhHuKubJ7Ol2fYKgzc9t878DoxD9tRs=;
-        b=JmoD9MGCp5zC1EWMpeOtkx1bXowB1h8vvK6VIDlz6+zb94zkBP5kYj90AUQ7pklG8G
-         RH139gmjRPfyUwgRHXhyrJV7rqatRZQIRZ+pZxGQs0hX7zJ3Oz6qovsaGf6PMhoQgUBf
-         tAKy8QdEoKKWIKla0HUGkDfgyvRKX4mPjRYttI8blaGjjGTyPkmOhZUb0grIn0rfVSeO
-         D9J5XvtpIjN3epwlzOj4AfBc2mxxikxvbD6VUHHVW2+MNw/jbeBwNS9XT+D+my1lNgW2
-         4zPhI0oNHUpKcT4tE7tlBQ43Jt34wJFqRYaSOQR6iULfPzbJDvbMAzEpPjFaUOZ7P56c
-         zagg==
-X-Forwarded-Encrypted: i=1; AKwUvByrdx1thngwJiwWcBJWeos096CvWUa5dElL8YksXY+c6IOyISyiIs08C7PduyidS7xT/hM+aLu+4Q==@kvack.org
-X-Gm-Message-State: AFq9FYLcx9ZSW2I+CfbTav4CvFnupdk8eSzuL/A7+yPXtUxdqpZ1DSw2
-	Y0Ho6SlkRxGaR1JU3aKbsr/BE98/NbxfB02Z2jUuMvhS6NJ8c4bsFLra
-X-Gm-Gg: AYBFou3vH5UYkYyn0+799ooJmij3bYNiFD4ueYjRrdL4LgurL++wO6sTRIo5Wk5ZUrc
-	jbM+FE/GUGeDx44r4oLt4JKlPuZCbeyTyG8kuyxEUdnYWnU9FgJaR3zXqJlsAFPd7StadKH630f
-	L5SS1lYFEjoIX0ObbHsMSl9DV0vFYpRf5yc4zrfxhYK/pKLcjMElSxVSZ4MoPGFOQ5lCNIqMYm2
-	oEhc7+63no7lb/9s+euiQdfpC6097kTnNidR1ATLuBTRVitS1BE/hkw+tCguL1sZmusQtqDSO07
-	wwiRGPeIIrjsr7poT+Nd2qa5LMDszQ6hrCsY7uZaIC5iYqnsktGaDujgVWR9SsEwcJD9iMwEALW
-	0Kgrv0oe+ouS1dQMF0WfG+T6kpyGJUu0CNpbqOBRgqkvtKOcc9pxh1s954UuYWtIKsF4H2MhVO8
-	OEWHJ96lNi3RA2WSuAjrh92vGefSGkAd/J5AgU4UyxvseVzPDY/UJbtHDl/mJvnlNt5yhh63Yzo
-	mxxtA1wrhR0Jr0L66Ouzb5sGqdJUOEXd1HY8Qy1r/GL9Up7eyjjMNDQ
-X-Received: by 2002:a05:7022:294:20b0:189:f7f6:38f3 with SMTP id a92af1059eb24-189f7f63acemr518737c88.13.1792326747918;
-        Sun, 18 Oct 2026 05:32:27 -0700 (PDT)
-Received: from 1u1g-b650-0212.nvidia.com ([72.25.70.131])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831ba424a6sm20953055c88.17.2026.10.18.05.32.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 05:32:27 -0700 (PDT)
-From: Samarth Narang <samarth.colleges@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Xu Xin <xu.xin@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Peter Xu <peterx@redhat.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Samarth Narang <samarth.colleges@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/ksm: keep soft-dirty and uffd-wp when merging a page
-Date: Sun, 18 Oct 2026 05:29:56 -0700
-Message-ID: <20261018122957.526467-1-samarth.colleges@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	imf29.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=kigMjTXk;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf29.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792328971;
+	b=KwXYLxhGahhwWW3khPsV986ZcJmIQeocJapGacVmyctfoVzRUYlneDj1IlWcW+5EDuLhCZ
+	mGqxyfttGqjBgg519HHmyJMiHpBSZVcn789+ckaJAiFmfTD+wqemn0CsF+YLtYJozZs9Zc
+	CPb2vMxn/3P9du6HYUmXPpVlq31/E34=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=Ad+KRCeiTeq89I8EAoLhJ8IoqMcKydtjkjF0jccydEg=; t=1792328971;
+	x=1792933771; b=kigMjTXkUwSp+SrcwtX2xz96or7lgbM65MstGbLtdfjB70lSJwcdldny0d73e
+	FZR8WopBvH+uYXXcy0bPHX/N5RhbcnNeBTUOWTTJz32EAWWN5C2IQo94I1T4Xgq6+6hAdvAjRzNZf
+	KbA+mBYv3ARhVLrv2GvuHSR6hFaMGsvebQYtk3XNmfmh1JEUKgIBf1rLduwqbGLxU71Vp0uVkhu1R
+	yZQ0c7JJc2HLoiEbVA02sCsHIhj3UNw5+aSH2/WPH1fkbt/QWZaEE94XPq48wkEzsE4v2qnufF2/u
+	Da3sr3VA/vUji/RFbSY1gbZdR6COJtwEfRaM0+ZkfIsS7IZ6eg==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.100)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1xIQdh-00000001xYw-3xcj; Sun, 18 Oct 2026 15:09:25 +0200
+Received: from [45.156.240.96] (helo=[10.13.52.99])
+          by inpost2.zedat.fu-berlin.de (Exim 4.100)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1xIQdh-00000002g1r-18WS; Sun, 18 Oct 2026 15:09:25 +0200
+Message-ID: <e3068b5c97884032e7cbd12c78f6b5534d75e30c.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v2 0/3] sparc64: Randomize mmap base and PIE executables
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Stian Halseth <stian@itx.no>, Andreas Larsson <andreas@gaisler.com>, 
+ "David S . Miller"
+	 <davem@davemloft.net>
+Cc: Kees Cook <kees@kernel.org>, Michel Lespinasse <michel@lespinasse.org>, 
+ Jan Engelhardt
+	 <jengelh@inai.de>, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Date: Sun, 18 Oct 2026 15:09:22 +0200
+In-Reply-To: <20261018122734.2594904-1-stian@itx.no>
+References: <20261018122734.2594904-1-stian@itx.no>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 45.156.240.96
+X-ZEDAT-Hint: PO
+X-Rspamd-Queue-Id: 4BFC8120005
+X-Stat-Signature: kzjt9156zzucwr76h36iyunsm1qd8rhh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 557B81A000B
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 9rjdgrayantuz8kz6m845fmrhdz8yjbd
-X-HE-Tag: 1792326749-444471
-X-HE-Meta: U2FsdGVkX18VoEf3Mp3jPJ5Fe66t0IK76PztdDOOAXmWS6cqYmJGLo8hZilrKesq5l+Y6fYC5PzNjweQfGAf6b9cmwj9XFlwOP3bQDTN9X0Yjxn4/QtB9DTO7De7zl1Xf6O66D5+XZggi7YXk8TkS0gPqc9cVMFycEjzI+WBNfPCV5BrfkNOJpIzu6Kb/YYgI+v4pP3jN1ELoSvYtJTylMYoNfiTI1KXLxZsApSS5cbgZwmMn5Yc1B51lfhVgI5ew8nSAt+A4wNiVxlo45YyS49zYvfJy3/06MbZnEbpJQRAfOu9Ekt9z3wVkkLFCUGFLfwZxr20ARaR/QK6aNzvqDpchYf35BfoFnTfSPFzn5YZS8UJRTFpDkCU/ATYgZQVGECGnKCgNZRxy/pO+kAWqrqM7z3RvBkOst4xtY6KW9QA+8jVyTmwZV8d+UTy7WXj28ibZsHLi90zyunkhiq2RnbcA1dqLy5aZx7pqmO2C3JuScmUNUoej9YeLUNWYgdzVFeDEIflONeFFmKxweXGJSw1VOsjSi+micCTbPLpEbyUJy6M3/c0mJBroBq6DKeFvV9SUMMnd479iWckVGP7eIN7ltjEX0MFnhpkQRVIqYq1XUhPbg/Z3RMBirXKJKARzDF1azA82FV+xYeLfe233ZUXSPVtbF6o3PXi/IDRZVehn8FUIXQJZgl8IXFHKdnQhfFwxRuuOrdUziDwYNnnWg4oxquj3kFmk1D8HzOvm3HLHIGb16Wjo7/faQ0aK11HFTmfIxam+R7Zi1h8dGiUOYFB688JMS0QYXRhAq7ymn3II+LMYKfFUjGlkQe+ku1ll4LDhAvyfqd/Rrzvh29q4B6/ATUKurU9R50t9IG4/Mv/9qvlhL0StmCV0Q/7StCp/4bu0is7IlYoaymyKSzznRadlC4ylBo1OZoxQfhwpQKShn71Q6KV/dZPOThoIwsZZnGBAB6xDvH76zGiagd
- lCRIiUkp
- 47JS1VbdeVZ7FP9hD8eQCBqXe2Nl/p2/XCHuW/jDo4v6yLJblL2sktZJCMsp2/WL+bJ/tpdZbWuMxPRXngoQv6iQgF6rhDQewcTjLuFsIiQI67OzzC8gFsA0dc1QPPkEN7mO2+1sgjvNOVkCBWKeHW6xd4CG1uFYZG+3czCrsS5k6cFa4U94J7gHB4/6Cp4q3yK1o3TrFzQheexMGWVm+H3JXOKFWn9lQOrez/7Nxr7VQCr/gx1/pgF0vYFk79YzKZ/wqbt4UYVkHRWuAdYIRykZ9TkejZp2wXaKKjT3po8gyiQpNYnst13agHjy1rIbcMalKHDe5esgQs0od5drGZhPNiibqOCAD0irr41TeoNiERj9+GYUW80apJuwzIUjbtcihUDYKCEbEf/nnHMx3H0nKi60lifrmad1YsVstOvRvm4lRt+geO0o0VtTcOKqg6sCjotVjdladC2XVqeYe5au0nMYi4lrIw53XHlz1ikLKqzxDFU30k5oRmr3QOkiyEHgq
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1792328971-287861
+X-HE-Meta: U2FsdGVkX18oN4rg4+EmR5nP1isFMvyjsApAv3oqz3qOqNIWgtUxs/FJsdz0clpGYBXKv19lk9PVHJfxgfpLf5NnvFy47aejak+Qd1XrfpG3+PAgSOmeVdqNjo3QrJz1Sk86kCpkWCEJPxiUCcsDEDf5DpAGFqB7YS2OJ3kaHojx+HOjmxxUm6/Xs6yvGJ/AjCVa7+X4lxAkeZh/DjuL/a0ymf4/Q4tuQc6gu0ibdsTg2pcJ2OpBzRJOwv9orXwDkVPb/Eu9TA1odwWhBK9totWfsPCguJ4FkXS8qhQj+JiY9jb/ncMg83/capdosTxkTEpMIPGWomWj/6+gTJod5Q6k5sDtLcLBpazL10AsLPM/scUpuVKpTUfP0GEMGFrt+0lI6nxBpzICGGg+yfRxLZcFMzboDtyQVEyo+yFbUx5hEYwdnf6nqlRCXVWmkHArM6EJztxY9B0JeZXDX2yxwpG8bnzHvLxOIoZVDsrIYFrexPe/a6WOs84yWLWXr6Dtoo2qZ0GndgxQcalG0KqqKGkewvnoec9J+83t/6qacrMmJlGfw5oFPNhMp+Ei9W0Rdq4Ii2IID4UdhLfledBakZ7/ymD4XzHSsKMMZhR7fe84uBE96Mx+voKO+Kbo/xu0rJDaOq1zwN13A6UCEHZguXn+kp/P+ANdYeIU/YU/tFhrIvYGZ+hNdeFKiwFNozifQZxQ7qIcKLUxwxKQ0DNzE1lnokytVhgGH7wovAV1CEPeG9DI1TfK+Z4S9kHtfij97xQd4HDrnF/WLqVzATMKpoWLG04mCNhCXC+llWRmzpbIo/4FuMUi4s61qaXWCvuku8KyNzsT0c3t4EL0fyqmx6OQ/9rAIF9JarV10PSG0TsfWyLP6mWArmq7yM12b8wiozPz1AOYHiI0z3sL0vFHlCzswzMPmOzHG6L2T+nXxtomQLfkmn9H/uqSCYwXKWvniloueot+XQ/D2ZsU3lZ
+ FRuSzrBJ
+ 6KEUPWCWawo/rvPrLoHma+gWx9kjZkXdt8KPgkh/PorWZWnkNuZBfH3fEXwVW/5T2pmuurbCwwSa3um+aV2E4gs3huWctsxYfrsouJCFjeALr55Wg4G0+xOApsJoKlsFOq45/nwuHmObxAjoB1G2EETasCv1PuydnW3AJOM1nsKNC88ME45Pa/oV8/fWzIk2GSK+TeL2+Dvrv4WZ5lc1Jz0K0MsCuKewk2QwTgrpSE1n7J+z1gqsWy6Hya054UwDpuhAZ4x00hhiPb9/lQM5A1xK7lQhKE4KMAREmBrlt0MgQ+dzpIV/V7pFoPON/LT7ckcZNFRml0iIWCB6BOlmSbK1BXz5guLAAMuA6OPqpi0O6XTWk8Mg6cKZdxqUnRYK+UYNRbkaHnlpg5nqFcGMHrzTcTc1X8Mlc+tTQPkoI+kafvBttf1zSSwvcXYFtwHUrd2QPOfA5BVqfTp0FRbKp2T/hriwbAGp57u+32HRLrNCJtUolfirI+O+zokl/aCneUIfI0mm5Vrs/kHA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,61 +107,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-replace_page() maps the KSM page with a PTE built from scratch, so the
-soft-dirty and uffd bits of the PTE it replaces are lost. Due to this, a
-write before the merge no longer shows as soft-dirty, the next write to
-a uffd-wp page raises no write-protect fault, and because the page is
-mapped with the VMA's normal permissions, on a uffd-rwp VMA the next
-access raises no RWP fault.
+Hi Stian,
 
-Copy the soft-dirty and uffd bits from the original PTE to the new PTE,
-and restore PAGE_NONE for RWP VMAs, as try_to_map_unused_to_zeropage()
-does.
+On Sun, 2026-10-18 at 14:27 +0200, Stian Halseth wrote:
+> On sparc64 a 64-bit process gets little address space randomization:
+> the stack moves, but shared libraries, anonymous mappings, PIE
+> executables and the brk heap land at the same address on every run.
+>=20
+> Patch 1 makes arch_get_unmapped_area() start at the randomized
+> mm->mmap_base again, which it has ignored since v3.8. Patch 2 moves the
+> 32-bit PIE base out of the legacy mmap area, so that patch 3 can select
+> ARCH_HAS_ELF_RANDOMIZE and randomize PIE executables and brk as on
+> other architectures.
+>=20
+> Found while adding PIE support to the sparc64 Go port:
+> https://github.com/sparclinux/issues/issues/119
+>=20
+> Tested on a T4-1 and a T7-1 (sun4v) and a V240 (sun4u), with 64-bit and
+> 32-bit userland. With the series the program image, brk, shared
+> libraries and mmap base move between runs, and with
+> randomize_va_space=3D0 or setarch -R the layout is the same as before.
+> The exec and mm selftests, glibc's elf and nptl tests, the Python test
+> suite and a kernel build give the same results with and without the
+> series.
 
-Fixes: 292924b26024 ("userfaultfd: wp: apply _PAGE_UFFD_WP bit")
-Fixes: 0f8975ec4db2 ("mm: soft-dirty bits for user memory changes tracking")
-Fixes: 763f43865fc4 ("mm: preserve RWP marker across PTE rewrites")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
----
- mm/ksm.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+What about sparc32? Does it use address base randomization at all?
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index dbfb8f98b189..b0d0555aa1b5 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -34,6 +34,7 @@
- #include <linux/memory.h>
- #include <linux/mmu_notifier.h>
- #include <linux/swap.h>
-+#include <linux/userfaultfd_k.h>
- #include <linux/ksm.h>
- #include <linux/hashtable.h>
- #include <linux/freezer.h>
-@@ -1463,6 +1464,18 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
- 		dec_mm_counter(mm, MM_ANONPAGES);
- 	}
- 
-+	/*
-+	 * The old PTE may carry soft-dirty and uffd-wp state that tracks writes
-+	 * to this address. Make sure to preserve these bits in the new PTE.
-+	 * On a uffd-rwp VMA, also restore PAGE_NONE.
-+	 */
-+	if (pte_soft_dirty(orig_pte))
-+		newpte = pte_mksoft_dirty(newpte);
-+	if (pte_uffd(orig_pte))
-+		newpte = pte_mkuffd(newpte);
-+	if (pte_uffd(orig_pte) && userfaultfd_rwp(vma))
-+		newpte = pte_modify(newpte, PAGE_NONE);
-+
- 	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
- 	/*
- 	 * No need to notify as we are replacing a read only page with another
+Adrian
 
-base-commit: 48fe11c8d0f1e4e59426a3606f20ac1130b6d8dc
--- 
-2.53.0
-
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
