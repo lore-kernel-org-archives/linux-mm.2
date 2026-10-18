@@ -4,84 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73301CCF2C9
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 13:38:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF558CCF2CF
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 13:58:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EC396B0092; Sun, 18 Oct 2026 09:38:16 -0400 (EDT)
+	id B97076B0088; Sun, 18 Oct 2026 09:58:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09BCD6B0093; Sun, 18 Oct 2026 09:38:16 -0400 (EDT)
+	id B47916B008C; Sun, 18 Oct 2026 09:58:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF2D06B0095; Sun, 18 Oct 2026 09:38:15 -0400 (EDT)
+	id A35476B0092; Sun, 18 Oct 2026 09:58:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D33516B0092
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 09:38:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C62B4A054A
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:38:14 +0000 (UTC)
-X-FDA: 85335850908.29.BB926F8
-Received: from mx.itxnorge.no (itx-kvm-14.itxnorge.no [91.189.121.228])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4939BC0003
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:38:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=QQaIQZeZ;
-	spf=pass (imf22.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
-	dmarc=pass (policy=reject) header.from=itx.no
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 672426B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 09:58:29 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7C40120533
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:58:28 +0000 (UTC)
+X-FDA: 85335901896.24.4ED08AC
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0CCCF100007
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 13:58:26 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Vad0u5xX;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792330693;
+	s=arc-20220608; t=1792331907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O3PNJs4NiGtilEQpWdRqiG+quBu7ASA7JyGTHSsV4qc=;
-	b=c6ccuw/1gqRsPLXqy+bK2nTqSSHxeleWr9IuC2fAgVFg9CUhXFC8YY5aPjqMm6Vb+3YCnV
-	xFFg0lS9G/H2WREY1KCRZK0moPXugcU8untfrO5xZSBAdAtUW9rwj4Bvu42WO0qU2R3tLf
-	7C5AUU734cfYgRTCF67JucSDbXsQUic=
+	bh=ayMWfGshO3UNwVYFCcSN2BNh422miW8cad5xrtcnUvg=;
+	b=rIfatrUt/cDIsNf2pY/cnTQM0u2ks2665+M2ROWJx+Pj8xCoazEMouN68YM8bXmjmP8po5
+	0fS1ncjS2GbTvkCC2x4fJoFoqM0vsc3jqSHffSAwewtrTPjiXm1zxe17gAAgEitKlmPoUl
+	xT6fXRkxMZDfTOWuLO8lubG6qgz0Za0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792330693;
-	b=DVVnsbWQvzfmU+EmWKhswmrZU/H2z8nZ7UTgqrPzm8IFfUyVjqqz9oS3Iw39mSUrBF2oCy
-	Zpv7UppCcddDCyYY7tYZTF/ahhMyzKxXZjBW2hFVctgFhsL5qMLTBob64MS3Ym0+dhfDU2
-	qh7DPLpVuzBxG2YM9y6nRRRGfkBnny4=
+	t=1792331907;
+	b=wECwVhORBUwd/Fh0YfskaCYiCmKOdHG3c5vo3Uyj6cbInXmva7eVWG/smLe1V6R8DXucdV
+	NwpXcIbw2NWSJvSK2B0dCVzg65O0AGuGAGSS9mibpNiYJE8TB4GL3sYqqVhAPe4Cqmh+r+
+	AohsjGqhsEhbDTHhby/hxFg2OkYO+6I=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=QQaIQZeZ;
-	spf=pass (imf22.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
-	dmarc=pass (policy=reject) header.from=itx.no
-Message-ID: <4f7dacd9b4cf0a43209be84f2408e6f7e033fd3d.camel@itx.no>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
-	t=1792330692;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O3PNJs4NiGtilEQpWdRqiG+quBu7ASA7JyGTHSsV4qc=;
-	b=QQaIQZeZxo16u7UdAOq4kPy1bHh5wCdCBH3QZYCg5PimPB58GI9wTdfFUotn+h0Z6v2BVp
-	u1poagQVYS3BGkVyq/Md3JtwjPxUGO4tWjKXdDBlmhiq53uFEsv4XbrV1lGHtHYHOXUfLl
-	cIxyUDqNWLy862uBUKeV5H2v+UifeUU=
-Subject: Re: [PATCH v2 0/3] sparc64: Randomize mmap base and PIE executables
-From: Stian Halseth <stian@itx.no>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Andreas
- Larsson <andreas@gaisler.com>, "David S . Miller" <davem@davemloft.net>
-Cc: Kees Cook <kees@kernel.org>, Michel Lespinasse <michel@lespinasse.org>, 
- Jan Engelhardt
-	 <jengelh@inai.de>, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 15:38:11 +0200
-In-Reply-To: <6e2d2b2b7aa4029c261831016d8b6c40bc335341.camel@itx.no>
-References: <20261018122734.2594904-1-stian@itx.no>
-	 <e3068b5c97884032e7cbd12c78f6b5534d75e30c.camel@physik.fu-berlin.de>
-	 <6e2d2b2b7aa4029c261831016d8b6c40bc335341.camel@itx.no>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-PHAaQr8Laoy3OBzen5hN"
+	imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Vad0u5xX;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7cc0892f92cso301114137.3
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 06:58:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1792331906; x=1792936706; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ayMWfGshO3UNwVYFCcSN2BNh422miW8cad5xrtcnUvg=;
+        b=Vad0u5xX6JCEbh4FH9/L9KrQ7AbZYTZ5Lfzz/U/eEi0b/qSq+I9JcFB+5t5qKHDL2K
+         iT+s7g2z+Tb/caLikYWCiUlESiRLy99Ia9m+8mWpOJKWhgH3TMT+aYPbTeA9fQwXoWaP
+         UIMWRwvNFMuQ929JDNGQUPFP4QobOw5xC0nPG9qZOUQK0xeDBNS1aB1RGy0uCKVwfthy
+         L51SOz+ZCJDk8WVIf8ZRX9BGcWvYPm95DKOCAIegroyCIkRZwJAcmy9US0afeSwNK2/F
+         k7Q7DoBvz98umiTUU/6Qay4T+DUlTTZvdMff+7Fxi+hwqR5onI+yprbQNeOrs4PxYSYq
+         fagw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792331906; x=1792936706;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ayMWfGshO3UNwVYFCcSN2BNh422miW8cad5xrtcnUvg=;
+        b=Imqv6tC5946eIY9Nk0cSGAW8t5bTF8iqyMY5flfgQmubg2+tYVHTjOfzYgBVvkZ07s
+         aLFdKRHaGUlxYqgoWh8orjxnKuUc/5aPTGy1sB9RiJdHLmaCxp0gk9jDVXZCBEGg0gM1
+         aCS6puElgVDfTKgPcr1c+e8g8OWzwnVC0LxwnaRSCRiMSqsWPa4zl/GdBN+O0aXJ3+pM
+         +SqGGH4Yc+wg47nJWgNPwpNIf0Ds+I0rL2JeEgUSTlAWli3E7q25njbGJqmRsIVYTb+H
+         ZdvpNG6FoZ5YX2J6cYXsJsorY7lorG0SbZHnUJX2SYSDTT/dhh4bhc9N64DLeOEtAh6w
+         bRFg==
+X-Forwarded-Encrypted: i=1; AKwUvBwY4nhUvmXV0wk5xMcm6U1KLHjDW5Jo/8ZcPi+V1fzudP4qs6vQY/Urba6lrYjIpjKKworQrzf+Mg==@kvack.org
+X-Gm-Message-State: AFq9FYKbZNOESZe+VawpMKQ8Chi2c8d+PQqJHszCMrZfP+LsLWDpRuZ9
+	uSKXBN7kTw2x0VXQ0OimByUnU8QMt0TA9IHMAbiwzilZZfZdvoRrXZDfxxHfx+6TjMQ=
+X-Gm-Gg: AYBFou2FrTEWUmlgU2xQY/6qSnLktPzL2mKYPZbqM48hbenKDtvErw+EUOedHBC9pOP
+	uib+/qsHUXy12sptg+yeVTx9UK9Y6ghydeW951j4OtIGC4jDu34NAme2ya33V9S+MxRo+ujPAiA
+	9YcWYOMvhK4pdkCcI/B1eGdt5rxvSqXzPlmYv/9//jFuaNmCmxWn3K1+Aho0djIF1tayJ9SY0qm
+	h99jLCGNZtZNeA3rBvMQD4yf9n20gjMd6ME1KkK6JxPRikr4hvK2D0jj9qgZGkGAZkDNWdmOO/G
+	82hOQw4hVv+qBNO9MPJ1gWh9zaTq4eAypN5XGcqMP/ope2mrTBrl7RkvlOlU39e0chlRFjhp7sA
+	Nvxm6NZdWG30JGAbqFQo+mml6DQzS28jl6HtQkFMFzT/PEEdffPZZlha1x1ktU1QBJlMMJUgKs2
+	86oCmSSAQL4zwvnvXMfxw7pjrfLv+CFsvh+kGmVrl910//tEY8BRH82Fov1jYrfW49QhjW1zSEy
+	GkUuz/p97m3/3GCu7Hc5yO0Dw8oYCNIgZh9D/xJLC9XJG047wfX1ODWRmTujie4hgZsFhtayRQ=
+X-Received: by 2002:a05:6102:5809:b0:7a7:19aa:f0d4 with SMTP id ada2fe7eead31-7cc36af7150mr1191922137.33.1792331906038;
+        Sun, 18 Oct 2026 06:58:26 -0700 (PDT)
+Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9908366328dsm6405154241.12.2026.10.18.06.58.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 06:58:25 -0700 (PDT)
+Date: Sun, 18 Oct 2026 09:58:24 -0400
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: "Luck, Tony" <tony.luck@intel.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, kees@kernel.org,
+	rppt@kernel.org, juri.lelli@redhat.com, nik.borisov@suse.com,
+	tglx@kernel.org, vschneid@redhat.com, kprateek.nayak@amd.com,
+	vincent.guittot@linaro.org, bp@alien8.de, thorsten.blum@linux.dev,
+	cgroups@vger.kernel.org, david@kernel.org, mingo@redhat.com,
+	akpm@linux-foundation.org, linux-mm@kvack.org, seanjc@google.com,
+	ljs@kernel.org, zhangguopeng@kylinos.cn, dietmar.eggemann@arm.com,
+	mhocko@suse.com, vinicius.gomes@intel.com, tj@kernel.org,
+	vbabka@kernel.org, linux-kernel@vger.kernel.org,
+	peterz@infradead.org, surenb@google.com, hpa@zytor.com,
+	x86@kernel.org, dmatlack@google.com, tim.c.chen@linux.intel.com,
+	kexec@lists.infradead.org, pratyush@kernel.org,
+	dave.hansen@linux.intel.com, rostedt@goodmis.org,
+	gmonaco@redhat.com, jgross@suse.com, mgorman@suse.de,
+	graf@amazon.com, linux-edac@vger.kernel.org, liam@infradead.org,
+	ridong.chen@linux.dev, longman@redhat.com, bsegall@google.com
+Subject: Re: [PATCH v1 0/8] x86, sched, mm: Speed up CPU hotplug on large
+ systems
+Message-ID: <atTQgM72TWSFZ0AX@google.com>
+References: <20261015153331.1872641-1-pasha.tatashin@soleen.com>
+ <atFGxagFo50iG6IS@agluck-desk3>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atFGxagFo50iG6IS@agluck-desk3>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4939BC0003
-X-Stat-Signature: 58bjb7hxw93xy3xem7ni1oxxoauz79iq
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1792330693-228575
-X-HE-Meta: U2FsdGVkX18CLHvZQckfzM66XRQpxHfF3l1KqDa1t2YgSk2iSZuwFNv2TLieEYE7rEVshF5hge/6lAMwQCgRtaPjajCat8Jr8ShWDSaZfS4sHcyuITQYVO70gaa/gZTbGsp9xBYr+OjYkoCDObf0wuETfRnlPXxnzEwZhoWRgcUlfloXkTh0i/B/qx+q3M/jXRginhg+KREZy1OMtC07qVLn4LDB519GvKeNKh+qoqSZvteRjyam8CD0ggXp4OfMQNkhQ4MA6buuS/0hnnCfqP8wJw7QZdKeZT1TUPavNwNnFLsF/y75NIO1joOJhflLjkoMKJOGkVqHEPTrsDJI+t6+L4QeMTZcrbo4ND6i4LxMTZQeieUuPf6RpH/woXhV/kmWIN+PckYKDW/uKMUHpbGtj3SH81MLXdjSe0jMEKIMq/B3CC4SUXXNebRQcZYYMurN/J4xQGSzfaokLZxNjV65iNxsozOhawA5n1xGTKrTFpwZs+ptQButbQuDx+Tk7QI9PjLcBpJ66pOU2Cg3fXFIm1vypn3KIy4VAk8Mp+K36wUix/m1xtJRngVKZugT0qa84L74GI3AAhE6MjqH+TXR7o8p2xOC4vOLnAPtW0InMfSS3UtOsRYYt7o2n/KvolBcQoaVgY3W3j/UdDBBj0bKQU/KnNBSpXC/qRBb+MaSBiU2cNyTVZ33k85bvhSWNPHTMmZdZzpb8PsWbRvBaRVXH99SZAGmjbVVDKS09BTzaLZrRM0dF+MILxsZ90g7zqpd1V/E7gaDS3RKSN5DmMITW1HabjTeh9xoUaSlkfuKC3+Ic/5xoZgMwHt5UyiegmkK1bwSDS7g3knOIXHuNFcGHVkgbIgKT5n01CDWX2qTGwRuFjUQgRZa5nNjt214514/wFt8zH+vUbevek+AhRdl8iQga/LZ0vngKIT2A7wLsQ4LfEtzJrzHZXEkqpmErVpH2tmSw+iuTj93exZ
- +oeJ3Ts+
- dcY5M6s0izgq7O0PHILXmZflRAUImNcC8kqih/1U/ep96GVJCzekgyghB0mWhW61Fcl9mcaWdvJgJFAT4MkNkhvSUQy3tAsVBo49beQbLbkct8K3b7yzc44JERBbV0W7vLOz24U8Ucl5GYWVbpTTi61J0bVr6+jLHDhrS6fl0UwJ7Z8rR5FFZwKEGC7t//2mW+ADPnwJJsV3F47xXy7uU5Evo9DC56M4hmNgEhOqT0F9X0BBFBtIaBO0iLg==
+X-Rspamd-Queue-Id: 0CCCF100007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: d8owdqubaz4j1mi4zxqekf8ahhtrpg8h
+X-HE-Tag: 1792331906-39772
+X-HE-Meta: U2FsdGVkX181+lwik52wYoHSk4WgYeUL4pkFxFixjxkTQYMtFxTGDLVUXPPmybRbQnHOgCbLJYi6vbUMTZXM6Qe9Co4pOf7CLFaOP/uUe7dgYZ3EbMesompQ4c4+OYcQvM1LHOayiQUBRsnmZofX2xsrXppsaydlEoNssgQpZfdLfXYwKkoQ/MaoxMFWtQ6S0doGYLnOISFO7nzo8dfzWN7z7gHg9YjBRCSMMTMvLFIPSMIcigJUJlYRQphtH+0zn7X5+WmSDYVdieOVRMYwedFQg6F57FV5NDeUDgxQHeg/AknZOksQv3BDKuFtf/Rduoqx+PgGmJPZ1IQ8Xp+ZWxlkxR8IkTvGCmMsctkNVpklP/2ec5m2g11gLeYmgLQ01fqV80hOZbjnLPqtysTST2vLGHtdL29U7rgvvs2ri3w4gT9M68lowoq4IEiGa2vpOfmz/5q6H2qvAFJWPZ0u4pbUaFs37zRVSLS6mG86vCjrNulxmRIfHdWaEhSNRCnLdfuRSWpuQLQkh7LC0TgJp9snxCs5a0lMNcP5KhDNcb5QfATIAECE6uFM46UjXEO+W8iPcZHNCd41rAlSU8cMzpeUGG0oXnnJgGd5OBkIxMFry7wukPqMs799S9qjj9cwMH1s6qaUgG2mUaQKzBOUI2OC7Ie+fAsCQSO1tJzj49pyGThFK/OMgbFehEWUPWHilRCefR9O5rFysyQ/nHMK/717oku9m3wrYIQyzuSIjw0Lbd3kmjmseIcxsAWjcxuvqZhBHmKbbXA1hPqYpEq6kNHXYR3IFCCPW59fLnu+YDYBWwN7pDE2uZLDilHN0LbprGZkLNwhfna2N0/y2gRvh/CUNowJcgwlU31sbGZ1mTLqMmszWdDhCV67dtyzaqTNFmzO+9UtYaQay20MefVsSQuZdJqJOqvh46pstEe1+heiJTYClsQYQw9NRkkhZYiQsDKg4jRvz4Ux4EMN/JM
+ w0L+A7lK
+ Q3fC9j3HXsmHNX/Ed9NGQLRTa37KtOhbbNY8QUpZXYt0Jeb3qNRV9bLmgDm4dGvdvrD32/spnrQi+Dsa75Xjev3/z8HkRkztKkieHMl0loDwNnORDaeNepfON/iHqZunrIrhY4zYZABnqsXWRAamy+4hpaUiTLfLwYlHkxioBfz7ixjDPXo5g2EpKXA2JgIGZogN8MwbzzlTX9fIU78cZ6TeLvZrBMU4UXmH4Anh1tNlEC2J7FiONObgTt/HAzmD+BD2S1YgoBsZ0QqTSLLjy/1Pz9WNvyseC0UktWWC3IkaiEBKLSoQdG2oJUwcBlWLXgptutLyMZIcKrMsAOSldVFKF0MuKLn59Td0/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,49 +135,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 10-15 14:33, Luck, Tony wrote:
+> On Thu, Oct 15, 2026 at 11:33:23AM -0400, Pasha Tatashin wrote:
+> >    - Patch 3 bounds cmci_rediscover() on CPU teardown. Currently,
+> >      cmci_rediscover() broadcasts an IPI via on_each_cpu() to all online
+> >      CPUs, serializing them on cmci_discover_lock while reading up to 32
+> >      MCA MSRs. Because any disabled MCA bank is shared at most with an
+> >      SMT sibling, L2 cluster peer, or die/package peer, probing a single
+> >      online topology peer via smp_call_function_single() (or returning
+> >      immediately when no shared banks were orphaned) reduces 479-CPU
+> >      offline time on Intel from 11.42 s to 9.63 s (-15.7%) and total time
+> >      from 22.50 s to 20.74 s (-7.8%).
+> 
+> I took this series for a spin on a timy 2-socket Icelake (36 cores, 72
+> threads per socket). My test was to just offfline/online the 72 logical
+> CPUs on socket 1, and I saw some good speedups:
+> 
+> 	offline: 4.833s -> 3.17s
+> 	online: 6.157s -> 3.796s
+> 
+> I noticed that your cmci_rediscover() improvements mean even better
+> offline performance if you work from high to low CPU numbers as the
+> shared banks are assigned to the lowest numbered CPU within the sharing
+> topology domain. So working from high to low avoids creating as many
+> orphan banks that then need to find new owners.
+> 
+> 	reverse order offline: 2.984s
+> 
+> I haven't looked into the code yet. But the general direction seems
+> good.
 
---=-PHAaQr8Laoy3OBzen5hN
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Thank you for the data, and your point about the ordering is spot on. 
+However, once single-thread performance is adequate, my end goal is to 
+parallelize the operation so the number of CPUs won't significantly 
+affect the total time it takes to remove them and add them back to the 
+scheduler. This is crucial for the live update work, as transferring CPUs 
+to Caretaker is part of the brownout, and in some configurations, the 
+blackout of the live update process.
 
+Pasha
 
-On Sun, 2026-10-18 at 15:33 +0200, Stian Halseth wrote:
-> Hi Adrian,
->=20
-> On Sun, 2026-10-18 at 15:09 +0200, John Paul Adrian Glaubitz wrote:
-> >=20
-> > What about sparc32? Does it use address base randomization at all?
-> >=20
->=20
-> sparc32 is at the same state as sparc64 was before this series. Only
-> the stack moves.
->=20
-> I've only tested 32-bit programs on sparc64. The same approach will
-> probably work, but needs testing on real sparc32. Could be possibly
-> be
-> added as a follow up, if someone with sparc32 hardware can test it.
->=20
-> /Stian
->=20
-
-Additionally, outside of qemu testing, I'm a bit worried about sparc32
-machines with virtually indexed caches. I've heard those can be fun,
-and I wouldn't feel confident about implementing it without testing on
-the "real thing".
-
-/Stian
-
---=-PHAaQr8Laoy3OBzen5hN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTK1ph9OaYoND1R57zoeAEuJe36VgUCatTLwwAKCRDoeAEuJe36
-Vl7RAP48VGMJlbwWIQ7VHqi25QkjzG+Eh44RA0bTgOXyVfzwmgEA8nOr9l4i+AbW
-Ux5a921hTL1xjAjla4+mWeEC5nU7dwY=
-=2Xlx
------END PGP SIGNATURE-----
-
---=-PHAaQr8Laoy3OBzen5hN--
+> 
+> -Tony
 
