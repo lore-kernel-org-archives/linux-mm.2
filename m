@@ -4,115 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4E65CCA490
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 08:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AD2ECCA490
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 08:34:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2FD56B0088; Sun, 18 Oct 2026 04:27:03 -0400 (EDT)
+	id 2A72A6B0088; Sun, 18 Oct 2026 04:34:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB9926B008C; Sun, 18 Oct 2026 04:27:03 -0400 (EDT)
+	id 258156B008C; Sun, 18 Oct 2026 04:34:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C811F6B0092; Sun, 18 Oct 2026 04:27:03 -0400 (EDT)
+	id 16E2F6B0092; Sun, 18 Oct 2026 04:34:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BA066B0088
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:27:03 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F5A81204D6
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:27:03 +0000 (UTC)
-X-FDA: 85335066726.27.6ED7CB6
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5696240002
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:27:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=U9kuUF5x;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 304LUagkKCIgmxuoq3Atxs00sxq.o0yxuz69-yyw7mow.03s@flex--aliceryhl.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=304LUagkKCIgmxuoq3Atxs00sxq.o0yxuz69-yyw7mow.03s@flex--aliceryhl.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E726D6B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 04:34:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 74A9B16042A
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:34:40 +0000 (UTC)
+X-FDA: 85335085920.13.8EBFE01
+Received: from mta1.migadu.com (out-240.mta1.migadu.com [95.215.58.240])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3DF94C0002
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 08:34:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LCx1+dVW;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792312478;
+	b=nDoqwTgikCgfTwboyhDjm3rVXmuuqswka64S7gJlC1DXYf+/4QFbTqsog8TQ+052RweXTi
+	pIiyvNkUZ9NdEI97DrvAeUjyr9wUcTMr3UWCveK6NU2SNekuCDkJt9BYrVetThn1c+ARjX
+	FppLlLZLyVaJjzvJ1Km1KS/3nak46is=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LCx1+dVW;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792312021;
+	s=arc-20220608; t=1792312478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QkOWVJGDMEJpVMoa9QrtOzGeGfuXdeF8I51bc2Lb2JM=;
-	b=WEgNBxzWfQYI2ooRk+/gqHsHyeNh7fh/rPD/z+jN0hX7mtSlhJca53H0hBXoaFudjjMN9z
-	JqrtDrS14CVLiD58uSz2/e3tCpJ080Xe/z9GPlJJJBW1AaFht8ZuTZt4pJeOoMh/tj/Tvz
-	Z9vb8wbXb9OqUrv3OK15X59HKsaAp5c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792312021;
-	b=Cq9d7CwKzhibi833UPEP4gQ46mNFeOLEsk/rfRZ/EY2hm8+F5YEiS93tnrMkq79MeosTAp
-	Y/QvBhwZRPXfpi5s0Crf9z27b5RX+ots8wKke9VEJ90WDgmq5QNOSyv0+7jZanw+T6Yza/
-	ur4VOj91jY5o9hnSvQAp8mRA5hWjtpE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=U9kuUF5x;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 304LUagkKCIgmxuoq3Atxs00sxq.o0yxuz69-yyw7mow.03s@flex--aliceryhl.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=304LUagkKCIgmxuoq3Atxs00sxq.o0yxuz69-yyw7mow.03s@flex--aliceryhl.bounces.google.com
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c40285df2a0so57420766b.2
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 01:27:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792312020; x=1792916820; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=QkOWVJGDMEJpVMoa9QrtOzGeGfuXdeF8I51bc2Lb2JM=;
-        b=U9kuUF5xILODDjegspRs8HwoPyK8Q4LTEQVe6KCNm0dLNm42DwOyJgPUfl9tPcOBgM
-         Qy72i8Uri1A/iat26sVCvF5dsxv/F/Y61+gD19ckaLpGKBXFY0wdSbca4jta+aHnVEeb
-         lTdTaqC1dEax7EbV6zyysGrmUxvwG3AzscTfGBw3lCW0+226FqM/+e9WcitUXEx0GGhU
-         tje26sPuN2bPmF2NjuUcq5peKGFrbiRVmSWtaBYtC9aT8639lgNCUsZvV1kG85b0bo4R
-         R5eLcFdr16Fq0BCAW7dSRDyja4vyuOqvQu6uk1qFbwK35sCGziHCjfb1kKGj8tjLVzcl
-         dy1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792312020; x=1792916820;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QkOWVJGDMEJpVMoa9QrtOzGeGfuXdeF8I51bc2Lb2JM=;
-        b=u7TLY94dxgi4lKqLK0FpqIh+1NOkKa07UWECFjV4sKiTHJ0XkUhqRlLOEDzP/SbdKD
-         Q44PO3XfSKex3TTsLqjl+ae6F5jcmvMb/sGBngmdddrkZ1aYjRbvG6cpurlM6/OgsG5U
-         TTUOzTYCSCDfVXUQq6KqYoo9ry1MQ0ubpiIgCqhtit1RJ7jWzS6H9ujYXxu/o3qi3yVE
-         F3d5MB5XbB+Tc5jYsJCBvsT2L8/96VeIrX6ROKieJjnm4VWmtgy2MJ8jRAjwODsfKfYT
-         E3xCT9rkx7vCIJ43kSxSlTSniI6sVHtggUNXiU129ZPoXHKGHcSXHdvKD1NbPFrlgapx
-         pGBg==
-X-Forwarded-Encrypted: i=1; AKwUvBwep8LdP0R/DIUlnfryn0kOw8yOK67FDRzFhZvqn/8tfrVZsJ1jyrgm1BebKwdW9xz+B91udauzBg==@kvack.org
-X-Gm-Message-State: AFq9FYKBdz5xTX3LtcfLB5UXkpizeQIYWka1B4arbQTXkN6/V5JV3ERH
-	135nZji1TE7+8R60+dwKZZLRP4iBJ3q1Cyw8fJtXJaqTMJmPZ5EsNrSwd/v2pf+8tlDPhlv9OHW
-	snCRDQcGGbL+2js4eBg==
-X-Received: from ejzu11.prod.google.com ([2002:a17:906:c40b:b0:c42:1a41:d93])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:7946:b0:c33:ca5e:8ddb with SMTP id a640c23a62f3a-c419eb33ac1mr311884866b.28.1792312019486;
- Sun, 18 Oct 2026 01:26:59 -0700 (PDT)
-Date: Sun, 18 Oct 2026 08:26:58 +0000
-In-Reply-To: <CABdmKX1fLKvC_TnO3g_DkPjcfoXiU2rM-Fa+ZjriYctVQPkFTQ@mail.gmail.com>
-Mime-Version: 1.0
-References: <20261016-binder-memcg-v1-0-d659b8ae088b@google.com>
- <20261016-binder-memcg-v1-2-d659b8ae088b@google.com> <CABdmKX1fLKvC_TnO3g_DkPjcfoXiU2rM-Fa+ZjriYctVQPkFTQ@mail.gmail.com>
-Message-ID: <atSC0lHwc7N_6rVv@google.com>
-Subject: Re: [PATCH 2/2] rust_binder: charge allocated pages to memcg
-From: Alice Ryhl <aliceryhl@google.com>
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5696240002
-X-Stat-Signature: 8sfw3afdepn1t3jwj49fs66hsg1ik9so
+	bh=4FHu0SrOXnVIwNP/Tb0Qhbw7/vflkiK9DWXkwldrzj4=;
+	b=SUaoQLkchzVMfFSAuOkfdYLNHpMSzJbHM5nz9S+kKA3UtJgRVhMLHU6g3LuXAp7uknXJWJ
+	d2em9yK/uqXzyFng3cR+ddYJTpf+9tm5Ayx3dFMhTTjmkqpcvY70MD+h37GNMGH3KyETHB
+	1Fa1HqQVn/IXzFUO+woGuFTuwu7Lu4Y=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4FHu0SrOXnVIwNP/Tb0Qhbw7/vflkiK9DWXkwldrzj4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792312476; v=1; x=1792917276;
+ b=LCx1+dVWxKkFYHab4iGMbh4EiGbeivfzobmOF7Km6kkmJSxkOiz9oHwe3BM5yIsDkkwE5kOk
+ sR64MbrCwbAOOqc0b8/TEmLuk9aDDbsRMyGciKn55NMMKCnTJ2r6qvn2ke5kNlh9YGvx+bf1BU5
+ uNVhmc/+sqCMbSbUVmTgA4oA=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5616a91c2f12ed25;
+	Sun, 18 Oct 2026 08:34:36 +0000
+X-Mizu-Trace-ID: 5616a91c2f12ed25
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	agl@us.ibm.com,
+	mel@csn.ul.ie,
+	riel@surriel.com,
+	peterx@redhat.com,
+	kas@kernel.org,
+	rppt@kernel.org,
+	josef@toxicpanda.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 10/10] mm/mremap: fix calling fixup_hugetlb_reservations() on the wrong VMA
+Date: Sun, 18 Oct 2026 16:34:31 +0800
+Message-ID: <20261018083431.15699-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261015-urgent_fixes-v1-10-42796911043b@kernel.org>
+References: <20261015-urgent_fixes-v1-10-42796911043b@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1792312021-14157
-X-HE-Meta: U2FsdGVkX19Fcf073L27qhzB8w45iDGRv1w8XiwZWSNy8avTD4IEoiMscBgIf/dtCcQ6+Dun++tAWj1tn54eGXq8Q44ndQuT/4jbCFKxv9lfkmFY2s1bLd2Y7gtkKLMfuprbGEnnz8GOl7Lec+bcxaJ/IboMTqzXv3Qhlp5SISDl2sReaQQkwhzLITuSUQcYxRLvLANkPoBB5jIesbyAIhgJLBR4GI5ceN4TirO0BPSYEXjAEvnsNjlPlKbI2CMgAUdKtBbGqN1t8XR45TUVb+bXZNFZTesy54QrNG4tI3O77eiyV8J/YpBr6StONdoAw9g5smQzxVrry/qyn/NfWRpXAYN/g9ksU8TkddF3YsELSnyGPoSt1QvmsoIVr5K0jUpjBNzh6UcEE+lmwndWB9x9tzhciVZGscl+66Y6YVilVL+tAB57ZARGGsXpc9S3eAKQAF7joXjz6QtW9EbCNUUB6OdCoNAwMwiFh4X6+ZHzrNJf+hc3EuefunFdbZq9kRQ5SRSkviRJ4nRD2VLr6xEug2dnLJU+OgAv0zSId/KNkb1dxTVUsWhpcoPVIQDYg7q43o6MoGC34vv+Wc0YwB0Jw5JtB5uNA33IpO5KaXC/vNRIa5EQZKMtLGlVJBvuohBk/S+ZMnxXRi2V4uZy9PI1g9mmFemQF1MZzHR67joBb50s2HOuvQ3gv5cLGRDgpyvZ4v61tEKRmhsVp7HChzM0aKQ/OzQCfIATYcRil45p0wWtQbvA0v5tp9h2xWv+HX3EXS1H1f7pzPJiwhi4hEKmQYZJRxAbkCzwS8oohyak3w++WGYmc+J1dHC19ik4GW1JM4rzw+mMpehWpN02PHjKDDeuShpceJDIhACV3RJB9D2GNZ8mZGOcnLP5GmymC8fXxEJTzRSbbPzU+7Lxq1xLM2iZwUFV8pwgYGrNwHc1ixmSxjDibkaEwyOXWVj0bJxbsfOBBZQS+x3i3iZ
- 6HaWyRZB
- Z8ghHCLXRAssXJpckGrKc7NI5sq0ZnV/OoifEEajtgDX/KCkexU+66mvbCxrI3hskw75Geh9T5bpaespq+iq2F46eGAmvWM/9QorTgVzwqk30W/G4hjoPzcpPjdoKwxGOaNdRPSzDFk3tx5HrmVajFkPXmL0Ff4pqCmG3sQ6sfpDxYnS1vQIi/vDr1NmULbcJ6gFucY0wmya1etiCrFI/k4ibK9Wep9aevQ0mMD10Wws50dHrEsfQYYHC+zrl5FoagB3mzn0UWilq4n6sHzkP2MLmOCPkff8XYOOS+brWJI8fuVaTSDIQgEUsImmH7FMSYxxDzKS/dgP9+Hps7bw66JVH8upMucP/xNtFIpFpwHHIQc4AtkJ86Tonyx6ZeFRJPoGRJfEhtUN3WSaq+HNGlwqIepvm0xoFWZSTrL4jCbbKNdhPKBDWG5osGmi9113cGY529fV6yn8aSGKMtd0Uz0t2YO7yEkP8OcBzJH5o2PXfgO86mE9X0iL5cmn2lrQ8PBqWL7kA/lSUybYC6DE98TnLvDUMd14S+bo9ui7tPMPve5cka/UiZ2GyWvS9hFBLwNgFCXK93f+T8kcRgH+pExVvdMb9r0h/nZ+oLyTLBGWlQQv6MMnpVh+FVmPwkYdTyMlyjXjwMQDk7JklYUcLWDrKAFU1e9jSvyEFHZsHOl2HCYpTrla6vJEqxMeT4LqXBlAcxuT1TNap5/Q=
+X-Rspamd-Queue-Id: 3DF94C0002
+X-Stat-Signature: z75s75k4zggmxir8oa6781hi5x7es8ku
+X-HE-Tag: 1792312478-503002
+X-HE-Meta: U2FsdGVkX1+R2TVTFm4rm9/4nDzFJTM606YFTe9EBc+ZFYy4vKvH8n48L6cIsqz+3c7T+i94GeClpMnAG+5stjuqGnByacwFEGsqc4fiioApPfxCTIHcRwbHvIufF1AMBrXguzKs+QqC7D0j+FPhPm7BI57EqxzngRhuh+i/uPZNSP/7VE6ENAcTl7utrSq3o7m4dcljjKbWDtBg69YNr958Ca9Us1GVBUl47Q/9SaTduaV/Nq2M4LRjXQKqjAXBzwrrbOpW9dwRoC+n0WKjyrsB8qrVoAKGnICzmz4TaygKkvNEZqaglaVEVxr1CuOqbcfemu3JOe+KtloUpxZo/TQWAJd0tRk1HGX41ov3HupjJjKfADRfO94R6NFznR6i7rtxuMKdvQ3sukoyvvU8T+EqY5yT2UW/cejU9Q8i1/SO2uevtnFdJ5tTMw4T0EMQLZmmV2uS+7ptL5djtn038dgd4Lk1rIPL4aDeCrjC/LYvEl7wNr+vBLaMlfDuDSmQ35zfK/y+DoR/Nu5ESQDl09xWBBNPkXvWIPqjAvHXVI/2RXHOgDpGhuJiWKwHyY4/99AWhPBI49LLsmbclsInYT0SI66U3SNS37EJ4yUewjaJ5t0Fu0zdxmoLCkpedav1Pz7UAjNEO2cE2udHZBnmNqn8nosyhLawUDHhv1wqXNDpKeTXAQ3KcdkjvbAV8NUMQWQiSgbdUK2UK/jGF6hNGEcP2eqBsXcuP4CsPAs9kMuDUrf496ua41C/1noJAmEEiIRiB9hw8pASMOjE2ILXRvggyBx6tBq7TRNMJ8Arz792NKjKcWrMuNdALwVhfQ4alGefYHhtwirl4Dr3CcLtvSMEbINVH0HknGlh2cgEGSz1VACD1d/rhPJ0TNrRdxbHFsu1hsgL8PJSYrKg+H+j9zGDmPxVEtMQOpPoMAhB3IVnCvFF1YiA2/lXBG1LO522oIZX8H2QxH7OusPi0uD
+ 4jXD+RWl
+ C9P3KUBgGl5mh93jwjMI/62F5RyjlVISL4rfdQ2t3dxh/82Q3MMiWZ6ayl/7TT/LDLcRIqJ2vx4v2g02hU6TeanxHzzEUYMJkOw1b/EkWqmH0wxY4sKEZdscubUC0QKNSwGyuHcfKjRAU83tbDhFl70EIH+wa43vMkGWo2bJyyc2s4ZpCr++A96YMpxKc3gYuRv1J1DLCg2u+jQH1QDtPdkgu7o5aQh6jaFExmfNms765/mqrqjZTfv3R1jsBbgW1t76ln50rgpP5Dd1jQB6HQRR84CYdkju38B/ps5MBE3XIsrIzkbZIlI7/j8bsmOE2eirFD6Uc1yev/nQlPgf/jcF2ZaCA0eB1v5o/qKzKw74QMF4aT7GeY+/pDArPWNvV4XiI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,67 +108,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 16, 2026 at 11:41:55AM -0700, T.J. Mercier wrote:
-> On Fri, Oct 16, 2026 at 6:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > Pages allocated for a binder VMA are currently not charged to any memor=
-y
-> > cgroup. Thus, use `Page::alloc_page_memcg()` to charge them to the
-> > owning process's `mm_struct`.
-> >
-> > Suggested-by: T.J. Mercier <tjmercier@google.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  drivers/android/binder/page_range.rs | 13 +++++++++++--
-> >  1 file changed, 11 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/android/binder/page_range.rs b/drivers/android/bin=
-der/page_range.rs
-> > index 52ffbf3504e7..57da47243967 100644
-> > --- a/drivers/android/binder/page_range.rs
-> > +++ b/drivers/android/binder/page_range.rs
-> > @@ -27,7 +27,7 @@
-> >      ffi::{c_ulong, c_void},
-> >      mm::{virt, Mm, MmWithUser},
-> >      new_mutex, new_spinlock,
-> > -    page::{Page, PAGE_SHIFT, PAGE_SIZE},
-> > +    page::{MemcgAllocError, Page, PAGE_SHIFT, PAGE_SIZE},
-> >      prelude::*,
-> >      str::CStr,
-> >      sync::{aref::ARef, Mutex, SpinLock},
-> > @@ -399,7 +399,16 @@ pub(crate) fn use_range(&self, start: usize, end: =
-usize) -> Result<()> {
-> >      /// Assumes that `i` is in bounds.
-> >      #[cold]
-> >      unsafe fn use_page_slow(&self, i: usize) -> Result<()> {
-> > -        let new_page =3D Page::alloc_page(GFP_KERNEL | __GFP_HIGHMEM |=
- __GFP_ZERO)?;
-> > +        let new_page =3D Page::alloc_page_memcg(GFP_KERNEL | __GFP_HIG=
-HMEM | __GFP_ZERO, &self.mm)
->=20
-> Not related to this change, but I think it might be better to ditch
-> GFP_KERNEL | __GFP_HIGHMEM and use GFP_HIGHUSER. We're already mapping
-> this into userspace (and now charging the memcg for it).
->=20
-> Is current the sender here? If memory.high is exceeded, current gets
-> blamed for it in try_charge_memcg()'s done_restock section. So if it's
-> the sender, that's not exactly what we want since the sender would be
-> throttled for it. So I think this depends on
-> https://lore.kernel.org/all/20261010210957.1350874-4-shakeel.butt@linux.d=
-ev/.
 
-Yes, current is the sender process here, allocating a page on behalf
-of the recipient process (`self.mm`).
+On Thu, Oct 15, 2026 at 06:07:16PM +0200, David Hildenbrand (Arm) wrote:
+>In case we fail to move the page tables, for example, because we fail
+>to allocate a page table, we actually keep the old VMA.
+>
+>Calling fixup_hugetlb_reservations() on the old VMA is wrong. Fix it
+>by just calling it on the VMA that will be removed.
+>
+>The user-visible impact is that the VMA loses its reservations, meaning
+>that the existing reservations get stranded (leaked) and new hugetlb folios
+>that are getting allocated in the VMA cannot make use of the
+>reservations, failing these allocations.
+>
+>Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+>Cc: stable@vger.kernel.org
+>Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
-Because current is the sender, I don't think we want GFP_HIGHUSER: the
-only difference between GFP_KERNEL | __GFP_HIGHMEM and GFP_HIGHUSER is
-__GFP_HARDWALL, which enforces current's cpuset (current->mems_allowed)
-in cpuset_current_node_allowed(). Enforcing a hardwall against the
-sender's cpuset when allocating a page for the recipient doesn't seem
-right.
-
-And yes, it looks like we do indeed depend on Shakeel's patch.
-
-Alice
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
