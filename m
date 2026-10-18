@@ -4,89 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0BACCCF2C4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 16:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61946CCF2C9
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 16:53:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 972866B0088; Sun, 18 Oct 2026 12:23:40 -0400 (EDT)
+	id 5B07F6B0088; Sun, 18 Oct 2026 12:53:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 922AD6B008C; Sun, 18 Oct 2026 12:23:40 -0400 (EDT)
+	id 53BD86B008C; Sun, 18 Oct 2026 12:53:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 839316B0095; Sun, 18 Oct 2026 12:23:40 -0400 (EDT)
+	id 4033C6B0092; Sun, 18 Oct 2026 12:53:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 63CDF6B0088
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 12:23:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ED9121A0562
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 16:23:39 +0000 (UTC)
-X-FDA: 85336267758.26.B356041
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5003140008
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 16:23:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P6pSUoE0;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F027C6B0088
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 12:53:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49C8AC0531
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 16:53:09 +0000 (UTC)
+X-FDA: 85336342098.05.4E9C45C
+Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8DD3D1C0005
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 16:53:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linuxbox.cz header.s=default header.b=JVessS2R;
+	spf=pass (imf20.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
+	dmarc=pass (policy=none) header.from=linuxbox.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792340618;
+	s=arc-20220608; t=1792342387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PkvCnZp3GqJK4bIvD1zVQOPN0TOHqm9DCWSAjzxS07o=;
-	b=w3+mZgKMsQFaEurFYzI+OA0OnKEGZFV8dOa3+mrGtz5du8kQJ08Xai7HyS30AnLnfRAajU
-	sCVoFJwC6ar4cgEAwDHxN4SfUZ099TQExtUNVad4v5n6lQ4d4Dh7jVHitP4YreBZu65t0L
-	eOSfyb3KOsWXnYrlJhFvJk7E1y/LQPY=
+	bh=04K1XWtuV3X33sgYJ/vH8S9+3XQC8lVkjSB9505KyUg=;
+	b=wNQVewOI0JROypRjsqfWXWnNpwmYNaWL4uifxDhhOVAy8ysbCf3/1UEX60GMgQp+PoJFQP
+	S9V9LstVCNeBwjtmqFLQa3c9oFHJ4mSj2y1w/BLkZjNu10Q1PffelmA+Ohjmi7+1h2+1up
+	k4RlNbeSoqwDzNf8Esp+K7TW9Vds/Vs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792340618;
-	b=As4vmOaW2AIYAQbLUzRpryariajySH3x33L+9ZyhHrnC+JGyDQvuij0wI9A6sWSuFApqGa
-	zMsSNg6kr7HmNgSkT0Ol2pTieQZT1Myy0ZDXkhrfusHq6ED7ljonivDgxOn+eqELNDFHl8
-	tobTx2ZFEzgSxc9vC3HeIorfupZkVNc=
+	t=1792342387;
+	b=n2hzf5GnZq0brye2GhMwAXW6FjVnFu6QxrzBd3aIVTdEvn8r4ncd7QvivgQJk0Kydoa9fa
+	Rdn3ZXEdQoyU2r/yWBI0jCdncgPJchKfW8kF24nWHCNKISbe+2F1l7dmWlA9raXZ9Jurq3
+	jvhlL6Y2wypYK8zY8fOT64YdXDsCsG0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P6pSUoE0;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 318DC4095D;
-	Sun, 18 Oct 2026 16:23:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40A31F000C4;
-	Sun, 18 Oct 2026 16:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792340617;
-	bh=PkvCnZp3GqJK4bIvD1zVQOPN0TOHqm9DCWSAjzxS07o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P6pSUoE0uF9R61EmmdJ/FHRrRUP+N3n8/JOStw3k3xMxktDAZ9yjDt6raMWvnFs5r
-	 uTBxSI4ODXNjzZWV+iMaAY5Eo8+aNEsYoWI9w4fR2/Mx742HJQvD88czJXIG0UJtsh
-	 E4N8qevijiTh2YnwIrS1lvZ8QSi6b+vRnZ4QDROCVGvM61VF+F9VPLf/CzITV4Tf71
-	 YMYMWbfXe7eYuGr/tZ7sJJHWKWr4My4sbUy0KPpN89fyQTXNuaOfwYCjuEsQtHIqYm
-	 vvEI3gAzUDGrzJ1FDtwWyABA2tdZQz2OtJZcNmI8+E8YWx3n9joQ4Y206uVsHG1INU
-	 Ifk14sum/ay8g==
-From: SJ Park <sj@kernel.org>
-To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/damon/sysfs.py: stop obsolete_target shells hanging the test
-Date: Sun, 18 Oct 2026 09:23:29 -0700
-Message-ID: <20261018162330.107844-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261018020415.35567-1-jaeyeon.lee.dev@gmail.com>
-References: 
+	imf20.hostedemail.com;
+	dkim=pass header.d=linuxbox.cz header.s=default header.b=JVessS2R;
+	spf=pass (imf20.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
+	dmarc=pass (policy=none) header.from=linuxbox.cz
+Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
+	by gwu.lbox.cz (Sendmail) with ESMTPS id 69IGqanD1091127
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Sun, 18 Oct 2026 18:52:36 +0200
+DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 69IGqanD1091127
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
+	s=default; t=1792342357;
+	bh=04K1XWtuV3X33sgYJ/vH8S9+3XQC8lVkjSB9505KyUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JVessS2RxHUeJkGFl8SPVnWHq5IUr3hSCd38JkUfDYfgapnzTdu57hmkRCJk1DpSW
+	 CThaGmZEjrXdXHTbV2K3MAyJcFLXW2+TMmjAlXnm/Bspn4GgP8Kjt6jD5E7zVp+ZTi
+	 RnvbEeQQmcVdLdlDcGVt6ncxHjhBvGGl/JbDlmZQ=
+Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
+	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 69IGqZiZ004275
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Sun, 18 Oct 2026 18:52:35 +0200
+Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
+	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 69IGqTuU3136419
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sun, 18 Oct 2026 18:52:31 +0200
+Date: Sun, 18 Oct 2026 18:52:29 +0200
+From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>,
+        David Laight <david.laight.linux@gmail.com>,
+        Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, david@kernel.org,
+        Mike Rapoport <rppt@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
+        luizcap@redhat.com, pbonzini@redhat.com,
+        Tal Zussman <tz2294@columbia.edu>,
+        Matt Fleming <matt@readmodwrite.com>,
+        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+Subject: Re: hunting memory corruption bug in 6.18.x
+Message-ID: <atT5TYyLapHO5ZoX@pcnci.linuxbox.cz>
+References: <aseMsMGpGPT/G548@pcnci.linuxbox.cz>
+ <20261008182356.GBasffvDuTemTu1VUY@fat_crate.local>
+ <20261009090042.39ba9c06@pumpkin>
+ <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
+ <20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
+ <20261015172820.7961d2c0def74d41cc6c4b0c@linux-foundation.org>
+ <20261016031242.GDatGWKo98YSOhEOOn@fat_crate.local>
+ <20261015211832.45d87fab15bb3e0bbc2f47cb@linux-foundation.org>
+ <20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local>
+ <atI_yuCc4BiweBQP@google.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <atI_yuCc4BiweBQP@google.com>
+X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
+X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
+X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
+X-Antivirus: on lbxovapx9 by Antivirus 
+X-Milter-Copy-Status: O
+X-Stat-Signature: nj6taigaddnai5auoyrajn3x3z9j7jd9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5003140008
-X-Rspamd-Server: rspam08
-X-Stat-Signature: iiogeuums35oir745hkz4o15w54u4wuo
-X-HE-Tag: 1792340618-648652
-X-HE-Meta: U2FsdGVkX1/t0s9euuuo+E9HnNDRqE30WT/aeZjrc6Mpq5lRwNMfhA+H4Wn8i2VKjiAknpyTnggGPHpBffwK1u9NSsAYgXUtB8bRQWWbe0t8dHrv4XLMCPsDtIxNat9MOzV1bSVNQoFv17qcEY0SYLorph2r3rukKc/hEt0vb0fANX7bb/WD0lIv4yqHfYwrKrJcer8LT9CCd8ZyiTiERSGGn8eIWCS9inSZ03lfD6hiBkwedeuhshZf4l54NY5GHUUthFUs4wTBi4buA+45TVdt7kGXTxWo+YwB03EHvBQWNifXqTQE+KH6HWThGhspLi6CuBF72oz8adN0ZrfUURQ08m99vkx/BBHieAjZtM9Vot4jfvuUqWkNEAvMsGqtkzYcMtR6l10jNyUXHg3VgHYLn7D6QMqmkSCs4ZBroe+Gx+uU079KgdZLxgRrxo1waIe1qnBtE/8hmIfGmfIRfewGV1awT8Vk0rOl7FDv048sPFhGa5I5OtMZ7pCeGsO0/jveCvnvFmONoSWaRdeXF8K2xJjq2R36A+BofDtMYitJObD5vPraugbics9tEOACjxKElX7PN6VkxzI+0AtG1XCo45bb/lD1AifmjXYS/+TUkZhclwgyREofEmGksHjpdl5du/e5b8xAN5BmEEMiErJB0bp48gSYptbaagEOugaEy8G1+XK46xsPguWNCZJ1R5XkDLCQpLKBWQatfK3nIjk6qS6SWhNDwZ/k9Ttbe1y4HAgdsFNFhgnpv84vD7HP8OKy8JPaGaMav7kZOszjtlDLkGxcikvw1uokz4ak7DB2vgnqTS1PlojMnQs4ZgLKLRaeigUofylqPCJDilBx6w5kV/+hfyB8IxFa1pzlZk678tTUp4Khhwa1d97/KeD0GyVarAyYQW+osk4hW6a+aXEpIRtMmD2b0l4pilKhj6QPsZWCtIjm4J6rYFHkCYmSXyNXMsSLwvifyZmdTP/
- o+HLuZbc
- 3O9GBT7OLXxNGIZZqHnNPGdlvGtXRQ8FZriQWeoAoVGYYMxJy8PzjZd2Mlk9wYiK5qzinzkfQbFHQF0E8RANG1pb2Skn78Mc4iWoSXn1Jh9ehIDRyypYE1pUX32/mTRTZaO1OZ0gHLuZd3NLjb99hCCgmsJaobO0a2rz2+fQSnm7clz9pwiRfPGcT9doc7XzsY5ekiOoNSPULtaKHdJhNGSKFAclM/VAkaT1zzcQseX3ozQaS+DbMGA702FRz3QNWTUP9lMPd+ghB0RpQgXCcfHDIyxZoswSlwMWlQNGoT5rKSV7QUFfJFkgiO++hRxupnxZMaNaJ0n5IdUtZdmzYIpjB2Y9cQVLTsYbF+jMTVLs0AkmdEVVpK9dDAEXJzvq5avwoGiU5Sd0pxPgU0faEIcQ8Ug==
+X-Rspamd-Queue-Id: 8DD3D1C0005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792342386-839047
+X-HE-Meta: U2FsdGVkX19pyjR5/QP/udGz4H3/1oil3iJy19RSg5q9yKz6qTp4S936BqtGLz1IxSOSPdrEnPRX4jehW1cWWEFyFPDdABLOjK9+cLQD9PWtWSGYpbtbPCf804y7nxOS8idQlYHk6RuzTFVw1sA6EyyG7XbEM4sZSqKPd318qbINo9KilVOZeq2GOEDZPNd6yd79MSNTOq8ijFhr+K3MM79OFoHXB8fHneiURUlRUif66DyfFQ6rKnjHE9GVQLYlPNpczAPXRphphxtt3lfOGoY80Q7HPgo8hOE5VRuizhT7Yoc5GDOp5ZVLspxYXs2i7jbEvXr3iwo6sIcpzgnRZ6Bd8MzsAIGrNgo0WGm+QVFJPBtzll3qXNExpEEamfPQFvvVF8nPK7siIgyZuYn/RWKjyeISKKEjR5ikKaag7ZSynDms2u1mBzrnA+Bu43Z4IDXY+JezkcnX+csy/WvsqjJZlEKCu8nD7ehtilyVvoBUYYP0H16UTccQvZu/Sfrg+GfUMsKHSHpF/D1DPwcLJVQB/cGDfkfnXq8fx6SsC8NKxwew2PNL9/q2+bIa7obZOHiKEiHCS2378kB/KD73PF4L6UhgeVDp32c7IVAD3PaSzHbN6lEeiv2x9aUVVFdY3e/m6LTLXCFsCF9Rtcn03WwXcO8/Yg3qcnpDVdPWTfdpi4dnob+QfsRlhCelQWqoil1PTxAA1TiegSYF8cnfELLRx2NkWvAu6bIgoozQcvN0fCUuu914oVi+uiiHHUIqGnX0+fcjms876Dh0At88Keiuo7f4RWtQs6cXrXzEtlRbl710YvuqVwGndRJcrZNfZxYC3K/xPTZb8128gvOWOEyeU8MnZijwSgSayybO0nTJGeDc8BNOOM9rKS/duzgyBGLAaQ80KeAAC31WdXB20Vsa+ghHk917DTWXGMgmGBwRGs3/k5oj31Ku/GkhaG7oZqArhtWtIfdIHVLMKph
+ s/a8uOrF
+ 1TcGCJHsPoGgeYvzagO+iQVgI7Ke2ua1wHJ9Z8osjkUbmw0Q8OMrkH/4CpSnyd6mIimH6xYulztoowaAZ5VEpuUlYXSLAal+Wu+wioVg9hc+HnTa2ccq2N0MGWurdFS1JjUiFws1IVKpGrrzS8kq/aZKpaPmzDLzLTtCLSprVhDEtJ2ipyuU66WHmfU6pFxcvnpHCzm1DQqGAwDWxM1GTxq+saUz/qZZ8NJPBz7wM1/UL7A/MSkmtd8IAUmTAxR0tDnuXNoDl2g4Ic41DZ6aFa7qvV+8v1GNxITvRicx2lyeHRi8ydeL9b3/BoZMTFKCqBKsdyjaQbLN8MB1Lis9Q6CSR+Ln1KqzrFH2mwn5CZCqB4ajNR0Zm7skLNExzRVSa+RJgGcxlHqJaJspz/Pjsw0AOLMJibmYsIeHVMOMWSKsrKYE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,44 +120,291 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 18 Oct 2026 04:04:15 +0200 Jaeyeon Lee <jaeyeon.lee.dev@gmail.com> wrote:
 
-> The obsolete_target test spawns three 'sh' processes as monitoring
-> targets.  The processes inherit stdin from the test.  When the test is
-> run via 'make run_tests' from an interactive terminal, the kselftest
-> runner executes it under 'timeout', which puts it in a background
-> process group.  The 'sh' processes then try to read the terminal, so
-> the kernel sends SIGTTIN to the whole process group.  This stops the
-> 'sh' processes, and also the child the test has just forked to spawn
-> the next 'sh', before it can run 'sh'.  The test then waits on that
-> child forever, until the kselftest runner kills it after 45 seconds.
-> The test passes when run directly.
+Hello Sean (and others),
+
+I think I've finally found the (at least) one missing piece needed to reproduce
+this. At first I wasn't paying much attention to nested virtualization, because
+ we don't use it much (or so I thought), but I was still wondering why
+ why all of this seems to be tied to Windows guests. So I dug into advanced
+Windows security features and found out that newer Windows versions use
+something called Virtualization-Based Security (VBS), which relies on
+exactly that: SVM/VMX, i.e. nested virtualization. (I'm not a Windows guy,
+so excuse my ignorance here.)
+
+So I enabled Secure Boot as well as VBS on my lab test guests, checked
+msinfo32 and tried migrating them and voilà, the guest crashed almost
+immediately.
+
+After a few more attempts, it looks pretty easy to reproduce: it usually
+doesn't survive more than 3-5 migrations (often 1-2 are enough).
+
+So far I've retested 7.3-rc7, and it seems to be rock solid (60 migrations
+and no issues).
+
+I'll give your patch a try, and if it doesn't help, I can try bisecting.
+Now that I have a reliable reproducer, that should be doable.
+
+I'll report back soon.
+
+thanks,
+
+nik
+
+PS: of course this can still be something different that memory corruption
+bug I'm hunting, but still it'll be worh backporting to LTS 6.18.
+
+
+On Fri, Oct 16, 2026 at 08:16:26AM -0700, Sean Christopherson wrote:
+> On Thu, Oct 15, 2026, Borislav Petkov wrote:
+> > On Thu, Oct 15, 2026 at 09:18:32PM -0700, Andrew Morton wrote:
+> > > The corruption patterns strongly resemble AMD VMCB state, particularly
+> > > FS/GS segment data appearing at the expected VMCB offsets in unrelated
+> > > host memory.
+> > 
+> > Aha, ok.
+> > 
+> > > This suggests that a VMSAVE operation may have written to
+> > > an incorrect physical address.  Ordinary KVM performs VMLOAD/VMSAVE
+> > > without nested virtualization, so Boris's objection doesn't eliminate
+> > > this possibility.  However, the relevant assembly is essentially
+> > > unchanged between 6.18.55 and 7.3-rc6, and I haven't identified a newer
+> > > commit that convincingly explains why the corruption apparently stopped
+> > > reproducing.  The earlier candidate 55780d8a1dcc remains poorly
+> > > motivated without evidence of nested virtualization.
+> > > 
+> > > Two investigations look worthwhile.  First, test 6.18.55 with both the
+> > > KVM TLB-flush fix (26505e1b5b54)
+> > 
+> > Pff, we've been looking at that one recently too, trying to figure out whether
+> > it was really necessary.
+> > 
+> > > and tlbi=ipi;
+> > 
+> > Yeah, we checked that, it ain't that.
+> > 
+> > > the existing results don't conclusively establish whether that combination
+> > > was tested.  Second, examine the vmcore to determine whether the corrupted
+> > > host pages contain complete FS/GS state matching a legitimate VMCB, rather
+> > > than merely a few matching values.  If they do, inspect the VMCB's
+> > > VMLOAD/VMSAVE interception and virtualization-enable bits.  That could
+> > > establish whether a hardware VMSAVE was allowed to write to an unintended
+> > > physical page.  The successful 7.3-rc6/rc7 testing is encouraging, but it
+> > > doesn't yet prove that all the reported corruption symptoms share one cause
+> > > or have been fixed.
+> > 
+> > Hmm. I guess looking at and around VMSAVE handling wouldn't hurt...
 > 
-> Fix this by passing stdin=subprocess.PIPE when spawning the processes.
-> The processes then read from a pipe that never receives input, so they
-> stay alive and idle as the test expects.
-
-Thank you for finding and fixing the bug!
-
+> @Nikola, as very long long-shot, can you try running with the below?  I don't
+> expect it to help or flag anything, but this is eerily similar to a known bug[*]
+> where KVM writes to user memory in the wrong address space (wrong process) when
+> tearing down a VM after migrating the VM.  But that bug (well, bugs) only affects
+> Intel, and I don't see any similar patterns on the AMD side.
 > 
-> Assisted-by: LLM
-> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+> [*] https://lore.kernel.org/all/20261001202234.3794060-1-seanjc@google.com
+> 
+> diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
+> index df1d0cf769475..fc0ae4727793b 100644
+> --- a/arch/x86/kvm/vmx/sgx.c
+> +++ b/arch/x86/kvm/vmx/sgx.c
+> @@ -63,7 +63,7 @@ static void sgx_handle_emulation_failure(struct kvm_vcpu *vcpu, u64 addr,
+>  static int sgx_read_hva(struct kvm_vcpu *vcpu, unsigned long hva, void *data,
+>  			unsigned int size)
+>  {
+> -	if (__copy_from_user(data, (void __user *)hva, size)) {
+> +	if (kvm_copy_from_user(vcpu->kvm, data, (void __user *)hva, size)) {
+>  		sgx_handle_emulation_failure(vcpu, hva, size);
+>  		return -EFAULT;
+>  	}
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index f65081330c8a4..2dec1463b596c 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -3902,16 +3902,16 @@ static int init_rmode_tss(struct kvm *kvm, void __user *ua)
+>  	int i;
+>  
+>  	for (i = 0; i < 3; i++) {
+> -		if (__copy_to_user(ua + PAGE_SIZE * i, zero_page, PAGE_SIZE))
+> +		if (kvm_copy_to_user(kvm, ua + PAGE_SIZE * i, zero_page, PAGE_SIZE))
+>  			return -EFAULT;
+>  	}
+>  
+>  	data = TSS_BASE_SIZE + TSS_REDIRECTION_SIZE;
+> -	if (__copy_to_user(ua + TSS_IOPB_BASE_OFFSET, &data, sizeof(u16)))
+> +	if (kvm_copy_to_user(kvm, ua + TSS_IOPB_BASE_OFFSET, &data, sizeof(u16)))
+>  		return -EFAULT;
+>  
+>  	data = ~0;
+> -	if (__copy_to_user(ua + RMODE_TSS_SIZE - 1, &data, sizeof(u8)))
+> +	if (kvm_copy_to_user(kvm, ua + RMODE_TSS_SIZE - 1, &data, sizeof(u8)))
+>  		return -EFAULT;
+>  
+>  	return 0;
+> @@ -3946,7 +3946,7 @@ static int init_rmode_identity_map(struct kvm *kvm)
+>  	for (i = 0; i < (PAGE_SIZE / sizeof(tmp)); i++) {
+>  		tmp = (i << 22) + (_PAGE_PRESENT | _PAGE_RW | _PAGE_USER |
+>  			_PAGE_ACCESSED | _PAGE_DIRTY | _PAGE_PSE);
+> -		if (__copy_to_user(uaddr + i * sizeof(tmp), &tmp, sizeof(tmp))) {
+> +		if (kvm_copy_to_user(kvm, uaddr + i * sizeof(tmp), &tmp, sizeof(tmp))) {
+>  			r = -EFAULT;
+>  			goto out;
+>  		}
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 3c4e2401de072..13f44961e6e7d 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -1341,13 +1341,35 @@ int kvm_write_guest_offset_cached(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+>  int kvm_gfn_to_hva_cache_init(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+>  			      gpa_t gpa, unsigned long len);
+>  
+> +static __always_inline __must_check bool kvm_can_do_uaccess(struct kvm *kvm)
+> +{
+> +	return !WARN_ON_ONCE(current->mm != kvm->mm ||
+> +			     !refcount_read(&kvm->users_count));
+> +}
+> +
+> +#define BUILD_KVM_COPY_USER_WRAPPER(fn, to_user, from_user)				\
+> +static __always_inline __must_check unsigned long kvm_##fn(struct kvm *kvm,		\
+> +							   void to_user *to,		\
+> +							   const void from_user *from,	\
+> +							   unsigned long n)		\
+> +{											\
+> +	if (!kvm_can_do_uaccess(kvm))							\
+> +		return n;								\
+> +											\
+> +	return __##fn(to, from, n);							\
+> +}
+> +BUILD_KVM_COPY_USER_WRAPPER(copy_from_user, , __user)
+> +BUILD_KVM_COPY_USER_WRAPPER(copy_from_user_inatomic, , __user)
+> +BUILD_KVM_COPY_USER_WRAPPER(copy_to_user, __user, )
+> +BUILD_KVM_COPY_USER_WRAPPER(copy_to_user_inatomic, __user, )
+> +
+>  #define __kvm_get_guest(kvm, gfn, offset, v)				\
+>  ({									\
+>  	unsigned long __addr = gfn_to_hva(kvm, gfn);			\
+>  	typeof(v) __user *__uaddr = (typeof(__uaddr))(__addr + offset);	\
+>  	int __ret = -EFAULT;						\
+>  									\
+> -	if (!kvm_is_error_hva(__addr))					\
+> +	if (!kvm_is_error_hva(__addr) && kvm_can_do_uaccess(kvm))	\
+>  		__ret = get_user(v, __uaddr);				\
+>  	__ret;								\
+>  })
+> @@ -1367,7 +1389,7 @@ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+>  	typeof(v) __user *__uaddr = (typeof(__uaddr))(__addr + offset);	\
+>  	int __ret = -EFAULT;						\
+>  									\
+> -	if (!kvm_is_error_hva(__addr))					\
+> +	if (!kvm_is_error_hva(__addr) && kvm_can_do_uaccess(kvm))	\
+>  		__ret = put_user(v, __uaddr);				\
+>  	if (!__ret)							\
+>  		mark_page_dirty(kvm, gfn);				\
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index ba09b1dabc4b7..aa1564d41e7ff 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -3207,8 +3207,8 @@ static int next_segment(unsigned long len, int offset)
+>  }
+>  
+>  /* Copy @len bytes from guest memory at '(@gfn * PAGE_SIZE) + @offset' to @data */
+> -static int __kvm_read_guest_page(struct kvm_memory_slot *slot, gfn_t gfn,
+> -				 void *data, int offset, int len)
+> +static int __kvm_read_guest_page(struct kvm *kvm, struct kvm_memory_slot *slot,
+> +				 gfn_t gfn, void *data, int offset, int len)
+>  {
+>  	int r;
+>  	unsigned long addr;
+> @@ -3219,7 +3219,7 @@ static int __kvm_read_guest_page(struct kvm_memory_slot *slot, gfn_t gfn,
+>  	addr = gfn_to_hva_memslot_prot(slot, gfn, NULL);
+>  	if (kvm_is_error_hva(addr))
+>  		return -EFAULT;
+> -	r = __copy_from_user(data, (void __user *)addr + offset, len);
+> +	r = kvm_copy_from_user(kvm, data, (void __user *)addr + offset, len);
+>  	if (r)
+>  		return -EFAULT;
+>  	return 0;
+> @@ -3230,7 +3230,7 @@ int kvm_read_guest_page(struct kvm *kvm, gfn_t gfn, void *data, int offset,
+>  {
+>  	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+>  
+> -	return __kvm_read_guest_page(slot, gfn, data, offset, len);
+> +	return __kvm_read_guest_page(kvm, slot, gfn, data, offset, len);
+>  }
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_read_guest_page);
+>  
+> @@ -3239,7 +3239,7 @@ int kvm_vcpu_read_guest_page(struct kvm_vcpu *vcpu, gfn_t gfn, void *data,
+>  {
+>  	struct kvm_memory_slot *slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+>  
+> -	return __kvm_read_guest_page(slot, gfn, data, offset, len);
+> +	return __kvm_read_guest_page(vcpu->kvm, slot, gfn, data, offset, len);
+>  }
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_read_guest_page);
+>  
+> @@ -3283,8 +3283,8 @@ int kvm_vcpu_read_guest(struct kvm_vcpu *vcpu, gpa_t gpa, void *data, unsigned l
+>  }
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_read_guest);
+>  
+> -static int __kvm_read_guest_atomic(struct kvm_memory_slot *slot, gfn_t gfn,
+> -			           void *data, int offset, unsigned long len)
+> +static int __kvm_read_guest_atomic(struct kvm *kvm, struct kvm_memory_slot *slot,
+> +				   gfn_t gfn, void *data, int offset, unsigned long len)
+>  {
+>  	int r;
+>  	unsigned long addr;
+> @@ -3296,7 +3296,7 @@ static int __kvm_read_guest_atomic(struct kvm_memory_slot *slot, gfn_t gfn,
+>  	if (kvm_is_error_hva(addr))
+>  		return -EFAULT;
+>  	pagefault_disable();
+> -	r = __copy_from_user_inatomic(data, (void __user *)addr + offset, len);
+> +	r = kvm_copy_from_user_inatomic(kvm, data, (void __user *)addr + offset, len);
+>  	pagefault_enable();
+>  	if (r)
+>  		return -EFAULT;
+> @@ -3310,7 +3310,7 @@ int kvm_vcpu_read_guest_atomic(struct kvm_vcpu *vcpu, gpa_t gpa,
+>  	struct kvm_memory_slot *slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+>  	int offset = offset_in_page(gpa);
+>  
+> -	return __kvm_read_guest_atomic(slot, gfn, data, offset, len);
+> +	return __kvm_read_guest_atomic(vcpu->kvm, slot, gfn, data, offset, len);
+>  }
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_read_guest_atomic);
+>  
+> @@ -3328,7 +3328,7 @@ static int __kvm_write_guest_page(struct kvm *kvm,
+>  	addr = gfn_to_hva_memslot(memslot, gfn);
+>  	if (kvm_is_error_hva(addr))
+>  		return -EFAULT;
+> -	r = __copy_to_user((void __user *)addr + offset, data, len);
+> +	r = kvm_copy_to_user(kvm, (void __user *)addr + offset, data, len);
+>  	if (r)
+>  		return -EFAULT;
+>  	mark_page_dirty_in_slot(kvm, memslot, gfn);
+> @@ -3466,7 +3466,7 @@ int kvm_write_guest_offset_cached(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+>  	if (unlikely(!ghc->memslot))
+>  		return kvm_write_guest(kvm, gpa, data, len);
+>  
+> -	r = __copy_to_user((void __user *)ghc->hva + offset, data, len);
+> +	r = kvm_copy_to_user(kvm, (void __user *)ghc->hva + offset, data, len);
+>  	if (r)
+>  		return -EFAULT;
+>  	mark_page_dirty_in_slot(kvm, ghc->memslot, gpa >> PAGE_SHIFT);
+> @@ -3504,7 +3504,7 @@ int kvm_read_guest_offset_cached(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+>  	if (unlikely(!ghc->memslot))
+>  		return kvm_read_guest(kvm, gpa, data, len);
+>  
+> -	r = __copy_from_user(data, (void __user *)ghc->hva + offset, len);
+> +	r = kvm_copy_from_user(kvm, data, (void __user *)ghc->hva + offset, len);
+>  	if (r)
+>  		return -EFAULT;
+> 
 
-Reviewed-by: SJ Park <sj@kernel.org>
+-- 
+Ing. Nikola CIPRICH
+technický ředitel
 
-I applied  this patch to damon/next [1] tree.  We are now quite close to next
-merge window.  It may better to focus on making mm.git more stabilized and
-therefore ready for the next merge window, rather than adding more changes that
-are not really urgent.  I understand this series is not really urgent.  Hence,
-Andrew might not add this patch until next -rc1 release.  In the case, I will
-request adding this to mm.git after next -rc1 release.  So, no action from your
-side is needed for now.  Let me know if you think this is really  urgent.
++420 591 166 214
++420 777 093 799
+nikola.ciprich@linuxbox.cz
 
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+www.linuxbox.cz
 
