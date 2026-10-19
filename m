@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C16E6CCF2DE
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:14:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E05BCCF2DE
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:16:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A705B6B00EA; Mon, 19 Oct 2026 10:14:43 -0400 (EDT)
+	id 590826B0273; Mon, 19 Oct 2026 10:16:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A48A46B00EB; Mon, 19 Oct 2026 10:14:43 -0400 (EDT)
+	id 51A876B0275; Mon, 19 Oct 2026 10:16:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9376D6B00EC; Mon, 19 Oct 2026 10:14:43 -0400 (EDT)
+	id 430776B0276; Mon, 19 Oct 2026 10:16:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66C6A6B00EA
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:14:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4E21160769
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:14:42 +0000 (UTC)
-X-FDA: 85339571604.06.B0C0810
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6C1E2A000C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:14:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dFvUhypR;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F6726B0273
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:16:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9274E140684
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:16:01 +0000 (UTC)
+X-FDA: 85339574922.10.BFE39C4
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 05277C0008
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:15:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=LXMceNcC;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf15.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	spf=pass (imf10.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792419281;
+	s=arc-20220608; t=1792419359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=NEJJZ34u4qlgZ0S11fm90eLB3kl92LQqge8z3SZGpCM=;
-	b=o76rdLiblRDKUaH8FlqNV4qrXWKywr72Eu2OEEYtpwm9aMkkFgGovOeK8OIqN5UQh2Atd+
-	VI0rn9nLyu0bIgFKR2h8BtC60LY9rZnTYDyBFugYk7KZzh9+Y2q9PmsdJceydmNfOR8aXO
-	IrHnC2G5ERmIv6cpLXvzzqXbXOFMDPM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xoreJwIbc9FMkcxPipG4faUYvfDzahKIM5OORCnCFbM=;
+	b=eVb5V2UYi/c8wkLqkU4vVoEUvmXMacEHnBDuNT6GWzYn/hEj9sqzTiI2jV1qhnaFhN2NAT
+	tYAUK8VyJaPZoGWG7DnmybGjf9o5PyRwgnRtyV0meW4w2A+r8OCX15QssgMPT/17Hh38YD
+	Ql5n3B78uB+A8JZxS68fT60Uan1YjHc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dFvUhypR;
+	imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=LXMceNcC;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf15.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	spf=pass (imf10.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792419281;
-	b=RaNEcME9ThjPgJ/7IX6j2AW+YeO29K2vu/hIDTxsEdRLWUkLxpdd40SvqXstd4DeN0lRNs
-	sObWOc4mej62gap52tT4bsyrz518QE1KQUqMJykXCF21PcmhtIadHVdPP892o5AzRomkyK
-	L2RPu3xW+gvWIWrqB6GjcpJJdDsR8uY=
+	t=1792419359;
+	b=DD4phT9mrFOSd4tni//StBFSuzrdK70p3UbAWnB+F/U7Rbb7XIq0yQGPtLw8asYesHs6BI
+	rtCFrDlKs/vXYi8Q5Ol5UeHg3Yjzg10SuPFt7/qc290vBTQpZY7koEZmEn0YLqiyNOoOUP
+	HYFKSV0qnqg87/IiSZIO20o2a08TsUo=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792419273; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1792419352; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=NEJJZ34u4qlgZ0S11fm90eLB3kl92LQqge8z3SZGpCM=;
- b=dFvUhypRzf1ummP5/JL1m6szKVH6GqQcOUAX+b/BfVsuiGUsaKMGpHsvJIiqn6jLg6c2TZ
- g/GFZyYo4GZ7IcKXQd7tfuMMwxW8ObwK9f1jmKHRvHK5eUpQn/DXHqYlDvDwCwhrPk57cK
- RqXABqFE7yJcTFEhxbg3lyfTEAtkbqyZ5GXeCiMY88nlNi5ipWuwDJqmMi0eV8WamR0KGZ
- 4Q0w4SqC1t5mw4QR/C3we4KTNfbh6J6JNkSgOYJgfrFBpuAcCn87VytS4qbQ2uDly3f1oE
- CVHvk0wp5vnzhaY55FKNG4SoAyojsVUs7p9Md4bJjJX4lki8xN6KdkKvZiuB2w==
+ bh=xoreJwIbc9FMkcxPipG4faUYvfDzahKIM5OORCnCFbM=;
+ b=LXMceNcCGzigzX0mF22ioTXqfXUYPoQjn3BxLQWgem6phcnaTx9GfHWjJZvEFm++8Fm5Jl
+ MriCqpDq8qfaQb6BKsg2+Z17juZm3284EkiJnYjPbzZhRe3hBpWHI/GUPiShsoqK46/BK3
+ KpQ3ucBYa0i2cFTyyh177/lnszmPVHVA55pLGUvTQ6FJwnahazFhTv3gJtFQEvaFJbMirO
+ jE/ab2HqJOzqa03de9Fz0ujyb0mTXCRfp4Edrc7VXpbXRjHvuYkvGUZSEHySfevdb7RwF2
+ bVcO9egQhXusqup2ChkMyP3nZMnpS/OLCWuJvLpdVVAqB1dnXhYc4WyVXcd++g==
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: [RFC 2/2] mm: add tier source selector to memory.reclaim
+References: <20261019141401.11927-1-lizhe.67@bytedance.com>
+In-Reply-To: <20261019141401.11927-1-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.45.2
 To: <akpm@linux-foundation.org>, <david@kernel.org>, <gourry@gourry.net>, 
 	<ziy@nvidia.com>, <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, 
 	<ying.huang@linux.alibaba.com>, <ljs@kernel.org>, <mhocko@suse.com>, 
 	<muchun.song@linux.dev>, <roman.gushchin@linux.dev>, 
 	<shakeel.butt@linux.dev>, <weixugc@google.com>
-Date: Mon, 19 Oct 2026 22:13:59 +0800
-X-Lms-Return-Path: <lba+26ad625c7+9d7cf2+kvack.org+lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Subject: [RFC 0/2] mm: add source selectors to memory.reclaim
+X-Lms-Return-Path: <lba+26ad62616+aaebf9+kvack.org+lizhe.67@bytedance.com>
 X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
 Cc: <cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>, 
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
 	"Li Zhe" <lizhe.67@bytedance.com>
-Message-Id: <20261019141401.11927-1-lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6C1E2A000C
-X-Stat-Signature: bbmwrgyj6x8pzwqpwpob76neje1qsws5
+Date: Mon, 19 Oct 2026 22:14:01 +0800
+Message-Id: <20261019141401.11927-3-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 05277C0008
+X-Stat-Signature: 9kdbz3k5qf57cfgheq6rmmzzkq7i1gty
 X-Rspam-User: 
-X-HE-Tag: 1792419280-968372
-X-HE-Meta: U2FsdGVkX19AcejkJJdNzJvZFJXO43LfgGs/GJh6QYbyhCPyCJvIqbTJeizJcfylFJzlAzvSofUrHoEXa4VeJ2AUth42xiFgAWDaUjSs4zERbrvvGUHh7g/OEWAHEVtCvXekRjyNSPt2mzBfJne2Yss+NjAj8oM2i8zyLldYPuV3Rp/C1h4kj3TN8qz/jPqOG6EWiVkAW5ZpIlTlETir7jnjsr5aslTdjtWNa1N72mDyIAlrW73YFO+SzhMW9vncxzENtPY5FjBKecfFQUy1JACnx7C7VzVDzvAlGOmPJ6jaN36D/fUpaafsT6QB1kvYnnsbMK0z9GZHP6U9DQNPLTM5JeJF3AABKJz+nwFQEGrFIfXAcVwZJOdJkotLEfv99XKQUOD+IOf50NQzoH0NUueFOsRxwgzWW1lDdcqL4JXufdh7iCSM5Lz+GIC9VAd3WqN1e82hL0Hb+aA9SmNmg1dGeYJ01Dedkp7XHMCdPC5qK+tEeZx+IUJ5SGgWVZU8bA/FwmJif33BbyA5DnSyfzjWxRX8wicedRKgTIbqgK315sOWLiLMtTXPZh/ljRZ6WpfxannxendllTTCiVqBSQ1uuJE7YxQl/dieeLOf7KXOc0PmGKooFe+b27/jTmI6FUdVX7dsHdGSTXXOcNSW4fnkEoSopmKtEKocmp12Ik4XHSESuoA+Or/Y+LLrnLc5sijd1ogrKGfzWywK6VungLRaazhISTdMMgmIw2DiyMkD2vfS+XNQxQqLdO7J8VAhWIqKhfjbRLu+785iuhuA/caZ2LHfYuQ2G7nbnIaDDtrr46/sE03Ut11NPIqkPKH9eGGUNofSWZGNgGzc0Q+2yl9hfLuYaA+glJn2rswistFuagenbxVI9dEP24WySTT9zWWa8j2jPReOqAhi1kBSL360gr8lA6v/+O6YXdwI/EnxdXSgShb+//gOI9dl4uFUuEZuHuy+0wpY7pFP2wH
- xjDITI7F
- DhWqkWxITxoxDJKLGZqfqs/mWV3uyhgj1SNx4gU3O/pJBdrz0xqDMyb0fsdlXbF0tGOJEGLAxw7vrMTQ3TTASHmqOH4rNsMGJfDRYz+IqGMPd3gMesmPLK7/Z7Lm6uBnpBd18GlsQ27BPb18FnjEhPuUoZgMIHdxRXnRIH7mz9OE1aTbQ6Us+8PmRdjduOSbZmriXYB70dn/KD/85B3EuiF9GWQplwjK9sVEHtnGcxPFbuNpko95Tg3tN4CBZWiJ7t4Y/yaP5Pu7fWgaWNFgcen8sxr6Mcowx/bSHvlW9cB50qiubQ5XOWgwx0B23gpPzIbOPYeANoyNLNzo=
+X-HE-Tag: 1792419356-188840
+X-HE-Meta: U2FsdGVkX1/jkmxMjj0nPBBweBAqTJH4Jf4AEnUU6wIrviBWiLXeTHVEnbUCwOVVw2CfaOthc2/KhO/n7MFZ7ILnmvWcURdLHAqhYkcbyYNeeIpsx3O9ruUMt8E5CO1HjMC4YMANE+rePJJRdwGuDyT2XN8s+fBGBX/RbzGVQrpjUS4PNp55YezmGdrvlgJAhWeHa8LtjwXPTk2C4Wsv2PVqmfojBJDg3ny9puLjtEBA5wDRzqZR/+e6EvoHXEpqpzrB0Q+d3YAhyEKyrni8FOGNnv9lEpR8yhNCSaT68ni+kZBhM17tpVkGh2FHYZ05uj0DI8wOA0P5yClfYzn/Jw3oHAI3DxtlWHF1H4CnHGMOuT6gYy4ycdaXmM9tK3qeicsQoktuYtQnYf8wQsjZirBzkNzZnDjS822hoNaDfp7qecvG5RTrNP+qWYlyy4kucaLFmZiOH5UNu6L2XAFRpNQujHzWh2yGnbgx8rysWv+XjiWYqHKPQD6sccPYznag4GwScZ2jp4aoaqF7wz9hmeXxMkVXGTkz5X4m1Ly2c4kHCmhs5RqptP5GArGwr0mPSfT8Y7b0GdEKFbFQ+Np43Ypi08zUdqmo/K+pjLgc53hRWtXKhKMB0Z0IPWaD/WRDkWDFkdSRwzEjoOiZULfr0hpms6FJW1/9FWrXjrYnIeuQJLE7Fa7HwquOhgndCWACG3n7S1TF5fC0ItmOY4OD9lf4dReb653r3pbd2JMBxVboUP0YqbZMWviHT637s1nLnM3rTnqRyOpcY2B8QvTEaKaY29pu6Tq1XXbJ/nAIf51ONsnzbq13jdxnjtBrs8M2iHSNDxQkftqTFZEJUmIVBUGeGCFNsX1nRg+TbzMpVTHdH2bfK+dKzKfIo5B47K8kE8R0BdT3FDzVU1A5m6uFlL2kIhIcIKdt485sVFmuWEpTNTDxUXsAdl/0PdDSRCmuIyHwB57UyfGSx9aH13W
+ /snWh5+G
+ S1drN1A+QGfOnhaiL8hfNBl/Eo/CQRpwUO+HkwlSTjeoXgsUD9fxk3bmxwp/4B2esuPUQ2baH6h7oED4/89yDzkxioDmbVM0tdmp0XmYlr5CD5HvYK2YUCeqm35yXTpC9qVDlF7cgYGbU7aVe2LE59Zen2WdNtMMq/Hl2L3NvP+weXCGh36M3clAfXdkCVK3BAdr2JXcfyfmOruyAjIUMlLjkmgrjPhtYHADaxtLPXQpKhvwmSzdKRjFTld4BahYqjAcO8/ukUEMO7RSD//YtS1i8+4Zh5PyIiQ6VbANOYjHmcQMKV/Ttw22QyG/UsEb492LPVt7cS6cDMbU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,92 +94,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memory.reclaim is a useful proactive reclaim interface for memcgs, but
-tiered memory makes "reclaim N bytes from this memcg" underspecified for
-userspace controllers that manage memory placement across tiers. The
-kernel's reclaim policy is aging-based, and on tiered systems aging may
-demote folios before they are eventually evicted. Without a way to
-declare where reclaim pressure should start, userspace can only reclaim
-from the memcg as a whole and observe one aggregate progress value.
+source=nodes:<nodelist> lets userspace apply the existing
+memory.reclaim aging pipeline to a specific set of NUMA nodes. Many
+tiering controllers reason in terms of memory tiers rather than raw
+node lists, and the memory tier core already exposes those tiers as
+/sys/devices/virtual/memory_tiering/memory_tierN/nodelist.
 
-There is prior history here [1]. The old nodes= proposal tried to let
-memory.reclaim scan selected NUMA nodes, but the discussion left several
-ABI questions unresolved:
+Add source=tier:<N> as another typed source selector. The selector
+uses the same N as memory_tierN and resolves it to the tier's current
+memory-node mask at write time. The resulting mask is then passed to
+the same source-scoped reclaim path used by source=nodes:<nodelist>.
 
-- nodes= did not clearly say whether the mask was a source selector, a
-  reclaim domain, or a demotion-target constraint.
-- The implementation did not apply the mask to the whole reclaim path,
-  so demotion could allocate outside the mask. If userspace interpreted
-  the mask as a domain or target constraint, the ABI did not provide
-  that.
-- Selecting top-tier nodes could become an implicit way to request
-  demotion without uncharge. That would make userspace depend on a
-  particular reclaim policy and could make future policy changes hard.
-- The separate completion-accounting question remained: demotion can
-  count as reclaim progress even though memory.current is not reduced.
+This is only a selector convenience. It does not choose demotion
+targets, does not introduce a demotion-only or eviction-only goal, and
+does not change memory.reclaim completion accounting or reclaim policy.
 
-This series takes a narrower approach. It adds a typed source= key which
-declares only the source on which the existing memory.reclaim aging
-pipeline should be applied. It is not a demotion target selector, not a
-demotion-only goal, not an eviction-only goal, and not a change to the
-existing completion accounting. Leaving source unspecified preserves the
-existing memory.reclaim behavior.
+Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+---
+ Documentation/admin-guide/cgroup-v2.rst | 22 ++++++++-----
+ include/linux/memory-tiers.h            |  6 ++++
+ mm/memory-tiers.c                       | 24 ++++++++++++++
+ mm/vmscan.c                             | 42 +++++++++++++++++--------
+ 4 files changed, 73 insertions(+), 21 deletions(-)
 
-In that sense, this series extends node-scoped reclaim pressure to the
-memcg memory.reclaim interface. The existing node memory_reclaim
-interface can apply pressure to a node, but it is not scoped to a
-particular memcg. This series lets userspace apply the same kind of
-source-scoped pressure to a cgroup's resident memory on selected nodes
-or tiers, while still using the normal memcg reclaim path.
-
-The main benefit of this series is to give userspace a steering knob
-for per-node and per-tier memory placement control. A tiering controller
-can observe the resident memory distribution across nodes or memory
-tiers, and then apply reclaim pressure to the source that should be
-relieved. For example, it can apply pressure to top-tier nodes so that,
-under the existing tiering policy, cold folios can be aged and usually
-demoted to lower tiers, or reclaim from a terminal tier when it needs
-actual charge reduction.
-
-The existing memory.reclaim interface cannot express this. It applies
-pressure to the memcg as a whole, so on a multi-tier system the kernel
-may make progress in a tier different from the one userspace is trying
-to control. That makes feedback control of tier ratios ineffective: the
-controller can observe that a specific tier is over its desired resident
-footprint, but it cannot direct the next reclaim request to that tier.
-
-Patch 1 adds source=nodes:<nodelist>, which is the basic source
-selector. Patch 2 adds source=tier:<N>, where N is the memory_tierN id
-exposed by /sys/devices/virtual/memory_tiering/. The tier selector is
-only a convenience layer over the same source semantics: it resolves the
-current tier nodelist at write time and then uses the same source-scoped
-reclaim path as source=nodes:<nodelist>.
-
-The remaining issues from the old discussion are intentionally left out
-of this series. If userspace needs to control demotion targets, that
-should be a separate target/demotion-policy ABI rather than folded into
-source=. If userspace needs a strict "bytes actually uncharged"
-completion mode, that should be discussed as a separate accounting or
-goal extension because it would change the observable meaning of
-memory.reclaim progress. This series only adds source selection for the
-existing reclaim policy.
-
-References:
-[1] https://lore.kernel.org/all/Y5bsmpCyeryu3Zz1@dhcp22.suse.cz/
-
-Li Zhe (2):
-  mm: add source selector to memory.reclaim
-  mm: add tier source selector to memory.reclaim
-
- Documentation/admin-guide/cgroup-v2.rst | 29 +++++++++++
- include/linux/memory-tiers.h            |  6 +++
- mm/internal.h                           |  3 +-
- mm/memcontrol-v1.c                      |  6 ++-
- mm/memcontrol.c                         | 11 +++--
- mm/memory-tiers.c                       | 24 ++++++++++
- mm/vmscan.c                             | 64 +++++++++++++++++++++++--
- 7 files changed, 133 insertions(+), 10 deletions(-)
-
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index a016575010ba..d6e9b275fcfd 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1467,18 +1467,24 @@ The following nested keys are defined.
+ 
+ 	The source key declares where the normal reclaim aging pipeline is
+ 	applied. It is a typed selector in the form source=<type>:<selector>.
+-	Currently only source=nodes:<nodelist> is supported. For example::
++
++	Currently source=nodes:<nodelist> and source=tier:<N> are supported.
++	For example::
+ 
+ 	  echo "1G source=nodes:0-1" > memory.reclaim
++	  echo "1G source=tier:4" > memory.reclaim
+ 
+ 	This instructs the kernel to apply reclaim pressure to memory of target
+-	cgroup that are currently resident on nodes 0 and 1. Reclaim then
+-	follows the normal reclaim path for selected folios. The source
+-	selector does not choose a demotion or eviction policy. On tiered
+-	memory systems, a source node in a non-terminal tier will usually make
+-	progress through demotion when an allowed demotion target exists. A
+-	source node in the terminal tier has no demotion target, so successful
+-	reclaim progress from that source is eviction.
++	cgroup that are currently resident on the selected source. The nodes
++	form selects nodes directly. The tier form selects the nodes currently
++	in /sys/devices/virtual/memory_tiering/memory_tierN/nodelist, where N
++	is the memory tier id. Reclaim then follows the normal reclaim path
++	for selected folios. The source selector does not choose a demotion or
++	eviction policy. On tiered memory systems, a source node in a
++	non-terminal tier will usually make progress through demotion when an
++	allowed demotion target exists. A source node in the terminal tier has
++	no demotion target, so successful reclaim progress from that source is
++	eviction.
+ 
+ 	The source selector is a source constraint only. It does not select or
+ 	limit demotion targets; those are still chosen by the kernel's memory
+diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+index 7999c58629ee..71fa51ba317d 100644
+--- a/include/linux/memory-tiers.h
++++ b/include/linux/memory-tiers.h
+@@ -49,6 +49,7 @@ int mt_calc_adistance(int node, int *adist);
+ int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
+ 			     const char *source);
+ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
++int mt_get_memory_tier_nodemask(int tier, nodemask_t *nodes);
+ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+ 						  struct list_head *memory_types);
+ void mt_put_memory_types(struct list_head *memory_types);
+@@ -142,6 +143,11 @@ static inline int mt_perf_to_adistance(struct access_coordinate *perf, int *adis
+ 	return -EIO;
+ }
+ 
++static inline int mt_get_memory_tier_nodemask(int tier, nodemask_t *nodes)
++{
++	return -EINVAL;
++}
++
+ static inline struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+ 								struct list_head *memory_types)
+ {
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index 54851d8a195b..75ec73b224a3 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -180,6 +180,30 @@ static ssize_t nodelist_show(struct device *dev,
+ }
+ static DEVICE_ATTR_RO(nodelist);
+ 
++int mt_get_memory_tier_nodemask(int tier, nodemask_t *nodes)
++{
++	struct memory_tier *memtier;
++	int ret = -EINVAL;
++
++	if (tier < 0)
++		return -EINVAL;
++
++	mutex_lock(&memory_tier_lock);
++	list_for_each_entry(memtier, &memory_tiers, list) {
++		if (memtier->dev.id != tier)
++			continue;
++
++		*nodes = get_memtier_nodemask(memtier);
++		nodes_and(*nodes, *nodes, node_states[N_MEMORY]);
++		if (!nodes_empty(*nodes))
++			ret = 0;
++		break;
++	}
++	mutex_unlock(&memory_tier_lock);
++
++	return ret;
++}
++
+ static struct attribute *memtier_dev_attrs[] = {
+ 	&dev_attr_nodelist.attr,
+ 	NULL
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 155d0ef82b48..2abbce265af6 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7961,29 +7961,45 @@ static const match_table_t tokens = {
+ };
+ 
+ #define MEMORY_RECLAIM_SOURCE_NODES	"nodes:"
++#define MEMORY_RECLAIM_SOURCE_TIER	"tier:"
+ 
+ static int parse_memory_reclaim_source(const char *source,
+ 				       nodemask_t *source_nodes)
+ {
+ 	const char *nodes;
++	const char *tier;
++	int tier_id;
+ 
+-	if (strncmp(source, MEMORY_RECLAIM_SOURCE_NODES,
+-		    strlen(MEMORY_RECLAIM_SOURCE_NODES)))
+-		return -EINVAL;
++	if (!strncmp(source, MEMORY_RECLAIM_SOURCE_NODES,
++		     strlen(MEMORY_RECLAIM_SOURCE_NODES))) {
++		nodes = source + strlen(MEMORY_RECLAIM_SOURCE_NODES);
++		if (!*nodes)
++			return -EINVAL;
+ 
+-	nodes = source + strlen(MEMORY_RECLAIM_SOURCE_NODES);
+-	if (!*nodes)
+-		return -EINVAL;
++		nodes_clear(*source_nodes);
++		if (nodelist_parse(nodes, *source_nodes))
++			return -EINVAL;
+ 
+-	nodes_clear(*source_nodes);
+-	if (nodelist_parse(nodes, *source_nodes))
+-		return -EINVAL;
++		nodes_and(*source_nodes, *source_nodes, node_states[N_MEMORY]);
++		if (nodes_empty(*source_nodes))
++			return -EINVAL;
+ 
+-	nodes_and(*source_nodes, *source_nodes, node_states[N_MEMORY]);
+-	if (nodes_empty(*source_nodes))
+-		return -EINVAL;
++		return 0;
++	}
+ 
+-	return 0;
++	if (!strncmp(source, MEMORY_RECLAIM_SOURCE_TIER,
++		     strlen(MEMORY_RECLAIM_SOURCE_TIER))) {
++		tier = source + strlen(MEMORY_RECLAIM_SOURCE_TIER);
++		if (!*tier)
++			return -EINVAL;
++
++		if (kstrtoint(tier, 10, &tier_id))
++			return -EINVAL;
++
++		return mt_get_memory_tier_nodemask(tier_id, source_nodes);
++	}
++
++	return -EINVAL;
+ }
+ 
+ int user_proactive_reclaim(char *buf,
 -- 
 2.20.1
 
