@@ -1,93 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E0560A2601
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 17:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA6560A3804
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 17:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=gjjwm/hz
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=sqNHz1K+
 Received: by kanga.kvack.org (Postfix)
-	id 998506B0302; Mon, 19 Oct 2026 13:12:15 -0400 (EDT)
+	id 15C986B0303; Mon, 19 Oct 2026 13:12:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 920E96B0303; Mon, 19 Oct 2026 13:12:15 -0400 (EDT)
+	id 098836B0304; Mon, 19 Oct 2026 13:12:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 812896B0304; Mon, 19 Oct 2026 13:12:15 -0400 (EDT)
+	id EC8DF6B0305; Mon, 19 Oct 2026 13:12:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B4746B0302
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:12:15 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C43966B0303
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:12:16 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C25308078E
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54470160833
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:12:16 +0000 (UTC)
+X-FDA: 85340019072.11.75A2686
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8527718000D
 	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:12:14 +0000 (UTC)
-X-FDA: 85340018988.11.D3646EC
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 077F440007
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:12:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="gjjwm/hz";
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=sqNHz1K+;
 	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792429933;
+	s=arc-20220608; t=1792429934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NSkebjJriJxD8huVKtJ/dZPvDeRsYwUsy6nc9NLY9s4=;
-	b=Y7JONZhFk85L6T6pY1ZyUpXSahrMVObr7JtFiT8YMyKXwy4jDh+W80BDqP/1TYdwen4FsH
-	HEht0ZANtA4AMSpCA65DM6+zOajylQG/4nlFtUVr/FmZOvxUunzdmuHuNHjhJ//+0qSVN3
-	wy6qAxeJtKirC9pRGNCLcaBAZ8OVuIw=
+	bh=bz4HIGdHrbzH5B04ukJiXoFVbLAu333X7PHNoO6ecQs=;
+	b=qcK0p8XNEiSnC4GkZGg/DvnftntyVaRlKYomCZMW4axhKYs24jCoNZfHRGWdqbz07u2rkN
+	pzrDE0sQhdzSfqaB45xucHhvE4Z7/a8DYel1Wg518MqwQbEfZpAW5IfcHiUMIw4oar4vhH
+	WxsYfuEQbYpWq0vWodTnNWVVdB7YvBU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="gjjwm/hz";
+	imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=sqNHz1K+;
 	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792429933;
-	b=NPE16nUl4rauJ7lDOG/7W2/2phr6gjUq/nhWSo5CikF8EVr2Jnwl3vcmlmpYpF5gSSieS8
-	YiGVhoS8Z28EqLN1kFbTrMsjYrNAjZDaBiIL5MtLRRKdN9jVdUpKnIJyOe05HRqcm7/Njh
-	+GY5KuxGo0q3qY5aNc2zV3fGN3vRv9E=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91beb36fcc6so15513716d6.1
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:12:12 -0700 (PDT)
+	t=1792429934;
+	b=BuKVc6KZnbNXXMzUlyHxcisOJrguDjPLbhu6Uevfa1dr1DKcYHknUI1M2GzKl7+Yuu1zgk
+	8kqsMimza0y39TSIM8vmPNfpslLAl13Wll4LeSTA/IMFRI8U/CEn0q1qJsMe0KNA1CJqU8
+	B1YAhR5NVu+PjJaMHeq6xj0CXVExrwM=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5366ae57896so11834291cf.3
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792429932; x=1793034732; darn=kvack.org;
+        d=gourry.net; s=google; t=1792429934; x=1793034734; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NSkebjJriJxD8huVKtJ/dZPvDeRsYwUsy6nc9NLY9s4=;
-        b=gjjwm/hzhArOxjVTz+4i3nxYBmhM5ye/hLdrDiFwJ/oAcjFCqpWkbMmUu5v8Hx2z+k
-         l5BFxB2lwwCTfToRW7pHxo+p5cdz/HCEqLsAePV45vE526LgddErM8HmOrKSVowemnht
-         Tow+4iW4/q4QvrLh1pQL8v7+OjC+7a5cSbM75YeW7Nw74u3gdyLQ7TCU9sAUl86YFXFC
-         Y7K+8Qgxs8h0UwB/EtOeca4mQZamUbov3fWFpU+buO60rPbDB1z2s53WKhm0lYXR6ryJ
-         ZpVhUWuHvNh8pIeMa+qnLRn4Rw5oSKcS7JhDW+hRRPQILmzyFlIox7kJRWUhP+gC2RXL
-         B1Zw==
+        bh=bz4HIGdHrbzH5B04ukJiXoFVbLAu333X7PHNoO6ecQs=;
+        b=sqNHz1K+pnGAEq/M5xks766SfujXcQjjVpSatrGprlKEMmhPFYsbt1xboIUqLWst9V
+         q+Qf8OJuPCXu/SXbC51psTkytPpexoWdlZ9q+A3jkRi8gXxy5If0TG15CiIxoUqBQ8l/
+         5BYI5tCyCN8uI+ttva/WNQQnFo/mtul1mzR6d7V13F1tcXVtQD7kL07OjNhcB4hUDO7d
+         nV8acrFki6tPPMwr7anPxrQ1FHNFYTwuEYon/Y3A8vfGhaJhNKk/Gf9KPovUXDPAay+H
+         xGnUckgrahdx5Fs8H8sQFgwa8yT6KYX7tL9ZsWPyMO0D+8I2iM1uJKftGBHsGlvg7rZJ
+         osEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792429932; x=1793034732;
+        d=1e100.net; s=20260707; t=1792429934; x=1793034734;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NSkebjJriJxD8huVKtJ/dZPvDeRsYwUsy6nc9NLY9s4=;
-        b=EWfeX2KWkMfibba83YR39Vyza4DAw0GBjWeY0u7sS8NfBlZPLrGqSX0mzjSjjWprnX
-         c4Vc8ywTr41owzQyS7cC25p1xhvMsvdJ4+cfJhF1AAVChyCQO7z8eXO/JrSC9Kzygdfm
-         /SV7gEUPyYUjvpSgZMKlKlj+83iU+qe1Y5VLasM7mMgflnuO69DFypL5HmGINYCZEr96
-         2hqgg+Qrgjyoa4FcYAxV/ti/nBdq8SFfkPWykQ4LmvQTsj6H/EfPbacQFESTREppwaw2
-         h1xo/GDMZI6C6397NcftxBgkvUMA4HSLwD/qmOh9K092JNWG5fWG49p/rXwdAe3OFNve
-         TQjg==
-X-Gm-Message-State: AFq9FYIE5R68EzHIKyHX0On12cr3eFDs80oxRkjYgGzpC0UkWIo7sQ8S
-	94+14cOwtFyxVxJb3nTJweaSkQpiIhR/33SxxA52DJpRgfc1DSd+Vxe5H7oOw4af4iQ=
-X-Gm-Gg: AYBFou15dQd/CCP/BCTpip+QzNTUjHt9NziXjCgW3OeyBUNg/gAG7Kt2t1gOIHEOjcG
-	3SN6V3MgpaXZxucIAec7uaBHB5CQwrM5FVEq++NShmlgo3LLV8w1UdviA5XycNO2yPCvHFphCog
-	nLKsKaR7MNDeznf5fYT0YI855ybzhKxjgYk4cpGEN3TJdfuZyxkGFMmAn+/ZGOFuMP6J+rJ816i
-	rn0Jzm86M2o1RoW9oRIw7VQgUmUkvU10Pfv7iqSPenjd7s+fcx7TsKprWj1nU8rQrWBg1/7Mvt+
-	C2Ka8VIZsFWGIvRVlodurD9l88dYat+OH/duKGQ9Y2W6dHyppYEZ6YNS1goC6c8hH5vO/8DhdsB
-	TU6bbFuLYZzBWS69k1+dGAXNsBcVKjkjHYFLTtluGzukRbDuHskJvoV/GLSISVWznzdgGNbCeIw
-	5KrplvMf9ayAWVbIRSFHsjdYYE6YWdHvmEgmfh1f23nf/zAwebj0qcYrQaaE/EKmlAQxXaQ2Vdt
-	lJJ9l2Y73WEos4Qvx55cfmZueWgzKsyh/1TZO6jKtirFGpXdTFpbJJqr5cAuNgGWBHIYqGn7U4m
-	QTmaOqQ6HsNVnQhnXwgRGft+uuGFsIfOJx093ykBZA==
-X-Received: by 2002:a05:6214:dcd:b0:91b:9061:b7f7 with SMTP id 6a1803df08f44-91bdf059500mr152667696d6.20.1792429932077;
-        Mon, 19 Oct 2026 10:12:12 -0700 (PDT)
+        bh=bz4HIGdHrbzH5B04ukJiXoFVbLAu333X7PHNoO6ecQs=;
+        b=HQSDFQXVknbNMy4L3YCa/DL/VMnX4Xh6/n1hNDtN5V/7yxGWmK/2ksaVoQOhUnpV6d
+         VWJO0cSyy+kWWhcnpHkBbo9PkyXw2ifLjL8aY0sFqTP1HGOEI47uYWzum38V+nbMI6Ut
+         dEGBsSDwlQ1UTNOemFJmYfwC7+l4kp5jolgFs8mIsmTaor/n+drKr0+6EA7bF1gr9twp
+         zr/8E1+FT0E1QXfiYSBe2HAAD4eBBZj5gfqz2dNJCt3XPkg73mTBSO1FmZhfPPjSNawB
+         MBFQ3hFuK7Hn6tvH68pbx1EoHWXvgY2rQJYcEUZAkPNU79tz62FAv9MuBmax8hxpWrQ6
+         Ff1A==
+X-Gm-Message-State: AFq9FYKN6xa0wYCPe/jxlo6/vdmr2yjtIXxvqR8PaJdDCJrvb08sQgvW
+	YiOSrer8yArT1F7jKgu95B2SlSGp2/qlf7SN77xWw/dfbnwNAHdvtfFvK1S6coSoHWw=
+X-Gm-Gg: AYBFou3dmKvOuUuDUKYADbq+Sa4vFxNgaw0mhrbhXtW30+SbZJVdlVag4fmEbqQZOIX
+	lATozQqZ2RxKIYRnLX5myV/MLuX7eEl6dAMARjx+//VrtyAq/+2J9qLUnmRjwMrJ6kQC7/HqT76
+	94aaonZV8mYoFj+d0O9fdpEQArNZ/TnqPvtB0KRdLSTX0uWUHqbRFy/uoAr8WXNM8258tWxNQeX
+	yX27idaUE7bDFm+Aj3BD3rj0EeOOS/FZqfRJO5QcCpT1ZUUZ/Darv0L+i7jvcMxqs7LQ6q+gLZO
+	poSZj04Q8yTNkvUnP2frhBsov/pL8pkvY3aLinzXAGM+0NQ+LiYs7XeGtPKAu0a7UJl8b38F3/5
+	OQ+XiRZ+GWi1wVVHjWIHcbw/rXp3ZDnQ3weiyaHy04B6Q3KJq+PiALw6iOHoYm2ibxjquqmrpuL
+	LhxR+uX3IbnW2Evxa/vtyTzMZ1f9C3M4mOJD8ZXtXPir1fTyjaoHmJzM+kNdxo4A5W2LW/L6L8m
+	8/jZLxzzhXkX0kfhMcbnHYlX6zFtuq3MOi/FIh9ez4YTgNPmhLbZ96vbQHR
+X-Received: by 2002:a05:622a:229c:b0:51c:fc4:a144 with SMTP id d75a77b69052e-53645bf1ad1mr120809701cf.4.1792429933560;
+        Mon, 19 Oct 2026 10:12:13 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040d4cedsm723116d6.34.2026.10.19.10.12.11
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040d4cedsm723116d6.34.2026.10.19.10.12.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 10:12:11 -0700 (PDT)
+        Mon, 19 Oct 2026 10:12:13 -0700 (PDT)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: linux-kselftest@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -101,28 +100,29 @@ Cc: linux-mm@kvack.org,
 	rppt@kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
-	shuah@kernel.org
-Subject: [PATCH v3 2/7] selftests/mm: check MADV_COLD and MADV_PAGEOUT range handling
-Date: Mon, 19 Oct 2026 13:12:01 -0400
-Message-ID: <20261019171206.3331374-3-gourry@gourry.net>
+	shuah@kernel.org,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: [PATCH v3 3/7] selftests/mm: check that MADV_COLD and MADV_PAGEOUT reject hugetlb
+Date: Mon, 19 Oct 2026 13:12:02 -0400
+Message-ID: <20261019171206.3331374-4-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261019171206.3331374-1-gourry@gourry.net>
 References: <20261019171206.3331374-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 077F440007
-X-Rspam-User: 
-X-Stat-Signature: bgwfnz6kkz37tayu8s48rhxyeyz3qgjt
+X-Rspamd-Queue-Id: 8527718000D
+X-Stat-Signature: xptxitmj65qqw5uztnf1grp3fzdg98zh
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792429932-658589
-X-HE-Meta: U2FsdGVkX19BczUZKr6xaa3Vn3YGjUmJ+VFoIQW0tLl78htqONDkaIrBQPhatk5LUIeUALbcjgZnmfv3cYsO37qQvqDU10NwL+NCP4NGkWE4YTubOoQAZW+AU717SfvoDGkEtp30/4oDOOr+y74XvwryEY+qy+ZalqM1e/NbhdJDalyrgmUBoVGl8Yykhoxj8NE3UmcKQtoF4pnvRXrCWJ0VdaUimnUwr06QjFQ6/S6J0ubuLOlV98LQ+HXT67Qb4tIWTF4eorxMVOo/hzwNFqPyP25+Q5FzE8yGIunf4Cldaa/6M7inVMKA0LTSURhhNF6lPtEbzgJcCXJ0Phw2u+he3W7NC07MFFza0isrCuy8RAahUwouL7XjfUkCBa/BKDk5YwJEfW9UR0+yj7+9m5V/+NdjYQX+LeWfiFmPKuqCWdCwHUK2ZHmL9U7Hs76cu56rCrJ/oTnYe8nOuRj5Ww4XHrBYCkWK8QAlHppSF0OrwR69rLxVQvo7Ss6F01t4gV3xvRFbDrzGhgKPmRf+k7iQbjnCDS2ZMN3oXX9TR45o1FoRenmzPTBNlt9j5JlIabhr40Jxzyw1GJr83QfM4bVSHx3cSRCaU1sBI8776GUivjDMDiueQC/WyT/80daA0MsGpfbRYJ/Owa+0it4Bfd3vq82telAqhDBFcawEjhOrtpdjJVHEkT++tT1HG35VgiJTnzL54zStL+GUK6UraI6LghqH6s2aFy/TGOB7t+hwAbikB7tF1Sj0SRHg9YarCwJ0yb0i8F9wvt7pJSaFM1yr+Sd/7LpI/cjA+VQKdP/mOfYxfmZ6aE3VR/RSQ1Ix/Wi/UhSRy34ZSQvz1aN0Ivl4vhvOb+qOH3NK04q3DJx7k0RRGhu05WOVIaTUnA44g5OOjfVq4tTQHttqD1MBm7IvypeQMJ6hka3Ii0AgzYo7JFKsmvqdgNINBKu7DANE/KtfRh4xMP5M9QPcPFB
- 83NF7a8N
- 9BvcO62nHQe+f6+/X8UkGIopuwXC7o9AKdinbXNcQoNYNwjlcq+GAaR8Bw/tf+hwc3K523OHIReqc1hmHVIIH6MXE8ueHdaMG19ajJ955qA/yEzESDehMNn/8ARr6R2IqJkeOLLNq/5Hv//Xwyvu3AffPdkND/jD45VDT7H9TGqQ95EH9zHnjlBWSv9zik8zd9EuXgTpy3xkqJf0YDc+7O6JKGIZoQbOy0NTDbdOMGBBKszuCtjrYSbVoJHCRe/MwJf11yl1Wr8P8CgO2r+nTSnyS+7od7EdHPRPoqCZyMXIC9h6ZnHCSXKbIOkuqOxw1CwAmgUxl0+Gd+L6TIeft50WDpRzjKBWTMZ2g
+X-Rspam-User: 
+X-HE-Tag: 1792429934-808507
+X-HE-Meta: U2FsdGVkX1++ROme7HYtO4WgbtjYtlDWBk8xCX2YimLCTQH1hM5YVJMBDCS5t7HhAWGe//8Ls8gW5je+Grdo4Qzj3RUXUSE1v2Q2etmqkA8amqdMIzPYRd85O7PeruFs+eOu/SGF+QEKC8vp1N1+WhVw1E+izPEOtCfhosecj7Lpp7Lf8vd++oyfATXBiB9Fwz9W8yn5iTvJL4gqCoADlHdXWQg5PRf95SmM2PFd6d+ELsw4Nhmyjn/znWbVZc1Isd0PFvgj5QX8pThkWKA8UZLCvxC91j2ktWuAUb05IHCP2ItuPerbfDCWTeW6vOZFCc4Pfe2ns2HqmIH6z7Jc4E6fZKKUHnCu3qhMgj9CYRWxYyxV9qmNUfld6XghvXvp+MgdKztRer1HWawhBKlYyKd/d0NdwbE9plgYWdKtZR1Luaj32qBLlyiRI3bbm49kRuJNf/kCP5Xd8ezyvajC+7ivlhnaZLg1x9GksO/qmdDe+H6NiFcDF9AqUiCkQ2gDdjhxifRItNaL0ziiY+FMpQi5qYDaUwjWUF80aYKzd0ci3qHsTbSnfJOgxPxxoN0nvJ6+2eanxLrY4bp8fYordqlBPR2F9bjRaaOJUZVWM2xtzN2ClWzhshYexzWRfzIafB/foDQnhx46uLJOL+3MjVx+DmM4KeFmhQySgYFl9XSbQ2NMD6Uz35TmK5N3MIs6jOj5QjzmfITDuJ43gjKsqViJI+cNNpI2mgnmnvzA1tV7GIb+FOf/JxK+/Cau1VBWmD0++lo+KYwOXQvmSXByP59Wi8+oKQc8UH2WSP4+bMg1jQerd3YdnnBpqW5JNdqcL2TO4mOFCcM7OpYXPhMjJhEwo0EcajnI2eeU/jQ4LqgfvhWOWQnj5L9pWD3fVoGQog85C4EHdenUucHpJYUlUUerN0STIaANXAwxIjb5oZd1q+sO06fPjSZb8THtxF1AP5m9hC4P0Ao/2RKTLSw
+ lxd0P+Du
+ V0qWRg3MU1y2+PoYZ/y7Plsb0F5RAg+iOJXR6Tmecc11Yg0oyKL0VUJaOZ7jOeN7EwaIDt+azRB6vUdI/t0+eqtEMSrluAs5O3ClCBbFE6H1EWI+fF39YTrzqXEpVsuRS/s2Fv1J86EPjv44jufzfA4QQd+OXWF7ilvfXCFeJHq+bGl+UCZokgJZQCvyhugZggKqb4Bgqv/wehjAshgMSn9Wb6uidCu9s+SbKTXHNQ6+axbteCc2KieiTXhacoC6t0gDHXzPjJp5PF1yUZiCFNJeSoIRo5/XpNCYl6rXhj0QXKSonswiD1asmpmqshdL+WqNzgE9YEKsSKqjq3gRYi1exdWi24dSiXopBkfP/k11psFRAM3NbyDmaGXdOUjV66AsScIk9qxvQ3vtvBoKx1xY2LTXH2KULMkYt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,111 +131,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-madvise(2) accepts a zero-length range, rejects an unaligned start, and
-reports an unmapped gap in the range with ENOMEM while still applying the
-advice to the mapped pages on either side.
+Neither hint may be applied to hugetlb memory, so madvise(2) must fail
+with EINVAL for a hugetlb VMA. Locked VMAs are already checked here and
+PFNMAP VMAs by the pfnmap test.
 
-Check each of these for both hints. Around the gap, only MADV_PAGEOUT has
-an effect the test can observe, so only MADV_PAGEOUT is checked for
-paging out both neighbors, and only if MADV_PAGEOUT can swap at all.
-Both hints' ENOMEM is checked first, so it is covered without swap.
+Check the hugetlb case for both hints. run_vmtests.sh does not reserve
+hugetlb pages, so when run as root main() reserves the one page the test
+needs, and restores the pool on exit. Otherwise the test skips if no
+page is free.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- .../testing/selftests/mm/madv_cold_pageout.c  | 80 +++++++++++++++++++
- 1 file changed, 80 insertions(+)
+v3: Kept Sarthak's Reviewed-by, but only a couple minor changes,
+    e.g. the hugetlb reservations / skips.
+---
+ .../testing/selftests/mm/madv_cold_pageout.c  | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/madv_cold_pageout.c b/tools/testing/selftests/mm/madv_cold_pageout.c
-index 5d451d409937..8cbbfd4c24c4 100644
+index 8cbbfd4c24c4..0874726ec141 100644
 --- a/tools/testing/selftests/mm/madv_cold_pageout.c
 +++ b/tools/testing/selftests/mm/madv_cold_pageout.c
-@@ -141,6 +141,86 @@ TEST_F(madv_cold_pageout, locked_vma_is_rejected)
+@@ -141,6 +141,29 @@ TEST_F(madv_cold_pageout, locked_vma_is_rejected)
  	ASSERT_EQ(munmap(mapping, page_size), 0);
  }
  
-+/* A zero-length range is accepted. */
-+TEST_F(madv_cold_pageout, zero_length_is_accepted)
++/* Neither hint may be applied to hugetlb memory. */
++TEST_F(madv_cold_pageout, hugetlb_vma_is_rejected)
 +{
++	size_t size = default_huge_page_size();
 +	char *mapping;
 +
-+	mapping = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
-+		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(mapping, MAP_FAILED);
-+
-+	ASSERT_EQ(madvise(mapping, 0, MADV_COLD), 0);
-+	ASSERT_EQ(madvise(mapping, 0, MADV_PAGEOUT), 0);
-+
-+	ASSERT_EQ(munmap(mapping, page_size), 0);
-+}
-+
-+/* The start of the range must be page-aligned. */
-+TEST_F(madv_cold_pageout, unaligned_start_is_rejected)
-+{
-+	char *mapping;
-+
-+	mapping = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-+		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(mapping, MAP_FAILED);
++	if (!size)
++		SKIP(return, "hugetlb is not supported");
++	mapping = mmap(NULL, size, PROT_READ | PROT_WRITE,
++		       MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
++	if (mapping == MAP_FAILED)
++		SKIP(return, "no hugetlb pages are available");
 +	mapping[0] = 1;
 +
-+	ASSERT_EQ(madvise(mapping + 1, page_size, MADV_COLD), -1);
++	ASSERT_EQ(madvise(mapping, size, MADV_COLD), -1);
 +	ASSERT_EQ(errno, EINVAL);
-+	ASSERT_EQ(madvise(mapping + 1, page_size, MADV_PAGEOUT), -1);
++	ASSERT_EQ(madvise(mapping, size, MADV_PAGEOUT), -1);
 +	ASSERT_EQ(errno, EINVAL);
 +	ASSERT_EQ(mapping[0], 1);
 +
-+	ASSERT_EQ(munmap(mapping, 2 * page_size), 0);
++	ASSERT_EQ(munmap(mapping, size), 0);
 +}
 +
-+/*
-+ * An unmapped gap in the range makes either hint fail with ENOMEM, after
-+ * advising the mapped pages on both sides of the gap. Only MADV_PAGEOUT has
-+ * an effect on those pages that the test can observe.
-+ */
-+TEST_F(madv_cold_pageout, unmapped_gap_fails_after_advising)
-+{
-+	bool swapped = false;
-+	char *mapping;
-+	int retry;
-+
-+	mapping = mmap(NULL, 3 * page_size, PROT_READ | PROT_WRITE,
-+		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(mapping, MAP_FAILED);
-+	mapping[0] = 1;
-+	mapping[2 * page_size] = 1;
-+	ASSERT_EQ(munmap(mapping + page_size, page_size), 0);
-+
-+	ASSERT_EQ(madvise(mapping, 3 * page_size, MADV_COLD), -1);
-+	ASSERT_EQ(errno, ENOMEM);
-+	ASSERT_EQ(madvise(mapping, 3 * page_size, MADV_PAGEOUT), -1);
-+	ASSERT_EQ(errno, ENOMEM);
-+	ASSERT_EQ(mapping[0], 1);
-+	ASSERT_EQ(mapping[2 * page_size], 1);
-+
-+	if (!can_swap)
-+		SKIP(return, "MADV_PAGEOUT cannot swap");
-+
-+	for (retry = 0; retry < PAGEOUT_RETRIES && !swapped; retry++) {
-+		ASSERT_EQ(madvise(mapping, 3 * page_size, MADV_PAGEOUT), -1);
-+		ASSERT_EQ(errno, ENOMEM);
-+		swapped = pagemap_is_swapped(self->pagemap_fd, mapping) &&
-+			  pagemap_is_swapped(self->pagemap_fd,
-+					     mapping + 2 * page_size);
-+		if (!swapped)
-+			usleep(10000);
-+	}
-+	ASSERT_TRUE(swapped)
-+		TH_LOG("MADV_PAGEOUT did not page out both sides of the gap");
-+	ASSERT_EQ(mapping[0], 1);
-+	ASSERT_EQ(mapping[2 * page_size], 1);
-+
-+	ASSERT_EQ(munmap(mapping, page_size), 0);
-+	ASSERT_EQ(munmap(mapping + 2 * page_size, page_size), 0);
-+}
-+
- /* Neither hint may fault a swapped page back in. */
- static void check_skips_swapped_pte(struct __test_metadata *_metadata,
- 				    int pagemap_fd, int advice)
+ /* A zero-length range is accepted. */
+ TEST_F(madv_cold_pageout, zero_length_is_accepted)
+ {
+@@ -276,6 +299,9 @@ int main(int argc, char **argv)
+ 	page_size = getpagesize();
+ 	/* The harness forks each test, which inherits this. */
+ 	pin_to_current_cpu();
++	/* Only root can reserve the page that hugetlb_vma_is_rejected maps. */
++	if (!geteuid())
++		hugetlb_setup_default(1);
+ 
+ 	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+ 	if (pagemap_fd < 0)
 -- 
 2.56.0
 
