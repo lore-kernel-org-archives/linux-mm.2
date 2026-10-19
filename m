@@ -4,87 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5A35CCF2D6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 13:39:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6099CCF2E3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 13:46:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E73C76B0260; Mon, 19 Oct 2026 09:39:15 -0400 (EDT)
+	id 09F1C6B0269; Mon, 19 Oct 2026 09:46:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFD966B0266; Mon, 19 Oct 2026 09:39:15 -0400 (EDT)
+	id 076BA6B026A; Mon, 19 Oct 2026 09:46:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CECE86B0269; Mon, 19 Oct 2026 09:39:15 -0400 (EDT)
+	id EA8406B026B; Mon, 19 Oct 2026 09:46:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A5A786B0260
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:39:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 434B8A070D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:39:15 +0000 (UTC)
-X-FDA: 85339482270.23.2E44838
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A7CAE40002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:39:13 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WQl2eY5q;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C37E26B0269
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:46:39 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 64599406DC
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:46:39 +0000 (UTC)
+X-FDA: 85339500918.17.068D0B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A17D7100009
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:46:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BqyE52BJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792417153;
-	b=jVbdOfYSz3W9GuSijSFq3jCiUo1EylqKyaKubxeHALA1g+PnpfHYUUrXGoGqIoQmAY5lJp
-	8wVOHRRHtJQfANV7Ix6BMqpjhKS1fn54NjteZ9NVNywNgYbLHVX22odbh7gVZ3Wv227AzR
-	Ycbi3aa7eUCm2lsKcyyRxWtgdrguPrE=
+	t=1792417597;
+	b=NK1tVAv247K5A2Gpxb55woyLZaPI/M4dT9Q4RiXalGYbyWx2wbDeoEq2drqWh5b4K4vs6M
+	q1LibroZDVGmMwIFOI59Xy9fllqFidrkLxWu8kQ3pCH4IyiKU/G74mXHc1TPXikQC17xvl
+	da77Kzjhevl0rwV5hsjT2ojtHlixxv4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WQl2eY5q;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BqyE52BJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792417153;
+	s=arc-20220608; t=1792417597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jFDkykTpCFq9YT8TT2xwNVz5rz5D5UYP/IyAQl0FhJU=;
-	b=NtLUpX8dgp2BRwOmLzZo5MsdBpjhYOuoqJYuposYUT1HiqqbNRRv9OyxOYVX2UcvpKxkca
-	eS4e/8fNx5e/PJ/ZuVCs6tTwd7dtQ5d4BO2Zw6TOzECwlyY7Ua6W1gmjCiALtKsNltTJoC
-	rhrDX3qK/29PI2xD9zjWmWiijr/ZlU4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GIOgXb/mnhZxFdGRsi0Jf0fYXTZWOZ0EseekTxOkjig=;
+	b=M0JqRJHEYPWLiNgxN1g/xHF/MQYD9bFB51pM2ncGyGVzfi5U1xRl6X5t0BQxdubV5g27fg
+	jy7hGLXg7EYkPGJ2EEsfSKzuHRUGjT6s4tq6uEE/Jif27zD/JLcEKyTcgOio5j/Dvq+OGq
+	Dv6a1UqQkrj7ZQqkOSmoGdqRvlcOtKM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E23CC407DA;
-	Mon, 19 Oct 2026 13:39:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943531F000C4;
-	Mon, 19 Oct 2026 13:39:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F288C60136;
+	Mon, 19 Oct 2026 13:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BEE1F000C4;
+	Mon, 19 Oct 2026 13:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792417152;
-	bh=jFDkykTpCFq9YT8TT2xwNVz5rz5D5UYP/IyAQl0FhJU=;
-	h=From:To:Cc:Subject:Date;
-	b=WQl2eY5qduO/ycVgT9nFECZAtwHY8BcuxkWXEtGaMyZcoWRr10cgdIql5DB6VQJ6v
-	 pf/pzsioytZw2BC2C7loqHvXe20yFpfuGsIPAR2FeoFY+OZUhY/LR5HbRVbdbEhgyx
-	 fiesFcMNxTnouwP+oaTnTBYvdbcUEwiL6Jw9Ecm4XI0pHukfzFD26HNQyyYDFeb4SY
-	 TbcA7KpnDDkrgKaOU9QDiXAKlhUt3AQt6ZSTFUou72vo5ASNrkArSXOnCFbpyVyeAB
-	 5CRq8pVppS7nSk3Yzg9HDrStqoYiAvxGsoK8d7sIzSpri3gTMVZU6zQygsZ66eFVFH
-	 Rc5bJ2UfIXKdw==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2] mm/damon/core: filter out damos address filter-split failed region
-Date: Mon, 19 Oct 2026 06:38:55 -0700
-Message-ID: <20261019133856.86835-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20260515; t=1792417596;
+	bh=GIOgXb/mnhZxFdGRsi0Jf0fYXTZWOZ0EseekTxOkjig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BqyE52BJIudzcsDq5arU4VxZYP8jdANRgfaSAsySsr/SfWhoTbCY0S6zvW1kK3HPu
+	 GdDoQFIsAyEtKwjLr56Fj0KpDOKI9rkD/SKwuzSNgU5Y5RbnbQoqiq/b1nV4kIt1/i
+	 CoJECe7g8iRVAee7GK7AM/spZv5PaVNwfj6Tyib7OJf9/7/y1DiU25X7W/UNXEILvq
+	 CvQZbD9MU8dYkV9Z6DTgQB7up5xZhD8iLmj/TnFJ0u8I1yEHyLMKGaUJfmj6/BY40e
+	 gQ58Uq/U8gyY9kyUD0Je0VFboIlM8CtwDnxlyYvjtTuvpQsyp1WgQKqlx/LnYSTRsw
+	 wmInQsE/GIaMg==
+Date: Mon, 19 Oct 2026 14:46:34 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
+	SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
+	Hugh Dickins <hughd@google.com>, David Rientjes <rientjes@google.com>, 
+	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Chen Ridong <chenridong@xiaomi.com>, 
+	Tal Zussman <tz2294@columbia.edu>, Xiang Liu <liuxiang.277@bytedance.com>, 
+	Ehab Ababneh <ehab.ababneh@intel.com>, zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, 
+	Lian Wang <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v4 03/17] mm/memcg: add folio-based lruvec live helper
+Message-ID: <atYdi3O77m6XzaKu@thinkstation>
+References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
+ <20261016-mglru-fg-v4-3-2106750c0bfa@tencent.com>
+ <atEkfmRFgXJCbJuK@thinkstation>
+ <CAMgjq7A6Yom=dHDMXk+mpYm3dotgOaVRjPHgUsOryjJ1VjPC6Q@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+In-Reply-To: <CAMgjq7A6Yom=dHDMXk+mpYm3dotgOaVRjPHgUsOryjJ1VjPC6Q@mail.gmail.com>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A7CAE40002
-X-Stat-Signature: s5snkqqg3dp7x6txbt4z716cwfbiohyk
-X-HE-Tag: 1792417153-330821
-X-HE-Meta: U2FsdGVkX1+7CCwRWJ47tpWBDdKasl3/WOzcTsATrNDbCPPGn+150b2QWhqc7l1+lezwt8KLYCwMWBrOtkapNs/kpVqu+cU4mtCawFmXbt9VDnHwl0Id2VRWnCxn7m5dbkMyExoy2VZV9KUmsAH6AtnuFifKA9z+yktQeObLFdwOXksfNMQ//i0iqcRrjIjjsiyt7UUpzZAsn15IaGkml4gfeXLoIOD7xdQCzaXtmHd6821LYYeEAUD8sRBDpju4CHY4nPl06R/m5I75PCsUQl3evBss/PBfNLDKzAQV65JIHPKEIiHVARRssFt5m0XKudjDeoorpnD6nRg8OaHq/NG44sORRhcjLLKuCFVzL94bKSUt3os53DqKgwm7Gx8CVXMf+vGzvOZhd3AeQ4nJK+HHGgJgCJO3MUZZxsJUggKLUet6vt6lgl0SFhED8xpJWM+Wdejwq2URknK8jRkbiNgbEsy2VyBIYEBqyxbQalzjnXVIRdq3oinDqyG1gNxOXkDRQpNf1UiICB4teBhemNj++qCHkqSzWeiI78DRG6D9KRWZRRiB0PUCIiIgsVxMaDrwtOjaWCfgRux67mCLy2Qfjcr8EnNxzD/KVXOYIyZoZLCtweuKW/KXm0VHChY3rPeWLS3aLPmNo46/oSR61YbdVoxPHPirWg15bis5YSoSfT+ja709JeFmxYy9MAh/r045p1Ua06U+9J4n3hzCiRNeDQrXMFtWOrLkCF/hrLlx1xutWPJngmdrWHNo8kGUu5sG7o8jWlwxymCisUUQZfeG4fn9ZNnsyDsqIt3D6EjRnpCoJ50gWl3/2atk2b+4Ar4yv3i92C/aUp5PaJddtuzL/AKUlG7z4Ta+jVJoklAYyD5fQbqXKXVPrWAgGo3CzUAapImboAOjAnR4OJtXxQdGYvnX6i6xZsBiTxLxugYvMOXPn0sf8M6msZuL5bd/bZW1hi3Kj/MHr8w2S64
- AimYCdw8
- WSHR4iBl7lP+Y9v/CPPW+39LC/9Gwe1IKFYaKOiuo8Qb0y7et3sZrlGw+TnigxdLLcPXfL9Nro12TAPe1SX65chA1vs3sKpCYQj+hBFuMeX+REV3PsITPETXzKXoXHQm2ejiCl6u3FkeNnuVGcBiPPXzveYjGTcaw0P9TJXlOHUyozCPx9S45fYnro0rZO/99kqRyyiWdeIDcA7K94/GsdlpeHItmiMWL18N6kxZYZZA9DPLS5gNSnvloLd07l1YnmObIscLLQ9NhNLk=
+X-Rspamd-Queue-Id: A17D7100009
+X-Stat-Signature: h65m57ef9xauzyk39tnup1igri3cxize
+X-HE-Tag: 1792417597-418439
+X-HE-Meta: U2FsdGVkX1/FrRSe0ZFqw7cNT1HNJSNaRHWvgInqWsLEQA2N9f8r4wrUk97awj5JgX0ygaD7OhZib4+Jvkjb136Ow3fXp8YrnJs51YpdKpNQbUKS3MOZlJXyPfoRRyl/5Lh8jpMQ/Yr4Nh4ndBQI7PWrjAMPJPi41ntqB/XQmKFOFgGhsf/atsu5diw43xQDyi87a2UemUzXVHsBfr5guSGYAvy2ywH13qame9z3Xb3gsk7Ns9cg1sGNVOFCkzFscnWEsOvPRwyr3vm+bNVqLLk8xjCua31Zmpv2mAKLVS3PxYq6C7hjWuzv0fjwW+UhStypP1nAOu+4uhp5D2Fzp3hPtvIeHHdL5YNMpSORuZ3SSF2LZaKh2n+88bDiZim3iKfZs4eD9mQDbs0OH0/HExzzxoJpxYBqrwnXKS2+qY71FzGK9tgZpbGFNgd0bCcBgeTRZk0QemmUqTddR7UNLjp60R6OeCxxjP1CSv2f6TVR8N7iD5VEc7GLoUxhHkeoAt3Pp/9OIYiq4l0fdMI1AnjkZy9bx91zOsI4eOLwYLxnbI5DZK9ZQaj9pFojeLUYoO4XuzZJFjCMZRK3kRa/8CUlaXlYiSewFhFSByjFCNj8P5LGQ8QQ2G7pXGt/1VkBwwVZxv8i27vE1FimuVh6uh71836DtXzcDuAPE44DluOZyf1GHYnZ2mrlvaQNH9ex8fxyxtQnqmDoCtgd68K9G1DqGjODvFXPOzTd/o60/I3Nz8tM4Ti6Zr+DzEJpMkqc8tsAPQmqGcU4uJnMZfSgG/HXBtWdWOFCoCokJXT4Dpo1w0fj9iPhWvi2d1w2V+C3GBFTmQua7wr1QqunFKBDPtddJwd01uA+CruSjgYJJLaCHYZqoITHKQhVo/lmT4iuL+ldTTXjPMWZifE1+IXiLAReJoNRMPMsr3yIFpemOlwDUokArcdi3f2XL80Npt8XEriAwx1RjVfkAnuR8C8
+ bYGWWoVm
+ 32CkcdxddER6isluujoZq6Y47+pCsFSTDl0V8f0V/xlAjZ9PCWwRGU0HBpVUWSD6lPp9BnE5V9s8YMcYy428EkR/VBIzZ/y0B08p3RVmzcPYKVlMhuRblw1fAs7mRBmKubLNVKKk37JxgprPdGKvQe9R2y6cyQqYYPkwgrzzK+eYbjJ0y3lZiFl6stQUZbo4iKfe17/8CkEzvFUMlS7J3u3qE0x5tGheCTHWO+2vCDqVfLJi4pV/F3U7SYSLIyhUC7KOifxBbiAuq+HLTjHATEzZvf292R4x9a2xHaRd3CfH6QxfjlGfOidJQ2jVycQl/3dVHcS7jSxQt9kzrKwfaj3FsIBlyUHnyHI2pcwaEOCWg5fgNe9ptG52RVJ+X2K4o8kIn2/CDqVv2PYBuT0o236uRaa+JBGLN4bd/bqfNF9rQOE8fVs4IcRNL3XNw2YUu+gDnYpOpQkO49fk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,149 +115,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When an address type DAMOS filter is configured, DAMOS tries to split
-the region for the filter range, and apply DAMOS action to the filter-in
-region.  The split operation (damon_split_region_at()) could fail from
-allocation failure under extreme memory pressure.  In the case, DAMOS
-action could be applied more or less than expected, ignoring the address
-filter.
+On Fri, Oct 16, 2026 at 02:15:59PM +0800, Kairui Song wrote:
+> On Fri, Oct 16, 2026 at 3:11 AM Harry Yoo <harry@kernel.org> wrote:
+> >
+> > On Fri, Oct 16, 2026 at 02:15:52AM +0800, Kairui Song via B4 Relay wrote:
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > Add a helper that resolves a stable lruvec for a folio under RCU
+> > > without taking the lruvec lock.  It takes a folio directly so the
+> > > lruvec lookup happens inside the RCU read-side critical section,
+> > > which a lruvec-based interface cannot guarantee.
+> > >
+> > > No functional change.
+> > >
+> > > Tested-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > > ---
+> >
+> > This new helper is doing the the same thing as what
+> > get_non_dying_memcg_start/end() do.
+> >
+> 
+> Hi Harry, thanks for letting me know, I wasn't aware this helper
+> exists, this series started before the re-planting work, so I missed
+> it.
 
-The issue only rarely happens under extreme memory pressure.  No crash
-or leak happens.  Occasionally not applying the action to a few regions
-shouldn't be a real problem.  But applying the action to a region that
-the user has excluded via address filter could be a surprise depending
-on the use case.  It is only theoretical.  No such real case is found
-yet.
+No worries!
 
-Filter out the entire region if the split is failed.  Update
-damos_filter_match() signature to receive the error from split.  Also
-update kunit tests for the updated signature.
+> But it's a bit different though, get_non_dying_memcg_start assumes the
+> caller holds a reference to memcg, while folio_lruvec_live_get only
+> assumes the caller holds an reference to the folio.
 
-The issue was discovered [1] by sashiko.
+Not sure I follow. I think get_non_dying_memcg_start() has the same
+assumption (a reference to the folio). A folio no longer pins the memcg,
+which was a key requirement for the reparenting work.
 
-[1] https://lore.kernel.org/20260801203121.117449-1-sj@kernel.org
+In the function, RCU is the only mechanism that prevents release of
+the memcg and guarantees correct reparenting of local memcg stats
+(state_local) as it's reparented in an RCU work.
 
-Fixes: ab9bda001b68 ("mm/damon/core: introduce address range type damos filter")
-Cc: <stable@vger.kernel.org> # 6.6.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from RFC
-- RFC: https://lore.kernel.org/20261018220253.158238-1-sj@kernel.org
-- Handle failure in another split operation in damos_filter_match().
+> I'll check if I can deduplicate it though.
 
- mm/damon/core.c             | 16 ++++++++++++----
- mm/damon/tests/core-kunit.h | 11 ++++++-----
- 2 files changed, 18 insertions(+), 9 deletions(-)
+Thanks!
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index b63e60ef89901..479169dc9ac75 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2551,13 +2551,14 @@ static void damos_update_stat(struct damos *s,
- 
- static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
- 		struct damon_region *r, struct damos_filter *filter,
--		unsigned long min_region_sz)
-+		unsigned long min_region_sz, int *err)
- {
- 	bool matched = false;
- 	struct damon_target *ti;
- 	int target_idx = 0;
- 	unsigned long start, end, wsum;
- 
-+	*err = 0;
- 	switch (filter->type) {
- 	case DAMOS_FILTER_TYPE_TARGET:
- 		damon_for_each_target(ti, ctx) {
-@@ -2583,12 +2584,13 @@ static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
- 		}
- 		/* start before the range and overlap */
- 		if (r->ar.start < start) {
--			damon_split_region_at(t, r, start - r->ar.start);
-+			*err = damon_split_region_at(t, r,
-+					start - r->ar.start);
- 			matched = false;
- 			break;
- 		}
- 		/* start inside the range */
--		damon_split_region_at(t, r, end - r->ar.start);
-+		*err = damon_split_region_at(t, r, end - r->ar.start);
- 		matched = true;
- 		break;
- 	case DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:
-@@ -2607,10 +2609,16 @@ static bool damos_core_filter_out(struct damon_ctx *ctx, struct damon_target *t,
- 		struct damon_region *r, struct damos *s)
- {
- 	struct damos_filter *filter;
-+	bool matching;
-+	int err;
- 
- 	s->core_filters_allowed = false;
- 	damos_for_each_core_filter(filter, s) {
--		if (damos_filter_match(ctx, t, r, filter, ctx->min_region_sz)) {
-+		matching = damos_filter_match(ctx, t, r, filter,
-+				ctx->min_region_sz, &err);
-+		if (err)
-+			return true;
-+		if (matching) {
- 			if (filter->allow)
- 				s->core_filters_allowed = true;
- 			return !filter->allow;
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 3fbb4e4e36fac..43e2f950f8ff4 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1783,6 +1783,7 @@ static void damos_test_filter_out(struct kunit *test)
- 	struct damon_target *t;
- 	struct damon_region *r, *r2;
- 	struct damos_filter *f;
-+	int err;
- 
- 	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true, false);
- 	if (!f)
-@@ -1803,27 +1804,27 @@ static void damos_test_filter_out(struct kunit *test)
- 	damon_add_region(r, t);
- 
- 	/* region in the range */
--	KUNIT_EXPECT_TRUE(test, damos_filter_match(NULL, t, r, f, 1));
-+	KUNIT_EXPECT_TRUE(test, damos_filter_match(NULL, t, r, f, 1, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region before the range */
- 	r->ar.start = 1;
- 	r->ar.end = 2;
- 	KUNIT_EXPECT_FALSE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(NULL, t, r, f, 1, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region after the range */
- 	r->ar.start = 6;
- 	r->ar.end = 8;
- 	KUNIT_EXPECT_FALSE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(NULL, t, r, f, 1, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region started before the range */
- 	r->ar.start = 1;
- 	r->ar.end = 4;
--	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f, 1));
-+	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f, 1, &err));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 1);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 2);
-@@ -1839,7 +1840,7 @@ static void damos_test_filter_out(struct kunit *test)
- 	r->ar.start = 2;
- 	r->ar.end = 8;
- 	KUNIT_EXPECT_TRUE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(NULL, t, r, f, 1, &err));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 2);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 6);
-
-base-commit: 7e7e74286672b8e164e60aec0e94f05f62eb357e
 -- 
-2.47.3
+Cheers,
+Harry / Hyeonggon
 
