@@ -4,113 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA8CCCF2D4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 04:15:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1A5FCCA46C
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 04:23:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D23E6B00A7; Mon, 19 Oct 2026 00:15:18 -0400 (EDT)
+	id ADCCA6B00AC; Mon, 19 Oct 2026 00:23:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17CAB6B00AC; Mon, 19 Oct 2026 00:15:18 -0400 (EDT)
+	id A8F4E6B00AE; Mon, 19 Oct 2026 00:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 044646B00AE; Mon, 19 Oct 2026 00:15:17 -0400 (EDT)
+	id 9A31D6B00B0; Mon, 19 Oct 2026 00:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D11FB6B00A7
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:15:17 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 530AA1A0187
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:15:17 +0000 (UTC)
-X-FDA: 85338061074.18.3164E13
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 421FA100005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:15:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=krQRunRK;
-	spf=pass (imf05.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 718E06B00AC
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:23:41 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E69A0C05E2
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:23:40 +0000 (UTC)
+X-FDA: 85338082200.23.C642995
+Received: from mta0.migadu.com (out-22.mta0.migadu.com [91.218.175.22])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1876120003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:23:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EoopDytz;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.22 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792383819;
+	b=PqjDpeWEFu7LseG25/fy4uhf+1OAbEbFTBWJvLUe5vA6J9wT5tthFqg6iRyeLvAd+C4S1i
+	+nAxdJPwzMBHtZmkfmjuXYvot7Me8wlpDQIaSeLtGhriMfwqbEboTfV37iKsHrt+h+p07z
+	3vgy/fd3LBvyXa0dAM5hoEH25xzY+YY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EoopDytz;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.22 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792383315;
+	s=arc-20220608; t=1792383819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p7h+Wad+pyLNKMyu/1QoznQu9hqJDkJyBcK35tN0uCU=;
-	b=EXZDnIEuFCDgOtFHboPxfHKfNbtDFQPLXZ88b3GrgvX9OUuZHSxOClJhmAx//f2kkXIILi
-	p2kr8cAJjSnd9B+nY7ATeA3qqITL5MBpk4RvSe0+CLZYnXoj1iTVKFsS4OaG7VF2aFfJkX
-	2qYBo8VtkUc57j7PQ+rMImfHr+ZlMTY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=krQRunRK;
-	spf=pass (imf05.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792383315;
-	b=ppsqccEiJe1fg+PhP/FJwR24o4UDs2qTQ9pLHR1grDjKLKqgCooTrdbpWlgEnehoNXZNTh
-	kAy+5rHY6flWYpRiMw8hyMDruxpXZtZHGTE9Nn0yUleZ5WC6fqKejnSnfq1mZkHVMGz9o2
-	3hUC/A3p6P9KNDvadFdBD9GsLCt2GLU=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D5B6740E015B;
-	Mon, 19 Oct 2026 04:15:11 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ErKCFo8JYxqO; Mon, 19 Oct 2026 04:15:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1792383308; bh=p7h+Wad+pyLNKMyu/1QoznQu9hqJDkJyBcK35tN0uCU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=krQRunRKTqK6d2hTGjOH7yn/uQLDHxmKKlr1aGOby1aaVDc3GQrHaj1IbHWOFlLpQ
-	 T0aQX0GmkWvWAFeSOegTniHGVsARBfFAB06fcbjuLrWPhIKC/oAX7Bl601zhD8ndNq
-	 ptyxCShUW2IE9OxOjox9vj5EQMH1EUUctJ2JrLryVXfJ2dV6U9hoowGqsxUAxz9nZ7
-	 b8/vjju9uRSXpWyG0+CVSObizaWmtlropor31KW9i7tzRE0Z5aZEpEjEOKu4sYvDgX
-	 MlHm5C5wZcM+6vPu+wG5g7WynB++k1HYbh8B4mEwhJiTNThdlr0MSohDfmpmAh4gD3
-	 iyIu+YfaXIYay+jjre1VSA+hD5Rp5W4+Cf0O1E1baJaIVH4Fh00se5dOdIn/FjZZ8f
-	 x9IAGu5v8nRy7U82DAPnJGWcEto1cmy0Y7wrdvheY+mSWJfVs/GWse7sW+GdrOlMP1
-	 7ukpv+FOUfYnAl/Twyohy2+MffdW2FXFdcg0WMVznkid71/QccRVzn+MK8mNW1TLiw
-	 AicMdVAv7J5PoXdnDUeE0PXklFDbyX+au9v0CfMXAD70lX/nXv7mFSGiQuM0KDy90M
-	 9XuIeljxPNEzFtqGVD9zd+gQm/o9UaoecMe/PHoqwnbBVuPeUYOCdfvvvCMIh1un+a
-	 1RBQnMXpnN4JqWjZTLBCi1W4=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 465DE40E021A;
-	Mon, 19 Oct 2026 04:14:23 +0000 (UTC)
-Date: Sun, 18 Oct 2026 21:14:20 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: kees@kernel.org, rppt@kernel.org, juri.lelli@redhat.com,
-	nik.borisov@suse.com, tglx@kernel.org, vschneid@redhat.com,
-	kprateek.nayak@amd.com, vincent.guittot@linaro.org,
-	jpoimboe@kernel.org, cgroups@vger.kernel.org, tony.luck@intel.com,
-	david@kernel.org, mingo@redhat.com, akpm@linux-foundation.org,
-	linux-mm@kvack.org, seanjc@google.com, ljs@kernel.org,
-	zhangguopeng@kylinos.cn, dietmar.eggemann@arm.com, mhocko@suse.com,
-	vinicius.gomes@intel.com, vbabka@kernel.org,
-	linux-kernel@vger.kernel.org, peterz@infradead.org,
-	surenb@google.com, hpa@zytor.com, x86@kernel.org,
-	dmatlack@google.com, tim.c.chen@linux.intel.com,
-	kexec@lists.infradead.org, pratyush@kernel.org,
-	dave.hansen@linux.intel.com, rostedt@goodmis.org,
-	gmonaco@redhat.com, jgross@suse.com, mgorman@suse.de,
-	graf@amazon.com, linux-edac@vger.kernel.org, liam@infradead.org,
-	ridong.chen@linux.dev, blum@kernel.org, longman@redhat.com,
-	bsegall@google.com
-Subject: Re: [PATCH v2 0/8] x86, sched, mm: Speed up CPU hotplug on large
- systems
-Message-ID: <20261019041420.GCatWZHINJx7DIhXSP@fat_crate.local>
-References: <20261019011446.834487-1-pasha.tatashin@soleen.com>
+	bh=5NcJDfwUROqyQiff/cnKcRQcj58oG2NeTIWz0yBYKFU=;
+	b=FeZZgFfZDAEvlJwD6J7hFtjVnQJsAJbThUPoEmjqHTHEHO1iQyAZt7n5ECLVATCOtJrZ53
+	w+gPLcuMOIUgJwuQZmDWVmguJu3EB2x6Shjfc4La3VUYLX0nLRPXrUgn9SnaZ8gdixkEJB
+	5mfRwoEMlopHb2gmyXilEuSt3K2ElYo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7Fh4oWhpxYf6gDp8+ypvgmOJyH6o3AMY/5a5fCOp5W8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792383816; v=1; x=1792988616;
+ b=EoopDytzBZyCkdjuIvTJsIBxSLsCMtXEHUw3ua8S6L/ejm6mHsDqcwoP+aHjxlWoGl5Z/ycR
+ sLM85E4sendGztrmFulCySA+sdjUD/w9aGEjkujTqkQn6RqoCeoQaMD05b1HjG0mAVYgO/4WYEz
+ eaWAfTjOW6y06g2J2H18MIXQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id a50a931287826443;
+	Mon, 19 Oct 2026 04:23:35 +0000
+X-Mizu-Trace-ID: a50a931287826443
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Dave Chinner <david@fromorbit.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH v4 6/9] mm/vmscan: pass scan_control to mm_vmscan_reclaim_pages
+Date: Mon, 19 Oct 2026 12:23:05 +0800
+Message-Id: <20261019042308.2372396-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261019034426.2354049-1-ridong.chen@linux.dev>
+References: <20261019034426.2354049-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261019011446.834487-1-pasha.tatashin@soleen.com>
-X-Stat-Signature: sgghabxinr15xj4spi3ch4rh53ecrjom
-X-Rspamd-Queue-Id: 421FA100005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1792383315-84981
-X-HE-Meta: U2FsdGVkX1/ixK7lmoN6mv1nLmAk4yEZH7lT5zeMI3N3a/oFqjRal9Rrnt5HoAy8h2VLWGb8va2kM5uGWcv64S/C4AwV3nVyMsD3B5GSzThAak1tiQzNDecjkZBfhotzlIt4FQ1FlpP7Li4wk1wyCfKiihscCknG5CJGw4gBwRQ0Fg4qdFzHfOtY6Vq1IjNeoztUTvStfiNESGeLCMapkPW4t1pJe6hPOmowCbRn6edMCU6XU/9OXOrA/AlBCifk/Fy6eOKncKoFsSzUD2acfDasaro+Rvo24xZkXtr91sZKfHEk6vDav8Hh55+LkLYRPplHCCECG+ElraV/rWMpneNUdJOpGzuX3PyotF9uchUxsbAzYDnCFvqi9oyuapKLWS73mXM7DGfeiXgrii2YgiRW6qJW595zZDag8zugGBEEnx0A5kRXCHgyXTKYKBJeE6z/780zyGcC5AnSnKvz5INPHkN0HpDBYEpbvNrD1GXNDLNi0TMwNdelYtVG6s6Sce/IjmPXqhPX6liICokleikn6fhbM+wBDOMQWCZ6lfmMEH9xZyAbkW+xybuSLmlQ4krLde/uatahqDLcsaMtjI2y2yxynO+ZIjB/A8EzcLSxhHeRlSArf3XNItSOQMkIvnXKYnSwF7D2CFjlDCvSxiwt0aDD382rcvglelrW89EnH786cvHjxL6Q0J/k5CBWYDI8OJlgCIWtxM9nExqKxgFMgedscfn003R4gBqokfTEADwn5DMd3Pd1Fv3QmEFozE25LsHGak4dj+Yjtfp6TBmGWia/S1OCnhza+N8YEzBVAXBS6vOuBG1MV5assNj1zzbm7TZMRXRDndQl1Ln8vKeZnFA6iOA6Mb/OjxmqaYZhOQuAl8MvBoaVgUvVi8ZwivJPCDA8Fqtg/VgYGRtBWg2kt/CrBHAIj6i0/YLNMQjtujyNukPdnc0W4cnR7FCf01K8/blQfEHYrK2dI1I
- e0JqjaWj
- 2hwbRirDM4QKDrdAlIgpBFk/OxAOeXizmGklyyriQ28A32YqGhYH371IaBlsMX3HawbQIrPLf7BG70Xpr1fjwGBK6lnOis6ZylGhCZNe90S7jJ1pMSmBDKLwOacs5cn0ikZjAoRgx/wDFEhIormjBQ0ygDs5BKC6Sep7ORBbs+raqkCRcdZUIRBUfv0KqUDU14Ebnq3QyGlohsA3MPay0y1GaYX0MIrMgX7vdikFYnqaKl3Xvba17LDrsVoTQxvDrAbYLATUcgIKsV1m6ziFuqkDoa9jCuHFY7ovGIHE2NN2ZsP8=
+X-Rspamd-Queue-Id: 1876120003
+X-Stat-Signature: myxiwf8b69makjs3bgn6whwhoge1uxbt
+X-HE-Tag: 1792383818-132704
+X-HE-Meta: U2FsdGVkX1+EmssVSM9XtGhW1zNoXZ2O+peibTb8bifeJjx3al5C8cX0D7y+uOM7zptsXINNSWA95DQv6rJGe6xqziUsLZy82BzOT/VdjwWfAYvrT7HEj8JXMj/i51M1Ed2m+yMmlCPoBvEKUIwRyrIg0mvz3z2kD+vEZKD0Ztdf4WRFHGRL2IL3Y+yCi3ePosQuiqGbHVbleHB/r/HZV/t8NZUiFl8lA12yLVVVpRxf+mzUCMMt6i0O6BuUVKAcuMOqiE7AUPn0+TJjah/LeOzx07Ym9clXQbCIFQY3skDDgvtzPPw+oNV2TFEqVstRKVOWhWBLMAcuOw/7gwEOchhiH4DFXY0QxzEkMbLrtM0z3nuLE14Q8fbP4aiy8ov60EXvbPj/6iewiwcTiqWX9RuwF1f8E7s4EWdrtwZvOuG/pYfne0D6tzru+YlCpzg5emon8AqqwnegsD4jQVGiNxjlr5QoB+fIPIo3wRK4kbS4XDFgSpB+wlfFp3aFSJtMXlSP7tw/DZQ7azaG2o6zKaBzfJIVzL2xRtqL6iuWhm3mjta2sQQ1lT2rNat9ZZC46qIgWk358sPVaO+0D69bvglMuBnrFdau9GoSH1k8Ia+mFRLVIuyI431n8QpcbH8KFit0NQTpH5+kgUrLl9V9tmlnE0nlmB88s/FQdTO6MZM+FNjeJjqwMRKPPcYMczzejO0oHGndRmiJWpgINFuI/gjkCEMRe2Qp0kDWW2dFSP3E8ha1nHj6k8wF05TGbi6a1rIdUBtFg8USNYei8OWvZK4A3jqCOXCDZLUKni51vQ2uGUaGaL0chWL6yF4IFpDwqJjS9GAPCxc/sp0AKcpMgjxjzuWnO2twWWVgPx4B4l/VotDv9fgAsbsuINyWySwYRF92s8gzywz4Xbi7gJ/Gra2yQZYlI7mmmyRK12TQjP3pnOxcCbUGxz4D67B1APhtuGYe5jyLdmDAFjgop9a
+ Yw9ONYLi
+ iheVDFvsO6IfzZxDbIyOGBqUdZ/m3xKfjEx+dl4YfSqb8bExvVpbB5QHZxCbIMvY7n0xafPCAlS0fTrtsJcv9HbtH5bqPKJhwkO8jP4XoxPYgHxrtebLjIxUCN0vfp7uvi5/joxTrwXSYt15xZlyhQSSSbPUcQjc3WwM1mCma2cwgR51bp3wYuI9g8KkXzJzPwNhnpZolrrzCkQCytrfKXx02RuPj12JukGhybjvkTiDIhtuOIFm42SYXZ6LheVu71oGggmug6C9buipIztEtcGS1ob2ONPntHSxMOqKLSn1BahM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,39 +112,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 18, 2026 at 09:14:38PM -0400, Pasha Tatashin wrote:
-> For live update we require a fast CPU online and offline capability.
-> However, sequentially offlining and onlining all application processors
-> on modern high-core-count x86 servers exposes a series of hardware and
-> algorithmic bottlenecks across arch/x86, the scheduler topology builder,
-> deadline bandwidth accounting, and vmstat.
+From: Ridong Chen <chenridong@xiaomi.com>
 
-From: Documentation/process/submitting-patches.rst
+reclaim_folio_list() passes sc.nr_scanned to mm_vmscan_reclaim_pages as
+a bare argument. Pass the enclosing struct scan_control instead and read
+nr_scanned out in TP_fast_assign, consistent with the other reclaim
+tracepoints. nr_reclaimed stays a separate argument: it is the return
+value of shrink_folio_list(), which does not update sc->nr_reclaimed.
 
-"Don't get discouraged - or impatient
-------------------------------------
+No functional change. The tracefs event format (TP_STRUCT__entry and
+TP_printk) is unchanged, so tracefs-based consumers are unaffected.
+BPF programs attached via raw_tp/tp_btf see the new TP_PROTO and need
+to be adjusted; tracepoints are not a stable ABI (see
+Documentation/bpf/bpf_design_QA.rst).
 
-After you have submitted your change, be patient and wait.  Reviewers are
-busy people and may not get to your patch right away.
+Assisted-by: LLM
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+---
+ mm/trace_vmscan.h | 10 +++++-----
+ mm/vmscan.c       |  2 +-
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-Once upon a time, patches used to disappear into the void without comment,
-but the development process works more smoothly than that now.  You should
-receive comments within a week or so; if that does not happen, make sure
-that you have sent your patches to the right place.  Wait for a minimum of
-						     ^^^^^^^^^^^^^^^^^^^^^			
-
-one week before resubmitting or pinging reviewers - possibly longer during
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-busy times like merge windows."
-
-+ the merge window just opened.
-
-So stop the spamming please.
-
+diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
+index b1b329039e14..54168ad45f6e 100644
+--- a/mm/trace_vmscan.h
++++ b/mm/trace_vmscan.h
+@@ -418,11 +418,11 @@ TRACE_EVENT(mm_vmscan_write_folio,
+ 
+ TRACE_EVENT(mm_vmscan_reclaim_pages,
+ 
+-	TP_PROTO(int nid,
+-		unsigned long nr_scanned, unsigned long nr_reclaimed,
+-		struct reclaim_stat *stat),
++	TP_PROTO(int nid, struct scan_control *sc,
++		 unsigned long nr_reclaimed,
++		 struct reclaim_stat *stat),
+ 
+-	TP_ARGS(nid, nr_scanned, nr_reclaimed, stat),
++	TP_ARGS(nid, sc, nr_reclaimed, stat),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(int, nid)
+@@ -440,7 +440,7 @@ TRACE_EVENT(mm_vmscan_reclaim_pages,
+ 
+ 	TP_fast_assign(
+ 		__entry->nid = nid;
+-		__entry->nr_scanned = nr_scanned;
++		__entry->nr_scanned = sc->nr_scanned;
+ 		__entry->nr_reclaimed = nr_reclaimed;
+ 		__entry->nr_dirty = stat->nr_dirty;
+ 		__entry->nr_writeback = stat->nr_writeback;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 5d5eee757c61..4bb00371a67f 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2178,7 +2178,7 @@ static unsigned int reclaim_folio_list(struct list_head *folio_list,
+ 		list_del(&folio->lru);
+ 		folio_putback_lru(folio);
+ 	}
+-	trace_mm_vmscan_reclaim_pages(pgdat->node_id, sc.nr_scanned, nr_reclaimed, &stat);
++	trace_mm_vmscan_reclaim_pages(pgdat->node_id, &sc, nr_reclaimed, &stat);
+ 
+ 	return nr_reclaimed;
+ }
 -- 
-Regards/Gruss,
-    Boris.
+2.34.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
