@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DC0ECCA490
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE217CCF2D4
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:15:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F7316B00BD; Sun, 18 Oct 2026 21:14:55 -0400 (EDT)
+	id CC1086B00C0; Sun, 18 Oct 2026 21:14:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A8456B00BE; Sun, 18 Oct 2026 21:14:55 -0400 (EDT)
+	id C49D76B00C2; Sun, 18 Oct 2026 21:14:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 397B06B00BF; Sun, 18 Oct 2026 21:14:55 -0400 (EDT)
+	id B12296B00C3; Sun, 18 Oct 2026 21:14:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C1BA6B00BD
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:14:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 98E501C3CF8
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:14:54 +0000 (UTC)
-X-FDA: 85337606508.15.A13D774
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EC48F1C0005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:14:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=SwAzCgwI;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792372493;
-	b=krJnZNyjI9jU+TP/Gaho/F4XK7Hhat4FVqzEoi1gZgnEcxKNaWkWq6VQshRBBU+ziGIu29
-	rhB7k12YOeLhQ+W7yXmCjQGDDk+BeZdaETkORfgfvNy0moKQjkYhA1APYkHZBmdVI1/zNw
-	DN2znzlwI5xOxon/3n+Fd3psg7yHXhM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=SwAzCgwI;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1766B00C0
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:14:58 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2EF5B1A061A
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:14:58 +0000 (UTC)
+X-FDA: 85337606676.27.792FEB0
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5BEAE180005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:14:56 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=S4jWN9HP;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792372493;
+	s=arc-20220608; t=1792372496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=J29y68RABBwtPItFwE/Tw/yYInAbTL5GAQo5LD76s4c=;
-	b=6froE0nkLSymzMvHqHBZ8LO5esxQ/R1QwX+vPuJ8Fw5HhwYHzmb4eRR11hKdCrb4BzD/4L
-	hXEnegfhpJFyWVxbCZ5LKaDX+wI9+EiG6//vH5SIXbhOs0Klj5U+xXMl+adNgm6iwddZJ0
-	sC8UxjfWkRH7i48WrXaja4zEdf5jG+Y=
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5c9e7731b34so1238216e0c.2
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:14:52 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=r5Uh0UovwmV8EFz8GLwox5sAAEwyuEzq/FgIh/SpVjc=;
+	b=5UprDP3nnUkjdvclKhhxELEH/8Ikd3Ce91Hp0bwejg+BmeXUs7TGeDUfQXK/v3RELuKeyF
+	kUcfUsOarRVBuHB0g9oDgjossSg+LwwgFu5dHQflIhbyHdmryxOoqqm2hzWUOOLZ04mNZ9
+	jQMxrPQmsLoahLd3W7N1vrbZ8CbOo44=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792372496;
+	b=hZ66wFx9Sr16Uhqa6lZ5/M7kx6/vYcEM0ThlZocdSR9PmrsXabVyZV4Df5Zs0s7R1R1/JY
+	YGJdcO7vKGQNLZHUc4h0OFuUnTnENpe0s0zyCKd4iCVLQni6Pj24ko0j69vIN+5h7yN7t3
+	08NpARN75rfDBHIVmctQTohb1rBYIWo=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=S4jWN9HP;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5eabf243d05so321376e0c.2
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:14:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792372492; x=1792977292; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=J29y68RABBwtPItFwE/Tw/yYInAbTL5GAQo5LD76s4c=;
-        b=SwAzCgwIJOCUTTG/rLbZZmNe+FTZOVa/xix1l1c95FPk/6Z75Usa6pXCpnFx2Nc6Rl
-         ChVH2ayFHSe0mgai16Ijie5UqNyYVA/H+z0VGLAgBtUUQOoo6BHNV6Msv0ak00ZvlqDm
-         h/IkpypbSz9yyumYdUM/MU+F8FKT0weX0oOROE1/AGS8vQIASvek7dAy00QeCmh60psm
-         6zRl1EdPHTmRedijPWMkF85tkbaQO5BqeI08pjOvxw+PNUNUyup24cQvM5uFc/5qc5Rf
-         RPfZCfQ7Vm1fmvIUa4VFUTjKKYwJXItpjip+lGqyn3dtCWVLgnNnVgmqAZkMs0qb/lXR
-         p7bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792372492; x=1792977292;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1792372495; x=1792977295; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=J29y68RABBwtPItFwE/Tw/yYInAbTL5GAQo5LD76s4c=;
-        b=rNZ3r52BdPJ5o9tVK8bY97DS8XMdtgxVTcD/Wu/wgdg9J/k5/khu4rB0L+XQEQRSTP
-         arRayE9RlUSRfCa0pwVVRZsjUYg12VJc88kItWXOmDwXgRDZfFqRE+r5LBC1amaAhcYE
-         I6nAWKry51uwUDV7sFdH+i/p2/CWEU5a4P+JOyPpMXGCMymS2vQmGTcY6t4PzeXqHbM0
-         lkE+eu9ChrsWGoxVnkozeutDbGKJUfBweumJPXLMkNFNVklgQJ2o8ZPz6LI2xkMFYMMu
-         4VaZy0umuF0j2NZXQR0zT1kQ6DeJaVDk/EdO0Jq9qObfWv2jiIUMGYrEkshRfCYcVHOf
-         oZMw==
-X-Forwarded-Encrypted: i=1; AKwUvBxc4Yh25W9XP9c7H7sXto1CjsOg/HZC8ZvZy7kcqtsAJ1Jear5fkQlLJTLi56Hnds1pI8N/PZcnsw==@kvack.org
-X-Gm-Message-State: AFq9FYIJM9KgFYMpCv2vLxz05pBVnuKvoSxbFTJBi1+Nts/x3F26eAEZ
-	W4pUqlYkzqC+YLUhus8yVrITZJN2uNpwaYmPrB5M5051B1k/ixVG1mSRe4LM689M71s=
-X-Gm-Gg: AYBFou3X2EfwQge02UWuUkTtAgZJQtuRQMurSotbkbMczgH0+pnb+4CpTLFvSL4nqEW
-	9OD72NCjjKluzZJ6BZyJSckNJKglBZNAVJt+cR97skgPR4CpoU7PbPY3eams/r+LjcgfrTx6LvG
-	vVn1GKx6cMOJ02N7x9WUWlT8OkYhs9L95z5XgyPK3O8bdbz453QBD4txUq+9RF4SMCTjuP32kig
-	zVhYnzB1t05a17/08jzj5o7Hbtf+c9f/a6bDZzEPx9qfTRgEjP4rQvO2U43bbwtE895+Rn6qpJ+
-	f7GmIou+uiCIwAUpnU3wuxA9bP/UCeFQeR9OBwNJW1hjMq1o+Gdm7ypFwcPo2pYqt3JOo1PPx4+
-	XAJP45f441+vdP0BPU44Mk2xqlMUpv69XLvTtYh18ki18qzsiLpKDNM6txYmuNeC+mLvHi/QmWQ
-	rwkghtiDmcOGK36z55SiWxszCy5FJTrAgoYFpT944baiWD9PL/4Udh9pneqEhCDRSt7ah6z2sNv
-	ObarPyx+ulh0KinX7P3I10feH6AgvqnXpGm37mmr5lsJr81qOrGG9EfLGCXxbWfapBZg69C2wfF
-	id1mBbqpKjpGxTfnXTk=
-X-Received: by 2002:a05:6122:6d10:b0:5cd:575f:9396 with SMTP id 71dfb90a1353d-5eaaa51809bmr2046551e0c.12.1792372491910;
-        Sun, 18 Oct 2026 18:14:51 -0700 (PDT)
+        bh=r5Uh0UovwmV8EFz8GLwox5sAAEwyuEzq/FgIh/SpVjc=;
+        b=S4jWN9HPmDE9xwQjU3giqk97GtNrAFqgc6iF3Se11IuUxboEok3NNlBPT5sqC/eMPY
+         Ek0KkgWGhRpn63ZGxRq3qwI2QiMLOy8CJxEpJjQoMHhSbyp4G9Q6hhASbkLjtJGvegXk
+         D4Sc53JAmBo+fzB0riBi2Ghw8E/MwgvB67/w815/27iOPj75gZDne3nzh7GA/yfcJYF4
+         +4GQfwPVHSfcoqmqSwBPLvX4KRFmbKvD3nHoiGTqwqI/jbDseEqpPc2gEhqwA8iG7Jiw
+         CY/FU8svbb7Dd6gn91KISzNO7raqtc+CY9knleuLzvGWOTIZRYH3LJE+c81zJkVWl1I0
+         0kqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792372495; x=1792977295;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=r5Uh0UovwmV8EFz8GLwox5sAAEwyuEzq/FgIh/SpVjc=;
+        b=Kw5+lC3kmN75+BW85s4OMAbc4XL8obXt1KjZuMXLMGnGXPXiBdu6Za3OvcldidAbCw
+         kCUEl4WSJZFDhi0HQcgajr07yu7UaQFCh5eGU97uahdKOCZqCFObweXHH2PLNgkf2Vzd
+         0VmXHT1oxqRxaYkEXAeSd1sZKo66X0Z5GtnRPDrlBrc+nnWQXuWrORjSwpSX0+LrZJub
+         eFpaa+BIVZapjmyLuHB78kQOI4Ujuj6CNB/ZXVSI2c8nK/59z4QE/M0KhzTcfUu0qeNL
+         NgcuMUnzmUyZ8xnlmJV3DpxCvX1QtUtsQuQvxDrNSQqdFrkfpp0ipDmmZQ3Mkl4EaVgY
+         OzwA==
+X-Forwarded-Encrypted: i=1; AKwUvBxJ6+/ilN1itXvWGg7HA5LLTtJnwypwQ/FmuPbhSt3upMHDC489GZYYepIQ8BAUyq6Qtyngtc3nPw==@kvack.org
+X-Gm-Message-State: AFq9FYJlq7eFWLPdXQxNFMegXph4sBAoXvM7QzG1gzyJQXrdv0s4Ihtd
+	5RNwJbvE1VovQ5FPhEtFmhk1uz1x308XXPTuLraFv/k/OkQ23bvBxRquwfkdzaXjQiw=
+X-Gm-Gg: AYBFou3XUJxWE2uHSLbFqdVH5FQ2EK7wUTw9ZDp/lfXbOarHDiLri7QL72Qq71zZztY
+	Qa147teJpUVi3FzDfvmDq1pwg0Tr/UszUtgcdAwaGlK4Ps6UlfxLStFErecitLHTuK2HiMqY2pJ
+	Y1AA/uBYE7VWRpRM62L7YQ5mVQNbUY8SUuKmThZGnPVl7shysKkux7HD4FhzD5ngBaE43ZuMBBU
+	I3Nk5Qf7ennYlAx64FQvXY63aSc3OHMySirMq0a0qfSRB8foTSqYbyOMZy2zKxXK8vkVwkJvJsJ
+	ANIVuvMCYeohyBpEkOp6YuGOVPqHh4YC8WIyhER3ciDhr1mCUaJvNtvWaWYjggqZ8Khe8gSHehj
+	2dOa+fcpLb2H3GJeyoG2V0867ZMIOUykn+3iM0VitMYb+48yizHrZ6fsdv9+rJXpTazU+FA0Jug
+	Y6dJ/HzCgQlKLV0PiLWNqjCpqKw4bFHueThqPPWP0nanzRZ+QZervwsTM/1wBagoWhkFI9b5zsL
+	LKTw//vbSqldCtFJMQlUhzoZGKblloP2OBCfvfP66K125Mv6VvtPIzR75k5lUl74fTcjLWf8TvW
+	tXYIJ7ErdcehRkCxmNo=
+X-Received: by 2002:a05:6122:10e7:b0:5e7:e3f9:1322 with SMTP id 71dfb90a1353d-5eaaa4183dbmr1605940e0c.9.1792372495503;
+        Sun, 18 Oct 2026 18:14:55 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b474b2asm8039142e0c.4.2026.10.18.18.14.49
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b474b2asm8039142e0c.4.2026.10.18.18.14.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 18:14:50 -0700 (PDT)
+        Sun, 18 Oct 2026 18:14:54 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: kees@kernel.org,
 	rppt@kernel.org,
@@ -138,21 +140,23 @@ To: kees@kernel.org,
 	blum@kernel.org,
 	longman@redhat.com,
 	bsegall@google.com
-Subject: [PATCH v2 0/8] x86, sched, mm: Speed up CPU hotplug on large systems
-Date: Sun, 18 Oct 2026 21:14:38 -0400
-Message-ID: <20261019011446.834487-1-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 2/8] x86/smp: Remove unnecessary WBINVD from mwait_play_dead()
+Date: Sun, 18 Oct 2026 21:14:40 -0400
+Message-ID: <20261019011446.834487-3-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
+In-Reply-To: <20261019011446.834487-1-pasha.tatashin@soleen.com>
+References: <20261019011446.834487-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Stat-Signature: 4sut5uenf5qjiqyokajrcwmagxjqg1r5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EC48F1C0005
-X-Stat-Signature: 6apx856ehp3kkmw7shficawftqunmsx4
-X-HE-Tag: 1792372492-445159
-X-HE-Meta: U2FsdGVkX18FqXJfOEQaB8T3AC2jZ+ejdg6jgZWiC6KbC7kDBhFK/FH2fzYoXu1CnyTp3ntLXtUmvNAZMNFGfq7cQlooUcr2DKO6LXUKXA2vns2qVvsHr32ZaipQgIEv9oIaVm+Ocvs2N5QWfBNDWq0mN4O4u3YyYKAxmuE1bsf2/9YV9JpWDAYj0trNOamUm7DsWwq4WQb5SrvIH0yFC9bpLS9IHbZaJkeqeBw97nqXnIQ+hfbBkZGA8v+vpkuzU3fbi1SriUJ2zfsp1+TujxLcxX0LUo9p/4IINqBcGydrL+izmRg4sGctxKy5aUZpE4uTweR8aIYDqdxdXEsjEdnUlBeuEZZntUr+FY20RqES9SXUtg7/1jRob1wXNwwq0pbu0A0Y6oiqQ4oouzQ9JeAnLwdMa/oIBUvH5XC1rkISpiAtqBu+25tWu+WISQIAcWJXIkMbyXbpfAa7RHa8iOHwDgmlLvyvJkQ6ZgJBIqmjfHTiWkYpsRXfu/boMWVZ+8CCLGHuV+cy95g5tUEOF+rRAp734nk1J2MUAaryBthiXVgeH+7yoZgNHceq5I+dcUEsvfpQ/Vy+ep6+n9ZKxlL3F7PgCvbHv6lDRDv7hNvZzzhCSL1GrtVyU7zjRjjLWa0zHPFbZKqCmI9H2flo476bVspQeJALTUVZ4jGuPZvlqrbzlIt4oWp6NU7AFqdzuYwkzAX8gtJXcbARY/q3OtWqzoxk+ryNUXfgfSjL6nCB9jx5GBCskR5zzwd7aPnYJ5k0QRdAGLytsLIpaBU20KVl6n+i2O/qaQTaGApGbwSPa8kV7K3F3J5U/Fn6a85rA6nF/wC9pYkYErUcfQogJOQ4A987LtNvrzmpp34pXX5DzkQ5e5w3v8U/NuoGvvoVqRSqJOM2tBeisvr/AyDvLj9sbNo0tzuptB7TatC0DYv/B+dR2yDtChC8ANv2GzyyiYVm2pjG5YcPNdJSna8
- L+To+p8l
- 7dsVRTbfc6AFeHUanxDiHgIbDxK4vGijWjXbh5lj1jsI+mX3TyC6cirP7cveczvFadqDN9wk0MKeE4OczbPPI2pEcBRi7P5tYyV8zPm1MLASfWRGRSP/pILj801IJlkt1Iqboa+p5omSHFec/8w3CSMvlYpGaHyEE6xi5SNOx4AcrT85XKYNeGNtd4JKjA8GGxF1WpahC89zdLlYX00lGx+fixifs3DEkdtKhLiJlJ+Fnj4zKCvp1HeOhwrWKJ/JdPn0UpCt1QJY1ixIWMa+fjzC/Wgakkq+CiCX6LkyK5sE3xlM2BdxvDuOZqnlA3Z9yDMFs9ek3L3tnG64rkseHD/HhltJ3Gd7GbMk6Wgybnp+hNkI=
+X-Rspamd-Queue-Id: 5BEAE180005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792372496-877000
+X-HE-Meta: U2FsdGVkX18ZA4RgcA1wBi72fruzLq4cOvUjT7cVHb2Ulnf2zl6FFJwepWFZGe9XaU374zgg4IKcLfLrF/Rb1bLc4uY/0aVT0wCp6m/s7X31G87uIgG8LeMF7qyIbh93mDrwD2J7xb27cO8ITbzpxldd4dKo1nVU3o5QensDU/L9zFHDIbQs9AK0eHwxgucvEByb3h7lZfiPKUOTsfcn1GPQXlx7yLTWmY+eyjurgCKP44xCoxwRXNZ4FyvIH4MKmoxcLONP2noNrqAZxF4IZhNTSeHSyadSc4u0kRViN8dz1PDxu/ytgfuMPdzNabucGmf4PyOyw2mYVEX/QFMIonr+OlRdJqBG8tAuBH4gcZwSP4dFE8svCZR+7pR/aYbPyyA4uon3CoJsPt3CFOqvcB0CkAf0gM2IHMxRftapW2OPi+cN2jiWPJUkhH2q9Lc27DXdP+ZLNLvgibX38rnWGmb33noG07cpeDiKlsS0c9qGv+ZLwFkUR52fZ76sJYy/MmZVAWtQKzYApZU5+a/Q6MKASXen1dq+Up/2D69y3UO68DhOD9gZKoiZf2usMkhgFssANBa0xOaqu3il6BKw2fvg95AbL1uEaxwSyzQ6nO/W6Jym0T1hmwm0MFUwr6CX3O3DIdSpM+qNvGf9nXhOUIcAAXe66P5+imzYiAiH4GQYColh795jjh4t/58f5bTHt3wFRgE1UgWXFOEYqXEfO4MfK8JbQ3gYIRVejAhhYr0Fz3UYXbrpovndwpdyMO2ijwjSNCCk20vYub11YVa6Z5tqzNvYCxLPL7DiGUQqhYLjfjb5Zct6oYCka3hdOy/CkNXxXxda7YPiiJcg59+Rr9+VUPPbT2b64ZHxOpluhcZI4RrgXTiVRykQcrGSZVmNMSdAlWXXvykDUNwvZnZrmH2vyoU6OE4uqFP7z2WoegxepD1zy/wi40Fes1559GCCm/G7e9/zFP8LhcGwC1f
+ IxGqEGqR
+ dfKMtTdwW5t8q3xzCvn6ZVpxEVngilWXjvndTsxr/v6hnpXf6XKapdtCqFZiHu73yxZELWarvkRsbufDyTRFVje7x19kPUQUV9/zdjIdx3ukAlS38Bvksd6nwFdvrkdEJ5EJnFBeAR/k1mSKneVOn34xPqLVjGBNQ+K983v1oynpVeZHVZ/aPbzBZLiAHTSpUYARKysSukEFjWZYIvZnafaXlFjGEcAa9ic6ROxEWxG3nUrXU4oBSwvnOlZWpcCH4UlG5s2YiMnptZUwtTU5VYNqogGv5pVsAQXjLDlepIBAGDt5xKjMOD5Wx01I1qX6qn0fTkUq3p+7x2HZy97jD6QpMT8MaXXyy+UGJJDJ/PvaOjqgXFPnei9leadDjnwoQuKfp23XtvXKxq/pE+CLLtJG6w0RNE544fCah
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,200 +164,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For live update we require a fast CPU online and offline capability.
-However, sequentially offlining and onlining all application processors
-on modern high-core-count x86 servers exposes a series of hardware and
-algorithmic bottlenecks across arch/x86, the scheduler topology builder,
-deadline bandwidth accounting, and vmstat.
+When a logical CPU goes offline via mwait_play_dead(), it executes
+WBINVD before entering the MWAIT loop. On processors with large shared
+last-level caches (such as Intel Xeon 6985P-C with 504 MB L3 per
+socket), each WBINVD takes ~85-115 ms, flushes and invalidates the
+entire socket's shared caches, and stalls the physical core (including
+any online SMT sibling on that core) for the duration of the flush.
 
-This series addresses these bottlenecks, reducing the time to offline and
-online all AP CPUs by 95.2% (21.0x faster) on a 2-socket, 480-CPU Intel
-Xeon 6985P-C and by 59.8% (2.5x faster) on a 2-socket, 512-CPU AMD EPYC
-9B45.
+mwait_play_dead() places the logical processor into an architectural
+MWAIT C-state—the same hardware C-states entered by intel_idle during
+normal idle without executing WBINVD—where C-states deeper than C1/C1E
+flush core-private L1/L2 caches to the coherent LLC on C-state entry
+and maintain cache coherency while the package remains powered.
 
-Benchmark workload (mean of 10 runs per step):
+As long as at least one CPU sharing the same LLC on the package remains
+online, system-wide cache flushes (wbinvd_on_all_cpus()), system sleep,
+and kexec will still flush that shared LLC via the online CPU(s).
+However, when the last online CPU in an LLC goes offline, no online CPU
+remains to service wbinvd_on_all_cpus() or flush the package before
+S3/S4 power removal. Similarly, if the target MWAIT state is C1/C1E
+(which does not flush core-private caches) or cache_state_incoherent is
+set (e.g., SME), the CPU must flush its caches before entering MWAIT.
 
-  # echo 1 > /sys/kernel/rcu_expedited
-  # for i in {1..N}; do echo 0 > /sys/devices/system/cpu/cpu$i/online; done
-  # for i in {1..N}; do echo 1 > /sys/devices/system/cpu/cpu$i/online; done
-  # echo 0 > /sys/kernel/rcu_expedited
+Skip WBINVD in mwait_play_dead() when entering a C-state deeper than
+C1/C1E while another CPU sharing the same package and LLC remains
+online (unless cache_state_incoherent is set).
 
-  2-socket, 480-CPU Intel Xeon 6985P-C (N=479):
-    Offline:  40.40 s ->  3.09 s  (-92.4%, 13.1x faster)
-    Online:   65.83 s ->  1.98 s  (-97.0%, 33.2x faster)
-    Total:   106.23 s ->  5.07 s  (-95.2%, 21.0x faster)
+2-socket, 480-CPU Intel Xeon 6985P-C (N=479, mean of 10 runs):
+  Offline:  40.46 s -> 11.42 s (-71.8%)
+  Online:   11.14 s -> 11.08 s (-0.5%)
+  Total:    51.60 s -> 22.50 s (-56.4%)
 
-  2-socket, 512-CPU AMD EPYC 9B45 (N=511):
-    Offline:   4.53 s ->  2.30 s  (-49.2%,  2.0x faster)
-    Online:    3.88 s ->  1.08 s  (-72.2%,  3.6x faster)
-    Total:     8.41 s ->  3.38 s  (-59.8%,  2.5x faster)
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ arch/x86/kernel/smpboot.c | 46 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 39 insertions(+), 7 deletions(-)
 
-  (On AMD EPYC 9B45, each 8-core CCD has a 32 MB L3 where WBINVD takes
-   < 0.5 ms, offline uses acpi_idle rather than mwait_play_dead(), and
-   Intel CMCI is unused, so Patches 1-3 do not affect AMD, which enters
-   Patch 4 at 4.53 s offline / 3.92 s online / 8.45 s total. Without
-   rcu_expedited=1, final 10-run mean total time with all 8 patches
-   applied is 12.04 s on Intel and 15.99 s on AMD.)
-
-1. x86 WBINVD, CMCI rediscovery, and MTRR rendezvous (Patches 1-4):
-
-   On processors with large shared last-level caches (such as the 504 MB
-   L3 per socket on Xeon 6985P-C), CPU hotplug is initially dominated by
-   full coherence-domain cache flushes (WBINVD), each taking ~85-115 ms
-   per CPU while stalling active cores:
-
-   - Patch 1 removes the obsolete WBINVD from trampoline_start, which was
-     added in the 1990s for Sequent NUMA-Q hardware (removed in commit
-     b5660ba76b41 ("x86, platforms: Remove NUMAQ")). Per the Intel SDM
-     and AMD APM, INIT preserves cache contents and leaves CR0.CD and
-     CR0.NW unchanged. Removing it cuts 479-CPU online time on Intel from
-     65.83 s to 11.14 s (-83.1%) and total time from 106.23 s to 51.60 s
-     (-51.4%).
-
-   - Patch 2 skips the redundant WBINVD before MWAIT in mwait_play_dead()
-     during runtime CPU offline when entering a C-state deeper than
-     C1/C1E/C2 while another CPU sharing the same package and LLC remains
-     online (unless cache_state_incoherent is set). Architectural MWAIT
-     C-states deeper than C1/C1E/C2 flush core-private L1/L2 caches to the
-     LLC on C-state entry and maintain cache coherency while the package
-     remains powered, just like normal idle in intel_idle. Skipping it
-     except on the last online CPU of an LLC cuts 479-CPU offline time on
-     Intel from 40.46 s to 11.42 s (-71.8%) and total time from 51.60 s to
-     22.50 s (-56.4%).
-
-   - Patch 3 bounds cmci_rediscover() on CPU teardown. Currently,
-     cmci_rediscover() broadcasts an IPI via on_each_cpu() to all online
-     CPUs, serializing them on cmci_discover_lock while reading up to 32
-     MCA MSRs. Because any disabled MCA bank is shared at most with an
-     SMT sibling, L2 cluster peer, or die/package peer, probing a single
-     online topology peer via smp_call_function_single() (or returning
-     immediately when no shared banks were orphaned) reduces 479-CPU
-     offline time on Intel from 11.42 s to 9.63 s (-15.7%) and total time
-     from 22.50 s to 20.74 s (-7.8%).
-
-   - Patch 4 skips the stop_machine_from_inactive_cpu() all-CPU
-     rendezvous (and the AP's cache disable/flush and MTRR reprogramming
-     in cache_cpu_init()) in cache_ap_online() when the AP's hardware
-     MTRR MSRs already match mtrr_state (which cache_aps_init() already
-     programmed during initial boot and warm reset preserves). This cuts
-     online time on Intel from 11.11 s to 8.69 s (-21.8%; total 20.74 s
-     -> 18.54 s, -10.6%) and on AMD from 3.92 s to 3.15 s (-19.6%; total
-     8.45 s -> 7.66 s, -9.3%).
-
-2. Scheduler domains, deadline accounting, and vmstat (Patches 5-8):
-
-   Once the x86 hardware bottlenecks are removed, CPU hotplug on both
-   Intel and AMD is dominated by O(N^2) and O(N^3) work inside
-   partition_sched_domains_locked(), build_sched_domains(), and
-   refresh_zone_stat_thresholds():
-
-   - Patch 5 avoids redundant O(N^3) group weight, SMT core-mask, and
-     asym_prefer_cpu recomputations in init_sched_groups_capacity() by
-     caching those fields on struct sched_group_capacity, reuses
-     already-initialized sgc instances in init_overlap_sched_group(), and
-     allocates sdd->sg, sdd->sgc, and d->sds lazily on demand. This cuts
-     total hotplug time on Intel from 18.54 s to 9.20 s (-50.4%) and on
-     AMD from 7.66 s to 5.29 s (-30.9%).
-
-   - Patch 6 eliminates three O(N^2) dl_server bandwidth walks per
-     hotplug step. Because fair_server is enabled on every runqueue by
-     default, rq_attach_root() performs O(N^2) remote extra_bw updates
-     when attaching def_root_domain during teardown and again when
-     attaching the new root_domain during build, followed by a nested
-     O(N^2) loop in dl_clear_root_domain(). Dropping the redundant
-     __dl_server_attach_root() calls in rq_attach_root() and converting
-     dl_clear_root_domain() to two linear O(N) passes cuts
-     dl_clear_root_domain() at ~500 CPUs from 1.8-5.5 ms to < 65 us,
-     reducing total hotplug time by 30.5% on Intel (9.20 s -> 6.39 s)
-     and 18.7% on AMD (5.29 s -> 4.30 s).
-
-   - Patch 7 eliminates per-CPU bitmap scans over already-covered groups
-     in build_sched_groups(), reuses temporary per-CPU domain pointer
-     arrays across rebuilds instead of calling alloc_percpu() and
-     free_percpu() on every hotplug step, reuses precomputed domain/child
-     span weights, and hoists LLC size calculations. This cuts total
-     hotplug time by 15.0% on Intel (6.39 s -> 5.43 s) and 19.5% on AMD
-     (4.30 s -> 3.46 s).
-
-   - Patch 8 avoids unconditionally zeroing and rewriting every online
-     CPU's per-CPU stat_threshold in refresh_zone_stat_thresholds() on
-     every hotplug step (since calculate_normal_threshold() only changes
-     at powers of two and is clamped once num_online_cpus() >= 64),
-     reducing refresh_zone_stat_thresholds() by ~88-91% on Intel and ~51%
-     on AMD, and bringing total hotplug time down to 5.07 s on Intel
-     (-6.6%) and 3.38 s on AMD (-2.3%).
-
-Changelog:
-v2:
-- Rebased onto tip/master.
-- Patch 2:
-  - In addition to cpuhp_tasks_frozen, also flush in mwait_play_dead()
-    when the target MWAIT state is C1/C1E/C2, when no online CPU remains
-    in the same package and LLC, or when cache_state_incoherent is set, so
-    shallow C-states and packages offlined at runtime do not retain dirty
-    cache lines across wbinvd_on_all_cpus(), subsequent S3/S4 sleep, or
-    kexec.
-- Patch 5 (Suggested by K Prateek Nayak):
-  - Key sdd->sgc lookup in init_overlap_sched_group() by group_balance_cpu
-    via a new find_group_balance_cpu() helper instead of
-    cpumask_first(sg_span) with a child-span equality check, allowing
-    overlap groups to reuse sched_group_capacity even when the group span
-    differs from the child domain span.
-  - Pass group_balance_cpu into build_balance_mask() and iterate via
-    for_each_cpu_from().
-  - Use atomic_set(&sgc->ref, 1) directly on the init_overlap_sched_group()
-    allocation slow path.
-- Patch 6:
-  - Wire !CONFIG_CPUSETS cpuset_lock(), cpuset_unlock(), and
-    lockdep_assert_cpuset_lock_held() to sched_domains_mutex so concurrent
-    SCHED_DEADLINE sched_setattr() calls are serialized against
-    dl_rebuild_rd_accounting().
-  - Skip TASK_DEAD tasks on inactive CPUs in dl_add_task_root_domain() so
-    their pending 0-lag bandwidth is not leaked on the active root domain
-    when inactive_task_timer() fires on def_root_domain.
-  - Combine the two writes to rq->dl.extra_bw in dl_clear_root_domain()
-    into a single WRITE_ONCE() assignment.
-- Patch 7 (Suggested by Tim Chen):
-  - Add lockdep_assert_cpus_held() to __sdt_free_percpu() and clarify in
-    the commit log that sched_init_numa() / sched_reset_numa() are
-    serialized against domain rebuilds by the CPU hotplug lock.
-  - Add a comment and WARN_ON_ONCE() checks in __sdt_alloc() and
-    __sds_alloc() verifying that reused per-CPU pointer slots in cpu_map
-    are NULL at the start of a domain build.
-Link: https://lore.kernel.org/all/20261015153331.1872641-1-pasha.tatashin@soleen.com/ # v1
-
-Pasha Tatashin (8):
-  x86/realmode: Remove unnecessary WBINVD from AP startup trampoline
-  x86/smp: Remove unnecessary WBINVD from mwait_play_dead()
-  x86/mce/intel: Bound cmci_rediscover() to a single topology peer
-  x86/cacheinfo, mtrr: Skip stop_machine rendezvous in cache_ap_online()
-    when MTRRs match
-  sched/topology: Avoid redundant O(N^3) group capacity walks and unused
-    allocations in build_sched_domains()
-  sched/deadline, topology: Avoid O(N^2) dl_server bandwidth walks
-    during root_domain rebuilds
-  sched/topology: Avoid redundant percpu allocations and bitmap walks in
-    build_sched_domains()
-  mm/vmstat: Avoid redundant per-CPU stat_threshold writes in
-    refresh_zone_stat_thresholds()
-
- arch/x86/include/asm/mtrr.h          |   2 +
- arch/x86/kernel/cpu/cacheinfo.c      |   7 +
- arch/x86/kernel/cpu/mce/intel.c      |  57 +++-
- arch/x86/kernel/cpu/mtrr/generic.c   |  49 ++++
- arch/x86/kernel/smpboot.c            |  46 +++-
- arch/x86/realmode/rm/trampoline_32.S |   2 -
- arch/x86/realmode/rm/trampoline_64.S |   1 -
- include/linux/cpuset.h               |  23 +-
- include/linux/sched/deadline.h       |   1 -
- kernel/sched/deadline.c              |  93 ++++---
- kernel/sched/sched.h                 |  10 +-
- kernel/sched/topology.c              | 394 ++++++++++++++++++---------
- mm/vmstat.c                          |  58 ++--
- 13 files changed, 524 insertions(+), 219 deletions(-)
-
-
-base-commit: aacd2a9507b9fad8eb505c0e493b88779fe35d74
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index ba01a9e919b7..0dccd2f927bb 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1414,10 +1414,28 @@ void play_dead_common(void)
+ 	local_irq_disable();
+ }
+ 
+-/*
+- * We need to flush the caches before going to sleep, lest we have
+- * dirty data in our caches when we come back up.
+- */
++static bool mwait_play_dead_needs_wbinvd(unsigned int eax_hint)
++{
++	unsigned int cpu = smp_processor_id();
++	u32 pkg_id = topology_physical_package_id(cpu);
++	u32 llc_id = per_cpu_llc_id(cpu);
++	unsigned int i;
++
++	if (cpuhp_tasks_frozen || MWAIT_HINT2CSTATE(eax_hint) < 2 ||
++	    llc_id == BAD_APICID || this_cpu_read(cache_state_incoherent)) {
++		return true;
++	}
++
++	for_each_online_cpu(i) {
++		if (topology_physical_package_id(i) == pkg_id &&
++		    per_cpu_llc_id(i) == llc_id) {
++			return false;
++		}
++	}
++
++	return true;
++}
++
+ void __noreturn mwait_play_dead(unsigned int eax_hint)
+ {
+ 	struct mwait_cpu_dead *md = this_cpu_ptr(&mwait_cpu_dead);
+@@ -1426,15 +1444,29 @@ void __noreturn mwait_play_dead(unsigned int eax_hint)
+ 	md->status = CPUDEAD_MWAIT_WAIT;
+ 	md->control = CPUDEAD_MWAIT_WAIT;
+ 
+-	wbinvd();
++	/*
++	 * Entering MWAIT C-states deeper than C1/C1E/C2 writes back and
++	 * invalidates core-private L1/L2 caches into the shared LLC before
++	 * power-gating the core. While the CPU is still in C0 prior to MWAIT,
++	 * its L1/L2 caches remain coherent and snoop external cache flushes,
++	 * and once in MWAIT its L1/L2 caches are empty and all dirty lines
++	 * reside in the shared LLC. Thus, as long as at least one CPU sharing
++	 * this LLC remains online, any concurrent or subsequent
++	 * wbinvd_on_all_cpus(), system sleep, or kexec will flush the shared
++	 * LLC to memory.
++	 *
++	 * Only flush here during system sleep (cpuhp_tasks_frozen), when
++	 * entering C1/C1E/C2, when the last online CPU in the LLC goes
++	 * offline, or if the CPU's cache state is marked incoherent (e.g. SME).
++	 */
++	if (mwait_play_dead_needs_wbinvd(eax_hint))
++		wbinvd();
+ 
+ 	while (1) {
+ 		/*
+ 		 * The CLFLUSH is a workaround for erratum AAI65 for
+ 		 * the Xeon 7400 series.  It's not clear it is actually
+ 		 * needed, but it should be harmless in either case.
+-		 * The WBINVD is insufficient due to the spurious-wakeup
+-		 * case where we return around the loop.
+ 		 */
+ 		mb();
+ 		clflush(md);
 -- 
 2.56.0.176.g3575e65682-goog
 
