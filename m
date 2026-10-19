@@ -4,130 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA5B9CCF2D4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 04:28:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27A02CCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 04:35:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EA066B00B5; Mon, 19 Oct 2026 00:28:27 -0400 (EDT)
+	id 3C80F6B0119; Mon, 19 Oct 2026 00:35:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B226B00B6; Mon, 19 Oct 2026 00:28:27 -0400 (EDT)
+	id 378826B011A; Mon, 19 Oct 2026 00:35:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 765006B00B8; Mon, 19 Oct 2026 00:28:27 -0400 (EDT)
+	id 2909F6B011B; Mon, 19 Oct 2026 00:35:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CAB66B00B5
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:28:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2306160683
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:28:26 +0000 (UTC)
-X-FDA: 85338094212.04.726F63D
-Received: from mail-yx2-f1.google.com (mail-yx2-f1.google.com [74.125.224.129])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E67F640005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:28:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HF06QW4Q;
-	spf=pass (imf11.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.129 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792384104;
-	b=vzFR6TRN1K1dTgkgSlRaOmJFkhBv0ctbq6adIBmg8/1RGgXW8LkI7kKm9mT9QnDdQP4Pns
-	O5XyPsR7XGaB65e7W7MRSVNX/QdIHnBgPSqv9Da0XYQZLGAKYiwqz5iTlDyw5imb9O1+BK
-	SL4auGzbg9YGYKlfMdny5TntnuYMTDE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HF06QW4Q;
-	spf=pass (imf11.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.129 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F39466B0119
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:35:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 85C40405D3
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:35:23 +0000 (UTC)
+X-FDA: 85338111726.12.87B49F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EA9B1100003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:35:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzQGxFq7;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792384104;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1792384521;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KPEnziyqohgCiyllOGpLsBcdgNJdfasBLYSYKWDG7f0=;
-	b=EEjw071mQmV1SF0HU0MetB1S/TKLQ3ljhV4Z1xHIl56FoT3kkjgXnzIHq7+ZyUXJts56BB
-	nre/3qGCwyKlycSBPV3uMHGVUpakysi35Vb4wJIPHS/+FPaXSKtPbWfWqN8hU+Cw1KLzUC
-	mSvITE8OLzrPubEp9WXUkBJpz27/CYM=
-Received: by mail-yx2-f1.google.com with SMTP id 956f58d0204a3-679f050b6feso39493d50.1
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:28:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792384104; x=1792988904; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KPEnziyqohgCiyllOGpLsBcdgNJdfasBLYSYKWDG7f0=;
-        b=HF06QW4QN5qTyB6P3F7ejbwAvfg9MjMbn5MgzPkjAnP0Qb0nEehqtmD4xkIo/hsEh5
-         JKbeskqPkZbAVgvcwlDEJs0GfdaACRTBo0HJVKBFtY9K0C6mjaVahiGOO0+1yulwQ2EP
-         fR7y/KR3fdLm5iMSTjhqLxgMP+AS4YZRimAP3utrt//rhTOd60honYQbZDQU0KZKT7gQ
-         N9s7RLCVbFboq8niuKuRP2Z6zgf7YBdm5w2d2VcgQIppRj+Va3wkJlnjvYEGSJhLjRw9
-         SkT8buqw1636Z4H6vDZ0as3lw7Of14QXllYgUdB/Hk05E3r6G1lVS5e9WE3IUZBrgXmp
-         WDRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792384104; x=1792988904;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KPEnziyqohgCiyllOGpLsBcdgNJdfasBLYSYKWDG7f0=;
-        b=KAy5jQbXSokU32+KSBeQFzpAzXnKoEBEYJRtSbjulc34VTIxXtIAWz8BIAmsOTdWEp
-         3pY11roTMFFNHga5lZfj4fhDEpvHUsmWymFnuDnsjKXb7SOdx4pJRP/9dGF9lY4GLO5N
-         9QUm903daKhYePo8d19FJI+xvI4NSCLDB1xgR6FsoIpD3SQc7pZnAZWODP/ekSYrADB3
-         G/Eqcp6J1YJhvu3MjUAyg35r8FlJBOAhDtrCg4C1IMBbfDOcRvD8wA+szI/fivNQJx/H
-         tnKFu425nUJzJO9rcSbp+/jrzggC0+F0IN9vwkombIlXlPjln/4Bt/Fj8m9biOkDebOW
-         8hOA==
-X-Forwarded-Encrypted: i=1; AKwUvBx5SxsQJTQKCXVGIx+icADCu3zmOzdopVTucePZcZOgivWpLC63x3WbvT6Sf2CF3gcXZJTj7YSj3Q==@kvack.org
-X-Gm-Message-State: AFq9FYKNI2fRbUHcryoKPllZSqSuJIbVnnwL4I+5k8sou1/mHbPjhJno
-	4dZAmAGPgVjEq9vFwAmSAmMDpkVIGgOVoRSrelJz+W5MAURpwcE6Roo=
-X-Gm-Gg: AYBFou1c8UxbgCB99QeWF2oPIQ3t5GebP+EzCAopUNvWCch/JOau92ugWFGUMVDiUKf
-	JOkbNXq0P3Ivw+CeEK+lhISOeGdnqcGbTWKYBAkL+G4MudjBj1cxUGxCHda5dC5BLrEmLwsFk5S
-	fpC7rMCt2hvKsrk0esN5oLNiU6N+FfyXN19YfI1867rVp2cOVvwCZOVofh4JDpwgNnifZdYFW7/
-	XAO64SD9Qm7aV+rF2T5Dy2XNF6u8mONgFOqmFC5MkeQcW37YEXCsRp0s+8KlE4DN8MIuBiqH5q5
-	1PB55WFmeVhOM2od+nCzIeuhZZ8lDKh1qSwccUWItFuSNHkifceWq0eSRJmkWbPHK2Rx8w7OxAR
-	T/A7ZH0sSIUOx4z7opLor+92AMWArK9Ypdfn8NaFuIc9gVJ+Fls8lI9b9BqZj38+0f9zTZqgMaN
-	PfyVF0ImJ1j5gKFjiTBJq6PTiiCxSqQAjRZp3UIsboW1ZfI5cBC5FByZEA+rYDR/W2jZLk5K5pq
-	BfrYmbXtVj5dFt591R/NytxfGdL0Y+gsTzdwDWi+kibcwEXHN+OCoKXs9CS/7LZNkqpKdXDrFlj
-	oMTaw5Rws3KcS0ud8A==
-X-Received: by 2002:a05:690c:4346:b0:8a8:8f62:eb3 with SMTP id 00721157ae682-8b0f21d7fc0mr14428137b3.62.1792384103712;
-        Sun, 18 Oct 2026 21:28:23 -0700 (PDT)
-Received: from localhost.localdomain ([2600:1700:4577:1050:ec89:21db:40a3:896])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b0e591c51bsm35347307b3.34.2026.10.18.21.28.20
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 18 Oct 2026 21:28:22 -0700 (PDT)
-From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-To: aethernet65535@gmail.com
-Cc: ravis.opensrc@gmail.com,
-	ajayjoshi@micron.com,
-	akinobu.mita@gmail.com,
-	akpm@linux-foundation.org,
-	bijan311@gmail.com,
-	corbet@lwn.net,
-	damon@lists.linux.dev,
-	gourry@gourry.net,
-	honggyu.kim@sk.com,
-	jic23@kernel.org,
-	kunwu.chan@linux.dev,
-	lianux.mm@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	rientjes@google.com,
-	sj@kernel.org,
-	weixugc@google.com,
-	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH v4 0/9] mm/damon: hardware-sampled access reports
-Date: Sun, 18 Oct 2026 21:28:19 -0700
-Message-ID: <20261019042819.1937-1-ravis.opensrc@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261017211613.16456-2-aethernet65535@gmail.com>
-References: <20261017211613.16456-2-aethernet65535@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E67F640005
+	bh=4yJfhlID4fPBOMkqV1WPDOqXgcDXux6NyWocqTjnn2g=;
+	b=mTGQDtTVNiCjYTrgaYhgdXDm5LlHDXpMqQcdlrTkGIG6rJ2WKD0GQV4MZj72gqYZSckTlx
+	LtCEvi2RAtoCWygs6aDJrSVIfyMCSVx4G3VX+SiyOcxX8sZEgkVmwYfysuvAH59OO8lfKU
+	JKckHLf4OP0p7jOX5S3mJdJEwSJ3/yQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792384521;
+	b=MOpqgZfS8IbbJVt6LXk14ybJ3XSV0K84abWT9DrgSjog5fMkUWxmp4gY73S0gdXDnFEQKh
+	gxtB2klfqRSPQNkQF6X8FD+2gGT3qpU79hO9+DC9wrE8TLb04tR/+ZBaOcELkKr0rJhykx
+	zew0qsMnLesNJLqvtswqbV9t4k3wrbY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzQGxFq7;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 665EB601DB;
+	Mon, 19 Oct 2026 04:35:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404CC1F000C4;
+	Mon, 19 Oct 2026 04:35:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792384521;
+	bh=4yJfhlID4fPBOMkqV1WPDOqXgcDXux6NyWocqTjnn2g=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OzQGxFq7LnoaH2sBKLf4N2VMO2ZNXiWKD2jjmIm7oya1wsXuWDnVXYYSdz1i7KPN9
+	 PL2VCbQv09vKJb9fU6nZ2w0zli5D8OUDeOWUAFqIor5+PS0aXbPU81bUIfCXmnhKqv
+	 Bb2E9f+YNIAKNBmxMUAvubAT9eWsla59+tHY91iu7JKjcwWJciQhsRnIsY84PZgSsR
+	 G1CvKKxjmLaILM06FvWzPCz1E05w+Vqg3fjjKhaKJ4s3WLoGeRiIELwXLFBf9YvdPj
+	 K+4gw6q0RHz2Zsxzq3uMbB4jJbLEvLKKgJPRLH+TQPUAS31EMEvaB3FRhjj2AgaVHJ
+	 qXBNHllpoMrgA==
+Message-ID: <sashiko-outbox-176636@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] kasan: fix runtime shadow page table synchronization
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Muchun Song" <songmuchun@bytedance.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>
+Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Alexander
+ Potapenko" <glider@google.com>, "Andrey Konovalov" <andreyknvl@gmail.com>, "Dmitry
+ Vyukov" <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>, "Dan
+ Williams" <djbw@kernel.org>, linux-mm@kvack.org, kasan-dev@googlegroups.com, muchun.song@linux.dev
+In-Reply-To: <20261018043501.3257632-1-songmuchun@bytedance.com>
+References: <20261018043501.3257632-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 19 Oct 2026 04:35:19 +0000
+X-Stat-Signature: a8w3k86n9j6k997iapd1txwxjtjz6t48
 X-Rspam-User: 
-X-Stat-Signature: oqxxhfyw1jbwph8epyewpcndto1jzzz4
-X-HE-Tag: 1792384104-797852
-X-HE-Meta: U2FsdGVkX1+NN7K2X2Ddeh7JDMu4UK05yX+md+m3vi1wkZBCWUaYBcdEfVtQxMuKZyBKLuZFsn1zm5nFJp5G+3UZ4xj/1qsQBfTmCeegiI3pb67HAQE6AwigtSJ+1oVuGISllZ8S3vCMqT1vmqBD5F2JM3c7gR8LjTx0ZP7hjc9xMqUOzIYQDwxfiy2416LRyARHCPgx+bkFn39aPT+of5Qo4f+GjZLWJWgvK1M7uuF5EvBiPOiujab7s7W7G0zoShtjWBRgnJJFpPsUWlVJxms1DfN697VEKIjGTWq+3B4ZAXy3Y7SWWcjgLYQI0Ou+smmDoR4Q50ALuI9xDf/KtAF1uNsvzjv2pg1Fv3DpyK8a0rQit9NvHXdkZa7aH31pX9+lMRt8BYySNpVUN9piunoph65I+GHiNiHiQyeBCerWZOLd2Dd7I5IHxh7wybwuwotvop/GcPxN5BBnu3GQzW7O5QpLMK0ilQvWRodPECh7xr4GLBqhDQFAI/3avaANdTq7wyswpvtJ8/Cp0UsCFu8Aaq1NRg9ErFkPa61NYF7emzlWCCiLBSKB4x/FHC4wfjZoALF6Io4KvzXhQD3xLdcR2bIrwPs3ZscyAM2tWB9xIPp4ECqXtaIhiL+DtXN8PtkLIvmhn+nczRI8OovikF8cht8yD6FIio9BR42Ug9kKVnWeKX/2NGote2UdxfZX2btGRNhG9ENse5WUrCo5o70JAX/dybgzJhvr5zkUpM00vV/XcLynCy9aMQXP38izHnZGi0DVdF/B7KD8hT9l+TRVHIYDpAJKMNXOhqiwSeH5+uSec3JsQpMBIACLMIcKbHDjqll8yTKKMrxOIIvinljlCWxSZ/q0BRz+7zDRgt+2E5EyvA027UZAesHpXNzDy6CF6UevayCZenJq2IH5m5Mps/8onTM5ZpAO4CYLhqexSZJa+2KPEEbkJjtoHmzVoAGNt1GyN9PYDfXCFUk
- nJrN+avi
- BO2N2+19o2zYLsDgdZu+BbzK2idgushkW8njcKVI42VXRhV1TXfjKu1YE4abZLrWHx6q7KZWntwZBSGgvGKgyKbdAQWJITCwB7rTzXjbtrT5BTPrQOaP1BfpiVyIDtG0VZreXsqMPK2s3VAnv7wj0JgOKG7yB+t9gqTraRsA0CZZh5obDRSsrq96fE5/DmxAt9QY+5exk+Mz5KYnDuped7MiTnskWqELGJTRQLXUot+379BrXwvpwhjz0+ou62CwNP/9ZH9eYYTWqn98uHvXronwZG/6oFQ8QRC/FIWcGSMT0xvStRK5dwVtV4XEiz7MVv4PDXGn6wVHjVEgD00D0HoUXnTlPpk+eFMh4czSPzATUASz+440Pqxar35hFw/mw6IM6qfDhj4YD5C6aBM6WvFbU/paYHFU3rNSV0wtuIG40TFX7aONr334kMLNgJyZCa6canw76BLn6QfwdRL0MmmpceElVFM5W4edxiVgAoHt0IGql4tJfy6pgihkKHGi32GSoNFAZ37jYE10=
+X-Rspamd-Queue-Id: EA9B1100003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792384521-456206
+X-HE-Meta: U2FsdGVkX18eFOjtLu6FBxF5fZwKizJaWU0vQpmjpu0yaT1E36PqSCqIFPhBPstG+9lQVqwg3J4eq1Ar5+mT6y37/7Um5ctADD25xQmXBxV3Rwmg8HTRHbXk68lp3qKXDIbbQ4wYsZjI8GddGw8ZEQRbItv3AwSjFwYg5A56G+N6IcDy8fthiOl4n/Tm15RB/MdRoxqwTUd8HGDvSbyg/oz9ON6uq4bQGyOYoENzbl14ncudPTUCOMq8n7MZsjXf2mz22Wg7yIVms4Q65yeSKpegyJXLa3zeiAVtyD9nnTiSKFF3RDVATIEPWNFhisMjzs1xhK0cp545HKA9wF2Z0+YM2MltbeYbgXdCRGh+KuWrjXZqQqq4MP3KJJaKiolKsVZ7nPG8c22AS5MbsvMHY0Gwvro+vfhCHtExl7tIXNllibV2Munt4JatlwiigeHn8OGEXwV1HOsOvdcBFlZBuwj7nBeWKhlVZmepCxfADvxRmkJTiXoXWOu+mLI89s80UqMXZBJqmI7i65BzP7QXRfUzGxMnIahYYcpDSQj7JjBjxtyL0IIG17cJz0FfKMUPxuBQMmr5i9X1X0VdFq/cSMyhkJdbro1xbb7Pl33eN8kM1bdOXRMCmuUPaC/CbghoYG8jkrgREvCbcH1z+bXWUx276Ip2N/j86J762asMU6onetNKgkWtkg7Y6VwwOG/yks+sYMRcVJo6NTByuUBDzK6iX7j7S4buG6Jjm09cIk23vuFGj5m89dS1sYnvNZ4AzkFo6fY3mitAJmnFw1XZtKvfqYlGrBQfXGaH6yjq37EY7hJAFROy+8ZIjNqK8xaoRKDBEUJioJ+KDPSi31Y//7ppktr0XdwgXjgxtjTojfSRlndIiwh+R5Os6daBlC8YxCS5Zp/MrCQKorObFawjyxPO4v9Ry+SM0RdIvg+GIlCG8r9MFGhO5TCsFZmPpzgb9ILTBKEdjkIYwOOZJOs
+ 7Sd0ruZ7
+ 8b1+YlPGPJeTFYlCKfjAI6g8fkawN2dRAm3a3uvYkJauAN5jyoNx/E7LPBASMNi71xOl4AL83cD/AeRAMkMtCT2kIYvbM283HlB3Pi7wvygOVMik4Qo21zPP4+5aESAdV4w3LoZMEsIkXcJdCMlbp1KigXcBrjdIcUXznz8LycUDxCiqZaoVrty8AIXo2BsTcNzvOAJJOF1xCIHMDiS/g8sN+2ph8AuuKua3H3g+HuLqzfxwI8fUX1jFZ5vUesthiv/qIpOA6VkYfb4sC5d0igdxtdknCBmTOvPFhr2Fi5IuHD0ZHXAK4u6SlwIS1sAWbJyAazGe7kGFUqDl2GBnS5WmoX5mFMp0VS4V5vJmhKhFWPRcRjJeI9XK8QfNizB1h0saVrjuj0NlRUnqBom5duOySE7MVncq9pMF+F+hDz/Bo6yhQTo7WjZaoWDfQTTj97EXnDnmEMWMKEG3aEQkhWo+ae5kpY5ya2fWIwbk/rPkkT86toKZzDzKrqV02zgsCcJJGhYLDOvSgtQGTPda/9UaBPgP/fVR0qAIewr1YweEYm5AUPszOINYmMTCrmwE9z/mCFUoK8+6BSbno/MkTpm3oSqXQdyyFVNwub458icn1+xdAxJlFibPOY2+6X5SruCWqjUikUg1V9lkiIjH/j44Fxa/gYXQy2wgN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,45 +95,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Rui Yan,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] kasan: syncing static early shadow tables breaks kasan_remove_zero=
+_shadow()
+- [High] kasan: missing kasan_p*d_table() checks in kasan_populate_early_sh=
+adow()
+--
 
-On Sun, 18 Oct 2026 05:16:13 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> On Sat, 17 Oct 2026 15:11:18 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-[...]
-> > Later, I noticed that about 10 minutes after starting DAMON, the 'seen'
-> > stopped increasing:
-[...]
-> I found that if I enable the kernel NMI watchdog, this issue can be
-> fixed.  So I think this is not issue of this patch.  What do you think?
+commit 84e267a96cb1eab3b9fd041e188f62b5f7899dd0
+Author: Muchun Song <muchun.song@linux.dev>
 
-Thanks for testing the series!
+kasan: fix runtime shadow page table synchronization
 
-Agreed, this is an AMD IBS / x86 NMI quirk rather than an issue in this
-patchset.
+This commit tracks page table modifications during KASAN zero-shadow
+population and calls arch_sync_kernel_mappings() once after the walk. It al=
+so
+avoids replacing already-populated page table entries during aligned shadow
+population and retains page tables referenced by synchronized entries during
+teardown.
 
-On AMD IBS, when a counter overflows it sets IbsOpVal in
-MSR_AMD64_IBSOPCTL, stops counting, and sends a single edge-triggered
-NMI.  If that NMI edge is lost (e.g., across C-state transitions),
-IbsOpVal stays set and the counter remains frozen on that CPU until
-perf_ibs_handle_irq() clears it and re-arms the MSR.  That also explains
-why the sample count in your graph stepped down gradually over time
-(100k -> 36k -> 18k -> 4k -> 0), as individual CPUs got stuck one by
-one.  When the NMI watchdog is enabled, its periodic NMI walks all
-NMI_LOCAL handlers (including perf_ibs_nmi_handler()), which spots the
-pending IbsOpVal bit and re-arms IBS.
+> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
+> index 66a8838879876..f94f461d864ca 100644
+> --- a/mm/kasan/init.c
+> +++ b/mm/kasan/init.c
 
-For ibs_op, a larger period such as sample_period=262144 (as used in the
-cover letter) or setting config=0x80000 (cnt_ctl=1, dispatched micro-ops
-instead of clock cycles) also helps reduce the NMI rate on the CPU.
+[ ... ]
 
-Also, if it helps for testing, the damo branch in the cover letter [1]
-already has sysfs read/write support for the perf_event prep attributes
-(commit 1178ccb) and tools/damon_tier_gen.py for generating IBS/PEBS
-configs.  Your probe_hits_wsum support in 'damo report access' on your
-branch is a nice addition as well.
+> @@ -115,25 +116,26 @@ static int __ref zero_pmd_populate(pud_t *pud, unsi=
+gned long addr,
+>  	do {
+>  		next =3D pmd_addr_end(addr, end);
+> =20
+> -		if (IS_ALIGNED(addr, PMD_SIZE) && end - addr >=3D PMD_SIZE) {
+> +		if (IS_ALIGNED(addr, PMD_SIZE) && end - addr >=3D PMD_SIZE &&
+> +		    pmd_none(*pmd)) {
+>  			pmd_populate_kernel(&init_mm, pmd,
+>  					lm_alias(kasan_early_shadow_pte));
+> +			*mask |=3D PGTBL_PMD_MODIFIED;
+>  			continue;
+>  		}
 
-[1] https://github.com/ravis-opensrc/damo/tree/damo/auto-tier-bw-2026-10-04
+[Severity: High]
+What happens in zero_pmd_populate(), zero_pud_populate(), zero_p4d_populate=
+(),
+and kasan_populate_early_shadow() when the page table entry is not none
+because it already points to the shared static early shadow table
+(kasan_pte_table(*pmd), kasan_pmd_table(*pud), kasan_pud_table(*p4d), or
+kasan_p4d_table(*pgd))?
 
-Thanks,
-Ravi
+For example, in arch/loongarch/mm/kasan_init.c, kasan_init() pre-populates
+swapper_pg_dir across the entire shadow range with kasan_early_shadow_* bef=
+ore
+calling kasan_populate_early_shadow():
+
+arch/loongarch/mm/kasan_init.c:kasan_init() {
+	/* Maps everything to a single page of zeroes */
+	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, tru=
+e);
+
+	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
+					mem_to_shadow((void *)KFENCE_AREA_END));
+}
+
+Because *p4d, *pud, and *pmd point to kasan_early_shadow_pud,
+kasan_early_shadow_pmd, and kasan_early_shadow_pte rather than
+invalid_pud_table, invalid_pmd_table, and invalid_pte_table, p4d_none(*p4d),
+pud_none(*pud), and pmd_none(*pmd) all evaluate to false.
+
+Instead of skipping aligned PGDIR_SIZE, P4D_SIZE, PUD_SIZE, and PMD_SIZE
+blocks, kasan_populate_early_shadow() descends into zero_pte_populate() for
+every single PMD across the multi-terabyte VMALLOC_START..KFENCE_AREA_END
+shadow range, executing billions of redundant set_pte_at() calls on the same
+shared kasan_early_shadow_pte array (and on 16KB-page LoongArch configs whe=
+re
+mem_to_shadow(VMALLOC_START) is not PMD-aligned, prematurely write-protecti=
+ng
+kasan_early_shadow_pte entries while kasan_pg_dir is still active).
+
+The same descent into the shared static kasan_early_shadow_* tables happens=
+ at
+runtime if kasan_add_zero_shadow() -> kasan_populate_early_shadow() is call=
+ed
+again on a range where kasan_remove_zero_shadow() previously retained a
+synchronized kasan_early_shadow_* entry.
+
+Should these aligned fast paths also check whether the entry already points=
+ to
+kasan_early_shadow_{p4d,pud,pmd,pte} (and skip descending without needing to
+re-populate or set the modified mask)?
+
+[ ... ]
+
+> @@ -377,6 +420,9 @@ static void kasan_remove_pmd_table(pmd_t *pmd, unsign=
+ed long addr,
+>  			continue;
+> =20
+>  		if (kasan_pte_table(*pmd)) {
+> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PMD_MODIFIED)
+> +				continue;
+> +
+>  			if (IS_ALIGNED(addr, PMD_SIZE) &&
+>  			    IS_ALIGNED(next, PMD_SIZE)) {
+>  				pmd_clear(pmd);
+> @@ -403,6 +449,9 @@ static void kasan_remove_pud_table(pud_t *pud, unsign=
+ed long addr,
+>  			continue;
+> =20
+>  		if (kasan_pmd_table(*pud)) {
+> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PUD_MODIFIED)
+> +				continue;
+> +
+>  			if (IS_ALIGNED(addr, PUD_SIZE) &&
+>  			    IS_ALIGNED(next, PUD_SIZE)) {
+>  				pud_clear(pud);
+> @@ -430,6 +479,9 @@ static void kasan_remove_p4d_table(p4d_t *p4d, unsign=
+ed long addr,
+>  			continue;
+> =20
+>  		if (kasan_pud_table(*p4d)) {
+> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)
+> +				continue;
+> +
+>  			if (IS_ALIGNED(addr, P4D_SIZE) &&
+>  			    IS_ALIGNED(next, P4D_SIZE)) {
+>  				p4d_clear(p4d);
+> @@ -464,6 +516,9 @@ void kasan_remove_zero_shadow(void *start, unsigned l=
+ong size)
+>  			continue;
+> =20
+>  		if (kasan_p4d_table(*pgd)) {
+> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
+> +				continue;
+> +
+>  			if (IS_ALIGNED(addr, PGDIR_SIZE) &&
+>  			    IS_ALIGNED(next, PGDIR_SIZE)) {
+>  				pgd_clear(pgd);
+
+[Severity: High]
+Can skipping synchronized kasan_early_shadow_{p4d,pud,pmd,pte} entries here
+prevent kasan_remove_zero_shadow() from unmapping the zero shadow at all?
+
+When kasan_add_zero_shadow() -> kasan_populate_early_shadow() runs at runti=
+me
+(with slab_is_available() =3D=3D true) for a range covering an aligned PGDI=
+R_SIZE,
+P4D_SIZE, PUD_SIZE, or PMD_SIZE boundary at a level included in
+ARCH_PAGE_TABLE_SYNC_MASK (for example, PGTBL_P4D_MODIFIED on 4-level x86_6=
+4,
+PGTBL_PGD_MODIFIED on 5-level x86_64, or PGTBL_PMD_MODIFIED on 32-bit x86/A=
+RM),
+it installs the shared static kasan_early_shadow_{p4d,pud,pmd,pte} table
+directly into the synchronized entry.
+
+When kasan_remove_zero_shadow() is later called to remove that shadow mappi=
+ng,
+hitting this continue leaves the entry pointing to kasan_early_shadow_*.
+Unlike a dynamically allocated page table (where kasan_remove_*_table()
+descends and clears all child entries before kasan_free_*() retains only the
+empty top-level table), kasan_early_shadow_* is a shared static table whose
+entries cannot be cleared and remain permanently mapped to the read-only
+kasan_early_shadow_page.
+
+If normal System RAM is subsequently hot-added and onlined in that address
+range, kasan_mem_notifier() in mm/kasan/shadow.c checks shadow_mapped():
+
+mm/kasan/shadow.c:kasan_mem_notifier() {
+	...
+	case MEM_GOING_ONLINE: {
+		...
+		if (shadow_mapped(shadow_start))
+			return NOTIFY_OK;
+}
+
+Because the read-only kasan_early_shadow_page PTE is still present,
+shadow_mapped() returns true and kasan_mem_notifier() skips allocating
+writable shadow memory, causing subsequent KASAN shadow writes to fault on =
+the
+read-only zero shadow page. In addition, if a smaller or unaligned range
+within that region is later passed to kasan_add_zero_shadow(),
+kasan_populate_early_shadow() sees !p*d_none(*p*d) and descends into and
+modifies the shared global kasan_early_shadow_* tables.
+
+Should kasan_populate_early_shadow() avoid installing the static
+kasan_early_shadow_{p4d,pud,pmd,pte} tables at page table levels that are in
+ARCH_PAGE_TABLE_SYNC_MASK when slab_is_available() is true, and instead
+allocate a normal page table at that synchronized level so its entries can =
+be
+cleared during kasan_remove_zero_shadow()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261018043501.3257=
+632-1-songmuchun@bytedance.com?part=3D1
 
