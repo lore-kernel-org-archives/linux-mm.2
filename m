@@ -4,132 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B7ACCF2E4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 11:34:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B13D4CCF2D6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 12:09:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9CBB6B01B3; Mon, 19 Oct 2026 07:34:47 -0400 (EDT)
+	id 7D9366B01F2; Mon, 19 Oct 2026 08:09:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4D3D6B01F1; Mon, 19 Oct 2026 07:34:47 -0400 (EDT)
+	id 7B0D66B01F3; Mon, 19 Oct 2026 08:09:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEE486B01F2; Mon, 19 Oct 2026 07:34:47 -0400 (EDT)
+	id 69F416B01F4; Mon, 19 Oct 2026 08:09:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F9686B01B3
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:34:47 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24633A8167
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:34:47 +0000 (UTC)
-X-FDA: 85339168614.06.D55A5CE
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F1F3D80008
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:34:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Btioxvxy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CSXyFG4N;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Btioxvxy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CSXyFG4N;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792409685;
-	b=UXJaJTCuvWhw6i+kIn1E6Q/p+2OdiL0svalmk4sDoM9S8JXYRsHn0UPjbxGC582y/PnWoA
-	tb/uHywcB+y01Rx18VL9xm4s9lflbs9IslsoK30xaam1bI1ALZuhU7UkKmbTaubnl+iXZd
-	x2nx2gTvEwYk0h+lNBrvUIBpVsy/YNc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Btioxvxy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CSXyFG4N;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Btioxvxy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CSXyFG4N;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792409685;
+	by kanga.kvack.org (Postfix) with ESMTP id 31F816B01F2
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:09:12 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F223714064C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:09:10 +0000 (UTC)
+X-FDA: 85339255260.11.20400C8
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E255314000C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:09:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TsAvED38;
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792411748;
+	b=L3LaoS5e/lQMacXKcOYCGrsGfx/g+rgHMlfAl/EmZJwmxPQAZbh0npxh488W8oBPZDaLVb
+	Qx7nhhYHqnzaX1VRuFJ2IU+wMCyn8iCQBSX5MGdfZoqPGH53WKaLgjRVyoalErkXe5gMba
+	ewz/A5ByPpYWxpQoWTys7ePv8aJwiAM=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TsAvED38;
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792411748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jD3t1wkN6Rchd26X8X6BEMEdqv5151afoVogq/j3xEE=;
-	b=H9B+tYKtJVacwzBtw/FduDe0Ey1IY5PftXrS7B+T8371rRWAVDq+yQczi+wqVTxNZtAq7z
-	Kc/SeFqFTh0VmlWLZDpADFrK+P15h67tOv69R88smjAn+u583aKsqk6votcQ951xV07NK6
-	yV6QJHw/QQEJCZY0yejjBvZ6k88aroI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B1F521F441;
-	Mon, 19 Oct 2026 11:34:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792409683; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jD3t1wkN6Rchd26X8X6BEMEdqv5151afoVogq/j3xEE=;
-	b=Btioxvxy2o/5nNjvrR/K024Fg9yRxU/DMlJ4FkQmX30tIdzdPtTzjjyLAOgv/bA6lh6nQC
-	EhQICIipr8jVetUX/9sbV8pdOzUwXssZDtg7CLe8V89kWRPWE4yApuL1Ko/JGJmD7A41+u
-	hipbb7daq4UFDKgMx1HWQds7Am1G+Fg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792409683;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jD3t1wkN6Rchd26X8X6BEMEdqv5151afoVogq/j3xEE=;
-	b=CSXyFG4N0Co80mhRy5z5Z4Tf6vZKCYn4pVt1fSZvcp/kmS1ALupPvQJ8F3fw6DMCtG1808
-	ECpplwObsREGaDCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792409683; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jD3t1wkN6Rchd26X8X6BEMEdqv5151afoVogq/j3xEE=;
-	b=Btioxvxy2o/5nNjvrR/K024Fg9yRxU/DMlJ4FkQmX30tIdzdPtTzjjyLAOgv/bA6lh6nQC
-	EhQICIipr8jVetUX/9sbV8pdOzUwXssZDtg7CLe8V89kWRPWE4yApuL1Ko/JGJmD7A41+u
-	hipbb7daq4UFDKgMx1HWQds7Am1G+Fg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792409683;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jD3t1wkN6Rchd26X8X6BEMEdqv5151afoVogq/j3xEE=;
-	b=CSXyFG4N0Co80mhRy5z5Z4Tf6vZKCYn4pVt1fSZvcp/kmS1ALupPvQJ8F3fw6DMCtG1808
-	ECpplwObsREGaDCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 87164134B3;
-	Mon, 19 Oct 2026 11:34:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xFQWGFMA1momMAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 19 Oct 2026 11:34:43 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 13E2BA1413; Mon, 19 Oct 2026 13:34:39 +0200 (CEST)
-Date: Mon, 19 Oct 2026 13:34:39 +0200
-From: Jan Kara <jack@suse.cz>
-To: Nickolai Zeldovich <nickolai@csail.mit.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Manjong Lee <mj0123.lee@samsung.com>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm: bdi: reset min_ratio after the sysfs attributes
- are gone
-Message-ID: <jf527frib32yfvdlgrmjozxav2kujmijsmakmr3a6wlshdzwx5@ju6qpy6pztng>
-References: <20261017030620.793108-1-nickolai@csail.mit.edu>
+	bh=e7Ud9f3El/BHwF00Nrwj1rk03TUfZ28/hoWdqTPVNfI=;
+	b=xxxNpkn3hp1tih7PNyI/rrfCjMw3SZsutu8qmrgeVumwlWkzv94QIeytO7mc8f/cXvRwge
+	yly3JktCfrt+YYydAnL2cIGjIB1GiD8qconYjI7rm7gKmSoLFJwwNjh9cGwnjySlBO1D0n
+	PBnlpAa6i1uN+ZvoIls2Iul4yaqVzxk=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a06ca6e8f4so496228b3a.1
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:09:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792411748; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YcawuhGqE58YF6KfwKjxgoRH4cwT3452uYTfSQ8D2l+5xUiI8sTCQiLvkwQTEt3xEa
+         wXosIFcpqfsFMDC3ru243Q8QpIGqLc8FoEidlYtQSwOeFI2G5czY9BvWIRon8/lV/uiu
+         BEpsJIxnRSFfNxAnGPjd8+ty5O16+kIj5A9opzdUNMe6Gwdc0PSu8gd5r/a5e0sa1i2/
+         rA9ii1oxmuShLdQT3F0vS/Y1H9O2k6oqtcW5su/YlP5sMuiCrMvdG9YKfcxGDjQp9/oG
+         bRCPlaY2hrcASsqwEiMwMel03qOZNiudVSKsfdb7j8TdXnnMKT/BD3yMooeFg4qQ8KbC
+         95lw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=e7Ud9f3El/BHwF00Nrwj1rk03TUfZ28/hoWdqTPVNfI=;
+        fh=BRswjrorPDJe59NAr7GLmCZa8wmOFuh7SgJhqrtZ+lE=;
+        b=kmWWO16F7C0qfrzA/ZUdz0XRI3cILkz8Tipc6wAGqFxl7TDX14GHb5pZFFRsWTD44E
+         XXCzCF5M26NzoasjIAGlMuqp0GZx+jqtSPOHYblE3I0gkfEos2Seki8y3WC5SWsnF5rB
+         K1yVbuo83/euW1+OiMKb11EyCvJftdAyKpKxBCCyISr+PheZRP5QAT38Dj+RuC0R7KbH
+         8w16HqLr1mEykXBwf1QOLCENpMb/ex4VAT7BLrYFZBpQT8PWEKX/whHlJ81BazLBIZpU
+         QaW+LyyGO6L7ZcdMukJsUVGlTvehynKH777tDH3JThPOqvbC+alpZSNI0tAVCn+QhSUs
+         G91w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792411748; x=1793016548; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=e7Ud9f3El/BHwF00Nrwj1rk03TUfZ28/hoWdqTPVNfI=;
+        b=TsAvED38PNnZAkNXRX83t7q+O8CdjvE0K54vDajDGtTTCU2yZpzV3LK+a3svW2MBTK
+         8b0S6kreCOlhmx/SQxjFaxQjhJmcMIdRjUh26srC/vyPhlJrNTsNWEA/kvRVkGkAS9P/
+         BdtHsOpsCoKIqkngptdYCxb8BP1ApSqmtJvKJ+Ah7om2SCkE6taCyQPo+Shr6kNXCPek
+         zIeLWdCk+eGxBvFoQSV7tPLleyGEbSaqxG+9Z50V5DgbwWstdWjTXHH9fLuGEBy/pGEb
+         KLxVj9caFwukiNZrGPwrXdFeoxkbFzLvemO/9eVetanosTn1bzqi7j37KaOG/m9OFsDe
+         UufQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792411748; x=1793016548;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e7Ud9f3El/BHwF00Nrwj1rk03TUfZ28/hoWdqTPVNfI=;
+        b=HkHZzMc0K7BMFAL1Mk/htD+ZIc7MQiNViaOtz9b3Xwr+FtmkF4rTRpf8trR6lHM4KK
+         vqU+P42Btyz6cApn4/ygeOzXrrfY5YTVWH8qTnWbOImQvx00asWbHLHtL2sunOcvkXf3
+         AyIhepzZEqxCdmByYomSabCAzgnhZ5EQsthQCIom1CspzALw5bzL3rG9aiUiX0pt5SuO
+         Jc8wnjvIr1mWZLRGWvSkoNilISx2Z29t4KQDcciYz0VF+Ee/3n5kqusApg8A2vWd9BLC
+         3YDlBmCFs4YosWaXjZ80SAyhyLE0q15p2E8N6xR8M7hGAR7aMoDhKTWzMIWkYuRGIpV2
+         UPiw==
+X-Gm-Message-State: AFq9FYI0dfqscYS2MswUPMPHKmf+bQzvPDq3u95AzvDgJoiWDacTMpJI
+	t81BfEpcIwGFB4wjs/783viOVptCiVdnszHNu/w6/CI/8aauIu89V6ZLFqhvuhiB6CaILv1ccbo
+	T4HpuDPnmLmv4p9J6ZCM/N3hsuTTnMOk=
+X-Gm-Gg: AYBFou0WmYcZS37FCDLQKi0nhQRhPX1PS70//W89HRti+ifOi5+QSQ/8IGTiYJZ+y69
+	Zzy/8VE5jxqZlLB1A/SltiLK9IpIjdOOvTTXT1NPAwzHZ20PR1j721ZKMyOPWWTF6ErScYVY9jE
+	QYCgBgbZDG/M32q9H4ghGVhgExU10CEzZyXKrRygMFO0u5JIylK7k6ZwsgAc8MJ5NiLFsVfhSa+
+	7FEqYd2Nl1vdvxCOds/zgpce9hyXm+r47cLlxhNskRtKNEnJX8LEh4tlV5+ZWELMXWiW+J0cfl6
+	2MjxJQ40me6Cp8LxYDQbq+czzsS2mD15VvqkZEyXvbAR5BHGSWgibjQSUlSzyc7LAEKNe/ZqnZJ
+	Pl8tEqEwB1PBH
+X-Received: by 2002:a05:6a00:4f91:b0:878:3783:8a88 with SMTP id
+ d2e1a72fcca58-8a04ce5913cmr6191420b3a.52.1792411747433; Mon, 19 Oct 2026
+ 05:09:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261017030620.793108-1-nickolai@csail.mit.edu>
-X-Rspamd-Queue-Id: F1F3D80008
-X-Stat-Signature: yrcich9nrbn9893kqrr7h3qqeeq1m7ok
+References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
+ <20261016-mglru-fg-v4-4-2106750c0bfa@tencent.com> <CAGsJ_4z3q_q-qyWdj85ZkMZvKOsXu7eO6qkiuQcppnd2oE3dTQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4z3q_q-qyWdj85ZkMZvKOsXu7eO6qkiuQcppnd2oE3dTQ@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 19 Oct 2026 20:08:27 +0800
+X-Gm-Features: AclHuK8_w4Y468-vdC7he0TKQWZxngtWQrKxvrqOWxFYmIpExFbV_IhfkTCRLk4
+Message-ID: <CAMgjq7Dqa5Thm+tXUMrg5D1oSJxwyuJR5UOU+w33OgiebGvcJw@mail.gmail.com>
+Subject: Re: [PATCH v4 04/17] mm/mglru: frequency guided workingset promotion (MGLRU-FG)
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, SJ Park <sj@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
+	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
+	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
+	Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E255314000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1792409684-983923
-X-HE-Meta: U2FsdGVkX189lmXgYgx9i2tiV5PAvcBBhz7nagn7DtQJBi21ASFEw1P+83o1EXELWtoLjkydq5Vi153HCsg8tXZyOGvMQfbf2SUPkstR3PfNHh+8J7jMrO/QZZYjNmqc6oH7vnbC06DlENZ7jUULJjuLnaLKaaopuI2zMsSkdcYu/Mgn/AhQVKTiKOS+bULno/EazvdgAuGKyDUqgcdYY1Cm0/6sPYzeKFS8vbr4Yl0pKlUSq0hNVOuAa+nYrQTCTCzfqvIXn0G61vEztbAesHYDHSWfzdeMxUfeLKyJDUt4REAmuKzKdn6Kii+oW4nDV7oJmCKkTfZgw6h5mJUgaoEyMcBlnZgA72qfvCCNBE3D1TIthpGskRucCWupuxkJaFaTwS4vsO62KUKm4CrqUXpIx4VA1sHxfW5uInDU3IuR9TlDevwN4S/vZnmCJx99Cta9KBhcipwFkl4NFhKN4a0NhIh5YKgqB9+gvFD51E9fQfOxxePJ12LnIn9mJqeSkH7LJz16AMtu62M23nGq+0SFRjm9DE29dByTUp6Hte4cfImB2usdGHuhp90KTgzWbyZjryJPmkiNZLmWck8F6JUpwwr7CRogCUnR+00EJdYLq61i9jhRl8uPiDJexhx/OmvwZ55nmKCYrU42iu8/iFT8cIThi/Ev99vHLMzYgHCozAb7ikRyreAzVitl4cRbOmj9DYmYyLRtdURW3hP+BDKlWipZtfDVWm+i9TTRM4bC1rO1mpQYp8JteGRvDVO57SXrQ38hLRtnkTQdoXRXmM57b9B72iENhbHsIKxoDqOHrFg1mylpbZTV386mjAifQFoXNsx7C9zueDKDYXQ/tverWDz8DHZVtSEyFUBd9LU8a8NS3B5XEXJxmw5UaJbP8Jrcdjb1q5i7Bho3uRol8LNCLWrSCNuKTMDvmnASHd0DCBA+DSwvcbFib++Mo0kzjA0Dt95l+ZNOlGYBU4p
- 4Wgm5Csj
- 80ZCfJ7lTAf/n5bIP1PO05+JWeJHYYMiwzGMRCvMcbw7brBBGLqKWwnTCCz4r3SFf18ZaaT4unNiZA6QRPKV5z1J9JL1bUkfYZ/vLI50KuiELk4ldjEYZeQLqWY2cbc0OxABlV+FWHQ/x5RJZhLpjQhxpvKg/jqR7TdUklUwcetVDu8NW/TYUi10ZtQX4LCxws/zW2Qwj78L3gHHqPWwUqQb20Wf3poepndFKjpELbX8cx4ncq1s5eGsL3+hPdosCK0PxTeXwYvZccXaG5VIrfoM5HXvEaTvjB6KvGJ0S0YsXZo01PX6Rk0AK2ILtH99DrhmYg1s+OrGZGdl3O6bCmryIr4/qVDtqsDE/9s0hruYDtsfKhrKXrgj8tMzXOyhQL9tWUvDnyWXIPiK7U8yfYH/OR3eogqBdHZH59dfEpMIqULc=
+X-Stat-Signature: jwn8gwxp6eex8ktx696gtpzdi93g6q9a
+X-HE-Tag: 1792411748-174975
+X-HE-Meta: U2FsdGVkX1/WnHTGa4zjJIy5xAF/BCgWk1614UVPm5dGR3s4MLEpOZ0slvQQfEMvvk4kyOUoUXEL+Bh/b9UErl30cgf0V+S3sIDYTiokFqoYMDPvsY+E4fF7XIaLn0SMRC/W/NtUwpfjp4hX1aW957Rx4lmENDTPtm7uP3WmQi5BLnMrueaCMdS4jF4mI5NYkMJ3BONpbv77AilDGfpuKbEXoXds147P7RMgFJjJLe/g8wGzZ4x35SM/mjUKi8vRKAYTnCyb7l23YOxCwpVwYn8TE8XQ0KqnYxgGmj6bJ+KB8IJpurzW8sVZyZ3V5BcjmmbqaG4ve9+KadT8q12HfJXwPbYYi0ffWGwdpH+X46r201wxagnflrxWjVnknM5As3dAGmiISVa9CaSagM500EhC0M0Q7p3fTg56NkSvgha3uuiiOlRU9otKwl86iW845ExCxM/vA9DoovvoxqIAORWR/0XM7gSz4BCjEcIRUOXRbjrlENHI0MYjQmvA12j0gQEtnuv8uVNx4j4giMycXs1hmAOXCuQcfYMxMkBQdcFboHALKaL8js2zFpSAMtGg+8H5rRY1Kxu167TpiG3u8FF6RqrJN33nmzZaTNR58HEmxMWoaIolOIWgIKzQbjdEhX1LLg/Q8a/hITr5gHA9RIctsIBkjg7cF2g9qZIi4qUMu6ItY6OzIRIyFix3qtbuh1pqsw7cBB48776vZR6C3aCK6RvL5EzhbP+FkCGYMgYH7sG1PH6eYcW208OjbK8Lss+OPIBcSovNmj/WLlZJmP/mVeuwz/GOWwfUBEg60KEJb2IscxbX8hqo3ftwH/hp3779LyFx7hUTp6dnCOixVpXdI47rJDaOuVnwdU/C84nIdmLFOBwFBqb0JdeV6LmCMFjXEh7qrg7eBAE8FIkzyOVJKOgoaHjjUU11IXLy6cy1qS9w2XY2UuHTp4ePI3Rriz1KX+L9ds4P1F9ctf1
+ GITNSlY3
+ GqaxrpZT3B0F/M4uaVewQC4f3MSRYu0n5UoJR89w5Lmu0PmzaaHCmOuJ/PHDP5VoiiliiKsrBf056VH5epS/qqoydeI9ANdD7cPHVv8JuOgTpx/89T/QuSlRGKywyfjpTIyPiK4UGm0NvG9VhhfKWuwUFJs+umuCipfS7VS7AasxrCLIVqWBNWz9DUBzJup9xSSWLyu7JhF6TuX8+oeMrYMbBSdF1W3+UxIyX+vUB2zMFoKNpa76BFSg7xpiHARZjZ/1zNDZ5irc1776sh0xZ/bCAnCI6vJRCu8m9q1lzPKmPw04fIfwIwmvge6o1PDxt8Tf5to1QAfll7OTMVKCn6yAF8+43GbwpPq3apBT9/ZDoaW3pil46pUty6y0JxVYpmY76QcqzR+5k4LZ1IuQufcASOnDLVFl29Wr872hYxYWZVee/eC13X6pucPNAM29TwtE1DcTkbfk2g6KU3GIxq9iWoUJuyGTD/yMXNf7YDhVRfa7Vl/KKoZHBNUbgNytPOEL277TQIC6mfpw464cpaEPZA2/10gre7vIOX+2A+X1LBJz2lAu/oez3JB7HRQ+8rVaqsTcVRGuYQvM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,162 +160,538 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 16-10-26 23:06:20, Nickolai Zeldovich wrote:
-> A write to /sys/class/bdi/<dev>/min_ratio (or min_ratio_fine or
-> min_bytes) that races with the removal of the device leaves the global
-> sum of minimum dirty shares charged for a bdi that no longer exists.
-> Until the next reboot, that share of the dirty threshold is withheld
-> from every other bdi (__wb_calc_thresh() scales by 100 % minus the
-> sum), and a later min_ratio store on any bdi that would push the sum
-> to 100 % fails with EINVAL although every bdi reads 0. Root privilege
-> is needed for the store; the removal is any del_gendisk() (a disk or
-> loop device going away) or the unmount of a filesystem with its own
-> bdi. On an x86_64 defconfig kernel (v7.3-rc7), 2000 rounds of
-> LOOP_CTL_ADD/LOOP_CTL_REMOVE on one loop device with a second thread
-> writing 50 to its min_ratio leak the share on the first round the
-> store lands in the window; afterwards `echo 99 > min_ratio` on another
-> loop device fails with EINVAL. With the fix the same run keeps the sum
-> at 0 and the store succeeds. Affected since v5.16, when the reset in
-> bdi_unregister() was added.
-> 
-> bdi_unregister() gives the bdi's share back with bdi_set_min_ratio(bdi,
-> 0) and only then calls device_unregister(), which removes the sysfs
-> attributes. A min_ratio_store() that gets its kernfs active reference
-> before the removal runs to completion after the reset:
-> __bdi_set_min_ratio() takes bdi_lock, sees bdi->min_ratio == 0, adds
-> the new value to bdi_min_ratio and stores it in the bdi, which
-> bdi_put() then frees. Nothing gives that share back.
-> 
-> Move the reset after device_unregister(): once the attributes are gone
-> no store can run, and bdi_set_min_ratio() needs nothing from the
-> device.
-> 
-> Found while formally verifying bdi_unregister() against the kernel
-> binary.
-> 
-> Fixes: 3c376dfafbf7 ("mm: bdi: initialize bdi_min_ratio when bdi is unregistered")
-> Assisted-by: LLM
-> Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+On Mon, Oct 19, 2026 at 6:10=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
+e:
+>
+> On Fri, Oct 16, 2026 at 2:15=E2=80=AFAM Kairui Song via B4 Relay
+> <devnull+kasong.tencent.com@kernel.org> wrote:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > Complement MGLRU's eviction-time tier-PID protection with access-time
+> > frequency-guided promotion.  Introduce a unified set of helpers built b=
+ased
+> > on referenced (access) count of a folio.
+> >
+> > Each access increments a folio's referenced count stored in folio flags
+> > (refs), refs still maps to a logarithmic tier just like before, but wit=
+h
+> > more formal bit definitions, a few special thresholds are introduced:
+> > LRU_REFS_REFERENCED (1), LRU_REFS_WORKINGSET (2), LRU_REFS_PROTECTED (3=
+),
+> > and LRU_REFS_MAX (7). When refs reaches a certain threshold, the folio =
+is
+> > promoted proactively instead of waiting for the PID controller to kick =
+in.
+> >
+> > Also simplify MGLRU's usage of PG_workingset and PG_referenced: they
+> > become the low two bits of the refs count, with the higher bits
+> > provided by LRU_REFS_MASK.  This reduces MGLRU's original refs count
+> > bit usage by one, since only one extra bit is now needed to record a
+> > max referenced count of 7, and makes MGLRU's refs accounting more
+> > accurate.
+> >
+> > This doesn't affect classical LRU in any way, and it addresses several
+> > shortcomings of MGLRU's old tier-only cache protection model:
+> >
+> > - Long feedback loop: protection only activated after enough re-faults,
+> >   by which time the hot folios are already evicted, or no longer hot.
+> >
+> > - Limited tier resolution: once referenced count exceeded the bits
+> >   limit (8 previously), MGLRU could no longer distinguish hotter folios=
+ as
+> >   they are capped by the tier.  And what's worse, PG_workingset forces
+> >   a folio to stay on tier 3.
+> >
+> > - Eviction hotness reversion: because PID protection activates upon
+> >   eviction and always targets the LRU tail, it tends to protect cold ta=
+il
+> >   folios at the expense of hotter head folios.  Once the tail folios
+> >   consume the PID protection budget, head folios lose their protection.
+> >
+> > - Additionally, the PID cannot distinguish the access time of folios
+> >   that share the same reference count, and there are only 4 tiers.
+> >
+> > To achieve a frequency-guided framework, this commit introduces and rew=
+orks
+> > the LRU_REFS related helpers and definitions; most of the work is done =
+by
+> > the helpers below, and their inline comments describe the details.
+> >
+> > - folio_inc_lru_refs(): Called on any cache access (folio_mark_accessed=
+)
+> >   or page table access.  This is the main helper: it promotes folios
+> >   according to their access frequency.
+> >
+> >   A first access only defers eviction for a folio at the tail of its
+> >   LRU, i.e., in one of the MIN_NR_GENS oldest generations of its own
+> >   type (see lru_gen_at_tail()), and a workingset folio accessed through
+> >   a file descriptor is deferred from the same tail.  Those are the
+> >   generations the eviction scans next, so the deferral moves the folio
+> >   out of its way for one generation.
+> >
+> >   Promotion is lazy: the gen bits and size counters are updated eagerly=
+,
+> >   while the list move is deferred to the next isolation.  NOTE: For now=
+,
+> >   the lruvec lock is unconditionally taken on every on-list access to
+> >   block concurrent aging; a lockless fast path will be implemented very
+> >   soon in a following commit.
+> >
+> > - folio_inc_lru_refs_walk(): Used by the PTE walk path during aging and
+> >   by the batched look-around, both without the LRU lock, so max_seq may
+> >   be stale.  A first page table access only advances a folio at the tai=
+l
+> >   of its LRU, i.e., in one of the MIN_NR_GENS oldest generations of its
+> >   own type (second chance), a second access promotes it to the newest
+> >   generation; this also performs lazy promotion.
+> >
+> > - folio_inc_lru_refs_isolated(): Used by the rmap check before
+> >   eviction.  The folio is isolated and hence this doesn't perform
+> >   promotion by itself; the folio will be added back to the right gen
+> >   upon return according to the access frequency.  This path also has a
+> >   higher promotion bias.
+> >
+> > The eviction-time folio_inc_gen() still handles PID protection, but the
+> > protection ratio is softer than before since proactive promotion is
+> > mostly good enough already.  The PID gain factors are relaxed from
+> > (2:3) to (1:2) and the setpoint now spans the cumulative mass of the
+> > tiers below the candidate instead of tier 0 alone.  folio_inc_gen()
+> > caps refs at WORKINGSET so the folio retains enough history to stay
+> > above the cold tier.  Tier 1 is the fallback tier for PID, and tier 2
+> > is the fallback tier for frequency-guided promotion.  The forced
+> > protection for full-refs folios is removed, obsoleted by the proactive
+> > promotion.
+> >
+> > Refaults are now activated purely according to access frequency:
+> > the old fault bias applied in folio_add_lru() is simplified, since a
+> > folio's access history is a more consistent signal than the context of
+> > the faulting task.  Page table access is still considered a slightly
+> > stronger signal.
+> >
+> > Consequently the placement hint for newly added file folios also uses
+> > LRU_REFS_WORKINGSET instead of PG_referenced, so a folio accessed only
+> > once now starts in the oldest generation rather than the second oldest.
+> > The previous one-generation grace was an artifact of the fault bias whi=
+ch
+> > is well described in the cover letter of this series, and it depended
+> > on LRU drain timing.
+> >
+> > This also redefines PG_workingset and PG_referenced as the low two
+> > bits of the refs count, eliminating the old restriction where
+> > LRU_REFS_MASK was only valid when PG_referenced was set, and allows
+> > all paths to use the same encoding consistently.  Following this idea,
+> > a workingset folio is now defined as refs >=3D LRU_REFS_WORKINGSET (2),
+> > matching the active/inactive LRU's definition and giving in-kernel
+> > consumers (PSI, readahead) consistent behavior on MGLRU, fixing the
+> > longstanding issue that these users don't work well with MGLRU.
+> >
+> > PG_workingset and PG_referenced are no longer independent flags under
+> > MGLRU.  Adjusting existing raw folio_test_*() callers to the new
+> > semantics is left as follow-ups.
+>
+> So this is the main course, with the earlier ones as appetizers and
+> the later ones as desserts?
+> Overall, this dish looks very delicious to me.
+>
+> I ran kernel build on my machine, the result is quite similar with[1].
+>
+> W/o patch:
+>
+> eal    1m49.094s
+> user    25m31.484s
+> sys     3m40.959s
+> pswpin: 662112
+> pswpout: 2504415
+> pgpgin: 4424336
+> pgpgout: 10355273
+> refault_file: 359626
+> refault_anon: 670724
+>
+> W/ patch:
+>
+> real 1m48.944s
+> user 25m30.987s
+> sys 3m34.605s
+> pswpin: 467952
+> pswpout: 2319080
+> pgpgin: 3481187
+> pgpgout: 9603332
+> swpout_zero: 602042
+> swpin_zero: 6250
+> refault_file: 310538
+> refault_anon: 474154
+>
+> But it behaves in a much more sensible way.
 
-Looks good. Feel free to add:
+Hi Barry,
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Thanks for the review and testing. Glad to see it worked for you.
 
-								Honza
+>
+> I've had a preliminary look, but haven't reviewed it in detail yet.
+> I have a few comments.
+>
+> [1] https://lore.kernel.org/linux-mm/20261016213115.70515-1-baohua@kernel=
+.org/
 
-> ---
-> 
-> Notes:
->     The window is between the reset and kernfs draining the attribute's active
->     references in device_del(): bdi_debug_unregister() and the device
->     removal (uevent, bus and class teardown) sit in it, tens of microseconds,
->     so a tight store loop lands in it within a few hundred add/remove rounds
->     under QEMU TCG. A store that lands there also fails every later min_ratio
->     store of 50 with EINVAL, which is why the unpatched run shows few landed
->     stores: the leaked 50 % plus a new 50 % reach the limit. The same window
->     exists for min_ratio_fine and min_bytes (same helper), and for the
->     per-superblock bdis unregistered from generic_shutdown_super().
->     
->     Reproducer (x86_64 defconfig, root, loop devices 20 and 21 free, QEMU
->     -smp 2):
->     
->       gcc -O2 -pthread -static -o bdi_min_ratio_leak_short bdi_min_ratio_leak_short.c
->       ./bdi_min_ratio_leak_short
->       before: min_ratio 99 on loop21: Invalid argument   (exit 1)
->       after:  min_ratio 99 on loop21: ok                 (exit 0)
->     
->       /* loop device add/remove racing a min_ratio store; root, CONFIG_BLK_DEV_LOOP */
->       #include <errno.h>
->       #include <fcntl.h>
->       #include <linux/loop.h>
->       #include <pthread.h>
->       #include <stdio.h>
->       #include <string.h>
->       #include <sys/ioctl.h>
->       #include <unistd.h>
->     
->       static volatile int stop;
->     
->       static int store(const char *path, const char *val)
->       {
->       	int fd = open(path, O_WRONLY), r;
->     
->       	if (fd < 0)
->       		return -1;
->       	r = write(fd, val, strlen(val));
->       	close(fd);
->       	return r < 0 ? -errno : 0;
->       }
->     
->       static void *storer(void *arg)
->       {
->       	while (!stop)
->       		store("/sys/class/bdi/7:20/min_ratio", "50");
->       	return NULL;
->       }
->     
->       int main(void)
->       {
->       	int ctl = open("/dev/loop-control", O_RDWR), i, r;
->       	pthread_t th;
->     
->       	ioctl(ctl, LOOP_CTL_ADD, 21);			/* the control bdi */
->       	pthread_create(&th, NULL, storer, NULL);
->       	for (i = 0; i < 2000; i++) {
->       		if (ioctl(ctl, LOOP_CTL_ADD, 20) < 0)
->       			continue;
->       		while (ioctl(ctl, LOOP_CTL_REMOVE, 20) < 0)
->       			;
->       	}
->       	stop = 1;
->       	pthread_join(th, NULL);
->       	r = store("/sys/class/bdi/7:21/min_ratio", "99");	/* sum must stay < 100 */
->       	printf("min_ratio 99 on loop21: %s\n", r ? strerror(-r) : "ok");
->       	store("/sys/class/bdi/7:21/min_ratio", "0");
->       	return r != 0;
->       }
-> 
->  mm/backing-dev.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-> index 18e999053bae..fad1495d3b20 100644
-> --- a/mm/backing-dev.c
-> +++ b/mm/backing-dev.c
-> @@ -1162,19 +1162,20 @@ void bdi_unregister(struct backing_dev_info *bdi)
->  	wb_shutdown(&bdi->wb);
->  	cgwb_bdi_unregister(bdi);
->  
-> -	/*
-> -	 * If this BDI's min ratio has been set, use bdi_set_min_ratio() to
-> -	 * update the global bdi_min_ratio.
-> -	 */
-> -	if (bdi->min_ratio)
-> -		bdi_set_min_ratio(bdi, 0);
-> -
->  	if (bdi->dev) {
->  		bdi_debug_unregister(bdi);
->  		device_unregister(bdi->dev);
->  		bdi->dev = NULL;
->  	}
->  
-> +	/*
-> +	 * If this BDI's min ratio has been set, use bdi_set_min_ratio() to
-> +	 * update the global bdi_min_ratio. After device_unregister(): the
-> +	 * sysfs min_ratio stores can no longer run and set it again.
-> +	 */
-> +	if (bdi->min_ratio)
-> +		bdi_set_min_ratio(bdi, 0);
-> +
->  	if (bdi->owner) {
->  		put_device(bdi->owner);
->  		bdi->owner = NULL;
-> 
-> base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
-> -- 
-> 2.53.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Right there could be some similarities, and some differences, e.g. no
+more lru_gen_in_fault hanlding here, or difference between anon /
+file. BTW did you test the whole series or just this patch? This patch
+have a few workaround as intermeidate step (e.g. the forced LRU lock
+in folio_mark_access, which is a pure burden but have to stay until
+very end of the series).
+
+> >  /**
+> > @@ -212,13 +216,13 @@ static inline void lru_set_refs_flags(unsigned lo=
+ng *flags, unsigned int refs)
+> >   */
+> >  static inline int lru_get_refs_flags(unsigned long flags)
+> >  {
+> > -       if (!(flags & BIT(PG_referenced)))
+> > -               return 0;
+> > -       /*
+> > -        * Return the total number of accesses including PG_referenced.=
+ Also see
+> > -        * the comment on LRU_REFS_FLAGS.
+> > -        */
+> > -       return ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) + 1;
+> > +       int refs;
+> > +
+> > +       /* Return the total number of accesses. See the comment above M=
+AX_NR_TIERS. */
+> > +       refs =3D (flags & BIT(PG_referenced)) ? BIT(0) : 0;
+> > +       refs +=3D (flags & BIT(PG_workingset)) ? BIT(1) : 0;
+> > +       refs +=3D ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) << 2;
+> > +       return refs;
+> >  }
+>
+> Could we use the following instead? Coming from a hardware register backg=
+round,
+> this looks more like register encoding to me:
+>
+> static inline int lru_get_refs_flags(unsigned long flags)
+> {
+>     int refs;
+>
+>     refs  =3D !!(flags & BIT(PG_referenced));
+>     refs |=3D !!(flags & BIT(PG_workingset)) << 1;
+>     refs |=3D ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) << 2;
+>     return refs;
+> }
+
+No problem; it means the same thing and looks better indeed. I think I
+better change the return type to unsigned too, refs can never be
+negative (gen could be though, as a reserved value).
+
+>
+> >
+> >  static inline int folio_lru_refs(const struct folio *folio)
+> > @@ -236,14 +240,29 @@ static inline void folio_set_lru_refs(struct foli=
+o *folio, unsigned int refs)
+> >         } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_fl=
+ags));
+> >  }
+> >
+> > +void folio_inc_lru_refs(struct folio *folio, unsigned int flags);
+> > +
+> >  static inline int folio_lru_gen(const struct folio *folio)
+> >  {
+> >         return lru_get_gen_flags(READ_ONCE(*const_folio_flags(folio, 0)=
+));
+> >  }
+> >
+> > +static inline bool lru_gen_at_tail(struct lruvec *lruvec, int type, in=
+t gen)
+> > +{
+> > +       unsigned long min_seq =3D READ_ONCE(lruvec->lrugen.min_seq[type=
+]);
+> > +
+> > +       /*
+> > +        * Consider a folio is at the tail of its LRU when it is within
+> > +        * MIN_NR_GENS of the oldest generation of its own type
+> > +        */
+> > +       BUILD_BUG_ON(MIN_NR_GENS !=3D 2);
+> > +       return gen =3D=3D lru_gen_from_seq(min_seq) ||
+> > +              gen =3D=3D lru_gen_from_seq(min_seq + 1);
+> > +}
+>
+> If only two generations remain, should both be considered hot?
+> If three generations remain, is only the oldest generation old?
+>
+> Also, the name is a bit confusing, as "tail" usually refers
+> to a list. Could we rename it to one of the following?
+>
+> lru_gen_is_old()
+> or
+> lru_gen_is_near_oldest()
+
+Right, I wanted to introduce an idea of something called tailing gens
+(e.g. 8 tailing gens when there are 64 gens in total, folios in
+tailing gens are promoted on each access instead of multiple access,
+this works really well for fine grained hotness detection, and avoids
+over protection too). But for now this helper is just meant to tell
+the caller if the folio is close to be evicted or not, checking
+min_seq only could easily fall into a pitfall where the oldest gen is
+very short.
+
+Maybe lru_gen_at_expiry? Or lru_gen_at_salvage?
+
+BTW the whole picture involves three kinds of gens:
+{tailing/expiry/salvage} gens (promote by one gen on each one FD
+access), frequency gens (promote by one gen on multiple FD access),
+times gens (promote to latest gen on PTE access); We now only have
+expiry gens and frequency gens, timed gens are extensions for the
+workingset report or pghot design. e.g we have 64 gens, then 8 tailing
+gens are expiry gens, 16 frequency gens, and 48 newest gens are timed
+gens.
+https://lwn.net/Articles/976985/
+
+I mentioned this in the cover letter that the "climbing of the file
+cache" will stop at 8 gens or 16 gens, this is the whole story, there
+is a lot of context and plan so I trimed them off to focus on the FG
+improvement first..
+
+>
+> > +
+> >  static inline bool lru_gen_is_active(const struct lruvec *lruvec, int =
+gen)
+> >  {
+> > -       unsigned long max_seq =3D lruvec->lrugen.max_seq;
+> > +       unsigned long max_seq =3D READ_ONCE(lruvec->lrugen.max_seq);
+> >
+> >         VM_WARN_ON_ONCE(gen >=3D MAX_NR_GENS);
+> >
+> > @@ -300,23 +319,24 @@ static inline unsigned long lru_gen_folio_seq(con=
+st struct lruvec *lruvec,
+> >                                               bool reclaiming)
+> >  {
+> >         int gen;
+> > +       int refs =3D folio_lru_refs(folio);
+> >         int type =3D folio_is_file_lru(folio);
+> >         const struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> >
+> >         /*
+> > -        * +-----------------------------------+-----------------------=
+------------+
+> > -        * | Accessed through page tables and  | Accessed through file =
+descriptors |
+> > -        * | promoted by folio_update_gen()    | and protected by folio=
+_inc_gen()  |
+> > -        * +-----------------------------------+-----------------------=
+------------+
+> > -        * | PG_active (set while isolated)    |                       =
+            |
+> > -        * +-----------------+-----------------+-----------------+-----=
+------------+
+> > -        * |  PG_workingset  |  PG_referenced  |  PG_workingset  |  LRU=
+_REFS_FLAGS |
+> > -        * +-----------------------------------+-----------------------=
+------------+
+> > -        * |<---------- MIN_NR_GENS ---------->|                       =
+            |
+> > -        * |<---------------------------- MAX_NR_GENS -----------------=
+----------->|
+> > +        * +------------------------------------------+----------------=
+--------------------------+
+> > +        * |     Accessed through page tables and     |     Accessed th=
+rough file descriptors    |
+> > +        * | promoted by folio_inc_lru_refs_walk()    | protected by fo=
+lio_inc_lru_refs/inc_gen  |
+> > +        * +------------------------------------------+----------------=
+--------------------------+
+> > +        * | PG_active (set at isolation or refault)  |                =
+                          |
+> > +        * +--------------------+---------------------+----------------=
+----+---------------------+
+> > +        * |     LRU_REFS_MAX   | LRU_REFS_WORKINGSET |    LRU_REFS_MAX=
+    | LRU_REFS_WORKINGSET |
+> > +        * +------------------------------------------+----------------=
+--------------------------+
+> > +        * |<-------------- MIN_NR_GENS ------------->|                =
+                          |
+> > +        * |<----------------------------------- MAX_NR_GENS ----------=
+------------------------->|
+> >          */
+> >         if (folio_test_active(folio))
+> > -               gen =3D MIN_NR_GENS - folio_test_workingset(folio);
+> > +               gen =3D MIN_NR_GENS - (refs >=3D LRU_REFS_WORKINGSET);
+>
+> Could we define the "workingset" variant earlier so we can reuse it here?
+>
+> workingset =3D refs >=3D LRU_REFS_WORKINGSET;
+
+Looks good, will do.
+
+> > +/*
+> > + * Update the folio's lru refs indicator. The caller doesn't need to h=
+old
+> > + * the folio lock, isolate the folio, or hold the lruvec lock. Used by=
+ both
+> > + * cache access (flags =3D=3D 0) and page table access (LRU_REF_MAPPED=
+,
+> > + * optionally with LRU_REF_EXEC).
+> > + */
+> > +void folio_inc_lru_refs(struct folio *folio, unsigned int flags)
+> > +{
+> > +       int max_gen;
+> > +       int type, refs, old_gen, gen;
+> > +       unsigned long new_flags, old_flags, max_seq;
+> > +       struct lru_gen_folio *lrugen;
+> > +       struct lruvec *lruvec =3D NULL;
+> > +
+> > +       type =3D folio_is_file_lru(folio);
+> > +       old_flags =3D READ_ONCE(*folio_flags(folio, 0));
+> > +       do {
+> > +               new_flags =3D old_flags;
+> > +               old_gen =3D lru_get_gen_flags(old_flags);
+> > +               refs =3D lru_get_refs_flags(old_flags) + 1;
+> > +               gen =3D old_gen;
+> > +               if (old_gen < 0)
+> > +                       goto out;
+> > +               /*
+> > +                * Lock the lruvec if the folio is on-list. We are alre=
+ady
+> > +                * doing lazy promotion so in theory we don't need this=
+,
+> > +                * but for now, concurrent aging would still corrupt th=
+e
+> > +                * size counters.  This is a temporary limitation and
+> > +                * will be lifted very soon, so the lock here is not a
+> > +                * performance concern.
+> > +                */
+> > +               if (!lruvec) {
+> > +                       lruvec =3D lruvec_live_lock_irq(folio_lruvec(fo=
+lio));
+> > +                       lrugen =3D &lruvec->lrugen;
+> >                 }
+> > +               max_seq =3D READ_ONCE(lrugen->max_seq);
+> > +               max_gen =3D lru_gen_from_seq(max_seq);
+> > +               if (old_gen =3D=3D max_gen)
+> > +                       goto out;
+> >
+> > -               folio_set_lru_refs(folio, 1);
+> > -               return false;
+> > -       }
+> > +               if (flags & (LRU_REF_MAPPED | LRU_REF_EXEC)) {
+> > +                       /* Promote second page table access or executab=
+le */
+> > +                       if (refs > LRU_REFS_REFERENCED || flags & LRU_R=
+EF_EXEC)
+> > +                               gen =3D max_gen;
+>
+> This looks a bit odd to me. Could we handle LRU_REF_EXEC in a
+> separate branch instead of mixing it with refs > LRU_REFS_REFERENCED?
+
+Not sure how? They seem to want the same thing: promote the folio.
+
+> > +                       /* First access only defers eviction of a tail =
+gen */
+> > +                       else if (lru_gen_at_tail(lruvec, type, old_gen)=
+)
+> > +                               gen =3D (old_gen + 1) % MAX_NR_GENS;
+>
+> The logic makes a lot of sense to me. It should be able to
+> differentiate readahead folios from those that are actually mapped
+> and likely to be accessed more than once.
+>
+> If we allow two generations to remain, this could be a problem
+> because old_gen + 1 would overflow. Maybe add a
+> VM_WARN_ON() to guard against this case?
+
+We just checked if (old_gen =3D=3D max_gen), so this should be fine? I
+mean overflow and the mod MAX_NR_GENS is also part of the sliding
+window logic.
+
+> > +                       refs =3D min(refs, LRU_REFS_PROTECTED);
+> > +               } else if (refs > LRU_REFS_MAX) {
+> > +                       /* LRU refs counting overflow, bump the gen */
+> > +                       gen =3D (old_gen + 1) % MAX_NR_GENS;
+> > +                       refs =3D LRU_REFS_PROTECTED;
+> > +               } else if (lru_gen_at_tail(lruvec, type, old_gen) && re=
+fs >=3D LRU_REFS_WORKINGSET) {
+>
+> Sometimes you use >=3D LRU_REFS_WORKINGSET, while elsewhere
+> you use refs > LRU_REFS_REFERENCED. Can we unify these
+> checks or define a workingset variant?
+
+No problem; I can use a macro for that, as they mean the same thing.
+
+> > +/*
+> > + * Update the lru refs indicator of an isolated folio, only used on
+> > + * mapped folios upon the final eviction.
+> > + *
+> > + * Increments the refs count (capped at LRU_REFS_PROTECTED, evict_foli=
+os()
+> > + * then caps it at LRU_REFS_WORKINGSET).  Returns true if the caller s=
+hould
+> > + * activate the folio (second access or executable), false to put it b=
+ack
+> > + * for a second chance.
+> > + */
+> > +static bool folio_inc_lru_refs_isolated(struct folio *folio, const vma=
+_flags_t *vma_flags)
+> > +{
+> > +       unsigned long new_flags, old_flags =3D READ_ONCE(*folio_flags(f=
+olio, 0));
+> > +       int refs;
+> > +
+> > +       do {
+> > +               new_flags =3D old_flags;
+> > +               refs =3D lru_get_refs_flags(old_flags) + 1;
+> > +               lru_set_refs_flags(&new_flags, min(refs, LRU_REFS_PROTE=
+CTED));
+>
+> I'm having a hard time understanding why an activated folio
+> still keeps LRU_REFS_PROTECTED, since it will be promoted
+> to the active list anyway :-)
+
+Right the FG idea is to always retain the frequency counts, instead of
+resetting them to 0, so folio_inc_lru_refs can promote FD accessed
+folios much more proactively, when a folio reaches LRU_REFS_MAX it
+will be promoted by one gen.
+
+I did a in depth analyze of runtime distribution, with this, we can
+see very hot folio being promoted from max_seq - 1 to max_seq, and
+after aging, the hotness info is still kept and workingset stay stable
+and accurate (it's like the global aging of traditional LFU, which is
+obsoluted in upstream due to overhead despite having better accuracy,
+but now it comes with almost zero cost).
+
+>
+> Later, I see that you set it to LRU_REFS_WORKINGSET in
+> evict_folios():
+>
+> folio_set_lru_refs(folio, min(folio_lru_refs(folio), LRU_REFS_WORKINGSET)=
+);
+
+Right that part is meant for aging the older folios and PID controller
+though. LRU_REFS_WORKINGSET could means historical workingset, and
+LRU_REFS_PROTECTED means folios being currently actively protected.
+
+Also we are now giving the PID tiers a proper defination, tier 0 is
+readahead / cold cache, tier 1 is folios used at least once, and
+LRU_REFS_WORKINGSET is just the tier 1 fallback line, tier 2 is
+LRU_REFS_PROTECTED which is the proactive promotion wokringset
+/candidates, consistent with each other.
+
+> So, is the purpose to distinguish between max_seq and
+> max_seq - 1 even when we know the folio will be placed
+> on the active list?
+>
+> My concern is that after the folio is moved to the
+> appropriate generation, LRU_REFS_PROTECTED or
+> LRU_REFS_WORKINGSET may still remain set. Are these
+> flags cleared somewhere?
+
+They are never cleared, only PID protection / eviction protection can
+reset it to LRU_REFS_WORKINGSET, which is the idea of FG. And it
+worked really well checking the zipf read data and especially for
+multi tier DB benchmarks. Folios in
+
+And actually for the current mainline MGLRU impelmentation,
+PG_workinset is also never cleared and it will pin a folio at tier 3
+causing over protection very easily, we will reset it to tier 1 here
+and with a softer PID protection factor, it seems much better in real
+workloads.
 
