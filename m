@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C592CCCF2DA
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 860AECCF2DA
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE55C6B012B; Mon, 19 Oct 2026 01:38:27 -0400 (EDT)
+	id 6905F6B012D; Mon, 19 Oct 2026 01:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8E786B012C; Mon, 19 Oct 2026 01:38:27 -0400 (EDT)
+	id 640F16B012E; Mon, 19 Oct 2026 01:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7CCF6B012D; Mon, 19 Oct 2026 01:38:27 -0400 (EDT)
+	id 556B06B012F; Mon, 19 Oct 2026 01:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8230B6B012B
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:38:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F216C05F8
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:38:26 +0000 (UTC)
-X-FDA: 85338270612.23.90DA276
-Received: from mta1.migadu.com (out-60.mta1.migadu.com [95.215.58.60])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0ACCEC0002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:38:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o0+2Mzj6;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.60 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 2FFF76B012D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:44:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F23AC04F8
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:44:27 +0000 (UTC)
+X-FDA: 85338285774.09.B66298B
+Received: from mta1.migadu.com (out-120.mta1.migadu.com [95.215.58.120])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B20601C0003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:44:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=L1iXzGB8;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.120 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792388666;
+	b=AFhsh9gxEilWg/6gOtTE+uNCCYa6MiZaXwKX0jrXnDnYdAn3fMYXy0PQdnLKBwgSapBEKj
+	fmhD2+IsiUX1oS1SixnKJ/Qo8bFhRlXNsDJw85BAefjXX3ue5ibmRUaTafxhvYEZF9KXII
+	33yQ7eS4NBP392pJC5jGwnnkM9/8KnU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=L1iXzGB8;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.120 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792388304;
+	s=arc-20220608; t=1792388666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fj1QnA8Wbfs9pmSonhebSKG5k1h01DAB044UZgasZmM=;
-	b=VhdWnfJ72fxRpGjIlkB9pn+GAMexl6K+qxZc4AktR2tkY9HzRkovAV7bdDOLM8z2tBb7jt
-	zwcRX4rCitRR2QRZwFiJISlESici1pL0bQ/A5t6WiFOI+Ucw9go383tE/NishX4BM5MEmo
-	HLh1cAcfGb95eDyFxeYd3EWWVhefnao=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792388304;
-	b=fdC92kKurUxgG9vGXlGlm+3KEHtZIkvtiRnOxHBExMeF6r8O9+YB7ht9AloMSdwrl8RJEi
-	k18WwnBhOni1eEP99toESQvZMWtNraB9xOlP05GOdAnzVIXEadXsveN4yvX8zFX9kCx35O
-	AWMnUS6Us3YszwU6jxiCEvt/FUYiHW4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o0+2Mzj6;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.60 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Csd/DWIbabNfDXhiBNfIrUSLSOKx+oLs3xGRISDhTSQ=;
+	b=LsXw3Y3fzRc4wiTgA+cT7SpBCK13UlhQuqYqyCmAwKNf0mexzOHp9SCwaNjJsCxtPY520z
+	/tH9YgbnQmKf8NS1OFUbPKyQ5lRVS9XUAdeRq8VAREE2rV3HJ6KL2XYl5FmqNXDh1NjV4V
+	xMdqB1gTDEWO50H7QrWQevOvhSvB1ag=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5E31hXFLn3ZF06DDXoSyDVQz+JRrW2LFsdTv2H+nT0Q=;
+DKIM-Signature: a=rsa-sha256; bh=/fcqj4m3aIuWshJpvmCFywqs73fNC8e2m8IxJm9UhVM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792388302; v=1; x=1792993102;
- b=o0+2Mzj6jR0sh8s3vW7/WMOS+4ddEI1CG0esQegFfd+dTIU9fhM3WSi7/9cmzQVXxfTfcmKl
- 7K7iK3fwddNVUUr0q+3wWfH22v2i1e2dXjZdHKqfqKRC2dO1N4/MY/lyXCIxQSTM3LyQO6zSqeP
- UQaJWfiLfOZ6Jb4E0dLGY8C4=
+ t=1792388661; v=1; x=1792993461;
+ b=L1iXzGB8MgXBJes32c8pUMkR6QGc495686Fb3M4e/WS4kl432MCwRFb90MraL3UY52FsSOdB
+ kg8gX69i2gxRtg4dzsUOEgHN7DI38ImxPA56Rx43onDahWkaAEn84BOga3EodVgkHd92FLAgw32
+ ChH/tXF598lC+v7R4/pau8RA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a20ba9f3511e7662;
-	Mon, 19 Oct 2026 05:38:22 +0000
-X-Mizu-Trace-ID: a20ba9f3511e7662
+Received: by smtp.migadu.com with ESMTPS id c488493aed6b46f9;
+	Mon, 19 Oct 2026 05:44:21 +0000
+X-Mizu-Trace-ID: c488493aed6b46f9
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <19d5b7cc-782f-44b1-8ec9-a1764484f10f@linux.dev>
-Date: Mon, 19 Oct 2026 13:38:07 +0800
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH v2 0/5] mm/vmalloc: make the mapping functions undo their partial mappings
+Date: Mon, 19 Oct 2026 13:45:25 +0800
+Message-Id: <20261019054531.87652-1-hao.ge@linux.dev>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: unqueue deferred split folios outside the lruvec
- lock
-Content-Language: en-US
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Hugh Dickins <hughd@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20261017004555.2890038-1-joannelkoong@gmail.com>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20261017004555.2890038-1-joannelkoong@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B20601C0003
+X-Stat-Signature: ptpf8gq6r31br9sft7xidnzmdpe3dgzt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0ACCEC0002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: nwz6esoee57utz7hhh4mh7mtpge6rtzm
-X-HE-Tag: 1792388303-19428
-X-HE-Meta: U2FsdGVkX19XhkoRVGlEz4HaX/hONg9NFTScdmsvvYXA6oSVsaRV499LIcT4hcbZ4ljkeTPUXQykZ+ndExBFra1rSY+goSF1VD/aTnJPq4f10J38fvX0nlTiQ4JzV7JQ5U/Xpkdyuifp94uvF5xTKC1DA18eoSEoREYpAPi9LKIqLMaraWo/UBQvzCLg/xtbrB6Lqr0hyytTv+9trpCYfMhqPLKwEb74+WAwmOpJFZIZfOzSXoQyXyyrgbO57jfjwv8wpmPvWOxFGlMmvSXv9h1Y5f/LZPMc3cRq4Jj1kSvGG+EYJOeqoM95DydCXjMTMFmB2nPSkHxBsvJCYIJbPmvkyUNApb9H6NG1E4l3ZdFltOtgjz9HsISA1D4lxl3DvBrBVpPsi966byMlxzr5JAfKvzw0enoOZD/M40cCLv4pWB9PjO6lK7TJJ1VH0FaLfPvcSwUc7s9/JvwOsMVnlbzGyo1t5O2XC+7/aBKiv7qlpHX7qukl9RKRFRHSLs5nvF/ncjciHIHuqlz/lC6eWKUIblyR/ySJ0uTqmqaBTlQ7KLdw8fhCc7pwmrFRxmQbVnsEI8+p29x0PIjLDfnANRjrMJ7DmOJHTthJQ70o8IeHHq+KU3afgQaLhzDLz2D32Zg2XR1xRO/8+Xv2fuYCiFNFIoXjAZo6J73piA+/l135FXshyxusPZOLovn7gT6a/PK3zCTmA0Bgftfz7IZkzNhPuP+Y5VCza63k+g/jkYq3Zw4RwnJCOg6n3YcbMQ/vQk2OlmJNr9Qo0dEomYJLgFR1ufcSKc4GXcMkGSrhStInoPy4BKy+xFgHxyJpLqg/1pRs/UeX4l8RF+QjVkeOIv69ZGvmfO12kE8rGTwWlreTnBpU+WmDiI6UW+Bvzxl1lKB71Kvu3LnM6rKO/X8fjnkNzK5sWiVvBN1fuP0EBKAOTt5KM2goU13ZF4uvExuS+STa51WafqdWKfZfGiv
- M3UYaYAJ
- FE1WC4KDr39gA+ZR8v9SK4cuuS9I11cbyN2rHfvQc3YXs6RWvl2Q68QQwE377vHZ/NUotnTQ2iqU39WXWDp9tsiZCYH5ZrzGLUzBGnmlGw7deKd171w7ZweZpJfQuQADycgTubcnZQZijWeDJaxnDx1Wr6ZhT6H3yHLeybI5t8dpu4kZg7MuzbPjlE9pNiL1hcZQ+aHqsD7fEvTu6K0Pkh8he+yWqDkeupHhszABXvtE5nQT/cCTk4Hwy+F/xH/QNhgA1KhceVZeTW537M2EV/oDjXc57pQcD8uUHu82/V2p4Aw8=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1792388662-773583
+X-HE-Meta: U2FsdGVkX18KwOauAc5fIfQ64leut2XzW4cnv9ybAlzhlnlBHonlXBEnjujlgCnXnQxu197soFMCJFZBFIr1BTUyLWRkZxVh4+jmGz2r+Hx10uf8dlCit7Eewc7lkiecsBkg0Ue07wL8P4U7azs289yG9gVH+YwAgF1k1nS/lTGTZWDWA7njH5+sia9CXLey8Eepp7R9Z0oIi0Og2W/z4slnnd+XtI2CiHOM7BBrDyboSZoYl8eg2LwqAnxQVAK+lqfyvJayNNFdpTLwVLbdCb6OsnuFIXv54nE5I8fU0cWDp/tRv5i8pwUnvpQazLOKg6rsVzzqt3T6ViQd9jdZwLqhaDihRmghrcxTaoYqHFE+u8WZXz2fjWspWr+vGx8vR6fRDvcsatWX+ysFDAnSBPwHhXzJbHvlO6JIGUR0F9Y7LW/N9yR+oTj4gsgOXtfWWlxghe71ySsScBmQ8nIU0gIufKkXkgBFhg9K4x4NaI8GPmjPoeOSBnVhMmAoj5yblTCV6VA4vPzINF+VfXPA5n8idVHOihe8iDvne9IriTnK84/aeAsQiFN6jtPNdFwUob5wb8+HQpL6qd7NHtszHEGSOCOt98z5jaGMwM4/eroHp3nimoYga+Px78z3C+4c8F+6KYkURNLI5Wuwodd9/y36QU+Bij4YQkbaESdLrlgBNCPU0G++Wi3U63dG7qDjLUjxBH73Nv3V8bBJI9sywkrp/8yrvKWj8+nWJFaW//tfZMcjfJEXTKMNipI1J4gRywRT7+iKruUEOZzMBLJ2dcX/uQXB7EGnG2Fycaqaa3pVfsBDhQPAnQnNQ/QzL4SAj17jmGsATiQ0q1JMcY/m3ZbvFi4RsqR3EzMjF/b3TI5RSNGE0w60DnqBtFFuN1FyiYN0k/PHGwzeUsnNFO1Ca1bDcyCDFomqNad1S5yZGyVesJmeFKXG4WwiH+bzf6vQjfYuL/o2Dhm7o9+SUBE
+ XH0cR7uU
+ 3TWNOhQKZpLC4kyWYgB8hNjklfdcO4vLqrzAxBjrEtD1/M+3hANCiRCTzcHMtkOltWuWbOFJvzRDWfjvI+1vj5+OTrNtEy6CeQxk+FiPKqZM7aEQ3Cbx2AZPM72NhpWA3zloa+zB1xeHPRICGQbYQRxzSN8+6ADP+xg6hcIvOTs5Yk8e0XeZFRGps95yDUQT2UFizpAZql8BZMK1VW10MyqOdRVDzJOnkC6Bo+5cJHuYkBXuU0rguE4DRjMEAUWQ4VqnTHRfO2RsbYQhkRrmpKrNRWCS8m6rKnrgLHdhQkABTLEX32AwtpZaYRWHTQitBn1ABsRoc0N/l/hc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,50 +103,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+__vmap_pages_range_noflush() and friends can install some PTEs before
+failing and leave them mapped, and the kernel callers do not agree on
+who cleans them up. pcpu_map_pages() and kmsan_ioremap_page_range()
+roll back what they mapped before the failure, while
+vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
+__vmalloc_area_node() rely on the mapping functions cleaning up and
+do not call anything like vunmap_range() themselves. When the same
+range is mapped again, the attempt hits the leftovers and fails, with
+a BUG() in vmap_pte_range() for huge mappings and a warning on the
+small-page path.
 
+After discussing with Suren and Ulad [1], we move the rollback into the
+mapping functions. A failed vmap leaves nothing mapped, and the
+callers no longer clean up after it.
 
-On 2026/10/17 08:45, Joanne Koong wrote:
-> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
-> folio_unqueue_deferred_split() on folios where the refcount has dropped
-> to zero. In these paths, folio_unqueue_deferred_split() is called with
-> the lruvec lock often held (move_folios_to_lru() always holds it and
-> folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
-> in the batch except the first). However, it's not needed to hold the
-> lruvec lock.
-> 
-> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
-> the deferred split queue lives on folio->_deferred_list in
-> deferred_split_lru. The deferred_split_lru is a list_lru with its own
-> per-memcg per-node lock.
-> 
-> There are already other existing callers that call
-> folio_unqueue_deferred_split() without holding the lruvec lock (eg
-> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
-> 
-> Add folio_batch_unqueue_deferred_split() and use it in
-> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
-> unqueue each batch of zero-refcount folios from the deferred split list
-> after the lruvec lock is released and before
-> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
-> critical sections, which run with IRQs disabled and are highly
-> contended.
-> 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> ---
-> This patch came out of a discussion about splitting underused mTHP folios [1],
-> where queueing small mTHP folios on the deferred split list was found to
-> regress Barry's fault microbenchmark. The cost turned out to be the unqueue
-> running under the lruvec lock rather than contention on the deferred split
-> queue itself. Testing this patch on top of the series in [1] with the same
-> microbenchmark, queueing every 16k folio went from a 15% runtime cost to
-> noise, with lruvec lock wait dropping from 491 seconds to 38 seconds (most of
-> that contention then moves to the deferred split list_lru lock, but runtime
-> still drops back to the unqueued baseline).
+[1] https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/
 
-Looks great :) Could you also keep the benchmark results above the '---'?
-They'd be useful to have in the changelog, along with the test setup.
+Patch 1 is the KMSAN part. The shadow and the origin of a range
+are mapped by two separate calls, so the rollback there has to
+cover both. Patch 2 is its disabled-KMSAN counterpart. Patch 3 adds
+the rollback to __vmap_pages_range_noflush() and vmap_page_range().
+Patches 4 and 5 drop the powerpc and percpu cleanups that are not
+needed anymore.
 
-With that, LGTM!
+Changes since v1:
+ - Add patch 2. Sashiko reported that an empty range that hits patch 3's
+   WARN_ON_ONCE() trips __vunmap_range_noflush()'s BUG_ON() through
+   kmsan_vunmap_range_noflush() when kmsan=0. Patch 2 adds the
+   kmsan_enabled check the unmap side was missing.
+ - Pick up Reviewed-by tags from Suren and Ulad on patches 1, 4 and 5.
+ - Add Cc: stable to patch 3.
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+v1 link: https://lore.kernel.org/all/20261009063619.112313-1-hao.ge@linux.dev/
+
+Hao Ge (5):
+  mm/kmsan: undo the shadow mapping when the origin mapping fails
+  mm/kmsan: skip vunmap_range_noflush when KMSAN is disabled
+  mm/vmalloc: undo partial mappings inside the mapping functions
+  powerpc: drop redundant unmaps of failed vmap mappings
+  mm/percpu: stop unmapping the CPU that failed to map
+
+ arch/powerpc/kernel/isa-bridge.c |  5 ++--
+ arch/powerpc/kernel/pci_64.c     |  4 +--
+ mm/kmsan/hooks.c                 |  3 +++
+ mm/kmsan/shadow.c                |  4 +++
+ mm/percpu-vm.c                   |  5 ++--
+ mm/vmalloc.c                     | 44 +++++++++++++++++++++++---------
+ 6 files changed, 45 insertions(+), 20 deletions(-)
+
+-- 
+2.25.1
+
 
