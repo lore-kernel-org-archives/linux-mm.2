@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BDE1CCA490
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 02:11:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3AFCCCF2D4
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 02:11:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E09F96B00A6; Sun, 18 Oct 2026 22:11:30 -0400 (EDT)
+	id A61796B00AA; Sun, 18 Oct 2026 22:11:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB9C76B00A7; Sun, 18 Oct 2026 22:11:30 -0400 (EDT)
+	id 9F0566B00AC; Sun, 18 Oct 2026 22:11:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCFA46B00AA; Sun, 18 Oct 2026 22:11:30 -0400 (EDT)
+	id 88AC86B00AB; Sun, 18 Oct 2026 22:11:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8186F6B00A6
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:11:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F411D805ED
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 583696B00A7
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:11:31 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EA80C405CE
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:11:30 +0000 (UTC)
+X-FDA: 85337749140.23.81DC5D1
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 6A4C620005
 	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:11:29 +0000 (UTC)
-X-FDA: 85337749098.12.3EDA029
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 40F2780005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:11:28 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=R9FYuu1D;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792375888;
-	b=EEZk8+C95OCE1RjQTbMCJZtFVs/7ZrLF+WvQIcldPClOtEwFM9i/rTwDw6FiMZqlgSBK5E
-	mJh9SNgVFuAttjAARoXkO4Y3WnOrrNxxTVqZNZdll7kZ712dcvjOCXG5ZZO2qpRWT/CJ6K
-	P//SusDD2uZQyPuMzRHhoS5Zdc4oUFg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=R9FYuu1D;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=MLUvrMmw;
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792375888;
+	s=arc-20220608; t=1792375889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+N9EQwOcSjySxMS4O9eOeYmAxXFE2sVJ9Vy3mk5tWu4=;
-	b=fo5ERY4IU7GbI3YvanOs6pnIIVP2eY42VSMM1wx6Pg6QAIlEHiCWq0lfz7KV+6pryBmRpP
-	GOxEnvrDQmj8/cbbHdx/BOxpfWt2g3Dr/dSuRFSY+9XYUn+DBM/bGjAaDAaz0M6Qedul7H
-	GvRa0xxbWe33GTBUC0uwSRE/T1Zu1Zs=
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5e94a057d9eso1276019e0c.3
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 19:11:28 -0700 (PDT)
+	bh=PhWkLfOOfteM1FeePp68BcqpwCgdE0YNcf9YXtfJq5A=;
+	b=e8J24pH1FjpTJnNS6ykrbIjJSIhFvpC6f89KxCQVlf6bLVkD+1QhaRtZBfuJB1kWz0P2r6
+	BQ/ZnuyNpMboNFKC5WEioxsd+QVouV3InyqaqUR21iq1oGrQPQXKB92f/DVzGimrV3beoG
+	gb/5W6/hpYkWVE2YRm9ZdQ8v28WzAvk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792375889;
+	b=bRUVttJZchMvAvIG1v6z0wozB6aMChBoNBHmsRxozGq63VYjwYaa1KMNNSbYN94sX/loZD
+	vVuHU2QJETT/pvIfqlP+ev5M3tTu98pExxPefsVR+dpwwqzc0fL+mRCxxy40voPU1pftTU
+	cZeT6XILUj/eAm88tiM4wEWht+j+cHc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=MLUvrMmw;
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-7c3b6e8225dso1045169137.2
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 19:11:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792375887; x=1792980687; darn=kvack.org;
+        d=soleen.com; s=google; t=1792375888; x=1792980688; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=+N9EQwOcSjySxMS4O9eOeYmAxXFE2sVJ9Vy3mk5tWu4=;
-        b=R9FYuu1DXXaSwW9fVy9vvxRTbfhBi3y0c0CZ57k8/EpCtk3UmhoIt6XT+oOk0oUsh3
-         7cEXKxC5SUE6sWUM9GVQ9DTatzZaMjaRznxIzLqXHyCECY/uPWVlBTSDrrMzpWc17gmL
-         mx/B5zFRQ6vpjh2uYswOvsUHifyT4B5waFcRMD1KN6cKl1lP0VqR/tCYXVqkNnO4tWJO
-         SdM+DmTqymyPIaRFs4m2vq/F6WbH3rIZLtNHYoeBijuXGmsUcwG4FBun++/nNosWZ1Tk
-         Pe82roUv9snsrCAhxPCS70ubpTc4t+z0c7OhKchQDCody3ZlIaG/UQRQi313GjzA+L+g
-         jDPw==
+        bh=PhWkLfOOfteM1FeePp68BcqpwCgdE0YNcf9YXtfJq5A=;
+        b=MLUvrMmwrMlr65IYMFmXsRq2wgi+TfzL3/Ho2j7avt9mH5s/VatwSUY3y5dYPRavaK
+         ip79/URCelEaPFwAUcfOJxQQTTGQnHjC1ELIVE8mNSyUGl6mbHbZFtXdzRIgQYWIHC76
+         fjiL7zJfh/opXoPmka+62zt2ZTjYuArHXItCjQ/GXxOtiyVqnC71LeWCd6fG3Odif/+h
+         GJs/gOC9nUXALpCHqIq5oFPoqTn/vAcuS9KR5RVG4w9h0UwjSDICnXhFdhezi30HrfNQ
+         oa0SADo/HkfzwJ0cIHJOhkrknKO4dExk/a7jrhbh81+naJ1MvCu4Yxwho6LYamVs2089
+         W6GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792375887; x=1792980687;
+        d=1e100.net; s=20260707; t=1792375888; x=1792980688;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=+N9EQwOcSjySxMS4O9eOeYmAxXFE2sVJ9Vy3mk5tWu4=;
-        b=xtPfNYEkMLzm2PBAguJZERi3h5moIai7heDaIAQlJ+CFNV7i9UFNmQleC5V1Ws1ZQa
-         If352grZ95TYblciD+7WL15yDXSVRox2Mot5DlXp+AFqMaBCZqtdeMdNipfU21w401qB
-         Q8u38yTQOCu50tRrTHAZ0LZhMOgdJk8TcEHXQm3knmGCYa2AvAy13aG/Xz/FUKS3529P
-         HY9bdI2ak7Rn93ReAT29I/kloaykgtyt2GOqGWfqxkTcqTb0z+PRQpnlkd24L9FDOjmj
-         wDo0UcGWP3Z1MplJsGlYhrFzP706q4Als5X1seEmyY+gVmKRhw+SPiY2Pyua8tJOR47S
-         5DrQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwK2kFdHm3e7lxeWH79BTlxjEpV/L9EZlBeLIiF/0q9ZmUUO3ISCADGYVcktQoVFNyZtK5nj176Rg==@kvack.org
-X-Gm-Message-State: AFq9FYKPk26GGZb8n0eZK+czLLP+QZ826OXFW98fjwOQY/wF6O4X8qYE
-	ZuUwfJNUdYLt5j5QmhRyGJS8+Ye9HJB3w3OLUfMGwzx810osJ9kRa5VfZLPiptdQuCw=
-X-Gm-Gg: AYBFou0/EbJIFHzYVcI9yl3ha2w2wRM40SxTrhzvkw40kMH+nO5vnciba9NC2NILuFE
-	k6wopX3jJJCEim0RIqWOVBputkPhIVd8czkioydbwKaX5zNsaohFu2wQkhFOECMvRvFav9n4uGh
-	oekpddx1OnOgfifHN+9L6U7oxWcLweSjLtBvRhf/HiAkxMjd50SZSN5jeBN31T+lGJfoY7iMKx2
-	Y7VUHIk2MZRziADIATTqaL4DQVXIgzX1L6LWyhuLUqMPIsfkOvogexLxH7dJxkj+3cZI/yF3+b7
-	UCZueVJ8Z5QLlDHUMlh/4ykeDW8heUYsoDecIx2ZtQ8G7xpiVDkloN4v9rR9h5VFNA/PrMhtUS+
-	L5yvFUqgLVIxd1AU5W9da2Syk0omyuCLiAhU1rTosXuQW/CpYj9LH0jLS7dEc+j06Gh/xTmFMpe
-	oQZoybs+ZQDwIbZSEBBcFAgIbKAmj+B4e9uN9dd0Bto9oYyONLVee3o4/7KoDrmVPag8qlijb5Y
-	iae6N2hyBE6YKyA3GTz0pfD335M2uu7p6JwOzTgTtnD3FgYbTcVo2Argyyeg+Zv2IiP5I0iMD+U
-	D7SrUVTT3cBsxT6cplg=
-X-Received: by 2002:a05:6122:3115:b0:5ea:a749:d33c with SMTP id 71dfb90a1353d-5eaaa66d4eamr2218681e0c.9.1792375887405;
-        Sun, 18 Oct 2026 19:11:27 -0700 (PDT)
+        bh=PhWkLfOOfteM1FeePp68BcqpwCgdE0YNcf9YXtfJq5A=;
+        b=B64NHO3eNHXAIn059EwRHGTsQxJyxUE/zRpixzDyUQNzJxsz7KvqeTwSunM2oPRSGq
+         2HqG6PMQDLu+ju6ifooCwtdgKJ4ekiSKayAd70IxdPOqhv3Y7toIOu/TTOIAcqIhUBKm
+         E1wOt+Ki1SUa3hG3QjCSIFKJAEsSuy3/iiFLsPKE6TcS9lroypsVam5AdaMhVUc2JQHy
+         m0lYK9hpf10nuqFCLjt7JdIlUARhLQ0iMMXDDl79LtApQSZcZ5oAAwhhIuo1KKUFmRQp
+         AzjWameOv/VbpFgoxCQMWK/AQdNGfTHuO/JM2JCVUt4O6uAGYVLaidrmJfxycoQ1GF2S
+         YSmQ==
+X-Forwarded-Encrypted: i=1; AKwUvByc24cnXrlRjj+ArGl3BFzAt96Go/S/Mwn2bNL014/NryVaPdIHBxqgVqXf443W5IsZgiDBdfspZw==@kvack.org
+X-Gm-Message-State: AFq9FYLSzjMO5PhAS2zpJAQanJaKiPN4wXkxzenH06DMDiswfmCpCNCo
+	P78568pcl5mqumvuVbt+ZdsTAsAaPImA876YrSzK7xv1SGWeCPEdRuoBKFJXMvF80RY=
+X-Gm-Gg: AYBFou0f4f9H/06PcdGcA1S4jM+pkvHghsx6X5vLZP3wad4G1rAMFgaY4vrDlCGvQr7
+	DzPeLAxRKUolp7MiXCBzX+pYiHfSJ85jCjQsHowrQ6KlZOaVo/cRf2+KdAy7nYvTKgmauJDr3CR
+	atuT/izSiUo+8FqAIzK8govkyyThZ6fIkBNyyCEQsAn78EYRSaXVvEuRW/0huqw9f26aVDV5KKI
+	2mvN46UyVoN6MfIuErLKROmaMqVUehsnzQxO4LJpzbTRokxTZpFe19YtGrEkwbQOxcddgYRJnf7
+	nQalxxWtK5f1nU9AvlBBbfscaRstuAPmzV7IIHt6O09PGmmElrU0e8VYYa1KWMu4mu8Ham1PJoa
+	XsRT/faBbVriseBWOOkO3K+rX/v/mdq+15nB4Mh4RSb3C23JcbGGwWOPZrd2fPs8zpSXWUVVr45
+	Xr1MVtHqeMo36ARJqll/pFOYmRerklEA0UnlOSqPcqvLdKBeznGltlXv/4C59JnA+UOtF4QDH40
+	ltpdJmzI7iV+cBxcRx6b/ve65ZKkJEHawX0lgOKO2lmX7JtvOPKKA5pAdksZCj31HMcid6JcXei
+	XQG9X8LDiZ3XGeM1Ifq+GDtRdYJ1cw==
+X-Received: by 2002:a05:6102:849b:20b0:7cc:3eb0:6ef5 with SMTP id ada2fe7eead31-7cc3eb09b24mr1037299137.11.1792375888447;
+        Sun, 18 Oct 2026 19:11:28 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eabbd9ea2bsm4271383e0c.2.2026.10.18.19.11.24
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eabbd9ea2bsm4271383e0c.2.2026.10.18.19.11.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 19:11:26 -0700 (PDT)
+        Sun, 18 Oct 2026 19:11:28 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	rppt@kernel.org,
@@ -120,22 +120,22 @@ To: linux-kselftest@vger.kernel.org,
 	lirongqing@baidu.com,
 	liam@infradead.org,
 	jlayton@kernel.org
-Subject: [PATCH v1 6/8] kho: support read-only KHO mode in kho_block
-Date: Sun, 18 Oct 2026 22:11:09 -0400
-Message-ID: <20261019021111.990394-7-pasha.tatashin@soleen.com>
+Subject: [PATCH v1 7/8] kho: test: support read-only KHO mode in test_kho
+Date: Sun, 18 Oct 2026 22:11:10 -0400
+Message-ID: <20261019021111.990394-8-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
 In-Reply-To: <20261019021111.990394-1-pasha.tatashin@soleen.com>
 References: <20261019021111.990394-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40F2780005
-X-Stat-Signature: gu8g4pigi467zrcdi3gjfggjaw7j7r3o
-X-HE-Tag: 1792375888-922534
-X-HE-Meta: U2FsdGVkX1/ccAuDgfx7jOI8wbTlP7KH10+hQs5RA888EIj6a4ZXyq7pyAjAFtZtwrGk4UEtP5S++E+vxzi7lSE8P1XYNNXcyhr9NESciao4QICZNx6tHEe8uWoF2TGM0rtwOk2+XxES8jTQcxSs7FV2Ec6aX6lM3UTNMtZxaArXXrLE+FqTWaI2zTqmaCNCyeewCTXhMYJxOFMBKWkqVq1ZaHLA/OZhoDNZd/m9ZBzWkYloyMjcEzRCgANCDR7N/uR9yRkz3HMizC9q+YLauXoRvs0dpdq/z9OuWKoLb6CNWqoErQSbIva5xyKDM6aV0CaHiYbXoIffNVK0hPf/npUYbe+JwxIzQu9bJcPVsPxZbVU2JCM3U4WbQ2lnEl+4NvJpNDVYbQ6vetFSZVk9wy1DjXQXEvhErxLNMNi3aL3VeW60e8Km9KpSNuOXLCEYySfDqmzHNBiZ6fLJzuS3RXIeJIzQ+H+tBlhxpuZ0KfJx2APpfrmQ4JQ+xzSKLLADNBt8VgUmMsCuiWuXFeFn/rkBof4+9WHQ6RXDcWG8jFxCjzS5itEGIm1xpdArDPzHFjIPYiecUjzZiU+HMyD4yTIVZfEP5SDYt8xgE4npgta6MaGPfub9hkeUgyBvULBruxaeytQyv6gHAuZW2zCKDsRwDWCvkD4KPcnF/ouPJkKu9OUYuno3ckgh13qWpfuc6y6jT5xT2w1l4MUUvPBs0oko35aCqn2Ifomkvfc9iEr94/MZwNXEII0NivCw9CBeBI4fB5MyYBYRK9xnLMoOg8WShfcBz69oHDkgvROqwBW3bNhUm42plNabjM2zjpFjM1sA1OgHcFs2Zi0DS7PWlN02OGmADcUDeMjorgDRfwHYTepNKwIvuyA4w6s7ef0xNYP/leKWIxyeuVgNEfQJhunbkIXDVEuIAAsrdwQYe3BIkmkAjqAeuxYSzGNM/knUC/1vhFoTKDPN7/V/S2/
- BXjtFx4p
- RV1uqtqlWZ+PKd8GtzbQDSWQadUWBtpLeKo9+rMBJferAkk9jY/CkvV/vCAE94JquJGVzVeCC4zwLG/mccdytKkcVikWS/HzxmeaqEpPuvMrufNh5LV0NFdeFmmwiCuwsKTxsmI2uSjGkU+DqhLoXvDBclASVl0ObrHPn/k1XpHJh4jY8CHV5Byna1wD3lY0XWjL11jVKvdsWJlalGrlS5UJ+9j2vbA0HUBR3v7GKHQTp8qaZFLLltAgSXbp8adqd11iXyDgJTRIP1IGckZ92VIGKrQZxIQNTjmV+ypwcRiPMENUVjYyR4G47WQCNVmnCGW4kebhOLtPE9fG7h95Chb93UVPTm1ps8eyTqBeb3gwx5p6edSONBp3KLg==
+X-Rspamd-Queue-Id: 6A4C620005
+X-Rspamd-Server: rspam08
+X-Stat-Signature: e3bz3onjjtxwdhgoen7uaqx1jgc1b7p1
+X-HE-Tag: 1792375889-93094
+X-HE-Meta: U2FsdGVkX19tty/lk1HDPcF0yJJbsJcfAIQSccXUtIq+uxSN2kxW4BUsPHU7RMCp1DSjwl3esRbL0uC/lEPqnXVUXe4j8JFru0v8cBZ5loFPGRjavSbbqrtx+b3yRIyoraYecmgcEK/gBnPOugHAX2m6iF1DmAHoxZe4NdV4xZTr7esry5C+bYucW9wNomeXEoD50QrUMoTLaETNzBMaTgBiAfcJzjyK173+SVxE29wWuwROozTnYPAfcrK2AyqfxXGwxEenVk4rrw9idGEXfQNYHFXG8NMKeZGHZGXJddmwv3WPBuoQHMfiNH0PQ3/kytPzqihT5KJN3Y3wBpE9jTk0XHKiYZwQFhOBYsUv3c96xPiR2rcSasRDyjkNn+OevJTPxyt6piFgBn9H1707wh/SCzuWX1KozyVCw0iLzb6FesJ+/J37KmV8ykwa1vw3inPNcTnuWtVYyuwLvPmRlc+PC03ZNYG6zWrdqwkQrtoijsk47tFXBhkrnWkwDWx0jcwiuZ6MuCczg2Bj+NJdKQJ/eA992g+TghMJlDO3nKmu/25U8tLMfWWTjkiEZSSlU/5crvfSZAa6Nr1Vmh1gyI9eIrjNGREIx/NMedxt+df7sP4fKcBwjKTqf3QaXUJxLAJ15R4QNbiMYb5PqealBYEUt/JnOLbtafscO2tf+Fg/MZiXTGoMyfr+j22GrmdlttCQF/Ermjb5puwy+UPlwioH/6qJOP75jO/eQWe+6fh7cHwhPcCxfh7kA18zvssynzcqpCFswcb8V5tKHvmj6nJlale3RI9GcRC1bM+DVr3bdVl2tK0Euck1jkg8TPiEspCEGMvryF463MD4k7FyrpT/tcH/W/OmAOgG/CnT3jlmj5UaMN8mEvlP61ZbOmod84kqJ3idw3U8IYfPJnJ/th2TnzRDLSZ39dqpVtLomvOnsFi/Ep/hriFuR/JjLFbr3+jQOJA9IgOwAL5h0t1
+ B+hTiFmY
+ xqmtt01pVZb72zC9IAAqmSfn54exE8LVbkyMgNwdI0fXBjBH/4LErH6RUykXYelb1QnvVLhajwTTOj3uHUQxKmwarPCzgEtKxFnzgSkj5Zhw6UsrlFS6eshVFzrjzYfXKXq8sEI1/h+xzX6ZmLsCTYgZ4G5rWADmNJwKuMoqQtTdGRG3dPAugN3aj3VHEmMczJ6+eaE52EVNvgTrxHXngXmZZJkgDfwUaF2Ve33GnVw5C/FkJ6R+7zJErya/GcSKnLTqSdLJ68PAAMASfXSp+H/vJExvgJREczk7+K420z/dQJmIY9kTo1wYsjQ8P5dIqe/O+Fv6G/O7SY0YkQwvP1n7Vl6F4CxRg1Dx0AHiarfjsd4PYTQlKHOoHnJnI/UIrYhvA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,179 +143,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In read-only KHO mode, incoming serialized kho_block chains lie outside
-the kernel's direct map and must not be modified or freed back into the
-page allocator.
+Allow CONFIG_TEST_KEXEC_HANDOVER to be enabled with
+CONFIG_KEXEC_HANDOVER_READONLY and update test_kho to verify preserved
+state when booted in read-only KHO mode.
 
-Map incoming serialized blocks read-only via kho_ro_map_folio(...,
-PAGE_KERNEL_RO) during cycle detection and restoration, and unmap them
-via kho_ro_unmap() instead of calling kho_restore_free() when destroying
-or shrinking a block set in read-only mode.
+In read-only mode, test_kho retrieves the test FDT subtree, maps the FDT
+folio via kho_ro_map_folio(..., PAGE_KERNEL_RO), restores the preserved
+vmalloc folio descriptor array via kho_restore_vmalloc(), verifies each
+folio's preserved order in the KHO radix tree via
+kho_ro_lookup_folio_order(), maps each folio via kho_ro_map_folio() (and
+unmaps via kho_ro_unmap()), and verifies the checksum over all preserved
+pages.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/Makefile    |  5 +--
- kernel/liveupdate/kho_block.c | 76 ++++++++++++++++++++++++++---------
- 2 files changed, 60 insertions(+), 21 deletions(-)
+ lib/Kconfig.debug |  2 +-
+ lib/test_kho.c    | 68 ++++++++++++++++++++++++++++++++++-------------
+ 2 files changed, 51 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-index f8b09e04bea2..d3587048e619 100644
---- a/kernel/liveupdate/Makefile
-+++ b/kernel/liveupdate/Makefile
-@@ -1,14 +1,13 @@
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 134b15a44625..74223ef8bd1c 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -3381,7 +3381,7 @@ config TEST_OBJPOOL
+ config TEST_KEXEC_HANDOVER
+ 	bool "Test for Kexec HandOver"
+ 	default n
+-	depends on KEXEC_HANDOVER
++	depends on KEXEC_HANDOVER || KEXEC_HANDOVER_READONLY
+ 	help
+ 	  This option enables test for Kexec HandOver (KHO).
+ 	  The test consists of two parts: saving kernel data before kexec and
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+index aa6a0956bb8b..1e0f257a5854 100644
+--- a/lib/test_kho.c
++++ b/lib/test_kho.c
+@@ -239,7 +239,7 @@ static int kho_test_restore_data(const void *fdt, int node)
+ 	phys_addr_t *folios_info;
+ 	const __wsum *old_csum;
+ 	__wsum csum = 0;
+-	int len;
++	int len, i;
  
- luo-y :=								\
--		kho_block.o						\
- 		luo_core.o						\
- 		luo_file.o						\
- 		luo_flb.o						\
- 		luo_session.o
+ 	node = fdt_path_offset(fdt, "/data");
  
--obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
--obj-$(CONFIG_KEXEC_HANDOVER_READONLY)	+= kexec_handover_ro.o
-+obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o kho_block.o
-+obj-$(CONFIG_KEXEC_HANDOVER_READONLY)	+= kexec_handover_ro.o kho_block.o
- obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)	+= kexec_handover_debugfs.o
+@@ -259,11 +259,28 @@ static int kho_test_restore_data(const void *fdt, int node)
+ 	if (!folios_info)
+ 		return -EINVAL;
  
- obj-$(CONFIG_LIVEUPDATE)		+= luo.o
-diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
-index a4e945f28fad..a3cf5b964b26 100644
---- a/kernel/liveupdate/kho_block.c
-+++ b/kernel/liveupdate/kho_block.c
-@@ -60,10 +60,32 @@ static void *kho_block_entry(struct kho_block_set_it *it, u64 index)
- 	return kho_block_entries(it->block) + (index * it->bs->entry_size);
+-	for (int i = 0; i < *nr_folios; i++) {
++	for (i = 0; i < *nr_folios; i++) {
+ 		unsigned int order = folios_info[i] & ~PAGE_MASK;
+ 		phys_addr_t phys = folios_info[i] & PAGE_MASK;
+-		unsigned int size = PAGE_SIZE << order;
+ 		struct folio *folio;
++		size_t size;
++
++		if (order > MAX_PAGE_ORDER)
++			break;
++		size = PAGE_SIZE << order;
++
++		if (kho_is_ro()) {
++			void *addr;
++
++			if (kho_ro_lookup_folio_order(phys) != order)
++				break;
++			addr = kho_ro_map_folio(phys, PAGE_KERNEL_RO);
++			if (!addr)
++				break;
++			csum = csum_partial(addr, size, csum);
++			kho_ro_unmap(addr);
++			continue;
++		}
+ 
+ 		folio = kho_restore_folio(phys);
+ 		if (!folio)
+@@ -278,50 +295,65 @@ static int kho_test_restore_data(const void *fdt, int node)
+ 
+ 	vfree(folios_info);
+ 
+-	if (csum != *old_csum)
++	if (i != *nr_folios || csum != *old_csum)
+ 		return -EINVAL;
+ 
+ 	return 0;
  }
  
-+static struct kho_block_header_ser *kho_block_map_ser(phys_addr_t pa)
-+{
-+	if (!pa)
-+		return NULL;
-+
-+	if (kho_is_ro())
-+		return kho_ro_map_folio(pa, PAGE_KERNEL_RO);
-+
-+	return phys_to_virt(pa);
-+}
-+
-+static void kho_block_unmap_ser(struct kho_block_header_ser *ser)
-+{
-+	if (kho_is_ro())
-+		kho_ro_unmap(ser);
-+}
-+
- /* Free serialized data */
- static void kho_block_free_ser(struct kho_block_set *bs,
- 			       struct kho_block_header_ser *ser)
+-static int kho_test_restore(phys_addr_t fdt_phys)
++static int kho_test_restore(phys_addr_t fdt_phys, size_t fdt_size)
  {
+-	void *fdt = phys_to_virt(fdt_phys);
+ 	const unsigned int *magic;
+-	int node, len, err;
++	int node, len, err = -EINVAL;
++	void *fdt;
++
++	if (!fdt_size)
++		return -EINVAL;
++
 +	if (kho_is_ro()) {
-+		kho_block_unmap_ser(ser);
-+		return;
++		if (kho_ro_lookup_folio_order(fdt_phys) < get_order(fdt_size))
++			return -EINVAL;
++		fdt = kho_ro_map_folio(fdt_phys, PAGE_KERNEL_RO);
++		if (!fdt)
++			return -EINVAL;
++	} else {
++		fdt = phys_to_virt(fdt_phys);
 +	}
-+
- 	if (bs->incoming)
- 		kho_restore_free(ser);
- 	else
-@@ -197,6 +219,20 @@ void kho_block_set_shrink(struct kho_block_set *bs, u64 count)
- 		kho_block_set_shrink_one(bs);
+ 
+ 	node = fdt_path_offset(fdt, "/");
+ 	if (node < 0)
+-		return -EINVAL;
++		goto out_unmap;
+ 
+ 	if (fdt_node_check_compatible(fdt, node, KHO_TEST_COMPAT))
+-		return -EINVAL;
++		goto out_unmap;
+ 
+ 	magic = fdt_getprop(fdt, node, "magic", &len);
+ 	if (!magic || len != sizeof(*magic))
+-		return -EINVAL;
++		goto out_unmap;
+ 
+ 	if (*magic != KHO_TEST_MAGIC)
+-		return -EINVAL;
++		goto out_unmap;
+ 
+ 	err = kho_test_restore_data(fdt, node);
+-	if (err)
+-		return err;
+ 
+-	return 0;
++out_unmap:
++	if (kho_is_ro())
++		kho_ro_unmap(fdt);
++	return err;
  }
  
-+static bool kho_block_step_pa(phys_addr_t pa, phys_addr_t *next_pa)
-+{
-+	struct kho_block_header_ser *ser;
-+
-+	ser = kho_block_map_ser(pa);
-+	if (!ser)
-+		return false;
-+
-+	*next_pa = ser->next;
-+	kho_block_unmap_ser(ser);
-+
-+	return true;
-+}
-+
- /*
-  * kho_block_set_is_cyclic - Check for cycles in a linked list of blocks.
-  * Uses Floyd's cycle-finding algorithm to ensure sanity of the incoming list.
-@@ -205,30 +241,26 @@ void kho_block_set_shrink(struct kho_block_set *bs, u64 count)
-  */
- static bool kho_block_set_is_cyclic(struct kho_block_set *bs)
+ static int __init kho_test_init(void)
  {
--	struct kho_block_header_ser *fast;
--	struct kho_block_header_ser *slow;
-+	phys_addr_t fast_pa = bs->head_pa;
-+	phys_addr_t slow_pa = bs->head_pa;
- 	int count = 0;
+ 	phys_addr_t fdt_phys;
++	size_t fdt_size;
+ 	int err;
  
--	fast = phys_to_virt(bs->head_pa);
--	slow = fast;
--
--	while (fast) {
-+	while (fast_pa) {
- 		if (count++ >= KHO_MAX_BLOCKS) {
- 			pr_err("Block set is corrupted\n");
- 			return true;
- 		}
+-	if (!kho_is_enabled())
++	if (!kho_is_enabled() && !kho_is_ro())
+ 		return 0;
  
--		if (!fast->next)
--			break;
--
--		fast = phys_to_virt(fast->next);
--		if (!fast->next)
-+		if (!kho_block_step_pa(fast_pa, &fast_pa))
-+			return true;
-+		if (!fast_pa)
- 			break;
- 
--		fast = phys_to_virt(fast->next);
--		slow = phys_to_virt(slow->next);
-+		if (!kho_block_step_pa(fast_pa, &fast_pa) ||
-+		    !kho_block_step_pa(slow_pa, &slow_pa))
-+			return true;
- 
--		if (slow == fast) {
-+		if (slow_pa == fast_pa) {
- 			pr_err("Block set is corrupted\n");
- 			return true;
- 		}
-@@ -266,16 +298,23 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
+-	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys, NULL);
++	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys, &fdt_size);
+ 	if (!err) {
+-		err = kho_test_restore(fdt_phys);
++		err = kho_test_restore(fdt_phys, fdt_size);
+ 		if (err)
+ 			pr_err("KHO restore failed\n");
+ 		else
+@@ -330,7 +362,7 @@ static int __init kho_test_init(void)
+ 		return err;
  	}
  
- 	while (next_pa) {
--		ser = phys_to_virt(next_pa);
-+		ser = kho_block_map_ser(next_pa);
-+		if (!ser) {
-+			err = -ENOMEM;
-+			goto err_destroy;
-+		}
- 		if (!ser->count || ser->count > bs->count_per_block) {
- 			pr_warn("Block contains invalid entry count: %llu\n",
- 				ser->count);
-+			kho_block_unmap_ser(ser);
- 			err = -EINVAL;
- 			goto err_destroy;
- 		}
- 		err = kho_block_add(bs, ser);
--		if (err)
-+		if (err) {
-+			kho_block_unmap_ser(ser);
- 			goto err_destroy;
-+		}
- 		next_pa = ser->next;
- 	}
- 
-@@ -285,9 +324,10 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
- 	kho_block_set_destroy(bs);
- 
- 	/* Free the remaining un-restored blocks in the physical chain */
--	while (next_pa) {
--		struct kho_block_header_ser *next_ser = phys_to_virt(next_pa);
-+	while (!kho_is_ro() && next_pa) {
-+		struct kho_block_header_ser *next_ser;
- 
-+		next_ser = phys_to_virt(next_pa);
- 		next_pa = next_ser->next;
- 		kho_block_free_ser(bs, next_ser);
+-	if (err != -ENOENT) {
++	if (err != -ENOENT || kho_is_ro()) {
+ 		pr_warn("failed to retrieve %s FDT: %d\n", KHO_TEST_FDT, err);
+ 		return err;
  	}
 -- 
 2.56.0.176.g3575e65682-goog
