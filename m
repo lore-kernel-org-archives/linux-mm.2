@@ -4,107 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D7ACCF2DA
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:46:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A66CCCF2D6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:50:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D1DC6B014D; Mon, 19 Oct 2026 02:46:13 -0400 (EDT)
+	id 1B7926B014F; Mon, 19 Oct 2026 02:50:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3826D6B014E; Mon, 19 Oct 2026 02:46:13 -0400 (EDT)
+	id 167D16B0150; Mon, 19 Oct 2026 02:50:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 298276B014F; Mon, 19 Oct 2026 02:46:13 -0400 (EDT)
+	id 07E5A6B0151; Mon, 19 Oct 2026 02:50:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 04E526B014D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:46:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A5601405D8
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:46:12 +0000 (UTC)
-X-FDA: 85338441384.18.0D8E01B
-Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 294271C0003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:46:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=zWPyn5VV;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=u1wLz4gp
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DDB266B014F
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:50:24 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73B8B120640
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:50:24 +0000 (UTC)
+X-FDA: 85338451968.22.1D5D8E8
+Received: from mta0.migadu.com (out-134.mta0.migadu.com [91.218.175.134])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2C0E71C0005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:50:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ge8c+ySl;
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792392370;
-	b=owaEui3GtyorfiYmagglTNtuMby2Z+t7eIY+7xflNp7VKElsOFrKmdDeBFLzqDD3EGpwrn
-	/eylhsyX0QqPBTD0dco4HwFQk87+Ke2uES+9l5bdh1AKineJQt0coUoSUDguw2Pz+ovdn/
-	Bih7sshHb3t4pXQ0wXy1gUYDs7z1o2k=
+	t=1792392622;
+	b=MPAy99uwmkQaQ/i21Sazsdl1B2OoOI6F/bdQhItPwpj3CRXytJFnJy3P+acdTW/iBIjhHB
+	v8D3Cw2+YYf76x22WbaWesacK+FncbFq6WPLYVSSP/JpbIYuhw6nlQFNNMsQiFrGsubLq6
+	hWkHeT4YelIBdv8LBz66e3QQVHphVSg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=zWPyn5VV;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=u1wLz4gp;
-	dmarc=none;
-	spf=none (imf20.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.211.244) smtp.mailfrom=vitaly.wool@konsulko.se
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ge8c+ySl;
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792392370;
+	s=arc-20220608; t=1792392622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZIc5wdBzF7Eo3TwtmXp7N5ocviEXanEWtYba1s8mAqA=;
-	b=Tq5u9qf5cnbtfzRH5D9fyqoW7SkpA8frtO2CzPCeQXM8JMCsIjoXFrlCxR/5xMPbgzVvKn
-	jCGfoxsEtc9A6zKKZdxsDWCgR+RbVccQs++WkSReu0wrl3RhaDnUuhglaumYVAlZ3UO2Hu
-	CGFW7HFWW66t0Zc+MaGWONfaxrO+5Rk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792392367; x=1792997167;
-	d=konsulko.se; s=rsa2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=ZIc5wdBzF7Eo3TwtmXp7N5ocviEXanEWtYba1s8mAqA=;
-	b=zWPyn5VVjxNThWaLK3VxKa7MX87RgJsHeauOB2NOJH4XAfhq9lv3QPM5Bm2nAinxdLmxBmFJUHcAw
-	 vtk38mk9Bfx9a1RR1WDTSxWYewtbh4MmDUn5BUKq5vTg0vIId9boD9lnWW/1XFueXGKR/Mp2GB6qch
-	 hdPJDdtSrvwaDd8MOzUsgebYw3zkqCRWdxKYZDtTnqiQM7CfO+TL5RZzcPGDKgpjcGTMeRXFl/rBMv
-	 pvcLUa4PZQlKWuc/xq/RrnyUNwlztSQjfSgdvjY27cb7r3JmysniqrET/TluBU6rSHH4IDFugYpKyp
-	 vIw+b37B0VtFGktR5E7YhL1+mPHFFlg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792392367; x=1792997167;
-	d=konsulko.se; s=ed2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=ZIc5wdBzF7Eo3TwtmXp7N5ocviEXanEWtYba1s8mAqA=;
-	b=u1wLz4gpXoUAuJpMAj+IXFrZCLOqwGRpq8AgLAk8C0dgc/x3tuGTB7PUcQTTs92W7dTnVy8FSTPOh
-	 emqdoNdDQ==
-X-HalOne-ID: c17ea4dc-cb88-11f1-8312-1db1c303b0c0
-Received: from smtpclient.apple (h-158-174-93-34.na.cust.bahnhof.se [158.174.93.34])
-	by mailrelay3.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id c17ea4dc-cb88-11f1-8312-1db1c303b0c0;
-	Mon, 19 Oct 2026 06:46:06 +0000 (UTC)
+	bh=SXxZX9qAYvAB0RkdPkm6MthSehAVG+uWV00/KzloPlI=;
+	b=oYRp1vvPo8N74jexm6FSkFEr3NL3FwsP2UbQhRznDTKFo3Cidf2bXhqzLC42Pto4hsbgPV
+	W4TUem+ZoVNspsFgssUwGsenFDklX3wc8GgL6QYHAKOBtGaoY3DUwuH1/Liqni+2x9xGqU
+	Bvs2i5N1eZSE5QztCbNDiJZDIzUn9YM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5gBGyOmGG2XT0r7pd95Im9pzr7GBNEl4HR2v/rxZFt8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792392619; v=1; x=1792997419;
+ b=ge8c+ySl/QZdIM8YLPoSa6N7sPXLc72uzbQ5n6xzPL7yourDoGb7mW/NyIsUdCBc2PrFQpQ/
+ VrMnT2XmQ1JD+V6t+TngNTjkKoOCumrX5sXjEtXCjAq7ciQTCE47tGlyjJnPToc3NWhdj2qjXa6
+ P5HfioMhnwBb8Xz2xeMyrI7w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 99e215486e67a95b;
+	Mon, 19 Oct 2026 06:50:17 +0000
+X-Mizu-Trace-ID: 99e215486e67a95b
+X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v1] mempool: fix min_nr exceeding the elements array after
- concurrent resizes
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <atTv1tg9q9n92kZv@thinkstation>
-Date: Mon, 19 Oct 2026 08:45:55 +0200
-Cc: akpm@linux-foundation.org,
- cl@gentwo.org,
- hao.li@linux.dev,
- hch@lst.de,
- linux-kernel@vger.kernel.org,
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 0/5] mm: hugetlb: add CMA support for PMD-sized page
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <cover.1792136742.git.zhengqi.arch@bytedance.com>
+Date: Mon, 19 Oct 2026 14:50:00 +0800
+Cc: osalvador@suse.de,
+ david@kernel.org,
+ akpm@linux-foundation.org,
  linux-mm@kvack.org,
- nickolai@csail.mit.edu,
- rientjes@google.com,
- roman.gushchin@linux.dev,
- vbabka@kernel.org,
- vitaly.vul@partner.samsung.com
+ linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <F846CE95-6D2A-4D53-9C09-5C8630E2C8A7@konsulko.se>
-References: <atTh-yyVIPQ-zNWJ@thinkstation>
- <20261018160315.1465504-1-vitaly.wool@konsulko.se>
- <atTv1tg9q9n92kZv@thinkstation>
-To: Harry Yoo <harry@kernel.org>
-X-Mailer: Apple Mail (2.3826.200.121)
-X-Rspamd-Queue-Id: 294271C0003
-X-Stat-Signature: 41hqxhmsppb7wpyj7ktuws4jsp4baaoo
+Message-Id: <FA455F0C-0A46-4B5B-AB50-E9968001D2C9@linux.dev>
+References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1792392369-265023
-X-HE-Meta: U2FsdGVkX18XE51OJo/pcY7WQsRkOb3cLFyNApyV/eLcQp23Kw2PfDSwsHhGZblSLYmGktM282jnTaZeHbzUKGxI/Cv9DVwnmSZOxyQd5kiSTOSvrLRwZVWM4MfjvoZU0NRdVopCBdzxe3t0KrN6hdaJ9m7BNkvRI1gt/f2vUvuwLIViF0mOiIpzLh3skMxrKaYHj76QmrON322zhvvMFSJP3XdVitmXlhBpiFDq7k5nhI2ddSwFt90iHxYJJgxiL3N7HM9tI5ZTP5zsw55xvYJL4hhVEgpHKPNWa+5gqfX/iQ4R7ab0BD7nTKUfa3u2WI1T2mjq+xf6hxZCuh3WfzArUBKqWKIDXGQm7jL9sgylQk3Qk+X5ID35+8b8S7hT3pFmnCfrkgSm8DPtIhTH4Kyn7Lxah6UWVR65e3/lfwkZkbBQ/pGrYbTrZ15pbF98s6G+Rapw3u+TmQ+WNDTeI3yoxo4XXWW7v7dwt462hIh6/rM3D0/G7fyOqOopz5jwwEFiCHhfgQACWftUspx5vj88LFwgoW82hsnuOIVi8T5ok9rKmyAvnUpeVxgLtwrBK/hY1QOieqAr2m+AM3kJAhlXVY8h/yWpgsr+hT+rMjHr2PG+qe1TQr+uvpOMUZmeU2NwlorGwJh3AebUd4KbcE2T1oDRUh0z6poWDQfsUcNNiPwTL3H46e9n4WrjpaJu91N1oWRnnBJGPtiYpRJmc9GIkije49KHaou5393LYgfBrq8eLCFsR9vEmwOAFT11KVREElmp5Ost1qjkL3yc3Kjpj1jqJF+kl2Tn+01phK/cpI+3t5WwM8pBX73DicJ05A9IfExbJbvgrXs1L2Zyw4ZrxQ0pJX8VO2T5a1t/A5B1C5pLEqenW8Viexhov5zdVuRSpm/hFKmpXqfG/5tjC8oX1rkiohStA9O6AZPclFhM0q4nM4I8Ur7Qo5F+6dWDhLp3x1qbx265tbk7qUV
- YWlEQjdZ
- goffMJq0QF2fO4mxDiES1RbYH8xvlJsAAIKKvpVXrpoYdw0zS3ExDYKJNRWc8/28IBO1u70/w0EkMElt9eswshWipuHBDNqzDpHNtxFmsXsXrBsIEq48HPjgn7l+p/ZtIcKTQ0gzMdcLjmw2M2F8iQCqhS9TLZfM05GUpd38D8J+knuZbKJ82thhv+mGJcc1amrq/7y2jkytvFogzPZUAQ7oMUy9hfyd9DJkInc/Xn33eSMPx58lmO97h7MYmMBqx7hAHCscj61BNGski7Gib4Sj7BoNtjH9V4nX0WgCZRAY/oNTbFBK6yjSDpIZ4d2W6O/J6cXnNhq9vV3T8qdabZzNczFEWhvlQgzY/
+X-Rspamd-Queue-Id: 2C0E71C0005
+X-Stat-Signature: hf834zj76x4n93difa9h7543cuowpdjp
+X-HE-Tag: 1792392621-449331
+X-HE-Meta: U2FsdGVkX198uREfSEDwn1ujqTTiaWDzEdXZ0GtPbTF2HKVmAowSTPsUXiOeI2bZcqQUzjIIAs1UeLvnIeW1FQffhxdemOGfZssEbd8vKbkUxk0PDyBuu8F8+RblRD6x/9PK4/nXZplgm1ZNF0+q1wuglh/zXZYijXxFqYb2mIF/IwTef8jxRsyNDkQh+/3pQBr2mMAx/TLsYfXe489x+lOARM92Ql01B9l7wIuocM04qpQ/8ZUg8USLNFLgZ3XOgu8pz8MSmH3OKPNT5mBAlJoM/X/d0NsnyFZ8fggzh8q6KZUG8x3cI02UxsjyJnFgSCvStC8Lt8b2MKsa8UJed3a6yDpG22ckdFqObW3MJW6FBNeOn8vMKp8VIoN9cNxQhUAI7B7KQS2pHtL3kMmmBvfqokvan1Cs2wD7yU9pXhLNpEabJUWQoZQZJOobHWggQZ73sW2MJrdeCfZ6kld3p7Iq6GqtAARIVdM4cBVhYxt/PDykPf1WGl4pogCV9ga7LFhnoLd3olR1caz2jnGy903l6yDlC//T3Pp3dn+Sif1Dy7adZuEFG+DTrnFFk6nOoyY5hAi24I3W/QaRg+dqg0BI5lFJPg6dYRUbxlO0cLSLG+5MkJ1QdDwnpgfm2O87DHmsSw4A2ykoGUea+QBUcTfHGbto37ME7hesmDyqgZX6BxGeOYUSfbL72RtSd4MUQhxqGn9+ApkiaqrtmC1TR8OpasNBX0FWsxskl0BmAr3eLO6qiKyXLWTVksZQDeOqtx5IZelQoz7D4ZohPAYxjB8OZXH5HILOTQMDqWmDAUYti8pcih90UKcRev/BARUHkHf0od0iKVDIg/ucVrXhB2oeBKX10YZBn3SlOVy2djwmRN5veHmXSL+M5FpED8Hxr3h8cwy401UlzlKnaMpeQCQ8tAmXQ1vRB/LI7rwmhBMQEcRSjZuu1h8KdR2tS4/8tX5jA0MD9C9s3Ei3bd0
+ pgYTPuLn
+ lebNJwQ9L6vHRYgXmWpZ4KS7J4/wosHEtMTEOdtFs06fdhrkiPC2MG3XkWu2RI4SLZVwF038Ya8LOU8chxnBa0pCJ2lnYNdVXsPhDipZpOTOZ+vI4SX+MVp0EAQHPVbIHRGjOl2sNFkPgy82Z9w9+87SeYrdFrRCRKJ6ROlJfgvaXxNOrvATmFG1DZCb0PPgbTdRvI9oKY24JF9WRHLROrgRzYeFNSU4L/o7MfG4uMA+L+zuXtUJz1UB97gnwnrN+Dm2JFqJTDERHS+BY7hj/5t1mNV+PVM4DLnjk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,32 +97,92 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Oct 18, 2026, at 6:15=E2=80=AFPM, Harry Yoo <harry@kernel.org> =
-wrote:
+> On Oct 16, 2026, at 18:07, Qi Zheng <qi.zheng@linux.dev> wrote:
 >=20
-> On Sun, Oct 18, 2026 at 06:03:15PM +0200, Vitaly Wool wrote:
->>>> How about we take my patch [1] instead since
->>>> it isn't prone to this bug and is a nice optimization to the =
-existing
->>>> mempool_resize() at the same time?
->>>=20
->>> It is not a good idea to squeeze a bug fix and an optimization
->>> into one patch.
->>=20
->> Generally speaking, yes. But that patch had been submitted before the =
-fix
->> popped up, so there was no sqeezing per se.
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 >=20
-> I mean the patch you've submitted does two things (wihch is not good).
+> Hi all,
 >=20
-> It should be split into two patches that 1) fixes the bug and 2)
-> optimizes it.
+> Allocating PMD-sized HugeTLB pages at runtime can become slow or fail
+> as physical memory becomes fragmented. Reserving HugeTLB pages at boot
+> avoids this problem, but keeps unused pages unavailable to ordinary
+> allocations.
+>=20
+> Live upgrades are one example: they need additional HugeTLB pages only
+> during the upgrade. HugeTLB already supports CMA for gigantic pages,
+> but reserving a CMA pool for 1 GiB pages can fail when physical KASLR
+> and other early reservations leave too few suitable 1 GiB-aligned
+> ranges. At runtime, 1 GiB allocations can also fail when pages cannot
+> be migrated out of a suitable contiguous range.
 
-I don=E2=80=99t think this is a fair statement. I would say that the =
-patch I=E2=80=99ve submitted improves mempool_resize() to be rid of =
-unnecessary reallocations and data copying, and that (improved) =
-implementation is *not* prone to the race found in the previous version =
-of this function.
-=20
-~Vitaly=
+Yes, that's our use case at ByteDance. Allocating a 1GB HugeTLB page =
+from
+the CMA pool is more prone to failure than allocating a 2MB one. To =
+improve
+the probability of successful allocation, we typically configure the CMA
+size to be larger than our actual requirement, keeping a certain margin =
+to
+handle cases where temporary kernel operations (such as DMA) prevent =
+successful
+migration. For 1G HugeTLB pages, since the margin must be an integer =
+multiple
+of 1G, the extra memory configured as headroom is also relatively large,
+making it less flexible than 2M pages.
+
+>=20
+> Extend CMA support to PMD-sized pages so their backing memory can be
+> reserved at boot while remaining usable for movable allocations until
+> needed. This relaxes the reservation alignment requirement and reduces
+> the contiguous range required per allocation.
+>=20
+> The series adds an optional @<page-size> suffix to hugetlb_cma and a
+> separate PMD-sized pool. For example, on x86-64:
+>=20
+> hugetlb_cma=3D4G hugetlb_cma=3D1G@2M
+
+Different sizes of gigantic pages already share a single HugeTLB CMA =
+pool.
+Given that, why not let 2M pages also reuse this same pool? Would that =
+make
+the overall code implementation simpler? And if it does make things =
+simpler,
+should we go ahead and do it first?
+
+Thanks,
+Muchun
+
+>=20
+> This reserves 4G for the existing gigantic-page pool and 1G for the
+> PMD-sized pool. Existing unsuffixed parameters and gigantic-page pool
+> sharing are preserved. The new size follows the architecture's PMD
+> size rather than being fixed at 2M.
+>=20
+> The preparatory patches introduce per-pool state and prevent recursive
+> CMA allocation during migration before enabling PMD-sized allocation.
+>=20
+> Thanks,
+> Qi
+>=20
+> Qi Zheng (5):
+>  mm: hugetlb: add explicit page size to hugetlb_cma
+>  mm: hugetlb: group CMA pool and reservation state
+>  mm: hugetlb: track CMA reservations by page order
+>  mm: hugetlb: avoid recursive CMA allocation during migration
+>  mm: hugetlb: enable CMA allocation for PMD-sized pages
+>=20
+> .../admin-guide/kernel-parameters.txt         |  39 ++-
+> include/linux/hugetlb.h                       |   4 +-
+> mm/hugetlb.c                                  |  80 +++--
+> mm/hugetlb_cma.c                              | 328 ++++++++++++------
+> mm/hugetlb_cma.h                              |  11 +-
+> mm/mempolicy.c                                |   2 +-
+> mm/migrate.c                                  |   3 +-
+> 7 files changed, 306 insertions(+), 161 deletions(-)
+>=20
+>=20
+> base-commit: b810335a0699d1810683796b0e3ffe8827ddfe6c
+> --=20
+> 2.54.0
+>=20
+
 
