@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EEF2CCF2DE
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 02:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9450DCCF2DF
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 02:11:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2974E6B00E6; Sun, 18 Oct 2026 22:11:25 -0400 (EDT)
+	id 1D8E76B00E8; Sun, 18 Oct 2026 22:11:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 248636B00E7; Sun, 18 Oct 2026 22:11:25 -0400 (EDT)
+	id 184936B00E9; Sun, 18 Oct 2026 22:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15D456B00E8; Sun, 18 Oct 2026 22:11:25 -0400 (EDT)
+	id 0734B6B00EA; Sun, 18 Oct 2026 22:11:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E15CE6B00E6
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:11:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 68E4C405C7
+	by kanga.kvack.org (Postfix) with ESMTP id C4CDB6B00E8
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:11:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49AB91A0617
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:11:26 +0000 (UTC)
+X-FDA: 85337748972.22.5B22BB8
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 89DF4A0002
 	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:11:24 +0000 (UTC)
-X-FDA: 85337748888.16.5EE9DA5
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AD51340005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:11:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ABaOCQEg;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YKdF9zCA;
+	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792375882;
+	s=arc-20220608; t=1792375884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Puhhw/KYQlkth6JZ8nHBxXQPEXoRo970byZVNnmTOX0=;
-	b=2oMpbxhX8RdQm5JZiFqdm/0wQz+SWJgrWtCxTCdJRuva7+BNMCnxHZoMIs7crgf4FSLbtP
-	nq2tfB000bgNiQtY6oJym77Rv4YiI1BVoJBlkgIV//H//m2m/hs+otycbFRPodN9KfNk+4
-	C7yAqLphZo0JOL5D0quxcWfO8jEG8RU=
+	bh=HFKyVkuGCKpOVLuQsnhKod7q0RL600zFuUYepG6R/FE=;
+	b=vGg7JgaMzr7IUK3PJTya3jg+KSYTPDJalnC/HjX+RyQArhCmiFGqlF5tA9zzffSGQ4dgnT
+	uu02mO1HlhgkLiPZzF5hMR+djyhX+vpPraT33B34VfFrW+e99GXbLFvUPOAvwL2A76JGei
+	FB/6J4xVnDNToVTAyUS1T750IR1R38A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792375882;
-	b=qgLOqjWBHarEdIZTPyYh/BoSk0kRY34JLAOitAT7weCXUpnLjdU4Cql+X6Rb0opJfduNYc
-	YF0RDk5EfxCFrG3QPz/d8G1y4C/vdurrpm2ZfBin6Bd5YSmWvAlFKietEbGYXNWaPcHvNa
-	vb2PoyrxbQj61FNN2EnmGVeOuYqBwqo=
+	t=1792375884;
+	b=QKkWPbWvxD2fHUj1lr5eLhxqow7ZT5ov0VkE4Khoj9212VQEcGi1QPHBL9cMCXSZD+0kjb
+	jt8wv/apop1sbWX1qfb7Dtqk/7TJ9rkEo/sgUp/atifUQAL5Kj+jCuHHMIg5Jb0k1lDgXw
+	4ptRvz2p5FfTl5AldP6fHNG5b2MnRLM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ABaOCQEg;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YKdF9zCA;
+	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5e930a11148so1138828e0c.2
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 19:11:22 -0700 (PDT)
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5eac6c5f927so153522e0c.0
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 19:11:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792375882; x=1792980682; darn=kvack.org;
+        d=soleen.com; s=google; t=1792375884; x=1792980684; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Puhhw/KYQlkth6JZ8nHBxXQPEXoRo970byZVNnmTOX0=;
-        b=ABaOCQEgJKPTqalvqi/G5AU6VO9ueGOOKC2ocSt7JlHIxo5+iBypdbO0Rb3ZFl4Iqn
-         WhivwmqJUg+Oaa2aGW74xNihYx7YZZ39GtQSoUTGSkxklSDW034ziAxTWIL1MR2d6Tkg
-         x0QcvkDGmJPsHbGslHSKX2yuvsTau3TP7j9Ci1u0En2FW2hMgtXsCOfKDIgVSRDrjq8i
-         QwmEhrmF2/CXIwvHu5PVFzcBqqgdvQSpawOJvNKn9Wg1NNkW73A+SCCmtCNuXmL0EqkF
-         gaA2uew51zMZIcZmlGpulyu20y9CHnQOAe6kFRfRuJoTXZFKIxxTFiVoeZcRJZIHzdmz
-         qGDA==
+        bh=HFKyVkuGCKpOVLuQsnhKod7q0RL600zFuUYepG6R/FE=;
+        b=YKdF9zCAvRufpWUWSIhGvRODdq4Jgxfdy3DSeeZk5bEKXGBtQxrmRz+OubYNzEF105
+         49pHIsNAmVjGG0aphLpQGpVPPq5LHWySl+zadkjo5My/vU+VqWK7/OCP6YsUYP2XYhPZ
+         +JPvN2YiQht4xcNOl+iA75kD3Vz/ZULln+98/3PcLneosnreJch5zSy3TsczhJwT1ZEh
+         6PFbiwEEnz/I7iha6VNWmxJ1TPkWdgEPrzD5xwLkMYqE1sK+oyl/M9K9H/c0o6wy+DGP
+         kEforNamDVMKSMovulydRpsQnI/uhN0KnOFZ3PspIgEp/M0SN8ziWA4l8bE1CXphMr1t
+         Rlrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792375882; x=1792980682;
+        d=1e100.net; s=20260707; t=1792375884; x=1792980684;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=Puhhw/KYQlkth6JZ8nHBxXQPEXoRo970byZVNnmTOX0=;
-        b=HC0MeG6xAsSSoj20g34Dtwpa1xopslxOgxWqEkJpzXOlfTP5GafpbIoh9zeN/FX6bj
-         Ia21/gM3FMNfR9u7W0G02TDW+3jnu6ZCGTnNkdf90nfT6NQycHKyleKkqSWwCh9kIIOp
-         ESwA/0nEuQGcn4eJZfEWWUKzwQl2kISNN1wtiX8elrO8sNygN5DtJW+QltQKaOhBsZzZ
-         e4UeD2UV7UKMQWquNsX6dOfaxAD9A0CdJ3PBWhBFE5+EmeJc2Khyl+jnqePYwl9iFGbB
-         /5mI29ksuLmeWsxCmB1HIGB08TYgHhKr+mkgW/86X4INkc3JrWc7qvH3yen6gJkHizSd
-         4GDQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzq9lzjED7UJ9NaF/GjdAnZgZ7hGAm0pqdcNr/ohYK2m+uMc7T1O0Ocpzp4QmsWRuEMNPBL/Avr2g==@kvack.org
-X-Gm-Message-State: AFq9FYLi9OiD5CFjHdNyakxRukOx30YAE19mYVyvBEJQNNVK4DBnl+N9
-	W92H2yTM523ToESXbVPiV5DHNUX69eqvRJdHw3NfqyMI8VN5szlmZM3rWH9GrHBxzkiR1slES0i
-	6ypnY
-X-Gm-Gg: AYBFou3U7lLOmhOGSdR2KNMlZmWUOe24D0wgH11HVHWC6Vnz/W5xnO3epFsyKOINsk9
-	UX16JeAqSPMNJylpeI67sppw0MQJrQj0FuSSqJnYmaZo6QAhxnQMOT02XpZN4Zqc06k/KZ9lwjw
-	lQPn5R3RQD3DJhTbJ9G/goDW2LSladnvO1sMBknFS6lQnsWTIap8KwpgaIqanMfMDd6RdY+8b2f
-	ts8J1jOy5FGlf6MWLP1t7u01HoW6EDX3bIPkMmDsMFxp03HVJhO5xglvxGVCSfcE4rDvPJ7xg0f
-	0T5tcMPgtRBh3ey3+KxuxhsBFl8c0+jYbQzIpYlJzpMC1YHYhDB8MRxBocSIVgdZqyP2kFG/BCF
-	dh3BDkX7NsrnUj+/OKRl7pcbbE+55m4VbJzoRV5wz3VrFfH/VBQQPcBjHuq5p3Tw/Kpzob3wAAA
-	KUMKl363v+TCR7/S1/CnhyLiiEubCYVjkfXbN5eAZTjEKjkcYtG0przKis7Vepl7V3kfd1NEIFf
-	FZi/GS2eOKf6NFqdKAyDLhx2QrzSj4MvYB8lXDIlFTPdxFKnoelMugFDwpUcfgVPVAQ9TNaQwOn
-	RnKM8znCZJmAddwiRqY=
-X-Received: by 2002:a05:6122:d19:b0:5ea:c90d:d1b2 with SMTP id 71dfb90a1353d-5eac90dd9bfmr480991e0c.13.1792375881262;
-        Sun, 18 Oct 2026 19:11:21 -0700 (PDT)
+        bh=HFKyVkuGCKpOVLuQsnhKod7q0RL600zFuUYepG6R/FE=;
+        b=mXZbx8kaVszUcNRfUe/aoAYLb5vpofYoRIFEZfReALNEVpz7QqlwLOC8dvwG89V965
+         Cao1rVQZUHxVqhnrbEAmVo822FlwhxEiuKsSndI4FpNRxvc61oxrwrb9RAc74bFZboUT
+         YZJ0RhzmRUP9psqxzzJOy6ZZqJ5aJ4vLJtbcrISyLliwnwuMtJZR914NI4IIoRXmRP5R
+         zcgiaqNCHsB9tESPzKtgKtWq98+0uhacN1wvqf/XD1whN3Jdt+iTUELDTtUaskGiH9Fw
+         Ys6fJWb9r+CHnMNV3QMhYyMdipTFzNzJHamzWXytljgvGxP1onfOEhSACL+kRiLKHNDq
+         9Bjg==
+X-Forwarded-Encrypted: i=1; AKwUvBws56UdMGC4WDmE2rjyZ7Qdg7T134sBOd//RhdLqaFxmwwaXdrlxyKW7QId/8GotSrqUp1clh2oqw==@kvack.org
+X-Gm-Message-State: AFq9FYKSkp1wCXXj86ZbEd3uRlzmwS/GsaLxm2uWWI+Wf6SGeZULqH/9
+	J/k9AnSI6SnUql/sM0p6Bvtmxej/zpwQlZ2LDiCfPK20qOByyomoK9RbvrH1P5aVeKs=
+X-Gm-Gg: AYBFou2rkymP5rPNRJ3WxkIQWm8l3Pk98rPgU8ZsoSrh3+agzwlYmrEDqk2J3Dhs3yp
+	xADbt3lG7JCHCPpsxJy027xUqs50YbBqddMM2BhH3fJK4eP8h7pLzqOoxU5Aa1Ep0kRkaXXMv2Q
+	Cir37YgcqY2b9I1P8EYr5lCKWXi05QUzpdNCreZWt/qcy6HOn0j09t76iZq6L5KnZvteSAhc7Q5
+	s3vAdfZk1WuS0Kut/jK3lLNQ9Zkll0eQut2OfMvDAba2ENLm/1mszpCZsyEP2gDhWUiRAXM7o06
+	fOrXMexEuRwBxwwayBuElT8TjaAOZcCiMmNwmXUAdh7gbnlz9jmXe2o0id28iIUGOZcuC0dtwSt
+	VZFWC6Ix/7iaEwr+Tk12UHQg/To5YAXKZ3IuwH/4YMV387MnHnG2RWTOIYX0cebONSG+RaP4Vai
+	xp6P2YuhJYzEkyCZA/RQh4vasJy++X64XblYvxtW0KjjH3kMKfyXR+zV6rtx8jBPdRHGq7Pny/g
+	aM+k2SFIoWKdrjN2DnoGl01yfP/SOMtr+EIQTROTGKd9KEDQ2EGICPI+K3xp1qacro0DDRclCLL
+	Buh96QeBoj2uzSBE6ec7xtDLxJm7Bw==
+X-Received: by 2002:a05:6122:4b10:b0:5ea:b9b5:8c43 with SMTP id 71dfb90a1353d-5eab9b59387mr1211022e0c.18.1792375883763;
+        Sun, 18 Oct 2026 19:11:23 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eabbd9ea2bsm4271383e0c.2.2026.10.18.19.11.20
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eabbd9ea2bsm4271383e0c.2.2026.10.18.19.11.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 19:11:20 -0700 (PDT)
+        Sun, 18 Oct 2026 19:11:22 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	rppt@kernel.org,
@@ -121,22 +120,22 @@ To: linux-kselftest@vger.kernel.org,
 	lirongqing@baidu.com,
 	liam@infradead.org,
 	jlayton@kernel.org
-Subject: [PATCH v1 3/8] kho: validate preservation metadata in kho_restore_vmalloc()
-Date: Sun, 18 Oct 2026 22:11:06 -0400
-Message-ID: <20261019021111.990394-4-pasha.tatashin@soleen.com>
+Subject: [PATCH v1 4/8] kho: do not modify incoming serialized blocks
+Date: Sun, 18 Oct 2026 22:11:07 -0400
+Message-ID: <20261019021111.990394-5-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
 In-Reply-To: <20261019021111.990394-1-pasha.tatashin@soleen.com>
 References: <20261019021111.990394-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7rgbrh157zahmx3xcp35tn5myrucynxu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AD51340005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1792375882-574051
-X-HE-Meta: U2FsdGVkX18KP/5NGDVUtk2kqTNzSnaFbDgQ2KpUjLjhJEJ4Qsi5L+tYvG2lhTBqgdX1jtk+md4aiQYo8KkhoturbSLnpooA7CsjWvqX6VMWzWVaq/7mBb4oINrlaT07+zErojUqzLbgMI0ad0lVbmNwhxXa4swvZkX67yrgmP99sbVP9rJu7CdEFxvMBFm623kWZUAvhR0tW8fzciRtFdX+3LdOmhjlkWXPEhS+sGVU8X+7UoS8qiHiObW0yrUBvBeP+8gvqo8oIb/6lJpGM5pY/UKHkZmM7oXOf2FxwYZmbiLXq5teeQ9uQV5O2B04MyBj12gPGz7GxIw1lWMirBFTlh/LVk1WB7qU8YXu4tHaGSUS5nWq+5Ch23PFjGDeS4qo8Rj3wVAxmkHbejZfdPcbA7ADUTlDA3TYlWtHsP2DrZ41/r+sYfyTGV5Wi2HkA+A69+6tZt8hoL4jFhi2AlLb9SzKdDgNNoccYsNEjKc/LaMEzUkVbG9bWiHaHPWzVShRcU9xU9cnoxRdsToEfWvqRXIbTylEXtOeFyjyl/5tGPoH4iS776sqKmVRvl/pJkZdwHUz4bwvORC5bn/N2spF1DClyt21zIi6RKEIMlUAH7Nyx7AWrb5YeqzMIa8OSI+Jz4f54XDZTp4yJ1//JMLJvlJrZpfRHbeMqFlnoH5UeBBWgAB0dIgy597DuxX4bfFQ/ml/X5j/Xe08wbi23o+tbOb5VrFrWgw6qfCrDUV/Bpjo6O0Mg16ydKWbri4musgxX4hUyCnJ2o/VWS3/KSS6NLYNKZHgJgsaTiaMwT9DxtHvT/WWjMGUOxKFxgJ9qcNAswWdA1tqJNgklOPfRPHN87bvaZsOGSIUKf4Fsx9s44gIUgbu1JeY9NNfGWR1TVUHLGtTHNLk41Q9+6YHNrEdNSRc2xX2uixyCfsvQS8dmWUbZpY/2WXreBWkDHW30gZvuelyEynEsrVivFw
- RVhuBQ4n
- taHVnRX5BMEsqHGTjvoGHKT0OansxRVNXvLcPkO9q00PgR6vctRamjAXWLSwEDcgzEqQUiBftu6XyWP76a4DHgG4xj2aDqIAfdQMlXIXK05/kY/uPG2pW7xNmRdL7sr4TnDo8w/9dJy5NsoA59hG8eSziUAcOK+QUsak2vyKQqdA1EQiPJ8Z3rPMGrc5T2Mj2ek5HK31TfR8wHGXlvS9vFHIc2bo4AEVhaW0RzsiYKc8RasRdcWd/vJt63zv0uH6a8jtjnTnpB8Fsury2q+ptLzR3pwl3X6HyV2TvbzRt9yM0bt3X+QwipRX/YNyNLIc8dwjgEivJjwPqhhTxJ+WgqryOXKVC51lckxqDe9xcPdPeD2fWTx8g2CvJ7JHiiewAEjWz
+X-Rspamd-Queue-Id: 89DF4A0002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: r4icpbc33y41kynpgz6ypksfpmziea9k
+X-HE-Tag: 1792375884-115499
+X-HE-Meta: U2FsdGVkX19bUKDK9r+tjVc6bkxck8QTIzdG8ZTITsYPEic/UT9NTah6fbIwT/Jwop5sPWU71bRZLKiMVp5CURea6fAR5tr9xc7sPFx/oDB3UDZ2qiKfjSsb8yoPamJ5M6TmsWzIQHCy1LNTyUWGsL930y5W4cY1/Qq6kKRNQbCyjRlp8S7URA7Df0RAB/fogETpEMebulAcbAHmJVFRTCboiSEQr4fOSRWv7L5deOmiQ2AoMaPgNewPLZsRyTcGdBzElPONX1vl/RnCsT6O73V2FZt32nY1BCMnIANyE2NgRmIeA2x4L3pk6Q/IYdGed4G2v9JeEDfPwKlwB6jnGln0fp8/OqaUgRhEeks2ZloUNuXpCJu+Q4kbIge/F+sdDXFa731ytdbh3F3cgQk/ug1sY/eQ7sbrRqKhcOU12XRZUI2h0oIqzWOp4CylKE9y5KGSD7Nk6Q00eXASRAz30x3ttV+7yw/qOZnRxSjzMmItVcCDZ5mBfyw97hXQg1CKdgHo6q33mpWsWPk11JSjeO39XTtQsRh7tv2qO+sVNCoqN/k/J5e9L9NABZ6KzMpfOhHWVhAwRw4OaIjSkn6GFWPzKdUrQraviNWvuV2RGIQJ0+otmilSQav3ZYpeAJrp23dRjZh0JwBwUVzACJUOFK5g1ApEGjEFk0oxnVzFFr8iR0KjWwWVMwMJHpJx0N3PaAxkxsZefb1P29AVJn+rMnXrGvIcjda7qMStiwEDxmPTtu68EvcsE+TRif/y3zfKB7IMrNL6G/NWdSm/yE6Ojo29rFIct6YQjFxLhiX16Z+YYSf931aXAbHkXGjKOkxlQoELX/QydEZku/cx8mG2FZ4TuEVqaRmFeCyJK3Y8QuWMW8wyjXDUIfu2H9Pq4kOKI/iO7c4NLRLT+JfNR6RSR3TSEWTw2TD6YY/ptN4JH7KF25RvuvfLLfTbnvNVosf2R6xclK7qU7UOoBM5UvB
+ Fwkio4yT
+ ju6NjAUKV9lwjRzsNIk6EdAU6aP4kimZlOiSDpzrA2j4VayWpV+hpW4/+NKqPJM4FEwSt6QfBpyDUZ0ovo77lLFyEh+Ac3TGnQTFRdTi7R1KLWsc4VwxGyFWnO0OKmgppMPzqyWN2aWSkn41iYvsqi/ad4p10fsSMyS7TqLmhyMkLmHqj8mwQ/AErsFOSnzXH2Na484dp9/uyp+NJ3+xI4YIvoBI607rPLlwrrJCwzmp9FM+veB4l5DnfzzbMdsDC/aoMrjjpcGcPiqeZFqH5TxPi9XTKIowkKUIzgXgDxxmJQT0APaGLFrhgTMdoLxy5dlKyeJTkbign+VE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,126 +143,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kho_restore_vmalloc() currently dereferences preservation before
-checking for NULL, does not reject unknown KHO vmalloc flags in
-kho_flags_to_vmalloc(), and does not validate preservation->first.phys,
-preservation->total_pages, preservation->order, or potential size
-overflow before allocating the pages array and shifting by order.
+When restoring an incoming block set via kho_block_set_restore(), the
+physical chain of blocks is already linked and bs->head_pa is already
+set. However, kho_block_add() unconditionally rewrites last->ser->next
+and bs->head_pa, and kho_block_set_shrink_one() clears
+new_last->ser->next even when operating on an incoming block set.
 
-Introduce kho_vmalloc_validate() in kexec_handover_internal.h to
-validate the struct kho_vmalloc header and convert its flags before
-restoring the vmalloc area.
+In the upcoming KHO read-only mode, incoming serialized blocks are
+mapped read-only and must not be modified. Guard the ser->next and
+bs->head_pa updates in kho_block_add() and kho_block_set_shrink_one()
+with !bs->incoming.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/kexec_handover.c          | 17 ++++++------
- kernel/liveupdate/kexec_handover_internal.h | 30 +++++++++++++++++++++
- 2 files changed, 38 insertions(+), 9 deletions(-)
+ kernel/liveupdate/kho_block.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index f427cdd9a969..a9c52d998855 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1384,28 +1384,27 @@ EXPORT_SYMBOL_GPL(kho_unpreserve_vmalloc);
-  */
- void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
- {
--	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
- 	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_PROT_NORMAL;
--	unsigned int align, order, shift, vm_flags;
--	unsigned long total_pages, contig_pages;
-+	unsigned long total_pages, contig_pages, align, idx = 0;
-+	unsigned int order, shift, vm_flags;
-+	struct kho_vmalloc_chunk *chunk;
- 	unsigned long addr, size;
- 	struct vm_struct *area;
- 	struct page **pages;
--	unsigned int idx = 0;
- 	int err;
+diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
+index 0d2a342ef422..a4e945f28fad 100644
+--- a/kernel/liveupdate/kho_block.c
++++ b/kernel/liveupdate/kho_block.c
+@@ -93,10 +93,12 @@ static int kho_block_add(struct kho_block_set *bs,
+ 	list_add_tail(&block->list, &bs->blocks);
+ 	bs->nblocks++;
  
--	vm_flags = kho_flags_to_vmalloc(preservation->flags);
--	if (vm_flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
-+	if (!kho_vmalloc_validate(preservation, &vm_flags))
- 		return NULL;
+-	if (last)
+-		last->ser->next = virt_to_phys(ser);
+-	else
+-		bs->head_pa = virt_to_phys(ser);
++	if (!bs->incoming) {
++		if (last)
++			last->ser->next = virt_to_phys(ser);
++		else
++			bs->head_pa = virt_to_phys(ser);
++	}
  
-+	chunk = KHOSER_LOAD_PTR(preservation->first);
- 	total_pages = preservation->total_pages;
- 	pages = kvmalloc_objs(*pages, total_pages);
- 	if (!pages)
- 		return NULL;
- 	order = preservation->order;
--	contig_pages = (1 << order);
-+	contig_pages = 1UL << order;
- 	shift = PAGE_SHIFT + order;
--	align = 1 << shift;
-+	align = 1UL << shift;
+ 	return 0;
+ }
+@@ -133,10 +135,10 @@ static void kho_block_set_shrink_one(struct kho_block_set *bs)
+ 	kfree(last);
  
- 	while (chunk) {
- 		struct page *page;
-@@ -1420,7 +1419,7 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
- 			if (!page)
- 				goto err_free_pages_array;
- 
--			for (int j = 0; j < contig_pages; j++)
-+			for (unsigned long j = 0; j < contig_pages; j++)
- 				pages[idx++] = page + j;
- 
- 			phys += contig_pages * PAGE_SIZE;
-diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
-index 094b4917a0f1..878e21bd8b00 100644
---- a/kernel/liveupdate/kexec_handover_internal.h
-+++ b/kernel/liveupdate/kexec_handover_internal.h
-@@ -7,6 +7,7 @@
- #include <linux/libfdt.h>
- #include <linux/list.h>
- #include <linux/mm.h>
-+#include <linux/overflow.h>
- #include <linux/printk.h>
- #include <linux/types.h>
- #include <linux/unaligned.h>
-@@ -23,6 +24,9 @@ static inline unsigned int kho_flags_to_vmalloc(unsigned short kho_flags)
- {
- 	unsigned int vm_flags = 0;
- 
-+	if (kho_flags & ~(KHO_VMALLOC_ALLOC | KHO_VMALLOC_HUGE_VMAP))
-+		return ~KHO_VMALLOC_SUPPORTED_FLAGS;
-+
- 	if (kho_flags & KHO_VMALLOC_ALLOC)
- 		vm_flags |= VM_ALLOC;
- 	if (kho_flags & KHO_VMALLOC_HUGE_VMAP)
-@@ -31,6 +35,32 @@ static inline unsigned int kho_flags_to_vmalloc(unsigned short kho_flags)
- 	return vm_flags;
+ 	new_last = list_last_entry_or_null(&bs->blocks, struct kho_block, list);
+-	if (new_last)
+-		new_last->ser->next = 0;
+-	else
++	if (!new_last)
+ 		bs->head_pa = 0;
++	else if (!bs->incoming)
++		new_last->ser->next = 0;
  }
  
-+static inline bool kho_vmalloc_validate(const struct kho_vmalloc *preservation,
-+					unsigned int *vm_flags)
-+{
-+	size_t alloc_size;
-+
-+	if (!preservation || !preservation->first.phys ||
-+	    !PAGE_ALIGNED(preservation->first.phys) ||
-+	    !preservation->total_pages)
-+		return false;
-+
-+	if (preservation->order >= BITS_PER_LONG - PAGE_SHIFT ||
-+	    (1UL << preservation->order) > preservation->total_pages ||
-+	    !IS_ALIGNED(preservation->total_pages, 1UL << preservation->order))
-+		return false;
-+
-+	if (check_mul_overflow((size_t)preservation->total_pages, PAGE_SIZE,
-+			       &alloc_size))
-+		return false;
-+
-+	*vm_flags = kho_flags_to_vmalloc(preservation->flags);
-+	if (*vm_flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
-+		return false;
-+
-+	return true;
-+}
-+
  /**
-  * kho_encode_radix_key - Encodes a physical address and order into a radix key.
-  * @phys: The physical address of the page.
 -- 
 2.56.0.176.g3575e65682-goog
 
