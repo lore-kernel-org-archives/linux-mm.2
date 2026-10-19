@@ -1,122 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91FF606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 18:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70CA606A319
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 18:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=O8zf9CEj
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JQmo1lpa
 Received: by kanga.kvack.org (Postfix)
-	id E2F656B00F5; Mon, 19 Oct 2026 14:15:47 -0400 (EDT)
+	id E57B76B0335; Mon, 19 Oct 2026 14:16:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E06D96B00F6; Mon, 19 Oct 2026 14:15:47 -0400 (EDT)
+	id E08BA6B0336; Mon, 19 Oct 2026 14:16:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1CAE6B00F8; Mon, 19 Oct 2026 14:15:47 -0400 (EDT)
+	id CF9746B0337; Mon, 19 Oct 2026 14:16:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ADF0B6B00F5
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:15:47 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D233A7880
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:15:47 +0000 (UTC)
-X-FDA: 85340179134.14.CC5A335
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 02C16C0012
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:15:44 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=O8zf9CEj;
-	spf=pass (imf22.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792433745;
-	b=QtFv9sHFVCYI1IYIzEX3W/fL3gIW45g77efR8DqPHZCiBvrDy8ru8Jz7yxmc6u7wbULhAa
-	Gq92JDR2XJSZuchyG/tu3yVqq9YA1tEWh18H/tFuHSUdYul+g6mV6mlZyxdIQS4FHDQPpt
-	3ZXWxdb2DM9Z4usDccMsHGB/9ziCsv4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=O8zf9CEj;
-	spf=pass (imf22.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	by kanga.kvack.org (Postfix) with ESMTP id A27576B0335
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:16:33 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC81D14071B
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:16:32 +0000 (UTC)
+X-FDA: 85340181024.01.F5E3C8E
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DE19310000A
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:16:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JQmo1lpa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792433745;
+	s=arc-20220608; t=1792433790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4w7YFTBtscoIjxgLMpx7cQ62ZcRL/yC92+hTKY2Gc7Q=;
-	b=g0mkUM841bIzfPT6ZNh4fWrsE+yvaEcIoDPTHrhxgPPcsLnCrPytfz9arLkwGLVFVWQL7j
-	YIyAigMwWIMqlb6p9jyhGSPI3ESZrTKynwZRagyhe9NUMOXSRu9g/Sa7GnodsAGgTmQ5eY
-	ZT8/IurMl9PJ200Ie1hYAmE5Px3Dggg=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5A2FB40E029C;
-	Mon, 19 Oct 2026 18:15:42 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2vR_LGbI_aXz; Mon, 19 Oct 2026 18:15:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1792433735; bh=4w7YFTBtscoIjxgLMpx7cQ62ZcRL/yC92+hTKY2Gc7Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O8zf9CEjohQ3LUBYJVk4K44Xx8LNvFk/sIF0mu6AePh5AI6eobVCNOs7FEE4r2SbJ
-	 c5UG6JaOdiR19Cnb8odfqiEUnkjOKIf0Ce2khTOpPwLVfv4icKB0811U21/szJttOE
-	 NK3ex/bHxr9XZSKM0kOZBw4HXPBNR1DeD1LpjF4TV6pG03AI+eOvcCrqjFBLJsF1Ep
-	 lNXcllkXMq7HmgiDT56MId8aZ0bRW/ocG+Jg7XuyKlZHcv4p0CTj49XwYAW6B9S42o
-	 MvZOJRWPWlBHLFOd1fb4ouMv4rpNFy7p4ijHpeNujsFh5+tv23evVyenYy0P+rZIPT
-	 fL+ZVZ5SyjQ/ZUsinA4qdHX/pQczzB14+xFlHSdl5KViBiMtztSYrALNuMteJtAJtC
-	 9c58CzcXHZ8SuB2gJULlIn9wMK2A0baYz0O5KD3YEmYmxK09v2uMSJ3Fg5wrcGCYMp
-	 XZWu00EW92jAoqikHBGwLp0MkdDnp5Gaf/v5c9Zgqgu5SAX5Bv+Wpa22/M+FIiG0yU
-	 4sLaBAxm8dWvPdopS5uhadfeGS2Ld9IEAD9sPBpw4pDFQzmdJKD9bDsb5ypE+seeFB
-	 egHsCag6kSSNTqeBb3RD6wVeEXnrhL4o3xHa9Ex7YiwNqtSyIQyS5dyBrx2sjullGb
-	 MvXkaBiVi8hrhbKmjWOVSpok=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4EDAD40E015B;
-	Mon, 19 Oct 2026 18:15:14 +0000 (UTC)
-Date: Mon, 19 Oct 2026 11:15:10 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Nikola Ciprich <nikola.ciprich@linuxbox.cz>,
-	Sean Christopherson <seanjc@google.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, david@kernel.org,
-	Mike Rapoport <rppt@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-	luizcap@redhat.com, pbonzini@redhat.com,
-	Tal Zussman <tz2294@columbia.edu>,
-	Matt Fleming <matt@readmodwrite.com>, gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <20261019181510.GAatZeLtUmU3Zy9VZt@fat_crate.local>
-References: <20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local>
- <atI_yuCc4BiweBQP@google.com>
- <atT5TYyLapHO5ZoX@pcnci.linuxbox.cz>
- <20261018201538.d0957878f378a9821852836f@linux-foundation.org>
- <atXXma5NXxoSWJO0@pcnci.linuxbox.cz>
- <atY1vWRBRUwpISKb@pcnci.linuxbox.cz>
- <20261019083529.a81910ac0976c1a5687d4c6a@linux-foundation.org>
- <CAO9r8zO41EromgLGhKv8H0aKXjrffH+t4CFGU6cLo59JJ3CEuA@mail.gmail.com>
- <20261019105844.02d4623b7063fec25ebd34ad@linux-foundation.org>
- <CAO9r8zN1dTJmULsKCwNrNr_vKyrV+vMfD7wifQ05uAti7E-yDw@mail.gmail.com>
+	bh=9GcCoJID0P6FXucLCwUTBYqCKowiVzUjNAVvxodr5aw=;
+	b=0Ugcr+o6OkyV5Q6soROwuvh1C5C+RQrH2hy0XkR0FDTX1fw6nqL2zmWk0yEoEQ4lcksBf5
+	s8O+gq++GRPy5DXChnI/oFnqW1+pgs2IrYGRFjD2Hmw8LION0eQfn7SqkyD30DxxjbOwxa
+	d6rRo4Extrs7yLJysUPuWFp5Tvrg8t4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JQmo1lpa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792433790;
+	b=Fr8FGE04AXzuL6ZHKnMF5xejk0cHxJpRHOGolfRcEwIYJwXwL8vLqThBrWWgj43WYBibfw
+	FOOtk/A9s5QDhH+W2isijm+82pWBy4NF4u5Zez/bcUXVnwDa0xcnIxL2psWpQm5cJCk0Nn
+	Z+FBFv3pKC8O/xi5XuJJMdHqjrdCfaE=
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-833e671ee9fso1599518a34.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:16:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792433790; x=1793038590; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9GcCoJID0P6FXucLCwUTBYqCKowiVzUjNAVvxodr5aw=;
+        b=JQmo1lpayYCN7pY9BPsyxtnk23XqC0ZhW4w6oB5u0vrALIvDnou3o1Fq2bW7KEuxNX
+         0TssillEVYdBIt7r/BLrQUfNa8AkwIdnGKim6EmtSM67KDsiBED4dYPHLY/hz2/ja9iZ
+         tzD6nD0WazDYt1+aTmSLK0HhOSKkDH0pZA4ITNFPUU2aFiVCw2uPAeNFoM1eBw1HZb/c
+         baqkG01l40yY+AQskvVmBzfjteu43Rr6L8NwebqDmKYBC/Q/dzn0AqyP1SbEow/lphfa
+         O4cF61wtiEOabiz3tNct2ZRc6Mye4ZrgbuPkun98Zo1ABEbOoivq2v+upujCHag59zSW
+         S5ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792433790; x=1793038590;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9GcCoJID0P6FXucLCwUTBYqCKowiVzUjNAVvxodr5aw=;
+        b=I37ZAfi3oiH9WYfRFmoX4Nkdnm2tSvZVV1ZgWL1kXYr6KgogntL6MyhM/yFOt6DoK5
+         eWU+H10FeH31mG/0t/EoYIxZe25jdDgX/Fl+KfJ7rlWKdhUJfZ3cPWniMYtGE6tAZBYh
+         fn1AJsoz2zew1sp+1U8NHCa8Qxu8kx4PF9D3b3ptniX1jLDo4X/KRwjuzdZA4wBuqU6B
+         8xqbvy8RJgyLNl2FzzF5EAP4IV95lH1Phb9f9axP84P/+f5Zz5skashrMxT2/0HWGkst
+         GI580769t9F8U4D6WtK1r/riQMha16EdUzSx71XpSNVQca7zHmnJe9N3hqKZXyGgMw/F
+         ZFRw==
+X-Forwarded-Encrypted: i=1; AKwUvBx39DPJ0GEy5zKcPlzxJ/fW/o6TEMvt+4l5h9xn0Xzr6pUln58EfX+uoGid8TfrB/l//gQD7GoVdA==@kvack.org
+X-Gm-Message-State: AFq9FYL4h2jQzEKWr7z+BM42fz/vPZ/ZF4wjRKJhLMuR3U6TAJYJYKU5
+	qg4KpF88ObRMiD477NBGUpcxFRojhz4tNVyv5PMIPV/QsGvm1F35Xrsz
+X-Gm-Gg: AYBFou1Vi5t7O/3O4MhewazA2NTyvEyypjH09pCOAcaRV5Y0lMspnYhm3/qMiNjqox0
+	R3cKscXdk+XXNhzjRNxM2mbs4SwxwWn3HFex51NywfTFm+FCdnvFlJMpTntBnsvDBFBKjG8+H/h
+	7loJjRybdaGNicARPxN+96akdoMLLilJtpCq7iNgSJM+NNwcuDlTfwTWdCMhf3Y1bPFnvD92H3R
+	qbfzIPl7x/wXD5kfNIQ7teuryn/zheGQ4YvxRjzfk+CjegE9LbUFREj3UwnM6+f/Ru1gCH8SJNW
+	sbqJAXFND0ImNWMHvYtHvbHNik0lNRpAgtbTMW8FIUfpQTG3hPEWLou7/X4usP/9pHp7D2MCbdU
+	Oq3Uic8SQu3o10HBvLObk7tr7/2Zlt4Q82YG9DVhILd9/sSY3q/AZ/a7qGBzx0Yu8lNQyOc8WWv
+	pRxtpiDW83SO6LzW2l9cJaLAnCHPoncV2IcHJzIJAZZXYO9GAS2gogedtiOC0aBf9KNOhdxJgo0
+	yz3GnaBmTHf6GTQ6PEepTemfz/tSw==
+X-Received: by 2002:a05:6830:64cb:b0:843:8982:9532 with SMTP id 46e09a7af769-84500b76ebamr7325422a34.28.1792433789721;
+        Mon, 19 Oct 2026 11:16:29 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:43::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-848e7d444e3sm3722002a34.25.2026.10.19.11.16.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 11:16:29 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Harry Yoo <harry@kernel.org>
+Cc: Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/percpu: clean up callers of pcpu_obj_full_size()
+Date: Mon, 19 Oct 2026 11:16:27 -0700
+Message-ID: <20261019181628.2113224-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <atZWW7V0MI--HOke@thinkstation>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAO9r8zN1dTJmULsKCwNrNr_vKyrV+vMfD7wifQ05uAti7E-yDw@mail.gmail.com>
-X-Stat-Signature: prkk4x38y1p11kixyr4n1xrzutjxgxx5
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DE19310000A
+X-Stat-Signature: 9ipz3dhp5rdoiatyfzfi6us4u9ur3ndw
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 02C16C0012
 X-Rspam-User: 
-X-HE-Tag: 1792433744-832501
-X-HE-Meta: U2FsdGVkX188vFM9nHhCm7bgEJeI1MxXFm21Mr+tu5+VWxhBP3HDPiS1aO1YSx8oYQb6XwjrWVdAvKNz89DUjPZvkuoeaZSpGFfoJMbERU0SuA+5owgeulREcknHytFuU9LDgMyNn2YbyvBAI+INIgLuAvScZl0oFDVx4Qmv5H5tutZ8Fpx22yTp9EPzka8WcydtI80smLFEd7VK4/AAs5uxHFjhSw4PHm8+M9cNE72k3wzJxcUcXJD9zdp/pcITGqgg0upgSxNADx1mQR/Y7zxLXYQ678mCASxFW6asgvoveHdm+mpqEgBIhuW57FVN3Ye169yiBx5z71yYU2hO5G5SSOke2TBkW2uv8CGPYPFTHOTg44LmPMNhpGOT2K8ZWnW1nIf+3qE2S3kuCuJpsqksGCALW9Jpl0F7owZ/6qNcNBrJOm9p9bQjq5AfaADgBfb6I7uUU9T5DiZkGLQqxB/Uxb1ZvIPIlyk6FJMZKCo8z2ngSr5EkTYCe5BLm7VKa5rXHPysdHQlsS/Rj/slOzggjMLVrCMepJmj0o3Xr7euGAyGum/8D+4QGq37Wf6deLV1EX8LB/HtXcYpGiiJYXq0UN8NoYHZnmPOAKXT9cHhBnmMI6aPmTUfDE0m2O5hDcrKxnXBcxcFWTo0D9Wp2vBkVAf/dPxCRO7GmLvakboC7qK60Bw0zNkjN9+yd2GnsfEfoI/e1YIknl3+AOX8nF0vZS5ZKp/iglkKlCHVgDWzUJlHeedTZQyJm4Nafs/pAXqWhQ/UGz/BnrWEIwWFXtuidba2qc1HovPP2YbGQArUzHKGiL471NJqaWxKFp0fVNSPP/midRGwk+/uIfJYEh0d2P1JdeLYA4/+isdx0lIHKvZydi6IwoT4LmngFd1/zR48BylRk2iCGsIcF7QRep9MwA9bfVxdMLMR1XFC3BLAbIQM+h8coVFY/WWS7dfp5jqvFTo56pogD3rlQQS
- gEdj26cj
- mg3IF3/jv+9t9AkaKfZCLh9C/zDRRKw12gds2ut9EUN2ku4YTTobvRykZw9i6WTefeCrbRYvw4kRtdXNi+KJBqBKEd1rC7kpL6Wp16y5lo00/bBwj46b9VXnkfZUL8ht36f0z04ow7rAhEYKPaeBKirrCI/fM+luDxXXrs37l8V4HsGglK+EL9UuST8YfMKXl9rIBqCwiqnwbx9338KBNPb1BFY80dvXee8rvMV/JUqO8bTDH5akwAJSrPTrFe+rczblwJl83Iq4EtXONptPz5TCcuffLWnf0z3lcLhbITvWlJMbzwyRCEplol9gW4OdDzFh25aTEvJqhoUpObjcc/W/9REmJkbFPuVT/ZwnyN60HmK0Eiy488o4bqME5mxn9JoRKGHidQ6HZAyCHL/EhbhM1vfNodYbkxoyh9SyRH0khhQQ=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792433790-401932
+X-HE-Meta: U2FsdGVkX1+zPdXiKvnvmIdFBHVe23gkViPIby5X86RXwaXuZBeu1UI1J2VrWp01OAOqFiVbwq6xJnmySoO3SN9gmhBUJ64u81MBasNGKJ1dvutfTfTBTrBsg5TxH86tCojYD1jTa8FMk73epRln9pPhHWzyZgPSFSEfJGMioFA4UazbdyvNEDcvD1iTzQ93ew85VEsDrtUm2/C5oohOwbTi094xV14br8mU0y0JfqBVxOm3P86ekSgIf3FqFd8Q32fPiKCJQMQJMpOtC2BOiEMDCweaUsXjLyottH83HV8hNQuZFPuR7AXm0TteoyzhhV1thP+5gXot2BLvnz4Fvz2z+W95gTx06zTuvPkrX/+v55OfybJXcJQhRt56ju7LcfKaJgbzMXwDdUFXASyoARHjmhQIwuRxSdon0u1wONK7LUMPcQ9/EGNODbCsktX+zALZuw0dXYSgZnGRaAsZV+EBPxEh0MNHcougs1OQcJMCzOHq3fISD87YbGNBao4tB4LXjT6VrmuAm1h3sPAEML/Ci4C0PpKJ2TnEoB1O5OGIFCykq22GPySSTfzSqVNZw354i1cy6w89nEiu1IAdqjC8Na6anT4djo6IJKvv3QWbFTGk2BJmwtXcy7hWfbae/2ikiJSx+sEdliisxtozyOg2kB6ix2HcnhPXZqCUrU+cLT0vhhI9dFetilOeVb9QABpZvFzEByIMqSHo5SRX3hQROCJzrT+LOFgImaf8VdKHwH1DgwBahIiOJtwCU+fpMUtJQniFN19cyHGtJtgKBZbeo7OLNPW56JYC4Ful3JoHq6FzAYVPzGkb5XVYxYSPxreuuxvfykHG5LtK0GIl4bS8Yb1JgdfQagQGcedbEXMCPV8NbxZ+BCQ0HlIOJwubq76llVwfTfQXT3hqVCa3GMfwobYUKe3qPfBQanCNYRlLC5QwbhyYc2MvtbE2I+b+6qf2jsXw7jEu1nFB8MI
+ gFuzSC2C
+ TQ9Gxzr+PproxGzFKdzYhckvpv3JxNzbE1Nan3ShCmHjVjOlq+CM27Q2sNreykBQ4RU9ImyEdu5N7nLcCBilK4PCTM4caCeh/d0893WjrmRRLtKuvwA2XblZptkUGU36e0BgZ8u8LdJJ+gq98Q8B/ryJyXYUnbaJA3ve2z1V7Ziwx7n8QboB97rYB6YwqSLEgVhJVpMPZJhU3iTQ9nTiYVnPRmPwj0KJer9KUNpiwfaMUWQt0q4dKzwCMW3I8Va3FeRo5zAxxOqChB19YWY9miHqHiJJBE+ogQG3Di+8rvuk/AHlx7zCMypjDPYSE/gW7DtDwoEOB3CHqiNkxtOeeKoDUbwNtvyP+foP4Q1g0V7SmkLfTj4nTX4PcJun5cImR+y1rppY8PLFEnv4Gs/B0WKNcpCZVt3CC3NsGZiBKzxUPGtjngVDtze7EWgNflSCjUDE/GatiKw1gzqkciTdXtWebsSbfHWKg2gCIu8d8oHbMeres2fnSmnmLRSb62DbzemUgHC3Yiz1osdF5TAN/P0B3qBU1rh71hs849tr2/PSmF5qcZyohRhzI+SdLogJX7sLI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,32 +127,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 11:00:00AM -0700, Yosry Ahmed wrote:
-> Right, but this is for new patches that get merged into Linus's tree,
-> what about existing patches? Any way to retrigger that workflow?
+On Mon, 19 Oct 2026 18:49:26 +0100 Harry Yoo <harry@kernel.org> wrote:
 
-You take your patch, apply it to the stable trees here:
+> On Mon, Oct 19, 2026 at 09:28:02AM -0700, Joshua Hahn wrote:
+> > The size of a pcpu allocation can be interpreted in two ways:
+> > 1. The size of the allocation attributable to a single CPU.
+> > 2. The total size of the allocation across all CPUs, including the
+> >    allocation overhead (for obj_cgroup membership).
+> > 
+> > In most accounting paths for percpu memory, we need the second
+> > definition (total size). Make this more obvious by coalescing the
+> > callers of pcpu_obj_full_size().
+> > 
+> > No functional changes intended.
+> > 
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > ---
+> >  mm/percpu.c | 39 +++++++++++++++++++--------------------
+> >  1 file changed, 19 insertions(+), 20 deletions(-)
+> > 
+> > diff --git a/mm/percpu.c b/mm/percpu.c
+> > index d7883507dc151..76848e096caee 100644
+> > --- a/mm/percpu.c
+> > +++ b/mm/percpu.c
+> > @@ -1623,7 +1623,7 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
+> >  	if (!objcg || obj_cgroup_is_root(objcg))
+> >  		return true;
+> >  
+> > -	if (obj_cgroup_charge(objcg, gfp, pcpu_obj_full_size(size)))
+> > +	if (obj_cgroup_charge(objcg, gfp, size))
+> >  		return false;
+> >  
+> >  	*objcgp = objcg;
+> > @@ -1642,11 +1642,10 @@ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
+> >  		chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = objcg;
+> >  
+> >  		rcu_read_lock();
+> > -		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
+> > -				pcpu_obj_full_size(size));
+> > +		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B, size);
+> >  		rcu_read_unlock();
+> >  	} else {
+> > -		obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
+> > +		obj_cgroup_uncharge(objcg, size);
+> >  	}
+> >  }
+> >  
+> > @@ -1662,11 +1661,10 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
+> 
+> Perhaps it's better to rename 'size' parameter to 'full_size' in those
+> memcg hooks to make it clear it's expecting total size?
 
-https://www.kernel.org/category/releases.html
+Hi Harry, thanks for the review! That sounds very reasonable to me.
+I'll spin up a v2 to make this change.
 
-and send the applied and tested version it to <stable@kernel.org>.
+> Otherwise LGTM!
+> Thanks for cleaning this up.
+> 
+> And it might be beyond the scope of this patch, but I think
+> trace_percpu_alloc_percpu_fail() should take full_size instead of size.
 
-I.e., you backport it yourself. :)
+Hmm, I'm not sure. The trace event for percpu_alloc_percpu actually
+tracks both size and bytes_alloc separately, but percpu_alloc_percpu_fail
+only tracks the "size" paramter. I think it might be a bit confusing to
+have the percpu_alloc_percpu_{, fail} have diferent meanings for the
+"size" parameter.
 
-Do git-log on those branches to see how stable backports are annotated. It
-needs to say:
+Perhaps the right approach here is to add a new field "bytes_alloc"
+to trace_percpu_alloc_percpu_fail so that we get full parity with
+trace_percpu_alloc_percpu?
 
-"Commit <sha1> upstream."
+( Actually I think we don't even really want size, what we really care
+  about to me it would seem is the size of the allocation request that
+  failed but alas... it may be too late to change the meaning of the
+  field )
 
-at the top.
+wdyt?
 
-There's also Documentation/process/stable-kernel-rules.rst
+Thanks again Harry, have an awesome day : -D
 
-HTH.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> Wdyt?
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 
