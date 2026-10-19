@@ -4,92 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C09CCF2DA
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:25:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54A68CCF2DA
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:42:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBAD16B013F; Mon, 19 Oct 2026 02:25:25 -0400 (EDT)
+	id 26EC26B0141; Mon, 19 Oct 2026 02:42:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6BF66B0140; Mon, 19 Oct 2026 02:25:25 -0400 (EDT)
+	id 2446D6B0142; Mon, 19 Oct 2026 02:42:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C81C96B0141; Mon, 19 Oct 2026 02:25:25 -0400 (EDT)
+	id 15A896B0143; Mon, 19 Oct 2026 02:42:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB8C56B013F
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:25:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B1C2D1A0649
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:25:23 +0000 (UTC)
-X-FDA: 85338388926.27.7F6E451
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C074940002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:25:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PAjLuW7o;
-	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DB1876B0141
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:42:28 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4BED28061D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:42:28 +0000 (UTC)
+X-FDA: 85338431976.05.3E38C1A
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8A616A0002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:42:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="rStAN/zm";
+	spf=pass (imf15.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792391122;
-	b=hDbjm4cCcflWEHdLCozQZQaozkcAsjVA2Tl2uA91lVrzrW4LrkM02mdzPpZ0KCBnbQrllm
-	SviWCzXKJ9S7fKYYggKu6rLtdrSRWinq7HYdvEJpJhH7X7XZpwdHmURliUHLPaM/oCpT2R
-	HJ8foTsfKUOYZ+eVdle3SJkYh4powWM=
+	t=1792392146;
+	b=urZhmqxjfC9Z7J+CkE7OATt1Zes7OfJ8LgOlfS9k6UnaKgU/DxbOB45xg72Axch2206qXf
+	h1QymgG506ZjsdPqqOXxJ2eGrDROJrQcE90TSp6738ZTq+WmNHYd0rS2LmTjvQYcxwWMC+
+	BjWm2Z+Flvy96qqCx7nnVm4DQJbAapM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PAjLuW7o;
-	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="rStAN/zm";
+	spf=pass (imf15.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792391122;
+	s=arc-20220608; t=1792392146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XN+K9d8x6X2efXo7o/Md4BoXf+qoI6rmokNsGst2jzM=;
-	b=HSfc8tR11xm83P0QS4jERz67VS/glFmcS8IIVnmWyrE+z2F/sv9hewv6AXjMbE1XiZqEqf
-	0XjeZcEkLAzh06rK+y8g1XLKtONRk7i0VEj1nEYPAX9rG6jAcKSdzozTBJ+YN61ulbTvBb
-	GjIxpo5pfGaDFW6zC6uAcAr9cTX2QZU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E13A1477;
-	Sun, 18 Oct 2026 23:25:17 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A8423F673;
-	Sun, 18 Oct 2026 23:25:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792391120; bh=55RfTNFBQ9bYI0TDGXnU655P/5to3Zf/3l6pm2G36ns=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PAjLuW7oV1dFsO9RUkEDuhzNJVk/QIY1FdzjBlsdfuae1ojCAEHeWbysLZQS33AuL
-	 91afN7as3b2wVL8PgRS7QalzNL3VJmXu5G34VBJSycUtx5kDnNHbQGuFmbHivrXfdR
-	 PWNX8NdAERb2KexXuzG3pP1o8xO/AUzTHsFH5Gv0=
-Message-ID: <d7b1711a-44aa-4169-a250-227a172f4125@arm.com>
-Date: Mon, 19 Oct 2026 11:55:12 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=f5XFXarYDugU15GvRn4heGPbOvz9Qo8H6YKk5rO58RE=;
+	b=ybumo5zlOQhtvm7gOw4RVtXFqgPN7t4Pp3JLAEn7sDTSVH6v5OjP42fzZdSmFlUpWFCGFH
+	Kq1WucKPDNl/Uy9Ygzf7+UFVjabzXdjhg6qlRTozxtNkrzXfquz9cSCtqE2CXB9JcKpg67
+	rIU4EiNP6y0sf52W6SrJPzt1nhA7jWc=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cd5e6f0a22bso540776a12.1
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 23:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792392145; x=1792996945; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f5XFXarYDugU15GvRn4heGPbOvz9Qo8H6YKk5rO58RE=;
+        b=rStAN/zm3SyKogcUoKFDfAwqSfRk4rKRbeZ68GYQ+c1psrTHTW5+7XxO6PR8SOTgb6
+         yZlikL09yc0EvaK61ciSq4PHg8lkgaOUTDkp0v4U8iv+HoIpjwyAdS+jPjSKt3pzjYVM
+         0E2nIn0u7Ddv/q5sGVwTgSrK68B3n1B/tbqcsbqvaJvITNiNdh2S2gPlfDRWNUt8udGA
+         vprO/pj4jHw5PeElBzGLgcVhQgzL4cdC64AgzhPwr8G3FMQjf9tVQ8yleItmJ+4y3V4D
+         39J9qPvaeKWcaEECc5dXR3KmMsfiBFCv/rKHVKrLf0qHE73a09C3XLVVhD+Jv7/6s8xV
+         4OGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792392145; x=1792996945;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f5XFXarYDugU15GvRn4heGPbOvz9Qo8H6YKk5rO58RE=;
+        b=FK41q9qipMjLtrTac11W/PljFHqwBTzsw3EEF4w+Gyec88sALXAdZ5TfiX4Bb8X/t5
+         LMT7P9y4LGpBBZKLU6pNsnGD23eQEjCNIb20gL+0MDfvPyew0wb2KtjDS4DJRr650kwO
+         7d0hz4vEH+E1Mds1JERzadAYE5BQojOzyNj2K4Jx9m2/yigxN/9Tv9xXz4/EXWwed8mV
+         aaVhTY+ShvsSMhMkk24NMoYC1ekXFCk7njwN85pEPI+D04BwvtNRcENpmMEHyXQxwwWZ
+         4dB7sImoNcfNcxr4fTK9kddJChNBHudw9pGCUQSAkVvuLCaAcAFlH7gLX7a4Zgjq9lAN
+         JsDA==
+X-Forwarded-Encrypted: i=1; AKwUvBzaIHW3UeeqdDf1JC+7nHTIBj2pdHEFcBbtjWrFw1N6Lo3UOT+a7nq15HiUqn2RBBDt1Jh+cn4AIg==@kvack.org
+X-Gm-Message-State: AFq9FYJYe/pc3jgQbgiSSXQkcDnw02kJDxet8W6yvTQfpvbz3T9rzWKQ
+	xC64AD4DzAPPZyUEpvIgy7/yOAtrpDKMWO+zsx/c/y0kxT48FXKxHZ2c
+X-Gm-Gg: AYBFou0E+VScVKBy0k2nRjMgJSVcwKv9P2JfaWzoXtua3C3g8MndVQaJ+y1AkOSPXtj
+	G5IsNO232ukEwgq1kaoP6TW97Ept+qyI9vUsIY8YEtHhnoE5W/IrA8xRYlU3BJgdf6l7UTaQsjy
+	eb3JR0JkqZ200HF1k7Q4RiVpBGizN5M8M6RD7dUcNf/VA2ix9AlqEzb7zLSoQrLNPflkfWdtgsV
+	amL3Q/TF4H5C6XLoTqZYU39RqGBpnK2BRSYO6f6kNccNtEUxiIfuYcZTNJW024xOewkMOJioRHc
+	s92Fo+tq9KoipqFSgo6eFdoq47E9DF0WAAOvQnY/eXOYQaH82GIQToesWKZaNj8vwUqxGMUD4Ub
+	WpXHuY+rcGVg+ENIcCVWPbTJPl0qswb7+nHnjOQgUe2cmitt5Rwibuve8AJEOygovpf68LUQzqS
+	MZxC05+5VfIdf+LLTWD0MKw1I9MDcevgKE/GhS35CO6SKlBfGzGOzzkkYRp9i1zUR3d80gGB/tQ
+	DIVhGcyLM2AvLZHHRPadCDWH3dcZsRsi8Wc2mMiVpJ0n0uxLc/XKj/8cU1KIyzlW+WcOw==
+X-Received: by 2002:a05:6a20:e30b:b0:3e1:c6e6:d101 with SMTP id adf61e73a8af0-3e225f7674emr5446422637.29.1792392145181;
+        Sun, 18 Oct 2026 23:42:25 -0700 (PDT)
+Received: from localhost.localdomain ([240e:46d:2100:3fed:6938:3f14:63eb:c479])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd654a3a592sm3688960a12.30.2026.10.18.23.42.15
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 18 Oct 2026 23:42:24 -0700 (PDT)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	gourry@gourry.net,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	shakeel.butt@linux.dev,
+	roman.gushchin@linux.dev,
+	yu.c.chen@intel.com,
+	zhao1.liu@intel.com,
+	tim.c.chen@linux.intel.com,
+	lizhe.67@bytedance.com
+Cc: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yafang Shao <laoar.shao@gmail.com>
+Subject: [RFC PATCH v3 bpf-next 0/5] BPF-based per-cgroup NUMA balancing mode selection
+Date: Mon, 19 Oct 2026 14:41:52 +0800
+Message-ID: <20261019064157.29885-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: keep ksm_tests on small pages
-To: Qiliang Yuan <odys.yuan@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Usama Arif <usamaarif642@gmail.com>, Yu Zhao <yuzhao@google.com>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261018-bug-selftests-mm-ksm-tests-nohugepage-v1-1-55ed54bdad35@gmail.com>
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-Content-Language: en-US
-In-Reply-To: <20261018-bug-selftests-mm-ksm-tests-nohugepage-v1-1-55ed54bdad35@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8A616A0002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C074940002
-X-Stat-Signature: oossos95kxk91x1tzp6hkkok8jk3ncth
-X-HE-Tag: 1792391121-696675
-X-HE-Meta: U2FsdGVkX19TAJmLN+ppcmD2AjE8NORte1lvPlfKVnuI6nZYFePVuHgYaRYef2hTECS1wdDcarXqGpzOOb3oZkYHSLUaLnXkmsEq0SUJdusgJ+gOih1jY+fJmAJW7kLbmLKXUeLN4qXHWiRzKcmkmBOb8O4684QBIfOz36J/lJzDPS9i/pCL8k1tVm+FYnagT73W8ryTIYVmaOdSC/vOd9tgJZFOaJIVO20s1D/qFhmBfwFVtAmKn96NfBAVnpQKlj3r8n0TX8U+UwGkqscsmFHMtISOCr/adNgbrW03dR249n+EW0Mm96uUzBqW9ZQo/adRDo/iUYsPDCK/yZtRsbcMFd0wSNiA827jSZw10dZZFDenEqRBmJGlH9ni+sgwhmAsFv49WrRoDVrNQA5YnIaPqwZuoMVglWUO7TxnzuV/8Vaywqffljk9Rqla9gXvWTBWKiaNtVRl8MaCKjUDYL0z04hbx+/VokJUDa92wVz75KTS3d2UbRH5pnBmdd5hgMfnoHzL8+yv4+J4ibJAkW9IAU7LWWn3554g0LOVodsrLD+Tj+B4sQKDZpNW8NVHBgeKWHEnAy5TvoPqGjT8W4aY8njUmMmhigR4iFtt7gZgBPGRGb4wparSbRGzCk6DN9nkILiGqUE2CzPDrQeJo0+aLLYTfM+snzFiosFVN0VFaskQ+unZbimHmpzSrFiMth+6i6WIaCbZFlkEhyuvMa8M19Wq1OwjvzohdDwajGcW11N1gnOQi9PQPI3NLfnIyZxBJ/CxlCaCM4lrc1G6BRB26GJwRnIW/u6AfoHaZtEgWYXZ826XXO7Bu+dIfqtjND84ejIoLRZOjyx/TOqqKm3/o/Ru6blCt9P/RqvfroWAbhzhD+DQ16xYtdNATJiuxmRq1ccSM3/gzmtJgAHJvMEyI5sz1uhM0/2IjMuVtNY1vMTlgf9OO+oXp9ezaE6OWEhMwgHxbqaEWlvbZct
- 3EGx83YF
- QtVT+KWUjTigCHnx8DCEp5PGW2QJcKlLL+N/Gw8Y/MSVf+hdaXyzoClrUZFY4/Kd7cGsL4cBuwRo4MOD7nT3w96fiNnm7AQmztQs9gELJe+JZIOS47Wln5D6/XA6gtKORhrpiao6zw3KB+BP0kjxg+1eZbMRf+rUZtyKgjDAmE4a84iPTM8hh75tcsrv3kWsep9G2NE2JNrVLEQoTxFDt2KCPbEto8zP0WofKnj7bUvaIx5EnQwIDlwdjyPdTTZN38RPcxHVrrbenhEjSPuw/hNibPPsQ+u6EGnxXRxRWTi8riaSDzIAWC2e2jklcLO4VhqP+nMELsukeo4ujZjXFQ8gUOkJGn0JpAo2i4yBmISsz/lRQk10sPmcjsC6XCNPCZwm50aDmQXepXdHopLB1EY3V2s0dg+IVRr1yDhNmmr5mGuHBDd1c9sJwZrqBckbMb+Uc
+X-Stat-Signature: jg3bs5dhiersmaes5kcbi1ktpg7gmjim
+X-HE-Tag: 1792392146-276381
+X-HE-Meta: U2FsdGVkX19jpSD7VAB2amNvKEcfP3/8/ULuskUdtSnpalbcFFbhFX/1QfeP+tKy25Ek1YOUq+LXROagYzw91rzublQRXX3zmjFQYJHBJgkY8cf48tQ2xtQuBZPfuqy82c+QQo2P8OHhI8//wD3GJ67pMlr2zcWWt3GyX+hQMYTFuDzIyVvDLZAkDeCDQwziK1IKcZbWeNSSL1WBLNzv02qzrs3SaD/c6ux6qkW0uiPl11vNnGVY/sJDQqSWsNhg7QUTRMio/SuhREAm15QntCakV66A+Mj1YGc6cK51vifAriUWAwzmBG8p+BAynhmp5LbR1oWaPgVLmZxInxBF7CnpS2RN979Y3juYteVn3VgW8QBfcoR4xu5pKzg0IX4+crgNgKFWDcSyUcBUfFiNhFTTNz8snI5YpcrlWy7Qo3AiBq6CDf+NqMCyUhz/QBmJqiMu7LFTfx/ZbFezQS4njvL/R82MaCuPVl5DLOYbKK2ZOsmTRS74ItmioOmrjY/tpNz41UTQKI5yiU2GKl+3fbQnBcKN5aKdrAr2AvXiQGfeOmHB/vDLcAYW/doRENejz2/TenyJjRQlmjz4hHUzTjlAcLqdZVSKXqwieEh2NaLAMtLcN5+F8xaUKy/J3QQxZ6Pe0Zgpx2QflWf48x7Kgearp1PZ/KAdCFNOaRMbLF3i8KZvnz8mv1nC0LFO0kJNnyeJmBxXijorstzPcoUed1V+Df5c7h6mep9IIr8wcRwIxTCtaIpjrTEn1JDkRPlyBeIJ5jpCKhxh1Stn3jK4HY3fpx71USxPozBwGpytttX1chUrB3gV2T87EXnGT4voS9Fiwpx7Tk0ryZ9EzjcXQR2UMdpYC52PTgpzcUcBRoQ2XNPLZpMB758eF9LC/wKsmZC1NyhgO7q2X53xJZJoqHCjP7eDKFTlLaSaa6MsdZuQgNEj+lwAFC5wZ95DZI3cBtR+Up1KrLUU3yGGrh3
+ gPnHQp5H
+ pDh3KiUueHSY4keH+MtvDSDVJnXEye29TbgtFX+UzeR8MxeXXmeTVRva3ublXi14r8yYzHGeHD9MMUyV5fgsZm45asvWwI7WSp8V2zbBSMQRyDQralLYFjx/bdbDvg44d8lgI14K9Am7wNZnvrfQrSM3WEIb5vtVcCMZNAWBSdQJUautA2ep9KAl0Sce+izNYRfyiy7nbYYhyC9EwvtrgPeNa+AHDBBVZrG6KbwS2mmkppn9y+eQYqR+m8CRiMDcyu4MgklDy4xrceg5ALxbNRZKePMv2ZU+HM3RcL3WJ2TfJTv5SsF1U/ufp+iClnCvTrZ3+rWq7cX4cPIt3ipZ2FGjCZ5q9wgC4htHBNrW+IOcFxFCjc5Vx+I7t4g3HHqZvloZ45nWDE3kn/c0xdmkbaoOGos2ebOpn7ZPKgxMIMltfM5bCtOgnvuaElQnwdhL9pRsIZoKqSo8ihHQjCvr8gRmaRejvnSGKF2kAlCD7gKnlA6KcfomCDuQiZLZyDv2KHZfKM2lvvb4I5iAJEafUypjwEatOUGPR6H/LgZaowskXt6yMcB7hM2Pr0wValSGDobvs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,32 +138,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The Problem
+===========
 
+In our large fleet of Kubernetes-managed servers, NUMA balancing has
+been historically disabled globally on each server. With the increasing
+deployment of multi-socket AMD EPYC servers, cross-NUMA access has
+become a critical performance issue, which made us reconsider enabling NUMA
+balancing to address it.
 
-On 10/18/26 10:23 AM, Qiliang Yuan wrote:
-> ksm_tests fills regions with identical data and checks KSM's counters
-> after merging them. allocate_memory() maps these regions without any
-> THP hint.
-> 
-> With mTHP enabled the regions can be backed by large folios, which KSM
-> splits before merging. Splitting an anonymous folio maps its
-> zero-filled pages to the shared zeropage, so with use_zero_pages=0
-> those pages never become KSM pages and "KSM zero page merging" fails
-> its count. "ksm_tests -Z -p 10 -z 0", 20 runs:
-> 
->   THP setup                     before    after
->   default                         0/20     0/20
->   every mTHP size "always"       20/20     0/20
-> 
-> Map the regions with MADV_NOHUGEPAGE, as ksm_functional_tests does.
-> ksm_merge_hugepages_time() maps its own THP-backed region and is not
-> affected.
-> 
-> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> ---
-Tested the patch by enabling all mTHP sizes as mentioned. Before the
-patch, the test failed and applying the patch fixed it. So:
+Enabling NUMA balancing globally is still not acceptable since it can
+introduce latency spikes for latency-sensitive workloads. What we need is
+to choose per workload whether NUMA balancing runs at all, and which mode
+it runs in. A latency-sensitive service wants NUMA balancing disabled,
+while a batch service wants its PMEM-resident memory promoted when hot
+without paying for scheduler-driven migration. No single global setting
+serves both.
 
-Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+The Design
+==========
+
+This series introduces the fine-grained per-cgroup NUMA balancing
+control. It grows out of Tejun's suggestion to store the existing
+NUMA_BALANCING_* bitmask per cgroup and expose it through BPF kfuncs.
+cgroup::numab_mode holds the request: NUMAB_FOLLOW_SYSTEM (-1) defers
+to the global sysctl state, anything else is a bitmask.
+bpf_numab_set_mode() writes a request, bpf_numab_get_mode() reads the
+combined request of the cgroup and of every ancestor back. The hot
+paths walk the same chain at read time behind a static key, so while no
+cgroup makes a request the overhead is one patched-out branch.
+
+An opt-out wins and binds the subtree: a DISABLED request anywhere in
+the chain opts the cgroup's tasks out entirely. Otherwise the requested
+bits OR together and the kernel reads them independently, the way
+kernel.numa_balancing reads them, so a combined NORMAL|TIERING engages
+both modes. A DISABLED request only speaks for the cgroup's tasks,
+never for its memory, which follows the remaining requests of its
+ancestors.
+
+The cost of the additive combination is that an ancestor cannot cap
+tiering short of a full opt-out: a descendant's TIERING request
+re-engages promotion for its own memory, and promotion is the mode that
+consumes the shared fast tier.
+
+The readback contract is worth spelling out: bpf_numab_get_mode()
+returns the combined request of the cgroup and its ancestors, and the
+kernel reads it the same way it reads a single request, each bit
+independently as kernel.numa_balancing does, so a combined
+NORMAL|TIERING engages both modes. When any cgroup in the chain makes a
+request, the value read back is the mode in effect for the cgroup's tasks;
+when none does, the readback is NUMAB_FOLLOW_SYSTEM (-1) and the sysctl
+decides. The answer speaks for the cgroup's tasks only: its memory follows
+the remaining requests of its chain when it opts out, and that folio-side
+view is not exposed by the kfuncs. These are deliberate simplifications;
+both can be revisited if callers turn out to need them.
+
+The sysctl's own documentation is untouched; the override is documented
+where it lives, in the CONFIG_BPF_NUMAB Kconfig help and the kfunc docs.
+
+The override was measured with schbench, 384 workers, on a two-node
+384-core machine. Whatever kernel.numa_balancing is set to, a cgroup
+request puts the cgroup at the throughput of the equivalent
+system-wide setting, within a fraction of a percent: the override
+itself costs nothing measurable, performance follows the effective
+state alone. The two states themselves differ by less than a percent
+under this load.
+
+Changes
+=======
+
+RFC v2->RFC v3:
+- The struct_ops interface is replaced by two kfuncs, following
+  Tejun's suggestion.
+- Improve on the function naming and simplify the code (David)
+
+RFC v2: https://lwn.net/Articles/1099962/
+
+RFC v1->RFC v2:
+v1 keyed the hook on the memory cgroup and temporarily embedded the cgroup
+id into the struct-ops value, because the cgroup struct_ops integration was
+still under development. v2 attaches through the cgroup struct_ops support
+that has since landed in bpf-next, keys the task surface on the task's
+cgroup and the memory surface on the folio's memcg, and adds the
+memory-tiering mode alongside enable and disable.
+
+RFC v1: https://lwn.net/Articles/1054030/
+
+Yafang Shao (5):
+  sched: fix stale get_pref_llc() stub for !CONFIG_SCHED_CACHE
+  sched: use static_branch_likely() for the NUMA balancing tick check
+  sched: add helpers for numa balancing
+  sched: add BPF-based per-cgroup NUMA balancing mode selection
+  selftests/bpf: add tests for the numab kfuncs
+
+ include/linux/cgroup-defs.h                   |  10 +
+ include/linux/sched/numa_balancing.h          | 149 ++++++++++++
+ init/Kconfig                                  |  20 ++
+ kernel/cgroup/cgroup.c                        |  14 ++
+ kernel/sched/bpf_numab.c                      | 195 +++++++++++++++
+ kernel/sched/build_policy.c                   |   4 +
+ kernel/sched/fair.c                           |  33 +--
+ kernel/sched/sched.h                          |   1 -
+ mm/memory-tiers.c                             |   9 +-
+ mm/mempolicy.c                                |   3 +-
+ mm/migrate.c                                  |   7 +-
+ mm/vmscan.c                                   |   6 +-
+ .../selftests/bpf/prog_tests/bpf_numab.c      | 227 ++++++++++++++++++
+ tools/testing/selftests/bpf/progs/bpf_numab.c |  32 +++
+ 14 files changed, 681 insertions(+), 29 deletions(-)
+ create mode 100644 kernel/sched/bpf_numab.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/bpf_numab.c
+ create mode 100644 tools/testing/selftests/bpf/progs/bpf_numab.c
+
+-- 
+2.52.0
+
 
