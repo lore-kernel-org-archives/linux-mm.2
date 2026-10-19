@@ -4,84 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D8CCCF2D3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 07:37:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF75CCCF2D6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 07:38:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 430FD6B00C7; Mon, 19 Oct 2026 03:37:39 -0400 (EDT)
+	id 913AF6B0167; Mon, 19 Oct 2026 03:38:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E2326B00C9; Mon, 19 Oct 2026 03:37:39 -0400 (EDT)
+	id 8EB916B0168; Mon, 19 Oct 2026 03:38:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F7C06B00CB; Mon, 19 Oct 2026 03:37:39 -0400 (EDT)
+	id 8021E6B0169; Mon, 19 Oct 2026 03:38:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F2B266B00C7
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:37:38 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 739521606E3
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:37:38 +0000 (UTC)
-X-FDA: 85338570996.04.41DF6CA
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3EE0780007
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:37:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=OEqPjCTZ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf30.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792395456;
-	b=qMmCwYAnIDe9aa7ThMaYHk3xRdbXq9RKczZuZqraG/iBoYBLX+guZmK9bpdYzby3UA5+IW
-	UaYSn+/qOrpKYl/KHMJnRD6pvWQDF2+a0XQ2Fz+6vwd28DZZazZwaND7ss0e0rwtjxlj/p
-	Pm9bHPpvZ66WmGcrw1K/G7PiIOB3bZQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=OEqPjCTZ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf30.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 573456B0167
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:38:28 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 913E5A0468
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:32:37 +0000 (UTC)
+X-FDA: 85338558354.20.8CD0CB1
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2414F140002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:32:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=auGD+Dyd;
+	spf=pass (imf09.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792395456;
+	s=arc-20220608; t=1792395156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h5Bz8p0/6fFu4pna3JkJBMFOb4VonOxLITU8io1OR8E=;
-	b=QmOAJg7CZMW8NMHs/JE/6p+/+giVZW5rK1fAvRxLdDBobCCRnXKwmPHHUJZYyfQb0rOx6P
-	h0kRFmadJ6Ya8Zeb9VJDC2Pg2kHMKR9gfXRSF533H8HgLmYu1K7JDMCEn9Lbl5sNrWIuxb
-	39YHTsyaFwofUC/KfU0AOB6Ua6vtLbI=
+	bh=a9E2/1RrbNu8/zRm5DyQP/PhhVl988xi9MIrrC75Wnc=;
+	b=YL7plsD7tVAVMHObRW6Qx+LiOihD5Mx2BDUSFbanzPxZaJTbF7ZvB0nFJbBkcfQK8e0b54
+	0JqmU0fwynBsdqhqq0fvQ00OrgxfM9U+9V/hRJtu3lfT/AxVCS1kyImyYx5X0reXBmNoW+
+	qYabW7o7YXneElUU9pDjDcxeH99EIEo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792395156;
+	b=fB0SNsb6US2nYvBJqIeYYalwgRkkSVrT8PLviSI5ZgvFaong15jTsze3obixtNi1iTlljz
+	Z8GroWv7HWYG63oebiz1ny57NcyJ/9v6hRl4iDxMPupM7NzeeHfK4GYXWlfMtgN4hq+D2g
+	c32/GQ7aiZihRTsotOAM7BYksFssExI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=auGD+Dyd;
+	spf=pass (imf09.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792395446; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1792395150; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=h5Bz8p0/6fFu4pna3JkJBMFOb4VonOxLITU8io1OR8E=;
- b=OEqPjCTZ6pyKl27vfs+dBiGhnKxia0ayrjPJwTyFr3LBqTLF8SbiP116vt8FeMEKeB8sN/
- LEDpGkphk/FA0bQOLZfObs0vZqqMUQYYLLz9yrya0VILjk+GLGtKz/a/FLf+7HykQujDCt
- NOdrpAPPcxP/5VyHQK7c2WQLkCq/36h3Q4W1qH/G6G6RgK9iyfuc2EKn1DaQSTsIc7Zbln
- H99VmeTLAH88aazkBw0xftL7TI2Fwnc5S6akGrHd4u+sehxNgzoAPwKgvXi6BlSekZfSyf
- ZJKiZi1QsIJvbbwv6YGmJTqjVyUo+XVhAolpH/o2SlQgpk7Hsh2W8xeupj/0wA==
-Message-Id: <4a7ad39d-fee6-4390-beff-d40ecf49cbdc@bytedance.com>
-X-Original-From: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: <osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>, 
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/5] mm: hugetlb: add CMA support for PMD-sized page
-Date: Mon, 19 Oct 2026 15:37:09 +0800
-Mime-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Type: text/plain; charset=UTF-8
-To: "Muchun Song" <muchun.song@linux.dev>, "Qi Zheng" <qi.zheng@linux.dev>
+ bh=a9E2/1RrbNu8/zRm5DyQP/PhhVl988xi9MIrrC75Wnc=;
+ b=auGD+DydcHIOVO+QmYt0Smo9Fzkyv/WmdWjWy+UYFq3SS198lL+UTzbDeHAhA806wzz1PM
+ t0SaQuSq2St9bw2m/2yJcASJ3jFmHAujSzmoSpuo3C6bmp+OZOYfwIKSfOJvD2EmLrtGq4
+ HRBUnSCc3mL2v+ac9hxauYNLaWXeUHnR08zFClU8nUfE8HL6XZcCupTu5OlsvhGaHs3uJ0
+ ZEtRVE0iimOSM9Kc+LbkH9GdP7rIbScgyZnyxfGWFPsVU9EQWkCvcHbtPqhpZxIGP0CK9o
+ 89pkETIUWOiRBkUdmqSeZWG4MokhVRIWCVLXqd+Ig9v1CwodIUQTaDyUNJv2Dw==
+Subject: Re: [PATCH 5/5] mm: hugetlb: enable CMA allocation for PMD-sized pages
+Message-Id: <b8d87b71-c5ca-43d8-8050-72fc14802ae1@bytedance.com>
+In-Reply-To: <ddb1e84f-2cfc-4a99-85c4-9a8c6415dbb1@gmail.com>
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+	"Qi Zheng" <qi.zheng@linux.dev>, <muchun.song@linux.dev>, 
+	<osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>
 From: "Qi Zheng" <zhengqi.arch@bytedance.com>
-References: <cover.1792136742.git.zhengqi.arch@bytedance.com> <FA455F0C-0A46-4B5B-AB50-E9968001D2C9@linux.dev>
-X-Lms-Return-Path: <lba+26ad5c8b4+e8dbf8+kvack.org+zhengqi.arch@bytedance.com>
-In-Reply-To: <FA455F0C-0A46-4B5B-AB50-E9968001D2C9@linux.dev>
+Date: Mon, 19 Oct 2026 15:32:13 +0800
+Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+References: <cover.1792136742.git.zhengqi.arch@bytedance.com> <df6eee954b62f41d65c4d087d17a7a7cf60da791.1792136742.git.zhengqi.arch@bytedance.com> <ddb1e84f-2cfc-4a99-85c4-9a8c6415dbb1@gmail.com>
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Mime-Version: 1.0
+X-Original-From: Qi Zheng <zhengqi.arch@bytedance.com>
+X-Lms-Return-Path: <lba+26ad5c78c+3f8e79+kvack.org+zhengqi.arch@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3EE0780007
-X-Stat-Signature: 85fauoyhnnnxsr51hmia9jkemcdmihnn
-X-HE-Tag: 1792395456-892899
-X-HE-Meta: U2FsdGVkX1+CFxpHsFU9bwX4Ml4Mf86IphuUvc4BRfF/DdfmxD5Ud1PzqVxyDlJlNo4nWH7NofAl0R+ATtJZzDL3N33sj7lWxeSyNP5bQCUBHGXiqx1HR8dRNBs5CCgzvVOqw4efAlz5cKXVosqSMgIpR7daFoejSXQxostqA54n5Y3FRagYWTN8qGcWuCLhKWcx7KDZUqTTbY9Zpte/As7tCKBr9oZqsUMcJPq5TuuRQB1pdq1syxZaHoMnNAS9PTr95UwEEllp1V5T4UFM4UhKg/q2A1lzRdUw3tSF5lK6SEeF8Vepze5xs1YuCOHJS/y6tVbdjajVHHgJDky8silWeBYb7jslkUxfChUN0eFp4M/ypVdDD50d50JnnfLWoI9LbaWwLcsTpSrEqGLZRINkFu4WgpZVT+9KUwb3kSCvOoul2ScIyBberi+qTU9O0Xehk9DwmgCQFODWbQp9TgHXVXV1+sXznNZn/QlMr1gUvi7j+dCLP/AzErCaDr1mYIj0PEUMiVZrfpcTQi76rNDNp9xWZdMmFVS0u5v+8VyN56LS09fBONcEz1vPf91YFPWUQ0I/5m0MfIK2UJrCL5v97Ah84DLMCrBxSupOeemXWUllHsAMcl3t0KiRE4gtKo3997Fo8ng3UMMgg/t1Jnts1eJRXy4Xt3yW+Bxc1WTn+wlt2yu5tGr4Gui+DfHvTyBtPda1waREe7SUhVHtScSxmTVNjLM8uODGDwvdCtbinLqr7/P4gHv9FH+k197O9thMjH8m1OlBSce2dfbMboVAwQc0uCdUQc3EzCB5gmYKzfpOb7VAGlK5GjAcSOLMEhhfGdXZ0tZ+/h5eSsBmWa5NFL3d5rN/c5BAOIb3tg+Gs+dxXnah5GYLTs4L8ZakXUHosE+2a8dqzEnW07/TWb4gnoPuhVfMMir+283wiPuPGUQAyyQKCwT0cHtfrkUosLMzZonmj2TQd7wU5wh
- Xo60X41a
- wI45FFT/JCWlBCPi6Jfj7hDa8GMnyccPkbbrJ2msULX69tLj40PdpBBO823gJmJ2RRw4pMTN39IviH/cNwK4PE9XfYkELkrFQwd4XqizYqMYHhdGCwV0QAWr0zcQcnbfsVM5d8gUHGmPWBc+9YCcp4rxgn12xeH9TC1L/E6Rd3pbS+JDL5ji+WvSeMLZr7gjK1gjnAkizNUybi911agLp/Slja+7LUK922eqTKRBH3vqVRnL2F+l1IL0pD9DMM8cMVdhTf1NxUbMPF1Cjb7arRk+qLqgVFZKaJm+TBWI76pUXl2c=
+X-Rspamd-Queue-Id: 2414F140002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 6r55fb7w7ubraszhsnqp4xk3mwwb3hqb
+X-HE-Tag: 1792395154-9269
+X-HE-Meta: U2FsdGVkX18FM/yOck6oTMtc0RXdmnsH9SOX4ufE1Hdv5VESx62wBo2UoleDZ84kOfzBEPUQEqmdJ+qSQJjKKE8GDQtei6CQG28IPcPi6FdYcE/3f8QRJffPHDaRdtw6IBU43gMi1CBFr6VHeyMHulozXDAERmAuEXdqYiMCMGMfjAeEfllhvq9MeA+RNa2UX9OI0MKZ7p2YgaPWyo6b5saRYFCujkPmzKnnn3zl6S+/cOqN+qja14Z/qT6F14BDUEJXVebyBNF+m+Kh1aabJTXoEf4/pfLsGhSYJ++/0/Gtfo3Z9BGo6JOncDUU1gzuZ7fBM+sGZNuSL43fgPaX2ePIHViQrlPfNpcV2Wda/NKfiCTHA+B93lHM+KKgTeQDVwGSJ6BwmgB6ZuB/0JvgqnvFBAEhOxgapLgDi8xvFIxzqB4FgZiJpjFk/YUA5haeQ2HyACSjSRPOYEKppUVlxJJKZoabPbg6o2E/ecxt00zlz7yu8y8cbF2DxaSXjGLhLYCN6otLo5ZN7tgxJqJjPxEJz681j6N36LwW9HmDXTDgxbs8MsYkXovgpoGrEtbInvCzU17DKBpH2qDxAmbkYx44+KQbdkwl4PAR1I+APt7GkafhfoxP7lS+8Hnp4l2rtvhs5EojLSqZXhmwrlxAmrHLyVkd3VvnB2k1kCaTx1hf9jM8ugQQtxMRY7akpaiUP0aSwLlmJ8oVZttNlCNhr/JVsB6u8y1+u+A9ECz557Rhi18I4+lh2savtjd2ecM3NBcMA97et3/6WBsMafz9WM0M7TTAcmIobIhU8K9MmTz2ZoAIJq3t1/xzZb41D+Bq+VMJmIpp+PfBSr84n1Yo7SNvZTGHw4xgJt5692YsBGkA5S2QhAoeI2r8eYt2Y5xlLzSQ4gbxY7qBEv00BbvpVF+W0eYfMxdFKZ1yccYuvXSLH7LjlwLR7F9vNWYVEW8L+ZT1FRzv4UQiMx0/BzO
+ xAidsKqw
+ rHuLj2WFyU4TVbaUz+Xt2frfm/e0uby/oMuzsKkvQD+6z8wxwr/pz2cZf4cFR4VRdG0gNtCQJ6NyUqMfKA05MPiDKF3jqu35p/Hkdhkum5CJqidjyWO9p4lu+oRvavRbFT/iJB3OWhKt+tk6hMPgFMrrOfWX2aIJtU3RNcOAToWe98NMlCZmZyhHLtjSkh5Q4upUPRUsHf00CJDEFtPtwWiNLP+AR3aXXrs2ybztfme/+tkBr845GdKBozk3CcoZ1jggs3YmUEAPU5OwkIddpwUQ/zfyopYKal/WsdyGQ5ULsAE5NUDhPSM2EHXgZJEMuJf6IFyPYUdpQb/Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,99 +90,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Muchun,
-
-On 10/19/26 2:50 PM, Muchun Song wrote:
-> 
-> 
->> On Oct 16, 2026, at 18:07, Qi Zheng <qi.zheng@linux.dev> wrote:
->>
+On 10/18/26 3:07 AM, Jose A. Perez de Azpillaga wrote:
+> On 10/16/26 12:07 PM, Qi Zheng wrote:
 >> From: Qi Zheng <zhengqi.arch@bytedance.com>
 >>
->> Hi all,
+>> Allow hugetlb_cma=<capacity>@<page-size> to select the architecture's PMD
+>> size in addition to its existing CMA size. PMD pages are 2M on x86-64 and
+>> 2M, 32M or 512M on arm64 with 4K, 16K or 64K base pages.
 >>
->> Allocating PMD-sized HugeTLB pages at runtime can become slow or fail
->> as physical memory becomes fragmented. Reserving HugeTLB pages at boot
->> avoids this problem, but keeps unused pages unavailable to ordinary
->> allocations.
+>> Give PMD pages their own pool without changing the original pool's sharing
+>> among other gigantic sizes. On arm64 with 4K base pages, 32M and 1G pages
+>> continue to use the default 1G-aligned pool. Unsuffixed arguments and an
+>> explicit default size still configure that same pool.
 >>
->> Live upgrades are one example: they need additional HugeTLB pages only
->> during the upgrade. HugeTLB already supports CMA for gigantic pages,
->> but reserving a CMA pool for 1 GiB pages can fail when physical KASLR
->> and other early reservations leave too few suitable 1 GiB-aligned
->> ranges. At runtime, 1 GiB allocations can also fail when pages cannot
->> be migrated out of a suitable contiguous range.
+>> PMD requests use only the PMD pool, even when their order is gigantic.
+>> Other gigantic requests use only the original pool. Apply this mapping
+>> consistently to allocation, CMA-only policy and boot-time accounting.
+>>
+>> Move CMA allocation into the common fresh HugeTLB allocation path so
+>> non-gigantic pages can use CMA. Align reservations to both the selected
+>> page size and CMA's minimum alignment, and use a bitmap granularity no
+>> larger than the selected order. Keep the original CMA area names and give
+>> PMD areas distinct names. Document the syntax and pool selection.
+>>
+>> Assisted-by: LLM
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Yes, that's our use case at ByteDance. Allocating a 1GB HugeTLB page from
-> the CMA pool is more prone to failure than allocating a 2MB one. To improve
-> the probability of successful allocation, we typically configure the CMA
-> size to be larger than our actual requirement, keeping a certain margin to
-> handle cases where temporary kernel operations (such as DMA) prevent successful
-> migration. For 1G HugeTLB pages, since the margin must be an integer multiple
-> of 1G, the extra memory configured as headroom is also relatively large,
-> making it less flexible than 2M pages.
+> [snip]
 > 
->>
->> Extend CMA support to PMD-sized pages so their backing memory can be
->> reserved at boot while remaining usable for movable allocations until
->> needed. This relaxes the reservation alignment requirement and reduces
->> the contiguous range required per allocation.
->>
->> The series adds an optional @<page-size> suffix to hugetlb_cma and a
->> separate PMD-sized pool. For example, on x86-64:
->>
->> hugetlb_cma=4G hugetlb_cma=1G@2M
+>> +	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nmask);
+>> +	if (!folio) {
 > 
-> Different sizes of gigantic pages already share a single HugeTLB CMA pool.
-> Given that, why not let 2M pages also reuse this same pool? Would that make
-> the overall code implementation simpler? And if it does make things simpler,
-> should we go ahead and do it first?
+> boot-time hugepages= goes through here too, so hugepages=128 with
+> hugetlb_cma=512M@2M already uses half of the pool at boot. would buddy
+> first and cma as fallback make more sense for PMD?
 
-Sharing the pool would simplify the implementation. My concern is that
-small PMD allocations could fragment the default pool and prevent later
-gigantic allocations.
+That makes sense.
 
-32M allocations can already cause this, but 2M allocations can block
-the same number of 1G-aligned ranges with much less allocated memory.
+Buddy-first can reduce CMA migration and leave more CMA capacity
+for later allocations.
 
-Thanks,
-Qi
+I'll use buddy first and CMA as a fallback for non-gigantic PMD pages,
+while keeping hugetlb_cma_only=1 restricted to CMA and preserving the
+existing gigantic allocation path.
 
 > 
-> Thanks,
-> Muchun
+> [snip]
 > 
->>
->> This reserves 4G for the existing gigantic-page pool and 1G for the
->> PMD-sized pool. Existing unsuffixed parameters and gigantic-page pool
->> sharing are preserved. The new size follows the architecture's PMD
->> size rather than being fixed at 2M.
->>
->> The preparatory patches introduce per-pool state and prevent recursive
->> CMA allocation during migration before enabling PMD-sized allocation.
->>
->> Thanks,
->> Qi
->>
->> Qi Zheng (5):
->>   mm: hugetlb: add explicit page size to hugetlb_cma
->>   mm: hugetlb: group CMA pool and reservation state
->>   mm: hugetlb: track CMA reservations by page order
->>   mm: hugetlb: avoid recursive CMA allocation during migration
->>   mm: hugetlb: enable CMA allocation for PMD-sized pages
->>
->> .../admin-guide/kernel-parameters.txt         |  39 ++-
->> include/linux/hugetlb.h                       |   4 +-
->> mm/hugetlb.c                                  |  80 +++--
->> mm/hugetlb_cma.c                              | 328 ++++++++++++------
->> mm/hugetlb_cma.h                              |  11 +-
->> mm/mempolicy.c                                |   2 +-
->> mm/migrate.c                                  |   3 +-
->> 7 files changed, 306 insertions(+), 161 deletions(-)
->>
->>
->> base-commit: b810335a0699d1810683796b0e3ffe8827ddfe6c
->> -- 
->> 2.54.0
->>
+>> +	if (order != PMD_SHIFT - PAGE_SHIFT && order_is_gigantic(order))
+>>   		order = hugetlb_cma_default_order;
+> 
+> doesn't this take gigantic PMD-order pages out of the default pool even
+> when no PMD pool is set? would trying the exact order first and then
+> falling back to the default pool work?
+
+Good point. Perhaps we should use the following selector with the two
+fixed pools:
+
+static struct hugetlb_cma_pool *hugetlb_cma_pool(unsigned int order)
+{
+	struct hugetlb_cma_pool *pmd_pool = &hugetlb_cma[HUGETLB_CMA_PMD];
+
+	if (order == PMD_SHIFT - PAGE_SHIFT && pmd_pool->size)
+		return pmd_pool;
+
+	if (order_is_gigantic(order))
+		return &hugetlb_cma[HUGETLB_CMA_DEFAULT];
+
+	return NULL;
+}
+
+> 
+> I tested it on qemu and saw no issues, but I'm hesitant about the points
+> above. I can give a Tested-by tag on the next version :)
+
+Thanks! I'll send out a v2 as soon as possible.
+
 
