@@ -1,130 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1C0606A325
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A626606A328
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ri2ytWQ+
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=BdWjSwId
 Received: by kanga.kvack.org (Postfix)
-	id F21866B0387; Mon, 19 Oct 2026 17:25:29 -0400 (EDT)
+	id 6C4F06B0388; Mon, 19 Oct 2026 17:31:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAAD26B0388; Mon, 19 Oct 2026 17:25:29 -0400 (EDT)
+	id 6772E6B038A; Mon, 19 Oct 2026 17:31:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9A406B0389; Mon, 19 Oct 2026 17:25:29 -0400 (EDT)
+	id 564BF6B038B; Mon, 19 Oct 2026 17:31:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7629B6B0387
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:25:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0564F120839
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:25:28 +0000 (UTC)
-X-FDA: 85340657178.21.F722EAA
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0D03518000C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:25:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ri2ytWQ+;
-	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EBDB6B0388
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:31:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A7475A835E
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:23 +0000 (UTC)
+X-FDA: 85340672046.05.88B30AD
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0707D160003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BdWjSwId;
+	spf=pass (imf08.hostedemail.com: domain of 3KIzWaggKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3KIzWaggKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792445127;
-	b=Txhb9UcCZKN+GNCC/WUqvLZrPfyG+cpUmCs3qf9vrP/Zd2k0vjKLE5kWq7EXMm6ChuawSz
-	XAjdrtwtTExFP6QErp5sMNiK5qGM1ushzzW0hysE6BLBKWlwMRnjr3F3n58DNUIi0Fg/vP
-	8/4Cv2QNMvw3WIzmcxDx5xkdzSV2eoo=
+	t=1792445482;
+	b=mNre5jzocGG2O/nGoIJH9H8K7cAgpF9aS79EX8oHqNyIt8GPLgAbA8y5aLagNmNycali6g
+	Jk60Ykqc29BNbaWSE/dMlOHlEPb4Agi+fjR2yVaHWVeZ1ejQzOiEIIH9jZGhnckI2m95p3
+	5qHnc5mgcdvF6d28zqyQXb1apLaOXVo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ri2ytWQ+;
-	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BdWjSwId;
+	spf=pass (imf08.hostedemail.com: domain of 3KIzWaggKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3KIzWaggKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792445127;
+	s=arc-20220608; t=1792445482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bqwC/Ywk/urErM3liCKcvDfgOsAI1aXiD3ThAOoBayk=;
-	b=gwPMUQP2rDexlLU1rcpr6eOK1S1EgafxT8w2FlFNGzd4jXyIaK87MZzIJNGlhUNAmBFYMO
-	lFbafUGSA6tqMPIWdhnLsPOiuCbuX2P2UlZzHcN0vreg8mtcVQ9u9jVPosuStCwFMsm8Xh
-	gPAYlR8aGVdOynTeze0UVychTtGHzQ4=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a19cba5c14so26770345e9.3
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:25:26 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LkNUC+PMoXZDStaNEegSy7SLi35cqcuQZkVqC98j7D4=;
+	b=JcBz7Tc2Bo/1NBOPD6cZIQbRocnIvuTXMj2khkigsNlJxFBGNZdNYrMd/WmC9m83pDGLqk
+	rNNjJVwlupRUGAE+SvzvhIz8zoFkBRVMehic6eNPfQon9974W4gp7taKB72NsQwAIapJ5p
+	n6mXEBmAmBpGUx5VnxAwqZCKekPu3dw=
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cec4226c70so24192675ad.1
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:31:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792445126; x=1793049926; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bqwC/Ywk/urErM3liCKcvDfgOsAI1aXiD3ThAOoBayk=;
-        b=ri2ytWQ+QGTTFxCy+3AnSVHl8v1VHZ44IY/1In4b7Ee6uvNsNIpkArOE0SftF7t6Pr
-         y4StG4E2Z1FWbQEWS2K0VA/exh2e2F5oQ+Gg0/tY1hM2hLI92vIo7tedMWWBRMWMNfa+
-         3UgwVSSvG77VldOvNki7Dt/k8r6mNaMPWan8ktknwmMLfElAH9ekqVNakAZ9YDomNO5t
-         0ermA+O5+wbfA5J/+Qp2dBpjxaeTcEVgTqpNKtpC0/Z5+A+Y2NbHfnaCuTQ571/aWFXC
-         rX6kjgJx8vOHpIaXOLskT05eqvPedWKSum96bnpBLnJbZ02Rwt8dUm/CvKipCqr/lHS7
-         7K5w==
+        d=google.com; s=20251104; t=1792445481; x=1793050281; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LkNUC+PMoXZDStaNEegSy7SLi35cqcuQZkVqC98j7D4=;
+        b=BdWjSwIdExj5PcQxWPwNa8x1DAj6AG3RrBJM3JCfl79ijDQI9x2iZOPK65Vdy3bOAQ
+         ymvoytUurqFAsoMRJ7P1uxafZD0MRBGio3jDftBjcKXf1puDRoqxq6rIaIuGLOOTp3AK
+         kCgbeCyzG0uMI86IPEZSCyQ+yqZIN6rFWY2hUdnHhy1OasgSqCK8kKE5zNobQ5BNxKte
+         Z92MBpmnUcoRSQ3HrjfgtIaGmDoCZKTfhnpS7+FmM+nDMF/DII7zl66F22rvCgRPwPpU
+         mkcPiASyc0f2WSH8BrqydubKUwKUxdtUIJZf609yMzmJu8JMFxXbImVKfUf0Sb7TF+vq
+         aSVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792445126; x=1793049926;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792445481; x=1793050281;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bqwC/Ywk/urErM3liCKcvDfgOsAI1aXiD3ThAOoBayk=;
-        b=nXHF7q9WHT3FGWUryfr1JZ1/BzQCaKxV0E/KCX0Xc5ve/oA41/ysUZj7I1tmy1x40l
-         uSS63QBsAtj8p1TeaTc12QGLXDTM8HASw2BeYH1P5NSKjDIpAP6YiUaDtQzgI756NKrA
-         0VaFC2a/FJEZ23oizTFg54yR6CK4ELX5qp7AiKY3VY5/7SHtm0lkm+p3dBR5Q25ybpFN
-         DbzNX3+ogNhLkvfzaMK8dXbImagEuWU+lELtMD/v/KKswLWW/7VvnkvAyHR/RimFb5p8
-         FCG8nnD+LHcgrnOzMF5HvJ2JgNpoiinQVYY4okCKTKENG1NCYCygUjdL4HaeUuRU/noB
-         iMnw==
-X-Forwarded-Encrypted: i=1; AKwUvBzIZsZtrWyBjf6tqKtfuurS5jny3jHL9QTtrlngmjw8r/TZLa+2ca+vX2T5cWV7WvIs+koN/MwSFg==@kvack.org
-X-Gm-Message-State: AFq9FYKvnBAvs1x7k0315xg2fzf1yogcto2DqD/klMefq2sWon7jTWqJ
-	DF9xTjOrNZtxaRxeSBjekIZTQlwqphZDFxlIYTVP2aaDv1Y5rbrA425FV8vqnlE/
-X-Gm-Gg: AYBFou32mJ9aJNlXRoZWwl8e5786nDvduswV3ekv2V72s/zdv87PH25kqtwJ6JH2mLR
-	s2dnfa8Zvpf3Slgdzi9kdOEAud9hiIK6w/k/bHtTChEgBM/bEt8SugtpqPqpGsTv5IIclz+P0UK
-	tTjlogk9CupmAaOAvxiDG3dbqQE0eyTAqu90vJEI9znWMUWavjS3/sB/+XxHkXDMvYEq0QC4Aq4
-	6ZUlTpyISBoeSYYwbkVA4SGro3IDkbNZpqcejgzKfiAj9cOr8SP5m6b5S26GAK7BlmPryrWE+ex
-	EtJ5gaWkzHPjWfWOfGC9E+oLwPfMhDd21OfuvDIZ2bh44Vb1EukAHQB+Xvy8PwQb60GsYlQKZdY
-	Vh+nxb5838Jd1sMN55q4+ly6O9jt3Wjlkg7gzoD4cPCOk8aVT9vD/PV0kQHNMAzBOH4iRt9yKrH
-	koh0Zd0fDPHh9b0dlddKA0f4c7TH6F/PE25ELKRuXtFuRjrT8/iLPWyqQ38pfLW46tmH0MM6pdU
-	K6Wk+Bqhzlub3hyjteGVjywgCCIvPJSKsA=
-X-Received: by 2002:a05:600c:c8c:b0:4a0:bc9:28c6 with SMTP id 5b1f17b1804b1-4a1d7643dadmr171548545e9.34.1792445125587;
-        Mon, 19 Oct 2026 14:25:25 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2c1e0e6sm25118305e9.0.2026.10.19.14.25.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 14:25:25 -0700 (PDT)
-Date: Mon, 19 Oct 2026 22:25:24 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Petr Mladek
- <pmladek@suse.com>, Kees Cook <kees@kernel.org>,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- bpf@vger.kernel.org, Jim Cromie <jim.cromie@gmail.com>, Lorenzo Stoakes
- <ljs@kernel.org>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>, Luis Chamberlain
- <mcgrof@kernel.org>, Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>,
- Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v2 next 03/15] kallsyms: Improve selftest
- test_perf_kallsyms_lookup_name() output
-Message-ID: <20261019222524.695a4d31@pumpkin>
-In-Reply-To: <202610200434.qSHPOyDo-lkp@intel.com>
-References: <20261018155206.132411-4-david.laight.linux@gmail.com>
-	<202610200434.qSHPOyDo-lkp@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        bh=LkNUC+PMoXZDStaNEegSy7SLi35cqcuQZkVqC98j7D4=;
+        b=MbCqzXu2r/i1E27A1KK/MwDgrsOMGyGwGP7g0fSOxSkyvoKSnlNqNiMrkyH1d2vpwt
+         vLIXA1GAvSvL+Vzl/7KO8jPlpijMV6HF2KwhcuE5JUu6W4NIWKwK27vNG/iN35C52iTk
+         TXp3sW2bvFZr4ypGNU0VfqicE1tgcbiyRNxZfZEzEZKG9nJUfqUP13V/BasKoqJSJ7qP
+         7W3Dq0mzuFh31P4qT10SH0cmFuwwH6QSQ8Nh7sjRPYnzx4qrd8q+U44Nv8pR5+C+R0Bq
+         /dWmtPK+L5ZRwYq4R/a2E0FkN0UWTsTktqwJdf+MspTaTZhzVpFzHpQupw0fhrc94Xox
+         Ob9w==
+X-Forwarded-Encrypted: i=1; AKwUvBx7FlbPWcYRwA7LbhO1CET06xkV29HsQFFlpxElvrpVlqfD9umeJWK/aZcdT/VwafIm0v9GLY5gEA==@kvack.org
+X-Gm-Message-State: AFq9FYIMcFWkszpdc2MXZDK3jAHOk1H5e87IoUwxtVDG+O5rJc+fypRo
+	fESABL56Y3tGFxYyPxnWhRuE24F5MCrNULNarnz5MHd17V3zoraesKh0aDc1q4xbbM92uAsnvMG
+	tAqE/1i8V/gatYQ==
+X-Received: from plcn2.prod.google.com ([2002:a17:902:d2c2:b0:2e5:40ef:ff34])
+ (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:d2c6:b0:2e8:4f3f:60dd with SMTP id d9443c01a7336-2e9a69e9987mr69340785ad.37.1792445480207;
+ Mon, 19 Oct 2026 14:31:20 -0700 (PDT)
+Date: Mon, 19 Oct 2026 21:30:44 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D03518000C
-X-Stat-Signature: oksh3geazmatr83gas1fpd3a3h3mpgts
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_2 autolearn=ham
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+Message-ID: <20261019213054.3157159-1-dmatlack@google.com>
+Subject: [PATCH 00/10] PCI: liveupdate: Keep preserved devices accessible
+ across Live Update
+From: David Matlack <dmatlack@google.com>
+To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pci@vger.kernel.org
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	David Matlack <dmatlack@google.com>, 
+	"=?UTF-8?q?Ilpo=20J=C3=A4rvinen?=" <ilpo.jarvinen@linux.intel.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	Logan Gunthorpe <logang@deltatee.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
+	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: onkwktebjymxgqr5wh5bt39okmjhoq9j
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792445126-584592
-X-HE-Meta: U2FsdGVkX19phJzvkSuKVLGxqSr2mFP0SI1QO6G3SULJhghnJ/fOPH97/ugzCYb8t01N+Hy6NYkTUsNIDx2T8MqWTpbH0oCHPTlIbUGWuPEcD53rzAwfmMrhSyT7ZP+QiNrX1k4qeJ6fiP6g4XWau02bS3uohDemdtKDQVJpo1NmwhoDHVde6FpDseJz9QBfSEPHStLFdBOXSEpXy4+90ThL5w2FzemVbwnFI8Dr3mIowPLtwVY0fgs8ze1HVhtWHzsSUqR74i0Ha1Z/HMWi1AdX0uvNYIWKwnsoxi9c23rP+hreH2vodEq8FyxkHI+Pw/bHnPrYWlxPXPScves+krK4QvGmd5Z9GFPl3ko3+lD5I2ixf83BXmlLS26n8yD9B9GnZ119zDMA6GeKAMnOHkixysq1duCd/4FwMYmSs3I4pyjJQsHxQ108jBeqVbEBBuP10i8wCDN5hCGf7BF+bmywLuftJxT6k7xrvbs4GK5EGpTY79sfMNKIBeYriWnNf/B45pZf0ey73SJDeOK3gQPU6utomocsAaSxmz8yqpG0Kn55qjsRHCDXXGHujM0kmz+z+/+Lr+Ie0Ykww1aEwpGoK8xp37SxymcqKcoPTSZf4AaGnKFIouA8vjwK4sIwZkAzxMtC3IMFgUhY8A4s/lTbEWVPU2y20XNHqN5ed1IAhWYEJXFex7z2P/HF922yC813cdXiES2Xy5/e/wh0dkE1FngF4spRM0wjmZQDhoP8Et6b2hHHKm2PrI0lUid2GB3RyWYBBC6JeJaV0575idWYsDE6AJHwJyux4NpyBFuLPYJ0MIAK1HAHGXpjekqOcIIsK89UHomttW71ghI8yCG54PA9NA3Di+xh+WGfKqd7dJd5zgpcwGGB69rWT55FW3WEbHvgcCmkhyoRJLYTCZ+5oDTuwCVbrKa1dDAxrLqrDxNm5Dy/9UqKv5v77HdQgxNkZeYQUOnOr2NV+KS
- EFnrQLoj
- quXytUh7VYgorOPaAUkblDJSx2BYtLxN6zKM8rliGOfNz6L28K4CqiVyBBHujKs+W3bTreh+7QSvEdSXzrdcKd26CxBm5ORDj4+UWvsOrl2SxkD4iOnbu+xLZGR9RqN9NImumyPcvZEEQ77DjRgWNpyGANZjXxM2otUffrUyCCB9lp2GNOUn0lsVqZa0db0ByZdZ23uK3oMJLwJ8DHfTS5gPVMKl2ucDAUg+MNcUv1SaNW96Amt8coxmWChrgAOjYBXEfR7cvt12Nia+jB2h6kZh/+09OALuVyVOH+5K2U0LFAC1Dhlte5u5edH2FzJqHIXjrxHUuhDQHVX94L0cN2PnaQjK73G3pnXim3V07fDvYu6F9xLNMG6H6Hnm9qeFJcEVUwLTfBBTQfEHvwRWi1faWH3lhCG28Lfesfr6JnJmCkfP/3fACl7mNrg16Le870BVGLEPeLJsnt3MT17P8zhMbdE4RTaSXUQMfFzrluFTNPjxDiUUVMuQna012LFJGQxpjHH0GdFPN1nvqG+pzyVmV4KJn2yr3OvTGwVAUr0l+tKms2HVexWTI82CAmcW3tNgrVZF6w+ps/GidK+DH7Wotn9Dk8HUqD2vSD6Lx2mgmD7c265N3flGXgkIHuTKTw2FwvSoOot1aSyoH3TLF/uFmKg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0707D160003
+X-Rspam-User: 
+X-HE-Tag: 1792445481-262803
+X-HE-Meta: U2FsdGVkX18Cse20+hPOHAZPw5GmJGoQJ9y6MKzF/kwCLcsyK5/vxzu+nwPpDMSXXIMCQb90i8cskNeW42zNzFEFHMLlHY/zLROS8XYdBwWcNVw1eRB3SULxpUO15trPgPYDvNuh4X32kTRKWXTL2qaQWs4DTKPUtIeAOYYTbVTucEtM3e7J+XdE9b10Yg/uQyaHnrJ6oVJUPET0aVwAgnD5cwrSn1cjTOWhWkjSpAC1dMYT2vCEODi9o1EIK1JfkWDXWCd3nZsOLB2GsJxUHJidZRFUjyxyRO93ft4OWSkTrABihAn4U857IV1Oo3y2CD5m/KXQP3Y4ICXhbCptCPDYwlo2f80O2OVLs5iCqINSFpMnAJuMqpJhbOrFyai+YDv0HenOBFDzVlHhIcC9Qb9RSX779lqpXyEW+0SjOuQw9IKSii8sAZ2sRSOJCC2jSOhRIbXNth6CDkD1aqB59GO0xY4tlHSgncInhnLd2GY+kE4AxxDbb4lpln6dPKUqzU2tKWQuKyNGvXO/43tpYL20n+iHnjmKlZ4hV0d27hzPDNsJSSUnqRilHL2w8NU8RiBit8wX0RHZNnZ3+InwlThv/qitRczXihat2/Zg5HXUAPULXLPEDlwzX2S0wL0EQ4jDjmFAbfNI/r6mku0v0oRSXF5EVjv1JHGFpQLzs8vURLctEp+IxihsOGA0nk41mb19SmO/s1VptUYZLy+7vmUkQc/4PeCu7QjB+spwgM43pdVRQ37VeAdFkBLrdrvAH4rKS6Nb8Lh+/2UV6q1Xg97ilcoIrlM9POG6VgVFljZLWjJaCqPaRAbax54E1qqK7I9QMDvfYvCPHkHHt4a08eZDr3qHsWFIfsT3C3oQxLoTNFTAkHx5SRLkDQjtwluUp2AP0ER1AKwOV7IhRYmrR0hM04B8BuWKrPjmtdEw33hl4LRVDSgwAKjqSeBXvbgeykrgXnZW2PwoKdbW8Ka
+ cqlOcDds
+ AUEDGDGJj4ABHTkHk72z0QZD5oL405A9IMy1qE11fKJ+2M7ZouGrKHAGayOgFlIxTPoTgqoFI6h+mmc62tKNaZeZIS+io7bksPVhKlFrFW8FSscCoHCCqqyEwIe1o5O6XTi+/QhNKKfFsyMu0Qup2SpC0Gz/g965tjNqYucaL0sWOksWMtRJWOnE2yQeGFqKuJyrXoqkzV5vMUEobh/9IYgtEmN/0i0L4T3RFcfbbPQaK7FkE7KOBg6QzKq3NI8QRj9s/+7/JzVyFzB8tWRIBXUcILW0WXhpcl0tLSiHdlkOeAwXcTQZKdHD2iXJzbxN1I/nzdL4vL8XgLt4Qs1rQAADWRLNH0E6KXvTsqw3Lz492CpeElCtRHm2jdLSjEKvVdSVFmaTpDWkfssGqryPd5xa6GHJGf6Bl94AWWAejFncrcxAl1SNAJ4elwIK7zAy6PdBWQlbdpIpTCMpvY+LL5etXsh+oaIAhruDU9tsSn9PjNkp4Gu5I/MW/HklDrqEIiHQSd4ZTbJ+ULKFuiDHu+Fc1gphWStk6Iyfw3M8XlF5bMWgP0902g331VEIocTZU+zskhpy+Rll8noZDloEaUj3p6ZtdjIdLnJPtKFIHifT3kuKgbTbgH3/01fZbTRmHHGztWZp1S/d0JFnAGMn4LhVu5yTBrrFMMIgyktT+E1jps9lrBvI2xw6KXl6Bfyq6uJcGvY3ZL3FxTzs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,57 +119,166 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 20 Oct 2026 04:57:54 +0800
-kernel test robot <lkp@intel.com> wrote:
+This series can be found on GitHub:
 
-> Hi David,
-> 
-> kernel test robot noticed the following build warnings:
-> 
-> [auto build test WARNING on akpm-mm/mm-everything]
-> [also build test WARNING on linus/master v7.3]
-> [cannot apply to next-20261016 next-20261016]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/David-Laight/kallsyms-scripts-kallsyms-c-Avoid-overrunning-on-stack-buffer/20261018-165152
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-> patch link:    https://lore.kernel.org/r/20261018155206.132411-4-david.laight.linux%40gmail.com
-> patch subject: [PATCH v2 next 03/15] kallsyms: Improve selftest test_perf_kallsyms_lookup_name() output
-> config: arm64-randconfig-1000-20261019 (https://download.01.org/0day-ci/archive/20261020/202610200434.qSHPOyDo-lkp@intel.com/config)
-> compiler: clang version 21.1.8 (https://github.com/llvm/llvm-project 2078da43e25a4623cab2d0d60decddf709aaea28)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261020/202610200434.qSHPOyDo-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202610200434.qSHPOyDo-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
-> >> kernel/kallsyms_selftest.c:82:12: warning: unused variable 'The_time_has_come_the_Walrus_said_To_talk_of_many_things_Of_shoes_and_ships_and_sealing_wax_Of_cabbages_and_kings_And_why_the_sea_is_boiling_hot_And_whether_pigs_have_wings_O_Oysters_said_the_Carpenter_Youve_had_a_pleasant_run_Shall_we_be_trotting_home_again_But_answer_came_there_none_And_this_was_scarcely_odd_because_Theyd_eaten_every_one_The_moon_was_shining_sulkily_Because_she_thought_the_sun_Had_got_no_business_to_be_there_After_the_day_was_done_Its_very_rude_of_him_she_said_To_come_and_spoil_the_fun' [-Wunused-variable]  
->       82 | static int kallsyms_very_long_name = 1;
->          |            ^~~~~~~~~~~~~~~~~~~~~~~
->    kernel/kallsyms_selftest.c:69:33: note: expanded from macro 'kallsyms_very_long_name'
->       69 | #define kallsyms_very_long_name \
->          |                                 ^
->    1 warning generated.
+  https://github.com/dmatlack/linux/tree/liveupdate/pci/p2pdma/v1
 
-Duplicate, depends on config options.
+This series builds on the PCI core support for Live Update [1] to allow
+memory transactions targeting preserved PCI devices to proceed
+uninterrupted across a Live Update. The base series allows preserved
+devices to perform DMA to system memory across a Live Update, but the
+next kernel still sizes, probes, and may reassign the BARs and bridge
+windows of preserved devices during enumeration, which disables
+decoding or moves address ranges out from under anything that is still
+accessing them.
 
-David
+Use cases include:
 
-> 
-> 
-> vim +/The_time_has_come_the_Walrus_said_To_talk_of_many_things_Of_shoes_and_ships_and_sealing_wax_Of_cabbages_and_kings_And_why_the_sea_is_boiling_hot_And_whether_pigs_have_wings_O_Oysters_said_the_Carpenter_Youve_had_a_pleasant_run_Shall_we_be_trotting_home_again_But_answer_came_there_none_And_this_was_scarcely_odd_because_Theyd_eaten_every_one_The_moon_was_shining_sulkily_Because_she_thought_the_sun_Had_got_no_business_to_be_there_After_the_day_was_done_Its_very_rude_of_him_she_said_To_come_and_spoil_the_fun +82 kernel/kallsyms_selftest.c
-> 
->     81	
->   > 82	static int kallsyms_very_long_name = 1;  
->     83	
-> 
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+  - P2PDMA between preserved devices, e.g. between devices assigned to
+    the same VM via VFIO.
+
+  - MMIO from Orphaned VMs [2], whose vCPUs keep running in guest mode
+    on dedicated CPUs during kexec, and therefore keep accessing the
+    BARs of devices assigned to them throughout the Live Update.
+
+To support this, the BAR addresses and bridge windows of preserved
+devices must not change across a Live Update, and the next kernel must
+not disable decoding or forwarding on preserved devices or on the
+bridges above them while enumerating them and assigning resources.
+
+[1] https://lore.kernel.org/linux-pci/20261013162529.1928093-1-dmatlack@google.com/
+[2] https://lore.kernel.org/kvm/20260920193650.3373435-1-pasha.tatashin@soleen.com/
+
+Series Overview
+---------------
+
+This series implements the following:
+
+  1. Avoid sizing the BARs of incoming preserved devices. Sizing a BAR
+     requires disabling decoding. Instead, have the previous kernel
+     pass the BAR masks (the values the BARs return when read after
+     writing all 1s) and decode the BARs from those (patches 1-2).
+
+  2. Avoid probing which windows incoming preserved bridges implement,
+     which temporarily disables the prefetchable window. Instead, add a
+     generic mechanism for passing the results of probes that require
+     writing to the device, and use it to pass which windows each
+     bridge implements (patches 3-4).
+
+  3. Skip programming bridge windows that already contain the values
+     being written, so that pci_setup_bridge() does not temporarily
+     disable the windows of preserved bridges. This applies to all
+     bridges, not only preserved ones (patch 5).
+
+  4. Claim the BARs and bridge windows of incoming preserved devices,
+     as programmed by the previous kernel, while scanning and before
+     anything sizes or assigns resources, regardless of how the host
+     bridge driver sets up resources. Panic if they cannot be claimed,
+     since that means something else may be decoding the same address
+     range (patch 6).
+
+  5. Prevent the PCI core from assigning, releasing, or realigning the
+     resources of incoming preserved devices (patches 7-9).
+
+  6. Avoid enabling INTx on incoming preserved devices, both while
+     probing whether INTx masking works and when the device is enabled
+     (patch 10).
+
+All new behavior applies only to incoming preserved devices, i.e. only
+after a Live Update and only until pci_liveupdate_finish(), except for
+patch 5, which avoids redundant writes for all bridges.
+
+ABI Changes
+-----------
+
+This series uses the optional feature flags added to struct pci_ser in
+v10 of the base series to append new fields to struct pci_dev_ser:
+
+  - PCI_SER_OPTIONAL_BAR_MASKS: @bar_masks and @rom_mask.
+
+  - PCI_SER_OPTIONAL_PROBED: @probed_supported and @probed, a bitmask
+    of probe results (which windows a bridge implements, and whether
+    INTx masking is broken).
+
+The ABI only contains hardware state (register values and the results
+of probing hardware), not kernel-internal state such as IORESOURCE_*
+flags. If the previous kernel did not pass a field, the next kernel
+falls back to sizing or probing the device as before.
+
+Merge Plan
+----------
+
+This series applies on top of v10 of the PCI core support for Live
+Update series [1], which is targeting Linux 7.5. This series is
+targeting Linux 7.6, or 7.5 if feasible.
+
+Both series will be merged through liveupdate.git, matching the
+agreed-upon tree in the MAINTAINERS entry for PCI LIVE UPDATE.
+
+Testing
+-------
+
+This series was tested in conjunction with v5 of the VFIO PCI driver
+series:
+
+  https://lore.kernel.org/kvm/20260714151505.3466855-1-vipinsh@google.com/
+
+The full set of patches used for testing can be found on GitHub.
+
+  https://github.com/dmatlack/linux/tree/liveupdate/pci/p2pdma/v1-with-vfio
+
+Testing was performed using vfio_pci_liveupdate_kexec_test with the igb
+selftest driver, which keeps the device performing DMA while kexec
+happens. QEMU traced every PCI config write, and each run checked that
+the next kernel did not write to the BAR, ROM, bridge window, or bus
+number registers of the preserved device or any bridge upstream of it,
+did not change their decode or Bus Master Enable bits, and did not
+enable INTx on them, and that their BARs and windows had the same
+values before and after kexec. The following configurations were
+tested:
+
+  - x86 (q35): igb behind a root port.
+
+  - x86 (q35): igb behind a PCIe switch (root port, upstream port,
+    downstream port), with a non-preserved device on another downstream
+    port of the same switch.
+
+  - arm64 (virt, SMMUv3, generic ECAM host bridge): igb behind a root
+    port. This exercises the path where bridge windows are not read
+    from hardware during scanning.
+
+Future Work
+-----------
+
+Please see the PCI core Live Update Roadmap:
+
+  https://lore.kernel.org/linux-pci/20261001232133.560284-1-dmatlack@google.com/
+
+
+David Matlack (10):
+  PCI: Factor out BAR sizing from pci_read_bases()
+  PCI: liveupdate: Avoid sizing BARs of incoming devices
+  PCI: Factor out bridge window probing from pci_read_bridge_windows()
+  PCI: liveupdate: Avoid probing windows of incoming bridges
+  PCI: Skip programming bridge windows that are already programmed
+  PCI: liveupdate: Claim resources of incoming devices during scanning
+  PCI: liveupdate: Never assign resources of incoming devices
+  PCI: liveupdate: Prevent releasing resource windows of incoming
+    bridges
+  PCI: liveupdate: Don't realign resources of incoming devices
+  PCI: liveupdate: Avoid enabling INTx on incoming devices
+
+ drivers/pci/liveupdate.c    | 363 +++++++++++++++++++++++++++++++++++-
+ drivers/pci/liveupdate.h    |  26 +++
+ drivers/pci/pci.c           |  18 ++
+ drivers/pci/probe.c         | 110 ++++++++---
+ drivers/pci/setup-bus.c     |  62 ++++--
+ include/linux/kho/abi/pci.h |  52 +++++-
+ 6 files changed, 589 insertions(+), 42 deletions(-)
+
+
+base-commit: 312200e9211ede3f9a03cc17d094805e06e4674e
+-- 
+2.56.0.212.g129ede20d9-goog
 
 
