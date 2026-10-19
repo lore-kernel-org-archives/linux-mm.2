@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32071CCF2E3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 12:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54A24CCF2D6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 12:49:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47BA06B00E3; Mon, 19 Oct 2026 08:48:53 -0400 (EDT)
+	id 453206B00E7; Mon, 19 Oct 2026 08:49:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 451E96B00E7; Mon, 19 Oct 2026 08:48:53 -0400 (EDT)
+	id 42A616B00EA; Mon, 19 Oct 2026 08:49:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38EAE6B00EA; Mon, 19 Oct 2026 08:48:53 -0400 (EDT)
+	id 3403F6B00EB; Mon, 19 Oct 2026 08:49:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B3A06B00E3
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:48:53 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A71781A012D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:48:52 +0000 (UTC)
-X-FDA: 85339355304.19.B2CEFE8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0D889100004
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:48:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DAL0Wg6/";
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792414131;
-	b=PV/YLmAz+S8TSLc8kKrc2d41acW1DO4fZsmeWc/e9WI1NxHYmez+MnzilTDPPiuHwYeCsJ
-	Uwam/mdvun5gUASWHstNawfZJK1COg8naEsYsAguUYOpMbA9bopvu0U9CIMYCPf3c4ugDj
-	q7GYVUZKM0k4OEhodVTF/aVKHAS1p00=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DAL0Wg6/";
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1279A6B00E7
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:49:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A10E51606B7
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:49:01 +0000 (UTC)
+X-FDA: 85339355682.21.807DF3B
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 06612140003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:48:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=5nPKjafy;
+	spf=pass (imf23.hostedemail.com: domain of chengzhihao1@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=chengzhihao1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792414131;
+	s=arc-20220608; t=1792414139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=82tscvJQeALvTjkOiogQrI9DMuVsqZ8C8KWnmNFXNYc=;
-	b=YNsrvDmXQLYU8VI866tiD1oX+gtrzXh8P93qq14/yvFn1JirCN61WTRALXkbqGjsQfarGU
-	g5X72a/PnIYIB5bZ920YLBb+dGo9QhNyNUHBHsN8qTVIZhmdsJMIj8T7J/n7XH5US9HFis
-	3iZeqle7PV6Tr0QJWrgPWKUJrf+5lDk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 95E34601F9;
-	Mon, 19 Oct 2026 12:48:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33601F000C4;
-	Mon, 19 Oct 2026 12:48:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792414130;
-	bh=82tscvJQeALvTjkOiogQrI9DMuVsqZ8C8KWnmNFXNYc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DAL0Wg6/9CAY7gjHSBkAIkZf4BBRLeX/6ZZt7JE3LLky3y4IS8d7a58QHpZBfaSB7
-	 TslxDHWWf1ZqKCJcZ0ipcVYij3tquqIkl/+kqoSrTXhVpDBydYN6+ToqvvP4Uwfh0R
-	 zsIMQckdj6m0knPgc1UlxUtutdlGQmKFGDDfjheKS1zqzsdSnaeaMnEdP91F4/fil7
-	 4EV7aJHIfg8CKSeWLa+90Kfm+Y84ZWDJEjnC9X7K+J0mNTKqc4nrNvRLIMBX/M0Ye/
-	 EADLl6zZnPR+onOPKGcSylhtfcavSqIIZte65E+s6gIomP32z5xiSZ0fcZX8E+BrEK
-	 +DE9/BZfZBehA==
-Date: Mon, 19 Oct 2026 13:48:46 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/vmalloc: read vm_map_ram block regions from the
- requested offset
-Message-ID: <atYRUyFHca-giQcw@gremlin>
-References: <20261017125244.b2d7134fa9697b2982cb8cec@linux-foundation.org>
- <20261017231325.796986-1-nickolai@csail.mit.edu>
- <atSM69faDNgmLNVJ@milan>
+	bh=sQXqHgnR+1pIPsUZEl3zynhZARYK4/So3jnkyAxXf8g=;
+	b=UbWSv8mnMtYyS1oeWUD7vk+pIiNrC/fUTgpREB2dCuB/06MJbuHI+ogykxfIWj1BcJYF6L
+	1RQWAJNX48u9v3UAIUGgJgZGpLdvROZKMad2eDvXF01dtLKKCURL0UJHYOCeVphfuwGlwa
+	zTwA9krhAcXNS1e6v8omgH7pk88J0hQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=5nPKjafy;
+	spf=pass (imf23.hostedemail.com: domain of chengzhihao1@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=chengzhihao1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792414139;
+	b=4gisrSdhmaVmTEny+6U7tE3BLhkV+/vDxx2B21Fqnv8rNSroUZBghw/DDqksHeK2O2ImnL
+	HDc8Eo2CnnrRgUk2Rc+Jlgut+gZnutCYb38jRGjijvtfyROjgWEW9sxz/AmD3mX80WQ1ax
+	O9BPGqejKlnEaXLxzlzjXh9afUbcT2Q=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=sQXqHgnR+1pIPsUZEl3zynhZARYK4/So3jnkyAxXf8g=;
+	b=5nPKjafyrabzeYMbeC7CX7CvCEf/VurO0VfLru+paC6OxT8dAUxqnA/3sDANVSIoP4gpTLBEY
+	ldxw8tzmZwGk51W8BfpHKFDJJD4RLHv1UV4A24RPMjZlgVQ/YUDwP77ggmhZAPfiuKNURMSWASF
+	Xqc7BvH4tV0tVjx+5FQF5ZQ=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4j7b2Q3NYlzcb48;
+	Mon, 19 Oct 2026 20:48:46 +0800 (CST)
+Received: from whupemo200011.china.huawei.com (unknown [7.152.185.179])
+	by mail.maildlp.com (Postfix) with ESMTPS id F367C203AB;
+	Mon, 19 Oct 2026 20:48:52 +0800 (CST)
+Received: from [10.174.178.46] (10.174.178.46) by
+ whupemo200011.china.huawei.com (7.152.185.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 19 Oct 2026 20:48:51 +0800
+Subject: Re: [PATCH] fs: rotate inodes whose page cache could not be dropped
+To: Nikolaos Karaolidis <nick@karaolidis.com>, Christian Brauner
+	<brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>
+CC: Jan Kara <jack@suse.cz>, Mateusz Guzik <mjguzik@gmail.com>,
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20261016102515.111285-1-nick@karaolidis.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <9ea0c46f-a2b2-b18b-6b69-ca035b005bbe@huawei.com>
+Date: Mon, 19 Oct 2026 20:48:50 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atSM69faDNgmLNVJ@milan>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0D889100004
-X-Stat-Signature: pjbw6gwznhq84z6iy36ma78d9jkr3s3u
+In-Reply-To: <20261016102515.111285-1-nick@karaolidis.com>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.46]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ whupemo200011.china.huawei.com (7.152.185.179)
+X-Stat-Signature: atuy4eqkfq73dij6spyaw4efzrhouaaf
+X-Rspamd-Queue-Id: 06612140003
 X-Rspam-User: 
-X-HE-Tag: 1792414130-971863
-X-HE-Meta: U2FsdGVkX19M10T7oBf46w/gC4eVc24S9+BF/ldk+k780e1s7Fy0aPGcEHbxsNuBQZJUIFoNmqk+nAAsFxKLTp0KX8URgqzIJOMA29748+HWY88qBT7sT+ZLHkjYvIs2ReT7bRyiHiNyPY5U+ALW79VWRBivi8WVW+Y9kWqfQbKuX4bsAAqSziDZeXsvYOi80kjYNyIlAVxIam+6PYVG3L1Q241Tr0CPM9zG09S75ut3D8WwVuwtA0R2wi8aiqNbWZVYBANOWKgFtAUquB+9DS/Esf6LNa6LjHX7q3VNypPs9OzMj1MJ4OYONoIDrDd6/m5Vtch5T1XdrrOei13jcjqEQH7XOWd5ITg+rBoNCnjjoz6LHbIusf1mFMRN13lGIn/QlKUEgcIhpz4SGAW9ax+0BW52llsr3mj13a/AbtZdfpHb957I5AQbhqPi1D4bif7jlQHBzHVl8TnYrwfCgVUAKYzBpZ7Z++bM4ZlzNLrhfO5Co/5fZAkHxnq0iJahOvPu1STyu4WJZ+W3Wf+OOIUyo6jBZUF+m0hVxFIouTdDbktB5uS9Rzs3RKlwXHPZeJEFL6yu0PVmpz/ycyVAycpIjo4TFValx4TZHXQwNZ14loFRqeuMeNyxvVFSm+9jfV5sugr4KGgfzSisx6almbxrvFOG8S2trVHXUfG83lc7bPiVoOS/w1G/6LzP+6PUU7mIZIc1vpQN5VzeYO03DZQ9emzW4whfjerq6s+nSPxzaB+YfgR3Zokiymvee5cc3cCo0A4k8iOx+VKkHWmDKi3ZIhaBGnqeRQ03YEwa82hLqmmtt7mQr1UQYQD2VGcW6yQZqXGW4bv3yqryPCzYBN5iis9fz9nbKQYDTWpC6tgq8BiD+AFgqpcjPXJ6a7xcejuWm/CXEX+uBdFZerTzgHXL6O9Ti9MLbnMYKfxVMxVyvyNguMEzAVOLyLKxXejVTZY14OM4OaWDodaIoBW
- 56IumN5U
- eNghueps1bCPOPEBn4H8THGROEE8LAvHuWCHfu32G4S9/lWbaKqaN2WSirgoNWPSdEv/gBK+WVxUoF1j1YEfHdI7qkLa+DF0jK9HfevpjTX2HOj74DzN8ULTN8aosGrIamVcply6Ad9+GSn1JHaB9FQXHWH9I344hPm/rawKMjrsPbPs3h3MzoceyY+TAxP5C+8OnwrSZ70Cipt9bt1td0sYuyPU+yD0vU8lOjXO3exJwUNXsKaAPYrY95VWVzk56lfefRgpKFpFkpgr4gvHxykxMn536irvqbRi63KhoC9kooc8=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1792414138-300596
+X-HE-Meta: U2FsdGVkX199nii2iltRaIrGX6oLguqAtsjX7NW6pCZcz3sSB8VsPo/850OXGRIwmtRXJi5Xim1faAQD1JMVMWOncToh4INK9dgAGhXhah5eZZXKkiJGZ+f8k724rxuUu0iNOZ2jFuTAlBx0OPK76XQz9q+btuLV7EdDHz3BNxfszWj0toG0A6Qf3k+IsnnvKX4cz3A/wIuPbJvWcOSU4gOBa/o49SFca+W7tD5r2JI8S6OdjQvYYcb/t7wzUHr10r4arR+4PrYMPzrZo9PcHZX1awN51TGjnwBtnIV/GjnqgHAcljncHxn/8aXzP68hqYHKPTXJ9T9hAmaGvN/H8tpCCvqo7y/4lEi416SPK3DyxEh9RIk+vyDmEclIiRF/k11SHKdCXZQn5+Y6MfVnhz2Cpm4ygbIzlTOfbp/n8I1y4TjLo5PpmyI39sDCwVWfyesu43P3l4zIY9ulsqhMfSKbWrpeuMF2ov7IHP89id2JmCIGKDOc5KLTYvbHW0Rgv5EFxZ5YS/+BIYXXOsP/VhutWLOAm6VXeyfCA7xDR4lYyb9HmRmUEsQB9GTbNdoVUpm/ttT7I1Ytt9/SfVOsMxWebFjrQkK35mhGbw1o9zV8GZSXNWVvKDbncEt69LPR3lDsORDfNdDDk2FCJa0cifmT6+OPD/HKAB8ip4xpo+Lb62nk2vZ0CkjDPnQSI6TWQPfRDTIlZDLC5tPUet+vEMVxZiFcbPnf3X9Np5sY+muefRFpd/H3cvmZxMmzHr1ioWK6Xl6m1e/jYhb1d1VgKJfW+I6C+wH+KCOHvFihsMD6MowijGE6dhlbsq5zNkoDQqOkUOfl5HAm1V7WsPp44etxIqSfZsYJT4fo7Yrjix2GCZ7JWcPYt8hhDgt9fFRI0GrIufnW5olv8Hz67g4f2bE8GuEMd7G52DLdZ1IFxSmYH1plxdHbfP4tI7lR4PVyP7dqX3Pa2VJ7FOhmjjo
+ OCpRdgGs
+ 2TK37euz8+ixoYeOkWMljKhMuGvnh9RoFc1APr+iLxDh25CShM7SOB+uO6lmB4u9X0e4PJHFU3/GpHRLQtc1uUdtz+VfnUoLRVnaKeLe2n1vSw5oaGLOKm2Q5+ZPkBMjiZuhwkk0kn1cELKgnngyQwuTbBVyjdF5VoLKOHCCYKdVlppqnvPzKjwUnzEbzTIsnp+KPxsLqb5otKp3TS8iwmBKhIW/8wagYDr0hXHVO9G26dnRTwZPWnW4+WLdjQSVHpbU3qsbDZw2fsLh2UCIiq9EiJnep4NgAPOiuPBKwfdsBI5NEtEQfo8B+1T0NgAnF2vqATET5mN3W6Yu1bIE4FP76iFl7Ka2vvlSFS8+rDgPbwTmTwPcQ316tCdt4Kmjzm69VvBR+zvwrN5qN/r032Ur4CA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,14 +100,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
--cc slopper.
+ÔÚ 2026/10/16 18:25, Nikolaos Karaolidis Ð´µÀ:
+> When inode_lru_isolate() drops the page cache of an unused inode, it
+> has to unlock the list, so it returns LRU_RETRY and the walk restarts
+> at the head of the list, where the inode still is. If
+> invalidate_mapping_pages() could not empty the mapping, the restarted
+> walk strips the same inode again, and so on until nr_to_walk runs out.
+> Every walk of that list then ends on this inode, and nothing behind it
+> is reclaimed for as long as its cache stays.
+> 
+> Before commit 2a0629834cd8 ("vfs: Don't evict inode under the inode lru
+> traversing context") the walker pinned the inode with a reference, and
+> dropping it in iput_final() set I_REFERENCED, so the restarted walk
+> rotated the inode to the tail. Set I_REFERENCED again when the mapping
+> is still populated after the invalidation, in the same i_lock section
+> that clears I_LRU_ISOLATING. inode_unpin_lru_isolating() now expects
+> i_lock to be held, like inode_pin_lru_isolating().
+> 
+> On CONFIG_HIGHMEM kernels this can happen to any unused inode: a folio
+> is left behind if it is locked, under writeback, spliced into a pipe,
+> or still in another CPU's LRU-add batch after being read. Without
+> HIGHMEM it happens to DAX inodes whose only entry is at index 0, which
+> mapping_shrinkable() lets onto the LRU and invalidate_mapping_pages()
+> never removes.
+> 
+> Fixes: 2a0629834cd8 ("vfs: Don't evict inode under the inode lru traversing context")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Nikolaos Karaolidis <nick@karaolidis.com>
+> ---
+> 
+> Found while working on reclaim of inodes pinned by page cache in
+> ZONE_MOVABLE.
+> 
+> Tested in QEMU/KVM on master af32da41b032 (v7.3-rc6-232), with lockdep
+> and KASAN enabled. A small init program makes one unused inode whose
+> page can't be invalidated, lets it reach the head of the inode LRU,
+> opens 2000 other files, does one "echo 2 > /proc/sys/vm/drop_caches"
+> and counts the inodes left via umount; kprobes count the
+> invalidate_mapping_pages() calls:
+> 
+>                                without patch           with patch
+>    i386 HIGHMEM, file read     2000 of 2000 left,      none left,
+>    on another CPU              10300 strips, 1 inode   4 strips
+>    i386 HIGHMEM, page          same                    same
+>    spliced into a pipe
+>    x86_64, ext4 -o dax,        same                    same
+>    file mmap()ed
+>    controls (no leftover,      none left               none left
+>    shadow entry at index 0)
+> 
+> 2a0629834cd8^ behaves like the patched kernel, 2a0629834cd8 like
+> master. On 5.15.y x86_64, where every unused inode with page cache is
+> on the LRU, the read-on-another-CPU case blocks the walk as well.
+> 
+> With "echo 64M > /sys/fs/cgroup/memory.reclaim" instead of
+> drop_caches, the i386 pipe case does 262450 strips and frees nothing
+> without the patch, 40 strips and frees everything with it. In the DAX
+> case that write takes ~400ms with the patch instead of ~4ms:
+> invalidate_mapping_pages() counts the DAX entry it leaves behind as
+> reclaimed, so unpatched, the 64M are "reclaimed" by re-stripping one
+> inode in a tight loop while nothing is freed.
+> 
+> The reproducer is a single C file; I can post it.
+> 
+> An LLM was used to check the analysis against the code, write the
+> reproducer and draft the changelog; I have reviewed all of it.
+> 
+>   fs/inode.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> diff --git a/fs/inode.c b/fs/inode.c
+> index a9d37be390a1..1614a97ce953 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -593,12 +593,11 @@ static void inode_pin_lru_isolating(struct inode *inode)
+>   
+>   static void inode_unpin_lru_isolating(struct inode *inode)
+>   {
+> -	spin_lock(&inode->i_lock);
+> +	lockdep_assert_held(&inode->i_lock);
+>   	WARN_ON(!(inode_state_read(inode) & I_LRU_ISOLATING));
+>   	inode_state_clear(inode, I_LRU_ISOLATING);
+>   	/* Called with inode->i_lock which ensures memory ordering. */
+>   	inode_wake_up_bit(inode, __I_LRU_ISOLATING);
+> -	spin_unlock(&inode->i_lock);
+>   }
+>   
+>   static void inode_wait_for_lru_isolating(struct inode *inode)
+> @@ -981,7 +980,13 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
+>   		else
+>   			__count_vm_events(PGINODESTEAL, reap);
+>   		mm_account_reclaimed_pages(reap);
+> +
+> +		spin_lock(&inode->i_lock);
+> +		/* The walk restarts here: don't retry leftovers right away */
+> +		if (!mapping_empty(&inode->i_data))
+> +			inode_state_set(inode, I_REFERENCED);
+>   		inode_unpin_lru_isolating(inode);
+> +		spin_unlock(&inode->i_lock);
+>   		return LRU_RETRY;
+>   	}
+>   
+> 
+> base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
+> 
 
-Keep in mind that this individual is flooding the kernel with slop.
-
-We should be wary about encouraging this kind of behaviour. I suggest taking
-over patches, 'discussion' will likely result in having to deal with a meat
-proxy.
-
---
-Cheers, Lorenzo
 
