@@ -1,95 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B6760A261D
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 20:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43AD606A339
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 20:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XCKMUP58
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=pRHjY3Fd
 Received: by kanga.kvack.org (Postfix)
-	id 9D6866B00FC; Mon, 19 Oct 2026 16:51:34 -0400 (EDT)
+	id 08A5F6B037D; Mon, 19 Oct 2026 16:53:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 987126B00FE; Mon, 19 Oct 2026 16:51:34 -0400 (EDT)
+	id 0624D6B037E; Mon, 19 Oct 2026 16:53:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89D766B0101; Mon, 19 Oct 2026 16:51:34 -0400 (EDT)
+	id EBB2A6B037F; Mon, 19 Oct 2026 16:53:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C6086B00FC
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:51:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1562AA7B94
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:51:34 +0000 (UTC)
-X-FDA: 85340571708.05.C91B31F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BE22020005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:51:32 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCKMUP58;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C57306B037D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:53:03 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5825CC07ED
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:53:03 +0000 (UTC)
+X-FDA: 85340575446.29.DC51C4B
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7A7FD180002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:53:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pRHjY3Fd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792443092;
+	s=arc-20220608; t=1792443181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z09TlHme8s+UYlN6I8GSIiTbNEV9B18/ss/FueYOjmg=;
-	b=l5mjBjknkE0imIc6gE5nm/+mUQ2H3IDAQjwvB+h5bRj5qhfotVzsiIJlET0T/6uDATOvZF
-	RjyqMZpnPV4DkIQ1IfvgXrQ6jQDcqv7PgJmQrhvRPH6yAM7V4Pic9/NnHHIUdxwkupA6/Y
-	DP17Ir+N6mz89JQDL2XYNQYRWOgq2uI=
+	bh=DKddisKzxLuVQIaXtLpNXNAV8kvVeTeFgFk5M6wbup8=;
+	b=xhFEy9yc/rPU/c9PlfwH8GaKmi/ppfFRYCM3OWgeIlhuxVnvb2vqulkVuDyLoJDOmBD94C
+	8uzw+sfCH4OIxkA0FqVr/c2pv1zxYBAwzMupv2FznPsKMY1E2GzrxNS2AyBaY2MPZFEebw
+	vSpXtxfUCA1RLtDl9CB99dLj9jwh50Y=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCKMUP58;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pRHjY3Fd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792443092;
-	b=YvmU69OIDoy6CoL2tLJAm6xqX4PCjKLirMG6cVGDpX0O5XcvOhsvbgWvUQSw1KGlaShMpF
-	VUPhpGkDWxWC2UVrFBPX1kH+RHt9d+Vrjw8Pe10omYIDh2gwBe9817xKxklbhVj/AGmJ4V
-	tlK+l/XtCz28zsZvpzTL3xILFjQs6nY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C89C42A60;
-	Mon, 19 Oct 2026 20:51:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97921F000C4;
-	Mon, 19 Oct 2026 20:51:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792443091;
-	bh=z09TlHme8s+UYlN6I8GSIiTbNEV9B18/ss/FueYOjmg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XCKMUP58RqYYAGi8f/qrT4MupGAV7Y/5KbiQx2GN7ryUsajnzax1rAUyZszN20opG
-	 8TSyUYoJevEScTJN+N33VeDVqLmhdo02wuISvoi2tHkIQtEsLoV11SMCFI9f/qrcnL
-	 AzZdQo4kpx0DqPNPDwXSI4f6zY9/KVFOHx9CP2WwQs999f0CEQIO7T9ZKGqxM9AUbx
-	 C656DjxNOzQAKj8CWqFAOF3T7iKu8kJxeSf/o4p5pnihgRWVkpYRjRY6NpMVAAKcPK
-	 3lxxoHPYwmJazhosRodJTsYxYkpaftF35bnvPmz9fWWAvJH6wtb6g/4Y/pqzDN7F1d
-	 3+T825S9VgMoA==
-Date: Mon, 19 Oct 2026 21:51:29 +0100
-From: Harry Yoo <harry@kernel.org>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, hannes@cmpxchg.org, 
-	david@kernel.org, mhocko@kernel.org, ljs@kernel.org, dave@stgolabs.net, 
-	roman.gushchin@linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive
- reclaim
-Message-ID: <ataClWf9F_zp-KDh@thinkstation>
-References: <20261019185002.3428594-1-gourry@gourry.net>
+	t=1792443181;
+	b=fe+7BgE67m/VzC04yeEcwPTv7y62KKFfP4110hJfdfRGQfXrUvovxcDAyXaPPTi49oypJS
+	rPhZNCdHk+sO4uOFnZENZvcd+kiDzu7ghIAgDTPjGcu/7+xRV9KW4oDIWtEHUiVpfeB+bD
+	TcovIMBTitSIbrfS4J3TEh1lpLcAJ6Q=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49d05d51553so17717565e9.2
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792443180; x=1793047980; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DKddisKzxLuVQIaXtLpNXNAV8kvVeTeFgFk5M6wbup8=;
+        b=pRHjY3FdWeigguHSM1TMUI03LAHGhKOIg4BPVAj4KGtAvyj22WBuSsQBEV5JakTxJ2
+         J+TyCrJufhzlvfQkMYylaz+5+hU6qYMJ3au1fD3K0Zo3bTx3sukDTWDfjtG8rhfkWbiz
+         xTPkuBXDj5rHXq53Mxe46+GlsC5WtHYom3zk7FWYGtqQUATfmzq6wRMMLTmA7bPql/4k
+         oK/u5PgkDa/DtnAdAq5kpZfIsSPHa0XLUYWUPGWL0ZlF9sFkTxGeHWTS/ZyibYxqF7Xk
+         zEWcdWEwywRzxzM/k/nuyLfziaGWsyVmuH0CIDKI0ZQQ42HjzbsvtDLksh5CP/zSkqKm
+         xTDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792443180; x=1793047980;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DKddisKzxLuVQIaXtLpNXNAV8kvVeTeFgFk5M6wbup8=;
+        b=i/N05rXHIEEdAfET6ASmE+3zNiNKV/eBo0MqT/BxYKMnNaDF9QvXqCCjHI6VmF7LGN
+         KNduPkXQdQJlnXOIgNJHj7aB721/e+H6SV44FikJFDG6FQsKcB+xlCIgF45f02+LpV8x
+         ZPGzAcUjinKAPa9rAtTPs2idESZ5Yj03XveewsFlCMbcakAJGzWrHQt6aev31iSEcx9m
+         8IP1lpNAuH8aXt9C61O1/6g8gLGJ7F5BPn+P9F1LBS5exCKdezLZzy5+S/FQoCxRssl8
+         ZwWcd9O2DtVd6m8RaGVGcHl70IE4DAMZFMH/KhbKAGVDndLuTe4apJpu7JIlOYIxN5u6
+         16QQ==
+X-Forwarded-Encrypted: i=1; AKwUvByD2VvdRX0SmaaBJV/owZTdzIY044S7mOrUi+LtK0IkKX1E/vAa+TIevjwM6uifsxw1lVN9q98xZA==@kvack.org
+X-Gm-Message-State: AFq9FYJTG98kbi88SIfMXnHALsxUAoAUGYVtK5GZh+MHcGaRj8l7GGgn
+	Zg+4Xhw7QzX4FLuu9/cvaRK+qFzdPxKPJveT0OLSSCDEJuK9clGJ/9ch
+X-Gm-Gg: AYBFou3XfNMyobYVX4mNqwytu/DLEnIvjUtba3VhVgsZ2m5+C2ca/Utxqxifm6mcUrq
+	wToAKazdJljdRArVDq7K5nh3xF8rQkkTpNlyRbtno7VFu6DsKJQPJrrxcHkvAy08/GDrRsp4up1
+	P7BxqVGiv78ZULnNKuYmWzzkTfRcvVvUQ+xjli8rG9jCSqm6hejQ4WXaJ88nApNePughRCY7TuG
+	DTCj4H8kpgGNH1+hWZa/3aI24YzPTQmviQg8wCzgVdealpd7QPtSa2y+tR4hLMXk9CrDhh2DNAO
+	sWtc4ujO8i0Kao3KRhcrNtARH1LEsu70ghNREWdtfeCD94LUm9eXhOWZrIWkpMG6p+aol750bdP
+	TZdmoZQKR9Bk0BL8gq7TaTDiedHvQ9bBuFj8l1hrsxi2s5nOqZs8Pjm0S6lHG1ASxU7frwPe+Ua
+	HEdwLxz9YrVTtrcxYOJqSZstvdeD3J2NspGHcju2Mvx3e8kuC4nhU2VoupMsNogpsEY+TS4pRYA
+	CthrH7kWRVkK6Z4TEl5bIWZR2VoDZnA3nhbvMui7B7uZIF6vtZZYzTsWSCwKG/aCF+O3qFem03X
+	9nUP3Jbpo/stm3Tv
+X-Received: by 2002:a05:600c:4e8a:b0:4a0:4a8:d444 with SMTP id 5b1f17b1804b1-4a1d7630cf8mr199302945e9.33.1792443179571;
+        Mon, 19 Oct 2026 13:52:59 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2c9f301sm16245455e9.2.2026.10.19.13.52.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 13:52:59 -0700 (PDT)
+Date: Mon, 19 Oct 2026 21:52:55 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: "tejavojjala@google.com" <tejavojjala@google.com>, "Rao, Bharata
+ Bhasker" <bharata@amd.com>, "rppt@kernel.org" <rppt@kernel.org>,
+ "ankur.a.arora@oracle.com" <ankur.a.arora@oracle.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "vbabka@kernel.org" <vbabka@kernel.org>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "surenb@google.com"
+ <surenb@google.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "nhuhuan@google.com" <nhuhuan@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
+ "tglx@kernel.org" <tglx@kernel.org>, "liam@infradead.org"
+ <liam@infradead.org>, "Salunke, Hrushikesh" <Hrushikesh.Salunke@amd.com>,
+ "bp@alien8.de" <bp@alien8.de>, "mhocko@suse.com" <mhocko@suse.com>,
+ "ljs@kernel.org" <ljs@kernel.org>, "rientjes@google.com"
+ <rientjes@google.com>, "torvalds@linuxfoundation.org"
+ <torvalds@linuxfoundation.org>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH RFC v2] mm: introduce copy_mc_highpages() and batch copy
+ in folio_mc_copy()
+Message-ID: <20261019215255.17455ebe@pumpkin>
+In-Reply-To: <b22a59fa30183e13043e69ee91dfc77eca4d4a26.camel@amd.com>
+References: <20261019-batpagecopy-v2-1-d75e7d0dfaae@amd.com>
+	<20261019131901.7a8fae90@pumpkin>
+	<b22a59fa30183e13043e69ee91dfc77eca4d4a26.camel@amd.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019185002.3428594-1-gourry@gourry.net>
-X-Rspamd-Queue-Id: BE22020005
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7A7FD180002
+X-Stat-Signature: 6onodcd8wjd7ytdempy11enxij3jkw4w
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_2 autolearn=no autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: qf1az4stfbcswk4mkrp1hj7ukrgfm4ei
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792443092-244691
-X-HE-Meta: U2FsdGVkX18olkJJ8HA1f/A4fZCz3syq9u/WaJDy9Q+IvRBg9a9mlKari2gRbXTEMC5TQXoJu+TjBmJbmZzMqC+RDOmSo0dwKsvp+/o6rwPJ3CP4djSYxHvQN4aNXQayqi/TxszUmfNp6tHJlbIomaB8tN+8tjg/SOzJjg2pDd+ICGw6mG38X5RLpt0vVPVL22o84JNgb8U83pscHrrGtMzv24doEaO3dwm+pWn+e7qp/Ly3Rsw1Jnrtg9HDACEc4pbKO/82ULphkjrNJD+u1gNC5V4druF9WI69r7mc79JuQkBIZfz+frP9NcKsfTQ/ogDHYG+dMkaKOoNYuZ7gkrv/D5U6pLYNuCaOpqTUfl6gQ4oTDiDE1+VGZu8r+x3+/Vx/+WRFOMJhRHpaxoblrutYR++bvXZ8tyMUz+AWt3C/5EUCDGRKFFc5bKTxWAS26kkaSm+rMtttZYD37lZW4ujuiJqTMNBPAPQddstvukF+ezIo5HvBi1gtYkT+499PxhwW2FFUaZX6pDLeITRqU2cg2ErLsGGjYXY6EDpOICEuInLSCvZ/ckeVTBUylhUCxDDNtuXAC8WISGg+K9gAX4Fov4DExPxQOi8rYqVd0nsbadnlCUxIf5OTRBqyA+Fn1/glilnvkWdlrMSCvjbcgyDl9uqM56qkLsJ0R0vl5WkoRPc0aXl3RIjdPT5TvTJhklBV0307CPai9fIjS9y+2KDY381Cwy708VaFH1WjnrSox4pqRLN0etc5Lxp5KenKvVuR4floQa6N3XVjrID3NyHNBORsv6gA+kXxk/ADvLIii7XpVxEUM17Ax1X2/dzM+Y+auH+AyIM/sC12mGGqlXRJNWObPocHwnluLXaBX2n/6LR9GhlinGAi7m5tdrvUjTqThx5QCvaETyZOrqoF1Zw+WyK/NIY6N2gf+vxWAPSAWpjXnbDK9d7gBz31tBSHHSi+ugEamo96ZMfANgI
- FXb/P9HD
- 4QTuKw5P9Xt+RBRfeFO1JXY6m9R/Frs+QNOF98MDOYUdZN1tOoMiIv3Bnayf8EqwKRwfR4r20rntcN71efIt5S6eF3kthtCc1Dcw6E+EHNJ436BaXQPRSvJVUDrPn8f+483b4PWC4Q1RbPIBYcVMEKDZ0NW2eYumTIOOnv2KQhky+aQuIeXOJLNr+i3PGVeUvJbU7wRNs/AFB6S/U8QlCezHve9yEWtAyrVyLuZihRWBmptLq7TctG6xL4YOaMq+Rc/eUKQdcsj/60F74npzdSf9/5pWYp6Lqu0Eg0+3FcM46H79l901afGrZ7CADXx56vQdrNXhnND+R/LO27qOzHy2R8g==
+X-HE-Tag: 1792443181-374672
+X-HE-Meta: U2FsdGVkX19rtwp+zyXY6jaom/xy97SH1JU6ytAQcVzjvQWEIC5IuVlWifXkeq7lGO5Qay668bFPM6GW5lb2P0JyVtSAJ9ub7P3FiD3GnMgI8xHyq4oVWRkV8s05rMeRKygG8uwSeBkxs2awdIeb8GOaCcoNqSgb6UWy8NFyG0UG15OjysuFVjfBkvf+YUEAlzOXXAC6hBn5r1P03i7T4unr/2PrCfMKp8oPWEMRVtdqwf46jL1ry4sbG3Qa+iJ5MitjYUNyZJl/Pef1CKRUOrb4iuiUCHoWKEzgmyNNtBcbccbH2QRSt1XEhI9Vqn4nXufhCXlZWFDyE/xY2cP3uG+1tJQn8ZtgezhxhaLuqTflOMj+T6zzNf1bj2tDoYjNokM3ZUxoNf/KBEJTV3CyciViOcFrDil+emVbC6yQGUQaegSTt3HO7k+GzNlBeKEFZWkJ27K5Ewban5dNb9CQpvEtsRvmZPcHYbrd5me/WyC8RwmG1ylQSS52zJcfCgDjFS5z0fDn+y7ErTcxuvmM/klEs/KDSTiTxX8jamJ8N9W4229hn63sZI68rIJdPYftud4RRFGp0qc4lgvIjT3F2CDql23t7f3K0fX+bRJ0tx4MgmGQ1VOdH0FgA5onqS3NIsauUKqwnHft1N1nYgpQCuCGXfUo0wtrWw867U/nfY72R1PAA8lLYiC2Qo+DD0knKXoyXi5vOB/iNP7fbNv8ZM5/I+pni6EK+tGNIhwGUDiz9Rtatcjv9m5p8AE7oyTL1oVHkO+MpMAe8v1SlIaWL0FqVzy9nSS3kCyxzHlUwviWCzWbhZ81RBd2o8GJUJKS4l9oD7Uz6JoD1FF59tqpOe0mccLCoqV9jYJqqsrVDQ8L4OBcnLmZe0YTV7L+Qudw4op0l9LEZS27+hV2P5Lmunj3TLdiffCglW7NpJiAuWw+wkI3s6ylJyTFOfsyDLaL4B2yIUyutH8D9gcwrCl
+ FqStd2wi
+ em/ze1SGBXGWd/tF2TLepr5o2bQtmkMT+FpDfAdzovcf14XnUzv1RnCwOKZJXBhCXXpTmEhf0X6zd9PqmOtPvKIVWxXCR4eZT9A89VgR/htWP5QP/cVJh4J9+cR0ADZiYGwCdFQzn6QJs57CUWhSkRYoE7Otly6884G8+9nf/baTFtbJxzNPWL+6mzjjk7rlBp/wdvV4q98oGy21MHNf+NtEFy2nvjx9CyzWUeNSOq7SrChg4xMX9gzhUY72v86tREhTu7g4UIX0hzR8YohpRksM3AEQ2sD8mDZHIi42GTkFJL37z4g7jIhNyeqLFOfOabd4CMFbuPO4+nBj153KH/2WPMtww1J2kz/AqZJXsBf1AZuT7ejjqHgt5tyS5nTKWZaqwEpK0LEfF6EDSLQutEZ+DAvaKxS9LU54a3/286Ye89c3T9AOQ+op1Ek10oZZXuim+kgSy5x/C20UOXLEVjQlsuLScbF41gID2gMvntK9J9M5stpNU/EHWL2TExR63UE9/Z6hxTxKoVs+BlaI2Ux7S2GKsmHD+a40Y538n6/mtXrWN97cZ42O1jUqOSUJb2MD7jmNyi2+1FXY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,30 +143,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 02:50:02PM -0400, Gregory Price (Meta) wrote:
-> user_proactive_reclaim() limits per-node reclaim to
-> gfp_zone(GFP_KERNEL), which is ZONE_NORMAL. Proactive reclaim serves no
-> allocation, but that limit makes shrink_node() skip every ZONE_MOVABLE
-> folio, so writing to /sys/devices/system/node/nodeN/reclaim never
-> reclaims a node's movable memory. A movable-only node, such as dax/kmem
-> or hotplugged memory onlined movable, reclaims nothing and fails with
-> -EAGAIN.
-> 
-> To reproduce, fill a movable-only node with clean page cache and write
-> 200M to its nodeN/reclaim: the write fails with -EAGAIN and the page
-> cache stays. The same write to a ZONE_NORMAL node frees 200MB.
-> 
-> Scan every zone, as memory.reclaim does.
-> 
-> Fixes: b980077899ea4 ("mm: introduce per-node proactive reclaim interface")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
+On Mon, 19 Oct 2026 18:54:26 +0000
+"Garg, Shivank" <shivankg@amd.com> wrote:
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> On Mon, 2026-10-19 at 13:19 +0100, David Laight wrote:
+> > On Mon, 19 Oct 2026 10:06:49 +0000
+> > Shivank Garg <shivankg@amd.com> wrote:
+> >   
+> > > folio_mc_copy() copies a folio one page at a time with copy_mc_highpage(),
+> > > so a 2MB folio makes 512 separate copy_mc_to_kernel() calls. Each page
+> > > pays the startup cost of the string instruction ("REP; MOVSB" on x86
+> > > CPUs with ERMS) plus a cond_resched().  
+> > 
+> > Don't you always want to use 'rep movsq' for these aligned copies (on any
+> > cpu anyone cares about).
+> > I'm pretty even on some that don't advertise ERMS. 
+> > 
+> > The fastest a copy loop is ever going to run (on anything but the latest cpu)
+> > is one write every clock - so 8 bytes/clock.
+> > A 4k page will then take at least 512 clocks.
+> > Even an old sandy bridge cpu will (IIRC) copy 32 bytes/clock if the destination
+> > is 32 byte aligned (not much later cpu double that for 64byte aligned destinations).
+> > So the copy part takes at most 128 clocks.
+> > That makes 'rep movsq' faster unless the fixed overhead is in the P4 netburst
+> > range.
+> > (I was using lfence when I did my performance measurements, it hides
+> > the fixed latency of rep.)
+> > 
+> > I've never measured zen 1-4.
+> > 
+> > I also suspect the slow part of a 2M copy is all the D-cache misses
+> > (especially on the read side).
+> > 
+> > OTOH the longer copy is likely to be better...
+> >   
+> 
+> Thanks for taking a look and for the detailed explanation.
+> 
+> In my measurements, 'rep movsb' and 'rep movsq' perform about the
+> same for aligned, longer copies.
 
--- 
-Cheers,
-Harry / Hyeonggon
+On Intel cpu it makes absolutely no difference which one you use.
+But some of the older zen do handle them differently.
+
+> 
+> Since copy_mc_to_kernel() takes an arbitrary length, always using
+> 'rep movsq' would mean adding an alignment/length, etc. or adding a
+> separate copy_mc_pages() (or something similar) for page-aligned copies.
+
+If you know you are copying aligned buffers it really is better to
+have a copy routine that can rely on that fact.
+I suspect it is only x86 'rep movsb' implementations that don't really care.
+Pretty much all the others are going to have code to check the alignment.
+
+David
+
+> 
+> I think that would be worthwhile x86 change on its own, independent of
+> this series. Here, I'm not changing the underlying copy mechanism and
+> behavior other callers.
+>  
+> Would it be okay to have hardware specific changes separately?
+> 
+> 
+> Thanks,
+> Shivank
+> 
+> 
+> 
+
 
