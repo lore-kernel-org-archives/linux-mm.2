@@ -4,128 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885FDCCF2D6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 09:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 876B2CCF2DA
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 09:53:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82AC36B018E; Mon, 19 Oct 2026 05:44:03 -0400 (EDT)
+	id 57D276B0190; Mon, 19 Oct 2026 05:53:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 801F06B0190; Mon, 19 Oct 2026 05:44:03 -0400 (EDT)
+	id 52E6F6B0192; Mon, 19 Oct 2026 05:53:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 717BD6B0191; Mon, 19 Oct 2026 05:44:03 -0400 (EDT)
+	id 41C7C6B0193; Mon, 19 Oct 2026 05:53:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 467116B018E
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:44:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D69861C3ED2
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:44:02 +0000 (UTC)
-X-FDA: 85338889524.23.8A6D673
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C0736B0190
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:53:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3998BC0648
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:53:34 +0000 (UTC)
+X-FDA: 85338913548.16.A69893E
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7030440008
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:44:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WH7aG4VM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aaVhJAWM;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=u6VHnfyM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qXNeOZFc;
-	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1D78D100005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:53:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TNiH6jAG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IMKWDODb;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TNiH6jAG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IMKWDODb;
+	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792403040;
+	s=arc-20220608; t=1792403612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=09Lq3An05DWPwWxeP0P+1z2FcKSxt+uwU4M2CkK9Eew=;
-	b=cO4nlDGDPlb7uQ7hdggw7MJCo+2+ekprsNjBh7jJ7w9MpGrR+kLNX7qAj7LZVFEM0sJSxK
-	tgCYkfWfhf6DzRJJJ+zryQBWVz3jELt+8kFcODXBhPdqD8Gc5e7Q5VVudjHrNq8AuOuAr3
-	DfV/NPRWH2v39+Pkby7csTEk2tQQJIo=
+	bh=DKiqBw8kgNDEliDnoLY6tY5aR14ZoTfXZiHIpRU4Bno=;
+	b=Wka9hLsJnXVTuVdSTCdcxCyBgjj5aX2nOFXcollglC65LeTewdS2maDCl7Pct+l6v/4daT
+	N5KAOh+R4wLBn+bumX75rV4ee3vEzwC9WJxRihPHV2AJ2BDOiQugnbJOEI9qll8+bCU4my
+	IYqRdN5I9e18eAS6OqqcPq8zKl6GVEc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792403040;
-	b=0jddI9qd70VQzVgADGISTUEMQwuJqyIPK/Lodeto/lBIb+LOvdE7J9l715Z+TKCyyXVPiV
-	0O1aI1ggiwreQeRg8rSRxsUxOlaBoGnzDrPWz5HL/4Tb9i5ZZLRaR9FdcJr5Qbnv9UZ+Z6
-	8YNXAEap58zAs0xp0rdSrV2QFc+vhhU=
+	t=1792403612;
+	b=8pp6+cQrZvMb31rJZI7O9mPunn49rtvP7NW/rWNwBK1oUhG+b1PoOH6CZE5xQqqy3Clu8M
+	DrJNK/LRL32jfOWo00JXrBxws8fioZYUIBzNxOH3+Tirmg3aEXEdLAi2kk3vZ+ef+fspMd
+	IaP4Tzu1xl6wqP3X9sY+FZ0z3Pw8F/Q=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WH7aG4VM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aaVhJAWM;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=u6VHnfyM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qXNeOZFc;
-	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TNiH6jAG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IMKWDODb;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TNiH6jAG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IMKWDODb;
+	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DCDCC21C08;
-	Mon, 19 Oct 2026 09:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792403039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3BB3121AC0;
+	Mon, 19 Oct 2026 09:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792403610; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=09Lq3An05DWPwWxeP0P+1z2FcKSxt+uwU4M2CkK9Eew=;
-	b=WH7aG4VMWqpdzzXRD5GJ5dlxyI/o4EpP4Q94+TvJH9IHtf6zS54iHiucDyKotDjUP8CYOf
-	8PwpQlkbGHerat8yADcrafZBWQgMTutlnyodTHJlVlw8Tdt4oedJLgKKMPOLVriTotfhgn
-	tIR1RSaUeSX1F61Fqg0c3JRghG1DeaA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792403039;
+	bh=DKiqBw8kgNDEliDnoLY6tY5aR14ZoTfXZiHIpRU4Bno=;
+	b=TNiH6jAGWzJ+CcphCjW4j7aj5U0zeU2N7JUCu5ljMtqB9zQxmzOq8YRau0SpCDN/Tnb02Q
+	ahicBwHrHCw5SO2pH6kRe68ZDqSaS7aHEX9UPBg8P5zUXJ7Puj/y+xTRwvkrsHE4jTNiAB
+	kRcd3Vn7S05FSmK01RYD+x5vtTkQBUk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792403610;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=09Lq3An05DWPwWxeP0P+1z2FcKSxt+uwU4M2CkK9Eew=;
-	b=aaVhJAWMHnFF7+W7PztBek5nPyblgTcK+EAJOCjarkm2YETBlBCmcztlnE3/526Yj4DhND
-	4wjH76CgpjeF4nDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792403038; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	bh=DKiqBw8kgNDEliDnoLY6tY5aR14ZoTfXZiHIpRU4Bno=;
+	b=IMKWDODbku31f9X+imJzQOexZonmmj16TZ2NhoXcsP1S/iPoyWMdMHJAmLh+ZIE4EYWEan
+	6BsoR6hGM5kS4FCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792403610; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=09Lq3An05DWPwWxeP0P+1z2FcKSxt+uwU4M2CkK9Eew=;
-	b=u6VHnfyMtr8FXFmcl6a7oawp/5Dnehifq04nZUU8VkEy8cCVV6mdykSTlMcrhTNKKNJCnZ
-	T9A7GXg/SiZqbSBVlHRZnk0smuNlY191IrsvgajtdWjgvuLkmFAcobgaDg9dwBz/29VSIq
-	Xygu2EZyWN8pnAcTuoE7myI2T9+qMXg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792403038;
+	bh=DKiqBw8kgNDEliDnoLY6tY5aR14ZoTfXZiHIpRU4Bno=;
+	b=TNiH6jAGWzJ+CcphCjW4j7aj5U0zeU2N7JUCu5ljMtqB9zQxmzOq8YRau0SpCDN/Tnb02Q
+	ahicBwHrHCw5SO2pH6kRe68ZDqSaS7aHEX9UPBg8P5zUXJ7Puj/y+xTRwvkrsHE4jTNiAB
+	kRcd3Vn7S05FSmK01RYD+x5vtTkQBUk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792403610;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=09Lq3An05DWPwWxeP0P+1z2FcKSxt+uwU4M2CkK9Eew=;
-	b=qXNeOZFcz5kSMb+dkWrHfvw1RIyoj++ARYsiqXv9EO/F63yoXtRYtPeM/FZQBlE0kpaYQF
-	KF0ROHT+RnZR5FBQ==
+	bh=DKiqBw8kgNDEliDnoLY6tY5aR14ZoTfXZiHIpRU4Bno=;
+	b=IMKWDODbku31f9X+imJzQOexZonmmj16TZ2NhoXcsP1S/iPoyWMdMHJAmLh+ZIE4EYWEan
+	6BsoR6hGM5kS4FCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AFD48134B3;
-	Mon, 19 Oct 2026 09:43:58 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0BBCD134B3;
+	Mon, 19 Oct 2026 09:53:28 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Q8gqIV7m1WrZMQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 19 Oct 2026 09:43:58 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3C4D9A1413; Mon, 19 Oct 2026 11:43:58 +0200 (CEST)
-Date: Mon, 19 Oct 2026 11:43:58 +0200
-From: Jan Kara <jack@suse.cz>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org, Christian Brauner <brauner@kernel.org>, 
-	Christoph Hellwig <hch@infradead.org>, Mikhail Rudenko <xyzzy@yandex-team.ru>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 0/7 v3] fs: Deferred inode reclaim
-Message-ID: <tsjar7j52anyxrtfdqfhmp6enu4e32hsvtitk5gy3bpxvagsjx@5exi7yidgf66>
-References: <20261009133253.20102-1-jack@suse.cz>
+	id Hk4/NZjo1Wo2OwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 19 Oct 2026 09:53:28 +0000
+Date: Mon, 19 Oct 2026 10:53:27 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+	Daehyeon Ko <4ncienth@gmail.com>
+Subject: Re: [PATCH v2] mm/vma: avoid spurious write locks when
+ mm->mm_lock_seq overflows
+Message-ID: <atXjbsDn7DJybsHU@pedro-suse.tail5790ac.ts.net>
+References: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261009133253.20102-1-jack@suse.cz>
-X-Rspamd-Action: no action
+In-Reply-To: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
+X-Stat-Signature: 7muo7n3p691xenwuipytdopijk5uazue
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7030440008
-X-Rspamd-Server: rspam08
-X-Stat-Signature: ayoxd83mr1f34gr85z4fephybfd7r6sj
-X-HE-Tag: 1792403040-591480
-X-HE-Meta: U2FsdGVkX1/0tqCvTkWdqgRMIfvZldIIoOpJyyqDhiLhmrcGCwADcqF+lrPelPdILpftkEjEySAzT43TqSeePoHS+O5deKNgJEIkN+LpG4gaYkNgYam1ACCgHUYIZH/gLrWx/twztwAjWjilEFkK7CzqUtyNuiRKP1bDt/Uec1bffDzuzPambySpjd4//mKB/Vau6g2vWeWUzgmTgVRSLQnqc3i+LXJoQe6ZBGY8yTG1GFXuIQ2PotG29q+z7cj6FdX9mKwAgIhJR5Zj+u63myQuKB4LcHp2HQ/W3suO0gr9Svj+F1JmM/KMYKgW8S0/ISrAHOA9lhTst6kI7exR9EPU2S4MoaBdW9rXQTfjPoet5iAj87EGDKdcPmjAU2Gx776Yw1ZHiHNHV/TvjGwvt0FOB5zhRhMB6lMHdOlcfAwhZ7YLSxx24FgqpDyq3MQ6SCGdH+4Pgr44Kai2tPLT9gL71KzbKMqSWRKU2O5Tkb7BjKXqSzrtsUZldfLRrEyagY62xSybF1IEZFIK/lngU9AdmTvqbY9vdVC+/dP3BaYkp1RfNwwMB8UJao1CvWWTyHv52JQsXsavMQnmu1SEESrPmpL3BMcK7Jby92ASpgtzkptWmA00rCgt9y3UcLneOVt3CJwV3hkKyssa7KIdIBix2FgeTF46SSajwvRvec4BmbBejPKwjQ1kKrhh4v539HjWH/m+U83+oBN6g5opJqwh5rO8/a3TS7y/REFyuxJaEcWestwJow/2qibz7FM/Q7YIB2HlbKbwGsUO9AzPpQG/nyjxHd5Bfegt11ACRAJiMj4WI88yofJCCz1zCL4szfN7BJAKiqB3awuSw43NujdTMx+jloyrHx3kw3+ldwUr666N/l/b1Ck4XOTBmb/QrfBeg+9TUc4unloERZN5vKX6Lyl/nMgosjkc6tm54WmiiKmov6nA6qPaGKCoe3RxBRQaSjnjm/xjXwGOn20
- V7QjY7FD
- mMIVjIq9QkccHuUTwh+R0UbB0CJRJY3lYESf9iFa4Saqa4uccYLgvk9sLSsjBd1Ncq1+CNM4n6evnaGoIniwmTTWGebQ01k+txdEU6FhZWPA3UgyZcIy3JWmnzORUSqyN+OpAowz/XBBMOv93nCrQK7oPkOvFFjpBBTYBWNcTPuayRc5UslW5ngbhSNra7zr02b5QeWOLFoZKsw6c8sWY5XTHe+mt9gp5zFDr3R260i6D3bZHrOXTflKw0wqYaiTARXbZjky2vpFEtElNTb0p4+cBCRejKX4cVitkbJfqXDEfdwHrcfuKtido0xwZWCoq9eFzJjOWWz9uotBwCItYpgZAStG7UXeKbEYg4HggrhSfc9o=
+X-Rspamd-Queue-Id: 1D78D100005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792403611-313316
+X-HE-Meta: U2FsdGVkX1+DhoR55dS+Ba6W+9FuwoOkvhRz/go3It467FQs8viHuxAPKkXmDWxSPsxLi+dK0KBtLOY0iBAV/xZtv4RN4gahWlaJskbsKdGvlA6ihQN3bQdeA5yWVyT4KTDd9v3vvcZ1I03kq/PGQcPWwoSdCFZFGa9nDN7PljN7h9IBzxEg1XefMc9zG05TIw2cH85GZ8+ScJymeKGJRJq5GeS5r1+pjjDKuTEqyhEWRZKKX58+59O88KWSgZ8nVT49yXNrxYxtVL6h1UVF78wdkO99E2zEAZdRjMRwkR1nSqKdKcGgAa/qruiJrNtwSpLOOiNGLMZtkWxgI/cbSCfH3xe1O7Ev+m45eMzK2YqGX4oomDTJq9U5NBpd+tDztzFS9h160t4sSXTT8+cJOn+k1RzTvD9FBCPVbzaTH+Z/krJRkhmXznihd5RrTgv1kiexv3+8QMyv8mxDyOlqrLah9b0DZ3XHF8TevBcRdnAyzjCHXpdsrEqi+B9ai8pFMAJxmebQ7YtzYYck6+MS4W+0qKFuxHShyiU3x+nqcaVQRyPGcV9Jy2g5Qti2/JQ3fj3oeXJ52dQAaYaxe6vJb2HtIgizGkYQ2jUVXdhk0gwxVDQHc+7bsTX1JdbMIEquUrIefrs6YwYZQo1S1pOiZyE7DJHB/uctXZRmUZ23xafNdE9kFaC9+X9NEJROGa+12PgV1GTf1h2PCwGUh73Kdk8zCR9CeMBpIxM+fDGSoY+MLukmSPxUxTY969LkQf5fe6oHYOQyE40bf5Ma6P8PAfuF6RB3cFRdV/TFIam/JXL09lr7xvD0I5uVMIepV7wpuUkIwK7DfakUpdMmF3m+6I57McUMOJfxVtjWJFYwI65jroty18hnL9VS8cdYapMaulo+qOQW2/5jTEeMBDkaaGj/uSegZIicUvL/inTJek585jUBFKvIESUnA79blSYS6OBwfHNYhe3Bn2sDswJ
+ pO4kMr9x
+ JFZ/JDX6jMCGSPWzElD0NBMvCHpAcvTWJWIOoD0zyQSmRoYroLhY8b5zmuq/k04Q4zl4Iph85Z+rTWmvgCSEb5RUAz6oI5OhTmY9tWVpbpkMUtUIA/20znyf5qAS4fojav/4WdVz6DvCQ1hWigMnqY6kZzAqO0jkqg/khBO+xFUlBlIlxpCafGGsl2vLMhmNagBcweuXM5ujNhtfGxvvOnV0wYbiY/424Rxps7MX3+7mDJStIyJahErPdZsyqT6J0H8iJ65dVNCAf4kghwmiAmGh/BbgF9Px7ypXDX7vWVlSoLskdTUIqrUVHY0XXX6etsAU7iVOaRNVmp4JWMoR96FJ4vyd1eS/YEyyHQJwqnanwUiA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,93 +136,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!
+On Fri, Oct 16, 2026 at 12:34:33PM +0100, Lorenzo Stoakes (ARM) wrote:
+> So far the assumption has been that mm->mm_lock_seq overflow is benign,
+> resulting only in readers spuriously falling back to the mmap lock, however
+> it turns out that this was an unsafe assumption.
+> 
+> If a VMA can be spuriously considered write locked that means read lock
+> exclusion does not take place, and thus a VMA can end up write-locked with
+> concurrent readers.
+> 
+> Since overflow only occurs every 2^31 write lock/unlock cycles, resolve the
+> issue by resetting every VMA's vma->vm_lock_seq each time such an overflow
+> occurs.
+> 
+> This is done in vma_end_write_all(), which is called when the mmap write
+> lock is released, i.e. in mmap_write_unlock() and mmap_write_downgrade().
+> 
+> Care must be taken, as resetting the sequence count at overflow means
+> changing the seqcount of VMAs which are already attached and observable.
+> 
+> The mm's seqcount is guaranteed to be odd when a write lock is held, and
+> thus any write locked VMA will have an odd seqcount assigned.
+> 
+> Therefore resetting to an even value prevents spurious write locks, since
+> these can only occur with the mmap write lock held, at which point the mmap
+> seqcount will be odd.
+> 
+> However, vma_start_read() also checks vma->vm_lock_seq == mm->mm_lock_seq,
+> bailing if so (indicating a write lock).
+> 
+> This would cause any even reset value chosen to prevent VMA read locks from
+> being taken - avoid this by also checking whether the VMA seqcount is odd
+> before bailing on the read lock.
+> 
+> So far, vma->vm_lock_seq has defaulted to UINT_MAX, but this has been
+> unnecessary since commit e5e7fb278e59 ("mm: convert mm_lock_seq to a proper
+> seqcount"), since this is assigned when the VMA is still detached, and
+> cannot be observed.
+> 
+> Therefore perform both reset and initialisation of vma->vm_lock_seq by
+> simply setting vma->vm_lock_seq to zero.
+> 
+> The reset, performed in __mm_reset_vma_seqcounts(), only needs to
+> WRITE_ONCE() the value.
+> 
+> However the read of vma->vm_lock_seq in vma_start_read() needs to have
+> acquire semantics to pair with the smp_wmb() in do_raw_write_seqcount_end()
+> so a reader reading a reset value also observes VMA modifications made
+> under the write lock.
+> 
+> Since all VMA write locks were just released and the mmap write lock is
+> still held, there are no concurrent VMA writers.
+> 
+> Concurrent VMA readers are unaffected. New VMA readers observe either zero,
+> never a write lock, or the prior seqcount, behaving as before the reset.
+> 
+> Since this only occurs every 2^31 write lock/unlock cycles, the time taken
+> to update all VMAs is considered to be acceptable.
+> 
+> Also update comments, documentation and VMA userland tests to reflect the
+> change.
+> 
+> User facing effects are - dangerous races that could cause memory
+> corruption or NULL pointer derefences (especially on page table traversal)
+> are avoided.
+> 
+> Reported-by: Daehyeon Ko <4ncienth@gmail.com>
+> Closes: https://lore.kernel.org/all/20261015143735.1630957-1-4ncienth@gmail.com/
+> Fixes: 5e31275cc997 ("mm: add per-VMA lock and helper functions to control it")
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+> Andrew - no stable tag please.
+> 
+> I will do the stable backports manually, they can be solved with a different
+> approach.
+> 
+> Also, since, we're so close to the merge window I'm applying this against
+> mm-unstable.
+> 
+> So I think it's fine to just send it (early :) in the merge window.
+> ---
+> v2:
+> * Updated comment in vma_seqcount_is_write_locked() to mention the VMA
+>   being attached.
+> * Renamed reset_vma_seqcounts() to __mm_reset_vma_seqcounts().
+> * Used acquire semantics in vma_start_reads() to avoid race with reset -
+>   there is another acquire immediately after this one so it should just be
+>   noise perf-wise.
+> * Removed stable tag, will do the backports manually (just make the value
+>   64 bits...)
 
-FWIW Sashiko still found some stupid mistakes I've made so I'll have to respin
-this. However none of the issues Sashiko found are fundamental (just some
-memory leaks, wrong memory ordering, ...) so the overall design should
-stay so if someone has any comment to that, they will be still valid.
+I guess you're fitting this where __vm_anon_pgoff_lo now sits? If so, then
+this patch probably wants backporting to 7.3.
 
-								Honza
+> * Updated comments to reflect changes.
+> * Added user-facing effects as per Vlasta ;)
+> 
+> v1:
+> https://lore.kernel.org/r/20261015-fix-vma-lock-overflow-v1-1-01beb245d9da@kernel.org
+> ---
+>  
+> +/*
+> + * Called with mmap write lock held after mm->mm_lock_seq just overflowed (and
+> + * therefore zero), with all VMA write locks now released.
+> + *
+> + * The stores below follow the smp_wmb() in do_raw_write_seqcount_end(), so
+> + * a reader that observes a reset value also observes this cycle's VMA
+> + * modifications (ordered by the ACQUIRE on vma->vm_lock_seq in
+> + * vma_start_read()).
+> + */
+> +void __mm_reset_vma_seqcounts(struct mm_struct *mm)
+> +{
+> +	struct vm_area_struct *vma;
+> +	VMA_ITERATOR(vmi, mm, 0);
+> +
+> +	mmap_assert_write_locked(mm);
+> +	VM_WARN_ON_ONCE(mm->mm_lock_seq.sequence);
+> +
+> +	/*
+> +	 * Failing to reset means stale vma->vm_lock_seq values could result in
+> +	 * those VMAs becoming spuriously write locked when mm->mm_lock_seq
+> +	 * happens to match their values.
+> +	 *
+> +	 * This is problematic, as it causes the VMA write lock to not exclude
+> +	 * readers, which can result in concurrent readers while a VMA write
+> +	 * lock is held.
+> +	 *
+> +	 * Avoid this by resetting to an even value (indicates no write lock
+> +	 * held).
+> +	 *
+> +	 * Readers will either observe zero (not write locked) or the previous
+> +	 * value, so this is safe.
+> +	 */
+> +	for_each_vma(vmi, vma)
+> +		WRITE_ONCE(vma->vm_lock_seq, 0);
 
-On Mon 12-10-26 10:23:38, Jan Kara wrote:
-> Hello,
-> 
-> here is the third revision of my patches implementing deferred inode reclaim to
-> deal with MM warnings due to GFP_NOFAIL allocations from reclaim paths. This
-> happens because to reclaim some inodes, filesystems have to do IO including
-> complex operations using journalling and forward progress of these depends on
-> successful memory allocations (which is impossible to guarantee from reclaim
-> context).
-> 
-> Since the last revision the most notable changes include addition of automatic
-> deferal of inode eviction from iput() when inode link-count is 0 and we are in
-> reclaim (PF_MEMALLOC flag set). This path gets triggered e.g. by overlayfs
-> whose inodes hold dentry references on upper filesystem and thus slab reclaim
-> of overlayfs inodes can trigger the last dput() (and thus iput()) of already
-> unlinked files. Since inode deletion is practically guaranteed to require IO
-> (and thus possibly e.g. loading allocation information into memory) I've
-> decided to unconditionally defer reclaim in this case instead of marking inodes
-> in each filesystem.
-> 
-> Another bigger change in this series is that we now protect deferred inode
-> reclaim from filesystem freezing. Otherwise inode eviction could block the
-> reclaim worker on frozen filesystem which could stall deferred inode reclaim on
-> the whole system. Deferred reclaim workers now skip reclaiming inodes on frozen
-> filesystem and we block filesystem freezing while the worker is evicting
-> current batch of its inodes.
-> 
-> The last bigger change is that mark_inode_reclaim_deferred() does not block
-> when the queue of deferred inodes grows over limit anymore. Instead it queues
-> task work to delay the task appropriately when returning to userspace. This
-> solves possible lockups when tasks would get throttled when calling
-> mark_inode_reclaim_deferred() with some locks or transaction started.
-> 
-> The patches have survived full fstests run on ext4 when marking all loaded ext4
-> inodes for deferred reclaim to stress the deferred reclaim paths. I have also
-> tested (when marking all inodes for deferred reclaim) the patches by creating a
-> memcg with 128m memory limit and then scanning from 10 processes 1m inodes in
-> total which heavily exercises deferred inode reclaim paths. This also verified
-> efficiency of throttling of marking of inodes for deferred reclaim. Basically
-> we cannot guarantee any particular limit on the number of inodes queued for
-> deferred reclaim as that is bound only by their number in memory and memory
-> pressure. But as the number of queued inodes grows, the tasks creating them get
-> slowed down so eventually some equilibrium is hit. In my VM this was at ~10k
-> inodes (only slightly above the 8k limit when throttling kicks in) but this all
-> very much depends on the reclaim pressure, speed of deferred reclaim etc. so I
-> don't think this is some representative number.
-> 
-> The first patch is a pure fix for a problem I've hit when running fstests.  The
-> second patch deals with lazy timestamp updates which I've decided to handle
-> better directly inside the writeback infrastructure instead of deferring
-> reclaim. The remaining patches implement the inode reclaim deferal. Ext4 use of
-> deferred inode reclaim is there mostly as a demonstration. Other filesystems
-> need to determine which inodes need deferred reclaim and mark them as such
-> which generally requires good internal knowledge of the filesystem. I'm hoping
-> that once the infrastructure is there, fs developers prompted by MM warnings
-> will start using it :). I know for a fact that besides ext4 e.g. gfs2 wants
-> to use this infrastructure.
-> 
-> 								Honza
-> 
-> Changes since v2:
-> * Some cleanups and simplifications from Andreas Grunbacher
-> * Fixed couple of bugs pointed out by Sashiko
-> * Added support for auto-deferring eviction from iput() when inode has 0 link
->   count and we are in reclaim path
-> * Added protection of deferred reclaim from filesystem freezing
-> * Throttling now doesn't happen directly in mark_inode_reclaim_deferred() but
->   on exit to userspace
-> 
-> Changes since v1:
-> * Multiple workers to reclaim deferred inodes, related to that I've
->   moved lists of deferred inodes from per-sb to global ones
-> * Added missed lazytime sync fix
-> 
-> Previous versions:
-> Link: http://lore.kernel.org/r/20260429174850.18223-1-jack@suse.cz # v1
-> Link: http://lore.kernel.org/r/20260911081309.14137-1-jack@suse.cz # v2
+I'm concerned by the possible latency when doing this to many VMAs. Do you
+have any numbers?
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Pedro
 
