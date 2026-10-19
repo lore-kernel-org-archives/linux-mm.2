@@ -1,94 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75242606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 19:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BB0606A322
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 19:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZwcHYIiP
 Received: by kanga.kvack.org (Postfix)
-	id 8DC596B0355; Mon, 19 Oct 2026 15:40:36 -0400 (EDT)
+	id E1FEE6B0357; Mon, 19 Oct 2026 15:50:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B48F6B0356; Mon, 19 Oct 2026 15:40:36 -0400 (EDT)
+	id DD1D46B0358; Mon, 19 Oct 2026 15:50:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F20C6B0357; Mon, 19 Oct 2026 15:40:36 -0400 (EDT)
+	id CBFFE6B0359; Mon, 19 Oct 2026 15:50:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4754F6B0355
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:40:36 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C62D71A0874
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:40:35 +0000 (UTC)
-X-FDA: 85340392830.10.B23367F
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3D0DCC0002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:40:34 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf22.hostedemail.com: domain of 3MXLWagkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3MXLWagkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792438834;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=PBifRyIrgHNKeJNMg4xWZbwNbxc9hE/18PM0weTakxA=;
-	b=7wtihVKfKavTmIgaYXjlxxGTBHGojMIikYO+H/1Bh47gawngE8FMmslzaixN2bHNZf9EQV
-	W6n7cX2T2TxN5zRCkDsIoCpoCOmzKpgwNnx6hcmyPahSUC0pQF8xyChPNb0JeDWYzTAr5G
-	v0CFJy532qZjSsM6NoLzvLYMU8kPkWo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf22.hostedemail.com: domain of 3MXLWagkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3MXLWagkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9048F6B0357
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:50:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3D62120816
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:50:54 +0000 (UTC)
+X-FDA: 85340418828.04.56AB90D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EB2121C0012
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:50:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZwcHYIiP;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792438834;
-	b=K5abnN++hNXCVOgpLUWn86ErTO7ZJo5OHRKnXRv0MqCB/8VnO9k1NQN/gRiQlXcmoUGWdh
-	nbG9xAbG3LuYMRPu7N8ybnbu5r/xz26yd/J+KnHe9zZPNF5MvwrD2+T/F04sUsuSkHIwaG
-	DhC9T3K75k8ZokQAVwwhlYCX+fa+lVg=
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-540537f959fso2858877b6e.0
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:40:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792438833; x=1793043633;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PBifRyIrgHNKeJNMg4xWZbwNbxc9hE/18PM0weTakxA=;
-        b=hAXY31AXqkC/Ppfv6t1vDUlwDkRMXmt5IN71Q4glUyJwdVJ7s+2r9HHMt2vL8OJy5B
-         jjzdYJz5kj2eukfpQAictxegQZ4Pnk3BCoOCGIdTZpSRm7QwRCewocbze9w4FaisVw1b
-         8TDjf8OwioVD1r1wqXQRn/5BbLsBTtT9Pe5pj8MpIcQCMHOJ9kGgqpx7BmmKwHATqheI
-         npzflEuwIdZ7zzi0x5Kt+ede/gjhSA/tOhqL494daWP16gmKu4aI9caVVzrRSKvhdtMp
-         5F2N3K1q7hnIktDQKNwMpOFAe5yG7pf+L9D79S2q7JT+4m6Elp7WXC7uQNdRNpen8Cah
-         x91Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzbb/oAVMzMqwsYxNkeOWdOc+fDZ/k1EZFtAu/Z+ah1fmt/VkTsq1vBlTbt9kn5JnOVtVkl8h/xww==@kvack.org
-X-Gm-Message-State: AFq9FYL7cyTETqoE2YJXgrddfbDquTgh9V3w+Ig4/1eGJqGqfWlvH/T2
-	+0GE3Rx0/wxDHgrAf741gQ+sPHiwxeIQAvAnbu/3ljkdhilKkSacy1Zne5hiYdEobcHfJS83dGt
-	O/6H0Fdut/zBaGsBApa68BnRUzVyhdT99kKS7RhC8XKK/IzPUecUkjJI75I4=
+	t=1792439452;
+	b=cDnC97EkaBJVMXPJDg0f/hhYTcp3VcetsLCp12DGaaEPaMKCACZ67KQbxagY/j7yrGwCeH
+	Dzb51y91DNMitbZxc7FTdBaFeZ0xtthT4njWsgQ1oH6Qc8tfCCbk9leuQ6AvAW5DhFx6XW
+	YN9yCNtBh/55FahNwVpisAUYWD4eIz4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZwcHYIiP;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792439452;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iQIL6cRyZtwVIh/NjWyixGeu8fpj0ROdrbRqFiXL/B8=;
+	b=JKW9iHe4iumAE9VsGGRwAqAZfsKo5VzjKLdVX1AH3njj3wvQ2vMYWeU5auWEdDhM4mV1mZ
+	ZWWHcaSOjhRkwmUpFXeZoXttCQ9abrJL1D3+bczfMXJO5y3Y2kcmOdtQT022ReddDPE1Qk
+	m9AXdJ5sj6d0psshxyULClrtjZUQ71s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792439452; x=1823975452;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DENo3LTyk9RmB9EFH3XG6IgFZAo7Ve/NCjoyjKnjphI=;
+  b=ZwcHYIiPf0OFZ/rVP6kxKVvr4uhhjmEdLlz542N9DZN7M0FNeM0UVlqB
+   YMQNa+22GquErkM9yjnZxuTWvLPNHk/msiDPVPNx6N4tG84W29n/lWwy8
+   gE47JpDJlcVEmrOpgkPDZKi+qCGnT3y+iEZbA+GXU9yxmsSOLUWcCSXZO
+   jVc8fUi+HtLUNfCBjjL0aLP8WMwgMXdMYwm+Q4/wh5QmN9xkSDhC5pdu5
+   2W3dFSw9drfEpASZypyIkOESMBq3A08rL4PnH/CQH48fHNGmjubdPOfbK
+   TSp14r8tNB8zswrRHDBLN5mPvYgddd6CvYY9zIdx8LDQVM6Txk2v/zCDl
+   g==;
+X-CSE-ConnectionGUID: Ub6Zxhs7STicIUlSG6sRdQ==
+X-CSE-MsgGUID: +m7wks9PTEC6vW5v7O4svw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1234501"
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="1234501"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 12:50:50 -0700
+X-CSE-ConnectionGUID: 81WQDgsmQzmzWnzIVBPqJQ==
+X-CSE-MsgGUID: bLLG/m5ATGO0TVoWyQJysw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="2620934"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 19 Oct 2026 12:50:47 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xItNc-00000000MJ8-1uPF;
+	Mon, 19 Oct 2026 19:50:44 +0000
+Date: Tue, 20 Oct 2026 03:50:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Laight <david.laight.linux@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Petr Mladek <pmladek@suse.com>, Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	bpf@vger.kernel.org, Jim Cromie <jim.cromie@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH 14/15] kallsyms: scripts/kallsyms: Reduce the output file
+ size
+Message-ID: <202610200336.6v4SE96n-lkp@intel.com>
+References: <20261018155206.132411-15-david.laight.linux@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1784:b0:4e6:cc78:edc1 with SMTP id
- 5614622812f47-53ccf0036fbmr8290767b6e.42.1792438833300; Mon, 19 Oct 2026
- 12:40:33 -0700 (PDT)
-Date: Mon, 19 Oct 2026 12:40:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ad67231.a20cb897.960b0.0042.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in shrink_one
-From: syzbot <syzbot+54f6a8926b40a171f2c8@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@kernel.org, gourry@gourry.net, 
-	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 3D0DCC0002
-X-Stat-Signature: d8e3axdy3rdkzrjzz4d9psghkako4xh6
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261018155206.132411-15-david.laight.linux@gmail.com>
+X-Stat-Signature: ntwsb1fznogfomyj4eq93phai3gbdap6
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EB2121C0012
 X-Rspam-User: 
-X-HE-Tag: 1792438834-295082
-X-HE-Meta: U2FsdGVkX1+2xs5l7PxZfOfl/oviwgSO8oTDZ9jjoWlj/hK9c7kJDD007JLpf3EvTM7NUmZcpxsxrdve/p54ENDcLKeb9VhE1rscpR8C62wiQjOngf8b7z7Ge6iSZ2f1DfuSbF8J0uYdE5rThs4+f4ec6wOiEIIvpFV2edtM+vbPFC72Sdgn+R6u7cot0ydxnIxLxCYC2h8IR8HhQaiGdJ6Y7SxucUUgh0GXRIrxZ2Udj3ieciTN6QPWGmZbLg/d0DkWdjHEcBjEbnU+fPI7QMqfR50qjS1l8PBc4bCaWfmSKk4R9IqiOeihranC/oa/kREvGKkhgwRPzjP0yXmtGTVI9Ehem75z+I8NFXhR4j2mqXUwHI4j84EKHT1H+J4fk3wHjrotv8/WLBSJ9ZdGwGFDskuPE6g1cFBUDoIRympqwblPn9D3JTk0GocPjAb8avKRKm3oz57h9/PZrcYJluFPLU8CGPJsg3zUwGvqexJonNPH4mN3qhoQSO2QDKQ0WyXVyyqneDvN8XYbwO6w84O7rwIG1h2l9pmWdwAaS6iBDtfygUMfy9CJkhphOyZABpT6zWVE0CIha8V9HJ7Tgw8fliWsG1ym5lg4jUHTbpd+x6dsUha/RgTP4B2OLcRNIN054cwdbEut5Jmt1KwDTS0GYMOrQmNw/zF7g3Pw8GK+y/CA2W+7UbSoG0zQ8Y2f5yn0fm80fpTar7KfMpZbj0wZHFJNlJqVqvQU8gt9kgdnoVy5B4G4xlHG5S/sDdSHV60CRB8ooOTpmzf3yrOk6iRlnFC7xLtCCvf24BUZzetEfJte+d5GB0Mzvz2Hv2yn6qZCiY8W+4pEdRId2ZYl+Z+9YuZMRxJOj7KKyRIwZ5cdhtTk/byhK0wI0V/mYBrn7tL88R/2iZULmM0XNJcCSnbwNJaf9zQhYP1PlA8sduvNwHQvRns9lPb4nP+sXExRPEgTk+ACxKlr1dtmGD3
- 4VQJ7y0y
- U8DYoTui0NX6/J5e8jB4QoWlS7vI8MzPH0yKjokfEHjnGkOYc4AM3nOAA7Kg1TIHmqcng9YC69kInwRatBHWrV+fSouxA30T3asY+DWjWyCx8Szyt5+K5hgsdp03RfwB1pztqbRh6B8z5cfTF3QXhajeiMemISoL+XT2o2yilCPVVVO1RoLJo779ySz7OPYWGXCG5LmxrLKI8dki0b0dZ3PWRAnH+qBUaT7IJCy38AlRysoGZ6TeADPafzo7IZcZjsqD/DTFWpcdWaoRKUn50i3X3hGlJh6FR7yYh4SBgAUvUu6uS1vOh3hNnfg85C+sazok/j3F1z8/pygmf5YQ7uPwzaGEp+2h2QaRrKayHaIoeYmuXH8MSPEKCLySI9a3moE/MySCSRWonCcG3KRqkjxj5mpGNA81kKhS6Lof01v9kqjoemJpZv7zXDhL46TBjFIyXbYe83bbZ/gHbgiKHM881INDNrZnSy8oZMKhXoCAHQrZeOdxjbiggVpXRtxHPn0Qp9/tVaU4c2JlHizm6lsEjTiP8tLRNh0m6a+7dKC8KVFjzOtbon9KbmCgagUkWJLcOF1PPKoJTghciFH/ZcCIQHMjAjdIN8Rpr77uV69TWvL2tj/ryQIqppEH5R/FMpJwRy5gbUk9217MBUk/XPYqzXl/RZ3TYxeGBtFAARU4Fb+/kxHrwfZyvgdp2/Cyz17D46snwUVuDcl6KlIXCIjgPwp5IwcItwdQq9qs5yYEth9EN/AXD+AW/hAnEfrbdvLwBqch1UBs1tl0g4Kg8gJ7UMiXN6hpxw7qDY5UCycf5eZcrRmnNnxK2hGGpnJARgqXk74mWznAXetDRBK6jz6GQJW+eH4NqUgkIoDsih+xpYDw6keKfX6oF6pGvmusAWBrk/FZsRpEfzCmqXUU10C4SIGJQ4WrTMRU+tp1rrwaES1coT3mioIYMRwkmLLH4hq/ATPs27jk8qMf+/Y4gnot4p9ew
- sjp22rnM
- MPA8Hzv/ok3w86LqUvLSYDAZaJ7X6mvcrawY20MibzvY+4c4EoCM5MrSr0nq78wE9W7cFKYyiMNBViqGY4dIOCwXu3psG/RjTsr3qdxshNRMfuPMjCYClAAWZu1tkoigQF5cqIKaTa60MmxLOV87ejAwEOTiR/9O3cILyVaBu/bmIW/lS1Hho9RnH+fyYjAZQ8Kjls7xWznYdSnpK1amm1VOdxuxxgn9cDIKRCXVJjJ0HolrQ5YkbgNCSJ+gVoW7ERziqz7NYFm0m7b84xCWqUQ7R3bjo8D9ufSwzgdad/I4ZA/r20AjZrX+lmVr9y00ywCPmwdolb7Mcp/+CSZO2Hkuk27b/Cj66qq5KBYZ30NyrTmAP3isZsX8OJOY9qHt7JtJAQJSx1K7dMTvNuYCqxrKmUN0XfiO/mKGz0tCdVfP4XLSOtd5O7/ZI6/rOM3fVCGQV8UyLh81EMESu7Mw6kYPw/clF6Be6os+8uHEQcXlpc/Mf4ge7A==
+X-HE-Tag: 1792439451-240720
+X-HE-Meta: U2FsdGVkX1+SqmwGrJmTRTatgANL52sH10kMrV1JHbtG1j62uBGUcBnY2yjSpTpj25p8aTMjD0j+rULmdq7DL0FPuN9nwuod81xkB1W6ltNVAPhyNvordZ/w8trUFdWz7zFJ7vgX6YoWzjZAOAalkDB5sIDWgw2XITv0lMEaZDpYcL3RdrSh/u83OkEDGhQhp3pbA9zhhjxG2Bex16thUMsZcNUB2qn88uBBksmFnUfFEWMuW56ho+hAnN90Q5832JKIzSvfQUeF0Vz8O7jT9B3p1Sw/8pIL7ObbXQ3x2gHZtnTOJrBDCtO3IsDulG9J9cgw1BtP0CtgMyLc9PtP/2NmGbY7NBW/mMLidAbK4F1h8fEaVDXUHR7r3ZrdWY6vPrfB03IYXPb99Yi7o1ycP2Hd10RPXkQTblsGhnRmN+2nbr//tMR/mrw15rH/Ql+9NfieuNJMwyzthZR4J+4HW/unZK+c1uK02dmWTKVnhCYolqt6G456npnrUma1mSIzft3L3Q5FOz50V2WhSetwqAK/2VmskMbgvWt8ThfByGsEAkDsGa2LIGEjh19Nkg17HZC1RSwhQOCQo4wqB50cxz4ubeieZ7GB0ET/LvyN/T0f11IjK8Gmzr9skDWXPzjykrn2GjdIoWpFVXgj1+dqE8NsXkQZhnvw5L6q9h+5yXJybKE6YrLT7ev4Ta8DEtck1fWtDBlXKJ55fPhiSFoauCNm53wu1IZVpVAUUZvDX6a7plw2yppfIV4ZwoGodF1jrUT8OgGJJR8nT9KFNPvsbyVzTVFC1P00pD5Lo++KK8CgZGra5BocCkI1Z4F2L+jpELjwItxyvM9C6QuMNDHuGIJv/BSnJsuYxSNM48vVeev5by17vCEFyfxN6YacpTdl5+P44JTe5BiehwI6CuFE8GrFjXovRsb1lUDJ0AUhFpM0DZr9sMED2fW3AYagShG9Km2tTq002Oj2ho2Rc8k
+ NYaQM5aK
+ PuZamrmcsPZzHBXoKScyjxdhTBd0LsS1mZCWKyG9QUu4BVQspCFZG2S8e9wFoPGOrP4hgLFRzRi1xoYQfY5KxPFn9ti1uJ6yUsh36wQoLRATRWPuil7XI2lT33DX0/R4c09OYxL2QAdXeTfLTc4KDU1BkpHKsLftxniv+W38oaAMRVFo3ffAWLZXxY6gDwfXs2NMtgpCxekO+LNUqLvwZXB8+tY/tjVB3gGu8LjUvWzJr5+rc2pR5A1m7csyGQaV5LzTPRAw92YPFFvHTTLgA8A1Gh0wy+LWLV8gdYcwQoJfV2YGs2C6vorwY9IA7GV7CWQHERPH9Erhd9WgHWK5RNjkx5PTf2SffEOpux5mEFeE9UuM2pNOM6A7OCxb8djRJ8vqo+CnygbCzK/jNY8d41moLW2AtLN2UzPKbJO/qouihQHr30GwKsN7naXUew64j1C+kcCW4+tW2vag=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,117 +118,277 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello,
+Hi David,
 
-syzbot found the following issue on:
+kernel test robot noticed the following build warnings:
 
-HEAD commit:    a0ff06b3a7bd Merge tag 'firewire-fixes-7.3-final' of git:/..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12cdb20d580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=44ac479246d4559b
-dashboard link: https://syzkaller.appspot.com/bug?extid=54f6a8926b40a171f2c8
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-userspace arch: i386
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on linus/master v7.3]
+[cannot apply to next-20261016 next-20261016]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Unfortunately, I don't have any reproducer for this issue yet.
+url:    https://github.com/intel-lab-lkp/linux/commits/David-Laight/kallsyms-scripts-kallsyms-c-Avoid-overrunning-on-stack-buffer/20261018-165152
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20261018155206.132411-15-david.laight.linux%40gmail.com
+patch subject: [PATCH 14/15] kallsyms: scripts/kallsyms: Reduce the output file size
+config: um-allmodconfig (https://download.01.org/0day-ci/archive/20261020/202610200336.6v4SE96n-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261020/202610200336.6v4SE96n-lkp@intel.com/reproduce)
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-a0ff06b3.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3f4bcbceb92e/vmlinux-a0ff06b3.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/bf4df8252e54/bzImage-a0ff06b3.xz
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610200336.6v4SE96n-lkp@intel.com/
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+54f6a8926b40a171f2c8@syzkaller.appspotmail.com
+All warnings (new ones prefixed by >>):
 
-------------[ cut here ]------------
-current->flags & PF_MEMALLOC
-WARNING: mm/page_alloc.c:4816 at __alloc_pages_slowpath mm/page_alloc.c:4816 [inline], CPU#3: syz-executor/5706
-WARNING: mm/page_alloc.c:4816 at __alloc_frozen_pages_noprof+0x1eac/0x3300 mm/page_alloc.c:5449, CPU#3: syz-executor/5706
-Modules linked in:
+>> scripts/kallsyms.c:371:26: warning: adding 'int' to a string does not append to the string [-Wstring-plus-int]
+     371 |                         printf("\n\t.short\t" + !i);
+         |                                ~~~~~~~~~~~~~~~^~~~
+   scripts/kallsyms.c:371:26: note: use array indexing to silence this warning
+     371 |                         printf("\n\t.short\t" + !i);
+         |                                               ^   
+         |                                &              [   ]
+>> scripts/kallsyms.c:371:11: warning: format string is not a string literal (potentially insecure) [-Wformat-security]
+     371 |                         printf("\n\t.short\t" + !i);
+         |                                ^~~~~~~~~~~~~~~~~~~
+   scripts/kallsyms.c:371:11: note: treat the string as an argument to avoid this
+     371 |                         printf("\n\t.short\t" + !i);
+         |                                ^
+         |                                "%s", 
+   scripts/kallsyms.c:428:25: warning: adding 'int' to a string does not append to the string [-Wstring-plus-int]
+     428 |                         printf("\n\t.long\t" + !k);
+         |                                ~~~~~~~~~~~~~~^~~~
+   scripts/kallsyms.c:428:25: note: use array indexing to silence this warning
+     428 |                         printf("\n\t.long\t" + !k);
+         |                                              ^   
+         |                                &             [   ]
+   scripts/kallsyms.c:428:11: warning: format string is not a string literal (potentially insecure) [-Wformat-security]
+     428 |                         printf("\n\t.long\t" + !k);
+         |                                ^~~~~~~~~~~~~~~~~~
+   scripts/kallsyms.c:428:11: note: treat the string as an argument to avoid this
+     428 |                         printf("\n\t.long\t" + !k);
+         |                                ^
+         |                                "%s", 
+   4 warnings generated.
+--
+>> scripts/kallsyms.c:371:26: warning: adding 'int' to a string does not append to the string [-Wstring-plus-int]
+     371 |                         printf("\n\t.short\t" + !i);
+         |                                ~~~~~~~~~~~~~~~^~~~
+   scripts/kallsyms.c:371:26: note: use array indexing to silence this warning
+     371 |                         printf("\n\t.short\t" + !i);
+         |                                               ^   
+         |                                &              [   ]
+>> scripts/kallsyms.c:371:11: warning: format string is not a string literal (potentially insecure) [-Wformat-security]
+     371 |                         printf("\n\t.short\t" + !i);
+         |                                ^~~~~~~~~~~~~~~~~~~
+   scripts/kallsyms.c:371:11: note: treat the string as an argument to avoid this
+     371 |                         printf("\n\t.short\t" + !i);
+         |                                ^
+         |                                "%s", 
+   scripts/kallsyms.c:428:25: warning: adding 'int' to a string does not append to the string [-Wstring-plus-int]
+     428 |                         printf("\n\t.long\t" + !k);
+         |                                ~~~~~~~~~~~~~~^~~~
+   scripts/kallsyms.c:428:25: note: use array indexing to silence this warning
+     428 |                         printf("\n\t.long\t" + !k);
+         |                                              ^   
+         |                                &             [   ]
+   scripts/kallsyms.c:428:11: warning: format string is not a string literal (potentially insecure) [-Wformat-security]
+     428 |                         printf("\n\t.long\t" + !k);
+         |                                ^~~~~~~~~~~~~~~~~~
+   scripts/kallsyms.c:428:11: note: treat the string as an argument to avoid this
+     428 |                         printf("\n\t.long\t" + !k);
+         |                                ^
+         |                                "%s", 
+   4 warnings generated.
+   In file included from kernel/sched/rq-offsets.c:5:
+   In file included from kernel/sched/sched.h:28:
+   In file included from include/linux/cgroup_api.h:1:
+   In file included from include/linux/cgroup.h:27:
+   In file included from include/linux/kernel_stat.h:8:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:24:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:12:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+    1209 |         return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
+         |                                                   ~~~~~~~~~~ ^
+   1 warning generated.
+   In file included from rust/helpers/helpers.c:48:
+   In file included from rust/helpers/blk.c:3:
+   In file included from include/linux/blk-mq.h:5:
+   In file included from include/linux/blkdev.h:9:
+   In file included from include/linux/blk_types.h:10:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:12:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:24:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:12:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+    1209 |         return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
+         |                                                   ~~~~~~~~~~ ^
+   clang diag: include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   1 warning generated.
 
-CPU: 3 UID: 0 PID: 5706 Comm: syz-executor Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__alloc_pages_slowpath mm/page_alloc.c:4816 [inline]
-RIP: 0010:__alloc_frozen_pages_noprof+0x1eac/0x3300 mm/page_alloc.c:5449
-Code: 38 d0 7c 08 84 d2 0f 85 de 12 00 00 65 48 8b 05 c2 6c 1c 13 c7 84 24 94 00 00 00 00 80 00 00 f6 40 2d 08 0f 84 ba e7 ff ff 90 <0f> 0b 90 e9 b1 e7 ff ff 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03
-RSP: 0000:ffffc900045465e8 EFLAGS: 00010202
 
-RAX: ffff88802a07a580 RBX: 0000000000000000 RCX: 1ffff1100fffad29
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffff88803fffd938
-RBP: ffff88802a07a5ac R08: 0000000000008000 R09: 0000000000000001
-R10: 0000000000000002 R11: 0000000000000000 R12: 0000000000048c40
-R13: ffff88803fffb900 R14: 0000000000000000 R15: 1ffff920008a8cd7
-FS:  0000000000000000(0000) GS:ffff888095a4a000(0063) knlGS:00000000567714c0
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 00000000f7159f10 CR3: 00000000265ed000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 00000000000f000e DR6: 00000000ffff0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- alloc_pages_mpol+0x201/0x550 mm/mempolicy.c:2486
- alloc_pages_noprof mm/mempolicy.c:2577 [inline]
- folio_alloc_noprof+0x22/0x250 mm/mempolicy.c:2587
- filemap_alloc_folio_noprof.part.0+0x3db/0x440 mm/filemap.c:1019
- shrink_one+0x398/0x850 mm/vmscan.c:5119
- shrink_many mm/vmscan.c:5180 [inline]
- lru_gen_shrink_node mm/vmscan.c:5258 [inline]
- shrink_node+0x2b20/0x4320 mm/vmscan.c:6247
- shrink_zones mm/vmscan.c:6503 [inline]
- do_try_to_free_pages+0x33e/0x16d0 mm/vmscan.c:6565
- try_to_free_pages+0x2a0/0x740 mm/vmscan.c:6804
- __perform_reclaim mm/page_alloc.c:4451 [inline]
- __alloc_pages_direct_reclaim mm/page_alloc.c:4478 [inline]
- __alloc_pages_slowpath mm/page_alloc.c:4939 [inline]
- __alloc_frozen_pages_noprof+0xf8a/0x3300 mm/page_alloc.c:5449
- alloc_pages_mpol+0x201/0x550 mm/mempolicy.c:2486
- alloc_pages_noprof mm/mempolicy.c:2577 [inline]
- folio_alloc_noprof+0x22/0x250 mm/mempolicy.c:2587
- filemap_alloc_folio_noprof.part.0+0x3db/0x440 mm/filemap.c:1019
- filemap_alloc_folio_noprof mm/filemap.c:2033 [inline]
- __filemap_get_folio_mpol+0x653/0x1280 mm/filemap.c:2018
- __filemap_get_folio include/linux/pagemap.h:761 [inline]
- filemap_fault+0x879/0x3130 mm/filemap.c:3607
- __do_fault+0x10b/0x440 mm/memory.c:5565
- do_read_fault mm/memory.c:6000 [inline]
- do_fault+0xb3f/0x1830 mm/memory.c:6134
- do_pte_missing mm/memory.c:4700 [inline]
- handle_pte_fault mm/memory.c:6558 [inline]
- __handle_mm_fault+0x150b/0x2f60 mm/memory.c:6707
- handle_mm_fault+0x363/0xa20 mm/memory.c:6876
- do_user_addr_fault+0x59c/0x12f0 arch/x86/mm/fault.c:1343
- handle_page_fault arch/x86/mm/fault.c:1483 [inline]
- exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1536
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
-RIP: 0023:0xf7159f10
-Code: Unable to access opcode bytes at 0xf7159ee6.
-RSP: 002b:00000000ffdf10b0 EFLAGS: 00010283
-RAX: 0000000000000051 RBX: 00000000f73ebff4 RCX: 0000000000000050
-RDX: 0000000056792cf8 RSI: 0000000056792748 RDI: 00000000f73f2760
-RBP: 00000000000005b0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000292 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+vim +/int +371 scripts/kallsyms.c
 
+   344	
+   345	static void write_src(void)
+   346	{
+   347		unsigned int i, k, off, off_size, table_size;
+   348		unsigned int best_idx[256];
+   349		char buf[1 + KSYM_NAME_LEN];
+   350		struct sym_entry *se;
+   351	
+   352		printf("\t.section .rodata, \"a\"\n");
+   353		printf("\n");
+   354	
+   355		output_label("kallsyms_token_table");
+   356		off = 0;
+   357		for (i = 0; i < 256; i++) {
+   358			best_idx[i] = off;
+   359			off += token_table[i].len + 1;
+   360			printf("\t.asciz\t\"%s\"\t/* %u: %u */\n",
+   361			       token_table[i].str, i, token_table[i].refs);
+   362		}
+   363		printf(".size kallsyms_token_table, . - kallsyms_token_table\n");
+   364		printf("\n");
+   365	
+   366		output_label("kallsyms_token_index");
+   367		for (i = 0; i < 256; i++) {
+   368			if (i & 15)
+   369				printf(",");
+   370			else
+ > 371				printf("\n\t.short\t" + !i);
+   372			printf("%u", best_idx[i]);
+   373		}
+   374		printf("\n");
+   375		printf(".size kallsyms_token_index, . - kallsyms_token_index\n");
+   376		printf("\n");
+   377	
+   378		output_value("kallsyms_num_syms", symbol_cnt);
+   379	
+   380		output_label("kallsyms_names");
+   381		off = 0;
+   382		for (i = 0; i < symbol_cnt; i++) {
+   383			se = symbol[i];
+   384			se->seq = off;
+   385	
+   386			/* The length must be less than that of the original symbol. */
+   387			if (!se->len || se->len > KSYM_NAME_LEN)
+   388				errx(1, "symbol %d has corrupt compressed length %d\n",
+   389				     i, se->len);
+   390	
+   391			/*
+   392			 * Output the number that identifies the symbol at the start
+   393			 * of the line so that they line up nicely.
+   394			 */
+   395			printf("\t/* n:%u */\t.byte\t", off);
+   396	
+   397			/* Encode length with ULEB128. */
+   398			if (se->len <= 0x7F) {
+   399				/* Most symbols use a single byte for the length. */
+   400				printf("%u", se->len);
+   401				off += se->len + 1;
+   402			} else {
+   403				/* "Big" symbols use two bytes. */
+   404				printf("%u,%u", (se->len & 0x7F) | 0x80, (se->len >> 7) & 0x7F);
+   405				off += se->len + 2;
+   406			}
+   407			for (k = 0; k < se->len; k++)
+   408				printf(",%u", se->sym[k]);
+   409			printf("\n");
+   410	
+   411			/*
+   412			 * Now that we wrote out the compressed symbol name, restore the
+   413			 * original name.
+   414			 */
+   415			se->len = expand_symbol(se->sym, se->len, buf);
+   416			memcpy(se->sym, buf, se->len + 1);
+   417		}
+   418		table_size = off;
+   419		printf(".size kallsyms_names, . - kallsyms_names\n");
+   420		printf("\n");
+   421	
+   422		output_value("kallsyms_marker_shift", marker_shift);
+   423		output_label("kallsyms_markers");
+   424		for (i = 0, k = 0; i < symbol_cnt; i += 1u << marker_shift, k++) {
+   425			if (k & 7)
+   426				printf(",");
+   427			else
+   428				printf("\n\t.long\t" + !k);
+   429			printf("%u", symbol[i]->seq);
+   430		}
+   431		printf("\n");
+   432		printf(".size kallsyms_markers, . - kallsyms_markers\n");
+   433		printf("\n");
+   434	
+   435		output_label("kallsyms_offsets");
+   436	
+   437		for (i = 0; i < symbol_cnt; i++) {
+   438			se = symbol[i];
+   439			if (pc_relative) {
+   440				long long offset = se->addr - _text;
+   441	
+   442				if (offset < INT_MIN || offset > INT_MAX)
+   443					errx(1, "relative symbol %s value %#llx out of range\n",
+   444						se->sym + 1, se->addr);
+   445				printf("\t.long\t_text-.+%d\t/* n:%u %c %s */\n",
+   446				       (int)offset, se->seq, se->sym[0], se->sym + 1);
+   447			} else {
+   448				printf("\t.long\t%#x\t/* n:%u %c %s */\n",
+   449				       (unsigned int)se->addr, se->seq, se->sym[0], se->sym + 1);
+   450			}
+   451		}
+   452		printf(".size kallsyms_offsets, . - kallsyms_offsets\n");
+   453		printf("\n");
+   454	
+   455		sort_symbols_by_name();
+   456		off_size = table_size < (1u << 23) ? 24 : 32;
+   457		output_value("kallsyms_off_size", off_size);
+   458		output_label(off_size == 24 ? "kallsyms_off_24_of_names" : "kallsyms_off_32_of_names");
+   459		for (i = 0; i < symbol_cnt; i++) {
+   460			se = symbol[i];
+   461			off = se->seq << 1;
+   462			if (i && symbol[i - 1]->len == se->len &&
+   463			    !memcmp(symbol[i - 1]->sym + 1, se->sym + 1, se->len - 1))
+   464				/* Mark that this is a duplicate of the previous symbol */
+   465				off |= 1;
+   466			if (off_size == 24) {
+   467	#ifdef CONFIG_CPU_BIG_ENDIAN
+   468				off = __builtin_bswap32(off) >> 8;
+   469	#endif
+   470				/* The three spaces before the tab line up the comments */
+   471				printf("\t.byte\t%u,%u,%u   \t/* n:%u */\n",
+   472					off & 0xff, (off >> 8) & 0xff, off >> 16, se->seq);
+   473			} else {
+   474				printf("\t.long\t%#04x\t/* n:%u */\n", off, se->seq);
+   475			}
+   476		}
+   477		/* Terminator without the 'duplicate' flag. */
+   478		if (off_size == 24)
+   479			printf("\t.byte\t0,0,0\n");
+   480		else
+   481			printf("\t.long\t0\n");
+   482		printf(".size kallsyms_off_%d_of_names, . - kallsyms_off_%d_of_names\n", off_size, off_size);
+   483	
+   484		fflush(stdout);
+   485		if (ferror(stdout))
+   486			errx(1, "error writing to output file");
+   487	}
+   488	
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
