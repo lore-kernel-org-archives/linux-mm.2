@@ -4,85 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF75CCCF2D6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 07:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B52CCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 07:41:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 913AF6B0167; Mon, 19 Oct 2026 03:38:28 -0400 (EDT)
+	id DD4466B00CB; Mon, 19 Oct 2026 03:41:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EB916B0168; Mon, 19 Oct 2026 03:38:28 -0400 (EDT)
+	id D84CA6B0168; Mon, 19 Oct 2026 03:41:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8021E6B0169; Mon, 19 Oct 2026 03:38:28 -0400 (EDT)
+	id C4BFF6B016A; Mon, 19 Oct 2026 03:41:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 573456B0167
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:38:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 913E5A0468
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:32:37 +0000 (UTC)
-X-FDA: 85338558354.20.8CD0CB1
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2414F140002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:32:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=auGD+Dyd;
-	spf=pass (imf09.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792395156;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F2A46B00CB
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:41:12 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E39881405C3
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:41:11 +0000 (UTC)
+X-FDA: 85338579942.16.AED3D0C
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 01D5D14000B
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:41:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nOR73INO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792395670;
+	b=E8Uw3j4ad1Nzk5WLxPmT50uRZkiCRgTZRtBP10D40OnTiuqNMyo0VmpCBnwYr07OJVrKSd
+	Oe4K3n0pV3p2zodTxbIMP4u3DgULKxaktuchoE22QcNZXP5P/q+Rv4NcvLu/jwFgPxuZWJ
+	hLhYB71XqPUQSONjiQfvQMm7WFmZQdA=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nOR73INO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792395670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a9E2/1RrbNu8/zRm5DyQP/PhhVl988xi9MIrrC75Wnc=;
-	b=YL7plsD7tVAVMHObRW6Qx+LiOihD5Mx2BDUSFbanzPxZaJTbF7ZvB0nFJbBkcfQK8e0b54
-	0JqmU0fwynBsdqhqq0fvQ00OrgxfM9U+9V/hRJtu3lfT/AxVCS1kyImyYx5X0reXBmNoW+
-	qYabW7o7YXneElUU9pDjDcxeH99EIEo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792395156;
-	b=fB0SNsb6US2nYvBJqIeYYalwgRkkSVrT8PLviSI5ZgvFaong15jTsze3obixtNi1iTlljz
-	Z8GroWv7HWYG63oebiz1ny57NcyJ/9v6hRl4iDxMPupM7NzeeHfK4GYXWlfMtgN4hq+D2g
-	c32/GQ7aiZihRTsotOAM7BYksFssExI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=auGD+Dyd;
-	spf=pass (imf09.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792395150; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=a9E2/1RrbNu8/zRm5DyQP/PhhVl988xi9MIrrC75Wnc=;
- b=auGD+DydcHIOVO+QmYt0Smo9Fzkyv/WmdWjWy+UYFq3SS198lL+UTzbDeHAhA806wzz1PM
- t0SaQuSq2St9bw2m/2yJcASJ3jFmHAujSzmoSpuo3C6bmp+OZOYfwIKSfOJvD2EmLrtGq4
- HRBUnSCc3mL2v+ac9hxauYNLaWXeUHnR08zFClU8nUfE8HL6XZcCupTu5OlsvhGaHs3uJ0
- ZEtRVE0iimOSM9Kc+LbkH9GdP7rIbScgyZnyxfGWFPsVU9EQWkCvcHbtPqhpZxIGP0CK9o
- 89pkETIUWOiRBkUdmqSeZWG4MokhVRIWCVLXqd+Ig9v1CwodIUQTaDyUNJv2Dw==
-Subject: Re: [PATCH 5/5] mm: hugetlb: enable CMA allocation for PMD-sized pages
-Message-Id: <b8d87b71-c5ca-43d8-8050-72fc14802ae1@bytedance.com>
-In-Reply-To: <ddb1e84f-2cfc-4a99-85c4-9a8c6415dbb1@gmail.com>
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	"Qi Zheng" <qi.zheng@linux.dev>, <muchun.song@linux.dev>, 
-	<osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>
-From: "Qi Zheng" <zhengqi.arch@bytedance.com>
-Date: Mon, 19 Oct 2026 15:32:13 +0800
-Content-Type: text/plain; charset=UTF-8
-User-Agent: Mozilla Thunderbird
-References: <cover.1792136742.git.zhengqi.arch@bytedance.com> <df6eee954b62f41d65c4d087d17a7a7cf60da791.1792136742.git.zhengqi.arch@bytedance.com> <ddb1e84f-2cfc-4a99-85c4-9a8c6415dbb1@gmail.com>
-Content-Transfer-Encoding: 7bit
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Qi Zheng <zhengqi.arch@bytedance.com>
-X-Lms-Return-Path: <lba+26ad5c78c+3f8e79+kvack.org+zhengqi.arch@bytedance.com>
+	bh=KpPZjaMDJls8EZkE/6oJfht+hbPc5JiwcvTAxpT7o3k=;
+	b=485ctBbQuqexj/5Rg6/GXXamJJTMWgctbWczMF0WX6d5a68HZJWZjQcLXYzivvZL6h6wPb
+	geb5V5xYu9cPcrfUaxn4EjFdmdY9H1ggShmo60WUgAgX7Vu9nxsl+3/JmZQni015V5h63x
+	9PPRecpsa5QwSD0tmRiB8fqG0NHjZQk=
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-67921b515a7so1874780d50.2
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:41:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792395669; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ACBNUip2xhcKudOLZiWzxi+GcXB8Y3bfLUGMMyR/CCRAL+o9B6wIX/v2OyJ8gDcwkq
+         Q7Pet7JkXfjU6IN7CdUibf0t1RLYZstePWAQ7+LbIVrT7b91R1OHLpRtCeUBRrWMI2IF
+         S8gGAz356HqQhGoWP7qqlWQB5LufniLNVlV8XOPGz33+dbFGltkhxqCKTK9dYqQNXP7H
+         DHGcFfBQW9cp0iHf9TEyW4O7trVigNDAAvMxVUxjQGOh7LOGZqXWFFuAQ9/ddSdTO4Uv
+         ueJopGlYzAwSkq0JF4LwMtmCKS7OEp+8c5e7AGY5Z9gfCirMXmtFqr7DCZEXWTr3gHL8
+         EzCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KpPZjaMDJls8EZkE/6oJfht+hbPc5JiwcvTAxpT7o3k=;
+        fh=ifu9WfluMVoWpm1ez15uoVxVJLHajgLSytug/c0yY6o=;
+        b=JOsgPTJQxPP3pQjbxeIq1+I6oq4nVjDcGnH7iUTAztHNoNTiKieTDRaL0FOmsdiLek
+         XTVm2N6jLpUBT3Iyo7zk1RlNVDZM2lCJ+Hy3eLF9BEhJQKOU1zyar44z1OEyPBNrfen4
+         9p6ahOLxpVAIQzs+MTX5yodqoP/Vz3EkOdYGCu2mmkIMYIwMW/ZoFnnBTWncSqLrWtlA
+         WlseZJPz1xKQQCD41qxXULmg9PN8m2JimPY62BRU27Br4pQw7cOCuHfXn9OQZfMena6t
+         iV5hh2ErCDmUteaXZEmHQoO9Lszw4EukmzvATwur4NMdmFBhOVGwecuD2iH3c+1+OGHM
+         RBRg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792395669; x=1793000469; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KpPZjaMDJls8EZkE/6oJfht+hbPc5JiwcvTAxpT7o3k=;
+        b=nOR73INONBANUZYauTrYkQbl6g7dIPLp/j8pYpSs8Yzw+dX3antreuAzI2grhOAMjL
+         tm6wS+u8oQhTOSlx2tqwyQxML4l/Momvh+pwT+9uvAQtv8wqGBcR3LXV1wgNDu+as+ii
+         V6LKQj4gOY7Ua6gUsJds1/ZWm4yqOr8seE/mL58bMnhNdhS9VRKLNt9v3M9TNrg+Z9Km
+         hwV9KVtE5XrR/Xe8EaD0DXsuJwpURc4dpOybV+EHrpXKAbdBIpjoHt5coq95sbRa/zyA
+         ApolYa6YQW3FMey7xAG7TJWWEwYFrS4Mnlw/Wqh08/INf8Fb6bCKmly4K3VFrmnRlEBo
+         2iKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792395669; x=1793000469;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KpPZjaMDJls8EZkE/6oJfht+hbPc5JiwcvTAxpT7o3k=;
+        b=rGcCM9IMEcI800Jr3b9f4rS60vXGDlviwYLqBRa+tisfiE57loSNm1jFp7VVGwsimb
+         glKGgnC5MsmfVLu/63ZMUk9RNvtUsksFHoOXqg0px+mY74FxHj3czB2qF8ezNTb8qTvz
+         rgW8aGEP8ryd5IVYYh9fJmFMkUms9xxvjMfX8D+dqUxpHTcfPjPOTwB991IPan+/awp3
+         XkI74mIEHbWkpTiMiO7GAAmfgbvrO7iRaM+7f0vgbBYd8BLUbte+wPzGQ5Pe/ATFPVJy
+         VPPo79lkc2Ejz4mRFbUxnhJq88EJEC+m7n39uoKwXcLHMnpfC8+FEcatyzyp/96NuRUo
+         u+ug==
+X-Forwarded-Encrypted: i=1; AKwUvBxF5fqiKbyhgkTrLv3z5MXBxK2F+Vm6Yc61IrZKQ83mJRCL8vn7yYQur08OOWXNBIj1ldylI/ch8w==@kvack.org
+X-Gm-Message-State: AFq9FYKiz7a8ttiMjCS0mgEWDQteNmJOx2eGc7C6UdE4j0Z5VyaeG0lm
+	YaTqN688dF9UdrtlY8JfDozgmaGUmT+x7cR3oJAWIu8EMnygSfZa/1Inv+j6ymzsbQqHoQ4wQuk
+	xfRzyaNk5FZcigvH+vMELZ7oPEzszTwg=
+X-Gm-Gg: AYBFou1DCYC306pNuCxRw2ixV0ADIMX5ryFg9EBCkDF8qr7IO48EISjUPXKc5MOvDhK
+	z2CVmQr22lknDwu7T7mgkHcoUK/Ech5HX5hSKRtDiLCaAY9YsVO1Wi+TL9sxmIXj4h1cT93Bhmk
+	0AsgRboF7cBSbPERBb5ATA0V8Q/TJkzDmR75hxCP6E4UalpCVZhdq0XLY+40K85fM+sWdq0P6YR
+	c3Yt8suq4U1vM2JlBN3CFdxZMFfPPNCOYgkIdcsuALtkiJ0G9hpjBPxLmsAUdn6Tra/qPXFHh3I
+	SlujUYsnPhm4SR/HFYmmGlkFwHgQqdXBQF5gwyOl/VElqlmK8DEqBLUbPYakH70v9s3MkBxaFO5
+	7ScB2EEvaSA==
+X-Received: by 2002:a05:690e:4181:b0:679:938d:a5e1 with SMTP id
+ 956f58d0204a3-679ca9152camr1672832d50.106.1792395668941; Mon, 19 Oct 2026
+ 00:41:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <20261019064157.29885-1-laoar.shao@gmail.com> <20261019064157.29885-5-laoar.shao@gmail.com>
+ <sashiko-outbox-176727@kernel.org>
+In-Reply-To: <sashiko-outbox-176727@kernel.org>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Mon, 19 Oct 2026 15:40:28 +0800
+X-Gm-Features: AclHuK87RnG2er9Q0sMuCWVVDHgxTVssGIXLDngoxhqch9KZMv8DKOFsSe8QrYs
+Message-ID: <CALOAHbA9XCM=5AKz=MMCRcx79_E44rBNUZQi_c68tZQ1iYoxhA@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 bpf-next 4/5] sched: add BPF-based per-cgroup NUMA
+ balancing mode selection
+To: sashiko-reviews@lists.linux.dev
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, 
+	memxor@gmail.com, mingo@redhat.com, peterz@infradead.org, 
+	juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, 
+	david@kernel.org, gourry@gourry.net, tj@kernel.org, hannes@cmpxchg.org, 
+	mkoutny@suse.com, shakeel.butt@linux.dev, roman.gushchin@linux.dev, 
+	yu.c.chen@intel.com, zhao1.liu@intel.com, tim.c.chen@linux.intel.com, 
+	lizhe.67@bytedance.com, bpf@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2414F140002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 6r55fb7w7ubraszhsnqp4xk3mwwb3hqb
-X-HE-Tag: 1792395154-9269
-X-HE-Meta: U2FsdGVkX18FM/yOck6oTMtc0RXdmnsH9SOX4ufE1Hdv5VESx62wBo2UoleDZ84kOfzBEPUQEqmdJ+qSQJjKKE8GDQtei6CQG28IPcPi6FdYcE/3f8QRJffPHDaRdtw6IBU43gMi1CBFr6VHeyMHulozXDAERmAuEXdqYiMCMGMfjAeEfllhvq9MeA+RNa2UX9OI0MKZ7p2YgaPWyo6b5saRYFCujkPmzKnnn3zl6S+/cOqN+qja14Z/qT6F14BDUEJXVebyBNF+m+Kh1aabJTXoEf4/pfLsGhSYJ++/0/Gtfo3Z9BGo6JOncDUU1gzuZ7fBM+sGZNuSL43fgPaX2ePIHViQrlPfNpcV2Wda/NKfiCTHA+B93lHM+KKgTeQDVwGSJ6BwmgB6ZuB/0JvgqnvFBAEhOxgapLgDi8xvFIxzqB4FgZiJpjFk/YUA5haeQ2HyACSjSRPOYEKppUVlxJJKZoabPbg6o2E/ecxt00zlz7yu8y8cbF2DxaSXjGLhLYCN6otLo5ZN7tgxJqJjPxEJz681j6N36LwW9HmDXTDgxbs8MsYkXovgpoGrEtbInvCzU17DKBpH2qDxAmbkYx44+KQbdkwl4PAR1I+APt7GkafhfoxP7lS+8Hnp4l2rtvhs5EojLSqZXhmwrlxAmrHLyVkd3VvnB2k1kCaTx1hf9jM8ugQQtxMRY7akpaiUP0aSwLlmJ8oVZttNlCNhr/JVsB6u8y1+u+A9ECz557Rhi18I4+lh2savtjd2ecM3NBcMA97et3/6WBsMafz9WM0M7TTAcmIobIhU8K9MmTz2ZoAIJq3t1/xzZb41D+Bq+VMJmIpp+PfBSr84n1Yo7SNvZTGHw4xgJt5692YsBGkA5S2QhAoeI2r8eYt2Y5xlLzSQ4gbxY7qBEv00BbvpVF+W0eYfMxdFKZ1yccYuvXSLH7LjlwLR7F9vNWYVEW8L+ZT1FRzv4UQiMx0/BzO
- xAidsKqw
- rHuLj2WFyU4TVbaUz+Xt2frfm/e0uby/oMuzsKkvQD+6z8wxwr/pz2cZf4cFR4VRdG0gNtCQJ6NyUqMfKA05MPiDKF3jqu35p/Hkdhkum5CJqidjyWO9p4lu+oRvavRbFT/iJB3OWhKt+tk6hMPgFMrrOfWX2aIJtU3RNcOAToWe98NMlCZmZyhHLtjSkh5Q4upUPRUsHf00CJDEFtPtwWiNLP+AR3aXXrs2ybztfme/+tkBr845GdKBozk3CcoZ1jggs3YmUEAPU5OwkIddpwUQ/zfyopYKal/WsdyGQ5ULsAE5NUDhPSM2EHXgZJEMuJf6IFyPYUdpQb/Q=
+X-Rspamd-Queue-Id: 01D5D14000B
+X-Stat-Signature: mc387kez864upzt7tdy55zaf98cd74zd
+X-HE-Tag: 1792395669-320269
+X-HE-Meta: U2FsdGVkX19Z0RCViAW6qju07kS1Qf4wtAfhv/I5HGetbrGZuRvDR8Wrf+KjgKHw/MLhZv7ZCRxknwj/427UTmXt4fUpSR7QAVb8S5yGumdjXqrR168CiHsZNf1axujO8xXn/isJfXf1yqQscoeXoX7Hdcvjj4q7/nSDn+4WXmFu7gFWhQ6ETNtLoUECicv73KJnrdJPw9NPA9l7Y0+jFgSDjXDc59UrhKstEIfxk2G6aTsBFHIwAVxtO/IaU5xa5UfdVfaEtzqlZLQg03Pl6ZGtsJg3IfvcJU7S2v1afcCXv2LRL+d91RNAyttVaNVg7VsNhFPWycxnEzUCs4JZyGGA3/F947iEZRDAx81t3Zuf7GDwZxpwgBTtgrQCKdpAd4KxqWpFxEsRV0TfhEw7KC+YcfV3uund48Tht6Ll0w+zv6H4n/N4BDCbQvmjWEg4fkocQrU2q6ihPRdOPLeGQSZdhuWhIFlZbH6PCbr7cFVX1N/O6Xo4FR8itI3baPeUGz34CMCLN6Up+RpjDQ29ZPAq3gCaRPkoshGNUDLQOy9bJeqaqi0W+hsoZ6sWzuDg+q4eoVpf0yLl+3QrDqPe67ifKO5ZXcjqrkYiYcjCmz7UIl5oAnPSXc5yXoUyyVmDYPUddfe/3qQJSOxdyT98PNXlhe5x7iALUMX037mhRNqqvnqPUipPKqbaiRx8fy7ASdUwZjgkEHP7CRDkDx5lD4VR6KMHVPBlu4LsbN4FumW/Z6Q4Cobwak0dmej19JS0pZgi/cjw1xB2YG/7nz6H057PZ4wWv9zY5oKxmDHi3ZpXkGAW97krspAQr/GmPbCeKhgFAqQVZ6K9EqlyfHh5MbBn58Cb3MXlF8a1hsLq6BNw4h8wAk2//idvR8etWAPHd4oQg03vCczUyEP2x5CmTvewSBp7fRdBV7ZnInkXnUeDaRi/SGaKxIkCAPgrdQwsLBs747uvc/DqMDrSlS/
+ XRX6py/6
+ UHKilGy3Ph/tTB5kLfPDkCFi3a7NYPD8jKcdEFnV1L7YCGNssL8ZmNUUcI3JNcQhctuRIaaeunidm49dtTGKv8ovV3c6eVLXxlsTfQMtutPJVp+CXa6nOvBrTH6Sj+XSc5we0+CFYX+tRuh4P7htcWipZvv3ruFA9tyhoZQ94SWWlpvFcDKcH77APsOKwJHNRIiIoqLn2YgaDAcqURUSZrNWWfjven9S/m2+62I9fLXBBaE3zezJlabjNacX94r4SVXgDIkIPhDD2eRjFOozBtqATjcDkUEiWfNKl/+L5BL71NQ+NGV0cDTvW7W2DlPw4ccQoldjfDYoiR+my/GY3RqUwjlFmqby3c4sSJRsWIh18QlQGtQYOzeqqarTXVCDwYLjpX/jVHzJpcZlqlr9+QWMflTyghGLmYJ9BotEYF3zcVI9m0D9d+6qXfiMeuj1rZsIAS6/keFgkhm0A8RRQz6cCop8gtZz8/5Sy6kidXwV2Hh4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,80 +147,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/18/26 3:07 AM, Jose A. Perez de Azpillaga wrote:
-> On 10/16/26 12:07 PM, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> Allow hugetlb_cma=<capacity>@<page-size> to select the architecture's PMD
->> size in addition to its existing CMA size. PMD pages are 2M on x86-64 and
->> 2M, 32M or 512M on arm64 with 4K, 16K or 64K base pages.
->>
->> Give PMD pages their own pool without changing the original pool's sharing
->> among other gigantic sizes. On arm64 with 4K base pages, 32M and 1G pages
->> continue to use the default 1G-aligned pool. Unsuffixed arguments and an
->> explicit default size still configure that same pool.
->>
->> PMD requests use only the PMD pool, even when their order is gigantic.
->> Other gigantic requests use only the original pool. Apply this mapping
->> consistently to allocation, CMA-only policy and boot-time accounting.
->>
->> Move CMA allocation into the common fresh HugeTLB allocation path so
->> non-gigantic pages can use CMA. Align reservations to both the selected
->> page size and CMA's minimum alignment, and use a bitmap granularity no
->> larger than the selected order. Keep the original CMA area names and give
->> PMD areas distinct names. Document the syntax and pool selection.
->>
->> Assisted-by: LLM
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> [snip]
-> 
->> +	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nmask);
->> +	if (!folio) {
-> 
-> boot-time hugepages= goes through here too, so hugepages=128 with
-> hugetlb_cma=512M@2M already uses half of the pool at boot. would buddy
-> first and cma as fallback make more sense for PMD?
+On Mon, Oct 19, 2026 at 2:58=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Critical] mm: use-after-free on source folio in migrate_misplaced_foli=
+o()
+> --
+>
+> commit 5de3ed8c82d3030544f5f025b8ae47dd8339bfeb
+> Author: Yafang Shao <laoar.shao@gmail.com>
+>
+> sched: add BPF-based per-cgroup NUMA balancing mode selection
+>
+> This commit introduces per-cgroup NUMA balancing mode selection managed v=
+ia
+> the bpf_numab_set_mode() and bpf_numab_get_mode() kfuncs. Hot paths combi=
+ne
+> requests along the task or folio's memcg cgroup hierarchy behind the
+> numab_cgroup_mode_set static key to override the global sysctl setting.
+>
+> > diff --git a/mm/migrate.c b/mm/migrate.c
+> > index 211c29bd2a283..c0692c7b27467 100644
+> > --- a/mm/migrate.c
+> > +++ b/mm/migrate.c
+>
+> [ ... ]
+>
+> > @@ -2770,7 +2770,7 @@ int migrate_misplaced_folio(struct folio *folio, =
+int node)
+> >       if (nr_succeeded) {
+> >               count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+> >               count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded=
+);
+> > -             if ((numab_in_tiering_mode())
+> > +             if (folio_numab_in_tiering_mode(folio)
+> >                   && !node_is_toptier(folio_nid(folio))
+> >                   && node_is_toptier(node))
+> >                       mod_lruvec_state(lruvec, PGPROMOTE_SUCCESS, nr_su=
+cceeded);
+>
+> [Severity: Critical]
+> Has the source folio already been uncharged and freed by the time
+> migrate_misplaced_folio() calls folio_numab_in_tiering_mode(folio) here?
+>
+> Before calling migrate_pages(), migrate_misplaced_folio() snapshots the
+> folio's memcg because migration transfers the charge and releases the
+> isolation reference on the source folio:
+>
+> migrate_misplaced_folio()
+>   memcg =3D get_mem_cgroup_from_folio(folio);
+>   migrate_pages()
+>     migrate_pages_batch()
+>       migrate_folios_move()
+>         migrate_folio_move()
+>           move_to_new_folio()
+>             folio_migrate_flags()
+>               mem_cgroup_migrate()
+>                 old->memcg_data =3D 0;
+>           migrate_folio_done()
+>             folio_put(src);
+>
+> When nr_succeeded is non-zero, calling folio_numab_in_tiering_mode(folio)=
+ ->
+> folio_numab_mode(folio) -> folio_memcg(folio) -> folio_objcg(folio) reads
+> folio->memcg_data on the freed source folio:
+>
+> static inline struct obj_cgroup *folio_objcg(const struct folio *folio)
+> {
+>         unsigned long memcg_data =3D folio->memcg_data;
+>
+>         VM_BUG_ON_FOLIO(folio_test_slab(folio), folio);
+>         VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
+>
+>         return (struct obj_cgroup *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
+> }
+>
+> If the freed page has not been reallocated yet, folio->memcg_data is 0, s=
+o
+> folio_memcg(folio) returns NULL and folio_numab_mode(folio) falls back to
+> NUMAB_FOLLOW_SYSTEM rather than using the owner cgroup's tiering mode for
+> PGPROMOTE_SUCCESS accounting.
+>
+> If another CPU reallocates the freed page before this check runs (for exa=
+mple
+> as a slab page setting PG_slab and MEMCG_DATA_OBJEXTS, or as a compound t=
+ail
+> page), can folio_objcg(folio) trigger VM_BUG_ON_FOLIO() or dereference a
+> slabobj_ext pointer as a struct obj_cgroup *?
+>
+> Would it make sense to evaluate folio_numab_in_tiering_mode(folio) before
+> migrate_pages(), or derive the mode from the already-pinned memcg pointer=
+?
 
-That makes sense.
+Nice catch. The check has to run before migrate_pages().
 
-Buddy-first can reduce CMA migration and leave more CMA capacity
-for later allocations.
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 4b87d465c5fd..84f224c42ab2 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2761,6 +2761,7 @@ int migrate_misplaced_folio(struct folio *folio, int =
+node)
+        LIST_HEAD(migratepages);
+        struct mem_cgroup *memcg =3D get_mem_cgroup_from_folio(folio);
+        struct lruvec *lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
++       bool folio_tiering =3D folio_numab_in_tiering_mode(folio);
 
-I'll use buddy first and CMA as a fallback for non-gigantic PMD pages,
-while keeping hugetlb_cma_only=1 restricted to CMA and preserving the
-existing gigantic allocation path.
+        list_add(&folio->lru, &migratepages);
+        nr_remaining =3D migrate_pages(&migratepages, alloc_misplaced_dst_f=
+olio,
+@@ -2771,7 +2772,7 @@ int migrate_misplaced_folio(struct folio *folio, int =
+node)
+        if (nr_succeeded) {
+                count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+                count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
+-               if (folio_numab_in_tiering_mode(folio)
++               if (folio_tiering
+                    && !node_is_toptier(folio_nid(folio))
+                    && node_is_toptier(node))
+                        mod_lruvec_state(lruvec, PGPROMOTE_SUCCESS,
+nr_succeeded);
 
-> 
-> [snip]
-> 
->> +	if (order != PMD_SHIFT - PAGE_SHIFT && order_is_gigantic(order))
->>   		order = hugetlb_cma_default_order;
-> 
-> doesn't this take gigantic PMD-order pages out of the default pool even
-> when no PMD pool is set? would trying the exact order first and then
-> falling back to the default pool work?
 
-Good point. Perhaps we should use the following selector with the two
-fixed pools:
+BTW, the folio_nid(folio) next to it has the same problem: after a
+successful migration the source folio is uncharged and its isolation
+reference dropped, so it may already be back in the allocator, and
+a reallocated page's flags give a wrong nid. That one predates this
+series (it goes back to e39bb6be9f2b), so I will fix it separately:
 
-static struct hugetlb_cma_pool *hugetlb_cma_pool(unsigned int order)
-{
-	struct hugetlb_cma_pool *pmd_pool = &hugetlb_cma[HUGETLB_CMA_PMD];
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 15b45832bcfa..685c06a472ea 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2760,6 +2760,7 @@ int migrate_misplaced_folio(struct folio *folio, int =
+node)
+        LIST_HEAD(migratepages);
+        struct mem_cgroup *memcg =3D get_mem_cgroup_from_folio(folio);
+        struct lruvec *lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
++       int src_nid =3D folio_nid(folio);
 
-	if (order == PMD_SHIFT - PAGE_SHIFT && pmd_pool->size)
-		return pmd_pool;
+        list_add(&folio->lru, &migratepages);
+        nr_remaining =3D migrate_pages(&migratepages, alloc_misplaced_dst_f=
+olio,
+@@ -2771,7 +2772,7 @@ int migrate_misplaced_folio(struct folio *folio, int =
+node)
+                count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+                count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
+                if ((sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIE=
+RING)
+-                   && !node_is_toptier(folio_nid(folio))
++                   && !node_is_toptier(src_node))
+                    && node_is_toptier(node))
+                        mod_lruvec_state(lruvec, PGPROMOTE_SUCCESS,
+nr_succeeded);
+        }
 
-	if (order_is_gigantic(order))
-		return &hugetlb_cma[HUGETLB_CMA_DEFAULT];
+Pls correct me if I'm wrong.
 
-	return NULL;
-}
-
-> 
-> I tested it on qemu and saw no issues, but I'm hesitant about the points
-> above. I can give a Tested-by tag on the next version :)
-
-Thanks! I'll send out a v2 as soon as possible.
-
+--=20
+Regards
+Yafang
 
