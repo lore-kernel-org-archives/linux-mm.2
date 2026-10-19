@@ -1,121 +1,110 @@
-Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E2A607F498
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:04:30 +0000 (UTC)
+Received: from smtp.lore.kernel.org (ip-10-30-226-214.us-west-2.compute.internal [10.30.226.214])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC5E606EFED
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=L2CsdjyJ
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dquZ0zsb
+Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F6AECCF2E6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:55:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB95C6B00F2; Mon, 19 Oct 2026 10:56:44 -0400 (EDT)
+	id 406B56B0294; Mon, 19 Oct 2026 10:55:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E90926B00F3; Mon, 19 Oct 2026 10:56:44 -0400 (EDT)
+	id 3DEC46B0296; Mon, 19 Oct 2026 10:55:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCDEF6B00F4; Mon, 19 Oct 2026 10:56:44 -0400 (EDT)
+	id 31C656B0297; Mon, 19 Oct 2026 10:55:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AA4E36B00F2
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:56:44 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2BE04A073E
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:56:44 +0000 (UTC)
-X-FDA: 85339677528.04.FA6327E
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6BA5A100005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:56:42 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L2CsdjyJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of error27@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=error27@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1056A6B0294
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:55:10 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9823780718
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:55:09 +0000 (UTC)
+X-FDA: 85339673538.30.218CE94
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C794A20010
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:55:07 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dquZ0zsb;
+	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792421802;
+	s=arc-20220608; t=1792421707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vJKWEXJHZfF0BggswatoUj5xyndbeG3MBJPDa8wHg/Y=;
-	b=xQ6ZK2h282ejIIdvolmVrLW3mp4A/udZI3sh6J+qRcI0e9es13XUiCaHkXAW6CodhmvoTo
-	5eXCEZ8FMNAXbu9HgVU0EVXPEpAi6bLNNZI+szibeRkwTrNuQeMJJPyG1xD2d1swExnueK
-	VFsmRolvUeS42ek35Zi8dmBNWgN57Ko=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L2CsdjyJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of error27@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=error27@gmail.com
+	bh=S4hxhJmvPn7AcnQ/ZWKG7QsPda8INusHl4ZJ/PDgaQU=;
+	b=uN0fxnVe7aU3Q11kSI2dlVyCLpEzc1tomtopRPJFq98vrbEFBq9kw17J9CtqCsa/9XwzKW
+	lNGGVPKcb0JZ0zzB1EF0S4vnWGbKlP+OOL5+tQK0tTDdsUUX3kahIFcGjX72IQCkKwEuDX
+	XHQ+kCh5KXpgLw4fxmGtZbJYsiEpfaI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792421802;
-	b=7XBXTOmx1yvggBl5XIajpAn4UF9ONzABR7gG8CHIIIV4h6nSD36DzJlMCazvVCtpR7a83o
-	r9NOiuAC9vkZUFR0C2E4R5/H4iUMdFS6s4Lel8bD6IZv0V+TzKyR4IhD1dWFIjOHrcM0CC
-	ocDoGNGhHE6qq7FZn1DZQzpODClhnkc=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a1df146015so11906565e9.0
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:56:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792421801; x=1793026601; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vJKWEXJHZfF0BggswatoUj5xyndbeG3MBJPDa8wHg/Y=;
-        b=L2CsdjyJ0Mv6rRlG5PtmQXqZgRwKikmefcvgUzw5PpaNQ+QhTXDuKavpecMyAZqLAu
-         izdSnqvklkiwfxWGNsskVS7Jcysp105FHDfAdLTZ6s1e0FEg+ep2pvB59ng1/VtllSGo
-         oEbKKmjbakE0jf7jK5f+i6G0TbAgSNW4llzzea4FJM+JtSj/oBqgCFM0pDXK8ZIOvsDP
-         pg9RsPSM84Yve17Kju4gShsW4R/yjzspyOTDVSad/AFHApuQZ3UuIzx8pFPbFRBQH3/t
-         M36fIZMfO6xUsKxtTKinNYAUxh5ZI4Dl/X9kGi2yEB14BmlpM4Y/87KZ+fTCBJYBWwCD
-         o3Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792421801; x=1793026601;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vJKWEXJHZfF0BggswatoUj5xyndbeG3MBJPDa8wHg/Y=;
-        b=1l233JLY46nwN8QZbTq9ZJMHl1EZEzzTnbfd8zIiimCa+KxJ8/Nq/1Wq9YNWx6N6VN
-         0Txim0Q5nVh9RLnVdKN2PKD3c9r3M2pI8rHQ3ksLsluhAROfCiQ5jywudAF60FbMz+I9
-         gG68sJs9gSH5ViZaZqnBphe0GPTHbdBuCsG80hBGgVppQPaHiWjmJnPW0Na97UsjmKdS
-         +zxhMLM5GzJo3Y+jExeWj2UaguEZJg/JM1C6ZV0dbYq8NuDVtXG4fL61yZvsCzLdG8ci
-         y6vOw4P6E4a3Nsl6MKcaSi/LScAh1w0cmHv3JSGk96HIL/wobfloHXZ31vnpDDoMyPWq
-         gGHw==
-X-Forwarded-Encrypted: i=1; AKwUvBw2cpfGcSO7IJ0mSCVsnWuXieA4jWGTsATqECKpywRtLvTcHV/ITJzAfYldAHFTwX5ozS6AsK2mtQ==@kvack.org
-X-Gm-Message-State: AFq9FYLJeFgpx8hAHh/S1JphwgIC5JuZEr3X+6+wSFB1NI/IBPJ5KXeg
-	3YIGETsO0vYvgIK/rb+gWm2Rwsyglr09Uo1TLttPW4Ly8c3oBVKcM5KT
-X-Gm-Gg: AYBFou3b8Xbq9N3S3Pmk4d2ADfi0Zn0PTMPM/GuGAaco15+hzByaJ8iuKURiCNNBRqf
-	qmcjM/h+uYfYM5kywfv8AShB1K8il35u1VMijnrnmKANbejDUV67uyc2ynTMU2FnomzGH9BYkV2
-	f4Ukg7+BEf3H+s7BvNgKm7UEz5uBrbLSke3c3fo4k6gCdY2H0BkzTt6Cdqei36pFzyNeNLTFs3w
-	1VEkN6t4SBj/COuGBmHfl9cjKTRM8oF5TYTWGtXLfXaT9yTPymfk8Fwix7kuCImGmOJxXt/Efgz
-	kCNRES8JgzvDVi4ZWVElixb06tuzrZFgpqiBqMpnY0Inl01JwFfF9SZLG1GF6EDhUGH8WxZjYbl
-	QBJ6BcZCky3AG/qGN/xdoQ1NfO0V6n0AqDmLYbqBADkbeYlDeeuNuo5OvNB/trMg+5sgdBvaLIn
-	PkofIbMc3zOhSNagZfDz1k6u7ZG/8aJYbp136MVksWqiYWG+6uyXITpfAoT53j2519zwk=
-X-Received: by 2002:a05:600c:548c:b0:49f:dc71:e609 with SMTP id 5b1f17b1804b1-4a1d7610f2dmr171252085e9.20.1792421800470;
-        Mon, 19 Oct 2026 07:56:40 -0700 (PDT)
-Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4c4fc4sm20913100f8f.15.2026.10.19.07.56.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 07:56:36 -0700 (PDT)
-Date: Mon, 19 Oct 2026 17:56:26 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/5] tools/vm: rename tools/vm to tools/mm
-Message-ID: <atYvmj4ZKlOfphJ2@stanley.mountain>
-References: <atYOvqkdVSgjXZVM@stanley.mountain>
- <20261019135355.87175-1-sj@kernel.org>
+	t=1792421707;
+	b=qTVIJbrN3rEG2DWHwk1Jqj46ZDaY4WEIULsMO3SqT5DHlgMk0Eh66ETPTBT3ASYUxxGRRI
+	CX6yf64jvniy239FESmnA9cXtnZl3ftD6na3+eOCTbV9bKIPdwOdYXBjSOroV2Yf1b1jrP
+	w0pXVDfptaNwrVMH4OjFKBdVmDSNHBY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dquZ0zsb;
+	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 268E01D34;
+	Mon, 19 Oct 2026 07:55:03 -0700 (PDT)
+Received: from [10.164.19.55] (unknown [10.164.19.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 637A23F673;
+	Mon, 19 Oct 2026 07:55:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792421706; bh=JePCMnx8/su8AAS/ZVIThUJhxAH7QCVSw2VlUvAcrQc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dquZ0zsb8TUxQqrVKFHzKecjJPxmFn9BPWmSPeUt4pp2uBPq8APeVyzMisLgssh1v
+	 TZU/WEC3H5pP58oL4cP/OjMccLrvXkUY+5HU52USqCNbPlN+hEGwvXf1yR7AkaGpR7
+	 gskM7Oy6PccGDnhdnyilm74wYQa3HEvySaszSEwE=
+Message-ID: <45c5ebc9-a4d2-44e6-a08f-79676ecb0579@arm.com>
+Date: Mon, 19 Oct 2026 20:24:57 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019135355.87175-1-sj@kernel.org>
-X-Rspamd-Queue-Id: 6BA5A100005
-X-Stat-Signature: mfxhxdg7udww43igetzf8ue39wtng3af
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] mm/kmsan: undo the shadow mapping when the origin
+ mapping fails
+To: Hao Ge <hao.ge@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, stable@vger.kernel.org
+References: <20261019054531.87652-1-hao.ge@linux.dev>
+ <20261019054531.87652-2-hao.ge@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261019054531.87652-2-hao.ge@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C794A20010
+X-Stat-Signature: gc8br1fmb4h74qfrxr4opbkbfbjz6db5
 X-Rspam-User: 
-X-HE-Tag: 1792421802-392734
-X-HE-Meta: U2FsdGVkX18hAGadiV+ps/70BFSHumvEHmRTmaBpmKTevNu1H8PZ8Fmd1f6GJSwznuhawsj+3Hbg3HMnpskIwLET4XUHZaLdEird87eQ1dopt4tlT6tR2asoOqS1rlXWpRUk5jkk+vGQIrGAYrRS89M8ASdpOLcGiYUYEPPt5AYZeyL8ifQ66z2BZQMEP4tZ3kDr5EfSEjoZfgQgYWCZwykWkGPkZnB7GARk1MMUHxTr4DN0cPYAeOtQ4s8FYZfx781aTOXavDi4TkdHj5Wez8aXlFNRKSd0y4KCmHzVX2mJLYq1D4/bd6sDBHpTnv1Nwl5UDGv0CbxIpRC+W0xc66b0esIZR7iLs641RcZRAUkeH5MGIIhAqujTJYZdoHdnQHHn4j8/mHVoP0UGcfdLKSI4WTDTVxGPL1kgi+RKtztX5LpdD45dkNfal+82QYw5EqT+0HK22aOKSrR7bzw9pifAV2cOIhXzAExnqzAOQQeg0ZLv/KV0nWUK5B2YJ3upYIjZWz3winGxB+fpAwH/5JskBjFi/NTCimcE0SmjTcrlJW8bHOtxXKlJ6kuMKowcIcZiXXEVIHetFxinQFhFVb+VG4vaN+ElgWPWAMyq/F8D2w/y+qC/FIu+Z6a/fpA+qWe83LQrLCec2Ihhnm2lcZ2qeUXLAZ04YTN/7gKvXTtyKQdk2S1eT4yxHYjSO4Mho+HccTekEltZzchccffpVYaeB5LW4ffPkWO54o8T8PlQp4TaSmVT836Ewi/7Jq7OW/Qo8PjjVc7p9OVVr/+q65W201lBiVtL0OC8ulbW+7xxMB7pqt9iHUFWphF1HAnhayykI6bp6Obs4NrfKrjXNzhnbPdfRqt+sNtkJUu7Bx7cgfaHLvgFNFTyQz7kv1Dp3TozvWH+dwilkFO9CV4Z3fUzxVw8t1+rc/ikn6VOKNIUb8cf47AeqgE8J5XCCRAjUT4Jp4TFqInCFxklV84
- 06/PPnh7
- FhADjHN/74er631M0Y0k6E3U/kQYVt6abXckq7dVxNTdfmj8y7p6ZgAH30FMMK1gtQksDXEQpDVDvXWJmKLMnlnzWtQodV2qdAYoskhsNl20Crzg+huCsZvB9aYqUpG5SupBHcP+lt6v94fv51xVraZiVwd3K8y/R7uSqyNRT5Fnlt5e5pvxsZXNCgltKStcNMA8V40xQ3hylv/TMtbEfUSivU/XJguYgBSPTsGdI37KO2KJz52V6NdDSFws6GDR9QAYeRNc6p2wUCkCpw4E4jNu/flcQpZpr8ov0zKd5cnE+A1r54zXBoz9xYnhXbNlsVp2toJjU4fWfC/CX90Yp6jJJQXeky4k7nLhYMcOb4pqw3adngwVfjOhL1x/T6+5cojRQ4AAxpP4j5oAxGGliUehUxuuzC8MmJ7ueWBzxgYkloQnfy9I15Va5+y+O2cMCFeN35k8l2BH1QBr6FUJmKqGldeT3VmOcg0YSQhQo8dC06xRnpwZii8km/yQYe+NdXjVm8IpNEDzObgDadPFc6+iAqs4nZtS/lQ2Sxex/6m4APqKg3rYwvpagbsOpQKWR/klVt8s8/LUIcFDTOkOXBboRMAr4Hc7yBwMHT9QVFUig2GU=
+X-Spam-Status: No, score=-17.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792421707-963820
+X-HE-Meta: U2FsdGVkX194kcpuG6DDwDVHPv1sj3TW37kPS7HAZNI6VRZRM5pGZ9S+pOoDaK6k6zsv/R5OUBkto8nog4mF3DyMjVlw4Iy4E6chwU+hkq6aHKdr8LOeT8gMr3gZlTkXDZVWlE4/65gZyGxdSbb3cwSWO2CQHhJ7kIYmHqbR0Ca3JcRMY0QiBz6/WP4ewavbYrSS5QBcgPUoRMNexFrPIqFZtUDJ5qeQW21QEnV5mwtmaoMyEI7bMwX1ScNDflM8ZBdTBt4bYF+gC3jGxP4vTnrQy6kWCOYwBF25sp6NAr29OGYi84wFIF3koz9mqnBbQR0KVTTlxTO95aPHAmwTMZx1d/1fxCCiztXyWB7bFxOHjEc8cPbbFhTCzAz/T49QCHqz1jVdG7gwnFyk7cguDP4sgOcIQY3ZGbL8TFkPbNLvhAjn7CabsE43oMzJwWt+W2ugTJRGZ7EQfT6HexgjA24k8yQYxoYBnbIGS6rKFcLvUcvmvPTSEwFkukLxhpce1SkIbnf/Hg/zKHJczeBBnVah91TAV2bSeie8yCQFNd6MK8lodzeySZ1xkMKqPD1ybsvSk88IF8ajDavEudBIaywugTQqGQn/Q1A4ZzVgDrnwZTRLkE1/AdtStJFYMnre0WQ9YucB0A/vfRk2cq8xmG0r4/XDAFJoj39FtrFqbLqDPEiqyQx9488gpLTo85A9V48N4lCpGOfIfsmg2ic+n0HdyokdDfdfqB8wqYaM0fa84Za96wiIu2p2AN5adedQ70ixtnmY0WZnFl+UzIdz6fIbTOKNur6v91gUT1gMnAWwimzcI2IAmoM9pqr3HbUYyu53REakHsel774BvM9Lt4kZOQukvKL/R1XnqnUr8lgJ+fuA4H6/1vGU1ecXd56stiV/h2ucwDzlmpjruZuqSJ1jC22iBlnVcRx3SBqUhe0y9yrY7vlmc7J3WR2Lq/flOhNJOsXdCM37AawDLXe
+ QhrHUzDD
+ Tjkrcy88RzcEPd/QOZ1d7Y4ys7w75sQVxx6gh7CQUVeqhchqKhI3u4dIoekOt/UlGyUHiZg7rTg+XPME7pTc9qJ+x/oicKe3yEVQ8vmjuI8jnxJzpGOobPQ9/QL3IFdbdhWGo1phS4O+P9FNC85InKQm+LwtbNvmJMKPGuczTkt1tT+iIsOaiGht9HiDBHoz6Tb1ri79oz7ETuzOmSZvXBR4BQWKfYO4NNyWgNOsgr7H88cW1f7VR3+ohO4U9yF6m+6TvfqtmPecnvHY6CbAwSiCk+rJk7rsHU7Zbmf4HLHqpyjMgxXYa6nz8ViWgVpK30v5TgrHOcH4SUsX2eEa+j6XOxD2MYIf/JaCtTdnTPimfmBkqZECq4i6i35AjtaDcT7JbCl8foGLHBIbmKxdgHOk25wRUSVbOkODm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,76 +113,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 06:53:54AM -0700, SJ Park wrote:
-> Hello Dan,
-> 
-> On Mon, 19 Oct 2026 15:36:14 +0300 Dan Carpenter <error27@gmail.com> wrote:
-> 
-> > On Tue, Jan 03, 2023 at 06:07:52PM +0000, SeongJae Park wrote:
-> > > Rename tools/vm to tools/mm for being more consistent with the code and
-> > > documentation directories, and won't be confused with virtual machines.
-> > > 
-> > > Signed-off-by: SeongJae Park <sj@kernel.org>
-> > > ---
-> > >  Documentation/admin-guide/mm/idle_page_tracking.rst | 2 +-
-> > >  Documentation/admin-guide/mm/pagemap.rst            | 4 ++--
-> > >  Documentation/mm/page_owner.rst                     | 2 +-
-> > >  Documentation/mm/slub.rst                           | 2 +-
-> > >  Documentation/translations/zh_CN/mm/page_owner.rst  | 2 +-
-> > >  MAINTAINERS                                         | 2 +-
-> > >  mm/Kconfig.debug                                    | 2 +-
-> > >  mm/memory-failure.c                                 | 2 +-
-> > >  tools/{vm => mm}/.gitignore                         | 0
-> > >  tools/{vm => mm}/Makefile                           | 0
-> > >  tools/{vm => mm}/page-types.c                       | 0
-> > >  tools/{vm => mm}/page_owner_sort.c                  | 0
-> > >  tools/{vm => mm}/slabinfo-gnuplot.sh                | 0
-> > >  tools/{vm => mm}/slabinfo.c                         | 0
-> > >  14 files changed, 9 insertions(+), 9 deletions(-)
-> > >  rename tools/{vm => mm}/.gitignore (100%)
-> > >  rename tools/{vm => mm}/Makefile (100%)
-> > >  rename tools/{vm => mm}/page-types.c (100%)
-> > >  rename tools/{vm => mm}/page_owner_sort.c (100%)
-> > >  rename tools/{vm => mm}/slabinfo-gnuplot.sh (100%)
-> > >  rename tools/{vm => mm}/slabinfo.c (100%)
-> > 
-> > Is there a reason we left the tools/vm directory even though
-> > it's empy?  Is it for backwards compatability or something?
-> 
-> No, I think this patch didn't leave tools/vm/.  I cannot see that on my tree:
-> 
->     $ git log -1 799fb82aa132fa3a3886b7872997a5a84e820062
->     commit 799fb82aa132fa3a3886b7872997a5a84e820062 (HEAD)
->     Author: SeongJae Park <sj@kernel.org>
->     Date:   Tue Jan 3 18:07:52 2023 +0000
->     
->         tools/vm: rename tools/vm to tools/mm
->     
->         Rename tools/vm to tools/mm for being more consistent with the code and
->         documentation directories, and won't be confused with virtual machines.
->     
->         Link: https://lkml.kernel.org/r/20230103180754.129637-4-sj@kernel.org
->         Signed-off-by: SeongJae Park <sj@kernel.org>
->         Cc: Jonathan Corbet <corbet@lwn.net>
->         Cc: Shuah Khan <shuah@kernel.org>
->         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->     $ git show 799fb82aa132fa3a3886b7872997a5a84e820062:tools/vm
->     fatal: path 'tools/vm' does not exist in '799fb82aa132fa3a3886b7872997a5a84e820062'
-> 
-> If your local tree has some git-untracked hidden files under tools/vm/
-> directory, the directory might not be removed.  That could made you think this
-> patch left the directory?
 
-Ah, yeah, you're right.
 
-What happened was ChatGPT told me to type:
+On 19/10/26 11:15 am, Hao Ge wrote:
+> kmsan_vmap_pages_range_noflush() first maps the shadow pages and then
+> the origin pages. If the second mapping fails, the first one is left
+> mapped, and the callers do not roll it back. The next vmap of the
+> same metadata range hits the stale PTEs again and BUG()s on the huge
+> mapping path, or gets -EBUSY with a WARN_ON() on the small page one.
+> 
+> Undo the shadow mapping on that error path, the same way
+> kmsan_ioremap_page_range() cleans up after a partial failure.
+> __vunmap_range_noflush() only clears the PTEs; nothing has touched
+> the shadow mapping, so no TLB flush is needed.
+> 
+> Fixes: 47ebd0310e89 ("mm: kmsan: handle alloc failures in kmsan_vmap_pages_range_noflush()")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> ---
 
-	make -C tools/testing/selftests/ TARGETS="vm" run_tests
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-That command is outdated since it's supposed to be mm instead of vm but
-it creates an empty vm directory...  PEBKAC on me.
 
-regards,
-dan carpenter
+>  mm/kmsan/shadow.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
+> index 0c88d89bf0d6..2166086d3dc3 100644
+> --- a/mm/kmsan/shadow.c
+> +++ b/mm/kmsan/shadow.c
+> @@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
+>  					    o_pages, page_shift);
+>  	kmsan_leave_runtime();
+>  	if (mapped) {
+> +		/* Undo the shadow mapping set up above. */
+> +		kmsan_enter_runtime();
+> +		__vunmap_range_noflush(shadow_start, shadow_end);
+> +		kmsan_leave_runtime();
+>  		err = mapped;
+>  		goto ret;
+>  	}
 
 
