@@ -1,157 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EF7606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 22:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569E3606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 22:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=dugFetql
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fqTGEjK2
 Received: by kanga.kvack.org (Postfix)
-	id D26446B03A7; Mon, 19 Oct 2026 18:31:21 -0400 (EDT)
+	id 6842D6B03A9; Mon, 19 Oct 2026 18:42:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7246B03A8; Mon, 19 Oct 2026 18:31:21 -0400 (EDT)
+	id 635126B03AA; Mon, 19 Oct 2026 18:42:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B788D6B03A9; Mon, 19 Oct 2026 18:31:21 -0400 (EDT)
+	id 524486B03AB; Mon, 19 Oct 2026 18:42:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EB4F6B03A7
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:31:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB0C8A8448
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:31:20 +0000 (UTC)
-X-FDA: 85340823120.17.81B402C
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 05F0B1C0003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:31:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dugFetql;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792449079;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 183E96B03A9
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:42:50 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 164291A08C9
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:42:48 +0000 (UTC)
+X-FDA: 85340852016.27.8982B51
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 725E2180004
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:42:46 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fqTGEjK2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792449766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Y7YiwpHnHRTlx4OY6pg4GKzGSuy4/quEwIOKfF9VTA=;
-	b=v3UjmDyBllW4Pru2HjqefgY/nc2rJ8QVHuCAcCjuv21I4lulq9OPalqkngYIm9ABGswDr8
-	klatDZi5A6dQv/ZILf/s2myvnoxMWSLnwCEEMPCMS4xUScbnH8LonXMMGlL//as8l8eaJB
-	iQvaRptUDurnJfHmsxntULfGjKKY6n0=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dugFetql;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792449079;
-	b=EU65LQfrrwGhH9gwvEhjYMaJ9i122mWrbH4fnM1Ca1rDoU5GZnl7UoAHiEZi+zJcgsTG2/
-	bn3+WRbX5P3W0gb3gEeRX5M4Ev07T9WOJj8xk2ZQuHpTIYqCQC2JN4IxdLWH+QjRO9znXY
-	27Dz7ga35IK7Qq0qG+oJB+3rf5BSh1Y=
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-353804b591eso4986783eec.0
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:31:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792449078; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KB9xAykCFp3caY0zkZxOyC+hDSTMQmwqBHDN3HaEoKPPG3lQfvo4bUXy1Fw+I/VQpN
-         8ZzMHmLr7OeRGRer1K4DsmrBTdJXJvYLnyl9dVHh7WSqvniH98Zc0ykgx5/5+MGPfvQS
-         /8Mww11KGMSHiOYVhbyTmuSotfvoUAfu/A27SSyWCmqKylYYyZsiVss2cqd12LUEqy2p
-         WdtAuICUVcJUgM2ZDmgsNVI3ubszuuS/9itsjuYr5D9qygThtuaKK8+/oCnXEszOzaGI
-         XT+0+4mUs7yZj+N29+mLD/BZfVSiNJ/01MQ1mFP8l7vQ/ugHMxiKcDV/OfV3drMqPeii
-         luAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=7Y7YiwpHnHRTlx4OY6pg4GKzGSuy4/quEwIOKfF9VTA=;
-        fh=8G3DEmqEw67Y/f2CiKvF0DTV9mHIH8BILSofZgVr1QY=;
-        b=IDUQVx+5rhZ4qhnTfwhG2Qn/Fn9YnK92l/qDWSVW5qZSKUGaGH2bjX62TJQ8S38baP
-         dcbHRvAWAEwfQ+DTJ4KLvIbkTu/h0yOUgZ/jWoC0v2SBY84W9Dta/iRU/qu2H+1N+Wde
-         BqlTxe58gMBp/4bKre+mwSng+r73Pt9hTzMwufxX59H3nVn+oewq25dad00sypttUgbY
-         1M9c0C6aH78HvJF+J/VW8LiE8UbGF1mH24cELUV31ndEloQXmjT246Y/ciOxAUi197pa
-         dAVGNX7WOIdNfbXZ86whuMOV11HnLQiicvJFotjc+2RdA5lTBoX5xdFTg6BKYt26Fxwn
-         ltEQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792449078; x=1793053878; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7Y7YiwpHnHRTlx4OY6pg4GKzGSuy4/quEwIOKfF9VTA=;
-        b=dugFetqlms4ECY3fCsKo1gD2gqWayBVKNYUi7I6s2Nu6fZeWynBfy9fOwaoBjIWkm1
-         tLFtXsH4r1NrErTm1T2BdaLso+dyU1vutaTKX/QCw1reuOVfDBc4b3FUT5TTIUEdatza
-         R50e8oGcB25+r9rKdU1baGNXDbUaP0/72067QqE6ap1fR9dsQRM2nPokIxsc0kkrsP4D
-         S1/dceBKgf9YsboRKMXgkAF2O64EGo1WzRykEAGPDKDZF3Zu2ToZCu0KXkWW59bDvVqx
-         KKTVVyArdRKLj4xoFSobwJ1o9rIAQL9NDx/s48PRFvP8lJDSGMJkXY+nKKiK9k8fO3w4
-         VLAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792449078; x=1793053878;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=7Y7YiwpHnHRTlx4OY6pg4GKzGSuy4/quEwIOKfF9VTA=;
-        b=bydubo51fbliBYMVdlZD+a8T74FXbSePI3cChGsPPg22By9YYjKSfO4XwK0/9t0b4+
-         53+eeblJuKEsWNE99jJOrvfBORsGTyeMXbODJ/SU+7bSEINNg/B606TT23oocbD0a2I5
-         nDaidSlorc4/ls53Tceh2z8b+YVOYqa4/RwDd+vg7SdBLB4FhxwkHR4qHyNt4wTYsBbn
-         6ZL1xpajFm4nPVqnx5SQCiX8fb4jI6ApjWJzlM9lAVUtRbr3QLakNokbVAaiLaKE9O4+
-         couG+POWjUq3Pnydk8v5LYBQ38GdKIKuB1i20JqjKQSlY8TUNPIcpDP2K13SajyQKQ4r
-         cS6w==
-X-Forwarded-Encrypted: i=1; AKwUvByUqyproA+MPi/SlrvTA4cC73APMxxWVxYuakJvDh977yal6rJpL+JUWa055MrCxLT+0KP3UYQzGg==@kvack.org
-X-Gm-Message-State: AFq9FYKa8Xc1yqi++Ymmo86IfcUwtNofCwChZf7pzC3hYP+RoweEuumj
-	N8h7ggKMe1HI4201B+Cg7WIGjem0RLsXIEvDpnfTyk1xRed5d8JJ/OqOkITpqOp9jiW+0mbpIXG
-	nDTQAHB5ArR7BvdcCKqkKncAH15nQw0eDqvak92i1
-X-Gm-Gg: AYBFou2iibmJxtSGx4bfjtd/t0B4crukCWO9fQYr3yXnO79zp3UZj1Wa3NR0gy6Hu7D
-	jjtRY1gEac4wdxUlKmR7QkG8WE+BR5qPyoHjC4VfJPmCYiPMT2IUiW9jphZwt5PKsKDF/xkql+a
-	dKxKMgdDS6rRN2t/9nqYb3kdRiu0RkYDBdBH3LEowvABrUwiUnaYJWkBezGpEhVaYo1Up3C5HE2
-	r6EUHmkw/tNEwSEziUvaHL79AQNllNXbUSN0kMFOkQf+hU3/keSglw4T7Ph0O647jj8E2IynY8y
-	DlBc12RnrHpwbe9Wk4DbBwUcRSMeAY62yUQVr1iFttLHgMd7A0Tp1wTnm5/TTSJ+/vTOPo2+78/
-	d0rido1Dsq//Nf4lJTYQMSInyue9YXPu5hrEzelwOMb2oaGdUImr/1H04j2dVbutuzAkr
-X-Received: by 2002:a05:701b:42cb:10b0:169:b1b1:1445 with SMTP id
- a92af1059eb24-18512e2515fmr12984330c88.31.1792449074316; Mon, 19 Oct 2026
- 15:31:14 -0700 (PDT)
+	bh=tXbwnR2RlCJZXvS7RGs12P+e1RnZcsA+7Uc/5Gfouos=;
+	b=GkUfDYl0XYLPzm22uijYBRun3G91aAKA+xfCo43UOQSC+jwk677J/5QMz2IbKebRrGkqMq
+	nVnkGSAm9CFzbnAKYsNrd8LB/gN5deqMmc4nijIvzPWSBBBnkwyVHdT+cSppwMjxV3JcPX
+	aUGrO3s45aw9E3B6LRp3bIkRW5HPuII=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fqTGEjK2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792449766;
+	b=EqGj/qeJ44oKgPshBbIain+Ssgi09mC163vfi8R3d/kVjWgL0CMTa5NNPfqYSjkd5GZoe1
+	1HUNyTRZo9roHHNUTI0JkgvbnyJB0mHsOZ03oE6lcrehG62PFmHVdhMykTbJPY2nJCX3bR
+	x52+LlEOwA8UAmjXd3CWzuDKrs1AJDY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EF0F0600DA;
+	Mon, 19 Oct 2026 22:42:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ECF1F000C5;
+	Mon, 19 Oct 2026 22:42:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792449765;
+	bh=tXbwnR2RlCJZXvS7RGs12P+e1RnZcsA+7Uc/5Gfouos=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fqTGEjK2k/qk2/XNPXLr8ukixfoWwjB4gtEYaQfxQWiO7jazvPdblIhmtcV/ubSe/
+	 XAunHnFhLU8uK2kDBgJt5hDKF98EqfQwe+3OhEr8+UV7/rEePiER9pTy7dYJzx25es
+	 a72Xz382QF6geDuUejhjjhH4ezOmf4Es8L2uItUwzMWX5sOKdLue0feow2ju6bw1LK
+	 4Aq2XSSp95TOrCEj9YS15xBlA+FlKrLzy4UJOI0I+78tXNTGBiPYI0VfxlROWCvuOs
+	 GPzftPlxo16nmUBCFg/mfcOFhDdhx9+wklYbJyaS4LcpR13bXqgg9z87zjAikyFjjr
+	 LPCUllYYuBfnw==
+Date: Mon, 19 Oct 2026 22:42:43 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+Message-ID: <atacyPeRJeDiUs1X@google.com>
+References: <20261008182814.27450-1-kanchanapsridhar2026@gmail.com>
+ <CAO9r8zOHtaeo5jhHkHB8Vtb9+KZXO+DH74v+7Y84W0v=tatRqg@mail.gmail.com>
+ <CACpmpofN-JfCgJtW9D0wNu0_pL1pRWGfNphUQnE9Bse-P5tHpQ@mail.gmail.com>
+ <CAO9r8zO+0h3LLuaFGi6RF02sBYrG71Zf9qMei73UPvRi2onGxg@mail.gmail.com>
+ <CACpmpoe+krnso-b1h_g_Q=HzV5x8xpu=Ke9==+4PfWF0ZcAUgQ@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261019-bug-word-at-a-time-zeropad-kasan-v1-0-f21a3ed6a477@gmail.com>
- <20261019-bug-word-at-a-time-zeropad-kasan-v1-1-f21a3ed6a477@gmail.com>
-In-Reply-To: <20261019-bug-word-at-a-time-zeropad-kasan-v1-1-f21a3ed6a477@gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Tue, 20 Oct 2026 00:30:37 +0200
-X-Gm-Features: AclHuK-9KfyXQ0m8f9CHsU2jTa1lgiXB2sNpwhyCmDMarQWZL2s0qBm4al6Ih6c
-Message-ID: <CANpmjNPPncfo41Hu=TKB8cd1aFm0Lm-9+AT6pXVsYyUgFVx8TQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] word-at-a-time: check the first byte in load_unaligned_zeropad()
-To: Qiliang Yuan <odys.yuan@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-arm-kernel@lists.infradead.org, Kees Cook <kees@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	Peter Collingbourne <peter@pcc.me.uk>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 05F0B1C0003
-X-Stat-Signature: 4s61x5s6h5xm1iyj4bou9u14n7ryg4cp
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACpmpoe+krnso-b1h_g_Q=HzV5x8xpu=Ke9==+4PfWF0ZcAUgQ@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 725E2180004
+X-Stat-Signature: jc6axwr8ff7dgzmd4troqiyxdn8p6d5i
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-	version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792449078-78557
-X-HE-Meta: U2FsdGVkX19AHTuq95I4C5T1afuqJ80qW8vr7Ecb0UxooKrfiH6D13kb4p8Z4w7SEeyh7CFMhjU6ouyrEFMAD6NfKSCEoWu6j5PtyhF69FUkA/42TbdfWlrJUn7vY+kKFXedwzJ6EXCMJM7dIsaiD6yvRKnb4dtMSQgyTdHz5wl9JzDCPc6mYsGdQB+kFfhyuBkkEjcF5yfN4vO8Tg6EM40dlhAfZlNvGRdWqSugRV07XWnSq6f9PcWz8w2nr2qiaKxzpnGGvn7J7aanVSiVLAfh8fI5d46lC3dNqNw0aN23T6IBB2BNwfzTky9W3utR/f0lhUfhAIfe/cJkst3OektjL4OuoyVkI++FpW7DS8VpOtp0Rg1X/Q7B+JjHvS1eM13b1mOLegE4xCBB0MuCdx/MTovQJjWMGaheeTsKIB737wySMcDuAMtNxMHTQVwRaRJmSHrPFgP1xaUedDsRWy9JOc72Go7u6PHwQ2nStJP/VSgcAymzdDvlW6EoT2f99ZLCk79M6vJmrQ1WdvZhV//W0mWrWa7U/RV4UHGNsZtXLSt2yGsVDNyFeFfQff9LDPpjjDtCREPgpsEIgRC8KEUt20pjNLIxapSwzooxLYflYI5h5fUoSQFiG6jm6sZRI99dzuD0hUq0tBj6827pE/pP88Slae2z8fjoSXo9zWAjSVUUS4OZwrLi/ScVozcXBx5xzKrPv4A0RlfotMukvQMPo5U48T2WOTQuSLscVt8sEnZG6Qum0/vRPJEB44ZkjkYEuah0V93fuu5t/2srXUDbTnjpFoNYI5DbQKxV+8iqKJzQaEdXyXo5z/+hdzzbPcEuXqqyKydN99t0USY3ZOepu4oZkXJJO8ourEhWsaenkfCYPv/UmqLimZcVpGClIeCi4osA1THCPOtqxWIkpxSf9OM3UPN/PYIm4GTjX7moiIccFQSoahfl9E8uFmqcIu6ScO1mV0meXU/zcAk
- wOuTOGmH
- MO/zM0u8/KgIpdWCVkSC7CD3sPLi/Fx9Ie+TiDPk3LAPNyzFq57yBFRiJsAfTb9uvfjviZoa4qsEOoqsKlmlZw6bQOL/+x8h0KdMsPp7BS/d1Ei69Q7llzuSoigraozTzlY2PHN42tyS+1hBh+dxxnfNZ8+iUl/T07CgwVT8PBH7b7nQk1CpsL6vfX79QQt4dyUixhSbTvPNG+1ffmUcL2WJNF+nURsvhKUV0s2OxIrHp6/vwlHotzC2AL9+YKhUaNhPCJo2i7dxYQLDTqJDa0msypK5nLkkad0c8CC/GpK5pl4ChtSluqKghQbCRk/3//P5Q3WLUoWAR2Kz/Gh/NVddDVngij+lF6SQtzysjHCuUv1d1JGGdad43Jy1fh8fhO5NuFFvUqxmQu9z9mabF7sQqL9zSf/oVk0/Vx7g3jDU1ObgQMpY98KGqMmCANl7lOgB7FhsyZPMgT/Xz9AMs88OJM4BUX5wVkYFBCVoUlswcsoOHCckzKh5jBsy+qPG+FwxwOalm7784lxMeU48mWRxMblnio2jKh63ZnTyeY5rFmQo=
+X-HE-Tag: 1792449766-176209
+X-HE-Meta: U2FsdGVkX196Rl+OYiayTBoKmEarHLMZ+SAFlpxqO4QGq2jtPPvOsfCYY9EUOOfC3+WA5p8PGFVB94O1cMw/Tf+8cCmGar5FtQcgbVNhjP8lsCVSesHSFP9k+tThnHIX0aYJlG+/CvwTFuK8vOxjbvHMkl+mBvh1UCPaLF7CeZ/QUmN4UBh6jhcghZw8xSSS46PlOEuNLdAIhXbqwR770KKlAOsNO1PF3Cj/ZmLVg0sRYa1/1So21tJK6PvpP12sXe/YpQyBA3loZhCaQxPyXwgvcworCepWXp2/ddrkokdZtZQ3Fsr1aV121PqEsxTm4H1QFa9EPB59gGh8Vu9yS8aZIttV/xbQ4I9LfvAhB3g+jYQ6B6yxFis7iaDC/uyPAwR+ccJ9wTsBk0tKKjOQ7an4aqD7UkIBr2SXKb/6zNIkujc5/jFr5kFVvYYqXmkD6cNX4b0gXNEEroYkXO3t8iaJ/eG6djKzMrhiUTt/DpcRTNDDdrt9qGIZxuHqujrEyBg2cwmZAEWMH6jh4pR+nJ8KAOF/5qsi65yQNXuVA4B1j1nLsda552/90wcx3yxyND2BD9wTSIw9pZCIQWvOMmc61j3UPmldnqPQ3uhm+2zBuL5hcu/zGq6NoywWUvXaL5tB5dlHUWZpoSzT2zUTFpr+TDBk3m3OwU7VHkbQwZBo307pphC+FKAQAztZUQAfSRkdBHHw6XqS8NitDYcgoknONtavAdHImMhiuAlyGm5RNf63a/JSaayO3V/XBnzfA/+Xrx2zhtdbX/oAA0lLUx2VUe+GCJSqk68VJNF4L6ibp29xBWdbWu1dSAi6Mz9PIe1/ZDCBDKSsaVQyMoJrWfxEENrWC5NhbSOf1+GbNvjUlVOuemWG8hFQ2aoRmYauBgpqxNOBGUoLGd4XvC4XKk7RpszQ2JylxN75nMXAgYGutaVQyqPHGVa1RwwwP1zxuM9SQqqCNcyK2i0Cfd5
+ Zs/fe0ii
+ 3qIeLCc89qM7Flr9Qxi8jJoz5B1YYYxFFOX3SS5cK2ueAoueFGh8+eBMyFmDCnxOHUcTNW47wsRtBD2egEfhEas96dw+ugYRzJNxSfuV/RFbzLL3xXQUtuM4LTVubxQhg83S8c12hez2injpIzpegJS05bZMS975PRMMS7kb0WLsxKtq7ktfVFh2eRg9g2O/1wVp3eS/vTjiZwffo51/LPttDSvh/PJvR+QA43ksz3w3l0KR7dSmPYlsIaHv4nRQayYPjhsEFdtHnqDzC5mMLQ+ge/D3m7GPWJyikY/PoXaFW3KL4XGTU+/IGkbrpQmqdpAritAKCCNyUKtAAtaWeAiT0z/5LTgVoE6gHl9emfZ9Cz78zwKvHqEFGLQNGI6Xl2LL2Joxn7CZ+BQQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,220 +101,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 19 Oct 2026 at 03:58, Qiliang Yuan <odys.yuan@gmail.com> wrote:
->
-> load_unaligned_zeropad() reads a word that may run into an unmapped
-> page and recovers through an exception fixup. It does the word loads of
-> sized_strscpy() and of the name compare in dentry_string_cmp(), path
-> components in hash_name() and hashlen_string(), and the trailing bytes
-> in x86's csum_partial().
->
-> It is inline assembly on every architecture that implements it, so
-> KASAN and KCSAN never see these loads, while read_word_at_a_time() at
-> least checks the first byte of each word. A use-after-free or
-> out-of-bounds read of a name handed to path lookup goes unreported, and
-> so does strscpy() reading from a bad source, which the kasan_strings
-> KUnit case expects to be reported. On x86_64 with generic KASAN:
->
->   KASAN and string KUnit suites      failures
->                                   before    after
->   CONFIG_FORTIFY_SOURCE=n              1        0
->   CONFIG_FORTIFY_SOURCE=y              1        0
->
-> Check the first byte at the start of load_unaligned_zeropad() on every
-> architecture, as read_word_at_a_time() does. All callers only load a
-> word whose first byte belongs to the string or buffer they read, so
-> the check does not flag their intended reads past the end. Add no-op
-> stubs for the powerpc selftest that builds the header in user space.
->
-> Suggested-by: Peter Collingbourne <peter@pcc.me.uk>
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+On Fri, Oct 16, 2026 at 08:53:26PM -0700, Kanchana P. Sridhar wrote:
+> On Fri, Oct 16, 2026 at 2:48 PM Yosry Ahmed <yosry@kernel.org> wrote:
+> >
+> > On Fri, Oct 16, 2026 at 12:05 PM Kanchana P. Sridhar
+> > <kanchanapsridhar2026@gmail.com> wrote:
+> > >
+> > > On Fri, Oct 16, 2026 at 9:14 AM Yosry Ahmed <yosry@kernel.org> wrote:
+> > > >
+> > > > On Thu, Oct 8, 2026 at 11:28 AM Kanchana P. Sridhar
+> > > > <kanchanapsridhar2026@gmail.com> wrote:
+> > > > >
+> > > > > v1: Batched zswap_store() with compression batching
+> > > > > ===================================================
+> > > > >
+> > > > > This series is a spin-off of "v14: zswap compression batching with optimized
+> > > > > iaa_crypto driver" [1], and focuses on the generic crypto_acomp and zswap
+> > > > > compression batching enablers. Resuming work on this series following a gap
+> > > > > since v14 (January 2026). Please note that my email address and affiliation have
+> > > > > changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@gmail.com. I
+> > > > > have retained the original Intel sign-offs on prior patches for historical
+> > > > > attribution while signing off v1 of this series with my current address.
+> > > > >
+> > > > > To summarize the main contribution of this patch series: Batching is introduced
+> > > > > in zswap_store() of large folios: we carve out a large folio into batches of
+> > > > > ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store each
+> > > > > batch. Moving the fundamental operations that need to be happen to store a page
+> > > > > to now work at the granularity of a batch offers opportunities to optimize them
+> > > > > from these perspectives:
+> > > > >
+> > > > > 1) Utilize existing kernel API that minimize obtaining locks for bulk
+> > > > >    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
+> > > > >
+> > > > > 2) We keep the working set for each of the core store functionalities (alloc
+> > > > >    entries, compress pages, store pages in zsmalloc) to be focused on a
+> > > > >    batch, thereby minimizing cache evictions and benefiting from cache
+> > > > >    locality.
+> > > > >
+> > > > > 3) Along the lines of (1), the main zswap_compress() batching routine obtains
+> > > > >    the acomp_ctx mutex lock once per batch, and releases it after it has
+> > > > >    processed all pages in that batch.
+> > > > >
+> > > > > 4) Any zswap store functionality that works on a batch can potentially be
+> > > > >    parallelized as a next step, to further improve performance.
+> > > > >
+> > > > > Performance data: usemem with 60% over-commit:
+> > > > > ==============================================
+> > > > > Validation was done with mm-unstable as of 10-3-2026 (Baseline) and with this
+> > > > > patch series.
+> > > > >
+> > > > > Testing was done on a Chromebook with a QEMU "vng" VM running in Crostini.
+> > > > >
+> > > > > Chromebook Diagnostics reports:
+> > > > >   Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
+> > > > >   RAM: 16GB
+> > > > >
+> > > > > vng setup:
+> > > > >          Memory: 7G
+> > > > >            Swap: 3G
+> > > > >     Pinned CPUs: 4 (E-Cores: 4,5,6,7)
+> > > > >
+> > > > > zswap compressor:
+> > > > >   ZSTD
+> > > > >
+> > > > > mTHP enabled:
+> > > > >   64kB
+> > > > >
+> > > > > vm-scalability/usemem setup:
+> > > > >
+> > > > >   cgroup memory.high: 3G
+> > > > >   4 usemem processes, each allocates 1200M anonymous memory, reads the
+> > > > >   Silesia dataset [2] from a pre-fork-allocated buffer into the 1200M,
+> > > > >   writes to each unsigned long in the 1200M, sleeps for 10 sec, then
+> > > > >   frees the memory and exits.
+> > > > >
+> > > > >     usemem --read-silesia -w -O -b 1 -s 10 -n 4 1200M
+> > > >
+> > > > What is --read-silesia? Is this a local change you made to usemem?
+> > >
+> > > Yes, this is a local change I made because I wanted to get compressed
+> > > lengths besides 565, which is the only compressed length of data
+> > > swapped out from the original usemem.
+> > >
+> > > To replicate my setup:
+> >
+> > Thanks for sharing the details. I am having trouble reproducing the
+> > results, mainly because the standard deviation seems to be too high to
+> > make conclusions. What is the standard deviation in your runs?
+> 
+> Sure thing! Let me know if it would be useful to upstream the
+> --read-silesia option to the vm-scalability tree.
+> 
+> Yes, standard deviation is considerable, which is why I run usemem
+> consecutively for 10 iterations and report the mean Average
+> throughput. I could also report the median going forward if that
+> helps. The cover letter vmstats are after 10 iterations. The last set
+> of data I reported in this thread after applying patch 8 [batched
+> version of zswap_compress()], had a mean of 20,946 KB/s, standard
+> deviation of 5,391 KB/s and median of 22,477 KB/s. For reference, the
+> stddev for the baseline mm-unstable was 5,397 KB/s.
+> 
+> I have found this methodology to be reliable in drawing conclusions
+> because as zswap_store() performance improves, the outliers are fewer
+> and the data is more clustered near the mean.
 
-Reviewed-by: Marco Elver <elver@google.com>
+I think the stddev is too high to make any conclusions tbh, I will
+respond to the other thread with Herbert.
 
-Thanks!
-
-> ---
->  arch/arm/include/asm/word-at-a-time.h                           | 7 +++++++
->  arch/arm64/include/asm/word-at-a-time.h                         | 7 +++++++
->  arch/powerpc/include/asm/word-at-a-time.h                       | 6 ++++++
->  arch/riscv/include/asm/word-at-a-time.h                         | 6 ++++++
->  arch/s390/include/asm/word-at-a-time.h                          | 6 ++++++
->  arch/x86/include/asm/word-at-a-time.h                           | 6 ++++++
->  tools/testing/selftests/powerpc/primitives/linux/kasan-checks.h | 3 +++
->  tools/testing/selftests/powerpc/primitives/linux/kcsan-checks.h | 3 +++
->  8 files changed, 44 insertions(+)
->
-> diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
-> index 5023f98d8293d..f672aad2e30e6 100644
-> --- a/arch/arm/include/asm/word-at-a-time.h
-> +++ b/arch/arm/include/asm/word-at-a-time.h
-> @@ -56,6 +56,9 @@ static inline unsigned long find_zero(unsigned long mask)
->  #include <asm-generic/word-at-a-time.h>
->  #endif
->
-> +#include <linux/kasan-checks.h>
-> +#include <linux/kcsan-checks.h>
-> +
->  #ifdef CONFIG_DCACHE_WORD_ACCESS
->
->  /*
-> @@ -69,6 +72,10 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
->  {
->         unsigned long ret, tmp;
->
-> +       /* open-coded instrument_read(addr, 1), as in read_word_at_a_time() */
-> +       kasan_check_read(addr, 1);
-> +       kcsan_check_read(addr, 1);
-> +
->         /* Load word from unaligned pointer addr */
->         asm(
->         "1:     ldr     %0, [%2]\n"
-> diff --git a/arch/arm64/include/asm/word-at-a-time.h b/arch/arm64/include/asm/word-at-a-time.h
-> index 824ca6987a516..11ecca99057aa 100644
-> --- a/arch/arm64/include/asm/word-at-a-time.h
-> +++ b/arch/arm64/include/asm/word-at-a-time.h
-> @@ -40,6 +40,9 @@ static inline unsigned long zero_bytemask(unsigned long bits)
->  #include <asm-generic/word-at-a-time.h>
->  #endif
->
-> +#include <linux/kasan-checks.h>
-> +#include <linux/kcsan-checks.h>
-> +
->  /*
->   * Load an unaligned word from kernel space.
->   *
-> @@ -51,6 +54,10 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
->  {
->         unsigned long ret;
->
-> +       /* open-coded instrument_read(addr, 1), as in read_word_at_a_time() */
-> +       kasan_check_read(addr, 1);
-> +       kcsan_check_read(addr, 1);
-> +
->         __mte_enable_tco_async();
->
->         /* Load word from unaligned pointer addr */
-> diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
-> index 54653a8634149..49c6a1f65c493 100644
-> --- a/arch/powerpc/include/asm/word-at-a-time.h
-> +++ b/arch/powerpc/include/asm/word-at-a-time.h
-> @@ -5,6 +5,8 @@
->   * Word-at-a-time interfaces for PowerPC.
->   */
->  #include <linux/bitops.h>
-> +#include <linux/kasan-checks.h>
-> +#include <linux/kcsan-checks.h>
->  #include <linux/wordpart.h>
->  #include <asm/asm-compat.h>
->  #include <asm/extable.h>
-> @@ -168,6 +170,10 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
->  {
->         unsigned long ret, offset, tmp;
->
-> +       /* open-coded instrument_read(addr, 1), as in read_word_at_a_time() */
-> +       kasan_check_read(addr, 1);
-> +       kcsan_check_read(addr, 1);
-> +
->         asm(
->         "1:     " PPC_LL "%[ret], 0(%[addr])\n"
->         "2:\n"
-> diff --git a/arch/riscv/include/asm/word-at-a-time.h b/arch/riscv/include/asm/word-at-a-time.h
-> index 3802cda71ab7e..fb7e2904dd7fd 100644
-> --- a/arch/riscv/include/asm/word-at-a-time.h
-> +++ b/arch/riscv/include/asm/word-at-a-time.h
-> @@ -11,6 +11,8 @@
->
->  #include <asm/asm-extable.h>
->  #include <linux/bitops.h>
-> +#include <linux/kasan-checks.h>
-> +#include <linux/kcsan-checks.h>
->  #include <linux/wordpart.h>
->
->  struct word_at_a_time {
-> @@ -60,6 +62,10 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
->  {
->         unsigned long ret;
->
-> +       /* open-coded instrument_read(addr, 1), as in read_word_at_a_time() */
-> +       kasan_check_read(addr, 1);
-> +       kcsan_check_read(addr, 1);
-> +
->         /* Load word from unaligned pointer addr */
->         asm(
->         "1:     " REG_L " %0, %2\n"
-> diff --git a/arch/s390/include/asm/word-at-a-time.h b/arch/s390/include/asm/word-at-a-time.h
-> index eaa19dee76994..59393cf065964 100644
-> --- a/arch/s390/include/asm/word-at-a-time.h
-> +++ b/arch/s390/include/asm/word-at-a-time.h
-> @@ -3,6 +3,8 @@
->  #define _ASM_WORD_AT_A_TIME_H
->
->  #include <linux/bitops.h>
-> +#include <linux/kasan-checks.h>
-> +#include <linux/kcsan-checks.h>
->  #include <linux/wordpart.h>
->  #include <asm/asm-extable.h>
->  #include <asm/bitsperlong.h>
-> @@ -52,6 +54,10 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
->  {
->         unsigned long data;
->
-> +       /* open-coded instrument_read(addr, 1), as in read_word_at_a_time() */
-> +       kasan_check_read(addr, 1);
-> +       kcsan_check_read(addr, 1);
-> +
->         asm_inline volatile(
->                 "0:     lg      %[data],0(%[addr])\n"
->                 "1:     nopr    %%r7\n"
-> diff --git a/arch/x86/include/asm/word-at-a-time.h b/arch/x86/include/asm/word-at-a-time.h
-> index 422a47746657a..1319e1d87a9c4 100644
-> --- a/arch/x86/include/asm/word-at-a-time.h
-> +++ b/arch/x86/include/asm/word-at-a-time.h
-> @@ -3,6 +3,8 @@
->  #define _ASM_WORD_AT_A_TIME_H
->
->  #include <linux/bitops.h>
-> +#include <linux/kasan-checks.h>
-> +#include <linux/kcsan-checks.h>
->  #include <linux/wordpart.h>
->
->  struct word_at_a_time {
-> @@ -71,6 +73,10 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
->  {
->         unsigned long ret;
->
-> +       /* open-coded instrument_read(addr, 1), as in read_word_at_a_time() */
-> +       kasan_check_read(addr, 1);
-> +       kcsan_check_read(addr, 1);
-> +
->         asm volatile(
->                 "1:     mov %[mem], %[ret]\n"
->                 "2:\n"
-> diff --git a/tools/testing/selftests/powerpc/primitives/linux/kasan-checks.h b/tools/testing/selftests/powerpc/primitives/linux/kasan-checks.h
-> new file mode 100644
-> index 0000000000000..000c92de6baf2
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/primitives/linux/kasan-checks.h
-> @@ -0,0 +1,3 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/* There is nothing for KASAN to check in user space. */
-> +#define kasan_check_read(p, size)      ((void)(p), (void)(size))
-> diff --git a/tools/testing/selftests/powerpc/primitives/linux/kcsan-checks.h b/tools/testing/selftests/powerpc/primitives/linux/kcsan-checks.h
-> new file mode 100644
-> index 0000000000000..39c97bc15531e
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/primitives/linux/kcsan-checks.h
-> @@ -0,0 +1,3 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/* There is nothing for KCSAN to check in user space. */
-> +#define kcsan_check_read(p, size)      ((void)(p), (void)(size))
->
-> --
-> 2.43.0
->
-> --
-> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
-> To view this discussion visit https://groups.google.com/d/msgid/kasan-dev/20261019-bug-word-at-a-time-zeropad-kasan-v1-1-f21a3ed6a477%40gmail.com.
+> 
+> >
+> > Also, I tried measuring the latency of zswap_store() itself through
+> > bpftrace, and it doesn't seem to change much throughout the series.
+> 
+> I ran bpftrace today to gather zswap_compress() latency per-page,
+> before and after patch 8. It shows a clear performance improvement
+> with compress batching for the reasons mentioned before:
+> 
+> Sequential_zswap_compress  nr_samples     p25     p50      p75
+> p95       p99
+> =================================================================================
+> zswap_compress_ns_per_page  1,722,489  43,947  57,791   88,489
+> 130,165   323,961
+> 
+> Batched_zswap_compress     nr_samples     p25     p50      p75
+> p95       p99
+> =================================================================================
+> zswap_compress_ns_per_page    339,088  42,081  52,633   63,185
+> 118,461   191,710
+> =================================================================================
+>  Latency saving (ns)                   -1,866  -5,159  -25,305
+> -11,704  -132,251
+> =================================================================================
+> 
+> Hope this helps. Thanks!
 
