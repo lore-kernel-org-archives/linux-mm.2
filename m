@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EFE60A4AF4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA51606AAE3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAvaUwuv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hsXIhuWW
 Received: by kanga.kvack.org (Postfix)
-	id 9C8626B02CC; Mon, 19 Oct 2026 11:50:46 -0400 (EDT)
+	id 163336B02D3; Mon, 19 Oct 2026 11:50:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97D8C6B02CD; Mon, 19 Oct 2026 11:50:46 -0400 (EDT)
+	id 13AED6B02D4; Mon, 19 Oct 2026 11:50:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83FB46B02CE; Mon, 19 Oct 2026 11:50:46 -0400 (EDT)
+	id 0024D6B02D5; Mon, 19 Oct 2026 11:50:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 595B86B02CC
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:50:46 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CE4BE6B02D3
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:50:54 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF79DA079F
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:50:45 +0000 (UTC)
-X-FDA: 85339813650.30.2ADC7AE
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E574F160782
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:50:53 +0000 (UTC)
+X-FDA: 85339813986.30.54165EE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0924D40005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:50:43 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAvaUwuv;
-	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id F1A0F4000A
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:50:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hsXIhuWW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792425044;
+	s=arc-20220608; t=1792425052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=84kciOlrBZyXkODv4mERfw9QO7WVRKrOSp1zoHtEMTA=;
-	b=DW23lFcNoLCW/a61mTzriR2TN13OxG23TV1ODCJhZDPEpUn3v+9mGJI7pnItM7kh+YPSdF
-	30oRx36Igq81Nhrl0ihLt3TbJP6XLMLFgUw/fXzTjJcVnjlDCh3Wd+KDx5DT4CTQ/ypqqb
-	dF8F2D47RnZRXizj1nwp83gU0yCgPqI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792425044;
-	b=so5sKbxCitU31h2ilTfpXlnbkBVMC4zTYj87Jvgec5LB6AxojhIllcqfuV/uw7tlXO06tm
-	EsaIScAEWNOWU+3+4mkxhH1lFocH39MrBlkxgcwYkAmxvyT20xh93OLHibPbG/M84ZQkfs
-	h/noGbRRfVd6t+kzRj6284RscNidSQ4=
+	bh=1tklyEFR6gzCJ5Mm0LyngFaJuzsqMluVwnmmNtY4Bjo=;
+	b=K9Ejs4yh6tsD2CbkL5nQI5svQv4vgoEjBOWrwWemJUdshGnAdRfM7YV+13nWaRbDHJYKAY
+	JbZHna0/8Xe5hwQmyI0FVfdugtO2kAEeJXniUgmfpQ29MC0Mi3u7E7EU+5Mbpy2BF1Q20x
+	2WCynlXaAOutMMc9VZSJhfDEXD7Q/14=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAvaUwuv;
-	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hsXIhuWW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792425052;
+	b=ekozpygSb/1zJ5V94HHPLljWt3wcf08WV7AWoLvlwNnc/maV2OiVZupQFgHaGOjNqxiCHm
+	RPzO4YIg+mWrj+0ZDzFWrj8Grrnj+NBTS+izwoMb2vFlXbqws2HePNbqD1U2I0pIRwi7p5
+	gw+39rOYab8zE8OJc+vLG4uUHFl6N5E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 971F360A8C;
-	Mon, 19 Oct 2026 15:50:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23951F000CA;
-	Mon, 19 Oct 2026 15:50:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8825960DC2;
+	Mon, 19 Oct 2026 15:50:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777831F000CD;
+	Mon, 19 Oct 2026 15:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792425043;
-	bh=84kciOlrBZyXkODv4mERfw9QO7WVRKrOSp1zoHtEMTA=;
+	s=k20260515; t=1792425051;
+	bh=1tklyEFR6gzCJ5Mm0LyngFaJuzsqMluVwnmmNtY4Bjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aAvaUwuvUUtLmjHYM/vxdlwjRnPCQd/X1k+Vw9SNUtMs9+NZJtqXQVqXvKPce2k/1
-	 NJCVygj7XBwelPnvcCM45nnXhwbK3SsH9e9IVmctY2H78WSxBaR0KvtZQxDtJVhM17
-	 tUbFh5QkQYMGYUQCuePulKhNcEeHnBHf9kgposV10ZipNjxU5anJqHBNeBJ7GSrOAA
-	 olUj9GyXxCNMHqHs3XuQYGjJB4l9U7YTvaHIy9wob25lR4PgASSai9U5/TRjt79Z45
-	 nwyrlNUis8TN0J6gKu2LQN37WExB0MjiBdsLWM3gp0uLGZba+NgDi5HEvv9B4EnbkQ
-	 ZFkS8VWRjlQ5g==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id E2028198003A;
-	Mon, 19 Oct 2026 11:50:36 -0400 (EDT)
+	b=hsXIhuWW5cj0PTnvYiQiB6X2pHdnoes0T9srZXVcGrGCLignDLmHgupnUcoAgQ6sL
+	 zNEpP2bzdCxqRAzHHta6tZqeBuB/Ybnq7NpmSLKcyxol4ZNb5HZjMVH3Fi6HN2lIa8
+	 RT6361ta0KFbAm1A7d4ohT1mxTZGqmPad99jfEOBeVsQPuMb5cqHMTV/F1S2gNpWn9
+	 36gbsPRKMmo/fkjzpLprlWSRnqpI4UNcBnFS2ZcF2CKMRpSARaxRs88W2d25DKTwpP
+	 bYwnV06hz7rhXb4KqmlQ97hCoZQGDTLCKj1DWLvkR47g5T1eFJyfX3ZzR4maur/kXM
+	 c/oH0GAq61XAg==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 4FBAE1980047;
+	Mon, 19 Oct 2026 11:50:43 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 19 Oct 2026 11:50:40 -0400
-X-ME-Sender: <xms:TDzWasO60PQvntzS9366fCY95rDVfKeIR3NJ7ADs4wV6sTUJjpwbGw>
-    <xme:TDzWaoPKS8FIYC618DvlO3pyALvXKjKQhn2vx3rhkDA0tTDewfl-I4kdm13kD98Tc
-    23RDfK5vMlPpiz-hsQaC_cfvN6_gIjd9p4KxXJBbaQSouuBtIMJHAplpQ>
-X-ME-Received: <xmr:TDzWal47R9QK2HPBOM5PFWfyKY1_XY1VmGEp4Lzi0bNCigy9R2QEHqVo-HA>
-X-ME-Proxy-Cause: dmFkZTE+kjgISKw/D5xbtovMvE/5+MXw9OAGtDBfqR9Zk5dZNOqhNWGTcEGO5Lmn7qsaMJ
-    P+2+K5eT4SfShSSEvxMo9+0NhMtUrbV4W6Uy0A3XpuEB672w8089GbqFaxEF0wWgdpl5Mt
-    ZGUplA1E9XDXzNgkO2MrFgMfcNS4u61SieDRP0v46gjH0l2eZ2DL9zme+jYfCIiYlLA1YJ
-    nvbn1HssXPAJFHKdL+OCiEp78jaTWZC2fJHjA4vCnfghQrymIXyUGAHupLMJJEm2bjt0nv
-    kEsuBoXYnW/I4u0Q3SZjAxl07Y4ERxrcHOAeD/N6wYko4+jO11wXgs98kOmjLgJ2rMOJsz
-    18DGIkmN8sCfzQCV7sEJC2pxZj7RC8eMNg1UeU3okF34a7lwK/lwdys+qzGdOtcOrJ/aTC
-    NyiQb2ojE9CGVMmdY3XRIUnsiIK+vh2Qp4y529vGZS2ky5yIHL3l90Z6GWGm/WOIIfg5oK
-    Xg26A/pynhkh6hF6E3O78PaDtNLzaswXz7QJDAJiscbJuWQaSXJGKaFS8MYUIp92Gs9Bqi
-    sxgAWUCcGgxBqOARvxJ8DYrqTKwa3N7LrLH3zC2I6q2SQjdzl3j6BRuxDXQTf9D/aeV5Nz
-    GTRyl5naroztNsJRmBnZqOQ+gKUFxhFup+Qqs7PCujlpUVIZc9ZejZctTQDA
-X-ME-Proxy: <xmx:TDzWakbXGWKb0c3p3qtVBjmRHsel7_XO7EfjIjy1thc7dBUfGuN9jw>
-    <xmx:TDzWalEbCtrJtH572tDLhZDb3-jkcyazOMqru97D2XXJRJYZZP1pjw>
-    <xmx:TDzWagJ63Zx6R_4aGY5kpVgF0g9Bk1oj1YxX5n5-KI92AYhlhs7V6g>
-    <xmx:TDzWasf4QkPNubBlQgrobPTuLwGYevPvVymd_nKbfx0w0xeNw8_t-Q>
-    <xmx:TDzWalb8VXuZsly1wZFHr7B_OCOMH-ACacB-wGS81awYqeXdWE6YfBfS>
+  by phl-compute-05.internal (MEProxy); Mon, 19 Oct 2026 11:50:47 -0400
+X-ME-Sender: <xms:UjzWas8YaXxplGvXzipG6uI1sXsBInjXF9r8sbOdPBhU0BQ58KGbHA>
+    <xme:UjzWarrZKeqH1_igCCu0ZWOb4ltgMBWO_uD6NCfB4eQHmLJ_7w40CKkJ7KAVxUelm
+    -Zg5Paksq_0oHxs7iBvumCcbgOQrcy3BPyZhKTUsfsRTVe_jkGhP6-m>
+X-ME-Received: <xmr:UjzWanLsrRLrWT2ZsFloo-00WxlBJ83FqnbM5-8y6hmXW3bX5miNo1uMnEk>
+X-ME-Proxy-Cause: dmFkZTEfcY8Sedpzpe5Eju9n5oayhWKPyUV/WN4ORzd354gnHcUNRyDxnfDrVtF0Alji6y
+    FwZ4Dnqmp2xFA5TRzvzZXvYk9IWIcIACK0GXlQFj7v3uEIoT3YE0GAecfgycvJObnsWgyU
+    omy/lOe9Ul2f7WNFeSYzOhn9Xhyn3eRZ1/u1NlpfN8iOBPXkq7lLkPZY3eLvZtE4xL/1Z+
+    12+yKL0HGegFnoIlCDAqs/SztneWlDn0ZvTxx6bOoXiDCEows+EqK1vqCcT2wFPXdzHPq0
+    s7OKMwp4WgMV4JhSm776pUXmDzbWh34FJ6orb+IJbBIpKyqJoy5T7ZZsX3UOdwDn/V3zkn
+    ciLaL3SK5aczqSEptHZ258YgE9enzFCIUpka6iwuWD4uOZeMrkBJzpGIh4KYoSTKKtrZvs
+    4xlScy5Hvhm0g7xX4aojdn8ZeOHImmKyG4/X0NM0BEhBJZwbtMoljvktLExWcSAkjo8TeY
+    M9ZgiJ4yApWw5S7yHaoM4S1qhuWXr76hmoCzlz/14P2STYv2JmsxWXbP8qgk3L+yEEfm4+
+    3MerERvzt9ihX2Y+062QX7gG/Ixr1M6EPT/QUzWtcZAGVChJyuJxYkvUbIu8P8Xs/1zdh2
+    jr3zr60rV2eRRKH1RKef8o1ShHXZiOm4tHdbt5LbIl8o+Sy3moybVLTrAMFg
+X-ME-Proxy: <xmx:UjzWag2nrMBiBp4mlK9_Ir0PiiNluPyJXZO4HJytHTBQeoAtapKu0Q>
+    <xmx:UjzWag7h7bJWxybYjWYlm3ke8BwyrXuLS3qcZHceyvKUdrzDDfvR7Q>
+    <xmx:UjzWauOg48uChbEoCOpDwRAH-d8ahHPMAOzQIm1zcvkGaaR5AE2lbA>
+    <xmx:UjzWakK4lkDbmwm-rOmWK-bmvHauC5bAOuFZwPpunuoyY0t2-8HEyg>
+    <xmx:UjzWapq27qqMqn2japDn8szkR0NKrbTuk5ifZtw_7yBQEUVdalmiFhCi>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Oct 2026 11:50:35 -0400 (EDT)
+ 19 Oct 2026 11:50:41 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -135,28 +135,28 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	linux-fsdevel@vger.kernel.org,
 	fuse-devel@lists.linux.dev,
 	kernel-team@meta.com
-Subject: [RFC PATCH 12/18] mm/filemap: don't defer the free of folios of an inode being evicted
-Date: Mon, 19 Oct 2026 16:49:05 +0100
-Message-ID: <20261019154913.1765974-13-kas@kernel.org>
+Subject: [RFC PATCH 13/18] mm/filemap: store the end of a read in f_ra only when it changes
+Date: Mon, 19 Oct 2026 16:49:06 +0100
+Message-ID: <20261019154913.1765974-14-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261019154913.1765974-1-kas@kernel.org>
 References: <20261019154913.1765974-1-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0924D40005
-X-Stat-Signature: rgd9kk5foidf5f77486if5yq95gngzwy
-X-Rspam-User: 
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F1A0F4000A
+X-Stat-Signature: j5ej5dwo4maoyws6prt48sw4ta4jczmj
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792425043-532347
-X-HE-Meta: U2FsdGVkX1/LuvBeZb56OKx7XWQ2dMtzQMSHlD8f+gV6XIb93BSzF8hkiazmEOa0Fra010wAmyf4DUaK/E2RoyvAlx3xPnD58i3H6GEBseGFgbMPqd1EahNyzC6y7msmc+mLIMGoVNSzixsNTnXNTgdBliOWgPtxUb2AnJqGwixE4Dm8pEVnNxrTNeb00f/ItxsGVCwYTAh4lW6nFMOg40YcdTSt4247gi8xPt8EvCXR7Purn30YkyzDGbcJOb9BvTIZG48lTWFAIul8/N6/elYxYA0hNDc4bMeFv5zF8sPwgPKOXQUxyDZRomLK3GA8ruZc5ufp7+8VYXtdQFDabXAoDKiCX3lmoiMP4VBZJncAX/YUmmpQCejvsn97AAy+GVIB4B65I2VCKV1yGxOk71ufkXhvxzy2FXGPH6t64287PDAYddbfq9j+hX7dpFiF+e2tstR3LNe/hS6UQoIEYADbD/6qmqa/EiIg1qG6sH964KWGN5db2KqFzP2Ycn6hbB15yGToEOivg0MWoAVdeF4FMKDXAOh/Q7wLAFuvl5wLLf6B7pUnkDaz+k2t9XSN1TN3+wfV69Zk4IIofY8fFV1jFYmF5LaWglyVXjjZbBRoeIodCH7FUGkuK+PKYbnsycTrEn51K2S2dEPZW7jiGgs1YT5j2UhoIycb6jxwN3PJIGeneldSd5BqHMSCnWg4AqrAqxwV5swTbKetPxLK2WVaMrsPQkvWB68m1d78qsld4X3cYmKzYnstFmewQiuRwk9gyVJNS+4+KVsO2hu5UTXdRV77Eeblat/glHubyiUwd+oRbpIpio7Usw9t422joEAcNK//wG1r/VPN6HIvuVJb8Ii0YjbhzlrWPwA/XDLaSt1ZIDoLGRcNj4GumYyt86en8DiUjHICUt3EAbvG3/vwZAlh3oAv9rglUBVrAIZkAoyVDhvK91ieAKADy1Wt5cqVFs9SfMJWwkfZ70V
- FbLbsUO9
- KwnFR9ietcSFQeN5vJdFMDjsSqZCCZj/GaZ6ab8/GtXFqmfaCzuoH5+6qvwtprtkFn5fi4u1mscp66rxCQs2N/kOPXvo8eLcLQ7CCMzHSKwS1rvpxIp8iWI3Wgs+LLX7s9UgTfRASBtLyWlSfgJE0lPbXZnfD7+Mt+GNy5u+0Gdvz7cSWtx3MIb/fglOX0mETy+bp92IDJbIS1BQHGPuO+0GyVsHDwij2zDIRdkk5B06DP0oNF8mW/IqBYzmxk0U5oOW2nuiMVcXL7tKHXbTwZ779ed7frvbLp6+fCVFg4APcLYATTKcpl37JKX1yzVE9P5VUgvo4DDO/JHsMQbveI0694SB7Cy7h8HVjfleG5q3L0I3WrO67z2Qy/mBeKqnPbqYl1AJXUyLglD4=
+X-Rspam-User: 
+X-HE-Tag: 1792425051-997923
+X-HE-Meta: U2FsdGVkX19WUCeKnIdfiq7QFcfvwNi3nQwiQ/KxmT0FVhI/Tu4RecEuOIWzVS6Rra0foRb4D/pIP1UwpeM4TLHBdhiJtRNPGXKa95eblwLui90TEhyGUeLBRgsxUBUHBUeENsaBVQrtnaeW5i7rzRTK3xAUOuhfMotsUX6A6dDFmrnOcNKHTmDJ3uZzyqFAA+Ce/qwFpzsk2RJbRB5Qew1pF/+cp9NAJKeL251W5unqgXxZrTLXraGPGaofiAotrmuNMbe62hsITvK9/6dNSNK1BntjbmXPvo0HBkMAgT0Ej1vlCn52HH6D3MuJBOtk/EJEKGfRulI7xVj5OP+YxJcjjw4QydBXN584X4zsC3qAtwwk40EIG5Z+zOgNGwjACGvB4FcAB73TiLWL7s8q4uEJm1BkuaZOx9k65mEx55vo6450jpgT0Iw11t1mLBYF/13ZXX71B98qxLn0rEtCzFeTWY/p6tY/Dxm+WRF8jtF/qddaAlifOowKbWPFqtEgf8vEJ7qODYIC1VgBsMALrpe+O1ZmTlDnpx2c9yZtV0lwKzurmhDqxEOj4HRXUPCaIZGVWzTv8F/QmnAfW3z4RnjwHTOFwYdHFkUMxv3ZsFNT/vC8QbbLbNg1pbmZ6RxsSZ2ip0Ooh2MvB6Fr6dPc092hcchFm5HsickF5j+z5Py41spt/Czr9hXke6ilTtwOI8c1QdIpdVJ+A0MEaHrJULhDttwFJdwcpaejYOWDui+o9xeBu22UA7wmnoLNu/KiLAKXElOyaF6XWtVPH9loA8tCLoM1nrDhur9+wJntB6O/GFOsWVpSjxerQ1WgABsW8+kfcV+KDtvHJy4baJBd8CRPpfCWM0tI1dERtV3qe86XXElVlbKy19pAcftmnTgcC2Iib6QPDTLqG7r1kJfO1jr7/dKt7Ty2WuqNm08HJT+OBKb6sCa4PGsg5JxQ/ezCc63+b1MbHk/8hoLS9OL
+ UsQYW4Vz
+ JsBmJI23jqpTuxdwlqXs7Yrq7vw7WC///qfDpmRbtNJTLHg5I+Cm9NYHfzdBFuFYCnyD6w1lKIjGjPUhdZDYJFKeJ53js1keL16xH09Uv1DC0PMgs8a2gqiKi7J/lPUpWKtllZiRonHOmN0Jntw0wY9tVPsC3rW6WLm6kTBpQ3pHcIHBUPRRHY2yZJ3Ts6+OIIMScISQKA1Q+pUetjjxiu9ErFgB1rw2Hqiu2LLht25QxY9GiigspY78Z5GqUEqSxrCuO/CjplZQ8B7N5BlHDhu6QVSamL5Blam9SENgqZvKcIu8e76kOaWlX5KjA+XeEwIK4YeNIYx7bL5BZhgk3oSazMrZAtT74aCjucF3oPmSkTJBfjXjMzVAgILW0vHui3vmvIPpARQWpPXvLaT7FYdgaDQAPqkxpIqpD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,74 +165,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A hot folio keeps PG_rcu_free until it is freed.  Deleting a file that
-was read a lot, or evicting its inode under memory pressure or at
-umount, then defers the free of all of its hot folios.
+filemap_read() writes the end of every read to file->f_ra.prev_pos.
+Threads that read through one open file all write that cache line, on
+every read.  The value often stays the same, as for reads that start at
+the same offset each time.
 
-No lockless reader can be in the page cache of an inode being evicted:
-the read holds the file open, and the open file holds the inode.  Clear
-the flag when the final truncate removes the folio, which
-mapping_exiting() tells apart.  A truncate of a file that may still be
-open keeps the deferral.
+Store it only when it changes.
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Assisted-by: LLM
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- include/linux/page-flags.h | 5 ++++-
- mm/filemap.c               | 6 ++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ mm/filemap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index a1e52a1f8a52..4916b5713a74 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -608,17 +608,20 @@ FOLIO_FLAG(dropbehind, FOLIO_HEAD_PAGE)
- /*
-  * A lockless lookup that sees PG_rcu_free and then still finds the folio
-  * where it looked may read it until rcu_read_unlock().  Set under a
-- * reference, cleared only by the free.  Not for hugetlb or
-+ * reference.  Cleared by the free, or when the folio's inode is evicted:
-+ * no lockless lookup can reach it then.  Not for hugetlb or
-  * free_pages_nolock().
-  */
- #ifdef CONFIG_PAGE_RCU_FREE
- FOLIO_TEST_FLAG(rcu_free, FOLIO_HEAD_PAGE)
- 	FOLIO_TEST_SET_FLAG(rcu_free, FOLIO_HEAD_PAGE)
-+	FOLIO_CLEAR_FLAG(rcu_free, FOLIO_HEAD_PAGE)
- 	__FOLIO_CLEAR_FLAG(rcu_free, FOLIO_HEAD_PAGE)
- #define __PG_RCU_FREE (1UL << PG_rcu_free)
- #else
- FOLIO_TEST_FLAG_FALSE(rcu_free)
- 	FOLIO_TEST_SET_FLAG_FALSE(rcu_free)
-+	FOLIO_CLEAR_FLAG_NOOP(rcu_free)
- 	__FOLIO_CLEAR_FLAG_NOOP(rcu_free)
- #define __PG_RCU_FREE 0
- #endif
 diff --git a/mm/filemap.c b/mm/filemap.c
-index b732ecaa78a9..53ec92279977 100644
+index 53ec92279977..960d53b61d4b 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -138,6 +138,9 @@ static void page_cache_delete(struct address_space *mapping,
- 	nr = folio_nr_pages(folio);
+@@ -2941,7 +2941,9 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 	} while (iov_iter_count(iter) && iocb->ki_pos < isize && !error);
  
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-+	/* No lockless reader can be in an evicted inode */
-+	if (folio_test_rcu_free(folio) && mapping_exiting(mapping))
-+		folio_clear_rcu_free(folio);
- 
- 	xas_store(&xas, shadow);
- 	xas_init_marks(&xas);
-@@ -306,6 +309,9 @@ static void page_cache_delete_batch(struct address_space *mapping,
- 		}
- 
- 		WARN_ON_ONCE(!folio_test_locked(folio));
-+		/* No lockless reader can be in an evicted inode */
-+		if (folio_test_rcu_free(folio) && mapping_exiting(mapping))
-+			folio_clear_rcu_free(folio);
- 
- 		folio->mapping = NULL;
- 		/* Leave folio->index set: truncation lookup relies on it */
+ 	file_accessed(filp);
+-	ra->prev_pos = last_pos;
++	/* Readers sharing the file would bounce the line for nothing */
++	if (ra->prev_pos != last_pos)
++		ra->prev_pos = last_pos;
+ 	return already_read ? already_read : error;
+ }
+ EXPORT_SYMBOL_GPL(filemap_read);
 -- 
 2.54.0
 
