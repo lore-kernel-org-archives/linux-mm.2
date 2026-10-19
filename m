@@ -1,97 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA014606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CBB606A33A
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 17:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=vRCjSre6
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=aTiAZMEt
 Received: by kanga.kvack.org (Postfix)
-	id CDC3A6B030E; Mon, 19 Oct 2026 13:19:49 -0400 (EDT)
+	id 36E0A6B0311; Mon, 19 Oct 2026 13:23:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8CC86B030F; Mon, 19 Oct 2026 13:19:49 -0400 (EDT)
+	id 345A26B0312; Mon, 19 Oct 2026 13:23:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2D8D6B0310; Mon, 19 Oct 2026 13:19:49 -0400 (EDT)
+	id 25C136B0313; Mon, 19 Oct 2026 13:23:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 880706B030E
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:19:49 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C363A081C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:19:49 +0000 (UTC)
-X-FDA: 85340038098.19.E8EF3A2
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4F207A0003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:19:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=vRCjSre6;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.210.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 028E86B0311
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:23:52 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 795A11207CA
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:23:52 +0000 (UTC)
+X-FDA: 85340048304.23.8AE8B08
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BA1F3140005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:23:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=aTiAZMEt;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792430630;
+	b=WwCfvASr26SiqeXOTcun+gZe6qd+Hzk2NDlfTdr0z6q83x8sPMwhv/dH2G3h3w3e8327zL
+	CODfTb/PDoBIt1cExa24TPLFURgAgOq4opVNyQV0zZpQu2bkeIab3zIiHXsf73e3Rcffc4
+	fAPh/mJsXSNxvHNU7OWDWcZj9oDqsr4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=aTiAZMEt;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792430387;
+	s=arc-20220608; t=1792430630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CHAyG17ULwqYW3XMyT+/P6CxC7w9alZQfDxEUV7e7EU=;
-	b=RoYgNcNCAcUXZpxwArwx9h1LLOvfjL/Pb7TAuZN9ynL1PrxUMN678jpUp82wcoB417lWf1
-	PTEvb2Q6BGkQBWH1yovO+gM7OPftV6+iulLpIirfXXHkw9E13V8x2TsGsb1rcK+BCswjQx
-	JO9b9Pt96CNNC9s84SIPG+R8ueXV+vY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792430387;
-	b=UdBCDDV6BxBJ66vRlNasZp9LmaYAQMNNQqD3v+FRfyKh4xusXqMU84HjvEynxRN/2Ex5+b
-	LaQV6/TbDnaw8ygCBHAuhhf0jeXrJ5sO77PsjHj1eIdZClbO0Z2lABkm4lGcCetDBfCdVf
-	wBVWkxSHKPc0uybpaTVvWtLF6JrDuuc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=vRCjSre6;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.210.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-8446af403b5so1162390a34.2
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:19:47 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=FM3inNO3NvMJdWVpEEkpanyELpfwLSr0b1DWGRNHevw=;
+	b=slqtqWKL/SIFufFhlbNpkWmCpLsLhimzT19VXRqLGEQ2cYvWPec48G0nWnlpVCEBf3qBpR
+	F8tgZjuyuM9kIrTFyoz/XGs86tpLil8ILogH08xFso6Modk0C5ZW844kZcTETYWgHJHrkR
+	636DzNKUhKnLTZ9HfoQDla0BQlqLMSc=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-91befbcad6dso26234036d6.3
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:23:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792430386; x=1793035186; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CHAyG17ULwqYW3XMyT+/P6CxC7w9alZQfDxEUV7e7EU=;
-        b=vRCjSre6EOwYBi+hJWLqVJol+1Cm5nYJ4oLy4Y28e/mhAr8i9WBmkxht6ID/3B/bwi
-         uzIvliIjw4vp/5fiytUjWuQWwg4dvHfxlVBcyzViNGnCfv6Ez5Uv8JMLTYnTfUeddh7+
-         npokuNNRZ4c4zXYHAW0/vEXDU6P8bI7yOIJLP9PSenGOP1eMc17MwrZ8YTXM/eZruyh4
-         1USc+Gi0tzSNyiNsyDNfc5+XTyrENH0X0wT2D+sVtwPWYW5iYCce1RpzuCY4SxW07Jon
-         I2WlMExS61MhKmIp/pbkHBjwmZXFDb3sbMFrffy2ytcHRMv3ASAurKGlrRgkYtnkhxAG
-         n0pA==
+        d=gourry.net; s=google; t=1792430630; x=1793035430; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FM3inNO3NvMJdWVpEEkpanyELpfwLSr0b1DWGRNHevw=;
+        b=aTiAZMEt8siKomJdE8Vp5NB9B2HKs42seAq57YV/YY1Rnjd3CF+aE/qBkFV60Dh9Wb
+         y9nf3+oWlqeuU2pFHv5Yaq06pC8eijlAMkrBNp5qmrpLyiOIzqIcNYzRQjOvHrQ0uza+
+         d1O14frVjhT+ca2To3WKoD+Lv61Jk0bkq+yVNBr9F2SQ97SLC4bdP6vhNUpMqlzcBHW3
+         EcLlW0kq5D1vLvs9Z2UGdCzzMUH1VhejBHivFiDlFs7TsmCcnF6dYgQlfQQZGPMkhXLX
+         xjncXvGkVD96A4tyZtYWHS7ROlkIXH5L2fQJfONEkKcoB1F7zUWEXrGU9LkKTddTkHZi
+         ChHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792430386; x=1793035186;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CHAyG17ULwqYW3XMyT+/P6CxC7w9alZQfDxEUV7e7EU=;
-        b=MhqWwvnnH+yTJdPbKmSuQQytxy/+ZUeI2p4tBP91vwVoQrycR2RWQke9OS+K5O6JAr
-         IZO4mBwnLQDvQTWrh8VlFWZoFLKWbm5cdpvVXQ5X7UKkLQlk2R2Ml5hcByuGWJo0sDW7
-         vdcQOyJImX3URAGglSE/aDSCGmAqudbz6jKpP3ZlWNOH40AoyevT7uXQ98DPqBCuUJe1
-         l2gR9r4HXwObWEUWA7e7Q6fa8yw6p4K300lrZj9dEAOoFw+rp/843iIftHpXy+nMSSc6
-         Ks9g87xeh6nZ0dryj2fqTwhbUOJ+6kjAugoIxNv16zVeACU19RSHNexQqVsOsT796AFW
-         oOsg==
-X-Gm-Message-State: AFq9FYJUS1WZv7bLw4w56lx7vnATnoW69oTijnBdx++oZQR0FMHzUC6u
-	LrGOY9oKKOmGsV0HuaLLDVcPwv6Gu/0R1sOxiZ6AeNDlk/5+umSryEO/ewrmS+56Mti2cUoL93R
-	g+DbTJ24=
-X-Gm-Gg: AYBFou1EjcTkdw8Dt6ufrUIyhhwqNG2tIJoTkQkFpQl+5lWdeBrqcIi4KcyhlvSTczl
-	2xF92MZIiZoqFMvZ8s67TOCnBKEyyMFE/Sa307syiJzKUT85Y6Z672h5R99Dxjo3WekRAS/JmaB
-	qkJVwmm5HQzBAzHl5SUHBQsqzbr3jupVpvvr4qdfsFk1zW3Fi4eqcOAd4GLL0GJY5MPj43ISlIj
-	B8OvjgcZE09ZZQ2dX131abIBIbPibnJqb1p1vqjPgCo52lWo3ILFJR9hdT0/4/meLhEL/BfQqP/
-	kDmYCjo0C2KK4pG6dnFpPNcLEqugReErnRP1k7ftQ8m0Q+8Cnd6Vv5cYiRNYcqN4zdCcKwk46O2
-	xgP8j/vYsln2I4Qc0O+GAcy4ICObpymbdd0v21ejLc1GantFNK/eiat2A4Er/kH9qZEQoAuHhOm
-	1waOm/WrSbU5aGwmAOURBajFDucppMBrQrYEVQh1GplMArzQ7kSuc4UIVZ53ogfYiIOBOdDEi0J
-	txHYAPAajiWH+F26TRXiHDhxOD7oyF3vkBo2otrY5sFIb2an9B96HFw/3rR
-X-Received: by 2002:a05:6214:1d2a:b0:91b:7f54:8dc1 with SMTP id 6a1803df08f44-91bdf3e5077mr140461206d6.50.1792429940088;
-        Mon, 19 Oct 2026 10:12:20 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792430630; x=1793035430;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FM3inNO3NvMJdWVpEEkpanyELpfwLSr0b1DWGRNHevw=;
+        b=xaYAkd3oGWQ4kH37BrE8LQWaVvT/qMROh+pdgH0u//Kdx4q9XPD+8RABqz3FtpNl4g
+         3qgClbnNXAYriH+LejV692AGp7mhkeNRrQSR/d/Bjl0q+mTx3FbpmN3b3E4Yqq41jynQ
+         qGS5qgzqe9KhWNV7LDQb/ggOeRR9v/cInJPhmjSAmaxlUy27NT8Scj+uvarxtMblUabY
+         8/+hsTPPVsdu4aoXlgaxgZ9Lrsp6bDUvnfAtgLaw6XCrTUaqeLuPn90ZlYsYDD90YHUV
+         VGifyG0PBQSVfiNnBME4qoOtEwXlVWLUTBgFcrcGedvhD8doMnI1X6+sEYa0TVRJojJI
+         dlEA==
+X-Gm-Message-State: AFq9FYKvtz+rOxwcdaBpnmDrGF7t98zAfe9ccjozTRt/Q60Aq5twT0wD
+	UfVGnWwjIj4DthhYFL1r38cMhOPHeanzhC8zA+W9k1PkMkZE1aUxmnpV4ojolASFW4DubAn7RAE
+	rtoNRTo0=
+X-Gm-Gg: AYBFou00DCP7Tx9icSe5IfXomp8HL9dl822+YO7sYBPbPVZiZvCuytRL44JHUs8Ki+r
+	ZZgaJVaDZf8P5d2eFaacL1i1O93IWzXi7kP+AP8UadLZyBCyWPEySnjPEYNiH3/ukbN61DecAo/
+	5SC279I+LFYfiSLEYEzPl7S5Vnp1tiaJ73eWJf9IkgAxRE4SWYEnDKEUws5HxCFNmMosButuJ6c
+	R3mzKDCuHJVdC4bdua9C2qnaV02igqXKOK+L5QVjNOWUgWT76WnNNhcAoiqnVP4rzwooBv6/ZVK
+	XMKjwHD5O9mjSIrLGnGSywhz716QwKRFo6AQWlOPL94zL5Wp0yuR/pMRu3A9IaVeRczNHSllizM
+	0PwUsjuYTjE2gp8LJuaa8KNaYNrjmVGyqmd1cg2tzV/upe+XADde53eNfiTysYzlJQs1/JHD8TY
+	my+I9ik9NDIpL2dCIpgBiKzbo3DG1UYc2HuxR+p1Xa6ZgpFzQMxGkTO7xsRW7/eRpuh/4s0g/hs
+	/kpVH3wgvvUSvXg3DADJuBTmOA3oOzgrMyEPHANPta6vPMovMM7+Wt3Ve+m
+X-Received: by 2002:a05:620a:43a8:b0:93f:1dbf:6ceb with SMTP id af79cd13be357-93f29b74543mr1329416185a.3.1792430629865;
+        Mon, 19 Oct 2026 10:23:49 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040d4cedsm723116d6.34.2026.10.19.10.12.19
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f4adb28c2sm14615385a.0.2026.10.19.10.23.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 10:12:19 -0700 (PDT)
+        Mon, 19 Oct 2026 10:23:49 -0700 (PDT)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-kselftest@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	akpm@linux-foundation.org,
 	david@kernel.org,
@@ -101,29 +99,31 @@ Cc: linux-mm@kvack.org,
 	rppt@kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
-	shuah@kernel.org,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v3 7/7] selftests/mm: check that unauthorized MADV_PAGEOUT skips large file folios
-Date: Mon, 19 Oct 2026 13:12:06 -0400
-Message-ID: <20261019171206.3331374-8-gourry@gourry.net>
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	mgorman@techsingularity.net,
+	jiang.liu@huawei.com,
+	Bessel.Wang@huawei.com
+Subject: [PATCH v2 0/5] mm: fix allocator races with memory hotplug
+Date: Mon, 19 Oct 2026 13:23:40 -0400
+Message-ID: <20261019172346.3344005-1-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261019171206.3331374-1-gourry@gourry.net>
-References: <20261019171206.3331374-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4F207A0003
-X-Stat-Signature: e75wmxep4grzpmimfipy83s7b3fkpktf
+X-Stat-Signature: y515aciuy971bfe84agizps5hpq3dgun
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BA1F3140005
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792430387-998734
-X-HE-Meta: U2FsdGVkX1/sBk7KYQtnJxB976AtVuSKyYEzr61VWwJCCWDm9XdyKazua8zeSYh9Rwwvted13G0NONS/dWqB4wy7NAQs2sRjX56ONKfwMA8pnR2SCI9z52n9cMFfwAz+PcD1cIrshsbifk1yX8kaN+tVrtFPLow0JWw+OjLI6uwJGIUxJOVV24YFQnFn3PUIH9AU2Wct8GXqCYGzsyi8wdc2r1s9ISz2nvH/zaK/EglVIlfx4Iut2Md/UkXuBt7ORXAmqh32SWEgEU1bA32ufk3/XGpJ00FFIw34uKiBw4v8R3CzitufBQxz42V+B29HaorGgOIyTsy/ON5a5ULFE2dJGBe23d+AWOFg6x3WMB+PgG9xsvyWGORVRe7bX0pQCGNQJwEiYBUvikonQ9dOEwfKGMp51lgMc1YQrYr8hg2eFdF7+usPMXalLoOgXHb+Q+30QU8YwbL4GR4qrlo4k5g36mEP6toxKzet3cFslI/L6N++K8NOmyTohC2xrxkA6R3OO5LdpvyECHYQ6e8/tSP3lrn0jDQRJwYBCsQsy6jBgM+B8eMTI9J6SORaGotTu/GOWBNDtCvha5eUM08atC0Aw0xZF46Mo3eTlxiu9u8V7nhTYZlPP32JCKH9zXw2a/tlfx+UTdI0ffuSJxt4ttgEzOErVEtfOFqxsy9HG3yEJR7VTq0Q8Pj91nwAczNkG4qvdwvesDP4HfC2UP9YKIKVfNsum5l0TCESoAE8YYpuQcagxgCPTIkuSyqASzIXJd0p9y9F1fclcGKI6Nam3DsKXaamP2LdnYKJSvHXlU0BWB2rV0gvNqQ+nzuUw4A+sHvltP8UWS0HWSmol8M7Bih5uACx8G7bZr9dfHOFhaYe3rHCRT7qdZG6HPABZ7XGvjbR1YLoIpCFG31oikt4y0Wm6UTb3KEISK58X1+5E0LJeOz/+5a5Co+nv6c+SSuslmtvw5+Na114spRZjng
- tbJAvm+Y
- wZvuvRPhf/CBYLa67nYtZv5foFnGZE5brJmOR7ogNcRfQqiMaacvm3dcXMo6OszDXhvfANTlp5MEjoJu8mG0X0ebNoQyJWYgd7o01PJSLLpVo9mP1R5TIKZcmlodnd16ZSD6fWaijf0IqYkH4849TjBxJQEFtFRp38jsBONJ91oeGx97jHc0+NXYkJ4QdentFC9dp3DCdCmNvII6ZGB8yXqu3oTqYJtlcOuk2Nfj5jCJVFVRwkT4DhrjkhZGcmvxx3279hFkGhyvkpa8zYPaNiDgjXfO8TcS3Q2suHotAwt5Uqtmig+9wZQRtjie/kwY8NYPQCCvzIdP3UdxPZeY/wVM3E246LcOEfBgGLg7fo0LcSqgadmrxFCLeHTvlOvkeA+t7pX3fKmDbMj546jOljYvzGiciY/cPkOgw
+X-HE-Tag: 1792430630-30834
+X-HE-Meta: U2FsdGVkX1+umNHFRiBoqAKJRUvhckqFEcXTB7t9uIRXV4byJmEBKC11D+xl2rM2bCX47b92fWKRZm+Yo976OFFzVhyMnOWQSwSphwPJ7jruZUL+kS4MTeQypg6gRUito6j5uVZ2TAWhT/IZg8N/HADfM5bGbHX8tCpplhVkdp5DvJoS2YjzBeWzQaf2XrGjmlqlyqo7xpT3hnsyCdmZZRcqxTnMSQ85RxJi3Y7FGFbzpCoF45Hxkh6jrHKiXnnK/hPEDhi42FmzArbn8GjuizBlWin9jGqBNeHHhIrBGkbK5UHmHR8Nsb5AOpnYAtQwaCFqlE4dfxS9RwTwyj48qwC6zHo4AHJLN2og8wcvMmEEEbKpDMu1z4p6tv4aRqDRtAmLOSxrEYaocP6dvI8c+/mDzQY0+sul/2AJRASda6j/XtBuWczv8gGH0Yu2Z41Gg6ghe+8eXdZH7JA05Gu9DTtI4W+qG17yX1EzRIpUW9YHhfv5FRdtlgyh3I2E2h8TRxL2Be2UwkckwFiSY+932TjhhqqdJGVGYq1PA/ABLxcOkO2L1oqM4aGOquAWHDUVPxYX1XfdB2xTvTiTCoipvUtBXnysqGJnbM5vv+8BmK9AEJLiVu2ylXXBED09BNTiblm9WZbg+I2hAJNHyAdHm8x6gkU1hgjywBrHajrfMOkf69X4LHa/J+vNFfj6GqaZic/v4fPkecNQLlv6RgcikZ2FwkMgPC8Ovc0VCFzC1yyu2Vgj0oL0i+MHt+/8Y+Dr6h9UxbWGX+P9Bfz2ZqtR7my+jYXHe2aUZwfasaupA2kodb3LRyKVX+/Abj6qwKlXDqhkGLCaUsve/RBULSb+XLgrbSke4RPxaxIOeGs8TtE6iV34KnycHaq9Dk/xPGiknDHVTWOtdpCOYf7Kf/tN2GTfspGQVESKHkM8CllafV6VBUdoRnx0Db4YOj80DZR9VdEzsWqEb+semqCvJui
+ gp4MCA8k
+ 5b+L5t7DhgUhUeB4KRUdtfb4cb4rMWAPOkQqsP6Ok3Yj3K25ALcD6ewNFHma2tdJTqRFG6f5o4tX3ntgtFvSn/X9+XICx7Z9RDS5J7bSoBiLqR22tbZgSFGG22jOX7QF06YbU8KcQYdn+eZ+XFTJwnDhxSGZXTLw2uAx8GpSJR1cCNvAFLa3RBNA9Ljs6XexxrF86Yiud3D2I6GY/FPwNR3gxbiZaeaXfOl2DUN0jxVU8iqZ3T5JsEba9b6JTwopsBwn8+sMds6LucSx7stX3lcdpUvMIU3/lV44rJ3YUuWtaWG8DrsevEQdaN8Y4EArrVC0LGTIsstUKYUq4aWtIwg1d7ntRg/hTDBL8D6CjS1nLnBR+YaMfEHK6yVWisK+KEo4KxX7x4v4Pv6jO8LR8c1A3vg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,159 +132,157 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A caller that neither owns nor may write a file may page out the COW
-pages of a private mapping of it, but not its file pages. When the
-advised range only partly covers a large file folio, the folio must be
-filtered out before it is split, on separate paths for PMD- and
-PTE-mapped folios.
+Five fixes for allocator paths that can act on state another CPU is
+updating: zonelists rebuilt by memory hotplug, and the pagesets of a
+zone that offlining empties.
 
-Splitting a file folio unmaps all of it, and a partly covered folio can
-only be reclaimed after a split, so a split is the failure to look for.
+I've packaged these together because they're all related to hotplug
+in some way, but they may end up backporting differently.
 
-Check that partial MADV_PAGEOUT by such a caller leaves every mapped page
-of a PMD-sized shmem folio mapped, both when a PMD maps it and when a
-mapping of half of it maps it with PTEs. Since this checks for a split
-rather than for reclaim, it needs no swap.
+Patch 1: the zonelist_update_seq retry is compiled out without
+CONFIG_MEMORY_HOTREMOVE, but memory hot-add rewrites zonelists in place
+too. A __GFP_THISNODE allocation that sees the list mid-rewrite fails
+even though the node has free memory.
 
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
----
- .../testing/selftests/mm/madv_cold_pageout.c  | 114 ++++++++++++++++++
- 1 file changed, 114 insertions(+)
+Patch 2: onlining a zone shifts zonelist slots under an in-flight walk,
+so the allocator can use a zone its filters rejected: a GFP_KERNEL page
+from ZONE_MOVABLE, which later makes offlining that block fail, or a
+page from outside the nodemask. Without CONFIG_MEMORY_HOTREMOVE, it
+relies on patch 1 to retry a walk that skips a zone and runs off the end
+of the list.
 
-diff --git a/tools/testing/selftests/mm/madv_cold_pageout.c b/tools/testing/selftests/mm/madv_cold_pageout.c
-index f5a81d7bd08b..5a226ccbacb2 100644
---- a/tools/testing/selftests/mm/madv_cold_pageout.c
-+++ b/tools/testing/selftests/mm/madv_cold_pageout.c
-@@ -195,6 +195,33 @@ static void pte_map_thp(struct __test_metadata *_metadata, char *mapping,
- 	ASSERT_TRUE(flags & KPF_COMPOUND_HEAD);
- }
- 
-+static char *map_aligned_file(struct __test_metadata *_metadata, int fd,
-+			      size_t size, int flags)
-+{
-+	char *mapping = reserve_aligned(_metadata, size);
-+
-+	ASSERT_EQ(mmap(mapping, size, PROT_READ | PROT_WRITE, flags | MAP_FIXED,
-+		       fd, 0), mapping);
-+
-+	return mapping;
-+}
-+
-+/* Create a PMD-sized shmem file filled with 1s. */
-+static int create_shmem_file(struct __test_metadata *_metadata)
-+{
-+	char *shared;
-+	int fd;
-+
-+	fd = memfd_create("madv_cold_pageout", 0);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_EQ(ftruncate(fd, pmd_size), 0);
-+	shared = map_aligned_file(_metadata, fd, pmd_size, MAP_SHARED);
-+	memset(shared, 1, pmd_size);
-+	ASSERT_EQ(munmap(shared, pmd_size), 0);
-+
-+	return fd;
-+}
-+
- static void assert_filled(struct __test_metadata *_metadata,
- 			  const char *mapping, size_t size)
- {
-@@ -792,6 +819,93 @@ TEST_F(madv_cold_pageout, pageout_private_file_reclaims_only_cow)
- 	ASSERT_EQ(munmap(mapping, 2 * page_size), 0);
- }
- 
-+/*
-+ * An unauthorized caller must leave a large file folio of a private mapping
-+ * alone, even when the advised range only partly covers it. Splitting the
-+ * folio would unmap all of it, so every page must stay mapped, which needs
-+ * no swap to check. See pageout_stays_within_range about other unmapping.
-+ */
-+TEST_F(madv_cold_pageout, pageout_private_file_skips_large_file_folio)
-+{
-+	char *mapping;
-+	size_t offset;
-+	int fd;
-+
-+	if (!pmd_size)
-+		SKIP(return, "PMD-sized THPs are not supported");
-+	if (geteuid())
-+		SKIP(return, "requires root to change credentials");
-+	fd = create_shmem_file(_metadata);
-+	mapping = map_aligned_file(_metadata, fd, pmd_size, MAP_PRIVATE);
-+	if (!collapse(mapping, pmd_size, check_huge_file))
-+		SKIP(return, "could not allocate a PMD-sized shmem THP");
-+	ASSERT_EQ(fchmod(fd, 0400), 0);
-+	if (!drop_privileges())
-+		SKIP(return, "could not drop privileges");
-+
-+	ASSERT_EQ(madvise(mapping, pmd_size / 2, MADV_PAGEOUT), 0);
-+	for (offset = 0; offset < pmd_size; offset += page_size) {
-+		ASSERT_TRUE(page_is_present(self->pagemap_fd,
-+					    mapping + offset))
-+			TH_LOG("page at offset %zu was unmapped", offset);
-+	}
-+	assert_filled(_metadata, mapping, pmd_size);
-+
-+	ASSERT_EQ(munmap(mapping, pmd_size), 0);
-+	close(fd);
-+}
-+
-+/*
-+ * The same holds for a large file folio that a private mapping maps with
-+ * PTEs: every page the mapping maps must stay mapped. See
-+ * pageout_stays_within_range about other unmapping.
-+ */
-+TEST_F(madv_cold_pageout, pageout_private_file_skips_pte_mapped_file_folio)
-+{
-+	const size_t size = pmd_size / 2;
-+	char *mapping, *shared;
-+	unsigned long pfn;
-+	uint64_t flags;
-+	size_t offset;
-+	int fd;
-+
-+	if (!pmd_size)
-+		SKIP(return, "PMD-sized THPs are not supported");
-+	if (geteuid())
-+		SKIP(return, "requires root to change credentials");
-+	if (self->kpageflags_fd < 0)
-+		SKIP(return, "cannot read page flags");
-+	fd = create_shmem_file(_metadata);
-+	shared = map_aligned_file(_metadata, fd, pmd_size, MAP_SHARED);
-+	if (!collapse(shared, pmd_size, check_huge_file))
-+		SKIP(return, "could not allocate a PMD-sized shmem THP");
-+	ASSERT_EQ(munmap(shared, pmd_size), 0);
-+
-+	/* Mapping half of the folio leaves it mapped by PTEs. */
-+	mapping = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
-+	ASSERT_NE(mapping, MAP_FAILED);
-+	assert_filled(_metadata, mapping, size);
-+	pfn = pagemap_get_pfn(self->pagemap_fd, mapping);
-+	ASSERT_NE(pfn, -1UL);
-+	ASSERT_EQ(pageflags_get(pfn, self->kpageflags_fd, &flags), 0);
-+	if (!(flags & KPF_COMPOUND_HEAD))
-+		SKIP(return, "the shmem THP was split");
-+	ASSERT_EQ(fchmod(fd, 0400), 0);
-+	if (!drop_privileges())
-+		SKIP(return, "could not drop privileges");
-+
-+	ASSERT_EQ(madvise(mapping, size / 2, MADV_PAGEOUT), 0);
-+	for (offset = 0; offset < size; offset += page_size) {
-+		ASSERT_TRUE(page_is_present(self->pagemap_fd,
-+					    mapping + offset))
-+			TH_LOG("page at offset %zu was unmapped", offset);
-+	}
-+	assert_filled(_metadata, mapping, size);
-+
-+	ASSERT_EQ(munmap(mapping, size), 0);
-+	close(fd);
-+}
-+
- /* Swap out an anonymous page, to see whether swap works at all. */
- static bool probe_swap(int pagemap_fd)
- {
+Patch 3: offlining a zone's last block can move the zonelist's NULL
+terminator onto an allocation's preferred slot, which the allocator then
+dereferences in zone_statistics().
+
+Patch 4: zone_pcp_reset() frees an emptied zone's pagesets while the
+vmstat worker can still use them. The pagesets are now kept for the life
+of the zone, which costs 320 bytes per possible CPU for each zone that
+was onlined and then emptied.
+
+Patch 5: __next_zones_zonelist() tests a slot's zone for NULL, then
+reads the slot again to look up its node. If offlining turns the slot
+into the terminator in between, zone_to_nid() dereferences NULL.
+Current GCC and clang merge the two reads, but nothing requires it.
+
+Reproducers
+===========
+
+All five races were reproduced on unmodified source in a QEMU guest
+with three NUMA nodes:
+   node 0: 3G, CPUs 0-1
+   node 1: 1G ZONE_NORMAL, CPU 2
+   node 2: 1G ZONE_NORMAL, CPU 3
+
+And a 512M pc-dimm cold-plugged on node 1, left offline at boot
+(CONFIG_ACPI_HOTPLUG_MEMORY=y).
+
+Patch 1 needs CONFIG_MEMORY_HOTREMOVE=n to show the failure
+Patch 5 needs mm/mmzone.o built with -fno-inline -fno-ipa-sra,
+        without which the two reads are merged.
+
+The windows are a few instructions wide, so I used a test module to
+widen them with kprobes that stall one CPU inside the window. This
+emulates an interrupt or vCPU preemption.  The vCPU preemption is the
+more likely event to cause this at large scale with memory hotplug.
+
+Patch 1 (zonelist):
+
+  Online node 1's first memory block as ZONE_MOVABLE, which rebuilds
+  node 1's zonelists.
+
+  Stall the rebuild after it writes ZONE_MOVABLE into the first entry
+  but before it writes ZONE_NORMAL into the second.
+
+  On another CPU, allocate GFP_KERNEL | __GFP_THISNODE from node 1.
+
+  Before: the allocation fails, 3/3 runs.
+  After:  the allocation waits for the rebuild and succeeds, 3/3 runs.
+
+Patch 2 (zonelist slots):
+
+  On one CPU, allocate GFP_KERNEL with a nodemask, and stall it after
+  the iterator approves its first zonelist slot but before the
+  allocator loads the zone from that slot.
+
+  Online node 1's first memory block as ZONE_MOVABLE, which inserts
+  ZONE_MOVABLE at the front of node 1's zonelists.
+
+  Before: nodemask {1} gets a node 1 ZONE_MOVABLE page and nodemask
+          {2} a node 1 ZONE_NORMAL page, for single-page and bulk
+          allocations, 3/3 runs each.
+  After:  nodemask {1} gets node 1 ZONE_NORMAL and nodemask {2} gets
+          node 2 ZONE_NORMAL, 3/3 runs each.
+
+Patch 3 (preferred zone):
+
+  Online node 1's block as ZONE_MOVABLE, so node 1's local zonelist is
+  [MOVABLE, NORMAL].
+
+  On another CPU, allocate GFP_KERNEL | __GFP_THISNODE from node 1,
+  whose preferred slot is NORMAL, and stall it after it loads the zone.
+
+  Offline the block, which rebuilds the list as [NORMAL] and moves the
+  terminator into the preferred slot.
+
+  Before: NULL dereference in get_page_from_freelist(), 3/3 runs.
+  After:  the allocation succeeds from ZONE_NORMAL, 3/3 runs.
+
+Patch 4 (pagesets):
+
+  Online node 1's block as ZONE_MOVABLE, then offline it.
+
+  Stall the offline before the zone empties, and stall the vmstat
+  worker on another CPU (kicked through /proc/sys/vm/stat_refresh) in
+  decay_pcp_high() for that zone. Let the offline free the pagesets,
+  reallocate the freed percpu area with a known value, then release
+  the worker.
+
+  Before: decay_pcp_high() runs on the freed pageset, 3/3 runs. In
+          1/3 the area was reallocated before the worker resumed, and
+          decay_pcp_high() rewrote the new object.
+  After:  the pageset is not freed, 3/3 runs.
+
+  Repeated offline/online of the block, and ejecting and re-adding the
+  only DIMM of a CPU-less node over QMP, reuse the same pagesets.
+
+Patch 5 (slot reread):
+
+  Online node 1's block as ZONE_MOVABLE, so node 1's local zonelist is
+  [MOVABLE, NORMAL].
+
+  On another CPU, allocate GFP_KERNEL | __GFP_THISNODE from node 1
+  with nodemask {1}, and stall it after __next_zones_zonelist() tests
+  the NORMAL slot for NULL but before it reads the slot again.
+
+  Offline the block, which rebuilds the list as [NORMAL] and moves the
+  terminator into that slot.
+
+  Before: NULL dereference in zone_to_nid(), 4/4 runs.
+  After:  no oops, 3/3 runs.
+
+All five reproducers also pass on the series tip, 3/3 runs each.
+
+Changes in v2
+=============
+- Added patches 2-5.
+- Pulled cpuset patch out by itself
+
+Link: https://lore.kernel.org/linux-mm/20261014222456.2318284-1-gourry@gourry.net/
+Link: https://lore.kernel.org/linux-mm/20261015210539.3243563-1-gourry@gourry.net/
+
+Gregory Price (Meta) (5):
+  mm/page_alloc: detect zonelist rebuilds from memory hot-add
+  mm/page_alloc: validate zonelist slots against concurrent rebuilds
+  mm/page_alloc: snapshot the preferred zone against shrink rebuilds
+  mm/page_alloc: keep a zone's pagesets when it goes empty
+  mm/mmzone: read each zoneref slot once when filtering by nodemask
+
+ mm/mmzone.c     | 11 +++----
+ mm/page_alloc.c | 77 +++++++++++++++++++++++++++++++++++++------------
+ 2 files changed, 65 insertions(+), 23 deletions(-)
+
 -- 
-2.56.0
+2.53.0-Meta
 
 
