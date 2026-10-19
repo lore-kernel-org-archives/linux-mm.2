@@ -1,125 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0098C606A32D
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 16:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FC4606C96E
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 16:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=GzKHFjUo
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=CuXdWaus
 Received: by kanga.kvack.org (Postfix)
-	id F09096B02EE; Mon, 19 Oct 2026 12:21:46 -0400 (EDT)
+	id C557E6B02F0; Mon, 19 Oct 2026 12:28:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBA9B6B02F0; Mon, 19 Oct 2026 12:21:46 -0400 (EDT)
+	id BDF2A6B02F2; Mon, 19 Oct 2026 12:28:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD0816B02F1; Mon, 19 Oct 2026 12:21:46 -0400 (EDT)
+	id AA7876B02F3; Mon, 19 Oct 2026 12:28:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AFAC36B02EE
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:21:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 89285A0787
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:21:45 +0000 (UTC)
-X-FDA: 85339891770.21.D397BEF
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B7AD880013
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:21:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GzKHFjUo;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792426903;
-	b=sgjBZUggkzMVuo/3wJ+WKpadV73hmDR2/15lBDuejnx+GAflQydkeMgrqpSKPtazIoqDMX
-	USjayAKkf5ADkHawVbGqB79uEAfV+UVgODOpkx1icztylC5ivF6cIOPO6jXLY/yhoFFwt8
-	kxhWJxtSj6U/CFZshr1s8/l0QbIxMsc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GzKHFjUo;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 839C46B02F0
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:28:07 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13DE8A07B8
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:28:07 +0000 (UTC)
+X-FDA: 85339907814.20.95739A9
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5152B20011
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:28:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CuXdWaus;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792426903;
+	s=arc-20220608; t=1792427285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=AXALzYiDlqNLgw2O3tAb14ubqs9EH5rpsxDv02Io52g=;
-	b=BA18Z+YDYVgux1wmwAoAvkiH6huojNuXIuZ3nCiIeAuXvLii+sZ2nOFB8j4drQIeL7+ZmN
-	r3sy67mVYup+a3Us3LEX163mSrdLMWO4IrencH7pndWcV9OgvkBJ3SwLSNxTy0Cy7Zghba
-	rkURvlg+OB4hFazFwzatMz7G/mUHl6c=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93f2ed2541aso179265385a.0
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:21:43 -0700 (PDT)
+	bh=MPCaT6OOOqUW7TTHp3t+eRxmMncThW2Jrb7agn7Vd5c=;
+	b=s5d1q7vsr7ftIfiCNmq3FmS7lxBR1xLCbbtjHr/Dqmkb+tBz7tk/tyBELU/OtKoPwQ6QwR
+	NaQEBiNVHGJ58Nt5wMRoF1MElmk57J//+u9jA9i2vDfSVVZFUiVgZJz9RrX4mRIlAYNS2g
+	i4gloC8XWsG9w3S6hOVubld7d/vrCSQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CuXdWaus;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792427285;
+	b=bNi4bk+pPAXH+6CeBUUKfzxvHlPMCCGlizOWRm/R9xCj/PE/1HqY4gYndwKWNEWh3LPBO2
+	VjNwcLw51jxbeCRDYXFDxH9nL/A5zlItGSagpUZgrwJcdiqtaviNsboQ0AmI/pCPC67uwK
+	mE8pgmbWFgMmGcCjO3f9LFfXL5WDq4Y=
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6d00d120b28so1818283eaf.1
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:28:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792426903; x=1793031703; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792427284; x=1793032084; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AXALzYiDlqNLgw2O3tAb14ubqs9EH5rpsxDv02Io52g=;
-        b=GzKHFjUouMwecR/b/+5qbbrgb1TtfB3ZcVc1DsaByoK1ag62sIVuJcMLck+crTm/H7
-         i4C6HSdRLFyM7oPrk3nfd5YDYubIQagQKrGam5D03jTLlLZjAb1FMq9ruVZW9klmVX1l
-         2B/eogU8R5xy8iKUt+cCDOVdPdnrfgDqfNmiEwvjPhDtujb58MLksOwIdMIRDGOHA4LH
-         Ct9PL/0kk6NAiw0VlZmw2hhQuWkkSs9vtctEkpzuLKnwr6Z6SWgAXvNnR2Q6Yj0uZNhP
-         NCLssdOhrkg8o/szb9k6SqkFQepuMgLtkZ7bAuRoU6t9WD/DxtIZR2zy4sg4gp9z/c3P
-         XYRA==
+        bh=MPCaT6OOOqUW7TTHp3t+eRxmMncThW2Jrb7agn7Vd5c=;
+        b=CuXdWausNh1pZUZWtqvMDsoLuGo5Z1cAktr8/Jf6B7xjta6FhHDqJUuGp8Ui8O/b1m
+         lX6UGJkdAvsS6az1GVr2GMPd6hE6Po2Rh3HwosKy8fYd/WddaKRiDkog73KJRulMMrUQ
+         ss6OXY2Z65X6psQR0SuUTSVoyHZmBm0YdpS/ixdqMAY46wcFqbGYC06byp0igJiXcDEe
+         yVvty4s4StrJnK22M1BZxP9rwlERET2E7sp7BaYJQ/vXJ+4Z5d6ilAesyxU6SIEVA7Or
+         cyMJsKsVXWs1+PLctdw+57AiS+auWag5gFLy1rHzQ0pdWMcjWGr2KLYsIpnKT4KzOX54
+         2nxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792426903; x=1793031703;
+        d=1e100.net; s=20260707; t=1792427284; x=1793032084;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=AXALzYiDlqNLgw2O3tAb14ubqs9EH5rpsxDv02Io52g=;
-        b=PF7j3YNkB61I3+uP0rQ41YWsiE1phcj0czYvuh7s4ftkfrUTwqBsgFRXcjSM6QUd9x
-         RmxO8JZajizqe/v9rSvFm9h3V4Apnh5EKt74+aBsR2dX1VL/wlmVO46pK7AdNy2kyAgq
-         i3dAxz7wz3s4r9Sw7sKgtwtLLSfKH3jYoB5GzG/jjkxM9/pLGmkYvJiIdn2+alW4IqBD
-         25OL4jx2QsSAPVJGG1OpvY9c0AE3qmnmG69dU4xRlBhDqTIBNxzG/1aNQFHXFXEQ3mVo
-         2svkUsw6Steloro7joPSsVPo0wASIVisJRdku0PGuHrwYoQGySEh1DXJg2A4oFIVIeZS
-         XuUQ==
-X-Gm-Message-State: AFq9FYLWPiQm18TUNEe7WbfbObJoeS3rrowcbDpCKlnhUiYnVOrE9F9r
-	cJUitE8ScBBOS0SVKq85ghLNslSR/prBBT0FwzpIt0Hc0oYvojWdyNSBiYYkNqdHcQ+541nh+YH
-	uUdUc9Vs=
-X-Gm-Gg: AYBFou05ZN2aB+a0hrMxQ5Pb4RHPy7AVHNM63Nt0zE5o4SQcJO20hXJlbEmIEfBuVwc
-	lAUPTlBIUvGllS5VGc7OAf6+FPV36EZ/LLiZXYLrDKPPvNIqwJLczxDGLYq60im0/lrQLu6cRFg
-	REMsEXYyNZjaXE2NxSPjC0CN8jTQeVZ6yfRLL7b80dLH3Wf6SRSbO4M3pwtbS+2NsFwjVkOqYp4
-	CMCKY0N4eNclpVQxRwRdI8AwaslEYyiBKboSj7+JmG0r/VgBYYe615/AShfQveUfZ7cfgj+rMxH
-	AFU/VkUysGjhCcMpEGwmfElbQPTSu6u0S5lw41q+xqnLSSmT6v4XwVIKLakR/7e0J0ve9e689bj
-	SqgtgeuLKH1D8LLn6XL7DGFY4PTQ5Dj2hTwLpsyGUoSyg7cVz1pwemq9JJbZp/ZqP1556aHMPg7
-	y3IKbhsk8NU5zJOsOAmDevk48ZUh+ZPaDXZnVgyLyYzCbA7pyWofNm1gnCQumkz1nsYGp5jVgVg
-	HkB5HkuKa0Gfj1xsIlEHN9Po7PlDd7ERdJJ4Csh3H9EXSUJETxSpg27e++67vzs2i+t3zU=
-X-Received: by 2002:a05:620a:6cc4:b0:93f:2b65:593b with SMTP id af79cd13be357-93f2b655ed6mr1165985985a.38.1792426902714;
-        Mon, 19 Oct 2026 09:21:42 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcba4b9e1sm102394026d6.14.2026.10.19.09.21.41
+        bh=MPCaT6OOOqUW7TTHp3t+eRxmMncThW2Jrb7agn7Vd5c=;
+        b=fa/TzFWaoJhc/MCuGilBlNfSrtPYDjlPrJsF2TZix3bcjY2ED3wi+xW/kTVcOrr8xd
+         Fefs7wAZ2q+q9xmgftL4sd2M4pvnxYMNICmDfbduNPMjhl/e0K/aOwOZtqTzRnp7QVD4
+         VCH61MzUaARvSqqJ3Z4r0E1/FQRO9It0GMxKDs+GF92xxegCe04aOzLuh6PCtaXYvqIW
+         KcMpE6O5/AaHku8hRIux5DOnW7XcC25Kf9BQS3y0jpp1kI7DZElCF8AIiIH2CrfeNCeq
+         ZhHXyuPThbYeXMttob7Wv6WgBG5hqq5NfcfRvXlfEK8j8xYCgazFF1iaFGOqEudV2Eau
+         tTbA==
+X-Forwarded-Encrypted: i=1; AKwUvBylT5tVoTHPdiSV+6SGDcQCqDeqzAMnZn6rtQlm5TADa8dgU32RmJ4Z2SvxhLcXuFNBXsWZlmHyqw==@kvack.org
+X-Gm-Message-State: AFq9FYKNJQf9232IB7gX2J6ifiOb6S9ZG2gI+NObVJGqMnpb8onFhU36
+	UN5XVaTz/ifOYOBmIafjAITd6ykKybi3+Nl9sG7THJuVShUNApjpNvzk/u9nzw==
+X-Gm-Gg: AYBFou1/HztDFLNXjGjJD79eto2gnMmOBQH2rH1ff03PNe4Bm/19WjCM4DBhQeW+7pS
+	XV93kY9lkuf52HMiLPMSS4sThgdQ83wRBXs7D+iRMsqDOTlY/u11XUdIN5IxUUkf1lTjvL0r1cK
+	zMru6ronnrFwB5/kUNElhPPa0dxYXdlWgySNbXEpV8UTCU5n7LLlQ4a/BnqNSksX5h7wxZs82eI
+	VgmFIL5bJS0MXjMVcjSzGF7U3LXKAEhnTWj77XQeRyznGsUcML5FCv9bIPdyQyblXqoPhupLXNy
+	+QLlOCfTJfmaqH45zexaYDpxrT8H5cmJQ1R2FOk8IwIJq8L7FPP7ulaslHvbAyz11W+ua5LwlZw
+	5I1JTGYIqFvWRFnNwA10c6Bn/97WFkWgzHVswe3lzVBWKnDRLKOu0SgHD/KXJHQDsjCUzYiu2Oz
+	T+ALknDAEsCNVJMq7d5aVtQlmonklimuWZyIZsuq4WbMe9qvdAr5jDNmd17USU+1d4MBIvMy5ks
+	z6dMDczwMu51AiEI/L1QXxVNg==
+X-Received: by 2002:a05:6820:560b:b0:6c9:80d8:a201 with SMTP id 006d021491bc7-70357496035mr3645829eaf.62.1792427284118;
+        Mon, 19 Oct 2026 09:28:04 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-849859184easm2998661a34.23.2026.10.19.09.28.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 09:21:42 -0700 (PDT)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-mm@kvack.org,
-	cgroups@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	longman@redhat.com,
-	ridong.chen@linux.dev,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	mkoutny@suse.com,
-	akpm@linux-foundation.org,
-	mgorman@suse.de,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [PATCH v2] cgroup/cpuset: use mems_allowed_seq when checking a policy nodemask
-Date: Mon, 19 Oct 2026 12:21:38 -0400
-Message-ID: <20261019162138.3271947-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.0
+        Mon, 19 Oct 2026 09:28:03 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Harry Yoo <harry@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH] mm/percpu: clean up callers of pcpu_obj_full_size()
+Date: Mon, 19 Oct 2026 09:28:02 -0700
+Message-ID: <20261019162803.281810-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5152B20011
+X-Stat-Signature: jafsfwfyisphprzt3n8tmqtzbb7fzni3
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B7AD880013
-X-Stat-Signature: t38upstyfi1jkyjcgid7y8sdioodeiah
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792426903-773293
-X-HE-Meta: U2FsdGVkX1/k02cTm090314d9RsGJ6VFiG9Mcdwi9RV9JJXi2OdaADZ7MwlEvhj3xDLwi8wZd/XaVvo8VHl+GNKmN7DouX3FNLY1sLGbPSWbHL9fi4qnqugoPOfrsJSsdImkN9K5YgUJ3Sylut4ciVSbOWJViKOamfL9mBGlI4YY4NgGDRhUQ+lNYMFWDEZMbXtzl9gTebkHQtSwGAEaVrShMC6jMxXTv/eQDc/M7PrSKWM1O9URg2+st+R0QglbqYCAUeFlyy4F+nqM4I0hJM7rKvtJqwpEzmNfXUNRPOObz1JWAgxtURsEGzK2I9WM+PfbIhYdTvn4z9XCbpF1FQwTkxvSKzA4H05RGYiPvkNO4hHDuWF4lRxDJ88rirkGe8Bgx3DUQ/zywv3jFELuswZgfeO1jvHyO7sDqXQLg9EU35oO2BEORgsyFQrtqGHzYS3b4IEprkNnj5hVUADG4DdyqfLE7zxbgqhi+zCxo4TyT0FTYUCyZLAHTPVmfJsTZfb93DAgw/Km0jTPAfgGW666OxQX9zz4niYA6vkcyk3tuF1CboNy3eJfK/+7Qd3rx5jiduGhTAwqd4ehIGqcjq6J5SIrjGEFvBFpVB7qrzYLsYtfyfhpl55XWL132QLqiF46+M1FmB909TqMpln8IasWizbUc4oWkKtnD6LEriWg9kdipEPLfy3eOOpzjbd+zx9JlniIAgnFfUY9E58QLEb6ID5OJpTP2I4AcK31X8iEWcfqWCdj6kmySSa7CB8OLIm101Or5RNEYGJSxM6YhFl4myfAOm9dB8Tt4SCfV/Pd0FkRRUPRTPa+PFCkJjEPInxgcspqQfi5LFnbbEHbQe8EF/YtCkHsJeC8uyNRwB36NxuZKTAmr5E36jV7SBU/w36qu7GRDvLf7E3bdEfJU9WF3di/0QEw4s6b8/OepU0pEXKDp66tFwNTfgSWMNojPGEDrorT3dcjaeGLUSO
- yHOPyx0+
- Hd8Xn7uNdkccWUr3TjmvQe0kUilW8GOUihWxdZ+85ZJ9hlF22p52yM8Tsw40O/IEuW4Zt02aQb2wvT8NmpPym7KJBZNzHtBOteD4eCVwxs/WonkgYkqdp9zIgJmKnylhkg+4cs1ukpQ9Z3BTXqlG5qWfe7r94j4zkf4C0R8uwr1Lo+Fxm9afvevJtAyA3ByRUZb4sxNvLHW92o2Ypltf28I9gJpKDXYZmF53p2vtjdJDiaiw1Gsi8d7ReSdzwdQ+/L6RqzYJ1+9+Bq4HggCJw4GqPGp8TYlMQytQnm8+BHMQDkvUOUFtSfAeduoUYU0H4d7EP1X8a2KX7SDsBoFdf2HOgSah7jZMzdmBW4gM4lNOKOhKGEPW3gA/2zC4W97ATg6ED1X9RuLT7dHg=
+X-HE-Tag: 1792427285-69884
+X-HE-Meta: U2FsdGVkX19YpS1X+2LPqgKTyI2jfZGluQs3tlXgklnsiZl/3sefeEButuOrFweu644pdjN7VpJO8LtN5fHBTm97fI2YlynVbvoy9EqnxjAk9N+kkH/cx78JSv/tgHIbm80XtNcC+ynd7vN8BAg/wF03J8H5drc9guKqymvYH7mq7dZ070i2LuXYGEmwmPiTqYu8JuqDOdG4SvYSFviUVkgfvjBGHpWnsfJWiTGlQuHelat4KT+h1dM/etiLkZD5ItbQTNSxBuTPjbd+sbHbDnRCkNKvi+MqpLwu1uM1LIzdts+iGVQBLgINox/V9vZMo4mycM7ajYkt7KtFWmb78GcvLOglk0JDl4n58jSKgAEt1TH+KBuLTe3AwE6qGHlEq2J/UjpV2Qdm5PFcg+i+PzXiycwZV10pS/f9+GMGg8Yo0mlTy3CAdsqQ+/7AsAOdNGgPda/CfVxHpLydcPBPotKo3eG5ozOcvVt7t6dPmwniUumfn61CdheaUlWJCaEhYKnNNf6jo3rS+HB1D+Nl5RKSh6axFXL5JVxliVWjViBNEgW5mW/vJeN97x5mRxN9mGgNt5uY/euKrLoh0SnilAlEEwGeunOKrrPSRdQe3e+W+eoFyX9hUmm7+naa4bRX8jWbkemKtuhK0oE2sE6tIb+o5GBcthJx4Ax3oKnW4KgGUkOdQ5bv1b1pzxfUrVZpsJjlox6libzsg4p1jqTxN41ZcZUgka/UK4ErMIh34B7ibBanjktN3vCEVgjZCpSmfeUSHTG2YEaB/CbF8+H5Vr8e8zW0AZH4ur/lXGnKOi6+0i/pRL9M0shAGh0Wh7Cm1CeneAWjQ7spYcAVB3qYA8dZhFeMApBx+PoCADsrMjJian1zICR3105n7urQlqrbSh+d9eRQcO8y2txNYBqlTParnBjPZQ8lPCGv0Z8y0tj3HUVVRKpFjfD1klJtjG1MqlNNvr+7n+XxiMwFPwr
+ t8JBg5Ii
+ nEQEeLZru9DbBJF/IDFZ8nK15MDpfI22jLrE7c5Aayd31HYalFxK37JwJsOVagI8qeOWO1KQpN+G5Bxf1+GCG7oJvrqg0jHXZAoYULzEZCiFQqdgt9x2Nk1ErGSYEIVeXj/92z6vNM55qPTmUsi84UWvjvwh8aZjXSF6I4pDxSNROtMUoUN04A5HDV22YAp1F/7YKL6MSGtfwkr7EdHXtk/b7FjjTlcpejj/uAsKVKpXFJHdFEwmAevc7icvAweqbEOxPikOeA/P8dMIJsCUaZaxUHjRf9WOgoEtUdHejr6GfYqaHXdONfcx9/l7cIZaUdHYtVbmlImJlpoxXFrQV9ESlgXcATTRIj41mYBo+4uLbahok5HRWlsr9uDVzd5UjSZRVEqkIEi/Tjr4w5px9H9iTRpthO9OCtqGFuTnSBLBZDWhbaRaFe5wuFnJd4LYJJYsSiVbkVmbq9YNfXZc2x7zS9SenuHzfdjYhUX3xzJSDtpKflDxABnYZvJ8fn/qNhZkuqOceFUFV/AKd301V/VZr9vraix6qeAvfnj4opcnR3BQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,65 +125,165 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A cpuset update changes the task's mems_allowed and rebinds its
-mempolicy in separate steps under mems_allowed_seq, but the check
-reads both without it.  This can cause a spurious numa placement
-miss under some cpuset/mempolicy combinations.
+The size of a pcpu allocation can be interpreted in two ways:
+1. The size of the allocation attributable to a single CPU.
+2. The total size of the allocation across all CPUs, including the
+   allocation overhead (for obj_cgroup membership).
 
-A reader that loads one mask before the update and the other after
-it can see a spurious empty intersection and drop the nodemask.
+In most accounting paths for percpu memory, we need the second
+definition (total size). Make this more obvious by coalescing the
+callers of pcpu_obj_full_size().
 
-For example, a task with cpuset.mems={0} and MPOL_BIND={0}.  If the
-cpuset moves to mems={1,2}, the policy is rebound to {1}.
+No functional changes intended.
 
-The allocator can race and compare the old mems_allowed {0} against
-the new policy {1} - which will result in a dropped nodemask and a
-misplaced allocation on node 2.
-
-Simply retry the intersection until mems_allowed_seq is stable.
-
-This covers the task policy, which is rebound under mems_allowed_seq.
-VMA policies are rebound afterwards by mpol_rebind_mm(), outside
-mems_allowed_seq, and are not covered by this change.
-
-Fixes: cc9a6c877661 ("cpuset: mm: reduce large amounts of memory barrier related damage v3")
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
-v2: there is no real update here, i'm breaking it off of the page_alloc
-    series so the page_alloc fixes backport collectively cleaner.
+ mm/percpu.c | 39 +++++++++++++++++++--------------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
- kernel/cgroup/cpuset.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 3f52717c19654..8ee239d5c6b48 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -4354,10 +4354,21 @@ nodemask_t cpuset_mems_allowed(struct task_struct *tsk)
-  * @nodemask: the nodemask to be checked
-  *
-  * Are any of the nodes in the nodemask allowed in current->mems_allowed?
-+ *
-+ * A cpuset update rebinds the task's mempolicy and changes mems_allowed in
-+ * separate steps, so retry if an update raced with the check.
-  */
- int cpuset_nodemask_valid_mems_allowed(const nodemask_t *nodemask)
- {
--	return nodes_intersects(*nodemask, current->mems_allowed);
-+	unsigned int seq;
-+	int ret;
-+
-+	do {
-+		seq = read_mems_allowed_begin();
-+		ret = nodes_intersects(*nodemask, current->mems_allowed);
-+	} while (read_mems_allowed_retry(seq));
-+
-+	return ret;
+diff --git a/mm/percpu.c b/mm/percpu.c
+index d7883507dc151..76848e096caee 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1623,7 +1623,7 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
+ 	if (!objcg || obj_cgroup_is_root(objcg))
+ 		return true;
+ 
+-	if (obj_cgroup_charge(objcg, gfp, pcpu_obj_full_size(size)))
++	if (obj_cgroup_charge(objcg, gfp, size))
+ 		return false;
+ 
+ 	*objcgp = objcg;
+@@ -1642,11 +1642,10 @@ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
+ 		chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = objcg;
+ 
+ 		rcu_read_lock();
+-		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
+-				pcpu_obj_full_size(size));
++		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B, size);
+ 		rcu_read_unlock();
+ 	} else {
+-		obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
++		obj_cgroup_uncharge(objcg, size);
+ 	}
  }
  
- /*
+@@ -1662,11 +1661,10 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
+ 		return;
+ 	chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = NULL;
+ 
+-	obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
++	obj_cgroup_uncharge(objcg, size);
+ 
+ 	rcu_read_lock();
+-	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
+-			-pcpu_obj_full_size(size));
++	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B, -size);
+ 	rcu_read_unlock();
+ 
+ 	obj_cgroup_put(objcg);
+@@ -1696,15 +1694,14 @@ static void pcpu_alloc_tag_alloc_hook(struct pcpu_chunk *chunk, int off,
+ {
+ 	if (mem_alloc_profiling_enabled() && likely(chunk->obj_exts)) {
+ 		alloc_tag_add(&chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].tag,
+-			      current->alloc_tag, pcpu_obj_full_size(size));
++			      current->alloc_tag, size);
+ 	}
+ }
+ 
+ static void pcpu_alloc_tag_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
+ {
+ 	if (mem_alloc_profiling_enabled() && likely(chunk->obj_exts))
+-		alloc_tag_sub(&chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].tag,
+-			      pcpu_obj_full_size(size));
++		alloc_tag_sub(&chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].tag, size);
+ }
+ #else
+ static void pcpu_alloc_tag_alloc_hook(struct pcpu_chunk *chunk, int off,
+@@ -1744,7 +1741,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+ 	int slot, off, cpu, ret;
+ 	unsigned long flags;
+ 	void __percpu *ptr;
+-	size_t bits, bit_align;
++	size_t bits, bit_align, full_size;
+ 
+ 	gfp = current_gfp_context(gfp);
+ 	/*
+@@ -1773,6 +1770,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+ 	size = ALIGN(size, PCPU_MIN_ALLOC_SIZE);
+ 	bits = size >> PCPU_MIN_ALLOC_SHIFT;
+ 	bit_align = align >> PCPU_MIN_ALLOC_SHIFT;
++	full_size = pcpu_obj_full_size(size);
+ 
+ 	if (unlikely(!size || size > PCPU_MIN_UNIT_SIZE || align > PAGE_SIZE ||
+ 		     !is_power_of_2(align))) {
+@@ -1781,7 +1779,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+ 		return NULL;
+ 	}
+ 
+-	if (unlikely(!pcpu_memcg_pre_alloc_hook(size, gfp, &objcg)))
++	if (unlikely(!pcpu_memcg_pre_alloc_hook(full_size, gfp, &objcg)))
+ 		return NULL;
+ 
+ 	if (!is_atomic) {
+@@ -1793,7 +1791,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+ 		if (gfp & __GFP_NOFAIL) {
+ 			mutex_lock(&pcpu_alloc_mutex);
+ 		} else if (mutex_lock_killable(&pcpu_alloc_mutex)) {
+-			pcpu_memcg_post_alloc_hook(objcg, NULL, 0, size);
++			pcpu_memcg_post_alloc_hook(objcg, NULL, 0, full_size);
+ 			return NULL;
+ 		}
+ 	}
+@@ -1903,12 +1901,11 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+ 	kmemleak_alloc_percpu(ptr, size, gfp);
+ 
+ 	trace_percpu_alloc_percpu(_RET_IP_, reserved, is_atomic, size, align,
+-				  chunk->base_addr, off, ptr,
+-				  pcpu_obj_full_size(size), gfp);
++				  chunk->base_addr, off, ptr, full_size, gfp);
+ 
+-	pcpu_memcg_post_alloc_hook(objcg, chunk, off, size);
++	pcpu_memcg_post_alloc_hook(objcg, chunk, off, full_size);
+ 
+-	pcpu_alloc_tag_alloc_hook(chunk, off, size);
++	pcpu_alloc_tag_alloc_hook(chunk, off, full_size);
+ 
+ 	return ptr;
+ 
+@@ -1938,7 +1935,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+ 		mutex_unlock(&pcpu_alloc_mutex);
+ 	}
+ 
+-	pcpu_memcg_post_alloc_hook(objcg, NULL, 0, size);
++	pcpu_memcg_post_alloc_hook(objcg, NULL, 0, full_size);
+ 
+ 	return NULL;
+ }
+@@ -2242,6 +2239,7 @@ void free_percpu(void __percpu *ptr)
+ 	struct pcpu_chunk *chunk;
+ 	unsigned long flags;
+ 	int size, off;
++	size_t full_size;
+ 	bool need_balance = false;
+ 
+ 	if (!ptr)
+@@ -2262,10 +2260,11 @@ void free_percpu(void __percpu *ptr)
+ 		WARN_ON_ONCE(1);
+ 		return;
+ 	}
++	full_size = pcpu_obj_full_size(size);
+ 
+-	pcpu_alloc_tag_free_hook(chunk, off, size);
++	pcpu_alloc_tag_free_hook(chunk, off, full_size);
+ 
+-	pcpu_memcg_free_hook(chunk, off, size);
++	pcpu_memcg_free_hook(chunk, off, full_size);
+ 
+ 	/*
+ 	 * If there are more than one fully free chunks, wake up grim reaper.
+
+base-commit: 2887e63d2e8e0cf55402612d8996ce955a2c3e55
 -- 
 2.53.0-Meta
 
