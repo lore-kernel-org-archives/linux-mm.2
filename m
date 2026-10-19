@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC68CCA46C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 04:51:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81096CCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 04:59:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D17B6B011D; Mon, 19 Oct 2026 00:51:49 -0400 (EDT)
+	id 6DCEB6B011E; Mon, 19 Oct 2026 00:59:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45BA46B011E; Mon, 19 Oct 2026 00:51:49 -0400 (EDT)
+	id 6B4666B0120; Mon, 19 Oct 2026 00:59:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 323256B011F; Mon, 19 Oct 2026 00:51:49 -0400 (EDT)
+	id 5C94B6B0121; Mon, 19 Oct 2026 00:59:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BC656B011D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:51:49 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DBDD405C8
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:51:48 +0000 (UTC)
-X-FDA: 85338153096.22.E0D5724
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E7D56B011E
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:59:30 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4646916068B
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:59:28 +0000 (UTC)
+X-FDA: 85338172416.25.4EBC7C3
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6AC7820002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:51:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iG9JOxw4;
-	spf=pass (imf03.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792385506;
-	b=rB/5xn7LAClm4GR4WO91Ex+XJwCWv+LOOyZ9FyCbFJDFVrYhLumaIl3la6ZcCE87bN2gJe
-	yiEWjGFHuks6p3YKSkRDqRGvOiZ73o2oaQA+7VAKtdgXyY8DBTRKCcms0Jt327MDnPiPUo
-	6hW9eOsm3Z8Z5rrvjaGzOWZ5ChC+tic=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iG9JOxw4;
-	spf=pass (imf03.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6DDF01C0009
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:59:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OoKVnnAW;
+	spf=pass (imf20.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792385506;
+	s=arc-20220608; t=1792385966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9b2PR9KF0sMc6WkyedWjiZYS77RD8axd1cemRg7tAlM=;
-	b=h7AhmT3KL6LeYttCCwaGi/RbVYfyoxqp1VP8WOPP8zSrM+Nmn22w+SSswI+s1aAqLlgxIk
-	aVOPUagw5l3vBtDZZsNhhxp+VKp1SxtU6Ni3RLOZFkP/cha+fDpZ0i+e+oTCtcZftb94za
-	qhCzlIvA8M6gVEvlqfV4RAk8H/Jfc/g=
+	bh=WAr8yxCgbI96KITmlLhJVRMX6I8A79vMCHMCwNS6Oe8=;
+	b=KYjLWWYRv7RtmIJ8kG91qBxnjd+hTQ643ALg/wKIhueMuwJaT3W/xOC/HQykf07XZNyQZp
+	NVa9QKd2PG40kOWnsMnwzdS4CBD810pdsu/y6e9dEz2SnyG5Bdmmn7Xlm+hFIOiijV1eqt
+	yWod9NqmniXgQx5TXxHCIFjn+QSz700=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792385966;
+	b=6ab8CBVgSl8wWnDqu5NZ7L312zfdbSSkHtWT1Lllltz58EiyZBxCkq44c1I+nVNM2CGjdx
+	Rcs1XOSqcVRuYraAUqdRPwyTjwReJqldjUjfSey7gRzAtLazu1SX3LOTLFOY43w9SF4Axw
+	V6fVV7jeb+avs5UFcO3OxnN0PSw4jVE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OoKVnnAW;
+	spf=pass (imf20.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 082BC1476;
-	Sun, 18 Oct 2026 21:51:42 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5860A1476;
+	Sun, 18 Oct 2026 21:59:22 -0700 (PDT)
 Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FF973F673;
-	Sun, 18 Oct 2026 21:51:40 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 957D23F673;
+	Sun, 18 Oct 2026 21:59:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792385505; bh=5WEYiF0irBJpRs6F1IhKzRhrLDDCuuESsN66/V4Jl08=;
+	t=1792385965; bh=wSKR26ILxURLnFx2+QlKpgJeVV02uGi/OJ246XfSBBk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iG9JOxw4rscU6r/UL82N8mypUm+ghnV4mG+JArN39f2sj4gp6w0JICTrXUnkJUUj7
-	 88zLUmGtHEFeyM5Ki14JCXsPA+zOXuv7FY5DjyvGsesvrDrfNjbHLVgP6Lpc7HEQLY
-	 YP+OUOlHmUsQ5qt6fgLmaB1/DJhAGbIRKi2XN3TA=
-Message-ID: <db446de6-bd87-44b6-b9db-c4533ee047fa@arm.com>
-Date: Mon, 19 Oct 2026 10:21:38 +0530
+	b=OoKVnnAW5h6G8pIZOaIkk+8Ax2CDh6YIjtCquL38N20RtIps5AAUG0wRkrAL0y2Ou
+	 jIOksQFm78zNWVnU9EZILHAlzRG9ZcXG32/md25shOTNxjWF8OPEXrmyFn8rLW1en7
+	 CwIROAczVQTA1z3R0zAmIOSecWfJq5EwNW1lCT+U=
+Message-ID: <ad987ce7-1aa1-405e-a647-456c0c2283f6@arm.com>
+Date: Mon, 19 Oct 2026 10:29:18 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] selftests/mm: check MADV_PAGEOUT file permissions
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
+Subject: Re: [PATCH 1/8] selftests/mm: add MADV_COLD and MADV_PAGEOUT contract
+ tests
+To: "Gregory Price (Meta)" <gourry@gourry.net>,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
  liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, shuah@kernel.org
 References: <20261014175756.2035176-1-gourry@gourry.net>
- <20261014175756.2035176-8-gourry@gourry.net>
- <cba2a01d-630c-42d3-b6e4-b498f10c4b45@arm.com>
- <atImwW1ONQQ9Hv7p@gourry-fedora-PF4VCD3F>
+ <20261014175756.2035176-2-gourry@gourry.net>
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 Content-Language: en-US
-In-Reply-To: <atImwW1ONQQ9Hv7p@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20261014175756.2035176-2-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6AC7820002
-X-Stat-Signature: jdgu1rcdpi7tc76y7yamd9aaxjtcrwny
 X-Rspam-User: 
-X-HE-Tag: 1792385506-683883
-X-HE-Meta: U2FsdGVkX19hGe11m1QLplHirFg8GhQIUqAWortwft4OuD/+MGQQXEJ+1o8Nm1+xpwzsYjdqunTSgDlFaJkhnbkFTPc/Y8SJsbSkw0WPZsJOa7wo+CNxXAxwXUAr8Qpcpsn6IElZK5MZ3HjHnDyvb3jKLdFbz8HSOV0jpXVnSYGLHvBZ7dLi15TGwIOiLpZ7bsIlobRx8pSxBNEwVswScalbfWz59OPzznHIyBjeOpXTF41/OpzTvZmWOmrTsc2ir8pALG9BHIdcI42iZS2olPQo/pZ9I57gUsGv2AkSgKMB6YGfgNSCwMpzcQkKQKMBVUKigLdpajjolunhgFVYfq5n6hIZ0ZjddKJ7YuNKO9gyphfjblSxg0kQgKKChckGje4tiFdqdp48u9SQMza6WPsBNn3Yk4ww9SEiK82x8s9BRfSiFhFNrsqWzTTDc85w5uTb4oxPUOCmRnFz1yMNoSC9Fe5tiC1hhPr8V2qW6dUmBBSHagWbdOUYH/favaVg+OqIlxCi/ZQ7ZfVxTyeXSdi79fttLxrwX4uUGAL1enExYwoMRbEg4yx2dGWO/9jqXV5D1hryiLDxhefDV9BUgH76a3KNlHtr6z5v3EGkoX0xcv0nYx0BDkZZhXcEHu8nhchskzltP52c8rYiPYDioN4BDgRaNv+558OvJOA9omj6KKgtLWP5CYvPTzPya60H5uisYS6CQZjUFDkR5g2AuqZ+qN1qf+34n83uaF+aIMduG518+R7aQ1Ay74pn4GZwto/1tVkLkT2mXEGKevBEncu6Ml8sa1g8KeIMhFsuWRMpyjD3R3CJzQeXSGDUu8QCpmAAL8Yc7KB/uVgVUyRepizF3ERQRq83nTqoPsSF3ycIFWwB+6D5z/wsNmBro51o4FRnTVT5iEiblEpWnQ5V1AZVKES8c26MpZK1Qi7kpXsQKd1v4mTBPw7kq/aul2vcTAch2l4PTMvIcfKBSlh
- kHp5l6Ap
- XbLdEGVh+eDCDuvx8A5xmSh6MQPTRg1Yqw4nBvlOP+mUgRV3yQn3jowUSWbxggYDkoe0HE2CezU4JyKK3ULkLSIcjE181/kU+wzY9ldnSdftKTJazHmYEIs+92VzeZ7dPKmpuhFHyoutQex0RyAn8wjGv8vwWqkwo35FSw3fog4Hv3Wx3tHh6TY0zVsHBp0xvi5puEUlg9UQj4OEdF73O1yBC01rfLz+odKLWMLO16O4rfQVH/LB06WmdKszNN0OuRXs872phkLqzwy0/ko/DrJ3Cw2w3qds60rKv
+X-Rspamd-Queue-Id: 6DDF01C0009
+X-Rspamd-Server: rspam08
+X-Stat-Signature: pehxf9xh8y8rj3cfbcjdz4cp77gepkhw
+X-HE-Tag: 1792385966-76220
+X-HE-Meta: U2FsdGVkX196bD6/9l+CFKOApQJqBDzZmSGByW1GSLhKmoD8/XQyKeYxQdNKkY9sqdgr8W+qWS4f1mkCpvljgWdNdVZMhUBWvSJc94ULqAsTjzUO6u3FQI3IfQU4aEQd0QecErvvLLVICsEIZfTGVCfZM3gYOX1rkBjGnZThTUHwL4vXNmM6clNZ712bdOrKgNvr9oniHfnPU7/zNtntyX07QDwWO/EIDsvMrGY9Xai9+uVirpSDCIbBvuS+myeqOMVeLrVWuvZO0rcFqxVlO6OA7zZjeEgXqnt+ocNGYFX1JCtTOg5ll6XLcUgHW9FLujg/EAmWDfUrhNVM5fwOcmCvJr4J3HNa5WmUg4CyCmgzUOBMb+qxVEATPg9XGTEIDz3iBzIE6ZOsrywgEN8yTbYNktgIaMNgmloi9OjgoA45/Pw3UV7kTz98vJ0aMFt+ov+FnJrjaRAIuors2S9GVHQYmoNVXRwPKT0v9ak3wr22zJwul8JYjhpwV9u7Rgv5OzrDxra7ffbEWJqk/Rk8+Stw4cUbLRF71Z6r7ZlILOdWZF4yioNFMOq2MRlgYWddRNr0HbQPRj1peGg1y2GG44fcllCzsgjchYHJqsvuxgh3ltBgL7ccOHGj3f3neQEHCliETVSfYtSEZHvpbZ8/NeYR1oVlzWcmzMOlHqAYbrJNCK+uL45sZ6hcnFXTXUxAQWFs6052LfuIOCb/1gX5/RP1TLOgi9NNY1949vQVditTWln7soeGVIRTyqfzTxPyJnJbR4cR9NpXc2CjL+3EsCk+8EDYarh+NW11JASbS1uRPVLJteD2bwX7jFkpYpxT4NKXKJfP9M7+8A95cfYuU/6eFWC2LuJSwuDbTFgKGf1RtctEupCWAF9RkbpNzQ926i8cDNpf4l1d38CS6bB1KGZqOiphFTcBjpiGxY9j35HliC6zcfbtgJ/f8T/C2TelcJ8M5LLkitUE+OFeFbq
+ FZWb+Wcy
+ SKOZkjBdQ+fErFm72mXqkPQfqBKqjVVvRaohelWYS3PdjFIp3qBS1u0F7HtAzCwGD93y/RugnZSYHlug5JOwUobbkPJ0pfEDHy+xfV0RwkOtz+s80A7nB/AByaZ/mu2hx0aeTGegXDXpDyi55KSQFEoMQzGXN9jgHzWt8sur+emWqFy7MOM+0asAm9bQbzV61wRFp5HPOc1FAAjfmEISnghZoAsHZ34bSiV57FZS/j9buR6yLO8VO7wqTl6/nm412P1p+tpgH0Hvq2dr3tiButQBN+8ELeu3JB2eVh733fheQ+FNcBCEY7RLIQkSmv/3QIRz2B0WCtt/sVLNY84mD87/KfHPNRVDiqKOWMF19hrz9vXbW/vlUsOYkV3OJzKOvMxoNOvfYk6qrkMACA8HzhVCc9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,86 +97,35 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 10/16/26 7:18 PM, Gregory Price wrote:
-> On Fri, Oct 16, 2026 at 05:48:11PM +0530, Sarthak Sharma wrote:
->>> +/*
->>> + * The owner of a file may page out its clean page-cache pages. Run as an
->>> + * unprivileged owner, so that capabilities cannot stand in for ownership.
->>> + */
->>> +TEST_F(madvise, pageout_evicts_owned_file_page)
->>> +{
->>> +   char *mapping, *control;
->>> +
->>> +   if (!geteuid() && !drop_privileges())
->>> +      SKIP(return, "could not drop privileges");
->>> +   pin_to_current_cpu(_metadata);
->>
->> Is there a reason why we are pinning to the current CPU here and not in
->> the next two tests?
+On 10/14/26 11:27 PM, Gregory Price (Meta) wrote:
+> MADV_COLD and MADV_PAGEOUT share a page-table walker covering ordinary
+> PTEs, PTE-mapped large folios and huge PMDs. Existing selftests provide
+> little coverage of its range, folio-state and permission decisions.
 > 
-> Oversight on my part.  I added it where i got a failure, but didn't
-> carry it forward to the other tests.
+> Add a kselftest harness test for both hints, starting with the most basic
+> behavior userspace relies on: MADV_COLD neither populates a PTE hole nor
+> faults a swapped page back in, and neither hint may be applied to a locked
+> VMA.
 > 
->>> +   ASSERT_EQ(mapping[0], 0);
->>> +   ASSERT_EQ(mapping[page_size], 0);
->>> +   mapping[0] = 1;
->>
->> If both pages are on CPU 1's per CPU LRU batch here and then hte task
->> migrates to CPU 2 here
->>
->>> +
->>> +   ASSERT_EQ(madvise(mapping, 2 * page_size, MADV_PAGEOUT), 0);
->>
->> Then this can cause lru_add_drain() on CPU 2, and therefore both pages
->> do not reach the main LRU list. Thus they won't be reclaimed and the
->> test can skip here since the CoW page wasn't swapped.
+> The swapped-page test skips when swap is unavailable.
 > 
-> I think there are other corner cases here as well. So yes i'll set up
-> thei pinning - probably worth it to just pin the entire suite of tests.
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
+>  tools/testing/selftests/mm/Makefile        |   2 +
+>  tools/testing/selftests/mm/ksft_madvise.sh |   4 +
+>  tools/testing/selftests/mm/madvise.c       | 134 +++++++++++++++++++++
+>  tools/testing/selftests/mm/run_vmtests.sh  |   5 +
+>  4 files changed, 145 insertions(+)
+>  create mode 100755 tools/testing/selftests/mm/ksft_madvise.sh
+>  create mode 100644 tools/testing/selftests/mm/madvise.c
 
-Yup, that would be better.
+I am not sure if this test needs to be called madvise. I think this
+might be a too broad name for a test for MADV_COLD and MADV_PAGEOUT. Can
+we maybe call it something like madv_cold_pageout (similar to
+madv_populate already present)?
 
-> 
-> My original set had a bunch of this tested more explicitly, but this is
-> really implementation details that are not worth the additional test
-> complexity.  I think we can just rid ourselves of that and just pin
-> every test and make sure it does what we expect in that case.
-> 
->>
->>> +   ASSERT_TRUE(pagemap_is_populated(self->pagemap_fd,
->>> +                mapping + page_size));
->>> +   swapped = pagemap_is_swapped(self->pagemap_fd, mapping);
->>> +   ASSERT_EQ(mapping[0], 1);
->>> +   ASSERT_EQ(mapping[page_size], 0);
->>> +   if (!swapped)
->>> +      SKIP(return, "MADV_PAGEOUT did not swap the COW page");
->>
->> Also, here we skip if we couldn't swap out the CoW page. Won't it make
->> more sense to check with pageout_until_swapped() first if pages can be
->> skipped, and then fail here if the CoW page wasn't skipped after all the
->> retries, similar to how some other tests implement it?
->>
-> 
-> Ah yeah good catch.  I'll adjust like this:
-> 
->    /* Ensure pageout-swap actually works first with a control page */
->    control[0] = 1;
->    if (!pageout_until_swapped(_metadata, control, page_size,
->                               self->pagemap_fd))
->       SKIP(return, "MADV_PAGEOUT did not swap the control page");
-> 
->    /* Run the actual test */
->    ASSERT_EQ(mapping[0], 0);  
->    ASSERT_EQ(mapping[page_size], 0);
->    mapping[0] = 1;
-> 
->    ASSERT_TRUE(pageout_until_swapped(_metadata, mapping, 2 * page_size,
->                                      self->pagemap_fd));
->    ASSERT_TRUE(pagemap_is_populated(self->pagemap_fd,
->                                     mapping + page_size));
->    ASSERT_EQ(mapping[0], 1);         
->    ASSERT_EQ(mapping[page_size], 0);
+Apart from that, it LGTM.
 
-Yes, that looks good. Thanks!
+Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
 
