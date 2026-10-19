@@ -1,114 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F910606C90E
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 16:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61702606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 16:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=mrUcQDHo
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=FnL5qN+r
 Received: by kanga.kvack.org (Postfix)
-	id 162796B02EB; Mon, 19 Oct 2026 12:12:00 -0400 (EDT)
+	id 45AB16B02EC; Mon, 19 Oct 2026 12:16:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13A416B02EC; Mon, 19 Oct 2026 12:12:00 -0400 (EDT)
+	id 402FE6B02EE; Mon, 19 Oct 2026 12:16:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 050BE6B02ED; Mon, 19 Oct 2026 12:11:59 -0400 (EDT)
+	id 2F2536B02EF; Mon, 19 Oct 2026 12:16:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC7766B02EB
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:11:59 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 69BB080774
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:11:59 +0000 (UTC)
-X-FDA: 85339867158.15.F2703A1
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6C79D14000D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:11:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=mrUcQDHo;
-	spf=pass (imf26.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792426317;
-	b=dpjf9K337Q7E7dM+tiUGUD/vMH/qqMWkCLbPw5CQ8voP8vYytIwfAlw0wbTZkTlbT49LMW
-	FKMvQcqaHz4yfcY//HpBG8ELEydSg8IcnjNU3vmTgwmB5eqAqqsT3Bk8xjhej+z2UTvjTk
-	GTbv1CRrQatFKz8S7L3HCciWvePAQAU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=mrUcQDHo;
-	spf=pass (imf26.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792426317;
+	by kanga.kvack.org (Postfix) with ESMTP id 0932A6B02EC
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:16:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A2F218077B
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:16:55 +0000 (UTC)
+X-FDA: 85339879590.18.1732311
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9EFAB4000C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:16:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FnL5qN+r;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792426613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=CDrohwjJTpsso8SgDTwYh9k//AsOTFOPCFpSoWxu9xY=;
-	b=p4+Lf7p2DOVd35tzeoslEur8C5nbo7v5Ai8o5raguVHiWlSjWlkPws1bkrpTKcZRNcj/Z9
-	HFNtAh8khiNgfWxQ2OgOxpUEMLMjN8gk0KobwTj9TuinB2VFUIOzhpEkzW0Q4QRaGoQUbA
-	PtgykWPEBb+3N8L21ZqboPwBmHMSGp8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=CDrohwjJTpsso8SgDTwYh9k//AsOTFOPCFpSoWxu9xY=; b=mrUcQDHoDdhAxO5d5pT
-	N4DrI8T/1uGOrNTpfFOL6qpIFU404DQlweHurDW2pcJAEdzNbVT3XmuZYqgyGk9k3tzucoNhFnkR1
-	cDMY2lBcoNwmwHkL92bYBomIt0sogQPMK8FFVQkzcPjUqB17qAfI2dk3uWWcTgcA23XMBzh/u1klD
-	ALJXOji8fYkLa4oXelQgS9QMxeN8icD0IyDmZt9nrUGdiibupnCJEX1dJAfIdiUfmVQsSFiV3Tf55
-	yXdhB4OazT0t/Osbr+2qqrk4iOmOPOGyIYgy+iiz5FS9kKHgqQi6E8mEwSqtPKm3USDDCQLaB4Wc0
-	2wFgFSsPILVIrig==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xIpuE-005W7Y-2G;
-	Mon, 19 Oct 2026 18:11:42 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Mon, 19 Oct 2026 18:11:44 +0200
-Subject: [PATCH v3] mm/shrinker: allocate shrinker_info_unit from a
- dedicated kmem_cache
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tzy2/hZNZgxPkh/2CJVsFN5uf24dNj2kZ/M8pdTK09Y=;
+	b=4omnqeEKMQvy23w6vLmnJlqPIlsGXTZMOPiQMJtjn5G5iOu2/xRCeCmM7pYXw/qfxi9wus
+	jICnQw27YBc/RxHO1SHeR/oFeLoFXaYXLx72DTwVHA542Co7IS2x96GC6kqUrNfQABtfKY
+	1OaYJL9jRUHI9d6N4mHQZcjxHFUz4TU=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FnL5qN+r;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792426613;
+	b=5x3IWZEd1R6tUHjV12D4fID/TGCeEEcxsyLLXEga4uya8+PK0hBdYSMD2AdWgez5qLdxDh
+	m+4x7BXxpaHtmOQ+RiEwOHLxyTJfVXPcex0bixNr6E4tq/brijj1XrXoe81yefgDmPfEHa
+	3W4ngLfQDo/Xcvlh/ll9MYRQ41N1xI4=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48b060ec084so1553995f8f.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:16:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792426612; cv=none;
+        d=google.com; s=arc-20260327;
+        b=q5LYaiw9Gxv8yyK1iUylkW7dR750c8dkF2LO6wZrYMVvABLEwfFQsVDAbUTAfDYt2z
+         Wdoej6qSAmC3xVICkcE6uweWi3nk5HyNDqa+1zaL/g5MdQROFw8CMBbQA3e/aDDL1DeS
+         rhlw2xgZ063BiK03UfJ4h/8nGNAcoT3uKuIDLbagTRupD6lo56Dh08+t7Bi8rTZaQ8Lp
+         LDxZYgn+CU9pQs/CzTo2RBrOCl+nBSkt4dgF51j65+POS391UXl3aTHi62XZ6ODzgbCf
+         rWL7RSmfsq6hLxPtzBPUl+E2wmNkNqeo9L/2wKuyNEKhvx4Nb9cGpvRO7RXWT7X/k6hF
+         osUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tzy2/hZNZgxPkh/2CJVsFN5uf24dNj2kZ/M8pdTK09Y=;
+        fh=j6g037MjgqzBimLmHqiiQ9QGnO4NfjaccOLyZOJBJf4=;
+        b=EtJvUeO/uCKaD8j+EogyWJc/Of+JJQNh5aRn+cesrzyxz+EtciO15qQYsSNGR0tXJx
+         S5yStiPPyTeE6fN+ZTjnTS4ITUYFvhSjEDgLXeqLOMSn7Y4RSJKwrezkFMa9CLZ29tcF
+         ZqzILcYmpb/6hBZldJ+mP9imGG1ilcnFtcau4KLOwcp0AiMeNp6E1821MGKChRRrXDpd
+         Ei1K2tyPvZR+uxa4DsLPZCGMIxxiNDvF91FCaYYuPFUUhLscSIsvONmsKNA8QYhFCJye
+         NNBz+Mvnj4dbadqopkZyMQV7ScSi469jf0/G7OFIcEU2E335rePbEVdAoWtMyt1h/oQJ
+         c6mw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792426612; x=1793031412; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tzy2/hZNZgxPkh/2CJVsFN5uf24dNj2kZ/M8pdTK09Y=;
+        b=FnL5qN+rUVcKgbGAUBxIY3Ql0BMzYDWwIldHPU5+R0hmNJnawkW1yWJ2c3F4/D2w35
+         9PWaeJuSOnaKwNVo0S3iK6C7Gyu7fF6RjbX08IpRdoKKfLbnaxdBwFpJ2HN941AtkyEf
+         ppLU7gDBlXouwg3NzfjTnthULbLX9NXHEwHollkRR8hagkVlov5ttdDZowASGkBLMO0e
+         /jc0v04iyIWhA/iUmSP7IJZxbyDxZB9p3zlzrBtFVHv2AI37Vozav7dHv5S1SnuVOGOj
+         1i2kzHuvTVhPJwJns+8Q5etqHvqYyFqbTGWBRifUdcDiJd9vIbUYkqYv9dx135gZp/99
+         87BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792426612; x=1793031412;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tzy2/hZNZgxPkh/2CJVsFN5uf24dNj2kZ/M8pdTK09Y=;
+        b=2Xe0oQk5jBth0XSTJGG4aDTR4b8Coy+QYCpwExN4i8qbblg/5Vn13aScHneUjsL2Fz
+         7WyWPpHBT8T27yqoac3RjypgQJpZ+7s4M4cgd8ZVsCfnTRqyw2u4uLRkfhQn+XRhoT1x
+         x1zdvf1pPvMhc+qr+sa9zxOu8hwE/NYlyfQT/ONISL6/uiSfvnOCogABlJfcuS3CF7I2
+         xb8py9heqhz/eeW+xArY6uQXS10pUE5fKOGydo/q5eDjSpk04bBOJPr8GzIfYNflJJFq
+         nJlUiuazUqgIjncgCI4hfPoRLIYb3i5++qnpRfHjh1/TB1JFulBhwAr2d/VmSY1Z+g7y
+         71xg==
+X-Forwarded-Encrypted: i=1; AKwUvBz/qQfcmqbCSrXrfCV/1iN01yGpsKv/uQ0z5Lj8Q0nd+RjHZWr1TmA3VegxpqYpx5Elj51duz58xQ==@kvack.org
+X-Gm-Message-State: AFq9FYLiCOFjyZyud1dy8/BpdQk0R9I6OGRbiR9rhE9AyFGeir4bknuK
+	JyyqJM0CUBgpQey8FJoUGUSU6o4JCfQOThtI3UdW9AyUygRjrxf/Eltkg9ZiJiWweJVfH0So7Ed
+	Q3Zt4yPElqa+u58TL9MJ0A/7+z58BHt0=
+X-Gm-Gg: AYBFou38m3TwzCxbfvzU4L7y9AAdRtl8bIb/QkACyqFj0P3rwNNKNGb+ruSWB5stKih
+	SivuXu1AmraBZQOCRBReZrsWRqSP91h/rcUGMF0xkgSbk5U191ns56I41MqOo8jOkO1OPIcxuO/
+	OWersj1MvH+KPclohr7dcBuSD0DWBXWDUj0pGafvGgZgxLPyr9sxdySXP/pa1V17ceTk+rgxXxK
+	6boR6/TCfytTQNOBI5/s9i1xI6h8HB+WucN6fmfrM5dbxfyQuih+69xjvjCkL2x35KEUv8hhqHs
+	5OUYlXphshrNCsxyM3gGYi5QcM/MJJ4w9INFOa3rwZsG64gWeq8KuobPuvLhOCVb/qdqHvh/RzJ
+	/UBSQdh6iUB90o0FgG5yEK1kHN28fKFhpUMF5MGf2V9g0osGpLD/s5Jep4o2GRXQELDXM/0wxPm
+	mgfMXRiQ==
+X-Received: by 2002:a05:600c:3e85:b0:4a1:6991:36d7 with SMTP id
+ 5b1f17b1804b1-4a1d75e385fmr158858205e9.10.1792426611931; Mon, 19 Oct 2026
+ 09:16:51 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-vstor-144715-shrinker_info_unit-kmem_cache-v3-1-0fb061e09bf4@virtuozzo.com>
-X-B4-Tracking: v=1; b=H4sIAD9B1moC/yXNQQ6CMBBA0auQWduEUijqVYxpoE7tSGjJtBATw
- t2tunyb/3dIyIQJrtUOjBsliqFAnSqwfghPFPQohqZutKylFlvKkYVs2152InmmMCEbCi6aNVA
- W04yzsYP1KPQFB+X686hVByW4MDp6/2a3+99pHV9o8/cAx/EBwWIgko4AAAA=
-X-Change-ID: 20261016-vstor-144715-shrinker_info_unit-kmem_cache-69ea3f78b635
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
- Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- cgroups@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4716;
- i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=A02/K9KBXa2vsDlxYeUgtKBEVpOgUV2FhLca4x06Ks0=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq1kFGx9BvQsfXRTLTJ30NLwN8MLEz/PrdwIfXC
- y763+LJIu+JAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCatZBRgAKCRBRlgpH+WFc
- Kr/6D/9d6PZqCp6vtGcQOvsbJvB0d6vZcjylCrCPwKSyjLvdu765yH5uakjNmj/1qF5YqbqczOR
- TZcjSs6xzH2nMcbs6PN3ShXsWKlOSl8Ywx6H2aWBIRTefbXQ0YW2nec6HdwO9nyivcNiuXEith8
- ZRjj8Xwa475s/DLxl5fYjUdpEXP1hZHzYFFpWH819GkOm9Xm5rHGQJRVySQcCaHdOx48IkjV9mf
- rbXX8XTSoF6h2qdi7SircBvupck0IFXvWPFLHWu3Dp8S2XkYVFqjhYigMZ27hYTQPLdeh5acjFu
- EM1L/pNePbFrTxdMX0/y7gnyZAPnn9ARrpHF3Wfk++0hXw7g765IVtGCA5CZge8M+tWn14Dmj6f
- FNAvs5aSV4lUYXwICfDS9dxS7aaAcaUyIhUWKK+e5oDAgB2qAyH9Wn76UwWGqtLX3A9qLN06YGS
- /63yQ/H6jkyJyWqH070a/9olC0rci2uLoJQr/yPp+6dxj5jrdB7BrsIGHd85FlzF1mvZfUDAw4s
- VsqmSxt9pmKt1q3NjEoOislEo1E0eTVVJsMqIx0r0FQJJP4rbfBCqNPVgL5jBQ7yTJ+jymuIcDF
- pEE5SENtgRRV6/wo4cTqoMi2Tl80hHEfQXzdL5ipXabRqeKvoPTANdbUFm/PM+xZInWFNDrzLVz
- WKWuizsDy8Zoezw==
-X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
- fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
+References: <20261019160615.2348500-1-nphamcs@gmail.com>
+In-Reply-To: <20261019160615.2348500-1-nphamcs@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 19 Oct 2026 09:16:40 -0700
+X-Gm-Features: AclHuK-V3wuqh2II4jQy2GzXwFR6X_qUKiksPsMgYsjyzYDn2Cz39hAf5ULvwpw
+Message-ID: <CAKEwX=O7i6ehqyLNCpp9bqoREmahXwGS4Ja8bCsKUzyAMu_QLg@mail.gmail.com>
+Subject: Re: [PATCH] mm, swap: revalidate populated clusters before scanning
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9EFAB4000C
+X-Stat-Signature: 5erzyadgc4b8wqixc6hhma3wfk4hcq37
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6C79D14000D
-X-Stat-Signature: cu8hf41cnp7oqrji53u9ym7ep9zf3ajk
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792426317-816789
-X-HE-Meta: U2FsdGVkX1+eVz0ZobuZl2cyaU+Ywk5esLcjhMp+qdhfA1E2DGuhbuS+JAblEhSoZAMNXXOAS349+An9Mj4EDlJUikkO5y0EE/cJlwHnOdVYa3cfCAGh+sy8+ZZ5egVFVgsGNOyABbH72qpDtiqMi/nbknG9CreYQaT255ZCgIFQ4KhYUvzgW3i8uD8tkrrU089CE1aDupVo4b4rnrTeBNi708bhFLnRTTIRQc0m9/A4f3xtpQ6ZBdaoB3Iek+qI5ZsHYTvgBFz2vEvQv1sTrBlNy/Qys7mJAib/qFu5/F90KXMF031rUigutq5+XAcMtFe8unkgJchc3cag2kBaECigWIeA3zHOTiWRI/W30nfV83kIi8XaF7YMBmQIF/0CzTKFqzZNybp0sSoOF7L9HQrtUII9UlVpyzg7Ve/t34hiyYlo8JlxQ/0yGhaSwtZFx0kP/9hHgFNqeKT/5UTDOhMMR0qAV1JZ8Ary10++VxFznm/gisP8cOdkc7GHZRsiBgDuGh6N56I9ptnTfGxzuOQJzaP/bQbO6DVNRvy50/TKIxYFl74uObDYygnV1EhA/eZhIFgWBaCk4pd3eLBgugIast/wzByP6EphJUbvCP/h+hOS54+6qiIarzPKnJRjhRZbCcQCzEwKYHf9vggouZoCR5gz80OCBsjo0U1zVjwR4v1xI+Po+82wUEafNRfJIQG9hs8KMfdMpyKafoadd7rxYpsvzxpkWQo2reopVkCLgfqNI2cPwT1Zw4uxdF6r0Hsy1vg9KYm6HXQQwVQUZGAz56xskGBA3yVaVeHQ3Ae7qWopuBaumUYbi0r2P8hck8J76bcV7iAwkaZu0IRByjm8nqh8Hv6/MhRisRxtO32JBhowMBChiz42Rneyi57x6O4waZqrn4Psjo2XaxXVQe6E+Z4z/uypzAvRBxPpmxfAq4XU88KtIJX9RzOAAWNPk0c6E51NVGzMQotiejm
- ZJu368GA
- QJ8eOo1rBlK6CR5zT/TvjH5abg5Fu0jVGIaE3tCzrLixKBbMTtcwq9c/XCTVBDs53Pt1G5ztmQYNGV3Od9I6T5G6dx+YzPX5g/hK+IuQQeb2zjtVx1pY05UN55s3Mr3kQM38+YvK93eQl7qq9oNmLL4E3fw9A2Bo/Z9gKwrjaBtG3o5cXGRr1jRz4Abgpuhr6GTGWmFsal/yYmW7X4HTBviIuTNpOk5C6Pkd7ohK1RQynVI/VTWQz669irgFuMIJz/klheQhAFY9bbMHszgxFbnAbVdi5ki/j0Nh/olZ7ZtoMXgwofvUX0LTyqVc5KJkXjOZYkEX98MKPzPwr9fXI3npVLtVjs1RE5SE97qvHQXzdWSTnt1E8RHeDRgN+2I245uLJM8RQrgD5s8CsMfdfTHmq3rbOVTduquwClIBOX9XI0wQYi4GDCZehDdaca1tWYN1W/f4LHxBnRW7GAqAh+2bVJKCS3avqgS46
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792426613-701449
+X-HE-Meta: U2FsdGVkX1+KoT8CsqR0d2SR3qSKyuViFamm6w4IlZvIpDevjyg9LONh7iJWIjbga+c2pFYY0SH8v3BogVHquFO8MuzawMDWvCKaAb5/EmEvxqySWbK8pZtfvCm7EgzRhH92ofk7Tsrn3QV4T/NjKwScEBFZc79RqKhajvbilGthLGCbu+dVZlGq4nmBc0Ukisp2DObhH8hMDpD9j9WNTwBpTUNDiDM7Uh7L0D/dxgAuh/C/FdMeox1nTHqlc8cbavUQsq8hy/fJ6vlZuKhC54/k8BkEXcSLlX4egQ4++85Mtp95/zKxlvOj0LQ/HJqViaDPoNZtdeZcdqqi8pQw8M6PgEcXdalENHSyQde1xcfJ9OrvJ8fPmv2ImsfYu/k+uAoY6vaLU07VQBYaXXdR3NHqsX7Z8viFbB40QLE3v8HOrMPQfzY1rZ8jQVTxzKyQMJwxPi1pLiCEFZkkiBdDZ3uu8Ja8bKhgkmzUYiMLSk40zkAtHnfh1p/VKwcndY5DWDtjhVufQubvArtshvXNPdT95fcKFTZKDK/LL43zg/9OhCX4HIrUmXAnsMU0cDtzscdNv9JovH6eIFLvFCeQI7/LTm5YJHej2s4kxgcOyqRvy1gHPy81dxACm/zr4tym5ShQuf1OY5hE5KDmXs6fdANjFgcDEpcR1aqIeFZlJU/pWEVbwMAqyBdIhqRlOICgghRvCombAy8lcf7sVI7mAAF4TP6RqbcCDfP3IMBisIiITowd9kfqR2v/JzyVL3Uituj7HV4u5EGE0g1q8zzXxhWCqmQcfApuEeECUASjbYdXi0Ma4sboC4+LBUYBtv7XAa+nx5n4Qu37ICXTFd4g/OFY/KBgbzdgoQdQ7legfrw0OXmfCGQ2r9rlPKe0503cGfKp0V36Y4IIfINpjn8NxegA9C37toch0xelEsLZTUYi17O2eBipsnALf13A138myOA5tU9QQI4qX1knUjB
+ rGLgQef7
+ xQ+xFN/sPoKGEk9hSg34BxWj3cGYnt64JnXWwnDogJceEVB2CBJdCsEFUSjnRgZNoIXe8u7yLzEU+iLFyLkcyLeqRqYItnbRkg3bGksY0OvlsNxXwA/2JKEOTbEcolgUg/sJURG9aSENS1TLgB4B12PQZ30O3d5hvZRRkluEESMYJbBvwpcdjLx1L4L5MLoIMPHrWSZmftzIUnEN0Xn3XH1RssqOMP/qL0fs7SXqQQt9lhDHIfqhX1+a8FJKmIUx3I4705wI2B0JVBEUoChEdcI7gGCePdw9ObuCWN+ElpKcTJ0ukBmNuOjuyqbMDEU2bNYIn8FKYHEnqNk46SKY/gcXQeaq52EfyTJUVcH98LW1MxZ/noqbzhHAuUkgP9Fn+JtKIfZ8xdWhyeTtRs05RV4KFrz2M4fr5jhsA+U2vpJwWbpgY2WfHyG7D0aKLeUIwDysT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,126 +147,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-shrinker_info_unit holds BITS_PER_LONG atomic_long_t of deferred work
-plus a one-word bitmap, 520 bytes on 64-bit. kzalloc_node() takes it
-from kmalloc-1k, so almost half of every unit is padding.
+On Mon, Oct 19, 2026 at 9:06=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> swap_cluster_populate() can publish a cluster's table with the cluster
+> lock dropped. A cached allocator can use and empty it before the
+> populating allocator reacquires the lock. The resumed scan can then
+> dereference a NULL table.
+>
+> For example, CPU1 can retain a cached cluster offset on an SSD with
+> per-page discard disabled:
+>
+>     CPU0                          CPU1
+>     ----                          ----
+>     swap_cluster_populate()
+>       swap_cluster_alloc_table() fails
+>       spin_unlock(&ci->lock)
+>       local_unlock(&percpu_swap_cluster.lock)
+>       swap_cluster_alloc_table()
+>         rcu_assign_pointer(ci->table, table)
+>                                   swap_alloc_fast()
+>                                   local_unlock(&percpu_swap_cluster.lock)
+>                                   mem_cgroup_try_charge_swap() fails
+>                                   swap_cache_del_folio()
+>                                     __swap_cluster_free_entries()
+>                                       free_cluster()
+>                                         __free_cluster()
+>                                           swap_cluster_free_table()
+>                                             rcu_assign_pointer(..., NULL)
+>       local_lock(&percpu_swap_cluster.lock)
+>       spin_lock(&ci->lock)
+>       return ci
+>     alloc_swap_scan_cluster()
+>       cluster_scan_range()
+>         __swap_table_get()
+>
+> Reject an unusable cluster under its lock before scanning it. Relocate
+> it only while its table is present.
+>
+> Fixes: cdd77f84d966 ("mm, swap: consolidate cluster allocation helpers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 
-Allocate the units from a cache of their own, sized to the unit. The
-cache is not cache-line aligned: the counters of a unit already share
-cache lines between shrinkers, and aligning the unit would only keep
-neighbouring units off each other's boundary line, at the cost of part
-of the saving.
+I'm revisiting the lifecycle of clusters, because vswap introduced
+dynamic (i.e run-time freeing) behavior to it. For the most part it
+looks good (both physical and virtual side), but this look racy to me.
+I don't see how it can be safe. Once you drop the lock, all bets are
+off...
 
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Assisted-by: LLM
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
-This is v3 of patch 1/2 of "mm/shrinker: make per-memcg shrinker units
-cheaper", sent on its own as Andrew asked in the v2 thread.
+But at the same time, I have not been able to reproduce it (yet). Will
+report here if I manage to.
 
-Patch 2/2 of v1-v2, "mm/shrinker: allocate the per-memcg shrinker units
-on demand", is not part of this posting. It is the change that makes a
-memcg pay only for the shrinkers it uses, and it is discussed separately
-in the v2 thread.
-
-Tested on a 4-CPU, single-node VM with the test from the earlier cover
-letters: 8000 tmpfs mounts, then 2000 empty memory cgroups. The units
-move from kmalloc-1k to the new cache, 31 per order-2 slab, and the
-unreclaimable slab per cgroup goes from 144 KB to 87 KB. Removing the
-cgroups and dropping the caches returns the cache to its earlier size.
-
-memory.reclaim on a cgroup still frees its objects on 140 ext4
-superblocks, and cgroups making their first objects while mounts keep
-raising shrinker_nr_max leave nothing in dmesg, also with
-slub_debug=FZPU on the cache. selftests/cgroup test_memcontrol passes.
-test_kmem_memcg_deletion also fails without the patch, by a similar
-margin.
-
-Changes in v3:
-- Allocate the unit from a dedicated kmem_cache instead of shrinking it
-  to 63 ids so that it fits kmalloc-512 (Andrew Morton, Muchun Song).
-  New subject, since the unit keeps its size.
-- Link to v2: https://patch.msgid.link/20261014-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v2-0-51af2aedbe6c@virtuozzo.com
-
-Changes in v2:
-- Patch 1: check the unit size with BUILD_BUG_ON(!is_power_of_2())
-  in shrinker_unit_alloc() instead of an open-coded static_assert()
-  in the header (Muchun Song).
-- Link to v1: https://patch.msgid.link/20261012-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v1-0-5a7608393b7a@virtuozzo.com
----
- include/linux/memcontrol.h |  1 +
- mm/memcontrol.c            |  2 ++
- mm/shrinker.c              | 11 +++++++++--
- 3 files changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 7d1c0ce189a88..b5a89594c263c 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1675,6 +1675,7 @@ static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
- }
- #endif
- 
-+void shrinker_unit_cache_init(void);
- int alloc_shrinker_info(struct mem_cgroup *memcg);
- void free_shrinker_info(struct mem_cgroup *memcg);
- void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 856a7d07586cc..7a817181168ed 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5717,6 +5717,8 @@ int __init mem_cgroup_init(void)
- 	memcg_pn_cachep = KMEM_CACHE(mem_cgroup_per_node,
- 				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
- 
-+	shrinker_unit_cache_init();
-+
- 	return 0;
- }
- 
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 7ec2a9704f6f2..4fb424e721bca 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -12,6 +12,12 @@ DEFINE_MUTEX(shrinker_mutex);
- 
- #ifdef CONFIG_MEMCG
- static int shrinker_nr_max;
-+static struct kmem_cache *shrinker_unit_cachep;
-+
-+void __init shrinker_unit_cache_init(void)
-+{
-+	shrinker_unit_cachep = KMEM_CACHE(shrinker_info_unit, SLAB_PANIC);
-+}
- 
- static inline int shrinker_unit_size(int nr_items)
- {
-@@ -33,7 +39,7 @@ static inline void shrinker_unit_free(struct shrinker_info *info, int start)
- 		if (!unit[i])
- 			break;
- 
--		kfree(unit[i]);
-+		kmem_cache_free(shrinker_unit_cachep, unit[i]);
- 		unit[i] = NULL;
- 	}
- }
-@@ -47,7 +53,8 @@ static inline int shrinker_unit_alloc(struct shrinker_info *new,
- 	int i;
- 
- 	for (i = start; i < nr; i++) {
--		unit = kzalloc_node(sizeof(*unit), GFP_KERNEL, nid);
-+		unit = kmem_cache_alloc_node(shrinker_unit_cachep,
-+					     GFP_KERNEL | __GFP_ZERO, nid);
- 		if (!unit) {
- 			shrinker_unit_free(new, start);
- 			return -ENOMEM;
-
----
-base-commit: a5ebb76233b79db01e82e061173cb73c6d2b5c6b
-change-id: 20261016-vstor-144715-shrinker_info_unit-kmem_cache-69ea3f78b635
-
-Best regards,
---  
-Konstantin Khorenko <khorenko@virtuozzo.com>
-
+(Side note: my vswap code is actually safe in this scenario. CPU0
+allocates a new cluster entirely, and lock it before publishing it. So
+even if the cluster index is cached in CPU1, this race cannot happen).
 
