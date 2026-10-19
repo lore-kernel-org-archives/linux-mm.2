@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C32AFCCF2E6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 13:51:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9DEACCF2DE
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 13:54:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E82C6B026A; Mon, 19 Oct 2026 09:51:46 -0400 (EDT)
+	id B0D536B026D; Mon, 19 Oct 2026 09:54:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BD896B026C; Mon, 19 Oct 2026 09:51:46 -0400 (EDT)
+	id ABD7C6B026E; Mon, 19 Oct 2026 09:54:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FAF06B026D; Mon, 19 Oct 2026 09:51:46 -0400 (EDT)
+	id 9FA9B6B026F; Mon, 19 Oct 2026 09:54:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 199166B026A
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:51:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F85E1C3F77
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:51:45 +0000 (UTC)
-X-FDA: 85339513770.20.F682170
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 33E256B026D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:54:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBD1B806DF
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:54:04 +0000 (UTC)
+X-FDA: 85339519608.01.65381C8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E5172180009
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:51:43 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kedHgPQ5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792417903;
-	b=WTl/ximfF7NSTFgf9Oh7+fuqCaq5FgVj7yiZEOE2YOcX3IgW5jX6jbkGWJ0EbmedxnT6qD
-	oRn99PPo3WcmC3S2V82C9KqXUgXgH6d16JxV6U064R0wODqZ9OOeMm4l3WRasHe5ZWt6pM
-	T9hZJSZXTN/RpeTbF8hbYnHlr4zTmoM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kedHgPQ5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1CB1340009
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:54:02 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TLtVbW4t;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792417903;
+	s=arc-20220608; t=1792418043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8DoshP9R1xMB2Brh7195PJTWyn0JrbcznglLz6Oe4+g=;
-	b=QozQWTMfq1TzYhecHTDcwj1qn+9YY+PZzcZfoQ2ztZ41hQVqHOXpYO55O7nYUBsVY6P74Y
-	6P1qUiJ4aiwf4cWVEye7WezfCjrg+umCwbUNJQciOIO9xg4DZCPgsl4rYjWnl6Y8uDQgEs
-	15NHmG2LigQTR11Er9SzzYAvz3r+Bm8=
+	bh=h/7HJtb6+Lht2UwV3mRdqEstIbANi/Ys/pJBas6kykI=;
+	b=uKb8T3G6GEm05rDLHQjeeSRSXjIZZXNcAlBcKg5DC6ZA/SgZCszlw1yhCMrYmv94O41vaK
+	C3SOkB7tbyVRceJGQ3n86asdVQVDiv9foe9rF/LvTkbwyjjq8slBLfzc0RCJienzzC18Oz
+	hOPkp1XjX1Uq4dC+adn1NbjxT/GSwrM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792418043;
+	b=F/pvacmLqOpuTHODiySTBRiBG646LhiPHLU2xW31uqWXX1PEokNsdP9ay6YLmjahuf6vGm
+	Lvgfx/wcPe4VElzsd2fDlVn42J9cH4g5qrsZAW537UarQNY1q0YsF5xCuwbjUiEEBwWTjA
+	YZF5M1THQZ31CRmDUc+cY+/XJ/5hSoc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TLtVbW4t;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 69AA460238;
-	Mon, 19 Oct 2026 13:51:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD041F000C4;
-	Mon, 19 Oct 2026 13:51:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A53C260136;
+	Mon, 19 Oct 2026 13:54:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259CA1F000C4;
+	Mon, 19 Oct 2026 13:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792417903;
-	bh=8DoshP9R1xMB2Brh7195PJTWyn0JrbcznglLz6Oe4+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kedHgPQ5/MjBobdknoNxY3rNJAzcZKbN+qUia8TMgugleJgbhHs+Dbuphixq5anO/
-	 +QRf0JOMZWQd/mbSmUkqNIaQmNd5YXHMAEwZmK2qPW8g0vwFU5u9wlIqE3HGT1IRWa
-	 MGNoyOF7/wiH2ocLaJIQuaSKDQ/UEny+B3o2Vn0TeARKFIIT6VTwdHL6gq5EKL2xBr
-	 Vuc1dfGCoUT5et2QgVbY+30Q0rzdO+yjDKl6jtHTxqQjOAD+qmKo1pPKGvWcM+pVF0
-	 qRrmSdP0H7dtmDTbKCrgz1vDRN0WxB+o1uM65KpnwemIG+JCjw8pgWUNdbIUHTx5gy
-	 N9oK9JDc5SQOg==
-Date: Mon, 19 Oct 2026 14:51:37 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	s=k20260515; t=1792418042;
+	bh=h/7HJtb6+Lht2UwV3mRdqEstIbANi/Ys/pJBas6kykI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TLtVbW4tAFTyV2J2WBygjBhShYTN1UW44rrFgBJc2zNZFqpjTikm+kOY02YN46KvA
+	 l2qxFi5A3tgPOcA75yuYVq3yvAla/0Zzvk4cQqzjhKEqSwKv3XYA4stUQfOoRPiFon
+	 pUka423K81R0Gkl5Y7rbM7pLXkDIr6mzi5rPTWSKrpQRCumZGPe1ByJnIWm9Xu+L0w
+	 eMT2xUHXdIsi01sJFczisu6PG2L+IxRHZvjGaO0IdSxc+w8IeRN8MrVwtODcK0fUhy
+	 r6vT3JF1lE+fsuhSwtM1avcKQpsJDTjJ8BrYjy+ZOWm9OQk46vIMdindesBvuPvmCb
+	 rRmiafew9Tk7g==
+From: SJ Park <sj@kernel.org>
+To: Dan Carpenter <error27@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/mm: check MREMAP_DONTUNMAP mlock accounting
-Message-ID: <atYgQ-K4oIxvCSUU@gremlin>
-References: <20261006064120.6796-1-azpijr@gmail.com>
+Subject: Re: [PATCH 3/5] tools/vm: rename tools/vm to tools/mm
+Date: Mon, 19 Oct 2026 06:53:54 -0700
+Message-ID: <20261019135355.87175-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <atYOvqkdVSgjXZVM@stanley.mountain>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006064120.6796-1-azpijr@gmail.com>
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7qzo91t3j4rdi9dkuuquxjwzp6f7rjfr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E5172180009
-X-Stat-Signature: qxehktie589uyg9mxr6wgj5qgjydd8mf
-X-HE-Tag: 1792417903-106525
-X-HE-Meta: U2FsdGVkX193qFJpCXMSvIOnJcAh3hFgkJC+AL+zWsljjX6sruZH08V/hJXsjW1w/6aNMeTZvr6cQEZr5bPP/+IuKclKUs/QdkbCc/3NiZCotpv6CURKJH8Xl9VoK8nuJrTKHEGPHgRVvWzlQKxRP3pDMXceNdqfbQy0SRtUVQ6gXFA5LN08lE8XiPtIh2RrN9v1LMOOA0EvIn6DaWdQ8yH4DCPBPreddlZ+YyBZWlBElP4KFEOaiHCbYNgVyyPHsk1LT5OlpONWOH6OfBVHcToC3puSVlMqhO5uw2qJbbEMJ5UOaoPUwe48GQocTQjtLhvQiMDVPkFpYKJ4nyW61SSpOA1Q2Q27xETuy8QlQRrZU0dBiuFf5OQhzBB3GoAdU4NIeYoiLHIV77QPWc5qLtCataAkZPXMkZHMI4zfIMqv35Y5c44w50nGx7RvYtfX/Oybogo6YyCmPHHovgmRMrFyJVWfS97s30a9cjj9Ev5qk1oMFYYfvQjPZK0wpJKjto5739ElHyzW8Hffnxw0+BpQSYPGfhCOPDSO+qIxVLh9sbqGO+jPNpzLvoB0lspaea+Vg1+e5v5dRv46CVRzCYJ1wZTWO3Vy+xN3O5yKuHnleL2C7qwyTz9yjtWEP+5lmtmprtA2hKAztJqQoF//g143aFGhZqnl19ShKnZJEfGC4Uhfu7m0zeunFhK2DpapmAuSJGHItMSjGeZL3/TsGNh5PgWloYWIhgo1nRIfAoCfC4IEfV0ZpIAlYm7gpwLLO/kFC15K73JKB6GLJttPzLad0MEo+K6c2JkMu5ygAA4+tDu4jvLcJfTv0WdAddN06FHQHfkybCy2Rh9iJppsoQys2YvaJsu4ARuyUalHuDIroXv4dkbHmG5pXGvBH6Jr1tPxQzAdahLRbk7CnBiSWlXSdSJx1KoSRzcv/Pi1TCS1DE0q4lIsm8jHj5d2paTCg2J2d4WFPNJBpX2t6Lm
- MOrNQkL6
- pvmvB0BPNihudaSejfifAM0aq4V07l7nhdqQm2qpCwt1rUkxVj6PiD/k/IbQ3yhn+/wfrHE0BpkjmmCyHM6BcyRUhrpLZZvSRaKkTuZqpyJ/J6DeTKwSkPgBuCmPNV//bf9Z7tR3hy+wuI/lFASAdXMQuD0n/oFBSdFYhEOpR1XJclcIUtpbL9lJNhoBVmF9oL8ep98uRAnYheQa9HEdcAncsDBRdN73S3+huUurZwN1onuRvIW5KbsxdvuCE/KzPMF5ISPwxRrw1JrU0zRP6XTazeiwuG0/rx9K83k8eYSGFq2vNXye/aFPzbZAnkJUag1Gj79E8AbTkFjrpNbL0+fmHSJxH0gHPfybG
+X-Rspamd-Queue-Id: 1CB1340009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792418042-154991
+X-HE-Meta: U2FsdGVkX1+T5+kVrYGENyEw/m6lBowjBmk18JVhpP4Z6KOzfEATqV2HnSnsnGg6a3asCrmjAUcTpOx0BISDV0XgJa+8O6Rp2M/pCqXCaBBrgLdboM6/kV/qwX/9mny0UHv5J4zLcrW5UUOP6cBcf4D20/xE7QK0TTfOOwgpWSrcujGA4R54nTzn8Gw2ULGyDOP54Un9IU+afCdH0jTce2ILRMKtxWHzoqlH9WfH8T14pyjAnGHUtP6+dQ0PwtgTYDqKgwff1hcBRWnlJhYAzTmQtp+wRXmleuCl4S+sqJg1Q+j/Vgpo/67uohJYHPmvvlt7wqu2UWAxAidr2ertLDFYFlmOTHgetGv9Gbfz/xcXQpyGdNGlk3pGFHcM4J/jRD9L5jaPAHx0dGVp3ha3moIhZ7p7FtDSMPodzKx1WA2JytRXXu2amVXZpQD5xIiQzm5JdiwzDGmrtob8nY8QUaimhmwuOr727UlDRL/hjcDUFrsG3Sw83rwHp9swSPVX7pkJ/03ifK9z0eIVXErA621c9B0JfF3ZDDl71wSl2upZWUFEPym29g/TFTGQQqPoWKIHz+eS12Z3LV/Ap4pcGGiC2+lPQwmAVdS0sDsg5+ao0oyAwr3YvPeLIX8m/drMgUGdqfvXhms3WwGmL/NzBOlEmmv095w+z822TOfZWs4VDtof7K4inolsRIn+Jju9GpEKPEMIQ+cW19BwwR5hrgAgqXC1eHPBxoiV27lmfEY4S6suFP4jlVi337bT66HMUKaTVqLiNacU3FFb5NV24ZAfRBqWXfo0CFfEqIEV6i3gquUnU65RVFwytyPlirwmo8MO9j6u1WjPD9eQjovED7wbvjzFhH7uSFHCyuzmeOwryb13acn04w7iPws2/LFgkSFBPZnwQIYcGmWRYXaUYBm+dIIjhmsK5osqs8IeZkMKxzvdWCvbLJMVBave7nC+2Q/T56cANj7ePlKBJfm
+ W2OyY216
+ J67umIH20Fiz7bXdO0cdJ/Am7Efw8Pssv0WC/oDx5fhX5b9mjYT3lUSwOPbMpQPWd0o9wdvZCGgug7i0PZdsVZEH8MdwqIEdCtcVU0khYZJ6sh08MBZTp1G2xNujuvFcpXj+XAk6NUjo2IFFVHb2P/RqiDn4dij1xqi/xebjcI3rbR+BAk0r1ZoEapEkl8esSIJIiP2PGVv0RyS9vsWUjq/0a1QMhJhNF3228OKpxZCXv/d9fz2AHv1qAAooCN/roTV73RpncfrCAZIDvuv6DxhrUqJ5g5pAB+2ZaQFjpA9oDwLO000yzvQVnvI328ED+5/EEFlEERFt9lPHnPDbqyeDu03X5O0ijjCIQpbW1+GA+9xYQq/4tZ9RSzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,152 +94,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 06, 2026 at 08:39:01AM +0200, Jose A. Perez de Azpillaga wrote:
-> MREMAP_DONTUNMAP keeps the source VMA in place, but clears its mlock flags
-> while setting them on the destination VMA.  The "mm/mremap: fix two issues
-> with MREMAP_DONTUNMAP" series fixed two cases where this leaked
-> mm->locked_vm:
->
->  - an unfaulted mlock-on-fault VMA moved behind itself self-merges, so the
->    single resulting VMA loses the flags without the accounting being
->    dropped;
->
->  - a partial mremap() moves only part of the range, leaving the pages which
->    are not moved accounted as locked in a VMA whose flags were cleared.
->
-> Add a test which mlock2()s a source mapping, moves all or part of it with
-> MREMAP_DONTUNMAP, unmaps everything and checks that VmLck is back to its
-> value from before, and run it for the self-merge case and for a partial
-> move with and without MLOCK_ONFAULT.
->
-> Verified on x86_64: the three cases fail on mm-unstable with the two fixes
-> reverted and pass with them applied.
->
-> Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Hello Dan,
 
-Thanks for writing tests for this. Looks generally OK to me, so:
+On Mon, 19 Oct 2026 15:36:14 +0300 Dan Carpenter <error27@gmail.com> wrote:
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> On Tue, Jan 03, 2023 at 06:07:52PM +0000, SeongJae Park wrote:
+> > Rename tools/vm to tools/mm for being more consistent with the code and
+> > documentation directories, and won't be confused with virtual machines.
+> > 
+> > Signed-off-by: SeongJae Park <sj@kernel.org>
+> > ---
+> >  Documentation/admin-guide/mm/idle_page_tracking.rst | 2 +-
+> >  Documentation/admin-guide/mm/pagemap.rst            | 4 ++--
+> >  Documentation/mm/page_owner.rst                     | 2 +-
+> >  Documentation/mm/slub.rst                           | 2 +-
+> >  Documentation/translations/zh_CN/mm/page_owner.rst  | 2 +-
+> >  MAINTAINERS                                         | 2 +-
+> >  mm/Kconfig.debug                                    | 2 +-
+> >  mm/memory-failure.c                                 | 2 +-
+> >  tools/{vm => mm}/.gitignore                         | 0
+> >  tools/{vm => mm}/Makefile                           | 0
+> >  tools/{vm => mm}/page-types.c                       | 0
+> >  tools/{vm => mm}/page_owner_sort.c                  | 0
+> >  tools/{vm => mm}/slabinfo-gnuplot.sh                | 0
+> >  tools/{vm => mm}/slabinfo.c                         | 0
+> >  14 files changed, 9 insertions(+), 9 deletions(-)
+> >  rename tools/{vm => mm}/.gitignore (100%)
+> >  rename tools/{vm => mm}/Makefile (100%)
+> >  rename tools/{vm => mm}/page-types.c (100%)
+> >  rename tools/{vm => mm}/page_owner_sort.c (100%)
+> >  rename tools/{vm => mm}/slabinfo-gnuplot.sh (100%)
+> >  rename tools/{vm => mm}/slabinfo.c (100%)
+> 
+> Is there a reason we left the tools/vm directory even though
+> it's empy?  Is it for backwards compatability or something?
 
-> ---
-> v2:
->  - Reduce the churn (David): fold the three cases into one parameterised
->    test and drop the child process per case, comparing VmLck against its
->    value before each case instead.
->  - Use the file's BUG_ON() for setup failures and vm_util's
->    check_for_pattern() to read VmLck, call mlock2() directly.
->  - Verify against mm-unstable with the two fixes reverted rather than an
->    older -rc, now that the series is applied.
->
->  tools/testing/selftests/mm/mremap_dontunmap.c | 63 ++++++++++++++++++-
->  1 file changed, 62 insertions(+), 1 deletion(-)
->
-> diff --git a/tools/testing/selftests/mm/mremap_dontunmap.c b/tools/testing/selftests/mm/mremap_dontunmap.c
-> index 96ba537facf7..5ca33d9d42af 100644
-> --- a/tools/testing/selftests/mm/mremap_dontunmap.c
-> +++ b/tools/testing/selftests/mm/mremap_dontunmap.c
-> @@ -7,6 +7,7 @@
->   */
->  #define _GNU_SOURCE
->  #include <sys/mman.h>
-> +#include <sys/syscall.h>
->  #include <linux/mman.h>
->  #include <errno.h>
->  #include <stdio.h>
-> @@ -15,6 +16,7 @@
->  #include <unistd.h>
->
->  #include "kselftest.h"
-> +#include "vm_util.h"
->
->  unsigned long page_size;
->  char *page_buffer;
-> @@ -335,6 +337,62 @@ static void mremap_dontunmap_partial_mapping_overwrite(void)
->  	ksft_test_result_pass("%s\n", __func__);
->  }
->
-> +/* VmLck from /proc/self/status, which is mm->locked_vm in kB. */
-> +static unsigned long locked_vm_kb(void)
-> +{
-> +	unsigned long kb;
-> +	char buf[256];
-> +	FILE *fp;
-> +
-> +	fp = fopen("/proc/self/status", "r");
-> +	BUG_ON(!fp, "unable to open /proc/self/status");
-> +	BUG_ON(!check_for_pattern(fp, "VmLck:", buf, sizeof(buf)) ||
-> +	       sscanf(buf, "VmLck: %lu kB", &kb) != 1, "unable to read VmLck");
-> +	fclose(fp);
-> +
-> +	return kb;
-> +}
-> +
-> +/*
-> + * MREMAP_DONTUNMAP clears the mlock flags of the source VMA and sets them on
-> + * the destination, and mm->locked_vm has to follow.  mlock2() a source of
-> + * num_pages and move its first move_pages to gap pages past its end:
-> + *
-> + *  |------ source ------|... gap ...|-- dest --|
-> + *
-> + * then unmap everything and check that VmLck is back where it started.  With
-> + * no gap the destination is adjacent to the source and could merge with it,
-> + * otherwise the gap is left PROT_NONE so that it cannot.
-> + */
-> +static void mremap_dontunmap_mlock(const char *desc, unsigned long num_pages,
-> +				   unsigned long move_pages, unsigned long gap,
-> +				   int mlock_flags)
-> +{
-> +	unsigned long size = (num_pages + gap + move_pages) * page_size;
-> +	unsigned long locked = locked_vm_kb();
-> +	void *source, *dest;
-> +
-> +	source = mmap(NULL, size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	BUG_ON(source == MAP_FAILED, "mmap");
-> +	BUG_ON(mprotect(source, num_pages * page_size,
-> +			PROT_READ | PROT_WRITE) == -1, "mprotect");
-> +	dest = source + (num_pages + gap) * page_size;
-> +
-> +	if (syscall(__NR_mlock2, source, num_pages * page_size, mlock_flags)) {
-> +		ksft_test_result_skip("%s: %s: mlock2: %s\n", __func__, desc,
-> +				      strerror(errno));
-> +		BUG_ON(munmap(source, size) == -1, "unable to unmap mappings");
-> +		return;
-> +	}
-> +
-> +	BUG_ON(mremap(source, move_pages * page_size, move_pages * page_size,
-> +		      MREMAP_DONTUNMAP | MREMAP_MAYMOVE | MREMAP_FIXED,
-> +		      dest) != dest, "mremap");
-> +
-> +	BUG_ON(munmap(source, size) == -1, "unable to unmap mappings");
-> +	ksft_test_result(locked_vm_kb() == locked, "%s: %s\n", __func__, desc);
-> +}
-> +
->  int main(void)
->  {
->  	ksft_print_header();
-> @@ -348,7 +406,7 @@ int main(void)
->  		ksft_finished();
->  	}
->
-> -	ksft_set_plan(5);
-> +	ksft_set_plan(8);
->
->  	// Keep a page sized buffer around for when we need it.
->  	page_buffer =
-> @@ -361,6 +419,9 @@ int main(void)
->  	mremap_dontunmap_simple_fixed();
->  	mremap_dontunmap_partial_mapping();
->  	mremap_dontunmap_partial_mapping_overwrite();
-> +	mremap_dontunmap_mlock("onfault self-merge", 1, 1, 0, MLOCK_ONFAULT);
-> +	mremap_dontunmap_mlock("partial", 3, 2, 1, 0);
-> +	mremap_dontunmap_mlock("onfault partial", 3, 2, 1, MLOCK_ONFAULT);
->
->  	BUG_ON(munmap(page_buffer, page_size) == -1,
->  	       "unable to unmap page buffer");
-> --
-> 2.55.0
->
+No, I think this patch didn't leave tools/vm/.  I cannot see that on my tree:
 
---
-Cheers, Lorenzo
+    $ git log -1 799fb82aa132fa3a3886b7872997a5a84e820062
+    commit 799fb82aa132fa3a3886b7872997a5a84e820062 (HEAD)
+    Author: SeongJae Park <sj@kernel.org>
+    Date:   Tue Jan 3 18:07:52 2023 +0000
+    
+        tools/vm: rename tools/vm to tools/mm
+    
+        Rename tools/vm to tools/mm for being more consistent with the code and
+        documentation directories, and won't be confused with virtual machines.
+    
+        Link: https://lkml.kernel.org/r/20230103180754.129637-4-sj@kernel.org
+        Signed-off-by: SeongJae Park <sj@kernel.org>
+        Cc: Jonathan Corbet <corbet@lwn.net>
+        Cc: Shuah Khan <shuah@kernel.org>
+        Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    $ git show 799fb82aa132fa3a3886b7872997a5a84e820062:tools/vm
+    fatal: path 'tools/vm' does not exist in '799fb82aa132fa3a3886b7872997a5a84e820062'
+
+If your local tree has some git-untracked hidden files under tools/vm/
+directory, the directory might not be removed.  That could made you think this
+patch left the directory?
+
+
+Thanks,
+SJ
+
+[...]
 
