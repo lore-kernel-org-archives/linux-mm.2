@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B4F5CCF2DF
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6563ACCF2D6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 07:07:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B0FB6B0156; Mon, 19 Oct 2026 02:58:54 -0400 (EDT)
+	id 72DA86B0159; Mon, 19 Oct 2026 03:06:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659E76B0157; Mon, 19 Oct 2026 02:58:54 -0400 (EDT)
+	id 6DE026B015A; Mon, 19 Oct 2026 03:06:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5703C6B0158; Mon, 19 Oct 2026 02:58:54 -0400 (EDT)
+	id 5F3F06B015B; Mon, 19 Oct 2026 03:06:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ADAF6B0156
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:58:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6CDC1A0677
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:58:53 +0000 (UTC)
-X-FDA: 85338473346.07.D8C77E3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 091B5180003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:58:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ogMA/RRi";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 37ABC6B0159
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:06:59 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CB228A0468
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:06:58 +0000 (UTC)
+X-FDA: 85338493716.08.0E74520
+Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 586C3A0003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:06:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=hXWIrbHh;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf15.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792393132;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1792393617;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aJlqgxp41eAYYigFtpNAqy8U/Byaa9W5YO4I3+RNMyc=;
-	b=U6xo9glQ269F/bolt7ZMaBCCSJWFP1FNlCJh58i66D7w/9Oz0t/6JqOVbYHK/EFOUqoIcP
-	nnA4j4p7n9c+es8sKCUIpx2HDzYqsq0kK6vrAqnIy6+B0ed7B/MD9b16TSQwFG9OyDlIyz
-	DznmK2bdJJajzxD7HTXBd62zB/3E8B8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792393132;
-	b=YUG2MEQNwgTdLrQGd2LKquqh/ShUt+HnzyVsPwXm8P+bgxv3LkPaenFFSc0MKbVSIHVRwM
-	9RhpCW3cLo0tv5NTIez/jWANXHNbIYf5AHhqLr+KSEQHaHXvGHVhR9tE6G4YFnJXP8vMjf
-	o5WQ94tEWBoYpPv6TwOkb1iOy8uIvp4=
+	bh=96Wm4D57LuIgrDtXs3jtILL79TgZtcHA3nY+j4YAW3Q=;
+	b=UYxzg01iaUTJkadZiZkHeGByvZ3eA3qaXLl5qA/Ng1DHsb3a/YZWzrfSN4P1CgBTS8oWNm
+	LCeCLm8a7aZ9LeLU4/V6OT49K0HA7XAIprD8x2IVAXJFXYLGovOysWmQNxVqjmvRsQKhYH
+	dnHNBfaSHRpPPwBDtJyQ+swkCw0u96s=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ogMA/RRi";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6865543A63;
-	Mon, 19 Oct 2026 06:58:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265E51F000C4;
-	Mon, 19 Oct 2026 06:58:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792393130;
-	bh=aJlqgxp41eAYYigFtpNAqy8U/Byaa9W5YO4I3+RNMyc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ogMA/RRijFq2qd3pavq5UwIVnN9FHzMkCa6FNXL18Ov8QEIwg1SMOQ3kjCPWGOu2C
-	 WEZhy+uHqhFSfQeKXsRoASsHXR4bSQeZF2VzGFqY+5nMBQEeAhUmE6oYdoeJrniwXS
-	 Z6zR8oYlR5M/i4z8zsydovatS5TGjAUMHe8eoshN7Los1G3EzPJL//Dp1KyG8wPxCn
-	 jJEHYrCksZTMH+bqK73FWGDWb0KaYcd0WvITihAp7xy1hSpuoneFop9tlbUdqSazGV
-	 xMFQbx5c+R7q4KBuQXHmW2eRS1YGULWfpwJi/RNsTIIRGIaAU0eAE+G90ae29pv1es
-	 EZF9A3f+JhcIw==
-Message-ID: <sashiko-outbox-176727@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 bpf-next 4/5] sched: add BPF-based per-cgroup
- NUMA balancing mode selection
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yafang Shao" <laoar.shao@gmail.com>, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, david@kernel.org, gourry@gourry.net, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, shakeel.butt@linux.dev, roman.gushchin@linux.dev, yu.c.chen@intel.com, zhao1.liu@intel.com, tim.c.chen@linux.intel.com, lizhe.67@bytedance.com
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261019064157.29885-5-laoar.shao@gmail.com>
-References: <20261019064157.29885-1-laoar.shao@gmail.com>
- <20261019064157.29885-5-laoar.shao@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 06:58:48 +0000
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 091B5180003
-X-Stat-Signature: 6af8sqcdjkqkf6h33imgmcrbnfr1br9z
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=hXWIrbHh;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf15.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792393617;
+	b=Xw60uzRNJrdaSkVwaSHqq8r0rjUNwxVqiz2ZVaFmHHw99IaDYktTtYyjraUZjuvqPnTRJb
+	JWr+QbJoeHn1YOogU1FW8HXRn1AcCGmpIeGMAEi+7tYga2P5MHk+EbJ+eKAyj88B08AdCb
+	r+DIJDG6uIcVCQ5R5SSMKMZMPGVGPLQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1792393610; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=96Wm4D57LuIgrDtXs3jtILL79TgZtcHA3nY+j4YAW3Q=;
+ b=hXWIrbHh/zoTrGqhiFS5hJfKXv7MRtu9h/fgsAkvpSItQI1ZG3FHO+G9k83wsyWDD4qgki
+ PVEpHMONKYA3jenAosXFCEvzbFEqVwqDPSWlw27Ku4IedpYrk/BWxL3jjfTXQkArNftX0r
+ wslhnH5fkcuTMGu9tfm5OcnI9J01SIfF9tKV8DfHzJd6+yuvo7/TjFbe1OnHc/3DSyahu8
+ yrDImSeKhxMyZhCaJi9Z7uN3VI9xHFiyl6Fd7lXsSiXkTiIwFs/xP8IfpXt5LAwp1YEa9h
+ fp6l9kbTv6lZ795Io88mkKpGU949+GbPPfh/1OuG54DekUD3Dg4Mnd6Di6fYwA==
+Message-Id: <e0f60526-bb95-4d39-9a7a-72cdf32ca5b6@bytedance.com>
+Cc: <dev.jain@arm.com>, <baolin.wang@linux.alibaba.com>, 
+	<lance.yang@linux.dev>, <mark.rutland@arm.com>, 
+	<akpm@linux-foundation.org>, <ljs@kernel.org>, <liam@infradead.org>, 
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>, 
+	<mhocko@suse.com>, <linux-arm-kernel@lists.infradead.org>, 
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, 
+	<stable@vger.kernel.org>
+From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
+Date: Mon, 19 Oct 2026 15:06:26 +0800
+Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid PTEs
+Mime-Version: 1.0
+References: <20261013093600.54995-1-zhaogongyi@bytedance.com> <daab2f45-56c2-48ad-a24f-aa4f889e4da2@kernel.org>
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <daab2f45-56c2-48ad-a24f-aa4f889e4da2@kernel.org>
+X-Lms-Return-Path: <lba+26ad5c188+a0165b+kvack.org+zhaogongyi@bytedance.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, <catalin.marinas@arm.com>, 
+	<will@kernel.org>, "Ryan Roberts" <Ryan.Roberts@arm.com>
+User-Agent: Mozilla Thunderbird
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
+X-Rspamd-Queue-Id: 586C3A0003
+X-Stat-Signature: 8fmzu1n7bqxubtfa13qf5okrcx5znh9t
 X-Rspam-User: 
-X-HE-Tag: 1792393131-443994
-X-HE-Meta: U2FsdGVkX1/b8dau85rRSDs2gLlSoK+w7LTIVahmKoe5g8Fad4MmiqrEnwx2PsO4ZINnO2ogtlZZ0lwF+nHNkJP54fr/dyrsC/7fp4ZrAURXyJ7+eOfBz0nnA3paVwgcS8VFlOWknKEYXodyIp3o3Awexz/MzRRT/KU50qrSG7m4Ns3E9httKve+/Nn8jZLB7KAcmBw2IZLUnWfJvGTegh8HXKiDeuddHjIX9SbtJVnKaXVdm0r7qWdsp+WjcOpWMPXoDZjpauaw1VkHAsfd+BGDVFVNRHPrcZnV3oNvIaKFLJH1KqgTqjfCuIXcpgbdq4k5oy+Dlicsk14Uls+yNtX9bUC84s/KtX1r0ICewHEQ5wspJYQtAsr4tDfTxsyu++Ij/J3iMAJUd1VvuO7vQEiFPcvoDoqehWqQ1N+seT3vOWmdDDMZOAU5viCBrUKq+Sy6Ea3c6Hi4i/SVd8t/NIktom+p4oNB1gVl8ZZewVFC/N5yRyMLbCopZ5A8fxDlXiOWWRCleYgYBpakyFisWzSyUrxeC74G4yzAauHw18iIvXb7FyHOJqJawP/g7XocVFmoi4+nVmohNDWvlw8iwe6X/ZzQoVYBomCExfojUzZcpfVVf2HNRAp6/M7HmajvDwha/YA9qFBuPTdLvARrfNQTFhOfGLMmerfRP3f3L0JhAY3JSl+jtpZWzmc11TwJLOe6J+6C/5dXaD/OaLLitLb3125YNu7KsZtlY09Eh0WWGnRd9H9x1CBS8FmeKPu5zQbgoulym4nEAwsto9H/b9+TnjHye6qnMqNOkERwiQ27b6LFDGtG+KVmnOUyioPId4KCJ5HrijuEWwiN46QdWwZnbICieLMzFxppvVDflvA4bR/vBoGXJCJjhpq++8dv0QF/HaE13Bfqg71YGjRuOP08zCnI4thyaiD2u8NypLuu1IupQpv6YikwPkCgTDJIUDNP+rgQtaimjgp1NmD
- Q19Ga8t3
- Y0bHYbD/YNVgWWts6DoUg6Ebjk2+bB/Sf1NIszEJ3cdAL0OpTxKSJPWQYCjUopp/wpO/jmfB6076EdXZvH6ytmvq4Yzn+cCXREmmq53GafqDXyWvPPaEfI0VNnfFYslmfqv1e8o1qCZ5w4uhJElt3g/Sq8BqEEHi+oLh1ohLo4C1einbprY2dIlVj/ALa4fN7LQpN6KG6nU0sT1m/khzIhdWB+v7I2itAHDOj93Zy/O8hO1IEVad8Yl1XDUoBxBDUKvSnuHSgI5F/UFbMge1hLtspuKNazcNYAJmRZImY6UXrTzr5EiNc6WWt/i4xw0aI+7uUsQptccPv62uj8kb3+7+UHGTB4ScNkW85VcusM0Z9RBbFo5tOIAHP5xkdk8HtX0UUn4PtRhE0r8OZJ5EasT0cXHdNWKGo2LuR37rQDrqtNN/RF6MojblCbgt1GrhQ3Ff7U0RbZA+vGFkp9jLDikq76BMZsa7VVlsL9pzYctUwUWW8rpsifsGh7PwJyAx5LMRDrhWfd/yqFkKxmPmqr59XVeciJlMbbsrFYLlxCi2/oHZP3eBilxW/kOzPirzsK0G2CxwPCY7UJTmPZBttQ1cYkUdajBvIitZevwqQQs5fkvzhUNr1vux8wjr3S/04BRt9ComcESDSODkfcIIOCOqr0ZtggA3YvK4P
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1792393615-904125
+X-HE-Meta: U2FsdGVkX186Ds69YD4mxu1ZThvUnwBP+y9+MXxwtrbQgCsfzh25/NPvyzTXotLt6a5ZwRIk+f0+AfhP6PBN5jfQRVYJT2lCLnyWLq5/lhaJgpN39IRce6uHR47P4GTSXq9AFU3BcKsjaQIZqfYN+K0e7sb+2fifDIykMItOtqlfsYH7FFF+kgiA2+obI3uc4J+2ZFKwjjwcmMLhN7R8/QW+gL1T2J9/Jb+HjMAGpDKeKNavE1LK5ARqy4awNVG1iQxiOg9ReA9wfWmvW3WBo2HnPOZv53WH5QXPNHINcrSgN7G4Ua35nzgg4d5TUINVHjRKJr0uGcd+rpYqgYQDgeaNd34PTENaKFw4xGbPoF4yhjxqXMICEFUV8uouaidE2g4ct0Ho5xBz4Iq1p8cK8LdE+d+yvdoDcKpPISLwJTkcVyxlR5PiWP8lp/BLUdvcqO81Zi73Ha5AJTD8MlknCOboY1utyBypkVsuK/kS8efedfv4kXw0zR2MciqQSjL3YdzQcCaNfL4eVoE7hU0ydNX4EHRg6jvPhTQh1EU28rbq4EWvqMqgkCiy9QKTyg4Dc+8xKxpZG1aJTg7X/BccCtnwnWXGqdQ4HQJ5JNKyF4ID7WyMMECQfHtY1WjMu3cKMaSHld+5DhSSDaXOm8URomwzo4fHNPT6eI4SE3T5PcxbDNuN6Hi9UIrOz9xsh6yNkw+ie3+sX+W1HhXS1X+nTYdZirIdrvPM+gGoDq3iPsrgGJ8nLR5GE0llSHFK6t+2fjaDKAC/0eiv/cmRrLYp+TEMrlycGeqb/4HFOcQ/NsG4tPuKThA95UM0+FSK39Ma0MLjrygswlGaEqNYpUFU9M65CbKtVEt54+0TyqAOEMTOqTHJEr6xp/gFIu9ZINYh02yPZxw6//tMKy/FFMHHC8KS1oTXI+vNCzdHIFp0reQxxOO0dqLZk3daNrNEYDTgUmGonJUoWZ5f6oMEssF
+ moTe2k+x
+ IMZyfyNT4A1SLVM1I/zS5MQUyTmhHpSUf7RBMdeejTgYII7s6TKDGRfpo3gKFhHDf3KuIlvgfRJL1Ytnx4328Z4v+w9z8D0jPaIu8E6NvUZ7+gTAgmBfRfU/D5RLBGg2JtTBWhpH7pWd0CMyh7Nz23NkWUdez/VJvw/TfcedI3J9lAcukCycnrO3fKafBthmW9s26famRxlASmoOHlLclNBuzL+kmAS2J0zJ2RU56x+hRkYRqdB6YM9gvsVROXPqun0Y+dMopzrnPWmydHTD4lK4uYw2fcuspPIGwse7QpVLnCt18g9sMR1tIZIapP/MC3M5e3hGCoPFjnIzyprt33RH/1UKxmT9byedVrH3iOkdfNXPYLfcu1gdmeE05AUFC8jRR+2SCp7eK4X0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,89 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] mm: use-after-free on source folio in migrate_misplaced_folio()
---
+On 10/14/26 5:41 PM, David Hildenbrand (Arm) wrote:
+> CCing Ryan:
+> 
+> https://lore.kernel.org/r/20261013093600.54995-1-zhaogongyi@bytedance.com
+> 
+> On 10/13/26 11:36, Zhao Gongyi wrote:
+>> The transparent contpte layer treats PTE_CONT as software state: when a
+>> PTE has PTE_CONT set, the contpte helpers may align the operation to a
+>> CONT_PTE_SIZE block and operate on the whole block. That invariant only
+>> makes sense for valid mappings. Explicit users such as hugetlb manage
+>> their contiguous encodings separately.
+>>
+>> contpte_set_ptes() currently sets PTE_CONT from alignment alone. Batched
+>> set_ptes() users can therefore install present-invalid PTEs with
+>> PTE_CONT set, for example mprotect(PROT_NONE), NUMA hinting through
+>> modify_prot_commit_ptes(), fork() copying a PROT_NONE large folio, or a
+>> PMD split installing PAGE_NONE PTEs.
+>>
+>> This is not a hardware programming problem: invalid descriptors are not
+>> translated, so the hardware ignores descriptor bits such as PTE_CONT. It
+>> is a software-state problem. Some arm64 fast paths intentionally test
+>> pte_cont() directly instead of pte_valid_cont(), for example commit
+>> 9970a9a27ffc ("arm64: mm: implement the architecture-specific
+>> test_and_clear_young_ptes()"). Fixing the producer side preserves these
+>> fast paths and covers all consumers.
+>>
+>> In the observed failure, mprotect(PROT_NONE) installed a full
+>> CONT_PTE_SIZE range of present-invalid PTEs with PTE_CONT set.
+>> MADV_GUARD_INSTALL then zapped one PTE. The nr == 1 clear_full_ptes()
+>> path only unfolds pte_valid_cont() entries, so the neighbouring
+>> present-invalid entries kept PTE_CONT while the target entry became a
+>> guard marker.
+> 
+> Hm, is there a good reason why we cannot just use the cont-pte bit for all
+> *present* PTEs, even if HW would not be prepared to benefit (!pte_valid())?
+> 
+> I guess we really only have to make sure to shatter properly, right?
+> 
 
-commit 5de3ed8c82d3030544f5f025b8ae47dd8339bfeb
-Author: Yafang Shao <laoar.shao@gmail.com>
 
-sched: add BPF-based per-cgroup NUMA balancing mode selection
+Hi David,
 
-This commit introduces per-cgroup NUMA balancing mode selection managed via
-the bpf_numab_set_mode() and bpf_numab_get_mode() kfuncs. Hot paths combine
-requests along the task or folio's memcg cgroup hierarchy behind the
-numab_cgroup_mode_set static key to override the global sysctl setting.
+Right, there is no architectural restriction preventing PTE_CONT from
+being used as software grouping state for present-invalid PTEs. For this
+particular failure, making contpte_try_unfold() recognize something like
 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 211c29bd2a283..c0692c7b27467 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
+         pte_present(pte) && pte_cont(pte)
 
-[ ... ]
+would make clear_full_ptes(nr == 1) unfold the block before replacing one
+entry with the guard marker.
 
-> @@ -2770,7 +2770,7 @@ int migrate_misplaced_folio(struct folio *folio, in=
-t node)
->  	if (nr_succeeded) {
->  		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
->  		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
-> -		if ((numab_in_tiering_mode())
-> +		if (folio_numab_in_tiering_mode(folio)
->  		    && !node_is_toptier(folio_nid(folio))
->  		    && node_is_toptier(node))
->  			mod_lruvec_state(lruvec, PGPROMOTE_SUCCESS, nr_succeeded);
+My reason for preferring the producer-side fix is that the existing
+transparent contpte helpers mostly use pte_valid_cont() as the membership
+test, including contpte_try_unfold(), ptep_get[_lockless](),
+pte_batch_hint() and contpte_is_consistent(), while some range fast paths
+test pte_cont() directly.
 
-[Severity: Critical]
-Has the source folio already been uncharged and freed by the time
-migrate_misplaced_folio() calls folio_numab_in_tiering_mode(folio) here?
+If present-invalid PTEs are also considered members of a transparent
+contpte block, I think we should audit the single-PTE modification paths,
+rather than changing only this clear path. We would likely also need a
+pte_present_cont() helper: the pte_present() guard matters because the
+PTE_CONT bit position is part of the swap offset for non-present entries.
 
-Before calling migrate_pages(), migrate_misplaced_folio() snapshots the
-folio's memcg because migration transfers the charge and releases the
-isolation reference on the source folio:
+There is no hardware benefit while the descriptors are invalid, and
+set_ptes() can recreate the contiguous encoding when an eligible range is
+made valid again. For a stable fix, I therefore preferred to stop
+contpte_set_ptes() from creating present-invalid transparent contpte
+mappings, which also matches the pte_valid_cont() contract used by most
+of the existing helpers.
 
-migrate_misplaced_folio()
-  memcg =3D get_mem_cgroup_from_folio(folio);
-  migrate_pages()
-    migrate_pages_batch()
-      migrate_folios_move()
-        migrate_folio_move()
-          move_to_new_folio()
-            folio_migrate_flags()
-              mem_cgroup_migrate()
-                old->memcg_data =3D 0;
-          migrate_folio_done()
-            folio_put(src);
+I agree that saying this invariant "only makes sense" for valid mappings
+is too strong. I will reword that to describe the current helper
+contract instead.
 
-When nr_succeeded is non-zero, calling folio_numab_in_tiering_mode(folio) ->
-folio_numab_mode(folio) -> folio_memcg(folio) -> folio_objcg(folio) reads
-folio->memcg_data on the freed source folio:
+If preserving the software grouping across PROT_NONE is the intended
+semantics, I can rework this as a broader unfold-path audit instead.
 
-static inline struct obj_cgroup *folio_objcg(const struct folio *folio)
-{
-	unsigned long memcg_data =3D folio->memcg_data;
-
-	VM_BUG_ON_FOLIO(folio_test_slab(folio), folio);
-	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
-
-	return (struct obj_cgroup *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
-}
-
-If the freed page has not been reallocated yet, folio->memcg_data is 0, so
-folio_memcg(folio) returns NULL and folio_numab_mode(folio) falls back to
-NUMAB_FOLLOW_SYSTEM rather than using the owner cgroup's tiering mode for
-PGPROMOTE_SUCCESS accounting.
-
-If another CPU reallocates the freed page before this check runs (for examp=
-le
-as a slab page setting PG_slab and MEMCG_DATA_OBJEXTS, or as a compound tail
-page), can folio_objcg(folio) trigger VM_BUG_ON_FOLIO() or dereference a
-slabobj_ext pointer as a struct obj_cgroup *?
-
-Would it make sense to evaluate folio_numab_in_tiering_mode(folio) before
-migrate_pages(), or derive the mode from the already-pinned memcg pointer?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019064157.2988=
-5-1-laoar.shao@gmail.com?part=3D4
+Thanks,
+Gongyi
 
