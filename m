@@ -1,116 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0D0606A31D
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE3C606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 22:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lQZgqdUp
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RGd1WEcy
 Received: by kanga.kvack.org (Postfix)
-	id 312356B03A2; Mon, 19 Oct 2026 17:47:43 -0400 (EDT)
+	id 7A1586B00FE; Mon, 19 Oct 2026 18:06:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E9F06B03A4; Mon, 19 Oct 2026 17:47:43 -0400 (EDT)
+	id 72C5D6B03A5; Mon, 19 Oct 2026 18:06:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DC5E6B03A5; Mon, 19 Oct 2026 17:47:43 -0400 (EDT)
+	id 5F3436B03A6; Mon, 19 Oct 2026 18:06:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ED9066B03A2
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:47:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F19540810
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:47:42 +0000 (UTC)
-X-FDA: 85340713164.06.267C0DD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 61D428000B
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:47:40 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lQZgqdUp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 257E76B00FE
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:06:43 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FEA71608C8
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:06:40 +0000 (UTC)
+X-FDA: 85340760960.15.C5ECBE3
+Received: from mta0.migadu.com (out-15.mta0.migadu.com [91.218.175.15])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 616CD100005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:06:35 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RGd1WEcy;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.15 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792446460;
+	s=arc-20220608; t=1792447598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y01ZFxKnej6mlURbS/x8BLwV+C7jNkm78zIZtDfVDp0=;
-	b=KGKQLaOAggJlifu0j7eMXhRM1n4JBsy6U1p+wSytl7qT+OgenLV5+IgJqvk5VK7nURrhbZ
-	sFwtCXUT9bcotSxWJpxE7GJLPAalBJ8E5YQN76Fi4UKFvd/MGpZE0EiuSqC2QrezGR6voC
-	F4HHFKVMU1hRXTnq6iFSXxBtkgh8lA4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lQZgqdUp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	bh=wIBD55LUoHoDATJCGVof+4CgALz8EVmNkMYBhtvyd6Q=;
+	b=RxknPDwWDHsAYoyTPFjqGJIUb4banUWeaZr0R9IRSJWyvAKdszllSHKLkBGxl2aN9wG5uC
+	tFPNAjp+LkEAqYqC31pjkwi2dRwSy0VM9WdWakWPpTsvHdtGbKTOUkToIrRpgMO8vuG60R
+	tlsdHFs5GT4NuCBMB2nEhYVWtJZLFNY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792446460;
-	b=k9PECsZ6x7lQAiOAs0R9fhrVsReGZ1hYsq+slXnPR32BJTPg/meJxLluoEH6CgI35wlTEd
-	IEnLikwd6CT/L33soEgQQ5Ja2jzS0T+I6o99P/k8BZW/kQeqq4uqJExRg2lPlYQawkjFQn
-	2dH8Oi/7e2AWWTlbrLNQioi6I2lpJy4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CCD5C44042
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:47:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B361F000CA
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792446458;
-	bh=Y01ZFxKnej6mlURbS/x8BLwV+C7jNkm78zIZtDfVDp0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=lQZgqdUp0zhIV+HXrQx5g7nOPWsoMxtLqnTsHtXZlQCwNWMUSIOC7WxV680SQyNMX
-	 sTdeatBIAD4itaMEkXk7aWS7vdcUtIKLVTIiA4qBID8nKENcCHY6qNgM5jI9vR2Czq
-	 HFTVWnGcBeWQxlzclhq3lp67FAWDRV8FhAJxsU/kECVxxVnIFLMEi6WIyoQI4QGnE1
-	 cIimnS27lGSjRknOtwBK9V1MFJxiauAA6JE8G8YwLzTl89jtgJczRe7bza/Q1fKAMa
-	 xvMiSWUK3NiuwFH8k3m1jMV6LKMNACiaQg5MZp5RhQOCb7divTCTqibkDlFSnl5Mvr
-	 II97sRUECqtDw==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c3f8d72d7ceso444458266b.3
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:47:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzk6Vpk9L7QwLBEHyCEVGMGz9yF7F+qNau1/Q2xN1SVNqiZjZ8Br2xh71cnHfkzhO1ELh/bvRSgBQ==@kvack.org
-X-Gm-Message-State: AFq9FYJ+fiWMF0wu8uR1lxMgsWQ753An1jcDdXM0BiC1O3DgWLAdegED
-	HKduIJcALv5ixwyoWu9CQsdSvcHwCJ/b72uD30gSJOqV0k2Qjj/uWyUhOK1blXdBzAid85cxJMI
-	ZP+Le0uG5wULWtAe9JpzbY/EjPYTeSgg=
-X-Received: by 2002:a17:907:d385:b0:c41:5a0e:3356 with SMTP id
- a640c23a62f3a-c419ff0269amr587261666b.41.1792446457458; Mon, 19 Oct 2026
- 14:47:37 -0700 (PDT)
+	t=1792447598;
+	b=DN2ukWeIq2hToHWeHyDU+h23penSkMxnDuZ24VF/nVzs66oGbn7ltxrD7iXtxdiRU3UvTA
+	4cHBuqMwYXr9HGPfW+3WF7L9jFeNIvyf7XW5R9CrewdPJvoPj7rPfxDPmQJw8pkQlvuvrx
+	+hhpi7a6Q+Q8Ekvbvr72u704m4BaQ08=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RGd1WEcy;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.15 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=GhC0senqgW9jk2iZrX/Oeif4+RMjrpYmvR16vIm3Y84=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792447592; v=1; x=1793052392;
+ b=RGd1WEcy6qUGkInqsO6UQsWxpSvK+GCUSBAFheBJNPOMDkx2Wm6h3ooFMF3h2XC9eBo1/JXS
+ mGwIUxbHAIB1I8DpG2ajAUb0Kc/0FxArxX1xbPeubnS+lc1j6hxvD5faGh3cgPyTEupWpX3uNsc
+ Z8FyFfQficBtcqQvYNYy4FcQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id c4935393cb2a0c10;
+	Mon, 19 Oct 2026 22:06:32 +0000
+X-Mizu-Trace-ID: c4935393cb2a0c10
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 19 Oct 2026 15:06:29 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Gregory Price (Meta)" <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
+	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org, 
+	ljs@kernel.org, dave@stgolabs.net, roman.gushchin@linux.dev, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive
+ reclaim
+Message-ID: <ataUUbN1leyRVVQ1@linux.dev>
+References: <20261019185002.3428594-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local>
- <atI_yuCc4BiweBQP@google.com> <atT5TYyLapHO5ZoX@pcnci.linuxbox.cz>
- <20261018201538.d0957878f378a9821852836f@linux-foundation.org>
- <atXXma5NXxoSWJO0@pcnci.linuxbox.cz> <atY1vWRBRUwpISKb@pcnci.linuxbox.cz>
- <20261019083529.a81910ac0976c1a5687d4c6a@linux-foundation.org>
- <CAO9r8zO41EromgLGhKv8H0aKXjrffH+t4CFGU6cLo59JJ3CEuA@mail.gmail.com>
- <20261019105844.02d4623b7063fec25ebd34ad@linux-foundation.org>
- <CAO9r8zN1dTJmULsKCwNrNr_vKyrV+vMfD7wifQ05uAti7E-yDw@mail.gmail.com>
- <20261019181510.GAatZeLtUmU3Zy9VZt@fat_crate.local> <CAO9r8zMdLN+wms164bs_c5BfnrYZoNAPz6b6hcODt1JnUMniVQ@mail.gmail.com>
-In-Reply-To: <CAO9r8zMdLN+wms164bs_c5BfnrYZoNAPz6b6hcODt1JnUMniVQ@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 19 Oct 2026 14:47:25 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOq16mMpRsg_83wfYX8HQQziJLFtjVGuUu_j0doCBVgZQ@mail.gmail.com>
-X-Gm-Features: AclHuK_Usd8FmnB_Y9RQuzU--fW4ljIz5k0wB473gNs2RDhEXbyVkZbgYbBQPGY
-Message-ID: <CAO9r8zOq16mMpRsg_83wfYX8HQQziJLFtjVGuUu_j0doCBVgZQ@mail.gmail.com>
-Subject: Re: hunting memory corruption bug in 6.18.x
-To: Borislav Petkov <bp@alien8.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Nikola Ciprich <nikola.ciprich@linuxbox.cz>, 
-	Sean Christopherson <seanjc@google.com>, David Laight <david.laight.linux@gmail.com>, 
-	Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, david@kernel.org, 
-	Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>, luizcap@redhat.com, 
-	pbonzini@redhat.com, Tal Zussman <tz2294@columbia.edu>, 
-	Matt Fleming <matt@readmodwrite.com>, gregkh@linuxfoundation.org, sashal@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 61D428000B
-X-Stat-Signature: 6gzjnwzmu3h499dbfn7munuy1es4f8e3
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261019185002.3428594-1-gourry@gourry.net>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 616CD100005
+X-Stat-Signature: qempatc46rdt58bsoeu5w4wepby3jjd5
 X-Rspam-User: 
-X-HE-Tag: 1792446460-370044
-X-HE-Meta: U2FsdGVkX19oDvhyd1r6Y2tLcYsE/aq/9erNAucO2aVP2LaoLrGGjqmbohGxRyK/3uvc936hNXS6wbl7A514CMagcnY7L/JstrXNFyW//GdF5LcpQz9uxjlTVur9qqL8xLOkONoZuk6P6ReF42lPeVBPKhFZbkMCficeDZVSiECGaBH1iz6lqrEP0+DEynxrwqod7zirst9j5/DX75LuS7+Pi7FtuLNh2lOD7S/YFCehGR6/YodACHb1upxQ7OrvQTTLo9mZcC+j8cXqXJHNIL7SDL/0jHzdZq/iU0OSiFGR1abpNzu+vCDaPK3MdDZ4Z6eJZhn0XtIBNCENSETm8NYwxT0lPs42bVPl9MfrT8R5gEM9MFcWbmAdp/nNrZF4VVMoTZyNUFN4iDtbFQaiI+7B28gfxbzKsCzuy0FI/5Oz9/g8rjYAwGJD6Shh6U4OXvirCX7lN89OxE+brE3Pjki7AInH/32b49Ok3EkxD/vO6SA2LTL5sUhqmOqQewIynpH6WRvkcP96nrX3d3NxKx4u5xFLh53wHT7cmFvVAxaKHM7tHGyB+ZG9Tf11odtlLRIFgiZZHsKKYJ63jVA7PhC0WhXwP5/R2MvoPzmIWsunhCV297UD2G9NoWjy7XQGVUrXDupW1e884jS8riUUqXKvJY61Njvb8g1elsJOPzE7zfZMTkMSGsTVNf5QbAujwI4NLdLd0HYC2tQ9x6SrGZLr8+mii81ifreK6Yw2PCAGq6OL0vYm8FMb+07wRzPyJYz62TcHVW1mkmo4fdexOdAy8i+w9D3kzAO+lbntN/Kog8I2WU2C3alYgiOQY1prhYICK30Alz/seVp1ErAdy4GloUnhF7kWqoY44909Llv2DFSbgZtWDIUostaHq3KZNzIazrWhV4qqzDsHQ6b/YSA5Es3MZKrbscGjblEVX7nrhWoHmAVjaWlCjfWPzUp2adcCrDKdhz2GxqDe1ZW
- jwcRq05L
- Ngjr7zt8g5aZmdyFMeuB5C0eGiNE8b4bXrZLxxw1zSd+KcO8Y10k8tzbwMpJWzMEG4nYII1sdg39rXHGTrQnGxi5A9ZajCe79YbuhpkgsyzBPAaO2VJAxxgYju7d0cJ1O2pcf0o5g2PQeOcQCYDM2X5T+JR/n9lcsfslch+pwGGwQxJbCTqHxOFk5zq/vlzSuWIKw2sL80IPS/2MFSY+dzNlLSZhIEU4Tnj+vS28n7AlX+JKzBtmo5zfvv/zNDWM+qqs34U04uDGg1rbKXoSNgjgNcivxvEp2q/shJvyJ9T71FL0t4PVWfcLO1txZu+v3Di3u86U7L7EKbv+PkhzwH8ISDOAmFlY1Wvd0yvDZTHZ+3rooGLroZi05yByHKBvz8KJx50je6MSs8ohi78nuYPMAAqMe22U4McMEkDgHGbc4Mwb24nknuW6M6w==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792447595-342271
+X-HE-Meta: U2FsdGVkX1+DKchAWsH3Q0RciCnHqVZ8f9/8KYKq/1AH8qUG6ek+1ZjOMIaBvhIDv/nIyAUoMJOlIMYHdXR8CGAPbD7JN/AsoALlmzwTw7ez24nkDSnLlAbZ8D62Aaa7CNw/mjKEPnLjCcKJg7n1aMsUCgQvmx77tSpHHKNb8cAgxrxXLxKu5ndtONeXXdP+HCX5f5bNEaU20L+Tq7qe4xVEvcaStX5DzPBKvN0gKUHodAcVFAlm0CV+EX+F2IN8M4lxyo8xTUDyhQCreYvcdbFNSI3GM1rBvsK+O4oCh4hGOW7L3Zgyf78KSn7PEI38osvJLLiazMXeMAhmmi69ZyJIVGN2zR2o0MALYvAyQrF9N0gZmH4zdKpj5CDIsEFH6X0xjTJ/wFw5NhE+F8T0wvDbT3IZ5Cz5j7WKR/yrFXE4ISUGFtcj5ixLpjveJfbzCYrRCCGGGSsjv5ywvuGXCgopq5C19Ej4rtTGs4l0KwmI/PVHtvke/GsLFXJupUEUj3vIb/CInLUp097lIk1rkR3U62BVacIsG8GJza6ociSe+Hn5hDaRDzZ3yZtDaF6osk98rFTKQHDN9T0Y/eo9UvSBcIErmbF0LB4TuWwcYl6n6nJfltmQQXTi2v+rnDrPBV1weqf5dsx673bUwFHUwimSqX1Yaet3NEDFfienqyQpPwAQ1/juqza9Wmdpu3KdzcPxP4nPngNt+Yhv8MmoOtD3nqnX02TBGWS4RaGFQ/b109wGAHsAjpnI7FnbxDHhdHMLwQjRNarc2I3WrmsJOo+oBjYVvrMEmp4NJivitl+QCVA9x6usvDTLMh0+r1mzfJEb4SCHd2FaTg3rE6dN0cIud5lzMPH1Ytnl0v09QAgWTr+nw+4/jxAMe0KEMs8JQYN+CIsRG/8VjVmtF5azsHjn4MByqI8lM3Ac+fJ4rXAsnt4Tnh6xDAqBPAAjttEsfREVDtCWEDQh45dz9Yg
+ lkW06ws+
+ UVs3RpgT/CWXTC0SL1svqR+4gLmTfC0u56i1kwjWJRnzCz02dzsORNJjtMxz7YMDtCuwmAxfjvYTmnsLe8oE+HUpVTaXMwFWKOQJ8BqmR5Mpt7bticLuGN/4uDn1snpFkeS5yEjwcOpJ3GG/yxUs0I60wkqB61SvrmsuyL1Uk1IoecwxQVCaa5wtfqjNchcDhktbzBAvHH2BMoXqkeKoOuOu9oHrACda7dIQMCpyK7qLc/Ts6sXwRsePDecz5FwZsmgVpnvjB6POlXo1Fcs0ST6JaR5kMcFi215vDHplnDEhVReNLrKg3qvzx0Dj/LSjg24wuCLKc9PeVwt3j8yuj43kT/syXhjpjOADn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,36 +96,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 12:53=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
-te:
->
-> On Mon, Oct 19, 2026 at 11:15=E2=80=AFAM Borislav Petkov <bp@alien8.de> w=
-rote:
-> >
-> > On Mon, Oct 19, 2026 at 11:00:00AM -0700, Yosry Ahmed wrote:
-> > > Right, but this is for new patches that get merged into Linus's tree,
-> > > what about existing patches? Any way to retrigger that workflow?
-> >
-> > You take your patch, apply it to the stable trees here:
-> >
-> > https://www.kernel.org/category/releases.html
-> >
-> > and send the applied and tested version it to <stable@kernel.org>.
-> >
-> > I.e., you backport it yourself. :)
->
-> Will do, I have done manual backports before but only for conflicts. I
-> was more asking if I need to send the patch to all branches or if it
-> will be automatically backported to the others if there are no
-> conflicts.
+On Mon, Oct 19, 2026 at 02:50:02PM -0400, Gregory Price (Meta) wrote:
+> user_proactive_reclaim() limits per-node reclaim to
+> gfp_zone(GFP_KERNEL), which is ZONE_NORMAL. Proactive reclaim serves no
+> allocation, but that limit makes shrink_node() skip every ZONE_MOVABLE
+> folio, so writing to /sys/devices/system/node/nodeN/reclaim never
+> reclaims a node's movable memory. A movable-only node, such as dax/kmem
+> or hotplugged memory onlined movable, reclaims nothing and fails with
+> -EAGAIN.
+> 
+> To reproduce, fill a movable-only node with clean page cache and write
+> 200M to its nodeN/reclaim: the write fails with -EAGAIN and the page
+> cache stays. The same write to a ZONE_NORMAL node frees 200MB.
+> 
+> Scan every zone, as memory.reclaim does.
+> 
+> Fixes: b980077899ea4 ("mm: introduce per-node proactive reclaim interface")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Actually, it doesn't matter. I think only v6.18 is affected. I think
-the problem was introduced in 5a1a726e68ff ("KVM: x86: Use
-KVM_REQ_RECALC_INTERCEPTS to react to CPUID updates"). This commit
-deferred the initial intercepts calculation to the first KVM_RUN,
-making it possible to calculate the intercepts while L2/vmcb02 is
-active without calculating the intercepts in L1. Before that, I
-believe the bug was indeed benign in practice (I think a VMM can still
-trigger it by going from an Intel CPUID to an AMD CPUID after
-restoring into L2 but before KVM_RUN).
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
