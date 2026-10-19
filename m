@@ -4,109 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFC89CCF2DE
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:14:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C16E6CCF2DE
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:14:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 960DD6B026F; Mon, 19 Oct 2026 10:14:30 -0400 (EDT)
+	id A705B6B00EA; Mon, 19 Oct 2026 10:14:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 937B26B0270; Mon, 19 Oct 2026 10:14:30 -0400 (EDT)
+	id A48A46B00EB; Mon, 19 Oct 2026 10:14:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84D706B0271; Mon, 19 Oct 2026 10:14:30 -0400 (EDT)
+	id 9376D6B00EC; Mon, 19 Oct 2026 10:14:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 64E5C6B026F
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:14:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6980C06B6
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:14:29 +0000 (UTC)
-X-FDA: 85339571058.28.D033C65
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 430D41C0004
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:14:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mkgx2V7u;
-	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792419268;
-	b=g/Gy7RUTzcg94H1xDGNbzvnLhNnMBV56jlvYgjrwjCCG5kbh/UbKQjewgPBvt+4hxUdsHb
-	e1YOS41YsMwOLYAvYySL55a4XFJ9ZYeCpgL89P68SckBfKabtlUvx0Y5yengD1aXnsIqVN
-	F/PerWHHPw7hCeDELA7fg1SOR1UR1d8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mkgx2V7u;
-	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 66C6A6B00EA
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:14:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4E21160769
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:14:42 +0000 (UTC)
+X-FDA: 85339571604.06.B0C0810
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6C1E2A000C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:14:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dFvUhypR;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf15.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792419268;
+	s=arc-20220608; t=1792419281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7796Na8Lv8R+oexI0qKXaPmDdfsdOtZrwkjrcnP6R9E=;
-	b=k+qW0vq5kDLX8bjSI7Ym0L96riTCnyoB7/xfdwocsKEYnCIgQRY8gS94nZH7PrCuDgy0bc
-	hSrCLtqLHIFLARDcJa7c3KYUKvvSssdvB1NXgk936C6fvFl8nTCnSABfU3Nv7tqN2V8KZF
-	NmDm/SzKUy1hlz5LvBPtUBSGNUMufzo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 18C9960213;
-	Mon, 19 Oct 2026 14:14:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE961F000C5;
-	Mon, 19 Oct 2026 14:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792419266;
-	bh=7796Na8Lv8R+oexI0qKXaPmDdfsdOtZrwkjrcnP6R9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mkgx2V7ufsKA0GuRgq4ukenZFT+R1sPN2WiOnCwsZ/VP3g3lmzZfDm00z3z2CAUIe
-	 bTsfFvc2uuNXx8Vn8tZJie9CLGIPGzCOdZESkWLvl+e9muw7OpPOneBngK77eyLYhh
-	 iJW5czRYIGrxsC3vz8IKHLDEW/zhdxem0GA/fbsfloeVeOgdG55um9Cwciq0sFqLzF
-	 oeHvQaHqwL3bkMdwFC0FWUFJPwB7NXmAjV3n9cdCvXGe7NRh0XNwytR8/Y98qnyWsT
-	 xEhkC6KUJ3LZWsgzN0j+/pK+hjnDgOLp+be77PjVvfihIacChpxEfBApH6ELx+aVCG
-	 UbzM5bsEfOTzw==
-Date: Mon, 19 Oct 2026 15:14:24 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
-	SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
-	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
-	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
-	Hugh Dickins <hughd@google.com>, David Rientjes <rientjes@google.com>, 
-	Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Chen Ridong <chenridong@xiaomi.com>, 
-	Tal Zussman <tz2294@columbia.edu>, Xiang Liu <liuxiang.277@bytedance.com>, 
-	Ehab Ababneh <ehab.ababneh@intel.com>, zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, 
-	Lian Wang <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH v4 03/17] mm/memcg: add folio-based lruvec live helper
-Message-ID: <atYgxto1RXZyZtLB@thinkstation>
-References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
- <20261016-mglru-fg-v4-3-2106750c0bfa@tencent.com>
- <atEkfmRFgXJCbJuK@thinkstation>
- <CAMgjq7A6Yom=dHDMXk+mpYm3dotgOaVRjPHgUsOryjJ1VjPC6Q@mail.gmail.com>
- <atYdi3O77m6XzaKu@thinkstation>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atYdi3O77m6XzaKu@thinkstation>
-X-Stat-Signature: dao4ifx3jmqkrdgbakirsdpusys57rqd
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=NEJJZ34u4qlgZ0S11fm90eLB3kl92LQqge8z3SZGpCM=;
+	b=o76rdLiblRDKUaH8FlqNV4qrXWKywr72Eu2OEEYtpwm9aMkkFgGovOeK8OIqN5UQh2Atd+
+	VI0rn9nLyu0bIgFKR2h8BtC60LY9rZnTYDyBFugYk7KZzh9+Y2q9PmsdJceydmNfOR8aXO
+	IrHnC2G5ERmIv6cpLXvzzqXbXOFMDPM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dFvUhypR;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf15.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792419281;
+	b=RaNEcME9ThjPgJ/7IX6j2AW+YeO29K2vu/hIDTxsEdRLWUkLxpdd40SvqXstd4DeN0lRNs
+	sObWOc4mej62gap52tT4bsyrz518QE1KQUqMJykXCF21PcmhtIadHVdPP892o5AzRomkyK
+	L2RPu3xW+gvWIWrqB6GjcpJJdDsR8uY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1792419273; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=NEJJZ34u4qlgZ0S11fm90eLB3kl92LQqge8z3SZGpCM=;
+ b=dFvUhypRzf1ummP5/JL1m6szKVH6GqQcOUAX+b/BfVsuiGUsaKMGpHsvJIiqn6jLg6c2TZ
+ g/GFZyYo4GZ7IcKXQd7tfuMMwxW8ObwK9f1jmKHRvHK5eUpQn/DXHqYlDvDwCwhrPk57cK
+ RqXABqFE7yJcTFEhxbg3lyfTEAtkbqyZ5GXeCiMY88nlNi5ipWuwDJqmMi0eV8WamR0KGZ
+ 4Q0w4SqC1t5mw4QR/C3we4KTNfbh6J6JNkSgOYJgfrFBpuAcCn87VytS4qbQ2uDly3f1oE
+ CVHvk0wp5vnzhaY55FKNG4SoAyojsVUs7p9Md4bJjJX4lki8xN6KdkKvZiuB2w==
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <gourry@gourry.net>, 
+	<ziy@nvidia.com>, <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, 
+	<ying.huang@linux.alibaba.com>, <ljs@kernel.org>, <mhocko@suse.com>, 
+	<muchun.song@linux.dev>, <roman.gushchin@linux.dev>, 
+	<shakeel.butt@linux.dev>, <weixugc@google.com>
+Date: Mon, 19 Oct 2026 22:13:59 +0800
+X-Lms-Return-Path: <lba+26ad625c7+9d7cf2+kvack.org+lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Subject: [RFC 0/2] mm: add source selectors to memory.reclaim
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+Cc: <cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	"Li Zhe" <lizhe.67@bytedance.com>
+Message-Id: <20261019141401.11927-1-lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6C1E2A000C
+X-Stat-Signature: bbmwrgyj6x8pzwqpwpob76neje1qsws5
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 430D41C0004
-X-HE-Tag: 1792419268-98628
-X-HE-Meta: U2FsdGVkX1/7GFhHVHObudUInmV43UnGMeLAVFM7WX1JX4Fvq4xU+Ujo92b9G9dpF/2Y0p/bzbylz8FleDISUaXA2aOJumsFVpx0k10QTgezYeKzDMib357W7mbFP0vLkbAOlw9GG4iFPz5D/YXJZd4Ry6M9B2J07Wslth8IfrMKB7ZrS7OH/3S6FGLbzqiECr/KBsZpbRvCDN+oqjYpZV9fNiPWb67zY/oAqN8a/Gqekg/RBKppJfqKVZIoI5vRRE2XRk2dqkMnQLmuE2TF5k+HSCpIx6Yv//vF/OZYoHvDFV5NMuuDeBSffrAclpwulb49/pt10+T0r7G7FSTBrzFZZAQSogbRhatRzR4u7hqav9H5qlG2vo/eR26Iw1MHZh4vnntdsRzRNMurR0Os2a8N60GWcub1PBWf2MrZprM70ANCkFv2a9HeTGThjr+V8VnQCBDG9Q97cxQrcqhFzd4NihX7G4CT3O4pBVK+z3N8E6yEaU6P8wxl3bAfeEEXBJxiqBaz40gvg/hamLNnHjHkN0kiVw7Zsc2GlJ7/ki4HmFsUgD0WgoRR+bhq2RyQWbJ6jVGFvU0Z6lrXZ0fuNhXYqP8pOUjM7xlt8Yd94rInEqTbRIW4NmvAKkSV+E5W0QWU1V4QHOx5EkYrhAQkTSVhctSWi1hdBOxi7X4HLSQWAVFHz6RCwcePLJk1sxjzYDZkFVP1KjaTDCmgKTo6KUglsjJ60RA0qOt4BfXA+/269k0tiVRvq6NkHW3wqyyHOrSkHkuNcySzU8isz5+yETJrl3R2Hb+PaoF9j1aEnrVPNTd+2NcfLfuJmuZ+HJx/Pz/HuuSgkyQMT4dP+mvhgr02t/WI2R1q1bVlZyVbxwCvSPRJ9q9BWmRB2AjEiFKlrrRf/e82UqyP8NjGMAPVBZYZpZlkFhb3uhHkTbE/r5IXedvgfCciMu8y0Jl02V9HLL0+DYrVQMTxkqGMhpq
- pCh1EjZK
- jSDUYUE3x76KzvZNIKHlmqmIPfXOyq8SDhy+Aw6epl5kJSMwHnRSPFeyqHUeqqSvHNYnWbX+7TmPqzhs1tywgHfZrlxnBhTUjbenyS0DfK7JemnviWjDTsCC16IA3BjnIoYAc/oX1JG3oU+xcQCAyYWvq7BhZV5G5eeZHHuVBZEMN6YBhU6AUjiR6jG8t5Cc1dIbtv7zX9KQImkI36sJ9I6UHdgcWNSB3UwyeblQyJ7/y88HyAjui+f/s7vtpP+4tF5lK1KASFoO2hIIKVFD3hzlW9pSe9/mM3wWPpf0BjqV8nt/PbHQncfdgQSYfSbLIzhiVa4Yrq45QYHROy+HhW7ob7VEU7Ft0lLrH
+X-HE-Tag: 1792419280-968372
+X-HE-Meta: U2FsdGVkX19AcejkJJdNzJvZFJXO43LfgGs/GJh6QYbyhCPyCJvIqbTJeizJcfylFJzlAzvSofUrHoEXa4VeJ2AUth42xiFgAWDaUjSs4zERbrvvGUHh7g/OEWAHEVtCvXekRjyNSPt2mzBfJne2Yss+NjAj8oM2i8zyLldYPuV3Rp/C1h4kj3TN8qz/jPqOG6EWiVkAW5ZpIlTlETir7jnjsr5aslTdjtWNa1N72mDyIAlrW73YFO+SzhMW9vncxzENtPY5FjBKecfFQUy1JACnx7C7VzVDzvAlGOmPJ6jaN36D/fUpaafsT6QB1kvYnnsbMK0z9GZHP6U9DQNPLTM5JeJF3AABKJz+nwFQEGrFIfXAcVwZJOdJkotLEfv99XKQUOD+IOf50NQzoH0NUueFOsRxwgzWW1lDdcqL4JXufdh7iCSM5Lz+GIC9VAd3WqN1e82hL0Hb+aA9SmNmg1dGeYJ01Dedkp7XHMCdPC5qK+tEeZx+IUJ5SGgWVZU8bA/FwmJif33BbyA5DnSyfzjWxRX8wicedRKgTIbqgK315sOWLiLMtTXPZh/ljRZ6WpfxannxendllTTCiVqBSQ1uuJE7YxQl/dieeLOf7KXOc0PmGKooFe+b27/jTmI6FUdVX7dsHdGSTXXOcNSW4fnkEoSopmKtEKocmp12Ik4XHSESuoA+Or/Y+LLrnLc5sijd1ogrKGfzWywK6VungLRaazhISTdMMgmIw2DiyMkD2vfS+XNQxQqLdO7J8VAhWIqKhfjbRLu+785iuhuA/caZ2LHfYuQ2G7nbnIaDDtrr46/sE03Ut11NPIqkPKH9eGGUNofSWZGNgGzc0Q+2yl9hfLuYaA+glJn2rswistFuagenbxVI9dEP24WySTT9zWWa8j2jPReOqAhi1kBSL360gr8lA6v/+O6YXdwI/EnxdXSgShb+//gOI9dl4uFUuEZuHuy+0wpY7pFP2wH
+ xjDITI7F
+ DhWqkWxITxoxDJKLGZqfqs/mWV3uyhgj1SNx4gU3O/pJBdrz0xqDMyb0fsdlXbF0tGOJEGLAxw7vrMTQ3TTASHmqOH4rNsMGJfDRYz+IqGMPd3gMesmPLK7/Z7Lm6uBnpBd18GlsQ27BPb18FnjEhPuUoZgMIHdxRXnRIH7mz9OE1aTbQ6Us+8PmRdjduOSbZmriXYB70dn/KD/85B3EuiF9GWQplwjK9sVEHtnGcxPFbuNpko95Tg3tN4CBZWiJ7t4Y/yaP5Pu7fWgaWNFgcen8sxr6Mcowx/bSHvlW9cB50qiubQ5XOWgwx0B23gpPzIbOPYeANoyNLNzo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,23 +91,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 19, 2026 at 02:46:37PM +0100, Harry Yoo wrote:
-> In the function, RCU is the only mechanism that prevents release of
-> the memcg
+memory.reclaim is a useful proactive reclaim interface for memcgs, but
+tiered memory makes "reclaim N bytes from this memcg" underspecified for
+userspace controllers that manage memory placement across tiers. The
+kernel's reclaim policy is aging-based, and on tiered systems aging may
+demote folios before they are eventually evicted. Without a way to
+declare where reclaim pressure should start, userspace can only reclaim
+from the memcg as a whole and observe one aggregate progress value.
 
-Uh, no. looking at the code again I might have been confused!
+There is prior history here [1]. The old nodes= proposal tried to let
+memory.reclaim scan selected NUMA nodes, but the discussion left several
+ABI questions unresolved:
 
-The caller is expected to have either 1) acquired RCU read lock,
-or 2) have a reference to the cgroup.
+- nodes= did not clearly say whether the mask was a source selector, a
+  reclaim domain, or a demotion-target constraint.
+- The implementation did not apply the mask to the whole reclaim path,
+  so demotion could allocate outside the mask. If userspace interpreted
+  the mask as a domain or target constraint, the ABI did not provide
+  that.
+- Selecting top-tier nodes could become an implicit way to request
+  demotion without uncharge. That would make userspace depend on a
+  particular reclaim policy and could make future policy changes hard.
+- The separate completion-accounting question remained: demotion can
+  count as reclaim progress even though memory.current is not reduced.
 
-I see a bunch of callers that acquires rcu_read_lock() before reading
-memcg/lruvec from folio and passing it to mod_lruvec_state() (and then
-get_non_dying_memcg_start()/end().
+This series takes a narrower approach. It adds a typed source= key which
+declares only the source on which the existing memory.reclaim aging
+pipeline should be applied. It is not a demotion target selector, not a
+demotion-only goal, not an eviction-only goal, and not a change to the
+existing completion accounting. Leaving source unspecified preserves the
+existing memory.reclaim behavior.
 
-Callers like reclaim e.g.) mem_cgroup_iter() hold a reference to the
-cgroup...
+In that sense, this series extends node-scoped reclaim pressure to the
+memcg memory.reclaim interface. The existing node memory_reclaim
+interface can apply pressure to a node, but it is not scoped to a
+particular memcg. This series lets userspace apply the same kind of
+source-scoped pressure to a cgroup's resident memory on selected nodes
+or tiers, while still using the normal memcg reclaim path.
+
+The main benefit of this series is to give userspace a steering knob
+for per-node and per-tier memory placement control. A tiering controller
+can observe the resident memory distribution across nodes or memory
+tiers, and then apply reclaim pressure to the source that should be
+relieved. For example, it can apply pressure to top-tier nodes so that,
+under the existing tiering policy, cold folios can be aged and usually
+demoted to lower tiers, or reclaim from a terminal tier when it needs
+actual charge reduction.
+
+The existing memory.reclaim interface cannot express this. It applies
+pressure to the memcg as a whole, so on a multi-tier system the kernel
+may make progress in a tier different from the one userspace is trying
+to control. That makes feedback control of tier ratios ineffective: the
+controller can observe that a specific tier is over its desired resident
+footprint, but it cannot direct the next reclaim request to that tier.
+
+Patch 1 adds source=nodes:<nodelist>, which is the basic source
+selector. Patch 2 adds source=tier:<N>, where N is the memory_tierN id
+exposed by /sys/devices/virtual/memory_tiering/. The tier selector is
+only a convenience layer over the same source semantics: it resolves the
+current tier nodelist at write time and then uses the same source-scoped
+reclaim path as source=nodes:<nodelist>.
+
+The remaining issues from the old discussion are intentionally left out
+of this series. If userspace needs to control demotion targets, that
+should be a separate target/demotion-policy ABI rather than folded into
+source=. If userspace needs a strict "bytes actually uncharged"
+completion mode, that should be discussed as a separate accounting or
+goal extension because it would change the observable meaning of
+memory.reclaim progress. This series only adds source selection for the
+existing reclaim policy.
+
+References:
+[1] https://lore.kernel.org/all/Y5bsmpCyeryu3Zz1@dhcp22.suse.cz/
+
+Li Zhe (2):
+  mm: add source selector to memory.reclaim
+  mm: add tier source selector to memory.reclaim
+
+ Documentation/admin-guide/cgroup-v2.rst | 29 +++++++++++
+ include/linux/memory-tiers.h            |  6 +++
+ mm/internal.h                           |  3 +-
+ mm/memcontrol-v1.c                      |  6 ++-
+ mm/memcontrol.c                         | 11 +++--
+ mm/memory-tiers.c                       | 24 ++++++++++
+ mm/vmscan.c                             | 64 +++++++++++++++++++++++--
+ 7 files changed, 133 insertions(+), 10 deletions(-)
 
 -- 
-Cheers,
-Harry / Hyeonggon
+2.20.1
 
