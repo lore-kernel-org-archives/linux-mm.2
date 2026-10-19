@@ -1,125 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60B5606A337
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 18:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B98F606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 18:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mcN3jL0x
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=avrWlHXY
 Received: by kanga.kvack.org (Postfix)
-	id CCC0C6B033D; Mon, 19 Oct 2026 14:34:12 -0400 (EDT)
+	id 51D796B033F; Mon, 19 Oct 2026 14:47:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C85DF6B033E; Mon, 19 Oct 2026 14:34:12 -0400 (EDT)
+	id 4CE396B0340; Mon, 19 Oct 2026 14:47:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B44EF6B033F; Mon, 19 Oct 2026 14:34:12 -0400 (EDT)
+	id 3BD106B0341; Mon, 19 Oct 2026 14:47:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 861616B033D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:34:12 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16408140732
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:34:12 +0000 (UTC)
-X-FDA: 85340225544.25.D6B7256
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0B3D480006
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:34:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mcN3jL0x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 193026B033F
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:47:18 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9A813807D3
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:47:17 +0000 (UTC)
+X-FDA: 85340258514.08.DA01CF7
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DED55180005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:47:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=avrWlHXY;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792434850;
+	s=arc-20220608; t=1792435635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fpSk/CbNOxgm/YwPtWLbatYprzPLT2PIdzvPIH54y58=;
-	b=VekF61cUl1UlUc4ORO/5uxAKTrIpgthrbSq1VLoAViULprc3T6NnqUP3WQCW9KOjANSoP9
-	qwIRYycFH25rn2XVhvxkE1VtAQDHjojQ3lr8SieqfVfuFFG15IuEGsnDdupzWVAnSs2JXB
-	TLL8JGDHc3Rgaf7VyE7LtZPf1MvZ1qs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hbKgm88xqZwylAt4q2OznWtgQkbJqO8+m4FSvU2MBBc=;
+	b=WbSSUFuUhCE6DPV/AkDO7j+SY6BLOYgjPwPX861o/vGexLTZcek9mGd+6NHx1EMttrY3mx
+	HRM47TWAaNdJbBIGDROVpsyEk/dxnssBgdY/rheDQMVwT5Q0CF01/sU70IhqStSxMivJzf
+	j5bWLXRnlj/yMs5C+GnrVwB6LXTVvf4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mcN3jL0x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=avrWlHXY;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792434850;
-	b=69eqIwQnz14/ywaNPXaOznRv+reHIxKY7YRMnaALiDzRgFlz0wVHXvzwLmZp9Oh/Dga5qt
-	+nP8+moaoQJSMyFrsUgcY+SM2ccf8SzK9ux3mFzuAb84VH4jAwrDjiE/SrNw1meGKQc5Q8
-	Y0lXG3SFaPsMM2/BsOkgYIEZyxjnN08=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8863A602A8;
-	Mon, 19 Oct 2026 18:34:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63DA1F000C5;
-	Mon, 19 Oct 2026 18:34:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792434849;
-	bh=fpSk/CbNOxgm/YwPtWLbatYprzPLT2PIdzvPIH54y58=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=mcN3jL0x7o07gopqYbe6aQDb3uAGUgaxOQsFsgcY4yYkKSBZUled8S3ng4uax5VRQ
-	 Y9ronnjw4+MQOAJ9bcE2XPVTC+D0sSvIDnqGKDIIoCDTO/HgDglU463/FRXUWMyIOl
-	 E69fanaXZo4amEpW0sIDvIE7dZ29p4YQTGmgqlH8Y9Q3F3yUyHBPIX/qrx2UehUV5H
-	 9nVtpPvCTMSm5twqXn/1Tb/qG6qUozGvtyuLn3/J5tLlNrz5sAjX4XrwemqsZ+4L/b
-	 78TxvmfIOzAkm0A0Igc0PpVop3siJ/0JzrnNxWlqiz7gDtTzm+i5tF/yB3WuJrcYRe
-	 f3y9qRN7JpvjQ==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4D490F4006C;
-	Mon, 19 Oct 2026 14:34:08 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Mon, 19 Oct 2026 14:34:08 -0400
-X-ME-Sender: <xms:oGLWaiqFvBURSSl0gU0eKj5KT_8cztuwHdKcJzxtN62_DMkj1os5AA>
-    <xme:oGLWardCL6tbTZv4_8WDs5ufaImxCQYHhXsOCmshAhUZX4msruc9eO9PKjrOh7H4l
-    965XpDX4It-QlSsGFKWqt0ZIfzSMnP77CFjGn8babFZiYpXFAJkSa0>
-X-ME-Proxy-Cause: dmFkZTGU9dwEU4XRK5nfGJiAm4glnmpJQKWEZoqJtiBJkpSTPtHDUzcNFeKIV1MVYcCjaB
-    efQJ3D5ne3hBoH3g4G+5JTBy2dhL/NzUjEcCd+BKoakAPgCNfsgXVatn7K99IqrxC6wkvh
-    f4fbA5ujaLZZuTYe2mCnFgn7FxpCHqpKccrLgc8HDKj5jnv15GFdyQD448mH2wGhK6BKrj
-    yMg9Z1NF84Y98QZDVhK8TeJ2DayFiMqv3Tc3085uI9nJS8haoO7AhZVKfxsPTam18dQUX4
-    8jIE8Bd4OBWK4W5B+7a89Tju+Lo5PS0G5hg7LtnbEPb46Ao+zMycFo6IGpGotsiACSPPKu
-    n0Z3qJ6TLWRoynA1ICgbyIOI7SLHtquS6bEjnt/cfBzzF6PMEDQi1G+3jIuUx/Jb2fVxWv
-    UNTS2qjqCGQaMD+Zw5/mw10mpm/+KIDA8WNGtfsdTENCHHLdAfJOmBhYI8GvEHrKBTosCv
-    bcttISHXbnuav/VEFCbLqjn8eoZa60VOlJCbA3oB2kOIMYLlm0mFTIXt2HXTS6vUpjTMQt
-    n1JR5r+xM0IWuvKj3MXhSqv+gx9bmiCYBWVaEGB/pI7iadcisLm2WuOYQvlKrNAm/ZGoXx
-    tvbQsHJ9RW30Hz3VAAr1wWodOp7THzk2LTtEjRffH/gjhMQaXPe8u4finxog
-X-ME-Proxy: <xmx:oGLWavga5e8muFHTMT035QeK7vBI_wV2cOpOZB08fRRcN1NMQzB2tQ>
-    <xmx:oGLWakIdZhKUF7o5oh9j00VmfqpaThVo1RXc9HEVoJQVKeWPMPOmJA>
-    <xmx:oGLWaunONJIGdi-BAwdqq2J-acghmrbjGtT_mgDw7TciE8A3gdkeGQ>
-    <xmx:oGLWasPtl9EdzlHrFRNJNN9LJTTq05cjyP6goD9Yjcte01adCvc1NA>
-    <xmx:oGLWao6PAYSqOEbEf6Nt5kRINYVMyKxFvGlFOgEvVy6hpj5_u6h6ha4r>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1A8A0782738; Mon, 19 Oct 2026 14:34:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	t=1792435635;
+	b=BMzcw35JV0PvGo7tNqab63Ay5v39XnUCDltA/ZrFRh7sxM+rARnHJxM2K0GM2UU4nDj+VS
+	mQHdU/BIFjmVYo873TrUrKGC0sjpCt5z2QfmcHwnRWGZiETTrMI50AqKWXXt5Olf8wV4qb
+	urz5ImewvXlR0h4evQBJnLnIqptEkig=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-917a04338c1so22977136d6.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:47:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792435635; x=1793040435; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hbKgm88xqZwylAt4q2OznWtgQkbJqO8+m4FSvU2MBBc=;
+        b=avrWlHXYRZZO44sT1+GqSB1LCsmV8ECkVyX3aakDOI+9bgMKbamjBnqXfyglR21m3z
+         BY18cpM7rOA1d6Y3L12VrEyZOHszVfkP3nkoOPPfyYLe/ua25wR648jv+MV2PZrz4yn7
+         b/fnIOz78DjSt2oxr9pUWgWSkuQkB0yxaRdUIoSZRZ5o++ddrAImbCo2ImLPzGHjK9rw
+         DWUSzFHDGMRzbouvZxql7pzA5zkH5ckBqu6eBFRGE7Yzy+EvMf8McXTA1gg/d9gxkcDx
+         h/FlXkKVTWeVA9xWLptIZb6/eE7J8dZjIZ210Ayj+EH29eRARYX6vd5sSxQEiDFJqcvN
+         qKyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792435635; x=1793040435;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hbKgm88xqZwylAt4q2OznWtgQkbJqO8+m4FSvU2MBBc=;
+        b=V54tB4f4FiVm6QLSUXAJKlyaOuEwmFHD+pjP213NuE1B2+utfzhFiVE9PRl6wJpndX
+         ULAx3/2x4xU+K8GyAtouxqMDRfWTUoWUR714frEcJtGStx62aOaBbtTeSkEZHcOF1NbG
+         p4huQYyUlnGs57LlVwmNMnpHN/dIeEyhPM0sikYpXJ7cfvlp+rrtIazoT/4rR3aa51Bv
+         ExKurnCE0BWvKlVdgG5jH7kROe9ZCKOH9wzeEwBMkV9dvvb9tBCQ7kakUGy2uhEe+9GE
+         CCwfSucvjWCvZ3xk7Rw/dJIJQjm7+y1XNk/2xGf2gC2lH867Scp0p+vWB2dYo1v6RTV6
+         iSzw==
+X-Gm-Message-State: AFq9FYJk8D+OZ+UKU/7kSWXQ9yMpiVGH1do0/rVTVDSOwTLLsG/t3C13
+	ggSryaTq84dDMOoH3ZPHEMZeP0riyXtsebzngpcw5c9fdVNFNBmEQFsNnwRNqqPTPZIpsM0Lbk6
+	Na8PzX14=
+X-Gm-Gg: AYBFou3isEnxpXvafh8rBpfajLrrx00uTzw7IcZE/pfMPhathZpvNT5+Lo+afi1bQeO
+	ZsPv98czeiAOGkRp9NRGkOuQn6T6hct3qYEM4N/en4Unlrg86C/SBOfZjcw56hb8i35OxlZCclF
+	YvVmdTVwKhV65wPe94QEV78H7uHrl2L6Qja4SuT6kT05MQZ0WzyIqVDwu6JD56Lomzj2jM4eU4x
+	I0tzA6b2CDqrC/uW8nPPXRMkHc8HEROM+uh9ILq9msDQQSDT6nF+PxBMzRFQFtUKsv9WMHH/Bpv
+	6cHGZjjyx910Wvl1fWmNRI/tkBqh7sgrGBrIBXyxigWpYaws5q6uzo7Q3831/KjKsJoiq0E9CIL
+	KJQ5w+iRQMxARNeyML4Yi69uZcUMLa9GgRTwWakACcdh4Mg723+EUY4UEnBVDpVvDM2X0KyHhIy
+	EyQyPM8akVv7w2kL5qlVoADUnmHpuH56Vj+MBD06J747pFPeDtmYxKSz+9URkybVHfswPi1qdto
+	QleAqwh2ct/kgOCMmm+14HA7Jc7PDpvEban8zB35ylkHZx+NjOtwiH63NFG
+X-Received: by 2002:a05:6214:3f89:b0:915:4229:17a3 with SMTP id 6a1803df08f44-91bdf7ef1bfmr142927206d6.25.1792435635045;
+        Mon, 19 Oct 2026 11:47:15 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040e2ddesm3081366d6.36.2026.10.19.11.47.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 11:47:14 -0700 (PDT)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	gourry@gourry.net,
+	ziy@nvidia.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	weixugc@google.com,
+	aneesh.kumar@linux.ibm.com
+Subject: [PATCH] mm/memory-tiers: reset demotion targets of nodes without memory
+Date: Mon, 19 Oct 2026 14:47:10 -0400
+Message-ID: <20261019184712.3422641-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AS6kSLE8WzSk
-Date: Mon, 19 Oct 2026 14:33:47 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Mike Snitzer" <snitzer@kernel.org>
-Cc: "Jeff Layton" <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
- NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Christoph Hellwig" <hch@lst.de>, "Jens Axboe" <axboe@kernel.dk>,
- "Matthew Wilcox" <willy@infradead.org>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-Message-Id: <f39bfe92-8676-4241-bb4e-bccd838ab99b@slotpi15m67>
-In-Reply-To: <20261019150725.1507-2-snitzer@kernel.org>
-References: <20261019150725.1507-1-snitzer@kernel.org>
- <20261019150725.1507-2-snitzer@kernel.org>
-Subject: Re: [PATCH v5 1/6] NFSD: add tracing for how direct-mode READ and WRITE are
- serviced
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0B3D480006
-X-Stat-Signature: zp6cz8y4tgcz579wiwewibx6sktcma1u
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DED55180005
+X-Stat-Signature: hxstmwpawqt3nddiwjwp1b67m7mw1643
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792434849-43407
-X-HE-Meta: U2FsdGVkX1+nxf71z2nqwllp11KFGFYU3zfr+/CoJAxWwDO8AbfwxvGcbUggM236j9+flYw+PBZKCqdvYIOHKfjVNgcFeA+G3rlqPH9CO0fhko5WZPVR8CAlnpZgcEoJdPfz0arWWiE/okQsLDclgT1BYZ73FHFlDI9P4w1RWi/BZ2UgEKzA5Wfg6z92+XgAIlRXKJWdVnOtPMl3n4OvT3yeZvLFKZrHaJDmshdkqmbGPzfTe4Sjh6nYRL2USDT6CEwZQwdQwO0nnkceDgJji7d0oUtMDRXYGSK/MjV/Aoy0xA1+Ec9YIi+FW5ObZ0p3qGOH5kU+4P6fDyYq4t9tZBfc/Pfpngo30cinfUMT0ztM34qRa1DlXmtvlsLNp1J+a5tghCTnm3Li18JqOEa/+6pMmOPCA4qWs/JO0I+O0fNBuo8udwu1H8hhaRiu0OKyP4MvD6A8M1LAdEEXaEAMLQsC+M1xGuQynukRj6OgvVPyv9r5CQMJgh68mmtpUUDYrxw9S3+RhSw9qozgQSG/43+LeMOyoIKgarc5RXuRogbhcjuHfYbYQ3P4Tpz4iAntx0baUB9Tj3iPxcq7lbnagCof3DvhMUrX5KZihUcsqc9ENYL+v6dQq6LGz3kguFcuTCxS5PFdkLih6//ZjN/mEVLUB7IAiP9Jj23Pm6xtATTQ6N9sECv3K0KkjH7Mu+zC0UKHrazgS2nue5IaB1s/kZNCHEz2GkEs/uLo8Aho/W/gzOb6A5OvbgkDxgYFf1PhxhbRwKLzUpyXhDuOISTGF73wdBKLXC0J4KGeV2FVZrmACbVWOvLHLwchiKy7VUUkXjdMo1rm7aUUA+icHJ72Ve+SeVp0Rk2jz1wkJyMrIu+sNQgubgtSER9TsZj8MxjRxIf0kW7sOo7MS4vXp/V5wX5/IUqb4lzsmy3gPTl1a0Uxxp0y6+Wshmvm95SSvX8PWR9bH7a+5Rpiwk+qykS
- /fEOhLAN
- yAHwsf+kXqMIYsf3QckotCs4BGIiDQkWzAilmJo/uOfQqqp90AzLQ5O93ptvfA8k+YZhii8FMLCyNo8fCHiYVIXq60myQ7dJnhyENpFNV3QeKIahLvVcHjDYvOEEQHrBGPllER5acSs4cT2I6LK0pWMdCQoYfMyUoVEIaaVp4sUaQ2qAJIxQXFI4VwLaQpymr922Hh0WGNcpKCQ9uqAakVjZ2BwP/panZwP/WlWTLMfFdO2gjAg30iVs+P865a4pyRwl1zphK41Nl6bx39GkLPAm/HZzjjJgtZHSKIsXaTNXP/t/udMg7fI6jaNq6CB58YYtkjhfjRwv29PdV9wLgiZi8vtSncL4S69yu+xB1siriQF0=
+X-HE-Tag: 1792435635-510123
+X-HE-Meta: U2FsdGVkX18kEaSnUzwOhIXFABzKC8MGpg9JCj2FnH8SJGaz1m5cVuvJoC9EdOE+Sz+CypWl3z9glIF0+cBxpWNMmNp3/ntj25UH1nSQNJY3UZbSLKHFkekNPGlGDNwVRiBCkIAnqOw9Uv7yT6R0SPlxj5wEiabdmA2lPJRylreTufuGwtKV+FRxMwy5OL42tlAX4uD4OVwMs59jcTWxdWZaUZL1wLtWoyYCst5s+tUHITRMAHzv8RvOJY7FnZ2LHTYS9EmC3s17/G3S8hu9PtrJuyT2/bkOZpzkGtZsO4IoIcddANi385CUE+YYTSL8yKSP/gJ3dG+2ZPIsP9NwNoe0IREU5DcEKBWw4oiWGOtWve7IPcrYKXwG3ApCILy2rteecM+IM3wJxpwstNggVNiQpYi3RPFjaFvM5G+ggz2GU+HLoPOKsxPW++CxicwwwxvrFf1TQbz9AOa580qAM55jc9Gwe5HFQTZGAeSw+Zs3WVXWY5HLw166oTRyhuQzTOIINWVHlUoAtKV7jMlXVMzmFoBtnrgWhVjwXgCYaw/LTviDJ0vubwfKxfoJAYitL6iH0GEqsKr1RiKM1k1kbKuglUYumfEd9ib7JBVRyoe7JSSL93zPSgRz1xAXR0iCvl1VAGsoHdVyPa1OLoHsvDOZR0Mso54QMXQDuFurWA6AzjNwO3e0gQWcEgWC+NcwHyzuAZCDUmsSslJh76W4MTtWA36/PX4rkovk5kSeCXaAMALlDtM1CSxEGYACjjr1+EbgrZyz7DYX/rMB4XM0unmKv8GqY1WRYz8fjo3yyv/9YvIoaeLfqBasLIgw93v8RfAC7NfZlwDxnWaEIZgW053CbUZt5+AEwacdjlSi0ftpOSVpssSMZmVlzVkQpVTilPq1+/wLUUFLD6WuEtyrRrN9YFXyMAQc9taW+RGapP8cEqTCG+mqlYqewi43jyGfr1L7OS/Y6jc890YfuQc
+ 67dC5U6V
+ RUKKoktb0w9DUEhxBC3AldsT6+lAqARLoEkM8LchzSdNMQFdIzdgeyLQL+YYDFF0jGiloLFZvSyzwNoB6fuGIivb2P0pO7VL/lPjkVcu8ocdfhQkedVEUj38wYs+MXPQ2dDYxR6Mr8wGrg7yezZbHbkHbH/euILXAAHlgpn5e1hWWpf1cYRzKPBWAhhn+PxDbLBbRMymFAh4p4RI+0QcfDluWRXU3Wz411F3uX5SnYE4PTvfRDhlvS0J5zeCjaxqUGBjAQuJ+9zY1pUbdyIjW1s1e//5pjip+G8wxvfKz0cdixOWpG5NsnHJfAiBAtjszUIcc/b1FAd7+66SkEH++5FSb+GIdRJR1laxGXQK0igIJoinD+oc5ylto8B+Q9fCd2P6o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,65 +127,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026, at 11:07 AM, Mike Snitzer wrote:
-> Add:
->
->  - nfsd_write_dio_split, emitted once per direct-mode WRITE before any
->    segment is issued.  It records the advertised offset and memory
->    alignments, the payload's offset within its first page, the start,
->    middle and end segment sizes, a disposition naming the path taken
->    (direct, no_alignment, too_small, no_middle, mem_misaligned), and
->    whether buffered segments are issued IOCB_DONTCACHE.
+When a node loses its last memory, offline_pages() clears N_MEMORY
+before the memory-tier callback rebuilds the demotion targets.
+disable_all_demotion_targets() resets only N_MEMORY nodes, so the node
+keeps its old node_demotion[] entry while it has no memory. Before
+6c542ab75714, the reset covered every online node.
 
-Let's define a single event class and then use DEFINE_EVENT per outcome,
-rather than one event with a disposition field. You'll notice this
-pattern is used elsewhere in trace.h.
+A reclaimer reads the stale entry only between the node regaining memory
+and its targets being rebuilt, and it filters the entry against the
+current allowed targets, so there is no user-visible effect. To see it,
+online and then offline a node's only DIMM: a debugger still finds the
+lower-tier node in node_demotion[nid].preferred.
 
-So nfsd_write_dio_class with the alignment and segment-size fields, and
-nfsd_write_dio_direct, _no_alignment, _too_small, _no_middle,
-_mem_misaligned fired at the site that makes each decision. An admin
-chasing "why isn't this direct" then enables only the decline events.
+Reset the targets of every node.
 
-Also, let's give the READ side the same treatment so admins can see
-the decisions that prevent reads from going direct.
+Fixes: 6c542ab75714 ("mm/demotion: build demotion targets based on explicit memory tiers")
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+---
+ mm/memory-tiers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-With the per-outcome events in place, the dontcache field on the
-per-WRITE event is redundant: nfsd_write_direct/_dontcache/_vector
-already say how each segment was issued. As it stands it also
-misreports the direct middle, which carries dontcache_flags
-regardless of direct_misaligned_dontcache. Consider dropping that
-field.
-
-A few less critical items:
-
-- nfsd_write_dontcache and nfsd_write_vector are emitted only from
-  nfsd_direct_write(). The io_cache_write=dontcache and =buffered
-  paths in nfsd_vfs_write() emit neither, so the new DONTCACHE event
-  never fires in DONTCACHE mode and the commit message's "now fires
-  only for normal buffered I/O" isn't right either. nfsd_iter_read()
-  covers all three modes; please make the WRITE side match.
-
-- If any enum from vfs.h ends up in a TP_PROTO, note that trace.h's
-  own #include "vfs.h" is after the per-class events. It builds today
-  only because xdr4.h pulls vfs.h in first. Move the include up with
-  the other headers.
-
-- mem_offset records bvec[0].bv_offset, but the mem_misaligned test
-  is on bv_offset + prefix. With prefix=100 the event shows
-  mem_offset=0 next to a mem_misaligned verdict. Record the quantity
-  that was actually tested.
-
-- The doc says iomap_dio_invalidate_fail "reports an O_DIRECT middle
-  segment that the filesystem serviced with buffered IO instead". It
-  reports one cause of that, on iomap filesystems only. ext4's
-  fallbacks are silent. Let's narrow the wording.
-
-- The doc talks about start/middle/end segments while the event
-  prints prefix/middle/suffix. Let's pick one vocabulary.
-
-Jeff's comment about the ki_flags test in the hot path stands on its
-own. I'll leave that between you and Jeff.
-
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index 25e121851b586..7197f1a67a340 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -378,7 +378,7 @@ static void disable_all_demotion_targets(void)
+ 	struct memory_tier *memtier;
+ 	int node;
+ 
+-	for_each_node_state(node, N_MEMORY) {
++	for_each_node(node) {
+ 		node_demotion[node].preferred = NODE_MASK_NONE;
+ 		/*
+ 		 * We are holding memory_tier_lock, it is safe
 -- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+2.53.0-Meta
+
 
