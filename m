@@ -1,106 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033F9606EFC3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0DB608749F
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=YYbUVaVN
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ARTmqlMc
 Received: by kanga.kvack.org (Postfix)
-	id 209176B02B2; Mon, 19 Oct 2026 11:35:34 -0400 (EDT)
+	id D1CA06B02B5; Mon, 19 Oct 2026 11:48:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B9EB6B02B4; Mon, 19 Oct 2026 11:35:34 -0400 (EDT)
+	id CCD736B02B6; Mon, 19 Oct 2026 11:48:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D0466B02B5; Mon, 19 Oct 2026 11:35:34 -0400 (EDT)
+	id BBD226B02B7; Mon, 19 Oct 2026 11:48:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E27EF6B02B2
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:35:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 709C6A0772
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:35:33 +0000 (UTC)
-X-FDA: 85339775346.11.56B2497
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9197640002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:35:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YYbUVaVN;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 903C56B02B5
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:48:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C0C6C0743
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:48:08 +0000 (UTC)
+X-FDA: 85339807056.29.AF3E50E
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 41517100005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:48:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ARTmqlMc;
+	spf=pass (imf14.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792424131;
+	s=arc-20220608; t=1792424886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pctsoJTIi3PIcREBl4WC4IIZ1RXf5gRECxbUB6cpZoM=;
-	b=XpvtPwfEEtUxk/vjIFPJawtkB4/cEJWJcBzVkDCofeshAb64cRfpxJkbZ+AUlPEOU032OW
-	05v133B9ibhCgvzjOkd4aFg9zpj+RBCJsEsMMTMIbw0IanACatTjCPMxylLQkQaTRn4v/o
-	uk33vfbIQemFQbn88AIDfcuMCiVMZ5o=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YYbUVaVN;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=5EEixkvcwcspzICRMAZjL3IuGJ+enZar5rUD2PHfTo0=;
+	b=lTFwqeK4DqFIaWqi+YVwvTwflplaGPr0dnQwNDzKQCHEQaGYUu8RhoV/V0OIW1OJNgY4qZ
+	MKmpqbXegtaDUwkbamwTtSKONXUzFuM7SGPLRFtr9Z5R3wSa1TD7YB0KLEs5yNx1KoSOAs
+	grtKGgVMExdEelQc1M2Ted/Aprk9ZaM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792424131;
-	b=RuyY+vLu/8VHHXkI0c9nziJcb7qtG6GNw5IJV32X9SkVl4tib9Y2RqRJNLblcHoHZ01PVS
-	Q2w+cUgwGfAKXXRi9wrx9k70ulwpvH0q1aMSp4uGvMyhx5N9EJH81zhU64cy0eJ76jQzqp
-	KXodos7aq05bcd/go8+IQ/F/e+9hjko=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E67960DC6;
-	Mon, 19 Oct 2026 15:35:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5701F0283C;
-	Mon, 19 Oct 2026 15:35:30 +0000 (UTC)
+	t=1792424886;
+	b=6kVlawpLodioZe8X7Vcj3s/xTDuNPrczd82H2C2RfXuBV/16wEC7IQn0B0FFUx/TA8C59Z
+	SMdcQJxoNVMsIlB2nwCE60eW59UNEvo9/t29hsQO2xMGK03um8NjYhfZU8JxZR9Vi/zrJr
+	bdxxbtQ1h4rrzWVmGrvHJ9tdBTzalWs=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ARTmqlMc;
+	spf=pass (imf14.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-35943f55c06so3396958eec.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:48:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792424130;
-	bh=pctsoJTIi3PIcREBl4WC4IIZ1RXf5gRECxbUB6cpZoM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YYbUVaVNFOS3ikdPPAI0feyllwwC0JAn5J9+vzlGaHw385Cbra4uKCOAehI4fLL8d
-	 lHqVkJr9iabcTmrdzSgeBqF6ufaO1VZQSw1fIO7wQjJxWubhEDsZZl+opqfQn0DQtO
-	 x5+6ZpH9ghkNIilJ1vs0fiqHzhnyP3e7b78PTCkQ=
-Date: Mon, 19 Oct 2026 08:35:29 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Cc: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>,
- David Laight <david.laight.linux@gmail.com>, Rik van Riel
- <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, david@kernel.org, Mike Rapoport
- <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Pedro Falcato
- <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>, luizcap@redhat.com,
- pbonzini@redhat.com, Tal Zussman <tz2294@columbia.edu>, Matt Fleming
- <matt@readmodwrite.com>, Yosry Ahmed <yosry@kernel.org>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-Id: <20261019083529.a81910ac0976c1a5687d4c6a@linux-foundation.org>
-In-Reply-To: <atY1vWRBRUwpISKb@pcnci.linuxbox.cz>
-References: <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
-	<20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
-	<20261015172820.7961d2c0def74d41cc6c4b0c@linux-foundation.org>
-	<20261016031242.GDatGWKo98YSOhEOOn@fat_crate.local>
-	<20261015211832.45d87fab15bb3e0bbc2f47cb@linux-foundation.org>
-	<20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local>
-	<atI_yuCc4BiweBQP@google.com>
-	<atT5TYyLapHO5ZoX@pcnci.linuxbox.cz>
-	<20261018201538.d0957878f378a9821852836f@linux-foundation.org>
-	<atXXma5NXxoSWJO0@pcnci.linuxbox.cz>
-	<atY1vWRBRUwpISKb@pcnci.linuxbox.cz>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20251104; t=1792424885; x=1793029685; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5EEixkvcwcspzICRMAZjL3IuGJ+enZar5rUD2PHfTo0=;
+        b=ARTmqlMcPIq3WiMXIu3Uj5VZPmNAbg7sSNjjXhqDD5iIGlA1BPGGl2wpmTa8TzpYBl
+         dFYoJz6RLapS/zIbm4Fq6DUi+zo10RK/FpCXeBaNpkdVjRxGckakqChID0ommmXu9YL3
+         2rB11qCp9EJ+a0hg1TA7A8YCVlgvjTzQuJISlZ8OfFWmCdt507qEqmNlZ+4BPjkPAiXL
+         gXxFEa33m9723MAcR/ImTPvOHCnLayy/a4Rl+TS6VB2webA6ANttv1S3HyhPRO22Ss9X
+         hgAavEeKrSXdBuaZF517s1EM5NUqr7p++xqnp9cyGA+qTubu1H1w74PEgyi3SS6H9UX/
+         AW8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792424885; x=1793029685;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5EEixkvcwcspzICRMAZjL3IuGJ+enZar5rUD2PHfTo0=;
+        b=hzNcIJnjOlpJM/pb4VaCQEQQsQQyqEPAL7rvUY4heVCc22fs0LwqksMbgFjb+SjMQA
+         ILlnkCbxzkvpKJo4XDnBkoTknn8LpQcylcKtyfB8N0X7D1gvjh4cirmbJtBa73QRfdYf
+         Wh65ZfNxTjp/0CdhegS+uwEvH2DS6+McGvU2UERSEvRj5FRfvM0NG2swCSdel7fuOGeX
+         NZS+NH7E1fOg22Lhp0e/c8D50THBP+0anQW2SGzEXC4ClrpZ2QAtkp/bJYwc1wfFBtDT
+         89ddQlkYEvSyDrsX2wcjDyL5NILupTPKtMChITzdHVZfZkRp/JmS7kvsujPKuvM8fWet
+         Qjog==
+X-Forwarded-Encrypted: i=1; AKwUvBxzu/6N8f9Ioo9JR8vslLIgdxVX+Qb5cPHDMSCfYprqGWf9mJq/NC1LvrKdT4Pv1QfxECe3QJ2ecQ==@kvack.org
+X-Gm-Message-State: AFq9FYJDh5OXne+B5kre37bhgVsfCkOfGs6+saZzF43AAe9z1gvIeljE
+	Dq3ecYuxwZJgsS1CSsFG4T/ds+UX374Imwsc0O7fAki2XAB728lZUtTJ
+X-Gm-Gg: AYBFou0duGIb1Ji7JFVgEN72+2u1zrVGbjZskHY46XLQ5SIn++liw28iQipL7tYrZSU
+	Z1pybDoTHrNaH7vKDIFYebsUMpwUQikVhfdKABq26hLU9YIO9Kes29E3qa7SqB8+DOyAwlMAeu+
+	qqik/wzpof8tU/UZ1lmUhIew30uOSLivX5YFQ8HnSoiRc/iipOkjN2nbUVKenGcE4pAH2Teejty
+	EEqq8Z/KGS6YsVPyhJBiFYRJZgTHXvvkf2jV8OFKQmPKE76LxnQeIYplMHENEfpch4zXz974Qqf
+	9VHA1YmxOiU7wUHErmXVUgI3c7wYbfaGAaR1CtJoMH2+47symFMWCiqR7IVwAALhDoSjI/+f1a2
+	lhN8HgTj6U5q3VTibSVn5zknBKKG81PK3G5P1WK6U4nQeC+KfznG5jU+/BlW/UnxcsPzWTI/tdl
+	VWD5OecMpkawbk4PXbBmNIujNmb6KjcKxHBcXP+BVSvM4WmC2oMOYPggCChnTbAgpPgtzHVyxML
+	+ad9yUYAtT9glwF24P6L/JfwTfbng+NRdb1/fQEnE317QaUJrzqyGYmrhrTJD0ahRGkW+vfrw==
+X-Received: by 2002:a05:693c:8097:b0:35d:5e81:1d87 with SMTP id 5a478bee46e88-3602ddd6208mr15681319eec.12.1792424884655;
+        Mon, 19 Oct 2026 08:48:04 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360826875b3sm34946358eec.21.2026.10.19.08.47.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 08:48:04 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: dev.jain@arm.com
+Cc: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	david@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	zhaonanzhe@xiaomi.com,
+	lipengfei28@xiaomi.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] mm: compaction: target mTHP order for proactive compaction
+Date: Mon, 19 Oct 2026 23:47:56 +0800
+Message-Id: <20261019154756.2023037-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <8e54025a-03da-4cba-bae8-1604463c7622@arm.com>
+References: <8e54025a-03da-4cba-bae8-1604463c7622@arm.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9197640002
-X-Stat-Signature: khf5bxdsmrkj918aysokm1785gpezb57
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-12.4 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 41517100005
+X-Stat-Signature: g1bd9zjxe6cgjwiefb88jsuuhicanerr
 X-Rspam-User: 
-X-HE-Tag: 1792424131-156187
-X-HE-Meta: U2FsdGVkX1/IOuwP+CxrTsUJa36sphtJH2+mvkbs9qBfclP5mwk8tZr2RtEqRX8xV5DIpBw7Km7iPa6pwCsTC6+8KJ+SAZJ7w6HRWLD6sT6cOMHCcr3O1ekl/LlSSgHgIyFcShgT8M2RdiWVNnxF7IIkEsktKW2FM/sEdS8bLXfWHwMd8/fqkRiL+lj2cggbsZTYA0jNl9t7WHJZMUkjfp4AVG4eqmTZwnK1/1soKCssLGsbd0F83qdQLGcbEpXR6VON1VghNQzmrfkaskvNSbZ5q3V2iF07XKTR/1VWK4Lbe1q2ADkhTnuH8KZ14Adej69QPUExA6cVKObyBGQXpfQm4DMKdHTDdsKXsLzd6EZbytIg52YQBgCDhXjQjpnM/DQxRbZi3cAyXRmilqDBXHRhSofA/kgQez42doxyg7HbiKTfhEo5irQC178FqOxXRMj+C9DHTiaiW55vt9NEVLbc0dK159DTueI7f5OwZrhzzUaRpnVvwa0Lp2yPwyWcpGHxCvFsou4rvJfRQ+nD9b2RBMfFV5iZP86AdT4CHdmah3Lh8ex3PuPPgx0RTMcPs6WemMLGuv70afdBaI7SmShNgajbKI+PYx2W8osJ77rBqLU8/EP8U/AOOKJyKfSBHSZmCKKycoeHL9EGVl1o+dP8JXJh+CDsi/JsAZZguY4iUlMoHGVdP7C7uoc8uJkIIQf6jnjOCH1SYWE7ozz6zcWpCECTSIZCVKlvJoxYYAHOs8hG07ML45Kmj8RJZvtviUn4Q5YvAMZfZPg7xZOpI8Qll4s5tJFuWU/fSXbviPXibHh/cq831W+hzUjocyIT43iYYlxiJ9b+VAggHVutQFre1D9Q0sBI8Ds74cqxavK1WjLzW+clZfK78OYiWIMdOO594kMsNK+5klZtydgR1e8NajfPD/mER3tEM7zeX22EmYzpN6giaY0dxELJs0PYXzODw0qzipq4XHf2Uqr
- ckEsZCs3
- Rtyf7cYWnlZyHoB+XaCddiNk2RYhGGuHA3DCjy0lXhcJ1ZJ2UFig9DaL4q8qachJiTXwQjSwOWXGrEA1GS+sdAUh+/hTUK5VFj0hvZL5HMHMMttt+G8OnYhTzeE3ZHBhb4Y9K/Nd0nMxH8B6jfw++EgBo6uEtVjNYOKY7WJaQ9JVkYAUcsjd1yQy3yKLWEFQXrG6L1WmRGntXIiFOAipIqUqwFSkBGeryvAvCWz/Emdx7mcaCz7oNDi22kKKg4M31OeIxhQzoc79PdyT4SWyf3s5HTWF2WfZwhoQsHlSlhcqU4jZa+eeKNPMb2mmYuI5VRXFFVePeeowREaXlxCxeqF8NnTnBXBdJoaQF
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792424886-94717
+X-HE-Meta: U2FsdGVkX19kPphGS/cnFSJMfUA9lljYG2qtGcJ6y/P8sp1PM7egVMJ8s0uoUypHq0yg0j+CGKWmj1C9oLkM31OqJl6xsnz2J4WaW7p0WzKDUpwflqgfSb/HiI7Nwc9GXjzYeu79OSf7T+2nveTPKZF+WTQV503lXZZmyVhRAdZZMSn5VE0wu7YcYyevMYf/MmXMRUAcdnw5kOLNlA8vRoNW/lf15qrZ0DoSFBzYCBkTmJI6ZC9A1wX8CsdUsp6dqsgs5JEc+GJWYQavhGaMTsfQ4PNuN8aED6APQPeZOHEJ2GbV8WZaxf9gvdPdzri8GDV30vIOX7vYAFO8SXMdzndRPDyV8qo3MOU2kKxTYcx4FayiNDX8oDUDlrq9nBa7TsifsZaj7G+s94+6g+nN0FcCfPSppwrrG4rik9Xnn/GX6z9U4OvlPUeTsXurnDpgBEta1XtrGVGqZElzdu5yXGKMLAEVRa4pCueIGNpOowy/sJOigR9cZBhtvbh7ejwI+nSfcKo9+HUf+M1fcUrUQXFtJLoEeUVTcb67vjf2I2q7ULwiuiaY7xwwlZolgyqL+8eiYRcixLTcH8F4vw9g+PJELYpUKBEetpv2Kf6otK6fEJDkNJH8jwHBvLlEYkjRAtb8OiRw6/rxqqgZMVWHOzmzZmjBSO9AGGsctAWOkF5guid+zsvHik2wQWMYwzlhkAWAUIyDUP7Q1S8q9WvGgyWq4Z2b+7ZFX6cyYcHBaOQAmoPhM/umRj0JMGwMFmMLgqzWW3pYJ6UsiCmwsipyOZUc2JvhVly1ETlfFuVuYKgm6RAgVx8ULYvJ5M3yyQOF0Q1hjuc+2PsQa0u/lZ/nZTWxXn9u8qemZEyNvwKRJrCIzyC8aE87mpM1ZdGkKvsKAWxoaPIcMk/4wXcDuB8ppa1MuWj6jfaseL4PDWg59uCOD9wRd4OnHLuMnttaPbsPXNj1zfzuseDVz7bCWbz
+ U873uUPM
+ l4tE9apxYqH/VIFo1WJZPC9sWgmZ5apsM6wWvGB4wQo44Gei/YgMSkHJGgvGmBkHKf35+cL9VBwSnb8GQYZNcGD4qsHJIYQNxgfduxjrAbx/+Vu8wEFHqRo7+1gn5ggHKGtXoSNhHMXARLgXuALHv6l6TX8RW8OiBnJG+3XAhrPChN2pUfNidkNah9Ewd7gODso3qSU/zODFy0C5tsZVbPQPVU582Wld9DscsZ89uJ6fbGMHt7ayelm8kYzEH3HBtT9Eysev97qhd+GXHIuoMF6xk0YZNVq3BsjqPd2eysV/1LvkM36seJEboefmRbDaU4hOUYtz36QJ23bkA0psw7AePstlgzfQExwZ4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,50 +143,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 19 Oct 2026 17:22:37 +0200 Nikola Ciprich <nikola.ciprich@linuxbox.cz> wrote:
+[Resending: my earlier copy does not seem to have reached the list.
+Apologies to anyone receiving this twice.]
 
-> > 
-> > Sure! And I have more good news: after applying 55780d8a1dcc
-> > to 6.18.56, I was able to perform more than 30 migrations without
-> > a glitch. After booting back into 6.18.56 without it, both VMs
-> > crashed within 2-3 migrations. Furthermore, some memory apparently
-> > got corrupted on one of the hosts, since various commands started
-> > crashing too:
-> > 
-> > [  303.466091] traps: systemd-logind[3085] trap invalid opcode ip:7f7b5667e616 sp:7ffe1afdec38 error:0 in libsystemd-shared-252.so[7e616,7f7b5666d000+22e000]
-> > [  303.493810] traps: systemd-coredum[11269] trap invalid opcode ip:7fc6bf67f614 sp:7ffc075da958 error:0 in libsystemd-shared-252.so[7f614,7fc6bf66d000+22e000]
-> > [  377.528955] traps: systemd[5607] trap invalid opcode ip:7f791447e616 sp:7ffe83e61cf8 error:0 in libsystemd-shared-252.so[7e616,7f791446d000+22e000]
-> > [  377.556993] traps: systemd-coredum[12080] trap invalid opcode ip:7f97ce07f614 sp:7ffe28b56a88 error:0 in libsystemd-shared-252.so[7f614,7f97ce06d000+22e000]
-> > [ 3746.173043] traps: hostnamectl[45846] trap invalid opcode ip:7fe00cc7f614 sp:7fff89916e48 error:0 in libsystemd-shared-252.so[7f614,7fe00cc6d000+22e000]
-> > [ 3746.202305] traps: systemd-coredum[45847] trap invalid opcode ip:7f7fe9e7f614 sp:7ffea227cfa8 error:0 in libsystemd-shared-252.so[7f614,7f7fe9e6d000+22e000]
-> > [ 3750.581940] traps: systemctl[45903] trap invalid opcode ip:7fbb8967f614 sp:7fff733e5748 error:0 in libsystemd-shared-252.so[7f614,7fbb8966d000+22e000]
-> > [ 3750.612651] traps: systemd-coredum[45904] trap invalid opcode ip:7f90d347f614 sp:7ffdc7f55148 error:0 in libsystemd-shared-252.so[7f614,7f90d346d000+22e000]
-> > 
-> > I'm not sure if this is of any use, but I collected a vmcore of
-> > this state by intentionally crashing the host via /proc/sysrq-trigger.
-> > 
-> > Anyway, I'll give 55780d8a1dcc some more migration rounds, but it looks
-> > promising.
-> 
-> 500+ migrations back and forth, no issues. I consider this solved and am rolling
-> out the patched kernel; I’ll report if anything new turns up.
+On 19/10/26 1:42 pm, Dev Jain wrote:
+> I wonder if this function should be left alone?
+>
+> compaction_proactiveness, as I understand is given as a sysfs knob to
+> ensure that the user can control how much power they want to invest into
+> compacting. So suppose the value is 20, and the highest mTHP order is
+> only 2. This gives wmark = 90 * 2 / 9 = 20. So, even if 80% of the memory
+> can serve order-2 allocations, we will still perform compaction for
+> order-2. This seems "extremely proactive" :)
 
-Great, thanks.
+Thanks a lot for looking at this closely, and you are right that the
+scaling factor is the weakest part of this patch. I called it out as an
+open question in the cover letter and I don't have a solid theoretical
+basis for the linear order/COMPACTION_HPAGE_ORDER form.
 
-oops, we haven't been cc'ing Yosry.
+What pushed me towards scaling the watermark at all was the opposite
+problem on the measurement side: without any scaling, the order-9
+threshold is essentially never reached for a small order, so proactive
+compaction effectively never runs for order-2.
 
-> Definitely a -stable candidate. Andrew, will you send it to Greg, or shall I?
+I instrumented fragmentation_score_node() for order-2 on an 8G,
+data=journal kernel-build workload and sampled it at ~100ms. On the
+unpatched kernel the order-2 score looks like this:
 
-I volunteer Yosry or Sean ;)
+  order-2 score (unpatched, same workload):
+    mean      17.3
+    p90       47
+    p99       91
+    max       100
 
-I think 55780d8a1dcc should be repackaged before sending over to the
--stable people.  Its changelog is very wrong: "The bug is benign
-though".  Update the changelog to explain that the bug is in fact evil.
-Otherwise -stable and further downstream won't understand why we sent
-it to them and won't understand the impact.
+  fraction of time the score exceeds a given threshold:
+    > 90 (unscaled, the current order-9 wmark):  1.0%
+    > 20 (scaled down to order-2):              27.2%
 
-And that repackaging would be an opportunity to add
-Reported-by:/Closes:/Tested-by: you, which is the least we can do to
-thank you for all this diligent work!
+So with the current (unscaled) watermark, the order-2 score crosses the
+trigger only 1% of the time, which in practice proactive compaction almost
+never fires for order-2.
 
+That said, your example shows the linear scaling clearly overshoots in
+the other direction: a scaled wmark of ~20 can keep compacting while a
+large fraction of memory is already usable, which is not what the
+proactiveness knob is supposed to express. So I agree the current formula
+is not the right answer.
+
+I'd appreciate your thoughts on the direction here. A couple of options
+I can see:
+
+  1. Leave fragmentation_score_wmark() alone and instead make the score
+     itself order-aware / normalized, so that a given proactiveness value
+     maps to a comparable amount of work regardless of the target order.
+     This keeps the knob's meaning intact.
+
+  2. Keep scaling the watermark but with a floor / non-linear mapping so
+     it cannot collapse to a value that triggers when memory is clearly
+     sufficient.
+
+I haven't settled on either yet and would rather hear which direction you
+think makes more sense before reworking it.
+
+Also, thanks for the review on patch 4 -- good to know the
+costly/non-costly split seems like a reasonable compromise.
+
+Thanks,
+Bo
 
