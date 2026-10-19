@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07E4DCCF2D3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 11:31:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2548BCCF2D6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 11:31:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 289756B01A6; Mon, 19 Oct 2026 07:31:27 -0400 (EDT)
+	id 39ABC6B01A8; Mon, 19 Oct 2026 07:31:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 212BD6B01A8; Mon, 19 Oct 2026 07:31:27 -0400 (EDT)
+	id 324306B01AA; Mon, 19 Oct 2026 07:31:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 101D66B01A9; Mon, 19 Oct 2026 07:31:27 -0400 (EDT)
+	id 23A286B01AB; Mon, 19 Oct 2026 07:31:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D8CC86B01A6
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:31:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 668E840663
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:31:26 +0000 (UTC)
-X-FDA: 85339160172.20.6717079
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 49843140009
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:31:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Lx6k4wGK;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id EE46A6B01A8
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:31:42 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 782281A06E9
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:31:42 +0000 (UTC)
+X-FDA: 85339160844.09.7C637CE
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7CC91C000D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:31:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ZAH2WzTV;
+	spf=pass (imf10.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792409484;
+	s=arc-20220608; t=1792409499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NAWO0hPInuKz2svZuq+EEVdySP1nRs4Jci480qIc9q4=;
-	b=6+mhkDV4Huja/5fwLRLNDB3dtVD6kuqJZw8Mps4ytmXbUTp47Omm0xgsktZvuV1oor8ilC
-	bRh6kpSWw//4LcNMcQb/1O1ZqH5XBkVa4wHU9Uelho8+yR/2TaqO4imC8TeNOaAdEAdCY0
-	YX/U1lHJkNe/wlGCrlLiT+nUqR0GZwk=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Lx6k4wGK;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	bh=zNdUrREfRi6A2agO64v8XOxx7iV4RKo6fmZLB1LQoIc=;
+	b=fFFyWw4kBaYbf69ae4rcGNtqist+VZl4CbRsno3otpyTg+VxioIWun6N2kJ25AD7aEhoXN
+	VkcLrdPn7/Thf9wufSgY5zc98TxK5gfwQ7b57c6UMJMiYO/VhPYjU+ITMycdMAwWOOk9N5
+	LAdl/wwxpXwcmhSyvtO1/JOsm6oCb5A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792409484;
-	b=RYN3Q8LWjhAzVR4zo1SaUsJ4SJMh0ad8EpVlmoAeLIieN6S34016NaIjDbwQ+YF1P5WRvl
-	3lzoDB6oexe8QLRkPBJsRCa826MKOCIC+P79iMIKSpbcB8015SH68LJ59zdMjz9JQyFrhF
-	dobd+7KfBLA8DpO4cfhAoFQ7XedsWTg=
+	t=1792409499;
+	b=18UKlTWTgx3Jzez8MRcBEECqc3uCcAKec5DbZ1rh8WZgys0XU+XV2F0E/Te6k6wuuZ+GGY
+	+1+/AdwUCwhrubfWfYplv/0tk9jaoR6PTKtHvFyYJhqvmn2jCl1+Dyq9t3UgFby9EcgQTI
+	uFAyphe9NUDkGj8tQPZM9ZZeHnAQVZM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ZAH2WzTV;
+	spf=pass (imf10.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792409478; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1792409494; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=NAWO0hPInuKz2svZuq+EEVdySP1nRs4Jci480qIc9q4=;
- b=Lx6k4wGKAlwP6ewF+be1ydhXjT82JEf9VbN55LkxJLHO4udT+TljPSGmZ0UjYqMXSlPZbm
- 4+146W1P7EMBCLmspyuGMwhwRgNuYSIicUC0hZq+buKDz3GFCViC/SrXuKFMP9WaLHFj5N
- t7tEqFLvTTfpI5sQXZX7a4mUDAjM/9mSH4H2gsfJt+VVXbfoIQhx3MMAqd8T7x6VZQe6zk
- Ymg+l3npscgnxFhGZHUj2UBDTc0n8svXgIKlvVurrh3j7u6eahlZvuQysfGdXWNb8WXFZa
- u5x+E/oHw1Sg+Wgohgm6Q0Yw/G1hKmDM6St/7T+8gR/T/e8zsAiq75N9XMjJfg==
-Date: Mon, 19 Oct 2026 19:30:32 +0800
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26ad5ff84+8bd397+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Subject: [PATCH V2 1/3] mm/hugetlb: fix mremap move length truncation
-Mime-Version: 1.0
+ bh=zNdUrREfRi6A2agO64v8XOxx7iV4RKo6fmZLB1LQoIc=;
+ b=ZAH2WzTV4UssXPn14XA4UoWaN86Xw6Arj3z5b8l++x2nw85hDatT+OY29rpJhCfbqf4cTs
+ YMxprNX9E1tbc9MzTkLUoitjeq3EySUqB3VTbYDaiuu/HSnbhtNfMxUOgeG7AoZZLguPAO
+ bS6hyNdEl1x444/55dLPyosRd497buv6iHteZyo3kUlKrYnftKywtyFtmTlSPG81DosL5b
+ 67rZsnnzRtZpx2crmFaLLqEz16LrsbChq7RcLvsB747tHLPL5juYDnZjcqdvHg8pXVuBPn
+ NH2ka5BtrkscWylgSfktyjwIwFYiBnuVAkBwbn5K05cJikSUo4Phh88M275itg==
 References: <20261019113034.97690-1-lizhe.67@bytedance.com>
+Subject: [PATCH V2 2/3] mm/hugetlb: disable PMD sharing for UFFD missing mode
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
 In-Reply-To: <20261019113034.97690-1-lizhe.67@bytedance.com>
-To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>, 
-	<akpm@linux-foundation.org>, <rppt@kernel.org>, <peterx@redhat.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Message-Id: <20261019113034.97690-3-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26ad5ff95+abd689+kvack.org+lizhe.67@bytedance.com>
 X-Mailer: git-send-email 2.45.2
 Content-Transfer-Encoding: 7bit
+To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>, 
+	<akpm@linux-foundation.org>, <rppt@kernel.org>, <peterx@redhat.com>
 Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, 
 	"Li Zhe" <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Message-Id: <20261019113034.97690-2-lizhe.67@bytedance.com>
-X-Rspamd-Queue-Id: 49843140009
-X-Stat-Signature: 3j6f5o1catqwse9ycy594q5gxc9ahzqj
+Date: Mon, 19 Oct 2026 19:30:33 +0800
+X-Stat-Signature: otaomo5j9qx5jpwad4yhzzgb1ujtzanp
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792409483-595547
-X-HE-Meta: U2FsdGVkX18/isFZf6qKV6Ig5oKsqrAUfOG+AHeVu39R5qAUWTZ2wBfscPKpSn2PtZ3Nb7RREhnCeuBZQiA2XK/dl7ZZRNO4mYTkwO1rb+j0L6kt1bzUl2ziy8cCDHYGxNtxnS2h9kHUxR5HN6RRCEQQ36RqbcvJSGcPXBhtKJJxdv4kbRe3LxJuJLHMgK6yg+L1cokds3TCfN5gv/oR1ebPSins4c5TbXhwGjtqQ6KuvxKWQ+7jG+AoLROJNozLDMhDnmiAS96N8d7M/lHFAmZQzV/M5gbqeWs6z/YlpuTWBb7EHxmHYYnrstNJO4dMt5ortoqwpVML/RddxTExsuklH9MT9YCP/K+MIWWfjW4z0kmLY9YGI18r6syFc5GDNEuX8/7logVPtncN8h+CNmsSYu/Cxtvvn4k2Va/xcrb+FV8IyIIZpl4irtSGiIq4v+QAGO0ybQPPC1VwT9GeTUhRSoUUIM7HLpWj3/zqc32F3VMF62/TlibkpWeKoj7dagpNh/dO1meOk4QlmcuQY3cbqyigzEmONk04hgdxWRZSigNedaJqV2y7T4GMWXPxlZpwyvXoxM9LuHy+X296O+Xi8hL6/qd3ERRmFTPs0/BF4hjW0FHc6n+12uuCEuzmRBR9s6FK6ZK8xE/JLLcI3Lhb0LcT6jSCzPD8N+mxvy/nAJHUl0xiSZ7Y0tZPz3LfkjyHhxj3MpKktvRhLBQg9qugeiT7n/475R0ArsJOot7R2IOEAz1qIR9bj4MCQbgOwyfLDK019FDgvXgqdIRWJd49BagNKV+BtpRiWIMQkzEkFy56S5/T1sGf4AA3KDUueJl+ZWX3n2/NCoDstCs3Pp9slB7QlkY2OP6/O24RgUV6VZ+dPbjxPPnyem2UQLEgTif++4fqmYUQItijCoge+mpa4l7whmCWZoBgl1RWSa2S/AtTqvJ3T0yLRlMmir1ZfPaFg9NA/zaVBM0Kt7I
- kf3edgJk
- VnzJGxvE9oZ1TYVyfgTuJibnkoJH9RvnLMmOGyfTD2Tf0Tm9bpZ1v0KCFG7uiFFUta7K/jCnmmKCo2B42wp4t0imEkY44841MuNkVv58bI/+CLy++ZOWVBjYnT4oYIWWzc8NX7e5klxM6T6t91VJDQnzNpPysErsgCXsRkaVOaZRuLKSM+zlpkgqca+TIaY3IczBOEeNd4xSCv0V6y/ZjKrherKDlo9/rLSLseDsjp+UPQo3PPs6nRpfNQdYkOW3vYnYv
+X-Rspamd-Queue-Id: 7CC91C000D
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792409499-216925
+X-HE-Meta: U2FsdGVkX19oDMz3z0pgrrexBoz2n7p91gdIZWs5xtbOcoTw5Crsp3DhYflPqVXTwv2RW8GsN9QPzkWOMnGQm5o4tXWQs5pAh7gzOha5dfGqfgptDSLFA0LnXIzbIw4Wf1NNTI5n8FGAR1pNtK4gFrZOu9Y6h10MpAbdD5hSDU/Hyk3r1wK0m8dyzOtgtj5bZIxVsvEYa0q7HxgX0WISl7EohIp0WdZJVhSu0XBM81lrTBbBgTCRQqKP1GZuHclu3s20hEybgSvrFwaBz9+c7OxJmWtRhFmNqYMSxeZwmNFGpQfZ/ZeEzGDZiiRTUJB6izX+Opih8o5qYVsxpjLIE+WA0eJlTZ3vh3+rPaNTTEZg/TUZok8In4u6DhuibEe1bJ5DF9WGdbslaqrszaThzc3z2h84Ae3u2n/sqyrXFfg7OKJhPgdKIm9b/uJJZZcOxanVUm2uc6YWKG/jrnFooBXnxbC1Y8hvLYneM92Wzky7YbIi5YVLXdTZQr7ziKJVpcLB/ko2VTt/NlSmFtK3TL5a/ewbdkfp4TNKg6Ijzp+MyHXpWXqBbVHZwDdn+DPwWEw/SfpG90QHIBok8D2qYRKuagNoE+kxLZC4d6EF+ZCBKpyaARwSgY08q9KzPpxSFMqb1ZHk2TeQFnQ0KuWhOyeFqfSo4jlPzNeP0Ne1vb4uNbSmQXTScP6Vty6FFRpNUIxkufjhVcpJVZZJdBcpAoOj91+M0i8T/dKCB5TBWzMfh4AZqficDiJORUwFFewOt/BHdrnY/jC+JoGutj/pGUNt309vFLBd2nsQkEzHHWWrpSyaj34R2p2iGG2W/Wq1rhyQpgplkP8rz69EVsstWFC26ySRUiCY6OJBaFW0eNV6oYdtdRDj/yB9f+/H1Tjsx/iaUdMf9SVMza8kyhH/kznsxsu6IjsJQkeNiXWYiUDRdb4fbZV2CPpaBBrAYTApabQ2Gc8+AgSzfZn8Dor
+ 0omc2zWb
+ 4/FeSkr19GEQYgjXYICnICDh5zg2JIoWJshYWSNy9pqfbzeEUDKUrz2RN4W5eh2GXKbA0ygPV7M+ppWktQ2NkeuSzbrn7MjYFGDIJH0Ph4WM/2Fq72YP/AGI6pVubThAWuYwyL+yix/BxAXS0bJIR/ji2x6XZo/UnPttWFnxKvOb9HhXrV+bp5vTKdGVbg/IRgLywn9hV+IbC3kGYbybRVr8viKmWFBzRHyJ+K4TOjz+gLmzcxEimyIFENQKMkxgRdQFclaoJjla3kDgocGNBnA0wIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,81 +90,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-move_hugetlb_page_tables() returns the number of bytes moved, but
-its return type is int while the generic move_page_tables() path uses
-unsigned long lengths.
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-A hugetlb mremap() move length above INT_MAX can therefore be
-misreported to copy_vma_and_data(). The out-of-range conversion to int
-is implementation-defined; on common 64-bit builds, for example, a
-4 GiB move can be reported as zero, making the caller treat the move as
-a failure and use the wrong length for rollback.
+For UFFDIO_POISON to install a poison marker in a hugetlb mapping, it is
+sufficient to have the VMA registered for missing mode.
 
-Return unsigned long from move_hugetlb_page_tables(), matching
-move_page_tables() and preserving the full byte count.
+However, UFFD missing mode does currently not block PMD table sharing, so
+installing the marker will be visible to everyone using the shared PMD
+table, which is wrong as UFFDIO_POISON must stay local to the process.
 
-Fixes: 550a7d60bd5e ("mm, hugepages: add mremap() support for hugepage backed vma")
+To fix it, include VM_UFFD_MISSING in uffd_disable_huge_pmd_share(). Add
+a debug check on the marker installation path.
+
+The existing registration path will then unshare PMD tables, and
+subsequent faults will not share them while the mapping remains
+registered.
+
+The alternative would be to unshare PMD tables selectively when
+installing poison markers, which results in way more complexity. Or
+alternatively, simply failing the marker installation, which might break
+some use cases.
+
+This effectively disables PMD sharing for missing-mode registrations
+that never use UFFDIO_POISON.
+
+Suggested-by: Li Zhe <lizhe.67@bytedance.com>
+Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 ---
- include/linux/hugetlb.h | 18 +++++++++---------
- mm/hugetlb.c            |  8 ++++----
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ include/linux/userfaultfd_k.h | 13 +++++++++----
+ mm/hugetlb.c                  |  1 +
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 16c4c4caa126..cc12040e4032 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -121,10 +121,10 @@ void hugepage_put_subpool(struct hugepage_subpool *spool);
- 
- void hugetlb_dup_vma_private(struct vm_area_struct *vma);
- void clear_vma_resv_huge_pages(struct vm_area_struct *vma);
--int move_hugetlb_page_tables(struct vm_area_struct *vma,
--			     struct vm_area_struct *new_vma,
--			     unsigned long old_addr, unsigned long new_addr,
--			     unsigned long len);
-+unsigned long move_hugetlb_page_tables(struct vm_area_struct *vma,
-+				       struct vm_area_struct *new_vma,
-+				       unsigned long old_addr, unsigned long new_addr,
-+				       unsigned long len);
- int copy_hugetlb_page_range(struct mm_struct *, struct mm_struct *,
- 			    struct vm_area_struct *, struct vm_area_struct *);
- void unmap_hugepage_range(struct vm_area_struct *,
-@@ -339,11 +339,11 @@ static inline int copy_hugetlb_page_range(struct mm_struct *dst,
- 	return 0;
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index a4351cffc60c..fe78ba14dc68 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -169,7 +169,10 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
  }
  
--static inline int move_hugetlb_page_tables(struct vm_area_struct *vma,
--					   struct vm_area_struct *new_vma,
--					   unsigned long old_addr,
--					   unsigned long new_addr,
--					   unsigned long len)
-+static inline unsigned long move_hugetlb_page_tables(struct vm_area_struct *vma,
-+						     struct vm_area_struct *new_vma,
-+						     unsigned long old_addr,
-+						     unsigned long new_addr,
-+						     unsigned long len)
+ /*
+- * Never enable huge pmd sharing on some uffd registered vmas:
++ * Never enable huge pmd sharing on the following VMAs:
++ *
++ * - VM_UFFD_MISSING VMAs, because UFFDIO_POISON may install markers and we
++ *   want PMD tables to be unshared when installing these markers already.
+  *
+  * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
+  *   tracking information is per pgtable entry.
+@@ -182,9 +185,11 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+  */
+ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
  {
- 	BUG();
- 	return 0;
+-	return vma_test_any_mask(vma,
+-		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
+-					VMA_UFFD_MINOR));
++	const vma_flags_t uffd_flags =
++		mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP,
++					VMA_UFFD_RWP, VMA_UFFD_MINOR);
++
++	return vma_test_any_mask(vma, uffd_flags);
+ }
+ 
+ /*
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index cea25773a6c9..2c64ca985dfa 100644
+index 2c64ca985dfa..fdd65e019a55 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -5139,10 +5139,10 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
- 	spin_unlock(dst_ptl);
- }
+@@ -6304,6 +6304,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+ 			return -EEXIST;
+ 		}
  
--int move_hugetlb_page_tables(struct vm_area_struct *vma,
--			     struct vm_area_struct *new_vma,
--			     unsigned long old_addr, unsigned long new_addr,
--			     unsigned long len)
-+unsigned long move_hugetlb_page_tables(struct vm_area_struct *vma,
-+				       struct vm_area_struct *new_vma,
-+				       unsigned long old_addr, unsigned long new_addr,
-+				       unsigned long len)
- {
- 	struct hstate *h = hstate_vma(vma);
- 	struct address_space *mapping = vma->vm_file->f_mapping;
++		VM_WARN_ON_ONCE(size == PMD_SIZE && hugetlb_pmd_shared(dst_pte));
+ 		_dst_pte = make_pte_marker(PTE_MARKER_POISONED);
+ 		set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte, size);
+ 
 -- 
 2.20.1
 
