@@ -4,88 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1738BCCF2D5
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 03:53:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0DCECCF2D4
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 03:53:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 990D76B0100; Sun, 18 Oct 2026 23:53:18 -0400 (EDT)
+	id 23FB76B0102; Sun, 18 Oct 2026 23:53:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 941326B0101; Sun, 18 Oct 2026 23:53:18 -0400 (EDT)
+	id 1EFFB6B0103; Sun, 18 Oct 2026 23:53:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 830D66B0102; Sun, 18 Oct 2026 23:53:18 -0400 (EDT)
+	id 104A66B0104; Sun, 18 Oct 2026 23:53:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CCF56B0100
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 23:53:18 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9607BA81BC
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:53:17 +0000 (UTC)
-X-FDA: 85338005634.20.D33133A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F1BE540002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:53:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6s4hY1l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792381996;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aTAJ39hBUarIZFhO0OJWMfQPPN8/Ral7/CgoQ38TKhM=;
-	b=8jyrtZ79LRx5BgeS8zzMIcaP1D1MdP4u2qTWuKSrcqWsLCdZ4KjiDpKFzWOFu56JEszoaU
-	TdAAKN3zwKO9oHdR4HsjaxHSXcdPU/fmb67USKLhyq+Jw7M/voeFFniUB0XrGS4Kzf1Ork
-	XoVkGvvoQzqm7prrnl2hqCr3AKXWaUg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6s4hY1l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E8456B0102
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 23:53:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F2789C05E1
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:53:21 +0000 (UTC)
+X-FDA: 85338005802.26.98BFD1C
+Received: from mta1.migadu.com (out-149.mta1.migadu.com [95.215.58.149])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0C652A0002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:53:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OG2ez1ld;
+	spf=pass (imf15.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.149 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792381996;
-	b=x4Wm2q8qtD0YOMVu1sMGHXqB+A/idf1pZPHywfVRGRvAQmYVPDMJFcdgWe9t+RttNiao9y
-	KYhTbtcoMiDIJ04tUP76n6/iuMOe+t03129PcBNRJNpWq5JoNMzVUOpLR57uEOeKmcPAk4
-	Vz0vUNs074YJWxfKDzqUnE090B3zo/A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1531460233;
-	Mon, 19 Oct 2026 03:53:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787C01F000C4;
-	Mon, 19 Oct 2026 03:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792381994;
-	bh=aTAJ39hBUarIZFhO0OJWMfQPPN8/Ral7/CgoQ38TKhM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e6s4hY1lG4WND/DAKwuOfxj8htQX4HgmaTsBAaTzgUfGJbpig5y7TRGrGiUErYdM+
-	 R+y/cl2WHFhYKeJQDxKq8pMvqckrlFQbGXp67TQE0io2loutvcQPKdYh4JMWw0LqDf
-	 ikKY6n+Le4rmVFfBZbsFC3WfVvJtxZKbgbIv+VRnT1uhIvUAUqf6s6eNtu9KV1ATkK
-	 DVZ5ifyVlYj8c03hU7D+jzGsIPxZJSqipM8YbO7hC4zkWTkOkZZROcZLjQNzKnoeNm
-	 McZvz3pk38TcGF6DXmROyqAvD7WW4uSMjXlnqY2UUW+cN0vxjwHZLQgZ85nQy7eqI8
-	 A1CWTFfgm0FpA==
-Message-ID: <sashiko-outbox-176604@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 12/13] zram: borrow idle decompression streams in
- exclusive mode
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sergey Senozhatsky" <senozhatsky@chromium.org>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Brian Geffon" <bgeffon@google.com>, "Barry Song" <baohua@kernel.org>, "Bo
- Zhang" <zhangbo0325@gmail.com>, "Minchan Kim" <minchan@kernel.org>, "Richard
- Chang" <richardycc@google.com>, linux-mm@kvack.org
-In-Reply-To: <20261018035125.3120704-13-senozhatsky@chromium.org>
-References: <20261018035125.3120704-1-senozhatsky@chromium.org>
- <20261018035125.3120704-13-senozhatsky@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 03:53:14 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F1BE540002
-X-Stat-Signature: hnnudzcywshfrzib5pxcs8cmonc1z1m3
+	t=1792382000;
+	b=GIDv7mJzFcMJtaXkBZmbaVaCZFREhagYG+CMyOKqogmOxm84PjGDeTJRl3/l4KlaYmTviF
+	AXTfA+mmBkggp/iU0YzjxACmeRUVpDjIgakHb5ehtbFEPKiuK4ZbvxN5lprCukf6wlYTdi
+	uBcLTqjDJxj/zen50GjjOUe0mLUdjrQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OG2ez1ld;
+	spf=pass (imf15.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.149 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792382000;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gcN84E3UjnqxU6eKaog7TRLTEvYA/s1zCGcNydSgCxE=;
+	b=YS403qJS8t7oJKX+y8ZcR3kJgbyW+0FUNSq7dCJURWZ1z7p8apPl9KXyc9Oku1439zUFhg
+	pC31zIhrKdrtCJdcAaU9pwaPIVRUdtEM+GGm88idRiPcNHISKtjgj0UYnIZvyuPlb1MbpG
+	SVTF648UYNqsrHLq56IkSeM4kk7BGHc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=e8l9i2dqh+WprW025KXQLD9b8ygmrBV8jxkpiu2Ku/4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792381998; v=1; x=1792986798;
+ b=OG2ez1ldewROnPxlfncxt8/TOHN9tEzKiN7uD3cx2faiyR8TLC5/jEhreOpzuw92GiQuOznl
+ jLdtv+j9PO2ziA+EVI8I50NDIfHtDToBcH8lHP8WChiLQ6+Ygz2gMqm2kQcHitCBP2FY5KHKoqK
+ szZl+ggBaDC5GXyMAIbdR+bE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id c32a42bc20d1c051;
+	Mon, 19 Oct 2026 03:53:18 +0000
+X-Mizu-Trace-ID: c32a42bc20d1c051
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Dave Chinner <david@fromorbit.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH v4 2/9] mm/vmscan: move vmscan tracepoints to a local header
+Date: Mon, 19 Oct 2026 11:52:45 +0800
+Message-Id: <20261019035252.2357900-2-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261019034426.2354049-1-ridong.chen@linux.dev>
+References: <20261019034426.2354049-1-ridong.chen@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0C652A0002
 X-Rspam-User: 
-X-HE-Tag: 1792381995-6872
-X-HE-Meta: U2FsdGVkX1+yivpGkFOFIG5fj/t115rSNtABRaJyHENuK4UXJCmJgFpSCCv8jI4+6btA8P15hnSe6VYcAh5uPIbqHk5ZJN3VSsbuLztTnepBRA9PROAxGjB7prdNVv9Q+q0bC09S6wvg61gKyjMSmDzqsI7y6prL2DtsHyhoyIy5ymsumtQhcmErCXXxmAI6OplDY5MzXgSjF8hZa0yFfxthrCf/9f8ZtfrWYNmP865san76iwRsv0BL5Ty4S0mc4UrfIXe0HeBQcdglVeUmu25BQ5hEHiQ/5eezeT/n9czF76GndIIXMc1XpquZ03kZPbh9n41vAJct0Fa8SxEf01CkiixqLykLZSgxHqDQ0lGxYAVIOAMVUJAFdXYqrsgekMUu/+WRG4nyHmhMwWZ4jLb7RmeO9Hngk5huVbXDGgr0D3FKmDund9hfjjw07PElEKm9O19S05sZRSBj15eqfGpmFUViOnEaLwI15PJEr+JdFbuvXvZ1T/EXN1kcNv38QsFav20Z4EMafD+dAk3U660a/8y6IfUjur2IfsueDUJk3gppI14CD5/cVK3+yloxS9+RhvsnYXRcRS/vvVSw7yJmH4ny80PahH4FgPovm9TqJnZDIcFirffCTqS0M6gl3ES2aqvE2l/scnRQQ5F3EDk4CSYDGv+IXt0ZNFz2ujyekjBRESWlnwcXYsyZDCu8lV/JNf0IIVytWRsQ4vZum9dbSNv0xmdQk6HNnQ5ZQ/dUdsYlbiMctW2z1FiD8qGH/nP9hHd1ChXQfpHP9R2G1GbxRa8EkvTQMcvpByssSBZY+9gAn6YcK28waIIrTuCng4+7idHABGXNKDRC/IMWqeYyXsVxs9fUJdc+BWttm5WjSq2l6bukWY+flTzBSRTTTvn0PeSV3EqG7/cGeukGzRlZEqYVkBKldPEeKV6PF18bSCANnNPluOw3ADI4JIYs8FPm1q33CO3CVkEBobf
- 1QaYe5Im
- S/3kdS6ATolW7vNBEJbmzOKomukekr48PVNK8RYxTKB/a4Vkjc5fGxg5YsduSwO+rp7dfrUl9/W2UnkZuIPdqIoXOizFODSTsY2tPvY43uNEvard+tv2qwnXRmXWdzD4rt3V9gAP3HxZujxUnA3plTvf2+Zddwf6raN8CcYviUct22yH3M0xhfcam9cikHvkvYoxJXlykfnTsSrkKtWN9drPqRhBdYys1oC9exvZ7SCAEJFQ2kOuSjldC5maOLJ6gd+XXd8/Qu+iN0yOpjVoowi0r4eMIyOho4SBNwBSJIYT0rRX+5lDZ97P7hMvz+SsTqXTPmGbF+EIBMq6YXHWHS8EIuT5MFQTQsQ3QW9qjG1sN53Ab1QFRm5J/WDeizAlNlGaDXbG5eHMJTr4nGHY1zfo4dJmNHi5MTXsXBTsUIc8H8E2nmjj975KH8dzQgRZ6D97QEtqtO+ffRIfTU0ogy3gKHAS6HUI3CVXSmyyt0e/e4mLbFudbVfJm8rVe58YyhKmzEzb86AKBwPBmipHx7zKMnGbufdDnNbDSFIj0Xfy6IGEXTMI0zlYz31xzPEL5H6zNYtUz6WjrXEEtem5VPnTjVw==
+X-Stat-Signature: ksanycdptfdigfyqqhz49owfad4kuhi9
+X-HE-Tag: 1792381999-265863
+X-HE-Meta: U2FsdGVkX195XlAxyEl82nDSTjmXU7Pd6DdsIC4BjWcA1siDmeX5ZD3mOhAIjo6VBEwDaHwSpe5h9TEDvChKSXE5UqLfuSo+A4hwyd8YX9Vo8D/MifoEohH3nCGefqXzxMZOR1cpI/nOXXgbWKS8vVqPz9QqzLnt1SibavWYVEModU4GswGGfa30UISoOHohUMXJQGmwORZg2yZLcjlk62ludmFCfOsy+u1kRh8j+jggkifM8y4pBSSr8iHOtipgwDwh39mIpW5ptXIPm8K4AlWRxTbd4aSCLZ14e9Qd1S9Cy0qQEYbEnCKyuqlADH5MVGSP7PMoWcszibyOVNWx70GAEewOTuPJoscfWZCUVLVidb62zO158Odv64VUE4G0Qmcwhi+VY3vT44HwGEZKjVjw+gHu3oSoNUftIdA+FjqA103qii1vuHlRYVE0UOWnaYaUiSpu9qO01xILOWzzG0EmpgtWUMgFwsj0yCs4obrb6h3tu666XffXSCfH7rYjrlACezabljO43FPKuXxBTxUpahf+nnP5HwnAeRq0SucbIo095heGEjki//KXNztKsBybUTdAh3lUZodKOK9X9hCL4uZCuAZdltPE+QKkQ/6/6ULtWBMmAe8z6Z9yJnzi6707yeXTzwH89mHB/hqcLyTguW24O4k8Tf5rc2FxkpkIShMcMMVzqCRjZHI3tdU8SDERAKet3URo/wCOOet8pVntZPlIaj8WujqTCjM8MUM6Y3mwIZ6qsxJmxAubatdovTh3JXhXe+vqYGXumSiHehTpdfTtyWsmBkox//0fcOj0Z2CQRVNq44rzgIvgC4tivHsu+02LAJng6s+oI7pi/CAJ0zVRQBwN0MUr6txpU/3euJnJdmyklBhAfPUsZjua8cPUGLsw3vLvTBC1+qpcS/y85HlC7RUox79pbXrejn0r1U3yZj3P7txfT0Hzfj4SHhESPawWk3+I+xX21DC
+ 9J5LtINw
+ 35lfw1wc+7UBjHLT9avBP5B3ECjAMBsTiXgyQCOlRiShfaEAmUqC3VEpKtQJHOkSNuYVo0WrwrypTG0t0lodObg/DV7c1zQV662/nDr0HPVk3ZH4GoYkVQxy+rJc2W9/5P1jgV8Ha8QXJKIr02zhvrDQ87AbIUggdeBr4m/imSWMxqda4njGeB3CtdfzZ19qvM5WNX0sUpF+6CxVMG2xiZ4HCkk8eIfH5OOUZCYRCw3enjwctp4hB5Pb5EYVIk8puOxBHHJbgAu3pii38nZieTBYQfeCWiVuJXJMhBq6JTXTkAJYCPwGA48A6JVs3OC5twNmVATtpJVzFMkk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,121 +112,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] zram: raw_smp_processor_id() re-evaluated in zcomp_dstrm_excl_tryg=
-et() loop
---
+From: Ridong Chen <chenridong@xiaomi.com>
 
-commit a4463f4c7972dc5e8129cff84e8c92b3498b7a73
-Author: Sergey Senozhatsky <senozhatsky@chromium.org>
+Move include/trace/events/vmscan.h to mm/trace_vmscan.h so that the
+tracepoints can be extended to reference vmscan-internal structures such
+as struct scan_control, which is not visible outside mm/.  This mirrors
+what several other subsystems already do with their trace headers (e.g.
+fs/fuse/fuse_trace.h, fs/gfs2/trace_gfs2.h, fs/lockd/trace.h).  As they
+do, set TRACE_INCLUDE_PATH to "." and add mm/ to the include path of
+vmscan.o, the only user that defines CREATE_TRACE_POINTS.
 
-zram: borrow idle decompression streams in exclusive mode
+No functional change.
 
-This commit allows exclusive decompression stream requests to scan online
-CPUs and borrow an idle per-CPU decompression stream before falling back
-to sleeping on a per-zcomp waitqueue.
+Assisted-by: LLM
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+---
+ MAINTAINERS                                        | 2 ++
+ mm/Makefile                                        | 1 +
+ mm/shrinker.c                                      | 2 +-
+ include/trace/events/vmscan.h => mm/trace_vmscan.h | 4 ++++
+ mm/vmscan.c                                        | 2 +-
+ 5 files changed, 9 insertions(+), 2 deletions(-)
+ rename include/trace/events/vmscan.h => mm/trace_vmscan.h (99%)
 
-> diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
-> index 4fda13aac8965..c6d2fd23c6f66 100644
-> --- a/drivers/block/zram/zcomp.c
-> +++ b/drivers/block/zram/zcomp.c
-> @@ -185,38 +185,67 @@ bool zcomp_shared_decomp(struct zcomp *comp)
->  	return !comp->ops->create_dctx;
->  }
-> =20
-> +static bool zcomp_dstrm_excl_trylock(struct zcomp_dstrm *zstrm)
-> +{
-> +	/* Cheap pre-check: don't touch a busy stream's cachelines */
-> +	if (mutex_is_locked(&zstrm->excl_lock))
-> +		return false;
-> +	/*
-> +	 * Pin the stream.  The write side of ->lock is only taken by
-> +	 * zcomp_cpu_dead(), which also sets ->local_copy to NULL.
-> +	 */
-> +	if (!down_read_trylock(&zstrm->lock))
-> +		return false;
-> +	if (zstrm->local_copy && mutex_trylock(&zstrm->excl_lock))
-> +		return true;
-> +	up_read(&zstrm->lock);
-> +	return false;
-> +}
-> +
-> +static struct zcomp_dstrm *zcomp_dstrm_excl_tryget(struct zcomp *comp)
-> +{
-> +	struct zcomp_dstrm *zstrm;
-> +	unsigned int cpu;
-> +
-> +	/* Best-effort start CPU hint; migration during the scan is fine */
-> +	for_each_online_cpu_wrap(cpu, raw_smp_processor_id()) {
-> +		zstrm =3D per_cpu_ptr(comp->dstream, cpu);
-> +		if (zcomp_dstrm_excl_trylock(zstrm))
-> +			return zstrm;
-> +	}
-> +	return NULL;
-> +}
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6f1f35a017a6..c41af07e870e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17231,6 +17231,7 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
+ F:	Documentation/mm/multigen_lru.rst
+ F:	include/linux/mm_inline.h
+ F:	include/linux/mmzone.h
++F:	mm/trace_vmscan.h
+ F:	mm/vmscan.c
+ F:	mm/workingset.c
+ 
+@@ -17380,6 +17381,7 @@ R:	Shakeel Butt <shakeel.butt@linux.dev>
+ R:	Lorenzo Stoakes <ljs@kernel.org>
+ L:	linux-mm@kvack.org
+ S:	Maintained
++F:	mm/trace_vmscan.h
+ F:	mm/vmscan.c
+ F:	mm/workingset.c
+ 
+diff --git a/mm/Makefile b/mm/Makefile
+index 2a3ec53d62ee..277b97f7f8d7 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -32,6 +32,7 @@ KCOV_INSTRUMENT_vmstat.o := n
+ KCOV_INSTRUMENT_failslab.o := n
+ 
+ CFLAGS_init-mm.o += -Wno-override-init
++CFLAGS_vmscan.o += -I$(src)
+ 
+ mmu-y			:= nommu.o
+ mmu-$(CONFIG_MMU)	:= highmem.o memory.o mincore.o \
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 7ec2a9704f6f..3c3e87c4b61c 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -3,7 +3,7 @@
+ #include <linux/rwsem.h>
+ #include <linux/shrinker.h>
+ #include <linux/rculist.h>
+-#include <trace/events/vmscan.h>
++#include "trace_vmscan.h"
+ 
+ #include "internal.h"
+ 
+diff --git a/include/trace/events/vmscan.h b/mm/trace_vmscan.h
+similarity index 99%
+rename from include/trace/events/vmscan.h
+rename to mm/trace_vmscan.h
+index 8a872990b4be..ad90f0e9bf2e 100644
+--- a/include/trace/events/vmscan.h
++++ b/mm/trace_vmscan.h
+@@ -648,4 +648,8 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
+ #endif /* _TRACE_VMSCAN_H */
+ 
+ /* This part must be outside protection */
++#undef TRACE_INCLUDE_FILE
++#undef TRACE_INCLUDE_PATH
++#define TRACE_INCLUDE_PATH .
++#define TRACE_INCLUDE_FILE trace_vmscan
+ #include <trace/define_trace.h>
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index e82ba737c028..a3538484f8da 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -71,7 +71,7 @@
+ #include "swap.h"
+ 
+ #define CREATE_TRACE_POINTS
+-#include <trace/events/vmscan.h>
++#include "trace_vmscan.h"
+ 
+ struct scan_control {
+ 	/* How many pages shrink_list() should reclaim */
+-- 
+2.34.1
 
-[Severity: High]
-Does passing raw_smp_processor_id() directly as the start argument to
-for_each_online_cpu_wrap() in zcomp_dstrm_excl_tryget() break the loop
-termination logic when the task migrates during the scan?
-
-for_each_online_cpu_wrap() expands via for_each_cpu_wrap() to
-for_each_set_bit_wrap() in include/linux/find.h:
-
-#define for_each_set_bit_wrap(bit, addr, size, start) \
-	for ((bit) =3D find_next_bit_wrap((addr), (size), (start));		\
-	     (bit) < (size);							\
-	     (bit) =3D __for_each_wrap((addr), (size), (start), (bit) + 1))
-
-Because start is expanded inside __for_each_wrap() on every step,
-raw_smp_processor_id() is re-evaluated on each iteration rather than
-once at the beginning of the loop.
-
-__for_each_wrap() relies on start remaining constant across the loop to
-know whether the scan has wrapped around:
-
-	/* If not wrapped around */
-	if (n > start) {
-		/* and have a bit, just return it. */
-		bit =3D find_next_bit(bitmap, size, n);
-		if (bit < size)
-			return bit;
-
-		/* Otherwise, wrap around and ... */
-		n =3D 0;
-	}
-
-	/* Search the other part. */
-	bit =3D find_next_bit(bitmap, start, n);
-	return bit < start ? bit : size;
-
-Since zcomp_dstrm_get() calls zcomp_dstrm_excl_tryget() in preemptible
-context with migration enabled, if a task fails zcomp_dstrm_excl_trylock()
-on CPU k and migrates to CPU m >=3D k + 1 before the step expression runs,
-__for_each_wrap() sees n =3D k + 1 <=3D start (where start is now m). It th=
-en
-treats the scan as having already wrapped and only searches [k + 1, m)
-(returning size immediately if m =3D=3D k + 1), skipping CPU m and the
-remaining online CPUs.
-
-When that happens, zcomp_dstrm_excl_tryget() returns NULL and
-zcomp_dstrm_get() sleeps in wait_event() on comp->dstrm_waitq even when
-idle streams are available on the skipped CPUs. In the case where CPU k
-is concurrently taken offline (so zcomp_cpu_dead() sets local_copy to NULL
-without waking comp->dstrm_waitq and the task is migrated off CPU k) while
-all other online streams are idle, no task holds excl_lock to wake
-comp->dstrm_waitq and the caller can sleep in TASK_UNINTERRUPTIBLE
-indefinitely.
-
-Should raw_smp_processor_id() be stored in a local variable before passing
-it to for_each_online_cpu_wrap()?
-
-[ ... ]
-
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261018035125.3120=
-704-1-senozhatsky@chromium.org?part=3D12
 
