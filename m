@@ -4,85 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE01CCF2D6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 07:11:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 078E4CCF2DB
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 07:14:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1903B6B015B; Mon, 19 Oct 2026 03:11:07 -0400 (EDT)
+	id 1E2E26B015D; Mon, 19 Oct 2026 03:14:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13FC06B015C; Mon, 19 Oct 2026 03:11:07 -0400 (EDT)
+	id 1947B6B015E; Mon, 19 Oct 2026 03:14:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 056F66B015D; Mon, 19 Oct 2026 03:11:07 -0400 (EDT)
+	id 0AB566B015F; Mon, 19 Oct 2026 03:14:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D42D46B015B
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:11:06 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E174D6B015D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:14:39 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 60A294060A
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:11:06 +0000 (UTC)
-X-FDA: 85338504132.08.DE24A33
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 80A83100003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:11:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=kYdDaaBI;
-	spf=pass (imf14.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74B31140333
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:14:39 +0000 (UTC)
+X-FDA: 85338513078.08.FBD1EC5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D779E40007
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:14:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TO3/piPO";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792393864;
+	s=arc-20220608; t=1792394077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nHPmq2WlguBeJi/Zj2mPBIP3oN0WpTMEjCrzt8cxejQ=;
-	b=Lo+zFXVdW2g5350GW+AEeCRKJiYILpnnHmKl8xlKHP6jwYxdPpBUHDAkQ4LzBSGdkFxUk0
-	+rRxDcZwl/u9uFoVVjkCkUSk30OecJ+90Jpom9J/nU0wPa4drfRh0D7m2Tl3OQnERzDB50
-	KqYwkuwlsxy+7A54enPG75KukRZEkbM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792393864;
-	b=pNkslWl0v3S1dMvyjnyWgMy6JeBdF9Ie+4R5EHLIKpTt/NnppHt8Ya/AWcn7dKthfVt0m0
-	FW2Bt9N+djyOVBrcN8Xx4mykDWdLq+HSqHYded1KUVm4yOFLs0WJP5YxmSyP4QeVhCfzhq
-	cWBHyxceCoI5UNEX3oNqmIhOnAB8Y5I=
+	bh=bjfAc2gny8dQsYPeC3CuZrupUfIwRcHCXU8B21O53cM=;
+	b=SsJptScdi7bau0p6LKNHqHLfMik4cGSMAe55qrfrrBRbkgIUZdvdf9VhOfVgXvk0wfprH8
+	6M88eprWig0yDwx9wBwExjR4eidXclVbZqb1tOW5/qmYZFnv261IidzfZqU3VPFo1B8vuY
+	JGvTAJiKA4dCGRt/SZ/WLFLYpsmMSrA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=kYdDaaBI;
-	spf=pass (imf14.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792393858; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=nHPmq2WlguBeJi/Zj2mPBIP3oN0WpTMEjCrzt8cxejQ=;
- b=kYdDaaBIfWRuIzxcg9Q27am+d8SfQhR1+Xe5N7UeU1EaXVHXxZUNOkF7LNGv53aB5xbtRV
- eViyCiVMIITcqGOSPEExrLjWvhSAiXXWPYz+Tgp2l0fV5ou8Ck1UaP3WWJTntjEUrzKrfD
- DvRfb4mMf1BV8ki11qC9P874LcVg0Y6FeagbNoqAZ/tGH603z/vZ9BsCZzPBn0Ze1gmTPx
- NSjmt6NsCbIuB1KKat/+c/17oxlKWpsXHmVQUCtJUJK6j9oGUhZr5VyurRqzpW/PYieIQm
- 8NXZWiseRxlbjYXAPSF+dGGdmxB3h1yRbi3Zhdj0kIvv85p0RgwJzhgweSX15A==
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Date: Mon, 19 Oct 2026 15:10:40 +0800
-Content-Transfer-Encoding: 7bit
-From: "Qi Zheng" <zhengqi.arch@bytedance.com>
-Mime-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Type: text/plain; charset=UTF-8
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	"Qi Zheng" <qi.zheng@linux.dev>, <muchun.song@linux.dev>, 
-	<osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>
-Message-Id: <61c88ac2-43e9-4e78-98c4-a1879da6f79e@bytedance.com>
-In-Reply-To: <ac34f212-2e51-4298-a281-9380fb0d073c@gmail.com>
-X-Original-From: Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH 3/5] mm: hugetlb: track CMA reservations by page order
-X-Lms-Return-Path: <lba+26ad5c280+4b8d53+kvack.org+zhengqi.arch@bytedance.com>
-References: <cover.1792136742.git.zhengqi.arch@bytedance.com> <57cd5cac5e2749cba24c502bcd9682ad8b9f2bcd.1792136742.git.zhengqi.arch@bytedance.com> <ac34f212-2e51-4298-a281-9380fb0d073c@gmail.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TO3/piPO";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792394077;
+	b=hrgFl7is36GTBkEwmkTCoe9XzqbMajektUuM4sZaBIuetuz7V894TYPN17CdMBNZJJ+OXb
+	NKE2R8mKJFlK2FNjdbjluaHrDyGsqkNYxxt/2jONqM0v0hcANQIN5gfCxit4d+e399NxUF
+	sNpqEXK+rsTT099FYht/MPjBunL0cOY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A104601FB;
+	Mon, 19 Oct 2026 07:14:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFDF1F000C4;
+	Mon, 19 Oct 2026 07:14:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792394076;
+	bh=bjfAc2gny8dQsYPeC3CuZrupUfIwRcHCXU8B21O53cM=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=TO3/piPOM3x60PNpztvZMRu22lNm4l7few6eRCSKB1FrHx2knOjeG/Oa7F0Fc0C9l
+	 UmVkO/ZWa6oeP5/zf9/BfXFxg6KQZVuewNvTgb5BCC8Hu2DA+Ev+FT2wz0lYRiBgk+
+	 YUWS+niNabITtQe/7d75LLWlDjywICF7JaYnSOfaXlG35XFHF50Ntf2bSz2MA4GbjS
+	 Vv7kT71/ONlhp0fLiEnQngyIR1ijOewuz9jel3TNNWJblNpyaAryXAoorWX1neL5rK
+	 OpFJJQv3VFTlWthXwOa84cWgk77PrwZ9YGGMTuK9Ee6YY6g9j8J+Z1dkU7WBqOe9QC
+	 y6oZG6pgkOJXg==
+Content-Type: multipart/mixed; boundary="===============4079140705519087332=="
+MIME-Version: 1.0
+Message-Id: <03f6cc15036fbecfd577d878d80d7b182b1cc6574e8bb7daabf6ad8e44fd59dd@mail.kernel.org>
+In-Reply-To: <20261019064157.29885-4-laoar.shao@gmail.com>
+References: <20261019064157.29885-4-laoar.shao@gmail.com>
+Subject: Re: [RFC PATCH v3 bpf-next 3/5] sched: add helpers for numa balancing
+From: bot+bpf-ci@kernel.org
+To: laoar.shao@gmail.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,mingo@redhat.com,peterz@infradead.org,juri.lelli@redhat.com,vincent.guittot@linaro.org,akpm@linux-foundation.org,david@kernel.org,gourry@gourry.net,tj@kernel.org,hannes@cmpxchg.org,mkoutny@suse.com,shakeel.butt@linux.dev,roman.gushchin@linux.dev,yu.c.chen@intel.com,zhao1.liu@intel.com,tim.c.chen@linux.intel.com,lizhe.67@bytedance.com
+Cc: bpf@vger.kernel.org,linux-mm@kvack.org,cgroups@vger.kernel.org,linux-kernel@vger.kernel.org,laoar.shao@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Mon, 19 Oct 2026 07:14:36 +0000 (UTC)
+X-Rspamd-Queue-Id: D779E40007
+X-Stat-Signature: 5854umwargp3k6k6p5rurfnssqti53r4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 80A83100003
-X-Rspamd-Server: rspam08
-X-Stat-Signature: oaz8poauebf9m5posckjqgserqacs39x
-X-HE-Tag: 1792393863-893328
-X-HE-Meta: U2FsdGVkX1/A+mS19lYUGibsAdIItL2aajbr/99lB1T2otO/mGvVwpe+KzbK31egyBOGcE2jv8Jq+/vNCkggsD10vnFssDzsBL98us3gPLYDkJDJ+45rRdHQtNQwnltZ93iNadEV9xmANb48jLMVb7+JJkrqD3cE8m+oPi9/3+WAr2R7pLcHgJjh1nbJAAEaBe+tCC+iZoFUPHH0M1GZseGyIu/Bdex1p+n874ZaE0fwZoCoM067PTezCBZJNVJHu7RnHThFKt1/SvZlBXBeX2pOnH8+2LkHCqyNJ6hAxkL7bA4Zy4cSChS5wS7D1oj3pRtIJH+1iGsz3dDxOrL7HoHhYa5G6KudqO8/Q0tZvLAzTxYULsKZLuBOZNqoalgWlzdElthw4/gTDgxpwSboWv2usuelf903u8PXKMR+WeA7iaUOrDVTK1KeuybuGQpYZgEdAgpuzQ9T5ozVdPBgk4LJuz+tT9R08g3OC7tePB9j+ly4FSaalPv36A2IcUqzziIAODwv+sEafD+7H8lXo4BW8NbEnixKAF+k4NlAN0miwT3/MYDPgAoxoyS2FjenDPJxmosuyetT09btK30X8bnFaA0bZAO+XBC1Ao7fjrp2iU0a5z3zL9+gW3hpoIpMgB0jTkNiBRMbbr4Wmcx4ZORn5PPYNh+0DT+x+8/3iOyHB7IHT+Yx4/9zOXJdrGmf4UkeqtxcsEzc9UXdBerRhZ6beOafF7YzksyEvyZHxCHdYbKV1fytCcSRXZrNO63NMjVlajRVnWpLe56ZJxZ9jhju3V1o2cJEkicNfGeg4P2Tg9lFVbTO9B3LESezSsBadRqdAJ8h+pVL39rh4Pnv9v/LEVbfY1yrDSc3Mq4gkaSMHs7fMTFgqs6jeT5+c/N8B5mqRjyxuiFbwLNSL4QsEXI6PrseisBFITzLYOtKK/SqSmUnRxKH9CuBI9gEVvg2GHM5p9fg3tDkE1UAdzL
- u6DNFrTl
- 7WWbdsBFeCVEuxVCel5mNv3wwuFlEZGKCthIKZlmpjBGpOwgtyo43FVQIxvsL2ScL91+3VMdWGkaLGJm6tI6mPNilkw6rYcWsUm6tDcOmzOSLwcIJbhPPvjEv7GgS9av6i2VDYmx2z2zYcCGmYV2qeeXanl3aJ6BehPPB7gTKHjDFnO8q8CV/TLaG/RX+Vh4uy9ra2QLSv1h2bP2NOlfw/pF94HnqnosdK90FO9I+qP0Nfxr1JQ+guGtrm42Kpk8BFPX8x5qcc41l39ALmMHpbmxzAUlQAtuSxRAOcxceq2cuMhY=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1792394077-278039
+X-HE-Meta: U2FsdGVkX19I/EeVI/COzsBKaXRZQLXT108aXxLkTeEHd54TRGTCA+/DrC/MTN/bjj/kbPeaV2vO8xgCdSHTt+HkwnypRLYIMASJOmkzN9lgGvqkJuu2uEPAxlktrlFg+ztbN2KJdnkIR6xPlSWF8t7GYMXMWUglHRc2vmyFPL/9soyNjzI1aHa6J57L0Rjrbve2C07AOnjwphkkXZkZvacwaup57fftZ0ThpYEkH54I3++kZoGheVqZpzD82mBkYaoM0BsgMnY6JjF4z2s30yBy4bKTsUaJo2kJhfgkcFlK6tnCODY0YItOVoekOwnQyzZUmBAoxpd+Gx7IkwqywhQCNIvo/Iz96Y3IdZM6cjs5J0LSiZmq90ZJH5LHj9mNVfwRwzFsURhN95DjbDTvjY4NVGtXdmNUDVApSY8Ibzh3j7rmen+PSW9g7ymmvCYR1sdenTLNeM/cGQTUqGt6f3PckCBRTlKwudh4k+GT7AdUjcMgMiP0AFgl2PiSIzanEfqQ3a2mfF7TcxAC98OdcsG3t+OH1wxoQhpspLJUFJP/frJGAYOvGKyPGJycEcuqjdASuyljShynuGap/dDlV98k752Iy+n5bZTg7DxqL9HSuCBI80kxDu46UUimiRzJwognZb6wSRfo/UzJzspWm0Dc/ILCqEdt0rWyE1EUYic9AziXmNIGMXh8UHD+V14l0/T0eLZN3WE0a3GykPgXLnqbQUiwPuLWnX7Q8fJJCCqZgp7tjzWP6fng6IIoLjmgZOEMoEJrULB7SuMEc12oyR1wKEJX2753DUTfZcxAWnCC4FvH5l/9RN3bmlGZMT1nrnOdK4baDVJGvfQNbb6e9HgBWLfDWu+85Et++xaRQ2gH380a6ZznPPe8Xrwez9Uf6Pv8ayVQAExkTwJn7Nf8lkxgN2Gh53pbBrWosEU396gcXMvdR2DxCYHtJb6FOKTc5xmc93kot6iseOqKJAY
+ lePliNfB
+ ShR6W8nGtiqq5CDJ6ChtJAwRxe9pHKuh439e5Yg6+/iPvkns18VHi50lqaZ7LdxwX1kWFLORqk1SGFMrG10eIIbl+CYkYL4Vld44tTl3m1gdDb2JS0W+KdoOvXHWO+qgEFWQc4K8QDBzNm5IvpNnifNJVMGeZVnzUG6s/slTCKiFp/pqJyhEoE88RWmsYnvUKhKxtaq0mVvzNCfIPXsQwUmAH4ORz0UQ5SRP6rdiGhd11+c+YBK3hJyYuuWh6Nk2ec1RdRz0h/TCOUoAZHoiShLJzqfNTxDdxF06He1QrCJKjpD+SUPRUtwTrSSc8y4n9ncVGypCSGpxTv0LUe7o+jhEPJXfocsDry2B+ftEUJdJ0VOWYO6GxZCiLxGRXG/DTW26QjQohs7wDGOb4BMkZE2+dEYOWbaDXJvzmoFcQ+uOxT69W1zNhxqzBXYcycSjTV9FGiAU9vup48S5oXekpV6NKL7DdSGp2ZRm/q97t6+GZY4CQ6xCXHKNunw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,52 +88,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jose,
+--===============4079140705519087332==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 10/18/26 2:41 AM, Jose A. Perez de Azpillaga wrote:
-> On 10/16/26 12:07 PM, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> Prepare for a separate CMA pool for PMD-sized HugeTLB pages by organizing
->> CMA areas and reservation parameters into pools identified by page order.
->>
->> Select the corresponding pool for allocation, CMA-only checks and
->> boot-time allocation decisions. Release folios through the CMA area that
->> owns their physical memory, including after demotion.
->>
->> Record each pool's successfully reserved capacity. Remove
->> hugetlb_cma_validate_params(), since the per-pool CMA-only check already
->> handles missing or empty pools.
->>
->> Continue accepting only the architecture's existing CMA page size and
->> preserve the default pool's use by all gigantic sizes. PMD-sized pool
->> support will be added in a subsequent patch.
->>
->> Assisted-by: LLM
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> [snip]
-> 
->> +static struct hugetlb_cma_pool hugetlb_cma[HUGE_MAX_HSTATE] __ro_after_init;
->> +static struct hugetlb_cma_config hugetlb_cma_config[HUGE_MAX_HSTATE] __initdata;
->> +static unsigned int hugetlb_cma_nr __ro_after_init;
-> 
-> the commit message prepares for one more pool, the PMD one, and
-> hugetlb_cma_pool() folds every gigantic order into the default pool.
-> would a fixed pair work instead of an order-keyed array?
+> sched: add helpers for numa balancing
 
-Do you mean keeping two fixed pools, like this:
+TL;DR: Nits only: redundant parentheses around the new numab_in_tiering_mode()
+helper calls in should_numa_migrate_memory() and migrate_misplaced_folio()
+could be dropped.
 
-enum {
-	HUGETLB_CMA_DEFAULT,
-	HUGETLB_CMA_PMD,
-	HUGETLB_CMA_POOLS,
-};
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 71dc47d6114d..066818498c76 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
 
-If so, I agree. That is sufficient for this series and simpler than an
-order-keyed array.
+[ ... ]
 
-Thanks,
-Qi
+> @@ -2963,8 +2965,8 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>  	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
+>  	last_cpupid = folio_xchg_last_cpupid(folio, this_cpupid);
+>  
+> -	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+> -	    !node_is_toptier(src_nid) && !cpupid_valid(last_cpupid))
+> +	if (!(numab_in_tiering_mode()) && !node_is_toptier(src_nid) &&
+> +	    !cpupid_valid(last_cpupid))
+>  		return false;
 
+this isn't a bug, but could the extra parentheses in
+!(numab_in_tiering_mode()) be dropped here?  They were needed around the
+old bitwise test, and the other converted sites such as
+task_numa_fault() call the helper without them.
+
+[ ... ]
+
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 15b45832bcfa..a622df9a9b42 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+
+[ ... ]
+
+> @@ -2770,7 +2771,7 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+>  	if (nr_succeeded) {
+>  		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+>  		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
+> -		if ((sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
+> +		if ((numab_in_tiering_mode())
+>  		    && !node_is_toptier(folio_nid(folio))
+>  		    && node_is_toptier(node))
+>  			mod_lruvec_state(lruvec, PGPROMOTE_SUCCESS, nr_succeeded);
+
+The same applies to the parentheses in
+if ((numab_in_tiering_mode()) here.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39213018427
+--===============4079140705519087332==--
 
