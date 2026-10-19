@@ -1,102 +1,98 @@
-Received: from smtp.lore.kernel.org (ip-10-30-226-214.us-west-2.compute.internal [10.30.226.214])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044AC606A324
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CytbvJKg
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2458CCF2E5
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD6A608343C
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SeaWtDs9
 Received: by kanga.kvack.org (Postfix)
-	id AB7E46B0290; Mon, 19 Oct 2026 10:51:59 -0400 (EDT)
+	id 380CB6B029C; Mon, 19 Oct 2026 11:07:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A90926B0292; Mon, 19 Oct 2026 10:51:59 -0400 (EDT)
+	id 331346B029E; Mon, 19 Oct 2026 11:07:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CBC66B0293; Mon, 19 Oct 2026 10:51:59 -0400 (EDT)
+	id 221686B029F; Mon, 19 Oct 2026 11:07:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 793C56B0290
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:51:59 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 762AA1A0776
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:51:57 +0000 (UTC)
-X-FDA: 85339665474.14.5BA8160
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E94A26B029C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:07:29 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 892631406D1
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:29 +0000 (UTC)
+X-FDA: 85339704618.17.8A99DF1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CC6701C0007
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:51:55 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CytbvJKg;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792421515;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IEuKHXnppdYbcLdn+ZpMOWRZpyj22L+OaDWKsVYJBU0=;
-	b=n9dTywEbBKWYZnz6rKYgbWEm9eBRlD9a//e8Lj5uHzty/LAw9nXd0i6Zc+/YXFF6Rp7iFq
-	CQh800OjGAH/4rxV0PyerDrLoOapmWxr5b8CaUT4SXP7N1x3qYGOgYnjoLzTcl1EzdCOKC
-	z3xmgfRIEJOeeCR/CpGC3a2mb7U84iY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CytbvJKg;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id EE7EF4000D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SeaWtDs9;
+	spf=pass (imf12.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792421515;
-	b=IFF9oiFLIorXpZRWJeIRoiKc7PKYOQc0XlJiIrAD2bzdO410yAfw3wdsRpGLf5UeLcptzo
-	33vY3oVd/c1QcQpOnwinUTeqJvVu1XTnvQ23hHQtNaQQ1T2HN9cjDhaKvAKxxdJadVymFw
-	+/SUDodtAfvYscMHNWjWvrdqMyMgWq4=
+	t=1792422448;
+	b=mTIS6r1nQr5cvvh4N/pLHsqA6eg6pNDFnzi5G0Kl/o3hNfapA0O6f/arc6jBcfoae/rNNy
+	VGXfnJPc1J3421ED/2oF3/cIweNXlETjGjQ6KRXf8H61oMslFXHvXcf2pf7Q2veCD4bhaK
+	G1SqJxaYqt1KhuEF0i7xGgIjw0gtuns=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SeaWtDs9;
+	spf=pass (imf12.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792422448;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fwOiNhCTnZrqfGqH9TnldJ5DIHOFF0sKxmDqg1xr2P0=;
+	b=ubW6/Kd5Rj5/BSoyXRZh7VzheG6PuBvPdi7BrTcjVZi0DqhTqVRpv5UYUxfpxsFHobz7oy
+	13CUUYsvmb1HRRM/MV6aDqiO4p++qmuYdh7oxOGpi2jrL6mNanflpPO4WWgvUwuV/kLZOE
+	YQWsg1VAhGy19IrnCLV5kOuvB+ak63I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0AA89601FD;
-	Mon, 19 Oct 2026 14:51:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98C11F000C4;
-	Mon, 19 Oct 2026 14:51:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B416601FD;
+	Mon, 19 Oct 2026 15:07:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D579D1F000C4;
+	Mon, 19 Oct 2026 15:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792421514;
-	bh=IEuKHXnppdYbcLdn+ZpMOWRZpyj22L+OaDWKsVYJBU0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CytbvJKgpdduswBwk1KzlfJSnpKOX7ypQXzLh7ah9RHTacFvwlL0K9eu+Xt5w8eS9
-	 5yEze4BmXOXsrukOsydZtO2HZK+HD9K8r6f34WpmEAColF8mZQR4TAQ7pisWqDLakM
-	 jCx7a6dbOPMec+ZyLbiAkRvRtkMhdP8kQaJpvOVBDrwmi9ff4npyXzVToSZ9r6OX5a
-	 mDmwePbsqtTbIX8Pykf7QvN48xBhV51ByiKkLXgWGOz8ZOYGaqTlPdUnB9WfjqqZ4i
-	 mysUbn+eqHr6lc2ERj3DgEyYW1UfLSsZVon1Ht0CKOH4rTDb1G4RTgePzgSDmbu4cV
-	 +jA1W37dt0AsQ==
-Date: Mon, 19 Oct 2026 15:51:48 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, gourry@gourry.net, 
-	ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	ying.huang@linux.alibaba.com, mhocko@suse.com, muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, weixugc@google.com, cgroups@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC 1/2] mm: add source selector to memory.reclaim
-Message-ID: <atYsvc9gIejcuwew@gremlin>
-References: <20261019141401.11927-1-lizhe.67@bytedance.com>
- <20261019141401.11927-2-lizhe.67@bytedance.com>
+	s=k20260515; t=1792422447;
+	bh=fwOiNhCTnZrqfGqH9TnldJ5DIHOFF0sKxmDqg1xr2P0=;
+	h=From:To:Cc:Subject:Date;
+	b=SeaWtDs9gxmhFp+vIt4L84AgDz6rjq+MyRqzdqZNSFtglItNvDMdmTgbJcGcsq8Xz
+	 Eye5aGoYQSrPh9EciHAWvyhlyAejXwTOOnsf3OonSv3DFoNVKAssZCYUFjLsQ+SybF
+	 gDqesw6cIzdFPdL6GiGjKFkZuzccLI6N2Wj6XoW5T0FsT/AMV0zpkG0GGvMYMnwENH
+	 wFCV0+LjkEPju3OuVrWndS6+fDWD3bMsUHIo1+g9qmV07mun11mmigFrQnIspe8AWV
+	 7m4hSeJaRBnACejNXCm/7SrfHTrlhY68oChuZ1jtoGJpHS38IQulRnQnj+j5ZTVJ1p
+	 md8SIrkVZesfQ==
+From: Mike Snitzer <snitzer@kernel.org>
+To: Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>
+Cc: linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v5 0/6] mm, iomap, NFSD: stop uncached writes reading back shared pages
+Date: Mon, 19 Oct 2026 11:07:19 -0400
+Message-ID: <20261019150725.1507-1-snitzer@kernel.org>
+X-Mailer: git-send-email 2.44.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019141401.11927-2-lizhe.67@bytedance.com>
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CC6701C0007
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: uwimwc9f51yerkbw8ot58ofy3y5s4zz8
+X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS
+	INCLUDES_PATCH,MAILING_LIST_MULTI,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: qkj1wtppr3pr1ypbs7aozrh4cwb35gs6
-X-HE-Tag: 1792421515-217568
-X-HE-Meta: U2FsdGVkX19HlH5u+EVr6+K3hUNGNB54HGbIfM8FBr88bT4mh139sNB5gpznrg0YLpR5HxrqwOqC6go8+wfwZNwUaB9HghS8+JqVamVpb3k/v7pASe2SQzHtWKIboDLEX/iMWzqqfFErrDeBtADee9KELIS2nzcbshe8bTGSC1tf/rauXWA6tkyK+FrJeEM/Q1UcGMcn1eDXsR3Tl2PEWYieC5WFJjhYOF5evNkFEWkj4k7ZWlf91NPa66BeORpF+YFlV9Valf3wc5CahUvAUZA9IumjpmF7zvcMOITeBtsbXADDpSjMvl1b9u373oFKp/N9qhS2IlIW9NsYYmNAKOahwk0Ft16Duf/2DbVaFD4AFOxSkT7g2D+VoJdOBtiYjKNQxiPO+bMvQQ14H0AMzItP3rQtx+OeKUvEchSnP9dyI+NP7ZuPhHJGlH06ncKpFx9f8Tr9cB/t4sRv5E46ZbOLoBfbckJ5F5l0A6ujPkiYM514dANdDw+3lAQFu/MLZZbv9XveJXTcbAy1zM0jJ7bsIxjYWWpsBoTKHoc2RaWywogh37sWZqaWjn4YsKMLwqGNPUdOyfUQfqFq5LtYVeSPQQOQoNO3zCWbnF4U4Ga6yXkjbeJq7DDejK60xGMClqmxV+xWYo1YQDwWuVDBrkfuRa7G7HUI4I6NrXOlvsWKUopiAmWSm2ueTEhEQhIP7XspwKdHzCpBgMM0w0T5zzcRK23ycuv2KbQUUQpd8XHqtCHKsD9OxN9j7ir6ELRxSWZoSqRfb0G6OiPLje3XbCnF41kJoKjOZALi3RrCayxJs/N7PNFE8+GtvU+iibdtRQeLrsmbM9t8Ci5K+wNCVdakIOVpIk7QEGIes0S9JmUAyAZBAdJv9GB1f8knGYjrSuWske3Sljtu5PsslFH5C9xFnP0FFvyxEdLw2VyxmGC4mwXMq6ns2vgpg8DM7+S2w/CCKvAslSre1oycq46
- /B3J3Hs5
- ENHO9h0Ws+oReEmaF3dAYkIemKZAHuxVFopOtdQCSe/4lzxdfqtxcg/4/ZcOlVYIYfnrDPFV4QPAU8oHH9cePZgSAChpsv+ZdiitmNsQrIk3alMbP5Yzer1QwJYzrO1UF4omN8EvpZuz2+UYZEfcK+qjwq7t8VMtALY+e1Snc9V2XSKN7zX3dMiZz7brsvaquhgSxnLA1q9PibqwMJ+KaIqBgZTFve4Odyky4wYHLA0PHWm3qA9rSZuq6W/xDSimRIn8lctcyhsU1KBMM0ofI1le1j4FsBES1eLq4Q6b3QD3mA8Tize71KC2eCbPchCM69O+QSHZcwm56ggE8PvXIDh1fQMJ3wwsVXYhtMLpvPjiik5puAgPMHpJ+YYt38aJhp2JS
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EE7EF4000D
+X-Rspam-User: 
+X-HE-Tag: 1792422447-938414
+X-HE-Meta: U2FsdGVkX1/Yhj0QmFIlLiweXpOSgfiUInTwCmOTSM+C/ppexiWvedafU47JrtywqhRyS0aMf6+QW2KPIznaCUTIlXN3/GIrW0oj5Au3ff7wHzHgzgxhm2burAtg6gVErFijfWs0GEfTbWMxhy359SY8vO3POY+wA8xkIB1tVwdKgGcFT3II0aBUXZEOqk7mo8rilRnEKun2kZak4dvFsl3Ni5l884Kl4hY+VNFsDTvz1Pa2KEV6LpW4U84Cxm965DwsI4lGqNnQ7Hp3DY2HNd/fXZQ4rs8aIDCXzAz7Su+LFb3AZDHoTSpO3qiEoTiRgsl6YDBc7yfGQFA5fZhLng/qcVBgVVIXdABuk4LgUKQmlRdqJ4HOP3kiVdQr0jgJ5zVEzYNOJTTyOb2tEyfs0mjOefytxouHVEuoO+oOgN337rkI7/ltfzbxc+qrx8CUR/jc9jxs+QvPqkx9QsVHmq+A5ZRQTvVFD2Na3MWwvLhEKOyG+BeQJMeuRJruPEEOrOi/73TUgpNsf27ythwisG95JSodeMnl24eTi5lYwClGtiZNpWQMaCGhC+4azPi6/wZT0XeOwXb5aieqIuSGP+w+WgMy4mefJePoHyVDdTp1ZIO5eo+PSitWnFauOZyWz7Up5yE0JoUTF9sp98D7IIB2ufOxOGD8l3oavSQF20/V/mNIrp5y2PR3Z0r+05GOnHgh5c90Is+UVUF8vpT9AzgyD+RQgizCcy7RuN4ISo9ynqA+ZMhe/+hOnSXij3nLK3Y7B4LHQdpg/I/X+8Nq/c6lEmgr6WhpgkbCvdtBklm6IvTB1hnsTwfCJ9CzNjcEu2iF1N/vmQQSerOxejTEkhtzvf2QK2dDs09o80XfrH5pNJrq70YgutWltOxMKzXFVW/t/ogqc6j0LR6Y6cuKz6girIqoWV06fDvhimmnZdi/3p6juxbeHLBiSyyACeVGCRBsh26k6WwO/NME0a+
+ SL6OYjEb
+ 6rqV5eo4U+10w+g/pPfA6z/RlkWwtTRlu3Z/Xv5W2YLRCSV0oIuxPZMJyU5U8iyDvNc5ie9F5wzoNlzrnrUNAHvruAAL+wFkHaMcERfgEc07La7y7iL6xUBMdpGgKGThHDk1U16ouozzNfcu0fDCxBe8zIm59WpDR3tSwoEs12ffAls6g+jNvtQUMU6k89+m5lEW7FH2k2HkPvIuLtbJQDmdikijbKtR9OJNIokZZRx31pz7hlCA6XRrVrhIYKFLKZfK8EwL5GRVUIEAkpW87r1m0yZrYr44MxVR+4MHO5LBP5N+F1qZnZXm0zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,92 +101,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 10:14:00PM +0800, Li Zhe wrote:
-> memory.reclaim was added as a generic proactive reclaim
-> interface for memcgs, but memory tiering makes its practical
-...
-> The source= key is intentionally typed so future selectors can be
-> added without reinterpreting the nodes form. For example, later
-> patches may add source=tier:<selector> or other source types while
-> keeping source=nodes:<nodelist> as the NUMA-node source selector.
+Hi,
 
-Similar comment for the commit message as below re: simplicity.
+Chuck asked, of v4 7-9, whether those changes belong in NFSD or in mm:
+"Seems like you've identified an issue with DONTCACHE itself that
+shouldn't be limited to an NFSD-only fix."  He was right, and v5 moves
+the fix into the page cache.
 
->
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->  Documentation/admin-guide/cgroup-v2.rst | 23 ++++++++++++
->  mm/internal.h                           |  3 +-
->  mm/memcontrol-v1.c                      |  6 ++--
->  mm/memcontrol.c                         | 11 +++---
->  mm/vmscan.c                             | 48 +++++++++++++++++++++++--
->  5 files changed, 81 insertions(+), 10 deletions(-)
->
-> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-> index 86a2a0099178..a016575010ba 100644
-> --- a/Documentation/admin-guide/cgroup-v2.rst
-> +++ b/Documentation/admin-guide/cgroup-v2.rst
-> @@ -1454,6 +1454,7 @@ The following nested keys are defined.
->
->  	  ==========            ================================
->  	  swappiness            Swappiness value to reclaim with
-> +	  source                Source to apply reclaim pressure to
->  	  ==========            ================================
->
->  	Specifying a swappiness value instructs the kernel to perform
-> @@ -1464,6 +1465,28 @@ The following nested keys are defined.
->  	The valid range for swappiness is [0-200, max], setting
->  	swappiness=max exclusively reclaims anonymous memory.
->
-> +	The source key declares where the normal reclaim aging pipeline is
-> +	applied. It is a typed selector in the form source=<type>:<selector>.
-> +	Currently only source=nodes:<nodelist> is supported. For example::
-> +
-> +	  echo "1G source=nodes:0-1" > memory.reclaim
-> +
-> +	This instructs the kernel to apply reclaim pressure to memory of target
-> +	cgroup that are currently resident on nodes 0 and 1. Reclaim then
-> +	follows the normal reclaim path for selected folios. The source
-> +	selector does not choose a demotion or eviction policy. On tiered
-> +	memory systems, a source node in a non-terminal tier will usually make
-> +	progress through demotion when an allowed demotion target exists. A
-> +	source node in the terminal tier has no demotion target, so successful
-> +	reclaim progress from that source is eviction.
-> +
-> +	The source selector is a source constraint only. It does not select or
-> +	limit demotion targets; those are still chosen by the kernel's memory
-> +	tier demotion policy. Specifying source does not change reclaim
-> +	completion accounting. On tiered memory systems, completion may include
-> +	demotion progress that moves folios away from the selected source nodes
-> +	without reducing memory.current.
-> +
+An uncached (RWF_DONTCACHE) buffered write drops each page it writes
+once that page is written back.  A page the write covers only partly is
+shared with the neighbouring write, and once the first of the two has
+been written back the second has to read it back from disk before it
+can write its part.  This shows without NFS.  32 threads writing
+interleaved records to one file on XFS (emulated 4Kn NVMe, 4 KiB pages),
+before and after 4/6:
 
-I'm no cgroup expert so I can't really comment on the concept overall, but can I
-ask please that you try to make this documentation FAR simpler and clearer?
+  record  pwritev2() flags          4 KiB device       MiB/s
+  bytes                             reads per write
+                                    before   after     before  after
+  47008   RWF_DONTCACHE             0.97     0.000     831     2281
+  47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.000     601     1227
+  6000    RWF_DONTCACHE             0.97     0.000     121      488
+  6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.000      90      206
 
-I have no idea what an 'aging pipeline' is, then the paragraphs dive into
-significant detail and I don't see why you would want this or what it's useful
-for?
+4/6 has the page cache keep such a page for the write that completes
+it, and drop it after that.  5/6 lets a writer that syncs its own write,
+as NFSD does for a stable WRITE, mark those pages itself once the sync
+is done, so they are dropped without extra writeback.  6/6 is what is
+left of v4's 9/10: NFSD uses 5/6 and no longer manages any page cache
+state of its own.
 
-You should lead with that, and keep things simple, only introducing detail
-later.
+For NFSD DIRECT, 32 interleaved writers of 47008-byte records, against
+v4:
 
-Right now it's 'types:selector' (only 1 trivial example given) -> reclaim
-follows 'normal' path (what is 'normal'?) -> for selected folios (who selects
-them? How is it relevant to _an admin_?) -> source selector (what?) does NOT
-choose a demotion/eviction policy (neither defined in document) -> source node
-in non-terminal etc. etc.
+                             device reads per WRITE   MiB/s
+  each record sent as        v4       v5              v4      v5
+  1 FILE_SYNC WRITE          0.0102   0.0002          379     402
+  2, one after the other     0.0021   0.0001          217     237
+  2 at the same time         0.0401   0.0001          212     234
+  2 UNSTABLE, then COMMIT    0.0944   0.0001          219     248
 
-It's very typical of LLM-generated text - it treats the reader as a computer
-with a large mental 'stack' for storing this information.
+and a FILE_SYNC WRITE no longer wakes the DONTCACHE writeback kick at
+all.  The patches' own descriptions carry the details.
 
-Humans don't work that way.
+How this might land:
 
-The document targets _admins_ and this text strikes me as very very confusing
-for kernel developers, let alone admins.
+- 1/6, tracepoints for how each direct-mode READ and WRITE is serviced,
+  is NFSD only and does not depend on the rest.  Chuck, it can go into
+  nfsd-testing on its own.
 
-It also seems to assume a lot of knowledge.
+- 2/6 to 5/6 are mm, with small iomap changes and an IOCB flag in 4/6
+  and 5/6; 6/6 is the NFSD change that uses them.  They are Cc'd to
+  linux-mm and linux-fsdevel.  It would help if the mm and iomap
+  maintainers could review them and, if they are agreeable, ack them for
+  Chuck to take 2/6 to 6/6 through nfsd-testing, so that further NFSD
+  direct-mode changes can build on them there.
 
---
-Cheers, Lorenzo
+The series applies to cel/nfsd-testing (b4e06bef3884) and each patch
+builds with W=1 with no warnings.
+
+Changes since v4:
+- v4 1/10 to 6/10 dropped: Chuck applied them to nfsd-testing.
+- v4 10/10, the tracepoints, moved first, as 1/6.
+- v4 7/10 and 8/10 swapped, as 3/6 and 2/6.
+- New 4/6 and 5/6: the page cache, not NFSD, keeps the shared page.
+- 6/6 (was 9/10) retitled "NFSD: drop a shared boundary page only once
+  both WRITEs have written it" and reduced to calling 5/6's functions.
+  It folds in "NFSD: mark a shared boundary page only once the other
+  WRITE has written it", posted in reply to v4 9/10.
+- nfsd-io-modes.rst describes the page cache keeping the shared page.
+
+v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
+v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
+v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
+v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
+
+Thanks,
+Mike
+
+Mike Snitzer (6):
+  NFSD: add tracing for how direct-mode READ and WRITE are serviced
+  mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
+  mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
+  mm, iomap: keep a partly covered page until an uncached write completes it
+  mm, iomap: let an uncached writer complete its shared pages itself
+  NFSD: drop a shared boundary page only once both WRITEs have written it
+
+ .../filesystems/nfs/nfsd-io-modes.rst         |  55 ++++++-
+ fs/iomap/buffered-io.c                        |  16 +-
+ fs/iomap/trace.h                              |   3 +-
+ fs/nfsd/trace.h                               |  77 +++++++++
+ fs/nfsd/vfs.c                                 | 146 +++++++++++++++---
+ fs/nfsd/vfs.h                                 |   9 ++
+ include/linux/fs.h                            |   8 +-
+ include/linux/iomap.h                         |   1 +
+ include/linux/pagemap.h                       |  12 ++
+ mm/backing-dev.c                              |  11 ++
+ mm/filemap.c                                  | 106 ++++++++++++-
+ 11 files changed, 413 insertions(+), 31 deletions(-)
+
+-- 
+2.52.0
+
 
