@@ -1,109 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885B1606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B073606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZO1g0dwR
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hEm+tm/L
 Received: by kanga.kvack.org (Postfix)
-	id 728456B0101; Mon, 19 Oct 2026 17:21:00 -0400 (EDT)
+	id F1C626B0385; Mon, 19 Oct 2026 17:23:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FFB86B0105; Mon, 19 Oct 2026 17:21:00 -0400 (EDT)
+	id EA68D6B0386; Mon, 19 Oct 2026 17:23:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6152A6B0107; Mon, 19 Oct 2026 17:21:00 -0400 (EDT)
+	id D6ECF6B0387; Mon, 19 Oct 2026 17:23:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 383AA6B0101
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:21:00 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FAD3A0878
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:20:58 +0000 (UTC)
-X-FDA: 85340645796.13.658EEFB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 655942000C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:20:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZO1g0dwR;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A41DB6B0385
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:23:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC02FA8542
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:23:57 +0000 (UTC)
+X-FDA: 85340653314.23.1008F38
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C35FEA0007
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:23:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="hEm+tm/L";
+	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792444855;
-	b=dGlAd1V2/oXB7fhronP/flOqGtwrUD13ysE5ZHYPGH9eutE8g6RM2YLp+X6C7tkzQq1FkN
-	Br97ytggtDrMywnW6kFZ2wYGc8OZQjTjJ8djWy5+2LQyfzdJkfxauMXeb+znUBfFpj9Q42
-	XYoVDauKL10o8gbc8/J9gU35eSpxL94=
+	t=1792445035;
+	b=4KKx+sOm7UxsW5zF0gOHr2bsPwQfD2/bAAjoyh3rypVU6O48J6k0fIgGTsFdRegt/PBj0I
+	+K2h+lUm06bl1jmF/KsPl70r48VrGaP+YnGYTvIY2Dl9ZjO5h8GJ5JUZo/idR4Ej1nCRdc
+	tWYuV7UuHtJVwtjGpTEHgfBrYjrqFws=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZO1g0dwR;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="hEm+tm/L";
+	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792444855;
+	s=arc-20220608; t=1792445035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ptUqxl+FSgqXww7qutPBzfxssS1laHZAufEmAd4CAbg=;
-	b=p936w0FpJcy7ubcgOHpgZhVBTuPhZedy7g9Y/TOkXVCtT+yv2+KLxQa4iYfFnQghiNa7c1
-	kB7qNX4wHJb46AcRtIoJ5OGCLiYaoegOCVdsely8i+4xfDbbWoyCpHoofgZhUVYCmRx9cQ
-	EWD5nvieiAB7zGgjaXWIyN4GCMcIQ+4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 33E7D40A66;
-	Mon, 19 Oct 2026 21:20:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5FC1F000C4;
-	Mon, 19 Oct 2026 21:20:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792444854;
-	bh=ptUqxl+FSgqXww7qutPBzfxssS1laHZAufEmAd4CAbg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZO1g0dwR2An6DWTYT1MnRSMy0VDM3lT2LPQ4okidvUTthZv9inrUnniecU775G5v/
-	 IwLDeAYpkFiHXGIcKPYk+00oVgSlARzg/q3CRw/dtv/UQpMJ/CuvQkD9RLKURTc1ts
-	 0Mo2k0XFL8Db7+9a7nN7ptrIDTBUtHafTOMp5f2222OHcFxmcMHkSShXVldqgwjS2t
-	 6ofKlh6RWERZAUhWbI+YcbuIDpkSKgMCXyxVc35VBndwRXW3whm/Q0c2suU1n1LSL7
-	 JcQJj0Lve42/9/rgOTFsFnIetEg27twNWpp7hgoYhxXqU3HA0TE/cB4MyORyZ+iuM1
-	 z4JDvU6goV5wQ==
-Date: Mon, 19 Oct 2026 22:20:52 +0100
-From: Harry Yoo <harry@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>, 
-	Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
-	"Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	"Paul E . McKenney" <paulmck@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Ilya Gladyshev <ilya.gladyshev@linux.dev>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, kernel-team@meta.com
-Subject: Re: [RFC PATCH 00/18] mm: read the page cache without folio
- references
-Message-ID: <atZurH8mp-yW3Upg@thinkstation>
-References: <20261019154913.1765974-1-kas@kernel.org>
+	bh=RaSAtodmC/zEZWFNfit/fgpW8kKnO7aYgRQp3aEBxrU=;
+	b=c/qxzsSw91enPk5e2Is6Rs80pmK0eSCKlTPR6DZ3H+FL3JrWdG1RqGA1ScPGs340NSqWI2
+	yNADC2wBwSC+LChp/J+o32lwDfbz3U0C3sVIxE5M7Ewk+KcOI2758WceNIjDlRoSh2ARkJ
+	At4n+u/zJHCn6QVUTVy3i/H0I1/IOII=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1df146015so14251135e9.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:23:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792445034; x=1793049834; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RaSAtodmC/zEZWFNfit/fgpW8kKnO7aYgRQp3aEBxrU=;
+        b=hEm+tm/LFrQY2MRQzsxA8+CaE0v/+hQIzTgn4UpvsG2VgOl60pEQBxdUetw329oGAl
+         v9XolmsHtcpxzvnJsbnI0V1ffx13ijtliVh49JgGaYYy57QKGW2aDSRbHJE7BD9Xk0/O
+         gA06I9PNdjMV6rCpz4U2Ba4UrlkiQV6lRqUg7ckl2DIIzwpp8CnxzNlkfY+6TQLMDDyx
+         tV/S3rYtfSLhKEohPBgcFYGOBLMtYvv01UI3Ecy9i0k76Q4E1D0BJedYWjqG+V0dllyM
+         lg2ml57uCXKDPm0suOxBZezZxw3zAQ8mVzVWWUvc6kxtIkXBrzYAy/uZeNUz76EZPt9h
+         FheQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792445034; x=1793049834;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RaSAtodmC/zEZWFNfit/fgpW8kKnO7aYgRQp3aEBxrU=;
+        b=nbaTKUnr2Ko6M9On1vNZTzDVOzGNq2wvZxlQG2qvIPzD09LNsi00ZjXby7kmfn8u3D
+         bcG+j4Z69nzF50iMsBhwPFqU79Fxhp4q0rgTQHdHaC5HXlSLhhYp7ZfZYbtKIsHxJv5b
+         5lhnQT3Z3xfxoHlAEZGEiL3yH9qsefG8dAqvSPv2Q60BERAXfAiJV2E3t5OL5aS7cgvx
+         iQHntfJpb9fnA/bD1OfsDzSB2Kph1E/Tn0BRnzgYnb60FcA0I4sVQ4hMbkUjAEWiI2lp
+         3qfkBM7bEe0EoJ9kp6Ff5RRyMs+Pfs73Psl3CWIuciiruXiN4Th2RT2dF1i2xRPDR7fS
+         97GQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxtsZYP0XNnGrQZt/jcE0POlLzqSB2CQImqT1uw9VCzvzyuFXfI682LlPpUc0d/EM8h7Nrt4DWIXw==@kvack.org
+X-Gm-Message-State: AFq9FYJr6AqqkjL1HeSb/CBK1JeF8d6tqcguxsSkFZSUTKG4Tm35acf6
+	+4FQMDhHbRXSLkcbMWG6vmAVMIqFpR6m9mQnZ8D5PfRdNwPpXS8KHnsD
+X-Gm-Gg: AYBFou1weZ84XB9Lhgpi/oI5Duk4asVIme9qdJwg2yGUS1SaMeMy+qHGDoPjjyY6kt9
+	p4S3UzSOLMqjzKRe00Y2ZLvih0Ee08LaFVKftuUyAZvm3W7+pbpPVG7tA0luImPDobOraFrizL5
+	a09Cfy0a4I5MB+fhKQ4mQGui0seB70VdnFMBgaMWjuQ1kgzhTcmN4JApEB7MgCKpYWTSNrgIPnP
+	lkEdxcZ1SnbQ+/xiHHXX8kI3p+ZzU3w/zOZsV/WuMuFTRbMpTuz7dyldrwcygjhHA/q2YSUreQj
+	bDDl/U5Uuiq0g0BiQD548TIWjB0upZkQsFleyj54NEx2Y2knTBl0p01X1+1w2fom1wQeuQ/rz9h
+	vQWbwH7lBfIxOK8+2xzpgutNIwXaHakAazwg++X+0NHVwEWP+/hU5d9ud+V05m9ZGMweCaeT268
+	Iocawft18aaCnhtSByCEGL03xcT2c0sWsPJ0aRygHezIasH5P6BmrUoz6XPgHP6dbOG94QRvAip
+	Oihduw6/9q5IAPhmiGb9FtJDPGr9mkX59w7m3LKvbmT2A==
+X-Received: by 2002:a05:600c:e549:20b0:4a1:811c:8078 with SMTP id 5b1f17b1804b1-4a1d7624601mr116807835e9.26.1792445034012;
+        Mon, 19 Oct 2026 14:23:54 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1e2def9ecsm97956265e9.1.2026.10.19.14.23.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 14:23:53 -0700 (PDT)
+Date: Mon, 19 Oct 2026 22:23:51 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Petr Mladek
+ <pmladek@suse.com>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ bpf@vger.kernel.org, Jim Cromie <jim.cromie@gmail.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ Linux Memory Management List <linux-mm@kvack.org>, Luis Chamberlain
+ <mcgrof@kernel.org>, Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>,
+ Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH 14/15] kallsyms: scripts/kallsyms: Reduce the output
+ file size
+Message-ID: <20261019222351.64bb9d35@pumpkin>
+In-Reply-To: <202610200336.6v4SE96n-lkp@intel.com>
+References: <20261018155206.132411-15-david.laight.linux@gmail.com>
+	<202610200336.6v4SE96n-lkp@intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019154913.1765974-1-kas@kernel.org>
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 655942000C
-X-Stat-Signature: 5cdfkggf6x55re34ngoj6ruhbd3xihu1
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: jmcp691535q5xh4rhh5anq87eitefayr
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_2 autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792444855-457575
-X-HE-Meta: U2FsdGVkX196I+dOJj2jTLc6vFzpkMcGbRKXl+OXEsIXQHNDzcM/w+KSHHhCNEl51rbcb+3iI5KxUoSb75c9dCUmiA2Isk6H50N33FDucdW/rNs1OPbz+6KJlSmLOcuYX8Z3DR1NmINtrhDdP/tTEK7Hhlu69qKg5gTqB3ekKYXIGmS3V2OCssXD3x/b7n6qNO19Qkh8UjhsMFovlM0j2jNoUvrloyAxe9U+CP2wMnKLuFHij9USra6JiMjHxWo/8LoYYqyF6e1XLUJSrb6D5ZuEG5EH7CfFXxjH6rm5exKnlTxgFo+j15dcF6BLe4bzmoinV5/0JVDYjAc2a1IeMlEwwDYaXRebFx5haw88LRNnWRHIQqxi464ZJlEjUe4ZcdQsv3nSRNjHgNfSbZvhUmnSmoY/UcooVFSPNkrJXEhvTAA3wPcACLk4VglckTBeXAm6gbyWJZQoPtYMZ3o/Kx3DllF91uS4/eExM8tw7F/t6q9bMx3ihhZtpDnkp16w6o+kkhxJObLZ4Ep7tZUAkhDP3qnwi64b2O+iqquVfXKYQXsBRCcfm3J3BbXml4DPAq4aplhhmU6IF7J5yZSPX2abQbYhIugpZDxm7fw2icOEbbUaRKpoGyFlhFx2Gc0SaBnZqt9QI6MPKzr8hI2SgZje9C/xTFZ2k9v67iYKZ0T67J8X5q+5buh6EwLaw0P8Zz5hjjl8kHmrK4WUAuJ9EgcR5ghuLTnOt+J5c6OmmtUZpEV3KVx5RoU8ULdsubsT8Xrw5GVCRSZIveSUO910ttCTJAWS2SVcQv/sETeElCSwm/qmNlh/wb/wYx6k5MGtqX7iP5d5RDZi4oI5UA08MTNKxSDgClJZeS/kLFEkINxhl+yH8cA7TYjpp0/AEReYbaycENyRX6u5nZxUwhf+FgBnnJc3K0IlhjqubIGcRrKgpmvBwvD13q41YA2DmMKE5cY4zXRiJKJs0xF7bRx
- cwoI5nRL
- rznuqxmV4Rh0/rQmX5LRiKqr8fNytB7R/Jicyz0yaB3PNceJz+rOShw0b7VEgzlmrGVBLsIb9g/CTTcKCfaGuTQVOYjZjy6beVNhjatGEk9H1kzDdvwz3aO7WQ3noQF5L6Sut/LBHYIIDutAbNpKGRnGn3+j+kDrG07iiJdEx9kbL6SdRKifWwFPi6bwBG0oVQCM7DqLlDH8UWrGyi2ym3rTmHjciLchiFqkeqzpdlprL7ZetZGny8dclDH9/xbetMn9mZfIF8l9BNmMzhWRQlYAjWXHXrTFRGQUPhLLJN6x1hdG7awCpjKpqY3Ue3By+EcHdT7ANzp8XciGBMgVf3xHp0HjbQdvUbqBbxGG+illF+8z66kSAdtdzv7oaXwxLAsNMEHQlWR5yxf4kU3lEtjg/oZWI8dYpxGm9
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C35FEA0007
+X-Rspam-User: 
+X-HE-Tag: 1792445035-13794
+X-HE-Meta: U2FsdGVkX18jKfVZXQbrfiyTXsZnLBhmzUSNdJ0/Ru05VQStWTHY/Ijw0fo8uPm7Bts1zckHJwL5KKsWFt4iDM0R0lTe3hVKKFIqO2GDh2Li0FRegOz+lnOwIgTTVL///rkTr9SChy1Qh97hnIsJ7na2fbQhV9/CTLOO1DdA/C46scrv12ar3cRvZ9kEKaofcK/FMchC41/X2frxaXZazNaSD6AiUCnz/LvjUh4CZwQf25sUSnqp9DZ7LyQGc+rPdVtSmVM35Gi6v/ttlB3kv9LhIFwco0FKzSEz1I9y2MMwVejnXgUalxjkAYrhmiJkQF0yvfChMgllVOa/6bbz7YtfYxVukuCnWekFy/994HWooszEHx/gzITPmkY0IwWwtuHzWQ/QbbwU8le2o8KvrwcYLdGL6lhAqabOofCTrclfSvMrgJy6S6Xr5OIvPjSJWXRndBVI/OfprVSByvkBV++SCui3dhhsGMpxnoXPxbpqgZu3Z249npVScjmRQywnbQgNH8QB6jG5EYmXfj0jp4W1IZ/eZNJokb6JXAf1k9ZHVP4wQPhAC5uOQJ/dZWK7pOTumprWPoyvBclmDqpmubkMZdQTB7zmuMoWNNEQGBiSl4cf4gFS2Z+xsaxowEr6uysuHchXqKelBAHZrlu2Z0ExwlinYLGoLeUxApvv2+VN2O+MP+CKSaHLJrmG7dxmJakmbZ4tk06RpfZzhrDFd0NY5798OUG+YQuCa+MiAM1C5/V8T2t+pgDJHCyFG+9+VLIPaV5jANHKA/A7rgdNl/1ueug1mKAl0Octg2E5JfI0eo3M7Himn/GdS9UPePjh5F8mETdEHt36BQJZreM7tqwZ51lEiJHNmKWJvfOAZBL2sx7K9b/hOe2A8h0qQpNfJEFK/6MSG5OWtBZihou0kIhXW81ly6XnTPQPBeI4t1wvZzCbTi56/Y6w0E/+yWeZ1Ol+4OtN1iLbogGufPL
+ jgMUL7ZA
+ 8iVywYKme8zYjvEjTk02oNPDPoTu2MNhq9rFJ28r23DOSvtD0rwU1jsr88zhL7+Px4bpzmf8UsQ/Cjs5xXMqPMjkww3IQP1W/orYMV6Sir7ZlJHX/C2NtGvHESbr65fL6njwTTmA26Z7nlEzmRraesS4u6U3rOBPwZVqvkVC12z32XTFjbQjEuht9iHxSm4Kdb1IwNsn2hAmk/VuX9ixa1NBrrazmrwoSI/z/ooLAfeeM0rzoe/DgO3gR2cCMb0pzeZvmllzGPFbg1yl5qmkr6SWPlcYeworLE4E+l9RuQN/jUg0g4RU5BFEyi2bxqUGyQp8c3nsg0sFe+g7p3a0lXFtuF58FAulm8n+njvIrh1Dz1EqazTgVzWSCCsLZsJsBv6fZL3clNLJugoNDQq+TR4r+dUa9U3uTA02kAWsEV6FERLPHO7IQvO6ytP7kBqHoqb1GzlA19j+CD+CyUtEvoxqXlu9cTSwhc9i4EOuAtehgt4nTAe7dKIx7jo5c74PzTZdDLgyfOK0e9XXkXJ42l3FDovZC9HynN1nwclHYalEx1ypinLM2HodWMX1ZSor5JRIMn2ypFY9Ji55CiM9qp85muRld4vMNagj8opqM+1+0Cus=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,78 +133,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 04:48:53PM +0100, Kiryl Shutsemau (Meta) wrote:
-> Small reads of one file from many CPUs all take and drop a reference on
-> the same folio, and its refcount bounces between the CPUs.  This series
-> lets filemap_read() and shmem copy from the page cache without taking a
-> reference.  It is Linus' RFC [1], reworked: a folio that such a reader
-> may copy from is freed only after an RCU grace period.
->
-> Only the folios that reads keep coming back to get the flag,
-> PG_rcu_free: those that folio_mark_accessed() finds as accessed as the
-> LRU records.  Streaming reads and data that never gets hot are not
-> deferred, so the memory held back stays small and most frees are not
-> touched.
+On Tue, 20 Oct 2026 03:50:35 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-By applying this to hot folios only, small reads would benefit only when
-they contend on the refcount. That further narrows down the scope of
-workload that would benefit from this. Random or sequential small reads
-still perform the atomics on the refcount.
-
-Looking at what Linus mentioned as "Willy reported real users having
-scalability issues in that area a couple of years ago in a discussion
-about buffereed IO scalability limits:
-
-  https://lore.kernel.org/all/Zds8T9O4AYAmdS9d@casper.infradead.org/
-"
-
-On that thread, from Willy:
-> Not artificial; this was a real customer with a real workload.  I don't
-> know how much about it I can discuss publically, but my memory of it was a
-> system writing a log with 64 byte entries, millions of entries per second.
-> Occasionally the system would have to go back and look at an entry in the
-> last few seconds worth of data (so it would still be in the page cache).
+> Hi David,
 > 
-> This customer was quite savvy, so they actually implemented and tested
-> the lookup-copy-lookup-again algorithm in their custom kernel, and saw
-> a speedup from it.
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on akpm-mm/mm-everything]
+> [also build test WARNING on linus/master v7.3]
+> [cannot apply to next-20261016 next-20261016]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/David-Laight/kallsyms-scripts-kallsyms-c-Avoid-overrunning-on-stack-buffer/20261018-165152
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/20261018155206.132411-15-david.laight.linux%40gmail.com
+> patch subject: [PATCH 14/15] kallsyms: scripts/kallsyms: Reduce the output file size
+> config: um-allmodconfig (https://download.01.org/0day-ci/archive/20261020/202610200336.6v4SE96n-lkp@intel.com/config)
+> compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+> rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261020/202610200336.6v4SE96n-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202610200336.6v4SE96n-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+> >> scripts/kallsyms.c:371:26: warning: adding 'int' to a string does not append to the string [-Wstring-plus-int]  
+>      371 |                         printf("\n\t.short\t" + !i);
+>          |                                ~~~~~~~~~~~~~~~^~~~
+>    scripts/kallsyms.c:371:26: note: use array indexing to silence this warning
 
-https://lore.kernel.org/all/Zdz9p_Kn0puI1KEL@casper.infradead.org
+Hmmm it gives the same error for (!i + "string") even though that doesn't even look
+like a broken attempt to append to the string.
 
-Again from willy, from the same thread:
-> On Mon, Feb 26, 2024 at 09:17:33AM -0800, Linus Torvalds wrote:
-> > Willy - tangential side note: I looked closer at the issue that you
-> > reported (indirectly) with the small reads during heavy write
-> > activity.
-> > 
-> > Our _reading_ side is very optimized and has none of the write-side
-> > oddities that I can see, and we just have
-> > 
-> >   filemap_read ->
-> >     filemap_get_pages ->
-> >         filemap_get_read_batch ->
-> >           folio_try_get_rcu()
-> > 
-> > and there is no page locking or other locking involved (assuming the
-> > page is cached and marked uptodate etc, of course).
-> > 
-> > So afaik, it really is just that *one* atomic access (and the matching
-> > page ref decrement afterwards).
->  
-> Yep, that was what the customer reported on their ancient kernel, and
-> we at least didn't make that worse ...
 
-https://lore.kernel.org/all/Zduto30LUEqIHg4h@casper.infradead.org
+>      371 |                         printf("\n\t.short\t" + !i);
+>          |                                               ^   
+>          |                                &              [   ]
+> >> scripts/kallsyms.c:371:11: warning: format string is not a string literal (potentially insecure) [-Wformat-security]  
+>      371 |                         printf("\n\t.short\t" + !i);
+>          |                                ^~~~~~~~~~~~~~~~~~~
 
-From the discussion I'm not sure if the scenario above would benefit
-from this.
+The compiler ought to do better there...
+Indeed, gcc does.
 
-Maybe we should try to either 1) find a better heuristic to mark
-which folios should have PG_rcu_free to make it beneficial for wider
-range of workloads or 2) identify workload that heavly contends on the
-refcount of a small set of folios...
+...
+>    366		output_label("kallsyms_token_index");
+>    367		for (i = 0; i < 256; i++) {
+>    368			if (i & 15)
+>    369				printf(",");
+>    370			else
+>  > 371				printf("\n\t.short\t" + !i);  
+>    372			printf("%u", best_idx[i]);
+>    373		}
 
--- 
-Cheers,
-Harry / Hyeonggon
+I knew I should have interleaved putchar() and fputs() with the printf().
+They are somewhat faster - in this file it is measurable.
+gcc does convert printf() to putchar() or puts() but not fputs().
+
+The time taken to write the files halves if I initialise an array with all the
+",%u" values and use fputs(str[byte_val] + !comma).
+I decided someone would object to the mess.
+
+I'll think of something for v3.
+
+David
+
 
