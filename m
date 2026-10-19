@@ -4,100 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A816DCCF2D4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7453ACCA490
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 02:08:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD0E96B009F; Sun, 18 Oct 2026 21:59:15 -0400 (EDT)
+	id F14726B00E1; Sun, 18 Oct 2026 22:08:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B81116B00A2; Sun, 18 Oct 2026 21:59:15 -0400 (EDT)
+	id EEC8A6B00E2; Sun, 18 Oct 2026 22:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A984D6B00A3; Sun, 18 Oct 2026 21:59:15 -0400 (EDT)
+	id E2A4A6B00E3; Sun, 18 Oct 2026 22:08:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9158E6B009F
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:59:15 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 25E041205F2
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:59:15 +0000 (UTC)
-X-FDA: 85337718270.13.A6D03D8
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A2EBE180003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:59:12 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="d/ldGeBd";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BBFF26B00E1
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:08:21 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42566405C1
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:08:21 +0000 (UTC)
+X-FDA: 85337741202.03.957EC8F
+Received: from mta0.migadu.com (out-104.mta0.migadu.com [91.218.175.104])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 31B69C0003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:08:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pLDQIBFL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792375153;
+	s=arc-20220608; t=1792375699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=5A3o0YyXGxodAzwdKg9agnXDUoySQjN+sSNyI0/Yu5k=;
-	b=tpaWJ+muB2md41/fwcAJdbeQmlr6X67ydyv5e18zJCR3I3AXDZmxMl01L318OOohBWzwmc
-	os3kXXlMGNCy83h3E3AiCL+igopKt6jzTCTOAWMijuQ0rePx6xsdeTXTCATMevsw73gbCC
-	Ucb/1GMWUTUQoLaLiOs/N87C5Cjyh/c=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AapkH9Re9c1pnNZGrR/Nofsi9bNRtMJZBUYf8hABUds=;
+	b=2qOIQRnYk4C1+jNDgOfIrBvqIA2P8x37vAJvZ7KBC6rda8hSDHxN4O0ZfqEXmWjAqeswP8
+	mdbgmw1iB8mKfUxmMOIrO+8LZ0ON0Jxe2KfLbRT7BxXf46+bXo4JaxH37BvYfhGoCsEeUg
+	wkhejySS9dPz5WhhUWSvJoxcFlwpAlk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="d/ldGeBd";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pLDQIBFL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792375153;
-	b=Im2PhlxjRihIOwZHHnyxu3glQ83ClrPR7/tW4DSo4MKKwV+yXIuCLZ0O70KojOithQLYNC
-	cEl8AZ25Kta8S/yQ3lWd2812PavHxNHD8TZQ59Ddx7IfL5ojEJ+yDQKnDHhsCfWwG2HgJR
-	FL2itZxv9+q8y/Rs8F4a+B8FqbQkrHc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792375153; x=1823911153;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=7fnx3dXsI2wRJdwIsrpwQJW0BoY5IQYr8pQyudxvv9Y=;
-  b=d/ldGeBd69D0MpwfvW5dwJ11MCa0T/+dEtZKo4RNNFuaKF5opXXHWo5C
-   oxFtzSj3zlkVliDO1z2yhi9R35dTKkoUJRm/+wMAKjX07vLIBZflPtrbX
-   84zprih3H72aDN8tGq489YEgpVDg2uK3WOk+KZqlvYP6j75l4GWp5FKtq
-   KGCGm7af8EQzawyR8mR5HklCkFDnMi1bqVFOmReDNryNMo6bdMqpykw9C
-   tYOJLjCQBfrinzHBXuDNOf2XmK1EIZCT8htaS7vaRvKck04Tba7sfma+K
-   FDzC7o1gDuhorzDrdxAvQp8hdXpkJvmuSiWMvp0yhqreHcPs0h6s7Cmj+
-   A==;
-X-CSE-ConnectionGUID: RUAxmsOGRH6s5jYIIDDPSw==
-X-CSE-MsgGUID: bYBFYXu7QfWt2Xva2yYQmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="924658"
-X-IronPort-AV: E=Sophos;i="6.27,166,1787036400"; 
-   d="scan'208";a="924658"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2026 18:59:11 -0700
-X-CSE-ConnectionGUID: peGbbfOhSn2jwTT84XRp+A==
-X-CSE-MsgGUID: rwe68dC6Tkma6YgMmPfUFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,166,1787036400"; 
-   d="scan'208";a="2839779"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2026 18:59:06 -0700
-Date: Mon, 19 Oct 2026 09:59:01 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, yi1.lai@intel.com
-Subject: [linus:master] [mm]  7625cb5673:  stress-ng.mincore.ops_per_sec
- 28.1% improvement
-Message-ID: <202610190930.7aeab52b-lkp@intel.com>
+	t=1792375699;
+	b=7i8OC/U/fcW8wADdv4J+LgjdKFeTfRUC3dAuxmFNwEtD525e12pGaH7oQ6wy9m3+5ptIji
+	ga+qXSVgRFPEOTTqe5bwQccnoo8f4KN/jbHPD3jvbPsyuf7lJEvk2I2gQw3/8t2N1h9Idn
+	hcPxOd7dXwU4YFDQMgU929PuTjB7nBg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=TGx+L/6tf3P9BlQx79oc67eTtWqhL3dBGQ6vFXfCt04=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792375696; v=1; x=1792980496;
+ b=pLDQIBFLOfInEnDPpokkie/UA47oQoauG108QTVlqIktQGJX/n0lLXVZDZOWuKXtaxIxI9+e
+ t7N7EyMYplvk2oLpYy6jiHX78FTPXwHt879aOOfRWf5MInsqfJa4L8qEadLpw+IAfh1psjwIs3y
+ O71dUGLPE50XIzWLy1W08gMM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0856886304343c3d;
+	Mon, 19 Oct 2026 02:08:16 +0000
+X-Mizu-Trace-ID: 0856886304343c3d
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <e2ea8e4f-152a-4695-bc25-1712e385d8a2@linux.dev>
+Date: Mon, 19 Oct 2026 10:07:55 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/ksm: keep soft-dirty and uffd-wp when merging a
+ page
+To: Samarth Narang <samarth.colleges@gmail.com>
+Cc: Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20261019010934.697895-1-samarth.colleges@gmail.com>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20261019010934.697895-1-samarth.colleges@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A2EBE180003
-X-Stat-Signature: kbheo5juspa5cfnomw18anwqbk51w4c6
+X-Rspamd-Queue-Id: 31B69C0003
+X-Stat-Signature: 9eyrd7s5pihrjyqzdw7hpzekxfroud7e
 X-Rspam-User: 
-X-HE-Tag: 1792375152-850079
-X-HE-Meta: U2FsdGVkX1/4xDvh1MLymZIJ2/ZxvI7IrXlRqV0Rr8fXv+NXpUF6MKYWU8batGCeShqvmW+S488JbsW7/MKYEuwwNGMFbUquNKAyiRxaD+/4EiguS8kpjgN4nGnMzPkqlIHJaNmGWGfmLbGHa4h7jROy4Z3RCP0D5F+dzDEaoJwJUWU+tiv9jPRSdaI/v34bkUGcdKvwssYfijX+QX9RBBHOMHYe1gQPBzqeqB606fzFaYZY3xUOzaHrRX2okFtnuxZb0Wajj2L/6H6Q1JmA1XrS2MfbCgjMjUx+iOILnvKP/3fUY023yomJL/D/wsptb6hcY8z0lVVUy82bWgbYMJGeAdXHDAeksLVLvdaVw3+ivqbkJ79MhRPpbiFpk+TDgvg2Xy/lsNIl7fWmS4MA/Qub++4hYW6xEGyujQ0p/11zJOgYsE+z0yjzji/carzV8YFh4dMaL/PN+hGBJJmGTGIY71AKawdDhaCL05kjJEXgY/I5dfun2Jp3x176cko9HSTElD7FwViEcL04vymcs6Gf2J9gdbp50mQXgtTTJN9kwZWt0I67MvFDpjS3k2JLO+htytnJOM4k480l4h41msry42AeM8xcKi6WTAhlQjkH4UJ77/XVCf4Irgi+jW4vMxhW7sUp/LoSIFNWT2E3wG0hqyhPms5XW/fzxlfKVYRmpbpX0FuGHTWzDuh+STKjeeRXiGSyzot0BJyS3M8WcvJtIZ78APPkcrjFGcVbBVRZI3x+iHgal4xWd6vtCdlbrvhvOGPz+2Re0xaTVupTN7f6SKToZGOAO3vjCp/CV4xNpuFr3svECuaxgM/sBxg8PAI2NYWnF6ql2QSKZwQRLXKbV7uUyst7htT25aEvgymHPS9M+9s5ANZzgNTt5IPtg9emtr+Azjao2JEEqiwESkNLXGoPFKVmnNvoIKRZjLKsd6PZcOIHfvl4M7h/41NoxBnb2x5vHSmrXOjKOZo
- CC6Ibjzr
- bEwy78sHF4yOpLvwJxNgZIuEJnbyz48K8ts5zd2ZrybhqzXdv3wH4hM30DWE/qnW9Iy5dnhnmVGn5saB16VzPz7jYccVug8sGWlTxULNkk2AkIic3SxTHn51QzcaDszsB4tjKtR3wBo5A71lKJeJ1pe2y6EwZbtftM+2eys20nBYeb70A1zajz51s9i76cx6HFf3mzx9VI+5Fz5Rla4FnMyOg2v9GRTKxu/QLjZGnlWtaYF3v3r5Ium8jbM+idKFlm18zIP7Q2m7x6jElMRAVWhuzxpr9P4GaxVK4TlQzEk0AC3qh+mHazs5dgDOFLH8A94fvTkZnoP/jG91oFqfc+taFzqPBybxZDRs65a6SEw63zX5Q/B6XdnbblQ==
+X-HE-Tag: 1792375697-698948
+X-HE-Meta: U2FsdGVkX19ggI2tKQWh9JiYqz541y3CrRizhIBFxXxJQpE06HoIKr+knkJOK2ZYL6GqJwxwtJsrvEFVrc53yZ/d7t+h/dOCJJlCg5TUZ8WyEpoOZ7U4c2QieToEOP0xLtQznM8/rfekJ8UEVmSeW+x7yHRStgZ+27+s3yQSy18mHjefnZu2OnD9hc7oaXB4oO73dK5oBl8tpDpsNIp9HxdXwuGy0J8x8LFYHJPAPqkpfIQX7DU9OGOOLL+n5aI8fPImzPpwNuNZSv/w1yg6hyBmvN47No4QR0kiCwB23ckE6SmOkohOWGijfEK5WEElWvis4aqXuL1boZ4aXvTodO60aZA3fHzXJT+17gTwA/EI/3CZRP1rMVEnVx4cwONPlBncxWYQ3Ycc3EDrrhygcvq9ktIZmqDkcNYgB9VXf2i3u5j5iL21Cu1Aoov9JUxbotNqnkroGRlQyiZ5t1ofrrUnPYAFWWWWRrti86zLLyrDY9uoRaJNndkbGkbHk9oB4Wgfpi5J3yiCmbT5K4xF9kcLQzngEi6tEc3QI185ZSH5X0grOol5ycaPuSafSaMki9FkM4VCuQ6XL8UdbPBQZIV3Q7rpAqVQhl2qlWzZA5jAhI9W6yHkrkZ6z+hFdg7GFrtCSFzXL4Ec7nd1cc1zanhQYVCg5bM9lxGf4HqJHpoyUgtjtHZQ/fhTD9LJakAD1ZllqClegkDAtl/Ur/RiMcLxSsRaeZsUjlfzzvqJ1hs09Ysw41A1jS/vsTd/c/bTTtYkyWIWvU0lUCGyjJfNFuBZZspFFPXHEYfvGdTtnvSND+6k1F0W9wIPUO1gJqcSW0eIU1Co+39FFWviRLL1iYZnPNUemIj9Ri/6+W8ttLlk3jy6UI2FMk5+9Eg0d+CHv+buNd4l6rNpumjon3HHliUldg6ToaD+Sg02I+v3BvV0uF3acKs45x5HFndRyvmEMqYP8wzFz1fviw7jWrS
+ vJ+WKnoc
+ Yd3fFRCLiQ+N63WE9yKrc6J2J1o67KZj+qPN0xXCO7lsVNwf82O0k8/QniexfC72BYPlUHdrtLH8fKYabHWCBPPT3b+rBQ1+8bVPGDYmu7trskkybqDnHG5zuncEfvB5JhvYSxHEXLagAx0dzxFQh61KXcHZhUb5tmNGy2ZG/wyeOfwxiuhhnFSHDIO+t3eIzbs2pi+7zhHBrcsqgGYJbI+8XQNKtV+zfqUZvI6F0kHO2MM6q/Nu7dzB9SjyoFLvRGc216XnIH4cbowsxsl66OQmEfvA7QxRY5WaEjIWJhYGEp8RsYWb8AD7XKhXKFCdLHnvaIHPG+Ojv+K0SUikrQlSzKbQeM537aaZVKPJBl/ZGPRFJrYEd/SCVYj3wn10usYg0EmI8djboLBFRMqjzBH5cIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,59 +98,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-Hello,
+On 2026/10/19 09:09, Samarth Narang wrote:
+> replace_page() maps the KSM page with a PTE built from scratch, so the
+> soft-dirty and uffd bits of the PTE it replaces are lost. Due to this, a
+> write before the merge no longer shows as soft-dirty, the next write to
+> a uffd-wp page raises no write-protect fault, and because the page is
+> mapped with the VMA's normal permissions, on a uffd-rwp VMA the next
+> access raises no RWP fault.
+> 
+> Copy the soft-dirty and uffd bits from the original PTE to the new PTE,
+> and restore PAGE_NONE for RWP VMAs, as try_to_map_unused_to_zeropage()
+> does.
+> 
+> Fixes: 0f8975ec4db2 ("mm: soft-dirty bits for user memory changes tracking")
+> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+> Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
+> Cc: stable@vger.kernel.org
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Assisted-by: LLM
+> Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
+> ---
+> 
+> Notes:
+>      v1: https://lore.kernel.org/all/20261018122957.526467-1-samarth.colleges@gmail.com/
+>      
+>      Changes since v1 (thanks, Lance):
+>      - Fixes: point the uffd-wp and RWP tags at the commits that make the
+>        registration modes reachable (63b2d4174c4a, 2d427bb01639).
+>      - Shorten the comment; the uffd bit carries RWP state too.
+>      - Add Lance's Tested-by.
 
-kernel test robot noticed a 28.1% improvement of stress-ng.mincore.ops_per_sec on:
+Generally, no need to rush the next version out, please. Let it soak for a
+few days so folks have time to review properly, instead of making everyone
+start over every time. Just saying :)
 
-
-commit: 7625cb56733bfd470e9fae69a1b8b78aa8b1d3eb ("mm: mincore: replace __get_free_page() with kmalloc()") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-
-testcase: stress-ng
-config: x86_64-rhel-9.4
-compiler: gcc-14
-test machine: 256 threads 4 sockets INTEL(R) XEON(R) PLATINUM 8592+ (Emerald Rapids) with 256G memory
-parameters:
-
-	nr_threads: 100%
-	testtime: 60s
-	test: mincore
-	cpufreq_governor: performance
-
-
-Details are as below:
--------------------------------------------------------------------------------------------------->
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20261019/202610190930.7aeab52b-lkp@intel.com
-
-=========================================================================================
-compiler/cpufreq_governor/kconfig/nr_threads/rootfs/tbox_group/test/testcase/testtime:
-  gcc-14/performance/x86_64-rhel-9.4/100%/debian-13-x86_64-20250902.cgz/lkp-emr-2sp1/mincore/stress-ng/60s
-
-commit: 
-  006943a9b4 ("mm: mincore: remove special handling for VM_PFNMAP")
-  7625cb5673 ("mm: mincore: replace __get_free_page() with kmalloc()")
-
-006943a9b437b2d4 7625cb56733bfd470e9fae69a1b
----------------- --------------------------- 
-         %stddev     %change         %stddev
-             \          |                \  
-    547.22           -25.4%     408.24        stress-ng.mincore.nanosecs_per_mincore_call
-  27632999           +28.1%   35386493        stress-ng.mincore.ops
-    460725           +28.1%     590032        stress-ng.mincore.ops_per_sec
-      1729            +7.1%       1852        stress-ng.time.user_time
-
-
-Disclaimer:
-Results have been estimated based on internal Intel analysis and are provided
-for informational purposes only. Any difference in system hardware or software
-design or configuration may affect actual performance.
-
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+Cheers, Lance
 
