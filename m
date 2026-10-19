@@ -1,121 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459C060AB736
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B04A608485C
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linuxbox.cz header.i=@linuxbox.cz header.a=rsa-sha256 header.s=default header.b=Hh5PLXpv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c7bdnBCd
 Received: by kanga.kvack.org (Postfix)
-	id 6FB276B02B0; Mon, 19 Oct 2026 11:23:03 -0400 (EDT)
+	id 221736B02A3; Mon, 19 Oct 2026 11:07:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2676B02B2; Mon, 19 Oct 2026 11:23:03 -0400 (EDT)
+	id 1F91D6B02A4; Mon, 19 Oct 2026 11:07:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60F456B02B3; Mon, 19 Oct 2026 11:23:03 -0400 (EDT)
+	id 0996E6B02A5; Mon, 19 Oct 2026 11:07:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0DA6B02B0
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:23:03 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0393120754
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:23:02 +0000 (UTC)
-X-FDA: 85339743804.18.F4B5F6F
-Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EB32816000D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:22:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b=Hh5PLXpv;
-	dmarc=pass (policy=none) header.from=linuxbox.cz;
-	spf=pass (imf08.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CA1086B02A3
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:07:35 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A446A80D5
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:35 +0000 (UTC)
+X-FDA: 85339704870.27.EFC050C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BCB6DC0003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:33 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c7bdnBCd;
+	spf=pass (imf10.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792422453;
+	b=YVsNFFCPFXRsKAS5IKsk3FNUz/QHzkjK/tlT/F5Dvn5++69IPzSICXb6SECMeSLo8ynG+U
+	Yu9QnyuGKpuhvUoMuy8UncyWYuMoFTO8j0JdbGgrG8l0eF3B20tYnSA92r7BBhkXuSNOBj
+	GzuZ/2W8MsxE9lICBHk+zC8Qhy+hROc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c7bdnBCd;
+	spf=pass (imf10.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792423380;
+	s=arc-20220608; t=1792422453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+HvJ2kFVuvGS7ZT5+hoLkozBmLJcLaDkGg+Rc7WYWmE=;
-	b=Kwm/FTaUWCRnOGNvNphkn71qYHF1/Ag0mJ3bKGHvAWEr+GEfRyBVJdB83Y0qKtCasfg2cT
-	N2f+ONl9OA6jhMawasl2YxcONYgCLqWofqHWRCDHIN53HIe7PQ6ga9xInyE4Cfe7+KT1M2
-	7GpFGc/9gAazkdb0X5nfijzEDXiQHqs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linuxbox.cz header.s=default header.b=Hh5PLXpv;
-	dmarc=pass (policy=none) header.from=linuxbox.cz;
-	spf=pass (imf08.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792423380;
-	b=RMaGJ2QERfpA4fPp3PGJwuKD4u9ruGk99eX1QMWjgAfMFdNk1PjlfO1NS+EZjlFkdHuBDC
-	SHmpIvqqW+oq8mOKLUxRVtzwQnLbLmFNjdnJ5QrVmOIIGHU74/skK/fyO393bZHOSFnOV/
-	dtZeN9Moo0EsqSG37M3e9w95EqByUGg=
-Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
-	by gwu.lbox.cz (Sendmail) with ESMTPS id 69JFMfLC1208580
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 19 Oct 2026 17:22:41 +0200
-DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 69JFMfLC1208580
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
-	s=default; t=1792423362;
-	bh=+HvJ2kFVuvGS7ZT5+hoLkozBmLJcLaDkGg+Rc7WYWmE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hh5PLXpv5/rcoN0VZaOLprddInBoOxdrtKPj8uYQo+VzSQcyZAU2ZNQ3Kqt2My1qX
-	 /520Dy+VoiNeqPY5l/1x2zlBC6dLkRDxm6cGczTHN8N8Gr4biMl9ZkZKfHFtPNJR/M
-	 AxZd75YD1uEaQr1hKEINql/b/YbZC2nZett8lwHI=
-Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
-	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 69JFMeGg012171
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 19 Oct 2026 17:22:40 +0200
-Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
-	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 69JFMbH63191394
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 19 Oct 2026 17:22:39 +0200
-Date: Mon, 19 Oct 2026 17:22:37 +0200
-From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>,
-        David Laight <david.laight.linux@gmail.com>,
-        Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, david@kernel.org,
-        Mike Rapoport <rppt@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
-        luizcap@redhat.com, pbonzini@redhat.com,
-        Tal Zussman <tz2294@columbia.edu>,
-        Matt Fleming <matt@readmodwrite.com>,
-        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
-Subject: Re: hunting memory corruption bug in 6.18.x
-Message-ID: <atY1vWRBRUwpISKb@pcnci.linuxbox.cz>
-References: <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
- <20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
- <20261015172820.7961d2c0def74d41cc6c4b0c@linux-foundation.org>
- <20261016031242.GDatGWKo98YSOhEOOn@fat_crate.local>
- <20261015211832.45d87fab15bb3e0bbc2f47cb@linux-foundation.org>
- <20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local>
- <atI_yuCc4BiweBQP@google.com>
- <atT5TYyLapHO5ZoX@pcnci.linuxbox.cz>
- <20261018201538.d0957878f378a9821852836f@linux-foundation.org>
- <atXXma5NXxoSWJO0@pcnci.linuxbox.cz>
+	bh=fUJUf2XHU25x2noX8Uf7Y4DKlKoCjH6yK/uRcd1adlc=;
+	b=j44Sv3QqN/MPU1ZyGWJt1Vbq5CCttswqROZxk78bG5zGraNohww5pwq7WbX6N+2N7scxNf
+	X0B2D3avOiQG+6PO9X0Aa8iUiD1CYX2tqtVFp6PKiFNf5XCMfvK9D8g3/dmhxT1c0zfe+K
+	qFzOIyhnt3z/GEYtS/25w52AUVt2xrk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F68960220;
+	Mon, 19 Oct 2026 15:07:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47BF1F000C4;
+	Mon, 19 Oct 2026 15:07:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792422453;
+	bh=fUJUf2XHU25x2noX8Uf7Y4DKlKoCjH6yK/uRcd1adlc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=c7bdnBCdznePYW1udBUCDo5aKM3zaD/ECLpat5TO8AxvSoRKzLDQJZSbgcHPrG4+g
+	 lOnR7zvSfRjDI+8Sldgt8NxNVaDQxG4J4AK9smg7yZeUvKpgssZ2p0z9zegMAe2Zat
+	 Saz6l3cYwgYaPu1iTWj6u74z4io/0waDPd9EMSLyVkGnc3JCgaejKRLzCQAvtUQ1KM
+	 XqqNWAGiNdWbgNSKmJUeUO0Kej3ZTy0d44lw5NiqiJw3ZrMGbuyJU9DAQlx2EvO0sY
+	 Rp5GC4kSuxSBFwUlEi1JjAlAM/BkPQph+uNIwKZ3qhFzOvRrlgjWrMeAmGtQ1D4miF
+	 v6y4b4JOGREYA==
+From: Mike Snitzer <snitzer@kernel.org>
+To: Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>
+Cc: linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v5 5/6] mm, iomap: let an uncached writer complete its shared pages itself
+Date: Mon, 19 Oct 2026 11:07:24 -0400
+Message-ID: <20261019150725.1507-6-snitzer@kernel.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20261019150725.1507-1-snitzer@kernel.org>
+References: <20261019150725.1507-1-snitzer@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <atXXma5NXxoSWJO0@pcnci.linuxbox.cz>
-X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
-X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
-X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
-X-Antivirus: on lbxovapx9 by Antivirus 
-X-Spam-Score: N/A (trusted relay)
-X-Milter-Copy-Status: O
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EB32816000D
-X-Stat-Signature: 6uezyg3yj4ahjifxagkmypgytwe4g3na
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: u97r4t8dkwoy5woo1hz9yw6thkbhx6gt
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BCB6DC0003
 X-Rspam-User: 
-X-HE-Tag: 1792423379-237211
-X-HE-Meta: U2FsdGVkX19U/9qTOs/fcnqBcMN7GrXC3NEgF4vIF1rMK+l+fd69WYNWqqPdELeJyTCUtjB4R56G+xmMumqlMl+g71Z/3/yYKbuA4Z3dMHnuPKlzCMlv7PqrBc4OVhlAj+Arndt09qdW7hWAC/0GjzEEQw41OfsOPcUBwzD8EamTTb4tYHSBH+KwH3dsDy3XZiBkQBJ4cNExZVQd0gH5vcnbRil6aBmws8/KjceCshUScIu0zvGKOabCIG8JtNaHCCvZXBj61NtCYWS2lqPbobW+n0wrNMUpDhF2kbR0zVODLlTkQgC0G5fKVQTA5QHQK6d+Yx8RITPI+w8TPyOWVam4YWp5egycSBYn6DNYPP+mowlV+YdPM8UhPECG0El759Hn2/I4YogZUOeHmMDy7bJcGQDFLCjv+4sLF9ZlIISYaeKTEy13Uhc+Wh1tYAJUdYxBDdMduk7k6voxY+6UYgriROTCi3h7bCDvId/kZJ6csoyvuR9j9Sa7A90fprCyS+B/SfQeADlRQ6y3NW3u1mSnX14qoSAZymFykMJpPCcKXep1JgG4H17msHN3DxLEumxa9eHikz3M+zxgXgOJMyHDEyY6jDqpFWGAghaM9EazyTSMqRig5Vz0F/5Im4QHhvvy+7ZsHdN8Cd7AhPYhImRsL7YFItg73ywyF3IF0qDI1SH0a+9OhCbStOyboL/0ZYiYicVtYnUve5I5hOIbGz0EhpGYvGTkbg6qFINIbuSi022fXreNDG96oVQ0grzITwGcJlXGJTC/bZPmlbNiD908i6M9+WMas7as3GYnqsAIahWyF2nCnqajJyiYT7JUdLh+DygsJYErbY7fkVlHWLTwv8FyHGtkYuZDLuITfVBPZU6KSjN+RENrvB00PdWhPyTBkgtsm96dfbPRnHOlbU9j+f4DRFllb7Wi5xsNngIcbQaO9XAOi6MyrIlurf6OU5V/rNYCLPhgTqo0NoM
- t3NrLHbn
- PfrurR0m7AM4PUwy7ftrh47VyjSk3DVji5E53P/XsJzpkoNRN/M8nXHE2ZnKwccbuVbhN453icq/IwWpf2+1/CoN91M1fkbxPddBlYdFVSXcdfK7tHKGPqYIk32NNmNZYyMRDvs9GOEEvhnCsDcu0KRK37XFzlv72TmisV7TZwOPilNaOmZrrR4JEy2b8c23CaJUl5+HURMU0rP14fMjovr09m0xLWXByLkXmq9Xfmzw3Hfcism1P6/PYHD/C8n0zX7qWN1slnx6u9OS5xI//nH8jTISx2E6r2hel1TsII/ziQ3FAJjnupQL3Vpew7KOj4oJrXQOWl5R07JyohHxhh6Pho42ErVK1qYXEr3pCU3GygKlZmonteMhmmvbU9zD6JK1y
+X-HE-Tag: 1792422453-851568
+X-HE-Meta: U2FsdGVkX18cuOK1YdJcbQ6f2gAz2KcMq9pYDLQTben4RPvEsqbTdq7MPbPdJknCHEX9kgdsmbp74NYVtjvCHLP+EwhzM/xX1j9NRdphktGLqY2VAfRjB62dLeIHDjxap8j/nSqi7VgrxVe8SnziP7B2UDzBjFpDCcefyMauleaUkxL7fC54DHukWEHF7XA438PMbfn6qa9DkqA8RHQZWSncDu81j1tC9sFxaG45ZVaXX/WKz8OxPx1bnUv4A+hXYFmFzj28jGLEWAZaCDhr+IeMMbzJd1k5FVVEv/Vb6CzhZXut8BYzYNCTOCtQPcLRA8YRi4zNJ+nSJpElEg3PgV2geDAqXStLzD4+6J5V8Y9wcnVxvO6JR/vpJR+20HRei50HlaM/Vv57Pva3r86AEqPVhijXufzGDUs43LXEhnVrprNi+Uah43ZfTGrG3sggs+RbX/nqBGoU9SByIvWyagXxvRMsajOdRKm4uQVm9yE/P/Otzj4megI1GkjA5/gtrtTLCEI0lAjTHpjSVs0ufcg/jVXlpnoc3ZM+QTpnvu5T4W3I5MjWkwv62eapzNCOiPQ+v9TXHm1xl6B4SFEoG9pvUKNjysQxhgoHvC9kg9MroGrxX2E9hN9EPX3h2JZprSvbkMU6a4e/3twLVLTtuPdVPVuixnR72QnNNN4VYADLuBRh8BKgv0Btmd4ZsvYIMdoSCa1DEobUEs81jJrWF32IfiW7C4ezw5VwUibMa0/hf1Lp43LT7WGi4ZfGRTRPYDqsmStJcHBYxVvX/2sBopmzzyxF3JQmbwaTSYSWiTqn0X9cUtiWfDE9lTUWrEDPxHPRHqin8xOjC5jGHoCNgCRD9kJ6HYajJ7g//UyTjgULRLn8AihqdsrgFkH5FJraHbxTSKprGJWgi6uHhXxuACcT9lNPZpgdfg9CFvrrzIfFQ3Rkfy5US7ZSaUdRM3ta6DK7Nx5XZynqC0u/FBD
+ GWaDA5DJ
+ gX3mB7iZEvS7kEFu7V1RFatD+iqw8lWOsf9m/Ck5cdXFa1lv16CWrmq34gcqRjVJRiGPgW63qBb6j6yhjhGqfew71xcR72U/ZCRzNeoZ2DOoR3lNPm3CRx5dSUXE1TpXwHGxuB3uCYPhT8TphEo756OBVbu/j6mftQHjpdTsF1Ojf1aiJGCDxZ4qm60IEA1hgPGXkO1xHSE7TSP6oaUOHp9kzKLCZLQLZSehV1YADS8qrF5uINZL4H+Mb5HtSfisjOXgatvc65vjXNeBmGMSWPfEGnGt+XF02xzE4cS/mo7UHvG7VdOXVOtEpLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,53 +103,223 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> 
-> Sure! And I have more good news: after applying 55780d8a1dcc
-> to 6.18.56, I was able to perform more than 30 migrations without
-> a glitch. After booting back into 6.18.56 without it, both VMs
-> crashed within 2-3 migrations. Furthermore, some memory apparently
-> got corrupted on one of the hosts, since various commands started
-> crashing too:
-> 
-> [  303.466091] traps: systemd-logind[3085] trap invalid opcode ip:7f7b5667e616 sp:7ffe1afdec38 error:0 in libsystemd-shared-252.so[7e616,7f7b5666d000+22e000]
-> [  303.493810] traps: systemd-coredum[11269] trap invalid opcode ip:7fc6bf67f614 sp:7ffc075da958 error:0 in libsystemd-shared-252.so[7f614,7fc6bf66d000+22e000]
-> [  377.528955] traps: systemd[5607] trap invalid opcode ip:7f791447e616 sp:7ffe83e61cf8 error:0 in libsystemd-shared-252.so[7e616,7f791446d000+22e000]
-> [  377.556993] traps: systemd-coredum[12080] trap invalid opcode ip:7f97ce07f614 sp:7ffe28b56a88 error:0 in libsystemd-shared-252.so[7f614,7f97ce06d000+22e000]
-> [ 3746.173043] traps: hostnamectl[45846] trap invalid opcode ip:7fe00cc7f614 sp:7fff89916e48 error:0 in libsystemd-shared-252.so[7f614,7fe00cc6d000+22e000]
-> [ 3746.202305] traps: systemd-coredum[45847] trap invalid opcode ip:7f7fe9e7f614 sp:7ffea227cfa8 error:0 in libsystemd-shared-252.so[7f614,7f7fe9e6d000+22e000]
-> [ 3750.581940] traps: systemctl[45903] trap invalid opcode ip:7fbb8967f614 sp:7fff733e5748 error:0 in libsystemd-shared-252.so[7f614,7fbb8966d000+22e000]
-> [ 3750.612651] traps: systemd-coredum[45904] trap invalid opcode ip:7f90d347f614 sp:7ffdc7f55148 error:0 in libsystemd-shared-252.so[7f614,7f90d346d000+22e000]
-> 
-> I'm not sure if this is of any use, but I collected a vmcore of
-> this state by intentionally crashing the host via /proc/sysrq-trigger.
-> 
-> Anyway, I'll give 55780d8a1dcc some more migration rounds, but it looks
-> promising.
+The write that completes a page an uncached write covers only partly
+marks it drop-behind as it writes, while the page is dirty, so the page
+counts as DONTCACHE dirty and the DONTCACHE writeback kick writes it
+back.  A writer that syncs its write itself, once, after several
+segments -- NFSD answering a stable WRITE, the NFS client's LOCALIO path
+-- issues each segment without IOCB_DSYNC, so every segment's kick
+writes back pages its own sync is about to write.  Measured with NFSD
+DIRECT and 32 writers of 47008-byte records: with the previous patch
+alone, 23,000 to 65,000 kick rounds a run, where NFSD marking the pages
+itself after its sync had taken 51 to 274; with this patch and NFSD
+using it, a FILE_SYNC WRITE wakes the kick not at all.
 
-500+ migrations back and forth, no issues. I consider this solved and am rolling
-out the patched kernel; I’ll report if anything new turns up.
+Let such a writer complete those pages itself.  IOCB_DONTCACHE_DEFER
+(IOMAP_DONTCACHE_DEFER, FGP_DONTCACHE_DEFER) leaves a partly covered page
+unmarked even when the write finds it uptodate.  Right before writing such
+a page the writer asks filemap_dontcache_edge_completes() whether it is
+uptodate already, which means the neighbouring write has written its part
+and this write completes it; once the write and its sync are done,
+filemap_dontcache_edge_complete() marks it and, clean, drops it at once.
 
-Definitely a -stable candidate. Andrew, will you send it to Greg, or shall I?
+Two writes that arrive together may both find the page absent before
+either has written; that page is then left cached until reclaim, which
+the folio-lock ordering of the default path avoids.
 
-Thank you all for spending time on this!
+Assisted-by: LLM
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+---
+ fs/iomap/buffered-io.c  |  4 +++
+ fs/iomap/trace.h        |  3 ++-
+ include/linux/fs.h      |  8 +++++-
+ include/linux/iomap.h   |  1 +
+ include/linux/pagemap.h |  6 +++++
+ mm/filemap.c            | 58 ++++++++++++++++++++++++++++++++++++++++-
+ 6 files changed, 77 insertions(+), 3 deletions(-)
 
-BR
-
-nik
-
-> 
-> I'll report soon
-> 
-> Cheers, nik
-> 
-
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 780a0186045d..5ca82000e2ec 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -811,6 +811,8 @@ struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
+ 		 */
+ 		if (offset_in_page(pos) || len < PAGE_SIZE) {
+ 			fgp |= FGP_DONTCACHE_EDGE;
++			if (iter->flags & IOMAP_DONTCACHE_DEFER)
++				fgp |= FGP_DONTCACHE_DEFER;
+ 			len = min_t(size_t, len, PAGE_SIZE - offset_in_page(pos));
+ 		}
+ 	}
+@@ -1318,6 +1320,8 @@ iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *i,
+ 		iter.flags |= IOMAP_NOWAIT;
+ 	if (iocb->ki_flags & IOCB_DONTCACHE)
+ 		iter.flags |= IOMAP_DONTCACHE;
++	if (iocb->ki_flags & IOCB_DONTCACHE_DEFER)
++		iter.flags |= IOMAP_DONTCACHE_DEFER;
+ 
+ 	while ((ret = iomap_iter(&iter, ops)) > 0)
+ 		iter.status = iomap_write_iter(&iter, i, write_ops);
+diff --git a/fs/iomap/trace.h b/fs/iomap/trace.h
+index e1ea8392cf47..4f0343eeed1b 100644
+--- a/fs/iomap/trace.h
++++ b/fs/iomap/trace.h
+@@ -104,7 +104,8 @@ DEFINE_RANGE_EVENT(iomap_zero_iter);
+ 	{ IOMAP_UNSHARE,	"UNSHARE" }, \
+ 	{ IOMAP_DAX,		"DAX" }, \
+ 	{ IOMAP_ATOMIC,		"ATOMIC" }, \
+-	{ IOMAP_DONTCACHE,	"DONTCACHE" }
++	{ IOMAP_DONTCACHE,	"DONTCACHE" }, \
++	{ IOMAP_DONTCACHE_DEFER, "DONTCACHE_DEFER" }
+ 
+ #define IOMAP_F_FLAGS_STRINGS \
+ 	{ IOMAP_F_NEW,		"NEW" }, \
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index f9d1e05e8ae6..ad181b6ce6b4 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -357,6 +357,11 @@ struct readahead_control;
+ /* kiocb is a read or write operation submitted by fs/aio.c. */
+ #define IOCB_AIO_RW		(1 << 22)
+ #define IOCB_HAS_METADATA	(1 << 23)
++/*
++ * With IOCB_DONTCACHE: the caller completes the pages the write covers only
++ * partly itself, see filemap_dontcache_edge_complete().
++ */
++#define IOCB_DONTCACHE_DEFER	(1 << 24)
+ 
+ /* for use in trace events */
+ #define TRACE_IOCB_STRINGS \
+@@ -374,7 +379,8 @@ struct readahead_control;
+ 	{ IOCB_NOIO,		"NOIO" }, \
+ 	{ IOCB_ALLOC_CACHE,	"ALLOC_CACHE" }, \
+ 	{ IOCB_AIO_RW,		"AIO_RW" }, \
+-	{ IOCB_HAS_METADATA,	"AIO_HAS_METADATA" }
++	{ IOCB_HAS_METADATA,	"AIO_HAS_METADATA" }, \
++	{ IOCB_DONTCACHE_DEFER,	"DONTCACHE_DEFER" }
+ 
+ struct kiocb {
+ 	struct file		*ki_filp;
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index bc7ae6327dbf..f3509d495a92 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -212,6 +212,7 @@ struct iomap_write_ops {
+ #endif /* CONFIG_FS_DAX */
+ #define IOMAP_ATOMIC		(1 << 9) /* torn-write protection */
+ #define IOMAP_DONTCACHE		(1 << 10)
++#define IOMAP_DONTCACHE_DEFER	(1 << 11) /* see IOCB_DONTCACHE_DEFER */
+ 
+ /*
+  * Return the existing mapping at pos, or reserve space starting at pos for up
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 0c1d6bd09aa0..a0a67e4c940b 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -705,6 +705,9 @@ pgoff_t page_cache_prev_miss(struct address_space *mapping,
+  *   only partly, and a neighbouring write may complete it.  A folio created
+  *   for it is not marked drop-behind; a folio found uptodate is, as the
+  *   write that completes it.
++ * * %FGP_DONTCACHE_DEFER - With %FGP_DONTCACHE_EDGE: the caller completes the
++ *   page itself (filemap_dontcache_edge_complete()), so a folio found uptodate
++ *   is not marked either.
+  * * %FGP_WRITEBEGIN - The flags to use in a filesystem write_begin()
+  *   implementation.
+  */
+@@ -720,6 +723,7 @@ typedef unsigned int __bitwise fgf_t;
+ #define FGP_STABLE		((__force fgf_t)0x00000080)
+ #define FGP_DONTCACHE		((__force fgf_t)0x00000100)
+ #define FGP_DONTCACHE_EDGE	((__force fgf_t)0x00000200)
++#define FGP_DONTCACHE_DEFER	((__force fgf_t)0x00000400)
+ #define FGF_GET_ORDER(fgf)	(((__force unsigned)fgf) >> 26)	/* top 6 bits */
+ 
+ #define FGP_WRITEBEGIN		(FGP_LOCK | FGP_WRITE | FGP_CREAT | FGP_STABLE)
+@@ -1316,6 +1320,8 @@ void folio_end_writeback(struct folio *folio);
+ void folio_end_writeback_no_dropbehind(struct folio *folio);
+ void folio_end_dropbehind(struct folio *folio);
+ void folio_mark_dropbehind(struct folio *folio);
++bool filemap_dontcache_edge_completes(struct address_space *mapping, loff_t pos);
++void filemap_dontcache_edge_complete(struct address_space *mapping, loff_t pos);
+ void folio_wait_stable(struct folio *folio);
+ void __folio_mark_dirty(struct folio *folio, struct address_space *, int warn);
+ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb);
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 0397ec771547..7d7c56a42643 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1675,6 +1675,61 @@ void folio_mark_dropbehind(struct folio *folio)
+ }
+ EXPORT_SYMBOL_GPL(folio_mark_dropbehind);
+ 
++/**
++ * filemap_dontcache_edge_completes - will this write complete a shared page?
++ * @mapping: the file's mapping
++ * @pos: any byte offset within the page
++ *
++ * For an uncached writer that completes the pages it covers only partly
++ * itself (IOCB_DONTCACHE_DEFER).  Call right before writing such a page: it
++ * is in the page cache and uptodate when the neighbouring write has already
++ * written its part, and this write then completes it.  Two writes that
++ * arrive together may both find it absent; the page is then left cached,
++ * unmarked, until reclaim.
++ *
++ * Return: true if the caller is to call filemap_dontcache_edge_complete()
++ * once its write, including any sync of it, is done.
++ */
++bool filemap_dontcache_edge_completes(struct address_space *mapping, loff_t pos)
++{
++	struct folio *folio;
++	bool ret;
++
++	/* FGP_DONTCACHE: a plain lookup would clear a drop-behind mark. */
++	folio = __filemap_get_folio(mapping, pos >> PAGE_SHIFT, FGP_DONTCACHE, 0);
++	if (IS_ERR(folio))
++		return false;
++	ret = folio_test_uptodate(folio);
++	folio_put(folio);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(filemap_dontcache_edge_completes);
++
++/**
++ * filemap_dontcache_edge_complete - drop a shared page both writes have written
++ * @mapping: the file's mapping
++ * @pos: any byte offset within the page
++ *
++ * Mark the page drop-behind.  If it is already written back, drop it now;
++ * otherwise the writeback that cleans it drops it.  A dirty page marked here
++ * counts as DONTCACHE dirty and wakes the DONTCACHE writeback kick, so a
++ * caller that syncs its write calls this after the sync.
++ */
++void filemap_dontcache_edge_complete(struct address_space *mapping, loff_t pos)
++{
++	struct folio *folio;
++
++	folio = __filemap_get_folio(mapping, pos >> PAGE_SHIFT,
++				    FGP_LOCK | FGP_DONTCACHE, 0);
++	if (IS_ERR(folio))
++		return;
++	folio_mark_dropbehind(folio);
++	folio_unlock(folio);
++	folio_end_dropbehind(folio);
++	folio_put(folio);
++}
++EXPORT_SYMBOL_GPL(filemap_dontcache_edge_complete);
++
+ /**
+  * folio_end_writeback_no_dropbehind - End writeback against a folio.
+  * @folio: The folio.
+@@ -2024,7 +2079,8 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 	 * folio lock, so the writeback that cleans both writes' data drops it.
+ 	 */
+ 	if ((fgp_flags & FGP_DONTCACHE) && (fgp_flags & FGP_DONTCACHE_EDGE) &&
+-	    (fgp_flags & FGP_LOCK) && folio_test_uptodate(folio))
++	    !(fgp_flags & FGP_DONTCACHE_DEFER) && (fgp_flags & FGP_LOCK) &&
++	    folio_test_uptodate(folio))
+ 		folio_mark_dropbehind(folio);
+ no_page:
+ 	if (!folio && (fgp_flags & FGP_CREAT)) {
 -- 
-Ing. Nikola CIPRICH
-technický ředitel
+2.52.0
 
-+420 591 166 214
-+420 777 093 799
-nikola.ciprich@linuxbox.cz
-
-www.linuxbox.cz
 
