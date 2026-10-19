@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FACECCF2DA
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:15:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC8AECCA490
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:15:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A76706B00C6; Sun, 18 Oct 2026 21:15:05 -0400 (EDT)
+	id E223D6B00C8; Sun, 18 Oct 2026 21:15:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A53986B00C8; Sun, 18 Oct 2026 21:15:05 -0400 (EDT)
+	id DF4FB6B00CA; Sun, 18 Oct 2026 21:15:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93D116B00C9; Sun, 18 Oct 2026 21:15:05 -0400 (EDT)
+	id CBFAA6B00CB; Sun, 18 Oct 2026 21:15:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 699CC6B00C6
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:15:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D1F60805CD
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:15:04 +0000 (UTC)
-X-FDA: 85337606928.01.6694CAA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A1FA56B00C8
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:15:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 17684160664
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:15:06 +0000 (UTC)
+X-FDA: 85337607012.02.A2EBB32
 Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 03B8C180008
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:15:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=GiOBrcmT;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792372503;
-	b=cntYbUs6q076XpU8NUPl++fTkVSKX5mjqcocuhvXaNtn60k1VTODzrR/Rqt7AJ6P+32snX
-	KJqDkeKZs9/hqg/vs6D0xR4bT+yTr4fEAd++AS5piCON+2kd+/LSZEVEpYQbzVP3FajTqz
-	Pav8RvOulxhshYMP9ES3aVMEBwcU5TM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=GiOBrcmT;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by imf20.hostedemail.com (Postfix) with ESMTP id 598061C0008
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:15:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=FHWOfB+M;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792372503;
+	s=arc-20220608; t=1792372504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oOMQVB/jXsWsIeoiodYZ/B+RDWxFCBllXDVeS82fgVc=;
-	b=Zx1RJnP25BNaAlwL0SD0np6H7nAkv/SHGMi468+J+rhOyr9SE5tiGaHgcD4KZI+U0TGEBq
-	Prfoh1LfQfrufMzcVee9BGCHifHxs5ETIEaO3XO70tRUKJffuqlfiVZlLPssmK5lfkaJrm
-	FcM4PFgLpTiL0Cek/TN++RyicSpf1CY=
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5eabf7d5bbeso1054355e0c.1
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:15:02 -0700 (PDT)
+	bh=nWlH64QVUIffog8q/xCBPliUXpBJWVHV3VkMcYCT96w=;
+	b=TDupq54EtRbhDcSjVZHu99NSHhmjEGT1+VTxl9kwyNhYF2uCfqu94JjvtYummXpH0nXM0e
+	VOCWUXy1BdLmqAYvTvBBb9ZdPAVyfU/IJtDmvh+q8KnIFyVDLRgUKkHoVJebaIVprSLyd5
+	rZadwll4fH4q7TMOZiLBLZOLnhcdROQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792372504;
+	b=TLDCuvWK/ZAF9nFiBv0Eg7yMi1eW9tM/269ubjKWTJ+I50BtYJ+KRxQbVIk5pImerY9p/G
+	xZUpc5xHcRXLau4NGinQrmrG+KxXw8ttUpF2Bx1mNtMeABJT3eoX3kNcbb0pYx2KZ9w3bR
+	e0YBu6fD4PbSIvIzoWvG9x/a80ORErU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=FHWOfB+M;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5eac6c5f927so144246e0c.0
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:15:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792372502; x=1792977302; darn=kvack.org;
+        d=soleen.com; s=google; t=1792372503; x=1792977303; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=oOMQVB/jXsWsIeoiodYZ/B+RDWxFCBllXDVeS82fgVc=;
-        b=GiOBrcmTTgae+RHPyjV5T/QWCaXFW8oMapJtyY62Gm2UcXebhy4ekfVQ6Lagealw9x
-         +49YcrqDRszrlB648uwwS9dMLg0Y0zgAB4qM26+eRPron9gYPXBbEIZkr/V3iLNMUPYB
-         GY0E4CraJqrdwH0Gad24ke5EZ5XDyfb1SgTv5A3ZrSNlitdzXRRzFGJnpNRc49mbjBVo
-         TwK4cSH8gQKmvYHvpno4+pcevd4eg+JWKot/M8ZwBh9jFY0s2cB45wHV4OzgWvME+tiY
-         UurAlhNTFyfqNIuV7KTimKpLlZxZsCegFN/PlxEGWA4QJJPUE6mcrxHGFHGhJkI/UPsO
-         ZRaw==
+        bh=nWlH64QVUIffog8q/xCBPliUXpBJWVHV3VkMcYCT96w=;
+        b=FHWOfB+MAFJyTjc53jFCz78CTflCaicY4MEAoyZsbeNLuG0CxEfKnG8ItcB0i+qoI9
+         pShRFDykEuXYuN1E8aU4DaKHzEDy23m+EBiKtu/ubco48bY41cidrcJiH3hZnBGjN5Fq
+         xS3tRF9AOovgAfWwhEq2raOuAV8PkiPXJcCc++3tBxThhGKLGjUF05FNG3WXREGd0LMR
+         sTg2T/s0pWLGYDKsfRBshi26nOJw/xzryYda/hW+b6MoJBcT5RAK/jnMjqB/CWPDBprE
+         8whq5B9joYWvwQDLT/dWbkm9hqt1mMlDhOJGKW7+pYcHod/C5jO9R5i3MoJcFgDL/tMN
+         q4fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792372502; x=1792977302;
+        d=1e100.net; s=20260707; t=1792372503; x=1792977303;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=oOMQVB/jXsWsIeoiodYZ/B+RDWxFCBllXDVeS82fgVc=;
-        b=bfOfCpQDgVYQC3Tu7u3ENkb8/5y+Rf0HkyBwT+usSPWWvWzB25Eq0nB1RDnbxSFYn5
-         jcn+AO3nUB75aWPUIXDnz/Otvz1oo7qLrFt03DUMpjoULlLloguMMlBkoCYPB0FFvj7H
-         jx1hkPw89YQOL9cUAlEgQe6xZEl5+iLyulXiDOQZGh3kDh4EEAq0eaLSrrBP1Br0mw0o
-         1xP5SD5FkoA+tHbOW6VyAAj/TfkLVe9VisNlcOKLNVOJvKBBrP3zccc3ONy3v74nwv0N
-         DW60cmDzwZk2tFo0kwfNBqnjWg/YV8EHVtEiYDz71rdjlnjh0yC+/axuyhMqHjNq7Vv9
-         aTKw==
-X-Forwarded-Encrypted: i=1; AKwUvBwHBinJ3He1HIc4jBi5Z+r4RGcNU7yCfQ4XkCPO1poUMbUM/HxKKkvCZsJkeEWcwakvT52upqoXhA==@kvack.org
-X-Gm-Message-State: AFq9FYK8+gGy3fuIJGxdlgPjq6fJCRzWubWZcrHYz3zNAHt2tfyf9dxb
-	Ec+hPD3REE/i2fZAcO/wiWMDdEjM2EbzXJzm6mIyVzxMP7JubIEMEUtp45BRRgw1Yfs=
-X-Gm-Gg: AYBFou3G5lHN1uoQszcVMI0KgvDrAgGTQB5lW3LaGH28VtdayXeBAHEBUNuzHSUfe4N
-	ZJGyWcJ+3/I3YMfpaSVX3kMFmbdRljQU4EDnjWmau/+Kg2xBo5a69u3VYhJIGMgZ+qzxMMrcgII
-	Eor7VK8s0cnP/O2RMgA+3hXRSeYQhL8ITt0nrxI1ojgCehpnkm8zNqn1x4alN2JGgvZfywsRJdk
-	zxFXTyYJDExE6igIr71SDqnV5Rx7qnHpXVEhAw8XMT4AbKuNuNC0TgdKE8AGkH4yRaQmeCL9UFl
-	rfooLH8FbcZOccwDLQtdfnH01MzHrqU9qtwxDc1nvWs3F1XwVxKIrcVXwVv+BBWax0LVu411YmG
-	fCjIOOfhFaUsCupurEnJIIYMEy28nYkv5tGtj1Z9e8BawcAggf2reCJE08UlEu0zTanpLRh77Ps
-	WYC/CWzRbtiVqFdlEAvJ1oKcDpMXqut7FrhVMRijZ/EBHXSBPiTXx6SkbXp9EJpSs1CYtLw43bn
-	8F4LgNKJRW81tgu/rRIozlEG+d4CPf9Yyj1CxQCBaGW8e1kDvCRuMhwUrUGF25j71SDYUD8PL26
-	cGRFhvA/qgYwBd3uRfw=
-X-Received: by 2002:a05:6122:78e:b0:5ea:389c:51e4 with SMTP id 71dfb90a1353d-5eaaa0c78fcmr2260825e0c.2.1792372502039;
-        Sun, 18 Oct 2026 18:15:02 -0700 (PDT)
+        bh=nWlH64QVUIffog8q/xCBPliUXpBJWVHV3VkMcYCT96w=;
+        b=C7XQjbi+zWbXAa2ac89LzhdcAEjQZyzj0Czb8KwCac3r9qM4xPeFJ0sr20AtSalnfg
+         0B/arwmePFwN5j3IVccp7bgQfhqj/ThGxD1tnjPRBJ5hVZnJv3EZN2uSGKWglMQVOQ9L
+         G7QOMB/u7I7IHcKJhoO0OsWL3oWeMpjLvXTrDj94fHtyXVgN+NrZmlv/BZFQ1rQAMYd/
+         KIKdmrhPZdxTjePBwQdixkOOTxGi52oXwDnaK7Zom/O7NP3Es0jqR+YTo3zQgHpkEvgi
+         241os+6VyHQT846OwI+2h5hWKoLshnPat7ogkDUiPbIrn2lfMdzDoep7aLljeJAlxJzL
+         OKZg==
+X-Forwarded-Encrypted: i=1; AKwUvBx4xJoSu1VGH+cLmEAbjOeD+brERpGAcXo50WyobZhpzd3eOzKr/9L1/o6m/a1w2H2m9UNFU01BKg==@kvack.org
+X-Gm-Message-State: AFq9FYLSuRRKBMI/QL8XqHFahdHpYGX8lJhFDGSDluef1Qu+KoTJ/sZi
+	PDJEh/fHjQIJJHGw5E6ny49yQTbJ8/uh+sYoFvKCqAxEEl8HtW7L1kGWF2/id9KsUBE=
+X-Gm-Gg: AYBFou23XVOQbA5/Z6ZDmQZOMOGlbXdlOKE5HcfTAjyVwAU7r12WEc319DX3wMqgQnJ
+	3mL8UuXfmsWpwhjN+7d4k+H79/ERzOjhrAh0mBDBMo0WBPvcvIamGVekaouL6ziHANY4xgOhtxb
+	VNIwf2smwYwL5UkQh3ToVN82IJwW+euaS8zUVpArujuoTKWGLFbYSFiqjiV61FIgQs6yVKwkCIw
+	E3TjRb8ZO57YKLsE1Ba/sr2ZYDeDpds5dMsm8gbfeJlvMymk9JiRPWEr1Lsqh8zfFKfp97OiCVi
+	vTStK8hflPEyLGrlcXa7hj0deJ0cTXDwmxINybB0Q85r+Xglw4mxea2l8qYW1G1QiPO8+ZZfeL5
+	lizrvbTMLlmjBXLTk43izWfWkcsHB3qqTK/qQPLJvc4eHYiGY9BB0oVEPyh2VPMxvTvghYqZEUk
+	xYDvZq2IydOfXqz0Roqr041x+SnMpEH5J7j4+Gm3slTGL/cdtem0jpmyKQDxwko/rVto1WsHod6
+	rwsj8DVk+u3rJe8YrBZky0ZIQ67ElYfu9jeT3bvkz9Yw9f+H+ZVDENCErrcD9CB15C8BMcELqjS
+	4lFvN0aOZ9Zyby1dz8I=
+X-Received: by 2002:a05:6122:4b10:b0:5ea:b9b5:8c43 with SMTP id 71dfb90a1353d-5eab9b59387mr1190052e0c.18.1792372503429;
+        Sun, 18 Oct 2026 18:15:03 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b474b2asm8039142e0c.4.2026.10.18.18.15.00
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b474b2asm8039142e0c.4.2026.10.18.18.15.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 18:15:01 -0700 (PDT)
+        Sun, 18 Oct 2026 18:15:02 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: kees@kernel.org,
 	rppt@kernel.org,
@@ -138,22 +138,22 @@ To: kees@kernel.org,
 	blum@kernel.org,
 	longman@redhat.com,
 	bsegall@google.com
-Subject: [PATCH v2 5/8] sched/topology: Avoid redundant O(N^3) group capacity walks and unused allocations in build_sched_domains()
-Date: Sun, 18 Oct 2026 21:14:43 -0400
-Message-ID: <20261019011446.834487-6-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 6/8] sched/deadline, topology: Avoid O(N^2) dl_server bandwidth walks during root_domain rebuilds
+Date: Sun, 18 Oct 2026 21:14:44 -0400
+Message-ID: <20261019011446.834487-7-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
 In-Reply-To: <20261019011446.834487-1-pasha.tatashin@soleen.com>
 References: <20261019011446.834487-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 03B8C180008
-X-Stat-Signature: bepfnj1x814tf4nb9n3jg75x8dfbe7hu
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 598061C0008
+X-Stat-Signature: mmo3esr1wa4x65eiegcarb1uptkbqm1c
 X-Rspam-User: 
-X-HE-Tag: 1792372502-992494
-X-HE-Meta: U2FsdGVkX18Qf0SnvZQEFHtLIkjiHNN1s2ylTJrYtBGwd3OM+abpO/sUj6nDrPs+ZwzcqDpvPp9aUEn6H/Ovv/xuaSfEaMoyrpE4Yb2DPwQ7F8s4q4f4IFsaYE2wvvUpnlB4gWt7S9aZ2kAl9Cm7SAOyxcdNeJsYu5HmUemsKvVa0tZ87830zBW7+s5PqZ6aENtS3URaYTMKEbDthjL8kbk5+to762bqU/npdAxEbGk0LuQ2cqJNR3c6pZ+xLKXYpkp8FhFtz0NNGRp4bXbmFTI0o+zdsfihkWfX5vAxPnR8XVOEYa6MHaydAC6Jl5ryk43Bvvun2ZhYnLJ99tAbxq/cnnDUClmTB8l6OVtcU/EW+Y+5payM7QvxXIOyyAi8R/UpL/VfPOlYpPaNpjx2drfRe66i8BqcMRZRXtDyPOWbrBm8F1cyxtsW5rBHKrynDxCF2sDaxbN4K/Di1y0u0JpHN7t+MPHD1569YnQE+JjRKQzHExaM5EI7cOSdxO3MfvnVdgczHBrPv8Sv4syCXupfGbc8isIoeBP56WNGOFZPemI1pFWgi0f4fPPHnWSoAFVLbZUG9pLRLceu4Gl5kEv1tJfeUzo2akt49rvyrgHBropO5/Oz0ujBNHphfC5YB6Ef+lc8jp1hPEq1CeiCrQqa+cLQ9+EKTTATu2xVlMIKlePDSWEy9tRNp3gw8TLvnNvxD+2Mxgcu1PrbEWG+HaKBsQw8dupndSgnQicrHqJVv+OISWFBOd7PoyK3d57QfXUq+OleJQYmvDuix13fn+SrDRgwOQt8K6N/9EyL5806peiJRVPz4YrX24d2652qeYYAoBGmctSPp4smt+RkDOvdCBkU3AR3sQ0Sy1PvRmsH6GtoB2Vy4pP6F09MRRTw187usJ18afgcCdjmlv5a0r8+6/1PLQ7vnZldkiViq/VcLmFHuljMQBhYGQyNSTYezjnR5UASt690tdBo0Wx
- 9qGafhob
- sGISv3fmeTgaHhFFW+QbgDtO59a6lCSDWK3VQOK83cg00+EmLV7g/jfVFJfbaD/EiNiDglp3X1rW8d3ewgufNBnBWv4cL1MrZ29F6xzpKmGHWpk6ykY/pdcsnKDliOIyeWsEZgVliQRGLZOI7Z8laRR6zabyzFxxO245UMF8oX7kUoniX1E9shfgvYu79r80diEdDLT+lStHApVJPN7qbe/BvBE5tXoMobKDDAEO96n5EjHiSNOF9Xk5hsA2nl06wc023N6pH3d+pYcQM7mEtiwaeOSKJCEmFbQFz5OiTs6V99YQxqjjiGhRuaFQ973nckl946BqLaWgHgB2jGT2ZXD3pl1Ks/x8bL+rEoC1s5W+dONZLPDKEVxXrIPs3I+Wx9+2L
+X-HE-Tag: 1792372504-744355
+X-HE-Meta: U2FsdGVkX182p1O7+d5ETs8TBzrfYQ4FPS2EDxsJV6xkfWydfr3c4rHO2Ak//gLD/vy72Q20wctI1Lzrc3XdcorgD+sTxsVSZiBxetpJOnTVIE1ePwiaujILkkMCUDQ6JapKH0TKeRg82x1tZMR8T3vMnVLiBGjHamV50yLilifoBpy1MY/DFi/JUytzhGZlS0YqaEcE5RCw+CZAlz+OY6OCqD24t8tH7fCxijJIK9vfOuEIpcUy188UtLSyIiBkR/0qW+5fwnIVltIbh4xJB8buq8Q3VZbHGOUuelDzKtFtnljdHt6l7hwS4tVIpXjk2XUvzomDfzFhxQP8JXd1ebrMXF8e+nkhNP+L/rgbQgy3B72pL/XS+bti+k6wDGd//mmol37BjRtmnBPQ1EOa/9Zv8yfmnb55CWuCKuis5e6IP31Xx/hv5w79n1Eel2u6+lAFJCSh+0IbyHhtjQyCdZ6KP3mBCmSwBSF0JHsxUhoQaY2Da+X4yW6nMp5hIFGQUq0ojkfTgVxKAEsAPzcmBVfpsYY2FERavMGp0zZjzijEHPIjIN5xm7h7VGBjZl6aqd0FPNz2F7wjLdz9kPRNPtyh2g0k397/nSlO5UT/GO7qTIvoMJMQCg7OPJ0LQT7EBk8SDZo4oNvFsLqAYQNFfG1gMGdZS72LZ0/GZx8XSBPO95MSwfAu1+bzk6OrgkukHGAQk3cXEJdkA95/EBoSTGRVIJ8mZ+PwZijzeCvSoOAxGIu5OBrzMKBtLUyT31Hv/f+Fo3NoVk6rAi9AjEEou/HxiSRlwMJl1ZUpSsDeFzmdge4lwnTIzZTstptu0dX1FadbQR+hg/iCjDKPvOu3YRq3rRthQmkM9aVNAZZz/Oq7KMyTgWcokTNZk05a66PgcmPEWCjHt3hQvFakaIthf2j/ZgZ5h2JTdthG+ajtYMt7CcbLHpSYRiI1DZdkCRm1GjaVsQ5cOpSweC1lu0U
+ xUls8zkM
+ kPLiXIsiqTntt9BN29c+448sbl32TduBO5/ZDLLp9z3DDyRYowzDfZreoNnjsPje8kBhivgZc3EEZ1h6CmMWQmHa3dGn3gP4GwGwtFQyvcBO7JBa4XZmdOkrlArbe7vX+p35MsHqdlX2RVv6b1ejggoaAW4rjXU3ceNHNyX3BvXBt8E+8i67Z6N9oXIkaqeNXL8Sk4cLTGyspJTxzvHlBn/Js64+BRpdkWl73QM0mhWiZBmC2lp8/5AGji9uIcB+SOCjHDGn+YtkxfP+ArYhCj5+cAxVv7HZuwgcPJtadpHsyKa4MnDCoF4+vuwYZ8rjPaSkrn89BA/VQFWQKsSiuycASIsAn6vd2EoxKdgzRYhWM76fujIDKkh0tZG7RV8Cas1lX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,469 +161,312 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During sequential CPU hotplug on large systems, build_sched_domains() is
-invoked for every CPU offline and online step. Two bottlenecks in the
-domain construction path scale poorly with CPU count:
+Every CPU runqueue has a fair_server (and optionally an ext_server)
+deadline entity enabled by default. Whenever a root_domain is rebuilt on
+CPU hotplug or cpuset changes, partition_sched_domains_locked() currently
+performs three O(N^2) remote runqueue bandwidth updates across all N
+active CPUs (O(N^3) across sequential hotplug of N CPUs):
 
-1. On non-overlapping topology levels, all CPUs sharing a domain span
-   share the same circular ring of sched_group instances, and on
-   overlapping NUMA levels, groups with identical spans share
-   sched_group_capacity (sgc). However, init_sched_groups_capacity()
-   walks the entire group ring for every CPU in the domain and repeatedly
-   recomputes group_weight, cores (walking the group cpumask and clearing
-   cpu_smt_mask), and asym_prefer_cpu (O(N^3) bitmap operations per
-   hotplug step). Similarly, init_overlap_sched_group() recomputes
-   build_balance_mask() and cpumask_weight(sg_span) even when the shared
-   sgc was already initialized.
+1. detach_destroy_domains() calls
+   cpu_attach_domain(NULL, &def_root_domain, i) -> rq_attach_root() ->
+   __dl_server_attach_root() for each of the N CPUs. Each call recomputes
+   cpumask_weight_and(rd->span, cpu_active_mask) twice and calls
+   __dl_add() -> __dl_update(), walking all active CPUs attached to
+   def_root_domain so far to update rq->dl.extra_bw, only for
+   def_root_domain to be detached milliseconds later.
 
-2. __sdt_alloc() and __sds_alloc() upfront-allocate a sched_group,
-   sched_group_capacity, and sched_domain_shared for every CPU in cpu_map
-   at every topology level, even though get_group() only uses the entry
-   for the first CPU of each child domain and d.sds is only used once per
-   LLC (plus at most once per SD_ASYM_CPUCAPACITY_FULL domain). All other
-   per-CPU allocations are immediately freed unused by
-   __free_domain_allocs().
+2. build_sched_domains() calls cpu_attach_domain(sd, d.rd, i) ->
+   rq_attach_root() -> __dl_server_attach_root() for each of the N CPUs,
+   performing another N*(N+1)/2 remote rq->dl.extra_bw updates using
+   intermediate partial span weights (1..N) that are immediately
+   discarded at the end of partition_sched_domains_locked().
 
-Cache group_weight, cores, and asym_prefer_cpu on struct
-sched_group_capacity so init_sched_groups_capacity() computes them once
-per shared group capacity, reuse already-initialized sgc instances in
-init_overlap_sched_group(), and allocate sdd->sg, sdd->sgc, and d->sds
-lazily on demand.
+3. dl_rebuild_rd_accounting() -> dl_clear_root_domain() resets
+   rd->dl_bw.total_bw = 0 and cpu_rq(i)->dl.extra_bw = max_bw, and then
+   calls dl_server_add_bw(rd, i) -> __dl_add() -> __dl_update() in a
+   nested O(N^2) loop over rd->span with interrupts disabled.
+
+Remove the redundant __dl_server_attach_root() calls from rq_attach_root()
+(since partition_sched_domains_locked() always rebuilds root_domain
+accounting via dl_rebuild_rd_accounting() once domain attachment is
+complete), and replace the nested O(N^2) loop in dl_clear_root_domain()
+with a single O(N) accumulation pass and a single O(N) extra_bw update
+pass.
+
+Also provide a !CONFIG_CPUSETS implementation of
+dl_rebuild_rd_accounting() (using a lockless dl_prio(READ_ONCE(p->prio))
+pre-check before dl_add_task_root_domain(p)). Previously,
+dl_rebuild_rd_accounting() was a no-op stub when CONFIG_CPUSETS=n, which
+left root_domain rebuilds without SCHED_DEADLINE task bandwidth
+accounting and left inconsistent per-CPU extra_bw values computed from
+partial active CPU counts in rq_attach_root().
 
 2-socket, 480-CPU Intel Xeon 6985P-C (N=479, mean of 10 runs):
-  Offline:   9.85 s ->  5.15 s (-47.7%)
-  Online:    8.69 s ->  4.05 s (-53.4%)
-  Total:    18.54 s ->  9.20 s (-50.4%)
-  build_sched_domains() (cpu479 offline / online):
-    35.65 ms -> 10.39 ms (-70.9%) / 35.68 ms -> 9.58 ms (-73.2%)
+  Offline:   5.15 s ->  3.88 s (-24.7%)
+  Online:    4.05 s ->  2.51 s (-38.0%)
+  Total:     9.20 s ->  6.39 s (-30.5%)
+  dl_clear_root_domain() / dl_rebuild_rd_accounting() (cpu479):
+    5,537.0 us -> 58.1 us (-99.0%) / 5,176.2 us -> 61.9 us (-98.8%)
 
 2-socket, 512-CPU AMD EPYC 9B45 (N=511, mean of 10 runs):
-  Offline:   4.51 s ->  3.26 s (-27.7%)
-  Online:    3.15 s ->  2.03 s (-35.6%)
-  Total:     7.66 s ->  5.29 s (-30.9%)
-  build_sched_domains() (cpu511 offline / online):
-    11.69 ms -> 5.61 ms (-52.0%) / 12.24 ms -> 5.84 ms (-52.3%)
+  Offline:   3.26 s ->  2.77 s (-15.0%)
+  Online:    2.03 s ->  1.53 s (-24.6%)
+  Total:     5.29 s ->  4.30 s (-18.7%)
+  dl_clear_root_domain() / dl_rebuild_rd_accounting() (cpu511):
+    1,880.5 us -> 27.5 us (-98.5%) / 1,762.3 us -> 22.6 us (-98.7%)
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/sched/sched.h    |   9 ++
- kernel/sched/topology.c | 218 ++++++++++++++++++++++++++--------------
- 2 files changed, 150 insertions(+), 77 deletions(-)
+ include/linux/cpuset.h         | 23 ++++++---
+ include/linux/sched/deadline.h |  1 -
+ kernel/sched/deadline.c        | 93 +++++++++++++++++++++-------------
+ kernel/sched/sched.h           |  1 -
+ kernel/sched/topology.c        | 13 -----
+ 5 files changed, 73 insertions(+), 58 deletions(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 499a5649582e..314fcad94668 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2262,6 +2262,15 @@ struct sched_group_capacity {
+diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
+index 914983387e95..b99f329551fa 100644
+--- a/include/linux/cpuset.h
++++ b/include/linux/cpuset.h
+@@ -129,7 +129,7 @@ static inline int cpuset_do_page_mem_spread(void)
  
- 	int			id;
+ extern bool current_cpuset_is_being_rebound(void);
  
-+	/*
-+	 * Build-time cache shared by all groups using this sgc while
-+	 * build_sched_domains() runs; not maintained afterwards (e.g. by
-+	 * sched_update_asym_prefer_cpu()). Use the sched_group copies.
-+	 */
-+	unsigned int		group_weight;
-+	unsigned int		cores;
-+	int			asym_prefer_cpu;
-+
- 	unsigned long		cpumask[];		/* Balance mask */
- };
+-extern void dl_rebuild_rd_accounting(void);
++void dl_rebuild_rd_accounting(void);
+ extern void rebuild_sched_domains(void);
  
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 919d0fb00bd9..a5a5d1378ce2 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1207,6 +1207,33 @@ int group_balance_cpu(struct sched_group *sg)
-  */
+ extern void cpuset_print_current_mems_allowed(void);
+@@ -196,9 +196,20 @@ static inline void cpuset_update_active_cpus(void)
  
- 
-+/* Find the group_balance_cpu() */
-+static int find_group_balance_cpu(struct sched_domain *sd, struct sched_group *sg)
+ static inline void inc_dl_tasks_cs(struct task_struct *task) { }
+ static inline void dec_dl_tasks_cs(struct task_struct *task) { }
+-static inline void cpuset_lock(void) { }
+-static inline void cpuset_unlock(void) { }
+-static inline void lockdep_assert_cpuset_lock_held(void) { }
++static inline void cpuset_lock(void)
 +{
-+	const struct cpumask *sg_span = sched_group_span(sg);
-+	struct sd_data *sdd = sd->private;
-+	struct sched_domain *sibling;
-+	int i;
-+
-+	for_each_cpu(i, sg_span) {
-+		sibling = *per_cpu_ptr(sdd->sd, i);
-+
-+		/*
-+		 * Can happen in the asymmetric case, where these siblings are
-+		 * unused. The mask will not be empty because those CPUs that
-+		 * do have the top domain _should_ span the domain.
-+		 */
-+		if (!sibling->child)
-+			continue;
-+
-+		/* If we would not end up here, we can't continue from here */
-+		if (cpumask_equal(sg_span, sched_domain_span(sibling->child)))
-+			return i;
-+	}
-+
-+	return nr_cpu_ids;
++	sched_domains_mutex_lock();
 +}
 +
- /*
-  * Build the balance mask; it contains only those CPUs that can arrive at this
-  * group and should be considered to continue balancing.
-@@ -1216,17 +1243,19 @@ int group_balance_cpu(struct sched_group *sg)
-  * can fully construct this using the sched_domain bits (which are already
-  * complete).
-  */
--static void
--build_balance_mask(struct sched_domain *sd, struct sched_group *sg, struct cpumask *mask)
-+static void build_balance_mask(int group_balance_cpu,
-+			       struct sched_domain *sd,
-+			       struct sched_group *sg,
-+			       struct cpumask *mask)
++static inline void cpuset_unlock(void)
++{
++	sched_domains_mutex_unlock();
++}
++
++static inline void lockdep_assert_cpuset_lock_held(void)
++{
++	lockdep_assert_held(&sched_domains_mutex);
++}
+ 
+ static inline void cpuset_cpus_allowed_locked(struct task_struct *p,
+ 					struct cpumask *mask)
+@@ -273,9 +284,7 @@ static inline bool current_cpuset_is_being_rebound(void)
+ 	return false;
+ }
+ 
+-static inline void dl_rebuild_rd_accounting(void)
+-{
+-}
++void dl_rebuild_rd_accounting(void);
+ 
+ static inline void rebuild_sched_domains(void)
  {
- 	const struct cpumask *sg_span = sched_group_span(sg);
- 	struct sd_data *sdd = sd->private;
- 	struct sched_domain *sibling;
+diff --git a/include/linux/sched/deadline.h b/include/linux/sched/deadline.h
+index 273538200a44..6f03357f05c7 100644
+--- a/include/linux/sched/deadline.h
++++ b/include/linux/sched/deadline.h
+@@ -31,7 +31,6 @@ static inline bool dl_time_before(u64 a, u64 b)
+ 
+ struct root_domain;
+ extern void dl_add_task_root_domain(struct task_struct *p);
+-extern void dl_clear_root_domain(struct root_domain *rd);
+ extern void dl_clear_root_domain_cpu(int cpu);
+ /*
+  * Return whether moving DL task @p to @new_mask requires moving DL
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index c0ebdcde5fe5..c8847e1ea55a 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1885,24 +1885,6 @@ void sched_init_dl_servers(void)
+ 	}
+ }
+ 
+-void __dl_server_attach_root(struct sched_dl_entity *dl_se, struct rq *rq)
+-{
+-	u64 new_bw = dl_se->dl_bw;
+-	int cpu = cpu_of(rq);
+-	struct dl_bw *dl_b;
+-
+-	if (!dl_se->dl_bw_attached)
+-		return;
+-
+-	dl_b = dl_bw_of(cpu_of(rq));
+-	guard(raw_spinlock)(&dl_b->lock);
+-
+-	if (!dl_bw_cpus(cpu))
+-		return;
+-
+-	__dl_add(dl_b, new_bw, dl_bw_cpus(cpu));
+-}
+-
+ int dl_server_apply_params(struct sched_dl_entity *dl_se, u64 runtime, u64 period, bool init)
+ {
+ 	u64 old_bw = (init || !dl_se->dl_bw_attached) ? 0 :
+@@ -3433,7 +3415,8 @@ void dl_add_task_root_domain(struct task_struct *p)
+ 	struct cpumask *msk;
+ 
+ 	raw_spin_lock_irqsave(&p->pi_lock, rf.flags);
+-	if (!dl_task(p) || dl_entity_is_special(&p->dl)) {
++	if (!dl_task(p) || dl_entity_is_special(&p->dl) ||
++	    (READ_ONCE(p->__state) == TASK_DEAD && !cpu_active(task_cpu(p)))) {
+ 		raw_spin_unlock_irqrestore(&p->pi_lock, rf.flags);
+ 		return;
+ 	}
+@@ -3451,18 +3434,22 @@ void dl_add_task_root_domain(struct task_struct *p)
+ 	raw_spin_unlock_irqrestore(&p->pi_lock, rf.flags);
+ }
+ 
+-static void dl_server_add_bw(struct root_domain *rd, int cpu)
++static void dl_server_sum_bw(int cpu, int cpus, u64 *total_bw, s64 *extra_bw)
+ {
+ 	struct sched_dl_entity *dl_se;
+ 
+ 	dl_se = &cpu_rq(cpu)->fair_server;
+-	if (dl_server(dl_se) && dl_se->dl_bw_attached && cpu_active(cpu))
+-		__dl_add(&rd->dl_bw, dl_se->dl_bw, dl_bw_cpus(cpu));
++	if (dl_server(dl_se) && dl_se->dl_bw_attached) {
++		*total_bw += dl_se->dl_bw;
++		*extra_bw -= (s32)dl_se->dl_bw / cpus;
++	}
+ 
+ #ifdef CONFIG_SCHED_CLASS_EXT
+ 	dl_se = &cpu_rq(cpu)->ext_server;
+-	if (dl_server(dl_se) && dl_se->dl_bw_attached && cpu_active(cpu))
+-		__dl_add(&rd->dl_bw, dl_se->dl_bw, dl_bw_cpus(cpu));
++	if (dl_server(dl_se) && dl_se->dl_bw_attached) {
++		*total_bw += dl_se->dl_bw;
++		*extra_bw -= (s32)dl_se->dl_bw / cpus;
++	}
+ #endif
+ }
+ 
+@@ -3483,26 +3470,33 @@ static u64 dl_server_read_bw(int cpu)
+ 	return dl_bw;
+ }
+ 
+-void dl_clear_root_domain(struct root_domain *rd)
++static void dl_clear_root_domain(struct root_domain *rd)
+ {
 -	int i;
-+	int i = group_balance_cpu;
++	u64 total_bw = 0;
++	s64 extra_bw = 0;
++	int i, cpus;
  
- 	cpumask_clear(mask);
+ 	guard(raw_spinlock_irqsave)(&rd->dl_bw.lock);
  
--	for_each_cpu(i, sg_span) {
-+	for_each_cpu_from(i, sg_span) {
- 		sibling = *per_cpu_ptr(sdd->sd, i);
- 
- 		/*
-@@ -1277,32 +1306,51 @@ build_group_from_child_sched_domain(struct sched_domain *sd, int cpu)
- 	return sg;
- }
- 
--static void init_overlap_sched_group(struct sched_domain *sd,
--				     struct sched_group *sg)
-+static int init_overlap_sched_group(struct sched_domain *sd,
-+				    struct sched_group *sg)
- {
- 	struct cpumask *mask = sched_domains_tmpmask2;
- 	struct sd_data *sdd = sd->private;
--	struct cpumask *sg_span;
-+	struct cpumask *sg_span = sched_group_span(sg);
-+	struct sched_group_capacity *sgc;
- 	int cpu;
- 
--	build_balance_mask(sd, sg, mask);
--	cpu = cpumask_first(mask);
-+	cpu = find_group_balance_cpu(sd, sg);
-+	if (WARN_ON_ONCE(cpu >= nr_cpu_ids))
-+		return -ENOENT;
- 
--	sg->sgc = *per_cpu_ptr(sdd->sgc, cpu);
--	if (atomic_inc_return(&sg->sgc->ref) == 1)
--		cpumask_copy(group_balance_mask(sg), mask);
--	else
--		WARN_ON_ONCE(!cpumask_equal(group_balance_mask(sg), mask));
-+	sgc = *per_cpu_ptr(sdd->sgc, cpu);
-+	if (sgc && atomic_read(&sgc->ref)) {
-+		atomic_inc(&sgc->ref);
-+		sg->sgc = sgc;
-+		return 0;
-+	}
-+
-+	if (!sgc) {
-+		sgc = kzalloc_node(sizeof(*sgc) + cpumask_size(),
-+				   GFP_KERNEL, cpu_to_node(cpu));
-+		if (!sgc)
-+			return -ENOMEM;
-+		sgc->id = cpu;
-+		*per_cpu_ptr(sdd->sgc, cpu) = sgc;
-+	}
-+
-+	build_balance_mask(cpu, sd, sg, mask);
-+
-+	sg->sgc = sgc;
-+	atomic_set(&sgc->ref, 1);
-+	cpumask_copy(group_balance_mask(sg), mask);
- 
+-	/*
+-	 * Reset total_bw to zero and extra_bw to max_bw so that next
+-	 * loop will add dl-servers contributions back properly,
+-	 */
+-	rd->dl_bw.total_bw = 0;
+-	for_each_cpu(i, rd->span)
+-		cpu_rq(i)->dl.extra_bw = cpu_rq(i)->dl.max_bw;
+-
  	/*
- 	 * Initialize sgc->capacity such that even if we mess up the
- 	 * domains and no possible iteration will get us here, we won't
- 	 * die on a /0 trap.
+ 	 * dl_servers are not tasks. Since dl_add_task_root_domain ignores
+ 	 * them, we need to account for them here explicitly.
  	 */
--	sg_span = sched_group_span(sg);
--	sg->sgc->capacity = SCHED_CAPACITY_SCALE * cpumask_weight(sg_span);
--	sg->sgc->min_capacity = SCHED_CAPACITY_SCALE;
--	sg->sgc->max_capacity = SCHED_CAPACITY_SCALE;
-+	sgc->capacity = SCHED_CAPACITY_SCALE * cpumask_weight(sg_span);
-+	sgc->min_capacity = SCHED_CAPACITY_SCALE;
-+	sgc->max_capacity = SCHED_CAPACITY_SCALE;
-+
-+	return 0;
- }
- 
- static struct sched_domain *
-@@ -1405,7 +1453,10 @@ build_overlap_sched_groups(struct sched_domain *sd, int cpu)
- 		sg_span = sched_group_span(sg);
- 		cpumask_or(covered, covered, sg_span);
- 
--		init_overlap_sched_group(sibling, sg);
-+		if (init_overlap_sched_group(sibling, sg)) {
-+			kfree(sg);
-+			goto fail;
-+		}
- 
- 		if (!first)
- 			first = sg;
-@@ -1507,6 +1558,25 @@ static struct sched_group *get_group(int cpu, struct sd_data *sdd)
- 		cpu = cpumask_first(sched_domain_span(child));
- 
- 	sg = *per_cpu_ptr(sdd->sg, cpu);
-+	if (!sg) {
-+		sg = kzalloc_node(sizeof(*sg) + cpumask_size(),
-+				  GFP_KERNEL, cpu_to_node(cpu));
-+		if (!sg)
-+			return NULL;
-+		sg->next = sg;
-+		*per_cpu_ptr(sdd->sg, cpu) = sg;
+-	for_each_cpu(i, rd->span)
+-		dl_server_add_bw(rd, i);
++	cpus = cpumask_weight_and(rd->span, cpu_active_mask);
++	if (cpus) {
++		for_each_cpu_and(i, rd->span, cpu_active_mask)
++			dl_server_sum_bw(i, cpus, &total_bw, &extra_bw);
 +	}
 +
-+	if (!*per_cpu_ptr(sdd->sgc, cpu)) {
-+		struct sched_group_capacity *sgc;
++	rd->dl_bw.total_bw = total_bw;
++	for_each_cpu(i, rd->span) {
++		struct rq *rq = cpu_rq(i);
++		u64 bw = rq->dl.max_bw;
 +
-+		sgc = kzalloc_node(sizeof(*sgc) + cpumask_size(),
-+				   GFP_KERNEL, cpu_to_node(cpu));
-+		if (!sgc)
-+			return NULL;
-+		sgc->id = cpu;
-+		*per_cpu_ptr(sdd->sgc, cpu) = sgc;
++		if (cpu_active(i))
++			bw += extra_bw;
++		WRITE_ONCE(rq->dl.extra_bw, bw);
 +	}
- 	sg->sgc = *per_cpu_ptr(sdd->sgc, cpu);
+ }
  
- 	/* Increase refcounts for claim_allocations: */
-@@ -1562,6 +1632,8 @@ build_sched_groups(struct sched_domain *sd, int cpu)
- 			continue;
+ void dl_clear_root_domain_cpu(int cpu)
+@@ -3510,6 +3504,33 @@ void dl_clear_root_domain_cpu(int cpu)
+ 	dl_clear_root_domain(cpu_rq(cpu)->rd);
+ }
  
- 		sg = get_group(i, sdd);
-+		if (!sg)
-+			return -ENOMEM;
- 
- 		cpumask_or(covered, covered, sched_group_span(sg));
- 
-@@ -1595,27 +1667,40 @@ static void init_sched_groups_capacity(int cpu, struct sched_domain *sd)
- 	WARN_ON(!sg);
- 
- 	do {
--		int cpu, cores = 0, max_cpu = -1;
-+		int i, cores = 0, max_cpu = -1;
++#ifndef CONFIG_CPUSETS
++void dl_rebuild_rd_accounting(void)
++{
++	struct task_struct *g, *p;
++	u64 cookie = ++dl_cookie;
++	int cpu;
 +
-+		if (sg->group_weight)
-+			goto next;
++	lockdep_assert_cpus_held();
++	lockdep_assert_held(&sched_domains_mutex);
 +
-+		if (sg->sgc->group_weight) {
-+			sg->group_weight = sg->sgc->group_weight;
-+			sg->cores = sg->sgc->cores;
-+			sg->asym_prefer_cpu = sg->sgc->asym_prefer_cpu;
-+			goto next;
-+		}
- 
- 		sg->group_weight = cpumask_weight(sched_group_span(sg));
- 
- 		cpumask_copy(mask, sched_group_span(sg));
--		for_each_cpu(cpu, mask) {
-+		for_each_cpu(i, mask) {
- 			cores++;
--			cpumask_andnot(mask, mask, cpu_smt_mask(cpu));
-+			cpumask_andnot(mask, mask, cpu_smt_mask(i));
- 		}
- 		sg->cores = cores;
- 
--		if (!(sd->flags & SD_ASYM_PACKING))
--			goto next;
--
--		for_each_cpu(cpu, sched_group_span(sg)) {
--			if (max_cpu < 0)
--				max_cpu = cpu;
--			else if (sched_asym_prefer(cpu, max_cpu))
--				max_cpu = cpu;
-+		if (sd->flags & SD_ASYM_PACKING) {
-+			for_each_cpu(i, sched_group_span(sg)) {
-+				if (max_cpu < 0)
-+					max_cpu = i;
-+				else if (sched_asym_prefer(i, max_cpu))
-+					max_cpu = i;
-+			}
-+			sg->asym_prefer_cpu = max_cpu;
- 		}
--		sg->asym_prefer_cpu = max_cpu;
++	rcu_read_lock();
++	for_each_possible_cpu(cpu) {
++		if (dl_bw_visited(cpu, cookie))
++			continue;
 +
-+		sg->sgc->group_weight = sg->group_weight;
-+		sg->sgc->cores = sg->cores;
-+		sg->sgc->asym_prefer_cpu = sg->asym_prefer_cpu;
- 
- next:
- 		sg = sg->next;
-@@ -1889,7 +1974,8 @@ static void claim_allocations(int cpu, struct s_data *d)
- {
- 	struct sched_domain *sd;
- 
--	if (atomic_read(&(*per_cpu_ptr(d->sds, cpu))->ref))
-+	if (*per_cpu_ptr(d->sds, cpu) &&
-+	    atomic_read(&(*per_cpu_ptr(d->sds, cpu))->ref))
- 		*per_cpu_ptr(d->sds, cpu) = NULL;
- 
- 	for (sd = *per_cpu_ptr(d->sd, cpu); sd; sd = sd->parent) {
-@@ -1898,10 +1984,12 @@ static void claim_allocations(int cpu, struct s_data *d)
- 		WARN_ON_ONCE(*per_cpu_ptr(sdd->sd, cpu) != sd);
- 		*per_cpu_ptr(sdd->sd, cpu) = NULL;
- 
--		if (atomic_read(&(*per_cpu_ptr(sdd->sg, cpu))->ref))
-+		if (*per_cpu_ptr(sdd->sg, cpu) &&
-+		    atomic_read(&(*per_cpu_ptr(sdd->sg, cpu))->ref))
- 			*per_cpu_ptr(sdd->sg, cpu) = NULL;
- 
--		if (atomic_read(&(*per_cpu_ptr(sdd->sgc, cpu))->ref))
-+		if (*per_cpu_ptr(sdd->sgc, cpu) &&
-+		    atomic_read(&(*per_cpu_ptr(sdd->sgc, cpu))->ref))
- 			*per_cpu_ptr(sdd->sgc, cpu) = NULL;
- 	}
- }
-@@ -2700,8 +2788,6 @@ static int __sdt_alloc(const struct cpumask *cpu_map)
- 
- 		for_each_cpu(j, cpu_map) {
- 			struct sched_domain *sd;
--			struct sched_group *sg;
--			struct sched_group_capacity *sgc;
- 
- 			sd = kzalloc_node(sizeof(struct sched_domain) + cpumask_size(),
- 					GFP_KERNEL, cpu_to_node(j));
-@@ -2709,24 +2795,6 @@ static int __sdt_alloc(const struct cpumask *cpu_map)
- 				return -ENOMEM;
- 
- 			*per_cpu_ptr(sdd->sd, j) = sd;
--
--			sg = kzalloc_node(sizeof(struct sched_group) + cpumask_size(),
--					GFP_KERNEL, cpu_to_node(j));
--			if (!sg)
--				return -ENOMEM;
--
--			sg->next = sg;
--
--			*per_cpu_ptr(sdd->sg, j) = sg;
--
--			sgc = kzalloc_node(sizeof(struct sched_group_capacity) + cpumask_size(),
--					GFP_KERNEL, cpu_to_node(j));
--			if (!sgc)
--				return -ENOMEM;
--
--			sgc->id = j;
--
--			*per_cpu_ptr(sdd->sgc, j) = sgc;
- 		}
- 	}
- 
-@@ -2767,23 +2835,10 @@ static void __sdt_free(const struct cpumask *cpu_map)
- 
- static int __sds_alloc(struct s_data *d, const struct cpumask *cpu_map)
- {
--	int j;
--
- 	d->sds = alloc_percpu(struct sched_domain_shared *);
- 	if (!d->sds)
- 		return -ENOMEM;
- 
--	for_each_cpu(j, cpu_map) {
--		struct sched_domain_shared *sds;
--
--		sds = kzalloc_node(sizeof(struct sched_domain_shared),
--				GFP_KERNEL, cpu_to_node(j));
--		if (!sds)
--			return -ENOMEM;
--
--		*per_cpu_ptr(d->sds, j) = sds;
--	}
--
- 	return 0;
- }
- 
-@@ -2954,7 +3009,7 @@ static void adjust_numa_imbalance(struct sched_domain *sd_llc)
- 	}
- }
- 
--static void
-+static int
- init_sched_domain_shared(struct s_data *d, struct sched_domain *sd, int flags)
- {
- 	struct sched_domain_shared *sds = NULL;
-@@ -2976,6 +3031,13 @@ init_sched_domain_shared(struct s_data *d, struct sched_domain *sd, int flags)
- 	 */
- 	for_each_cpu(cpu, sched_domain_span(sd)) {
- 		sds = *per_cpu_ptr(d->sds, cpu);
-+		if (!sds) {
-+			sds = kzalloc_node(sizeof(*sds),
-+					   GFP_KERNEL, cpu_to_node(cpu));
-+			if (!sds)
-+				return -ENOMEM;
-+			*per_cpu_ptr(d->sds, cpu) = sds;
-+		}
- 
- 		if (!sds->alloc_flags ||
- 		    sd->span_weight == 1 ||
-@@ -3000,6 +3062,8 @@ init_sched_domain_shared(struct s_data *d, struct sched_domain *sd, int flags)
- 	 */
- 	atomic_set(&sd->shared->nr_busy_cpus, sd->span_weight);
- 	atomic_inc(&sd->shared->ref);
++		dl_clear_root_domain_cpu(cpu);
++	}
++	for_each_process_thread(g, p) {
++		/* Racy pre-check; dl_add_task_root_domain() rechecks under pi_lock. */
++		if (!dl_prio(READ_ONCE(p->prio)))
++			continue;
++		dl_add_task_root_domain(p);
++	}
++	rcu_read_unlock();
++}
++#endif
 +
-+	return 0;
- }
- 
- /*
-@@ -3015,25 +3079,24 @@ init_sched_domain_shared(struct s_data *d, struct sched_domain *sd, int flags)
-  * degenerate into a single-capacity group. The relevant edge cases are instead
-  * covered by the caveats above.
-  *
-- * Return true if this CPU's asym path claimed sd->shared, false otherwise.
-+ * Return 0 on success or if not claimed, -ENOMEM on allocation failure.
-  */
--static bool claim_asym_sched_domain_shared(struct s_data *d, int cpu)
-+static int claim_asym_sched_domain_shared(struct s_data *d, int cpu)
+ static void switched_from_dl(struct rq *rq, struct task_struct *p)
  {
- 	struct sched_domain *sd = *per_cpu_ptr(d->sd, cpu);
- 	struct sched_domain *sd_asym;
+ 	/*
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 314fcad94668..3225cda0f9f6 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -418,7 +418,6 @@ extern void sched_init_dl_servers(void);
  
- 	if (!sd)
--		return false;
-+		return 0;
+ extern void fair_server_init(struct rq *rq);
+ extern void ext_server_init(struct rq *rq);
+-extern void __dl_server_attach_root(struct sched_dl_entity *dl_se, struct rq *rq);
+ extern int dl_server_apply_params(struct sched_dl_entity *dl_se,
+ 		    u64 runtime, u64 period, bool init);
+ extern int dl_server_attach_bw(struct sched_dl_entity *dl_se);
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index a5a5d1378ce2..b5dec7f486b5 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -516,19 +516,6 @@ void rq_attach_root(struct rq *rq, struct root_domain *rd)
+ 	if (cpumask_test_cpu(rq->cpu, cpu_active_mask))
+ 		set_rq_online(rq);
  
- 	sd_asym = sd;
- 	while (sd_asym && !(sd_asym->flags & SD_ASYM_CPUCAPACITY_FULL))
- 		sd_asym = sd_asym->parent;
+-	/*
+-	 * Because the rq is not a task, dl_add_task_root_domain() did not
+-	 * move the fair server bw to the rd if it already started.
+-	 * Add it now.
+-	 */
+-	if (rq->fair_server.dl_server)
+-		__dl_server_attach_root(&rq->fair_server, rq);
+-
+-#ifdef CONFIG_SCHED_CLASS_EXT
+-	if (rq->ext_server.dl_server)
+-		__dl_server_attach_root(&rq->ext_server, rq);
+-#endif
+-
+ 	rq_unlock_irqrestore(rq, &rf);
  
- 	if (!sd_asym || (sd_asym->flags & SD_NUMA))
--		return false;
-+		return 0;
- 
--	init_sched_domain_shared(d, sd_asym, SD_ASYM_CPUCAPACITY);
--	return true;
-+	return init_sched_domain_shared(d, sd_asym, SD_ASYM_CPUCAPACITY);
- }
- 
- static int __sched_domains_alloc_llc_id(void)
-@@ -3179,15 +3242,16 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
- 		if (!sd)
- 			continue;
- 
--		if (has_asym)
--			claim_asym_sched_domain_shared(&d, i);
-+		if (has_asym && claim_asym_sched_domain_shared(&d, i))
-+			goto error;
- 
- 		/* First, find the topmost SD_SHARE_LLC domain */
- 		while (sd->parent && (sd->parent->flags & SD_SHARE_LLC))
- 			sd = sd->parent;
- 
- 		if (sd->flags & SD_SHARE_LLC) {
--			init_sched_domain_shared(&d, sd, SD_SHARE_LLC);
-+			if (init_sched_domain_shared(&d, sd, SD_SHARE_LLC))
-+				goto error;
- 
- 			/*
- 			 * In presence of higher domains, adjust the
+ 	if (old_rd)
 -- 
 2.56.0.176.g3575e65682-goog
 
