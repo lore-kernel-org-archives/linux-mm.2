@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD6A608343C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8FB608484A
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SeaWtDs9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q7/5HC2y
 Received: by kanga.kvack.org (Postfix)
-	id 380CB6B029C; Mon, 19 Oct 2026 11:07:30 -0400 (EDT)
+	id 5F2416B02A0; Mon, 19 Oct 2026 11:07:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 331346B029E; Mon, 19 Oct 2026 11:07:30 -0400 (EDT)
+	id 5A42F6B02A1; Mon, 19 Oct 2026 11:07:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 221686B029F; Mon, 19 Oct 2026 11:07:30 -0400 (EDT)
+	id 4B84D6B02A3; Mon, 19 Oct 2026 11:07:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E94A26B029C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:07:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 892631406D1
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:29 +0000 (UTC)
-X-FDA: 85339704618.17.8A99DF1
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A78D6B02A1
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:07:32 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A593FC072C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:31 +0000 (UTC)
+X-FDA: 85339704702.09.789589C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EE7EF4000D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SeaWtDs9;
-	spf=pass (imf12.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792422448;
-	b=mTIS6r1nQr5cvvh4N/pLHsqA6eg6pNDFnzi5G0Kl/o3hNfapA0O6f/arc6jBcfoae/rNNy
-	VGXfnJPc1J3421ED/2oF3/cIweNXlETjGjQ6KRXf8H61oMslFXHvXcf2pf7Q2veCD4bhaK
-	G1SqJxaYqt1KhuEF0i7xGgIjw0gtuns=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SeaWtDs9;
-	spf=pass (imf12.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 27BDE14000D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:30 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Q7/5HC2y";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792422448;
+	s=arc-20220608; t=1792422450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=fwOiNhCTnZrqfGqH9TnldJ5DIHOFF0sKxmDqg1xr2P0=;
-	b=ubW6/Kd5Rj5/BSoyXRZh7VzheG6PuBvPdi7BrTcjVZi0DqhTqVRpv5UYUxfpxsFHobz7oy
-	13CUUYsvmb1HRRM/MV6aDqiO4p++qmuYdh7oxOGpi2jrL6mNanflpPO4WWgvUwuV/kLZOE
-	YQWsg1VAhGy19IrnCLV5kOuvB+ak63I=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KYIFZnbJ/tQXvMmHyoqaiwEU9dnEoX51wTobPwpbUYk=;
+	b=dFxsYpRvyullaWj6J8GAAOPul8jlTvSFmgl6J74GGyNPwFR1ASDSbTXSMLHhnuge8uA4pd
+	dpINkWxWUREdizGUCaZnRQ7pJMZkcW7lbouUXrICAk2dXuZEf7R3mAjTKD7KTnnF6i+hwJ
+	P1Dj2TVRfJl8osFplE+atPQpU9TlYkY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Q7/5HC2y";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792422450;
+	b=KNSvzeH53u/sfwrYop6O1gI1gFT4NNp6WPKdqN+/zJUXWDfjXQ1mSMak2cZH6AyMiIrYvq
+	5AtYYJ+eRUYUmP+g6Rzxcm07DMN2K7PnJPaMMv0CtLFgKZiOq3l97lLw02VoQ4hPPALsOb
+	GV+Io1jR156EU+IQHsJFAMjz+eIvE28=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B416601FD;
-	Mon, 19 Oct 2026 15:07:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D579D1F000C4;
-	Mon, 19 Oct 2026 15:07:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B874E602A8;
+	Mon, 19 Oct 2026 15:07:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE711F000C4;
+	Mon, 19 Oct 2026 15:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792422447;
-	bh=fwOiNhCTnZrqfGqH9TnldJ5DIHOFF0sKxmDqg1xr2P0=;
-	h=From:To:Cc:Subject:Date;
-	b=SeaWtDs9gxmhFp+vIt4L84AgDz6rjq+MyRqzdqZNSFtglItNvDMdmTgbJcGcsq8Xz
-	 Eye5aGoYQSrPh9EciHAWvyhlyAejXwTOOnsf3OonSv3DFoNVKAssZCYUFjLsQ+SybF
-	 gDqesw6cIzdFPdL6GiGjKFkZuzccLI6N2Wj6XoW5T0FsT/AMV0zpkG0GGvMYMnwENH
-	 wFCV0+LjkEPju3OuVrWndS6+fDWD3bMsUHIo1+g9qmV07mun11mmigFrQnIspe8AWV
-	 7m4hSeJaRBnACejNXCm/7SrfHTrlhY68oChuZ1jtoGJpHS38IQulRnQnj+j5ZTVJ1p
-	 md8SIrkVZesfQ==
+	s=k20260515; t=1792422449;
+	bh=KYIFZnbJ/tQXvMmHyoqaiwEU9dnEoX51wTobPwpbUYk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Q7/5HC2yuwRStW9uT0uRx6ddM3dspudm2S30vTdZhfxrJmdHNXGuppUxH6i1DtdhH
+	 XjJjNTLHPLxrW+qWvrEpd8QN+onnmwyIgNnBd0fQwuSdK92xPdtwMt1w7M4+Xwq/mn
+	 f2iPBxoQzG7PyD7Pe9C0ddHHi4/2k5vc/xBQBeN3Jth1U9QUpRRAYBhKd3j951VokQ
+	 /sZR+wL4hUIgfRCuk/OZ791Cf+jBc8dVRwgXpTXGpeKjA+vV2F30ax7BGlHDmLNjPB
+	 QO4zLIX/y1ygzGKb0ZtRKtxszT+/Cz4bUJLMDo/w8DN5pAkzhrfg/g0lPdI+dMDHY4
+	 K/2eHdhpPreFw==
 From: Mike Snitzer <snitzer@kernel.org>
 To: Chuck Lever <cel@kernel.org>,
 	Jeff Layton <jlayton@kernel.org>
@@ -73,26 +73,28 @@ Cc: linux-nfs@vger.kernel.org,
 	Matthew Wilcox <willy@infradead.org>,
 	linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v5 0/6] mm, iomap, NFSD: stop uncached writes reading back shared pages
-Date: Mon, 19 Oct 2026 11:07:19 -0400
-Message-ID: <20261019150725.1507-1-snitzer@kernel.org>
+Subject: [PATCH v5 2/6] mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
+Date: Mon, 19 Oct 2026 11:07:21 -0400
+Message-ID: <20261019150725.1507-3-snitzer@kernel.org>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20261019150725.1507-1-snitzer@kernel.org>
+References: <20261019150725.1507-1-snitzer@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uwimwc9f51yerkbw8ot58ofy3y5s4zz8
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 27BDE14000D
+X-Stat-Signature: scdkhcgndmx9q9eqaw6wzt7execf48qd
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EE7EF4000D
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792422447-938414
-X-HE-Meta: U2FsdGVkX1/Yhj0QmFIlLiweXpOSgfiUInTwCmOTSM+C/ppexiWvedafU47JrtywqhRyS0aMf6+QW2KPIznaCUTIlXN3/GIrW0oj5Au3ff7wHzHgzgxhm2burAtg6gVErFijfWs0GEfTbWMxhy359SY8vO3POY+wA8xkIB1tVwdKgGcFT3II0aBUXZEOqk7mo8rilRnEKun2kZak4dvFsl3Ni5l884Kl4hY+VNFsDTvz1Pa2KEV6LpW4U84Cxm965DwsI4lGqNnQ7Hp3DY2HNd/fXZQ4rs8aIDCXzAz7Su+LFb3AZDHoTSpO3qiEoTiRgsl6YDBc7yfGQFA5fZhLng/qcVBgVVIXdABuk4LgUKQmlRdqJ4HOP3kiVdQr0jgJ5zVEzYNOJTTyOb2tEyfs0mjOefytxouHVEuoO+oOgN337rkI7/ltfzbxc+qrx8CUR/jc9jxs+QvPqkx9QsVHmq+A5ZRQTvVFD2Na3MWwvLhEKOyG+BeQJMeuRJruPEEOrOi/73TUgpNsf27ythwisG95JSodeMnl24eTi5lYwClGtiZNpWQMaCGhC+4azPi6/wZT0XeOwXb5aieqIuSGP+w+WgMy4mefJePoHyVDdTp1ZIO5eo+PSitWnFauOZyWz7Up5yE0JoUTF9sp98D7IIB2ufOxOGD8l3oavSQF20/V/mNIrp5y2PR3Z0r+05GOnHgh5c90Is+UVUF8vpT9AzgyD+RQgizCcy7RuN4ISo9ynqA+ZMhe/+hOnSXij3nLK3Y7B4LHQdpg/I/X+8Nq/c6lEmgr6WhpgkbCvdtBklm6IvTB1hnsTwfCJ9CzNjcEu2iF1N/vmQQSerOxejTEkhtzvf2QK2dDs09o80XfrH5pNJrq70YgutWltOxMKzXFVW/t/ogqc6j0LR6Y6cuKz6girIqoWV06fDvhimmnZdi/3p6juxbeHLBiSyyACeVGCRBsh26k6WwO/NME0a+
- SL6OYjEb
- 6rqV5eo4U+10w+g/pPfA6z/RlkWwtTRlu3Z/Xv5W2YLRCSV0oIuxPZMJyU5U8iyDvNc5ie9F5wzoNlzrnrUNAHvruAAL+wFkHaMcERfgEc07La7y7iL6xUBMdpGgKGThHDk1U16ouozzNfcu0fDCxBe8zIm59WpDR3tSwoEs12ffAls6g+jNvtQUMU6k89+m5lEW7FH2k2HkPvIuLtbJQDmdikijbKtR9OJNIokZZRx31pz7hlCA6XRrVrhIYKFLKZfK8EwL5GRVUIEAkpW87r1m0yZrYr44MxVR+4MHO5LBP5N+F1qZnZXm0zg==
+X-HE-Tag: 1792422450-665003
+X-HE-Meta: U2FsdGVkX18kYqRDwF+nDxhVEo69bvwUfZsRLuLlGT2BJAFItI7jUK/fTpVy8R3/83Y1CJfpINyVISghKHmKv8n1Z2nqZM10gBtYsB5aO2RztKcQXv+m3s2CwzfiJfZqNW2pd+R2yJDZq7BfV9LusrIhpvDtE4ndVkiHmutMQJFlbkS0jyjNCqzTqtH6k7WXKZyzDGFvyXipPmaxA3jPaVJUC/4O4mk9xgL8sdiwbZ3G1DjqoBvCd5pFg76k4Eoh7P9ZwdAtzN9h2WuEuEmDtIlMNEYvB019vHUVoR+fNLWil2a0SGswy+ck0OyagWXVRTyww/izBTG7TzJX1ljr4HeQhoZU4JwXzzj1RTZpykb1xwdKBBb0luTzM8lbNZgl63PNqWFfslocSZKVLLt80PJCNpu6uNEXdJT6FwkpzCA6YObfIrHGA6pHFtG+kEWzorx68hrAendzDwOoLJCkuzdCjry7bZRof0oR1QFBkLLEnR8n/EgpI045I1cE6d6PPimGQdnvRU5JnxvJFlgHaescNk0JWgiqjR6zV1sGBz7vqHTXbvBhr2EtEFtB3UmfNdCKyU/hkjCTdSkk7T3iovgcDe4SGidOXr/lx2H4pJG6y07umpDS4SXxaADu5ejVL8sFuvtvoC8N39+4lXvfcRYNCkl5nKPCd04HtH/8YpHrR9L2c4OsItA4DT2sWnbf3GwsSDCbCJUVlEii25I4qwISJ8ssNjuELPWS4CZjxSl4ZXYWZ8WFnh9TMf6GrxOiqeY2XPL9SeCuwl5oVQAzCJHuCxdV6AET+C3FRA58pCxKcSsyM20gNhfxyxGl8BfTqhgR9tlgtuQi/+48+m2J62zQhctW4MxB+WFngzaTMgSjI4Y94t7dfclDSEPbccyTd61NeZwPXDnSEptmB5jSjuTmZiABhEGiK1sxGfD7hrg2PCxdX3Orex7TpppQM02Pk44EstRqBEx65A/dWXs
+ lCkDxFpB
+ Jt8DfEW7kesN5DmaDRtrxrY8XiizADxIh8evYHISH25eUgIjQ1IRaSstOf01f25GxyaDN7M7Wm8a+o09+TNnOLugmoOALiC4pagUTs9gfyW8qnq2tv/4udfc5XwQkLy139UBuKw621TuNqUUzV2bYFV0CnWUOwd9iKHLr0s6yBqNQFJls3JJUqxQ0DySlBamnsj6Z7CZl45U1F1T1pPDBMCazoXufgpRaRaFboe5UYpPRyHkZ50kbm1VzvxtR71giWD6WuVvlhwpKgoshAdYvThLURTau5pfRyyY1gzKy6UaP2ED+rrsIrJF4CLQRX2MBzix2etGSA/K+9oMg8iaA3Z+ZbyP9rj0r2shpr5ZRFmuozvZffpiJI/fiH+IYUuPuvAJdQoeD9UmrAcHz0uuFP8iHwHs36KS9ytFdtMewJVBeXvmE3SP0CFMSUAetVj5cqLYG8rqjqK3F5s1ADaH6D8H7R3GGyyr/jl18
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,105 +103,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+The per-bdi_writeback WB_DONTCACHE_DIRTY counter drives how much the
+flusher writes back in response to an IOCB_DONTCACHE kick, but it is
+not reported anywhere, so the DONTCACHE dirty backlog can only be
+inferred from MemFree/Cached movement.
 
-Chuck asked, of v4 7-9, whether those changes belong in NFSD or in mm:
-"Seems like you've identified an issue with DONTCACHE itself that
-shouldn't be limited to an NFSD-only fix."  He was right, and v5 moves
-the fix into the page cache.
+Report it as BdiDontcacheDirty in /sys/kernel/debug/bdi/<dev>/stats
+and as WbDontcacheDirty in the per-wb stats, next to the
+Reclaimable line.  Use wb_stat_sum() rather than wb_stat() to fold in
+the per-cpu batches: the flusher targets the summed value and small
+backlogs would otherwise read as zero.
 
-An uncached (RWF_DONTCACHE) buffered write drops each page it writes
-once that page is written back.  A page the write covers only partly is
-shared with the neighbouring write, and once the first of the two has
-been written back the second has to read it back from disk before it
-can write its part.  This shows without NFS.  32 threads writing
-interleaved records to one file on XFS (emulated 4Kn NVMe, 4 KiB pages),
-before and after 4/6:
+Fixes: 88d6f128d06d ("mm: track DONTCACHE dirty pages per bdi_writeback")
+Cc: Jeff Layton <jlayton@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: linux-mm@kvack.org
+Assisted-by: LLM
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+---
+ mm/backing-dev.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-  record  pwritev2() flags          4 KiB device       MiB/s
-  bytes                             reads per write
-                                    before   after     before  after
-  47008   RWF_DONTCACHE             0.97     0.000     831     2281
-  47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.000     601     1227
-  6000    RWF_DONTCACHE             0.97     0.000     121      488
-  6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.000      90      206
-
-4/6 has the page cache keep such a page for the write that completes
-it, and drop it after that.  5/6 lets a writer that syncs its own write,
-as NFSD does for a stable WRITE, mark those pages itself once the sync
-is done, so they are dropped without extra writeback.  6/6 is what is
-left of v4's 9/10: NFSD uses 5/6 and no longer manages any page cache
-state of its own.
-
-For NFSD DIRECT, 32 interleaved writers of 47008-byte records, against
-v4:
-
-                             device reads per WRITE   MiB/s
-  each record sent as        v4       v5              v4      v5
-  1 FILE_SYNC WRITE          0.0102   0.0002          379     402
-  2, one after the other     0.0021   0.0001          217     237
-  2 at the same time         0.0401   0.0001          212     234
-  2 UNSTABLE, then COMMIT    0.0944   0.0001          219     248
-
-and a FILE_SYNC WRITE no longer wakes the DONTCACHE writeback kick at
-all.  The patches' own descriptions carry the details.
-
-How this might land:
-
-- 1/6, tracepoints for how each direct-mode READ and WRITE is serviced,
-  is NFSD only and does not depend on the rest.  Chuck, it can go into
-  nfsd-testing on its own.
-
-- 2/6 to 5/6 are mm, with small iomap changes and an IOCB flag in 4/6
-  and 5/6; 6/6 is the NFSD change that uses them.  They are Cc'd to
-  linux-mm and linux-fsdevel.  It would help if the mm and iomap
-  maintainers could review them and, if they are agreeable, ack them for
-  Chuck to take 2/6 to 6/6 through nfsd-testing, so that further NFSD
-  direct-mode changes can build on them there.
-
-The series applies to cel/nfsd-testing (b4e06bef3884) and each patch
-builds with W=1 with no warnings.
-
-Changes since v4:
-- v4 1/10 to 6/10 dropped: Chuck applied them to nfsd-testing.
-- v4 10/10, the tracepoints, moved first, as 1/6.
-- v4 7/10 and 8/10 swapped, as 3/6 and 2/6.
-- New 4/6 and 5/6: the page cache, not NFSD, keeps the shared page.
-- 6/6 (was 9/10) retitled "NFSD: drop a shared boundary page only once
-  both WRITEs have written it" and reduced to calling 5/6's functions.
-  It folds in "NFSD: mark a shared boundary page only once the other
-  WRITE has written it", posted in reply to v4 9/10.
-- nfsd-io-modes.rst describes the page cache keeping the shared page.
-
-v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
-v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
-v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
-v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
-
-Thanks,
-Mike
-
-Mike Snitzer (6):
-  NFSD: add tracing for how direct-mode READ and WRITE are serviced
-  mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
-  mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
-  mm, iomap: keep a partly covered page until an uncached write completes it
-  mm, iomap: let an uncached writer complete its shared pages itself
-  NFSD: drop a shared boundary page only once both WRITEs have written it
-
- .../filesystems/nfs/nfsd-io-modes.rst         |  55 ++++++-
- fs/iomap/buffered-io.c                        |  16 +-
- fs/iomap/trace.h                              |   3 +-
- fs/nfsd/trace.h                               |  77 +++++++++
- fs/nfsd/vfs.c                                 | 146 +++++++++++++++---
- fs/nfsd/vfs.h                                 |   9 ++
- include/linux/fs.h                            |   8 +-
- include/linux/iomap.h                         |   1 +
- include/linux/pagemap.h                       |  12 ++
- mm/backing-dev.c                              |  11 ++
- mm/filemap.c                                  | 106 ++++++++++++-
- 11 files changed, 413 insertions(+), 31 deletions(-)
-
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index 18e999053bae..b8a2c27e07fa 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -46,6 +46,7 @@ struct wb_stats {
+ 	unsigned long nr_dirty_time;
+ 	unsigned long nr_writeback;
+ 	unsigned long nr_reclaimable;
++	unsigned long nr_dontcache_dirty;
+ 	unsigned long nr_dirtied;
+ 	unsigned long nr_written;
+ 	unsigned long dirty_thresh;
+@@ -78,6 +79,12 @@ static void collect_wb_stats(struct wb_stats *stats,
+ 
+ 	stats->nr_writeback += wb_stat(wb, WB_WRITEBACK);
+ 	stats->nr_reclaimable += wb_stat(wb, WB_RECLAIMABLE);
++	/*
++	 * Sum the per-cpu batches: the dontcache flusher targets this
++	 * counter via wb_stat_sum() and small backlogs would otherwise
++	 * read as zero here.
++	 */
++	stats->nr_dontcache_dirty += wb_stat_sum(wb, WB_DONTCACHE_DIRTY);
+ 	stats->nr_dirtied += wb_stat(wb, WB_DIRTIED);
+ 	stats->nr_written += wb_stat(wb, WB_WRITTEN);
+ 	stats->wb_thresh += wb_calc_thresh(wb, stats->dirty_thresh);
+@@ -125,6 +132,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
+ 	seq_printf(m,
+ 		   "BdiWriteback:       %10lu kB\n"
+ 		   "BdiReclaimable:     %10lu kB\n"
++		   "BdiDontcacheDirty:  %10lu kB\n"
+ 		   "BdiDirtyThresh:     %10lu kB\n"
+ 		   "DirtyThresh:        %10lu kB\n"
+ 		   "BackgroundThresh:   %10lu kB\n"
+@@ -139,6 +147,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
+ 		   "state:              %10lx\n",
+ 		   K(stats.nr_writeback),
+ 		   K(stats.nr_reclaimable),
++		   K(stats.nr_dontcache_dirty),
+ 		   K(stats.wb_thresh),
+ 		   K(dirty_thresh),
+ 		   K(background_thresh),
+@@ -163,6 +172,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
+ 		   "WbCgIno:           %10lu\n"
+ 		   "WbWriteback:       %10lu kB\n"
+ 		   "WbReclaimable:     %10lu kB\n"
++		   "WbDontcacheDirty:  %10lu kB\n"
+ 		   "WbDirtyThresh:     %10lu kB\n"
+ 		   "WbDirtied:         %10lu kB\n"
+ 		   "WbWritten:         %10lu kB\n"
+@@ -179,6 +189,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
+ #endif
+ 		   K(stats->nr_writeback),
+ 		   K(stats->nr_reclaimable),
++		   K(stats->nr_dontcache_dirty),
+ 		   K(stats->wb_thresh),
+ 		   K(stats->nr_dirtied),
+ 		   K(stats->nr_written),
 -- 
 2.52.0
 
