@@ -4,124 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90408CCF2E5
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:25:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2650CCF2E5
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74FF76B027F; Mon, 19 Oct 2026 10:25:12 -0400 (EDT)
+	id AFF676B00EE; Mon, 19 Oct 2026 10:28:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 727B56B0280; Mon, 19 Oct 2026 10:25:12 -0400 (EDT)
+	id AB0AA6B00EF; Mon, 19 Oct 2026 10:28:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63D896B0281; Mon, 19 Oct 2026 10:25:12 -0400 (EDT)
+	id 9C6CD6B00F0; Mon, 19 Oct 2026 10:28:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E2706B027F
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:25:12 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BE2FC806D9
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:25:11 +0000 (UTC)
-X-FDA: 85339598022.03.E6035CA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 477F140009
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:25:09 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 6DDB76B00EE
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:28:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F3D12806FD
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:28:35 +0000 (UTC)
+X-FDA: 85339606590.05.6DF3472
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1E5844000C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:28:33 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="SKtg/Ky8";
-	spf=pass (imf12.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R0tceiBT;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792419909;
+	s=arc-20220608; t=1792420114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+XXPCAKR9i1PdeuwWGGQvHpwQuIulYAqTmpYB26s6s=;
-	b=rlb9GbcPOFLnEsMQ4qOJfRCrdeZmuU53qxsgQycC4OnxP41TrTY55wMTk8Drol3OjnR4nZ
-	zzsp0tlpodVf+8g0p4K7nMNvD8dpbgpiVJkdjmOqDrsr6JhfuaiD0aEwodeekpS15VKF9/
-	Xqgs4zVujyKEDYG5AC03xLVNbQcnhtA=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=a0eu8oJCqbVdCYPiFjU8ZN1euvr9n6L7NmwFCs6qrSo=;
+	b=WDXObwLBKRmRheSDysq+yux4bUpPWQpfsA3cbYR8OJ6ESJw7Ys8xXNJRzDflD+FzZCMxCO
+	PfNb0yxanUEW5/cJzOnDyYk1/g7zAA3syR1Khy6zjtTGMEkcF/ZJESzT/5sciM/iySDZna
+	arznKb7YZ7MltrLw2SfBj03ajE8H7Sk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792420114;
+	b=iXtoDtKJbIqiDqtIAsC7ruOhI0W7gQ+0bGdIvqAIfJ0Nzb+nDObe3cwSZZb3+dJVji0Ucl
+	0dISPAwfGoX9JnYTAkxRCjpTz7b5afKdoIRd4bvtmE5b82auKbPMpo7sRn00r8sLB+Zqqf
+	6w2WlHJ85jDrtTttitNQXzir3FoSGog=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="SKtg/Ky8";
-	spf=pass (imf12.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792419909;
-	b=079WwnUWxKHV0c23WCshB1UuIGdyweFFf4DFjsQOEPPN4laXFp68E1ITtkdgpBBhxWj96H
-	W8rq+jZQrGdt37zvFvH59EwPqBQvrtMOlEQB8vwEi4bhyoHjTIc7s4Gs48iIqZSMbxbF7Z
-	ewoYPvJ+y9DQXsqiJryJsjrh+1RT+3U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792419908;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t+XXPCAKR9i1PdeuwWGGQvHpwQuIulYAqTmpYB26s6s=;
-	b=SKtg/Ky8hhSqQWZZC70Dii/bKDBmLTQdOKcMZBjxQTA828Yb4ipi6yJ6H55OLrOS7+t+9c
-	6ZYgAP2p7QbAdy88FL+3Qa8CDYzriABLc6hwffkbQLU9XPzMwrp9OO3CIGGZq9Wf2V57vm
-	OniOr9nb0Qw9CYgIPlG644DqOHRCm+A=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-194-DrcQHqF1OfCRDj8-GKP5Kg-1; Mon, 19 Oct 2026 14:25:07 +0000
-X-MC-Unique: DrcQHqF1OfCRDj8-GKP5Kg-1
-X-Mimecast-MFC-AGG-ID: DrcQHqF1OfCRDj8-GKP5Kg_1792419906
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-3a987e52306so7919631fa.2
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:25:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792419906; x=1793024706;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t+XXPCAKR9i1PdeuwWGGQvHpwQuIulYAqTmpYB26s6s=;
-        b=KEr00Kv2hZ6VsYc1jb18uhrmZHhUNUo1qd/7m9ZKDquStTVzGCbIhzw1mT2F/0IjxK
-         o27rSTT0RsVQMpY+j3RGO8Z0ef0PX3pHBUye5eSu23weTuI0WZpc8DXkVzZRp9sIN81G
-         oJmLdhlN3yJOMeeH0PldugHJj22+uRZfElxqoa+NffnCLecItB/ek68n6RYXXJg4ikrD
-         dLoSFaqJCWc4NTuaD1ea1CC5NodH6goIs8PUP8ffYRVD7+yWOzu0HJUiT5kHT/Jb44Fa
-         mSdnoBBHqYF3dwygmlpN0XDvJBYVn63tn4NLSd1VgsSSWDhHUMjvgSYkoq4S8tkqQgYW
-         5shg==
-X-Forwarded-Encrypted: i=1; AKwUvByieE6tU8Q5075qZZzWtlawTdnEgdrmSkjHnrtsnGbcEy8MQIOhVWdNNzCi1/uGQJZ5QfdL1MagIg==@kvack.org
-X-Gm-Message-State: AFq9FYJPl7uVvoi2nTJ4eWi2EZNOL+ifHgO1hJ5+jeJPCRJoSYdpdjUD
-	jPxjULcUORu0oaBe8tGslWoN35mx9VgJBMPqAdgtrdHuzv4AIDf2VluQLgg12Nk11j4WCRg8wbu
-	3kd2fZ/ahuiyYbH2fgrXDvkf41Rt/Bum6foSZj856RlDTMK1e4H6c5E6Xfvp0B/PTmwNKuYAdn2
-	Pw8qGWoJHovIqfAioRFSUSvA1qbMI=
-X-Gm-Gg: AYBFou0O5kcYaJSg5sMf+74d1kQE17pyK1uKy2ymCmQ0GH5ghwaMqADvf/DwIEZ1P2x
-	elJLXhOWZRouPE33z58Hq7jXfEMXsP2POu+MxEvBG/E/foDTawxQUdbTOjnPNDa2/SeYPp2aKM1
-	2zR/UA7JiubTbBfFZET0boGsWOFxUpgpacg5CRdrAZEEiLUT+0pFJBSbVuk07/davzsOeM0j8=
-X-Received: by 2002:a2e:be8d:0:b0:3a6:48ce:2b05 with SMTP id 38308e7fff4ca-3ab293008d2mr20364731fa.24.1792419905601;
-        Mon, 19 Oct 2026 07:25:05 -0700 (PDT)
-X-Received: by 2002:a2e:be8d:0:b0:3a6:48ce:2b05 with SMTP id
- 38308e7fff4ca-3ab293008d2mr20364511fa.24.1792419905099; Mon, 19 Oct 2026
- 07:25:05 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R0tceiBT;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 44DC643AB4;
+	Mon, 19 Oct 2026 14:28:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A281F000CB;
+	Mon, 19 Oct 2026 14:28:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792420113;
+	bh=a0eu8oJCqbVdCYPiFjU8ZN1euvr9n6L7NmwFCs6qrSo=;
+	h=From:Date:Subject:To:Cc;
+	b=R0tceiBTdz93YJdfHeH8pZUiTkWguzroOhkkNnGd4l02iujB4nuCLY6w7JpjZAQli
+	 tNRk1jPdbOUxETxdoint4A+ivorhOlzSfkVh0iOq4DiRYiDgo9b4C971SNl657Txpv
+	 /eU/p8GtkpyL+1c1nLliUW6yRKn9Q8myCatKat4igI2Ulgq2g160ubptBeMz+uz1Nr
+	 HVb/RYaJcu0mdiiH1UHYx2Jn9SPjO5Y85XcbxpPMKFzW0KHNgyV+CewXhQWKXBokxR
+	 EBfuBaX0Z2A9z7fFDEs+2NPKK6ZvoEo3sJ/w6VjTVGBwC/ZpuR4KHyPc+Hg303h3aM
+	 tobUBwbRV+VFA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Mon, 19 Oct 2026 15:28:27 +0100
+Subject: [PATCH] mm/mremap: populate calculated fields in vrm state
+ correctly
 MIME-Version: 1.0
-References: <20261018-bug-selftests-mm-ksm-tests-nohugepage-v1-1-55ed54bdad35@gmail.com>
- <4a6ddf56-af89-482a-b173-18e181bfc3ae@kernel.org>
-In-Reply-To: <4a6ddf56-af89-482a-b173-18e181bfc3ae@kernel.org>
-From: Nico Pache <npache@redhat.com>
-Date: Mon, 19 Oct 2026 08:24:37 -0600
-X-Gm-Features: AclHuK8zKZKMm5fTjvg9yQro-QDDhE55HWKI1sJCDKDoRQ2ReZ01Whinkm8cRqk
-Message-ID: <CAA1CXcDZuHkPpRjE_f1J9Z_6a-JJokAEsCNg+NKfrNviBTt_pQ@mail.gmail.com>
-Subject: Re: [PATCH] selftests/mm: keep ksm_tests on small pages
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Qiliang Yuan <odys.yuan@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Shuah Khan <shuah@kernel.org>, Usama Arif <usamaarif642@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: K_NWxFNQk4MG857FynoE1-1vcuCmH6QhYQ_IYzbpGMQ_1792419906
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 477F140009
-X-Stat-Signature: 5zoi8s5kntycfsbcnuyrr96qr59wfz6r
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261019-mremap-fix-shrink-charge-v1-1-a3ce209e5360@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3M0QpAQBCF4VfRXJvaWSJeRS4Wg0mWZktK3t3k8
+ q/vnAcSq3CCNntA+ZIkR7SgPINxDXFhlMkavPMVOWpwV97DibPcmFaVuKE5NTdw2bjgC6KpBpu
+ fyob+665/3w9JyZs/agAAAA==
+X-Change-ID: 20261019-mremap-fix-shrink-charge-be490a2311d7
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+ "Liam R. Howlett" <liam@infradead.org>, stable@vger.kernel.org, 
+ Nickolai Zeldovich <nickolai@csail.mit.edu>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3473; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=1KwnnSydsrMowhW6/UrPI5beylcA0+sO0VKAeZUDuRc=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKuafKsWPJgxxzPY3+XHFw5Q3ZZjFanlDxPwJ+ilX2ZP
+ R1nJ7If6ShlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEnl9g+J+azVxxzaNamMPJ
+ u3R6bLbNv8wdrxTlmlf2vly099XKr/oM/yN/XSzlbWm0MLG8ulvixdb0ppvcyg//Rngsfv59sZu
+ CPisA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1E5844000C
+X-Stat-Signature: 9drtwm4kp8wdhxsa31i587119mufj9fn
 X-Rspam-User: 
-X-HE-Tag: 1792419909-106738
-X-HE-Meta: U2FsdGVkX1/dyGfXeoIzj5fGdzacdoxiXnBNDot3741osUxZ1BOl18q6U50D9lwEhv2qeSs7rQGtJ1QMnmwRN7BWOIZg4+7Nv0xGH5FOeo58C8TKsSPEQ2ynG8cvJyV6N8q0avzey6uK/ouHRjM1vnTmIlu1QqeGxshXuELrh2Wsh0vokBp6XEEDlDRUy9+cXTP4513HUJii2MAFUJf8sJE8ylKKNU0FMjPIcFgIWZE4XxhK5+upAqoEgrxU6WW49V1Imgv5Slbf3mMEGSqKG77LJMdTW2v4jxHzwHhjmP26myKfZeuiNgxdgUXzZpYpcUoLLNNXqKNLC94BERJUKzfCuxqnZ3+BN8/G/lovyhoCtCN74oXEyWm2PgvVr4f7J9kwm9/I+JHAVUPsDffvn/ws7jcNPqZDKVTgo3h2UrKgwyPETKMV4qs99A0/R3mmh4QtEWNXeDjvta9ygG2hBUNmbidzXeHBKAteHCAPlbDcRjimLXYUMn9iuMcApKpu80Ak7JE+I9Fv3caxVQisvgttndbrRSoUun/W6wKl+P05KbRXD3jgA13Tchh/eo/Zyi9iFy73bBRVtYektPSjQL0f9IxaFQ+v4mMjaSgZ7+ioMGmXiJgjxIPlIG+cRmBFQc30GEfRk9xxKYae8gffbc52KbO2MzHLvDLpUvDHzEptGWjKAoUROJLQZ5WdhFT566JdV3ra2s5b8TM+Ubtug2tbxp3dRlpxjGot8y61CE29qezUWELaDmpOR7f6TzxBidCs1VRai8lIC6cORmyf9za4oW8Odvi8tkAnHkvUHL1/ukL5M7wRn4ZrqlOHB8FbBEooBUnYoqGbAHvftZfPRUK1tMp9HIE8FhzlvAHeuSpyGw7YiKdNOg9+kD10uSKZUwy9f0fs71TNmuqSF2WCzV2euzaaNWVv/j9JKcBmWxr6d9IgAANu5LnDwZOKDI+Ih5y/lOCN6X924sE/Gzj
- OGkPYmzA
- SILim5K1kFMzJMzdElOu8BS0PvsYqV1lNbIyrInXkoxCxkC3pHhPmPH01gqsJzSfoZCDPd1J6SofreGhm05IFD/+jaiYWs8/G6xE/J+E2wu/eVpmST+VOMu3Wj/+tOytsFKrnU2ejAwTDZTVeEiUGu7paWEATaWeMca2ZqIVKGbHfdLMEu+gjIhSDcIVT/8WDsEk4WzkcptM7sGr0OS7b8ENyvqeMkDPShLT41Co+QDDLjEhWksBq5sy1xaWU4MLnI7K5LKy7SRAi0y5fm+1BpTfu54kCgoryoSdV58Ti+gXx3eo7EO6c8vUUDUBT+AnylyahjWQZR0yfF4fER4cErvXWTUfmZSh40uDbSHwoN0gxLQi383lagzRZndmE2spKsBCjlfhSf4WjzfcVWOKXrm8lMg==
+X-HE-Tag: 1792420113-221547
+X-HE-Meta: U2FsdGVkX18TYhZuL5hVEvdZvnXy9B5GGD2DstW6AaDFFXAMqFJDnHyLLU6wuQQX4mLm6hwaTf+ZtXHu4tvqEpye4gkKuFFAq2zO5ENZlH640AoW/CqlQcz5VpTszzPsIoBRipFM0qfCE8PH23pV9mVJRXujb9HmKj39vGtWXhU8VWHR58ZWMXpF/oWM6EqUQJk6UCd/MAau87uztdWiWb3DUk42044cuVlsVvOuU+Ot/BTkmAzj4y+ter6b859AwxUTboAZGrcjCNuJS4Z02GOYCajOPIuUV6LbUCylmhzG6vJlwWaKNJnbhDrBsU1Dhrlf1YEBdUhp2h/WxKZ0936u9BHjEvXhALgY9HjL/vfxu1uykJ21g+FvlJ4TfplPj7JalT3x5gF4RgoEPEsNM3bKA5YWbrt3r7X2QPy7grYfFHLcdsyH/RTIhC55sw6NxNxlhFZswM5wrHbfxZwIfTwAPSclYrLiflLj4rwNJBui7E2UMJb5I7fIU8nsxxhyJvvSmJlLQuYWJhqMWCWKshT6qUPt74m6n5bgKWKbwuFKKc+q62wy5TX19eO4eaBqjFjQ7q+NrPUxNuRrf8qQdF4Kwja1MRx1WJG6b6Xz42Rktjyhf2ELxxOpZBr3LQzM35Tx4I7RmiiNwTrucwdJqFc+GphEAwk+c1f0qgsgLlShxDzWj7zWZ2rkpmx37I6rckfA4EyWvMllUjWSp5I0Yn5dTZDrI6u/iO1iz6hUoYKt3g+H7WZUqySh1gVjLWa4U3xPt0bUYfqR1iIgxwq/nHZzEFQpdmqp2GMXaYj9VmNW7eaHAoPBiDR5c+OKfHm0P8oQdawxldGFkZbFUGsBDmbUnPB6U7ebjx8iE+ylhKwk/Hb00so9nd7rHrWTziRb/gyWgJwbVbUiegiqGWGgWeSCGZOlGkOVSjvINZgQQxapZx3bnszj7JdjMbmouGwmsDdGTB/3uiOYCc5ue9C
+ jqsGgegI
+ QRU9q2ol2Blff9JixGAcz2LPpFr91tEX99JdFbCylKurxqfSXPddJQTSPaSUznTddIDhjPmpgKgi63FiUUSeZAdubLOKXDC/LkS389+zQ4eM1WYNAnhmOMwmemBvwVfRXhzeTMdUb0G7WugFqt9akHEMxWun+Z5DdhHx7v1EC09PnnvvewiRyBvASrtwn5zhwFzotvknZJ2YR/2Btrf/CIAtaafv1f8fhPHpLIPURKqXAE0w2P7f7w3CpOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,82 +105,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 19, 2026 at 7:38=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 10/18/26 06:53, Qiliang Yuan wrote:
-> > ksm_tests fills regions with identical data and checks KSM's counters
-> > after merging them. allocate_memory() maps these regions without any
-> > THP hint.
-> >
-> > With mTHP enabled the regions can be backed by large folios, which KSM
-> > splits before merging. Splitting an anonymous folio maps its
-> > zero-filled pages to the shared zeropage, so with use_zero_pages=3D0
-> > those pages never become KSM pages and "KSM zero page merging" fails
-> > its count. "ksm_tests -Z -p 10 -z 0", 20 runs:
-> >
-> >   THP setup                     before    after
-> >   default                         0/20     0/20
-> >   every mTHP size "always"       20/20     0/20
-> >
-> > Map the regions with MADV_NOHUGEPAGE, as ksm_functional_tests does.
-> > ksm_merge_hugepages_time() maps its own THP-backed region and is not
-> > affected.
->
->
-> That's actually something Nico intends to fix:
->
-> https://lore.kernel.org/all/20260609114619.144416-1-npache@redhat.com/
+Commit d5c8aec0542e ("mm/mremap: initial refactor of move_vma()")
+introduced the vma_remap_struct helper to pass state sanely through
+mremap() logic.
 
-I will try to get the fix posted today!
+Part of this state is vrm->delta - equal to the absolute difference between
+vrm->old_len and vrm->new_len (the old and new lengths of the VMA,
+respectively).
 
->
-> >
-> > Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when=
- splitting isolated thp")
-> > Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> > ---
-> >  tools/testing/selftests/mm/ksm_tests.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/sel=
-ftests/mm/ksm_tests.c
-> > index 5fd7792a0d479..140ea833353b6 100644
-> > --- a/tools/testing/selftests/mm/ksm_tests.c
-> > +++ b/tools/testing/selftests/mm/ksm_tests.c
-> > @@ -178,6 +178,16 @@ static void  *allocate_memory(void *ptr, int prot,=
- int mapping, char data, size_
-> >               ksft_perror("mmap");
-> >               return NULL;
-> >       }
-> > +     /*
-> > +      * Splitting a large folio before merging maps its zero-filled pa=
-ges
-> > +      * to the shared zeropage, so keep the pages small. Ignore EINVAL=
- on
-> > +      * kernels without THP.
-> > +      */
-> > +     if (madvise(map_ptr, map_size, MADV_NOHUGEPAGE) && errno !=3D EIN=
-VAL) {
-> > +             ksft_perror("madvise");
-> > +             munmap(map_ptr, map_size);
-> > +             return NULL;
-> > +     }
-> >       memset(map_ptr, data, map_size);
-> >       if (mprotect(map_ptr, map_size, prot)) {
-> >               ksft_perror("mprotect");
-> >
-> > ---
-> > base-commit: 90201351a862182bdabfc1ad1c97b1e1b6ed5931
-> > change-id: 20261016-bug-selftests-mm-ksm-tests-nohugepage-1414868db0ef
-> >
-> > Best regards,
->
->
-> --
-> Cheers,
->
-> David
->
+This value is used to correctly charge accounted VMAs.
+
+When shrinking a VMA, mremap_to() sets vrm->old_len equal to vrm->new_len
+having performed the shrink of the VMA first, prior to any potential
+move (e.g. MREMAP_FIXED | MREMAP_MAYMOVE specified).
+
+However it does not recalculate vrm->delta, which results in incorrectly
+overcharging the VMA.
+
+The charge leaks to Committed_AS globally, meaning a mischievous user can
+cause allocations to fail across the system in strict overcommit mode.
+
+Resolve the issue by abstracting the update of vrm->delta to
+vrm_populate_calculated() and invoking this from mremap_to() when
+vrm->old_len is changed.
+
+Additionally, update vrm->remap_type whose value depends on
+vrm->delta. The field is not read again after the shrink, but it is the
+logically correct thing to do and protects against future changes which
+break this.
+
+Fixes: d5c8aec0542e ("mm/mremap: initial refactor of move_vma()")
+Cc: stable@vger.kernel.org
+Reported-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+Closes: https://lore.kernel.org/all/20261017233527.797191-1-nickolai@csail.mit.edu/
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ mm/mremap.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 6970783fc445..24827e13e617 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -887,12 +887,6 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc)
+ 	return pmc_progress(pmc);
+ }
+ 
+-/* Set vrm->delta to the difference in VMA size specified by user. */
+-static void vrm_set_delta(struct vma_remap_struct *vrm)
+-{
+-	vrm->delta = abs_diff(vrm->old_len, vrm->new_len);
+-}
+-
+ /* Determine what kind of remap this is - shrink, expand or no resize at all. */
+ static enum mremap_type vrm_remap_type(struct vma_remap_struct *vrm)
+ {
+@@ -905,6 +899,13 @@ static enum mremap_type vrm_remap_type(struct vma_remap_struct *vrm)
+ 	return MREMAP_EXPAND;
+ }
+ 
++/* Populate calculated fields. */
++static void vrm_populate_calculated(struct vma_remap_struct *vrm)
++{
++	vrm->delta = abs_diff(vrm->old_len, vrm->new_len);
++	vrm->remap_type = vrm_remap_type(vrm);
++}
++
+ /*
+  * When moving a VMA to vrm->new_adr, does this result in the new and old VMAs
+  * overlapping?
+@@ -1523,6 +1524,7 @@ static unsigned long mremap_to(struct vma_remap_struct *vrm)
+ 
+ 		/* Set up for the move now shrink has been executed. */
+ 		vrm->old_len = vrm->new_len;
++		vrm_populate_calculated(vrm);
+ 	}
+ 
+ 	/* MREMAP_DONTUNMAP expands by old_len since old_len == new_len */
+@@ -1795,8 +1797,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
+ 	if (vma_is_hugetlb(vma) && !align_hugetlb(vrm))
+ 		return -EINVAL;
+ 
+-	vrm_set_delta(vrm);
+-	vrm->remap_type = vrm_remap_type(vrm);
++	vrm_populate_calculated(vrm);
+ 	/* For convenience, we set new_addr even if VMA won't move. */
+ 	if (!vrm_implies_new_addr(vrm))
+ 		vrm->new_addr = addr;
+
+---
+base-commit: 4dbe24720eb3811563cd56b35d87ddf3f9beed2a
+change-id: 20261019-mremap-fix-shrink-charge-be490a2311d7
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 
