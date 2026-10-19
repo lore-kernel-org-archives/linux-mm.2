@@ -1,144 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61702606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0098C606A32D
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 16:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=FnL5qN+r
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=GzKHFjUo
 Received: by kanga.kvack.org (Postfix)
-	id 45AB16B02EC; Mon, 19 Oct 2026 12:16:56 -0400 (EDT)
+	id F09096B02EE; Mon, 19 Oct 2026 12:21:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 402FE6B02EE; Mon, 19 Oct 2026 12:16:56 -0400 (EDT)
+	id EBA9B6B02F0; Mon, 19 Oct 2026 12:21:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F2536B02EF; Mon, 19 Oct 2026 12:16:56 -0400 (EDT)
+	id DD0816B02F1; Mon, 19 Oct 2026 12:21:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0932A6B02EC
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:16:56 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A2F218077B
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:16:55 +0000 (UTC)
-X-FDA: 85339879590.18.1732311
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9EFAB4000C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:16:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FnL5qN+r;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792426613;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AFAC36B02EE
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:21:46 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 89285A0787
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:21:45 +0000 (UTC)
+X-FDA: 85339891770.21.D397BEF
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B7AD880013
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:21:43 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GzKHFjUo;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792426903;
+	b=sgjBZUggkzMVuo/3wJ+WKpadV73hmDR2/15lBDuejnx+GAflQydkeMgrqpSKPtazIoqDMX
+	USjayAKkf5ADkHawVbGqB79uEAfV+UVgODOpkx1icztylC5ivF6cIOPO6jXLY/yhoFFwt8
+	kxhWJxtSj6U/CFZshr1s8/l0QbIxMsc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GzKHFjUo;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792426903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tzy2/hZNZgxPkh/2CJVsFN5uf24dNj2kZ/M8pdTK09Y=;
-	b=4omnqeEKMQvy23w6vLmnJlqPIlsGXTZMOPiQMJtjn5G5iOu2/xRCeCmM7pYXw/qfxi9wus
-	jICnQw27YBc/RxHO1SHeR/oFeLoFXaYXLx72DTwVHA542Co7IS2x96GC6kqUrNfQABtfKY
-	1OaYJL9jRUHI9d6N4mHQZcjxHFUz4TU=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FnL5qN+r;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792426613;
-	b=5x3IWZEd1R6tUHjV12D4fID/TGCeEEcxsyLLXEga4uya8+PK0hBdYSMD2AdWgez5qLdxDh
-	m+4x7BXxpaHtmOQ+RiEwOHLxyTJfVXPcex0bixNr6E4tq/brijj1XrXoe81yefgDmPfEHa
-	3W4ngLfQDo/Xcvlh/ll9MYRQ41N1xI4=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48b060ec084so1553995f8f.0
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:16:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792426612; cv=none;
-        d=google.com; s=arc-20260327;
-        b=q5LYaiw9Gxv8yyK1iUylkW7dR750c8dkF2LO6wZrYMVvABLEwfFQsVDAbUTAfDYt2z
-         Wdoej6qSAmC3xVICkcE6uweWi3nk5HyNDqa+1zaL/g5MdQROFw8CMBbQA3e/aDDL1DeS
-         rhlw2xgZ063BiK03UfJ4h/8nGNAcoT3uKuIDLbagTRupD6lo56Dh08+t7Bi8rTZaQ8Lp
-         LDxZYgn+CU9pQs/CzTo2RBrOCl+nBSkt4dgF51j65+POS391UXl3aTHi62XZ6ODzgbCf
-         rWL7RSmfsq6hLxPtzBPUl+E2wmNkNqeo9L/2wKuyNEKhvx4Nb9cGpvRO7RXWT7X/k6hF
-         osUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tzy2/hZNZgxPkh/2CJVsFN5uf24dNj2kZ/M8pdTK09Y=;
-        fh=j6g037MjgqzBimLmHqiiQ9QGnO4NfjaccOLyZOJBJf4=;
-        b=EtJvUeO/uCKaD8j+EogyWJc/Of+JJQNh5aRn+cesrzyxz+EtciO15qQYsSNGR0tXJx
-         S5yStiPPyTeE6fN+ZTjnTS4ITUYFvhSjEDgLXeqLOMSn7Y4RSJKwrezkFMa9CLZ29tcF
-         ZqzILcYmpb/6hBZldJ+mP9imGG1ilcnFtcau4KLOwcp0AiMeNp6E1821MGKChRRrXDpd
-         Ei1K2tyPvZR+uxa4DsLPZCGMIxxiNDvF91FCaYYuPFUUhLscSIsvONmsKNA8QYhFCJye
-         NNBz+Mvnj4dbadqopkZyMQV7ScSi469jf0/G7OFIcEU2E335rePbEVdAoWtMyt1h/oQJ
-         c6mw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=AXALzYiDlqNLgw2O3tAb14ubqs9EH5rpsxDv02Io52g=;
+	b=BA18Z+YDYVgux1wmwAoAvkiH6huojNuXIuZ3nCiIeAuXvLii+sZ2nOFB8j4drQIeL7+ZmN
+	r3sy67mVYup+a3Us3LEX163mSrdLMWO4IrencH7pndWcV9OgvkBJ3SwLSNxTy0Cy7Zghba
+	rkURvlg+OB4hFazFwzatMz7G/mUHl6c=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93f2ed2541aso179265385a.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:21:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792426612; x=1793031412; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tzy2/hZNZgxPkh/2CJVsFN5uf24dNj2kZ/M8pdTK09Y=;
-        b=FnL5qN+rUVcKgbGAUBxIY3Ql0BMzYDWwIldHPU5+R0hmNJnawkW1yWJ2c3F4/D2w35
-         9PWaeJuSOnaKwNVo0S3iK6C7Gyu7fF6RjbX08IpRdoKKfLbnaxdBwFpJ2HN941AtkyEf
-         ppLU7gDBlXouwg3NzfjTnthULbLX9NXHEwHollkRR8hagkVlov5ttdDZowASGkBLMO0e
-         /jc0v04iyIWhA/iUmSP7IJZxbyDxZB9p3zlzrBtFVHv2AI37Vozav7dHv5S1SnuVOGOj
-         1i2kzHuvTVhPJwJns+8Q5etqHvqYyFqbTGWBRifUdcDiJd9vIbUYkqYv9dx135gZp/99
-         87BQ==
+        d=gourry.net; s=google; t=1792426903; x=1793031703; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AXALzYiDlqNLgw2O3tAb14ubqs9EH5rpsxDv02Io52g=;
+        b=GzKHFjUouMwecR/b/+5qbbrgb1TtfB3ZcVc1DsaByoK1ag62sIVuJcMLck+crTm/H7
+         i4C6HSdRLFyM7oPrk3nfd5YDYubIQagQKrGam5D03jTLlLZjAb1FMq9ruVZW9klmVX1l
+         2B/eogU8R5xy8iKUt+cCDOVdPdnrfgDqfNmiEwvjPhDtujb58MLksOwIdMIRDGOHA4LH
+         Ct9PL/0kk6NAiw0VlZmw2hhQuWkkSs9vtctEkpzuLKnwr6Z6SWgAXvNnR2Q6Yj0uZNhP
+         NCLssdOhrkg8o/szb9k6SqkFQepuMgLtkZ7bAuRoU6t9WD/DxtIZR2zy4sg4gp9z/c3P
+         XYRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792426612; x=1793031412;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tzy2/hZNZgxPkh/2CJVsFN5uf24dNj2kZ/M8pdTK09Y=;
-        b=2Xe0oQk5jBth0XSTJGG4aDTR4b8Coy+QYCpwExN4i8qbblg/5Vn13aScHneUjsL2Fz
-         7WyWPpHBT8T27yqoac3RjypgQJpZ+7s4M4cgd8ZVsCfnTRqyw2u4uLRkfhQn+XRhoT1x
-         x1zdvf1pPvMhc+qr+sa9zxOu8hwE/NYlyfQT/ONISL6/uiSfvnOCogABlJfcuS3CF7I2
-         xb8py9heqhz/eeW+xArY6uQXS10pUE5fKOGydo/q5eDjSpk04bBOJPr8GzIfYNflJJFq
-         nJlUiuazUqgIjncgCI4hfPoRLIYb3i5++qnpRfHjh1/TB1JFulBhwAr2d/VmSY1Z+g7y
-         71xg==
-X-Forwarded-Encrypted: i=1; AKwUvBz/qQfcmqbCSrXrfCV/1iN01yGpsKv/uQ0z5Lj8Q0nd+RjHZWr1TmA3VegxpqYpx5Elj51duz58xQ==@kvack.org
-X-Gm-Message-State: AFq9FYLiCOFjyZyud1dy8/BpdQk0R9I6OGRbiR9rhE9AyFGeir4bknuK
-	JyyqJM0CUBgpQey8FJoUGUSU6o4JCfQOThtI3UdW9AyUygRjrxf/Eltkg9ZiJiWweJVfH0So7Ed
-	Q3Zt4yPElqa+u58TL9MJ0A/7+z58BHt0=
-X-Gm-Gg: AYBFou38m3TwzCxbfvzU4L7y9AAdRtl8bIb/QkACyqFj0P3rwNNKNGb+ruSWB5stKih
-	SivuXu1AmraBZQOCRBReZrsWRqSP91h/rcUGMF0xkgSbk5U191ns56I41MqOo8jOkO1OPIcxuO/
-	OWersj1MvH+KPclohr7dcBuSD0DWBXWDUj0pGafvGgZgxLPyr9sxdySXP/pa1V17ceTk+rgxXxK
-	6boR6/TCfytTQNOBI5/s9i1xI6h8HB+WucN6fmfrM5dbxfyQuih+69xjvjCkL2x35KEUv8hhqHs
-	5OUYlXphshrNCsxyM3gGYi5QcM/MJJ4w9INFOa3rwZsG64gWeq8KuobPuvLhOCVb/qdqHvh/RzJ
-	/UBSQdh6iUB90o0FgG5yEK1kHN28fKFhpUMF5MGf2V9g0osGpLD/s5Jep4o2GRXQELDXM/0wxPm
-	mgfMXRiQ==
-X-Received: by 2002:a05:600c:3e85:b0:4a1:6991:36d7 with SMTP id
- 5b1f17b1804b1-4a1d75e385fmr158858205e9.10.1792426611931; Mon, 19 Oct 2026
- 09:16:51 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792426903; x=1793031703;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AXALzYiDlqNLgw2O3tAb14ubqs9EH5rpsxDv02Io52g=;
+        b=PF7j3YNkB61I3+uP0rQ41YWsiE1phcj0czYvuh7s4ftkfrUTwqBsgFRXcjSM6QUd9x
+         RmxO8JZajizqe/v9rSvFm9h3V4Apnh5EKt74+aBsR2dX1VL/wlmVO46pK7AdNy2kyAgq
+         i3dAxz7wz3s4r9Sw7sKgtwtLLSfKH3jYoB5GzG/jjkxM9/pLGmkYvJiIdn2+alW4IqBD
+         25OL4jx2QsSAPVJGG1OpvY9c0AE3qmnmG69dU4xRlBhDqTIBNxzG/1aNQFHXFXEQ3mVo
+         2svkUsw6Steloro7joPSsVPo0wASIVisJRdku0PGuHrwYoQGySEh1DXJg2A4oFIVIeZS
+         XuUQ==
+X-Gm-Message-State: AFq9FYLWPiQm18TUNEe7WbfbObJoeS3rrowcbDpCKlnhUiYnVOrE9F9r
+	cJUitE8ScBBOS0SVKq85ghLNslSR/prBBT0FwzpIt0Hc0oYvojWdyNSBiYYkNqdHcQ+541nh+YH
+	uUdUc9Vs=
+X-Gm-Gg: AYBFou05ZN2aB+a0hrMxQ5Pb4RHPy7AVHNM63Nt0zE5o4SQcJO20hXJlbEmIEfBuVwc
+	lAUPTlBIUvGllS5VGc7OAf6+FPV36EZ/LLiZXYLrDKPPvNIqwJLczxDGLYq60im0/lrQLu6cRFg
+	REMsEXYyNZjaXE2NxSPjC0CN8jTQeVZ6yfRLL7b80dLH3Wf6SRSbO4M3pwtbS+2NsFwjVkOqYp4
+	CMCKY0N4eNclpVQxRwRdI8AwaslEYyiBKboSj7+JmG0r/VgBYYe615/AShfQveUfZ7cfgj+rMxH
+	AFU/VkUysGjhCcMpEGwmfElbQPTSu6u0S5lw41q+xqnLSSmT6v4XwVIKLakR/7e0J0ve9e689bj
+	SqgtgeuLKH1D8LLn6XL7DGFY4PTQ5Dj2hTwLpsyGUoSyg7cVz1pwemq9JJbZp/ZqP1556aHMPg7
+	y3IKbhsk8NU5zJOsOAmDevk48ZUh+ZPaDXZnVgyLyYzCbA7pyWofNm1gnCQumkz1nsYGp5jVgVg
+	HkB5HkuKa0Gfj1xsIlEHN9Po7PlDd7ERdJJ4Csh3H9EXSUJETxSpg27e++67vzs2i+t3zU=
+X-Received: by 2002:a05:620a:6cc4:b0:93f:2b65:593b with SMTP id af79cd13be357-93f2b655ed6mr1165985985a.38.1792426902714;
+        Mon, 19 Oct 2026 09:21:42 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcba4b9e1sm102394026d6.14.2026.10.19.09.21.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 09:21:42 -0700 (PDT)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: linux-mm@kvack.org,
+	cgroups@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	longman@redhat.com,
+	ridong.chen@linux.dev,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	mgorman@suse.de,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [PATCH v2] cgroup/cpuset: use mems_allowed_seq when checking a policy nodemask
+Date: Mon, 19 Oct 2026 12:21:38 -0400
+Message-ID: <20261019162138.3271947-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261019160615.2348500-1-nphamcs@gmail.com>
-In-Reply-To: <20261019160615.2348500-1-nphamcs@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 19 Oct 2026 09:16:40 -0700
-X-Gm-Features: AclHuK-V3wuqh2II4jQy2GzXwFR6X_qUKiksPsMgYsjyzYDn2Cz39hAf5ULvwpw
-Message-ID: <CAKEwX=O7i6ehqyLNCpp9bqoREmahXwGS4Ja8bCsKUzyAMu_QLg@mail.gmail.com>
-Subject: Re: [PATCH] mm, swap: revalidate populated clusters before scanning
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9EFAB4000C
-X-Stat-Signature: 5erzyadgc4b8wqixc6hhma3wfk4hcq37
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+X-Rspamd-Queue-Id: B7AD880013
+X-Stat-Signature: t38upstyfi1jkyjcgid7y8sdioodeiah
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792426613-701449
-X-HE-Meta: U2FsdGVkX1+KoT8CsqR0d2SR3qSKyuViFamm6w4IlZvIpDevjyg9LONh7iJWIjbga+c2pFYY0SH8v3BogVHquFO8MuzawMDWvCKaAb5/EmEvxqySWbK8pZtfvCm7EgzRhH92ofk7Tsrn3QV4T/NjKwScEBFZc79RqKhajvbilGthLGCbu+dVZlGq4nmBc0Ukisp2DObhH8hMDpD9j9WNTwBpTUNDiDM7Uh7L0D/dxgAuh/C/FdMeox1nTHqlc8cbavUQsq8hy/fJ6vlZuKhC54/k8BkEXcSLlX4egQ4++85Mtp95/zKxlvOj0LQ/HJqViaDPoNZtdeZcdqqi8pQw8M6PgEcXdalENHSyQde1xcfJ9OrvJ8fPmv2ImsfYu/k+uAoY6vaLU07VQBYaXXdR3NHqsX7Z8viFbB40QLE3v8HOrMPQfzY1rZ8jQVTxzKyQMJwxPi1pLiCEFZkkiBdDZ3uu8Ja8bKhgkmzUYiMLSk40zkAtHnfh1p/VKwcndY5DWDtjhVufQubvArtshvXNPdT95fcKFTZKDK/LL43zg/9OhCX4HIrUmXAnsMU0cDtzscdNv9JovH6eIFLvFCeQI7/LTm5YJHej2s4kxgcOyqRvy1gHPy81dxACm/zr4tym5ShQuf1OY5hE5KDmXs6fdANjFgcDEpcR1aqIeFZlJU/pWEVbwMAqyBdIhqRlOICgghRvCombAy8lcf7sVI7mAAF4TP6RqbcCDfP3IMBisIiITowd9kfqR2v/JzyVL3Uituj7HV4u5EGE0g1q8zzXxhWCqmQcfApuEeECUASjbYdXi0Ma4sboC4+LBUYBtv7XAa+nx5n4Qu37ICXTFd4g/OFY/KBgbzdgoQdQ7legfrw0OXmfCGQ2r9rlPKe0503cGfKp0V36Y4IIfINpjn8NxegA9C37toch0xelEsLZTUYi17O2eBipsnALf13A138myOA5tU9QQI4qX1knUjB
- rGLgQef7
- xQ+xFN/sPoKGEk9hSg34BxWj3cGYnt64JnXWwnDogJceEVB2CBJdCsEFUSjnRgZNoIXe8u7yLzEU+iLFyLkcyLeqRqYItnbRkg3bGksY0OvlsNxXwA/2JKEOTbEcolgUg/sJURG9aSENS1TLgB4B12PQZ30O3d5hvZRRkluEESMYJbBvwpcdjLx1L4L5MLoIMPHrWSZmftzIUnEN0Xn3XH1RssqOMP/qL0fs7SXqQQt9lhDHIfqhX1+a8FJKmIUx3I4705wI2B0JVBEUoChEdcI7gGCePdw9ObuCWN+ElpKcTJ0ukBmNuOjuyqbMDEU2bNYIn8FKYHEnqNk46SKY/gcXQeaq52EfyTJUVcH98LW1MxZ/noqbzhHAuUkgP9Fn+JtKIfZ8xdWhyeTtRs05RV4KFrz2M4fr5jhsA+U2vpJwWbpgY2WfHyG7D0aKLeUIwDysT
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792426903-773293
+X-HE-Meta: U2FsdGVkX1/k02cTm090314d9RsGJ6VFiG9Mcdwi9RV9JJXi2OdaADZ7MwlEvhj3xDLwi8wZd/XaVvo8VHl+GNKmN7DouX3FNLY1sLGbPSWbHL9fi4qnqugoPOfrsJSsdImkN9K5YgUJ3Sylut4ciVSbOWJViKOamfL9mBGlI4YY4NgGDRhUQ+lNYMFWDEZMbXtzl9gTebkHQtSwGAEaVrShMC6jMxXTv/eQDc/M7PrSKWM1O9URg2+st+R0QglbqYCAUeFlyy4F+nqM4I0hJM7rKvtJqwpEzmNfXUNRPOObz1JWAgxtURsEGzK2I9WM+PfbIhYdTvn4z9XCbpF1FQwTkxvSKzA4H05RGYiPvkNO4hHDuWF4lRxDJ88rirkGe8Bgx3DUQ/zywv3jFELuswZgfeO1jvHyO7sDqXQLg9EU35oO2BEORgsyFQrtqGHzYS3b4IEprkNnj5hVUADG4DdyqfLE7zxbgqhi+zCxo4TyT0FTYUCyZLAHTPVmfJsTZfb93DAgw/Km0jTPAfgGW666OxQX9zz4niYA6vkcyk3tuF1CboNy3eJfK/+7Qd3rx5jiduGhTAwqd4ehIGqcjq6J5SIrjGEFvBFpVB7qrzYLsYtfyfhpl55XWL132QLqiF46+M1FmB909TqMpln8IasWizbUc4oWkKtnD6LEriWg9kdipEPLfy3eOOpzjbd+zx9JlniIAgnFfUY9E58QLEb6ID5OJpTP2I4AcK31X8iEWcfqWCdj6kmySSa7CB8OLIm101Or5RNEYGJSxM6YhFl4myfAOm9dB8Tt4SCfV/Pd0FkRRUPRTPa+PFCkJjEPInxgcspqQfi5LFnbbEHbQe8EF/YtCkHsJeC8uyNRwB36NxuZKTAmr5E36jV7SBU/w36qu7GRDvLf7E3bdEfJU9WF3di/0QEw4s6b8/OepU0pEXKDp66tFwNTfgSWMNojPGEDrorT3dcjaeGLUSO
+ yHOPyx0+
+ Hd8Xn7uNdkccWUr3TjmvQe0kUilW8GOUihWxdZ+85ZJ9hlF22p52yM8Tsw40O/IEuW4Zt02aQb2wvT8NmpPym7KJBZNzHtBOteD4eCVwxs/WonkgYkqdp9zIgJmKnylhkg+4cs1ukpQ9Z3BTXqlG5qWfe7r94j4zkf4C0R8uwr1Lo+Fxm9afvevJtAyA3ByRUZb4sxNvLHW92o2Ypltf28I9gJpKDXYZmF53p2vtjdJDiaiw1Gsi8d7ReSdzwdQ+/L6RqzYJ1+9+Bq4HggCJw4GqPGp8TYlMQytQnm8+BHMQDkvUOUFtSfAeduoUYU0H4d7EP1X8a2KX7SDsBoFdf2HOgSah7jZMzdmBW4gM4lNOKOhKGEPW3gA/2zC4W97ATg6ED1X9RuLT7dHg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,58 +128,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 9:06=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> swap_cluster_populate() can publish a cluster's table with the cluster
-> lock dropped. A cached allocator can use and empty it before the
-> populating allocator reacquires the lock. The resumed scan can then
-> dereference a NULL table.
->
-> For example, CPU1 can retain a cached cluster offset on an SSD with
-> per-page discard disabled:
->
->     CPU0                          CPU1
->     ----                          ----
->     swap_cluster_populate()
->       swap_cluster_alloc_table() fails
->       spin_unlock(&ci->lock)
->       local_unlock(&percpu_swap_cluster.lock)
->       swap_cluster_alloc_table()
->         rcu_assign_pointer(ci->table, table)
->                                   swap_alloc_fast()
->                                   local_unlock(&percpu_swap_cluster.lock)
->                                   mem_cgroup_try_charge_swap() fails
->                                   swap_cache_del_folio()
->                                     __swap_cluster_free_entries()
->                                       free_cluster()
->                                         __free_cluster()
->                                           swap_cluster_free_table()
->                                             rcu_assign_pointer(..., NULL)
->       local_lock(&percpu_swap_cluster.lock)
->       spin_lock(&ci->lock)
->       return ci
->     alloc_swap_scan_cluster()
->       cluster_scan_range()
->         __swap_table_get()
->
-> Reject an unusable cluster under its lock before scanning it. Relocate
-> it only while its table is present.
->
-> Fixes: cdd77f84d966 ("mm, swap: consolidate cluster allocation helpers")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+A cpuset update changes the task's mems_allowed and rebinds its
+mempolicy in separate steps under mems_allowed_seq, but the check
+reads both without it.  This can cause a spurious numa placement
+miss under some cpuset/mempolicy combinations.
 
-I'm revisiting the lifecycle of clusters, because vswap introduced
-dynamic (i.e run-time freeing) behavior to it. For the most part it
-looks good (both physical and virtual side), but this look racy to me.
-I don't see how it can be safe. Once you drop the lock, all bets are
-off...
+A reader that loads one mask before the update and the other after
+it can see a spurious empty intersection and drop the nodemask.
 
-But at the same time, I have not been able to reproduce it (yet). Will
-report here if I manage to.
+For example, a task with cpuset.mems={0} and MPOL_BIND={0}.  If the
+cpuset moves to mems={1,2}, the policy is rebound to {1}.
 
-(Side note: my vswap code is actually safe in this scenario. CPU0
-allocates a new cluster entirely, and lock it before publishing it. So
-even if the cluster index is cached in CPU1, this race cannot happen).
+The allocator can race and compare the old mems_allowed {0} against
+the new policy {1} - which will result in a dropped nodemask and a
+misplaced allocation on node 2.
+
+Simply retry the intersection until mems_allowed_seq is stable.
+
+This covers the task policy, which is rebound under mems_allowed_seq.
+VMA policies are rebound afterwards by mpol_rebind_mm(), outside
+mems_allowed_seq, and are not covered by this change.
+
+Fixes: cc9a6c877661 ("cpuset: mm: reduce large amounts of memory barrier related damage v3")
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+---
+v2: there is no real update here, i'm breaking it off of the page_alloc
+    series so the page_alloc fixes backport collectively cleaner.
+
+ kernel/cgroup/cpuset.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 3f52717c19654..8ee239d5c6b48 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -4354,10 +4354,21 @@ nodemask_t cpuset_mems_allowed(struct task_struct *tsk)
+  * @nodemask: the nodemask to be checked
+  *
+  * Are any of the nodes in the nodemask allowed in current->mems_allowed?
++ *
++ * A cpuset update rebinds the task's mempolicy and changes mems_allowed in
++ * separate steps, so retry if an update raced with the check.
+  */
+ int cpuset_nodemask_valid_mems_allowed(const nodemask_t *nodemask)
+ {
+-	return nodes_intersects(*nodemask, current->mems_allowed);
++	unsigned int seq;
++	int ret;
++
++	do {
++		seq = read_mems_allowed_begin();
++		ret = nodes_intersects(*nodemask, current->mems_allowed);
++	} while (read_mems_allowed_retry(seq));
++
++	return ret;
+ }
+ 
+ /*
+-- 
+2.53.0-Meta
+
 
