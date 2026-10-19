@@ -4,101 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9E3DCCF2D6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 13:31:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4103CCF2DE
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 13:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F7A76B025A; Mon, 19 Oct 2026 09:31:00 -0400 (EDT)
+	id DFC556B025D; Mon, 19 Oct 2026 09:37:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A82B6B025C; Mon, 19 Oct 2026 09:31:00 -0400 (EDT)
+	id D8DAA6B025E; Mon, 19 Oct 2026 09:37:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00016B025D; Mon, 19 Oct 2026 09:30:59 -0400 (EDT)
+	id C29946B025F; Mon, 19 Oct 2026 09:37:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF8B36B025A
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:30:59 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 9BF2B6B025D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:37:55 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 58D951C3FD6
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:30:59 +0000 (UTC)
-X-FDA: 85339461438.11.71E6E2A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8DACC160007
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:30:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=T0k9Nac2;
-	spf=pass (imf08.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13BC21C3FE7
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:37:55 +0000 (UTC)
+X-FDA: 85339478910.11.1EAED23
+Received: from mta0.migadu.com (out-100.mta0.migadu.com [91.218.175.100])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E439E1A0006
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:37:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IwouMnhI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.100 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792416657;
-	b=djhJSJcwhLKbZIpMmxfWWWmQSA4ACqUZbKo6vXH3kdPPAGWvB/+d6uhyNDnfW0DXZypjfi
-	qi+Ut0GhUN80ZnrsYFxPG84FRC/KTRi4pb98FGM6GTlSKS+pVBJ7tF1ievbnc19jNTeFQJ
-	Ds4Xh1JIlv+mv8RObuFY2PqRtb2NQjo=
+	t=1792417073;
+	b=6k/Bnyx/Am1S/USCuxmx8FyLvsZOl2uP9uyhBHrTCJ40vIA7+MsQyTFlL0mlTSTVvPX363
+	Xw4r5ZMS2bbYNPeckGMPi7oeyH2p/5efTx2ro8ckRvlOfnYD49Yko4SH1do41uhkzk+xz/
+	oE/lwDKFDPPzlZqMvs/0VSb1eK0Qnvk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=T0k9Nac2;
-	spf=pass (imf08.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IwouMnhI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.100 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792416657;
+	s=arc-20220608; t=1792417073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KvEW6aCBL4SWxSXxBrKgFflt8U9FzSAbaJ1OEa7Q68w=;
-	b=UTF/EBq9BVwjM45uKxnPEDD9r7mb9EgecAxun3VoeszBB8GEKT1vccct5rVViOVUOSxNq/
-	jN/gU6kucGjmss8tVArIkG3N0OFJ7n1rnOf9+NRBHaKnia7RClIdiP6OHV3k6inl/J2vH8
-	GcIbj+3MI2uNmyIZhOiRnBNBesauU3A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792416657; x=1823952657;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uIuobwNhfyVUsj1zAuU66QsxRjheSBek0U9eSTXLQYU=;
-  b=T0k9Nac2BwXdRyq74Q7a3LisUonYaCQB+fB3WHhC/1yWdedoah9aEco+
-   A2VyBt4UQYcDFJyd9t8bFoLO8rVnJWGRNl2qLY0ry9K0qCFTuThytK9kZ
-   SE276sE5nI+tAjEziu4wounhgZaI082Vi4UJIU/u7A8eqQ4H3zynFlImR
-   Vc0SF/lynJ3D59o/V13EeZEM4ef82WYa6VWpVjl1pRSICIEys+PNG/JsU
-   Js8R0Sz3cblTSWAFwhNnIJcqWUwcLMc5hLlvyngP9nKyh7+rbx5jbylFo
-   NiR85gr1MxMn2NMhKZ7MO4sQZ3oi1CTTLg0QPTqqj9dC9RKSghxENIuYd
-   g==;
-X-CSE-ConnectionGUID: THC0CO4oTKCaao92YKSC3A==
-X-CSE-MsgGUID: cb2kX6WOTDaFTwcGOQp8TQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1120355"
-X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
-   d="scan'208";a="1120355"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 06:30:55 -0700
-X-CSE-ConnectionGUID: uUwqYWYTRWeci4QHBbTswg==
-X-CSE-MsgGUID: luTHl8xXRl+q/Oo2j/7j3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
-   d="scan'208";a="2424760"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.209])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 06:30:54 -0700
-Date: Mon, 19 Oct 2026 16:30:51 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: __efistub_cmdline.c:undefined reference to `__efistub___ashldi3'
-Message-ID: <atYbiw9a0AGySXEh@ashevche-desk.local>
-References: <202610191553.uvFTO4t9-lkp@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202610191553.uvFTO4t9-lkp@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8DACC160007
-X-Stat-Signature: gfcuy14b4q7on4fuc3cjmjfsmbpsrj74
+	bh=Wk/L+CiGgNrpNtoLYjDLvtAPgSr8HQ4tlkfHoLuLjPk=;
+	b=BsPq98NOQskVsctxrhyICmqTb6uzJ1SHFgibkaYORQXYDbsNBWOLaBTBX1zeqaQnj2Ic/j
+	FYG199/1fDVqXLU1On3HQVCs8JMWBw9gGKbp/BZAJ/yrND0fl5SPnGSNGZwYdfNAaATF2O
+	THj4VlECpt1ifX8DekyRBlWMw77kURI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=65IJJFbhths20avgZNJD2q94gK8PBA8MJtV9YGwO3DA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792417071; v=1; x=1793021871;
+ b=IwouMnhIvsMfHWhsHXue94krguhPeVLrmzGYjJyBT2cWHCjJeZbj/E5oGSdcME3NYL4RzWwg
+ eEHBExmPatj0OQT2KeVdPtYzc0zOU1FM7Z7qane7XElA8QJtbKqzWB0zHCSjt4qWGEIQsH9AHtS
+ vlC0EZSvazGVr/sXKA9OJc28=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 78fcc01bb5219cf8;
+	Mon, 19 Oct 2026 13:37:51 +0000
+X-Mizu-Trace-ID: 78fcc01bb5219cf8
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Muchun Song <muchun.song@linux.dev>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] MAINTAINERS: add an entry for MEMORY MANAGEMENT - MEMORY MAP
+Date: Mon, 19 Oct 2026 21:37:32 +0800
+Message-Id: <E0A71C12-C69D-46D5-8F9E-3DEF4097424D@linux.dev>
+References: <20261019-memmap-maint-v1-1-80850871d0cc@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>
+In-Reply-To: <20261019-memmap-maint-v1-1-80850871d0cc@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+X-Mailer: iPad Mail (24A446)
+X-Rspamd-Queue-Id: E439E1A0006
+X-Stat-Signature: dwwqm8khjs75j4cthtkob6qgwg8ote81
 X-Rspam-User: 
-X-HE-Tag: 1792416656-138899
-X-HE-Meta: U2FsdGVkX1+PnQXXTjRg1EsNMF/bZm0KJG7bVm5Vq0CgPkzSCsE4biIZxQNBli521RUmA4VP/PrT8LykgWlw2fV7YgI2mps8Sk4Cvc0BmA3qAWM84yHJIjS+UlDr7ldENSAfKAFBoQ3OTgNTVu3/LoXkD97ZxLjIhLd7aRjYCgDaVDdnzgzvGKOHrcq0EjdAqtK0NMAnNFFdyw6UDyt92pLOBbi2nhmAuKPiVYUfHUCYnb10sj11k0vplJjprJp91LGVDRip+Oq84tOzLU2YXvqWunUXowZ8mTBdGtciQ9S8I/YpVjoobo2oJlZc8X0yDeS1ud0ONFqKAVT6z046DRBJf1MT0nbvpzVWbEiZt6V7oq4P9/r84HNeXLvBoKWYBP+I5l2SyVf09jmrmPKHEZgJt2ZfkHsc3RpgbP5YS3cDfYzIn/E6aez6g8To8ubklT2uVpgtQSJn6mi+DCY9O5G0tZ7LArPgxwfpMd+AKm0XWLCEYaP3IvGZzDGa+6BXNK7/Q02epeFSXzI15j7Qr/dPXxgXhj+SUT2EZePEAjEc/zvfFrn905m+vQFFglEicKjenhK/utkF88fJWXytZRq5c597f9SD58MVwR1SK5x3cGoLr1Jy+C1YbBOKjmJ84EFFN5ebt3P2jHbfU3RL5XNBSWByafmtB04UrXnPA7eleJOuswuNrru61RCB6XSEmyEt893BgF6AhnxYkIoA6EUWKSBnaQDb2nQ7Qu48IkvxctM6j3DppFb6VBBvW+5746f1LDco+a3t3tOkC2GBhaDqnATTYbGZEegRC5IzafWj+P2v7NLnTqgkbLRt7GJsAl9su+Q6zP0B8xUV79kFzfI5kZIUloxgcrkJH4rsD47y5SJ+Tcv6wkL66nl2tdEqv3dyDe9pr9yNDMRIfH8+BQrWSVz+GHzBBaZPrwOjUeZbv4bAgWxOYuh1HDTgihxfPEsUkXtJaks/SL/lTFM
- 2Yi6Xyq3
- ARJ6hFdRC68aCWWVgG2tuLMHJAkjAP00MeWFdeLMTQjoIjuRsIL/JjNEn9Ln8SH1wLmcJNJUzhUKGXSTiXHvI2NKaJRGe+2eWRdlDwtBUXguNgFKRi3eko3GXeR6W+L4GPsR0qi8sXJXOkJY5IFYjBckY8XqLEz1hsSclm1IAhrRBgR44u2BJ1rW4oD0+Y+NFcYPeGOoBsJD9JqHB2dwGXv1k+Qr9YQCAjeDWqgP5Cu9i4oshpOR7tR4NzgWR6V+e+8tmS1enyMDlJ4KBTtIgtYgdQ7RQby/e7WutNKq0JJguU/gMCkg/WO0+HprYDgU85lyzxI2UrhyoABjCL6GGReYRTw==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1792417072-594884
+X-HE-Meta: U2FsdGVkX18SswlWcWeX24dqTvhkpB2eh7w9qVs2mA96otKHTrKnH73KOtiQpixST08BckqMVEnlebA2pm1nBCl5VzUlHz81+qvzLFm8uaOVftU7JOmdSjiMi2uRBZ9wslXssGbI4tNp9Hts3u3Tohz5XjCyfpRwW4qV7/gAQtRdXnZKhlQrBcBa6n/gtoD/Kt+dPRlFi0gI6jYGCmCXe+7RrVRKOssxKqDB98WjinjRcwzL6EovdeKQP9ujNNo/+VhBK1oyADnhVUBHlN79hQLMZzPenbZZTt7dac0ypejYaijsH48QfDei3IAxAMniO8HqCco6pwuruO7cHxl31ISNa5N2zSz7xSEmUHTGaQaZ+aoeBCNUnxfr7crl0ssrpWDSLy52k+qfGicv6WZR/pFOiV78GYbtoELfrDcxfrHxUi19+G+TQza09s7f03qkkEgnURheG6YYm8THAOE+CSdeOUBMnYGWrULVPJMaGPZbNbOPLTcnLGUbttG6tVXhVbae7szV91H04toqQkC79Jh6NirgZ0hFpH3Ivu3QEf89WecCO1q55Rg39VnY+fn793VvUskmOsPR38m12wWVRYBPGfxjrHdpJlNf9/DjsI51tJplhhoBR1F7kIE9zR9DEY5c9TXq8EttXa7TftPRJ0Nw1oB7YjbZO/q/tBYKxvb1jy+wHerUqbIN5lpEN2J25ig5tAf4d4/YOYdKYAQnBB4mI3zxt5UIDkNL31soZIZUWiYO8VWvQbnocuxxRePmOudP3vE8vu0TvbdIToQ60DjWHCKJo+JeYBPeU5dU+9LahOMiUKlbbVUD+wmXaCXhcwe0dsY6si08gVcWQXXWo/IvdayWPKV6SfpmMJXkBhkoZ4lQautfTJdJFFjE2pD9buUn/rlXL004UWgONcmbY4sRx8P9nNWF/XTeIuoChCUJlF1+3oT0lldECoQgWGIYiK8+inNzKOQ1b9t2hko
+ nB2qUF6v
+ aXWlDpRQyFBeEvO7I6qMYO4YihWtw57+kdoonlWoyrQqarvh2tuNNbB+5a2V0wHfAcBnMw67iRPOpt9lD73s1QIJApqQiGKzSueacl9ThJP2dDK8D8FymD79OYFK88c1ooyOWfKinV+HRNWNUxd1BYAMxhzzu3PvS8c+JMot3JoZ/DwRlrHgdnnupfBh79RTiJ00lLxFIQRAGtAheFAjA69YtiIsx6le8pupslomXbWJ5YAxnqjHk6ZTKxICfVjr0+32pg1TjGha0AzY140q0obvAC433tdTYkJCeWrwT7zoj5oea4yZYj/NB5SpWbpCrJsEN2GE2gBL+LXlOS0NX7aG3cn3I+245+myBrSq+Xo07YUd0qAkzqRCvX24PmK2V3O43uvLsrIMoY50Y6VljpdoQ3qTye3p2dlS4P+b8nlkK2eElkHjMgmakpdqnayhAh2iP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,33 +91,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 19, 2026 at 03:27:47PM +0200, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> head:   c03c1a14507dfaf8b856c2608f9ac216021fc222
-> commit: 9a4580db6e9f83428813f671a79486469684069f lib: fix memparse() to handle overflow
-> date:   5 months ago
-> config: loongarch-randconfig-r2309-20261019 (https://download.01.org/0day-ci/archive/20261019/202610191553.uvFTO4t9-lkp@intel.com/config)
-> compiler: loongarch64-linux-gcc (GCC) 16.2.0
-> sparse: v0.6.5-rc1
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261019/202610191553.uvFTO4t9-lkp@intel.com/reproduce)
-
-Blast from the past?
-
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Fixes: 9a4580db6e9f ("lib: fix memparse() to handle overflow")
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202610191553.uvFTO4t9-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->    loongarch64-linux-ld: ./drivers/firmware/efi/libstub/lib-cmdline.stub.o: in function `__efistub_.L47':
-> >> __efistub_cmdline.c:(.init.text+0x288): undefined reference to `__efistub___ashldi3'
-> >> loongarch64-linux-ld: __efistub_cmdline.c:(.init.text+0x298): undefined reference to `__efistub___lshrdi3'
-
--- 
-With Best Regards,
-Andy Shevchenko
 
 
+> On Oct 19, 2026, at 19:34, Mike Rapoport (Microsoft) <rppt@kernel.org> wro=
+te:
+>=20
+> =EF=BB=BFSplit out files related to SPARSE and SPARSE_VMEMMAP management f=
+rom
+> MEMORY MANAGEMENT - CORE into a dedicated entry.
+>=20
+> Also include architecture specific sparsemem.h headers, pfn_to_page() and
+> page_to_pfn() conversions and Documentation/mm/memory-model.rst.
+>=20
+> Muchun, who did a lot of work cleaning up SPARSE_VMEMMAP and extending
+> vmemmap optimization, volunteered to help with the maintenance.
+
+Thanks for your trust. Happy to help maintain this.
+
+>=20
+> David and I will continue to look after that part of the mm subsystem.
+>=20
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+Acked-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
+
+> ---
+> MAINTAINERS | 18 +++++++++++++++---
+> 1 file changed, 15 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f53047aa8d3c..b468ecdf8c65 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17161,9 +17161,6 @@ F:    mm/mmzone.c
+> F:    mm/pagewalk.c
+> F:    mm/pgtable-generic.c
+> F:    mm/ptdump.c
+> -F:    mm/sparse-vmemmap.c
+> -F:    mm/sparse.c
+> -F:    mm/sparse.h
+> F:    mm/util.c
+> F:    mm/vmpressure.c
+> F:    mm/vmstat.c
+> @@ -17210,6 +17207,21 @@ F:    include/trace/events/ksm.h
+> F:    mm/ksm.c
+> F:    mm/mm_slot.h
+>=20
+> +MEMORY MANAGEMENT - MEMORY MAP
+> +M:    Muchun Song <muchun.song@linux.dev>
+> +M:    Mike Rapoport <rppt@kernel.org>
+> +M:    David Hildenbrand <david@kernel.org>
+> +L:    linux-mm@kvack.org
+> +S:    Maintained
+> +T:    git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git memma=
+p
+> +F:    Documentation/mm/memory-model.rst
+> +F:    arch/*/include/asm/sparsemem.h
+> +F:    include/asm-generic/memory_model.h
+> +F:    mm/sparse-vmemmap.c
+> +F:    mm/sparse.c
+> +F:    mm/sparse.h
+> +K:    (?i:vmemmap)
+> +
+> MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+> M:    Andrew Morton <akpm@linux-foundation.org>
+> R:    Kairui Song <kasong@tencent.com>
+>=20
+> ---
+> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+> change-id: 20261019-memmap-maint-72fec54e6752
+>=20
+> --
+> Sincerely yours,
+> Mike.
+>=20
 
