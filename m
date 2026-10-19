@@ -1,121 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE5360A2601
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 20:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B6760A261D
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 20:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=H0LhZGsR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XCKMUP58
 Received: by kanga.kvack.org (Postfix)
-	id 1AA486B0379; Mon, 19 Oct 2026 16:40:12 -0400 (EDT)
+	id 9D6866B00FC; Mon, 19 Oct 2026 16:51:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 135AE6B037A; Mon, 19 Oct 2026 16:40:12 -0400 (EDT)
+	id 987126B00FE; Mon, 19 Oct 2026 16:51:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0028A6B037B; Mon, 19 Oct 2026 16:40:11 -0400 (EDT)
+	id 89D766B0101; Mon, 19 Oct 2026 16:51:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE85F6B0379
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:40:11 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C6086B00FC
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:51:34 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 49BA71C41D1
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:40:11 +0000 (UTC)
-X-FDA: 85340543022.05.AC68F11
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7D6F8140007
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:40:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=H0LhZGsR;
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792442409;
-	b=lQAG8RnnyzSJnFUwjZMT8L0pVnPR5dtp4dV7TqAL1EgQmEOVr4RAainmBdT3Yw48scOgZj
-	s3Hy35BuTv86Et85LDAOVoIFPaf+ayWaps61rSWYmGY9YlB0YokFd+M6Mk4vPba+RF62Cy
-	g/9OutXqDcF66+DgW5fTurADkw/xcwc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=H0LhZGsR;
-	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1562AA7B94
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:51:34 +0000 (UTC)
+X-FDA: 85340571708.05.C91B31F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BE22020005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:51:32 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCKMUP58;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792442409;
+	s=arc-20220608; t=1792443092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5TU2bw9dZra1XsKruc6sjmGSbXJI2gRuYiN6+oX/+4Q=;
-	b=jASaQU9OqCZvgXp2NDWegp0sYKiZWH/6UlFfNQi9Hrvb2ERmR7OTDJTWXwBoI3rqwnfuyL
-	ZMJ/1i3qg+zmQmvKeywLiwUDc8Ggxg6f7NiJxCLj57aMw+RI+GNaUlBKPJpk1KA9ak5bLy
-	5Rye88WF0ZALmWQochFyI4+dSu0BgN0=
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91b8306b9f8so38979856d6.3
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792442408; x=1793047208; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5TU2bw9dZra1XsKruc6sjmGSbXJI2gRuYiN6+oX/+4Q=;
-        b=H0LhZGsR6itMOfy86DDxFxOM15VgFO7qH3XhIT3SnWkY+B4n9h7oAS37+ZJjU77avy
-         iuOAdQWBPhYuWB4okRah9AYi4Vccd1l+yBePW32tMttswTI5a1zFvkKkT9Gp4audmv7W
-         UzRqywlkEiW5DGgMx0DICOMupncOWLko5/f057eO5N0rQo0RzA4mwkJWrYMJTBniOOM6
-         cxryPBzKSc0KRj7kcpwO+6zPTwUao6aRkEEdJii/D7a7bWpG8eeLTS9Sy4y5jCJPPKPl
-         b+LQbfqDFdpaEDL4JFSfsTdj0NUcrkFqc6vYRsj4dszAelFBj746+fuZgb+UfBRf0BQE
-         3JbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792442408; x=1793047208;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5TU2bw9dZra1XsKruc6sjmGSbXJI2gRuYiN6+oX/+4Q=;
-        b=xFD4LH54p0oS9SEHr2tYVoDxNjVZkBzWeK27vuK9IMj6y3QeT+etp9VAoKQLFUXpvq
-         RJRUNxZNkhjiN1GAahqL7jWbKrPlkJmH+qM9UKdI2Y1rXhQudnNSmQjlp6TIm9W2qHTe
-         zm/LX6FIvBLO3zGPqaZFW2rvpNZBffQ0sStwxrNQIElwJsNsttU1DYbI5uGE1zJsn5gc
-         BGSnDBYCSIPHsLeOr7n0k35z86CHLZsphV5I/PGpwTpCahXkJafljRTEIvv1y34l8Q5E
-         K6rhAg86hn33tHk9d25EeCwi+Xz81nqgHhI1z3JzVCUcLNifFDOjxnMLyJhSLCOfP+9u
-         gvAQ==
-X-Gm-Message-State: AFq9FYKhwCd/pFvg4+efPBgALbJdhXqz7V6wQJCr7O25zxGn/8wBC8w3
-	aN44i/6vS9j03mtWp/Sc6lLnMIRfAIccxI7scWPTqhCAEJ+vfYoB1ZKlRlsOl6D6FDs=
-X-Gm-Gg: AYBFou0yvgK1jyvoWUJ3PfZLT1i1RrLXF0+oAQD3rwZC0LUpOOrt9fF/ZooTEF2zzcW
-	zVIiE7A+PSWcxXgyoqNULAnRnxblN/4XIJM2E0yNmEwIX2AYpeEswXBPCsSg6dQW8tptynbbgwT
-	nkNVXkiqkyH23PPj8jp+Dhx+IvRXJQ+OtYFXPccuMTPH0a5Ac/9KshApan8OkSJP8MvFg/jS1sv
-	b+HxYh0QILI/L5LGOOcCwiO6+5ROr5TXoU/IkAfWpPHihVic6QoQzouUyBTd14Ibsp6errg53bg
-	llxO+Nr1NImK7g4IdLKdccObHXjGDU8qXyAKHdbKdwmdIkKSLJJOdWc7KrTuyksuuQtihMtQguZ
-	Tgmmku3YnNZFH9hO930lehL4yVeZD/EOYLYJFcTpVySo4dNFVneVOnhROpzy7YNeujZMnGtGhkr
-	/1QKxQ7kZoYbUhScVD2emWQdR8Bvb5sZzwarV9sODpaUSoC2wL4legir7TUgxpkIqZDMHK4tLU0
-	6Dx2T6nMPuksnfdYQUQXStzo6N9aPM72S8hSGwMcVF7QW7u0Mpl2QU=
-X-Received: by 2002:a05:6214:d4c:b0:915:eb0e:321d with SMTP id 6a1803df08f44-91bdf3fe6b1mr160127356d6.46.1792442408212;
-        Mon, 19 Oct 2026 13:40:08 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040da11bsm5657186d6.35.2026.10.19.13.40.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 13:40:07 -0700 (PDT)
-Date: Mon, 19 Oct 2026 16:40:05 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Johannes Weiner <hannes@cmpxchg.org>
+	bh=z09TlHme8s+UYlN6I8GSIiTbNEV9B18/ss/FueYOjmg=;
+	b=l5mjBjknkE0imIc6gE5nm/+mUQ2H3IDAQjwvB+h5bRj5qhfotVzsiIJlET0T/6uDATOvZF
+	RjyqMZpnPV4DkIQ1IfvgXrQ6jQDcqv7PgJmQrhvRPH6yAM7V4Pic9/NnHHIUdxwkupA6/Y
+	DP17Ir+N6mz89JQDL2XYNQYRWOgq2uI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCKMUP58;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792443092;
+	b=YvmU69OIDoy6CoL2tLJAm6xqX4PCjKLirMG6cVGDpX0O5XcvOhsvbgWvUQSw1KGlaShMpF
+	VUPhpGkDWxWC2UVrFBPX1kH+RHt9d+Vrjw8Pe10omYIDh2gwBe9817xKxklbhVj/AGmJ4V
+	tlK+l/XtCz28zsZvpzTL3xILFjQs6nY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C89C42A60;
+	Mon, 19 Oct 2026 20:51:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97921F000C4;
+	Mon, 19 Oct 2026 20:51:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792443091;
+	bh=z09TlHme8s+UYlN6I8GSIiTbNEV9B18/ss/FueYOjmg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XCKMUP58RqYYAGi8f/qrT4MupGAV7Y/5KbiQx2GN7ryUsajnzax1rAUyZszN20opG
+	 8TSyUYoJevEScTJN+N33VeDVqLmhdo02wuISvoi2tHkIQtEsLoV11SMCFI9f/qrcnL
+	 AzZdQo4kpx0DqPNPDwXSI4f6zY9/KVFOHx9CP2WwQs999f0CEQIO7T9ZKGqxM9AUbx
+	 C656DjxNOzQAKj8CWqFAOF3T7iKu8kJxeSf/o4p5pnihgRWVkpYRjRY6NpMVAAKcPK
+	 3lxxoHPYwmJazhosRodJTsYxYkpaftF35bnvPmz9fWWAvJH6wtb6g/4Y/pqzDN7F1d
+	 3+T825S9VgMoA==
+Date: Mon, 19 Oct 2026 21:51:29 +0100
+From: Harry Yoo <harry@kernel.org>
+To: "Gregory Price (Meta)" <gourry@gourry.net>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, 
-	brendan.jackman@linux.dev, ziy@nvidia.com, flyinrm@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: let the highest memory node recover from
- hopeless state
-Message-ID: <atZ8ej_zL-D_FIIt@gourry-fedora-PF4VCD3F>
-References: <20261019184850.3427905-1-gourry@gourry.net>
- <20261019201321.GJ371161@cmpxchg.org>
+	akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, hannes@cmpxchg.org, 
+	david@kernel.org, mhocko@kernel.org, ljs@kernel.org, dave@stgolabs.net, 
+	roman.gushchin@linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive
+ reclaim
+Message-ID: <ataClWf9F_zp-KDh@thinkstation>
+References: <20261019185002.3428594-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261019201321.GJ371161@cmpxchg.org>
-X-Stat-Signature: 8sbh9u1ntiybkpez3co63xhj1pa4h96m
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7D6F8140007
+In-Reply-To: <20261019185002.3428594-1-gourry@gourry.net>
+X-Rspamd-Queue-Id: BE22020005
 X-Rspam-User: 
-X-HE-Tag: 1792442409-274463
-X-HE-Meta: U2FsdGVkX1+VhTW9txQvYWbPSWUBC3U2SCj18L6m66bEBmRdV49XE29yLqiPzPoBJ8+xAntRRJd8zGabHrGCnbnoDz4zhp2NM7vImkCeZ3MmY0V0rsYKIjlJl8itn7iENqR6SSY0agK2QHom2sURbKG/KJw2EKJ10DEMhWt1etH9O73lBJXxAIrFnA0PoaSa3BSmUTRjf4dpElKNN3hPKdc7nlLwxtCxXQRdPskXB6rKrkNs3cV7XIUhWLb08o1HNzaf6pS/X8uQZwlt+vZK4Petvk3AqCu3kqeOzfUMBxnzPvOrbsN1DIf+FAxAxbMpTzlD2zjpkq9m2iEgghz2rtgce6hDlBaaAURAagzSvr8zJJApsw5ispDmXbGs5R9YFJIS5RExMW4wPat5YOU2x6ufCBc29cyP0S0GWNdCSzGsLJxgSqj2YiRef+tbRZN0OSQV0Kawt1DU3rPGaTxECTmeavltXls7YY6knXclzyDQllo8GPsCg/+bUKOBCJA3xxk33K8H1dhAybJOvjWYIEPuWjxPj8Szizl0zEddqodE7qqbqihvT7o7mQbnyAczaUN+IS1fARJ0IYvkFVOBq9k5D3gAmkD4K2B1T8qHWvx2v+yuRLKshLclWHnZRNUmoR8sqE2UR7yAflDC1evFzGB/bgEKUNDVLQWHqbA8AQDQbfwTuCSPlIik08dk4yDp+luFe5Vx+G2vAxbkCl0EYGb6zqA0R8wSve0H15UBejZ9sQBlyD8lmXo35567zP8zFsQD0W2M/x0y3DnxFktnNw5khqbk/pnEbA4K1MBQWvFxoLJTdA/2+6ywRK4qbTJvvsWck6T5FjrBnO9il9vrWZ8HTAfkOO4OoBvqtjXoFPuoWB62f9MKmoLktwZX3Qg11mvMpzwh/Yo8ZePqpAaeYmI8zcYCcGRHMjbhC5Cp57IB9H4IfrexjOgYFKWouENICN6F2kixtqmlnkVmdqP
- r7Jf++Yb
- de/nUWjXQqDfZ/1u7aLe13Zgd+3CZ825BxKAioNxDeyXtoBYvUtLOoMoQCy3G4qby0duYGnDYAWRxlCoudQFNEgkJq9AZkKf4mzeRARK3WHe3p2D9ZSZDirJHtICQWHorWHLAug+klLeXOUOcircZd/wkCoVWiy6pg4SFTnmrCSX0p29XygqEoVJBZ5znoR67hWST8W/L5oNSti6+0zgj/qQQI71NSiEwABY/iCtonUbA2+ZwbHqMa/w+oIVsEY6AY5RYxbOmtNYh3aVdkfCQzO3P+F7wDCkEktli9fEBU7Jo0pXDiiKiXz3NEEPlhW2dK+9EkJKul3VbCmaW7SlcEHlnvpD6HZo/ZtfM/JdaTVon2ExXZowDbhhQetZ80k5kUO4g
+X-Stat-Signature: qf1az4stfbcswk4mkrp1hj7ukrgfm4ei
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792443092-244691
+X-HE-Meta: U2FsdGVkX18olkJJ8HA1f/A4fZCz3syq9u/WaJDy9Q+IvRBg9a9mlKari2gRbXTEMC5TQXoJu+TjBmJbmZzMqC+RDOmSo0dwKsvp+/o6rwPJ3CP4djSYxHvQN4aNXQayqi/TxszUmfNp6tHJlbIomaB8tN+8tjg/SOzJjg2pDd+ICGw6mG38X5RLpt0vVPVL22o84JNgb8U83pscHrrGtMzv24doEaO3dwm+pWn+e7qp/Ly3Rsw1Jnrtg9HDACEc4pbKO/82ULphkjrNJD+u1gNC5V4druF9WI69r7mc79JuQkBIZfz+frP9NcKsfTQ/ogDHYG+dMkaKOoNYuZ7gkrv/D5U6pLYNuCaOpqTUfl6gQ4oTDiDE1+VGZu8r+x3+/Vx/+WRFOMJhRHpaxoblrutYR++bvXZ8tyMUz+AWt3C/5EUCDGRKFFc5bKTxWAS26kkaSm+rMtttZYD37lZW4ujuiJqTMNBPAPQddstvukF+ezIo5HvBi1gtYkT+499PxhwW2FFUaZX6pDLeITRqU2cg2ErLsGGjYXY6EDpOICEuInLSCvZ/ckeVTBUylhUCxDDNtuXAC8WISGg+K9gAX4Fov4DExPxQOi8rYqVd0nsbadnlCUxIf5OTRBqyA+Fn1/glilnvkWdlrMSCvjbcgyDl9uqM56qkLsJ0R0vl5WkoRPc0aXl3RIjdPT5TvTJhklBV0307CPai9fIjS9y+2KDY381Cwy708VaFH1WjnrSox4pqRLN0etc5Lxp5KenKvVuR4floQa6N3XVjrID3NyHNBORsv6gA+kXxk/ADvLIii7XpVxEUM17Ax1X2/dzM+Y+auH+AyIM/sC12mGGqlXRJNWObPocHwnluLXaBX2n/6LR9GhlinGAi7m5tdrvUjTqThx5QCvaETyZOrqoF1Zw+WyK/NIY6N2gf+vxWAPSAWpjXnbDK9d7gBz31tBSHHSi+ugEamo96ZMfANgI
+ FXb/P9HD
+ 4QTuKw5P9Xt+RBRfeFO1JXY6m9R/Frs+QNOF98MDOYUdZN1tOoMiIv3Bnayf8EqwKRwfR4r20rntcN71efIt5S6eF3kthtCc1Dcw6E+EHNJ436BaXQPRSvJVUDrPn8f+483b4PWC4Q1RbPIBYcVMEKDZ0NW2eYumTIOOnv2KQhky+aQuIeXOJLNr+i3PGVeUvJbU7wRNs/AFB6S/U8QlCezHve9yEWtAyrVyLuZihRWBmptLq7TctG6xL4YOaMq+Rc/eUKQdcsj/60F74npzdSf9/5pWYp6Lqu0Eg0+3FcM46H79l901afGrZ7CADXx56vQdrNXhnND+R/LO27qOzHy2R8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,53 +98,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 10:13:21PM +0200, Johannes Weiner wrote:
-> On Mon, Oct 19, 2026 at 02:48:50PM -0400, Gregory Price (Meta) wrote:
-> > free_frozen_page_commit() clears a hopeless node's kswapd failures once
-> > its zone recovers above the high watermark, but only if another memory
-> > node exists for allocations to fall back to.
-> > 
-> > The test `next_memory_node(nid) < MAX_NUMNODES` finds only memory nodes
-> > with a higher id. The highest-numbered memory node therefore never
-> > recovers on this path, and its kswapd stays disabled until reclaim on
-> > that node makes progress and balances it, or demotion is re-enabled.
+On Mon, Oct 19, 2026 at 02:50:02PM -0400, Gregory Price (Meta) wrote:
+> user_proactive_reclaim() limits per-node reclaim to
+> gfp_zone(GFP_KERNEL), which is ZONE_NORMAL. Proactive reclaim serves no
+> allocation, but that limit makes shrink_node() skip every ZONE_MOVABLE
+> folio, so writing to /sys/devices/system/node/nodeN/reclaim never
+> reclaims a node's movable memory. A movable-only node, such as dax/kmem
+> or hotplugged memory onlined movable, reclaims nothing and fails with
+> -EAGAIN.
 > 
-> This seems to be the express goal in the commit referenced by
-> Fixes:. Can you explain why this premise was wrong?
->
-
-tl;dr:  next_memory_node() is not the right check for what the
-comment and patches say it actually wants to check.
-
-on a 2-socket system you would have:
-  if (next_memory_node(0) < MAX_NUMNODES) /* clear's hopeless */
-  if (next_memory_node(1) < MAX_NUMNODES) /* doesn't clear hopeless */
-
-despite the fact that each node is the other one's fallback node.
-
-> The patch in question also only added another re-wake event. It didn't
-> remove one. How can it be at fault for kswapd getting stuck?
-
-Not at fault for getting stuck - it didn't fully fix the thing it claimed
-to fix. So this patch completes that patch's attempt.
-
-
-> I don't understand what "having more than one node in the system"
-> means for re-igniting kswapd on this one node.
+> To reproduce, fill a movable-only node with clean page cache and write
+> 200M to its nodeN/reclaim: the write fails with -EAGAIN and the page
+> cache stays. The same write to a ZONE_NORMAL node frees 200MB.
 > 
-> Generally I don't understand what the heck we're trying to do with all
-> these patches against the hopeless state code. It shouldn't be that
-> hard, right?? If kswapd on a node failed for whatever reason, let it
-> sleep until direct reclaim makes forward progress, or other frees
-> (unmap, etc.) put the node back above the high watermarks (which means
-> enough of the unreclaimable pages were freed to justify a new wakeup
-> in the future to attempt reclaim against new pages).
+> Scan every zone, as memory.reclaim does.
 > 
+> Fixes: b980077899ea4 ("mm: introduce per-node proactive reclaim interface")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
 
-Zi said the same thing, and I agree.
+Looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 
-I didn't want to propose that in a stable tagged commit, but if there's
-strong opinions here I can just outright drop it.
-
-~Gregory
+-- 
+Cheers,
+Harry / Hyeonggon
 
