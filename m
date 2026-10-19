@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC904CCF2E5
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:40:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3E41CCF2E5
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:41:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BAD46B00ED; Mon, 19 Oct 2026 10:40:31 -0400 (EDT)
+	id DD85A6B028D; Mon, 19 Oct 2026 10:41:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 744446B028A; Mon, 19 Oct 2026 10:40:31 -0400 (EDT)
+	id D60CB6B028E; Mon, 19 Oct 2026 10:41:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65A256B028B; Mon, 19 Oct 2026 10:40:31 -0400 (EDT)
+	id C4FCD6B028F; Mon, 19 Oct 2026 10:41:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D38F6B00ED
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:40:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E553FA8386
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:40:30 +0000 (UTC)
-X-FDA: 85339636620.06.DC5593E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 48E0B14000B
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:40:29 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MeVZuzya;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9625E6B028D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:41:31 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 31C9780706
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:41:31 +0000 (UTC)
+X-FDA: 85339639182.29.B37CDF2
+Received: from mta0.migadu.com (out-126.mta0.migadu.com [91.218.175.126])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BEDAC40006
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:41:28 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=d+6BuBab;
+	spf=pass (imf12.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.126 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792420889;
+	b=HXBA8QFmbPs0CsfdRli6SihKX447BW5fc1Xv4cFAc89mt2XDlToO4nyQn0C8loSfX07wyw
+	G7dm1Ie2uHhFbaTwfiy9s9QdQpsm+2sxq850iMNC/1c1auN16kuWugRdqY9A2kYfDTwkAh
+	5ogwpey9ZEYHRnkj1oUc+bUSNg5KcXQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=d+6BuBab;
+	spf=pass (imf12.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.126 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792420829;
+	s=arc-20220608; t=1792420889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=grbMMayDZ7AfUlhp6lU9LvTmW/PhQ8Ok6Mqphz7bbx4=;
-	b=W/X5P0LUNj9D8mHW19HrRMGc5ied5Z6oMRuwW534g7nXHMUYJCBwCE2ZtBRGGAfsgd9y6L
-	iHY41CbMQCfptAEYy0nvKD4OUjLT+pJtkDPoPPfnleEcHM84oL6DJM3uws/jS/Wwi4Ab2J
-	1akAeKcy2DMHpz4e5u5Lch6DhRVEeAg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MeVZuzya;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792420829;
-	b=pI8rO6mBrxOPiprNh4LwgCbylMr74ODTlw3LhfH2H+t6GJZso3QUOvO+xkoRb/tvjiU0vD
-	FHlG6VllADqz0Lp69C/GDFRhQQFE5jil9mDInRV33OrzwbLp8MeQF1PVmGRYiwhfygaHV/
-	HDEtuCDkym3DTHs8C1d5a1lOsLIiRyE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AAB7842A83;
-	Mon, 19 Oct 2026 14:40:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE69B1F000C4;
-	Mon, 19 Oct 2026 14:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792420827;
-	bh=grbMMayDZ7AfUlhp6lU9LvTmW/PhQ8Ok6Mqphz7bbx4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MeVZuzyaJB9brvMUdTtBCNfWn8pmzehSBGLdpXeBYLYBiQZ+eSLGCrFPU1gbCNdOz
-	 eEdBaOCNJgTESHwT7bBNHU1F4fXhVcZWYp6SVWh3oucgTTIqfhEBgDXo4zvDk2fhfV
-	 1Lwk0Nz0uCrEmCJtYMrTUgoqRaBcl63bXnr7Fnv4JvYaxP2xoR5L8avgGxk1/YcOMf
-	 kI0p4gdb1hsJAkZd/pf0qzLaM9p9KkLPE9+f+ClGePBgi5XqRQGcZTuTekSmbvX9+Y
-	 NziN1Xn9N5PIsvAHbydyXRNehbRxeVxxT8TmF27eirOvfGrYDy0gQyEmWTfcyLRXxT
-	 PffbUDy7ppa0g==
-Date: Mon, 19 Oct 2026 15:40:21 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	Daehyeon Ko <4ncienth@gmail.com>
-Subject: Re: [PATCH v2] mm/vma: avoid spurious write locks when
- mm->mm_lock_seq overflows
-Message-ID: <atYrwiHPc0GU3rGn@gremlin>
-References: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
- <atXjbsDn7DJybsHU@pedro-suse.tail5790ac.ts.net>
- <atYJA7nIu_RwpoCC@gremlin>
- <20261019073201.aee381fbbdf2edfdd0a68754@linux-foundation.org>
- <atYqIrlyW1tgZJIx@gremlin>
+	bh=T6raW/PObwT7h5FSIt56ztQ+9Pww7CebsT2963E2czs=;
+	b=eRVCKCdhY8A1i5xtXIHsEfUWnorftw217TlufrR2FVIqyiOdBEiR0HsStib4hyTrijZjW6
+	xFzaOvuE7IeP1pSF7soI7mqK5Z5RgHpdrkQvrGTKOBlPVHU6vQx9CVmwZ/I7YsbyTr3mk5
+	cBKDkPvP8J4bG5yJAQp0IcZp83fPShc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=HwE2plcjFNclb9HwtwKDo6zr2B1gdPL2a6p1mdIeSyU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792420887; v=1; x=1793025687;
+ b=d+6BuBabhD1ZdY8NeF7Ot2Jm16a39EPZNn1G5n1mNMhKmdi+mX+6Qon1A49I/y/CISLbdZXn
+ WGhfN6ws709zzS7si8qffSU92nnVUUR52ZGgla6XtBgpVAORphi+kgowB/eeR1RWghh7otM6oKV
+ Bu+i453MfyuqJ5EQTzvA3ae4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id df66da58367c8def;
+	Mon, 19 Oct 2026 14:41:27 +0000
+X-Mizu-Trace-ID: df66da58367c8def
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <19fcff1a-75be-4522-8413-047efc2612e5@linux.dev>
+Date: Mon, 19 Oct 2026 22:41:20 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atYqIrlyW1tgZJIx@gremlin>
-X-Rspamd-Queue-Id: 48E0B14000B
-X-Stat-Signature: nfm9ps9tbymzuki1racd14o4cmbbffpn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
+ up on
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
+References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
+ <CAMgjq7CT4srpTcAkStOV6zN8X2v4mPN7cRzA9B_eevFB4azvtg@mail.gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CAMgjq7CT4srpTcAkStOV6zN8X2v4mPN7cRzA9B_eevFB4azvtg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792420829-936357
-X-HE-Meta: U2FsdGVkX1/PRWUPc6dPC6y6+48OSW7OxFGUb1eMTQ+E0cnBHTA5wcVvEgcXdFRuBUOwPVx4nRsGPkUbMrNwuZnIEJD6ERjNar95wAO9MJZot8WNx0HVxOidhO5otanVJ2ssk47EXqcvQGEfK5QZ2MErXRqM9BPRHSxwco0WtvAe2RWmiuKKdj+HnHWX4X5q2cuhS2bU/gkWc00aRRmD3Jsbl8kNo9ZZn/2dEUvEVTjt3TyL1sisyXlOTDtLZVMcllzVoq2z4+iZXHiwB3ALs4KpLkGKDt2GfX3jWUQmshuaW6riFfTQdqd4rQ2eIDaOfu2De+57t8mNWcxzrQ1b+d/9K/rv8yOWzkDGu381nNE30jXAwCWc/h42MqLy1i/Y9SyqD+U9XxTz/PXFIGJKMsEAyFdmtUnR6PuQFlZImABQhOlg1KSlZxxCs5BMRl8EpMIYtEsIReWFzPA8py63024BYBy8k3j0/RnJnUofLbdpX9ovNuwKKLtch1amrByWp5vvHdqWL2IRDMDrbP00eK0amwS5CO9recEn/ABKmMZkKsqHSyZj97G/bWGMKOz9P19m/6lEIbQ5OkdnIIMaOttpLzHA6X8/nUkPwUiac5uGt91pFTghNjtSTr6bLFyVvkIeLbgDCJ3zdpb7knxGdeT4dtArwcOwrQ28CnPheFat7e3b8lKtwswEVfpdeyTPAo/hr+MquAffQ9UZAFEDdrhwHdrJXZHPosX33imh3C+u0oekdnv6SDG9Xk8BDvIALhvc4CIgExqSFqisgkxVDKM6MGuiEoyIdau7hS8rhGVztxr51RqOYD7jsvgEAVPA3o4flepkDxETpC+Nvx1MyNrGUbkYzy11GvMVYxkflcI9fiShkaddDFADPX+xbj4A3YNujkNmym5FxXv0ZAI2PvCbSWVMqNQ6PTiuiW1od27cpT8VnfWokQQbH5IHxG16YY/a9VbiT4O7XT/LVdZ
- wFT8NuZk
- tTQMPLcu5430ppDC1NydnSWqxR4WpH3G8Rt7+YcpBO/Og+HKZXdElL9iZzy4Z9IHVIbe8MT6C84fx1iFmCZY5bLPVy1c2hBNEThyj6mxKQo/uf4fLG0+2c9q3camCLOWoTnGujLaTmZVyT+B598d7PZb6z4b3wh+qRuWBPlyTjZtQxrVNjYKYASliEZ8bIZqsG6D7Ru/xIZ3G4SyGG0OkkaCghhN4S/Jys174NW6C/FB2iqQmreNEBtTnXoyZ2EAwlzrrQnbbcOU45uje4T+xYhO2rcezyjNPYc2oY31T8apIbQ8UDwJbM/V6iFid/Gq4TCDPRoEcPcVCr8BQJavGJiu5n4w6dnfn4nsE
+X-Rspamd-Queue-Id: BEDAC40006
+X-Stat-Signature: b3cqwes178nnff1kykmhsnkgwafhqo6a
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1792420888-797005
+X-HE-Meta: U2FsdGVkX19wqpUzK4lplTuXDcU88xT51IDvR25omK17QsiyfDtdHa2G504J2d4M+X9EiHstMoanGjW3HWCXmKI4RZGRHRfAS8plx0xCAx2BYQUYNBhWcn+R+fabRSXT9z+Xe/oFvM7QOtPkSgACYpkEZ30XGxmnnle2dCtH4Z7IKH3tzP8sid725j9xVcv90+7cZpevEe4K4diHJzBuJsq1GpT/8LyrUSY5XvYPmtygpPpha8wMEBUw8GT2VU02JFAymNfVWMAgDGpOkFipyghlhLaKkjtadX2PRXk79L2pbYKN0VbrSw+Ix98VtVsvS9EGgdVEpspd1QWAyd3T7udbU3eynZ3TpMWL/XVWstuuJ42QhGCGB0nS65nMFSsIaqXrannftp7halo45BWDJ0jfx9GXYmbdv9hXz2nMdQQa7TGK2U7q2rVmCBXpuctN8yM4wRusizTqKvRI7N+Lk3w4C/+AUYcgRto7zBN+YIONqmFKSy9u9/+adRrTr23CTsYnfNhce8SeHSXC2JCwwFex98fN8x8HV71rsrJIKgVno6HNxAQTS2ZY7qSRVBy5HN7Sk0y+IEixk4MXXy2Q5uu0d5bdmk1kGyXA/VKX3c7+hosmzH+ewcpomqDJ400wP+ZfH22OsBIg3tXZHWLMbgwH9gh6ArY7Fl7NlCIPp27sGOCt3GIRO/pRDh5Auil5HZAVs9i+5kp2LUlRGZ63Fwx4vxB4e4Kw2dcqsmlXjc79V1YvJ9eWFRw8URNrv7SL25rlPV2qfvQdUdRRYPoCP57s0Ru9i0bHzG6s4ZVQY9w7wxkPFzR8gYpKtuXYS7Tqeu7hM7n8gciEO6OO5z7jOBXwdzhMtwLJUIjpM4l0XBUNgIxc4j2ZGyuAqqY0Xv3V7s59Q4I+7gF4K5m12Rtp8+/aB22NcvywWP2q40/uhDAqqZIsa9IrREX6Za4Y9Q5LgJFjCE5h38jc4qX2cfG
+ 5DuwHIEY
+ KvcbGjOM6G1DyJg5wHnRxdreWvEEkXzKq6PdiNzbvjASI9sz6A1K69UZi9rDiCm7RW7wKrRAU3+qjVi5a4U6idYhn7TuN5Jtc4GM/CdPbv2dbNhDGStCcJWT6l2ISDShVylfDJKJ8PGl6WMsuvSvFYk4Iph/06rWQZpY8pjwL+KlaA2Qnb12JkREn8b44vvBgePJWQwrlpwY/qjwPSF9IPs7MGeQOokiujsN6czmKQzy25maw9esoTQHu8mxbFvSu0C6dPdV0gh3ValQPmiU8BuerAPMyi8soXodFKAzCZlM474s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,15 +95,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 19, 2026 at 03:39:27PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Could you update it to:
+
+On 10/17/26 2:17 AM, Kairui Song wrote:
+> On Wed, Oct 14, 2026 at 5:10 PM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+
+
+[...]
+
+>> --- a/mm/swap_state.c
+>> +++ b/mm/swap_state.c
+>> @@ -598,16 +598,13 @@ void swap_writeback_dropbehind_folio(struct folio *folio)
+>>    *
+>>    * Its ok to check the swapcache flag without the folio lock
+>>    * here because we are going to recheck again inside
+>> - * folio_free_swap() _with_ the lock.
+>> + * __try_to_reclaim_swap() _with_ the lock.
+>>    *                                     - Marcelo
+>>    */
+>>   void free_swap_cache(struct folio *folio)
+>>   {
+>> -       if (folio_test_swapcache(folio) && !folio_mapped(folio) &&
+>> -           folio_trylock(folio)) {
+>> -               folio_free_swap(folio);
+>> -               folio_unlock(folio);
+>> -       }
+>> +       if (folio_test_swapcache(folio) && !folio_mapped(folio))
+>> +               swap_reclaim_entry(folio->swap);
+> One problem here, if folio is not locked, you might read garbage from
+> folio->swap.
+
+
+
+Right, keep the trylock in free_swap_cache() and only read folio->swap 
+under it.
+
+
 >
-> Cc: <stable@vger.kernel.org> # v7.3.x
+>>   }
+>>
+>>   /*
+>> diff --git a/mm/swapfile.c b/mm/swapfile.c
+>> index c3288910b3e3..ee29085152fe 100644
+>> --- a/mm/swapfile.c
+>> +++ b/mm/swapfile.c
+>> @@ -172,6 +172,8 @@ static long swap_usage_in_pages(struct swap_info_struct *si)
+>>   #define TTRS_UNMAPPED          0x2
+>>   /* Reclaim the swap entry if swap is getting full */
+>>   #define TTRS_FULL              0x4
+>> +/* May sleep: wait for the folio lock and for writeback instead of giving up */
+>> +#define TTRS_WAIT              0x8
+>>
+>>   static bool swap_only_has_cache(struct swap_cluster_info *ci,
+>>                                  unsigned long offset, int nr_pages)
+>> @@ -217,9 +219,19 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
+>>           * avoiding deadlock. This is a special case and you should
+>>           * use folio_free_swap() with explicit folio_lock() in usual
+>>           * operations.
+>> +        *
+>> +        * The zap path (TTRS_UNMAPPED) is the one caller for which giving
+>> +        * up means the slot is never looked at again: it stays allocated
+>> +        * with count 0 and an unmapped folio pinned in the swap cache. Let
+>> +        * the sweep worker, which can wait, come back for it.
+>>           */
+>> -       if (!folio_trylock(folio))
+>> +       if (flags & TTRS_WAIT) {
+>> +               folio_lock(folio);
+>> +       } else if (!folio_trylock(folio)) {
+>> +               if (flags & TTRS_UNMAPPED)
+>> +                       schedule_work(&si->sweep_work);
+>>                  goto out;
+>> +       }
+>>
+>>          /*
+>>           * Offset could point to the middle of a large folio, or folio
+>> @@ -232,11 +244,20 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
+>>          }
+>>          offset = swp_offset(folio->swap);
+>>
+>> +       if (flags & TTRS_WAIT)
+>> +               folio_wait_writeback(folio);
+> You may merge this into the TTRS_WAIT check above?
 
-Sorry... no 'v'. So:
+Right !
 
-Cc: <stable@vger.kernel.org> # 7.3.x
 
---
-Cheers, Lorenzo
+>> +
+>>          need_reclaim = ((flags & TTRS_ANYWAY) ||
+>>                          ((flags & TTRS_UNMAPPED) && !folio_mapped(folio)) ||
+>>                          ((flags & TTRS_FULL) && mem_cgroup_swap_full(folio)));
+>> -       if (!need_reclaim || !folio_swapcache_freeable(folio))
+>> +       if (!need_reclaim)
+>> +               goto out_unlock;
+>> +       if (!folio_swapcache_freeable(folio)) {
+>> +               /* Same for a folio the zap caught under writeback. */
+>> +               if ((flags & TTRS_UNMAPPED) && folio_test_writeback(folio))
+>> +                       schedule_work(&si->sweep_work);
+>>                  goto out_unlock;
+>> +       }
+>>
+>>          /*
+>>           * It's safe to delete the folio from swap cache only if the folio
+>> @@ -1099,6 +1120,80 @@ static void swap_reclaim_work(struct work_struct *work)
+>>          swap_reclaim_full_clusters(si, true);
+>>   }
+>>
+>> +/*
+>> + * Free the slots a zap could not take back: swap cache only, count 0, folio
+>> + * not mapped. The zap runs under the PTL, so when the folio was locked (a
+>> + * readahead or an asynchronous swap-in still reading into it) or under
+>> + * writeback, __try_to_reclaim_swap() had to give up and scheduled us. Such
+>> + * a slot is reachable by nobody but LRU reclaim: no page table holds its
+>> + * entry, and the allocator skips it until swap is half full. Here we can
+>> + * wait for the lock and the writeback.
+>> + */
+>> +static void swap_sweep_work(struct work_struct *work)
+>> +{
+>> +       struct swap_info_struct *si;
+>> +       struct swap_cluster_info *ci;
+>> +       unsigned long offset, end, swp_tb;
+>> +       unsigned long nr_clusters;
+>> +       int nr_reclaim;
+>> +
+>> +       si = container_of(work, struct swap_info_struct, sweep_work);
+>> +       nr_clusters = DIV_ROUND_UP(si->max, SWAPFILE_CLUSTER);
+>> +
+>> +       for (unsigned long i = 0; i < nr_clusters; i++) {
+>> +               ci = si->cluster_info + i;
+>> +               offset = i * SWAPFILE_CLUSTER;
+>> +               end = min(si->max, offset + SWAPFILE_CLUSTER);
+> IIUC scanning the whole device for one pending folio reclaim doesnt' look good..
+
+
+Agreed. What I'd really like is a mark on the cluster itself, so the
+worker only walks the clusters that need it (mentioned in commit message).
+That needs more thought though, especially with Andrew's point about
+backporting in mind, so I want to be careful there.
+
 
