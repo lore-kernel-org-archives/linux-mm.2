@@ -4,92 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0F7ECCF2D3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 07:51:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABD30CCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 08:06:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B27096B016B; Mon, 19 Oct 2026 03:51:07 -0400 (EDT)
+	id 6AEEE6B016D; Mon, 19 Oct 2026 04:06:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD7876B016C; Mon, 19 Oct 2026 03:51:07 -0400 (EDT)
+	id 6603F6B016E; Mon, 19 Oct 2026 04:06:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EDF96B016D; Mon, 19 Oct 2026 03:51:07 -0400 (EDT)
+	id 54EF66B016F; Mon, 19 Oct 2026 04:06:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D89A6B016B
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 03:51:07 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 00EC6A0680
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:51:06 +0000 (UTC)
-X-FDA: 85338604974.18.F86DD24
-Received: from mta1.migadu.com (out-50.mta1.migadu.com [95.215.58.50])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BEE888000A
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 07:51:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lIGxj7Mi;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.50 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 28E546B016D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:06:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8FB40120650
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:06:04 +0000 (UTC)
+X-FDA: 85338642648.08.B5C2663
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8CB1840003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:06:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=eRxeBKcF;
+	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792397162;
+	b=CM/Lci+vnZgGxoZcDozrILGa7v1SCC6LxTXL/LexycyQB7NFQkwv1sX6fuQuDeMGsNyLAa
+	TXQQjK6hvRcafYbKrpmRaYaNSrvxfsHf8DDquuJJAV905oJQx7XMJJlzJg/kCDZ4GLL/9x
+	VB+uLncSTkUw8jIe6yihcaM0GobjCLc=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=eRxeBKcF;
+	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792396265;
+	s=arc-20220608; t=1792397162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7qZaDy+NlMF6Jfo93oKKnh49XozYmZutq3k/aN20Vf0=;
-	b=a0yTjZrhHi6eD1Ri05AFKGz18i66wTAkaWWBjX/+eVdISD+6rGXskHTLOhZTsVoqxeJGJI
-	EEvX2vwtYI6h/YKXdhfIgwXUBtqJuBwCUCFnEKtAR9wUt/d6w6X37y5l+ea3Jl9TVSex0K
-	9JeuE+JgFqvApLZIGjnDjXinlZmOBro=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792396265;
-	b=S6RNUZDWVfZX/Kb3gqGZNF/AhSNYxe12fMYNwlX61QU9CghyxLZwUZ0/soXpDuculhrz3E
-	nbfj5JpXIKisOOnUdAXfrn6Z1SC8bJQ8Qb5b6IzP4VWNnaUsgUvUHuc87REyfPuEDasOsa
-	kHDZ94jw8infsVTmQs/BhKpZjnidc9E=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lIGxj7Mi;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.50 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=hjF8tZ7rA6iLI0wdX17D/6yLew+0TeKbdr1X0twuh94=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792396263; v=1; x=1793001063;
- b=lIGxj7Mij5RFMLv6ysso3EZicJKMD0fiibM4JQVtcJXN3SXgCzkD1zzdKQr57NrBMRRT0ftQ
- HQqeCrKzBgMZPyVPMc3fTj7rjlHV6n7ty8DSrT5QCdl5Lv7iCRdIhIOqMGMEASSlF6XVH3vI5As
- 2qwqiQi8GAECFL1Sx2zl0MJE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id e63287af24581460;
-	Mon, 19 Oct 2026 07:51:02 +0000
-X-Mizu-Trace-ID: e63287af24581460
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 0/5] mm: hugetlb: add CMA support for PMD-sized page
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <4a7ad39d-fee6-4390-beff-d40ecf49cbdc@bytedance.com>
-Date: Mon, 19 Oct 2026 15:50:48 +0800
-Cc: Qi Zheng <qi.zheng@linux.dev>,
- osalvador@suse.de,
- david@kernel.org,
- akpm@linux-foundation.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BEADD50D-94AA-4B05-B9AD-136E37247FDD@linux.dev>
-References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
- <FA455F0C-0A46-4B5B-AB50-E9968001D2C9@linux.dev>
- <4a7ad39d-fee6-4390-beff-d40ecf49cbdc@bytedance.com>
-To: Qi Zheng <zhengqi.arch@bytedance.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BEE888000A
-X-Stat-Signature: ppyqy1ip3y6u9o83gbxrwsgxf7c9xwmg
+	bh=4OS48Qr0CZvLG5JGazX9ZFM2Vl3rE95sPji6iuRYp1w=;
+	b=EY21ItXyiRu6fAKasj5GBPLIcRkN5++iUX9Es3nkQ6VntUXDehhbAMCQ9wK/No8HKuEr+Q
+	/rWMkr1uCIhbxnBzf5ohXpXJk3QixDayjQ5K7MOQDj18kFlbDOASwzd+aRFZwSENS/qGhj
+	BTH0Hd5txZBuFGLhSHGMVCghz6L3cZQ=
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c434376dbebso162434566b.1
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:06:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1792397161; x=1793001961; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4OS48Qr0CZvLG5JGazX9ZFM2Vl3rE95sPji6iuRYp1w=;
+        b=eRxeBKcFPBtnG2LZeK9CQS6g55IGScz8yHOMeiT9TZSzsuN/AD9SJztIefNKhcbOHo
+         NfSw7PKrKr+NDHnwG+pnYVZOJlWG4DG9IJsvNxZzpsm0WZUznQOaGrSaUK/bDBPMfH8h
+         5cUdJwb6EliCv68vc8RJWBi7pBRIZ/Z5ROwJq2JEA/8fZKlOxWkJ8+3/SehFoWDF4QDv
+         o1RhtlV15uoRtck5s/cYSDSFMAuMDPlWWuPC5rbE7a5UX0ovX4cR2N7J3HPoQbJvH7ce
+         Vg5umzEOqtUgMzHA2AzrO1jilolxcoO4X6k0/J6ymMufNkacnY18woGeRm20iJfhzn0W
+         OmSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792397161; x=1793001961;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4OS48Qr0CZvLG5JGazX9ZFM2Vl3rE95sPji6iuRYp1w=;
+        b=DwN72FicXp42hDf3YQZj94FTLOp8ltfU+rVmF+wRzWQE1fNgdk7+2SuDNmAJOShKUR
+         YggpUZ1TT/8JFuopm1ufJFH6TbhHlR6OZURwMUTsKn6yztbH4F2bIqOlhn+d96UJq8OZ
+         B5u6uYnVOM7MAIf9QsJ7PmMDtvcD20oRfBy4PQEHUtKLcvsZfb6mYWsXt88TKLSlMCE7
+         AmPcgtSlKxGm3Zo+5tGI0BRrVqx91k9kQjLiWncldfAiYYBWpIzL1Zk8BmTyJUUOVfv5
+         7xyGs9WoY1MVGrOUW2RvVjk4Gn4wlyklcKeswCXefGpvlPnTn774tBoL/xvXfDoaLjb2
+         g2OQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxFAWr3Wm7peHE8jnPrQ+4vdjj1BpxPoTu6ZK8QTwgNfWdhf5HsOUMiR6+C5uSpV5WmOQcoQKJqxg==@kvack.org
+X-Gm-Message-State: AFq9FYJgQGGiqRdgRTMncBAdbLr41N8icpFILPYkNQiXVwl5nC7Rdv3S
+	qPz/0GkxrbF1oZ55fJbOgU5Su5I4YrPpqZiw/DMkL1nPSo1oqb5funlCLAtgQbBEEtA=
+X-Gm-Gg: AYBFou2R7Dv68wedbpMqImA+Aerg8BsDkckusKU9l4BKHaq4Nsa/VkZhXaY9POnbbDY
+	U/s/Ws1PX4OhSyDGgKznT7csk0bkUnCO8FDuHADb2tB/UtmQnru9GZyytUm/yMUttfam0pUT6cE
+	jf4hoHBDE8mhWZyWMY5UQnm/fW1RXBovSxVN5I3HrOUH/YsEGdCbjFAXD3LwphWDHGi6c8M6ec8
+	jKJw0q4z17t3msGMoQ5K7wjqmlbLIOqW5lPgmfh/2G+pF1wsscc02G7el+1jx03cWmn6cwW8k3w
+	TGPKmb/5lZgArFKOLhkJ+HdmuiebBcYX1L3EU7XqnMGS903JFbKK2emX3zpnbyaFJuMjCk12dVC
+	GAOld+dQ72UGYvkf6vUUO/CMEmbXdz3NVL/hFgT3fCSQl0Zx3b+iyugCbV4X87oHf3lHChZRfCY
+	G41jnOG64XfwlylsEWSXCvWO1nTjc9Gl/zE9lgttTxJZvUayKk8frK5M8L/+mK3dafHdZGMpATl
+	9NeFLnCVvbfZg==
+X-Received: by 2002:a17:907:72cf:b0:c2e:22f7:59c5 with SMTP id a640c23a62f3a-c40206fb12emr782141466b.7.1792397160793;
+        Mon, 19 Oct 2026 01:06:00 -0700 (PDT)
+Received: from localhost (109-81-30-108.rct.o2.cz. [109.81.30.108])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd5033a2sm21427563f8f.45.2026.10.19.01.06.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 01:06:00 -0700 (PDT)
+Date: Mon, 19 Oct 2026 10:05:59 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Alexis Bouzigues <BouziguesAlexis@johndeere.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm: nommu: set MMF_OOM_SKIP in exit_mmap()
+Message-ID: <atXPZ4QB7qoCt3di@tiehlicka>
+References: <20261013-fix-nommu-exit-mmap-oom-skip-v1-1-cb957cdbfcc3@JohnDeere.com>
+ <as80Rpm-VHhP14aK@tiehlicka>
+ <BY3PR05MB82607AF910C023253C48CD26A09D2@BY3PR05MB8260.namprd05.prod.outlook.com>
+ <atB63fzpLyfWpzPn@tiehlicka>
+ <BY3PR05MB826006B6F1E2D97E247104BFA09B2@BY3PR05MB8260.namprd05.prod.outlook.com>
+ <atHKQFi0ckwxLa-P@tiehlicka>
+ <BY3PR05MB8260C9F9055EB094183544A9A09A2@BY3PR05MB8260.namprd05.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BY3PR05MB8260C9F9055EB094183544A9A09A2@BY3PR05MB8260.namprd05.prod.outlook.com>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1792396264-533229
-X-HE-Meta: U2FsdGVkX19glhu/uXzrN0uOiuze0oIRijMSq8ZLxaD36FQKvOjn6/BnvRW7G9wbfK6tuUp6BmNMhSC+zIQwA0R1hXbKcNJsOMcE0+eTMKtdO0XWLgeSNsTpJHVPd/l/i9o5yEuRLsPizQPWikSzk7FqvEKGefqex2snKu+dnhKFAzro1fcrOZFxmhIkduMBYHUVirhvCuDBJUP6cDNSlSu4PE8E362LjenDWz0DKTsnqXYlyIswA1WuRLKwZtI9F9SuTb49kRiHRIUOnWd3iew8lZpKffUx/mKNCbKt35Y9YeTc/bbTFW7qwRlhMeBEJXRaJC0dd4ENi9Z1xkQwmy8KiCFMH18sIEnq7MGwr9wOFAj64AocVFxFWtxcHmHrV+uEYmKlKprnMQlaHFEGTE7WXWvSykJer/lhYg4FE1V0FzpsvvdoLABQYfh1gRxL/HF7zmDXYcG+xlKoByXKvF3nz1qgHous2V2UwWqDHhLCey4JrpnptgT6DalDMbF3ORFROwPO/UyTC6o4kOmzFhgZ/6z614XThA2A91m4fA2GpMcVlzfNZyrlw0leGixJhFZQcH7XanTnMDYVOJgJo8pkqkQqpIM/cN45SWMKPkJYODaqsTiHdEhnXnHyL8a0Mr0gDnSiNQtoTzgliKpVzl59m/VC6N9wKtQ1GSyDwchjS8JZiTax3Vz6bqLv3+5wmOjNI0D1+sOxBkOgM5WrmElVyRZgTJERwlAmNeQyTo9PsnJkssgN57iD5GNfUEGGqSSZy79CmSYTpPnNu+dX5/WQeboM2V8dFwj6+GJo3wcfSIcVBvIINP1B4Yr0/7NZtvF6rWSjlYvPov4INMPZy1ZG3+RBWats9Niowcq87m+De6UaW3nMjpqjE8NPp9S6jku63wR7/DLfooA2us1SZnYUz7574uT6Vd4t1PwxcYAiVDSyJ419twX+OgPGN0whcDuxFmlUizbOa8zB5qt
- N+3ZaTgt
- wo5OIbHNZitCOrFjR5wHiNpfHW11nafrHAeFLMO52wQMcGH/Bo4XlkZl9enU7nxOWYjX+8yky92NaSyHItNie16fou3MOHaFiLMN86vAHnwDFOD1fYYNLXkceB/7Kppgh09qQE8H47MwhqXCD+T+cRTM6F6hh0Fr/+0BZ5EOdC/5gSWmt3XGf2OwPJRRdLAy770mkllr1QX4rkiaOFyYAT99JU2MA7fhl6u/cPzuzA7Xwi1xuk9HiICwGw9McqgjE7Bw4PasXyrzn0oAVLmEjuJs/8BT7Tgs+adpZNV5Yq24QosfmBeplwDJXeuAYGw6oCisJ
+X-Rspamd-Queue-Id: 8CB1840003
+X-Stat-Signature: fhdeuqmjregc9dn8y1dr4shfn5d6a6ut
+X-HE-Tag: 1792397162-471695
+X-HE-Meta: U2FsdGVkX1/HBdr/7JrwDx+Rt3d+5eMvfdmIdLzOAgtVFvyKTK7TVa4NfQTVj5zvFINK8t86Bwg2BchtxLE5vaL8ozlP0DFz4R78PyIAW3av7/W2S6+70Y9ZRz6RDSinWuRmNmFz790ZSV7Yd/R+j/qNg4678+bgDM7aDHYCr5CQX97psQ+aCj3R1sDMY/db0vXMdU7GmzIqyinnKSz8cAW4LUNYLXOm+Jbq64rPAC7W8PJ/z/tyztJFyoBUa4VAutjyDt0pBjoYoLO5Slb1QcJFkdYOPt466wSUiKN1CTI8ycoR5v42P4CEkelEy6o+xIoedZ/86OxdajwvNwB97kK5IBJKJwFLV+JQMY7WO5IRq8dzRI1HCBFd9V2eAgZnYGKc+3/P8WRDukUzCLoSYyQ9dYFLjzWZi7+tLYWoe/YWrkfqD0Rrqmz4Z8PP3Rk+r9i4W7VkeGY0RyCh7OiW5Xvcl2cMypuMS3xfV4xHOkFFnQXmDSdAt3PuM89i2k+JLnqf2rwKMUThl9a6l48VXU3js3coGx8KLEaPKUDWc68T+yu0DZ57a2UgcOZTwCnLRjEx8R3FWX63PADAP7STjy2SdiNOFy8oxEZvrB7qQovIPk2aL/xnryDUl0Vmvx68pdFplzcI1jjjal0vudBaAiK8br0p4nrn+J0xRtljN2//z6se9H43v7wA+XNtdJpG/GRgSK8nWl7BVSDLllK6Y4qcby0kgo2urMEi6ttx2Eym0jv0sYGmVN0Si75ZeWXW8vb+NCybeYSLiYXaT387yiO6NkKujhnkW6fQ7dtz5Pc6ABg3Ao9sfm2HShTOyeiBULcAwzaMv65BDn/jY11tP1rAe2u9PDuhI1y+HbHmbm3Z0tAH4iii5TyK/htaeRL8vtbu0GJDM4uFfnsROwAzyfQWF4WkCqSR80uR2e1KxcKSAvYZH54xKHSpN1vBHH3LgjfMYqIGfED6ucGQZn6
+ Yf0Nuso3
+ wSV1OcQMIdYTzagprz0YAUq6vLk8HoW+IUig8WK/vXCfcLNMcjKVjM5v2NqLfVpZJmLdKBHeBJNLwwDYngAvTtzZYkDDiJe2eFjW//IgL9ZqX0guThFN1ZbzTvHTw9bTMPAHZ7SrtH1OThg51xijrC8eQU4iW7DL5Q/aViBngNjdhOmxErQ8cQNr2CeGIXtA0a+AdSQtxenzL9ZM4tpZC5YD+E6ML1VMWNCWBTI5bF7iII+XBdEQYt6W+zJWS1vGvKlCk/cEDVPeK0ZEYcKc9l3e9OL1DPR+xdaFpI+/+Hjcuvu9/AEUp25FMVaEc+H18Vooe2tXRZ9QuLV7asajpF2DAfK/N81akD35DJ6GLnitZqKtsZgXHw0zr0kP/9sEWGWzDDVHrQEUiqgFLvxHqxMXPojG9RuojxqhpJze5UON+6ij4bTszskWN8dTmv52s+U5nT6/141h4sHljsMYZk96YrAtNNrf18F/R90jfhajZuiH516DD96A22qYMTSGjvNihm2P8KC3oyfU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,141 +128,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat 17-10-26 04:32:37, Alexis Bouzigues wrote:
+> On Fri, Oct 16, 2026 at 08:54:56AM +0200, Michal Hocko wrote:
+> > Correct. The question is why killing the child, which has passed
+> > exit_mmap stage sucessfully didn't help.
+> 
+> There needs to be ongoing memory pressure otherwise the
+> parent's allocation succeeds and does not hit oom_kill.c or a livelock.
+> 
+> If there is memory pressure, then the allocation hits out_of_memory() and
+> then blocked in the __alloc_pages_slowpath/oom_evaluate_task retry loop.
+> 
+> > a) a corner case of a valid nommu application or this is
+> >    a theoretical problem
+> 
+> I think it is mainly a correctness fix (see below). I have only hit it
+> with benchmarks, including the /init provided earlier from which I obtained
+> the backtrace. I encountered this bug initially while running a
+> benchmark to test memory reductions.
 
+Make sure you describe this in the changelog. Along with an explanation
+why this benchmakr matters or represent any real life scenario.
+Especially in the context of how oom situation on nommu is inherently
+fragile.
 
-> On Oct 19, 2026, at 15:37, Qi Zheng <zhengqi.arch@bytedance.com> =
-wrote:
->=20
-> Hi Muchun,
->=20
-> On 10/19/26 2:50 PM, Muchun Song wrote:
->>=20
->>=20
->>> On Oct 16, 2026, at 18:07, Qi Zheng <qi.zheng@linux.dev> wrote:
->>>=20
->>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>=20
->>> Hi all,
->>>=20
->>> Allocating PMD-sized HugeTLB pages at runtime can become slow or =
-fail
->>> as physical memory becomes fragmented. Reserving HugeTLB pages at =
-boot
->>> avoids this problem, but keeps unused pages unavailable to ordinary
->>> allocations.
->>>=20
->>> Live upgrades are one example: they need additional HugeTLB pages =
-only
->>> during the upgrade. HugeTLB already supports CMA for gigantic pages,
->>> but reserving a CMA pool for 1 GiB pages can fail when physical =
-KASLR
->>> and other early reservations leave too few suitable 1 GiB-aligned
->>> ranges. At runtime, 1 GiB allocations can also fail when pages =
-cannot
->>> be migrated out of a suitable contiguous range.
->>=20
->> Yes, that's our use case at ByteDance. Allocating a 1GB HugeTLB page =
-from
->> the CMA pool is more prone to failure than allocating a 2MB one. To =
-improve
->> the probability of successful allocation, we typically configure the =
-CMA
->> size to be larger than our actual requirement, keeping a certain =
-margin to
->> handle cases where temporary kernel operations (such as DMA) prevent =
-successful
->> migration. For 1G HugeTLB pages, since the margin must be an integer =
-multiple
->> of 1G, the extra memory configured as headroom is also relatively =
-large,
->> making it less flexible than 2M pages.
->>=20
->>>=20
->>> Extend CMA support to PMD-sized pages so their backing memory can be
->>> reserved at boot while remaining usable for movable allocations =
-until
->>> needed. This relaxes the reservation alignment requirement and =
-reduces
->>> the contiguous range required per allocation.
->>>=20
->>> The series adds an optional @<page-size> suffix to hugetlb_cma and a
->>> separate PMD-sized pool. For example, on x86-64:
->>>=20
->>> hugetlb_cma=3D4G hugetlb_cma=3D1G@2M
->>=20
->> Different sizes of gigantic pages already share a single HugeTLB CMA =
-pool.
->> Given that, why not let 2M pages also reuse this same pool? Would =
-that make
->> the overall code implementation simpler? And if it does make things =
-simpler,
->> should we go ahead and do it first?
->=20
-> Sharing the pool would simplify the implementation. My concern is that
-> small PMD allocations could fragment the default pool and prevent =
-later
-> gigantic allocations.
+> > b) why this doesn't break otherwise very fragile nommu oom
+> >    handling
+> 
+> It does not break nommu oom handling because it places the flag only in
+> exit_mmap() right after the process has called the last delete_vma,
+> guaranteeing it has freed all of its private memory.
+> 
+> This flag is used similarly on mmu (mmap.c) and in previous versions of
+> nommu, until the Fixes tag 212925802454 ("mm: oom: let oom_reap_task
+> and exit_mmap run concurrently"). It took it away from the shared
+> __mmput() and only kept it in the mmu-only path (exit_mmap of
+> mm/mmap.c).
+> 
+>   void exit_mmap(struct mm_struct *mm)
+>   {
+>           ...
+>           unmap_vmas(&tlb, &unmap);
+>           mmap_read_unlock(mm);
+> 
+>           /*
+>            * Set MMF_OOM_SKIP to hide this task from the oom killer/reaper
+>            * because the memory has been already freed.
+>            */
+>           mm_flags_set(MMF_OOM_SKIP, mm);
+>           ...
+> 
+> This change places it in the same exit_mmap() of nommu.c.
+> 
+> The MMF_OOM_SKIP mm flag comes from your commit a while ago
+> 862e3073b3ee ("mm, oom: get rid of signal_struct::oom_victims") and had
+> the same rationale for nommu to mark the pid's mm to hide the process from
+> oom killer:
+> 
+>     After "oom: keep mm of the killed task available" we can safely detect
+>     an oom victim by checking task->signal->oom_mm so we do not need the
+>     signal_struct counter anymore so let's get rid of it.
+> 
+>     This alone wouldn't be sufficient for nommu archs because
+>     exit_oom_victim doesn't hide the process from the oom killer anymore.
+>     We can, however, mark the mm with a MMF flag in __mmput.  We can reuse
+>     MMF_OOM_REAPED and rename it to a more generic MMF_OOM_SKIP.
+> 
+> Let me know if this answers your questions!
 
-Yes. However, the premise is that there has to be a mixed-use scenario.
-I'm not sure if this kind of mixed usage is a common scenario.
+Fair enough. And now I see where the Fixes tag came from. This was a
+side effect of that change because oom victims are not hidden anymore.
+Would be good to clarify that in the changelog.
 
-Of course, we don't have much experience to draw on, because on most
-architectures there is generally only one kind of gigantic page, and
-prior to this, mixed-use scenarios could not arise.
-
-Therefore, I think that before the need arises, a simpler design is
-easier to maintain.
-
-Thanks,
-Muchun
-
->=20
-> 32M allocations can already cause this, but 2M allocations can block
-> the same number of 1G-aligned ranges with much less allocated memory.
->=20
-> Thanks,
-> Qi
->=20
->>=20
->> Thanks,
->> Muchun
->>=20
->>>=20
->>> This reserves 4G for the existing gigantic-page pool and 1G for the
->>> PMD-sized pool. Existing unsuffixed parameters and gigantic-page =
-pool
->>> sharing are preserved. The new size follows the architecture's PMD
->>> size rather than being fixed at 2M.
->>>=20
->>> The preparatory patches introduce per-pool state and prevent =
-recursive
->>> CMA allocation during migration before enabling PMD-sized =
-allocation.
->>>=20
->>> Thanks,
->>> Qi
->>>=20
->>> Qi Zheng (5):
->>>  mm: hugetlb: add explicit page size to hugetlb_cma
->>>  mm: hugetlb: group CMA pool and reservation state
->>>  mm: hugetlb: track CMA reservations by page order
->>>  mm: hugetlb: avoid recursive CMA allocation during migration
->>>  mm: hugetlb: enable CMA allocation for PMD-sized pages
->>>=20
->>> .../admin-guide/kernel-parameters.txt         |  39 ++-
->>> include/linux/hugetlb.h                       |   4 +-
->>> mm/hugetlb.c                                  |  80 +++--
->>> mm/hugetlb_cma.c                              | 328 =
-++++++++++++------
->>> mm/hugetlb_cma.h                              |  11 +-
->>> mm/mempolicy.c                                |   2 +-
->>> mm/migrate.c                                  |   3 +-
->>> 7 files changed, 306 insertions(+), 161 deletions(-)
->>>=20
->>>=20
->>> base-commit: b810335a0699d1810683796b0e3ffe8827ddfe6c
->>> --=20
->>> 2.54.0
-
-
+Thanks
+-- 
+Michal Hocko
+SUSE Labs
 
