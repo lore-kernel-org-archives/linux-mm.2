@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E1E606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8779060A2608
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=UAlYl0mk
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=kVLRlUZG
 Received: by kanga.kvack.org (Postfix)
-	id 1E3346B0390; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
+	id AE4C36B0392; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BB866B0392; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
+	id A6D866B0394; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0348F6B0393; Mon, 19 Oct 2026 17:31:28 -0400 (EDT)
+	id 9837C6B0395; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B3F706B0390
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:31:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0C41F1A0890
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CCC96B0392
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5B64C0495
 	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:28 +0000 (UTC)
-X-FDA: 85340672256.12.B186820
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4F2EE4000A
+X-FDA: 85340672256.10.02836E1
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1A0304000B
 	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:26 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UAlYl0mk;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of 3LIzWaggKCPsgpdwodfnjrrjoh.frpolqx0-ppnydfn.ruj@flex--dmatlack.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3LIzWaggKCPsgpdwodfnjrrjoh.frpolqx0-ppnydfn.ruj@flex--dmatlack.bounces.google.com
+	dkim=pass header.d=google.com header.s=20251104 header.b=kVLRlUZG;
+	spf=pass (imf04.hostedemail.com: domain of 3LYzWaggKCPwhqexpegoksskpi.gsqpmry1-qqozego.svk@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3LYzWaggKCPwhqexpegoksskpi.gsqpmry1-qqozego.svk@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792445486;
+	s=arc-20220608; t=1792445487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ob0OqST4cKlshaBFbfeFqwou5GMUNnLOz8/rLCUeWMM=;
-	b=sHfRdR7MSfCVH8DSXyRP7D39kr8/Cor0AMu51PDZKmMjLauwU6qVDksU4QfUlhUsPEaN6D
-	gQ7bk349Il5q9y0TO+tgMxYKV7z7jK0p1cAa5zAecfnbr9UMyAv7CCttPNgc/mDUiocWnM
-	CombYn+WMRffkD99yOgJYvF1FVTT7Pk=
+	bh=rccGvdC4VDGY+kjlq/11HJtI0x1dTEfzAQPx1OmbdOk=;
+	b=sSpV14MhNywLCGbwnnAIdik6p3/vW9QCnmQX7/l1P0UVZtwyUpeKawUALTLl+veinEjZ7m
+	hS++sv1s8AR9XuU0vbL2XjTIvJXIKpAqjEbTMxiSNvV5jNjyImM4WccTKhQG7dS5TaW34A
+	kD9BO71bqjXItm6v8+STFF7/VkSoxx8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792445487;
+	b=Am/oXikQ0QUrPThPO/AKD1pytsQhtOoXI5A1n1vvKh2446lVc5/qQ7IxKg2C7fgmA1an5N
+	rdxuPtR/P+8fKAFhT5XnHRsS75D42FnKSlaxBLvJ22MWtkrmxhm11GdwzbiPvl2m5i8aUA
+	Yr1KG9gJ4PiShateLnvUGPBQyM/oUXA=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UAlYl0mk;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of 3LIzWaggKCPsgpdwodfnjrrjoh.frpolqx0-ppnydfn.ruj@flex--dmatlack.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3LIzWaggKCPsgpdwodfnjrrjoh.frpolqx0-ppnydfn.ruj@flex--dmatlack.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792445486;
-	b=51sXxKmaMThw3p56Bsh/cYJSpjN93ydQvq0FO7i594W8o4syp2BZQG9de/NDpCUVNUUeFr
-	OdZyLa1YYcG0NIoHAI5i9rFb0/bg5YxInB2n8lYdPBtd29Xnj8eFR4M13B+r0Z7Po8TcX/
-	ig3uDKPYI7plvGo9ukbqbd/Jrsvzfdg=
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39512608fb1so4997512a91.1
+	dkim=pass header.d=google.com header.s=20251104 header.b=kVLRlUZG;
+	spf=pass (imf04.hostedemail.com: domain of 3LYzWaggKCPwhqexpegoksskpi.gsqpmry1-qqozego.svk@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3LYzWaggKCPwhqexpegoksskpi.gsqpmry1-qqozego.svk@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e987ec84afso23017215ad.3
         for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792445485; x=1793050285; darn=kvack.org;
+        d=google.com; s=20251104; t=1792445486; x=1793050286; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ob0OqST4cKlshaBFbfeFqwou5GMUNnLOz8/rLCUeWMM=;
-        b=UAlYl0mkKsH4Z2QpjLKsMGWnrTLdJybo8IoECkSOygmpuB2QUjZe9mjkjh5IGlCQUm
-         4FK+uslLr/vOaZSR/8tUqGGbi8LlhiiwTIWil88vk5G9aZo8NWaw2jbBmSxCTxSWZAaP
-         JV2boFxOAavJ9uzD/MJMPKnGFjy/BkJESdbySTF5VjuYFrC7hMOkdz0QK4QyOdMTo2Qb
-         kHz1gwBPCeJJ44NUF0aWR8+qJo9k3EjryYn88hzvuQ4KzXJkly/0DdlNi0r86+4AH6o+
-         o+4ScsJSIgIpcSq+UtmepzLfMI0WeiXTZBwjfjU19X0Iv+YxDCntXLgJ2lxi6xRb/dum
-         FWuQ==
+        bh=rccGvdC4VDGY+kjlq/11HJtI0x1dTEfzAQPx1OmbdOk=;
+        b=kVLRlUZGaG3Y9KTll+okDKwnt5pexKdjvG0tW1tALtnq1iK/N2KasdpkrTVYyGGiUT
+         l0QUs/rJv2RrelkfCXZGGU+UItJkv14II3LZXa55uxfGcSBVeL7AG8L1uisi8x1hKwgy
+         zSa1gSRoriIMFKX3fK0DReV76mP9HfuE875sig3hi/q8yrbMQ3Jax5gbmXVz7Jw6s/GX
+         s81Fi3LtEgXAK1ai8w55OzEZyotZXsZwC1j9QRiTcnLeyHD3Z9PY7so/Kvekkc/bFR0j
+         PSYTunC3tDX/nUm3TeitxWfmWho35YAWmyWXW6Cd5+nN2DuVx2etyrSMdIwb1NdRFTQJ
+         wcOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792445485; x=1793050285;
+        d=1e100.net; s=20260707; t=1792445486; x=1793050286;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ob0OqST4cKlshaBFbfeFqwou5GMUNnLOz8/rLCUeWMM=;
-        b=gGj7mJpLNP+ybG1gp3PQK8/0yrjJF/fH0iqUWD9Z39uumrpCheC7tA+A2kG7yroKw/
-         cx/gQNhdSCclt7xuHNyW8yv5LEEP9dAS0IaHcIws/IxPpQbuf06+ySl/W/2WUaoNkqYF
-         Nv3Lbxj8FUBt6GOcye0ntPUGQBjR5AmbIrPbAMEsacoXw+DlZx3z/e7Z4h/k1jUxK03P
-         iNi5o+Dm5W8JS/mpcPlEtT8UuNm/pkKFu74XJQKkDVQO8QVMy+P+BZ4LCLbRIvYzjfEf
-         QwA84q6BpwzItapJZwZ08JVujVObGgLLnXxN1b3f4IcBE0/OeWFLyhFphY5s1NbCz828
-         LRJg==
-X-Forwarded-Encrypted: i=1; AKwUvBySdbIJFXcCIKuEue3FcxApOfrh4CfqVCtepP3Oavsw/qjD2yBfXRVakmtSAku+OHR++w3yGoLTyw==@kvack.org
-X-Gm-Message-State: AFq9FYJfH+FnCUjRMsIOej+y/HiDhFOhrFIBTlqUbt9WEAm8dzg1JFfJ
-	vfy7G9OidmD6JZAe6q9Xs/QTGyV2KoijbD5y/YLIVvdIFeqHcRiKyC9OAlcycPvbX8TclVLkgbL
-	XohcESFShLwA/ig==
-X-Received: from plxe4.prod.google.com ([2002:a17:902:ef44:b0:2e9:73da:58d6])
+        bh=rccGvdC4VDGY+kjlq/11HJtI0x1dTEfzAQPx1OmbdOk=;
+        b=TKKuqasFTY6aWK3ztyGnn+T9Js10yKIFTXk0gGXhXgoYJRejJa37acjJf1/x7ruhAh
+         sOSfBmrRLfQMeqNuB2rK2FI0dDRAWxihXKMFo0oN8T5NuLGJugHAoIgKZnR29WzABDEi
+         sxeinu0cvd5oLaK76Qs5Sww3GP+6z3Bv4J4Yaj3YSb6fyTcva7IrDaLnMDeeW5Jh9j3A
+         XRqxUHUKdDglYJiuQVvCT02R1My22Dj0xKGmx6YOwuhYstSOJvWRzIGKHh44uQgT7QnA
+         qsJgOD/uwtUMOGOuGQFICcXWUA1W8W4304oV54TV7WV3h+tdN68EzU9KmIBeIXeTJN5K
+         D4vw==
+X-Forwarded-Encrypted: i=1; AKwUvBxJ35oiBK3h7y47n0+ugciqrp9BgdeDoHS9N4fp662Mna+IgPyVe33qzIeQ4/i66v1naHZ/9mk86w==@kvack.org
+X-Gm-Message-State: AFq9FYJ4RDCDoLxE5lx8jr2HsDnlgUC6IihHlLyKAPIeunnLEztrMEkC
+	XjGdd5e72uQD+zlml7aROOMWN1nPkWgnrd4YV957+BdccUjcEG5XNiu+SOeS2grct/rvKV6BwgR
+	QLywgRzvhDYH+cg==
+X-Received: from plok11.prod.google.com ([2002:a17:903:3bcb:b0:2e9:5b68:4b7d])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2b48:b0:3ac:9f00:3bc7 with SMTP id 98e67ed59e1d1-3acef0c88a8mr8307573a91.33.1792445484749;
- Mon, 19 Oct 2026 14:31:24 -0700 (PDT)
-Date: Mon, 19 Oct 2026 21:30:48 +0000
+ 2002:a17:902:e949:b0:2e2:d02d:a173 with SMTP id d9443c01a7336-2e9a6f59777mr77394715ad.49.1792445485578;
+ Mon, 19 Oct 2026 14:31:25 -0700 (PDT)
+Date: Mon, 19 Oct 2026 21:30:49 +0000
 In-Reply-To: <20261019213054.3157159-1-dmatlack@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261019213054.3157159-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261019213054.3157159-5-dmatlack@google.com>
-Subject: [PATCH 04/10] PCI: liveupdate: Avoid probing windows of incoming bridges
+Message-ID: <20261019213054.3157159-6-dmatlack@google.com>
+Subject: [PATCH 05/10] PCI: Skip programming bridge windows that are already programmed
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-pci@vger.kernel.org
@@ -101,19 +101,19 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
 	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 4F2EE4000A
-X-Stat-Signature: wy8xzjpuh5smduez5r4esuq33urtmwxd
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1A0304000B
+X-Stat-Signature: gsi9ohbwwyhngtppkotha7f5c4yshd94
+X-Rspam-User: 
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792445486-947108
-X-HE-Meta: U2FsdGVkX1/phjHHMeIIJuykfkSgXTVR7FmU6R/ENd+gsPirHwg5YiYQ6n7mABD2eddtjrwhOBGAXZ525oYwcg7DBJXWm0BqMGeVn8QizlSKKoamrXrlp4EWkynlIUvq7uwYY11ip9cW03btbWYrFWHyNg2oNWxYcNRiRNhFfp5mYXtMRV9fkeJ+/Lu93HOuRBmbCAo2Amg32NByQlsESarbgf3RWmGV1aNbIhR810jFLl+6UBwMxViG8iu0f3kPKZNuC33vKuhNe7g7ch+Iru8uNx8RHlWlFbg3b5pxXGqJDJm2ql4YHOzyn1fCZoQM4JOaXjuugGc0EZ1wwLxNvR3x5HRDdH1K8M78mWkJaHBO4Q8N5xmmHEOwRVKNkW22CrO5r0D4Z6fiix2oxBD1qu3/0Cpj6mC8tb73o51orFiql0kKCVdPW/2nCjgopAZ27RTVuu2tMUon7UoRMKXYlu6QHZIlioH7vSZVcDVQ9Z1nSRj8VVrZX48BR3H5B+/xEj2wYXqXvE4q+f/+0EWF+o9ngDQc6GpXjBAt25wHooVxm6rC3MGIxrgpNucculfsXrVERloZwDXgyySlDc3h/sJlENmDz4hyDt0h2QCxdXEbIMEAZWs16adiFuoRQtl18gOnsCDo8lyBU0TJpgBS09Tbe5A+S2h75h9f9IsUwBNaFqupv0MaMZISPNAKeAsKJTiZUpJEMsYyMEbgiBRLnUEaAHzHpj0I6J7bXlbgbbwyCOJnKJUESMd1xP4cbagjx6pK6lWYMhCK47Uc1ovE6SVtvxOQkTUZoLePzP2QeEayrkm3d75ORxbfTqFUCTkpUyApC779EKx5PeKlpiqs672gif97itm4hcIUmsNVKKRbHMHJpZCGg85prW+9FXX1XgkPpNFbGDI7H71R0wdNZYdGUGZhXkq9ENCO6uoqRA8jIl572Q3+wqCJxiFAgD8/BksjdaFsNfaqE9eHveU
- OjE3re7c
- aG/UU3fMiiA4jESKb1/KDRfBuPMfQNT0R4mELuxLKXLXtL9s1UjaEU7/E0bk39847V3OZq8/jx0pEf8LsEq+ANVby58QWZeYNuX4iLGD+mXSzhOSgBhB3xyKnnMfL8QEGpGSiUirV/vSw5boIpFhO387eYjbiI06NsEcqy3CrpW3DLtyadQndfxUuk3QzqsUh15IUdI8MLEpOzLUNXpXvLxLcTmCKkzCoqfZRmnTZhsVG7LnD1xv0ikaZ4g06Xeis538djpllWUcqkagXPEEZXhIOhHKMdLwKid+ah+oBRzugcYhOTeeuTWXoo4EyCc+N2WNNKtW0pSB72GbNdzeT1gp72S6y96YGIFZM2EkgKWqMqTIEt5NwZfp9FpKkQPzh9qbKxKcHTUHiRkOIW8SO0L2MjGoIH5KZvSvimWf6PHohLcoCRNDhl3y47m0w356W5PQLr0dkIR1RYeOtnNpvXyLvRWxEY45BIx2JFx5IQwvD+eByaYYTssxIrE+QpsTNiKUSswTGeIkHE/FLKyDxa4i4p/BVl1pWLq2+kNywSWvSib8xhMrdiO568zYbRGEH39Uz5AL/X7Kcp2pd0YU6jPKbg4CppvMFnEDh
+X-HE-Tag: 1792445486-151460
+X-HE-Meta: U2FsdGVkX18YEqlt/HhmWsfYhZxRzhO5hct5w0pUqBUH6HQp9io3kFKyhyoiablpRFayTx4mJncZXbrbsUvGKYRWLackldSJ2qclnjnEbxgJP6e1ODnD1TJ+X46Jgbni7IhQRuBY+FNXjCEx5+05uYZdXDE7bwIYwG1dHbfu2gKSiTBAFhsmgG9ryJ73DsB/jGKDVx21BoPcPf3OdNXAJA3D+DDojpG1lmLevhUZrIgIJe7v2SgGamTqQQw2wSVmyqOBhHN7P8FCyW5abh2cU04TgIdeR/mrD8KjHeAjzg6riqIK+8yj7VjwHqi/aYnh0jJP4pdexpxeCdjUzzm3i3g57xlgIq5wz+6RZ1A2luJdxGBEDRU85sKDrVIa1geBuptSCe8yV2rkcsahnBnBnWr8DeyBz/qXkU99oxcL9Rs2dRxOcvofd3xlj+SWo57vdScLhKr6T7MuXtQ4xVcQz6NPr3loUUZsTQXVkGOpI9PYHxFQUJYNHrQva+jzTZVaz+MDfuQAHHSCJsO10I1YD1gO2kZ1RTET/MOdfREAaT88ax6gyKCqd9iEgyTePp412DPj2ZET4RFOB+djPrht3Mt7t2Z3E2DSDJXrXmGmINkYaB4urHG+Zr0fMLARfOZ5JHxjyHb0dUXR2B/gyW/Z32F7LxSRH2r41mLmmdljHomL4gwpwYttH1LynDKaF8yxYihkWgxzBzcG6OrBzDvBUSRWUmQJuDCEVX+B7gurwYjeIqrwvbYDNFKHPEVCC1VQkO1/OkOGVfwvzaDAfNaeOlrSMqP1pZd3EoKdgND5voiyGwlxToB3SggWZOOkcgJbwf14+5hYgt2jc6YaEYKdrvRARFmd+MAf06C7trbI8vEHd1rRS4BSPCoTM7p0uFGYjbdT75TJ4AZpxjKw/sswIXeeyWbJINlh7KpJtP5W1gz73ndS4oAPm2eW5/GSbs5kMI28rZJhdcDdP+rM/L/
+ Kyam1vXN
+ 8lpGB6+rxgpRx5KTD8qOFM1CzMVEcLjNPUtaUKgSR4xLSLgtbBawxL72lWSe1gEqje+YSnJpebuRZ8Z7nmH2k83v7MAkk30NgtASg+iGL4WAVnlUe/FnsaxPTWms40wCRofD/APlyP+LNnJH95XnZZfRXPoFKTuqG7XUjFcCoLXbZgXVIWbtZ+C7amlL+Gz6Ir9RCYZhDKeqIfYAGWA2PuuGecZsXg37jb+DUJ0tBf5NEAUl494rwmqa6Soj2sX8opJ4EoUdfOLtANjkBTNoo57yHN9ul6vsiPtiu1bbS9AO+KoVyyWiVdVRirpJu6/wgx9yuAZup4nC+gv5jvVnOnaiQDlh9Bza7BVh7CcMw6lYJ09Cfx56v+SALUftYNQspK4wuGl34UVK8YFd0mDMjZqil8ObjDNrpslnm5uU21GCcNvw/4w4uKHKXF3DaoTcxZSYiYDwcgCFevP3pjdnZ0HDbZYe2mUc0iC17nBfe9dRm0y5F+xTRYYohEY8IRKRlyw7ygg50pINH5w8+mmHz5D30j+0b5WiM+4Pb9sETe0MY+dNg4y3VYAnE3z1wc8/FDwYOnCpLQmDf55xMKwGUG7n8FQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,274 +122,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Avoid probing which windows incoming preserved bridges implement during
-enumeration. Instead, add a new optional feature for passing the
-results of probing in struct pci_dev_ser, and use it to pass which
-windows each preserved bridge implements.
+Skip updating the window registers of a bridge in
+pci_setup_bridge_io(), pci_setup_bridge_mmio(), and
+pci_setup_bridge_mmio_pref() if they already contain the values being
+written (ignoring the read-only low bits of the base and limit
+registers).
 
-pci_probe_bridge_windows() always writes all 1s to the Prefetchable
-Base Upper 32 Bits register of bridges with a 64-bit prefetchable
-window to check that it is writable. This temporarily disables the
-prefetchable window, so the bridge stops forwarding memory transactions
-targeting devices below it, such as P2PDMA from other preserved devices,
-or MMIO from VMs whose vCPUs keep running during kexec.
+pci_setup_bridge_io() and pci_setup_bridge_mmio_pref() temporarily
+disable the I/O and prefetchable memory windows while updating them,
+since the base and limit of each window are split across multiple
+registers. This happens even if the window is not changing, e.g. for
+every bridge whose windows were assigned by firmware and claimed, since
+__pci_bus_assign_resources_one() calls pci_setup_bridge() on every
+bridge that is not yet enabled during enumeration.
+pci_setup_bridge_mmio() updates the memory window with a single write,
+but skip unchanged writes there too for consistency.
 
-The new optional feature, PCI_SER_OPTIONAL_PROBED, appends two bitmasks
-to struct pci_dev_ser: @probed holds the results of probing properties
-of the device that require temporarily writing to it, one bit per
-property (PCI_DEV_SER_PROBED_*), and @probed_supported indicates which
-bits of @probed are valid. This allows passing the results of more
-probes in the future (e.g. whether INTx masking is broken) without
-adding a new feature flag for each one, and lets the next kernel use
-the results it understands and probe the rest.
-
-If the previous kernel did not pass which windows a bridge implements,
-fall back to probing the windows.
+This prevents disabling the windows of bridges preserved across Live
+Update during enumeration, which would disrupt memory transactions
+targeting preserved devices below them, such as P2PDMA from other
+preserved devices, or MMIO from VMs whose vCPUs keep running during
+kexec.
 
 Assisted-by: LLM
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- drivers/pci/liveupdate.c    | 93 ++++++++++++++++++++++++++++++++++++-
- drivers/pci/liveupdate.h    |  6 +++
- drivers/pci/probe.c         |  9 ++++
- include/linux/kho/abi/pci.h | 24 ++++++++++
- 4 files changed, 131 insertions(+), 1 deletion(-)
+ drivers/pci/setup-bus.c | 52 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 41 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index f48cab3cc232..72ad4fd00f7b 100644
---- a/drivers/pci/liveupdate.c
-+++ b/drivers/pci/liveupdate.c
-@@ -204,6 +204,12 @@
-  *    vCPUs keep running during kexec). Instead, the previous kernel passes the
-  *    size of each BAR in struct pci_dev_ser. Everything else about the BARs
-  *    (e.g. their addresses and types) is read from the device as usual.
-+ *
-+ *  * The PCI core does not probe properties of incoming preserved devices
-+ *    that require temporarily writing to the device (e.g. which windows a
-+ *    bridge implements), since that would disrupt memory transactions
-+ *    targeting the device or devices below it. Instead, the previous kernel
-+ *    passes the results of probing in struct pci_dev_ser.
-  */
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index e8c94aa1d3c1..4bec76950f46 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -799,8 +799,8 @@ static void pci_setup_bridge_io(struct pci_dev *bridge)
+ 	struct pci_bus_region region;
+ 	unsigned long io_mask;
+ 	u8 io_base_lo, io_limit_lo;
+-	u16 l;
+-	u32 io_upper16;
++	u16 l, cur_l, l_mask;
++	u32 io_upper16, cur_io_upper16;
  
- #define pr_fmt(fmt) "PCI: liveupdate: " fmt
-@@ -282,7 +288,13 @@ struct pci_flb_incoming {
-  * Bits in struct pci_ser::optional_flags that this kernel knows how to handle.
-  * This kernel also provides all of them to the next kernel.
-  */
--#define PCI_SER_OPTIONAL_FLAGS_SUPPORTED	PCI_SER_OPTIONAL_BAR_MASKS
-+#define PCI_SER_OPTIONAL_FLAGS_SUPPORTED \
-+	(PCI_SER_OPTIONAL_BAR_MASKS | PCI_SER_OPTIONAL_PROBED)
+ 	io_mask = PCI_IO_RANGE_MASK;
+ 	if (bridge->io_window_1k)
+@@ -823,6 +823,18 @@ static void pci_setup_bridge_io(struct pci_dev *bridge)
+ 		io_upper16 = 0;
+ 		l = 0x00f0;
+ 	}
 +
-+#define PCI_DEV_SER_PROBED_WINDOWS		\
-+	(PCI_DEV_SER_PROBED_IO_WINDOW |		\
-+	 PCI_DEV_SER_PROBED_PREF_WINDOW |	\
-+	 PCI_DEV_SER_PROBED_PREF_64_WINDOW)
- 
- /*
-  * The minimum size of struct pci_dev_ser given the optional features that are
-@@ -295,6 +307,9 @@ static u32 pci_dev_ser_min_size(u64 optional_flags)
- 	if (optional_flags & PCI_SER_OPTIONAL_BAR_MASKS)
- 		size = max(size, offsetofend(struct pci_dev_ser, rom_mask));
- 
-+	if (optional_flags & PCI_SER_OPTIONAL_PROBED)
-+		size = max(size, offsetofend(struct pci_dev_ser, probed));
-+
- 	return size;
- }
- 
-@@ -626,6 +641,28 @@ static void pci_liveupdate_save_bar_masks(struct pci_dev *dev,
- 	dev_ser->rom_mask = lower_32_bits(mask);
- }
- 
-+static void pci_liveupdate_preserve_probed(struct pci_dev *dev,
-+					   struct pci_dev_ser *dev_ser)
-+{
-+	u64 supported = 0, probed = 0;
-+
-+	if (dev->hdr_type == PCI_HEADER_TYPE_BRIDGE) {
-+		supported |= PCI_DEV_SER_PROBED_WINDOWS;
-+
-+		if (dev->io_window)
-+			probed |= PCI_DEV_SER_PROBED_IO_WINDOW;
-+
-+		if (dev->pref_window)
-+			probed |= PCI_DEV_SER_PROBED_PREF_WINDOW;
-+
-+		if (dev->pref_64_window)
-+			probed |= PCI_DEV_SER_PROBED_PREF_64_WINDOW;
-+	}
-+
-+	dev_ser->probed_supported = supported;
-+	dev_ser->probed = probed;
-+}
-+
- static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
- 					  struct pci_dev *dev)
- {
-@@ -671,6 +708,8 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
- 		if (IS_ERR(dev_ser))
- 			return PTR_ERR(dev_ser);
- 
-+		pci_liveupdate_preserve_probed(dev, dev_ser);
-+
- 		pci_info(dev, "Device will be preserved across next Live Update\n");
- 		outgoing->ser->nr_devices++;
- 		outgoing->ser->devices = kho_block_set_head_pa(&outgoing->block_set);
-@@ -1116,6 +1155,58 @@ int pci_liveupdate_read_bar_masks(struct pci_dev *dev, unsigned int nr_bars,
- 	return 0;
- }
- 
-+/*
-+ * Get the results of probing @bits on the incoming device @dev, as passed by
-+ * the previous kernel. Returns false if the previous kernel did not pass all of
-+ * @bits, in which case they must be probed.
-+ */
-+static bool pci_liveupdate_read_probed(struct pci_dev *dev, u64 bits,
-+				       u64 *probed)
-+{
-+	struct pci_dev_ser *dev_ser = dev->liveupdate.incoming;
-+
-+	lockdep_assert_held(&pci_liveupdate.rwsem);
-+
-+	if (!dev_ser)
-+		return false;
-+
-+	if (!(pci_liveupdate.incoming_optional_flags & PCI_SER_OPTIONAL_PROBED))
-+		return false;
-+
-+	if ((dev_ser->probed_supported & bits) != bits)
-+		return false;
-+
-+	*probed = dev_ser->probed & bits;
-+	return true;
-+}
-+
-+/**
-+ * pci_liveupdate_read_bridge_windows() - Get the windows of an incoming bridge
-+ * @bridge: The PCI bridge
-+ *
-+ * Set which windows @bridge implements (@bridge->io_window, pref_window, and
-+ * pref_64_window) as determined by the previous kernel, so that the windows do
-+ * not need to be probed.
-+ *
-+ * Return: 0 on success, or -ENODATA if @bridge is not incoming-preserved or
-+ * the previous kernel did not pass which windows @bridge implements.
-+ */
-+int pci_liveupdate_read_bridge_windows(struct pci_dev *bridge)
-+{
-+	u64 probed;
-+
-+	guard(rwsem_read)(&pci_liveupdate.rwsem);
-+
-+	if (!pci_liveupdate_read_probed(bridge, PCI_DEV_SER_PROBED_WINDOWS,
-+					&probed))
-+		return -ENODATA;
-+
-+	bridge->io_window = !!(probed & PCI_DEV_SER_PROBED_IO_WINDOW);
-+	bridge->pref_window = !!(probed & PCI_DEV_SER_PROBED_PREF_WINDOW);
-+	bridge->pref_64_window = !!(probed & PCI_DEV_SER_PROBED_PREF_64_WINDOW);
-+	return 0;
-+}
-+
- /**
-  * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
-  * @dev: The PCI device to check
-diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
-index 80749f14beea..4c4104025a7e 100644
---- a/drivers/pci/liveupdate.h
-+++ b/drivers/pci/liveupdate.h
-@@ -21,6 +21,7 @@ int pci_liveupdate_adopt_ari(struct pci_dev *dev);
- bool pci_liveupdate_is_outgoing(struct pci_dev *dev);
- int pci_liveupdate_read_bar_masks(struct pci_dev *dev, unsigned int nr_bars,
- 				  u32 *bar_masks, u32 *rom_mask);
-+int pci_liveupdate_read_bridge_windows(struct pci_dev *bridge);
- #else
- static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
- {
-@@ -66,6 +67,11 @@ static inline int pci_liveupdate_read_bar_masks(struct pci_dev *dev,
- {
- 	return -EINVAL;
- }
-+
-+static inline int pci_liveupdate_read_bridge_windows(struct pci_dev *bridge)
-+{
-+	return -EINVAL;
-+}
- #endif
- 
- #endif /* DRIVERS_PCI_LIVEUPDATE_H */
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 473e4389ffae..184d93aa8522 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -529,6 +529,15 @@ static void pci_probe_bridge_windows(struct pci_dev *bridge)
- 	u16 io;
- 	u32 pmem, tmp;
- 
 +	/*
-+	 * Writing to the window registers would disrupt memory transactions
-+	 * that bridges preserved across Live Update forward to devices below
-+	 * them, so use the windows determined by the previous kernel for those
-+	 * bridges.
++	 * Leave the I/O range alone if it is already programmed as needed,
++	 * rather than temporarily disabling it below. The low bits of the I/O
++	 * Base and Limit registers are read-only.
 +	 */
-+	if (!pci_liveupdate_read_bridge_windows(bridge))
++	pci_read_config_word(bridge, PCI_IO_BASE, &cur_l);
++	pci_read_config_dword(bridge, PCI_IO_BASE_UPPER16, &cur_io_upper16);
++	l_mask = ((u8)io_mask << 8) | (u8)io_mask;
++	if (!((cur_l ^ l) & l_mask) && cur_io_upper16 == io_upper16)
 +		return;
 +
- 	pci_read_config_word(bridge, PCI_IO_BASE, &io);
- 	if (!io) {
- 		pci_write_config_word(bridge, PCI_IO_BASE, 0xe0f0);
-diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
-index 5fa2ecfe5b6d..84a1bf71eeca 100644
---- a/include/linux/kho/abi/pci.h
-+++ b/include/linux/kho/abi/pci.h
-@@ -66,6 +66,13 @@
-  *             which requires disabling decoding and would disrupt memory
-  *             transactions targeting the device.
-  * @rom_mask: Same as @bar_masks, but for the Expansion ROM BAR.
-+ * @probed_supported: The ``PCI_DEV_SER_PROBED_*`` bits that are valid in
-+ *                    @probed.
-+ * @probed: The results of probing properties of the device that require
-+ *          temporarily writing to it (``PCI_DEV_SER_PROBED_*``). Used by the
-+ *          next kernel instead of probing the device again, which would
-+ *          disrupt memory transactions targeting the device or devices below
-+ *          it.
-  *
-  * Each field after @refcount is only present if the ``PCI_SER_OPTIONAL_*``
-  * flag that covers it is set in ``pci_ser.optional_flags``.
-@@ -76,8 +83,23 @@ struct pci_dev_ser {
- 	u16 refcount;
- 	u32 bar_masks[PCI_STD_NUM_BARS];
- 	u32 rom_mask;
-+	u64 probed_supported;
-+	u64 probed;
- } __packed;
+ 	/* Temporarily disable the I/O range before updating PCI_IO_BASE */
+ 	pci_write_config_dword(bridge, PCI_IO_BASE_UPPER16, 0x0000ffff);
+ 	/* Update lower 16 bits of I/O base/limit */
+@@ -836,7 +848,7 @@ static void pci_setup_bridge_mmio(struct pci_dev *bridge)
+ 	struct resource *res;
+ 	const char *res_name;
+ 	struct pci_bus_region region;
+-	u32 l;
++	u32 l, cur_l;
  
-+/*
-+ * Bits in struct pci_dev_ser::probed_supported and probed:
-+ *
-+ *  * PCI_DEV_SER_PROBED_IO_WINDOW: The bridge has an I/O window.
-+ *  * PCI_DEV_SER_PROBED_PREF_WINDOW: The bridge has a prefetchable memory
-+ *    window.
-+ *  * PCI_DEV_SER_PROBED_PREF_64_WINDOW: The bridge's prefetchable memory
-+ *    window is 64-bit.
-+ */
-+#define PCI_DEV_SER_PROBED_IO_WINDOW		BIT_ULL(0)
-+#define PCI_DEV_SER_PROBED_PREF_WINDOW		BIT_ULL(1)
-+#define PCI_DEV_SER_PROBED_PREF_64_WINDOW	BIT_ULL(2)
+ 	/* Set up the top and bottom of the PCI Memory segment for this bus */
+ 	res = &bridge->resource[PCI_BRIDGE_MEM_WINDOW];
+@@ -849,6 +861,12 @@ static void pci_setup_bridge_mmio(struct pci_dev *bridge)
+ 	} else {
+ 		l = 0x0000fff0;
+ 	}
 +
- /*
-  * The size of struct pci_dev_ser when this ABI was introduced. Since fields
-  * can only be appended, every struct pci_dev_ser is at least this large.
-@@ -113,7 +135,9 @@ struct pci_ser {
-  * large enough to contain the fields of struct pci_dev_ser that it covers:
-  *
-  *  * PCI_SER_OPTIONAL_BAR_MASKS: @bar_masks and @rom_mask
-+ *  * PCI_SER_OPTIONAL_PROBED: @probed_supported and @probed
-  */
- #define PCI_SER_OPTIONAL_BAR_MASKS	BIT_ULL(0)
-+#define PCI_SER_OPTIONAL_PROBED		BIT_ULL(1)
++	/* The low bits of the Memory Base and Limit registers are read-only */
++	pci_read_config_dword(bridge, PCI_MEMORY_BASE, &cur_l);
++	if (!((cur_l ^ l) & 0xfff0fff0))
++		return;
++
+ 	pci_write_config_dword(bridge, PCI_MEMORY_BASE, l);
+ }
  
- #endif /* _LINUX_KHO_ABI_PCI_H */
+@@ -857,14 +875,7 @@ static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
+ 	struct resource *res;
+ 	const char *res_name;
+ 	struct pci_bus_region region;
+-	u32 l, bu, lu;
+-
+-	/*
+-	 * Clear out the upper 32 bits of PREF limit.  If
+-	 * PCI_PREF_BASE_UPPER32 was non-zero, this temporarily disables
+-	 * PREF range, which is ok.
+-	 */
+-	pci_write_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, 0);
++	u32 l, bu, lu, cur_l, cur_bu, cur_lu;
+ 
+ 	/* Set up PREF base/limit */
+ 	bu = lu = 0;
+@@ -882,6 +893,25 @@ static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
+ 	} else {
+ 		l = 0x0000fff0;
+ 	}
++
++	/*
++	 * Leave the PREF range alone if it is already programmed as needed,
++	 * rather than temporarily disabling it below. The low bits of the
++	 * Prefetchable Memory Base and Limit registers are read-only.
++	 */
++	pci_read_config_dword(bridge, PCI_PREF_MEMORY_BASE, &cur_l);
++	pci_read_config_dword(bridge, PCI_PREF_BASE_UPPER32, &cur_bu);
++	pci_read_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, &cur_lu);
++	if (!((cur_l ^ l) & 0xfff0fff0) && cur_bu == bu && cur_lu == lu)
++		return;
++
++	/*
++	 * Clear out the upper 32 bits of PREF limit.  If
++	 * PCI_PREF_BASE_UPPER32 was non-zero, this temporarily disables
++	 * PREF range, which is ok.
++	 */
++	pci_write_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, 0);
++
+ 	pci_write_config_dword(bridge, PCI_PREF_MEMORY_BASE, l);
+ 
+ 	/* Set the upper 32 bits of PREF base & limit */
 -- 
 2.56.0.212.g129ede20d9-goog
 
