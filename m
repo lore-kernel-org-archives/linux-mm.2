@@ -1,78 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27000606A33B
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 17:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2761606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 17:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=XfYKDgn5
+	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=vmanoCTZ
 Received: by kanga.kvack.org (Postfix)
-	id 365666B031F; Mon, 19 Oct 2026 13:39:37 -0400 (EDT)
+	id 820E46B0320; Mon, 19 Oct 2026 13:39:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33DCF6B0320; Mon, 19 Oct 2026 13:39:37 -0400 (EDT)
+	id 7D14D6B0322; Mon, 19 Oct 2026 13:39:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2533E6B0321; Mon, 19 Oct 2026 13:39:37 -0400 (EDT)
+	id 69A046B0323; Mon, 19 Oct 2026 13:39:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EDB7E6B031F
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:39:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 909A840707
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:36 +0000 (UTC)
-X-FDA: 85340087952.01.05FAFC9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F5876B0320
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:39:38 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEC9BC06A6
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:37 +0000 (UTC)
+X-FDA: 85340087994.18.E3D0E22
 Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C7AC018000B
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=XfYKDgn5;
-	spf=pass (imf06.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id EA03DA000B
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=vmanoCTZ;
+	spf=pass (imf15.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
 	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792431574;
-	b=f7p0QAHD+RtnxBwNd+0NWGYnDF40ub9uaQbYiPGaCdeD7zOZQMFZYbJtMgkMlDAN0FKIzA
-	1XAu1NqOnSbwlnAUpvrVvizht7eNzTbvpl+MeRLJMPMBYqSOvYpSDDvgJluZu2z7Xr0Z4N
-	lC2ELpao3FM0KgMyxBcn5iNA0R+dGJM=
+	t=1792431576;
+	b=h0J4UVlFhjLmXZXtlAXR/q/QoCvzcXFzjti9u3NlcE8Q4Iq4xlPrc5D2f/PPAdKeQF2wqG
+	kZZ20V+fXenJc5aLN/WrKh/3hGXDs97ZlCfcF0sMt+XbRPYpu7d9+K/sQe60/tAPdFL3iB
+	O8G7oXlBqJ7PaET6O2EF/mC0ZsEPi/U=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=XfYKDgn5;
-	spf=pass (imf06.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=vmanoCTZ;
+	spf=pass (imf15.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
 	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792431574;
+	s=arc-20220608; t=1792431576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=51ZqUeACXcpZacBrZlRnXybKqIYTaPAWzvKxnKGcX/w=;
-	b=fPfxMnjF+hCMhYuBevip0qrInPNBv1ebZS4o5tBFSPCwHHZ3kIId7+Xoy74mNcKVhQ02UH
-	XTLqastc0MkwZ9Whfs2TNfZMdfdEw4L9qHDMya7/Gk5RvnCU9a+pxkFX0c7nApHntErDzZ
-	KPOvxfusUmu0fkq3aJ0vX3qdPcdIUyg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L564zTSbyW7RsQ72MGvk0hgr14JcFjENwmP8MEdxbFQ=;
+	b=KFt+ftjLPe4lW3Zdv6uyPbzSDx5WaBEMZPvsJy6wRfmmDgEGpCH27y/IcUY4GNabVywl6+
+	eFXmr24DzmClOoRa8MDAEGUj6PIYaXg2/cXDzyfTdxQHFFU29s5T+lsi3UBxNXNgaHfBEh
+	jwx4httO/4Hq6rYiQvs8E71W/58vBzo=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-Id:Date:Subject
-	:From; bh=51ZqUeACXcpZacBrZlRnXybKqIYTaPAWzvKxnKGcX/w=; b=XfYKDgn5gEgfYoTmKNr
-	xHUHTHOszRZBeMzbXeKouUsuzNC88buCs0M3ms7wN4ecL2yOBARp4zhbQwF7LZOTDDvR+BFU2Cn23
-	/ElqI0A6Rsc2UCSSzj4wkVkq0yflNp7+hCCpru0v/U8I6JfhqYIwPgI+0RGpq9nqs4zNeqg7Fkm8O
-	tLc37NsfpWHgRT3iVNgztf/lY77FgQiU0V9vU7rZcABbAPw+ouoj9o+CVcQeDkUdolBy8AujY9bSs
-	ICRN4Ax76QpNqPUd047hSgUse15zm2+lHeCK5zGDFxlnf4qMaY4vf9pZmhIGjU33R/JaUhXU/GS5J
-	bbL2LAolfDNbltw==;
+	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
+	:From; bh=L564zTSbyW7RsQ72MGvk0hgr14JcFjENwmP8MEdxbFQ=; b=vmanoCTZLSykPeQZOht
+	UIzzTqhnlp9Dvheg7yDZHaUcJNRhXXUFedv6Pzil5NCweL918SkROF2iGIhpfH/VfePskLpBvCHbd
+	1AhEkzUiPhVMgQOMjsaQfykeq2zE1xW+ZzAp8LejrA6wLCZDFY3Zqxlne7enIfkqZaJT2ZHfSlQpj
+	zBoQJfniR3MPA4ZgaUb/MZ0o+X5t5g2RIsWyHDDHN4PJYlSWRpx9trrs8A3DwjvZoPH+oSKBnDcfq
+	iSTiTOw+Xst0BD8ixRMj8Boq3+XN52iK+pH2IJnVf3FlwP1EwYJLTleO1v4UiJ3F++pkI+YkIqegU
+	Wwr+GQgtkoWF9qQ==;
 Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
 	by relay.virtuozzo.com with esmtp (Exim 4.96)
 	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xIrH1-007Chf-0e;
-	Mon, 19 Oct 2026 19:39:19 +0200
+	id 1xIrH2-007Chf-0H;
+	Mon, 19 Oct 2026 19:39:20 +0200
 From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Subject: [PATCH 0/2] mm/shrinker: per-memcg shrinker units in an xarray,
- allocated on demand
-Date: Mon, 19 Oct 2026 19:39:22 +0200
-Message-Id: <20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v1-0-64ed1f7957c9@virtuozzo.com>
+Date: Mon, 19 Oct 2026 19:39:24 +0200
+Subject: [PATCH 2/2] mm/shrinker: allocate the per-memcg shrinker units on
+ demand
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMpV1moC/02P22rDMBBEf8XouVsk+RaZUvofJZiVvErUYMmVb
- JMm5N8rJyX08cAwM+fKEkVHiXXFlUVaXXLBZxAvBTNH9AcCN2RmkstGcKFAVzBFmmBNc4ggqqo
- VLUwUYaTRHCAdo/OnjIt3c4LgYaAR/QBnjBF/wGo7yBZ3ZmgUyyO5y7rz/cDn/sFp0V9k5m31L
- xHpe8nP5keMaUwEJoyjm7tCViiUVnVJEsuBE9a5vFK1QI56Z0vZSm4Ub7eqkVLCu1JXvD2N/pn
- Uz/+98zb0mwScsllv0BwJ1hIEcKt5I4grbauP1cV5CZdLeM2H3tn+dvsFt9X/T1MBAAA=
-X-Change-ID: 20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-fbfd27a8cd69
+Message-Id: <20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v1-2-64ed1f7957c9@virtuozzo.com>
+References: <20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v1-0-64ed1f7957c9@virtuozzo.com>
+In-Reply-To: <20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v1-0-64ed1f7957c9@virtuozzo.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
  Roman Gushchin <roman.gushchin@linux.dev>, 
@@ -81,35 +78,35 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  cgroups@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3859;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9941;
  i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=qX2RYnuIBw7lvnDu9WuIMmC+EJTZiBoSc6ySim5RomA=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq1lXODSiZHrBaM+21Dc0C7nWJidNdICEXrPMvi
- 5XzzXEW5viJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCatZVzgAKCRBRlgpH+WFc
- Km/5D/4tacnGJojOgnomfU/sBBP418jNm0kvem0FQ50VsNBh71ibkf6X1CRRAeoj4kf8+6XpkbQ
- rpgLsngzSRti+HCJLe0RFWJgswjPMgULiOmoJgOOoUdzr4MQwBL1okWkXT7mtRycnatX4iZcGsf
- 2sk5qzxqZw2qJ7nWr6xpYw42QsGmP5UpFMLemP7kXA5a3puOSbbt+M0C/TFTNPUs2LPyBsvkxaQ
- Hv9Ankk6EuSHUgTlcDkxLOMDrGHw/QWkUqr52oex1/fb4qhHwa/6p4PBuu2PMxedzGe6wCAP5WS
- X6xVkBjc07Wo0YxYSG6bcDiRQB3Yvapo1lrmmi+pguD/0ueasmCBkZIxmnUPIvDcHzVQhiuIq3F
- VoJ012jS5b2Zn/qa+llulh24Tgm20c2CKveUNhI7+glhS5So0i+TFwOx/4lwy6UNY+cO99Kyl/z
- k9Dg9cfvrqrsM3jhApeuu3bgp0oYdxyWAfOKdZJ6DGnHDji7D45rOKZzpRySNS0KahEmPVsBZBL
- uExX18fPekMzVF/fUeuGwIhdcOT+X6sWhCJlcMjNT4522ZKOzQP7TkY/Cohg4PheCjjwkV1ttuC
- zPFgpcgh5BcpYsLGaxMSTDV5zKp6JqlK9d/NNt5OdHq97aGskV2dB+7U6NWB6etYKHzCg3rL6Ev
- ZD0FxeckAFFiswQ==
+ bh=8uo6nmMfK1qRCkrTayzRsZZFLXg9ry/A/NIJpkUVam4=;
+ b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq1lXPUfI/6sjDSwTkjjRqO/jqCNpkqD/v1yAaF
+ wkBa66nkuuJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCatZVzwAKCRBRlgpH+WFc
+ Khv8EACI13FKl26bLsJYggvCcjvmFoS/TptyzXRBL9LYsrzPtBtXsdLXs99WMwofIaQZgIOZmCC
+ ALjUpX8BZebK5zCQbc7iaVLougI3YM5UmGy+VjHv01YUaU4BzdczUn2Oys62fXspLMRa5bNVzNJ
+ GSPNghqASJ7ptVPGddeFTKAvbcaBkYCB8+bHd+7uglcf4ZK+pinhF4fZLtAy8vH+2QmsfuNd6oh
+ Svtibcc3C2BMyrPMOyVnzaTv1MEOBjQhUbJZ0wrS/RTnDe+L98f5gkMDappAWW8diBLyMT9dqfd
+ ywFgzU1+qiEmxflGkSsPz5Ptx9Y0ccEbcxRgyICZynDFEBNXSw8CCCRTMG9Yk4BRnIR91rLDnnv
+ H0CxfyOUMIVyjqd4r6GkatGfTD09Ktv92tbyhZ5r6/oL0X1y7ti7Wso0bw8aLEvPqEj6p4Kn98h
+ utEs2R3MoDzEPLkZmOX1BlZu1WVSIqemB+pbu7FWRPN/NNZvdf9ARKarGYhjo2Kyi0AWR+ryBz1
+ 6Go1aefBGKhaQu3BLgA9x5i2oOg4KFcs+s5SuiKXUTsrWRUtsDsRsoZrIQbmfhWvrfM5livqjzs
+ O5t+DkPAgcDkmGuXGWe+FqbqY3ALVX5WvGD6PgkKdy0HFz1IkkBdw2q9xIW8dbqgnr+I0DmIFGe
+ lGL+b3zu3il/PjQ==
 X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
  fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C7AC018000B
-X-Stat-Signature: qx9q5i51kys9octa87imtzxp1fx3tsbh
+X-Rspamd-Queue-Id: EA03DA000B
+X-Stat-Signature: cfy3nj6boosus558pbsambz8xe9w5dfn
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792431574-782811
-X-HE-Meta: U2FsdGVkX196CuYnDB7TqMxHhVNhPcKclqB3OoXAkcq0iJjyTsssrB/N9dAnSf9LMFDTpUz5zZud19FqtNMoF37ZF4fNeYQOZRIzTRWdDTIRTxJ63Wd3lLOisSFqsEOI5WP3qK9SKRuuZCc8Iwkjx5tRWKgNkkScS9DEOuX0X+IxEV4OZZ/tjmeHW/Vzd7QB0DUcSt0+k3yfyeL9e79lgqQjoiB+5UsxQQ26s+x9EpcGKCUJe5JP7ZaWvjbFwoFN43zuJEyiOpTCv7c27CxnywN4GuodH7+HYhzleWZHYM2KvRCtYz3EiItA6HtYkYLq3KLCUWJcwMrys1KDbjkooRGXPgRKSbJOnVqMgpEyVim19tycs+k2SGH3NsrDNITGvNpKTkjiCMQb80yWlwf4bFl6T/st7o8pR4z3K7v7WpG4MBtw0GJry+Wx5RFLSzKGXbvuuJmsaCGYpIuFhYSoOxLfz/3thnzmuipt62Rd5vcA13MzIuhKjB3R7xp7T/C2mPOtZ51FLJ3K7yQ+42mA+Jp63jd3oP/LBBzM2dsz+i5Z0hAXg8KJ/MaEdyjfTHfBfsLZwhZYjiuV1+O6w4PwF1aazWV9qmElaP5MO/WS9rgVv3tnntHhMBteYTB4mK6e/ZH6zRGWyfpChZ9jOF8CohFmxg5fw2N1iFhESUYcqcPhjN/fi6NgoeOJyB4Jcmgzp0W8/3dEMEq4tTJsnhV88KpFhSpwX6WKLozezwe43fzYPCXGhP3aVpMBD3uD3sSRpA9oe8SOLd383Nvm+yz/JBOzUlHGLvrqMd6wy4oeJLrXV5S7GO89OBvpNr96gtKLBFwyGtkRn19Bsavk1ly/jcUFdu7wHAtjYlAwx5psnfGgNd/ykMWYtakVpe/q4hExPsQm3dPbZ4sG+CbdmZUTnhYXZ5sjCBuZpaO656A8rltJQfgaRBNq1CRgFcFlYCquYYXo7SzXAznP2g/7Ijt
- r51gGNvM
- yRFu7gOIF05b5BNRt6pM/WpWbRgk4dn06gqPfISXjWiCJEFBIVMMoX6MBgNuGHa0G5sOGQZ+wPrrKvR1Iix6U4y1ZUIOJML1FZMpPoyfqJws4BBAoFdFP8Wlz3CmA/4B8RQfDCzn/McaYlOnMTHh0RxQK+BXQ3Pw2yfsse36c0NBEz4RNxrP7AgqjocDkH4MS9rsXl+UsOv3w+uq4AA7uD3bLAUjC/hV0vU1mJYJG2lYd2D76uK6TcdNUVtxOKuNKZ1qwuK56Wb/jnfq4N/BFlZr+NyYCimSr/Pjo3KgqgAYZQ+cRJXoT43loj5A01B8HrO0x8FLCpu4/2kX7dkWgtUl1bkRjGEuvceQbAijgdtxcL20=
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792431575-757299
+X-HE-Meta: U2FsdGVkX19wjx3xiIc/61vHLGUDykn/1a1SxriU9+GOMRH1jzIKKDxncJ6tdLYecxKjU3HTnauMvUpuwvb0BRhyxURwnPF0Qv3C+EtahiOfyR20abLacBOXAtf/ntlAgoO3Khzqqi/w2HJnNWFpONRexio210UhCNYZWsJCoRxiRRErtSBRiQIQVmaeI1fpN0UH9PVGeFZmMfzc85reywBA/vxeFBwh/f30nRHh+XQMu7YTzm+gWCak3wqWSzFG/L3o3OtYkpMaD/y1nZBn8Av6IjpfAJMbjzNtfDw7J7wylh79O0b+8MLQ40vYF2TVywERXOwt31lbjfODnIb4Nbzk/5Tfv+UX7eMLtpMoV7a9wPUx8BaJoawVoct4XFWLQ05bKdI5KcBpwQfzbqzNV6BdBNl7GYozymBAbcwKZiFTVxQgNxsfsLb2zPthR+h8KsQCBKK8IlYPrPc6LPvSlVin5SETg+hXCBf+NxX/MwEKnoRBhLOShdv9ab9/GHfXbI++LxfLk93fOOvthIEI30XJilkKCnGsNxk/A8KXYUkaa293eptjnWzabbSVSC/volg7KIFGiAUQIVAhT4tHf9TD4AcIqczbBEoM/MiPe/Yy0gyUwhZQHUVZBAlrSxEFCs5eh2ICdF6TGQKPa1TX9Qx+Zp+jpXgjeJv0AtyXmqlyIhsfFdEyMLMsTI2T7EmI2ZHvUPWIOgznsHTVJq53PUl+cKvCp3nM8D2T1r1YiHZBgF9zRSm6gPJpMTkFcT44TkUWcD/DM7kEq9kTpVN1ggPOScj9/KZgOOeZOYZCM+KOig8mSMLec8GNSbTAws5C+w47UlVeFXd7u+9d30u6hq8jRcR+Pp95H+M10RAMa+qn0duYygoBQQcFARzst/CAlsoCs6NfMmNTIxkYLCLfIrpTGwc0aYfMdGWUdxMCSgcQ2DGvBAD4/M/KRagJ58q7gPZvo1o9vluZDL+O0jB
+ ciY/tkxy
+ Kivkf+ZElNb1G2oPNFsXO8nalBvDdX65uj0Qi6O5sSSsInxLEG+HQFYgePFSTdonVeYNEtV3RSlZ7U/v3+rixBjxqpigt8QaqVyKL9RA33I6EerAIX4DmGH+dYz9kjdBYRf6lMiq+Y4C8tWPt3EqOr0djkaTJQlgAfAyqhb8nTsCJl+gBJaP91sstVIYJmFHbf7gtUHYj9Aw7lN2s+63DhV9PgeBlQ0dBsLFEaUf99I/IKYfS3HWCQ0KJOSBecf52XA2YY2ktHsIgVzORq/Nc5jCzbyEv5XSTToZI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,78 +115,308 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Every memory cgroup allocates, per NUMA node, one shrinker_info_unit
-per 64 memcg-aware shrinker ids up to shrinker_nr_max, whether or not
-it ever charges an object to those shrinkers, plus a pointer array
-sized for shrinker_nr_max. Every superblock registers such a shrinker,
-and shrinker_nr_max never comes down, so a host that mounts many
-filesystems and runs many cgroups pays for every superblock in every
-cgroup, live or dying, and keeps paying for new cgroups after the
-mounts are gone.
+Instead of a shrinker_info_unit for every SHRINKER_UNIT_BITS ids up to
+shrinker_nr_max on every NUMA node, give a memory cgroup only the units
+of the shrinkers it holds a list_lru list of.
 
-This replaces patch 2/2 of v2, "mm/shrinker: allocate the per-memcg
-shrinker units on demand", with the xarray variant discussed in that
-thread. It applies on top of "mm/shrinker: allocate shrinker_info_unit
-from a dedicated kmem_cache", patch 1/2 of v2 sent on its own as v3:
-https://patch.msgid.link/20261019-vstor-144715-shrinker_info_unit-kmem_cache-v3-1-0fb061e09bf4@virtuozzo.com
+The rule the code relies on:
 
-Patch 1 keeps the units in an xarray per memcg and node instead of the
-pointer array. A new unit is inserted where it belongs: nothing is
-reallocated, copied or published under RCU when shrinker_nr_max grows,
-and the readers find a unit with xa_load() or walk the present ones
-with xa_for_each(). The units are still allocated up front, so this
-patch changes no behaviour.
+  A non-root memcg that has a list on a list_lru has the unit of that
+  list's shrinker, on every node.
 
-Patch 2 allocates a unit only when the cgroup gets a list on that
-shrinker's list_lru, which is where map bits are set: a cgroup pays for
-the shrinkers it holds objects of, not for every superblock on the
-host. The install is an xarray insert with the gfp of the list
-allocation; there is no array to race with, so no lock of its own.
-The root memcg keeps its units for the deferred work of global reclaim
-and is the only memcg a shrinker registration still visits.
+The unit is installed before the list is published and lives until the
+memcg is freed, so set_shrinker_bit() always finds it. A reader that
+finds none knows the memcg never held objects of that shrinker.
 
-Measured on a 4-CPU, single-node VM, 20000 tmpfs mounts (shrinker_nr_max
-20096) and 2000 memory cgroups, on three kernels:
+Two cases outside the rule:
+- the root memcg, where global reclaim keeps the deferred work of
+  memcg-aware shrinkers; it gets every unit up front and is the only
+  memcg a shrinker registration still visits;
+- under cgroup.memory=nokmem a list_lru is never per-memcg, so it gets
+  no shrinker id either and no bit can be set.
 
-  base                 v7.3-rc7 with the kmem_cache patch: every cgroup
-                       has every unit, in a pointer array
-  xarray               base + this series: units on demand, in an xarray
-  old array on demand  base + patch 2/2 of v2, rebased: units on demand,
-                       in the pointer array
+The install runs with the gfp of the list allocation and can sit under
+the i_pages lock, which is taken from interrupts, so the xarray lock is
+irq-safe and a node it could not get under the lock is allocated
+outside of it, as list_lru does for its own xarray.
 
-                                                     old array
-                                      base    xarray  on demand
-  slab per empty cgroup               185 KB  18 KB   22 KB
-  shrink_slab_memcg(), empty cgroup   1.6 us  0.2 us  1.6 us
-  same, cgroup with objects on 100 sb 1.9 us  0.9 us  1.7 us
-  mkdir/rmdir the cgroups, 4000 more
-  mounts with them alive              same within noise
+The units of a memcg now scale with the shrinkers it and its
+descendants hold objects of, not with shrinker_nr_max.
 
-Changes from the v2 patch 2/2:
-- The pointer array is replaced by an xarray in a patch of its own, so
-  the on-demand patch no longer needs the spinlock that ordered an
-  install against the array copy in expand_one_shrinker_info().
-- Link to v2: https://patch.msgid.link/20261014-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v2-0-51af2aedbe6c@virtuozzo.com
-
+Assisted-by: LLM
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
 ---
-Konstantin Khorenko (2):
-      mm/shrinker: keep the per-memcg shrinker units in an xarray
-      mm/shrinker: allocate the per-memcg shrinker units on demand
+ include/linux/memcontrol.h |  2 +
+ mm/list_lru.c              | 15 +++++--
+ mm/memcontrol.c            |  7 +---
+ mm/shrinker.c              | 98 +++++++++++++++++++++++++++++-----------------
+ 4 files changed, 77 insertions(+), 45 deletions(-)
 
- include/linux/memcontrol.h |   5 +-
- include/linux/shrinker.h   |   6 -
- mm/list_lru.c              |  15 +-
- mm/memcontrol.c            |   6 +-
- mm/shrinker.c              | 374 ++++++++++++++++++---------------------------
- 5 files changed, 163 insertions(+), 243 deletions(-)
----
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-change-id: 20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-fbfd27a8cd69
-prerequisite-message-id: <20261019-vstor-144715-shrinker_info_unit-kmem_cache-v3-1-0fb061e09bf4@virtuozzo.com>
-prerequisite-patch-id: 83371af931f7c67d55b59e51720ebaab143aefb6
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 52f3646e244ae..91641cf082a4a 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1678,6 +1678,8 @@ static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
+ 
+ void shrinker_unit_cache_init(void);
+ int alloc_shrinker_info(struct mem_cgroup *memcg);
++int memcg_shrinker_unit_alloc(struct mem_cgroup *memcg, int shrinker_id,
++			      gfp_t gfp);
+ void free_shrinker_info(struct mem_cgroup *memcg);
+ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
+ void reparent_shrinker_deferred(struct mem_cgroup *memcg);
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index 36662d02ff963..73480d8edf641 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -597,6 +597,12 @@ static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
+ 			parent = parent_mem_cgroup(pos);
+ 		}
+ 
++		if (!css_is_dying(&pos->css) &&
++		    memcg_shrinker_unit_alloc(pos, lru_shrinker_id(lru), gfp)) {
++			kfree(mlru);
++			return -ENOMEM;
++		}
++
+ 		if (!mlru) {
+ 			mlru = memcg_init_list_lru_one(lru, gfp);
+ 			if (!mlru)
+@@ -666,13 +672,14 @@ int __list_lru_init(struct list_lru *lru, bool memcg_aware, struct shrinker *shr
+ 	int i;
+ 
+ #ifdef CONFIG_MEMCG
+-	if (shrinker)
++	if (mem_cgroup_kmem_disabled())
++		memcg_aware = false;
++
++	/* A list that is not per-memcg sets no memcg's shrinker bit. */
++	if (shrinker && memcg_aware)
+ 		lru->shrinker_id = shrinker->id;
+ 	else
+ 		lru->shrinker_id = -1;
+-
+-	if (mem_cgroup_kmem_disabled())
+-		memcg_aware = false;
+ #endif
+ 
+ 	lru->node = kzalloc_objs(*lru->node, nr_node_ids);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index a13f3984f0e09..07075bb220719 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4110,7 +4110,7 @@ static bool alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
+ 	INIT_LIST_HEAD(&pn->objcg_list);
+ 
+ 	lruvec_init(&pn->lruvec);
+-	xa_init(&pn->shrinker_units);
++	xa_init_flags(&pn->shrinker_units, XA_FLAGS_LOCK_IRQ);
+ 	pn->memcg = memcg;
+ 
+ 	memcg->nodeinfo[node] = pn;
+@@ -4277,11 +4277,6 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 
+ 	memcg_online_kmem(memcg);
+ 
+-	/*
+-	 * A memcg must be visible for expand_shrinker_info()
+-	 * by the time the maps are allocated. So, we allocate maps
+-	 * here, when mem_cgroup_iter() can't skip it.
+-	 */
+ 	if (alloc_shrinker_info(memcg))
+ 		goto offline_kmem;
+ 
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 74fc6f64459f0..cd9441f149363 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -42,31 +42,40 @@ static struct shrinker_info_unit *shrinker_unit_get(struct mem_cgroup *memcg,
+ }
+ 
+ /*
+- * A memcg is visible to expand_shrinker_info() before it goes online, so
+- * a unit may already be there from either side.
++ * Installs run from the list_lru allocation path with the caller's gfp,
++ * possibly under the i_pages lock, which is taken from interrupts: the
++ * xarray lock is irq-safe and a node it could not get under the lock is
++ * allocated outside of it.
+  */
+-static int shrinker_unit_install(struct mem_cgroup *memcg, int nid, int index)
++static int shrinker_unit_install(struct mem_cgroup *memcg, int nid, int index,
++				 gfp_t gfp)
+ {
+-	struct xarray *units = &memcg->nodeinfo[nid]->shrinker_units;
++	XA_STATE(xas, &memcg->nodeinfo[nid]->shrinker_units, index);
+ 	struct shrinker_info_unit *unit;
+-	int ret;
++	unsigned long flags;
+ 
+-	if (xa_load(units, index))
++	if (xa_load(xas.xa, index))
+ 		return 0;
+ 
+-	unit = kmem_cache_alloc_node(shrinker_unit_cachep,
+-				     GFP_KERNEL | __GFP_ZERO, nid);
++	unit = kmem_cache_alloc_node(shrinker_unit_cachep, gfp | __GFP_ZERO,
++				     nid);
+ 	if (!unit)
+ 		return -ENOMEM;
+ 
+-	ret = xa_insert(units, index, unit, GFP_KERNEL);
+-	if (ret) {
++	do {
++		xas_lock_irqsave(&xas, flags);
++		if (!xas_load(&xas)) {
++			xas_store(&xas, unit);
++			if (!xas_error(&xas))
++				unit = NULL;
++		}
++		xas_unlock_irqrestore(&xas, flags);
++	} while (xas_nomem(&xas, gfp));
++
++	if (unit)
+ 		kmem_cache_free(shrinker_unit_cachep, unit);
+-		if (ret == -EBUSY)
+-			ret = 0;
+-	}
+ 
+-	return ret;
++	return xas_error(&xas);
+ }
+ 
+ static int shrinker_units_install(struct mem_cgroup *memcg, int start, int end)
+@@ -75,7 +84,8 @@ static int shrinker_units_install(struct mem_cgroup *memcg, int start, int end)
+ 
+ 	for_each_node(nid) {
+ 		for (index = start; index < end; index++) {
+-			ret = shrinker_unit_install(memcg, nid, index);
++			ret = shrinker_unit_install(memcg, nid, index,
++						    GFP_KERNEL);
+ 			if (ret)
+ 				return ret;
+ 		}
+@@ -108,10 +118,17 @@ void free_shrinker_info(struct mem_cgroup *memcg)
+ 	mutex_unlock(&shrinker_mutex);
+ }
+ 
++/*
++ * Global reclaim keeps the deferred work of memcg-aware shrinkers in the
++ * root's units, and root has no list_lru allocation to install them from.
++ */
+ int alloc_shrinker_info(struct mem_cgroup *memcg)
+ {
+ 	int ret;
+ 
++	if (!mem_cgroup_is_root(memcg))
++		return 0;
++
+ 	mutex_lock(&shrinker_mutex);
+ 	ret = shrinker_units_install(memcg, 0,
+ 				     shrinker_id_to_index(shrinker_nr_max));
+@@ -124,26 +141,15 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
+ 
+ static int expand_shrinker_info(int new_id)
+ {
+-	int ret = 0;
+ 	int new_nr_max = round_up(new_id + 1, SHRINKER_UNIT_BITS);
+-	struct mem_cgroup *memcg;
+-
+-	if (!root_mem_cgroup)
+-		goto out;
++	int ret = 0;
+ 
+ 	lockdep_assert_held(&shrinker_mutex);
+ 
+-	memcg = mem_cgroup_iter(NULL, NULL, NULL);
+-	do {
+-		ret = shrinker_units_install(memcg,
++	if (root_mem_cgroup)
++		ret = shrinker_units_install(root_mem_cgroup,
+ 					     shrinker_id_to_index(shrinker_nr_max),
+ 					     shrinker_id_to_index(new_nr_max));
+-		if (ret) {
+-			mem_cgroup_iter_break(NULL, memcg);
+-			goto out;
+-		}
+-	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
+-out:
+ 	if (!ret)
+ 		shrinker_nr_max = new_nr_max;
+ 
+@@ -211,7 +217,8 @@ static long xchg_nr_deferred_memcg(int nid, struct shrinker *shrinker,
+ 	struct shrinker_info_unit *unit;
+ 
+ 	unit = shrinker_unit_get(memcg, nid, shrinker->id);
+-	if (WARN_ON_ONCE(!unit))
++	/* No unit: this memcg never held objects of this shrinker. */
++	if (!unit)
+ 		return 0;
+ 
+ 	return atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
+@@ -223,12 +230,35 @@ static long add_nr_deferred_memcg(long nr, int nid, struct shrinker *shrinker,
+ 	struct shrinker_info_unit *unit;
+ 
+ 	unit = shrinker_unit_get(memcg, nid, shrinker->id);
+-	if (WARN_ON_ONCE(!unit))
++	if (!unit)
+ 		return 0;
+ 
+ 	return atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
+ }
+ 
++/*
++ * Called before @memcg gets a list on a list_lru of shrinker @shrinker_id:
++ * a map bit is only ever set on a memcg that has such a list.
++ */
++int memcg_shrinker_unit_alloc(struct mem_cgroup *memcg, int shrinker_id,
++			      gfp_t gfp)
++{
++	int nid, ret;
++
++	if (shrinker_id < 0 || mem_cgroup_is_root(memcg))
++		return 0;
++
++	for_each_node(nid) {
++		ret = shrinker_unit_install(memcg, nid,
++					    shrinker_id_to_index(shrinker_id),
++					    gfp);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
+ void reparent_shrinker_deferred(struct mem_cgroup *memcg)
+ {
+ 	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
+@@ -237,14 +267,13 @@ void reparent_shrinker_deferred(struct mem_cgroup *memcg)
+ 	int nid, offset;
+ 	long nr;
+ 
+-	/* Prevent from concurrent shrinker_info expand */
+-	mutex_lock(&shrinker_mutex);
+ 	for_each_node(nid) {
+ 		struct xarray *parent_units = &parent->nodeinfo[nid]->shrinker_units;
+ 
+ 		xa_for_each(&memcg->nodeinfo[nid]->shrinker_units, index, child_unit) {
+ 			parent_unit = xa_load(parent_units, index);
+-			if (WARN_ON_ONCE(!parent_unit))
++			/* Installed but never listed: nothing deferred in it. */
++			if (!parent_unit)
+ 				continue;
+ 			for (offset = 0; offset < SHRINKER_UNIT_BITS; offset++) {
+ 				nr = atomic_long_read(&child_unit->nr_deferred[offset]);
+@@ -252,7 +281,6 @@ void reparent_shrinker_deferred(struct mem_cgroup *memcg)
+ 			}
+ 		}
+ 	}
+-	mutex_unlock(&shrinker_mutex);
+ }
+ #else
+ static int shrinker_memcg_alloc(struct shrinker *shrinker)
 
-Best regards,
---  
-Konstantin Khorenko <khorenko@virtuozzo.com>
+-- 
+2.43.0
 
 
