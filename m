@@ -4,114 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 067F4CCF2DA
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A80CCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:56:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF6956B0138; Mon, 19 Oct 2026 01:55:34 -0400 (EDT)
+	id 015E16B00AE; Mon, 19 Oct 2026 01:56:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D805F6B013A; Mon, 19 Oct 2026 01:55:34 -0400 (EDT)
+	id F08FB6B013A; Mon, 19 Oct 2026 01:56:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C48EE6B013B; Mon, 19 Oct 2026 01:55:34 -0400 (EDT)
+	id DF7476B013B; Mon, 19 Oct 2026 01:56:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A73F6B0138
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:55:34 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 28E331403E4
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:55:34 +0000 (UTC)
-X-FDA: 85338313788.08.BC85275
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 425EE4000C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:55:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Qgqi21CA;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.45 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	by kanga.kvack.org (Postfix) with ESMTP id BB5266B00AE
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:56:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37FB31405B4
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:56:09 +0000 (UTC)
+X-FDA: 85338315258.15.9FC4AB2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3B36840006
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:56:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WSlGexRR;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792389367;
+	b=z1SasjsitloedJbn//fTYg5pgd3/SxZ0cqnffW3R5ByXt0Yw2+4QmD6J6A6foZ0YOo5Naj
+	o/1mHkbdIGvDKhV3DWCWD3ve1MTVEghRCEPwl4WkzESmJ6/7kQdiOcL/v5HoG7/xRzh4la
+	SB9+HoUx6lW3z8Re2V2XZVgmM7HqteA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WSlGexRR;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792389332;
+	s=arc-20220608; t=1792389367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qdtOUxXRF05TEuV+l00U15wQDymBAePZDceRfWQ/v5c=;
-	b=RLKYDcUPZMPf5lXQ6fgn7IO/RRf0G1+k4GbmdSxcIB0SrCT92RF+sJr1kxxhU/YO12ms5p
-	a+zeZLVbneWeayjSrBDDigathaf9iwcmi6al8nIR/GeELjEAgwlvfj+P6c6/x/+wlpI19r
-	6Y2hi0CXCwj31RGr1IQ271jIPxSLh4Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792389332;
-	b=evdS5U1P7qYoBBRb3s0oZC24PKVVtvzLFumqtsrG86IDC9xU7R3CbVfuy7H0Qlp1Y8J9rd
-	diNWxpHzhpmyY66Oo7FRWuEO5zGisHL85DXvW5r7if3tn/KhqWNiU3UBc+bYMBCJP/PT3T
-	sGJtm9SkQZteWaVv7Zs44Uv4Hq2OSBg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Qgqi21CA;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.45 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3a7cfe8f761so1831585a91.1
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:55:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792389331; x=1792994131; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qdtOUxXRF05TEuV+l00U15wQDymBAePZDceRfWQ/v5c=;
-        b=Qgqi21CA6YvOg7FJvp5sxPvZpo24PFSBZEyjCctZN9X9GjUL3ijPhhkHtDbLXTvUBF
-         Jh1NIt+TSEs/j8wN9qYd0bvRKhIW59CZOOuShnI6jZXs1wXioZTi9f+hjGlWzOFjh58E
-         eTfWjo6BtK5TY0/b+YTqsnF4es9zV2cgF0p1I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792389331; x=1792994131;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qdtOUxXRF05TEuV+l00U15wQDymBAePZDceRfWQ/v5c=;
-        b=bq5f1jDuAjwGcegBOUbUNljZpdYQwTer+X6HZFCxjJMOeyR0LAuROA5k359st8o2Qy
-         BrdAaZ3/9CpOp80ebkFU0o0GsPwTbsrE1HA5gcX+B3Nenvvk37r5M3W9Su2KSAVrPgMr
-         QlhmubYJO5HZG0XVJDJgMToEbRh9ly2q3Rl8KV1ELeuJSxkT1QFYIw+OMAlIi0sRBWfo
-         cGaiTYNGNSI9AG0Uom3//PxBi0O1JoENPSetFGa73GQ+QDukcRSbLsD/7MF7Dc0xVXy4
-         TGIi8NDn9hwQOYpQsXN/OtycdoAuEmCWQWdXfu/7SBjHNQ3gF1foAdxzFlfQcUuS/Uo0
-         bp0g==
-X-Forwarded-Encrypted: i=1; AKwUvBzpSbnTl6cCZLqvuujg/yYHn5NWulxvyg5LzVl6uRifPYzxdYidqSy3qnaa77VXatanx3nO/NAryQ==@kvack.org
-X-Gm-Message-State: AFq9FYJRZLumJq/YRhvym2EE5FHJxrQqGIJp2JE+c+7G4GCUndd7NngV
-	BnJQixACkI/CFJNQNxjAHx7cAM7oyhO8OIiUvjnkQ7xzyJCvsoBTOD53HJv554VvIw==
-X-Gm-Gg: AYBFou0IaJm71WOFSACQd7uaW+Ttb3EmG+kd0rJFl1PBkf4mSyjQSNz5dij2mpQVIsY
-	EHL2hSJaYAprqj4zpRnnLK9eCSrsvn0Vmbg2iBU+QoO/rnn1ewP71X93ytSxTHUsAqx4Un8crgQ
-	O4q3LZQAhx14dXUoHAG8/jIVqSiyRs1cPZC3ZvXcLfkpn9niBbX/y6TkJGWRoocgPLb0oJPpQhr
-	4uSD5ybn9ZH6ldnPRf3EJNfMqV/IgK1C1oEe/U+MpAVCZNEuND+C5D6oCI/e64c3Uc/poYzssWp
-	b0rgV5QtE2mfmuP8/Xu9g1UMk79so7/TZfP9+LBhkqHQA2GALjWOBzpjtg3FuPzi0hHHaL22UGJ
-	we4gqIs8BJionmro8P3cLwOly7xhbyOhHzjlqJAE+fW/xHP2+s1QX7Lqxrkc2MBLMjtmqegGOgn
-	RNyM86CBmt8dNgapCALaVw+07acqN95YCUb+g4+2holnF/q2LACm/Y0ULAnQduanzTG8Is+FO9Y
-	rllnXNqnKkBy3oZ5NpCIjzBEk+TAhkd8jFobD0feiALqsFQFKNqmjrmChAk9w57IiOQAZa5TuAh
-	yx9OJR0p3PmXyUd6OE58HnJ2EnttiK2cYzjYHgIn
-X-Received: by 2002:a17:90b:582f:b0:3a6:e9bf:f244 with SMTP id 98e67ed59e1d1-3acee275f7dmr4044584a91.1.1792389331013;
-        Sun, 18 Oct 2026 22:55:31 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:7b3d:f4ff:823:5963])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac94627250sm19129769a91.8.2026.10.18.22.55.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 22:55:30 -0700 (PDT)
-Date: Mon, 19 Oct 2026 14:55:27 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Bo Zhang <zhangbo0325@gmail.com>
-Cc: senozhatsky@chromium.org, akpm@linux-foundation.org, baohua@kernel.org, 
-	bgeffon@google.com, minchan@kernel.org, richardycc@google.com, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 10/11] zram: use rw_semaphore for decompression streams
-Message-ID: <atWwtdGez8Rjq5ht@google.com>
-References: <atHftz13hWzGludk@google.com>
- <20261016134847.1620103-1-zhangbo0325@gmail.com>
+	bh=V1R/rxlJHtAIixzoKXTCBUmA5XYASXYQvG6Yh/D5vUc=;
+	b=uUnpR9qQGTmJaY0VE3K5jjZ4US+Mw9a5DGVH0iNETyI+Bf/7P4GjuN21oHK+ujIQMjR7F3
+	BEkWMrouvgVLBn6cJ+Uw70jAuE/BhxLtfgXsjPlZp6Q3Rxos5r54/KyJKf7uCxuBd7rVAP
+	Pygj2lxFKp2/8U6Gi+4opeFiaHybFUs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 936A24477C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:56:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0441F000CD
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:56:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792389365;
+	bh=V1R/rxlJHtAIixzoKXTCBUmA5XYASXYQvG6Yh/D5vUc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WSlGexRRcveL3gPe8o8sNXcYcFIiLceom6L9+HzV8kU9geaAB8mZedMyFP9pUtlwF
+	 V+vnhTt4gY5f+aR4Akmzo8RiAceKfB2Ollc/k4U7sBYt1tL8vaGTSmmSXevkX8uWJ5
+	 LgrUvQ3Ub8V8ox+Jl9H6+jFmPOUXv2vEPvm7yR31LYBbjZeKn6zdvhkH247B4uZ6V/
+	 igDLz79prmJHK5KBup7kAOLgTmu7LxbBiQwPQGYVfh2sfrZMibkZbwNaJbGMw8qS6S
+	 6tbO3/9022qDbPcKwxWW8qCbVVNdDI8RcrQJMUzXq+aH+yVIb3KHO8SU5FX7o2zMKm
+	 EkjjlJVpgnP0g==
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5364648ae07so18436471cf.1
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:56:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy9yK3NljWV03WaHAWiP5T4Bv/5kOU9hD+PfBDSVB/mjoHVl2UeecRK0m10tEQiNLiK0ZekKfDsPA==@kvack.org
+X-Gm-Message-State: AFq9FYIKXkk89rU91bXcyvQHIFtRmsMid6rpc9HyznbQJh4rL5R1K2hJ
+	HHQnDyYiQAKWeOVpGxsxhs4VlOTSwtYiyVFIDq1+Mu9GD2TT7ugiEeqqag1a4DSSWGZT8tS83hB
+	IBxjjU5wOmsoIrazm+UmRk2LFkHyKEzI=
+X-Received: by 2002:a05:620a:28c6:b0:93f:3565:813 with SMTP id
+ af79cd13be357-93f3565089bmr678706685a.9.1792389364634; Sun, 18 Oct 2026
+ 22:56:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261016134847.1620103-1-zhangbo0325@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 425EE4000C
-X-Stat-Signature: mpuw4wrdhskim6dd1bf5ujupzf8rk87u
+References: <20261017004555.2890038-1-joannelkoong@gmail.com> <19d5b7cc-782f-44b1-8ec9-a1764484f10f@linux.dev>
+In-Reply-To: <19d5b7cc-782f-44b1-8ec9-a1764484f10f@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 19 Oct 2026 13:55:51 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yME1gdFCq4jXCK7tYiQKiV-CsRMLM7vz9L_69OkMaZ0w@mail.gmail.com>
+X-Gm-Features: AclHuK_JiHk60NrX7-Usm3115HOQ01kuH7Otr6mcrw2Y29QUJab0XSsc9l_Jpxk
+Message-ID: <CAGsJ_4yME1gdFCq4jXCK7tYiQKiV-CsRMLM7vz9L_69OkMaZ0w@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: unqueue deferred split folios outside the lruvec lock
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Usama Arif <usama.arif@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3B36840006
 X-Rspam-User: 
-X-HE-Tag: 1792389332-527243
-X-HE-Meta: U2FsdGVkX1832BEtwuXoMs1YyrL7EGY03o3t9wCAv5k57YEs/aalRW8KizPHEjNvzHYUy99TwdQiWsI1JPOo375Ajnhm6koRB+yVzeoNiY7mZN1bDHczQADxeyGVmAIYkj/mZOKDxC2wdsGzAM5ufYOv1d+5lVhPy53Art9linmb67HRdk3vMTr/2Rh/apbEN/wzK3ML4suQIgDuVdgIIaAj7FfUN/eeSQPRCgI/CIUz036NINKvNWNUPYZzsQzok3C22bK0xT3d0U+p75sRcyQRdO8iN6f+2smK9hXG+mfTHTWdc7aVecvdLuGbEAiVtpsXy2On+xWgJR0R/++LlChl9hUPr/KKo/KGQ+jxAsCM/I8uPwcM6nkfEWdqf9MQ0+BOFcX3t5ffHbzrd7Bx5C/t0NiyvCGc8wSHwmWFNw3HwKg/wyseo6QzEuZaq9xY5VKA5wIdY5Rq+M+sNoXMCtG70fgqnDl7H5cB86wiJ72N5inRy/0fe0dv6M3Y1Vw3yoL+CSSWeKM5wXVU+KrVuafqOKZLVa7+5+yuonx4zJJSZHRqeA0zD8mCu7tHoxSZvK+do8WfycU8Vu84EXmwMgppWiCSa+5fBfVfLbsd1Hekfdiu8QtcROeFhFsVIuoJLOHGEwcqsJtmFFbPpj6wm9e8nmD7eYxOVH+dk+/R3H9sJA0Q4DARDdb5BHVPPsnPLg8Chj56g7vx+RaRfvH3WmCUTTmLV2hTFpmguBRJusEh38YJyxsuO56LnuY99ioJlBdLIaD6BvaMGf03hs7o2CH0G5os2IQzItfJoRrYaJKAjt2xFCUK7DRoemAfU8VFArc9Pn+RgQvdSRDm8FlYQ+3S2ULFQLfPHuIB6pVTkFv6/xLZWpxw0a913VYAVmp16HjRe0bVpKleb/LkY4Fn8zVTJdgtNer2MdenjXewOrecssaVyIGSLqxLzWNlAuHgO57IjUc3Y6YpAKrlAyn
- YXRu+ztg
- 0Ynw/XsoInUXqgaaShOvji/pktmEQ0i8t0O23P/IHuoSj8GAQnWp8lGe6AREuKOix9vZODO6Lk92wezN43HMzAyYtA/pwtnV2ExqSxy7BwU/XWbaMBA3dy8Sw1ITnWy3effVrInysbRW0kEO8029A1R6voZ3sNg8nnJ+yVBdkwz8JdqhWNmLufaRnN1+tkM2nFsxgXLhHXzvvV5rJtxuvzBRmn6s49nU34d8QE4cmORFP4OFnLDqGa8Xc1Dx6MxunxJAg/v/vK2j99ZOzURWHmfet0hiNjcfCjDMK3gcNjBE8Wmh2TGjAIbOApBH15wtUGBJsjp94hKSQgquawiyobb3B6m6w4dPqUT4Hza7K4EtN0Dn5veRAFc0HmrQXUEEvr75uXO3j02zVJgI=
+X-Stat-Signature: 5668z5uj55gkdk97ixf1dbnsegoghurr
+X-HE-Tag: 1792389367-476400
+X-HE-Meta: U2FsdGVkX1+ihlr8sCea42B63FYDpVWeRwVKbeOwLfTLruiEdY8Pap0ANBVcXrgh40PWstUsGblqAMRK+/JdJQWtvLzoRSuznPlpxx25CDfHvs4/Q1wh9jM7kJ7ronULztT8yhmQuS7eCF1rusYyRJMLwJ+sMEE+YtP4fluIEFhHWL/aJCEwJzdA8gIGO+HpXQbiPQauB9aS2N8D+E8Slu211w/gheZC1eEFZzB2Ixga2RvYibOmeaEhYo+/9jiqgHCw0AmnU+jdDDvc0jO+z39BhRCVapamq4w3wjB+haH3tuuEcHv5GPWliU0OQzBLAD8N1OSSPjMAukraa1aUfDJmCTmBHfbq2lAGu0sO5tEmIc7B1czgxmXCNQgJ6ZWG2+n/LHXlILWbgx41GaGt7Whf1JFqEaHejAlkt7pL4oxJ+vEMACnQOSdt7BN7tPMsWipa8wiTuhw2z8RjQ6RN6wXncErQn2Rp47GAWro+GEWSyW6mLXlbmN1uDmae1l9CjcdMQCwj9ah1TuGFZaA4znKAUxjKoX0tQThVJqKVXcNiEB3gPXQaeBNo14zQmO1rePkkimj9haoegPWNos9rZRnLDIHddoDyupkkKFR+MfZWNg0ISeKEDvQ/PnPPSxJ72B+ZUknDRKLHmBmFiA/Vy7CGZnb9zfj7DnmRmEUc5w8bLzkwUhOwz84NilYrQocGIwYISYV5gmaHgc/jPNWNjXtFLrjZeGUnp1q9pVXwB+2wno5ZqSd1CU0qw4wIIrxvhKikD5dLWekTowp04yYrb+SFo4X5oc7rrh1KckxfDfCc8tkSZ1UhoOSjmxPcaWqRCoKtb8y2QW0hJ3N5xuuYw2LjAAdFiNu+ISBmAbuDx3nlI1os5Ti7w0Ofe4Efs0bfq3Qa7kt+YJG1+bCnvTMmstS5TJHNaG0xYRu9SnAjwMmQ5P3kOrgpLRBPZx8Aao2D+p3mdLexSlUVwTh3Hwa
+ m4wz5lHb
+ DlvQr0qp+S2WRfg7HhRJ8ZFnp3MEL4j/+U2jegGESygmlLw07G2JrsDYkMYPJlAOoPg/AlY01SpxyeU7Hb/xXg0pgdOGv1C7/yAU06D1IrEeLvisqeta7a5Ivwo3Mo4akhB4pZpKHbL1j2LJIWcjoiha0jEi3P38tJwcFqJiCQBx31nmTp5wFvhVlJeqzGzHjsdXW5c27xO/ZF23qkvy2uvqJqWdnDY9mN/fXyu7qVMC1w3oeg8xIVBj7XFn27Fs7YzThpCmPGhCY/locNDjGaYB2fr/gFYPiCjeiHMBrZb9XsRAmojR0qWXPxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,29 +110,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/10/16 21:48), Bo Zhang wrote:
-> On Fri, 16 Oct 2026 17:54:25 +0900 Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
-> > A quick and dirty patch, as usual, just to play around with.  This
-> > attempts to improve the reader side, because the reader is side
-> > much more sensitive.  Tested only with zstd.
-> 
-> I applied the cross-CPU borrowing patch on-device and re-ran the same
-> zstd Android A/B, so it can be compared against the preempt-disable
-> numbers I posted earlier. Focusing on the read (exclusive decompression)
-> side, which is what this patch targets:
-> 
->                         9+10+kmalloc   preempt-disable   cross-CPU borrow
->   dexcl_contended       15,919         54                1,447
->   dexcl_wait_ns_total   109.6 s        0.68 s            3.66 s
->   dexcl_wait_ns_max     145 ms         34.6 ms           26.6 ms
->   dexcl_avg_wait        6.88 ms        12.6 ms           2.53 ms
->   dexcl_acquire         2.21M          2.75M             2.94M
-> 
-> Borrowing clearly works: dexcl contention drops 15,919 -> 1,447 (-91%),
-> and the residual 1,447 are the genuinely all-CPUs-busy cases that fall
-> through to wait_event(). More importantly for us, the worst case and the
-> average are the best of the three - max 145ms -> 26.6ms (-82%), avg down
-> to 2.53ms.
+On Mon, Oct 19, 2026 at 1:38=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
+rote:
+>
+>
+>
+> On 2026/10/17 08:45, Joanne Koong wrote:
+> > move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
+> > folio_unqueue_deferred_split() on folios where the refcount has dropped
+> > to zero. In these paths, folio_unqueue_deferred_split() is called with
+> > the lruvec lock often held (move_folios_to_lru() always holds it and
+> > folio_batch_move_lru()/folios_put_refs() usually hold it for every foli=
+o
+> > in the batch except the first). However, it's not needed to hold the
+> > lruvec lock.
+> >
+> > The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+> > the deferred split queue lives on folio->_deferred_list in
+> > deferred_split_lru. The deferred_split_lru is a list_lru with its own
+> > per-memcg per-node lock.
+> >
+> > There are already other existing callers that call
+> > folio_unqueue_deferred_split() without holding the lruvec lock (eg
+> > __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
+> >
+> > Add folio_batch_unqueue_deferred_split() and use it in
+> > move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+> > unqueue each batch of zero-refcount folios from the deferred split list
+> > after the lruvec lock is released and before
+> > mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+> > critical sections, which run with IRQs disabled and are highly
+> > contended.
+> >
+> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> > ---
+> > This patch came out of a discussion about splitting underused mTHP foli=
+os [1],
+> > where queueing small mTHP folios on the deferred split list was found t=
+o
+> > regress Barry's fault microbenchmark. The cost turned out to be the unq=
+ueue
+> > running under the lruvec lock rather than contention on the deferred sp=
+lit
+> > queue itself. Testing this patch on top of the series in [1] with the s=
+ame
+> > microbenchmark, queueing every 16k folio went from a 15% runtime cost t=
+o
+> > noise, with lruvec lock wait dropping from 491 seconds to 38 seconds (m=
+ost of
+> > that contention then moves to the deferred split list_lru lock, but run=
+time
+> > still drops back to the unqueued baseline).
+>
+> Looks great :) Could you also keep the benchmark results above the '---'?
+> They'd be useful to have in the changelog, along with the test setup.
 
-Thank you Bo!  I included your numbers into the commit message.
++1. I guess Joanne didn't include it in the changelog because the benchmark
+depends on her patchset, which hasn't been merged into mainline yet. But it
+should be fine to include the relevant details in the changelog since there
+is already a link to Joanne's patchset.
+
+Joanne, could you also link your patchset and explain which patchset you
+used to collect the data?
+
+>
+> With that, LGTM!
+>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
