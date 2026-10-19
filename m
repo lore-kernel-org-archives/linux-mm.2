@@ -1,109 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDB1606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 23:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338FA606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 23:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gNXTSu92
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Xz2PyeQW
 Received: by kanga.kvack.org (Postfix)
-	id 191B36B03B5; Mon, 19 Oct 2026 19:36:04 -0400 (EDT)
+	id 3F0AB6B010A; Mon, 19 Oct 2026 19:46:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 142B26B03B6; Mon, 19 Oct 2026 19:36:04 -0400 (EDT)
+	id 3A0686B010C; Mon, 19 Oct 2026 19:46:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 009E06B03B7; Mon, 19 Oct 2026 19:36:03 -0400 (EDT)
+	id 2B5E56B010D; Mon, 19 Oct 2026 19:46:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C970D6B03B5
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:36:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54981A08C3
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:36:03 +0000 (UTC)
-X-FDA: 85340986206.05.1F5C901
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03C186B010A
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:46:42 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86D2614056A
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:46:42 +0000 (UTC)
+X-FDA: 85341013044.25.2D16581
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 762D6140006
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:36:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gNXTSu92;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id B286818000B
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:46:40 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xz2PyeQW;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792452961;
+	s=arc-20220608; t=1792453600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FhKtU5w8GBj/yeJDEwS7da8UC+5x8nc458iXyjzet9g=;
-	b=ejijSwjQKnP8IVaiPmXZoiwZc9jz5MU6IU6YihyDvmLfvEnye4lk6vkpj/HBKYNQx3HmjX
-	ohpFFXtFXlU4xD5Vu9MCfYj0RPK3DNvxYCJB2NHFy9PiCGGsv2+ijb4s23AIremaZRh+NH
-	DWHF+6aXlbflmTwFbl/TFj1B7g6OfmM=
+	bh=lnbJ/fWoD11/g9szFmuzDGasP/1e2AgpJzFnEjFUq1Y=;
+	b=OWT5tXn5Y9b7JdEDUTWbzksohzzpq79mYzlU4P9hnZjb1njeyUWrdtb7BUNLnq9LmB7Vwc
+	YFz5l2FfjMITZR9tCMVj5VPjClSMEwHiIliTWnJXdAycB1Uft9BWK7JP3wPC4OWj8Z76DG
+	/uZntiHZRCKCsy8gxc6oTxvgDiW4VLA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gNXTSu92;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xz2PyeQW;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792452961;
-	b=lrsQD6jxaylvJGZDwxshtyCrYqkL7ij6YOolmX1Hd3WiFm9SxMMHE7gts3cbuqtA68nSM2
-	f2ljadjrlOOobKkplVzRaAm4pRAjpXpCbC+QidGNwr/lPSt6Fu1qA/2JFpxPNhdAzd68VV
-	hKd0T3FHA8fePJ/1f16ZWkQA/6WB4mo=
+	t=1792453600;
+	b=JcUdp7Cz+Y3X4IaBJY0coNZJRWcxIHkah+G7n8VCqWKnMy/YuRrmAhBuuHpTPr1lJJLGN9
+	TW4cMYYVefWi20rAoRYePHiqrNw93mD9cE592HZN6Bcayft/jaZhL0gn1uaUXTQWYFdjfV
+	kXp6It0SGyZNpMSex26x02AY7njnHOk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF1F460A5A
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:36:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6831F000CB
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:36:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792452960;
-	bh=FhKtU5w8GBj/yeJDEwS7da8UC+5x8nc458iXyjzet9g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=gNXTSu92jBmXmdxQAiSfPljfEV05rK6BJ3RpiKEQ8XRwVUwxD47Iy2yQpmQPI8rGr
-	 a0tfbEe44MYi5/6ImPwdDhvNth6OoSa8+tru3+d3uAeRTNUfHBgvnUj7jcYiCw5ccj
-	 jNytduKQoMz+o9r04sXSCNlimT5Yd7+Ze3Gh3NqdOyr4c4rVoU3yt5Dbbn2vsNyxN6
-	 H8pLOjIDJmJ6lw+sROT8F8pILSFhRFf9UebtFlcF5gJI15Ah91X5Bg+z/MUPLLGrsi
-	 GQG1m9eRlWKo8K/1Mk1gF75G7n5exymRzJYA//sgauhgH16Zd6jXZd3I1NW5IJzPoW
-	 M4qt/rrJoq/BA==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-930c0f9c1b1so258380085a.1
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:36:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByfUDmcPI8VWvJpGxRjlfOlCH7XEyZknBio+bnqJrKtYZMSMkUVIaz3QzdMhUO2dMQfcoA7on1DjQ==@kvack.org
-X-Gm-Message-State: AFq9FYLXWVWxjAFjQKJFptAl6TFSrwcNP/Bmi47/4wMDBL0cSVZGC5ET
-	Jz652YShdChWaN91wwonudDdrUDrhq1RcdgATxH8XejDl0/gXbRmnZjBtD6NFiK8mnihTvbix9g
-	e2+c/vrsADX6IWzAe8TbqBQwKobYEy/s=
-X-Received: by 2002:a05:620a:4552:b0:93f:3829:8494 with SMTP id
- af79cd13be357-93f38298718mr932075885a.31.1792452959559; Mon, 19 Oct 2026
- 16:35:59 -0700 (PDT)
+	by tor.source.kernel.org (Postfix) with ESMTP id DF615600AA;
+	Mon, 19 Oct 2026 23:46:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EED61F000C4;
+	Mon, 19 Oct 2026 23:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1792453599;
+	bh=lnbJ/fWoD11/g9szFmuzDGasP/1e2AgpJzFnEjFUq1Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Xz2PyeQWC71Jdv+LVHPfpQH3SZFM38V7OqQRR6Rn+L0Or9GHlKTA9epcwDawRBhIW
+	 o6Xjx+ug/q8y2FztLjpwhbc6LgdWxI5Xjwh7kTUZxVKLQRo3/YAl9XTCM+8srtVkkj
+	 lzuNM0WK2JrER1UjAq1N6orohUxovMraATbR+YcY=
+Date: Mon, 19 Oct 2026 16:46:38 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+54f6a8926b40a171f2c8@syzkaller.appspotmail.com>
+Cc: david@kernel.org, gourry@gourry.net, joshua.hahnjy@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, rakie.kim@sk.com,
+ syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
+ ziy@nvidia.com, linux-ext4@vger.kernel.org, Vlastimil Babka
+ <vbabka@suse.cz>, Barry Song <baohua@kernel.org>, Theodore Ts'o
+ <tytso@mit.edu>
+Subject: Re: [syzbot] [mm?] WARNING in shrink_one
+Message-Id: <20261019164638.c33e70eaefbee802eefb4716@linux-foundation.org>
+In-Reply-To: <6ad67231.a20cb897.960b0.0042.GAE@google.com>
+References: <6ad67231.a20cb897.960b0.0042.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261017050928.128582-1-sidchintamaneni@gmail.com>
- <20261017050928.128582-2-sidchintamaneni@gmail.com> <CAGsJ_4wGq9oc05=-g4aWptLdCbTwUjMjXk4Rd6KjJ6x=tzMm+g@mail.gmail.com>
- <CAE5sdEhGFtGF6LC4xNkMwGj3vTxLOW=GNBXnk3-JmsgjntXx0Q@mail.gmail.com>
-In-Reply-To: <CAE5sdEhGFtGF6LC4xNkMwGj3vTxLOW=GNBXnk3-JmsgjntXx0Q@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 20 Oct 2026 07:35:48 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wmvBvEn_vXu8-c6BRAnRewYmTs8iUd8T7KRx7_svZrwg@mail.gmail.com>
-X-Gm-Features: AclHuK_aaDmiOoPjOifUmGBKmvM4s-x70UIqD7plw7aV8rDhARGqcnWCGr0bz_Q
-Message-ID: <CAGsJ_4wmvBvEn_vXu8-c6BRAnRewYmTs8iUd8T7KRx7_svZrwg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: multi-gen LRU: fix NULL lruvec->pgdat deref in get_lruvec()
-To: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org, 
-	kasong@tencent.com, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
-	yuzhao@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	apais@microsoft.com, rlmenge@gmail.com, stable@vger.kernel.org, 
-	Hardik Garg <hargar@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 762D6140006
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B286818000B
 X-Rspam-User: 
-X-Stat-Signature: 4nb5w4noci156qb8bpjsb9bn8twqka81
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Stat-Signature: ndpe4a8ijscydsiu39ohcgzyimj1bd57
+X-Spam-Status: No, score=-7.4 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1792452961-406403
-X-HE-Meta: U2FsdGVkX1+kOxsgJUVPfjG1HXp6atdOETVuuF+6d8LFZz057BzXeZ8pI+r1VdRH5aJSAEulOmMQJg9UmOke1CJhzk+rsfxQWITF6zspasHQIsux2D2vtD4FsR+KrrD3fBcLvKst4JbOIWLAMiyRcQ7daTM4sLwe5rKjryjFMeJpz3tn3y+BFKHaVO4iXM6Z654PU76Y3cw2k8Dlijw+7TcZKhueW5bUzGa2rMprMeRTgLQX1Kdygas+WX97PmYWbIeLXY6vEYNdz/fkzXIk604zRERGKwfuZ15zdPH1m083Aa490h41gQXRLkhC0qhrjpaeigtN19fLn3FrlRpa1Q7wD/yNaV3zTAqNSJMOV4AoOe9C5Hpoy4JxymDXkd4nCk8vXW9LRtYZtja71DRuViz1QqXjXkDM49b+noN6YLfgcdA4B4Z+P1/HO13HBltnzAbox6nBuKRS6lRc2vG+/F6d3ZKIzV1UfRzUVi8kwCArYRj+A9YD5+o82HOnWru6nzKOnbeno1AJQ7SVbQpedKDKHK90IvsLHVMHKFEHU8atIHEmAYoT3VLnZ47WM7dbF6Kbb6BftXJv3plKQx1aDRLhtFolFwtm5r9KAA7pcJ6Sdq4pyJa4eRifTb2wwFJ3Zn3npftONSG5h+it600jGKp3o7ePY/qqh6XXFSQivG/QlYtLT+ABDVMZ/sAplTckRryXGkWFTyDjveCuW0b5SCvkbNyN4JAy4NC3bxjXdi6FZMLyMdz/zBfvsDUKrp0W6Q6inPhV5SBg8nQdG6hNTG3rsDpYdkEYZBOQCoxmZ+nUUV0I22T6JiSTUKEXvRbtdv+FjfBeJXs0ZlpzSxQeUcDbJ696e9k7eh7WkvjunUthT53MPKDrWy2GGNsiHmXbe9gTO6VcD3uwjtAGXlt17+gbs+qlfFjh6DtCyEGusb3sUdnzIZWt1vNGjMK49ztNDiw70yvHUuzCpVaTUM7
- tSE+oKut
- eAmug2eCfMwUTYPb9j0aonSMO8iMpFNQ/pTl8jH/w6DA+vsp/IxpD5kFXI49z+pCJLn8+d6QwdZR5KsC+lmQ5qOMEDZQQ+oQImNDZtdyB41hucc6jXppafHRBVnsv8zt5HJnSHgcSO2wEZOfuIfAOwpigIcOr2l/5DxcfGvjhQW0NcRMKx9Ajn7JYQnLuUhXF86BbyFvCgwaFRDfupld/mhIy4fahmaJm+Dvx0B77KrtwcdFDcRMxS2ebbNmD+yUheYP2WxU/n0tyddpVlJGk2XK9kY8D4mwcjNy+1ou3jnKpi7Ug/Z1C6F+dvPUigYnyr448JjS5q6oQzrD0zCMeZ9/22RUvjazJDZ5mH+seNznqzzBX+8bSJJ/oBg==
+X-HE-Tag: 1792453600-225176
+X-HE-Meta: U2FsdGVkX194C6ZnCi21AgCqxLu9fE+Ech1vH4JFtYRCyI/cR5eTGHwDTRIlve+suyOn2jiyl0tkLVbIpOXskeLNAI6tZVqTTNJeRMivYFyJuyWrs0gZSTYQ0p6BI5jVX1RU9HRrObGOoRoDbgCrvj61PRXejWKNhMHTzs2e2FfUlbthbFT9PO5yCILvw4jA9fou6KPlZC5PazWVcP+A3fOXigGqaV4MdgKglBkmYHELbHANHfGZJofhsuww16Z/zkipSmXtDiu1Fm3kZR20zDOUghpsII5XzBrScfqgFsNwRKL+0FfwfXl4PWAH8MZxxblJyDikxGWBupDE8PcZ4z+TxD37VYT4/FODWh5i2m4rB+K9RDTivet/VlYUQYBdI+e78eL7frzM51WUIanvAqF1YISC2zd/DJm9MG+SeAppVuh+PZlTUM125sDB8xWNzcKnfTafUjmp/3N8rSVRb0L5J6jcNwVWQwKNFzrBYdIQw2JB5KzMhLFBN0zghD8GSztM2qXVRcKYZeI3M5bg+8/DAwSbBCzLbhtOBJhxdePaF+tZElm+4bFa7x6P1ZnJxTiM4YI9TePr+0xZgXmiIK1smBuFPijDO6BSl1jz2oq1dCFl+S5ecep1zi1psNNATE++Z4+8P22GSllvyoC0wI6U6GZKcTns2yvYHJDPzNT0rr8VR3/JoM9PJUTnHlykuY/g6hCCXpipu2JIS9eyR4sKnFFanLTJWNYpjOsVHHuUmBFokdaWT8b3AXnAB91Q9IABkuYqE2cp9CkKDgkPWUs/oKPa8x1r+WK2i+JxCULwbPIEEwTMDjpcpeqnBW9v+80JQd2R4CLCiVSsny9+Xy32P6CZpTRHg0ON5iuu9TsjTDiiTfxXE3Teqxw3VV8ySJJ/1+NXq2ERLmgX2TuY8sxYzoooIicdIxOQwxvRUpGl3BfednyPJ37mlw6Zy6hRdMdYN+ZAofM2QK9yG1a
+ wy0E5RVy
+ nIw2DJK+SusqqBKQI+crlJEZ0nQ3DSXA6MvAktwwbIFUJNQuwASlW2c6GRKoPVaxTFsUOqEL57azZT+i6UH2Sf/YG/Xb8WU/CjS/EO/lAScqMl4uaXyY5GjrRymTNN4OUE5YsGowHztutFw+jCLWLb0BkvVf2OYJhay1L5bGEOYJHI2ku1zHpF4JSBLasYgAJN7D4EHbMBbJMQZej9PUtFitO3fgPh1p8yFe6hXcTPr4Hrtz86PW7Fwf/RqO+CHIRUQyzwV36D0C5eXAexTz8b3BYoKi5zTpVqAnU/4SNSJt0guF6M4t1zDdnU+3e2dsg29zJO3v8lQwdW1o28xCGH70Ea4gislrbWC+JJltCvBMa6kN4ydDHThOhDCygk2ByYQPOtJ4FfKtIFbyi+NITX3wGgCKwBfOP0Vy/ZkANzMoVMvA9iJr/4XJR61IpuszcIKshnHuElBi9/pHnjg0YczpMl4INsA7aSOk8vv6+XChHgo4HoEyEUcTdEjTCl9qPxx5l25uO5VraKJd2URr/QC9cOnr3NES1G35koewqf6FwccBU3nTNo/8FvTY+FTMNVvznYaYLFC/JG1TDHHQAr8Dlsgwydl/MdQbBvBF9rFxO5ni9BiVer9gsAAzURr01T7UsYXJh/zYNpgd3LD14HtC2SLYe3Mb7xvOdqAOe0VVVuWFH3YVBbU/LWU1qk+v4VtijBQgtkpdPgXoqjDG5qlWklTgM5ccbjp4EA5fKFBOzAw5zGG3nBIgcYghuyX09plz1KbEUwTipKPKNsX3O54P6gQiIF1GkR40xhlUUV/iB5bMp+vOkrru4TZoGhe7X3io74f+2baZ+ce0znXC6fS3Xw0gjBzJvmXdtHH5jZXw9fgG7U5HOZUDx2zb66nTJ04hGAG5WQ/qJxAvfXXz9s8NmV4iZYY+kb3u0T3K1f6UwekGmhuufvjp5RMDyh7CXVy+HxiCjWjlN6JFiJjFRanQePkk0
+ oh+qjLOP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,68 +97,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 4:33=E2=80=AFAM Siddharth Chintamaneni
-<sidchintamaneni@gmail.com> wrote:
->
-> On Sun, 18 Oct 2026 at 14:24, Barry Song <baohua@kernel.org> wrote:
-> >
-> > On Sat, Oct 17, 2026 at 1:09=E2=80=AFPM Siddharth Chintamaneni
-> > <sidchintamaneni@gmail.com> wrote:
-> > >
-> > > Andrew Morton reported that get_lruvec() has the same problem as
-> > > lru_gen_shrink_node(): when memcg is disabled on the command line
-> > > (cgroup_disable=3Dmemory), it returns &pgdat->__lruvec directly and s=
-o
-> > > bypasses the initialization of lruvec->pgdat. The MGLRU debugfs
-> > > interface calls get_lruvec(), then dereferences the pgdat pointer in
-> > > lru_gen_seq_show() and other paths, so these can hit the same NULL
-> > > dereference.
-> >
-> > So userspace must have booted, since otherwise we couldn't read
-> > debugfs. The reachable case is therefore a memory node with no
-> > LRU folios when debugfs is read? So this could happen on a multi-node
-> > system where folios are landed on other nodes but not on this node?
-> >
->
-> That is my high level understanding. I'll let Andrew to comment if I
-> am missing something,
->
+On Mon, 19 Oct 2026 12:40:33 -0700 syzbot <syzbot+54f6a8926b40a171f2c8@syzkaller.appspotmail.com> wrote:
 
-I made a silly toy setup by running two numa nodes with one of them has onl=
-y 4KB
-memory, the other one has 1G-4K:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    a0ff06b3a7bd Merge tag 'firewire-fixes-7.3-final' of git:/..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=12cdb20d580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=44ac479246d4559b
+> dashboard link: https://syzkaller.appspot.com/bug?extid=54f6a8926b40a171f2c8
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> userspace arch: i386
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-a0ff06b3.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/3f4bcbceb92e/vmlinux-a0ff06b3.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/bf4df8252e54/bzImage-a0ff06b3.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+54f6a8926b40a171f2c8@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> current->flags & PF_MEMALLOC
+> WARNING: mm/page_alloc.c:4816 at __alloc_pages_slowpath mm/page_alloc.c:4816 [inline], CPU#3: syz-executor/5706
+> WARNING: mm/page_alloc.c:4816 at __alloc_frozen_pages_noprof+0x1eac/0x3300 mm/page_alloc.c:5449, CPU#3: syz-executor/5706
 
-qemu-system-aarch64 -M virt,gic-version=3D3,mte=3Doff -cpu cortex-a53 -nogr=
-aphic \
--smp 4 \
--m 1G \
--object memory-backend-ram,id=3Dram0,size=3D1048572K \
--object memory-backend-ram,id=3Dram1,size=3D4K \
--numa node,nodeid=3D0,memdev=3Dram0,cpus=3D0-1 \
--numa node,nodeid=3D1,memdev=3Dram1,cpus=3D2-3 \
-  -kernel arch/arm64/boot/Image \
- -nographic -append "cgroup_disable=3Dmemory
-...
+Thanks.  The stack trace is missing important bits for some reason, but
+it appears to be ext4 disagreeing with page reclaim.
 
-Then I got a machine where node1 is very difficult to have a page in lru.
+__alloc_pages_slowpath():
+	if (unlikely(nofail)) {
+		/*
+		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+		 * otherwise, we may result in lockup.
+		 */
+		WARN_ON_ONCE(!can_direct_reclaim);
+		/*
+		 * PF_MEMALLOC request from this context is rather bizarre
+		 * because we cannot reclaim anything and only can loop waiting
+		 * for somebody to do a work for us.
+		 */
+-->>		WARN_ON_ONCE(current->flags & PF_MEMALLOC);
+	}
 
-then i ran the debugfs for mglru:
+The electrical think machine said:
 
-/ # cat /sys/kernel/debug/lru_gen
-memcg 0
- node     0
-          0      14972          0         953
-          1      14972          0           1
-          2      14972         18        3308
-          3      14972          0           0
- node     1
-          0      14972          0           0
-          1      14972          0           0
-          2      14972          0           0
-          3      14972          0           0
 
-now you see node 1 has no page in lru but yet i didn't have any crash.
+filemap_fault()
+  -> direct reclaim
+     -> shrink_slab()
+        -> super_cache_scan()
+           -> prune_icache_sb()
+              -> evict()
+                 -> ext4_evict_inode()
+                    -> ext4_clear_inode()
+                       -> ext4_discard_preallocations()
+                          -> ext4_mb_load_buddy_gfp(
+                               GFP_NOFS | __GFP_NOFAIL)
+                             -> __filemap_get_folio()
+                                -> page allocator
+                                   -> WARN_ON(PF_MEMALLOC)
 
-i think i will need more time to figure out what is the problem and how to
-reproduce it.
+
+The task enters direct reclaim after a filemap allocation failure. 
+Reclaim calls shrink_slab(), which evicts an ext4 inode via
+super_cache_scan() and prune_icache_sb().  The eviction path eventually
+calls ext4_discard_preallocations(), which explicitly does:
+
+    err = ext4_mb_load_buddy_gfp(sb, group, &e4b,
+                                 GFP_NOFS | __GFP_NOFAIL);
+
+If the buddy-cache folio isn't resident, ext4_mb_load_buddy_gfp()
+allocates one through __filemap_get_folio().  This reaches
+__alloc_pages_slowpath() with __GFP_NOFAIL while PF_MEMALLOC is set,
+triggering the warning.
+
+Simply removing __GFP_NOFAIL doesn't look safe.  The preallocations
+have already been detached from the inode's tree, and failure to load
+the buddy information can prevent their space from being released
+correctly.
+
+It seems that ext4 needs a way to complete this mandatory cleanup
+without performing a NOFAIL allocation from the slab-shrinker context. 
+Perhaps the preallocation cleanup could be restructured so that it
+doesn't require allocating buddy-cache folios during reclaim?
+
+The syzbot report is at:
+https://syzkaller.appspot.com/bug?extid=54f6a8926b40a171f2c8
+
 
