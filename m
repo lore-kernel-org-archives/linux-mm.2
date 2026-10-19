@@ -4,105 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A80CCF2D3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C2BBCCF2DA
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:21:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 015E16B00AE; Mon, 19 Oct 2026 01:56:10 -0400 (EDT)
+	id 4661C6B00B6; Mon, 19 Oct 2026 02:21:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F08FB6B013A; Mon, 19 Oct 2026 01:56:09 -0400 (EDT)
+	id 416476B00B8; Mon, 19 Oct 2026 02:21:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF7476B013B; Mon, 19 Oct 2026 01:56:09 -0400 (EDT)
+	id 32D436B00BA; Mon, 19 Oct 2026 02:21:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5266B00AE
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:56:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37FB31405B4
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:56:09 +0000 (UTC)
-X-FDA: 85338315258.15.9FC4AB2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3B36840006
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:56:07 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WSlGexRR;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EB1FC6B00B6
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:21:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5CD3B1A021C
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:21:54 +0000 (UTC)
+X-FDA: 85338380148.21.1C22AEA
+Received: from mta1.migadu.com (out-82.mta1.migadu.com [95.215.58.82])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2D4EF40006
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:21:51 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PZeCpItu;
+	spf=pass (imf17.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792389367;
-	b=z1SasjsitloedJbn//fTYg5pgd3/SxZ0cqnffW3R5ByXt0Yw2+4QmD6J6A6foZ0YOo5Naj
-	o/1mHkbdIGvDKhV3DWCWD3ve1MTVEghRCEPwl4WkzESmJ6/7kQdiOcL/v5HoG7/xRzh4la
-	SB9+HoUx6lW3z8Re2V2XZVgmM7HqteA=
+	t=1792390912;
+	b=ZLe0TOvR2bDqSPviXqwyQY1tZMMDzWN5dClhDof7kReBv457lIH62YZKNfuxsDx23FcZyZ
+	t17Gr/GoTo7C8zg6bQtdnXgXcUIB6NynCRi3DAq2oSSOGL5wNSSepDdfPcxVsjZG4OAZZa
+	O0IgiH92BzzBnQ/8rHkcgkBnbo4TXxI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WSlGexRR;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PZeCpItu;
+	spf=pass (imf17.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792389367;
+	s=arc-20220608; t=1792390912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V1R/rxlJHtAIixzoKXTCBUmA5XYASXYQvG6Yh/D5vUc=;
-	b=uUnpR9qQGTmJaY0VE3K5jjZ4US+Mw9a5DGVH0iNETyI+Bf/7P4GjuN21oHK+ujIQMjR7F3
-	BEkWMrouvgVLBn6cJ+Uw70jAuE/BhxLtfgXsjPlZp6Q3Rxos5r54/KyJKf7uCxuBd7rVAP
-	Pygj2lxFKp2/8U6Gi+4opeFiaHybFUs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 936A24477C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:56:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0441F000CD
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:56:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792389365;
-	bh=V1R/rxlJHtAIixzoKXTCBUmA5XYASXYQvG6Yh/D5vUc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=WSlGexRRcveL3gPe8o8sNXcYcFIiLceom6L9+HzV8kU9geaAB8mZedMyFP9pUtlwF
-	 V+vnhTt4gY5f+aR4Akmzo8RiAceKfB2Ollc/k4U7sBYt1tL8vaGTSmmSXevkX8uWJ5
-	 LgrUvQ3Ub8V8ox+Jl9H6+jFmPOUXv2vEPvm7yR31LYBbjZeKn6zdvhkH247B4uZ6V/
-	 igDLz79prmJHK5KBup7kAOLgTmu7LxbBiQwPQGYVfh2sfrZMibkZbwNaJbGMw8qS6S
-	 6tbO3/9022qDbPcKwxWW8qCbVVNdDI8RcrQJMUzXq+aH+yVIb3KHO8SU5FX7o2zMKm
-	 EkjjlJVpgnP0g==
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5364648ae07so18436471cf.1
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:56:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy9yK3NljWV03WaHAWiP5T4Bv/5kOU9hD+PfBDSVB/mjoHVl2UeecRK0m10tEQiNLiK0ZekKfDsPA==@kvack.org
-X-Gm-Message-State: AFq9FYIKXkk89rU91bXcyvQHIFtRmsMid6rpc9HyznbQJh4rL5R1K2hJ
-	HHQnDyYiQAKWeOVpGxsxhs4VlOTSwtYiyVFIDq1+Mu9GD2TT7ugiEeqqag1a4DSSWGZT8tS83hB
-	IBxjjU5wOmsoIrazm+UmRk2LFkHyKEzI=
-X-Received: by 2002:a05:620a:28c6:b0:93f:3565:813 with SMTP id
- af79cd13be357-93f3565089bmr678706685a.9.1792389364634; Sun, 18 Oct 2026
- 22:56:04 -0700 (PDT)
+	bh=tb1CVDb/qtCe1N0t8PpStFV2JA8h8qEFpJDkLU3BfdU=;
+	b=sTTf3hAFl/gpTVFmUBnEUqNtWEnQYEi6yYlWIJn5QPqjhey8ZlRrVVbtwfXzI0HA/2hv2b
+	FAVUIgqj9PWptEyRzwtn2u/puRu/PsDkVyNDcYfWeWX+7jEbPgJwjCD13eRM/R0dFG6XeI
+	QARS9NV/61E0W5/T6m0OYeXMNcVXuhk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=I4MPMNFIXchxrDocrBAZUC2FdxNIMi1x4SFGsuGksro=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792390910; v=1; x=1792995710;
+ b=PZeCpItuM79ocVG/ZTKd6RwQdP6Tps/2lRzSJ7JAm/RXajDfEmBbX5mBR0tlLaddhCmUpcII
+ OaeqLlQjikHo8sJ5ktuQokskT7UgL5xw6Bf3VsI72r63+AKezog8THBAEXn1lyAJCziDW3pdtwC
+ JFs3wFclqUiEoZAFKlmzI0mc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ab907ebe85d37efd;
+	Mon, 19 Oct 2026 06:21:50 +0000
+X-Mizu-Trace-ID: ab907ebe85d37efd
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <8ed89bac-d9f0-4dba-b733-7d678a4b47ac@linux.dev>
+Date: Mon, 19 Oct 2026 14:21:39 +0800
 MIME-Version: 1.0
-References: <20261017004555.2890038-1-joannelkoong@gmail.com> <19d5b7cc-782f-44b1-8ec9-a1764484f10f@linux.dev>
-In-Reply-To: <19d5b7cc-782f-44b1-8ec9-a1764484f10f@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 19 Oct 2026 13:55:51 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yME1gdFCq4jXCK7tYiQKiV-CsRMLM7vz9L_69OkMaZ0w@mail.gmail.com>
-X-Gm-Features: AclHuK_JiHk60NrX7-Usm3115HOQ01kuH7Otr6mcrw2Y29QUJab0XSsc9l_Jpxk
-Message-ID: <CAGsJ_4yME1gdFCq4jXCK7tYiQKiV-CsRMLM7vz9L_69OkMaZ0w@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: unqueue deferred split folios outside the lruvec lock
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Usama Arif <usama.arif@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] mm/mglru: add tracepoints for scan and aging paths
+To: Steven Rostedt <rostedt@goodmis.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Baoquan He <baoquan.he@linux.dev>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
+ Ridong Chen <chenridong@xiaomi.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>
+References: <20260911102939.2485750-1-ridong.chen@linux.dev>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20260911102939.2485750-1-ridong.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3B36840006
+X-Rspamd-Queue-Id: 2D4EF40006
 X-Rspam-User: 
-X-Stat-Signature: 5668z5uj55gkdk97ixf1dbnsegoghurr
-X-HE-Tag: 1792389367-476400
-X-HE-Meta: U2FsdGVkX1+ihlr8sCea42B63FYDpVWeRwVKbeOwLfTLruiEdY8Pap0ANBVcXrgh40PWstUsGblqAMRK+/JdJQWtvLzoRSuznPlpxx25CDfHvs4/Q1wh9jM7kJ7ronULztT8yhmQuS7eCF1rusYyRJMLwJ+sMEE+YtP4fluIEFhHWL/aJCEwJzdA8gIGO+HpXQbiPQauB9aS2N8D+E8Slu211w/gheZC1eEFZzB2Ixga2RvYibOmeaEhYo+/9jiqgHCw0AmnU+jdDDvc0jO+z39BhRCVapamq4w3wjB+haH3tuuEcHv5GPWliU0OQzBLAD8N1OSSPjMAukraa1aUfDJmCTmBHfbq2lAGu0sO5tEmIc7B1czgxmXCNQgJ6ZWG2+n/LHXlILWbgx41GaGt7Whf1JFqEaHejAlkt7pL4oxJ+vEMACnQOSdt7BN7tPMsWipa8wiTuhw2z8RjQ6RN6wXncErQn2Rp47GAWro+GEWSyW6mLXlbmN1uDmae1l9CjcdMQCwj9ah1TuGFZaA4znKAUxjKoX0tQThVJqKVXcNiEB3gPXQaeBNo14zQmO1rePkkimj9haoegPWNos9rZRnLDIHddoDyupkkKFR+MfZWNg0ISeKEDvQ/PnPPSxJ72B+ZUknDRKLHmBmFiA/Vy7CGZnb9zfj7DnmRmEUc5w8bLzkwUhOwz84NilYrQocGIwYISYV5gmaHgc/jPNWNjXtFLrjZeGUnp1q9pVXwB+2wno5ZqSd1CU0qw4wIIrxvhKikD5dLWekTowp04yYrb+SFo4X5oc7rrh1KckxfDfCc8tkSZ1UhoOSjmxPcaWqRCoKtb8y2QW0hJ3N5xuuYw2LjAAdFiNu+ISBmAbuDx3nlI1os5Ti7w0Ofe4Efs0bfq3Qa7kt+YJG1+bCnvTMmstS5TJHNaG0xYRu9SnAjwMmQ5P3kOrgpLRBPZx8Aao2D+p3mdLexSlUVwTh3Hwa
- m4wz5lHb
- DlvQr0qp+S2WRfg7HhRJ8ZFnp3MEL4j/+U2jegGESygmlLw07G2JrsDYkMYPJlAOoPg/AlY01SpxyeU7Hb/xXg0pgdOGv1C7/yAU06D1IrEeLvisqeta7a5Ivwo3Mo4akhB4pZpKHbL1j2LJIWcjoiha0jEi3P38tJwcFqJiCQBx31nmTp5wFvhVlJeqzGzHjsdXW5c27xO/ZF23qkvy2uvqJqWdnDY9mN/fXyu7qVMC1w3oeg8xIVBj7XFn27Fs7YzThpCmPGhCY/locNDjGaYB2fr/gFYPiCjeiHMBrZb9XsRAmojR0qWXPxQ==
+X-Stat-Signature: mggege3w6pny8xfsmzjcwunhqqk31tu6
+X-HE-Tag: 1792390911-427379
+X-HE-Meta: U2FsdGVkX1+xrwTRxr9sEs00shxcaTgYZERl0M8AdToePjHD1Fdrj14MKSZWyAAmLlD8RCBduZLwEBf0HJ1QYyT7BqboQdjh4Ck4Am6WSM92po/MHiiWqHfBy+NUJt8mBGZzvSfcxGRmoYGO2xBlNvyVCkUCBjYMEjcoQtitbcGMSMr3P1XNQd8c33wLx/eCng6dvg7HauMvaS5RqWbu4xT/v3IqF3lQrOomcJX8RBFy+gkpmGNWuD7iYxUiaDe+xRWwN9emwSy2/njMqZx5Z2AqXs7cVLJ4q3BRwOob37k9v/rZ65RS3dxomrybpsmgF98cUOj00YsE4eLQ+NuWuQk+ZJpfVEZHtwPM/CFvIK9mJofGpfGpx87etMbORRgN08kbbr7aB0FxuQ9Z2kml9vRSsD83lhcVrsoML7a/oacuF/LnVhzXLPQbOo0vHNGAeWSbymgSDVT3ot9oYpLrw113q7KTYpK7bO1z28WUU58ajsmcmOtU0+spaaHvT9QVvT+hEDemdg/wAD7necOcRg3ybgD0+zLGtMkoTE0q0nYT8dSDj0Dqyi2jCjwgsReqQCR25wPC/lFjC6GZwupC3HSUdl1mlNvw3GoIUe1xCcBFIzH5wSV6KOqAy8bw0rXk8lRZoO6FDQJfniG5eJMlyuOosiWWPw0Vf1lK66AaO9N/rXamO/j984yhs/pcA3I4XGVVNpiqWqaxk9P2xfi6cYH6zG9JI0u4BMuCrrilfMz4SlQo0vD3x0+kgj5jJrZDzL0HaTVDrcs5YRCRl/InV1oZM4SUJ5ns/lND05prxRgYvyMUCa/s/yGkmDpJ1m3/OvxJ3bSc22DPhaSOzm1cfe0toXH4vFLT1A75Q34i7dTjpEvjzDW5NqZAHlBHkcrSry6J/CMeRsnW4tTmmxoACUjhTjjcTbLzTBm03AYrbXk0DYGGZfdYbLn6nXKY8vhxwBM6i47Ms80698IH9fa
+ Ckz0U9pJ
+ qOG6k64cTsIa9nKygwMbBDhAr1K3wz04WTU54xIIpMRb5hE0T991C3fcYERAVXEutyuo1Pxhp6bKJJxFOz5qmN34iz32nGkn7JibIWs1Fayy8YrOr7R0QiyNx1Htia74qbvxs6Qhja6TtNFs2eGeQ2HK9i+1n73m8c+1untikkccdK5Uojtce11ULEYeiCkjByMn8qBpGAxgd0IZegxP9WymiDYLyVu1JrT6xpIpuHvl75YRJLOBqB9p2tD3mfZYKY2GAmj1uiFPpdL/V6Uc2osa6f24iVojgWLVu0Dp4ic9Z+r7Rdn2iipCaDxwi0xMLsXFtd3MGI4RE+HHoWZC51J9xLeXEqPw5Inn6ITbZzeZLLrFg21P5j/Ed5/XuJ1IY7xnN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,71 +101,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 19, 2026 at 1:38=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
-rote:
->
->
->
-> On 2026/10/17 08:45, Joanne Koong wrote:
-> > move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
-> > folio_unqueue_deferred_split() on folios where the refcount has dropped
-> > to zero. In these paths, folio_unqueue_deferred_split() is called with
-> > the lruvec lock often held (move_folios_to_lru() always holds it and
-> > folio_batch_move_lru()/folios_put_refs() usually hold it for every foli=
-o
-> > in the batch except the first). However, it's not needed to hold the
-> > lruvec lock.
-> >
-> > The lruvec lock protects folio->lru and the reclaim LRU lists whereas
-> > the deferred split queue lives on folio->_deferred_list in
-> > deferred_split_lru. The deferred_split_lru is a list_lru with its own
-> > per-memcg per-node lock.
-> >
-> > There are already other existing callers that call
-> > folio_unqueue_deferred_split() without holding the lruvec lock (eg
-> > __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
-> >
-> > Add folio_batch_unqueue_deferred_split() and use it in
-> > move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
-> > unqueue each batch of zero-refcount folios from the deferred split list
-> > after the lruvec lock is released and before
-> > mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
-> > critical sections, which run with IRQs disabled and are highly
-> > contended.
-> >
-> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > ---
-> > This patch came out of a discussion about splitting underused mTHP foli=
-os [1],
-> > where queueing small mTHP folios on the deferred split list was found t=
-o
-> > regress Barry's fault microbenchmark. The cost turned out to be the unq=
-ueue
-> > running under the lruvec lock rather than contention on the deferred sp=
-lit
-> > queue itself. Testing this patch on top of the series in [1] with the s=
-ame
-> > microbenchmark, queueing every 16k folio went from a 15% runtime cost t=
-o
-> > noise, with lruvec lock wait dropping from 491 seconds to 38 seconds (m=
-ost of
-> > that contention then moves to the deferred split list_lru lock, but run=
-time
-> > still drops back to the unqueued baseline).
->
-> Looks great :) Could you also keep the benchmark results above the '---'?
-> They'd be useful to have in the changelog, along with the test setup.
 
-+1. I guess Joanne didn't include it in the changelog because the benchmark
-depends on her patchset, which hasn't been merged into mainline yet. But it
-should be fine to include the relevant details in the changelog since there
-is already a link to Joanne's patchset.
 
-Joanne, could you also link your patchset and explain which patchset you
-used to collect the data?
+On 9/11/2026 6:29 PM, Ridong Chen wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
+> 
+> Background
+> ==========
+> 
+> MGLRU currently has no tracepoints of its own. The scan and evict paths
+> reuse the classic-LRU tracepoints (trace_mm_vmscan_lru_isolate() and
+> trace_mm_vmscan_lru_shrink_inactive()), which predate MGLRU and carry no
+> generation, sequence, memcg or swappiness context. A trace of a running
+> system therefore cannot tell which memcg a given scan belongs to, how far
+> reclaim has progressed through the generations, or when a new generation
+> is created - so how MGLRU actually operates is effectively invisible.
+> 
+> Implementation
+> ==============
+> 
+> Patch 1 is a cleanup that factors the per-generation page-count
+> summation into a helper, lru_gen_seq_nr_pages(), reused by patch 3.
+> 
+> Patch 2 adds mm_mglru_scan_folios on the scan path, and patch 3 adds
+> mm_mglru_inc_max_seq on the aging path. Both carry the memcg id and the
+> generation window (min_seq/max_seq), live at MGLRU-specific layers with
+> no classic-LRU counterpart, and are guarded so the hot paths stay
+> zero-cost when disabled.
+> 
+> Effect
+> ======
+> 
+> Paired, the two tracepoints make the full aging-to-eviction window
+> observable per memcg: aging advances max_seq (the leading edge), scanning
+> consumes the oldest generations, and the min_seq/max_seq pair on each
+> event shows how the generation window moves over time.
+> 
+> A sample trace, with the classic-LRU tracepoints left enabled to show
+> how they interleave:
+> 
+>    mm_vmscan_lru_isolate: classzone=4 order=0 nr_requested=36 nr_scanned=31 nr_skipped=0 nr_taken=29 lru=inactive_file
+>    mm_mglru_scan_folios: memcg_id=73 classzone=4 order=0 nr_requested=36 nr_scanned=31 nr_sorted=2 nr_skipped=0 nr_taken=29 lru=inactive_file max_seq=3 tier=3 min_seq=0
+>    mm_vmscan_lru_shrink_inactive: nid=0 nr_scanned=31 nr_reclaimed=29 nr_dirty=0 nr_writeback=0 nr_congested=0 nr_immediate=0 nr_activate_anon=0 nr_activate_file=0 nr_ref_keep=0 nr_unmap_fail=0 priority=5 flags=RECLAIM_WB_FILE|RECLAIM_WB_ASYNC
+>    mm_mglru_inc_max_seq: memcg_id=73 max_seq=4 anon_min_seq=1 file_min_seq=1 nr_anon={0x0,0x0,0x1,0x0} nr_file={0x0,0x427,0x6,0x4a}
+>    mm_vmscan_lru_isolate: classzone=4 order=0 nr_requested=5 nr_scanned=5 nr_skipped=0 nr_taken=1 lru=inactive_file
+>    mm_mglru_scan_folios: memcg_id=73 classzone=4 order=0 nr_requested=5 nr_scanned=5 nr_sorted=4 nr_skipped=0 nr_taken=1 lru=inactive_file max_seq=4 tier=3 min_seq=1
+>    mm_vmscan_lru_shrink_inactive: nid=0 nr_scanned=5 nr_reclaimed=1 nr_dirty=0 nr_writeback=0 nr_congested=0 nr_immediate=0 nr_activate_anon=0 nr_activate_file=0 nr_ref_keep=0 nr_unmap_fail=0 priority=5 flags=RECLAIM_WB_FILE|RECLAIM_WB_ASYNC
+> 
+> The mm_mglru_scan_folios lines carry the memcg id and the generation
+> window (max_seq/min_seq) that the bare mm_vmscan_lru_isolate lines above
+> them cannot - those cannot even say which memcg they came from. The
+> mm_mglru_inc_max_seq line then shows a new generation being created
+> (max_seq 3 -> 4) with the per-generation page counts for both types.
+> 
+> ---
+> v2: address Sashiko AI review [1] - pass struct lruvec * into the tracepoints
+>      and do the memcg lookup inside TP_fast_assign.
+> 
+> [1] https://sashiko.dev/#/patchset/20260911072848.2346073-1-ridong.chen@linux.dev?part=2
+> 
+> Ridong Chen (3):
+>    mm/mglru: factor out lru_gen_seq_nr_pages()
+>    mm/mglru: add tracepoint for scan_folios()
+>    mm/mglru: add tracepoint for inc_max_seq()
+> 
+>   include/trace/events/vmscan.h | 101 ++++++++++++++++++++++++++++++++++
+>   mm/vmscan.c                   |  53 +++++++++++++++---
+>   2 files changed, 146 insertions(+), 8 deletions(-)
+> 
 
->
-> With that, LGTM!
->
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Hi Steven, Baolin and Baoquan,
+
+Thanks again for reviewing v2.
+
+Following Steven's suggestion in this thread, I first moved the vmscan
+trace header under mm/ and exposed struct scan_control to it in a
+separate RFC series. Patches [2/3] and [3/3] of v2 have now been
+reworked on top of that and posted together with it as one series:
+
+   [PATCH v4 0/9] mm/vmscan: move tracepoints to mm/ and add MGLRU
+   tracepoints
+   https://lore.kernel.org/all/20261019034426.2354049-1-ridong.chen@linux.dev/
+
+The two MGLRU tracepoints are [8/9] and [9/9] there. Compared with v2:
+
+- Both events now take only lruvec/sc plus the local counters, and
+   derive everything else (memcg id, order, reclaim_idx, lru, max_seq,
+   min_seq and the per-generation page counts) in TP_fast_assign()
+   (Steven).
+- Add nid, derived from lruvec_pgdat(lruvec) (Baoquan).
+- Group the int fields at the end of the entry to avoid padding on
+   64-bit (Steven).
+- Drop v2 [1/3] "mm/mglru: factor out lru_gen_seq_nr_pages()": the
+   per-generation page count is now summed inside TP_fast_assign(), so
+   the helper has no user left.
+
+Since [8/9] and [9/9] changed substantially, I did not carry over your
+Reviewed-by tags. I would really appreciate it if you could take
+another look at v4.
+
+-- 
+Best regards
+Ridong
+
 
