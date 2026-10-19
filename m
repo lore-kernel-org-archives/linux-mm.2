@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60F3DCCF2D3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8824ECCF2D4
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:13:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50CBA6B0123; Mon, 19 Oct 2026 01:02:49 -0400 (EDT)
+	id 807786B0124; Mon, 19 Oct 2026 01:13:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BE0D6B0124; Mon, 19 Oct 2026 01:02:49 -0400 (EDT)
+	id 7B89A6B0125; Mon, 19 Oct 2026 01:13:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D3B36B0125; Mon, 19 Oct 2026 01:02:49 -0400 (EDT)
+	id 6CE216B0126; Mon, 19 Oct 2026 01:13:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 198AE6B0123
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:02:49 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 224FCA819D
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:02:47 +0000 (UTC)
-X-FDA: 85338180774.21.F9CAD61
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44F7B6B0124
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:13:24 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB4FC1C3C55
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:13:23 +0000 (UTC)
+X-FDA: 85338207486.13.5753390
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2F6641A0006
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:02:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="F/vu4sl/";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0B1C6180003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:13:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sgeAvZuB;
+	spf=pass (imf24.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792386165;
+	s=arc-20220608; t=1792386802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d+82KpTqWIxKLWYpfS12tE61Rj9/9wRHeFszm2cr2MM=;
-	b=XeO6WT3WSxQvdDthA1sL7Vql7C4bdOfACoTaaZW/Sroo3g5QqrN/xiTIeQg6Fk0xBvbWOG
-	c68VQD1eDPsGOQfnH62sLfFBlYEdzMsaDDF/XtjLFvCK63+S6o1zhlAEgswde99AkL9J3s
-	u325qEHX5JnIcUHtYpRVg9yQzlcf1vc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792386165;
-	b=tmQqMHCfseoGHoGuJHYHUGHRUMdA7+5Hp5eWrfQa5yz3FUurtISuBbfwFfn7EuUJj23/Oj
-	uDRuTv3Wc1m9IjH6JuDdByhdnlwNTMj9ypVH6iWO92ySp9eyxsvvm04CbKNA3/cNHRvPUX
-	9XIqHlDkjHT/g/QtTPEiYExcTXkHWOQ=
+	bh=XvhtXuV9XKl0XQhWMK4sJXSo5YXTOO2+0hwy2EwXoWE=;
+	b=dOwOEIk/FQR2hSCh983tUhOi7+z7tnR3+8X40Qx8xKc6deFvXbChdoYWeM1r0mKmONHuvu
+	IADF4FOrVwwF5yV3xgeiaayH5TC48FX2RY0SzGuqGl/SB2zolIAkPstbv/V8FLglM+j77c
+	h7EUW7dbUCNxBdfl/BIkvSzDCWg+MTU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="F/vu4sl/";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sgeAvZuB;
+	spf=pass (imf24.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792386802;
+	b=dWurwxuOOlxINORJHv0EGf2+ys0Uu1BV9a3voT77gVigq24CKOnqZTEqFF8cmkR7ldDPJ8
+	zS6ZdPU+gHv2GrUlIZ1xeC5Nnh4e+Lxx4lc16zfARBV6Tp9mNcMa5AgdwSFrhyTTBFxmou
+	nTs8+Vmd4bOTzEtNIPzOhllVylobVe4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB42C1476;
-	Sun, 18 Oct 2026 22:02:40 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02B3E1476;
+	Sun, 18 Oct 2026 22:13:18 -0700 (PDT)
 Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A9B473F673;
-	Sun, 18 Oct 2026 22:02:39 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 469C33F7B4;
+	Sun, 18 Oct 2026 22:13:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792386164; bh=Cj/atyE4UCUgEPfqHW1EGv7amQMnd8KzvEvOkzLcWVc=;
+	t=1792386801; bh=/cZAu8TZP4F38PHdEa60qvWPo9zmofCHFWZ65uJo+CM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=F/vu4sl/jFktMyJt2cKI0Q2G7Vdoa8O1y4xrvofUVi5wxET9PTUe8/yjpk6QDfIiq
-	 rhuUParGnSZxzXCjU59/2UQdiqUZgl1dFVpFDhVFskymh8DAllwGS0G8T62gRaYopy
-	 Ckj3bT27fkiN1L3gzL4soSU44vj/8bMchO1CsI/k=
-Message-ID: <4459b993-84e5-45b8-9cf1-154457facb22@arm.com>
-Date: Mon, 19 Oct 2026 10:32:36 +0530
+	b=sgeAvZuB1W6o1SdRy9zYA7GJMhndI73Mrx1OMrKc6iaKtu+wVbV9Et6vqsUoL4Ei2
+	 AlUw7uMs0dDHZIdIf/qR4ykATw7Uhw9c56n8TDd7wKgyWoGwhTy0njvoz+x1s9NB8X
+	 vCST7KDRrGfaVAbHWEVbXIK7ptDuUgFZlv3Csl/g=
+Message-ID: <d67a7c38-5f35-47db-8ddd-e84e01f63388@arm.com>
+Date: Mon, 19 Oct 2026 10:43:14 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] selftests/mm: check that MADV_COLD and MADV_PAGEOUT
- reject hugetlb
+Subject: Re: [PATCH 5/8] selftests/mm: check that MADV_COLD and MADV_PAGEOUT
+ preserve shared memory
 To: "Gregory Price (Meta)" <gourry@gourry.net>,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
@@ -74,20 +74,20 @@ Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, shuah@kernel.org
 References: <20261014175756.2035176-1-gourry@gourry.net>
- <20261014175756.2035176-5-gourry@gourry.net>
+ <20261014175756.2035176-6-gourry@gourry.net>
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 Content-Language: en-US
-In-Reply-To: <20261014175756.2035176-5-gourry@gourry.net>
+In-Reply-To: <20261014175756.2035176-6-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2F6641A0006
-X-Stat-Signature: dh3tunis7jdcwtai1398cpatbxqgixoi
+X-Stat-Signature: qh8x1yd8htrabr3kiwtckt6m5fkpcz4f
+X-Rspamd-Queue-Id: 0B1C6180003
 X-Rspam-User: 
-X-HE-Tag: 1792386165-631325
-X-HE-Meta: U2FsdGVkX1+hVYxOQ6zVwp56XbaniJ3w9GcsXcmBjBVVws4J910g5ims2VgNnsnzJBPr9ldcaq/UmOwaMJAuEVk61TX0cOYzBWJjUedtnbsBRO/jQ1GMyX2MB1KvHkv4MfvDOavMoZZ59E9Nm0qeRMGXtVah3l9o9Pnq8H3z58WGVnrKxy8ZvlAD7XE2iBQTAKtSL+mmppoAR475cN8LL4ooJh9wfwBiGh+ZS2qPdMlKJnkjdlr98MFXxAVAYZE1h4ZpGCU9OiuD9lRXOd7qBMa4n0WIve5TYyTMHu3w8g3YtcV3T63N8uTdI4JJ54m5CLg2vqQMu6GqKlM1TFzOwnzg6NV7c2LFEUMVdz10UbRIKqeeS5FDFYI4jNTnbInoB7hhiSXc5fOiS1dXf8tHhRJcY65kjW6wuDtgrpSAMD8Np5hQZt7OfQQu4pxWZajxGYaw1YEti+JYTmcoTqMaSrA/p07gQBz1ap1coSwPWKPIKyiMXg2DGbK/eL3uvENrioOw8N0PbACiL4FZNAgpoWXy/PM4/n378d+kySl7cAor5BUmJe/LjENiIbTvvQXoqG5ijcxESAGVB1AfzYS5JE8BP7Jk1p178kmqSRg4j5Mq/JEz+qnF9Mi7FwuTe2VXqsiFLdFYooQP99AcShWsCdsKkb2f3RboOaz9SsrN2Uonzby/O72JZBch/84GVQ1QAaUzzAqcIYaSkudLeAGUbKibisqOulEBzmo+y7X9YVGG1AyZi/g4tSpoND/j9VcF1BTaG4LO892eFDbRzN107xpLEj24xo2UGrrywCAKxmeIO7hARROg/NfChiIWK8kGARHUt1IS+rLz0+M5BMRoU5SErh4UU8tjGsUGsH/h50VtCse+UZydj9d4cFTFDC/BA6RwxPkwghzkZXT5UB71/XQi3wGODbN4+BfisPUKABKzOfZDfMMZv4MBoJzK5AdudE3Hb/0VR8sczKb6kLI
- jzrSUNy3
- nmWflXgAAChKU2zyBfk7jZQWvR+4L7rPpgmbBa07wrFCVS6K3S75yCK3TPb6eFmr5KUDu2h7V+gok15mrqpj7C0R2HfGf0xAlFDyxvARFrduST+j7ags74i97FBLWNY5NcXWoeHH8aeuIZnuL1XBPoWNMjBZVcVj2UIlachVe6QpSkhVgW2EomYeieBbzUGdUIGU9Cu6I0xoE3om84FEdYlDQkQetwGyzLelR4zi1g1I38jT33GisqUl5iuOTmubh0X2Cu/EG3xuuZobQqU6bdoxKjcQJfD942P60jGp+k7Cg4+aMlanwto+0WO+hpFlJ8/3vd2u/TACWh4SXTqvIFy8R6AjOvmGsu+90y02GbftMcCk/fm8zhvuWBM6BpNaZXt2mqnZTc3WborxN09sMWoEM1PyLWcX+OiaQVOx0fhaD5Y0=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1792386801-928405
+X-HE-Meta: U2FsdGVkX18pGfN6C8DtBATFLH2AMXuOAmopCAEYTzzk7ZfP7UIEWxjuiP3+QjPeIty1xz0Le1SDbvfFmZwUeh+nNhQQT73lS19Z8xOCTW8S662cqjP1ZzscBnzXyd/O5+qISBq0HRVsapCwpJRUF6H45yjaTz8yex492d+Z4e3FZ/QHmlSmr/HkWW0ASaV6qV9zIt+P/nAMey3w2/FxBOLdWSj0ICydE/wsJqCgg6UcbFIMYFO8/N9lumVTjZQjo9i5dA+T1dTY2Qwqha/VtLSULwcrW2b7FZ3sGuyHpcQ3ZMZDLWDfaUuYMK4FGbDsKTvSWp8uPa/3XNywVdqrwHLStFG0Ax21V/ztFYrlqncaAIFlMrz0K77NpxzrmluxF28m8DjNXPnBcTiVReq596FcJaMB3QzelXfnlP/mMEpFEzy5qxswswMCXN3AoKc5gQmPXuI+bp7aYwSJPTFD8zsK4l2CVT0PH6qnM8Ny/g1u0v2XR6lU52w5h56+dJnelqfQcT1MeDptl0WrGV67kk0zTMoZYUnNYgBlSqbnDSY/tEU/EG+7mU3NvEriKPw8yejKMy1mqDwWh2Gc4rQIQ66xLeRw+PbjRZlLAX72Nzc/R8aZ9uobcQOXLzSnA7iOJiIEe3A14/F66nX3zyNxXBf9y5E3Nd+nHh4T7/hzB7UrAkHuTNj4ODC2TS8Opix24GZkbY1pdf3kUOq8qvMuTtU9/agdHAWI3c7LKu1R5Ttw38M+sNYyH3jXbz7+6CAEp/3oxsYSSKW4my16KpeYq0bBjghqg2zKuCcA6swiQz7xZDoCkrCsIxLTv6iFgrdJWXZW1NFpbjdkJPwEebsIDUC0Rl2vHLTmYTiVaqnnOwx8d/Q2MxNUhh6/ZzwYVG34ZCgNARg6FY4y+ywp4dZs81yH7u6o3ATNW250eTK0351PC/JI9Cp6UO0EvDenSW2pO/grWqyYtQQYUYasrNu
+ 02arHb0C
+ OMxQYzwWl3FGAmKJMLkbJRaGeY+P63f4yAOWhjesY5/ZABtUR2gjoBsJjJDWhkVS5jL+O690X7kZridl9eMp7E8gZsBzN8KqW9d0KwT/LEla5pLe7qeRMaWTrJiz14t0RSXS6nXyUwLk9cIyXVS7sTPtv5aUIsf7MgdAh5XZCM0o6YCeavXlJ7EWxjKxblgIIBdPQvzdMohFMhzcEfwMKUWTvDZMmI/WnczkUTUUhw8nO5SqyOEklMP8y4gnIhLvN4rmdMMFyhwUdoDeEme+v60Yes/1xCdgoBQFruWCJNSU7lOP5csze1y0S9wMWLkqVCEE/lRYl8t2WWMzBR2qbHvH1x+cP9KhGbpoxpGagL2Nq7CQabtMT/4PuToaM65pk3UeHkI3Sb9hFHFN+thOSusiKIXcCWqm8KRVko6TDMluuXuw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,17 +98,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 10/14/26 11:27 PM, Gregory Price (Meta) wrote:
-> Neither hint may be applied to hugetlb memory, so madvise(2) must fail
-> with EINVAL for a hugetlb VMA. Locked VMAs are already checked here and
-> PFNMAP VMAs by the pfnmap test.
+> Both hints are non-destructive, but the tests so far only check that for
+> private anonymous memory. Shared memory reaches reclaim through different
+> paths: a dirty shared file page must be written back or left resident,
+> shared anonymous memory is paged out through shmem, and a SHM_LOCK'd
+> segment is unevictable without its VMA being VM_LOCKED.
 > 
-> Check the hugetlb case for both hints.
+> Check that MADV_COLD and MADV_PAGEOUT preserve a dirty shared file page,
+> that MADV_PAGEOUT preserves a shared anonymous page, and that it leaves a
+> SHM_LOCK'd page resident. The SHM_LOCK test needs root to confirm through
+> /proc/kpageflags that the page is unevictable, and skips if it is not.
 > 
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
->  tools/testing/selftests/mm/madvise.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
-Looks good to me.
+>  tools/testing/selftests/mm/madvise.c | 138 +++++++++++++++++++++++++++
+>  tools/testing/selftests/mm/vm_util.h |   1 +
+>  2 files changed, 139 insertions(+)
+LGTM
 
 Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
