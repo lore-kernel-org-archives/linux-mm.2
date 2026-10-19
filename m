@@ -4,156 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42961CCA490
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:15:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFB0ECCA490
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:17:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2399E6B00CC; Sun, 18 Oct 2026 21:15:13 -0400 (EDT)
+	id C75456B0099; Sun, 18 Oct 2026 21:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EA1E6B00CE; Sun, 18 Oct 2026 21:15:13 -0400 (EDT)
+	id C25F06B009D; Sun, 18 Oct 2026 21:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DA216B00CF; Sun, 18 Oct 2026 21:15:13 -0400 (EDT)
+	id B14FE6B009F; Sun, 18 Oct 2026 21:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD6576B00CC
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:15:12 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1384C16065F
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:15:12 +0000 (UTC)
-X-FDA: 85337607264.28.DA18663
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 64803160005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:15:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Idfio+iE;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792372510;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 82C4F6B0099
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:16:59 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED3FC805D7
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:16:58 +0000 (UTC)
+X-FDA: 85337611716.30.1EB5C7A
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1624540002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:16:56 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OgpU9P35;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of samarth.colleges@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=samarth.colleges@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792372617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k1COhzPK8MoPAOVKkuVJ9yCDV5Zgubw3w5lCCc8/uFo=;
-	b=4PCQ0cB6M1FZ03Qjmzosan1HxJiaasdbXm4F7Y4iNxcsFXMMinZ/uz19+MEqeSREvJf6i/
-	nr8XnHDFZwlGeMGVnRxKxSz3z/hQBXMJfi2Ts1LtRZWHW2XvKcuH1ZV3IQWmAIERRnNpIJ
-	zdHZUuJimI+gK1EI463OLIWa3tJ8k6Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792372510;
-	b=rXax8r/zEeeCD0MSnb35f94moeefSD93TpJFCHfBgSJ2XqGNyCkoj1QeYOPazZOJcEFlPZ
-	taSpjadU0bg/UvBJlpqQlulZFGx4qxouO0zCMav4ug7lUMSEZtIsJVI4r3/srwkK+Fj4f9
-	x0GL7xY4v6P7czOSwyfDKRLYtLfO/OI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Idfio+iE;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5eac3b6b2ceso163659e0c.2
-        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:15:10 -0700 (PDT)
+	bh=MbuYquEC73fu46Z70aussYis/c1Xk/EjCDYarx2LiM4=;
+	b=BjM3MnSXrxapKjeMKReDA/kKR4PCnSlt2178c64CCmGqcP50pvBcbF1vj7AgA5qzT6Iaak
+	2lne4RnvZLVkprsuyi9C1i3gcoXPrWCWFcBfpccgxVxjG0ZJl+g4gKxTb2JSGl/xr++NVe
+	DI9DbJ7uUHCoqKYyMZhqpKEUDuvMisc=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OgpU9P35;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of samarth.colleges@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=samarth.colleges@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792372617;
+	b=5VFm57NC+iW/PWWUmaglaPvwzHh1NffCpHY1FPIr2PTIktqHIDa2wOkgUJ7WbtkGrAW0Ew
+	qlkDRl2eP+lcjdFq3kHuX66NrFUvtzTTRbDGpiYK9qTtCK43dwhVSi2f0Zf4g6XeXJpQHV
+	Tmnv3lA+7SCs1LxYg3LFPRRW8S9v0wY=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6afafc89b48so2297516a12.2
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:16:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792372615; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QR7o1c+kAdWPyoE4mDxTm8ee9i1VjC7y6pevoouOH/vB40Y8dmpWjm3BnypHyeQnAF
+         8mgx1JQlRX2tOR9SPbmKfpBEdkAz4vRlxKMY+Bkjm03YT7/7zuLqjj1u8U3pT+Vq9vjC
+         LpkTAL4fbyxle7jpLv/wkcnXjhheInqmlETTveTjceIEI67AIalCVsNtBHwfAWFVCysP
+         9J08DYh7W9WMkwT+evE1aK5OMLeHAEpon9cbwV9glEDSOCDfyEx405t5N/kNXva5XvI1
+         +KEnJnM2Z54Z9ICWVXsn3Vte/+Xd+S12K7AO7YvAQ9roI0MFnQdBkxmuVMMwFrKahytp
+         I3HQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=MbuYquEC73fu46Z70aussYis/c1Xk/EjCDYarx2LiM4=;
+        fh=9jUMN9AGz9bo/s7laz8E1evauhdxdc1bJxosJp/1b1A=;
+        b=D/UWkX1e+3vOu1xx5Oe34tam7+5FuSI6WNN9yjtFYWvCzayeEWjnu1T8NMdVZ7ZdyB
+         MJp0kVL4SNMx2SpeZg6JNM8+xTl8xhkE/VRLee9IAXQV6tPoOPZZLZlQem9g6fTitRwl
+         ac4tvLFnw93WRY8nlGhTjcKqkppPYKwOkLZ4NF78jc6byXQ2MRVVVZSeoVceC5i2p5Yh
+         BflCdUbt6X/pupXKtcAlKqJqWMD0bgQUtjvhaLimnLumnUUaxD8mFpoYWr/DZsf6s2LC
+         gjoEuA31EtzsMZ23hXo44Haje+8pKEUkUTFvL/wUO8gtHVB+/9EgxzeUlw8E9SxUUmBw
+         q27Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792372509; x=1792977309; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=k1COhzPK8MoPAOVKkuVJ9yCDV5Zgubw3w5lCCc8/uFo=;
-        b=Idfio+iETpj6iCXzpDfyh5fEDxDxSbCqC1hTtMVBvU9nY42zQyuEwQw70l0qmFw7D4
-         wqmgwThb8CRGHeAREGFWt2fpD5PVDHps0e2y0Vc1JcAyKUM44O6NyWBmvdH5EQhrVZk9
-         cgaSIgpm10kxC1vv+63GEUCWciS/SxORsFTDVzr7V4xg7hIHUfvLoeYmDOg9IA0rdkPq
-         nCba5elQmQ39mBAoCknhk6b68sGAXLVdA6Ooy8h+B0cp9vLExiXc+d3Mj1YS3lBXkhSb
-         wi1cRvI183qVaK+AEVz2fFRfsHbgW88hBzNIZqMdtoD2jDcQGuSYZKYR1rTN8K+/Bnen
-         v5cA==
+        d=gmail.com; s=20251104; t=1792372615; x=1792977415; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MbuYquEC73fu46Z70aussYis/c1Xk/EjCDYarx2LiM4=;
+        b=OgpU9P35nPlCl4Jw4JZ6GEsVX6dxD6mEA1ku5a3AECyb30yqPuQzePR8blc9nQgrvS
+         jMCPOA0NPL94O6EP/pAXbvAxFk/rmboMrk6Es8yYzhPoARFz/ZjEAZIhA8rOM7Xr+tv2
+         14Y83dq3PSECBXmO0/vW+wJL8RpYjU0KJG4g4k6AgxTcEWOOPr+RJWg+iZGMQ7UBeSct
+         ohmH4yLrb8wHim8cNf+G6wzHk88LXD98fHamevSpiIMVOmVB28U3ob6jv5RM6GIrSjdq
+         6uLyC5OdYv7ibEgz/fdwunL8lXfbaBq7t8Hn8+20iwb3kBt4u0JreHFGPtQ7L71rO5W+
+         uKbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792372509; x=1792977309;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=k1COhzPK8MoPAOVKkuVJ9yCDV5Zgubw3w5lCCc8/uFo=;
-        b=pZ22wez7SegJwjqwUdyiFRYU5wZ0u6V0RS7rlSEL46X5rJ92iVYCmN5vKb2b+inoGx
-         EsqdaoTyPri9YhS22JeLLzC2EN/M+Mdeb2CE3r6kMQmHUbvhJhKV2J0WBo75kajS2gkh
-         RmOfREHdC2Li3ulbiWiByd4Cty58dwtb+lEUO2A3kAmSUbPsd8oejYq6ma17b9oILTPs
-         BsEOobl+Ku8CLGotLInzyHtgzNGNPtqhk8RgS1rqpYDCk8yDyyvNfegzb5IXTIE2CBZ8
-         CcCBlyGA3b2QKfzkVTUapabXCSYyLpmbp1MS/LJJcFB8CvmhHIpog0kca05uz3h9Cc7p
-         VCgA==
-X-Forwarded-Encrypted: i=1; AKwUvBxUALxiWr7frzCPlTE9QaDZ9frf16LxYSL9Z3LRdbMlbyJiEp9lGqJ1J+TDlXyYlGgtV0j1tf45ow==@kvack.org
-X-Gm-Message-State: AFq9FYInnmz3qwqRyt5LFw1aD6X6eXJNKIKJIkm/ryV4XcH+Kc9Tvq6J
-	6eieAjcJq02xn1cQEPTu+vMevxEeQLP/yP5FidqB0eV1S2nwVCyHkJ213w/t0IQHF+w=
-X-Gm-Gg: AYBFou3v1gzC+Hv4EeTU0s+0bOBYD1pqGRz2E2E04RiOHx90jRVZU+TiX39ERc2Ll0g
-	z1jK69PAA4RmzUTowPqYNyzL2uytMO5FqNavHEjZJxbxL0plaKM53K1k7SGcTVHTTsvxPvqbDAC
-	XHh/9RPz5oovxrkvEhA4XrCNYWmXxFGM1QQ30eASZf2IrACR6Y3q+Duuo74nnzr3Be+UrXt3Tz4
-	KHYx/dJ/jqPR32394foO0SxkTM1oI56JBHH94xkIdXm2WUwoJ8oO0fq8NIGAa4bp9bakz1Le7Kj
-	Hbv0Hx2U93JhOmuh6O9XWLWL4GkkbWb1de2/JQoq7ajx4HGuNQErUkWzoJJCAxFI4HqAXz24RpU
-	lRiO4XzR5lM9rGehG7lQb/lEvQyT5D61vnF1XEgFBkygiq+nMSpFXBR91JwU8PbwDwOhDAIoI3S
-	EovRGeoAcDDaRGtBMq/J7OYeopL7FkOGejah8GAN1VgFXzVZO+nu3Odf3VlDzRrOhhtNBzGJQPC
-	u/OeZkrXntNYZ2hsPmyI/WaSJR+dl068diAy/eTzbQ6wRRK0qA4EADQJAdoVN1UFPoELnOOGi/1
-	CjoD6JdorYTHzHkUbr2H8va0iYfYZZA=
-X-Received: by 2002:a05:6122:e14e:b0:5c8:46e3:ec57 with SMTP id 71dfb90a1353d-5eaaa0ba603mr2227545e0c.1.1792372508911;
-        Sun, 18 Oct 2026 18:15:08 -0700 (PDT)
-Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b474b2asm8039142e0c.4.2026.10.18.18.15.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 18:15:07 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: kees@kernel.org,
-	rppt@kernel.org,
-	juri.lelli@redhat.com,
-	nik.borisov@suse.com,
-	tglx@kernel.org,
-	vschneid@redhat.com,
-	kprateek.nayak@amd.com,
-	vincent.guittot@linaro.org,
-	bp@alien8.de,
-	jpoimboe@kernel.org,
-	cgroups@vger.kernel.org,
-	tony.luck@intel.com,
-	david@kernel.org,
-	mingo@redhat.com,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	seanjc@google.com,
-	ljs@kernel.org,
-	zhangguopeng@kylinos.cn,
-	dietmar.eggemann@arm.com,
-	mhocko@suse.com,
-	vinicius.gomes@intel.com,
-	vbabka@kernel.org,
-	linux-kernel@vger.kernel.org,
-	peterz@infradead.org,
-	surenb@google.com,
-	hpa@zytor.com,
-	x86@kernel.org,
-	pasha.tatashin@soleen.com,
-	dmatlack@google.com,
-	tim.c.chen@linux.intel.com,
-	kexec@lists.infradead.org,
-	pratyush@kernel.org,
-	dave.hansen@linux.intel.com,
-	rostedt@goodmis.org,
-	gmonaco@redhat.com,
-	jgross@suse.com,
-	mgorman@suse.de,
-	graf@amazon.com,
-	linux-edac@vger.kernel.org,
-	liam@infradead.org,
-	ridong.chen@linux.dev,
-	blum@kernel.org,
-	longman@redhat.com,
-	bsegall@google.com
-Subject: [PATCH v2 8/8] mm/vmstat: Avoid redundant per-CPU stat_threshold writes in refresh_zone_stat_thresholds()
-Date: Sun, 18 Oct 2026 21:14:46 -0400
-Message-ID: <20261019011446.834487-9-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
-In-Reply-To: <20261019011446.834487-1-pasha.tatashin@soleen.com>
-References: <20261019011446.834487-1-pasha.tatashin@soleen.com>
+        d=1e100.net; s=20260707; t=1792372615; x=1792977415;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=MbuYquEC73fu46Z70aussYis/c1Xk/EjCDYarx2LiM4=;
+        b=mOO+wOW44haglQLqcMQvejtcGefzxrBqnK9VEmjiexr8Ke84fJa/gmx8/DKZ2uEXFe
+         8bMHNkVqdXCNaVxlZeA06iG/COFuVmN+eXI8Nma1Ojm4eBSe952+F90BZEANUgG2LwJ8
+         M2w53DxRdWTwjSwx5JmCH2S4ZwrzwhiDFB1qz0/u1RtTCKYe33tVkercSdHeeb2BR09u
+         J/lr/A/GRAbwMTACI28bejUapPidx8Xpxt8H3EMVA16Z/Ao0/EZlVq+anfFTRH8cwDUF
+         4YsGdwp+TQSkoFvjDfkARI8PzUKNdnyWDircAPHpXs5XQtB52X/rOgEpwKCkDrATf5TE
+         /MMw==
+X-Forwarded-Encrypted: i=1; AKwUvBwJ/4vDasUirQZ93dqZg55ZmXC9HtM/1XHp2rK0RGI+RDq5VTt/QTJZ9KFh97J6XbBHTcF2g0M8Nw==@kvack.org
+X-Gm-Message-State: AFq9FYLBMZlUzlQFvn32gxfXRJ1p03Gd6+VgSghX6O9KAdzmQpPQrpcN
+	31WmuMeXHIXI33Cd4167TrS90hXxwoOGEVWM7um6rEVoCqoCgLh0OHrGQ9hY5X7SaAnB61IiQXo
+	1GSYGf1KBTzpvmhfGLJHmnEa2VGxd24A=
+X-Gm-Gg: AYBFou12RXJ05Xp1+XECVrY+Pwa3YKnnEUA5nU3bh6COyHLzt6aRl595itI2xiavJ18
+	T/3yy1UmZq+MDHU4aupIIL/nREOKnNX9wmN+wX+6gWbg/DQLnxGBhpV3p59wSJ2ezAIsx2rk4YY
+	znKvoTW/N5QTeSX3eybtvFIpgzlH3X0lw6x6ZrYfHvGoc67D5Vupk1cJXdK4b0J60T+3S09jHCw
+	aBrKVofFUeyStDaYx0vd/hQL3gJS9W5jXe96d9KogKTKwretDLioafpitGSRI+CkfaeAJjE4guv
+	6KTDsW6qqSKkbtAl15clABH84/PBa/wpp6OMmkAXYDOczRpSI+8qjFS58Mm8rS3FZOqcN3JtXER
+	/KhjfrCb+wPE=
+X-Received: by 2002:a05:6402:5c8:b0:6aa:e263:51c with SMTP id
+ 4fb4d7f45d1cf-6b3a8159b56mr3313615a12.16.1792372615304; Sun, 18 Oct 2026
+ 18:16:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261018122957.526467-1-samarth.colleges@gmail.com> <20261019010224.69153-1-lance.yang@linux.dev>
+In-Reply-To: <20261019010224.69153-1-lance.yang@linux.dev>
+From: Samarth Narang <samarth.colleges@gmail.com>
+Date: Sun, 18 Oct 2026 21:16:44 -0400
+X-Gm-Features: AclHuK9ZHhuGEHPAshewk5omXgKckqt-pQenU7TKa9MdL0JakSVGHI_1mTWY0sE
+Message-ID: <CAAbz3fTArEOXC7udRQDdGz77faMnmpXdZT2q_zVZmbhapwn_3g@mail.gmail.com>
+Subject: Re: [PATCH] mm/ksm: keep soft-dirty and uffd-wp when merging a page
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin@linux.dev, 
+	chengming.zhou@linux.dev, peterx@redhat.com, kas@kernel.org, rppt@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: multipart/alternative; boundary="0000000000000a5a2d065e2745c5"
+X-Stat-Signature: r4tssxk8kx8b9omhm3gxnuhx4z3hcdnp
+X-Rspamd-Queue-Id: 1624540002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 64803160005
-X-Rspamd-Server: rspam08
-X-Stat-Signature: yzfarcwjt6d85wit4eea11g4qaebjhdw
-X-HE-Tag: 1792372510-53299
-X-HE-Meta: U2FsdGVkX19Xpny0RYCDAtow5QV2T1nmyvz/Kh0Yn7yQe8jUmjxXQ6NnF8FI75v0VZED25hTNuPJ6OuegMwpDSikYibqoaNjUJb0fOpat2G1R5JwFrCZrLrWibdoiM6DPZAgq/yW87wb4rqemcPdSV1LohXpwiS3UUNQoKoyjRLRVRiFSHsc+PsfjafmQVCOSNbE6j0AWLrp3ixD7+T+bCG1mdx/j9toqy5tvaDg7DjbqSUlC38HEG0LjhLOjgw9EWASY+iDgLwea8FhtqU7xPS6mgh2e0RfMFQba/KfhOt+nMOhTYa4MRjW9St5iSy0Jd1azE6dJYyIaxSIW4DKAmTo4tSv/XQDDTOVVaXFZ85dLTPxb89GFTP3i0dIRu5zjKXtOgLtF7DX/0fMznX8R+e9u1yrx1PbFn5YMz+uHcEGRrKZXu2ppGicdu/d0iyH5ALMGll+XhtwEfrkHkkSz74IDMV60EVnsn31EL1RtAxMXcxxJTjP8NZeM0xSxXc2csnZ/Xlu8LOxFZ7XNrAUFILRNMFHQCh7u8eA53LOgvx3S+LzXuIqxQ7J4cjt9ROaBs1m7szdybmJ+ylAXj9sXUOgoYW3v1/ARoKTuudDA/h3D+PQM9abI6fyf7vbspRqXFo4eUVxQYedjpGHJ9uyp2OS9OF2gbAdSXhq0h6nFAVsMn4Pxz/aOC5e0R8Zms1vjjWOdSM2Z0Kv7HxL26gG3atnZ8rDsXfmmr7iqAvFvte2h43sf82hH+e4Ra3Gjh8jlRqm4+CJOGeRrXY1Ti1SxZYTouHEO4ilPb4UrG/iI/1T85tuSlKQIez4DLZFYdEv1VKatHpNvUxHZPUVvzTLgpd/ARmh3hPsSoSFLkAb6tn7SPlVSv4M9J7uZd5amE33TLM+H5OV66RikzH5dZfC43tBWD9qm7LVjgDR9g1KlK6goy4llF9rIEykVhsVWinhxIFRbXcLjrkM0/YIAdp
- UtfDX/Dd
- c3VXYApUBbtrYzPnQNkPxn74K2dCSDR503Kxq2OlwUFqF+hfrKJc4Ae+yVswo6i10oR6KDSL1tdxeuBRrpLrKr7hbKG577gDdbslKw6TSJPTC6+YcvRkIdBOEKLn6J4pvc6nlu8UFlwudDubOwCKyNczAw0E1DpUuZwQjtnNLF7Nj3PVqjRZqVaezF1q/ZH/BQ0h/FsYGz7KJ/1GzKY9v8KtDYgqQipDY0SyqiaFHhMYatyk9K716wSEdjWNB7fEV2Ijne8jVKT0uRgpKMVTkXez2L3ETeksEfr30I740EqTiuHI7uZOQEqDjZODUwPUobNWx/mf5uU1MKhV+QpYDUQf/S74Eevr0NKiCX5yRn+dSNe84T8gbEsaOmxYRdcbN2W05NNxxOmkR1yLMyRJ+k0FZAhxVn7oGfXfy
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1792372616-839033
+X-HE-Meta: U2FsdGVkX1/xnBXmxPHa2cWzvcJIh1ZOQEOdaN61XWC2DkXZjNqrfcOTzoubVFHwQriE5A79y2VgzLFhu9mqzDb6OSlBlbtu4hMPMTskq0/XhDqfo1FrmMi9NY8Roiil0PGrOuf1m8dMn094H8mq90q0AZfNxqetqJPplh+r4mAuM08A3KjVSMwfg9d29CeeHdoTK+ed+0Iq0XJio6unRyZQNu+gFS5E2TgDCqvfAg4T2iPP+T/uw3W8dxHy4pJj8ymZqu2zvSTKD6vpZl8AIr2lMoeyOasWUwrCaYpmvEkStMoKulopsD4KQ/fxm27aqa+lV2UUdjVWgN9f7tUFGH7kMB70s5szZmaU91uFz92rwaqLcGUHNUn4UExn34rGaIx6nTX/yL7P6V2AHzjqSjBFO7G2VxT6Ii/NHMNg08GoItXyPWinv4nB/xd0Ics18KlU8CRvvGHHN4Ez09qc8HusZu9rAP9b2FzXHvkbURg2r04iUx61nnmNYxqUmAUNuI0uYJPeBOaolJ9RbuXUg3Yb1jzNB5DY1cAJhizSFCHBe/Ej7ftpzZ5lyyiJnkc8Lkbh4IFq1WfO1hPcqwypIoSf8VcvNlmfM/MRKOL/tVqijYlE0O0vGHntG0bqmyW0yaVzDVlafp2JY5K2XsFPKLSN3BwgWgsOQmlBL2A2TjkMTh6OnLUYLvpFn49Q1V908uvVfDnRgFJ69SVS67KCyvy/pdxzNlX2+HIgj1SWO+rS9g5KU+skwMNPjdOtSbfPVkPu+3LQyfUqJc8WoabMbBX1hAr5dP4O6uOGem0nYBlLg8i28aOJ3wjkA5jNHEai00wAypdEKk5t/KdZt4bZqno9dpkPrLobYELpp1Qkx/tkLeCulX/mXG0nSITzoavcuJyo8TGREILULu6jjpoLcvc0c7a2V+CCUY4bbJCpbT5xbo953MCqJU4kXzpoiYCuz+GJurFdq9vyONcI5cW
+ gTJTnGhY
+ 99QpuNqxqRM2X4567mjrT2rnm3hXatkMuhGa0Kp2+Texf6q0LG1NYDmGw6IVojQNNZER1RFxb9gBDFSaqeqiTQd5HP/rt3762U7MK4Fld6zxHMSLNM5TqXYXApzIUs6rfmxm7mb06qznleOQLyAxMdd3JsEalvTj5YTQ1Be2mNvVNNKJyq8AedSOdPg18Hywxm+vmiVIz6D183fhEb6bgqoHmnKO+glNsxO9Co7TROFHj/OyKluZwmmrxk0bSegTKSPgvpm572aGsnHQx/9oKv6kBVNqf1W/A7/iS++45ThqjtZkqqtDBLAzfCjyLPw4t10v63ZFHk5oka++bTipOZhBR6lwUdPjlafbODAteaqUH2yLQj+q2ka0g/4O+qSndEYhk8Lm4w/uJHXdYHnplcQQHEOvkYa/9qhiibbZTxlFxUpJI0+Ui8eyhtnImpsJnFA5UnvizH53QHwhpwJ47SUXFgCOQVngOBkl3wpMQDOhkYNbZsnt2WxrQvd+7uuh7emxZlZ4187gSy5WAZNaXI7OLObiHT9D8e5tWckX8qWyrdW0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,122 +138,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During CPU hotplug, vmstat_cpu_online() and vmstat_cpu_dead() invoke
-refresh_zone_stat_thresholds() on every CPU transition. Currently,
-refresh_zone_stat_thresholds() first zeroes
-per_cpu_nodestats->stat_threshold across all online CPUs and all online
-nodes, and then unconditionally writes per_cpu_zonestats->stat_threshold
-and per_cpu_nodestats->stat_threshold inside the zone loop for every
-populated zone and every online CPU.
+--0000000000000a5a2d065e2745c5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-However, calculate_normal_threshold(zone) only changes when
-fls(num_online_cpus()) changes (at powers of 2) and is clamped at 125
-for large normal zones (>= 16 GB) once num_online_cpus() >= 64.
-Unconditionally zeroing and rewriting every CPU's per-CPU stat_threshold
-on every hotplug step repeatedly dirties remote per-CPU cachelines with
-identical values (and briefly exposes stat_threshold == 0 on live CPUs).
+On Sun, Oct 18, 2026 at 9:02=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
+rote:
+> Shouldn't we use these two instead?
+>
+> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to
+userfaultfd ioctl")
+> Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose
+UFFDIO_REGISTER_MODE_RWP")
 
-Compute pgdat_threshold across each node's populated zones first, hoist
-the per_cpu_nodestats->stat_threshold update out of the zone loop, and
-only write stat_threshold when the value actually changes.
+Thanks for reviewing, and the comments/fixes make sense. Sent out a v2
+<https://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail=
+.com/>
+ patch.
 
-2-socket, 480-CPU Intel Xeon 6985P-C (N=479, mean of 10 runs):
-  Offline:   3.37 s ->  3.09 s (-8.3%)
-  Online:    2.06 s ->  1.98 s (-3.9%)
-  Total:     5.43 s ->  5.07 s (-6.6%)
-  refresh_zone_stat_thresholds() (cpu479 offline / online):
-    1,158.9 us -> 135.3 us (-88.3%) / 1,468.2 us -> 128.6 us (-91.2%)
+Best,
+Samarth
 
-2-socket, 512-CPU AMD EPYC 9B45 (N=511, mean of 10 runs):
-  Offline:   2.34 s ->  2.30 s (-1.7%)
-  Online:    1.12 s ->  1.08 s (-3.6%)
-  Total:     3.46 s ->  3.38 s (-2.3%)
-  refresh_zone_stat_thresholds() (cpu511 offline / online):
-    104.6 us -> 50.7 us (-51.6%) / 109.3 us -> 53.5 us (-51.1%)
+--0000000000000a5a2d065e2745c5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- mm/vmstat.c | 58 ++++++++++++++++++++++++++++-------------------------
- 1 file changed, 31 insertions(+), 27 deletions(-)
+<div dir=3D"ltr"><br>On Sun, Oct 18, 2026 at 9:02=E2=80=AFPM Lance Yang &lt=
+;<a href=3D"mailto:lance.yang@linux.dev">lance.yang@linux.dev</a>&gt; wrote=
+:<br>&gt; Shouldn&#39;t we use these two instead?<br>&gt;<br>&gt; Fixes: 63=
+b2d4174c4a (&quot;userfaultfd: wp: add the writeprotect API to userfaultfd =
+ioctl&quot;)<br>&gt; Fixes: 2d427bb01639 (&quot;mm/userfaultfd: add RWP fau=
+lt delivery and expose UFFDIO_REGISTER_MODE_RWP&quot;)<br><br>Thanks for re=
+viewing, and the comments/fixes make sense. Sent out a=C2=A0<a href=3D"http=
+s://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail.com/=
+">v2</a>=C2=A0patch.=C2=A0<div><br></div><div>Best,</div><div>Samarth=C2=A0=
+<br><div><div><br></div><div><br></div></div></div></div>
 
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index cb57714539fb..c671e9669b43 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -280,41 +280,45 @@ void refresh_zone_stat_thresholds(void)
- 	int cpu;
- 	int threshold;
- 
--	/* Zero current pgdat thresholds */
- 	for_each_online_pgdat(pgdat) {
--		for_each_online_cpu(cpu) {
--			per_cpu_ptr(pgdat->per_cpu_nodestats, cpu)->stat_threshold = 0;
--		}
--	}
-+		int pgdat_threshold = 0;
- 
--	for_each_populated_zone(zone) {
--		struct pglist_data *pgdat = zone->zone_pgdat;
--		unsigned long max_drift, tolerate_drift;
-+		for (int z = 0; z < MAX_NR_ZONES; z++) {
-+			unsigned long max_drift, tolerate_drift;
- 
--		threshold = calculate_normal_threshold(zone);
-+			zone = &pgdat->node_zones[z];
-+			if (!populated_zone(zone))
-+				continue;
- 
--		for_each_online_cpu(cpu) {
--			int pgdat_threshold;
-+			threshold = calculate_normal_threshold(zone);
-+			/* Base nodestat threshold on the largest populated zone. */
-+			pgdat_threshold = max(threshold, pgdat_threshold);
- 
--			per_cpu_ptr(zone->per_cpu_zonestats, cpu)->stat_threshold
--							= threshold;
-+			for_each_online_cpu(cpu) {
-+				s8 *pz = &per_cpu_ptr(zone->per_cpu_zonestats, cpu)->stat_threshold;
- 
--			/* Base nodestat threshold on the largest populated zone. */
--			pgdat_threshold = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu)->stat_threshold;
--			per_cpu_ptr(pgdat->per_cpu_nodestats, cpu)->stat_threshold
--				= max(threshold, pgdat_threshold);
-+				if (*pz != threshold)
-+					*pz = threshold;
-+			}
-+
-+			/*
-+			 * Only set percpu_drift_mark if there is a danger that
-+			 * NR_FREE_PAGES reports the low watermark is ok when in fact
-+			 * the min watermark could be breached by an allocation
-+			 */
-+			tolerate_drift = low_wmark_pages(zone) - min_wmark_pages(zone);
-+			max_drift = num_online_cpus() * threshold;
-+			if (max_drift > tolerate_drift)
-+				zone->percpu_drift_mark = high_wmark_pages(zone) +
-+						max_drift;
- 		}
- 
--		/*
--		 * Only set percpu_drift_mark if there is a danger that
--		 * NR_FREE_PAGES reports the low watermark is ok when in fact
--		 * the min watermark could be breached by an allocation
--		 */
--		tolerate_drift = low_wmark_pages(zone) - min_wmark_pages(zone);
--		max_drift = num_online_cpus() * threshold;
--		if (max_drift > tolerate_drift)
--			zone->percpu_drift_mark = high_wmark_pages(zone) +
--					max_drift;
-+		for_each_online_cpu(cpu) {
-+			s8 *pn = &per_cpu_ptr(pgdat->per_cpu_nodestats, cpu)->stat_threshold;
-+
-+			if (*pn != pgdat_threshold)
-+				*pn = pgdat_threshold;
-+		}
- 	}
- }
- 
--- 
-2.56.0.176.g3575e65682-goog
-
+--0000000000000a5a2d065e2745c5--
 
