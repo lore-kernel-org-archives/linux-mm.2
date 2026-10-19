@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8824ECCF2D4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:13:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 584B2CCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 807786B0124; Mon, 19 Oct 2026 01:13:24 -0400 (EDT)
+	id D3C976B0127; Mon, 19 Oct 2026 01:16:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B89A6B0125; Mon, 19 Oct 2026 01:13:24 -0400 (EDT)
+	id CEE006B0128; Mon, 19 Oct 2026 01:16:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CE216B0126; Mon, 19 Oct 2026 01:13:24 -0400 (EDT)
+	id C031D6B0129; Mon, 19 Oct 2026 01:16:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 44F7B6B0124
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:13:24 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB4FC1C3C55
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:13:23 +0000 (UTC)
-X-FDA: 85338207486.13.5753390
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 911946B0127
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:16:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74C5BC05F9
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:16:38 +0000 (UTC)
+X-FDA: 85338215676.22.C353172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0B1C6180003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:13:21 +0000 (UTC)
+	by imf24.hostedemail.com (Postfix) with ESMTP id B1B12180007
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:16:36 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sgeAvZuB;
+	dkim=pass header.d=arm.com header.s=foss header.b=uvenVXd4;
 	spf=pass (imf24.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792386802;
+	s=arc-20220608; t=1792386996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XvhtXuV9XKl0XQhWMK4sJXSo5YXTOO2+0hwy2EwXoWE=;
-	b=dOwOEIk/FQR2hSCh983tUhOi7+z7tnR3+8X40Qx8xKc6deFvXbChdoYWeM1r0mKmONHuvu
-	IADF4FOrVwwF5yV3xgeiaayH5TC48FX2RY0SzGuqGl/SB2zolIAkPstbv/V8FLglM+j77c
-	h7EUW7dbUCNxBdfl/BIkvSzDCWg+MTU=
+	bh=NFmgeB37RrMEaTiq9/1yjdALrJzKBo64oW+9MSxzpRw=;
+	b=sVgosW0EofLpbJT4G76rJvZQnUq9SB9rr11+ZKl/tDCoPu9LTnfKq6rCi/PnwtIdoYkM1M
+	V+sJpUeEY259cFoNhlBYXIjHuLn+NDGm48QHyOYH4l0/MvxHWEhPOhotoHcLAbmZEcsDnZ
+	dbrhWkzOtnc6w2uvTHlZ6hZ1NAOm1GU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792386996;
+	b=j5o07Z/Ir02k+NhJMD6kuTA6l3JNIJD3jDluQgP6t8fU+QB7ITWBqiO9xcfh2ajsi8yTxb
+	dwoDaRcNdHHWoZnqYoPNJDxw/4i3pfXE127GrGognst22/VtwrO/LA43oQsCsvWKD3NTh0
+	P1/faKt/2/oZde8ITo2bDBmO27MIZtU=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sgeAvZuB;
+	dkim=pass header.d=arm.com header.s=foss header.b=uvenVXd4;
 	spf=pass (imf24.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792386802;
-	b=dWurwxuOOlxINORJHv0EGf2+ys0Uu1BV9a3voT77gVigq24CKOnqZTEqFF8cmkR7ldDPJ8
-	zS6ZdPU+gHv2GrUlIZ1xeC5Nnh4e+Lxx4lc16zfARBV6Tp9mNcMa5AgdwSFrhyTTBFxmou
-	nTs8+Vmd4bOTzEtNIPzOhllVylobVe4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02B3E1476;
-	Sun, 18 Oct 2026 22:13:18 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3EDD1476;
+	Sun, 18 Oct 2026 22:16:32 -0700 (PDT)
 Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 469C33F7B4;
-	Sun, 18 Oct 2026 22:13:17 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5AB0C3F7B4;
+	Sun, 18 Oct 2026 22:16:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792386801; bh=/cZAu8TZP4F38PHdEa60qvWPo9zmofCHFWZ65uJo+CM=;
+	t=1792386995; bh=mMlo5yhT+yBq0RqdKFNPHeYCznZMnItKtpCZiqLMqS8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sgeAvZuB1W6o1SdRy9zYA7GJMhndI73Mrx1OMrKc6iaKtu+wVbV9Et6vqsUoL4Ei2
-	 AlUw7uMs0dDHZIdIf/qR4ykATw7Uhw9c56n8TDd7wKgyWoGwhTy0njvoz+x1s9NB8X
-	 vCST7KDRrGfaVAbHWEVbXIK7ptDuUgFZlv3Csl/g=
-Message-ID: <d67a7c38-5f35-47db-8ddd-e84e01f63388@arm.com>
-Date: Mon, 19 Oct 2026 10:43:14 +0530
+	b=uvenVXd4wUxq5NdWMjKhwYFhTtEUS42roohcPbVmjMYVF4Qxn4wIsXRwOz/kUAyCl
+	 LRNTEFDqNlUbymET7J0YUwkJf0uYLJ4ZbTXK1wkoifNz/Vzjndr4CZ1xwEbgQgawn9
+	 TyUsVpuKFxNHb6zsIuqeDRs9FRor0982wVA4uke4=
+Message-ID: <3eeed828-6abc-4501-bdc9-e16769f52100@arm.com>
+Date: Mon, 19 Oct 2026 10:46:28 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/8] selftests/mm: check that MADV_COLD and MADV_PAGEOUT
- preserve shared memory
+Subject: Re: [PATCH 6/8] selftests/mm: check MADV_COLD and MADV_PAGEOUT on
+ partly advised THPs
 To: "Gregory Price (Meta)" <gourry@gourry.net>,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
@@ -74,20 +74,20 @@ Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, shuah@kernel.org
 References: <20261014175756.2035176-1-gourry@gourry.net>
- <20261014175756.2035176-6-gourry@gourry.net>
+ <20261014175756.2035176-7-gourry@gourry.net>
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 Content-Language: en-US
-In-Reply-To: <20261014175756.2035176-6-gourry@gourry.net>
+In-Reply-To: <20261014175756.2035176-7-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qh8x1yd8htrabr3kiwtckt6m5fkpcz4f
-X-Rspamd-Queue-Id: 0B1C6180003
+X-Stat-Signature: 5w8mj4z1zpy5a1pmdtcupwhb57eknrfh
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1792386801-928405
-X-HE-Meta: U2FsdGVkX18pGfN6C8DtBATFLH2AMXuOAmopCAEYTzzk7ZfP7UIEWxjuiP3+QjPeIty1xz0Le1SDbvfFmZwUeh+nNhQQT73lS19Z8xOCTW8S662cqjP1ZzscBnzXyd/O5+qISBq0HRVsapCwpJRUF6H45yjaTz8yex492d+Z4e3FZ/QHmlSmr/HkWW0ASaV6qV9zIt+P/nAMey3w2/FxBOLdWSj0ICydE/wsJqCgg6UcbFIMYFO8/N9lumVTjZQjo9i5dA+T1dTY2Qwqha/VtLSULwcrW2b7FZ3sGuyHpcQ3ZMZDLWDfaUuYMK4FGbDsKTvSWp8uPa/3XNywVdqrwHLStFG0Ax21V/ztFYrlqncaAIFlMrz0K77NpxzrmluxF28m8DjNXPnBcTiVReq596FcJaMB3QzelXfnlP/mMEpFEzy5qxswswMCXN3AoKc5gQmPXuI+bp7aYwSJPTFD8zsK4l2CVT0PH6qnM8Ny/g1u0v2XR6lU52w5h56+dJnelqfQcT1MeDptl0WrGV67kk0zTMoZYUnNYgBlSqbnDSY/tEU/EG+7mU3NvEriKPw8yejKMy1mqDwWh2Gc4rQIQ66xLeRw+PbjRZlLAX72Nzc/R8aZ9uobcQOXLzSnA7iOJiIEe3A14/F66nX3zyNxXBf9y5E3Nd+nHh4T7/hzB7UrAkHuTNj4ODC2TS8Opix24GZkbY1pdf3kUOq8qvMuTtU9/agdHAWI3c7LKu1R5Ttw38M+sNYyH3jXbz7+6CAEp/3oxsYSSKW4my16KpeYq0bBjghqg2zKuCcA6swiQz7xZDoCkrCsIxLTv6iFgrdJWXZW1NFpbjdkJPwEebsIDUC0Rl2vHLTmYTiVaqnnOwx8d/Q2MxNUhh6/ZzwYVG34ZCgNARg6FY4y+ywp4dZs81yH7u6o3ATNW250eTK0351PC/JI9Cp6UO0EvDenSW2pO/grWqyYtQQYUYasrNu
- 02arHb0C
- OMxQYzwWl3FGAmKJMLkbJRaGeY+P63f4yAOWhjesY5/ZABtUR2gjoBsJjJDWhkVS5jL+O690X7kZridl9eMp7E8gZsBzN8KqW9d0KwT/LEla5pLe7qeRMaWTrJiz14t0RSXS6nXyUwLk9cIyXVS7sTPtv5aUIsf7MgdAh5XZCM0o6YCeavXlJ7EWxjKxblgIIBdPQvzdMohFMhzcEfwMKUWTvDZMmI/WnczkUTUUhw8nO5SqyOEklMP8y4gnIhLvN4rmdMMFyhwUdoDeEme+v60Yes/1xCdgoBQFruWCJNSU7lOP5csze1y0S9wMWLkqVCEE/lRYl8t2WWMzBR2qbHvH1x+cP9KhGbpoxpGagL2Nq7CQabtMT/4PuToaM65pk3UeHkI3Sb9hFHFN+thOSusiKIXcCWqm8KRVko6TDMluuXuw=
+X-Rspamd-Queue-Id: B1B12180007
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1792386996-600392
+X-HE-Meta: U2FsdGVkX19IY4OcrgFJh0KugRFG9DsDnLwHiqpnobQQstZo/yqi5NMSalqXndV4TUx+eZlxrXYNfzWKAbqDBL06ODbNy16umSnBdG/pGDX6fMUMzXHvwVgPuvkfI/VSf3T2yKueUlCs4VlRSqdXHdWH/IPXhkfrwRwD0HwIXjUsZeT9/hdyW7mqWmFiVf4n/v+2ZGB5sa8810O3nPuDPECuxEp/Ns37UnbRk59Y/wSrSA9SkRStBkiT40fADB4N7FGZaccKuLTku6Ix5J1VoGfPSieFn10e/IDFXG5i6zxQWyg38FDyciW1/9PeDLcN9bR7nc/PKT/6mqVce6fVFvxsHAxIE+qnpgug16aKxtBhBE8KC80WErdJ10fjPnD1JtztIBkjK/MXaE2cjPFeLClsMsZxMa02V+tJbRJwE8P2oDKxRu3Vg+H4sWyZhU/BslgVBfzVymzvuuOF7lsPH1qM9JTtYWWqgj92O1gjvNk2yn+1Hmj7zD9nxX/VjyrqEgi/RvRHpqAkhsco8ExaIx3XSfjySIoMJPlaNEp4jeo2B0GA3IYedPaEvxUQQ8eiSruKV7VViGpO0NPifyRbSSl0th3haQCE1KkNx1GTTlbd6XLNkKusZMzqczY0EArcGKNp8aDueB8OH3GuhoxcwoD3I6bJkJN7ekAuwfbmmA0FvQh97NgViFljZxEECqSW+8IXJm0ULfQZp5Qqy9ztgvLlDicsohNUhGeF1lvI4kovTLyEHSwTe1x9lCQHBohAj3+jJck0EsFjIHW+6AVfnUoA8zlLvsrMGqvar8REcVHRBmuB3MCbKGRBPIE9ohiaKrWvXIdmk9RTtOFh9fmCtAWHcIJ7D52sGFUEsK6WxJLP4huWbPOq09ee9CEBLD1XGpYqop1zS1ZDJ32JRt+eXc1Y56mJvNEWl7JkoqiPBOXyyd4umajZTQCV+fdAxwzwrsouhizbI8pgSJYKzCc
+ dPSe8Y0w
+ SioVjwI4Ch4bo9ViRYzSwXGHWbzAzQ2mu12u8T5liW+p2lz2HbIVCxoSDHWr+MYiPU+tnbujStVtlGBSjgJO6dEvWE4DGA/JI/9qnByRIHATdciyTLl3jUa1fF/O47qQVAGaZaEUKr6+KXn4FMmyBm+MstYjfG0qfOAgsPz6wn2Ts622vtGJ3FlF/pgZ4FyfMw//JizlFbW+TlP9fuOhpLghBhDv123LgvcpHxpn8EOYHHAEJAXXG/hF7GvzDTuPht3gVH03Y1pswJBXV7Sgb/qFcezZNJuOnCy9rQmWUpy9aRNUcq/Ncw3+B3UhU0fKWNwBLj+0dfA5IY/J0SRzvJTB5wlYWQyWSNacGuHKLMpLZCiFPn56cLYJxW7IJs7q3dtJGOeV+suwPGd8/6MJ8a6G4YDD4SlEzPzSMXQYgBml9mgI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,23 +98,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 10/14/26 11:27 PM, Gregory Price (Meta) wrote:
-> Both hints are non-destructive, but the tests so far only check that for
-> private anonymous memory. Shared memory reaches reclaim through different
-> paths: a dirty shared file page must be written back or left resident,
-> shared anonymous memory is paged out through shmem, and a SHM_LOCK'd
-> segment is unevictable without its VMA being VM_LOCKED.
+> Paging out a THP that the advised range fully covers must not corrupt it.
+> A THP that the range only partly covers must be split before reclaim, or
+> skipped, so that no page outside the range is reclaimed. MADV_COLD takes
+> the same split path.
 > 
-> Check that MADV_COLD and MADV_PAGEOUT preserve a dirty shared file page,
-> that MADV_PAGEOUT preserves a shared anonymous page, and that it leaves a
-> SHM_LOCK'd page resident. The SHM_LOCK test needs root to confirm through
-> /proc/kpageflags that the page is unevictable, and skips if it is not.
+> Check that a whole PMD-mapped THP is swapped intact, that pages outside
+> the range stay resident after paging out a base page or half of a PMD- or
+> PTE-mapped THP, and that MADV_COLD on half of either THP preserves its
+> contents. Tests skip when PMD-sized THPs cannot be allocated, and with
+> /proc/kpageflags the PTE-mapped cases also confirm the folio stayed large.
 > 
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
->  tools/testing/selftests/mm/madvise.c | 138 +++++++++++++++++++++++++++
->  tools/testing/selftests/mm/vm_util.h |   1 +
->  2 files changed, 139 insertions(+)
-LGTM
+>  tools/testing/selftests/mm/madvise.c | 234 +++++++++++++++++++++++++++
+>  1 file changed, 234 insertions(+)
+> 
+Looks good to me.
 
 Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
