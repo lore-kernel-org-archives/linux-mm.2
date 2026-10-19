@@ -4,91 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7453ACCA490
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 02:08:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DFCCCCA490
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 02:11:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F14726B00E1; Sun, 18 Oct 2026 22:08:21 -0400 (EDT)
+	id 668766B00E2; Sun, 18 Oct 2026 22:11:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEC8A6B00E2; Sun, 18 Oct 2026 22:08:21 -0400 (EDT)
+	id 619BE6B00E4; Sun, 18 Oct 2026 22:11:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2A4A6B00E3; Sun, 18 Oct 2026 22:08:21 -0400 (EDT)
+	id 507756B00E5; Sun, 18 Oct 2026 22:11:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BBFF26B00E1
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:08:21 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42566405C1
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:08:21 +0000 (UTC)
-X-FDA: 85337741202.03.957EC8F
-Received: from mta0.migadu.com (out-104.mta0.migadu.com [91.218.175.104])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 31B69C0003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:08:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pLDQIBFL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 22F356B00E2
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 22:11:19 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9A62AC0388
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:11:18 +0000 (UTC)
+X-FDA: 85337748636.21.139E0C5
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EDB7C40005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:11:16 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Q8AKU7LO;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792375699;
+	s=arc-20220608; t=1792375877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AapkH9Re9c1pnNZGrR/Nofsi9bNRtMJZBUYf8hABUds=;
-	b=2qOIQRnYk4C1+jNDgOfIrBvqIA2P8x37vAJvZ7KBC6rda8hSDHxN4O0ZfqEXmWjAqeswP8
-	mdbgmw1iB8mKfUxmMOIrO+8LZ0ON0Jxe2KfLbRT7BxXf46+bXo4JaxH37BvYfhGoCsEeUg
-	wkhejySS9dPz5WhhUWSvJoxcFlwpAlk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pLDQIBFL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YAWJPU0bKj56z57yKFJ+IjOtblegGIXvDvyM4kHd1kM=;
+	b=oqLPTyucykktnQNL3nQ+/SAKDOrGKl5FkQ1morl0tJflG7UgsjIGye92gcksIP3fHhqBaw
+	OgGj3Wv36IswDnFVoYwEPiYZtgxsAP9hNwwCf5/nr9u0SaS9Uhf0L1Kgvni4fcOO3CocXG
+	60UZq2OlACdN1blPT1kh7uCR2m3zFfo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792375699;
-	b=7i8OC/U/fcW8wADdv4J+LgjdKFeTfRUC3dAuxmFNwEtD525e12pGaH7oQ6wy9m3+5ptIji
-	ga+qXSVgRFPEOTTqe5bwQccnoo8f4KN/jbHPD3jvbPsyuf7lJEvk2I2gQw3/8t2N1h9Idn
-	hcPxOd7dXwU4YFDQMgU929PuTjB7nBg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=TGx+L/6tf3P9BlQx79oc67eTtWqhL3dBGQ6vFXfCt04=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792375696; v=1; x=1792980496;
- b=pLDQIBFLOfInEnDPpokkie/UA47oQoauG108QTVlqIktQGJX/n0lLXVZDZOWuKXtaxIxI9+e
- t7N7EyMYplvk2oLpYy6jiHX78FTPXwHt879aOOfRWf5MInsqfJa4L8qEadLpw+IAfh1psjwIs3y
- O71dUGLPE50XIzWLy1W08gMM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0856886304343c3d;
-	Mon, 19 Oct 2026 02:08:16 +0000
-X-Mizu-Trace-ID: 0856886304343c3d
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e2ea8e4f-152a-4695-bc25-1712e385d8a2@linux.dev>
-Date: Mon, 19 Oct 2026 10:07:55 +0800
+	t=1792375877;
+	b=r6WXldzZ5GMCHUJS5JoHw+G/n3cGcaMkSgEsa3qEMNVIgppCQXfG0qDgoPyjqwWNZJycSM
+	vU9gigPtaRPsx2OCL1KOrU+rbE7jkE12fNJLI53KBrUNwhCoFoI1aFOE3wVI3zIh5ZwDOJ
+	EI1d9hcjvIXNuUJsd2jSe0PkGOwc+QE=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Q8AKU7LO;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5eaabf28c06so1931344e0c.2
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 19:11:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1792375876; x=1792980676; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YAWJPU0bKj56z57yKFJ+IjOtblegGIXvDvyM4kHd1kM=;
+        b=Q8AKU7LO5FXMNnhNIo94oeIgHfaEsEiNYHtFDgpm8KW9RIEO3AM4QH/Ae9kQrDDS56
+         AMuW24ZDblMXw+HX2TUWH4BwjnOWRO3v4s5xPZCzG0qvvQdtWLQlOxzwbjDQn4yNzoAq
+         +7SxCl204IGd4i6jagpkqP47oKeqxWdOFeK4mHq3Kw/R9kcskNTsrbg05Q5Q64nrAI3M
+         kPeQqRuPC0deFEyMijR/6c4233dFtZ93Vc3C2DnGDfSPFTo2AY7nVmxPcWrco1XKQtsj
+         V7c4kBW4p0pxzoFhrCzw638ZiJhussFwdw7vZz6/11PcAV+mpMhMVyA2zrcZrsBtJbG1
+         BfAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792375876; x=1792980676;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=YAWJPU0bKj56z57yKFJ+IjOtblegGIXvDvyM4kHd1kM=;
+        b=LZmpk5VR7YlfL2o4EfO+NvXeAb3vLxNypr0f2vl3F9yxs3C2PCeTAhgcEZIlzghFUQ
+         N3RK5ZAGRdBEpc/zhyoUTFquq/jVfCmPa3tiW8t1kcCLeGIBj1vK4rGrI8aSURfL88ex
+         f5i8qqQzDITQeFcA9MIs+z/AgjvRA7mfqnZksMSU7ZFZEDjhYoNEoQKXg6FmJIZRuWwP
+         5f/rVN5RWwxTPiFBuV5bpM2qpdKuyADAHXzYHqDVvjtNwrm30Q2xCVtv6wa2nYIjKINi
+         ev+Djw7tKryB5cFnp2qF2pkgv5yRChN3k751te81qeR5xIQFiWsp4Lb/nykCicnS4rm4
+         Ca9Q==
+X-Forwarded-Encrypted: i=1; AKwUvByv0eMtimH9A1tHoT03bV4tDUZBU1WMSuZqqzOM3uTc+h1lGRHcaxavP1ccSrNZp1xQCiEvC0Prmg==@kvack.org
+X-Gm-Message-State: AFq9FYKaa6YyM7F94pmf0sML6BWtl0OwUABpWcmG71Xj2IU/VPvTF3XE
+	Zq7FqQhChU5r48xWy9aQ4BUY106dTSsJtgvdMkfTYgBikgWe2cBT59hCi0nCAhh5vHU=
+X-Gm-Gg: AYBFou2TYacfJe5QWkKKMR8dq3+aGkfD/Xix9znoeArSrvqO5Hh+pBqpbIcwR4LdIEo
+	5tVZ1EG7EDDHoRp/MPqiUA16QQXr3QRwLRZ4jMhnHaqlGtMQRFhL9+SLKhgMyVViQTYaSQx/zFI
+	rkLCfP5KirNmPQdUbKm4H+tV/ezrR+tpv1uWU13+XRT8fMsNQa/4mtQwFqw2fBb12C3A52bqJcO
+	s8vin+YGCzPe7f/IV1zTzw5r8VO5ulIbfIOFeAyOAiNV5xlTCntTOiIFNH+P1Ya2B7xPidcGPP8
+	tlzgs8CR9XD26Apc2H+NciRfDvI5jN8xNc9JsFLX15DKvIGT64D6/xdZJmuuQ4i5/yqJVHHbLGk
+	pEqMxu2RSAEwwmvBbOVG8D8L4F3ec37yYFSzIWtQdkBZzK3UmyFy77tpXd/w4+MScxIpMYheSf2
+	giOs3vR7hQbfZtOzAtyi5JGwpjXhja+KFdZYt4VHYL4GKiNUA8WvwcHbik4izbSHH9mAGLvaPT9
+	VDpuS9JVj4TcgtzGx7Y761FKrkacXBFRvMc92wvtKZVMemgX0JiIpliWWHkDCQUIMNkkVP5grCG
+	qZ13B9jc5z5ujcZ5Ie0d
+X-Received: by 2002:a05:6122:4f87:b0:5ea:a21b:31c6 with SMTP id 71dfb90a1353d-5eaaa0fd89amr2353045e0c.2.1792375876111;
+        Sun, 18 Oct 2026 19:11:16 -0700 (PDT)
+Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eabbd9ea2bsm4271383e0c.2.2026.10.18.19.11.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 19:11:15 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: linux-kselftest@vger.kernel.org,
+	rppt@kernel.org,
+	kuba@kernel.org,
+	enelsonmoore@gmail.com,
+	bp@alien8.de,
+	shuah@kernel.org,
+	david@kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	vbabka@kernel.org,
+	dapeng1.mi@linux.intel.com,
+	linux-kernel@vger.kernel.org,
+	corbet@lwn.net,
+	surenb@google.com,
+	pasha.tatashin@soleen.com,
+	kexec@lists.infradead.org,
+	pratyush@kernel.org,
+	rdunlap@infradead.org,
+	elver@google.com,
+	graf@amazon.com,
+	lirongqing@baidu.com,
+	liam@infradead.org,
+	jlayton@kernel.org
+Subject: [PATCH v1 0/8] kho: add read-only Kexec Handover mode
+Date: Sun, 18 Oct 2026 22:11:03 -0400
+Message-ID: <20261019021111.990394-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/ksm: keep soft-dirty and uffd-wp when merging a
- page
-To: Samarth Narang <samarth.colleges@gmail.com>
-Cc: Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20261019010934.697895-1-samarth.colleges@gmail.com>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20261019010934.697895-1-samarth.colleges@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 31B69C0003
-X-Stat-Signature: 9eyrd7s5pihrjyqzdw7hpzekxfroud7e
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EDB7C40005
+X-Stat-Signature: qcisao61npqjssh6ed3xm79dw3qr11yu
 X-Rspam-User: 
-X-HE-Tag: 1792375697-698948
-X-HE-Meta: U2FsdGVkX19ggI2tKQWh9JiYqz541y3CrRizhIBFxXxJQpE06HoIKr+knkJOK2ZYL6GqJwxwtJsrvEFVrc53yZ/d7t+h/dOCJJlCg5TUZ8WyEpoOZ7U4c2QieToEOP0xLtQznM8/rfekJ8UEVmSeW+x7yHRStgZ+27+s3yQSy18mHjefnZu2OnD9hc7oaXB4oO73dK5oBl8tpDpsNIp9HxdXwuGy0J8x8LFYHJPAPqkpfIQX7DU9OGOOLL+n5aI8fPImzPpwNuNZSv/w1yg6hyBmvN47No4QR0kiCwB23ckE6SmOkohOWGijfEK5WEElWvis4aqXuL1boZ4aXvTodO60aZA3fHzXJT+17gTwA/EI/3CZRP1rMVEnVx4cwONPlBncxWYQ3Ycc3EDrrhygcvq9ktIZmqDkcNYgB9VXf2i3u5j5iL21Cu1Aoov9JUxbotNqnkroGRlQyiZ5t1ofrrUnPYAFWWWWRrti86zLLyrDY9uoRaJNndkbGkbHk9oB4Wgfpi5J3yiCmbT5K4xF9kcLQzngEi6tEc3QI185ZSH5X0grOol5ycaPuSafSaMki9FkM4VCuQ6XL8UdbPBQZIV3Q7rpAqVQhl2qlWzZA5jAhI9W6yHkrkZ6z+hFdg7GFrtCSFzXL4Ec7nd1cc1zanhQYVCg5bM9lxGf4HqJHpoyUgtjtHZQ/fhTD9LJakAD1ZllqClegkDAtl/Ur/RiMcLxSsRaeZsUjlfzzvqJ1hs09Ysw41A1jS/vsTd/c/bTTtYkyWIWvU0lUCGyjJfNFuBZZspFFPXHEYfvGdTtnvSND+6k1F0W9wIPUO1gJqcSW0eIU1Co+39FFWviRLL1iYZnPNUemIj9Ri/6+W8ttLlk3jy6UI2FMk5+9Eg0d+CHv+buNd4l6rNpumjon3HHliUldg6ToaD+Sg02I+v3BvV0uF3acKs45x5HFndRyvmEMqYP8wzFz1fviw7jWrS
- vJ+WKnoc
- Yd3fFRCLiQ+N63WE9yKrc6J2J1o67KZj+qPN0xXCO7lsVNwf82O0k8/QniexfC72BYPlUHdrtLH8fKYabHWCBPPT3b+rBQ1+8bVPGDYmu7trskkybqDnHG5zuncEfvB5JhvYSxHEXLagAx0dzxFQh61KXcHZhUb5tmNGy2ZG/wyeOfwxiuhhnFSHDIO+t3eIzbs2pi+7zhHBrcsqgGYJbI+8XQNKtV+zfqUZvI6F0kHO2MM6q/Nu7dzB9SjyoFLvRGc216XnIH4cbowsxsl66OQmEfvA7QxRY5WaEjIWJhYGEp8RsYWb8AD7XKhXKFCdLHnvaIHPG+Ojv+K0SUikrQlSzKbQeM537aaZVKPJBl/ZGPRFJrYEd/SCVYj3wn10usYg0EmI8djboLBFRMqjzBH5cIA==
+X-HE-Tag: 1792375876-176692
+X-HE-Meta: U2FsdGVkX19au9KiwMnoJV2NRWCk6n121mHuVGydxiJBr0LWJq6vVD0EIVMJbi1wMP59bb+uUwTv+dkFpr91SudhW4qOoMYxz9eOfXP1XDsRkb78Be9+pubTCNR5jbOou37T5YFRFV/bY9dW8F6xKs1r98MqpFmkve9PsuWJbP2xdNZ4r402Rovoxuj7+eMBN6RFdjm+vV6GKXv8zfmt49eYjoiIiBhNTA/EMSiR9MEmbXscoDjzLPnFilvUD0oyIaRtXUxW7XgovU/w3SiGNHY2qTlkKAwbu6NRGd+bsTdUZxZIzifZ154SGhLe7PtcO7xGHhGmzK9Pu/a4XtGfaVBv/0j7Uhu61WBICBYoOvLyKNci0lSfW5BZxIhMBxkEdQZBacebH4DCXH6A/v+OKu8gpkb2v3EwcmL2SiaoGk3J6eJbAvJQtbxCWSQPubfO4ez62c4cRi1wA10/7MXi5GUIfifz1gNzgYju7jkFEDuj1V2xyHyxtm1hx2hrfoEH+rq56D9CawalnGXuUk4zUVsAbuti7+VpDooHwUTKU3OOC35I9o/P7iRVbsJiplX6OZgj3ElZTmMhfA99pW2DkQVNEhCnsbH20E3lcIwpgchN2waEbRdbsw+hG2T8APDf+vp34P/IIvaa5NShX1s37K5ktTFbPzIH0dRlZP546QnFRzpRpsjFK5/5DU6bIuUyySkuUU6ZlqgypwmTL2mtESKiEF6y30hcC+8KQJbM1pjWqrJZY6PYSAQxhEVCSmPDQ2LFCnB5sxJm7mI+94UmmFZwCzoL1VDAIqndjtMPNKBhp6Y8bBBR4l/REcLXCUeNyl8Vfw1zGH5vP56/An5igNtSQhlhyZSjbQLZqERfkC9TAc7kicGPX0y1RvP4AnNqg3BXDotshyC7hmzzJ37Cxx1dRwzOgWHffb8XQqgNufMz0wQ4YYoAzLl36R1N4DpPWa2ajmP+GKA99ON8ywu
+ qcKoDYK8
+ wZI0/RcnETSeQTi4DxsB2RQ7vRmWdsbilSjPqTTuwHih4AMHY+zQQFBuzVNMYsR8Zu7GtGxYt4uHW1I7KKCCXSOhq8Tqt88ljhEsE14YcVzZ8GeT7ZGfUTLRvzA72ayt75Dr/SFb1W49PWtttnz4170wk1Z9qYKEDeEg+4gOyFFjWnAnVUZMLnJl1PbNibZDi3P1enCahV35gSZofEeY0cHltoak3varXR3c5QW4/Zw00UWiWH/VV9TSS3C7x8/l4M7xfWjUSUJnNyWI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,41 +139,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This series introduces a read-only Kexec Handover mode, enabled at boot
+via 'kho_ro=<pa>' pointing to the physical address of the KHO FDT.
+
+In standard KHO, the target kernel takes ownership of preserved memory
+during early boot, initializes struct pages for preserved folios, and
+reclaims KHO metadata and preserved pages back into the page allocator
+as they are restored.
+
+In some scenarios (such as a caretaker, inspection kernel, firmware), a
+kernel needs to inspect and consume preserved KHO subtrees, radix trees,
+and serialized metadata without taking ownership of or modifying the KHO
+state, leaving the preserved KHO tree intact for a subsequent kernel.
+In this mode, the KHO physical memory lies outside the kernel's direct
+map.
+
+To support this cleanly without duplicating KHO traversal logic:
+- Patch 1 exposes the physical address of the outgoing KHO FDT via
+  /sys/kernel/debug/kho/out/fdt_phys so userspace tooling can pass it
+  to a 'kho_ro=<pa>' kernel.
+- Patch 2 moves the shared radix-tree key encoding and indexing,
+  vmalloc flag conversion, and FDT validation and subtree lookup helpers
+  to kernel/liveupdate/kexec_handover_internal.h so they can be shared
+  between standard and read-only KHO.
+- Patch 3 hardens kho_restore_vmalloc() by introducing
+  kho_vmalloc_validate() in kernel/liveupdate/kexec_handover_internal.h
+  to validate the preservation metadata header and flags before
+  restoring the vmalloc area.
+- Patch 4 avoids modifying ser->next and bs->head_pa in kho_block_add()
+  and kho_block_set_shrink_one() when operating on an incoming block
+  set, as the chain is already linked and incoming blocks must not be
+  modified in KHO read-only mode.
+- Patch 5 adds CONFIG_KEXEC_HANDOVER_READONLY and
+  kernel/liveupdate/kexec_handover_ro.c. When booted with
+  'kho_ro=<pa>', preserved KHO metadata is mapped read-only
+  (PAGE_KERNEL_RO), with the FDT and radix-tree nodes mapped lazily on
+  first visit and kept cached, providing read-only implementations of
+  kho_retrieve_subtree(), kho_restore_vmalloc(),
+  kho_ro_lookup_folio_order(), kho_ro_map_folio(), and kho_ro_unmap().
+- Patch 6 updates kho_block to map incoming serialized blocks read-only
+  via kho_ro_map_folio() and unmap them via kho_ro_unmap() in read-only
+  KHO mode.
+- Patches 7 and 8 extend test_kho and tools/testing/selftests/kho/vmtest.sh
+  to test read-only KHO handover when preserved memory lies outside
+  the boot kernel's initial memory range on both x86_64 and arm64.
+
+Pasha Tatashin (8):
+  kho: expose physical address of outgoing FDT
+  kho: move radix tree, vmalloc, and FDT helpers to internal header
+  kho: validate preservation metadata in kho_restore_vmalloc()
+  kho: do not modify incoming serialized blocks
+  kho: add read-only Kexec Handover mode
+  kho: support read-only KHO mode in kho_block
+  kho: test: support read-only KHO mode in test_kho
+  selftests: kho: add read-only KHO test to vmtest.sh
+
+ .../admin-guide/kernel-parameters.txt         |   6 +
+ Documentation/admin-guide/mm/kho.rst          |   3 +
+ include/linux/kexec_handover.h                |  53 ++-
+ kernel/liveupdate/Kconfig                     |  16 +
+ kernel/liveupdate/Makefile                    |   4 +-
+ kernel/liveupdate/kexec_handover.c            | 142 +------
+ kernel/liveupdate/kexec_handover_debugfs.c    |  22 +-
+ kernel/liveupdate/kexec_handover_internal.h   | 171 +++++++-
+ kernel/liveupdate/kexec_handover_ro.c         | 378 ++++++++++++++++++
+ kernel/liveupdate/kho_block.c                 |  92 +++--
+ lib/Kconfig.debug                             |   2 +-
+ lib/test_kho.c                                |  68 +++-
+ tools/testing/selftests/kho/arm64.conf        |   3 +
+ tools/testing/selftests/kho/init.c            |  38 +-
+ tools/testing/selftests/kho/vmtest.sh         | 103 +++--
+ tools/testing/selftests/kho/x86.conf          |   1 +
+ 16 files changed, 881 insertions(+), 221 deletions(-)
+ create mode 100644 kernel/liveupdate/kexec_handover_ro.c
 
 
-On 2026/10/19 09:09, Samarth Narang wrote:
-> replace_page() maps the KSM page with a PTE built from scratch, so the
-> soft-dirty and uffd bits of the PTE it replaces are lost. Due to this, a
-> write before the merge no longer shows as soft-dirty, the next write to
-> a uffd-wp page raises no write-protect fault, and because the page is
-> mapped with the VMA's normal permissions, on a uffd-rwp VMA the next
-> access raises no RWP fault.
-> 
-> Copy the soft-dirty and uffd bits from the original PTE to the new PTE,
-> and restore PAGE_NONE for RWP VMAs, as try_to_map_unused_to_zeropage()
-> does.
-> 
-> Fixes: 0f8975ec4db2 ("mm: soft-dirty bits for user memory changes tracking")
-> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
-> Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
-> Cc: stable@vger.kernel.org
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Assisted-by: LLM
-> Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
-> ---
-> 
-> Notes:
->      v1: https://lore.kernel.org/all/20261018122957.526467-1-samarth.colleges@gmail.com/
->      
->      Changes since v1 (thanks, Lance):
->      - Fixes: point the uffd-wp and RWP tags at the commits that make the
->        registration modes reachable (63b2d4174c4a, 2d427bb01639).
->      - Shorten the comment; the uffd bit carries RWP state too.
->      - Add Lance's Tested-by.
+base-commit: 27be83a12b246b6b3783e7d3ac5c378ff7520f25
+-- 
+2.56.0.176.g3575e65682-goog
 
-Generally, no need to rush the next version out, please. Let it soak for a
-few days so folks have time to review properly, instead of making everyone
-start over every time. Just saying :)
-
-Cheers, Lance
 
