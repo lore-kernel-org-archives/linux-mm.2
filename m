@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 037FACCF2DA
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 09:41:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0526BCCF2DA
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 09:43:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCDFD6B00CE; Mon, 19 Oct 2026 05:41:02 -0400 (EDT)
+	id D59956B018D; Mon, 19 Oct 2026 05:43:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA5B36B018B; Mon, 19 Oct 2026 05:41:02 -0400 (EDT)
+	id D0A826B018E; Mon, 19 Oct 2026 05:43:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABBA36B018C; Mon, 19 Oct 2026 05:41:02 -0400 (EDT)
+	id BF8EA6B018F; Mon, 19 Oct 2026 05:43:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A83C6B00CE
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:41:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75F8FC0654
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:41:00 +0000 (UTC)
-X-FDA: 85338881880.12.2FD1104
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B908A40002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:40:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZGgPxyKl;
-	spf=pass (imf04.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9803C6B018D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:43:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEC21A024B
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:43:45 +0000 (UTC)
+X-FDA: 85338888810.22.618CA27
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 083EA100005
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 09:43:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kzoGYgAt;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792403024;
+	b=zO01Q32C5HkjVBnEQYgL3726flpy15up2NUHnLRNKN8r6rRZ2rdUCXnb7ke4vQtMFzK9+n
+	eI/HE+cwyECGz+zIqpHkLQz0NqfTiKm4lfmUaKq1LhsXo5j5zDZCZgXFIwxzeZwipGM5Vk
+	cdXQdm/QFTbC9T39fN4FzkGes5DtMH8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kzoGYgAt;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792402858;
+	s=arc-20220608; t=1792403024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ojxx9nhEWkvJwn8p5+rm0APJk+Pi1n3Ff8wZwW56tgI=;
-	b=un/3NchWFmioqNzLEbkA6BlmrHLv+zgTSmQg7qG+1z5sVi6mGUeGKKuWRPMJDXBAiv/gIH
-	aaPWIPk7gEaxXoNzW7sm+Kc386BfyObhR5+1o+RwelmiYypmdMDAULPQJ9mz5tbxSIeol2
-	F86IbQvHM/q8DL3uXDSfzDJOhbVFmxg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792402858;
-	b=xaulyi1QeY4/mpvuY/Lt6eOa0zyuollW6LUPSQHvD/XdnzYmTTr5jJiqmo3wpkrTvn6D3O
-	oG9EZYeMLCxB8qtIlIOHdopW9Xw+Jum6GGGqltRugksy6IXbVMN0H+unUk1x9T3KcoKtjP
-	NIdZmtG5h4Is81qm4rqclhdFDIMZERE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZGgPxyKl;
-	spf=pass (imf04.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1397B60DB8;
-	Mon, 19 Oct 2026 09:40:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAC21F000C6;
-	Mon, 19 Oct 2026 09:40:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792402857;
-	bh=ojxx9nhEWkvJwn8p5+rm0APJk+Pi1n3Ff8wZwW56tgI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZGgPxyKlRG+mE/fXMg+GJXOOj3xNX3FhdnCOtWScVuFDNJHzvJ39Im+zQUmNTrn8k
-	 lL0xKXJSnHvIEid2ZabhUrfq4d9YTjPvrxpfXjyFYU/U3pCOd3mcpID64FfAvHXFEj
-	 pFotsfkMJ+c5Ze9/xuIT+6UI8D/Cr8oGRUEOuUF/Xl34/aLrqPfYcfTBNh5k5qyZ4z
-	 R4/xWj7OvyQkjBY6dsixCZLxQSw4ESPbCW7F9z3SxvIdaOW2Ae0jR59XjNv6VX52NI
-	 VGT2ZYxlS5wJrOyL3xwYqqOJlMs6EOquIzWTmHE6rdXbTnYwiWKpmkICmD9yvmxfpx
-	 WbKc2YEbQO6Sw==
-Message-ID: <2546936e-1ae6-494f-a3e8-1949436bfd3a@kernel.org>
-Date: Mon, 19 Oct 2026 11:40:53 +0200
+	bh=aP4YlH9yNTX5OhzyVhEqM3gZrkGRzoNW+7w0dUsXbaY=;
+	b=41i67LTfbifUeDrHM7zfoaHbWNfGwKjsiH0fmFy99kSCI+QxiM1hbNo38DgLF4W4F1J9he
+	vUxE0cpN+n3isn3Z1oGQUM+WTyEXdnqW5oNI5M704yj8wOu7yxRzxfCgaZRHaGQ8+jez1t
+	Cuw5xELuEHJh5x+gQTwJQdXjhFZY6Z8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B27381477;
+	Mon, 19 Oct 2026 02:43:39 -0700 (PDT)
+Received: from [10.164.19.55] (unknown [10.164.19.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2A0C03F7D8;
+	Mon, 19 Oct 2026 02:43:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792403022; bh=wjXWIDX6E9efo9SoSpjdI20BZtWXx7eS+3XUoeg9ZNQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kzoGYgAtae0nazZp7bpP9KyWhmuMn3GVItwvwoGbReeCO+g83J2C/FwjVqg3gdYK5
+	 oeHmWsJ7W14jhVHG3L1eZ4ixsojf/Z07R9Z5ntxW8WLBmXhk6N+dGG96jlP7OXeyaG
+	 zkAU0KehFADdXdCZubV6ojQ/bgMqg9GYgpeTcezk=
+Message-ID: <f4b8c610-abc4-4c0c-8d15-5d2de679a409@arm.com>
+Date: Mon, 19 Oct 2026 15:13:33 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mempool: optimize mempool resizing
-To: Vitaly Wool <vitaly.wool@konsulko.se>, Christoph Hellwig <hch@lst.de>
-Cc: Harry Yoo <harry@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Roman Gushchin <roman.gushchin@linux.dev>,
- David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
- Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, vitaly.vul@partner.samsung.com
-References: <20261014130301.GC15407@lst.de>
- <20261017090802.1423681-1-vitaly.wool@konsulko.se>
-From: Damien Le Moal <dlemoal@kernel.org>
+Subject: Re: [RFC PATCH v2 4/4] mm: compaction: skip unmovable blocks for
+ non-costly proactive mTHP compaction
+To: Bo Zhang <zhangbo0325@gmail.com>, akpm@linux-foundation.org,
+ vbabka@kernel.org, david@kernel.org
+Cc: surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
+ hannes@cmpxchg.org, ziy@nvidia.com, ljs@kernel.org, liam@infradead.org,
+ rppt@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ kasong@tencent.com, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, zhaonanzhe@xiaomi.com,
+ lipengfei28@xiaomi.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Bo Zhang <zhangbo56@xiaomi.com>
+References: <20261001001412.3837085-1-zhangbo56@xiaomi.com>
+ <20261001001412.3837085-5-zhangbo56@xiaomi.com>
 Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20261017090802.1423681-1-vitaly.wool@konsulko.se>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261001001412.3837085-5-zhangbo56@xiaomi.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 083EA100005
+X-Stat-Signature: shfbzsq767xy1j469ak8a6t5sxgzbudc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B908A40002
-X-Stat-Signature: ogoid35zsm1uw9ay6odiyzz43yan81kf
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1792402858-499571
-X-HE-Meta: U2FsdGVkX1/msi+x+5/7t5O4I1o0DWONABGKAuelZeayETJWNsl1l8z+bcoAzh7p1rJenfSRjVnTdu9ab2D15Y8HZjWaC/QhOMFCSUJMMb9d7AmLj8qXNp90cxGDUegu7VTxXNX30J4/4lbNxPqMpHbksGvNfJS60onrCCU9HaiNwTG6yqn/O9tuK7au2puKmJnUW/WSXCOayzS4XNSvmhlt2wW0eUx1iYh20/LzgD5Gv96K0YPsm7/qOJK1CL47EuhAf8Cjzp4sop+3MnXmDqwAvaDMHoFkByUngaovH+hlHAiMr6M7EybW8YfQLfO0aTk6U7tbLHBs1lFpIfT+m/t+CldLd/3kIACl/HJK8ZN0CShpqeVATW2l7dhFiM6cZ+HcynL5nrKGplK+TR+l7TPyRidod2ZYq2jcWGkTZQbPwA9NOTnVwoaqmKutyBub+ps0dLJgaRzB8Jb2vbu5efnecaWd9yZhGLoQpIHIP35p11pqke7E/lU4RK4hTbG6zceLImIcCSkMfXSaIkdLILhEz3SqTEVvhcT/TqW7iPf1j8+Gn6Wv3gPK8xML0Ih7f/NBi5vBvbK1tEpYtzvrY5xjtkkowj4H+yI4l8CNVEzLoipZwp78garubgltUvUzGuXUldfcwJGFtF49E20kwnJmzlPE3PFEjkb4VFCfCb03D/GWmKLMyZu0Oghp+J8PSGmsS0ucMcRR26DKGaymJ7K39VKqu059vKFd0oOEayv8PZPrwq4E2vgv34z3a7Lyff+eVCv8/exwIGA+kG8t2O9qwO1et/OxTF0qv9+dblokI65CMhUQzAmuHnGliWpqgfTV6+olNFvOIeaG1DpY0IX+VqT6GM6FOO4Zk7LurYSOucX+atY0KraG3DrsShN0QzknnkfekrBOZtCUHfNSm7tcpjyL7gK+TIHszvwaOZYrOtOzORorZU25khS8mvuD6gCFLjpPuKp2oMTdWOD
- IP5o4jci
- QuzxS2WWL7L05qZiP1v1d5F5cu3ZiicEZRX4Ka+xt4lOFLfS56bMgqdCxzpj/kqWXXABJlha/DMtdNv+Y0v00p+dcbff8iROTBj2Vck1VAAHK3GkI0RVmFr0UXE92qWewfwmfsLcNqmHg5+NBVQdg+QmLj67hb/HYp4RtTKmsrb32JESZ4V41TCFfqQtLlby/jfVmKc018cRaOF9HTb6TLLdMQ/Oi47B2b+oZsibJ8GkN3PmklwRoarCzmtDtsz7V84qDzZq7izy7DVIZSbi5F6o5TRTtwHpfUmZRJWqKnWDbk3Y=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1792403023-331661
+X-HE-Meta: U2FsdGVkX18KPUaFpTKCx8C7aS2m9fUMeFHjFdOUtBEuKnv/gnDALyoM/0TEohPsSvIwOg9rt5C9AI7lqKf1sGcUMjvBbR+LiQqc9CgwVRfXTmVF9tXGbubhmCN9LfMldzRvX3eG8rudRClRjv+9PykVgi3FuICoa/ckEi2cQC3BHx1nceLMWM3uOg9B/bc0N2JcsfeRyICyNaEyPhk9Tf446LeyGXVkXthv46qzygIwPX3D8IkusxRMF9XNPaqVrBEWRpyThXqB3cOPU07wZUuNihJUZX/iTPlmAGnMqE8FF1TnXhPgwaN6desD3Qs2r14OhtQZAoyHByufomU+YO+7IVn3T53Qw+ke1IQnhNkmRas12RESMsbgdFJZ4DvJNyHbJu27qR7O1yZ+UyJdyT8Nfl3SdhOdwohLqMSrwY1yb/JcKeIq8EVOv2MtTtI7qAcUQNv3vW6jnBEesXWVzWz3RjxC5Rt59CdQYFkyGAaga9YRs7qEHLg5nGQx1OxqIeR2Zz687KMWx++ozKtdP8wGIR5wwvj2JqSAyl6ckCSrbQBztjfiHFK5H/k4TjrRupvtuy+R8T0xLHprQ9shxJTF2rwOe0x5ldCpDCbEKcUMMWXb8ndPnSuom5YptqjRJZD+NCazAU7fZCMbgDIC+fiFqH5YNuJASzEtxHjJmrKWRFmjdsyIaazTIJ5gwdFwsb8vNVUYztnKOkwH7I5FRujnnjDgye+eLmlqn6GGgc5+cWreJKDLH82BRJm9NQZJbH/nM4PyfEfrk0S9BEFdV8fMZWU1Z93wk++XwG0heGN/IFAGJxi/sUlckcF+52D1NlPakC4akQRf6hxveTdVlgL/KAqOsntGNHCWy3ipKok3bRhy7t18SQc9e9PBORKnOaaFbMpDdsZERG6F8iP3JRwXN125L/ID0PCm6ELpis/cA/2uq1H6GNPh12180TW/vYWm/EStM9ElUgDcoKN
+ h0sAjQli
+ Ixo0U3kTABpyU/jGeeIwI1GWeq85LwXR2YB13S3soCMxGYp5sMbqzdyAuOsow5C4vNC5/2K/p2OjdnbLF+CdmbFrIygPWQaIIXnZGoCOFJqonARdNuM1XI6560gDvMnvWuBGU4raLKMT2ZhLygMPnvI85puj/dUYFKGunmxc5izgQ3S5YDjhzgFmMyk+zhr125ky3yHkrHlBCQywsGChNHnnw8T3RO5FYizUMz5sT1kLOfHPR1OgsVW1tk4iCazc0mnHA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,26 +98,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/10/17 11:08, Vitaly Wool wrote:
->>> Imagine you have a mempool with 10000 elements, and you have to reduce it to 3000. Then
->>> if you at some point want to go back to 10000, you'll end up reallocating the elements
+
+
+On 01/10/26 5:44 am, Bo Zhang wrote:
+> Proactive compaction scans all pageblocks including unmovable/reclaimable
+> ones. For non-costly mTHP orders (<= PAGE_ALLOC_COSTLY_ORDER), those blocks
+> are dominated by non-migratable kernel allocations (slab, page tables) and
+> scanning them wastes cycles: a small order is easily satisfied from movable
+> blocks alone, so there is no need to scavenge the few migratable fallback
+> pages inside unmovable blocks.
 > 
->> Who is "we" and where is the code?  This is a highly unusual, not to
->> say most like broken usage of mempools.  If you need changes to support
->> such a use case you should include a link to the intree user (or bundle
->> it with the submission of the new code).
+> Costly orders keep scanning all blocks: they are hard to form and benefit
+> from any migratable page available, including allocator fallbacks inside
+> unmovable blocks.
+
+I think this is a reasonable compromise for now.
+
 > 
-> This situation may well happen in the block layer (zoned). The numbers will
-> be different but they were arbitrarily chosen in the example above anyway.
-
-The block layer zoned code does not use gigantic buffers from a mempool. The
-mempool is only used for small zone write plugs descriptors and if the user goes
-over the device advertized max open limit, using lots of plugs, the device perf
-will start going to /dev/null. So optimizing for growing the mempool for this
-case is really not a priority/needed, at all.
-
-
--- 
-Damien Le Moal
-Western Digital Research
+> Restrict non-costly proactive compaction to movable/CMA blocks.
+> 
+> Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
+> ---
+>  mm/compaction.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index 0ff454ee5604..deddf931d0f2 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -1404,10 +1404,19 @@ static bool suitable_migration_source(struct compact_control *cc,
+>  							struct page *page)
+>  {
+>  	int block_mt;
+> +	unsigned int order = compact_hpage_order();
+> +	bool costly = order > PAGE_ALLOC_COSTLY_ORDER;
+>  
+>  	if (pageblock_skip_persistent(page))
+>  		return false;
+>  
+> +	if (is_via_compact_memory(cc->order) && !costly) {
+> +		block_mt = get_pageblock_migratetype(page);
+> +		if (block_mt == MIGRATE_MOVABLE || is_migrate_cma(block_mt))
+> +			return true;
+> +		return false;
+> +	}
+> +
+>  	/*
+>  	 * Background compaction produces blocks for the zone at
+>  	 * large, with no particular allocation context. Allow al
 
