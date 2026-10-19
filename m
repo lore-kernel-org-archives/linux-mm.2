@@ -4,93 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 762E3CCF2D6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 08:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C6ECCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 08:20:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7800D6B00C9; Mon, 19 Oct 2026 04:13:08 -0400 (EDT)
+	id F2FA46B00C5; Mon, 19 Oct 2026 04:20:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7579F6B0170; Mon, 19 Oct 2026 04:13:08 -0400 (EDT)
+	id F0DCE6B00CD; Mon, 19 Oct 2026 04:20:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66F886B0171; Mon, 19 Oct 2026 04:13:08 -0400 (EDT)
+	id E1CA56B00CE; Mon, 19 Oct 2026 04:20:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 41D526B00C9
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:13:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C09901405CB
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:13:07 +0000 (UTC)
-X-FDA: 85338660414.08.D71D752
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9DCD1180002
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:13:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ScN3WlME;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792397586;
-	b=l82Xt3/B6KW13oEEwtRGLUCvcirCyGPCq90LkAZDZnKC83A6SgnQQ8ia61KSwYoNbtOBkN
-	5csNzixDYx9bL84+hlkKsVB50zwQdOoelhUn5qY4lW+XcYP1vrxkryiaoXHSYs5yvQ8Za1
-	cf3244w4RDFJU+0xc4ZY4dT9RF131F0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ScN3WlME;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id BA3026B00C5
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:20:27 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5E8280659
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:20:26 +0000 (UTC)
+X-FDA: 85338678852.26.8BCFF53
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EF4E7C0004
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:20:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RwoCg+St;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792397586;
+	s=arc-20220608; t=1792398024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TE/b1vGpQ3zzRCCJUuIygS9h4aYbpZH8vZP0Ck1WhPk=;
-	b=nULbXNBdlMI+9FOu+WRBuRiihzB54RXE/CFmPDEBOBh+cnlRkZ+G/PsjOhoZGuW/mo8buv
-	djAtv3Obq9alyq8LSTfFGqWhQMdJhEkp5Hrv7wWtIBp+Tbd6X3koJDaOGvqqVwfUvChdcC
-	uSj58epWxK0ji9y5loMW4MJniVjT0sk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 449F11477;
-	Mon, 19 Oct 2026 01:13:01 -0700 (PDT)
-Received: from [10.164.19.55] (unknown [10.164.19.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 01C893F673;
-	Mon, 19 Oct 2026 01:12:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792397584; bh=J+CS5fDSpkD3yZQR05hOJn3PmeuKCGE/5OUyR0Qg/dA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ScN3WlMECk4NXBAmST1T9qGWJsM371k2ZAqhsGXlCB43d1V6BGnTWNP16+ieLeOAn
-	 ChnTbqWSqJDuX3DOttFoSSb1A3JjE8UGnbdr+tUe25JzOtw63gszgPPYJnEnza7GbU
-	 eW9b2ajdBqijvSRJqrPcEQ399ZJssTkWnFjh12e8=
-Message-ID: <8e54025a-03da-4cba-bae8-1604463c7622@arm.com>
-Date: Mon, 19 Oct 2026 13:42:55 +0530
+	bh=dETs3b2ome9uziZhue1inxGS0jrP6uSNFUFfPPGZ4os=;
+	b=vt+4DpmScTc6COBabMz2UDsdFOoO8kuI3LbXh6RhUPIswfUsP/4wCq2C6V6sEGXD0Ao/1c
+	A0GW0MIIrYFwwmTqG+T4AkfFuOckoldPwnfYSgfm42TFlcac36m1c2gZE9uARLJ+XYfyt9
+	GLCFvjB3m4hCZ03rOTCU+VhQIgqz3Zo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RwoCg+St;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792398024;
+	b=UH6Vrep3XdL/VcCxpRExdkBo42/pTljio73b7y5DxxFWp3vAIxbxcSb5aHh1UH3mhihQRv
+	Ab+ZDdkab2gkewdWgFj5QnoelHuTasG57eO6lGgK1ymhvwvr2dfzNYV/BAVsnO8BJO+VVg
+	tJxKcbRr+FGG2A6Rey3jjOojVSjt4K8=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a0286c981dso19404795e9.2
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:20:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792398023; x=1793002823; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dETs3b2ome9uziZhue1inxGS0jrP6uSNFUFfPPGZ4os=;
+        b=RwoCg+StkYJj8iCjuU0Wls89uwnaI07TQ9t+XCvev1gueWm2ctNJC88ewb9EnUGv0a
+         gocp1TfFvMEuYvM4adKRzJuGMI2JEgNeiV94v+uDvum+6TGmeDMroxQsDkYrMBgREdUL
+         9i0TApkm/eSzbj41ogztywEKj/a295XhuRVhoe3DCCbrggbqfeE80P4mqQB1ci0wNMEw
+         iDoUGZxqjkEf97VLa5xMKvNUrUCXFuCXSLSWSYdes9iXqXLo+DXEpijXg9A21urQO71H
+         hhB0Ifc1Q9ilfXUn0Hyx7/MJM9TWbGxQOb4zcHaFAWRMD/A05EOYIxuRR0RVwcj8vDzf
+         VQZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792398023; x=1793002823;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dETs3b2ome9uziZhue1inxGS0jrP6uSNFUFfPPGZ4os=;
+        b=dmbkLhu1jYFrRU7gEii6RNk5wiTtKnmN2NICozmlJ2NunUarkDdmME9aXA5t51Mj/l
+         NI9h/KQgpCcS6gmo7hvSww41/rvk/WN6LlHT1iNwow163SbUdRjw+XCpgmB4dMwxa4/n
+         +ybyn1S6Iq785NwgJoEinMVKX6kK3htRTjT9Ypg5l72GPn1EYiAKO34w/yjDRZ28t1tY
+         8lZ+PP6LZO3Pr2yVNB8YOsOyKI2JL2u6O996BVblcXN9UmRZYQgXwTkrgMlLa9Ym8ujw
+         ASytRkZ723T4bQkXEjFwmeeQeKX7CHzRPcOIbWmBulKiPnimJG8LHN2LpRRS9GyafuhB
+         G20g==
+X-Forwarded-Encrypted: i=1; AKwUvBxzKtSiNVqWcFljGtkbCw4EO9oOD4GZLdQEobqn4z/ye19fTiEgJRVnnC2RqT6wYz6gRRhdk0jqYw==@kvack.org
+X-Gm-Message-State: AFq9FYLTQQClEmMhNjo/JnIaKhb7QzgMn4Zr0u0slP2d0Yom7oINeEpk
+	BTaTgUs9Jc7Zp4OjUHAaNQDtqtvo75wCb80jk+B2Cj0MAEZtnsOYCLop
+X-Gm-Gg: AYBFou1Zk8JVqU/SDpZE5yiTYYR114c3KWYDJp5/bIIEwFw5AnUa1WyZ+ESTKHW2e+J
+	LJuaPr9l4P8nQCHZhQbuB7Bup3FrdD16fDZQSwgiWZ5XbPt9523alSEAWckQ8+ReuQ3adzLj5EY
+	R3CuEI+75m/iicl+PqkleirqpJCc9ZE9jgErSW+BfOVXOpEbb43AIIOU8vDuVbIFGCVkWq1ljDh
+	hH7263Z5pVydilQxGbUgTVnDWnL59WLRqjG9Qtbh0B9kwmCHqbnT8Es2G2Zs2dgKA3AGSfFJuno
+	K0UFu8wuWeSvZ5OjHOvt0qbB3f1XLgIs1P+Rkq2+S4TRxYW0pHWsMjiwLVS0p9If9IAMDOj5Vz6
+	MGmKXrX7R+l+BxtWv9Q+id0dyeasYMQFqiJtLxXRBYXgZQIbdSMwLSoLCEVb5MAZmXS0hpray2q
+	2P76+4YNut8NDspPVqLjueq2hVyS5F2WtyAjDm62jEunsbYG2OCeLWw4/Gk7+jTTUa0FE=
+X-Received: by 2002:a05:600c:8b22:b0:4a1:8627:aec7 with SMTP id 5b1f17b1804b1-4a1d75e6fe3mr151926975e9.5.1792398023183;
+        Mon, 19 Oct 2026 01:20:23 -0700 (PDT)
+Received: from [192.168.1.18] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd9b8ebdsm385910145e9.10.2026.10.19.01.20.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2026 01:20:22 -0700 (PDT)
+Message-ID: <988249c7-abf0-4f4f-9386-27e835a4d2de@gmail.com>
+Date: Mon, 19 Oct 2026 10:20:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/4] mm: compaction: target mTHP order for
- proactive compaction
-To: Bo Zhang <zhangbo0325@gmail.com>, akpm@linux-foundation.org,
- vbabka@kernel.org, david@kernel.org
-Cc: surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
- hannes@cmpxchg.org, ziy@nvidia.com, ljs@kernel.org, liam@infradead.org,
- rppt@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- kasong@tencent.com, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, zhaonanzhe@xiaomi.com,
- lipengfei28@xiaomi.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Bo Zhang <zhangbo56@xiaomi.com>
-References: <20261001001412.3837085-1-zhangbo56@xiaomi.com>
- <20261001001412.3837085-3-zhangbo56@xiaomi.com>
+Subject: Re: [PATCH 0/5] mm: hugetlb: add CMA support for PMD-sized page
+To: Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>, osalvador@suse.de, david@kernel.org,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
+ <FA455F0C-0A46-4B5B-AB50-E9968001D2C9@linux.dev>
+ <4a7ad39d-fee6-4390-beff-d40ecf49cbdc@bytedance.com>
+ <BEADD50D-94AA-4B05-B9AD-136E37247FDD@linux.dev>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261001001412.3837085-3-zhangbo56@xiaomi.com>
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <BEADD50D-94AA-4B05-B9AD-136E37247FDD@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9DCD1180002
-X-Stat-Signature: ttdqtim37gbfsghgbf6sah8deo3iq8qs
+X-Rspamd-Queue-Id: EF4E7C0004
+X-Stat-Signature: q9sxuxgkdxsonep56g8fzqpgtayeyepd
 X-Rspam-User: 
-X-HE-Tag: 1792397585-648977
-X-HE-Meta: U2FsdGVkX18kVs9QcCaVeDQ19CdlCwDl9PxCOr5wHFj4vf+EYwR98ilje4QA5KU+lFQPTLzNYPQGuA7U5mzibK/5ddbQYdHzghKtMV+f29P6B/zz+1hbqX3glCLbhJpN5K2QJszXXmbsWn45MhvEaAzAjCvMXtBZyoDHB9Av0/nVkjXMkxhkE1BG3Fr9SUjT+dtUpSQMYUchHbLkwN+UY/1yxqmXUpGcxwnw1vabxIyw9HHk2TH5kxymcBKFVP8xi4V+4hKHhvPM3PIJN8pTeXETu6edzhefW11kN3Umt83Wk4kLOunyGXfY+bmgkurvXWrxJmEaQnFf4yYMzVUPrfAIkH0sy6RApVCx70XvU5lFbcxHkN4y1fgYlyqr4zEw1nE1QSI9A38bL2pj6iCggZYn8U/9uM5VNOYlYfcpvQ3I3F/8rLAov5vEZGyTtkB+a71Ha/LgPHFhIaoFRW0c10OKOP74VYGW1naQ4TCbPNqPmPDYjg1H91kj5/O2STEfSPdIb83POa0Mk+Ze5W1IbAT/n2/T8GEX3g71hYZqVvza2UuVd7z1xuJYibJv9KoYcdOJYyxv8AzI5Y5910m9tk2yVd91PVVs9qc15o3y+3jEzVmqUzzesUgRqWVid4/BbjAVb121stVpPss0OO3oyW4UQNRcppTfPOdJF5HUkstWnjKWMFBerQ4AtxfiCVXpGQhImny46VtD9nrAl/G0W0zLrroVyZmk0PX8zNO7R8iisJg+EejERxjQuSORbRF402Uuawe2Y0P6/pTJoOckvfP8yQn32X/p1dR8Wk2WeWcP/h286XPtwdk4Zbva1diDupkQDhE461nUewL8ln870gkVBpC0338Ye604wSNFfs2wjrYG2A37nqA0aP148MYRlqQ68siNfic5/c+itXsI1e5M2++tCF0EVcFMt7ZMgx4kWfBC7eT51Xl1iVVSLtYG9K6rIgPxuSe56E42TGe
- vBGoNGUT
- ZpniBQTxxwXaG2P1esICC8hV/Rk9WW2Zftevt0ECkb07tK9GA4jH5C89/M7WFlEeyY61POTx09NtCqdkgN2CDJvsd57oPWa5+rJALR1PZWWDgNzcr/acu7z2M66hiV/+5LnHmqadh8q9qKPztFXBIfweP5jIsY+ZM98VxqeQ3erv08CEYlIka9pDHI/jwSuFtpRooAxg84Lw1JmD7dH8NKtuC6SvHR+UE8THJRQpK4inZJeXjWAK8CEPugSDw21gdvjMpbdNFCpnFUmJ3Ko0BV9rqScdGlGdwz0Du
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1792398024-415210
+X-HE-Meta: U2FsdGVkX19tmm90zfR91po6sHiPqkTL2p36+8H0IOQJniYnq7X9ZTWNXSDIQcUXMCCZ8gatwA8aIyNNVUx9Ycu3pWMW/PYyo/0fp85bjbPpHGORbrFcOBzDnzLRd2ia8EN0E5R+TPMrwXD+t6LDOi/XeiYPXIIiQ7N8XZjaXjZbnFgVI/xM1exgcCodg7LKOtrIyl+3HAjK0Fe24S3qZ1SncUyCDI6M3es5bwZVVWMeshxy4tbmfAFCUXjUpvGn8nBN/QRFUZonHMQ8sXUQqcnWCMxCd2C3qKL3JpZUv4panMj2k7yf6Cs7SaVkGr2VR8sG6SvfzgKA8nBdvBXKlk/EJnzahiiD0dLQJ/IkauKkTh3v6lArtcOsT47wNm7HaaAa/u5LZNDnSBhOoXSe1VaUqEJcaYIgZol1a/i1fKwVexmVyOSLMkZy7BTJF9z/lh3k3MzK3yrQBWwbouEjU6WmbjRMfbfnHyigDPZP7Ri04VIHYLi+yuJtEUKmDMD2osvtlgSXvHafG+usgans0lyMEAjZTUdQ/c39EV/wb5EaYMSpa6i6q6vi7I3LHL7jFudweZZdNhASNxwT/ru1FFXJVI1aqYKzS6ulBtA3jzpRumbqGfEzjaDPJpS3u5A9EMlo8fKW7zSTyVGKKecR71vDZAJcwfKuCo+I6AW1a1zRrxeube0uF7ka10KBlUG7+kEJflL/udkmxxke625zfeGsNqystXKIOQcTVe7iVd8jqjPG16qu/DpMMZx7vevAOVY8NymFQawf/vaACJt5PnXzM5HZzB9kluZd7D1cgwMjVbf9+fUcTfy94dLZjENhbYqOJ00xOerEdM2bfNCQUdjtniPL4kanTXrrB+SrcAr2/6iNyeDQinOa2niCcb9goETf85GH2KuAqMfbJOU1sy2VOubOumchSc9EXWqnefopQCI4A3PBK6gR5UJIYiqVH1I6UREDHuZHeUFtECb
+ /sibWKhc
+ BFzOWoxDy8Fmit2RhxcLUeTkm3m1fIyzLTVWUu6oYUAEweqDJc8ZKBWkU9kUhMRGeIeuzYRR4VcSfAEqImHqpLjMN37k4wkBJ0PpiOax34Gb/xkOZYwy50oj7yh5ewJERgRYyD+QRKh6pqvVU5PgqYCBNv2GJ14HzO2pFWTKg/BIZwZnwi/fxCqliim/esVR5Bp2GBZN6gF3CKI2N4u7DhFokdXpAK+rFa5r9q8LHH1Jv4l0lKVWC3NWP2UZDIMc/4vbU64zZSAKf7g8adqWVEqbmFoAZjEilaxEB6WhiNQTY2tw43eF3smWwY8rvd8cmXjrH3LQxrfCXOsx+SBPQr2XoavSO1xUCPs3GlbFLYEv//wD+9xziSty3UPP707MjFHeGoAKBskuaBrCQl9vFojPDf9tHDqiVZLHtX9gVZ+xxGDMvuBt/6VEtSrTA5sbtcKs4dogGuiJMP4iqYt4WK0o9uJiirTnR8rZNCMDIb93gbX/dkCPwGOpy4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,137 +125,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 01/10/26 5:44 am, Bo Zhang wrote:
-> Proactive compaction triggers against COMPACTION_HPAGE_ORDER (order-9),
-> which is too heavyweight and misdirected for mTHP systems where the
-> pressure is on smaller orders like order-2.
+On 10/19/26 9:50 AM, Muchun Song wrote:
 > 
-> Add compact_hpage_order() to return the highest always-enabled anonymous
-> mTHP order, and use it as the proactive compaction target in
-> should_proactive_compact_node(), __compact_finished() and kcompactd().
 > 
-> Fragmentation scores are not comparable across orders, a small order
-> scores much lower for the same state, so scale the proactive watermarks
-> down in proportion to the target order, otherwise order-2 would rarely
-> reach the order-9 threshold.
+>> On Oct 19, 2026, at 15:37, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
+>>
+>> Hi Muchun,
+>>
+>> On 10/19/26 2:50 PM, Muchun Song wrote:
+>>>
+>>>
+>>>> On Oct 16, 2026, at 18:07, Qi Zheng <qi.zheng@linux.dev> wrote:
+>>>>
+>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>
+>>>> Hi all,
+>>>>
+>>>> Allocating PMD-sized HugeTLB pages at runtime can become slow or fail
+>>>> as physical memory becomes fragmented. Reserving HugeTLB pages at boot
+>>>> avoids this problem, but keeps unused pages unavailable to ordinary
+>>>> allocations.
+>>>>
+>>>> Live upgrades are one example: they need additional HugeTLB pages only
+>>>> during the upgrade. HugeTLB already supports CMA for gigantic pages,
+>>>> but reserving a CMA pool for 1 GiB pages can fail when physical KASLR
+>>>> and other early reservations leave too few suitable 1 GiB-aligned
+>>>> ranges. At runtime, 1 GiB allocations can also fail when pages cannot
+>>>> be migrated out of a suitable contiguous range.
+>>>
+>>> Yes, that's our use case at ByteDance. Allocating a 1GB HugeTLB page from
+>>> the CMA pool is more prone to failure than allocating a 2MB one. To improve
+>>> the probability of successful allocation, we typically configure the CMA
+>>> size to be larger than our actual requirement, keeping a certain margin to
+>>> handle cases where temporary kernel operations (such as DMA) prevent successful
+>>> migration. For 1G HugeTLB pages, since the margin must be an integer multiple
+>>> of 1G, the extra memory configured as headroom is also relatively large,
+>>> making it less flexible than 2M pages.
+>>>
+>>>>
+>>>> Extend CMA support to PMD-sized pages so their backing memory can be
+>>>> reserved at boot while remaining usable for movable allocations until
+>>>> needed. This relaxes the reservation alignment requirement and reduces
+>>>> the contiguous range required per allocation.
+>>>>
+>>>> The series adds an optional @<page-size> suffix to hugetlb_cma and a
+>>>> separate PMD-sized pool. For example, on x86-64:
+>>>>
+>>>> hugetlb_cma=4G hugetlb_cma=1G@2M
+>>>
+>>> Different sizes of gigantic pages already share a single HugeTLB CMA pool.
+>>> Given that, why not let 2M pages also reuse this same pool? Would that make
+>>> the overall code implementation simpler? And if it does make things simpler,
+>>> should we go ahead and do it first?
+>>
+>> Sharing the pool would simplify the implementation. My concern is that
+>> small PMD allocations could fragment the default pool and prevent later
+>> gigantic allocations.
 > 
-> Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
-> ---
->  mm/compaction.c | 40 ++++++++++++++++++++++++++++++++--------
->  1 file changed, 32 insertions(+), 8 deletions(-)
+> Yes. However, the premise is that there has to be a mixed-use scenario.
+> I'm not sure if this kind of mixed usage is a common scenario.
 > 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index ecd3e6cf54fc..3928a5483efc 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -24,6 +24,7 @@
->  #include <linux/page_owner.h>
->  #include <linux/psi.h>
->  #include <linux/cpuset.h>
-> +#include <linux/huge_mm.h>
->  #include "page_alloc.h"
->  #include "internal.h"
->  
-> @@ -81,6 +82,17 @@ static inline bool is_via_compact_memory(int order) { return false; }
->  #define COMPACTION_HPAGE_ORDER	(PMD_SHIFT - PAGE_SHIFT)
->  #endif
->  
-> +static inline int compact_hpage_order(void)
-> +{
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +	unsigned long orders = READ_ONCE(huge_anon_orders_always);
-> +
-> +	if (orders)
-> +		return __fls(orders);
-> +#endif
-> +	return COMPACTION_HPAGE_ORDER;
-> +}
-> +
->  static struct page *mark_allocated_noprof(struct page *page, unsigned int order, gfp_t gfp_flags)
->  {
->  	post_alloc_hook(page, order, __GFP_MOVABLE, ALLOC_DEFAULT);
-> @@ -2257,24 +2269,36 @@ static unsigned int fragmentation_score_node(pg_data_t *pgdat, unsigned int orde
->  	return score;
->  }
->  
-> -static unsigned int fragmentation_score_wmark(bool low)
-> +/*
-> + * Fragmentation scores are not comparable across orders: a lower order
-> + * scores much lower than a higher order for the same fragmentation state.
-> + * Scale the watermark proportionally to the target order so a small order
-> + * can still trigger proactive compaction; COMPACTION_HPAGE_ORDER keeps the
-> + * original threshold.
-> + */
-> +static unsigned int fragmentation_score_wmark(bool low, unsigned int order)
->  {
-> -	unsigned int wmark_low, leeway;
-> +	unsigned int wmark_low, leeway, wmark;
->  
->  	wmark_low = 100U - sysctl_compaction_proactiveness;
->  	leeway = min(10U, wmark_low / 2);
-> -	return low ? wmark_low : min(wmark_low + leeway, 100U);
-> +	wmark = low ? wmark_low : min(wmark_low + leeway, 100U);
-> +
-> +	if (order < COMPACTION_HPAGE_ORDER)
-> +		wmark = wmark * order / COMPACTION_HPAGE_ORDER;
-> +
-> +	return wmark;
->  }
+> Of course, we don't have much experience to draw on, because on most
+> architectures there is generally only one kind of gigantic page, and
+> prior to this, mixed-use scenarios could not arise.
+> 
+> Therefore, I think that before the need arises, a simpler design is
+> easier to maintain.
 
-I wonder if this function should be left alone?
+wouldn't a shared pool still be sized and aligned for 1G? then the 2M
+headroom stays a multiple of 1G and the 1G-aligned reservation can still
+fail, which is what the series is trying to avoid.
 
-compaction_proactiveness, as I understand is given as a sysfs knob to
-ensure that the user can control how much power they want to invest into
-compacting. So suppose the value is 20, and the highest mTHP order is
-only 2.
-
-This gives wmark = 90 * 2 / 9 = 20. So, even if 80% of the memory can
-serve order-2 allocations, we will still perform compaction for order-2.
-This seems "extremely proactive" :)
-
->  
->  static bool should_proactive_compact_node(pg_data_t *pgdat)
->  {
->  	int wmark_high;
-> -	unsigned int order = COMPACTION_HPAGE_ORDER;
-> +	unsigned int order = compact_hpage_order();
->  
->  	if (!sysctl_compaction_proactiveness || kswapd_is_running(pgdat))
->  		return false;
->  
-> -	wmark_high = fragmentation_score_wmark(false);
-> +	wmark_high = fragmentation_score_wmark(false, order);
->  	return fragmentation_score_node(pgdat, order) > wmark_high;
->  }
->  
-> @@ -2306,7 +2330,7 @@ static enum compact_result __compact_finished(struct compact_control *cc)
->  
->  	if (cc->proactive_compaction) {
->  		int score, wmark_low;
-> -		unsigned int order = COMPACTION_HPAGE_ORDER;
-> +		unsigned int order = compact_hpage_order();
->  		pg_data_t *pgdat;
->  
->  		pgdat = cc->zone->zone_pgdat;
-> @@ -2314,7 +2338,7 @@ static enum compact_result __compact_finished(struct compact_control *cc)
->  			return COMPACT_PARTIAL_SKIPPED;
->  
->  		score = fragmentation_score_zone(cc->zone, order);
-> -		wmark_low = fragmentation_score_wmark(true);
-> +		wmark_low = fragmentation_score_wmark(true, order);
->  
->  		if (score > wmark_low)
->  			ret = COMPACT_CONTINUE;
-> @@ -3239,7 +3263,7 @@ static int kcompactd(void *p)
->  		timeout = default_timeout;
->  		if (should_proactive_compact_node(pgdat)) {
->  			unsigned int prev_score, score;
-> -			unsigned int order = COMPACTION_HPAGE_ORDER;
-> +			unsigned int order = compact_hpage_order();
->  
->  			prev_score = fragmentation_score_node(pgdat, order);
->  			compact_node(pgdat, true);
-
+-- 
+cheers,
+jose a. p-a
 
