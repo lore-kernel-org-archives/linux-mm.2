@@ -4,103 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3AC3CCF2D4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Oct 2026 23:07:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A4E4CCA490
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C6A46B00B7; Sun, 18 Oct 2026 19:07:25 -0400 (EDT)
+	id A10646B00B9; Sun, 18 Oct 2026 21:02:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69EBE6B00B8; Sun, 18 Oct 2026 19:07:25 -0400 (EDT)
+	id 9C1826B00BA; Sun, 18 Oct 2026 21:02:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B4006B00B9; Sun, 18 Oct 2026 19:07:25 -0400 (EDT)
+	id 8D7C16B00BB; Sun, 18 Oct 2026 21:02:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E92E6B00B7
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 19:07:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 84716405AB
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 23:07:24 +0000 (UTC)
-X-FDA: 85337285208.05.77B9116
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DC2C2C0007
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 23:07:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDeFqf5f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D2336B00B9
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:02:35 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1AFCA0606
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:02:34 +0000 (UTC)
+X-FDA: 85337575428.10.88A45C4
+Received: from mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9DA18140003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:02:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=V5Q54Or0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792364842;
+	s=arc-20220608; t=1792371753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S2GDaNmy/wVSfogh9oHukOtCd9b8DsJ0trBZHfkjrl4=;
-	b=5T7ARLe1bDKEDKMHlZn6eYdjXFcB+eWGQuzR4at5CwhnBlPMkf2jUFQqD9j1eDyiSjK92O
-	KPbmDg8ir583jKDcuKLxj4yNnBArPYejayFOAd9065+tDUR+7qdSKKmYyqq7indUrqma90
-	ja0Gnzv5CpFK0Z64nAm1pUQkq3KtQ9k=
+	bh=Ev3xzK9VUla8R0Otc8+sWvhyjTp5CVfjvUfT1rJwpRA=;
+	b=mIzLnpoGS44zb/JjWvZlY2xu3cKXX4EPnbHEGs9/vmwt0EekHjipsyBJXgym3ZTO0UcWaA
+	31IoKOYukuv2kHYmt0oW+ioT6nkTF+DD1wzOWq8w/eUTjC54b4MQ5vQQXnBqpaJ7KDpJY2
+	5nZKu30ioTGvK/91negBZ9fxgD4oagE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792364842;
-	b=AKSsF+cpx9c7/55bjo4cdJ3klb8ZnUVtS/VhUO6Xf3UBT7ZmDunRxQdpYGGPoMUwraCxKp
-	Wx1vUGVRAOXRumC6OmmDTWSH6HfRhiaI2LX/fpHNXmT7fUe9IfuCkkpVSl6O73+FaJ/L8I
-	bgQ9RMgRyMzBrtIFL7uBFeqYiNT5h2M=
+	t=1792371753;
+	b=v+V55Nmozf6XP/0eqykwoLxRV7Z8Vyu4yrPFviB0QXh+1jl/1Jzy9RmatUCNfgT5KUqwWV
+	9T2cdWmLf3dJnjrMREElC1ZYAMljr6WyosTJHOdlTIR39/eprV0hGatPCY5h3Pp95vBiiE
+	bRqM4WyBSuOtnMp/X0I3q+1TZr66JRA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDeFqf5f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3B6A960D9E;
-	Sun, 18 Oct 2026 23:07:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9BD1F000C4;
-	Sun, 18 Oct 2026 23:07:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792364841;
-	bh=S2GDaNmy/wVSfogh9oHukOtCd9b8DsJ0trBZHfkjrl4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CDeFqf5fKLIa5oRo22htq/OmB8KuGpT0d+Sr7DQESZKDA5ZC+fSj7KLEYgIowl0tj
-	 7YB3c/Nwx1h4MFEHTNwm5dAjzja1BEO2nHWtVI3obExFCcDzThvHoJXPdCQ5IUU1WN
-	 I6elIMskMWCqq6WkCmrqpAD7WfAYtOMFr0GHV0t0nUg565IgwJOwJSOqTIQJvPbFZp
-	 JZrOsta3netX3qxKQ81vkfl5BpqsRRZkUZLNlM+Rjt0vf3+E/A5DrL35ZCv7omCMSK
-	 hWkc9guVySn87ZC+tRhQ+yIEroyw1THZ2FulLLjLnqHIoEWY43qezDsjOMGZW24ZhH
-	 TJXsBbTIRSIMA==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	ackerleytng@google.com,
-	akpm@linux-foundation.org,
-	chriscli@google.com,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	jack@suse.cz,
-	liam@infradead.org,
-	muchun.song@linux.dev,
-	shakeelb@meta.com,
-	ziy@nvidia.com,
-	"Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: Sashiko change proposal
-Date: Sun, 18 Oct 2026 16:07:12 -0700
-Message-ID: <20261018230714.160431-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261018224830.160147-1-sj@kernel.org>
-References: 
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=V5Q54Or0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7SU2HNON/BqLq2bv/cBKuk5LpU1ziW+Kvf5YYswTIMs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792371750; v=1; x=1792976550;
+ b=V5Q54Or0jGTuNpPsKosHfm8ybonnXKSHjGN7wJImYDTyrcP/Xby+C5jLIuLAf5LCl05iBLMf
+ 0yL5M1HVZdvW72E79PTFS+k4U3IHx01WtNMlVWHeZvqs9dtDEAsUNf2lMVw+l6PlWMPUtVy8zEm
+ GR//fK5+cBH7JPr6hLb46adA=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9ff5fbd1b53f1ea9;
+	Mon, 19 Oct 2026 01:02:30 +0000
+X-Mizu-Trace-ID: 9ff5fbd1b53f1ea9
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: samarth.colleges@gmail.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	peterx@redhat.com,
+	kas@kernel.org,
+	rppt@kernel.org,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/ksm: keep soft-dirty and uffd-wp when merging a page
+Date: Mon, 19 Oct 2026 09:02:24 +0800
+Message-ID: <20261019010224.69153-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261018122957.526467-1-samarth.colleges@gmail.com>
+References: <20261018122957.526467-1-samarth.colleges@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DC2C2C0007
-X-Stat-Signature: 5waf7kog89utwhofw7fmjtnemt7tikm9
+X-Rspamd-Queue-Id: 9DA18140003
+X-Stat-Signature: 9115sar7pdznpohz1f4ohe9imw7fkqeo
 X-Rspam-User: 
-X-HE-Tag: 1792364842-213744
-X-HE-Meta: U2FsdGVkX195fHajaCYhuZJJr5fJaKSVVKwNycrcWreo3VEI1c6S6fw3RslXSq2whhC410h3SiGk4l0tT87lYk63fLONmgggZ8Ezhu1cDwnlmNDdTxkKxW6Dcvd/1aWer5mxMha/MMDRYGg79mFcE/krBnrkhGXTmH//I/j/XoS8QShrExRqr5ZwBwWLZQz/7W8jX/x3mImuGnubOJ80sZzNxSwumeKJpuW4Z/8YXCWLrrUO+gEUxJRk3P7AuMZ2CbF0jIH/6P0nrtuCqpmZYbZUiZUR7nyHZF4Gp0itcvZIDoZ9Sb5XRG7RHxAvqeyR3fL6xv47D9cerYfUQy2JqU9x89LlbdKJ00lfoxRAtIKzThpDPABfTp0KgoLEhdTVAgTznQLyp0QRvZz9mbaBlZRXrcZddKnqLSzaBekG7793PZO3fa72CVsLZa9TdbUyN4xNnxp/V5DOyBvAlMATk8GnuJ6bYdDx4Ep/dTxZqmRppV2iuHG+PfGGDLhoV9xLhiUmu8cYBMnQAwFLCriSEjzz4Qmja3aHpuETlCRRuL777zoX9S17KyEDPP2Ytbd5ZBMwpIqqE7lbmm9A+vnkwWfDIFEn++xm7MYsPgwGdo3TRUMF5uzLv1cHSjQxNJmE2kQH5Xz4xdt2vMIiixNAq3uc0mXax1B9HICWtmUnJ5OJ5AGhMxqQUOHLDoBmNzyOq8JtD+g3/2h59IykcEkOipQwGlZQlxCx3pGNYOUg+lFGB7pQ2mzntW2ZlCBXHCglo5aMbE6PP0LZUb+3X2bBojI+/+pdjGxYfENFD6rM/abPhilD02M/l0uqWSkMvoTVBCDIEN2ToOs6Z2SXguX/eIX0KuZgsYWuKP1MMHpRflh5QzvsIusQNhxp8+QOx4QjYgMFRxGRuBb6SOzLOsFB0wNr4AsU22SprcrJ4an+HevIMnZbUcyachX6C8WIK66GXCdocAPu6Gc0VtHWi8X
- gHrnObfe
- NpiUbHKmX1kc65fixtCXFBci+emz6JpY/Htu5QCyRJu859ysY7ouiBNJV42ydTh1/cag9cqd49hgZBGuwqIN+6edw1dghLAYblMv7qB9J8S15FkjITv/YR9yyu+noimUwMjibN10hCaODF6I3PVx0jnPKZ0iEOdWNXa945hE1QJ+ZJ6s2ADQWdHnhKod8CKSQWsjQ7NV+8v5y9qqr62spDIzCjoOxuohCkyuOalq2sG5nfjWlBw1SsCZmuo6EmcIv+fh4/EbxdWMxRLLztW6VAYy2sCIm9fxau4wVkBJCCWnjlZfSjpB9q0/x+gn90oVpGEEeCM9g/Qs6S5sP+Ayz4p9JaKtFvqyoDfoudBfgVoaAt5luvmCOIe8glFMR5tOVWLY/ueZtg0KYLKheyQAtWUOtW5fIldoxaBN9ghcMVmCDWq+vVTN7zUrfEu76AJHBlutYQPD0wz5emkb5yY7xNtIVYBFYE5WGTp5kes+Xchwm5A34JQunP9iBpdCkxjkpS50xTWfu8htiXt/Sd0bpgr3tDoLGQVbrXpp2CS5SGcU341KDuJda4va9Sr1nomo4AhTT
+X-HE-Tag: 1792371752-740807
+X-HE-Meta: U2FsdGVkX18ggTMSpcEkG0N2bhYBCP67acy51Tw+ELgHuMq8yND/TN/5+CaY3buhi6Kx9Hx0XTcVh8784VVz/z8jquYls27j5DP3Yuh6ZEeY25knTB7A9Q57CSzzrQEP3NYp9WuTviYSMYx/3WpiZWdw1Bv5dwCAMENDVvWVq4n2/QlPy+H0d6Ba8TXzfU/SPS4zcaji9ieMVezSCbXVPr/OSIxBNeyBq09Y6J1smBxYk9BbKA/5nP0qRhDVEKx8v2llvYRn+jgdoqQSDNQpfgu0+AsX0PCYfFz/knwKc6GsTQoQB5pXkufeZ7pHoqKUdN5Mrk8vmHqIddQs0FTNzvTJuMa0AtJbEZ39BL/SD2Qjd7Hq9x+bZS4BwwufuUqp+E7+iyZmGGZhjWM1Fmxait426r56QQ7dRKoAqaNLNqksSCjdnxgeGhrpKcLs6sNX2k0/to5YU6a8dE74n+lpfdREzhHJr9qwfROugq7EJ/ss7Ijz0R5TIdBR0jA+NiERnGa0exuo8L4VLnMCOOY29BN8JUZIxg4VxmoXqZTMkLQungrk2mZUmU22Q3xAspHxB4X2sXarAQc3UzRIvW4PkppLSqxrzP9hQkL6S9A325P1ao8M0ERqy+oVlDLdwJSTgcUPFftn4Va5EzQaBkqhx7lqGAlVK0zNDX+VajXa+U7Z2D6J6QYlu0UwhHogwbyBDxVfXvXxOlre+rmbZRwJ98+INOt2oiERQnjiUVWOyOj+b8Ja2awkQmWKvTNmmUtkzD4ZrWMSPn2PFhI3waFbrXhpJ6rwJMUX97IDMcOYPyPyO+ggr0PaSrF1KmCWvmXoE4DzSOd8OJV0TvIK1BRjW0upLSKmHs4Yi3Cv83QrWVcmdUn/Pij2M4wMa3KCRW69OEJSeTCkYWpo1HYDoeFQ3n2fbKKgx/HSsKewZJUjQBLYOq+7jvgNbxPdukdA+37Tw+1UEmmg/Ep9/WG/nwP
+ 0d/T5n3W
+ od5LVg8LdLrelZ3HDNvVHwu5eD8VBlfS+AVnUVU3MFXElyYFEQpWpEqUnzxKN38nQ2oSCe5aSOKmEP5g8VaE6nxsdFYNziRoapGgXP+Sas4nu7fuKEgI6VPpH5l2l+RE/E4SO2AFLb6sUHnfI/x6gNLeDx+UTTOG0rzMN2hZf83t5356DEMOk6NTHRMTedUrd9DasMaBCKxcSrTTgFX95jT4+5FIuWamMIiSPr+H9JUuE/gBFZ0GaVrcykO/LkcrSj7xrR5c+LJKEyJzfX2YSqupy9iCDxvXgPOzYzXYRaz2WptXO5PmkdL8wMjThp0jvYmYLdLqXE7gRQ3mywNK8IC7S7RYIaTHlST0JPuBSwnLgFg4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,91 +99,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 18 Oct 2026 15:48:28 -0700 SJ Park <sj@kernel.org> wrote:
 
-> On Fri, 16 Oct 2026 14:39:49 +0000 Roman Gushchin <roman.gushchin@linux.dev> wrote:
+On Sun, Oct 18, 2026 at 05:29:56AM -0700, Samarth Narang wrote:
+>replace_page() maps the KSM page with a PTE built from scratch, so the
+>soft-dirty and uffd bits of the PTE it replaces are lost. Due to this, a
+>write before the merge no longer shows as soft-dirty, the next write to
+>a uffd-wp page raises no write-protect fault, and because the page is
+>mapped with the VMA's normal permissions, on a uffd-rwp VMA the next
+>access raises no RWP fault.
+>
+>Copy the soft-dirty and uffd bits from the original PTE to the new PTE,
+>and restore PAGE_NONE for RWP VMAs, as try_to_map_unused_to_zeropage()
+>does.
+>
+>Fixes: 292924b26024 ("userfaultfd: wp: apply _PAGE_UFFD_WP bit")
+>Fixes: 0f8975ec4db2 ("mm: soft-dirty bits for user memory changes tracking")
+>Fixes: 763f43865fc4 ("mm: preserve RWP marker across PTE rewrites")
+
+Shouldn't we use these two instead?
+
+Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
+
+At 292924b26024, WP registration still returns -EINVAL. RWP registration
+isn't enabled at 763f43865fc4 either.
+
+Fixes: 0f8975ec4db2 ("mm: soft-dirty bits for user memory changes tracking")
+
+As for soft-dirty, the tag looks fine to me :)
+
+>Cc: stable@vger.kernel.org
+>Assisted-by: LLM
+>Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
+>---
+> mm/ksm.c | 13 +++++++++++++
+> 1 file changed, 13 insertions(+)
+>
+>diff --git a/mm/ksm.c b/mm/ksm.c
+>index dbfb8f98b189..b0d0555aa1b5 100644
+>--- a/mm/ksm.c
+>+++ b/mm/ksm.c
+>@@ -34,6 +34,7 @@
+> #include <linux/memory.h>
+> #include <linux/mmu_notifier.h>
+> #include <linux/swap.h>
+>+#include <linux/userfaultfd_k.h>
+> #include <linux/ksm.h>
+> #include <linux/hashtable.h>
+> #include <linux/freezer.h>
+>@@ -1463,6 +1464,18 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
+> 		dec_mm_counter(mm, MM_ANONPAGES);
+> 	}
 > 
-> > "David Hildenbrand (Arm)" <david@kernel.org> writes:
-> > 
-> > > On 10/16/26 02:15, Roman Gushchin wrote:
-> > >> Yosry Ahmed <yosry@kernel.org> writes:
-> > >> 
-> > >>> On Thu, Oct 15, 2026 at 1:38 AM David Hildenbrand (Arm)
-> > >>> <david@kernel.org> wrote:
-> [...]
-> > >>>> I suggest the following sashiko change for linux-mm:
-> > >>>>
-> > >>>> diff --git a/projects/linux/mailing_lists.toml b/projects/linux/mailing_lists.toml
-> > >>>> index a9198de..ba123da 100644
-> > >>>> --- a/projects/linux/mailing_lists.toml
-> > >>>> +++ b/projects/linux/mailing_lists.toml
-> > >>>> @@ -46,7 +46,6 @@ ignored_emails = ["patchwork@emeril.freedesktop.org"]
-> > >>>>  ["linux-integrity@vger.kernel.org"]
-> > >>>>  ["linux-kernel@vger.kernel.org"]
-> > >>>>  ["linux-kselftest@vger.kernel.org"]
-> > >>>> -["linux-mm@kvack.org"]
-> > >>>>  ["linux-nvme@lists.infradead.org"]
-> > >>>>  ["linux-omap@vger.kernel.org"]
-> > >>>>  ["linux-pm@vger.kernel.org"]
-> > >>>> @@ -315,3 +314,7 @@ reply_to = ["author", "list", "recipients"]
-> > >>>>
-> > >>>>  ["fsverity@lists.linux.dev"]
-> > >>>>  reply_to = ["author", "list", "recipients"]
-> > >>>> +
-> > >>>> +["linux-mm@kvack.org"]
-> > >>>> +reply_to = ["author", "list", "recipients"]
-> > >>>> +embargo_hours = 24
-> > >>>>
-> > >>>>
-> > >>>> Which means:
-> > >>>> - Embargo 24h
-> > >>>> - Mails sent to everybody (author, list, CC list)
-> > >>>> - No positive-review ("looks great") mails (default)
-> > >>>> - No other static email addresses that receive a copy (default)
-> > >>>> - No additional ignored author email addresses (default)
-> [...]
-> > https://github.com/sashiko-dev/sashiko/pull/699/ , landed.
-> > 
-> > I'll roll it out later today.
-> 
-> Now linux-mm@ and damon@ has slightly different configs.  damon@ has no
-> embabrgo but send mails to only the author and the mailing list.  It is a
-> faster but narrower-scoped delivery setup.
-> 
-> I was assuming linux-mm@ side change will not make any change to damon@ side,
-> but apparently it is not.  DAMON patches Cc linux-mm@, and seems it results in
-> applying linux-mm@ side setup.  For example, this patch [1] got a sashiko
-> review, but it was marked as embargo on sashiko.dev.  I found and clicked a
-> button for releasing it.  It resulted in sending the review mail to all
-> recipients, not just the author and damon@ mailing list.  Correct me if I'm
-> wrong.
-> 
-> Could we keep the old behavior for DAMON patches?  For example, let damon@
-> setup to override linux-mm@ setup for DAMON patches.  After a second thought, I
-> realize this would be not very simple.  Identifying if a given patch is for
-> DAMON or not is implicit.  Maybe we could see if the subject contains "damon"
-> keyword...?  Still not perfect but maybe work for most cases?
+>+	/*
+>+	 * The old PTE may carry soft-dirty and uffd-wp state that tracks writes
+>+	 * to this address. Make sure to preserve these bits in the new PTE.
+>+	 * On a uffd-rwp VMA, also restore PAGE_NONE.
+>+	 */
 
-I just found sashiko has a feature, subject_prefixes [1], which seems designed
-for this case.  I should have read document carefully.  Based on my current
-understanding, I uploaded a PR [2].  Please let me knwo if I'm misunderstanding
-something.
+Nit: the uffd bit also carries RWP state, so "tracks writes" doesn't quite
+cover it.
 
-> 
-> For now, I will release damon@ patch reviews as soon as I find.  I don't mind
-> clicking the button multiple times, but I'm slightly concerned if someone might
-> be distracted, because DAMON patch review mails will be delivered to not only
-> the author and damon@ list but all recipients.  Please let me know if that
-> really distracts you.  Let's find a way if that's the case.
-> 
-> [1] https://lore.kernel.org/20261018220253.158238-1-sj@kernel.org/
+Maybe:
 
-[1] https://github.com/sashiko-dev/sashiko/blob/main/MAINTAINERS_GUIDE.md?plain=1#L60
-[2] https://github.com/sashiko-dev/sashiko/pull/711
+/*
+ * Preserve soft-dirty and uffd bits when replacing the page.
+ * Restore PAGE_NONE for RWP-protected PTEs.
+ */
 
+Otherwise, LGTM, thanks!
 
-Thanks,
-SJ
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
-[...]
+Cheers, Lance
+
+>+	if (pte_soft_dirty(orig_pte))
+>+		newpte = pte_mksoft_dirty(newpte);
+>+	if (pte_uffd(orig_pte))
+>+		newpte = pte_mkuffd(newpte);
+>+	if (pte_uffd(orig_pte) && userfaultfd_rwp(vma))
+>+		newpte = pte_modify(newpte, PAGE_NONE);
+>+
+> 	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
+> 	/*
+> 	 * No need to notify as we are replacing a read only page with another
+>
+>base-commit: 48fe11c8d0f1e4e59426a3606f20ac1130b6d8dc
+>-- 
+>2.53.0
+>
+>
 
