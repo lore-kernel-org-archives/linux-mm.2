@@ -4,120 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C6ECCF2D3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 08:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F764CCF2DA
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 08:41:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2FA46B00C5; Mon, 19 Oct 2026 04:20:27 -0400 (EDT)
+	id E45496B00CD; Mon, 19 Oct 2026 04:41:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0DCE6B00CD; Mon, 19 Oct 2026 04:20:27 -0400 (EDT)
+	id E1D7D6B0173; Mon, 19 Oct 2026 04:41:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1CA56B00CE; Mon, 19 Oct 2026 04:20:27 -0400 (EDT)
+	id D32E76B0174; Mon, 19 Oct 2026 04:41:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA3026B00C5
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:20:27 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5E8280659
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:20:26 +0000 (UTC)
-X-FDA: 85338678852.26.8BCFF53
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EF4E7C0004
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:20:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RwoCg+St;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A34E56B00CD
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:41:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 20A841606E5
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:41:23 +0000 (UTC)
+X-FDA: 85338731646.20.810AAFD
+Received: from gwu.lbox.cz (gwu.lbox.cz [62.245.111.132])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8D6A340007
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:41:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linuxbox.cz header.s=default header.b=uEIFfeil;
+	spf=pass (imf11.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
+	dmarc=pass (policy=none) header.from=linuxbox.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792398024;
+	s=arc-20220608; t=1792399281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dETs3b2ome9uziZhue1inxGS0jrP6uSNFUFfPPGZ4os=;
-	b=vt+4DpmScTc6COBabMz2UDsdFOoO8kuI3LbXh6RhUPIswfUsP/4wCq2C6V6sEGXD0Ao/1c
-	A0GW0MIIrYFwwmTqG+T4AkfFuOckoldPwnfYSgfm42TFlcac36m1c2gZE9uARLJ+XYfyt9
-	GLCFvjB3m4hCZ03rOTCU+VhQIgqz3Zo=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RwoCg+St;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	bh=uX2TPHTXMC8dGzpy+XOl7entqN+gnCyUv9Ljjb8ldcM=;
+	b=GngUvb6hFKyWOIovCuFByiXhwROui1LZHmhS4fZ13OjENriawUaLWq0vhgGIycdsA8vC0a
+	QTYBNIKdhmhJnT65GDNsrpaOgo3oXJaKZMw3v8yz1iQRRpo1lp011/bxpJWxicFsi6VEAq
+	T2fa1EYYUpxx42jLC7i2cmPzpnqxUrE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792398024;
-	b=UH6Vrep3XdL/VcCxpRExdkBo42/pTljio73b7y5DxxFWp3vAIxbxcSb5aHh1UH3mhihQRv
-	Ab+ZDdkab2gkewdWgFj5QnoelHuTasG57eO6lGgK1ymhvwvr2dfzNYV/BAVsnO8BJO+VVg
-	tJxKcbRr+FGG2A6Rey3jjOojVSjt4K8=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a0286c981dso19404795e9.2
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:20:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792398023; x=1793002823; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dETs3b2ome9uziZhue1inxGS0jrP6uSNFUFfPPGZ4os=;
-        b=RwoCg+StkYJj8iCjuU0Wls89uwnaI07TQ9t+XCvev1gueWm2ctNJC88ewb9EnUGv0a
-         gocp1TfFvMEuYvM4adKRzJuGMI2JEgNeiV94v+uDvum+6TGmeDMroxQsDkYrMBgREdUL
-         9i0TApkm/eSzbj41ogztywEKj/a295XhuRVhoe3DCCbrggbqfeE80P4mqQB1ci0wNMEw
-         iDoUGZxqjkEf97VLa5xMKvNUrUCXFuCXSLSWSYdes9iXqXLo+DXEpijXg9A21urQO71H
-         hhB0Ifc1Q9ilfXUn0Hyx7/MJM9TWbGxQOb4zcHaFAWRMD/A05EOYIxuRR0RVwcj8vDzf
-         VQZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792398023; x=1793002823;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dETs3b2ome9uziZhue1inxGS0jrP6uSNFUFfPPGZ4os=;
-        b=dmbkLhu1jYFrRU7gEii6RNk5wiTtKnmN2NICozmlJ2NunUarkDdmME9aXA5t51Mj/l
-         NI9h/KQgpCcS6gmo7hvSww41/rvk/WN6LlHT1iNwow163SbUdRjw+XCpgmB4dMwxa4/n
-         +ybyn1S6Iq785NwgJoEinMVKX6kK3htRTjT9Ypg5l72GPn1EYiAKO34w/yjDRZ28t1tY
-         8lZ+PP6LZO3Pr2yVNB8YOsOyKI2JL2u6O996BVblcXN9UmRZYQgXwTkrgMlLa9Ym8ujw
-         ASytRkZ723T4bQkXEjFwmeeQeKX7CHzRPcOIbWmBulKiPnimJG8LHN2LpRRS9GyafuhB
-         G20g==
-X-Forwarded-Encrypted: i=1; AKwUvBxzKtSiNVqWcFljGtkbCw4EO9oOD4GZLdQEobqn4z/ye19fTiEgJRVnnC2RqT6wYz6gRRhdk0jqYw==@kvack.org
-X-Gm-Message-State: AFq9FYLTQQClEmMhNjo/JnIaKhb7QzgMn4Zr0u0slP2d0Yom7oINeEpk
-	BTaTgUs9Jc7Zp4OjUHAaNQDtqtvo75wCb80jk+B2Cj0MAEZtnsOYCLop
-X-Gm-Gg: AYBFou1Zk8JVqU/SDpZE5yiTYYR114c3KWYDJp5/bIIEwFw5AnUa1WyZ+ESTKHW2e+J
-	LJuaPr9l4P8nQCHZhQbuB7Bup3FrdD16fDZQSwgiWZ5XbPt9523alSEAWckQ8+ReuQ3adzLj5EY
-	R3CuEI+75m/iicl+PqkleirqpJCc9ZE9jgErSW+BfOVXOpEbb43AIIOU8vDuVbIFGCVkWq1ljDh
-	hH7263Z5pVydilQxGbUgTVnDWnL59WLRqjG9Qtbh0B9kwmCHqbnT8Es2G2Zs2dgKA3AGSfFJuno
-	K0UFu8wuWeSvZ5OjHOvt0qbB3f1XLgIs1P+Rkq2+S4TRxYW0pHWsMjiwLVS0p9If9IAMDOj5Vz6
-	MGmKXrX7R+l+BxtWv9Q+id0dyeasYMQFqiJtLxXRBYXgZQIbdSMwLSoLCEVb5MAZmXS0hpray2q
-	2P76+4YNut8NDspPVqLjueq2hVyS5F2WtyAjDm62jEunsbYG2OCeLWw4/Gk7+jTTUa0FE=
-X-Received: by 2002:a05:600c:8b22:b0:4a1:8627:aec7 with SMTP id 5b1f17b1804b1-4a1d75e6fe3mr151926975e9.5.1792398023183;
-        Mon, 19 Oct 2026 01:20:23 -0700 (PDT)
-Received: from [192.168.1.18] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd9b8ebdsm385910145e9.10.2026.10.19.01.20.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Oct 2026 01:20:22 -0700 (PDT)
-Message-ID: <988249c7-abf0-4f4f-9386-27e835a4d2de@gmail.com>
-Date: Mon, 19 Oct 2026 10:20:21 +0200
+	t=1792399281;
+	b=kREgxM1vhmyXq37soW9j4pW0BWpdatdyAEnLm7+t64lNNB8bGPuzvyTt3AWJrgIO+3jC6z
+	ijLFbcjjwgmEQsOg1/952W21kkKkjZNL5bHRRqK1vJS2VdnoEncYxj3U0W1FaOeopm4w7V
+	ykXr9jexnVruM2jQQP+Nf3dgAl+7Ens=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linuxbox.cz header.s=default header.b=uEIFfeil;
+	spf=pass (imf11.hostedemail.com: domain of nikola.ciprich@linuxbox.cz designates 62.245.111.132 as permitted sender) smtp.mailfrom=nikola.ciprich@linuxbox.cz;
+	dmarc=pass (policy=none) header.from=linuxbox.cz
+Received: from linuxbox.linuxbox.cz (linuxbox.linuxbox.cz [10.76.66.10])
+	by gwu.lbox.cz (Sendmail) with ESMTPS id 69J8f2hD1170196
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 19 Oct 2026 10:41:02 +0200
+DKIM-Filter: OpenDKIM Filter v2.11.0 gwu.lbox.cz 69J8f2hD1170196
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxbox.cz;
+	s=default; t=1792399263;
+	bh=uX2TPHTXMC8dGzpy+XOl7entqN+gnCyUv9Ljjb8ldcM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uEIFfeil7ssJaBBmWiND1ItLKsRJcy4DAmF8CjtZoPI/WuyjzOd6Y1v3cTPpveuVv
+	 UOFr7zUgvX1dpfRXWXwgxD/+oxJVmazECRLFL8MmWeZ1QAVGHX8YC9I5Ynsa3rnWvz
+	 nIqJMTT1ibf/Y6p8ov3oRP2e91HaCdWzaguNav8U=
+Received: from pcnci.linuxbox.cz (pcnci.linuxbox.cz [10.76.3.14])
+	by linuxbox.linuxbox.cz (Sendmail) with ESMTPS id 69J8f1QH023969
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 19 Oct 2026 10:41:01 +0200
+Received: from pcnci.linuxbox.cz (localhost [127.0.0.1])
+	by pcnci.linuxbox.cz (8.18.1/8.15.2) with ESMTPS id 69J8evSi3176760
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 19 Oct 2026 10:40:59 +0200
+Date: Mon, 19 Oct 2026 10:40:57 +0200
+From: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>,
+        David Laight <david.laight.linux@gmail.com>,
+        Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, david@kernel.org,
+        Mike Rapoport <rppt@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
+        luizcap@redhat.com, pbonzini@redhat.com,
+        Tal Zussman <tz2294@columbia.edu>,
+        Matt Fleming <matt@readmodwrite.com>,
+        Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+Subject: Re: hunting memory corruption bug in 6.18.x
+Message-ID: <atXXma5NXxoSWJO0@pcnci.linuxbox.cz>
+References: <20261009090042.39ba9c06@pumpkin>
+ <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz>
+ <20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
+ <20261015172820.7961d2c0def74d41cc6c4b0c@linux-foundation.org>
+ <20261016031242.GDatGWKo98YSOhEOOn@fat_crate.local>
+ <20261015211832.45d87fab15bb3e0bbc2f47cb@linux-foundation.org>
+ <20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local>
+ <atI_yuCc4BiweBQP@google.com>
+ <atT5TYyLapHO5ZoX@pcnci.linuxbox.cz>
+ <20261018201538.d0957878f378a9821852836f@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] mm: hugetlb: add CMA support for PMD-sized page
-To: Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>, osalvador@suse.de, david@kernel.org,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1792136742.git.zhengqi.arch@bytedance.com>
- <FA455F0C-0A46-4B5B-AB50-E9968001D2C9@linux.dev>
- <4a7ad39d-fee6-4390-beff-d40ecf49cbdc@bytedance.com>
- <BEADD50D-94AA-4B05-B9AD-136E37247FDD@linux.dev>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <BEADD50D-94AA-4B05-B9AD-136E37247FDD@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: EF4E7C0004
-X-Stat-Signature: q9sxuxgkdxsonep56g8fzqpgtayeyepd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261018201538.d0957878f378a9821852836f@linux-foundation.org>
+X-Scanned-By: MIMEDefang 3.7.1 on 10.76.66.3
+X-Scanned-By: MIMEDefang v3.7.1/SpamAssassin v4.000002 on lbxovapx9 (nik)
+X-Scanned-By: MIMEDefang 2.86 on 10.76.66.10
+X-Antivirus: on lbxovapx9 by Antivirus 
+X-Milter-Copy-Status: O
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1792398024-415210
-X-HE-Meta: U2FsdGVkX19tmm90zfR91po6sHiPqkTL2p36+8H0IOQJniYnq7X9ZTWNXSDIQcUXMCCZ8gatwA8aIyNNVUx9Ycu3pWMW/PYyo/0fp85bjbPpHGORbrFcOBzDnzLRd2ia8EN0E5R+TPMrwXD+t6LDOi/XeiYPXIIiQ7N8XZjaXjZbnFgVI/xM1exgcCodg7LKOtrIyl+3HAjK0Fe24S3qZ1SncUyCDI6M3es5bwZVVWMeshxy4tbmfAFCUXjUpvGn8nBN/QRFUZonHMQ8sXUQqcnWCMxCd2C3qKL3JpZUv4panMj2k7yf6Cs7SaVkGr2VR8sG6SvfzgKA8nBdvBXKlk/EJnzahiiD0dLQJ/IkauKkTh3v6lArtcOsT47wNm7HaaAa/u5LZNDnSBhOoXSe1VaUqEJcaYIgZol1a/i1fKwVexmVyOSLMkZy7BTJF9z/lh3k3MzK3yrQBWwbouEjU6WmbjRMfbfnHyigDPZP7Ri04VIHYLi+yuJtEUKmDMD2osvtlgSXvHafG+usgans0lyMEAjZTUdQ/c39EV/wb5EaYMSpa6i6q6vi7I3LHL7jFudweZZdNhASNxwT/ru1FFXJVI1aqYKzS6ulBtA3jzpRumbqGfEzjaDPJpS3u5A9EMlo8fKW7zSTyVGKKecR71vDZAJcwfKuCo+I6AW1a1zRrxeube0uF7ka10KBlUG7+kEJflL/udkmxxke625zfeGsNqystXKIOQcTVe7iVd8jqjPG16qu/DpMMZx7vevAOVY8NymFQawf/vaACJt5PnXzM5HZzB9kluZd7D1cgwMjVbf9+fUcTfy94dLZjENhbYqOJ00xOerEdM2bfNCQUdjtniPL4kanTXrrB+SrcAr2/6iNyeDQinOa2niCcb9goETf85GH2KuAqMfbJOU1sy2VOubOumchSc9EXWqnefopQCI4A3PBK6gR5UJIYiqVH1I6UREDHuZHeUFtECb
- /sibWKhc
- BFzOWoxDy8Fmit2RhxcLUeTkm3m1fIyzLTVWUu6oYUAEweqDJc8ZKBWkU9kUhMRGeIeuzYRR4VcSfAEqImHqpLjMN37k4wkBJ0PpiOax34Gb/xkOZYwy50oj7yh5ewJERgRYyD+QRKh6pqvVU5PgqYCBNv2GJ14HzO2pFWTKg/BIZwZnwi/fxCqliim/esVR5Bp2GBZN6gF3CKI2N4u7DhFokdXpAK+rFa5r9q8LHH1Jv4l0lKVWC3NWP2UZDIMc/4vbU64zZSAKf7g8adqWVEqbmFoAZjEilaxEB6WhiNQTY2tw43eF3smWwY8rvd8cmXjrH3LQxrfCXOsx+SBPQr2XoavSO1xUCPs3GlbFLYEv//wD+9xziSty3UPP707MjFHeGoAKBskuaBrCQl9vFojPDf9tHDqiVZLHtX9gVZ+xxGDMvuBt/6VEtSrTA5sbtcKs4dogGuiJMP4iqYt4WK0o9uJiirTnR8rZNCMDIb93gbX/dkCPwGOpy4w==
+X-Rspamd-Queue-Id: 8D6A340007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 35mep7w9xnsprinia1yzohsdt3b98mz8
+X-HE-Tag: 1792399280-833328
+X-HE-Meta: U2FsdGVkX1/Ltvqbk6rKmFP16+vqXXOMA7GhyVj/tn6/lTtCP3cJIBASH1dDkfvqb+pnZf7f7QP3a+/NaEI0SIMPFxKZLhh/zPr8Fwitw750zbxhczMSl3OsM+LVwT+9wonQXw8MOKr+DhzACcuTyK4SCKXmvmFhyIc2yDTyvlT/zeYhZ9eKM67t5u3/3Sl/jlaiG5Lp6nM7YweJUr2zfsGPeRy6SJTy8o5taTrXqFXR76prlDxaYG42ePm8Qv+wUa4mw9StMMnDPMFxDzKapq0FKyWy3hCip89q0yLdPTGNTDsCEosqN6BjTGzqzNw2jcCWZYXstsDgTvVy62xHgyALz8rUGMZ3FnoKIeMkqRvqv6KebrdI4Pbli7Wzg7BEUTWisHDNLK1fo4SsLytVo8j7J3sx0lBs05A6UbGMdd0UipIGGBnPjwKlfksUBZspmZLjNktZEX6LtCD6Px0IPYEHIaF2+i0gaLjk8N0ox3K6oNEpduEJGnrwCbJU2Xd5CI8EDrDboCPIQAiuqc2b/M7asCEclnDPCQbOOgr/wul4JcWSVIpAInK1u/zXiyM4W+9EkwyxlHD72UZ+oEG6sikP8OFrcXbcI5pDrRhGQ0Ei0C9Rljv8DNaFAKUzbtcKDdof4YTVKI/HgEYzJh197FECYcGtGNC20pWDFaiubMDdOdMSo7kg6dQ/ydWpm1dnPs9Op+kSuY57USnndQjBDSo2SXh07Txer9HENdQZpRuOkjKuDdKlBdipmIKNSumtRubZkaxwBAstAvAxPkJP1RxFJ+7b7Lku0aTmEhpQPZsLiBgn6k4Tczpx+gXLyDwY7G8OwT7BvwfKWovcqt8A8IV23kO7UotJ2qt4zosRW1c/7hT3HeM6UBGch5pwxEUwHg0GoyQWtTvAZiZQFQmXttPaC5vLDNtaIkWfOkdY0+NrNEqT+BIfijj96GYxLNHlhgcc4WiXzjH6wX2QVPr
+ vIc/DIxx
+ nDFlprhaqzYea2k9Yu86j0OhDaDGncBZPBuypvzlYUMbN9W+euWrC6CM2MAS1scXLRDcRqfomkJkLHEsThv4ECHKS6vijfHKHdmSKIt/Qo7ZOOKR97Z0Vhc9/tF2yg/k8FhyveqoVxml57DkC9z4rUIdyL7KxRIVvq5lyRxdoBMyEHNT2/Q4YpDAyDMxYe4Jbm8WQcmnVVXNPqQy1iQuKC9ZN0TFwInEFdHS4ncZK+ARVQrZFdHLHDGYf96MzJs//tCWx+/kSMcfE/epeHehdpZUWfGuOrTdTYbemeY2gKQn/wc4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,78 +118,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/19/26 9:50 AM, Muchun Song wrote:
-> 
-> 
->> On Oct 19, 2026, at 15:37, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
->>
->> Hi Muchun,
->>
->> On 10/19/26 2:50 PM, Muchun Song wrote:
->>>
->>>
->>>> On Oct 16, 2026, at 18:07, Qi Zheng <qi.zheng@linux.dev> wrote:
->>>>
->>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>
->>>> Hi all,
->>>>
->>>> Allocating PMD-sized HugeTLB pages at runtime can become slow or fail
->>>> as physical memory becomes fragmented. Reserving HugeTLB pages at boot
->>>> avoids this problem, but keeps unused pages unavailable to ordinary
->>>> allocations.
->>>>
->>>> Live upgrades are one example: they need additional HugeTLB pages only
->>>> during the upgrade. HugeTLB already supports CMA for gigantic pages,
->>>> but reserving a CMA pool for 1 GiB pages can fail when physical KASLR
->>>> and other early reservations leave too few suitable 1 GiB-aligned
->>>> ranges. At runtime, 1 GiB allocations can also fail when pages cannot
->>>> be migrated out of a suitable contiguous range.
->>>
->>> Yes, that's our use case at ByteDance. Allocating a 1GB HugeTLB page from
->>> the CMA pool is more prone to failure than allocating a 2MB one. To improve
->>> the probability of successful allocation, we typically configure the CMA
->>> size to be larger than our actual requirement, keeping a certain margin to
->>> handle cases where temporary kernel operations (such as DMA) prevent successful
->>> migration. For 1G HugeTLB pages, since the margin must be an integer multiple
->>> of 1G, the extra memory configured as headroom is also relatively large,
->>> making it less flexible than 2M pages.
->>>
->>>>
->>>> Extend CMA support to PMD-sized pages so their backing memory can be
->>>> reserved at boot while remaining usable for movable allocations until
->>>> needed. This relaxes the reservation alignment requirement and reduces
->>>> the contiguous range required per allocation.
->>>>
->>>> The series adds an optional @<page-size> suffix to hugetlb_cma and a
->>>> separate PMD-sized pool. For example, on x86-64:
->>>>
->>>> hugetlb_cma=4G hugetlb_cma=1G@2M
->>>
->>> Different sizes of gigantic pages already share a single HugeTLB CMA pool.
->>> Given that, why not let 2M pages also reuse this same pool? Would that make
->>> the overall code implementation simpler? And if it does make things simpler,
->>> should we go ahead and do it first?
->>
->> Sharing the pool would simplify the implementation. My concern is that
->> small PMD allocations could fragment the default pool and prevent later
->> gigantic allocations.
-> 
-> Yes. However, the premise is that there has to be a mixed-use scenario.
-> I'm not sure if this kind of mixed usage is a common scenario.
-> 
-> Of course, we don't have much experience to draw on, because on most
-> architectures there is generally only one kind of gigantic page, and
-> prior to this, mixed-use scenarios could not arise.
-> 
-> Therefore, I think that before the need arises, a simpler design is
-> easier to maintain.
 
-wouldn't a shared pool still be sized and aligned for 1G? then the 2M
-headroom stays a multiple of 1G and the 1G-aligned reservation can still
-fail, which is what the series is trying to avoid.
+> Well we initially thought that nested virtualization was not involved.
+> 
+> It it indeed is in the picture then it might have been 55780d8a1dcc
+> which unknowingly fixed this.
+> 
+> Are you able to test that commit on the 6.18 kernel?
 
--- 
-cheers,
-jose a. p-a
+Sure! And I have more good news: after applying 55780d8a1dcc
+to 6.18.56, I was able to perform more than 30 migrations without
+a glitch. After booting back into 6.18.56 without it, both VMs
+crashed within 2-3 migrations. Furthermore, some memory apparently
+got corrupted on one of the hosts, since various commands started
+crashing too:
+
+[  303.466091] traps: systemd-logind[3085] trap invalid opcode ip:7f7b5667e616 sp:7ffe1afdec38 error:0 in libsystemd-shared-252.so[7e616,7f7b5666d000+22e000]
+[  303.493810] traps: systemd-coredum[11269] trap invalid opcode ip:7fc6bf67f614 sp:7ffc075da958 error:0 in libsystemd-shared-252.so[7f614,7fc6bf66d000+22e000]
+[  377.528955] traps: systemd[5607] trap invalid opcode ip:7f791447e616 sp:7ffe83e61cf8 error:0 in libsystemd-shared-252.so[7e616,7f791446d000+22e000]
+[  377.556993] traps: systemd-coredum[12080] trap invalid opcode ip:7f97ce07f614 sp:7ffe28b56a88 error:0 in libsystemd-shared-252.so[7f614,7f97ce06d000+22e000]
+[ 3746.173043] traps: hostnamectl[45846] trap invalid opcode ip:7fe00cc7f614 sp:7fff89916e48 error:0 in libsystemd-shared-252.so[7f614,7fe00cc6d000+22e000]
+[ 3746.202305] traps: systemd-coredum[45847] trap invalid opcode ip:7f7fe9e7f614 sp:7ffea227cfa8 error:0 in libsystemd-shared-252.so[7f614,7f7fe9e6d000+22e000]
+[ 3750.581940] traps: systemctl[45903] trap invalid opcode ip:7fbb8967f614 sp:7fff733e5748 error:0 in libsystemd-shared-252.so[7f614,7fbb8966d000+22e000]
+[ 3750.612651] traps: systemd-coredum[45904] trap invalid opcode ip:7f90d347f614 sp:7ffdc7f55148 error:0 in libsystemd-shared-252.so[7f614,7f90d346d000+22e000]
+
+I'm not sure if this is of any use, but I collected a vmcore of
+this state by intentionally crashing the host via /proc/sysrq-trigger.
+
+Anyway, I'll give 55780d8a1dcc some more migration rounds, but it looks
+promising.
+
+I'll report soon
+
+Cheers, nik
 
