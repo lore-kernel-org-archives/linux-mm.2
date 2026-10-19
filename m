@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDD61CCF2D3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60F3DCCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 05:02:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E31596B0120; Mon, 19 Oct 2026 01:00:42 -0400 (EDT)
+	id 50CBA6B0123; Mon, 19 Oct 2026 01:02:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E09226B0122; Mon, 19 Oct 2026 01:00:42 -0400 (EDT)
+	id 4BE0D6B0124; Mon, 19 Oct 2026 01:02:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1E706B0123; Mon, 19 Oct 2026 01:00:42 -0400 (EDT)
+	id 3D3B36B0125; Mon, 19 Oct 2026 01:02:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B347E6B0120
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:00:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35768A80BB
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:00:42 +0000 (UTC)
-X-FDA: 85338175524.06.BEA643A
+	by kanga.kvack.org (Postfix) with ESMTP id 198AE6B0123
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:02:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 224FCA819D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:02:47 +0000 (UTC)
+X-FDA: 85338180774.21.F9CAD61
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 38010180005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:00:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="a0VF/tta";
-	spf=pass (imf16.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792386040;
-	b=CU+gTjvGgd+nHUdWZyx4VCB6kvsldcqyza9dbSuLHMik9bpYaoldpKYzYgvRvCpQVxCTex
-	MbUzPy/Iw/MY72XeUpfe1TYnV87TAaW3UthCEWx69ugenWke3kJN3vfCWCIC3TFiAXQje5
-	bFBcZglsJPMnBBHlcDrys77+MNKnppI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="a0VF/tta";
-	spf=pass (imf16.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2F6641A0006
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 05:02:45 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="F/vu4sl/";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792386040;
+	s=arc-20220608; t=1792386165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=trJxfOdGMmGPD4wULnd0WACTIKb/cR1ipDUXsqkxIZg=;
-	b=wzVRMDF7buGKHBSjwQ0W1jq94AGOOnvvkWVx1XMIYj+kxjdNEFlafwKtU6KfM62EU4G4SL
-	Uqa9NQYI8mmJNUVN4YKw2e6YpF2qkiXi6XRTxEAe5kuJTvwXcgWHjoN5SM7OAthuky4xcM
-	b1qe8RwK2htjfimCDPwUAT7gRyUNq5Y=
+	bh=d+82KpTqWIxKLWYpfS12tE61Rj9/9wRHeFszm2cr2MM=;
+	b=XeO6WT3WSxQvdDthA1sL7Vql7C4bdOfACoTaaZW/Sroo3g5QqrN/xiTIeQg6Fk0xBvbWOG
+	c68VQD1eDPsGOQfnH62sLfFBlYEdzMsaDDF/XtjLFvCK63+S6o1zhlAEgswde99AkL9J3s
+	u325qEHX5JnIcUHtYpRVg9yQzlcf1vc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792386165;
+	b=tmQqMHCfseoGHoGuJHYHUGHRUMdA7+5Hp5eWrfQa5yz3FUurtISuBbfwFfn7EuUJj23/Oj
+	uDRuTv3Wc1m9IjH6JuDdByhdnlwNTMj9ypVH6iWO92ySp9eyxsvvm04CbKNA3/cNHRvPUX
+	9XIqHlDkjHT/g/QtTPEiYExcTXkHWOQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="F/vu4sl/";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 270A91476;
-	Sun, 18 Oct 2026 22:00:36 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB42C1476;
+	Sun, 18 Oct 2026 22:02:40 -0700 (PDT)
 Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA5933F673;
-	Sun, 18 Oct 2026 22:00:34 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A9B473F673;
+	Sun, 18 Oct 2026 22:02:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792386039; bh=MpFXJGreFC947YOltE/B3dvQz4LgDH3h21f59hHEwMY=;
+	t=1792386164; bh=Cj/atyE4UCUgEPfqHW1EGv7amQMnd8KzvEvOkzLcWVc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a0VF/ttahHJY/sgcOLILs9GCKnmV6no4P6mR2TGUNcQXP9b5xmzh7MLKTsWeSjo1t
-	 eeR7yREp+doEhnB25y8EnTyBQkFA/vG3+7Zu5Wtde9KgSTRZgFQvhATrGq4da0pRUU
-	 pIaBw8jgrCtX4KqP0cBR2zwxRpiuOewhk2JL1OQA=
-Message-ID: <964ec917-39f4-4309-8dae-fa41e2df16ed@arm.com>
-Date: Mon, 19 Oct 2026 10:30:31 +0530
+	b=F/vu4sl/jFktMyJt2cKI0Q2G7Vdoa8O1y4xrvofUVi5wxET9PTUe8/yjpk6QDfIiq
+	 rhuUParGnSZxzXCjU59/2UQdiqUZgl1dFVpFDhVFskymh8DAllwGS0G8T62gRaYopy
+	 Ckj3bT27fkiN1L3gzL4soSU44vj/8bMchO1CsI/k=
+Message-ID: <4459b993-84e5-45b8-9cf1-154457facb22@arm.com>
+Date: Mon, 19 Oct 2026 10:32:36 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] selftests/mm: check that MADV_PAGEOUT skips holes and
- swapped pages
+Subject: Re: [PATCH 4/8] selftests/mm: check that MADV_COLD and MADV_PAGEOUT
+ reject hugetlb
 To: "Gregory Price (Meta)" <gourry@gourry.net>,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
@@ -74,20 +74,20 @@ Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, shuah@kernel.org
 References: <20261014175756.2035176-1-gourry@gourry.net>
- <20261014175756.2035176-3-gourry@gourry.net>
+ <20261014175756.2035176-5-gourry@gourry.net>
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 Content-Language: en-US
-In-Reply-To: <20261014175756.2035176-3-gourry@gourry.net>
+In-Reply-To: <20261014175756.2035176-5-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 38010180005
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2F6641A0006
+X-Stat-Signature: dh3tunis7jdcwtai1398cpatbxqgixoi
 X-Rspam-User: 
-X-Stat-Signature: 5taq4br4sufzdj8rio7oyukj4yak5d5b
-X-HE-Tag: 1792386040-658160
-X-HE-Meta: U2FsdGVkX1/tXn0OAiLkv1Vq8TaBNRaYETtEnT452hJI0YuBW2pSgLcj1qVczkZe8epK5k9ehRahqii1ARNjkjBA4s5KTpduDE+/JzFYs979lDlt46M1jMkdYsXZeYGXvzV7ezCJT0lIfZbsTc6+8m9FNAaoOT1HAO2wWSUrMX32Jjsb/4fc9PbiSX87KLLI/v87bgdk+mTCy7iNFjpMPYq0MiW7MHyHd39zfEs08JGGDoMJv3SC07eXuP+/S0yu/Hw+xuFOgH2NyOYpFgAmCOmZjGiLoaM5ykGur2fybjX7FOTwHrhIyGu3kRfORaD1xDpvWBH4X2qZHBQQcFsBC6HUbuHizQGLbaDlKYD7guI0Iijy1FxDZz1mkA+DWxHz2Sas0BeuhvvCtr2U/PMW5BMgl9wt/xHBPApGqCTYpQvwEvSGXUuEl/EawlGIAqmraHMKHGHtwLaEHuE+XrkvQM7lzA6Eo3v9rkE6t5Y0qBJee8xiSL65YJhDhd9ar4AmeapVIzrnh5BIeFIXkqNiogiIW54eEbFeFCR70251iX+QmTdoEgSJUcE9gFFEFwUIE3LwQUgqdRDrhCEWsc/QFKu0TJzY0lHF5mJ6VGXLHh9ClUqEOPDj5+oSCIYwzS9WvKn3KTm0FsSBWVDXngmW8rT+xe7XWQ7DNitlW5P8IX78aawzRvu6SM50FnxxdOQjNBE4kwO1RIBnPOFKuxerU9kIEEwIaxGV6eS2g3ve9UBd9JpIIuCTgN6waW5NHPbIiVd2P48YLQpRwYzCU8TydE7Qcg8lyq/kR3KzWT9EOxmlbAPcC6w/S33U5yQj8gkck9tUjjn7n5d8lTery9t/5L/x+xKq4QDE7bP7w1jiGX/4B/mFm81ehNrbL1sv763+46+QXvq/SqydPjKhqmZz2zeQT3tl2sSzqrQaEBL6dQOba3pW+CdAiI/OlRAEbvu9hMgk9rPFk9STrzjKxg5
- jgXQ+3yh
- CNWlDkpBHL+26KDLA3AzmipReP+ArU4CUXdZQyk2I93SbSH0GnEKV6ZVeHfMC7dImhpVEyuY5ghwWGEYoWZoTFodRvlzbPhH+8pu/LZ2BJnswDuLI/CbpX+x9KqULGTFRS/ZfwaHFPDSZ7AeRPWaL5P44MEzDSuyAYmUZntgiQxugqoRBSJuvfcNUWbrcpG8VdELnRRdsJh/8awP3N8oWhAFq06PZ4xOVRR2+DVr6DB1Rq4/6Yz2260YekAyj2nu4mTjcd8ReCqkbnFxVBCcySmEhx2uCu5NTOCLzBqv7nrsjljz7fy0o2aQzIq4sSKfzXGv1XY0pfn3KKPGmOOHuiMj3iybuFIWFG3bQP98ncpZY5BHwJRrgRawZh25M+6e9rtKkoCg/j0Xhwe7EWL3LsW43Zg==
+X-HE-Tag: 1792386165-631325
+X-HE-Meta: U2FsdGVkX1+hVYxOQ6zVwp56XbaniJ3w9GcsXcmBjBVVws4J910g5ims2VgNnsnzJBPr9ldcaq/UmOwaMJAuEVk61TX0cOYzBWJjUedtnbsBRO/jQ1GMyX2MB1KvHkv4MfvDOavMoZZ59E9Nm0qeRMGXtVah3l9o9Pnq8H3z58WGVnrKxy8ZvlAD7XE2iBQTAKtSL+mmppoAR475cN8LL4ooJh9wfwBiGh+ZS2qPdMlKJnkjdlr98MFXxAVAYZE1h4ZpGCU9OiuD9lRXOd7qBMa4n0WIve5TYyTMHu3w8g3YtcV3T63N8uTdI4JJ54m5CLg2vqQMu6GqKlM1TFzOwnzg6NV7c2LFEUMVdz10UbRIKqeeS5FDFYI4jNTnbInoB7hhiSXc5fOiS1dXf8tHhRJcY65kjW6wuDtgrpSAMD8Np5hQZt7OfQQu4pxWZajxGYaw1YEti+JYTmcoTqMaSrA/p07gQBz1ap1coSwPWKPIKyiMXg2DGbK/eL3uvENrioOw8N0PbACiL4FZNAgpoWXy/PM4/n378d+kySl7cAor5BUmJe/LjENiIbTvvQXoqG5ijcxESAGVB1AfzYS5JE8BP7Jk1p178kmqSRg4j5Mq/JEz+qnF9Mi7FwuTe2VXqsiFLdFYooQP99AcShWsCdsKkb2f3RboOaz9SsrN2Uonzby/O72JZBch/84GVQ1QAaUzzAqcIYaSkudLeAGUbKibisqOulEBzmo+y7X9YVGG1AyZi/g4tSpoND/j9VcF1BTaG4LO892eFDbRzN107xpLEj24xo2UGrrywCAKxmeIO7hARROg/NfChiIWK8kGARHUt1IS+rLz0+M5BMRoU5SErh4UU8tjGsUGsH/h50VtCse+UZydj9d4cFTFDC/BA6RwxPkwghzkZXT5UB71/XQi3wGODbN4+BfisPUKABKzOfZDfMMZv4MBoJzK5AdudE3Hb/0VR8sczKb6kLI
+ jzrSUNy3
+ nmWflXgAAChKU2zyBfk7jZQWvR+4L7rPpgmbBa07wrFCVS6K3S75yCK3TPb6eFmr5KUDu2h7V+gok15mrqpj7C0R2HfGf0xAlFDyxvARFrduST+j7ags74i97FBLWNY5NcXWoeHH8aeuIZnuL1XBPoWNMjBZVcVj2UIlachVe6QpSkhVgW2EomYeieBbzUGdUIGU9Cu6I0xoE3om84FEdYlDQkQetwGyzLelR4zi1g1I38jT33GisqUl5iuOTmubh0X2Cu/EG3xuuZobQqU6bdoxKjcQJfD942P60jGp+k7Cg4+aMlanwto+0WO+hpFlJ8/3vd2u/TACWh4SXTqvIFy8R6AjOvmGsu+90y02GbftMcCk/fm8zhvuWBM6BpNaZXt2mqnZTc3WborxN09sMWoEM1PyLWcX+OiaQVOx0fhaD5Y0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,16 +98,17 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 10/14/26 11:27 PM, Gregory Price (Meta) wrote:
-> The contract tests check that MADV_COLD neither populates a PTE hole nor
-> faults a swapped page back in. MADV_PAGEOUT makes the same promises, so
-> check them for it too.
+> Neither hint may be applied to hugetlb memory, so madvise(2) must fail
+> with EINVAL for a hugetlb VMA. Locked VMAs are already checked here and
+> PFNMAP VMAs by the pfnmap test.
+> 
+> Check the hugetlb case for both hints.
 > 
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
->  tools/testing/selftests/mm/madvise.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-
-LGTM.
+>  tools/testing/selftests/mm/madvise.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+Looks good to me.
 
 Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
