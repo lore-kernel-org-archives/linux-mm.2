@@ -4,90 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27A02CCF2D3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 04:35:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C743CCF2D3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 04:49:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C80F6B0119; Mon, 19 Oct 2026 00:35:24 -0400 (EDT)
+	id 9868E6B011A; Mon, 19 Oct 2026 00:49:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 378826B011A; Mon, 19 Oct 2026 00:35:24 -0400 (EDT)
+	id 937A36B011B; Mon, 19 Oct 2026 00:49:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2909F6B011B; Mon, 19 Oct 2026 00:35:24 -0400 (EDT)
+	id 84D9F6B011C; Mon, 19 Oct 2026 00:49:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F39466B0119
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:35:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 85C40405D3
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:35:23 +0000 (UTC)
-X-FDA: 85338111726.12.87B49F6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EA9B1100003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:35:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzQGxFq7;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 56FF36B011A
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 00:49:09 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD20E120421
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:49:08 +0000 (UTC)
+X-FDA: 85338146376.25.D886DE6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9CB36180002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 04:49:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Mod5dmx4;
+	spf=pass (imf24.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792384521;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1792385347;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4yJfhlID4fPBOMkqV1WPDOqXgcDXux6NyWocqTjnn2g=;
-	b=mTGQDtTVNiCjYTrgaYhgdXDm5LlHDXpMqQcdlrTkGIG6rJ2WKD0GQV4MZj72gqYZSckTlx
-	LtCEvi2RAtoCWygs6aDJrSVIfyMCSVx4G3VX+SiyOcxX8sZEgkVmwYfysuvAH59OO8lfKU
-	JKckHLf4OP0p7jOX5S3mJdJEwSJ3/yQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792384521;
-	b=MOpqgZfS8IbbJVt6LXk14ybJ3XSV0K84abWT9DrgSjog5fMkUWxmp4gY73S0gdXDnFEQKh
-	gxtB2klfqRSPQNkQF6X8FD+2gGT3qpU79hO9+DC9wrE8TLb04tR/+ZBaOcELkKr0rJhykx
-	zew0qsMnLesNJLqvtswqbV9t4k3wrbY=
+	bh=nzSOmacPqNQprQe2LTkZuDJfdNlgHZO8T/fGbyLS930=;
+	b=b6HNg+XLXWveFAMcN6G00GN0dxiiOwmIwjDeMSCSpbWUAIgw+K8b1Vg/feo1F5/HMMuq79
+	Q1GxSmk6yFFaRpnsSILgOO4lUNtS8PpCUirPdYM6YfLG00kRyV5AoTPeSdKdyz/mh9j+YS
+	jDLiVQ61IbZivbYcemKNJjRE+XjcO4s=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzQGxFq7;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 665EB601DB;
-	Mon, 19 Oct 2026 04:35:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404CC1F000C4;
-	Mon, 19 Oct 2026 04:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792384521;
-	bh=4yJfhlID4fPBOMkqV1WPDOqXgcDXux6NyWocqTjnn2g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OzQGxFq7LnoaH2sBKLf4N2VMO2ZNXiWKD2jjmIm7oya1wsXuWDnVXYYSdz1i7KPN9
-	 PL2VCbQv09vKJb9fU6nZ2w0zli5D8OUDeOWUAFqIor5+PS0aXbPU81bUIfCXmnhKqv
-	 Bb2E9f+YNIAKNBmxMUAvubAT9eWsla59+tHY91iu7JKjcwWJciQhsRnIsY84PZgSsR
-	 G1CvKKxjmLaILM06FvWzPCz1E05w+Vqg3fjjKhaKJ4s3WLoGeRiIELwXLFBf9YvdPj
-	 K+4gw6q0RHz2Zsxzq3uMbB4jJbLEvLKKgJPRLH+TQPUAS31EMEvaB3FRhjj2AgaVHJ
-	 qXBNHllpoMrgA==
-Message-ID: <sashiko-outbox-176636@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] kasan: fix runtime shadow page table synchronization
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Muchun Song" <songmuchun@bytedance.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Alexander
- Potapenko" <glider@google.com>, "Andrey Konovalov" <andreyknvl@gmail.com>, "Dmitry
- Vyukov" <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>, "Dan
- Williams" <djbw@kernel.org>, linux-mm@kvack.org, kasan-dev@googlegroups.com, muchun.song@linux.dev
-In-Reply-To: <20261018043501.3257632-1-songmuchun@bytedance.com>
-References: <20261018043501.3257632-1-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 04:35:19 +0000
-X-Stat-Signature: a8w3k86n9j6k997iapd1txwxjtjz6t48
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Mod5dmx4;
+	spf=pass (imf24.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792385347;
+	b=wb5TwPurNsaS1zYdC+XEyAbahXdYv1zicA1mCMcZcSSLDcuB591bvFqzMTlH7gLLBdB/fP
+	dzQ1hOBQYpx0MfGFZDKn2EhtkwbhAippTX6WjB7OPjygwzsq6k/oeQCLrUTnldZwVF0J22
+	dMP1FDmFJY6y5+HeRd41iLlUQVc1aMo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 480CA1476;
+	Sun, 18 Oct 2026 21:49:02 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E4513F673;
+	Sun, 18 Oct 2026 21:49:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792385345; bh=si7QsQnsH09mNJsPLKAXHcWxuGvdCBwgZF+8vn9kW/k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Mod5dmx4zAhvQZJluv51WnM0iAhgYxZE3XO6/39Mp14IHn9gbJTDXu5FzUzpKMBPp
+	 ShmIFc7VCfiJd5rhnBIp8bKandPFZpCAC+ULCS9WHgaNJsXcH7PHKahVPy3FcqHSvd
+	 r0uvqM4bLS6LAz386V0ecFiIfMEJipEyq5fH7Zzw=
+Message-ID: <f74f6e87-1a6e-4b45-934b-d13fdb0c6ddc@arm.com>
+Date: Mon, 19 Oct 2026 10:18:58 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/8] selftests/mm: check MADV_COLD and MADV_PAGEOUT range
+ handling
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org
+References: <20261014175756.2035176-1-gourry@gourry.net>
+ <20261014175756.2035176-4-gourry@gourry.net>
+ <73c55ce6-67a5-471d-811c-facf712b2fe9@arm.com>
+ <atIkDw9r6CVDJaG7@gourry-fedora-PF4VCD3F>
+ <atIvbzEGUcyCqdC7@gourry-fedora-PF4VCD3F>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <atIvbzEGUcyCqdC7@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hetryy8pm4h4pry1m1cixezsgfijytpp
+X-Rspamd-Queue-Id: 9CB36180002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA9B1100003
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1792384521-456206
-X-HE-Meta: U2FsdGVkX18eFOjtLu6FBxF5fZwKizJaWU0vQpmjpu0yaT1E36PqSCqIFPhBPstG+9lQVqwg3J4eq1Ar5+mT6y37/7Um5ctADD25xQmXBxV3Rwmg8HTRHbXk68lp3qKXDIbbQ4wYsZjI8GddGw8ZEQRbItv3AwSjFwYg5A56G+N6IcDy8fthiOl4n/Tm15RB/MdRoxqwTUd8HGDvSbyg/oz9ON6uq4bQGyOYoENzbl14ncudPTUCOMq8n7MZsjXf2mz22Wg7yIVms4Q65yeSKpegyJXLa3zeiAVtyD9nnTiSKFF3RDVATIEPWNFhisMjzs1xhK0cp545HKA9wF2Z0+YM2MltbeYbgXdCRGh+KuWrjXZqQqq4MP3KJJaKiolKsVZ7nPG8c22AS5MbsvMHY0Gwvro+vfhCHtExl7tIXNllibV2Munt4JatlwiigeHn8OGEXwV1HOsOvdcBFlZBuwj7nBeWKhlVZmepCxfADvxRmkJTiXoXWOu+mLI89s80UqMXZBJqmI7i65BzP7QXRfUzGxMnIahYYcpDSQj7JjBjxtyL0IIG17cJz0FfKMUPxuBQMmr5i9X1X0VdFq/cSMyhkJdbro1xbb7Pl33eN8kM1bdOXRMCmuUPaC/CbghoYG8jkrgREvCbcH1z+bXWUx276Ip2N/j86J762asMU6onetNKgkWtkg7Y6VwwOG/yks+sYMRcVJo6NTByuUBDzK6iX7j7S4buG6Jjm09cIk23vuFGj5m89dS1sYnvNZ4AzkFo6fY3mitAJmnFw1XZtKvfqYlGrBQfXGaH6yjq37EY7hJAFROy+8ZIjNqK8xaoRKDBEUJioJ+KDPSi31Y//7ppktr0XdwgXjgxtjTojfSRlndIiwh+R5Os6daBlC8YxCS5Zp/MrCQKorObFawjyxPO4v9Ry+SM0RdIvg+GIlCG8r9MFGhO5TCsFZmPpzgb9ILTBKEdjkIYwOOZJOs
- 7Sd0ruZ7
- 8b1+YlPGPJeTFYlCKfjAI6g8fkawN2dRAm3a3uvYkJauAN5jyoNx/E7LPBASMNi71xOl4AL83cD/AeRAMkMtCT2kIYvbM283HlB3Pi7wvygOVMik4Qo21zPP4+5aESAdV4w3LoZMEsIkXcJdCMlbp1KigXcBrjdIcUXznz8LycUDxCiqZaoVrty8AIXo2BsTcNzvOAJJOF1xCIHMDiS/g8sN+2ph8AuuKua3H3g+HuLqzfxwI8fUX1jFZ5vUesthiv/qIpOA6VkYfb4sC5d0igdxtdknCBmTOvPFhr2Fi5IuHD0ZHXAK4u6SlwIS1sAWbJyAazGe7kGFUqDl2GBnS5WmoX5mFMp0VS4V5vJmhKhFWPRcRjJeI9XK8QfNizB1h0saVrjuj0NlRUnqBom5duOySE7MVncq9pMF+F+hDz/Bo6yhQTo7WjZaoWDfQTTj97EXnDnmEMWMKEG3aEQkhWo+ae5kpY5ya2fWIwbk/rPkkT86toKZzDzKrqV02zgsCcJJGhYLDOvSgtQGTPda/9UaBPgP/fVR0qAIewr1YweEYm5AUPszOINYmMTCrmwE9z/mCFUoK8+6BSbno/MkTpm3oSqXQdyyFVNwub458icn1+xdAxJlFibPOY2+6X5SruCWqjUikUg1V9lkiIjH/j44Fxa/gYXQy2wgN
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1792385346-315560
+X-HE-Meta: U2FsdGVkX1/eF/2EfYgh1ExiD8sx3EXhA3vxjeFE8+xZMOnJ/wRl+GHLI1uyCuGZb9xvG9rIZN4SR7TwvJDROGoGTQWQokdWywMONthLEm0ZoT+mxnQkQF9J+Rafp9V2prfaq24zK0fBpTVrpdMoGt0mk9uoA9+sBERX+AqxnTNhOHbJRLxgALasH+sDmDzcwWQnz/gDjtEXPUsGCrQGpJSHrSXppaYFXb3tI67IIPFj3P6aWmoWlTaLwk4cllWW5PnwAl8TRk/t0ZicNWsysz/Wl5I+fl9BIsVV0Asz/knyHouSFQh1gjOPbRHJ+pYe16zs/xlpJJhnKyRRdLGy2d4JU50GxKuiHyDjpt7t+WSux8zvpIbfPF+7NZcQ3iXRYlVtAx65fvMCmBgpjG0sDbMnF4zQlQOHQk3A5oY0ZgcevGh94jZichBOQdfYzQ4KqLs+zqEJaRG9w+Nd8s3Nv1GzIRZ9wMFGJNytu+XvqeSSbPXnioX7BqZT+idiPfyV4SPTo/ynM1fCIXp56YSJK9ip4DZnGcElgp9jX3k6Ypj2r1YIpTx29wP2GIl00Hedp2ouRoQuyRrzDtHWa+KOnuoORdoVztewtKZboM8E32TxlC9SH6/BYbL2swnDFA79UiRaiH/rOhAh87VYNy72SQa1nBo8i4qHLxs+iHe/d6hjpn405oeSrQgDfBpEeCvrnaUsQLRDZvQIdx+GHq2NNs3a8NyV8FO60CC9oP+x3nG/4hA/uQuPwqfPGstHiJg+i+9/YBoEzV9GSzZrWh3tsIuVcIdRhFbFOCHktqvFYHUYa4Tzr7TQinP7zBha4sVxUNERwZrFUhai9d19FUNVEGGGwMQqx0nNO4VWaUu4Qjm1cXFAmVPScnuTVfbMrt/oCaOiYDXLrYh44+Asog0GH39y3Rse98M2NX4PjVlFbyoCly1wUx+cbHpGwZokuyBKhGsDFTl2Y0HF7HiBut3
+ dWA23y+Z
+ +4PtLD9tpOKTPBKvgexR0pzNZPMpXYj+Ij6b00gHOSX2S2qt/k59aieAtJ7wcTxFbZLvd3Fk2XDkD2ETAiD7AK3IcYS/bhPCvod91nG4qxPShN8u+H2e9oDSiQcf1YtJs1HKvUd6k/n2tDUYkP02ZQ0Ug27XA3oJJqt8LSxJd8+9lnP15sE9iUtss+ZQjZJsowqSs6Hpw8jonRPWmxM1TPUDj00Wca2nhYwF3tiqyut1AjYjqK8I3ihIQ1Xa3qcHb3cVfupYdHZaxERmMy5PWJQFTe2ezxMYXeeJI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,196 +98,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] kasan: syncing static early shadow tables breaks kasan_remove_zero=
-_shadow()
-- [High] kasan: missing kasan_p*d_table() checks in kasan_populate_early_sh=
-adow()
---
 
-commit 84e267a96cb1eab3b9fd041e188f62b5f7899dd0
-Author: Muchun Song <muchun.song@linux.dev>
 
-kasan: fix runtime shadow page table synchronization
+On 10/16/26 7:37 PM, Gregory Price wrote:
+> On Fri, Oct 16, 2026 at 09:22:54AM -0400, Gregory Price wrote:
+>> On Fri, Oct 16, 2026 at 05:47:57PM +0530, Sarthak Sharma wrote:
+>>>> +/*
+>>>> + * An unmapped gap in the range makes either hint fail with ENOMEM, after
+>>>> + * advising the mapped pages on both sides of the gap. Only MADV_PAGEOUT has
+>>>> + * an effect on those pages that the test can observe.
+>>>> + */
+>>>> +TEST_F(madvise, unmapped_gap_fails_after_advising)
+>>>> +{
+>>>> +	char *mapping, *control;
+>>>> +	bool swapped = false;
+>>>> +	int retry;
+>>>> +
+>>>> +	pin_to_current_cpu(_metadata);
+>>>> +
+>>>> +	/* Make sure MADV_PAGEOUT can swap at all before relying on it. */
+>>>> +	control = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
+>>>> +		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>>>> +	ASSERT_NE(control, MAP_FAILED);
+>>>> +	control[0] = 1;
+>>>> +	if (!pageout_until_swapped(_metadata, control, page_size,
+>>>> +				   self->pagemap_fd))
+>>>> +		SKIP(return, "MADV_PAGEOUT did not swap the page");
+>>>
+>>> This test is checking for both MADV_COLD and MADV_PAGEOUT. So if we skip
+>>> here because we couldn't pageout, then we don't test for MADV_COLD
+>>> behaviour at all. Do we want it this way, or should the tests for both
+>>> of these be separate?
+>>>
+>>
+>> If swap is off, the behavior of COLD and PAGEOUT look pretty much the
+>> same, and we can't actually test them meaningfully.
+>>
+>> We check that madvise(COLD) returns -1, but that's also largely
+>> meaningless if this initial pageout_until_swapped() call fails.
+>>
+>> At least that's my thought.  If you think I should split it, I can.
+>>
+> 
+> on second look, i will just move the cold checks above the rest, since
+> they're mostly checking failure paths.  those are mostly unchanging
+> regardless of swap status.
+> 
+> so basically no need to split, just a mild reorder.
 
-This commit tracks page table modifications during KASAN zero-shadow
-population and calls arch_sync_kernel_mappings() once after the walk. It al=
-so
-avoids replacing already-populated page table entries during aligned shadow
-population and retains page tables referenced by synchronized entries during
-teardown.
+Yes that would cover MADV_COLD testing even when we can't swap.
 
-> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-> index 66a8838879876..f94f461d864ca 100644
-> --- a/mm/kasan/init.c
-> +++ b/mm/kasan/init.c
+Just thinking out here. Say if MADV_COLD fails, do we lose out on
+MADV_PAGEOUT coverage in that case? Or is it meaningless to test for
+pageout if MADV_COLD fails?
 
-[ ... ]
+Also, say MADV_COLD passes, but we can't swap, then the test will report
+a SKIP. We know that if it reaches a skip, then MADV_COLD must have
+passed, but the ksft counters won't report that. So I would still prefer
+separate tests from a test reporting POV, but I don't insist strongly,
+it's upto you :)
 
-> @@ -115,25 +116,26 @@ static int __ref zero_pmd_populate(pud_t *pud, unsi=
-gned long addr,
->  	do {
->  		next =3D pmd_addr_end(addr, end);
-> =20
-> -		if (IS_ALIGNED(addr, PMD_SIZE) && end - addr >=3D PMD_SIZE) {
-> +		if (IS_ALIGNED(addr, PMD_SIZE) && end - addr >=3D PMD_SIZE &&
-> +		    pmd_none(*pmd)) {
->  			pmd_populate_kernel(&init_mm, pmd,
->  					lm_alias(kasan_early_shadow_pte));
-> +			*mask |=3D PGTBL_PMD_MODIFIED;
->  			continue;
->  		}
+> 
+> ~Gregory
 
-[Severity: High]
-What happens in zero_pmd_populate(), zero_pud_populate(), zero_p4d_populate=
-(),
-and kasan_populate_early_shadow() when the page table entry is not none
-because it already points to the shared static early shadow table
-(kasan_pte_table(*pmd), kasan_pmd_table(*pud), kasan_pud_table(*p4d), or
-kasan_p4d_table(*pgd))?
-
-For example, in arch/loongarch/mm/kasan_init.c, kasan_init() pre-populates
-swapper_pg_dir across the entire shadow range with kasan_early_shadow_* bef=
-ore
-calling kasan_populate_early_shadow():
-
-arch/loongarch/mm/kasan_init.c:kasan_init() {
-	/* Maps everything to a single page of zeroes */
-	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, tru=
-e);
-
-	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
-					mem_to_shadow((void *)KFENCE_AREA_END));
-}
-
-Because *p4d, *pud, and *pmd point to kasan_early_shadow_pud,
-kasan_early_shadow_pmd, and kasan_early_shadow_pte rather than
-invalid_pud_table, invalid_pmd_table, and invalid_pte_table, p4d_none(*p4d),
-pud_none(*pud), and pmd_none(*pmd) all evaluate to false.
-
-Instead of skipping aligned PGDIR_SIZE, P4D_SIZE, PUD_SIZE, and PMD_SIZE
-blocks, kasan_populate_early_shadow() descends into zero_pte_populate() for
-every single PMD across the multi-terabyte VMALLOC_START..KFENCE_AREA_END
-shadow range, executing billions of redundant set_pte_at() calls on the same
-shared kasan_early_shadow_pte array (and on 16KB-page LoongArch configs whe=
-re
-mem_to_shadow(VMALLOC_START) is not PMD-aligned, prematurely write-protecti=
-ng
-kasan_early_shadow_pte entries while kasan_pg_dir is still active).
-
-The same descent into the shared static kasan_early_shadow_* tables happens=
- at
-runtime if kasan_add_zero_shadow() -> kasan_populate_early_shadow() is call=
-ed
-again on a range where kasan_remove_zero_shadow() previously retained a
-synchronized kasan_early_shadow_* entry.
-
-Should these aligned fast paths also check whether the entry already points=
- to
-kasan_early_shadow_{p4d,pud,pmd,pte} (and skip descending without needing to
-re-populate or set the modified mask)?
-
-[ ... ]
-
-> @@ -377,6 +420,9 @@ static void kasan_remove_pmd_table(pmd_t *pmd, unsign=
-ed long addr,
->  			continue;
-> =20
->  		if (kasan_pte_table(*pmd)) {
-> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PMD_MODIFIED)
-> +				continue;
-> +
->  			if (IS_ALIGNED(addr, PMD_SIZE) &&
->  			    IS_ALIGNED(next, PMD_SIZE)) {
->  				pmd_clear(pmd);
-> @@ -403,6 +449,9 @@ static void kasan_remove_pud_table(pud_t *pud, unsign=
-ed long addr,
->  			continue;
-> =20
->  		if (kasan_pmd_table(*pud)) {
-> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PUD_MODIFIED)
-> +				continue;
-> +
->  			if (IS_ALIGNED(addr, PUD_SIZE) &&
->  			    IS_ALIGNED(next, PUD_SIZE)) {
->  				pud_clear(pud);
-> @@ -430,6 +479,9 @@ static void kasan_remove_p4d_table(p4d_t *p4d, unsign=
-ed long addr,
->  			continue;
-> =20
->  		if (kasan_pud_table(*p4d)) {
-> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)
-> +				continue;
-> +
->  			if (IS_ALIGNED(addr, P4D_SIZE) &&
->  			    IS_ALIGNED(next, P4D_SIZE)) {
->  				p4d_clear(p4d);
-> @@ -464,6 +516,9 @@ void kasan_remove_zero_shadow(void *start, unsigned l=
-ong size)
->  			continue;
-> =20
->  		if (kasan_p4d_table(*pgd)) {
-> +			if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
-> +				continue;
-> +
->  			if (IS_ALIGNED(addr, PGDIR_SIZE) &&
->  			    IS_ALIGNED(next, PGDIR_SIZE)) {
->  				pgd_clear(pgd);
-
-[Severity: High]
-Can skipping synchronized kasan_early_shadow_{p4d,pud,pmd,pte} entries here
-prevent kasan_remove_zero_shadow() from unmapping the zero shadow at all?
-
-When kasan_add_zero_shadow() -> kasan_populate_early_shadow() runs at runti=
-me
-(with slab_is_available() =3D=3D true) for a range covering an aligned PGDI=
-R_SIZE,
-P4D_SIZE, PUD_SIZE, or PMD_SIZE boundary at a level included in
-ARCH_PAGE_TABLE_SYNC_MASK (for example, PGTBL_P4D_MODIFIED on 4-level x86_6=
-4,
-PGTBL_PGD_MODIFIED on 5-level x86_64, or PGTBL_PMD_MODIFIED on 32-bit x86/A=
-RM),
-it installs the shared static kasan_early_shadow_{p4d,pud,pmd,pte} table
-directly into the synchronized entry.
-
-When kasan_remove_zero_shadow() is later called to remove that shadow mappi=
-ng,
-hitting this continue leaves the entry pointing to kasan_early_shadow_*.
-Unlike a dynamically allocated page table (where kasan_remove_*_table()
-descends and clears all child entries before kasan_free_*() retains only the
-empty top-level table), kasan_early_shadow_* is a shared static table whose
-entries cannot be cleared and remain permanently mapped to the read-only
-kasan_early_shadow_page.
-
-If normal System RAM is subsequently hot-added and onlined in that address
-range, kasan_mem_notifier() in mm/kasan/shadow.c checks shadow_mapped():
-
-mm/kasan/shadow.c:kasan_mem_notifier() {
-	...
-	case MEM_GOING_ONLINE: {
-		...
-		if (shadow_mapped(shadow_start))
-			return NOTIFY_OK;
-}
-
-Because the read-only kasan_early_shadow_page PTE is still present,
-shadow_mapped() returns true and kasan_mem_notifier() skips allocating
-writable shadow memory, causing subsequent KASAN shadow writes to fault on =
-the
-read-only zero shadow page. In addition, if a smaller or unaligned range
-within that region is later passed to kasan_add_zero_shadow(),
-kasan_populate_early_shadow() sees !p*d_none(*p*d) and descends into and
-modifies the shared global kasan_early_shadow_* tables.
-
-Should kasan_populate_early_shadow() avoid installing the static
-kasan_early_shadow_{p4d,pud,pmd,pte} tables at page table levels that are in
-ARCH_PAGE_TABLE_SYNC_MASK when slab_is_available() is true, and instead
-allocate a normal page table at that synchronized level so its entries can =
-be
-cleared during kasan_remove_zero_shadow()?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261018043501.3257=
-632-1-songmuchun@bytedance.com?part=3D1
 
