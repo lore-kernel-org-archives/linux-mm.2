@@ -1,112 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD29E606A332
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 17:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E986606A331
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 17:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=G3IVVpGF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EkbMnleH
 Received: by kanga.kvack.org (Postfix)
-	id EFEB56B0324; Mon, 19 Oct 2026 13:39:38 -0400 (EDT)
+	id 22D096B0322; Mon, 19 Oct 2026 13:39:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED31C6B0322; Mon, 19 Oct 2026 13:39:38 -0400 (EDT)
+	id 2052C6B0326; Mon, 19 Oct 2026 13:39:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D529A6B0322; Mon, 19 Oct 2026 13:39:38 -0400 (EDT)
+	id 0CBE56B0327; Mon, 19 Oct 2026 13:39:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ACCFC6B0322
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:39:38 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E53E1606D7
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:38 +0000 (UTC)
-X-FDA: 85340088036.28.B5B3E73
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1F90640008
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:35 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D09686B0322
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:39:47 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63C741607C3
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:47 +0000 (UTC)
+X-FDA: 85340088414.04.9DB60F7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6014F4000D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:45 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=G3IVVpGF;
-	spf=pass (imf27.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EkbMnleH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792431576;
+	s=arc-20220608; t=1792431585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zHnuirrNc367IjZFH3zZ8z3xoT1TDeKZt/utz/QfB6Y=;
-	b=BnWHDXzxLgdScIQUzubIRL7nZmIOxOUuaSqfAt0JXnUu2lILkb+q5MoltOgr8KiNyelMUr
-	HUCnpSSIZhiecuXjKt0E+LKAvpnuCaLvof5WKos9drhDWAndOPtpwouoUyjtVDUfYZeuP6
-	PBZzcti5axjqxBnjCoNdPHrRZeyn4KQ=
+	bh=GnQBvL9ThoitpYzUQcFIdzE3H2uK7kr1ppoIGal+PjA=;
+	b=pV3nIhTmAIbNA9nEoLW0jIe48Vb84yce1UiZKdh1TW6zPN6Da1EtcvdKaXCBkAHkX0vLpL
+	ZP0G8O/6aof97YIiB0w73h3jxNC+v36FHJ66ZmKSeQY2j8rIrWnw/HGTfQWu4ySik+NHrv
+	oEkorrEckHk7WOMXhdVDzmg2Zvt11qg=
 ARC-Authentication-Results: i=1;
 	imf27.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=G3IVVpGF;
-	spf=pass (imf27.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EkbMnleH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792431576;
-	b=g5QqtDpgvFdr5w93o7nHwwbcUDiX41fJoUBxU1YaLHp83qqsaHAxU0zpAmDpbuEBXHsu0w
-	RhDVEPj45jKIAwrxSVBZ8X4v8CCpraL53QdbOv+zGvAiC2t8dNBQENEf9b3WbPeejvbb7l
-	DNyTFQFZ/bQhb9PJKJKgF3iGzLAiWD4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=zHnuirrNc367IjZFH3zZ8z3xoT1TDeKZt/utz/QfB6Y=; b=G3IVVpGFIRL3x16xiaC
-	AJCmECQhdU3tyI3V6M+0Exi6vEYgWYnsIVu7d6cTqFw5WyBJNRegzOizoZ7s7ytdzHcxUjzm/3tOk
-	VfXNBi0XNQaRBK81emY9uPYv6pV+cd/PhhWtaogoaz6CbS+QNfu6sp3RItVnbCYfJWV03vTfHSwWb
-	9uaoQnOQ/9DG4D6cnwk6O9StcwAjpezPEhfWLzyRD9hAiPYBk9n4rYJOIqHnvs4VYaEXjLgeJiyZD
-	cOHtl1EIlFuARXyrBwYhnfBjK9F0SyK3RosamrqOxLTRTfQtdFnP1dU4fHIZG7wnVS6LKgwTjJ1Cj
-	YMmdNjbcgLf3f5w==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xIrH1-007Chf-22;
-	Mon, 19 Oct 2026 19:39:19 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Mon, 19 Oct 2026 19:39:23 +0200
-Subject: [PATCH 1/2] mm/shrinker: keep the per-memcg shrinker units in an
- xarray
+	t=1792431585;
+	b=v96O5do+t5a+i0C4NGAl1V0XXODqHSLNyePQod8/fM59gufxXT9YrwJEzRJ22ZXg0GQSjx
+	WyXokZOlL/Zp45iwviuFHB+1q5+p90kF7nWMAudOTrbDamcyOKVBcqbRyAD8keLcbu6Id4
+	8pCtmnUqH27ob6nKHlPNAtDdl+LneP8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 56693434AA
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350911F01574
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:39:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792431584;
+	bh=GnQBvL9ThoitpYzUQcFIdzE3H2uK7kr1ppoIGal+PjA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=EkbMnleH6Ux0aJawtFLpleM4XWROY17SoR2ZJUVHht30tBfxhMdGVLXQPeKAHJl4a
+	 m/Z8JPoRveVu/5pysSp4L87w64yZqLzTCeH0I3RldQg3932x7x7HjTG6If0oePfWPs
+	 Iquoay8yGHz9oP//eJtPewhK+vm4RNOxPMLfrPK1yZlbuHNONZnnKFQH4s/Xf238hq
+	 /J0ODclJLzjeqfLwnlA2kxPObjzWwPwO5o3YK0FHiBtn/1GVjIKsw0eaLFEXQRrilH
+	 DYLgxeGOaLNOeSssJY1nAy0dLbEb73T8Pl7tobbbBUo/BeN1EpOanMu0ZvjQ9ZrK8b
+	 9M2xoZP0tW2MA==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c315869241fso263266766b.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:39:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByX4y6YgukjRJNf1geDTb1K/FSPI0/EUtl/IkNCto4uLxK0F+/SNxU2QkhOqWjrZw0omYxtChFM+A==@kvack.org
+X-Gm-Message-State: AFq9FYLQZepLi1PMgUWI7/Ty0kC11UGTSl60Fy2MpqIrE9vNkSkjcIgb
+	F0gzGpUR3tPd3rTF87pj2E4QyWual6mvUlwJPzrZJu9Wqaj4D/vbbjWVxO922J2/uFKKpGldWp6
+	Vv2X/a46sHfEElFi+HSAkALklooFjQWI=
+X-Received: by 2002:a17:907:944a:b0:c40:19dc:a24d with SMTP id
+ a640c23a62f3a-c419e648fffmr666097466b.9.1792431583119; Mon, 19 Oct 2026
+ 10:39:43 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v1-1-64ed1f7957c9@virtuozzo.com>
-References: <20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v1-0-64ed1f7957c9@virtuozzo.com>
-In-Reply-To: <20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v1-0-64ed1f7957c9@virtuozzo.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
- Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- cgroups@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=16675;
- i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=sVC4fMQqfY/qvO5GWprmSJ4HVz7x2/++1IMEmDe3khk=;
- b=owEBbAKT/ZANAwAKAVGWCkf5YVwqAcsmYgBq1lXOsD8QfSlcM8r4JnX/ukVApYPSKHrC4MzVs
- ZJzvXN4Y1KJAjIEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCatZVzgAKCRBRlgpH+WFc
- KphpD/dzinaPGl1PrmAjUuZDYRppu5Z+68vcdVDp00Fd80VuBT0vBTGMiiQJSjfj6QhpCVKCxEZ
- 3IyfGE50GJff6+OxEXWZJ3/Hasn1jQW7327rOxjmWLvc1xMd9AY9csP/lwOhExEyrtMBBl9Txo1
- ETghvq75jCwF1LxJzjYW+i+4AtkFhPplKqtFShEYuRaS11lvEGsitO2mTgi8QLTadx8t5Ue60aK
- hOG1Ie/iJyMbE2kGBaSTmfZ5+e/IvAwBI+pIO/p30/jFtg5Np32h/+VIeEFD7ui3VJ+OVZAjUCq
- nsGBZCk8LOluqJJ5/tozeBsLWO0R5vADA7yzQ8bFo01NG5ukAhY+IMmCLUVSD7ec0lDFuxw73vu
- JvdiQeJZRafBwyoUxsZTu4ueNaxsGNVL6y7H+qnaDOez6RRuY60Hb54qzh6SslyQdVpsgKy5AI9
- HEvow81Xd4BOZfy1qOQyqOBkLWtCP2a/oEFU8ltvsYdt2rnwN5ifdvnsRqJTOfN5hCGJUQpsoBz
- cX7KF87H7iepz0RWJrMYkBSs/hSR+fbiPtYtbY+wNs/nB86lrikeBzQiYVHlFFkAjWeT1TYcyfG
- k1/WCyRaQZQrEdvXf+vOJ0HKCwrS8zyZVRPguPS8lePxor2y4PT5Dsn461g0xlx1dA949BYbim0
- KK3XcLaMe5L2U
-X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
- fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
+References: <aszH4vpXFAOQP1WG@pcnci.linuxbox.cz> <20261014235736.GCatAW8GD0GlYumL4l@fat_crate.local>
+ <20261015172820.7961d2c0def74d41cc6c4b0c@linux-foundation.org>
+ <20261016031242.GDatGWKo98YSOhEOOn@fat_crate.local> <20261015211832.45d87fab15bb3e0bbc2f47cb@linux-foundation.org>
+ <20261016054954.GEatG7AgMNFRkiTo1H@fat_crate.local> <atI_yuCc4BiweBQP@google.com>
+ <atT5TYyLapHO5ZoX@pcnci.linuxbox.cz> <20261018201538.d0957878f378a9821852836f@linux-foundation.org>
+ <atXXma5NXxoSWJO0@pcnci.linuxbox.cz> <atY1vWRBRUwpISKb@pcnci.linuxbox.cz> <20261019083529.a81910ac0976c1a5687d4c6a@linux-foundation.org>
+In-Reply-To: <20261019083529.a81910ac0976c1a5687d4c6a@linux-foundation.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 19 Oct 2026 10:39:30 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zO41EromgLGhKv8H0aKXjrffH+t4CFGU6cLo59JJ3CEuA@mail.gmail.com>
+X-Gm-Features: AclHuK8n2lTFq8e9VdttHlGOs0y_QO-3e4ybHTHpOpRKbp8_vTnwjvldNPZm8AE
+Message-ID: <CAO9r8zO41EromgLGhKv8H0aKXjrffH+t4CFGU6cLo59JJ3CEuA@mail.gmail.com>
+Subject: Re: hunting memory corruption bug in 6.18.x
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nikola Ciprich <nikola.ciprich@linuxbox.cz>, Sean Christopherson <seanjc@google.com>, 
+	Borislav Petkov <bp@alien8.de>, David Laight <david.laight.linux@gmail.com>, 
+	Rik van Riel <riel@surriel.com>, ljs@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@kernel.org, 
+	Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Kiryl Shutsemau <kas@kernel.org>, luizcap@redhat.com, 
+	pbonzini@redhat.com, Tal Zussman <tz2294@columbia.edu>, 
+	Matt Fleming <matt@readmodwrite.com>, gregkh@linuxfoundation.org, sashal@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6014F4000D
+X-Stat-Signature: whwksfb8iywghxzuoeqnbtiesfjq1nza
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1F90640008
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: e8e68ragtz97q89m1ouigmntyttimux5
-X-HE-Tag: 1792431575-401394
-X-HE-Meta: U2FsdGVkX183V/LvnO40TZb8jURUvXsgLrBD8j/meNeYi84/ZNQR9fl5QLPuUV4A+V3G5PU6mKk522sYiTJitFAWOP3tnFXPFlYj1wgrG+1HKqsoi+ZxUKh06I536/hHd9eRDiDlx2Lay2r2rKpn5hCHsrXfZbSjVotwvdAxT2baZ4GO/Yll3LE+P+AXLQfuMFdgm8rS7HtgYtlVaXyVjEryhUFYToMLZFdKayCPnvCQQrfhS7I0alvSCQrqyq5cthmqVyAltzlVdsHVNIXyp1hXBJ1KdGW0IJhJcpzg09slIqU18enAMh0dNXhfLGaIRoaHa4Y5fK+YJ+eexPutZ0z4yL57Eh1rfsXWG/4vvCZRj1f1fcKiC9cp8inYPwgDZs40/XVfmAp1LEQtpm9ky2k71b86NC+b85gJes8jCoTLersQlQwE5nYefUf38vEpo+csi3bFV801BifNfdO03xOXHJfc5kETDvTDYW0Utr9Ca2aJov4++pOr7SuEMsje7dzZYYIln9dTW83mCBauQ/92/xmRslUAmdpUrt0BzfBfWmgSCrGoTez/7+uyTg80l4z7BkRymcUUzzSk4WW+dC03YSvnZud98oNXMOoYTqNaoZE9Ot+TNGBXpSPV8nq55GQ13QwRG4rBPH8NoOlZ5RPz55i/0TNJLAmM5LFMzd+Ha/9v1p1HPUDdX69kjFL5grPZKFWRz8Ndn8ZLYmad1rzISlhknsnVaDt0N2fzkNn7uJX2DifvxNfv/HrDtcAEER7tg1P3icUjDtOKj2jTf+xWo2PZIqlqUaO7PCdxthKnfRZmraM3ldpYPrad9vRz8CK/XtsIe97PJWej1sDGRSL92JzMuxXaN3rrYQBcXTc17SKXKzTcsp7c1M18Y3i8s2VRWECNZiEljuAEoc8LmiP6uhiTg7hW+IaAvtbph195Lk/2puLLllU5sre9uTVjmZqlnv3pWEboIyAqfDr
- EKOQEeB6
- oG03VQOwOTzdrw59XX7TtYfFUpFl9nh5uNSgXFNz7pF3TJCXY05ybGt/tm4KOUeFdXn6ylirLO8gcZQpv71qnGpb8ax6xORu1OYo8k9wtMLvym+q4Pdsts/ag1RFXPQvIFZtQpkCF0hC+QY/OtZvXtzMRwlGUA35yW111vRGJ38KxV9kOKcNo1gB1RbsKbzDLnsd12j57ryHAqUJyfVgVJwMbWkq1LxJ5uPDCwcbncwyeENYBtJHCxC3k01MAJp/jqwS7QvyW+20xAo0l0OhxzINkRtvj317KhHAm
+X-HE-Tag: 1792431585-776035
+X-HE-Meta: U2FsdGVkX1/+tqVR7IDWAVlC3rFZeoivE18EEQNvnMuGNJFMic7PAAdAFMQ2zK/M3TbYJmO7Bo+9w8PtqHgb49Q8YqqAlb3pDaARzxFKJ9wGk9w80wv+/o7ge7hdL5HGdMJMdTa2Rqx/bQ+Tecf/3wBAISmBa/ncs9zLsIK6QbdunZzRTgahV8yMv1S+vcvv51xfHbyuaOkBUjW7FpQlKEXKB0FhC+XZ7OR8WRLFthTuCE+YT+a7+ROSoXX3D8tvcGmG93irVbl20tK/q7FBY5mUkv8z/NWEa3WtIVHnwCqc0FRU8FO873qO8ss0gvBOVbWHVsQm1V9fjEnXqqWm9qyMqnHJA3aPqj4wFGDNLCYIJg+Ca11ECOfXVVJ9kGF2rKA8eCqamHEMoBPQ9dGu5TDUz30OaKonkEhBJINoLuok9Tadtmpx+ZHqAz7gaE+NMT9ZfTzKxmHBXVI7o0ATdcgyCPeeCVVd5ifNstDRSrqH0wRq9cpgvjme7emIy4o+AYfaBrBWcsgKYQk6i0WQ6dqLq9fc7+WbyEz39R1CTr0cSRgm5OqLQ7Ca7KkkUJM9EgZqcO3o52FYt8ls/5tV+oP+uwVf8KWtNS75ZruIunqv9vm/cqeHNJbcfUqCoD7y8stJUIXWeXBpcTWZhBDzFG56Ijq9NZJCbi2QGa/Y9QdEPj2IIJcmC91xa4jt99jTNxRLUfADTU0c18Foh67w0F6goo9TPkCXXshVwEh3SuwVfDX4XJ+cCJeeCbiF4nCS2aHITWBPSVKfzTPbX9gfIYCqlpCPlBDkP1X/iehMnfuuhOJ/MpVQGiTr/qeE+o5Uo8AJvMsCNwasypY9P3mTMmEs6RNrhxFjgJb0R7Qo35XMWF0Gr3A1/Cv3EB8+j0/OE5orjwO3CPJJTFz7dNTFAOt9gVHSOxzzdztP08s18v796P3b8qOjSma6TOmSqynEZhtjW8eco5PpUDikg67
+ /d99mGwC
+ T072YHqQf+7Jp1VgOgTD1H1vpx76P31UxA/NoM0GrrYxxIDQfhO9KXlfPcy7jd8vsk1PZMmDOr9PBXZ5yV3xjXz0uHLcS9N/sWQ0LG7tD5iQUrglr9paGRIaDh5f6HIEzEGwvIDxqAMXd4ZJluAIlTgkumx1dn5+lK0CdExxeGS7EZ4PijtRGQpGCY0/qyGrG6D1ukPtyhzCVT2RlRSoXQlCnvHJ+1hhPcJ9aUjkxNRUX9RTWCGZnH0DiD3BVIlmdfNMYaTa62Y1ivwge+6MMt1/J+NogokMvVZ/ONr9UsXj98kSYGXyYNf+y945UtFcz/w51wKHq9+J3SvOnEp8+2Cu7whLT1BwZ8dGQNpEL7Gx0r6aaI2pYrI5pweYaqouv4klFK7zVskkPZTNiahd24iPkVBWieCR4eKoT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,516 +116,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Every memory cgroup keeps, per NUMA node, an array of pointers to its
-shrinker_info_units, sized for shrinker_nr_max ids. shrinker_nr_max is
-the highest memcg-aware shrinker id ever handed out; every superblock
-takes one, and it never comes down.
+On Mon, Oct 19, 2026 at 8:35=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 19 Oct 2026 17:22:37 +0200 Nikola Ciprich <nikola.ciprich@linuxbo=
+x.cz> wrote:
+>
+> > >
+> > > Sure! And I have more good news: after applying 55780d8a1dcc
+> > > to 6.18.56, I was able to perform more than 30 migrations without
+> > > a glitch. After booting back into 6.18.56 without it, both VMs
+> > > crashed within 2-3 migrations. Furthermore, some memory apparently
+> > > got corrupted on one of the hosts, since various commands started
+> > > crashing too:
+> > >
+> > > [  303.466091] traps: systemd-logind[3085] trap invalid opcode ip:7f7=
+b5667e616 sp:7ffe1afdec38 error:0 in libsystemd-shared-252.so[7e616,7f7b566=
+6d000+22e000]
+> > > [  303.493810] traps: systemd-coredum[11269] trap invalid opcode ip:7=
+fc6bf67f614 sp:7ffc075da958 error:0 in libsystemd-shared-252.so[7f614,7fc6b=
+f66d000+22e000]
+> > > [  377.528955] traps: systemd[5607] trap invalid opcode ip:7f791447e6=
+16 sp:7ffe83e61cf8 error:0 in libsystemd-shared-252.so[7e616,7f791446d000+2=
+2e000]
+> > > [  377.556993] traps: systemd-coredum[12080] trap invalid opcode ip:7=
+f97ce07f614 sp:7ffe28b56a88 error:0 in libsystemd-shared-252.so[7f614,7f97c=
+e06d000+22e000]
+> > > [ 3746.173043] traps: hostnamectl[45846] trap invalid opcode ip:7fe00=
+cc7f614 sp:7fff89916e48 error:0 in libsystemd-shared-252.so[7f614,7fe00cc6d=
+000+22e000]
+> > > [ 3746.202305] traps: systemd-coredum[45847] trap invalid opcode ip:7=
+f7fe9e7f614 sp:7ffea227cfa8 error:0 in libsystemd-shared-252.so[7f614,7f7fe=
+9e6d000+22e000]
+> > > [ 3750.581940] traps: systemctl[45903] trap invalid opcode ip:7fbb896=
+7f614 sp:7fff733e5748 error:0 in libsystemd-shared-252.so[7f614,7fbb8966d00=
+0+22e000]
+> > > [ 3750.612651] traps: systemd-coredum[45904] trap invalid opcode ip:7=
+f90d347f614 sp:7ffdc7f55148 error:0 in libsystemd-shared-252.so[7f614,7f90d=
+346d000+22e000]
+> > >
+> > > I'm not sure if this is of any use, but I collected a vmcore of
+> > > this state by intentionally crashing the host via /proc/sysrq-trigger=
+.
+> > >
+> > > Anyway, I'll give 55780d8a1dcc some more migration rounds, but it loo=
+ks
+> > > promising.
+> >
+> > 500+ migrations back and forth, no issues. I consider this solved and a=
+m rolling
+> > out the patched kernel; I=E2=80=99ll report if anything new turns up.
 
-Keep the units in an xarray per memcg and node instead. Every memcg
-then holds just the units it has, not an array sized for the host,
-and growing shrinker_nr_max touches nothing that already exists.
+I am glad the commit fixed your problem!
 
-The units are still allocated for every memcg up front.
+>
+> Great, thanks.
+>
+> oops, we haven't been cc'ing Yosry.
+>
+> > Definitely a -stable candidate. Andrew, will you send it to Greg, or sh=
+all I?
+>
+> I volunteer Yosry or Sean ;)
+>
+> I think 55780d8a1dcc should be repackaged before sending over to the
+> -stable people.  Its changelog is very wrong: "The bug is benign
+> though".  Update the changelog to explain that the bug is in fact evil.
+> Otherwise -stable and further downstream won't understand why we sent
+> it to them and won't understand the impact.
 
-Assisted-by: LLM
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
- include/linux/memcontrol.h |   3 +-
- include/linux/shrinker.h   |   6 -
- mm/memcontrol.c            |   1 +
- mm/shrinker.c              | 312 +++++++++++++++------------------------------
- 4 files changed, 105 insertions(+), 217 deletions(-)
+It was found through code inspection, there weren't any symptoms, and
+I think I know why my analysis was incomplete. It assumes that
+svm_recalc_instruction_intercepts() already ran at least once for L1
+(vmcb01) to configure its intercepts, which generally must be the case
+(L1 must start L2), except during migration :')
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index b5a89594c263c..52f3646e244ae 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -23,6 +23,7 @@
- #include <linux/writeback.h>
- #include <linux/page-flags.h>
- #include <linux/shrinker.h>
-+#include <linux/xarray.h>
- 
- struct mem_cgroup;
- struct obj_cgroup;
-@@ -93,7 +94,7 @@ struct mem_cgroup_per_node {
- 
- 	struct lruvec_stats_percpu __percpu	*lruvec_stats_percpu;
- 	struct lruvec_stats			*lruvec_stats;
--	struct shrinker_info __rcu	*shrinker_info;
-+	struct xarray			shrinker_units;
- 
- #ifdef CONFIG_MEMCG_V1
- 	/*
-diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
-index 1a00be90d93a9..2eae68a7ff6c5 100644
---- a/include/linux/shrinker.h
-+++ b/include/linux/shrinker.h
-@@ -18,12 +18,6 @@ struct shrinker_info_unit {
- 	DECLARE_BITMAP(map, SHRINKER_UNIT_BITS);
- };
- 
--struct shrinker_info {
--	struct rcu_head rcu;
--	int map_nr_max;
--	struct shrinker_info_unit *unit[];
--};
--
- /*
-  * This struct is used to pass information from page reclaim to the shrinkers.
-  * We consolidate the values for easier extension later.
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 7a817181168ed..a13f3984f0e09 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4110,6 +4110,7 @@ static bool alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
- 	INIT_LIST_HEAD(&pn->objcg_list);
- 
- 	lruvec_init(&pn->lruvec);
-+	xa_init(&pn->shrinker_units);
- 	pn->memcg = memcg;
- 
- 	memcg->nodeinfo[node] = pn;
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 4fb424e721bca..74fc6f64459f0 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -19,48 +19,66 @@ void __init shrinker_unit_cache_init(void)
- 	shrinker_unit_cachep = KMEM_CACHE(shrinker_info_unit, SLAB_PANIC);
- }
- 
--static inline int shrinker_unit_size(int nr_items)
-+static inline int shrinker_id_to_index(int shrinker_id)
- {
--	return (DIV_ROUND_UP(nr_items, SHRINKER_UNIT_BITS) * sizeof(struct shrinker_info_unit *));
-+	return shrinker_id / SHRINKER_UNIT_BITS;
- }
- 
--static inline void shrinker_unit_free(struct shrinker_info *info, int start)
-+static inline int shrinker_id_to_offset(int shrinker_id)
- {
--	struct shrinker_info_unit **unit;
--	int nr, i;
-+	return shrinker_id % SHRINKER_UNIT_BITS;
-+}
- 
--	if (!info)
--		return;
-+static inline int calc_shrinker_id(int index, int offset)
-+{
-+	return index * SHRINKER_UNIT_BITS + offset;
-+}
- 
--	unit = info->unit;
--	nr = DIV_ROUND_UP(info->map_nr_max, SHRINKER_UNIT_BITS);
-+static struct shrinker_info_unit *shrinker_unit_get(struct mem_cgroup *memcg,
-+						    int nid, int shrinker_id)
-+{
-+	return xa_load(&memcg->nodeinfo[nid]->shrinker_units,
-+		       shrinker_id_to_index(shrinker_id));
-+}
- 
--	for (i = start; i < nr; i++) {
--		if (!unit[i])
--			break;
-+/*
-+ * A memcg is visible to expand_shrinker_info() before it goes online, so
-+ * a unit may already be there from either side.
-+ */
-+static int shrinker_unit_install(struct mem_cgroup *memcg, int nid, int index)
-+{
-+	struct xarray *units = &memcg->nodeinfo[nid]->shrinker_units;
-+	struct shrinker_info_unit *unit;
-+	int ret;
- 
--		kmem_cache_free(shrinker_unit_cachep, unit[i]);
--		unit[i] = NULL;
-+	if (xa_load(units, index))
-+		return 0;
-+
-+	unit = kmem_cache_alloc_node(shrinker_unit_cachep,
-+				     GFP_KERNEL | __GFP_ZERO, nid);
-+	if (!unit)
-+		return -ENOMEM;
-+
-+	ret = xa_insert(units, index, unit, GFP_KERNEL);
-+	if (ret) {
-+		kmem_cache_free(shrinker_unit_cachep, unit);
-+		if (ret == -EBUSY)
-+			ret = 0;
- 	}
-+
-+	return ret;
- }
- 
--static inline int shrinker_unit_alloc(struct shrinker_info *new,
--				       struct shrinker_info *old, int nid)
-+static int shrinker_units_install(struct mem_cgroup *memcg, int start, int end)
- {
--	struct shrinker_info_unit *unit;
--	int nr = DIV_ROUND_UP(new->map_nr_max, SHRINKER_UNIT_BITS);
--	int start = old ? DIV_ROUND_UP(old->map_nr_max, SHRINKER_UNIT_BITS) : 0;
--	int i;
--
--	for (i = start; i < nr; i++) {
--		unit = kmem_cache_alloc_node(shrinker_unit_cachep,
--					     GFP_KERNEL | __GFP_ZERO, nid);
--		if (!unit) {
--			shrinker_unit_free(new, start);
--			return -ENOMEM;
--		}
-+	int nid, index, ret;
- 
--		new->unit[i] = unit;
-+	for_each_node(nid) {
-+		for (index = start; index < end; index++) {
-+			ret = shrinker_unit_install(memcg, nid, index);
-+			if (ret)
-+				return ret;
-+		}
- 	}
- 
- 	return 0;
-@@ -68,18 +86,18 @@ static inline int shrinker_unit_alloc(struct shrinker_info *new,
- 
- static void __free_shrinker_info(struct mem_cgroup *memcg)
- {
--	struct mem_cgroup_per_node *pn;
--	struct shrinker_info *info;
-+	struct shrinker_info_unit *unit;
-+	unsigned long index;
- 	int nid;
- 
- 	lockdep_assert_held(&shrinker_mutex);
- 
- 	for_each_node(nid) {
--		pn = memcg->nodeinfo[nid];
--		info = rcu_dereference_protected(pn->shrinker_info, true);
--		shrinker_unit_free(info, 0);
--		kvfree(info);
--		rcu_assign_pointer(pn->shrinker_info, NULL);
-+		struct xarray *units = &memcg->nodeinfo[nid]->shrinker_units;
-+
-+		xa_for_each(units, index, unit)
-+			kmem_cache_free(shrinker_unit_cachep, unit);
-+		xa_destroy(units);
- 	}
- }
- 
-@@ -92,82 +110,22 @@ void free_shrinker_info(struct mem_cgroup *memcg)
- 
- int alloc_shrinker_info(struct mem_cgroup *memcg)
- {
--	int nid, ret = 0;
--	int array_size = 0;
-+	int ret;
- 
- 	mutex_lock(&shrinker_mutex);
--	array_size = shrinker_unit_size(shrinker_nr_max);
--	for_each_node(nid) {
--		struct shrinker_info *info = kvzalloc_node(sizeof(*info) + array_size,
--							   GFP_KERNEL, nid);
--		if (!info)
--			goto err;
--		info->map_nr_max = shrinker_nr_max;
--		if (shrinker_unit_alloc(info, NULL, nid)) {
--			kvfree(info);
--			goto err;
--		}
--		rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, info);
--	}
-+	ret = shrinker_units_install(memcg, 0,
-+				     shrinker_id_to_index(shrinker_nr_max));
-+	if (ret)
-+		__free_shrinker_info(memcg);
- 	mutex_unlock(&shrinker_mutex);
- 
- 	return ret;
--
--err:
--	__free_shrinker_info(memcg);
--	mutex_unlock(&shrinker_mutex);
--	return -ENOMEM;
--}
--
--static struct shrinker_info *shrinker_info_protected(struct mem_cgroup *memcg,
--						     int nid)
--{
--	return rcu_dereference_protected(memcg->nodeinfo[nid]->shrinker_info,
--					 lockdep_is_held(&shrinker_mutex));
--}
--
--static int expand_one_shrinker_info(struct mem_cgroup *memcg, int new_size,
--				    int old_size, int new_nr_max)
--{
--	struct shrinker_info *new, *old;
--	struct mem_cgroup_per_node *pn;
--	int nid;
--
--	for_each_node(nid) {
--		pn = memcg->nodeinfo[nid];
--		old = shrinker_info_protected(memcg, nid);
--		/* Not yet online memcg */
--		if (!old)
--			return 0;
--
--		/* Already expanded this shrinker_info */
--		if (new_nr_max <= old->map_nr_max)
--			continue;
--
--		new = kvzalloc_node(sizeof(*new) + new_size, GFP_KERNEL, nid);
--		if (!new)
--			return -ENOMEM;
--
--		new->map_nr_max = new_nr_max;
--
--		memcpy(new->unit, old->unit, old_size);
--		if (shrinker_unit_alloc(new, old, nid)) {
--			kvfree(new);
--			return -ENOMEM;
--		}
--
--		rcu_assign_pointer(pn->shrinker_info, new);
--		kvfree_rcu(old, rcu);
--	}
--
--	return 0;
- }
- 
- static int expand_shrinker_info(int new_id)
- {
- 	int ret = 0;
- 	int new_nr_max = round_up(new_id + 1, SHRINKER_UNIT_BITS);
--	int new_size, old_size = 0;
- 	struct mem_cgroup *memcg;
- 
- 	if (!root_mem_cgroup)
-@@ -175,13 +133,11 @@ static int expand_shrinker_info(int new_id)
- 
- 	lockdep_assert_held(&shrinker_mutex);
- 
--	new_size = shrinker_unit_size(new_nr_max);
--	old_size = shrinker_unit_size(shrinker_nr_max);
--
- 	memcg = mem_cgroup_iter(NULL, NULL, NULL);
- 	do {
--		ret = expand_one_shrinker_info(memcg, new_size, old_size,
--					       new_nr_max);
-+		ret = shrinker_units_install(memcg,
-+					     shrinker_id_to_index(shrinker_nr_max),
-+					     shrinker_id_to_index(new_nr_max));
- 		if (ret) {
- 			mem_cgroup_iter_break(NULL, memcg);
- 			goto out;
-@@ -194,38 +150,20 @@ static int expand_shrinker_info(int new_id)
- 	return ret;
- }
- 
--static inline int shrinker_id_to_index(int shrinker_id)
--{
--	return shrinker_id / SHRINKER_UNIT_BITS;
--}
--
--static inline int shrinker_id_to_offset(int shrinker_id)
-+void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
- {
--	return shrinker_id % SHRINKER_UNIT_BITS;
--}
-+	struct shrinker_info_unit *unit;
- 
--static inline int calc_shrinker_id(int index, int offset)
--{
--	return index * SHRINKER_UNIT_BITS + offset;
--}
-+	if (shrinker_id < 0 || !memcg || mem_cgroup_is_root(memcg))
-+		return;
- 
--void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
--{
--	if (shrinker_id >= 0 && memcg && !mem_cgroup_is_root(memcg)) {
--		struct shrinker_info *info;
-+	unit = shrinker_unit_get(memcg, nid, shrinker_id);
-+	if (WARN_ON_ONCE(!unit))
-+		return;
- 
--		rcu_read_lock();
--		info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--		if (!WARN_ON_ONCE(shrinker_id >= info->map_nr_max)) {
--			struct shrinker_info_unit *unit;
--
--			unit = info->unit[shrinker_id_to_index(shrinker_id)];
--			/* Pairs with smp mb in shrink_slab() */
--			smp_mb__before_atomic();
--			set_bit(shrinker_id_to_offset(shrinker_id), unit->map);
--		}
--		rcu_read_unlock();
--	}
-+	/* Pairs with smp mb in shrink_slab() */
-+	smp_mb__before_atomic();
-+	set_bit(shrinker_id_to_offset(shrinker_id), unit->map);
- }
- 
- static DEFINE_IDR(shrinker_idr);
-@@ -270,52 +208,44 @@ static void shrinker_memcg_remove(struct shrinker *shrinker)
- static long xchg_nr_deferred_memcg(int nid, struct shrinker *shrinker,
- 				   struct mem_cgroup *memcg)
- {
--	struct shrinker_info *info;
- 	struct shrinker_info_unit *unit;
--	long nr_deferred;
- 
--	rcu_read_lock();
--	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--	unit = info->unit[shrinker_id_to_index(shrinker->id)];
--	nr_deferred = atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
--	rcu_read_unlock();
-+	unit = shrinker_unit_get(memcg, nid, shrinker->id);
-+	if (WARN_ON_ONCE(!unit))
-+		return 0;
- 
--	return nr_deferred;
-+	return atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
- }
- 
- static long add_nr_deferred_memcg(long nr, int nid, struct shrinker *shrinker,
- 				  struct mem_cgroup *memcg)
- {
--	struct shrinker_info *info;
- 	struct shrinker_info_unit *unit;
--	long nr_deferred;
- 
--	rcu_read_lock();
--	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--	unit = info->unit[shrinker_id_to_index(shrinker->id)];
--	nr_deferred =
--		atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
--	rcu_read_unlock();
-+	unit = shrinker_unit_get(memcg, nid, shrinker->id);
-+	if (WARN_ON_ONCE(!unit))
-+		return 0;
- 
--	return nr_deferred;
-+	return atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
- }
- 
- void reparent_shrinker_deferred(struct mem_cgroup *memcg)
- {
--	int nid, index, offset;
--	long nr;
- 	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
--	struct shrinker_info *child_info, *parent_info;
- 	struct shrinker_info_unit *child_unit, *parent_unit;
-+	unsigned long index;
-+	int nid, offset;
-+	long nr;
- 
- 	/* Prevent from concurrent shrinker_info expand */
- 	mutex_lock(&shrinker_mutex);
- 	for_each_node(nid) {
--		child_info = shrinker_info_protected(memcg, nid);
--		parent_info = shrinker_info_protected(parent, nid);
--		for (index = 0; index < shrinker_id_to_index(child_info->map_nr_max); index++) {
--			child_unit = child_info->unit[index];
--			parent_unit = parent_info->unit[index];
-+		struct xarray *parent_units = &parent->nodeinfo[nid]->shrinker_units;
-+
-+		xa_for_each(&memcg->nodeinfo[nid]->shrinker_units, index, child_unit) {
-+			parent_unit = xa_load(parent_units, index);
-+			if (WARN_ON_ONCE(!parent_unit))
-+				continue;
- 			for (offset = 0; offset < SHRINKER_UNIT_BITS; offset++) {
- 				nr = atomic_long_read(&child_unit->nr_deferred[offset]);
- 				atomic_long_add(nr, &parent_unit->nr_deferred[offset]);
-@@ -485,9 +415,9 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
- static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 			struct mem_cgroup *memcg, int priority)
- {
--	struct shrinker_info *info;
--	unsigned long ret, freed = 0;
--	int offset, index = 0;
-+	struct shrinker_info_unit *unit;
-+	unsigned long index, ret, freed = 0;
-+	int offset;
- 
- 	if (!mem_cgroup_online(memcg))
- 		return 0;
-@@ -495,51 +425,17 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 	/*
- 	 * lockless algorithm of memcg shrink.
- 	 *
--	 * The shrinker_info may be freed asynchronously via RCU in the
--	 * expand_one_shrinker_info(), so the rcu_read_lock() needs to be used
--	 * to ensure the existence of the shrinker_info.
--	 *
--	 * The shrinker_info_unit is never freed unless its corresponding memcg
--	 * is destroyed. Here we already hold the refcount of memcg, so the
--	 * memcg will not be destroyed, and of course shrinker_info_unit will
--	 * not be freed.
-+	 * A unit is only freed together with its memcg, and the caller holds
-+	 * a reference to the memcg, so the units found by xa_for_each() stay
-+	 * valid without the RCU lock and do_shrink_slab() may sleep.
- 	 *
--	 * So in the memcg shrink:
--	 *  step 1: use rcu_read_lock() to guarantee existence of the
--	 *          shrinker_info.
--	 *  step 2: after getting shrinker_info_unit we can safely release the
--	 *          RCU lock.
--	 *  step 3: traverse the bitmap and calculate shrinker_id
--	 *  step 4: use rcu_read_lock() to guarantee existence of the shrinker.
--	 *  step 5: use shrinker_id to find the shrinker, then use
--	 *          shrinker_try_get() to guarantee existence of the shrinker,
--	 *          then we can release the RCU lock to do do_shrink_slab() that
--	 *          may sleep.
--	 *  step 6: do shrinker_put() paired with step 5 to put the refcount,
--	 *          if the refcount reaches 0, then wake up the waiter in
--	 *          shrinker_free() by calling complete().
--	 *          Note: here is different from the global shrink, we don't
--	 *                need to acquire the RCU lock to guarantee existence of
--	 *                the shrinker, because we don't need to use this
--	 *                shrinker to traverse the next shrinker in the bitmap.
--	 *  step 7: we have already exited the read-side of rcu critical section
--	 *          before calling do_shrink_slab(), the shrinker_info may be
--	 *          released in expand_one_shrinker_info(), so go back to step 1
--	 *          to reacquire the shrinker_info.
-+	 * The shrinker is found by id under the RCU lock, and
-+	 * shrinker_try_get() pins it before the lock is dropped;
-+	 * shrinker_put() wakes up the waiter in shrinker_free() by calling
-+	 * complete() when the last reference goes. The next shrinker comes
-+	 * from the bitmap, not from this shrinker, so nothing else is needed.
- 	 */
--again:
--	rcu_read_lock();
--	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--	if (unlikely(!info))
--		goto unlock;
--
--	if (index < shrinker_id_to_index(info->map_nr_max)) {
--		struct shrinker_info_unit *unit;
--
--		unit = info->unit[index];
--
--		rcu_read_unlock();
--
-+	xa_for_each(&memcg->nodeinfo[nid]->shrinker_units, index, unit) {
- 		for_each_set_bit(offset, unit->map, SHRINKER_UNIT_BITS) {
- 			struct shrink_control sc = {
- 				.gfp_mask = gfp_mask,
-@@ -594,12 +490,8 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 			freed += ret;
- 			shrinker_put(shrinker);
- 		}
--
--		index++;
--		goto again;
- 	}
--unlock:
--	rcu_read_unlock();
-+
- 	return freed;
- }
- #else /* !CONFIG_MEMCG */
+About repackaging, yeah we can add a note about the new finding and
+the necessity of the backport. One question tho, is there a way to
+send a patch to "all" stable branch (the same effect as adding Cc:
+stable retroactively), or do I need to send separate backports to all
+open stable branches?
 
--- 
-2.43.0
+>
+> And that repackaging would be an opportunity to add
+> Reported-by:/Closes:/Tested-by: you, which is the least we can do to
+> thank you for all this diligent work!
 
+Will do.
 
