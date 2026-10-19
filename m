@@ -4,98 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CA5ACCF2D6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B4F5CCF2DF
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:58:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26A946B0155; Mon, 19 Oct 2026 02:58:53 -0400 (EDT)
+	id 6B0FB6B0156; Mon, 19 Oct 2026 02:58:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EDF56B0156; Mon, 19 Oct 2026 02:58:53 -0400 (EDT)
+	id 659E76B0157; Mon, 19 Oct 2026 02:58:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DC576B0157; Mon, 19 Oct 2026 02:58:53 -0400 (EDT)
+	id 5703C6B0158; Mon, 19 Oct 2026 02:58:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E376B6B0155
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:58:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E40B1405DC
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:58:52 +0000 (UTC)
-X-FDA: 85338473304.21.A8F8354
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 876192000A
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:58:50 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=StlLDKq4;
-	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792393130;
-	b=twIH2lZprqZSrI4R0Ho46E2VeKcXpeWS7wJi79/QYPMN+Mqs9ked71aSIXWm+VBCH+YFP+
-	9guqfMzgKlpp2tUl/UJT50x8VuDWNzDPKqEQIuX0gQ4XnyCTPz05NufRzl7l2ONaE17grj
-	TXwthCZj9leFet7Ah/6rlMZdGglYOow=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=StlLDKq4;
-	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ADAF6B0156
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:58:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6CDC1A0677
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:58:53 +0000 (UTC)
+X-FDA: 85338473346.07.D8C77E3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 091B5180003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:58:51 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ogMA/RRi";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792393130;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792393132;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+k7Fh9ZsdUdoxm+LzzQ1wpGUjIs9WC9S2HuufWwarJw=;
-	b=zINeNGg3fY3YsX1zVp9/Uzbtp5c7CTq4lZ3stCTbTfRlp2gqG4A2NzchfXXm123OEahlcT
-	f7Ng+fKc5Px8SSKqfyjBMp9YWqFFekyE0+fCCw2s3xPeNz4YNKsjkKrMBd8x11jdW3luTt
-	VIyB0faq8ZG9hdfiutXwzd3eLSHkqu4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F4841477;
-	Sun, 18 Oct 2026 23:58:46 -0700 (PDT)
-Received: from [10.164.148.56] (MacBook-Pro-3.blr.arm.com [10.164.148.56])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 514DC3F673;
-	Sun, 18 Oct 2026 23:58:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792393129; bh=jKcRI0F9aHnlKD651grREaBBW4xvRcUMzBlgAiHKlsU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=StlLDKq4P1yblYmcNUL/S2ln1AqLeYYRPcJPR+/GUUMAOs1w3CfSJYbdyEfSHULs+
-	 yNXPO49brP9+UjPFeg1bY6f39wNxEV9GIf+ejuiDxy5qXrhRH/cH9ROgchLpwdaLtX
-	 AYklqgynUtNpXJDDuA7feuEpCmp7LhrGsihDk9Ms=
-Message-ID: <4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com>
-Date: Mon, 19 Oct 2026 12:28:40 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
-To: Kiryl Shutsemau <kas@kernel.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kernel-team@meta.com
-References: <20261009125503.126202-1-kas@kernel.org>
- <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
- <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
- <as5q14OsbK2CmOrh@thinkstation> <20261014202936.GC371161@cmpxchg.org>
- <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
- <atDMN5MoGrwJNpAj@thinkstation>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <atDMN5MoGrwJNpAj@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 876192000A
+	bh=aJlqgxp41eAYYigFtpNAqy8U/Byaa9W5YO4I3+RNMyc=;
+	b=U6xo9glQ269F/bolt7ZMaBCCSJWFP1FNlCJh58i66D7w/9Oz0t/6JqOVbYHK/EFOUqoIcP
+	nnA4j4p7n9c+es8sKCUIpx2HDzYqsq0kK6vrAqnIy6+B0ed7B/MD9b16TSQwFG9OyDlIyz
+	DznmK2bdJJajzxD7HTXBd62zB/3E8B8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792393132;
+	b=YUG2MEQNwgTdLrQGd2LKquqh/ShUt+HnzyVsPwXm8P+bgxv3LkPaenFFSc0MKbVSIHVRwM
+	9RhpCW3cLo0tv5NTIez/jWANXHNbIYf5AHhqLr+KSEQHaHXvGHVhR9tE6G4YFnJXP8vMjf
+	o5WQ94tEWBoYpPv6TwOkb1iOy8uIvp4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ogMA/RRi";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6865543A63;
+	Mon, 19 Oct 2026 06:58:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265E51F000C4;
+	Mon, 19 Oct 2026 06:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792393130;
+	bh=aJlqgxp41eAYYigFtpNAqy8U/Byaa9W5YO4I3+RNMyc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ogMA/RRijFq2qd3pavq5UwIVnN9FHzMkCa6FNXL18Ov8QEIwg1SMOQ3kjCPWGOu2C
+	 WEZhy+uHqhFSfQeKXsRoASsHXR4bSQeZF2VzGFqY+5nMBQEeAhUmE6oYdoeJrniwXS
+	 Z6zR8oYlR5M/i4z8zsydovatS5TGjAUMHe8eoshN7Los1G3EzPJL//Dp1KyG8wPxCn
+	 jJEHYrCksZTMH+bqK73FWGDWb0KaYcd0WvITihAp7xy1hSpuoneFop9tlbUdqSazGV
+	 xMFQbx5c+R7q4KBuQXHmW2eRS1YGULWfpwJi/RNsTIIRGIaAU0eAE+G90ae29pv1es
+	 EZF9A3f+JhcIw==
+Message-ID: <sashiko-outbox-176727@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v3 bpf-next 4/5] sched: add BPF-based per-cgroup
+ NUMA balancing mode selection
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yafang Shao" <laoar.shao@gmail.com>, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, david@kernel.org, gourry@gourry.net, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, shakeel.butt@linux.dev, roman.gushchin@linux.dev, yu.c.chen@intel.com, zhao1.liu@intel.com, tim.c.chen@linux.intel.com, lizhe.67@bytedance.com
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261019064157.29885-5-laoar.shao@gmail.com>
+References: <20261019064157.29885-1-laoar.shao@gmail.com>
+ <20261019064157.29885-5-laoar.shao@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 19 Oct 2026 06:58:48 +0000
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 091B5180003
+X-Stat-Signature: 6af8sqcdjkqkf6h33imgmcrbnfr1br9z
 X-Rspam-User: 
-X-Stat-Signature: mpdihd4dg4eqmb7qyo3eqt7w4sd8pzsk
-X-HE-Tag: 1792393130-943905
-X-HE-Meta: U2FsdGVkX1+Zma+vzqj2oFCV4Kk/wMONwPow0zQY1/3H31ajKXgyoldheZwHuXXRMzgQGUTcDo+Xh0zlS4DRQcL3kOMg5ue61pwVkq3fgt5upyi5pFQL4DHr7A90xCO/kJwZaXyofAsa9INSaMPBdWDfBjgbVcmiPCw4eRjVakUfaApNS7I9x1fbiqm77lE4NEKSMZnfwCwvndenAZr0JWbjv3MSxnyw5KWPy4Nw9pPWt3zNejyZNitUPFJNmbdlSs3tRa7S6KQcjbA4TQAmhrFCbt0yHUkCFrNPg+2FD9A5hb0B5r25KPEsp560PKfg0hnlNShf7utQg/T8iZjGDyGOtZFYGOtj8HQmNHYNsIi0L7exz461jlm22ZfxCuHiV399154zori60SqyiSZ4WBoFBw9tMXCjRrkEiFQCQ6lt4+8oN35FvOCwyats984u7irKcAvWMfHpC9kY6G41dM5cyt7HhtyiTvHkua0cqZObSO1Y/bN9VAQMLmP80Tsqgeslt3Lut4w8xPUaqALLiSZUUANNHTg5VAbLpzABg5p6yGOHDwoBuiD7zTxrr3aIrc/LZrWaqZ6M7A8iPjhKoZ2phWU6SXjQTELCwSIhhhcye5QjM0/tvkoR218OcL21O+vmTs5RkCglwzssMHpukfr1ccnVM2EEHaUM4NvVI1poU2reJWgSVogpGAto8EgLy10NSzM08ZqIwf4LPG6kUE8dAPqYaMawHNCWuQYzCSWW23J5O5y+H3AauJiLJoafJqfkYM7DXJ1/cBTZVEjZyJ0Dmgh7RxJWEa28wraVo5zY+Ek3hxb2bU/nzUdQihy0EVhWB6Su8SMegZtcM/WXYXx01DOHwZRyOwrWmDl4cMdHUKiG7tXaQqiUPMw4RF1Gq6QTaDg2PtiQb47rzM3nW6+6UBXq6p8a2+zq6DhRwYC6C+RqAYx4zmqqpTKgN0Y/31BqQTkGFZAIDTVuwJB
- hUSfauvS
- 2/MNLZgRrQjxXWBDo6E5VUGoYLeeCHIdOCamluaGQ670W3L6YjVh39Re1GnONcOb3u8SLZC7MqlbmxDkD/pAcFYGvQMkeY4MPL8hrFQ/XOG9NFNzZUNMSsw4nI6iphFguc/GW99zOEJnWugm/e/Pn+SknMIvOeBBZa+81xL+TrrL6z15UMIoZdaXEFA1YPvkxFi1YZ5iqf5wkmi88LtJu03jClsaklytnhb3WTz9KwXz1dbxo+3jZfNXHheX7DENysYTr4Lt5jGbnE7W1I4f3Nl0ojGr+OzZuHnG6
+X-HE-Tag: 1792393131-443994
+X-HE-Meta: U2FsdGVkX1/b8dau85rRSDs2gLlSoK+w7LTIVahmKoe5g8Fad4MmiqrEnwx2PsO4ZINnO2ogtlZZ0lwF+nHNkJP54fr/dyrsC/7fp4ZrAURXyJ7+eOfBz0nnA3paVwgcS8VFlOWknKEYXodyIp3o3Awexz/MzRRT/KU50qrSG7m4Ns3E9httKve+/Nn8jZLB7KAcmBw2IZLUnWfJvGTegh8HXKiDeuddHjIX9SbtJVnKaXVdm0r7qWdsp+WjcOpWMPXoDZjpauaw1VkHAsfd+BGDVFVNRHPrcZnV3oNvIaKFLJH1KqgTqjfCuIXcpgbdq4k5oy+Dlicsk14Uls+yNtX9bUC84s/KtX1r0ICewHEQ5wspJYQtAsr4tDfTxsyu++Ij/J3iMAJUd1VvuO7vQEiFPcvoDoqehWqQ1N+seT3vOWmdDDMZOAU5viCBrUKq+Sy6Ea3c6Hi4i/SVd8t/NIktom+p4oNB1gVl8ZZewVFC/N5yRyMLbCopZ5A8fxDlXiOWWRCleYgYBpakyFisWzSyUrxeC74G4yzAauHw18iIvXb7FyHOJqJawP/g7XocVFmoi4+nVmohNDWvlw8iwe6X/ZzQoVYBomCExfojUzZcpfVVf2HNRAp6/M7HmajvDwha/YA9qFBuPTdLvARrfNQTFhOfGLMmerfRP3f3L0JhAY3JSl+jtpZWzmc11TwJLOe6J+6C/5dXaD/OaLLitLb3125YNu7KsZtlY09Eh0WWGnRd9H9x1CBS8FmeKPu5zQbgoulym4nEAwsto9H/b9+TnjHye6qnMqNOkERwiQ27b6LFDGtG+KVmnOUyioPId4KCJ5HrijuEWwiN46QdWwZnbICieLMzFxppvVDflvA4bR/vBoGXJCJjhpq++8dv0QF/HaE13Bfqg71YGjRuOP08zCnI4thyaiD2u8NypLuu1IupQpv6YikwPkCgTDJIUDNP+rgQtaimjgp1NmD
+ Q19Ga8t3
+ Y0bHYbD/YNVgWWts6DoUg6Ebjk2+bB/Sf1NIszEJ3cdAL0OpTxKSJPWQYCjUopp/wpO/jmfB6076EdXZvH6ytmvq4Yzn+cCXREmmq53GafqDXyWvPPaEfI0VNnfFYslmfqv1e8o1qCZ5w4uhJElt3g/Sq8BqEEHi+oLh1ohLo4C1einbprY2dIlVj/ALa4fN7LQpN6KG6nU0sT1m/khzIhdWB+v7I2itAHDOj93Zy/O8hO1IEVad8Yl1XDUoBxBDUKvSnuHSgI5F/UFbMge1hLtspuKNazcNYAJmRZImY6UXrTzr5EiNc6WWt/i4xw0aI+7uUsQptccPv62uj8kb3+7+UHGTB4ScNkW85VcusM0Z9RBbFo5tOIAHP5xkdk8HtX0UUn4PtRhE0r8OZJ5EasT0cXHdNWKGo2LuR37rQDrqtNN/RF6MojblCbgt1GrhQ3Ff7U0RbZA+vGFkp9jLDikq76BMZsa7VVlsL9pzYctUwUWW8rpsifsGh7PwJyAx5LMRDrhWfd/yqFkKxmPmqr59XVeciJlMbbsrFYLlxCi2/oHZP3eBilxW/kOzPirzsK0G2CxwPCY7UJTmPZBttQ1cYkUdajBvIitZevwqQQs5fkvzhUNr1vux8wjr3S/04BRt9ComcESDSODkfcIIOCOqr0ZtggA3YvK4P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,35 +91,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] mm: use-after-free on source folio in migrate_misplaced_folio()
+--
 
+commit 5de3ed8c82d3030544f5f025b8ae47dd8339bfeb
+Author: Yafang Shao <laoar.shao@gmail.com>
 
-On 15/10/26 6:25 pm, Kiryl Shutsemau wrote:
-> On Thu, Oct 15, 2026 at 09:16:36AM +0200, Vlastimil Babka (SUSE) wrote:
->>> And agree 7.4-rc1 with CC stable is fine. Sadly, not sure if anyone
->>> but Meta is using the feature right now.
->>
->> I thought it was there for a long time but it was only added in 2025 :) At
->> least the enterprise world is slow to adopt things, AFAICS.
-> 
-> I was thinking to propose a patch after merge window to make defrag_mode
-> default. Do you think it is too early? I don't think it is ever going
-> to be truly stabilized without wider exposure.
+sched: add BPF-based per-cgroup NUMA balancing mode selection
 
-AFAIU defrag mode is not going to improve mTHP allocation success.
+This commit introduces per-cgroup NUMA balancing mode selection managed via
+the bpf_numab_set_mode() and bpf_numab_get_mode() kfuncs. Hot paths combine
+requests along the task or folio's memcg cgroup hierarchy behind the
+numab_cgroup_mode_set static key to override the global sysctl setting.
 
-I ran a synthetic benchmark faulting in lots of 64k mTHP with swap enabled,
-defrag mode caused me to enter a warn_alloc (and 8 times more compact_stalls),
-which didn't happen without defrag.
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 211c29bd2a283..c0692c7b27467 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
 
-So perhaps bundle the default with pageblock_order eagerness etc.
+[ ... ]
 
+> @@ -2770,7 +2770,7 @@ int migrate_misplaced_folio(struct folio *folio, in=
+t node)
+>  	if (nr_succeeded) {
+>  		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+>  		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
+> -		if ((numab_in_tiering_mode())
+> +		if (folio_numab_in_tiering_mode(folio)
+>  		    && !node_is_toptier(folio_nid(folio))
+>  		    && node_is_toptier(node))
+>  			mod_lruvec_state(lruvec, PGPROMOTE_SUCCESS, nr_succeeded);
 
-> 
-> We also discussed with Johannes to make a stricter (defrag_mode=2?) mode
-> that will not give up on fragmentation ever, but OOM instead.
+[Severity: Critical]
+Has the source folio already been uncharged and freed by the time
+migrate_misplaced_folio() calls folio_numab_in_tiering_mode(folio) here?
 
+Before calling migrate_pages(), migrate_misplaced_folio() snapshots the
+folio's memcg because migration transfers the charge and releases the
+isolation reference on the source folio:
 
+migrate_misplaced_folio()
+  memcg =3D get_mem_cgroup_from_folio(folio);
+  migrate_pages()
+    migrate_pages_batch()
+      migrate_folios_move()
+        migrate_folio_move()
+          move_to_new_folio()
+            folio_migrate_flags()
+              mem_cgroup_migrate()
+                old->memcg_data =3D 0;
+          migrate_folio_done()
+            folio_put(src);
 
-> 
+When nr_succeeded is non-zero, calling folio_numab_in_tiering_mode(folio) ->
+folio_numab_mode(folio) -> folio_memcg(folio) -> folio_objcg(folio) reads
+folio->memcg_data on the freed source folio:
 
+static inline struct obj_cgroup *folio_objcg(const struct folio *folio)
+{
+	unsigned long memcg_data =3D folio->memcg_data;
+
+	VM_BUG_ON_FOLIO(folio_test_slab(folio), folio);
+	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
+
+	return (struct obj_cgroup *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
+}
+
+If the freed page has not been reallocated yet, folio->memcg_data is 0, so
+folio_memcg(folio) returns NULL and folio_numab_mode(folio) falls back to
+NUMAB_FOLLOW_SYSTEM rather than using the owner cgroup's tiering mode for
+PGPROMOTE_SUCCESS accounting.
+
+If another CPU reallocates the freed page before this check runs (for examp=
+le
+as a slab page setting PG_slab and MEMCG_DATA_OBJEXTS, or as a compound tail
+page), can folio_objcg(folio) trigger VM_BUG_ON_FOLIO() or dereference a
+slabobj_ext pointer as a struct obj_cgroup *?
+
+Would it make sense to evaluate folio_numab_in_tiering_mode(folio) before
+migrate_pages(), or derive the mode from the already-pinned memcg pointer?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019064157.2988=
+5-1-laoar.shao@gmail.com?part=3D4
 
