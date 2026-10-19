@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C2BBCCF2DA
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C09CCF2DA
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 06:25:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4661C6B00B6; Mon, 19 Oct 2026 02:21:57 -0400 (EDT)
+	id DBAD16B013F; Mon, 19 Oct 2026 02:25:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 416476B00B8; Mon, 19 Oct 2026 02:21:57 -0400 (EDT)
+	id D6BF66B0140; Mon, 19 Oct 2026 02:25:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32D436B00BA; Mon, 19 Oct 2026 02:21:57 -0400 (EDT)
+	id C81C96B0141; Mon, 19 Oct 2026 02:25:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB1FC6B00B6
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:21:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5CD3B1A021C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:21:54 +0000 (UTC)
-X-FDA: 85338380148.21.1C22AEA
-Received: from mta1.migadu.com (out-82.mta1.migadu.com [95.215.58.82])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2D4EF40006
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:21:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PZeCpItu;
-	spf=pass (imf17.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id AB8C56B013F
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 02:25:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B1C2D1A0649
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:25:23 +0000 (UTC)
+X-FDA: 85338388926.27.7F6E451
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C074940002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 06:25:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=PAjLuW7o;
+	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792390912;
-	b=ZLe0TOvR2bDqSPviXqwyQY1tZMMDzWN5dClhDof7kReBv457lIH62YZKNfuxsDx23FcZyZ
-	t17Gr/GoTo7C8zg6bQtdnXgXcUIB6NynCRi3DAq2oSSOGL5wNSSepDdfPcxVsjZG4OAZZa
-	O0IgiH92BzzBnQ/8rHkcgkBnbo4TXxI=
+	t=1792391122;
+	b=hDbjm4cCcflWEHdLCozQZQaozkcAsjVA2Tl2uA91lVrzrW4LrkM02mdzPpZ0KCBnbQrllm
+	SviWCzXKJ9S7fKYYggKu6rLtdrSRWinq7HYdvEJpJhH7X7XZpwdHmURliUHLPaM/oCpT2R
+	HJ8foTsfKUOYZ+eVdle3SJkYh4powWM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PZeCpItu;
-	spf=pass (imf17.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=PAjLuW7o;
+	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792390912;
+	s=arc-20220608; t=1792391122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tb1CVDb/qtCe1N0t8PpStFV2JA8h8qEFpJDkLU3BfdU=;
-	b=sTTf3hAFl/gpTVFmUBnEUqNtWEnQYEi6yYlWIJn5QPqjhey8ZlRrVVbtwfXzI0HA/2hv2b
-	FAVUIgqj9PWptEyRzwtn2u/puRu/PsDkVyNDcYfWeWX+7jEbPgJwjCD13eRM/R0dFG6XeI
-	QARS9NV/61E0W5/T6m0OYeXMNcVXuhk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=I4MPMNFIXchxrDocrBAZUC2FdxNIMi1x4SFGsuGksro=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792390910; v=1; x=1792995710;
- b=PZeCpItuM79ocVG/ZTKd6RwQdP6Tps/2lRzSJ7JAm/RXajDfEmBbX5mBR0tlLaddhCmUpcII
- OaeqLlQjikHo8sJ5ktuQokskT7UgL5xw6Bf3VsI72r63+AKezog8THBAEXn1lyAJCziDW3pdtwC
- JFs3wFclqUiEoZAFKlmzI0mc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ab907ebe85d37efd;
-	Mon, 19 Oct 2026 06:21:50 +0000
-X-Mizu-Trace-ID: ab907ebe85d37efd
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <8ed89bac-d9f0-4dba-b733-7d678a4b47ac@linux.dev>
-Date: Mon, 19 Oct 2026 14:21:39 +0800
+	bh=XN+K9d8x6X2efXo7o/Md4BoXf+qoI6rmokNsGst2jzM=;
+	b=HSfc8tR11xm83P0QS4jERz67VS/glFmcS8IIVnmWyrE+z2F/sv9hewv6AXjMbE1XiZqEqf
+	0XjeZcEkLAzh06rK+y8g1XLKtONRk7i0VEj1nEYPAX9rG6jAcKSdzozTBJ+YN61ulbTvBb
+	GjIxpo5pfGaDFW6zC6uAcAr9cTX2QZU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E13A1477;
+	Sun, 18 Oct 2026 23:25:17 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A8423F673;
+	Sun, 18 Oct 2026 23:25:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792391120; bh=55RfTNFBQ9bYI0TDGXnU655P/5to3Zf/3l6pm2G36ns=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PAjLuW7oV1dFsO9RUkEDuhzNJVk/QIY1FdzjBlsdfuae1ojCAEHeWbysLZQS33AuL
+	 91afN7as3b2wVL8PgRS7QalzNL3VJmXu5G34VBJSycUtx5kDnNHbQGuFmbHivrXfdR
+	 PWNX8NdAERb2KexXuzG3pP1o8xO/AUzTHsFH5Gv0=
+Message-ID: <d7b1711a-44aa-4169-a250-227a172f4125@arm.com>
+Date: Mon, 19 Oct 2026 11:55:12 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] mm/mglru: add tracepoints for scan and aging paths
-To: Steven Rostedt <rostedt@goodmis.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Baoquan He <baoquan.he@linux.dev>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- Ridong Chen <chenridong@xiaomi.com>, Johannes Weiner <hannes@cmpxchg.org>,
+Subject: Re: [PATCH] selftests/mm: keep ksm_tests on small pages
+To: Qiliang Yuan <odys.yuan@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Masami Hiramatsu <mhiramat@kernel.org>
-References: <20260911102939.2485750-1-ridong.chen@linux.dev>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260911102939.2485750-1-ridong.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Usama Arif <usamaarif642@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261018-bug-selftests-mm-ksm-tests-nohugepage-v1-1-55ed54bdad35@gmail.com>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+Content-Language: en-US
+In-Reply-To: <20261018-bug-selftests-mm-ksm-tests-nohugepage-v1-1-55ed54bdad35@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2D4EF40006
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: mggege3w6pny8xfsmzjcwunhqqk31tu6
-X-HE-Tag: 1792390911-427379
-X-HE-Meta: U2FsdGVkX1+xrwTRxr9sEs00shxcaTgYZERl0M8AdToePjHD1Fdrj14MKSZWyAAmLlD8RCBduZLwEBf0HJ1QYyT7BqboQdjh4Ck4Am6WSM92po/MHiiWqHfBy+NUJt8mBGZzvSfcxGRmoYGO2xBlNvyVCkUCBjYMEjcoQtitbcGMSMr3P1XNQd8c33wLx/eCng6dvg7HauMvaS5RqWbu4xT/v3IqF3lQrOomcJX8RBFy+gkpmGNWuD7iYxUiaDe+xRWwN9emwSy2/njMqZx5Z2AqXs7cVLJ4q3BRwOob37k9v/rZ65RS3dxomrybpsmgF98cUOj00YsE4eLQ+NuWuQk+ZJpfVEZHtwPM/CFvIK9mJofGpfGpx87etMbORRgN08kbbr7aB0FxuQ9Z2kml9vRSsD83lhcVrsoML7a/oacuF/LnVhzXLPQbOo0vHNGAeWSbymgSDVT3ot9oYpLrw113q7KTYpK7bO1z28WUU58ajsmcmOtU0+spaaHvT9QVvT+hEDemdg/wAD7necOcRg3ybgD0+zLGtMkoTE0q0nYT8dSDj0Dqyi2jCjwgsReqQCR25wPC/lFjC6GZwupC3HSUdl1mlNvw3GoIUe1xCcBFIzH5wSV6KOqAy8bw0rXk8lRZoO6FDQJfniG5eJMlyuOosiWWPw0Vf1lK66AaO9N/rXamO/j984yhs/pcA3I4XGVVNpiqWqaxk9P2xfi6cYH6zG9JI0u4BMuCrrilfMz4SlQo0vD3x0+kgj5jJrZDzL0HaTVDrcs5YRCRl/InV1oZM4SUJ5ns/lND05prxRgYvyMUCa/s/yGkmDpJ1m3/OvxJ3bSc22DPhaSOzm1cfe0toXH4vFLT1A75Q34i7dTjpEvjzDW5NqZAHlBHkcrSry6J/CMeRsnW4tTmmxoACUjhTjjcTbLzTBm03AYrbXk0DYGGZfdYbLn6nXKY8vhxwBM6i47Ms80698IH9fa
- Ckz0U9pJ
- qOG6k64cTsIa9nKygwMbBDhAr1K3wz04WTU54xIIpMRb5hE0T991C3fcYERAVXEutyuo1Pxhp6bKJJxFOz5qmN34iz32nGkn7JibIWs1Fayy8YrOr7R0QiyNx1Htia74qbvxs6Qhja6TtNFs2eGeQ2HK9i+1n73m8c+1untikkccdK5Uojtce11ULEYeiCkjByMn8qBpGAxgd0IZegxP9WymiDYLyVu1JrT6xpIpuHvl75YRJLOBqB9p2tD3mfZYKY2GAmj1uiFPpdL/V6Uc2osa6f24iVojgWLVu0Dp4ic9Z+r7Rdn2iipCaDxwi0xMLsXFtd3MGI4RE+HHoWZC51J9xLeXEqPw5Inn6ITbZzeZLLrFg21P5j/Ed5/XuJ1IY7xnN
+X-Rspamd-Queue-Id: C074940002
+X-Stat-Signature: oossos95kxk91x1tzp6hkkok8jk3ncth
+X-HE-Tag: 1792391121-696675
+X-HE-Meta: U2FsdGVkX19TAJmLN+ppcmD2AjE8NORte1lvPlfKVnuI6nZYFePVuHgYaRYef2hTECS1wdDcarXqGpzOOb3oZkYHSLUaLnXkmsEq0SUJdusgJ+gOih1jY+fJmAJW7kLbmLKXUeLN4qXHWiRzKcmkmBOb8O4684QBIfOz36J/lJzDPS9i/pCL8k1tVm+FYnagT73W8ryTIYVmaOdSC/vOd9tgJZFOaJIVO20s1D/qFhmBfwFVtAmKn96NfBAVnpQKlj3r8n0TX8U+UwGkqscsmFHMtISOCr/adNgbrW03dR249n+EW0Mm96uUzBqW9ZQo/adRDo/iUYsPDCK/yZtRsbcMFd0wSNiA827jSZw10dZZFDenEqRBmJGlH9ni+sgwhmAsFv49WrRoDVrNQA5YnIaPqwZuoMVglWUO7TxnzuV/8Vaywqffljk9Rqla9gXvWTBWKiaNtVRl8MaCKjUDYL0z04hbx+/VokJUDa92wVz75KTS3d2UbRH5pnBmdd5hgMfnoHzL8+yv4+J4ibJAkW9IAU7LWWn3554g0LOVodsrLD+Tj+B4sQKDZpNW8NVHBgeKWHEnAy5TvoPqGjT8W4aY8njUmMmhigR4iFtt7gZgBPGRGb4wparSbRGzCk6DN9nkILiGqUE2CzPDrQeJo0+aLLYTfM+snzFiosFVN0VFaskQ+unZbimHmpzSrFiMth+6i6WIaCbZFlkEhyuvMa8M19Wq1OwjvzohdDwajGcW11N1gnOQi9PQPI3NLfnIyZxBJ/CxlCaCM4lrc1G6BRB26GJwRnIW/u6AfoHaZtEgWYXZ826XXO7Bu+dIfqtjND84ejIoLRZOjyx/TOqqKm3/o/Ru6blCt9P/RqvfroWAbhzhD+DQ16xYtdNATJiuxmRq1ccSM3/gzmtJgAHJvMEyI5sz1uhM0/2IjMuVtNY1vMTlgf9OO+oXp9ezaE6OWEhMwgHxbqaEWlvbZct
+ 3EGx83YF
+ QtVT+KWUjTigCHnx8DCEp5PGW2QJcKlLL+N/Gw8Y/MSVf+hdaXyzoClrUZFY4/Kd7cGsL4cBuwRo4MOD7nT3w96fiNnm7AQmztQs9gELJe+JZIOS47Wln5D6/XA6gtKORhrpiao6zw3KB+BP0kjxg+1eZbMRf+rUZtyKgjDAmE4a84iPTM8hh75tcsrv3kWsep9G2NE2JNrVLEQoTxFDt2KCPbEto8zP0WofKnj7bUvaIx5EnQwIDlwdjyPdTTZN38RPcxHVrrbenhEjSPuw/hNibPPsQ+u6EGnxXRxRWTi8riaSDzIAWC2e2jklcLO4VhqP+nMELsukeo4ujZjXFQ8gUOkJGn0JpAo2i4yBmISsz/lRQk10sPmcjsC6XCNPCZwm50aDmQXepXdHopLB1EY3V2s0dg+IVRr1yDhNmmr5mGuHBDd1c9sJwZrqBckbMb+Uc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,105 +99,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 9/11/2026 6:29 PM, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
+On 10/18/26 10:23 AM, Qiliang Yuan wrote:
+> ksm_tests fills regions with identical data and checks KSM's counters
+> after merging them. allocate_memory() maps these regions without any
+> THP hint.
 > 
-> Background
-> ==========
+> With mTHP enabled the regions can be backed by large folios, which KSM
+> splits before merging. Splitting an anonymous folio maps its
+> zero-filled pages to the shared zeropage, so with use_zero_pages=0
+> those pages never become KSM pages and "KSM zero page merging" fails
+> its count. "ksm_tests -Z -p 10 -z 0", 20 runs:
 > 
-> MGLRU currently has no tracepoints of its own. The scan and evict paths
-> reuse the classic-LRU tracepoints (trace_mm_vmscan_lru_isolate() and
-> trace_mm_vmscan_lru_shrink_inactive()), which predate MGLRU and carry no
-> generation, sequence, memcg or swappiness context. A trace of a running
-> system therefore cannot tell which memcg a given scan belongs to, how far
-> reclaim has progressed through the generations, or when a new generation
-> is created - so how MGLRU actually operates is effectively invisible.
+>   THP setup                     before    after
+>   default                         0/20     0/20
+>   every mTHP size "always"       20/20     0/20
 > 
-> Implementation
-> ==============
+> Map the regions with MADV_NOHUGEPAGE, as ksm_functional_tests does.
+> ksm_merge_hugepages_time() maps its own THP-backed region and is not
+> affected.
 > 
-> Patch 1 is a cleanup that factors the per-generation page-count
-> summation into a helper, lru_gen_seq_nr_pages(), reused by patch 3.
-> 
-> Patch 2 adds mm_mglru_scan_folios on the scan path, and patch 3 adds
-> mm_mglru_inc_max_seq on the aging path. Both carry the memcg id and the
-> generation window (min_seq/max_seq), live at MGLRU-specific layers with
-> no classic-LRU counterpart, and are guarded so the hot paths stay
-> zero-cost when disabled.
-> 
-> Effect
-> ======
-> 
-> Paired, the two tracepoints make the full aging-to-eviction window
-> observable per memcg: aging advances max_seq (the leading edge), scanning
-> consumes the oldest generations, and the min_seq/max_seq pair on each
-> event shows how the generation window moves over time.
-> 
-> A sample trace, with the classic-LRU tracepoints left enabled to show
-> how they interleave:
-> 
->    mm_vmscan_lru_isolate: classzone=4 order=0 nr_requested=36 nr_scanned=31 nr_skipped=0 nr_taken=29 lru=inactive_file
->    mm_mglru_scan_folios: memcg_id=73 classzone=4 order=0 nr_requested=36 nr_scanned=31 nr_sorted=2 nr_skipped=0 nr_taken=29 lru=inactive_file max_seq=3 tier=3 min_seq=0
->    mm_vmscan_lru_shrink_inactive: nid=0 nr_scanned=31 nr_reclaimed=29 nr_dirty=0 nr_writeback=0 nr_congested=0 nr_immediate=0 nr_activate_anon=0 nr_activate_file=0 nr_ref_keep=0 nr_unmap_fail=0 priority=5 flags=RECLAIM_WB_FILE|RECLAIM_WB_ASYNC
->    mm_mglru_inc_max_seq: memcg_id=73 max_seq=4 anon_min_seq=1 file_min_seq=1 nr_anon={0x0,0x0,0x1,0x0} nr_file={0x0,0x427,0x6,0x4a}
->    mm_vmscan_lru_isolate: classzone=4 order=0 nr_requested=5 nr_scanned=5 nr_skipped=0 nr_taken=1 lru=inactive_file
->    mm_mglru_scan_folios: memcg_id=73 classzone=4 order=0 nr_requested=5 nr_scanned=5 nr_sorted=4 nr_skipped=0 nr_taken=1 lru=inactive_file max_seq=4 tier=3 min_seq=1
->    mm_vmscan_lru_shrink_inactive: nid=0 nr_scanned=5 nr_reclaimed=1 nr_dirty=0 nr_writeback=0 nr_congested=0 nr_immediate=0 nr_activate_anon=0 nr_activate_file=0 nr_ref_keep=0 nr_unmap_fail=0 priority=5 flags=RECLAIM_WB_FILE|RECLAIM_WB_ASYNC
-> 
-> The mm_mglru_scan_folios lines carry the memcg id and the generation
-> window (max_seq/min_seq) that the bare mm_vmscan_lru_isolate lines above
-> them cannot - those cannot even say which memcg they came from. The
-> mm_mglru_inc_max_seq line then shows a new generation being created
-> (max_seq 3 -> 4) with the per-generation page counts for both types.
-> 
+> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 > ---
-> v2: address Sashiko AI review [1] - pass struct lruvec * into the tracepoints
->      and do the memcg lookup inside TP_fast_assign.
-> 
-> [1] https://sashiko.dev/#/patchset/20260911072848.2346073-1-ridong.chen@linux.dev?part=2
-> 
-> Ridong Chen (3):
->    mm/mglru: factor out lru_gen_seq_nr_pages()
->    mm/mglru: add tracepoint for scan_folios()
->    mm/mglru: add tracepoint for inc_max_seq()
-> 
->   include/trace/events/vmscan.h | 101 ++++++++++++++++++++++++++++++++++
->   mm/vmscan.c                   |  53 +++++++++++++++---
->   2 files changed, 146 insertions(+), 8 deletions(-)
-> 
+Tested the patch by enabling all mTHP sizes as mentioned. Before the
+patch, the test failed and applying the patch fixed it. So:
 
-Hi Steven, Baolin and Baoquan,
-
-Thanks again for reviewing v2.
-
-Following Steven's suggestion in this thread, I first moved the vmscan
-trace header under mm/ and exposed struct scan_control to it in a
-separate RFC series. Patches [2/3] and [3/3] of v2 have now been
-reworked on top of that and posted together with it as one series:
-
-   [PATCH v4 0/9] mm/vmscan: move tracepoints to mm/ and add MGLRU
-   tracepoints
-   https://lore.kernel.org/all/20261019034426.2354049-1-ridong.chen@linux.dev/
-
-The two MGLRU tracepoints are [8/9] and [9/9] there. Compared with v2:
-
-- Both events now take only lruvec/sc plus the local counters, and
-   derive everything else (memcg id, order, reclaim_idx, lru, max_seq,
-   min_seq and the per-generation page counts) in TP_fast_assign()
-   (Steven).
-- Add nid, derived from lruvec_pgdat(lruvec) (Baoquan).
-- Group the int fields at the end of the entry to avoid padding on
-   64-bit (Steven).
-- Drop v2 [1/3] "mm/mglru: factor out lru_gen_seq_nr_pages()": the
-   per-generation page count is now summed inside TP_fast_assign(), so
-   the helper has no user left.
-
-Since [8/9] and [9/9] changed substantially, I did not carry over your
-Reviewed-by tags. I would really appreciate it if you could take
-another look at v4.
-
--- 
-Best regards
-Ridong
-
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
