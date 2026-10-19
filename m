@@ -1,141 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7393D607DC4C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7934F6084858
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 15:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GN3AUQf/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B9CLWqxz
 Received: by kanga.kvack.org (Postfix)
-	id 21A2E6B029A; Mon, 19 Oct 2026 11:03:34 -0400 (EDT)
+	id 358EB6B02A2; Mon, 19 Oct 2026 11:07:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A5306B029C; Mon, 19 Oct 2026 11:03:34 -0400 (EDT)
+	id 2E3416B02A3; Mon, 19 Oct 2026 11:07:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06B6D6B029D; Mon, 19 Oct 2026 11:03:33 -0400 (EDT)
+	id 1D19C6B02A4; Mon, 19 Oct 2026 11:07:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C557F6B029A
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:03:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5B92EA0769
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:03:33 +0000 (UTC)
-X-FDA: 85339694706.02.22B719E
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6F0B540008
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:03:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="GN3AUQf/";
-	spf=pass (imf04.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E18746B02A2
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 11:07:34 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6063A80720
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:34 +0000 (UTC)
+X-FDA: 85339704828.23.3768B79
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A94882000E
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 15:07:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9CLWqxz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792422211;
+	s=arc-20220608; t=1792422452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kKFgXAWOd0iYwNRMqtKFlgfZbmk+9qhcBIiWIQuiCC0=;
-	b=EWGISFzOiH/T2Ut8UM62B5rosOWFd1/EIBNg8nG53z9+1MAjQ29jqurt6iHRjRF7GuSU1r
-	+Q0WQbhqXOWwDfBKRm1EUG8PMRGbuVWkykaCER9sawlAhoNSCh4TvnSXFP0ln1nDDGvLup
-	D4qq/Pc7JwhpA9LCv4ppIub5SfLt5a4=
+	bh=XAW+AstcWY6xdbUMT8c6ejV79mSagbIvsiRflolJ1vg=;
+	b=XXQOOJXTFKmRqtwWlWA9w4G9Xf+ekzrG5+AnooJyHZysu08un+1wrLJdOklFeYSyvYCJVU
+	VN9AA7rnvYuS4xYZDdHJQOQ61RNWk5FHxIqUuKUorAbqnDHyGgxWS7VeTOV0ElqFsvtTyl
+	DFZLymn3bI3vFnyr0l6pFshkY8K4Lfk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="GN3AUQf/";
-	spf=pass (imf04.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9CLWqxz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792422211;
-	b=OjhTx8IHyYKGAYKqRdWmPIeuVdMrS8l06B5GKRFIcA8ptlriDL4LrQ1bwgBqngfTpMCjAZ
-	9yW2Yo0o251i/BigrVc/Y4SgX1kmtAuQWRvKXfka9wdKbs0WjgDhkQb5NAnUBi/b3jGDjh
-	26M5kHwGOf5xnc/SwwU76Zqyr3rc524=
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso144316eec.0
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:03:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792422210; x=1793027010; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kKFgXAWOd0iYwNRMqtKFlgfZbmk+9qhcBIiWIQuiCC0=;
-        b=GN3AUQf/sOLzUPctm7thcEqHpMRwKp1ZhcwcqVPmYwsHP+Y02XTazFmsBlGaQ+G/Xq
-         kIfhKIoFxSp2ac/dwkeltpyY0/P3s7RyqgbqJ1kSFIqv01es4Rh435D81j8CWIWqYlF2
-         NTJNU1G/Mg1gPzLalsKzMijhzMcZ8naeGUmzAfAzEhqn/ckn2UGzS5QCbnq+xwhM708p
-         THRdsrylZRBtVvTavVA2JpqmeAzBHR4OIDCODHnVnTlncEutIO5PX4Dp7OUjIIrtJkTC
-         hD6vZcMWmfw1KskMwZF/WGb0FkeBNW+4AHOePFY8F4gnF9CrBLH22s6mfEh9OANZiijZ
-         nI8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792422210; x=1793027010;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kKFgXAWOd0iYwNRMqtKFlgfZbmk+9qhcBIiWIQuiCC0=;
-        b=thEU+WmrjinhZvO2i0x965d17SC7etbhXffwjSJvRJWNRUuTBWSVVmHrIFQCDHKiA0
-         1jdb0YzgfEdsIZldgv9zb4Qm1ykYjR5oANVnuYerlg9N4C4o0UzlMV+EwqKTc4JMyDq1
-         CwueLcTWTi1kEIWDqkWLpj65/slhXYBxkma7phg6w5ResQn2+j9hmJ4NANsvpDNLX3Yp
-         mzRiRwNKgiOgxcsWuFbqN7YgxLLrsXTOEDndn94cYzaNJcN4NgAkk69K5OcNwQR9RTRD
-         it0/8tX20bZt96+Wh+XpBKaNHERsM8QPZrXQYR6Nug1JE+oZ646+NhmWM69Py+7uHYiV
-         410A==
-X-Forwarded-Encrypted: i=1; AKwUvBz1hyz2Y+pdKPjHE0BuVSn1bFcdZjzIc59s0qrFlbYZj+vDcy5IsSPWcJF7i1fZVmEq1adgi4TjFA==@kvack.org
-X-Gm-Message-State: AFq9FYIV42aabmr1/D5UlpVXd6g8cvaEEFo2Zu1w06i8PzsDzrHutFWK
-	UbX7DzKODLrZ3u1chSA20kqcv4nWGXDzD7Wdw/HnWlOgyx3FFNf7y9GW
-X-Gm-Gg: AYBFou2dXgFPfyB6wM9HvtXJGitszwHGlFtRH9Uvvyf4XglR74cOEPPg1VNetW51cMT
-	Rp9BIKb3nB+lamR3o6zrt7aFGAPEpdatm5sW9qKZY7UTY8YX9PmgpuWnAIbsF9d4VzJVVDYVm/P
-	GTq85HX4cQRIOTluMO+NJTqb7mMRCzNNKK5CbFwMzy9WOIeeUvYJsQQJzSXzC+OY8xUJkWldZvL
-	zKo6PX9TQAk5E4goOUdBkq+ub2Y6K5SXAYnA9qiFe/ofsGmpW53N99Kn3EG+5XV8cOiPeGnwru4
-	/hihqMOmCrg4jtd/nyc1MjSKrU8Ihfe/qonhEezAf7EHW4d3QH3Q9OHW1/u5z7JyBUMR8EQ5SeC
-	KyXTfx5SfhfGOlLZpNDP66F/HWdsg4/ZaMiuo7XA9FC091sU6431nMEJrvFo3eOidhr6WNEEgSn
-	AYJxhZcXnXMnABcflNoB7NXpqO/D6Go9x105CR/UNM4vaB1z4HqXRDgUrK4rpdn3WHcauU/Qxfu
-	q+K+Bp5kWgeMTCFYgftPQjGcQQY
-X-Received: by 2002:a05:693c:87db:b0:35d:9516:eb26 with SMTP id 5a478bee46e88-361a1366c56mr10050323eec.13.1792422204963;
-        Mon, 19 Oct 2026 08:03:24 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360813b6e33sm34648900eec.7.2026.10.19.08.03.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 08:03:24 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: dev.jain@arm.com
-Cc: akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	david@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ljs@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	zhaonanzhe@xiaomi.com,
-	lipengfei28@xiaomi.com,
+	t=1792422452;
+	b=oqobkgWG8qQwSqSHl59CjoNLvHMt4f85WGZ3PM9cmSEuqCZ3YcOo/ygIqHapePQYXaDmiQ
+	EfGbnxxtLV9gdyk/9071HN2tOP9ri83pT2rYHCDC7nGRk8WQoQ8oqyAlBEqE12IzOkyO6U
+	wQjRGQzEjvvqBneA/6kUiC1NXmIEHSE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C7436021A;
+	Mon, 19 Oct 2026 15:07:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14DE1F000C4;
+	Mon, 19 Oct 2026 15:07:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792422451;
+	bh=XAW+AstcWY6xdbUMT8c6ejV79mSagbIvsiRflolJ1vg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=B9CLWqxzzRjvfuihRqvaLRG+rbfVKJu2ObMot/c0U3Lo0hdtcwZNtfKO29/O2Bu/b
+	 videMyr2SxDpPaQyRShXtzk1ZPsoo0UILYTwfkx/cpPLi4AMu2+9HDhiXC0GdvyLgM
+	 wP0Z4ThjZPKUDicGiqUKq8nuv3t0LGi90/YoSZTOgjOju/GO3HnER5M/jbUYL2x0lp
+	 dgQLxiefE80zbHvh8k5gOkT00LVb01Y2HW2zNWB0opiTQdboTU9ZofIQ3Pz4LvyyFe
+	 pC0mYnJii/23DUipruQXPnjK6FEYC6ZGbE9/dWwkK7bHL8hTBYvqTuKalRTsv5lJiy
+	 IxveDDQCRuqMA==
+From: Mike Snitzer <snitzer@kernel.org>
+To: Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>
+Cc: linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Matthew Wilcox <willy@infradead.org>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Bo Zhang <zhangbo56@xiaomi.com>
-Subject: Re: [RFC PATCH v2 2/4] mm: compaction: target mTHP order for proactive compaction
-Date: Mon, 19 Oct 2026 23:03:15 +0800
-Message-Id: <20261019150315.2018934-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <8e54025a-03da-4cba-bae8-1604463c7622@arm.com>
-References: <8e54025a-03da-4cba-bae8-1604463c7622@arm.com>
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v5 4/6] mm, iomap: keep a partly covered page until an uncached write completes it
+Date: Mon, 19 Oct 2026 11:07:23 -0400
+Message-ID: <20261019150725.1507-5-snitzer@kernel.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20261019150725.1507-1-snitzer@kernel.org>
+References: <20261019150725.1507-1-snitzer@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A94882000E
+X-Stat-Signature: k13ig5kzafuik3894odtmtj1rxae8ftr
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6F0B540008
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 5ezns3qyusf49xgkfg55nykzax5simt6
-X-HE-Tag: 1792422211-772655
-X-HE-Meta: U2FsdGVkX185V1kPEIOajpBsM42/Ov3T1fOb/WfinXjVBOtKtqPZDwmYifI4BgIj0rQM4hNJoWEKy1zlHhhlhkrmhnVcqsj1s9Pi3D6sLV3hO4vvoBDjQLAPHqq7cVpk92xBPRBLpar5Z48QFM2wlqkO1DwUjsBqX/i7NtyfsIUvKbSw3VGzZ9enq0PBorsRVnbcDoLZYK/YVDVJGOZ26CO76qyl2GWzpL2c8KhsGLQ1WZCy3CVYeLVoYHuHLfVkHzRFxJ3qDURVJJ20CKau1rA/Ac7Sw+SgrWjgOY8WUtDhSQfpIP4JElKCGBa0xGmoTfQovU0BTyElhpFJGTw9zNH6f9iaMT+sA6HYMcF/OQxlkGqtvcJYRcKdUIFNssnU++YZ9E8fh8iAZeX2zSp+rhA470a7DP8xfzXcG1i0Citoe341RyHNl6W2aj1+6IlvzX5GqzUCM4g378fobp7jv5IP4HLTYGR/jXex75J0zWoWiBdCIi/LW9LMh/EDqcwT3DOhBwDKrzwj7wCqCYaritkOQ8F5XV5bRpPeflvxWO+XIeftlryocLqkX5XST6PL2HpqvzS6k7gAtlSEEP9rozwyNxFRtww7deFRI77lDeGhozuJUbEB8Qp66v5qhp962hc00m68Zmp59d6JcfP5XnUvFVwcJGxO+wGgeVmK0sV49+qmk+cRLpbcSY0Aee74vQJz1CAW5SahKSe8FQTGNnpQlBQNromRgBSJC2coq3eey6roJKZ6fbOQpvAKsogpLRAQHwf3bmqjciywlEz4cUcSXzrogYRCIFpZdXzPKdA/L3lrWezv5YGg4JYOPoJ3d/TaxCyA0Zs8ulaVBeH2ZC27THNKD77AV22RJlx6c6ZC5KiKivUL652EZm3DK2Cku7bAnfUrPctQicByZmQftcY2vCNf9nmQuFVxTgpwGJ40e9koDGKr3SDY/OQ0kHdylWPF9NpUMptL3BRgb8U
- jxM3umWy
- 4P50INwz/IXUvRZzRrgfclUsHHCQDwz59oSNlZXHSiX8kJ7hcJKI/OiNoN5I8x3g0xtylrdl1kFfsA7B0188D4pGlr96EQK88czrMqP99qy7G4KF909HC7r7mGTXcyYFDFvNP6RfzHNaZ/pf+bDDCTap+8gZdYrvTX7ucHb+UCT/TtKHW1BFaUgW89UTWmOfPqgUF5V0bFh/Ax1C+AUJghTdFIMSmb/Cy7HerBD9P+dB2UlOcvj4Db7cuAah2rB8NMj1veUtowM4Dop6P0tUdgT+/HN34PLL6Vvfybd/Cfxs/CXXAlqAeKbzVlTOd+f0x71RHPPQ8g6aKBSxUBAcge+WfYrfeuMvvNd7A
+X-HE-Tag: 1792422452-25564
+X-HE-Meta: U2FsdGVkX194ychDOONwDbZGYQ68mQ70D6qEcxj7ynJAhSn24I/Hr8it0x65AxnSNv4h92QzDYIVtl6wKiaKOmKidQfIdsObMsyxLxpRXJqxLygqaii4CERXWaBg14Rl4fINma+AHHhErcxThx46HzxR3VUSsANU8in/i7VEBMira0eeUWyUJVw/b9Pazkr4fMZDy3VoXdMcv2aASPvtI1/glrInwEte+Pqa1Usyh+jWWmPNhzWBFkW9DeuzljLshyCozila1befZP6huYxPyP0BazqPetDSvvqL0VWW88CUuGggsMSh1pmaDf2n0K4LsKhPzcskvBDaN0Op31qomarwS9UFXArEfzZFAMFeg5+VSKHzQuex1OigAA1yPSNoePa3xbKYtk4a2bQ4K7MX1PPCr4flcdygiG/+wR9VdE8X4jxW8CyTefBv6NkG1ZuSqHYvy7Zbc9llBck1UTjisjjFAyF9dz6ESj6XoP98vWco2CApHaace2Lv3SyYJf0T0o7r++Fo52XG+O5KzmbsBfj+2vUUIuSXYdQkRzgWc6Sk0OaCqoBm+LWEI+NhkHzXRP9eJ/0fCtCx2f12zE9N/1FoldmlvnUMe7OLmXXPZKYIM4oVm+gRrX/H6g2BTslDqnvnr2r98y6yYKIj73Go+5JBCa9GSpiZYXufqiGRkQCooQd7OIBUoMhVKivC7ufwF5ElDtTpY2t22m5kOIqlN7PudN0DshMehZAF3rEmxBjGNtqxjZc5DUwQ0hdiuxXn0gdKr7dTn8+9g07NGOVetxZVIYeAJ4lR174MfMC8d3LR13ZI/wtXg06fsq2gWx0m5hIPv3Xp7/n+c1vCxOBbZCqtf90AfsndlBRQuLqXAtlmzxFjzIVlrPcYZ7vDWWhdWkpf5138/VhEExqijAoJuaRie9SEQFcLu7/GUoQraNqyaILxE8DfgDCKNXVsicQQ4B/fi6y3btgKOL0CJGg
+ OU4VIDQM
+ GlMmEw1GkPgTl2qam48Td0onlsn6ubslZcL05IOq0AzeN8BBvq04odjRHCC0Zit6/c4BkkfX96wCAbwVeErv+ZzBwg5z9pV5H7MgYAxXx+DUELY/2ecl9wcm6Q/lRbtTgibhqyOSqxgcEiHLzMchrOQER0XXQheYMm2QqxisOCKzr458BG+bs42COp30LyOWGG5CW0dyNqK2HxljqT/9TZS2y9AwCDyw6v+ghOF/kHptuj9XPGByTHiTuYL+PgJs0y3DTLsjHVMBqUGbDS7lpAFrYLZFzD3ZOb+V23jutkocUJt1nCU7EdLxRtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,68 +103,161 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 19/10/26 1:42 pm, Dev Jain wrote:
-> I wonder if this function should be left alone?
->
-> compaction_proactiveness, as I understand is given as a sysfs knob to
-> ensure that the user can control how much power they want to invest into
-> compacting. So suppose the value is 20, and the highest mTHP order is
-> only 2. This gives wmark = 90 * 2 / 9 = 20. So, even if 80% of the memory
-> can serve order-2 allocations, we will still perform compaction for
-> order-2. This seems "extremely proactive" :)
+An uncached (RWF_DONTCACHE) buffered write marks drop-behind every folio
+it creates, so writeback drops each one as soon as this write's data is
+on disk.  A page the write covers only partly is usually shared with the
+neighbouring write, the one that ends or starts in it.  Once the first
+of the two has been written back, the page is gone, and the second has
+to read the block back from disk before it can write its part: one read
+per misaligned write.
 
-Thanks a lot for looking at this closely, and you are right that the
-scaling factor is the weakest part of this patch. I called it out as an
-open question in the cover letter and I don't have a solid theoretical
-basis for the linear order/COMPACTION_HPAGE_ORDER form.
+Measured locally on XFS (emulated 4Kn NVMe, 4 KiB pages), 32 threads
+writing interleaved records to one file with pwritev2(), 1 GiB per run,
+before and after this patch:
 
-What pushed me towards scaling the watermark at all was the opposite
-problem on the measurement side: without any scaling, the order-9
-threshold is essentially never reached for a small order, so proactive
-compaction effectively never runs for order-2.
+  record  flags                     4 KiB device       MiB/s
+  bytes                             reads per write
+                                    before   after     before  after
+  47008   RWF_DONTCACHE             0.97     0.000     831     2281
+  47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.000     601     1227
+  6000    RWF_DONTCACHE             0.97     0.000     121      488
+  6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.000      90      206
 
-I instrumented fragmentation_score_node() for order-2 on an 8G,
-data=journal kernel-build workload and sampled it at ~100ms. On the
-unpatched kernel the order-2 score looks like this:
+Before this patch every write waited for its read, and because XFS holds
+its IOLOCK exclusively across a buffered write, the other 31 writers
+waited too: both record sizes ran at about 20 thousand writes a second,
+one device read per write; after it nothing is read back.  With
+RWF_DSYNC each write still waits for its own sync, so the gain is
+smaller: the uncached write now runs as fast as the same write without
+RWF_DONTCACHE, 1237 and 209 MiB/s against 1227 and 206 in the table.
+Records of 49152 bytes, which cover only whole pages, read nothing
+before or after.
 
-  order-2 score (unpatched, same workload):
-    mean      17.3
-    p90       47
-    p99       91
-    max       100
+NFSD DIRECT issues the misaligned ends of a WRITE as buffered uncached
+segments and gains the same way.  Without any handling of the shared
+page, 32 interleaved writers of 47008-byte records read 45144 blocks
+for 45664 WRITEs; with this patch, and no NFSD code for the shared page,
+0.0001 to 0.0008 blocks per WRITE whether each record is sent as one
+FILE_SYNC WRITE, as two one after the other, as two together, or as two
+UNSTABLE.  The page cache then marks the completed page while it is
+still dirty, so each segment of a stable WRITE wakes the DONTCACHE
+writeback kick (23 to 65 thousand rounds a run); the next two patches
+let NFSD mark it after its sync instead.
 
-  fraction of time the score exceeds a given threshold:
-    > 90 (unscaled, the current order-9 wmark):  1.0%
-    > 20 (scaled down to order-2):              27.2%
+Let the write path say which pages a write covers only partly
+(FGP_DONTCACHE_EDGE, set by iomap when the write starts inside a page or
+ends before its end) and get such a page as a single page.  A folio
+created for it is not marked, so writing back this write's part does not
+drop it.  A folio found uptodate is the neighbour's, already written:
+this write completes it, so mark it, under the folio lock and before its
+own data goes in, and the writeback that cleans both writes' data drops
+it.  The folio lock orders the two writes, so the second always finds
+the first's data in place.
 
-So with the current (unscaled) watermark, the order-2 score crosses the
-trigger only 1% of the time, which in practice proactive compaction almost
-never fires for order-2.
+A page whose neighbour never writes, such as the last page of a file,
+stays cached until reclaim.  A partly covered page another task had
+cached and that is uptodate is now dropped after the write's writeback,
+where before an uncached write never dropped a page it did not create.
 
-That said, your example shows the linear scaling clearly overshoots in
-the other direction: a scaled wmark of ~20 can keep compacting while a
-large fraction of memory is already usable, which is not what the
-proactiveness knob is supposed to express. So I agree the current formula
-is not the right answer.
+Only iomap file systems say which pages a write covers partly so far;
+write_begin_get_folio() users such as ext4 and the NFS client do not.
+With blocks smaller than a page, a write that crosses an extent boundary
+inside a page asks for it as two partly covered halves, so the page,
+though one write covers it whole, stays cached until reclaim.
 
-I'd appreciate your thoughts on the direction here. A couple of options
-I can see:
+Assisted-by: LLM
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+---
+ fs/iomap/buffered-io.c  | 12 +++++++++++-
+ include/linux/pagemap.h |  5 +++++
+ mm/filemap.c            | 19 ++++++++++++++++++-
+ 3 files changed, 34 insertions(+), 2 deletions(-)
 
-  1. Leave fragmentation_score_wmark() alone and instead make the score
-     itself order-aware / normalized, so that a given proactiveness value
-     maps to a comparable amount of work regardless of the target order.
-     This keeps the knob's meaning intact.
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 0a5ebfda90f1..780a0186045d 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -802,8 +802,18 @@ struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
+ 
+ 	if (iter->flags & IOMAP_NOWAIT)
+ 		fgp |= FGP_NOWAIT;
+-	if (iter->flags & IOMAP_DONTCACHE)
++	if (iter->flags & IOMAP_DONTCACHE) {
+ 		fgp |= FGP_DONTCACHE;
++		/*
++		 * A page this write covers only partly is shared with a
++		 * neighbouring write: get it as a single page, which is
++		 * kept until the write that completes it.
++		 */
++		if (offset_in_page(pos) || len < PAGE_SIZE) {
++			fgp |= FGP_DONTCACHE_EDGE;
++			len = min_t(size_t, len, PAGE_SIZE - offset_in_page(pos));
++		}
++	}
+ 	fgp |= fgf_set_order(len);
+ 
+ 	return __filemap_get_folio(iter->inode->i_mapping, pos >> PAGE_SHIFT,
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 3012bd95812a..0c1d6bd09aa0 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -701,6 +701,10 @@ pgoff_t page_cache_prev_miss(struct address_space *mapping,
+  * * %FGP_NOWAIT - Don't block on the folio lock.
+  * * %FGP_STABLE - Wait for the folio to be stable (finished writeback)
+  * * %FGP_DONTCACHE - Uncached buffered IO
++ * * %FGP_DONTCACHE_EDGE - With %FGP_DONTCACHE: the write covers this page
++ *   only partly, and a neighbouring write may complete it.  A folio created
++ *   for it is not marked drop-behind; a folio found uptodate is, as the
++ *   write that completes it.
+  * * %FGP_WRITEBEGIN - The flags to use in a filesystem write_begin()
+  *   implementation.
+  */
+@@ -715,6 +719,7 @@ typedef unsigned int __bitwise fgf_t;
+ #define FGP_FOR_MMAP		((__force fgf_t)0x00000040)
+ #define FGP_STABLE		((__force fgf_t)0x00000080)
+ #define FGP_DONTCACHE		((__force fgf_t)0x00000100)
++#define FGP_DONTCACHE_EDGE	((__force fgf_t)0x00000200)
+ #define FGF_GET_ORDER(fgf)	(((__force unsigned)fgf) >> 26)	/* top 6 bits */
+ 
+ #define FGP_WRITEBEGIN		(FGP_LOCK | FGP_WRITE | FGP_CREAT | FGP_STABLE)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index ed7e4dbea653..0397ec771547 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2016,6 +2016,16 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 
+ 	if (fgp_flags & FGP_STABLE)
+ 		folio_wait_stable(folio);
++
++	/*
++	 * An uncached write that covers this folio only partly, finding it
++	 * uptodate, is the write that completes it: the neighbouring write
++	 * that left it here has written its part.  Mark it now, under the
++	 * folio lock, so the writeback that cleans both writes' data drops it.
++	 */
++	if ((fgp_flags & FGP_DONTCACHE) && (fgp_flags & FGP_DONTCACHE_EDGE) &&
++	    (fgp_flags & FGP_LOCK) && folio_test_uptodate(folio))
++		folio_mark_dropbehind(folio);
+ no_page:
+ 	if (!folio && (fgp_flags & FGP_CREAT)) {
+ 		unsigned int min_order = mapping_min_folio_order(mapping);
+@@ -2053,7 +2063,14 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 			/* Init accessed so avoid atomic mark_page_accessed later */
+ 			if (fgp_flags & FGP_ACCESSED)
+ 				__folio_set_referenced(folio);
+-			if (fgp_flags & FGP_DONTCACHE)
++			/*
++			 * A folio the write covers only partly is left
++			 * unmarked, so that writing back this write's part
++			 * does not drop it before a neighbouring write has
++			 * written the rest.
++			 */
++			if ((fgp_flags & FGP_DONTCACHE) &&
++			    !(fgp_flags & FGP_DONTCACHE_EDGE))
+ 				__folio_set_dropbehind(folio);
+ 
+ 			err = filemap_add_folio(mapping, folio, index, gfp);
+-- 
+2.52.0
 
-  2. Keep scaling the watermark but with a floor / non-linear mapping so
-     it cannot collapse to a value that triggers when memory is clearly
-     sufficient.
-
-I haven't settled on either yet and would rather hear which direction you
-think makes more sense before reworking it.
-
-Also, thanks for the review on patch 4 -- good to know the
-costly/non-costly split seems like a reasonable compromise.
-
-Thanks,
-Bo
 
