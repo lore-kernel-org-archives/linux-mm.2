@@ -4,109 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 653CBCCF2D4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44134CCF2D4
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 01:35:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B59A6B00D1; Sun, 18 Oct 2026 21:32:46 -0400 (EDT)
+	id 458466B00D3; Sun, 18 Oct 2026 21:35:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58DDA6B00D2; Sun, 18 Oct 2026 21:32:46 -0400 (EDT)
+	id 4320C6B00D4; Sun, 18 Oct 2026 21:35:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C94F6B00D3; Sun, 18 Oct 2026 21:32:46 -0400 (EDT)
+	id 345AD6B00D5; Sun, 18 Oct 2026 21:35:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F7E56B00D1
-	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:32:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7080405BC
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:32:45 +0000 (UTC)
-X-FDA: 85337651490.18.A6D7858
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 30EB51C0003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:32:42 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Zmez+VG0;
-	spf=pass (imf21.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792373563;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 051DB6B00D3
+	for <linux-mm@kvack.org>; Sun, 18 Oct 2026 21:35:17 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83AF41205A5
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:35:17 +0000 (UTC)
+X-FDA: 85337657874.29.BD22299
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D72D320003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 01:35:15 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oSBIdu+q;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792373715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=D/2L6ediYCoQEHH7aQLiFtTZWbELizMV1kEoTwu0c+0=;
-	b=AxPxsrFIRCE7E4XDwwDTJQKmCwYPmk2tHbdmVaHytxH9W3/kJHJkQc85Ve5u+ICIp2+iJ3
-	qc2CcCrzIGb1ZyvpTpcJFq9fPKnfI+zcJd/txPcxa5OAAheXIhntHlVfQW683yBc2ZeFdz
-	/Z6hn4Rpi2Lp8okft+WSvDB5Ujhmna8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792373563;
-	b=IvBTfiTj/lw6TsFMAarfFxcjmv6g+pAvex84sz160ni1xsmXhTmREGQGiD5oeY9D7Wi2Id
-	pmbOQmUgwcl/OFmSgBFSXTx6rGHnku1DU986jfzHW8Z4zPExYExtni4JevHwRStOfTZcgl
-	kcWu0o1OOMCxZTENJSkQGawwJCB8t7w=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Zmez+VG0;
-	spf=pass (imf21.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792373564; x=1823909564;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RXERPTuL/5y/d7hWDRVXc6d/Cd+HYVuMmBfzY3LpxrU=;
-  b=Zmez+VG02PPYkvO9eH0GhfrHCU+6+BL4k8upG+I9FyWKB6rbtyWA1v9y
-   C5V1/dkYgfPumR5McOFhh4nt9Ud8F18SZ9GJQPIaw7FMPymROa7t7+y/u
-   eoUCrFkNr+JpksG676tng6c+bi0Q9mgU81W7cqjau9qurrsOAjxRYWdUk
-   VFkDfP00wZUGKgHsHPttk2D6DsJgpmeG8C7sMrOEORK75snguF1g0zQEn
-   ipGee3Hjh4ZDLruldwqB7aVZvFFQbDTJpKAv+sr3ppJ21v4ZznzZLZUyi
-   WbeprXcg0u0z01U2D4BiMtMaCO7RjnOPz+337i+CbO8hnSzxeZWDvrzMm
-   w==;
-X-CSE-ConnectionGUID: JKt0dRdrRfuTHLQke0sGGw==
-X-CSE-MsgGUID: WsNQPNcGTLeoD7l1T5n5yA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="1069185"
-X-IronPort-AV: E=Sophos;i="6.27,166,1787036400"; 
-   d="scan'208";a="1069185"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2026 18:32:42 -0700
-X-CSE-ConnectionGUID: mNts2OuEQrKepLEn4BeTNg==
-X-CSE-MsgGUID: CkNwRCGYSNWthbIVwa2dHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,166,1787036400"; 
-   d="scan'208";a="2728948"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2026 18:32:37 -0700
-Date: Mon, 19 Oct 2026 09:32:33 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Barry Song <baohua@kernel.org>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Baoquan He <baoquan.he@linux.dev>, Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
-	yi1.lai@intel.com
-Subject: [linus:master] [mm]  8d596d8b81:  stress-ng.mlockmany.ops_per_sec
- 10.5% improvement
-Message-ID: <202610190949.71c20bb5-lkp@intel.com>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Nff/2Dooakw/NTwEm9AsfcojNM4c7HTexv035G2HWNQ=;
+	b=ylir2XNZCQdAUiQCunX8Vd9O9dScvdHEUzrqzJ4AlZ0vTBfoTrj4vm6OJ6VHezuoYH5Gic
+	TsO7d7fnRrK0XQKT/ZMymX8ExydyOfB2RdqcUw5JNjXVwRPSBZ+RlWMsta/Cn2I2oDDwbF
+	RrGT0SZJW0oOd6Zw4dE5+axmuZM7MiA=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792373715;
+	b=ozwAeDmiKXlkevstDecb+NLt5UhmPyHzQ9nKsE8tqEHAX4azDKH8QxKRH+V2liWOS7u6i8
+	/AlvSwaddfgdrOmWwVXSzdJQ7zIdv+CGvGhEqSox1KyFNdBmyOBQEzQfWar6AuKDqz3oUE
+	kFJYeOCS/83uMq95FUdByjNQyV8pm0I=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oSBIdu+q;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bcdae234ecso1306958e87.3
+        for <linux-mm@kvack.org>; Sun, 18 Oct 2026 18:35:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792373714; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mrTF7uhKwqX2LCNk+npAPjPbGbltRJJvWHJXop+ro1YrWvALTynMtSsL8fMUGAyEQj
+         Lom6gEoqEuf0KWSXV6bm9maNwNQs3xJiFGKvVZPZJfRKx6DkIWDRVWZZfy50hrehyNv9
+         /PgnD66njPiukJLZMcw+o3Uxylw5GM3GptvB29GhPhq06fHDUT3/2HfN4+ejKXLpjU1+
+         AiW0qxCsdCPbsVpuXp+CEXR07rsOMyUfM9qDKvAu/JCJ3fqE5F+BMm4Kn4S0YG+xVW9T
+         7maSopHdSrrKUb13UxlxHo4MHDaPfUWEYiX7Naus8ZGUFNU7nBIrJBeKZAPrd91hwoym
+         2NRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Nff/2Dooakw/NTwEm9AsfcojNM4c7HTexv035G2HWNQ=;
+        fh=uQ731VPjP7tCq0BTL3jE//Fg6LiseZivj4LI6MYT8DA=;
+        b=CU5pC9kSTLoX11gAMgGJ3K75cMShC8xYA14GySdjcuE4XGcvEM2zkkiSm65z+z9Dej
+         ScLdaAn404FN9qf2GNiylpHL61bT2lmtMb2KRRIPO+OfSn0idZ0e4eQgfAHmpHfMV2DD
+         Y6IOTi99QXGNVoZXAp8L/GrahVB3jHqf8quhXhY3eT0vY9waU0l0RIROaFUycToHZe5h
+         USH4vfJ+ta4aQLEriw79CeiwQ5nXPj4vUY31ii0sO+VXkVSFWr+0e9JrASMlf9Jdu1CP
+         /1AYr8POzMOmb/4rHcefWcjZ3dNOHHN2cEOJh9TQ7in5vf3okTdlWl2KnVjomt0Mqmiu
+         41pQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792373714; x=1792978514; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Nff/2Dooakw/NTwEm9AsfcojNM4c7HTexv035G2HWNQ=;
+        b=oSBIdu+qdX8NmMp1ysCXEC54mfk/J442fMIX8MmokkrhwNbSHo7qeoyequJhS77Eaj
+         2HgAzi5MH6ejA+Oj30FzQRplxV+uC2Sf1DiQszh1Vjhcuc9xq5OQxS05LGIzMR+gA8eD
+         nStYFctzYu+UeQPgYWpdHytJCz1W14dYeq+5aSdR3I+HRVtpIx8CYqdCY6u49MOgtyFA
+         u5Xiua/d1WdFxqNyBMwPKJ94+q3QutbsshyIVhvRo4bh6cYCgVoY72kntWwc8D11u1sp
+         ob7ektChNLM/VFls2fCzwD3FtBOJt77QIq3s2iVkYzbBTHYwBGSeyWD7SclNUTtO//1z
+         g7kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792373714; x=1792978514;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Nff/2Dooakw/NTwEm9AsfcojNM4c7HTexv035G2HWNQ=;
+        b=TTAzD3Qu/pQMhJLfJvWa/1mHV1XJuF2Lm7BlWv30VSAlQ03YU7bq6OQpi8P2lEmOJq
+         IDY+7NZoxO3OU6AoKFR6XPCsdxyvXW+J7oPskUq0ywS1FsJalQNdcUpjlujJ0AXBml1D
+         BUks2GyD6bkVvYZ623hQ4eVBldxgzD+DhEF8klutdsmanNyoM+5XKRgMOVpa/X2nAwLQ
+         u4KKQTuJH0UUWWgVvcjl6GsbtP7jvOj9fJ8ohGNLRen8tSwVfiT+Ta7pJ5WcqGgi3kon
+         /gDs05kz2V6iUl1FpOkS90VPjQ+EW5ziAAgl2/sc2UMen5g8ZsGdEJ2MBcJUFlGwH2GB
+         F2Ig==
+X-Forwarded-Encrypted: i=1; AKwUvByiSKd3fa6euRf7oZq/ZuB5sCNVmrWKxVqSVaSaDYkGur25vXL/36uH7bt91CEJGrVc1s4/9N7wtQ==@kvack.org
+X-Gm-Message-State: AFq9FYJCLnNu3bn/XwokYGdFelGAG1un89KtQMGR60B2hYzPhl+5yea6
+	ng9UPNVWh1kFbplfG/8LyA22Tr58A/IAYdux6JAgE+l1ZQkee7kp/p0uvs/eKqU5fdcTdo9l4ts
+	ZHd1vMyWfpMUukDLs3hsWPplWb9lldeU=
+X-Gm-Gg: AYBFou0zD5tM0IboX+LeWx3TTwGmVP2WE2Mjcgw3o71DW+R01uADooB+BXSU/N4FAtV
+	Bt7dDffQ2JyINYMSEbBza4WXP2ueE3o9GE9fRgvW+vXmTi+W+OFYp5zaAE/ubmd7gXijg68ZRf3
+	nJqY3/Ktg1yKyl55LgevYPRbu/y+dqewwzMy0Huu0TV9MPfF0TIGwe3QWs4siaQrgVX8v/oDgXy
+	Ldml0UZgj9B7iEtHleW1KAnqJ2ip9ljHQ70CjyEzRFfq+UAx++ijSykjc4/kiyCvqgQlRcE+U6t
+	bwwDBWEzSguRqN3+nI9VDQNpqJB99yw7sd/IXyjeyxP2lg7n3EQUUi5AJoj49kY+Yw==
+X-Received: by 2002:a05:6512:691:b0:5be:540f:ce48 with SMTP id
+ 2adb3069b0e04-5be540fcf96mr1950051e87.18.1792373713661; Sun, 18 Oct 2026
+ 18:35:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gg39jcwtbi9r4khh9a6ed13eyjtwx3ay
+References: <CAO9r8zN5n=9v4K+OtEEODg=e0kcFW99PreUcZm09q9CUMQc+ew@mail.gmail.com>
+ <CACpmpofdoeVbbw7izCDeJ7eS+XpWj+3sp3teKEQWywyRB75jYQ@mail.gmail.com>
+ <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
+ <CACpmpoecz4tjr-qvFRy22CGuF+4NBWbE7HVjdTGFqQOheK3CLg@mail.gmail.com>
+ <CAO9r8zOAcf4=TscCXjMYvowUx-_u9qLGqY2-p7cK-z5CUU_x8w@mail.gmail.com>
+ <CACpmpofYXDMviE6FS-BZdVntmQFvS+_xvfmOnJ2caZFerz6vyg@mail.gmail.com>
+ <atGqPIpUfX0LDokV@gondor.apana.org.au> <CACpmpofyLW5z1DYEY2YAty0VOAhRR+Leic8O-B0N9hrzdW_=Ew@mail.gmail.com>
+ <atL1ok1YkHbA4AaI@gondor.apana.org.au> <CACpmpoe_RXcJM42sTVwk_Qvt3zjAOZhzYZNsRD4xz_1HxDmadg@mail.gmail.com>
+ <atMCfhB63koot230@gondor.apana.org.au>
+In-Reply-To: <atMCfhB63koot230@gondor.apana.org.au>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Sun, 18 Oct 2026 18:35:01 -0700
+X-Gm-Features: AclHuK-sa0bPZwSQVwxADRhzmdY4PA3aAYNaQTZ1DmSolcYDHA8wcYiAtLkFuj0
+Message-ID: <CACpmpocZGHpTTOq+xa2bTnS-=gdUa8+E_KKJm41H_dSfbGikYQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Yosry Ahmed <yosry@kernel.org>, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D72D320003
+X-Stat-Signature: b95g6umbuxi7qwwk3hpd4gg3jp9qtqp1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 30EB51C0003
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1792373562-60374
-X-HE-Meta: U2FsdGVkX19i8tXSoR6sNi+gjOKRXH95KDcSnvVj9pHBRBCkQDpSjfYd+CFBuhlxMYXoDIMi0yjiTS5G6YbnbcGUHCod30RRHa9PJmErUCGnRi7xIFLSuFlCNa+pwkzUhCwnlMpheT9WJnh78n1c6MlCDxz2oDWMucaxfN6ncbodPsHgNdtVPW1xk30cTvJqwOh2c8WwIJuc6obH+J8TRAf3v58KJIoynlP00TtL0cyHU4A4Vqnvi1RsJZYlZFEX28g+BQjjYW75JoegQOhzEMb605GSqxf/izN3ioNBNj1phFoHuumx38ukL67HA0Azw8EnfM0QkuRGuaWsnYP99/vLEVJstwlrI+uZkG5DReJmmP8FMS0GLpda8X4z/IbHqEUBZ2DWK/wfOM/Q8rvopwBKOTc2iPza4OZhI/ninZy2af+hodH/CDSCSfXVMJlN/apCgnwmRj435dix7i2HVcPrtGltz9TLEGoVduWPmi7ZElEVYxYeTcaYfUiZBykl35G4cm/F09F/CZ1uQvgb+t2P9xYwQkLoQ3TP4GQuYJ1itAWr4f8oYgueZrZapUTvk6pkxRlTYqF00yAOwNQwYoBk8NbBNAaXp8Zu7Bydi9/NrL45Waps+mSU5TcyN60OYk17Eme4S3cB9zpcMb42G+b+DLA8BGYTZTzHl9PAxiznvdki9qYHw+gAJiIPR+2VhkqbknwgW9rVrZFVvw04J3WFx0ojp2c2ZNkYeyBLOlBQLZRAS0QI2Pw3/6oNFM5tZR+v+rj62cqGkwCp1W0z4v8dPtQ7wOwZDNXunxfySIkYtW60UAdee6m8wr94dVk4Te55BaKa2g5Ps9uWkeI2sVIzZkGrwoIlyA2mh3Nk2F3a1NIubl4EwHyC+UeToXmzR2k6adTGSEi2HcXohkZNyZhaiGTJjBgafNM+TDkMFm6qaFHlIfki/7F5LYHUDHvuVqUB/GManLrGsIzkjum
- CEOLd/ys
- k+rsJ4+OH0+7bvQVzEd3kHKU5kyp8eUOpEH31J4K0J4DXHXWEwt7Bv5dNaEKMfw1ttOLjJBB2sIMmD4s4AApjyyaTCVRFS3lOvUcQie8fUBB5zrE3AizkelycTDhBz5Sak0FfYnShu3d0aJDwnVyNcrjdVT1wfEHiGhvjwwF6g98nz1iDepBOj8Lsv9A5+HfTeUkGYOCDJM0nUqZUa5b1Mj4kvT0dDAC/OMqOaRBKBGk3HzDlYjI0ARMaJnruZO8irxx4qy1JIMUBMkgV1V0vTz+SDvw+LrvKc9ebXNMP/9xigaYjPMME/MRAOyt55mTKIDmDL9rON9z5QrQk8KgW88yIP/mD673HBzGDRLX18Gxt9YIpzZGZJFt3XFooi5aZbQaPahHQxzx7nACDhjyOAYlxVw==
+X-HE-Tag: 1792373715-470599
+X-HE-Meta: U2FsdGVkX19UVaVuvP2yJ0NFAXjmkcTuRnKYHs0ojFoYeF2hiINRvdXadPijxRwYBpFrHFTEIXtgN+U9e6kywoDmzIWYUtbAjA9uj5LkKVQYgWbdtlgtkrgWByPVH+stxUNI87lfwgWZz5ZXYqJsJUljaTX4FXTGAdTNo3vmEuTBoq5zO5lylWXb37KE4EifG2u9hQI9fox1+oWxHweidjgl6EsQLjwJVlSYTdkmv5mAts8xpGdhoXQRJMp7vtu6lPREMq9F1+Zg4hU4NutDI/X+y3TN8vG3K9hbmjm7Z+uMJ4emA0S0HA25B3YL9VKElmPl8ZRc2+vfjJgUEargVJR37TjKbh4t/Raj1/zl5ml5hlTNe4GhCia5YSUIX+ZtXggHbmMiAppjSzr5IKeliWFd78uKV4UajtwuQ3MVtbN+oh9yWwfvVSofsq2XTglgOrt7dsXQ8TNkSU1zDAi5UVh19349FcOwv3Ljk6npAze1yCenH/xJqrygEjSEdkTJEwGp6RaNYjIrErfJ/Sl0FU+F2A5R05S+8m4Wea+syIX29mie2iCSCE18qJC6DUpPPxwxSPUpnnJZo7t1seBuNRbwpR5oCO9IKBEbPzrUJRikta8zaAiZgYTrlpbV/eWNzdhMiCAzmVMYQVpQ/Etv9tkEIhP+Fk3cMujshbCif/CN58ujjXI1rq5UersvV58R8yh9c/qjJ7survFA6LnaI0fPVE7wrLapD3w6fwR8G+5INyQrmFHYTcfErWSBZBezuC8IUscKiLFuZpDt67nv2JTrfEoy1zQKkJbjIOOAUKDCXOLtCL9A4xKAmZ3zVd5KCajWdK3wf353GJsohhtSGHlsTCiL+b1FDeiXwEQN32BCu/r1LkNBjD/pBevATG3kfzO9VOlFEtCs5EyZ/SVtu6IxADo7bNzSoR1mgYEbsK2poMT1PD8Pv4Okl5QzZr/LNE8uSVG/C/OziHCiNbC
+ yBmKRUaA
+ R6DBixm14vjxu3Xs/JkA3pcu/0IR0rSXzUYYyan53No2uDRKCqQpTiyp5giYtTpu00LnHoLfAfTI0kkFwUxQeXghieuj845XkmXd2UE2JBLYxUzMkpc6Mw8oqHUHypZINJNRYw7kia5ym/IJrhJrobUn5bpFyBYmrJOkQpcdkaeHGqs3BwSKZYFYKVhF6k1TkjMlcwdK85viFlMPOvPu9SOpybYgwKPs2tkMCeqdhFt8PTt0y5hUlfVe62HzIgr/FQIUktTrf0ws5riUsn8WBkCdJfP7App4wZCH3zQh46ynE2oaAsLf/o6tbv7Txfo5g1yb07TohAQGinF39BhQo+Mves4zc/OKPj6W5lTFvV6Esg4EVw0wGsgy2fRJDkS/iuw2RqpttyWnBcZFilVujuRBhnCki2xgk+xQp3QzXqyaDC4a+RG1LwYeHGBLNe35taHXPX5c7Czb/n/ppTWPNaWINaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,62 +151,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Oct 16, 2026 at 10:07=E2=80=AFPM Herbert Xu <herbert@gondor.apana.o=
+rg.au> wrote:
+>
+> On Fri, Oct 16, 2026 at 10:02:13PM -0700, Kanchana P. Sridhar wrote:
+> [ .. ]
+>
+> That isn't quite right though.  We need to ensure that it really
+> is a singleton before taking the short-cut.  So you need at
+> least one conditional:
+>
+>         if (likely(req->unit_size =3D=3D req->slen))
+>                 take short-cut
+
+I added the check for the singleton req [2]. I hope this looks Ok.
+
+With the latest crypto_acomp_compress(), the batch compress latency
+improves considerably:
+
+usemem 10 iterations average throughput:
+
+   patch 6 (store batching only): 19,119 KB/s
+patch 8 (+ compress batching): 24,076 KB/s (+25.93%)
+
+bpftrace measurement of zswap compress latency per-page:
+
+Sequential_zswap_compress  nr_samples     p25     p50      p75
+p95       p99
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+zswap_compress_ns_per_page  1,722,489  43,947  57,791   88,489
+130,165   323,961
+
+Batched_zswap_compress     nr_samples     p25     p50      p75
+p95       p99
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+zswap_compress_ns_per_page    665,267  41,511  54,915   77,707
+124,648   213,962
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+ Latency saving (ns)                   -2,435  -2,876  -10,782
+-5,517  -109,999
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+
+Please let me know if [2] looks good and I can include this in v2, thanks!
+
+[2]:
+
+int crypto_acomp_compress(struct acomp_req *req)
+{
+struct crypto_acomp *tfm =3D crypto_acomp_reqtfm(req);
+
+if (unlikely(acomp_req_on_stack(req) && acomp_is_async(tfm)))
+return -EAGAIN;
+
+if (likely(req->unit_size && acomp_request_issg(req))) {
+if (likely(!crypto_acomp_req_seg(tfm))) {
+if (likely(req->unit_size =3D=3D req->slen)) {
+int err =3D tfm->compress(req);
+
+req->dst->length =3D unlikely(err) ? err : req->dlen;
+return err;
+} else {
+return acomp_do_req_chain(req, true);
+}
+}
+
+return tfm->compress(req);
+}
+
+if (crypto_acomp_req_virt(tfm) || acomp_request_issg(req))
+return tfm->compress(req);
+
+return acomp_do_req_chain(req, true);
+}
 
 
-Hello,
-
-kernel test robot noticed a 10.5% improvement of stress-ng.mlockmany.ops_per_sec on:
-
-
-commit: 8d596d8b81ef56bf61538d6b4761a7b0d6138280 ("mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-
-testcase: stress-ng
-config: x86_64-rhel-9.4
-compiler: gcc-14
-test machine: 256 threads 4 sockets INTEL(R) XEON(R) PLATINUM 8592+ (Emerald Rapids) with 256G memory
-parameters:
-
-	nr_threads: 100%
-	testtime: 60s
-	test: mlockmany
-	cpufreq_governor: performance
-
-
-Details are as below:
--------------------------------------------------------------------------------------------------->
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20261019/202610190949.71c20bb5-lkp@intel.com
-
-=========================================================================================
-compiler/cpufreq_governor/kconfig/nr_threads/rootfs/tbox_group/test/testcase/testtime:
-  gcc-14/performance/x86_64-rhel-9.4/100%/debian-13-x86_64-20250902.cgz/lkp-emr-2sp1/mlockmany/stress-ng/60s
-
-commit: 
-  819bfbd47e ("mm/page_alloc: remove set_page_private() in prep_compound_tail()")
-  8d596d8b81 ("mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()")
-
-819bfbd47e49df89 8d596d8b81ef56bf61538d6b476
----------------- --------------------------- 
-         %stddev     %change         %stddev
-             \          |                \  
-   1050118           +10.6%    1161061 ±  2%  stress-ng.mlockmany.ops
-     17541           +10.5%      19384 ±  2%  stress-ng.mlockmany.ops_per_sec
-   2933233            -7.5%    2714192        stress-ng.time.involuntary_context_switches
-     76.26           +29.3%      98.61 ±  3%  stress-ng.time.user_time
-   2425877            +9.4%    2654908 ±  2%  stress-ng.time.voluntary_context_switches
-
-
-Disclaimer:
-Results have been estimated based on internal Intel analysis and are provided
-for informational purposes only. Any difference in system hardware or software
-design or configuration may affect actual performance.
-
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+>
+> Cheers,
+> --
+> Email: Herbert Xu <herbert@gondor.apana.org.au>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
