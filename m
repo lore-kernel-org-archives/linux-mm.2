@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2650CCF2E5
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60EC3CCF2E5
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 14:32:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFF676B00EE; Mon, 19 Oct 2026 10:28:36 -0400 (EDT)
+	id 53A5D6B00EC; Mon, 19 Oct 2026 10:32:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB0AA6B00EF; Mon, 19 Oct 2026 10:28:36 -0400 (EDT)
+	id 4EB696B00EF; Mon, 19 Oct 2026 10:32:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C6CD6B00F0; Mon, 19 Oct 2026 10:28:36 -0400 (EDT)
+	id 3DA2F6B00F0; Mon, 19 Oct 2026 10:32:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DDB76B00EE
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:28:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F3D12806FD
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:28:35 +0000 (UTC)
-X-FDA: 85339606590.05.6DF3472
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1E5844000C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:28:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R0tceiBT;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E4F96B00EC
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 10:32:06 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A65A1160778
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:32:05 +0000 (UTC)
+X-FDA: 85339615410.25.1EA85D9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D0A8AA0002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:32:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="NbQxnj3/";
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792420324;
+	b=WqhvPQSDP+NrGgHIqfXmgda6XewcTQI5HVPfzGgyseIYHlL8+huKbn27Jqij4C5RwAi+km
+	Uod5FEh6ltunpm34szok2ns4xk09zeBOHkRCQf6zvnVbUE6z511p+SRdkDSdPfiI1DZGIO
+	Xd4+WMCCVxHXyK3tetjDaekPPJGWV3o=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="NbQxnj3/";
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792420114;
+	s=arc-20220608; t=1792420324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=a0eu8oJCqbVdCYPiFjU8ZN1euvr9n6L7NmwFCs6qrSo=;
-	b=WDXObwLBKRmRheSDysq+yux4bUpPWQpfsA3cbYR8OJ6ESJw7Ys8xXNJRzDflD+FzZCMxCO
-	PfNb0yxanUEW5/cJzOnDyYk1/g7zAA3syR1Khy6zjtTGMEkcF/ZJESzT/5sciM/iySDZna
-	arznKb7YZ7MltrLw2SfBj03ajE8H7Sk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792420114;
-	b=iXtoDtKJbIqiDqtIAsC7ruOhI0W7gQ+0bGdIvqAIfJ0Nzb+nDObe3cwSZZb3+dJVji0Ucl
-	0dISPAwfGoX9JnYTAkxRCjpTz7b5afKdoIRd4bvtmE5b82auKbPMpo7sRn00r8sLB+Zqqf
-	6w2WlHJ85jDrtTttitNQXzir3FoSGog=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R0tceiBT;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZJgfKZnh+KyHBRkUlFc9hON0UASMOT/JjSHODOYQjQY=;
+	b=E7Wh7d6fgt62SiwMLHGtwXQL0YQfdnoKNvbp/+YPZ/4ACHk1AW7hY8DduFNoE7UVyNzI7s
+	pK9xyAO4HeKKBYou5ezXslf4zQ1WpZOI58YcHUCBZBTJhtm3Y38fDurWzBIcXDLdVeJFpu
+	8LhIfW08jL96ctr9Zn+v3L+fF6PIZ24=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 44DC643AB4;
-	Mon, 19 Oct 2026 14:28:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A281F000CB;
-	Mon, 19 Oct 2026 14:28:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792420113;
-	bh=a0eu8oJCqbVdCYPiFjU8ZN1euvr9n6L7NmwFCs6qrSo=;
-	h=From:Date:Subject:To:Cc;
-	b=R0tceiBTdz93YJdfHeH8pZUiTkWguzroOhkkNnGd4l02iujB4nuCLY6w7JpjZAQli
-	 tNRk1jPdbOUxETxdoint4A+ivorhOlzSfkVh0iOq4DiRYiDgo9b4C971SNl657Txpv
-	 /eU/p8GtkpyL+1c1nLliUW6yRKn9Q8myCatKat4igI2Ulgq2g160ubptBeMz+uz1Nr
-	 HVb/RYaJcu0mdiiH1UHYx2Jn9SPjO5Y85XcbxpPMKFzW0KHNgyV+CewXhQWKXBokxR
-	 EBfuBaX0Z2A9z7fFDEs+2NPKK6ZvoEo3sJ/w6VjTVGBwC/ZpuR4KHyPc+Hg303h3aM
-	 tobUBwbRV+VFA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Mon, 19 Oct 2026 15:28:27 +0100
-Subject: [PATCH] mm/mremap: populate calculated fields in vrm state
- correctly
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	by tor.source.kernel.org (Postfix) with ESMTP id 34A3760136;
+	Mon, 19 Oct 2026 14:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CCD1F000C4;
+	Mon, 19 Oct 2026 14:32:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1792420322;
+	bh=ZJgfKZnh+KyHBRkUlFc9hON0UASMOT/JjSHODOYQjQY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NbQxnj3/eQBeNqoeo73Qu4NP8xi/B4Sf3/zzgGqRCrR9TtTqb1srXCyjVPzsptdCq
+	 Mdj9cF7/chwDMEvqqytfujGNn2YpdV0wFy+VT6pZ4tX6PTL6SPHBMSSZqmaYp5VNAl
+	 Dc6Qc/hmR9nZxdlYLk2bIYE3z9nJba7LfNf8e0ps=
+Date: Mon, 19 Oct 2026 07:32:01 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan
+ <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, David
+ Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal
+ Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Randy Dunlap
+ <rdunlap@infradead.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, Daehyeon Ko
+ <4ncienth@gmail.com>
+Subject: Re: [PATCH v2] mm/vma: avoid spurious write locks when
+ mm->mm_lock_seq overflows
+Message-Id: <20261019073201.aee381fbbdf2edfdd0a68754@linux-foundation.org>
+In-Reply-To: <atYJA7nIu_RwpoCC@gremlin>
+References: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
+	<atXjbsDn7DJybsHU@pedro-suse.tail5790ac.ts.net>
+	<atYJA7nIu_RwpoCC@gremlin>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-mremap-fix-shrink-charge-v1-1-a3ce209e5360@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3M0QpAQBCF4VfRXJvaWSJeRS4Wg0mWZktK3t3k8
- q/vnAcSq3CCNntA+ZIkR7SgPINxDXFhlMkavPMVOWpwV97DibPcmFaVuKE5NTdw2bjgC6KpBpu
- fyob+665/3w9JyZs/agAAAA==
-X-Change-ID: 20261019-mremap-fix-shrink-charge-be490a2311d7
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
- "Liam R. Howlett" <liam@infradead.org>, stable@vger.kernel.org, 
- Nickolai Zeldovich <nickolai@csail.mit.edu>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3473; i=ljs@kernel.org;
- h=from:subject:message-id; bh=1KwnnSydsrMowhW6/UrPI5beylcA0+sO0VKAeZUDuRc=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKuafKsWPJgxxzPY3+XHFw5Q3ZZjFanlDxPwJ+ilX2ZP
- R1nJ7If6ShlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEnl9g+J+azVxxzaNamMPJ
- u3R6bLbNv8wdrxTlmlf2vly099XKr/oM/yN/XSzlbWm0MLG8ulvixdb0ppvcyg//Rngsfv59sZu
- CPisA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1E5844000C
-X-Stat-Signature: 9drtwm4kp8wdhxsa31i587119mufj9fn
+X-Stat-Signature: 79pp1u399emfo6mprdikkmtdxh73wstp
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D0A8AA0002
 X-Rspam-User: 
-X-HE-Tag: 1792420113-221547
-X-HE-Meta: U2FsdGVkX18TYhZuL5hVEvdZvnXy9B5GGD2DstW6AaDFFXAMqFJDnHyLLU6wuQQX4mLm6hwaTf+ZtXHu4tvqEpye4gkKuFFAq2zO5ENZlH640AoW/CqlQcz5VpTszzPsIoBRipFM0qfCE8PH23pV9mVJRXujb9HmKj39vGtWXhU8VWHR58ZWMXpF/oWM6EqUQJk6UCd/MAau87uztdWiWb3DUk42044cuVlsVvOuU+Ot/BTkmAzj4y+ter6b859AwxUTboAZGrcjCNuJS4Z02GOYCajOPIuUV6LbUCylmhzG6vJlwWaKNJnbhDrBsU1Dhrlf1YEBdUhp2h/WxKZ0936u9BHjEvXhALgY9HjL/vfxu1uykJ21g+FvlJ4TfplPj7JalT3x5gF4RgoEPEsNM3bKA5YWbrt3r7X2QPy7grYfFHLcdsyH/RTIhC55sw6NxNxlhFZswM5wrHbfxZwIfTwAPSclYrLiflLj4rwNJBui7E2UMJb5I7fIU8nsxxhyJvvSmJlLQuYWJhqMWCWKshT6qUPt74m6n5bgKWKbwuFKKc+q62wy5TX19eO4eaBqjFjQ7q+NrPUxNuRrf8qQdF4Kwja1MRx1WJG6b6Xz42Rktjyhf2ELxxOpZBr3LQzM35Tx4I7RmiiNwTrucwdJqFc+GphEAwk+c1f0qgsgLlShxDzWj7zWZ2rkpmx37I6rckfA4EyWvMllUjWSp5I0Yn5dTZDrI6u/iO1iz6hUoYKt3g+H7WZUqySh1gVjLWa4U3xPt0bUYfqR1iIgxwq/nHZzEFQpdmqp2GMXaYj9VmNW7eaHAoPBiDR5c+OKfHm0P8oQdawxldGFkZbFUGsBDmbUnPB6U7ebjx8iE+ylhKwk/Hb00so9nd7rHrWTziRb/gyWgJwbVbUiegiqGWGgWeSCGZOlGkOVSjvINZgQQxapZx3bnszj7JdjMbmouGwmsDdGTB/3uiOYCc5ue9C
- jqsGgegI
- QRU9q2ol2Blff9JixGAcz2LPpFr91tEX99JdFbCylKurxqfSXPddJQTSPaSUznTddIDhjPmpgKgi63FiUUSeZAdubLOKXDC/LkS389+zQ4eM1WYNAnhmOMwmemBvwVfRXhzeTMdUb0G7WugFqt9akHEMxWun+Z5DdhHx7v1EC09PnnvvewiRyBvASrtwn5zhwFzotvknZJ2YR/2Btrf/CIAtaafv1f8fhPHpLIPURKqXAE0w2P7f7w3CpOA==
+X-HE-Tag: 1792420323-235310
+X-HE-Meta: U2FsdGVkX1+4/d/w9E/v/lLI6jaKDGJSeumu5c/pDp05GOuRn9Ca6npZC8N+fTcvx2BCp4Qar0i17681S3eGmzz4MLOQZznU9FB/l9ld7laf0F2LXwMjqJAhr0QypChkuJTJo7FClUIg5PQT0KmM29ELGgy8JNglVG7FFGI/ztDxiDQfzA0wD4GBNZt5O62F0uF3AkhbfCZa6E1nQLGcPIIbAH37QxEM7DBi2bUUcPmybVZchPK5iMEKzG+sVy/EbzM9fc1rh/0MTg/cdJIZ9fBbs6gKGOSo9ASloc4q8sd931ss9IliOAsHNzFBNPtLce6GATdmi1UAPGSeKI0mxCdQXHmyABdEWkLsru+TwK3moPsudtWVCk8Ee28l2qkvLBM0/sUqt7Tgynvn7FSQlXBLUpiljnDFKUL6XB0TKmdgJJYIICbsKa5PNZSe2o2ovJxgB4Ak+Ul0zHqy4CxKdj6k4fUtIlAhrxksPeIdCYQgd4bldjnYQGuNmJc8h2L1Xhx2G97oGIC10UJLhNOA31vvLk2tElLbJF5LEkRzkBv1VPKGB78TS5/uEUr2i4ylV4dhGLj9jENWOC1B+3Ionl5ADzTdYJ4l6dPyM58k2vkDtROnblrtzyKaQbBlXfvl318PYgV43c42qpjxX7i83LICQLvHMADA6cx8V7AJSw1v4VThi3curFsuv8Tfa+mlHKxwt+vx/lwqgzD3L3ZUUkk5EDnYJsquvIJ0aXX8ayO4sNwEq3u3TECHozC/6xUzcc1e10l5EiY6Fwi6BtchCFqFHp5mMXtKaeaafW+uFGPh08gznzyZM6rw7DN0QNu041ReZ2IOUQUwSXcFI26Y+d5evpqcqodTt5YCtBwWL849Nm8CK49pg7fgedGIhahg5AoxDhVPq9oU6OhQJY6huzflxAd09FYFg5MtE5KbtZ2iv/ZribE8m86UvifQNdfZJBxBdP6WIqwCqqKfBDN
+ OMz1leas
+ usJQxBAU9+3/0FEFpxh9mVbXUH98Jm2D/y7feOgdoMPEWGA5Og2dmkzlkJaWSXcs0A8Kogn+evsl/dYpv9g6jFODeXSHFK5I1aVx2Eh/lU1/XvefuCeofxABPfACTtTOsRUGE0GMD4Syz3g09EoYddDh5T9OOWzeRVFZjkr1JwAEQO4mwemrKoBoc4kHJXOscE6s1tGdn+DVxBRFnpQE4WVuvUVYKEc+DHSaM7QMll86a+eYVc/JmpCgzyf/gr63soSmIc2reNCZtk0eaTYk9MvF6oZ2K4b6aR3cgGQvSek7Gc4BtHtC0SWHhzzfFYlon43mn/jGrfizk1G3Cr8Q6RoQt1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,100 +99,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit d5c8aec0542e ("mm/mremap: initial refactor of move_vma()")
-introduced the vma_remap_struct helper to pass state sanely through
-mremap() logic.
+On Mon, 19 Oct 2026 13:19:45 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-Part of this state is vrm->delta - equal to the absolute difference between
-vrm->old_len and vrm->new_len (the old and new lengths of the VMA,
-respectively).
+> On Mon, Oct 19, 2026 at 10:53:27AM +0100, Pedro Falcato wrote:
+> > On Fri, Oct 16, 2026 at 12:34:33PM +0100, Lorenzo Stoakes (ARM) wrote:
+> 
+> > > So I think it's fine to just send it (early :) in the merge window.
+> > > ---
+> > > v2:
+> > > * Updated comment in vma_seqcount_is_write_locked() to mention the VMA
+> > >   being attached.
+> > > * Renamed reset_vma_seqcounts() to __mm_reset_vma_seqcounts().
+> > > * Used acquire semantics in vma_start_reads() to avoid race with reset -
+> > >   there is another acquire immediately after this one so it should just be
+> > >   noise perf-wise.
+> > > * Removed stable tag, will do the backports manually (just make the value
+> > >   64 bits...)
+> >
+> > I guess you're fitting this where __vm_anon_pgoff_lo now sits? If so, then
+> > this patch probably wants backporting to 7.3.
+> 
+> Ack.
 
-This value is used to correctly charge accounted VMAs.
-
-When shrinking a VMA, mremap_to() sets vrm->old_len equal to vrm->new_len
-having performed the shrink of the VMA first, prior to any potential
-move (e.g. MREMAP_FIXED | MREMAP_MAYMOVE specified).
-
-However it does not recalculate vrm->delta, which results in incorrectly
-overcharging the VMA.
-
-The charge leaks to Committed_AS globally, meaning a mischievous user can
-cause allocations to fail across the system in strict overcommit mode.
-
-Resolve the issue by abstracting the update of vrm->delta to
-vrm_populate_calculated() and invoking this from mremap_to() when
-vrm->old_len is changed.
-
-Additionally, update vrm->remap_type whose value depends on
-vrm->delta. The field is not read again after the shrink, but it is the
-logically correct thing to do and protects against future changes which
-break this.
-
-Fixes: d5c8aec0542e ("mm/mremap: initial refactor of move_vma()")
-Cc: stable@vger.kernel.org
-Reported-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
-Closes: https://lore.kernel.org/all/20261017233527.797191-1-nickolai@csail.mit.edu/
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- mm/mremap.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 6970783fc445..24827e13e617 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -887,12 +887,6 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc)
- 	return pmc_progress(pmc);
- }
- 
--/* Set vrm->delta to the difference in VMA size specified by user. */
--static void vrm_set_delta(struct vma_remap_struct *vrm)
--{
--	vrm->delta = abs_diff(vrm->old_len, vrm->new_len);
--}
--
- /* Determine what kind of remap this is - shrink, expand or no resize at all. */
- static enum mremap_type vrm_remap_type(struct vma_remap_struct *vrm)
- {
-@@ -905,6 +899,13 @@ static enum mremap_type vrm_remap_type(struct vma_remap_struct *vrm)
- 	return MREMAP_EXPAND;
- }
- 
-+/* Populate calculated fields. */
-+static void vrm_populate_calculated(struct vma_remap_struct *vrm)
-+{
-+	vrm->delta = abs_diff(vrm->old_len, vrm->new_len);
-+	vrm->remap_type = vrm_remap_type(vrm);
-+}
-+
- /*
-  * When moving a VMA to vrm->new_adr, does this result in the new and old VMAs
-  * overlapping?
-@@ -1523,6 +1524,7 @@ static unsigned long mremap_to(struct vma_remap_struct *vrm)
- 
- 		/* Set up for the move now shrink has been executed. */
- 		vrm->old_len = vrm->new_len;
-+		vrm_populate_calculated(vrm);
- 	}
- 
- 	/* MREMAP_DONTUNMAP expands by old_len since old_len == new_len */
-@@ -1795,8 +1797,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
- 	if (vma_is_hugetlb(vma) && !align_hugetlb(vrm))
- 		return -EINVAL;
- 
--	vrm_set_delta(vrm);
--	vrm->remap_type = vrm_remap_type(vrm);
-+	vrm_populate_calculated(vrm);
- 	/* For convenience, we set new_addr even if VMA won't move. */
- 	if (!vrm_implies_new_addr(vrm))
- 		vrm->new_addr = addr;
-
----
-base-commit: 4dbe24720eb3811563cd56b35d87ddf3f9beed2a
-change-id: 20261019-mremap-fix-shrink-charge-be490a2311d7
-
-Cheers,
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+I added cc:stable to the mm.git copy of this.
 
