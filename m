@@ -1,92 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8779060A2608
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A194606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=kVLRlUZG
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Vs1+swBa
 Received: by kanga.kvack.org (Postfix)
-	id AE4C36B0392; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
+	id 5DB196B0394; Mon, 19 Oct 2026 17:31:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6D866B0394; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
+	id 5B29B6B0396; Mon, 19 Oct 2026 17:31:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9837C6B0395; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
+	id 4C9D96B0397; Mon, 19 Oct 2026 17:31:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CCC96B0392
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:31:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5B64C0495
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:28 +0000 (UTC)
-X-FDA: 85340672256.10.02836E1
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1A0304000B
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kVLRlUZG;
-	spf=pass (imf04.hostedemail.com: domain of 3LYzWaggKCPwhqexpegoksskpi.gsqpmry1-qqozego.svk@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3LYzWaggKCPwhqexpegoksskpi.gsqpmry1-qqozego.svk@flex--dmatlack.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F8336B0394
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:31:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 919FF40817
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:29 +0000 (UTC)
+X-FDA: 85340672298.05.2F3253E
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D6FBC180008
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Vs1+swBa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3LozWaggKCP0irfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3LozWaggKCP0irfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1792445487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rccGvdC4VDGY+kjlq/11HJtI0x1dTEfzAQPx1OmbdOk=;
-	b=sSpV14MhNywLCGbwnnAIdik6p3/vW9QCnmQX7/l1P0UVZtwyUpeKawUALTLl+veinEjZ7m
-	hS++sv1s8AR9XuU0vbL2XjTIvJXIKpAqjEbTMxiSNvV5jNjyImM4WccTKhQG7dS5TaW34A
-	kD9BO71bqjXItm6v8+STFF7/VkSoxx8=
+	bh=+8+r+UgUrY8DXLFgmEvSoqHNnXfv9U//CDOtL9HGeYU=;
+	b=JNCupjztKnXDetAE60AGPtvee2yqmgFQTGwpRWGRfV8L8sYdXqhnEokq/rK2X4Fak7B9rU
+	ZBcOFASKDF6WPKnQm4X+YXde0YdB/Fjkef9a7A4L4+Pm8EmDJDGihRXlrN+KZJSA7gEEc8
+	s1k8y8qQaKo6XRbqDo7+AAT3o2ryHFA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Vs1+swBa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3LozWaggKCP0irfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3LozWaggKCP0irfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1792445487;
-	b=Am/oXikQ0QUrPThPO/AKD1pytsQhtOoXI5A1n1vvKh2446lVc5/qQ7IxKg2C7fgmA1an5N
-	rdxuPtR/P+8fKAFhT5XnHRsS75D42FnKSlaxBLvJ22MWtkrmxhm11GdwzbiPvl2m5i8aUA
-	Yr1KG9gJ4PiShateLnvUGPBQyM/oUXA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kVLRlUZG;
-	spf=pass (imf04.hostedemail.com: domain of 3LYzWaggKCPwhqexpegoksskpi.gsqpmry1-qqozego.svk@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3LYzWaggKCPwhqexpegoksskpi.gsqpmry1-qqozego.svk@flex--dmatlack.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e987ec84afso23017215ad.3
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:31:26 -0700 (PDT)
+	b=VYXrSX9bae0zEvPh7MrDKVqa46PYr9XvirhooslaFYcRMV4j7rIcS70gjvUppctkqn8tsi
+	TopxaS4aczGuP/EJEn3CdlYziNlIflzc1H9dcKCyTvmRKwvey6AfNrsw9R5aAfNBdYH2z3
+	G+MbPST+TrcA0i5ikM9J/Ul0rhLVXKo=
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cd67e98f68fso1724803a12.3
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:31:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792445486; x=1793050286; darn=kvack.org;
+        d=google.com; s=20251104; t=1792445487; x=1793050287; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rccGvdC4VDGY+kjlq/11HJtI0x1dTEfzAQPx1OmbdOk=;
-        b=kVLRlUZGaG3Y9KTll+okDKwnt5pexKdjvG0tW1tALtnq1iK/N2KasdpkrTVYyGGiUT
-         l0QUs/rJv2RrelkfCXZGGU+UItJkv14II3LZXa55uxfGcSBVeL7AG8L1uisi8x1hKwgy
-         zSa1gSRoriIMFKX3fK0DReV76mP9HfuE875sig3hi/q8yrbMQ3Jax5gbmXVz7Jw6s/GX
-         s81Fi3LtEgXAK1ai8w55OzEZyotZXsZwC1j9QRiTcnLeyHD3Z9PY7so/Kvekkc/bFR0j
-         PSYTunC3tDX/nUm3TeitxWfmWho35YAWmyWXW6Cd5+nN2DuVx2etyrSMdIwb1NdRFTQJ
-         wcOA==
+        bh=+8+r+UgUrY8DXLFgmEvSoqHNnXfv9U//CDOtL9HGeYU=;
+        b=Vs1+swBapoQnVuQ7rWw9QOOQh8BvbdeIpVpIubWwqRRCZYFMhUX7MD5BaGuVgpbpMH
+         Kni64t29FzmCKDt88pR1krhzFC185Lqf/X8Q+VwvYIBLVXOruxUnDTc3050EAjwUrpoJ
+         zWLIMmKz9DIOYFznMwZq8T4F/wi3k2YgiTtnCzrZ6ry9L3CHPD1WRkzgQdbFBbjqgaxa
+         CnOqYV7r4w0+X/yWVR6kF9UWGFGqOrXJ74u3zOFZS1pV6zGTNluFR6jsVgkGAbsT3Xu8
+         NGcW4wYanq2KkNUCIE21JnA+rc37MQ6tnYfXDkek8xyRyw0aPArebdVKxj81VydRTxHv
+         IuWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792445486; x=1793050286;
+        d=1e100.net; s=20260707; t=1792445487; x=1793050287;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rccGvdC4VDGY+kjlq/11HJtI0x1dTEfzAQPx1OmbdOk=;
-        b=TKKuqasFTY6aWK3ztyGnn+T9Js10yKIFTXk0gGXhXgoYJRejJa37acjJf1/x7ruhAh
-         sOSfBmrRLfQMeqNuB2rK2FI0dDRAWxihXKMFo0oN8T5NuLGJugHAoIgKZnR29WzABDEi
-         sxeinu0cvd5oLaK76Qs5Sww3GP+6z3Bv4J4Yaj3YSb6fyTcva7IrDaLnMDeeW5Jh9j3A
-         XRqxUHUKdDglYJiuQVvCT02R1My22Dj0xKGmx6YOwuhYstSOJvWRzIGKHh44uQgT7QnA
-         qsJgOD/uwtUMOGOuGQFICcXWUA1W8W4304oV54TV7WV3h+tdN68EzU9KmIBeIXeTJN5K
-         D4vw==
-X-Forwarded-Encrypted: i=1; AKwUvBxJ35oiBK3h7y47n0+ugciqrp9BgdeDoHS9N4fp662Mna+IgPyVe33qzIeQ4/i66v1naHZ/9mk86w==@kvack.org
-X-Gm-Message-State: AFq9FYJ4RDCDoLxE5lx8jr2HsDnlgUC6IihHlLyKAPIeunnLEztrMEkC
-	XjGdd5e72uQD+zlml7aROOMWN1nPkWgnrd4YV957+BdccUjcEG5XNiu+SOeS2grct/rvKV6BwgR
-	QLywgRzvhDYH+cg==
-X-Received: from plok11.prod.google.com ([2002:a17:903:3bcb:b0:2e9:5b68:4b7d])
+        bh=+8+r+UgUrY8DXLFgmEvSoqHNnXfv9U//CDOtL9HGeYU=;
+        b=LJRqlMI+ieTIV/ZAUx0IymLMPTD/hz9mlco32LtUf1N5NfjPJNp/oEjEwvw8+juiiU
+         amHDnLjIlbDspb6IKpjThrSpXkFZcPqwz9yp+XjHp3RsmyHCj+r7wX3ldfw8amf9D+Ms
+         Lp8c2UgdToW/a2pXeimxkoKienTlEDklmAwzZjxpjXVXwmPc1v2c94j7CImt3/kRsBFf
+         dyAv+jItUmURhjTtd3WhzRspNYlH5w2fAYzO/qcFVDPUfjL35IhFYz0jdu8OApf66GA4
+         pXfGdoP6zg/FQC/BHOfOjDznYz1m9wpMUt8pvenpPG5ijddrJU7vt2Bj6aODUVOi+FAu
+         NyaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzBXk1sAYG5g+SWZ9aH2gpJH3oee8whKsp/EfNhS0ctt8YMcqCzGAF03C6emw7rFLfdyB9r6w6LzQ==@kvack.org
+X-Gm-Message-State: AFq9FYJ1pFCi2TmDzNjwmgbq0bjlFFl1zIBLf/4ZqabbvFKHY+YS7d2/
+	MX6tBua3aFqizvh1yG70kCU3igLV/W2unALDaZJ5c908iSVTzbYkapEtwwqe3XD3126Gpn6IGOg
+	Urwi5gmCCaMOy2g==
+X-Received: from pglk6-n1.prod.google.com ([2002:a05:6a02:6b86:10b0:cc7:dd4c:a852])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e949:b0:2e2:d02d:a173 with SMTP id d9443c01a7336-2e9a6f59777mr77394715ad.49.1792445485578;
- Mon, 19 Oct 2026 14:31:25 -0700 (PDT)
-Date: Mon, 19 Oct 2026 21:30:49 +0000
+ 2002:a05:6a20:ac44:b0:3e2:1656:b7c9 with SMTP id adf61e73a8af0-3e226401953mr7453690637.66.1792445486484;
+ Mon, 19 Oct 2026 14:31:26 -0700 (PDT)
+Date: Mon, 19 Oct 2026 21:30:50 +0000
 In-Reply-To: <20261019213054.3157159-1-dmatlack@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261019213054.3157159-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261019213054.3157159-6-dmatlack@google.com>
-Subject: [PATCH 05/10] PCI: Skip programming bridge windows that are already programmed
+Message-ID: <20261019213054.3157159-7-dmatlack@google.com>
+Subject: [PATCH 06/10] PCI: liveupdate: Claim resources of incoming devices
+ during scanning
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-pci@vger.kernel.org
@@ -101,19 +102,19 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
 	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1A0304000B
-X-Stat-Signature: gsi9ohbwwyhngtppkotha7f5c4yshd94
-X-Rspam-User: 
+X-Rspamd-Queue-Id: D6FBC180008
+X-Stat-Signature: kcd818mm4p4cb8kwxj7c78nfw9fhdx56
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792445486-151460
-X-HE-Meta: U2FsdGVkX18YEqlt/HhmWsfYhZxRzhO5hct5w0pUqBUH6HQp9io3kFKyhyoiablpRFayTx4mJncZXbrbsUvGKYRWLackldSJ2qclnjnEbxgJP6e1ODnD1TJ+X46Jgbni7IhQRuBY+FNXjCEx5+05uYZdXDE7bwIYwG1dHbfu2gKSiTBAFhsmgG9ryJ73DsB/jGKDVx21BoPcPf3OdNXAJA3D+DDojpG1lmLevhUZrIgIJe7v2SgGamTqQQw2wSVmyqOBhHN7P8FCyW5abh2cU04TgIdeR/mrD8KjHeAjzg6riqIK+8yj7VjwHqi/aYnh0jJP4pdexpxeCdjUzzm3i3g57xlgIq5wz+6RZ1A2luJdxGBEDRU85sKDrVIa1geBuptSCe8yV2rkcsahnBnBnWr8DeyBz/qXkU99oxcL9Rs2dRxOcvofd3xlj+SWo57vdScLhKr6T7MuXtQ4xVcQz6NPr3loUUZsTQXVkGOpI9PYHxFQUJYNHrQva+jzTZVaz+MDfuQAHHSCJsO10I1YD1gO2kZ1RTET/MOdfREAaT88ax6gyKCqd9iEgyTePp412DPj2ZET4RFOB+djPrht3Mt7t2Z3E2DSDJXrXmGmINkYaB4urHG+Zr0fMLARfOZ5JHxjyHb0dUXR2B/gyW/Z32F7LxSRH2r41mLmmdljHomL4gwpwYttH1LynDKaF8yxYihkWgxzBzcG6OrBzDvBUSRWUmQJuDCEVX+B7gurwYjeIqrwvbYDNFKHPEVCC1VQkO1/OkOGVfwvzaDAfNaeOlrSMqP1pZd3EoKdgND5voiyGwlxToB3SggWZOOkcgJbwf14+5hYgt2jc6YaEYKdrvRARFmd+MAf06C7trbI8vEHd1rRS4BSPCoTM7p0uFGYjbdT75TJ4AZpxjKw/sswIXeeyWbJINlh7KpJtP5W1gz73ndS4oAPm2eW5/GSbs5kMI28rZJhdcDdP+rM/L/
- Kyam1vXN
- 8lpGB6+rxgpRx5KTD8qOFM1CzMVEcLjNPUtaUKgSR4xLSLgtbBawxL72lWSe1gEqje+YSnJpebuRZ8Z7nmH2k83v7MAkk30NgtASg+iGL4WAVnlUe/FnsaxPTWms40wCRofD/APlyP+LNnJH95XnZZfRXPoFKTuqG7XUjFcCoLXbZgXVIWbtZ+C7amlL+Gz6Ir9RCYZhDKeqIfYAGWA2PuuGecZsXg37jb+DUJ0tBf5NEAUl494rwmqa6Soj2sX8opJ4EoUdfOLtANjkBTNoo57yHN9ul6vsiPtiu1bbS9AO+KoVyyWiVdVRirpJu6/wgx9yuAZup4nC+gv5jvVnOnaiQDlh9Bza7BVh7CcMw6lYJ09Cfx56v+SALUftYNQspK4wuGl34UVK8YFd0mDMjZqil8ObjDNrpslnm5uU21GCcNvw/4w4uKHKXF3DaoTcxZSYiYDwcgCFevP3pjdnZ0HDbZYe2mUc0iC17nBfe9dRm0y5F+xTRYYohEY8IRKRlyw7ygg50pINH5w8+mmHz5D30j+0b5WiM+4Pb9sETe0MY+dNg4y3VYAnE3z1wc8/FDwYOnCpLQmDf55xMKwGUG7n8FQ==
+X-Rspam-User: 
+X-HE-Tag: 1792445487-123805
+X-HE-Meta: U2FsdGVkX19zCLuNta3zRV5HOYU6ji1dd2CshtcRKP5HQTUsvlg+gVHdNeyBDXa+ljPAQhwX26N1KZEzpI5uCyPcSExzuy7wBa38lmyFkO06G8592WFAsGqaTpsh5vkl8e2LqaqHQGfyxdA7dqvXP1G120leclxd90ELzvkaSRgGHL6z0lFXe8CnNNlwO3Hg9X9EIx00XbhwGqDNyQNQPM22nS/K/emh3seXuoeW1HAdp1BAZuawZTfJ5W7nuDXEBEtKJ0QqipLAZoVLY3gXSsUBN8hv4RQ3VY+IJlJLKDWd3FOIi7ByNEzZbiawztNDFhvjhyZx3ZmMOInFlcI4da0wflbkcaqguJJJAQViyXPYHeqKOrNj9MPPXG9Hv0QbjcjTCSMl2tBfEFMTP1G2EKFeGyG+n7+VbikLqEp7qgTYH6QuZLuAroB8PYOEXkyKn/5sHEsBQGCCdmv+CZydzwpnhyhj59jyzT+s2H7BVOBzZ4qjJ38ySR7b8M1SFa6c0FttMfEwIJ1gWUteuva+h6hkyz5i+3IHfVkoUVHAwds9z+FwPAt/RPfgtxa398alKJ15++z+1Bj7qEByhmvKHxiRcJX4p03fp5XQHRl8EcqNy/Rin/H9Y1Yr0AmNRWwL6f/zaDFmiwTnoajpMlE4A/cFwbEUlyIjn5BR18NaqrW9VKbUHDmIRTWbhks/OkRMBJsP2OtZj27nxzB67a3LMdvsBPGAD4gCEEdHl8kHSYAKkrBixOMxvwFTQbvU8wc1TYwihfHFaDgxV3XbJaI7fdVY7Zm0sgo69q3rP23XLdNbZz1UqBUYLL2u689YBsITY4rel6pieGjnqK7T8F1QugBjbl9pZtioMpCt7z/wQ8ltZz3u8DruBdU9pN4h0Zan1JrGBHYCfSWcTfVdJfuy1joesmgHx2zY35kyj0LaIOA5rpUceiyfZ05oXi6+2m4qg8ycPD+E5aNiDzVoOtS
+ 3P+gpGnM
+ GTbqgnuUphbN2+u5AcEUmgbgofZ887p7aOT1QIYrHYq6oC/KD6Ukz4fMZYxaCPd6PqW7TLtgj5yqb9UgGt9uBUOBIAMAMEJha9wWJ865vAd4PmmSvfcRijByrX/J3DX/65tcDe2pXDufWmhkzvcmbtF9Oss9Dhp4Q68UTSmyARmCwLcSN+Gt3/WhLV2GMEuH7dGGtLCodPmwTyuqa0jSvzcNOUUMjTdhaZzRDZuC7ZjJ05bWxXtKsFsptSHCuqGLW8AkcN1wRe/UP688ILkOQ2HuIvVQhRT0JYmOtHXI+qdkN0UOn6Y6orceTT8FGN6Z/wxzAZ9hF0N8KjJCeKIsJ5O9DSrhgIiV3rL4vX48SaydjNdZVv84RIj98nSTjstYXFdSdvpLqAS+ACmf3/mcg5Vt21JuOrHX+5Q+FWols7bKGrB1bJ0MuCA0p/ocLZyTbxUEq81kBIav68Qm4E7WIBIxCBukDbIJLrzrM+iY26AKmdmEZ5iPW7s1G2uM8djDkvfWxSw31Y5I1RCTdWmIMOgCJx9C3Wq9BSwgq5tghENdNDNKxvXhj2l0aKCGO5K9HC9ImGQ2cog+OGZhK/iUFY9eFugbFqjyb5z6S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,132 +123,218 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Skip updating the window registers of a bridge in
-pci_setup_bridge_io(), pci_setup_bridge_mmio(), and
-pci_setup_bridge_mmio_pref() if they already contain the values being
-written (ignoring the read-only low bits of the base and limit
-registers).
+Claim the BARs and bridge windows of incoming preserved devices, as
+programmed by the previous kernel, while scanning. Claim them for each
+bus after its devices have been enumerated and pcibios_fixup_bus() has
+run, and before the buses below it are scanned.
 
-pci_setup_bridge_io() and pci_setup_bridge_mmio_pref() temporarily
-disable the I/O and prefetchable memory windows while updating them,
-since the base and limit of each window are split across multiple
-registers. This happens even if the window is not changing, e.g. for
-every bridge whose windows were assigned by firmware and claimed, since
-__pci_bus_assign_resources_one() calls pci_setup_bridge() on every
-bridge that is not yet enabled during enumeration.
-pci_setup_bridge_mmio() updates the memory window with a single write,
-but skip unchanged writes there too for consistency.
+This ensures that the address ranges decoded by incoming devices are in
+the resource tree before anything sizes or assigns resources,
+regardless of how the host bridge driver sets up resources. Without
+this, whether existing resources are claimed depends on the platform:
+x86 claims them in pcibios_resource_survey(), pci_host_probe() and the
+generic ACPI host bridge code only claim them if the host bridge has
+preserve_config set, and some host bridge drivers (e.g. VMD) never
+claim them.
 
-This prevents disabling the windows of bridges preserved across Live
-Update during enumeration, which would disrupt memory transactions
-targeting preserved devices below them, such as P2PDMA from other
-preserved devices, or MMIO from VMs whose vCPUs keep running during
-kexec.
+Buses are scanned top-down and all bridges upstream of a preserved
+device are also preserved, so the windows that contain the resources of
+an incoming device are always claimed before the device's resources.
+Outside of x86, bridge windows are not read from hardware during
+scanning, so read them first if needed. Code that claims resources
+later, such as pcibios_resource_survey() and pci_bus_claim_resources(),
+skips resources that are already claimed.
+
+Panic if claiming fails because something else has already claimed part
+of the range decoded by an incoming device, since memory transactions
+that still target the incoming device (e.g. P2PDMA, or MMIO from VMs
+whose vCPUs keep running during kexec) may be corrupting it. Also panic
+if a bridge window cannot be claimed for any other reason, e.g. because
+it does not fit in the upstream window, since the bridge would keep
+forwarding a range that the resource tree considers free, and the PCI
+core could assign it to another device. Neither should ever happen,
+since the previous kernel had the same resources claimed. A BAR that
+fails for any other reason was never assigned an address (e.g. a ROM BAR
+that the previous kernel left unassigned), so there is nothing to claim.
+
+pci_liveupdate_claim_bus_resources() does nothing if the previous kernel
+did not preserve any devices, so the only overhead outside of Live
+Update is checking a flag under the PCI Live Update rwsem.
+
+An alternative that was considered was setting preserve_config on host
+bridges with incoming devices, which makes pci_host_probe() and the
+generic ACPI code claim all existing resources. However, not all host
+bridge drivers honor preserve_config, it is a firmware-provided policy
+that applies to every device below the host bridge, and it would have
+to be cleared once Live Update finishes.
 
 Assisted-by: LLM
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- drivers/pci/setup-bus.c | 52 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 11 deletions(-)
+ drivers/pci/liveupdate.c | 99 ++++++++++++++++++++++++++++++++++++++++
+ drivers/pci/liveupdate.h |  5 ++
+ drivers/pci/probe.c      |  8 ++++
+ 3 files changed, 112 insertions(+)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index e8c94aa1d3c1..4bec76950f46 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -799,8 +799,8 @@ static void pci_setup_bridge_io(struct pci_dev *bridge)
- 	struct pci_bus_region region;
- 	unsigned long io_mask;
- 	u8 io_base_lo, io_limit_lo;
--	u16 l;
--	u32 io_upper16;
-+	u16 l, cur_l, l_mask;
-+	u32 io_upper16, cur_io_upper16;
- 
- 	io_mask = PCI_IO_RANGE_MASK;
- 	if (bridge->io_window_1k)
-@@ -823,6 +823,18 @@ static void pci_setup_bridge_io(struct pci_dev *bridge)
- 		io_upper16 = 0;
- 		l = 0x00f0;
- 	}
-+
-+	/*
-+	 * Leave the I/O range alone if it is already programmed as needed,
-+	 * rather than temporarily disabling it below. The low bits of the I/O
-+	 * Base and Limit registers are read-only.
-+	 */
-+	pci_read_config_word(bridge, PCI_IO_BASE, &cur_l);
-+	pci_read_config_dword(bridge, PCI_IO_BASE_UPPER16, &cur_io_upper16);
-+	l_mask = ((u8)io_mask << 8) | (u8)io_mask;
-+	if (!((cur_l ^ l) & l_mask) && cur_io_upper16 == io_upper16)
-+		return;
-+
- 	/* Temporarily disable the I/O range before updating PCI_IO_BASE */
- 	pci_write_config_dword(bridge, PCI_IO_BASE_UPPER16, 0x0000ffff);
- 	/* Update lower 16 bits of I/O base/limit */
-@@ -836,7 +848,7 @@ static void pci_setup_bridge_mmio(struct pci_dev *bridge)
- 	struct resource *res;
- 	const char *res_name;
- 	struct pci_bus_region region;
--	u32 l;
-+	u32 l, cur_l;
- 
- 	/* Set up the top and bottom of the PCI Memory segment for this bus */
- 	res = &bridge->resource[PCI_BRIDGE_MEM_WINDOW];
-@@ -849,6 +861,12 @@ static void pci_setup_bridge_mmio(struct pci_dev *bridge)
- 	} else {
- 		l = 0x0000fff0;
- 	}
-+
-+	/* The low bits of the Memory Base and Limit registers are read-only */
-+	pci_read_config_dword(bridge, PCI_MEMORY_BASE, &cur_l);
-+	if (!((cur_l ^ l) & 0xfff0fff0))
-+		return;
-+
- 	pci_write_config_dword(bridge, PCI_MEMORY_BASE, l);
+diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+index 72ad4fd00f7b..ac4525568818 100644
+--- a/drivers/pci/liveupdate.c
++++ b/drivers/pci/liveupdate.c
+@@ -184,6 +184,12 @@
+  * The PCI core treats preserved devices differently than non-preserved devices.
+  * This section enumerates those differences.
+  *
++ *  * The PCI core claims the BARs and bridge windows of incoming preserved
++ *    devices, as programmed by the previous kernel, while scanning and before
++ *    any resources are sized or assigned. This ensures no other device is
++ *    assigned address space that an incoming device is still decoding, and
++ *    that the resources of incoming devices are never reassigned.
++ *
+  *  * The PCI core adopts all ACS controls enabled on incoming preserved devices
+  *    rather than assigning new ones. This ensures that TLPs are routed the same
+  *    way after Live Update and ensures that IOMMU groups do not change. Note
+@@ -1207,6 +1213,99 @@ int pci_liveupdate_read_bridge_windows(struct pci_dev *bridge)
+ 	return 0;
  }
  
-@@ -857,14 +875,7 @@ static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
- 	struct resource *res;
- 	const char *res_name;
- 	struct pci_bus_region region;
--	u32 l, bu, lu;
--
--	/*
--	 * Clear out the upper 32 bits of PREF limit.  If
--	 * PCI_PREF_BASE_UPPER32 was non-zero, this temporarily disables
--	 * PREF range, which is ok.
--	 */
--	pci_write_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, 0);
-+	u32 l, bu, lu, cur_l, cur_bu, cur_lu;
- 
- 	/* Set up PREF base/limit */
- 	bu = lu = 0;
-@@ -882,6 +893,25 @@ static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
- 	} else {
- 		l = 0x0000fff0;
- 	}
++/*
++ * Check if the windows of @bridge have been read from hardware. Outside of x86
++ * that does not happen during scanning.
++ */
++static bool pci_liveupdate_windows_read(struct pci_dev *bridge)
++{
++	int i;
++
++	for (i = PCI_BRIDGE_RESOURCES; i <= PCI_BRIDGE_RESOURCE_END; i++) {
++		if (pci_resource_n(bridge, i)->flags)
++			return true;
++	}
++
++	return false;
++}
++
++static void pci_liveupdate_claim_resource(struct pci_dev *dev, int resno)
++{
++	struct resource *r = pci_resource_n(dev, resno);
++	int ret;
 +
 +	/*
-+	 * Leave the PREF range alone if it is already programmed as needed,
-+	 * rather than temporarily disabling it below. The low bits of the
-+	 * Prefetchable Memory Base and Limit registers are read-only.
++	 * Skip resources that are unused, already claimed, or disabled (e.g.
++	 * bridge windows that are turned off).
 +	 */
-+	pci_read_config_dword(bridge, PCI_PREF_MEMORY_BASE, &cur_l);
-+	pci_read_config_dword(bridge, PCI_PREF_BASE_UPPER32, &cur_bu);
-+	pci_read_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, &cur_lu);
-+	if (!((cur_l ^ l) & 0xfff0fff0) && cur_bu == bu && cur_lu == lu)
++	if (!r->flags || resource_assigned(r) ||
++	    (r->flags & IORESOURCE_DISABLED))
 +		return;
 +
 +	/*
-+	 * Clear out the upper 32 bits of PREF limit.  If
-+	 * PCI_PREF_BASE_UPPER32 was non-zero, this temporarily disables
-+	 * PREF range, which is ok.
++	 * Panic if something else has already claimed part of the range, since
++	 * memory transactions still targeting the device may be corrupting it.
++	 * Also panic if a bridge window cannot be claimed at all, since the
++	 * bridge forwards the range even though the resource tree considers it
++	 * free. BARs that fail for other reasons were never assigned an address
++	 * (e.g. a ROM BAR that was left unassigned), so there is nothing to
++	 * claim.
 +	 */
-+	pci_write_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, 0);
++	ret = pci_claim_resource(dev, resno);
++	if (ret == -EBUSY || (ret && pci_resource_is_bridge_win(resno)))
++		panic("%s %s %pR: Failed to claim resource of device preserved across Live Update\n",
++		      pci_name(dev), pci_resource_name(dev, resno), r);
++}
 +
- 	pci_write_config_dword(bridge, PCI_PREF_MEMORY_BASE, l);
++/**
++ * pci_liveupdate_claim_bus_resources() - Claim the resources of incoming
++ *                                        devices on a bus
++ * @bus: The PCI bus
++ *
++ * Claim the windows of the bridge upstream of @bus, if it is
++ * incoming-preserved, and the BARs of the incoming preserved devices on @bus,
++ * as programmed by the previous kernel. The PCI core calls this while
++ * scanning, after enumerating the devices on @bus and before scanning the
++ * buses below it, so that the resources of incoming devices are claimed before
++ * any resources are sized or assigned.
++ *
++ * Buses are scanned top-down and all bridges upstream of a preserved device
++ * are also preserved, so the windows that contain the resources of an incoming
++ * device are always claimed before the device's resources. Failing to claim a
++ * resource because something else has already claimed part of its range is
++ * fatal, since memory transactions still targeting the device may be
++ * corrupting it.
++ *
++ * This does nothing if the previous kernel did not preserve any devices.
++ */
++void pci_liveupdate_claim_bus_resources(struct pci_bus *bus)
++{
++	struct pci_dev *dev;
++	int i;
++
++	guard(rwsem_read)(&pci_liveupdate.rwsem);
++
++	if (!pci_liveupdate.had_incoming)
++		return;
++
++	if (bus->self && bus->self->liveupdate.incoming) {
++		if (!pci_liveupdate_windows_read(bus->self))
++			pci_read_bridge_bases(bus);
++
++		for (i = PCI_BRIDGE_RESOURCES;
++		     i <= PCI_BRIDGE_RESOURCE_END; i++)
++			pci_liveupdate_claim_resource(bus->self, i);
++	}
++
++	list_for_each_entry(dev, &bus->devices, bus_list) {
++		if (!dev->liveupdate.incoming)
++			continue;
++
++		for (i = 0; i < PCI_BRIDGE_RESOURCES; i++)
++			pci_liveupdate_claim_resource(dev, i);
++	}
++}
++
+ /**
+  * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
+  * @dev: The PCI device to check
+diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
+index 4c4104025a7e..98d23e217308 100644
+--- a/drivers/pci/liveupdate.h
++++ b/drivers/pci/liveupdate.h
+@@ -22,6 +22,7 @@ bool pci_liveupdate_is_outgoing(struct pci_dev *dev);
+ int pci_liveupdate_read_bar_masks(struct pci_dev *dev, unsigned int nr_bars,
+ 				  u32 *bar_masks, u32 *rom_mask);
+ int pci_liveupdate_read_bridge_windows(struct pci_dev *bridge);
++void pci_liveupdate_claim_bus_resources(struct pci_bus *bus);
+ #else
+ static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
+ {
+@@ -72,6 +73,10 @@ static inline int pci_liveupdate_read_bridge_windows(struct pci_dev *bridge)
+ {
+ 	return -EINVAL;
+ }
++
++static inline void pci_liveupdate_claim_bus_resources(struct pci_bus *bus)
++{
++}
+ #endif
  
- 	/* Set the upper 32 bits of PREF base & limit */
+ #endif /* DRIVERS_PCI_LIVEUPDATE_H */
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 184d93aa8522..a53d0077a08b 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -3155,6 +3155,14 @@ static unsigned int pci_scan_child_bus_extend(struct pci_bus *bus,
+ 		bus->is_added = 1;
+ 	}
+ 
++	/*
++	 * Claim the resources of devices preserved across Live Update before
++	 * scanning the buses below and before any resources are sized or
++	 * assigned, so that nothing else is assigned the address space they
++	 * decode.
++	 */
++	pci_liveupdate_claim_bus_resources(bus);
++
+ 	/*
+ 	 * Calculate how many hotplug bridges and normal bridges there
+ 	 * are on this bus. We will distribute the additional available
 -- 
 2.56.0.212.g129ede20d9-goog
 
