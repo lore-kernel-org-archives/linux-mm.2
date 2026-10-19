@@ -4,93 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A918CCF2D6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 12:20:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C1ACCF2E3
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 12:23:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6F646B00D6; Mon, 19 Oct 2026 08:19:54 -0400 (EDT)
+	id C39046B00DA; Mon, 19 Oct 2026 08:23:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B47306B00D8; Mon, 19 Oct 2026 08:19:54 -0400 (EDT)
+	id C11426B00DD; Mon, 19 Oct 2026 08:23:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5CD96B00DA; Mon, 19 Oct 2026 08:19:54 -0400 (EDT)
+	id AFFB76B00DE; Mon, 19 Oct 2026 08:23:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 765B16B00D6
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:19:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 088EB1C3F85
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:19:54 +0000 (UTC)
-X-FDA: 85339282308.26.3530886
+	by kanga.kvack.org (Postfix) with ESMTP id 831966B00DA
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 08:23:32 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03D581C31FB
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:23:31 +0000 (UTC)
+X-FDA: 85339291464.24.31E2109
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 78E9480005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:19:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZZ40E/VC";
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0B0532000A
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 12:23:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oq7f7u02;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792412392;
-	b=M69MMxoDnZB1pQbfQ/0GNV55GmXt5yzcPCsNRA2sSrM9WA5qXur0jf0GYqs4K0ErPh+65S
-	36n4Ro/0sBxjHOE/AZKMVMLgngt9l1gPWnTZdr1G0KnOTiNOblzCzMwcn2Yt8RxQxWsT4q
-	o0HYRdXdCYR64JUZPhnxeI1r65mgIaU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZZ40E/VC";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792412392;
+	s=arc-20220608; t=1792412609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q9hc5cIkyPezjts4c8r6cEvhiZGbSkNeXgJkba3+Ks0=;
-	b=pGIIVf77YPzc6GnW9gyyTCP8m9tlkwA/qU9P9Um1+UaSjdJ0fGsSJfkRq/T+nRKFKTSBE5
-	90Fp/BIpQke6M4rKQUDWnRqgmnkXC4prR0CQPWsJfTZQG+gcOTfwZYBlzsoBTCdN+HMoM1
-	Wq9YompTFNy2/9tpDhLB03oC8HqdVxk=
+	bh=LuiCl+I2h452P2ySjY/aKFWNJcn4drc6seXyIqCSVY8=;
+	b=zM+2bLw/ILoFk8T3tTiFQQbUmzwOyso8mG9cMiUEXRWDkslU4rF+6qPGtKtIcXRGXCTSgy
+	QPZzB+UdroPmhOJJu1mH1MjYiExtI2E+LJ/UDscdHPswuD1zw8iemVQq0E8JBkjYk2TYOe
+	AqX2Q+cFi0L4SLBV0zmGRLP2bziW4a8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792412609;
+	b=v4+D9xnJqBvtIYbW2Viv7gJdX5TlcKlfB5lRinicZTIIqPycMpMzoUKLe2lC6KL/0Hv8bk
+	P2Ms2VExngbNqNzG2QU8VTR6krysq3Rkff6ZISZEVYtzNRgH70Vmbf6VsQtje+v9NbrvQX
+	DbEpqOsTFD4vpiMb4wXdgfhd62D4bmA=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oq7f7u02;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E961560142;
-	Mon, 19 Oct 2026 12:19:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0014D1F000C4;
-	Mon, 19 Oct 2026 12:19:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4097960136;
+	Mon, 19 Oct 2026 12:23:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DAA1F000C4;
+	Mon, 19 Oct 2026 12:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792412391;
-	bh=Q9hc5cIkyPezjts4c8r6cEvhiZGbSkNeXgJkba3+Ks0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZZ40E/VCmFDgut286wgaCHh17UAGwN+J1SGcdJ1lynmahPLbL8fK+Vq7XLtg8A79R
-	 4k+/Y8JK01Vmt2melYAgFaFLvB/EJ2FcIftKpK1wQWIB3WNUTB3GfothUMQ1Np2jlc
-	 3PEU/mOIZBlGJuDf6Lc2PrgGIQrrQ/lAAZKxo9iBfbdK71hGst9X2E8TltCLqWFUMb
-	 wTImVBTPBY6WmRlIHA9Ie6MYtizSsfToOxumT/vyix9yGLaC6n+gGfs4wFvpHXwIlk
-	 vY15WF/wkS2EEKq7C2MKgYjGV5W6UHVsr1ckHmJ/eGUegcoyIH9hj05ZG4M+oTg46y
-	 vEFzh2mwJXDUQ==
-Date: Mon, 19 Oct 2026 13:19:45 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	Daehyeon Ko <4ncienth@gmail.com>
-Subject: Re: [PATCH v2] mm/vma: avoid spurious write locks when
- mm->mm_lock_seq overflows
-Message-ID: <atYJA7nIu_RwpoCC@gremlin>
-References: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
- <atXjbsDn7DJybsHU@pedro-suse.tail5790ac.ts.net>
+	s=k20260515; t=1792412609;
+	bh=LuiCl+I2h452P2ySjY/aKFWNJcn4drc6seXyIqCSVY8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Oq7f7u02z1MZMAwTdBQfCe7hZrRaN2XCtCDfk6Kmv9L+JzDLETnM+pXZ/QdKeAsCd
+	 IpjIT35E4EWLub8zbfJYdEvr8sZ4ATo9B3YFfoBKHidQyqWtp4k/yGXOOfSAqWKM2t
+	 QWLsVwUuEgK3krujErnkqv/z5CluTrRgy8Wb9rkHIc8/PFjdynqwnoEr0y171MeIWK
+	 Oi1QRss8lATZaL/cdyQqfX0yX/tPIMhMufaemhnMMfIWtYuzBTRhc8ASlitX1iJdCU
+	 Te16u5lGojfvFc7g8Sur8XSomaWBT9BS3Kd3isIO6Lwj9C2EWSGmMInLc1vQF14u1G
+	 R0gIBW3J68SWg==
+Message-ID: <ad34dd6d-f106-42b1-b8b6-a4487822285f@kernel.org>
+Date: Mon, 19 Oct 2026 14:23:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atXjbsDn7DJybsHU@pedro-suse.tail5790ac.ts.net>
-X-Rspamd-Queue-Id: 78E9480005
-X-Stat-Signature: 8cicgzcb6mw6qhze64tmnj8i7nokmwaj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2] mm: introduce copy_mc_highpages() and batch copy
+ in folio_mc_copy()
+To: Pedro Falcato <pfalcato@suse.de>, Shivank Garg <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Borislav Petkov <bp@alien8.de>, Ankur Arora <ankur.a.arora@oracle.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
+ <tglx@kernel.org>, Bharata B Rao <bharata@amd.com>,
+ Hrushikesh Salunke <hsalunke@amd.com>, Ingo Molnar <mingo@redhat.com>,
+ "H . Peter Anvin" <hpa@zytor.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ David Rientjes <rientjes@google.com>,
+ Linus Torvalds <torvalds@linuxfoundation.org>,
+ Teja Vojjala <tejavojjala@google.com>, Huan Nguyen <nhuhuan@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20261019-batpagecopy-v2-1-d75e7d0dfaae@amd.com>
+ <atX3lpXQBHH1JPhW@pedro-suse.tail5790ac.ts.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <atX3lpXQBHH1JPhW@pedro-suse.tail5790ac.ts.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0B0532000A
+X-Stat-Signature: i5a8qncjx9b4i5pdmtcqe1o31ofqob3z
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1792412392-44217
-X-HE-Meta: U2FsdGVkX18sZSpzdFMfUTKNtXWHU5VoBmbbGX6g/JQ6yHCi9B2wlyHeZqqcOGcEQHJyYRnia5r4cybrhtPJMJ0VcS8OF4rU/Y2rxDirk8uxvNQ1bGleuncJXGG7KGwALkrtDiwRs6e7K5Y+DY+J9/8/5S+fPE0jiL9x+LJ7yrLBv5RmNPSno8rQW8fcASlzoiWzQEjxdnLHA0+WbJQapBr6bb05o6msFVnpq6GHC+QwjUruX4VvywRzhYhSi4AshQMPV5bPSs1tdxJ1f0LMtAwrpan05s8Ndx7dMC5R8wF5GyGDrb6zupB1iy0unKvCqxG6BQchcOJq7xNgzLSKuR9L8hp6SI0UwI9Ymel2SzQvKR2GfWG1GLV8Gla4pwKDe3D0GfaPjOgIQZMnrcb6O/AVkMonyPIuWhFgAyoi2znAeMCfRfVZe6OSDl/+hHUl6TQ0Uq41xkmqf5q+Qk4piAKwZZfjHqYdvhLTFSDXDXvy3ttd/1/ceU3l0+EvseUK+CHwRhk0iTL3CKjRnpV2lNJi6U37rIqNmVfF2nVa2OncwVMMW5c6h9O1FRjTKX6e+akrvRLfgbvoOGLRO7KcQYhAm1NfHqVV0X8ukJq5rmMAW31SfT08gsu8kD3Yb/w2l1icrb/cD16udZR4/VLwhCZh050ycipcDcTjXXUpFFDZ+wR6A+V/qAVfWVw3E7xtbkW2mYJNFVr+NsfIxk12KWXXsQho1PS1yuHbuWsIh0E4aal709x8HgacAMcmWe510DwWKYd7NUe5SUFNzBeNjLdtdmL22FIQNFp/RZ2bZ4JDT6XgYtLloc4ZTxKS5tvkCVWWlvxlytupub0OZDS8/UEE0C/fftagZGXYJU4q3Mdn684WvelODmyutHCQ6GQL3kSl1KzbpnMoQSfM1SMU4xStYCXcNGhjb7CE1EpAGjj2YSDdWOcNnRGoVznDY93mXnILzkAUmoAMCjlxLT5
- xJ1fBbSb
- qfes2U5OvEsls3preIBmwCq8Q+zhh1ErqE7pUMTwD/31bJPZHA4ITYr/5Lx95FtGEuh+zmqr3NoXT1QeQZtMZ72Oap74FUhKs4utqVzI0IlMP/0FN2mh428B3qF6xPDl4jSKzlmAUlwhIMsYdv/PPoW4D3sJr/ayYauWaNkTbMbSit5S7gfJWiAKaOWVDKisJj+Mgwj/UDF8QK/rq+jERtmZecHPdjuARlV4Ad3y1x8YL6Vux7FinhlW9A1ll8cEzipchaDFwRNbyM5akQqphWXfH8wJyUgv4fzZyaHIjeXBZw70=
+X-HE-Tag: 1792412609-393674
+X-HE-Meta: U2FsdGVkX18/45rv/ule/P1li/WbECGdY8oeJtfh5eWj/a8hUl6hFL6gpj6zusKbYNFWFqp4bbGDJwc7Y9Y9PIpqMxFOVf/8UXkV8NiwwxpDABusoLkoZlzZTk5r1OHCXyLyE6RDS4h1L1/QgyOW3sNxtqIpuMH5zBxXQZobQir2NBpJKoxarI/lyVuUT5KSMPNl6hcCeo168yHXfqfKzaGTmNq/9q5+N6282LP5bt2pHEd/ZfD65UESmNQQvQDJ+Ogc7ylKGbkDE6VOJC3iVPaHWuY3H9OlrnGcW64O71EEwCT/JmplAOtbnpA057uxZoItD8k1HV97XtCXSyZqUlZHJGMjeUdWL3B4ojDnSOkXMNEViefx5YdkRYoqtX6xbhBfSsdhuHotIZ3MDANwZnq8vXW3DYaTfIdMxK2Q9H/gdTEtJNWvX0iE309phXM5CL04LAEKM212HWtw7PGI4+sPsjxteOUnsZRrL4y8H1wtiV+wDIOtGyuzF9GKHEYsZ386UtoaRfAqtTaGI9TZcd62fcW+/54mM8ln9b+BtRuDLrZ01kQXDKvHsldNMmHSj0Ltrj2JCtU2FHIGGt+JPTIgHZ7V7A01esYPW1VdUQ+PDTQDyles+fVXwRBnC8bcD0H0E9eboznPW4Q5u9C7p50HMmLVrWp9w+IKn7cbL+utolOsAUejxlR+LQ1nRGmUE50lC+Dzts6Y0RRPjA5/PdCLHAJoYygG9vV7woJT+HHg2Jxtp92OBYeXuAl/sOs6kzE6jaqcoX45mPMsiW0cUyE2cb50/qy6aWOlbNr6V8FEh+miTP9rS8vq/Y1twY/bBcdpNDOfS6nAP8jdC0xZDW5h0HpdHYNnsJTVKlGmAc+AUatOTiq266H0xmBUZscuJtWjN3Z/lbOjG85TWpYb7R56rB5FZmEAfQxmD72H2Q3L16elK4uOwlNhZX8PyPFUxwh06rxqqBVTQBUUlyM
+ 2DuOQF3Z
+ 5Vpy/n7U0agzYIoPXfbgw0tnY+t5IN96WNfQ9Ffis/Wlmz102No2EGpLb/sfchIueOASMi8rTPTrcCJacozs0XzQV3j1m5mmEFr7j32ubvtv8WbaF4GU9JvHgqfnzuB3zRFB59rR2araovqWStVqvjphXSgTNiK1JpAfTRjHpGqgRyqH0fY54Y3rIr4OX/R5Ija+2DilottVPXZ759Oaaz63KMT4fXL/jyw+0m2HnNZlnx63Gn8FEImqKkMnNQVImUyXQ6CPMb+dtb1x5c6LrF2V+M7EMG2g/iMJXP/EiXCueeZcU7xxm7jjZ8hG+WIqVyut16XIMEX0tUzA3t8nEYE/sr4uu40OHRzdEhY3md2+i1pelrmMOvRzl3Jvi3eTaPLKk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,93 +151,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 19, 2026 at 10:53:27AM +0100, Pedro Falcato wrote:
-> On Fri, Oct 16, 2026 at 12:34:33PM +0100, Lorenzo Stoakes (ARM) wrote:
+>> +}
+>> +#else
+>> +
+>> +#define COPY_MC_PAGES_NON_PREEMPT_BATCH		1
+> 
+> I would suggest that perhaps this should be the fallback for non-preemptible
+> models. But it gets a little weird with PREEMPT_DYNAMIC I think?
 
-> > So I think it's fine to just send it (early :) in the merge window.
-> > ---
-> > v2:
-> > * Updated comment in vma_seqcount_is_write_locked() to mention the VMA
-> >   being attached.
-> > * Renamed reset_vma_seqcounts() to __mm_reset_vma_seqcounts().
-> > * Used acquire semantics in vma_start_reads() to avoid race with reset -
-> >   there is another acquire immediately after this one so it should just be
-> >   noise perf-wise.
-> > * Removed stable tag, will do the backports manually (just make the value
-> >   64 bits...)
->
-> I guess you're fitting this where __vm_anon_pgoff_lo now sits? If so, then
-> this patch probably wants backporting to 7.3.
+Why can't we just use PROCESS_PAGES_NON_PREEMPT_BATCH where we have similar
+handling already?
 
-Ack.
+> 
+>> +
+>> +static inline int copy_mc_highpages(struct page *to, struct page *from,
+>> +		unsigned long nr_pages)
+>> +{
+>> +	unsigned long i;
+>> +
+>> +	for (i = 0; i < nr_pages; i++)
+>> +		if (copy_mc_highpage(to + i, from + i))
+>> +			return -EHWPOISON;
+>> +	return 0;
+>> +}
+>> +#endif
+>> +
+>>  static inline void memcpy_page(struct page *dst_page, size_t dst_off,
+>>  			       struct page *src_page, size_t src_off,
+>>  			       size_t len)
+>> diff --git a/mm/util.c b/mm/util.c
+>> index 7f374bb8bf36..5015cfdfeaa5 100644
+>> --- a/mm/util.c
+>> +++ b/mm/util.c
+>> @@ -763,13 +763,23 @@ EXPORT_SYMBOL(folio_copy);
+>>  
+>>  int folio_mc_copy(struct folio *dst, struct folio *src)
+>>  {
+>> -	long nr = folio_nr_pages(src);
+>> -	long i = 0;
+>> +	const unsigned long nr_pages = folio_nr_pages(src);
+>> +	/*
+>> +	 * Copy the largest extent possible to allow for architecture specific
+>> +	 * extent based optimizations. copy_mc_highpages() does not call
+>> +	 * cond_resched(), so limit the unit size when running under
+>> +	 * non-preemptible scheduling models.
+>> +	 */
+>> +	const unsigned long unit = preempt_model_preemptible() ?
+>> +				   nr_pages : COPY_MC_PAGES_NON_PREEMPT_BATCH;
+> 
+> See? now mm is aware of preemption models! eww!
 
-> > +/*
-> > + * Called with mmap write lock held after mm->mm_lock_seq just overflowed (and
-> > + * therefore zero), with all VMA write locks now released.
-> > + *
-> > + * The stores below follow the smp_wmb() in do_raw_write_seqcount_end(), so
-> > + * a reader that observes a reset value also observes this cycle's VMA
-> > + * modifications (ordered by the ACQUIRE on vma->vm_lock_seq in
-> > + * vma_start_read()).
-> > + */
-> > +void __mm_reset_vma_seqcounts(struct mm_struct *mm)
-> > +{
-> > +	struct vm_area_struct *vma;
-> > +	VMA_ITERATOR(vmi, mm, 0);
-> > +
-> > +	mmap_assert_write_locked(mm);
-> > +	VM_WARN_ON_ONCE(mm->mm_lock_seq.sequence);
-> > +
-> > +	/*
-> > +	 * Failing to reset means stale vma->vm_lock_seq values could result in
-> > +	 * those VMAs becoming spuriously write locked when mm->mm_lock_seq
-> > +	 * happens to match their values.
-> > +	 *
-> > +	 * This is problematic, as it causes the VMA write lock to not exclude
-> > +	 * readers, which can result in concurrent readers while a VMA write
-> > +	 * lock is held.
-> > +	 *
-> > +	 * Avoid this by resetting to an even value (indicates no write lock
-> > +	 * held).
-> > +	 *
-> > +	 * Readers will either observe zero (not write locked) or the previous
-> > +	 * value, so this is safe.
-> > +	 */
-> > +	for_each_vma(vmi, vma)
-> > +		WRITE_ONCE(vma->vm_lock_seq, 0);
->
-> I'm concerned by the possible latency when doing this to many VMAs. Do you
-> have any numbers?
+Yeah, we have that in clear_contig_highpages() already, which is getting
+replicated here for copying instead of zeroing.
 
-No, somebody schloppened a patch for a real issue and I haven't the time to do
-even the things I need to do let alone 'here's a new task' stuff :)
+-- 
+Cheers,
 
-However, this is a simple write to every VMA, done at the point the mmap write
-lock is held with all VMA write locks dropped.
-
-It was implemented such that:
-
-* No VMA write lock is taken on the VMAs.
-* VMA read locks can proceed.
-
-I.e. it amounts to a loop over VMAs and a write to a field.
-
-I don't think you could possibly do more to reduce latency here, and you
-absolutely have to update this field across the board.
-
-Under any realistic workloads this will occur at worst ~days intervals, often
-far longer, and likely you will see quite some gaps between separate processes
-experiencing it.
-
-There's also an upper bound of vm.max_map_count per-process, so it can't explode
-into something truly insane.
-
-Most processes don't have that many VMAs, other than certain steam games :) so
-it's hard to imagine there really would be that much latency here.
-
-And the latency is occurring on one thread, which is performing an mmap unlock,
-so nobody sane will put that on a hot path.
-
---
-Cheers, Lorenzo
+David
 
