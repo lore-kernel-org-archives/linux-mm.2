@@ -1,89 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A626606A328
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2588960A2615
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 21:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=BdWjSwId
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=vk4tOeAY
 Received: by kanga.kvack.org (Postfix)
-	id 6C4F06B0388; Mon, 19 Oct 2026 17:31:24 -0400 (EDT)
+	id 5DA826B038A; Mon, 19 Oct 2026 17:31:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6772E6B038A; Mon, 19 Oct 2026 17:31:24 -0400 (EDT)
+	id 58AF86B038C; Mon, 19 Oct 2026 17:31:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 564BF6B038B; Mon, 19 Oct 2026 17:31:24 -0400 (EDT)
+	id 390B76B038D; Mon, 19 Oct 2026 17:31:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EBDB6B0388
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:31:24 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A7475A835E
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:23 +0000 (UTC)
-X-FDA: 85340672046.05.88B30AD
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0707D160003
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BdWjSwId;
-	spf=pass (imf08.hostedemail.com: domain of 3KIzWaggKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3KIzWaggKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CC066B038A
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:31:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DA9E4081D
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:24 +0000 (UTC)
+X-FDA: 85340672088.11.05BFD48
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D0F1EA0003
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:31:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vk4tOeAY;
+	spf=pass (imf15.hostedemail.com: domain of 3KYzWaggKCPgirfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3KYzWaggKCPgirfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1792445482;
-	b=mNre5jzocGG2O/nGoIJH9H8K7cAgpF9aS79EX8oHqNyIt8GPLgAbA8y5aLagNmNycali6g
-	Jk60Ykqc29BNbaWSE/dMlOHlEPb4Agi+fjR2yVaHWVeZ1ejQzOiEIIH9jZGhnckI2m95p3
-	5qHnc5mgcdvF6d28zqyQXb1apLaOXVo=
+	b=oY+Li+x0q9HoAJLyklVo0vGJ+jvz7/Hv8m2ffDgcp0lvvSlV44FkUAdrmFH8FsC5hyvBXX
+	EG5mNCQHc+4RmlyMCIKPeKjsd4Tk0jtjMJPDd3XJfUVQjetRnLsjwcdI1ac9b7pq0RIs9W
+	iFe/01bqROK6vBS+JLVsfdmvrXhzE5M=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BdWjSwId;
-	spf=pass (imf08.hostedemail.com: domain of 3KIzWaggKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3KIzWaggKCPcclZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vk4tOeAY;
+	spf=pass (imf15.hostedemail.com: domain of 3KYzWaggKCPgirfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3KYzWaggKCPgirfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1792445482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=LkNUC+PMoXZDStaNEegSy7SLi35cqcuQZkVqC98j7D4=;
-	b=JcBz7Tc2Bo/1NBOPD6cZIQbRocnIvuTXMj2khkigsNlJxFBGNZdNYrMd/WmC9m83pDGLqk
-	rNNjJVwlupRUGAE+SvzvhIz8zoFkBRVMehic6eNPfQon9974W4gp7taKB72NsQwAIapJ5p
-	n6mXEBmAmBpGUx5VnxAwqZCKekPu3dw=
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cec4226c70so24192675ad.1
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:31:21 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=C0Zll4v1/3YDrC6QBHjix9780IIPkFEga7v4jahmDjE=;
+	b=fu6C/yThw2hsf3k5UUFIsMC8r1THLnAFMQc8OAt+Vlf1Ibf4ahEOBtRsk1WzUCGaI4tfbx
+	GWmPAbubs43sYr6q5CdGusz/RyTwqDJ71ypvkzbbtwdCpGQ5ywC0hL1k804F+GL+vBiJVM
+	+Vn728HQyH+hv7uRI8YXTYo4CSZOWBs=
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2df8d1e91c9so36409225ad.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 14:31:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792445481; x=1793050281; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LkNUC+PMoXZDStaNEegSy7SLi35cqcuQZkVqC98j7D4=;
-        b=BdWjSwIdExj5PcQxWPwNa8x1DAj6AG3RrBJM3JCfl79ijDQI9x2iZOPK65Vdy3bOAQ
-         ymvoytUurqFAsoMRJ7P1uxafZD0MRBGio3jDftBjcKXf1puDRoqxq6rIaIuGLOOTp3AK
-         kCgbeCyzG0uMI86IPEZSCyQ+yqZIN6rFWY2hUdnHhy1OasgSqCK8kKE5zNobQ5BNxKte
-         Z92MBpmnUcoRSQ3HrjfgtIaGmDoCZKTfhnpS7+FmM+nDMF/DII7zl66F22rvCgRPwPpU
-         mkcPiASyc0f2WSH8BrqydubKUwKUxdtUIJZf609yMzmJu8JMFxXbImVKfUf0Sb7TF+vq
-         aSVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792445481; x=1793050281;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792445482; x=1793050282; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LkNUC+PMoXZDStaNEegSy7SLi35cqcuQZkVqC98j7D4=;
-        b=MbCqzXu2r/i1E27A1KK/MwDgrsOMGyGwGP7g0fSOxSkyvoKSnlNqNiMrkyH1d2vpwt
-         vLIXA1GAvSvL+Vzl/7KO8jPlpijMV6HF2KwhcuE5JUu6W4NIWKwK27vNG/iN35C52iTk
-         TXp3sW2bvFZr4ypGNU0VfqicE1tgcbiyRNxZfZEzEZKG9nJUfqUP13V/BasKoqJSJ7qP
-         7W3Dq0mzuFh31P4qT10SH0cmFuwwH6QSQ8Nh7sjRPYnzx4qrd8q+U44Nv8pR5+C+R0Bq
-         /dWmtPK+L5ZRwYq4R/a2E0FkN0UWTsTktqwJdf+MspTaTZhzVpFzHpQupw0fhrc94Xox
-         Ob9w==
-X-Forwarded-Encrypted: i=1; AKwUvBx7FlbPWcYRwA7LbhO1CET06xkV29HsQFFlpxElvrpVlqfD9umeJWK/aZcdT/VwafIm0v9GLY5gEA==@kvack.org
-X-Gm-Message-State: AFq9FYIMcFWkszpdc2MXZDK3jAHOk1H5e87IoUwxtVDG+O5rJc+fypRo
-	fESABL56Y3tGFxYyPxnWhRuE24F5MCrNULNarnz5MHd17V3zoraesKh0aDc1q4xbbM92uAsnvMG
-	tAqE/1i8V/gatYQ==
-X-Received: from plcn2.prod.google.com ([2002:a17:902:d2c2:b0:2e5:40ef:ff34])
+        bh=C0Zll4v1/3YDrC6QBHjix9780IIPkFEga7v4jahmDjE=;
+        b=vk4tOeAYcD8Q7XKgH7D+iVu7aUd2pRZI3UD8saRofph7QTd1wfdn1ujPxnC0Plz2eB
+         i3c0kBsd72h0qaNS0WFgSNYsDmv0N8JVVj/RsNyAoUFL+LmZS18P3TBA/Q69/QeXAHxQ
+         yQQA1Q17wPzT4dRolVfMaaJmZ5tOieHE5rkaWESwD7KAnz449rUq6/yQuz8l37yVCqSh
+         cdMQALQCgR2NVOHqBGJNQCtCOu/pXZoiBOyF2j4kFI6IhMfzwS8ukV6oJS6yVZU3aMfw
+         BB5cO8/iLLF+WuOmUZLqFihKgIXAFQPwD9TVElRiXAazaGESAvfv22j3JcwlO6EfHd9I
+         /xWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792445482; x=1793050282;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C0Zll4v1/3YDrC6QBHjix9780IIPkFEga7v4jahmDjE=;
+        b=NuDm8JiHKGBDzAUMojGx95cHndj0UJemJx4i5Jk80NtPXG+OCVFUUcBLagvac42Qk5
+         TJG9hDO8HpObwUtdO5DAkUlUfYhiAomi1dk7cx1PfeB39mLrQmG+IYdS55iADPQeVwEq
+         zfneFsxSO++PxzYSzHZ6/dosBsJ6Y9LyVYgd67HyXwCH0+JC+let3Tin5B9TngInNto4
+         IMJm9fzK30c1TCw+X2AWkLzOwEipXlhwqGHBG8VrrGo8M66JJah/bQQa3JHmCItGSYTa
+         mRyg0ASpS+7A0eJQgPW/GlrN/UhbQw4LtnFlyasPwL1StFpgsAuC7doeVLK780fvC1lK
+         s1Xg==
+X-Forwarded-Encrypted: i=1; AKwUvBzD62fC0h6FOgevwHkEAiSQzMA01ENLQ1006/nXXsBMTouDjszXfEBGokN4YKyxQpGX59Qk/7FAwg==@kvack.org
+X-Gm-Message-State: AFq9FYLgmTb+VDhgZ0nV3S2j7GOgsHHIYj1C1NNlJ203V6w4D9F7eOWj
+	uCXWRxk5XkO1bsS9NAZP9EYxGm3+NTf3MRvRZR3+KB/pj4m0LLyBDL31dJZaWnMK0QxPgeYAkHy
+	3oQKTVfGLWEGwhw==
+X-Received: from plbbi9.prod.google.com ([2002:a17:902:bf09:b0:2e3:c3e:def2])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:d2c6:b0:2e8:4f3f:60dd with SMTP id d9443c01a7336-2e9a69e9987mr69340785ad.37.1792445480207;
- Mon, 19 Oct 2026 14:31:20 -0700 (PDT)
-Date: Mon, 19 Oct 2026 21:30:44 +0000
+ 2002:a17:902:e84a:b0:2e9:4b65:368e with SMTP id d9443c01a7336-2e9a6d1eaa1mr80079565ad.15.1792445481409;
+ Mon, 19 Oct 2026 14:31:21 -0700 (PDT)
+Date: Mon, 19 Oct 2026 21:30:45 +0000
+In-Reply-To: <20261019213054.3157159-1-dmatlack@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
+References: <20261019213054.3157159-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261019213054.3157159-1-dmatlack@google.com>
-Subject: [PATCH 00/10] PCI: liveupdate: Keep preserved devices accessible
- across Live Update
+Message-ID: <20261019213054.3157159-2-dmatlack@google.com>
+Subject: [PATCH 01/10] PCI: Factor out BAR sizing from pci_read_bases()
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-pci@vger.kernel.org
@@ -98,19 +101,19 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
 	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: onkwktebjymxgqr5wh5bt39okmjhoq9j
+X-Stat-Signature: zgegtt58bj7uc11mfhph81urjz8wn3z4
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0707D160003
+X-Rspamd-Queue-Id: D0F1EA0003
 X-Rspam-User: 
-X-HE-Tag: 1792445481-262803
-X-HE-Meta: U2FsdGVkX18Cse20+hPOHAZPw5GmJGoQJ9y6MKzF/kwCLcsyK5/vxzu+nwPpDMSXXIMCQb90i8cskNeW42zNzFEFHMLlHY/zLROS8XYdBwWcNVw1eRB3SULxpUO15trPgPYDvNuh4X32kTRKWXTL2qaQWs4DTKPUtIeAOYYTbVTucEtM3e7J+XdE9b10Yg/uQyaHnrJ6oVJUPET0aVwAgnD5cwrSn1cjTOWhWkjSpAC1dMYT2vCEODi9o1EIK1JfkWDXWCd3nZsOLB2GsJxUHJidZRFUjyxyRO93ft4OWSkTrABihAn4U857IV1Oo3y2CD5m/KXQP3Y4ICXhbCptCPDYwlo2f80O2OVLs5iCqINSFpMnAJuMqpJhbOrFyai+YDv0HenOBFDzVlHhIcC9Qb9RSX779lqpXyEW+0SjOuQw9IKSii8sAZ2sRSOJCC2jSOhRIbXNth6CDkD1aqB59GO0xY4tlHSgncInhnLd2GY+kE4AxxDbb4lpln6dPKUqzU2tKWQuKyNGvXO/43tpYL20n+iHnjmKlZ4hV0d27hzPDNsJSSUnqRilHL2w8NU8RiBit8wX0RHZNnZ3+InwlThv/qitRczXihat2/Zg5HXUAPULXLPEDlwzX2S0wL0EQ4jDjmFAbfNI/r6mku0v0oRSXF5EVjv1JHGFpQLzs8vURLctEp+IxihsOGA0nk41mb19SmO/s1VptUYZLy+7vmUkQc/4PeCu7QjB+spwgM43pdVRQ37VeAdFkBLrdrvAH4rKS6Nb8Lh+/2UV6q1Xg97ilcoIrlM9POG6VgVFljZLWjJaCqPaRAbax54E1qqK7I9QMDvfYvCPHkHHt4a08eZDr3qHsWFIfsT3C3oQxLoTNFTAkHx5SRLkDQjtwluUp2AP0ER1AKwOV7IhRYmrR0hM04B8BuWKrPjmtdEw33hl4LRVDSgwAKjqSeBXvbgeykrgXnZW2PwoKdbW8Ka
- cqlOcDds
- AUEDGDGJj4ABHTkHk72z0QZD5oL405A9IMy1qE11fKJ+2M7ZouGrKHAGayOgFlIxTPoTgqoFI6h+mmc62tKNaZeZIS+io7bksPVhKlFrFW8FSscCoHCCqqyEwIe1o5O6XTi+/QhNKKfFsyMu0Qup2SpC0Gz/g965tjNqYucaL0sWOksWMtRJWOnE2yQeGFqKuJyrXoqkzV5vMUEobh/9IYgtEmN/0i0L4T3RFcfbbPQaK7FkE7KOBg6QzKq3NI8QRj9s/+7/JzVyFzB8tWRIBXUcILW0WXhpcl0tLSiHdlkOeAwXcTQZKdHD2iXJzbxN1I/nzdL4vL8XgLt4Qs1rQAADWRLNH0E6KXvTsqw3Lz492CpeElCtRHm2jdLSjEKvVdSVFmaTpDWkfssGqryPd5xa6GHJGf6Bl94AWWAejFncrcxAl1SNAJ4elwIK7zAy6PdBWQlbdpIpTCMpvY+LL5etXsh+oaIAhruDU9tsSn9PjNkp4Gu5I/MW/HklDrqEIiHQSd4ZTbJ+ULKFuiDHu+Fc1gphWStk6Iyfw3M8XlF5bMWgP0902g331VEIocTZU+zskhpy+Rll8noZDloEaUj3p6ZtdjIdLnJPtKFIHifT3kuKgbTbgH3/01fZbTRmHHGztWZp1S/d0JFnAGMn4LhVu5yTBrrFMMIgyktT+E1jps9lrBvI2xw6KXl6Bfyq6uJcGvY3ZL3FxTzs=
+X-HE-Tag: 1792445482-556187
+X-HE-Meta: U2FsdGVkX18DRgdJQ0cdDlMjgaXYWDJpUAEDe71II2uIsblkA5S0xv2Jbl3maLdVaILv1P4XxE6tatEYedpoK5vr/ocGXoIs2FWUHexCLIc0Ys2DRRoehQQvl+Xe/RH659i/afp/3TaxSKzuq1lHRKlvDyI+3EaMqVGeG1T5E6iMvEj5BPqjGzBTyy2o0/z+upsrI5J1LaEtxCWKiLWZFx5onuUgOhBk5/BgE2TAl1cfzAJdULox14bn5OBEA5BS7Y/Of6Q+IVcP54y14b2BdNXdhWIPhytt6g5NJ46c3nv3jpGBDazUAfL10jPF8jN3rjONfgDLZdWrj0EHxhktHNY7tLDwEse3N8gLKE5p9MX9i7RvnIoqn+wDtbeyFvIOXQzqhL2RWr/rOPEpzXjCi/gHi2vGlNdqRiK9DNGPmgrmKEBgpPkEQr/JUkaQSDmjaqS7lwHb5kZIvFB8p/JOzZ3lIvVElLzvxYGJakO/K+UvjEvfWs14go7G0iEgroGYQzhvUui6NZACLLG6kkkiTP5ocOPXtLQMSDpPYFb+oO38kSbsyFYWTjAceCXWu89I0BtbnCXbJf1aHUWBzeOSZahy5bBmfRgdlZLRBV9/JNtHXGPXY1pqmVJeJbT+679JuZZipL0Whdp/jSaXRgE6tZ3hZazByk85WvD/R/72yWiy64pvckf1bbvJsjjKszev4eIDBm2nuAUbz2wIt/pJqKdglvlsLz/k9XpfzD4w54zi+XCyWBT+mSboD0gVRdmRRzGS33zO1/aD82yXrPEzcQrjN8ytpqI7cwHdf1EfBh33Qfpn+sYIXwBzMb03ItQlNFb7TOJHLAH6pGNuPGjyD/iv9RntbyVlT5YN3NX0X2SyHmYUnydR0P2dlo6vrfEmM0ULWwCOI9QM4iFkQ5um55cPm6yIsdFvo34F/EyTL2SlAeb4b/lBPdKd5vRfjt7f0qAe/1AZNn7oXnIcj9U
+ IHg1/bmS
+ s06fcnqArw7fFd9GV1dKOcWC+at5heZAOQgzqW44C29cCrP1wCCGJ3PYVXkCJidK7OUDa7RJpZh1AzH+AFV+20Sug/vNMiMAZ30pvXVZHrhnmrJ6gSamGsi2CvFi3eaV0ElFEukdfVwSIr6omWTN5ooXOWXQcl59Dj+Id1aJBWjRp3YUSJAvFQ2lMvXdahn89H1DJfYah2j7urVXKIkU0fyFEAv3Xd9WDHwBdjJenTvJ06XjtAatUPAQaJ95ZsDnGdlGvTBsvIht2R3g/GFIZ8xP5r44LnhqgyadnIHI8H6via2hXZSUR9Q+P4N6Br+U8RF4vhUhbG6JOypii6YhDhvIXa/PTcDsTBw8TQaCY2KnEOH/vFrqt5UIlUVdtzvX2C2cIDWAuT+B+g1qhPaht/JIovw+xMBjhhcYLnPPRfOWA90BdT38yoypRdmeZobJrCb27DV2JDrSALH0GibG6vMLOr5P8IzCbpoZpjM0adJud94DmitlVP+m57FEPNe1kyzhGhTqIYGdMAtGRN9lLIPDRtTLdusw1mP1rMTyU6cX70m/EntJdyUb/6lfr0eMlKj9j/9jP25JVyM16TwTJzEUTkSx1naezCcKbQaqWYt9hEO36FgsWrFsaN9U9zwkSV5Y4+g3YM25UlTQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,165 +122,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series can be found on GitHub:
+Move the code that sizes the standard BARs and the Expansion ROM BAR,
+including disabling decoding while sizing, out of pci_read_bases() and
+into a new helper, pci_size_bases().
 
-  https://github.com/dmatlack/linux/tree/liveupdate/pci/p2pdma/v1
+A subsequent commit will obtain the sizes of the BARs of devices
+preserved across Live Update from the previous kernel instead of sizing
+them, since sizing requires disabling decoding.
 
-This series builds on the PCI core support for Live Update [1] to allow
-memory transactions targeting preserved PCI devices to proceed
-uninterrupted across a Live Update. The base series allows preserved
-devices to perform DMA to system memory across a Live Update, but the
-next kernel still sizes, probes, and may reassign the BARs and bridge
-windows of preserved devices during enumeration, which disables
-decoding or moves address ranges out from under anything that is still
-accessing them.
+No functional change intended.
 
-Use cases include:
+Assisted-by: LLM
+Signed-off-by: David Matlack <dmatlack@google.com>
+---
+ drivers/pci/probe.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-  - P2PDMA between preserved devices, e.g. between devices assigned to
-    the same VM via VFIO.
-
-  - MMIO from Orphaned VMs [2], whose vCPUs keep running in guest mode
-    on dedicated CPUs during kexec, and therefore keep accessing the
-    BARs of devices assigned to them throughout the Live Update.
-
-To support this, the BAR addresses and bridge windows of preserved
-devices must not change across a Live Update, and the next kernel must
-not disable decoding or forwarding on preserved devices or on the
-bridges above them while enumerating them and assigning resources.
-
-[1] https://lore.kernel.org/linux-pci/20261013162529.1928093-1-dmatlack@google.com/
-[2] https://lore.kernel.org/kvm/20260920193650.3373435-1-pasha.tatashin@soleen.com/
-
-Series Overview
----------------
-
-This series implements the following:
-
-  1. Avoid sizing the BARs of incoming preserved devices. Sizing a BAR
-     requires disabling decoding. Instead, have the previous kernel
-     pass the BAR masks (the values the BARs return when read after
-     writing all 1s) and decode the BARs from those (patches 1-2).
-
-  2. Avoid probing which windows incoming preserved bridges implement,
-     which temporarily disables the prefetchable window. Instead, add a
-     generic mechanism for passing the results of probes that require
-     writing to the device, and use it to pass which windows each
-     bridge implements (patches 3-4).
-
-  3. Skip programming bridge windows that already contain the values
-     being written, so that pci_setup_bridge() does not temporarily
-     disable the windows of preserved bridges. This applies to all
-     bridges, not only preserved ones (patch 5).
-
-  4. Claim the BARs and bridge windows of incoming preserved devices,
-     as programmed by the previous kernel, while scanning and before
-     anything sizes or assigns resources, regardless of how the host
-     bridge driver sets up resources. Panic if they cannot be claimed,
-     since that means something else may be decoding the same address
-     range (patch 6).
-
-  5. Prevent the PCI core from assigning, releasing, or realigning the
-     resources of incoming preserved devices (patches 7-9).
-
-  6. Avoid enabling INTx on incoming preserved devices, both while
-     probing whether INTx masking works and when the device is enabled
-     (patch 10).
-
-All new behavior applies only to incoming preserved devices, i.e. only
-after a Live Update and only until pci_liveupdate_finish(), except for
-patch 5, which avoids redundant writes for all bridges.
-
-ABI Changes
------------
-
-This series uses the optional feature flags added to struct pci_ser in
-v10 of the base series to append new fields to struct pci_dev_ser:
-
-  - PCI_SER_OPTIONAL_BAR_MASKS: @bar_masks and @rom_mask.
-
-  - PCI_SER_OPTIONAL_PROBED: @probed_supported and @probed, a bitmask
-    of probe results (which windows a bridge implements, and whether
-    INTx masking is broken).
-
-The ABI only contains hardware state (register values and the results
-of probing hardware), not kernel-internal state such as IORESOURCE_*
-flags. If the previous kernel did not pass a field, the next kernel
-falls back to sizing or probing the device as before.
-
-Merge Plan
-----------
-
-This series applies on top of v10 of the PCI core support for Live
-Update series [1], which is targeting Linux 7.5. This series is
-targeting Linux 7.6, or 7.5 if feasible.
-
-Both series will be merged through liveupdate.git, matching the
-agreed-upon tree in the MAINTAINERS entry for PCI LIVE UPDATE.
-
-Testing
--------
-
-This series was tested in conjunction with v5 of the VFIO PCI driver
-series:
-
-  https://lore.kernel.org/kvm/20260714151505.3466855-1-vipinsh@google.com/
-
-The full set of patches used for testing can be found on GitHub.
-
-  https://github.com/dmatlack/linux/tree/liveupdate/pci/p2pdma/v1-with-vfio
-
-Testing was performed using vfio_pci_liveupdate_kexec_test with the igb
-selftest driver, which keeps the device performing DMA while kexec
-happens. QEMU traced every PCI config write, and each run checked that
-the next kernel did not write to the BAR, ROM, bridge window, or bus
-number registers of the preserved device or any bridge upstream of it,
-did not change their decode or Bus Master Enable bits, and did not
-enable INTx on them, and that their BARs and windows had the same
-values before and after kexec. The following configurations were
-tested:
-
-  - x86 (q35): igb behind a root port.
-
-  - x86 (q35): igb behind a PCIe switch (root port, upstream port,
-    downstream port), with a non-preserved device on another downstream
-    port of the same switch.
-
-  - arm64 (virt, SMMUv3, generic ECAM host bridge): igb behind a root
-    port. This exercises the path where bridge windows are not read
-    from hardware during scanning.
-
-Future Work
------------
-
-Please see the PCI core Live Update Roadmap:
-
-  https://lore.kernel.org/linux-pci/20261001232133.560284-1-dmatlack@google.com/
-
-
-David Matlack (10):
-  PCI: Factor out BAR sizing from pci_read_bases()
-  PCI: liveupdate: Avoid sizing BARs of incoming devices
-  PCI: Factor out bridge window probing from pci_read_bridge_windows()
-  PCI: liveupdate: Avoid probing windows of incoming bridges
-  PCI: Skip programming bridge windows that are already programmed
-  PCI: liveupdate: Claim resources of incoming devices during scanning
-  PCI: liveupdate: Never assign resources of incoming devices
-  PCI: liveupdate: Prevent releasing resource windows of incoming
-    bridges
-  PCI: liveupdate: Don't realign resources of incoming devices
-  PCI: liveupdate: Avoid enabling INTx on incoming devices
-
- drivers/pci/liveupdate.c    | 363 +++++++++++++++++++++++++++++++++++-
- drivers/pci/liveupdate.h    |  26 +++
- drivers/pci/pci.c           |  18 ++
- drivers/pci/probe.c         | 110 ++++++++---
- drivers/pci/setup-bus.c     |  62 ++++--
- include/linux/kho/abi/pci.h |  52 +++++-
- 6 files changed, 589 insertions(+), 42 deletions(-)
-
-
-base-commit: 312200e9211ede3f9a03cc17d094805e06e4674e
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index debe0ad1ef68..9187f1d91766 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -323,22 +323,11 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
+ 	return (res->flags & IORESOURCE_MEM_64) ? 1 : 0;
+ }
+ 
+-static __always_inline void pci_read_bases(struct pci_dev *dev,
+-					   unsigned int howmany, int rom)
++static void pci_size_bases(struct pci_dev *dev, unsigned int howmany, int rom,
++			   u32 *stdbars, u32 *rombar)
+ {
+-	u32 rombar, stdbars[PCI_STD_NUM_BARS];
+-	unsigned int pos, reg;
+ 	u16 orig_cmd;
+ 
+-	BUILD_BUG_ON(statically_true(howmany > PCI_STD_NUM_BARS));
+-
+-	if (dev->non_compliant_bars)
+-		return;
+-
+-	/* Per PCIe r4.0, sec 9.3.4.1.11, the VF BARs are all RO Zero */
+-	if (dev->is_virtfn)
+-		return;
+-
+ 	/* No printks while decoding is disabled! */
+ 	if (!dev->mmio_always_on) {
+ 		pci_read_config_word(dev, PCI_COMMAND, &orig_cmd);
+@@ -350,11 +339,29 @@ static __always_inline void pci_read_bases(struct pci_dev *dev,
+ 
+ 	__pci_size_stdbars(dev, howmany, PCI_BASE_ADDRESS_0, stdbars);
+ 	if (rom)
+-		__pci_size_rom(dev, rom, &rombar);
++		__pci_size_rom(dev, rom, rombar);
+ 
+ 	if (!dev->mmio_always_on &&
+ 	    (orig_cmd & PCI_COMMAND_DECODE_ENABLE))
+ 		pci_write_config_word(dev, PCI_COMMAND, orig_cmd);
++}
++
++static __always_inline void pci_read_bases(struct pci_dev *dev,
++					   unsigned int howmany, int rom)
++{
++	u32 rombar, stdbars[PCI_STD_NUM_BARS];
++	unsigned int pos, reg;
++
++	BUILD_BUG_ON(statically_true(howmany > PCI_STD_NUM_BARS));
++
++	if (dev->non_compliant_bars)
++		return;
++
++	/* Per PCIe r4.0, sec 9.3.4.1.11, the VF BARs are all RO Zero */
++	if (dev->is_virtfn)
++		return;
++
++	pci_size_bases(dev, howmany, rom, stdbars, &rombar);
+ 
+ 	for (pos = 0; pos < howmany; pos++) {
+ 		struct resource *res = &dev->resource[pos];
 -- 
 2.56.0.212.g129ede20d9-goog
 
