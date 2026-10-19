@@ -1,125 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8151E606A319
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 20:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86074606A324
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Oct 2026 20:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=mxhSBjJM
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=i0plHjP8
 Received: by kanga.kvack.org (Postfix)
-	id 8A5016B0375; Mon, 19 Oct 2026 16:33:50 -0400 (EDT)
+	id 80E7C6B0377; Mon, 19 Oct 2026 16:37:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 855E46B0376; Mon, 19 Oct 2026 16:33:50 -0400 (EDT)
+	id 7E6356B0378; Mon, 19 Oct 2026 16:37:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744076B0377; Mon, 19 Oct 2026 16:33:50 -0400 (EDT)
+	id 6FC736B0379; Mon, 19 Oct 2026 16:37:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48BCF6B0375
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:33:50 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B4F27160894
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:33:49 +0000 (UTC)
-X-FDA: 85340526978.06.8044557
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CE96FC0005
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:33:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mxhSBjJM;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 485886B0377
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 16:37:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C9E441A0896
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:37:38 +0000 (UTC)
+X-FDA: 85340536596.08.C096D9D
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E2CFA20002
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:37:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i0plHjP8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792442027;
+	s=arc-20220608; t=1792442256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y7T5iwCFDP7hg0heh3HDw1oJbqflVFC2TJRQE7Ow7l4=;
-	b=dB0ZyXFTlD2ZBEKUzecRQw6IqL7ZTqasrT8nU8s5Qg4Xc5SnM5VSkA028i8aZApzULlaQ2
-	oYBvQ2PQrESWx4DdAG8T6N65meEzAejbyzmWszH/BcWbZTSeukqVZmzDyoHA6bvQWQ++yA
-	SYdd7sLLGOkfGe2FXE9Tey2j4sv2vtU=
+	bh=PO9p69nb6+vsNmUFhgfonclxpqAf2KqjRDuFhGInggw=;
+	b=feqZ1Pq/M5BJWfhlh8nCUYU5CrhFj3IXDUajzsUOiAsE/jely35cQuiXNYFv7wgX66n3Zo
+	qbB7g2F4hXBc0Ogl3vrWkp4QOLM48C7vK/qyNB+sRUpOurfhKeozZFOggn3MLAwdoJ3D85
+	vvqwH4wiEXx512Ppv8W8c08C9bKDULc=
 ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mxhSBjJM;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i0plHjP8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792442027;
-	b=SZNshTAKD/RA3NFEiPUakB1gXLJoyFGPSGl/XJKFl4k/8s84QcB60raDa/u23+nx5cI1sD
-	+ufNhBs7jt0YmuGmbx4K1/mVNW5Li/XK0rVDoJiBnslE0YEOGCn13P/2y5KOKKBjcVvMIg
-	/kQRgVDp3KfH7+XN4bZsW0qD0bymepk=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8a83d2706fdso17318247b3.0
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:33:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792442027; cv=none;
+	t=1792442256;
+	b=bQqSJPYC8I0BvQXFgiVrh/2Fyk+JN6zhUht818p0QS/nXAaVGUWpAm2GbNk6ftvgr+ucuV
+	lcK8pqd4qlyNxS7a84Qc4Vr3ih720ssJwElIfyQBzYhiYNCB3hVojFV4FUmXG1xshssIib
+	2BIN8n1n+oDGhm7bD+IftHMIsfP5ctc=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8ac8a2ac52bso836357b3.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 13:37:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792442256; cv=none;
         d=google.com; s=arc-20260327;
-        b=qxeF1K8gDcVo4pJE6eKk71hw9dwzX7a5NIDNfcPSjqsd4ai3cUk1NIhIhVbXRDRYiX
-         93uP0lQoMpJFoUsw3wE/s8xsBVWeRth4U2DBu/zqT0wf45IYp3KVwwan30xF/qzPk7hu
-         cbXv2X7uQxmaypMn83Y1WNIBstv7zYRIpoy+Mx09lqDbyJdimhUP2vWaUVA1NZVMl9kK
-         vVQ7b8vqpwcphFFuS8G5jLSDA+kysl6hymZxIegAA/UaYij0Ahb4f9fj2gOweyqp3mfg
-         96Qx+kvlf1zfpO5tmwYj1Miz1CrOaRNA5Gi625hAOA7Y2O4gF1Hrk1ykbzQS6TUimgxA
-         xRhA==
+        b=PYeSu7RVVFeeJwe30YW/+wqodESefrogBZtiQILa4IN51A0BP3kABDg2wcl15wA8DI
+         kBiEX6rHet2FAAtL7B/A9yfgLRv6YlpTir0UWDW1+c2W4C3d16DxcbwyMINSxl7qcBuJ
+         aS4YVPbZi5hw+FjsiOG+IMZC09bQDj6EECD+joAyNK4SDCKbSt2rvHa/dD9+0Qrmcit1
+         KQUYWT6BJKLmarkSxRlyeELl3x6ESSwZr6UhRRwEeZyXT/iS455k+rNbUOJEzZeNcLwG
+         rlrFd3+oudnIykYJyV4p27dVCQYJ4v5Iyi5RQ8V4zVsH3wuccwYa7FutQDD9HZQzoWPf
+         8mUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Y7T5iwCFDP7hg0heh3HDw1oJbqflVFC2TJRQE7Ow7l4=;
-        fh=Sms4jNF70loqsMFFbmSpzBR3EPUhttcK9coPt2ZPKtA=;
-        b=W4yX4SxvgOQF/89ZkF8AS1reMBassmdV+DrkW0Ee2WixzwOzCQThFO80NbC2x1gF2B
-         WxmQLZO6/PP/AVfmH9xeqg3//3B9m+6eISkVzeYO9rr7ZdQAGgqsb9VI8vh/MU/qzB7M
-         Qw+4TrgAMJDBHQNmn2E5dqjmOCXJIVtkUzj4rVd+BLi/XCj6yqhJuynlsVWIc3cMWFLS
-         +lYKJHVoKnF20XYzTCJKhUTlJbZFwtT9gWV3Fw8PVRZ+cOfUm4MniF4mKwZ+w4t3DrKD
-         v17EfzpT7JS7o+WaQZdeiLW3Z/tcR/DUTna5Mt1PjnJF81no2XDGEwr+pUGNwbsVU1UI
-         bUBg==;
+        bh=PO9p69nb6+vsNmUFhgfonclxpqAf2KqjRDuFhGInggw=;
+        fh=N/SeTE86vAtY3XDQ94PsxmbU8ynhTQ+QYNuClsFKNVY=;
+        b=YUhanFBK+0twx2WQc6Mi1p8xFh1YKTpS0O4cF5orjZZmmtXbYWbyrpDQjP50SaDunk
+         Qww4tLdFX6YpTGEoy7CmHzz+K6T1tviSy9+kymh4AmoeRsKZty2GhS3+EY1ISCJQMrz3
+         05s1QrQp5dIcRKHaEZv6kIJewW10uxidjwHE21LdtG/jUIeEcVXCgz2IJp422U955eyh
+         uGPi9/QhhpL5sbocubqyOwAKB5cR2OQaa/zwqwWKI9fFc93SosulbgYyIUuTP5OM0iKY
+         tUEjxcxVDkLcxra2a4KNYEZLtEdXYlqfcm6VqFppOXDcq1tYgWJj4w7wi1YaDklcTL4M
+         FfBg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792442027; x=1793046827; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792442256; x=1793047056; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Y7T5iwCFDP7hg0heh3HDw1oJbqflVFC2TJRQE7Ow7l4=;
-        b=mxhSBjJMFHhfpNjuaoDHExrVaPGc0ezjO5wgQhD3bBbqnOjFehqbR455auptFy0lvx
-         IzkZYc3YJkjjMWs1duaEd6XC6v162u+rBsPpesHfc2GHsj0CnW1YZ5U3mzUALaRJ5aWt
-         2cY0aoaVqPG96KBRluUA7YziFF1F6z36seDW7ycJehggDfQEOgHuGQMdwSS+57kXEwmU
-         MmkD/wOoqDuLqHq5ugnUW8PHFFUGL/gT0QNNhvhaRdQ6pkly75N2FRcXw5MT9AmN3IGw
-         acLqrKHS9Htlq99f6BmZZ0NoB1qaOckuOu2vVlGCFG1TtrubO53dwjcAKjzaFWFX0o0Y
-         qy8A==
+        bh=PO9p69nb6+vsNmUFhgfonclxpqAf2KqjRDuFhGInggw=;
+        b=i0plHjP8mMIPU/jtP/DjRFhnNGoSt2rX6mWQIbWZtOTpiJEwiBqAGJYFbAe9N6V+OK
+         B3ireJi4U7j2aFW4w8B3nY6eTNS2box6DlSud9/g/PctQyPThXIFBwbafr24ZWmG6bZF
+         kHzLuBxKTHxH3s2BWyqrxvJ08VTEvbihkpUGGbmrALKlUx3sPxNJMS60caIblEwRYS4O
+         gxpektBPX3yUUqSs/3kg6XRQ5LQ9TsT7Plj0QqhTc1sc0ZRM8gzFGHk1y8qq/niAOMqY
+         xew7NtKlppC8RwysbKUwFdltHfQxo8/d1sDb6+LgM0y3lXL78f1LvZEmZtLkw7+Ygxhp
+         QAlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792442027; x=1793046827;
+        d=1e100.net; s=20260707; t=1792442256; x=1793047056;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y7T5iwCFDP7hg0heh3HDw1oJbqflVFC2TJRQE7Ow7l4=;
-        b=gPNI8uSE0zXyGAS40wfe77RikqC7Hv3FrRO1tXlHhFFbAe4COgobPcQrnMNW7+X3Zd
-         f7LF1aHEKWfp7udA5vtUED0rVqhXWdY9vLkxkhJTMpkYJErWJcLrqruMiVfKNkeDy1Lo
-         Y3IEqw2itvjWhJlSUTGpYGPcegEaC7sHeNfZjUUe1rcRLyZKmET2z8JNtuHvLJQc8F6j
-         +Cb1Jo3mCcXa3vdv5jEass30oOaztB01kvNr7OHJ6vCbN2GsZ/Am/urxU5fUWd1afSx0
-         J5vH4siJmFmoa/WIao+nVGtiwHa5wbqdKc4NPHeTRTnTrcXEKym04CwYvg0dP2ELTyNU
-         MC8g==
-X-Forwarded-Encrypted: i=1; AKwUvByebhHV1Sua/tZilHU+RCsTLJwgCvnelQ4lTZqbW2XUYIA41/IyouN7XS4it4fTkTUOui/pM8iSqQ==@kvack.org
-X-Gm-Message-State: AFq9FYI73p/yFpJMMMH/fLoXIjHpdKmHPTUpHw/SgIWfW8Xja4lluPvn
-	xz1UrWViFzBYZGpoSOpG3WFkWSWs0sA6D9+e4ESsnv30VfWFkomQQKE0P0bavTUHDzoZZxF7YUI
-	lcJXYBMmo7cM3g9EN469dbJv8AbRnhbQ=
-X-Gm-Gg: AYBFou10e+NC7iuBpTE6eyUW9ATGluLpAFBKMN+sm8z0brN6WA+sN1nxwkHJZHdbJfK
-	kwgv8haPFswL1y8BJsvQckDlIxmJZWqDnj5h4HUCZOuTEN4mMDVaSfovIkDebVt3CydJgt3uk4c
-	RAXsdzwzkEFlY0s7pXlfJq4JlaP4ImgyycFNpBZ3wQI9mlLiela/ZuuHUo+6up4YpRcwS8Te8Yf
-	I74bKEAGUX2M+p9kfyJ9R9GG6F78kuTkWproMrfnNRjJVFCkb0/FBXJcmAH2JnvtJUHbZMvluVY
-	96pq5ldTdep+17V41PrHAm5mwMmdAG+ZqYUx1pmc/lStmlXQn0m3zS3ctFEM0DVn+/qn/9SHwZ+
-	8HqRkOd5MQv0x/etga8OQ5I9ikjEU90Csm8J4tSzbLEDU13b3UMwN5gKjxbXgXrllOLC5cfKiK0
-	Sfm24Br6wVrz4kIx1hUnBVk+Y=
-X-Received: by 2002:a05:690c:f91:b0:8b0:e680:615f with SMTP id
- 00721157ae682-8b0f2072ae6mr28736617b3.9.1792442026685; Mon, 19 Oct 2026
- 13:33:46 -0700 (PDT)
+        bh=PO9p69nb6+vsNmUFhgfonclxpqAf2KqjRDuFhGInggw=;
+        b=V63Y9EdfOG3uVXu067IwP3JmWXCEi+kNgoqjUWZ2ItWOkddCi4gX7T8JsZDN8vIux0
+         Bi06W9FYh6F96T4isRiv0Ebvj8g755hlfHaOF7cfbN6LdiIYGrKh4gvcV6Y0ZHsueVQf
+         0zxIntbjoYAg/UQtcEn8WUNHuJEfTjH2tnvJjZEtjph5Q6JlPUFRrh//6NM9EEly4SmE
+         FWVmvcoLTU7bLNs63jX7fLgEJ6uJ4e/dmioU4d987cBl8WATl8FfPRtlk3mYoh7pXyL3
+         Ptc/YCH+LWBWTQbVMnOHnEitesiMCnwSWBV4rrxigq57XJTDwb6Aa+o2JlRrgvD3MPT7
+         nDtw==
+X-Forwarded-Encrypted: i=1; AKwUvBzrXM+6VLgjNNhtiuw4SZN/IQE2UBhXRJ4qNST+XtiL+e2oXTlimAz1j2YfTfT2XcizRZh8OeYtHQ==@kvack.org
+X-Gm-Message-State: AFq9FYKNSAZUqoViPbNsSydFnugq+d1ml3AsnU4K1YZ/rm++OmouXpsP
+	IOkth/5370ExEAxqvMc6hkzYgvuAFzoBvILGPmVCl/a6bhXASHzFgj6ZxBk5x9lMtep6NIuqWkL
+	RXD5OtFbQicZNMDjj6WiJALwUiDTIxCI=
+X-Gm-Gg: AYBFou196+eYdC8lzYR65vBW6cWP3i3C9gF5hBAMYACBhCJLj87pPxd33HBSHjccbqO
+	XDXb2mQ8HzSvtpkzvE5T7kak27Wu21nU0ufiJXbUmBX8gnbozBrMJo5tXeHTjd2Uu2q3CgcB6ty
+	kd+n6EKuW+eiKZvOvLhqDZJZQ9N5bdFakGQX5J74AOwN4XrxYAYCjdWoR0HyZV6zBHbcMTESApm
+	RXddF2R4X6GxpUMCSyTnQ2ZFJ8wDuMMCKl47Vpq0tWtDr+6p4k9qBQNgpMJ+ESnjXegWSLq10jt
+	u2OKgT5YJJpBfIUbRqBC/VVlAhVS+plTxNx4SrXJkdIZt7jQFWS3wF/YX0kkhtXJt448yPu0CPP
+	rGL1f7Dbkw5MGF4qD1FTWd7lRMcHE5wxs+mRsDZeh5zm/DHErWsDlTCqOFv9Sj6S+ZGVTB3GSL6
+	BkdlP6OKH1NIKmvpFjOeBDhqs=
+X-Received: by 2002:a05:690c:fce:b0:8b0:e13c:2857 with SMTP id
+ 00721157ae682-8b1200efc87mr992317b3.13.1792442255969; Mon, 19 Oct 2026
+ 13:37:35 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261017050928.128582-1-sidchintamaneni@gmail.com>
- <20261017050928.128582-2-sidchintamaneni@gmail.com> <CAGsJ_4wGq9oc05=-g4aWptLdCbTwUjMjXk4Rd6KjJ6x=tzMm+g@mail.gmail.com>
-In-Reply-To: <CAGsJ_4wGq9oc05=-g4aWptLdCbTwUjMjXk4Rd6KjJ6x=tzMm+g@mail.gmail.com>
+References: <20261017050928.128582-1-sidchintamaneni@gmail.com> <CAGsJ_4whqGRQ4JY5rLLJZU=f8u5T75qHkJYQFDoqZSx5c6EBHQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4whqGRQ4JY5rLLJZU=f8u5T75qHkJYQFDoqZSx5c6EBHQ@mail.gmail.com>
 From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Date: Mon, 19 Oct 2026 13:33:35 -0700
-X-Gm-Features: AclHuK_VFblb2-qRhJWRPlqaC_e3NKRbx_LiB-tHmq77IBIhW4V1ck4pMMbCmjE
-Message-ID: <CAE5sdEhGFtGF6LC4xNkMwGj3vTxLOW=GNBXnk3-JmsgjntXx0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: multi-gen LRU: fix NULL lruvec->pgdat deref in get_lruvec()
+Date: Mon, 19 Oct 2026 13:37:23 -0700
+X-Gm-Features: AclHuK9gI4T4O854Y6L1TXMVucW7npKKDzemjhJTunU2ylrUfYVjiEaTh7rHj_8
+Message-ID: <CAE5sdEgR3C30xMayXJkWOECQTfADHgNE8Qf9=wjB5eGimjwLYg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mm: multi-gen LRU: fix NULL lruvec->pgdat deref
+ with memcg disabled on cmdline
 To: Barry Song <baohua@kernel.org>
 Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
 	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org, 
@@ -130,19 +130,19 @@ Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org,
 	Hardik Garg <hargar@linux.microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CE96FC0005
+X-Rspamd-Queue-Id: E2CFA20002
+X-Stat-Signature: rr4wef5ad3rsbax1u6ut9zpxbrpdg9w6
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: 8dgud6qsyhncurh99iimq8zrnqsfr1po
-X-HE-Tag: 1792442027-705612
-X-HE-Meta: U2FsdGVkX1+0HlKAl2PW+O7aY1dbMr3jvL7/YAL+FV6mEWPrbjrIrHnp2gEL58eX3t7QbQJJiG7z9UsHaN1x7OfdMjn7HoU3kA/1BpSgtiLq1nBcIH71DMOEfA03UFVONZkh4B1lBnjygoD+sNzOOPmLcLnvhMylSyrLaYn60TGfgSVheNgt3tQi3URPm6pQDNFyC8t6obHft579mXmkpuZcbvxil0f37dbvApZea5IMfgStMStRM7WiLcDU6t1BaFkuLHOcijSx6wH2W5XJb9Tl02hn7ta02d8jxLV7RzhL7JicVBdrk/WOenxa4GEaOzNnS4chC//OOQamlDOfXGFVFm22c3VUDdX/0nZianYzGWpUI+ryFNsGrcaHIr5T/N3RxKz6/LGXWgKaSnIZjWXoDrvlvewaW0BQo7vX2g8VpC/qVPBkvReIXXV7wFmH6U/zSLGp1NvD8o5ER1fWdtEjdBMpJRczc0Du2ETJ/QgrfOGXRAOFSCGq40Lv9AfHGo80/0VHgb3EoZE21cWa52C5PVRtFv9o1Z9u9bjDZ5no1+zejIbfY/UOyzf1VUpSM+Izl1EmB6HSuvlnKfSUqZ9CBcNNAfNWGT4tJQWgWS4zT2bx0ls+yDsFxoyQLPttSlO4V809Ml5VySYpMXmvbW5i5aczPKgI9Y/xIfLEvb3eTjbhuv1SN2Gr+PMgGvGgIKKbmc+i2kyXsmLoBi2GteZurzSc6OeDmASwHybDA5XrB4xM9R/jRR1j1qKnJNZM1/kQ0HcGujHbMUByTRVquD2jnOaCcmmlodPtfJIDiwOCC6V1LzhKkAlwE+UAxFxsQA9eoE63Th316SgvdSdaFSZwE4p57pE1M8bE21R4+kOyUukkPyYhSCrJQU4ALgz+QUYegNPw1gutXo6dld+qDZgeyVtjmqNzzpwCc2WvhIWCP1hKoVnj4KqUKvyFhHHmGwZ3mPOuF6Qt8eNbeWC
- kUJrkAOw
- 9jXdIN2jnzlmKwD/AAIWIEz6UNAU6xaw9zx+fnbofSMUc49v/QN8E9ERP9iScs0w9dAqZKdTDT+GnX2qBfTWWqC+2Gzs0+Cf7nenkylZMqs/eh9I5UN168pgrF15KaNMoq6LiVZ0BRQmbOonNfaZf2veE6XDPg5vfUgSAxdBFQU3P2kD/zKGUyYqhn3xcbgCPjwpVnz0ypg0qB/8R0RjaWWeq7d8OGScku0Jnm8jlkC8m4henRWhMll5xb9yPTqmje5rBfc6bNROddMwH1Q7yRegFBq0DrtLymaffhE3ndzuqcrB6tQ6XzMxX0sjImXZvZW/hKO2k4J4sV7KENxeaKBRbmifvDmrxKuAOmZek1pJsgEGi1f5br4tIGzcAQEdVIeP/5AahUT3dg6UnWPObWC+ZtkCH3/UyjXmt/2YZi6OCx3kQYTLpV0QC+0+QBjm7qE+5moIj9IY6l6cjJsox/+bkNQw7AvHSSjEi0Jf/ojNjBSspDur5oI4LzgADXMhVJ1Yh+4DL7Oq6NDY=
+X-Rspam-User: 
+X-HE-Tag: 1792442256-73046
+X-HE-Meta: U2FsdGVkX1/tQSKRsMOK9ZeALetgklaXUSH6XApqifnhsfp95xY+ho9kPIFse7jJmPNShHR2pCzCdn+lusxxxbY9+oM+vdn2HaE+vlgvdt4iCxHbQRItFtNUDgv9N1Hi70Lx8+4MBbywWVEywdVBKE2RmlNPrweywgtuKmdBlC6LsgeIzD1pvCXN5SOFzIkVDalLjtn1rbiuvoCsaDkNbXVQ8ounMYURJc58M5ic7iZ+LXaLE8QpKyjAh6F9oEklcIvOWERzsYoZIMM0QAIxOw9VlksOs2s0Zzf8JtnkwFF4Uix2FW5bimN225czqvTtXPmx02K8OCsc4RgSxzbJWNSTHI8O+mZcUlqa3oaPWlR1qaA+zrajyu+uQbarNQzggx1anZttwPh1JzwgU0IZuGtTjHi0MnbwBcqyxs4aOJI82QzPs2Y4eNDbcRq/BRLEt4ty6yl7N4Z1H7dD0LSCF6pX8gXcdhuUR0FCKFI+9uB2lpZG1XOoCMhrch/sdB6OCtriYv2vSb+BiFcUcaq0SBvZN7Ker3xnSNaoFW+u5QHZpakzWMjlS4/UDG3ErauLhbbkYcbLnqrGot3lHhU7mVSHnGy/Xegd9ZB3LgjhYtzVK9VQVd2ggYymloEvR+7hKnCWoGFjMsRpzyrY+QwIifmGeTZoMvkWsdBWlKx+Bbluz58JCF1hzwc/ix2EiEGIOiyGuUfo6ty3N5jV63CnUltuQOuQ7+9qfR9JdXKrMo0LjcJGu8FU+41CeeNziwLl8MZGUJwcWQ6CSwpOGEJLSQZQV1ALdypaqSsgEIkiYKMjVVFL/tvs/h5B1M7LfXa57HtY6lEacdYcsKY/DcAxhKBs04TUEcTux/bPKIAicVmUS0sm83dIPggh1j0VxKsha5PRf6Aq+KSXrQVGLenno5A8fgV9ER5iwt2JPSEPKzxZZyZeyGI1S4yD5Ah/E+Fj2jJtEOYuoBh3EJ56arI
+ PsrmXkTk
+ 6N9cPalbndUrAtWDXzgwYvqOu1o5wZx6jcENyd0Cg5/HxYzqvpNtdA56w4X+x3hWD+mO86A0XTTO/tiu/PUeVXRpBt7NQtNBHv7k6TT/E/VoFrxXgv1sixxRo4XNEXHhFis3w7XL+gl84QF/YR8m5p+UTlxK45RpUY7uEsE6h2L5nyRvtre8diq5zIfYdEcQiIg8w3gJlR3opxJwSqwZPEfyTOh0y2Qp22eHxX+31xgD4Ti56rLq0QE03hUs7kF82SLAktGcvIk0iNfvSAEbjIFVK45KA75CjW7JHP/hM1s5zDJc0daRf6srACwB6WqVKp4alGKY60R0SEXB7YSyxRfskMDgeoxwhcP1Q5McQE3kIrVLndZ1MW8M3zRJVLYj2AlDx4ZYyKCNsj/cponQ5c16xo0jYdWk8bJbToK/iqZpP2h/dXgyglty2GYKmU0W1vLdbdxGfVDelZuTH7f4MklQJFx2N4Nhd9vrI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,81 +151,121 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 18 Oct 2026 at 14:24, Barry Song <baohua@kernel.org> wrote:
+On Sun, 18 Oct 2026 at 14:05, Barry Song <baohua@kernel.org> wrote:
 >
 > On Sat, Oct 17, 2026 at 1:09=E2=80=AFPM Siddharth Chintamaneni
 > <sidchintamaneni@gmail.com> wrote:
 > >
-> > Andrew Morton reported that get_lruvec() has the same problem as
-> > lru_gen_shrink_node(): when memcg is disabled on the command line
-> > (cgroup_disable=3Dmemory), it returns &pgdat->__lruvec directly and so
-> > bypasses the initialization of lruvec->pgdat. The MGLRU debugfs
-> > interface calls get_lruvec(), then dereferences the pgdat pointer in
-> > lru_gen_seq_show() and other paths, so these can hit the same NULL
-> > dereference.
->
-> So userspace must have booted, since otherwise we couldn't read
-> debugfs. The reachable case is therefore a memory node with no
-> LRU folios when debugfs is read? So this could happen on a multi-node
-> system where folios are landed on other nodes but not on this node?
->
-
-That is my high level understanding. I'll let Andrew to comment if I
-am missing something,
-
+> > When CONFIG_MEMCG=3Dy, lruvec_pgdat() returns lruvec->pgdat, which for =
+the
+> > per-node pgdat->__lruvec is left NULL by lruvec_init() and only filled =
+in
+> > lazily by mem_cgroup_lruvec(). Normally that happens early, e.g. on the
+> > first folio_add_lru().
 > >
-> > Fixes: ec1c86b25f4b ("mm: multi-gen LRU: groundwork")
-> > Cc: stable@vger.kernel.org # 6.2+
+> > With cgroup_disable=3Dmemory, lru_gen_shrink_node() passes &pgdat->__lr=
+uvec
+> > directly to shrink_one(). If direct reclaim runs before anything has
+> > called mem_cgroup_lruvec() for the node, which can happen during early
+> > boot under memory pressure (e.g. a kdump kernel), get_swappiness() ends
+> > up dereferencing a NULL pgdat:
+> >
+> >   Unable to handle kernel NULL pointer dereference at virtual address 0=
+000000000005040
+> >   pc : get_swappiness+0x68/0xb0
+> >   lr : try_to_shrink_lruvec+0x54/0x2c0
+> >   Call trace:
+> >    get_swappiness+0x68/0xb0 (P)
+> >    try_to_shrink_lruvec+0x54/0x2c0
+> >    shrink_one+0x8c/0x240
+> >    shrink_node+0xc6c/0xe08
+> >    do_try_to_free_pages+0xdc/0x570
+> >    try_to_free_pages+0x124/0x278
+> >    __alloc_frozen_pages_noprof+0x6e8/0xf78
+> >    alloc_pages_mpol+0xc4/0x1c0
+> >    alloc_frozen_pages_noprof+0x54/0xe8
+> >    alloc_pages_noprof+0x1c/0x40
+> >    atomic_pool_expand+0x98/0x300
+> >    __dma_atomic_pool_init+0x58/0xd8
+> >    dma_atomic_pool_init+0x154/0x170
+> >    do_one_initcall+0x64/0x350
+> >    kernel_init_freeable+0x214/0x430
+> >    kernel_init+0x2c/0x208
+> >    ret_from_fork+0x10/0x20
+> >
+> > The classic LRU path and MGLRU before per-node lru_gen_folio lists
+> > obtained the lruvec through mem_cgroup_lruvec(), which sets
+> > lruvec->pgdat.
+> >
+> > The above was hit on an arm64 kdump kernel (6.18-based) booted with
+> > cgroup_disable=3Dmemory nr_cpus=3D4. It also reproduces on mainline on =
+an
+> > arm64 VM with CONFIG_ARM64_64K_PAGES=3Dy, CONFIG_MEMCG=3Dy,
+> > CONFIG_LRU_GEN_ENABLED=3Dy and:
+> >
+> >   mem=3D160M nr_cpus=3D4 coherent_pool=3D512M cgroup_disable=3Dmemory
+> >
+> > These options only serve to force direct reclaim early in boot; with
+> > 160M the boot eventually ends in OOM regardless. On mainline the first
+> > LRU reclaim happens while unpacking the initramfs, and faults the same
+> > way:
+> >
+> >   Unable to handle kernel NULL pointer dereference at virtual address 0=
+000000000005040
+> >   pc : get_swappiness+0xd4/0x150
+> >   Call trace:
+> >    get_swappiness+0xd4/0x150 (P)
+> >    try_to_shrink_lruvec+0x44/0x2b8
+> >    shrink_one+0x80/0x1a0
+> >    shrink_node+0xd98/0xea8
+> >    do_try_to_free_pages+0xf4/0x4b0
+> >    try_to_free_pages+0x110/0x360
+> >    __alloc_frozen_pages_noprof+0x8b0/0x1718
+> >    ...
+> >    __filemap_get_folio_mpol+0x2ac/0x548
+> >    simple_write_begin+0x44/0xf8
+> >    page_symlink+0x178/0x198
+> >    ...
+> >    do_populate_rootfs+0x13c/0x200
+> >
+>
+> So this happens before any folios are added to the LRU and before
+> the userspace init process starts?
+>
+
+Yes!
+
+> > Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+> > Cc: stable@vger.kernel.org # 6.3+
 > > Assisted-by: LLM
 > > Signed-off-by: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
 > > Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
 > > ---
-> >  mm/vmscan.c | 15 ++-------------
-> >  1 file changed, 2 insertions(+), 13 deletions(-)
+> >  mm/vmscan.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > >
 > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 0c57e4f1eb15..99e9f07fa2e1 100644
+> > index f11491ee9ed5..0c57e4f1eb15 100644
 > > --- a/mm/vmscan.c
 > > +++ b/mm/vmscan.c
-> > @@ -2745,20 +2745,9 @@ static struct lruvec *get_lruvec(struct mem_cgro=
-up *memcg, int nid)
-> >  {
-> >         struct pglist_data *pgdat =3D NODE_DATA(nid);
+> > @@ -5253,7 +5253,7 @@ static void lru_gen_shrink_node(struct pglist_dat=
+a *pgdat, struct scan_control *
+> >                 sc->nr_reclaimed =3D 0;
 > >
-> > -#ifdef CONFIG_MEMCG
-> > -       if (memcg) {
-> > -               struct lruvec *lruvec =3D &memcg->nodeinfo[nid]->lruvec=
-;
-> > -
-> > -               /* see the comment in mem_cgroup_lruvec() */
-> > -               if (!lruvec->pgdat)
-> > -                       lruvec->pgdat =3D pgdat;
-> > -
-> > -               return lruvec;
-> > -       }
-> > -#endif
-> > -       VM_WARN_ON_ONCE(!mem_cgroup_disabled());
-> > +       VM_WARN_ON_ONCE(!memcg && !mem_cgroup_disabled());
-> >
-> > -       return &pgdat->__lruvec;
-> > +       return mem_cgroup_lruvec(memcg, pgdat);
-> >  }
+> >         if (mem_cgroup_disabled())
+> > -               shrink_one(&pgdat->__lruvec, sc);
+> > +               shrink_one(mem_cgroup_lruvec(NULL, pgdat), sc);
 >
-> I've been struggling to understand why MGLRU needs its own
-> get_lruvec() when mem_cgroup_lruvec() already exists.
-> With your patch, it feels like we're one step closer to
-> getting rid of MGLRU's own variant in the future.
+> What's a bit weird is that even if we fix this here, with an empty
+> lruvec, we still won't be able to reclaim a single page. But it's
+> hard to see where we could break out early, right?
 >
 
-I agree with that! I'm happy to send a follow-up cleanup patch to
-remove get_lruvec if that makes sense. Not sure how it will affect
-stable backports.
+I am not really sure about simple bailout logic. Please let me know if
+anyone have any thoughts.
 
-> >
-> >  static int get_swappiness(struct lruvec *lruvec, struct scan_control *=
-sc)
-> > --
-> > 2.45.4
+> >         else
+> >                 shrink_many(pgdat, sc);
 >
 > Best Regards
 > Barry
