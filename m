@@ -1,97 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEA2606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA86606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N1/nEJWO
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=obDZKewv
 Received: by kanga.kvack.org (Postfix)
-	id 602146B0575; Tue, 20 Oct 2026 18:11:58 -0400 (EDT)
+	id 4B6DF6B0188; Tue, 20 Oct 2026 18:24:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D82D6B0576; Tue, 20 Oct 2026 18:11:58 -0400 (EDT)
+	id 467FA6B018A; Tue, 20 Oct 2026 18:24:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EFA36B0577; Tue, 20 Oct 2026 18:11:58 -0400 (EDT)
+	id 357916B018B; Tue, 20 Oct 2026 18:24:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA5A6B0575
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:11:58 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB9FD1C399E
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:11:57 +0000 (UTC)
-X-FDA: 85344403074.28.7B613CE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2136D2000B
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:11:55 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N1/nEJWO";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0689F6B0188
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:24:13 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C5861A01AC
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:24:13 +0000 (UTC)
+X-FDA: 85344433986.04.D5E4B05
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B88AE80005
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:24:11 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=obDZKewv;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792534316;
+	s=arc-20220608; t=1792535051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NpFLan+/UuwgnzMCO1yKW0YhIn6YvxfWrSCdFI7nkSg=;
-	b=HJg5LEEHNEwgqQbq7vwBBVjYprLJ6FUft5iAoniXdAeYx1at5LKNsqbGebKK+X8MdnLiz3
-	laLtoVmVW7UcfQXithPYpwGhSgxbyjJMVKpAYJ4w6wWMMsnnf4W9FlQbc91Vyg9ZPMwXg9
-	0gpOfIpRnIPw8i9ojfEYR2qLm0CLLKc=
+	bh=JbcL9UJUoZzm8h4f8WZ8/x3EwYH3/2Tgl62Z2dUn4XM=;
+	b=LY7K7roUhlluw+rrvO27nE+xJIBFJpbHhfX/e0P2Nmi0vN6pztEGAHhMxpydOG4NFCpS8n
+	R3Wp6BwsEdVNrKmoi+QJK4LfRjpkLFCm/Kq6X/qFvXdUgiURkdR4IR/qnMg6zhvpcsFeRa
+	KyG7RqvrtGZHB5yRcrfbxlq2+yQKSac=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N1/nEJWO";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=obDZKewv;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792534316;
-	b=180WlBAJhzgTzRi5REZb3QdKPT61kpm8XvDjhlyl6bINm4s4BqvrcK5UF4V+ECUo92rkSd
-	9MjMe9ftbTDFv+N23GWW/17gaEKrDp8iIEGjpLqFCRy1n+pMoeSCFcqE2jLREN0yAoCt+l
-	MtvTQA61Fppu4pDsk0Pg52RsSlCPIa0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4AD24601E4;
-	Tue, 20 Oct 2026 22:11:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52651F000C9;
-	Tue, 20 Oct 2026 22:11:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792534315;
-	bh=NpFLan+/UuwgnzMCO1yKW0YhIn6YvxfWrSCdFI7nkSg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=N1/nEJWOj9GL0Tc5obFWdlcWohS41ITXgsBTMTdVcUdZ3M00ZixvCMaMTMsT+OwuD
-	 g+ycxH/HAME4S/LIjYo4Kd1fXkJ9oXBw5XyrL07bK8TqBU9/bmJBrSqTQD+z8WMqqt
-	 6XE1bszg5xZjnxqWX/Mj+fra/ygDz3ypMGHygi7DlO35STxFgn0c+Z7lzr5hJIFh71
-	 MQg8Ov3kzBbxTKTQHk4DyH2htibCiDlwcpufA9EdsVjApsDhlrKxmZTukgkryU/TW0
-	 34qnmroxipBVxkKxhm8too4dCWsX2bRYOffBv9HSWUA13VZjpGo8WJ6nzNTYAZ2D41
-	 Xxh5crpem99iw==
-Date: Tue, 20 Oct 2026 18:11:53 -0400
-From: Mike Snitzer <snitzer@kernel.org>
-To: Mike Snitzer <snitzer@hammerspace.com>
-Cc: Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v7 1/5] mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
-Message-ID: <atfnKRbYfnwwi_Tb@kernel.org>
-References: <20261020220346.28020-1-snitzer@kernel.org>
- <20261020220346.28020-2-snitzer@kernel.org>
+	t=1792535051;
+	b=RDWZA3cvSiM252xe+hjgzcnVPrtlGAA2jeV6DbpFTZH3z1wAcmPwN63aeiA5RW+kznWROt
+	VldPuRclCv/1CP8a4OnqKN4RXTotRxOerLcp4qGPuXd7hVL9awQN1zfr41k+0gH0WVATj8
+	9nHRGG3q2c8tRNavprC11gtcQYwPGEE=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5363c8de563so1679681cf.0
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792535051; x=1793139851; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=JbcL9UJUoZzm8h4f8WZ8/x3EwYH3/2Tgl62Z2dUn4XM=;
+        b=obDZKewvxrxUjPrxMRurrTXsEY6V+2t39UmuMgwAI7OfTInxKeiwFuD0ZMwC4XnGzJ
+         20pCFc8nzgfT3zq4suJQ2GlXmvVD/3R+Npk2FT2OneqURY3LikyhYrCUUm9qzqYkABnf
+         Lny4WsuTPmr0kX3t1oS2eT0hWvekT+7j67IPUhsuDNuDRpCMM5PlUAiYlcMqA7isUJW9
+         95Q3RmF4bBZG0pQjNpufpgsPNTMOLm/LkfCBjUQgn8P6riX/Kvc3dsGC8tQ/XMGG1GDq
+         nWjT6gb3afnAMXGrtlWgVReLlAUL4ppUBpyGUvGJ6OmSzKk4cefCK8Pp7/LPp4RnwsvU
+         a00g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792535051; x=1793139851;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JbcL9UJUoZzm8h4f8WZ8/x3EwYH3/2Tgl62Z2dUn4XM=;
+        b=OA2ajlgRK1aC0rTOJcPGiS4fY0XLU/U3qeJ/eM0qjT+UgWOqeEKaxom63m/68ViJs3
+         nYB2IXW8qKGbk/O916jxcSYqKZMRSms06rmT5rIRdZeadT+So5RmOaNUDLGUz8+F39to
+         s7a8+2EdHwMFjKV3pFzfyfJq6O+e1U+gATDKO7serHaMB+nOmm2ajUtcFXwWTCUEEnfB
+         KDzbBNYvC+/b6CAgjBS+x6M3TAg6rx8+CMcCNMHvUrBoHeER3Shsi6rRY6yWww5r/Sl+
+         5DztlXv6mOOhHjvKrs1IU6QmKzpx0uLKu6Ov0h0+ycco9mScoLAV5eTcPMeJ3UmauIhn
+         pnIA==
+X-Forwarded-Encrypted: i=1; AKwUvBzcwK00USsj3lLETa+sh5yBMJj1aucCmxB24lXOvk/EuxJy1FBaTk0DHPPhXQJPPesGsdldjG/PJQ==@kvack.org
+X-Gm-Message-State: AFq9FYLXF2ONK7JbZxBVuPeeVnSu+4Qr0MF6ob7PGFWGUjgxLamI1f4U
+	SGJ8fnm1YFgyR/x7JCK/2Wu4oK4VZczOKeYlmfTl97XsXUbGUbBGAI7s8q5Mf9V+RGI=
+X-Gm-Gg: AYBFou1yJsGXVN6bCz/BWCKHnLBRO56ALZNXO3+NVJUIH5N0Ino1bO7HcjDwSxQo9Ih
+	7AzOCA3nTo5M+EMp1h1U1Mj4W0IELp5OvM7o/sz9KAlyyU23D1vjPJ6Kfh1E5V45Gdfh74zM0Nf
+	rxhtDvBfzWjKlBg6HJZ14tJvRFdgYngQlJOKljiueDYKX+Y6THeBepVys85hG18GEwZ9iCcBBkS
+	NIBoG+NuL7HdQvh24VkXPsq6jb9nPl7WzY/VUZPDghnA/vTec/14aivLwy0Op2zuDiFb5lQqmnV
+	wCvlRFsGppVcGa5MHG9vP4aVzeFcSIhIf80cDcKN8f5tAzDD1e0iSrs2gcp/MNDTMMMQm0sMriZ
+	NzRHjAweT5x55oSlnj+xFtkvtKx2lM7PvMqjbn81Hp67tYw8qVFy53I/63/AXMKtk2eRVObscGy
+	ZhfJeziPJtzaHDNrajaMX2TYfW9FM3Yi077LSqah+YtCv6tbi+oo455k2Eynmn/7ApSHTaX5ruO
+	SVPSSU3F4Zhc0kZbO4jVPFpFT3fm8KxU3BlPvkxu7uzhzg=
+X-Received: by 2002:ac8:5cc1:0:b0:535:f9dd:ce3b with SMTP id d75a77b69052e-5369bb816b4mr3355061cf.69.1792535050831;
+        Tue, 20 Oct 2026 15:24:10 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53698b3d2c9sm6239981cf.14.2026.10.20.15.24.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 15:24:09 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020220346.28020-2-snitzer@kernel.org>
-X-Rspamd-Queue-Id: 2136D2000B
-X-Stat-Signature: y6sf8prhktnrw7woytkdhcnxywjarq3u
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 2/5] mm/page_alloc: validate zonelist slots against
+ concurrent rebuilds
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, 
+ mgorman@techsingularity.net, jiang.liu@huawei.com, Bessel.Wang@huawei.com, 
+ stable@vger.kernel.org
+In-Reply-To: <45ef34c7-eea5-4813-b54f-3e34675697b5@kernel.org>
+References: <20261019172346.3344005-1-gourry@gourry.net>
+ <20261019172346.3344005-3-gourry@gourry.net>
+ <45ef34c7-eea5-4813-b54f-3e34675697b5@kernel.org>
+Date: Tue, 20 Oct 2026 18:24:07 -0400
+Message-Id: <179253504789.1514232.10853151353341082033.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B88AE80005
+X-Stat-Signature: ium8zby4egsx78mmwe18agzd1tas5omu
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792534315-195566
-X-HE-Meta: U2FsdGVkX19dPzdugtZn6w53JAugX0DM+F2a3n5DWj8mlOR/GHxdg915179yJ17XINAWkqZMSNcPY0piPVTbVa59ddr6XNnXJM9g17m8TMDXhQUu8EpQzg8eCU93uQ321ZuOpCjcxs63E3K+bZIJI/CsH+K1g11oo+6kBkTKF9GwDDD+oo9T6qA4aAyRUZK6PXmHdBofYTyZke7KWLC9bC1fefBLhlExUUkatlzuqp1eVqBR8IizlBRsMRGoqWtbuLKRd9pypYV7woDYaPoKWOMOC3iKTB1QPUReZ7NnM25vT73MI2DIZNaLX93nQuLLnleaHinpHYVp85TAZ+nhSiU0slee11+Oa1GCp3JTIZISt2eEyyVAHNXA+E53pO1g3Xhy4nTFhSLtYclSWcqffw9k8R+woM5FEtsIBbdcicbJb2F3JEc+I8BHij8yLFUOl6NomEb9YwxYOA4rfItMbH0n6qhtkA4Iwmn6/ic9tYwDHu8kdFgP/Dp/45DDtKuX+4iod6g5buLrgwJ3DGXMv4EZInIYRMCPQt1RtZhEoEkPbL8Wp1Bfm6are5syetPoEr4ii5XEwMgijbjskZWT8cyqsP8/8OYLFhyjIitljbIgSZ0Q5LNT7trIeluY2z/5At7SURnNkJEDQ4S7vLZGbfW8Dcq3XpvIBv/Y26gjcx9xQb6jeUcQ4fiGLDCe8wzYdF2Qfm1HAMEUqnYiblZll6lgKZBT9fTf6a2tdDxiqZVIXihbmgKvFV1jjZnP1JvHOmrWqgyytDIhW0Ai1kpesFHIYPYDnVhwkKzWigxKLCtji1QJCvqwn3eFyk4WfrQ8hf5ieGu3hKMXAJ7jy1QcGDPy2PETATQvL21a0+xB2P/gBEfT4sOuHXwtfZvQHO2GhQ5kJ86TsRoa0fhsQXWHN3nrm8KX4r9kOIaFUNbMDODB+GdbUN43gGz0eYJz2RtyCgLQFFQU7p0PbPKzz42
- TDrK0LGb
- g//qhEzcmVJIuEsallZeLn30LBHE48rZuo7YamEOLflaWgK4VUscum4MQ5CwkGQsbH71UHbUBAM67A8EcFymm06or27Bq7toy3UpLgUFAIkK3h7VB+kPjytfObXheBF4VMlLZkt9+t/yLZY2lbEzdZ9KdXJ6GGRPMgA/QyNfCREATgsYFyY+DrKomfdzHrs9fny2VaWnUbxYIEk5KTnoSosgGTBmja5lDXr5e2CZrkNrSDfdCcq3oqjY4qqgJhRK4Gduz0kLV1y5Vu6rsB3GR21MFbQOQOH7pejM18F/fqL3lauMUEH+rf20AobC5fdiqB7YJe0e2Ht9tyJrjIhKIZb8uvFIM4jwmRSMMUAQRJWfzK1OENBLwaxfAC4ylccEcJvMln3qY2HMUuqky9Zd82PSjyMDiM4Tv7aFqzYmxV0DfmY9iFQT6NtKYlH8TFgAL45rT9SWUfaOcC3OmWTe5nkZ92fctmIcHEj0x70UPeP0x//1TDtC4Lxti+rhM8u2lCgrbZ6/n8Xx3dZk=
+X-HE-Tag: 1792535051-870199
+X-HE-Meta: U2FsdGVkX19YnoQoI/ml+GhS326AnrtsPNVv9vTWIywdLL7RuiC0oaZzwSu29OpV18ixVooUXNYwuNvlOdS/YgTn6IYJBYYD0KCher0Mgd3RzLWepfAmtwLEUzQl9tWZdySBI8fP3WL9btoU9USBLuh6UFkJYFJidbsUJCBYDQcSzvUge2/6DkXNTG15aQbNWGJO4yvzOPdAqJgds4blObAp/n1FOnE4lsUJnKVSn6h0nf0U24OjJKvHmwv2V94winX2ya2sAQrQMEbaP5X1q/tE8I7fJ18ruZmah4Ek2wgH6w5Z6pVmLtbWalSGwuea1SDsHfN4FgO7ytefosYInaCXTeif9lhWFDlqdn8uMuyicqZ7ELSU04cg4wOz/fY3/Tb+XNQGZaFH+ftRJGhMZ+gRSLaTe2pl8dC6W/mIKPJWjlvwELDzaGVg8EN9I74pQrdXLStAdUS9TCK2Zcj4w8XvjwAUyHzkPaNhhY0Y2PTMbvBa8vVdG24QwMSOU9ieqpmsfe6ky0miruGO0TVGESbofOM/Fc68VsDezmafDv6qBixjvhIXsb23C1ffUgWutChZF64V1Hs4HBm+ggz3++UFdoP5+7+ci6WTWwhsTlwKc3OU13aUNjEEsIAIBX777pSQ/LPOZ2ph4E9SNZdsxyPQYqR2Lf2Pp+Pypsnqh95H1MLo3NBmkH7wlZk/QU8SpFSCEfD2maAiE9iy0xNC9cGcfV+LlEuTzVbs+MljcZZfWPwXZe6whwXbJeeR3xtv37vp2YwiJYWd0QY9eQlqtk245cz/J90kzfRnhwKaqcVaT38Z1jMcb3EIiUwQsOB9UVKRYDFKzQl7kKVI6MDhWmmE4nMexvCNL3f9f4fXMgz1twISzQbodwIt8YIlPsJlfAHp65fATj3NqmAG1g6IucE3OQLDpCxBWxMSaRwB0nvHhw5KAkOjcOx/r8I1cUr8eMK+ufq7BQllhWmqRxi
+ oY564FFa
+ WIY7Gq68PaLDNthusIv5ofUgkiC3HKPf7iABPLwgH/ruU2iEt9Kn+2UhRqptpduIQAl3XSoD8mABjCoD1fczzV2RXBf1y34E9a8c7+NDMWCw9+SzuZg/T2ituMnR5yw46ZcKcAP67knAm8W3IkLvyf4dTY7e/1l6v3Ex02z52BEb5aCadtP5EwVmNcHFEiByGJsJOQvccVdnKxgjOSRL3ZjIMbwFGNE4/qa7FP9o4PV0V9tsRKSBoUmX8RrrLJcHWb+hsQcD+RernSyHS71wQrNcw4/lj2HEFB+Or+wvSKyKBVUB1HIOkBBQ4+9e8f9aMv5YVrl4/JAt5cD2ECqDerBO9t8n5qmGWMWPuxzYjv14056mDGbJiXEDezGHJPTVIXF5LA7WFzigTi/7i0LKT7kUKFnoC2J2DuJph+flWNHOHUVogA2pRR4TXDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,97 +132,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 06:03:42PM -0400, Mike Snitzer wrote:
-> The per-bdi_writeback WB_DONTCACHE_DIRTY counter drives how much the
-> flusher writes back in response to an IOCB_DONTCACHE kick, but it is
-> not reported anywhere, so the DONTCACHE dirty backlog can only be
-> inferred from MemFree/Cached movement.
+On 2026-10-20 17:22 +0200, Vlastimil Babka (SUSE) wrote:
+> On 10/19/26 19:23, Gregory Price (Meta) wrote:
+> > Onlining the first block of a zone rebuilds every zonelist in place,
+> > shifting the slots after the new zone. An in-flight walk can use a
+> > zone it previously filtered. e.g.:
+> >   - a GFP_KERNEL request can land in ZONE_MOVABLE,
+> >   - a node not in the nodemask can have its zones selected.
+> > 
+> > With kprobes holding the walk across the online, I was able to get this
+> > zone/node misplacement to happen consistently across hotplug events.
+> > 
+> > The iterator approves a slot by its zone index and node, and the
+> > allocator then loads the zone pointer from the slot again:
+> > 
+> >   CPU 0                             CPU 1
+> >   first_zones_zonelist(nodemask {1})
+> >     slot 0 (NORMAL1) approved
+> >                                     online_pages()
+> >                                       build_all_zonelists()
+> >                                         [NORMAL1, NORMAL2, ...]
+> >                                         -> [MOVABLE1, NORMAL1, ...]
+> >   get_page_from_freelist()
+> >     zone = zonelist_zone(slot 0)    /* MOVABLE1 */
 > 
-> Report it as BdiDontcacheDirty in /sys/kernel/debug/bdi/<dev>/stats
-> and as WbDontcacheDirty in the per-wb stats, next to the
-> Reclaimable line.  Use wb_stat_sum() rather than wb_stat() to fold in
-> the per-cpu batches: the flusher targets the summed value and small
-> backlogs would otherwise read as zero.
+> Since the zonelist_zone_valid() checks you're adding happen before the
+> "zone = zonelist_zone(slot 0)" part, I don't understand how they can be
+> helping here. Aren't we just reapproving slot 0 when CPU 1 can mess it up
+> between that reapproval and load? Am I missing something?
 > 
-> Fixes: 88d6f128d06d ("mm: track DONTCACHE dirty pages per bdi_writeback")
-> Cc: Jeff Layton <jlayton@kernel.org>
-
-FYI, I forgot to pick up Jeff's provided review tag for this patch:
-
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-
-see: https://lore.kernel.org/linux-nfs/2bee53783a2372b8dc715350b6f6d2ad5d8770ff.camel@kernel.org/
-
-Thanks,
-Mike
-
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: linux-mm@kvack.org
-> Assisted-by: LLM
-> Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-> ---
->  mm/backing-dev.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+> Furthermore, since we have the zonelist_update_seq anyway, wouldn't it be
+> better to use it to avoid these kinds of races rather than the more tricky
+> way of relying on what exact updates in what order can derail the allocator
+> side and trying to protect against those specifically?
 > 
-> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-> index 18e999053bae..b8a2c27e07fa 100644
-> --- a/mm/backing-dev.c
-> +++ b/mm/backing-dev.c
-> @@ -46,6 +46,7 @@ struct wb_stats {
->  	unsigned long nr_dirty_time;
->  	unsigned long nr_writeback;
->  	unsigned long nr_reclaimable;
-> +	unsigned long nr_dontcache_dirty;
->  	unsigned long nr_dirtied;
->  	unsigned long nr_written;
->  	unsigned long dirty_thresh;
-> @@ -78,6 +79,12 @@ static void collect_wb_stats(struct wb_stats *stats,
->  
->  	stats->nr_writeback += wb_stat(wb, WB_WRITEBACK);
->  	stats->nr_reclaimable += wb_stat(wb, WB_RECLAIMABLE);
-> +	/*
-> +	 * Sum the per-cpu batches: the dontcache flusher targets this
-> +	 * counter via wb_stat_sum() and small backlogs would otherwise
-> +	 * read as zero here.
-> +	 */
-> +	stats->nr_dontcache_dirty += wb_stat_sum(wb, WB_DONTCACHE_DIRTY);
->  	stats->nr_dirtied += wb_stat(wb, WB_DIRTIED);
->  	stats->nr_written += wb_stat(wb, WB_WRITTEN);
->  	stats->wb_thresh += wb_calc_thresh(wb, stats->dirty_thresh);
-> @@ -125,6 +132,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
->  	seq_printf(m,
->  		   "BdiWriteback:       %10lu kB\n"
->  		   "BdiReclaimable:     %10lu kB\n"
-> +		   "BdiDontcacheDirty:  %10lu kB\n"
->  		   "BdiDirtyThresh:     %10lu kB\n"
->  		   "DirtyThresh:        %10lu kB\n"
->  		   "BackgroundThresh:   %10lu kB\n"
-> @@ -139,6 +147,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
->  		   "state:              %10lx\n",
->  		   K(stats.nr_writeback),
->  		   K(stats.nr_reclaimable),
-> +		   K(stats.nr_dontcache_dirty),
->  		   K(stats.wb_thresh),
->  		   K(dirty_thresh),
->  		   K(background_thresh),
-> @@ -163,6 +172,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
->  		   "WbCgIno:           %10lu\n"
->  		   "WbWriteback:       %10lu kB\n"
->  		   "WbReclaimable:     %10lu kB\n"
-> +		   "WbDontcacheDirty:  %10lu kB\n"
->  		   "WbDirtyThresh:     %10lu kB\n"
->  		   "WbDirtied:         %10lu kB\n"
->  		   "WbWritten:         %10lu kB\n"
-> @@ -179,6 +189,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
->  #endif
->  		   K(stats->nr_writeback),
->  		   K(stats->nr_reclaimable),
-> +		   K(stats->nr_dontcache_dirty),
->  		   K(stats->wb_thresh),
->  		   K(stats->nr_dirtied),
->  		   K(stats->nr_written),
-> -- 
-> 2.52.0
-> 
+
+This does end up cleaner.  I'm going to reorder the series a bit and use
+the zonelist seq count to make it a bit cleaner.
+
+I also just noticed that the same issue is present in hugetlb (because
+of course it is) so i'll probably append it there.
+
+~Gregory
+
+-- 
+Gregory Price (Meta) <gourry@gourry.net>
 
