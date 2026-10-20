@@ -1,85 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D974C606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 07:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CD4606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 07:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LOnZjXNC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DvxGAV+O
 Received: by kanga.kvack.org (Postfix)
-	id DEE966B0422; Tue, 20 Oct 2026 03:53:08 -0400 (EDT)
+	id 67ADB6B0131; Tue, 20 Oct 2026 03:56:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9F956B0424; Tue, 20 Oct 2026 03:53:08 -0400 (EDT)
+	id 62B3F6B0133; Tue, 20 Oct 2026 03:56:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8E3C6B0425; Tue, 20 Oct 2026 03:53:08 -0400 (EDT)
+	id 519996B0135; Tue, 20 Oct 2026 03:56:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A468F6B0422
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:53:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 36AC5A093C
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:53:08 +0000 (UTC)
-X-FDA: 85342238856.18.511396E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6369B140007
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:53:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LOnZjXNC;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 290E56B0131
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:56:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3093160949
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:56:01 +0000 (UTC)
+X-FDA: 85342246122.11.F333211
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 039C620005
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:55:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvxGAV+O;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792482960;
+	b=ibA2Mmrws0hMArGgbKEJEpVP1CoKGcWKvKsRwPRSkqhUnPv14M3zhmR01nIyz7X8pJ+86N
+	ndWYZzimMkzglyxTlApvpGB1ZTmwIjPvRwuO95TsRwAgidhZqWG9Ld0GfBP5uhZbg74gcz
+	0bp/dFeDM/KE18nfs670vSk6ueQpVXM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvxGAV+O;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792482786;
+	s=arc-20220608; t=1792482960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oreWRsHu0/Y/Reg+AkC/KD5bgP4fkoJRzWsKaFNl2KY=;
-	b=lSk4DstJ7ZJRR8RSkmJYyhosbqmUkPanxCn0o+m4PKnVh4zh3IJhbaLHCEZdTyHKBiMo+O
-	4Xts9iDmsPso+JXjIyMFkPymADEzqcwnNhMAg3QP77rhuQHeRH0K+DdwywSO3g6df/TDZl
-	Af681M8JiORhARBxvzB2Wjwk4ltVMdE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792482786;
-	b=xQDxfOKrjnGlPw7fCnhrGoPGtvYrrX4CdGrSDZ227H4e2ZUgQDzjzhULULKBCSBrbE6F/w
-	jk+lbDq0+zZNUYZCAgjhIJK+7HkfWkjXGJa5oH1YI74PWjNDPRjAuY1Mpade5V5sFqVzWE
-	B4oe6iOGz4/sE0SpkAGiUIC9whIVB1A=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LOnZjXNC;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=mG3kNywBpCjlsN90sZBCwLqBblspQOk2h7zQBNKp7wI=;
+	b=oytADzoepkLjuFSQX9j4MJcV6B19W4InMeBcn/rQPlkZMDU5pCwaE+vZLFf/Sk+YK0mRwn
+	YUEKZl5pb0FHXhg99TOfcUQCPnsM/CWVoz76PSE5i2d8KEqeE1tA/jFtx13LeMOIOzTK5Y
+	m2B5iYoh4loULHyPh8nvSacg0nt7ylU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 45D9643436;
-	Tue, 20 Oct 2026 07:53:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085AB1F000C5;
-	Tue, 20 Oct 2026 07:53:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 816C860DA4;
+	Tue, 20 Oct 2026 07:55:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5174B1F000C4;
+	Tue, 20 Oct 2026 07:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792482785;
-	bh=oreWRsHu0/Y/Reg+AkC/KD5bgP4fkoJRzWsKaFNl2KY=;
+	s=k20260515; t=1792482959;
+	bh=mG3kNywBpCjlsN90sZBCwLqBblspQOk2h7zQBNKp7wI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LOnZjXNCL6cpxfuzxz3pLkyebgaHRvb6qiN7MLYZggTKKbawULXCFlu2i/+HTq6R2
-	 qujo2942aZsU5deb4T/4Mm6v+3ZxuqDqVc0H1e/5C9aS5STCF8QyB8vj46R0a46MS7
-	 glyKhEgBTM8O814OqO8ao1gV/AHHhG0ZNuNCBCp/Hnjy4q9635desihFiDPwa84fnH
-	 dGIc5y7CQ79I7gAobtG3JU2Ya/Xknj2iloMXbJwH1AVoEEXqugCrsR4Bes38VVSZny
-	 UBIv+SEn5B8thLRBxaGg5p9ks/0Gk6+a96UZu3C9yqYgaAhAJS4XHi21w5ZhvBx4Zo
-	 D0JwAM8/9d3tQ==
-Message-ID: <95a5ab94-5d91-4a01-a417-19f27aa91b54@kernel.org>
-Date: Tue, 20 Oct 2026 09:52:59 +0200
+	b=DvxGAV+OaraT9ljQafttLtkjrCxCFCziGjRjdD6HwDSpmr4+0+MkXiqlz3dN3LkvR
+	 MfM/McOKEjS6LdRZ6VGYT8CWPrJhfnxWW1JkPviBcxyJrcCOm6OYTyoDRKnLxDzXlJ
+	 gygE0Udc9/JKsQXMuoyTGMOiyu0lM2/HJ4EK04aOfsQ60EhPsIji7jnMWfon937KHA
+	 Ry9q64jMwMhte7oWL6nK2TbfURYsSEwUAOTeWoV8lik4nsuFWIv4b7hJNTI2x4/F8O
+	 7YwJlW32gApnjMaxcZR64YRoxdu+mtO7KqcMSGUdLoFSnKOIkdJY0ZbdF6xyEHG1gX
+	 XXeczGddFlPoQ==
+Message-ID: <70771a19-9392-4fbb-8aaf-dcd40f60e977@kernel.org>
+Date: Tue, 20 Oct 2026 09:55:54 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/compaction: skip folios containing hwpoisoned
- pages
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>,
- Yuanhe Shu <xiangzao@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com,
- tujinjiang@huawei.com, mgorman@techsingularity.net, kaitao.cheng@linux.dev,
- chengkaitao@kylinos.cn, muchun.song@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260928105805.1215770-1-xiangzao@linux.alibaba.com>
- <20260928105805.1215770-2-xiangzao@linux.alibaba.com>
- <99cbd960-439d-4672-aba9-6b49697db8b3@kernel.org>
- <20260929034123.2705745-1-xiangzao@linux.alibaba.com>
- <877bjowf9i.fsf@DESKTOP-5N7EMDA>
+Subject: Re: [PATCH] mm/memory-tiers: reset demotion targets of nodes without
+ memory
+To: Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ ying.huang@linux.alibaba.com, weixugc@google.com, aneesh.kumar@linux.ibm.com
+References: <20261019184712.3422641-1-gourry@gourry.net>
+ <DM91RXTJ5EFF.2YQARRB6TXQIK@nvidia.com>
+ <atZ67m_JYJADzY-C@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,21 +121,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <877bjowf9i.fsf@DESKTOP-5N7EMDA>
+In-Reply-To: <atZ67m_JYJADzY-C@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6369B140007
-X-Stat-Signature: 7b4aieuew8thy69cueogb19wukmy3rgn
-X-Rspam-User: 
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: jaeej13oq1h5ipwcyi965akj6xo9ig5c
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792482786-659154
-X-HE-Meta: U2FsdGVkX1++WNMdPz5vfhbjVdm/jWbisnoqoajaId4WV+Y0mZE8YtapJZnw7z2Y/Qbvf59smq3N/9q10Vhkgr3kWD8brfJL7mEBo9y2z7AvIoxfUMsLn/S4wUuzMX2+9Hn8RjxZOWSDQxjIs3JokUWAkJGH+mBUllGgVtNLg+sHr3fLjBuwrqaCPakQJbH2GL/RIWP2mvBHXMdykIp5c4gD1Bw5VGVdB9rl1LAtdVluMftt8bULZ3w5/MC74XmZy8kOc8LcpOkeliUW6SPD0qjS2LZR//0ddr66FdLOgREtjhr1eVhOO2MWd1r5APt8GmcVvKM3+DdeGlXEO+/DU9uPW3WHjTu/7/c/8vUMSYheA+pY/7VfHpXo9MEp0vBUiYKkvuWaPYqzZ1te3kIaZ8EUyG+8eX0qnqveBOn7KS8qp191epFc3kUpf+YxNyY9ybCpQlcXmOF+E/WI9O/F125HeuzCJrDP6nOnPHumEuKZBHIEpmeAUklr1/WUC9Ef4jFhamnav6oMnkqpVYxbVFsNIXiwbCcbJu9/Tg5eohg2dKvhBgzaxJXx1P+MDjjMuEecT89S8ukHLT7LVRtEHCCOpnzRia5kVsQbL/fYFT+EJczNChcIfFBEDFlnBdk9d5WEHii195UH9A1owOwmGKgZNbGUhjpCbiY9ceN3/yaIYi8Nlaz+kfPe0aW56idA7joQFHudtyP3C/99fOeXdnoolT4MPCFttGd4vpFig4O5+i6AbNUR28Sg8/84nSWlrF99yA5jkM8e8P+3XGsyA6yNeqhxhmyHM9wxU6PU2PkdV/wI0vQb+r3yMAiK6JJIW90SQ5KiwRRzYuYFSrDi5lJIyhfeYAtDQx0wsc/cjX3Nga/wTm/oSQHPnLTaXo5RBDAhLtFgSLlDY19PHf1A/GR5pbhEuHXGu6CVlGtLwSjCNqgYYcIJjdMvkh9nJY63VrTpdDQjHISrrtf1z9Y
- Hvc9VsIU
- jB/1ZtAvmYpAsNw91Zb02bXWedCbFLaguSM6ydK7PLCMVC8AfEX+WWozf7+R5NbYymxyXQaKPA2BIhPbcL25E+1YjvCfYr0kjPO7MYl7SqoRdnnU8cy5PKMRjq7t7iRFcxUhARIIf5cgIc/e/i4WgODGE1uCWFMlEm5AKBEJ/nClAQ83v2pqgvy9DVn5uRhOdCG2m5xEnTcdRfNJWKiEicIuwd+wTNNKQ6mcdcCb21eSwzIE8nngEoxv/6j1uZLJ2XdG0mCTd+UQo0irXi30JrPKMGGAVmT6jpAvsYFV8xv0zsoXgv2knTWGqGLLj7+MonQsUAm8QWwHdTszs4AUcCFLfPtVMxDoXe7hi7geR69Ujv+I=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 039C620005
+X-Rspam-User: 
+X-HE-Tag: 1792482959-567075
+X-HE-Meta: U2FsdGVkX192U0xQMOf51V2pYrlptzmguk9zizv5m3nK/8Dxiao2/u8IrsLu55+aIVFDg34jzOYmg/UfpHMPxURajtBbFlFa+Oak+kMZZTpM1RLXpl0c0lp14kUdmvDU1Wz0wzVlzAeY14Opx0ZjkyOz6dulpjIzWxqfB2FlG7a7uwIL7eHdpmQo6QPclRW61Xq6k5mtuqo70ZPDDlKnU0g9/RGtBKeFHX+ZPCKdtVsx8FMEBOXXP6GQUgkGgsNuNz+mCJnBEi16m/vYr4R/PfjINLGnez/BJRjXkqPuj/PXGdEv+lMunsHyksg1H9vKHzbtTuUD3Ick/JfAxQlE77+smXs8Z652LtR/HWvuZLbVx9UzrYtiEA+HUP7fbhbQ/ge4LEu1ZEqfJy/krcY6j6E4kdjFlH2Xacj9NtoS5zDo8VBeoGIkYiNt3dNg0OnefK1kuN0kGZOxiPf0KcVn47DmbXgg4a0PerHZlTaffewnRVcV/pNWgwxssUX9P0+6av/tjncSrX0vo2f8s0CjZ0EeLuToXboQOCCJarBw5Ozbz7cvdST8JtSBJ9Q2AUCLcpnnWD8MI6hL7VJ/dk8BOX6Rqi0npEjn0XdajHvdBtyiLLqfjn1wn/EgRx+dO+Ry/pDHK00HJiYZ692Zwj+gtY+z+GUyB3MV7/DmKrJ6YZvQbQvC4HArqdb+lQRpmAEhnKdpasCS9qjEY2rzRnwO0POx8Ptr2gJyLtOsHvMI0PLFd5O+yEASzNzlH9If+zoBf3a/oAXjLZS/M6Ff60ecIqWyHPBiKuma/2OhUqpWLbh3FoeAj0KmZodEDKpvyYyX7r2ytP7sp4Z4/cKvnEYV8g5TyQHWxok7Hk+GJLLeX2C/aLqnEmKyuagSSO6p9YEXvH6r+o66Qa1u0AU1GR/+QjiY0eZ9JAPK2i96cgDfgU+ms9gjQf5/OsXRBcrkYLqNuiHyPYJNREMDrfkU2ZN
+ UlHHeTfn
+ JH3qUKOR7D7uGXzMWxSzQULaGdAgpIDjvMY3KYNN0Y28/3aSwSTDN/M9xedrX2owGveBb3tfI65kGw46/0YlVodD9PCErcFlKxPowDxEJ1pO6sdSSwNzgwL2XEF5OtIHHe0NgNGuV73stv0PGYQox8vQEouP+vSpM6M2IETFRZEt9uc2akP/44+b9YAQ2gsw6D7op2/gZw+uyDKRlQOY3FzNoXksSVJ85/eghmJWMia79MpcVoRF/TZQHJDbYhrX22UE4dEfcJ4FEeFSFzp6oC/vYSS9smqaVz9ICm8sPkUR4h5uEP4Z6s73Xgt+yEfEnjPst/k+xcrIK38iIrIjfsC9Bla6vgy9riNK7l40LvQpOOyEgg0iJFyJRJEt1y4Sm6jIZ/GvbJLXw82o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,26 +145,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/11/26 15:14, Huang, Ying wrote:
-> Yuanhe Shu <xiangzao@linux.alibaba.com> writes:
+On 10/19/26 22:22, Gregory Price wrote:
+> On Mon, Oct 19, 2026 at 03:04:45PM -0400, Zi Yan wrote:
+>> On Mon Oct 19, 2026 at 2:47 PM EDT, Gregory Price (Meta) wrote:
+>>> When a node loses its last memory, offline_pages() clears N_MEMORY
+>>> before the memory-tier callback rebuilds the demotion targets.
+>>> disable_all_demotion_targets() resets only N_MEMORY nodes, so the node
+>>> keeps its old node_demotion[] entry while it has no memory. Before
+>>> 6c542ab75714, the reset covered every online node.
+>>
+>> establish_demotion_targets() uses for_each_node_state(node, N_MEMORY),
+>> because the to-be-online node is already added into N_MEMORY?
+>>
 > 
->> On 9/28/26 20:12, David Hildenbrand wrote:
+> NODE_ADDED_FIRST_MEMORY happens after the memory is already added
+> (though not necessarily online). 
+> 
+> NODE_REMOVED_LAST_MEMORY happens after the last memory block is removed
+> (and therefore N_MEMORY is gone).
+> 
+> slightly different timing for each event.  There isn't a reasonable
+> change we can make otherwise.
+> 
 >>>
->>> Then they should implement it.
+>>> A reclaimer reads the stale entry only between the node regaining memory
+>>> and its targets being rebuilt, and it filters the entry against the
+>>> current allowed targets, so there is no user-visible effect. To see it,
+>>> online and then offline a node's only DIMM: a debugger still finds the
+>>> lower-tier node in node_demotion[nid].preferred.
+>>>
+>>> Reset the targets of every node.
+>>>
+>>> Fixes: 6c542ab75714 ("mm/demotion: build demotion targets based on explicit memory tiers")
+>>> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+>>> ---
+>>>  mm/memory-tiers.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+>>> index 25e121851b586..7197f1a67a340 100644
+>>> --- a/mm/memory-tiers.c
+>>> +++ b/mm/memory-tiers.c
+>>> @@ -378,7 +378,7 @@ static void disable_all_demotion_targets(void)
+>>>  	struct memory_tier *memtier;
+>>>  	int node;
+>>>  
+>>> -	for_each_node_state(node, N_MEMORY) {
+>>> +	for_each_node(node) {
 >>
->> Agreed, and nothing here replaces copy_mc.  Two things the check adds
->> while that work is pending: on archs without copy_mc the plain copy
->> does not fail, it consumes the poison - the same poison consumption
->> commit 841a8bfcbad9 ("mm: prevent poison consumption when splitting
->> THP") refused to risk on the split path, at your suggestion; and the
->> refusal happens before the copy is attempted at all, while copy_mc
->> recovers only during the read.  The check and copy_mc compose.
+>> I think the above code deserves a comment explaining why for_each_node()
+>> is needed instead of for_each_node_state(N_MEMORY), because when a node
+>> is added or removed during memory hotadd or hotremove matters here.
 >>
 > 
-> Is it good to implement the trick in copy_mc_user_highpage() and
-> copy_mc_highpage() if the macro copy_mc_to_kernel is undefined?
+> Sure.  Will respin tomorrow and give others a chance to look at it.
 
-That is indeed better.
+A comment makes sense to me as well, it's not completely obvious.
+
+Apart from that LGTM.
 
 -- 
 Cheers,
