@@ -1,91 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ACE606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0107606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xyqgyjm5
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Cu6UwvDm
 Received: by kanga.kvack.org (Postfix)
-	id 49D5C6B0126; Mon, 19 Oct 2026 22:40:10 -0400 (EDT)
+	id C1A4B6B03F3; Mon, 19 Oct 2026 22:41:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 426C36B03F0; Mon, 19 Oct 2026 22:40:10 -0400 (EDT)
+	id BA3616B03F4; Mon, 19 Oct 2026 22:41:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EEF36B03F1; Mon, 19 Oct 2026 22:40:10 -0400 (EDT)
+	id A93A36B03F5; Mon, 19 Oct 2026 22:41:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 06F876B0126
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:40:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F75EC0875
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:40:09 +0000 (UTC)
-X-FDA: 85341450138.23.2F90C75
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EE8CE1C0004
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:40:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xyqgyjm5;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 746C16B03F3
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:41:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01826A858F
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:41:34 +0000 (UTC)
+X-FDA: 85341453750.17.79BD47A
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1182D140002
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:41:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cu6UwvDm;
+	spf=pass (imf09.hostedemail.com: domain of hanzhijian1991@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=hanzhijian1991@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792464093;
+	b=i+P+PkyQqGs0jfsU2d3Sgq9dBsfxNiA1/mwhGUmhQ3GwG8V3uCMf3kve4TNaZ7emWpviwf
+	Dhy0ZSrnUJA9a6uLjttltFATSino+6XmYaX+u7w/0qcbSGt1glHbL9GkAg3eAFJDvZonxA
+	8rLtSIyN+3DGk8UrNXV69Ol97RCPUDs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cu6UwvDm;
+	spf=pass (imf09.hostedemail.com: domain of hanzhijian1991@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=hanzhijian1991@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792464008;
+	s=arc-20220608; t=1792464093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=60QPBhNMCngRfmcAjrxpcv4Imf6U8Bv5IKWR7KuqOvs=;
-	b=FMR1GiTAwtN+g4Sp7RyIz1YyGjjAhTyr8pnxpXQ3MvP12bcuWEKIGIMhPwNF9Q9YwLrNlD
-	3QokB+qUKSCncwhf1D+hcIsQq/qLkRyjXjR6VD4zUeNbiAtG+pU6iF6xPZuAPa5gMIX1/5
-	AvcQM93p5/als9K5Ck9mHooAH/LQ2ek=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792464008;
-	b=tMWrKX41lut8dME6FNmzLa3ONdlPrMOxlSjHIUHIO2CqDYInZs+BHYB+Xri9hdHbdvLv/D
-	GfsOXA5gMPyBxZOfrWE0POhdarDu4Sp/w8y0mvKUJzLSHsrPVyewqK6YoapjMuC5k5Y+m4
-	EB2zX0sGBLos1Tyo4NTa2lALaKNU2Kg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xyqgyjm5;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B8CF560098;
-	Tue, 20 Oct 2026 02:40:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9241F000C4;
-	Tue, 20 Oct 2026 02:40:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792464006;
-	bh=60QPBhNMCngRfmcAjrxpcv4Imf6U8Bv5IKWR7KuqOvs=;
-	h=From:To:Cc:Subject:Date;
-	b=Xyqgyjm5aAEUx7O1C9+9sZ9HoyLu1TowKrpLnSkIE2mnYWjuicwO9PecBk4neY/QR
-	 qOEt0O820lHWWZw3hrx+f6My1KevhlIB/FNNOapdeq8Uub3voWMxb2nb4Sc5p+QgMB
-	 hncjtTQ25QsrGw6AmtFQKsg4WlFMZsuz0ekg82bW9XeertI7dDcyOhKPjRqT0vbvqU
-	 eGdfGNIsslgL/v044qhPF79CYZ+XN03Gbjj8gygXSkwtNGkAyAiXvg8GcgzJb4m1yz
-	 qyhk3F4OfK1NbUu5zoNOmc2UuwaXjO8xZTM4+7XL7MF6zv+DSxIYaU908k6iF2gqTW
-	 4cycCLMbtUWnw==
-From: SJ Park <sj@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ROppqsELXHGeGLcCYxsSX2/ig91E8qLeW9utj4B4bq4=;
+	b=ET5ec1wk3IgXCRAtDByDDkiN97i5FBeOSu15V/bb659fZLlMO7PY0QLRzy9tiqipJy7BJb
+	+IMwR29YozaPndfe2Vk3mDjCsptUOpxmUPkfaUfDC/VJVmhTutLuvnEz1y3UG8YR6CnVd4
+	O74LjyAm5fllF1JgkcosQ+qAokl+NUQ=
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-35f036b17easo1758385eec.1
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:41:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792464092; x=1793068892; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ROppqsELXHGeGLcCYxsSX2/ig91E8qLeW9utj4B4bq4=;
+        b=Cu6UwvDmHixPhsIQnFCtWFNssCQucG+J+ZlPPaJlri/Z+uXavoxze8RRhd+/+T6uIC
+         f5EHlduveFgYWD1w+kJwpnwVF9qHY6/RuxsXXmCsecvhibGmT6yX5VyQeTFYzWWOjHgc
+         7XPPN35GchHcue9wE7C9nIwpLHeHRJdd4fL+h0vNHlKHk/07NAIMQrqdAsmVQxaCMnxz
+         vWme8wdflIMM3cFyRAywVburjzvjpG6BDiVSl5E/tvY1jhZCyI5b0al1aB0LIHg6cxGA
+         5RRJhK5463UnYLhsf6S3qDFmNAi6koe/kXtIeeioWkjlaJwx2+NwuvlAL0Zp6sTYxY94
+         pkgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792464092; x=1793068892;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ROppqsELXHGeGLcCYxsSX2/ig91E8qLeW9utj4B4bq4=;
+        b=JXHb/8OK6C1iPCPoYK5UTLw6KeWurnvcRYIWhgSJUkK1YZSl9fivccFz3j+qVoCGSq
+         4v4S0Ey0u4PW/kuYLhdaol4W4Pm6MJ0GSFENX6BYqS/lDoILTZi0mf7DTMrcOdALKDMD
+         WpK58ctk0F22XXJcwPDaDH7UUyGXRWqrbxI0jHn0pckdznsuijpXgZa3nepTgHb9ULLk
+         zJjoEjwOwdSuwknEID5FaBzlmt9jBwuLKkyfjLF/E408i7c3Bf2XFGhgNl66jHaIy3YP
+         CSsKQ5c1pX5bjH8cpAesIKfmND4eFScLeM7xUUeczmhWJx87tXGTCMMkgI4GEsCHNMQR
+         6t0g==
+X-Forwarded-Encrypted: i=1; AKwUvBxNP3MblJl9h21JNgRuEasKorVttRFTQnr19O3dWwEBhgAPgMXEf2a38JVxkTMDe2ARAsaiayy5VQ==@kvack.org
+X-Gm-Message-State: AFq9FYLISZYOUx4JRphdN0y2UccWg8Mtj7m7C+6qrmLSeNcjBpXnpEDx
+	A+nqVU0CT4fWUnfnRKPyuIhGwOZlAxrWneKIXEi3HoYswnhJMH4cUA8O
+X-Gm-Gg: AYBFou2ud4oJxDpSOLsoYfyRCvwiWy27KKpM0Il75GCSu/71eawQ8ZMPpYEC+uRUxFI
+	SolwgXEC5uF32wrDvZ0JBHI7ZOB021NivsyldNUT78US4CXyGcqIdVrHZeJBsFHax9ix+eunIO4
+	KgqLA3XzBJwY61CjEeIFss+KCvDbZ7jcFTbAFvQsAwlq4pZf+zi7C5k29qHwsc9bQAVLmAqZz4Z
+	issCyse+h3hMReCmEfU/b7k8f69DpgshtfESW/8ewXbbPefBL1vj4Ji8qm3VXYLL3cPC9kpnh2G
+	8wXFPfiyJvFicQZt47PxkTQ+tlVssrt58rAPRpTBjFcXNmajQGW+pHPOYoi1QNqSEiPNWtBmhme
+	5D1IMx0DAHZK77dzhzS+TwJLWR7UpOvmCGyjS/a1CHHAeofsHEhaFAMpY7HlZVzGDzaF3RcAdgf
+	EZY8HYXBqHaZeaBDUlfDXYUC9rTCw2vN4nLb38fXkT3vslRGGsqz122wwTNeO0NiYnw3v47bCYI
+	v9tfSIN3ZEi9aVqrHo/BD4/LbBX/PxFNGOYULM8Cky+5X7nAjvi/GwvUHt3IxB0
+X-Received: by 2002:a05:693c:62dc:b0:366:6644:2839 with SMTP id 5a478bee46e88-3666644361bmr61423eec.3.1792464091268;
+        Mon, 19 Oct 2026 19:41:31 -0700 (PDT)
+Received: from hanzj-mi.. (ec2-99-79-140-187.ca-central-1.compute.amazonaws.com. [99.79.140.187])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36632d8b273sm1116057eec.15.2026.10.19.19.41.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 19:41:30 -0700 (PDT)
+From: Zhijian Han <hanzhijian1991@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: remove unreachable damos charge_{target,addr}_from
-Date: Mon, 19 Oct 2026 19:39:56 -0700
-Message-ID: <20261020023958.108276-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+Cc: David Hildenbrand <david@kernel.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: khugepaged selftest: intermittent collapse_full(madvise:anon) failure and low-memory false failures on arm64 64K
+Date: Tue, 20 Oct 2026 10:41:16 +0800
+Message-ID: <20261020024116.2949892-1-hanzhijian1991@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EE8CE1C0004
-X-Stat-Signature: jgh6m3665gm7tro4syf91d8ugmrjeun9
+X-Stat-Signature: si5m5biuqpashtrc4jnar948339wdsj7
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1182D140002
 X-Rspam-User: 
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792464007-306990
-X-HE-Meta: U2FsdGVkX19HAZtnIb3BAG2L0rq5UhSopsgltWgtaBkrkaNzcdJvvxLh6SQhhn5gyyMXgipeB+GMWyGYuNa6qHW7wM86VgMrSLHLKs1/Vq9i7E26LKE2LdKBwC5rff74VlOKwEg03OzdSMKmE7xBXchhs5RXP07pz3XyZjUQFH/DuYfpvkAafhJCAxFD3Ql0bTVwDZ+2eB15KWzqsfdp9K3o+TCj/+/Nxuk/mt935mZE43hhpAumwAdUUARqaDEA+FxkgQvDlSaNa8DYvpVYbckUaWlNH1HmE38/9cycC0pOB27WDIxbn/WdKjNHMGxKjXPae50IWXasErIenyORyGWYffJvVCAmS3NQrpejl90z2xF5KsnqGmCAizcf83dFnGW79wdcasGkN0MdeBSb1TupKTu/ADIknVT5BxBwZWdW+Wd9j5W2xx/oWzu2rFZLbPTlrFyih//cPmuvBoU1UMB4DmxkxWopB5bV5jvLUxOkNigOJxroasGl+Nslbaez+0l55MdwJSAnL567d6plNhGZ3NgDiUp0TwrdFlWqXTyxSUhP41yHdYLTFQqK/CJjHEWz1zp1Y458Xd9efRzHABapUnjBwHO+xue7A7cJyheP8g3FPmbpBNhwMtWgF+V8ZXsQelD4dWCQsC3kFWprWRCZvuWLRLAA1LpRrcXVNU5sH+XGqOPHYpnjX3X2k0oxFtvsWC7dIH8zKTasB4OKCU4kyWS48TGqa/pYnyHNghwf0fl35+Ler+AwNY8iUUe1IdCNkbz/2qLiwwMIRedBEeBaIw1BnXCdboUH2ZNO9j9xgSBeQ7wg0Udf+prTGjZ7ZehRURH1i9wdw2821wQ7X+3ZoIlFzhwARgUVDhILat1KeRE//jYbwJQD1c5fco2db+wdFe/iRp5nmREvfiTq0jAmbB9kmCQcWEhYv2IIFKvR1CyNYPSJD0PDyRULq/H66kfSnjOdc2CXRYMj7u+
- buvFDCuQ
- akeLTYwj8tTyA7PnzYEsoBZLZAIjGde87PhhCqOyDKnRunICvyEaZv4TThb93HkG4opl8x7vCHgFmfqYsoo7cFbANJpRe/eeIwJHe3MklVFXEGKcnzkPWyLZrfoKcLMfYza+LWElLUkhgOY4jyWBxJGWxuH0bOezhbzFclXUwoxTZm62NqnUgi/peXWnUAN9ezaxWnhua4ajLFVYQSPyR3ciuZ5U8xNe6+YzYZTjZ5dROT2LEBeeHd1E/L2evlUJJ0vu5yVHTxIxgmBo/sxv0guHsLAu0xFLgd5CroyXXn26ytGWdGztR99bsmtfbgjTG8bzPgJzPpxsSPPCg698cVdtMsg==
+X-HE-Tag: 1792464092-733719
+X-HE-Meta: U2FsdGVkX18iq9uxAS7mGdZHqor76MoeHZb+hkdNAWz4HWyTGsnTS8amy0qhiO7vP2RcaE5pjwzIMR0f95jDZnWTotPjR+dXYG3YA17627GQPX2vPjn/MJDYuN4BHkl2xCburaX1XPuvLYI0voTCvknYZZevdj8c13+IzlP9r3a3kshr/gz54GiGAKzY/GPxHtF+o0bnn3NP96gmHV18LOWxMLwQxqrcE9N9RXA6CDDDhNu+tGFcr0OBDGyIKkguzkMzWJy7K8Fhekhv/ci4i1jUtNqfVatECQMj60CUXPu02VaG7Dyha4kORSMXQ3hoRaVA1wcqLJT9Mdo/yqRGc/9CilXxgAAdh1dGBXBJyikkS1IrG3sGbfkFFr1RDecQfPR05/t78ZCYPFVPlvEU/0vgLWP1M3Xl8unoher7Mw6zz25jQb9aXUw/noSbydjSsQBaaOr42dzQ0FjUUdg5vwOmTpt+nWEEGddgtwHN9JBALcF22T9ZstR4BPih5PUeypStcsdSwknCPZXjevu5jM4eeD5rAhnE2RLaZ/RtOkeZWDoQew5JTUpfKCc7FLPSIr6z9n516henM1MrwTbfBwZENlVPQW6etWRNJpmtgyJgk9g9JsArJF7x8y/5rhHnmsTBCxuwDuEWAVzA+2vE8MZBBKXPHQbHug0Qz5YlWwMzjyd7VRjZenBrxiUh7SJVCi3W5bhaa9QcDAM7kNBvHMKD5O0TY4NwpOne67z6aJGMPB2qR2hn+N11ZTGyZYjXXNAW5bQDkSBbvSz9RSq0PrPnLTgadAssiE9OVPA4cEMHLxolpIG6jlIWiVbV/JsBXxkyZ2DbYNsIZMaC92BmARMhcVhbx9o4qnuD45C7P3BJnV/WeNt52fYAUbMvGd9FU2GOjn1M2+jRAU1142dSsuk9/TXowTS2rlptAp4BFCVf+taUHJgxwgMuDu28WAtH8wi+R1B94hKRbDny8Cq
+ yJ1AbcSy
+ BNjJLJpj5qDkMI5eaZo6GfqGOdXGuE3GqigFwl08Dcd1gzmJ0hU5R5Ah/zh2ztZLD5l4Msa/6/XbyOruvs3Z5+NHGbNSCQZcQOih2Xxy6sR6sNmE15Q7aSRdM/2z7/PinbnDwBfEX6rEEW/OI9G2yrGJQC+TglaVEo8pNms97o+AAc8h2yyWHd0myCjjelZFwfdl/g+t0h0ChJ3pDXHEAoGABh7DRE5R7U4lyrPRq3HwkXy60dJPQSmhlopE7lNMt0PlcbyC2qiLW1wRljADJ1G7TZ05IwdcgsJEnuYCOauiucGCqMDulJkfwSwp20ZAqSm0f/f9oHvvaHx9LaC3wjtZDIrp0tqXKBpKp9i9PeOeA2hIGmSJubTUxnCErGamZD5P5dWcLg5tCNl63QW3bv2y6q3cKBcTaro2/GRqk1aJVLtkXYV2N5GGfqZUXsy8HEa+5LLsdIMJIafEJCKLsyalA8wJtwK/Eety54Q6lxp1MHBoZGvC1H4t31A2HGZU3D3bTJHporcMrGkcexWO04HWJ8t/xDXH1DpyzbzQij7oSpk+pQOykkkBXmVkPz+JcDnpvm/78KIK2o7U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,82 +124,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-damos_quota->charge_{target,addr}_from saves the target and region the
-scheme's quota limit is reached.  damos_skip_charged_region() skips the
-target and regions before the point.  The target that was assigned to
-charge_target_from could be dynamically removed from the context by the
-runtime parameters update (aka commit) feature.  In this case,
-damos_skip_charged_region() cannot find if the point is passed or not,
-so the scheme is effectively disabled.
+Hi,
 
-Similarly, the user could also remove all the regions of the target
-using the runtime parameters update feature.  It would be uncommon to do
-that, but it is a supported feature.  Because the skip pointer detection
-logic (damos_skip_charged_region()) works for each region of targets,
-this result in the logic is entirely skipped and the scheme is
-effectively disabled again.
+I ran the khugepaged selftest (as of linux-next 20261019, tip 3d229ce89862,
+which includes Kiryl's "run every supported collapse order by default"
+series) across several QEMU configurations while setting up a test
+environment for mTHP collapse work. Two observations that may be worth
+acting on; full logs available on request.
 
-The user impact is that the DAMOS scheme could suddenly stop working
-under certain uses of the runtime parameters update feature.  It could
-surprise users. No crash or leak happens though.  Users could also
-simply work around by re-installing the scheme.
+Environment: QEMU virt, cortex-a76, 2 CPUs, khugepaged test run from a
+statically linked binary inside a busybox initramfs (no distro userspace).
 
-Catch the corner cases in damos_adjust_quota() and reset the pointers.
+1. Intermittent collapse_full(madvise:anon) failure on arm64 64K pages
+---------------------------------------------------------------------
+With 6G of guest memory (so order-13 PMD folios are allocatable), over 7
+complete runs I saw one failure:
 
-Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
-Cc: <stable@vger.kernel.org> # 5.19.x
-Closes: https://sashiko.dev/#/bug/linux-cd0c55fc-0cc8-45d8-9637-3334811c49b8
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from RFC
-- RFC: https://lore.kernel.org/20261019143713.98610-1-sj@kernel.org
-- Drop RFC tag.
+  # Run test: collapse_full (madvise:anon)
+  # Collapse multiple fully populated PTE table... Fail: Bad return value
+  not ok 80 collapse_full
 
- mm/damon/core.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+The other 6 runs were fully green (102 pass / 0 fail / 3 skip each). The
+failing run did not report an allocation failure or OOM in the kernel log.
+A minimal probe (mmap 512M, memset, single MADV_COLLAPSE) succeeds
+deterministically on the same setup, so the failure seems specific to the
+test's sequence rather than a plain allocation shortfall.
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 479169dc9ac75..eb1fcdabc0075 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3383,6 +3383,26 @@ static void damos_trace_esz(struct damon_ctx *c, struct damos *s,
- 	trace_damos_esz(cidx, sidx, quota->esz);
- }
- 
-+static void damos_fix_stale_charge_pointers(struct damon_ctx *c,
-+		struct damos *s)
-+{
-+	struct damos_quota *quota;
-+	struct damon_target *t;
-+
-+	quota = &s->quota;
-+	if (!quota->charge_target_from)
-+		return;
-+	damon_for_each_target(t, c) {
-+		if (t == quota->charge_target_from) {
-+			if (damon_nr_regions(t) > 0)
-+				return;
-+			break;
-+		}
-+	}
-+	quota->charge_target_from = NULL;
-+	quota->charge_addr_from = 0;
-+}
-+
- static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- {
- 	struct damos_quota *quota = &s->quota;
-@@ -3418,6 +3438,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 			damos_trace_esz(c, s, quota);
- 	}
- 
-+	damos_fix_stale_charge_pointers(c, s);
-+
- 	if (damos_quota_is_full(quota, c->min_region_sz))
- 		return;
- 	if (!c->ops.get_scheme_score)
+This is the same symptom family as bddffa2f9cbf ("kselftest: mm: fix
+intermittent failure khugepaged test") — there may be a residual flaky
+spot on 64K-page configurations. I was not able to reproduce it
+deterministically; happy to run more instrumented iterations if that
+would help.
 
-base-commit: e558ba2a16a47baf6b8e76bb11e92eb92a491e3a
+2. Low-memory runs fail without a skip guard
+--------------------------------------------
+With 2G of guest memory, six cases fail outright (starting with
+"Allocate huge page on fault... Fail") because an order-13 (512M) folio
+cannot be allocated. collapse_compound_extreme() already skips itself
+with "PMD too large for fault-time THP construction" on this
+configuration; the PMD-order cases have no equivalent protection, so a
+low-memory or fragmentation-heavy environment reports what looks like
+kernel bugs rather than resource limitations.
+
+A skip guard along the lines of "cannot allocate a PMD-order folio even
+before the test proper — skipping" (or a documented minimum memory
+requirement) would make the suite's results readable on such setups.
+
+3. Confirmed skips on 64K (for the coverage ledger)
+---------------------------------------------------
+  ok 9   # SKIP collapse_order_mixed_sources: no supported source order below target
+  ok 91/92 # SKIP collapse_compound_extreme: PMD too large for fault-time THP construction
+
+These match the gaps noted in the v6 cover letter.
+
+Baseline for comparison: x86-64 4K with a swap device attached is fully
+green (76 pass / 0 fail / 1 skip — the mixed_sources skip).
+
+Assisted-by: LLM (QEMU test harness)
+
 -- 
-2.47.3
+Zhijian Han <hanzhijian1991@gmail.com>
+
 
