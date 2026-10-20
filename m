@@ -1,147 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C54606A331
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 08:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6331A60A2626
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 08:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XsYl4wxj
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HknpIIqB
 Received: by kanga.kvack.org (Postfix)
-	id 4AFB76B042F; Tue, 20 Oct 2026 04:22:36 -0400 (EDT)
+	id 79D6C6B0137; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 461336B0430; Tue, 20 Oct 2026 04:22:36 -0400 (EDT)
+	id 773E96B0139; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34F916B0431; Tue, 20 Oct 2026 04:22:36 -0400 (EDT)
+	id 68A066B013A; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 02EDE6B042F
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 04:22:35 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78DEEA8658
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:22:35 +0000 (UTC)
-X-FDA: 85342313070.23.D65ED53
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 847CC180002
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:22:33 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XsYl4wxj;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3620F6B0137
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AECBC120909
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:25:49 +0000 (UTC)
+X-FDA: 85342321218.19.D3C0BFC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A3A45C0006
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:25:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HknpIIqB;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf28.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792484553;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1792484747;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e4jp3dxFAzyLqjrHv50Jg9sR4jM2Bn9qOTXiixdLDnA=;
-	b=Wc1qm+o+PYnJdjWOx4as62gF+Pn2dfIp60tnHAn7BiVP0Bn/pl/RxqTiz3ndkHolPMaJBo
-	IellgGKkFnwnK+AIQDTol3rWpxKk1Sy6EFzFABBAQ0vy7xXQzBhOVphdSEK1RA35I+rqhA
-	NUGo7VgCrDO3IjSQc2TahR98VNl5k44=
+	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
+	b=HZs6ftsj06S3vpiZUpQp+Or7qUj8F/DCGcetxMXoa6meaqM5Nm/3LuUUpcBaY0OJHpI3O0
+	wkLwbtoqQ9HyNXwBF/JAKVxoT5EIBvnRlYJ1/XgzuSfCgUTFZu7Svc1BCYdnDSkhnhWVyb
+	VLbwiTdhnYJ0oS6aRRWrTAvTPctZPWw=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XsYl4wxj;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HknpIIqB;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf28.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792484553;
-	b=qne7zkIQVfCCPNMD1uXDl5bvOcogsfKr2HOpiEzI+OL29N3M6GsOhV9hZMbrk5+qs6Pua4
-	kA37d+7VUvdBhKSQmpLlhxKcLek0nFmHLxUEK0S1tdj0SaxwtU1ZmFgB19RYjurbDB5g9G
-	dMJTcUAT+G4UUZWEuzx2l2IUCbxAtxg=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a0a4aa99bdso3501652a12.1
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:22:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792484552; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bzIBojNhqWDDOPM+2KaYPxtqkdN4WpS9+nAp8xCqdRcMM++/UMJDfEu6YNZ4ue9vER
-         UpixRmaqoBbNkRVSXQbmj7U6H3047XK1lsgTzScQad+aEZsVg+to4WcxgYMMdelLA8sp
-         uHlJF9sLVNuOCyuqqqr97mVUEwCwg7RivLp8cy4Lk2sDNGNaq2Bhf39Bty1c8x6tmkYe
-         AzqdqqFuCf155yPr5DqqbKihb6AGD0WCunDgUMCvGc7efXtJjDqF4NbpmN1QrijxKMZN
-         sBM/RLatKa24PieS3oovfi/tBw02e9M9U6qA39tOb2o7922gJQ1R+RpOyOXhXmMQP2iN
-         ay9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=e4jp3dxFAzyLqjrHv50Jg9sR4jM2Bn9qOTXiixdLDnA=;
-        fh=pzG1TVX4AKAKu9GEZB0Gb2jPpZI+2GBA6mXueWY4qmE=;
-        b=g/Msl8NStuYCZVOPuA4+h+vA17YRwi2c8HkwTJ3nir+HFm3ztf9UZzIRjC/fFl1AEC
-         NCVqAe5ba/tmtFrRtwcZgFLJk+SzAQGQpyToqsnoGQb33Z3GVSP3mdEbyl3EQ0uhezO8
-         ZWWFFnyOaKn5RPKE10pmj/PKqvL8nl6jeY8pcUMNUCJ/V6fYfyUCYn5iLGGlmhatTiUE
-         oPq32AZgvKmodjayFxUk7AvYkH+t9XoIyTkWEs3rLj+RrDUkV7h9H82U5JSutV+2NZ6Y
-         hBpkprVd3iOH1xRPBrbRQErErW4SEkkvTpzYEaXqvYMSekxVB3g8l6HRTo2OayjrjBNd
-         kApw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792484552; x=1793089352; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=e4jp3dxFAzyLqjrHv50Jg9sR4jM2Bn9qOTXiixdLDnA=;
-        b=XsYl4wxjOfhW9Fe7EpYRtL0gNRQZ5afkzNuKS8kTtf5HHTEP2oXvTWAHsixAbSt7R/
-         DkGaSTVDXRZiFZXds+6eZ3uIeVGp+Ulsb1aiAnbSfAq0xomKt2cm2QTz4EyRVazCQQtA
-         zaij2qWlrtOZGani/9sGKXK7Fupiu8vv+nHjA4l1FGFw4kYTKbcMZtya098z9oUawayr
-         9ci3yNgdE6Surd2b7uKu8/n/M1OQVPZTXY3Jq1ljBLMyYLRL4JS0jBzkeRpXPSrDL2cH
-         Q+/VXDy9fIjrC/aD48siwIaXRXPYxE37/jUtDd64nqZ8zXMjkZSacCvplX3/uJ0CsZIA
-         3+eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792484552; x=1793089352;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=e4jp3dxFAzyLqjrHv50Jg9sR4jM2Bn9qOTXiixdLDnA=;
-        b=n0amD90s+Z+vFnY2ebBbPqyiTIGqUO4il72yMo2iXy7MOH85Dfb0MMPw+of72I4IoR
-         NocHyoNBDEYIPKz61bIsNnyOC1VlOyEyAZtiOnX2o9PDiHr6cPWXyLNLL2CvBeA5Seds
-         Oupc9UISL7n84/xusTuzdmULd4rD8uH4PKRUdYwEEYJvqoD/bqkmXMsKMEgYdr4Pew62
-         4v42eOACOHklL6C+N8TJchmUxBvZNerdryaYi50WUOlHkCMxozLM7TpadaWMp1KRRcEc
-         ZiBWj+GvVlmgD8QS0NQ5BpEHsqih8ekCurIjeH2VXs/7UTZfe7tVZiKZVWcp4CH/Lkvz
-         DBvA==
-X-Forwarded-Encrypted: i=1; AKwUvByGlM8Yb9lNA+KFnx6huIBOH0jb0nDalp/qqzkao/euzqjnRz37NMlxo+pqxj7bSacAdcHtAun4zQ==@kvack.org
-X-Gm-Message-State: AFq9FYKPGp651o4TEUDv8a171xUPnK16Q4WWYboOyJctkJRpfgNDpImB
-	x18bOjr7+9M/lBM/3hE1O0QyUZ73HqZasybPvwyxKrLfD3kh9CYOQmvplUuyT77pXGKR16gQI4H
-	67BFmL59eJxhRuZ292t1GPaAWnNMReo9aHspoIwc=
-X-Gm-Gg: AYBFou1o/Do0zqQLR+Gtd3V543vkFbipZcMWHvGxl/TZ7Bl6I3VlQs4R7CV+2+wG4lw
-	Ia/LnaKBxkvSD7eqePEWugzziS3N3E/j+Qtl9bvlrcrT0KV9Sh8doBpCURpL7yQUyw4Ir2hXV34
-	L7wnNoxbr8x+ou87TuPbimKaWXXu/nVVDWrqfZle5F/LPtoxZDdLnhyvEfFoOsrUobNMUoLQoZP
-	kWhPJ7in9rkeWBPod7OBZCHyevkg+/ybWeLQIX9JHIQDQjhUXGfWfJgXIXnT6QiBKnUqKehKD0R
-	GJDSSsrL2EBdzLYmrttCBEmUc56aegrTtodSM0IEjwdoafnuE+9Kg+UdCOoHkplQeKL+P28n/5u
-	sf8q1Q0qQeVYe
-X-Received: by 2002:a17:907:5c1:b0:c3f:8c92:3b4a with SMTP id
- a640c23a62f3a-c419df3e37emr689197466b.8.1792484551834; Tue, 20 Oct 2026
- 01:22:31 -0700 (PDT)
+	t=1792484747;
+	b=ZlsrrEHw8H1A85vQ3BWCFz0DBxdNDFdcxLL9VEW+i3oSYlHhla9C3kM5TEUUpK2Fr77Eym
+	kTbDddPqUBiN21kO9w9mcANRI3DoUeaf2Pkzwlh8iyurb++SBFDIXJgecZTmPO1Zu3DGHh
+	qiqWTRlBLFAiCzP8NA9nWK/wcEd99oY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 30CA8601F9;
+	Tue, 20 Oct 2026 08:25:47 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792484746;
+	b=FgPoTl+yeNRRHhK72O8ELkfEEdU10jb7xOM0QNRZtes2bT1qZKT4nk19hMfZ2gPKsP5C
+	 Nm8W2ZBgMy+U+rgyVXoLdKcgW94+l95qrSOiCUffk7r+j2cmj2POggcwnGzF+ad2jRGl1
+	 ZZl/dTmEVJ+/3ARlV0RQ0Gr0l/lGypWKGIwIYn+r/EkqDHfPCqO5z1RlNlFyGN38GCQxQ
+	 U0AmeFRe89h9a6d47BaMCQTqEuWerFr89FGQoGf6Nsu7aKPsPpoDuAx+HkAjHf7rRMusK
+	 bAaJ5+UBJAN75j0zpLoIqqYE/EYY9a5Yq3qLKiRKbDUTfHMNEkKEmw3ZDDkZMZl7TMA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792484746;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
+	b=q/rIZtmngc2brjlffBD1+sxNgNPvZUf/Uk/lw2b8rsC5cZ5AbqGGia8eFVQ3Sl3msIEn
+	 R32cfgQ1rPoCpi6NNhzrONWGs5Q0QAwFoLtTdZySnuWJqk5MSf1PsnmnrVGjjaT3NsWzp
+	 qtsysX8lC78Dna5GuSX9na5MJwg2DsCJmenfKMc9GUN0UiuM4VJBDdDDvBnQKjJhpvpNK
+	 fU42mIcwI5EndAZA/qp/jrhlj3EiIjErgcnorRdOvXoOpQRxVbzD8lLYS38Gml529f6qh
+	 jPl6fn5YVsxPwkN+BwMjB0oYycpdev0Pxm9B7WJmPJZDVTt1nbf3X79lg8C0F+36Zrw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 45D0A1F000C8;
+	Tue, 20 Oct 2026 08:25:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792484746;
+	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=HknpIIqBWVG4RDDAWPFpeRRZGI105BMcDt/QIyAV3htiFcIUqAU8Ri2roNpFry+6f
+	 +kOv38KMHhCeBugMGAoYx80IeABD8tTwrDsIq33IGF0ys4V7aymNlRctRl+0nAsALZ
+	 OHG8osUMufjdJjYWE8UA/9TnvxqE73TuGWXRIEH50rHZ+5VRAB6E9wEIJFrnRkN25c
+	 H45MBY6CfEyCZgtzfukiSv0D5/6fNhQ0bkaYUhfNr1Ivo3SZE8manAWF3xFC61B7UJ
+	 LmJs9bFUtTPKI/C3vauUl4lgQv+ar0Nb7pplNlpPpvGrKykypckpFqPe/4YPb9UPCZ
+	 yUivwQHc+kJrw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 9FFEE430CC;
+	Tue, 20 Oct 2026 08:25:45 +0000 (UTC)
+From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
+Date: Tue, 20 Oct 2026 16:25:18 +0800
+Subject: [PATCH v4 01/11] rust: sizes: add SZ_4G constant
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261020023548.3242028-1-ridong.chen@linux.dev>
- <CAGsJ_4wnuQhyCkMq1Dub8HgB+uYAjy+LkgBxCRJG_kZiwAxA8w@mail.gmail.com> <a3d410eb-e7ac-43e3-bdb7-d00445cdc7d6@linux.dev>
-In-Reply-To: <a3d410eb-e7ac-43e3-bdb7-d00445cdc7d6@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 20 Oct 2026 16:21:53 +0800
-X-Gm-Features: AclHuK82qZWD01jLYGYlE1KkBrPsLWu_FaSyfHwoBsRgP3V8VjafyDQseh67aSk
-Message-ID: <CAMgjq7BEC8zs6St1QCXfjONypUWu4yqKK8O65bzuLcNnAvghhQ@mail.gmail.com>
-Subject: Re: [PATCH mm-new] mm/mglru: clarify the generation placement in lru_gen_folio_seq()
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261020-tyr-ioctls-v4-1-704de77da223@kylinos.cn>
+References: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
+In-Reply-To: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org, 
+ linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
+ driver-core@lists.linux.dev, Ke Sun <sunke@kylinos.cn>, 
+ linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792484721; l=1808;
+ i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
+ bh=5K5ZDtbb0No9pS3iRwCaB/ZkoyNuv4RA97gE66KsHmQ=;
+ b=S7kNtOQT98eXxrrMvt4CgYx9CRvn9LdTut3eQA05YkIP763ffVSnG4AhPDuBiTBCVr5svmTSQ
+ ijyrtnGRtN+ClGSgrmja1W8xjNWmpTDLmdDgZdMd8avLa/I2O501p7K
+X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
+ auth_id=950
+X-Original-From: Ke Sun <sunke@kylinos.cn>
+Reply-To: sunke@kylinos.cn
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 847CC180002
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: pd8zbtrqffkyqme8yebi79wfyi8t83zc
-X-HE-Tag: 1792484553-401109
-X-HE-Meta: U2FsdGVkX1/HVaeGxL2JWyI/+3Cb3DgM19OWOUbcT6t+3iBGQzJzsVCe4RSTM0gG1sVFgb5rimSok3PWfTHj5iUmRLdtoQ9LhBGeH4QY2IxUuxU3wJ8BxQKEG3uoZl33rW/DGxvQpIMQ4U+LQjbs1JywFV4o9zcCh4lQdjjag2jSa9OdZj6n3FEdwSYnCgR6+NBaPjlws88qKwvCtRI5vziocBMYPjxVsb7c6IEelaN4wKM0uM38DluRq60KDe+bKlOD2/sn/QDOgbTQpEi1rrFJLZuLf2/9lddku9+Ov8TS4DyYh+4sN2ne5uNRCXdZRZ3u7NLfzB8HBGEJ0RthT1XQfGsUPcGlN11UHl/3ODk+o4jiYo3qxpzRcF9LarxQARv6Rn8SMcv6+0g4JKHIhSATqsO8kvAEstqOqSnOPBPcv5v/OlhzS9EQzXrooV27kUqbJ3cKJF68HHf4rL+lusUkhb04nzxVhOV482zXqDC5gjdneujQupQHalHGIX9tfQltqRyabOx5PVyOrbYoXQH9SMrwPzBqPo3MGZHtIOTWlHJU4/LqeiVb8erq2qqqbBdqTPSs20Htwsn3mfdJqqmmEdAzBwv2FcALlaG+nt9FDrgFDSQNX9zZbDuM3Ld13w9797LMT59Nd9uDYpHT7zRmq44Ds49zDWaPB2+PXVuxImL1DqtIoaPOPix0e6iez0ThuRwnHLRMQszjNfXHwOdZm+HdwbLJQ9nwMkDVInyRr3pEfyejz7nal/OpyF47QwUtlR3FPzMCroI+5Z2YkVUCFEE9i8P5aLPnYXJ/cF5KO8FRNogUEJGoy5KF7zMAeEEKlyNJNabWSO4qXHgiWbNKRvDtlnmWGtTfC6guGfp6AUEZVWD8MwbkPUQwnZjT5fjSMsOa2JAZcoiykUp43dICi4muNKk4JnUft3e5BlLzWzIDPUxxbydvUMDVgYzBhmEzTJGyj6zE0XL1VJG
- Kt22cvcJ
- 3UgKluHKzQSVVQub7UsOF4/d/qNq16xEUm3CR/VYf+64yfxCdG11Cn5ZMwyMMXtyAWgZxfWCjMsum2M9JUSZTjQNw76sf6oQtl4ZmYzMYYhqtiaqrnRlaAF7xIa+NZ1xzDeVzuC4/VYIEBQB0tJ8pdXlUFKXnsr+l+emA9c480Hzv3i/ZqE1n6K+YSmwTfM5oiI3kvK6qPu1sZ+rgT9Wm74XSo2d5hnMpBKiPgsM8BAgJS4R8wJyAwRu6MHEfII6LBUgC7Q022ZSrnOcQncnoSNoruoA5u/ZdtIIpbeF4oFl6LHEojTCYxLqCP7pxGhL4x4sIaJQ4ylSNOgRpdC1HRjvZ2XpS0HolQJM7u1niCNb0R42HevhAT9P4H/r8CmshJX+y81pZxzGqnrCsyRGdQbJGLmDcWHFLjP7F7Wm3CW9PgewQ8TVbFXiYfkwy4JPnkobZ4Ms1pnH97jnEdEdl5AYVoCl1Yi0hlkMVLpfysIl5pVvjeOjjTLyPqRvGc1XHY9io
+X-Rspamd-Queue-Id: A3A45C0006
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: fgiyqjwdwbp7q38eo4eb4hpzhwgdf74z
+X-HE-Tag: 1792484747-25807
+X-HE-Meta: U2FsdGVkX1+FM8nrOaGkStesVDFlIUd9jbcZobMl0ZEIMS1knVykXA8h4tYfTHbdr6y4ZOEC0IQurFaIw2Yc1EqtyLqBzGoPXWf9vpJPTo7sXsZfUByucQfmqTSjVBqaiXYT425kj2q/UU/FkRr9HvzqKwnYvk5AvLnnlg5sTBPCJ46dPvdfksOrpzJuB+xdX+FFxsRife6gVLKVaeiv6Jns0FWJC1zZoSrMvEU38EwCGaGBEuoYeVBeOwzfBUgOOiKUm+5Tjrq4kuAs5G0eev5F02QsfzLiKwdiffxZbhuFLxJ8vKm5Gb3ropliMLmmgbHuFRj7pbA9rhcbdwtprFxJxbEnMd2Gn5RAeMtgGhOM4DSk6J+fqvieyuRJZCxfvbFFtyBcW6mKAmaPGn3N1cJs9mws0SAMoKl6Y8aTWq1qBGny9g8rg9zd3/Mr2Iob0jXH+ugOKwKZS8jBOJZTSSVDemCaMG6Zq+p1y2oWkjHLeuTQfTVoDSNtJJh8z45KxMYsWHWwc0wwl0mW5vgDea7WR33+O7kCiHx4c8Rx4VmVni4zpAn9ysvMs4xoTGppZcNVtCzVXyobBS6W5LVzKwVTbB7Qi2LEjNXSqmC8awN5bUgzgvbO+Eptf0X/Im7EWAEZhjpvq9oSwaziC5D35eg5QQu66xpy9+hz+2gvhhGYqJIA+GHY8u2cLbeXZLrfegOAu6EVYBA3cUEKPxH/gkRYHJeZIPAuNQ50vRSsDJg6O6yG9ZKn16Vheyeq5bA45zt45buRdfJmf+8ozCjv4VQRx5IFybPQuX5xFfoEZ1ITbjVhcmyWjIL6R5ibF+kEsZbe5GCnw48tzoaAA7Z3eUo47+Wn0GYBBI67JFIabc/6IPD7WlfPAa4My8sVGy3Jdumsf3Pn0jZK/ySePBKZb10Am2vuU1S1Xcb3nw21Nq45wuhFASwexMTSprlMHUjh9O3editgMzTt0dBhUKG
+ Oi1Wqp1f
+ gMBPMp5HEyfZE6GxHVW2O+LkmJraz5SRQEAAro6/f+gBhZ8mnwt2sJ8qp7XrSvjdRjIshuTFpnyfBO+rDvx636ieCIrAeNpSn8GCkK+46VNxRtsdZYYGad7yoMVfAU4TZEe6cJFgKBXX+Hz/gHaF7J2E4SdzmLIWHPXkygv0USFLBIuynGNJUfz+eWrLerMhhBE+DNWdSCYBciz3sqiMdMFi/IUyu9kkFKIV0nru50lPo2yQ5qjNiOAy5gw/DUYJUvpDPNS0KDNo9PBEksmKmhOTIAkxfHlCS3NL5NS53kcvY2eGCSFF/HfI3zKHkIe83Vk88ruYzamh+yhTfbWHVmta+L1e6zsb6vn/NN7QoLgw1eaOKZQ2XuZrcXxhSs2rMq/BgR+ImHlnjWydST4wMhYDlrFKyy5moRIMxisrHFh78ZF5TDmLsvaZNyUVWLPAJJf7qWIWxY2wLfYKO76IJ89XdaIyj63ofut10qd7IlD+RbGDpN0TnZFn5lUWco+bkFv0JBFMxcd1ttXWskqOQn27yj2kQxNcqve7P40rOzvFmzzJFhqrNVbOu9Vusz9KhyZ1YGZk7E+mxEcP9meaxG2uDVYqlwp2L4DBCqtSP8CMjZm97qx/S6SVE+JuQ8HrCZM2W4i6h6SLUn3bQYqT502akSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,54 +152,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 2:28=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
-> On 10/20/2026 1:43 PM, Barry Song wrote:
-> > On Tue, Oct 20, 2026 at 10:36=E2=80=AFAM Ridong Chen <ridong.chen@linux=
-.dev> wrote:
-> >>
-> >> From: Ridong Chen <chenridong@xiaomi.com>
-> >>
-> >> lru_gen_folio_seq() computes how many generations below max_seq a
-> >> folio should be added to, but stores it in a variable named "gen".
-> >> Elsewhere in MGLRU "gen" means an index into lrugen->folios[], i.e.
-> >> seq % MAX_NR_GENS, so reusing the name for a relative offset is
-> >> confusing.
-> >>
-> >> The comment table above the code also no longer matches it. It only
-> >> covers the PG_active and the final branch, leaving out the reclaiming
-> >> and "can't evict yet" cases, and it lists LRU_REFS_FLAGS as an input
-> >> although lru_gen_folio_seq() never looks at it.
-> >>
-> >> Rename the local variable to "age", redraw the table so that each
-> >> branch maps to the age and seq it produces, and note that the result
-> >> is clamped to min_seq[type].
-> >>
-> >> No functional change.
-> >>
-> >> Assisted-by: LLM
-> >> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> >> ---
-> >
-> > Hi Ridong,
-> >
-> > The cleanup might be right, but this part is changing rapidly
-> > with Kairui's MGLRU-FG series. Maybe we should wait until
-> > that series lands and then see if this cleanup is still needed?
-> >
-> Sure, I'm fine to wait. Looking at MGLRU-FG v4, though, only [4/17]
-> touches this function, and it mostly adapts the workingset checks to
-> LRU refs. The local is still called "gen" and the table still leaves
-> out the reclaiming and "can't evict yet" branches, so the function
-> stays just as confusing after the series.
->
-> Or=EF=BC=8CKairui, do you think this is worth cleaning up? If so, would y=
-ou
-> mind adding a patch to MGLRU-FG to clean it up, so it doesn't
-> conflict with your changes?
+From: Alvin Sun <alvin.sun@linux.dev>
 
-Sure, I can rebase or add this patch in next FG series, BTW for the
-comment part I left some review reply, I think we better keep that
-part simpler as the if branches ain't too complex to follow, repeating
-it again in the comment seems not helpful. How do you think?
+SZ_4G is used by Tyr when splitting the GPU VA range into
+user and kernel regions. Add a LargeSizeConstants trait, implemented
+for u64 since SizeConstants only covers sizes that fit in a u32.
+
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/sizes.rs            | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 930e63290cdd4..ee99f470ae5f4 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -116,6 +116,7 @@ const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+ const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
+ const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
+ const size_t RUST_CONST_HELPER_GENLMSG_DEFAULT_SIZE = GENLMSG_DEFAULT_SIZE;
++const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
+ const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
+diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
+index 521b2b38bfe77..0acc8733d2368 100644
+--- a/rust/kernel/sizes.rs
++++ b/rust/kernel/sizes.rs
+@@ -132,3 +132,15 @@ impl SizeConstants for $first {
+ }
+ 
+ define_sizes!(u32, u64, usize);
++
++/// Large size constants (≥ 4 GiB).
++///
++/// Only implemented for [`u64`].
++pub trait LargeSizeConstants {
++    /// `0x1_0000_0000`.
++    const SZ_4G: Self;
++}
++
++impl LargeSizeConstants for u64 {
++    const SZ_4G: Self = bindings::SZ_4G;
++}
+
+-- 
+2.43.0
+
+
 
