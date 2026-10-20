@@ -1,92 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5672606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 14:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D4MT/KgP
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2BA606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 14:52:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A90446B04E2; Tue, 20 Oct 2026 10:47:40 -0400 (EDT)
+	id 14BB06B04E5; Tue, 20 Oct 2026 10:52:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A19376B04E5; Tue, 20 Oct 2026 10:47:40 -0400 (EDT)
+	id 0FBF96B04E6; Tue, 20 Oct 2026 10:52:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 910086B04E2; Tue, 20 Oct 2026 10:47:40 -0400 (EDT)
+	id 011D36B04E7; Tue, 20 Oct 2026 10:52:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E0036B04E2
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:47:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DFF39A021C
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:47:39 +0000 (UTC)
-X-FDA: 85343283438.08.5D90B7B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D26A26B04E5
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:52:33 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 621368021E
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:52:33 +0000 (UTC)
+X-FDA: 85343295786.20.A0D1A3C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 473F2C0010
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:47:38 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D4MT/KgP";
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 941A340002
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:52:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792507951;
+	b=H8KXNJCZ0l9m4hcJfhOo+rrvaZGkajVKVkv9hQJ7w1mlYa/+XDDmZarAV65AzUsF/1UKh4
+	qobw5fdqdlvUiinDse+8heCOs2L8DNH+DdURIEwomxEFp5NiRnSPuMhyV53PfZgpEAbnhh
+	S7wykyiuLNmYOODYetJ2hSQlgv7aYls=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792507658;
+	s=arc-20220608; t=1792507951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8KLZGYnTaZZfWo0UwCu1ph7Ozc8pVIN7vRMc1zsSV1g=;
-	b=V7ZoIVKVU9kJfTLvmM6dMNR3sOCBk/Ixw0VafxRrHaAo56UlaTHhIqvJkGgev6P0uzSFid
-	R1fTVGGC9odXqScYE8s1tDN7+Tzas1kRpbBmYMp3YwcuxIZ8L+v19vEn+AVvKoZqfWE5cu
-	ughsNHGLaHzFye9fsOpZLnK/bYWkt3o=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D4MT/KgP";
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792507658;
-	b=6wSZjxCaXac+6i5HTY5zXDwe2tE1I8QB1DyuGMRF3H15T8qaBxA0kNzY/cbXWRl996T5Kn
-	bdjbPqcCA6cIV7q0+Np+Et4LNniU/1aRxbVyLP0Uyp+6lCZhlLGTbv03hkSrmDJP4KLwaj
-	XDO6GKXMkqWVfq8edhybOAjia71LofQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uST+2UPhGQtFdm1FrEDP4iWERzT3x7EHMCAY/Ff1mCw=;
+	b=mbKfFQ2975o4cuaOqoPPgBXFiB2QeLJ55W5MIcTVwQOutRRrNrMcmzcq8x/RC7esxEq66R
+	bS5MGgarNQnN861fNA86LkBP80H/dRaMkFtFwfo0tHvfgV/mtpWIKOhyWEOkuSV9QEXm2c
+	tLe5nK83abUwXHqkChcblQymWtuzMW4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 39D6743A9B;
-	Tue, 20 Oct 2026 14:47:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48FA1F000C4;
-	Tue, 20 Oct 2026 14:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792507657;
-	bh=8KLZGYnTaZZfWo0UwCu1ph7Ozc8pVIN7vRMc1zsSV1g=;
-	h=From:To:Cc:Subject:Date;
-	b=D4MT/KgPVeIyRqW9ieO8UoVRz48J1VsRFefiD3x9nDNdAu62Mkrvbh9F4WY8uzk1L
-	 t+zUAqjuIjRc8S4m425jmJFCAUoXO10wl8OCTqVtBc5LE7WvffRUYcLQwFwBMKaoZx
-	 1QIzJx7T1LS5Jq9dWWJO3igUYuhuFvob6iZ6y+EJa7Wwgaxi9RDKsv/f2xDWbmaEkI
-	 1AIkuUwrmE9zqQHCQboXcQ8ic2izEQoKZB99XWR/yfXW0Ny8Yzvbt6nKL5fLRjJsdl
-	 +JyjHbO7FAA+nFX+djkxpiYKUjzE5C0Jck79FdHXf2VEXBo9svXkGJDY7mXLdbbM+N
-	 daaI6ENhhxiPA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/sysfs-schemes: hold damon_sysfs_lock in target_value_store()
-Date: Tue, 20 Oct 2026 07:47:25 -0700
-Message-ID: <20261020144726.88978-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	by sea.source.kernel.org (Postfix) with ESMTP id BD02243AE0;
+	Tue, 20 Oct 2026 14:52:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776E71F000C4;
+	Tue, 20 Oct 2026 14:52:26 +0000 (UTC)
+Message-ID: <11264869-00ad-44ea-b39c-a78347af0ee1@kernel.org>
+Date: Tue, 20 Oct 2026 16:52:19 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 473F2C0010
-X-Stat-Signature: kayuodh9xcp7gz9wu837mwparopye638
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 0/4] mm: compaction: mTHP-friendly memory
+ compaction
+Content-Language: en-US
+To: Bo Zhang <zhangbo0325@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org
+Cc: surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
+ hannes@cmpxchg.org, ziy@nvidia.com, ljs@kernel.org, liam@infradead.org,
+ rppt@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ kasong@tencent.com, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, zhaonanzhe@xiaomi.com,
+ lipengfei28@xiaomi.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Bo Zhang <zhangbo56@xiaomi.com>
+References: <20261001001412.3837085-1-zhangbo56@xiaomi.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261001001412.3837085-1-zhangbo56@xiaomi.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792507658-834802
-X-HE-Meta: U2FsdGVkX1/eEiLxEnALWfqHF6mPY4qiqwZui7sGzijkCKjU41r+gBDLRW2alDXvaegcTNbYootlTBw4UyL+Du9RZG7xYL5hG20cV2N5K/IGV7o4huh2jKWW3JqJC4MD1tuxFkYdpQCKDD0dlEjvHF3NeqTwW5utcIu/Thb74VIMnl51w+31RZVkQzP5CGK0RJevAAdl3Rve9McBR8OmcAJae6gJ6sfaDxgoRqU7UsL+Ry8KCAPeZOmjkLg0uigXBGS/y0adgCiWBGXZye2yNx1C45flf3GiFDxtzHQqCwhBhEkNUebd+7LRtRgCyDbC7oE4wrnm02vOWn3kyVMDs95IcwU79C1sk7jO27+cLvJOsQU+bbs2gjvCeBrh/F0u1Stb54SNalZ55kq4gSGkv0Kncz5bqNROoRP08Z7MnmUk+7WbZDE66vSZ4yQA7wl/fG8xj0haFwkr3NNDivGkFdBqXt2smcviRCRT9A9usuQMrMV1advNrPrPl6YFvCOehH5QZ6PZF0ASiadVgXZhs3K5woWT7eK5Pj6vkpMMrGuLXgBX8DiX++MzKwwBrde+01Mvpsz1ZfRwBM3gEsWRonPr6CY6mCVjhI5mwv44GrFGv77a8Y/IFXJr3zMqA7Yjgu0hbWP1dhPRizYKJArBaup0biamXkugaVz9ROVIxCtjNMA/fBYi8J0Kt2Wqbyrz3b9wSxHWIxWBa3VNg8SpBgpRmoFzgNbgXC8LfF7ccjVXslgO+f//x0acY3np5tGYdbmw07dDgtSY2DdtMZO/QEgso+LPhB2UUoeJw1K29vI5TrrFJam8SgfJCkMvxtFEtu0sDAb67ZPv6HvT7hansvt7lcPWqTCvWJ8Q1I/C6ppbEJXNFzoJ6VAToGEaiIKXxz6SBHmJ2zFqRSp+uN3kBxo8yl9YnbuTUhlLCnDhP5aqfVDNHFGjDy1gY3OSFRGbuNXEIjMqM3kFpDv6QSA
- an555ta9
- mi19/sz18zBcmb1ADvCcmgVHile7HE6IADlgY0TSyyHqpJxEWi1/DCBcj0RpcIsPVfWvSGpcjartc0BpLLDlKiyyqNHlgAM6yh58GNMQ6V8SHT5C3r96xIfc2kEBG38yNRGt9+kdZApsOsL/pCcATSJrh6zs70fxebNKQHUnuKRtSYJ89PWg9jjzzEDBrW949odJ2NUpcNm+HJWp+rkVosjDLquFk2ymQ0bGyDdV3Fk+tNJkefzCAbO2ztPT8gVAuNoc/3erytePVpcmcGjeEG+SayGLzI+QabOvYTwpHfSi2gZZ7CqWjPu8iimidSUDaptZm9zZb3dCEGaD2sTeClVyTmg==
+X-Rspamd-Queue-Id: 941A340002
+X-Stat-Signature: mfbnwuqeec6jsdzt6n8qboc3sgpi8hhh
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792507951-149239
+X-HE-Meta: U2FsdGVkX194rDRQH5zb/VKwRL627RqKCOR3I8anaYeou+F9wEgrzB3nh27u7XK0B+eUwfihbdE958yp2M/x5DBdHtkT6DuK3aCix9WwM9DV62+rHZKp0X3iMaEykTZ4M0UndcZlyVaV77GDuRxltc2IuUGmGEPv3zFAHRAghvrvTaeUfM9lWsOLvD9H+oMoNynO9kpp5XLcJYZvuwX5DIouhFpLIzbp+R/8nwuTln/kwMVKfycih2hiyIuarFho8RM2BMUWY2WmrBE7P1EhkI3+qdf3QojzfR87Kjst4xeapa5l2EtLQ3uDWY+Cryq7miCV3RAL4utKoZJl+oM+sWtpF1ucwq8oLh8zl10fK4SvGtoVCX1feveGuKJhCwtbvMSOXIpmzjphf14YxccAVVxmORL6nCCuT6N8ovCX2zChDf/9QO2llbHYqqjtCveAHvafxtWRXJx8FRzub4bOPgmvxnFLFLwnHte9D8HxRC8M4jboCMqp1zwlRWcl/tiJUuYXJsOtkSd2mA/vtcQRLfTsUtE2/yID7vmm6U9/2DsYGgQ7UI+7/jJCLuBtTbo0bX8EsX8JT36mCKvWGVBWyjmG47NPG7ajZbi9oIHphU/6Gh4mEEFq8pdwHzxdwNX+jIYEX3qS7kBEiMWj0L5wZDh0sEK5hcyO7NCB/HVP77U/A6zv+Wlo7Deq0oWfS9orgaq0wtPu+2XxHhKvitvSUKX997ZU78efUX97n+tlzl2MIEtWjAdvC4F9IEcNWyUNVLEPBZuGTmAIiIXVjxcAPMB+lqUAP7QwjGhDogcJdtTvsjKnsTY/5AqyYsL8WyF4Y6ILnThbocdjfPoLCAXdak4zhxIPlmAukN5PT031s2uha2UD6+XCKvVcM8tPdq6+VlEKun7xzV859JkfNnRUuJ+vRF7/dDWADWDJUucVfLwbPHd20+7Aem8Y5Z3mtFZppSPZDBBpGDpqd1EnsxP
+ ZIt578Y7
+ 0ISZVz+bRt0IwBGFi7bTDloyEVbYjakmi+LFcWfjWwdpPmDRN6G7igIvvbjvVpSRLpMt6k1L0udRHPFs/dcTJM2GjOHaJrgwFf+ra8CuIzKSOxXoQh9gEWAVTf57vhbEsu32IyNjLZdBPhfnstu5vcgauxOo6GgDwkqK0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,69 +130,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Remove a race condition under certain use cases that can trigger
-divide-by-zero.
+On 10/1/26 02:14, Bo Zhang wrote:
+> Open questions:
+> 
+> 1. In skip_isolation_on_order() and elsewhere, the target order is read
+>    from huge_anon_orders_always directly, since during proactive
+>    compaction cc->order is -1 (via compact_memory) and there is no clean
+>    way to plumb the mTHP order down.
 
-damon_sysfs_add_quota_score() setup damos quota goal as user configured
-and pass to the core layer.  Because it could have a race with
-damos_sysfs_quota_goals_rm_dirs(), which destructs the files that carry
-user configuration, both are called under damon_sysfs_lock protection.
+Isn't using  struct compact_control clean enough? There's already many
+fields like
+    bool direct_compaction;         /* False from kcompactd or /proc/... */
+    bool proactive_compaction;      /* kcompactd proactive compaction */
 
-The damos quota goal setup disallows zero target_value parameter because
-it can be used as a denominator later in the core layer function,
-damos_quota_score().  Otherwise, divide-by-zero can happen.
+Who says is_via_compact_memory() cannot be refactored into something using
+these kinds of fields and not 'order' being -1, which could be then used as
+the target order.
 
-For the zero value check and final assignment,
-damon_sysfs_add_quota_score() reads damos_sysfs_quota_goal->target_value
-twice.  And user can update damos_sysfs_quota_goal->target_value via
-target_value_store(), which doesn't hold damon_sysfs_lock.  As a result,
-a time-of-check-to time-of-use (toctou) race can happen.  If the user
-sets the value to zero between the zero value check and final
-target_value assignment, zero target_value is passed to the core layer
-and results in divide-by-zero.
-
-Fix by holding damon_sysfs_lock in target_value_store() while saving the
-value.  The read side, damon_sysfs_add_quota_score(), is already called
-while holding the same mutex lock, so it avoids the race.
-
-Users could reproduce the race by writing zero to the target_value sysfs
-file while DAMON is starting, or online parameters update is ongoing.
-The issue will only rarely happen in the real use cases.  It requires
-sysfs write permission.  The race window is short.  Sane users wouldn't
-write zero target_value.  Especially, they wouldn't do that while DAMON
-enablement and/or online parameters update is ongoing.  That said, the
-probability is not zero, and the consequence (divide-by-zero) is quite
-bad.
-
-Closes: https://sashiko.dev/#/bug/linux-7f814c9a-986f-4103-a55a-ef9537dcf62b
-Fixes: 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota goals user input to DAMOS")
-Cc: <stable@vger.kernel.org> # 6.8.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs-schemes.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 8f083611741fd..55298a17b653a 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -1355,7 +1355,13 @@ static ssize_t target_value_store(struct kobject *kobj,
- {
- 	struct damos_sysfs_quota_goal *goal = container_of(kobj, struct
- 			damos_sysfs_quota_goal, kobj);
--	int err = kstrtoul(buf, 0, &goal->target_value);
-+	unsigned long target_value;
-+	int err = kstrtoul(buf, 0, &target_value);
-+
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	goal->target_value = target_value;
-+	mutex_unlock(&damon_sysfs_lock);
- 
- 	return err ? err : count;
- }
-
-base-commit: 33560dfbb2df9b2d1525fd51ceeca3c1167431e3
--- 
-2.47.3
+> This variable can change under
+>    userspace at any time, making the semantics fragile. Ideas on how to
+>    pass the target order through the proactive path cleanly are welcome.
+> 
 
