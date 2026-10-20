@@ -1,91 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F62606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A48606A324
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HRIsqgUU
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=CvpUkYzR
 Received: by kanga.kvack.org (Postfix)
-	id A238F6B0183; Tue, 20 Oct 2026 18:36:09 -0400 (EDT)
+	id 199C26B018B; Tue, 20 Oct 2026 18:36:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D65D6B0579; Tue, 20 Oct 2026 18:36:09 -0400 (EDT)
+	id 14A566B018C; Tue, 20 Oct 2026 18:36:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EA766B057A; Tue, 20 Oct 2026 18:36:09 -0400 (EDT)
+	id 060346B018F; Tue, 20 Oct 2026 18:36:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DB7C6B0183
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:36:09 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F6991C3A90
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:36:06 +0000 (UTC)
-X-FDA: 85344463932.05.B9BF2B1
-Received: from mta1.migadu.com (out-207.mta1.migadu.com [95.215.58.207])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E89BE180010
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:36:03 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HRIsqgUU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DBB0F6B018B
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:36:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D8A2A7E90
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:36:52 +0000 (UTC)
+X-FDA: 85344465864.20.C01CF57
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id ADB261A0007
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:36:50 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CvpUkYzR;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792535810;
+	b=ns625KmqkRxNq4iEpJycQz+QcuO0GvsXNF5TevaxRYKmGiJWGXgPfDzQqev4+lHsGxeTF8
+	WNCg2XaoCNIBBAqeaO0WoBf7AzZdVeBskd5UQ3xEe3gzE+ku+bjFz1l6vwWbra3uel7hq/
+	cxgqWBuLvOhhxu/fgP6HNrRfAKbneBw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CvpUkYzR;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792535764;
+	s=arc-20220608; t=1792535810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HodTXsgPBzIPYL+ZGw+MXUWqV6VcazjbsVd6O07Sa00=;
-	b=Iz7i/SBY+cQ48Z+YHm3bVJtPxDa3b9Alo1zYJ/vQBbwudgjN3Dl4Z6zI1wEC5zXqArCpZ+
-	IKnO8wGMdaJoEbwZT1mT0sZ0A01ux0cBc0cPi5wbcZPNWwjGzpDvkS2cBI7362lXfAh2eH
-	hAkDTVjUZ+9/dzWmI0dsVnFURzkrSAI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HRIsqgUU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792535764;
-	b=BH4h12k0gQ8eq5Imc5w+l6ltedx4AxgtyIS2qc5JdocwOwfhILv3yf3S7S8CyKRG/cV3S0
-	tFbOehNJERaqTAFALjF/o74CtB1TIVNwk3vS3kGk/CyCH/1WreJ92rIedGzJq+fltu/dxX
-	BxHsud7xxU8XE1D91uMxmHaTKYyUNJk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=HbWlWrJdZDODn99IUscfxlxDII0g4fQaUHUOuuxABQs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792535760; v=1; x=1793140560;
- b=HRIsqgUUXhHI+u1+mlBVDis39gAMNR/0IypEohlIqm1xcyaLokbn2llHgMu7mG5b3f2HXKQR
- PFL6gcADN0refJuy6Eu0VxX+JxKt+P0nzgV1ma6f5+wS3+9cXQUgUS+mdOZDCSC++c85QfTPvab
- BanTvTpRdD+j9U85DrdfTlpk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f1fdcb3e0d7c102c;
-	Tue, 20 Oct 2026 22:36:00 +0000
-X-Mizu-Trace-ID: f1fdcb3e0d7c102c
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 20 Oct 2026 15:35:59 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
+	bh=Rv30j355ZOn02JMfZ3RVK29kwKID6foC3R1nQuJB9KE=;
+	b=rHDGnf6JWoQx+YtPPCUH24VvPUg0HNkLWRSMFuF51fRZbWRGBtSEhwaXCiRVYj14heVWNd
+	8zMbRlDn3VordUtmiXRtwZ99N+krqETOOHOAqS2PGm0jxsf946i8Ke0St90uxTOdGU3kn9
+	k77IvlVWbfgAn2QFml7ZNRStt4dqzrU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7A6E360098;
+	Tue, 20 Oct 2026 22:36:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7111F000C9;
+	Tue, 20 Oct 2026 22:36:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1792535809;
+	bh=Rv30j355ZOn02JMfZ3RVK29kwKID6foC3R1nQuJB9KE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=CvpUkYzRfhBVW8RqAWpQuWI7gU2PABbkK5qRUeeF0mF10sMgigl60Fj23MU4UcKj0
+	 8qBnMeIY1RNIFU46IX3s9ngCawWnwx3DtDIuthqPYi302K8XWN09HfpQ7uYjOGMrqP
+	 zT6EztMOTuOzA5E5gwpaOqsJcawgbYRKjaSxOGpo=
+Date: Tue, 20 Oct 2026 15:36:48 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
 To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1] memcg: fix cacheline contention between lruvec stat
- updates and LRU lists
-Message-ID: <atfrhsr6bft4t7SI@linux.dev>
-References: <20261020200730.250189-1-joannelkoong@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng
+ <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Zi Yan
+ <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>, Usama Arif
+ <usama.arif@linux.dev>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins
+ <hughd@google.com>
+Subject: Re: [PATCH v3] mm: unqueue deferred split folios outside the lruvec
+ lock
+Message-Id: <20261020153648.52636815691868735e9699be@linux-foundation.org>
+In-Reply-To: <20261019230646.3510790-1-joannelkoong@gmail.com>
+References: <20261019230646.3510790-1-joannelkoong@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020200730.250189-1-joannelkoong@gmail.com>
-X-Rspamd-Queue-Id: E89BE180010
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: n7pspg3kq61esf8h8ih3csxft5ftj1yo
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: ADB261A0007
+X-Stat-Signature: w74mymqu8877odikwiz5ri7wcimpanac
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-8.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792535763-479237
-X-HE-Meta: U2FsdGVkX1+NEmEMNd3cDoi1X0Vs9JWMgvz/zGOr49IpRcKyoKkGYU1KxGLQfHms644L+GA3S0jQWd2Ezpy+up6sImKnZ4C6sZcsPESTr1ZN0XMPxUdMMhdStrmXgjSNOWQ6LeM4Mri7Cb9n2fPdEHvzCwK5Q503T+PYL+arSabnCyPQJXVSFElSOKp0VUpBHiQT1KcZJk6Y6eup87sJe2es9/zQFlLjrRoQcIUgTwp189+TdYwVfY0H7PHX5m93ZFYOR1fdAuCg9iwFhK/2sj6Wt/8fiY2nK50D29DRPrFXBA4Ax9CBFCmos1UGJpvyxQWtxpZNfBN9MrNQ9I6JAald4WYINv4/pbd/dtrv3T2KcMtdaKVOpsqjLy6gs21tua6maJL3BOQ5HRR695Lbl58SuvmtKfQhilO9kcZ66v/OsciWc0o5pUPgh1kihOnVg9Bwj7k5+weEXVZ0lfuvoL8Jgr9A1UouZB5pX8kHawMEwdyO3jW+JTS9/RZAx8aoMOMaJR5ACklcXcIgMlqt2M1fD1T15d5gaxlomkeRUKyu/GHOIhV5FeLOLpSUYmEjBo79cemHAnpVCvYEHfILsDTXDxrcZEeOGVhpzmVqNjuNPWDBjonG50UqrY5rvDvCLz4gefBhJqfE5v5GAqi8pVOC34FRjOehv2di/LezDRwju1BSFJkLH28WsNt6EGNcXQKvSyOu6PrD84SapT9p/lVL2xAq9udBkZaFPklq0W6jmvLLB0SmaDwYD7y06Gckb6LXT1sTVaoOwMm2LH3w/NGPBZTfyJBmfYlmp7FyaHR1NxFF18QW/+n/UCs76E3gdB1cATMzOHla8bb2TePlkkpLNv5SOIgTTTKMMydg1dTDvvn62Nhc2YpU1fHDCBoUztlyH5XOPuQ04GqWmfbMKxyDNSd0PD0ZSeFXI0UjDeI10xTPbaaZ9mJoCfOtvCe1ZO+oRRx/ETySXJqF2tG
- eqIobxFD
- r71D5DAcUf7r5Hq/Vc+yAw2NySScTBZDcmzpYpWaDwTAXOCNeIYFiszXk8qrIZC+igOJ80G+UYA7j/f4I9vfRGvS9Jr7xn4Kxxo4wQvQ3jISRn3TSkFK4HZt2CzccQ9nYGUk3+Hu1fn8DxhQrlhDL3AhsNZxyF+dCiVeSBUlrgTBwpWeXHvCFPfN9zvVh1Kkv/9l9pbmnlj5zV3ln90FyZm3BCruooS2rMVr/13CHSFcLymlcmvjhjMKqfpls1D5DmtPpArxYoOynPpk=
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792535810-805855
+X-HE-Meta: U2FsdGVkX19TS8Oec33GiFXLfPXhHwoH0SmyHtDeGbR/Wb3fnsuXHkfeRzw6zAXtwa3lKKU9SV5bOfwjYRb0YigYuue8FCHjVMMSMfiDF0xkC58AkmsD2+nVVwoZgGEdaCs5K0GfiWcjoUZU3kMIn5ZI/V7ELIi2lHiswZsjNzo+uWKrr+VdBgNuFcc/Tkh41a48OocLR5O5YbSJMtnBTo7qPefsLNi4+NbuR1Zi8zIEUHPyhagmt6Y8dv7MZrg+Y1VFiSX2iQLa3JJeM+AyytQq2P23g1tzxk7EU7QsW6cDxYd/U67CZKmyHjljSWuT3Xz2ZeJ3J95uG92OekfBpqNipNG3ixB+ZUCMNb/UE4tgbncrMcsXazTiT1zch0AKtSxH5oGv1XqvB4lZuT2//PIWVOd4Ipp6Y/MRn4KFhYVKv5TwgKhpKC7y63BxeYlIRvMY9ZpArqVqPUlWlxMg3ovK2Aw6gJGgfFYDamDxAtLJthgNIlJ54E/sB/lUn5zd8QBMYjmxzKvyM54kSR74dpCbU2So5/esWY9thh9ooMzVtqM3qmTRaIjTm3/1gyd2bfM1UHTJA2k2Qj2fDIIw79XxW+pkFUDxYhDzwatkY+E7jH192zNJGF1YqHZfB7C9Q6mA4WpS+gqtRwjOQFDckouepZfIBoBAVYtY9gNm5FifYRnX+1vdcLhSsO9OdzMQXYF59V8b2IAPGQdJ/XS5IGMe/6cNFQLmVug/2brGft8vsRPB8UcbXzeVSC0dVh4s/eXCFfQxsKYx5LN647o+1qPBz/7BZMiqz3p3ifqr9JposEf9uk/miCYrN66AoR+RffzTSRHtnqQ6jxzD/wIiLv9sdQuVGepHnMIQ9FHJxAvrbwm6OgXxB4JtkW2UUd6ldkRRuReuTLUOjH5JIUu+M9DP92vEzF7nm2KQFr8PiPs/i47W905E6MpzvzTX10LCJOJwQ/6QIbIb0aIHm03
+ sdZqGZrE
+ lzYO6AarR34NDLC6Fqss8pS5etUSrm9tdDMoSQPCzvB8p6qZZgJ8/W/pSP5mYdi7afedOfS0W5gdc/AjLtPlcP9UbVWrGwwTQ35CjfMMmOzFOyWH/Sl2Z/jePNlWEvTCDDRA1lvAXXZYAecVF8HtrYjdlr0azKmvija8BVq3YdLoxLTuCZYXNtoeYXew/q3zarZFcLvWTK6sjQGVhfrFnTvh/XbjfU72xrYItBT53k8rRes48y9RH4hdKZU4/SUnbccC4LeJllyxFjdWFYP7VEOOpaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,88 +102,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 01:07:30PM -0700, Joanne Koong wrote:
-> Every memcg lruvec (per-node) stat update reads the memcg and
-> lruvec_stats_percpu pointers in the first 64 bytes of struct
-> mem_cgroup_per_node, and the ones that go through mod_lruvec_state()
-> (such as lruvec_stat_mod_folio()) also read lruvec->pgdat. These updates
-> are extremely frequent (eg these updates happen several times for every
-> page that's faulted in, freed, dirtied, or written back).
+On Mon, 19 Oct 2026 16:06:46 -0700 Joanne Koong <joannelkoong@gmail.com> wrote:
+
+> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
+> folio_unqueue_deferred_split() on folios where the refcount has dropped
+> to zero. In these paths, folio_unqueue_deferred_split() is called with
+> the lruvec lock often held (move_folios_to_lru() always holds it and
+> folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
+> in the batch except the first). However, it's not needed to hold the
+> lruvec lock.
 > 
-> The memcg_pn_read_mostly cacheline group keeps those read-mostly fields
-> on a different cacheline from the lruvec, but on CPUs that do spatial
-> prefetching [1] (which is most Intel CPUs / modern CPUs), cachelines are
-> fetched in 128-byte aligned pairs. Depending on where struct
-> mem_cgroup_per_node lands in its slab, that cacheline can be paired with
-> the cacheline holding the LRU list heads, and the lruvec->pgdat
-> cacheline with the one holding lru_lock.
+> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+> the deferred split queue lives on folio->_deferred_list in
+> deferred_split_lru. The deferred_split_lru is a list_lru with its own
+> per-memcg per-node lock.
 > 
-> When this happens, every stat update also pulls in a copy of the LRU
-> list heads and lru_lock cachelines, which are written to constantly by
-> other CPUs under the lru_lock. The stat update has to fetch them from
-> another CPU, which is unnecessary overhead since the stat update doesn't
-> use the LRU list heads or lru_lock at all. But even worse, the lru_lock
-> holder then has to invalidate those copies and wait for the
-> acknowledgements to come back before it can do its next write, which
-> makes the lru_lock critical section longer for everyone waiting on the
-> lock.
+> There are already other existing callers that call
+> folio_unqueue_deferred_split() without holding the lruvec lock (eg
+> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
+> 
+> Add folio_batch_unqueue_deferred_split() and use it in
+> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+> unqueue each batch of zero-refcount folios from the deferred split list
+> after the lruvec lock is released and before
+> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+> critical sections, which run with IRQs disabled and are highly
+> contended.
 
-Can you please reproduce on a non-intel machine?
+Thanks.
 
-Second, can you try the following patch instead of your on the intel
-machine?
+This is a speedup and not a correctness thing, yes?  Let's make it a
+7.4-rcX thing, for the 7.5 merge window.
 
-From a747ceeb4e3f10fb0c3e7daf5660076a49b77126 Mon Sep 17 00:00:00 2001
-From: Shakeel Butt <shakeel.butt@linux.dev>
-Date: Tue, 20 Oct 2026 15:33:26 -0700
-Subject: [PATCH] memcg: rearrage mem_cgroup_per_node
+I'll park it in the mm-new branch for now.
 
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- include/linux/memcontrol.h | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 74110a324f9e..0e73f5c96e15 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -95,6 +95,17 @@ struct mem_cgroup_per_node {
- 
- 	__cacheline_group_end_aligned(memcg_pn_read_mostly);
- 
-+	/* Touched only when the memcg is reparented or freed. */
-+	__cacheline_group_begin_aligned(memcg_pn_cold);
-+	/*
-+	 * orig_objcg preserves a pointer (and a reference) to the original
-+	 * objcg until the end of life of memcg.
-+	 */
-+	struct obj_cgroup	*orig_objcg;
-+	/* list of inherited objcgs, protected by objcg_lock */
-+	struct list_head objcg_list;
-+	__cacheline_group_end_aligned(memcg_pn_cold);
-+
- 	/*
- 	 * Keep lruvec on its own lines. Sharing them with lru_zone_size[]
- 	 * regressed, see commit f59adcf59332 ("mm: memcg: add cacheline
-@@ -114,17 +125,6 @@ struct mem_cgroup_per_node {
- 	atomic_t		slab_unreclaimable;
- #endif
- 	__cacheline_group_end_aligned(memcg_pn_write_hot);
--
--	/* Touched only when the memcg is reparented or freed. */
--	__cacheline_group_begin_aligned(memcg_pn_cold);
--	/*
--	 * orig_objcg preserves a pointer (and a reference) to the original
--	 * objcg until the end of life of memcg.
--	 */
--	struct obj_cgroup	*orig_objcg;
--	/* list of inherited objcgs, protected by objcg_lock */
--	struct list_head objcg_list;
--	__cacheline_group_end_aligned(memcg_pn_cold);
- };
- 
- struct mem_cgroup_threshold {
--- 
-2.53.0-Meta
-
+If people think the speedup is sufficiently worthwhile then I can add a
+cc:stable to it, if clear justification is included in the changelog.
 
