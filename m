@@ -1,94 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBFD606A333
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D207606A325
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=hammerspace.com header.i=@hammerspace.com header.a=rsa-sha256 header.s=google header.b=IVa0+bbl
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=hammerspace.com header.i=@hammerspace.com header.a=rsa-sha256 header.s=google header.b=dyyXyaRc
 Received: by kanga.kvack.org (Postfix)
-	id A5EDA6B0567; Tue, 20 Oct 2026 18:03:52 -0400 (EDT)
+	id 185526B0568; Tue, 20 Oct 2026 18:03:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A36AF6B0568; Tue, 20 Oct 2026 18:03:52 -0400 (EDT)
+	id 10F576B056A; Tue, 20 Oct 2026 18:03:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94DFE6B0569; Tue, 20 Oct 2026 18:03:52 -0400 (EDT)
+	id F3F946B056B; Tue, 20 Oct 2026 18:03:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7A26B0567
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:03:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 998DC1C2CD8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 98BA36B0568
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:03:54 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2C79C03C5
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:53 +0000 (UTC)
+X-FDA: 85344382746.19.0F05099
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C1F6A120008
 	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:51 +0000 (UTC)
-X-FDA: 85344382662.09.2EBFC2E
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A0E934000C
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=hammerspace.com header.s=google header.b=IVa0+bbl;
-	dmarc=pass (policy=quarantine) header.from=hammerspace.com;
-	spf=pass (imf12.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=hammerspace.com header.s=google header.b=dyyXyaRc;
+	spf=pass (imf29.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com;
+	dmarc=pass (policy=quarantine) header.from=hammerspace.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792533829;
+	s=arc-20220608; t=1792533831;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oiJsb2ENhg2Lat5WWUqDnx4kJNVMy/Qtqe/7sshNmdw=;
-	b=SYbA8zfk0AoHfCaU2arV6qLxxqzNv7oHvFSZGLN3JSja8KCd906ia74/vHYDfWhRbJcB7H
-	/JxdNtS7PNMx8f4PO0hmWPphzjhhFvLLocw9TQuGdTCZoU0S2xFwaNKMFlJ5yfMbEsuS/P
-	8VJuu9kqfRbdSCdk5JS+38bIzcKn5AE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KYIFZnbJ/tQXvMmHyoqaiwEU9dnEoX51wTobPwpbUYk=;
+	b=6o9QctmMLrOt1B1AaoSDB9L15bjlZHtmc6p48tvBzE1EsxJh/1OV+Dw/taNNqtZbMZDsqv
+	2d+tZDJvv/h3GLra0DvpL23rZjVW9PZcjCeHPIs3Sadx9cl7VobNCtBhfOxZkjE8Up2rgh
+	HYXF0hnJT1YYotFHkbOzeW57u3NA4SM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=hammerspace.com header.s=google header.b=IVa0+bbl;
-	dmarc=pass (policy=quarantine) header.from=hammerspace.com;
-	spf=pass (imf12.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=hammerspace.com header.s=google header.b=dyyXyaRc;
+	spf=pass (imf29.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com;
+	dmarc=pass (policy=quarantine) header.from=hammerspace.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792533829;
-	b=vDj7ng4tUYv797bROqejUHL3iMzIlg2oCgRDfJhwTcT8d8QDY6nxwChspV2deaSNNgzS0/
-	rSBLWMK92y63nWzvAuT4YI+d8Km0YcatCf8RZuAdfo1CqITRksfXOYubbQHfqrd5UO/O3S
-	Yodc4zsal5XX82TQWp54U7QHi5zccQY=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93e515769d3so9157685a.3
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:03:49 -0700 (PDT)
+	t=1792533831;
+	b=fggzmSiZPvD06wVU3uCQOBuuv6h23b8f/CAzjaW3xN9cabqOWt77VFqPaI9CXU3iDvsrye
+	xuM1JQ3d+FacN6rx/m0gXfXdOOIp1qhmYb/ehFJwfWgQuEgZH4TWXRjU1PmQRkruQr6iki
+	O8Vu3iM1h8XpcBT+CTStuFylj8YN6cg=
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91b834592afso1650696d6.0
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:03:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hammerspace.com; s=google; t=1792533829; x=1793138629; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oiJsb2ENhg2Lat5WWUqDnx4kJNVMy/Qtqe/7sshNmdw=;
-        b=IVa0+bblkvUKcZK8goOAN/6fbGOYtzJsyylgbUQkaqiQZU9ijLhKSO2tr+CgtlZ/KO
-         BHb112DdrI0LmLCdMm69QjxGeb81SUI0BJjK2hQwtrHWWwNCffQ39wOBFBARDjy4iL4C
-         VKbPlQzrcAm6JgLzN27ZrWiKluSodiPmAIac3JzKzfSuqLLRaGYsJ/FIjJ71u79CKIwf
-         En6zkNGfkk++nzOf26+N3Rg9H++6pOtYMZKqvXJDhI8SYiV51hNvMwXyQDrIP5ynSmK+
-         XtLhT7K8ybQoFaVsWo7+4TpOWM5jTj4MGprTA5u2dkzkZQ5h3EjsdXfUPcEpk1emnHX8
-         UZYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792533829; x=1793138629;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=hammerspace.com; s=google; t=1792533831; x=1793138631; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oiJsb2ENhg2Lat5WWUqDnx4kJNVMy/Qtqe/7sshNmdw=;
-        b=Njj9bpsl5V27vQhaXvZ1XwHzbwbrCctZeq6GFYfXzSUNpvMXd14JPvThd2mILQF/MV
-         QpHn7+1ZE3ECOxq59hKPT4e461tQVupPUEkBRaKMR5851dWKsYnjEa0UN0zwYxENCqBN
-         RqmY9Ql9gdjqxVnWJ/+2FuE6HS3Brw2Qc5bhQkiY/Sr5BkbtWt4aNkAvqxTV/Es4k7jP
-         S0yQkEX7V3b2nFoA9CU0KbAK2yYceexBLx6JtHWK8AUyBa1De8Peu0edCQLfUts+ZH07
-         SJm7s6HIFz3YddxSF9xwL8anGZIL9wypxL4UqSvHbueXvtTi3bEbSjYbnr/YVTlqzL8G
-         0pKg==
-X-Forwarded-Encrypted: i=1; AKwUvBwHW3rwPemZASUf2v/dkcQrWQYNkK59uWwKZENQC1wFpmqqBe0OlS/X119tSlrclGjYzBcZJyZpRg==@kvack.org
-X-Gm-Message-State: AFq9FYIqMrbaHgaxPa0/CQSYsjMIb6y8dLVGNuyj2Xc7xebc4HKkOUz0
-	nT1z751G9gd2XgzNxrQLX83N1JfIKIPoBHFAWgpSnnFS2ys3E6/Bkg3AsHpytjDbkAk=
-X-Gm-Gg: AYBFou1ST15yyV/l86FBNaoRd7SCLS0O64+5718sllBWnciHwS3xzovX+PbBc2s77cv
-	IPWoa/AqXoZc70YGPNdBF8EdgmNuoOBQP57ovDyWmdUSveo1jrV0BcnDgJpf7kiadvmezIskTvq
-	Qn7bnMIe/RqT+4pJLSuHs0NqKl4GkmwTOSvMO0mLWc9yTSlMwJJ7tq74vK8tkzK2EPB3qeakNv7
-	p7fyuLcYFZo6VxQMVQVySqad12GTL4rm9Nwc6KaJbg1CTGzn8ZZIT8eTmkyZYmRrpYDQA75Nndy
-	4aYUQvSp7mG/AUtNu7x2z+023tfbYNoyTPI0oq0xqYTYHOE4dzCEanp7fNAl2w+ESzYtAR79T4y
-	o6WeLrj4JKXgKHMZsGJnzU1WTEdBvDrrqJvqSpIs+IyQ/Verf1zrZQacXiqUX/cqFBd/63scdzD
-	eLFFSJe9Foaly4Q2X+tax7gchOHvQYKmPvz0fY5mIQUuve2z1tLE9v9Ppk1ZD+VxbWIuf6x8ff/
-	mdzx7GUR8kBb6bwk2GrOnDV1wII79A/pZ2BSNj8/yWGWN74FQgT63dKkll2YKGI++PLyZCFN5Ri
-	zHUpL2Ozf6jRE6gtOAtsso71zutlacPI7KmD+EaXkvlKsZljuwx9wNMQ63TtrtfOfA==
-X-Received: by 2002:a05:620a:690e:b0:93f:52c5:a32 with SMTP id af79cd13be357-93f57f7aff1mr111231185a.83.1792533828633;
-        Tue, 20 Oct 2026 15:03:48 -0700 (PDT)
+        bh=KYIFZnbJ/tQXvMmHyoqaiwEU9dnEoX51wTobPwpbUYk=;
+        b=dyyXyaRccHrhK907YxuYR/IDIby/vKYF0zzVcRLKTuiPwfzWYOQ9Bfjm8iT5+CdHbf
+         7xOq3WMSRHxQuAOrQe13xDkQdMC4OpqH1B7mG1Jx0IoCLb566EnQizcdeGZpEib2E7F3
+         boyXLwKLJoN0wcJzA1c6OCxoI+QqgGcffKWlBV60MKexx2PY1olcgb6lVEQNU43Ra3IO
+         XEcwjsvu99TBTEYSMsTs0khgNn0M56IqmIRab9HrCOPvSlLIGF1D5ti8p20/MQHl3dWg
+         iTzXA3s4mLYH7SenP3pfzVQBs5JiV0s9jSoug4X7Ooj4MUpO/0rUkd7Vof9Bf7rpXVCO
+         EVWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792533831; x=1793138631;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KYIFZnbJ/tQXvMmHyoqaiwEU9dnEoX51wTobPwpbUYk=;
+        b=kGj19hx/O05B6gDm6LlFjrTWamqxpnvGBMrpVSYvJ/JTo43ANgSplhQvdoGVcszQqM
+         8ToIFKQM3gUG8Bd55JNsQ5vDbY7j2Bpc8jkwL6OUmGSl0ds5Up4IXww0cuMec5NRCA4C
+         ZsqQgVaQ2N2uTrCCFrgax64hJv8UEEGroBvV3gYp1SmdasuQeyc5qPotPDoFYbGwnU3u
+         2CSDtDXWSAWorENNaL8GupL9d9n7JZI/FguqIKV8HpI2O/thX5MwTQtDCRjpaU52jtds
+         F3ZERJhiut2DfyBv+KnB1/Z8bPPK8lUdLRfzVjlWjk0YTOQdWZb2bFcBnpyhV0wNveVZ
+         FuIw==
+X-Forwarded-Encrypted: i=1; AKwUvBzK/NpgouyeSNea8mRJ/EMysiqCxEkiYndgv676SOFrmDKqgP72I/qjPLybIdWtfp2EAFFuGoRqRQ==@kvack.org
+X-Gm-Message-State: AFq9FYKNTiafIJfYOQK3kzQcXvnKrYozYmtL28qtlh3jle7C3tN9uXCE
+	uVy4/PFQG+2MbjfzjzDbG8B43lW1FuMaOE2aocdYifVcPeEoYHQSsGTeVIMy72x0mug=
+X-Gm-Gg: AYBFou1iuRQFE0BB4J1UlfMDmebxZO9N72FykN3yMn5ohCawSgwPMnvfy066xZ56kR3
+	c7Bz5hzWIv/QVPtaei1guQSmdMtviX72+QY8x5AyH1vS0n3vFvaTOqkYwBPJalD0WY2M4qHwJTd
+	Q1lGN8BaGfl2Ze2B0eXDL/wyL//FIONmiUh0Hx8MxpOGkQHv3YfrOEZU6r/k0fHslRNTjXij051
+	21AE2BfXds+SijcXe63Vl0gFdJzlxfAoB6TmBueHYL68PzBe56Awh2HELY/+9wDjrnFEiO6wVLe
+	7taUvM8mVQ1JFhfUnK+0IyxhpDcNFlPge3bxTXeLhKF3Eu+CI8ra5pQ3esYmvFfnKssAsMWIzZI
+	G9JgVXmAPyggRfA/wr2fNTTjHSBQry/EJ3oy1cFPN6ZZcbQkG86YbGoF3Wj3UlCtJRmU174CDv1
+	YQYLxNwjP8+f4vJj4HBi2Ne2474VxLvfBZ0DkGP6IyWg420BZO+gOaF7CKV7QsCHERPVwJ2ERlx
+	n6ltFgQUz1KtjAe6QdpiZyTTpfe5mOeHbwfljGkIvk6VjSsHpgnOEjKLLTn5LsdAAQinUXTE+Q2
+	4/qmki8dzQ==
+X-Received: by 2002:a05:6214:8623:b0:91c:1061:f005 with SMTP id 6a1803df08f44-91c12eddb7emr2552846d6.20.1792533830405;
+        Tue, 20 Oct 2026 15:03:50 -0700 (PDT)
 Received: from localhost (pool-68-160-167-46.bstnma.fios.verizon.net. [68.160.167.46])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56ddd369sm92332385a.21.2026.10.20.15.03.47
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c116fa63bsm6647676d6.36.2026.10.20.15.03.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 15:03:47 -0700 (PDT)
+        Tue, 20 Oct 2026 15:03:49 -0700 (PDT)
 From: Mike Snitzer <snitzer@hammerspace.com>
 X-Google-Original-From: Mike Snitzer <snitzer@kernel.org>
 To: Chuck Lever <cel@kernel.org>,
@@ -104,25 +105,27 @@ Cc: linux-nfs@vger.kernel.org,
 	Jonathan Corbet <corbet@lwn.net>,
 	linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v7 0/5] mm, iomap, NFSD: stop uncached writes reading back shared pages
-Date: Tue, 20 Oct 2026 18:03:41 -0400
-Message-ID: <20261020220346.28020-1-snitzer@kernel.org>
+Subject: [PATCH v7 1/5] mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
+Date: Tue, 20 Oct 2026 18:03:42 -0400
+Message-ID: <20261020220346.28020-2-snitzer@kernel.org>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20261020220346.28020-1-snitzer@kernel.org>
+References: <20261020220346.28020-1-snitzer@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A0E934000C
-X-Stat-Signature: ixsrpcb43huf33ztu9ogwd4qyd9p97qq
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C1F6A120008
+X-Stat-Signature: dfzbhthri9ieitzk1645xazhypy5oghp
 X-Rspam-User: 
-X-HE-Tag: 1792533829-153485
-X-HE-Meta: U2FsdGVkX1/mhKcJiVKCHPB+lpBFY3BLEIQYcsFouV8LVWZ1O/DCooYolTQfWtVi/KDIHockIVoDqCmwz6LiyBYZFrBIU0mDKjhqwuFnLE5WDXTT9TJATlJ8ok4Sys4HG/qWUh3VLIyJ/0jPg3NvqPT/3++JwY4QcVn1k1ys9qqB07+yN9rSONKy1wlpAezclE1SFgts6I3qX6gJ6fdB89PW9yBoVBd4+UMexUftmaZT3RiYcuDZXAuCpZpURWErC+StqiZPbMztD3ZjHO8Y8BiGLm03hBUFeN233n8oqlj3DRJZxy1/bqCYRkrD+Mnk3B1H4wWjevdmUssEjRTB5ESfRVlw2DAtkwxKbTUDova5Dd7HKsV+4Qlvq5fxijC9GRf73znuwiOSAuNYx5NT3ix3H8odP8cdL6MVLPXU14kivy35HxFDiDB90F5VvPJQUS+tqAKf0VoNDL9NJv5HmHJr63sPryVzmM6dCw5OuOiiBo9kr59sZEp3nE+5roBf+UJHKYgaw7GTT3Oa221q87R6ijENMOK8/phu6ylsWQVAr4bvoGl7dWctFV81hLrF23c2kYZUePyB+EUgtdUUXdcgA6HgwbkuiMt2llzXp3+1BdI8JoIPLq2hVA30+Hsamm2kt6y/7n/TMRnKpttltOkoo3cpddKg37U4LVVPcrf8d7kvsxdpH63niNeHN0NIHQJD2jHV2P2KLQRz9YB4HjZunYgBCKBYiqRIttdEOQp+nDGt6ymdBqAwUI8tDYuJIwUbEk3tjcE/rY8eFfcqSRg7ykOUx9Zid78QkeG1m1+RhskhewpV5NpyfJdGuKmoyQSov9G5C92yTjq/HjC1+Gz5mSt19dPw6I83wVsWLNN5+Kt04FQe+TnOndqX9ASbTZ98cw0kre0yrTemLUkzfcBgvZo1t3Or08Y9WzmytQjgVfbcTf4RCfwk134PAta3hiZazYEOctBAAPNdA1H
- oErp9RJd
- Qq6U/A9DXvfB868bt+YtN0idKY7XQIU9zgXhq/oHDRLDMfoUSLx9sLfDvcZyWmHmm9GA7/pJOLsSiJvejU929sdiNfjzxdAbMuyEWvEdnXOp28uvwime/63dJ8RY9eVdhjF4fy4/Xq2gC8Es0VO75Cm/N5qLGd/yrafQs45nK4/7DTZJPixfjrEoG5zJDXW/Jxqs0ydNSOkrkvyKeTOXNXViA2QgSp15n5Rgs3qBtL88JL3iWn8gzCI8QkXwxuE/Rel+dhBMZzRe4Tm+DGU/sWh+NOrw2NEAjVfJHjta9E96R5ZFRanVhYq65waZ81sA5CVS1lmTcoTcXPhqBmF3kRzYub7SIucmCmG4e28CGOBVbXNSGNsTAZU86G0dSLUgve+tIa+dWAwa6Y2TWNHkQZOu7cUuchhIf3eNyT1JQkklLxiZcgFPR1FtXf/YOgDLKwgg5cEPvasVAy3x/dD1h4R9aR1HaLCDhbSeDU+tIoob/HzL1vJIxdMYQO4EpupGwcoWGXFFJDvWpsqkuxNER7fma/HO6uPjJeHkYcvAFMk1/a00syhsI5NGikLdoHzk7WoLuHkPvcFTRCBECcdqSoXv2qU528sdLrzai39CDa7OUdZQ=
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792533831-36838
+X-HE-Meta: U2FsdGVkX18fWng5Mn5ueGPpxNpZDJly6VMhEB8oII5gxZh0Cy4f3JG9/L3n5n28Ir4tUn+b5gjHGsoMDRSAyzI5TokMpmshrRGqq3A/FUZ20IvxYrF9St15LgFJY/GCpJMKHANx4nPEKzDAOM0TF66QZvMFsznUi+Tu7NXyNZyHv9IqX+3OrMAjy+naImt85A/OZHYIXCs0TrMGM3NM9rD8U1HT9o1q4FjNlnXZVdScgWy55h0Vr9ckisWF9nXq8Zvvgx3382C7aAeF5f00O5LxdZ4txFv74qHEobPEw1+jaIv/iuPCdN94+AJVuY93Ki5jpTigz+RNJ2IbzxaNRI/sWzIzsUOCypRhc9RFYMtnRB0T+iSADuapT5WZ0tOkGLijB4f0fd7MKS4msamLvy7B/RaDA0LzbgtITDQEc+BcglWvppuOHUftWy/j1OfozmMfIOFjitGnfCZhsmaqQCg9KCjUpYnOvzVbxi9LzWWtfNfQ1FfqKD66Kb9LjBqf7XCF/BmAN8ujkbMenKRWqcDxxNRk26hqC21z8Nmw+CfnNtmkKN0NL3NpRoF9dVdd3muJd5q8qbNmQj3JYJTc6a/N+FNi8wLPH81o5FTcqLzi89CyAf3pt11D/cvEs3a3KzB6sUgI+Nl2j0SStfWdDSh8g8AEzCIrCTdqjhdcLU4zMMeWS1zI1f1zcs3BnqbxBciA9cFAc4egncAc0U5cSUp6zYdTR2ufpkV+2MZbq9KMOQQjwtM68tGKN8I45n/WdW2qclR0/JUSztAC10DeW96U4YHTK40Xh9npfPQbqiDe8tQjBkmTuInaHhmmhyi1oMtpNUwZBg9d2i389v3zZ9bWOwPxVp+//sPSy+rSaeijHohsSCgEwfZYpNUSuTjYNHJFjeunmLokw+q9rfBocjKnhEDRHO1DEBkDVi4Nt3yRAY/xYLxLj28U+8jLiGhNqmPzyUnvlRcjDLB1gtD
+ y3UEwHYY
+ YeRJSiP3dd5Cm9jDq5G2tZaYaKSf/IoemZ0VbWyn8W/VhmG781fXGOfBGWrcmIpAveSoZjTaP1Fy9wFzz1QehH4q1UXQqrtDcunOJsQS8coRIPSfrT7MQ8YSLEiTH+6mJGGes5iVf4lGOgQaJVtdF+UXn2YxWLiBN4o/ChoxeHujIytHSM4/WNR7gEuxd68G1qcFm4gK4NNRJuMMj8PoF1i1DJqDD9Io5oiPs4NT7KU5VeDziFTJs5rjWDBukiHBAIskS7l9FF5bglB8xdidKkjX92f1/QBNSUk7xJzGqRC7TbhO6jLbxzPtrs+BCxV6WYHkCM0zTN9mS7oM/6qB+4GqrZyRn0hvX9sO26PRVb8S5On9+O11ja7iJfQMUaEQ76fuPzdwa7pq2JGG5Cf41ifY4ElVYczoq/iYg6cWWiSpyp09w/tZX9cplrB6YUty07FKVbhNr4AeN4EJvMxyHBwxVSXwQV9Y/+FWrFWehV9POoJ8H3/W8HYUS0lipPQHmIrz9jYimHuqjDoVuwNCu2ngREuPuTRKU6SL+0lWly6fz+Ho/pN5cwE8yDdadXCd4WJRG3S8MTY5Dh1MLficIWKyTZmZVNu18bSEDBTPncmc09VecPSK/I6kAAg+9qKQvxG1Nx3ptdRTbzwFM3tto+t9S+Z4YxfYp8SornB5FhE+a052vYQFPEtRHIdlaJwP4dBkNtt0G3Wv7aTWjj/+3YHTvRfbRFkTcxiCCq+vuR031vhgTHvwMlWSfd6WkHQLBEN69aIkReoj0Wgg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,76 +134,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+The per-bdi_writeback WB_DONTCACHE_DIRTY counter drives how much the
+flusher writes back in response to an IOCB_DONTCACHE kick, but it is
+not reported anywhere, so the DONTCACHE dirty backlog can only be
+inferred from MemFree/Cached movement.
 
-Please consider this v7 for the v7.5 development cycle, so that it can
-go upstream in the v7.5 merge window.
+Report it as BdiDontcacheDirty in /sys/kernel/debug/bdi/<dev>/stats
+and as WbDontcacheDirty in the per-wb stats, next to the
+Reclaimable line.  Use wb_stat_sum() rather than wb_stat() to fold in
+the per-cpu batches: the flusher targets the summed value and small
+backlogs would otherwise read as zero.
 
-An uncached (RWF_DONTCACHE) buffered write drops each page it writes
-once that page is written back.  A page the write covers only partly is
-shared with the neighbouring write, and once the first of the two has
-been written back the second has to read it back from disk before it
-can write its part.  32 threads writing interleaved records to one file
-on XFS (emulated 4Kn NVMe, 4 KiB pages), before and after 3/5:
+Fixes: 88d6f128d06d ("mm: track DONTCACHE dirty pages per bdi_writeback")
+Cc: Jeff Layton <jlayton@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: linux-mm@kvack.org
+Assisted-by: LLM
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+---
+ mm/backing-dev.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-  record  pwritev2() flags          4 KiB device       MiB/s
-  bytes                             reads per write
-                                    before   after     before  after
-  47008   RWF_DONTCACHE             0.97     0.000     831     2281
-  47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.000     601     1227
-  6000    RWF_DONTCACHE             0.97     0.000     121      488
-  6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.000      90      206
-
-3/5 has the page cache keep such a page for the write that completes
-it.  4/5 lets a writer that syncs its own write, as NFSD does for a
-stable WRITE, complete those pages itself once the sync is done.  5/5
-is the NFSD change that uses it.  1/5 reports the DONTCACHE dirty count
-in the bdi debugfs stats, and 2/5 adds folio_mark_dropbehind(), which
-3/5 and 4/5 use.
-
-The prerequisite NFSD changes are staged in cel/nfsd-testing, through
-ad42983b887e ("NFSD: add tracing for how direct-mode READ and WRITE
-are serviced"), which was v6's 1/6.  This series applies on top of it,
-and each patch builds with W=1 with no warnings.
-
-1/5 to 4/5 are mm, with small iomap changes in 3/5 and 4/5, and are Cc'd
-to linux-mm and linux-fsdevel.  If the mm and iomap maintainers are
-agreeable, their acks would let Chuck take the series through the nfsd
-tree.
-
-Changes since v6:
-- v6 1/6 dropped: Chuck applied it to cel/nfsd-testing as ad42983b887e.
-- 1/5 to 4/5 (v6 2/6 to 5/6) are unchanged; 5/5 (v6 6/6) only differs
-  in context, from its rebase.
-
-v6: https://lore.kernel.org/linux-nfs/atbfEbgMU6UGkn2X@kernel.org/
-v5: https://lore.kernel.org/linux-nfs/20261019150725.1507-1-snitzer@kernel.org/
-v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
-v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
-v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
-v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
-
-Thanks,
-Mike
-
-Mike Snitzer (5):
-  mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
-  mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
-  mm, iomap: keep a partly covered page until an uncached write completes it
-  mm, iomap: let an uncached writer complete its shared pages itself
-  NFSD: drop a shared boundary page only once both WRITEs have written it
-
- .../filesystems/nfs/nfsd-io-modes.rst         |  17 +++
- fs/iomap/buffered-io.c                        |  16 ++-
- fs/iomap/trace.h                              |   3 +-
- fs/nfsd/vfs.c                                 |  99 ++++++++++++++--
- include/linux/fs.h                            |   8 +-
- include/linux/iomap.h                         |   1 +
- include/linux/pagemap.h                       |  12 ++
- mm/backing-dev.c                              |  11 ++
- mm/filemap.c                                  | 106 +++++++++++++++++-
- 9 files changed, 257 insertions(+), 16 deletions(-)
-
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index 18e999053bae..b8a2c27e07fa 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -46,6 +46,7 @@ struct wb_stats {
+ 	unsigned long nr_dirty_time;
+ 	unsigned long nr_writeback;
+ 	unsigned long nr_reclaimable;
++	unsigned long nr_dontcache_dirty;
+ 	unsigned long nr_dirtied;
+ 	unsigned long nr_written;
+ 	unsigned long dirty_thresh;
+@@ -78,6 +79,12 @@ static void collect_wb_stats(struct wb_stats *stats,
+ 
+ 	stats->nr_writeback += wb_stat(wb, WB_WRITEBACK);
+ 	stats->nr_reclaimable += wb_stat(wb, WB_RECLAIMABLE);
++	/*
++	 * Sum the per-cpu batches: the dontcache flusher targets this
++	 * counter via wb_stat_sum() and small backlogs would otherwise
++	 * read as zero here.
++	 */
++	stats->nr_dontcache_dirty += wb_stat_sum(wb, WB_DONTCACHE_DIRTY);
+ 	stats->nr_dirtied += wb_stat(wb, WB_DIRTIED);
+ 	stats->nr_written += wb_stat(wb, WB_WRITTEN);
+ 	stats->wb_thresh += wb_calc_thresh(wb, stats->dirty_thresh);
+@@ -125,6 +132,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
+ 	seq_printf(m,
+ 		   "BdiWriteback:       %10lu kB\n"
+ 		   "BdiReclaimable:     %10lu kB\n"
++		   "BdiDontcacheDirty:  %10lu kB\n"
+ 		   "BdiDirtyThresh:     %10lu kB\n"
+ 		   "DirtyThresh:        %10lu kB\n"
+ 		   "BackgroundThresh:   %10lu kB\n"
+@@ -139,6 +147,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
+ 		   "state:              %10lx\n",
+ 		   K(stats.nr_writeback),
+ 		   K(stats.nr_reclaimable),
++		   K(stats.nr_dontcache_dirty),
+ 		   K(stats.wb_thresh),
+ 		   K(dirty_thresh),
+ 		   K(background_thresh),
+@@ -163,6 +172,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
+ 		   "WbCgIno:           %10lu\n"
+ 		   "WbWriteback:       %10lu kB\n"
+ 		   "WbReclaimable:     %10lu kB\n"
++		   "WbDontcacheDirty:  %10lu kB\n"
+ 		   "WbDirtyThresh:     %10lu kB\n"
+ 		   "WbDirtied:         %10lu kB\n"
+ 		   "WbWritten:         %10lu kB\n"
+@@ -179,6 +189,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
+ #endif
+ 		   K(stats->nr_writeback),
+ 		   K(stats->nr_reclaimable),
++		   K(stats->nr_dontcache_dirty),
+ 		   K(stats->wb_thresh),
+ 		   K(stats->nr_dirtied),
+ 		   K(stats->nr_written),
 -- 
 2.52.0
 
