@@ -1,105 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E0E606A32F
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 14:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8132C60A2604
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 14:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Br31H+Qh
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=niEunjKd
 Received: by kanga.kvack.org (Postfix)
-	id F3BC66B04EB; Tue, 20 Oct 2026 10:56:16 -0400 (EDT)
+	id A2C0B6B04EC; Tue, 20 Oct 2026 10:56:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E97646B04EC; Tue, 20 Oct 2026 10:56:16 -0400 (EDT)
+	id 9DCBC6B04EE; Tue, 20 Oct 2026 10:56:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD44A6B04ED; Tue, 20 Oct 2026 10:56:16 -0400 (EDT)
+	id 919976B04EF; Tue, 20 Oct 2026 10:56:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BBE946B04EB
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:56:16 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F9141A021C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 695606B04EC
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:56:20 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A2CAB1C2488
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:56:18 +0000 (UTC)
+X-FDA: 85343305236.28.08F8EE3
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A66E4120004
 	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:56:16 +0000 (UTC)
-X-FDA: 85343305152.29.97A096B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8D219140004
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:56:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Br31H+Qh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=niEunjKd;
+	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792508174;
+	s=arc-20220608; t=1792508176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YPJwaVZNA7XKvLKxSJHwt8AND996P5FWcqMfwW7J6O8=;
-	b=n8wQ7ZpppFF/QEZjttik6vu43s6TwXUd+4vQ23p/sUNRkmFKEYVgKAVAO8McYK1UDXAo3F
-	AthuLutvvml/yOFyjyiBO6JexQWgC5zUZ8yp1Hjby3ipC3psGgYmjEWQEEZNMO/hPgpe8P
-	yziuld6KT04/Y9CvZ48t6ezKRboQSPU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eiEwhWr3XYxLbSW4Mrcitwl/6JDMFOEBaL5OtTFKJ9Y=;
+	b=8jukASpDYOuLI6Yk6Q3CEvwykuXhgqOwQ/0jnFQpYN4lFU8Iy/A02+ut9regBV9VXUfwtD
+	706T9Zi3kfwqU9K8x5IUoMfKjjE/649/YweEAmX9mJR5wX5tNLi7DdU5qAcvMUu8QXh/8n
+	6GMZBMlJZjJM3N3IOI0opdnnJVn937I=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Br31H+Qh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=niEunjKd;
+	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792508174;
-	b=nvYvh8r9LE6dpee7xrqa0FOSK5OVrNWubc9Lzgk8lT386hkofxYX0g0nvPVkit+cia6Uif
-	ldGOIFvlMlmmgnMhupsk3AGgWOg0BBiZjkDXXgpC8TNKXFmect6UZy77PBQUOAfytB2Pfg
-	j+9hiHxx+19lf+aT6RFb/3iVir0MtcY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BDB5F4076A;
-	Tue, 20 Oct 2026 14:56:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918F31F000C4;
-	Tue, 20 Oct 2026 14:56:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792508173;
-	bh=YPJwaVZNA7XKvLKxSJHwt8AND996P5FWcqMfwW7J6O8=;
-	h=From:Date:Subject:To:Cc;
-	b=Br31H+Qh0kx6ex2p34z1bcfok8kj+ZeG4llZ75BUvFAo1Dq1oPIxoCeoO6p099xDz
-	 B1wVy9dJMNDsufbp48mbsveiXBnHWXzouJ2SZR18uI60w+/rYgyR12elBi5JKs+kSv
-	 tJNFoBdiDltvan4+zjzPLiRRlFGYh1nuA1ow+lXudu04U2EPrBg5DqrSrNJxtYqVhZ
-	 Rbbr2NYOqf8bZeChGqW6uCbepAEJJ5VGDKkbO/h0ytPeIKRPxM+ivmh4DjT3fIABJj
-	 yUGQyIgf6H4bPp5IRLW+NdAItwvsBLXzNwErHvQjRHby106yriXO/hY2eiQw45B43C
-	 fpN2VdGoZJcAA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 20 Oct 2026 15:55:30 +0100
-Subject: [PATCH] mm/vma: avoid broken uffd merge on mremap
+	t=1792508176;
+	b=lmUgh2GkaDOSUigSUwuL/wqrglNCVFm3gYawgn9VTKap772IH5UMu2oXF20CSJELxaPFBd
+	BT7U/1Md5xAZsaXtyMFKNX5eTPf1C6LjxGBZ4kDy/t5Lxu89dvjsiyXaRB3eMsFU7yP0ok
+	iQ+bhiIU74fBOnfCg5dd+tKv7tF94Qg=
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c38ac26cc5dso498687366b.2
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:56:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792508175; x=1793112975; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=eiEwhWr3XYxLbSW4Mrcitwl/6JDMFOEBaL5OtTFKJ9Y=;
+        b=niEunjKduQw/oJy7TCM8lVPAMgM7Y82N6HjUbql7WhiMGZRGkFePPB/plBjH0FNEAU
+         PeXg6NZvHDnGM7jBHmMn8/8R5++G7BwDQxvszdRQDwAY5asz8tk1ebS4ZJsXd+rvznmR
+         LxF21wZBWZ/PRaFkig2tr7w8LMVJK9uTvqeq/53t8j/Cy2DpEjdKpr2Iy5uHNFEZczdq
+         q9zdWudknOBSF1bJpL5W+/aAhiXTTRFrk8N7ICEJGEhZKwsR5xh50oO7hD8PVZzOWu23
+         Y1woJQ2qcxRxD7Y53oyrzxbYEJXjYbUDXlyiXQpqZORQtTnt5qfwlDyQLYKEKA86xCMq
+         BQAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792508175; x=1793112975;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eiEwhWr3XYxLbSW4Mrcitwl/6JDMFOEBaL5OtTFKJ9Y=;
+        b=No8kAt50/zvKFBa6lPs1OLB1/syUXW0MIQaIIRBPJZ1BBHyYFP2YELq7yOCH3gQi8B
+         D4bzc3ITTlzI1Ifq++sKJMn8ezMoumWApr6ZuAbCMvixUt40Z9zKZFFMuS989VqQFh+h
+         d14xoWP3MRyqUFQYCU1CXGxKM5e7GsDgxWq7htum5jp1IyIL1NUkpGLyuitdEnbgEqzz
+         H7boHuBmGUUpgVpmPoDJMGc1gOXXB/02XJNLCUGTCu8wF2ttPauhNf0oGHLwQ39v6VOY
+         6VzgFSRH5oLIRRPOKbxH84PCO6BQtAy2NFwudTKCm61kj7lFjjOBWqGuU1KPTNW/8T4M
+         YDaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzsr1fBZUOhDlylS0vNdbXexvmGtd3P2YMdA1qjrs0ZGrUU9DJzVQFuPv8gaOc179OZ+X4HghrqIA==@kvack.org
+X-Gm-Message-State: AFq9FYJl9dpimHw6iqZtXzV9qASrhe9gnn6oTP3kDcc2lqlQBVMQptpV
+	pKF9UVf9zB+1JAq8mvd6/wLgpwrs8xxYJDCV1Twtz07tf4xMOByGtsExEH5DCwz3AOIpQ1wWxy3
+	5Y0Vi4HAf
+X-Gm-Gg: AYBFou0MPL2aStw/k/kV9peqen5G6QIVTgx3fh1RvQu6ltfn2+Im1zG8ppIfCLDtYwQ
+	KlRsPaX11Oy7Q228R/w0qHozMhFunxzMORi5ElMp1YZQF6RS1WhXpH/afgc9MXbVBgRVVHKaqG+
+	fW4g+S4XDWxU1PpNdNRTdQowhcIRWne79Nk1DixMvoSMtnTFy0EVte8R28rZFCiZQn/z/60luq0
+	mp+0cuyyjUoNXhLimoPNgFzRKYsbFCcGGAIqmhIbfBI6PUpf9w/h5J+DDY0rP9ogPkOfxf9C0ZX
+	W7u3dvn5KeiFIM7TKz1TWgsjq8pJkggIGcgCAwfUXxURMHMOCZT4qkb0r18cWJa6GlMt2QDQjXN
+	kE2Udhf/t08UTQtquoYR1ZPW2IPLjdZ2a+V9wH+fJiGy5g09nsdu9XMW6Xe9ATNryT8WnEg4sgI
+	+UR9QyErHshvBnSnL7M9S53x5un0MK+uwpA5GZ2rJ/WtiEruG1QR9B1QzNAwXGjkhzTM0a4ssE2
+	2OyWE6krytjHLck8PzozBvGweTlbNovS2ue/zCw
+X-Received: by 2002:a17:907:5c9:b0:c2e:7fe7:288e with SMTP id a640c23a62f3a-c419ef256camr6224966b.32.1792508174841;
+        Tue, 20 Oct 2026 07:56:14 -0700 (PDT)
+Received: from elver.google.com (11.26.205.35.bc.googleusercontent.com. [35.205.26.11])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c409239b3acsm502151866b.86.2026.10.20.07.56.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 07:56:13 -0700 (PDT)
+Date: Tue, 20 Oct 2026 14:56:10 +0000
+From: Marco Elver <elver@google.com>
+To: Caleb Kan <calebkan1106@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>, Caleb Kan <ckan@cloudflare.com>,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH RFC v2 09/11] stackdepot: add architecture hooks for
+ compact frame storage
+Message-ID: <ateBClusB8nSEnAr@elver.google.com>
+References: <20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com>
+ <20260908-stackdepot-trie-v2-9-1996d5cef732@cloudflare.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261020-uffd-remap-fix-v1-1-0f34fc181f0a@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvyJ7bsGMtPpKdDBbaw+VKEUg/T3pO
- AMzGRJFpgSDyBDp5sTnUaCuBLjNHishL4VBSaVrqSRe3i8YabcBPT/YG610Z5q5dQZKFCIV/Q/
- H6X0/AQvrAmAAAAA=
-X-Change-ID: 20261020-uffd-remap-fix-97626873b5c7
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- Mike Rapoport <rppt@linux.vnet.ibm.com>, Peter Xu <peterx@redhat.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, ljs@kernel.org, shaos <shawnq1@163.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2794; i=ljs@kernel.org;
- h=from:subject:message-id; bh=rkxTHg5wm6NIA3xJt/qMKzEyYMHeWzpVxMG0VaLooEw=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKuN7JNvNWf1Vdy3yLzNEfs+l7e7qnXpQ5tX6m0fbnpS
- hbltxv5O0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRRZqMDOs3JJY+k65a7/LB
- xMfJYNOLhWrzYsMOz2d7ueDLhDX/2hcy/PeoU1p0Vn3f/eZJcSmsP9+Fcstv0d8ey2MlUOnGuET
- +FicA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: 8D219140004
-X-Stat-Signature: fypwhxuer1h7atqaxs7npdubwxjy68iy
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260908-stackdepot-trie-v2-9-1996d5cef732@cloudflare.com>
+User-Agent: Mutt/2.3.2 (2026-04-26)
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A66E4120004
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792508174-208150
-X-HE-Meta: U2FsdGVkX1+Hk1VfQUccPLXEHaEnys7kLea0XzkqGF8DFECZGiFv7Snu9ZqXPI5I4pVO4h790vjLFCHijexE8sQ8jl/94x8dZ66trzOYy9YfUxBoT8gDxMf5vHU7kNkv2s0H0viskOiVBaswd98Q3CFGtr7yUNQ1kY0aXpgKLkiAnnGeQs4NLw7z0Lj+ItZUOj1x76DC9X/jnvSEq+jCHmgtpoUF2TBzHbkYdv10q4oLskabcNgN7n8++2bX7PkhyVtnYgJi4WdI8dHG22KnieOROQRP6IDo9O9yqsRTglYu1Juj53LRVaGuT0i2RpXOTBLzC5hgnuFQHfYbBd+yC3eQz/HoXpj4QfEZ6swoBIcOdevhPNYTpQIqCR8gE5AvFrFzdJcJNsol3xFpXhOsWcLn6uO+cjSYDJsvo8eCiWm3JPK5FQ31VjayAfkHAHNEJapojcF+vTmF26rHJbbBGqr7GmOZZlHN2AMmlvY0lZQAXqF6GsNs6i90hfhsBQesEsiuMZPtMHijeJ/wZadyNv9wluIcir/b+Jkhql3NT8WNVqmhybtnZPU6BKPAkr3yXwXN0APW0IZN8WBD3tMe8Om0bHZDboMVqg6gqT5FLfhvwBavbbRLFJyIoy7ZZs04ydxXlXOL20PMYXHCC5fW9h+GCfk/lHYkf2ooqLPdzlltVAaEn47OrniDfFDQBdmz1jVntPeMe5lBawxWQPlJlGmdS/arS77R8+jWkecsdLGEGhoebAzoQUpqMFjeJi1IqGT+jfPj0OSN/wcmLzwX+Gp/ew9Gw8c9dSFdgrEUAm8blHkCZ/KnMJkq9ZwyOwEIDUz/xQxmJCybyLM9JZhUFAPcRqjnZqYKa4Kt7hXI62BvI3kgadN09FeVedruDlx/TVlTTgS7Mtv0twMRxipyL3Q13bG8dyXavzPxX89EW1MxYvhaoJQ1t7zvk/TwLglIAVI953udRsvbGnVS/lH
- gmqRtj5f
- 0W0RbhRGR1Skhj+Rj7O29dqaGD+l90pyEQ6dmFfaFQ+0/hgL2GdSiX4vzpq+uz8llCKYSIBUem+wUgnKWJ3LTI2IUPpzgIfngaVkDe6JB2vZQZXhquTnLTaPb295rFWjBwqq0QPFGswjgR3TblD9Ey9fcNtCXXz68uqFsfOMQW4OTQN0pcV+UGcbhk6WY6Sxr6CdSJxsoV+wYRXw3k2/bfWBtpb+27xcjmbv5iy56fEE5WFGVWdREBcOtxQnkxXmGzMrXWrE+aBVeZKY=
+	SPF_PASS,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: h98d7ijdh6mqixwujfrs7kfidon4pb9a
+X-HE-Tag: 1792508176-677471
+X-HE-Meta: U2FsdGVkX1+EiYgeAq4uZU8OQhIIzXjc7FENL9Z5guaUlUSvVNruqRdBGcIdTmpoDStbbhM5UnCvQMCoPBlj2iIrBCUPK6lsPcVAJIkBryhSBxVi/C1+oBaLfkejfll4brip+ftXLftdJCk00rsse9U2pk6RAi+3JR+46rQW9UlMu3HXFRP+C/9kvBh3gmHZID8+1DMYesh34aQBxS5TPLQjvZ3uQnmGda7nsKfbEoET65KxDQvxXA0B1gb2Y2zds+9we7JsXacwSR4WU9TTebQygruX5cPFIQtghr2zfYocW8iyWhTJ4uMel0CMS9+hSYAvYhIaShPKq7B5D4L0+9vyOmn8GibvBYCMBW9N9/ZsG+PVEfieHwEFlxm3bu+dSDrSP/kE+PeRLCFaKZE3yLz4Wxkm9R4QpWWthiG/91jHjCzIgsSEtIKA5lIwBUb3x7PVO9vQMH2V+bKbYGISq2UGkadPlXucnZTJDf/SKkNdZYKsie9VmWQSj55taUX2DYk259mr9wqhlWA1dM8QtHgi5dnMVFpEdrCaSZO7dDNeNzIiszAkaPlUzdCZy45FfZfTPnIvTvl1wsn8hcAV8bEOTXZio5NXvNnSPLzrl0p5EdvIoT3qx2h5hxIBa1rHJe6Ii63aAOlm/iGWBxC2Wv7b3/COfqdjrgGSOaMJaup+a+PTAvquK4yPRA6utyjX3Gm4Leea4QdrhuHX092fJ+C7wki9F/73X2UlGO/xGNOig2xv7Gvxn8xtRlxXhafl9DTRUXVDcOd9P2MVWKcYUpdw7XLaL0ybXY/IEtt8l2rlxaR2LM9DfRg/HIu4ukqq465QKxcEb4vfmzTU7t8YTU7eFQF3XK/wFygG4nzsVGF25Yvc99YhlVJNbF5eld0Pc20nTlhiHMv7A2kdN5rWerEBO2Ewzrj9xtJOhEerkYMnLLandWkDzdPG8NN+M0IR52ZkPCgTlT6sWrRuoBu
+ 4AiAPQEu
+ W9JPBNYnmufZ9T/MZThTjn3owcKVaAg7/OdG3Now3r2iIzEfiT3DmVyiEjAD7oP1sv7En+rFemTAOI0KgbR3uP/BGGViNJyNScB7XV2vW/WpSIcYFi6Akd/dlPa5cBv2Q6r2dQQK+D4xyP/Fn5lQjd9Te51AkW0brOoQledChtl7ZrH8EX2O/KVPEuq6haR9TaeKCVqNydfs7ObQoSnhwEdd8Y4KDx0u4y43rHUliWNfpFheIrDSmKTatglhnzxjsXQ0C3R/NkeewXMJ0NYO4AjXw6n6tKDxbd6y9x/q9vAVi/rLUNnu445b1IVroOanAeS0FMXf7gPb01U56buqtaGsWIlEqzJkpKZSm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,83 +133,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Userfaultfd often causes unexpected interactions within mm, and does so at
-the intersection of uffd, mremap() and VMA merging.
+On Tue, Sep 08, 2026 at 02:13PM +0100, Caleb Kan wrote:
+> From: Caleb Kan <ckan@cloudflare.com>
+> 
+> Path-compressed trie nodes can reduce their frame storage further when an
+> architecture can represent kernel text and module addresses in 32 bits.
+> Add architecture hooks that compress a frame only when decompression
+> reproduces the original address exactly.
+> 
+> Store arm64 frames as signed 32-bit offsets from _text. This covers the
+> 2 GB module relocation window without depending on a 4 GB high-bit
+> boundary. On x86-64, store the low 32 bits when the upper 32 bits are all
+> set. Keep other frames full-width, and provide a generic implementation
+> that always rejects compression.
+> 
+> Make the generic header available to architectures without a specialized
+> implementation and wire it explicitly for UML. Add KUnit coverage for raw
+> fallback, arm64 boundary round trips, and native x86-64 prefix compression.
+> 
+> These hooks do not change stack depot behavior until a later patch adds
+> trie storage.
+> 
+> Signed-off-by: Caleb Kan <ckan@cloudflare.com>
+> ---
+>  arch/arm64/include/asm/stackdepot.h | 42 ++++++++++++++++++
+>  arch/um/include/asm/Kbuild          |  1 +
+>  arch/x86/include/asm/stackdepot.h   | 37 ++++++++++++++++
+>  include/asm-generic/Kbuild          |  1 +
+>  include/asm-generic/stackdepot.h    | 19 ++++++++
+>  lib/tests/stackdepot_kunit.c        | 86 +++++++++++++++++++++++++++++++++++++
+>  6 files changed, 186 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/stackdepot.h b/arch/arm64/include/asm/stackdepot.h
+> new file mode 100644
+> index 000000000000..df8959d59336
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/stackdepot.h
+> @@ -0,0 +1,42 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __ASM_STACKDEPOT_H
+> +#define __ASM_STACKDEPOT_H
+> +
+> +#include <linux/types.h>
+> +#include <asm/sections.h>
+> +
+> +/*
+> + * Modules are allocated inside a 2 GB relocation window containing the
+> + * kernel image. Store a signed 32-bit offset from _text so compression is
+> + * independent of 4 GB high-bit boundaries crossed by that window.
+> + */
+> +static inline unsigned long arch_stack_depot_frame_from_payload(u32 payload)
+> +{
+> +	long offset;
+> +
+> +	offset = (s32)payload;
+> +	if (offset < 0)
+> +		return (unsigned long)_text - (unsigned long)(-offset);
+> +	return (unsigned long)_text + (unsigned long)offset;
+> +}
 
-When an mremap of a VMA occurs, copy_vma_and_data() calls
-mremap_userfaultfd_prep() to notify uffd of this.
+'(unsigned long)_text + (s64)(s32)payload' avoids the branch and the
+potential UB if 'offset == S32_MIN' on a 32-bit 'long' (though arm64 is
+LP64, sign-extending directly is simpler).
 
-However, mremap_userfaultfd_prep() simply drops the UFFD context for the
-VMA if the user did not register it for remap, i.e. didn't specify the
-UFFD_FEATURE_EVENT_REMAP flag.
-
-This is OK for the VMA itself, as upon page table move, move_ptes() clears
-UFFD page table flags, using vma_has_uffd_without_event_remap() to
-determine whether to do so.
-
-However, this doesn't account for merging with adjacent VMAs, whose page
-tables won't have received this treatment, and thus latent UFFD markers
-will be left around.
-
-Worse, it'll break UFFD for any VMAs it is merged with. This is very
-surprising behaviour for a user, who will then simply not receive UFFD
-events for VMAs they ought to.
-
-Resolve the issue by explicitly checking for this case via
-vma_has_uffd_without_event_remap() in vma_merge_copied_range(), the merge
-function explicitly designated for mremap() operations.
-
-Also update the userland VMA tests accordingly.
-
-Reported-by: shaos <shawnq1@163.com>
-Closes: https://lore.kernel.org/all/20261020110748.959870-1-shawnq1@163.com/
-Fixes: 3cfd22be0ad6 ("userfaultfd: clear flag if remap event not enabled")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- mm/vma.c                          | 5 +++++
- tools/testing/vma/include/stubs.h | 5 +++++
- 2 files changed, 10 insertions(+)
-
-diff --git a/mm/vma.c b/mm/vma.c
-index de5ebc57e7a5..1be613044b4a 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -1211,6 +1211,11 @@ static struct vm_area_struct *vma_merge_copied_range(struct vma_merge_struct *vm
- 
- 	vmg->copied_from = vmg->middle;
- 	vmg->middle = NULL;
-+
-+	/* If not registered for remap, uffd context will be cleared. */
-+	if (vma_has_uffd_without_event_remap(vmg->copied_from))
-+		return NULL;
-+
- 	return vma_merge_new_range(vmg);
- }
- 
-diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
-index be8f5161f92a..f786a585caf0 100644
---- a/tools/testing/vma/include/stubs.h
-+++ b/tools/testing/vma/include/stubs.h
-@@ -386,6 +386,11 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
- 	return true;
- }
- 
-+static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
-+{
-+	return false;
-+}
-+
- static inline bool anon_vma_name_eq(struct anon_vma_name *anon_name1,
- 				    struct anon_vma_name *anon_name2)
- {
-
----
-base-commit: 3eb3e848d72cde2156447cc960ca321bb2ac41a9
-change-id: 20261020-uffd-remap-fix-97626873b5c7
-
-Cheers,
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+More importantly: why not use these 32-bit frame compression hooks
+directly in the existing hash-backed 'struct stack_record'? That gives
+most of the memory savings across *all* stackdepot users with almost no
+added code.
 
