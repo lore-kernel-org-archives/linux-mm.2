@@ -1,99 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D411606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 05:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99263606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 06:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WNn3QJ6Z
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AsNyDcLj
 Received: by kanga.kvack.org (Postfix)
-	id 413846B040E; Tue, 20 Oct 2026 01:55:55 -0400 (EDT)
+	id B05336B012A; Tue, 20 Oct 2026 02:27:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C5236B0410; Tue, 20 Oct 2026 01:55:55 -0400 (EDT)
+	id AB7E46B012C; Tue, 20 Oct 2026 02:27:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DC0A6B0411; Tue, 20 Oct 2026 01:55:55 -0400 (EDT)
+	id 9A51F6B012F; Tue, 20 Oct 2026 02:27:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 098146B040E
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:55:55 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 819A81208BF
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 05:55:54 +0000 (UTC)
-X-FDA: 85341943428.02.5EDD8D3
-Received: from mta1.migadu.com (out-129.mta1.migadu.com [95.215.58.129])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E1DF6100004
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 05:55:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WNn3QJ6Z;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 7D3596B012A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:27:55 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C0671208D5
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 06:27:55 +0000 (UTC)
+X-FDA: 85342024110.07.8E64ED1
+Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EA12B20002
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 06:27:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AsNyDcLj;
+	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792475752;
+	s=arc-20220608; t=1792477673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IJw3AdrV3TppvzYxPg9enasdEBHkQYF0+BiTA1BbFVE=;
-	b=JW2R4QOEWnrw0xOHZv/3iXrEp+BD7QDmIn4o2JJRqwZ6cdMQnxWQtsPbl9Eu/DIGz6m5Ps
-	H2c4j550Wgc4TTVVrcK2adieIUp8U+B+CYip10ComPNymGIAAHuW5hoD3k98sYw/ESIL+e
-	XzdrXEsaLymafz332kiqbAm4aaDp0HA=
+	bh=oXWoMZ1H2pnRsuoYdPPZZtfsEnR1q3jeWNCSU2sUjT8=;
+	b=xU/3+kYfBzoD5ZmySjsxW9y39W/KadSvC8p0x9QsDAj2ko6AgCkyq2Fm5F+CvYXGm+nouX
+	TVbP8GFw+/qGe9Pea/LXPq9Sjmu/fDYfJ8Y6EPlq0qu/9gdW0CDC4ckZT7iiki4GFFhF89
+	lfHZkkCCFdM9esejYdCGme1MMttkmuA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WNn3QJ6Z;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AsNyDcLj;
+	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792475752;
-	b=oxJ0PgPSTSv3eDn48dG+Hzkf4uE5ULn9L7Bq1QjDSrje3Csy6TeRRoGmh/IA2tHwI7AMAE
-	n5R62M66+EihqiKZF0QZPDCNMmSPYld23O9WqHyVr8E0aYanznEZ4aOh7yswxQNnG58qXq
-	+na27Edcygiv6aGMcTxEmeAp3IBG+nY=
+	t=1792477673;
+	b=Yl+FuvbqF558itWcLaIURyQQ7BwYoM/NA0PNrbv4U0oWwb0hS0hX1cIUSGfIUD//NyTfg8
+	nwocyXuhvfkyFBhAyMPotdHUQh7QGOZ92rlQt/cm3SlqRlj3ZWtQqqVEwOfyK+q/0gUtX2
+	hbfZsWyag/M+7hDuFLWxSVyp++4OlV8=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=C5+9nPezz3Sstm3YSed1zRvKh9tUg6y9C6lbamjjq9w=;
+DKIM-Signature: a=rsa-sha256; bh=X2OA0zhonpjv/0S8MYbPOzRw5uUgYP/J0+GBxLUXBOI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792475747; v=1; x=1793080547;
- b=WNn3QJ6ZwXnvUZHoiJ0qChAwy37lgAnsBH0a6qrWQMT4N96cJoHCxn3lBBw0uYTzzDXwGwhN
- N5eTjm2ZLz+KXghZZeJXNRW56UHX1lA6TCNUBDkh8YaXGlaW278fnFh+4u795SCcZXvl/DuAks8
- XWJ7hvaKTzptWCYWki1yMRPk=
+ t=1792477671; v=1; x=1793082471;
+ b=AsNyDcLjkdu2n0NL7PxGF3/m6VarwougfDaUnY3GcZdm+lvmOqbgCt6fVITMQjtAvOtP11et
+ Z0vvO9Jt4L9kdNOJEiKHNXCnYDj4fzxypgv0gpS/ZidlNnA339d+SL81/zoMIeWAEu+Ij3gkBry
+ BPA7mVq/kQMPooxWn2mzSsPY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6cfc978d2090e393;
-	Tue, 20 Oct 2026 05:55:26 +0000
-X-Mizu-Trace-ID: 6cfc978d2090e393
+Received: by smtp.migadu.com with ESMTPS id 3dba75d8f5189ea6;
+	Tue, 20 Oct 2026 06:27:51 +0000
+X-Mizu-Trace-ID: 3dba75d8f5189ea6
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: samarth.colleges@gmail.com,
-	akpm@linux-foundation.org,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	peterx@redhat.com,
-	kas@kernel.org,
-	rppt@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/ksm: keep soft-dirty and uffd-wp when merging a page
-Date: Tue, 20 Oct 2026 13:55:18 +0800
-Message-ID: <20261020055518.36087-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <efa6a28c-f0f9-4d1e-9cce-fec2c08e7d9f@kernel.org>
-References: <efa6a28c-f0f9-4d1e-9cce-fec2c08e7d9f@kernel.org>
+Message-ID: <a3d410eb-e7ac-43e3-bdb7-d00445cdc7d6@linux.dev>
+Date: Tue, 20 Oct 2026 14:27:39 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new] mm/mglru: clarify the generation placement in
+ lru_gen_folio_seq()
+To: Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20261020023548.3242028-1-ridong.chen@linux.dev>
+ <CAGsJ_4wnuQhyCkMq1Dub8HgB+uYAjy+LkgBxCRJG_kZiwAxA8w@mail.gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4wnuQhyCkMq1Dub8HgB+uYAjy+LkgBxCRJG_kZiwAxA8w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E1DF6100004
-X-Stat-Signature: x9px8te64ucgu4exkwncoz8ak81excsr
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792475750-744614
-X-HE-Meta: U2FsdGVkX1+GXwHDKXPcy/MeZMVFL/HH+GwUzMW/Qxt1b4b+KQ7EoWWyAMZN0eff0kTZU07C09SlCO6tU0x9mqL5B8rfnHk2v7b1x6SsoiQ+r9XxYglSyINd5kmQfk+zqwxLmhGNFZL2mBfFFNrXO8HjFGmTwd9UbjpM0ZQJxY9QhStYUWCqiUrWOeJsef1OLEO2YY0g1+KBIqxBcyZTWWdgUXmP5IY1FY2TKs7GmMWgjCiFwEmk2qjVXp7cgv4AmSl2WtgQVPF/l/GJmQNieVPnYnbm2GupfjHfBtfVgC58i0F9KedDic7UUs8g2fijaCGgEq38l6dYjtTEGR3WhmgcHdoUdoRntc7Q2KqiRv3q4UsKdbTO+nXM5OzFRAnEGIMHxsQSNqrcFzywzNBK+BYxI5c7fevokDEQ3iBkwN4bjcdcSOrWK9i3CqelJixeVZytgM2pV1/nQ+kx7cGAQvlcJY7XmVBvT7mxRB8eNz4ikP9ODb/ywV9uda+yWSWPaiE8uCvMSKgDLeK6fW0wuTWkVtgThjoqkE4xLz21LpI43hbAveY2/fwGoDeQNhaQWqQVVwwh4Wh90s/P8ITEMtOFMCVebY6LH4N43T7x7GFM9Zmmw72tKfI7s7igu9+fdi2CT32+9cvCvKwXLeuXgDYKCRbDAdaLDov5qIQtD0dUTbYDKWys+n6vnWCG5JUG0Cv4Xr00yiShcVhQJnfU3gIx9xs5btoqzJa8/DzbYHZMcpZsWBvZrW0wiJk6ZD4RzQ6nG+qqPAtV0RsRrEm48Wi7axhv/+ohkzwqraRHgN0glVi92HWuQkyT4HaZWooxlirMH8a8RuUjd2wKReG6B2iiC5zhKBzr9M6XjvmC9emvF7zPSCUTFNcaqTLlRwlb9fxPQa4syLRQ5qLa129KjmF8pE1DTKT6tGH2e7jIgdNXbDIMO5x/jmWVrBWEOX8EV49xhg4ZCG5rYWrOE7D
- b8R/fkl1
- ig2612iwSj+unzpQlzznlNdmTqX7J7woKjIKCJZIprHd5wQtCMuPl0Yo6BJnFnZGJAe5qIbk11im5gTClaDZcTyWvqOSCK3VBFtnLn0Smo/yIJwVJKCHGpqzKb79Dqc6eCej6QOdEQcloeAv1FXG3jW3n2JawB/GyqsbumIgdUH9k0jJnlGT5aGQG5M1yaMavkqMV1pBzZdth8ZQeloerMKyBEHMGBtgegP9qwzN5FmH2qV/4fkF6u0YsnC+NM8lXtDLYocysaJ4SzWgFGrfk5iSNIec+NA9hFR+cy1Ai92LBcXxa1K0JDFPz1g==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EA12B20002
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: zrczmzws8wbyeurd6ozg1zu1xfmfrna5
+X-HE-Tag: 1792477672-830199
+X-HE-Meta: U2FsdGVkX1/lanEbfIEAz+smUYALYzqg6XK2qDU4lnWzy1gHJ1TiBASnGjGnNsSnIC18VBm0ciE7mCUco9Fftt0ogah7zO91I89GSupN8YhNPXxdc/Ex8iSKiDfYXQj6WMTIr0o2SswfaGdKNxDz0Y7KwtBwE0nkrnw9QruMxzb0NWNE95gm96mwGB2pt4tO78Y09Mm9kI90Cr/xdL4hKclis71SifS5Cr66J6fcxp0nchDpc1fn5S2yXiJKitIfiz2rElWOfvWqBlwQRsrRDhRe8CrUaJ+bbCjS5+/OYJWdryzY7ehrFp+GlvgL6gsQshISFWihkC86Yekf1xr6TT1Jwt3jXDwzVFbnwyF5MM5iYfaAni4feXolMJnQXjOoj43iiePK6GIwj0t3iF3xZXHNI5KqhKnC8vRC5+Stv4Vv2IrZEEt58bk0pgTwmC+jMDpfy0ROeulusN2J3AA6HAsjE/Kp5JARYV6fG1M9RRY4hEaCFpGJWW2xu7VFqONzKsde7q1srjjKLnad3ubQt8A4zb1hdqRw8BYI7DWmXprTRCMDZMR5TGXvTdJgs/b2CHLtAb4EJAgbeOmTh+/Rz/kzXvvyBBMjcUg0QzGkd0aqHp3AsxPm+4dI7up667m5g6SSYQkggqYJ1E3Q6Hkmbv9+aWmiRM5NMYr8uOEeBjcPi/lNltdq9u4I/VvSkZ/y5fqVN4cYymHYx3xdM4mySdIt0qnTFG5V3cLh8EyQoKxGVtW9bavsj1IWWScJj+wBCV9Wqi+oZg5BQ9aIihqinJtoGsxZNyizqlEAqiHqevDmWIim6bClUGzFkoqXEFWPnQ83wfQDLcY84nQyCCGAx36HNesBDqvJ76FQmeqiOQtsLn+YqntNyOBVT0gfAaUZXk2MBxQ5lFVJgX2W2e6bCuLKuOy85duOGemIbtKBGSeOBppUYVa4MMi6HyH+bPD9BM4KIW7Ysp+RK6Prbdf
+ 3T9lMmAW
+ xk4jJD8QIkpb0s5f5qbtR0Bx/1V2ogu9OscJ9ZmbB0shZ42+Oa+QIQf/Y97MFinPOKPwFq7xzUPGqwyyWSW7TJa5Mezv7O1fxwP0G0A0SMrj8fJUXiB4R7GSxK+ScZLaMrObvxCeDF2YNHwTNjqSOT0mUVU9SLiOCXbi5FzyzelMq95LZVjifBvUXv5X6l+dl7eESq4vmFqcrF2ejEJAc6sOwVE6gDp6XBnKjkUxV/0TS66pYdtJKdmqZk4m32p/t75MvvA6RnJVvPabfDoSCRYKN/GLpdA4a5OVB26FadQ3a/6NpvdcbCVen77fcoutyOzl+0YWsgS8fXTy872+7rpODcPtnS3hCnjUT0We0qGbzM7QRkw/pND37pQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,104 +104,50 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-On Mon, Oct 19, 2026 at 03:24:11PM +0200, David Hildenbrand (Arm) wrote:
->On 10/19/26 03:09, Samarth Narang wrote:
->> replace_page() maps the KSM page with a PTE built from scratch, so the
->> soft-dirty and uffd bits of the PTE it replaces are lost. Due to this, a
->> write before the merge no longer shows as soft-dirty, the next write to
->> a uffd-wp page raises no write-protect fault, and because the page is
->> mapped with the VMA's normal permissions, on a uffd-rwp VMA the next
->> access raises no RWP fault.
->> 
->> Copy the soft-dirty and uffd bits from the original PTE to the new PTE,
->> and restore PAGE_NONE for RWP VMAs, as try_to_map_unused_to_zeropage()
->> does.
->> 
->> Fixes: 0f8975ec4db2 ("mm: soft-dirty bits for user memory changes tracking")
->> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
->> Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
->
->I would actually split that up into separate patches.
->
->Over-indicating soft-dirty (as raised by Sashiko) is in general not a problem.
 
-Right.
+On 10/20/2026 1:43 PM, Barry Song wrote:
+> On Tue, Oct 20, 2026 at 10:36 AM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>
+>> From: Ridong Chen <chenridong@xiaomi.com>
+>>
+>> lru_gen_folio_seq() computes how many generations below max_seq a
+>> folio should be added to, but stores it in a variable named "gen".
+>> Elsewhere in MGLRU "gen" means an index into lrugen->folios[], i.e.
+>> seq % MAX_NR_GENS, so reusing the name for a relative offset is
+>> confusing.
+>>
+>> The comment table above the code also no longer matches it. It only
+>> covers the PG_active and the final branch, leaving out the reclaiming
+>> and "can't evict yet" cases, and it lists LRU_REFS_FLAGS as an input
+>> although lru_gen_folio_seq() never looks at it.
+>>
+>> Rename the local variable to "age", redraw the table so that each
+>> branch maps to the age and seq it produces, and note that the result
+>> is clamped to min_seq[type].
+>>
+>> No functional change.
+>>
+>> Assisted-by: LLM
+>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> ---
+> 
+> Hi Ridong,
+> 
+> The cleanup might be right, but this part is changing rapidly
+> with Kairui's MGLRU-FG series. Maybe we should wait until
+> that series lands and then see if this cleanup is still needed?
+> 
+Sure, I'm fine to wait. Looking at MGLRU-FG v4, though, only [4/17]
+touches this function, and it mostly adapts the workingset checks to
+LRU refs. The local is still called "gen" and the table still leaves
+out the reclaiming and "can't evict yet" branches, so the function
+stays just as confusing after the series.
 
->Losing WP bits is.
->
->UFFD, the gift that keeps on giving.
+Or，Kairui, do you think this is worth cleaning up? If so, would you
+mind adding a patch to MGLRU-FG to clean it up, so it doesn't
+conflict with your changes?
+-- 
+Best regards
+Ridong
 
-Haha, yeah, I stared at the code a bit. Say we arm RWP on an existing KSM
-mapping, then do MADV_UNMERGEABLE. We're just replacing the shared page
-with a private copy. That shouldn't count as an access to the mapping ...
-no?
-
-But the protnone check sends us to do_uffd_rwp() before the
-FAULT_FLAG_UNSHARE handling. No FAULT_FLAG_ALLOW_RETRY here, so sync RWP
-gives us VM_FAULT_SIGBUS. Then break_ksm() does this:
-
-static int break_ksm(struct vm_area_struct *vma, unsigned long addr,
-		unsigned long end, bool lock_vma)
-{
-	vm_fault_t ret = 0;
-...
-	do {
-...
-		ret = handle_mm_fault(vma, addr,
-				      FAULT_FLAG_UNSHARE | FAULT_FLAG_REMOTE,
-				      NULL);
-	} while (!(ret & (VM_FAULT_SIGBUS | VM_FAULT_SIGSEGV | VM_FAULT_OOM)));
-...
-	return (ret & VM_FAULT_OOM) ? -ENOMEM : 0;
-}
-
-So we report success with the page still merged. Async RWP does unshare
-it, but only after clearing the uffd bit.
-
-I'd let FAULT_FLAG_UNSHARE skip do_uffd_rwp(). We'd still need to carry
-PAGE_NONE over in wp_page_copy(), though. That PTE is rebuilt from
-vma->vm_page_prot, so the uffd bit alone won't stop reads.
-
->How to deal RWP properly is a good question (see Sashiko review). I feel like
->some more stuff might be missing there to handle this correctly.
-
-Tested, this is what I had in mind:
-
----8<---
-diff --git a/mm/memory.c b/mm/memory.c
-index 976cd03954e3..d99f5ef1dd8c 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4119,8 +4119,11 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 		if (unlikely(unshare)) {
- 			if (pte_soft_dirty(vmf->orig_pte))
- 				entry = pte_mksoft_dirty(entry);
--			if (pte_uffd(vmf->orig_pte))
-+			if (pte_uffd(vmf->orig_pte)) {
- 				entry = pte_mkuffd(entry);
-+				if (userfaultfd_rwp(vma))
-+					entry = pte_modify(entry, PAGE_NONE);
-+			}
- 		} else {
- 			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
- 		}
-@@ -6656,9 +6659,12 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
- 		 * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
- 		 * NUMA hinting and must still fall through to do_numa_page().
- 		 */
--		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
--			return do_uffd_rwp(vmf);
--		return do_numa_page(vmf);
-+		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte)) {
-+			if (!(vmf->flags & FAULT_FLAG_UNSHARE))
-+				return do_uffd_rwp(vmf);
-+		} else {
-+			return do_numa_page(vmf);
-+		}
- 	}
-
- 	spin_lock(vmf->ptl);
---
-
-Cheers, Lance
 
