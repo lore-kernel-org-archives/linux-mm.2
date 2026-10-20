@@ -1,141 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E1D606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 10:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22141606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 10:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GDAqly89
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j1WJOhOl
 Received: by kanga.kvack.org (Postfix)
-	id EBB786B014B; Tue, 20 Oct 2026 06:02:10 -0400 (EDT)
+	id 324896B0150; Tue, 20 Oct 2026 06:02:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E45586B014E; Tue, 20 Oct 2026 06:02:10 -0400 (EDT)
+	id 2D4A96B0151; Tue, 20 Oct 2026 06:02:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE63D6B0150; Tue, 20 Oct 2026 06:02:10 -0400 (EDT)
+	id 1C3AC6B0152; Tue, 20 Oct 2026 06:02:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A4B26B014B
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 06:02:10 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 19BE680932
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:02:10 +0000 (UTC)
-X-FDA: 85342564020.20.9ABB9A1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 383AFA0007
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:02:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GDAqly89;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D56126B0150
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 06:02:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 57777A8676
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:02:54 +0000 (UTC)
+X-FDA: 85342565868.08.E2285D2
+Received: from mta1.migadu.com (out-190.mta1.migadu.com [95.215.58.190])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8836910000C
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:02:50 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j1WJOhOl;
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.190 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792490528;
+	s=arc-20220608; t=1792490572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=34jo2lTPBFEDXI1aSdUvkUPUth9L8yOyLhTCG7rWYZM=;
-	b=DNREG/Uv3ZWgiDezMh41vWZKdtOytbW4YHoMLImq/Q1i1OpgtwjfUzFu587p3IR+2LzDzn
-	owZt5QJtBbNWhAdp95O4cVgiJAV3pp+1alKL7OxMAam78h6M/m8mzkCAI+uV48Yt4yHJnP
-	bfd4cBZdZw5OUJbIEaIW2IQjEaNEf8M=
+	bh=9Q9Vtn9iuM5FjjwgFRmYAVzNxXo2zpaFYHAwpiMXXYI=;
+	b=L0154qD2vEx2OZmBErKEYcs6iNbHh9/+lvpUAn4oWojm/mv0GnQ0pXcXVQ9if6YlYyOJkK
+	wKIrGhFoaszU58BnOQ38Cg+RnXih8+ZfZyXyqStUX93G/C4r344si1s2zsL9jCRNJmPGBg
+	8OEegOP3SoQElcK544keF82pOsZdRrY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GDAqly89;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j1WJOhOl;
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.190 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792490528;
-	b=z+KprK/OhbUPsP99v69ZWXOqNlSj889l+jqaWmSrooAcFXOF2TnLoqRWqZMO0kgfuP7fzf
-	O3yROhgr/gBuU3qQ4RCDRuNPViVqpUoUoBxH1SRBP7BbL11MB6ssgWLp3MnI1ilq6iWOOZ
-	aEfGjar3G+Kk0dRtbb1cn/POW5Zp6dc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A4DA643CBA;
-	Tue, 20 Oct 2026 10:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78FD1F000C4;
-	Tue, 20 Oct 2026 10:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792490526;
-	bh=34jo2lTPBFEDXI1aSdUvkUPUth9L8yOyLhTCG7rWYZM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GDAqly89F/GH8yY5EhL1wwCAlHSQ1x3pwskc+bkhbIsZ8HRGCxNNpO9+Hxc3k2IzQ
-	 YcOA5kV75DK7i08tKqUtrnU2C7yvmBBxI72+1b6zLYGfkFbxISwpQOtDQfIKK2+gDC
-	 0iSWEYVdJ4tfVAqXHm1g8Wu7rA6WJKqSuFK+ikFVpHiuMEfQnK9/tr8oIpL2t3M2gC
-	 Q9lincGUMOWlQBms4PTWH4SUg2PX8+Ow8Tsj3kdfDQCaS3efG70dPs+64nNk/5+QsA
-	 NIMa9ANXzjLvRd9GkzFa2y5pIWyR4lllJ18vpYeltIGgelooasDh8vi4zR2zRMZcrF
-	 ekgAf1uuGVzmQ==
-Message-ID: <f5e7b114-2bda-49e3-974f-170211501203@kernel.org>
-Date: Tue, 20 Oct 2026 12:02:01 +0200
+	t=1792490572;
+	b=nQ5V6+uUtoMcKwtMBgkF/sDgAgeu7rMMecvOA8b3+uZgQhs+zIEoXNeJcSmWqG6CdzgJya
+	gR7Ty6G4phK+jPieW+lkSFIxAuNq0IqCJeLY9OHXfPC41tU51EoHuFNc/kYfhFpsebsUxw
+	Cy/1EqPnskdA7Z9xxLowbfRUyWBSm9s=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=t4SIrFwsLLdYUVykrtIKFEOdwi4NXhFqz8xZdBmmof4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792490568; v=1; x=1793095368;
+ b=j1WJOhOlSO4AhDFb47e9MF+Xr2UxBAyiMRfHD5E7GeziTxmYr5r3/B40OW5Ouk+JrOTGiKKV
+ 3J0+xJQtLFODbJriBs8Nyl0pvOGcsJ9q4O6uyp7YZn7cvfDPG2tbt7uMtB1QzUjHr2wCefVk07l
+ o/A1oySJBGtkva6H1MdOEhTY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1ae7d4d8b0dbbd41;
+	Tue, 20 Oct 2026 10:02:48 +0000
+X-Mizu-Trace-ID: 1ae7d4d8b0dbbd41
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <2b83dfaa-424b-4464-830e-a7714a816d5c@linux.dev>
+Date: Tue, 20 Oct 2026 18:03:50 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: skip shuffling and reporting for no-lock
- frees
+Subject: Re: [PATCH v2 3/5] mm/vmalloc: undo partial mappings inside the
+ mapping functions
+To: Suren Baghdasaryan <surenb@google.com>,
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ sashiko-reviews@lists.linux.dev, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
+References: <20261019054531.87652-1-hao.ge@linux.dev>
+ <20261019054531.87652-4-hao.ge@linux.dev> <sashiko-outbox-178439@kernel.org>
 Content-Language: en-US
-To: Karl Mehltretter <kmehltretter@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexei Starovoitov <ast@kernel.org>,
- Alexander Duyck <alexanderduyck@fb.com>, David Hildenbrand
- <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261005063515.6312-1-kmehltretter@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261005063515.6312-1-kmehltretter@gmail.com>
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <sashiko-outbox-178439@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 383AFA0007
-X-Stat-Signature: xgfo68hq8pz7k31qfafws1qz39nbhza3
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792490528-649066
-X-HE-Meta: U2FsdGVkX1808sOOSOJ3hp53BG51UIW5j+Ceijm+KMStiHj0b8fIQ4+Tq+FmOoU24qyGkSCKMWoykSMiQE/gAFwp2aywqzHzKFtBQaS6AWcOV4tWhjKG4lPLRQC8FB7N1zOvu0nic17LHFGHxVw0ielbsg/AdP20zFAb/04LrLh9BdE1Q9JOHdJr8anGIqEKc9ODDcXVjrFzTpk+YIwV8LeUajoODgY6qvauCdSjiyuUMTp3E3XqV+WIxDCbkg+DbaHQq4ZYHrQN4wPezTOPwvwif8g/qCP2PKK7acfRoDbj62skfWwwrRZWe3Cb+oxdWa8dP1DgTD7kM/1YP+LxQ7SCRHN2WXp4/XbBZcKdDOkHg/ZfFH3MCKQv4oFGmPMoZw89dFLwoJrfRXGC2D1eORNkIyVw3aQMs5H1FZOTnMz6wd6QzUOl7H8vHUvyrGfJQpmwOxNmrcqMiNPHI/AFrzPYi6z5irNgy7sU4F6xlfPqDzscdwbX8pvCdJTkA/SFfnyHnqmVAeUIyXr8wGGagEwRsYCk/s9nBgN0yBm3M9Vj4krLJnmKVNnqDn03GMJ55jNTtx0RkpxnTBfVjKHlVcV9sdM7OUwsnHyGTikJBcnNRFLyHPDOBVEte0kWb0vxoIJP+yUxrihVaVP/xLa84UtmBkqaeYr0kX7j9WFkMecxgAcB7mIH+1xwxLQnzv/Ag0SXe56z72Nybu1/+28dIFBQ+7TPT8R0h8GzY1WYO5R1R2OwrcpCcdivG1Pa+66CMPuMymkrTVykN1eeh3vRH3Osl02zy6SatM42gWhdAMM6EEhzBKmifO83yJTmPv0zsaV/zU2d1GrnXHNl+yB0pTatk6fbxzEjoT1DOca5YBhQgx8aJgiln7IRFEp85Dm7ThvgWu4sXje/euX11VX2n64BMVqISS44Il80TuGPFhyCzdsKwyTvy1hEgPRnPIsObhpRFNitHWM49AsEpds
- wF0Wgi62
- /9yYOkdYkVUGKd+Q6RW7kdUVnmM0lpe7d7FfOoVcTEv5oGdIDATnlGdaiknmA57tkZ2xFxdPRED1SO5MdyG3UFbm7zVM6MiXAWnRRwA5wC6nH4OVvH3O5MSjlvOxsMEGcBew1R1z7KGXFiO156QdesF5UWEzG5RcZMM9oR4ilvLrJb+dpc3dpyibVcvupecPRWIyiQadmddINrXQ7FzaSkMslVcS9ZZ+wOc7XwDVVgf2Qg8hKk4KFgDKT9AOJfdzhSBVWGdf7UwZ56y7BNnG5gzRhzX0fImEw/0a1J0MEoofKS50v8GQf/JmKSMndL1JEn0RqAjO8zEgGwp7a5h4YFwPn3RtxREiKoz6g
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8836910000C
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: nktpgjrm8eex5tqj8is13hu4ob3hxkrw
+X-HE-Tag: 1792490570-534597
+X-HE-Meta: U2FsdGVkX18DcADGA9SYG9D8WqWbGzoVUUXisizCHUKD44PudOGH1xqrf9jeL5UHJtqSdIhKx34f9WgaBFxe/Hw5Ahuq9ODVnk3JcLOXyjrkVXlSpCT4cLPD3x9fDDZuD3BFTO4vQyZtkpOPpeL6Eig+GS0GpRAVDee8UoDww+vY1rV+nUXhbCgbvJW3reQyH0ICTcv3geOXiWrfTrjw8wQ9eM1itKuhvKAiDhw3DMJ8guQsQIzluBueDTRW1EKsD96mtde622g0fDS1dHr/pfYx1nR6awnlrE2dTwDnvG/JErI9DBoS0ONVhdv5NBDP8xXX/dsaZOJcGKuJM5U/ebEyJJ4daZefoagO3hzTYD77N6mBcIE0iF+ZRsC2Jk2comXRviwdzNR31d33xo5bb7vuA5e7MmYI/E1uAY3HCnqeeT5h1r8qH/Fch5hBW9g9Q8wvHl9DhUKC6WUhoua6yn0m0fAZp97fqJWBL16n93yHF1QV3h26a74zrxPnv++rSxGW3SRAM5pJ+uJPtKrEoJ3Ej8kUJBmT00658CPSmr4GaKw4TrOcealiS+tt6AWuHPqMrkEMmnJWhuVpHR6d4jv3Go4tZOsNf0BLQWtFbw8/QcCAwD5QkPbMOFD9H5qgH4NOwiYLRTIhDX7igRJ7fixGtUSqQDedmlZfzaC/aVfDdvzyYOJCE/tgEfFptmlyWqPS/Mt/O/8U3J470FgQ7q2Vx/RdyPc8KwEz9QDNS7+XmD2+GMwAPNz7UtmUUTULWN+n7lBKD5u3HKkos6+Scm2qyxI/6oHz6S34/K3blzVSbMD9mQmw3zojWMLhK+RVT1GuW9UFQAUFI8eKhz5Hgbr8EHghFLt3UNuM5z74T3h8+2xrQwrv8Vw1x8SEZpgVZZWzMkxMBSC6wsasN9G+Sifg+SfK2ASdTeMfk9I2P7TAd2B3bJ7TnEDS66rI5RwZrcQ8M/1Z3HJd9ugJvMd
+ EKQ79dy8
+ D28jVCQjllXkaPAjtnKTeu2UMy8Dy8M/4s1CZ9VAiwrr5ChAEL0XE1gVJc336oNb3mE9i7oqDsfcDBNHwLxFoi/FYKrr2capqVjHMEXDruI8JnOrlGsO7B2RD0fDSrMhWkolm5QoUck22uUJ/Y2gum4FzxZyChpMIeN8ZVWKGWRIaZ8GjfZYGCjKDfU2vLUnggjkKjiIVtDOfPBnC9N4rPw2FUELpGorNwwyRtjpW5mnJCl5xJLNUgZO2KuPjlprpdSiHDdnZaxnpM277E+O92m0ZQt4fe+azRZcT5UHb3ndATqHKpwRJO6ERxnpZsEEiRR/3Vdx33kudkC4p5Fz++PsPGdzMWVdNZQ5E0z9m/jHh700jrwhn1PBPig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,133 +105,283 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/5/26 08:35, Karl Mehltretter wrote:
-> free_pages_nolock() may run in NMI context or while a raw spinlock is
-> held. When its zone trylock succeeds, __free_one_page() still reaches
-> optional work written for ordinary frees.
-> 
-> shuffle_pick_tail() can refill its random-bit cache through
-> get_random_u64(), which takes a per-CPU local lock.
-> page_reporting_notify_free() can queue delayed work. Both operations can
-> enter locking outside the trylock-or-defer mechanism used by no-lock
-> frees.
+Hi Suren and Ulad
 
-For page_reporting_notify_free() are any raw spinlocks bad or is it the
-scheduler locks?
+Sashiko reported several issues, and they all look real.
+I have some ideas for fixing the first few;
+of course, please correct me if I get anything wrong.
 
-> An instrumented PREEMPT_RT lockdep run forced a random-bit cache refill
-> while calling free_pages_nolock() under a raw spinlock. The unpatched
-> allocator reported:
-> 
->     BUG: Invalid wait context
-> 
-> The attempted lock was batched_entropy_u64.lock in get_random_u64().
-> Lockdep showed the raw test lock and zone->lock both held.
+I'd like to discuss the last issue with you all.
 
-In slab we solved this by using prandom - commit a1e244a9f177 ("mm/slab: use
-prandom if !allow_spin")
-Could be better?
 
-> Skip allocator shuffling and page-reporting notification for FPI_NOLOCK.
-> The freed page remains on the buddy list and can be collected by a later
-> reporting pass.
+On 2026/10/20 13:45, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] mm/vmalloc: infinite loop in vunmap_pte_range() on unaligned error rollback
+> - [High] mm/vmalloc: __vmap_pages_range_noflush() calls cond_resched() in atomic context
+> - [Medium] mm/vmalloc: vmap_page_range() calls flush_cache_vmap() before error rollback
+> --
 > 
-> Trees from v6.15 through v7.2 call this flag FPI_TRYLOCK. Use
-> FPI_TRYLOCK in place of FPI_NOLOCK when backporting this change.
+> commit 043026437ba63b051df5d14470fe69ce8fa8825c
+> Author: Hao Ge <hao.ge@linux.dev>
 > 
-> Fixes: 8c57b687e833 ("mm, bpf: Introduce free_pages_nolock()")
-> Cc: <stable@vger.kernel.org> # see patch description, needs adjustments for <= 7.2
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
-> This was found while auditing the no-lock paths discussed at:
-> https://lore.kernel.org/r/20260919171443.90512-1-kmehltretter@gmail.com
+> mm/vmalloc: undo partial mappings inside the mapping functions
 > 
-> Tested on base e767a4ea70a3 in four-vCPU x86-64 QEMU TCG with
-> PREEMPT_RT, PROVE_LOCKING, PROVE_RAW_LOCK_NESTING,
-> SHUFFLE_PAGE_ALLOCATOR, PAGE_REPORTING and page_alloc.shuffle=1.
+> This commit adds rollback logic using __vunmap_range_noflush() and
+> kmsan_vunmap_range_noflush() into vmap_page_range(),
+> __vmap_pages_range_noflush(), and vmap_pages_range_noflush() when page
+> table installation or KMSAN metadata setup fails. It also adds range and
+> page_shift validation in __vmap_pages_range_noflush().
 > 
-> A temporary initcall registered page reporting and freed 65 maximum-order
-> allocations with free_pages_nolock() under a raw spinlock. This exhausts
-> shuffle_pick_tail()'s cache and forces a refill.
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index 44e0eb32708f1..75aa5acf55660 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -363,6 +363,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
+>>  	if (!err)
+>>  		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+>>  					       ioremap_max_page_shift);
+>> +	if (err)
+>> +		__vunmap_range_noflush(addr, end);
+>> +
+>>  	return err;
+>>  }
 > 
->                                              unpatched  patched
->   free_pages_nolock() calls                          65       65
->   __free_one_page() calls                           130      130
->   shuffle_pick_tail() calls                          65        0
->   page_reporting_notify_free() calls                130        0
->   reporting work pending                              1        0
->   invalid-wait-context reports                        1        0
+> [Severity: High]
+> What happens here when vmap_range_noflush() returns -EINVAL for a range
+> where end - addr is not PAGE_SIZE-aligned?
 > 
-> Maximum-order splitting accounts for the 130 __free_one_page() calls.
-> Both guests powered off. The patched guest emitted no diagnostics. This
-> forced test does not measure normal frequency.
+> In vmap_pte_range(), commit a739e6b557af09 added a check to bail out on
+> unaligned ranges specifically to avoid an infinite loop:
 > 
-> A second A/B used no test-only MM caller. A BPF arena program attached to
-> mm_page_free_batched requested 2,048 pages from a memcg-limited map. Partial
-> failures rolled allocated pages back through free_pages_nolock() while the
-> tracepoint held the per-CPU page-list lock. A virtio-balloon device provided
-> page reporting.
+> mm/vmalloc.c:vmap_pte_range() {
+> 	...
+> 	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
+> 		return -EINVAL;
+> }
 > 
->                                       unpatched  patched
->   arena allocation attempts                  70       70
->   arena allocation failures                  70       70
->   shuffle calls from rollback                 9        0
->   get_random_u64() calls from shuffle         1        0
->   reporting notifications                    12        0
->   delayed-work queues                         5        0
+> This can be reached on 64KB page kernels via pci_remap_iospace() ->
+> vmap_page_range() with 16KB/32KB/48KB PCI I/O ranges (for example via
+> loongson_pci_probe() or acpi_pci_root_remap_iospace()).
 > 
-> Both guests powered off without a diagnostic. This confirms that an in-tree
-> caller reaches the optional operations. It did not reproduce a deadlock or
-> lockdep warning.
+> When vmap_pte_range() returns -EINVAL, vmap_page_range() now calls
+> __vunmap_range_noflush(addr, end) with the unaligned range. Whenever a PMD
+> in [addr, end) is already populated with a PTE table (such as the
+> PCI_IOBASE PMD populated during early boot by reserve_pio_range(), or an
+> earlier PMD mapped in the same call), __vunmap_range_noflush() descends
+> into vunmap_pte_range(), which has no alignment check:
 > 
-> The upstream form applies to v7.3-rc1, mainline and next-20261002. The
-> FPI_TRYLOCK backport applies to v6.15 through v7.2. mm/page_alloc.o builds
-> on v6.18 and v7.2.7. Stable backports were not runtime tested.
+> mm/vmalloc.c:vunmap_pte_range() {
+> 	...
+> 	do {
+> 		...
+> 			ptent = ptep_get_and_clear(&init_mm, addr, pte);
+> 		WARN_ON(!pte_none(ptent) && !pte_present(ptent));
+> 	} while (pte += (size >> PAGE_SHIFT), addr += size, addr != end);
+> }
 > 
->  mm/page_alloc.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+> Because end - addr is not a multiple of PAGE_SIZE, won't addr step past end
+> and loop infinitely, clearing unrelated kernel PTEs and corrupting memory
+> past the PTE table?
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 12fac9084c48..3e21dc90b858 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -89,7 +89,10 @@ typedef int __bitwise fpi_t;
->   */
->  #define FPI_TO_TAIL		((__force fpi_t)BIT(1))
->  
-> -/* Free the page without taking locks. Rely on trylock only. */
-> +/*
-> + * Request the no-lock free path. Use trylocks and skip optional operations
-> + * which can take other locks or queue work.
-> + */
->  #define FPI_NOLOCK		((__force fpi_t)BIT(2))
->  
->  /* free_pages_prepare() has already been called for page(s) being freed. */
-> @@ -1013,7 +1016,7 @@ static inline void __free_one_page(struct page *page,
->  
->  	if (fpi_flags & FPI_TO_TAIL)
->  		to_tail = true;
-> -	else if (is_shuffle_order(order))
-> +	else if (!(fpi_flags & FPI_NOLOCK) && is_shuffle_order(order))
 
-is_shuffle_order() should be checked first as it has
-CONFIG_SHUFFLE_PAGE_ALLOCATOR=n compole-time false variant, and static key.
+That sounds reasonable. I will add a separate patch in the next version to fix
+this problem.
 
->  		to_tail = shuffle_pick_tail();
->  	else
->  		to_tail = buddy_merge_likely(pfn, buddy_pfn, page, order);
-> @@ -1021,7 +1024,7 @@ static inline void __free_one_page(struct page *page,
->  	__add_to_free_list(page, zone, order, migratetype, to_tail);
->  
->  	/* Notify page reporting subsystem of freed page */
-> -	if (!(fpi_flags & FPI_SKIP_REPORT_NOTIFY))
-> +	if (!(fpi_flags & (FPI_SKIP_REPORT_NOTIFY | FPI_NOLOCK)))
+> [Severity: Medium]
+> Also in vmap_page_range(), flush_cache_vmap(addr, end) is called
+> unconditionally before checking err and before rolling back with
+> __vunmap_range_noflush(addr, end):
+> 
+> mm/vmalloc.c:vmap_page_range() {
+> 	err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
+> 				 ioremap_max_page_shift);
+> 	flush_cache_vmap(addr, end);
+> 	if (!err)
+> 		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+> 					       ioremap_max_page_shift);
+> 	if (err)
+> 		__vunmap_range_noflush(addr, end);
+> 
+> 	return err;
+> }
+> 
+> On UML, flush_cache_vmap is defined as flush_tlb_kernel_range:
+> 
+> arch/um/include/asm/cacheflush.h:
+> #define flush_cache_vmap flush_tlb_kernel_range
+> 
+> When vmap_range_noflush() fails partway through or
+> kmsan_ioremap_page_range() fails, flush_cache_vmap() runs while the
+> partially installed PTEs are still pte_present(), causing
+> update_pte_range() in arch/um/kernel/tlb.c to map them into the host OS via
+> ops->mmap() and clear _PAGE_NEEDSYNC:
+> 
+> arch/um/kernel/tlb.c:update_pte_range() {
+> 	...
+> 		if (pte_present(*pte)) {
+> 			...
+> 			ret = ops->mmap(ops->mm_idp, addr, PAGE_SIZE,
+> 					prot, fd, offset);
+> 		} else
+> 			ret = ops->unmap(ops->mm_idp, addr, PAGE_SIZE);
+> 
+> 		*pte = pte_mkuptodate(*pte);
+> }
+> 
+> When __vunmap_range_noflush(addr, end) then clears the software PTEs
+> without a subsequent TLB flush or unmap notification, won't those host OS
+> mmap mappings be left behind? Should flush_cache_vmap(addr, end) only be
+> called after both vmap_range_noflush() and kmsan_ioremap_page_range()
+> succeed?
+>
 
-Maybe add a comment why we check FPI_NOLOCK too?
+That sounds reasonable. I will add this logic in the next version.
 
->  		page_reporting_notify_free(order);
->  }
->  
+>> @@ -683,27 +686,35 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>>  		pgprot_t prot, struct page **pages, unsigned int page_shift)
+>>  {
+>>  	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
+>> +	unsigned long start = addr;
+>> +	int err = 0;
+>> +
+>> +	if (WARN_ON_ONCE(addr >= end))
+>> +		return -EINVAL;
+>>  
+>>  	if (WARN_ON_ONCE(page_shift < PAGE_SHIFT))
+>>  		return -EINVAL;
+>>  
+>>  	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+>> -			page_shift == PAGE_SHIFT)
+>> -		return vmap_small_pages_range_noflush(addr, end, prot, pages);
+>> -
+>> -	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
+>> -		int err;
+>> -
+>> -		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
+>> +			page_shift == PAGE_SHIFT) {
+>> +		err = vmap_small_pages_range_noflush(addr, end, prot, pages);
+>> +	} else {
+>> +		for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
+>> +			err = vmap_range_noflush(addr, addr + (1UL << page_shift),
+>>  					page_to_phys(pages[i]), prot,
+>>  					page_shift);
+>> -		if (err)
+>> -			return err;
+>> +			if (err)
+>> +				break;
+>>  
+>> -		addr += 1UL << page_shift;
+>> +			addr += 1UL << page_shift;
+>> +		}
+>>  	}
+>>  
+>> -	return 0;
+>> +	/* Undo the PTEs installed before the failure. */
+>> +	if (err)
+>> +		__vunmap_range_noflush(start, end);
+>> +
+>> +	return err;
+>>  }
+> 
+> [Severity: High]
+> Similarly here, __vmap_pages_range_noflush() checks addr >= end, but does
+> not check PAGE_ALIGNED(addr) or PAGE_ALIGNED(end).
+> 
+> If a caller passes a sub-page or unaligned range (for example, 0 < end -
+> addr < PAGE_SIZE), nr = (end - addr) >> PAGE_SHIFT evaluates to 0, so the
+> huge-page path still maps nothing and returns 0, while the small-page path
+> loops infinitely in vmap_pages_pte_range(). And if the huge-page path fails
+> on an unaligned range, __vunmap_range_noflush(start, end) will hit the same
+> infinite loop in vunmap_pte_range().
+> 
+> Should both vmap_page_range() and __vmap_pages_range_noflush() validate
+> PAGE_ALIGNED(addr) && PAGE_ALIGNED(end) upfront before attempting to map or
+> unmap?
+> 
+
+I think We need to check both PAGE_ALIGNED(addr) and PAGE_ALIGNED(end).
+As an example: if addr is PAGE-aligned, end is not, and end - addr < PAGE_SIZE,
+then nr becomes zero. On the huge page path, we simply return 0 with no work performed.
+
+At the same time, vmap_pages_pte_range() needs the same guard as commit
+a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not PAGE_SIZE aligned"),
+to protect against unaligned ranges.
+
+So will do next version.
+
+>>  
+>>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>> @@ -715,7 +726,16 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>>  
+>>  	if (ret)
+>>  		return ret;
+>> -	return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
+>> +
+>> +	ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
+>> +	/*
+>> +	 * The page tables undo themselves on failure. Tear down the
+>> +	 * metadata that was fully set up before the mapping failed.
+>> +	 */
+>> +	if (ret)
+>> +		kmsan_vunmap_range_noflush(addr, end);
+>> +
+>> +	return ret;
+>>  }
+> 
+> [Severity: High]
+> Can calling __vunmap_range_noflush() and kmsan_vunmap_range_noflush() here
+> trigger a sleeping-in-atomic-context bug when __vmalloc() or kvmalloc() is
+> called with GFP_ATOMIC or GFP_NOWAIT?
+> 
+> __vmalloc_area_node() supports non-blocking allocations by wrapping
+> __vmap_pages_range() in memalloc_apply_gfp_scope(gfp_mask):
+> 
+> mm/vmalloc.c:__vmalloc_area_node() {
+> 	...
+> 	flags = memalloc_apply_gfp_scope(gfp_mask);
+> 	do {
+> 		ret = __vmap_pages_range(addr, addr + size, prot, area->pages,
+> 				page_shift, nested_gfp);
+> 	} while ((gfp_mask & __GFP_NOFAIL) && (ret < 0));
+> 	memalloc_restore_gfp_scope(flags);
+> }
+> 
+> When a GFP_ATOMIC or GFP_NOWAIT allocation runs in atomic context (such as
+> under a spinlock, preempt_disable(), or rcu_read_lock()) and page table
+> allocation fails in vmap_small_pages_range_noflush() after at least one PMD
+> in [start, end) is populated (or after kmsan_vmap_pages_range_noflush()
+> populated the KMSAN shadow/origin ranges), __vmap_pages_range_noflush() and
+> kmsan_vunmap_range_noflush() synchronously call __vunmap_range_noflush().
+> 
+> __vunmap_range_noflush() walks the populated PMDs via vunmap_pmd_range(),
+> which unconditionally calls cond_resched():
+> 
+> mm/vmalloc.c:vunmap_pmd_range() {
+> 	...
+> 	do {
+> 		next = pmd_addr_end(addr, end);
+> 		if (pmd_none_or_clear_bad(pmd))
+> 			continue;
+> 		vunmap_pte_range(pmd, addr, next, mask);
+> 
+> 		cond_resched();
+> 	} while (pmd++, addr = next, addr != end);
+> }
+> 
+> Commit 9c47753167a6 ("mm/vmalloc: defer freeing partly initialized
+> vm_struct") deferred error-path cleanup in __vmalloc_area_node() to a
+> workqueue specifically because unmapping on failure can sleep. Doesn't
+> calling __vunmap_range_noflush() synchronously inside
+> __vmap_pages_range_noflush() and vmap_pages_range_noflush() reintroduce
+> cond_resched() in atomic context?
+> 
+
+This issue also appears real. One possible approach is to plumb the caller's gfp_mask into vunmap_pmd_range()
+to conditionally skip cond_resched().
+Suren, Ulad, do you have any preferred or cleaner way to handle this?
+
+Thanks
+Best Regards
+Hao
 
 
