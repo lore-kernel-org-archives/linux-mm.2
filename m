@@ -1,104 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5CF606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2406606A31F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=baB3S6gF
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l6k6wTjF
 Received: by kanga.kvack.org (Postfix)
-	id 0C4896B0122; Mon, 19 Oct 2026 22:36:06 -0400 (EDT)
+	id A1B316B03EF; Mon, 19 Oct 2026 22:39:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 075EF6B03EC; Mon, 19 Oct 2026 22:36:06 -0400 (EDT)
+	id 9A45F6B03F0; Mon, 19 Oct 2026 22:39:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA6B86B03EE; Mon, 19 Oct 2026 22:36:05 -0400 (EDT)
+	id 86D186B03F1; Mon, 19 Oct 2026 22:39:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AEBE86B0122
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:36:05 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B85D1205A9
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:36:05 +0000 (UTC)
-X-FDA: 85341439890.16.61C1264
-Received: from mta1.migadu.com (out-166.mta1.migadu.com [95.215.58.166])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4B40D1C0007
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:36:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=baB3S6gF;
-	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.166 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 572AD6B03EF
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:39:49 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC4EC140801
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:39:48 +0000 (UTC)
+X-FDA: 85341449256.27.4521D07
+Received: from mta0.migadu.com (out-59.mta0.migadu.com [91.218.175.59])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B28B81A0002
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:39:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l6k6wTjF;
+	spf=pass (imf19.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.59 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792463763;
+	s=arc-20220608; t=1792463987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xkGhnhY44K2J1OBQ/8hTDyBxqBV4vaK4wkgxii7kUUo=;
-	b=OjYmkNOx+6N88TIwQkJ0gVFOos72cwS5DDtPojMBcnGIrUmsa1T7sjYgJ99hdcLZc2W68r
-	mvapuV7Sk5Z+Q8X5G2jW7afECSpxZIEyEh2FF/WrYn22fiOHsj9EthOdX2XSckh6TVfOgL
-	GnvtIWOf3W6hHDOdJcsDfoKUJCcsVp4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=baB3S6gF;
-	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.166 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jKyfrtAnBnwO542LTPL2+YmVFhv9HS5+X9M5mbYFXh0=;
+	b=wuYEIL+pNS5AMKtbvJIlKJjY+9aGhRcWmKUikWVxKPsdUeWlTuwn3dqMg+QKsHkakH8zFE
+	Xem7n+nbi7DEtY/RKOClcZlHezQEt9eVkdKwQoCpJtAcFDWYBA4PArQqOaacDfVCtLhpUT
+	pNZn4zQo78s3JRHbqKuSVOcbUJhbqfQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792463763;
-	b=im1BYHAhSAnxVq2GNV6WBktNJLwom4OWBzKV9H08oP+ozFs6yjJSD38HhAnxjKkwpxWvwJ
-	IJr5coUw+1eCYHih3IrST/eyWDPZXS5TPQp67YpwdV0ux3paDPi/qc80JynVAWIIZ1fTcd
-	T6Rjgv+3y/FYQY9L1gCw391y+JlxTq4=
+	t=1792463987;
+	b=2Bi9DfJ9NExeh7ljDdgUFhqvLIyDIrax7mS+NIEsULN0NiR60DCXtfiTQNqjodiDk606YE
+	Nw8vQvcKasYsqK/WTBWhHY8r9urZaNh0APTOOSsVCjEGx+vBs2v5kN/L2CxhUzwg5HbI+d
+	O1s4xRx9nIV+8PVa4BLrcoNZY+KJ0v0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l6k6wTjF;
+	spf=pass (imf19.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.59 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VsTbGfpp4irBeMjTHpzRqpN9dSM7uDhmL47sNU/lgh8=;
+DKIM-Signature: a=rsa-sha256; bh=00+vt9qrllM8ZzXqix0pP9Xez7rpoPwxxNCrb4lFYHE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792463761; v=1; x=1793068561;
- b=baB3S6gFMdIWH3TskBvOzxIYK54c7b7kgB9p0vLO6E6qpm5U3l6Q6Z5S2V4Lk8C60PBJDjmz
- xeVuQzpJmWm88LjuDtBmrVjaBUzRSyo5xykOx/Z0ix8Z6mu0bEg4M0hMsbUjDhPH36WCtx0uvA0
- J80nSEuu+E75QhqNty3KgotY=
+ t=1792463985; v=1; x=1793068785;
+ b=l6k6wTjFhgWVj5NF7XU8bFp9FuEwCAtrbVnCT3tmMebERaTA44w4l+bpnScfqxKBzBEhDwZZ
+ MXIlpZXW2C2dWJp9tmZkmBUZdb5LbEGguI8gadfkvazqAFR0y49+RZ/se3OOPdibKGpZokBtcv9
+ oZ+y1Cl9dIrsosChpIMuvekw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 72d5ed4ea47801f3;
-	Tue, 20 Oct 2026 02:36:01 +0000
-X-Mizu-Trace-ID: 72d5ed4ea47801f3
+Received: by smtp.migadu.com with ESMTPS id 0520e0ef0e1754e3;
+	Tue, 20 Oct 2026 02:39:45 +0000
+X-Mizu-Trace-ID: 0520e0ef0e1754e3
 X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH mm-new] mm/mglru: clarify the generation placement in lru_gen_folio_seq()
-Date: Tue, 20 Oct 2026 10:35:48 +0800
-Message-Id: <20261020023548.3242028-1-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
+Message-ID: <d4a35334-56e2-4590-8b4c-1c030c36e5bb@linux.dev>
+Date: Tue, 20 Oct 2026 10:39:37 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
+ up on
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org,
+ Jiayuan Chen <jiayuan.chen@shopee.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ linux-kernel@vger.kernel.org
+References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
+ <CAMgjq7D50X47JFsTnF2-jYGv7i-Nd3WhQLK-TJGy4XkhMQU4OQ@mail.gmail.com>
+ <62d17959-d695-4fec-a87b-8eadaaf995a8@linux.dev>
+ <CAMgjq7CJ+bwKgwUmCzO9Hr7TrL68bDjgAsLx-4AGuXo6zowh9g@mail.gmail.com>
+ <CAKEwX=O4sPx5MtGL4-JwLzD4TWm7fNycFMiuOqLk4ADFUUipNg@mail.gmail.com>
+ <4f361479-1dbc-4f09-aa26-e1ad6c06cbee@linux.dev>
+ <CAKEwX=N4jj3PGXFx6wwh=PG4Vt6hRJ=-kqX24B55zoXyhAa1WQ@mail.gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CAKEwX=N4jj3PGXFx6wwh=PG4Vt6hRJ=-kqX24B55zoXyhAa1WQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B28B81A0002
+X-Stat-Signature: hr1qqniktxxy8zpnbz8q84hfhnum18ir
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4B40D1C0007
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: bmnu4kre9ns8ft5izhngn8xphy8fxx7w
-X-HE-Tag: 1792463763-285109
-X-HE-Meta: U2FsdGVkX18QCjJNV+xSmziosHxB3a5jszBNDyB4iiXi+2qlxAqglrBPimph16AsziW07UTnoJUgxiECMcxoFQmszt5OhiAfmQvhls4BsKx2z2GZ4apQ7J/pcoW/mjgLU+o06CK3/NEnOcaGMYj8KIyHE+Cd/haVDVsYbcW5OYfCd0rfxhSgHHaStPlvZ//vGdjCTK8YqRrPM8pY69v99SBQzjfw26Yw75DJm/Iu2AQ2qVBtUHjdWsBag+jG3Bh5A2J6TaPxE5PyuEnyT5PCFvJMy+JI5fidEyiEJ33kChKRdJZXDldiErcGTxtZT1c/MMofJYy/ubZ2Z/0cXmjQkv6UbfCeV1GvWg7MoncmErHgxRr5DpfuI7S9KPnfVVSvSYgG37CUDuGtwLj1d5h//5KlQnyxSy3Q4Rz0D8EHZO4S1v7yzetW6U+jfX+SeWvA2A3wUpBHqKxPITlgl/kv7GgJPuC3ZCfcJ+EvD39S7xCdfjaEOkjTaatCWKdRKwEB6zXmIBPYWJY19mN24NC3H5EPOQA1s/xj97bekVshOqfsgluArxbEkh4eskQ9fqPI6GnWcV1viR9Vdt24i6SrCHAYCZvSs5k1w+Fw9ou+IdGCqjqgX7ai8zWbay9guf73kgDEyoU2P1kEhOo9d3+fq74Y9eQX+4OUrPzwLUCboEwPKxAttxxkMaQfAuvnppxkiUDQX1XK9r6K2DDREfsKIfe2/YHqvgPASV3TZDCGYqvX7mUs5H2MgKiYfSXtMU9gP/KzvSStfCh5uSBnS4xV6lntZQgiacPUXyjmFFk+F0pySegHcAvCosuHiJyCMKDHi6WnvhSTe7RnjYKz986TFMSiSBr4VR6TEGgIyUkJ0DfUDPFKft/j8e75/aijW4DncWRjD6KJONGi0ew0bxaoHV/7IsHh6eWn6ALOcfnMaFL6Aqhl7N6Jw1KrfhsBzzFN044f94VBkjseR4ymfPP
- 5GF8G0Lk
- +ekFU/jYwkKz3KONbkyhmO1s2zAZKmbw1DaOxChY1TP0MfMC+Ij2Tzf2A3rMgVJ4opMV57lu097EVCnHyKCUHxsOlR5OyMSZ7qQB/vvwNJD9O7uuNp1duH9yIkAevheQn9mQB7ZMQ3wGLjiwfE8teEmmnfMjBt0OPlvRzrdo/ty1CHQ65RVfQQEzDaA9p6XFi25RQCzhb0/tuFCjyU4safzpfzk8P+Bx6ilzUcrzzoLfI3omdERHWmN39QB768oieKGx9bO+0xRlhen6BoubTDirPpx72sgGA0VrwIVmWpO70PMntKi8PqZTMonmRN9vGgYNJm3rTa1W4vD/BH4gRkRtrWw==
+X-Spam-Status: No, score=-6.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792463986-716491
+X-HE-Meta: U2FsdGVkX187JJaa5M6wVySTl70NvE7IqqxYpvHwLa5L4Sl2ARvI8A4dIILEorzyKrpusD6MHFJRQqEkpBG3nV2dNJBJ+SMs8WyJEMmi/5ZAKoTQMoRvEXlMGWsgwVJUYefOQeknIpp4fiPuX52jZW0a9It0DHYC02RqQagCepd4h8i3dvi1AmiyIfrhRQcdG3mKcK4fNCh4Ffdrgz5QVGiZTWz0aLtq5sZy1nk2HFjM/t1AagWE/bJ/H8+X9JXhzatly7Ia3643UNBka3krmHI9FVoGCIbDMenmKgsp11qJg1Nn7S6uClnNu3PqCcxY85uSE+0R51RVixdjnReWUfkvLaTIpZGjCRkUIVun7L+xHgVbqG84futyWrrJtr4HxbL6UKGe/FJ/xkD6B8KZwjAI79qJDHfrDo95etMpk6kjG01wDkQlOMEiCOaXZv9srdS171lQJP5b7V9eseJekiyYa4Utr91RCbcZG47TSPgmPNVGL/TVNxkBUaovn5TJhwVNQIEsufHsdLBc3j0JacUT1RTYWWw7fg6M50YwntncSFgxkzQmxuZfNRcUIQE2mVAUO6sfwoKTgW4b2PC3+CGOPJaY5chsjfzo6yLEqrF7X9T/MKzT3UFWx0pluSrNAhkwu6gB7LLknQG5hu0uW4QWzAdvapz14S55Ek1bImMLb1d6DWyizYM5T3i3T+mODraJiv3MoA7K9hwz2CVYx118iBgns/CAbvNWiPkG7pivhNOFUbEqdZInBaJ3rQ2DbYEE0oZUB7fEWT7LX2qINk8JasiT16oRMadZAB7p1yInxV1N+MetBsSw+C6282mPMZ4lAktSInWSAgLp4cK7E0tpLRmLicYw16NVhIfzXTGc/HGYMVp1MhlKOYorgtpnJY7dGrafgaR9RTIsTQjOvuqPqqJfhcB09Qo3XSGH1XHl+XPlTg01PKdAW25taqT0u7hWp4uG0Td0G/mRC0c
+ rzBFuXEu
+ iiTMV3gHZfcSm9btXVQLJgL4Hnxw1cgqCjdyz58Lc7/0SFhFxgwwonvuoXhd5mgWCTDD2zG7ve352R+4vsSDRoFc8Og22zxwucMLRJhp54zrLT2DxQ0GvNC49Ss0r1++DIg4LTteeNnKrtmPR0vuJ+F+pzM17PmABcw1KPXQVdb595+EKNmtiTllXQR/F/Ak97aqzHsMw/7hXdiL4s5EmU1/xetv4KSBev8HogCgTBcfx/oAdokKMifuDon48e91gc7PCPkEXVpOYKcMAJ1OHOfjDyHgICZS96RHZXXgddPaPGyRtw+mIF78L9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,103 +104,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Ridong Chen <chenridong@xiaomi.com>
 
-lru_gen_folio_seq() computes how many generations below max_seq a
-folio should be added to, but stores it in a variable named "gen".
-Elsewhere in MGLRU "gen" means an index into lrugen->folios[], i.e.
-seq % MAX_NR_GENS, so reusing the name for a relative offset is
-confusing.
+On 10/20/26 2:08 AM, Nhat Pham wrote:
+> On Mon, Oct 19, 2026 at 7:37 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+[...]
+>>>> Right.. But I think it will be much better to avoid such folios from
+>>>> hunging in the swap cache in the first place instead of having a
+>>>> worker to reclaim them. I'm not strongly against adding a reclaimer if
+>>>> other approaches are too difficult at this point though.
+>>> Also, IIRC, dropbehind can only be handled in task context, right?
+>>> We'd need to make readahead bios to complete in task context
+>>> (BIO_COMPLETE_IN_TASK). I wonder if this has any perf implications.
+>>>
+>>> Another idea: how about, in swap_read_folio(), where we are guaranteed
+>>> to have the folio's lock, we check if folio is mapped. If it's not,
+>>> invoke folio_free_swap(), unlock, put, then drop that folio from the
+>>> submit batch?
+>> At that point the swap count is still 1; the zap comes while the read
+>> is in flight. Checking after the read works for the synchronous zswap
+>> path, which I tried first, but the bdev read is unlocked in
+>> swap_bio_read_end_io(), in interrupt context, where the slot cannot be
+>> freed.
+> Zap drops swap count first, then try to free swap cache. You're saying
+> the read check the swap count before zap dropping it, but still holds
+> the lock by the time zap try to free swap cache? :(
 
-The comment table above the code also no longer matches it. It only
-covers the PG_active and the final branch, leaving out the reclaiming
-and "can't evict yet" cases, and it lists LRU_REFS_FLAGS as an input
-although lru_gen_folio_seq() never looks at it.
 
-Rename the local variable to "age", redraw the table so that each
-branch maps to the age and seq it produces, and note that the result
-is clamped to min_seq[type].
 
-No functional change.
+Yes, exactly that. With the check in swap_read_folio():
 
-Assisted-by: LLM
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- include/linux/mm_inline.h | 48 ++++++++++++++++++++++++++-------------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+thread A (readahead)                   thread B
+swap_cache_alloc_folio(B's entry)
+   folio locked, added to cache
+   swap count 1 (B's PTE)
+swap_read_folio()
+   folio_free_swap()
+     count is 1, nothing to do
+   zswap_load() / submit_bio()
+   .                                    MADV_DONTNEED
+   .                                      swap count 1 -> 0
+   .                                      __try_to_reclaim_swap()
+   .                                        folio_trylock() fails
+   .                                        gives up
+   read completes
+folio_unlock()
+folio_put()
+-> count 0, folio in swap cache, unmapped
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index ab69b9930893..a933d8c14558 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -302,34 +302,50 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 					      const struct folio *folio,
- 					      bool reclaiming)
- {
--	int gen;
-+	int age;
- 	int type = folio_is_file_lru(folio);
- 	const struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 
- 	/*
--	 * +-----------------------------------+-----------------------------------+
--	 * | Accessed through page tables and  | Accessed through file descriptors |
--	 * | promoted by folio_update_gen()    | and protected by folio_inc_gen()  |
--	 * +-----------------------------------+-----------------------------------+
--	 * | PG_active (set while isolated)    |                                   |
--	 * +-----------------+-----------------+-----------------+-----------------+
--	 * |  PG_workingset  |  PG_referenced  |  PG_workingset  |  LRU_REFS_FLAGS |
--	 * +-----------------------------------+-----------------------------------+
--	 * |<---------- MIN_NR_GENS ---------->|                                   |
--	 * |<---------------------------- MAX_NR_GENS ---------------------------->|
-+	 *            +-----------------+-----------------+-----------------+-----------------+
-+	 * age        |        1        |        2        |        3        |        4        |
-+	 *            +-----------------+-----------------+-----------------+-----------------+
-+	 * seq        |     max_seq     |    max_seq-1    |    max_seq-2    |    max_seq-3    |
-+	 *            +-----------------------------------+-----------------------------------+
-+	 *            |<---------- MIN_NR_GENS ---------->|                                   |
-+	 *            |<---------------------------- MAX_NR_GENS ---------------------------->|
-+	 *            +-----------------------------------+-----------------------------------+
-+	 *            | Accessed through page tables and  | Accessed through file descriptors |
-+	 *            | promoted by folio_update_gen()    | and protected by folio_inc_gen()  |
-+	 *            +-----------------+-----------------+-----------------+-----------------+
-+	 * PG_active  |  PG_workingset  | !PG_workingset  |                 |                 |
-+	 *            +-----------------+-----------------+-----------------+-----------------+
-+	 * reclaiming |                 |                 |                 |     always      |
-+	 *            +-----------------+-----------------+-----------------+-----------------+
-+	 * can't      |                 |  anon && not in |                 |                 |
-+	 * evict yet  |                 |  swapcache, or  |                 |                 |
-+	 *            |                 |  PG_reclaim &&  |                 |                 |
-+	 *            |                 | dirty/writeback |                 |                 |
-+	 *            +-----------------+-----------------+-----------------+-----------------+
-+	 * else       |                 |                 |  PG_workingset  | !PG_workingset  |
-+	 *            |                 |                 |       or        |       &&        |
-+	 *            |                 |                 |  PG_referenced  | !PG_referenced  |
-+	 *            +-----------------+-----------------+-----------------+-----------------+
-+	 *
-+	 * The resulting seq is clamped to min_seq[type].
- 	 */
- 	if (folio_test_active(folio))
--		gen = MIN_NR_GENS - folio_test_workingset(folio);
-+		age = MIN_NR_GENS - folio_test_workingset(folio);
- 	else if (reclaiming)
--		gen = MAX_NR_GENS;
-+		age = MAX_NR_GENS;
- 	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
- 		 (folio_test_reclaim(folio) &&
- 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
--		gen = MIN_NR_GENS;
-+		age = MIN_NR_GENS;
- 	else
--		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
-+		age = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
- 
--	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
-+	return max(READ_ONCE(lrugen->max_seq) - age + 1, READ_ONCE(lrugen->min_seq[type]));
- }
- 
- static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio, bool reclaiming)
--- 
-2.34.1
+The check runs before the zap, so it sees count 1. The zap comes
+while A holds the lock for the read.
 
+Checking after the read instead is what I tried first. It works for
+the synchronous path and not for the bdev one:
+
+zswap (sync)                           bdev (async)
+swap_read_folio()                      swap_read_folio()
+   zswap_load()                           submit_bio()
+   .        <- zap, count 1 -> 0          return     <- zap, count 1 -> 0
+   read done, lock still held           ...
+   count is 0: free the slot, fine      swap_bio_read_end_io() (irq)
+folio_unlock()                           folio_unlock()
+                                          no ci->lock here, slot stays
+
+The write side is the same picture with swap_writeout() and
+end_swap_bio_write().
+
+
+> I was kinda hoping this kind of interleaving would be rare :(
+
+
+It is rare per event, but it adds up. On production it takes days to
+leave a few GiB behind. The DONTNEED there comes from jemalloc, which
+issues it on every free the application does, so it never stops. Our
+reproducer is the extreme case, built only to verify the problem: it
+leaves 480 GB in about an hour. I'll put the numbers in the commit
+message.
+
+
+> And yeah, I think if we want to free the slot after read, readahead
+> swap IOs have to be submitted with BIO_COMPLETE_IN_TASK. zswap
+> writeback's dropbehind relied on that...
+
+
+Right, and that would still leave the writeback side. The worker covers 
+both in one place.
+
+
+>
+>>
+>>> That takes care of the readahead race. Seems safe to me
+>>> (I assume if a folio is not mapped and swap count == 0, then it's a
+>>> pure readahead artifact, but maybe I'm missing a case).
+>>>
+>>> The write direction already tries folio_free_swap() before submitting
+>>> the writeback, FWIW.
+>> Same shape: the zap arrives after that check, while the folio is under
+>> writeback. On our box with a swap partition that is where most of the
+>> leftover came from.
+>>
+>> Every check on the holder's side runs while the count is still 1. Only
+>> the zap sees it go to 0, and it cannot wait. That is why the patch has
+>> the zap hand it over instead (very nasty i know it :( ).
+> Yeah I got no smarter ideas :( sweep_work it is...
 
