@@ -1,91 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2831606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 12:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F932606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 12:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=P7AOOHSJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ny7xibCq
 Received: by kanga.kvack.org (Postfix)
-	id 0239D6B04B5; Tue, 20 Oct 2026 08:57:17 -0400 (EDT)
+	id 9C4C36B04B8; Tue, 20 Oct 2026 08:59:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F16E26B04B6; Tue, 20 Oct 2026 08:57:16 -0400 (EDT)
+	id 975C56B04B9; Tue, 20 Oct 2026 08:59:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2D116B04B7; Tue, 20 Oct 2026 08:57:16 -0400 (EDT)
+	id 864FE6B04BA; Tue, 20 Oct 2026 08:59:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ABC676B04B5
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:57:16 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D7E9A5250
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:57:16 +0000 (UTC)
-X-FDA: 85343005272.28.3B15DF4
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A5C3E2000B
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:57:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=P7AOOHSJ;
-	spf=pass (imf13.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FE446B04B8
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:59:37 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEA9CA0155
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:59:36 +0000 (UTC)
+X-FDA: 85343011152.04.46E9A67
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 27AE740006
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:59:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny7xibCq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792501034;
+	s=arc-20220608; t=1792501175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cGW0mJ+2hdBYx/vizWxNIRtNfckJ7CCDo5BdwrUOL4c=;
-	b=MpohUHls5dfF42pH0FS2Ndc7L3dT2yAdwzumWQURhWRTuJFPXqNHqlNTEQUO484enFSRbi
-	U7bNq0Ohi4aLef+4sDf8B0TxPJgDes6lRIjDiJNQO6MY5BoKsCwmjlLJtHkCYvPWhbG8Vo
-	TVhvL+b5sgu6StgylKCVmEvERnTsUWU=
+	bh=T9RUmLmMu1KGYjGG2ltedL/onlV4Qx016VCDjCFQv/g=;
+	b=4gwFNo77KYDhbBySxzm9puKad4ANOIVKztPQaV4kNC8T2fMQU5KBiPJG3PBnctOkqs/Bco
+	JmhmLU6ByOVA0AKVSsdekTaqvlDHAVBISS2U0+/HaQhoZwcvRVH8oq5+tD7qoBr4udIB6D
+	fOiinI/9lmQO0zUKmRqyrZWNwhKvvQw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=P7AOOHSJ;
-	spf=pass (imf13.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny7xibCq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792501034;
-	b=k6OrpmVXJaDYqUgfRYJVaEbY0VJWOh14KtChyndky+PTW8Vwtk/lgdzLPGkOvu4+JxRV8P
-	3VrAoEmXoq0UBWAtNixvEZsQQsESJK5NO/ONxrrpknmFsbHwe8CfM2hzGNaZU5EpV4dRl2
-	vy69V+/IBMg12ipKhlXwYE9wutsVeZI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cGW0mJ+2hdBYx/vizWxNIRtNfckJ7CCDo5BdwrUOL4c=; b=P7AOOHSJBvLAqXjM4rspNSg0EJ
-	OUo5Qic2asYWhp9EF0CrScVvesr8XZx6A34uWUDXnnYhH5UhdkRX3FuH54x8+CdWBxvpWY3fWHN3K
-	pdDaJFDwle9RKRKZjRO5f02oND0zEsAr3/zCQYtlCTUzC0jqUcjTpCMrBJUPXDsgUw2TZHD6o5A31
-	JbBmxOjlp+rtSbQW+AJSW3ueG8UIOxWs0ekNjxn29EnAqK7tsO1h26Zwos0w6R7G2MwvvU9NZR4fR
-	cg8mzHd/90Crnvv0IfJyviXOkM6gxMWIb1xCVUtPlLIZVzezRh5BwVV3ZcrAU8PLGllhyL4SUt+jn
-	/tQMLulA==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xJ9Ou-00000009it4-29Of;
-	Tue, 20 Oct 2026 12:57:08 +0000
-Date: Tue, 20 Oct 2026 08:57:05 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Dimitris Charisis <dchar@cslab.ece.ntua.gr>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
-	Suren Baghdasaryan <surenb@google.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] maple_tree: fix maple_range_64 crashes in RCU mode
-Message-ID: <e74x2yfkylwqwbom3hw5rnimrvn5yjq6byaq7d6wzaasku6qfm@rmijwa4jfzvi>
-References: <20261005-fix-maple-tree-range64-rcu-v3-0-ebe7fb278e20@cslab.ece.ntua.gr>
+	t=1792501175;
+	b=ACZ23dK6VzsEKtRc/j5hmE5RC+XQ5XRVK81wl/zN8dSjIZK7qwpoI+Ako4b5BANSXpFF7J
+	XCFzNjQl2uwOhjkbW/Duv8tqSRUNuaLlpIMCdrUqO8ALu3K+B1hbQzJxMf4CBGBOPF+cS+
+	OvviZekNeAN2sZpoY96DEwPSwvUSzq0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 27EEE43253;
+	Tue, 20 Oct 2026 12:59:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0F91F000C4;
+	Tue, 20 Oct 2026 12:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792501174;
+	bh=T9RUmLmMu1KGYjGG2ltedL/onlV4Qx016VCDjCFQv/g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ny7xibCqSRC4KpUWk4NQfqIwK0iffFjwPWWzmNxQ1hrSEQRHhJTeBRNDhlOl9uoE2
+	 /tThHfSCbz8U8niQDTCTdRaRCZPMRIkgNShXWTbS8ltb4u2W1RGIiRV9bd6Fr7NOI0
+	 hZIU2F8u9khb7dIeu95F8gravV0Qbu8W4GFfSrh01mXDhXob5kCsHfDkJERkK2hJ+w
+	 c/IX6vHYuGShkCcnbUiE+ku5Ss0O+68FgbzxTTHuQ3CPHbsVylpxGoWaarHg34++7A
+	 dXpr6wj1L2jJ23hxEXgwj/M3RZUnCI9uVXBory1bQDQHsM2sALggSorc6I/ifM8Ntl
+	 FhPK/gnhGiiew==
+Message-ID: <58126141-6915-4abd-8e93-93c4aac474a8@kernel.org>
+Date: Tue, 20 Oct 2026 14:59:30 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261005-fix-maple-tree-range64-rcu-v3-0-ebe7fb278e20@cslab.ece.ntua.gr>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A5C3E2000B
-X-Stat-Signature: pnshnwwzxucaeirpsauugaf455q6e9q4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] mm/ksm: KSM merge drops userfaultfd RWP markers
+To: shaos <shawnq1@163.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261020110757.960025-1-shawnq1@163.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261020110757.960025-1-shawnq1@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 27AE740006
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792501033-986541
-X-HE-Meta: U2FsdGVkX1+nxQ4/4o9VnrbdldEFztG7qE8ZVVGIxC3iFYj2z5GPob0Wxb79IzFMxL/B6b8KMSEUSA3X7QSseDJ2qlUHA2hIbqtObocDwhWfgc/fd1a6w0l7sQTC3dce+gpgGmzYhHDhwS7XG48ZYmsvDf/hVHRQTfF3+XvV1nu9rTZscV0vahc4UjG2azOfyFYvxyyn0fHT+5vr4B3FrPAAPhddehE9SfNQhLTzcWYsoCbMm/7TEhpKP1Lrx8k2O6lcZPPWIeL7RrTcqo2HPWSfzcyvhf0BHPGOwD0DaLISd8Hahy2X4UB4+7VzQHwvc09COYkhUoBFV/8LQJZnePxVANUdRjEuIxEbk5kSidfPDoZV+Dg9py+XkNZEnZ2giG0e+QFH4PDpIHpzbA4wbrmn1RUo0jLr/vKQ7Fezs7pb4FWQjqe1JKq0YWGl0Yb/Io+dKQbZcftCZ2SP2YgpLQSe26Ld+xX9yjIuT/eZGRZncPM4djJCaJCE2UXXLbrT22Xu5URcVzKfwZt24fY0urcD6SaVw0dGUF6PHDkWUSZhWjSZ3MjLNUJk/dcDocn1nSwey0j21Oz0NjJY/rLz8E1bIE8N/ZaYLLHMQoHYuZEj1+swQbc0ea1JVbb1DtavliKlATEsAPuRxaybXEysWGvAUwd3hfn5QlSwkAqqfrroRgyzclWifpiuswFzpFFRZm7XI0s0zfspuOIMGHDXTZEIjWITb9ZOMtStZz/jIH0yyUgv365S1/KE0WVBYHp7DAUxGgR3JrXZXFtWJjmVxPNhV/P9N85puehh9R0q5bXaxEanyv4kdQ/SNWyuk1Q15mT9PDossWdegQy8/yJVQoZb5LYZeWJy8kbNfP/Zm9+LzlZrrjBhXH1HDhdz37AVVZXAIJK++ZznIGpqKaI4jZz4cZlwyuKhO3qXuHAoHHXI4YxQ2PL38sr70EujvXVBHLW1CUOtO0J2O8JFfrD
- /N+mLP7U
- bgsDod/AhmQ0K8nwgZ+UsJExVLo2mb28sPlmHUzwTwF1LUyDJryV/SPet+glQ5CjuOnc3S09z9+dxKAPoz9Hb81Fx3REVGD7keAaKob00c68EKB/NYmz4MUrM7sn0Mo+CM1A7QHbdPUqRSsmhBMsjkKJqL0DInklc9ytpwIJbDSGYD2CM+ARYYqvYtetuH9wuldgRMm7AQRGD6d/NJ7zCNZtenwDqry3lBkL7xS+xgUQA/A+trpqvxlE9kiz7CF10hbQIZ1q9qR87evjYDrpbUkSvlufRRbcFvVgl3+rV96vpeEhznNKbF6Ee5zOFxpZApqFlXbo1qKvp85I4nouxIDpvfFrk1zUOKlAiTuvr29Ugj5dT6PK2N/AmVygOODbwZKl72sEkRDVQdDkpKzjdgFEl56GmQZie9c7Z
+X-Stat-Signature: t1e49x7rqtx3kswbjjpxh8y5j4zac8n3
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792501175-224162
+X-HE-Meta: U2FsdGVkX19PaMlCTfCyfeGpwbucmhIDT9vOXkwOWyy/dTkiuD5fAQXbV89tkzOMcoNV+abXC+qCcwMVJKCTVMqa+3uUQT9LBN2NIAeTZ8gqOQK7fASdFDvT2v0WUzFBpwsa5NVkW9+NX1Exbweuh14F3gXxaGMZhainsdf5KmZCc5McOcOoBoNNxN/qprZZ5b0Dl4N9xXKtH8yKSMmZTucbxz4hsnT+L43FK5nvSCyxyVUpdmIcJ1v5S4eJbo4Yx3hF5hpJnx8t7ddaXSv1t4Y6IgRoJQ+l95AEGrapd22IlWdHsFcFGsJlz6jZqmqXd7DEirR/BH6hOPSmk31pfl8iZpwlM4O70CJxnwBeIstfqjHU7IvvmNLXmFvJbIrkxxLcSeWVURT5hVNbgYhLeq9t42m1Sui6xvb6LvtOc0vDH046mUM60EZksUNL/TZkGxgTcorbGevWqfIJQOAMNeoVOK3QohSYCcnDkqe6gJrnFrQau+sXEfWpX/WIJDmc3zNJ9T2w7mBtNogxsWV4Ex1gsphFkkMemcgBJRGIb9uhKKUdSt9qutrW/FNRktXLdkt4xGntluuXztAqmzzNFlqjG5hC8c9eQ99inWyvsCOP2XjBDXaH7P6qzgB/FsV8XXS5JVoFMgbsVIlt+XxYwTM7ul3XwSW8GHrqvNruAsIYZFx3YZ+Ozqo2ISng81pzT45M4Y2zItamyOroB1Mg4/0lV4tEwVji6e5rm4BXiPVjvyWgLtYbBzMJ74YNp0OROZd23zr79alYqUf092Ar5BJYKD2fo0VNeQR0B75MWkuhtAqoO/qF+5HK3qPGVzuucMgIBdjjIXrSNbMA0yrL1njtR2vkN/DaEKORoN6ye4/NgoMBgLrK14HF2XWDB8yh/+wkmNuLfKdhABTFRcN57W4HPNyvS63ZlupeG9VcZg3C1PFTnpcAEsd7zmYiWGfT2Y2KrSPHcY8fYCum3CW
+ sWUZfjQN
+ QHklxERSaFhV+go2YG623NYS1/Zjdiv4rwrNF3EdvG3gQ0pavqaLiLm8WubH7aZ3K5811cr0A2NACVOgJ9IKrog8ouRjNqPvH5G0Aj2Naqfh6ir/oT5p7tcPOdypmBmvDb+BmYVf25WfH/8xEg++TMP7FopjUb+nB2OsLE3+cRh1HVYDHIWCMmbPCC7RFdANzDDkuGlH6r1Z4yER+SxQISOOJAsAsSY0XmmCP2t/aShxr0MTZ57Gea0pDAGrYseKPzxdZXwAS/GrQo8a9x6kFKX04Xeir53iKKDd1YDjMXGLBSA8iHIPIv29XAh23ST2py3W+3dtip/ghfnqVtEoGSc9VmZ9lJdXR9g5CAhCV7nwO1ieWb1BCaQmfSg5VMal5cwHd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,177 +139,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26/10/05 12:47PM, Dimitris Charisis wrote:
-> The patch series fixes two RCU destroy path issues on maple_range_64
-> nodes. Both arising from the fact that a maple_range_64 node repurposes
-> the last slot to hold metadata when the node is not full. Patch 1
-> addresses the issues, and patch 2 adds a test used to catch them.
+On 10/20/26 13:07, shaos wrote:
+> Hello,
 > 
-> Currently there is no in-tree user of maple_range_64 nodes in RCU mode.
-> All in-tree users of MT_FLAGS_USE_RCU also set MT_FLAGS_ALLOC_RANGE
-> which makes the internal nodes maple_arange_64.
+> KSM can merge anonymous pages in a VMA registered for userfaultfd write-protect (RWP), then replace an armed PTE with an ordinary accessible PTE. The VMA remains registered, but a read of the replaced page completes without the expected UFFD_PAGEFAULT_FLAG_RWP event.
+> 
+> The RWP PTE is represented by PAGE_NONE plus the architecture's _PAGE_UFFD marker. In replace_page(), KSM creates the replacement with mk_pte(kpage, vma->vm_page_prot) and does not preserve that state from orig_pte. The PoC observes pages_sharing increase, reads the replaced page without an event, then re-arms it and receives the RWP event again. A non-merging control keeps the marker and continues to fault.
+> 
+> The same replacement path also loses soft-dirty state; that separate observable is documented at https://gist.github.com/shaos26/9db36768f01eb83c6aa14ee9fc057388. This report focuses on userfaultfd RWP tracking.
+> 
+> HEAD commit:    24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+> source version: Linux 7.3.0-rc7
+> architecture:   x86-64
+> compiler:       gcc 11.4.0, GNU ld 2.38
+> QEMU:           6.2.0
+> 
+> console output: https://gist.githubusercontent.com/shaos26/e887665d7868dc323d73a1d678cacd3d/raw/e3e39212903e5bd5ba12f55a94ba7ae5b25bb238/console-output.txt
+> kernel config: https://gist.githubusercontent.com/shaos26/e887665d7868dc323d73a1d678cacd3d/raw/3cd943ba8c6026b43ef016a37d07efd2533a317a/kernel-config.txt
+> reproducer: https://gist.githubusercontent.com/shaos26/e887665d7868dc323d73a1d678cacd3d/raw/7fc8685bb0cc01fca488fc096d4859b8b70af3fc/poc.c
+> 
+> Build the kernel from the revision above with the attached config. Build the static PoC with:
+> 
+>     gcc -static -O2 -pthread -Wall -Wextra -o poc poc.c
+> 
+> The program is intended to run as /init in a disposable initramfs and mounts procfs and sysfs itself. Boot it with:
+> 
+>     qemu-system-x86_64 -m 1G -smp 2 -machine q35 -nographic -no-reboot \
+>         -kernel build/arch/x86/boot/bzImage -initrd initramfs.cpio.gz \
+>         -append "console=ttyS0 rdinit=/init panic=-1 oops=panic loglevel=6"
+> 
+> Two fresh positive boots reported RESULT=KSM_RWP_MARKER_LOSS_CONFIRMED; the close non-merging control reported RESULT=KSM_CONTROL_TRAPS_PRESERVED. No privilege escalation, memory corruption, or cross-process access is claimed; the defect is loss of the caller's RWP access tracking. I checked the affected code against upstream master f47d223627f8; this source path appears unchanged there, but I have only reproduced the behavior on v7.3-rc7.
+> 
+> Thanks,
+> 
+> shaos
+> 
 
-Thanks.  This looks good despite the massive change log.
+Always a good idea to look at the list before posting stuff.
 
-Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
+https://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail.com/
 
-> 
-> Below is the minimal reproducer used during debugging:
-> 
-> static DEFINE_MTREE(tree);
-> static int __init maple_fix_init(void)
-> {
->         unsigned long i, j;
-> 
->         for (i = 10; i < 4000; i++) {
->                 mt_init_flags(&tree, MT_FLAGS_USE_RCU);
-> 
->                 for (j = 0; j < i; j++) {
->                         mtree_insert_range(&tree, j * 10, j * 10 + 9,
->                                         xa_mk_value(j), GFP_KERNEL);
->                 }
-> 
->                 mtree_destroy(&tree);
->                 rcu_barrier();
->         }
->         return 0;
-> }
-> 
-> The splat for the first issue addressed by the first patch is shown
-> below. mt_clear_meta() runs after the slots have been rewritten with raw
-> pointers by mte_dead_leaves(), so it cannot recognize a valid last
-> pointer because the type information is stripped. On my 64-bit LE
-> machine, it clears bytes 248 and 249 of the maple_range_64 which are the
-> two least significant bytes of the last pointer. The lowest byte is
-> already zero, since nodes are 256-byte aligned, but zeroing byte 249
-> corrupts the pointer.
-> 
-> KASAN catches it as a double-free, because that corrupted pointer
-> happens to land on a node that was freed previously. The splat appears
-> at 226 insertions in the reproducer. This is when the tree has a full
-> root node on a 64-bit build.
-> 
->   ==================================================================
->   BUG: KASAN: double-free in mt_free_walk+0x138/0x3a0
->   Free of addr ffff0000f3d40000 by task swapper/2/0
->   [...]
->   Call trace:
->    [...]
->    kmem_cache_free_bulk+0x5b8/0xc18
->    mt_free_walk+0x138/0x3a0
->    rcu_core+0x5d0/0x1638
->    rcu_core_si+0x18/0x30
->    [...]
-> 
->   Allocated by task 1218:
->    [...]
->    kmem_cache_alloc_from_sheaf_noprof+0xa8/0x2f0
->    dst_setup+0x210/0x630
->    mas_wr_split+0x568/0x26e0
->    mas_wr_store_entry+0x98c/0x1de0
->    mas_insert.isra.0+0x3d0/0x5d8
->    mtree_insert_range+0xec/0x1c8
->    maple_fix_init+0x94/0xff8 [maple_fix_obj]
->    [...]
-> 
->   Freed by task 0:
->    [...]
->    __kasan_slab_free+0x88/0xb8
->    __rcu_free_sheaf_prepare+0x94/0x360
->    rcu_free_sheaf+0x30/0x138
->    rcu_core+0x5d0/0x1638
->    rcu_core_si+0x18/0x30
->    [...]
-> 
->   The buggy address belongs to the object at ffff0000f3d40000
->    which belongs to the cache maple_node of size 256
->   The buggy address is located 0 bytes inside of
->    256-byte region [ffff0000f3d40000, ffff0000f3d40100)
-> 
->   [...]
->   Memory state around the buggy address:
->    ffff0000f3d3ff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->    ffff0000f3d3ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->   >ffff0000f3d40000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->                      ^
->    ffff0000f3d40080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->    ffff0000f3d40100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->   ==================================================================
-> 
-> The second issue fixed in the first patch is in the mt_free_walk().
-> mt_free_walk() descends by checking if the corresponding slot[offset]
-> entry is non-zero. In a maple_range_64 node that has
-> MAPLE_RANGE64_SLOTS-1 valid pointers to child nodes, all slots will be
-> non-zero, since the last slot holds the metadata. Thus, mte_dead_walk()
-> dereferences the metadata as if it were a node and hits the
-> null-ptr-deref as shown in the splat below.
-> 
-> After fixing the first issue, the reproducer reaches this case at 3166
-> insertions. The affected node is the root on a tree with height 3 and it
-> has 15 valid child nodes on a 64-bit machine. The first fix does not
-> introduce this bug, but it exposes it for the root node because it no
-> longer clears the root metadata. On an unmodified kernel, the same bug
-> exists and is reachable when such a maple_range_64 node appears below
-> the root, where mt_clear_meta() is not called.
-> 
-> Second KASAN splat:
-> 
->   Unable to handle kernel paging request at virtual address dfff800000000006
->   KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
->   [...]
->   Call trace:
->    mte_dead_walk+0x78/0x140 (P)
->    mt_free_walk+0x1f8/0x3a0
->    rcu_core+0x5d0/0x1638
->    rcu_core_si+0x18/0x30
->    [..]
-> 
-> Both splats are from an arm64 QEMU guest. The test_maple_tree and the
-> userspace suite pass after each patch in the series.
-> 
-> ---
-> Note for reviewers:
-> 
-> * Before commit 790e1fa86b34 ("maple_tree: add RCU lock checking to rcu
->   callback functions") mas_clear_meta() was called while descending the
->   tree, so metadata was cleared on every node. That commit removed the
->   call from the descend path leaving only the final call for the root
->   node, and renamed it to mt_clear_meta().
-> 
->   An alternative fix would be to restore metadata clearing for every
->   node and fix mt_clear_meta() for full maple_range_64 nodes. I
->   preferred removing the clearing and use slot_len to identify the valid
->   slots directly.
-> 
-> Signed-off-by: Dimitris Charisis <dchar@cslab.ece.ntua.gr>
-> 
-> ---
-> Changes in v3:
-> - Combine both fixes into one patch, as suggested by Liam, to avoid
->   leaving an intermediate commit where removing mt_clear_meta() exposes
->   the second bug at the root node.
-> - Combine both regression tests into the next patch.
-> - Link to v2: https://lore.kernel.org/r/20260916-fix-maple-tree-range64-rcu-v2-0-0b09de37eb69@cslab.ece.ntua.gr
-> 
-> Changes in v2:
-> - Add one test after each fix.
-> - Reword the cover letter.
-> - Link to v1: https://lore.kernel.org/r/20260913-fix-maple-tree-range64-rcu-v1-0-31a130bb8cbf@cslab.ece.ntua.gr
-> 
-> ---
-> Dimitris Charisis (2):
->       maple_tree: fix maple_range_64 crashes in RCU mode
->       test_maple_tree: test maple_range_64 node in RCU mode
-> 
->  lib/maple_tree.c      | 43 +------------------------------------------
->  lib/test_maple_tree.c | 32 ++++++++++++++++++++++++++++++++
->  2 files changed, 33 insertions(+), 42 deletions(-)
-> ---
-> base-commit: e2e54005e20fb42d4a5e140d70a65be4a2363045
-> change-id: 20260912-fix-maple-tree-range64-rcu-02fa3d2e59a7
-> 
-> Best regards,
-> -- 
-> Dimitris Charisis <dchar@cslab.ece.ntua.gr>
-> 
+-- 
+Cheers,
+
+David
 
