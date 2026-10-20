@@ -1,91 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D266E606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 00:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB8C606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 00:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=erRlPRNc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AU0JOoKa
 Received: by kanga.kvack.org (Postfix)
-	id DD0846B010E; Mon, 19 Oct 2026 20:41:35 -0400 (EDT)
+	id E46876B03C5; Mon, 19 Oct 2026 20:43:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D80EB6B010F; Mon, 19 Oct 2026 20:41:35 -0400 (EDT)
+	id DF7676B03C6; Mon, 19 Oct 2026 20:43:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C96DD6B0110; Mon, 19 Oct 2026 20:41:35 -0400 (EDT)
+	id D0D8C6B03C7; Mon, 19 Oct 2026 20:43:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 952466B010E
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:41:35 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 14EF31A08CF
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 00:41:35 +0000 (UTC)
-X-FDA: 85341151350.12.120AB44
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D8836B03C5
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:43:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2498EC085A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 00:43:25 +0000 (UTC)
+X-FDA: 85341155970.27.A50762B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 932C8C0007
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 00:41:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=erRlPRNc;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 49F8940002
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 00:43:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AU0JOoKa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792456893;
+	s=arc-20220608; t=1792457003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9m+CklygXiF/Y3wz9sotcxoYMguOY3YvD18SzXdCUOg=;
-	b=MrcTVP28hMUicckCIgqEaJ97VTbUicGYL5eHZrZcpsFSniOQKAVjfMJmArRA04yLDAXIoU
-	plkus5Y5BA7yRIjN0JL6026P2xwngy2sR7tiHeN8/QDzkQ6h5FjPgBWtzDDYLpFZEmYRwv
-	TnNPhhJzao27iVWpFx+1Q5Ys4jb7194=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=f4ZdPaHrQW6w9mgMz6+ac4it4iyaDjTjOK6psKUBxIk=;
+	b=Dy1FxsLsHNbeBf5RO+CJ7SVIRQoJKna2EnsRMDWpdoacEwalYZt2CizLB2zs9C+buCbigx
+	It1iYEDfAmVqvAN1sDfAV578vLbOFh2vJP78+HDUNyyOJ3U0SRNVpaYbtO7dmI98tNTq2f
+	wE3y+M+1XnqRzwKRemDEPxtwjxffJuw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=erRlPRNc;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AU0JOoKa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792456893;
-	b=CgSC50bu3v6fSrTaqt8VDhItxDf2i8AuZHRJ+TabVdpGlKWP8jXdmjQn0XYGhYVPCYQ52r
-	3yTj9KNAL3l+RAZWDVPAv3KHtSXfTLU239ZXfOCOU92ZK8Rd6Q74nZCY/tjUGwAST4mDAd
-	/G3Y8iK4HuPp6Al1OdEAJlKUV5YzOzY=
+	t=1792457003;
+	b=HqRCPh2wJvvSsgeTkD2KfQmijZKl6t9fSknZ2AkgKuAamgSXvXgPXoJJ5RO+AT8ukn695O
+	1nmn1Mq/GnvredF2mWlJW3FzQdz89txZ8GzF2cwy5kLohAIwHWJUba8H19pqLCuDfg4smd
+	r3HVFnvDXxhHITHf9oEZKzYnso1o1sQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FE5760098;
-	Tue, 20 Oct 2026 00:41:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BEB1F000C4;
-	Tue, 20 Oct 2026 00:41:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D5F5F60211
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 00:43:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4311F000CC
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 00:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792456892;
-	bh=9m+CklygXiF/Y3wz9sotcxoYMguOY3YvD18SzXdCUOg=;
-	h=From:To:Cc:Subject:Date;
-	b=erRlPRNc32l3KGSD/8lf7EP4fmsIbQeF9K5KSK3is6u61gURDZA8QYKz4TsU9Zg71
-	 RvT5ostrfK93nZoxMclI1uGwuNdRGZutakIZ0iitfHzuIZ8X4vGn5RV+VqhzE10h0L
-	 Xrw0bmHzKuHR6tzCjP2LRC5Kua86B6qLe5MHiTjfyPCVSS2EFaVtDjSL/ghxtLy62l
-	 GJ93bcu22RcBrYZKlxZWi3/xMDNuVAa7AaEJwSWBrJO2A6Zj8dUbqSsVlRPvd8ufSf
-	 YvPX0bGWC8btTOVDBW/vMqpXeHiiwclEV4hkJyxbsvmku0JW7/VIxUv4pQPmwCraaL
-	 7Mh3mm8OT4qmw==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: filter out damos address filter-split failed region
-Date: Mon, 19 Oct 2026 17:41:18 -0700
-Message-ID: <20261020004119.106690-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20260515; t=1792457002;
+	bh=f4ZdPaHrQW6w9mgMz6+ac4it4iyaDjTjOK6psKUBxIk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=AU0JOoKaq7nzA+pLcOPR1wjiSLeTxt/51qv3AI/sFJpHZDbCw53jHvO8Yan67gXpq
+	 uxibzw9bD2Sd4dCEmYphGe6YVDBR0niQzlSGi0M+CX6SZ7MifLTKIsXXW79i5zSImR
+	 BrwAdqbAHEzSRLpeD20s0L59TpaU/BObRagL05aljpJ1PnVKovI5dSqZ8Ks4RX0o89
+	 UQUGKKfChmiPITDbOWnDB8vuYfe8JiVlQbSYn1miwcbpdbAmqFmS76egf53GLk5URK
+	 sBLsi+rurl/ZLSc+prlE0lj1+6vaeB0RYxs91DecRqYy2O5IqbTFApDAF1n4O/qH+Y
+	 f152jgG5W0Ndg==
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-93f2493c28bso213236885a.0
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 17:43:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxoQREy9BDaJFIephS5M0VEQeXGL7if1WZBLJ0y/PsMM0ZdIFewXCzzK+WEUNk0xFO6694UDT611A==@kvack.org
+X-Gm-Message-State: AFq9FYJCbk7+2rGxgXm6MvuBdT4J6ub97pSlPSDO6vc4CqIN0ztDNoi5
+	uKDLbApxbyg4QoU4tnUsxnm+iqJjReEd+fhnVsfDwSgrR2IzNme/NJ1VjXlHbVV9pWPECeD98yE
+	MK84VEDn+tC9zTWbsFVAoGTsdZrckbuI=
+X-Received: by 2002:a05:620a:2989:b0:937:6de8:b40 with SMTP id
+ af79cd13be357-93f29ceec65mr1607493085a.15.1792457001621; Mon, 19 Oct 2026
+ 17:43:21 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 932C8C0007
-X-Stat-Signature: 48yedcfpoacaucketrghjqoxzj8bykqn
-X-Rspam-User: 
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261017050928.128582-1-sidchintamaneni@gmail.com>
+ <20261017050928.128582-2-sidchintamaneni@gmail.com> <CAGsJ_4wGq9oc05=-g4aWptLdCbTwUjMjXk4Rd6KjJ6x=tzMm+g@mail.gmail.com>
+ <CAE5sdEhGFtGF6LC4xNkMwGj3vTxLOW=GNBXnk3-JmsgjntXx0Q@mail.gmail.com>
+ <CAGsJ_4wmvBvEn_vXu8-c6BRAnRewYmTs8iUd8T7KRx7_svZrwg@mail.gmail.com> <CAE5sdEiq3bY1kgMUQ6x7RRJCx0JH4sQ9Z_a9_YQSM5FKNwpk8A@mail.gmail.com>
+In-Reply-To: <CAE5sdEiq3bY1kgMUQ6x7RRJCx0JH4sQ9Z_a9_YQSM5FKNwpk8A@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 20 Oct 2026 08:43:10 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yZ3rueVMaRJ_+25Nnab0WH5ZLQeLjporWAFj7xJnJFHA@mail.gmail.com>
+X-Gm-Features: AclHuK_z9u93TiyYoAZaSFwx9j8LW96gLUQ2eqyJQLstVMCqEWfGNy3WkacpWX0
+Message-ID: <CAGsJ_4yZ3rueVMaRJ_+25Nnab0WH5ZLQeLjporWAFj7xJnJFHA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm: multi-gen LRU: fix NULL lruvec->pgdat deref in get_lruvec()
+To: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
+	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org, 
+	kasong@tencent.com, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
+	yuzhao@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	apais@microsoft.com, rlmenge@gmail.com, stable@vger.kernel.org, 
+	Hardik Garg <hargar@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 49F8940002
+X-Stat-Signature: gpn33zzdta9sabp6zfmtgxr4cicgbe4t
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792456893-330472
-X-HE-Meta: U2FsdGVkX1/8/kjggPDRFlB1FAnko4xwpTQc+6GTbvzbacmH3LiOLRu2EJVmaK4EK5V7gPRAbfcbnrOmirv7U8ai9pNRrPgUHNGxSmeIWgIaUQJkwam+mcgnjeEpZvf0Qy0kSRnopht3b9HnVzwzN84N33i2NO5VIrwFinTEpI3P3M8vw3xVntY88YVKTQrzgJIc9Pa7h2ycoAm0NrHblBoQTIb7l6F/Ca5aBRYZiePaTlXGIsX7DPGqj/hzlY/qApNZTH/90K+u2on28TfhgQy8MtJkalELv6b7NTNCT9TJMkglRE51VtWElUuw59N1trpesAA2kcOgBCxc7YMPlfji7y2Dye25L2wimY1+USv2oifcUzjVh+NwhNlj7+FoyvXjbWyVpYIZGqKckzxcAWXRYaGydmghfOnoUAUapYXCPQ/R/WUY9mahpbSue2XmKnwlu7UoVV7uJ3a6Q4rRkxAwNqd4FL+8rveSTNBwNXQkfVYHCOVrFUAtXk9rUKeyrbaRwJF940jrwtT7uO+Qzugc5iXJQX5wtQPXoR0ZUsvjjrMqXYpyfQzCslOVODHLveMFXTuAichWUkmgUAE+dZFofXdZAwVICv5S60LKZyD9ATbQfj3CEZve/+sXIW3GuEIySiLbGVbm6+k0xFkEyG0K7MGYpIYSYnmSrx5KBOa9na17jjCZbl0Nt84GvGcH9ft0Esf42qHq+RvG3vp6a5vyREGqmwSmm0R3sWeD9qQjnt/sDtpkNXW+YanvwEgBBIEi1Kx4S02LfQUYfylxm/GzV5WENR3LHUjCeO3Ay5KzezBp/vua9c4WaBA2gBSiXlamJxJZbO2ioMb8ahczk3gACjw0qC3MZYLKO0e7jxcNvf60HWv6/5UcFWr3AetNnAlCi8q6l4+2ufkIpvdUXdQeo9R1fUhH/iyvWyZjMOsxmZdg3+o3UAaD3qpdLw4Rb/QoEu9uUhO18ICY2Kl
- MsyeHQ/n
- 9Er+d5mBq5AlXTm/L+1xAgnIhwWyuKPv+HECQdmuucKZVOIqf0X5Ti6B8qdHAY1VtPzP/VqTLLDlwMjr2F8D1pyn/nZSQ6GDlzMmYRHof/Ziqhi/c1hR33mi6zfPWHpN+qsyqCoYihV58S0TURw5dHmJGVrFweSLcjFOJBrwQpG11A+7XDwLD4LkGVdKjlaMMwZye+g1snb/uXL1+rXi/xhS1uwwlOU8gdr3IUz00/O5LbWXhxYp0D3hwYMa6QuzPBB4XFt2eB8ni7wc=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792457003-706101
+X-HE-Meta: U2FsdGVkX19FFPH6eyluQsuff+zCMXJd1hneb+crgsVhEU9n0jOSgTYGmEHWy7Cw0AVfasHYyQITHl3+Djx6Jc5ZWFY/afIUKmnf882Wv4cewwAyqzPjLM4Jf8XY/GLwU4uma0sdwALQoVL/X+4XvEmXAkVxxIx5ChMDCyjxYCJTy4Qk32LlJUL4zxH2RYFkm7j+Xvh2jTiL+1A1CwOnAst+5+zMCRY/99Ggd6yNmAb52zvfjWW1Rz7BPyX9LOgyTyiPNrU/Dn4pKqO3O9MwuABnXZDkXNytLvFlz/rUg2ljetb7DyGttTvPJ6uDWyzpDnmMPHuFHaxqQ9ebHFSKRTXlVC8qZAxoE7Yi0B8XEnYuQc0IF2zf55jUVBRTdZKehPTFGWV/x0rjmDtSZrfsdPgNu87FgIIQy/AQ+lAVQzKsT6TtJrVMDynyL7fvnNbfCbfD7GOjoTrv0b8P2SEpTw7dAOkT8rEXfzq/t8NNggeaQzi6cKDJmmiQw5Gt7UsV6Jqlh84gJbtqI8nYiV+lvcu2L5Fu4mQFQr3tub3D91gT2IKGMs01S/Jn23fNECZ3oBg2NlF6Yy6Zgoxo2qMBT86+TRLebjesXsypJGgnMjFrBKMaPkHPkLE2/tMEsuz1m56fhRilgB9rvtSxnO3Gd4Qb6c3p+leaS1gzcWFtrb/vvtz/3psTxJ4ErhRRHbluaVZrsMXvP+2CEseJlsTC29I8slSfoGZrZ0V5xEkOJg5IedOwRcgvf6GAS5l8Ygu51BFBnUsKpw3XDyYPHTXzIDMFAWbhhWdMHZXE4980kHmqhEnD06UGoh0Trg4kpTgf0Gl9uCunpb14XrMP56FA/9P1wQ/5j2oUkwpaA9BxdxXhX+CoEXslKda4ZK16jtUKTryMI9neb7Ra1p2mBThukr7U56UvwlKZwpAMCrv6SlM4HQb8FZLU3pQZUL5lwix99RYZJKzdSk03wiBYmR3
+ QjycYSzL
+ aJQXf1TPyGzVUDyEJgZmsx9XXZGNDVl9Wm8QhSqL2VKyWx4i1cVXLSme+YX32629SdUcqOqEvLWxG8mv5QhKJG0rB/IVLRaU79oIdmMUGDqX/f0N5AlPBAwJnUynHmTYnKl3stli1f0YfZpXF2bwLgNwWBs+L1TY40uheAHW+NjFsWIY5TT/Vy+393Jb6vOwWK6qrA7j2wzvrfhfCsStqgSBxxEbIHacLh6Mf/shMa46akFS0vi66Bp1ZrErmV92wHD1pD1TDC+lFDg19xLfscnWJ1//c8BW8XyWNgVi0WNWXc1iryvSrKzPsBKkt7rCN3wWxBgb2tHi5oGTK97149sp9f7XtAKpP2bNwelyE20EllpHkQcRO8jqMWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,152 +113,114 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When an address type DAMOS filter is configured, DAMOS tries to split
-the region for the filter range, and apply DAMOS action to the filter-in
-region.  The split operation (damon_split_region_at()) could fail from
-allocation failure under extreme memory pressure.  In the case, DAMOS
-action could be applied more or less than expected, ignoring the address
-filter.
+On Tue, Oct 20, 2026 at 8:16=E2=80=AFAM Siddharth Chintamaneni
+<sidchintamaneni@gmail.com> wrote:
+>
+> On Mon, 19 Oct 2026 at 16:36, Barry Song <baohua@kernel.org> wrote:
+> >
+> > On Tue, Oct 20, 2026 at 4:33=E2=80=AFAM Siddharth Chintamaneni
+> > <sidchintamaneni@gmail.com> wrote:
+> > >
+> > > On Sun, 18 Oct 2026 at 14:24, Barry Song <baohua@kernel.org> wrote:
+> > > >
+> > > > On Sat, Oct 17, 2026 at 1:09=E2=80=AFPM Siddharth Chintamaneni
+> > > > <sidchintamaneni@gmail.com> wrote:
+> > > > >
+> > > > > Andrew Morton reported that get_lruvec() has the same problem as
+> > > > > lru_gen_shrink_node(): when memcg is disabled on the command line
+> > > > > (cgroup_disable=3Dmemory), it returns &pgdat->__lruvec directly a=
+nd so
+> > > > > bypasses the initialization of lruvec->pgdat. The MGLRU debugfs
+> > > > > interface calls get_lruvec(), then dereferences the pgdat pointer=
+ in
+> > > > > lru_gen_seq_show() and other paths, so these can hit the same NUL=
+L
+> > > > > dereference.
+> > > >
+> > > > So userspace must have booted, since otherwise we couldn't read
+> > > > debugfs. The reachable case is therefore a memory node with no
+> > > > LRU folios when debugfs is read? So this could happen on a multi-no=
+de
+> > > > system where folios are landed on other nodes but not on this node?
+> > > >
+> > >
+> > > That is my high level understanding. I'll let Andrew to comment if I
+> > > am missing something,
+> > >
+> >
+> > I made a silly toy setup by running two numa nodes with one of them has=
+ only 4KB
+> > memory, the other one has 1G-4K:
+> >
+> > qemu-system-aarch64 -M virt,gic-version=3D3,mte=3Doff -cpu cortex-a53 -=
+nographic \
+> > -smp 4 \
+> > -m 1G \
+> > -object memory-backend-ram,id=3Dram0,size=3D1048572K \
+> > -object memory-backend-ram,id=3Dram1,size=3D4K \
+> > -numa node,nodeid=3D0,memdev=3Dram0,cpus=3D0-1 \
+> > -numa node,nodeid=3D1,memdev=3Dram1,cpus=3D2-3 \
+> >   -kernel arch/arm64/boot/Image \
+> >  -nographic -append "cgroup_disable=3Dmemory
+> > ...
+> >
+> > Then I got a machine where node1 is very difficult to have a page in lr=
+u.
+> >
+> > then i ran the debugfs for mglru:
+> >
+> > / # cat /sys/kernel/debug/lru_gen
+> > memcg 0
+> >  node     0
+> >           0      14972          0         953
+> >           1      14972          0           1
+> >           2      14972         18        3308
+> >           3      14972          0           0
+> >  node     1
+> >           0      14972          0           0
+> >           1      14972          0           0
+> >           2      14972          0           0
+> >           3      14972          0           0
+> >
+> > now you see node 1 has no page in lru but yet i didn't have any crash.
+> >
+> > i think i will need more time to figure out what is the problem and how=
+ to
+> > reproduce it.
+>
+> I've asked AI to repro the issue with the similar setup
+>
+> qemu-system-aarch64 -M virt,gic-version=3D3,mte=3Doff -cpu cortex-a53 -no=
+graphic \
+>   -smp 4 -m 1G \
+>   -object memory-backend-ram,id=3Dram0,size=3D1048512K \
+>   -object memory-backend-ram,id=3Dram1,size=3D64K \
+>   -numa node,nodeid=3D0,memdev=3Dram0,cpus=3D0-1 \
+>   -numa node,nodeid=3D1,memdev=3Dram1,cpus=3D2-3 \
+>   -kernel "$KERNEL" \
+>   -initrd "$INITRD" \
+>   -no-reboot \
+>   -append "console=3DttyAMA0 cgroup_disable=3Dmemory
+> initcall_blacklist=3Dkswapd_init panic=3D-1"
+>
+> and it was able to repo it. AI identified that kswapd is initializing
+> the pgdat during boot, so blacklisting kswap_init was able to repro
+> the crash when reading /sys/kernel/debug/lru_gen
 
-The issue only rarely happens under extreme memory pressure.  No crash
-or leak happens.  Occasionally not applying the action to a few regions
-shouldn't be a real problem.  But applying the action to a region that
-the user has excluded via address filter could be a surprise depending
-on the use case.  It is only theoretical.  No such real case is found
-yet.
+Thanks!
+I guess you mean the following:
 
-Filter out the entire region if the split is failed.  Update
-damos_filter_match() signature to receive the error from split.  Also
-update kunit tests for the updated signature.
+-module_init(kswapd_init)
++//module_init(kswapd_init)
 
-The issue was discovered [1] by sashiko.
+Yes, I can reproduce it with the above as well.
 
-[1] https://lore.kernel.org/20260801203121.117449-1-sj@kernel.org
+But kswapd_init() is definitely called before we enter userspace,
+so this doesn't seem to be an issue here?
 
-Fixes: ab9bda001b68 ("mm/damon/core: introduce address range type damos filter")
-Cc: <stable@vger.kernel.org> # 6.6.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from RFC v2
-- RFC v2: https://lore.kernel.org/20261019133856.86835-1-sj@kernel.org
-- Drop RFC tag.
-Changes from RFC
-- RFC: https://lore.kernel.org/20261018220253.158238-1-sj@kernel.org
-- Handle failure in another split operation in damos_filter_match().
+So I feel there is no bug here, but this cleanup is still welcome.
+Am I missing any other scenarios?
 
- mm/damon/core.c             | 16 ++++++++++++----
- mm/damon/tests/core-kunit.h | 11 ++++++-----
- 2 files changed, 18 insertions(+), 9 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index b63e60ef89901..479169dc9ac75 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2551,13 +2551,14 @@ static void damos_update_stat(struct damos *s,
- 
- static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
- 		struct damon_region *r, struct damos_filter *filter,
--		unsigned long min_region_sz)
-+		unsigned long min_region_sz, int *err)
- {
- 	bool matched = false;
- 	struct damon_target *ti;
- 	int target_idx = 0;
- 	unsigned long start, end, wsum;
- 
-+	*err = 0;
- 	switch (filter->type) {
- 	case DAMOS_FILTER_TYPE_TARGET:
- 		damon_for_each_target(ti, ctx) {
-@@ -2583,12 +2584,13 @@ static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
- 		}
- 		/* start before the range and overlap */
- 		if (r->ar.start < start) {
--			damon_split_region_at(t, r, start - r->ar.start);
-+			*err = damon_split_region_at(t, r,
-+					start - r->ar.start);
- 			matched = false;
- 			break;
- 		}
- 		/* start inside the range */
--		damon_split_region_at(t, r, end - r->ar.start);
-+		*err = damon_split_region_at(t, r, end - r->ar.start);
- 		matched = true;
- 		break;
- 	case DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:
-@@ -2607,10 +2609,16 @@ static bool damos_core_filter_out(struct damon_ctx *ctx, struct damon_target *t,
- 		struct damon_region *r, struct damos *s)
- {
- 	struct damos_filter *filter;
-+	bool matching;
-+	int err;
- 
- 	s->core_filters_allowed = false;
- 	damos_for_each_core_filter(filter, s) {
--		if (damos_filter_match(ctx, t, r, filter, ctx->min_region_sz)) {
-+		matching = damos_filter_match(ctx, t, r, filter,
-+				ctx->min_region_sz, &err);
-+		if (err)
-+			return true;
-+		if (matching) {
- 			if (filter->allow)
- 				s->core_filters_allowed = true;
- 			return !filter->allow;
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 3fbb4e4e36fac..43e2f950f8ff4 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1783,6 +1783,7 @@ static void damos_test_filter_out(struct kunit *test)
- 	struct damon_target *t;
- 	struct damon_region *r, *r2;
- 	struct damos_filter *f;
-+	int err;
- 
- 	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true, false);
- 	if (!f)
-@@ -1803,27 +1804,27 @@ static void damos_test_filter_out(struct kunit *test)
- 	damon_add_region(r, t);
- 
- 	/* region in the range */
--	KUNIT_EXPECT_TRUE(test, damos_filter_match(NULL, t, r, f, 1));
-+	KUNIT_EXPECT_TRUE(test, damos_filter_match(NULL, t, r, f, 1, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region before the range */
- 	r->ar.start = 1;
- 	r->ar.end = 2;
- 	KUNIT_EXPECT_FALSE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(NULL, t, r, f, 1, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region after the range */
- 	r->ar.start = 6;
- 	r->ar.end = 8;
- 	KUNIT_EXPECT_FALSE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(NULL, t, r, f, 1, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region started before the range */
- 	r->ar.start = 1;
- 	r->ar.end = 4;
--	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f, 1));
-+	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f, 1, &err));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 1);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 2);
-@@ -1839,7 +1840,7 @@ static void damos_test_filter_out(struct kunit *test)
- 	r->ar.start = 2;
- 	r->ar.end = 8;
- 	KUNIT_EXPECT_TRUE(test,
--			damos_filter_match(NULL, t, r, f, 1));
-+			damos_filter_match(NULL, t, r, f, 1, &err));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 2);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 6);
-
-base-commit: c120c766883129cc62ff62a5c2b531625d1e5d2c
--- 
-2.47.3
+Best Regards
+Barry
 
