@@ -1,126 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9F1606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 20:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C467606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 20:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=P6c8TSbI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H5o3lkKZ
 Received: by kanga.kvack.org (Postfix)
-	id A87C26B055B; Tue, 20 Oct 2026 16:36:02 -0400 (EDT)
+	id 0F8216B055D; Tue, 20 Oct 2026 16:47:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0AA06B055C; Tue, 20 Oct 2026 16:36:02 -0400 (EDT)
+	id 0AA7D6B055E; Tue, 20 Oct 2026 16:47:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D3436B055D; Tue, 20 Oct 2026 16:36:02 -0400 (EDT)
+	id EDA956B055F; Tue, 20 Oct 2026 16:47:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EB256B055B
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:36:02 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF3F31C2FD6
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:36:01 +0000 (UTC)
-X-FDA: 85344161322.13.728D486
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0942D80006
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:35:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=P6c8TSbI;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B899A6B055D
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:47:38 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 47535A76C0
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:47:38 +0000 (UTC)
+X-FDA: 85344190596.16.79847D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 603501A000B
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:47:36 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H5o3lkKZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792528560;
+	s=arc-20220608; t=1792529256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=njlJ33l5OqoDckYqSYGuylmOTQxiBjEh77NJyjCPwxM=;
-	b=DISE+x0lg23tpl8jUMK3fhHa+IBsR8K9ss02gHR18wsdAav+gGrmFINtNPyCaBLSRuO5N2
-	n+UlydR67S2b5qJICbTWuqs9sfxZ6O9qjQ/U1A0cKk7Zdrnk9N1DCbq3aQMsBpndJojpK6
-	xK7JgKP/rlQHp4v7FUaaylJp8eDhXvA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792528560;
-	b=zC8GXxzUkpd5m6yBIcsG5kEcggaXR4QoJuM4ypNKSafzrtxj/9dl1zTltuF5FSyt6X2cLo
-	qSDOKd8WmjlRVRvcsmygaJ6UmW9gcAvI839cBGr5ROgjEDZqweIOmwWuy9WKQ0pn/62Obd
-	xFO8HTWnfoUN9VaC4v2ER6wxOp6pQ2A=
+	bh=xQwGSvzYOohT9kUoKDV9cqE99QB5OZ5zFZdvCKpT658=;
+	b=YlJEqcUF6Xy3IAHxlNc8i7aH7YG1l5k54MIb3gxwi4IhauZiyQAP0WV/gTfhzZ17BVXSMc
+	J2aBs0SiuRUZ9ia/r/lGryNfCflscA33uOy4YvUg2fsUFrk0svlpWPeUy7EdMc4F5y8fKI
+	48JYCiYgshtFL4rmuDoTRw3SSqgqRkY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=P6c8TSbI;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48c4649b35bso5534f8f.3
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:35:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1792528558; x=1793133358; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=njlJ33l5OqoDckYqSYGuylmOTQxiBjEh77NJyjCPwxM=;
-        b=P6c8TSbI/fYja7juZfL9t+nmhBMR/qsK1cRXH2EQfSKLGrCnMt0UzkQMG6HeDRHqyp
-         UIkY9+b2y+q6kNFMxTZXAuPcY50R9SxZMJmSME2P6cZ/Xhb5wdHRvGb9kFcT4kHqTl5+
-         7WPdKBVPVma1Qfp8YVy/wMTmG4K2tporasPKuXwgESHsM0FyOr/ZzB7RRtRD7SH+MiF9
-         w7EyuuSsoxqdy7/XDPJchMb/ixNIzPkLrd7YWFkGQ0OI9xX2wvlLt9slUHVDmJ2HQP6n
-         ScSSLBQCwWvdjwSUtRHCDuwPq8FWrE2E+7hq6XCrneoIZ6OdPXOSmckEolgI462ISu0N
-         rNkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792528558; x=1793133358;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=njlJ33l5OqoDckYqSYGuylmOTQxiBjEh77NJyjCPwxM=;
-        b=yC11DEyEBOmPTA3eE8r86yJOk+NwW6LGWz/HbpSoBcIGiSEJPFFB1X7RYFnh+xUsDX
-         am6jXGqVh59GeaiIGSoTlPg/Q9qrbSmIMhk9bbnpd2+59CEwpT6wN74DjHVR/OWMr7/K
-         r3thG5F0lhkGQj7POFay0Ev2d/xPVR1w5KEGgatQDnf54MpYkz8k/taxRU1m3K8OzqCd
-         QSBGKogDaXnWskcbsIGwiDSnOF710mPbEQRMuAaB1gXgj3uZ8FPxtXFySBxaIIPtu+in
-         5S8wEx2KVApBhmPZBGuz88s8ov5SRpuzTP1kQr5CAp34wE8nwYq54PLoFxkoNWmtEhUu
-         JfsA==
-X-Gm-Message-State: AFq9FYIJPBikbChEoQagxMubghYm9DcSPLXzR8CU3ey2pZa1H/55mJgO
-	GzZzYJpeK/4Ji3bY+XYA5jB0vw7w0bBzKMLglvS9cg/xXJqH8msYEiqnk/OPIHgVHLA=
-X-Gm-Gg: AYBFou2dMBMtIUcK4z7Ev5qKuGNVvg/+m9uP3iZ40qHI4zN30SdzQY6yrRVyos1yt2o
-	H/McbmTbQHmy5FIlzBEfqnFlh7XpwzUUPC94vesn4vS9J5ZIXUz7Sg9h0s2wkHyL/8Uf2mrKTgb
-	M8YlByYVRrfXqdM+ZVejWY/32f+lUUU734QexCjAVtlwBzZyfluO2bCKu9ELVQka56G8LvH6Ri4
-	GxGK6vtE1v5V+j1u201tf/bHCQxN12NDPC2mBJKMQKrdfHIvKe8dKhCkAlM9sZPOxFodWXyRuku
-	X/qzQnEDMLfAZujUyVE67MgODA3uFoNBr3i78zbdslEiaWcFCtO9AlFTMecpcb95s/5svL7y0Zp
-	0fiLbFJktX+CGDDwbzqUxidG3urqsVN6lLC0w8rp5gSb8WltYGgqoyODA4hA6Qr469+Haj2J0+R
-	vlv8e19qi/vqy8gLfDHA21+lVyF+lXNnBzjcNBCPFnYz4db7IY6yYoLNABMBGcl0hkIRfF4iBVR
-	CNn35VKU55VgQewZVnRfx8vO3iS3Sr+UZaUH7gryGGmWOfH5HgXtLZ9igVwi6gw1NlOjw==
-X-Received: by 2002:a05:6000:4805:b0:48e:10a7:40f with SMTP id ffacd0b85a97d-48e10a70508mr19393904f8f.17.1792528558447;
-        Tue, 20 Oct 2026 13:35:58 -0700 (PDT)
-Received: from localhost (109-81-30-107.rct.o2.cz. [109.81.30.107])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828c6dsm788025f8f.24.2026.10.20.13.35.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 13:35:57 -0700 (PDT)
-Date: Tue, 20 Oct 2026 22:35:56 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org, david@kernel.org,
-	ljs@kernel.org, dave@stgolabs.net, roman.gushchin@linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive
- reclaim
-Message-ID: <atfQrKh8AiKnvTRG@tiehlicka>
-References: <20261019185002.3428594-1-gourry@gourry.net>
- <atcc-91WerBlJ_Q5@tiehlicka>
- <179252633386.238494.13826191476140121288.b4-reply@b4>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H5o3lkKZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792529256;
+	b=UVDySy/sg6P1FUGDrTBNDZ7/YJT4mr4OWYITbAQtoZBDL6BjP0LeuSH6hOaflv/zVG7TjG
+	nx0keQ6J8oJapky6+uMjg2nY+fAvwa5yeq6pZ1f9YlBa62bW+he92YLPVsDk5JMRzGBkVb
+	yqibf/FgBBee7czTa5ZrqFS+pb8kY74=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DEC844812
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:47:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F841F000D3
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:47:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792529255;
+	bh=xQwGSvzYOohT9kUoKDV9cqE99QB5OZ5zFZdvCKpT658=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=H5o3lkKZtcjIhxg1Jgv4YSB4NydIvtuc83psyEK5vHeRwE5AllHqOE+kagT49yEZe
+	 zwV71Bqz3Fbr0bOUAQrGu+BejHU33ufiDBEFwR7lEyUo+r+6IlnvxT6EHL5YegDHsP
+	 W6Xl4C2XARRVmAJ8dlVmPzEL5+kTLphtPUPtxZrVrGcSEEuvZh5EVGcRSQ0kZkWTTE
+	 tAbvtvgmiHXSwfGCFrH2dV9vL+iwUIGZcatOfzrqr5sJHdvW1pnewqB0paRiHoU0eT
+	 KEycgEnnFkMimB8kxFQrVRjdJfGFpDVHp+YfD2lb/9y+m2K62825e2pUfFr/sRu60/
+	 RATdnq8u2bQYw==
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5361e313e63so890061cf.3
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:47:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByv2OypH3ETPeJl4QRt9nkNSDsbTjl1SOizz7ADOj1iDhmqX6MXpbP396755vOJFZcDqYmrh4vtpg==@kvack.org
+X-Gm-Message-State: AFq9FYKVyoLr22zmQHfZYSKkD9J9Nxu1MTLrEgbmAMXxs2/BTwxf8z2I
+	BPjDY6xb2BLeOpdwLSfuDwbMuXS0pbh+28vNwWj81zua0Ny7O83faA3BaErpufx9yDgal63wULE
+	+PJ8tnzkT0zTYgZQWImax2Brye8SynZ8=
+X-Received: by 2002:a05:620a:171e:b0:93e:c12c:9dd2 with SMTP id
+ af79cd13be357-93f57f7a370mr81878885a.82.1792529254015; Tue, 20 Oct 2026
+ 13:47:34 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179252633386.238494.13826191476140121288.b4-reply@b4>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0942D80006
-X-Stat-Signature: z6hoikfndrmz6a5tn51abtij1rgn4fz4
+References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
+ <20261016084256.12955-1-baohua@kernel.org> <CAMgjq7AtuK22FsuqvGRLVZ2eWrp-N4qQ_MHoXsXDkVBprekdDA@mail.gmail.com>
+In-Reply-To: <CAMgjq7AtuK22FsuqvGRLVZ2eWrp-N4qQ_MHoXsXDkVBprekdDA@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 21 Oct 2026 04:47:21 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yfX-__y0f5_od7r+j=Hqz2YAGzFDRyVP4s-6t8dh0_rA@mail.gmail.com>
+X-Gm-Features: AclHuK_6OQJo2WkKc2jeoR4HdJ1oLezMrDS6BoCD9oiiIL1tyFrKMHixg8usnik
+Message-ID: <CAGsJ_4yfX-__y0f5_od7r+j=Hqz2YAGzFDRyVP4s-6t8dh0_rA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/17] mm/mglru: frequency guided promotion (MGLRU-FG)
+ and flag cleanup
+To: Kairui Song <ryncsn@gmail.com>
+Cc: devnull+kasong.tencent.com@kernel.org, akpm@linux-foundation.org, 
+	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, 
+	cgroups@vger.kernel.org, chenridong@xiaomi.com, chrisl@kernel.org, 
+	damon@lists.linux.dev, david@kernel.org, dev.jain@arm.com, 
+	ehab.ababneh@intel.com, gourry@gourry.net, hannes@cmpxchg.org, 
+	hughd@google.com, kunwu.chan@gmail.com, lance.yang@linux.dev, 
+	liam@infradead.org, lianux.mm@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, liuxiang.277@bytedance.com, ljs@kernel.org, 
+	mhocko@kernel.org, muchun.song@linux.dev, nico.pache@linux.dev, 
+	nphamcs@gmail.com, qi.zheng@linux.dev, rientjes@google.com, 
+	roman.gushchin@linux.dev, ryan.roberts@arm.com, shakeel.butt@linux.dev, 
+	shikemeng@huaweicloud.com, sj@kernel.org, surenb@google.com, 
+	tz2294@columbia.edu, usama.arif@linux.dev, vbabka@kernel.org, 
+	vernon2gm@gmail.com, wangzicheng@honor.com, weixugc@google.com, 
+	willy@infradead.org, ying.huang@linux.alibaba.com, youngjun.park@lge.com, 
+	yuanchu@google.com, yuzhao@google.com, zhaozhengzhuo@uniontech.com, 
+	ziy@nvidia.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 603501A000B
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792528559-227470
-X-HE-Meta: U2FsdGVkX18rKa/eJsADhqpe6uLt09o71YuzhvyzPV833Tf65Cr561p/ozK0DdnnQWL5IUtcAfdVuMFScWb2DnVe/zei0JY5u1mEKrb7ojd5uYENLGNGNI2SzDTZRPZ/l/MZvw7sZVKSiKJcwWXxlK/gGS3OHXTZ2p6Bu/1wrGOCxkctaajZJCEFmE4R/29g1B4SHrMdt9hxqQ/Kx5PaORGMCkYJfYWogrpXF/cm1l08tvoul28pqsPIii0pZdVBLGOjf5uv8tL796GSAiFF8zivkScXPy8qqgVjAsb0SrqC3mFukA6rhWsuf0NbHLZqS7gDxytKwEJ8P1dD+ASRjObR5R5nOG6/t4emdlL7zX5XhHhfxEajWiFT+TYCvSEeO5lS9Pouzknz6dSaC1Olp554N120GNs6mFc9yR6hJOfPtQp5rfjUHn9c7glvKgpwPdcnLwgWY3YVV5bnQWxbpM9xvxswEuM6JF4wau1mA5SQHFcOKHZB3/hElhEB6aOFoq3iyjOxf6o8D1JIvqi7mxDxB6rKALOdl2obcFz8jdTgTcb0wTr3WjqNioqHljmH1c3AFKxrtbuebXrCEMHUh24/SxxhFvOlMFKfYNSVQmPiIGjWepGsVlSvWwJW0jD4h11ohr2Y+/jDoHWsi5/AWUMRvVETevfdLKVbnxIC/BebHsRZp7Dj6Khx8SfWPlDMFxkpAyIznZFwaNRno4z4Y7mQasJoAP2BS/UTdT3EGOyeHT5syv+IklXg3YWZzPafuhs1AKjFbEh/rxqru7a5dwKTvMUEocqte+a2QAtZ1vl0kvyhIZT2MOheN1c7RAcDgBYwiOza8izE+fctgYMNYmRjXHu3PfDH3wifquNLePZDfJ9Uutl+ygczHZ5Q/nEsvi39y1CoQope1S61wVt7bCt6gZymWh3tO2AmanjwsPMG0nOm3f7HBx01hD1ttvbttC1xwKRDy6Lrxmq7Cxx
- o4gAeihp
- OnLpWWPz7xrgeRLNy8LKdTlLpH9R99NhbZ12ly2x5XPbPCSGpD08YzMBhIihpghAucT/TKTlrrLy4IaPKLauUSp6htKArq0Rx2wGbs4WMmpko5q8ao2zW3FB7WaJ0YGm+YD0uuCH7x+xkCTe9DKKNXj+fD9LxusWixVvZ8+eeeHbQKhz11hZn/XgYKIKdqu5hZoO46317bB5JjG4LmamPyTMNhuywYZziX0/c6yOEeC8vHF5FgSTahn+FnpbigrcoLdoi0EPn0AvJV72VZNXthBlrdY6l0MM2mpIOCgv/7C4oNGitLORapUxK4bW+KwncG1QgjOcUimG0dHJzzF6WfsMKLE0DwK9jDnZAh+qsB7uFpFg6EPNqKSOrcunrKO//5wxo46pF45Pmylbv49Sbt/0eBGoCpTgKGKJP
+X-Stat-Signature: p8p5ou6iak1mxsxjdwtq1h3qx7a66b98
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792529256-13167
+X-HE-Meta: U2FsdGVkX1+cqiimdMVfi8J+U9clHyeWSJTj5NLiaSXKkcRBeZkldNqqmGDrhVmJEudeFgIJx18rX0c0u31WBQetxGjN4Oggn1Dg4v6yRHvp3jpYz/nWw7oUJhqlmK8JrQ7ZUomCnV3xKkcTNRTRBHJ6ZsdLb9lpc+dJSRJUAxdcvEGXTO2hBm3WQjkNi1a6DOe7eJcqUAY+zNvz4QZRGuUGES4CFUB5AcHoj70cZXtVSuw2Qdm2yrhb1nzn9Xcs75DtH5mmPJWiaKEU0ugT/swiBWgqsg6toCF/g14SxELNNSmLWAZeAx5/oqSMoYq/mpdcbfs9bUyV9TpgUFRg9HAClL0ZYRYZ2Lg9vvvAMyZ8hlOuv4sCHKCTHvPHbydF6srZZ3w/05XS/ty05bl/Gj1IsXuMg2a0R2AKsL0av/2rlUIDcqja5z78z1z3LZ4UGQfuWt0Mek6avOuSXUBEy5cYswvLdi57FclKrkeGJInDyEt78rcnOmjjGwSoD9Ae6BI84dKB33ODnjAjvBfOd6UwirWotwK5q9A/yTmvcLyjlb0L5yBhk8Nn9x/RFv9R/MIQ/1vAKbkSDQNmkQLSMg2pQsIMjpy316vdcAYSPjB/otiMajTt3aEqhvB9zDPnu2JbEX0/MrmTotBhQLILhYcQ6Kab9IhxYUR+CWmOovMKxqUSfV99NNVjZYiqGJTGPZy1hrd+CPxquqg0GA0Af41mQZlP+s0A9wfbdVzizG4kaBoKh7fJXNcoIfCBu48sKgAIop1RfDOZaXOgoFLGnIuD7DNuddimTXNtL5BHzna3tURko2hi+iGr70hW0V4MA+yXDuG4uLF6sNQDQa3/j7hJHAFJY+XWxwUZnE3cM1Pop7SH612VgbTdHDUK1UxwbbKlzvOtJmAGkY6wrXC+sUgEbFZLYau2Q3/1Z6UtAKodokrQGgvNg/aaQATXszHj6aPxN8g+ZrAnJsKhFaW
+ RPgJZp6X
+ Br7kCvZbRrMEqLCh16zprl/6OM+q7eQe0mLMvINfJ+aRXzuPYXBG4pJ6uF4ZkWgEtzcqRcU2V5hlqe/DVRBOLhy5/vLtROPTw/gGd3Fv4+B0gj1eVDXCXgVlauk/ybPCooJO+ORG0gcbhVWHha6odwle1JmFpRcnjiOOK17tOW/bToh6wkfOAItB3Bq3eq71s3anA5+QoyHXRR/u2/wuglfEZyVN0zQIo+0UthyGa5gopE+MsHZ3uuyL5kY7u6OqizJUQJ0NGTZgFDP6qVIZjEVYhqh93ZZ9SNfWQuqujzmj8HEMRxJ4Q7VvcGOjf83p0xiTKvPIJaTPLAna/Csq1PG/UbwI5grCENlMow0FtjW//awIwZI4DSkm6JK+GXmEi7dVXD2fgG15nLmu1IYmMWz+NASCKjBC9pljNhwdbv1KilkJh7FMh4kHSU3oCPF4n1cHHelpdgbIFP4g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,43 +122,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue 20-10-26 15:58:53, Gregory Price (Meta) wrote:
-> On 2026-10-20 09:49 +0200, Michal Hocko wrote:
-> > 
-> > Would it make more sense to 
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index f11491ee9ed5..e07db9514e59 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -7963,7 +7963,7 @@ int user_proactive_reclaim(char *buf,
-> >  	int swappiness = -1;
-> >  	char *old_buf, *start;
-> >  	substring_t args[MAX_OPT_ARGS];
-> > -	gfp_t gfp_mask = GFP_KERNEL;
-> > +	gfp_t gfp_mask = GFP_HIGHUSER_MOVABLE;
-> >  
-> >  	if (!buf || (!memcg && !pgdat) || (memcg && pgdat))
-> >  		return -EINVAL;
-> > 
-> > That would take care of try_to_free_mem_cgroup_pages too.
-> 
-> funny enough, try_to_free_mem_cgroup_pages does what my patch does:
-> 
-> struct scan_control sc = {
-> 	.reclaim_idx = MAX_NR_ZONES - 1,
-> 
-> 
-> now, whether the gfp_mask should be GFP_KERNEL, that's a different
-> question i think.
-> 
-> (tl;dr i think my patch is still correct)
+On Fri, Oct 16, 2026 at 7:44=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Fri, Oct 16, 2026 at 4:43=E2=80=AFPM Barry Song (Xiaomi) <baohua@kerne=
+l.org> wrote:
+> >
+> > On Fri, Oct 16, 2026 at 2:15=E2=80=AFAM Kairui Song via B4 Relay <devnu=
+ll+kasong.tencent.com@kernel.org> wrote:
+> > [...]
+> This is a nice change, but meanwhile the LevelDB and cerain workload
+> gain are gone too, we will again have a ~40% regression for similiar
+> workloads, I just double checked it. But that's fine, though, it was
+> never meant to be optimized that way, and the long-term fix can be
+> done later.
+>
+> A quick test on another of my test machine using Tal's LevelDB test case:
+>
+> CLRU: 3098 ops/s
+> MGLRU mainline: 3035 ops/s
+> MGLRU-FG: 3233 ops/s
+> MGLRU with this patch: 2194 ops/sec (should be same result with
+> reverting 6cbdd9726fb5)
 
-Ohh, right, I forgot that memcg reclaim always reclaims all zones.
-Tweaking the mask seems more consistent but not something I will insist
-on. Up to you which way to go. In any case
+Sashiko is raising serious concerns about this approach, so I'm
+really considering reverting the commit. The downside is that
+the revert would also regress some workloads, such as kernel
+builds and LevelDB Scan/Get.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
--- 
-Michal Hocko
-SUSE Labs
+Before we have to revert it, I'm wondering if the one-line
+change below could fix the SQLite scan and lookup regressions:
+
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index ab69b9930893..a3a894aae10b 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -327,7 +327,7 @@ static inline unsigned long
+lru_gen_folio_seq(const struct lruvec *lruvec,
+                  (folio_test_dirty(folio) || folio_test_writeback(folio)))=
+)
+                gen =3D MIN_NR_GENS;
+        else
+-               gen =3D MAX_NR_GENS - (folio_test_workingset(folio) ||
+folio_test_referenced(folio));
++               gen =3D MAX_NR_GENS - (folio_test_workingset(folio) ||
+folio_lru_refs(folio) > 1);
+
+        return max(READ_ONCE(lrugen->max_seq) - gen + 1,
+READ_ONCE(lrugen->min_seq[type]));
+ }
+
+If it works, It should be entirely thanks to the inspiration from your MGLR=
+U-FG.
 
