@@ -1,129 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA86606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F62606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=obDZKewv
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HRIsqgUU
 Received: by kanga.kvack.org (Postfix)
-	id 4B6DF6B0188; Tue, 20 Oct 2026 18:24:14 -0400 (EDT)
+	id A238F6B0183; Tue, 20 Oct 2026 18:36:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 467FA6B018A; Tue, 20 Oct 2026 18:24:14 -0400 (EDT)
+	id 9D65D6B0579; Tue, 20 Oct 2026 18:36:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 357916B018B; Tue, 20 Oct 2026 18:24:14 -0400 (EDT)
+	id 8EA766B057A; Tue, 20 Oct 2026 18:36:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0689F6B0188
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:24:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C5861A01AC
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:24:13 +0000 (UTC)
-X-FDA: 85344433986.04.D5E4B05
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B88AE80005
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:24:11 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=obDZKewv;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB7C6B0183
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:36:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F6991C3A90
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:36:06 +0000 (UTC)
+X-FDA: 85344463932.05.B9BF2B1
+Received: from mta1.migadu.com (out-207.mta1.migadu.com [95.215.58.207])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E89BE180010
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:36:03 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HRIsqgUU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792535051;
+	s=arc-20220608; t=1792535764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JbcL9UJUoZzm8h4f8WZ8/x3EwYH3/2Tgl62Z2dUn4XM=;
-	b=LY7K7roUhlluw+rrvO27nE+xJIBFJpbHhfX/e0P2Nmi0vN6pztEGAHhMxpydOG4NFCpS8n
-	R3Wp6BwsEdVNrKmoi+QJK4LfRjpkLFCm/Kq6X/qFvXdUgiURkdR4IR/qnMg6zhvpcsFeRa
-	KyG7RqvrtGZHB5yRcrfbxlq2+yQKSac=
+	bh=HodTXsgPBzIPYL+ZGw+MXUWqV6VcazjbsVd6O07Sa00=;
+	b=Iz7i/SBY+cQ48Z+YHm3bVJtPxDa3b9Alo1zYJ/vQBbwudgjN3Dl4Z6zI1wEC5zXqArCpZ+
+	IKnO8wGMdaJoEbwZT1mT0sZ0A01ux0cBc0cPi5wbcZPNWwjGzpDvkS2cBI7362lXfAh2eH
+	hAkDTVjUZ+9/dzWmI0dsVnFURzkrSAI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=obDZKewv;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HRIsqgUU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792535051;
-	b=RDWZA3cvSiM252xe+hjgzcnVPrtlGAA2jeV6DbpFTZH3z1wAcmPwN63aeiA5RW+kznWROt
-	VldPuRclCv/1CP8a4OnqKN4RXTotRxOerLcp4qGPuXd7hVL9awQN1zfr41k+0gH0WVATj8
-	9nHRGG3q2c8tRNavprC11gtcQYwPGEE=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5363c8de563so1679681cf.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792535051; x=1793139851; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=JbcL9UJUoZzm8h4f8WZ8/x3EwYH3/2Tgl62Z2dUn4XM=;
-        b=obDZKewvxrxUjPrxMRurrTXsEY6V+2t39UmuMgwAI7OfTInxKeiwFuD0ZMwC4XnGzJ
-         20pCFc8nzgfT3zq4suJQ2GlXmvVD/3R+Npk2FT2OneqURY3LikyhYrCUUm9qzqYkABnf
-         Lny4WsuTPmr0kX3t1oS2eT0hWvekT+7j67IPUhsuDNuDRpCMM5PlUAiYlcMqA7isUJW9
-         95Q3RmF4bBZG0pQjNpufpgsPNTMOLm/LkfCBjUQgn8P6riX/Kvc3dsGC8tQ/XMGG1GDq
-         nWjT6gb3afnAMXGrtlWgVReLlAUL4ppUBpyGUvGJ6OmSzKk4cefCK8Pp7/LPp4RnwsvU
-         a00g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792535051; x=1793139851;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JbcL9UJUoZzm8h4f8WZ8/x3EwYH3/2Tgl62Z2dUn4XM=;
-        b=OA2ajlgRK1aC0rTOJcPGiS4fY0XLU/U3qeJ/eM0qjT+UgWOqeEKaxom63m/68ViJs3
-         nYB2IXW8qKGbk/O916jxcSYqKZMRSms06rmT5rIRdZeadT+So5RmOaNUDLGUz8+F39to
-         s7a8+2EdHwMFjKV3pFzfyfJq6O+e1U+gATDKO7serHaMB+nOmm2ajUtcFXwWTCUEEnfB
-         KDzbBNYvC+/b6CAgjBS+x6M3TAg6rx8+CMcCNMHvUrBoHeER3Shsi6rRY6yWww5r/Sl+
-         5DztlXv6mOOhHjvKrs1IU6QmKzpx0uLKu6Ov0h0+ycco9mScoLAV5eTcPMeJ3UmauIhn
-         pnIA==
-X-Forwarded-Encrypted: i=1; AKwUvBzcwK00USsj3lLETa+sh5yBMJj1aucCmxB24lXOvk/EuxJy1FBaTk0DHPPhXQJPPesGsdldjG/PJQ==@kvack.org
-X-Gm-Message-State: AFq9FYLXF2ONK7JbZxBVuPeeVnSu+4Qr0MF6ob7PGFWGUjgxLamI1f4U
-	SGJ8fnm1YFgyR/x7JCK/2Wu4oK4VZczOKeYlmfTl97XsXUbGUbBGAI7s8q5Mf9V+RGI=
-X-Gm-Gg: AYBFou1yJsGXVN6bCz/BWCKHnLBRO56ALZNXO3+NVJUIH5N0Ino1bO7HcjDwSxQo9Ih
-	7AzOCA3nTo5M+EMp1h1U1Mj4W0IELp5OvM7o/sz9KAlyyU23D1vjPJ6Kfh1E5V45Gdfh74zM0Nf
-	rxhtDvBfzWjKlBg6HJZ14tJvRFdgYngQlJOKljiueDYKX+Y6THeBepVys85hG18GEwZ9iCcBBkS
-	NIBoG+NuL7HdQvh24VkXPsq6jb9nPl7WzY/VUZPDghnA/vTec/14aivLwy0Op2zuDiFb5lQqmnV
-	wCvlRFsGppVcGa5MHG9vP4aVzeFcSIhIf80cDcKN8f5tAzDD1e0iSrs2gcp/MNDTMMMQm0sMriZ
-	NzRHjAweT5x55oSlnj+xFtkvtKx2lM7PvMqjbn81Hp67tYw8qVFy53I/63/AXMKtk2eRVObscGy
-	ZhfJeziPJtzaHDNrajaMX2TYfW9FM3Yi077LSqah+YtCv6tbi+oo455k2Eynmn/7ApSHTaX5ruO
-	SVPSSU3F4Zhc0kZbO4jVPFpFT3fm8KxU3BlPvkxu7uzhzg=
-X-Received: by 2002:ac8:5cc1:0:b0:535:f9dd:ce3b with SMTP id d75a77b69052e-5369bb816b4mr3355061cf.69.1792535050831;
-        Tue, 20 Oct 2026 15:24:10 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53698b3d2c9sm6239981cf.14.2026.10.20.15.24.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 15:24:09 -0700 (PDT)
+	t=1792535764;
+	b=BH4h12k0gQ8eq5Imc5w+l6ltedx4AxgtyIS2qc5JdocwOwfhILv3yf3S7S8CyKRG/cV3S0
+	tFbOehNJERaqTAFALjF/o74CtB1TIVNwk3vS3kGk/CyCH/1WreJ92rIedGzJq+fltu/dxX
+	BxHsud7xxU8XE1D91uMxmHaTKYyUNJk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=HbWlWrJdZDODn99IUscfxlxDII0g4fQaUHUOuuxABQs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792535760; v=1; x=1793140560;
+ b=HRIsqgUUXhHI+u1+mlBVDis39gAMNR/0IypEohlIqm1xcyaLokbn2llHgMu7mG5b3f2HXKQR
+ PFL6gcADN0refJuy6Eu0VxX+JxKt+P0nzgV1ma6f5+wS3+9cXQUgUS+mdOZDCSC++c85QfTPvab
+ BanTvTpRdD+j9U85DrdfTlpk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f1fdcb3e0d7c102c;
+	Tue, 20 Oct 2026 22:36:00 +0000
+X-Mizu-Trace-ID: f1fdcb3e0d7c102c
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 20 Oct 2026 15:35:59 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1] memcg: fix cacheline contention between lruvec stat
+ updates and LRU lists
+Message-ID: <atfrhsr6bft4t7SI@linux.dev>
+References: <20261020200730.250189-1-joannelkoong@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 2/5] mm/page_alloc: validate zonelist slots against
- concurrent rebuilds
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
- liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
- brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, 
- mgorman@techsingularity.net, jiang.liu@huawei.com, Bessel.Wang@huawei.com, 
- stable@vger.kernel.org
-In-Reply-To: <45ef34c7-eea5-4813-b54f-3e34675697b5@kernel.org>
-References: <20261019172346.3344005-1-gourry@gourry.net>
- <20261019172346.3344005-3-gourry@gourry.net>
- <45ef34c7-eea5-4813-b54f-3e34675697b5@kernel.org>
-Date: Tue, 20 Oct 2026 18:24:07 -0400
-Message-Id: <179253504789.1514232.10853151353341082033.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B88AE80005
-X-Stat-Signature: ium8zby4egsx78mmwe18agzd1tas5omu
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020200730.250189-1-joannelkoong@gmail.com>
+X-Rspamd-Queue-Id: E89BE180010
 X-Rspam-User: 
-X-HE-Tag: 1792535051-870199
-X-HE-Meta: U2FsdGVkX19YnoQoI/ml+GhS326AnrtsPNVv9vTWIywdLL7RuiC0oaZzwSu29OpV18ixVooUXNYwuNvlOdS/YgTn6IYJBYYD0KCher0Mgd3RzLWepfAmtwLEUzQl9tWZdySBI8fP3WL9btoU9USBLuh6UFkJYFJidbsUJCBYDQcSzvUge2/6DkXNTG15aQbNWGJO4yvzOPdAqJgds4blObAp/n1FOnE4lsUJnKVSn6h0nf0U24OjJKvHmwv2V94winX2ya2sAQrQMEbaP5X1q/tE8I7fJ18ruZmah4Ek2wgH6w5Z6pVmLtbWalSGwuea1SDsHfN4FgO7ytefosYInaCXTeif9lhWFDlqdn8uMuyicqZ7ELSU04cg4wOz/fY3/Tb+XNQGZaFH+ftRJGhMZ+gRSLaTe2pl8dC6W/mIKPJWjlvwELDzaGVg8EN9I74pQrdXLStAdUS9TCK2Zcj4w8XvjwAUyHzkPaNhhY0Y2PTMbvBa8vVdG24QwMSOU9ieqpmsfe6ky0miruGO0TVGESbofOM/Fc68VsDezmafDv6qBixjvhIXsb23C1ffUgWutChZF64V1Hs4HBm+ggz3++UFdoP5+7+ci6WTWwhsTlwKc3OU13aUNjEEsIAIBX777pSQ/LPOZ2ph4E9SNZdsxyPQYqR2Lf2Pp+Pypsnqh95H1MLo3NBmkH7wlZk/QU8SpFSCEfD2maAiE9iy0xNC9cGcfV+LlEuTzVbs+MljcZZfWPwXZe6whwXbJeeR3xtv37vp2YwiJYWd0QY9eQlqtk245cz/J90kzfRnhwKaqcVaT38Z1jMcb3EIiUwQsOB9UVKRYDFKzQl7kKVI6MDhWmmE4nMexvCNL3f9f4fXMgz1twISzQbodwIt8YIlPsJlfAHp65fATj3NqmAG1g6IucE3OQLDpCxBWxMSaRwB0nvHhw5KAkOjcOx/r8I1cUr8eMK+ufq7BQllhWmqRxi
- oY564FFa
- WIY7Gq68PaLDNthusIv5ofUgkiC3HKPf7iABPLwgH/ruU2iEt9Kn+2UhRqptpduIQAl3XSoD8mABjCoD1fczzV2RXBf1y34E9a8c7+NDMWCw9+SzuZg/T2ituMnR5yw46ZcKcAP67knAm8W3IkLvyf4dTY7e/1l6v3Ex02z52BEb5aCadtP5EwVmNcHFEiByGJsJOQvccVdnKxgjOSRL3ZjIMbwFGNE4/qa7FP9o4PV0V9tsRKSBoUmX8RrrLJcHWb+hsQcD+RernSyHS71wQrNcw4/lj2HEFB+Or+wvSKyKBVUB1HIOkBBQ4+9e8f9aMv5YVrl4/JAt5cD2ECqDerBO9t8n5qmGWMWPuxzYjv14056mDGbJiXEDezGHJPTVIXF5LA7WFzigTi/7i0LKT7kUKFnoC2J2DuJph+flWNHOHUVogA2pRR4TXDg==
+X-Stat-Signature: n7pspg3kq61esf8h8ih3csxft5ftj1yo
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792535763-479237
+X-HE-Meta: U2FsdGVkX1+NEmEMNd3cDoi1X0Vs9JWMgvz/zGOr49IpRcKyoKkGYU1KxGLQfHms644L+GA3S0jQWd2Ezpy+up6sImKnZ4C6sZcsPESTr1ZN0XMPxUdMMhdStrmXgjSNOWQ6LeM4Mri7Cb9n2fPdEHvzCwK5Q503T+PYL+arSabnCyPQJXVSFElSOKp0VUpBHiQT1KcZJk6Y6eup87sJe2es9/zQFlLjrRoQcIUgTwp189+TdYwVfY0H7PHX5m93ZFYOR1fdAuCg9iwFhK/2sj6Wt/8fiY2nK50D29DRPrFXBA4Ax9CBFCmos1UGJpvyxQWtxpZNfBN9MrNQ9I6JAald4WYINv4/pbd/dtrv3T2KcMtdaKVOpsqjLy6gs21tua6maJL3BOQ5HRR695Lbl58SuvmtKfQhilO9kcZ66v/OsciWc0o5pUPgh1kihOnVg9Bwj7k5+weEXVZ0lfuvoL8Jgr9A1UouZB5pX8kHawMEwdyO3jW+JTS9/RZAx8aoMOMaJR5ACklcXcIgMlqt2M1fD1T15d5gaxlomkeRUKyu/GHOIhV5FeLOLpSUYmEjBo79cemHAnpVCvYEHfILsDTXDxrcZEeOGVhpzmVqNjuNPWDBjonG50UqrY5rvDvCLz4gefBhJqfE5v5GAqi8pVOC34FRjOehv2di/LezDRwju1BSFJkLH28WsNt6EGNcXQKvSyOu6PrD84SapT9p/lVL2xAq9udBkZaFPklq0W6jmvLLB0SmaDwYD7y06Gckb6LXT1sTVaoOwMm2LH3w/NGPBZTfyJBmfYlmp7FyaHR1NxFF18QW/+n/UCs76E3gdB1cATMzOHla8bb2TePlkkpLNv5SOIgTTTKMMydg1dTDvvn62Nhc2YpU1fHDCBoUztlyH5XOPuQ04GqWmfbMKxyDNSd0PD0ZSeFXI0UjDeI10xTPbaaZ9mJoCfOtvCe1ZO+oRRx/ETySXJqF2tG
+ eqIobxFD
+ r71D5DAcUf7r5Hq/Vc+yAw2NySScTBZDcmzpYpWaDwTAXOCNeIYFiszXk8qrIZC+igOJ80G+UYA7j/f4I9vfRGvS9Jr7xn4Kxxo4wQvQ3jISRn3TSkFK4HZt2CzccQ9nYGUk3+Hu1fn8DxhQrlhDL3AhsNZxyF+dCiVeSBUlrgTBwpWeXHvCFPfN9zvVh1Kkv/9l9pbmnlj5zV3ln90FyZm3BCruooS2rMVr/13CHSFcLymlcmvjhjMKqfpls1D5DmtPpArxYoOynPpk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,49 +94,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-20 17:22 +0200, Vlastimil Babka (SUSE) wrote:
-> On 10/19/26 19:23, Gregory Price (Meta) wrote:
-> > Onlining the first block of a zone rebuilds every zonelist in place,
-> > shifting the slots after the new zone. An in-flight walk can use a
-> > zone it previously filtered. e.g.:
-> >   - a GFP_KERNEL request can land in ZONE_MOVABLE,
-> >   - a node not in the nodemask can have its zones selected.
-> > 
-> > With kprobes holding the walk across the online, I was able to get this
-> > zone/node misplacement to happen consistently across hotplug events.
-> > 
-> > The iterator approves a slot by its zone index and node, and the
-> > allocator then loads the zone pointer from the slot again:
-> > 
-> >   CPU 0                             CPU 1
-> >   first_zones_zonelist(nodemask {1})
-> >     slot 0 (NORMAL1) approved
-> >                                     online_pages()
-> >                                       build_all_zonelists()
-> >                                         [NORMAL1, NORMAL2, ...]
-> >                                         -> [MOVABLE1, NORMAL1, ...]
-> >   get_page_from_freelist()
-> >     zone = zonelist_zone(slot 0)    /* MOVABLE1 */
+On Tue, Oct 20, 2026 at 01:07:30PM -0700, Joanne Koong wrote:
+> Every memcg lruvec (per-node) stat update reads the memcg and
+> lruvec_stats_percpu pointers in the first 64 bytes of struct
+> mem_cgroup_per_node, and the ones that go through mod_lruvec_state()
+> (such as lruvec_stat_mod_folio()) also read lruvec->pgdat. These updates
+> are extremely frequent (eg these updates happen several times for every
+> page that's faulted in, freed, dirtied, or written back).
 > 
-> Since the zonelist_zone_valid() checks you're adding happen before the
-> "zone = zonelist_zone(slot 0)" part, I don't understand how they can be
-> helping here. Aren't we just reapproving slot 0 when CPU 1 can mess it up
-> between that reapproval and load? Am I missing something?
+> The memcg_pn_read_mostly cacheline group keeps those read-mostly fields
+> on a different cacheline from the lruvec, but on CPUs that do spatial
+> prefetching [1] (which is most Intel CPUs / modern CPUs), cachelines are
+> fetched in 128-byte aligned pairs. Depending on where struct
+> mem_cgroup_per_node lands in its slab, that cacheline can be paired with
+> the cacheline holding the LRU list heads, and the lruvec->pgdat
+> cacheline with the one holding lru_lock.
 > 
-> Furthermore, since we have the zonelist_update_seq anyway, wouldn't it be
-> better to use it to avoid these kinds of races rather than the more tricky
-> way of relying on what exact updates in what order can derail the allocator
-> side and trying to protect against those specifically?
-> 
+> When this happens, every stat update also pulls in a copy of the LRU
+> list heads and lru_lock cachelines, which are written to constantly by
+> other CPUs under the lru_lock. The stat update has to fetch them from
+> another CPU, which is unnecessary overhead since the stat update doesn't
+> use the LRU list heads or lru_lock at all. But even worse, the lru_lock
+> holder then has to invalidate those copies and wait for the
+> acknowledgements to come back before it can do its next write, which
+> makes the lru_lock critical section longer for everyone waiting on the
+> lock.
 
-This does end up cleaner.  I'm going to reorder the series a bit and use
-the zonelist seq count to make it a bit cleaner.
+Can you please reproduce on a non-intel machine?
 
-I also just noticed that the same issue is present in hugetlb (because
-of course it is) so i'll probably append it there.
+Second, can you try the following patch instead of your on the intel
+machine?
 
-~Gregory
+From a747ceeb4e3f10fb0c3e7daf5660076a49b77126 Mon Sep 17 00:00:00 2001
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Date: Tue, 20 Oct 2026 15:33:26 -0700
+Subject: [PATCH] memcg: rearrage mem_cgroup_per_node
 
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ include/linux/memcontrol.h | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 74110a324f9e..0e73f5c96e15 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -95,6 +95,17 @@ struct mem_cgroup_per_node {
+ 
+ 	__cacheline_group_end_aligned(memcg_pn_read_mostly);
+ 
++	/* Touched only when the memcg is reparented or freed. */
++	__cacheline_group_begin_aligned(memcg_pn_cold);
++	/*
++	 * orig_objcg preserves a pointer (and a reference) to the original
++	 * objcg until the end of life of memcg.
++	 */
++	struct obj_cgroup	*orig_objcg;
++	/* list of inherited objcgs, protected by objcg_lock */
++	struct list_head objcg_list;
++	__cacheline_group_end_aligned(memcg_pn_cold);
++
+ 	/*
+ 	 * Keep lruvec on its own lines. Sharing them with lru_zone_size[]
+ 	 * regressed, see commit f59adcf59332 ("mm: memcg: add cacheline
+@@ -114,17 +125,6 @@ struct mem_cgroup_per_node {
+ 	atomic_t		slab_unreclaimable;
+ #endif
+ 	__cacheline_group_end_aligned(memcg_pn_write_hot);
+-
+-	/* Touched only when the memcg is reparented or freed. */
+-	__cacheline_group_begin_aligned(memcg_pn_cold);
+-	/*
+-	 * orig_objcg preserves a pointer (and a reference) to the original
+-	 * objcg until the end of life of memcg.
+-	 */
+-	struct obj_cgroup	*orig_objcg;
+-	/* list of inherited objcgs, protected by objcg_lock */
+-	struct list_head objcg_list;
+-	__cacheline_group_end_aligned(memcg_pn_cold);
+ };
+ 
+ struct mem_cgroup_threshold {
 -- 
-Gregory Price (Meta) <gourry@gourry.net>
+2.53.0-Meta
+
 
