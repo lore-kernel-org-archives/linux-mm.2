@@ -1,153 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722BE606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 01:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5092D606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 01:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=IX3NTm1E
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c3QFRNLS
 Received: by kanga.kvack.org (Postfix)
-	id 869CC6B0114; Mon, 19 Oct 2026 21:37:08 -0400 (EDT)
+	id 48F096B0111; Mon, 19 Oct 2026 21:49:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F41D6B0116; Mon, 19 Oct 2026 21:37:08 -0400 (EDT)
+	id 438C36B03DB; Mon, 19 Oct 2026 21:49:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 694816B011C; Mon, 19 Oct 2026 21:37:08 -0400 (EDT)
+	id 34FB56B03DC; Mon, 19 Oct 2026 21:49:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F0036B0114
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:37:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC696C0868
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:37:07 +0000 (UTC)
-X-FDA: 85341291294.14.2BBE3D3
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AB0D2140004
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:37:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IX3NTm1E;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792460225;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1015E6B0111
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:49:04 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 729E3808B8
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:49:03 +0000 (UTC)
+X-FDA: 85341321366.13.2B842AD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C88ACA000B
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:49:01 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3QFRNLS;
+	spf=pass (imf15.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792460941;
+	b=UqImnUedILKX+YchqVFKAyAZJFHuwx50gsDMMxv91uEB0LpKGuUcd7VgqCgRUTqoAJfqTk
+	v6Jh/+LwuzTvyH4xZqZBH0X+uRT6uyxtJ73yr7aFwER8UMBb98vsmZXiR6jcl0jIp6DLLY
+	F8h/7d/pcgfVemC8Shy0FciDKQlaDEk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3QFRNLS;
+	spf=pass (imf15.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792460941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BGjAR6GJbqkB0JeXW82W/emLheBNUt2rVvKEQMHhSAc=;
-	b=iyPl6Q4DI/TRitOg6vNs2p9ZQOxvtguoddz+z4ZNEqRCWBWe0qEZgssB0FNpWLauWq2i8j
-	Musar2ls59BhIeadozffnr34VlNoDWpPKLiBFij2mUM6amXqdDg0ocIHsXISGPvqtHnCVF
-	SkCjoa56rZXzHlT3ISm/crxj+yV3qvI=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IX3NTm1E;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792460225;
-	b=CzeEw+ZZtnGPtzcVBTdQbUxlTzDgAYOGsveyK4TlSIJR3PvwuhMZipxKWTMgt2mPqnJ/SC
-	GChISb4lWgSmLLYHP6kgCvk/IP191ulSoWtk1C2LzjuKArso1ecTZx2KlxnLzqqvTvKHsg
-	PwpBSCW0u7riYddhNR9YVQXxr7UQSyk=
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8b0e21048f8so20447407b3.0
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 18:37:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792460225; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kpwYNJBffp6jzsTm6cvXEy2lgQQ7rOwgigFbIOHfCBF1SneM87SaRmGLJepixFHjDK
-         du/bh6fAQH9s0lqecATW3jCBe3hu7RmD0k/K7g2wdwQ/iP6ECrHlkapbqblUuZCcpwHm
-         B9y2BYiYWgDoCCMOZ+yTRponoOe1qnek+4/k7wgREIoGCXkqksnDpUkhfvOF48KbvKK8
-         HXwL8SSjogvgVcLnZLNEyDBvrhnrTmPpo2o81WdZGRCOk3EDMqawDNf/XIvM/p47ESQQ
-         xr3RNxUNjGPy1emxUjbNiXZmErjqD/XLV6jjpRJwgohMXWd4lRZBmuNNuhCghPuyuSvn
-         6RnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BGjAR6GJbqkB0JeXW82W/emLheBNUt2rVvKEQMHhSAc=;
-        fh=AxwDxtlM/OsQbQ5VjmJxhwZxmehJt/oty8MLN7VPd7c=;
-        b=PyJtC96HwjYwgrjodFH+Zjyobe7txIqPhui72JN02RZY6iDfuWQOimGeuOrGU545c5
-         nr+i0aMzij8tXuk+UrcN2n4ahuyMmt34JEc7vEZyaZKFKA6CPy1rQGcFN9g8qTTkU79V
-         l0F/A6UYeM9RHTSYlPZf7YFrSyx34IbS6fjAwucUPUvj//4zs9GTTJmeVc7Z8fAV0unQ
-         ReRLRqpIU7ydvhfQ9LrMTTBu+Aq1LFqMfQGBWSV2iPFcQMl4Co1b2YmUp3cob44qmSRz
-         BSlObC8Rhh/CJYW7k6AMp7gn7NDeX65p7FYdYp9nzqp9JtEqdFnkX4EDGROI8CX3wZW1
-         OmGw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792460225; x=1793065025; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BGjAR6GJbqkB0JeXW82W/emLheBNUt2rVvKEQMHhSAc=;
-        b=IX3NTm1ETczd8D1ngFmVsbQScl3NhKC/f/rv9gHXxVtkSnGmUJdKNqDRaAd6uvrkMD
-         XrOlDMwbjEjcSauUfjIS7ssAL+P31EC9if5AMK0l4Al0VI0o90USpojcG6CZv3erw9cc
-         NaJxqDfdwSng5J4bEEQs81Bsde5GGC1kg6k20Js/7fyAhQf8oieNeKOD0O5zVOkGj3tK
-         hfI7ZR0V8X8D8NXQEuyqzrGTXdiJkNoUe+pjdKms1hSC6r2qveVaztwuZ/9nKdM8APIp
-         09EC7vwGfLDYUaX/XWuvA7sDAOBJbdl+QAUSNup1J893J8mp3Zlx3aih8Kj1QjFVG0gZ
-         LcHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792460225; x=1793065025;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BGjAR6GJbqkB0JeXW82W/emLheBNUt2rVvKEQMHhSAc=;
-        b=X1JjwnjaKB0Zi/khB5VSKPllPAKqkFisJQSPdySPIiVkXn3gYBKd7ZQjYj/ohHrlvI
-         Ur0OzTZ7IUPA9bcq1+cJdBcEyJgSeP0pbWj/kfAGKfzTzc7bFt/AxMyWZyk5tjs5n6DW
-         YfY4hswLuJiRDHA/wEYVIRbpRl6y3O4s1ZnqgPRERTbTPq5oaGZdhSWKL0chqE8PsCLT
-         FHuDtf9YXlNZGookP5HuKw/X99lX7DLEgKxy4PHnLuFUkQxqbR0aYfenH2qgBtE37Ys3
-         iQDUPsJaKeykAujSHxFwCS30jvJ7iQFglGqkBaQHPnkU7YAwnci16uI1idysKJLR3yMi
-         UKjw==
-X-Forwarded-Encrypted: i=1; AKwUvBwYMFfo8fuDEvWJcxaYvhzosuAEDLj0RypwjgEYKa/+z1h2dzsQxE/SQmqSXUcmwnr7jVhaS0bbGA==@kvack.org
-X-Gm-Message-State: AFq9FYLC84Kt0xXzNWbWq8Ehp09I34jkXqopO7ebSLjlqgnj6GgXYlvc
-	YYiH6fgNagevUsH96n7lpto2fwKmHFVlNm8hCUguAeLwcBNvrZ3dFqx0zWjIjLBMUN/luiACXSo
-	hQzHEar6ypQYxAFSqUFTs+Mnw70ODbb8=
-X-Gm-Gg: AYBFou3e2FIRM8H9++4kaw5kejrGr83Es9jOb4y/6ZMqDNcVhEUywQSD3rj3VW/cC7b
-	ArrCc5h/LeLVQIOVkfPmXsQ4KAwWguC7GEoPMXiXGprgOxN/l4UpuVdQIkL8SuJ5t9lawn8WL3q
-	qTanl1NZFL0vLVy+YljBputyRo6yadwq65rV+Yya883rkF3nN2HOG85qPH3k0zvsMZPFaAXT6+P
-	/TmXBQSJOtiJ/2Tiz2RcHBGICr1/PxoAq2Dyc3KE6YfQhrlzpVUh60OiZSb8aICEeYRSA5exToL
-	Z3hlLlvXuGqk32nYtI38hySz9+6vFd7QaTlguJgYL75/NMcAb3k0rMGyzQFG2EZVs7kJd8fOxqc
-	VU3tr2zfaEgR2rBxWrX4MUqrC2KakAKKFPZjVQhb5FwLpMBr1tDCs7exuLWvUjBgnY/mLQhCAKS
-	I5Csaf+aFKWH/m7GIgJPxgo4ywpONA0tVl5cr4D9qU4GyqWTx8BPvPhRa3r086fO2eq5xbiBKYO
-	JZ6Jaxf
-X-Received: by 2002:a05:690c:f8c:b0:8b0:a957:80bc with SMTP id
- 00721157ae682-8b0f2196dc2mr38396937b3.40.1792460224531; Mon, 19 Oct 2026
- 18:37:04 -0700 (PDT)
+	bh=vWuv+g6YMwm8Pkj5cSlXWYyt4r7CaiX7obNleT+9GD4=;
+	b=2waBYnYRh+gKWBOYRDqxvUNfV/P37rbsXBh3kthFGq6GKONsfOLQ1hl6kk/EKDldTnLsah
+	fZkart76pXmBYk3HiUP4mH68sl7is4qSvw6UxLUkj6ES0459ZI/bSzrU+xcm99HxNOqoBw
+	uPefB4FXfg0GJYozwz9Tis4nD+yzL6g=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E89860229;
+	Tue, 20 Oct 2026 01:49:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878B11F000CC;
+	Tue, 20 Oct 2026 01:48:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792460940;
+	bh=vWuv+g6YMwm8Pkj5cSlXWYyt4r7CaiX7obNleT+9GD4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=c3QFRNLS/dqRYbyr0rVazlU8AkrWzxo8HLfAoWyV87M2LCrRnNLFuaKPAdOhGjBUn
+	 zV3A0YSGAXqo5QuHJOmj9xd9JUWe1l4MZpaPGMR68+yByjWmKGocUlsYgKVPtAcWbc
+	 CkAjwUiPeHFpcoPvWrgBH6z5R7OyXIMnyd0RtIkk3eK567SOX6ucptmlWJNzTU96Kw
+	 hnQF7HfwITl0xDVLQuRJiwP7EFf2K0ac2rzM9QPR+t0g0i6GSEywYY5nl7hGVBq/1g
+	 D2UJxXr40bFZSsovqZO7YqIr4rwJRNzxI8JdNjL5LkVPR1zY8pxK4dLtyIXGpptL5P
+	 5uA1KWEYloS/w==
+Date: Tue, 20 Oct 2026 09:28:55 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Nickolai Zeldovich <nickolai@csail.mit.edu>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Deepak Gupta <debug@rivosinc.com>, Zong Li <zong.li@sifive.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-riscv@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] riscv: mm: Do not make execute-only PTEs readable in
+ pte_wrprotect()
+Message-ID: <atbD14yBffqVLQ3Z@xhacker>
+References: <20261017162229.796020-1-nickolai@csail.mit.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261017050928.128582-1-sidchintamaneni@gmail.com>
- <20261017050928.128582-2-sidchintamaneni@gmail.com> <CAGsJ_4wGq9oc05=-g4aWptLdCbTwUjMjXk4Rd6KjJ6x=tzMm+g@mail.gmail.com>
- <CAE5sdEhGFtGF6LC4xNkMwGj3vTxLOW=GNBXnk3-JmsgjntXx0Q@mail.gmail.com>
- <CAGsJ_4wmvBvEn_vXu8-c6BRAnRewYmTs8iUd8T7KRx7_svZrwg@mail.gmail.com>
- <CAE5sdEiq3bY1kgMUQ6x7RRJCx0JH4sQ9Z_a9_YQSM5FKNwpk8A@mail.gmail.com>
- <CAGsJ_4yZ3rueVMaRJ_+25Nnab0WH5ZLQeLjporWAFj7xJnJFHA@mail.gmail.com>
- <CAE5sdEjFgVoQbWw12=+AKdCOB9cWm-akxzbX7hJzvyO3vpCtgw@mail.gmail.com> <CAGsJ_4yrAosgxnxqc18qXyeJQHszYOdTxJw4TzSJqp10YQWjag@mail.gmail.com>
-In-Reply-To: <CAGsJ_4yrAosgxnxqc18qXyeJQHszYOdTxJw4TzSJqp10YQWjag@mail.gmail.com>
-From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Date: Mon, 19 Oct 2026 18:36:53 -0700
-X-Gm-Features: AclHuK8ck52zGHHnsy_oDpaMPdyA6LZuDR7CHNRNZa81ymtH366yW7A4g5vgegE
-Message-ID: <CAE5sdEj9biuOuXp7aej7pV1Zyjc0kqcH12Oi6gLyJCeuihF6Hw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: multi-gen LRU: fix NULL lruvec->pgdat deref in get_lruvec()
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org, 
-	kasong@tencent.com, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
-	yuzhao@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	apais@microsoft.com, rlmenge@gmail.com, stable@vger.kernel.org, 
-	Hardik Garg <hargar@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AB0D2140004
-X-Stat-Signature: 99h6btohjh58c93yi3yzec53sfuku8i5
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261017162229.796020-1-nickolai@csail.mit.edu>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792460225-320857
-X-HE-Meta: U2FsdGVkX19ls6clmkmqYrEInyYh853w4LWa0GpDMuDsTFb0IsJ4qVhnHGcIFk3PwVLmMUWwwnPAC2NepoX7d/t8RviLaULEdBzOJOF9Hu9GII46FsLRPuJXmZFS37g27cvMTEQSf6gWwgJOgD59umFltLut5eCWb8bv+QqssoAeQqOkSA/yskgZ9OuKoyjKp31ZSmD00s9+izumm4GW7ghG/VCh//y0AjyMjDpp7ZrmPf010Kf/XNy2Jf2kZTzwW6gkZCbFYrcjEpzmFaJ+g0dIbd/3+0WlN8SUjBVVQ+MKQJjTlCmH0DmifQfOS83RsDHEe1lvw16vdXkdXpeghbf9j/c9xiQms0TM11QFVZeCI5eOiGFmQehb5rQvTLeTOicDQ7Ye9xTaGDDFDLZGxbWkWTnfM+Qvplke+ZEZx/CboYCmEtIwhyL4eAliGeV7567qy3JTYIGOl4xuZz19N1lS3Ge03AuRiF5D/00WJp0XmkZ9qQSj0hBnndfGbeyGcFgPYIISd+7yMOzUsOEEOOI9sEfwqsHFoYV1WXMGo9v9MiZa4+w+NCi0C6mJYV2iw7Z5fjmj0dBNadj3Tmx8MKRFT4e8yD83OnFwpu94odE26ksdnKXFUMpOomhuvb7QwKCPmTrtaGOyzmpZJHYxRr1ejZSFh7Ql1l3rtAsfgBQz8aozbC4uyEGttwa1arnUIP1a/l+z2M9MClQKNOK4x1SROtRBUsKYZGFSFgKCWNCYuscTzDu10vpuOt7KWT6N6Av5ll6ct6f57ssFRqTCuAEKlKf2Tt4CkPtgjiU/W6LYNnsKQBGWCvFAafKI128g0LIoaviEBMsreOoBtJx9Q5c0fwMmmTltFu8Op1j7yee13bgXD2crRsw2CZ/+tIrK/26QzgRLdztssyZxzyvzlHZbQPiwXnv2waWmb5v7GhTVZkIarKcpvsq+euFxZgnJHs37OgTc+F2BtylBkdZ
- fasOjAWl
- snNqkNBFkIItuGD2tAVj8k8tbQQ7Zj3VM0jLV0o0/3RcRSM+ON1ez6UDoHl7ffxHKYSpseTewOMav7KkaVuN96bfh03G0uPEigOcM+1UrFixFc5Z8qritBBHdHeYXlE3IlDqM82RszIyBOmo1iBE9CUKbBdv1IQGxu44l5OMW3OPmf4wYNOgBEpeLN0fmbiq68lCB39kcroYNSpgA88GX5htD166yK+Ff0N8dQYYHDkVO029SE16BIrADqLVYxhIhTpI8C5+v7CBvUxR5VjXQJ9tIG8aaQs4pw/vh7FHNfvZQAbYXqapwtN1sDk6S9ENOoQO08w+lyfCKifIwuOLMcajZes+ycCvqxwNGMYXmres3KmYO5O0lc2+JzaQUHMb3JRvyfiTJLvaYD60h37y8YrQsAffhQoSipWHyjVYk3BD719XPuc3hHLNESCcs/j7UCoSrBBO+fs992F/Tu8snahTYSg81MtcaV1AVKnIWZLqV4mAnTolV5zKsG3Jj/KKX8cGGhF1yUCzx9cHhhqPxALw7Cxb5TdCcMZOu/LM02QcEPK0=
+X-Rspamd-Queue-Id: C88ACA000B
+X-Stat-Signature: 1dd4s3pyz37nkc6kpw99d6izbafsx1j5
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792460941-903433
+X-HE-Meta: U2FsdGVkX1/BSNcX8kdtoE6apJfNxW1Sw59rUHTPR45jxaceGONhIGCyOl1WwjjXWlzztsduDPr/aQqpW14th6IshiEglgySOag2m5Nvkbmh0hRoE9U9iZc4gxQ1T499iXtxSn0+l125sxXnIkm1yL8UtT3LB8BNcdCafJnzEbYylXr+bu1ZtyoxfJvkckFwESBhS6jAfqU8zo/LjLGu/awWLuou57qCDsdXnPvs+KtrkjePkkNLv8DVBln2W+nN7v1I9NwxNw3LWRwW+uJCmbx0ayHLHKxNNjhn9q9hyC3YYk7+4CmGQGA0b0ZOJ4W8M0lPpaBHnrk7nHVDHWAeZpc+B0Gtgxmr6V0ztNk/OC0Ta+h9Pwt8Wb/CJhb8V5YKMRcA0FZB8k1/vhYtoN/rFoANqHrePgH3jPlJX8cuyLQYY6nD7+xTI6MdD7iIWb86YKvJYyB3Pcq6cloo1scnZL8qCKpmNKgFbdHe7Ua/cHwgTRk7IE5Pvc9d9ccWH+fU/12zBzfTv8oJacp8t+HbRWwVUeYcKow+bXF/3jeYxnIxOG1JYkKK/iZf9QswX+TahsM3GSAv1cCMTDUW62pU9WLpEUTmTF0e32u/Ouf969qYleqNOQ6I7jXTHObA7huwyM1OfsxMNLlaucfNFgJCAGr5uvve9xNEpNzjHVuLo+83/WM7yS3+dc0HHPN7wOeVWIiyx6elyIKusOCSFQviH53u4hXErwFh+Cd8uRVX0EJZ1kwUexMDQdeDcNKCPoHofO7oZbI0Lfz0uBHXGN8021M/sPpZ1tQfbnU29PYDlVIhQDXhes4fD+ZlOfO6DImXA6TaLBkNyQwDKDrpZOQfCJgtQDiWY/EgLUvncBYGrDw8AP9QjGC7GznCPULQAIq2Uk2PDqRLwovzzLNuytffZxGu4+BbALrc4gNUhPtMP7GL5OaBGnEHFGs7lJ/pJI2Lzm7cEN4VA5r+VekNt8c
+ 4SxaXMcS
+ yOO/P6XD+msZfcRoalOuzw1C7yJqaduwSvsTVQeuu+0aOiFtgd1H4xjH7LW/JGMMF/PTPev+zvSrV/Sta6pclqDLS/b/5YyBGCW+lYMekHS0ToQdZ/nuLIc3goHpV1Iqz5BPyCqYKxrasrR9ex4D/1FUP4Q3e9XBdHwWY2hvypudKRIUv2jhYGnFNu8Gs8MALg7YpNkx40qL90j89pWJxFM/EpRu51AmyBkMsbeUpTAnIreTTM7kQGreNd/nClF8OIhAM06JhWbnjYAiVleJ9F9MQp3neZ11ZoeanFJfMmh8Ng+jh/CKJXon+RgO8XFDvopFLOTO4J1kHNOl8ShzV6ia8Ubg1E97baUNyZIxuKbZS+a9zy7vPpXOOaeWF0FyPYKvn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,58 +98,186 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 19 Oct 2026 at 18:20, Barry Song <baohua@kernel.org> wrote:
->
-> On Tue, Oct 20, 2026 at 9:02=E2=80=AFAM Siddharth Chintamaneni
-> <sidchintamaneni@gmail.com> wrote:
-> >
-> [...]
-> > >
-> > > Thanks!
-> > > I guess you mean the following:
-> > >
-> > > -module_init(kswapd_init)
-> > > +//module_init(kswapd_init)
-> > >
-> > > Yes, I can reproduce it with the above as well.
-> > >
-> > > But kswapd_init() is definitely called before we enter userspace,
-> > > so this doesn't seem to be an issue here?
-> > >
-> >
-> > Looking at the callee sites of get_lruvec, all of them happen after
-> > boot. So it should be fine. Anyway code clean up will address the
-> > issue.
-> >
-> > > So I feel there is no bug here, but this cleanup is still welcome.
-> >
-> > Are you ok with the patch as is, or would you recommend  changing the
-> > callsite of get_lruvec to mem_cgroup_lruvec?
->
-> Overall, I'd be happy to see MGLRU-specific code being removed.
->
-> If possible, could we split this into a two-patch series? The
-> first patch would be this one, and the second would drop
-> get_lruvec().
->
-> In any case, if this isn't a bug fix, there's no need for a Fixes tag or
-> a stable backport.
->
+On Sat, Oct 17, 2026 at 12:22:28PM -0400, Nickolai Zeldovich wrote:
+> On riscv, a user page mapped execute-only becomes readable when the
+> kernel write-protects its PTE. An unprivileged process that writes to
+> a MAP_SHARED file mapping, changes it to PROT_EXEC with mprotect() and
+> then has the page written back (msync(), or any writeback of the file)
+> can read the page afterwards, although every load from it faulted
+> before the writeback; the same happens to an execute-only anonymous
+> THP in the parent and the child of a fork(). The mapping stays
+> readable until the next mprotect(). Nothing else breaks, but
+> execute-only memory loses its point: code that relies on it not being
+> readable from user space can be read. This affects every kernel since
+> v7.0.
+> 
+> Since commit 540de7ade1e1 ("riscv/mm: update write protect to work on
+> shadow stacks"), pte_wrprotect() sets _PAGE_READ unconditionally, so
+> that a shadow stack PTE (XWR = 010) becomes XWR = 001 rather than the
+> non-leaf encoding 000. That commit assumed that every other PTE it is
+> applied to already has _PAGE_READ. Execute-only PTEs (XWR = 100,
+> PAGE_EXEC, used for PROT_EXEC mappings) do not, and pte_wrprotect() is
+> applied to PTEs that are not writable: the writeback path
+> folio_mkclean() -> page_vma_mkclean_one() write-protects every present
+> PTE that is dirty or writable, and mprotect() keeps _PAGE_DIRTY in the
+> PTE (_PAGE_CHG_MASK), so a written page that was made execute-only is
+> turned into XWR = 101. copy_huge_pmd() write protects an anonymous huge
+> PMD whether or not it is writable, through pmdp_set_wrprotect() ->
+> ptep_set_wrprotect() for the parent, which open-codes the same
+> expression, and pmd_wrprotect() for the child.
+> 
+> Set _PAGE_READ only when the PTE is writable, which is the shadow stack
+> case the bit was added for (a writable PTE without _PAGE_READ is only
+> ever a shadow stack PTE), and use pte_wrprotect() in
+> ptep_set_wrprotect() instead of repeating the expression. For a PTE
+> that is not writable pte_wrprotect() is a no-op again, as it was before
+> 540de7ade1e1.
+> 
+> Tested under QEMU (riscv64 virt, defconfig with an ext4 disk): after
+> write, mprotect(PROT_EXEC) and msync(MS_SYNC) a load from the shared
+> file page succeeds without this patch and faults with it; with
+> CONFIG_TRANSPARENT_HUGEPAGE the execute-only anonymous THP is readable
+> after fork() without this patch and not with it.
+> 
+> Fixes: 540de7ade1e1 ("riscv/mm: update write protect to work on shadow stacks")
+> Assisted-by: LLM
+> Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
 
-If that is the case, do we still need this patch?
+Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
 
-> BTW, I've been struggling to understand why MGLRU introduced
-> its own version in the first place. Maybe your follow-up
-> patchset will help clarify that :-)
->
-
-I have a theory -
-when MGLRU was introduced lru_vec also returns NULL
-https://elixir.bootlin.com/linux/v6.1.190/source/mm/vmscan.c#L3163
-that is not the case anymore. I haven't looked at the refactoring that
-happened later around it yet.
-That might be the reason but I could be wrong.
-
-> Best Regards
-> Barry
+> ---
+> 
+> Notes:
+>     The second hunk (ptep_set_wrprotect()) conflicts with "riscv: mm: Make
+>     ptep_set_wrprotect() atomic again" (posted 2026-10-16), which already
+>     computes the new PTE with pte_wrprotect(); if that patch is applied
+>     first, only the pte_wrprotect() hunk of this one is needed, and the
+>     fork/THP case is fixed through it.
+>     
+>     Reproducer (riscv64; the file case needs a block-backed filesystem such
+>     as ext4, the THP case CONFIG_TRANSPARENT_HUGEPAGE; no privileges):
+>     
+>         /* An execute-only mapping must not become readable through writeback or fork. */
+>         #include <fcntl.h>
+>         #include <setjmp.h>
+>         #include <signal.h>
+>         #include <stdio.h>
+>         #include <sys/mman.h>
+>         #include <sys/wait.h>
+>         #include <unistd.h>
+>     
+>         static sigjmp_buf env;
+>     
+>         static void segv(int sig)
+>         {
+>         	siglongjmp(env, 1);
+>         }
+>     
+>         /* 1 if a user load from p succeeds */
+>         static int readable(volatile char *p)
+>         {
+>         	if (sigsetjmp(env, 1))
+>         		return 0;
+>         	(void)*p;
+>         	return 1;
+>         }
+>     
+>         int main(int argc, char **argv)
+>         {
+>         	const char *path = argc > 1 ? argv[1] : "/mnt/xom";
+>         	size_t thp = 2UL << 20;
+>         	int fd, bad = 0;
+>         	char *p, *a;
+>     
+>         	signal(SIGSEGV, segv);
+>     
+>         	/* Shared file mapping: write, make it execute-only, write back. */
+>         	fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0600);
+>         	if (fd < 0 || ftruncate(fd, 4096))
+>         		return perror(path), 2;
+>         	p = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+>         	if (p == MAP_FAILED)
+>         		return perror("mmap"), 2;
+>         	p[0] = 1;
+>         	mprotect(p, 4096, PROT_EXEC);
+>         	printf("file: before msync readable=%d\n", readable(p));
+>         	msync(p, 4096, MS_SYNC);
+>         	printf("file: after msync  readable=%d\n", readable(p));
+>         	bad |= readable(p);
+>     
+>         	/* Anonymous THP: write, make it execute-only, fork. */
+>         	a = mmap(NULL, 2 * thp, PROT_READ | PROT_WRITE,
+>         		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>         	a = (char *)(((unsigned long)a + thp - 1) & ~(thp - 1));
+>         	madvise(a, thp, MADV_HUGEPAGE);
+>         	a[0] = 1;
+>         	mprotect(a, thp, PROT_EXEC);
+>         	printf("thp:  before fork  readable=%d\n", readable(a));
+>         	if (fork() == 0)
+>         		_exit(0);
+>         	wait(NULL);
+>         	printf("thp:  after fork   readable=%d\n", readable(a));
+>         	bad |= readable(a);
+>     
+>         	printf("%s\n", bad ? "FAIL: execute-only page became readable" : "PASS");
+>         	return bad;
+>         }
+>     
+>         riscv64-linux-gnu-gcc -O2 -static -o xom xom_min.c
+>         ./xom /mnt/ext4/xom
+>     
+>     Before (mainline 70dd4ee72eb2, defconfig + THP, QEMU virt):
+>         file: before msync readable=0
+>         file: after msync  readable=1
+>         thp:  before fork  readable=0
+>         thp:  after fork   readable=1
+>         FAIL: execute-only page became readable
+>     
+>     After:
+>         file: before msync readable=0
+>         file: after msync  readable=0
+>         thp:  before fork  readable=0
+>         thp:  after fork   readable=0
+>         PASS
+> 
+>  arch/riscv/include/asm/pgtable.h | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+> index 40b1ed4f3ea8..872b8b6a944b 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -406,7 +406,11 @@ static inline int pte_special(pte_t pte)
+>  
+>  static inline pte_t pte_wrprotect(pte_t pte)
+>  {
+> -	return __pte((pte_val(pte) & ~(_PAGE_WRITE)) | (_PAGE_READ));
+> +	/* Shadow stack is XWR = 010: keep a leaf by making it readable */
+> +	if (pte_val(pte) & _PAGE_WRITE)
+> +		pte = __pte(pte_val(pte) | _PAGE_READ);
+> +
+> +	return __pte(pte_val(pte) & ~(_PAGE_WRITE));
+>  }
+>  
+>  #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+> @@ -692,8 +696,7 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm,
+>  	 * encoding 000b which is wrong encoding with V = 1. This should lead to page fault
+>  	 * but we dont want this wrong configuration to be set in page tables.
+>  	 */
+> -	atomic_long_set((atomic_long_t *)ptep,
+> -			((pte_val(read_pte) & ~(unsigned long)_PAGE_WRITE) | _PAGE_READ));
+> +	atomic_long_set((atomic_long_t *)ptep, pte_val(pte_wrprotect(read_pte)));
+>  }
+>  
+>  #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+> 
+> base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
+> -- 
+> 2.53.0
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
