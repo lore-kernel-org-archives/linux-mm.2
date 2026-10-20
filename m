@@ -1,106 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2527606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EA6606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Eu5CzCZv
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qUDJQ0nV
 Received: by kanga.kvack.org (Postfix)
-	id D81FA6B03E7; Mon, 19 Oct 2026 22:25:51 -0400 (EDT)
+	id A82A16B03E8; Mon, 19 Oct 2026 22:29:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D328A6B03E8; Mon, 19 Oct 2026 22:25:51 -0400 (EDT)
+	id A2DE76B03EA; Mon, 19 Oct 2026 22:29:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C48576B03E9; Mon, 19 Oct 2026 22:25:51 -0400 (EDT)
+	id 91E2C6B03EB; Mon, 19 Oct 2026 22:29:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F7E66B03E7
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:25:51 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1EE3314080A
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:25:51 +0000 (UTC)
-X-FDA: 85341414102.07.9DDC62A
-Received: from mta1.migadu.com (out-92.mta1.migadu.com [95.215.58.92])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E3F35A0002
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:25:48 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Eu5CzCZv;
-	spf=pass (imf15.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.92 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3370F6B03E8
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:29:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C034120845
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:29:08 +0000 (UTC)
+X-FDA: 85341422376.14.2C91012
+Received: from mta0.migadu.com (out-216.mta0.migadu.com [91.218.175.216])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4675A140003
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:29:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qUDJQ0nV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792463149;
+	s=arc-20220608; t=1792463346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qkEnDwBugjwZfgs/RO2JOZXA4QXBERjlTcHQBq6IyoM=;
-	b=eZpC2atE+3nUUxMlVcsW5wYSs1RC23i893hchiK7eQacvYTCTSaFR+fslMyZ+uMYTBZSbK
-	BBi2hrBs33ZOTuzXef6xCcjyelRgY+4mX96yibUcnhvm9mGMb4OIvzHZGFuhAwKal13b8a
-	ka37fsOdwn16MvSCvb8Cn/7C5RBl20o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792463149;
-	b=ztjvRxhHQPc74RC4mTnJMqUePuIs2fT6dd8O3crUS/uhPnjiG3v3g9ELtgfQhdKWRcBKXo
-	+NBErETuEqMhbMPlKterwIcqINLcNroF7rxblY9CD7uygD4hq9XgKVXzBSoHPjdZh/SaWJ
-	9AvvtLzKFEOT2nVJIwB9ywQS5q64qxI=
+	bh=TQXRxNel2NXPGE7cNmLoxbySMwttErvNQDqeGZaxUwE=;
+	b=6plDxgPIaw9jRVhJ4+/9Ca2oPbfpxnRx0LIXNhTTpADuUZqpSM0Lt03sua3CxGgnRE3giM
+	o6s6jO99Nm5j0K7D2z3wLnvLGT+berwEHxJlobirM0YH8MzILPjnTYxJetlaP61HNANg2Z
+	JgLEoqv4jWoH4inYr6MYS8m85LEGhHk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Eu5CzCZv;
-	spf=pass (imf15.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.92 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qUDJQ0nV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792463346;
+	b=VCtyk6QE1cJHIN/qP9xPxua3oYCJdkirhRHHTlzfALGWMlkjqcLjQWk/qXgaDIuphd5Fq+
+	HmWwu+t4+ff6qac2RmL3Emo4dm+5FKCpSKxuyP3yqzCMsdhgzW+Zw90W5JWCejTY3deBj1
+	0j9QJ9Ismczb539taRMVfPAp/vuHjzI=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ntRwUSpnw+xfJNy+369eirj2tCJL/FP5kPFnotn1kaE=;
+DKIM-Signature: a=rsa-sha256; bh=TQXRxNel2NXPGE7cNmLoxbySMwttErvNQDqeGZaxUwE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792463147; v=1; x=1793067947;
- b=Eu5CzCZvzQRuuCA4jfdags9tIDsCpkho05xTr2bk25NTRylCoWFFZqCdb74tCez1dfqXk84q
- tgTmzMKC43zv9NP6sLhL3AIRUHbkLEMLC3urYJ0LR4W7AArVMfTJYhRpYT2Ptn9m09VoCsXi1f9
- 3Ya8E92vFRKlQukG0nRQFpiQ=
+ t=1792463344; v=1; x=1793068144;
+ b=qUDJQ0nVu66LxGsLtYCr/KVQJFS05FiWeAJBMMrJC3WaqrUDSH9uHHQvV9KYmdtuRY0+skGR
+ tRK5Ibf7+XzfGK6IMfjrPeOQ6aqfvh55SY3rB+Gu7MMwMUgZaQjHoRVujLojDirG0ZKftgDcJB3
+ G6RLNbf8n3EeO+FHXUWjzZ6s=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5b8ad6c55f67365a;
-	Tue, 20 Oct 2026 02:25:47 +0000
-X-Mizu-Trace-ID: 5b8ad6c55f67365a
+Received: by mta10.migadu.com with ESMTPS id d23a11d20bf69b7a;
+	Tue, 20 Oct 2026 02:29:04 +0000
+X-Mizu-Trace-ID: d23a11d20bf69b7a
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <b0d303c5-4ca5-4ccf-9e24-499a9719a50e@linux.dev>
-Date: Tue, 20 Oct 2026 10:26:55 +0800
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] mm/kmsan: skip vunmap_range_noflush when KMSAN is
- disabled
-To: Dev Jain <dev.jain@arm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, Uladzislau Rezki <urezki@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
-References: <20261019054531.87652-1-hao.ge@linux.dev>
- <20261019054531.87652-3-hao.ge@linux.dev>
- <3cbb17e3-e201-4138-a070-0c64289a12bb@arm.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <3cbb17e3-e201-4138-a070-0c64289a12bb@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E3F35A0002
-X-Stat-Signature: amuuxxstc3zg8j3mxhnowdggj8ngjijm
-X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v3] mm: unqueue deferred split folios outside the lruvec
+ lock
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261019230646.3510790-1-joannelkoong@gmail.com>
+Date: Tue, 20 Oct 2026 10:28:44 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Barry Song <baohua@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>,
+ Lance Yang <lance.yang@linux.dev>,
+ Hugh Dickins <hughd@google.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F1FD7E12-C456-4E0E-A604-FCFB45F125AA@linux.dev>
+References: <20261019230646.3510790-1-joannelkoong@gmail.com>
+To: Joanne Koong <joannelkoong@gmail.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4675A140003
+X-Stat-Signature: wssy9e59oyozbcwc16eoyuryijutck9t
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1792463148-104123
-X-HE-Meta: U2FsdGVkX18SLzYFTxhz2GiiwtEzx961A6iwrszZ8bYX5E+hbj/n0EnaSFHXb1FS7zqxUBo5zW9YY1+KYDQJTvMrpmCvLqUkoFtuL6ZogwrJoLJNrz8HINpQ+7MpmTB3VEvTK0tAzFGiLECYdd39y0iYMGP01gQ9YCJTdou3sHMdjpAE4pg3l+zR/pCaB+ggA4r1pPdL2O/VAk2H7UgAaw4hhdlOt0+ZPlaQyfCDDr0FLdkb+6lVkFzYwBUI/NFT6VfNjGa2rA3tciEpDZyAeKvAepZBoBPPxfv1kAV0kLZlCsQXRMXkyeGdCJ4yseppBLhAMTAcLnkx0+0fydyDMczy3gemq4yfpa7yneEAgP9GP4W2upktKv8EwLybJQzBWmIZwBjC6bd8ZQc8my8c9yNSxc8JKpUqFAa6v5MCWCAPs4WqErEqxRPl5GoOvChxSLxaLp3ylSr3qg7WLahToyjVjgIw59DCtGXOMtb2BVqTgKbS8jG9q6ILCaoRmmW7BmQts7bInw1AWRn/9Qp4deYDNOaGHX+gSV/fnIdoqxgum1S7CitABDJJTaHuLtL4H1WW13QtTPeUECkkDbE9/xN+OoYtY+LBFExPI2DQlyCJWgCetL16kCsrJRP7OHC2gfe4uqPttlDsiv/CsB0k0FlBeyW7uMov7FXooSkRnRHifsugY4bt06TeN9/qNIILfYo+LmGb8nRMMw55ty2Dz7WeL9LOjqus/Us7zFHbTS3O1V2ZEfGv7DWyR0n6t9JUo9vJ0S5CsVG5vG70m/zC/yNrZAwyaCp5IPtgjQNEaMWs+qSOxaf90RS9QOEQltUxAfRjfrrFxQUqN9YY7wXAHv66BBkKsaut+Ihz/XauEWwl7z3hYtGaNSLBxAqpemHacOlY4eZrG4b6IL6gQocns9G0xcU10Jc42CdLWzxDAE7HBH8OjXVMmuHNHROycuTpdJikCwBvlnhrKyXtfvc
- kP+Oe9Q1
- aUmLDquOtE/JOPj0e80v0WrQsn9IVgSgkHN3+oF5/Ak+8FHZ+Ncf27hERvDPfm2UPABVmv1wUIitl8tML3fXJSmtkX+23AXNbeNU5bh8DbBM2bDICkVu12cV3IfL3Y8jTP4Cuunfy7UT0zX9JAtXj3B8bF16964J44YEznizarNyYxyqr/7Y53CHZF3QaOujpuf51G6Us0dL1/c24RK0ekWmwHsUbEdUzX7WF0r0rqr6JxLII+d1QjgC7ifQ3AyGwKGNotCUxW/DqYhTlHTOX3vetzc2vaAeKskuCx0Ca3drAgRzt0rXvU4j2nO7nxXzXIgwQhhsnG8ESdVzWe5Ry2ZnHPXPVrMGHk0m4N5TheXND4qEmY9z/8h70iu9kLy/fO9eyqXper6HKn07PSz78jAD1R/Tb1NLf8/6dbUTmdVhADFg=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792463346-817672
+X-HE-Meta: U2FsdGVkX18RmMd2Uqkc1CyLu0NLUcUzIZKk0cKf118hhNOBhuOWya3l/Gtb3tjScDow00DSgGdBP/vy3sdIg5I6A9RhTYajZNwiJyDDFr3hf+8xz7BJ40FazwPk+OHNi18x/cHze3p60C8PLpNLpKdUouu2GAGTWAQPRL5yP+zBimd9uiRxO8Jty3b41jiE2Z7ys9ovxq77LQhtsgNItdjgG+01UwZB0iO986zXat5hw2FsIHQRX2boyiVKv80fxtOVhbpDUhgke7uEV9zEhsGGgHGVh9bSl2hNW2G2MRow7ARA9HGdSty/EGtIsROhzx1Pex0KxeHeBvdGAwrQ4sDoCOgKlQbj4t0QUsQU7vGc0Oh448t6pFb3OD4sK2byzKktWC+BmfRYu7i5iHsYiUy3/QnQHhZfROxc39MRfrX+MZ41znetVXhRx+luQlFiF/q8E4OyfksvAPFfqT5esgrngOSWwFnhWcuPOrd/Ge17q6uTyX+1NKleMnkCDfFWxVsUWjWCj+vBhMXD1HfHyxdFIgICf22LC3e/3rzBtfFZlFo9bG3fq+g+VtN49ys0Ddq4ThzJm7h1hGXaZQHnCCzuNtlr5qulro0EkTw5l22xAqAzOhh6XDUwiVxrxLnX33V5reLVkyrzmAub4YW0AaZ8B2Js11Y0lBeah+lTBMQPdPIsXu0+1xjmYg9Xo3dkJnMX6ew8wJykXjpzk2GvZRBlhczOKhlFLWgJ5/dejNLs12mD5kJGbJDY11Rl268crMgHqTw8zZmPYFzZW0gfYYEbxv7lke1+APJ97bJgoUHbe3j9OFEgLnj1nFRiWQLwfnDRE5m0vhvKt5/xugd2D00pH9nvOKHhcXqTptTugJXFP59MRBpDdU5lYcFkV6wnR7ddwOaGTl+onQP0CCQKPcluoaXxDfwQ5x/qhvZ46T2Yn+pJnUnl4D4psFD7EurEax3E8t7qb27NIPb9zWH
+ s9pwEJRm
+ R97PWoWNEScPXJBJE6tWwb7t8B0NhBxQtA0Vk0oFK3D71upWR9WmFZ0xTdht/aar7CL1KDbfj/+yAORuh/p1wlWJstyAMPwIjX4lO4UKt21fmiUG9/p5P/qJy5Kk7yciOIUDhAje7PvzkmE1r+s5bQLUOH2pXO0ylAP02EpYOu5CCIjpu+yFmD5YbZvkGIUtdfzs8nUoNuov40qJ/nXn6we0OTuQqKvMS07LUYHl6FZLIoGzyapp6ZDAvM6u0gwD38/zgja8IHpE9R3c+aq9FbLrWf2AgXDzivrH/DmnCPX/B2WCvBP6PmTY/BWz5h/+gAuGf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,107 +114,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Dev
 
-On 2026/10/19 23:22, Dev Jain wrote:
-> 
-> 
-> On 19/10/26 11:15 am, Hao Ge wrote:
->> kmsan_vmap_pages_range_noflush() returns 0 when kmsan_enabled is
->> false.  The unmap side does not, so it still walks the shadow and
->> origin page tables even though KMSAN never installed any metadata
->> there.
->>
->> Add the matching early return.
->>
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Cc: stable@vger.kernel.org
-> 
-> Cc stable without fixes?
 
-Oops, my bad. The Cc stable was added mistakenly.
+> On Oct 20, 2026, at 07:06, Joanne Koong <joannelkoong@gmail.com> =
+wrote:
+>=20
+> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() =
+call
+> folio_unqueue_deferred_split() on folios where the refcount has =
+dropped
+> to zero. In these paths, folio_unqueue_deferred_split() is called with
+> the lruvec lock often held (move_folios_to_lru() always holds it and
+> folio_batch_move_lru()/folios_put_refs() usually hold it for every =
+folio
+> in the batch except the first). However, it's not needed to hold the
+> lruvec lock.
+>=20
+> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+> the deferred split queue lives on folio->_deferred_list in
+> deferred_split_lru. The deferred_split_lru is a list_lru with its own
+> per-memcg per-node lock.
+>=20
+> There are already other existing callers that call
+> folio_unqueue_deferred_split() without holding the lruvec lock (eg
+> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
+>=20
+> Add folio_batch_unqueue_deferred_split() and use it in
+> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+> unqueue each batch of zero-refcount folios from the deferred split =
+list
+> after the lruvec lock is released and before
+> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+> critical sections, which run with IRQs disabled and are highly
+> contended.
+>=20
+> This came out of the discussion on v2 of the mTHP shrinker series [1],
+> where queueing small mTHP folios on the deferred split queue was found
+> to regress Barry's fault microbenchmark. With [1] applied and
+> khugepaged/max_ptes_none=3D0 so that every folio is queued, perf lock
+> contention showed that the extra cost came from waiting on the lruvec
+> lock in the free path.
+>=20
+> Test setup: 2-socket Intel Skylake, 40 cores / 80 threads, memory =
+bound
+> to node 0 so that all threads contend on one lruvec, with each of 80
+> threads faulting in and unmapping 16 MB of anonymous memory 200 times.
+> With only 16K mTHP enabled, this patch reduces the queueing cost from
+> 15% runtime to noise, and lruvec lock wait time (summed across =
+threads)
+> drops from 491 seconds to 38 seconds. Most of the remaining contention
+> moves to the deferred split list_lru lock, but runtime still drops =
+back
+> to the unqueued baseline. This test uses a worst-case configuration =
+([1]
+> is expected to only queue folios of 2M and larger).
+>=20
+> [1] =
+https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1=
+MaU9bXs99w@mail.gmail.com/
+>=20
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 
-> 
-> I guess without the fix nothing is actually wrong, except doing
-> wasteful work?
-> 
->
-That was true before, but not anymore after Patch 3
-(mm/vmalloc: undo partial mappings inside the mapping functions).
-vmap_pages_range_noflush() now does:
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-                pgprot_t prot, struct page **pages, unsigned int page_shift,
-                gfp_t gfp_mask)
-{
-        int ret = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
-                                                page_shift, gfp_mask);
+Thanks.
 
-        if (ret)
-                return ret;
-
-        ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
-        /*
-         * The page tables undo themselves on failure. Tear down the
-         * metadata that was fully set up before the mapping failed.
-         */
-        if (ret)
-                kmsan_vunmap_range_noflush(addr, end);
-
-        return ret;
-}
-
-Sashiko report: with !kmsan_enabled and a caller passing an empty range
-(addr >= end) the flow is:
-
-1. kmsan_vmap_pages_range_noflush() returns 0 at its first check, it
-   never looks at the range.
-
-2. __vmap_pages_range_noflush() hits the new WARN_ON_ONCE(addr >= end)
-   and returns -EINVAL.   
-
-3. ret is non-zero now, so the rollback calls kmsan_vunmap_range_noflush(addr, end),
-   which unconditionally does
-
-	__vunmap_range_noflush(vmalloc_shadow(start),vmalloc_shadow(end));
-
-   vmalloc_shadow() is a fixed offset, so the shadow range is empty too, and
-   __vunmap_range_noflush() starts with BUG_ON(addr >= end). Panic. 
-
-So the guard is not about the empty range itself: a caller passing an
-empty range is buggy, and on today's kernels it already BUG_ON() in
-vmap_small_pages_range_noflush() on the small-page path. Patch 3                                                                     
-deliberately turns that into WARN_ON_ONCE() + -EINVAL, and this patch                                                                
-makes sure the new metadata rollback does not turn that recoverable                                                                  
-error back into a panic when KMSAN is disabled.     
-
-But it's only theoretical. We haven't hit this case in real usage.
-We add this guard merely to reduce unnecessary work, and incidentally
-harden Patch 3.
-
-Thanks for pointing this out.
-
-Best Regards
-Hao
-
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->> ---
->>  mm/kmsan/hooks.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
->> index a706666db097..107f66841274 100644
->> --- a/mm/kmsan/hooks.c
->> +++ b/mm/kmsan/hooks.c
->> @@ -138,6 +138,9 @@ static unsigned long vmalloc_origin(unsigned long addr)
->>  
->>  void kmsan_vunmap_range_noflush(unsigned long start, unsigned long end)
->>  {
->> +	if (!kmsan_enabled)
->> +		return;
->> +
->>  	__vunmap_range_noflush(vmalloc_shadow(start), vmalloc_shadow(end));
->>  	__vunmap_range_noflush(vmalloc_origin(start), vmalloc_origin(end));
->>  	flush_cache_vmap(vmalloc_shadow(start), vmalloc_shadow(end));
-> 
 
