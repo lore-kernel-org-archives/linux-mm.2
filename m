@@ -1,121 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0107606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2D8606A33E
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 03:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Cu6UwvDm
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=enk7HOK9
 Received: by kanga.kvack.org (Postfix)
-	id C1A4B6B03F3; Mon, 19 Oct 2026 22:41:35 -0400 (EDT)
+	id 84DD66B03F5; Mon, 19 Oct 2026 23:04:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA3616B03F4; Mon, 19 Oct 2026 22:41:35 -0400 (EDT)
+	id 7FE9F6B03F6; Mon, 19 Oct 2026 23:04:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A93A36B03F5; Mon, 19 Oct 2026 22:41:35 -0400 (EDT)
+	id 6ED006B03F7; Mon, 19 Oct 2026 23:04:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 746C16B03F3
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:41:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01826A858F
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:41:34 +0000 (UTC)
-X-FDA: 85341453750.17.79BD47A
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1182D140002
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:41:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cu6UwvDm;
-	spf=pass (imf09.hostedemail.com: domain of hanzhijian1991@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=hanzhijian1991@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792464093;
-	b=i+P+PkyQqGs0jfsU2d3Sgq9dBsfxNiA1/mwhGUmhQ3GwG8V3uCMf3kve4TNaZ7emWpviwf
-	Dhy0ZSrnUJA9a6uLjttltFATSino+6XmYaX+u7w/0qcbSGt1glHbL9GkAg3eAFJDvZonxA
-	8rLtSIyN+3DGk8UrNXV69Ol97RCPUDs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cu6UwvDm;
-	spf=pass (imf09.hostedemail.com: domain of hanzhijian1991@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=hanzhijian1991@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4131B6B03F5
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:04:18 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B225D1608B3
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:04:17 +0000 (UTC)
+X-FDA: 85341510954.14.59CABCE
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D490EC0003
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:04:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=enk7HOK9;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792464093;
+	s=arc-20220608; t=1792465455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ROppqsELXHGeGLcCYxsSX2/ig91E8qLeW9utj4B4bq4=;
-	b=ET5ec1wk3IgXCRAtDByDDkiN97i5FBeOSu15V/bb659fZLlMO7PY0QLRzy9tiqipJy7BJb
-	+IMwR29YozaPndfe2Vk3mDjCsptUOpxmUPkfaUfDC/VJVmhTutLuvnEz1y3UG8YR6CnVd4
-	O74LjyAm5fllF1JgkcosQ+qAokl+NUQ=
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-35f036b17easo1758385eec.1
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:41:32 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FvpcUWOMJRPh8Fi2Ngt6U54Np2NRjnE0G0LmqIgTo0M=;
+	b=sidfxJpr8rk5RMheh49FDjpklXncRNWsyJlQ97BGGtNzoz49oYWRobM3r62JPAwYIO1Xw3
+	/jL1pJ9oq0kvgWPzhEo1+8lClG2CSChkRBmjrwZ8TpKtuiWzPLKrSrcCLruyqDYQVcRcR7
+	KgL2dH9jgxs3NwyZyLbmELMIUXcfpbA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=enk7HOK9;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792465455;
+	b=TeUfb6oPdBjPyYkGjkPz2o8Ya2Fh6HSOOir2sJA8vSRolSAY1yFTjI6t9yvDgetfD+J8D0
+	dSts5OktesEunagNZ0zfHi8JhE8I4SW17K1v2cHDBUwgQPN49ysNmPA1sOZvx68kFYxOGE
+	l2chWF28gzXQkWOzeTbyAGc5vFylXJM=
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93e4c00d71aso258898085a.3
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:04:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792464092; x=1793068892; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ROppqsELXHGeGLcCYxsSX2/ig91E8qLeW9utj4B4bq4=;
-        b=Cu6UwvDmHixPhsIQnFCtWFNssCQucG+J+ZlPPaJlri/Z+uXavoxze8RRhd+/+T6uIC
-         f5EHlduveFgYWD1w+kJwpnwVF9qHY6/RuxsXXmCsecvhibGmT6yX5VyQeTFYzWWOjHgc
-         7XPPN35GchHcue9wE7C9nIwpLHeHRJdd4fL+h0vNHlKHk/07NAIMQrqdAsmVQxaCMnxz
-         vWme8wdflIMM3cFyRAywVburjzvjpG6BDiVSl5E/tvY1jhZCyI5b0al1aB0LIHg6cxGA
-         5RRJhK5463UnYLhsf6S3qDFmNAi6koe/kXtIeeioWkjlaJwx2+NwuvlAL0Zp6sTYxY94
-         pkgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792464092; x=1793068892;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gourry.net; s=google; t=1792465455; x=1793070255; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ROppqsELXHGeGLcCYxsSX2/ig91E8qLeW9utj4B4bq4=;
-        b=JXHb/8OK6C1iPCPoYK5UTLw6KeWurnvcRYIWhgSJUkK1YZSl9fivccFz3j+qVoCGSq
-         4v4S0Ey0u4PW/kuYLhdaol4W4Pm6MJ0GSFENX6BYqS/lDoILTZi0mf7DTMrcOdALKDMD
-         WpK58ctk0F22XXJcwPDaDH7UUyGXRWqrbxI0jHn0pckdznsuijpXgZa3nepTgHb9ULLk
-         zJjoEjwOwdSuwknEID5FaBzlmt9jBwuLKkyfjLF/E408i7c3Bf2XFGhgNl66jHaIy3YP
-         CSsKQ5c1pX5bjH8cpAesIKfmND4eFScLeM7xUUeczmhWJx87tXGTCMMkgI4GEsCHNMQR
-         6t0g==
-X-Forwarded-Encrypted: i=1; AKwUvBxNP3MblJl9h21JNgRuEasKorVttRFTQnr19O3dWwEBhgAPgMXEf2a38JVxkTMDe2ARAsaiayy5VQ==@kvack.org
-X-Gm-Message-State: AFq9FYLISZYOUx4JRphdN0y2UccWg8Mtj7m7C+6qrmLSeNcjBpXnpEDx
-	A+nqVU0CT4fWUnfnRKPyuIhGwOZlAxrWneKIXEi3HoYswnhJMH4cUA8O
-X-Gm-Gg: AYBFou2ud4oJxDpSOLsoYfyRCvwiWy27KKpM0Il75GCSu/71eawQ8ZMPpYEC+uRUxFI
-	SolwgXEC5uF32wrDvZ0JBHI7ZOB021NivsyldNUT78US4CXyGcqIdVrHZeJBsFHax9ix+eunIO4
-	KgqLA3XzBJwY61CjEeIFss+KCvDbZ7jcFTbAFvQsAwlq4pZf+zi7C5k29qHwsc9bQAVLmAqZz4Z
-	issCyse+h3hMReCmEfU/b7k8f69DpgshtfESW/8ewXbbPefBL1vj4Ji8qm3VXYLL3cPC9kpnh2G
-	8wXFPfiyJvFicQZt47PxkTQ+tlVssrt58rAPRpTBjFcXNmajQGW+pHPOYoi1QNqSEiPNWtBmhme
-	5D1IMx0DAHZK77dzhzS+TwJLWR7UpOvmCGyjS/a1CHHAeofsHEhaFAMpY7HlZVzGDzaF3RcAdgf
-	EZY8HYXBqHaZeaBDUlfDXYUC9rTCw2vN4nLb38fXkT3vslRGGsqz122wwTNeO0NiYnw3v47bCYI
-	v9tfSIN3ZEi9aVqrHo/BD4/LbBX/PxFNGOYULM8Cky+5X7nAjvi/GwvUHt3IxB0
-X-Received: by 2002:a05:693c:62dc:b0:366:6644:2839 with SMTP id 5a478bee46e88-3666644361bmr61423eec.3.1792464091268;
-        Mon, 19 Oct 2026 19:41:31 -0700 (PDT)
-Received: from hanzj-mi.. (ec2-99-79-140-187.ca-central-1.compute.amazonaws.com. [99.79.140.187])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36632d8b273sm1116057eec.15.2026.10.19.19.41.24
+        bh=FvpcUWOMJRPh8Fi2Ngt6U54Np2NRjnE0G0LmqIgTo0M=;
+        b=enk7HOK9sU7ZO/ISRaa9g4EZXMBYOi40vmYGyCZSypKygEi9Ty/LLD8aIV67hCBiel
+         tFr5fn5TuVU2uscAu8nXmYEEOAsd0b0W504gU1FZgfqWSTz/Fb5nujskZpr1jqnUvb9S
+         B15/QiCXHSexrH2/6Oha9pCkLCbNwrZrHEH3h+1QD0RPNCUnHxMfPRwjrGz6p8eqYG6P
+         3W+XKMV7iMMVh6MRqMDFVfb/khn/RqIwx78nbSzEWHcrE1Jt666T8P/CG9/k4945zmrZ
+         ZaIsCseJxi6YBPBM2H9ZJXJP2xUH4f956/eR2JniV1R+tjNumo9XQqzwxUl6fW0HNJBU
+         57ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792465455; x=1793070255;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FvpcUWOMJRPh8Fi2Ngt6U54Np2NRjnE0G0LmqIgTo0M=;
+        b=xfxlc1zDWVd3l5dIyj7A9ElQITiDRxTqUUH3boQtTgEXTwPd/OKIFrnnTjcGY/vsBL
+         gwWPu+CwfuT5BykOsbCRZdMtJW5VIarY4iwSH8M1uw6HyFjhQtiwD1rd7z07Z+TiJvWv
+         QmPft+nIImIMA0gV57hiT3dAnNuFu/Ad9Z0nLuNotQFgMJl752BpzdG2LntBrahuQqX+
+         uM4882a4OJcu+zjzabCFvP+iHsu2dYMV+jrPmSi9zAEnP1kZZxjtJSvVsy/8IdT+Nrqq
+         FHKsXRPLWwr5a39GH0YLYwbAIkDSi0aC77kCfByh1MepBFRy2likDAXvF8x3gpl4GHQc
+         JnAQ==
+X-Gm-Message-State: AFq9FYIixwJgT3ew6Z0SkVm3lsYlERQVq+FbqeoNZ2N+6OWaQ9D1KMvg
+	UsuPTYGw4lpyieW8uErhPu70lEko+tGER/fmlQq9efnRSPqlDDrlLZ2BbfoQ/a4ayy8=
+X-Gm-Gg: AYBFou3z0StCEsjwOXa2ceZTTLJoKgG/5qjRM5lww92kackWqS3ESvqT8gVp6ZCve4J
+	+wh/CmztG31O4ZtoguYOuEIzTDPfb3Cpciuar0rZOZa6ERZw3Te557/48N+fL5fNoUF/5QRbtrA
+	zYhUGsahca1LjyUjnbNQay0FPA3OsUN5qVf/fx1M56c3BYOdtv0iZnrdDHM6ajGoMBC1+ood6Ux
+	FtMonCW6wOwZcubpqWM+yav6g+t5VUXpQCe3+tIhZwHElk8wlV0LxpxsljeBF44X1hem2C7/IA9
+	IDt9aBnr+bV+BhkHaE4x95/8SmZAwPPbRjjscG61bIN2K8Y1ympbKvhA7HMAKqm4/izvWrkk1ey
+	GU3tPztTP6bO4uMEuT3frVO+NkSkKq7NJO67uRo6KEn2ICYe70R2+DojtihOYTXpY0ce5mDoATz
+	bt8+cnORkMx3ygcvjGO1YepkHwLvO0pTCjTVnwmHappYkwWAXPSCX9BcbExjP3hbQxKc7U1ESKx
+	JIb2vEq2twREw3INlzkObUWCbp1PeYP2bZsiCJtoEKyizjCiFs9PD8=
+X-Received: by 2002:a05:620a:28c6:b0:93f:3565:813 with SMTP id af79cd13be357-93f3565089bmr1140582985a.9.1792465454862;
+        Mon, 19 Oct 2026 20:04:14 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f4b0c4f1asm114948985a.33.2026.10.19.20.04.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 19:41:30 -0700 (PDT)
-From: Zhijian Han <hanzhijian1991@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: khugepaged selftest: intermittent collapse_full(madvise:anon) failure and low-memory false failures on arm64 64K
-Date: Tue, 20 Oct 2026 10:41:16 +0800
-Message-ID: <20261020024116.2949892-1-hanzhijian1991@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Mon, 19 Oct 2026 20:04:14 -0700 (PDT)
+Date: Mon, 19 Oct 2026 23:04:12 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, hannes@cmpxchg.org, 
+	david@kernel.org, mhocko@kernel.org, ljs@kernel.org, dave@stgolabs.net, 
+	roman.gushchin@linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive
+ reclaim
+Message-ID: <atbZyUYli9Ioy5O6@gourry-fedora-PF4VCD3F>
+References: <20261019185002.3428594-1-gourry@gourry.net>
+ <b7aab691-ae63-498c-8d0c-1696592eea60@nvidia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: si5m5biuqpashtrc4jnar948339wdsj7
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1182D140002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7aab691-ae63-498c-8d0c-1696592eea60@nvidia.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D490EC0003
+X-Stat-Signature: pcmdi9pctnupfcudjxikxwf9ybgz8r39
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792464092-733719
-X-HE-Meta: U2FsdGVkX18iq9uxAS7mGdZHqor76MoeHZb+hkdNAWz4HWyTGsnTS8amy0qhiO7vP2RcaE5pjwzIMR0f95jDZnWTotPjR+dXYG3YA17627GQPX2vPjn/MJDYuN4BHkl2xCburaX1XPuvLYI0voTCvknYZZevdj8c13+IzlP9r3a3kshr/gz54GiGAKzY/GPxHtF+o0bnn3NP96gmHV18LOWxMLwQxqrcE9N9RXA6CDDDhNu+tGFcr0OBDGyIKkguzkMzWJy7K8Fhekhv/ci4i1jUtNqfVatECQMj60CUXPu02VaG7Dyha4kORSMXQ3hoRaVA1wcqLJT9Mdo/yqRGc/9CilXxgAAdh1dGBXBJyikkS1IrG3sGbfkFFr1RDecQfPR05/t78ZCYPFVPlvEU/0vgLWP1M3Xl8unoher7Mw6zz25jQb9aXUw/noSbydjSsQBaaOr42dzQ0FjUUdg5vwOmTpt+nWEEGddgtwHN9JBALcF22T9ZstR4BPih5PUeypStcsdSwknCPZXjevu5jM4eeD5rAhnE2RLaZ/RtOkeZWDoQew5JTUpfKCc7FLPSIr6z9n516henM1MrwTbfBwZENlVPQW6etWRNJpmtgyJgk9g9JsArJF7x8y/5rhHnmsTBCxuwDuEWAVzA+2vE8MZBBKXPHQbHug0Qz5YlWwMzjyd7VRjZenBrxiUh7SJVCi3W5bhaa9QcDAM7kNBvHMKD5O0TY4NwpOne67z6aJGMPB2qR2hn+N11ZTGyZYjXXNAW5bQDkSBbvSz9RSq0PrPnLTgadAssiE9OVPA4cEMHLxolpIG6jlIWiVbV/JsBXxkyZ2DbYNsIZMaC92BmARMhcVhbx9o4qnuD45C7P3BJnV/WeNt52fYAUbMvGd9FU2GOjn1M2+jRAU1142dSsuk9/TXowTS2rlptAp4BFCVf+taUHJgxwgMuDu28WAtH8wi+R1B94hKRbDny8Cq
- yJ1AbcSy
- BNjJLJpj5qDkMI5eaZo6GfqGOdXGuE3GqigFwl08Dcd1gzmJ0hU5R5Ah/zh2ztZLD5l4Msa/6/XbyOruvs3Z5+NHGbNSCQZcQOih2Xxy6sR6sNmE15Q7aSRdM/2z7/PinbnDwBfEX6rEEW/OI9G2yrGJQC+TglaVEo8pNms97o+AAc8h2yyWHd0myCjjelZFwfdl/g+t0h0ChJ3pDXHEAoGABh7DRE5R7U4lyrPRq3HwkXy60dJPQSmhlopE7lNMt0PlcbyC2qiLW1wRljADJ1G7TZ05IwdcgsJEnuYCOauiucGCqMDulJkfwSwp20ZAqSm0f/f9oHvvaHx9LaC3wjtZDIrp0tqXKBpKp9i9PeOeA2hIGmSJubTUxnCErGamZD5P5dWcLg5tCNl63QW3bv2y6q3cKBcTaro2/GRqk1aJVLtkXYV2N5GGfqZUXsy8HEa+5LLsdIMJIafEJCKLsyalA8wJtwK/Eety54Q6lxp1MHBoZGvC1H4t31A2HGZU3D3bTJHporcMrGkcexWO04HWJ8t/xDXH1DpyzbzQij7oSpk+pQOykkkBXmVkPz+JcDnpvm/78KIK2o7U=
+X-HE-Tag: 1792465455-611900
+X-HE-Meta: U2FsdGVkX19TziXiPftzztV3svvR91P8pwIWGEUVueiwkkoHm1Ix8RDGRVVPtCecssT6ucYgw88ctgFu1esBmaW5GWO4+6GnCziCTH5wn1lQCq/iRFESEp1GmrAVeArKUldhjtNpgSSDzlIQdwaQU5IxhagYjEzJyaTlaGWEF3kR6sSmLmT5D7FHuXRwGSaoY2QeDJ8B7UYw8JFbdqvjR03pEoNR8ZwF5FpRjYxgVN9Mv0YSTDKx8l5a416+6aJT6HGJyx/GLoPDK+YowhTLrnoawAHwuYbU5mSfeMbMcAMHlgyzwOjukkS7yL4O7xNblSj314hDYl8jig0SCMlk/17cc54JQntcap+QOhC+WkrbPEOCqhH5U+VrHa3fhvZB6UbvMNwdUJRP26MGkgDpV+vKuWypwbKBy9WZInvQcvrqZUl3fZRtxnClEdr2Yg1OY4Yd6kBSLIUqa9Dqn6Salaeq8fcRpoL35Gn6aLzgv2p25ynRBnIpZUOovOiAqabucMtVNn07XkgieH36x/LDQG3PfxoOPJPn358qwQAFXM78KG4ltbwLFTXmLHT/ae0ROUCddv92FB2WWP4LGZ52b4hQkp8VtaCYuGXI+d91BQdVuC3EU5utgFhazKQKtMTlLIeJn7dUZK3Alui24cEOj/VOVeF/80u/ZmgP2cq9jmVTW5yXtYcY9h8G9y/h1Wa3YrzDQkgN+a40aAeEZMhW6OOQnJ2uwbCDWF9wT0tuXPvVvn4Q/TjS/FXnfUdlCHHlYlZFmGaHdW1TjDxmmrBTiauM85nW3VU35zlvjrsIVfqgkuSS/kcU/C9idh6LHfwcJ4S2xibEwHiIUGPMll0YZS7yqV8C3AtJDfuMNAGUtP31zAgvXowD8kuGemOzV0CRlss2k6E4TGBS8IXiW+3xIUBMFLYUbeYCNO/ZAKu99PJWtbiVXZAguupE15bLVDKNWqIh2WOhg6zE5n4oVf8
+ VHxyIpjQ
+ lW2TvS4WXOUm7J43yQRdTSo/JQi19pCwdngg7BDxBo+GPtgBQbNfw9NUVPvRrOwxOMB0+IrBJbUceSdcinICUPbeFAUkyf//FqlAB3hreIp/FBakoeYdd9y7if719kHZBJU8zz6ATARUZOKle1+KgPMCyi6vNRYk55mTIU2fv/CqtUAvB1UDXCp0SP2Zb+LHQxCVPYXjAeuFE47ugbCLbwriA00vzfxOYqR1b027uwU+vvXj6qa2IoKEox7l7vu5KbRM5eM9yss9tPSQBQdC1CJycS/qel+WfjJNvnWZJXs9nZYF9NIb4cfw2f0Zx9qeEFfEW6DtiYylNm0M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,65 +127,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+On Tue, Oct 20, 2026 at 12:49:37PM +1100, Balbir Singh wrote:
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index e82ba737c028d..90f7a7bf4e426 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -8180,7 +8180,7 @@ int user_proactive_reclaim(char *buf,
+> >  		} else {
+> >  			struct scan_control sc = {
+> >  				.gfp_mask = current_gfp_context(gfp_mask),
+> > -				.reclaim_idx = gfp_zone(gfp_mask),
+> > +				.reclaim_idx = MAX_NR_ZONES - 1,
+> >  				.proactive_swappiness = swappiness == -1 ? NULL : &swappiness,
+> >  				.priority = DEF_PRIORITY,
+> >  				.may_writepage = 1,
+> 
+> 
+> I just noticed some other issues with this code, in terms of honouring
+> zone_reclaim_node (not related to this patch). I'll send out fixes, for
+> this patch.
 
-I ran the khugepaged selftest (as of linux-next 20261019, tip 3d229ce89862,
-which includes Kiryl's "run every supported collapse order by default"
-series) across several QEMU configurations while setting up a test
-environment for mTHP collapse work. Two observations that may be worth
-acting on; full logs available on request.
+I'm shocked, I tell you, shocked!
 
-Environment: QEMU virt, cortex-a76, 2 CPUs, khugepaged test run from a
-statically linked binary inside a busybox initramfs (no distro userspace).
+These are all things I accidentally ran into by just uh... using the
+interface.  I'm absolutely positive these interfaces are full of bugs.
 
-1. Intermittent collapse_full(madvise:anon) failure on arm64 64K pages
----------------------------------------------------------------------
-With 6G of guest memory (so order-13 PMD folios are allocatable), over 7
-complete runs I saw one failure:
-
-  # Run test: collapse_full (madvise:anon)
-  # Collapse multiple fully populated PTE table... Fail: Bad return value
-  not ok 80 collapse_full
-
-The other 6 runs were fully green (102 pass / 0 fail / 3 skip each). The
-failing run did not report an allocation failure or OOM in the kernel log.
-A minimal probe (mmap 512M, memset, single MADV_COLLAPSE) succeeds
-deterministically on the same setup, so the failure seems specific to the
-test's sequence rather than a plain allocation shortfall.
-
-This is the same symptom family as bddffa2f9cbf ("kselftest: mm: fix
-intermittent failure khugepaged test") — there may be a residual flaky
-spot on 64K-page configurations. I was not able to reproduce it
-deterministically; happy to run more instrumented iterations if that
-would help.
-
-2. Low-memory runs fail without a skip guard
---------------------------------------------
-With 2G of guest memory, six cases fail outright (starting with
-"Allocate huge page on fault... Fail") because an order-13 (512M) folio
-cannot be allocated. collapse_compound_extreme() already skips itself
-with "PMD too large for fault-time THP construction" on this
-configuration; the PMD-order cases have no equivalent protection, so a
-low-memory or fragmentation-heavy environment reports what looks like
-kernel bugs rather than resource limitations.
-
-A skip guard along the lines of "cannot allocate a PMD-order folio even
-before the test proper — skipping" (or a documented minimum memory
-requirement) would make the suite's results readable on such setups.
-
-3. Confirmed skips on 64K (for the coverage ledger)
----------------------------------------------------
-  ok 9   # SKIP collapse_order_mixed_sources: no supported source order below target
-  ok 91/92 # SKIP collapse_compound_extreme: PMD too large for fault-time THP construction
-
-These match the gaps noted in the v6 cover letter.
-
-Baseline for comparison: x86-64 4K with a swap device attached is fully
-green (76 pass / 0 fail / 1 skip — the mixed_sources skip).
-
-Assisted-by: LLM (QEMU test harness)
-
--- 
-Zhijian Han <hanzhijian1991@gmail.com>
-
+~Gregory
 
