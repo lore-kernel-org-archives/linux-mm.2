@@ -1,125 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E83606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180CF606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QcsoRHPe
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KxchpydK
 Received: by kanga.kvack.org (Postfix)
-	id D019D6B0517; Tue, 20 Oct 2026 12:10:34 -0400 (EDT)
+	id 2558E6B0518; Tue, 20 Oct 2026 12:11:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB2AD6B0518; Tue, 20 Oct 2026 12:10:34 -0400 (EDT)
+	id 22CFB6B051A; Tue, 20 Oct 2026 12:11:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9976B0519; Tue, 20 Oct 2026 12:10:34 -0400 (EDT)
+	id 16A4C6B051B; Tue, 20 Oct 2026 12:11:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 821266B0517
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:10:34 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6E58140278
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:10:33 +0000 (UTC)
-X-FDA: 85343492346.29.DB1F2D8
-Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 13C474000D
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:10:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QcsoRHPe;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.134 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E7B316B0518
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:11:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CB1C140243
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:11:21 +0000 (UTC)
+X-FDA: 85343494362.17.B4C1BD0
+Received: from mta0.migadu.com (out-23.mta0.migadu.com [91.218.175.23])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1DE7640005
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:11:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KxchpydK;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.23 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792512632;
+	s=arc-20220608; t=1792512680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c4lo9c1DzgFzppkuIe3m48wNpvzpTiu2Q7BfuVscJUc=;
-	b=nBfAVgsZkyBxxcP0/1zcBpXlkyRmbf7hdJectkfK9H8jshOpmjj+ET+DMD8REzQAXPKMVG
-	85iI3qgdHkqw07uCj8e8vB/eZXR2V4urOtzLPtL0Q3D8YhyLYDEeO9TchvTa5He5/o4SEq
-	CUL6YrH8aeAQMJkDdLSyvEG+KLxq6Sc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=huqzC5+NT3FshAWG+VCDlCjNdmPkTgAm4Cdkwvrtsao=;
+	b=Rw6rG3HHcXrELC2YNKi4aSguQrYc+Ly2MytL+fK0oQjcQQrSoGY4I6CDq3XwVeJhc9Sxo3
+	Qoercid788etfusIjXLdfUqWQ+UEUGC4dHXWJGZQ0MOszQ5Y/9ZQUuZbsO7MTyHWL7WT8V
+	/x/EFT9HA7x0a93xdqF7V/Hu8xzMwIU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QcsoRHPe;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.134 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KxchpydK;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.23 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792512632;
-	b=BO9JqL0KOVLDzz2pMGpCL7qh7PxqBBmu/Ddaz4Y9BCBtbAxENQ0UKgbVZ9kVpjBDiYlADQ
-	A4LYhOjJ2yWdSBVxNj/wSrwEIRotOxLZCJeVDryDWZZm5y8cFZL+V7BOgPMshEtAAI83sO
-	/Egmwnd6m2tckRdgxHhnT/Fix+r0XRI=
-Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-3ad211ad92bso773190a91.1
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 09:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792512631; x=1793117431; darn=kvack.org;
-        h=content-transfer-encoding:content-type:date:mime-version:references
-         :in-reply-to:subject:message-id:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=c4lo9c1DzgFzppkuIe3m48wNpvzpTiu2Q7BfuVscJUc=;
-        b=QcsoRHPe6tZUMbIQU3FaJR5Lej530hx9x1A8PE30fF5SrHzrOGbHwrnvvXJHFPMbin
-         8EY7J9nvwoPdvKaG3qfcuhETT1zXxIpEmLMFDKC3/920/PCYqEkPQKVqbANGTM8DJivk
-         ZhuDNFS8h55V5PCe+vWu04gNSjr9hNA4PztxtaronB+5/XMbdBhNCcyHVPCt/yvko/IE
-         6Sc2SNLVJTI12fkXCMOtl5YOkX0VZrwxAEwinAZk1ru8w2ala4NIAuemZb9zRP+qxgQ6
-         7FGJKLahTesexJl/orlVmpj+jEC2NBJbHxL0ubJ2dzf66GgE8w9fYBz38NPZOXwA+CTU
-         xz7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792512631; x=1793117431;
-        h=content-transfer-encoding:content-type:date:mime-version:references
-         :in-reply-to:subject:message-id:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c4lo9c1DzgFzppkuIe3m48wNpvzpTiu2Q7BfuVscJUc=;
-        b=wEp5SP3VuIGT9bYrYlPaXCNmpqT/8djd/Aqf5VpvPjEkO4cjeoCh7FCj+uNSXvuAK6
-         G26XZ/F+FkU4vLpDy014NCp3HLnH85n1JzXztG56+RL6ILpc8Gtp8ze3Ufv1OxvUb1rE
-         57Wx7T58Ve7LtbuRBlQQOWwyBxtPwZ1gbQe/FaFR/XXyEfNFSG1h3TCKkrnoR3tRj0dE
-         YJImRF3rKp5ou8aRJuzqr8L/QGat2J6eqJR0CmBfAPLdz07FFRvztRpOD0W5egzLOafs
-         ujFfZVTBqLQIAZ8Nnr3DpCE2tmaSr5Qn2rf9cj4J8Jz9Mb4fyGyHX2b14a8DFjgF/uG4
-         oc7w==
-X-Forwarded-Encrypted: i=1; AKwUvBz4aJ9W42V3XNmUAxYkChTDQx+9dWEA3Dung8Yc50tLJVUPq1C9BQuGUdXs8IWnvT1c1A9MomQwDQ==@kvack.org
-X-Gm-Message-State: AFq9FYJpLxCOg7wXFzctq8hpxBtpJG4vosePIsfIAc09KVVvfpdZ8NuM
-	2zfu/k25Xu3WtqO3dnHPvYcY1M85BYtL92cZTHrMj4QWQUBB4Uh8QNQk
-X-Gm-Gg: AYBFou1qDHUFbvgFdF1bVyxtSgnlN4Jhm1PkLYg9hKq9rO/ITS8JVFLESHNQEwI2CIx
-	7s3KEwImlmUD1H0RTqy0WVFk82g/iH++Zz6WOskECmnPUQIJDwFVCJxz2xr/tk0yxuQLKKSCzzJ
-	0NMWhKP+08hkcHQ0CqkZRjIJm9MQq3jMgSicpn1jpXXyff9mK7jRulYvMrmG4v8vDVWvrjIPHUo
-	RcOoTFsAqHKRGu/IR57Hqe/pCkOrdlFD2BJTSvKXhpee7jskV+bJQbcpvv7r/3CD6sOkaXK/j6B
-	zKti3F2nvuG271RnkIdWwWR/0m2ZbBbzVFFaxYaKzmydM+aB+OF/OOehvJqukbJyW2UAZqLXzcH
-	J9F3ajE3clLMSefpFSPClHFCBLqHiSCBa7mHlVYPtCj4dPrH3HMq31gYHa/YAV9W+OD3JsjfGQR
-	FF4zzj8mkphB1wNvuzSqBon+dBc7ebGhbhbsWNAHCMhX5w3DYmIqA69Xmy6v7Ti/DPJOlZQ22Hz
-	mRihiaajFRsm4dHj61jsaWONPhv+1nvaNmCK3vGbZ48iDRDsQVNNIGOPMlAU42XjNw2NSU=
-X-Received: by 2002:a17:90b:5112:b0:3ab:c80:9365 with SMTP id 98e67ed59e1d1-3acef0f47a8mr9810302a91.42.1792512630823;
-        Tue, 20 Oct 2026 09:10:30 -0700 (PDT)
-Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad80cbe295sm87743a91.5.2026.10.20.09.10.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 09:10:29 -0700 (PDT)
-From: Aveline Noir <jm5905938@gmail.com>
-To: SJ Park <sj@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
- rdunlap@infradead.org, damon@lists.linux.dev, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <179251032453.2.6166799753856435091.damon-watermarks@gmail.com>
-Subject: Re: [RFC PATCH] mm/damon/reclaim: allow disabling watermarks to force
- reclaim of cold pages
-In-Reply-To: <20261020135822.85334-1-sj@kernel.org>
-References: <20261020133233.3920818-1-ruanjinjie@huawei.com>
- <20261020135822.85334-1-sj@kernel.org>
+	t=1792512680;
+	b=I5DARv6qSg+pkYcQ89ap6fWTAsSqAmxQbOx0yT7K2C80Uxs8O2hSxXIEWkhmV1NaBHzA91
+	Y55s1EJ+b4axGt9DFpK7/JRmi6F04ULs31dMbml/zUZSSL9V1cMIt1Ul3BUV52bTHyPlvZ
+	XBZSDyecp5wWlamtDQIikMwYwqHgUgg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5DMNnG7wdUv/ycP5u/+jKq6/Rsp8gxxgXmoGG4r9E2U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792512673; v=1; x=1793117473;
+ b=KxchpydK44ePQ0NtdzuBPvgT78NaO8w+F/dELBS8s3G8mCSxvctbmlxBzIpnEUeO5ZDXdksN
+ FCgPoXxOdTVjUFnKFHotD9i8vaomQAPUWnz1LSwnrQTXRTenmhf+QmnfULQ0UFLRJP7J61r+3GX
+ zdMMssIE7aEDCSHe3dcLINgU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 99dbf0fb378e6f72;
+	Tue, 20 Oct 2026 16:11:13 +0000
+X-Mizu-Trace-ID: 99dbf0fb378e6f72
+X-Migadu-Flow: FLOW_OUT
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+Subject: [PATCH] mm/page_alloc: clear page tag refs when onlining hotplugged memory
+Date: Wed, 21 Oct 2026 00:10:53 +0800
+Message-ID: <20261020161053.59879-1-zenghui.yu@linux.dev>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 21 Oct 2026 00:07:00 +0800
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 13C474000D
-X-Stat-Signature: oxjtjjkx37yqkr19b54mdp5k77fw9w7r
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1DE7640005
+X-Stat-Signature: n3gcu8xrm9hur4b5hbbwh66ajd1qnehr
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1792512631-373098
-X-HE-Meta: U2FsdGVkX19V588hszUm3OCQFaWJjj/RJZcy2bKwRQH1ajLmxN2zDCPOJaRg491KH6igScbw56BCcJhAAlHasz7iA68Ah/9OVfHn6fXxSLq1QAFsi85FHL6tfGbWZX983YL2ryzOIhHtDz//x/iU1sw7HBAuzQ0cozYO9b8rAd/40wP1RPIqkfm9WLZ1laxPnFHnWPcjjAb+x4KNefviVqif0mU1WaoN0m2u7BiHXvTE7MhGC8LQ+NTNLyRM7gOmIbu7hnIHonUFetJUCF/9/WBg30btf8t41NAoIJ3+GjIJxQu4j1JqvclCilipFnEdvtaFSYZbrw3BR97hcj6mo2xXW6ygUPoTyNYQw0fQPeosERaV+1Z5a9x3sHh0EupGh/CUgB4kNn1GyVsxmbeI+sYkOn9cxzBr9YMCT/30jLYjaxytMXhnncuBXl+XgON9ux//u75cufCyITuAYq0v3QTLA8o8gSyxqqiF6Yl7rWE/7HP3j+JNVNreOxsMnLf+qfgbs6t6AACHuH5KjbILUnj7rVG2C1Q3I/BEY1SgNdQRLW07qlvoxXXk13hIY9aHNoC+srnnY/zwR0eGnhng5m3PzUNrK8DtXgFlwexSrvaH3JeRBfwUa6WKAzsuxykbhrVrZ8c0iNrrLIxaBQRcJBROOPUhwedRTiDx7NGNKLRgiH/S783E7+prPA2fvn+4WJQ8ysukRxxHLmmbex0nTw7XvwEbVltqQl73eCE779C9ygLN98OifLLpiFbk2p5GbEGFoZMt7naMaKT5e81s6xW4CqnaynjU20+8hMPQXyFaP4DSH9+Rzr+eWRk9DsBQA5rhQ+H9vAErMHtWbwZK7wcitTfXkoLmWpOjorcu13aS6y7nUXFlpbyTd6Nf2z5XNgXuKZiZ814lFUZ/1Bc2KlEMAsteLokQ86ptjL+ieyF5O90ySMysH2uM4aYQpNQ/LS2equdSQyyymAoEU7c
- UVjFWXkX
- hen6pDyxtF2kPTNQZ0ehmkyOvtWhrd0s0Ytfy8Z5kw87grf+slteA3cPIqfrdUELqW4+pp0C+TVKW5xmFXhLOMO1cCrjuBKpeoCPjvx7349slLaQK9DFQnpNn+a20TwXA6s0LSfQTaaigLtz6SVAjDUzxLrrB3egXI0aHtLiJxxYm23B0MHWYzqe7GIAkzMkHFXcH11M1UphlV0Eu9DKcJpiUrC345onpeD16nQEFFmDwYivDWzAZJeAYEilUL+I7ADyrQC6fITzmexSoAsL4OYMQGsGTnnNxyVi2RxKsOR2jpXucnaJTb8ZOJnjkG1xgCGgVQndxlvEMX930/Tl5w8UKz6xV+SH+9nQoZymug1eyE4ZqBUHGOnlxcRY95h4GYXzU0GzgbhgIj0T3CIRWlh70C4Ev462oA3xl0xz8+3926AEcbmoLA4dgbDLBxAfr4h8sBRXhbt7VSHLQ46KgNw1duGpA+zpfhoDhy0HkHQOzsPE=
+X-HE-Tag: 1792512675-491779
+X-HE-Meta: U2FsdGVkX1+MoPFRj3V7kyyueb3Yg/DDIqYrTJZC1Jw/zIM0mXuABA2vVdQ02aWgwlmehnfqhWD0seGJGffn0rHNTpwbZdvWoqOZhm3DVWpWNJG3kEZrIv0hCAgdTB4GDhpHQP5F0znYAVjlqXgEJVtqDZsr3kA/1LToLWKqleNwkDJtM/72FSrP9FW+L+yRue9ufegB6wXXsq72w2qmhe+TUrWCxMpVSkTG+wHoj11pqSz63sVQ5qn1Hcls15u2/gViRACAYPbBBkbs14uRzyId3bzf9LAofaaCfE9ljibyKjVPhzlzhP1gQPCxdlKMqWG6dl6grkPiBaXgGsjsE1T8XnArzg+editxA+HU9ShhTAAzkc/BhqSG8NX+ylcixcMm7TFV6GqMeSY05eYsblvcQWqD1xxXKv7R8MqwVXJx8bJ0DOB+CcFR0vTbmMz9l4BLvaQ3IQIUEu41nWrqoLjBKw0A2IqT4bkqEiV09uRccpD7h18VjxlOO+JM6oi8As+q7nIAM9oWrzsurejgC2OWW6cUSQoFXDZdxEsB7OzyD9VElLBMxGUpgF3h/dCAcYq4zyZpx1b1SkWse9m0QUagITQoZ30RPEAD32xE5OcR/o7vN+friuA0T/VokFkmtirFedJmx2mOb+sqHOaQjo3oGEpuaqLPIihgIByohufs0CxKzAEDLv0kI9yCmicqMhGYXM9egQ2UKWstopSaCjZs+qlQeiQ30ENfzTYRyY93DZ42Gxn8jK/6b1111rhB5Mz+SMeb4/k7f8vLAG3XVPgKk/8NNZtjDeP6jsodv5RX+DNi4ZrolTk5gfwCcEwzcvCDLZgQjOYclnG+tl82p/mzsLut/P+ZpAK4+iEGPPWbIUMuaoU5Pu0bj/SFNhiJjnTkHOl4Xftx1oBfAtXXwtR7wmy2BDaooyXd0hawjOH5dErxQxTg96bDFkKt8lZeMCCybQt9lzRg2SgNBnI
+ UM7+Mxxi
+ 7AsIrhbOmTNlkDWmJEmwFuMOGWjcA0rQ37yiDnqowqrpT5tfPJOXijZB+3PNUN1yuMilGri4Kz3tE7BwRxCjKFios5OSOBFaovi1Z0l9d+tXfjn6j98PP5idgiTaJRNxnJMa1YQshPv3RDsoHSSRJcqotCLMAsAJbeon89KP96fCwUCfEOS6f+9ZvX//RCa+YtvhtHHsFxMyy0S/fdnBKAukQ9SAouADEvKdw+I6iRg3OXlH0ijCqL13UIlG+J3PwOF6JrtPMuFKiW6A/BIeedjnoBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,14 +96,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 
-> setting wmarks_high, wmarks_mid and wmarks_low to 100%, 100% and 0%
-> effectively disable watermarks? Have you tried that?
+Onlining hotplugged memory (e.g., a dev_dax device bound to kmem) with
+CONFIG_MEM_ALLOC_PROFILING_DEBUG triggers:
 
-That worked in my test with swap enabled. Agree that documenting this
-combination might be useful.
+  alloc_tag was not set
+  WARNING: ./include/linux/alloc_tag.h:166 at __pgalloc_tag_sub+0x1fc/0x254
+  Call trace:
+   __pgalloc_tag_sub+0x1fc/0x254 (P)
+   __free_pages_ok+0x14c/0x6ac
+   __free_pages_core+0xa8/0x188
+   generic_online_page+0x14/0x20
+   online_pages+0x220/0x3b0
+   memory_subsys_online+0xfc/0x198
+   device_online+0x58/0xe0
+   state_store+0xf0/0xf8
 
-Thanks,
-Aveline Noir
+Onlined pages enter the buddy allocator without ever being allocated, so
+their allocation tag references are NULL.  The free path expects a valid
+tag or a CODETAG_EMPTY mark and warns otherwise.  Other paths feeding
+never-allocated pages into the buddy (memblock_free_pages(),
+init_cma_reserved_pageblock(), free_reserved_pages()) mark them with
+clear_page_tag_ref() first; the hotplug onlining path was missed.
+
+Mark the pages as not tagged in the MEMINIT_HOTPLUG branch of
+__free_pages_core(), where PageOffline and the refcount are already
+reset.
+
+Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+---
+ mm/page_alloc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index e71e514ea18d..9561f2cd873e 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1604,6 +1604,7 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
+ 			VM_WARN_ON_ONCE(PageReserved(p));
+ 			__ClearPageOffline(p);
+ 			set_page_count(p, 0);
++			clear_page_tag_ref(p);
+ 		}
+ 
+ 		adjust_managed_page_count(page, nr_pages);
+-- 
+2.56.0
+
 
