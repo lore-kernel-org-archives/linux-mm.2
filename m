@@ -1,149 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086A1606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 13:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D592D60A261C
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 14:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WXVQUnfR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I2geFVwp
 Received: by kanga.kvack.org (Postfix)
-	id 1CF066B0165; Tue, 20 Oct 2026 09:58:39 -0400 (EDT)
+	id D6BA06B04D9; Tue, 20 Oct 2026 10:00:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A8956B0166; Tue, 20 Oct 2026 09:58:39 -0400 (EDT)
+	id D1D436B04DA; Tue, 20 Oct 2026 10:00:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BC1B6B0168; Tue, 20 Oct 2026 09:58:39 -0400 (EDT)
+	id C32666B04DB; Tue, 20 Oct 2026 10:00:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D77C86B0165
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 09:58:38 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 621421201D8
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:58:38 +0000 (UTC)
-X-FDA: 85343159916.16.A004BE2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A9086B04D9
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:00:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B89A14014F
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:00:49 +0000 (UTC)
+X-FDA: 85343165418.26.1EE0FC2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AA4E640004
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:58:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WXVQUnfR;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4BE24180016
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:00:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I2geFVwp;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792504716;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792504847;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8KbcahdPnsareS4RJrUZQnfYvFwQkIaOnUakAWhA8PE=;
-	b=bYKbzEp8YCy1Avx1I25anzr21tuMNtKDa7cwFyUUuwpAA6hwBGKOjUA6ASMODtbjgSU5Up
-	dZ4zWQfCV5sXovX+IOZpRi8JUxC9BvfBauA02aIPsQcntRWdv4INLta5v4r3yHeb4uQ4sv
-	lrIg0QH0DAEPatXkB7LLUIPunkab5Do=
+	bh=BSlLg91psftAobeV8gdQkEiFF6hG5zNghfZl0ld8xE4=;
+	b=XQ31ADtK6x5NHhezJ3VtTYMfARyms+wT7QV/TQu/1l0MJQoR0LJJM2PtgS/DC9zzwpu6XJ
+	bo5b4nvz2bFugCdmfuNFbTyhT3m8RN8/dNJg2M1coguqQid/SnkfjoP3DXBC6tzEmP4xiT
+	hzB1aPGXcgQ35SEDetRI1KyHPo3CahE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792504716;
-	b=HxzOD7OtitjaednQxhYrap1b7mGG5e/qKhimWyhjkbBS1ZmrbSzNPOsah5uxYNQ72QMs5n
-	uFngOJyjN8SNE2NbG5aetEPti9YGL1QxVf1frYFkmxldWzOeSZytsxZ4FYJAhL9Z534Zi2
-	q45zJf08Ngl7cClfGkI5SFayeImYkSM=
+	t=1792504847;
+	b=Ux5IjVCE8xWc7tQo6U5tz+riZA1KnvYLlM3Ww/XJsenOD3vxXph9CXiilZWm3t/OG519aK
+	EHdNfULpncPk/BNXqLGHrBrW0cZFGDpJQyR0oKOoB3NLLu5UIUWCARueo8rtiz/lmvyKuk
+	rmy9yETRn3PNm5cAudLeibzS1TeNIyM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WXVQUnfR;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I2geFVwp;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3549460DCB;
-	Tue, 20 Oct 2026 13:58:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0778B1F000C7;
-	Tue, 20 Oct 2026 13:58:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BD8DC60DEC;
+	Tue, 20 Oct 2026 14:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD991F000CA;
+	Tue, 20 Oct 2026 14:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792504715;
-	bh=8KbcahdPnsareS4RJrUZQnfYvFwQkIaOnUakAWhA8PE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WXVQUnfRcR7QdAGNfG4lqnfdEi+SDlj6/QuImGNa7kvBBiZ5esx0GfFWj9JMuMO7P
-	 DTRH4vXPH4TLoQIAc1qpeEMQHmyrs2QY8I6pDSRLKRvd8gL1VyDAtPdhAXxqoYwTuc
-	 IQvgObBgcPtisgB/q9If8emoHa33ifGcpMd9ZjuLIFUGguYQpR7kRwjf/0DQJhZ1xn
-	 WCJ5JBWs6uHoF2AaZOjC5RkW2R8X08O0fgNHofo/HYX3qqJLLGWfY+PgpRnlss/uSx
-	 UFoh2CaNO8JnRAp2w9JMW3Hh1TemKaAg75UwTJcLK6bj/8LG8dBL7A/8zOFw9jN/vR
-	 ySa87WI8zNYgQ==
-Message-ID: <9da90d76-031f-4211-b9de-439cbf7bc63d@kernel.org>
-Date: Tue, 20 Oct 2026 15:58:30 +0200
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/compaction: skip folios containing hwpoisoned
- pages
-To: Kaitao Cheng <kaitao.cheng@linux.dev>,
- "Huang, Ying" <ying.huang@linux.alibaba.com>,
- Yuanhe Shu <xiangzao@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com,
- tujinjiang@huawei.com, mgorman@techsingularity.net, chengkaitao@kylinos.cn,
- muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260928105805.1215770-1-xiangzao@linux.alibaba.com>
- <20260928105805.1215770-2-xiangzao@linux.alibaba.com>
- <99cbd960-439d-4672-aba9-6b49697db8b3@kernel.org>
- <20260929034123.2705745-1-xiangzao@linux.alibaba.com>
- <877bjowf9i.fsf@DESKTOP-5N7EMDA>
- <fbd5ae06-b6da-48f6-9c46-188fb6ba9684@linux.dev>
- <bc1b3255-99f7-49c8-bb52-bada6df80f72@kernel.org>
- <23d3756c-1a87-402d-80b4-c838dfc29f4d@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <23d3756c-1a87-402d-80b4-c838dfc29f4d@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1792504846;
+	bh=BSlLg91psftAobeV8gdQkEiFF6hG5zNghfZl0ld8xE4=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=I2geFVwpdSRal6bhErvcT89tNx5RPlTBPnxPEWTRgZ1PCP6+4uvuCtwpstdekNojV
+	 Uz60j6IcEaWMy5hor8cADcWBlmm2HevTpR/F/CP7EdPh75z6P08NVOJXt39AI0yGdi
+	 OOwWB9+n1GmRItRBa0g34ad9/F77U4B1knotKvN8atrOpU+yXC+L8mRI4VJE401sMm
+	 km8oS2uDT2kaatV1fMmhgkYphsvkfViyySdMg1bYmPu86j4kWtoMc3h4JjTuAF/47q
+	 rqeEXkLLEwgubHrTX2XaGNxhwE1KWbkwYQeojkSy4M72Rzb9PUE7iuPEUmtM5LQQcO
+	 7RnURKDYcyqhw==
+Message-ID: <sashiko-outbox-179075@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH] mm/damon/reclaim: allow disabling watermarks to
+ force reclaim of cold pages
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jinjie Ruan" <ruanjinjie@huawei.com>, sj@kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, damon@lists.linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261020133233.3920818-1-ruanjinjie@huawei.com>
+References: <20261020133233.3920818-1-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Oct 2026 14:00:45 +0000
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AA4E640004
-X-Stat-Signature: 3a7uteicsthnheyzuzgr96ugxtoco4tf
+X-Rspamd-Queue-Id: 4BE24180016
+X-Stat-Signature: r8ck5ps9ufenrfoa5e4c954amtd7c7c7
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792504716-3774
-X-HE-Meta: U2FsdGVkX1+TnmUPilV0s2+N5xvhw9kcVgyjtv+ewjdjozSZck+7lDmz71ZIOPyMpKgdD8KOs0Qyi1YmQn6xZGC8XY3qsDcRIYjbxAsSk/FBER9Sah2ygd1MSmW78T1s4/+eoNg6SCWbG2VkqCFxL9JnTm3HYHEuYKUoW076L8m+5Jlzna14HdDJ1ypA3pjKmTeFLw+70nVQA4MfLXu1KtqrF26xwzhRrvv/Z8+nDVMGF1sBhesBWCt/m+zhZUePJi9isE5kOd9IUwrD3KZ3yjCwPuRyY9tY46PiH+FyA0uB+ku0kvr18Dg0mJmxnLxkHOPK7L0hXO8prTBP1hw5jwf0on7D9dD3Bw2XSTPvoN9mCTbn4l/hGZ6BYCQtAvFTyP7n5d0Q8Fg68EzHNNpQ7cF3E/ZIOr9FBqWzEun6e/Y5WQ5BK2nJNPEt5xwSYQELHwvF3XfsOmpnBySjsPGU68Furx+2bHiXFWBWG07/s44dYyBnUVaulNcOzXXnsldh3g52/VTzAoUpZ5GC+Dhz0D1aj08LY5rCEb7xfoA/6OOw1T8/EFjYcz6RVbOQZWz3wlmEoWCXD9uGJX3qsUt6gMmpfrrvkEK8N4d7+XfM6LTfSSXp61fcxVpCQbiiM+39D8QkeQH5Fs60aolr2XygvQ7tykK15gVBmWh2L34K+0C29Aqwf3597VXYc7woYMyLy1zllJcPgIDkNrgvWPLXfQy0hy1VB6Pvm8M8P12ftzZ3WYWNTz9Z6eJu7q/Namg0h/m5XcdzW2ho6AWxMX8xlhDgIIjpod3shSaGnP1iSeahnwXESqi5BR+x2gLJ9vr1K82iphEucP04KJSGgQl/SOwRSjj01kRH0TNrj1h2lW+97dKGkMRYmPOdab1rI7d3yo9Hcdd4wG0Npx2YGJlwU7EwDHJEXn7EN7UPrX7xdOHDfaZhxmUjE6YMKO4f3n21qwE9WKmPycYXWlaxqLg
- cHnDGGz9
- w3IdudtXLV1lYRH5g/B3rxamFKId8phnPcAZSV29Bz1rmqA8orp1GyNsNkxxrFg1Zyl5scLD/jT0CdJZMhPADTcSGUQeFtbdyygR624eLzbfX7RcrS5+OEFqRwXWtwzYldv4jzb4+DimyVD40Sn8G3GxK54325weVbHidVB5rwxbGjCLN466LCNJP3Y69VA82ltxnq56b7cNRsFhW8wNwm1pvsxA+chViyf8n5LDa7l2W2x+rkGsF4+P8xD2PxX7uyuBQZOtJ8NS318RV5PmmAyPD4aRqOEkfKZ9XGCteluZHGlGpOGjz+cyQxfEb1FGlDQgZbSol10em7bnkgErUZNQ3fe+5jHeXpU+Zf62k+rOLtz4=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792504847-895046
+X-HE-Meta: U2FsdGVkX18C68fQQ3O288Zx4gLIJZFvQSH6t/t3Cv8nU6/NpzxmCtoJEPJeSOdjyf5Cp+GKJ8nS0sjwK5VPbt3+biUvoTpBWsAd+nGmkkdIJMtqigGxEB4HHUChkOf6RKdEqQGnw2oEu2HRcPC+REGHPww+7YRNKko7bAVRVv8/itt+a+YvjnXkZaaMAymTEqhwSpBi+0q8Z32jyd6+WrFykBVS/ptuyM++vNpsm7KysrWD/8iTTSf1dlKQMvtmL+VbPmN0LstNwaoyA4nX4T3frO4Rdde+zg8tRZSmS92mMNX3D+d2Rp6qCZsZmt2HDNIIYqsuRwBysO8CFn0FOijhFMFIeMnpJZvwUeC1lkkyWa6JrR4jCWNPqq5GsTjl58csTButhv0IUdnmSBhXVa0d8Bpst0phXpH/oP1RDjKuidyzDutFfYtn2CL9Z4NyDWMipzaKwk7TS7mT/S+IKWgoGG3hvPgUtlH2z6YSchQW+8bwSePaZlwfRht7ZBB228dkqfhv3oSwSGhGgHabbxfj0PyOZzBhlkcrRn07K33FyjNea0ydm+f/sdUPMCWHl3ffLLr2yabRFfGDJimDfN9tOxMxQxz+Fx4FkxgzOE6fJo0hBeP0GqnAwMvSkbhcFVE6KVN0xmtEKtnxK73TYxalExDplulklQv6VjL80RtLuvYYClU/wP6ytOnfdDEN4fHLj5aPilkt4MX8hnws3708RT5lEGJtDCEVqMvWahCwwrj01BfJmsTS4ksiPMYl9e21eUUzxBrq2xBf2rGABlkrcqpnxAXcDSRDmRdbtfmD3Xw/lGyUJmIWofKlLq80rV26oL7cTBcZpb111Hg1oZ72uTj5IomUIOcWqBY/WHkqOnDwpvqvhLs7ZOYzN3l6BGmjMRkJR+pNg9uZZhHYX5tQo11NNRgM7nsguRcfX4SplSbKjkOLQKLsFjPsKKhPIRvSRmc+XT4CvxyVEUN
+ mgiyL1+4
+ X6AY+MpdZ+ufzG0oWHbalYdmSHLHsfjSAws9vb4LJvpmIXnFleSKPCIHs09ICuOWA23ScLFTjuDt5UiyHc7zt0czzrOBhEX2D+PWzzbp+LDrzLkNBdaT4XgbMYaKX5Fcbw8zWwsdRYnPNtOKnjoFUpWLRni/LjR+DYzVooHYPu2BmamKGfqHHqmJEjJ1Midw/SQFwMcvmL6IcdbHky1Y3fRPsF8SBC5zMPaJPVG8/OlXuCitDv5dkuym5IVIYqM8qm3o2BNdd5XET0hhRbIMjEjJ+kroim2Z2Fk2UJnS+QDRlZCxpDZ2j4tBIlL8Bsxcic/Zdaq3N9n8gDjChyL2b8atkd5wQ6OD9HEduh+ujQKacQs0iKLR6BqCxUH5p6sT82PEk4Scop8Q1d2M2yS8v+LNCAFVu0RwVXmzNCqS+CGLa1LpF9Qap/e143EN/701kKXXSHCRoC3yRtTpqcxkeBbDDpRw1ymfBo8bbwMxScnEkpqbwZzq36ujTUVdg7a8i+4H2KF5vXh37k1dlkbWZ73UwoW3leI2vG2vZl2GGoVX6OFKQbcDLdGx3rcA8pp9I7mMAfAA65L46P5zr5tTVBB2edA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,51 +90,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 10/20/26 15:31, Kaitao Cheng wrote:
-> 
-> 
-> 在 2026/10/20 21:07, David Hildenbrand (Arm) 写道:
->> On 10/20/26 13:27, Kaitao Cheng wrote:
->>>
->>>
->>> 在 2026/10/11 21:14, Huang, Ying 写道:
->>>
->>> On architectures with hardware error correction and exception recovery
->>> support, accessing faulty memory automatically triggers an exception,
->>> which itself guarantees atomicity.
->>>
->>> On architectures without such support, even if we implement this logic
->>> in copy_mc_user_highpage() and copy_mc_highpage(), checking the hwpoison
->>> flag and copying the data remain two separate operations. They cannot
->>> be performed atomically, so there is still a race window between them,
->>> however small.
->>
->> Yes. And you need proper architecture support to fix it?
-> 
-> It does require architecture support, but that doesn't seem practical, haha.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Low] mm/damon/reclaim: missing kernel-parameters.txt entry for ignore_wm=
+arks
+- [Low] mm/damon/reclaim: inaccurate ignore_wmarks parameter apply document=
+ation
+--
 
-Well, but that's required when an arch wants to rule out all races.
+commit 8e407c81e469d1e743666b3331a460c372ffea07
+Author: Jinjie Ruan <ruanjinjie@huawei.com>
 
-> 
->>> Moving the hwpoison check after the copy might address this issue.
->>> Is there anything wrong with my understanding?
->>
->> Will architectures that are not prepared for copy_mc_user_highpage() not simply
->> crash if they trigger an MCE during an access?
->>
-> 
-> Do we need to check both before and after the copy? This feels a bit
-> redundant, and I'm not sure whether such a small race window warrants
-> an additional check.
-> 
+mm/damon/reclaim: allow disabling watermarks to force reclaim of cold pages
 
-I don't see how checking after the copy makes any sense? :)
+This commit adds the ignore_wmarks module parameter to DAMON_RECLAIM so
+that the scheme can use DAMOS_WMARK_NONE and reclaim cold pages even when
+free memory is plentiful.
 
-You already crashed if there was a problem, why check? Or what am I missing?
+> diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentati=
+on/admin-guide/mm/damon/reclaim.rst
+> index ec7e3e32b4ac6..ef57f60a91059 100644
+> --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+> +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+> @@ -159,6 +159,23 @@ this auto-tuning feature.
+> =20
+>  Disabled by default.
+> =20
+> +ignore_wmarks
+> +-------------
+> +
+> +Ignore the watermarks-based scheme activation condition.
+> +
+> +If set to ``Y``, DAMON_RECLAIM runs its scheme regardless of the system's
+> +free memory rate, so the reclaim is bounded only by ``min_age`` and the
+> +quota.  This is useful when cold pages should be reclaimed even while the
+> +system still has free memory, e.g. to squeeze the cold anonymous pages o=
+f a
+> +just-parked virtual machine out immediately.
+> +
+> +By default, ``N``, so the scheme is activated based on the system's free
+> +memory rate, as described for the watermarks below.
+> +
+> +Changes take effect when the scheme is rebuilt, i.e. on the next ``enabl=
+ed``
+> +``0 -> 1`` transition, like the other DAMON_RECLAIM parameters.
 
--- 
-Cheers,
+[Severity: Low]
+Is this description of when changes take effect accurate?
 
-David
+In mm/damon/reclaim.c, ignore_wmarks is applied in
+damon_reclaim_apply_parameters() and committed via damon_commit_ctx().
+Because damon_reclaim_commit_inputs_store() invokes
+damon_reclaim_commit_inputs_fn() -> damon_reclaim_apply_parameters():
+
+    static int damon_reclaim_commit_inputs_fn(void *arg)
+    {
+        return damon_reclaim_apply_parameters();
+    }
+
+writing Y to commit_inputs also applies ignore_wmarks changes online while
+DAMON_RECLAIM is already running, without requiring an enabled 0 -> 1
+transition.
+
+Could the documentation note that changes can also be applied online via
+commit_inputs?
+
+>  wmarks_interval
+>  ---------------
+> =20
+> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+> index 014b0779ea6dd..effd963f3c783 100644
+> --- a/mm/damon/reclaim.c
+> +++ b/mm/damon/reclaim.c
+> @@ -112,6 +112,23 @@ static struct damos_watermarks damon_reclaim_wmarks =
+=3D {
+>  };
+>  DEFINE_DAMON_MODULES_WMARKS_PARAMS(damon_reclaim_wmarks);
+> =20
+> +/*
+> + * Ignore the watermarks-based scheme activation condition.
+> + *
+> + * With the default ``N``, DAMON_RECLAIM runs its scheme only while the
+> + * system's free memory rate is inside [wmarks_low, wmarks_mid].
+> + * Reclaiming cold pages itself raises the free rate, so the scheme
+> + * deactivates as soon as memory looks plentiful again.  For a VMM parki=
+ng
+> + * an idle sandbox, cold anonymous pages should be reclaimed immediately
+> + * even while the host still has plenty of free memory; setting this ``Y=
+``
+> + * makes the scheme ignore the watermarks, so the reclaim is bounded only
+> + * by min_age and the quota.
+> + */
+> +static bool ignore_wmarks __read_mostly;
+> +module_param(ignore_wmarks, bool, 0600);
+> +MODULE_PARM_DESC(ignore_wmarks,
+> +	"Ignore watermarks: reclaim cold pages even while free memory is plenti=
+ful (default: false)");
+
+[Severity: Low]
+Since mm/damon/reclaim.c defines MODULE_PARAM_PREFIX as "damon_reclaim.",
+registering ignore_wmarks via module_param() exposes
+damon_reclaim.ignore_wmarks as a kernel command-line parameter at boot.
+
+Should this patch also document damon_reclaim.ignore_wmarks in
+Documentation/admin-guide/kernel-parameters.txt?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020133233.3920=
+818-1-ruanjinjie@huawei.com?part=3D1
 
