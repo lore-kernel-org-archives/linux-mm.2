@@ -1,147 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAB0606A328
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 18:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516E260A260F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 18:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=WUBG2mD4
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=mukFFgob
 Received: by kanga.kvack.org (Postfix)
-	id 4DD746B017B; Tue, 20 Oct 2026 14:07:46 -0400 (EDT)
+	id 582A46B0181; Tue, 20 Oct 2026 14:12:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 460F76B017F; Tue, 20 Oct 2026 14:07:46 -0400 (EDT)
+	id 52C646B0183; Tue, 20 Oct 2026 14:12:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 301186B0181; Tue, 20 Oct 2026 14:07:46 -0400 (EDT)
+	id 41AAC6B0185; Tue, 20 Oct 2026 14:12:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E7E686B017B
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:07:45 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 02BB1160348
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:07:43 +0000 (UTC)
-X-FDA: 85343787648.01.860C22F
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0B91F20006
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:07:41 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WUBG2mD4;
+	by kanga.kvack.org (Postfix) with ESMTP id 0B8886B0181
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:12:22 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F9731C36CD
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:12:21 +0000 (UTC)
+X-FDA: 85343799282.12.2020D90
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7229240003
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:12:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mukFFgob;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792519662;
+	s=arc-20220608; t=1792519939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Tzrx3HtUL23rsTyUgIMMsHFbitPGwqDqJbiS38hOu0=;
-	b=4MefzWJaBMPWlFV5/izAki2gtbJyWtkttwMsQwgYzemDrlkP5POt17cIiMJGf8F/Vrzisc
-	6A1dJVDkPkMWsNHNGB6n5eGbSga81igdLkDnycD3B3GqL/qJBEGwL/jZbXvsXmfk9nYGug
-	oB5TZAc8JnZsIdXV06p92G/lBB9Y+vk=
+	bh=wDh+Gx4zWL1eoJPPpMyzufEKMmJDNsByR9q1z2w2fIw=;
+	b=nOUze88ncSNsvgGjtrlTwcK4dZ5HVNVpveFsrAjNoQBB7EG3VPvSQhn3j8pfdfCQPSrIk5
+	Sj29oP89AS5NtxGS/OrtpIXgtfrigkOcaJzmDl3kfnVM70JRC8kjIdrAeqg4ycGSfooegb
+	1vjlOI+dMcrmH5/ZIo/wPcTB17GB6ZQ=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WUBG2mD4;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mukFFgob;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792519662;
-	b=GjOXJiLJ8LnbNVvd4UR4HQi44GM8JNJn4qMNT4QJB1WivMUbZSNpY9IQp5LU4s605PgclF
-	m6jMI/Mx2kFGXbeLhLOvIfFKH+ASz18mNhZCVfRDCr1bPRbYCBCLis7D10n8L8NrWl0s4r
-	Tu9lCDpsuQEn3m9dE8K7V3bf+fQkiEg=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c2acc1e170cso524993066b.1
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:07:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792519660; cv=none;
+	t=1792519939;
+	b=UgkY17F899vdo/1H7nb2y068jVnlDs0gZ040XnNi3uJ0BGvKhcB3WtyaS2PHhf4exYJedp
+	9xPho5f10QRBZ/yR+XRUExXbHDSnb70zbcfaZrlvdRpiI/VUrrh3EgNJL5bzpV3yAZGuAS
+	A/mqPDQQFLrw+b5207mL/8tdS1KghUE=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c37b612635bso479649866b.3
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:12:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792519938; cv=none;
         d=google.com; s=arc-20260327;
-        b=jo8++IDezAGfcxAUEGIl/B+5uUwe1xlbsppnLF0e40Fgw6WyvcV/7HYSxyVDeCq9T6
-         jf6XKPZAl0IJjgbZr2MbVy3XYBQ4zAwamXsDVyO9lpZzbd34n5R1eu5Yw5HEM91XrF7q
-         HdLkp5cB/TMw1zIXhZVhrwzeGjpj8Lr5zfWAICTn2oc17RJyKM48IMlnjOaX7R8/pcCj
-         3PyGcsipTCtRmOOCkVemhIk/oR+pBa1+XR1k28Aa+XaGB/7gHrNXpoLWe9EvI8Bzo4r/
-         TIQ/PbAvZeqWtlDafX4uKyDKjVpp5/5euFjSFjOXOFSEzJMiTe2/DnR8YzyT0tJY9/vy
-         j9jg==
+        b=iWq2i6Yne4WA5Zqsgks1Qw2OLoFXBkVLecXHXJ2YYk4X2AfwX/NpoWSWeRvc5YDZFn
+         jOi+aNPNIwAeV3K4RYz2HZbBebVmS/kwC+uDbWz0hajpE7UDYljEQK1mypaQLHo4PK3a
+         K+fM6vIb0zZC7pbmxZARCZwCM5dm6cIPt3ajwhzt3IUgkEpKgsqPoio8cC4g4R9NAUH7
+         v6qUYtrNt3VQCCMjtehV1nxq+HhGX0Hsl6PUMWDtDMy9azm705oHIDvlrP9w3AhVCIlW
+         Ygk63Gygvbp9AY1w00CdlY8H8Vh+2CG+YFz48Y4PtzixDHX67zM1cX1RT4PcSV4J3yha
+         3OOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=0Tzrx3HtUL23rsTyUgIMMsHFbitPGwqDqJbiS38hOu0=;
-        fh=eYeMy6kmtuDiNmX3E8oJD5iqmdMMDtgHXH2/pUefhxQ=;
-        b=fDsiRjXSfPQ5G1cfYYMBVdqY2YsfjxZqpCU3iGuLFcwvLkgkz9ljtg7l4vfwcv+RY1
-         e0Fd12US8sxo1xgHAD7GCrKOBx0YGaKycSU+IMKJi6shyGFFg5G86huQZm0/jFzAPmSj
-         +VZY4lt0JvjjdUkjoZvn97TiLxuCugQmtHXPIIC+AAFulsMBzaGGwLpK9zCvfXQttWD9
-         iE+xKXjZkVq4UtSm/4B4tvKisEFwWJoN7a09dvHNpRJ9fwnfrqo+s08uraeQf6OeNPYF
-         zbrKjvK6m8SHem559iTOZbTt50oxtJzw3ij/uKmxMaBhyCY/mxqZ/F7yQFK6AAZV3u2u
-         2WaA==;
+        bh=wDh+Gx4zWL1eoJPPpMyzufEKMmJDNsByR9q1z2w2fIw=;
+        fh=Yu6j9kl/Ie6nngD38vWZKXYJR40SCEwv6II8LfKualc=;
+        b=JJTZ9rcylBqwCyfkXhlXiV39n9sjmxcESkIckF3AstoirbA/6Mbpoa6zYMX8oEtbpq
+         HWalsnFLTfQaRtclDnr06P3PGZUsFO7Fw9zYdndpAf29x6BXnoWY3+uM1khCPmedJJOG
+         W4v8RPdS5ywRUHOuYYEp+ocXyyE7bGHRtSqLGHZiNGNtbgroVZ3j2Jz3AJm0RksxVC0e
+         48s5895MfnzZNmiCGvheWnHQbjL9b8u3tvr5Iq6UidaJp9nGH1pTXKgPll/LxW13lNCt
+         DYgW1Fqc9HC30rj/iiyeYV/3xQyo/fu/oPRep84E0OC8tf8q4HSIWggCJh1ci5X+gwc6
+         CrRw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792519660; x=1793124460; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792519938; x=1793124738; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0Tzrx3HtUL23rsTyUgIMMsHFbitPGwqDqJbiS38hOu0=;
-        b=WUBG2mD4asLOP1rhyHKvnw+yD7UzjweeV0z3D8jjSOyYJf5uEKzCB+DsX8Q0xPfkXH
-         uiHRgKB88N4bL4yur7KEnKg8oH+NPfuFb5/zrcXi2HgiyO+TSVHFYUBBtvFskNwZd5Lg
-         yrXFMIKf6nnzaTH8xIEkScpuGJFEtDJEHu7nvrT7xM+UtkMAbcdftfoUB0TsbHbEiSLC
-         DEo9emnsBTNviLJ40hukjt2OVf4TDzLFjcDfpztWVlIJckElIONSpe7PKZtQiR8NAn5/
-         RCaXWbpcRKbCOJ1mDDWZrb2DsLkAzQ78NZ/0znnw+6KFT5K3TPPuBQK5YbLj1d4I6ATb
-         6xVg==
+        bh=wDh+Gx4zWL1eoJPPpMyzufEKMmJDNsByR9q1z2w2fIw=;
+        b=mukFFgob2G4bLbma0E6J5AkzVX5HdZhYODs2/cHxRKqGOnXnVsvnMol6oZMajqh1Pk
+         CFPQJLoxyTX2X3y7M00QozdfK3NVS7wHLQZq7fQF8xfjBH4LYgcqBsPTpAlWCTHlYbAU
+         Pd20N3MnkHL6J/ih7Ro6kJ5j92+MmS/EV+ujiNzbBWCM5GuFqucuDO8lomCVm+4aIarp
+         8Gk3fIV75NdfZKAJdjRVB/kBiy2A4mHG85hv/pFRCnqwrSOM5eD06Yajcdv4zQyQ2Wlu
+         a6qCJTmeFklWWNwiWIf8ZctLiKHLVWVlh6V2uLM/hghcmb6wGBYLlNtNdxzMGI26BT3k
+         Tvfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792519660; x=1793124460;
+        d=1e100.net; s=20260707; t=1792519938; x=1793124738;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0Tzrx3HtUL23rsTyUgIMMsHFbitPGwqDqJbiS38hOu0=;
-        b=UIKVgoHrxD78t7POSLzSyg0ne+TuguUCdrj6L4lM0zjbuHWHVG/fcuH4iMBibyZV6p
-         sVdhAG2BB022l+ttZWERGIPnUpW+kPPHXf3qUfTTcjfhUBdlzBO26iiopd3LrGMERmXV
-         venfQDbtkTpNFE4++Op4vGImF7Ua2dRPv9xHyD/VCNXFXwTj9tjYxccwgJ30nI5un/VU
-         PQl3UHAs/j6HsZl6NxnZHOemtf9WiMQyAOPhDDsZKGEXzZkRFgij2Cm6tn2gwB7QEaRb
-         nnK9G5MVmXTSJm8bz+s3fXlDIzZt2qadw01AXGjvhovCD7qT4MNmrV/fu3H3h3YiQjSf
-         GQ4g==
-X-Forwarded-Encrypted: i=1; AKwUvBypQtYmSwk+y5PRzKcEUdkQ2t8loTyDByFiKA/dbe5TeP8svU7f1AEgd84d+oeP72qud+91FmP3lA==@kvack.org
-X-Gm-Message-State: AFq9FYLFTfxTS3iYg3xu4ofF/HFYva+kTs8HIq5/+yEFABEgFXPyDCCt
-	HJ7Y4mmSB5QKZ5TwrC8rhRxoNTh3BBUmJhwZfFQK2l5tXNIBW73gt5UW25Gc/kx5Y+wWqdc79K2
-	7AChyFDOsp5aX3qR/hT2AmHFHmQLjkD0=
-X-Gm-Gg: AYBFou2xQtT9Few+DXkcApPsIzTKZXTWaFclfu+vDzeO+JWF6rjTcTU7C0HdcQpj4ml
-	6UrvZwzpYkoSThCFffhCYfa1ivXIr0U1nGCatEP6G+YbtTT5pezxlsALh1r8jbeQpwtgzWqbCvp
-	EUXYBwWaPWJ821tpJoTvLPD7M7TXgiwJkaZU4meelzBf49skc9DGZLeu2sGh/RX5/mtNCWShziZ
-	cVMJ8JXLhe2EjlGD3xhfKkZAcek+HhCOcgnsDZ0FCffs9w7kpzgQsRp8wcn6GYNPd+vQMNdQW/i
-	KK85AlWoIL1HWCs0kqEz4/YF47xfDSraZCvwMhNKkLBP4tyP9jooTlivAKeIWAzytAFbxV6PXea
-	B4l0r2HqVoO8Y
-X-Received: by 2002:a17:907:6e8e:b0:c2d:c800:d797 with SMTP id
- a640c23a62f3a-c46791a8928mr2454966b.6.1792519660356; Tue, 20 Oct 2026
- 11:07:40 -0700 (PDT)
+        bh=wDh+Gx4zWL1eoJPPpMyzufEKMmJDNsByR9q1z2w2fIw=;
+        b=cfX1GmTwCVKh9OrsUSqGDJe/bkEMTVnUmobTLh/9xsE5JvFJptfi/kLV3CMDmio+A2
+         6arfcQKgUtpn1LHE+paJh2P6EE0jOHxLpaSEx1YucVBMm84gPKeNQsQfrFPLcko6OAxT
+         aOzSh3euVXk6FKYTS/9YdwVY5m8G6kXxHd15q7ue39/RsBqcXIEvGarzHp6wL5Dhqdcs
+         oTPcvd/evwXE8T1tupuvXMkePL4K9Hsxau4Ab5bJhvPknp0SbccO3U7PoarpVVNmNaoC
+         87HRAuVtObBcDG+CkZNaI/aIQ/pRnbSIUbKbZ2DjM6yZFwpy+GQ6f2FrOs2KsiZuF+fR
+         96uA==
+X-Forwarded-Encrypted: i=1; AKwUvByUq9PAnfGn81EtiCMTCmwUYCVJizF735sNFZTIocJOpZ8iNNHyaquiiK0nglEpUdER9KSiBi5blw==@kvack.org
+X-Gm-Message-State: AFq9FYLdSiU1+7juaB/IXdL3jjG3vCm8qnG17uOutsLi/L+d88YqVanH
+	KGNJ6iOAMVsv+YYeA7WXSviRVsY6uXN8oT6+C7vF/4SQ3/qF/GL8pGvnB5csF8T7Hd3oRv6ecId
+	cInrR9JIm6r/IEYH1VOA6phwXuhmpuEP6rER5JzvG0w==
+X-Gm-Gg: AYBFou2YYKyrrZ/U0rcbzz7LblDNx5HSNebjAxKvmsqF5cTqZdNWmLYSlzbdaSofT8Y
+	kfHrRhlTB2bAgqfPaMghQjHBnvmzmgrgVdb0FBZiLxHW+lstJNEGa91JTbIGqcsq38VkQ4C/Wz1
+	43BOH5QZttImZVjsv9liNf8F7EuQ7Zd8Bh96DBDSy0P3an6xntV/uAr8qc+jxtw0Xe2g688IFW1
+	Z4lFY7OAeFnUQUwwTi8rZGRuhvbJn/Q7pgG2b3DoklG8WngH6pUi7wqAZwZbw+Djt88ugP0QNyX
+	16mH2YFfGVA13byM0bpL79/f5kdZRVgIo0XhKq6osCcQa0lN42eR9LTY5xQYURxDVdggBpmR3V9
+	FMUEctn8qgMNO
+X-Received: by 2002:a17:907:9483:b0:c46:7645:86c with SMTP id
+ a640c23a62f3a-c4676450bc8mr47938466b.47.1792519937953; Tue, 20 Oct 2026
+ 11:12:17 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261015060528.302634-1-jiayuan.chen@linux.dev>
- <20261015184014.715dcdd3a25e18fd4df49e95@linux-foundation.org>
- <b2f925b6-93e6-4b44-bc18-c94a34b381eb@linux.dev> <CAMgjq7AGRP3B0UZ9-wJKtz8D-ayivhV0gn2WxsrJ1Q=Qm4TVWQ@mail.gmail.com>
- <20261015200023.49685b4cba9d514d1f3ac374@linux-foundation.org>
-In-Reply-To: <20261015200023.49685b4cba9d514d1f3ac374@linux-foundation.org>
+References: <CANGjgdkFAK_EF-z64cyJttAOS2gqcJuM9jOAXAXOeio6h3wg=g@mail.gmail.com>
+In-Reply-To: <CANGjgdkFAK_EF-z64cyJttAOS2gqcJuM9jOAXAXOeio6h3wg=g@mail.gmail.com>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 21 Oct 2026 02:07:03 +0800
-X-Gm-Features: AclHuK_l73Ef6oIxyE87Kio-1EMNhd6Jp_RBoiRkCRSdqCOvvr4CSbl5CnLxa98
-Message-ID: <CAMgjq7D8Ek1yE+LUZKvvnOpiJ4WtY071Sysh685JTSeGAwK9KA@mail.gmail.com>
-Subject: Re: [PATCH] mm/swap: fix swap_cache_get_folio() returning a folio
- that left the swap cache
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, 
-	Jiayuan Chen <jiayuan.chen@shopee.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
+Date: Wed, 21 Oct 2026 02:11:40 +0800
+X-Gm-Features: AclHuK-a56hhk3GNOqdGt_ccV_P4wvltV_luq0BHFJPtqBbWLhDlh9fkskaTQ9k
+Message-ID: <CAMgjq7BoOTKxZEdcwnHAkuAZLzifaAD6YpoDAZXZsUx8oyN+vw@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: preserve physical order in swap fallback splitting
+To: Chengfeng Lin <lin2530632123@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Barry Song <baohua@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0B91F20006
-X-Rspam-User: 
-X-Stat-Signature: kbwnckiun4t5315spzuzpdr7bsc6zq3s
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7229240003
+X-Stat-Signature: bahxzk83xd1p6968ibmw1t41mxuzuqrb
+X-Spam-Status: No, score=-17.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792519661-504141
-X-HE-Meta: U2FsdGVkX1+LMjIpNyaVeEJfMz3g0THNPrmq6nCwQeZ0Cxn/qdW35sM4EkTGSHVBtPT3jMq+G+7XtDPdjMleIz4kQLAIZLgS4kB/Rh2NIVkaExWgcLa44Zq7dqeKbxS4rGFEjegpmzRLXKSdLcSXqrF/doNE262o+MKklXMmf3RoXTEXqU3Qv3C0bcx36cuJZANr9T2YL9qvfhxtZBo1Oc9AimP8owPvkOMetDEZqSwWYAU9mUfhJKHgRY7po+706ckDlMhWBzZo1FKjMf3yobmxOdRcEj5A7OZytMtJn6+UC0OVKQx85bB/JDhEjc9rGD6T0bRNa6pw7b2bo1ZEaEBsCb1cv4D5A0sBQGoIbctX4STRPjrxlrtQgpiCH9DI/lzg0GkIE3gCgutIUirMufwCi2Xa/jGc6VTymRDJwNVUtGxEE6dO3r9n6N19Q0mW7WNCQ96rnD8g41Y6mHWRGtsW73jphGeswoB0Nc5Zz11+Xe9QY7xyNrqC8BnoS1mdhdV1TWDzYSfd9/KSnlGsZhmsnq0lg8pRNYEfw5MSYCfzG9VbeMT3S4z6fAMbtDer61IMJpdjxbaNQxc1pD0zFseCtOAyTjdIjflfO7hk49vFdfVrbRjPWlaTY2GI19mCINqK6Ruh2Lo33tHfzKrziaO1v3qi85IPrp6qnkUrUK+NF0Wd0uqZBH86Vop+3beuSGUvY9TGPwFMlrjZcNyHlc6FFWpleazravG5TsoFpoBQetYMW0IHKasB4YooM0WHUNRa9fbgk+tHaZ+uPa7rpTRf2/Pa4T0Ie0SrcEr533bFOtGmO6e850yKyJMBk1fgHipX8oSm/1aPONmfJeRBzzBS0Pn4+qZIH2kFQeeVqDN1LKWQsS4AMRCg5PdWNjwNnjees54ZpjCYMUSneRhIYgPJimDmc94GrmH1xYszIqc+vr9UHONaMlK1XJvuovDWveYe6eQ7r7tBs4yPRTP
- Oey7U3Gl
- 6YPMfc+UCU+MrDzZ/VWRXcoF+9h5rYyTm3y40rc9CGuxTwnGqqyJbAh8QAjFFK4vRZJN137fy27YcQR+KYlgGCScW/gUJylrbsjFEkLv9kRobUXCt8LT31K4tXyP2+y74w/OU18XsosGHOf2FHr5bnxDfWsTkp3BJ+HtqDavlDGFO4+X0qduSVbVDNT37lxvKQw6Zkgss2SwMrtHTLOvXTYqEP3gv6Fn7tHkB2OoSkVNtS8jcmdrvNYSj1g5JN6Jn0HVXvGyD+wwkYfFdwqFEMEShTIrtZgvbncxHKG3rSdJQEJlhZFruUOBdEdiBEpTAnF9yICThhzFVnSbfpe+iIkkcEreGx072AfFQgOoYDT7wG40U4qxj0PlJivZtxl6Jgz/fqRn62tepaqP6I6wWUiqwulpJ+8COzF+qiePMEXUupdHFKe86biRBwC6bwNw1uDiLKDv8QWBFO7DX73jyqEzeW8o7SY3yZd03AqvsNmLmF9CpN2fkApaj05B2/2l/Yp1gfHs4kjJyqFX7+xeqq9u+X8ktzyQhyjdADXVMaCEpXn0=
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792519939-165174
+X-HE-Meta: U2FsdGVkX1+zvl7wPqaahUHH7BJjwHDJZNYg9VANOZqjHO4XTkZDXHHDnPo8aHq22CMltShCAVKrHXCT1IuhuRryDrVgQG8UFelW74OtC2srPoA/v2Nz3R4ekgxT/IhkSM0TqwlEzuZlg+c7l2h916RQEBwgf1YW3VGc3JtlGuS6w+52qDTemqQliWvWaEFQ+GCE481+vzMZwtDzuyqFYKrvsWO4oA3yutC1Y8CQ2FUcdoN7qaoyy+dk5PN8IwRjU+AlUevjgqE+/rnq/ntBstXl4AHvr7p1OFM1I7Bi1udKRTbQ52ssn5tROEIKLmGsq8pdneX3ICqVunRBoL9/A2fbw6cQl87PHYiSoGi/5as3t/Vnv/rNzAf0SBEmtmdU0XYSW25sean/T9MkpuCrpPDEk60Xt/nlpY7GVjNTl67eft6gGZsa9x1s247V5BkzcFOPdb9V0MTRrpJHcxwb/ZNpeoVLaynY47t4KTBZuZoS/bns9+o9c5tFtwKpusi6wAucQHynQAFucbxYIli1fsJhJNdM8M00xhRb0WyPpAhhUdp206/WYa4sCJdnImWzawUKozJTWp6ZbDBRkeIfWSoYpSInyWSWGn4Mnq4HKyN2+XxKTK6IOLSfAe/1774+r0iDU5CxlSUgH8rzfLs27BjJIHuPckw0IYkb1FJaukZjXN5gHfNyGyQup0elgIUJcVOuPKdC/DaYRLwMuGoti7VR91LMwg2odQd+8O/tifQXtc3idWIQA1ObALrxXiIBf93Q6ytR3wEc7JYBW5nis21jDIdKEjAvCzsPSnilF6W9Uz9uBtyec//9tetTBZq1MhRtqJ7/rDswWDSmJoUbmnUAhKO+If7Be6i7/eSsgXm7cyxl+/dALInn7JDcMcKFJP6nnq4GvNw4GeuN/ohu+f2s7IbDkv3JTuWDk0dnax7nFJjfxQx/Oi40cwpQiu5zQKskkI2+CTU3uuWMO72
+ JOY7L6yH
+ 9Crl4Vnhk5f0ssDlU2s2jzIo+sCmnJwTYazctLlSQ5/b7rp1CuFWNH3+YMI7RZNPFeFlZ/me4rIwZfH4/Y6pe4RYDvZRhZ6DDXPlU5LiPNRil1Iy7hSMCyI2x6r5wLn9kYCs3MPfURpnnrQe1Fw6b/AqpkoCLF0nBs1yqak7D+Woot/kQ5SAfVby5WKvlVU06KcT+TJTjeb58vAJCZkHsSGnPsbk5+dfsfxKLsXe0I2+wdmQyExbjxmEvjYGLtBwXg36eE5BoZDecd+QyPifr5WVd4ohmaMaaioGxQClnGO7xUJGMdbw2cEdCj9AS+xwb3kP0LPhPyyVxfWCVVlCfqOf6XBd6vJK6jptjfh0k9XeTXjwE7l3h/2Op1YX9gE71nX7Y18jyo7cZa1gXDBc7deoIXdrqvb0/PEmGZqPrjZpFVNqTB4q3YKSxEjjT3+1ZyI0D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,110 +145,140 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 16, 2026 at 11:00=E2=80=AFAM Andrew Morton
-<akpm@linux-foundation.org> wrote:
+On Sun, Oct 18, 2026 at 2:39=E2=80=AFAM Chengfeng Lin <lin2530632123@gmail.=
+com> wrote:
 >
-> On Fri, 16 Oct 2026 10:22:20 +0800 Kairui Song <ryncsn@gmail.com> wrote:
+> When swap allocation falls back to splitting an anonymous PMD-sized
+> folio, the new children are appended in ascending physical order.
+> shrink_folio_list() consumes its list from the tail, so it processes
+> those children in descending order after the original head. On the
+> tested NVMe/IOMMU path, this prevents much of the DMA mapping coalescing.
 >
-> > On Fri, Oct 16, 2026 at 10:16=E2=80=AFAM Jiayuan Chen <jiayuan.chen@lin=
-ux.dev> wrote:
-> > >
-> > > Hi Andrew,
-> > >
-> > > On 10/16/26 9:40 AM, Andrew Morton wrote:
-> > > > On Thu, 15 Oct 2026 14:05:27 +0800 Jiayuan Chen <jiayuan.chen@linux=
-.dev> wrote:
-> > > >
-> > > [...]
-> >
-> > Hi all,
-> >
-> > > >
-> > > > So CPU 0 writes to a folio it doesn't own: it may clear PG_readahea=
-d and
-> > > > takes the folio lock of someone else's page, before
-> > > > folio_matches_swap_entry() finds out the folio is not ours.
-> > > >
-> > > > Recheck the slot after folio_try_get() and retry if it no longer ho=
-lds
-> > > > this folio.
-> > > > Thanks.
-> > > >
-> > > > As always, when fixing a bug please fully describe the worst-case
-> > > > userspace-visible runtime effects of that bug.
-> > > >
-> > > > I asked $LLM for this and was told
-> > > >
-> > > > : When the race occurs, a swap fault can acquire a reference to a
-> > > > : physical page that has been freed and reused for an unrelated pur=
-pose,
-> > > > : potentially by another process.  The fault handler may then clear=
- that
-> > > > : page's PG_readahead/PG_reclaim flag, wait on or acquire its folio=
- lock,
-> > > > : and potentially attempt to remove it from an unrelated swap cache=
-.
-> > > > :
-> > > > : These operations can interfere with unrelated workloads and may c=
-ause
-> > > > : unexpected stalls, impaired reclaim or writeback, and potentially
-> > > > : system hangs.  The subsequent swap-entry validation normally prev=
-ents
-> > >
-> > >
-> > > I don't see a way to a system hang: the folio lock waiter is woken wh=
-en
-> > > the real owner unlocks, so the worst case is a stall. I suggest
-> > > dropping "and potentially system hangs".
+> Keep this ordering change local to the swap-allocation fallback. Collect
+> the new children on a temporary list and reverse their insertion into
+> the reclaim list after a successful split. Leave the original head and
+> existing reclaim entries in place. On failure, append any children in
+> their original order and return the original error. Other split callers
+> are unchanged.
 >
-> Yes, I think it's assuming the other-owned folio never gets unlocked.
+> Assisted-by: LLM
+> Signed-off-by: Chengfeng Lin <lin2530632123@gmail.com>
+> ---
+> Hi,
 >
-> > >
-> > > Writeback itself is not affected, only the PG_reclaim hint on where t=
-o
-> > > put the folio after writeback. So "impaired reclaim or writeback" ->
-> > > "impaired reclaim".
-> > >
-> > > So I'd suggest:
-> > >
-> > >    : When the race occurs, a swap fault can acquire a reference to a
-> > >    : physical page that has been freed and reused for an unrelated pu=
-rpose,
-> > >    : potentially by another process.  The fault handler may then clea=
-r that
-> > >    : page's PG_readahead/PG_reclaim flag, wait on or acquire its foli=
-o lock,
-> > >    : and potentially attempt to remove it from an unrelated swap cach=
+> This prototype reduced PAGEOUT plus cached-refault worker CPU time by 14.=
+84%
+> with one worker and 13.14% with two workers in a synthetic 8 MiB test
+> starting from anonymous THPs. Is this reclaim fallback a reasonable place
+> to preserve physical page order, or would you prefer addressing it in
+> the split or block/DMA mapping code?
+>
+> The patch and both measured kernels use mm-stable 2967f3ccdb5f
+> (7.3-rc5). The machine is an Intel Core i7-12700KF with 32 GiB RAM,
+> an ext4 swap file on NVMe, and translated IOMMU DMA mappings. The test
+> uses full preemption, the performance governor, turbo off and zswap off.
+> Workers run on CPU 2, or CPUs 2 and 4; the total size stays at 8 MiB.
+>
+> Each cycle fills and collapses the memory, calls MADV_PAGEOUT, waits
+> 20 ms and checks swap-cache readiness, then touches one byte per base pag=
 e.
-> > >    :
-> > >    : These operations can interfere with unrelated workloads and may =
-cause
-> > >    : unexpected stalls and impaired reclaim.  The subsequent swap-ent=
-ry
-> > >    : validation normally prevents the wrong folio from being mapped i=
-nto
-> >
-> > It's documented that caller always double checks the folio so this
-> > part is harmless from the aspect of data corruption or crash.
+> Each invocation repeats this four times. The primary metric adds the
+> workers' CPU time in PAGEOUT and these cached refaults, then averages it
+> over the four 8 MiB cycles. Setup, waiting, full data checks and cleanup
+> are outside this metric. It measures CPU cost, not concurrent throughput
+> or storage-read latency. The extra traversal of the split children runs
+> inside PAGEOUT, so its CPU cost is included.
 >
-> OK, thanks, adjustment made.
+>                        Baseline A   Prototype   Baseline B
+>   Initial THP, 1 worker   3804.69 us   3243.69 us   3812.94 us
+>   Initial THP, 2 workers  3978.96 us   3445.82 us   3955.02 us
 >
-> > > >> Fixes: 8578e0c00dcf ("mm, swap: use the swap table for the swap ca=
-che and switch API")
-> > > > Given the above, I suggest adding cc:stable.
-> > > >
-> > > > Do you and maintainers agree?
-> > >
-> > > Agreed for me.
-> > >
-> >
-> > This is more like a optimization than a bug fix, but it's clean and
-> > easy to follow, Cc'ing stable is fine to me.
+> Each point has two warmups and nine measured invocations per condition.
+> Relative to the two baseline points combined, the savings are 565.13 us
+> and 521.17 us per 8 MiB. Baseline return drift is +0.22% and -0.60%.
+> The two base-page controls showed no clear change. All 108 measured
+> invocations, including controls, are retained. This is one A/B/A boot
+> sequence, not evidence of the same gain in an application.
 >
-> Was that an ack ;)
+> Separate non-timing checks confirmed the changed page order. Both
+> kernels submitted 65 BIOs per 8 MiB. Within the observed PAGEOUT caller,
+> the same 8,384,512 bytes required 2,047 IOVA links on the baseline and
+> 64 with the prototype; these counts exclude work outside that caller.
+> The checks covered data, page state and cleanup on both kernels.
+> Failure/partial-output handling was source-reviewed and checked with a
+> local list model, not exercised by kernel fault injection.
 >
+> The reproducer and patch are attached. Configurations, measurements and
+> review notes are available at [1]. The numbers above are from this
+> MM-tree pair, not reused from older kernels.
+> Codex assisted with the workload, prototype, tests, analysis and message.
+>
+> [1] https://github.com/lcf0399/linux-regression-evidence/tree/a233ed8edb1=
+e91a6a0ea0d326668bb1f52384489/mm/mm-swap-fallback-folio-order
+>
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1153,6 +1153,37 @@
+>                         SWAP_OPS_F_REQUIRE_NOFS))
+>                 return true;
+>         return false;
+> +}
+> +
+> +/*
+> + * Keep this ordering local to the swap-allocation fallback.  Reclaim ta=
+kes
+> + * folios from the tail, so reverse only the newly split children to pro=
+cess
+> + * physically adjacent pages in ascending order after the original head.
+> + */
+> +static int split_folio_for_swap(struct folio *folio, struct list_head *l=
+ist)
+> +{
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +       if (folio_test_anon(folio) && !folio_test_swapcache(folio) &&
+> +           folio_order(folio) =3D=3D HPAGE_PMD_ORDER) {
+> +               LIST_HEAD(split_folios);
+> +               struct folio *child;
+> +               int ret;
+> +
+> +               ret =3D split_folio_to_list(folio, &split_folios);
+> +               if (ret) {
+> +                       /* A failed split may still have produced some
+> children. */
+> +                       list_splice_tail_init(&split_folios, list);
+> +                       return ret;
+> +               }
+> +
+> +               while (!list_empty(&split_folios)) {
+> +                       child =3D list_last_entry(&split_folios, struct
+> folio, lru);
+> +                       list_move_tail(&child->lru, list);
+> +               }
+> +               return 0;
+> +       }
+> +#endif
+> +       return split_folio_to_list(folio, list);
+>  }
+>
+>  /*
+> @@ -1391,7 +1422,7 @@
+>                                 if (ret !=3D -E2BIG)
+>                                         goto activate_locked;
+>                                 /* Fallback to swap normal pages */
+> -                               if (split_folio_to_list(folio, folio_list=
+))
+> +                               if (split_folio_for_swap(folio, folio_lis=
+t))
+>                                         goto activate_locked;
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>                                 if (nr_pages >=3D HPAGE_PMD_NR) {
 
-Right it looks good to me :D
 
-Reviewed-by: Kairui Song <kasong@tencent.com>
+Thanks... But I'm really not sure if this will cause any real issue,
+the LRU gets shuffled easily in reality anyway, and synthetic tests
+for adding a chunk of code for a limited particular case don't seem
+worth it.
+
+I had a similar idea for THP splitting in general for a while, but as
+a cleanup (to reduce LOC for mm/) and not to make things more complex.
 
