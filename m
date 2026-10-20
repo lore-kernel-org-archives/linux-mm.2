@@ -1,158 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E6160A2606
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 17:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA4C606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 17:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BfQrv/oO
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oQTPChcn
 Received: by kanga.kvack.org (Postfix)
-	id A5D5B6B0533; Tue, 20 Oct 2026 13:06:02 -0400 (EDT)
+	id 26EE16B0535; Tue, 20 Oct 2026 13:24:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0D4D6B0534; Tue, 20 Oct 2026 13:06:02 -0400 (EDT)
+	id 218736B0536; Tue, 20 Oct 2026 13:24:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D5506B0535; Tue, 20 Oct 2026 13:06:02 -0400 (EDT)
+	id 1067A6B0537; Tue, 20 Oct 2026 13:24:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61D7F6B0533
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:06:02 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC6401C31DD
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:06:01 +0000 (UTC)
-X-FDA: 85343632122.02.74374FC
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CAAF018000F
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:05:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="BfQrv/oO";
-	spf=pass (imf16.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792515959;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	by kanga.kvack.org (Postfix) with ESMTP id D69196B0535
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:24:32 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6CFE61C2179
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:24:32 +0000 (UTC)
+X-FDA: 85343678784.16.A19D996
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B0763C000D
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:24:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oQTPChcn;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792517070;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CawfSGUltcTxf3WieqiwxZVbLh4EPDpBCzdr6aE2BVo=;
-	b=tMBOvVdcnyvm/6Aqh1jFQTAh7FhIiAW6x6RKPvcHap4MdQLSYqn4pfMcRG5D+EWrLRU7Ag
-	YF9ELgK/o8lEMgtA9cusLJrKFp3cJAV0dR/E7wUcvW0jVuohfs7AAZRyoNC4kBSPuPN4EF
-	woR2Ea8+qjjsJLxBocNKjE4gHFSvlkY=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792515959;
-	b=FquDKmh640qWLyHFX2sal/jY7jyb850rhGy7HqQpi0Rra+/8YZcyNUluo52ftOU2bgL7kt
-	qYC4n5y1eM4YBR1LoHL2WwzdgAQhCjux1uARF+gGJygLMJVIo8CJRpBpG+dnNP15mO7JTZ
-	pD/7ukssWZxM6d2uimq00xy2f6BoL18=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="BfQrv/oO";
-	spf=pass (imf16.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8b0e1b91607so3881297b3.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:05:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792515959; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iXLYuZznPZDowtBJsM02ZbDZA/rHiUQFvCPXnC2fQKLcnLCJkdDRKNQGY6CdnnxXn/
-         E9GpTrSHs458Y+PPR2ugrk+eTlV7DFUvK9HZcHyeYTgfsHfoZWPWuJBuASGBMqSsQebt
-         InLOWjNk+oEvhTNZO/qrvmrLcW+q1bM5oTYvP+9tgeCv2gbgg53SyL+FJNm/f1LUt1hG
-         RWtMKBj4w2tZzvHgnoIDH0FQPKQPifU9ZXg77zv3P1VbMfOoiaI3804CqZkUdUbyhx/f
-         IS8he7B4sY658JpAThgBnwjvRY6u0T+j1Z+X4HVzPM0ZpAi1tSY/WXyvS+PCwQQSZwNi
-         kqvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=CawfSGUltcTxf3WieqiwxZVbLh4EPDpBCzdr6aE2BVo=;
-        fh=eZxRn9Vu+Xp/NggctIYpau0BhRBiDFRB3db/p6ZzPww=;
-        b=JwKXNmSCybd0Ms9cETnnCFjqmgnWoWqMnqVrfwMxMpiQYi0ad2FZyzYQhIBKl5iW5Y
-         NGZQwo25OEZ81nPFCNFE4qMZ9K4CSzIt9nTzEnBHozd7OcWi+HrYZKzDC7HC0WMsa3+e
-         Oe2+W1ZaZRdm4blhD91qn2axBxy0TwUBsOpX41opinLlZLvTtxR6iajHIoyOd/2Jee04
-         vcemKDPdJKYkdNipucNfH+tpvlAfZ9AtJefI/GLSBZrzk2cRVOH6VNQQ55jNxEyboeqT
-         k0Fc/P7p6gfzSVSL3eHBO//rBoiFDc/Bkl2gtX0F6WzNLNDpUnqXzl1dxUjqJLwuXM3U
-         BXDg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792515959; x=1793120759; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CawfSGUltcTxf3WieqiwxZVbLh4EPDpBCzdr6aE2BVo=;
-        b=BfQrv/oO14/vscSFTTAbZtEMaTev+7yNrjZ/JzTQud3Kk6wybxk3UJmkUXEByevsiy
-         LLqkVVCNaUSpIzO4BJFNCc0+b82iBmaBMOLMGh/aHWct+RLZSZyPXNX7chMOJHdI4LRk
-         zoTdKYCRiwoPOREiyYU+10f3/9GX9gIpoV2Sl9CKdTZfxRQ26YzraZpmknhYHQVDi87C
-         39QrKbTUodhSWQsCl8UUsJLa0N3n2A7Ve8oKACdLezRqMoE+CLAhgl6QLtQUZlwslOo1
-         KhmlDcPCpTyDVaa0MsjGBURGC1Kv1qI2m4lwzrARsmRd6Yzg4TWISRCy1t299h0ie5Za
-         KbIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792515959; x=1793120759;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CawfSGUltcTxf3WieqiwxZVbLh4EPDpBCzdr6aE2BVo=;
-        b=a0g2Y233czmkFWleUsdXnGzTP7/MEnK+0D5/LNeKqKjJHsba0E03BAIfglOlUy8SSi
-         dul0K9F3EKU8EGTNly0+DlBpOgRu0Uqz7QVP8KwUGU1Vv1m7LEAoswRZkpIESe30iN8t
-         gwbNORPVpbIjpmt0sXxhhmHrMZY7cv97N8a1e7eVArn6vmZJwgdWgZUzIxAFgZotAfF6
-         W/btE4wfTKd2d6DkhDIzhyilpw1C2FMBvFXrj0dEZDLx2FxuluOtou9uRtlvHKMbDsc5
-         FC1mOBNlx/wgtHUuqKjvirBJt4eiVM4cD8txOCabD/4bbAPOIAqe00j2qLSr/QExKA7X
-         WOTg==
-X-Forwarded-Encrypted: i=1; AKwUvBzG234Zhc1WxeYgzxY+HsmbRiBNjpuqQFw/ZjFVXhxosfRhPBgxkSk5UP0GnIAWBr/+uNqtkI/5dg==@kvack.org
-X-Gm-Message-State: AFq9FYK2f+tlMMv2elWpJGLnfwlM+NgHSUukYbhwEo2YoKKn5zbX+mBt
-	0KAYB0PUklSugpYJjBzFRbvI7pmtZyOGOdpuDCRfZ/vMs/LuGYWkCoqs6m4IE8b6u+W55wtERl7
-	g+f3/5WVhg1OynI+MH1bp1yjbLptko7M=
-X-Gm-Gg: AYBFou3ambvC6ZgGZRMUiF+4u3Qo9LMVI4mluJht+77VYr78tpzJcCR7YKiRQJvDAxr
-	HoaOcoFHRZPqAVRMc33TivoLVLYOfIjbHS4nBtBt1brqNlLu1f1s1jtCIFUQMTtehyY4HLK/tmZ
-	ZHiDufng4jK7qBtoVa7gbZ50Cc3FRZMu+rxK7IVRQT3OkSAalQytQkehtenWwstU3seOklsRQUo
-	mbVeQprZMpWVr46ASUDn5jXDiIUrK510dpjhLVQYyptMsOXkMvo4mtwtMUYIIXPw8/dtuN9+f91
-	yZ95Kvrc1DONDIUTanEU8G44qsOr/AIb+DbaernP82s2scQY1fcaNw==
-X-Received: by 2002:a05:690c:6087:b0:8b0:da84:d1c1 with SMTP id
- 00721157ae682-8b0f1f1a89fmr64960787b3.0.1792515958898; Tue, 20 Oct 2026
- 10:05:58 -0700 (PDT)
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Tue, 20 Oct 2026 13:05:58 -0400
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Tue, 20 Oct 2026 13:05:57 -0400
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20261019-bug-word-at-a-time-zeropad-kasan-v1-2-f21a3ed6a477@gmail.com>
-References: <20261019-bug-word-at-a-time-zeropad-kasan-v1-0-f21a3ed6a477@gmail.com>
- <20261019-bug-word-at-a-time-zeropad-kasan-v1-2-f21a3ed6a477@gmail.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Date: Tue, 20 Oct 2026 13:05:57 -0400
-X-Gm-Features: AclHuK_DtrU2XCq8YwSMY07NqOt7wGt-hW6PGZPkgwrcRUr2dimhQIUPQ6PwL98
-Message-ID: <CAPAsAGz89aKUHzm6U9PQZfkGq-GnWsm8AYHeo5+4u34LHk4uZQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] kasan/test: cover load_unaligned_zeropad()
-To: Qiliang Yuan <odys.yuan@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, Marco Elver <elver@google.com>, 
-	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org, Kees Cook <kees@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CAAF018000F
-X-Stat-Signature: h8y9iet5dngpxmg8xck7ny9okgng1cf8
+	bh=4xJJmU5rHTBbqNB8qX0H3I1zlzmfhbUR6pXqrPeXgTI=;
+	b=lRDRlTT5TFuO36rCy2MxLrxXgAnZbmg69xZj2pK9YRzTd2hYJ6uLZ8DBGdQR+K9gUOJ5Mx
+	4ypyc4YxT2swuAbCW88LqaYFmeqh1X3jr9ji1ToWX6cbYolXmdkRsVtChxvXk2LqmM9rd3
+	ZA4MdEKs0mwnIGAgZsIMcYNQbA4Q3xo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oQTPChcn;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792517070;
+	b=aKA+C6N7FxE1F2u2D9dYL122v6oJqqrHQDnbw3DIEVZHLyHP19HwvrgYgB/OHVTztEUszk
+	x3E54IoAJXi0kIv13gKrDs68YyacHG7xkrtUInlAZTztCCR4stvYW+2XBEKYBztD2Owtk/
+	Xm3uXuYOFgsjgMivl43g+4oAFn3ILHE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D219411BD;
+	Tue, 20 Oct 2026 17:24:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168DE1F000C9;
+	Tue, 20 Oct 2026 17:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792517069;
+	bh=4xJJmU5rHTBbqNB8qX0H3I1zlzmfhbUR6pXqrPeXgTI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oQTPChcn7BFZYUgyX418j3W9jezUCavmm2OyebTNhTU5QEEF2b1YL0R/8nrKJUS+S
+	 6Vwcmbzvy8FPljpURoDFE74V5UIWI+Erdvfdinl+sJKtxg6YoK6QDsfU1SxEvFm4Aw
+	 AJ32RgHCf4HOzYFtN3F/h6i4ftA0aotK8zVZpCo+gXLGYOwNsnu1P+l8S9bdPFAQHo
+	 IuNx3+A2ABONhLdr6jwfl+D0k8GxcwTdjYA4JETiBKOW5OkCed8AN/SwGseR9B9KwG
+	 oazqdrcaz/I1xXIz4fm2OxQIkvKHBobvTGEoCwTver3iI0nQvTsIEDXFl3isPp/E35
+	 twWMeLLNMmAXw==
+Message-ID: <sashiko-outbox-179415@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/5] mm/page_alloc: validate zonelist slots against
+ concurrent rebuilds
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?R3JlZ29yeSBQcmljZSAoTWV0YSk=?= <gourry@gourry.net>, linux-mm@kvack.org
+Cc: kernel-team@meta.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, mgorman@techsingularity.net, jiang.liu@huawei.com, Bessel.Wang@huawei.com
+In-Reply-To: <20261019172346.3344005-3-gourry@gourry.net>
+References: <20261019172346.3344005-1-gourry@gourry.net>
+ <20261019172346.3344005-3-gourry@gourry.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Oct 2026 17:24:27 +0000
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B0763C000D
+X-Stat-Signature: b4r9jhrs5g7swri6km7o89x9dhjotesx
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792515959-530081
-X-HE-Meta: U2FsdGVkX18mdYBcVcCWAhsSevH0yyt4u9Tc2A/6iZhhGvO/LlZchvageQulaVwDmkPc6erMscMZw6Lz7tcNKxMfXx+rxA1gYSVHhO73vJtbpbMxzW2V9QQDocMi+p3jU97xNCmiFdtKmlZic2n5rGuGqesEO1QCueoHCZQzDKYPdPzlIY4S9q776ji11/TdWlmM9ww9L3FUsejvMSdxxPgumAb2sMWE7/lvAa21mJPDjOc18KLvytFr7tpo+PjnGFaK74NL/IKBGDnoMbVOqaLjYQvPk7MamUpyFis35YU1POfTgtn+k7aVn4T8v8onqxPf5HKXz7bDFGh0MswPuvoprWyAWl4KJ9Z1wnui7RalfBUmI9U5B8uXntImQRtA8XLoL4gjWzLZOF/OC6ypqf+lAgJFVSWQuEbt7xe8sRwo4yEzUJASYRmzOYwrLFui3tNI6zu02dRrNVqJPhAPgAHJy3zgRpZxvxORnjtb/sgVAfJvQD3DmlexUizHlWJ7hZyfDHISKw3gSA2N9MWOl+0sJ+sCkINEgG0GhEDsvdeShT94yNZv6OlNuDaQcAd65C4BG8X5Sjkt+ljTD/MsvU1fojmcl4+dxpjbsPMSLVnnZWm3BDKp00sMW/wrAg1xfo39mOW0iJM/yS3jqcpFZaUoRguU8CyeP446rTDRGHIql8HsnzFGUVYZ70V9h1AWe0jlIEYOTjr7aSiKd343gT5Lq2B7yuu0YhtfwT1oLmKbavucG9EDtYNR2o7+urcgWsuGnemc3XGY8hTYozXcRcrBHLKJeHdfkgTVPPOuRvSwO/iK5De1KbvdO9LmzkC3vcBFSVesPvSjmNc91cemENcnUVviiD3QtKHQYFwdn1EBcdNx96eUSwMUsljRtj/iDHixl4LBqep8v6hQYdYWo2sUMzDbAfThGgE4zTPKzeLiz1rYDPVk8GvV5izZBUoH/UL0wdj3dPAEZ/yd5ze
- NNuacr/H
- 8Wk++qIVj+2s/OKyTSZZK5rUv/f3d04NlkhJuX5Uous1BlGUbRMBwA2W08Xe15DjJSqnFE196sfr1xrImL+DzNY/WkaVj1XqrlugafUEFN6gLb/41UQPihZimTpFIDoFL1ZpS/jDqaMrqwY23FtdBpgvYLKhd4cepbMNwxVoqDv43FYaJUKE33Qecy/ciMiojxqV9nEc9VYa+ki4NniLLV/2Qdl/yaud8QUBrriJAg9SIfJWGOyWSqlDjZPcVV+lQeBE91ZnFg0cCNmp27dXrE2cgN1uLD3qZz/R4oLU8hSofwCDmGf7g4u+HbAKp3gCtOHA0SYNjWZscgU0t9LY9k45KW9ivW8HNxoNbXtzfi/dSW08qw0lRq0yfP+R0eqkHi7rhR3iAqLgmVFdO70gjPn/uhlJ8j0sreHqxZOevOWd/fZLS3CYEFS2rmrlVvKmMwMEnpOiiDiOJyCzw/doElFdVEpCR2XvgVNuzoyr3XWyc2S4V42/5a4MwWtzgDnhvDLi+zbBdw0yj4MH7FXy4W1hdF1LzRui1/i9U+Mo1P/qqtT4vljYwQrwL5cLrgPL9f5RMAG4Fex8mu799GllBPdLIr7XspIX/f4Ed
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792517070-936688
+X-HE-Meta: U2FsdGVkX1+8kWy7S0y65HFuiZ+7A9bu4WCqE05cWRLYU7tuSStmuAK+B+3sfryxDNyBWhMdSH69/Wk1qN23yY4IlEFkQPxJQHU0FyR5xjo/P3MWH8F/20rsr+bg0qXkB9rH1mk8FuNBeSHHg0+qFzyJA0/r+TChHvK0rwyj1l6DspyiBzvNe9F+ZB0sfUuw6n7TK68QeV24Uk9x8j6oHeC84/YxGLmdEpaOkl4No4uFtbXBu9/2iDrKqNSL33kp2sPfu9bT/1Xl/RERXWdX3KzQA+jl2ZJjAaiBDOFQOkhRSmoZDylcaXeDMNldZBRmgsXtGsfZFhzlTyprkLX7DtNsggVooy8DfS3R4gpsBHq/Mzlx1BBd2yCqW4oQvp2H32w9qojxXnbPT0iLANRnOrhAEpdAGDtQ7n9T6bn3R+B/waFSWvSMvZla4G5Mf9VvkKm00BfQ86TKL6F64bo4QXM+qrsKku4kri3ZHBmmNnCCnWZwuzQGb8gEBYwBqgQgmH7K1Vk5AerKC6ne6AbHdhrvVZZTdSobsI9duCPR02x7oekzQdB+XDpQVTsgbZr9ypKJvnVIPep5mLZCr7ERFGZhVN6oyVODYEvf2WtY9vngr9p2o2Yn6uTHsviK5emStKXjbL1AC9TZmOdPjDOKa9L7paUt7mAQmgRwhwSRgRshY+cD3ENvT/5vWoPmg3bRD0igzzwrgH9l4zD0RXNbMqM3QObksE7V5hOrh30FcfnQjs8iebPsF+zfn+hkR1LkCSGJg+V2O5Ay+z/tpia44TV8aik2Q3EDBwbOyf6tQyR4Nl4goI98hO0k+lG+iWxLvHYrx++F375t+LCvTVCkblLQDxXpeKDMbgHLzesJJH5VH9HdYLhB464ROkTRzBruPQwxefSS9KKzGrRot/rl23IIJ4RyTihWupI6GEZAut6F9I91j9McNtexo2F41TKVmb8Sq64QISBlRJiJZtc
+ fPl4mjGI
+ sGhL9f1QLOb0k9A5/YVjRiiehdCP3G/tufM/8Krrw0c2nX9qKzaJsHy8Vnf9RCt+cDMkX7M9CKk+me1VOvRMCAUqZKZLUQrmEMPEQd/gtxLghaNf0VtaRcu592EfzPXDjc39363XSOj4t5kUC0aciZxFCLGm9PZ28HZb+YRfjaBIniBLf7JNOPnoekoZPQUruc2pNfO+h6FTZU/pXqrKIaNihj5oTNvKumG9F0BrhH7CUQo+w76CAYilt4Hc+p5gw7MsSz94dI/kuRBN2Gquf92uL+pK/xdMZfzQ6wLzWmv/2eUr+9h0Yp3vGj5hYMsrA/KkYoXU+TTUT4vFwXWNr+K0FjiX7MolE6oKN4zyQLT70JcekC4LaMtwXNpEd1r+P4S7JVXYxpm/w/nvgMGdjVbAyHtMF7YO92qPJAO6yIlHpviqwhckNUJYxvGIHaPKpfXjLSKQ8acKGoC6u0vkfqaJRYVsTylVgps6RiGif4tv7PXmyzuH0HjAkrdJREelk/uQ0T9uZyprGGk+Ej4qkgoPmmmzA3OUFu9NZQ7SU4HQZJfbBeggB6HIWwRR/5/RGF/5lubGFRPLP2hbDIK3P8z1y3iY085FBCq3wdMYVnHJ+ZXqK3TtbBC1z4cJehgynv8wwktaDku4FGqlvaCRtVZLaoyg16MgCX/9Rf1aPfTt75F6V3RtTiK0YS9eVFnbcGkC/SF95bSkHg+F3Ba9Kv1UOHGGG9FgEOnZqWFAj5FzHwk2ErxdVePbxIji+3Qj4cVLgAjZwdtBhrFROhv5tgs3NtnlBeuNaqRZP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,26 +92,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Qiliang Yuan <odys.yuan@gmail.com> writes:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/page_alloc: stale preferred_zoneref after zonelist_zone_valid=
+() skips slot
+--
 
-> On architectures with CONFIG_DCACHE_WORD_ACCESS, load_unaligned_zeropad()
-> does the word loads of the dcache name compare and of path name
-> hashing.
->
-> None of the KASAN test cases reads memory through it, so nothing
-> noticed that KASAN did not check these loads at all.
->
-> Add a case that reads a freed object through load_unaligned_zeropad()
-> and expects a report. Skip it with hardware tag-based KASAN, since
-> arm64 turns tag checking off for this load:
->
->   kasan_load_unaligned_zeropad, x86_64, generic KASAN
->   without "word-at-a-time: check the first byte in
->   load_unaligned_zeropad()"                                 FAILED
->   with it                                                   PASSED
->
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+commit c301c4c2a3915ab844aff8ba7e717c949c45cabd
+Author: Gregory Price (Meta) <gourry@gourry.net>
 
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+mm/page_alloc: validate zonelist slots against concurrent rebuilds
+
+This commit adds zonelist_zone_valid() to recheck the loaded zone pointer
+against highest_zoneidx and the nodemask in get_page_from_freelist() and
+alloc_pages_bulk_noprof(), preventing in-flight zonelist walks from using an
+ineligible zone after a concurrent hotplug rebuild shifts zonelist slots.
+
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index c7125f6693574..aa3cd44fdaa5b 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3784,6 +3784,19 @@ static inline unsigned int alloc_flags_cma(gfp_t g=
+fp_mask)
+>  	return ALLOC_DEFAULT;
+>  }
+> =20
+> +/*
+> + * The zonelist can be rebuilt in place while it is walked, so the itera=
+tor's
+> + * filters may have passed a slot that now holds a different zone. Reche=
+ck the
+> + * zone itself.
+> + */
+> +static inline bool zonelist_zone_valid(struct zone *zone,
+> +				       const struct alloc_context *ac)
+> +{
+> +	if (zone_idx(zone) > ac->highest_zoneidx)
+> +		return false;
+> +	return !ac->nodemask || node_isset(zone_to_nid(zone), *ac->nodemask);
+> +}
+> +
+>  /*
+>   * get_page_from_freelist goes through the zonelist trying to allocate
+>   * a page.
+> @@ -3812,6 +3825,9 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int=
+ order, int alloc_flags,
+>  		struct page *page;
+>  		unsigned long mark;
+> =20
+> +		if (unlikely(!zonelist_zone_valid(zone, ac)))
+> +			continue;
+> +
+>  		if (cpusets_enabled() &&
+>  			(alloc_flags & ALLOC_CPUSET) &&
+>  			!__cpuset_zone_allowed(zone, gfp_mask))
+> @@ -5236,6 +5252,9 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, in=
+t preferred_nid,
+>  	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemas=
+k) {
+>  		unsigned long mark;
+> =20
+> +		if (unlikely(!zonelist_zone_valid(zone, &ac)))
+> +			continue;
+> +
+>  		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
+>  		    !__cpuset_zone_allowed(zone, gfp)) {
+>  			continue;
+
+[Severity: Medium]
+When zonelist_zone_valid() rejects and skips the initial slot at
+z =3D=3D ac->preferred_zoneref after a concurrent online_pages() ->
+build_all_zonelists() shifts an ineligible zone (such as ZONE_MOVABLE for a
+GFP_KERNEL request, or a zone from a node outside ac->nodemask) into that
+slot, does ac->preferred_zoneref remain pointing at the rejected slot for t=
+he
+rest of the walk?
+
+In both get_page_from_freelist() and alloc_pages_bulk_noprof(), the walk
+starts at z =3D ac->preferred_zoneref (and in the follow-up commit
+"mm/page_alloc: snapshot the preferred zone against shrink rebuilds",
+preferred_zone =3D READ_ONCE(ac->preferred_zoneref->zone) is snapshotted be=
+fore
+the loop without validating or updating it when the initial slot is skipped=
+).
+
+In alloc_pages_bulk_noprof(), subsequent iterations still consult
+ac.preferred_zoneref for the local-node check and watermark check, as well =
+as
+for statistics at the end of the function:
+
+mm/page_alloc.c:alloc_pages_bulk_noprof() {
+    ...
+		if (nr_online_nodes > 1 && zone !=3D zonelist_zone(ac.preferred_zoneref) =
+&&
+		    zone_to_nid(zone) !=3D zonelist_node_idx(ac.preferred_zoneref)) {
+			goto failed;
+		}
+
+		cond_accept_memory(zone, 0, alloc_flags);
+retry_this_zone:
+		mark =3D wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK) + nr_pages - n=
+r_populated;
+		if (zone_watermark_fast(zone, 0,  mark,
+				zonelist_zone_idx(ac.preferred_zoneref),
+				alloc_flags, gfp)) {
+			break;
+		}
+    ...
+	__count_zid_vm_events(PGALLOC, zone_idx(zone), nr_account);
+	zone_statistics(zonelist_zone(ac.preferred_zoneref), zone, nr_account);
+}
+
+If a zone from a disallowed node was shifted into ac.preferred_zoneref, the
+node comparison against zonelist_node_idx(ac.preferred_zoneref) will trigger
+on the first allowed zone in ac.nodemask and jump to failed, aborting the
+bulk allocation into the single-page fallback. Additionally,
+zone_watermark_fast() receives zonelist_zone_idx(ac.preferred_zoneref) as
+highest_zoneidx, indexing zone->lowmem_reserve[] with the rejected zone's
+index (for example, ZONE_MOVABLE for a GFP_KERNEL allocation).
+
+Similarly, in get_page_from_freelist(), later iterations still reference
+ac->preferred_zoneref:
+
+mm/page_alloc.c:get_page_from_freelist() {
+    ...
+		if (no_fallback && !defrag_mode && nr_online_nodes > 1 &&
+		    zone !=3D zonelist_zone(ac->preferred_zoneref)) {
+			int local_nid;
+
+			local_nid =3D zonelist_node_idx(ac->preferred_zoneref);
+			if (zone_to_nid(zone) !=3D local_nid) {
+				alloc_flags &=3D ~ALLOC_NOFRAGMENT;
+				goto retry;
+			}
+		}
+    ...
+			if (!node_reclaim_enabled() ||
+			    !zone_allows_reclaim(zonelist_zone(ac->preferred_zoneref), zone))
+				continue;
+    ...
+try_this_zone:
+		page =3D rmqueue(zonelist_zone(ac->preferred_zoneref), zone, order,
+				gfp_mask, alloc_flags, ac->migratetype);
+}
+
+Could this cause get_page_from_freelist() to treat the first valid zone on
+the allowed node as remote and prematurely strip ALLOC_NOFRAGMENT, as well =
+as
+pass the rejected zone to zone_allows_reclaim() and rmqueue() ->
+zone_statistics() (and prior to the follow-up commit snapshotting
+preferred_zone, risk a NULL pointer dereference if a concurrent offline
+shrinks the zonelist so ac->preferred_zoneref->zone becomes NULL)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019172346.3344=
+005-1-gourry@gourry.net?part=3D2
 
