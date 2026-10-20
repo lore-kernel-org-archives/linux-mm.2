@@ -1,57 +1,57 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF91606A31F
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 15:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C5C606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 15:54:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5BDC6B050E; Tue, 20 Oct 2026 11:54:19 -0400 (EDT)
+	id 851176B0511; Tue, 20 Oct 2026 11:54:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B33826B050F; Tue, 20 Oct 2026 11:54:19 -0400 (EDT)
+	id 828176B0512; Tue, 20 Oct 2026 11:54:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A71386B0510; Tue, 20 Oct 2026 11:54:19 -0400 (EDT)
+	id 765FE6B0513; Tue, 20 Oct 2026 11:54:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F4316B050E
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:54:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1827FA0206
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:54:19 +0000 (UTC)
-X-FDA: 85343451438.08.E173F44
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 702851C0009
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:54:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 42FED6B0511
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:54:52 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CB4D14020F
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:54:51 +0000 (UTC)
+X-FDA: 85343452782.02.7230BD5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 484C1120009
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:54:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792511657;
+	s=arc-20220608; t=1792511690;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WxB0sJoqT2ygQ6sp4LzbXJKiFPeHWvevNR0ynXayBAw=;
-	b=dzkZOixDie6oBCbsC8HfNK4EQpgmedL1sgaVguP/UaVj+95Nexw1t+wwrcxtE38YXysCXC
-	Dn9rW90BdZ3H6mmDe41AT8BG8sRowLUOzgIjbQ/mVEZVYKChJWzxLCN8XpdDcGD56ust7N
-	hIMFP1h6eemIyAPPtaSDRe4cK5Z8vhY=
+	bh=HDTYtkirtkae8HUKpkTRrxZ2akKCw7vHpOwPBPYRBm0=;
+	b=lX824nCg+Qm9kEVL4faWxAV/KWLptb/sESAIGRuZqM0mjhKhvcPefU/F7cO3a7rv9zSucy
+	3PeN6++UmZQOwc9F3VYKjdCl4eh6t/BRa/552gtLWv2+s27xafG5iGaiSb6bgrEhIAwP6W
+	eXXO/D+nRReRI+kSTIKIeKfmxynlchQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
+	imf29.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792511657;
-	b=CfwD01gzFIZOa+9L4y7HxyfeB7pwz7wOmYmy/y8mtZvNCyXk8lRT94KF3KwS947wUqKhXz
-	mzXBbiBKbJpEwhzobj5ToQ6PDyFsGO+vBd04B/yE//OhHYAGYU6DWexUX3FDdoK6uMXEnG
-	mYaEOJ2sP2hsx+T+tHjeNtuySKSXDJc=
+	t=1792511690;
+	b=vPmeHDNXK9m6ZmLGlXojj5f2BXHqdn0ETncfc4S2S4XVd8shyB2sytJy2G97/YAYzhoT4T
+	YvGQqwlT8RnSimrGCCXjbMbjpOog/ZTNPrOHfHL8aEAfpuooyfRqPdi3o1JayZ03KNOyIS
+	aKhXA7LbpQa2KhmRmN0+gJ7SrNwiyWI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B4E8940E29;
-	Tue, 20 Oct 2026 15:54:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C9E1F000C4;
-	Tue, 20 Oct 2026 15:54:14 +0000 (UTC)
-Message-ID: <sashiko-outbox-179312@kernel.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id D822860D94;
+	Tue, 20 Oct 2026 15:54:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5E41F000C5;
+	Tue, 20 Oct 2026 15:54:47 +0000 (UTC)
+Message-ID: <sashiko-outbox-179313@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 14/18] mm/filemap: read from the page cache without
- folio references
+Subject: Re: [RFC PATCH 15/18] mm/filemap: read large folios without folio
+ references
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?S2lyeWwgU2h1dHNlbWF1IChNZXRhKQ==?= <kas@kernel.org>, "Andrew
  Morton" <akpm@linux-foundation.org>, "Linus Torvalds" <torvalds@linux-foundation.org>, "David
@@ -73,23 +73,23 @@ Cc: "Miklos Szeredi" <miklos@szeredi.hu>, "Miaohe Lin" <linmiaohe@huawei.com>, "
  E . McKenney" <paulmck@kernel.org>, "Pedro Falcato" <pfalcato@suse.de>, "Harry
  Yoo" <harry@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>, "Ilya
  Gladyshev" <ilya.gladyshev@linux.dev>, "Jaegeuk Kim" <jaegeuk@kernel.org>, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <20261019154913.1765974-15-kas@kernel.org>
+In-Reply-To: <20261019154913.1765974-16-kas@kernel.org>
 References: <20261019154913.1765974-1-kas@kernel.org>
- <20261019154913.1765974-15-kas@kernel.org>
+ <20261019154913.1765974-16-kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 20 Oct 2026 15:53:43 +0000
-X-Rspamd-Queue-Id: 702851C0009
-X-Stat-Signature: sy596c66c1fmbq6ykfw55c8f937n5obu
+Date: Tue, 20 Oct 2026 15:54:16 +0000
+X-Rspamd-Queue-Id: 484C1120009
+X-Stat-Signature: z1cb9kgr347spuc89ummgk1pq58puxdw
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792511657-90422
-X-HE-Meta: U2FsdGVkX182m2+n3zTeoHVBzoLv1LSLGAaR5hbLO0o8HypnTsWEqKaTLejSPg9gstRvGWJ6RWJFHANOMoUZiISVqPDn4I33ihu8AV1RF7Tjcu1IJgpmoIvRtCAcboiACh+XpcpXr+ooKMf/Ow1MEKrd93Jn4Dc554GaHdH+LOzkY/QUNRoqEbQaQ05UZx89LQjv9UNHuq25PbvEdDgXrg0+pbPrVWqeqVghDQYVu5pxH28PB4Nazgh60IBf7uRwe16icgl9JMHXeChlV5UwDeb1eCSvKIsb4vDrfMNbixII+ODfpJOqRg3+N6imRQtMaN8NCip732TwzfMMfgUwADBk5V9+ZW2YK9W/KVKnBvstZZzvNjKy79k+D12zrXExQQPisjrlJxJVtvVT7PAfnAkHZtlbTeuYKfPP+euTxSM7CbGK/pVFh/qmo4Y6JXs9nKZAB06+7lvkrSx8MJKm6L1/AfJiPwnDmfTOcf7JVOBJmHE3FabaSrrs8smWJxhqYc136Y65FURiXp16TOJ41LxukwEq1jU7FHYIy/P+19SE8CfnghecX9HpLBxLJLc+eQrBAgtwu5W5uFM6xceyugIGKKpuRDTgo8b2g0AANbhrUO5gxS2irn7yhDZyZSTUusbk/yAGfEtUTDOeXffd5kPbjsgFnNUejQ76VEnzF1rPUB+HhqqiO39K5wVrb8xcCZC2GE4UbKmRWJa2Wygzy7UxckvyR+LjP5NBzvbNn0RvpWyyLGB+rWcXsiapgVoTK2CURuFTbixkB646bz9R+oI3MjgeEdYCR14XEMNJJXJmKKDckjovv0+b+zKalmC7tYYa7qoin7TYHSzxA57+/YmDSNK44SZU9JZKt4EojdzF6BHcx0SJrTtpD6wLZdkTf829GNoAN77IU56+OVrH2SwabMgMiUxxmgpA3LxpeMqGL343U8KtifiAhNRVXicCPTD8hHWaMtXtZ+/5VWS
- 4vnCH5VM
- 9GVgWla5uc/jNkX7EMK11AYDKCfu9Ejuu+8J9K2KNNzuzlmRaoFTlMMJAeMV1xA6rwxWJuG5ukV/SSowECqLdqo1qY9u9F3miI5/OfNpPDS/skGSSBrTRCZDTMhilU/+sOxAolcfuAkYI4ZAwKcRQ0xCg+exR0g2ARCxR6RUifrSD0jnVotfMeb1fuxHmM54eCTF8tkKxO+agr3TB7daUvGiHymcF4NyUTCjchW+rKaLpouRg6qjBV6dYGaNUbRwN4VYYvuqTrXQ2ytqS3q3G55sO4zTnxk4MLX9gT27t2ixO/PQH3GFfiw+zetAhSZlUUr+d6oUevInvw8ks6T0gw3rCtztwkgcppGbhq0pD5jqCs5xcE6InANfjajgF3F9/fh+nGJp03eanja/YytITUrL2EqFCiUTnx4tijv1FJCOID5E9LT9u/cfUrp/pVxK5+Fvb5ANctehqkjLeiwXkoAr549o/HsZwF5XkWEB/+8G6ttUxF/GXUlv9brKVttU1LtWqvji8Ux/vUu6qHKMlKHB8sQeQKEUx4LcCNpsU7M0XqIShIovWiP2wxlr4RohVXJDGTmxdGPPpTLw24dY/LrWQMF6pKY9/C1MEy9Yu8KB4mDkz8H7wqVVYyuRBhzSy3uJthNzVQPO8J+8iWjDxBuJyCA==
+X-HE-Tag: 1792511690-730588
+X-HE-Meta: U2FsdGVkX1/5t8mkZ7+YZoTRuPQTsfZB+/WjQBB/vLEHnUX4kOnQsHie5EFOdvzVI7mGOzLyOm+n/M2WoPl+/ALw23+drfIb7G7wwMXW5C8Ij7V536D/iR6kWeQiLD9kGu7h7D04qTw2ve9tSDY/EvlgxayoXRZvnxG1I4pVD70KGJwA5SXn+GKwC5Qx0rWCqH2QjDwKRW3HRycbL6ygixYXECyF/aW4OcBA4PxcMVkXCtBVzCsEmePFsIDLOESmhPIKQxmpOPqriRXRjWaypzp+C64hUxAQlNj0pn8CZazmiJ0V6kP/7snnRxNahB0yCYZPAdO2IY8yC5/4sNd85aylBbfijLM3qPut2867dqaeoHkUmu4P83Q6ulXfjqF0byPd4pdViXQE2scgJxrw3pMHj7iQAwqcdU4ePnTpHVDykRD/k/ntO6bYvcBR/lnnLsFGvKwoQ0LedhDfYNbaUeqEBfEy851k+fDVeuWjUkB+oU8BWnG9O1JvykwzioU9u8r7PL16SWe1qgPXsVCt3AhWPqBk/2JdH3IhTYfOMchkVC0NwMuUN7VeCFT4+PeqkMm+Y5XJOiy/bgXzF5+NQt6OF580E00YtK3yY9V6sdSsObCxr5KDE/Lt+zgV1ln54YJZsyg8aUAvJiIpbxUTdEPAkgfVORmheUt5mflq/Ky1JD7L2Ez4CfZtoue49Xa5IVsBDibnoKwCFhX5NbHENiXbbo14bCVLV5j3wmkC6EwA/h91BJvC12MIEu6W3Kzus9UdZcVjUZjpEI7yQnMBpahjb89dkhD0xCc0/RxXm35ctuiFnBEw5P99pZ5NYuV2OAtgbfw2v5vzU2tSVB+c1FHMuzd8wyQ6j9sl8EQhG7L5oYkTirfvNrZX9FgdY9Qc2QG/LJbnXmkU8Iwys2RyxBD1pTlWfdjcB98hDhQKBzkxgYMEU1bPHD4V0eWAzVMDM3gY0ExyGbr+icv+4AZ
+ MiF2nvsN
+ b+D52XcnAI4maPB2R2teql9ET3qFu6rI0vrXMDgkvpnbvcVZSGcDq9FEBzWmWgxLk33Gn1LvsER6eRzBwg2CTXi1Md9gjT1b+HTRUZd7AYRiZIyQO58CArAaDNWs7fyzSQ2ttSiFhraZc6LpaC9yz87XxlDE/62cJb0Wfni7in9zaSzvJ9rhDgH8sH+9l4NQqlp9UUh6CFDrTy9e09LOiq4+XNI0PzzoIGQ18MVzmWtjpRu5E8DAFc2p0hOIrK7chgBhrnVLaVkqAeKSdEmDlcqP1wR0/z76HaIQnGmN38dO9st6Q+wVrS+IMbtw+9wn9OXU0VOH82NOyoohrPtH1cYe4f4PbY7TRX6u7n5KU45wXTP6utbcNLaYcSdms3NyuGHUdHETfu8FpktJUi+XTmecpGeeizIGbOAstFCovVzbyPnfTnV0Klwdp04YEGB/RmuzzZ+KfDInaBp6ZxAZdv3FRQQZsoaMSqI6I608+awn5Pt25SJIVWr86ZHmsb+g5a4PMwns/32l2eEaz8TPh9bPQXDaaHQZsIrOjd+F1l+la30dBwHt+19rlOmNlIk54Pt1JUSeVnqNYnwcD4McNjrBcrA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,301 +99,193 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] mm/filemap: race with folio split in filemap_read_rcu_can_copy=
-()
-- [Critical] mm/filemap: use-after-free in filemap_read_rcu() when AS_EXITI=
-NG is set on live inode
-- [High] mm/filemap: ABA race in filemap_read_rcu_lookup() via folio_clear_=
-rcu_free()
+- [High] mm: race with folio split in filemap_read_rcu_can_copy() and copy
+- [High] mm: lockless folio_next_index() in filemap_read_rcu_size() races w=
+ith split
 --
 
-commit 9b6ffbf436977a22ceda82d50abf0d37c589cc75
-Author: Linus Torvalds <torvalds@linux-foundation.org>
+commit 8d224bff99d361b93bdbc49e7fbdbc8d57975349
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm/filemap: read from the page cache without folio references
+mm/filemap: read large folios without folio references
 
-This commit adds a fast path to filemap_read() that copies from hot page
-cache folios marked with PG_rcu_free under rcu_read_lock() without taking
-folio references. Folios that are not uptodate, need readahead or
-dropbehind, are not hot, have a poisoned page, or are large are left to
-the slow path.
+This commit extends lockless RCU page cache reads to support large folios
+without taking a folio reference. It checks whether the last page to be
+copied still belongs to the same folio in the XArray and copies the pages
+one by one with _copy_to_iter().
 
 > diff --git a/mm/filemap.c b/mm/filemap.c
-> index 960d53b61d4b1..55fc471c04892 100644
+> index 55fc471c04892..ace6b1fd6b9ec 100644
 > --- a/mm/filemap.c
 > +++ b/mm/filemap.c
-> @@ -2827,6 +2827,165 @@ static void filemap_end_dropbehind_read(struct fo=
-lio *folio)
->  	}
+> @@ -2843,9 +2843,6 @@ static bool filemap_read_rcu_can_copy(struct folio =
+*folio, pgoff_t index,
+>  	/* memory_failure() waits only for readers that got past this */
+>  	if (folio_contain_hwpoisoned_page(folio))
+>  		return false;
+> -	/* One reference covers all of a large folio's pages */
+> -	if (folio_test_large(folio))
+> -		return false;
+
+[Severity: High]
+Can removing the folio_test_large() bailout here race with a concurrent
+folio split to order 0 in both folio_contain_hwpoisoned_page() and the
+subsequent copy?
+
+In filemap_read_rcu_can_copy(), folio_contain_hwpoisoned_page() checks
+folio_test_large() and then calls folio_test_has_hwpoisoned():
+
+include/linux/page-flags.h:folio_contain_hwpoisoned_page()
+	return folio_test_hwpoison(folio) ||
+	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
+
+Because has_hwpoisoned is a FOLIO_SECOND_PAGE flag,
+folio_test_has_hwpoisoned() calls const_folio_flags(folio, 1):
+
+include/linux/page-flags.h:const_folio_flags()
+	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
+	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
+	return &page[n].flags.f;
+
+If __split_folio_to_order() splits the folio to order 0 and executes
+ClearPageCompound(&folio->page) between folio_test_large() and
+const_folio_flags(folio, 1), won't that trigger the VM_BUG_ON_PGFLAGS()
+assertion?
+
+Even with CONFIG_DEBUG_VM_PGFLAGS disabled, __split_folio_to_order()
+initializes page[1].flags.f for the new order-0 folio (including copying
+PG_active) before clearing PG_head on page[0]. Since PG_has_hwpoisoned
+aliases PG_active, reading page[1].flags.f on an active folio being split
+to order 0 will see PG_active and misinterpret it as PG_has_hwpoisoned.
+
+Additionally, if a tail subpage is poisoned by memory_failure(),
+PG_hwpoison is set on that tail struct page, and splitting the folio in
+__folio_freeze_and_split_unmapped() -> __split_unmapped_folio() ->
+__split_folio_to_order() calls xas_split() (leaving old_folio in all the
+split XArray slots while its refcount is frozen at 0) and then executes:
+
+mm/huge_memory.c:__split_folio_to_order()
+	folio_clear_has_hwpoisoned(folio);
+	...
+	ClearPageCompound(&folio->page);
+
+before __folio_freeze_and_split_unmapped() replaces old_folio in slots 1 ..
+nr_pages - 1 with __xa_store(). During that window, a lockless reader in
+filemap_read_rcu_batch() does not check refcount and can look up old_folio
+at a tail index (or across a range in filemap_read_rcu_size()), observe
+folio_contain_hwpoisoned_page(old_folio) =3D=3D false because both
+PG_has_hwpoisoned and PG_head have been cleared on old_folio while
+PG_hwpoison is only on the tail page, and then copy directly from the
+hwpoisoned tail page in filemap_read_rcu_copy() without checking
+PageHWPoison(page).
+
+> @@ -2899,6 +2896,60 @@ static struct folio *filemap_read_rcu_lookup(struc=
+t xa_state *xas,
+>  	return folio;
 >  }
 > =20
 > +/*
-> + * Whether filemap_read_rcu_batch() can copy from @folio, or has to leav=
-e it
-> + * to the slow path, which holds a reference for readahead, dropbehind a=
-nd
-> + * folio_mark_accessed(), and deals with poisoned pages.  @last_index is=
- the
-> + * page the previous copy ended in.
+> + * How much of @bytes, starting @offset into page @index, can be copied =
+from
+> + * @folio.  A folio is in all the slots of its range or in none: when th=
+e slot
+> + * of the last page holds it too, so do the slots in between, and the pa=
+ges
+> + * are this folio's.
 > + */
-> +static bool filemap_read_rcu_can_copy(struct folio *folio, pgoff_t index,
-> +				      pgoff_t last_index)
+> +static size_t filemap_read_rcu_size(struct xa_state *xas, struct folio *=
+folio,
+> +		pgoff_t index, size_t offset, size_t bytes)
 > +{
-> +	if (!folio_test_uptodate(folio))
-> +		return false;
-> +	if (folio_test_readahead(folio) || folio_test_dropbehind(folio))
-> +		return false;
-> +	/* memory_failure() waits only for readers that got past this */
-> +	if (folio_contain_hwpoisoned_page(folio))
-> +		return false;
-> +	/* One reference covers all of a large folio's pages */
-> +	if (folio_test_large(folio))
-> +		return false;
-
-[Severity: Critical]
-Can filemap_read_rcu_can_copy() race with a concurrent split of a large
-folio to order-0?
-
-filemap_mark_hot() sets PG_rcu_free on hot page-cache folios without
-excluding large folios, and __split_folio_to_order() preserves
-__PG_RCU_FREE. Because filemap_read_rcu_lookup() does not take a folio
-reference or check for a frozen refcount, __folio_freeze_and_split_unmapped=
-()
-can freeze and split a large folio while filemap_read_rcu_batch() operates
-on it under rcu_read_lock().
-
-In __split_unmapped_folio(), xas_split() populates all split XArray slots
-with the original head folio until the post-split loop in
-__folio_freeze_and_split_unmapped() overwrites each tail slot via
-__xa_store(), so xas_load() and xas_reload() at index > folio->index
-continue to return the original head folio across __split_folio_to_order():
-
-mm/huge_memory.c:__split_folio_to_order() {
-    ...
-    folio_clear_has_hwpoisoned(folio);
-    ...
-    if (new_order)
-        folio_set_order(folio, new_order);
-    else
-        ClearPageCompound(&folio->page);
-}
-
-This appears to cause two issues:
-
-1. folio_contain_hwpoisoned_page(folio) evaluates:
-
-    folio_test_large(folio) && folio_test_has_hwpoisoned(folio)
-
-where folio_test_has_hwpoisoned() calls const_folio_flags(folio, 1):
-
-include/linux/page-flags.h:const_folio_flags() {
-    ...
-    VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
-    VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
-    return &page[n].flags.f;
-}
-
-If ClearPageCompound() clears PG_head between folio_test_large(folio) and
-const_folio_flags(folio, 1), won't VM_BUG_ON_PGFLAGS fire (or, when
-CONFIG_DEBUG_VM_PGFLAGS is disabled, read page[1].flags.f where
-PG_has_hwpoisoned aliases PG_active on the newly split order-0 folio)?
-
-2. When reading at index > folio->index, if __split_folio_to_order() clears
-PG_has_hwpoisoned and PG_head before filemap_read_rcu_can_copy() runs, both
-folio_contain_hwpoisoned_page(folio) and folio_test_large(folio) inspect
-subpage 0 and return false. filemap_read_rcu_batch() then calls:
-
-    copy_page_to_iter(folio_page(folio, index - folio->index),
-                      offset, bytes, iter);
-
-which copies from the newly split order-0 folio at index without checking
-its flags. In particular, if memory_failure() poisoned that tail page via
-SetPageHWPoison() and split the large folio via try_to_split_thp_page(),
-PG_hwpoison is only set on that subpage while PG_has_hwpoisoned and PG_head
-are cleared on folio, allowing copy_page_to_iter() to read from the
-poisoned page.
-
-Note that the later commit in this series ("mm/filemap: read large folios
-without folio references") removes the folio_test_large(folio) check from
-filemap_read_rcu_can_copy() and does not avoid these races.
-
-[ ... ]
-
-> +static struct folio *filemap_read_rcu_lookup(struct xa_state *xas,
-> +		struct inode *inode, loff_t pos, loff_t *isize)
-> +{
-> +	struct folio *folio;
+> +	pgoff_t end =3D index + DIV_ROUND_UP(offset + bytes, PAGE_SIZE);
+> +	pgoff_t next;
 > +
-> +	xas_set(xas, pos >> PAGE_SHIFT);
-> +	folio =3D xas_load(xas);
-> +	if (xas_retry(xas, folio) || !folio || xa_is_value(folio))
-> +		return NULL;
-> +
-> +	/* Not folio_test_rcu_free(): it may not be a folio any more */
-> +	if (!(READ_ONCE(folio->flags.f) & __PG_RCU_FREE))
-> +		return NULL;
-> +	/* Read i_size and slot after the flag: it implies uptodate */
-> +	smp_rmb();
-> +	*isize =3D i_size_read(inode);
-> +	if (pos >=3D *isize)
-> +		return NULL;
-> +	/* i_size_read() is an acquire; a write fills the slot first */
-> +	if (xas_reload(xas) !=3D folio)
-> +		return NULL;
+> +	if (end - index > 1 && folio_test_large(folio)) {
+> +		/* Read without a reference: it only picks the page to check */
+> +		next =3D folio_next_index(folio);
 
 [Severity: High]
-Can folio_clear_rcu_free() during inode eviction allow an ABA race on
-folio in filemap_read_rcu_lookup()?
+What happens if the folio is concurrently split to order 0 while
+folio_next_index() reads its size here without a reference?
 
-In page_cache_delete() and page_cache_delete_batch(), PG_rcu_free is
-cleared when mapping_exiting(mapping) is true:
+folio_next_index() calls folio_nr_pages() -> folio_large_nr_pages(), which
+reads from the first tail page (folio->__page_1):
 
-mm/filemap.c:page_cache_delete() {
-    ...
-    /* No lockless reader can be in an evicted inode */
-    if (folio_test_rcu_free(folio) && mapping_exiting(mapping))
-        folio_clear_rcu_free(folio);
+include/linux/mm.h:folio_large_nr_pages()
+#ifdef NR_PAGES_IN_LARGE_FOLIO
+static inline unsigned long folio_large_nr_pages(const struct folio *folio)
+{
+	return folio->_nr_pages;
 }
-
-Consider a lockless reader in filemap_read_rcu_lookup() on an open file
-(inode A):
-
-1. xas_load(xas) returns folio F from inode A, where F does not have
-   PG_rcu_free set.
-2. F is removed from inode A and freed immediately (since PG_rcu_free is
-   not set).
-3. F is reallocated for another file (inode B), added to inode B's page
-   cache, and marked with PG_rcu_free by filemap_mark_hot().
-4. The reader on inode A checks READ_ONCE(folio->flags.f) & __PG_RCU_FREE
-   and sees __PG_RCU_FREE set.
-5. Inode B is evicted; truncate_inode_pages_final() sets AS_EXITING and
-   page_cache_delete() / page_cache_delete_batch() calls
-   folio_clear_rcu_free(F), freeing F immediately without an RCU grace
-   period.
-6. F is allocated again and inserted back into inode A at the same XArray
-   slot without PG_rcu_free set.
-7. The reader on inode A sees xas_reload(xas) =3D=3D F and returns F.
-
-At that point, filemap_read_rcu_batch() accesses F in
-filemap_read_rcu_can_copy() and copy_page_to_iter() without a reference and
-without PG_rcu_free set on F, so a subsequent removal from inode A can free
-and reuse F while the reader is still copying from it.
-
-> +	/* Read the rest of the folio only once the slot holds it */
-> +	smp_rmb();
-> +	return folio;
-> +}
-> +
-> +/* Bytes one RCU read section copies at most: it holds up grace periods =
-*/
-> +#define FILEMAP_RCU_READ_MAX	SZ_512K
-> +
-> +/*
-> + * Copy from folios with PG_rcu_free without taking references, at most
-> + * FILEMAP_RCU_READ_MAX bytes under one rcu_read_lock().  Return true if=
- that
-> + * much was copied and the read is not done.  *last_index is the page the
-> + * previous copy ended in, set as the slow path sets last_pos.
-> + */
-> +static bool filemap_read_rcu_batch(struct kiocb *iocb, struct iov_iter *=
-iter,
-> +		pgoff_t *last_index, size_t *copied)
-> +{
-> +	struct address_space *mapping =3D iocb->ki_filp->f_mapping;
-> +	struct inode *inode =3D mapping->host;
-> +	XA_STATE(xas, &mapping->i_pages, 0);
-> +	size_t budget =3D FILEMAP_RCU_READ_MAX;
-> +	bool more =3D false;
-> +
-> +	/* flush_dcache_folio() is not known to be safe without a reference */
-> +	if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE &&
-> +	    mapping_writably_mapped(mapping))
-> +		return false;
-> +
-> +	/* A user fault cannot sleep in the RCU read section: it ends the copy =
-*/
-> +	rcu_read_lock();
-> +	pagefault_disable();
-> +	while (iov_iter_count(iter)) {
-> +		loff_t pos =3D iocb->ki_pos;
-> +		pgoff_t index =3D pos >> PAGE_SHIFT;
-> +		size_t offset =3D offset_in_page(pos);
-> +		struct folio *folio;
-> +		size_t bytes, n;
-> +		loff_t isize;
-> +
-> +		if (!budget) {
-> +			more =3D true;
-> +			break;
-> +		}
-> +		folio =3D filemap_read_rcu_lookup(&xas, inode, pos, &isize);
-> +		if (!folio)
-> +			break;
-> +		if (!filemap_read_rcu_can_copy(folio, index, *last_index))
-> +			break;
-> +
-> +		bytes =3D min_t(loff_t, isize - pos, iov_iter_count(iter));
-> +		bytes =3D min3(bytes, budget, PAGE_SIZE - offset);
-> +		/* Not _nofault(): its usercopy check reads the folio's order */
-> +		n =3D copy_page_to_iter(folio_page(folio, index - folio->index),
-> +				      offset, bytes, iter);
-
-[Severity: Critical]
-What prevents a use-after-free here when truncate_inode_pages_final() is
-called on a live inode?
-
-page_cache_delete() and page_cache_delete_batch() assume that
-mapping_exiting(mapping) is only set during final inode eviction when no
-readers can be active, and clear PG_rcu_free so the folio is freed
-immediately without waiting for an RCU grace period.
-
-However, f2fs calls truncate_inode_pages_final() on live open files during
-atomic write operations:
-
-fs/f2fs/file.c:f2fs_ioc_start_atomic_write() {
-    ...
-    if (truncate) {
-        set_inode_flag(inode, FI_ATOMIC_REPLACE);
-        truncate_inode_pages_final(inode->i_mapping);
-        f2fs_i_size_write(inode, 0);
-        isize =3D 0;
-    }
-    ...
+#else
+static inline unsigned long folio_large_nr_pages(const struct folio *folio)
+{
+	return 1L << folio_large_order(folio);
 }
+#endif
 
-and in f2fs_abort_atomic_write():
+where folio_large_order() reads folio->_flags_1 & 0xff.
 
-fs/f2fs/segment.c:f2fs_abort_atomic_write() {
-    ...
-    if (clean)
-        truncate_inode_pages_final(inode->i_mapping);
-    ...
-}
+In __split_folio_to_order(), when splitting to order 0, the loop at i =3D 1
+initializes new_folio =3D (struct folio *)(&folio->page + 1) and writes
+order-0 page flags into new_folio->flags.f (aliasing folio->_flags_1) and
+copies folio->memcg_data into new_folio->memcg_data (aliasing
+folio->_nr_pages) before ClearPageCompound(&folio->page) clears PG_head.
 
-When f2fs_file_read_iter() -> filemap_read() -> filemap_read_rcu() ->
-filemap_read_rcu_batch() runs concurrently with
-f2fs_ioc_start_atomic_write() or f2fs_abort_atomic_write(),
-truncate_inode_pages_final() sets AS_EXITING (before i_size is zeroed in
-the start_atomic_write case) and truncates the mapping's folios.
-page_cache_delete() / page_cache_delete_batch() sees mapping_exiting() and
-clears PG_rcu_free, freeing the folios immediately while
-filemap_read_rcu_batch() is copying from them under rcu_read_lock().
-
-Additionally, because AS_EXITING is never cleared on the live inode's
-mapping, any folios subsequently added and marked with PG_rcu_free by
-filemap_mark_hot() will also have PG_rcu_free cleared on any later
-truncate, hole punch, or reclaim while lockless readers are copying from
-them.
+When NR_PAGES_IN_LARGE_FOLIO is not enabled, folio->_flags_1 & 0xff can
+contain order-0 page flags such as PG_waiters (bit 7 =3D 128) or PG_head
+(bit 6 =3D 64), causing 1L << folio_large_order(folio) to perform a signed
+64-bit shift out of bounds. When NR_PAGES_IN_LARGE_FOLIO is enabled, reading
+folio->_nr_pages races with new_folio->memcg_data being written.
 
 [ ... ]
 
->
->
->
+> +}
+> +
+> +/*
+> + * Copy @bytes from @folio, starting @offset into its page at @index.  P=
+age
+> + * by page, as copy_page_to_iter() does, without its checks for each cal=
+l.
+> + * Not copy_to_iter(): its usercopy check reads the folio's order, which=
+ a
+> + * split can change.
+> + */
+> +static size_t filemap_read_rcu_copy(struct folio *folio, pgoff_t index,
+> +		size_t offset, size_t bytes, struct iov_iter *iter)
+> +{
+> +	struct page *page =3D folio_page(folio, index - folio->index);
+> +	size_t n =3D 0;
+
+[ ... ]
+
+> +}
+> +
+>  /* Bytes one RCU read section copies at most: it holds up grace periods =
+*/
+>  #define FILEMAP_RCU_READ_MAX	SZ_512K
+> =20
+> @@ -2944,10 +2995,9 @@ static bool filemap_read_rcu_batch(struct kiocb *i=
+ocb, struct iov_iter *iter,
+>  			break;
+> =20
+>  		bytes =3D min_t(loff_t, isize - pos, iov_iter_count(iter));
+> -		bytes =3D min3(bytes, budget, PAGE_SIZE - offset);
+> -		/* Not _nofault(): its usercopy check reads the folio's order */
+> -		n =3D copy_page_to_iter(folio_page(folio, index - folio->index),
+> -				      offset, bytes, iter);
+> +		bytes =3D filemap_read_rcu_size(&xas, folio, index, offset,
+> +					      min(bytes, budget));
+> +		n =3D filemap_read_rcu_copy(folio, index, offset, bytes, iter);
+>  		*copied +=3D n;
+>  		iocb->ki_pos +=3D n;
+>  		budget -=3D n;
+
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019154913.1765=
-974-1-kas@kernel.org?part=3D14
+974-1-kas@kernel.org?part=3D15
 
