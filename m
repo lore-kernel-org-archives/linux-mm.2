@@ -1,128 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D5E606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3C4606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 14:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Lt1XIhpQ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jRdYyCQI
 Received: by kanga.kvack.org (Postfix)
-	id EE22D6B04E6; Tue, 20 Oct 2026 10:53:35 -0400 (EDT)
+	id 806DD6B0166; Tue, 20 Oct 2026 10:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB8F96B04E8; Tue, 20 Oct 2026 10:53:35 -0400 (EDT)
+	id 7DCA96B0168; Tue, 20 Oct 2026 10:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCEA56B04E9; Tue, 20 Oct 2026 10:53:35 -0400 (EDT)
+	id 71A636B0169; Tue, 20 Oct 2026 10:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A79CE6B04E6
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:53:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6A00C023F
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:53:34 +0000 (UTC)
-X-FDA: 85343298348.10.5DFABC9
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 18AE440002
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:53:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Lt1XIhpQ;
-	spf=pass (imf11.hostedemail.com: domain of elver@google.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792508013;
-	b=EkMKGBtw9XfF8xlOk6dxGd4//W0mivxoBsQW3C/oRDV36Yq1xWzfpW3AuZM+n9D0FFV7rq
-	NSQa3FFAXqL5VlU5wi+MGDTxPYp2SqnTdtUZy+18OsJ8PPbg/sDzi8078B+3tlizljI7sL
-	VHCq2Qa1HfrIRqFeIGT7cLE9F3ZPbEM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Lt1XIhpQ;
-	spf=pass (imf11.hostedemail.com: domain of elver@google.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 533766B0166
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:54:21 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DA0381A0213
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:54:20 +0000 (UTC)
+X-FDA: 85343300280.27.C016C03
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 415D7180009
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 14:54:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRdYyCQI;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792508013;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1792508059;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PcThqUHv81EySKNyOUFRZgMbmffug3lqbPzwxJtZ+tI=;
-	b=RzdjUU/8nS2WVDXyyEZdQ97CMy7VwFSTdd/LjsPPm8B+80xDtm//C6ktg6kD2umxhUil3M
-	2beTE0zOsURAW4vvFveQ4l73HGX0DmmVyxjOVYZiu8+lBKVz+gvql/FdpIrmhQ5Q1wY60P
-	QLvyqS8NwjKY9zPbPPAhzkYN5crvDPE=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c2dc63f8d8aso557010966b.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:53:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792508011; x=1793112811; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=PcThqUHv81EySKNyOUFRZgMbmffug3lqbPzwxJtZ+tI=;
-        b=Lt1XIhpQTaGQ1u3ZqBZfOhwCwgUKqyPDlaJQiTnEUYcJpjbVhUS3Z4r3qD6AG2DuA8
-         zxNLi8sp8cRbC2fFSkOXegJstpzbPqfMgDzN5oyaCaid46SmyL04F5YZH8KVT0AZakLh
-         KLTl/tPf7q47ujIP6wb/H/XItCx02G+3Ty0g/Z2127fE6Ww+1vVQlqgeyOTJPt/gJBFf
-         BinSAQGS9Uk8RlNNCbct4gZ9vS2GKygdrfEYtsmhlo279dzeWVp1bkKDsadjy9OmTZ01
-         w50jKdb2H6f+ZoTc4dBFk9nh6Hb7rMPCBmifymF+IuLfwgDSl/ZBqTXvXnQ2hY0iv5Vz
-         vkfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792508011; x=1793112811;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PcThqUHv81EySKNyOUFRZgMbmffug3lqbPzwxJtZ+tI=;
-        b=1oxqK06gCUzQ+h1QDKd0SpxXAmRwbRsjDn08BuenqY7s4mm2WzeNFJZ3zaqGGhqtcl
-         Rq2a9saUh3/gQlWbhVSyl8X/CTSZKkNl4KIOJSy4YD3EjY3Gkyazl397epWP19HUbNCZ
-         W3PGCZGVsczhfxzTbJj94LLmA1rlUGMO/dxm9Idph4qevBajwv/7QYNOkcquI+jWxSKA
-         jdakrDaooCSCe3W2ZJjHlU5X6YykoGRtKeczRNwe7WA0CjJgrrhc2D1qdEhDdZ/GQxfw
-         5eZ6qk+NfcsbzgbA+mOAIjBOCVKEv9KevSd3rVCITC/DI1mPFBwbwj7wNxJ2G3h1XrE9
-         x1KQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxMm0DgH1Y9Idynjmf5QZYvYyKA2n+Vi3syJvgmiJwGXmoBOffbPAUP9srwaORzEg7rs4W5HupVlg==@kvack.org
-X-Gm-Message-State: AFq9FYLrseESZO0WVYojBPDiSyHQ1rUBEztJxwGIrnGM5nIVD3WOJsOR
-	sD+WDx3YSxD8MH/FT5ufb30NHVfvMA6Ztnr9q70LEvDmDGFmagRoooegopzU+MPAVw==
-X-Gm-Gg: AYBFou1oxZrtbPv+w5mbCV6VGnlE0JsuM4vcYiGf0m0fARufl2RRWVa/5hf/UWGjCl/
-	g7y/CSEfHmL7XEYrZahUnM7mYDEYlMljkb6pYKvMKL/A9EDKa+M6VG3vsVqEA4d9g3BF2JxcAw3
-	5OT2ptVR0GJ+PESGkB4xWZ5qgJ/OgEnkq73x5l6RbIQHihDlWMbdnxgRNETTEjkYsJKLxksQ8vx
-	BOdgIPWjDbPJ1Vv5Phvq0zbFw20RIf+apS/3UdvajoOsLWiYb/+LjT8hNbKOH8fi0QVQs/KjY+G
-	ZVbUbaHSJlV85F9tNcMMwMitVeuyc2l/MR16+VVWEsrc6tQtyUNTEErMkYM+QV5ESXaTRkljD2t
-	OmxjkxFxfuq8NKAjgTei6iQanT9qquZVFSgWV3TuTyK2CXkSYQKzUYrpQKISezpzQL/6zlRUhPe
-	/N16opR/YwK7NdwGLZhravfc4qLeAVsmYLmck39rbB0fkjC5jDgWaX2+YlDM0E63up5j5m7XIuv
-	05/UIfQ2kocEeVT0rmdTQjRSKNoCbuk+Ne6F/u+gwN6
-X-Received: by 2002:a17:906:7953:b0:c2e:2252:6ddb with SMTP id a640c23a62f3a-c419d540411mr840520166b.10.1792508009154;
-        Tue, 20 Oct 2026 07:53:29 -0700 (PDT)
-Received: from elver.google.com (124.100.205.35.bc.googleusercontent.com. [35.205.100.124])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b38a1b140fsm5516530a12.9.2026.10.20.07.53.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 07:53:28 -0700 (PDT)
-Date: Tue, 20 Oct 2026 14:53:24 +0000
-From: Marco Elver <elver@google.com>
-To: Caleb Kan <calebkan1106@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>, Caleb Kan <ckan@cloudflare.com>,
-	kernel-team@cloudflare.com
-Subject: Re: [PATCH RFC v2 05/11] kmsan: report trie-backed stack depot traces
-Message-ID: <ateAZGtPTpdBDSbn@elver.google.com>
-References: <20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com>
- <20260908-stackdepot-trie-v2-5-1996d5cef732@cloudflare.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908-stackdepot-trie-v2-5-1996d5cef732@cloudflare.com>
-User-Agent: Mutt/2.3.2 (2026-04-26)
+	bh=J5ivZiRDgZARjIXxCwRmMWEsN/ju1KWgpHJDr2xQTh4=;
+	b=iX3PpiLK9aP+pUwNHf3plQZMMM3NiHh55nheBSr4l3NJQk6YXGJikMM4ot+FfZ1lJMrTRp
+	c66M0d+7ZGfZsi5BXMMWnlqDfvh/4COyBJSXmbJigd+YtEicx54dlghi5uKJB2hUGkkl98
+	07IM6+gGSXtcDhxeIZRyHoBBSF+p+e0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792508059;
+	b=NEvcopbdsbtkJGLkpZyJuM58A8LQwWf2fuvdh/7J6S56xD+iO7/YaYoslwQp46h//huyUO
+	bzRx8htOFO1/6ozV7b0InLI/PngRGyYgT5TmIOUrAjZmTGZEhij7hjqpGwFVknSXdE8qNL
+	+nMmQGN1Pa21FMB6Y0yGxHToeB6QNxI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRdYyCQI;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C4534390C;
+	Tue, 20 Oct 2026 14:54:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1E21F000C6;
+	Tue, 20 Oct 2026 14:54:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792508058;
+	bh=J5ivZiRDgZARjIXxCwRmMWEsN/ju1KWgpHJDr2xQTh4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jRdYyCQIPrzoWk3yqSvHINHIOMhOzE/LSwUZLhN2DE2134XoUqzMFueQqbtvZBH6B
+	 +iekQ/ECNmAeiMGoBR4YZUYTIcLgntXbB7ISOet5AoaaWJUVHZCUEZ7O5aOB/gC0Ii
+	 oq/qONExx7g9NFJkfnbOXdwwXP37Im9Hc3DjoFexlgTto+AXXPxvbZMj+BEq7PL9YH
+	 JHdmskSuwhpuPSPyd/3P7FTD6YK22xFDhWo6t6UkQVR5ZVfGU4uCv+IzHprJNx22QL
+	 zOsb37fSQfsKj1GBoIMilY/fk+KQ56JCEeEWCEl9LjIiIPB3O2Hor/VlPJ1ZQZcyhG
+	 1BUprXTYfcgNA==
+Message-ID: <sashiko-outbox-179201@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH] mm/damon/sysfs-schemes: hold damon_sysfs_lock in
+ target_value_store()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "SJ Park" <sj@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261020144726.88978-1-sj@kernel.org>
+References: <20261020144726.88978-1-sj@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Oct 2026 14:54:16 +0000
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 415D7180009
+X-Stat-Signature: 3hmr4wjukdeice1p5zh8sbjcrahu1ioi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 18AE440002
-X-Stat-Signature: z85j8ojkfqumd9yexihes9y17ku8w13x
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792508012-863553
-X-HE-Meta: U2FsdGVkX1/BBEaW0WR4gJ+jAV1bv+Pb+Htpa3HwUUaVdzJ2egE2LyqY5SsPnNLIm1t0lRaEhun2WfUE2eGXUzR+M+65JjWQ0YDPW1MvA0W7SZdaGFO5zACQo3RpHeA/+Y65yErVasTDqorGeTbEoGKiqjE0N5SHpygrHhGhYEL8M8WhfYB0gARzNBtNMNVdKBrjiwVj1d1/jfcpMUWBHaPhMhPRYQTVR9UiX/VZ6pU06YpUS6M96QKcyery+jCE7Yy7eadPLbL6Kxb/xzYjOrryUhfPUMVCBUvXUeHwjgD4Wl8tFSwvfFgS2v49s9W6RiGrK/2Tpyrxps3Y1Ay0ENOsoZAIaerRtgCtEbL/wGz4vmDEV2ARqN7xTL/hJBjeKCizn7HEmjAiKH/ou0B+FS8sOFWhwtRep2bG91P2fIc8RyJR0bn7E2kCq0tL9tlmPFrQdXBsu8GFSkQUuZlYJV2p0AmHrkzRlFFliLJC48uz9ZUZF/utF5zOATs7t5kD9PDrqr+bCiZeSJDY2DTpIysKZd3gzDbcO0wOBYO0Bu10mD1AEfrWlRw8cq9Mj0ULAHuyLEkJoma8zflPaBBqNsOXlm8H/Y62Vyr3b4gr2vMIb8iGvWqbH856WADR87WWawnmEeRbRl/S7PC51hUUPrI1V9/5HvdouSAjutEIw6dBFW/RalmzdD2s7+ESVmbN8noG0bE3s55rb/sEmug3eShIxCATMzNBWTgwbZDcbJVJtr4sdO9/ehJ3bciAfNVREdu/pst0cja5pQY1jQ/NUdansaE8qLotN848mRC9Bb1rKcSRqpB3H1N4dOoGnzcMrxEikoQIva9rUtUDOiDfqGKto2feBArOTGCj68aU39CD4YvzCkquxJZ5smT2IOl8PA/4hDJrJD0hWVK5JXee0yaQq7leNew5uFNKINkAn9Ab9ml7ODuY9GFDpoInfozt9tkwESNjLDp1acFza4c
- BinL6b+c
- xJFB6inO+mgPhqUuU+X5Ve2nFWVmeAtvd6CwyCIs/wm01hx0EsC4Kj266RV5iWwudIuwM2qyHgv8CnDfrJ6Vz5L3syeVQyTk3F2Upm6FCakmTg0GjLX0kRIyJNj7sP6a5tw+3dggrU5BDh0bmWU0YDuPCzp3nNUCbVgPVLe269vRf4dVIctYT1Piqoz8v5EKKQr6EW6/h1dNhPbL6sMKUdZCwEX7iRsVguG82Zw1iMmtBiMGqGXDY7W92yDx/Zbeg0/alHiYUfoe1HeX5RwSzjoZ9zUE/3a0VjpHnrrg3Hcdxlxur7xrIBAer1Mbo4mWyxtlG
+X-HE-Tag: 1792508059-345058
+X-HE-Meta: U2FsdGVkX186Tccpjd4sXpVk/R6gGKHoEcxcY9P6bjQGyBbxIU4/PSY5ybD/HhTOUlkapA1Q/cYk5549ptX/U2lzSF9oqszuBbTjn/vEoYF2nel1zMrmTQznlIXndYSYzjp5AwjNp3ZwM2lKsifrxRk2SLbt0yHxeRmZt2eIFzIIWcFT0q0J07ZEcWPLESaum3wM49l0OB8IL1Ts3gmbgRFd8/iXBJy9q2Bz9p99yUTdgkktbkvSXCqnmGJ/BbNb+9uQTHgaizcp4p3c3KNnykl9vlfVqrE5MytDc/okCD943t8fEig1Z8yUwMhqmHHjOHUvoZl8GL6RmBMs+6SsrYtTvb5k3WQP3NDwq/Hsn143NcCTdj8VS2KYN/5AhjpX9f4v/u3M5qcGpvQxd5bd7mAbA6ekvWUfYWXmu+Dxu85AnqZJG1BmkQORJFo/3M7VdXzu18iGkE0Pn6QZAaA9Dok+17rrGi3KjkV005sem0Egp5693juFjzDWS2JKI6yiaPpHfR/HJUlfXXMH/fKx3ROgYFavMaoWQzQ3kuF9bZJYQcYqsJD5gqHb8RZsoZBBUwO8k1AcXiqe+djK8roBhhYzP8Ca4DT6MLrxmVyAVMr55sPSR4bmy/i7KskTB6oC77pECg1lth70H065IvMDsP/WvX1J7n5Rk1Sknfwpi2+9uQO6nxy07TiyWgTU9ugkL0RTkcZTFo0zL9Mp4skm9doTb4FVneXCxGZh5iAP0ilzAEhuc+cta8M/naRc+7d3YL9frJunSX4OCyIKTLN88eTR2GzmGzIGle9XC6/ZHXviFu1MfjdTiOayBUIxzrNs7FpW2y36cUyAviQt6uww6N2zMnvHBYP4eBRJMpUm+VezPKDwSbM7D84PLfMuV45eEEyAL1ZLg9F+aU0fqfcmUOFGFEkPaN/10SddT90HLE7ISI6H0NWOdctvy7pU47XrLjs/wplm6DynXLR/Ubm
+ sFRbJ0Gc
+ DTfXv6GmK3RnpqolzYhnoMaaXKGSQw4Ug2ixEDDbpoKH9HJx1fVGaABx0ToBqLI+kgPRTrpdaaA0nT+Ro05F573Z779fuFGVhYkUABAyjQgkoszmyQnfn/shsoL4Fqqa6PuAXbp34VDo12hEZD6ZCXIDdvFTyXG27haqk8OIlSOu8omU0+jilSEiEffypWiPuyIkamvpLlN1Os3kBw9QsHJL48YOnjZb5ytuwmk7D2BrCxL7Ycrc0TTTOIojE5SxKxINCOwqrXm5VJsK7CZlUbSSKwxYHDhojVjDADkEzsL8XWqEGP58Z1/X/pGdaS1ZlindNSuRAXSkCteUs81w0SLatREe1cOwf8s8VojjUy2ty0ay05eXxaCIbQAa6Ed4FXZWkZ4G7jc3p8A21oo13BtVXctMdrw02u4Vp27GhlWv5iU6wSSYCHYLOtOTK0b8FuLw8nDFq0+U35Bp6ajXpNe8lQceeAEUhFjlgCpT8S87wsjW+ofpRdQ0+wCbdeEeZRCisq2ytKEM/licC7wriiWoQxwWmTcVdjjoQjmGqn5X7duzT+XbNwz+jj1KIWYfuTi9XyFwyfW7ZuuzIcVE4+Lo4A4zR9uSEWnrJaLXMloDd2Q2wA6wIuBibvzuEjcwIY5KA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,114 +91,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue, Sep 08, 2026 at 02:13PM +0100, Caleb Kan wrote:
-> From: Caleb Kan <ckan@cloudflare.com>
-> 
-> KMSAN stores ordinary origin stacks and synthetic alloca and chain origins
-> in stack depot and retains the resulting persistent handles. Once trie
-> storage is enabled, these handles can refer to trie-backed entries, while
-> kmsan_print_origin() still relies on the hash-only stack_depot_fetch() API.
-> 
-> Use one KMSAN_STACK_DEPTH array to materialize each origin and chained
-> stack in turn. Preserve the chain's head and next-origin handles before
-> reusing the array for the chained stack. The array covers both the regular
-> save limit and the smaller synthetic records.
-> 
-> Pass the scratch array into a common origin-printing helper. Keep local
-> storage for standalone kmsan_print_origin() calls, but let kmsan_report()
-> reuse its existing stack_entries array after printing the report stack.
-> With x86-64 Clang 19, the regular nested report path uses 752 bytes, below
-> its 768-byte size before this conversion.
-> 
-> lib/stackdepot.c is uninstrumented, so stack_depot_fetch_into() unpoisons
-> the successfully copied range before returning it to KMSAN. Remove the
-> now-redundant explicit unpoisoning of chained entries. Origin depth and
-> use-after-free metadata remain in the handle's extra bits and are
-> unchanged.
-> 
-> Update test_stackdepot_roundtrip() to use caller-owned storage while
-> retaining its frame-count and kmsan_check_memory() checks. This verifies
-> that the copy-out API returns initialized entries to instrumented callers.
-> 
-> Signed-off-by: Caleb Kan <ckan@cloudflare.com>
-> ---
->  mm/kmsan/kmsan_test.c |  4 ++--
->  mm/kmsan/report.c     | 28 ++++++++++++++++------------
->  2 files changed, 18 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/kmsan/kmsan_test.c b/mm/kmsan/kmsan_test.c
-> index 31f47cc4dab4..7c04e4b21873 100644
-> --- a/mm/kmsan/kmsan_test.c
-> +++ b/mm/kmsan/kmsan_test.c
-> @@ -669,7 +669,7 @@ static void test_long_origin_chain(struct kunit *test)
->   */
->  static void test_stackdepot_roundtrip(struct kunit *test)
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm/damon/sysfs-schemes: uninitialized stack read in target_value_s=
+tore()
+--
+
+commit f43fea0015fcb1917385f72d150c59603a9ae43c
+Author: SJ Park <sj@kernel.org>
+
+mm/damon/sysfs-schemes: hold damon_sysfs_lock in target_value_store()
+
+This commit holds damon_sysfs_lock in target_value_store() while updating
+goal->target_value to prevent a time-of-check-to-time-of-use race with
+damon_sysfs_add_quota_score() that could result in a divide-by-zero.
+
+> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+> index 8f083611741fd..55298a17b653a 100644
+> --- a/mm/damon/sysfs-schemes.c
+> +++ b/mm/damon/sysfs-schemes.c
+> @@ -1355,7 +1355,13 @@ static ssize_t target_value_store(struct kobject *=
+kobj,
 >  {
-> -	unsigned long src_entries[16], *dst_entries;
-> +	unsigned long src_entries[16], dst_entries[16];
->  	unsigned int src_nentries, dst_nentries;
->  	EXPECTATION_NO_REPORT(expect);
->  	depot_stack_handle_t handle;
-> @@ -680,7 +680,7 @@ static void test_stackdepot_roundtrip(struct kunit *test)
->  		stack_trace_save(src_entries, ARRAY_SIZE(src_entries), 1);
->  	handle = stack_depot_save(src_entries, src_nentries, GFP_KERNEL);
->  	stack_depot_print(handle);
-> -	dst_nentries = stack_depot_fetch(handle, &dst_entries);
-> +	dst_nentries = stack_depot_fetch_into(handle, dst_entries, ARRAY_SIZE(dst_entries));
->  	KUNIT_EXPECT_TRUE(test, src_nentries == dst_nentries);
->  
->  	kmsan_check_memory((void *)dst_entries,
-> diff --git a/mm/kmsan/report.c b/mm/kmsan/report.c
-> index d6853ce08954..0770658ba932 100644
-> --- a/mm/kmsan/report.c
-> +++ b/mm/kmsan/report.c
-> @@ -83,9 +83,9 @@ static char *pretty_descr(char *descr)
->  	return report_local_descr;
+>  	struct damos_sysfs_quota_goal *goal =3D container_of(kobj, struct
+>  			damos_sysfs_quota_goal, kobj);
+> -	int err =3D kstrtoul(buf, 0, &goal->target_value);
+> +	unsigned long target_value;
+> +	int err =3D kstrtoul(buf, 0, &target_value);
+> +
+> +	if (!mutex_trylock(&damon_sysfs_lock))
+> +		return -EBUSY;
+> +	goal->target_value =3D target_value;
+> +	mutex_unlock(&damon_sysfs_lock);
+> =20
+>  	return err ? err : count;
 >  }
->  
-> -void kmsan_print_origin(depot_stack_handle_t origin)
-> +static void kmsan_print_origin_with_buf(depot_stack_handle_t origin,
-> +					unsigned long *entries)
->  {
-> -	unsigned long *entries = NULL, *chained_entries = NULL;
->  	unsigned int nr_entries, chained_nr_entries, skipnr;
->  	void *pc1 = NULL, *pc2 = NULL;
->  	depot_stack_handle_t head;
-> @@ -97,7 +97,8 @@ void kmsan_print_origin(depot_stack_handle_t origin)
->  		return;
->  
->  	while (true) {
-> -		nr_entries = stack_depot_fetch(origin, &entries);
-> +		nr_entries =
-> +			stack_depot_fetch_into(origin, entries, KMSAN_STACK_DEPTH);
->  		depth = kmsan_depth_from_eb(stack_depot_get_extra_bits(origin));
->  		magic = nr_entries ? entries[0] : 0;
->  		if ((nr_entries == 4) && (magic == KMSAN_ALLOCA_MAGIC_ORIGIN)) {
 
-Routing KMSAN's synthetic alloca and chain origins into the trie (patch 10)
-breaks KMSAN after 1024 origins:
+[Severity: High]
+What happens in target_value_store() if kstrtoul() fails (for example,
+returning -EINVAL or -ERANGE on malformed input) while damon_sysfs_lock is
+not contended?
 
-	__msan_poison_alloca():
-	    entries[0] = KMSAN_ALLOCA_MAGIC_ORIGIN
-	    entries[1] = (u64)descr   /* unique per instrumented local variable */
+Since kstrtoul() leaves target_value untouched on error and err is not
+checked before acquiring the lock, wouldn't this overwrite
+goal->target_value with an uninitialized stack value (which could also be
+read back via target_value_show())? Should err be checked and returned
+immediately after kstrtoul()?
 
-	kmsan_internal_chain_origin():
-	    entries[0] = KMSAN_CHAIN_MAGIC_ORIGIN
-	    entries[1] = extra | ((u64)id << 32)
+[]
 
-Because the trie in patch 10 is keyed starting at entries[0], *every*
-alloca origin in the kernel is a direct child of the single depth-1
-[KMSAN_ALLOCA_MAGIC_ORIGIN] node, and every distinct stack handle is a
-direct child of [KMSAN_CHAIN_MAGIC_ORIGIN].
-
-In patch 10, a node's child array cannot exceed 1024 children
-(roundup_pow_of_two(1025) = 2048 -> 16424 bytes >
-STACK_DEPOT_TRIE_POOL_USABLE_SIZE = 16208 bytes). Once 1024 local
-variables are poisoned during boot, every subsequent new
-__msan_poison_alloca() and kmsan_internal_chain_origin() permanently
-returns 0.
-
-Even below that limit, a 3-entry chain origin takes ~120 bytes in the
-trie (node + child slot + side-table slot) vs 48 bytes in the hash table.
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020144726.8897=
+8-1-sj@kernel.org?part=3D1
 
