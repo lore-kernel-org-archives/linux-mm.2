@@ -1,95 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEA0606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2527606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MtTqySqA
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Eu5CzCZv
 Received: by kanga.kvack.org (Postfix)
-	id B6F3C6B0121; Mon, 19 Oct 2026 22:15:02 -0400 (EDT)
+	id D81FA6B03E7; Mon, 19 Oct 2026 22:25:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B468B6B0122; Mon, 19 Oct 2026 22:15:02 -0400 (EDT)
+	id D328A6B03E8; Mon, 19 Oct 2026 22:25:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A355F6B0125; Mon, 19 Oct 2026 22:15:02 -0400 (EDT)
+	id C48576B03E9; Mon, 19 Oct 2026 22:25:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 66E966B0121
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:15:02 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 002D8808AD
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:15:01 +0000 (UTC)
-X-FDA: 85341386844.04.5A6EC90
-Received: from mta1.migadu.com (out-14.mta1.migadu.com [95.215.58.14])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BC670C0002
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:14:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MtTqySqA;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 9F7E66B03E7
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:25:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1EE3314080A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:25:51 +0000 (UTC)
+X-FDA: 85341414102.07.9DDC62A
+Received: from mta1.migadu.com (out-92.mta1.migadu.com [95.215.58.92])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E3F35A0002
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:25:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Eu5CzCZv;
+	spf=pass (imf15.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.92 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792462500;
+	s=arc-20220608; t=1792463149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H5koWBlEkzUtVRPXaV/v1U0rZzsCMMRJSatrplJvvdI=;
-	b=4rajWK8ApJbtOMzQkC3tvRejt2c3E0S/oSV7e/tmkULWlesKu5sy8UTgjbFtZYUuWepkV0
-	7SLsD4o+v9jrcqZFCjVnti680wT29SzxImo3aWVaxyeJ7i7D2gOCSHxBaozCkshaYuvE89
-	Qun2np4oFD3le37yZfJGqCOSzhirDMA=
+	bh=qkEnDwBugjwZfgs/RO2JOZXA4QXBERjlTcHQBq6IyoM=;
+	b=eZpC2atE+3nUUxMlVcsW5wYSs1RC23i893hchiK7eQacvYTCTSaFR+fslMyZ+uMYTBZSbK
+	BBi2hrBs33ZOTuzXef6xCcjyelRgY+4mX96yibUcnhvm9mGMb4OIvzHZGFuhAwKal13b8a
+	ka37fsOdwn16MvSCvb8Cn/7C5RBl20o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792462500;
-	b=waDtkM4Erq4tPEMY68up/mKsBP/Aq9yFDx1RsSZbkC8R5sxJm8uLREmcEO90m28SdXES9J
-	7DZ9u+7DygK+cDTg4CJfa2Ea8i6qxwb2j5meeHUxHiZk/aNU5IeIVw0B48rRtEz36t79Dp
-	RteKaDDUz8PKqwucN6fER052olTEFsU=
+	t=1792463149;
+	b=ztjvRxhHQPc74RC4mTnJMqUePuIs2fT6dd8O3crUS/uhPnjiG3v3g9ELtgfQhdKWRcBKXo
+	+NBErETuEqMhbMPlKterwIcqINLcNroF7rxblY9CD7uygD4hq9XgKVXzBSoHPjdZh/SaWJ
+	9AvvtLzKFEOT2nVJIwB9ywQS5q64qxI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MtTqySqA;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Eu5CzCZv;
+	spf=pass (imf15.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.92 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RIrheAYm8hykGe22Eq3j94xLVcRIa2q6YiEDm7rvq1I=;
+DKIM-Signature: a=rsa-sha256; bh=ntRwUSpnw+xfJNy+369eirj2tCJL/FP5kPFnotn1kaE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792462498; v=1; x=1793067298;
- b=MtTqySqABRAkFsDiyocbxlm1d9OrkRuNkd5LlWHji6/bhhwnZuwybc6iZbny2iJF29J8rO84
- k45ctSv0WYakcFKuJ6QKpSoB9ZaSCyoQJdjOji+otlausoKPjDUEChFLZRBH6o0srn03qBWoMlR
- d7AfDngwtMkve4uGwALBDn6U=
+ t=1792463147; v=1; x=1793067947;
+ b=Eu5CzCZvzQRuuCA4jfdags9tIDsCpkho05xTr2bk25NTRylCoWFFZqCdb74tCez1dfqXk84q
+ tgTmzMKC43zv9NP6sLhL3AIRUHbkLEMLC3urYJ0LR4W7AArVMfTJYhRpYT2Ptn9m09VoCsXi1f9
+ 3Ya8E92vFRKlQukG0nRQFpiQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1bfec103754fcc10;
-	Tue, 20 Oct 2026 02:14:58 +0000
-X-Mizu-Trace-ID: 1bfec103754fcc10
+Received: by smtp.migadu.com with ESMTPS id 5b8ad6c55f67365a;
+	Tue, 20 Oct 2026 02:25:47 +0000
+X-Mizu-Trace-ID: 5b8ad6c55f67365a
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <f8d85b59-971d-4397-a785-b4ab4d301874@linux.dev>
-Date: Tue, 20 Oct 2026 10:14:54 +0800
+Message-ID: <b0d303c5-4ca5-4ccf-9e24-499a9719a50e@linux.dev>
+Date: Tue, 20 Oct 2026 10:26:55 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/shrinker: allocate shrinker_info_unit from a
- dedicated kmem_cache
-To: Konstantin Khorenko <khorenko@virtuozzo.com>,
- Andrew Morton <akpm@linux-foundation.org>, Dave Chinner
- <david@fromorbit.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20261019-vstor-144715-shrinker_info_unit-kmem_cache-v3-1-0fb061e09bf4@virtuozzo.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261019-vstor-144715-shrinker_info_unit-kmem_cache-v3-1-0fb061e09bf4@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 2/5] mm/kmsan: skip vunmap_range_noflush when KMSAN is
+ disabled
+To: Dev Jain <dev.jain@arm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
+References: <20261019054531.87652-1-hao.ge@linux.dev>
+ <20261019054531.87652-3-hao.ge@linux.dev>
+ <3cbb17e3-e201-4138-a070-0c64289a12bb@arm.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <3cbb17e3-e201-4138-a070-0c64289a12bb@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BC670C0002
-X-Stat-Signature: ym61eqcb3kyqnkqgyzxc3gz33kcf53d5
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E3F35A0002
+X-Stat-Signature: amuuxxstc3zg8j3mxhnowdggj8ngjijm
 X-Rspam-User: 
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1792462499-563553
-X-HE-Meta: U2FsdGVkX19K7ssy3OAOPy6nneOz3hPmxsm0tFajhJ+HTXzo0yvjTDJEsx2agNTY2uwX9VRdaLxMe3RYYRd26TPcBZs0J9lZo0OAjWVQnzytKBAuDX0zKhQefWxHvSZxqSYMDJRP3QoegXXyGEDtL+TvOdhRmRVAmUuHa0R0f+LnoSPw1R7waJqs87nqlCCYptZ7PKcRUTS/ot2wPUipHxufBN4YwmEmPd734pkGQBK/7MZtib5UyXeX7UmNn9QoMvZXKjIAJ6+J/Z2RGjx0OqB7KiDMqCeyqMxq8QwXa6s1JhqaMGiDOx827KnkblbtaS5M4Y9B0nMLVki6SxWSPC47cLdSGPCop9ScUubT0C4udsHdfhNP8eewMqVIQhZ12z6Z8I6ZgeusVcv+3/DJOkluplcgxAdzKBHQtr/irVoPteKGc2K1NyBS+kozc0DbecAAjdUt5FB2KHwiHfLNvPCKJ2d2rS2HVjXUJFec0PRR4WQu50qgTkGSZK4hENXMKXAa9Q0dxNSefHCuaO8bfpeJBV9ElY/+DIU9UlaXJmPyJEq5uDa+iO1DDN+8Adv9dgrh2YmzVNngjwcX+ZpVdEs4orNitQToi8XMth+/Vgoavc23uOUrAn+V9JcwqSfpaIade3ZD+9raJjBotKVNvZRg9jU3bl2PxJ8RQ6o/NwGlpPOYpOvMOMOcusHk4H88Ie93v6q/Z/xPl6wfAjTkGnJE59OVAXbOQ3NKwRUkKZ7/rBAb8w6dMikvCcuVEYVz5O6H9Km1jn+0e39CqI4oNuQi4z0OuTTD32owmn9GN9oANTffFhts1Tv33j09Yq4ePY+R8/Af1Mx9TkTV0h6Dj/1p9MB3HdqS2NSNll+0HfwdzpSqImATC3ihtIwqTlLElM+2wBfhTwLt5tQIcQdb/JtxTcVDNx6zHh44dwhcqufBtLOBbo+CS5s+lkFG5CjEhRidwktWpG8znojF2VM
- k9M5FFh1
- CGTI/XHPX7Z1JahskQur5oSENUi5JY3o1ihpMww3DmvAidDUyzfuNqWRAQj+FUZU6EdowGIE2eJgP7604QFizRwQs5ACG8ndo4XR7E/jBr8X2Jw1t0pfOTI/26PLhwLCAIFNw5nTx3dRNaXu62i14/3OyJy15rG0Sq0Y95sxYqGxuiqHbImGKGjUITw+aNwy7t7+6dEK2SLXwXX5G197g1iRTPp9Da2naIF0wALlOjrBuPPATbnFqolIRNWl9eHTQtsmTMTJ5sfTcMgn/F3p6VgDyLHg7wIL/gySoujx3I3zwlex7NlrbrsgrsT0ZOahQS82cWaG886A1XQelCVw8Y0bjNlfQGr9N1ifsFY+POcxoBZWzZ+oFIOkcVkQTjx2LMK0zriixTzdg2BE3vj+rl81tuXxHR4XTJOAcQoBOVRLWpYhEyssMuHgBduU6yvWf5ampUpP5k7iybVhf38h9Mkhg3/FrLHyP50she6J7P5OtdkwS6XYm8cs2O00AC0XbEfFepV5PzNJYR7ppzNnkfBF7LA==
+X-HE-Tag: 1792463148-104123
+X-HE-Meta: U2FsdGVkX18SLzYFTxhz2GiiwtEzx961A6iwrszZ8bYX5E+hbj/n0EnaSFHXb1FS7zqxUBo5zW9YY1+KYDQJTvMrpmCvLqUkoFtuL6ZogwrJoLJNrz8HINpQ+7MpmTB3VEvTK0tAzFGiLECYdd39y0iYMGP01gQ9YCJTdou3sHMdjpAE4pg3l+zR/pCaB+ggA4r1pPdL2O/VAk2H7UgAaw4hhdlOt0+ZPlaQyfCDDr0FLdkb+6lVkFzYwBUI/NFT6VfNjGa2rA3tciEpDZyAeKvAepZBoBPPxfv1kAV0kLZlCsQXRMXkyeGdCJ4yseppBLhAMTAcLnkx0+0fydyDMczy3gemq4yfpa7yneEAgP9GP4W2upktKv8EwLybJQzBWmIZwBjC6bd8ZQc8my8c9yNSxc8JKpUqFAa6v5MCWCAPs4WqErEqxRPl5GoOvChxSLxaLp3ylSr3qg7WLahToyjVjgIw59DCtGXOMtb2BVqTgKbS8jG9q6ILCaoRmmW7BmQts7bInw1AWRn/9Qp4deYDNOaGHX+gSV/fnIdoqxgum1S7CitABDJJTaHuLtL4H1WW13QtTPeUECkkDbE9/xN+OoYtY+LBFExPI2DQlyCJWgCetL16kCsrJRP7OHC2gfe4uqPttlDsiv/CsB0k0FlBeyW7uMov7FXooSkRnRHifsugY4bt06TeN9/qNIILfYo+LmGb8nRMMw55ty2Dz7WeL9LOjqus/Us7zFHbTS3O1V2ZEfGv7DWyR0n6t9JUo9vJ0S5CsVG5vG70m/zC/yNrZAwyaCp5IPtgjQNEaMWs+qSOxaf90RS9QOEQltUxAfRjfrrFxQUqN9YY7wXAHv66BBkKsaut+Ihz/XauEWwl7z3hYtGaNSLBxAqpemHacOlY4eZrG4b6IL6gQocns9G0xcU10Jc42CdLWzxDAE7HBH8OjXVMmuHNHROycuTpdJikCwBvlnhrKyXtfvc
+ kP+Oe9Q1
+ aUmLDquOtE/JOPj0e80v0WrQsn9IVgSgkHN3+oF5/Ak+8FHZ+Ncf27hERvDPfm2UPABVmv1wUIitl8tML3fXJSmtkX+23AXNbeNU5bh8DbBM2bDICkVu12cV3IfL3Y8jTP4Cuunfy7UT0zX9JAtXj3B8bF16964J44YEznizarNyYxyqr/7Y53CHZF3QaOujpuf51G6Us0dL1/c24RK0ekWmwHsUbEdUzX7WF0r0rqr6JxLII+d1QjgC7ifQ3AyGwKGNotCUxW/DqYhTlHTOX3vetzc2vaAeKskuCx0Ca3drAgRzt0rXvU4j2nO7nxXzXIgwQhhsnG8ESdVzWe5Ry2ZnHPXPVrMGHk0m4N5TheXND4qEmY9z/8h70iu9kLy/fO9eyqXper6HKn07PSz78jAD1R/Tb1NLf8/6dbUTmdVhADFg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,136 +109,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Dev
 
+On 2026/10/19 23:22, Dev Jain wrote:
+> 
+> 
+> On 19/10/26 11:15 am, Hao Ge wrote:
+>> kmsan_vmap_pages_range_noflush() returns 0 when kmsan_enabled is
+>> false.  The unmap side does not, so it still walks the shadow and
+>> origin page tables even though KMSAN never installed any metadata
+>> there.
+>>
+>> Add the matching early return.
+>>
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Cc: stable@vger.kernel.org
+> 
+> Cc stable without fixes?
 
-On 10/20/26 12:11 AM, Konstantin Khorenko wrote:
-> shrinker_info_unit holds BITS_PER_LONG atomic_long_t of deferred work
-> plus a one-word bitmap, 520 bytes on 64-bit. kzalloc_node() takes it
-> from kmalloc-1k, so almost half of every unit is padding.
-> 
-> Allocate the units from a cache of their own, sized to the unit. The
-> cache is not cache-line aligned: the counters of a unit already share
-> cache lines between shrinkers, and aligning the unit would only keep
-> neighbouring units off each other's boundary line, at the cost of part
-> of the saving.
-> 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Assisted-by: LLM
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-> ---
-> This is v3 of patch 1/2 of "mm/shrinker: make per-memcg shrinker units
-> cheaper", sent on its own as Andrew asked in the v2 thread.
-> 
-> Patch 2/2 of v1-v2, "mm/shrinker: allocate the per-memcg shrinker units
-> on demand", is not part of this posting. It is the change that makes a
-> memcg pay only for the shrinkers it uses, and it is discussed separately
-> in the v2 thread.
-> 
-> Tested on a 4-CPU, single-node VM with the test from the earlier cover
-> letters: 8000 tmpfs mounts, then 2000 empty memory cgroups. The units
-> move from kmalloc-1k to the new cache, 31 per order-2 slab, and the
-> unreclaimable slab per cgroup goes from 144 KB to 87 KB. Removing the
-> cgroups and dropping the caches returns the cache to its earlier size.
-> 
-> memory.reclaim on a cgroup still frees its objects on 140 ext4
-> superblocks, and cgroups making their first objects while mounts keep
-> raising shrinker_nr_max leave nothing in dmesg, also with
-> slub_debug=FZPU on the cache. selftests/cgroup test_memcontrol passes.
-> test_kmem_memcg_deletion also fails without the patch, by a similar
-> margin.
-> 
-> Changes in v3:
-> - Allocate the unit from a dedicated kmem_cache instead of shrinking it
->    to 63 ids so that it fits kmalloc-512 (Andrew Morton, Muchun Song).
->    New subject, since the unit keeps its size.
-> - Link to v2: https://patch.msgid.link/20261014-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v2-0-51af2aedbe6c@virtuozzo.com
-> 
-> Changes in v2:
-> - Patch 1: check the unit size with BUILD_BUG_ON(!is_power_of_2())
->    in shrinker_unit_alloc() instead of an open-coded static_assert()
->    in the header (Muchun Song).
-> - Link to v1: https://patch.msgid.link/20261012-b4-prep-vstor-144715-size-shrinker_info_unit-to-a-power-of-two-v1-0-5a7608393b7a@virtuozzo.com
-> ---
->   include/linux/memcontrol.h |  1 +
->   mm/memcontrol.c            |  2 ++
->   mm/shrinker.c              | 11 +++++++++--
->   3 files changed, 12 insertions(+), 2 deletions(-)
-
-Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-
-Thanks,
-Qi
+Oops, my bad. The Cc stable was added mistakenly.
 
 > 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 7d1c0ce189a88..b5a89594c263c 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -1675,6 +1675,7 @@ static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
->   }
->   #endif
->   
-> +void shrinker_unit_cache_init(void);
->   int alloc_shrinker_info(struct mem_cgroup *memcg);
->   void free_shrinker_info(struct mem_cgroup *memcg);
->   void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 856a7d07586cc..7a817181168ed 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -5717,6 +5717,8 @@ int __init mem_cgroup_init(void)
->   	memcg_pn_cachep = KMEM_CACHE(mem_cgroup_per_node,
->   				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
->   
-> +	shrinker_unit_cache_init();
-> +
->   	return 0;
->   }
->   
-> diff --git a/mm/shrinker.c b/mm/shrinker.c
-> index 7ec2a9704f6f2..4fb424e721bca 100644
-> --- a/mm/shrinker.c
-> +++ b/mm/shrinker.c
-> @@ -12,6 +12,12 @@ DEFINE_MUTEX(shrinker_mutex);
->   
->   #ifdef CONFIG_MEMCG
->   static int shrinker_nr_max;
-> +static struct kmem_cache *shrinker_unit_cachep;
-> +
-> +void __init shrinker_unit_cache_init(void)
-> +{
-> +	shrinker_unit_cachep = KMEM_CACHE(shrinker_info_unit, SLAB_PANIC);
-> +}
->   
->   static inline int shrinker_unit_size(int nr_items)
->   {
-> @@ -33,7 +39,7 @@ static inline void shrinker_unit_free(struct shrinker_info *info, int start)
->   		if (!unit[i])
->   			break;
->   
-> -		kfree(unit[i]);
-> +		kmem_cache_free(shrinker_unit_cachep, unit[i]);
->   		unit[i] = NULL;
->   	}
->   }
-> @@ -47,7 +53,8 @@ static inline int shrinker_unit_alloc(struct shrinker_info *new,
->   	int i;
->   
->   	for (i = start; i < nr; i++) {
-> -		unit = kzalloc_node(sizeof(*unit), GFP_KERNEL, nid);
-> +		unit = kmem_cache_alloc_node(shrinker_unit_cachep,
-> +					     GFP_KERNEL | __GFP_ZERO, nid);
->   		if (!unit) {
->   			shrinker_unit_free(new, start);
->   			return -ENOMEM;
+> I guess without the fix nothing is actually wrong, except doing
+> wasteful work?
 > 
-> ---
-> base-commit: a5ebb76233b79db01e82e061173cb73c6d2b5c6b
-> change-id: 20261016-vstor-144715-shrinker_info_unit-kmem_cache-69ea3f78b635
-> 
-> Best regards,
-> --
-> Konstantin Khorenko <khorenko@virtuozzo.com>
-> 
+>
+That was true before, but not anymore after Patch 3
+(mm/vmalloc: undo partial mappings inside the mapping functions).
+vmap_pages_range_noflush() now does:
 
+int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+                pgprot_t prot, struct page **pages, unsigned int page_shift,
+                gfp_t gfp_mask)
+{
+        int ret = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+                                                page_shift, gfp_mask);
+
+        if (ret)
+                return ret;
+
+        ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
+        /*
+         * The page tables undo themselves on failure. Tear down the
+         * metadata that was fully set up before the mapping failed.
+         */
+        if (ret)
+                kmsan_vunmap_range_noflush(addr, end);
+
+        return ret;
+}
+
+Sashiko report: with !kmsan_enabled and a caller passing an empty range
+(addr >= end) the flow is:
+
+1. kmsan_vmap_pages_range_noflush() returns 0 at its first check, it
+   never looks at the range.
+
+2. __vmap_pages_range_noflush() hits the new WARN_ON_ONCE(addr >= end)
+   and returns -EINVAL.   
+
+3. ret is non-zero now, so the rollback calls kmsan_vunmap_range_noflush(addr, end),
+   which unconditionally does
+
+	__vunmap_range_noflush(vmalloc_shadow(start),vmalloc_shadow(end));
+
+   vmalloc_shadow() is a fixed offset, so the shadow range is empty too, and
+   __vunmap_range_noflush() starts with BUG_ON(addr >= end). Panic. 
+
+So the guard is not about the empty range itself: a caller passing an
+empty range is buggy, and on today's kernels it already BUG_ON() in
+vmap_small_pages_range_noflush() on the small-page path. Patch 3                                                                     
+deliberately turns that into WARN_ON_ONCE() + -EINVAL, and this patch                                                                
+makes sure the new metadata rollback does not turn that recoverable                                                                  
+error back into a panic when KMSAN is disabled.     
+
+But it's only theoretical. We haven't hit this case in real usage.
+We add this guard merely to reduce unnecessary work, and incidentally
+harden Patch 3.
+
+Thanks for pointing this out.
+
+Best Regards
+Hao
+
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>>  mm/kmsan/hooks.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
+>> index a706666db097..107f66841274 100644
+>> --- a/mm/kmsan/hooks.c
+>> +++ b/mm/kmsan/hooks.c
+>> @@ -138,6 +138,9 @@ static unsigned long vmalloc_origin(unsigned long addr)
+>>  
+>>  void kmsan_vunmap_range_noflush(unsigned long start, unsigned long end)
+>>  {
+>> +	if (!kmsan_enabled)
+>> +		return;
+>> +
+>>  	__vunmap_range_noflush(vmalloc_shadow(start), vmalloc_shadow(end));
+>>  	__vunmap_range_noflush(vmalloc_origin(start), vmalloc_origin(end));
+>>  	flush_cache_vmap(vmalloc_shadow(start), vmalloc_shadow(end));
+> 
 
