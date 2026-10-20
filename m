@@ -1,142 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EBC60A2602
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 15:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=X4MUhOKV
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58DF60A2602
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 15:22:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A30C46B04FD; Tue, 20 Oct 2026 11:19:48 -0400 (EDT)
+	id ECA1C6B016A; Tue, 20 Oct 2026 11:22:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E0C96B04FE; Tue, 20 Oct 2026 11:19:48 -0400 (EDT)
+	id EA0F06B016C; Tue, 20 Oct 2026 11:22:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D02F6B04FF; Tue, 20 Oct 2026 11:19:48 -0400 (EDT)
+	id D92DE6B016E; Tue, 20 Oct 2026 11:22:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 68EAF6B04FD
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:19:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 042804027D
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:19:47 +0000 (UTC)
-X-FDA: 85343364456.06.273D058
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1EE0018000A
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:19:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=X4MUhOKV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B23016B016A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:22:50 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E9871201B5
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:22:50 +0000 (UTC)
+X-FDA: 85343372100.03.CD1A0F5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1C3D2140004
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:22:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792509586;
+	s=arc-20220608; t=1792509768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EQYvwkMnfu+WDRyfOhAk5xxSPl+eH8WAQuJdlRRhiZE=;
-	b=vmiYGYd/eVSuFW9XacBGAmVPnRzdtMb0h7CTXFbt5Xw7z+dLXqWLEyNipaO4Zy7dWsPcY/
-	EV40DavEGl/IKIlQ8zrmwHGWfs3u4iJM1FBoz402WQS6YxU4IF9A7vQiOJ7IhU3QRfDV7p
-	aB6rNAGVqMgDBhj1jRaokipvnL2Tbco=
+	 in-reply-to:in-reply-to:references:references;
+	bh=NxIFDVsD5axqabICLrNLsV0/HgE+/FfIy2AFMMdvPg4=;
+	b=Cbrp564z9Uo+DVIydFF7o3L3jsDBfWSdY/NowuhIxxgI5UzCbzM+YpHELmdonOq0M27svX
+	ZrOoxf1rXQg3Folq34L3ktzcZamGvVXzSZ1zb51wJROouH2zC62UMDKmdWmQXuob4N48+c
+	Ka96FE2qoglbv/XcBchNqMVk/mnqDdg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=X4MUhOKV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792509586;
-	b=yuviLrhMIOE8kN5lXu+wVTrv/AMSMMqON9qGgXqkgjR2fomP+h0c+rt/+gT5eHlicBAbX7
-	unjXK3P/Vce4+I/xsU3v6eGGDPXy9XRAcJoM0wiwd1CKq14WCYPM5MBeKBZljtI4eZerud
-	P44d2aWjaI8wCWs1dm0pSAJD4Lmsv4M=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-881269371acso385033b3a.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:19:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792509585; x=1793114385; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EQYvwkMnfu+WDRyfOhAk5xxSPl+eH8WAQuJdlRRhiZE=;
-        b=X4MUhOKV++T1EWi2tPexcNLDc+juIS/QAxA/3zFo6jTWGi+Y2Hywn5xUnNWxu0XxxC
-         jSHBWjdGjTQHBg0rGAtHhet1dxvJxr/MYu4m+Mfw09I68RACkcQ/HyVvNLvk6X+UmudH
-         Dh7cLPxLvsM6HPTZgDPwGQzwHVw0FL42Gk6OzNrP4h4mlwDL7OxMAQVQuYwQuA43Qsi8
-         /HgwsuddqYyauK2JiHBIJ4jpcbcIEL12uiVac2iEdjvJWxsoHcEa5lozwlczF2vfy4WI
-         zMoViQlVOMduaco6lIsOdJ5hBKF862KxYRu5zrIxKqamy/yTtMOGhqdn+pUKxffKQ7QB
-         c3qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792509585; x=1793114385;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EQYvwkMnfu+WDRyfOhAk5xxSPl+eH8WAQuJdlRRhiZE=;
-        b=H/00weigiOi+UCkeeY3QdCSCWJhpB16f7zCu96l9fAEl40iXJjywRClqY8Pd91mCbQ
-         VUUv/rnlvAAmy1K0cksbtTXv1GQIDguQNid7PzhVA5ee0QWEsTByvkvyqf66JStugJA8
-         CaDMgn95g92vhgj010ADH12K5m2fL380+WCe7V02bTTtbXtCwrCG5FRbD6ehXwD1ZDB8
-         g72w6AfWyT77M0KUULjkGFG9aUdEUef0bHL3BYS8MNuudTM6IBRreaCfeZfA4mxI5Eq3
-         bDmyWazyqgpEwEQqsfo4ZyjNKCTWjvXeqGTFfqEHxQ3r6AMq2hPQj50f151QbWIWWYXx
-         3wDA==
-X-Forwarded-Encrypted: i=1; AKwUvBwunexkEvxCQCJ7iUl6JOUZScG4Glc82dEQHOFE0tESANGppDlKjZhnERwXyPQLfKH8WZr//kzwFw==@kvack.org
-X-Gm-Message-State: AFq9FYJ7HDGmr5ywHJ34vQuHOjzbanq7M/f4C9scjpuC/nQPkiW4mHw3
-	NfC0ilskY8x6ZVFwjoCcNn5px9zbtsrchMuMZL50JGDzHPYiqL5ZjwKo
-X-Gm-Gg: AYBFou0XNS2bLl/ATaflWdgmxWrTflP58X48IhmI35+qyy/zM5FzKpkWIVLve5F++Yn
-	voxT6Y4aNgmn1NqeYWWb2WEjZ4mqOim+VOxJCbe7xGQLtp/VI/4Q+cFK014xXPIsM4oTCC65cZW
-	yyZ4L+hhtg4NspdZZIw+9253HMG/Hjzvh6o8C9og5zw1uN1f7G14dXCjolMlIdyTlmfknbhh6K8
-	XPAMe7o8upxpiUnbT15NFFjL2JJnYQu30lKJV+StrYtw7y1p28FPrq0GrHJgy3p89W6acbpatjO
-	xWpI7921TeLFp2dLOfR8A/wS73pKsEticXTeLw/kzsGB1EMdGNE4wxGHLHGBI/OB7KxzNRUBbvk
-	G4VR7XJSTkp5G3/AEsmgepjPGJvJijA33fJBSa5M2KoV4sDQpHJeJkM9Ua3mK4MOB6ioj89ceqy
-	rnLqdbhUGWuzbIzPmamsg4uukYf3aNe42K76FaURHnN8X7VBG8xgNxgl+KlUXJvmXbBVAbG+a1J
-	nuaCx4haC5vC/jfBnfBM6vP4vcfJ/Ht8hThBVXltva1xun6MEmPnw==
-X-Received: by 2002:a05:6a21:4584:b0:3e1:3734:63e0 with SMTP id adf61e73a8af0-3e26fb99eeamr1595875637.41.1792509584766;
-        Tue, 20 Oct 2026 08:19:44 -0700 (PDT)
-Received: from gmail.com ([185.220.238.37])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89f56c89b97sm4994338b3a.12.2026.10.20.08.19.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 08:19:44 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: Kunwu Chan <kunwu.chan@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	hannes@cmpxchg.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	ljs@kernel.org,
-	dave@stgolabs.net,
-	roman.gushchin@linux.dev,
-	stable@vger.kernel.org,
-	Kunwu Chan <chentao@kylinos.cn>
-Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive reclaim
-Date: Tue, 20 Oct 2026 23:19:29 +0800
-Message-ID: <20261020151931.885951-1-kunwu.chan@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261019185002.3428594-1-gourry@gourry.net>
-References: 
+	t=1792509768;
+	b=jrnDtKSlFMPEWuwJzRR5EJn1DOUoz9MbuOc5u3Y7Zu1P6mbjjO7DH0iE8RhWQ/2zwvshD0
+	/l5iJK4KFI2yVCI9kfo9vTp8/EbkfN6sla6u0+2pKzlKAOxao6zryjFzGuU69PJ7A1Re6r
+	8DB7xXFbCqgNv5iANgVTvLQnDz+r+KA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B040601F9;
+	Tue, 20 Oct 2026 15:22:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68ABB1F000C4;
+	Tue, 20 Oct 2026 15:22:43 +0000 (UTC)
+Message-ID: <45ef34c7-eea5-4813-b54f-3e34675697b5@kernel.org>
+Date: Tue, 20 Oct 2026 17:22:11 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] mm/page_alloc: validate zonelist slots against
+ concurrent rebuilds
+Content-Language: en-US
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
+ mgorman@techsingularity.net, jiang.liu@huawei.com, Bessel.Wang@huawei.com,
+ stable@vger.kernel.org
+References: <20261019172346.3344005-1-gourry@gourry.net>
+ <20261019172346.3344005-3-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261019172346.3344005-3-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1EE0018000A
-X-Stat-Signature: 8detipg4yyaq9mx9xi4ksearagfn3r9e
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1C3D2140004
+X-Stat-Signature: z3653jink8egbiuipym5sjfxra5by94a
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792509585-964397
-X-HE-Meta: U2FsdGVkX1/RPFWCbzrYcCuXbVX/GYlp1ppJuXA/BaQRrAeM74puzld15K+asnkkaK+SS5A2ZHdm5w8MjCwitQNFccOBM9y5fT44Pjj3C1d7nDMvQ30Gzi0PGPxCM5T9ftiLlkzrKNNVB7Px1uvrUETcNMDqREPPHIuMcZRgWwfmjtNIEMESVDpnaxmqC3n3nFx0lvy21luCl838xQI5ngrBltoLQueunra0FO9BVgtUW4JqeyYB3m08jdpgNPuqBgBNwu1+uehtjmJ4I3vUnrEANRQi87INbxKMI1GpB18APcRyo1noCA9AEodm4YtS/UN5tJsFtf/Yvtl6HO49VPW3TANM3WFhxRSH+C1RoMscagDSl3NCe+/BCGf5G5QTxx1KNrNbOuvx4RE4WSWBigGy4ZiGRGY5SJIIAt+L9xbbmuYHYjlrigsZx2yashqJ9sZX2YlW7MfLn3uMUqylSvCAMBnhxpcmWiN5ZxWDdqqEdwMKF7ODcBd7sgfBMJXdgpXlP7p3SG4GA1XWOzMNQYhdlNorN8ENKgqQMIB/J3vMvCOKg1mAVIQavJnOasZezQ5y2svXlbnrvDuux8bJ9+tiDr4yOa+Jg5Hpll9SgrE5xIUFifscscgjZTa/ygby9zQ3qx1LSo4tWtWb3X12Nc/SfD2FyBMYpl8OvBNNaU6lv/EPw3Wg5PZFky99sLVB0Jl/LNpMBaWac0bTtYzil3n3V2dXwk1DC5LxNh1Cn/LKWA3wlnXMLj2HM7GzvPuKtBv6Exm0DtOZSkR09OQ+u34qmcszgB8qemfD7Le0mt1PkuwsNrXk3k+nvnMK34Zff8E6k6BXDAUu0kwieWM9R49YsYCCKrZ6gkpzs65KYfu0rahSOeinlIkoxOFWxWkT7Be2HkAtmG9VUWkKYh7jVXKqXLOW5+BgIqzKs44IoZHoUMXKuq4QFHK3ZD3qygmQtoWQEnETZwYdf8k8HxL
- cjGZ/f4R
- tubqMOK6OMJg5fnBqVUXYW7CJBubyqIfPn+6GkDU8ilTPjgHSZAc3vnpj2RVEnoFqWNR70piJ9714RiDQrRZYLbYEUDyi7p0ju1qS0//lIC5UQ03j8gcjbBZgfsBlpSM6wrugodlnd4MzKMZumrkTORvg5wJHCznkjSzCFNSPJpFRuYwuJvW4AZrG54u9WHxryKe9HsORP7eQ0DaVwAISAnWLCbmggK5VrjEYVJzClHHfIYkt9Onr34jjmsu+/x6BPO92XaUOWczDzw5BBdYqfJmsSmT5LZMa72VRjJYtpI26ANI7bJWBsS3ZnT8ZVaQzhtPlzG3HYx9bvGtx7zH3YqbcmZVFzSzy/zew4zEM3NNGxUpu9FmHFziSR/WjkV+sb4tW4S4p8x2Zl8ahc+cP3wS9bZNNUrE+3TDL2ogqG7DSeda3ICn1Lh3Iz2wjYR6LemS7297F0hgULQ7QwW78vX/WzHwO0WldsRI7D6f8PsG3KXJzwDkN/drJmE5V75Ug4ydRnELdXcPE3z308uqnyFgY12N4+mzP9TSI
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792509767-93694
+X-HE-Meta: U2FsdGVkX1+FcS9bkgkCGv2epIB0q4v4YoYLA1kWHhdFmxVQVwR/vVoH12FwQNakt80LRwZ9jgRed1vWEhM5i9uQK87MwXgCscN+S2tozWI3BagfUSL7OpstAAmI55MnB4Yp9CuEGPQH2E0Q+rmQm9g5Ov2g6Y05M6XifeyZ01sSOr2s7l+FieQrmODS62MYOHcY9aZeQkYSqFFXykAfgQ9OYAfBtgU3tDzOc/T1husZtVO6Azga1trzm/RKpZQT89WoYxB+xNlV7+9BmhsaZKy1MVIUsoydBQSyF6oUKTI6wY5bYZN0WtqcLJlSXXCtO2C+uHDsBlkZHl2VxkZRY2C310WUVZDrpRBnKIZ4++//kJinSoLWRlhy0DSAHs4MdFX5HdZ3E7G7ClzYsid6TNFGkq7CyMbVZUX4sd2k0APvKgCkE5oLiFpwIs0vpws3C6mEW4h+cC4DFJnerrkJq+mhFT4Tq8Mz2ZAexid8b5PafJeBb4KRYdhDkNzK+Q1IcBIiNB6EyhTKioO8N7ij/VGpZqcA7rWV9k4AcuOOBAmzS/0Q07v8YzFC9n0If7ALQzL1nu83eIZg5lUeZbGarBkG5RFoHaKnQ+YSqCv3v4tvASfSH1qrMs0rE3MC8aw7fpzapr9cm7M30FcRl3m1odtOmAJXZJmoWnht6axC4kpV6T/Vsz+GcnJV0RyCSuIAPwFZ0WqtQc/rn6EAwm3IIcVo3FO9Fgrac53Zdf5/Z0eaVwJOC90PqYKQdIB7OKU/lkhsBAF6KnZBpTz5zgpVhb5eSrGvO9NSCjwN5TqlQ2mnVIYRj7/S3oCPoq7nNaJBFbtRxUOxJ/c6G7W3DBjr5KL0cbzqPS4ok7kLuJxrvG+IoQmyOiKIy0NFtkPO9ME2pJ5S5AyGz/UfTUt8Qia1MCb9dY4lpco9QNHyNm8Ac20aETkE3XrNxDY7DFDzv5RV0Lgb8X6N0iQvyBW0bmJ
+ s700Fxre
+ VjwWtFxL3z5oRzl2UcgmFUCK+zP4UZzhbWiR85iZK6PzSpPKp/AbAmzzzJ7yr3uUv7cQGIW7/efaZkL1M71HgGeW9By1tPZnc37qmLl1UsiTtG4tolzrxCSkGpJk3GO5nKNzW5SqMW6OXV9SH+WjNi3kGLmyzwEVSv3uvFf8AUHXjVBBuNxaEgtwVbqp3Jt7sGpqL9YaTZYHNqK21w06hKadrxbj60ZZN55fPkxkuU4zGQBgKHLiWO+icz3JY1cHAffC6bACH08PxEWn8cmbMugPDAVdAXqrrGnmudS2tr0HLJZxsazn3j9UZUcmff6pA0cGQl1cIKHg2PHOa0VuRy+P+IQaOUxpy6vooZuRcq1O2CPw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,53 +129,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 19 Oct 2026 14:50:02 -0400 "Gregory Price (Meta)" <gourry@gourry.net> wrote:
+On 10/19/26 19:23, Gregory Price (Meta) wrote:
+> Onlining the first block of a zone rebuilds every zonelist in place,
+> shifting the slots after the new zone. An in-flight walk can use a
+> zone it previously filtered. e.g.:
+>   - a GFP_KERNEL request can land in ZONE_MOVABLE,
+>   - a node not in the nodemask can have its zones selected.
+> 
+> With kprobes holding the walk across the online, I was able to get this
+> zone/node misplacement to happen consistently across hotplug events.
+> 
+> The iterator approves a slot by its zone index and node, and the
+> allocator then loads the zone pointer from the slot again:
+> 
+>   CPU 0                             CPU 1
+>   first_zones_zonelist(nodemask {1})
+>     slot 0 (NORMAL1) approved
+>                                     online_pages()
+>                                       build_all_zonelists()
+>                                         [NORMAL1, NORMAL2, ...]
+>                                         -> [MOVABLE1, NORMAL1, ...]
+>   get_page_from_freelist()
+>     zone = zonelist_zone(slot 0)    /* MOVABLE1 */
 
-> user_proactive_reclaim() limits per-node reclaim to
-> gfp_zone(GFP_KERNEL), which is ZONE_NORMAL. Proactive reclaim serves no
-> allocation, but that limit makes shrink_node() skip every ZONE_MOVABLE
-> folio, so writing to /sys/devices/system/node/nodeN/reclaim never
-> reclaims a node's movable memory. A movable-only node, such as dax/kmem
-> or hotplugged memory onlined movable, reclaims nothing and fails with
-> -EAGAIN.
+Since the zonelist_zone_valid() checks you're adding happen before the
+"zone = zonelist_zone(slot 0)" part, I don't understand how they can be
+helping here. Aren't we just reapproving slot 0 when CPU 1 can mess it up
+between that reapproval and load? Am I missing something?
+
+Furthermore, since we have the zonelist_update_seq anyway, wouldn't it be
+better to use it to avoid these kinds of races rather than the more tricky
+way of relying on what exact updates in what order can derail the allocator
+side and trying to protect against those specifically?
+
+> Every later step of the walk filters and loads the same way, so a slot
+> approved for one node can also hold another node's zone by that time.
 > 
-> To reproduce, fill a movable-only node with clean page cache and write
-> 200M to its nodeN/reclaim: the write fails with -EAGAIN and the page
-> cache stays. The same write to a ZONE_NORMAL node frees 200MB.
+> Recheck the loaded zone against highest_zoneidx and the nodemask in both
+> allocator loops, and skip it on a mismatch. Hot-add only inserts zones,
+> so the zone that was in a skipped slot is still ahead in the walk, and a
+> walk that runs off the end meanwhile is retried by the zonelist seq-check.
 > 
-> Scan every zone, as memory.reclaim does.
+> The recheck adds about a dozen instructions per zone visited. The two
+> fields it reads share a cacheline with zone->per_cpu_pageset, which the
+> pcp allocation path loads anyway.
 > 
-> Fixes: b980077899ea4 ("mm: introduce per-node proactive reclaim interface")
+> Fixes: c33d6c06f60f7 ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
->  mm/vmscan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  mm/page_alloc.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 > 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index e82ba737c028d..90f7a7bf4e426 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -8180,7 +8180,7 @@ int user_proactive_reclaim(char *buf,
->  		} else {
->  			struct scan_control sc = {
->  				.gfp_mask = current_gfp_context(gfp_mask),
-> -				.reclaim_idx = gfp_zone(gfp_mask),
-> +				.reclaim_idx = MAX_NR_ZONES - 1,
->  				.proactive_swappiness = swappiness == -1 ? NULL : &swappiness,
->  				.priority = DEF_PRIORITY,
->  				.may_writepage = 1,
-> -- 
-> 2.53.0-Meta
-> 
-> 
-
-reclaim_idx = MAX_NR_ZONES - 1 is the right fix — proactive reclaim
-isn't serving an allocation, so gfp_zone(GFP_KERNEL) needlessly caps
-the scan.  GFP_HIGHUSER_MOVABLE would also work for the node path
-via gfp_zone(), but that's indirect.
-
-Reviewed-by: Kunwu Chan <chentao@kylinos.cn>
-
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index c7125f6693574..aa3cd44fdaa5b 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3784,6 +3784,19 @@ static inline unsigned int alloc_flags_cma(gfp_t gfp_mask)
+>  	return ALLOC_DEFAULT;
+>  }
+>  
+> +/*
+> + * The zonelist can be rebuilt in place while it is walked, so the iterator's
+> + * filters may have passed a slot that now holds a different zone. Recheck the
+> + * zone itself.
+> + */
+> +static inline bool zonelist_zone_valid(struct zone *zone,
+> +				       const struct alloc_context *ac)
+> +{
+> +	if (zone_idx(zone) > ac->highest_zoneidx)
+> +		return false;
+> +	return !ac->nodemask || node_isset(zone_to_nid(zone), *ac->nodemask);
+> +}
+> +
+>  /*
+>   * get_page_from_freelist goes through the zonelist trying to allocate
+>   * a page.
+> @@ -3812,6 +3825,9 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+>  		struct page *page;
+>  		unsigned long mark;
+>  
+> +		if (unlikely(!zonelist_zone_valid(zone, ac)))
+> +			continue;
+> +
+>  		if (cpusets_enabled() &&
+>  			(alloc_flags & ALLOC_CPUSET) &&
+>  			!__cpuset_zone_allowed(zone, gfp_mask))
+> @@ -5236,6 +5252,9 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemask) {
+>  		unsigned long mark;
+>  
+> +		if (unlikely(!zonelist_zone_valid(zone, &ac)))
+> +			continue;
+> +
+>  		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
+>  		    !__cpuset_zone_allowed(zone, gfp)) {
+>  			continue;
 
 
