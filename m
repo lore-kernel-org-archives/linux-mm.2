@@ -1,104 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6331A60A2626
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 08:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1FD60A3802
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 08:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HknpIIqB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YD9ZRw1e
 Received: by kanga.kvack.org (Postfix)
-	id 79D6C6B0137; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
+	id 06FE86B0139; Tue, 20 Oct 2026 04:25:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 773E96B0139; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
+	id 020806B013A; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68A066B013A; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
+	id E517E6B013B; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3620F6B0137
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B95F16B0139
 	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 04:25:50 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AECBC120909
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:25:49 +0000 (UTC)
-X-FDA: 85342321218.19.D3C0BFC
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4083616095D
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:25:50 +0000 (UTC)
+X-FDA: 85342321260.11.7DEDC31
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A3A45C0006
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2BB8018000B
 	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:25:47 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HknpIIqB;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf28.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YD9ZRw1e;
+	spf=pass (imf06.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792484747;
+	s=arc-20220608; t=1792484748;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
-	b=HZs6ftsj06S3vpiZUpQp+Or7qUj8F/DCGcetxMXoa6meaqM5Nm/3LuUUpcBaY0OJHpI3O0
-	wkLwbtoqQ9HyNXwBF/JAKVxoT5EIBvnRlYJ1/XgzuSfCgUTFZu7Svc1BCYdnDSkhnhWVyb
-	VLbwiTdhnYJ0oS6aRRWrTAvTPctZPWw=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HknpIIqB;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf28.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=jPxyRVxUkD8Td+9QwNyvaWaSg+CRoePkY9b5UHxne8c=;
+	b=l29fW1ivzHYT9TKxFsUuzbEG3x3XBKZP/7tjWReavTQT6Qj5DDOxxESeT4YhNKWnldIvAb
+	JG1LnA6tJFT/SG3+jzsrtbHVzuustzuJEpjSCTFnpO91ivXCS2YGlLnahO9cJkYFyXWy/8
+	3/l6aFjqx9JLNee+a2pMvWcC0TRwQdA=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792484747;
-	b=ZlsrrEHw8H1A85vQ3BWCFz0DBxdNDFdcxLL9VEW+i3oSYlHhla9C3kM5TEUUpK2Fr77Eym
-	kTbDddPqUBiN21kO9w9mcANRI3DoUeaf2Pkzwlh8iyurb++SBFDIXJgecZTmPO1Zu3DGHh
-	qiqWTRlBLFAiCzP8NA9nWK/wcEd99oY=
+	t=1792484748;
+	b=EUDEw08hocgVPo41DJZLw5FatiRI63YYBu9h4HLnVLwGvSKULqZXjJpKNMNPibV7JYMhds
+	IygpgK5JY3iLI7HCACshmOVAEmL9/08G23xsG3igb4oZP4mCas9gnaVkJ9ejg1G3y58+Uy
+	zTVJ/RS5eSRcCGuvB+XP+j8OjiHodas=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YD9ZRw1e;
+	spf=pass (imf06.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 30CA8601F9;
+	by tor.source.kernel.org (Postfix) with ESMTP id B65AC60DA4;
 	Tue, 20 Oct 2026 08:25:47 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792484746;
-	b=FgPoTl+yeNRRHhK72O8ELkfEEdU10jb7xOM0QNRZtes2bT1qZKT4nk19hMfZ2gPKsP5C
-	 Nm8W2ZBgMy+U+rgyVXoLdKcgW94+l95qrSOiCUffk7r+j2cmj2POggcwnGzF+ad2jRGl1
-	 ZZl/dTmEVJ+/3ARlV0RQ0Gr0l/lGypWKGIwIYn+r/EkqDHfPCqO5z1RlNlFyGN38GCQxQ
-	 U0AmeFRe89h9a6d47BaMCQTqEuWerFr89FGQoGf6Nsu7aKPsPpoDuAx+HkAjHf7rRMusK
-	 bAaJ5+UBJAN75j0zpLoIqqYE/EYY9a5Yq3qLKiRKbDUTfHMNEkKEmw3ZDDkZMZl7TMA==
+	t=1792484747;
+	b=hTIJtvSRH2k49nX6d+50Tro4sahNt4ZbWf/U/WUggzaqM6eD/WrJbIqTsr9vKGA5gB86
+	 JMnRj8E4zDXskzRIBAOVR4xCZwv6m9g8PtGEkkXRwxU8kmfwmNr2NSKjctk3K0dk+bSfb
+	 oneP7KxJACLm0g2tujFga0BY8sdiX/WlNSyAASor+bJh8nORDjrWH0H1RKCFIb33y8lV9
+	 JBwLS6blfUWhhq7Zqn3u1+wPrsmsB6f1/pWZeX8thokE3l3gK6UBFANVhdwCT4+tmwJlH
+	 3luiq/l+dwRnv63qjV0P5QRgIffiSqoTHU5R69iuK32Hxu9F8eCos9JDYup6XYTrA7w==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792484746;
+	c=relaxed/relaxed; t=1792484747;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
-	b=q/rIZtmngc2brjlffBD1+sxNgNPvZUf/Uk/lw2b8rsC5cZ5AbqGGia8eFVQ3Sl3msIEn
-	 R32cfgQ1rPoCpi6NNhzrONWGs5Q0QAwFoLtTdZySnuWJqk5MSf1PsnmnrVGjjaT3NsWzp
-	 qtsysX8lC78Dna5GuSX9na5MJwg2DsCJmenfKMc9GUN0UiuM4VJBDdDDvBnQKjJhpvpNK
-	 fU42mIcwI5EndAZA/qp/jrhlj3EiIjErgcnorRdOvXoOpQRxVbzD8lLYS38Gml529f6qh
-	 jPl6fn5YVsxPwkN+BwMjB0oYycpdev0Pxm9B7WJmPJZDVTt1nbf3X79lg8C0F+36Zrw==
+	bh=jPxyRVxUkD8Td+9QwNyvaWaSg+CRoePkY9b5UHxne8c=;
+	b=dKatv3KDTnujupP71/V0C99ssfgpTxF3JbVdauQpPBOCNMxRkSp3Pbt3qBjeQm6yvvGT
+	 lHA3j7u3ANXBzZR4KX9t/jPpTBV+1ag/fZMDTclTVoTlUQbIyLKn9ue4BzPMhJ2/LReja
+	 olOBfiToR31xqTE5AEaDWKlPLfyT5vcpynDqJLZyo5hg7EevYW7FxAd8l7+Xn0Ei6Qn1Z
+	 PQS25D7kLu7OtYWuEXT+dECQHOITTR0GsexOx+ogm2GwefJWLK4IZ/w/nIkHPSB09gUlr
+	 sza3PUaBUO98XoeZ/sN4a7mqDEFg7DY7RQlKpKUpj/Uml9tkVWn6r7Zz2LTPkUuF0HA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 45D0A1F000C8;
+	by smtp.kernel.org (Postfix) with ESMTPS id 4562E1F000C7;
 	Tue, 20 Oct 2026 08:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792484746;
-	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
+	s=k20260515; t=1792484747;
+	bh=jPxyRVxUkD8Td+9QwNyvaWaSg+CRoePkY9b5UHxne8c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=HknpIIqBWVG4RDDAWPFpeRRZGI105BMcDt/QIyAV3htiFcIUqAU8Ri2roNpFry+6f
-	 +kOv38KMHhCeBugMGAoYx80IeABD8tTwrDsIq33IGF0ys4V7aymNlRctRl+0nAsALZ
-	 OHG8osUMufjdJjYWE8UA/9TnvxqE73TuGWXRIEH50rHZ+5VRAB6E9wEIJFrnRkN25c
-	 H45MBY6CfEyCZgtzfukiSv0D5/6fNhQ0bkaYUhfNr1Ivo3SZE8manAWF3xFC61B7UJ
-	 LmJs9bFUtTPKI/C3vauUl4lgQv+ar0Nb7pplNlpPpvGrKykypckpFqPe/4YPb9UPCZ
-	 yUivwQHc+kJrw==
+	b=YD9ZRw1edhudz76MTNsrjlEf4hfWQ7z+8WgT/xIwtiZ1qTEz8z5rMMEmhE7vVzxcy
+	 rQcNJd8kE9JVl+3MUoQJHpZXi8W7RkRL43FRMc+QRp35wvYeQuQfrqQe9EwMc37AJn
+	 Mb2wmSa49WKkaY5OY01Cw5Y0F0QI+URCdsQLbIrADAkrKb5agEVOpjD+87zqtUIN/F
+	 6yieJWhW8QwcVg6IG3CCP2oDVugkrQXKr/wBX7lf5pjfopRhRv+WYPgJXCN7Nm3RY/
+	 wJrChpQCxPs+mgXTuTrU0Kg3ZljzjCGlyk+fJT1VSX/zzKTU8BL6Xl4fyye/NMU2Ri
+	 pQ8AeWx1pYJlA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 9FFEE430CC;
+	by lkml.kernel.org (Postfix) with ESMTP id AF794430D7;
 	Tue, 20 Oct 2026 08:25:45 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 20 Oct 2026 16:25:18 +0800
-Subject: [PATCH v4 01/11] rust: sizes: add SZ_4G constant
+Date: Tue, 20 Oct 2026 16:25:20 +0800
+Subject: [PATCH v4 03/11] rust: sync: arc: relax `ForeignOwnable` for
+ `Arc<T>`
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261020-tyr-ioctls-v4-1-704de77da223@kylinos.cn>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261020-tyr-ioctls-v4-3-704de77da223@kylinos.cn>
 References: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
 In-Reply-To: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -121,29 +122,29 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  driver-core@lists.linux.dev, Ke Sun <sunke@kylinos.cn>, 
  linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792484721; l=1808;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792484721; l=1389;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=5K5ZDtbb0No9pS3iRwCaB/ZkoyNuv4RA97gE66KsHmQ=;
- b=S7kNtOQT98eXxrrMvt4CgYx9CRvn9LdTut3eQA05YkIP763ffVSnG4AhPDuBiTBCVr5svmTSQ
- ijyrtnGRtN+ClGSgrmja1W8xjNWmpTDLmdDgZdMd8avLa/I2O501p7K
+ bh=E65clxOu/qjNbqNDrRBBfaWHB/W/gvw7JStoVkgnAT4=;
+ b=9OwCtSZSA8ESXlncgmFEdWkXp304HK2DH1QRwr3SpIWHFMg8uWBiTUZC5Hf5v+z/VV9+TF7dw
+ 4om5xcnMwqkBO3IoqCJ1E6WR15C8MP4tWxyhVdQb1+sbDG3gpEGztpT
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
  auth_id=950
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2BB8018000B
+X-Stat-Signature: iwuns5n781npz78ez9htdw4zyswz6w7m
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A3A45C0006
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: fgiyqjwdwbp7q38eo4eb4hpzhwgdf74z
-X-HE-Tag: 1792484747-25807
-X-HE-Meta: U2FsdGVkX1+FM8nrOaGkStesVDFlIUd9jbcZobMl0ZEIMS1knVykXA8h4tYfTHbdr6y4ZOEC0IQurFaIw2Yc1EqtyLqBzGoPXWf9vpJPTo7sXsZfUByucQfmqTSjVBqaiXYT425kj2q/UU/FkRr9HvzqKwnYvk5AvLnnlg5sTBPCJ46dPvdfksOrpzJuB+xdX+FFxsRife6gVLKVaeiv6Jns0FWJC1zZoSrMvEU38EwCGaGBEuoYeVBeOwzfBUgOOiKUm+5Tjrq4kuAs5G0eev5F02QsfzLiKwdiffxZbhuFLxJ8vKm5Gb3ropliMLmmgbHuFRj7pbA9rhcbdwtprFxJxbEnMd2Gn5RAeMtgGhOM4DSk6J+fqvieyuRJZCxfvbFFtyBcW6mKAmaPGn3N1cJs9mws0SAMoKl6Y8aTWq1qBGny9g8rg9zd3/Mr2Iob0jXH+ugOKwKZS8jBOJZTSSVDemCaMG6Zq+p1y2oWkjHLeuTQfTVoDSNtJJh8z45KxMYsWHWwc0wwl0mW5vgDea7WR33+O7kCiHx4c8Rx4VmVni4zpAn9ysvMs4xoTGppZcNVtCzVXyobBS6W5LVzKwVTbB7Qi2LEjNXSqmC8awN5bUgzgvbO+Eptf0X/Im7EWAEZhjpvq9oSwaziC5D35eg5QQu66xpy9+hz+2gvhhGYqJIA+GHY8u2cLbeXZLrfegOAu6EVYBA3cUEKPxH/gkRYHJeZIPAuNQ50vRSsDJg6O6yG9ZKn16Vheyeq5bA45zt45buRdfJmf+8ozCjv4VQRx5IFybPQuX5xFfoEZ1ITbjVhcmyWjIL6R5ibF+kEsZbe5GCnw48tzoaAA7Z3eUo47+Wn0GYBBI67JFIabc/6IPD7WlfPAa4My8sVGy3Jdumsf3Pn0jZK/ySePBKZb10Am2vuU1S1Xcb3nw21Nq45wuhFASwexMTSprlMHUjh9O3editgMzTt0dBhUKG
- Oi1Wqp1f
- gMBPMp5HEyfZE6GxHVW2O+LkmJraz5SRQEAAro6/f+gBhZ8mnwt2sJ8qp7XrSvjdRjIshuTFpnyfBO+rDvx636ieCIrAeNpSn8GCkK+46VNxRtsdZYYGad7yoMVfAU4TZEe6cJFgKBXX+Hz/gHaF7J2E4SdzmLIWHPXkygv0USFLBIuynGNJUfz+eWrLerMhhBE+DNWdSCYBciz3sqiMdMFi/IUyu9kkFKIV0nru50lPo2yQ5qjNiOAy5gw/DUYJUvpDPNS0KDNo9PBEksmKmhOTIAkxfHlCS3NL5NS53kcvY2eGCSFF/HfI3zKHkIe83Vk88ruYzamh+yhTfbWHVmta+L1e6zsb6vn/NN7QoLgw1eaOKZQ2XuZrcXxhSs2rMq/BgR+ImHlnjWydST4wMhYDlrFKyy5moRIMxisrHFh78ZF5TDmLsvaZNyUVWLPAJJf7qWIWxY2wLfYKO76IJ89XdaIyj63ofut10qd7IlD+RbGDpN0TnZFn5lUWco+bkFv0JBFMxcd1ttXWskqOQn27yj2kQxNcqve7P40rOzvFmzzJFhqrNVbOu9Vusz9KhyZ1YGZk7E+mxEcP9meaxG2uDVYqlwp2L4DBCqtSP8CMjZm97qx/S6SVE+JuQ8HrCZM2W4i6h6SLUn3bQYqT502akSw==
+X-HE-Tag: 1792484747-197276
+X-HE-Meta: U2FsdGVkX1+5vnVY8SzH2AgxVx9YPzB+ABv9LlXYTXhnoiO1ZrtqzsSYKcS/+EPwBsX9iFjJp9a4IXSAfghQHe/e8o396J3+HKwbAXJcNvtDkqoKR6P4Y1QTkeaa94TzIrOxCW68tyHjkv69lP4kHJUNCdZ+jkYRh34GnEY+ceLlwVD31/ZcGXMTb1Gweq0Sqru/f77Uk3+gQAB2a7nkuJByHqd+p0/kP6XcfQag6JSOuW68v1A/AdvDHUXhYHdPtM8QdCX71eLJ3m9UTNGlVhr1RsPeK6t20Rh029MVo7L2wOgHYd+m4iHOAeoevaHGE8jOebKWdP9zdqbbaQxJxWnBCauUzN9Jy97i/AY0UJzb1tGGYQD8eDj99DFz/8VWMA/NKrv2Ii7YR51SB98+UuLiG/TbZ/lX8y+q87KtTU9+VS/9/GYRB8FWs8PGzQ3tl6LsNYsn2E0f3ipzLEPA/IW1w9W//lhCm6HuUbOGI5hqZBF/8JIp/e89E6dTVXQDqRxf6w0VHlHqOTBjnnUnHlvoAmPD1o+fXUm4u73qrUdrqvx4O669Vv8hwsBOo9TEyYyJvoVEio8UOmG0vwhsd8jJK0gm91oDlX0uNPli3nWMZbKyeCLEzAmCTFFjX13QPe3thwDdhaRl7nl+WJHRHXHJNYECksGR3ASSXDhkKzxFM1OWj4SQZ4inWt91NPU80oMa1Xn23v6RfG8rzgZZ1qbkHr4+U2TQ3KUeYdAYhx42aSh1J9Xduc62cK1p1EZ/UtKphuTsX9ddhyycHYZRBxFrzjQvthQSaAry0y3ic87Cq9vQaKTXF6Scn1dr5nqwHvc8ClDopWKGo8XOjCxOmfWQRExwBykEZaFlyOLJgJFq+hTQ40srIPMnCKuA4AaD1ankzpWOm5aPFaljf8tLjheB+c/hZNBNo4mNlRz4e/ZSunnCDd8YCZOKK4XamYXKculph0y+aHA4ju3bLHF
+ MjbV1op1
+ 6cCFGCPnRAH4QXoBM+uYFMvO+RnHFnKIzHJQvP5DggH9F/rShfgl8DhcVsPbpWQ3RbGn5Eqtm5KoibjKbsSp9hm6NQvMfxUtIuuNJXPN4saxZFL/bwdBD6s7TQO4MI0gIxaFFXochZ2UEPLzBlxA4FLyrwi9FJRdnAilKyBsfhEM/qP/uYxK88D0mSCQlAt9zkVe7CsuJtW5gh68mRuqANzuHuSpPPEbHK8/RAGPbx+cWd/zmh+WPOd5pxWzIh5C6hlXdtscO2k2FpQwd5d0isGBX+JQXhpI2qFYbWrJ+rj+8ANSqq+ld6y8fdVw+WEiRbqYBDrKOKAoxMOlN3lPIZ/h6KqHPhadwFS9D6lDxdPLkm/XvJj0ATKjHg/gIjgteM3Ol0TrWse/kn3Pccz6l/1tMfXLC8Fmd6jrCqabflp/Zsnhq8M0MYw5B1ZTagLCXiXFOcW1/rnda382+S0LpwXD1cbCTQNyouoqFq2S7tz0naCja11+iWQsKNsrl7j6PqRVaR/KJVmrqu8bT3HzLLFRBQrJVG98OsBxzEq0uaMjSQynH2SVCOPk4Xw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,51 +155,42 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-SZ_4G is used by Tyr when splitting the GPU VA range into
-user and kernel regions. Add a LargeSizeConstants trait, implemented
-for u64 since SizeConstants only covers sizes that fit in a u32.
+Drop the `'static` bound so that refcounted values borrowing from a
+driver registration scope can be foreign-owned by the XArray
+abstraction.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/sizes.rs            | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
+ rust/kernel/sync/arc.rs | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 930e63290cdd4..ee99f470ae5f4 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -116,6 +116,7 @@ const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
- const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
- const size_t RUST_CONST_HELPER_GENLMSG_DEFAULT_SIZE = GENLMSG_DEFAULT_SIZE;
-+const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
- const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
-diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
-index 521b2b38bfe77..0acc8733d2368 100644
---- a/rust/kernel/sizes.rs
-+++ b/rust/kernel/sizes.rs
-@@ -132,3 +132,15 @@ impl SizeConstants for $first {
- }
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 8ae0fe6f19ec0..9b582a815f888 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -363,11 +363,17 @@ pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
  
- define_sizes!(u32, u64, usize);
-+
-+/// Large size constants (≥ 4 GiB).
-+///
-+/// Only implemented for [`u64`].
-+pub trait LargeSizeConstants {
-+    /// `0x1_0000_0000`.
-+    const SZ_4G: Self;
-+}
-+
-+impl LargeSizeConstants for u64 {
-+    const SZ_4G: Self = bindings::SZ_4G;
-+}
+ // SAFETY: The pointer returned by `into_foreign` was originally allocated as an
+ // `KBox<ArcInner<T>>`, so that type is what determines the alignment.
+-unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
++unsafe impl<T> ForeignOwnable for Arc<T> {
+     const FOREIGN_ALIGN: usize = <KBox<ArcInner<T>> as ForeignOwnable>::FOREIGN_ALIGN;
+ 
+-    type Borrowed<'a> = ArcBorrow<'a, T>;
+-    type BorrowedMut<'a> = Self::Borrowed<'a>;
++    type Borrowed<'a>
++        = ArcBorrow<'a, T>
++    where
++        T: 'a;
++    type BorrowedMut<'a>
++        = Self::Borrowed<'a>
++    where
++        T: 'a;
+ 
+     fn into_foreign(self) -> *mut c_void {
+         ManuallyDrop::new(self).ptr.as_ptr().cast()
 
 -- 
 2.43.0
