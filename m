@@ -1,108 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9C3606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 05:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C27606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 05:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f70NTLHk
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W3B9Y8OY
 Received: by kanga.kvack.org (Postfix)
-	id 8B96D6B0407; Tue, 20 Oct 2026 01:43:19 -0400 (EDT)
+	id A1B6D6B0128; Tue, 20 Oct 2026 01:45:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 890936B0408; Tue, 20 Oct 2026 01:43:19 -0400 (EDT)
+	id 9F3B26B0408; Tue, 20 Oct 2026 01:45:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CDD56B0409; Tue, 20 Oct 2026 01:43:19 -0400 (EDT)
+	id 92FB96B040A; Tue, 20 Oct 2026 01:45:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0A86B0407
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:43:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3A28A0904
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 05:43:18 +0000 (UTC)
-X-FDA: 85341911676.17.3EEFF90
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E468AC0004
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 05:43:16 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f70NTLHk;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792474997;
-	b=rkFAGFGzJ5/W/pu503N6AXeSha12qbXt4ZZU9JLlcUMqKsEOkzQaE+OAXvB5BwqSxEeLiR
-	AHrhkV3DDtPICvMSqV9//+ARkxhkIDRZDNzNXtq4GKldjhHUZ2cwQ7rNZJsC+kOyVJWVSc
-	DxXbmcrXQUvjyyp7TJn7o2VI7EMfxIQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f70NTLHk;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 682616B0128
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:45:12 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C84BE408BB
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 05:45:11 +0000 (UTC)
+X-FDA: 85341916422.07.3FC6A7A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 38C768000B
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 05:45:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W3B9Y8OY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792474997;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792475110;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TOWQDPzVYwtb3Y9VfuAlKkFOXg9wIgroexj3Hv2c5PU=;
-	b=HfEjd+qPvBp4YG4EPxqMBlkuiiQvm7hMO3ED72dhtRtdbeeeaC90qTWkW6thTjB1aRJmVQ
-	/BayhqXYriwWCdcTQvljjZMlRiQ7cqKD7umGI7rkaVXgqsVZX4aMc8uHhF5Y0HtKts+5S6
-	fYCgvTJ8bon8AIW/Qfu0xHfPQ+pWzWY=
+	bh=5ljNN4Eabv0VZKAivtD9fEiK49Q3BHX3CJd7m36FxJ8=;
+	b=cxH30lzxPujOOINAauXqqW861hqeXOEKXFt5cwju0OFlphVTg6wY/XObkAFDN7AbsjvMli
+	0kb5kA8GxctqcUI2s9WGpHFamB415WHiIdospPsauI+zqdg32YBfaPH0YFx3aWF10RAU0j
+	6lDJUq+bBI1LiXDQ6fqrdI03FhwKhTQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W3B9Y8OY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792475110;
+	b=UYGBMEcwktXNLug3MnAvxsLGeAL3fzlf7rcelR8SV1hwYN+W4endrbHjzSQFRs3rgIiM5z
+	JJV26Ij0wnKpzyOOliMAZ9Fucmei65FVE/HFsgohVn/4DS3QTZXWRs3RZsjKerrMvTtNpJ
+	cf+i20cFEXPleLiNsDw2wIchltCEdvs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 25F404450E
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 05:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0845F1F000CE
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 05:43:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B34C5600AA;
+	Tue, 20 Oct 2026 05:45:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704F31F000C4;
+	Tue, 20 Oct 2026 05:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792474996;
-	bh=TOWQDPzVYwtb3Y9VfuAlKkFOXg9wIgroexj3Hv2c5PU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=f70NTLHkDVN55vhVr0fufzuQdr+cLQ81mv0DoqgITqT95jr0aTO2WywORcIWEJloh
-	 /GSB/0/0drt21A+Lb8Bc6sOfL96QsepyOsAZomCvIaCJqm2MNx9KlYhAhD7kKePisK
-	 UA6Go+IV5NOkHcAToxd/yNIhcMwJ2PJZ+OSvG2KtmYS645eCpzleIMKPT8I03nrbPJ
-	 m517j4DX4cyslRWGnWrn/3tGvbmwkIi3VfJNJ1ZLjimLOCdH0vxojYbs3mBph81q8i
-	 OTKIKc1+5hSapk/o7eqREIT+qlRXorRSwc4nwd3UeuKZcnw2j6/Rw4ta4zlnxth2+4
-	 5r2lyaTkp6D1w==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93f3c895a0eso152717285a.2
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:43:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwZSNecUK6S9ZQVkq/VkPrB+/pZj7dgAU9jq2TIBHZh0Fu43fEv3u4nu0tsvl90HZK39/bZvattIA==@kvack.org
-X-Gm-Message-State: AFq9FYIaslKuB2gS2co3gQ263lfOvYUB0Tztaag8GekxtPky3oug979a
-	jdUt0SqNDsfA75A7taIUNm/vggVbp8qqx+99NFupIuOmVxu7USatseAW/B8H5RtfgMGiVPRYDNb
-	6WraQh+Tt1wrKmdxC7E8ocBHBsk7aqMc=
-X-Received: by 2002:a05:620a:294d:b0:93e:9508:8360 with SMTP id
- af79cd13be357-93f29ceeefemr1685050085a.27.1792474995360; Mon, 19 Oct 2026
- 22:43:15 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261020023548.3242028-1-ridong.chen@linux.dev>
-In-Reply-To: <20261020023548.3242028-1-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 20 Oct 2026 13:43:02 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wnuQhyCkMq1Dub8HgB+uYAjy+LkgBxCRJG_kZiwAxA8w@mail.gmail.com>
-X-Gm-Features: AclHuK9hXCsPI_k_chn3M7rnq88MHnuONOxS0xCnvuuODST2TZzqbko9HA9tBaQ
-Message-ID: <CAGsJ_4wnuQhyCkMq1Dub8HgB+uYAjy+LkgBxCRJG_kZiwAxA8w@mail.gmail.com>
-Subject: Re: [PATCH mm-new] mm/mglru: clarify the generation placement in lru_gen_folio_seq()
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
+	s=k20260515; t=1792475109;
+	bh=5ljNN4Eabv0VZKAivtD9fEiK49Q3BHX3CJd7m36FxJ8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=W3B9Y8OY8Xp51pJWVAc/0fCmzahSB5Y0GBI9G+IEeIxS5BMw+LQIt5TntXGyjuXbu
+	 wSxDSWZu6SP/kNay6ghFG3NR793hd+ckd6uVcVm3KhhWWlHhgakKWrHgHa6uMcVj5J
+	 hVdXrNuGNXAO6Fuq3SkzOeNZgbHIQH8wYMyeejg6wcTNKh7mTj/RlWvkSFL7poqfj7
+	 y6U8miDK2Qadx1ROV1KFikDPFNr/fXmmd84DKMdaJtiyxz4NTIAp/nV24P13OPPj/8
+	 2HXkJhLdg3/Axe2FwwVGfGlXThlXfyZLBh91eoRH62ENXjZbaYIwpRiC392OxyK9nV
+	 ewYVibQ4z4Oxw==
+Message-ID: <sashiko-outbox-178439@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 3/5] mm/vmalloc: undo partial mappings inside the
+ mapping functions
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Hao Ge" <hao.ge@linux.dev>, "Suren Baghdasaryan" <surenb@google.com>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>,
+ =?utf-8?b?Q2hyaXN0b3BoZSBMZXJveSAoQ1MgR1JPVVAp?= <chleroy@kernel.org>,
+ =?utf-8?b?Uml0ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>, "Shrikanth
+ Hegde" <sshegde@linux.ibm.com>, "Alexander Potapenko" <glider@google.com>, "Marco
+ Elver" <elver@google.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Dennis Zhou" <dennis@kernel.org>, "Tejun
+ Heo" <tj@kernel.org>, "Christoph Lameter" <cl@gentwo.org>
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org
+In-Reply-To: <20261019054531.87652-4-hao.ge@linux.dev>
+References: <20261019054531.87652-1-hao.ge@linux.dev>
+ <20261019054531.87652-4-hao.ge@linux.dev>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspam-User: 
-X-Rspamd-Queue-Id: E468AC0004
-X-Stat-Signature: 6t4htyzj51zahtkwgkoa8a47czbihmur
-X-Rspamd-Server: rspam01
+Date: Tue, 20 Oct 2026 05:45:07 +0000
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 38C768000B
+X-Stat-Signature: ykm7y7cghtwtyjmqsmaguy83irze6dkq
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792474996-785948
-X-HE-Meta: U2FsdGVkX18QXF8NKJ1MH/GXc1v3gAZHByTiTObkLINhAaremo8FrJmKTC5pkQdvX9XPLc+yr7jZDRA2G4eIZWap41cI0sdheuurcVnZgfeVffLipwl5I6bKtsX16VJdYPlBHk/CauJUiiWPGtTR/vx1rPJB4WbAkMFJKvBPbvCbVyigaC/Uu48DLTzPxMs3UBxtRDoZMTnXZnpY5S/5A4Kf/IA6D9uhEM5RetWnVyYZp8zdvE5PB/E9wSUWGj5W/m5zSlTKQCCaFZMCjnPLloED22MWoHJXHk/OYp+vP0AsJHHqn7rV4ijuRsjfNN8oJ6HXZrdLKPB74JOrRDwCKC0jaT4VWxmxrztr/qSte/bRXovQdDcHK5vLFBXLT2FTtAje6K/QVrLdbCyWYrOIivxjYD2LobRFnpEt5hiTiHz9mGMivfGZd8LuQUAX4CREKRpMAy0iL82adrgpebmFs21BC87eNR6PTASRsCMi0zhvobmf8MEYE7rPYozhlUbE/FtkvYcdDcH0HHKbW9mQGCWaALpLnUzzO/pxly2qotUTwOnwwN6LK5WZwAmGFi7aXWjO3gkQAaHj3O24PmCmjuq5YG25d/kBhJrdn258VwklVJFevJStQhjzcdxyRLFcM2kQjBPlcWiYHKVNutKxy/PMG85VNK+o0YBX3YNfOwDpdKXo30DWbN326DgoeR3fbhmkUdwHcMqnaJk5V+BObxaWTz4ucS/UayVGgSjGcKAIllxcHRhd0yiAP2XDbQKjv1MEk1ApS7fgpwJYvwmWU3SSSa5L7OMWdpkC+odQIvqSxpZoqAB7Yfd5Fnau7zgPw/3PIZBEqBGdUS7g04QRgTLwhX0Cao1QYv9Dq6YNtPdFvFR/kkW6/m5agM83C69dviHXlRYWooB1XRr09MnKfKQ3akMMVXW72s/iyUwPyVGZrrAX5rv+3D07vSruLcK49DAn7MUsRy4Vtme13Na
- bYpF0i58
- nAf9DE5y1appSh3vTqe/a91cd4VMpSgA1Y7BsL0oLCg4hg5a8i6ajlDnrjRErBHkXejL9fgoSv8AT3WGzIiofltKSp8VNAJ/zDVlzQCqwI2fZJcySJVkA+ab2tz9j9cd1zlNNpOhOBDiMXxErrkoqKeM58+eDKfQ4ZkrYhex3uT1YilFu4i3HHvB05Km5DfEpnuBWODOz2EhGa8S173qa4iYGiM8gtOSWlVt9Yht/EWwwpk1VJLFnufv7VXYPz/EjsJxEH8LyTqT4/muivAx78LElxLn79R8F3SxAO1kVWFvFkDWSuOO74cMZ2tsZ66z8BHLYrgmpX8RBleXHN2P8k7yLuZEUujW90zhW
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792475110-746523
+X-HE-Meta: U2FsdGVkX1+s2h0euIallskQCEWEkL7UuW7syAqV+KKqapa6wopnvTFdj9TmwjlX/UAYYMAtdXgtSggWNuI9AOum2xEfo7hm728EXsHSs7azxTHq8u3Bl7467NrHY0rhxXCvLTOrf4gQuTBTga8HC1oYf2P/rT1p7ZZd1dYA0adUt22KKgBL8eCeWaIu2WOw/6bd+lWsuFgGrkbARppxFTrL4dAbbGJvUYoIderumF0Qi1wtmcNbwIk5GACDsjlu7unBSUNHUOJrWO46jOp6emMV7c+BNSW1R36ZLxHh7MAmcKvZYts+2XthD3srb+updg3iAdOw3x0aMP4Q4zxbY9leoiVergsaLo7jlTfGlhjbDWxQZeSINC6NhTGCjX9+2FG90Fsv0V1YCm+bkzhp7qAZGH+gNk5ED99n9ZyCoUM30Eoy9rZgGC4ltBThETH3k8b2ajsXAQM2e5bnic4vClJQU3YxHoXhfDVnljcNdVK/clyXFbJvnA/Ohxc0mBSCJ/WHjBWJsxGXTfihkFDKsPnJG51xo4A6LiHpZKzvUP1uqwboiZ5zKrK6enJhje6hBPL/VxUkEK6wXos0VEpgzcNj6Bhybdy8/FESTruwSUtcIjgJEGvFbjIisIrwHtWZkvh8czVd/VE2MfbyF7uEj9YZ0B7zwCQ2EMdd6VDc/6FTIi1K5yRt3R5T3oOPFbXT4tU+wae7KJcrPzIKHaPwZDIWAPDQ7uawNweMa29EaC+aGwT7KWD9nzwrNJ9z/WLvP7cVA4Tt63F0SR/344WjU/ecXCyQF+7K1vzhaHb6EVRf+DNKrWEUMYq9dBTBtHWvrtWBnUV0676qkAco1N51dr2btKvqiQnutlKXF5ohkIbW+VExaFgvg1+5HgjN18EA9cwlpPsmfFCb2AYsOiItpjRupm51GkTMVorptt17jm0G0hEdm7Loc8RoWZad1rhb+17iHEpIvJnT3qSfi1S
+ EvmIbuln
+ Eg8iR/ZX1CZuFLGxmNgWDePO15A/Iij2vgJiXPLuxNSpgUn7lNt2iqEC6ylCX/Z5vaiaxf9mnCSCxCeYpeCAgScAJJExAxTvSoQhYT8zAYFiHuQVmbPmRDncrTGsbTHXDK5pXo0IH91U9TQjFjja1zvGU/Qgsp7jXo5cETpovf62gu8mpXEja8NffYAilIWEcNOeyq34PSLFoG+fWVjbdJMrztAFgX/fJhAMa2bjMfMQZzSzAWDcrA63zynmAQG+t3Yw9DMhVKFuRFZA3/8J4Vag67LlL7ENEyDFSQkfZhamF9848kTFTN/TDM7lFhoELnYArfsAZo7fGlpybMswFGGh0mSOeFjcgiyKO/0HVXkGKvaAxJZzFUEUj5B8JcGduMO/jn7QkVpFMap/RKDzpk+3Dx2PHYBfCADLOk4m/u0pcxXoWZ04nbPXuWfbnXburoDyRIyicJfI2UjhFBz6utKbs2TdAJHMgDQFhYoDB3T+7AJ+pM8cEhaEmapesuLGWiUDVI2h1WFT+nuBO9WKHrWxlgw8jQwaRiO41p5gI6P5nA2d3MWjAynJ5ZRKhLrna4rix9R3V/2UMKqxWWfOpPSc2nnPasopNm6tMYn09Gd3xd1W5Zp5pYP5gPf6IZUX8fVwbnmWRVo9ujhJ+KKSOpLlPhC3TLHg9Cs2t9CnXAqPwi90=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,39 +100,258 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue, Oct 20, 2026 at 10:36=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev=
-> wrote:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> lru_gen_folio_seq() computes how many generations below max_seq a
-> folio should be added to, but stores it in a variable named "gen".
-> Elsewhere in MGLRU "gen" means an index into lrugen->folios[], i.e.
-> seq % MAX_NR_GENS, so reusing the name for a relative offset is
-> confusing.
->
-> The comment table above the code also no longer matches it. It only
-> covers the PG_active and the final branch, leaving out the reclaiming
-> and "can't evict yet" cases, and it lists LRU_REFS_FLAGS as an input
-> although lru_gen_folio_seq() never looks at it.
->
-> Rename the local variable to "age", redraw the table so that each
-> branch maps to the age and seq it produces, and note that the result
-> is clamped to min_seq[type].
->
-> No functional change.
->
-> Assisted-by: LLM
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] mm/vmalloc: infinite loop in vunmap_pte_range() on unaligned error=
+ rollback
+- [High] mm/vmalloc: __vmap_pages_range_noflush() calls cond_resched() in a=
+tomic context
+- [Medium] mm/vmalloc: vmap_page_range() calls flush_cache_vmap() before er=
+ror rollback
+--
 
-Hi Ridong,
+commit 043026437ba63b051df5d14470fe69ce8fa8825c
+Author: Hao Ge <hao.ge@linux.dev>
 
-The cleanup might be right, but this part is changing rapidly
-with Kairui's MGLRU-FG series. Maybe we should wait until
-that series lands and then see if this cleanup is still needed?
+mm/vmalloc: undo partial mappings inside the mapping functions
 
-Best Regards
-Barry
+This commit adds rollback logic using __vunmap_range_noflush() and
+kmsan_vunmap_range_noflush() into vmap_page_range(),
+__vmap_pages_range_noflush(), and vmap_pages_range_noflush() when page
+table installation or KMSAN metadata setup fails. It also adds range and
+page_shift validation in __vmap_pages_range_noflush().
+
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 44e0eb32708f1..75aa5acf55660 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -363,6 +363,9 @@ int vmap_page_range(unsigned long addr, unsigned long=
+ end,
+>  	if (!err)
+>  		err =3D kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+>  					       ioremap_max_page_shift);
+> +	if (err)
+> +		__vunmap_range_noflush(addr, end);
+> +
+>  	return err;
+>  }
+
+[Severity: High]
+What happens here when vmap_range_noflush() returns -EINVAL for a range
+where end - addr is not PAGE_SIZE-aligned?
+
+In vmap_pte_range(), commit a739e6b557af09 added a check to bail out on
+unaligned ranges specifically to avoid an infinite loop:
+
+mm/vmalloc.c:vmap_pte_range() {
+	...
+	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
+		return -EINVAL;
+}
+
+This can be reached on 64KB page kernels via pci_remap_iospace() ->
+vmap_page_range() with 16KB/32KB/48KB PCI I/O ranges (for example via
+loongson_pci_probe() or acpi_pci_root_remap_iospace()).
+
+When vmap_pte_range() returns -EINVAL, vmap_page_range() now calls
+__vunmap_range_noflush(addr, end) with the unaligned range. Whenever a PMD
+in [addr, end) is already populated with a PTE table (such as the
+PCI_IOBASE PMD populated during early boot by reserve_pio_range(), or an
+earlier PMD mapped in the same call), __vunmap_range_noflush() descends
+into vunmap_pte_range(), which has no alignment check:
+
+mm/vmalloc.c:vunmap_pte_range() {
+	...
+	do {
+		...
+			ptent =3D ptep_get_and_clear(&init_mm, addr, pte);
+		WARN_ON(!pte_none(ptent) && !pte_present(ptent));
+	} while (pte +=3D (size >> PAGE_SHIFT), addr +=3D size, addr !=3D end);
+}
+
+Because end - addr is not a multiple of PAGE_SIZE, won't addr step past end
+and loop infinitely, clearing unrelated kernel PTEs and corrupting memory
+past the PTE table?
+
+[Severity: Medium]
+Also in vmap_page_range(), flush_cache_vmap(addr, end) is called
+unconditionally before checking err and before rolling back with
+__vunmap_range_noflush(addr, end):
+
+mm/vmalloc.c:vmap_page_range() {
+	err =3D vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
+				 ioremap_max_page_shift);
+	flush_cache_vmap(addr, end);
+	if (!err)
+		err =3D kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+					       ioremap_max_page_shift);
+	if (err)
+		__vunmap_range_noflush(addr, end);
+
+	return err;
+}
+
+On UML, flush_cache_vmap is defined as flush_tlb_kernel_range:
+
+arch/um/include/asm/cacheflush.h:
+#define flush_cache_vmap flush_tlb_kernel_range
+
+When vmap_range_noflush() fails partway through or
+kmsan_ioremap_page_range() fails, flush_cache_vmap() runs while the
+partially installed PTEs are still pte_present(), causing
+update_pte_range() in arch/um/kernel/tlb.c to map them into the host OS via
+ops->mmap() and clear _PAGE_NEEDSYNC:
+
+arch/um/kernel/tlb.c:update_pte_range() {
+	...
+		if (pte_present(*pte)) {
+			...
+			ret =3D ops->mmap(ops->mm_idp, addr, PAGE_SIZE,
+					prot, fd, offset);
+		} else
+			ret =3D ops->unmap(ops->mm_idp, addr, PAGE_SIZE);
+
+		*pte =3D pte_mkuptodate(*pte);
+}
+
+When __vunmap_range_noflush(addr, end) then clears the software PTEs
+without a subsequent TLB flush or unmap notification, won't those host OS
+mmap mappings be left behind? Should flush_cache_vmap(addr, end) only be
+called after both vmap_range_noflush() and kmsan_ioremap_page_range()
+succeed?
+
+> @@ -683,27 +686,35 @@ int __vmap_pages_range_noflush(unsigned long addr, =
+unsigned long end,
+>  		pgprot_t prot, struct page **pages, unsigned int page_shift)
+>  {
+>  	unsigned int i, nr =3D (end - addr) >> PAGE_SHIFT;
+> +	unsigned long start =3D addr;
+> +	int err =3D 0;
+> +
+> +	if (WARN_ON_ONCE(addr >=3D end))
+> +		return -EINVAL;
+> =20
+>  	if (WARN_ON_ONCE(page_shift < PAGE_SHIFT))
+>  		return -EINVAL;
+> =20
+>  	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+> -			page_shift =3D=3D PAGE_SHIFT)
+> -		return vmap_small_pages_range_noflush(addr, end, prot, pages);
+> -
+> -	for (i =3D 0; i < nr; i +=3D 1U << (page_shift - PAGE_SHIFT)) {
+> -		int err;
+> -
+> -		err =3D vmap_range_noflush(addr, addr + (1UL << page_shift),
+> +			page_shift =3D=3D PAGE_SHIFT) {
+> +		err =3D vmap_small_pages_range_noflush(addr, end, prot, pages);
+> +	} else {
+> +		for (i =3D 0; i < nr; i +=3D 1U << (page_shift - PAGE_SHIFT)) {
+> +			err =3D vmap_range_noflush(addr, addr + (1UL << page_shift),
+>  					page_to_phys(pages[i]), prot,
+>  					page_shift);
+> -		if (err)
+> -			return err;
+> +			if (err)
+> +				break;
+> =20
+> -		addr +=3D 1UL << page_shift;
+> +			addr +=3D 1UL << page_shift;
+> +		}
+>  	}
+> =20
+> -	return 0;
+> +	/* Undo the PTEs installed before the failure. */
+> +	if (err)
+> +		__vunmap_range_noflush(start, end);
+> +
+> +	return err;
+>  }
+
+[Severity: High]
+Similarly here, __vmap_pages_range_noflush() checks addr >=3D end, but does
+not check PAGE_ALIGNED(addr) or PAGE_ALIGNED(end).
+
+If a caller passes a sub-page or unaligned range (for example, 0 < end -
+addr < PAGE_SIZE), nr =3D (end - addr) >> PAGE_SHIFT evaluates to 0, so the
+huge-page path still maps nothing and returns 0, while the small-page path
+loops infinitely in vmap_pages_pte_range(). And if the huge-page path fails
+on an unaligned range, __vunmap_range_noflush(start, end) will hit the same
+infinite loop in vunmap_pte_range().
+
+Should both vmap_page_range() and __vmap_pages_range_noflush() validate
+PAGE_ALIGNED(addr) && PAGE_ALIGNED(end) upfront before attempting to map or
+unmap?
+
+> =20
+>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+> @@ -715,7 +726,16 @@ int vmap_pages_range_noflush(unsigned long addr, uns=
+igned long end,
+> =20
+>  	if (ret)
+>  		return ret;
+> -	return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
+> +
+> +	ret =3D __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
+> +	/*
+> +	 * The page tables undo themselves on failure. Tear down the
+> +	 * metadata that was fully set up before the mapping failed.
+> +	 */
+> +	if (ret)
+> +		kmsan_vunmap_range_noflush(addr, end);
+> +
+> +	return ret;
+>  }
+
+[Severity: High]
+Can calling __vunmap_range_noflush() and kmsan_vunmap_range_noflush() here
+trigger a sleeping-in-atomic-context bug when __vmalloc() or kvmalloc() is
+called with GFP_ATOMIC or GFP_NOWAIT?
+
+__vmalloc_area_node() supports non-blocking allocations by wrapping
+__vmap_pages_range() in memalloc_apply_gfp_scope(gfp_mask):
+
+mm/vmalloc.c:__vmalloc_area_node() {
+	...
+	flags =3D memalloc_apply_gfp_scope(gfp_mask);
+	do {
+		ret =3D __vmap_pages_range(addr, addr + size, prot, area->pages,
+				page_shift, nested_gfp);
+	} while ((gfp_mask & __GFP_NOFAIL) && (ret < 0));
+	memalloc_restore_gfp_scope(flags);
+}
+
+When a GFP_ATOMIC or GFP_NOWAIT allocation runs in atomic context (such as
+under a spinlock, preempt_disable(), or rcu_read_lock()) and page table
+allocation fails in vmap_small_pages_range_noflush() after at least one PMD
+in [start, end) is populated (or after kmsan_vmap_pages_range_noflush()
+populated the KMSAN shadow/origin ranges), __vmap_pages_range_noflush() and
+kmsan_vunmap_range_noflush() synchronously call __vunmap_range_noflush().
+
+__vunmap_range_noflush() walks the populated PMDs via vunmap_pmd_range(),
+which unconditionally calls cond_resched():
+
+mm/vmalloc.c:vunmap_pmd_range() {
+	...
+	do {
+		next =3D pmd_addr_end(addr, end);
+		if (pmd_none_or_clear_bad(pmd))
+			continue;
+		vunmap_pte_range(pmd, addr, next, mask);
+
+		cond_resched();
+	} while (pmd++, addr =3D next, addr !=3D end);
+}
+
+Commit 9c47753167a6 ("mm/vmalloc: defer freeing partly initialized
+vm_struct") deferred error-path cleanup in __vmalloc_area_node() to a
+workqueue specifically because unmapping on failure can sleep. Doesn't
+calling __vunmap_range_noflush() synchronously inside
+__vmap_pages_range_noflush() and vmap_pages_range_noflush() reintroduce
+cond_resched() in atomic context?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019054531.8765=
+2-1-hao.ge@linux.dev?part=3D3
 
