@@ -1,93 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4698C60A2604
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 10:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076E9606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 10:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=atEks0sw
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QuiQ4VLd
 Received: by kanga.kvack.org (Postfix)
-	id 35C9F6B0152; Tue, 20 Oct 2026 06:11:19 -0400 (EDT)
+	id 013496B0473; Tue, 20 Oct 2026 06:20:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30D966B0153; Tue, 20 Oct 2026 06:11:19 -0400 (EDT)
+	id F06DE6B0474; Tue, 20 Oct 2026 06:20:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 222E36B0154; Tue, 20 Oct 2026 06:11:19 -0400 (EDT)
+	id E1ACF6B0475; Tue, 20 Oct 2026 06:20:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EDB086B0152
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 06:11:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6B0CB1A006F
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:11:18 +0000 (UTC)
-X-FDA: 85342587036.19.35734B9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B72A5160003
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:11:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atEks0sw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B869B6B0473
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 06:20:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C85112011B
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:20:33 +0000 (UTC)
+X-FDA: 85342610346.05.30A03EF
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 42BE7A0009
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:20:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QuiQ4VLd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=4ncienth@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792491076;
+	s=arc-20220608; t=1792491631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UXWZ7sEhNUwUZK56UTebBPaHPaOPjNo4jUMgFuCuhHM=;
-	b=TfEjdCwDP6M3+YAQ2Bp8U6l/xp4YIj1WtsLAh1W44pcblEAFp08EvrpGO+wA/KZfpLHq10
-	i+S0Fxwd9F9RdahkIk3Jn2+dmK4IMCf1IP2tYnLCqOWAVQNexgbkgJTU3Y0fR//yUvVObU
-	GpXff3wEt2NwIQMqTAarlKNgwsI5dG8=
+	bh=f1CD5KUc+O3Tx5grzZrjsKykqx4I2RzLAmwE+DSm2ZA=;
+	b=Kwl4eTa3ejgaUuasSSOpk8VC0E9BRThUedry09+Uooxgv0MFfHGgr6V5fDBEawTOka0pzj
+	3q1jjeMUmL63Rdzb290ZFTZHaOsAUK9+OyGts0jlVe6kueSBsfzA6UirnPTVDflT72Rgh8
+	//+98+AZadjOHmYrqHL8h83qX5cmSPE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atEks0sw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QuiQ4VLd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=4ncienth@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792491076;
-	b=W8o7QGxEijryt+aC2IPbDkcAqd4SRIib4Dd4OxdLG1kMdbQJe48AoM/DfjncqPfvDdMbk8
-	ooWCmJHkkMxDjbqWB8Sw5oUeg72eZwvSxHDCCK+nqEziBVKYf2NUhyUMq1mJm1QlWVFhE/
-	6zju8o+TVWD6XsiOdjk3tnZZ1L3+X2g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E69EF4195A;
-	Tue, 20 Oct 2026 10:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D131F000C5;
-	Tue, 20 Oct 2026 10:11:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792491075;
-	bh=UXWZ7sEhNUwUZK56UTebBPaHPaOPjNo4jUMgFuCuhHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=atEks0sw233tV9WrSZ1An/64slEa4IYaTtsXzU0njX5GdPsbEsdRj/BTYZT8yEPpf
-	 5woYJdrsvZYVgJKYQkIY3Occ46yi1VBTXQJmIv13UYexi1B/3XFi3XrBRaCftte7Kb
-	 krCcz0amLp1lA+z6CaI8/4DmLsUK73JkZ9H16/BhmXWjOQ5Wtz5ynTDAOrxFriMw1J
-	 yHgYWUFgczmB8aPYNmhevH53Vaj9HZjk5IJmFNhcBLNRfTwO0PRDXiGxUk3TmvoclV
-	 4bqCYkvis8Y/EF/zNMGBh1Gd0U4F/cP5f/xiBNMXEoHDrocKaE6xcDLG4xeYQ01tGD
-	 kmJXQhBvI+WVA==
-Date: Tue, 20 Oct 2026 13:11:09 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
-	akpm@linux-foundation.org, peterx@redhat.com, linux-mm@kvack.org,
+	t=1792491631;
+	b=5bP1WQQ5ZH7/BazbooW6qA75TEQY7l1s8yQ1is7oOb8ofxns29o3dV7vJJac3vpS9H4Bb7
+	vas9E0kxucUpQBqXRJwb4aS5ah6ABTvZ3dV/jrbZJiGoALhM+aXJWoMPc043SeBh9vFc8P
+	Nu6d5DFNjusa648GYA3adhneF7e/a04=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-398b3c37877so1748629a91.0
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:20:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792491630; x=1793096430; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f1CD5KUc+O3Tx5grzZrjsKykqx4I2RzLAmwE+DSm2ZA=;
+        b=QuiQ4VLd7Ph31WDz0h/6P050kziT1OLD6I5OyF1rhvs4apmxr+O6osXp7yy2mBvLDq
+         CIfEdqWKtwaymucHDImzmLTsw004ruuBA5avRnwMy5Ngk3NvGs8jNBiChF9B4gglz+ON
+         TsM5apbCclFbK4BHqdfjO9rsZPG9zetecn3At8I04JG69sIVailk4VZuU00z/T22uBsw
+         iy+PHjaDEvlyc6ZRReboIxyWXcRVYp++3FFuey4Tox99ajtbL+UyrxIUGw7VmXVtOK4L
+         fSEsyejEO/F6lQZ7uY2MoDbtJE4KFZImr6SnP5QvtInZ2a1CmDlNFaJihsdoU1bknShO
+         Kzcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792491630; x=1793096430;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f1CD5KUc+O3Tx5grzZrjsKykqx4I2RzLAmwE+DSm2ZA=;
+        b=tPe/2KO48uhi64JkvWsvcirJHfv7Ty8E96LaHXDPoUn1G3o/s7gk47KliE8V/uFGkx
+         wDKBzvkB+PUVs9rZuzFjzmiUYrBs9bxx7GcoPkq+1Zsa2lzIJAnJRCP6KaIjP6Cle2E7
+         xm9EFG9cj19fWnucqWHxlElOwslD92u/Lbl9A6Ux/bcBcrKYht3DpbKf2msFCCSA4wVs
+         sroQNtBMaNmKgZ9AUPmYJ3ooVxgfnKPhGD8SPt0P0j+RKVxTmaDqDhu3+ldFeuphMd/z
+         8t5LS//XhwbdJbsHQ0rNg2vTNwey8GVvOpW21nTg7YPUnm1p0EgDvfoWFhineRjYtsLN
+         EIRA==
+X-Forwarded-Encrypted: i=1; AKwUvBxuUhcgT/VxYUyWL7TuA8TflCSZ4MUVZzYPaYktLCNJ2nAj6OLDQtNcrquS9zngGWIKCseL2mrx9g==@kvack.org
+X-Gm-Message-State: AFq9FYLvPKocd+uiS5LAKwtveVsmlFmSsTNnDMSO3nVspL5u8BVUlyLY
+	eyJ/7kzDe11X84MPzdPDa4Nmdu9o5OMnaqPJVUz4zs3m8G/NPVr2Hygi
+X-Gm-Gg: AYBFou26YPF0JL/6fNoNppX0FkdD1V7B3cBKY/KGEttgyPXRjTDX2JP+rS8jfHXGa+/
+	5DoGeimIYAN0LLdG40H2dbfqJZ7AJm+T+8eDB6UEqn0FXe1nsDd5iRNWMT2WMtnHHBXkG8k+jBJ
+	N+b2TuvpqRwh3Pjml9l4pScHiwuueeDk3DKFAX/uB37jqJuazB5SqOgWNnmuejcbg2cIsKGeYtO
+	b1ku2t98xiRU40nHsuZi5MVw/42jCfBY7ABfcUOBS+6XTSvSP1V525HGjR6V801+7xT+cphb7Ch
+	4d7cjJ2NMH4CFtbsdkRPRTUCrW4iUORGfYyQ8X7a02u1Bn6u+rQMuEBC0GjoYivFzEpDnHvxuQ9
+	E6ekuBfEq0x8wgI3fywmnWymLqvIKI6FeVaoBvsMBDv+Zdi7YmoT4Z/fh3NZTSQlHS/bvZxxVHj
+	RWLjCxhO8IvvYa4Qa8orkmeBZ/eM0mVEhmaMe2OEOI76/KAJABSyel0KTWQz+3lYYXJPrtNJSva
+	2tgtyQMFfBs
+X-Received: by 2002:a17:90b:5111:b0:3aa:f4af:1e0f with SMTP id 98e67ed59e1d1-3acee292795mr9830043a91.8.1792491630077;
+        Tue, 20 Oct 2026 03:20:30 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd3cc73c7sm9872459a91.4.2026.10.20.03.20.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 03:20:25 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: david@kernel.org
+Cc: muchun.song@linux.dev,
+	osalvador@suse.de,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2 2/3] mm/hugetlb: disable PMD sharing for UFFD missing
- mode
-Message-ID: <atc-PW2PirXZzNZh@kernel.org>
-References: <20261019113034.97690-1-lizhe.67@bytedance.com>
- <20261019113034.97690-3-lizhe.67@bytedance.com>
+Subject: Re: [PATCH] hugetlb: retry private VMA locking when unmapping folios
+Date: Tue, 20 Oct 2026 19:20:12 +0900
+Message-ID: <20261020102012.1775940-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <23623534-a163-4ffa-8538-b5aff7daecaf@kernel.org>
+References: <20261015170551.2656546-1-4ncienth@gmail.com> <23623534-a163-4ffa-8538-b5aff7daecaf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019113034.97690-3-lizhe.67@bytedance.com>
-X-Rspamd-Queue-Id: B72A5160003
-X-Stat-Signature: mpmk7thbu4dck7hed1zrj6eem5rdzgkx
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 42BE7A0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792491076-39716
-X-HE-Meta: U2FsdGVkX1/woYG0yUF3mrnHol4eawghnKSowp7LcZUxy4m2cgSC49WDvCDg2/JwxAZFQPU2GtGkrjY/8LbSihedSNry5jrRcjRk/XNMSvWY2OU9MXZ63W9+ocmj88u1pKyBON4/lDUPfTFVKhttY9N1dHXRaNpzHYHus+beh8/5lLIv1ie7T9opR/zNeKezBq/Te/qDqAIWsyvrZ15V3fyqWYsBPuQFvxQ32It7CHBASav2Xr3Cro8TzDls7Xj/cDcUw3ZNjTdX3ZypC0DMfiFUeDhsTVq/7kJgyXZW9jxSxgR+AyZa+6dFUMHYVsnh9p1DfJWxdYHC7miyx4GBYFQBlOeerM4Nf46B2DEc+Cf5ZtJmVp4QK6iJv31X5HrdqmiIIali2UKIwhbOgnkAdT9zqD1mljP0tCDhY3Pr0LWw3x5t3L9r6UCLdgKR2p8kGsCWps7UIBtjqRf1+DfgQHm0Fq7uyC0MJLEPIJhFjMcTnhi28ydosM10L+cKLqUE64DFLzXr2QW/+FKqjb1iSzWpg86E0pHXrCNimAE0+Rydda6awFLwVNid4S/qhQAsgYBxR2pwRk6nJovrA0jlM/mKCBtozpgtekfeYw2mg0Qm2kKKaKtfHX5oYUWbrYoA1I6ooEa1Ynt9QwALhkS1qbURk4UsoWzixvM2x+ONOsxBABeNpYZ/+HFFxTbK/Z1bw3bpJXM/KB/YmKmUfhkL6XZ8DW+0pvP4kME0Zie+wgsmthlxgyWkytcFS8zdVNe3VdtWrIReKvzzyN2oNtOfnfrUYLlAHaZKqF+E3B8KPzWDafmhABfJa9llbO/NcZVd2C6xogMaZpY+TgcKqdTIKOKN55foAj/LW9o5ShsshtRNHtkVAn/13H6nD8gSqxebgWMuq8zohtVE6hgnFnC5tjCmuLdQtaMxjuZdWLt/T8UmmXfbT7JNVA83jfpKYMLuy75ZDGbma2Jky7j1JrC
- la+Ohij0
- CliYj2YTrOMxFVCaILdp/O3RiRli+3oQsFDokLHqiQeP/FOyzNYj+H1BoNdwBvODeHvz5/zrd/xCXD3WMXaDTKu4Syqfdu6uzHacC9pB0poYstIq+TMpTJstKpyNf5a1zPHYfcBRrO3NwfwpErBmAn14QDst+5J6yKxCxDFI5BqSD3tAHyFCPRMNleSlUg3bkBYwzFA5UhgTFFyAq2NDjmwwa0z7C1hJBxPMBN0A2J1q/zQ2fZ+eT6v9KBCKyDYLy0Uk2MIPrSyJxBDP0vqLiLnN10eZHU3VDinpRdeZPbi64Jmk=
+X-Stat-Signature: rda5jwhdct5m9x4ajpppinye4cb36omy
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792491631-294098
+X-HE-Meta: U2FsdGVkX18j7fp3eiDyxwGQ5+kP6mJhURq/1e7gP2xEWFLPOhCw7p4Oe61WxvYmA6kB0b/E1NHcny/W1GWxQcNla9olXxs3JeS/hAJYxqJw26QD9BO02n1BC9bonOK76AfUDJN1REAn+jsLtmd03oPap7+XPqgImRArQway/lP4a7qO9bc+LzlFRV3XXWW9uAj0gskgNVG+YOojTXWAuDV+/s0hVOkj4hII8cAbQAJ9Lw4arGWZDHTaGwmUHGPPi9J150CUuE4FLM/bZHmuWvh4KNymJQLeKtM/1IR5KBPlivmWBGTTnWzKHXa/IPbYlFP0labMBMe75P1fbeE3+1FMFm9PEfJrbbQ+3jvktbYR5LJWmYyOgXoudz01ZMyDozbh6jGdT189wuk8+KCPFewNi5yfZn4AtyS+Cdcelo7izypunuYZliepyUxtq5EI2Ut0IOMKAGADrbiGxBtjiPQHuf8vYoYvRAyV7nyjuGZJgDI9zxAyZRFdhI6o3EfyloqoSovQe8XTF/EEuuY58MObaYELJVnXGwwyftEOkGHdK9OECK+53I5Cuu6UcKtXoUV3DSvRnJixXYX1T6qBaxxvodDKQHWZ5/luynaEXNWos2UXnKHUxmkw0zzRu/E1NI+7F4jvcBNYwXcn9sgXaDcSllNQhU2WETO60B4WQihYxenqvIb+AFt6HU/RnTSZf2+CyRcUeSjEFFVf7PYid+5fVGC9OkvwvSBGSKpOCThOb3fbSz+MnCGbIn2MOAxgtiwMh7pf00j1AhOJzKXpFw+VapSRYtJ/kvEbg+tZNn8CHuKhhbNhu9Pu44tPpfNwlbjRDrT6uh30YNZ1Q5Q0YD+FOk6diNpA7miSBvlWY2dVlsQmsjcCdTU/NXJAcLl4VX5RRISYQNIgeuaIkan2I1LibBIOM3QI7n6CAK2QsrkH+kz3lvrWXGhTS3EBNN2ua88I28mY4lwgS9OlBqs
+ UDvucfEU
+ 0W4RaNvCgRZxBqV3vwbIrjBniO5IjAdS5gOk0z1wtJLcivTYuRs5eFGdlGwp9YsFWIHUsD29LDD3TXr23n0PJFDsXXtWOY44XFYw1ZLfm5oJKxnQ3YMgZtm/RNd0szYuuo5OCJDUvOUAo5/Lz+Rx5RcuT+3zFfju9Q4Rjvi32BET+9uKw8/mC+jVdFnTJ6E5myQjsdennfnsi9LyFV6FEjs/G7iR2F31M/GJSY8Orc5BV0aHp4fjy7g1n+ZWnKsv9ag1t0nzykX13s7mjVrPE76F1QKA7I2+0m3hBR5vra5x8MFRzv8V0UO/BON0iDuqPYyc7AW8v1iFaVn/1a5MC8eKaLCtLQq7P5T57B+oyHMk8QyEAaDIKbj8q995amYRtgh2nd6HsNoP+tvTwn2uDB1scFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,91 +124,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 07:30:33PM +0800, Li Zhe wrote:
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> 
-> For UFFDIO_POISON to install a poison marker in a hugetlb mapping, it is
-> sufficient to have the VMA registered for missing mode.
-> 
-> However, UFFD missing mode does currently not block PMD table sharing, so
-> installing the marker will be visible to everyone using the shared PMD
-> table, which is wrong as UFFDIO_POISON must stay local to the process.
-> 
-> To fix it, include VM_UFFD_MISSING in uffd_disable_huge_pmd_share(). Add
-> a debug check on the marker installation path.
-> 
-> The existing registration path will then unshare PMD tables, and
-> subsequent faults will not share them while the mapping remains
-> registered.
-> 
-> The alternative would be to unshare PMD tables selectively when
-> installing poison markers, which results in way more complexity. Or
-> alternatively, simply failing the marker installation, which might break
-> some use cases.
-> 
-> This effectively disables PMD sharing for missing-mode registrations
-> that never use UFFDIO_POISON.
-> 
-> Suggested-by: Li Zhe <lizhe.67@bytedance.com>
-> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->  include/linux/userfaultfd_k.h | 13 +++++++++----
->  mm/hugetlb.c                  |  1 +
->  2 files changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index a4351cffc60c..fe78ba14dc68 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -169,7 +169,10 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->  }
->  
->  /*
-> - * Never enable huge pmd sharing on some uffd registered vmas:
-> + * Never enable huge pmd sharing on the following VMAs:
-> + *
-> + * - VM_UFFD_MISSING VMAs, because UFFDIO_POISON may install markers and we
-> + *   want PMD tables to be unshared when installing these markers already.
->   *
->   * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
->   *   tracking information is per pgtable entry.
-> @@ -182,9 +185,11 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->   */
->  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
->  {
-> -	return vma_test_any_mask(vma,
-> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
-> -					VMA_UFFD_MINOR));
-> +	const vma_flags_t uffd_flags =
-> +		mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP,
-> +					VMA_UFFD_RWP, VMA_UFFD_MINOR);
+Hi David,
 
-Since this essentially disable pmd sharing for any uffd mode, maybe replace
-the flags check with the check for non-NULL userfaultfd_ctx?
+Yes, that makes sense.
 
-> +
-> +	return vma_test_any_mask(vma, uffd_flags);
->  }
->  
->  /*
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 2c64ca985dfa..fdd65e019a55 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6304,6 +6304,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
->  			return -EEXIST;
->  		}
->  
-> +		VM_WARN_ON_ONCE(size == PMD_SIZE && hugetlb_pmd_shared(dst_pte));
->  		_dst_pte = make_pte_marker(PTE_MARKER_POISONED);
->  		set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte, size);
->  
-> -- 
-> 2.20.1
+The per-index fault mutex excludes concurrent faults for the folio being
+removed, while i_mmap_rwsem keeps the VMA in the mapping tree and excludes
+concurrent page-table teardown.  So the private resv_map lock is not needed
+in this path.
 
--- 
-Sincerely yours,
-Mike.
+I tested the exact diff from your message on v7.3-rc5 with KASAN+LOCKDEP.
+My unprivileged mprotect()/hole-punch reproducer completed 1,000 rounds
+(64,000 hole punches) with no KASAN, lockdep, unexpected warning, oops, or
+panic.
+
+Please consider my patch superseded by Josef's fix.
+
+One small typo in the quoted comment: "i_mmap_rwsem everybody" appears to
+be missing "excludes".
+
+The quoted commit also predates the current linux-next policy change:
+`Assisted-by` is no longer a recognized trailer.  `generated-content.rst`
+asks that tool-assisted discovery be stated in the changelog prose instead.
+
+Tested-by: Daehyeon Ko <4ncienth@gmail.com>
+
+Thanks,
+Daehyeon
 
