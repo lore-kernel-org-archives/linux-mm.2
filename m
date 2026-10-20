@@ -1,92 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F772606A320
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 11:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B70606A33D
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 11:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HTvAwsxx
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=YdxpoT1C
 Received: by kanga.kvack.org (Postfix)
-	id E507B6B0486; Tue, 20 Oct 2026 07:08:10 -0400 (EDT)
+	id A07636B048A; Tue, 20 Oct 2026 07:08:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD64E6B048A; Tue, 20 Oct 2026 07:08:10 -0400 (EDT)
+	id 9DF056B048D; Tue, 20 Oct 2026 07:08:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C03E96B048D; Tue, 20 Oct 2026 07:08:10 -0400 (EDT)
+	id 8CDDF6B048F; Tue, 20 Oct 2026 07:08:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 88FFE6B0489
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:08:10 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0EF8DA0120
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 637CF6B048A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:08:14 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E4BCC4011D
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:08:13 +0000 (UTC)
+X-FDA: 85342730466.13.6836D41
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 707574000C
 	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:08:10 +0000 (UTC)
-X-FDA: 85342730340.12.1E10334
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 68E0FC0008
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:08:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=HTvAwsxx;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf28.hostedemail.com: domain of shawnq1@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=shawnq1@163.com
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=YdxpoT1C;
+	spf=pass (imf27.hostedemail.com: domain of shawnq1@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=shawnq1@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792494492;
+	b=C/6mTaJzC3fpNeh52jPuzV0ebvJfb77C7YCYPLQmzHewv9rtqGSSnlBKXZh6/jpWWos+RI
+	8CWMFW4QHbXZTN5/UOPg1gKy3BKA9sFuTJjkv+xBvuyC8vVw0yLR+l+dW46L8F9moca5De
+	+uOl0pYpNFIiZWypOeV2YR7AiqysjAg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=YdxpoT1C;
+	spf=pass (imf27.hostedemail.com: domain of shawnq1@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=shawnq1@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792494488;
+	s=arc-20220608; t=1792494492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=bOAvUVQJjxk6pZZQVpeKthI9Jctl5WJbGGXL3unzYIk=;
-	b=XwjuCdQWK6QUUzC1jrBDKX+AngZodmJK/9UYAleKdTAnSoUOgxLLTrOXAFvFxHDajmsDtX
-	L8OYCy4GaXK6EKzIQT2XzE3CEUuOXKKiJ1FNzIze62YxnwHabhP4OOZpfd1+4VRPCVNXo2
-	l0fi20/dHoVkYTkhAtNSch0ZoI0VHlM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=HTvAwsxx;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf28.hostedemail.com: domain of shawnq1@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=shawnq1@163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792494488;
-	b=utKfeypyufVVGqZmjbgMcgC4HvfA8JG1Jss7NatFOer9zQ1yR6dbgXKhaztOk7+5TDrTVR
-	2D9qDLEQEjpfKtgb0e3vLbkAzgSyWEzmBSnlDtRQmnLkYxW7ayHROxwHHKWPvScFB0NxeO
-	fVAaMTB5I0KDkYKgcgvRTHggZ3rGHTg=
+	bh=K7fwwiQB/zWnok5poPdrINg9tw/c644NfMqHbW+4WN4=;
+	b=3jpuTx96Ra1YgXej0fqE5AG3Yxs0aBIS6dbVPJdZuMa/jge/YcCHxdOpdT1Nke7UHe4+ch
+	/cl9XY9UbBoJf4F2tA1Z9k1RpGeK8NSzZDj5Vj+xpuwA8Ugm0YvYduvy0MXUcjloy3wbEU
+	3NdxbFMDG5EvxN7VmAl1qVJTXkbnjz4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=bO
-	AvUVQJjxk6pZZQVpeKthI9Jctl5WJbGGXL3unzYIk=; b=HTvAwsxxKszlhPB3Hk
-	XW4tobwBF5Cu8v0mS6S/6A7X8yV8vAdZT5gBQuBy6Q2hjxL+6iTeKmxoO4mTm006
-	k2XxcovJGOKKdv6BjgaemQpqr+w2PhmVDVRgIbsEkfVVKh6u93o126Zxw1a91U6C
-	+KayN28ns/CfEbcytFYQbo97s=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=K7
+	fwwiQB/zWnok5poPdrINg9tw/c644NfMqHbW+4WN4=; b=YdxpoT1CyvCeMSv+jB
+	cZycIkvJMGE4BE+0PM+3oBZy+Jupg/gibadotxbUltpkbdUWuuL0T6R7RywnIJTN
+	kAqKxh+42X9qe3mCHEhenk4yl37lICoBsaZ541QgYTDjVkNg9EkpymAMlkfO98j4
+	+YXgKh4ulF8/ezCGGUC0B0zBc=
 Received: from shaos.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgAHuqGPS9dq_PjsAw--.59886S2;
-	Tue, 20 Oct 2026 19:07:59 +0800 (CST)
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD393GES9dqIxTHBA--.10263S2;
+	Tue, 20 Oct 2026 19:07:49 +0800 (CST)
 From: shaos <shawnq1@163.com>
 To: akpm@linux-foundation.org
 Cc: Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
 	Peter Xu <peterx@redhat.com>,
+	Liam Howlett <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] mm: userfaultfd RWP drops a populated shmem PMD
-Date: Tue, 20 Oct 2026 11:07:59 +0000
-Message-Id: <20261020110759.960089-1-shawnq1@163.com>
+Subject: [BUG] mm: mremap merge clears RWP state from an untouched neighbor
+Date: Tue, 20 Oct 2026 11:07:48 +0000
+Message-Id: <20261020110748.959870-1-shawnq1@163.com>
 X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgAHuqGPS9dq_PjsAw--.59886S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KrWkArW8Ww1xZr1xAFWxtFb_yoW8KF45pr
-	Za9w13K3Z7XF18J395tF40q3Wruwn3Gw4UJ3Z5Gwn5Zan8Kr1vkr4xK342g3WxAr1vkFWF
-	va1Yva4DCa9rt3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzw+GlGrXS49JmgAA34
-X-Rspamd-Queue-Id: 68E0FC0008
+X-CM-TRANSID:_____wD393GES9dqIxTHBA--.10263S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AF45ur48Xr4kuFWfGryrtFb_yoW8KF4Dp3
+	92y3yY9asFva15tasava18Z34F93Z5Jw17Xas8Xr48ZrW3Kw1jyryfKa4jkFy3ZFs7uFWr
+	twn8JFn7XFn0qF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYzuAUUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC8QWEkmrXS4WdhAAA3I
 X-Rspam-User: 
-X-Stat-Signature: gr9j1jkq7mzy4p3z1kyp48gcd5iqqpmz
+X-Rspamd-Queue-Id: 707574000C
+X-Stat-Signature: x7i41gidx98m87hhc73aqax5syw3b84s
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792494486-550966
-X-HE-Meta: U2FsdGVkX18GnxDAJ3eSbd3OSN50wBEVTM89tkVXheVUbqUgGyz6/tQCdpBijxrBfg7xGZkzQ7Vk/FaamKAxK/FRo50hYrSa7k2rgeMRxVLnEu7vfEW3A2FnSHair/p3MljseRwQPJoPBC73ljlJapACNPBQqjGsc1HaWpQfADwAijpMzqL0AbSLvD7iEa8KZsumii4pbrjTfyQohkbL+6NbsLElFsJz0LaZVdjGsja0rGVGXAi2y2nEOVNQGv8/3E7JIiB5gOTIDMkvRpZU6sBJ2gEteg8f2gEWHI8T2Ma5SnT0cjvvoUlNdqXNQHl/yD4zmXdxBmwEijTIqZhizRSgYckAzLgbv5tWJp/nh/Gr9VPg/ubaAF1RFachOReTZbWaT15bpgJ0tEbAdY3LQI5N6/XwM//xJ/zergwIThwmmKg9mCwq4e2akSCyZCqhKS6tA38fPG1uQz3wfXrlMp0eQ2n6G2NFawQKDr/TmLgPZi/Tt9H4xNxpsjCF/zk203pDsw47bFycXUD0XcQA9EdH8U+R9rHA/qQvaeZgGiYOzBXiRxlftNe6jp7KUMSL8ABSUuQJyVb/a+LhCB5dvf4nxHDM9WUkGmyLRoOIZfTOHbylWcFZhTC833SGIvhjO1Uku5WfxILw1ar3UGFBkTWDmtamRwU28TbyLKynDUrfKLa4M7IQ/kW7vYse9fUsqNq1zEbdMdDM/uTWFrzPriILEEmsd9FRFuhi0+FcfxhLeF8QbpZvIi/G581q1xB8sP0/dMpJ6w5kSOqDtZGLduRL4jsJamq0+hzKZL/xRwtrpl9THIlzPtg003+kgENErf5Kg6UxK7add4bwNvt0pfwXAdM5QRuQTP4khyvcjLZ0sfzsRSSSAx471rE5fDHmwvzrC5iiz2dY+4fXLg/AzUXK2TEYdyGZz5Gqn8iT/+QoXqLnAUoJMeKSStwFxPcogNm7tYOhyOAPvInBM8F
- VPhSiD84
- ww7WWB/uND+UMNUTw+NnbmHQfUH++f76iwWimhiCLKOdzDpBpod6SFSauRuOihCB3BrCRkyqoRjTlhh8tEU+xIKvmC/HsBrqXndAGAkIx1lB6h1d3HTh0g8WZB+Vt/Du6i7LVkuFEInyPlW83uuQww4gx0dDgpsFONH7D4f+aKb3mGzIYTZXIS9jC254o4ALu21Ty06AQYbIzLJSTDbN4szyydzpyNBq2A2oapLsAC4K+0/sTm+d6ke32Ph6YzwLgW6sX53wq1QO3NYIE3cwJx+KGJYl9cLC/btA5WKORS81twpo=
+X-HE-Tag: 1792494490-886840
+X-HE-Meta: U2FsdGVkX19f6BK/b11K1j25oJWkHaZtCogGxBCj/MLhXWh6ik5SKd271MBOnBfaMg7timhG03GTyB8wOp8vj0DvHNh6qLKrLELd1gnZVErZzxXRDYLW0UxE+LKQ1T1ihTeRY6IDp/2v1vcLAyKAFUfMK2LKJmBzfjSqsTQ2NB1z2QcoRXxCrh1SUa5Z6aUSfj1C9gIfKpOhN0vayYyPlTDnS7HILNHsoOguZxrDbvGIGW2Gf16T6yM7sswzxDDR4vK1q4ktle7Isf1UYYm3mCI0xAyVVKyr57t2xHWeq2/NpCFKExH4Ob2ofeJzkdN1BJtQmnbdA+IyN9edveHuS7J0m4gDVgX6ncRPKVG0p73EXGJNojU/PvCNFVDzxKH800nLX+U+4en7LvTt6Jj790MwDfmOX/lzLw9ge6+ntnQeWlTKu48M6cTtL4pQNx16JpmjHPM8MJDHwHjtctYfygafI9jdeMIkwXXnOE3I2AC2kpWR8TUODt8Q32OqL1eWZZDUsBNaOxZ8/ieuUnm4+NhaAbuRVcDC9Ceap22JE7H1mzDHmqK7vjkDa/6Vrgl1H9G3UDka6XaTJ19m2drM6/Er8Sz5SY3EmmU/JIPD6AjRoTzcD/MA+RO0fpsSrtwOljpryV5cz5kSqzWhJ9556KkOQ9dt2tWiN3hBh1yV+jGA4ATYaQkG+o0XS2e3kETp7H9RLvhvVI09N8z3ermQ0lpQhyokP2Ca2LzwkF4PTKwgUdYyWT8Hb4Ch3KhCIKWqMYbxEf4GXz+wnJ8Fu3EtLLr0bs1G72S2wjbXsoJ/lhTWWXWUM3uWNE7CObQNLfbqZfoiiV7PddICmyIso81xA/kfamiIlMua6u0H/draYNCU/on9RN4hWa1IGuPeKaR0mQLeSKZgZVYMXjtnOl+wn8M0msl5TOPb6YWRylhuCP2XSGBa2BLadJLdE8/+cV7awaRdOX3Q/1veaoPrutu
+ THvSyZeJ
+ cC4vO+IFpPEMQ7XYC0rYUfymGZjFWSsl6oXquGnRtoBcQUYhZqnJGqKseg2wwu2ElxEHr74kPVNJsSn0zaUEAbi77l/GCVuUoBJPUHtues3BokiwvHxRQOpxsEhQZC0Y0+Qu9q9AjDOHKsUf41WHz/SflHGZ9U0sdN8bB9p0KFNMCSVtPMu5N3Q/zodax7dXhzVhWeuOnutx6yWZyKWTQgT/FijODZD3uOUnq1o6ZxEjRUZxmZmKuF6kNOUvQ4kN4aR4Nl9ggnJuUn0skvItGIGyaVU+0cT67fs4tIcNBXnLcYGo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,11 +98,9 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hello,
 
-UFFDIO_RWPROTECT_MODE_RWP can return success for a present shmem THP mapping while dropping the PMD mapping instead of leaving the populated page resident and write-protected. The next read refaults the page and completes without a UFFD_PAGEFAULT_FLAG_RWP event.
+An adjacent mremap() can remove userfaultfd RWP handling from a neighboring VMA that was not moved. The moved VMA and the existing neighbor use the same userfaultfd context, and UFFD_FEATURE_EVENT_REMAP is not negotiated. When the destination merges into the neighbor, mremap_userfaultfd_prep() resets the context on the expanded VMA, including the neighbor.
 
-The PoC verifies ShmemPmdMapped=2048 kB immediately before the ioctl. After the successful ioctl, smaps reports Rss=0 and ShmemPmdMapped=0; the read completes with the original byte and no event. Re-arming the refaulted PTE and a separate 4 KiB shmem control both produce the expected RWP event. The observed issue is loss of the mapping and protection tracking, not corruption of the file contents.
-
-The source path splits and clears the non-anonymous PMD for MM_CP_UFFD_RWP, but the retry does not repopulate a PTE table because pgtable_populate_needed() only recognizes MM_CP_UFFD_WP. The ioctl nevertheless returns success.
+The neighbor's PTE remains PAGE_NONE with _PAGE_UFFD, but the VMA loses VM_UFFD_RWP. A read that delivered UFFD_PAGEFAULT_FLAG_RWP before the move then completes without an event. The same-mm PoC reproduces this on two fresh boots. No-move and nonadjacent-move controls retain the RWP event.
 
 HEAD commit:    24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
 source version: Linux 7.3.0-rc7
@@ -109,18 +108,19 @@ architecture:   x86-64
 compiler:       gcc 11.4.0, GNU ld 2.38
 QEMU:           6.2.0
 
-console output: https://gist.githubusercontent.com/shaos26/3c336ea98e1e8fe09b5270c3a82ca268/raw/da13df3db0c05df09952f74bedb457f57c53b78b/console-output.txt
-kernel config: https://gist.githubusercontent.com/shaos26/3c336ea98e1e8fe09b5270c3a82ca268/raw/baa5ee61ce748667104c480560ab5116a100e3fd/kernel-config.txt
-reproducer: https://gist.githubusercontent.com/shaos26/3c336ea98e1e8fe09b5270c3a82ca268/raw/420975783e9d5dd88bc4a69190d8ef194faf5fdc/poc.c
+console output: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/368568c2dd47417b54a957c8d9cc09f77f28b236/console-output.txt
+kernel config: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/4989bc843fa61b5eaaaa53422238ec39e4356b70/kernel-config.txt
+reproducer: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/109dc86c28debcaca07aedb2d450ed1e95ae5edf/poc.c
 
-Build the kernel from the revision above with the attached config. Build the static PoC and initramfs from poc.c; the program is /init and creates the shmem mapping itself. A fresh-boot run used:
+Build the kernel from the revision above with the attached config. Build poc.c statically with pthread support and place it at /init in a minimal initramfs. The positive run and controls use:
 
-    timeout 300 qemu-system-x86_64 -m 2G -smp 2 \
+    timeout 180 qemu-system-x86_64 -accel tcg,thread=multi -cpu max \
+        -m 1024 -smp 2 -machine q35 -nodefaults \
         -kernel build/arch/x86/boot/bzImage -initrd initramfs.cpio.gz \
-        -append "console=ttyS0 panic=1 oops=panic loglevel=7 kfence.sample_interval=0" \
-        -nographic -no-reboot -monitor none
+        -append "console=ttyS0 panic=-1 oops=panic loglevel=7 rwp.mode=positive" \
+        -display none -serial stdio -monitor none -no-reboot
 
-Two fresh boots reported RESULT=RWP_SHMEM_PMD_BYPASS_CONFIRMED and exited cleanly. The affected code appears unchanged in upstream master f47d223627f8; I have only reproduced it on v7.3-rc7. No privilege escalation, memory corruption, or guest escape is claimed.
+Use rwp.mode=no_move and rwp.mode=nonadjacent for the controls. The positive oracle is PRECHECK fault flags=0x8 followed by POST no_event value=0x41 and RESULT=RWP_NEIGHBOR_ESCAPE_CONFIRMED. This is a userfaultfd tracking defect; no privilege escalation or cross-process access is demonstrated. I checked upstream master f47d223627f8; the relevant mremap/userfaultfd logic is unchanged there, but runtime validation was on v7.3-rc7.
 
 Thanks,
 
