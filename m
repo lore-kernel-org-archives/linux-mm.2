@@ -1,99 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8323606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 01:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760EF606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nYfJuhMF
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=asanFCEu
 Received: by kanga.kvack.org (Postfix)
-	id E50466B03DF; Mon, 19 Oct 2026 21:50:43 -0400 (EDT)
+	id 5C87D6B03E1; Mon, 19 Oct 2026 22:14:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E01346B03E0; Mon, 19 Oct 2026 21:50:43 -0400 (EDT)
+	id 579186B03E2; Mon, 19 Oct 2026 22:14:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3DD96B03E1; Mon, 19 Oct 2026 21:50:43 -0400 (EDT)
+	id 467D96B03E3; Mon, 19 Oct 2026 22:14:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A1D256B03DF
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:50:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B66C140810
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:50:43 +0000 (UTC)
-X-FDA: 85341325566.10.6480BC9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 89F5380006
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:50:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYfJuhMF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792461041;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2B66B03E1
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:14:17 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F723C085F
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:14:16 +0000 (UTC)
+X-FDA: 85341384912.07.FBF9151
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A76E5C0004
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:14:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=asanFCEu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792462454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7E3MYOWZmAqd5n44b4wTDqjDi7qvsZEFmKsEM+R1X9I=;
-	b=xfMSpvClcvX0EU05oEbVDBjoYLbXREd19OWquVzuJTvtQgVWp39txcuojH2ujr1px2QrVp
-	lfRzA91WC8aPOdn3rn4OOLWaJ/21c1AkoH10yOk7YCuek2eS1X6ix3KvOaKKfT9VWIP9xi
-	vBm54cu3BWWvdU3Ncw7AuiA5Pat9zW4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYfJuhMF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792461041;
-	b=BD0fyqMV4mayJGvf9AchJs3a02YKWNxdok53Rmf6NNaGz7B/pQBU04cGVJCYSh7OYOrpMN
-	19UkUM8uRQ6arvtRcPt/C3PDLRnH9Ya5YK5TBR89uA3q3/lc5ve0msVW+yU9klXrLfRhQa
-	g8HnlFISv9SpdU6qhQgkP8/yjhv5lgY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 24FAA602A8;
-	Tue, 20 Oct 2026 01:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7601F000C5;
-	Tue, 20 Oct 2026 01:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792461040;
-	bh=7E3MYOWZmAqd5n44b4wTDqjDi7qvsZEFmKsEM+R1X9I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nYfJuhMF7lVNH8K59PI8SOCo9JhPtzkfmugOIwk/OBLhEZHvcvQAaLetAKbXg+yJ7
-	 KseQkgptJXdvJBZGupXNZ+EgKYiNZKWlnjIf8VxiU8xyCCHjTaEeArgkbZgXJuzJJT
-	 rKJIidY2vQcPLic1qkRx7yRn0Oz3WeaKIg5jdXE0/3odb12gGsKi8GxM33B9XQQEc0
-	 XVmhOgUmuTTf4TOrzg3OQX+4s8A7Tkw+RAt8cNuDxSwq8RaEvVcc2Iz1SVeJx9UbMs
-	 7I2MhIodSKTkOvjs1Ctj+g7FxvDOrRhd8VGCgrjzhNDdxlPOr158DZci7RHdwoRLXO
-	 E5Hqs+0/KGlLQ==
-Date: Tue, 20 Oct 2026 09:30:34 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
-	linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
-	stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] riscv: mm: don't let GUP-fast follow entries without
- _PAGE_READ
-Message-ID: <atbEOlTjwZ9nr7rG@xhacker>
-References: <20261015-riscv-gup-read-fix-v1-1-8cf7f2504029@nvidia.com>
+	bh=/kTZQWUcpHzrJy9NMwC8XJWFAf9FL4EwlT1MlBIWbLU=;
+	b=2T30SwbrZck60S/0iexWg1NIWQznARqISDLkZmJFTCC4zK+q1LSnSb9Dxo/qkcFF/x8iEX
+	0YjBdlAzILy/vkVsHC9asdSqDcsGk/HqOn0s+7SAgVH62MlifZa2wAVKi/NdEwiZ1qFh69
+	zSeZ0DtSiWJ1zK19Pj17XDYL9OF+Omk=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=asanFCEu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792462454;
+	b=eCMIC3kpi/A24SA82k+G7tDgKPz75zMaBSnTOF6s2LJ3f42g9MsJn0cdRYMysvqT0DVnfT
+	0y+ZuqwLD9mE+2YCrqYIJMxouMlUVQTxM326Dw0Zqfjlgn8mCTgrXBgymqquUzLMVmAkVf
+	EIgK7XE8zsTtcrguBuIej2sAxgfZ6Jo=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bcb4f23ddeso2672511e87.3
+        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 19:14:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792462453; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XOTPIs09ONbhoeuq1FkiSzfh49tSADk+l5tSD8dPOlCozusLhEcMevZEryanAH8MoP
+         c9sgopMkiO9RfxEm9VuIdr4LYhBbGVDLAc9IA7th7r5nYIGt4mDRz+X/fBP+P0ShrEze
+         0CHuZ/1zWOcqhVI5vzoVB48aHgAc88ItXZ9V+K5TRuvojcHINfgojvgVHaDpgzJQvOMR
+         f8oZ170fePHd94dtCnjiOkqkudJrqSX503c2Ui55quXwKdvGXLFh095EognEkDvIX3VC
+         ffcBxergSXB4pu2aprdjj9q+fmMKZt6mjyEbhbYA9HP+5kpNe5wANxBQBsF0mYZHWc3i
+         1MBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/kTZQWUcpHzrJy9NMwC8XJWFAf9FL4EwlT1MlBIWbLU=;
+        fh=ximD3sKT9RPiagZCU0TL8CW2fvtXAF6i2i7hkDwovHE=;
+        b=YVvvJ4HDIxKd7sc0zjuga1DocdttcoQkwpqqmJwOVL/pc5iWUTtlERO0kyL/XnSK16
+         jF5vSkCyrJpAk63zSrNURDZcED85l8Cq/7v+DjUENehP6nWVjFOjtUwzbSc/SASLsPqS
+         XghyZgENwE5rmOygfKk4EKWT3SXYL3FL+N7dT8nVbb6ncVsbQF9ul+Eum4uVLQ1h8cSZ
+         f6rtynd2GneYGMEGu4LuzVO1kRqj8CDb+IMl1Qtaig84DC4TurCBUjJzUIzG4hvaSUL+
+         BkaAmhbblAkPk/5lm/3t+p5ADHwCp0xm8Bq4s2+P0FssFAOKjDe2Mn64tBLdFKylNCA9
+         Amsg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792462453; x=1793067253; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/kTZQWUcpHzrJy9NMwC8XJWFAf9FL4EwlT1MlBIWbLU=;
+        b=asanFCEuoLtndqmAwzeYw90SqMYug1EWLBvtCE3AGT88fUSDMYwx5oGn489FrzgVqm
+         EowpPwgL4Z4lWoxhCWUQTPOl8RaA9bVTGjutPzltzEn17aKh4ge4p+oJTkS3UyrLMZQ4
+         tcIJULNeYl3uRO2kOTTOgx4+ShMphPkRf/pbvSEsgiBwgCbaqfHGMZvIUJyYEdROB6vd
+         DQAs+++i0yIxsFo2lgiAsOibbCpxIPjIhRzXD1RiinyBNFxZnj44nJTuqxGiTi/K+hvj
+         0CsKrY70rXn5a4+IySZslCFg2h6aaMTloJswvJRY/iuV2SW3vGMlBhF3Ce5a5HOg7UtT
+         jEAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792462453; x=1793067253;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/kTZQWUcpHzrJy9NMwC8XJWFAf9FL4EwlT1MlBIWbLU=;
+        b=wmIgawxpNKghV31HT6rnjF9F/xas50YxdYLhH6sxUl+eooXI3MeGTEJ3TsL2m4sONH
+         QlLu6N5w5f9S1Xz4S+4NWYDxrTZBol92799ePDyEFS7CkWs/DzrY+QnrQCg6sVyCOgUR
+         rboSejGyCEUh1ngrvRlWE/9XypLXBhBFPUn+l+Yu44hOP7h6/lnvtDmaAgFnk4VfMLk5
+         xYGjT0rQlMeAzDn2fo5CN3bOTffkRbwnQIrYSc+NPMDf/Sl0F4/Bvp/CJ300FZrUHBdm
+         /VuPcPBQNyEco5hxc4yl9CLn2MGUGy+330UW5Z8AhqUvSDzKBxB6BFmugOAD/JRO5acx
+         SInQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxTMB/5bbr6Oxoj2zzNYKpA57+39vQO3m3i0kl0wsAQjKYNeS6J9RnVvTEXApicMJOrWHSBLDx1IQ==@kvack.org
+X-Gm-Message-State: AFq9FYL/uez0SGQBBp6eVVQOg4mzJQpgXpoMMz5HOSL9PDo2S7crHNch
+	3vk33GVLSRf7nz5kEKmx39aNdPUNw9Cc1S4/F4aCZi8kB+DixjFvOaEynqWFwFSuZ9qDsOOcDeC
+	qF7H9DJtIzkfUPYWpIF2a3GFm3TCMm1A=
+X-Gm-Gg: AYBFou0Ar8/fMYxVxE3a01cwjdyvl4QFZfGuLKrVVMq0xRna+0d2YY5ZQbJzHFUrD2h
+	2hMo2+AC1KxFHmG7EbfStFxkxV3zPat3i7dJcSSA+l3gzreXfIHhfhFU6CjSbc/7vCQZfXF2JEF
+	g2aubArYGuXSnXerChFECjpwYc4/8bDZ2nQMCWUQO9HEyUAQVf3atWUqmIF11H6WQ/Va60+152z
+	I1YyQy8C2o2D87LZzgBHlE2vADZW9p1ydaBbRlrmdngJ09cM9Ag0J5874EgjUHm00zoARjLPt78
+	H7IHNtS9s7QOdcNs4WMcOaaEEOoXF6k5iDYU3vKk6D7YNYe91uC5gFuelPs9eDvF4mfYSHGUi6I
+	ig1hlRNy5ABP6kjHfFXp4DsojPQAm9FwkRDSS
+X-Received: by 2002:ac2:51ce:0:b0:5be:598f:2736 with SMTP id
+ 2adb3069b0e04-5be598f282bmr1905487e87.47.1792462452600; Mon, 19 Oct 2026
+ 19:14:12 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261015-riscv-gup-read-fix-v1-1-8cf7f2504029@nvidia.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 89F5380006
-X-Stat-Signature: aye3zch1t8wma1bm75is3d4xufkkrq9c
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+References: <CAO9r8zMaaUsBaS0TJumochRKt2ShV7nRaLnYPWv3=S-wUFgitw@mail.gmail.com>
+ <CACpmpoecz4tjr-qvFRy22CGuF+4NBWbE7HVjdTGFqQOheK3CLg@mail.gmail.com>
+ <CAO9r8zOAcf4=TscCXjMYvowUx-_u9qLGqY2-p7cK-z5CUU_x8w@mail.gmail.com>
+ <CACpmpofYXDMviE6FS-BZdVntmQFvS+_xvfmOnJ2caZFerz6vyg@mail.gmail.com>
+ <atGqPIpUfX0LDokV@gondor.apana.org.au> <CACpmpofyLW5z1DYEY2YAty0VOAhRR+Leic8O-B0N9hrzdW_=Ew@mail.gmail.com>
+ <atL1ok1YkHbA4AaI@gondor.apana.org.au> <CACpmpoe_RXcJM42sTVwk_Qvt3zjAOZhzYZNsRD4xz_1HxDmadg@mail.gmail.com>
+ <atMCfhB63koot230@gondor.apana.org.au> <CACpmpocZGHpTTOq+xa2bTnS-=gdUa8+E_KKJm41H_dSfbGikYQ@mail.gmail.com>
+ <atadE_kZz45KAeuE@google.com>
+In-Reply-To: <atadE_kZz45KAeuE@google.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Mon, 19 Oct 2026 19:13:59 -0700
+X-Gm-Features: AclHuK-O5GRznQ-4uEfzEMIrac0t16SF_OufPYrMOIRqkz_NpjCJyWmJTsaVlc4
+Message-ID: <CACpmpofy3P7ukri8vukWte8x2sYz1pNCVXXAN9YtL6=A3BeejA@mail.gmail.com>
+Subject: Re: [PATCH v1 0/8] Batched zswap_store() with compression batching
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A76E5C0004
 X-Rspam-User: 
-X-HE-Tag: 1792461041-361957
-X-HE-Meta: U2FsdGVkX1/UXlWTOOT5E3bkDuSxMfqBcn5EhxglD4rFRFdXknXWsrM3lR6/QkTUhlf/7GLX/iFPEwi5s2mBByoEeGnvER/C5jBEdW40gmaVQFFSXem4+QjykD6nLKHZ0G2r8BfGvj5P3/5Rcc0sJf+GKrSb0pvbquiO9XsGag082esyX+sTna+a/gM52J2wUQetPyfHninWaijLgEYmbNHKX/NMAJwJL8qpaqPFnhux8zjsJyIag5cmzek/hu5AObkTGRB4HcOU8/spqo6GStA1DWaeSSh9v82mJiKc867LJlJpL7kG5SXDbZtnhaoozV67y+9Bq90Looge9zKO+DhS/ZMvQQlbZz43kO6sscQ734da5a3yQFsr3OD5tpjoIrWQCwPoADDAqTbMPXJP3M3OlWbJSIAZ6j18p5n+VuyiP82fc7CNcmqamH+WYFQMsBjf/uOts4eydRwcgxcu3PO/aXa8pzAjxs8PfIeIb/Z9vcSZaOBlXBRkLwog3xi0SoauiH6xiSK9K6/ZCD64xsek47LHXW44x3C3htPrkjQ4SP2tUeMhsXw+vx4DppCqn8rT3wEkDHV96HOjrpuezfUmZrTThADu1NsUmJAebz2NKn/V8l2n+JdF+SjhXUa813Pf2UnG1Mjmnjbb0BpWcPZsRfzrIc6kSkCVooVURn7FLyKOphVsrpoI+7SvTEt6ukipap5CwtabrqXxH7xhjuwdSPSNI2EFY/oRGklFO46jTvd8gKvjdWm+Or4ICKmRlnxcFW23eeRJWF5EuTYYtI8wBxmbF/Dp8JKQFD6F4SDujQ4F6MWNWuGKMKTOGb/V3tPBn2GDybnxAkM1bD8GbGJstgPHXk1Jo4wPWY2V1Hp6ME1h2KRSNyrOij1dMnyOrQyjAoCFvi0E/N77+Yd/d0+nxE3z5JlcQV+VieogpmEdtpBAV5krxraJdLdGzK+B4VlvDqHBpUzYnRpoQwh
- Avgvj14j
- zn1nknUjZfdBOZgSQcme5zSYp5mmTnN677wfCObG5QZnqH/iiy7o06gzR5RlHRlxZsCDMTPh+TVVJ2b1gUxNjCVMyL9NNgLWMdMMtR/n/yVLBRACXjTOT8VVcvD8nL5V2rBEYwD2b+9oEc/nnAsGwhmTgOzPt1saRPKKhwVOJvWYTkRQryXlQuVfudLwRMyugtHvxXCRkXiYoFB+dbjZhlHXba5PxCfU1ydIOrj+/ShK1eQlxT7nqrzae3mMBoXvIp0OeHsY7rmCh0O3sfruWyhcm58oGr61SnnjDG0KjGoLDSag5RYRiVvmyWPoXRt+yem4nnPLzJw6nBMyhxamfZNJhCzJYJTyuk/Wifkzj2e8LfHDo7v0uKCOGR6RV7ytHeBGdSismiS5hCtxoT8ABPB0Cv+OuPzfTiM+l+IgWEbW2rUbZooG7xMK1gMW6vmsH89ZLYJmQTZ/pm76RSHscRO50VfuXX6yHRLqkGM4ZLbjy1Bd9kJpiDaBSgBpXa+o5ysNNuCVVJ60o/FuSx5C/Zgefze5GC00jWILmfHK4UwreF6M=
+X-Stat-Signature: 6zwewijz793oqmoxn6pxihrbxqcncusz
+X-Spam-Status: No, score=-1.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792462454-203807
+X-HE-Meta: U2FsdGVkX19CP/8HnFQTrqTJ622w6RJgdrjFvr5NfRneM7ZWW7orawK6Yj8iwLT4FLcbQraj0gSKd9rqHof7rSzWzqUSA+cvDTHrs3RNfFizbVfUYPv8Ds+/JrYhgeN25PfDMx9S7z6hK8g6U1cYWMAWVk1SwHiTonJkBBoRczbMnd5YDHw76QYG43kQRg0Js98LA8RAUTdN8mri3oB70W9xSK+65XC97Uo7U1TzwljyPN0rQlNd4IlDrgktVZt5RGtHy8QmnlTFExt7+YJaBMOKimviP51OngM+zrnxu/5whb/OEB0zWPcmg1KMWwDgXR6Vc97yrNJJijvdF4gLLLr57Rq3AHcdcFPqgm1gz3FODB+SY2jJUwJbRaySdln1+YuVOgJ5BvOp2uHGYy0Tt46vm7lHfFJX9zx89DoNevmzpFlUV/5ggP57rn+C6g6kz2QmLIvPRMpzaSLQe58KNyuO8ddOEfGcdYDKZKdV5/dEGZvPTrvi8y7b1w+2za4n11gKgjdd9DJY6pJbaj3ltDnnf/VOR/X9PNf5SdyP2RFgifFfbQ0hZ1Nxq6FEL1TWF4cbuUqZWNzfY3crgRX9Kn+H+r0LQ44hSLuXe7pdEThvwJSUyqrfT33n8QB3eMAwYg1VdkVCB0q7PUxkXVbT09mpVZ3F+G6NsmFb4JNrje0jHmE1wu6c7SEG9Q/4rWgEGQyfqOrbhvwkBGvf6Wwo3Elo/ZF7o1pM0FaMZRNObnpbVj8deLn+NGlPAB7/R0SRm7zRcb21igrsNRD67WZ54gisuHRH33qz28ARa8IdUcBwaZ/061JqB4Hz/WwDFj8JPSVEuv0sUShQt+x6MeayfvoJ6PoAhW/beZlMtCR35oKLrFWASkwML/TlMOBD33TC6MvVe9dTqdCpU9dRjY9T3ASk3YKhNZzwGj66kQk94pIsqqaYUzf8u4wu791bLaj5wAhFY4KKVR0fuuBTrdu
+ DSWQpj8F
+ DpAzyidNmQ0NdPsyfap5Ns+8xXv9941c4ooLMzbTqoDs9YNeulpx7LL5TMCf7KHJcc7WVHFTCJxEWYRXvGCFHT3OL3gpnPW1uV1F4okLf22R7Kpc1Rp2IvA3y0o20R0DohV+bnDT0rZ9FvzhHsqCC64mJk/qtEEiOowt1Awhqj8Iv4omLOKfCh54JgqC7lk1xlGXrAU/KssGCnuAoIWnsBcCxtzT96BSyxfQGo5dQ6nXvZtoq8sv26pX2TZo47k03Ma8mAinXixN3JHzOZEDC403vKwEujUxV93ZPEuwweEpMPbRz8w3zoT2SCZRYS2yqjCBfExAlGyh/6EzDkttez+iTCK4vDtsa0m+GxdBcnb2BtkdJaLkbjndx2Dq1/yzF082jJdKhJXiXY9bZ285imo0QZp+QRuC+eW+osYzsrWqgbbKJ5KXhkM75LQjQ1mX+L0CvYH+G+gaicPA+zBOY6QZPIhjgiQS/F+r+PSFYptjgAHV3L0NOgtxto4Jfh4BfDpE8VbRjmYG3u0V567I3ZxPj3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,128 +154,144 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 15, 2026 at 10:37:44PM -0400, Zi Yan wrote:
-> riscv maps PROT_EXEC alone as PAGE_EXEC, which has
-> _PAGE_EXEC but not _PAGE_READ, and a writable shadow stack entry is
-> XWR = 010, which has _PAGE_WRITE but not _PAGE_READ. riscv uses the
-> generic pte_access_permitted(), pmd_access_permitted() and
-> pud_access_permitted(), which only check that the entry is present and,
-> for a write, writable. So GUP-fast follows both kinds of entries:
-> 
-> - a read, e.g. from vmsplice() or an O_DIRECT write, can read an
->   execute-only page, which userspace cannot load from;
-> - a write, e.g. from an O_DIRECT read, can modify a shadow stack page,
->   as pte_write() is true for it.
-> 
-> Slow GUP rejects both: check_vma_flags() fails a read from a VMA without
-> VM_READ and a write to a VM_SHADOW_STACK VMA, unless FOLL_FORCE is set.
-> 
-> Fix it by requiring both _PAGE_PRESENT and _PAGE_READ in
-> pte_access_permitted(), and using it for pmd_access_permitted() and
-> pud_access_permitted() too.
-> 
-> Requiring _PAGE_PRESENT also stops GUP-fast from following a THP PMD
-> invalidated by pmdp_invalidate(). x86, arm64, and powerpc do the same
-> thing.
-> 
-> Fixes: 3f910b7a522e ("riscv: enable HAVE_FAST_GUP if MMU")
-> Fixes: c68c2ef9d641 ("riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs")
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20261015-anon_vma_uaf_fix-v1-0-7b977303b42b%40nvidia.com?part=2
-> Assisted-by: LLM
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+On Mon, Oct 19, 2026 at 3:50=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Sun, Oct 18, 2026 at 06:35:01PM -0700, Kanchana P. Sridhar wrote:
+> > On Fri, Oct 16, 2026 at 10:07=E2=80=AFPM Herbert Xu <herbert@gondor.apa=
+na.org.au> wrote:
+> > >
+> > > On Fri, Oct 16, 2026 at 10:02:13PM -0700, Kanchana P. Sridhar wrote:
+> > > [ .. ]
+> > >
+> > > That isn't quite right though.  We need to ensure that it really
+> > > is a singleton before taking the short-cut.  So you need at
+> > > least one conditional:
+> > >
+> > >         if (likely(req->unit_size =3D=3D req->slen))
+> > >                 take short-cut
+> >
+> > I added the check for the singleton req [2]. I hope this looks Ok.
+> >
+> > With the latest crypto_acomp_compress(), the batch compress latency
+> > improves considerably:
+> >
+> > usemem 10 iterations average throughput:
+> >
+> >    patch 6 (store batching only): 19,119 KB/s
+> > patch 8 (+ compress batching): 24,076 KB/s (+25.93%)
+>
+> This is exactly what I mean by the numbers varying too much to draw
+> any conclusions. I am not sure if it's the VM setup or the usemem test
+> itself, but previously it was argued that the short-circuit in
+> crypto_acomp_compress() was ~10% faster than the one in
+> acomp_do_req_chain() (20,946 vs 19,058 KB/s) due to avoiding a function
+> call and two conditionals, and now *adding* a conditional improves
+> performance by 15% (20,946 -> 24,076 KB/s)?
 
-Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
+I would like to clarify a few things:
 
-> ---
-> Sashiko found that the riscv pmd_access_permitted() added by the
-> lazyfree THP discard rework [1] lets GUP-fast bypass execute-only
-> protection. The generic helpers riscv uses today have the same gap, at
-> the PTE level too, and the generic pmd_access_permitted() also lets
-> GUP-fast follow an invalidated PMD. This patch makes GUP-fast require
-> both _PAGE_PRESENT and _PAGE_READ. Requiring _PAGE_PRESENT stops it from
-> following a PMD invalidated by pmdp_invalidate(), as x86, arm64, and
-> powerpc already do and as the rework relies on.
-> 
-> While reviewing this patch, an LLM also found that riscv's
-> pte_wrprotect() sets _PAGE_READ unconditionally, which turns an
-> execute-only entry into a readable one [2], e.g. every execute-only
+1) The short-circuit in crypto_acomp_compress() that gave the 20,946
+KB/s was missing the req->unit_size =3D=3D req->slen "singleton check".
+However, it gave better performance than the baseline patch 3 in v1,
+which went through the complete acomp_do_req_chain() protocol (save
+req, do one req, finish req, etc.).
 
-This issue can be fixed by Nickolai's patch:
-https://lore.kernel.org/linux-riscv/20261017162229.796020-1-nickolai@csail.mit.edu/
+2) When I added the same short-circuit in acomp_do_req_chain(), it did
+not give as good performance as (1).
 
-> hugetlb mapping via make_huge_pte(). That needs a separate fix.
-> 
-> Link: https://lore.kernel.org/all/20261015-anon_vma_uaf_fix-v1-0-7b977303b42b@nvidia.com/ [1]
-> Link: https://elixir.bootlin.com/linux/v7.3-rc7/source/arch/riscv/include/asm/pgtable.h#L409 [2]
-> ---
->  arch/riscv/include/asm/pgtable.h | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
-> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-> index 40b1ed4f3ea89..f46b742d6dd93 100644
-> --- a/arch/riscv/include/asm/pgtable.h
-> +++ b/arch/riscv/include/asm/pgtable.h
-> @@ -372,6 +372,21 @@ static inline int pte_write(pte_t pte)
->  	return pte_val(pte) & _PAGE_WRITE;
->  }
->  
-> +/*
-> + * GUP-fast only follows entries that are present and have _PAGE_READ,
-> + * and leaves the rest to slow GUP, which checks the VMA: an execute-only
-> + * entry and a writable shadow stack entry (XWR = 010) lack _PAGE_READ, a
-> + * PROT_NONE or invalidated entry lacks _PAGE_PRESENT. Any other writable
-> + * entry is readable too.
-> + */
-> +#define pte_access_permitted pte_access_permitted
-> +static inline bool pte_access_permitted(pte_t pte, bool write)
-> +{
-> +	const unsigned long need = _PAGE_PRESENT | _PAGE_READ;
-> +
-> +	return (pte_val(pte) & need) == need && (!write || pte_write(pte));
-> +}
-> +
->  static inline int pte_exec(pte_t pte)
->  {
->  	return pte_val(pte) & _PAGE_EXEC;
-> @@ -820,12 +835,24 @@ static inline int pmd_write(pmd_t pmd)
->  	return pte_write(pmd_pte(pmd));
->  }
->  
-> +#define pmd_access_permitted pmd_access_permitted
-> +static inline bool pmd_access_permitted(pmd_t pmd, bool write)
-> +{
-> +	return pte_access_permitted(pmd_pte(pmd), write);
-> +}
-> +
->  #define pud_write pud_write
->  static inline int pud_write(pud_t pud)
->  {
->  	return pte_write(pud_pte(pud));
->  }
->  
-> +#define pud_access_permitted pud_access_permitted
-> +static inline bool pud_access_permitted(pud_t pud, bool write)
-> +{
-> +	return pte_access_permitted(pud_pte(pud), write);
-> +}
-> +
->  #define pmd_dirty pmd_dirty
->  static inline int pmd_dirty(pmd_t pmd)
->  {
-> 
-> ---
-> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-> change-id: 20261015-riscv-gup-read-fix-d657d67d350a
-> 
-> Best regards,
-> --  
-> Yan, Zi
-> 
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+3) Herbert pointed out the short-circuit was missing the singleton check.
+
+4) I added the singleton check into the original short-circuit (1),
+and this did not degrade performance. It meets the functional
+requirements for crypto, per Herbert's feedback.
+
+5) I cannot make comparisons between "a function call + 2
+conditionals" (2) and the functionally correct implementation in (4).
+The functionally correct solution is qualified with "likely"
+annotations, which can explain the performance improvement.
+
+>
+> Moreover, for zswap with ZSTD the added check is always true: the batch
+> size is 1, so slen =3D=3D unit_size =3D=3D PAGE_SIZE for every request. T=
+he
+> previous version and this one execute the same code, so the 15%
+> difference can only be noise. With the stddev you reported (~5.4k KB/s
+> over 10 iterations), both differences are well within the noise.
+>
+> I think something is wrong with the performance testing methodology
+> here. The results are self-contradicting and do not make much sense to
+> me. Did I miss something?
+
+The previous version and this one don't execute the same code, as
+clarified above.
+
+I don't see how the results are self-contradicting. Can you clarify
+what you mean by this?
+
+OTOH, the zswap_compress() bpftrace results are clearly reinforcing
+the benefits of compress batching.
+
+"Sequential_zswap_compress" is stopping after patch 6.
+"Batched_zswap_compress" is stopping after patch 8.
+
+I hope we can agree based on the bpftrace data that
+Batched_zswap_compress outperforms Sequential_zswap_compress.
+
+>
+> >
+> > bpftrace measurement of zswap compress latency per-page:
+> >
+> > Sequential_zswap_compress  nr_samples     p25     p50      p75
+> > p95       p99
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+> > zswap_compress_ns_per_page  1,722,489  43,947  57,791   88,489
+> > 130,165   323,961
+> >
+> > Batched_zswap_compress     nr_samples     p25     p50      p75
+> > p95       p99
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+> > zswap_compress_ns_per_page    665,267  41,511  54,915   77,707
+> > 124,648   213,962
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+> >  Latency saving (ns)                   -2,435  -2,876  -10,782
+> > -5,517  -109,999
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> I measured zswap_store() (not zswap_compress()), to get the per-folio
+> latency, and it didn't seem to change much beyond noise in my testing. I
+> also notice that the number of samples is very different between cases.
+>
+
+I was addressing your earlier question about why not just stop after
+store batching, and why batching of compressions is needed. I would
+greatly appreciate it if you can review the zswap_compress()
+sequential vs. batching per-page latency data from the bpftrace and
+let me know if this convinces you?
+
+I thought the overall zswap_store_pages() architecture had general
+buy-in, since we bulk allocate entries, etc optimizations to minimize
+locks. Please correct me if I am wrong. IOW, I am focusing on
+gathering bpftrace data of zswap_compress() with batching since this
+was the main patch that needs buy-in.
+
+If we are on the same page thus far, can you please let me know why
+bpftrace of zswap_store() is important, and if I should gather this in
+my environment. I am happy to do so, but not sure what it will
+prove/disprove.
+
+Thanks,
+Kanchana
 
