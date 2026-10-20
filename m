@@ -1,142 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59010606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 17:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A2C606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 17:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=NkWn0tMo
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=W69weLHI
 Received: by kanga.kvack.org (Postfix)
-	id 75FB06B0541; Tue, 20 Oct 2026 13:58:24 -0400 (EDT)
+	id 7AD2B6B0179; Tue, 20 Oct 2026 13:58:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70E896B0542; Tue, 20 Oct 2026 13:58:24 -0400 (EDT)
+	id 784F96B017B; Tue, 20 Oct 2026 13:58:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FD396B0543; Tue, 20 Oct 2026 13:58:24 -0400 (EDT)
+	id 64CF16B017F; Tue, 20 Oct 2026 13:58:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A5AA6B0541
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:58:24 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB6401C34BA
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:58:23 +0000 (UTC)
-X-FDA: 85343764086.07.FDEC063
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DBA9440002
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:58:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NkWn0tMo;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3408E6B0179
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:58:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 888C71A0328
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:58:54 +0000 (UTC)
+X-FDA: 85343765388.24.9678ED3
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 92A43A000C
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:58:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W69weLHI;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792519101;
-	b=OjKHPFbzc1WcSF96PcM+dTmw4c1bzO8d88gECgeDNU6SzZvHvWyEKwsmRaJ5CH5yP/Jk/5
-	FoyvGwTRwHs2Yof+ckyIm1bLZvn5q7VU+eCU/CBXNc4OxsL+QTThu2Y/pKqIydsruFOmpN
-	9PgzhcJzh+qpH007M59gRncNj0AGvRw=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NkWn0tMo;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf25.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792519101;
+	s=arc-20220608; t=1792519132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYpDQsgGRr37nBGO2U3Z6QjUyN0Co5SvOmgYxqHioD0=;
-	b=i8dqJJsvTEAsYvuIpQzmr3yz6OARsyXrLlDs/wjgij7M/QHHscuTlLoRBgcvVocuXiKNtZ
-	zIFksobeCTIiWK5MWUoSOfxquFEYQ0sBFlQ6spV7UYSRc+VgejaOAQNYmPuSi8F4cn2+6c
-	U19YXvfYUjH/ybmQUoq91VfgpX9gWSw=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c3fd91337baso492537466b.3
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:58:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792519100; cv=none;
+	bh=Dc+Bo7udqDy3OvFW1e4k6Vi+Psamqa3s48HVUQ/rqV4=;
+	b=u7OxohDxjyBxjkIzRedYPM+sN5JVyAB4RMa0+Te2CrsXUXIuKUuLuo6218QDqSfZBZ/jnJ
+	/5OR0prkghECZokz+6yMw2GJn1fq1wcu1CV+OdDBM0VL5fOyEhXEKXydAiHZHA+yHSWJ1v
+	PRKhQP9nVz37zTUoG1gu3Uw2dn7vXJ0=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W69weLHI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf25.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792519132;
+	b=PwaYItTxXZHVz4Ac6KBmEgJt7hftOlywxd9crpA3pWOVwGi+J2naOk8GWe+ymJmVprfvkJ
+	z6aBXaqtCq/QhQlLWHEKqgh9UpuekEPMqz0IlxdRchYMq8OxtUNUl6Tufop+fm1ySuZl8N
+	jLeNxxDjp4GmbYxOFIY2iZBKvOa+r9o=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c4086e892a4so474902166b.2
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:58:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792519131; cv=none;
         d=google.com; s=arc-20260327;
-        b=ISs+MWegZLTayJBqEEt7rkfJomcpj1UlkRkovZGp/5zk6EhBfu1t9ile0ht8doQ5CV
-         LuPg0KWfR6pUiXJspPXZ7Km1VE9HPzl5lC6lR5fDajHfFKL/pNKQVtsaT3c8TGu0bj+a
-         gQNYoJ72szjJ2lIokkIIyXtYernmuJd/AQvc53B0v9vuPtGbgllUoGWlowjXCdbXqdE4
-         2nbzHXKO23DhQu2DkP7dMEn/bUX+bztrJgt2q+LSEZE84AR0pYLrxHlZaVpXY9cgzW0y
-         L4nP2pu5vk0NFEU4SZAPaRjHEBy9M/DQUzw3pPzhzLWwtXZOy2oFLUG50WWfac8YAj4T
-         rDCg==
+        b=DpF4g9qe6t0I98E0S5jTFTuZSs6ilUMe5i33Qk3pnYRpkbFpL2K+mEioHVKXp4C8qW
+         +KgA4lm59a1SX2di3TCxJuNlg78MX5sZgzCmf6mruw/hAnBX5OWRsV2bFINj2wnvCmhJ
+         4ZlNzFrAzjgslOv5Kg7mwBIilW0+guYhZfFNyBxHSTZ1thSqts/pLwGBSHgRC2vFi4bg
+         V+UeEcMI24luCAHdrY3ulMN9Gl4ukT6i45GBqPLm13Lcps+CMgQskcXYJwlYkHCRHsIz
+         ABTHO+ovRGe/Nr+4jAYiCiVs1poNnTx7FGP2MCDppgr0PO+CzD27U7BK+Eqw7sEqGVrE
+         bXGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=TYpDQsgGRr37nBGO2U3Z6QjUyN0Co5SvOmgYxqHioD0=;
-        fh=vDHySJwjsVPdL3nbZC04mZjNp+TO2e217qJEVvnxWfQ=;
-        b=lT/oIByPOXCWQ56p+GFrsPCjCGAfa3jVyTLrjbeKhNLwglxOCIU1cwXdmzIIRhUJQP
-         wXUagGuwNsiYk5bMKjEeJx5g3S7By3BW6toaX9qQyhH9JJ3Evek3LYMOPiSYGwawgNAh
-         hrYnSWhopXzR7U3TflD4Q8+dusLlkBOi9Oc5ibB192OMHdCPDjuZRDeuaqxACjjvMKyP
-         gWblbw7LPit+TQbqlQTJAnqbF8tfZ0HBS9LWnJODCluPou+0683WGyg1mi/AD5eTLF3R
-         p2w4xwE0ZH+Ykwl0ZispOZ/0VnBU8Zjs92QNkjsv2iGNOxepGafZjcTitSEdT2pLDsnQ
-         8i9A==;
+        bh=Dc+Bo7udqDy3OvFW1e4k6Vi+Psamqa3s48HVUQ/rqV4=;
+        fh=ApOVIMZLkV4GR5MNxVbYuZ1QUCchfe2TChoLyfzVjng=;
+        b=nWGgSjAV4kwkLOeGsIkZikSJc5wB5rPSWDeJaTOcTyW2xRtMvQn9Rhrhj8U9v6e9oq
+         Gf6YRoo0Mg2RzNOHWuuDu9VGjdqA63/1iHXxloHD42nUsH22LT/GXq5r9Y2iqtt+oY8A
+         iEyLTxNfxXzjjYRZ6GZRst2Mf70dqNnnsv3psDJlghRKCSHQB0mgNz8Lul44+fd3Iauh
+         4QtjXdqdmibMbTYOryA3eoIkTOvRlYR1j2NUD1vgO07lBDlFlq+JpDb6niPZMBaWeWM3
+         6w3Mgp8IFdPGsiBCjUkzG5XD3LMpJITEoas5IRoaMtWamDLgihI+lLzFVVLCamQt37cs
+         liEA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792519100; x=1793123900; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792519131; x=1793123931; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=TYpDQsgGRr37nBGO2U3Z6QjUyN0Co5SvOmgYxqHioD0=;
-        b=NkWn0tMoHcQfXUifzT+I6GkwFwuBi3WdL4CdZa/6oyRD0YZnYrvWhcZgTTE7figmTP
-         h7FI3yu0K2UFrtAbSMYH8vwY6v/d4c9ykmbjWUCGLk4RDmy4iELg7cM73wORuyT9gmSJ
-         q0FNV5CBCF3jyPU+Wa/5Ol77T3fOGf7Z8XQ/YXQWh9rq/IqLGA/E03l8Y72lZxgExc5I
-         7wd6tQwutcMZplJfWUGw1ra9ediH9OMRDUeCan6OSvyIMlxrGyyNWBNcewVHqCpQ4KWD
-         yrp1qymVl1xKLwXOhcUUN/ZljYhqMAAfN1Jl+xaTAGTeMaYTsX1/865j+YOF7qfI6U59
-         iQxw==
+        bh=Dc+Bo7udqDy3OvFW1e4k6Vi+Psamqa3s48HVUQ/rqV4=;
+        b=W69weLHICy6WDMyIj1i71jPo7isLg2A9fHTvYM5Rgdq6HjA1IIMk0i4d+FLRAmRWTd
+         j5g6mQ6JusEfeRzRNN5Bc/+zzYhSkue+GZfQq2+EVBEbQ+71VTAsrsxlmchc1Ix0stbC
+         WFV2+uQjsDncxtGcE/KYOJbWbn7KHSHPEsGp7RLzr+baHUp9HkxRB3bvZS+N2kHVeJT9
+         OiVAuW4EiTQ2SWslWZKmbFYFxRo/K/+vh5k3i5gAHSrE/ezVVuWkuhr5BG51H7gP+TnO
+         HA65vRRccy47so0F4OSqEHUZ0EPMyUlBVY/0YjmOsAKdu8U/TsRxqojqZ7GkjZyhqtcm
+         PAmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792519100; x=1793123900;
+        d=1e100.net; s=20260707; t=1792519131; x=1793123931;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TYpDQsgGRr37nBGO2U3Z6QjUyN0Co5SvOmgYxqHioD0=;
-        b=dNzZQXR1/W6soYNmmp8/fJd/gGBTzlPl/N2Vjgpup9/p2u6BltSPlHB3i8awSeDCjz
-         8bpZvgndjiIiiEN5lQZrYBfOz0N99gQ1uWDD69mVwvik54v4lSFOIks1ThDwobNQBt4z
-         cXx7exVfJyqcqMlSqEAQ4P+qaoeod4a6z6EFjea0mdS0FOT/Yq2eHeG2PyKKmEE/wXOw
-         WJg2W7UZk1mglWbgoZxOOn0AQUdEonTB74HrTlEXDsYUehqia+phCkbKD6mXsbTrl5Lu
-         uZXDwzKW3qDRUSg886ufcM52/ixgRrUVwbQKh54jab5sJjIipJtcu/pvTm5Sc0PGGVtX
-         6X9w==
-X-Forwarded-Encrypted: i=1; AKwUvBxY5Jwd2URf1Ey5dk5Iak42LsKwlgGyRVDnc0iGwiZkSHeqimkvnbE4pCuTrqKT7EwzYb4t/Dpasg==@kvack.org
-X-Gm-Message-State: AFq9FYI+3xVlpeIVxaA+3N2N5ALXarfdeGQRCM0iJMbQyTdzWImWil7d
-	mfmj1Zpw0VdFa6hjvLOax1fBCz/PB5pcn54Q1o/hjlhk19YyBweEStgAvZlQ9LyCrJwvZ6m+HBV
-	DKpbDqcpEEzaJ4md7NS+BeM6cm/RB0eM=
-X-Gm-Gg: AYBFou0WpP51ArHVYqy+a887Vz875NJjCcG6hs2BjJtmx7qGlwfQi2I7D9hRf6gEoyj
-	6apSE08pJUh8VgK1qcq5uasm+nuMUjX8OFIalua4rLIj0kRNTY+tbtAOlnCaZhfSB3oD0mc3E5x
-	yOxLcUq1aBfqEDmH05vJmQwe2024yVvcKg8FlFWP3QQLv0c+1qUkOwjrw17JRdtW87QwmsguQCP
-	Il1N3foMmkXu44uClPauVJ0lQ4q6rgBU40K/Ng50pHe+OM5Nb98C1foImbXrl1YH93z3osr/8xM
-	hjKFq4x9GbpFOUREgmsr2ojpcgG2er/AcWnoaiCLE/M09oXTGSdXNdpZahOOChMoNWlZmNucdzj
-	dVZnaIL8k40jq
-X-Received: by 2002:a17:907:6d12:b0:c31:8984:7fad with SMTP id
- a640c23a62f3a-c419d067e77mr853092766b.15.1792519100063; Tue, 20 Oct 2026
- 10:58:20 -0700 (PDT)
+        bh=Dc+Bo7udqDy3OvFW1e4k6Vi+Psamqa3s48HVUQ/rqV4=;
+        b=qFn4kr5mUTuPLq4Bh+MAct9CTS+LhBL+7OzfJoJzD/9DUoqS2k/bP4dHe3hk/czMyK
+         rSy2HF+TwKz8Ul8fpWI55Kg5HcU2ouoDoTDkTtu2APuQOFMJXRZXB/5IpNQzD4fm256k
+         t/1yFPQD+4/ZBWRyZlnZX+9e9lygFRBrenMXbkNFsgUNluP4Cl7+8jqHUItsF87mdnkB
+         KT+uMVlpMuBKOzgAy/3McsNrcBuhpLAz405iNFaYkvvdXez2Iu0Ex0ms+cIRwrC7YCeR
+         TrPtjzJh+yRxGblH9dAm1TRToky8+JyAxBn1T29nR9IZFYfDFx2mx2asgeYrJgcPZwTd
+         tpqA==
+X-Forwarded-Encrypted: i=1; AKwUvBzV56Bb/KoTNPmc7NhOGVTj1CCaNE69i2qNO6fWkNDnk7nGaG5QSb+x6uW6ws4katleNQmG+rgnhA==@kvack.org
+X-Gm-Message-State: AFq9FYKhDaUlflMrPK3vAqBDM31/e7cLEbQx+8m3vwMGcquVQowPfNI1
+	6S7d/AICimWCx06mhVxf7YnWyRdJRtKKdg750SiRC/BNyDPWE7ysSRiqFLckcrzoc38JbbAOzq6
+	6uZCV9b2iwnQ17BxkrVzPKfBsx4gvlkg=
+X-Gm-Gg: AYBFou0U79McV9ZkB+w3UYo7J/ClOabV0qThsEnTPz1bzwsEgBAvr9kdNFUWCZFu9jw
+	M9njnMnUuhxqUURo4g4qIA5Q6aWUT5r20Pj/x5uHWG9MyVk2hr+k51QQvEUge/MAcGF23Uddmoe
+	Cmxg8ldZv9f192b5dDEql6MdaZxWQdznof2D7tkIOrZlK41ii/8x33GXYPk4iAusGYUUpAQAkgB
+	DoO5kIngA1OecItypsonRfYQFVuI64MLpG+0CdDXrT5aPGnKDf0luYwk3K07goggoQmqELZyiz5
+	VaH9HRODkmjQJV3SyWkGH46+Dhbg9ShZ4En0wkHgZkMyubd3rUOsOD7HJvz8MspP2fxw1FfrRd7
+	Ez10G0Z5ej409
+X-Received: by 2002:a17:907:930e:b0:c31:8c48:e18b with SMTP id
+ a640c23a62f3a-c419df3d9e2mr827528166b.14.1792519130900; Tue, 20 Oct 2026
+ 10:58:50 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261019160615.2348500-1-nphamcs@gmail.com>
-In-Reply-To: <20261019160615.2348500-1-nphamcs@gmail.com>
+References: <20261019160615.2348500-1-nphamcs@gmail.com> <atcRLYvKavedT6Hs@yjaykim-PowerEdge-T330>
+ <CAKEwX=MRvzzd0Fn=UX+LcRo+K9wuqCWSB42NNn7rvZkZukRRrg@mail.gmail.com> <CAKEwX=OwzpxUfdANEXoCeZPBqch+91C4gKwhrcikm6Gj_LBPKw@mail.gmail.com>
+In-Reply-To: <CAKEwX=OwzpxUfdANEXoCeZPBqch+91C4gKwhrcikm6Gj_LBPKw@mail.gmail.com>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 21 Oct 2026 01:57:43 +0800
-X-Gm-Features: AclHuK81ig-p6n-cemVImrMFEtjvoTG0vQVQgOGs9ux1VBr9C6W8ghDtjcxeOK4
-Message-ID: <CAMgjq7AEg6XEUJPaM3mMBQAeS_KiDv8_za4w-R2WaZ=ZGenvuw@mail.gmail.com>
+Date: Wed, 21 Oct 2026 01:58:11 +0800
+X-Gm-Features: AclHuK9UBnCJDKT6vP1WD_aznvQkjk4cpSf1QdPurJznE3HDglLfCYeOaCQoUZk
+Message-ID: <CAMgjq7AsUWGw5K5Xk1qz67atXmXB7vYDww-+u9t8Mz7rNAH-6Q@mail.gmail.com>
 Subject: Re: [PATCH] mm, swap: revalidate populated clusters before scanning
 To: Nhat Pham <nphamcs@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
+Cc: Youngjun Park <youngjun.park@lge.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rxy7akdqttf7ryqikokk5ttojomc5dz5
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DBA9440002
+X-Rspamd-Queue-Id: 92A43A000C
 X-Rspam-User: 
-X-HE-Tag: 1792519101-8724
-X-HE-Meta: U2FsdGVkX1+j1vvRWJC/1zSPYpcg9l/9FmAedtoRUinDt+IvjLp0vcOE05GqaL7jyzSS4YjTjQSv8I9CnOwe+bbrfh1iGDONCvW93U0yKtvRDin+6to912fTrKP1/a+8P8BqdhL6W6oeGZ3zlLb6gC0Wa21AdB4QST6WnRnEM8qtj9R3BPuDcrxkuItwJxabz0RJQ2gAG9PvXGsnVEX3aRXZlr90me8hRy/jcLNq0BE7ExOub5Cs14Vt7RvZ/dckvL20MAc/u+SvuPhtjgsokxCjcEb66nW1Zjsln7yXrvUNm6/vz5hQ1lTaS/d9q0Y+mqjD77OmPbFeC0/IQgmDOaAzUYL52s4DXOgiRewiMWFLuYQ0ZzxD4hGqCdb7l4qrbGDEqqazwYnjxD5OmaS1TNXBY/PZ0Fc0y6H/HfSm/Tb+IrlCYP0LivJFKsKhxpGh1v1UgkHU8UyhFMZVCrCTnmPHLWVXv3PkWrc4XiXcBPvWGl9miOzskkCHP8q8hDnvwUhfvfXzOqJVLBxDh1i8kCg0S3cxeI6/9q4EQDUEaOU+neUEF4dUEBpg7eo4flmcqQG3Hgcu/iIdHfXldFpuqsSLT3y5ke3hlA1DkWr9NJME2TDT/rg5r/4QiFeQckRE/phm/eW0rNp9otFTSfjyA+EqK0OvT6msNDK3VAT87ZZcST7ENKeu5kvgaCm4gZwaYbsIPTirT7jpvVq4Zd7y5aHXB+eNdIgs4njRL2c5Bz7qPePVmczFUZRcTR5ZzdhWkoQH4gKqDWmIXk5QsDrZQx0Z7Ma37+/NoFhYbkuFNy41nHrPa0AaJYLPkeUwMuQEcrpErXZf4yZ520sfnG9dD8tTgQ4wzsxEEILCC6TUgvJ+S5Zm5LnehrQaij5ewoPqVr4uT4/bGwKfnwzPf+aMXgCSJ1iZtJev1lGhz8S+xVtBo+MUpjRhy4wak1BRgtXacjHWry8qEpalSN+xI/E
- d/23O4uM
- CjKZYW+BY/By+fqWD0e2XQlom788fCh5iiflRO3+2e5HpumJVtT+kOEV7mkfLmpEGVhAfxe+TohxZi9QVopO8K0n7vV3HloYYaSKVkGKgnJVVDRVZxxVjQmQrM5Qjw15CujG8tv/fyZ7ZDFP9zJmMtC3DI0GU8Ny6/jMDLXN2nUqKjg4uCoLbql8rSo7SA+RSnJuaf1wrInF2b6XggW1k5P0CMYSKQHrDKErv0XLh7MXnmx7J2EmfM1qxYKYzFQ16Gpo4NlnAtR7NhyrZt1RJg5YtkoWbBZpPomvx5LMknZ2zLBCoKSC+8oEWKqwKATJQUwuD41MuFBI7wc0VRfkcyAzxQO6ldamjYDWY9tlFZHe009nC21Rb9yKUk6shElnBFXrVsUPrS3OXyKyrApZttCmfe4ixX8i4aETV0awHv8D4TpU=
+X-Stat-Signature: rswoinhrhrs38x7z6z3w9t1mg15pkzyu
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792519132-935744
+X-HE-Meta: U2FsdGVkX1/FKAvxGCPSzF2aBrDQbCbvTmFvGX7nxCLlThtHwI+pABo1lM5ApiZGvU1H2NHFblAmUoGf3S/4t5AY6eNJ0/RoCGvAvhqMx1ypdkZ5SVzEefapQBzroN/pK3MtrCZS3MTqqfwyIo82O3qCvLJVe4J9CDsj4Q8Gn+4fU1iAkbJnQ8ien1v5+d0VFM+n9eKFFn7shDtnolIF5ckB4usOFhyX11EtRI1cB47ST1Lt2DQbKmUCFSn6q83oOgLEIEPnnoAOa3Q4YGCiJ7F/B6n6C5/r9znixx6aVqap8s69fdgh7aaD0kmjH1VJfVVQJAEovXYOqOEdI/iU4zGnmblU8Bq9bnmTbTJ0ByonrpuwtfgUAog16LNzEc+A9lVfdcnBprIp3//oqC1f4Iw6H+MejTULdjK3gxRLLIaPQUBNkz4G3iP2JVN8n2mVJgKY5vHrbfr2liuoF2IccC8IDC1UC9ivFz44tZJdpi9axxr4l32WnPpOvM4PrSXbm0HKg693oKUh7yt1btNMEgJ9I9MKBVtdhIox2cqqEIJZn/STQUQTZ8Neb81E1LjIegnZOTdbmY18Us0DgOGumAzWf4t6llabsNBiH3w3+nwxtMd4teovqdinmBCU+V0QQs6lVdUUWXiWnDIj4fJODgZZpV9HLRpY8PJioAgRlfJ3YGWMWOjthXuFmK2LyNl6UPEWGJgG8y1hMBCLhQkckgrov0HwaRmTxwuGXX07mNYSPECfd3Cp983S3yygBNa74KqMjGjU4RKoBtX/365Eupu5Ic4dLiSf7cyNDYP7F9wrVKStAm2Rs19rAdbzrmkCoVbHXWesEGNwW9ZHei2fxJxC7m91qaS0eW2S3NyRGbjmNbg9yxRk6BAH9hyLocFepmP4Bozza25t7EeV/DlMXUXLBu9vHXAuIMZ2hkRN92GW9dT9dt6Ny2lcMMM56/3DQBk7EGk9FktXrfffxpL
+ dzIkIIlI
+ 3seI6haUF1EijTJ2we+K5uH6sTmRbBDXU6tkupB1+aoR8LHeA1VESuDJxRgt3/74MC3T4vo61kOQIVGVW313wzsk0qVMFRboacY2Nnv10mC/6bXdPcML2//F8fQw6lyREkShkHCXXT9kibhsjRY9JWRGTxbGyt7pxNAiE7JJsrcnssgJvu5FxzoIigj4pKPn28SpNAlhHUaZ5Rim+ubKQHP2JuQY8Gvp2NXjYvCP+FUwL3TOLiVl/487jp79osTncLPaIEBRbEl61gyJjepX08fjuy+Qn+gZV4JfPNrZoWiF91YietpB7kwhtYtNKkU+766x3khBw80Jw5j4FvVE+0pP9VlJhZmA1ex4cVYGJ/mRHniJa5ZL+2wSEMrPLMfpAyS4w04DxhvdKhbO0tyZ3PZovzSVId2/QyzWqLfJDKGk4cQC8ytwIkFhHHwV6iCLse/8FopNn2BS2IMbwesU1PjK5rHdGGUVCR5U98OFfkLhvRu01N/HxEgmDTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,39 +147,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 1:41=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+On Tue, Oct 20, 2026 at 9:23=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
 :
 >
-> swap_cluster_populate() can publish a cluster's table with the cluster
-> lock dropped. A cached allocator can use and empty it before the
-> populating allocator reacquires the lock. The resumed scan can then
-> dereference a NULL table.
+> On Tue, Oct 20, 2026 at 6:12=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wro=
+te:
+> >
+> > On Mon, Oct 19, 2026 at 11:58=E2=80=AFPM Youngjun Park <youngjun.park@l=
+ge.com> wrote:
+> > >
+> > > On Mon, Oct 19, 2026 at 09:06:15AM -0700, Nhat Pham wrote:
+> > > > swap_cluster_populate() can publish a cluster's table with the clus=
+ter
+> > > > lock dropped. A cached allocator can use and empty it before the
+> > > > populating allocator reacquires the lock. The resumed scan can then
+> > > > dereference a NULL table.
+> > > >
+> > > > For example, CPU1 can retain a cached cluster offset on an SSD with
+> > > > per-page discard disabled:
+> > > >
+> > > >     CPU0                          CPU1
+> > > >     ----                          ----
+> > > >     swap_cluster_populate()
+> > > >       swap_cluster_alloc_table() fails
+> > > >       spin_unlock(&ci->lock)
+> > > >       local_unlock(&percpu_swap_cluster.lock)
+> > > >       swap_cluster_alloc_table()
+> > > >         rcu_assign_pointer(ci->table, table)
+> > > >                                   swap_alloc_fast()
+> > > >                                   local_unlock(&percpu_swap_cluster=
+.lock)
+> > > >                                   mem_cgroup_try_charge_swap() fail=
+s
+> > > >                                   swap_cache_del_folio()
+> > > >                                     __swap_cluster_free_entries()
+> > > >                                       free_cluster()
+> > > >                                         __free_cluster()
+> > > >                                           swap_cluster_free_table()
+> > > >                                             rcu_assign_pointer(...,=
+ NULL)
+> > > >       local_lock(&percpu_swap_cluster.lock)
+> > > >       spin_lock(&ci->lock)
+> > > >       return ci
+> > > >     alloc_swap_scan_cluster()
+> > > >       cluster_scan_range()
+> > > >         __swap_table_get()
+> > >
+> > > Hello Nhat.
+> > >
+> > > Good catch!
+> > >
+> > > > Reject an unusable cluster under its lock before scanning it. Reloc=
+ate
+> > > > it only while its table is present.
+> > > >
+> > > > Fixes: cdd77f84d966 ("mm, swap: consolidate cluster allocation help=
+ers")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> > > > ---
+> > > >  mm/swapfile.c | 7 ++++++-
+> > > >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > > index c3288910b3e3..988b7316e0a1 100644
+> > > > --- a/mm/swapfile.c
+> > > > +++ b/mm/swapfile.c
+> > > > @@ -981,7 +981,11 @@ static unsigned int alloc_swap_scan_cluster(st=
+ruct swap_info_struct *si,
+> > > >       bool need_reclaim, ret, usable;
+> > > >
+> > > >       lockdep_assert_held(&ci->lock);
+> > > > -     VM_WARN_ON(!cluster_is_usable(ci, order));
+> > > > +     if (!cluster_is_usable(ci, order)) {
+> > > > +             if (cluster_table_is_alloced(ci))
+> > > > +                     relocate_cluster(si, ci);
+> > > > +             goto out_unlock;
+> > > > +     }
+> > >
+> > > If this patch is applied as bloew, does it prevent the issue describe=
+d here?
+> > >
+> > > https://lore.kernel.org/linux-mm/20260720071342.50742-2-shikemeng@hua=
+weicloud.com/
+> > > (This patch publishes cluster table after lock acquired.)
+> > >
+> > > This patch is chagned the way I suggested during review... :(
+> >
+> > Ah I missed that patch series and your review! What happened to it?
+> > Did we just never land it?
+> >
+> > Looks like we are still doing neither Keming's approach (table
+> > copying) nor your approach (publishing at the end of
+> > swap_cluster_alloc_table()).
 >
-> For example, CPU1 can retain a cached cluster offset on an SSD with
-> per-page discard disabled:
+> Ah nope, I saw that Kemeng implemented your approach:
 >
->     CPU0                          CPU1
->     ----                          ----
->     swap_cluster_populate()
->       swap_cluster_alloc_table() fails
->       spin_unlock(&ci->lock)
->       local_unlock(&percpu_swap_cluster.lock)
->       swap_cluster_alloc_table()
->         rcu_assign_pointer(ci->table, table)
+> https://lore.kernel.org/linux-mm/20260907091356.53026-2-shikemeng@huaweic=
+loud.com/
+>
+> My bad! But yeah I think we still need this small fix (or Kemeng's
+> original proposal?), unless I missed something...?
 
-Nice catch!
-
-I think the real problem is that it turns out calling
-swap_cluster_alloc_table() without holding ci lock is bad idea... I
-think this patch still leaves some other call site too?
-
-We may instead add a "bool locked" to swap_cluster_alloc_table, and
-let it lock the ci first before it does any assign (not the alloc) if
-the allocation context is not locked. That is, keep the
-sleep-allocated tables private until swap_cluster_populate()
-reacquires local/global/ci, then install them under ci->lock,
-something like pre-cdd77f84d966, always assign it atomically.
-
-That should also cover the problem reported by Kemeng a few weeks
-earlier too, and prevent further misuse. My Bad on that change :P
+Right I remember that, I acked part of that and was waiting the update
+on that sashiko comment, as the first patch isn't perfect, while
+Kemeng's mail at "shikemeng@huaweicloud.com" is now bouncing back...
+I'm not sure if Kemeng still plans to update that.
 
