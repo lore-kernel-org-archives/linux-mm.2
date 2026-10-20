@@ -1,80 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CD4606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 07:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D831606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 07:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DvxGAV+O
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K3Zn69FG
 Received: by kanga.kvack.org (Postfix)
-	id 67ADB6B0131; Tue, 20 Oct 2026 03:56:02 -0400 (EDT)
+	id E703F6B0427; Tue, 20 Oct 2026 03:59:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62B3F6B0133; Tue, 20 Oct 2026 03:56:02 -0400 (EDT)
+	id E20B66B0428; Tue, 20 Oct 2026 03:59:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 519996B0135; Tue, 20 Oct 2026 03:56:02 -0400 (EDT)
+	id D10516B0429; Tue, 20 Oct 2026 03:59:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 290E56B0131
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:56:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3093160949
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:56:01 +0000 (UTC)
-X-FDA: 85342246122.11.F333211
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D9FB6B0427
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:59:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0B413408E6
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:59:14 +0000 (UTC)
+X-FDA: 85342254228.26.C70EAD9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 039C620005
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:55:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvxGAV+O;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792482960;
-	b=ibA2Mmrws0hMArGgbKEJEpVP1CoKGcWKvKsRwPRSkqhUnPv14M3zhmR01nIyz7X8pJ+86N
-	ndWYZzimMkzglyxTlApvpGB1ZTmwIjPvRwuO95TsRwAgidhZqWG9Ld0GfBP5uhZbg74gcz
-	0bp/dFeDM/KE18nfs670vSk6ueQpVXM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvxGAV+O;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5213A40006
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:59:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K3Zn69FG;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792482960;
+	s=arc-20220608; t=1792483152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mG3kNywBpCjlsN90sZBCwLqBblspQOk2h7zQBNKp7wI=;
-	b=oytADzoepkLjuFSQX9j4MJcV6B19W4InMeBcn/rQPlkZMDU5pCwaE+vZLFf/Sk+YK0mRwn
-	YUEKZl5pb0FHXhg99TOfcUQCPnsM/CWVoz76PSE5i2d8KEqeE1tA/jFtx13LeMOIOzTK5Y
-	m2B5iYoh4loULHyPh8nvSacg0nt7ylU=
+	bh=ReBTcrDImQvhoa5yHIWdOL2JpqjCmSuJOVv23tlb0UA=;
+	b=A82RbV/sXBubJNSMnZcQgnPHu2T2X8Ikn2JLdsDJYIdMwZxZnEou/QkC/zdM9PRexBhemA
+	c/z4IkdyHLlT6y83ZGq/l+7amNIQNOcTywOqrbsjswKw4s3vaObjs0Wri16cn6FICHgE4u
+	WMJVe9z3tCyiSLMeDFn1QpRsL9kqfdI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792483152;
+	b=lK2weSNC7HjcBDpEkGMysbQVdd3t0if+wK8pV6OY0jGnfiwxPkOkIV9a//Id52s7DhQ/RY
+	PkNeIdYU6ZBBN4i6BOSULFEhuj8lGPEqEp2LpdRIDTyfnSoThyKj335cTDtsTKICB9G5FZ
+	S3aR0KJ7XPUy3MYY9a3Bm+bs0KLaL0U=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K3Zn69FG;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 816C860DA4;
-	Tue, 20 Oct 2026 07:55:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5174B1F000C4;
-	Tue, 20 Oct 2026 07:55:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CF0D260142;
+	Tue, 20 Oct 2026 07:59:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8E51F000C4;
+	Tue, 20 Oct 2026 07:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792482959;
-	bh=mG3kNywBpCjlsN90sZBCwLqBblspQOk2h7zQBNKp7wI=;
+	s=k20260515; t=1792483151;
+	bh=ReBTcrDImQvhoa5yHIWdOL2JpqjCmSuJOVv23tlb0UA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DvxGAV+OaraT9ljQafttLtkjrCxCFCziGjRjdD6HwDSpmr4+0+MkXiqlz3dN3LkvR
-	 MfM/McOKEjS6LdRZ6VGYT8CWPrJhfnxWW1JkPviBcxyJrcCOm6OYTyoDRKnLxDzXlJ
-	 gygE0Udc9/JKsQXMuoyTGMOiyu0lM2/HJ4EK04aOfsQ60EhPsIji7jnMWfon937KHA
-	 Ry9q64jMwMhte7oWL6nK2TbfURYsSEwUAOTeWoV8lik4nsuFWIv4b7hJNTI2x4/F8O
-	 7YwJlW32gApnjMaxcZR64YRoxdu+mtO7KqcMSGUdLoFSnKOIkdJY0ZbdF6xyEHG1gX
-	 XXeczGddFlPoQ==
-Message-ID: <70771a19-9392-4fbb-8aaf-dcd40f60e977@kernel.org>
-Date: Tue, 20 Oct 2026 09:55:54 +0200
+	b=K3Zn69FGWwSiJtnA3FBjGGoXJSaQ410NJ80DjvSu6xdbeDuevOL9AACByNV9xTbWq
+	 o1J5l6e6+tCNtsnjE89KTNAGa4Lxg5PjNQ3TcF3VXEG21gwhgfJEATg3/IIt9tEc66
+	 GJXmr+tN0rbXuqI4CE+7oAr1gZVH7BPL2W4HoyDbhMTuyHOZfNgC2AF5XZCMRCrQYA
+	 WKrgr+M8EgQ19bpl4A8CTpaNg4Qazlsnj8fxenfx9YSQdnaAph96gxTN7GzGa/3r9W
+	 IfKRxOxomD4OQCsbAf+EXogLaKsngv2775eNZwjfOvRUu0BspyMnzUWe72nWkaoNYR
+	 0CXX9OuWyKmTA==
+Message-ID: <b66b3450-ec8a-4c85-bb19-3731e21c0dff@kernel.org>
+Date: Tue, 20 Oct 2026 09:59:07 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory-tiers: reset demotion targets of nodes without
- memory
-To: Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, weixugc@google.com, aneesh.kumar@linux.ibm.com
-References: <20261019184712.3422641-1-gourry@gourry.net>
- <DM91RXTJ5EFF.2YQARRB6TXQIK@nvidia.com>
- <atZ67m_JYJADzY-C@gourry-fedora-PF4VCD3F>
+Subject: Re: [patch v5] mm: vmstat_kunit: add synthetic benchmark for mm stats
+To: David Rientjes <rientjes@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <920ba123-077e-c42d-ebdf-a5effccf2073@google.com>
+ <8b077a83-3f79-cbfa-0273-e086b0e51ae4@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,22 +121,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <atZ67m_JYJADzY-C@gourry-fedora-PF4VCD3F>
+In-Reply-To: <8b077a83-3f79-cbfa-0273-e086b0e51ae4@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jaeej13oq1h5ipwcyi965akj6xo9ig5c
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 039C620005
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5213A40006
+X-Stat-Signature: cqw81tdz1qqkhd31hymcfrg6iy3qegbw
 X-Rspam-User: 
-X-HE-Tag: 1792482959-567075
-X-HE-Meta: U2FsdGVkX192U0xQMOf51V2pYrlptzmguk9zizv5m3nK/8Dxiao2/u8IrsLu55+aIVFDg34jzOYmg/UfpHMPxURajtBbFlFa+Oak+kMZZTpM1RLXpl0c0lp14kUdmvDU1Wz0wzVlzAeY14Opx0ZjkyOz6dulpjIzWxqfB2FlG7a7uwIL7eHdpmQo6QPclRW61Xq6k5mtuqo70ZPDDlKnU0g9/RGtBKeFHX+ZPCKdtVsx8FMEBOXXP6GQUgkGgsNuNz+mCJnBEi16m/vYr4R/PfjINLGnez/BJRjXkqPuj/PXGdEv+lMunsHyksg1H9vKHzbtTuUD3Ick/JfAxQlE77+smXs8Z652LtR/HWvuZLbVx9UzrYtiEA+HUP7fbhbQ/ge4LEu1ZEqfJy/krcY6j6E4kdjFlH2Xacj9NtoS5zDo8VBeoGIkYiNt3dNg0OnefK1kuN0kGZOxiPf0KcVn47DmbXgg4a0PerHZlTaffewnRVcV/pNWgwxssUX9P0+6av/tjncSrX0vo2f8s0CjZ0EeLuToXboQOCCJarBw5Ozbz7cvdST8JtSBJ9Q2AUCLcpnnWD8MI6hL7VJ/dk8BOX6Rqi0npEjn0XdajHvdBtyiLLqfjn1wn/EgRx+dO+Ry/pDHK00HJiYZ692Zwj+gtY+z+GUyB3MV7/DmKrJ6YZvQbQvC4HArqdb+lQRpmAEhnKdpasCS9qjEY2rzRnwO0POx8Ptr2gJyLtOsHvMI0PLFd5O+yEASzNzlH9If+zoBf3a/oAXjLZS/M6Ff60ecIqWyHPBiKuma/2OhUqpWLbh3FoeAj0KmZodEDKpvyYyX7r2ytP7sp4Z4/cKvnEYV8g5TyQHWxok7Hk+GJLLeX2C/aLqnEmKyuagSSO6p9YEXvH6r+o66Qa1u0AU1GR/+QjiY0eZ9JAPK2i96cgDfgU+ms9gjQf5/OsXRBcrkYLqNuiHyPYJNREMDrfkU2ZN
- UlHHeTfn
- JH3qUKOR7D7uGXzMWxSzQULaGdAgpIDjvMY3KYNN0Y28/3aSwSTDN/M9xedrX2owGveBb3tfI65kGw46/0YlVodD9PCErcFlKxPowDxEJ1pO6sdSSwNzgwL2XEF5OtIHHe0NgNGuV73stv0PGYQox8vQEouP+vSpM6M2IETFRZEt9uc2akP/44+b9YAQ2gsw6D7op2/gZw+uyDKRlQOY3FzNoXksSVJ85/eghmJWMia79MpcVoRF/TZQHJDbYhrX22UE4dEfcJ4FEeFSFzp6oC/vYSS9smqaVz9ICm8sPkUR4h5uEP4Z6s73Xgt+yEfEnjPst/k+xcrIK38iIrIjfsC9Bla6vgy9riNK7l40LvQpOOyEgg0iJFyJRJEt1y4Sm6jIZ/GvbJLXw82o=
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792483152-973311
+X-HE-Meta: U2FsdGVkX1///j3dSzIA+RujG0yuv5rHx76NRTBnZFvUTR5lINSSioyMJS6kYLS8UladC0duvLWm4mGB/xlgDNAO71NZ4v9+b3NTCa2J7Laj4GV7307Kvb7Vb3QsPVt5DVhr1RWICH+ax7WfmYhT3PzUce6PY49SvHcnrvJpvHzy4kL3kN8msn57nxLiZFAh/vibT8KvZqRj6BjM0Sn1HxW7FAyRD1KVuL7AUH4XufAWMyOktgmq8pqEZb8PkyihBMmL+M86+a7eX0E6SSTYoSFhEwCp3rGJQ1nPUd5SM7CMw8lx/4zNT51+7MleKCXyZXX0JCdXC7Fz0v6DP9oApXmqzmQtPiKPK2AfnKuiFdff8t2eod75mlPCnUTjTUQR4HpDnWMaXgg+npiyeRm1+oBCXZaXlC/vd/6L3LGKnGQRXGfjkTHI+7Ab5ZO2XxbqoYvOracrvD18Jjfyzj18+LDMup4+d+KOUIz8cHUqQrdA5GCkDJaBXTc2JJWQD+pswQF12IZbfeTknA+RqOY+5IQAo4QtuZ+JDgVB/pujJkqQI6vr51abCjbza/pfkqA26War3mL3lFwTdeFFG2K66GLO91A+VF7tgym+aGIayAUdG39tuVEP4pKpsNjNlgAj0i8JRpxaEq8WbozkrvX514cQJGNotisyRqkGjZ/HW9qEQgu6Yyg7DrR7e6FO+Aj7gRaIVUU1Xxzw0S7ZNJHwy+ewDCAPxzR4izHUiLpXgEb7PKc7oG1VqI6Wf24FYsbrUTxafC4KYEeJO577Fy7TYb2Gud+Gqd77hwNaPukOUL1d7uBr32J6uYyk7Vnw/QEls0VBmt8NrmjX6JB5WjL8dhkwr3J6vLxzaEojMstJbIvlrh3F8WO4a8AUyBfkO0VwPsw6ekfx8teD2BgAdEdT0TY3Bn1Kz4PSF5Gv6jj2tK/KV6V8PT1GAPgm3TiHWh/2nhK2YeILEFb6N1ppdUg
+ Xxi8dpY7
+ Zzp4zBNQc11+LPSgP8u/te8RSRK2SOgbeOoVmkTE46jH7Wkt8L/YyMnkjtVAN29GHyYhqj1ESKlK5cwz3bjrN5BF7BZZoFBvM2AZ/aBHrmSbqAuvg3iEU5ufYr0BRC1cr36GetFDCYNk+38jIRgjH+6CsDPQ+wvJoqo3vkULRDS1O5lxFOUvR1PrQSZpkgBW76Y99ZkOYSDuo43AsS0nsQZ0OE9S/TwXE15/fNV//cyFRUqise3d+NumB9A/Upot+yrb1H1cWXsjR06EBk9yvNbrTPKAglIu29tiZCldlQZtG9z9ynn5w+fuYG3+0gp/YaIAgzf+n9tcNdQO29PzimbJBEWN00MB9ks+YxvxqiGjTomIElH9UpGa0r/HfPJCIiq54RkAra8HuZyupZJjwWvhhcLWMsJ6FTOCGv6Pgt2DaApVZHo9rMeSV92FhdjVYGifgkHoHyV8wzsT+KJA+RiAQpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,64 +144,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/19/26 22:22, Gregory Price wrote:
-> On Mon, Oct 19, 2026 at 03:04:45PM -0400, Zi Yan wrote:
->> On Mon Oct 19, 2026 at 2:47 PM EDT, Gregory Price (Meta) wrote:
->>> When a node loses its last memory, offline_pages() clears N_MEMORY
->>> before the memory-tier callback rebuilds the demotion targets.
->>> disable_all_demotion_targets() resets only N_MEMORY nodes, so the node
->>> keeps its old node_demotion[] entry while it has no memory. Before
->>> 6c542ab75714, the reset covered every online node.
+On 10/17/26 00:35, David Rientjes wrote:
+> On Fri, 9 Oct 2026, David Rientjes wrote:
+> 
+>> From: Christoph Lameter <cl@gentwo.org>
 >>
->> establish_demotion_targets() uses for_each_node_state(node, N_MEMORY),
->> because the to-be-online node is already added into N_MEMORY?
+>> Add a synthetic benchmark that can be used to measure performance of MM
+>> statistics.  This is used to analyze any improvements or regressions in
+>> functions that are frequently used in hot code paths.
 >>
-> 
-> NODE_ADDED_FIRST_MEMORY happens after the memory is already added
-> (though not necessarily online). 
-> 
-> NODE_REMOVED_LAST_MEMORY happens after the last memory block is removed
-> (and therefore N_MEMORY is gone).
-> 
-> slightly different timing for each event.  There isn't a reasonable
-> change we can make otherwise.
-> 
->>>
->>> A reclaimer reads the stale entry only between the node regaining memory
->>> and its targets being rebuilt, and it filters the entry against the
->>> current allowed targets, so there is no user-visible effect. To see it,
->>> online and then offline a node's only DIMM: a debugger still finds the
->>> lower-tier node in node_demotion[nid].preferred.
->>>
->>> Reset the targets of every node.
->>>
->>> Fixes: 6c542ab75714 ("mm/demotion: build demotion targets based on explicit memory tiers")
->>> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
->>> ---
->>>  mm/memory-tiers.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
->>> index 25e121851b586..7197f1a67a340 100644
->>> --- a/mm/memory-tiers.c
->>> +++ b/mm/memory-tiers.c
->>> @@ -378,7 +378,7 @@ static void disable_all_demotion_targets(void)
->>>  	struct memory_tier *memtier;
->>>  	int node;
->>>  
->>> -	for_each_node_state(node, N_MEMORY) {
->>> +	for_each_node(node) {
+>> This is the first of three tests that measure the execution times of
+>> critical MM functions anticipated to be used by developers to measure the
+>> impact of any core changes that would end up causing workload performance
+>> issues.  Vmstats are embedded into MM hotpaths, so any regression can
+>> cause performance and scalability impact for users.  Google has carried
+>> these tests internally and kept them updated since Christoph posted them
+>> back in 2009 for this purpose.
 >>
->> I think the above code deserves a comment explaining why for_each_node()
->> is needed instead of for_each_node_state(N_MEMORY), because when a node
->> is added or removed during memory hotadd or hotremove matters here.
+>> This can also be used to detect regressions over time, from kernel
+>> version to kernel version, independent of development use cases.
+>>
+>> The test is run by KUnit or doing modprobe vmstat_kunit directly.
+>>
+>> Sample output:
+>>  KTAP version 1
+>>  1..1
+>>  KTAP version 1
+>>  # Subtest: vmstat
+>>  # module: vmstat_kunit
+>>       1..3
+>>       # vmstat_test_inc_dec_zone_page_state: 10000 ops: inc_zone_page_state -> 8 cycles (4 ns/op), dec_zone_page_state -> 9 cycles (4 ns/op)
+>>       ok 1 vmstat_test_inc_dec_zone_page_state
+>>       # vmstat_test_interleaved_zone_page_state: 10000 ops: inc/dec pair -> 17 cycles (8 ns/op)
+>>       ok 2 vmstat_test_interleaved_zone_page_state
+>>       # vmstat_test_count_vm_event: 10000 ops: count_vm_event -> 4 cycles (2 ns/op)
+>>       ok 3 vmstat_test_count_vm_event
+>>  # vmstat: pass:3 fail:0 skip:0 total:3
+>>  # Totals: pass:3 fail:0 skip:0 total:3
+>>  ok 1 vmstat
+>>
+>> Assisted-by: Gemini:gemini-3.8-flash
+>> Signed-off-by: Christoph Lameter <cl@gentwo.org>
+>> Signed-off-by: David Rientjes <rientjes@google.com>
+>> ---
+>> v5:
+>>  - added dependency on CONFIG_VM_EVENT_COUNTERS
+>>  - expanded commit description
+>>
+>> Once we're happy with this change, I'll apply the same treatment to the
+>> proposed pgalloc and slab tests.
 >>
 > 
-> Sure.  Will respin tomorrow and give others a chance to look at it.
+> I've added the rationale for the change to the commit description as 
+> primairly being used by developers to benchmark and monitor any 
+> regressions in functions that are known to be super hot and impact 
+> workload performance.
+> 
+> This is the simplest of the three tests that Christoph provided back in 
+> 2009, the others are pgalloc and slab tests, see 
+> https://marc.info/?l=linux-mm&m=178547194364290 and 
+> https://marc.info/?l=linux-mm&m=178547193264283 for those.  Based on the 
+> feedback to move to kunit, I forked this one off independently because it 
+> was the simplest to address all the feedback and pave the way for the 
+> other two to be upstreamed afterwards.
+> 
+> Is this acceptable for merge?  If we're happy with this, I'll move onto 
+> the pgalloc and slab variants.
 
-A comment makes sense to me as well, it's not completely obvious.
+Works for me. The tests are rather small and I see value in them.
 
-Apart from that LGTM.
 
 -- 
 Cheers,
