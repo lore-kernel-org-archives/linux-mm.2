@@ -1,120 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE52F606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=oO+pji7m
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B730D606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 17:03:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F327D6B052B; Tue, 20 Oct 2026 12:59:25 -0400 (EDT)
+	id D667A6B0174; Tue, 20 Oct 2026 13:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0ADA6B052D; Tue, 20 Oct 2026 12:59:25 -0400 (EDT)
+	id D16826B0177; Tue, 20 Oct 2026 13:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E21E16B052E; Tue, 20 Oct 2026 12:59:25 -0400 (EDT)
+	id C05E36B017C; Tue, 20 Oct 2026 13:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C6CF56B052B
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:59:25 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2DC571201C4
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:59:25 +0000 (UTC)
-X-FDA: 85343615490.06.132C28C
-Received: from silver.cherry.relay.mailchannels.net (silver.cherry.relay.mailchannels.net [23.83.223.166])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AEF5D20008
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:59:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=oO+pji7m;
-	spf=softfail (imf03.hostedemail.com: 23.83.223.166 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 955726B0174
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:03:45 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F80DA5BDA
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:03:43 +0000 (UTC)
+X-FDA: 85343626326.28.5D69FAE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9E05E40017
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 17:03:41 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792515821;
+	b=HU6e8dX8mkKOariyEsLXp5kUn0tysG6KMiAmnGkRg3pjcvwuJ1iCuhPmBHsj9WaEuN7qVE
+	rN8m1263ivqe+shSoMstGeiVYKDSwIZgH1fnGnt/w13lh8KsVRe9mmiHPL7Fx7A6JmUAAc
+	jLjzHjvhwXuTwF7WFi13joXnZ/L0gXQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792515563;
+	s=arc-20220608; t=1792515821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lsWi/+vV7HXNVefv/HtjTalVTQdcLmOCgb3JgZq0tdU=;
-	b=2ovmKXwxX50BIZ7B2X/ZiVZt9Dc2eELsAV/e6bKXIG+NHO54o/dNkxPfSK7D1U7eGDC385
-	aG4mPDPqL6iHIeiUTUGIJolIaG3G5ch0QPYJchJBx7utttP9lMSeWVHtIra/as935mk5qa
-	LCfCx7jf5OgYTa3VdPrKo/og0h4rkEU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792515563;
-	b=ZGjaXzgsboaxPQklbFU3WdljebPJw8cD+nW8amSbhaCdeQmC5AgoO+wqhVhGXNS2PwNnZJ
-	SRCSzqKi4JHjGcznIBxSnHI/KfqGc7x25pv9v2jXZPfxlKQtz0EJpPTQa2fkTjiApgRQLF
-	2kkSgGh4iGIEewVZfMVsPNFoZI4bncU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=oO+pji7m;
-	spf=softfail (imf03.hostedemail.com: 23.83.223.166 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net;
-	dmarc=none
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 5D4144E1526;
-	Tue, 20 Oct 2026 16:59:21 +0000 (UTC)
-Received: from pdx1-sub0-mail-a252.dreamhost.com (trex-green-4.trex.outbound.svc.cluster.local [100.96.14.12])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 0784D4E2152;
-	Tue, 20 Oct 2026 16:59:21 +0000 (UTC)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Illegal-White: 046881b50e36c100_1792515561217_47232638
-X-MC-Loop-Signature: 1792515561217:39543921
-X-MC-Ingress-Time: 1792515561217
-Received: from pdx1-sub0-mail-a252.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.14.12 (trex/8.0.2);
-	Tue, 20 Oct 2026 16:59:21 +0000
-Received: from offworld (unknown [76.167.199.67])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a252.dreamhost.com (Postfix) with ESMTPSA id 4j8JY362KGz102x;
-	Tue, 20 Oct 2026 09:59:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1792515560;
-	bh=lsWi/+vV7HXNVefv/HtjTalVTQdcLmOCgb3JgZq0tdU=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=oO+pji7mYjxFCtP5HeJroc1ODXuNr+hSmiBedjFzv+CkBkdC4rXtomtMA8pYA411L
-	 Y4KYhZI9YuLsMR5JuKet/LVeKpDI1e/mvhnASaxXJlGNUtZEuCf6N9RyuJTAqhVNMy
-	 svK6XA9lxXnHHQif44dKKTJpn3keotg0Fadrttv3Aen9PhLg5P7iDGeHkgh26V6+ra
-	 bhATCmru40mhEIAg6PEOmw7J/5D9pdob2Xt+ncEmh/lLcAwV/v/o0yE0GqHRLSGAwc
-	 clt4tfkkZtfmBLje5J4Z13wNA+k+uoq4a+VZxlqkCzEGZmHA7grLgZ2lLJ6jmI+gDF
-	 cMg++eo1SGvIg==
-Date: Tue, 20 Oct 2026 09:59:16 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org, david@kernel.org,
-	mhocko@kernel.org, ljs@kernel.org, roman.gushchin@linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive
- reclaim
-Message-ID: <20261020165916.pf4gxd2rulrqmdso@offworld>
-References: <20261019185002.3428594-1-gourry@gourry.net>
+	 in-reply-to:in-reply-to:references:references;
+	bh=jDKBdDNUgnFBiehR+3AYyTsALn1WTufXGDvPpnjpNx0=;
+	b=zUtyXNWXaInsd7cJ0wrFpjfJN/dyBWglhrOMem1kEpytMahiIk+rRWH7ZVA9vISeN6MtNp
+	who6NlRtLuaReJVPeHU7gIPJRQfsisPtOU/nbcwq5yoltQk3bImdN8t9+iTXsv5dYU9bmF
+	iXJQPvJCWcJE7cZeYCLboKqwRx2Xu04=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E0C660120;
+	Tue, 20 Oct 2026 17:03:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7E81F000CB;
+	Tue, 20 Oct 2026 17:03:39 +0000 (UTC)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 3F2E3198003A;
+	Tue, 20 Oct 2026 13:03:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 20 Oct 2026 13:03:08 -0400
+X-ME-Sender: <xms:yZ7XavrOIw1_gBGyaziF-ZMtgVeJKE3nH4r7UYLRU8Y_TmizNyllgQ>
+    <xme:yZ7Xai_uCVDX6P-UZwskLNQK_Mr3csTBsbSsWKN6waTl5OqsQzGqJ8Pr7dRL0iRZX
+    _j46ke_378wETQ-1RfIPMOFkPjph_MOCCCeXi4ExGr8hh3RNejt16E>
+X-ME-Received: <xmr:yZ7XakMNXp-fEx-jQVJ_YQhHVX32jE6ZzgozHV5e2RzwwSTx2ezWknKte_0>
+X-ME-Proxy-Cause: dmFkZTGkGIb3di2YCLCxxSDu64sQiSzl5RCtVWfkYdh889CF9jK0BQXmVxD4pT3c/xsx5j
+    bF0l00c2FSQwMLsevVaWcEbFPrXZuV+j1kO8K6B1q9AIA+Z+td5APm+by2UaUaK7szc4Me
+    F65Gr85Jd0nqGWJM4ya7q/ASMJXeMwMqWPC2tHJk1dvqfMc+2MyQv1t2c6LbWGl7yl8lQo
+    TGH5DoJc62V0ssUipmWTQVdTt8a87oJAlHy4qY7seWpswcRl33BqtDXMTtlbURGtse1ax3
+    XUC6RgZUTGjQrJssIhC+MCX/eTdgBorlngyx26IU2FgGV287DaSW3cBmdqwUiozfPp6eVc
+    Uuy/BU9SxgF9qXafjZnRjQguUd+sWoMGPWmJBQZJcnt1SyDhl2lvyck9NPZ7YWuVcRQuI9
+    uptTq9sDU8HOH3tpAFHtEKTLJ33COusQ9TyvQuqW5GEgNl6zD8AcFc7KhnbJk1HgiWDxyO
+    7wqF7sTEKFe/yTMuXdVBeqEDu1kpBy+PVdFzDIYiVslmun31rtXOUs7TPPeEgbUBMPeccx
+    Xg+0EsFUeebSIOe8QPMw9tldi9hpcm4QF0/9Oo1dR+IptD03LRAShFAxx9IicHQmIyygHt
+    BtYTOTUxrTbXLY0Z0hSARlrNk8pxjQ3RU3URtGrxyz4WYeeMEDT6svAs0gYQ
+X-ME-Proxy: <xmx:yZ7Xask2yfKJnejDpG-XGtzdGptLMV-MvfelgPB05-wMZsR7SuRf7Q>
+    <xmx:yZ7Xap-TIprOdGX76uDRQL4kechcy6IhLgA-hmO2QebI2OSgdgUArQ>
+    <xmx:yZ7XalMM5WFHMSFizZATTLbYyOTLMMWGJvVe-p3dTm_7yfhoWsc-SQ>
+    <xmx:yZ7XatHnwFey-_M-_7WScr6IEHhyu5C6LPVCwwIxzX66l9O6IOPodQ>
+    <xmx:yZ7XariDxe-NaLtuu9lzGit0tTgE4P1aXPEkype1kUEKlxfbegLwihNk>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Oct 2026 13:03:04 -0400 (EDT)
+Date: Tue, 20 Oct 2026 18:03:03 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@linux.vnet.ibm.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, shaos <shawnq1@163.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vma: avoid broken uffd merge on mremap
+Message-ID: <atede4rPZKNVqwDr@thinkstation>
+References: <20261020-uffd-remap-fix-v1-1-0f34fc181f0a@kernel.org>
+ <b61cbf73-b92a-4869-af94-72c30bbe9527@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261019185002.3428594-1-gourry@gourry.net>
-User-Agent: NeoMutt/20220429
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AEF5D20008
-X-Stat-Signature: hwxn345izcph5yib66qrdy7cbbbj1axq
+In-Reply-To: <b61cbf73-b92a-4869-af94-72c30bbe9527@kernel.org>
+X-Stat-Signature: 464z4t5ec8dpbg5etypgcmkjnphdh3e6
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9E05E40017
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1792515562-739961
-X-HE-Meta: U2FsdGVkX19H2IBlWjGC/6qHLjUwLkJFBPHdvhf/dKgGGLwEJG+0uKTggiCbrGdp18yO1iY4cK2vhYH1Bozsft9SAig29rOBK7JI9TvQNkP6LWont9EcYwJ0znzo3OY17WFb2ySKFy7ezYC4MnjgAEd5gcQvLNDL5RJVtgp0JF5iPCOAbF6e37MZYwQC/MEc4QW3p7bKhYBtWI3/Pxzyz7fC83hsLL/FBxKe2vsqrmIAO9LFvk6ae/2oL4FrO4vfjBDLmR1ZK77AlBm9eznVLKNL5T1H+HXzHY1MCw5xSinxKU8vFcts8M/tRzkOMSKF6MQi/RBzKDudqDLiJ9iXE+Jelubw+4Lzk1w3x3DlwKgE6txos8Y7ccjw8T6O5XqzuQQhn9SpVzLNk+q4dtkOONkWpGA2m6g7+4pjxB5PeTAm+mWWYexkNrARDXHz+nn4M01O9Msz4IYGwrIml0fps867nXXubvmEYhJytRjrnhqawtIYYcD5rvvIqTwzCw4IIIVBg9tg3lbGQlD+ZXsc6ad/0QuiaDad2Nv54TC2FYDDiMlFrcRzU32az7t1YS5rHP+xx0TKykN1xdcunOzUhkBjHMsVMj9UTUFXGEchvmMCKg5JJmIFyD/dLXg9pAkRPY9NOH+ywaPMbC8iqf/CKVKHIs5OnrSJUCwqwS6UZ+AiwoCvraWn1Re7Q9+EIZcIWN2pz0qTkeLPxnmxSMJFzDVd/hEetAEMKdJDBC5rqtNBvlT8YSmNjxuUTf2MWeXoEaukWBaprAcpjxuQUOpt2qicNQCDXDxqFKxSvarZomydcdoZhrj34WyFJZNEYudOfbKZymcsIOH+Ek1gx0AgEUFFY7LXY8Ph6EeYgdjyNIXMA3oQvvE7LVsX6ZdIfH1aXUe47HhCc8wcseHZRLzB8xbPsR3reuT46DvMh2tTWewWcILi1vDSQUn2HoMMhQ1sms/L+BwghsJ2jBmQI+u
- 1Cg5Qmkj
- YcTUmFbwqP1cHG9kfd478nbhXDcUQT3o96Z6/91Jh6+6ZYCBU/WmJ8UuZ1tG3vVghxSQm9mE7L34n/dfud5F/LeRDrQmY0mV2jSV1YWYKXFnReadOl/pycqpmmKm2/obgIRPU6l1i8bLIMgzvdRo+LQD9VfVy817lOeXwuneX8H3ELPuD4Zpgcy6DI7DpVUpAXF3gT8tYuZgAe0iY4vLZI0kczNLNcB8f89Likkj+F9bJAJC/IpsbZiQwIYa/dkEi/d9BwATlq6JCNMiR04kFOi+BOKTpryda9Mo07X6a83/6QIKggtpz562bsKvflfthAUBF+NXrywc3hyzltElC4nP4nhCUP10H8mOL9Tzl7PrJ2P65s5YSB54KHv8QbsytlQAPOrXZGIvgymqHX8CMQiH/vjcMW24trSVX
+X-HE-Tag: 1792515821-891755
+X-HE-Meta: U2FsdGVkX19/1nGP5TIxuEGsbKsH6NEBJWmKbLqG+RWsFWgW3Iu+/War45Tm8aUgnGBl1zMlsi1sgRe6FWfE3eG5VGXuhdqRtsNZhGXAfUwDDVflO27cCRITx5JPT/M3ZqVPmviBd1PGkvXsmAJOQksIqrbC/7L2pR1vL3msT9Vb1rQyTQ4E6U72jaPTbhJ6p8r3qOKw3Zv2XguY3YoQK8gQReRE1l4npD8KfgqWcF3v5K88sGEzZo0qYxvJ0sxyEt8oWjZ85Ixhw1+ox4xKOhp5e4q5ABELNSowz0gTIxcJWQ9oWpfjEn4UBiqNoKWJpcueu02Rgx0aOyUX09z9Ecwb+8Eec+wusqQvXUuik/F4kQkKIbEi3va9k/eu+6r0n7y8k6bUDIw3ymMsQeVsBRJYVSe+orRH03tZA5Buy/ncVDpCT6QaMJFrVYIeAjrA8U6mf4qXJgr8T4Zdcj37zCIbWsW4GKOYrg43Fk5PZaXLUnMOWOxpnCVQ0mtZpqGAqRZ8NZ+0GdGwND2+F+NiwWvYXL2gO6WX5z8yGjgIiDP3a4UL2K3b9r/hd4ATrznZWNU2+2PTi8za0UsplcS0J52ILGaFop5d7hQ87OL/AlgYwGBKVUX3qJOuG/4lMhs0PD54rMsx+xgMOlQhESzbQwYJWWzC9LJR/kgyZv5+5rMx+Z3adhwM+V3NpoTqVKd8vQp+y5EfR+il4Xu/tOJVQdChxU4U0FDyBWM+j6zPMTUbAwt7bpPmaMjAd14kJhHDJyCpqT2tsqlnUaQDghlD/nNJg2eJhpcIVardIpfuFCiODqPEQF2dmbDSS1DhjHVGrjsxyHnPQ18XvkhCNA6fLVCtKV3fFSuk+n47yM60MCoB75H45K+ezJQ162K80y9ib8vEw3EXebEmDsWzjemIntXoSurEFLUvnW2tri3o3Pk/SXHCW5RKuUHgkrzLs7s1/Q/5ZK/1w+hi1rt8N9f
+ KjntYI3Z
+ xImfDL4DXewTdlDmZLz4/ZiO3dGZtAMJjpK+aCznqiUAIcThJJ+rDllmX5Hg75zcvCyVS5CMgBPW8J7uTWK90NbjFo8HR79aohwbsT/ngollKnLj3APzUv0oP5lU7uYtb1brsu5x0woX0zVJFwpeR9vBGFt6rHiBGx0r8S+DwUooHJJT1uL2APBxE2hzjYPFuE6n4mxnNKgRZ+iEiJ9P0jVBAFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,49 +112,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 19 Oct 2026, Gregory Price (Meta) wrote:
+On Tue, Oct 20, 2026 at 05:51:12PM +0200, David Hildenbrand (Arm) wrote:
+> On 10/20/26 16:55, Lorenzo Stoakes (ARM) wrote:
+> > Userfaultfd often causes unexpected interactions within mm, and does so at
+> > the intersection of uffd, mremap() and VMA merging.
+> > 
+> > When an mremap of a VMA occurs, copy_vma_and_data() calls
+> > mremap_userfaultfd_prep() to notify uffd of this.
+> > 
+> > However, mremap_userfaultfd_prep() simply drops the UFFD context for the
+> > VMA if the user did not register it for remap, i.e. didn't specify the
+> > UFFD_FEATURE_EVENT_REMAP flag.
+> > 
+> > This is OK for the VMA itself, as upon page table move, move_ptes() clears
+> > UFFD page table flags, using vma_has_uffd_without_event_remap() to
+> > determine whether to do so.
+> > 
+> > However, this doesn't account for merging with adjacent VMAs, whose page
+> > tables won't have received this treatment, and thus latent UFFD markers
+> > will be left around.
+> > 
+> > Worse, it'll break UFFD for any VMAs it is merged with. This is very
+> > surprising behaviour for a user, who will then simply not receive UFFD
+> > events for VMAs they ought to.
+> > 
+> > Resolve the issue by explicitly checking for this case via
+> > vma_has_uffd_without_event_remap() in vma_merge_copied_range(), the merge
+> > function explicitly designated for mremap() operations.
+> > 
+> > Also update the userland VMA tests accordingly.
+> > 
+> > Reported-by: shaos <shawnq1@163.com>
+> > Closes: https://lore.kernel.org/all/20261020110748.959870-1-shawnq1@163.com/
+> > Fixes: 3cfd22be0ad6 ("userfaultfd: clear flag if remap event not enabled")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/vma.c                          | 5 +++++
+> >  tools/testing/vma/include/stubs.h | 5 +++++
+> >  2 files changed, 10 insertions(+)
+> > 
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index de5ebc57e7a5..1be613044b4a 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -1211,6 +1211,11 @@ static struct vm_area_struct *vma_merge_copied_range(struct vma_merge_struct *vm
+> >  
+> >  	vmg->copied_from = vmg->middle;
+> >  	vmg->middle = NULL;
+> > +
+> > +	/* If not registered for remap, uffd context will be cleared. */
+> > +	if (vma_has_uffd_without_event_remap(vmg->copied_from))
+> > +		return NULL;
+> > +
+> >  	return vma_merge_new_range(vmg);
+> >  }
+> >  
+> > diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+> > index be8f5161f92a..f786a585caf0 100644
+> > --- a/tools/testing/vma/include/stubs.h
+> > +++ b/tools/testing/vma/include/stubs.h
+> > @@ -386,6 +386,11 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+> >  	return true;
+> >  }
+> >  
+> > +static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+> > +{
+> > +	return false;
+> > +}
+> > +
+> >  static inline bool anon_vma_name_eq(struct anon_vma_name *anon_name1,
+> >  				    struct anon_vma_name *anon_name2)
+> >  {
+> > 
+> 
+> @Kiryl that should solve the issue I was raising the other day with leftover
+> uffd PTE bits outside of uffd areas? Can you review?
 
->user_proactive_reclaim() limits per-node reclaim to
->gfp_zone(GFP_KERNEL), which is ZONE_NORMAL. Proactive reclaim serves no
->allocation, but that limit makes shrink_node() skip every ZONE_MOVABLE
->folio, so writing to /sys/devices/system/node/nodeN/reclaim never
->reclaims a node's movable memory. A movable-only node, such as dax/kmem
->or hotplugged memory onlined movable, reclaims nothing and fails with
->-EAGAIN.
->
->To reproduce, fill a movable-only node with clean page cache and write
->200M to its nodeN/reclaim: the write fails with -EAGAIN and the page
->cache stays. The same write to a ZONE_NORMAL node frees 200MB.
->
->Scan every zone, as memory.reclaim does.
->
->Fixes: b980077899ea4 ("mm: introduce per-node proactive reclaim interface")
->Cc: stable@vger.kernel.org
->Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+Yes, it is the same copy_vma() merge.
 
-This makes sense - sorry for the trouble but at least glad to see
-people using this interface.
+With the merge refused, the reset in mremap_userfaultfd_prep() only
+covers the moved range, and move_ptes() has already cleared the uffd
+bits there.
 
-Acked-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
->---
-> mm/vmscan.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/mm/vmscan.c b/mm/vmscan.c
->index e82ba737c028d..90f7a7bf4e426 100644
->--- a/mm/vmscan.c
->+++ b/mm/vmscan.c
->@@ -8180,7 +8180,7 @@ int user_proactive_reclaim(char *buf,
-> 		} else {
-> 			struct scan_control sc = {
-> 				.gfp_mask = current_gfp_context(gfp_mask),
->-				.reclaim_idx = gfp_zone(gfp_mask),
->+				.reclaim_idx = MAX_NR_ZONES - 1,
-> 				.proactive_swappiness = swappiness == -1 ? NULL : &swappiness,
-> 				.priority = DEF_PRIORITY,
-> 				.may_writepage = 1,
->-- 
->2.53.0-Meta
->
+P.S. vma_has_uffd_without_event_remap() is a mouthful. With negation in
+the name...
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
