@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D207606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E46606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=hammerspace.com header.i=@hammerspace.com header.a=rsa-sha256 header.s=google header.b=dyyXyaRc
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=hammerspace.com header.i=@hammerspace.com header.a=rsa-sha256 header.s=google header.b=PK/Epd5m
 Received: by kanga.kvack.org (Postfix)
-	id 185526B0568; Tue, 20 Oct 2026 18:03:55 -0400 (EDT)
+	id 075836B056A; Tue, 20 Oct 2026 18:03:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10F576B056A; Tue, 20 Oct 2026 18:03:55 -0400 (EDT)
+	id ECA886B056C; Tue, 20 Oct 2026 18:03:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3F946B056B; Tue, 20 Oct 2026 18:03:54 -0400 (EDT)
+	id DE0986B056D; Tue, 20 Oct 2026 18:03:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 98BA36B0568
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:03:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2C79C03C5
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:53 +0000 (UTC)
-X-FDA: 85344382746.19.0F05099
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C1F6A120008
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=hammerspace.com header.s=google header.b=dyyXyaRc;
-	spf=pass (imf29.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com;
-	dmarc=pass (policy=quarantine) header.from=hammerspace.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 842516B056A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:03:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA7111A0376
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:54 +0000 (UTC)
+X-FDA: 85344382788.30.22FFE02
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D57F41A0002
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=hammerspace.com header.s=google header.b="PK/Epd5m";
+	dmarc=pass (policy=quarantine) header.from=hammerspace.com;
+	spf=pass (imf19.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792533831;
+	s=arc-20220608; t=1792533832;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KYIFZnbJ/tQXvMmHyoqaiwEU9dnEoX51wTobPwpbUYk=;
-	b=6o9QctmMLrOt1B1AaoSDB9L15bjlZHtmc6p48tvBzE1EsxJh/1OV+Dw/taNNqtZbMZDsqv
-	2d+tZDJvv/h3GLra0DvpL23rZjVW9PZcjCeHPIs3Sadx9cl7VobNCtBhfOxZkjE8Up2rgh
-	HYXF0hnJT1YYotFHkbOzeW57u3NA4SM=
+	bh=7y3NOM7xqvWmL65AFq+ZWC79CgE7opPLQwAIectARfc=;
+	b=j+iYePNDEtq+J8co0orc8RevciDMFYbdzROiN0fh59wp8XcL7qZlhPsD1KtDOKcWRWHP45
+	awDhDWWs27bgdjgVOZOAkLZqpDD1Q1RjY/6SAi6c6EEtMKmeQWvmT6Eb8aH77lshTwr3hG
+	gzvVWvYR2lB6vLFdfKh2ywZhBft010E=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=hammerspace.com header.s=google header.b=dyyXyaRc;
-	spf=pass (imf29.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com;
-	dmarc=pass (policy=quarantine) header.from=hammerspace.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=hammerspace.com header.s=google header.b="PK/Epd5m";
+	dmarc=pass (policy=quarantine) header.from=hammerspace.com;
+	spf=pass (imf19.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792533831;
-	b=fggzmSiZPvD06wVU3uCQOBuuv6h23b8f/CAzjaW3xN9cabqOWt77VFqPaI9CXU3iDvsrye
-	xuM1JQ3d+FacN6rx/m0gXfXdOOIp1qhmYb/ehFJwfWgQuEgZH4TWXRjU1PmQRkruQr6iki
-	O8Vu3iM1h8XpcBT+CTStuFylj8YN6cg=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91b834592afso1650696d6.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:03:51 -0700 (PDT)
+	t=1792533832;
+	b=paoIC9KpP4BZwKDuCjfXYbU2kHPLYsdIASNPoDeE6T19JSbvwD29oU2kQC+V83Ex5/Phx4
+	WptYeaTkKXZoWsTxr1c3lKabNiOPH1tGXsPWCAzQf2Hhj+xw6XruLojCfJYCFOjGAbRlcf
+	gTBxiguEqAKHdOlt2Gvyci6IEsSZpuA=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91b834592afso1650966d6.0
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:03:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hammerspace.com; s=google; t=1792533831; x=1793138631; darn=kvack.org;
+        d=hammerspace.com; s=google; t=1792533832; x=1793138632; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KYIFZnbJ/tQXvMmHyoqaiwEU9dnEoX51wTobPwpbUYk=;
-        b=dyyXyaRccHrhK907YxuYR/IDIby/vKYF0zzVcRLKTuiPwfzWYOQ9Bfjm8iT5+CdHbf
-         7xOq3WMSRHxQuAOrQe13xDkQdMC4OpqH1B7mG1Jx0IoCLb566EnQizcdeGZpEib2E7F3
-         boyXLwKLJoN0wcJzA1c6OCxoI+QqgGcffKWlBV60MKexx2PY1olcgb6lVEQNU43Ra3IO
-         XEcwjsvu99TBTEYSMsTs0khgNn0M56IqmIRab9HrCOPvSlLIGF1D5ti8p20/MQHl3dWg
-         iTzXA3s4mLYH7SenP3pfzVQBs5JiV0s9jSoug4X7Ooj4MUpO/0rUkd7Vof9Bf7rpXVCO
-         EVWQ==
+        bh=7y3NOM7xqvWmL65AFq+ZWC79CgE7opPLQwAIectARfc=;
+        b=PK/Epd5m69f36qqAfAlG+L71gwgO2SUWRJigKAIU2F4fRRvE8pKnVBUlagIgd1KGOW
+         t8m1FdCreJJyimMSFHDnYTCP5qBmoIXWNGTqoEg8W8UcVCsh9yGO8FbFY2xmcvt02D/I
+         A0notamtQLfMDMMvYzclZFdY+3M9e/J/vk4no44PLXKgjOv+UCPtl/vYf//fmspkdkSa
+         AFXu3HDNXQUd9jqCZwmyNUjqkz+R3xeA5XpDeWxmBS2c2F1UnqfI3UUTndE+jWZUxysr
+         Kph+R4xCTpNztRBsF0obggD3aDWZsf9JRm+qgmobXSLxANGBhqx6sNIga6PZV3r31PQp
+         gYfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792533831; x=1793138631;
+        d=1e100.net; s=20260707; t=1792533832; x=1793138632;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KYIFZnbJ/tQXvMmHyoqaiwEU9dnEoX51wTobPwpbUYk=;
-        b=kGj19hx/O05B6gDm6LlFjrTWamqxpnvGBMrpVSYvJ/JTo43ANgSplhQvdoGVcszQqM
-         8ToIFKQM3gUG8Bd55JNsQ5vDbY7j2Bpc8jkwL6OUmGSl0ds5Up4IXww0cuMec5NRCA4C
-         ZsqQgVaQ2N2uTrCCFrgax64hJv8UEEGroBvV3gYp1SmdasuQeyc5qPotPDoFYbGwnU3u
-         2CSDtDXWSAWorENNaL8GupL9d9n7JZI/FguqIKV8HpI2O/thX5MwTQtDCRjpaU52jtds
-         F3ZERJhiut2DfyBv+KnB1/Z8bPPK8lUdLRfzVjlWjk0YTOQdWZb2bFcBnpyhV0wNveVZ
-         FuIw==
-X-Forwarded-Encrypted: i=1; AKwUvBzK/NpgouyeSNea8mRJ/EMysiqCxEkiYndgv676SOFrmDKqgP72I/qjPLybIdWtfp2EAFFuGoRqRQ==@kvack.org
-X-Gm-Message-State: AFq9FYKNTiafIJfYOQK3kzQcXvnKrYozYmtL28qtlh3jle7C3tN9uXCE
-	uVy4/PFQG+2MbjfzjzDbG8B43lW1FuMaOE2aocdYifVcPeEoYHQSsGTeVIMy72x0mug=
-X-Gm-Gg: AYBFou1iuRQFE0BB4J1UlfMDmebxZO9N72FykN3yMn5ohCawSgwPMnvfy066xZ56kR3
-	c7Bz5hzWIv/QVPtaei1guQSmdMtviX72+QY8x5AyH1vS0n3vFvaTOqkYwBPJalD0WY2M4qHwJTd
-	Q1lGN8BaGfl2Ze2B0eXDL/wyL//FIONmiUh0Hx8MxpOGkQHv3YfrOEZU6r/k0fHslRNTjXij051
-	21AE2BfXds+SijcXe63Vl0gFdJzlxfAoB6TmBueHYL68PzBe56Awh2HELY/+9wDjrnFEiO6wVLe
-	7taUvM8mVQ1JFhfUnK+0IyxhpDcNFlPge3bxTXeLhKF3Eu+CI8ra5pQ3esYmvFfnKssAsMWIzZI
-	G9JgVXmAPyggRfA/wr2fNTTjHSBQry/EJ3oy1cFPN6ZZcbQkG86YbGoF3Wj3UlCtJRmU174CDv1
-	YQYLxNwjP8+f4vJj4HBi2Ne2474VxLvfBZ0DkGP6IyWg420BZO+gOaF7CKV7QsCHERPVwJ2ERlx
-	n6ltFgQUz1KtjAe6QdpiZyTTpfe5mOeHbwfljGkIvk6VjSsHpgnOEjKLLTn5LsdAAQinUXTE+Q2
-	4/qmki8dzQ==
-X-Received: by 2002:a05:6214:8623:b0:91c:1061:f005 with SMTP id 6a1803df08f44-91c12eddb7emr2552846d6.20.1792533830405;
-        Tue, 20 Oct 2026 15:03:50 -0700 (PDT)
+        bh=7y3NOM7xqvWmL65AFq+ZWC79CgE7opPLQwAIectARfc=;
+        b=E1MhDFlQVLbf1TcfixXplvCe/PT8zhh1L7BgIZe6yf3RT/eGBuAK0t4bzxtW8BI8v0
+         flpOI0WjMF/43W5ngHmpvaisRTqOymUdY+RrPpmKsK4y0DxJd8RHm79wE6RSt7Swq3Df
+         DLTrNrtOEC2a2BmPlB59RQ+9yFlUPgGvFvYessweuO0ptwOTljLcjHc2WkqsfDoIKNP7
+         8STwdl9E/mYnEZKqovOtz6s6U1wFSA39Clw6LkXt+1bEQ3r1Dd1vkH95+gGTNzMZc52G
+         LMcX6FsFTUbqZkWcafm0LWsY8CIk+YYVSv9SjN7tn0oECQ4yVcnxf9gYJjcLNZJcTC19
+         mScg==
+X-Forwarded-Encrypted: i=1; AKwUvBy6uQVD/5Deq74K2VMghKe47KOr5ose6k/cZ+8G4vwKxuDxAdDWENP2jE1XqB/i1cSjDYG5I9WPug==@kvack.org
+X-Gm-Message-State: AFq9FYIjARQ3URe2N9zmeTyVr8hiGsQlOf5pEde7yL+SRcmyrKmAE0u7
+	a6aLwJwvDspAQeRS5SndVdzzhqsF+zyalRicldCXSl4KAsrlQtCP39hlXs9+nwlclI4=
+X-Gm-Gg: AYBFou3GkAXdgBREzfLoK+p9VM/3U6fIqmhdaSa46uF2zGR+6K8VOTaRm4LwfQ558sr
+	73aT533HWim+wXftv+lLyqF0zpNt3KQ/sInRsgyGvp1/kQNZrhBGZy4CxHqeKXAXK8xcf2p4Hro
+	AeIMEO2nzxmBAJutJ6U3orgLYn6BRtwAGu2IvQHm73uLYtmlNHFlGi5Yw2y49xqAo1EdnT0XRIP
+	M8TIFebVOFnjM5ee1N3IuwEeLtuRJNEz/Z5Z1N8dc+jnknfTtylJdd4AJknroGXu+9P3u4SQFe0
+	O8YtCAqzyyztBON5VnqG2kXL15I9fuHPwysd36bk+aKTrfy8s6gcoMj62JzV+Qesr/NPjHzgY7c
+	s1wT/SB0e7c3bhN8JtzlpEPKgz98vHkFbgWQ/zjVJ3ZoJQZLweuYlsUxWAXCeskeYBIYEQaJEAK
+	b+PU8PHuyAnAGiJHsjMZ5nvDCJZAtyL1A3ryPQXeTmgHrZ/a0aduUjNyct7S/whaQ+9kViO+dUu
+	0/pl0ZBNUL9EsTlZQgNq8YbyiC1uBZTFUzr/RrMkhm5F407TIIRQ0rT0nvZ6TIOHH/mLhNpbA==
+X-Received: by 2002:a05:6214:1bcd:b0:917:a2ba:e481 with SMTP id 6a1803df08f44-91c12edd30fmr2833036d6.15.1792533831883;
+        Tue, 20 Oct 2026 15:03:51 -0700 (PDT)
 Received: from localhost (pool-68-160-167-46.bstnma.fios.verizon.net. [68.160.167.46])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c116fa63bsm6647676d6.36.2026.10.20.15.03.49
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c10b70c43sm8732996d6.10.2026.10.20.15.03.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 15:03:49 -0700 (PDT)
+        Tue, 20 Oct 2026 15:03:51 -0700 (PDT)
 From: Mike Snitzer <snitzer@hammerspace.com>
 X-Google-Original-From: Mike Snitzer <snitzer@kernel.org>
 To: Chuck Lever <cel@kernel.org>,
@@ -105,27 +104,27 @@ Cc: linux-nfs@vger.kernel.org,
 	Jonathan Corbet <corbet@lwn.net>,
 	linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v7 1/5] mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
-Date: Tue, 20 Oct 2026 18:03:42 -0400
-Message-ID: <20261020220346.28020-2-snitzer@kernel.org>
+Subject: [PATCH v7 2/5] mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
+Date: Tue, 20 Oct 2026 18:03:43 -0400
+Message-ID: <20261020220346.28020-3-snitzer@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20261020220346.28020-1-snitzer@kernel.org>
 References: <20261020220346.28020-1-snitzer@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C1F6A120008
-X-Stat-Signature: dfzbhthri9ieitzk1645xazhypy5oghp
-X-Rspam-User: 
+X-Rspamd-Queue-Id: D57F41A0002
+X-Stat-Signature: m6sebi8m75quqyfyjtybxwpu64iy3e5h
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792533831-36838
-X-HE-Meta: U2FsdGVkX18fWng5Mn5ueGPpxNpZDJly6VMhEB8oII5gxZh0Cy4f3JG9/L3n5n28Ir4tUn+b5gjHGsoMDRSAyzI5TokMpmshrRGqq3A/FUZ20IvxYrF9St15LgFJY/GCpJMKHANx4nPEKzDAOM0TF66QZvMFsznUi+Tu7NXyNZyHv9IqX+3OrMAjy+naImt85A/OZHYIXCs0TrMGM3NM9rD8U1HT9o1q4FjNlnXZVdScgWy55h0Vr9ckisWF9nXq8Zvvgx3382C7aAeF5f00O5LxdZ4txFv74qHEobPEw1+jaIv/iuPCdN94+AJVuY93Ki5jpTigz+RNJ2IbzxaNRI/sWzIzsUOCypRhc9RFYMtnRB0T+iSADuapT5WZ0tOkGLijB4f0fd7MKS4msamLvy7B/RaDA0LzbgtITDQEc+BcglWvppuOHUftWy/j1OfozmMfIOFjitGnfCZhsmaqQCg9KCjUpYnOvzVbxi9LzWWtfNfQ1FfqKD66Kb9LjBqf7XCF/BmAN8ujkbMenKRWqcDxxNRk26hqC21z8Nmw+CfnNtmkKN0NL3NpRoF9dVdd3muJd5q8qbNmQj3JYJTc6a/N+FNi8wLPH81o5FTcqLzi89CyAf3pt11D/cvEs3a3KzB6sUgI+Nl2j0SStfWdDSh8g8AEzCIrCTdqjhdcLU4zMMeWS1zI1f1zcs3BnqbxBciA9cFAc4egncAc0U5cSUp6zYdTR2ufpkV+2MZbq9KMOQQjwtM68tGKN8I45n/WdW2qclR0/JUSztAC10DeW96U4YHTK40Xh9npfPQbqiDe8tQjBkmTuInaHhmmhyi1oMtpNUwZBg9d2i389v3zZ9bWOwPxVp+//sPSy+rSaeijHohsSCgEwfZYpNUSuTjYNHJFjeunmLokw+q9rfBocjKnhEDRHO1DEBkDVi4Nt3yRAY/xYLxLj28U+8jLiGhNqmPzyUnvlRcjDLB1gtD
- y3UEwHYY
- YeRJSiP3dd5Cm9jDq5G2tZaYaKSf/IoemZ0VbWyn8W/VhmG781fXGOfBGWrcmIpAveSoZjTaP1Fy9wFzz1QehH4q1UXQqrtDcunOJsQS8coRIPSfrT7MQ8YSLEiTH+6mJGGes5iVf4lGOgQaJVtdF+UXn2YxWLiBN4o/ChoxeHujIytHSM4/WNR7gEuxd68G1qcFm4gK4NNRJuMMj8PoF1i1DJqDD9Io5oiPs4NT7KU5VeDziFTJs5rjWDBukiHBAIskS7l9FF5bglB8xdidKkjX92f1/QBNSUk7xJzGqRC7TbhO6jLbxzPtrs+BCxV6WYHkCM0zTN9mS7oM/6qB+4GqrZyRn0hvX9sO26PRVb8S5On9+O11ja7iJfQMUaEQ76fuPzdwa7pq2JGG5Cf41ifY4ElVYczoq/iYg6cWWiSpyp09w/tZX9cplrB6YUty07FKVbhNr4AeN4EJvMxyHBwxVSXwQV9Y/+FWrFWehV9POoJ8H3/W8HYUS0lipPQHmIrz9jYimHuqjDoVuwNCu2ngREuPuTRKU6SL+0lWly6fz+Ho/pN5cwE8yDdadXCd4WJRG3S8MTY5Dh1MLficIWKyTZmZVNu18bSEDBTPncmc09VecPSK/I6kAAg+9qKQvxG1Nx3ptdRTbzwFM3tto+t9S+Z4YxfYp8SornB5FhE+a052vYQFPEtRHIdlaJwP4dBkNtt0G3Wv7aTWjj/+3YHTvRfbRFkTcxiCCq+vuR031vhgTHvwMlWSfd6WkHQLBEN69aIkReoj0Wgg=
+X-Rspam-User: 
+X-HE-Tag: 1792533832-757034
+X-HE-Meta: U2FsdGVkX195ZwR2lEqomWJnX9QKDVwXvKKmf8yfEpgbqqLxlLctGMkhgDQ2ztleFaCx1szhlN4ovMp5whX0JQw9Ya1hn3wwzvoP8aYC13qazQsG6xso+xRRRWTlC80cVMl7yih6NKtVHxL7BNH4hv0agij638jHvdA1HaqJtM9HVTaj/6kl20ynhxE6svdj2Rkk5om71tKyqO7m8ySepmBVPH3SYTNF/2fSRpEYaJWNkekkvQRdfUrI1i3EctpDrausPaED03rTDEJqcm/h1yieIz+FFfFy61ab8vK2W1se/UFQSQeT7R9ZV0XU3KHkCJWIk7Yr0sVH6UR1dP+PccO52D5UU/hS9gdoQMPN8MWFgXHLUdCw5qr9SARTd894Q/XA6cbqm32c78yVdNWCXYm+O4qdHdNI9UM0VH3v4rCmkLkEDrB7SqFvIap02HGqKNaGo6ezcCaSUqP4mo+ImdxhgdL+oJohEF7D39uZt7e1nC04CYYFb9q5/KG64zMgrthrFT0EzHemrcR3Eyv6Mfqs1QsUPUs34MNzhzh8VIW9rL+NUijVb2Y6pcLBGa5/JWj+vmPZoViTnK/+UGv/T5rnV7wCxQ3yasoVcyyiycqjA5eplZfNk87WB4HtlM5IS1ylWp/KPlqyFo4hQERwlw4HxloEG1+fXykHEcJlUoPwNIfvWwV+q8FTtzOTsszf1gXWe1dvOmogS1u7sZ42VIfHQr25Ofl94u0HN7vHhfCQjRkG8f44ndcOFtWW8hJb0gPGexVsEeOubLiWDWznFOOSD7a/aGSsTsDHJrNPiFaqeVZlDXA0Gf5ykX6D/xee8v4LL0Bvyyb7TbuIJ5CS3LVC3oUG+gzxx34EssGNBiLIYDaPeauwOrswTlwt/aGn9ffmYSj9rTj1RJkgwxlrEYiWyzuHfyMcw8Upf/f/KwK5g8LTS5DZUeEvfqRsooV9CELbCZ5wKMvgXUbamaM
+ gA/hhA/t
+ gkU9HqQaPzuleHgxVqHI0Bn8O4P6LA7w1uJ+Cz6H2QvE1tdVOHewqL+sRNUYG6AxNnygT14pz2dxPcQMl36urNyBuXUBmYaw6jmacKNicJGz0S2MgTyTGkylkjs5biMGRfM4/4QOJmBDixXsf7WRgHDvD1X0MWBWyOduzg3Fzw+It6AeprpM4mMiJTD9LyfPivnFc80UX+BilImLjR0YREEsK26ZOyxjzMGGsCMgrvmGElm5dI/37BPGO3Ep/yjDnTvlO1XhNWbX4POUas7FnPKDV/iMC7HNxzIvsOYQiSVPNE1WZ1AjtJ3ppzixizMqwKIPY2FV6x2J2vj3lLLgDmTIB7VcmZRP0xD966HUVKkX9oqZJYOExQaY2EyOl11NbZiEY0qbXhlgd6zNEJToTkdaf98eMWOhJFxhR/DBkdM36SFLm4QVxYWcmDMtXfk2blaOmcW7g7ftvZNj+XtmI8fUJREbBmOYXeFXzsFUHW08LHhxf7HItHJdPSBJxK9A6zRNbe5Chfw8fqy6KmAptddG21kM1kFIBSrNSbIqMfieXeygKRxlJzpk4COXQEOrtXDBqTz3kf3XVfFmlWqfygW4v51hmFosB8EyItoUfWUGrlfrQ8D1mvoaR5FuJrYMYctEV28qNAhL0s/n60fFUQcJXjfEwNGwFja1B6bRAAxlr6wu2FYUARuj9O+5NVMe0SUmDj22Y5CYriRIFxt2Bszc3efI2NWHvSDXcpno4ES11rPwzxvCl1Gilx7me3CU48EdqlUOVBCetS9m4ZUJC9uSiZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,18 +133,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The per-bdi_writeback WB_DONTCACHE_DIRTY counter drives how much the
-flusher writes back in response to an IOCB_DONTCACHE kick, but it is
-not reported anywhere, so the DONTCACHE dirty backlog can only be
-inferred from MemFree/Cached movement.
+A folio allocated by an RWF_DONTCACHE write is marked dropbehind before
+it is dirtied, so folio_account_dirtied() adds it to WB_DONTCACHE_DIRTY
+and folio_clear_dirty_for_io() or folio_account_cleaned() subtracts it
+when it is cleaned.  Nothing marks a folio that already exists.  A
+caller that sets PG_dropbehind on a folio that is already dirty
+unbalances the counter: the clean subtracts what was never added, and
+once the counter goes negative, wb_stat_sum() reads it as zero and the
+DONTCACHE writeback kick stops writing anything back for every writer
+on that bdi_writeback.
 
-Report it as BdiDontcacheDirty in /sys/kernel/debug/bdi/<dev>/stats
-and as WbDontcacheDirty in the per-wb stats, next to the
-Reclaimable line.  Use wb_stat_sum() rather than wb_stat() to fold in
-the per-cpu batches: the flusher targets the summed value and small
-backlogs would otherwise read as zero.
+Add folio_mark_dropbehind(), the inverse of the clear in
+__filemap_get_folio_mpol(): with the folio locked, mark it and, if it is
+dirty, add it to WB_DONTCACHE_DIRTY.  The folio lock orders this
+against dirtying and against folio_clear_dirty_for_io().  A concurrent
+lookup without FGP_DONTCACHE that clears the flag again subtracts what
+this added.
 
-Fixes: 88d6f128d06d ("mm: track DONTCACHE dirty pages per bdi_writeback")
+The name follows folio_set_dirty() and folio_mark_dirty(): the first
+only sets PG_dirty, the second also accounts the dirty folio.
+folio_set_dropbehind() likewise only sets PG_dropbehind, and
+folio_mark_dropbehind() also accounts it in WB_DONTCACHE_DIRTY.
+
+A later commit uses it in NFSD to drop a page shared by two misaligned
+WRITEs once both have written it.
+
 Cc: Jeff Layton <jlayton@kernel.org>
 Cc: Jens Axboe <axboe@kernel.dk>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
@@ -153,66 +165,64 @@ Cc: linux-mm@kvack.org
 Assisted-by: LLM
 Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 ---
- mm/backing-dev.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/linux/pagemap.h |  1 +
+ mm/filemap.c            | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index 18e999053bae..b8a2c27e07fa 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -46,6 +46,7 @@ struct wb_stats {
- 	unsigned long nr_dirty_time;
- 	unsigned long nr_writeback;
- 	unsigned long nr_reclaimable;
-+	unsigned long nr_dontcache_dirty;
- 	unsigned long nr_dirtied;
- 	unsigned long nr_written;
- 	unsigned long dirty_thresh;
-@@ -78,6 +79,12 @@ static void collect_wb_stats(struct wb_stats *stats,
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 0adfa6605653..3012bd95812a 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1310,6 +1310,7 @@ void end_page_writeback(struct page *page);
+ void folio_end_writeback(struct folio *folio);
+ void folio_end_writeback_no_dropbehind(struct folio *folio);
+ void folio_end_dropbehind(struct folio *folio);
++void folio_mark_dropbehind(struct folio *folio);
+ void folio_wait_stable(struct folio *folio);
+ void __folio_mark_dirty(struct folio *folio, struct address_space *, int warn);
+ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb);
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 00fd89cf6f55..ed7e4dbea653 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1644,6 +1644,37 @@ void folio_end_dropbehind(struct folio *folio)
+ }
+ EXPORT_SYMBOL_GPL(folio_end_dropbehind);
  
- 	stats->nr_writeback += wb_stat(wb, WB_WRITEBACK);
- 	stats->nr_reclaimable += wb_stat(wb, WB_RECLAIMABLE);
-+	/*
-+	 * Sum the per-cpu batches: the dontcache flusher targets this
-+	 * counter via wb_stat_sum() and small backlogs would otherwise
-+	 * read as zero here.
-+	 */
-+	stats->nr_dontcache_dirty += wb_stat_sum(wb, WB_DONTCACHE_DIRTY);
- 	stats->nr_dirtied += wb_stat(wb, WB_DIRTIED);
- 	stats->nr_written += wb_stat(wb, WB_WRITTEN);
- 	stats->wb_thresh += wb_calc_thresh(wb, stats->dirty_thresh);
-@@ -125,6 +132,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
- 	seq_printf(m,
- 		   "BdiWriteback:       %10lu kB\n"
- 		   "BdiReclaimable:     %10lu kB\n"
-+		   "BdiDontcacheDirty:  %10lu kB\n"
- 		   "BdiDirtyThresh:     %10lu kB\n"
- 		   "DirtyThresh:        %10lu kB\n"
- 		   "BackgroundThresh:   %10lu kB\n"
-@@ -139,6 +147,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
- 		   "state:              %10lx\n",
- 		   K(stats.nr_writeback),
- 		   K(stats.nr_reclaimable),
-+		   K(stats.nr_dontcache_dirty),
- 		   K(stats.wb_thresh),
- 		   K(dirty_thresh),
- 		   K(background_thresh),
-@@ -163,6 +172,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
- 		   "WbCgIno:           %10lu\n"
- 		   "WbWriteback:       %10lu kB\n"
- 		   "WbReclaimable:     %10lu kB\n"
-+		   "WbDontcacheDirty:  %10lu kB\n"
- 		   "WbDirtyThresh:     %10lu kB\n"
- 		   "WbDirtied:         %10lu kB\n"
- 		   "WbWritten:         %10lu kB\n"
-@@ -179,6 +189,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
- #endif
- 		   K(stats->nr_writeback),
- 		   K(stats->nr_reclaimable),
-+		   K(stats->nr_dontcache_dirty),
- 		   K(stats->wb_thresh),
- 		   K(stats->nr_dirtied),
- 		   K(stats->nr_written),
++/**
++ * folio_mark_dropbehind - mark an existing folio dropbehind
++ * @folio: the folio, locked by the caller
++ *
++ * Mark @folio so that the writeback that cleans it drops it.  A folio that
++ * is already dirty is added to WB_DONTCACHE_DIRTY, as folio_account_dirtied()
++ * would have added it had it been marked when dirtied, so that the clean
++ * that subtracts it leaves the counter balanced.
++ */
++void folio_mark_dropbehind(struct folio *folio)
++{
++	struct address_space *mapping = folio->mapping;
++
++	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
++
++	if (folio_test_dropbehind(folio))
++		return;
++	folio_set_dropbehind(folio);
++	if (mapping && folio_test_dirty(folio) &&
++	    mapping_can_writeback(mapping)) {
++		struct inode *inode = mapping->host;
++		struct bdi_writeback *wb;
++		struct wb_lock_cookie cookie = {};
++
++		wb = unlocked_inode_to_wb_begin(inode, &cookie);
++		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, folio_nr_pages(folio));
++		unlocked_inode_to_wb_end(inode, &cookie);
++	}
++}
++EXPORT_SYMBOL_GPL(folio_mark_dropbehind);
++
+ /**
+  * folio_end_writeback_no_dropbehind - End writeback against a folio.
+  * @folio: The folio.
 -- 
 2.52.0
 
