@@ -1,101 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6726060A261D
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 13:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B435606A31F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 13:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WRTeGXwl
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=SYMhujjY
 Received: by kanga.kvack.org (Postfix)
-	id 918316B0163; Tue, 20 Oct 2026 09:31:51 -0400 (EDT)
+	id 7456B6B04D3; Tue, 20 Oct 2026 09:33:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EF3E6B04D0; Tue, 20 Oct 2026 09:31:51 -0400 (EDT)
+	id 6F5EE6B04D4; Tue, 20 Oct 2026 09:33:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82E256B04D2; Tue, 20 Oct 2026 09:31:51 -0400 (EDT)
+	id 5E5646B04D5; Tue, 20 Oct 2026 09:33:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 619FB6B0163
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 09:31:51 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2ECA8018D
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:31:50 +0000 (UTC)
-X-FDA: 85343092380.28.F2C6073
-Received: from mta0.migadu.com (out-245.mta0.migadu.com [91.218.175.245])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B39E5A0008
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:31:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WRTeGXwl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.245 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 374566B04D3
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 09:33:23 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE3F0A01D6
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:33:22 +0000 (UTC)
+X-FDA: 85343096244.14.11E82F5
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C8EE780010
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:33:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=SYMhujjY;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf02.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792503108;
+	s=arc-20220608; t=1792503201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bgejzNpzFsos1ceD0Tyakzy9X/up4gxl6mutO9Y2A2Y=;
-	b=wa4t1MxX70Ii7WrqFZ5QM+PPefBNMXLij8L5FHJpa2IubdXulb/y+4jsLWbSRrXW6XXuy7
-	Nb5rfIN8eAoryTMnlZLAXXOWibkfH6E+j828Jel/jciJbzxcRzLFoLYN+DYbaBn9Y/5bza
-	/bXp88huSuJkmk1m2L1htlQbV8Ols3c=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=CGrzPuac4BCqviRdihOooPny/4+gPoANGJ4ge/fXpto=;
+	b=WodiL1vnMNDxlqMSNrPQxHKhp0eDy6Q0kd53EGfHKF9ecHpSSWXXSdH6CTmKaHxKeoGoR7
+	vrMGJ31DfeyjzoFh8vGC2AppmlEIhaRrsPFXyYTM7ufH+viMcbr8atcUPLQFlv9Axyn+sC
+	7ey6Xw01ZtJtnxChTIVk6dLd2Vi4Hsk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WRTeGXwl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.245 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=SYMhujjY;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf02.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792503108;
-	b=XIa18YIx+EfhGJjCM7FnAqTPXclISYhNylyfmegz+d/ephiHnI6/wy16ZggT0Vfr/ewLHS
-	L15Supd0bGGzcv3JJk30Gt4Eg/xgmq/Sbi81XMumup+tcKrJ0BvIv2O6udmpcWAy4GqU/6
-	X9+MZXfft8ihdJAgqe2hQ7yybt+Nh5s=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7ZCru1odRA7o2VqH04VeCwToaD1wfxYt4FcZF/5+H7Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792503106; v=1; x=1793107906;
- b=WRTeGXwlI6uzGTIwXebYRG7lkXHUpp3h/VE8J64NtOtom4i3+ypXKJGTGCqXQ3TrFDsbgA7Q
- 5HBz31P5CvWHJYbfWJYFzZGwOplBckCh3g5CMYwO1/ljde2Cu+yPR6wRLKmK2V0vaY8w2iAd2/B
- /exexrJenXWT7k88klQ3Dtuk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 42b62126c2217a5b;
-	Tue, 20 Oct 2026 13:31:46 +0000
-X-Mizu-Trace-ID: 42b62126c2217a5b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <23d3756c-1a87-402d-80b4-c838dfc29f4d@linux.dev>
-Date: Tue, 20 Oct 2026 21:31:38 +0800
+	t=1792503201;
+	b=1vI+dWUjqyX6GpsZd+qmi7lo7lD6EnAUMu3ogBSCg22rE98O+rYc0dJz+G2DLLY1IRmKRk
+	iN6ecn6Zz7Se9x2czr8ywFXxRH1Co8ejvgokIxTRCoAlKttN1qioUyZqk2AstGM3M08Qap
+	Zq8bmU6yOpkJqtVxYckgIN9D8C1ncZ8=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=CGrzPuac4BCqviRdihOooPny/4+gPoANGJ4ge/fXpto=;
+	b=SYMhujjYXT7SQgfydoLP1stjj1ocdmWvEW6oVNA6z65TUczBhtqvsIDYw6fnaZFmNwq9YVzzR
+	pI5s3Ne8X+PS8UJeMYG3QinHxAbWXPYlAKfX+wZL87XDZaI3OEQ7SjPbNVItz1TAozqQJFB5ReY
+	rWrEEmbxVFBDIFYaonvC56U=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4j8Cz11mS6z1prKf;
+	Tue, 20 Oct 2026 21:33:01 +0800 (CST)
+Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id A9A684056D;
+	Tue, 20 Oct 2026 21:33:04 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemk200008.china.huawei.com
+ (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 20 Oct
+ 2026 21:33:03 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <sj@kernel.org>, <akpm@linux-foundation.org>, <david@kernel.org>,
+	<ljs@kernel.org>, <liam@infradead.org>, <vbabka@kernel.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<damon@lists.linux.dev>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [RFC PATCH] mm/damon/reclaim: allow disabling watermarks to force reclaim of cold pages
+Date: Tue, 20 Oct 2026 21:32:33 +0800
+Message-ID: <20261020133233.3920818-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/compaction: skip folios containing hwpoisoned
- pages
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- "Huang, Ying" <ying.huang@linux.alibaba.com>,
- Yuanhe Shu <xiangzao@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com,
- tujinjiang@huawei.com, mgorman@techsingularity.net, chengkaitao@kylinos.cn,
- muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260928105805.1215770-1-xiangzao@linux.alibaba.com>
- <20260928105805.1215770-2-xiangzao@linux.alibaba.com>
- <99cbd960-439d-4672-aba9-6b49697db8b3@kernel.org>
- <20260929034123.2705745-1-xiangzao@linux.alibaba.com>
- <877bjowf9i.fsf@DESKTOP-5N7EMDA>
- <fbd5ae06-b6da-48f6-9c46-188fb6ba9684@linux.dev>
- <bc1b3255-99f7-49c8-bb52-bada6df80f72@kernel.org>
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-In-Reply-To: <bc1b3255-99f7-49c8-bb52-bada6df80f72@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B39E5A0008
-X-Stat-Signature: 7ua59yhxcfxdaujnaimwhxir7471jcuu
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemk200008.china.huawei.com (7.202.194.74)
+X-Rspamd-Queue-Id: C8EE780010
+X-Stat-Signature: 4g7b67u47s1bpoo6owhju58ao4h5o44b
 X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792503107-627840
-X-HE-Meta: U2FsdGVkX1+0rhrbfHz5kID/70oWk6wd9T8UWp27FAhKqCKLJn2Rj7niBUnDxi70o4wecOfYL9bIZB9SGb1TrbiNX6iWYMAKxMKr3P0oRM1u00DgvJf9y+9IqzWthfSEn0BHCTDcr9GSg3JvCkhX5E2SBh7UjXvGCfsQF13JJ+20794ROqfAKKf/EmXQcYlxPhM+fgqbke9IEq+81omWlUE7nTvdw5wnwbySP4YxE1Lfb1k4TA+VdzNxW3FyfljMWvaPthREcgQ9qsTzpuMIRwlQ3xOrurNna2pdqoWogZwhBqns13kHItnVmcmA9ldb6ED5MM3Aqo81ItRLBi8GgFGwsYO0Kg81AozqI/cSPiU/4DSc5+oHBR5MJxZDI4mNizE1uZWfuwt9yHNGzRwF66CMn2++0DjewbnPlX0du6TBz8XkIbMT1WCVar1etnUeqDefxn/GU9TFjPh8VXfiq3uJtqyH5YuIEVRef13LqlRjl/Eo/XMAxTHDFg1uH9jgfS5ElTkKis9YT8ik3p9Xq0HaMXnKhT01+iFl776bIIcMjzzq46tb03KeA+HTuoPhnHq8X655i5xMO6r2Z0hrHsHFz7oisy2uNzofT61lyg8N2y4hJPJ4mpS5cw1sDGiXvBjNlWQjqPbOJIrmtFgOOaF0xLlsR70apBFAxZtVHOWX976KA+OcCsBmBaZZMwmtZsar8JfUhVMpW+flug9nFFS/rRyYgut9ZpxmyH0hgraj171LExCfGL+PPGDqYRVWfF4tAWEdt8s+Evbtci2HOiZoQ32HGqN9oCiqPdw+Ax/K7Mlbdt/FW2oikblYeQ5HSe74bBzWQsoug3ru96S/02ZWYzfM05HrNzE4r2AdXkO3MsAu+P+fDceiQ94k1iYr4zhaB49yu/U9SU8svt4Rq/UHpgzJPHljf09brp89PSHDBGHyVRKq7WzdI7Z7g0qkxV36A+d0y7LLyxkY2kO
- 58uzYSt1
- 5p0OOF8KlRr/SBtrZlBnY8D/KFnHY6PvhS2pbCyPIyLTAzucv65UfdwDavmgjwvRNfUTpGsJMbazC3yDEPEOBL0LRLgqydJUtnPmF/X8Bw4oWGv5OUiS3sFnScqdbPAP4/BEp6R0hA0QVRzkk1TRH5CTqg80pIj25OJNKxZXaf+qKiMcpbgfL5tm61xoJy7k6litjev6yJD5CQ3kTqSeR6dIS0h2K2izn+wDh5UyXmnTtPNk4bm0DJgD4XQHvYvgjUtbxyW5ukjNVYll+P/pusj3NN9mdD/SZjBBoP9pyJO8sPeuxeZjJRsb5cJhZchL+v9Clm+lqk0QSyWWxqyL/UhQyqBDQ4LmO6VRaMOe6kU+84RN6aFak7Wy9RBmFpWuJFskt6mpuOSOZI2m3QE38GcYPzQ==
+X-HE-Tag: 1792503198-459786
+X-HE-Meta: U2FsdGVkX18sFjdkfg0wu48ig38O62j82jaLGGOhkUYXi7me9CoutOj4xgYD8zHfUqjgPRQN0ikw+kJ/T2+xaZ4zHAmpIo1P9LAW5P5o4xH1eUk3eKFvvGQBxkh95QSym1IfUcXbuFT/S5chV55eey3ugNRD9NzqZdBsta93YwB8i0Z44m5T0YTZAfwMEIMzpjzd1FmlIzQpF8ctKnKskbmHyjMG6FUQOKv9lbo4OZl1We1VthVQdReqlXKoc1+fqDuhWG5S4jxZqZ5rNw8ZMf4cUvl8ICruBg5GwadvFcC1BqyCHYDPTFFT+TEL2oroejBSbLOz73s1jSkY4GlAWyj066UhAJVTLtYhbWRDevUt0MCJ6qQaQjziLjG91+Ut3m0J7qItOFd83FONXAKhAGQK7uafKR7lCBvLGvj0uJvqnsI1Mzz+UFJIyLJCkVvF+9KpklWWvds95Sy7/DwUjjNz8Xeo36S9JK5+m1Q/dolgJy1NzsXaQGmc6+DFLErq8w+j0+9JojVFYjN+hB5M+QK70SjWei4ed38tut7kwnn2XKX1VkR+e5YzAxaCDEV6Wx4rEHfe24PEF8nV5K+NoMKigvrZwDfjF/w8XWraZt4X9LurW4zTWHgS1kfFMZXh9rkGr/dIBvz64e5DTdi9nh0Ech0CeqV2ij1QynVjwvkX7lh73qBbKjXQ9ffVwdAtfJB+jXJFUEzUqjEP6vuiYH1XI/15SRZQHKT3TffppREkh5/4xVtPF03PeH+aG1GKD5oKNTVdRv8C2+EP5vWIGAOQLP8Qet/sdx5GnhqZ5lZM5vjgs00qcnbhdc+NjowciG9uDmFhV3QTU+g9eelNbV8laK3goXSMKLT2e4IPBwDDw7dj2Tcn6kQr050E0W4k+24l0FGgwTdHe1LQyK4eKKjpuMngvsw5aAHf4ImCTSzS4nbkE6ihXHpmEkd0Kt7Y0XG2SJdkXq6yqpnPFnA
+ a6X1d86K
+ QGHE5Ue/w9PYkIZwjX7O4L9qhK1N9LCZeWm9tA+0e6TJ5tmfZkXeqfue1wO/C1kddrjs/rc1KGJBJADYFmzs4D6ij/lwAqDQ5qzXzfV0xF7zLokaO2nTj5yUxiK6XnxXIo4K5ud6Xq9MaD1+4DX866C5d3EQoGc1Wbk1I6L6BE/jXAfurczhuVekKMr+PJ/bHt5vXbCQqdLEbIx2AlBCld3JcNdglfAGoI4FNNyOO8ZLg50wZxYkefnEgsibsNdxeneXUY7IGH7lWNKMO9Gpqksopo6ZtGFDoJ+Yot5yPWi4C1nU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,55 +100,89 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+DAMON_RECLAIM runs its scheme only while the free memory rate is in
+[wmarks_low, wmarks_mid].  Reclaiming cold pages raises the rate, so the
+scheme self-stops as soon as memory looks plentiful again, which is wrong
+for a VMM parking an idle sandbox that wants cold anonymous pages
+reclaimed immediately.
 
+So add an ignore_wmarks module parameter. When set, the scheme uses
+DAMOS_WMARK_NONE, so damos_wmark_wait_us() always returns zero and the
+scheme stays active, bounded only by min_age and the quota.
 
-在 2026/10/20 21:07, David Hildenbrand (Arm) 写道:
-> On 10/20/26 13:27, Kaitao Cheng wrote:
->>
->>
->> 在 2026/10/11 21:14, Huang, Ying 写道:
->>> Yuanhe Shu <xiangzao@linux.alibaba.com> writes:
->>>
->>>>
->>>> Agreed, and nothing here replaces copy_mc.  Two things the check adds
->>>> while that work is pending: on archs without copy_mc the plain copy
->>>> does not fail, it consumes the poison - the same poison consumption
->>>> commit 841a8bfcbad9 ("mm: prevent poison consumption when splitting
->>>> THP") refused to risk on the split path, at your suggestion; and the
->>>> refusal happens before the copy is attempted at all, while copy_mc
->>>> recovers only during the read.  The check and copy_mc compose.
->>>>
->>>
->>> Is it good to implement the trick in copy_mc_user_highpage() and
->>> copy_mc_highpage() if the macro copy_mc_to_kernel is undefined?
->>
->> On architectures with hardware error correction and exception recovery
->> support, accessing faulty memory automatically triggers an exception,
->> which itself guarantees atomicity.
->>
->> On architectures without such support, even if we implement this logic
->> in copy_mc_user_highpage() and copy_mc_highpage(), checking the hwpoison
->> flag and copying the data remain two separate operations. They cannot
->> be performed atomically, so there is still a race window between them,
->> however small.
-> 
-> Yes. And you need proper architecture support to fix it?
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+---
+ .../admin-guide/mm/damon/reclaim.rst          | 17 ++++++++++++++++
+ mm/damon/reclaim.c                            | 20 +++++++++++++++++++
+ 2 files changed, 37 insertions(+)
 
-It does require architecture support, but that doesn't seem practical, haha.
-
->> Moving the hwpoison check after the copy might address this issue.
->> Is there anything wrong with my understanding?
-> 
-> Will architectures that are not prepared for copy_mc_user_highpage() not simply
-> crash if they trigger an MCE during an access?
-> 
-
-Do we need to check both before and after the copy? This feels a bit
-redundant, and I'm not sure whether such a small race window warrants
-an additional check.
-
+diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+index ec7e3e32b4ac..ef57f60a9105 100644
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -159,6 +159,23 @@ this auto-tuning feature.
+ 
+ Disabled by default.
+ 
++ignore_wmarks
++-------------
++
++Ignore the watermarks-based scheme activation condition.
++
++If set to ``Y``, DAMON_RECLAIM runs its scheme regardless of the system's
++free memory rate, so the reclaim is bounded only by ``min_age`` and the
++quota.  This is useful when cold pages should be reclaimed even while the
++system still has free memory, e.g. to squeeze the cold anonymous pages of a
++just-parked virtual machine out immediately.
++
++By default, ``N``, so the scheme is activated based on the system's free
++memory rate, as described for the watermarks below.
++
++Changes take effect when the scheme is rebuilt, i.e. on the next ``enabled``
++``0 -> 1`` transition, like the other DAMON_RECLAIM parameters.
++
+ wmarks_interval
+ ---------------
+ 
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 45d5557cc575..03b9a57694a6 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -112,6 +112,23 @@ static struct damos_watermarks damon_reclaim_wmarks = {
+ };
+ DEFINE_DAMON_MODULES_WMARKS_PARAMS(damon_reclaim_wmarks);
+ 
++/*
++ * Ignore the watermarks-based scheme activation condition.
++ *
++ * With the default ``N``, DAMON_RECLAIM runs its scheme only while the
++ * system's free memory rate is inside [wmarks_low, wmarks_mid].
++ * Reclaiming cold pages itself raises the free rate, so the scheme
++ * deactivates as soon as memory looks plentiful again.  For a VMM parking
++ * an idle sandbox, cold anonymous pages should be reclaimed immediately
++ * even while the host still has plenty of free memory; setting this ``Y``
++ * makes the scheme ignore the watermarks, so the reclaim is bounded only
++ * by min_age and the quota.
++ */
++static bool ignore_wmarks __read_mostly;
++module_param(ignore_wmarks, bool, 0600);
++MODULE_PARM_DESC(ignore_wmarks,
++	"Ignore watermarks: reclaim cold pages even while free memory is plentiful (default: false)");
++
+ static struct damon_attrs damon_reclaim_mon_attrs = {
+ 	.sample_interval = 5000,	/* 5 ms */
+ 	.aggr_interval = 100000,	/* 100 ms */
+@@ -226,6 +243,9 @@ static int damon_reclaim_apply_parameters(void)
+ 	if (err)
+ 		goto out;
+ 
++	damon_reclaim_wmarks.metric = ignore_wmarks ?
++			DAMOS_WMARK_NONE : DAMOS_WMARK_FREE_MEM_RATE;
++
+ 	err = -ENOMEM;
+ 	scheme = damon_reclaim_new_scheme(attrs.aggr_interval);
+ 	if (!scheme)
 -- 
-Thanks
-Kaitao Cheng
+2.53.0
 
 
