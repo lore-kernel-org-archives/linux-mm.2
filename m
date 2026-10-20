@@ -1,92 +1,176 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EA5606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BA2606D567
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MI6QgEO7
+	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=s5iDtaWo
 Received: by kanga.kvack.org (Postfix)
-	id 9FB9E6B0521; Tue, 20 Oct 2026 12:34:34 -0400 (EDT)
+	id 7C71C6B0523; Tue, 20 Oct 2026 12:45:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AC426B0522; Tue, 20 Oct 2026 12:34:34 -0400 (EDT)
+	id 750C66B0524; Tue, 20 Oct 2026 12:45:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E9886B0523; Tue, 20 Oct 2026 12:34:34 -0400 (EDT)
+	id 5F3156B0525; Tue, 20 Oct 2026 12:45:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DA846B0521
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:34:34 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0829D140201
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:34:34 +0000 (UTC)
-X-FDA: 85343552868.04.D2B9142
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6F3C7180004
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:34:32 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MI6QgEO7;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792514072;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 319DB6B0523
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:45:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFA90402AB
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:45:46 +0000 (UTC)
+X-FDA: 85343581092.11.9FA5EB6
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020116.outbound.protection.outlook.com [52.101.69.116])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 997371A0010
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:45:43 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=s5iDtaWo;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	spf=pass (imf19.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.69.116 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792514743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hHqjIUhFvpVsVhV+I45YnU6GX4Mvwsm4gRW3Mvd2/jY=;
-	b=s/RZcVlbksrSzUohP201dzC2NV2Ac8Gy1tNidkTTC+9odUzkbxcIJT4dn1gQUs4UqFNx0O
-	aivBnIyn+z8aATEro+BPn/FI/2OOEZ4hrCvreiAd5jA/jEKCYgmSXlSitANE3rsZODJGOX
-	it6NSGo2kf4KpOuXoWjSrq5uXehdhak=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MI6QgEO7;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792514072;
-	b=qJ9splisj/FdsVkgYXGo7GJHAWNxJU4sk4IU8lGElVvUvCAefNBsm9Ct/wVEhQSWMVLNqO
-	iSdvL69oFLjYB2+pCaltMjxsbbosl5tCQ5acIR06J3lXuJSyH6mzu35S1O+Eu5wLE+TuMr
-	x+dDLcItMnFjBMd02DgqbWR9S3D+Suo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DEC916020C;
-	Tue, 20 Oct 2026 16:34:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9C81F000C4;
-	Tue, 20 Oct 2026 16:34:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792514071;
-	bh=hHqjIUhFvpVsVhV+I45YnU6GX4Mvwsm4gRW3Mvd2/jY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MI6QgEO7Qy5M5PYZMphw20mRiOi8/KO4htwUkAd/ccDBKZql9WT3W+ZEN7RVwN/Sx
-	 U6TSVS2tToYfivZyDXihd5ZL+XatFZDL5/HLDP88POXLNJgXjJJizBl1NqB3vqEnOD
-	 qmZRLHOhsHWPVyZ0nWAjEg3opj6MKlQjXcYGhGRFpU4EW3ihbQPM+PS19EQ7RVZTIP
-	 XA91ZMgjcXzBRYVgh70zCC/TOt/pqhva0mPqWyeDrM+2Rd1OddxKK75vnnpI1Jrqpk
-	 97iBi34fsYO4bSHzVilBadICPvyu+JElT5WSrFgNfNmCnssaUaJeoO+/gKrp+aOxky
-	 IKWu4LiprgO0Q==
-Date: Tue, 20 Oct 2026 19:34:19 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: shaos <shawnq1@163.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: akpm@linux-foundation.org, Peter Xu <peterx@redhat.com>,
-	Liam Howlett <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [BUG] mm: mremap merge clears RWP state from an untouched
- neighbor
-Message-ID: <ateYC2eXPHuy3HK1@kernel.org>
-References: <20261020110748.959870-1-shawnq1@163.com>
+	bh=CaC1tbqlhAutnDuJlc4cbz63VLGiulIGGi5uK1XKrF8=;
+	b=Mdq+gkA6wWM9u4AcKwlKyyjqnevY+VUwVNsvE29C/Un1HuwKCLK7Np6tm++GjX1RJuv92d
+	GYsum9aPI8mhxBSMsmDhPFa/GfCKPbed/G6yGoOHig3HswMf7Yy7zyYDLJjxc3jPVamBlt
+	EZvvP9odce2wQQdyBF8JUg16+JRJKSY=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=s5iDtaWo;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	spf=pass (imf19.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.69.116 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792514743;
+	b=PTnBSWyVyFDJ/9Pz4FfyV3tfOXrg2j2G/Xh2hC2U3gZgb3dY+O8gfnvCSXoEICNe9+Lcti
+	UcZWFreZAb+6UA2GZns04vv/tRmqk7q+yO8Zk0FwWGcXb/tx4TT4qDbn8r59PfOSZwBB4o
+	6AIT3FhqFyeiRh6PcUhbw2s+pHD5axo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H82w0IBKM9XVxH42tYwUmRLnwGpaWTxRB1LPvcUtVFDxuZLjWnooyrXflmNAaAByxRJU+ZlhHNu3zSIm/pbZzNtunxIou14/LaT/cic6aqJEi8Bwr+F/wpRAAb8+faeWtTa9Y3K3kl3xJ2GlrkZHSC+pGXYw9B4YgJAjd2InIo475MctvLBsIVdjadCeI0WxQBW79xzesZx/fqeAReI+l560M6k46zr04DHSN0+T8RXaUzdcU0wWGJ0RWdV6YGYFL0tOao4lsBUXAgKuAAw6uPKserH8szs+SFZDQVmW4Cl2r76jdZlf9XpaM7kOxhn1LNzvNiQJk2xhWvjhUMpvjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CaC1tbqlhAutnDuJlc4cbz63VLGiulIGGi5uK1XKrF8=;
+ b=xdgOmGnSpVGDzTbZaNp1dV5laUjZPKCmrS6x35JmFiLWVMo45WOtc3H8hBzYkuXtqs7/rTsFedaEMUiPMZsGv2V29Xn15wcKh55TRQyUI9yJCFiH6RlV191b/Wvk4V22mcLWw/cmapdQOLnIYZEmfK/8VJWRUARpbbWhdetQFEqA1Cv3HKNPl5AzKWtV4BTinlf/IAeIQTymIebr0qIq/uLdUwSWMlRYZcIMhtzCA3mK810/bHtehFfXqs4KGLdnZY6ABpFo3214lUPZYABoUptA/RbqGsQMtmt17DuT4uC7y13AEWsfRAemJ7kn48DKRsWSW3Aazzh45AXGiA+yHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CaC1tbqlhAutnDuJlc4cbz63VLGiulIGGi5uK1XKrF8=;
+ b=s5iDtaWodrpcZDyRG23CFAJeIn/j6uMLuH/cowoa3V1u5k2CM1CRnlaQjipX/5CXiwbiBXUedsOQbaqlnXhKNAJcb81KJ9SivDW0UcscKu2wMsBH3kRChTn43inyE3Dmfs2vK5LXb1InIH/OZPAHDt4axFwe4ZryR5SYmBR59MCgpmdfpeRLAxQTKeSHKnViQRpPphZP4PhFlqq1+Sy9gPAPejlWf117j16+wHoBj4gj0yZv350XiKtSUtn8Nd0S6B37LW34+Gtum1qGmSLpV4A70z9yslL0SyLuDxyprbC4ER7nYGnvc1Kq5b6EJ+sapFEVYtOpx/kQ0dwxXEyrHA==
+Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
+ (2603:10a6:102:3c7::20) by AS8PR08MB10027.eurprd08.prod.outlook.com
+ (2603:10a6:20b:63b::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.14; Tue, 20 Oct
+ 2026 16:45:38 +0000
+Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
+ ([fe80::1999:c6db:dc55:494a]) by PA6PR08MB10708.eurprd08.prod.outlook.com
+ ([fe80::1999:c6db:dc55:494a%5]) with mapi id 15.21.0546.012; Tue, 20 Oct 2026
+ 16:45:38 +0000
+Message-ID: <f0fd6ac7-0cf6-4456-8f6c-0620c3d9fbf4@virtuozzo.com>
+Date: Tue, 20 Oct 2026 18:45:36 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] mm/shrinker: per-memcg shrinker units in an xarray,
+ allocated on demand
+To: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20261019-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v1-0-64ed1f7957c9@virtuozzo.com>
+ <atZeVV-uZMaLL_Id@thinkstation>
+Content-Language: en-US, ru, sr
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+In-Reply-To: <atZeVV-uZMaLL_Id@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P192CA0027.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5e1::17) To PA6PR08MB10708.eurprd08.prod.outlook.com
+ (2603:10a6:102:3c7::20)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020110748.959870-1-shawnq1@163.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6F3C7180004
-X-Stat-Signature: eadj3uez8kdm3jpdez5gxd5a8h9a87kj
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR08MB10708:EE_|AS8PR08MB10027:EE_
+X-MS-Office365-Filtering-Correlation-Id: 355448b9-60de-4386-44c5-08df2ec991b1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|6133799003|22082099003|18002099003|10067099003|5023799004|4143699003|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	VKCY8Dex3boUIbXLCZRZZOz56qDJURWMlMU5jacr2OppkBV6LkEQzocSWd1NBVQEA3hINH98xb4VvVNRB2T66z1GZgDr0J1O17SI8VxpI3MAf6E3AFGVcE2YzLyIzrqiZjt72AJa8PZ/6/Oi5VEh78KFYVf22/Jq2lKHJXPL1ZPdpevoaYFkPYecM9wPqUsh4A//ZBcwugyythmjfqvu2sCXo3Of3Vrd4qcnBLcvL/VKLPrjIs6QkfHWC+d2KfV42ug5NWkQu5Q3N0edmmZzf5Y8g66vJyyhsGP9g7g+dUuVLzUm8YpuXlfmNFudSANVrAJ+ZFJX22zhIydt5UVPvCehtxh129P9ICBkIFq/lDEUAaKOxRK/XDCkFU3qovttojxtf9HzcaqvlC7ueeNDKcWJkx8/NwBpmcDbVMCNZb9TjJ/VT1/73yNbW06Tw66PHn/4rZRI3rE1S+Mu9H3KnKLt0xPQad9LmGA+b9lkVLtSi7Z6UbsRwPSOGFpZGcsUIdJGRStGqRX50Q1fbsMI6KONuCqLbW8t1Z7OGqrsNTALx4FKmviTJKMUONmmV300nulAMMhOQrbeUklv2Jx2focCSfxqKhSTfVVIuIjDyl+/+yl9FqbrcQZP+N0a/vki
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR08MB10708.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(6133799003)(22082099003)(18002099003)(10067099003)(5023799004)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OUIzdGpwSGVKMDRVRUxFaVFDcHRTS2tLY04xMmtacjRUbnlJU0dOZHBJS0tT?=
+ =?utf-8?B?ODFWUVVMSUh1UXhFdkhrbGhlNlJCVEJqaW5tZE1maGIvQW1jcFQ4bFFhd0lL?=
+ =?utf-8?B?M0Fma1FWL2NkV1RQa2lLcTVGbkRHVk9RQjhqbzlOcHd2Mk0zSjBBeWJqTURO?=
+ =?utf-8?B?MldET0FKV2llNlRSOHdMUk4xVjNzZSt0QlBIZzF0Rk4zU3lQcjJrUlRwd1VQ?=
+ =?utf-8?B?bjQrMEY3amhFcElWdU5FU3ZheFBRT0RyZGh0REdBVS9lYTZKTlN2TThHeHJL?=
+ =?utf-8?B?d2x3N1VLYmwrR2dLdytkeTdZRXVCTjNEV3llTGlFWDBIYnZiMVQ3em5KL1dk?=
+ =?utf-8?B?Wk5kZDJiQ1dZS0ZvYU03V05kQTJNd1dxMXZuU2FYUm5sYWFNNlVBMUs1M04z?=
+ =?utf-8?B?UFQ0a3oxeFhOeXJXdGdidFF0TDVjNkJNbVkzbStra0hwS2VJdHlKVGt4Ym5M?=
+ =?utf-8?B?a0FpbC9lcXVDK3JWMlUxQnVmVUx1TjFwa0VpNWl2RWIycm1haTcrZ1JnMHlm?=
+ =?utf-8?B?YlIzVENMODZab213bk1tVFo4K3plRTczbjhNLzZ0S0c4bUdOZEhZQU5jdk85?=
+ =?utf-8?B?L3E0OWsveC8yd2RGOFFtbi9rbCtYVG5iazhtWXEvN2p1L3RlMHQ4ckt3bWIr?=
+ =?utf-8?B?b3BIMGZTeTVaOXVmN0dkTHNzVDMxT1RWL2tRWFc1NFZGRU1mZ044MTVLditk?=
+ =?utf-8?B?MUUyZU00K2c4SVl0RDdhd2s2eDNHN2VoS1FJV0QxR1lPbGpYSjN5d2JPajBn?=
+ =?utf-8?B?S1RaM3ZIZGFIMkQ2Z0xJQUJBN3RQc0hNWjB0NmFDWkxEVjUrZDFjUWtWNDRz?=
+ =?utf-8?B?d3A2YnpWZEptQlFuODdpU0ZEaVBJaXVRb25BNmpOSUw0WEJLaS85R04ralha?=
+ =?utf-8?B?TExSQ2dBclU4bjY4MG0xQ3FRRml5eUdiNHVyYWhYSzZBQ2YwcXlTOExDcXEz?=
+ =?utf-8?B?MEt4Z2lBcDk1NUVWUlFHaFAycE5hZXZCOTk1Uk5TWloycVA3aEprNTlhR3ZV?=
+ =?utf-8?B?S0pQYWR5ZVJyb1Q0L1dWZTIrcHZnWWpDcmVWeEpqZzhFaXZOempNd3ZXM2kw?=
+ =?utf-8?B?N0FsNHhBNGNtSytaNlAzdGpNWHlFd2NCVzhHdmE4USs5S3BwR2ZnaU5ndUg5?=
+ =?utf-8?B?NzVYMVZyeTJxR2hKbG5zUXBIWEEzUGdZM2ZCdWhrcENUVzJSOTlwWkRpbHdP?=
+ =?utf-8?B?SllWTlk1Z1NuNjVrNVhVOGNjT3ZLUm9rUmpRNlhHSjlyS0EreStGUnozeXNQ?=
+ =?utf-8?B?RnJJcU9YbzRZcXN3cVpWT2E5UGlkemtkQU80Wnp3ZWplTHl3dUUrMlplRWhP?=
+ =?utf-8?B?enJLckN5S1ZaNk1raGxVL0NpNndOREZobFBkc0RoNGVMSXJXT010blhFbjM0?=
+ =?utf-8?B?WWd0ZGpCUmUzYmw3ZmtTUGN4aytMRUpoQlJvZVpBZEwzMDZoSnl3akZLQmRh?=
+ =?utf-8?B?NG9Rc1lDNVVObGFiNzNXZEcvWjdhNlFoVGFYaXJnSnVDODBROGpzbCtHWkc4?=
+ =?utf-8?B?WDFEalo4WGo5bEQ0cDJiQWtCTE0yUUl1Tm1WUjUzWUQ3Z2tKTVBNN2JIbzJK?=
+ =?utf-8?B?WEx6TFBNVnNjbStEYldFR3NYNXVWbENWeUYxMlMvSTVjUDNjZ2wxR2FHOFVs?=
+ =?utf-8?B?VFBGUzNDRnowb2pud1NGQzcxbWdUK0Z0VFFTTlhsbFNOOUFLMm5uOURNbjNE?=
+ =?utf-8?B?Q1MzbFlSYjBNVzlDRmtPTVl4L0t3V2MyTVhxalhmTkJiNjl0eWI1R05Xd0Za?=
+ =?utf-8?B?TTdXdzlZUitLREZVbDhQbS80TUFUdmdMN1RTekhHTzNsc0duWGJDQjlidHU1?=
+ =?utf-8?B?ck8vSlNtK2Z4M1FjNmY0RmxoRW00TXNWUk01bUxDc1Izd1ZvYUd0UW5EUFh2?=
+ =?utf-8?B?Z0lDSFhFNGRiN09WS1I2T1BLeDZpbGkyc083eU85ZUh0TmRzNCswdXZJemxQ?=
+ =?utf-8?B?c0creWxrUlYyQVo1d1dFK3VyY2JZeWtza29TbjV1UHZ2TzdiK2x2bEw4c21U?=
+ =?utf-8?B?OFRzUERuakNGL1RPOVA1Q3hIK1doRkFQa0J2Y1lQZlBZbzlXRFBMSEMrVEND?=
+ =?utf-8?B?NE13bTg5LzZVVDZRMkdKeWd5ckhqTUxTWTEvcUJGK3RaRzU2ZkRvMjlRckdk?=
+ =?utf-8?B?WkpWRHhOQlZFT1ZqVWhPQXEwbG84QjJSeCtLKzcvM08wQmZKU3Jxbk1nSnNw?=
+ =?utf-8?B?RGt6MHZldkhGT3QzRWt5S2NrcDl3Tk4xYk9yT091amovUUZDL2pROFZSSCtz?=
+ =?utf-8?B?bFh1YWJTMVpNOWhWYnpoZ1dWUlRJVktMOUFXTm1ZWnlUb0lFZVZXeDgwLyt0?=
+ =?utf-8?B?b3JJUGgwK0VSRnQvNTNPNUpaWG4wU2hFaHpVT1R3dWxQRXJQSHd6UT09?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 355448b9-60de-4386-44c5-08df2ec991b1
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR08MB10708.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 16:45:37.9622
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b5MZzHb0+ruYPf6XDKZoi6wUGUBIpMCFZgg7brKbA7MdfOlSdE8P4YEZ46O24CU/li6zmaSkD8yHP4H6uUHR/g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB10027
+X-Rspamd-Queue-Id: 997371A0010
+X-Stat-Signature: 4wq6cqhbfugr8ows1pat4woowioeozbe
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792514072-282309
-X-HE-Meta: U2FsdGVkX18Pe7r14CVduDdMDpgy95pi23ncM8hp6+QtA7ul+YTRJ3xV1VU55E7BgLNcwAlM4766H6Fp7l4exz288KfJtr6eOPmcSvGA7rvO/aqTmH6+fmX+a2ghP+HBcCbqDjBhzm+9Rd/wl3wHPxTrUkKnmCsPY1aQgJXAryQfgK7OVcc5KkT+sMXS0U+Q0PTAJ6XZsyuVjmQBafUS+lLmMM439GhvB471fr00xDCvitqIeVmnBhBskamgnkIj2a2NXjj3Yw+PJ3R95LSpsOhC+XflbYEwewFYtB4oCcHKAygkaeJbbi9zt5yQGJ004vDrtAx6lUKp5WzDiClpSoLsAVHzM7HGeuS0+jX+k+TAoVHhdZ/o9M4z2kpYKW5ybHrw8d4pq0RHh8aXYkagw/1Viklj3G3vbfZtHyhS0nSElKa0Ig+b6He/Uy+al/dVNMCTYbWKO2DCjkB9haaVpEtuRlTuQfozcwqZAcHgDe7ubbtB+xXPx6uYjVTOg+cv6V2Vm1s/8QQagMzdNnvNcIKINib99RNYeQM2NbKaGY+3fWwN+O6TuoeBDXJLfkRnaqc/hTmY0eMgE2+zs4SGJsOnT1zTsViQGdFStBsEn3X6rQAwQZvR8ixfuWITQLmUUP0Cmd+79IfzK1EJD/K3yKAF8vNJ4HIW673BtAfHBBYBoJwlvP562JTlmUkOj/zvvSPOlSrxwEpdt44r+KG/QmLnoObsBn08ESiS2ohDc1KDvmho6dAX2LGPGyq02ditLQHk/gGHHgb7LZOpp9xyEBg6RIQI3CJW1ZV1faf3OKV2Wze7JDwruFG5SmD9ebE6GaiSLGMILKES51I9n0ibhEZDU2gZaPJ/anT742i8IgXo1dQC5Mx8ENPmehTLkBanWSjDsxoWrq8b/qMODQohr5DBtOJ9sXfh5qFiSJ8qO7IlYYoxhALRpXOMzZzDVlgwA51cgR9Q4UCR/9oMaZG
- TUIZVSgK
- ck/y66sn1hsTc2RgDE1x65ZZnvI9tHrBsHmZSM4IqjFVijFDx+hOh1rjXpKa/HRVnVHj3QQQDjTLICZ3sDL21+lg5VDsuLikmt7ZPRygtYxGxdHKVUPSHMcOk0PfCOKfaMBkHTxyY56SWiIpoRYyReBrK7QxOWPiOmvYnATFb+HK7/TVc10E9otp291u9dszJcnstadB/RS/jIUWRS24E380Z/pW/2T43N1j+P+F9EneRPs3Hf0Mbp7jdmxf1MdXIdKRSQpBUlSIzwuq0l+19wPpnIIUxxxT1lL66+7VQvVcIErgJr0+onqflYQ==
+X-HE-Tag: 1792514743-730627
+X-HE-Meta: U2FsdGVkX19+Aq4qU/N1OuNAgK0/vWMP/KYG6l4QEmV5nheqkeNHq2gD887PrsZ6Of3YP5yKkoEY8YYpyg0Apb3O6MO5jm+4C+WS8MdAVJlhdN6Qy73H4Wy+PLN+oeDtFwezgp1ISHDNPQH9ugj7gh6tZSasXggb/nR7UAE+dohh2K77Yr83wSuESka4ug0+chkUR8XTjmmxBf068J8xOn7iXxKoLKnXhodo1phR6DqTmJXG74Rk1MS8zE+o24CsIpDLkWY/K8I+RL09n+LEivuHNEagcJPxW7FAZEAwaS32JPZWEVP3U1kTshzMXu4lyBiY7W7SWVKfdDNCLCttQfINKzlExDf8Y2uItgOC2glaRKN9fcpVhabTUS+k+XaOBMU91+gggqSpPpEU/JcORfygMKI6fwUuyWX8NMy2QovsLLNP0o3g14f8TpcP6hRLAX25XPg9RmdWJFdhQOv8kWICMAenIqDzV6sV+GMSgNXPUQIp4AzZ37+CBVFK3GUjTnogddAk0OmUZGy/GJkEXLwgJP4oaXeFrtWw3CNkXcT1rKxVgiB4nW6YNdkiTmkjwayKSBrHDLJhTJ1prLj/T1R933Ntho5e6BDZ0GdVDVMV2QgduXlyCrAE2hF1rlq6I0v7ZbPyZgPXJw8RoqhQEX+hEbH6j/nK1RPdi4/ddvEL+vs1Tnawv/dyoaTgNVetUP4cSvNpHnsnUD3Pyn8e1bFqBafqdZCXuX6tVFUd4C+UIaw5OZ5RDJdlnQlpemwujhEV/kHr7Bdg+fj6fdAA2eG9Au7IM7WVRqzarXTEjin2is0VwKR8AyjoB3W6ZJlm4p4K+euI1HanCrybvQWWf1wTWuEaPdExqxG5hJN2Y0fl4uY70X9BulP7m3s9jMGswk3Ua+AnP/LyxxpsoxCtdupbzrODn+rRNilehBV27nlWI9nP219zzD5BbF0WcqHFtm+IyfV8CRlcC/nCKjY
+ EMsrVNw8
+ H1/PEO11L3BBdZVdEJ+Y4jMRxXNZmoNlbMpDA/VhmDbLXRZCUafufJ0NYLMGuLSSsSQnbny40QhtNF9oF81T7BI96oVYrR8Q5ajRi1puhOedy2qooFttUuqQrjPn4wV3gkTotjewuH7BDDBJo7MFS0T13rWhJ5ge++ziAqg2MfQp8SqIK60nVR2RHTNmQgG82Qw9GwY7hj04gpareih6iWIUgH8Q3XDZPh12DYF9z70vLKRJmfKwQGEEEAJZRtqxWNyuJHjNUS9+Trm6FcptuBNqiTGrL4XJJspSgaFRsfrt/8TJ/hQ9ZN3vEXwnE3B1JlVBZXr1nz4vVRkV00OfZmDFm6nWfzonldD/5nO3kgmqCLfdpTDP1p9+TTpiLGYC5SJAw4wqmPzngopD4x/ISz6+6fdv37hTBJoAazXDqAQx8Bkjz3xPZkwy2BrLiMEzOgUut9cZRPeDC7+68DfRPJiS/e1pb+1kkGwz+b8uICx+O9/A6rSGmUsKLDJWHnLVYK4b5n8P+fAnNtLiv4ZGRvJDKObneC7dZZC62fswZymlZscT6hJGraDierWqMC1ZMSRbS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,58 +179,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-(adding Kiryl)
+On 10/19/26 20:32, Harry Yoo wrote:
+> On Mon, Oct 19, 2026 at 07:39:22PM +0200, Konstantin Khorenko wrote:
+>> Every memory cgroup allocates, per NUMA node, one shrinker_info_unit
+>> per 64 memcg-aware shrinker ids up to shrinker_nr_max, whether or not
+>> it ever charges an object to those shrinkers, plus a pointer array
+>> sized for shrinker_nr_max. Every superblock registers such a shrinker,
+>> and shrinker_nr_max never comes down, so a host that mounts many
+>> filesystems and runs many cgroups pays for every superblock in every
+>> cgroup, live or dying, and keeps paying for new cgroups after the
+>> mounts are gone.
+>>
+>> This replaces patch 2/2 of v2, "mm/shrinker: allocate the per-memcg
+>> shrinker units on demand", with the xarray variant discussed in that
+>> thread. It applies on top of "mm/shrinker: allocate shrinker_info_unit
+>> from a dedicated kmem_cache", patch 1/2 of v2 sent on its own as v3:
+>> https://patch.msgid.link/20261019-vstor-144715-shrinker_info_unit-kmem_cache-v3-1-0fb061e09bf4@virtuozzo.com
+>>
+>> Patch 1 keeps the units in an xarray per memcg and node instead of the
+>> pointer array. A new unit is inserted where it belongs: nothing is
+>> reallocated, copied or published under RCU when shrinker_nr_max grows,
+>> and the readers find a unit with xa_load() or walk the present ones
+>> with xa_for_each(). The units are still allocated up front, so this
+>> patch changes no behaviour.
+>>
+>> Patch 2 allocates a unit only when the cgroup gets a list on that
+>> shrinker's list_lru, which is where map bits are set: a cgroup pays for
+>> the shrinkers it holds objects of, not for every superblock on the
+>> host. The install is an xarray insert with the gfp of the list
+>> allocation; there is no array to race with, so no lock of its own.
+>> The root memcg keeps its units for the deferred work of global reclaim
+>> and is the only memcg a shrinker registration still visits.
+>>
+>> Measured on a 4-CPU, single-node VM, 20000 tmpfs mounts (shrinker_nr_max
+>> 20096) and 2000 memory cgroups, on three kernels:
+>>
+>>   base                 v7.3-rc7 with the kmem_cache patch: every cgroup
+>>                        has every unit, in a pointer array
+>>   xarray               base + this series: units on demand, in an xarray
+>>   old array on demand  base + patch 2/2 of v2, rebased: units on demand,
+>>                        in the pointer array
+>>
+>>                                                      old array
+>>                                       base    xarray  on demand
+>>   slab per empty cgroup               185 KB  18 KB   22 KB
+>>   shrink_slab_memcg(), empty cgroup   1.6 us  0.2 us  1.6 us
+>>   same, cgroup with objects on 100 sb 1.9 us  0.9 us  1.7 us
+>>   mkdir/rmdir the cgroups, 4000 more
+>>   mounts with them alive              same within noise
+> 
+> I think 'old array on demand' is probably good enough, and replacing it
+> with xarray is not justifiable unless you have a realistic scenario that
+> would benefit from it?
 
-On Tue, Oct 20, 2026 at 11:07:48AM +0000, shaos wrote:
-> Hello,
-> 
-> An adjacent mremap() can remove userfaultfd RWP handling from a
-> neighboring VMA that was not moved. The moved VMA and the existing
-> neighbor use the same userfaultfd context, and UFFD_FEATURE_EVENT_REMAP
-> is not negotiated. When the destination merges into the neighbor,
-> mremap_userfaultfd_prep() resets the context on the expanded VMA,
-> including the neighbor.
-> 
-> The neighbor's PTE remains PAGE_NONE with _PAGE_UFFD, but the VMA loses
-> VM_UFFD_RWP. A read that delivered UFFD_PAGEFAULT_FLAG_RWP before the
-> move then completes without an event. The same-mm PoC reproduces this on
-> two fresh boots. No-move and nonadjacent-move controls retain the RWP
-> event.
-> 
-> HEAD commit:    24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-> source version: Linux 7.3.0-rc7
-> architecture:   x86-64
-> compiler:       gcc 11.4.0, GNU ld 2.38
-> QEMU:           6.2.0
-> 
-> console output: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/368568c2dd47417b54a957c8d9cc09f77f28b236/console-output.txt
-> kernel config: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/4989bc843fa61b5eaaaa53422238ec39e4356b70/kernel-config.txt
-> reproducer: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/109dc86c28debcaca07aedb2d450ed1e95ae5edf/poc.c
-> 
-> Build the kernel from the revision above with the attached config. Build
-> poc.c statically with pthread support and place it at /init in a minimal
-> initramfs. The positive run and controls use:
-> 
->     timeout 180 qemu-system-x86_64 -accel tcg,thread=multi -cpu max \
->         -m 1024 -smp 2 -machine q35 -nodefaults \
->         -kernel build/arch/x86/boot/bzImage -initrd initramfs.cpio.gz \
->         -append "console=ttyS0 panic=-1 oops=panic loglevel=7 rwp.mode=positive" \
->         -display none -serial stdio -monitor none -no-reboot
-> 
-> Use rwp.mode=no_move and rwp.mode=nonadjacent for the controls. The
-> positive oracle is PRECHECK fault flags=0x8 followed by POST no_event
-> value=0x41 and RESULT=RWP_NEIGHBOR_ESCAPE_CONFIRMED. This is a
-> userfaultfd tracking defect; no privilege escalation or cross-process
-> access is demonstrated. I checked upstream master f47d223627f8; the
-> relevant mremap/userfaultfd logic is unchanged there, but runtime
-> validation was on v7.3-rc7.
-> 
-> Thanks,
-> 
-> shaos
-> 
+Well, i would not say that i'm happy just to rewrite a lot of code,
+too many completely new code, i agree, but i have to admit that
+measurements say xarray approach looks better.
 
--- 
-Sincerely yours,
-Mike.
+For the memory we are kinda good in both cases: we drop most of
+redundant memory, the rest numbers are low for both cases.
+What the array keeps is three costs that scale with
+shrinker_nr_max x cgroups x nodes instead of with what a cgroup uses.
+
+Measured on a 48-CPU, 4-node host (the one from the v1 cover letter)
+with 50000 tmpfs mounts (shrinker_nr_max 50112) and 20000 live, empty
+memory cgroups:
+
++--------------------------------------+-----------+-----------+--------+
+|                                      | base      | old array | xarray |
+|                                      |           | on demand |        |
++--------------------------------------+-----------+-----------+--------+
+| unreclaimable slab per empty cgroup  | 1.6 MB    | 65 KB     | 34 KB  |
+|   of it, the per-cgroup container    | 32 KB     | 32 KB     | 0      |
++--------------------------------------+-----------+-----------+--------+
+| 640 mounts crossing 10 unit          |           |           |        |
+| boundaries, 20000 cgroups alive      | 1.41 s    | 1.31 s    | 0.10 s |
+|   the same 640 mounts, no cgroups    | 0.08 s    | 0.08 s    | 0.07 s |
++--------------------------------------+-----------+-----------+--------+
+| echo 2 > drop_caches: shrink_slab()  |           |           |        |
+| for every online cgroup, the walk    |           |           |        |
+| kswapd does on every pass            | 23 s      | 11.3 s    | 1.3 s  |
+|   of it, shrink_slab_memcg() per     |           |           |        |
+|   cgroup and node                    | 22.8 us   | 10.7 us   | 0.5 us |
++--------------------------------------+-----------+-----------+--------+
+
+base is v7.3-rc7 with the kmem_cache patch: every cgroup gets every
+unit; both on-demand variants sit on top of it.
+
+The array row by row:
+
+- The container is a pointer array sized for shrinker_nr_max, 6 KB
+  here rounded up to kmalloc-8k, per cgroup and node, for cgroups that
+  hold nothing: 32 KB per cgroup on four nodes, 640 MB for the 20000.
+- A registration that crosses a unit boundary reallocates and copies
+  that array for every cgroup on every node under shrinker_mutex, which
+  every other mount and umount then waits for: about 120 ms per
+  boundary here.
+- shrink_slab_memcg() walks shrinker_nr_max / 64 indexes per cgroup
+  and node on every reclaim pass, whether the cgroup has objects or
+  not. The 11 s of drop_caches here is that walk; kswapd pays it at
+  every priority.
+
+The xarray version pays for the units a cgroup has and nothing per
+shrinker_nr_max, so none of the three rows grows with the number of
+mounts.
+
+Surprising it is also less code at its final version: it removes the
+array reallocation path and the spinlock the on-demand array needs so
+that an install is not lost in a copy, and ends up with fewer lines than
+before the series.
+
+--
+Cheers,
+Konstantin.
 
