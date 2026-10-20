@@ -1,80 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5675A606D55D
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FE260A2635
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:55:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6928B6B0172; Tue, 20 Oct 2026 12:47:27 -0400 (EDT)
+	id 3E00A6B0170; Tue, 20 Oct 2026 12:55:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 642CB6B0173; Tue, 20 Oct 2026 12:47:27 -0400 (EDT)
+	id 391416B0173; Tue, 20 Oct 2026 12:55:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57F526B0174; Tue, 20 Oct 2026 12:47:27 -0400 (EDT)
+	id 2A6D36B0174; Tue, 20 Oct 2026 12:55:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CF196B0172
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:47:27 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 48FF7802C6
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:47:26 +0000 (UTC)
-X-FDA: 85343585292.18.BEE5685
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 168612000D
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:47:24 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 08D526B0170
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:55:17 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 859281A02D6
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:55:16 +0000 (UTC)
+X-FDA: 85343605032.29.1A10B27
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 23062A0008
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:55:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792514844;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3Mz6UVuX23RzMK9sBDnIfn0n/9lxOQ67gJKXIYwI0FA=;
-	b=FFIcLxnxueIFLMBofah6ronjPMSyeEPkQP4h9wJE1Bear2clxy/Sxjgu0JKhMyil6QFCWw
-	SJe6dyAFLqvuMpDKmKWM46Q2ubKTOO370o20X4F6QMTjKJAX3n9yiie/ZFDsNm/eFc8oiY
-	RypD1F6X7/GJ/GQdx8YHKx4lHhdcHyA=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792514844;
-	b=3g7oDJfepQXIyqOVZ4nKVpwNWwVEO2XC6u5KhDpIvyUeokjZTz/5CRNE+zY409qwzy7oT5
-	VLzha+GWzcIjTH2LJGGfbqREeDBJ/q024xOvfgXnVIH7uZWWzFwWF6HFlm7darWg2RVCZ4
-	+21uYn1ZPtZh6Io/kBy6rNI/A0HMJU4=
+	t=1792515315;
+	b=EyWw5/HcrthqO5cf1GxzRUa1VoIsIVdCa1MdyrE8PH9sx0By8hujNhazv6QjGp4Zj6VzDa
+	bbTbBkiDzO3+C/2f1+TuR9JIgMHDGhgNtk0B0uQbjYorPeircv31shL+DpDDXpRadyUzVx
+	QlOwRUqLJsL5REEBc8hh51TStCTJ8os=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792515315;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=74faLD1IaSIP2Z+00B1XcX8OSASYEQH3UHt+KZjsp+Q=;
+	b=sV0Duwz1PPbSEqvdWgYDLyOq8IVAiGNWiBLcooPiYxFUa+pQHtydR3cyoRWjZ8e/iTj4xR
+	s2RMJs4trRsxdJTAGt0ukVbk1oYqIb4vedwMhCchP60tKis/j9HlPJUfVqFX/Lm6JQGYpy
+	946aLnlniJ4605yudlGDP9MFCsCs7HE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA8784061E;
-	Tue, 20 Oct 2026 16:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3811F000C9;
-	Tue, 20 Oct 2026 16:47:21 +0000 (UTC)
-Date: Tue, 20 Oct 2026 17:46:48 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: shaos <shawnq1@163.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	akpm@linux-foundation.org, Peter Xu <peterx@redhat.com>, Liam Howlett <liam@infradead.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [BUG] mm: mremap merge clears RWP state from an untouched
- neighbor
-Message-ID: <atea2DbZ-LVi5OUq@gremlin>
-References: <20261020110748.959870-1-shawnq1@163.com>
- <ateYC2eXPHuy3HK1@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ateYC2eXPHuy3HK1@kernel.org>
-X-Rspamd-Queue-Id: 168612000D
-X-Stat-Signature: 5wbiy6xceesobod43kjr1mx4mxa8bhw9
-X-Rspamd-Server: rspam04
+	by tor.source.kernel.org (Postfix) with ESMTP id D4D2D6057A;
+	Tue, 20 Oct 2026 16:55:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0231F000C9;
+	Tue, 20 Oct 2026 16:55:13 +0000 (UTC)
+Date: Tue, 20 Oct 2026 06:54:42 -1000
+Message-ID: <7bcbfa61a8c69e6ffd81e97652d981b0@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, david@kernel.org, gourry@gourry.net, hannes@cmpxchg.org, mkoutny@suse.com, shakeel.butt@linux.dev, roman.gushchin@linux.dev, yu.c.chen@intel.com, zhao1.liu@intel.com, tim.c.chen@linux.intel.com, lizhe.67@bytedance.com, bpf@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v3 bpf-next 0/5] BPF-based per-cgroup NUMA balancing mode selection
+In-Reply-To: <20261019064157.29885-1-laoar.shao@gmail.com>
+References: <20261019064157.29885-1-laoar.shao@gmail.com>
+X-Stat-Signature: j6ttpjn8dxedceywjxg1m3q9ifoyecdk
 X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 23062A0008
 X-Rspam-User: 
-X-HE-Tag: 1792514844-414840
-X-HE-Meta: U2FsdGVkX185fUDA4F0/ytgYoTceT01y+NICTokv8NJP+VSb5ZwJWfIxq2MeQ8waRfeF9qSVo2xTBQSbPSWlEtx9/MQrWCU0GuXn7y+rPbRyqlX84rGqXy8U9zebLwcWzb+OApYBfYU+1pJyChhaXLUhq4WysYFdeWviZEmaXdY6onZeGirxL3vndxwdKNCm8NaIRtFI+chE3Jo6QY2tD9gZJUwXvwZnGnjZEPsZET6Kms1zzr6LRISm/pIqf12ey3MsNrIQSFxCwuNAt9xqBmiHWK83Rukwh3JtQI1vDMy0R2bTHsiXm4U811MA+z6Wn7dgSj6LC8ajdVfpgulQeS8E3xDHe8u08bAq88R5SkSc6v2byMIXIjuoCMeW08R2RMgfW5HjbAuj1LFhdy4K6PXtNCqg5hdhAjAe/0AhGz01dWUa+a+yORsyG29qGRx9dzBhfQx2Xau4bIVLgJYZwXPLFTkE6dV7sa91qAkBTH3f/K1inPeKniNMW8/bLUOUqMY/v62IlfMJiGSWzEzNl0xKPKuLaMEhek00Rc1EBxgSLhMJOl8JwjGcUbmFACmhHiKEmz98dpRsvNETedPh45aYEGOJA0ZfEOtfxMKh6cXknuajhSCbIwZ+QtN5nMIHMSPW0jM40IEvQKwxaFpiYZ7faQXj+Bgyr4Bp77J/mE1jgyEL+tl5P2PcpbCQlXOPQ9UQCwndewtLGFHcNP+XlhAkFQg393jKfYwsLXrEsRJ4AhjzT8qSN5DbXkP5HUlR2IiuFEo6GFFN55wb3dKEu2XshWfB41l1RGGumKZN54nmMZQnDVIpJHH6P+TZpYCjqMsyvlzJhYeHtl8uhBBIHv9b/ta2fMt2BCIDGCl//ysveqDsk8huSt2Mtslq49jJiNfEHPFTPkbprGwNmmo6+znlhuTU0ezoizKbDzK28EAzZUJ4T+QgHUeY7CYFw7pFR4CCJNytAGsJKiSfW8E
- 0pi+kwRG
- Mq1EJ1NfttwIDF30L+Z8oVhRcd6IaaYbcQqMf5HMZQQZakbPeM2AXb/PsXBjEbp3rcowglAvLzk4ptMXmreE5sj9zFIIi4vXs3pHVcRI/MembYEZyxSF8RKK6Z4bgOMCplx965r3YCzqzxdgdArjPRq344ofPFejJk/S57mui3M8GGYtZWIVdpTFi0Rjm/lwCyUys
+X-HE-Tag: 1792515314-460248
+X-HE-Meta: U2FsdGVkX1/zgsZMRdLyqbIiml9yAlZaQRPVVC0uD8SkqJYP9Mh11Yp3iK3tEo0Txx9ugxJfiMgRbwLv1K7kSQ/lKR2RWkPpD5LiFY5ats3CeOJVIUWJNUV6nz8Mtt1RoyncacWSV+g9jmxooHH5v4EfejC1T0cKki0FzQdMlVPzEuJhCN58bklnzhCV7CAT3iXVRPKd7Z885DjQmrby1p4L3pKqvVsHFex9ZXjcRKQCrTeVOpnQH1fThH69Q7expaZw7RoofSBbjVtViXsgI0/aTeW/jBFUyENs9PQY5nCeMuLkvExF+jtYxDMlgx71Ggri9puEs12TGTO0ikbRsm2tDq/eAIxZZWN6Sk9zLqX1sPk9+bUZJ7shvjrrVzlNghG4wSS39JGndlwRPWuCfJX0eOgIxj94l7YxUInEz/buuEG9LYixAFYxo9YWHcowceTA7InK35cKNtFntLX/bPWWRVXZdyoEP0ZwFohsSVqO+RJpGNOmwe16PflewEKP/ZwuWmxt84XxUG6nO3FF5V4+BJCkwbT3enCAuFQNmLZA6qMkyOPJnFF3uBAUbDqeu5AdiTK0i48jHEvI8R/fGgUv1JYpLM4Ufyyu9S36PE+IsSfrTCYgky3qDdi3a/6kH/RWiOuZL3OlAdrMwl2gw+mj1T0cblOkKErvHZ4+VdPo6FDQknkG9s18sOqMcwHtQZRZbQmEv4oMLkoePWo04S1k2LxOR2xQ8D+kgpnW12x9H426IG4xAfR6spokvSOSMLVR/sZ983rVOvsfct4R21hMjp/g7cMKLixnVniagpsXkzTu8j622l9jx6QirHXnRG1A/0CkW6jg//Ed5T/3vlBHr+EKaCDho2aDF0Bdua3YLbeY9hnj9zA+DN+5dfjZNehAPZ6FRgZuVSoCpr5vCAArmJtP+uQhYvHs5Mzd56cilXIjWuMODWzYDAaatOb6gpHTVQNmLEokYPPuoEo
+ AaFnCx1Q
+ BsZ2MNsgdqOnTDLiuO3vbUHStD3IJvN9EbKt2QHaWE4L9qFScq0UIeUGp+A15fdlAB+XQ+2NT3I3e62QlStZQQkyCGZvaJ4NluNduzmTzWRabprBYErYbLo0su+qAr3yN1mwBugBUaLIQZgnqDCZQqUr6Yk9yL7ZKVyGad+M4JIr896372cfgj7ALplrHlRua0xw9NKv0pZxLWZcO8kITgo8EeA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -82,12 +73,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue, Oct 20, 2026 at 07:34:19PM +0300, Mike Rapoport wrote:
-> (adding Kiryl)
+Hello, Yafang.
 
-Fix patch is at https://lore.kernel.org/linux-mm/20261020-uffd-remap-fix-v1-1-0f34fc181f0a@kernel.org/
+On Mon, Oct 19, 2026 at 02:41:52PM +0800, Yafang Shao wrote:
+> An opt-out wins and binds the subtree: a DISABLED request anywhere in
+> the chain opts the cgroup's tasks out entirely. Otherwise the requested
+> bits OR together and the kernel reads them independently, the way
+> kernel.numa_balancing reads them, so a combined NORMAL|TIERING engages
+> both modes. A DISABLED request only speaks for the cgroup's tasks,
+> never for its memory, which follows the remaining requests of its
+> ancestors.
+
+Can you explain the reasoning behind the basic design decisions?
+
+- The folio paths resolve through folio_memcg() while the task paths use
+  the task's cgroup. Why isn't the whole thing tied to memcg?
+
+- Why do the task and folio paths combine the chain differently? DISABLED
+  binds the subtree for tasks but is skipped for folios.
+
+- Some of the folio paths already have the faulting task.
+  should_numa_migrate_memory() takes @p, and the do_numa_page() and
+  migrate_misplaced_folio() checks run in the faulting task's context.
+  Why not use the task there?
+
+Stepping back, the basic design decisions don't seem to have been
+thought through, and the descriptions restate them at length without
+explaining them. I'm not the best person to judge how useful the
+feature is in practice, but getting this version into acceptable shape
+is likely a lot more work than having someone who knows how to do it
+just write it. I don't think it makes sense to drag this out and force
+it into shape over many review rounds.
+
+Thanks.
 
 --
-Cheers, Lorenzo
+tejun
 
