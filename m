@@ -1,75 +1,76 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3DD606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 13:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE83A60A2605
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 13:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hReMojH2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=htGvWvY7
 Received: by kanga.kvack.org (Postfix)
-	id 4BD5F6B04B9; Tue, 20 Oct 2026 09:00:07 -0400 (EDT)
+	id ED03A6B04BB; Tue, 20 Oct 2026 09:00:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 494B16B04BB; Tue, 20 Oct 2026 09:00:07 -0400 (EDT)
+	id EA70E6B04BD; Tue, 20 Oct 2026 09:00:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AA466B04BC; Tue, 20 Oct 2026 09:00:07 -0400 (EDT)
+	id DBC866B04BE; Tue, 20 Oct 2026 09:00:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 10A496B04B9
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 09:00:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E26CA016B
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:00:06 +0000 (UTC)
-X-FDA: 85343012412.13.F1863A1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B31706B04BB
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 09:00:12 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D5B880140
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:00:12 +0000 (UTC)
+X-FDA: 85343012664.02.F2965A3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C809740005
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:00:04 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hReMojH2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 66D0DC0009
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 13:00:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=htGvWvY7;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792501204;
+	s=arc-20220608; t=1792501210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jeB9r41aTDoKdoA+kCZsJ2XWnJK4z4zZ4MkuJKrc1ow=;
-	b=48wCRX1AQ5Dz487C/2C2hhkbLEwySu4jbrRs8N7vbFi/EJkU8MbN3QHW3Jk8rvL3KBF1zY
-	ILN+Tn3mosx/CdbmgGYAXjM4jJfO40Q4l5fkYy/dyJVByuaFTdQmQpkLaTrXZ5ZVFQyn4B
-	xccE/Bq4QsQXv5TfOPQH6ydeZCvmyJI=
+	bh=0SlxZ5UQXu81xsFhH9I1ceqg/5A7Zf9sbax9KJqUchU=;
+	b=v5GoiyC2oSyMJciccc0kwiJqnucYaNMqiIUmIkv6ltWSuxW3CnySqC9HoZuzHzPbRK1ayo
+	N40sy2dQOJeqLOk9fjiotv6oDafptvjgkefym21fic7Aq1KNO33GuT0luSu2lgjrTvN2Mi
+	r+PXtQ7Jb2TgEzD87Utw85gbX5Y8Dkc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hReMojH2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=htGvWvY7;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792501204;
-	b=SeNhHnzCgFB3XCZK5+6LJG7h74aIgsH8urfSQ3vfxy70DspjIQKR/Sed7eky1tB7+gE9Ti
-	k5E/5A7aF5pPG3A7ZPL/zpmgpClPFnu167qGxneAx/yPKmF82YFE3h+5OH4rXubopkl28a
-	s0KP8NFQ4BuONrVkMlCcUg8K9otneMU=
+	t=1792501210;
+	b=HLXg0+1UsvSnMfnEzSGdSODUT61xcgQno3DdSLmWrW+88u9v9ZUrFitOZ+02xkKgztzWSV
+	fSY9tV5k24Mu3my1wGioKjk3J11jPf//INKvr7R2BRtKxBehwJFDibXxxpxk/9aROSK722
+	nf3C0MpH6Nu1mrLs/OdfJ34pBQb7MiY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E6C743B12;
-	Tue, 20 Oct 2026 13:00:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236841F000C5;
-	Tue, 20 Oct 2026 13:00:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AA8DD444F7;
+	Tue, 20 Oct 2026 13:00:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877C71F000CA;
+	Tue, 20 Oct 2026 13:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792501203;
-	bh=jeB9r41aTDoKdoA+kCZsJ2XWnJK4z4zZ4MkuJKrc1ow=;
+	s=k20260515; t=1792501209;
+	bh=0SlxZ5UQXu81xsFhH9I1ceqg/5A7Zf9sbax9KJqUchU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hReMojH2z5Fv4dGLKyixYESLgoxtiRUynJpJtAzqb3shE2lLmDBlTNCspH7vqWj9A
-	 1/SZWmKQ2msnYMUGK/lWSQ5oA+Y1R9OwOqLSCK8K9UVdb6aCqmVCJCf+/NymzwB7n0
-	 C2yK7DXZQjGkC+zl8iAm+PJs1PgejmG03zuerPFL92asiWatcLfJ1b12UuKTGLkEUs
-	 hIS/PTom6O+tCIPTSF4h47w7Vx1hfb3JfAb9AKJ1wKbGIE0FY0NdO4M/DXvzqteRtF
-	 440MPGH8lyFxY5XjzwgERy1jwMGoxpdSPgqytq6SRdI+kMCgiX+IVjZsR36tauwcI+
-	 i7f1E4IJ0ryPQ==
-Message-ID: <3a3e48b1-b5ea-4d73-806b-3c2801484b66@kernel.org>
-Date: Tue, 20 Oct 2026 15:00:00 +0200
+	b=htGvWvY70hcOTpY92QXwy8gTYzLILBSSisBX8mhP1sRKfYjNS6z09IxQOvQBMZm7Z
+	 HaiPFoXiUlsj7EF2GdaS3DckfqOcJlBx5eAZmOR8drqfoFb1OWgj9srtF825m7IO+G
+	 2Eaa29YIujwB+KexjanWX0jOM/ig/GHCHk1O6MUJy129SfiOabCY5J6Lon+eKe8DrT
+	 sBmXMH+3Uvvj+ga2A8kvkYsvuv9M9lWU91nP0W7O5WrUUcq2Tdle92kI5GZ3TTrE5n
+	 ZHCbpxm/cqjOqbaze53ai+CDC6++u7Q2WEtyGk8SYfmQdNa1RRwiF/MTjbhIAWLfTz
+	 2KkdmVuPKPb7A==
+Message-ID: <3c80ab1a-d86d-4986-bfae-d513734a0d90@kernel.org>
+Date: Tue, 20 Oct 2026 15:00:07 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] mm/ksm: KSM merge clears soft-dirty tracking
+Subject: Re: [BUG] mm: userfaultfd RWP drops a populated shmem PMD
 To: shaos <shawnq1@163.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261020110758.960048-1-shawnq1@163.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261020110759.960089-1-shawnq1@163.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -116,21 +117,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261020110758.960048-1-shawnq1@163.com>
+In-Reply-To: <20261020110759.960089-1-shawnq1@163.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C809740005
 X-Rspam-User: 
-X-Stat-Signature: hqes53f1fej3mm8kpx6ng8hesjbajqzr
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 66D0DC0009
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792501204-429609
-X-HE-Meta: U2FsdGVkX18KcEYLHMbz+qlLf9ryrnEIKFX3HrsYNE4VK45ffvbtWjH8bJLGe0JDTVCABP8DbRlOcB4HQsexlo+HOQT628hIh8jMKeD9IlciYKJySZ1VjmuKIbvPiLWVXFtiNrWhZ+MZqbjwU1BGpVkI9ib/FP9pqzZ9/2biBnRuaa6U7/4p0OOlHrj1SdwK5qz/CWEse39780YBAvJ3b6yNmGzBpb/RSQstie3TKncTrrwd15dslIGD2CeyfZZa60sQ+ukrQ2nrRgTvd21IlCEliBsLpsPMPSZh0WUmgI1AAZu78S7dpHUdGqfx+gk1zluWFuJ1uHy0ft0/jmXnSgZLYyVsvlN5L2dNRr4a1ZMz19miZZTyUFELWsTtZ4bi78+w68F+RKjV29A5cgy4NNVTWGCSbzodUyVdXqujV7Hv4bZzZohSa+Op0zw7Yt+Pxuu1u3jP8yZqXMGQl0R8OTzo4XS+bWyu7nDwCokEfeUMXVL8omA00sy/RPofNioRofL0Kjc5goUGdEAUfVfbMQTtnf8HA6Xv1kvpdXEW4L5l4N47TeLW3p874SJRQh0eF8/zhPWPdBkEfM5FKXXEMZgFxttmCLTlW99fOvttBBOwtOAVBF0YfKD+TWKrxVJ+xfkl5OB4qd6uleOrU6YmvJmffxARJWN1fP6KxRUCmaeMgngkpGo/kmDZddolrwF8abxd97xpY3fIb37jvUn6fzumIGqy5CMZ28adTb+2/KzZlFn3GTT3B/TghIl+3fsyJRKpK2fQ6TGN/fdIfjn2lB2Cbh8/rOb0JKcUBPfkzzPTT59w/19ffOQG1pOVviW+LPaqDl4/rr0ZF6gSQdXt3oe/KFKIQdsXqbN2vQ8jl2dE5LD0enJGFR1INMSYZYFT3YN7K7mysJ6jky4wIQkzxIJTETRwVOTB7BTRcCbjekF7TOsMQv/eAKM9FsSlhXgDKKA5xL/sRtUrXXhaDA4
- HkbOzYOK
- H4HZQ5hYSbYWSBQaIfQnpl3KgxJA1iR/QXlB9ew7N3i5ysZoLgB3DKDE+0GUliOtzUGnJ9QXfy4wPgSwqXWFxinJzvY+V4OnkaYKsYc6LV8U4JeX+iLiEw3JKNc2q2Ox/fu8fk6sp3HKVB7hzkmVLBDJon5eQmejIoKcEC6f6apBpXSDRsSkGjachJMvgbEcBOstVMtuYgD16n92Qgk7C04YNgGfSXWTUXUFX98OnmH9HgZHT6T/fiMamNwW3k266cjl8FNXUG3d0bBurmFF74XYdpsEMLPJhA+djIT6jOuiTPHvEsTZF+TiQWhJoyyfE45IOuZ15LQosx1q7AGMJl9jTONzjcEUjcfiquoYRpGc0o78y3DRLpYwv2ztJzwJoe5GT
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: pesrzhp7n5hyh8u85yo1ods39tbesoy4
+X-HE-Tag: 1792501210-708995
+X-HE-Meta: U2FsdGVkX188RebxsDYTRI2hcGrnQzaSeA5jJefDPcSKpqmWTpg7fKRyPlIpQavzmKJh3o95rmT9xoZdjDMw7qUIt84IZdS0VZWUoUAW+FOgMtpSfBgGAakmKDLzE5ZO12Es373AxNM371jBYX4w0H6++ErA3qtVCmoS8nHIzqQ1k+noU9WKgHvjG6n0Wa9OYqkBbbQmF1Kakar8D7+pqPkZfHbNdNgzsEWQ3OHeOO6RUlF7LvpBHzt6SB3ZgUVjDIhkyhtqEnhgF9+8vAbu2dzDDkb2CvlalZHv9o2nTN6pxaNNq84TTvAOzFoqG0Z8ddbZwmE4Yg72c1JExAajYcj4odM0RF825TksWDkaZAluRz+a2UOW+pzkjl58qbgcdXe1SWXi1saT2ZaOIkedRcDmbgRcksT3JiD+coQr2XFqBLCEHXTpxHElYkVoiIs3wGpG7D/QfND0LW7Ga5BqIsqjp2BiLD5VlclAbKyalArDVrO7UibUCm2lCWtE0oq+SulCCdVUuix/Qf1LZmXKcu/d021sHUSKYkRUcIXe0Kjg0Jan64HyBkOQkveFvjGA5ESDvG5dDXmhEzPIMvQA+hthOn7fVFg5NPL1eRcK3U501ml1LlxcJA6IIRzoCIj8TM/7B8YVMgsSsNiZmQ7kPTurOZliOM0Ab0Dtbp1rCkNaiNclhmLBQ/8zoI31oNf6FJ1u4CXfWxefCqBaXZUZKqO9l+WqtVOEXn4dbSS+48FFEzT6apGVRSiAtGvRkyE1H61WcHnQaOc9u0j5HI9zWp79JN/oj7+KMrizRcre5zw6qBMWWxh/KLvM4eBpRuvXDpUOGJiMUHPTrBcrzYLiY6po1fVLNWW4J7e3pp+YwJ7eLwGqjX/09zeedV4r08HDn3vqEfmUXkUgeJVmgnUjjVb7UWyw94or5VixVW91R847T790XkBS0g1m5N9dRrpW4iMk5vPef4DLAlhGw6n
+ fFLoe+Tf
+ JO0JppiseG6gZS1FZ4aTxDuGs2XKU+aGefZ1Ny4PmjzC88rC0+x8gyBwc6l3h2hbw7KGlI+WSU8dqcvghIMHuaslGFXR2xIjqnujYDr27JvUT324Sauichd1teHUaKtVjEIN0GyzDIWnrLk8/Q7GZ41PuWfVa7hYbzTuIvGw+NfhEh2nm8y7KYIb5MhNYea0XZl0MAlb8ETKfxBTfmpUU20Da2uffzWi267I1Ty4pnpVqxyvDjPcIDLeB6x1rVZnmeksBWSG40/vq+O+AFAzLSIW5bdNIRhpaQSnyoXwcGrmdXG8LOv7SCn+xyLW/6xjwHZq93PqvI2EiOWtiP9t8HGTejUjnzRhvK0RuXFoh3YOxnNI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,11 +143,11 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 10/20/26 13:07, shaos wrote:
 > Hello,
 > 
-> KSM can clear the soft-dirty state of a page when it replaces a PTE with a shared KSM page. After clearing soft-dirty state through /proc/self/clear_refs and writing to two identical MADV_MERGEABLE pages, both pagemap entries show bit 55 set. Once KSM merges them and their PFNs become equal, one entry has bit 55 cleared even though that mapping was written since the last clear_refs operation.
+> UFFDIO_RWPROTECT_MODE_RWP can return success for a present shmem THP mapping while dropping the PMD mapping instead of leaving the populated page resident and write-protected. The next read refaults the page and completes without a UFFD_PAGEFAULT_FLAG_RWP event.
 > 
-> replace_page() builds the new PTE with mk_pte(kpage, vma->vm_page_prot) and does not preserve pte_soft_dirty(orig_pte). The marker loss can make userspace dirty-page trackers miss a page modified since their last checkpoint. The PoC makes both pages dirty before merging, so the result does not depend on which page KSM keeps as the stable page.
+> The PoC verifies ShmemPmdMapped=2048 kB immediately before the ioctl. After the successful ioctl, smaps reports Rss=0 and ShmemPmdMapped=0; the read completes with the original byte and no event. Re-arming the refaulted PTE and a separate 4 KiB shmem control both produce the expected RWP event. The observed issue is loss of the mapping and protection tracking, not corruption of the file contents.
 > 
-> The same replacement path also loses userfaultfd RWP markers; that separate observable is documented at https://gist.github.com/shaos26/e887665d7868dc323d73a1d678cacd3d. This report focuses on soft-dirty tracking.
+> The source path splits and clears the non-anonymous PMD for MM_CP_UFFD_RWP, but the retry does not repopulate a PTE table because pgtable_populate_needed() only recognizes MM_CP_UFFD_WP. The ioctl nevertheless returns success.
 > 
 > HEAD commit:    24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
 > source version: Linux 7.3.0-rc7
@@ -154,22 +155,23 @@ On 10/20/26 13:07, shaos wrote:
 > compiler:       gcc 11.4.0, GNU ld 2.38
 > QEMU:           6.2.0
 > 
-> console output: https://gist.githubusercontent.com/shaos26/9db36768f01eb83c6aa14ee9fc057388/raw/59077135f035791493d6d487c9e619c16380518f/console-output.txt
-> kernel config: https://gist.githubusercontent.com/shaos26/9db36768f01eb83c6aa14ee9fc057388/raw/baa5ee61ce748667104c480560ab5116a100e3fd/kernel-config.txt
-> reproducer: https://gist.githubusercontent.com/shaos26/9db36768f01eb83c6aa14ee9fc057388/raw/06005564982eab5cbcec26c5d62ad86c7261a155/poc.c
+> console output: https://gist.githubusercontent.com/shaos26/3c336ea98e1e8fe09b5270c3a82ca268/raw/da13df3db0c05df09952f74bedb457f57c53b78b/console-output.txt
+> kernel config: https://gist.githubusercontent.com/shaos26/3c336ea98e1e8fe09b5270c3a82ca268/raw/baa5ee61ce748667104c480560ab5116a100e3fd/kernel-config.txt
+> reproducer: https://gist.githubusercontent.com/shaos26/3c336ea98e1e8fe09b5270c3a82ca268/raw/420975783e9d5dd88bc4a69190d8ef194faf5fdc/poc.c
 > 
-> Build the kernel from the revision above with the attached config. Build the static PoC with:
+> Build the kernel from the revision above with the attached config. Build the static PoC and initramfs from poc.c; the program is /init and creates the shmem mapping itself. A fresh-boot run used:
 > 
->     gcc -static -O2 -Wall -Wextra -Werror -o poc poc.c
-> 
-> Place it at /init in an initramfs and boot a fresh QEMU guest:
-> 
->     timeout 300 qemu-system-x86_64 -machine pc -cpu max -smp 1 -m 2048 \
+>     timeout 300 qemu-system-x86_64 -m 2G -smp 2 \
 >         -kernel build/arch/x86/boot/bzImage -initrd initramfs.cpio.gz \
->         -append "console=ttyS0,115200 rdinit=/init panic=-1 oops=panic loglevel=7 vivid.n_devs=1 dummy_hcd.num=1 netrom.nr_ndevs=1 rose.rose_ndevs=1 max_loop=1 comedi.comedi_num_legacy_minors=0" \
->         -display none -serial stdio -monitor none -no-reboot
+>         -append "console=ttyS0 panic=1 oops=panic loglevel=7 kfence.sample_interval=0" \
+>         -nographic -no-reboot -monitor none
 > 
-> Two positive boots reported RESULT=KSM_SOFTDIRTY_LOSS_CONFIRMED with equal PFNs and one soft-dirty bit cleared. The non-merging control kept distinct PFNs and both bits set. No privilege escalation or memory corruption is claimed. The affected KSM replacement logic appears unchanged in upstream master f47d223627f8; runtime validation was on v7.3-rc7.
+> Two fresh boots reported RESULT=RWP_SHMEM_PMD_BYPASS_CONFIRMED and exited cleanly. The affected code appears unchanged in upstream master f47d223627f8; I have only reproduced it on v7.3-rc7. No privilege escalation, memory corruption, or guest escape is claimed.
+> 
+> Thanks,
+> 
+> shaos
+> 
 
 https://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail.com/
 
