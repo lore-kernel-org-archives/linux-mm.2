@@ -1,129 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71487606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 19:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F6C606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 20:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=rNX5nGw6
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KEH9pa0d
 Received: by kanga.kvack.org (Postfix)
-	id 864AE6B054F; Tue, 20 Oct 2026 15:59:00 -0400 (EDT)
+	id C3A826B0551; Tue, 20 Oct 2026 16:01:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 815B86B0550; Tue, 20 Oct 2026 15:59:00 -0400 (EDT)
+	id BEAE36B0552; Tue, 20 Oct 2026 16:01:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 704506B0551; Tue, 20 Oct 2026 15:59:00 -0400 (EDT)
+	id B012F6B0553; Tue, 20 Oct 2026 16:01:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D02A6B054F
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:59:00 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D420C1C37A0
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:58:59 +0000 (UTC)
-X-FDA: 85344067998.17.847FF5E
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EE66C40006
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:58:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=rNX5nGw6;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 854A06B0551
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:01:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2066A03B6
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:01:01 +0000 (UTC)
+X-FDA: 85344073122.21.269B44D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 00E6640016
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:00:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KEH9pa0d;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792526460;
+	b=J4ibthn8vaheEu61Tspv5Qg41Zr1GYW6HayD3dqDjPUcKDbtWLG5wYr8hW7MHrHpCLFIOe
+	/DYVL3is5ySvoSEy407TBS0LT8UOsVN2zjNZWfLvVG1BNzywP1E7JrDUeeCbA5FeJKkNuD
+	wagS4zG1AlYc0BNML+OxI/L9RKIVxpY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KEH9pa0d;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792526338;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792526460;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d4lLCzzpRL6P4ForBOyjOrBe3fXm0rVhcelSyIuV9yA=;
-	b=D/uaRatV1z265HqlcNJayy+YFsT6FLPs+dA6J/sUAjlaTlm4N2zTimZ+g2n9OALI7xDTdF
-	LQa3o+cRMqTOtfbP6RMeJQtuCnmffOxN3aFQiCfUZ7SZd0qCjd08rYIG7EYGK0vkUTrruQ
-	9uzZCfqipMsMsTqsP0j1EuRsb1O5SlI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792526338;
-	b=tjm/Mesc2ue5QhPGmHD4p9GGGZlCmWLgz2eUI6GbL4KEDpK7DIYY9Gvw19T1Mv/TMtTzyP
-	VttgjqPd2de+lR78uOLhffFFaXCmiaYtYyAjhryGs/d71cXDzhWrdY0WNlxC9IJ6DI0/xN
-	1XUwi9Cws43+ZKnBmqYAW+4dWe6Nz4I=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=rNX5nGw6;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5365b48238dso540891cf.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:58:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792526337; x=1793131137; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=d4lLCzzpRL6P4ForBOyjOrBe3fXm0rVhcelSyIuV9yA=;
-        b=rNX5nGw67CuBrOH75loz+dNBSgzQCzVcwAZxTJYdQ3D9hVSOPBsh/x0Pwb/cKisn6D
-         Zqs8bFhLT+z4Vxpbz1ayXVsDDuWAKj11jhDrw4aocyiHqxrsiOUYHQ9mmrlAeqoysZB3
-         gKOiLox95DpWUttnySnIA6mLZaNna0+4szXRxxucWnqk0oE35na20mH255H5z8EqC2xC
-         f931Twz5EOs9anPiysS4A0FY+i2eWgBAM5FENZuBDZaQ1l5A797AyGwA3aWdN4qHa+NK
-         AAeOAU8E2Z/gWwNJu6dygfiJonC4TnM/Trm02Z/FsVZ0kwlvXQUf5yAMZf7zzhs/xgqb
-         ab6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792526337; x=1793131137;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=d4lLCzzpRL6P4ForBOyjOrBe3fXm0rVhcelSyIuV9yA=;
-        b=Rm32RRrVP1m4OW86JP1ux6V/yeVUvzYtQ5swq1W7e+rXonUY7FuJbSvCvaXUyP7cTg
-         zRIMkCkxSxu/7C8V9ylhkS68AwDWtJ9zwwESdT0qarrZj0x3ksaUdKOipw2z3WnSWATS
-         xvzrACRt6MmJhYSe5TC4ei+g9GHB79r94i9ScptsGbP9paQ+j8OfXgBq8YYK5uU73Qky
-         QnU4s3/66KPQI27Qyrn1hOSuSwVI8w8+p6rb36IU/M0wWWAn+docuup2bXfrjTqv3Agx
-         YOk95PVWlTiXdDYcZ6NbUag1qQ/8SUfhKVUbzi2tyAEcyGQCgNaIpObAUf/S4Xac2huJ
-         Nr1A==
-X-Forwarded-Encrypted: i=1; AKwUvByAMOc9GdJCuVePCBtsxGRuUu3XSjl1U69sx1oZCqYrKkZ4/dQv4bfJH+KlxxpLv5JUYhWkZuTZAw==@kvack.org
-X-Gm-Message-State: AFq9FYKCmwPAkea+6xQQbnJWXtqdXnpq71MqIWOSku1hlpm7GWs8UNx8
-	9LhUUU4pXua/b2FqdDVV5x1WVFceBMSU/9CWgxa7BCqrA1OTWg9r/YAjmounCEwY6fw=
-X-Gm-Gg: AYBFou3TXoOjDYcZzsKTxhyOVdukBcZFOzfHadM0SJNz9Mli7h/Fyt2rQ9/MnoJHxhi
-	C3wXvk4Hu22ikDCvYTMM+M/U1Fp1Rc/tEwrYRpcMcofvGm42oiAmdgh7LwNxmAtytgBO4ouaG9a
-	3e6rWGdPRccyHwp/fVliNiJyruqiuux/4yjLefIUo5mnftvQSXK3zdg+iQue+aRJclN+o2IH6YL
-	WHEu21vBKvW3k0wew/GcYpbMylAwi3WK2pznbsC3GYigtOxytgw6heWf9ly2iea7bbAgFE0yi4Q
-	9qyEm68+qX7ggCFbElLaPi+dEJpapYqbv3q5wjGC97CYAP1AhYpTeIR+lCOtN6Cvply6fzrSb1Q
-	dThGPNncP29pWa2HujBFJMOb8ktRBY6V3ELjnkCCgqYBkOLr2MNbM3b1mR5WDoRdYCYxa+08jK5
-	BWoKq2ttMEiWV98ltust1rLFbOcYevnRRthPnV/VCXesMl5yx6KnUJ/5cyqSCFdkRL5FDjmIS/A
-	/aDkUKlJf5UOZEIsfX2CTi0PEFi+Andcxz/Yy5cEhhl9A==
-X-Received: by 2002:a05:622a:148d:b0:530:d429:c70a with SMTP id d75a77b69052e-53645fa0b84mr188171321cf.26.1792526336944;
-        Tue, 20 Oct 2026 12:58:56 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53698b427f5sm3856891cf.15.2026.10.20.12.58.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 12:58:56 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive
- reclaim
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Michal Hocko <mhocko@suse.com>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com, 
- yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
- baolin.wang@linux.alibaba.com, hannes@cmpxchg.org, david@kernel.org, 
- ljs@kernel.org, dave@stgolabs.net, roman.gushchin@linux.dev, 
- stable@vger.kernel.org
-In-Reply-To: <atcc-91WerBlJ_Q5@tiehlicka>
-References: <20261019185002.3428594-1-gourry@gourry.net>
- <atcc-91WerBlJ_Q5@tiehlicka>
-Date: Tue, 20 Oct 2026 15:58:53 -0400
-Message-Id: <179252633386.238494.13826191476140121288.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EE66C40006
-X-Stat-Signature: 9u3mqco18s4qpbpxn9gdp9k4bnbhm5kj
-X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	bh=zfyehBfZ/NZDmVggboetswaZ5EHjIBQH3RA15D3wRlg=;
+	b=fe4mjpSNmCxhMo+JjmhvvBoEcNx0CK5e+GRozSVmNt7LkbGLGXwOQxXwp8PB9PLNPdA4Uk
+	8VHVeg8Zmd6GRWR9svXXjBgZelWe24Dtd5ScM1/Z3DBM8v602gKokk0ntZ8+oW/16V6QbM
+	N9cr8F7TM5pAw2N/cgIBqOjTFe2LSvU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 490A0601F0;
+	Tue, 20 Oct 2026 20:00:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26DF1F000C9;
+	Tue, 20 Oct 2026 20:00:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792526459;
+	bh=zfyehBfZ/NZDmVggboetswaZ5EHjIBQH3RA15D3wRlg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KEH9pa0dOrTQBDrixpNqKDsr6RzRoUWWTdOEZMK4QHhiFKXks1om6u7kv4+pOXGHZ
+	 UTvq8ophVkkUkPpojCXThVz0k9IJ2cdif6USzJ4+SoTnh2XpFJMqAzRFmgzFV22EAr
+	 xLlUPk30MQ/6Kls48HSu7aTt//sVtx2xxRPnMKOlviTcLyHX9YWW1hIgw+2FmtL1el
+	 YmbJY2IMALTIYdBelp/6D6ncT9cCQG8X38OWNPTAuEJFcDZw4G/g6zLOJhvJy9AXKK
+	 V78LOF8Gkwad+/kvAhXlUjqqCvVWe7DFeuAInRrkPQTZY1k5SX9hhl6IiEFmB675k0
+	 JdMuqu36pE7DA==
+Message-ID: <sashiko-outbox-179524@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 3/4] alloc_tag: Extend allocinfo_filter to support
+ tracing queries
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Abhishek Bapat" <abhishekbapat@google.com>, "Suren Baghdasaryan" <surenb@google.com>, "Hao
+ Ge" <hao.ge@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
+In-Reply-To: <9e49a8f68e4e7d25c5a9a73c1926f68e468ef320.1792439751.git.abhishekbapat@google.com>
+References: <cover.1792439751.git.abhishekbapat@google.com>
+ <9e49a8f68e4e7d25c5a9a73c1926f68e468ef320.1792439751.git.abhishekbapat@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Oct 2026 20:00:58 +0000
+X-Stat-Signature: pin3iid4fpojz9n5doayo9aqsi8zdygw
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792526337-861585
-X-HE-Meta: U2FsdGVkX19Guw57qXERD7EpGsSrTx3jJORYFGQORp7DtqhsJJuFscdvrGLVYzaHS6rXCm1tETGODX2myybL41Bvb9f2GWGnL/N/hiMfzldk4ce5sg+8+cyLbSrfurK/VryYvUbS5bflPmITsHMK2HazCjtt7sKfEYp/xgYLFFdM806Cw2iZVE/1KdpJxs3lmL25twQ/mVtR2gxDDuRWTJ4cbfP59xlLgd+11QDOhLuePI5aV25FJ/TQLOZnt2ghg6vO7N3+dd2pTBl60G/J2/1YIlLO7kCrBTGuZaiTceaidg5TiXhVTeLkhAmdp88NveAINkH+zdbA7mf3e02vFZ54RgrmkmQHsKn7QFw0O+LOavQtRmqksB8Kda7W+Fs/5upPvWTBDoZ5aY+SksIFk07j3v5E9ejARGMdmNpCQOybbbBWZ3KwaDu+KHZE/3GmL48aAFl/rONJkcUbIw9LpzIz1KcQFphnqVWRvuxQsZHqTzS1vUZGdzeVCDJUdm53/DlrTmvMo0KyBX+lAA6XlWnFCB2QvpRcsRWRJG9H00HMLpXW5Sz7uS/l33Yx4PB7948d36XxSQoWWtC8F98IaWMA+xYt4vMC+0cSsS7bpjsC3HTNIGeIui/kCXFWXELf/OQH/TxMb31Lqn3N7NMtn4srqhJtCx1i8ou+bfeQ+w3Oi1eLrnMjCad6kzYzs44DB7ZrGqR/cSjWl1nSNWCHqba7+zu0keQaP7jV28U6E2jKZwFhaRq99NuWGpOeZtvyz50mnA7h0w01+OKng3wIk1LUK48R0SvDeNssAqHxmqW1bZ+OWtr49AttQ2wuiySsp8X2ki3v1BOaj1mugEt4QeahtF0RwhqqvAg8J/CwhMlVjPIQkAv6v4un5XT0u1ZJYQF8Sk9e+JHNWXPipgGGd/t0X5ntY4/OCH2P9lS/iwtDA2w2krQBC3yj0ScQnGH+Rw++hx1cImSKeACTCSO
- mhsjVBxA
- g5ds4wUzYaillvpMdtgMZIswGUEVRSimT9L4+MXrGhfprlAUUCqQXQWVNe6P6N++uLV2VQKwyXnxiwschYd4HAcECZ7YxUA3RbSRiZmxwK+L5QXJqNwREAI5C8oAE2vdbkbrjohYoigKwNheNEuBvPL0TwCKGBkJ0ox1keq52DVvXNarTikGSAX1MxwpoqXd0Mj5Yd7Cpvt5wtznTHq611EGX4GI/BgelaNJ7KwMhd0GmA5/nQcxJZDiSQ8zTBf5EnKwKqFNSVKSyeJecF89sdYMJtgSF/JNFlk88plGm7em5XXppsSN+5BPM7g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 00E6640016
+X-Rspam-User: 
+X-HE-Tag: 1792526459-491219
+X-HE-Meta: U2FsdGVkX19ezYZbd549nsZbvPf/4Ps57XXntweJkRLWKaN5bFicNMtvVKUaUu/IHuwUs2ZmKifr3J/mrMXqmvrUGf50szMFeGkG8VRGuJUHen3zmSqPr7Kszot56Q2OGUarIbVxaLj6tt5cYu+NKFi6s9zXxTAY0F7OHTIgDOjR/NdT+rEHoNnQ+lR7+bcyOsWeByPvEADHVciFboTQnfJHsPW/7LB8n3vXyINAKXRWibPgtLmyygqmIm4TbmEwHqpkQnA2F+Dm4HXodoxL5v2V1l6a9qMj9qZx0d8IVNxW2hG6GEbFA/wU1GZfcFG70zNfBj8DyK54C3b8d3WiG56hvjdiao/3NnG7BpSOE6edP/iLTDcFsMhyhvDIu8VLH6A3wHlCZBLKe/8mYmzUdXBeM++h8ISC31W/K4Fk79YicWKqau7MTPW7PXWbbPe1IuJLhHgm4N0HxFPbR1Gl3dr5ZiyuiH91wbKccSZEoDpRFhnw3io2HNnGhSKd5mn13PGiVOA545yTC4FPmzOaKBwC2hfeHN28jjVOIiKfZT1ep0NP5Dt2VmIQBjwL3gBpMxqXNP79Zjo7Q6bJ5oCPkPn1ulXDvX8QOgE5kqou2fHlulegFRNiGIxqh8M56oMa54aBsk3FM00szysxZJQJlnoooQgR2qxX8XFgTB3mfyPBRGVphKqsTOcYl8IsdaJCD9CvrywyP66BoSCfCpo/84vVlBHxYGZiWSoIPatxdg0EFi8xUjt9UPglVQcbRF8bB9rgnQr9BrTdlrMA/hZfg50HEw+Ddi0l5y9HdJF5nksDH10+ww196nXl5Au0l1vkl9EkeFC6efvrSu82fgSGCnW0pde299ybY6gmjYtlbgMO9TDqLTZP2/qnGKAVueD4NramZ71MvmeLb+0ktMRXyMOi21DWjcJuZKENh9lx8Mrm1+HN4gLEf06tWMPZbPfmsN4p9e2E80RVowdc8z3
+ SKp9xjeK
+ nE6oq7gg04lIsRafnkEogscjHorZehyFtFIFn6vyyixcH0jb41M9EKrI1s93bHiyMq6G9Zl10fbZ5YomRhcC4IV+UbkiwIFvF+uLLYzvTgin8+3PWOCDOGFlpwoRdQ00zMWpnZI7wtFM1H5+Olli5pPg1JGVSifdOsmvPfZoVh20Fv+6kWVu5qdmHkgxGCu+qj7nJGMEb3/HiO0+wGgv0DLd54EvhOhQuSTylp0G+3uhuK62gff7tj4Z8WWEweNzZXYg2jlLfDEXHzo5SQSAhi3bcr5KcIym9dhy2cPWgM4ThySGcQtcX4PKRFKLnSjdy5ax03LUItc6zDJxnWizhBng33AakMGNZ58JMYWX33zo79BzxmVEJIrrGHcWHiw3vQj2OxA7h3UXTwOgyLW6nqnhqfx8XXq8hPMxjjDZNIhm4ZlAziy9emlqCyo7Sg5NNxTViN/F8ir9KVC2+6Jzvaj2bmVHtCXdImqv6a3gWCBFn3ZdZl0soWxW/5v4PlM0DNY9RUdgAYWRNLR4bvGcj5LGvaQq0al6lMOaru01d1fh6QtMHUPu7KigNIMS3eboSVBZchooLygMM+jHOPLDuguvF8LCQ8FMhy8mUWHu1jRpZn1qwqJncJbo3/UmjbV+JIQyD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,39 +93,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 2026-10-20 09:49 +0200, Michal Hocko wrote:
-> 
-> Would it make more sense to 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index f11491ee9ed5..e07db9514e59 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -7963,7 +7963,7 @@ int user_proactive_reclaim(char *buf,
->  	int swappiness = -1;
->  	char *old_buf, *start;
->  	substring_t args[MAX_OPT_ARGS];
-> -	gfp_t gfp_mask = GFP_KERNEL;
-> +	gfp_t gfp_mask = GFP_HIGHUSER_MOVABLE;
->  
->  	if (!buf || (!memcg && !pgdat) || (memcg && pgdat))
->  		return -EINVAL;
-> 
-> That would take care of try_to_free_mem_cgroup_pages too.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] alloc_tag: UAPI ABI break in allocinfo_ioctl() from growing alloci=
+nfo_filter
+--
 
-funny enough, try_to_free_mem_cgroup_pages does what my patch does:
+commit 93a7b2baed26770ea553f10bf7e51ee61056c1ff
+Author: Abhishek Bapat <abhishekbapat@google.com>
 
-struct scan_control sc = {
-	.reclaim_idx = MAX_NR_ZONES - 1,
+alloc_tag: Extend allocinfo_filter to support tracing queries
 
+This commit extends the /proc/allocinfo ioctl interface to report whether a
+codetag has tracing enabled and to filter tags based on their trace state.
 
-now, whether the gfp_mask should be GFP_KERNEL, that's a different
-question i think.
+> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_ta=
+g.h
+> index dafcba2f7e2c1..a96054ac22376 100644
+> --- a/include/uapi/linux/alloc_tag.h
+> +++ b/include/uapi/linux/alloc_tag.h
+> @@ -38,7 +38,8 @@ struct allocinfo_counter {
+>  	__u64 bytes;
+>  	__u64 calls;
+>  	__u8 accurate;
+> -	__u8 pad[7];
+> +	__u8 trace_on;
+> +	__u8 pad[6];
+>  } __attribute__((aligned(8)));
+> =20
+>  struct allocinfo_tag_data {
+> @@ -54,7 +55,8 @@ enum {
+>  	ALLOCINFO_FILTER_INACCURATE,
+>  	ALLOCINFO_FILTER_MIN_SIZE,
+>  	ALLOCINFO_FILTER_MAX_SIZE,
+> -	__ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
+> +	ALLOCINFO_FILTER_TRACE_ON,
+> +	__ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_TRACE_ON
+>  };
+> =20
+>  #define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
+> @@ -64,6 +66,7 @@ enum {
+>  #define ALLOCINFO_FILTER_MASK_INACCURATE	(1 << ALLOCINFO_FILTER_INACCURA=
+TE)
+>  #define ALLOCINFO_FILTER_MASK_MIN_SIZE		(1 << ALLOCINFO_FILTER_MIN_SIZE)
+>  #define ALLOCINFO_FILTER_MASK_MAX_SIZE		(1 << ALLOCINFO_FILTER_MAX_SIZE)
+> +#define ALLOCINFO_FILTER_MASK_TRACE_ON		(1 << ALLOCINFO_FILTER_TRACE_ON)
+> =20
+>  #define ALLOCINFO_FILTER_MASKS \
+>  	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> @@ -75,6 +78,7 @@ struct allocinfo_filter {
+>  	__u64 max_size;
+>  	/* filter criteria only; see allocinfo_counter.accurate for actual accu=
+racy */
+>  	__u64 inaccurate;
+> +	__u64 tracing;
+>  };
+> =20
+>  struct allocinfo_get_at {
 
-(tl;dr i think my patch is still correct)
+[Severity: High]
+Does appending tracing to struct allocinfo_filter break the UAPI ABI for
+ALLOCINFO_IOC_GET_AT?
 
-~Gregory
+struct allocinfo_filter and struct allocinfo_get_at were introduced in comm=
+it
+1d581ab2348c ("alloc_tag: add ioctl to /proc/allocinfo"), commit 5732a4e4c1=
+8a
+("alloc_tag: add ioctl filters to /proc/allocinfo"), commit 6f6769ea88f8
+("alloc_tag: add size based filtering to ioctl"), and commit 33588e0b81df
+("alloc_tag: add accuracy based filtering to ioctl").
 
--- 
-Gregory Price (Meta) <gourry@gourry.net>
+Unlike struct allocinfo_counter, where trace_on consumes a byte of pad[] to
+keep the structure size unchanged, struct allocinfo_filter has no reserved
+padding. Appending __u64 tracing increases sizeof(struct allocinfo_filter)
+from 232 to 240 bytes.
+
+Because struct allocinfo_get_at embeds struct allocinfo_filter by value bef=
+ore
+the output field data:
+
+include/uapi/linux/alloc_tag.h:
+    struct allocinfo_get_at {
+            /* inputs */
+            __u64 pos;
+            struct allocinfo_filter filter;
+            /* output */
+            struct allocinfo_tag_data data;
+    };
+    ...
+    #define ALLOCINFO_IOC_GET_AT _IOWR(ALLOCINFO_IOC_BASE, _ALLOCINFO_IOC_G=
+ET_AT, \
+                                       struct allocinfo_get_at)
+
+growing struct allocinfo_filter shifts the offset of data by 8 bytes,
+increases sizeof(struct allocinfo_get_at) from 464 to 472 bytes, and changes
+the size encoded into ALLOCINFO_IOC_GET_AT (as well as struct
+allocinfo_toggle_traces and ALLOCINFO_IOC_TOGGLE_TRACE).
+
+In mm/alloc_tag.c, allocinfo_ioctl() -> allocinfo_ioctl_get_at() only match=
+es
+the new ALLOCINFO_IOC_GET_AT command value and copies sizeof(params):
+
+mm/alloc_tag.c:allocinfo_ioctl() {
+    ...
+    switch (cmd) {
+    ...
+    case ALLOCINFO_IOC_GET_AT:
+            ret =3D allocinfo_ioctl_get_at(file->private_data, arg);
+            break;
+    ...
+    default:
+            ret =3D -ENOIOCTLCMD;
+            break;
+    }
+}
+
+mm/alloc_tag.c:allocinfo_ioctl_get_at() {
+    ...
+    if (copy_from_user(&params, arg, sizeof(params)))
+            return -EFAULT;
+    ...
+}
+
+When existing userspace binaries built against the previous UAPI header inv=
+oke
+ioctl(fd, ALLOCINFO_IOC_GET_AT, &arg) on /proc/allocinfo, won't
+allocinfo_ioctl() fail to match cmd and return -ENOIOCTLCMD (-ENOTTY)?
+
+Since matches_filter() only evaluates filter->inaccurate as a boolean via
+!!(filter->inaccurate), could the boolean filter criteria be encoded without
+growing struct allocinfo_filter, or could allocinfo_ioctl() handle the lega=
+cy
+command size so existing binaries continue to work?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1792439751.gi=
+t.abhishekbapat@google.com?part=3D3
 
