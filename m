@@ -1,80 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D831606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 07:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94418606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 08:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K3Zn69FG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S3jrazc4
 Received: by kanga.kvack.org (Postfix)
-	id E703F6B0427; Tue, 20 Oct 2026 03:59:14 -0400 (EDT)
+	id 911246B0429; Tue, 20 Oct 2026 04:15:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E20B66B0428; Tue, 20 Oct 2026 03:59:14 -0400 (EDT)
+	id 874976B042A; Tue, 20 Oct 2026 04:15:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D10516B0429; Tue, 20 Oct 2026 03:59:14 -0400 (EDT)
+	id 73E606B042B; Tue, 20 Oct 2026 04:15:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D9FB6B0427
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:59:14 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0B413408E6
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:59:14 +0000 (UTC)
-X-FDA: 85342254228.26.C70EAD9
+	by kanga.kvack.org (Postfix) with ESMTP id 2E6D16B0429
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 04:15:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 34CFA408D9
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:15:56 +0000 (UTC)
+X-FDA: 85342296312.05.7861D85
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5213A40006
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:59:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K3Zn69FG;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 78C40C0004
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 08:15:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3jrazc4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792483152;
+	s=arc-20220608; t=1792484154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ReBTcrDImQvhoa5yHIWdOL2JpqjCmSuJOVv23tlb0UA=;
-	b=A82RbV/sXBubJNSMnZcQgnPHu2T2X8Ikn2JLdsDJYIdMwZxZnEou/QkC/zdM9PRexBhemA
-	c/z4IkdyHLlT6y83ZGq/l+7amNIQNOcTywOqrbsjswKw4s3vaObjs0Wri16cn6FICHgE4u
-	WMJVe9z3tCyiSLMeDFn1QpRsL9kqfdI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792483152;
-	b=lK2weSNC7HjcBDpEkGMysbQVdd3t0if+wK8pV6OY0jGnfiwxPkOkIV9a//Id52s7DhQ/RY
-	PkNeIdYU6ZBBN4i6BOSULFEhuj8lGPEqEp2LpdRIDTyfnSoThyKj335cTDtsTKICB9G5FZ
-	S3aR0KJ7XPUy3MYY9a3Bm+bs0KLaL0U=
+	bh=7yZ3ca2iH2M2pKOMJWKH4DBzrr/28/Q1ygxpz33+pBg=;
+	b=54oanPUTfiDAQtIrGJ9FlVhOiRzEO80nB9q3Cm3cECpV8dLlf3VIaFbiIAZRZ5fPOWnyGc
+	CkFcaFJKDMnl3KkXVhO6fN2jBeR7jtC735zWNZDspTf+k075k955594a/HFOxuO2XOWlK0
+	UIWu2KlSIYBfP7c3e+HbJt6FUADn0D4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K3Zn69FG;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3jrazc4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792484154;
+	b=QWC2ID1XlFuOQP/e2dgjTf68Q9oMEa1YQLaZnQR0ZoQM+K5rFs9lprPXSzwtxLqocaUZcm
+	KlCZGv2FAExI/dVRkKMUFQfmowlq7owXcEv3NT8tUiN7jn9XI2DZ91TnVWexIhex3F4d6H
+	FuIiOPPVlUIxdS1xO9eOwwwRaO8Wp3Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF0D260142;
-	Tue, 20 Oct 2026 07:59:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8E51F000C4;
-	Tue, 20 Oct 2026 07:59:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E540D60DAD;
+	Tue, 20 Oct 2026 08:15:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913701F000C4;
+	Tue, 20 Oct 2026 08:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792483151;
-	bh=ReBTcrDImQvhoa5yHIWdOL2JpqjCmSuJOVv23tlb0UA=;
+	s=k20260515; t=1792484153;
+	bh=7yZ3ca2iH2M2pKOMJWKH4DBzrr/28/Q1ygxpz33+pBg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=K3Zn69FGWwSiJtnA3FBjGGoXJSaQ410NJ80DjvSu6xdbeDuevOL9AACByNV9xTbWq
-	 o1J5l6e6+tCNtsnjE89KTNAGa4Lxg5PjNQ3TcF3VXEG21gwhgfJEATg3/IIt9tEc66
-	 GJXmr+tN0rbXuqI4CE+7oAr1gZVH7BPL2W4HoyDbhMTuyHOZfNgC2AF5XZCMRCrQYA
-	 WKrgr+M8EgQ19bpl4A8CTpaNg4Qazlsnj8fxenfx9YSQdnaAph96gxTN7GzGa/3r9W
-	 IfKRxOxomD4OQCsbAf+EXogLaKsngv2775eNZwjfOvRUu0BspyMnzUWe72nWkaoNYR
-	 0CXX9OuWyKmTA==
-Message-ID: <b66b3450-ec8a-4c85-bb19-3731e21c0dff@kernel.org>
-Date: Tue, 20 Oct 2026 09:59:07 +0200
+	b=S3jrazc4KQEXQCcFcr9nRwTRdwtDENHAKdj7Phkw8X7Bbc3ffO6Y6t4vZGoRWOzg4
+	 OjNw74D8FOnAByQpid+l+oLVG5hwROi90zEAD37IjmH/nC6im7skFlSDnG6WKVg6KH
+	 qMRMpr87w5sIorUMeNso613YNsJKtOPpVKXIeYo2DbXrU/LOBmBJu8XkqIUBQqEswl
+	 ReT9vcusRxqmL3UO//Myvq77mb3baO9wTUfIvBkuenlNX69qUoFB7lt5qZRg5V/Ek/
+	 7OqbP7PdnbFVQmCHm4WlMXieZNVcTyA/gGHuTcEyxfyLvcAK99iaN2cwmNhXU7jSPQ
+	 xje4EPiyHA1Aw==
+Message-ID: <a9dedb1a-3b96-496b-ace8-6135167a61f6@kernel.org>
+Date: Tue, 20 Oct 2026 10:15:46 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [patch v5] mm: vmstat_kunit: add synthetic benchmark for mm stats
-To: David Rientjes <rientjes@google.com>,
+Subject: Re: [PATCH v3] mm: unqueue deferred split folios outside the lruvec
+ lock
+To: Joanne Koong <joannelkoong@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <920ba123-077e-c42d-ebdf-a5effccf2073@google.com>
- <8b077a83-3f79-cbfa-0273-e086b0e51ae4@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Lance Yang <lance.yang@linux.dev>,
+ Hugh Dickins <hughd@google.com>
+References: <20261019230646.3510790-1-joannelkoong@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,21 +129,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <8b077a83-3f79-cbfa-0273-e086b0e51ae4@google.com>
+In-Reply-To: <20261019230646.3510790-1-joannelkoong@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5213A40006
-X-Stat-Signature: cqw81tdz1qqkhd31hymcfrg6iy3qegbw
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 78C40C0004
+X-Stat-Signature: k98rnsrcai4u9quh4cuoi68jipp51oy6
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792483152-973311
-X-HE-Meta: U2FsdGVkX1///j3dSzIA+RujG0yuv5rHx76NRTBnZFvUTR5lINSSioyMJS6kYLS8UladC0duvLWm4mGB/xlgDNAO71NZ4v9+b3NTCa2J7Laj4GV7307Kvb7Vb3QsPVt5DVhr1RWICH+ax7WfmYhT3PzUce6PY49SvHcnrvJpvHzy4kL3kN8msn57nxLiZFAh/vibT8KvZqRj6BjM0Sn1HxW7FAyRD1KVuL7AUH4XufAWMyOktgmq8pqEZb8PkyihBMmL+M86+a7eX0E6SSTYoSFhEwCp3rGJQ1nPUd5SM7CMw8lx/4zNT51+7MleKCXyZXX0JCdXC7Fz0v6DP9oApXmqzmQtPiKPK2AfnKuiFdff8t2eod75mlPCnUTjTUQR4HpDnWMaXgg+npiyeRm1+oBCXZaXlC/vd/6L3LGKnGQRXGfjkTHI+7Ab5ZO2XxbqoYvOracrvD18Jjfyzj18+LDMup4+d+KOUIz8cHUqQrdA5GCkDJaBXTc2JJWQD+pswQF12IZbfeTknA+RqOY+5IQAo4QtuZ+JDgVB/pujJkqQI6vr51abCjbza/pfkqA26War3mL3lFwTdeFFG2K66GLO91A+VF7tgym+aGIayAUdG39tuVEP4pKpsNjNlgAj0i8JRpxaEq8WbozkrvX514cQJGNotisyRqkGjZ/HW9qEQgu6Yyg7DrR7e6FO+Aj7gRaIVUU1Xxzw0S7ZNJHwy+ewDCAPxzR4izHUiLpXgEb7PKc7oG1VqI6Wf24FYsbrUTxafC4KYEeJO577Fy7TYb2Gud+Gqd77hwNaPukOUL1d7uBr32J6uYyk7Vnw/QEls0VBmt8NrmjX6JB5WjL8dhkwr3J6vLxzaEojMstJbIvlrh3F8WO4a8AUyBfkO0VwPsw6ekfx8teD2BgAdEdT0TY3Bn1Kz4PSF5Gv6jj2tK/KV6V8PT1GAPgm3TiHWh/2nhK2YeILEFb6N1ppdUg
- Xxi8dpY7
- Zzp4zBNQc11+LPSgP8u/te8RSRK2SOgbeOoVmkTE46jH7Wkt8L/YyMnkjtVAN29GHyYhqj1ESKlK5cwz3bjrN5BF7BZZoFBvM2AZ/aBHrmSbqAuvg3iEU5ufYr0BRC1cr36GetFDCYNk+38jIRgjH+6CsDPQ+wvJoqo3vkULRDS1O5lxFOUvR1PrQSZpkgBW76Y99ZkOYSDuo43AsS0nsQZ0OE9S/TwXE15/fNV//cyFRUqise3d+NumB9A/Upot+yrb1H1cWXsjR06EBk9yvNbrTPKAglIu29tiZCldlQZtG9z9ynn5w+fuYG3+0gp/YaIAgzf+n9tcNdQO29PzimbJBEWN00MB9ks+YxvxqiGjTomIElH9UpGa0r/HfPJCIiq54RkAra8HuZyupZJjwWvhhcLWMsJ6FTOCGv6Pgt2DaApVZHo9rMeSV92FhdjVYGifgkHoHyV8wzsT+KJA+RiAQpw==
+X-Rspam-User: 
+X-HE-Tag: 1792484154-156479
+X-HE-Meta: U2FsdGVkX19AxqOzcDomCVA6BpjyclrzJTNYwmUfr61gIo3BeSSbF7J2F725KXrKklNWUqf4IodNLyrVhKd7N1Fodab6hIyUeN7N+r5LNHHnzRgABBGgNx9Nn01u8Ye6eZR6IHpiGsOXQ/Qhvg+I0s8QGD1zsys1+7BopDzsYuoEOKW7M/JzsE9fKnp7TnbvIyojxWf68W28LzS/iWM1b0rSNj3C0LEEBHjVJA8/L/4duR1k+CFbqi+6F6xHO1F5u16eh+NVWUPPBpDxuqPSC2bWQmFvTChYM3ZNrc9SgImddW3A1Hcgmp2rSpLdVJlKC/J50jrrFZIip3jMW8dXqgE9m5XOY3KMOQtLOvIkSJJzl+ylqVVNPyS4cq7nx+OehVSvefFwws2hf4G8fejH6fPU7lPKI5Z8gkOvP2n5XZ/vgdqgDw6Zb6BcNsmzBWda74Rcy5+rAfvFdbU+ERq27Uzm5wlYNY+e2qOhN9vrS6FCh4g2nrynTufyAme/9eAUHCgCl/oL0XAuyY7XdlavGu3WheFy5WlPIq+HFalV/og1Ung8CsW0pihv6vNIMQdr0Nd/fnZxy78lzkcL4r7IdktYMpojEBbitqWflbD9+8AM+/XzMwTo8AS7DM9q+XnPiKmNs/VIXL3qANCyIL2GO6Uj3sReUrW9sKi8+k3t+Wf0/CHJAQSAPZxdTP3x1vJdSYQ+r0cW7AzxFijX90XA+ExRMDKHkEDWlZYuSgIFu0dHjcD//9jBoSjzrLDhR4uTFoSNntCbbWCVm8DXLKq78wdV9CnEhITGd0M7y721UCR1+E6VL/QRPjMvLUcc4h08yGyrJU+EZVd1FwPWx78iTrnnGrfV61QbgN9yTZGhp+uj7wo0fs3H/1LIQgXOIIgbr6yLxa2bkixO4IXhzro+JNyqScP5BsKYJYQgInwyvks/8/6IOO6nWnviTekHkcmQXHoTMC0dIxorQ/7f5ii
+ QTdNSeJr
+ 6zhUgvB6ijxhnbozEP3zYQ0yZEttFqQVgRS6q0XWFKjxUvzwmFrYSYcD3phxQLLceHp0UzptW4jk3d6wQGbtXU1O48gX7i9G+CPefLNILaztpkJiq6Fck3rcuDwsqkHgj8U4iGh10J6yvpYnOy0rXBbHE1aKLdeNHSbfpFcrYfay/++mzhsxR2vAvlt/sodrK3w6tA7vK3P+8dD87VRQcPCbTSKpMN0HYJFhuhIDe90yYaDkZskgDpwz6BTYS4CNsvAbK1G34rfz8+InMcsPnEUUNz3zf34qh741EnmAGxahCySBudte7ajz0Hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,75 +152,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/17/26 00:35, David Rientjes wrote:
-> On Fri, 9 Oct 2026, David Rientjes wrote:
+On 10/20/26 01:06, Joanne Koong wrote:
+> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
+> folio_unqueue_deferred_split() on folios where the refcount has dropped
+> to zero. In these paths, folio_unqueue_deferred_split() is called with
+> the lruvec lock often held (move_folios_to_lru() always holds it and
+> folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
+> in the batch except the first). However, it's not needed to hold the
+> lruvec lock.
 > 
->> From: Christoph Lameter <cl@gentwo.org>
->>
->> Add a synthetic benchmark that can be used to measure performance of MM
->> statistics.  This is used to analyze any improvements or regressions in
->> functions that are frequently used in hot code paths.
->>
->> This is the first of three tests that measure the execution times of
->> critical MM functions anticipated to be used by developers to measure the
->> impact of any core changes that would end up causing workload performance
->> issues.  Vmstats are embedded into MM hotpaths, so any regression can
->> cause performance and scalability impact for users.  Google has carried
->> these tests internally and kept them updated since Christoph posted them
->> back in 2009 for this purpose.
->>
->> This can also be used to detect regressions over time, from kernel
->> version to kernel version, independent of development use cases.
->>
->> The test is run by KUnit or doing modprobe vmstat_kunit directly.
->>
->> Sample output:
->>  KTAP version 1
->>  1..1
->>  KTAP version 1
->>  # Subtest: vmstat
->>  # module: vmstat_kunit
->>       1..3
->>       # vmstat_test_inc_dec_zone_page_state: 10000 ops: inc_zone_page_state -> 8 cycles (4 ns/op), dec_zone_page_state -> 9 cycles (4 ns/op)
->>       ok 1 vmstat_test_inc_dec_zone_page_state
->>       # vmstat_test_interleaved_zone_page_state: 10000 ops: inc/dec pair -> 17 cycles (8 ns/op)
->>       ok 2 vmstat_test_interleaved_zone_page_state
->>       # vmstat_test_count_vm_event: 10000 ops: count_vm_event -> 4 cycles (2 ns/op)
->>       ok 3 vmstat_test_count_vm_event
->>  # vmstat: pass:3 fail:0 skip:0 total:3
->>  # Totals: pass:3 fail:0 skip:0 total:3
->>  ok 1 vmstat
->>
->> Assisted-by: Gemini:gemini-3.8-flash
->> Signed-off-by: Christoph Lameter <cl@gentwo.org>
->> Signed-off-by: David Rientjes <rientjes@google.com>
->> ---
->> v5:
->>  - added dependency on CONFIG_VM_EVENT_COUNTERS
->>  - expanded commit description
->>
->> Once we're happy with this change, I'll apply the same treatment to the
->> proposed pgalloc and slab tests.
->>
+> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+> the deferred split queue lives on folio->_deferred_list in
+> deferred_split_lru. The deferred_split_lru is a list_lru with its own
+> per-memcg per-node lock.
 > 
-> I've added the rationale for the change to the commit description as 
-> primairly being used by developers to benchmark and monitor any 
-> regressions in functions that are known to be super hot and impact 
-> workload performance.
+> There are already other existing callers that call
+> folio_unqueue_deferred_split() without holding the lruvec lock (eg
+> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
 > 
-> This is the simplest of the three tests that Christoph provided back in 
-> 2009, the others are pgalloc and slab tests, see 
-> https://marc.info/?l=linux-mm&m=178547194364290 and 
-> https://marc.info/?l=linux-mm&m=178547193264283 for those.  Based on the 
-> feedback to move to kunit, I forked this one off independently because it 
-> was the simplest to address all the feedback and pave the way for the 
-> other two to be upstreamed afterwards.
+> Add folio_batch_unqueue_deferred_split() and use it in
+> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+> unqueue each batch of zero-refcount folios from the deferred split list
+> after the lruvec lock is released and before
+> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+> critical sections, which run with IRQs disabled and are highly
+> contended.
 > 
-> Is this acceptable for merge?  If we're happy with this, I'll move onto 
-> the pgalloc and slab variants.
+> This came out of the discussion on v2 of the mTHP shrinker series [1],
+> where queueing small mTHP folios on the deferred split queue was found
+> to regress Barry's fault microbenchmark. With [1] applied and
+> khugepaged/max_ptes_none=0 so that every folio is queued, perf lock
+> contention showed that the extra cost came from waiting on the lruvec
+> lock in the free path.
+> 
+> Test setup: 2-socket Intel Skylake, 40 cores / 80 threads, memory bound
+> to node 0 so that all threads contend on one lruvec, with each of 80
+> threads faulting in and unmapping 16 MB of anonymous memory 200 times.
+> With only 16K mTHP enabled, this patch reduces the queueing cost from
+> 15% runtime to noise, and lruvec lock wait time (summed across threads)
+> drops from 491 seconds to 38 seconds. Most of the remaining contention
+> moves to the deferred split list_lru lock, but runtime still drops back
+> to the unqueued baseline. This test uses a worst-case configuration ([1]
+> is expected to only queue folios of 2M and larger).
+> 
+> [1] https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1MaU9bXs99w@mail.gmail.com/
+> 
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ---
 
-Works for me. The tests are rather small and I see value in them.
+Thanks Joanne!
 
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
