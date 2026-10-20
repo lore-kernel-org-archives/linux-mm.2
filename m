@@ -1,101 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2406606A31F
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ACE606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 02:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l6k6wTjF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xyqgyjm5
 Received: by kanga.kvack.org (Postfix)
-	id A1B316B03EF; Mon, 19 Oct 2026 22:39:49 -0400 (EDT)
+	id 49D5C6B0126; Mon, 19 Oct 2026 22:40:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A45F6B03F0; Mon, 19 Oct 2026 22:39:49 -0400 (EDT)
+	id 426C36B03F0; Mon, 19 Oct 2026 22:40:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86D186B03F1; Mon, 19 Oct 2026 22:39:49 -0400 (EDT)
+	id 2EEF36B03F1; Mon, 19 Oct 2026 22:40:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 572AD6B03EF
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:39:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC4EC140801
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:39:48 +0000 (UTC)
-X-FDA: 85341449256.27.4521D07
-Received: from mta0.migadu.com (out-59.mta0.migadu.com [91.218.175.59])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B28B81A0002
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:39:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=l6k6wTjF;
-	spf=pass (imf19.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.59 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 06F876B0126
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 22:40:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F75EC0875
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:40:09 +0000 (UTC)
+X-FDA: 85341450138.23.2F90C75
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EE8CE1C0004
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 02:40:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xyqgyjm5;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792463987;
+	s=arc-20220608; t=1792464008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jKyfrtAnBnwO542LTPL2+YmVFhv9HS5+X9M5mbYFXh0=;
-	b=wuYEIL+pNS5AMKtbvJIlKJjY+9aGhRcWmKUikWVxKPsdUeWlTuwn3dqMg+QKsHkakH8zFE
-	Xem7n+nbi7DEtY/RKOClcZlHezQEt9eVkdKwQoCpJtAcFDWYBA4PArQqOaacDfVCtLhpUT
-	pNZn4zQo78s3JRHbqKuSVOcbUJhbqfQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=60QPBhNMCngRfmcAjrxpcv4Imf6U8Bv5IKWR7KuqOvs=;
+	b=FMR1GiTAwtN+g4Sp7RyIz1YyGjjAhTyr8pnxpXQ3MvP12bcuWEKIGIMhPwNF9Q9YwLrNlD
+	3QokB+qUKSCncwhf1D+hcIsQq/qLkRyjXjR6VD4zUeNbiAtG+pU6iF6xPZuAPa5gMIX1/5
+	AvcQM93p5/als9K5Ck9mHooAH/LQ2ek=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792463987;
-	b=2Bi9DfJ9NExeh7ljDdgUFhqvLIyDIrax7mS+NIEsULN0NiR60DCXtfiTQNqjodiDk606YE
-	Nw8vQvcKasYsqK/WTBWhHY8r9urZaNh0APTOOSsVCjEGx+vBs2v5kN/L2CxhUzwg5HbI+d
-	O1s4xRx9nIV+8PVa4BLrcoNZY+KJ0v0=
+	t=1792464008;
+	b=tMWrKX41lut8dME6FNmzLa3ONdlPrMOxlSjHIUHIO2CqDYInZs+BHYB+Xri9hdHbdvLv/D
+	GfsOXA5gMPyBxZOfrWE0POhdarDu4Sp/w8y0mvKUJzLSHsrPVyewqK6YoapjMuC5k5Y+m4
+	EB2zX0sGBLos1Tyo4NTa2lALaKNU2Kg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=l6k6wTjF;
-	spf=pass (imf19.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.59 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=00+vt9qrllM8ZzXqix0pP9Xez7rpoPwxxNCrb4lFYHE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792463985; v=1; x=1793068785;
- b=l6k6wTjFhgWVj5NF7XU8bFp9FuEwCAtrbVnCT3tmMebERaTA44w4l+bpnScfqxKBzBEhDwZZ
- MXIlpZXW2C2dWJp9tmZkmBUZdb5LbEGguI8gadfkvazqAFR0y49+RZ/se3OOPdibKGpZokBtcv9
- oZ+y1Cl9dIrsosChpIMuvekw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0520e0ef0e1754e3;
-	Tue, 20 Oct 2026 02:39:45 +0000
-X-Mizu-Trace-ID: 0520e0ef0e1754e3
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d4a35334-56e2-4590-8b4c-1c030c36e5bb@linux.dev>
-Date: Tue, 20 Oct 2026 10:39:37 +0800
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xyqgyjm5;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B8CF560098;
+	Tue, 20 Oct 2026 02:40:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9241F000C4;
+	Tue, 20 Oct 2026 02:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792464006;
+	bh=60QPBhNMCngRfmcAjrxpcv4Imf6U8Bv5IKWR7KuqOvs=;
+	h=From:To:Cc:Subject:Date;
+	b=Xyqgyjm5aAEUx7O1C9+9sZ9HoyLu1TowKrpLnSkIE2mnYWjuicwO9PecBk4neY/QR
+	 qOEt0O820lHWWZw3hrx+f6My1KevhlIB/FNNOapdeq8Uub3voWMxb2nb4Sc5p+QgMB
+	 hncjtTQ25QsrGw6AmtFQKsg4WlFMZsuz0ekg82bW9XeertI7dDcyOhKPjRqT0vbvqU
+	 eGdfGNIsslgL/v044qhPF79CYZ+XN03Gbjj8gygXSkwtNGkAyAiXvg8GcgzJb4m1yz
+	 qyhk3F4OfK1NbUu5zoNOmc2UuwaXjO8xZTM4+7XL7MF6zv+DSxIYaU908k6iF2gqTW
+	 4cycCLMbtUWnw==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/core: remove unreachable damos charge_{target,addr}_from
+Date: Mon, 19 Oct 2026 19:39:56 -0700
+Message-ID: <20261020023958.108276-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-next] mm/swap: free swap cache folios the zap path gave
- up on
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org,
- Jiayuan Chen <jiayuan.chen@shopee.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- linux-kernel@vger.kernel.org
-References: <20261014090821.227366-1-jiayuan.chen@linux.dev>
- <CAMgjq7D50X47JFsTnF2-jYGv7i-Nd3WhQLK-TJGy4XkhMQU4OQ@mail.gmail.com>
- <62d17959-d695-4fec-a87b-8eadaaf995a8@linux.dev>
- <CAMgjq7CJ+bwKgwUmCzO9Hr7TrL68bDjgAsLx-4AGuXo6zowh9g@mail.gmail.com>
- <CAKEwX=O4sPx5MtGL4-JwLzD4TWm7fNycFMiuOqLk4ADFUUipNg@mail.gmail.com>
- <4f361479-1dbc-4f09-aa26-e1ad6c06cbee@linux.dev>
- <CAKEwX=N4jj3PGXFx6wwh=PG4Vt6hRJ=-kqX24B55zoXyhAa1WQ@mail.gmail.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <CAKEwX=N4jj3PGXFx6wwh=PG4Vt6hRJ=-kqX24B55zoXyhAa1WQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B28B81A0002
-X-Stat-Signature: hr1qqniktxxy8zpnbz8q84hfhnum18ir
+X-Rspamd-Queue-Id: EE8CE1C0004
+X-Stat-Signature: jgh6m3665gm7tro4syf91d8ugmrjeun9
 X-Rspam-User: 
-X-Spam-Status: No, score=-6.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792463986-716491
-X-HE-Meta: U2FsdGVkX187JJaa5M6wVySTl70NvE7IqqxYpvHwLa5L4Sl2ARvI8A4dIILEorzyKrpusD6MHFJRQqEkpBG3nV2dNJBJ+SMs8WyJEMmi/5ZAKoTQMoRvEXlMGWsgwVJUYefOQeknIpp4fiPuX52jZW0a9It0DHYC02RqQagCepd4h8i3dvi1AmiyIfrhRQcdG3mKcK4fNCh4Ffdrgz5QVGiZTWz0aLtq5sZy1nk2HFjM/t1AagWE/bJ/H8+X9JXhzatly7Ia3643UNBka3krmHI9FVoGCIbDMenmKgsp11qJg1Nn7S6uClnNu3PqCcxY85uSE+0R51RVixdjnReWUfkvLaTIpZGjCRkUIVun7L+xHgVbqG84futyWrrJtr4HxbL6UKGe/FJ/xkD6B8KZwjAI79qJDHfrDo95etMpk6kjG01wDkQlOMEiCOaXZv9srdS171lQJP5b7V9eseJekiyYa4Utr91RCbcZG47TSPgmPNVGL/TVNxkBUaovn5TJhwVNQIEsufHsdLBc3j0JacUT1RTYWWw7fg6M50YwntncSFgxkzQmxuZfNRcUIQE2mVAUO6sfwoKTgW4b2PC3+CGOPJaY5chsjfzo6yLEqrF7X9T/MKzT3UFWx0pluSrNAhkwu6gB7LLknQG5hu0uW4QWzAdvapz14S55Ek1bImMLb1d6DWyizYM5T3i3T+mODraJiv3MoA7K9hwz2CVYx118iBgns/CAbvNWiPkG7pivhNOFUbEqdZInBaJ3rQ2DbYEE0oZUB7fEWT7LX2qINk8JasiT16oRMadZAB7p1yInxV1N+MetBsSw+C6282mPMZ4lAktSInWSAgLp4cK7E0tpLRmLicYw16NVhIfzXTGc/HGYMVp1MhlKOYorgtpnJY7dGrafgaR9RTIsTQjOvuqPqqJfhcB09Qo3XSGH1XHl+XPlTg01PKdAW25taqT0u7hWp4uG0Td0G/mRC0c
- rzBFuXEu
- iiTMV3gHZfcSm9btXVQLJgL4Hnxw1cgqCjdyz58Lc7/0SFhFxgwwonvuoXhd5mgWCTDD2zG7ve352R+4vsSDRoFc8Og22zxwucMLRJhp54zrLT2DxQ0GvNC49Ss0r1++DIg4LTteeNnKrtmPR0vuJ+F+pzM17PmABcw1KPXQVdb595+EKNmtiTllXQR/F/Ak97aqzHsMw/7hXdiL4s5EmU1/xetv4KSBev8HogCgTBcfx/oAdokKMifuDon48e91gc7PCPkEXVpOYKcMAJ1OHOfjDyHgICZS96RHZXXgddPaPGyRtw+mIF78L9g==
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792464007-306990
+X-HE-Meta: U2FsdGVkX19HAZtnIb3BAG2L0rq5UhSopsgltWgtaBkrkaNzcdJvvxLh6SQhhn5gyyMXgipeB+GMWyGYuNa6qHW7wM86VgMrSLHLKs1/Vq9i7E26LKE2LdKBwC5rff74VlOKwEg03OzdSMKmE7xBXchhs5RXP07pz3XyZjUQFH/DuYfpvkAafhJCAxFD3Ql0bTVwDZ+2eB15KWzqsfdp9K3o+TCj/+/Nxuk/mt935mZE43hhpAumwAdUUARqaDEA+FxkgQvDlSaNa8DYvpVYbckUaWlNH1HmE38/9cycC0pOB27WDIxbn/WdKjNHMGxKjXPae50IWXasErIenyORyGWYffJvVCAmS3NQrpejl90z2xF5KsnqGmCAizcf83dFnGW79wdcasGkN0MdeBSb1TupKTu/ADIknVT5BxBwZWdW+Wd9j5W2xx/oWzu2rFZLbPTlrFyih//cPmuvBoU1UMB4DmxkxWopB5bV5jvLUxOkNigOJxroasGl+Nslbaez+0l55MdwJSAnL567d6plNhGZ3NgDiUp0TwrdFlWqXTyxSUhP41yHdYLTFQqK/CJjHEWz1zp1Y458Xd9efRzHABapUnjBwHO+xue7A7cJyheP8g3FPmbpBNhwMtWgF+V8ZXsQelD4dWCQsC3kFWprWRCZvuWLRLAA1LpRrcXVNU5sH+XGqOPHYpnjX3X2k0oxFtvsWC7dIH8zKTasB4OKCU4kyWS48TGqa/pYnyHNghwf0fl35+Ler+AwNY8iUUe1IdCNkbz/2qLiwwMIRedBEeBaIw1BnXCdboUH2ZNO9j9xgSBeQ7wg0Udf+prTGjZ7ZehRURH1i9wdw2821wQ7X+3ZoIlFzhwARgUVDhILat1KeRE//jYbwJQD1c5fco2db+wdFe/iRp5nmREvfiTq0jAmbB9kmCQcWEhYv2IIFKvR1CyNYPSJD0PDyRULq/H66kfSnjOdc2CXRYMj7u+
+ buvFDCuQ
+ akeLTYwj8tTyA7PnzYEsoBZLZAIjGde87PhhCqOyDKnRunICvyEaZv4TThb93HkG4opl8x7vCHgFmfqYsoo7cFbANJpRe/eeIwJHe3MklVFXEGKcnzkPWyLZrfoKcLMfYza+LWElLUkhgOY4jyWBxJGWxuH0bOezhbzFclXUwoxTZm62NqnUgi/peXWnUAN9ezaxWnhua4ajLFVYQSPyR3ciuZ5U8xNe6+YzYZTjZ5dROT2LEBeeHd1E/L2evlUJJ0vu5yVHTxIxgmBo/sxv0guHsLAu0xFLgd5CroyXXn26ytGWdGztR99bsmtfbgjTG8bzPgJzPpxsSPPCg698cVdtMsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,106 +94,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+damos_quota->charge_{target,addr}_from saves the target and region the
+scheme's quota limit is reached.  damos_skip_charged_region() skips the
+target and regions before the point.  The target that was assigned to
+charge_target_from could be dynamically removed from the context by the
+runtime parameters update (aka commit) feature.  In this case,
+damos_skip_charged_region() cannot find if the point is passed or not,
+so the scheme is effectively disabled.
 
-On 10/20/26 2:08 AM, Nhat Pham wrote:
-> On Mon, Oct 19, 2026 at 7:37 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-[...]
->>>> Right.. But I think it will be much better to avoid such folios from
->>>> hunging in the swap cache in the first place instead of having a
->>>> worker to reclaim them. I'm not strongly against adding a reclaimer if
->>>> other approaches are too difficult at this point though.
->>> Also, IIRC, dropbehind can only be handled in task context, right?
->>> We'd need to make readahead bios to complete in task context
->>> (BIO_COMPLETE_IN_TASK). I wonder if this has any perf implications.
->>>
->>> Another idea: how about, in swap_read_folio(), where we are guaranteed
->>> to have the folio's lock, we check if folio is mapped. If it's not,
->>> invoke folio_free_swap(), unlock, put, then drop that folio from the
->>> submit batch?
->> At that point the swap count is still 1; the zap comes while the read
->> is in flight. Checking after the read works for the synchronous zswap
->> path, which I tried first, but the bdev read is unlocked in
->> swap_bio_read_end_io(), in interrupt context, where the slot cannot be
->> freed.
-> Zap drops swap count first, then try to free swap cache. You're saying
-> the read check the swap count before zap dropping it, but still holds
-> the lock by the time zap try to free swap cache? :(
+Similarly, the user could also remove all the regions of the target
+using the runtime parameters update feature.  It would be uncommon to do
+that, but it is a supported feature.  Because the skip pointer detection
+logic (damos_skip_charged_region()) works for each region of targets,
+this result in the logic is entirely skipped and the scheme is
+effectively disabled again.
 
+The user impact is that the DAMOS scheme could suddenly stop working
+under certain uses of the runtime parameters update feature.  It could
+surprise users. No crash or leak happens though.  Users could also
+simply work around by re-installing the scheme.
 
+Catch the corner cases in damos_adjust_quota() and reset the pointers.
 
-Yes, exactly that. With the check in swap_read_folio():
+Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
+Cc: <stable@vger.kernel.org> # 5.19.x
+Closes: https://sashiko.dev/#/bug/linux-cd0c55fc-0cc8-45d8-9637-3334811c49b8
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from RFC
+- RFC: https://lore.kernel.org/20261019143713.98610-1-sj@kernel.org
+- Drop RFC tag.
 
-thread A (readahead)                   thread B
-swap_cache_alloc_folio(B's entry)
-   folio locked, added to cache
-   swap count 1 (B's PTE)
-swap_read_folio()
-   folio_free_swap()
-     count is 1, nothing to do
-   zswap_load() / submit_bio()
-   .                                    MADV_DONTNEED
-   .                                      swap count 1 -> 0
-   .                                      __try_to_reclaim_swap()
-   .                                        folio_trylock() fails
-   .                                        gives up
-   read completes
-folio_unlock()
-folio_put()
--> count 0, folio in swap cache, unmapped
+ mm/damon/core.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-The check runs before the zap, so it sees count 1. The zap comes
-while A holds the lock for the read.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 479169dc9ac75..eb1fcdabc0075 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3383,6 +3383,26 @@ static void damos_trace_esz(struct damon_ctx *c, struct damos *s,
+ 	trace_damos_esz(cidx, sidx, quota->esz);
+ }
+ 
++static void damos_fix_stale_charge_pointers(struct damon_ctx *c,
++		struct damos *s)
++{
++	struct damos_quota *quota;
++	struct damon_target *t;
++
++	quota = &s->quota;
++	if (!quota->charge_target_from)
++		return;
++	damon_for_each_target(t, c) {
++		if (t == quota->charge_target_from) {
++			if (damon_nr_regions(t) > 0)
++				return;
++			break;
++		}
++	}
++	quota->charge_target_from = NULL;
++	quota->charge_addr_from = 0;
++}
++
+ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ {
+ 	struct damos_quota *quota = &s->quota;
+@@ -3418,6 +3438,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 			damos_trace_esz(c, s, quota);
+ 	}
+ 
++	damos_fix_stale_charge_pointers(c, s);
++
+ 	if (damos_quota_is_full(quota, c->min_region_sz))
+ 		return;
+ 	if (!c->ops.get_scheme_score)
 
-Checking after the read instead is what I tried first. It works for
-the synchronous path and not for the bdev one:
-
-zswap (sync)                           bdev (async)
-swap_read_folio()                      swap_read_folio()
-   zswap_load()                           submit_bio()
-   .        <- zap, count 1 -> 0          return     <- zap, count 1 -> 0
-   read done, lock still held           ...
-   count is 0: free the slot, fine      swap_bio_read_end_io() (irq)
-folio_unlock()                           folio_unlock()
-                                          no ci->lock here, slot stays
-
-The write side is the same picture with swap_writeout() and
-end_swap_bio_write().
-
-
-> I was kinda hoping this kind of interleaving would be rare :(
-
-
-It is rare per event, but it adds up. On production it takes days to
-leave a few GiB behind. The DONTNEED there comes from jemalloc, which
-issues it on every free the application does, so it never stops. Our
-reproducer is the extreme case, built only to verify the problem: it
-leaves 480 GB in about an hour. I'll put the numbers in the commit
-message.
-
-
-> And yeah, I think if we want to free the slot after read, readahead
-> swap IOs have to be submitted with BIO_COMPLETE_IN_TASK. zswap
-> writeback's dropbehind relied on that...
-
-
-Right, and that would still leave the writeback side. The worker covers 
-both in one place.
-
-
->
->>
->>> That takes care of the readahead race. Seems safe to me
->>> (I assume if a folio is not mapped and swap count == 0, then it's a
->>> pure readahead artifact, but maybe I'm missing a case).
->>>
->>> The write direction already tries folio_free_swap() before submitting
->>> the writeback, FWIW.
->> Same shape: the zap arrives after that check, while the folio is under
->> writeback. On our box with a swap partition that is where most of the
->> leftover came from.
->>
->> Every check on the holder's side runs while the count is still 1. Only
->> the zap sees it go to 0, and it cannot wait. That is why the patch has
->> the zap hand it over instead (very nasty i know it :( ).
-> Yeah I got no smarter ideas :( sweep_work it is...
+base-commit: e558ba2a16a47baf6b8e76bb11e92eb92a491e3a
+-- 
+2.47.3
 
