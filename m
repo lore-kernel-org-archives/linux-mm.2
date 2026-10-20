@@ -1,123 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20457606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 10:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB3E606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 10:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=NJMlwJi3
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=G6q8CYHn
 Received: by kanga.kvack.org (Postfix)
-	id 3755D6B046D; Tue, 20 Oct 2026 06:04:05 -0400 (EDT)
+	id F3A856B014E; Tue, 20 Oct 2026 06:06:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 325C36B046E; Tue, 20 Oct 2026 06:04:05 -0400 (EDT)
+	id EEE196B0151; Tue, 20 Oct 2026 06:06:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EE0D6B046F; Tue, 20 Oct 2026 06:04:05 -0400 (EDT)
+	id DD8E66B0152; Tue, 20 Oct 2026 06:06:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AEE206B046D
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 06:04:04 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8294E160960
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:04:03 +0000 (UTC)
-X-FDA: 85342568766.26.AB04E57
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B7591100009
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:04:01 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NJMlwJi3;
-	spf=pass (imf14.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=4ncienth@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792490641;
+	by kanga.kvack.org (Postfix) with ESMTP id B32AA6B014E
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 06:06:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 587461C0025
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:06:40 +0000 (UTC)
+X-FDA: 85342575360.16.FF79AC7
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 838EE180007
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 10:06:38 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=G6q8CYHn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of puranjay12@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=puranjay12@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792490798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=2xqJ7ego2cIVHaasX6cs9qwWsOg7oxEQGC5sNjYglzs=;
-	b=ZvM8sVN/2hDBT43Rni3UeBEnxiAEK2hmUVnBXXSUJvoJhDxefmQ7R8TgAGdz616zdvctTN
-	KWluMPlVghAvLAy/hxZPrUAc+tK0FwbEQyZXBjTks7plvbFP6kJaCoXjBea9x9h3gCxJgx
-	QRNw+MzZX+jGsOIlglHgR1k7/0P3uKQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792490641;
-	b=vsNV/3Lmd2TM1cNluf6FJFHxNPFJgfsHK0FbVRHpBmfF7K6Fhxg3O2Ei74qAlAFG6k1f7y
-	VP7ZL8Vow5NqDYRohmqIStNwgMWkiDNjq9tt/d/QgZqjPfiUXYtizSWb+HrBj5EnEUaaPD
-	WSh6fkFUT8qd/yZhj4SseVUwTynIjJM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NJMlwJi3;
-	spf=pass (imf14.hostedemail.com: domain of 4ncienth@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=4ncienth@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cd6028ff33fso1175057a12.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:04:01 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hjLEZjKc1UC8sxA1BoAn5ZhOr52xZdZQzKhwFC7bfbg=;
+	b=tZcfSx6mYU3y72va3ztKRvR5V/MnbHOm3yr10N1mw1Buoj2Wz7rjiv7pViRrBn3aER4JRl
+	2/4vZPMuAUjSQzgDDE7oQp/v3zmsqpDlqkD4keVDCBXOUSoXoEk4PYuYeEGLr+uchO4Sey
+	MtwyyTKlgtnTnRLma6Ut6BvBLk60S2Y=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=G6q8CYHn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of puranjay12@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=puranjay12@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792490798;
+	b=AR17bUogKtycFuvSHavtQcyaDili2Qqr2BXOiYXFFUXvNGnXeN2/SkfU/2r8IqLlrWV4py
+	R5Y4ZN5CZz6wLa7g+g3xbA3na+kg0OW5Xz89RjN7WcDXNogBRi01x7oW+JUvVFcjN8A1AV
+	IGBzo+uZh7Bvc4yBg0VqVmVMPzMXSA4=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c445c95d553so233092266b.1
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:06:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792490797; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qLNp0Vyb/tIvHxjAzGmxrSVmhTIkInL+RiSg+nAM/bsT/vgE24Mac5ypJlXbx5IyfC
+         Xy6SScxREBpFWFu0ws4Ir9f/vwJIi2raeiowxFpknpYJI9td+++Z2Cto2xCQ1fNCxhjd
+         HeWNKWpef+8f8G0NbWrPe6xtYH04BWJJoGpshSMSwDPHR0wsvNcnwCyEPAxl2bnEvT6Y
+         qSgR/+wE2LsOgWJvUtH8gTzLT/5cOm2smlNIoD9jwRHLAZ6clJ/FtXIUcnayd6w+w3w+
+         kl0XlKSnN6MdEDFG+lz/VqmjN2yDJuAZLMkIRoFSzxWCjt3FhXGSh1EBPhI+cXErp2yC
+         yzwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hjLEZjKc1UC8sxA1BoAn5ZhOr52xZdZQzKhwFC7bfbg=;
+        fh=E1wIhMbIwlbShZ/8H2I+gWcHUHJwCACRm8ipUdDkMR0=;
+        b=mE8w2XNqw7DQY9Dj3Id991d4t0oPcun/p/f4xLkt81Zz5kNktme9p9xS+p2xUgW/7P
+         bgMThQTgOAzKC3x96r9SoyXxO4FukBzuHy+hfZ7GkRLRDGapNtuHlhCCUT08BmYIAAkB
+         xJ46H7ONAu6G49h2AXQ+fKopgkfmJfCibtr3CRFe3+Q1S+xJ5V4qqVX9sMsvmmBs5zI+
+         I1fG0s2W/+NDb82MGSFu5z5JRtPbS9tpGY5+s56uBn3dO5A3XP7Q9SHCGINDyxPaPOVw
+         fA048+QjfU66lBoy1E3qbGjO1ybTbple7svV3OJtfzI8garhUuVIt1QjNsviIcZR5+3a
+         J/cA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792490640; x=1793095440; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2xqJ7ego2cIVHaasX6cs9qwWsOg7oxEQGC5sNjYglzs=;
-        b=NJMlwJi3a5bqpu2HTDnpXWWJLpNufI03QMJgzMu8w97R+ad7Xlm6UaYF4vzD/Pgqvs
-         sSuM0w0QSQ/qXP0ML5ZXI8Kdjg/JWAFQz0tPw9QZZGxTHSmhykTWHEkY2rthLIRA/cOI
-         aqnoL/6BEtM0tZgx4Gx7CI/oTEUQOwxPDdWb1UHgm3041Wln5p1xv3xHvNnBs3WBNDF2
-         Z0y/9bwnftrVS5zhz9HsJ/sU3Us0AZkjtwUMpsamHQTMEz/0DNtkZJdglhQgL5XnOauh
-         mmjWuOH0uMzlEDF4yk+j9zM5aQUtca3+URKZB1M2p+FHyQM+qvAYovK1USfrgfaYMF5+
-         yrlA==
+        d=gmail.com; s=20251104; t=1792490797; x=1793095597; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hjLEZjKc1UC8sxA1BoAn5ZhOr52xZdZQzKhwFC7bfbg=;
+        b=G6q8CYHnEsFq/d+equu4njO7V8lBQAKyRWNoDrx0wbjAUyYlGAy/i8GHTOohiCbpWj
+         1fBjQav6fbw1/XrRpGDuY2HjUmW1lFlB9IOFWoTXpG3NFCxy806hszppivrM4twFHa7J
+         nbBk9CZ2iY4wYfR39tjdp39uCIQRsA1L+GARHOtoRoAu2pFUCKcNQqqcf2/CjfDUJO+X
+         ArTpaPCbd9Y8DZ7U9xdnb9xOR7kTG1KIWrSh2wJ315E7X5D2sTf3Gfg6nXSxXtiaG0lE
+         wAl6hssFTNsDWhVwBZ6DRSa7Ukvum8neML33HBwqEem8oMKqb4qw2Lbt2H7Wu23pzfgS
+         GouA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792490640; x=1793095440;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2xqJ7ego2cIVHaasX6cs9qwWsOg7oxEQGC5sNjYglzs=;
-        b=UJq9LuQMR+eVap+KeD4PibicD1M1m98jxykAzqgL4rnuVZ8Hv6pSlTbvicQuJbZwfp
-         DUm1FEfyDAgxugWbpKnOXGNEoo595eLc7z+5iiEbqUXNspz209ikn4p7NYJ7WMVqeQE3
-         nbvMmpDyqRgv992dxXIm4saTxEfEqxeGKoPMJ5KnYobA4RsUv53G0CG6g8eK+myOwf/Y
-         ZEZrWUJ51g8oC3Fh6Lf6SqihSPxRQx6uiyymzcM2YJ5BlPP+omJEPqGbx44LQfzm5dp3
-         N9NxCtmcM+adboFxKOe+vxThzm5EnEG9MQJrkgR/lYpeYTUlxPBxXMjxMS+W27XFiUgP
-         7SFQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJLizdmWNQBlPeTWvKP2UGuYn67ZyBBC/QFl/ctr96j6CxhCeSABWmmiPz5bK7itHHcnA3nkL0+g==@kvack.org
-X-Gm-Message-State: AFq9FYK3jk4ZlzBsVol3o9Wb1t81+1XsgPtjsSvPJNifMtJLV9qoc2J4
-	bf1b46CTBEVBk+5G+EYy87Uznp5maoa/m8BsWL/NotJVC9pPCVQAmKeD
-X-Gm-Gg: AYBFou2mxKn+xfRR6Yqa9JIhrrZUXyYLFhIETo/AH3c5zShsFvDBfwl+Lvnw2hsnYm4
-	zexa7cpPJZl4rPVsPLODe1cFSSm2hKlKD0rYm1PhQG1RalzF/a12slfranZ88TvtSjLfEbL6HjW
-	V9/427XBUzWbnEaQh2E/SqhRGTk3oLYIZTSbZTGjVMPV5qE1SI3HttnpuwFjVBqxhS3HDs494Jy
-	MHPsEp6k8Aai1oCvt12749JKWH8mHRtcZ+rkKqb4InvqQ3Y1Fk4Oy6tmf8U3BmLOS0zkLossdkD
-	dXNT+dvTQDkAzV258vrECgUUdSU0lzNDAhZEeruvsG7PctBb5MdGJk1C3SA8I2JaspKWuu+hQP6
-	hbYPvan196udPd84S/KNv1cgHWeWa4eW80Af5vgz+2HGQedMc90YlyZ48JeqMbdvTN1Lu5+Y3HE
-	MZWIvdxixt1umSn085wIg/aedxasMkuEzBBTU2IZhs+NQuEEJW4YEpryJeiYpUtVUGD8GJ7FB3P
-	S9kG1ifML4=
-X-Received: by 2002:a17:90b:582d:b0:3ab:c674:cad9 with SMTP id 98e67ed59e1d1-3acef519dddmr9226879a91.54.1792490640339;
-        Tue, 20 Oct 2026 03:04:00 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad5c72df56sm3203446a91.0.2026.10.20.03.03.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 03:03:59 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org
-Cc: david@kernel.org,
-	tj@kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daehyeon Ko <4ncienth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/hugetlb_cgroup: prevent use-after-free during cgroup offlining
-Date: Tue, 20 Oct 2026 19:03:45 +0900
-Message-ID: <20261020100345.1677643-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1792490797; x=1793095597;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hjLEZjKc1UC8sxA1BoAn5ZhOr52xZdZQzKhwFC7bfbg=;
+        b=skcmTmhaiaS1U6aKRV/xaiFiLhLT1tiWLlehC1pphP+ckP7sFbU8Z7+d0/qL0Jy3p5
+         PEMP7ZqM/pywizGdKQjfgSAgdLeZFBIDZtWOo13SUSF2ab0UrP9upbGCLPSnzE2vOYAl
+         IonR/ddoDXxILjcxFT52v3FElho1+3XzgPRU28KdDrVqb87W0SJRLs++Dg3HqvEnmUFX
+         tJvwRlY7ySe19y+Uhci9EOgs8o51wV9Ub6LPOrsepGBHzaUh/JMb9pPeONcOepstFLlo
+         uJhbHWkSEV+nNmanq3aLvLlOzPle9HiuRDe6TbU+btNzLQ9B1EnejZ1sE0Eb/K403GPB
+         znUw==
+X-Gm-Message-State: AFq9FYKain658vyxcwnLG+lrXbUM9n2SLImtoX4ncnZwowoch2m2s5+M
+	KaZPENzgVk031NIqL0YEw+5sINFllDlJmJk61ugcncg8O5forsPbNDn0lA63QCGXxDpV1QNAhzn
+	fZ1/XjU2cHupYgjgiV1T2hnBB3xS5EuE=
+X-Gm-Gg: AYBFou1zPH6cM+meQVJkj3SHNC2KeCx7boPQe+TVT7ReQBGI7kK5hCpg/ngr9XfFh0h
+	k9zU16N735rPVBdRGJ5CAcDL0EqU1EX+DwpDCbKaylMqOKEzHsdPLBB3BYsQcasp7BIgGE7bqEe
+	4nYaoJd+O2xpjuErxip2Hdo0d2uo39NVVuVRPdctCcatykOh07FvptVOeNSocSHmdmkfBdwF051
+	ieZCV716R/vEaZ9wGFuVAwTZ4iCpdCO67kKYGjy70zqsxFcMmUCyuL/s+mB3bKFd/5isqnix9WJ
+	9o8GVCpRfqKE3BE/3knln+NDIvOdz4Q9oxKgHv+6js0lVfYFYC4KtKQPtelQ8h3jfd/N6WE=
+X-Received: by 2002:a17:907:c642:20b0:c41:a5da:1511 with SMTP id
+ a640c23a62f3a-c41a5da279bmr487551566b.25.1792490796791; Tue, 20 Oct 2026
+ 03:06:36 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B7591100009
-X-Stat-Signature: y5c5apdzxbxxc663un7awneborei6cqp
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+References: <20261016155340.3304319-1-puranjay@kernel.org> <3225a379-a959-44b2-a2e8-02ca93759316@kernel.org>
+In-Reply-To: <3225a379-a959-44b2-a2e8-02ca93759316@kernel.org>
+From: Puranjay Mohan <puranjay12@gmail.com>
+Date: Tue, 20 Oct 2026 11:06:23 +0100
+X-Gm-Features: AclHuK-7_TwiedmUSuWVG98rjYO2MVoSPsgDN58DF5W8SXtLU45kxTKTy_DTVHE
+Message-ID: <CANk7y0jHbggDHB_68MjZNq4h=Gu_N_G-Ytf0YLrKM_B8A=qsoA@mail.gmail.com>
+Subject: Re: [PATCH] mm/slab: Call call_rcu() directly from
+ __kfree_rcu_sheaf() in any context
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: linux-mm@kvack.org, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, RCU <rcu@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 838EE180007
+X-Stat-Signature: yw7u79xjrnufkygjm6o5kjhpkxrr6331
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792490641-37585
-X-HE-Meta: U2FsdGVkX1/Oy27AXoUQU+++kZCCGSLqhgi4/C+fzcge7+kuKmQm4QV9vUiI3uLh+RhRjWcUT62oIKMmdRwGWCyc3wvyFbtytPNPe8HqrmVjxxiq2NY5h69TD850FTDrAahFKMcBO2EUiLDkCx1DNc8PweLkHFBmGBhBvofNtqQe8A3OwgNck2cUNJhgMUm5bUPgas3MozRVq4xidAkJ665MPZcuMlEzuUqeBqfpr+3lHcbCRleh6iRlLJHmxG4iUN1V6mnr5SugAhUNZBKkjUIQFbqSUypD+Kd2Mrsi1J863SesGeM57vKF/RB/Cc/MmD9pCGbhptASK37ZnUmBttktT0KDqD0Uma3mcSNAm7KHsfjyQ3xoFTP4dncmthz0phwUspcxPB0mxQUuFCQgleB6F05iN70aqTw3sRmVwFV6tFDWpYOW9P+ZWTSX3wYd/lo85nBLqYkLNJRLVexqulDfr2YNdginYhbvdx4nD9d2f6LjoLDHpgeupbA2/KltZgYwjMXTr50eNIeNevYVVaKnZFrpppt8kuSonruViygz6XBxkKesYbVQ0pGaf4yIHvHxde8YCuhOB1li4AqWZfeljUcpyAnFQNzr19GbRYWQ1VwJl4uXZjJVUPJRVLlr4PjOLuDM216hjRW6r17Bjvagx74DAHWepBt9TvXHYn8Qs7Y/YQNJHwsnoAt5TEOlHfKx2UM6CdIEoMX4Q6rxGx6YWZsdMRKVMBtgdHtlOcvQV8bHFgTJXya7GaTZWLUsEP90KI7xBZhTaso1R6X7rb/4ShM9JU/N6Bj0U/1dBHmVyWOxEh3tv9BH0VYSQWCdQFTQoWYJT0JN/pXvOjPaG1vb43CZtIgelXSsD3lAazzTQ6zFWCy5i+gtdY71EMlDXX01YHfbee4O9zkeb5lf/upq6mxkTSgpT0tbMeAnVSSodO1px/wxFhpp99pkQ4CsHBLsFD0DWk937HAuTIK
- uQznkmNe
- qmVRujM1lvbJBonOSB5YA1YuOYjeHHDchslSGsoX1yjAZmyc5waTyCYCzk5ry2XRYYwFegWVozCG/O+iC8Mcan/1eHPbtsC3nz+mzOFqZU+WW1ejRTUV1QsJ9BQWqIRfdqJr/3vTzcqaK/6MzcKH3B1hb7sSwX8VX8+shKhRLh7rxIySnkYdLc2XvLbQaE4AXY/pyODEzS9gcpKtXB8bgxqt4elQNYzUzjXX2dswbfolCQdAROtf3pDY0tt9jYodDRytNFCG+Rb+E0KUTnRmPTmBfHQqyZjpK+egeTrnUtS/BnvU1uCU0RQcRsi8oX/EfOGeBz9mO/dmIAoSp/kYm5ufN2UaDkQFpQ21wlMQ9SP4zzQILHlY9R4bpxyvD64WQNOWj4HiSBBSYcKlsptZlBSOSB49ZBURjYlLs9xlXsCHTjCCADB+m45ceVjO5vf4nddWG9mq+qm/E0uabzW/mQggtcbt+38C1tTfYMZwZB//GFEo=
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792490798-959564
+X-HE-Meta: U2FsdGVkX18zqsz5ND4ZhH3C1wsM+KZyZCN2OYZS2nAgsrEtGciDqruzhxkin9BEt1Puo/9e4xfqx1P1VmuiPuZ55hCACYClPcCs89/usAesXIfSlpAwlUa86P1KZPiv86n+LdIaZ33emHm8yqb4lt4zFBbSUoUhzh1fCyiZ4pFkQcvyHIm0NvIcE0GqKfm4upV0F/chO8EbrEdGvPNEXbzKY0WQEMtmebQLqYMb/ouYR2HT91nt1morDn0NGYOU3czgglkrfj0XdAT7wnsAp4KYNLH2jPQRLzoUSjQinRHXOosEvby6Lx6IvTtiMNnSPe1yFlqdpT/kqf9m3QqNp3YjBs1dC24756XzqEPf+87yg5wQc4puRS/tkhSTajCdzjnxRWkSY6uy0UvQKaAfuKfkVDH3eaGp4xd4z8cayDhmw9vu1E76fNHS4G5ZFlhErXxBTFRwExG8sAA5LzU4Th+IStHPdWUC28QB2HbWo3CliBUXw/uMmKXY+tvUdWYLvfp81x4fVYXuxprYLehyxaEbXt1aMMofi1Umr7VElbgtmGUIzSvu3kDb9DI4EqOolo3zaHBkg7GmQkP0sZWX+5qV2HByKW99dYNte76712BghTCF2XDLayA7cBiGuEpo4bf8hBU1wLJ7KbyiNfkSAuYNVgZEd7omuabt9DfDgjZlEG5anEu9+EVXTYc3DBxH7zq+IR8iRWBjH35n10eYwAFLCUAaXAz8+DUDj7XDlFKwMwO7plEgdBbVYZkGxPDMctiCu1iIRvGtKHCrkjdzpn+UG9edS0zXgKv6yUWtWrVHZE4rhRd4JZWtGHp4aNwtN1BrmQhJNRCfMLTDqkTc9R5/0jv8+h7ICFLDa8dAfbJ/vblpzuvfl/DK/+gygoYitZOWmVadL6DL+oMiLpiI0ScWvZ+qUHxPY1N+D8AaPIa6leA0+3GawrUdElu4vXyV+Fh+OnmcZ8Wg8z6apMl
+ v//Ez6lg
+ 177U4YA3/DH1xtZaMRmd3Z4sK+hxbWk0Ofv0lhY+Dj4H7FXjiwPeOJaIg3z9rc7uPupjCRENDuOtcHAAVxIQZm67HbmtqJIX1+DbaAWETDBH1tYM9x9q52piW6AosbcJsHGrtu9I5+1LikBNNTk7qCvzdI5exG5/xBLgtztnyR2d5Us16A1cdj41fHlyxu9AcWIvvxtzFoDrMmzGJwDMLPsxdCa9nubXXtuJF3i56/4F+5y5zE/65fHQfJMWZSpYdFv/qIB9K37KgUhrZj2wHmBd2jgKL+GlZ1DSDxxQRORdJTyvhNcnDsrWT1gKQypp41aetYHgjUT2RwYJA4quo0Hb3x5iP7Gnwg7XwszDGrLT47U8B/2RBh346zFj+IYxGQLiUzG2E9jOHsYIB+bz5s2h6+vGGmk1bPtYy21iI1R+KFmaqFAAGCSh6pIFPgqPWN+S9pxtgBtpbAa4M8aW2a7+3Uw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,128 +142,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A normal hugetlb charge obtains the current task's hugetlb cgroup with
-css_tryget(), charges its page counter, and drops the CSS reference before
-the folio is committed under hugetlb_lock.
+On Tue, Oct 20, 2026 at 10:23=E2=80=AFAM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
+>
+> On 10/16/26 17:53, Puranjay Mohan wrote:
+> > __kfree_rcu_sheaf() can run with allow_spin =3D=3D false, e.g. from
+> > kfree_rcu_nolock(), where it may interrupt call_rcu() itself on the sam=
+e
+> > CPU. call_rcu() was not reentrant, so commit 69abda97a09b2 ("mm/slab:
+> > extend deferred free mechanism to handle rcu sheaves") added a fallback=
+:
+> > when !allow_spin and IRQs are disabled, the full rcu sheaf is put on a
+> > per-CPU llist and submitted to call_rcu() later from irq_work.
+> >
+> > call_rcu() now handles this itself. When it is called with IRQs disable=
+d
+>
+> That's great! can you reference which commit does that? I assume it will =
+be
+> merged in this 7.4 merge window?
 
-The task can be migrated while the allocation is in progress.  If the old
-CSS is then offlined, its final active-folio scan can finish before the
-charge becomes visible.  The allocation can subsequently charge that dying
-CSS and commit its pointer to the folio.  Once the CSS is freed, uncharging
-the folio accesses the freed hugetlb_cgroup, including its page counter and
-per-node usage.
+It is part of the RCU pull request for 7.4:
+https://lore.kernel.org/all/720d335d-17f1-48e7-b5e6-49352712cdca@paulmck-la=
+ptop/
 
-Keep the reference acquired by the charge until commit or cancellation.  At
-commit time, while holding hugetlb_lock, move an uncommitted charge out of
-each dying CSS to the first live ancestor.  The hierarchical charge already
-includes every ancestor, so moving it only requires canceling each dying
-CSS's local count.
-
-This orders commit against the offline active-folio scan: either the scan
-runs after commit and reparents the folio, or commit observes the dying CSS
-after the scan and selects a live ancestor.  The retained reference also
-keeps the originally selected hugetlb_cgroup alive through this decision.
-Reservation charges retain their existing CSS lifetime and are not
-reparented.
-
-On an unmodified v7.3 kernel with a 128-page 2 MiB pool, a
-capability-free uid 1000 allocator racing administrator rmdir reproduced
-KASAN writes to a freed hugetlb_cgroup in three of three boots.  Controller
-disable reproduced the same fault.  With this change, 5,000 rmdir rounds
-with 1,075,055 successful faults and 2,000 controller-disable rounds with
-1,707,348 successful faults completed without KASAN, LOCKDEP, page-counter,
-or refcount reports.
-
-AI-assisted source review was used to identify the race and to help draft
-the reproducer and fix.  The interleaving and the resulting allocation,
-free, and use-after-free stacks were verified with tracefs and KASAN.
-
-Fixes: da1def55919f ("hugetlb/cgroup: add support for cgroup removal")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
----
- mm/hugetlb_cgroup.c | 43 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 11 deletions(-)
-
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index 3fb41311e4c7d..1e0dec070b05f 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -310,11 +310,10 @@ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
- 		css_put(&h_cg->css);
- 		goto done;
- 	}
--	/* Reservations take a reference to the css because they do not get
--	 * reparented.
-+	/*
-+	 * Hold the CSS reference until commit. Reservations keep it longer
-+	 * because they are not reparented.
- 	 */
--	if (!rsvd)
--		css_put(&h_cg->css);
- done:
- 	*ptr = h_cg;
- 	return ret;
-@@ -337,9 +336,26 @@ static void __hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
- 					   struct hugetlb_cgroup *h_cg,
- 					   struct folio *folio, bool rsvd)
- {
-+	struct hugetlb_cgroup *charged_h_cg = h_cg;
-+
- 	if (hugetlb_cgroup_disabled() || !h_cg)
--		return;
-+		goto out;
- 	lockdep_assert_held(&hugetlb_lock);
-+
-+	/*
-+	 * A task can be migrated after selecting h_cg. Once offlining starts,
-+	 * redirect the uncommitted charge to a live ancestor. hugetlb_lock
-+	 * serializes this decision with the offline scan, which reparents
-+	 * earlier commits.
-+	 */
-+	if (!rsvd) {
-+		while (css_is_dying(&h_cg->css)) {
-+			page_counter_cancel(&h_cg->hugepage[idx], nr_pages);
-+			/* The root CSS never dies. */
-+			h_cg = parent_hugetlb_cgroup(h_cg);
-+		}
-+	}
-+
- 	__set_hugetlb_cgroup(folio, h_cg, rsvd);
- 	if (!rsvd) {
- 		unsigned long usage =
-@@ -352,6 +368,9 @@ static void __hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
- 		WRITE_ONCE(h_cg->nodeinfo[folio_nid(folio)]->usage[idx],
- 			   usage + nr_pages);
- 	}
-+out:
-+	if (!rsvd && charged_h_cg)
-+		css_put(&charged_h_cg->css);
- }
- 
- void hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
-@@ -419,15 +438,17 @@ static void __hugetlb_cgroup_uncharge_cgroup(int idx, unsigned long nr_pages,
- 					     struct hugetlb_cgroup *h_cg,
- 					     bool rsvd)
- {
--	if (hugetlb_cgroup_disabled() || !h_cg)
-+	if (!h_cg)
- 		return;
- 
--	page_counter_uncharge(__hugetlb_cgroup_counter_from_cgroup(h_cg, idx,
--								   rsvd),
--			      nr_pages);
-+	if (!hugetlb_cgroup_disabled()) {
-+		struct page_counter *counter;
- 
--	if (rsvd)
--		css_put(&h_cg->css);
-+		counter = __hugetlb_cgroup_counter_from_cgroup(h_cg, idx, rsvd);
-+		page_counter_uncharge(counter, nr_pages);
-+	}
-+
-+	css_put(&h_cg->css);
- }
- 
- void hugetlb_cgroup_uncharge_cgroup(int idx, unsigned long nr_pages,
+Thanks,
+Puranjay
 
