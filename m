@@ -1,71 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FE260A2635
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DB1606A329
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 16:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bXa/NaSc
 Received: by kanga.kvack.org (Postfix)
-	id 3E00A6B0170; Tue, 20 Oct 2026 12:55:17 -0400 (EDT)
+	id EDF796B052A; Tue, 20 Oct 2026 12:56:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 391416B0173; Tue, 20 Oct 2026 12:55:17 -0400 (EDT)
+	id E8FF96B052B; Tue, 20 Oct 2026 12:56:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A6D36B0174; Tue, 20 Oct 2026 12:55:17 -0400 (EDT)
+	id DA5DA6B052C; Tue, 20 Oct 2026 12:56:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 08D526B0170
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:55:17 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 859281A02D6
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:55:16 +0000 (UTC)
-X-FDA: 85343605032.29.1A10B27
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 23062A0008
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:55:14 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B0F316B052A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 12:56:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E36C1C28D7
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:56:31 +0000 (UTC)
+X-FDA: 85343608182.08.6A4E0C5
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 81AE4A0005
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 16:56:29 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792515315;
-	b=EyWw5/HcrthqO5cf1GxzRUa1VoIsIVdCa1MdyrE8PH9sx0By8hujNhazv6QjGp4Zj6VzDa
-	bbTbBkiDzO3+C/2f1+TuR9JIgMHDGhgNtk0B0uQbjYorPeircv31shL+DpDDXpRadyUzVx
-	QlOwRUqLJsL5REEBc8hh51TStCTJ8os=
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="bXa/NaSc";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792515389;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=lJA6tKVLSd/rks8VATU4AwzUzgulNjgUJQKYEzoQbI0=;
+	b=g0fHYDfT1OhYyrNS+EXHr+TBEt0tUhaZ2lP7A8QKrFTP7RuBvnZXcO7fUBwmUSnaAi+5RK
+	8b/BWO4B+CA5dHG5krtEanuu2E/MOTe6R8gN3by6HKbaQtJQYtPjBoTAn4WGuI90cvRkuD
+	ShM0hOIFbA1nY46ChheG+uc4KsTiLFg=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792515315;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=74faLD1IaSIP2Z+00B1XcX8OSASYEQH3UHt+KZjsp+Q=;
-	b=sV0Duwz1PPbSEqvdWgYDLyOq8IVAiGNWiBLcooPiYxFUa+pQHtydR3cyoRWjZ8e/iTj4xR
-	s2RMJs4trRsxdJTAGt0ukVbk1oYqIb4vedwMhCchP60tKis/j9HlPJUfVqFX/Lm6JQGYpy
-	946aLnlniJ4605yudlGDP9MFCsCs7HE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D4D2D6057A;
-	Tue, 20 Oct 2026 16:55:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0231F000C9;
-	Tue, 20 Oct 2026 16:55:13 +0000 (UTC)
-Date: Tue, 20 Oct 2026 06:54:42 -1000
-Message-ID: <7bcbfa61a8c69e6ffd81e97652d981b0@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, david@kernel.org, gourry@gourry.net, hannes@cmpxchg.org, mkoutny@suse.com, shakeel.butt@linux.dev, roman.gushchin@linux.dev, yu.c.chen@intel.com, zhao1.liu@intel.com, tim.c.chen@linux.intel.com, lizhe.67@bytedance.com, bpf@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v3 bpf-next 0/5] BPF-based per-cgroup NUMA balancing mode selection
-In-Reply-To: <20261019064157.29885-1-laoar.shao@gmail.com>
-References: <20261019064157.29885-1-laoar.shao@gmail.com>
-X-Stat-Signature: j6ttpjn8dxedceywjxg1m3q9ifoyecdk
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 23062A0008
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="bXa/NaSc";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792515389;
+	b=ytyDmL4QNCai8djBiAb5q5yM4x5hSenc3XspOqm/0HXWSj06/ECCM2WtpHnUsD/RUWeZPW
+	ivzPxA3B1qmODHNTD4igGUnDHX3fhssGvUpPrS/fSCIOMFQUXJ8m+znajqAaxMtIF9BlWs
+	iQvWrNcKvnfGzH7zQhwHALo0KbAsop0=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8b10ac6ab7bso17490187b3.1
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 09:56:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792515388; x=1793120188; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lJA6tKVLSd/rks8VATU4AwzUzgulNjgUJQKYEzoQbI0=;
+        b=bXa/NaSc3b6YSNeDIy374iGYXSPz3mf63LYdV25vpTHQuaQIVY6iynOzq8X0NZo4OU
+         1FCK6AICtYMrbWbC5MKpgTbXVn7XEMALAPBqnTYLKgr/2xYN2fcOEdXfuMmMx8tCQ/I2
+         94ncBfMhAZKUNCsRrJJE1mfGWZX7LDNOO9zyOznGW0g5qpgtz+R/qwBPkWTuw2vzTMDE
+         hfeMHYmbkd0OvqL4YiCFL9R8PnGvPezlHrReOO/hizD5Oos7Hn0WS7mbAW/HtHE6lse9
+         skY1c+s9iVLv1EMTteIIN1zujMX3aAFiCIcWfNqY+pjIUJN4ku7mlkPJtkZJ3IX6CCcA
+         6qDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792515388; x=1793120188;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lJA6tKVLSd/rks8VATU4AwzUzgulNjgUJQKYEzoQbI0=;
+        b=kSup2KjPofs5ue7T5q32aoeEwOtO717sj82bGlHMf5qquDdcUFBXorKHgBVJpBAArL
+         oSh5O3GAQX6QX/sVb61SxVAIiQKOxdjpwhsCbKuHz5XqDZNKKODlWleU6YTs8HrzBWfM
+         lcOhzGy2E6wnlIP9H3y5adRVCa+mmqfH83UDIYgrLoT1iJdSPvnnbf/WTTWb/ay4toy9
+         XwiC3T/k95gRKwqUL8q/yVskutWJD5jlfnZ/j9H+goE03N7eYCeV6yIXskIWkS8z3Omo
+         8O3/nUcP5nW86WDTjlo4GHX4iOE5cWDa+dzXX9VgoejiKwLD+6qGYVv0h5DARVnjjrku
+         nxsw==
+X-Forwarded-Encrypted: i=1; AKwUvByMSU9VcFMAzDu4Dn3sVcDxawNpZUiiJrmcXFbq+LwM9x6U4vmaX8CnDxOGPhHAUhpY2A0uybiOng==@kvack.org
+X-Gm-Message-State: AFq9FYKu0qsJz7reYFUIAbEufHUNReubbZ3aW5xX5LTnL4mQPu93B9r6
+	DwrgY2yPbgYmW5PzkHH8yPp0iiHQJ6Xxf18n2Zv/ft2mrJxbaV++Zd1X
+X-Gm-Gg: AYBFou157mS29B5d08I58zxWC1DOd6mxnexR9NmuC+rvIBuqWcMpW/u/C82YlyDGbBJ
+	twwQo76G2pvp/ctVLczGWKDczbesY6FMTj8e86jFcxlvxYiTvd2RniO7tozbZo5T7O+YPmI1kWF
+	3RYM+OjSAKvKdmrpifHF3FZ4Qj0T1GSzknsqTSaPFwQsB1nk0JDr9bCR9t5wCIDwSxTHj0u0zpU
+	80nlX7MBVNLHzWtmAX4c5jpFLJTflwWpsOMbMbDiID2tM6rY6FB/avThUvv7fm2SCRV6lPgX8wx
+	lWkRDuCL00xaXtSrqAKDxVWQLqXSy6AoUtA2rb6edyFOVa38/ieAkPipjAVMmZCZqpnBxykQ1VO
+	WLOYFdzFSKKeLKrXVMT4rE8bQOZ1Lg3gpGk7cmYy8K4F+8APD9ItfhPU885mWTecXwmwPeEZrWs
+	Q9wkYTyok2DNsj7lmi9MV1ZEeybWpkzxrziRxeB+n7sPGQ5UnjA0MZYxAIIFTXouzkw9VBt5VyH
+	DIX3s+TQlxOaRdyUsrxGRIkGfug
+X-Received: by 2002:a05:690c:888:b0:873:17c9:b054 with SMTP id 00721157ae682-8b0f21690aemr36925147b3.21.1792515388537;
+        Tue, 20 Oct 2026 09:56:28 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:8::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b1300715cfsm549777b3.14.2026.10.20.09.56.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 09:56:28 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH] mm/memcontrol: publish null pointer before dropping css reference
+Date: Tue, 20 Oct 2026 09:56:26 -0700
+Message-ID: <20261020165627.1599959-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 81AE4A0005
+X-Stat-Signature: bb33ktyg5udzwwq7wqy8mth49dcrnk6w
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792515314-460248
-X-HE-Meta: U2FsdGVkX1/zgsZMRdLyqbIiml9yAlZaQRPVVC0uD8SkqJYP9Mh11Yp3iK3tEo0Txx9ugxJfiMgRbwLv1K7kSQ/lKR2RWkPpD5LiFY5ats3CeOJVIUWJNUV6nz8Mtt1RoyncacWSV+g9jmxooHH5v4EfejC1T0cKki0FzQdMlVPzEuJhCN58bklnzhCV7CAT3iXVRPKd7Z885DjQmrby1p4L3pKqvVsHFex9ZXjcRKQCrTeVOpnQH1fThH69Q7expaZw7RoofSBbjVtViXsgI0/aTeW/jBFUyENs9PQY5nCeMuLkvExF+jtYxDMlgx71Ggri9puEs12TGTO0ikbRsm2tDq/eAIxZZWN6Sk9zLqX1sPk9+bUZJ7shvjrrVzlNghG4wSS39JGndlwRPWuCfJX0eOgIxj94l7YxUInEz/buuEG9LYixAFYxo9YWHcowceTA7InK35cKNtFntLX/bPWWRVXZdyoEP0ZwFohsSVqO+RJpGNOmwe16PflewEKP/ZwuWmxt84XxUG6nO3FF5V4+BJCkwbT3enCAuFQNmLZA6qMkyOPJnFF3uBAUbDqeu5AdiTK0i48jHEvI8R/fGgUv1JYpLM4Ufyyu9S36PE+IsSfrTCYgky3qDdi3a/6kH/RWiOuZL3OlAdrMwl2gw+mj1T0cblOkKErvHZ4+VdPo6FDQknkG9s18sOqMcwHtQZRZbQmEv4oMLkoePWo04S1k2LxOR2xQ8D+kgpnW12x9H426IG4xAfR6spokvSOSMLVR/sZ983rVOvsfct4R21hMjp/g7cMKLixnVniagpsXkzTu8j622l9jx6QirHXnRG1A/0CkW6jg//Ed5T/3vlBHr+EKaCDho2aDF0Bdua3YLbeY9hnj9zA+DN+5dfjZNehAPZ6FRgZuVSoCpr5vCAArmJtP+uQhYvHs5Mzd56cilXIjWuMODWzYDAaatOb6gpHTVQNmLEokYPPuoEo
- AaFnCx1Q
- BsZ2MNsgdqOnTDLiuO3vbUHStD3IJvN9EbKt2QHaWE4L9qFScq0UIeUGp+A15fdlAB+XQ+2NT3I3e62QlStZQQkyCGZvaJ4NluNduzmTzWRabprBYErYbLo0su+qAr3yN1mwBugBUaLIQZgnqDCZQqUr6Yk9yL7ZKVyGad+M4JIr896372cfgj7ALplrHlRua0xw9NKv0pZxLWZcO8kITgo8EeA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792515389-919127
+X-HE-Meta: U2FsdGVkX18gEvVGWoQzrYiBXBOLqf0fIQIZGGJ4nukCfAQYMRlLJURHtDwhoFNtLylTp1G8GmAUgnLn2iVrSGfJKJJKuqjcoYrrZnRckB3qa5EirxXLpD5QaksbCFxeWEYjW+FEgvcuk0kdj9mNetC7F7XWm6tS2TaeQp3tpf8Iuvp57bHevYofB/VusEk3PVt2ufzoCr8Wo8RkPmjxaJ5dQ1ETffHrGwWz4O1WbDCvyBpwMERRVWqP2R+AX8TW4cNX8HiRmdk+VLAYpmgTJGTDZwV0QTlmVp3oZ4rXvZZTvCl1C0lwxlKg1kNKvSsIsFuC5iyzFTMV/AgkVgF2Eg+svUWmmWGktwAB2TFxHSgazzQevuhiMLbcgWFM3/JF9iQvj6fy5QgbJnCPSwVuTPeemncA/b2VfMnn0nUGpNWOFvldQkJgup3QSRSzycmewI7JzYzdyHeRC9diWie8zS58AfJ17hmyjY7CHIdPD9/OGOXEqn+aXxeKlX/fFdNaxvogut9r71PCKSbbvJ2j2NTx1iQuBJh2osDWTBkYFZ5MPWtoqBLQFCM1vFOxQz1MKP6hwLbvEtTk0FI/05n1Xgvcp1sQQTbua/itvPlKFjuvDJrIgz/bcnH7aymbwV2qWRcyFL2DZoqEp2aeqIU+XcN7IIZWqnfCblAFCH/jGZoj/MkmiMkVOl8w48bBq8c5CxWXD6sgYJv4MaZ1+13GVlATnEmOGPyhPxg/WIsxlKdq5NlKqT3QAm9DXshw18kSPZZRZAIlbho59wNl4zv0/9xPwCSBySBoanf6kLT4VCEtNd5Zmtqkbz50knj6MIBDN5U4wOh3Ex7YRMYUXWgr20V7OWNW9IbMM5oSw6ogrr2MnhGj9zotoyDpMaOmReQ69WHMxh0xvMbsi80Vs5oWle3GsWfX4MenyiT29pUre7h+hVRq5fCAwMqUOWcIheYqt6u1L4vaCmPmmuRmKoB
+ 8JVkXg2Z
+ V4BDKUQUn6i3Pr7zFCXBsBTJwCy0IPtz/WkB/+cq5MZWCA6a7EPvf3HFgB14j3Wq5xLzcIa6ZtzyF969LE88A96KuEvUWQZ87LWpYfjudJzl4qKHIvjgA+qCDZ0gpw+SxmC4oZY0utNamAMEj9wvA9ttqG+4sSqxelv1a79r2Y8NZzIyIRqjtQSdffEXcY8eRAZ5f0m8no7exdeMX8MApG1F9j7n0nhjbeLZYNw+r28J99KERoVjVVP9kBZ+lAGx75Js6eDO7iAzL4BjoqSFk+07SmZHtWm9V0VogVBRbtLIhpV0/N9ubZwdF7FULq1pdTnR/5i3k0PCBE9fOP6BmsJtfWYgLdlaUHvRznodm5Tj0IDS+JEFl0X1DDZytWoYx8nvKAhlBIl1nm12TQjRx6tTlmYOrBi4MRa5qTYybxGAccozywRILvA7x3AyLVgvaPZ6KSpy7kp16U8QFwm4CarWfV0uv9hVbMeKTo+Q6Q/edDA5sGU1mroqxOC3P32xi5iEJQqnm8V+zytPTwUnrbhYC+GAdJ+MAUNbe9MNxI0Mqsz6y0G60/GrQhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -73,42 +125,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Hello, Yafang.
+struct memcg_stock_pcp hold references to cgroups that it tracks to make
+sure that the memcg never gets freed with unaccounted charges still
+living in the stock. The cached stock can be cleared either via
+drain_stock() or consume_stock(), which drop the reference if the
+stock goes to 0, and then clears the pointer from the stock.
 
-On Mon, Oct 19, 2026 at 02:41:52PM +0800, Yafang Shao wrote:
-> An opt-out wins and binds the subtree: a DISABLED request anywhere in
-> the chain opts the cgroup's tasks out entirely. Otherwise the requested
-> bits OR together and the kernel reads them independently, the way
-> kernel.numa_balancing reads them, so a combined NORMAL|TIERING engages
-> both modes. A DISABLED request only speaks for the cgroup's tasks,
-> never for its memory, which follows the remaining requests of its
-> ancestors.
+If that was the last reference, the memcg is freed after an RCU grace
+period, but this can happen while the pointer still points to the
+to-be-freed memcg. Then a reader that enters its read-side critical
+section after the grace period has started is not waited for, and then
+can dereference it after the memcg gets freed.
 
-Can you explain the reasoning behind the basic design decisions?
+In practice, this is very rare and I have not been able to reproduce
+the issue in my own testing.
 
-- The folio paths resolve through folio_memcg() while the task paths use
-  the task's cgroup. Why isn't the whole thing tied to memcg?
+Switch the order of the reference drop and the publishing so that
+we first publish the NULL pointer, then drop the reference.
 
-- Why do the task and folio paths combine the chain differently? DISABLED
-  binds the subtree for tasks but is skipped for folios.
+This is based on a report from Sashiko, who found this pre-existing
+issue in my page_counter_stock series [1].
 
-- Some of the folio paths already have the faulting task.
-  should_numa_migrate_memory() takes @p, and the do_numa_page() and
-  migrate_misplaced_folio() checks run in the faulting task's context.
-  Why not use the task there?
+[1] https://sashiko.dev/#/patchset/20260928192349.3432886-1-joshua.hahnjy%40gmail.com
 
-Stepping back, the basic design decisions don't seem to have been
-thought through, and the descriptions restate them at length without
-explaining them. I'm not the best person to judge how useful the
-feature is in practice, but getting this version into acceptable shape
-is likely a lot more work than having someone who knows how to do it
-just write it. I don't think it makes sense to drag this out and force
-it into shape over many review rounds.
+Fixes: e1a366be5cb4 ("mm: memcontrol: switch to rcu protection in drain_all_stock()")
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+ mm/memcontrol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks.
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index e7d7db5718f9a..a05d9a8baa1b6 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2172,8 +2172,8 @@ static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+ 			stock_pages -= nr_pages;
+ 			WRITE_ONCE(stock->nr_pages[i], stock_pages);
+ 			if (!stock_pages) {
+-				css_put(&memcg->css);
+ 				WRITE_ONCE(stock->cached[i], NULL);
++				css_put(&memcg->css);
+ 			}
+ 			ret = true;
+ 		}
+@@ -2209,8 +2209,8 @@ static void drain_stock(struct memcg_stock_pcp *stock, int i)
+ 		WRITE_ONCE(stock->nr_pages[i], 0);
+ 	}
+ 
+-	css_put(&old->css);
+ 	WRITE_ONCE(stock->cached[i], NULL);
++	css_put(&old->css);
+ }
+ 
+ static void drain_stock_fully(struct memcg_stock_pcp *stock)
+-- 
+2.53.0-Meta
 
---
-tejun
 
