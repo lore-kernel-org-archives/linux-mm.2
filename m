@@ -1,93 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B70606A33D
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 11:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C9760A2600
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 11:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=YdxpoT1C
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LWoFlziJ
 Received: by kanga.kvack.org (Postfix)
-	id A07636B048A; Tue, 20 Oct 2026 07:08:14 -0400 (EDT)
+	id 023A66B048D; Tue, 20 Oct 2026 07:08:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DF056B048D; Tue, 20 Oct 2026 07:08:14 -0400 (EDT)
+	id EE8556B0490; Tue, 20 Oct 2026 07:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CDDF6B048F; Tue, 20 Oct 2026 07:08:14 -0400 (EDT)
+	id DFE866B0491; Tue, 20 Oct 2026 07:08:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 637CF6B048A
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:08:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E4BCC4011D
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:08:13 +0000 (UTC)
-X-FDA: 85342730466.13.6836D41
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 707574000C
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:08:10 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=YdxpoT1C;
-	spf=pass (imf27.hostedemail.com: domain of shawnq1@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=shawnq1@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B57556B048D
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 07:08:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CA6D14013C
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:08:21 +0000 (UTC)
+X-FDA: 85342730802.02.9A29CE7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 90F824000B
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:08:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWoFlziJ;
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792494492;
-	b=C/6mTaJzC3fpNeh52jPuzV0ebvJfb77C7YCYPLQmzHewv9rtqGSSnlBKXZh6/jpWWos+RI
-	8CWMFW4QHbXZTN5/UOPg1gKy3BKA9sFuTJjkv+xBvuyC8vVw0yLR+l+dW46L8F9moca5De
-	+uOl0pYpNFIiZWypOeV2YR7AiqysjAg=
+	t=1792494499;
+	b=G53najf7M995pKpHwFbFpoultg8irRnB4RICv63sLIWkXrNDZPNcbGkEzkGIlmRyCgmguR
+	db14sAbtGpA8m0GegF2i5KldSF2PEwDBhL90KG/llMc8oMchXiGQFWHeRhrgB5LGtZbn45
+	BnmcDjdaw3s+NeN/lA6p9PXML8clVNI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=YdxpoT1C;
-	spf=pass (imf27.hostedemail.com: domain of shawnq1@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=shawnq1@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWoFlziJ;
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792494492;
+	s=arc-20220608; t=1792494499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=K7fwwiQB/zWnok5poPdrINg9tw/c644NfMqHbW+4WN4=;
-	b=3jpuTx96Ra1YgXej0fqE5AG3Yxs0aBIS6dbVPJdZuMa/jge/YcCHxdOpdT1Nke7UHe4+ch
-	/cl9XY9UbBoJf4F2tA1Z9k1RpGeK8NSzZDj5Vj+xpuwA8Ugm0YvYduvy0MXUcjloy3wbEU
-	3NdxbFMDG5EvxN7VmAl1qVJTXkbnjz4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=K7
-	fwwiQB/zWnok5poPdrINg9tw/c644NfMqHbW+4WN4=; b=YdxpoT1CyvCeMSv+jB
-	cZycIkvJMGE4BE+0PM+3oBZy+Jupg/gibadotxbUltpkbdUWuuL0T6R7RywnIJTN
-	kAqKxh+42X9qe3mCHEhenk4yl37lICoBsaZ541QgYTDjVkNg9EkpymAMlkfO98j4
-	+YXgKh4ulF8/ezCGGUC0B0zBc=
-Received: from shaos.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD393GES9dqIxTHBA--.10263S2;
-	Tue, 20 Oct 2026 19:07:49 +0800 (CST)
-From: shaos <shawnq1@163.com>
-To: akpm@linux-foundation.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Liam Howlett <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] mm: mremap merge clears RWP state from an untouched neighbor
-Date: Tue, 20 Oct 2026 11:07:48 +0000
-Message-Id: <20261020110748.959870-1-shawnq1@163.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PlF7ghBaTUOdulozqC4E2cPwGAg3QGfupH1MiS+T580=;
+	b=glALD6BTJd4MeLt2UzFv1MYISEg5byRRADSG5yHq5LL1T+rc1w60CwJz5JAJbmPOIXVObu
+	WNkrYFLc5MpOCQmkRrgbyYlUbV+1Zo//Gp0ihreCcMx2kxJiAW7TiCmM0T8wMseE7pq+ZT
+	f/xT8CfKEg7YAgRJ7AXSil53BSOKYTQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9937E4082D;
+	Tue, 20 Oct 2026 11:08:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547E81F000CB;
+	Tue, 20 Oct 2026 11:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792494498;
+	bh=PlF7ghBaTUOdulozqC4E2cPwGAg3QGfupH1MiS+T580=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=LWoFlziJUISk7pi2VMy49q89tXOvLa/1vZF+kaDch//hMl5Rx1cjBvmCoEF4tW91w
+	 FXfNinvQWAvC/afqzLQ3j4gvmvJb4va7CW0t01WIfQjOKxzvl7VDb6rbonvcR8Vrd0
+	 KpbWN2F0nb7zY2sfYGyfiZbT5oklOmB9eY2lTKKh0UfwyB9R8GHkZhoVHiWMZcvJFB
+	 YJnESXMK/u8fvej2k/lO/oW9/P54hRW31vDPeLvnkHBwrgZ1vN9lCrdggmUf6zF8io
+	 UCUwEn4YAWBCXEj+D4ulM0xpZdmvppDAsQQUt9HywjvbKdIS46IoVdqXavtJQ0o18G
+	 NYyNXupfdPSLw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
+  akpm@linux-foundation.org,  linux-mm@kvack.org,  vipinsh@google.com,
+  linux-kernel@vger.kernel.org,  dmatlack@google.com,
+  kexec@lists.infradead.org,  pratyush@kernel.org,  graf@amazon.com
+Subject: Re: [PATCH v1 1/7] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
+ to freeze sessions early
+In-Reply-To: <20261015093816.2438942-2-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Thu, 15 Oct 2026 05:38:10 -0400")
+References: <20261015093816.2438942-1-pasha.tatashin@soleen.com>
+	<20261015093816.2438942-2-pasha.tatashin@soleen.com>
+Date: Tue, 20 Oct 2026 13:08:14 +0200
+Message-ID: <2vxz8q3shboh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD393GES9dqIxTHBA--.10263S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF45ur48Xr4kuFWfGryrtFb_yoW8KF4Dp3
-	92y3yY9asFva15tasava18Z34F93Z5Jw17Xas8Xr48ZrW3Kw1jyryfKa4jkFy3ZFs7uFWr
-	twn8JFn7XFn0qF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYzuAUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC8QWEkmrXS4WdhAAA3I
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 707574000C
-X-Stat-Signature: x7i41gidx98m87hhc73aqax5syw3b84s
+X-Rspamd-Queue-Id: 90F824000B
+X-Stat-Signature: ab4es6hc4qady1mnkx5za4hto8p1prmr
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792494490-886840
-X-HE-Meta: U2FsdGVkX19f6BK/b11K1j25oJWkHaZtCogGxBCj/MLhXWh6ik5SKd271MBOnBfaMg7timhG03GTyB8wOp8vj0DvHNh6qLKrLELd1gnZVErZzxXRDYLW0UxE+LKQ1T1ihTeRY6IDp/2v1vcLAyKAFUfMK2LKJmBzfjSqsTQ2NB1z2QcoRXxCrh1SUa5Z6aUSfj1C9gIfKpOhN0vayYyPlTDnS7HILNHsoOguZxrDbvGIGW2Gf16T6yM7sswzxDDR4vK1q4ktle7Isf1UYYm3mCI0xAyVVKyr57t2xHWeq2/NpCFKExH4Ob2ofeJzkdN1BJtQmnbdA+IyN9edveHuS7J0m4gDVgX6ncRPKVG0p73EXGJNojU/PvCNFVDzxKH800nLX+U+4en7LvTt6Jj790MwDfmOX/lzLw9ge6+ntnQeWlTKu48M6cTtL4pQNx16JpmjHPM8MJDHwHjtctYfygafI9jdeMIkwXXnOE3I2AC2kpWR8TUODt8Q32OqL1eWZZDUsBNaOxZ8/ieuUnm4+NhaAbuRVcDC9Ceap22JE7H1mzDHmqK7vjkDa/6Vrgl1H9G3UDka6XaTJ19m2drM6/Er8Sz5SY3EmmU/JIPD6AjRoTzcD/MA+RO0fpsSrtwOljpryV5cz5kSqzWhJ9556KkOQ9dt2tWiN3hBh1yV+jGA4ATYaQkG+o0XS2e3kETp7H9RLvhvVI09N8z3ermQ0lpQhyokP2Ca2LzwkF4PTKwgUdYyWT8Hb4Ch3KhCIKWqMYbxEf4GXz+wnJ8Fu3EtLLr0bs1G72S2wjbXsoJ/lhTWWXWUM3uWNE7CObQNLfbqZfoiiV7PddICmyIso81xA/kfamiIlMua6u0H/draYNCU/on9RN4hWa1IGuPeKaR0mQLeSKZgZVYMXjtnOl+wn8M0msl5TOPb6YWRylhuCP2XSGBa2BLadJLdE8/+cV7awaRdOX3Q/1veaoPrutu
- THvSyZeJ
- cC4vO+IFpPEMQ7XYC0rYUfymGZjFWSsl6oXquGnRtoBcQUYhZqnJGqKseg2wwu2ElxEHr74kPVNJsSn0zaUEAbi77l/GCVuUoBJPUHtues3BokiwvHxRQOpxsEhQZC0Y0+Qu9q9AjDOHKsUf41WHz/SflHGZ9U0sdN8bB9p0KFNMCSVtPMu5N3Q/zodax7dXhzVhWeuOnutx6yWZyKWTQgT/FijODZD3uOUnq1o6ZxEjRUZxmZmKuF6kNOUvQ4kN4aR4Nl9ggnJuUn0skvItGIGyaVU+0cT67fs4tIcNBXnLcYGo=
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792494499-786611
+X-HE-Meta: U2FsdGVkX19sjN9wSs/0llBiXomf+GA3xT5QxcvRJt5da7Be/rodMwTKvNoc/LWO3jdiYEeXHx6nAyLOwuj8tdFp940I2mg5XRAh3uDXzeckXO55GdD5DlC/kUi0Njpt225YWSJyTOiTc7xJgPNHX4ieCCX5Q5ddRO4rb3z8mRBTdRljkXvcJqiHO6UW2vR1Zunp5vwjE7W8DN1ssOES6Xj+XcA2zk1SvV5nJL8xAilonKwVE11rc5fTsOIzLCRJBSrXJfaWhKqDtgRf7knlVatt2Ui1+LOkzE1gtd0GbXukwUKusJXJKWDca+WhsSIWl8itC86KOKH5PUd2W/4GNb382aKP9SxZgGixscIXMJo60WrDRcQrhBrr0BwxjUePuYsBXdt17CY4AdzxMDzXrIiJjBahgcmhQ4KNEd5RuNrJmPH+iH6xcFt8jt6LKYIKo1AwjnW/FD56tYty+1jv/DaVHuioOF/z2UPi7FVgZM+9zjEf4xAwqV3zSCBonkJjf0oI0HqV3qMVWY8xe43pBLfPD5Nn35tsvSwNau9IaaJW5YrppGGlbuiyvV9bI5OEx7gBTjuzv9i53eBiHFGgpQU2crA1PnnVLjCwrstorM83x49aDD/PN3QK1GO9kg8Mo0RU0F3Z8UUQx/9f+eX9dgJmyy8EdE4n3K3zPp5btYigk3aZ0KMFN7/44azqn3B/s0qZKF/pGeD7Ukef1IYE0BkMEBMGvalwPIWJVrDVoSyJho7d73jpapAMONr+jSRjMRNUE02s4CbRAGHwPWeAFelpU2WmAqvVDK5WfHHSdem7PUDyMVcCE+dA7/BNrrEG3VLO1Tifhu8S1OAYnlViRbwztje1sE6yMX3BnIYfPb3AhFgTdL0pBLjd66phlm7hCR6mW1kX75+02Occh9y2t43c2lEZ11qkRStRKSg5XujVAPHK3UMWm1+wOGYq0o8EjTYJXZTrdKCn0BsN1qM
+ AoNWVFOv
+ T136CHqPvIMFr8I9Dyf6Z94whq9YzgN6CyPfkUPwGW0O+ijRtPvXZLsGR53XFlOrXwKcEaS+bIsRuJLMifG0oiUZMvtPzHRFofrrveHUBs5nV7+iCeuRF/0LUO1Xn52aNjevW9zUxmHXiPoODjCa5oXF7KmfaaVFEb2E5t8g721QaIeMYTu9YFtwMPyndI3XCOoFh0N4vdsVUuIiVW47JlSyvGpIqF0rEHsfuX3zbUF0qyn7f+p7HUMoJIIZ5lyV4BR8izNOGcahVrQ8zOTLI44FdWeg9B1diofkHMU2RSBrlTs4fJHVz0I+NGoVyUNsniqSH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,34 +99,203 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello,
+Hi,
 
-An adjacent mremap() can remove userfaultfd RWP handling from a neighboring VMA that was not moved. The moved VMA and the existing neighbor use the same userfaultfd context, and UFFD_FEATURE_EVENT_REMAP is not negotiated. When the destination merges into the neighbor, mremap_userfaultfd_prep() resets the context on the expanded VMA, including the neighbor.
+On Thu, Oct 15 2026, Pasha Tatashin wrote:
 
-The neighbor's PTE remains PAGE_NONE with _PAGE_UFFD, but the VMA loses VM_UFFD_RWP. A read that delivered UFFD_PAGEFAULT_FLAG_RWP before the move then completes without an event. The same-mm PoC reproduces this on two fresh boots. No-move and nonadjacent-move controls retain the RWP event.
+> Currently, LUO sessions are frozen automatically only inside the
+> reboot(LINUX_REBOOT_CMD_KEXEC) pathway, where luo_session_serialize()
+> iterates through all outgoing sessions under global write locks and
+> freezes them serially during shutdown. Allowing userspace to decide when
+> to freeze a session once it is done with it (and to freeze multiple
+> sessions in parallel, since luo_session_freeze() only acquires the
+> per-session mutex) avoids postponing this work to kexec shutdown and
+> reduces blackout time.
+>
+> Introduce LIVEUPDATE_SESSION_FREEZE on session file descriptors to freeze
+> a session early. The ioctl runs .freeze() across all preserved files in the
+> session and serializes their metadata. Once frozen, no additional files can
+> be added to the session, and subsequent freeze calls return -EBUSY. Freeze
+> is only valid on outgoing sessions and returns -EINVAL on incoming ones.
+>
+> During kexec, sessions that were already frozen early are skipped, while
+> sessions that did not invoke this ioctl auto-freeze as before. If an
+> early-frozen session is released before kexec, its files are rolled back
+> via .unfreeze() before being unpreserved.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+[...]
+> @@ -487,8 +488,10 @@ int luo_file_freeze(struct luo_file_set *file_set,
+>  		file_ser->token = luo_file->token;
+>  	}
+>  
+> -	file_set_ser->count = file_set->count;
+> -	file_set_ser->files = kho_block_set_head_pa(&file_set->block_set);
+> +	if (file_set_ser) {
+> +		file_set_ser->count = file_set->count;
+> +		file_set_ser->files = kho_block_set_head_pa(&file_set->block_set);
+> +	}
+>  
+>  	return 0;
+>  
+> @@ -501,7 +504,7 @@ int luo_file_freeze(struct luo_file_set *file_set,
+>  /**
+>   * luo_file_unfreeze - Unfreezes all files in a file_set and clear serialization
+>   * @file_set:     The file_set whose files are to be unfrozen.
+> - * @file_set_ser: Serialized file_set.
+> + * @file_set_ser: Serialized file_set, or %NULL if not serialized yet.
+>   *
+>   * This function rolls back the state of all files in a file_set after the
+>   * freeze phase has begun but must be aborted. It is the counterpart to
+> @@ -512,7 +515,8 @@ int luo_file_freeze(struct luo_file_set *file_set,
+>   * their respective .unfreeze() handler callbacks.
+>   *
+>   * Context: This is called when the live update is aborted during
+> - *          the reboot() syscall, after luo_file_freeze() has been called.
+> + *          the reboot() syscall, after luo_file_freeze() has been called,
+> + *          or when an early-frozen session is released before kexec.
+>   */
+>  void luo_file_unfreeze(struct luo_file_set *file_set,
+>  		       struct luo_file_set_ser *file_set_ser)
+> @@ -521,7 +525,8 @@ void luo_file_unfreeze(struct luo_file_set *file_set,
+>  		return;
+>  
+>  	__luo_file_unfreeze(file_set, NULL);
+> -	memset(file_set_ser, 0, sizeof(*file_set_ser));
+> +	if (file_set_ser)
+> +		memset(file_set_ser, 0, sizeof(*file_set_ser));
+>  }
+>  
+>  /**
+> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+> index 64879ffe73781..b42369c3b1f30 100644
+> --- a/kernel/liveupdate/luo_internal.h
+> +++ b/kernel/liveupdate/luo_internal.h
+> @@ -64,6 +64,8 @@ struct luo_file_set {
+>   *              previous kernel) sessions.
+>   * @retrieved:  A boolean flag indicating whether this session has been
+>   *              retrieved by a consumer in the new kernel.
+> + * @frozen:     A boolean flag indicating whether this session has been
+> + *              frozen early from userspace.
+>   * @file_set:   A set of files that belong to this session.
+>   * @mutex:      protects fields in the luo_session.
+>   */
+> @@ -71,6 +73,7 @@ struct luo_session {
+>  	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
+>  	struct list_head list;
+>  	bool retrieved;
+> +	bool frozen;
+>  	struct luo_file_set file_set;
+>  	struct mutex mutex;
+>  };
+> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+> index f48e9a4185f97..403906937bc0f 100644
+> --- a/kernel/liveupdate/luo_session.c
+> +++ b/kernel/liveupdate/luo_session.c
+> @@ -34,10 +34,11 @@
+>   * 1.  Creation: A userspace agent calls `luo_session_create()` to create a
+>   *     new, empty session and receives a file descriptor for it.
+>   *
+> - * 2.  Serialization: When the `reboot(LINUX_REBOOT_CMD_KEXEC)` syscall is
+> - *     made, `luo_session_serialize()` is called. It iterates through all
+> - *     active sessions and writes their metadata into a memory area preserved
+> - *     by KHO.
+> + * 2.  Freeze / Serialization: Sessions may be frozen early from userspace
+> + *     via `LIVEUPDATE_SESSION_FREEZE`. When the `reboot(LINUX_REBOOT_CMD_KEXEC)`
+> + *     syscall is made, `luo_session_serialize()` is called to freeze any
+> + *     remaining active sessions and write all session metadata into a memory
+> + *     area preserved by KHO.
+>   *
+>   * 3.  Deserialization (in new kernel): After kexec, `luo_session_deserialize()`
+>   *     runs, reading the serialized data and creating a list of `struct
+> @@ -222,6 +223,10 @@ static void luo_session_unfreeze_one(struct luo_session *session,
+>  				     struct luo_session_ser *ser)
+>  {
+>  	guard(mutex)(&session->mutex);
+> +	if (session->frozen) {
+> +		memset(&ser->file_set_ser, 0, sizeof(ser->file_set_ser));
+> +		return;
+> +	}
+>  	luo_file_unfreeze(&session->file_set, &ser->file_set_ser);
+>  }
+>  
+> @@ -229,6 +234,12 @@ static int luo_session_freeze_one(struct luo_session *session,
+>  				  struct luo_session_ser *ser)
+>  {
+>  	guard(mutex)(&session->mutex);
+> +	if (session->frozen) {
+> +		ser->file_set_ser.count = session->file_set.count;
+> +		ser->file_set_ser.files =
+> +			kho_block_set_head_pa(&session->file_set.block_set);
+> +		return 0;
+> +	}
 
-HEAD commit:    24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-source version: Linux 7.3.0-rc7
-architecture:   x86-64
-compiler:       gcc 11.4.0, GNU ld 2.38
-QEMU:           6.2.0
+This is getting messy. If early freeze, then you set the file_set_ser
+here, if late freeze, you set it in luo_file_freeze().
 
-console output: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/368568c2dd47417b54a957c8d9cc09f77f28b236/console-output.txt
-kernel config: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/4989bc843fa61b5eaaaa53422238ec39e4356b70/kernel-config.txt
-reproducer: https://gist.githubusercontent.com/shaos26/3b44971d9385a0cd18cfbf2e9bd730c6/raw/109dc86c28debcaca07aedb2d450ed1e95ae5edf/poc.c
+I think it is better to just set it here, and drop the code from
+luo_file_freeze() entirely.
 
-Build the kernel from the revision above with the attached config. Build poc.c statically with pthread support and place it at /init in a minimal initramfs. The positive run and controls use:
+Same for unfreeze.
 
-    timeout 180 qemu-system-x86_64 -accel tcg,thread=multi -cpu max \
-        -m 1024 -smp 2 -machine q35 -nodefaults \
-        -kernel build/arch/x86/boot/bzImage -initrd initramfs.cpio.gz \
-        -append "console=ttyS0 panic=-1 oops=panic loglevel=7 rwp.mode=positive" \
-        -display none -serial stdio -monitor none -no-reboot
+Maybe also rename the function to make it clear it only runs for
+serialization? The core of serialization is done by luo_file_freeze().
 
-Use rwp.mode=no_move and rwp.mode=nonadjacent for the controls. The positive oracle is PRECHECK fault flags=0x8 followed by POST no_event value=0x41 and RESULT=RWP_NEIGHBOR_ESCAPE_CONFIRMED. This is a userfaultfd tracking defect; no privilege escalation or cross-process access is demonstrated. I checked upstream master f47d223627f8; the relevant mremap/userfaultfd logic is unchanged there, but runtime validation was on v7.3-rc7.
+>  	return luo_file_freeze(&session->file_set, &ser->file_set_ser);
+>  }
+>  
+> @@ -249,8 +260,11 @@ static int luo_session_release(struct inode *inodep, struct file *filep)
+>  		}
+>  		sh = &luo_session_global.incoming;
+>  	} else {
+> -		scoped_guard(mutex, &session->mutex)
+> +		scoped_guard(mutex, &session->mutex) {
+> +			if (session->frozen)
+> +				luo_file_unfreeze(&session->file_set, NULL);
+>  			luo_file_unpreserve_files(&session->file_set);
+> +		}
+>  		sh = &luo_session_global.outgoing;
+>  	}
+>  
+> @@ -267,6 +281,9 @@ static int luo_session_preserve_fd(struct luo_session *session,
+>  	int err;
+>  
+>  	guard(mutex)(&session->mutex);
+> +	if (session->frozen)
+> +		return -EBUSY;
+> +
+>  	err = luo_preserve_file(&session->file_set, argp->token, argp->fd);
+>  	if (err)
+>  		return err;
+> @@ -340,11 +357,34 @@ static int luo_session_get_name(struct luo_session *session,
+>  	return luo_ucmd_respond(ucmd, sizeof(*argp));
+>  }
+>  
+> +static int luo_session_freeze(struct luo_session *session,
+> +			      struct luo_ucmd *ucmd)
+> +{
+> +	struct liveupdate_session_freeze *argp = ucmd->cmd;
+> +	int err;
+> +
+> +	if (argp->reserved)
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&session->mutex);
+> +	if (session->frozen)
+> +		return -EBUSY;
+> +
+> +	err = luo_file_freeze(&session->file_set, NULL);
+> +	if (err)
+> +		return err;
+> +
+> +	session->frozen = true;
+> +
+> +	return luo_ucmd_respond(ucmd, sizeof(*argp));
+> +}
+> +
+[...]
 
-Thanks,
-
-shaos
-
+-- 
+Regards,
+Pratyush Yadav
 
