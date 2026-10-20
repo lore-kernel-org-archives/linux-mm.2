@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0F4606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 01:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD08A606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 01:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=onJfwJKb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n6eDkrQT
 Received: by kanga.kvack.org (Postfix)
-	id 02C376B0113; Mon, 19 Oct 2026 21:15:54 -0400 (EDT)
+	id C3A9E6B0117; Mon, 19 Oct 2026 21:16:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFE4A6B0114; Mon, 19 Oct 2026 21:15:53 -0400 (EDT)
+	id BEBED6B011B; Mon, 19 Oct 2026 21:16:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D72536B0116; Mon, 19 Oct 2026 21:15:53 -0400 (EDT)
+	id ADABE6B011C; Mon, 19 Oct 2026 21:16:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ABA536B0113
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:15:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 386591C425F
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:15:53 +0000 (UTC)
-X-FDA: 85341237786.27.9D04C79
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A2343A0005
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:15:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onJfwJKb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A1066B0117
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:16:01 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23074C0828
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:16:01 +0000 (UTC)
+X-FDA: 85341238122.19.714FBA2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6E339140002
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:15:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n6eDkrQT;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792458959;
+	b=O1ZtveXQ1niwxG3P439VdVcKu0T7d8TQHmeWaKdWweZSTMMe5JfzpCbfKp4prXuaM3nku3
+	qP0T88y7jIT1IdKMFndaPfyUmnDlDqX0qr+7AfCDGwCLmhj8CzGE0l3c4JCFiXGtrr1yMq
+	Pi9m76iBpdEKmXcS/EI2+pQ3iKzGf94=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n6eDkrQT;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792458951;
+	s=arc-20220608; t=1792458959;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b0zbPbIVrw8g+L4HtojTXOfkJRf2Y4cPRt8OPTYZy2o=;
-	b=zJGAG4YkrBTdEOO2lv2XvoLLAfoHKcxKlNJoJ/LIxgmkB5Z5Lh0hGN4Npvi3olCpFf/mja
-	DwHK9qofvt7Vol2R01/4+Ze/uFYRJDi+Lz89KM/ZLeMmdyqL3/RD2/I7nSJ4FqMFYEiF7s
-	Qabyy3CMeXg/7EwYW8hBSQdeXEUFahw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onJfwJKb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792458951;
-	b=uaNbHKIBOekqTFqIzXAwGY+QLR6DeecCGVGnhuts4+SP+G/mBHwCA79Vfoj5VSgK9I5uiZ
-	v0qWGdb0dbBDrTaHj2TXL9XgITfmIO0f823LZNYBrnDhgsoRxAG8FUb3ntur7TLpG0CogL
-	W2d6UKzCpwsOhBn1hiH6dbMPekJSqDY=
+	bh=PofXJdtzFZtwuWvsf1UigVwLVE0UlV/1/R7tX4bqvFQ=;
+	b=Loq+Y1aTxyq9UMp5/DwTAILVRJqt/pNozC/ZEcRZAben/z6V9EZExt2X6llvj/zfIqsjBU
+	4OC6o7m71LQcEn82DEvYHbbhwYSu77ATVkqR35Bs6YgtJiIcjOuoyYKBF0ax7DGWlct8nn
+	XmELOV2RME7fVPtXTemqjbkMct/n53Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C742600AA;
-	Tue, 20 Oct 2026 01:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F751F000C4;
-	Tue, 20 Oct 2026 01:15:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BBDD141262;
+	Tue, 20 Oct 2026 01:15:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431B51F000C4;
+	Tue, 20 Oct 2026 01:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792458950;
-	bh=b0zbPbIVrw8g+L4HtojTXOfkJRf2Y4cPRt8OPTYZy2o=;
+	s=k20260515; t=1792458958;
+	bh=PofXJdtzFZtwuWvsf1UigVwLVE0UlV/1/R7tX4bqvFQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=onJfwJKbHbGdhCCzWjPhUi41SXBY/P3WASN9/ZXkShX3yQcO0ThFM5am6VhHMAKIb
-	 ZDoHRkORVfUVoSls68OkttynCoYL3/HqPYDCv4IhQ+dUrgZdCyUYK9vPBZEcccR9jX
-	 nwWe4q3ewkgXkAZrtaodf+bIwo1d4LBQ+ZnuJs0rerMC90Yj3wuZYim+Y93mJfP4rp
-	 HfQLxLagcrSwRcnn4J79wIW8LdT6Ef3XbNsB//iFuUExuYCTVt8cAgFS1X7SSJp6cM
-	 eh22Dv5lIYItT6CyIwvBcR5YoE7jBQru+evLNn+apE3NuNqsLjBrd153OlU8iBRZCe
-	 4Z6/GTqUGf07g==
-Message-ID: <sashiko-outbox-178404@kernel.org>
+	b=n6eDkrQTBE5XG7WvdONAHThI+LJzOulTvRSvB8qY1k1UsekWhZ7+AXU1YyrH08L+l
+	 //i6NX+1L1RXJQF3WPYzv1RDKLjOtHgNywDL4q0FwVb5vBwkJFGUZo8ZEG337Ukcxn
+	 AWmiW8qMMCoUt/DKKzuC7+2LYtq6PaMI6IVn6HbX4/geMgSh6r9ZqTNtSknEUeyygV
+	 VE/k8IZrCsDbw1oHh1SOt5FvM8JWK7Sv57ZZs0RrcDKZeuJKH+TbSyr+EboQ8sdq4e
+	 YCvKxc5zxT4q/n7u6MtugvjWlyZ/Lyz3avGHRIb6ODk1t23/8FcJ5qptLPnaZTBxT5
+	 RYATOqGJJeMow==
+Message-ID: <sashiko-outbox-178407@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/8] x86/mce/intel: Bound cmci_rediscover() to a
- single topology peer
+Subject: Re: [PATCH v2 6/8] sched/deadline, topology: Avoid O(N^2) dl_server
+ bandwidth walks during root_domain rebuilds
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Pasha Tatashin" <pasha.tatashin@soleen.com>, kees@kernel.org, rppt@kernel.org, juri.lelli@redhat.com, nik.borisov@suse.com, tglx@kernel.org, vschneid@redhat.com, kprateek.nayak@amd.com, vincent.guittot@linaro.org, bp@alien8.de, jpoimboe@kernel.org, tony.luck@intel.com, david@kernel.org, mingo@redhat.com, akpm@linux-foundation.org, linux-mm@kvack.org, seanjc@google.com, ljs@kernel.org, zhangguopeng@kylinos.cn, dietmar.eggemann@arm.com, mhocko@suse.com, vinicius.gomes@intel.com, vbabka@kernel.org, peterz@infradead.org, surenb@google.com, hpa@zytor.com, x86@kernel.org, dmatlack@google.com, tim.c.chen@linux.intel.com, kexec@lists.infradead.org, pratyush@kernel.org, dave.hansen@linux.intel.com, rostedt@goodmis.org, gmonaco@redhat.com, jgross@suse.com, mgorman@suse.de, graf@amazon.com, liam@infradead.org, ridong.chen@linux.dev, blum@kernel.org, longman@redhat.com, bsegall@google.com
 Cc: tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com
-In-Reply-To: <20261019011446.834487-4-pasha.tatashin@soleen.com>
+In-Reply-To: <20261019011446.834487-7-pasha.tatashin@soleen.com>
 References: <20261019011446.834487-1-pasha.tatashin@soleen.com>
- <20261019011446.834487-4-pasha.tatashin@soleen.com>
+ <20261019011446.834487-7-pasha.tatashin@soleen.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 20 Oct 2026 01:15:47 +0000
-X-Rspamd-Queue-Id: A2343A0005
-X-Stat-Signature: smipbaxo4the1a5eppdk78yg3kxbx8m6
-X-Rspamd-Server: rspam06
+Date: Tue, 20 Oct 2026 01:15:55 +0000
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 6E339140002
+X-Stat-Signature: iyfwyn9jq8ft69po8y45qojgw1nre6k6
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792458951-718905
-X-HE-Meta: U2FsdGVkX1/MS1s0dtjtE3xtKDnh5haBrNoZcvZLC7a5/I777VMl+HYz//KC8RbVhbKZ7q1dLV0PBqknklZ1fAlhO4/KMAiyOczcZw7pJOHZz9bXImv0sh9MC2jJxUDwwwYEdz/IY0gxCFwD4YKm2YYA/eU0s30VybB829xHA4jwoGZ+Wjjlw+NfA3xA0ExlJ4tPpb9zqzxKMuLYCgvgNgi3tr1Nf+PdDHf89/35L0JrNPHPeRxG4rhlESJB2iRecvD5E0SbbOiScf3bkmJH61mInAVNfR64KyIHoBJRe8HNRX5mr/mvlW6dsrxch6Rop/3hDKntvOlGi5jFIS4v0FoRTE78YldBT0WWOHWSuWlrNFqGXC+edXlqvAraC8ELaamUWgI7/W+EQv22/OVPRobjBb7l6eQRijlFI2pLxCxtps96Ixv3CyD45S5JRurMcrQkXoKPrV8yL2VItGVJ9nXlALcyAoiR4CpdMRNkcbwTDI6DdA5r8Dw93wRcpWrn337wAQrZNkx69E1bklr7trlGHH363js5XxmwXHRgLCSOHf3OS3k1Z2NA8exWlrhpx5ELXyq42VcRLFHWhMjpBJGslTv34SOpzgKZBSGQJpi80gmCfPk0LfF+1+0QHN8gN8hEjdX5VoJTxDvJKvEGy8XU72+6R2SVkxLHNFyJMAWXiwf8QjuItZUWfSGluhlANCz6oxhVAH+tyWs8whcnnk4Gu/WYbMqzKNph+vOt8gNeznfdCBKg33weNblqieouPz7cePlJS/cPq2Sh6LIkPkub6wy2kiQekxyCAXynZXs33jutgCgV3z1T0Yq8YIKg+IYgwz/YckJAAL4TBvYYMLfzr3eXaBV219C2oTfcZpADsWNp7I3xsw0n2FaRPNZES+H/wV0FZN1relnYTe2XbcOoA5FMO16K6San5I+k6a/T1ZulnSNN9egdZQaT9NPD5AmTl+fu8RZx8ZNmM/P
- KtZdOFgr
- di9KeoJ1Ok+8eJWageS6n2BrjJTNNrHfD5/Fcc8ji8orO6bQlfRSSjro4Fd9bw7sQykUHNYgyIWC2XdYFnbXqTTP2U4suWXrUXHTa4qTriqx1aXtLqhoPPIfPtM5I7ALrT7kX9yvvofkhrUkVoUHE8mB2mv1MzUv0sXHb5ib5XIWHL9BB2zOXi/FZq/iFNF1EEAmS/gsYUIqBVVPk23FjlyyaTknx+WZukobyalD5uNOXsXDR5C1OtdnmYq4DlUXSsEDMWpAyjO2Ilne5tgc/kKEB2RMVqgu2WiAJ/e3YXfZvI8HcC/l1Kmb1SRzFCMsbbW4ou3YHXa6R80AqIqHTr80bxa9KyLkERcQF2Sk5F0mcUbat+tRxxXjcJ1SHQ3dCLAX7+qtx5JLI+nvRRt6aVzb3eYqIeDBs5j/UNR5FhP8UYDFHtx/KvFPqPBAN4aaESXYGhHnyvwy5iIkmIVeOnkp8GmzhGkcspcM7+quHXKNB+DAk7wa6bMjtWa1D8B1cnxUQVOsikGs+JOgS4czOZqdHfPNEfucxvv3SDWaJ53YIfQ075qrL7PwI8G8Ip20AAeE+cgZdYc1c57HSTQWN4weAdBma6n/7FRWrPj2e9enYIiaJqS08PUWzCDonlZ8bICwrAXW1PKB5TzkHqw+vdIcmq9StcXlgA+AY8mvUooTJnJY=
+X-HE-Tag: 1792458959-751616
+X-HE-Meta: U2FsdGVkX18Qlxem7kxW/JWn6evGP+kegyiWAWOOS602E4u3gQJhFafgVrDzQ7gu04V5v6ZczmsIi3CdUvtIg5DcLxIITpXIiLLdQ5rqb96f+Bmpyvj5VIY/lJ0HT082iDN5y5WNmmReWXKRu7RTnYtHLWNLAoiYG+LniVw97bhNrWyZAyCPJey+kokcNMch34Wt0so4DoXzz8250lt4R+2fkXH4whAtvDJp8xrT7qOTZofzL+SX+3rZoxsQYcRegW28UtjRnn8mFWJ2MsGUkwSQhxy5AQ4uWNl+hSQ70+FJZd5udPmSHjlnzbCdkzVmc/oN9Ts79PS2Mu9hV/4Nambus3oxmgq9Cbmfwe75moP9kcEZK52IoM33EqxTLjuncqyZ3L5BqgHq3Z2nVORvKgl4KraVig3QEXXnIP3gCWq+jnuUnT0/qpIZJaCsB/5gsA3DKOZmaSEMEfxzJ6LBEePw37rvNJWZnp5XDlQ9IAF5ICCl9XC37nMwxbCic5krWoRhA4MR6O0ESbSPzd7hUOUK+PZN25cy6cXwFraqjNdKaJoPqSfq/+XTzIQIP1vYXZ0BpZjBzNayQW+ZSGE5QlvmtUeyPdN1ofmLMlXsEi7l7BGg/b2XfcY4KRP5Mao+GPP0nGRCXP938BSh7VhrJ1qUn2waXoIHTihI/nVEjDYMnef9otUI2svrXQ/OHeVJYGPxbg+mCsd2pw9aeNAnT3usnQibLhe2uhraG7xtFN4h3WB6kgpqvcBi50iXU3MEJaYdiJCLEpx+D4SG0+MHtACymYAMo088LoEE/2OFmpTd/bYjR9fc7nshObKOCLJJ2KUs9hTw4pP+JxOZpFz5nGhwoZ64/WtGD6Bkp4F0hbZcmNn+JFwg1ErANZxGiySUueG+txyFc0OUMVeYH/raPlWkGM+LT8ZUZj7LYJY9fnJItnWcvmQK0mX7j3dMFvZzDsWgIKFzmm9++ss5F8v
+ EVD1D/Xz
+ Q40szAucKaUsMegX5K5NfFtPRx81dkFm+qagorVxQyCXG+kr13dzutqynwMQ8z2PKTNJOnUigF+eyzPeXQNbwKDb2NZs3SNAzwpBStqJPHZkwayUGpMEvPvIERDFC7icdpD8txJy6lwvIYodqQKtT0I7g0vjfhM4wKpT60fnxVPowYrjyFWNmHVsZrQb5om2VGrYQ0IvqIdKv19aUmknziyYJ1S9ymBg3DDCVTurgqsG10Sknk0MnXK1geVfMbX/QUmJrCcKTv9rwqxM6851ZNewh5QDXTd8orLn2AOrMuX/PIj5lUApiuAsmTOuzvtx85OGXDoHW+sYJt3/Hq2UwyPnY6JofkrnGkMF+/hb0UDr3bT/4iYw/hPT89vrdsFjVzxMahywzE+BaRds7gsqe4kmzgK2s+pKLN4KF7n3Hjt6Iwkm4hBu9pZx56tcQ/HrIqleNwvSOqBr9otjiYIPzGCzN6AbTH+q+lbgSHNdSmJ5FerIb4FN2rBwIhrjPjsuvlIdzKlG2LyftSroYcjS6thhOUOCDiMMzhOSQMUY/rJF8JF/wIGgD1bq4/NsnS81l76JShednu6UB+vCND4s6Tr/bmIjBQIAqWpchqsndiYyklHqA34BVXqp6OpzeGnHu1wshSFjdnP2oVYINk2hlBPVzZxRsxVlO39XlYUqmxNUbBI8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,179 +96,212 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] x86/mce/intel: missing LLC topology level in cmci_clear() peer sel=
-ection
-- [Medium] x86/mce/intel: cmci_rediscover() leaves shared banks unclaimed o=
-n hybrid CPUs
+- [High] sched/deadline: dl_rebuild_rd_accounting() drops TASK_DEAD inactiv=
+e_timer bw
+- [High] sched/deadline: unskipped zero-dl_bw tasks in dl_add_task_root_dom=
+ain()
 --
 
-commit cb9d97fffee1a97a8d921b6c7ed854215ee3231b
+commit e4cc8155c8ec900e6f7e52f8baebd0b6ab370fff
 Author: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-x86/mce/intel: Bound cmci_rediscover() to a single topology peer
+sched/deadline, topology: Avoid O(N^2) dl_server bandwidth walks during roo=
+t_domain rebuilds
 
-This commit optimizes CPU offline CMCI bank rediscovery by recording
-orphaned banks in cmci_clear(), selecting a single online topology peer,
-and probing only that target peer via smp_call_function_single() in
-cmci_rediscover() instead of broadcasting to all online CPUs with
-on_each_cpu().
+This commit removes redundant __dl_server_attach_root() calls from
+rq_attach_root() and replaces the nested O(N^2) loop in dl_clear_root_domai=
+n()
+with an O(N) accumulation and update pass. It also adds a !CONFIG_CPUSETS
+implementation of dl_rebuild_rd_accounting() and skips TASK_DEAD tasks on
+inactive CPUs in dl_add_task_root_domain().
 
-> diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/in=
-tel.c
-> index 4655223ba5606..f57718b097d9b 100644
-> --- a/arch/x86/kernel/cpu/mce/intel.c
-> +++ b/arch/x86/kernel/cpu/mce/intel.c
+> diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+> index c0ebdcde5fe5d..c8847e1ea55a0 100644
+> --- a/kernel/sched/deadline.c
+> +++ b/kernel/sched/deadline.c
 [ ... ]
-> @@ -346,8 +353,31 @@ void cmci_clear(void)
->  	if (!cmci_supported(&banks))
+> @@ -3433,7 +3415,8 @@ void dl_add_task_root_domain(struct task_struct *p)
+>  	struct cpumask *msk;
+> =20
+>  	raw_spin_lock_irqsave(&p->pi_lock, rf.flags);
+> -	if (!dl_task(p) || dl_entity_is_special(&p->dl)) {
+> +	if (!dl_task(p) || dl_entity_is_special(&p->dl) ||
+> +	    (READ_ONCE(p->__state) =3D=3D TASK_DEAD && !cpu_active(task_cpu(p))=
+)) {
+>  		raw_spin_unlock_irqrestore(&p->pi_lock, rf.flags);
 >  		return;
->  	raw_spin_lock_irqsave(&cmci_discover_lock, flags);
-> +	bitmap_zero(cmci_orphaned_banks, MAX_NR_BANKS);
-> +	/*
-> +	 * A bank is shared by the CPUs of one SMT core, L2 cluster, die or
-> +	 * package, and these scopes nest. The first online peer found from
-> +	 * the innermost scope outwards is therefore part of every sharing
-> +	 * scope that still has an online CPU, so it alone can claim every
-> +	 * orphaned bank that is still claimable. If it already owns an index,
-> +	 * the instance released here is not shared with it, hence not with
-> +	 * any online CPU, and that index can be dropped from the rediscovery.
-> +	 */
-> +	target =3D cpumask_any_but(topology_sibling_cpumask(cpu), cpu);
-> +	if (target >=3D nr_cpu_ids)
-> +		target =3D cpumask_any_but(topology_cluster_cpumask(cpu), cpu);
-> +	if (target >=3D nr_cpu_ids)
-> +		target =3D cpumask_any_but(topology_die_cpumask(cpu), cpu);
-> +	if (target >=3D nr_cpu_ids)
-> +		target =3D cpumask_any_but(topology_core_cpumask(cpu), cpu);
-> +	cmci_orphaned_target =3D target;
->  	for (i =3D 0; i < banks; i++)
->  		__cmci_disable_bank(i);
-> +	if (target < nr_cpu_ids)
-> +		bitmap_andnot(cmci_orphaned_banks, cmci_orphaned_banks,
-> +			      per_cpu(mce_banks_owned, target), MAX_NR_BANKS);
+>  	}
 
 [Severity: High]
-Should the outward peer search in cmci_clear() also check
-cpu_coregroup_mask(cpu) (or cpu_llc_shared_mask(cpu)) between
-topology_cluster_cpumask(cpu) and topology_die_cpumask(cpu)?
+Can this trigger the BUG_ON(cpu >=3D nr_cpu_ids) just below in
+dl_add_task_root_domain() for tasks where dl_task(p) is true, but
+p->dl.dl_bw =3D=3D 0?
 
-In arch/x86/kernel/smpboot.c:set_cpu_sibling_map(), x86 populates
-cpu_llc_shared_mask as a distinct topology level between
-cpu_l2c_shared_mask (topology_cluster_cpumask) and topology_die_cpumask:
+During CPU hotplug or sched domain rebuilds, partition_sched_domains_locked=
+()
+calls dl_rebuild_rd_accounting() -> dl_add_task_root_domain(p) on tasks whe=
+re
+dl_prio(p->prio) / dl_task(p) is true:
 
-    if ((i =3D=3D cpu) || (has_smt && match_smt(c, o)))
-        link_mask(topology_sibling_cpumask, cpu, i);
+kernel/sched/deadline.c:dl_add_task_root_domain() {
+	...
+	msk =3D this_cpu_cpumask_var_ptr(local_cpu_mask_dl);
+	dl_get_task_effective_cpus(p, msk);
+	cpu =3D cpumask_first_and(cpu_active_mask, msk);
+	BUG_ON(cpu >=3D nr_cpu_ids);
+}
 
-    if ((i =3D=3D cpu) || (has_mp && match_llc(c, o)))
-        link_mask(cpu_llc_shared_mask, cpu, i);
+In dl_get_task_effective_cpus(), if p->cpus_ptr only intersects with
+isolcpus=3Ddomain CPUs, it returns the active isolated CPUs:
 
-    if ((i =3D=3D cpu) || (has_mp && match_l2c(c, o)))
-        link_mask(cpu_l2c_shared_mask, cpu, i);
+kernel/sched/deadline.c:dl_get_task_effective_cpus() {
+	hk_msk =3D housekeeping_cpumask(HK_TYPE_DOMAIN);
+	if (housekeeping_enabled(HK_TYPE_DOMAIN)) {
+		if (!cpumask_intersects(p->cpus_ptr, hk_msk)) {
+			cpumask_andnot(cpus, cpu_active_mask, hk_msk);
+			return;
+		}
+	}
+	...
+}
 
-    if ((i =3D=3D cpu) || (has_mp && match_die(c, o)))
-        link_mask(topology_die_cpumask, cpu, i);
+Normally, dl_bw_deactivate() blocks deactivating the last CPU in that domain
+while reserved task bandwidth (total_bw - dl_server_bw) is non-zero. Howeve=
+r,
+dl_task(p) can be true while p->dl.dl_bw =3D=3D 0 in two situations:
 
-On processors where cpu_coregroup_mask(cpu) is narrower than
-topology_die_cpumask(cpu) (for example, processors that enumerate tiles via
-CPUID leaf 0x1f tile domain or leaf 0x4 L3 cache sharing rather than die
-domain, such as Meteor Lake and Arrow Lake where compute tile cores and SoC
-tile LP E-cores have distinct llc_id values while sharing die_id, or Xeon
-systems in SNC mode), offlining the last online CPU of an L2 cluster while
-other CPUs in the same LLC/tile remain online will skip directly to
-topology_die_cpumask(cpu).
+1. A non-deadline task (!task_has_dl_policy(p)) is PI-boosted by a
+   SCHED_DEADLINE waiter via rt_mutex_setprio(), which sets
+   p->prio =3D MAX_DL_PRIO - 1 while p->dl.dl_bw remains 0.
 
-If cpumask_any_but(topology_die_cpumask(cpu), cpu) picks a target on a
-different LLC/tile, could an MCA bank scoped to the offlined CPU's LLC/tile
-either be masked out of cmci_orphaned_banks by bitmap_andnot() (because the
-remote-tile target owns its own tile's instance of that bank index) or fail
-to be claimed by the remote target in cmci_rediscover(), leaving the bank
-with CMCI disabled and unpolled while online peers in cpu_coregroup_mask(cp=
-u)
-are never probed?
+2. An exiting SCHED_DEADLINE task (p->__state =3D=3D TASK_DEAD) has already=
+ had
+   its bandwidth subtracted and cleared to p->dl.dl_bw =3D 0 by
+   __dl_clear_params(&p->dl) in task_non_contending() or
+   inactive_task_timer(), leaving p->prio as MAX_DL_PRIO - 1 while the
+   unreaped zombie remains on the process/thread list.
 
-> +	else
-> +		bitmap_zero(cmci_orphaned_banks, MAX_NR_BANKS);
->  	raw_spin_unlock_irqrestore(&cmci_discover_lock, flags);
+Because p->dl.dl_bw =3D=3D 0, dl_bw_deactivate() sees total_bw - dl_server_=
+bw =3D=3D 0
+and permits all isolcpus=3Ddomain CPUs to be taken offline.
+
+The new check only skips TASK_DEAD tasks when !cpu_active(task_cpu(p)). It
+does not filter out PI-boosted non-DL tasks (where p->__state !=3D TASK_DEA=
+D,
+such as a task blocked on a PI futex while affine to an isolated CPU) or
+TASK_DEAD zombies whose task_cpu(p) is still active while p->cpus_ptr is
+restricted to now-offline isolcpus=3Ddomain CPUs. For those tasks,
+dl_get_task_effective_cpus() returns an empty mask and cpumask_first_and()
+returns nr_cpu_ids, hitting BUG_ON(cpu >=3D nr_cpu_ids) just to add
+p->dl.dl_bw =3D=3D 0.
+
+Should dl_add_task_root_domain() check !p->dl.dl_bw (or !task_has_dl_policy=
+(p))
+before computing the effective CPU mask?
+
+[ ... ]
+> @@ -3510,6 +3504,33 @@ void dl_clear_root_domain_cpu(int cpu)
+>  	dl_clear_root_domain(cpu_rq(cpu)->rd);
 >  }
 > =20
-> @@ -360,15 +390,38 @@ static void cmci_rediscover_work_func(void *arg)
->  		cmci_discover(banks);
->  }
-> =20
-> -/* After a CPU went down cycle through all the others and rediscover */
-> +/*
-> + * After a CPU went down, rediscover orphaned shared banks on a single
-> + * topology peer (SMT sibling, L2 cluster peer, die peer, or package pee=
-r)
-> + * selected in cmci_clear(). Core-private banks whose core is now comple=
-tely
-> + * offline cannot be claimed by any other core, so probing more than one
-> + * peer is redundant.
-> + */
->  void cmci_rediscover(void)
->  {
-> +	unsigned int target;
-> +	unsigned long flags;
-> +	bool orphaned;
->  	int banks;
-> =20
->  	if (!cmci_supported(&banks))
->  		return;
-> =20
-> -	on_each_cpu(cmci_rediscover_work_func, NULL, 1);
-> +	raw_spin_lock_irqsave(&cmci_discover_lock, flags);
-> +	orphaned =3D !bitmap_empty(cmci_orphaned_banks, MAX_NR_BANKS);
-> +	target =3D cmci_orphaned_target;
-> +	raw_spin_unlock_irqrestore(&cmci_discover_lock, flags);
+> +#ifndef CONFIG_CPUSETS
+> +void dl_rebuild_rd_accounting(void)
+> +{
+> +	struct task_struct *g, *p;
+> +	u64 cookie =3D ++dl_cookie;
+> +	int cpu;
 > +
-> +	if (!orphaned)
-> +		return;
+> +	lockdep_assert_cpus_held();
+> +	lockdep_assert_held(&sched_domains_mutex);
 > +
-> +	if (target < nr_cpu_ids && cpu_online(target))
-> +		smp_call_function_single(target, cmci_rediscover_work_func,
-> +					 NULL, 1);
+> +	rcu_read_lock();
+> +	for_each_possible_cpu(cpu) {
+> +		if (dl_bw_visited(cpu, cookie))
+> +			continue;
 > +
-> +	raw_spin_lock_irqsave(&cmci_discover_lock, flags);
-> +	bitmap_zero(cmci_orphaned_banks, MAX_NR_BANKS);
-> +	raw_spin_unlock_irqrestore(&cmci_discover_lock, flags);
->  }
+> +		dl_clear_root_domain_cpu(cpu);
+> +	}
+> +	for_each_process_thread(g, p) {
+> +		/* Racy pre-check; dl_add_task_root_domain() rechecks under pi_lock. */
+> +		if (!dl_prio(READ_ONCE(p->prio)))
+> +			continue;
+> +		dl_add_task_root_domain(p);
+> +	}
+> +	rcu_read_unlock();
+> +}
+> +#endif
 
-[Severity: Medium]
-Can probing only a single target CPU in cmci_rediscover() leave shared MCA
-banks unclaimed on hybrid processors where CPUs on the same die or package
-have different MCA bank counts or per-bank CMCI capabilities?
+[Severity: High]
+Can dl_rebuild_rd_accounting() drop the bandwidth of a TASK_DEAD
+SCHED_DEADLINE task whose p->dl.inactive_timer is still armed, leading to an
+underflow of rd->dl_bw.total_bw or a divide-by-zero in inactive_task_timer(=
+)?
 
-In cmci_rediscover_work_func(), cmci_supported(&banks) re-reads
-MSR_IA32_MCG_CAP on the target CPU because CPUs do not necessarily all have
-the same bank count:
+When a running SCHED_DEADLINE task p exits via do_exit() -> do_task_dead() =
+->
+__schedule() -> dequeue_task_dl() -> dequeue_dl_entity() ->
+task_non_contending(&p->dl, true), if its 0-lag time is in the future,
+task_non_contending() does not subtract p->dl.dl_bw immediately. Instead, it
+sets p->dl.dl_non_contending =3D 1, takes a reference with get_task_struct(=
+p),
+and arms p->dl.inactive_timer.
 
-    /* Recheck banks in case CPUs don't all have the same */
-    if (cmci_supported(&banks))
-        cmci_discover(banks);
+When p->dl.inactive_timer later fires, inactive_task_timer() unconditionally
+subtracts p->dl.dl_bw:
 
-On hybrid systems (such as Alder Lake, Raptor Lake, Meteor Lake, or Arrow
-Lake), P-cores and E-cores share topology_die_cpumask(cpu) and
-topology_core_cpumask(cpu) while exposing different bank counts or bank
-layouts. When the last thread of a P-core goes offline through
-mce_cpu_pre_down() -> mce_disable_cpu() -> cmci_clear() and
-mce_cpu_dead() -> cmci_rediscover(), cpumask_any_but() on the die or package
-mask can select an E-core with a smaller bank count as cmci_orphaned_target
-even when another P-core is still online.
+kernel/sched/deadline.c:inactive_task_timer() {
+	...
+	if (!dl_task(p) || READ_ONCE(p->__state) =3D=3D TASK_DEAD) {
+		struct dl_bw *dl_b =3D dl_bw_of(task_cpu(p));
 
-When that happens, cmci_discover(banks) on target only iterates up to targe=
-t's
-bank count, and cmci_rediscover() then unconditionally clears
-cmci_orphaned_banks with bitmap_zero() without falling back to other online
-CPUs if unclaimed bits remain. Since other CPUs sharing those higher-number=
+		if (READ_ONCE(p->__state) =3D=3D TASK_DEAD && dl_se->dl_non_contending) {
+			sub_running_bw(&p->dl, dl_rq_of_se(&p->dl));
+			sub_rq_bw(&p->dl, dl_rq_of_se(&p->dl));
+			dl_se->dl_non_contending =3D 0;
+		}
+
+		raw_spin_lock(&dl_b->lock);
+		__dl_sub(dl_b, p->dl.dl_bw, dl_bw_cpus(task_cpu(p)));
+		raw_spin_unlock(&dl_b->lock);
+		__dl_clear_params(dl_se);
+
+		goto unlock;
+	}
+}
+
+There appear to be two ways a root domain rebuild loses p->dl.dl_bw while
+p->dl.inactive_timer is still pending:
+
+1. In the new !CONFIG_CPUSETS dl_rebuild_rd_accounting(),
+   dl_clear_root_domain() resets rd->dl_bw.total_bw to only the dl_server
+   bandwidth and rebuilds task bandwidth via for_each_process_thread(g, p).
+   If p was a sub-thread, autoreaped, or already reaped by wait(),
+   release_task() -> __exit_signal() -> __unhash_process() has already remo=
+ved
+   p from the process/thread lists before p->dl.inactive_timer expires.
+   for_each_process_thread(g, p) will not visit p, so p->dl.dl_bw is omitted
+   from rd->dl_bw.total_bw, and when inactive_task_timer() later calls
+   __dl_sub(), it underflows rd->dl_bw.total_bw and inflates rq->dl.extra_b=
+w.
+
+2. Even if p is still an unwaited zombie in for_each_process_thread(g, p),
+   the new (READ_ONCE(p->__state) =3D=3D TASK_DEAD && !cpu_active(task_cpu(=
+p)))
+   check in dl_add_task_root_domain() skips p when task_cpu(p) is deactivat=
 ed
-banks already cleared them from their per-CPU mce_poll_banks bitmaps in
-cmci_skip_bank() during initial discovery, wouldn't those shared banks rema=
-in
-both unowned for CMCI and unpolled?
+   during CPU offline while p->dl.inactive_timer is armed. That drops
+   p->dl.dl_bw from the active root domain on rebuild, and if
+   inactive_task_timer() fires after task_cpu(p) is attached to
+   def_root_domain, __dl_sub() underflows def_root_domain.dl_bw.total_bw and
+   divides by dl_bw_cpus(task_cpu(p)) =3D=3D 0 when no isolated CPUs are ac=
+tive in
+   def_root_domain.
 
-=D1=82=D0=B8=D1=82=D1=8C=D1=81=D1=8F
+_________________
+_________________
+_________________
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019011446.8344=
-87-1-pasha.tatashin@soleen.com?part=3D3
+87-1-pasha.tatashin@soleen.com?part=3D6
 
