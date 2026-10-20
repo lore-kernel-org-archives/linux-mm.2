@@ -1,177 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05295606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 01:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8323606A319
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 01:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=uQOLiZDl
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nYfJuhMF
 Received: by kanga.kvack.org (Postfix)
-	id 0932E6B011C; Mon, 19 Oct 2026 21:50:00 -0400 (EDT)
+	id E50466B03DF; Mon, 19 Oct 2026 21:50:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06AF16B011F; Mon, 19 Oct 2026 21:50:00 -0400 (EDT)
+	id E01346B03E0; Mon, 19 Oct 2026 21:50:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC4186B0121; Mon, 19 Oct 2026 21:49:59 -0400 (EDT)
+	id D3DD96B03E1; Mon, 19 Oct 2026 21:50:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C4B126B011C
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:49:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 69868A85BF
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:49:59 +0000 (UTC)
-X-FDA: 85341323718.29.7AB5E35
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013063.outbound.protection.outlook.com [40.93.201.63])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 880E3140003
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:49:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uQOLiZDl;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.201.63 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792460996;
+	by kanga.kvack.org (Postfix) with ESMTP id A1D256B03DF
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 21:50:43 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B66C140810
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:50:43 +0000 (UTC)
+X-FDA: 85341325566.10.6480BC9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 89F5380006
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 01:50:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYfJuhMF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792461041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mF31aDORRIzuK63GEkmX6WSOV2bPci9TuR9qODT3V00=;
-	b=3qRdL4xfqIW/Xw8hlXxKVKn+QitfdCwvJniV+FSEFt5jHnBu/ugX4waQIw+wdPodtBplCx
-	CguQgg6q7hLx4AlGlzx8sjosS7n0JONGkMliUJnue3LoO8fzAB9I7ITBeQyrqvj1Bf/GB4
-	oNS/RWFGYwxDt5o9xEMMsw8NTklnDXM=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uQOLiZDl;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.201.63 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792460996;
-	b=fuj2AsN01XvS+dvv1Bbu1+BDWAQj+opfg6mYtobG1qgZWwa3d4fWMeb0QLIqpRxWeR6fwi
-	+BHEIhJdqzvzWpM9fxSLjJpPuc/vDJV3NrjAMX4tPm33yZ+TlRlyiDiZv29drPw0tYGAQR
-	UxXpvQ5ZQj1vJ6gY9nGuKy6D6UtvIEk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R2V/TQPy8eO6ZXl8ZucU5ab03En7yZgHMjtWxMhOQnhJ01oWhQDRpnH6FNkF38iKaI8MzSIrJf4JsTo91yNkZ0Zzuk4VDhXu6a/u3/CIJcMRQukHZhTme31b7D3yMrScbOb+64NSWt7n0fs75mh3nyDnRZ1eMJ5MpCnq4Uh/LSKN1Nu4boc9xFeQmdHf4lmp67NJXiKEFa1LnUpXAQQ/HoVMsKj+QqZml9Vd5G9lNkbzkNDrohDu1UUuqk0PuNg2H1mOy0+KnKjVBsZXz2D9iCyO605B/5kfUpaVWEV3ZHcq3shoB3DewOODrmUMcQDurq+LtE34yleWA3AMbZAllg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mF31aDORRIzuK63GEkmX6WSOV2bPci9TuR9qODT3V00=;
- b=mPCwlWaueDIJOC6PLz6nps6s/CaxAjTAfVyOFxAQFq/JFtcxo1g7jtniN5EBh8xwTC1zyn3XDojREXazH200dFvp3BJVdZdgEw0TmEz3U8g0zf3MlwoCz6JiIb0YBLR27wTcupZko4q9EnpkkYT8bqKkpyDxpUUeMhRs6AaauzAMBSl6KSvDXq1CIbCbo/AE4IACc8EPAkdtn4wdVtszpZ/Oz5JHlF3+AkvEEH0u4FVpAXGjHzls9Ed89H7CMxIDt6hPx+DJkFgkMTRFTfjD+mW9uQawecomJDudXjURnKgj1uU9kyyDWJ1qTiQ/UblokzrWFF4Sf/GLHLe9vlfItg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mF31aDORRIzuK63GEkmX6WSOV2bPci9TuR9qODT3V00=;
- b=uQOLiZDlYy5VEO9b+U2kEnKwXWQsk4dOAfA+ZUCLVc6XfCbKNr1FqcigiBQQn8f+24wqtvOKpahNiAmsg7JWaaPTW0oivQ3Yke/+N567pg+1mG7DJ90Dfuk16Je2MlYQnc58JJppZ2cxQFnCvjcpDazrhxHR/D9J2EEytJNqDuPCIqSsMgB8c4zDKt8WLW13ObvHGD6IRooAYL6Wn0vMiqcKMJ1VEB/alh/3uyr6xEItlXGVvxprZTM9Hf+moFIPUGMR7eVYSZFxEIfsD5v121GpFvAs54ijebayZYnGGMUclDRGB4CEETpgr2lPsPVZQO6Wg+bXhEWkbr1v2eYGxA==
-Received: from CH3PR12MB9730.namprd12.prod.outlook.com (2603:10b6:610:253::9)
- by SA1PR12MB999084.namprd12.prod.outlook.com (2603:10b6:806:4a1::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
- 2026 01:49:52 +0000
-Received: from CH3PR12MB9730.namprd12.prod.outlook.com
- ([fe80::843d:c1f0:b2ed:4128]) by CH3PR12MB9730.namprd12.prod.outlook.com
- ([fe80::843d:c1f0:b2ed:4128%4]) with mapi id 15.21.0522.016; Tue, 20 Oct 2026
- 01:49:46 +0000
-Message-ID: <b7aab691-ae63-498c-8d0c-1696592eea60@nvidia.com>
-Date: Tue, 20 Oct 2026 12:49:37 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive
- reclaim
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
- baolin.wang@linux.alibaba.com, hannes@cmpxchg.org, david@kernel.org,
- mhocko@kernel.org, ljs@kernel.org, dave@stgolabs.net,
- roman.gushchin@linux.dev, stable@vger.kernel.org
-References: <20261019185002.3428594-1-gourry@gourry.net>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20261019185002.3428594-1-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MEWP282CA0199.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:220:1da::8) To CH3PR12MB9730.namprd12.prod.outlook.com
- (2603:10b6:610:253::9)
+	bh=7E3MYOWZmAqd5n44b4wTDqjDi7qvsZEFmKsEM+R1X9I=;
+	b=xfMSpvClcvX0EU05oEbVDBjoYLbXREd19OWquVzuJTvtQgVWp39txcuojH2ujr1px2QrVp
+	lfRzA91WC8aPOdn3rn4OOLWaJ/21c1AkoH10yOk7YCuek2eS1X6ix3KvOaKKfT9VWIP9xi
+	vBm54cu3BWWvdU3Ncw7AuiA5Pat9zW4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYfJuhMF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792461041;
+	b=BD0fyqMV4mayJGvf9AchJs3a02YKWNxdok53Rmf6NNaGz7B/pQBU04cGVJCYSh7OYOrpMN
+	19UkUM8uRQ6arvtRcPt/C3PDLRnH9Ya5YK5TBR89uA3q3/lc5ve0msVW+yU9klXrLfRhQa
+	g8HnlFISv9SpdU6qhQgkP8/yjhv5lgY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 24FAA602A8;
+	Tue, 20 Oct 2026 01:50:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7601F000C5;
+	Tue, 20 Oct 2026 01:50:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792461040;
+	bh=7E3MYOWZmAqd5n44b4wTDqjDi7qvsZEFmKsEM+R1X9I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nYfJuhMF7lVNH8K59PI8SOCo9JhPtzkfmugOIwk/OBLhEZHvcvQAaLetAKbXg+yJ7
+	 KseQkgptJXdvJBZGupXNZ+EgKYiNZKWlnjIf8VxiU8xyCCHjTaEeArgkbZgXJuzJJT
+	 rKJIidY2vQcPLic1qkRx7yRn0Oz3WeaKIg5jdXE0/3odb12gGsKi8GxM33B9XQQEc0
+	 XVmhOgUmuTTf4TOrzg3OQX+4s8A7Tkw+RAt8cNuDxSwq8RaEvVcc2Iz1SVeJx9UbMs
+	 7I2MhIodSKTkOvjs1Ctj+g7FxvDOrRhd8VGCgrjzhNDdxlPOr158DZci7RHdwoRLXO
+	 E5Hqs+0/KGlLQ==
+Date: Tue, 20 Oct 2026 09:30:34 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH] riscv: mm: don't let GUP-fast follow entries without
+ _PAGE_READ
+Message-ID: <atbEOlTjwZ9nr7rG@xhacker>
+References: <20261015-riscv-gup-read-fix-v1-1-8cf7f2504029@nvidia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9730:EE_|SA1PR12MB999084:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc524603-2c27-4e55-9b07-08df2e4c6b8b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|261009223027099003|10067099003|56012099006|18002099003|22082099003|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info:
-	ezS14ieRgtwI1+NtzXo8NFj9+fgOYg4to7PYORye+UyPj8GOw9TLDYKjRs6Kvpab4S37mWDQmWf1UuIW/wRAz8HHFhtIOQkRaT9CW3jGEk9wgAaTkUUQCrP+z9lWTD5J1hYe6Etyma4yh3j8IGQjrcVfu+jffFYhQhEZQvh4yp+OnKubhxTR/61iwm3AT5AqJErRfxRy7kcV2xF/TFdzQsaz7u81eM2R65C73tiDy+8vEGZt1M4Cse5fA6SN53mWusgh/xCBgRjDIBern1J0SQXyxBWYiBBGV6kM7KSIyIB0WQQQFTDeZntiPBULvZnRh3j2zT5G+ewoOnLX17enJVvH/cW9TbXUxTqWFv4ENX0SQHACN8e5yInoCph1YwcszDdyMCzs7qwVYZts6pDC1r11mc6K2svVCyFzdSvwbrLXKFFavwaP9WpjtlPjrYH9eMGruNhe2AXq6W0nMchYsC3SWVLbpnMkW3jDVWgjikBkBLUkqFP8uc5nr1O24JQEn061XIzb5SbNrRFAgE1NfQuUKu/1vGdCks1NbrSF2uq/hBs3CEZkHTN+pijT9fNlzF9UzaIDX7rjdYKBtcsSUJm81vWlVMx7CRSMmtFHZ0svz4/scbaAHDmOrbKogoJbo0Lh/d9FL4wIjkH76l8eSdbbjdsWDjIxrSsInainijQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9730.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(261009223027099003)(10067099003)(56012099006)(18002099003)(22082099003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YUJYNkl3Nk1jUDdaL0ZDbXhnNlJtaytSYzhBb1RsUlIwdFdyeUwyeUxFR3NQ?=
- =?utf-8?B?NGgxNnhmVGphWWdHSGF0d1J2Vk9lWkI5T0x6NmhxWVFuZ3hRQUgydmxvTmp3?=
- =?utf-8?B?c1NoWGZuL1JUQ1BEWk0zNTlHaDUyU0hBVFdSbGdTU1UyTVh2RXVQS3dLT1Mw?=
- =?utf-8?B?Ti9XU2NQMnZIMmpodjVtTFJwWjVlcXZnUk9scVdqMW0zeUlkcGJJNG9HbmNI?=
- =?utf-8?B?NjZHWnJsVzJhRWVuWmdkZ3RFUUwxWXJKaUVtb3NaeXZ6Y3pJQ0ZnM1FTbGIr?=
- =?utf-8?B?ZkxsaC9EWmIveTM0Y01PRWsyanl1WkNoek42U1JkWmg2ck1Vc2RLaEo1Y01t?=
- =?utf-8?B?LzRaSXJwSkdOelo5V2gyWmZWZUZWY3FUL2REWWZqNWNLb2dDeFBxMmlpUVpw?=
- =?utf-8?B?eG1rd1dKOHZwZFhIT2lSTjZkNXlreDBsWUhDdjlpNmFDZW13OFdKL3BNZlF4?=
- =?utf-8?B?RFBJMXlNM2VBdGdpbWR6WXV0K3pab2pCSncraGZpOXkzRW9jb09MdldCZDJU?=
- =?utf-8?B?YkJBNDN4M3V0a3phQUVCRjRhb25VMitvTzlFVmlVSlVOWXlhRTdpNDFnY0g5?=
- =?utf-8?B?Y3BEd2swL203RGtPMGt1cFp1RzhKT2ZRbGdXcnhTbVFIUWkzaXZ2eVNraGZj?=
- =?utf-8?B?MGlMdTNma0Ezcmd5c3Jwb0lxYnZTcGhxSHdiQldVeTMvc1VXVDA2WEVmMW9t?=
- =?utf-8?B?R2lCanJkbms1UGVMRno1UWtKeWpScUlhaWRxaHIyVHRwUk05WEl0Z3paK010?=
- =?utf-8?B?OUI3c1VIM29UUktUS1l0bWYyMlMrS1ppUUNzallUZ2xRSlpGUmFRQ2FXN21n?=
- =?utf-8?B?TVZUV0RwM0w1WnI4eE10cnd1TWIwTHNqUUxrd2Q4bU9QNnRGYWlDL1hQQTFM?=
- =?utf-8?B?NS83SnJsblJEdkx5YnVrcGI4N1EzMkMwVXpISTlwUFFuMXR1QkVUZ3dYRmVO?=
- =?utf-8?B?UlppWlVaOHJFRk1jRndkcEQ1Nm54QVJjMHM0aEJZeDdQQVR4N1phNGZFVlhI?=
- =?utf-8?B?amRUcjdwNGFkckFodFJrdlErUVM3OEJIc2h4V1k3Zmx3V2VqOUFZN2huLy82?=
- =?utf-8?B?QkwyV1V4bnlPYVlrRnE5UEFUMVphaG1XYXRsUEQ3eDIvZElZMUdpbi9hWUl3?=
- =?utf-8?B?K3NlQVMxTDk3NjdqVW51a1lRVHZueWJIMDl1Z3h4MmtJVGxRQVNWT09EL1U1?=
- =?utf-8?B?L3puYkNUUUZjWTQrSmlUbTRtdFlKYjNCYXNMQy8vdXJ1NWJDcVIwcWdqd08y?=
- =?utf-8?B?cUd1amsrUG5NR2xqZVU3Ulh4eS9rM3BKTVg4UEsvVFZ5ZG9KdEFEWjh1WUV1?=
- =?utf-8?B?YnN3YWYxR3F1Z2VGdVNkaWZiZ2FUNHRjMEtUcHBrNWNyQ0pNQ05WZUZvcG52?=
- =?utf-8?B?MXl5eWVZdmlKWVNRcjk1b1NOZFliaWNKNnZkdHJUcmhvdngzeXJPcFBpdUtm?=
- =?utf-8?B?cGttdEZtRW1tRk51ajViMFM4OFNDTmhWTWFTcWpsaktZcmtESWJYREZGTXkx?=
- =?utf-8?B?eEtnN3FpbDBHQkg1YkhKSnpoZk9ibFg2dWhwNmhhK1MrQm4rRGc5T3liVFcr?=
- =?utf-8?B?WjFqUDNyRFQ0bmlIeDhpOFlUSVRxMXpTS1NJeThEdVVhOG5scE4zeTRwQ3V0?=
- =?utf-8?B?ZzB6aWlDUUpkajRyUzdVMTB0NHpjZGhuRWdPSDk1b1hGRDd3VGh1TjZDaEZo?=
- =?utf-8?B?S0tuSHFlZWtZMC9JSUp0V0lvV21aL25FNjN6S3IzVll1ZldOdWp6UndEL0N6?=
- =?utf-8?B?a2ZtTnhFdGEza3hjQ0YwaUM1RU5uS2dNd2UzSUxtalN5UGYvQVdMWnRnekh1?=
- =?utf-8?B?ODROaWNGNkYxRkdXd0ExdTNnU1lCZ24vUnZvNUhjT1NqVDZUOUR0d1Urb05i?=
- =?utf-8?B?RktGUU1CWjRZZ1MyVzBTSUF0dm5EUHZLcUVtWTh1K1prd3BLTHpnQXhmS1lZ?=
- =?utf-8?B?OFVBQkIxeE0xcUNxQnB0TVNQa0c1MzRLMUN6ZnJmWlZrQnVmNXNQbEVYQWRZ?=
- =?utf-8?B?WFoyNUZBREJzcStWQzYreTFnNGpEVEFBVk96MWx0cFRsckZ5NHREL2xwM3Bk?=
- =?utf-8?B?VzFKZFpPK0liNmIwSnkxdGh1U2sxdVFUaHU5M0t3VENzaWFxZ25JZG84bnMz?=
- =?utf-8?B?QStaOFBRSldmZ1htV2pERnN0L2RVQlNqdCt6eFJOOXZDc2ZGNXIzUmNuVjJz?=
- =?utf-8?B?TVJiTVNoWmhvNytVZkR4OGhjbXg4ZExwQ2FUdVBVWWsxU1kzK0ZKNDVBSEIy?=
- =?utf-8?B?bnhjTHZ4SHpST2lFYlRSc2JPZW43SHU1akdtSWd1cm9jVGJSdEhkaGh0dEMw?=
- =?utf-8?B?akhKQ3dYbDM4WWJDNzAwRXBBUXozUFk0K1drSDBwakMyOFpCNUpYQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc524603-2c27-4e55-9b07-08df2e4c6b8b
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9730.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 01:49:46.7525
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eJUNicu0IOQsyPjoXBjmI0FTFdBNscNXZTum0y9cuhx2qi4KkZNDrxNnq9a6H8DulKX3Dt1eksuqiRVjQtqfhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB999084
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 880E3140003
-X-Stat-Signature: myimieuanmxmnm6nbkapgoffsnrrpsny
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261015-riscv-gup-read-fix-v1-1-8cf7f2504029@nvidia.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 89F5380006
+X-Stat-Signature: aye3zch1t8wma1bm75is3d4xufkkrq9c
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792460996-828338
-X-HE-Meta: U2FsdGVkX188onvafNwdoRkmORvMzAqFDySSaBJmGMDsy9N0adQlHfGQNSpZIkyJhWY/c9uyFSO2Xo2sH+W5E/U2cUkZVuy8xkXI/b31o9cCp67AmRcYc/bf1NPfoTiF5li9HGin92hcn4wHUXSlC/R3JuOYdO3lRZJDSIO8UCOsBqWbZ53AX7LqYbwA9XKrO2Qy0uJ4PHu9Qn4hIAHDwFCMDNNtEr6TOJ0YIi35j9lVZzVbQJkAsdfLuiVw19bT4OhVZvkFdTjvyIyEYxR+5Gs9oCHx81mvIOeHktsYVsSMUsHjzcJBCYTwEqE7GViUq8ew/LE0IXHt7YgkdQqKZuouZHQK2/2rbhqKAhdauwLn43XnTGb9HyUyAcgbmem87yzNxyyVfUI0xbK76pI4ej+jcd7PdZaPjBoRTPRe4+N+Le/JOa7rTL2dQ/l5SdZV4zG6JRZdDi0lcHHk0qm85jO6+XcJKCcjZsBTeGzsrEF8XuxsmA537lPA4aFS5IS3EvVB/9fgHew78SHa350Jbau3nyY9l0bgD+geG+dNfM1WOVjmUH1m+0pPuFHI5x7CZVsdiVVMUWvhjMoh9+ksZgSDIawSNgX4C8au6vV8Dm3FVTJoAuqhMTuwNeUmbqJXWaXrqEZCKKrkGO/Om4kJ9qqRuWh2hm3qWt5pu7tBDluwKP4SAC5jO+OSS8QayVGOPS1Bmy+ko9Y7tgcGJmJA2m3ZXzWEc15r8swunbGogswqqLPkCUaC28cOq/C9pgp5UKse4/rgDEeXpt9LyNFSFCr9pqbekiROEG7xkrQCmmdhX7ddQycHb2hM3qNFVs/fJgyRbqMsda5mnHfH4/FuybCflcikaFrDEtDxWvrsBNXRE3/jgMwoSt/rUj4UWEi3aA/uwULafbf7juwJRyYm1pX4CUSzXVoYhf4Ffw0Gxg2yxQt6q0aZYlek1Tg1ELrWLCsPP6rYEgUieeHNAno
- MCrzMQxp
- XoFB981zfaIo00DtjcjlxT/4JmWt5HHw7VFsNHElSYilBbRGSi5hNPEuKZfwcYkkgetSfPXWqkfF9Rfu0WaRapBV7sDxeMcmINumaA0xijcDi0s/6gSvpjZW1mWxGagrnZTp+Xaam4zrc5ZCUsKKEbOAh4RSejPmMASq9fU8TJbRmfHE7GRtAGEIWEgUjR/NyKwcG79q8UC5Lr3Q+jpwGB7ImacDrEqIBsI3MFjCRztFSs75RHqy5Rba97E93joEGaZEGX5eB6jJejhF1yTvwB1o0dKxl6FiT7V5KiJHOes+YkZLe+JGoWxiF2EJGymOzgTUXkjZ24RRZPzWqwJgg6vErNqJLEcVmgSaRpYgwCyoL37V5Ap567zbt3LoDNj7lSAcOLp/iHOfN6XepEyD3QRlfDits7xOKY/CkiZ7UOYopYB9PdiLjCLw7udP3esVmaAgrEv22g/ZScsSqeSQkXTkLVDZpa7SFIQmkqieDf81v2gF8e9ciVmayiC4XYQpyWoAmv12CF3zNsXY=
+X-HE-Tag: 1792461041-361957
+X-HE-Meta: U2FsdGVkX1/UXlWTOOT5E3bkDuSxMfqBcn5EhxglD4rFRFdXknXWsrM3lR6/QkTUhlf/7GLX/iFPEwi5s2mBByoEeGnvER/C5jBEdW40gmaVQFFSXem4+QjykD6nLKHZ0G2r8BfGvj5P3/5Rcc0sJf+GKrSb0pvbquiO9XsGag082esyX+sTna+a/gM52J2wUQetPyfHninWaijLgEYmbNHKX/NMAJwJL8qpaqPFnhux8zjsJyIag5cmzek/hu5AObkTGRB4HcOU8/spqo6GStA1DWaeSSh9v82mJiKc867LJlJpL7kG5SXDbZtnhaoozV67y+9Bq90Looge9zKO+DhS/ZMvQQlbZz43kO6sscQ734da5a3yQFsr3OD5tpjoIrWQCwPoADDAqTbMPXJP3M3OlWbJSIAZ6j18p5n+VuyiP82fc7CNcmqamH+WYFQMsBjf/uOts4eydRwcgxcu3PO/aXa8pzAjxs8PfIeIb/Z9vcSZaOBlXBRkLwog3xi0SoauiH6xiSK9K6/ZCD64xsek47LHXW44x3C3htPrkjQ4SP2tUeMhsXw+vx4DppCqn8rT3wEkDHV96HOjrpuezfUmZrTThADu1NsUmJAebz2NKn/V8l2n+JdF+SjhXUa813Pf2UnG1Mjmnjbb0BpWcPZsRfzrIc6kSkCVooVURn7FLyKOphVsrpoI+7SvTEt6ukipap5CwtabrqXxH7xhjuwdSPSNI2EFY/oRGklFO46jTvd8gKvjdWm+Or4ICKmRlnxcFW23eeRJWF5EuTYYtI8wBxmbF/Dp8JKQFD6F4SDujQ4F6MWNWuGKMKTOGb/V3tPBn2GDybnxAkM1bD8GbGJstgPHXk1Jo4wPWY2V1Hp6ME1h2KRSNyrOij1dMnyOrQyjAoCFvi0E/N77+Yd/d0+nxE3z5JlcQV+VieogpmEdtpBAV5krxraJdLdGzK+B4VlvDqHBpUzYnRpoQwh
+ Avgvj14j
+ zn1nknUjZfdBOZgSQcme5zSYp5mmTnN677wfCObG5QZnqH/iiy7o06gzR5RlHRlxZsCDMTPh+TVVJ2b1gUxNjCVMyL9NNgLWMdMMtR/n/yVLBRACXjTOT8VVcvD8nL5V2rBEYwD2b+9oEc/nnAsGwhmTgOzPt1saRPKKhwVOJvWYTkRQryXlQuVfudLwRMyugtHvxXCRkXiYoFB+dbjZhlHXba5PxCfU1ydIOrj+/ShK1eQlxT7nqrzae3mMBoXvIp0OeHsY7rmCh0O3sfruWyhcm58oGr61SnnjDG0KjGoLDSag5RYRiVvmyWPoXRt+yem4nnPLzJw6nBMyhxamfZNJhCzJYJTyuk/Wifkzj2e8LfHDo7v0uKCOGR6RV7ytHeBGdSismiS5hCtxoT8ABPB0Cv+OuPzfTiM+l+IgWEbW2rUbZooG7xMK1gMW6vmsH89ZLYJmQTZ/pm76RSHscRO50VfuXX6yHRLqkGM4ZLbjy1Bd9kJpiDaBSgBpXa+o5ysNNuCVVJ60o/FuSx5C/Zgefze5GC00jWILmfHK4UwreF6M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,46 +102,128 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/20/26 5:50 AM, Gregory Price (Meta) wrote:
-> user_proactive_reclaim() limits per-node reclaim to
-> gfp_zone(GFP_KERNEL), which is ZONE_NORMAL. Proactive reclaim serves no
-> allocation, but that limit makes shrink_node() skip every ZONE_MOVABLE
-> folio, so writing to /sys/devices/system/node/nodeN/reclaim never
-> reclaims a node's movable memory. A movable-only node, such as dax/kmem
-> or hotplugged memory onlined movable, reclaims nothing and fails with
-> -EAGAIN.
+On Thu, Oct 15, 2026 at 10:37:44PM -0400, Zi Yan wrote:
+> riscv maps PROT_EXEC alone as PAGE_EXEC, which has
+> _PAGE_EXEC but not _PAGE_READ, and a writable shadow stack entry is
+> XWR = 010, which has _PAGE_WRITE but not _PAGE_READ. riscv uses the
+> generic pte_access_permitted(), pmd_access_permitted() and
+> pud_access_permitted(), which only check that the entry is present and,
+> for a write, writable. So GUP-fast follows both kinds of entries:
 > 
-> To reproduce, fill a movable-only node with clean page cache and write
-> 200M to its nodeN/reclaim: the write fails with -EAGAIN and the page
-> cache stays. The same write to a ZONE_NORMAL node frees 200MB.
+> - a read, e.g. from vmsplice() or an O_DIRECT write, can read an
+>   execute-only page, which userspace cannot load from;
+> - a write, e.g. from an O_DIRECT read, can modify a shadow stack page,
+>   as pte_write() is true for it.
 > 
-> Scan every zone, as memory.reclaim does.
+> Slow GUP rejects both: check_vma_flags() fails a read from a VMA without
+> VM_READ and a write to a VM_SHADOW_STACK VMA, unless FOLL_FORCE is set.
 > 
-> Fixes: b980077899ea4 ("mm: introduce per-node proactive reclaim interface")
+> Fix it by requiring both _PAGE_PRESENT and _PAGE_READ in
+> pte_access_permitted(), and using it for pmd_access_permitted() and
+> pud_access_permitted() too.
+> 
+> Requiring _PAGE_PRESENT also stops GUP-fast from following a THP PMD
+> invalidated by pmdp_invalidate(). x86, arm64, and powerpc do the same
+> thing.
+> 
+> Fixes: 3f910b7a522e ("riscv: enable HAVE_FAST_GUP if MMU")
+> Fixes: c68c2ef9d641 ("riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20261015-anon_vma_uaf_fix-v1-0-7b977303b42b%40nvidia.com?part=2
+> Assisted-by: LLM
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+
+Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
+
 > ---
->  mm/vmscan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Sashiko found that the riscv pmd_access_permitted() added by the
+> lazyfree THP discard rework [1] lets GUP-fast bypass execute-only
+> protection. The generic helpers riscv uses today have the same gap, at
+> the PTE level too, and the generic pmd_access_permitted() also lets
+> GUP-fast follow an invalidated PMD. This patch makes GUP-fast require
+> both _PAGE_PRESENT and _PAGE_READ. Requiring _PAGE_PRESENT stops it from
+> following a PMD invalidated by pmdp_invalidate(), as x86, arm64, and
+> powerpc already do and as the rework relies on.
 > 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index e82ba737c028d..90f7a7bf4e426 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -8180,7 +8180,7 @@ int user_proactive_reclaim(char *buf,
->  		} else {
->  			struct scan_control sc = {
->  				.gfp_mask = current_gfp_context(gfp_mask),
-> -				.reclaim_idx = gfp_zone(gfp_mask),
-> +				.reclaim_idx = MAX_NR_ZONES - 1,
->  				.proactive_swappiness = swappiness == -1 ? NULL : &swappiness,
->  				.priority = DEF_PRIORITY,
->  				.may_writepage = 1,
+> While reviewing this patch, an LLM also found that riscv's
+> pte_wrprotect() sets _PAGE_READ unconditionally, which turns an
+> execute-only entry into a readable one [2], e.g. every execute-only
 
+This issue can be fixed by Nickolai's patch:
+https://lore.kernel.org/linux-riscv/20261017162229.796020-1-nickolai@csail.mit.edu/
 
-I just noticed some other issues with this code, in terms of honouring
-zone_reclaim_node (not related to this patch). I'll send out fixes, for
-this patch.
-
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+> hugetlb mapping via make_huge_pte(). That needs a separate fix.
+> 
+> Link: https://lore.kernel.org/all/20261015-anon_vma_uaf_fix-v1-0-7b977303b42b@nvidia.com/ [1]
+> Link: https://elixir.bootlin.com/linux/v7.3-rc7/source/arch/riscv/include/asm/pgtable.h#L409 [2]
+> ---
+>  arch/riscv/include/asm/pgtable.h | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+> 
+> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+> index 40b1ed4f3ea89..f46b742d6dd93 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -372,6 +372,21 @@ static inline int pte_write(pte_t pte)
+>  	return pte_val(pte) & _PAGE_WRITE;
+>  }
+>  
+> +/*
+> + * GUP-fast only follows entries that are present and have _PAGE_READ,
+> + * and leaves the rest to slow GUP, which checks the VMA: an execute-only
+> + * entry and a writable shadow stack entry (XWR = 010) lack _PAGE_READ, a
+> + * PROT_NONE or invalidated entry lacks _PAGE_PRESENT. Any other writable
+> + * entry is readable too.
+> + */
+> +#define pte_access_permitted pte_access_permitted
+> +static inline bool pte_access_permitted(pte_t pte, bool write)
+> +{
+> +	const unsigned long need = _PAGE_PRESENT | _PAGE_READ;
+> +
+> +	return (pte_val(pte) & need) == need && (!write || pte_write(pte));
+> +}
+> +
+>  static inline int pte_exec(pte_t pte)
+>  {
+>  	return pte_val(pte) & _PAGE_EXEC;
+> @@ -820,12 +835,24 @@ static inline int pmd_write(pmd_t pmd)
+>  	return pte_write(pmd_pte(pmd));
+>  }
+>  
+> +#define pmd_access_permitted pmd_access_permitted
+> +static inline bool pmd_access_permitted(pmd_t pmd, bool write)
+> +{
+> +	return pte_access_permitted(pmd_pte(pmd), write);
+> +}
+> +
+>  #define pud_write pud_write
+>  static inline int pud_write(pud_t pud)
+>  {
+>  	return pte_write(pud_pte(pud));
+>  }
+>  
+> +#define pud_access_permitted pud_access_permitted
+> +static inline bool pud_access_permitted(pud_t pud, bool write)
+> +{
+> +	return pte_access_permitted(pud_pte(pud), write);
+> +}
+> +
+>  #define pmd_dirty pmd_dirty
+>  static inline int pmd_dirty(pmd_t pmd)
+>  {
+> 
+> ---
+> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+> change-id: 20261015-riscv-gup-read-fix-d657d67d350a
+> 
+> Best regards,
+> --  
+> Yan, Zi
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
