@@ -1,147 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4C0606A33B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 03:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67BF606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 03:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fV6/RnI+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xv4fy6O2
 Received: by kanga.kvack.org (Postfix)
-	id 194126B03F9; Mon, 19 Oct 2026 23:22:14 -0400 (EDT)
+	id 73D656B03FB; Mon, 19 Oct 2026 23:25:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11E746B03FA; Mon, 19 Oct 2026 23:22:14 -0400 (EDT)
+	id 6EF576B03FC; Mon, 19 Oct 2026 23:25:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00476B03FB; Mon, 19 Oct 2026 23:22:13 -0400 (EDT)
+	id 5DDAC6B03FD; Mon, 19 Oct 2026 23:25:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BF0AD6B03F9
-	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:22:13 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3ADF5A08EE
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:22:13 +0000 (UTC)
-X-FDA: 85341556146.14.B4D015A
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 46E3A40003
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:22:11 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2254E6B03FB
+	for <linux-mm@kvack.org>; Mon, 19 Oct 2026 23:25:11 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 419F840802
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:25:10 +0000 (UTC)
+X-FDA: 85341563580.28.2D6C290
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6C62B40006
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 03:25:08 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fV6/RnI+";
-	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792466531;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xv4fy6O2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792466708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GJ0jzd45ePDV29eKZJ4sBGXJjhUAwze4eIfc7K86wG8=;
-	b=60nYSROOSIs7myQey+wrV36FNdySmbVMYeaQhmd66d+BzheC9gY2z4fd0vOdY3YvRHamHF
-	NO1kskV8XBuJ+sIt/IwiXrVJMz0aiYH1C9gdA58LV4YuQKas272aa8QtCORrQkpKU2/vxk
-	1yONLvtPHkLF7d7d15KDutnH+59luWs=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792466531;
-	b=Hq4L4sPfmMy/Eufdu+3hrvPhlk+qwYgIT8WbMx/W0cvf7D8Dab2k9Ie36znFoCuQ/1laj/
-	kH134QIevjLOachkffi3LrzX6i/ee+Xn1vRXbup1DlHyfwL8jyKHmJKT/LVZOxXxVXEJkQ
-	gDbgmBovF1Na+ExDIna796HgWmtImiM=
-ARC-Authentication-Results: i=2;
+	bh=FNE4gDI1BUcDx1gOC04y4qzKR1ouXNMi/Xg3zpGmxAE=;
+	b=iHGfcKomu2Avd5Xginoj6ID312qUB5p22CasnOHgQWi5tYKdk3AtakYsfsW49AWudDVAmt
+	WUy1iIZ6kHfdMzZV5HdhO6x7ERxJygSlrQSKRdQKcfbT4tcMb/tr1/breFecjDtGd5AoUE
+	/iwWhRwhm2WELWC1t5ZXkNCklwCQ+k4=
+ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fV6/RnI+";
-	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a1df4c0966so1385315e9.1
-        for <linux-mm@kvack.org>; Mon, 19 Oct 2026 20:22:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792466530; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ShTlJQky2bMoePBgH5xXYNj56echRWtnP67kTXdtpnnKXKrNtDCJTk8uDE6tnETL8I
-         JAFNypwf+yA+D3wxEN46Nvl9tMPDWHkUz4H+yJEaNgmu3St3lh4DpiGGXl+e9y1W8HzH
-         1C6/1UIGp/jtNGY578skHm6uImpxr6ckG9OfoipUp0EZBxoOfV8i4PRFOv95uRF4THTt
-         CzeZO6eRZx690Y9xYg6MiJzpNEi9EpTaMjvg6EJZpiY0FCN4I8mT1dGwerMwI1veYyu5
-         ewSmG2z6E6C87gEh21mEXQN/agbz2LCIJGtqPc2k3fjc5FVeozfPduZo5m1EoQ1aR2X7
-         I1vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GJ0jzd45ePDV29eKZJ4sBGXJjhUAwze4eIfc7K86wG8=;
-        fh=A49HW8PKEBTlJ3n4X42gmViquWoDQusgOch4REaPwdI=;
-        b=C4Zk5V8ZBf7BNNIrZ9TcImE9gW0LZ7fjC1ZPwJx/rEf9xTf0tqeuytCAtZzaaQeJ/k
-         GTZZ86LqOe0k6nw2h2gQJhz6LATp1w8YDtGmCG4qUZxnDmkAtZJHDRygwgkfoEtDqsr6
-         v68oo35OeXWq5lKZNCnRYSAUnGhbvt6gXaRybjiyndqp+a414SmbjkWLAXAr+jN1Hcae
-         fSome7qv8eoWgQNzzEMX8rwnLP+LlYFBL/guz3fxBaVznBZILmaQRmxaFJthSPi/bSZU
-         bufLRrnINRA0JItkLoh2sKY2vqSmNB1o17fE4jJNcO5/d7dMM97myazVTvbEDbxDGdHD
-         cRjQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792466530; x=1793071330; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GJ0jzd45ePDV29eKZJ4sBGXJjhUAwze4eIfc7K86wG8=;
-        b=fV6/RnI+i6O6cfo80HGt51tNDPrlyw+bVTJS6oQY+YSTcu2XScGz7Y/avXWa1wfdVO
-         /uysogWc94y7z8mskpZtHcWrH67QytZKEKfPp8B5XES39u2yy6s0HOlAdY5K3lPu43WQ
-         FWS7pmYeQaN4A5RCPLSG+UdEIVnSmMLN3XkYmGO811wu09GnDSgkaL6CUDf76aK+ksxl
-         aZpzHOCaMfU9xTdQ3O34hk70pUmBJl+AOVdBu87SLAdLgPNmAPPiNERTo+jkvctJP+jd
-         WMNVuydRNIPx9eB0xoiBV4bHh879xu+gRL65T+uW5CHsM9cOrrxQIFcBJakYip5UC+Wa
-         MONA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792466530; x=1793071330;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GJ0jzd45ePDV29eKZJ4sBGXJjhUAwze4eIfc7K86wG8=;
-        b=TPxc0jUrMKwlejrxQVUGvYs8MECQXmiEg+Ws9qVfwjL/Unbj1jPZs46Tnwh0YmCDf4
-         u4UXPL1m1C7rDetbbjDFY2o7sKSzes7UUCj4kvZ1kextJXT4M/7sdeM1CUdvVRGSRuMp
-         JFbk79+IUxK+R/Sqv6XKyEu7b5fP5c4L6GVSSZ6uSrMu0C9AW4wjTtIdrJGfX7WBPSku
-         cbbvhJanRV0rN0NlmXg9mIxLS3kcBl0Dr2jfmP5FKbs5qyut5RD6FvFgrb8DhcZHPDsj
-         zBGDKkrHYgQhNfQVnyZou5ecvWwP62FOhqjm5Lg40IVfCWKyrU4WXNeNPDK/jAx1mqKx
-         muVA==
-X-Forwarded-Encrypted: i=1; AKwUvBwYJkXinAHfOlwzu9kpDI6HKh0WX9iiLXMIYQCmv6LfRoxeXP8wDrYCR/Zzc0gCpNXh7ft83H5vaQ==@kvack.org
-X-Gm-Message-State: AFq9FYLrAIR5kAbWq4K/DBhItC1EK+swW/5cHCljylGtFvRcXXmqfHnI
-	nihvbLZfZP3kbqPnR02CeibBXvICiGfiC05XDPAind+pKTSU/jrMlN3Gbll+k/RoRCCJGC0UzKE
-	ukfPeJJ/0G74Oq6QhGhzMC41sGz7NGwA=
-X-Gm-Gg: AYBFou0g850WcgqLn5o86VsJyzoBje9xVWUDJCB7B1QrxZnD+TvpENmGghapiem4spq
-	/rJ53UNKJKIn49Ut4V5ZB29AXOsTVHVzdyNEWIHtH3W+CNz7fGK7TMiz0gqTUXAVkkDMsM163qa
-	vuG9KPxrayq/kqpC+ntqBceR8rJgHel760gS62NqyYO1gYl1Sp7Pa98LfKFe9F4LD5Q6gg9TkAq
-	ENS9wkPeqZMslDlARpVKdgvgd/iFnPUm9w+tYBATC/UqJucvW/b0p18lI8iaohtrPZbHt+mzF/6
-	inDKomyA6021q1H88xlgP0P6mZzxYMFpTHGx9y/43Z+Qc/VFlJZYieUciF1ENGahBjKtqZWB5zC
-	LokAzhgCustEe
-X-Received: by 2002:a05:600c:4455:b0:4a1:c6f5:2450 with SMTP id
- 5b1f17b1804b1-4a1f50a260amr15362205e9.17.1792466529668; Mon, 19 Oct 2026
- 20:22:09 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xv4fy6O2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792466708;
+	b=8dpAZzKpZ7aGtLuBEOiRNNFrWSS2kSdewxajSXiAF0cnw9EcGX9pZIcqHudUb/FgCkXc5X
+	udz2KW2H7v60p9Vg8naHHm8P3KPtmV5fcgLpvgMQWCkeOhb3xt7ghZ2+htEYvvDCHt2CjT
+	F3PlIlknhyBPBhwFFUs7ez3fTgI43ig=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C2F0043705;
+	Tue, 20 Oct 2026 03:25:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B76B1F000C5;
+	Tue, 20 Oct 2026 03:25:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792466706;
+	bh=FNE4gDI1BUcDx1gOC04y4qzKR1ouXNMi/Xg3zpGmxAE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Xv4fy6O2j3QZXZbXjWjDpZoDxWOyx6WJZdEy3wRCjw5fQtKqdoEwwmnlAGMAxvTYG
+	 1Z5aKKEmyjWz3ZIpxiHUnQGt0f9BOyGOWQpqYV40/pXuZXhrLTDrC8uyAy7Wdg4dwd
+	 ILJukIug5bUa5bfxxRhBeUbRx88ln2UDMa+5RhfNhaJD5KmqNpJzA2vrCoJeHxnWIx
+	 eRutIumJcINO7+ZJgy/OTxqVF9P9JUx4FiGMTwdJ8P94/JFb+ERw+oJl95Gdokqzsw
+	 aYJr6Zwh8ABQg4oBvlNQgp1QelnDVsW5PerixE3Q7BRof/3HqG3uzxh3McdaSqYYc/
+	 1pWsAOcC7reiA==
+Date: Mon, 19 Oct 2026 23:25:05 -0400
+From: Mike Snitzer <snitzer@kernel.org>
+To: Chuck Lever <cel@kernel.org>
+Cc: Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH draft-v6 1/6] NFSD: add tracing for how direct-mode READ and
+ WRITE are serviced
+Message-ID: <atbfEbgMU6UGkn2X@kernel.org>
+References: <20261019150725.1507-1-snitzer@kernel.org>
+ <20261019150725.1507-2-snitzer@kernel.org>
+ <f39bfe92-8676-4241-bb4e-bccd838ab99b@slotpi15m67>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261003-damon-perf-rfc-v3-send-2026-10-03-v3-2-0f00417b41bc@gmail.com>
- <20261004083036.613169-1-kunwu.chan@gmail.com> <CALa+Y17BOR0DBLS9-vns2SQfRhCueT0f82XCVojHhg9uacOX+w@mail.gmail.com>
-In-Reply-To: <CALa+Y17BOR0DBLS9-vns2SQfRhCueT0f82XCVojHhg9uacOX+w@mail.gmail.com>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Tue, 20 Oct 2026 11:21:58 +0800
-X-Gm-Features: AclHuK8qSfFyajdptQhJ0NGpKFtfIDqK4tiHr-fgZMp9gM24ujXx87HbJLiQhf8
-Message-ID: <CAN_Opa9=5dqD7CUpczUAz67HjmvUYE5vLMSgSVqzcKLAcjVxng@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 2/9] mm/damon/core: replace the access report
- buffer with per-context rings
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Gregory Price <gourry@gourry.net>, David Rientjes <rientjes@google.com>, Wei Xu <weixugc@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Bijan Tabatabai <bijan311@gmail.com>, Ajay Joshi <ajayjoshi@micron.com>, 
-	Honggyu Kim <honggyu.kim@sk.com>, Yunjeong Mun <yunjeong.mun@sk.com>, 
-	Akinobu Mita <akinobu.mita@gmail.com>, Lian Wang <lianux.mm@gmail.com>, 
-	Kunwu Chan <kunwu.chan@linux.dev>, Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 46E3A40003
-X-Stat-Signature: 6hnpoqj5hgeouir64txzib88b87qbrsi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f39bfe92-8676-4241-bb4e-bccd838ab99b@slotpi15m67>
+X-Rspamd-Queue-Id: 6C62B40006
 X-Rspam-User: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792466531-76179
-X-HE-Meta: U2FsdGVkX1+zpAUhgSLg4nGX3/XEJv+K3fPDF978biquMgddP7+JTO1Z01wBJ4i6xINX/nJ2BVLAK0BOuapgL81oI4oZQBPCkoRv8ewESRHVTDx76wLt55B/q3iPWGPKNrjWA6FFs3ETyvra03JcM6ipswf/ieMDrAfKdnetdfVqVRAT0aKr8a+XEc4d8Nb67mXLT0OpipoRr1mLxYi80NjWYaIVv34u1DMO37A3IRtVKcRwzkSU2rXH7tjBGn3WttLxtqyndzPt/5OsjXnNbULQEdNujRkoO8IwQ1Vj5X0tOp8q2zcMb0obhWa6FGl5eoO4bGjQJzFuGoI9nlzN/4FvuQXph4bnAnRxYpyNhul2DySyxXTEDa2249G7ydToCeDDYSJslP1dte/mQt5UY4SmNPZfePB2F7u9Z5dFkTz4K7Y/DSO9xxWaefkNCoEzSgZvJ9vHjOUUdqHQiQdGUhrfv7zK88GVBxZ/IdfiMvO/GF9418TRPjcXrSVYRqnGt/Tkz5taMFe0GgACi406Secx5Y0333/xVX/CQFADVCNZ1JQXAWsZgJC5HCAeCPJJS3bjp91LPsH+wJlkgCqUWq6lOFo/AmDYRpNZ5Ei8eEOG/DxFRCyDJzRTHMw2N7nKWCk3Wi8WSkBjLH3IavdBwT9PieI+e0aPYM1hAEtEwEfw6ePOyKnRS1Vp0Lrn9JjAZWDZNxZ+esmTlruoZHFtTtvN+eW+vvXOUv2ZpUVtl9vRjxhCqiGAgb9FG9UUErIEJ+xsh9ZOAR6/3eWH1FQuCVfcsg16D6PeC2GiI9WEPVLLne7gidCzQFVMS8vvfkbR9GT+XkBgzzy4LmFEj9f3vH9JbRTsX8y9XxVkXYHJrnAwrA8XV9i/4yNJ2+jKgONnINQF/zMBaXtfaDcZqkw7ME0uJLQgYjR95zilkl2ePBwO86QEmckOISebjP/t9qIeigas+zafD8rdLuDRoin
- Nr5+5LXV
- pgcKeSG/eT3qlhaHDzNwaCzeuOLKURDfw6mzyRJT/412XMHYCPnugeN1oNyNHaGHNVYtV/+cKBI97om3mbMqBlE7WrROjtt+KJyr6F6Q2hFZkfaWUXJIxVITGkCgjkBtJCQXUXGRLIFenVK/NAKzaYfrP4IHe9AmvlTzEuDGZYr54IXWPxg6RNO6JkLqZmOBQCC3Xcb38mRjIJVyQgb0I8rsAIAW6fvz7jaJsq1GCx8ScW8Ih+TPhnYbPRyO4TFSR/tD4O2I2vG3SFk6YHYg6xPwT2ZinwF4ah6NsMnlQB1JyPZPkkZkq98T9897YNJVJvJcxp4ND/lfHHpx9MTpqdKmGFL9XXjHSalQJWXZq1xjbY4CqKOqFvfwmRs7HpHxjooVa+jNrhsZRvomRUVPQAoa5PtKKL/Fn11CKPLukMs0e5JKw2IiIIThH9dhFuiQAYN/dbbUZgvfHieJhZsVQXtiqJ+jWbbOWUmMLQg2IKZlpG+xx3IKs25Y11crDvRIJecb+
+X-Stat-Signature: ttsuodhjorzcyg53hjjbkqruxiccgbnh
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792466708-239841
+X-HE-Meta: U2FsdGVkX1/FeZDTNNIEy9Fjm23eHSNxFRg5lr5AtnwTW5X3PGcErOkxB+ZfuuOOqUe3UWIE8hqeiCT04bZAOdQ6LoSL0CqZxJjfYqrjS8rPLcOwoO4j7tx/IwQEW7GzEDmvyvRL9kqkXEfhOczX36iRHwJGH9nA7sdTfVTYm/vMvijueK5EyEAU0aAYwQkyaYxslbxTlcu82UJ0I3FlX/1ekhcvy7YR/4xh7cA5jVPc8NKMXedqD3oo1p/6nGNmRiUpsNwWLvEtrGyRBE0pfICGM25xQWXK0gXUv3K9PWCmdi8F0VID4U/VDKzQfFos4O35CXzgtInwAPoo1ODrXrM6jQIAUvQU4oz7ZAm4y2ExtTPo0w/acjbr8x3HKRQsGhEHPRHDJ/45s8WoYiNcoPldYbXVMK0zTA59OvMCp+Fzg+xIVRcMdpinuz4jGbHFgVqxLt93UA5mq2/agnaHEfmkyCmMsXdpblQttc2Y3XwpEZdyqd1ehurNRZuDBAKlzqXBrSXNgEAbnrhzgk5NxyujIIJkSko81s9JtCxCtiNJnbQXpcO+ajJEOy9aQqU70FQg8YJn1aS9Toa43NndGfDLlalOccQstgTPhoqPqImE29C04Mh9BiscckaLX6OC8SQLr/lHJse2sELL0G2JtbKrv+Jikn2VQM4gcQNOMaFMzxSIqNqfDYETjYvPAkHriWCa3vlNKNeS+xZd8TMcKlk0MS38qwtnmd+aj12SgYIdcG3gFWrBKZjlgwbiz1G+NcdNV3NQpuY9YdjmtPB9kczH7yH68ZSIIu7W3hAmEs0zSTIoAKvu97Ut9ZZCEus+6el/JZpo8Majg4h2ukXDc6VF8VYr8V7518MVP3KaRrUoxm6OdrWS4FtWQicnkBwP+mFaj6c+bNTWu53H4kspXtpvEde/eNm2YoyKjjH7nZd9r2lengDAs6CU3vbhz6mdxIj3SkZ1potyWjXCkv3
+ YOEhZ5tY
+ TNq+yypYt66Oahh6GRHyZKC4rTROWu0YXQ8JlwuEQ0JqUJh9nND5K4KuBLSSb2FUdLmzMIiq/LPsjJJmz9qKiiNtInNurOyNnTxutEcjsEdys8OjRBuK3wVeOc6yni9T4DhZP2+qymOYS/1iWcKY0ENsouUNSAa7qEYqwmvpmruuuF+l1grWlcc/DrUWIbCjCo+jitkbPz/eytzZnrn6W8AwnY/T3qjc5mbFDBQ8POUhozDnvXSz691p2f/hcnL98QrrYLAmponRBiQ4EaoKAPZpqymsh61qZANjmq0xXuuswI2o9lbeC21MfcyuDIinWZgsISPzKS6kj+RvUBWiHJCfgOkOAb1nHpLJB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,18 +101,719 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-[...]
->
-> So in v4 [1] the drain no longer touches nr_accesses at all; its scale
-> stays with the access check primitives, independent of the PMU and its
-> sampling settings.  A sample instead raises the region's probe_hits[]
+On Mon, Oct 19, 2026 at 02:33:47PM -0400, Chuck Lever wrote:
+> On Mon, Oct 19, 2026, at 11:07 AM, Mike Snitzer wrote:
+> > Add:
+> >
+> >  - nfsd_write_dio_split, emitted once per direct-mode WRITE before any
+> >    segment is issued.  It records the advertised offset and memory
+> >    alignments, the payload's offset within its first page, the start,
+> >    middle and end segment sizes, a disposition naming the path taken
+> >    (direct, no_alignment, too_small, no_middle, mem_misaligned), and
+> >    whether buffered segments are issued IOCB_DONTCACHE.
+> 
+> Let's define a single event class and then use DEFINE_EVENT per outcome,
+> rather than one event with a disposition field. You'll notice this
+> pattern is used elsewhere in trace.h.
+> 
+> So nfsd_write_dio_class with the alignment and segment-size fields, and
+> nfsd_write_dio_direct, _no_alignment, _too_small, _no_middle,
+> _mem_misaligned fired at the site that makes each decision. An admin
+> chasing "why isn't this direct" then enables only the decline events.
+> 
+> Also, let's give the READ side the same treatment so admins can see
+> the decisions that prevent reads from going direct.
 
-Thanks, Ravi. Separating PMU samples from nr_accesses sounds reasonable.
-I haven=E2=80=99t had a chance to review v4 yet, but I=E2=80=99ll take a cl=
-oser look when I get
-some time.
+Done for v6.  nfsd_write_dio_class has the alignment and segment-size
+fields, and nfsd_write_dio_direct, _no_alignment, _too_small,
+_no_middle and _mem_misaligned each fire where that decision is made.
+For READs, nfsd_read_dio_class has nfsd_read_dio_no_alignment,
+_too_small, _pages_in_use and _not_last_op, one for each way
+nfsd_direct_read_ok() can decline; a READ that does go direct is
+already reported by nfsd_read_direct.  The disposition enum is gone,
+so nothing from vfs.h ends up in a TP_PROTO.
+ 
+> With the per-outcome events in place, the dontcache field on the
+> per-WRITE event is redundant: nfsd_write_direct/_dontcache/_vector
+> already say how each segment was issued. As it stands it also
+> misreports the direct middle, which carries dontcache_flags
+> regardless of direct_misaligned_dontcache. Consider dropping that
+> field.
+
+Dropped.
+
+> A few less critical items:
+> 
+> - nfsd_write_dontcache and nfsd_write_vector are emitted only from
+>   nfsd_direct_write(). The io_cache_write=dontcache and =buffered
+>   paths in nfsd_vfs_write() emit neither, so the new DONTCACHE event
+>   never fires in DONTCACHE mode and the commit message's "now fires
+>   only for normal buffered I/O" isn't right either. nfsd_iter_read()
+>   covers all three modes; please make the WRITE side match.
+
+nfsd_vfs_write() now emits them for io_cache_write=dontcache and
+=buffered too, so the WRITE side matches nfsd_iter_read(), and the
+commit message no longer says "only for normal buffered I/O".
+
+> - mem_offset records bvec[0].bv_offset, but the mem_misaligned test
+>   is on bv_offset + prefix. With prefix=100 the event shows
+>   mem_offset=0 next to a mem_misaligned verdict. Record the quantity
+>   that was actually tested.
+
+It now records the offset that the test checks: for a WRITE whose
+payload starts 132 bytes into its page with a 2144-byte start, the
+event shows mem_offset=2276.  A decision made before the middle is
+placed records the offset of the payload's start.
+ 
+> - The doc says iomap_dio_invalidate_fail "reports an O_DIRECT middle
+>   segment that the filesystem serviced with buffered IO instead". It
+>   reports one cause of that, on iomap filesystems only. ext4's
+>   fallbacks are silent. Let's narrow the wording.
+
+Narrowed: it reports one reason for that, page cache over the segment
+that could not be invalidated, and only filesystems that use iomap for
+direct I/O emit it; other fallbacks, such as ext4's, are not traced.
+
+> - The doc talks about start/middle/end segments while the event
+>   prints prefix/middle/suffix. Let's pick one vocabulary.
+
+The events now print start, middle and end, as the doc says.
+
+> Jeff's comment about the ki_flags test in the hot path stands on its
+> own. I'll leave that between you and Jeff.
+
+Thanks to both of you for the review.
+
+Please see the revised 1/6 below, which I would like to pre-check with
+you and Jeff before posting the patchset in full again as v6 (with
+this 1/6 applied, 2/6 to 5/6 are unchanged, and 6/6 only differs in
+context, from its rebase on the new 1/6).  Feel free to pick it up it
+looks good, either way I'll wait to hear back before posting v6.
+
+I was curious about the resulting tracing output so I tested with 3
+47008 IOs in NFSD io_cache_write modes 0, 1 and 2; here is the result:
+
+io_cache_write=0 (buffered):
+nfsd_write_start: xid=0xaf6f21f3 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_opened: xid=0xaf6f21f3 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_vector: xid=0xaf6f21f3 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_io_done: xid=0xaf6f21f3 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_done: xid=0xaf6f21f3 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_start: xid=0xb06f21f3 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_opened: xid=0xb06f21f3 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_vector: xid=0xb06f21f3 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_io_done: xid=0xb06f21f3 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_done: xid=0xb06f21f3 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_start: xid=0xb16f21f3 fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_opened: xid=0xb16f21f3 fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_vector: xid=0xb16f21f3 fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_io_done: xid=0xb16f21f3 fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_done: xid=0xb16f21f3 fh_hash=0xbb2b802f offset=94016 len=47008
+
+io_cache_write=1 (DONTCACHE):
+nfsd_write_start: xid=0xddf0249b fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_opened: xid=0xddf0249b fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_dontcache: xid=0xddf0249b fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_io_done: xid=0xddf0249b fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_done: xid=0xddf0249b fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_start: xid=0xdef0249b fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_opened: xid=0xdef0249b fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_dontcache: xid=0xdef0249b fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_io_done: xid=0xdef0249b fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_done: xid=0xdef0249b fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_start: xid=0xdff0249b fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_opened: xid=0xdff0249b fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_dontcache: xid=0xdff0249b fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_io_done: xid=0xdff0249b fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_done: xid=0xdff0249b fh_hash=0xbb2b802f offset=94016 len=47008
+
+io_cache_write=2 (DIRECT):
+nfsd_write_start: xid=0x86990005 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_opened: xid=0x86990005 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_dio_direct: xid=0x86990005 fh_hash=0xbb2b802f offset=0 len=47008 offset_align=4096 mem_align=4 mem_offset=132 start=0 middle=45056 end=1952
+nfsd_write_direct: xid=0x86990005 fh_hash=0xbb2b802f offset=0 len=45056
+nfsd_write_dontcache: xid=0x86990005 fh_hash=0xbb2b802f offset=45056 len=1952
+nfsd_write_io_done: xid=0x86990005 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_done: xid=0x86990005 fh_hash=0xbb2b802f offset=0 len=47008
+nfsd_write_start: xid=0x87990005 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_opened: xid=0x87990005 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_dio_direct: xid=0x87990005 fh_hash=0xbb2b802f offset=47008 len=47008 offset_align=4096 mem_align=4 mem_offset=2276 start=2144 middle=40960 end=3904
+nfsd_write_dontcache: xid=0x87990005 fh_hash=0xbb2b802f offset=47008 len=2144
+nfsd_write_direct: xid=0x87990005 fh_hash=0xbb2b802f offset=49152 len=40960
+nfsd_write_dontcache: xid=0x87990005 fh_hash=0xbb2b802f offset=90112 len=3904
+nfsd_write_io_done: xid=0x87990005 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_done: xid=0x87990005 fh_hash=0xbb2b802f offset=47008 len=47008
+nfsd_write_start: xid=0x88990005 fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_opened: xid=0x88990005 fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_dio_direct: xid=0x88990005 fh_hash=0xbb2b802f offset=94016 len=47008 offset_align=4096 mem_align=4 mem_offset=324 start=192 middle=45056 end=1760
+nfsd_write_dontcache: xid=0x88990005 fh_hash=0xbb2b802f offset=94016 len=192
+nfsd_write_direct: xid=0x88990005 fh_hash=0xbb2b802f offset=94208 len=45056
+nfsd_write_dontcache: xid=0x88990005 fh_hash=0xbb2b802f offset=139264 len=1760
+nfsd_write_io_done: xid=0x88990005 fh_hash=0xbb2b802f offset=94016 len=47008
+nfsd_write_done: xid=0x88990005 fh_hash=0xbb2b802f offset=94016 len=47008
+
+In DIRECT mode, mem_offset is where the middle starts within its
+page: the payload starts 132 bytes in, so 132, 132 + 2144 = 2276 and
+132 + 192 = 324.
+
+Changes since v5:
+- 1/6: the per-I/O events (nfsd_read_vector, nfsd_read_dontcache,
+  nfsd_write_direct, nfsd_write_dontcache, nfsd_write_vector) take the
+  kiocb flags and test them in TP_CONDITION(), so the flags are tested
+  only while an event is enabled (Jeff Layton).
+- 1/6: nfsd_write_dio_split, with its disposition and dontcache fields,
+  is replaced by an event class with one event per direct-mode WRITE
+  decision, emitted where the decision is made: nfsd_write_dio_direct,
+  _no_alignment, _too_small, _no_middle and _mem_misaligned.  READs get
+  the same: nfsd_read_dio_no_alignment, _too_small, _pages_in_use and
+  _not_last_op.  The WRITE events now also fire for
+  io_cache_write=dontcache and =buffered, mem_offset is the offset the
+  memory alignment test checks, the events print start, middle and end
+  as the documentation says, and the documentation of
+  iomap_dio_invalidate_fail is narrowed to what it reports (Chuck
+  Lever).
+- 2/6 to 5/6: unchanged.
+- 6/6: no change of its own; its context differs from the rebase on
+  the new 1/6.
 
 Thanks,
-Kunwu
-[...]
+Mike
+
+From: Mike Snitzer <snitzer@kernel.org>
+Date: Thu, 17 Sep 2026 18:06:39 -0400
+Subject: [PATCH draft-v6 1/6] NFSD: add tracing for how direct-mode READ and WRITE are serviced
+
+In a direct I/O mode, a READ or a WRITE segment may still be issued
+with DONTCACHE or normal buffered I/O.  nfsd_{read,write}_direct and
+nfsd_{read,write}_vector neither tell those two apart nor say why a
+request did not go direct.
+
+Add:
+
+ - nfsd_read_dontcache and nfsd_write_dontcache.
+   nfsd_{read,write}_vector now report normal buffered I/O only, and
+   the WRITE events fire in every io_cache_write mode, as the READ
+   events do.  These events test the kiocb flags in TP_CONDITION(), so
+   only while they are enabled.
+
+ - An event per direct-mode WRITE decision, emitted where it is made:
+   nfsd_write_dio_direct, _no_alignment, _too_small, _no_middle and
+   _mem_misaligned.  Each records the alignments, the start, middle and
+   end segment sizes, and the memory offset the alignment test checks.
+
+ - An event per reason a direct-mode READ is not issued as O_DIRECT:
+   nfsd_read_dio_no_alignment, _too_small, _pages_in_use and
+   _not_last_op.
+
+Document them in nfsd-io-modes.rst, along with iomap's
+iomap_dio_invalidate_fail.
+
+Assisted-by: LLM
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+---
+ .../filesystems/nfs/nfsd-io-modes.rst         |  73 +++++++-
+ fs/nfsd/trace.h                               | 174 +++++++++++++++++-
+ fs/nfsd/vfs.c                                 |  91 ++++++---
+ 3 files changed, 307 insertions(+), 31 deletions(-)
+
+diff --git a/Documentation/filesystems/nfs/nfsd-io-modes.rst b/Documentation/filesystems/nfs/nfsd-io-modes.rst
+index 0a5f4ef14a8a..0eef646a2423 100644
+--- a/Documentation/filesystems/nfs/nfsd-io-modes.rst
++++ b/Documentation/filesystems/nfs/nfsd-io-modes.rst
+@@ -143,10 +143,9 @@ Misaligned WRITE:
+     direct_misaligned_dontcache is N (below). The flag has no effect on
+     the O_DIRECT segment unless the filesystem services it with buffered
+     IO instead, as XFS does when it cannot invalidate page cache that
+-    overlaps the segment. The iomap_dio_invalidate_fail trace event
+-    reports such a fallback. A split FILE_SYNC or DATA_SYNC WRITE is
+-    persisted once, after all of its segments are written, not once per
+-    segment.
++    overlaps the segment (see iomap_dio_invalidate_fail under Tracing).
++    A split FILE_SYNC or DATA_SYNC WRITE is persisted once, after all of
++    its segments are written, not once per segment.
+ 
+     If NFSD does not split a WRITE, it issues the whole WRITE
+     as a single DONTCACHE buffered IO (normal buffered IO if the
+@@ -171,21 +170,81 @@ Misaligned WRITE:
+ Tracing:
+     The nfsd_read_direct trace event shows how NFSD expands any
+     misaligned READ to the next DIO-aligned block (on either end of the
+-    original READ, as needed).
++    original READ, as needed). A READ that is serviced with buffered IO
++    instead emits nfsd_read_dontcache (DONTCACHE buffered IO) or
++    nfsd_read_vector (normal buffered IO), in any IO mode.
++
++    In NFSD_IO_DIRECT mode, a READ that is not issued as O_DIRECT also
++    emits an event, where NFSD makes that decision, naming the reason::
++
++      nfsd_read_dio_no_alignment  the filesystem advertises no DIO read
++                                  alignment
++      nfsd_read_dio_too_small     smaller than the DIO read offset
++                                  alignment
++      nfsd_read_dio_pages_in_use  an earlier operation in the same
++                                  COMPOUND already put data in the
++                                  reply's pages
++      nfsd_read_dio_not_last_op   an NFSv4 READ that is not the last
++                                  operation of its COMPOUND
+ 
+     This combination of trace events is useful for READs::
+ 
+       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_read_vector/enable
++      echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_read_dontcache/enable
+       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_read_direct/enable
+       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_read_io_done/enable
+       echo 1 > /sys/kernel/tracing/events/xfs/xfs_file_direct_read/enable
++      for e in /sys/kernel/tracing/events/nfsd/nfsd_read_dio_*; do
++              echo 1 > $e/enable
++      done
+ 
+-    The nfsd_write_direct trace event shows how NFSD splits a given
+-    misaligned WRITE into a DIO-aligned middle segment.
++    In NFSD_IO_DIRECT mode, each WRITE emits one event, where NFSD
++    decides whether to split it, naming the outcome. Each records the
++    alignments the filesystem advertised, the sizes of the start,
++    middle and end segments (zero where not yet computed), and the
++    offset within its page at which the middle segment starts, which is
++    what the memory alignment test checks (for a decision made before
++    the middle is placed, the offset at which the payload starts)::
++
++      nfsd_write_dio_direct          split: the aligned middle segment
++                                     uses O_DIRECT
++      nfsd_write_dio_no_alignment    the filesystem advertises no DIO
++                                     alignment; not split
++      nfsd_write_dio_too_small       smaller than the larger of the
++                                     offset and memory alignments; not
++                                     split
++      nfsd_write_dio_no_middle       no aligned middle, or a misaligned
++                                     start or end with a middle smaller
++                                     than direct_misaligned_min_bytes
++                                     bytes; not split
++      nfsd_write_dio_mem_misaligned  the middle does not start at a
++                                     memory address aligned to the
++                                     block device's dma_alignment; not
++                                     split
++
++    Enabling all of them but nfsd_write_dio_direct shows only the WRITEs
++    that are not split, and why.
++
++    Each segment of a WRITE in NFSD_IO_DIRECT mode, and each WRITE in
++    the other modes, emits nfsd_write_direct (O_DIRECT),
++    nfsd_write_dontcache (DONTCACHE buffered IO) or nfsd_write_vector
++    (normal buffered IO).
+ 
+     This combination of trace events is useful for WRITEs::
+ 
+       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_opened/enable
+       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_direct/enable
++      echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_dontcache/enable
++      echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_vector/enable
+       echo 1 > /sys/kernel/tracing/events/nfsd/nfsd_write_io_done/enable
+       echo 1 > /sys/kernel/tracing/events/xfs/xfs_file_direct_write/enable
++      echo 1 > /sys/kernel/tracing/events/iomap/iomap_dio_invalidate_fail/enable
++      for e in /sys/kernel/tracing/events/nfsd/nfsd_write_dio_*; do
++              echo 1 > $e/enable
++      done
++
++    iomap_dio_invalidate_fail reports one reason a filesystem services
++    an O_DIRECT segment with buffered IO instead: page cache over the
++    segment that it could not invalidate. Only a filesystem that uses
++    iomap for direct IO emits it, and other fallbacks, such as ext4's
++    own, are not traced.
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index e0908cb21c4e..d41832e49a74 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -500,19 +500,187 @@ DEFINE_EVENT(nfsd_io_class, nfsd_##name,	\
+ 
+ DEFINE_NFSD_IO_EVENT(read_start);
+ DEFINE_NFSD_IO_EVENT(read_splice);
+-DEFINE_NFSD_IO_EVENT(read_vector);
+ DEFINE_NFSD_IO_EVENT(read_direct);
+ DEFINE_NFSD_IO_EVENT(read_io_done);
+ DEFINE_NFSD_IO_EVENT(read_done);
+ DEFINE_NFSD_IO_EVENT(write_start);
+ DEFINE_NFSD_IO_EVENT(write_opened);
+-DEFINE_NFSD_IO_EVENT(write_direct);
+-DEFINE_NFSD_IO_EVENT(write_vector);
+ DEFINE_NFSD_IO_EVENT(write_io_done);
+ DEFINE_NFSD_IO_EVENT(write_done);
++
++/*
++ * How a READ or a WRITE segment is issued, told apart by the kiocb flags it
++ * is issued with.  Each event's condition is evaluated only while that
++ * event is enabled.
++ */
++DECLARE_EVENT_CLASS(nfsd_io_kiocb_class,
++	TP_PROTO(struct svc_rqst *rqstp,
++		 struct svc_fh	*fhp,
++		 u64		offset,
++		 u32		len,
++		 int		ki_flags),
++	TP_ARGS(rqstp, fhp, offset, len, ki_flags),
++	TP_STRUCT__entry(
++		__field(u32, xid)
++		__field(u32, fh_hash)
++		__field(u64, offset)
++		__field(u32, len)
++	),
++	TP_fast_assign(
++		__entry->xid = be32_to_cpu(rqstp->rq_xid);
++		__entry->fh_hash = knfsd_fh_hash(&fhp->fh_handle);
++		__entry->offset = offset;
++		__entry->len = len;
++	),
++	TP_printk("xid=0x%08x fh_hash=0x%08x offset=%llu len=%u",
++		  __entry->xid, __entry->fh_hash,
++		  __entry->offset, __entry->len)
++)
++
++#define DEFINE_NFSD_IO_KIOCB_EVENT(name, cond)			\
++DEFINE_EVENT_CONDITION(nfsd_io_kiocb_class, nfsd_##name,	\
++	TP_PROTO(struct svc_rqst *rqstp,			\
++		 struct svc_fh	*fhp,				\
++		 u64		offset,				\
++		 u32		len,				\
++		 int		ki_flags),			\
++	TP_ARGS(rqstp, fhp, offset, len, ki_flags),		\
++	TP_CONDITION(cond))
++
++DEFINE_NFSD_IO_KIOCB_EVENT(read_vector, !(ki_flags & IOCB_DONTCACHE));
++DEFINE_NFSD_IO_KIOCB_EVENT(read_dontcache, ki_flags & IOCB_DONTCACHE);
++DEFINE_NFSD_IO_KIOCB_EVENT(write_direct, ki_flags & IOCB_DIRECT);
++DEFINE_NFSD_IO_KIOCB_EVENT(write_dontcache,
++			   (ki_flags & (IOCB_DIRECT | IOCB_DONTCACHE)) ==
++			   IOCB_DONTCACHE);
++DEFINE_NFSD_IO_KIOCB_EVENT(write_vector,
++			   !(ki_flags & (IOCB_DIRECT | IOCB_DONTCACHE)));
+ DEFINE_NFSD_IO_EVENT(commit_start);
+ DEFINE_NFSD_IO_EVENT(commit_done);
+ 
++/*
++ * Whether a direct-mode WRITE is split to issue its aligned middle
++ * O_DIRECT, and if not, why not: one event per outcome, each emitted where
++ * that decision is made.  start, middle and end are the sizes of the
++ * segments, zero where not yet computed.  mem_offset is the offset within
++ * its page at which the middle segment starts, which is what the memory
++ * alignment test checks; for a decision made before the middle is placed,
++ * the offset of the payload's start.
++ */
++DECLARE_EVENT_CLASS(nfsd_write_dio_class,
++	TP_PROTO(struct svc_rqst *rqstp,
++		 struct svc_fh *fhp,
++		 u64 offset,
++		 u32 len,
++		 u32 offset_align,
++		 u32 mem_align,
++		 u32 mem_offset,
++		 u32 start,
++		 u32 middle,
++		 u32 end),
++	TP_ARGS(rqstp, fhp, offset, len, offset_align, mem_align, mem_offset,
++		start, middle, end),
++	TP_STRUCT__entry(
++		__field(u32, xid)
++		__field(u32, fh_hash)
++		__field(u64, offset)
++		__field(u32, len)
++		__field(u32, offset_align)
++		__field(u32, mem_align)
++		__field(u32, mem_offset)
++		__field(u32, start)
++		__field(u32, middle)
++		__field(u32, end)
++	),
++	TP_fast_assign(
++		__entry->xid = be32_to_cpu(rqstp->rq_xid);
++		__entry->fh_hash = knfsd_fh_hash(&fhp->fh_handle);
++		__entry->offset = offset;
++		__entry->len = len;
++		__entry->offset_align = offset_align;
++		__entry->mem_align = mem_align;
++		__entry->mem_offset = mem_offset;
++		__entry->start = start;
++		__entry->middle = middle;
++		__entry->end = end;
++	),
++	TP_printk("xid=0x%08x fh_hash=0x%08x offset=%llu len=%u "
++		  "offset_align=%u mem_align=%u mem_offset=%u "
++		  "start=%u middle=%u end=%u",
++		  __entry->xid, __entry->fh_hash,
++		  __entry->offset, __entry->len,
++		  __entry->offset_align, __entry->mem_align,
++		  __entry->mem_offset,
++		  __entry->start, __entry->middle, __entry->end)
++);
++
++#define DEFINE_NFSD_WRITE_DIO_EVENT(name)				\
++DEFINE_EVENT(nfsd_write_dio_class, nfsd_write_dio_##name,		\
++	TP_PROTO(struct svc_rqst *rqstp,				\
++		 struct svc_fh *fhp,					\
++		 u64 offset,						\
++		 u32 len,						\
++		 u32 offset_align,					\
++		 u32 mem_align,						\
++		 u32 mem_offset,					\
++		 u32 start,						\
++		 u32 middle,						\
++		 u32 end),						\
++	TP_ARGS(rqstp, fhp, offset, len, offset_align, mem_align,	\
++		mem_offset, start, middle, end))
++
++DEFINE_NFSD_WRITE_DIO_EVENT(direct);
++DEFINE_NFSD_WRITE_DIO_EVENT(no_alignment);
++DEFINE_NFSD_WRITE_DIO_EVENT(too_small);
++DEFINE_NFSD_WRITE_DIO_EVENT(no_middle);
++DEFINE_NFSD_WRITE_DIO_EVENT(mem_misaligned);
++
++/*
++ * Why a direct-mode READ is not issued O_DIRECT: one event per reason,
++ * each emitted where that decision is made.  A READ that is issued
++ * O_DIRECT is reported by nfsd_read_direct.
++ */
++DECLARE_EVENT_CLASS(nfsd_read_dio_class,
++	TP_PROTO(struct svc_rqst *rqstp,
++		 struct svc_fh *fhp,
++		 u64 offset,
++		 u32 len,
++		 u32 offset_align),
++	TP_ARGS(rqstp, fhp, offset, len, offset_align),
++	TP_STRUCT__entry(
++		__field(u32, xid)
++		__field(u32, fh_hash)
++		__field(u64, offset)
++		__field(u32, len)
++		__field(u32, offset_align)
++	),
++	TP_fast_assign(
++		__entry->xid = be32_to_cpu(rqstp->rq_xid);
++		__entry->fh_hash = knfsd_fh_hash(&fhp->fh_handle);
++		__entry->offset = offset;
++		__entry->len = len;
++		__entry->offset_align = offset_align;
++	),
++	TP_printk("xid=0x%08x fh_hash=0x%08x offset=%llu len=%u "
++		  "offset_align=%u",
++		  __entry->xid, __entry->fh_hash,
++		  __entry->offset, __entry->len, __entry->offset_align)
++);
++
++#define DEFINE_NFSD_READ_DIO_EVENT(name)				\
++DEFINE_EVENT(nfsd_read_dio_class, nfsd_read_dio_##name,		\
++	TP_PROTO(struct svc_rqst *rqstp,				\
++		 struct svc_fh *fhp,					\
++		 u64 offset,						\
++		 u32 len,						\
++		 u32 offset_align),					\
++	TP_ARGS(rqstp, fhp, offset, len, offset_align))
++
++DEFINE_NFSD_READ_DIO_EVENT(no_alignment);
++DEFINE_NFSD_READ_DIO_EVENT(too_small);
++DEFINE_NFSD_READ_DIO_EVENT(pages_in_use);
++DEFINE_NFSD_READ_DIO_EVENT(not_last_op);
++
+ DECLARE_EVENT_CLASS(nfsd_err_class,
+ 	TP_PROTO(struct svc_rqst *rqstp,
+ 		 struct svc_fh	*fhp,
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 32136cd32af9..9219f8eb386d 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1238,24 +1238,39 @@ nfsd_direct_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 				eof, host_err);
+ }
+ 
+-static bool nfsd_direct_read_ok(struct svc_rqst *rqstp, struct nfsd_file *nf,
++static bool nfsd_direct_read_ok(struct svc_rqst *rqstp, struct svc_fh *fhp,
++				struct nfsd_file *nf, loff_t offset,
+ 				unsigned long count)
+ {
++	u32 offset_align = nf->nf_dio_read_offset_align;
++
+ 	/* When dio_read_offset_align is zero, dio is not supported */
+-	if (!nf->nf_dio_read_offset_align)
++	if (!offset_align) {
++		trace_nfsd_read_dio_no_alignment(rqstp, fhp, offset, count,
++						 offset_align);
+ 		return false;
++	}
+ 	/* Not worth rounding a READ this small out to whole alignment units */
+-	if (count < nf->nf_dio_read_offset_align)
++	if (count < offset_align) {
++		trace_nfsd_read_dio_too_small(rqstp, fhp, offset, count,
++					      offset_align);
+ 		return false;
+-	if (rqstp->rq_res.page_len)
++	}
++	if (rqstp->rq_res.page_len) {
++		trace_nfsd_read_dio_pages_in_use(rqstp, fhp, offset, count,
++						 offset_align);
+ 		return false;
++	}
+ #ifdef CONFIG_NFSD_V4
+ 	/*
+ 	 * The xdr_stream encoder ignores rq_res.page_base, so an operation
+ 	 * encoded after a direct read would overwrite the payload's tail.
+ 	 */
+-	if (rqstp->rq_vers == 4 && !nfsd4_last_compound_op(rqstp))
++	if (rqstp->rq_vers == 4 && !nfsd4_last_compound_op(rqstp)) {
++		trace_nfsd_read_dio_not_last_op(rqstp, fhp, offset, count,
++						offset_align);
+ 		return false;
++	}
+ #endif
+ 	return true;
+ }
+@@ -1298,7 +1313,7 @@ __be32 nfsd_iter_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	case NFSD_IO_BUFFERED:
+ 		break;
+ 	case NFSD_IO_DIRECT:
+-		if (nfsd_direct_read_ok(rqstp, nf, *count))
++		if (nfsd_direct_read_ok(rqstp, fhp, nf, offset, *count))
+ 			return nfsd_direct_read(rqstp, fhp, nf, offset,
+ 						count, page, eof);
+ 		fallthrough;
+@@ -1323,7 +1338,10 @@ __be32 nfsd_iter_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	}
+ 	rqstp->rq_next_page = page;
+ 
+-	trace_nfsd_read_vector(rqstp, fhp, offset, *count - total);
++	trace_nfsd_read_vector(rqstp, fhp, offset, *count - total,
++			       kiocb.ki_flags);
++	trace_nfsd_read_dontcache(rqstp, fhp, offset, *count - total,
++				  kiocb.ki_flags);
+ 	iov_iter_bvec(&iter, ITER_DEST, rqstp->rq_bvec, v, *count - total);
+ 	host_err = vfs_iocb_iter_read(file, &kiocb, &iter);
+ 	return nfsd_finish_read(rqstp, fhp, file, offset, count, eof, host_err);
+@@ -1391,7 +1409,8 @@ nfsd_write_dio_seg_init(struct nfsd_write_dio_seg *segment,
+ }
+ 
+ static unsigned int
+-nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
++nfsd_write_dio_iters_init(struct svc_rqst *rqstp, struct svc_fh *fhp,
++			  struct nfsd_file *nf, struct bio_vec *bvec,
+ 			  unsigned int nvecs, struct kiocb *iocb,
+ 			  unsigned long total,
+ 			  struct nfsd_write_dio_seg segments[3])
+@@ -1399,6 +1418,7 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
+ 	u32 offset_align = nf->nf_dio_offset_align;
+ 	loff_t prefix_end, orig_end, middle_end;
+ 	u32 mem_align = nf->nf_dio_mem_align;
++	u32 mem_offset = nvecs ? bvec->bv_offset : 0;
+ 	size_t prefix, middle, suffix;
+ 	loff_t offset = iocb->ki_pos;
+ 	unsigned int dontcache_flags = 0;
+@@ -1415,9 +1435,18 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
+ 	 * If alignments are not available, the write is too small,
+ 	 * or no alignment can be found, fall back to buffered I/O.
+ 	 */
+-	if (unlikely(!mem_align || !offset_align) ||
+-	    unlikely(total < max(offset_align, mem_align)))
++	if (unlikely(!mem_align || !offset_align)) {
++		trace_nfsd_write_dio_no_alignment(rqstp, fhp, offset, total,
++						  offset_align, mem_align,
++						  mem_offset, 0, 0, 0);
+ 		goto no_dio;
++	}
++	if (unlikely(total < max(offset_align, mem_align))) {
++		trace_nfsd_write_dio_too_small(rqstp, fhp, offset, total,
++					       offset_align, mem_align,
++					       mem_offset, 0, 0, 0);
++		goto no_dio;
++	}
+ 
+ 	orig_end = offset + total;
+ 
+@@ -1443,8 +1472,13 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
+ 
+ 	if (!middle ||
+ 	    ((prefix || suffix) &&
+-	     middle < nfsd_direct_misaligned_min_bytes))
++	     middle < nfsd_direct_misaligned_min_bytes)) {
++		trace_nfsd_write_dio_no_middle(rqstp, fhp, offset, total,
++					       offset_align, mem_align,
++					       mem_offset, prefix, middle,
++					       suffix);
+ 		goto no_dio;
++	}
+ 
+ 	if (prefix) {
+ 		nfsd_write_dio_seg_init(&segments[nsegs], bvec,
+@@ -1462,20 +1496,28 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
+ 	 * the first bvec, all subsequent bvecs start at bv_offset zero
+ 	 * (page-aligned). Therefore, only the first bvec is checked.
+ 	 */
+-	if (iov_iter_bvec_offset(&segments[nsegs].iter) & (mem_align - 1))
++	mem_offset = iov_iter_bvec_offset(&segments[nsegs].iter);
++	if (mem_offset & (mem_align - 1)) {
++		trace_nfsd_write_dio_mem_misaligned(rqstp, fhp, offset, total,
++						    offset_align, mem_align,
++						    mem_offset, prefix, middle,
++						    suffix);
+ 		goto no_dio;
++	}
+ 	/*
+ 	 * IOCB_DONTCACHE matters only if the file system falls back to
+ 	 * buffered I/O (-ENOTBLK).
+ 	 */
+ 	segments[nsegs++].flags |= IOCB_DIRECT | dontcache_flags;
++	trace_nfsd_write_dio_direct(rqstp, fhp, offset, total, offset_align,
++				    mem_align, mem_offset, prefix, middle,
++				    suffix);
+ 
+ 	if (suffix) {
+ 		nfsd_write_dio_seg_init(&segments[nsegs], bvec, nvecs, total,
+ 					prefix + middle, suffix, iocb);
+ 		segments[nsegs++].flags |= buffered_flags;
+ 	}
+-
+ 	return nsegs;
+ 
+ no_dio:
+@@ -1499,8 +1541,8 @@ nfsd_direct_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	ssize_t host_err;
+ 	size_t expected;
+ 
+-	nsegs = nfsd_write_dio_iters_init(nf, rqstp->rq_bvec, nvecs,
+-					  kiocb, *cnt, segments);
++	nsegs = nfsd_write_dio_iters_init(rqstp, fhp, nf, rqstp->rq_bvec,
++					  nvecs, kiocb, *cnt, segments);
+ 
+ 	/*
+ 	 * Persist a split synchronous WRITE once, after all of its
+@@ -1514,12 +1556,15 @@ nfsd_direct_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	*cnt = 0;
+ 	for (i = 0; i < nsegs; i++) {
+ 		kiocb->ki_flags = segments[i].flags & ~sync_flags;
+-		if (kiocb->ki_flags & IOCB_DIRECT)
+-			trace_nfsd_write_direct(rqstp, fhp, kiocb->ki_pos,
+-						segments[i].iter.count);
+-		else
+-			trace_nfsd_write_vector(rqstp, fhp, kiocb->ki_pos,
+-						segments[i].iter.count);
++		trace_nfsd_write_direct(rqstp, fhp, kiocb->ki_pos,
++					segments[i].iter.count,
++					kiocb->ki_flags);
++		trace_nfsd_write_dontcache(rqstp, fhp, kiocb->ki_pos,
++					   segments[i].iter.count,
++					   kiocb->ki_flags);
++		trace_nfsd_write_vector(rqstp, fhp, kiocb->ki_pos,
++					segments[i].iter.count,
++					kiocb->ki_flags);
+ 
+ 		expected = iov_iter_count(&segments[i].iter);
+ 
+@@ -1628,6 +1673,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			kiocb.ki_flags |= IOCB_DONTCACHE;
+ 		fallthrough;
+ 	case NFSD_IO_BUFFERED:
++		trace_nfsd_write_dontcache(rqstp, fhp, offset, *cnt,
++					   kiocb.ki_flags);
++		trace_nfsd_write_vector(rqstp, fhp, offset, *cnt,
++					kiocb.ki_flags);
+ 		iov_iter_bvec(&iter, ITER_SOURCE, rqstp->rq_bvec, nvecs, *cnt);
+ 		host_err = vfs_iocb_iter_write(file, &kiocb, &iter);
+ 		if (host_err < 0)
+-- 
+2.52.0
+
 
