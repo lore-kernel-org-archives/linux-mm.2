@@ -1,130 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7A0606A334
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 15:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C3F606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 15:52:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DD6C6B0169; Tue, 20 Oct 2026 11:51:53 -0400 (EDT)
+	id 3B7216B0503; Tue, 20 Oct 2026 11:52:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38E466B0503; Tue, 20 Oct 2026 11:51:53 -0400 (EDT)
+	id 38F906B0504; Tue, 20 Oct 2026 11:52:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27D4B6B0504; Tue, 20 Oct 2026 11:51:53 -0400 (EDT)
+	id 2CBDE6B0505; Tue, 20 Oct 2026 11:52:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F40E06B0169
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:51:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EBB12140202
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:51:50 +0000 (UTC)
-X-FDA: 85343445180.04.BED7A69
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 03F636B0503
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 11:52:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91EC4C02AE
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:52:06 +0000 (UTC)
+X-FDA: 85343445852.20.9DDD267
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2DDCCC0008
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:51:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id F0F8FC000A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:52:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792511509;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792511525;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rp2WPSA1/ERI/64JuBOxmZOEGsPjBzedZzE5dNWVpu8=;
-	b=lKHJIccH8y4xqew1lBuJ6OBNvNvMJjYgA9er5sLkUuUQP2W/AHyu1TMP6eFJnI//921qMf
-	Ic46hRTmyVctv0y8L5pMZgQ7q805Og/vzTrhl11dQc8yA3diJjD9jNPCih1TLd7suH0sxY
-	Exrod+QmbYLnVVlgAlI89aqM+mdU+MM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792511509;
-	b=N07uqAt8e2OUyHP6wOwqtCbyRO2FZqpROpaYpDUFE7tnCinXnB2FyTh+Q/AVJTHid97dVp
-	evjYn6cmq3/4hJSGVhCZEiMecwkwzmgZ0bxwmPWTj6hb6kcZi5D+xAUwteJla7bgtN9Dig
-	uj6rqLc3iagCPM1k946bnaS77cME01Q=
+	bh=F4PgIOIOdxD8OVxXY3JsTmivlXUupfdYHiqTfKL168I=;
+	b=KjRAkew3bfDX/IlA2NzVL6Sx1u90zv2eM1qJSZ8a435Hi5c89JzWmpqKim/t8et7OoXzJd
+	W+e74nuqmPH110tz3gi5GdFe/6V7vyn3kSRHhcqpnqGZZpMyu/7uwZ547kSOG9lErTalD0
+	ozu/b3PaFTw21zWWp2CQT0AA/7KhuHs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
+	imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792511525;
+	b=rNNRmpyW4I0gTTyX+tj62V8LfgsVU0NqsqiIwggNS4tWV9UnC893YHmQyXPootybJtyWx6
+	tDC92h4lwGUYiGxUHc2zieN4eqq6u6tZG2QhfFnID+TUfRR3xAx2QJfzGRM9xycz82sJLF
+	3oxlEnuhGSVPyx256YkrPFJVKO8MO0w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BCCC41AE0;
-	Tue, 20 Oct 2026 15:51:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE881F000C4;
-	Tue, 20 Oct 2026 15:51:45 +0000 (UTC)
-Message-ID: <b61cbf73-b92a-4869-af94-72c30bbe9527@kernel.org>
-Date: Tue, 20 Oct 2026 17:51:12 +0200
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vma: avoid broken uffd merge on mremap
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Mike Rapoport <rppt@linux.vnet.ibm.com>, Peter Xu <peterx@redhat.com>,
- Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, shaos
- <shawnq1@163.com>, stable@vger.kernel.org
-References: <20261020-uffd-remap-fix-v1-1-0f34fc181f0a@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261020-uffd-remap-fix-v1-1-0f34fc181f0a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2DDCCC0008
-X-Stat-Signature: 4reumhjuginkahinpao7s6ftusnzgnma
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E860403F0;
+	Tue, 20 Oct 2026 15:52:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEFB1F000C4;
+	Tue, 20 Oct 2026 15:52:01 +0000 (UTC)
+Message-ID: <sashiko-outbox-179304@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 06/18] mm: free the pages waiting for a grace period
+ before OOM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?S2lyeWwgU2h1dHNlbWF1IChNZXRhKQ==?= <kas@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Linus Torvalds" <torvalds@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Jan Kara" <jack@suse.cz>, "Hugh
+ Dickins" <hughd@google.com>, "Christian Brauner" <brauner@kernel.org>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>
+Cc: "Miklos Szeredi" <miklos@szeredi.hu>, "Miaohe Lin" <linmiaohe@huawei.com>, "Naoya
+ Horiguchi" <nao.horiguchi@gmail.com>, "Oscar Salvador" <osalvador@suse.de>, "Liam
+ R . Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Brendan
+ Jackman" <brendan.jackman@linux.dev>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi
+ Yan" <ziy@nvidia.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Nico
+ Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
+ Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Kairui Song" <kasong@tencent.com>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen" <axelrasmussen@google.com>, "Yuanchu
+ Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Paul
+ E . McKenney" <paulmck@kernel.org>, "Pedro Falcato" <pfalcato@suse.de>, "Harry
+ Yoo" <harry@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>, "Ilya
+ Gladyshev" <ilya.gladyshev@linux.dev>, "Jaegeuk Kim" <jaegeuk@kernel.org>, linux-mm@kvack.org, kernel-team@meta.com
+In-Reply-To: <20261019154913.1765974-7-kas@kernel.org>
+References: <20261019154913.1765974-1-kas@kernel.org>
+ <20261019154913.1765974-7-kas@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Oct 2026 15:51:30 +0000
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F0F8FC000A
+X-Stat-Signature: cye1iq6miadhrdt4wxhhh8ot7wh4iuau
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792511509-94469
-X-HE-Meta: U2FsdGVkX1+FNm6nni9VE0ZaCiURIyohA5KjlztRlzDw+2dwraSlJR5oRQ6za2IUusvUEbo182KjlCiUWO+MikyqBM+/udtM03OYfZEmqUn6IJoOG8Fl2R9Do2WU7c0IqUXS4fVp15WUoVKfqw2Q8r/qkrMxQoJwNmMgZyHfkdkcWjlKAITh7GqEiXmKzoJ7PbUhx0/1LLTjrjCaV5kjTavAM86V0YTOxDQvpFXzRUyWN4dQ+FxvfL6SCRbIX7uPTUWOm/reqdnqJcZFUSq80yV+2KSZYkzndz5vYUeyivRxHVQBhdxRqlwhjzG1J1M4wgDLfFT9Wm7uog9EVBIFvykRIFkKeUvSVYiX8Br7NI6TaPRfzQWir3WCo9GFZZ7jBZKh4WQdoOaipIaa85V2s0RIDU/zgFmNBKV4fiVywL/YYVi7VT+qChYl5+I41llzvCPbA2P6rq+LCJ1IcGP/A8xSXqCKWzWoED9RKcWBveyFkdXxpPT1ltNkLnpC1IenSw16c9uuygRiNfY49oBCSIqFJWnC5fexHdCFHxCbQjvG2i4QJZ0/n39uVqvAUnWGSw7lg9vEP6MCxDFRtSIfC3aDNf+bVQjdYcQR6JgvpvsqnN8JmFTKIp+YM71gQkf9UzM4P62L7oq20mTTRlHhrM0wyB9Q0ViPKOOkoWFnuVM9RFpPHfreYKV96IhQFdkXY9FPRbP+cCwK0LucLBjtzv+wwEoJ0FMWHWKpio2ajpN6awuuuxQTCqnTCrp8UcNIlDklgs3x2pNDxmlOOToph6FFRhcVOm/qw2J20+CTi7pIvUk11EqsKHQy2MmAYb+vdMnb+E8ErNiidgiYRCSZnrlLmukEAV+A1mLm+FIUzs3Dql97oMPl4Q9H4BdWshp6jMcqihmcVy6mw4aMG377bi4/Jjlk3mBQdjVvlbnQ9dSQl1SUAkMd8kdLFYCZ1WdjkvO8YAYO31EebTY8Cc6
- o3RG0wXA
- ypCosHSrg5r6xL+1SlL62NXTnuZmbSOKjF0+XixX5+Mv7QvDihxA/poZm2A3Rfn/nWsvCY2v+GF/XKLHIGyKsGiKNjGs5OzG/ttcoUIedx/i4h99W5jPhmovfh+t4iSoybMBet/OjvDiFHrzY560l9f1AYlv5ZJNKQK+PwGWOkTwrgeOD6oozyZ3q8iI62PZbw/LzJdu41c22Sp8=
+X-HE-Tag: 1792511524-849556
+X-HE-Meta: U2FsdGVkX19Qgp+ZMaxNeninVxoGmSVjTRWxGs7vG83rIfXpuEqP6xHg/2OW+ZwZ7YY7HmVM8VsKuA+oEMOpKyJpVmcdgqZkBjyG6FQzzeJdcOUVMPjAVFEpm5nSh5/mBdDBpIGn0vsDbAwRRpdfBk1ohXFRwIO8mItWdQ5YpqW8r7/eqTvN+sWlEgt5dnD8RVstNeZO7cIjkDx3AUoTXTXAME2l8yuYuHHLzJnenHa2OHRE8kQ0/Z/PDNCpLvuELDBuWOA5h5IDHv1LMiHv3wZvtYpDfqv9uAv95LpqewgnTGK3dBtC7d/QMWBscHXQf/jSVegIWpBrWINP5WiSEdTxR+6onwXOg2yl9xO99Q0BH+X6EGABsH/yDZUP3OFhrlZeO2hECRndwlcNYzEFn9DOy6Gf+0U82Y6Z1aMI15DcEWWLnf4WOBIfcT0cxqG8dwHSO1ETWyQ6Ri4IQ0JD+QBW28AwdYSVR2OBjxrHzCB0QUDAo9i8yu/AshyhtziFy1tpvnoQ/vZv/Y2zbzeRyiNO4wdneTDfQp6YONyymsurG6m8hMuqeZeYFUcXTU0rx2C2KRo8+CHd5I/NU67ueNC7AOaAkV/Z/Hn5QO8cp1JrldVvG7jvc1g/z7BCR7+Gz4fcWR+0pwJ2JcHrmLF4T3kKIJjyikNUd1heeHr0sDVD/xYxyZhVx+sTc+N82ppBJ4/pGfeF+GvlpLeQRVQhZXWbbgm/eDfCtKM+mKXYjLJhgs4gpocgnUk5gKqOli2Pf2riFDEPMChjT+i3wusLtRfpW7Whx5GDX16v1mZvmXnxweGiSkGz0HFPCTxwru9Wja8bJ+I5Lri4Z1r3nVtE2AU4+XSmCWWLNiZB8tlw39j31ohmJN/dtaa//QJcP3+BeYb2QZsYpbPtFtEgD4g5HsCJhfZNsAqMpn3T9V1OTeCQ48xJ7Kl+d2HTsZbBOBIXYR+7nD9NkMx1t6ERX8c
+ kpjrZdRU
+ i4NkK5uQUlWxZv+dwejVYDOFoBGzf/MqV9Er3HxgL/v+yXCiGdNtXz2nq5JB5J1s+kVKVTnVY/lqOr+2j8U0twMl3sMfFaERjc5WxFp/ljWBhij6bWDKwJ5q9ybzVOo7kSxaWfmssVwcgyNbiLkZWa9lzx7r7EGkT+FDTf+M+id7uQSTpzBkldK0r1yRD/scjn+US8XbY0mY54a92tQXqzga6QaBqqXnXkecaz4LqzU+Ai3LFnon0Ykg7e/39gzxMIknU4AIDQy8Ail70gj1T5DOmqsH3Xdb32MLVq0yxU5YlIUdVtlwFvzEQhkgOAW3okLMwBbR5o2LJYrJ7j5fjZf8YVOhnpvLanHro7KGKx9JF+actEnyvPUof9/hBtkapIGs7nYe9U+o18tdOV0aGuVxUhDAB/qiUiiqfshThqojJyjIQm2HR/CWOU51GltJd7F7OBctGNUUzl20fYZoP2S7mm5puHQnFNfXVp3E9N9FWYbUWp9tJHZCQUbcegNIUNiWeRTfWkNbPYDIHfMaRadmPQtw9nMjK+88fiqkx+zm2FThlKJhQHtjYq3v42jM6o/kvnQw4MQoJae0gFU/Dc7vGwkxcedH6Jma0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,85 +97,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 10/20/26 16:55, Lorenzo Stoakes (ARM) wrote:
-> Userfaultfd often causes unexpected interactions within mm, and does so at
-> the intersection of uffd, mremap() and VMA merging.
-> 
-> When an mremap of a VMA occurs, copy_vma_and_data() calls
-> mremap_userfaultfd_prep() to notify uffd of this.
-> 
-> However, mremap_userfaultfd_prep() simply drops the UFFD context for the
-> VMA if the user did not register it for remap, i.e. didn't specify the
-> UFFD_FEATURE_EVENT_REMAP flag.
-> 
-> This is OK for the VMA itself, as upon page table move, move_ptes() clears
-> UFFD page table flags, using vma_has_uffd_without_event_remap() to
-> determine whether to do so.
-> 
-> However, this doesn't account for merging with adjacent VMAs, whose page
-> tables won't have received this treatment, and thus latent UFFD markers
-> will be left around.
-> 
-> Worse, it'll break UFFD for any VMAs it is merged with. This is very
-> surprising behaviour for a user, who will then simply not receive UFFD
-> events for VMAs they ought to.
-> 
-> Resolve the issue by explicitly checking for this case via
-> vma_has_uffd_without_event_remap() in vma_merge_copied_range(), the merge
-> function explicitly designated for mremap() operations.
-> 
-> Also update the userland VMA tests accordingly.
-> 
-> Reported-by: shaos <shawnq1@163.com>
-> Closes: https://lore.kernel.org/all/20261020110748.959870-1-shawnq1@163.com/
-> Fixes: 3cfd22be0ad6 ("userfaultfd: clear flag if remap event not enabled")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/vma.c                          | 5 +++++
->  tools/testing/vma/include/stubs.h | 5 +++++
->  2 files changed, 10 insertions(+)
-> 
-> diff --git a/mm/vma.c b/mm/vma.c
-> index de5ebc57e7a5..1be613044b4a 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -1211,6 +1211,11 @@ static struct vm_area_struct *vma_merge_copied_range(struct vma_merge_struct *vm
->  
->  	vmg->copied_from = vmg->middle;
->  	vmg->middle = NULL;
-> +
-> +	/* If not registered for remap, uffd context will be cleared. */
-> +	if (vma_has_uffd_without_event_remap(vmg->copied_from))
-> +		return NULL;
-> +
->  	return vma_merge_new_range(vmg);
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] mm: rcu_free_drain() fails to wait for in-flight RCU free workers
+- [High] mm: rcu_free_wait() passes high order to __zone_watermark_ok()
+- [High] mm: should_reclaim_retry() splits reclaimable and RCU-waiting pages
+- [High] mm: rcu_free_drain() leaves freed pages on PCP lists instead of bu=
+ddy
+--
+
+commit 7de2bde642756023a3c02e6554282a28f501cd38
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+
+mm: free the pages waiting for a grace period before OOM
+
+This commit adds rcu_free_wait() and rcu_free_drain() to
+should_reclaim_retry() so that pages deferred for an RCU grace period are
+drained via an expedited grace period before giving up and invoking the OOM
+killer. It also introduces the PGFREE_RCU_DRAIN vmstat event to count drains
+that freed pages.
+
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index a9058d414f92d..bec9128d80db8 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1445,6 +1445,29 @@ static void rcu_free_defer(struct folio *folio)
+>  		queue_work(rcu_free_wq, &r->expedite);
 >  }
->  
-> diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
-> index be8f5161f92a..f786a585caf0 100644
-> --- a/tools/testing/vma/include/stubs.h
-> +++ b/tools/testing/vma/include/stubs.h
-> @@ -386,6 +386,11 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->  	return true;
->  }
->  
-> +static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+> =20
+> +/*
+> + * Free what every CPU's lists hold.  A concurrent drain holds the lock
+> + * until it has freed what it took.
+> + */
+> +static void rcu_free_drain(void)
 > +{
+> +	static DEFINE_MUTEX(lock);
+> +	LIST_HEAD(list);
+> +	int cpu;
+> +
+> +	mutex_lock(&lock);
+> +	for_each_possible_cpu(cpu) {
+> +		struct rcu_free_pcpu *r =3D per_cpu_ptr(&rcu_free_pcpu, cpu);
+> +
+> +		spin_lock_irq(&r->lock);
+> +		rcu_free_take(r, &list);
+> +		spin_unlock_irq(&r->lock);
+> +	}
+> +	if (rcu_free_flush(&list))
+> +		count_vm_event(PGFREE_RCU_DRAIN);
+> +	mutex_unlock(&lock);
+> +}
+
+[Severity: High]
+What happens if rcu_free_expedite_workfn() or rcu_free_workfn() has already
+spliced the folios off r->batch and r->pending before rcu_free_drain() runs?
+
+In rcu_free_expedite_workfn(), the worker takes the per-CPU lists into a
+local list and drops r->lock before blocking in synchronize_rcu_expedited():
+
+mm/page_alloc.c:rcu_free_expedite_workfn() {
+	spin_lock_irq(&r->lock);
+	rcu_free_take(r, &list);
+	spin_unlock_irq(&r->lock);
+
+	if (rcu_free_flush(&list))
+		count_vm_event(PGFREE_RCU_EXPEDITE);
+}
+
+Similarly, rcu_free_workfn() splices r->batch into a local list under r->lo=
+ck
+before calling rcu_free_pages(), and NR_FREE_RCU_PAGES is only decremented
+inside rcu_free_pages() as each folio is freed.
+
+Because neither worker acquires the mutex in rcu_free_drain(), a task
+entering rcu_free_wait() -> rcu_free_drain() while a worker is in flight
+sees elevated NR_FREE_RCU_PAGES, finds r->batch and r->pending empty, and
+returns immediately from rcu_free_flush(&list) without waiting. Once
+*no_progress_loops > MAX_RECLAIM_RETRIES, should_reclaim_retry() also jumps
+to out: and skips cond_resched().
+
+Can __alloc_pages_slowpath() then spin through all MAX_RECLAIM_RETRIES
+iterations of rcu_free_waits while the worker is still in
+synchronize_rcu_expedited() and trigger a premature OOM kill?
+
+[Severity: High]
+Also, when rcu_free_drain() calls rcu_free_flush(&list) -> rcu_free_pages()=
+ ->
+free_unref_folios(), folios with pcp_allowed_order(order) are freed via
+free_frozen_page_commit() onto the local CPU's PCP list rather than directly
+into the zone's buddy free_area (and NR_FREE_PAGES is only updated when pag=
+es
+move from PCP to buddy).
+
+When __alloc_pages_slowpath() jumps back to retry:, get_page_from_freelist()
+checks zone_watermark_fast() using NR_FREE_PAGES before reaching rmqueue(),
+and when __alloc_pages_direct_reclaim() sees *did_some_progress =3D=3D 0, it
+jumps to out: without calling drain_all_pages(NULL):
+
+mm/page_alloc.c:__alloc_pages_direct_reclaim() {
+	*did_some_progress =3D __perform_reclaim(gfp_mask, reclaim_order, ac);
+	if (unlikely(!(*did_some_progress)))
+		goto out;
+	...
+		drain_all_pages(NULL);
+out:
+}
+
+If the pages freed by rcu_free_drain() stay on the PCP list and do not
+increase NR_FREE_PAGES above min_wmark_pages(zone), won't the subsequent
+retry fail the watermark check in get_page_from_freelist() and proceed to
+__alloc_pages_may_oom() with those pages still stranded on PCP?
+
+> +
+>  static void __init rcu_free_init(void)
+>  {
+>  	int cpu;
+> @@ -4792,6 +4815,52 @@ bool gfp_pfmemalloc_allowed(gfp_t gfp_mask)
+>  	return !!__gfp_pfmemalloc_flags(gfp_mask);
+>  }
+> =20
+> +/*
+> + * Reclaim is about to give up: if the pages waiting for a grace period
+> + * would bring an eligible zone above its min watermark, free them and
+> + * retry.  Not for a dying task, which frees memory by exiting.
+> + */
+> +static bool rcu_free_wait(gfp_t gfp_mask, unsigned int order,
+> +			  struct alloc_context *ac, int alloc_flags,
+> +			  int *rcu_free_waits)
+> +{
+> +	struct zone *zone;
+> +	struct zoneref *z;
+> +
+> +	if (!IS_ENABLED(CONFIG_PAGE_RCU_FREE))
+> +		return false;
+> +	if (tsk_is_oom_victim(current) || fatal_signal_pending(current))
+> +		return false;
+> +	if (*rcu_free_waits >=3D MAX_RECLAIM_RETRIES ||
+> +	    order > PAGE_ALLOC_COSTLY_ORDER)
+> +		return false;
+> +
+> +	for_each_zone_zonelist_nodemask(zone, z, ac->zonelist,
+> +				ac->highest_zoneidx, ac->nodemask) {
+> +		unsigned long waiting, available;
+> +
+> +		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
+> +		    !__cpuset_zone_allowed(zone, gfp_mask))
+> +			continue;
+> +
+> +		waiting =3D zone_page_state_snapshot(zone, NR_FREE_RCU_PAGES);
+> +		if (!waiting)
+> +			continue;
+> +
+> +		available =3D waiting +
+> +			    zone_page_state_snapshot(zone, NR_FREE_PAGES);
+> +		if (__zone_watermark_ok(zone, order, min_wmark_pages(zone),
+> +					ac->highest_zoneidx, alloc_flags,
+> +					available)) {
+
+[Severity: High]
+For non-costly high-order allocations (1 <=3D order <=3D PAGE_ALLOC_COSTLY_=
+ORDER),
+does passing order to __zone_watermark_ok() here prevent rcu_free_drain()
+from being called when z->free_area[o >=3D order] is currently empty?
+
+In __zone_watermark_ok(), the free_pages argument (available) is only check=
+ed
+against min + z->lowmem_reserve[highest_zoneidx], after which order > 0
+requires an existing free block in z->free_area[o >=3D order]:
+
+mm/page_alloc.c:__zone_watermark_ok() {
+	if (free_pages <=3D min + z->lowmem_reserve[highest_zoneidx])
+		return false;
+
+	/* If this is an order-0 request then the watermark is fine */
+	if (!order)
+		return true;
+
+	/* For a high-order request, check at least one suitable page is free */
+	for (o =3D order; o < NR_PAGE_ORDERS; o++) {
+		struct free_area *area =3D &z->free_area[o];
+		...
+}
+
+Because the pages in NR_FREE_RCU_PAGES have not been freed into z->free_area
+yet, won't __zone_watermark_ok() return false before rcu_free_drain() has a
+chance to free them?
+
+[Severity: High]
+Also, should available in should_reclaim_retry() and rcu_free_wait() account
+for zone_reclaimable_pages(zone) and NR_FREE_RCU_PAGES together?
+
+When direct reclaim frees folios marked with PG_rcu_free,
+__free_pages_prepare() diverts them to rcu_free_defer(), moving those pages
+out of zone_reclaimable_pages(zone) and into NR_FREE_RCU_PAGES rather than
+NR_FREE_PAGES.
+
+In should_reclaim_retry(), the loop checks:
+
+	available =3D reclaimable =3D zone_reclaimable_pages(zone);
+	available +=3D zone_page_state_snapshot(zone, NR_FREE_PAGES);
+
+and if that fails, rcu_free_wait() checks:
+
+	available =3D waiting +
+		    zone_page_state_snapshot(zone, NR_FREE_PAGES);
+
+If the pages needed to reach min_wmark_pages(zone) are split between
+remaining reclaimable pages on the LRU and already-reclaimed pages waiting =
+in
+NR_FREE_RCU_PAGES, won't both checks fail individually and cause
+should_reclaim_retry() to return false while reclaim is still making progre=
+ss?
+
+> +			(*rcu_free_waits)++;
+> +			rcu_free_drain();
+> +			return true;
+> +		}
+> +	}
+> +
 > +	return false;
 > +}
-> +
->  static inline bool anon_vma_name_eq(struct anon_vma_name *anon_name1,
->  				    struct anon_vma_name *anon_name2)
->  {
-> 
 
-@Kiryl that should solve the issue I was raising the other day with leftover
-uffd PTE bits outside of uffd areas? Can you review?
+[ ... ]
 
--- 
-Cheers,
+>dari
 
-David
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019154913.1765=
+974-1-kas@kernel.org?part=3D6
 
