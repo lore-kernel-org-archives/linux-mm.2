@@ -1,128 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC5C606A319
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBFD606A333
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Oct 2026 22:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=OLr7ASNA
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=hammerspace.com header.i=@hammerspace.com header.a=rsa-sha256 header.s=google header.b=IVa0+bbl
 Received: by kanga.kvack.org (Postfix)
-	id D45096B0187; Tue, 20 Oct 2026 18:03:37 -0400 (EDT)
+	id A5EDA6B0567; Tue, 20 Oct 2026 18:03:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1C8C6B0188; Tue, 20 Oct 2026 18:03:37 -0400 (EDT)
+	id A36AF6B0568; Tue, 20 Oct 2026 18:03:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C31B16B018A; Tue, 20 Oct 2026 18:03:37 -0400 (EDT)
+	id 94DFE6B0569; Tue, 20 Oct 2026 18:03:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 958AD6B0187
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:03:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A7A26B0567
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:03:52 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20B91A01D7
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:37 +0000 (UTC)
-X-FDA: 85344382074.09.E4C94D7
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 481F01C000A
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OLr7ASNA;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 998DC1C2CD8
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:51 +0000 (UTC)
+X-FDA: 85344382662.09.2EBFC2E
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A0E934000C
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:03:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=hammerspace.com header.s=google header.b=IVa0+bbl;
+	dmarc=pass (policy=quarantine) header.from=hammerspace.com;
+	spf=pass (imf12.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792533815;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1792533829;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+dby3oqMku+pe08nNb3SVcKfzQbLv8VO0Jweo3C76TU=;
-	b=HosRvIfTDoqyDumaPSR7ngZSpFhNmtuxODinaNXwKkHtA/n7lMB25ki/oiwDoIclW4lF07
-	ygYEszqu8EXQJsbvJYiIPq/kM4Kp7CcSymO88ufN1DHHCrJl5KbaDDcnsn4yNCJWPLWs71
-	ZNP1miKow7NPd1qtFG/3cEktHlhoFAI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792533815;
-	b=loc/rKxFrlSsyoes40vzQeIM1tkqYz3rxvg0Q5USj9qU6khO4tM2Ty6Po+SuEdySaTvVHj
-	TW/ajqQ2sKFL67ik8reTJG1+bFAnlHZtgNjoBOYeT3Sby3T5GcmzSM3Nq9LivWlXduFy0z
-	RYhOp7axNMUxgkxDDEpQWR5a2vIO1s0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oiJsb2ENhg2Lat5WWUqDnx4kJNVMy/Qtqe/7sshNmdw=;
+	b=SYbA8zfk0AoHfCaU2arV6qLxxqzNv7oHvFSZGLN3JSja8KCd906ia74/vHYDfWhRbJcB7H
+	/JxdNtS7PNMx8f4PO0hmWPphzjhhFvLLocw9TQuGdTCZoU0S2xFwaNKMFlJ5yfMbEsuS/P
+	8VJuu9kqfRbdSCdk5JS+38bIzcKn5AE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OLr7ASNA;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-8b125371596so8139647b3.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:03:35 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=hammerspace.com header.s=google header.b=IVa0+bbl;
+	dmarc=pass (policy=quarantine) header.from=hammerspace.com;
+	spf=pass (imf12.hostedemail.com: domain of mike.snitzer@hammerspace.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=mike.snitzer@hammerspace.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792533829;
+	b=vDj7ng4tUYv797bROqejUHL3iMzIlg2oCgRDfJhwTcT8d8QDY6nxwChspV2deaSNNgzS0/
+	rSBLWMK92y63nWzvAuT4YI+d8Km0YcatCf8RZuAdfo1CqITRksfXOYubbQHfqrd5UO/O3S
+	Yodc4zsal5XX82TQWp54U7QHi5zccQY=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93e515769d3so9157685a.3
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 15:03:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792533814; x=1793138614; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+dby3oqMku+pe08nNb3SVcKfzQbLv8VO0Jweo3C76TU=;
-        b=OLr7ASNA+67qT+uYnQ9j/yUEmhhYSTw5c4eeEUv+HqU1v4t804Rlt5eHY8ezMp8r/p
-         M11CrJDnKwrQIhMVqQrA3NcQKqT0SoAV8eBdkPo5GwE+85fN/OiuNt220AHSz2C8Hqeb
-         +GIkwnhkbft3vsxtXCO63OwGjPpZ2V6jpITqEej81qh6QOOKGkqV3VavdLpJB/AX8BBP
-         b7ZWSzvoaWoJH6G2XAqT2m0VfPnWZ3HEu7VsRGppOoPfcHCXozTs9Oh+QMBmt2DsQtiR
-         68ckL+i0RmcsDK7CAOWFlC+uZiXUv1BN/qfprWWz4sObIy9F2msW8/bgBdowEjVIsJlm
-         iOzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792533814; x=1793138614;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=hammerspace.com; s=google; t=1792533829; x=1793138629; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+dby3oqMku+pe08nNb3SVcKfzQbLv8VO0Jweo3C76TU=;
-        b=XKZsB0hWvXGQBP5sq1RYH8aXb8LgVCgPFTKzCZmdqM+eVoxGY7doBdtL4zS/+mBACk
-         pRNASyGWTWRDZxwrWzSt6ORgtwHolxyWSgRigbJjwLCPytRrukz72JPsKcruxvtMJsPT
-         CFJAik3BClvg8f+sIdDHTjiaSSiAFsYdoCycaxYYDuNCW8iPVuoN7pohoY0PAifZ+fqa
-         Wm8YaRwMv2gqvybwHTAgiBucVomD7ZeKZ+KCsn7itz9s/e7u11ALJ4L1NopsOlkCqcPp
-         bZjw0ks5AUnTo2SBwr1eNaNa5ToEfk9nOWotUbkczxghNiKVxhRvndkjJTdgUxx+txsp
-         ik3Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxmj/e86j9NSw+xB6ybFXyIep5R6nbHd+a/Cq27KCkVTiHkuAuVHdjD8sWhFzUFRLX+QoL6LFRRvQ==@kvack.org
-X-Gm-Message-State: AFq9FYLy63UlOZ8vZkN8OZ/Qwtkz3d0wb5OLGR43m0fq7LX8EUJugMUA
-	TP8zqd5MRcA1uJ2wU4p7ZcJuBG0F6QpzYxFkgjozUw7JX8FnG2eGBJvi
-X-Gm-Gg: AYBFou1IFCqMKdcjKHPG487u5dR1uA+6Iky/moT2pfHTlq7LR1tVi2Lfh1crCbkgpIL
-	zj0xmr4CP0xPGKZ7kwz9MuKydvEAvR3DbZ8D/HpaGaOi5GKDHK/xYeOtZw8EivwhU0nehJUkl0U
-	4fWcnmuEGn/wtYSK+3mJQm9gAC2inWX64+sZIfjiVQ+m97X8efhiVrTm557UlPDRPAwL22vC9yE
-	k33uJm8lVw02vDpw311D14DR0nXZ0J6Nw+kUb54t9hJKukjaBl9HTLR+UdHsx0ypsm3FEPy7vBZ
-	VXROsmqH7w4U8eK6UVlWf0VyC14Sowzb2FOmz1JqFksQL1SBYKtBhl0hnK2VWcMRVHRSqW0DB/E
-	UVU+rC3kZy8mrQe9xvJJL4WXNur0RXg8MVkp+zB0nRI94ua79Ux2IosJy5tPD79prEIZBNA5DS/
-	SrZjlie2a2kHHyxUasaeQxlre6jZUg/a5dJqQHOo/7rF58+6B3irG0VUOVOrXmewpZd+oRoXT/7
-	xa52Lq9cURojx+Gp+fCEMh055A+kA==
-X-Received: by 2002:a05:690c:a:b0:8b0:a30a:7f31 with SMTP id 00721157ae682-8b133dae495mr1678197b3.29.1792533814287;
-        Tue, 20 Oct 2026 15:03:34 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:5d::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b1300eb0ecsm3660387b3.26.2026.10.20.15.03.33
+        bh=oiJsb2ENhg2Lat5WWUqDnx4kJNVMy/Qtqe/7sshNmdw=;
+        b=IVa0+bblkvUKcZK8goOAN/6fbGOYtzJsyylgbUQkaqiQZU9ijLhKSO2tr+CgtlZ/KO
+         BHb112DdrI0LmLCdMm69QjxGeb81SUI0BJjK2hQwtrHWWwNCffQ39wOBFBARDjy4iL4C
+         VKbPlQzrcAm6JgLzN27ZrWiKluSodiPmAIac3JzKzfSuqLLRaGYsJ/FIjJ71u79CKIwf
+         En6zkNGfkk++nzOf26+N3Rg9H++6pOtYMZKqvXJDhI8SYiV51hNvMwXyQDrIP5ynSmK+
+         XtLhT7K8ybQoFaVsWo7+4TpOWM5jTj4MGprTA5u2dkzkZQ5h3EjsdXfUPcEpk1emnHX8
+         UZYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792533829; x=1793138629;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oiJsb2ENhg2Lat5WWUqDnx4kJNVMy/Qtqe/7sshNmdw=;
+        b=Njj9bpsl5V27vQhaXvZ1XwHzbwbrCctZeq6GFYfXzSUNpvMXd14JPvThd2mILQF/MV
+         QpHn7+1ZE3ECOxq59hKPT4e461tQVupPUEkBRaKMR5851dWKsYnjEa0UN0zwYxENCqBN
+         RqmY9Ql9gdjqxVnWJ/+2FuE6HS3Brw2Qc5bhQkiY/Sr5BkbtWt4aNkAvqxTV/Es4k7jP
+         S0yQkEX7V3b2nFoA9CU0KbAK2yYceexBLx6JtHWK8AUyBa1De8Peu0edCQLfUts+ZH07
+         SJm7s6HIFz3YddxSF9xwL8anGZIL9wypxL4UqSvHbueXvtTi3bEbSjYbnr/YVTlqzL8G
+         0pKg==
+X-Forwarded-Encrypted: i=1; AKwUvBwHW3rwPemZASUf2v/dkcQrWQYNkK59uWwKZENQC1wFpmqqBe0OlS/X119tSlrclGjYzBcZJyZpRg==@kvack.org
+X-Gm-Message-State: AFq9FYIqMrbaHgaxPa0/CQSYsjMIb6y8dLVGNuyj2Xc7xebc4HKkOUz0
+	nT1z751G9gd2XgzNxrQLX83N1JfIKIPoBHFAWgpSnnFS2ys3E6/Bkg3AsHpytjDbkAk=
+X-Gm-Gg: AYBFou1ST15yyV/l86FBNaoRd7SCLS0O64+5718sllBWnciHwS3xzovX+PbBc2s77cv
+	IPWoa/AqXoZc70YGPNdBF8EdgmNuoOBQP57ovDyWmdUSveo1jrV0BcnDgJpf7kiadvmezIskTvq
+	Qn7bnMIe/RqT+4pJLSuHs0NqKl4GkmwTOSvMO0mLWc9yTSlMwJJ7tq74vK8tkzK2EPB3qeakNv7
+	p7fyuLcYFZo6VxQMVQVySqad12GTL4rm9Nwc6KaJbg1CTGzn8ZZIT8eTmkyZYmRrpYDQA75Nndy
+	4aYUQvSp7mG/AUtNu7x2z+023tfbYNoyTPI0oq0xqYTYHOE4dzCEanp7fNAl2w+ESzYtAR79T4y
+	o6WeLrj4JKXgKHMZsGJnzU1WTEdBvDrrqJvqSpIs+IyQ/Verf1zrZQacXiqUX/cqFBd/63scdzD
+	eLFFSJe9Foaly4Q2X+tax7gchOHvQYKmPvz0fY5mIQUuve2z1tLE9v9Ppk1ZD+VxbWIuf6x8ff/
+	mdzx7GUR8kBb6bwk2GrOnDV1wII79A/pZ2BSNj8/yWGWN74FQgT63dKkll2YKGI++PLyZCFN5Ri
+	zHUpL2Ozf6jRE6gtOAtsso71zutlacPI7KmD+EaXkvlKsZljuwx9wNMQ63TtrtfOfA==
+X-Received: by 2002:a05:620a:690e:b0:93f:52c5:a32 with SMTP id af79cd13be357-93f57f7aff1mr111231185a.83.1792533828633;
+        Tue, 20 Oct 2026 15:03:48 -0700 (PDT)
+Received: from localhost (pool-68-160-167-46.bstnma.fios.verizon.net. [68.160.167.46])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56ddd369sm92332385a.21.2026.10.20.15.03.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 15:03:33 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	cgroups@vger.kernel.org,
+        Tue, 20 Oct 2026 15:03:47 -0700 (PDT)
+From: Mike Snitzer <snitzer@hammerspace.com>
+X-Google-Original-From: Mike Snitzer <snitzer@kernel.org>
+To: Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>
+Cc: linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/memcontrol: publish null pointer before dropping css reference
-Date: Tue, 20 Oct 2026 15:03:27 -0700
-Message-ID: <20261020220331.2641416-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <atfMngq7nyZpt4u-@linux.dev>
-References: 
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v7 0/5] mm, iomap, NFSD: stop uncached writes reading back shared pages
+Date: Tue, 20 Oct 2026 18:03:41 -0400
+Message-ID: <20261020220346.28020-1-snitzer@kernel.org>
+X-Mailer: git-send-email 2.44.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 481F01C000A
-X-Stat-Signature: ojg4kcbjync779n9mbmzb7kgi3rpyhsc
+X-Rspamd-Queue-Id: A0E934000C
+X-Stat-Signature: ixsrpcb43huf33ztu9ogwd4qyd9p97qq
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792533815-910137
-X-HE-Meta: U2FsdGVkX1/omk7p2xz8GKCBq60dXAw0MjDu5Im188rzBnD1GJLiWUN3siVEGBJZ2SrLGCCj0HkOVfA7w4Gwqbder+RXCeH1BVsEy4BUDUUD1sCxgbz565uYBjzeK2ZbwDKQqrg/ms+Dicfc+AGY0ppSwHbteUJqG1zC+McXtCKQN0DpD6u0kkEKbqEoBADLWs068y/nCN5gXwPGsNW7at4E7UAvDQEvllvCApbdeWhSEocIkvsoF8sgu9cMOfwj6Ysmkl+qRPfwqCpXraXtwpxMIECXhLQRmqnNR69afoKVeS68sreKo1AnXot/DNrDCCaEXBjcam1dCh0FnhW/Udo0yZwiL6jvWoHYHk1DjTmeqkFIF5vUcnuf+VZ1uB5yW6puQQ+YIkUuS9kSxqxXfnhzUy4BPN/cCDdx6EZoLhn7ddHlQbzeYVT1XQVNKDUNWWNTWsbtDyXK5OpQz/lizXnerg7TFmT2yjRy+4Lga40mkSINkS0er2bW/fnsaIuYgrAB/StyL0pur7J3T/tPxGaaJwgcnw5mAyiqv67hDEK74LkK/DmdzL+q/wIA2RLyEn3BcTAtRI51ttm5zm9fmcmu9P1brCfa4/n2KldQNQdShVxOs/YhHOYSTGgS6CdiAWS4MxHRmHthucZRB6Oe8RDpHaBwoBH8xGjw3y8ywAmAwpwvHamlPuTbzOVk6mLsayDX5eoMtbpJuDo9LaBl9ZUuIRbz7QIg8FMZcbyygA0yu9MkJ1vpRSTIrVZxIHYeaP2BxamfBSpvupLWZiX0mFbi8UaIN97FeM70xyGSVTiqDvvtIBVFt2PsDOfJHkldWUNlVzfBlGrHr2t/DSH6mJUtAgAgK3TBlWisyIf2EHgRbpICRH5TuQDKQnaMYaCULk7n7sATN9XOYdnIlNboDMq9FFxRhS6w2yCt0RODzVmhZxhkhISaxcXvij/nx+7vhowpkuxfpU+MgRAoRyD
- mUM4kutC
- yoZO4TwIIe0w6KoY5BshsU60iVMT/wMoAfV7vMl2zSLTwTnLB3LuZjnsnI1tq8hKlhpIttku7EPDcqoZSqubVzofa1D5CmRJdqmLiW7qWFpa+FXPTaLJwma45ydw3a1gY2TvYPa1qARVUgcfH/A2ji5LM2aK45VBu12Nxy0/0QzRvlqwPYC3W2n6PrT4BO2lXTY91kAIaHjzQhCXWwqulkCwv+y9V9m/tNA7y2OD+cZJLhyAmANPekN/0zcByMTHPgYktLDeqq7iKisMu2imPe5nSODbYI0NoNoaWAGAE9XlAK5N0mtdiKzpdprcDrHeypqY2jteJH3RfBAwFbzKaVioHUMJb7EKmCyI9SSOJ0bMCh/f/Tc6K0Gw5N5s1AwyNB0fwqAfSbspKz97FwDWUOdbY6kCBTz+a6GjMBoVuS7wEbO7oelPZXAE49tdx/3JKL3gvLPpwCBRlYpHVpDz3PbqgqMLkMnWAkyrWX7sfpPr0/oFHv+ICVDY6NA9eqLYQo+r32AFHUDAGmXSJdzpWmxBWPXL/wfpKbfbU
+X-HE-Tag: 1792533829-153485
+X-HE-Meta: U2FsdGVkX1/mhKcJiVKCHPB+lpBFY3BLEIQYcsFouV8LVWZ1O/DCooYolTQfWtVi/KDIHockIVoDqCmwz6LiyBYZFrBIU0mDKjhqwuFnLE5WDXTT9TJATlJ8ok4Sys4HG/qWUh3VLIyJ/0jPg3NvqPT/3++JwY4QcVn1k1ys9qqB07+yN9rSONKy1wlpAezclE1SFgts6I3qX6gJ6fdB89PW9yBoVBd4+UMexUftmaZT3RiYcuDZXAuCpZpURWErC+StqiZPbMztD3ZjHO8Y8BiGLm03hBUFeN233n8oqlj3DRJZxy1/bqCYRkrD+Mnk3B1H4wWjevdmUssEjRTB5ESfRVlw2DAtkwxKbTUDova5Dd7HKsV+4Qlvq5fxijC9GRf73znuwiOSAuNYx5NT3ix3H8odP8cdL6MVLPXU14kivy35HxFDiDB90F5VvPJQUS+tqAKf0VoNDL9NJv5HmHJr63sPryVzmM6dCw5OuOiiBo9kr59sZEp3nE+5roBf+UJHKYgaw7GTT3Oa221q87R6ijENMOK8/phu6ylsWQVAr4bvoGl7dWctFV81hLrF23c2kYZUePyB+EUgtdUUXdcgA6HgwbkuiMt2llzXp3+1BdI8JoIPLq2hVA30+Hsamm2kt6y/7n/TMRnKpttltOkoo3cpddKg37U4LVVPcrf8d7kvsxdpH63niNeHN0NIHQJD2jHV2P2KLQRz9YB4HjZunYgBCKBYiqRIttdEOQp+nDGt6ymdBqAwUI8tDYuJIwUbEk3tjcE/rY8eFfcqSRg7ykOUx9Zid78QkeG1m1+RhskhewpV5NpyfJdGuKmoyQSov9G5C92yTjq/HjC1+Gz5mSt19dPw6I83wVsWLNN5+Kt04FQe+TnOndqX9ASbTZ98cw0kre0yrTemLUkzfcBgvZo1t3Or08Y9WzmytQjgVfbcTf4RCfwk134PAta3hiZazYEOctBAAPNdA1H
+ oErp9RJd
+ Qq6U/A9DXvfB868bt+YtN0idKY7XQIU9zgXhq/oHDRLDMfoUSLx9sLfDvcZyWmHmm9GA7/pJOLsSiJvejU929sdiNfjzxdAbMuyEWvEdnXOp28uvwime/63dJ8RY9eVdhjF4fy4/Xq2gC8Es0VO75Cm/N5qLGd/yrafQs45nK4/7DTZJPixfjrEoG5zJDXW/Jxqs0ydNSOkrkvyKeTOXNXViA2QgSp15n5Rgs3qBtL88JL3iWn8gzCI8QkXwxuE/Rel+dhBMZzRe4Tm+DGU/sWh+NOrw2NEAjVfJHjta9E96R5ZFRanVhYq65waZ81sA5CVS1lmTcoTcXPhqBmF3kRzYub7SIucmCmG4e28CGOBVbXNSGNsTAZU86G0dSLUgve+tIa+dWAwa6Y2TWNHkQZOu7cUuchhIf3eNyT1JQkklLxiZcgFPR1FtXf/YOgDLKwgg5cEPvasVAy3x/dD1h4R9aR1HaLCDhbSeDU+tIoob/HzL1vJIxdMYQO4EpupGwcoWGXFFJDvWpsqkuxNER7fma/HO6uPjJeHkYcvAFMk1/a00syhsI5NGikLdoHzk7WoLuHkPvcFTRCBECcdqSoXv2qU528sdLrzai39CDa7OUdZQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,86 +131,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 20 Oct 2026 14:21:22 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+Hi,
 
-> On Tue, Oct 20, 2026 at 12:35:31PM -0700, Joshua Hahn wrote:
-> > On Tue, 20 Oct 2026 12:03:38 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > 
-> 
-> [...]
-> 
-> > > 
-> > > So for drain_local_memcg_stock I agree, since FLUSHING_CACHED_CHARGE
-> > > is set, so you can't have it concurrent with drain_all_stock since it
-> > > will skip that stock. But refill_stock also calls drain_stock when
-> > > it evicts the slot but the flag isn't set, so is_memcg_drain_needed
-> > > can read it at the same time.
-> > > 
-> > > What do you think I should do? I think reordering makes the intent more
-> > > obvious and maybe it's just me but I did find it a bit misleading at
-> > > first that we were dropping the reference and then publishing. 
-> > 
-> > Oh and just for clarification, my page_counter_stock series actually
-> > gets rid of this codepath and switches the order when moving it anyways.
-> 
-> Yes but this patch has fixes and might get backported, so we need to be use it
-> is fixing an issue which is real.
-> Let's try to reason how the race can happen between is_memcg_drain_needed and
-> drain_stock:
-> 
-> CPU 1						CPU 2
-> 
-> drain_stock
->   WRITE_ONCE(stock->nr_pages[i], 0);		is_memcg_drain_needed
->   css_put(&old->css);
->   /* assume full grace period */
->   						  rcu_read_lock()
->   						  memcg = READ_ONCE(stock->cached[i]);
->   						  if(READ_ONCE(stock->nr_pages[i])
->   							mem_cgroup_is_descendant(memcg);
-> 
->   WRITE_ONCE(stock->cached[i], NULL);
-> 
-> 
-> Do you think there is possible race condition in above? I couldn't see.
-> 
-> However I ran this through AI and it has convinced me that on PREEMPT_RT, this
-> is indeed racy access.
+Please consider this v7 for the v7.5 development cycle, so that it can
+go upstream in the v7.5 merge window.
 
-Wow, thank you for going through and doing an analysis!
+An uncached (RWF_DONTCACHE) buffered write drops each page it writes
+once that page is written back.  A page the write covers only partly is
+shared with the neighbouring write, and once the first of the two has
+been written back the second has to read it back from disk before it
+can write its part.  32 threads writing interleaved records to one file
+on XFS (emulated 4Kn NVMe, 4 KiB pages), before and after 3/5:
 
-> AI reasoning:
-> -------------
-> 
-> How it breaks on PREEMPT_RT
-> 
-> On RT, local_trylock() takes a per-CPU spinlock_t (an rtmutex). That is
-> rcu_read_lock() plus migrate_disable(), but the task can still be preempted
-> inside it.
-> 
-> 1. CPU A, refill_stock(X): there is no free slot, so it calls drain_stock(i) on
->    old. It sets nr_pages[i] = 0, then css_put(old) drops the last reference and
->    queues the release work on CPU A.
-> 2. The refill task is preempted (by a tick or a threaded IRQ) before it clears
->    cached[i]. CPU A's kworker runs css_release_work_fn(), which calls call_rcu(),
->    and grace period G starts. G will wait for the refill task, because that task is
->    inside an RCU reader.
-> 3. CPU B, drain_all_stock() → is_memcg_drain_needed(): B has already passed a
->    quiescent state for G. It enters rcu_read_lock() and loads cached[i] == old. G
->    does not wait for this reader, because it started after G did.
-> 4. B is preempted right after that load (RT readers can be preempted).
-> 5. A resumes. It clears cached[i], puts X in slot i with a non-zero nr_pages[i],
->    and unlocks. G ends, and old is freed.
-> 6. B resumes. It reads X's non-zero count and calls
->    mem_cgroup_is_descendant(old, root). That reads old->css.cgroup from freed
->    memory.
+  record  pwritev2() flags          4 KiB device       MiB/s
+  bytes                             reads per write
+                                    before   after     before  after
+  47008   RWF_DONTCACHE             0.97     0.000     831     2281
+  47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.000     601     1227
+  6000    RWF_DONTCACHE             0.97     0.000     121      488
+  6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.000      90      206
 
-Thanks for taking a look. I think this is the race condition that Sashiko
-brought up in the original series that I had.
+3/5 has the page cache keep such a page for the write that completes
+it.  4/5 lets a writer that syncs its own write, as NFSD does for a
+stable WRITE, complete those pages itself once the sync is done.  5/5
+is the NFSD change that uses it.  1/5 reports the DONTCACHE dirty count
+in the bdi debugfs stats, and 2/5 adds folio_mark_dropbehind(), which
+3/5 and 4/5 use.
 
-I will go ahead and send a v2 with a new commit message that explains
-this PREEMPT_RT race condition so that it is more obvious where it can
-actually race in a kernel. Thanks!
+The prerequisite NFSD changes are staged in cel/nfsd-testing, through
+ad42983b887e ("NFSD: add tracing for how direct-mode READ and WRITE
+are serviced"), which was v6's 1/6.  This series applies on top of it,
+and each patch builds with W=1 with no warnings.
 
-Joshua
+1/5 to 4/5 are mm, with small iomap changes in 3/5 and 4/5, and are Cc'd
+to linux-mm and linux-fsdevel.  If the mm and iomap maintainers are
+agreeable, their acks would let Chuck take the series through the nfsd
+tree.
+
+Changes since v6:
+- v6 1/6 dropped: Chuck applied it to cel/nfsd-testing as ad42983b887e.
+- 1/5 to 4/5 (v6 2/6 to 5/6) are unchanged; 5/5 (v6 6/6) only differs
+  in context, from its rebase.
+
+v6: https://lore.kernel.org/linux-nfs/atbfEbgMU6UGkn2X@kernel.org/
+v5: https://lore.kernel.org/linux-nfs/20261019150725.1507-1-snitzer@kernel.org/
+v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
+v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
+v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
+v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
+
+Thanks,
+Mike
+
+Mike Snitzer (5):
+  mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
+  mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
+  mm, iomap: keep a partly covered page until an uncached write completes it
+  mm, iomap: let an uncached writer complete its shared pages itself
+  NFSD: drop a shared boundary page only once both WRITEs have written it
+
+ .../filesystems/nfs/nfsd-io-modes.rst         |  17 +++
+ fs/iomap/buffered-io.c                        |  16 ++-
+ fs/iomap/trace.h                              |   3 +-
+ fs/nfsd/vfs.c                                 |  99 ++++++++++++++--
+ include/linux/fs.h                            |   8 +-
+ include/linux/iomap.h                         |   1 +
+ include/linux/pagemap.h                       |  12 ++
+ mm/backing-dev.c                              |  11 ++
+ mm/filemap.c                                  | 106 +++++++++++++++++-
+ 9 files changed, 257 insertions(+), 16 deletions(-)
+
+-- 
+2.52.0
+
 
