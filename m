@@ -1,122 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C807606A31B
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 18:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529D0606A330
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 18:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=n4nuScuU
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Res92e2P
 Received: by kanga.kvack.org (Postfix)
-	id 00FB26B075C; Wed, 21 Oct 2026 14:16:33 -0400 (EDT)
+	id 576BD6B075F; Wed, 21 Oct 2026 14:24:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F01636B075E; Wed, 21 Oct 2026 14:16:32 -0400 (EDT)
+	id 4FE6C6B0760; Wed, 21 Oct 2026 14:24:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF0126B075F; Wed, 21 Oct 2026 14:16:32 -0400 (EDT)
+	id 3C6CD6B0761; Wed, 21 Oct 2026 14:24:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 896CC6B075C
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:16:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B3DFA81C9
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:16:31 +0000 (UTC)
-X-FDA: 85347438582.16.35C3A73
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C2BBE16000B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:16:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=n4nuScuU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 3ewHZagkKCEAvctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3ewHZagkKCEAvctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 13E356B075F
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:24:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9CC7A4068E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:24:32 +0000 (UTC)
+X-FDA: 85347458784.26.FDA2500
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DFDCF40008
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:24:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Res92e2P;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of samarth.colleges@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=samarth.colleges@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792606589;
+	s=arc-20220608; t=1792607070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=efyEsrFQ8z344hXqmH3KG35AeA/HgVLYWCaYhof8EHs=;
-	b=owTTpSMFCAXdfimBWbGf5+iQjL0uLl+jDewK1lDuM2sgdutF+iIGuJDDw1B6nsnFDr4t6O
-	J4+VqteLLrqDxm6Gx/H8jZYKQlCDnYX8qmVLo8BqB7/jcNdjWZ5+tSQlTX2Kl5kwVUew6/
-	otio89D1I5DemskHEyVSvYFkbT/C9Eo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=C8k+JbJNU5IGiHKVYYM+eJQgIjguwqcbHlYgMrCENwg=;
+	b=G5ddMC1Bkr6t2UpbRriWiU9rOwpIuPD/Etr2AUwFgiHRypmgvfe94Ju/iFFy0dOJk++50g
+	6qXYyd2MLhKOUcycze0YQ1pIn0UezCqOHCcy5zNoP6Ioa/1FwLUuFiz4xin1Ci2s2eLkoa
+	TCjtKNioGVvLOcuhBryJP/x0sc8ixN8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=n4nuScuU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 3ewHZagkKCEAvctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3ewHZagkKCEAvctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Res92e2P;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of samarth.colleges@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=samarth.colleges@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792606589;
-	b=oLUAQg7fiQkKXVf59bDDM036LMl3n7glhuF3UcX39x3jK3Z1i8nDihSVf3tf1IXGWPV+Ae
-	/RzcFNQWz+YDU3Gc5ABazoJtK68U+FXWXjYjYcDUf+2p8M/G2KS4JSSxkPGgzCiaiHVQ0F
-	yHZQOwYSAGwIdy2UatPFT35jH1lgqJo=
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6b3f6d9827eso869217a12.2
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:16:29 -0700 (PDT)
+	t=1792607070;
+	b=NRtaSr2A+6n1zzWHt3BVckGviB0s1eYBIAaS0qcPUwBSzuVd2uO/8IWxzFXwbfGCkLZgZl
+	XywZC7gsfO4IRWT5emhRZW8SXopfWw83e3euRnrU1ZoZFJq0uT2zHIYND2lGHcBViZxDIu
+	MYK+/DOkS5Aso0wF1kgb6n6KsAUD8+4=
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-3535a54bed9so1397675eec.1
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:24:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792606588; x=1793211388; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=efyEsrFQ8z344hXqmH3KG35AeA/HgVLYWCaYhof8EHs=;
-        b=n4nuScuUy/j7BWJEK0mN2p+dlrTtO+EJu3fL/uXiocdhYEaRXdl+LGhDMx/eGQoFjo
-         5eb0WVOrjd778hwQ+Xb1bZZXa3FmtW4WRGvKIQxz+kRBRJv+oHNRFGh22Q0EfPIzNgPm
-         BZTfLTHQUQUuy/52GZVsNZMPc/Nc57grJNSnH4HFXqV5JmC1csXVix952dOL7nDBJyvq
-         GjT/8Az3tU/rtt7zg6/U1zpxof9d+/EMlZm8KOhSKEWicY7Bqpnoam+G0sOXLz9vxfKA
-         4LHCFCOCDutTw/7v+1zHwms9vW5GWCJ8lII0DdhpGfOa+SFfpRdW+5WIiCe396onPDdt
-         8ImA==
+        d=gmail.com; s=20251104; t=1792607070; x=1793211870; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=C8k+JbJNU5IGiHKVYYM+eJQgIjguwqcbHlYgMrCENwg=;
+        b=Res92e2PXyRXAcZx/syEU3xjlg8CT5JVkLpRivAcEV+PYOeBHMVR826ztFmxiAarly
+         qRPh8fWbCI62EchKKyO2qgmiUD3lfA1uHywn2l63Uytz2NvZXuI2C28njWoAzpEt+iL/
+         Ag0ao/fjjZXMN/4uouKTShZwi/uX2TD/dI+512qrh5ZXKuuqrA5taoayY/PhZuIxKl6q
+         Grdjq8NWVFYdEzwKlB3jzONDP34pSrwqY/Pw1OcgUE7iqbS5CeN5tPfE6vZC2HHo0cW5
+         9nCgDsH9bjRYyOFylTtKub3cgGEwe2w3jxGKhCBrLiAHSFLv/tf95FvgB0KEgnkSiXPa
+         aGbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792606588; x=1793211388;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=efyEsrFQ8z344hXqmH3KG35AeA/HgVLYWCaYhof8EHs=;
-        b=FtHwPF1WzTO/mBxR57I1ey25ltPh4dJcT+817/wIeP93cerI9E2laVktNEZ/cjQb5q
-         sKlN0eSGdQW1zzzHYf4PcDnw2x5pxgGUq2/b7CjeJyQPrWPeY4GJJ1Lt1ZQ1Y7B9L/nQ
-         mWtUl+wZE2Wl98EmLCbTDcu8fCkXLHIYFeBRvZt34XJDoK4JgAB/qBjPU+K5cWanAr/+
-         aOnKpyaXx+Ep8kAENpgzt4zV1kg4cAMWGsikDYcWhBS8yWEN3tlrFEUuab8rSEmRVACg
-         /tKHkTS6/ZvzkhE/kDWre/Up5BFvhqpeamha6elSBv1YuegOdKKVMfizPJDxMZWhTsjT
-         HBBA==
-X-Forwarded-Encrypted: i=1; AKwUvBwqnHiAnAoaWOy7MpQp4Rn2KMIxiRCN0yVdtagte7hauvKulqMY2CZg2SJ+5IQM+WIRAsxWrpx92w==@kvack.org
-X-Gm-Message-State: AFq9FYIlInbNYAA6hk4qHJaOxgCqEkuXgxeZnyrJVmQXqKuUDV2/dtSC
-	93baZb3Deupel42P87lh8r/T7pq/VhHGLSY5lBzo1t6ogalKY5Vu8nEBLokQZ/U+OJhCjk8FrgW
-	kZ8WpnNe4Ow8vsmXO+Q==
-X-Received: from edtr11.prod.google.com ([2002:aa7:cb8b:0:b0:6b1:c2e5:327])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:400c:b0:6b1:cd9c:2588 with SMTP id 4fb4d7f45d1cf-6b408e9d743mr2117560a12.18.1792606587940;
- Wed, 21 Oct 2026 11:16:27 -0700 (PDT)
-Date: Wed, 21 Oct 2026 18:16:26 +0000
-In-Reply-To: <CA+CK2bC_wc4LxvHe0TREbBP7esYW3pcMNtkGK-kqvf6MyvOh2g@mail.gmail.com>
+        d=1e100.net; s=20260707; t=1792607070; x=1793211870;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C8k+JbJNU5IGiHKVYYM+eJQgIjguwqcbHlYgMrCENwg=;
+        b=FSD76qCRsjJzoaLRIViEI4/i6lnOQR63Jdf32f3xoUvHoKYqzAO5zlanf4s7oUSz+v
+         kKK5iRETZCK366jS0yn+nvvqHVe6150bPq9tpteChBNQLgyVFd1sqcUTFv1sPr7c6MRt
+         tl/BIaF2KOArNVOdc63YFbdkIDBR/pM6I2iPGE+YM1wToUrr8r+dF3YSFep7+u8i7vhi
+         908NBIakMUKiIiqcYXtzYanQEH1VYRP9B0saL+1g4JNsl9tW3eaCINODAlZKCtV3IbY9
+         09vI8MWKhVHl28Y1Iftrl7cML2BaE07gQsbHx2W5EhGFTXY7QathaYz7Asw2+qgqpWtC
+         JJOQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzXATd/P5tDwoLkmY+OqSati5ljtMdVbZVdnMO5S6ppsPjgMnD769AEsz/4ktAKASaWPjciXXUkEA==@kvack.org
+X-Gm-Message-State: AFq9FYL4qMeNLLIdLtZ35vD+cj5o+ZypqpcYQmZ02EUAhmJW8VvYvARY
+	YNmbMRwXd/HFlSRlhviQeE++s/aQw7DQsWc6aoTwtfD42D2IysKBAhO5
+X-Gm-Gg: AYBFou3L7hZimWzh+Ai3QmvYddpPz6mp19lS0Me9J2yYlRVVaFg1zS7OdUvdAls18ow
+	ZSU5phDATOZF04v2+J3IEoulRfN8KVx9CaE8JIzTUkC7lU2FwdiFB39tRL7AKRWMQh1kdfOcW1D
+	o5R1YOB/Z9BaIN6LXl8FPZSCvRt4lJm++hJR2Vw60MshIwlr/I3fgSXVz6YLyROOmiFklUwfcjO
+	UtUrleWR3dE4zUyumbbnN4S5/0hW83Mme0Zl/5YFe6O9IE8by1Nvo10Q1VetBF+J2pMSvzsZGIc
+	HA7Ml2LSN+Ej2UcFmIXqveJ/iSmshXokkM/xskp2CR9TbxPCfsBiTSMdK0a3Zvv89Ig0UbWPkMx
+	npadnt01maeJUOl5vVwtryhcvmpXBjj0hbYYlhRFqj66C29SXEu2/bkdVR8qRuMraCPjI60O38j
+	FAihEfyOKq5Iqr1biIuH/hkDPV5p1rwvN5wQS+17NTw32YpFWvAoginUAqs9DYFSM2v4+b0eYA1
+	tqtKBnsVtWXmY/VTov6lwzyKfgqm7gSObWEu/L7YPIMZQDUU8EMV/L2Q1E15gVqn3NYPeHDf8Zr
+	CrK/NGpR8tk5aC18IxhvUomrPlSb8hRLkqPtYg==
+X-Received: by 2002:a05:693c:8399:10b0:35e:f1a5:9ba6 with SMTP id 5a478bee46e88-3674a40738emr4497258eec.5.1792607069610;
+        Wed, 21 Oct 2026 11:24:29 -0700 (PDT)
+Received: from 1u1g-b650-0212.nvidia.com ([72.25.70.131])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36740cca3d8sm9107228eec.14.2026.10.21.11.24.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 11:24:29 -0700 (PDT)
+From: Samarth Narang <samarth.colleges@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Xu Xin <xu.xin@linux.dev>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Samarth Narang <samarth.colleges@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm/ksm: keep soft-dirty when merging a page
+Date: Wed, 21 Oct 2026 11:21:57 -0700
+Message-ID: <20261021182157.1873726-1-samarth.colleges@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-2-tarunsahu@google.com>
- <CA+CK2bC_wc4LxvHe0TREbBP7esYW3pcMNtkGK-kqvf6MyvOh2g@mail.gmail.com>
-Message-ID: <9huzik2u6hs5.fsf@tarunix.c.googlers.com>
-Subject: Re: [RFC PATCH v2 1/4] liveupdate: Rename handler compatible to name
-From: tarunsahu@google.com
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	David Matlack <dmatlack@google.com>, jgg@nvidia.com, robin.murphy@arm.com, 
-	loganodell@google.com, oupton@kernel.org, kevin.tian@intel.com, 
-	alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, 
-	will@kernel.org, Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org, 
-	linux-arch@vger.kernel.org, sagis@google.com, linux-mm@kvack.org, 
-	kvmarm@lists.linux.dev, iommu@lists.linux.dev, linux-pci@vger.kernel.org, 
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C2BBE16000B
-X-Stat-Signature: ap5xruzons1rit9ccb1jo6k6db6aouxo
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DFDCF40008
+X-Stat-Signature: m8p84rhhedm37sok4i3846jr6fubt4yx
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792606589-49923
-X-HE-Meta: U2FsdGVkX19SgfsCTQErtE62JxM4aVwK3TuWTAPrNJDcFwIRTOduDONSwaUC8AWiUTKygio/iB/bvdwag9hN3BzqKd6X97u4ag46rRdWWGyBD9eJV/CCsqwORTtsPnZ9+NIB6o4ryqksYXUyQrlY40R2jdOpolhDqGwKnp+y5rYnUC9sSLYxwNSdmbeUriNoNhxVVgVW3QgPTEaaadATZwACrOYFxQ38D5TNBgQAJEjsWcd0HOOuaXX2nzcUtGHLngLxHG9QtYjvc0ccLrOHC9Wy2m/3W6H/7EWpFH61KPDJZ2ZZbE9Lbp51SqPNRmWGlRJaNDrB6uWjNW+8sdPrdixQaAEraIy3M8ShI8KSi3LjOa14SrrEGxn7i3x3mb+9Wx6SK0GO5UIALVhRlK0yB7y3YzwLn5lJJ3uQoGkPPqgGGg301s4xh8t+/Xy3lxSUgtzec35Yt6+xV71R39kC7+wTVe1jx5jIrtrwsVRcBO5Gge4ee62weZ70WPCnqfU9C0jWos6BOm2ImHCc7KWEvHzR2xuvC0bdEPBZ9AZzpM1v7NCRP6f3moEfx1Zj/yvnYySHCR6MRYa0u4UMkueBe+YsA3pwkUKE9veKZDwsieaPvmRbwtiUEh1vU/8hciPrlp7pNp9ncfSjqRZfnbuUa3/+M9jogJCCSx0QGIuB+KPVBMgR/oKW5bQMdYH1B0D0GeKqyFngmlANfkMU2BGdX8V6Xd2rVLS4W1ntfrWjbaMaOhUcSBrt6yDgmWugRXeudZa4beja7TVh35j1gF0xFXOjjQf1JOoxvcjYt9ann53wubLBpk1VPKbT6Yotzj7HHHV2m5W+6jZFIzXCHPQ7WLGkcHGlRkJn9fX47zeEkZGeCMxAtz/J0pi6qB8Ih+RsynGwWwrhIRGlfmDOcYrFomvYrjelAc3K7bM3l9tfrlANCwObECWE7QsWWCkT4AkMsnfC6MaGX7Verx5L77j
- EE99qfK3
- bd6QrcB89DS00sTdNxp066Y+FzQ65vpuqZi6BAJVsDiOCjth9S/kELsu5dSxAyIZtm5DEdss8fQFkiletQNjVByHuctEUTrDKsmxH/EEtBX77/OX37D/nx8X+w3xhNlYJQbZw29cJqij6YuACmE9MlPEgDdI5FvTkJqFLbGe5IDS60p0Uazcs829P5IGyhFhq5bLHe9ie1JjAjEmRKK2c6hNdGAmWwdqXLgiloN5OiKMRAcu9eA4QD0nT9JGwvNkYeiyLLvB5lrneEjhqA1gGgI82UZsQg5nPCM1yCVXW0DSSepUWLm1HJ6sI1cq2hMtupN3OCUepa2I64Od4q+OJ+hzITmg8IgoZYkTlhijetkyfrMMOb3tdQ0GOMT5x2rZRZ3nN34F4dWYDDswjFZvG4P0g2+lq0IGgPGcV3OroKd5gu9bgJeOP5qe3CA9ZonqIoW7tqeOyBlugmmDneIMkzHUTkhnfkVdemiieu6DH8kVQx9yhDDC/HhprHa7k+6aERA1tl49bLCRmZvpfP9GhSVBlLZ0npSND8WijwKBbHj8csg6OQyu8M8aFE9S840rkYAQE5dTyaRjL/QvPymag/dssjgYPWQxeHj6iWpOFIBCypGgbo0+pg+KnYdOEdrlhCaQVP5og1lEtI28=
+X-HE-Tag: 1792607070-393790
+X-HE-Meta: U2FsdGVkX18p+YpAUC0v7ph5qTWDWF0D7goAmotj/JS8bM46DQzPCHucq2yGcEHsF86G0+tdduapjntZDdQ20jk4JPW9YKDz8ot09SgJzidpamndIk6GBQq43+D3bwWVn4HN2VvHr0c9NlqhSFZiho0BxlhO+xpUr+4ollt2nWrVm62GMUxgVf+v+3IPI7/ZGzPUifa8ORIomnsHqY8Sn9V9tnXn6N/wAjO+S9zCfV4BEurZYsXEU0iVDOFkMdQPvETo7fSZ7wJLyIP6xGq3cq2qiVH6SymTpiwveu2PBfwwjhP1nQTOrOSvWxfPg9WvcYyxPTaGHwFV9x8XVad0QsSSVKLOr9dqBLq1Omqm7tw+Oq62sQx3kZ8TdjIvTak8caAc+2MhbY8KtLqqv5h1gn6vJrcsI7+V95HYO6FlwmHmWoKS53xnlmG+1IOcheN+QzOLYK/6wjlylnYAuJe6Nr+PzJnKkZ4TTOClnsx3JZy3iC7dSYyccaSbR3Ser2zSLxMWa9R6cRIAZmQgy4m05Xbw32qVeRG40BQapfCItpZV9wmsosbKC3NWH1TtYaWw60/rD8uwKIsk33qZkZ5nccCrSUeMtMTj+f7AIFE9ZKcQfQZGfrbEj93lSqz30W+YTO2f+ovtfgKoP0+wIJlwSHCPnU+cUzwp3ivn/S3YrOEgMQpBm83yS7rc0f6fEbNncGx9MqycuUtZArOQ/ObacSWi2w7D8hvfz1kko3/otBYZjHGriT5l7G4xyILdpmcmPkhRKDujq4YmwHHSIGWgTN0G+B6OVu02gJfAbFqMZjN1GgablSsuSaljjAu08yQL5dC2RgylQTiffpuVVdB9IZvWUwbPmc6B0rlNWjGH30TZoE7N+xw81asa5NWypYDn4jtizGqMY1X47kYBElchTbKSzaRTEOh61wQivz4NiVTMlLFG383/yTZPy8OLh9mw3PAU9H1Fm8Eccw2azSs
+ Z2n1boDR
+ rg1x5EgE4BFNrzqoHcA3bCy9BBbM9Z8ngxtoIjp/04gNGg/djS6xLBarTSG6pkVxFPQYHLv2ti3o/0h96RjEi6S4kLw+HLQceOt7Tq+AM9yJMQBwE40rK1oxV6eC8FYEumf8w0brX0gVhdQ6VMAnc2sCCYMP5+LC+C8MtVezKb7aThQLdq0nfSsjCi0p8b9HUKjQva79rdU2X5TBPOoAwmPcU7SmlltaBCY9n7hx4Z9Jk3ltd3mkG5LO4wslDa+6vIweNz5JUWi3MaORgeWA9hv1OryEJuU8xdx8jx4JU+Mj8tgRiNfVZyOxcQ4oHnpbEZBITH1qGF43VaiysTTHspOWLtgvRqptPbR6OidPUAwqHyFBZPQVFsq0KtU8ddhI+2aOd8AKR2E3a0fdgl+WQlCIb+LO/3VR/xai0EDHjnd0u3CC3rzZDchRJHgdLO8GOMmbp5/zqGwz2CdWjRLsUOCZJf+rXnP+ZrtJXqMsvnQWbqIDpJn6Dz2uBhkL9A5Emp46c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,674 +129,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+replace_page() maps the KSM page with a PTE built from scratch, so the
+soft-dirty bit of the PTE it replaces is lost. A page written since
+"clear_refs 4" then no longer shows as soft-dirty once it is merged, and
+a soft-dirty based dumper treats it as unchanged.
 
-> On Wed, Oct 21, 2026 at 11:25=E2=80=AFAM Tarun Sahu <tarunsahu@google.com=
-> wrote:
->>
->> File handler and File-Lifecycle-Bound (FLB) identifiers name the
->
-> Please use FLB directly, no need to spell it out.
->
->> registered handler or FLB rather than a monolithic compatibility version=
-.
->> Rename compatible to name across LUO headers, structures, and consumers:
->> - struct liveupdate_file_handler and struct luo_file_ser name field
->> - LIVEUPDATE_HNDL_NAME_LENGTH (in include/uapi/linux/liveupdate.h) and
->>   MEMFD_LUO_FH_NAME
->> - struct liveupdate_flb name field, LIVEUPDATE_FLB_NAME_LENGTH,
->>   PCI_LUO_FLB_NAME, and LIVEUPDATE_TEST_FLB_NAME
->>
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->> ---
->>  drivers/pci/liveupdate.c        | 10 ++++----
->>  include/linux/kho/abi/luo.h     | 26 +++++++++----------
->>  include/linux/kho/abi/memfd.h   |  4 +--
->>  include/linux/kho/abi/pci.h     |  2 +-
->>  include/linux/liveupdate.h      | 18 +++++--------
->>  include/uapi/linux/liveupdate.h |  3 +++
->>  kernel/liveupdate/luo_file.c    | 45 +++++++++++++++++----------------
->>  kernel/liveupdate/luo_flb.c     | 16 ++++++------
->>  lib/tests/liveupdate.c          | 22 ++++++++--------
->>  mm/memfd_luo.c                  |  2 +-
->>  10 files changed, 73 insertions(+), 75 deletions(-)
->>
->> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
->> index 51695782ed42..3cf01d7d615c 100644
->> --- a/drivers/pci/liveupdate.c
->> +++ b/drivers/pci/liveupdate.c
->> @@ -424,7 +424,7 @@ static struct liveupdate_flb_ops pci_liveupdate_flb_=
-ops =3D {
->>
->>  static struct liveupdate_flb pci_liveupdate_flb =3D {
->>         .ops =3D &pci_liveupdate_flb_ops,
->> -       .compatible =3D PCI_LUO_FLB_COMPATIBLE,
->> +       .name =3D PCI_LUO_FLB_NAME,
->>  };
->>
->>  static void pci_liveupdate_flb_put_outgoing(void)
->> @@ -667,13 +667,13 @@ static struct pci_flb_incoming *pci_liveupdate_flb=
-_get_incoming(void)
->>
->>         /*
->>          * Live Update is enabled and there is incoming FLB data, but no=
-ne of it
->> -        * matches pci_liveupdate_flb.compatible.
->> +        * matches pci_liveupdate_flb.name.
->>          */
->>         if (ret =3D=3D -ENOENT)
->>                 return NULL;
->>
->>         /*
->> -        * There is incoming FLB data that matches pci_liveupdate_flb.co=
-mpatible
->> +        * There is incoming FLB data that matches pci_liveupdate_flb.na=
-me
->>          * but retrieve failed (pci_flb_retrieve() returned an error or =
-LUO
->>          * failed to acquire a reference to pci_liveupdate_flb_ops.owner=
-).
->>          */
->> @@ -998,7 +998,7 @@ EXPORT_SYMBOL_GPL(pci_liveupdate_is_incoming);
->>   */
->>  int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh)
->>  {
->> -       pr_debug("Registering file handler \"%s\"\n", fh->compatible);
->> +       pr_debug("Registering file handler \"%s\"\n", fh->name);
->>         return liveupdate_register_flb(fh, &pci_liveupdate_flb);
->>  }
->>  EXPORT_SYMBOL_GPL(pci_liveupdate_register_flb);
->> @@ -1009,7 +1009,7 @@ EXPORT_SYMBOL_GPL(pci_liveupdate_register_flb);
->>   */
->>  void pci_liveupdate_unregister_flb(struct liveupdate_file_handler *fh)
->>  {
->> -       pr_debug("Unregistering file handler \"%s\"\n", fh->compatible);
->> +       pr_debug("Unregistering file handler \"%s\"\n", fh->name);
->>         liveupdate_unregister_flb(fh, &pci_liveupdate_flb);
->>  }
->>  EXPORT_SYMBOL_GPL(pci_liveupdate_unregister_flb);
->> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
->> index 288076de6d4a..5fb2f46425d7 100644
->> --- a/include/linux/kho/abi/luo.h
->> +++ b/include/linux/kho/abi/luo.h
->> @@ -39,9 +39,9 @@
->>   *     Multiple blocks are linked via the `next` field in the header.
->>   *
->>   *   - struct luo_file_ser:
->> - *     Metadata for a single preserved file. Contains the `compatible` =
-string to
->> - *     find the correct handler in the new kernel, a user-provided `tok=
-en` for
->> - *     identification, and an opaque `data` handle for the handler to u=
-se.
->> + *     Metadata for a single preserved file. Contains the handler `name=
-` string
->> + *     to find the correct handler in the new kernel, a user-provided `=
-token`
->> + *     for identification, and an opaque `data` handle for the handler =
-to use.
->>   *
->>   *   - struct luo_flb_header_ser:
->>   *     Header for the FLB array. Contains the total page count of the
->> @@ -49,9 +49,9 @@
->>   *     that follow.
->>   *
->>   *   - struct luo_flb_ser:
->> - *     Metadata for a single preserved global object. Contains its `nam=
-e`
->> - *     (compatible string), an opaque `data` handle, and the `count`
->> - *     number of files depending on it.
->> + *     Metadata for a single preserved global object. Contains its FLB =
-`name`
->> + *     string, an opaque `data` handle, and the `count` number of files
->> + *     depending on it.
->>   */
->>
->>  #ifndef _LINUX_KHO_ABI_LUO_H
->> @@ -84,18 +84,16 @@ struct luo_ser {
->>         u64 flbs_pa;
->>  } __packed;
->>
->> -#define LIVEUPDATE_HNDL_COMPAT_LENGTH  48
->> -
->>  /**
->>   * struct luo_file_ser - Represents the serialized preserves files.
->> - * @compatible:  File handler compatible string.
->> + * @name:        File handler name string.
->
-> We are renaming from cpmaptible to name; I am not sure that is
-> necessary. We can still use compatible for the same purpose as name.
-> Unless it really bothers people, but for me 'compatible' works just
-> the same.
+Copy the soft-dirty bit from the original PTE to the new PTE.
 
-Yes it is necessary, For example if we have two handler for a single
-subsystem. We should refer it by handle this or handler that, not like
-handler with compatible string this and handler with compatible string
-that.
+Fixes: 0f8975ec4db2 ("mm: soft-dirty bits for user memory changes tracking")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
+---
 
-It ease the conversation and people will understand it quickly with
-name.
+Notes:
+    v2: https://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail.com/
+    
+    Changes since v2:
+    - Keep only the soft-dirty fix, as David suggested; Lance will be handling
+      the uffd-wp/RWP part.
+    - Fixes tag reduced to the soft-dirty commit.
+    - Dropped the Tested-by tag, since the patch changed.
 
-~Tarun
+ mm/ksm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
->
->>   * @data:        Private data
->>   * @token:       User provided token for this file
->>   *
->>   * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
->>   */
->>  struct luo_file_ser {
->> -       char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
->> +       char name[LIVEUPDATE_HNDL_NAME_LENGTH];
->>         u64 data;
->>         u64 token;
->>  } __packed;
->> @@ -134,7 +132,7 @@ struct luo_session_ser {
->>  } __packed;
->
-> Unreleated to this patch, but should be handled by this work, let's
-> remove all the '__packed' attributes, the are not needed, we will
-> explicitly fill in all the holes, with reserved fields.
->
->>
->>  /* The max size is set so it can be reliably used during in serializati=
-on */
->> -#define LIVEUPDATE_FLB_COMPAT_LENGTH   48
->> +#define LIVEUPDATE_FLB_NAME_LENGTH     48
->>
->>  /**
->>   * struct luo_flb_header_ser - Header for the serialized FLB data block=
-.
->> @@ -156,7 +154,7 @@ struct luo_flb_header_ser {
->>
->>  /**
->>   * struct luo_flb_ser - Represents the serialized state of a single FLB=
- object.
->> - * @name:    The unique compatibility string of the FLB object, used to=
- find the
->> + * @name:    The unique name string of the FLB object, used to find the
->>   *           corresponding &struct liveupdate_flb handler in the new ke=
-rnel.
->>   * @data:    The opaque u64 handle returned by the FLB's .preserve() op=
-eration
->>   *           in the old kernel. This handle encapsulates the entire sta=
-te needed
->> @@ -172,14 +170,14 @@ struct luo_flb_header_ser {
->>   * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
->>   */
->>  struct luo_flb_ser {
->> -       char name[LIVEUPDATE_FLB_COMPAT_LENGTH];
->> +       char name[LIVEUPDATE_FLB_NAME_LENGTH];
->>         u64 data;
->>         u64 count;
->>  } __packed;
->>
->>  /* Kernel Live Update Test ABI */
->>  #ifdef CONFIG_LIVEUPDATE_TEST
->> -#define LIVEUPDATE_TEST_FLB_COMPATIBLE(i)      "liveupdate-test-flb-v" =
-#i
->> +#define LIVEUPDATE_TEST_FLB_NAME(i)    "liveupdate-test-flb-v" #i
->>  #endif
->>
->>  #endif /* _LINUX_KHO_ABI_LUO_H */
->> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd=
-.h
->> index 08b10fea2afc..371ffd108a79 100644
->> --- a/include/linux/kho/abi/memfd.h
->> +++ b/include/linux/kho/abi/memfd.h
->> @@ -87,7 +87,7 @@ struct memfd_luo_ser {
->>         struct kho_vmalloc folios;
->>  } __packed;
->>
->> -/* The compatibility string for memfd file handler */
->> -#define MEMFD_LUO_FH_COMPATIBLE        "memfd-v2"
->> +/* The name string for memfd file handler */
->> +#define MEMFD_LUO_FH_NAME      "memfd-v2"
->>
->>  #endif /* _LINUX_KHO_ABI_MEMFD_H */
->> diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
->> index 9485ed73c351..973ca5b26dbd 100644
->> --- a/include/linux/kho/abi/pci.h
->> +++ b/include/linux/kho/abi/pci.h
->> @@ -23,7 +23,7 @@
->>   * incrementing the version number in the PCI_LUO_FLB_VERSION number.
->>   */
->>
->> -#define PCI_LUO_FLB_COMPATIBLE "pci"
->> +#define PCI_LUO_FLB_NAME "pci"
->>  #define PCI_LUO_FLB_VERSION 2
->>
->>  /**
->> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
->> index 6051abc0612c..475da5fc22ee 100644
->> --- a/include/linux/liveupdate.h
->> +++ b/include/linux/liveupdate.h
->> @@ -90,10 +90,8 @@ struct liveupdate_file_ops {
->>  /**
->>   * struct liveupdate_file_handler - Represents a handler for a live-upd=
-atable file type.
->>   * @ops:                Callback functions
->> - * @compatible:         The compatibility string (e.g., "memfd-v1", "vf=
-iofd-v1")
->> - *                      that uniquely identifies the file type this han=
-dler
->> - *                      supports. This is matched against the compatibl=
-e string
->> - *                      associated with individual &struct file instanc=
-es.
->> + * @name:               Unique handler name string (e.g., "memfd-v2"), =
-matched
->> + *                      against &struct luo_file_ser.name in the target=
- kernel.
->>   *
->>   * Modules that want to support live update for specific file types sho=
-uld
->>   * register an instance of this structure. LUO uses this registration t=
-o
->> @@ -102,7 +100,7 @@ struct liveupdate_file_ops {
->>   */
->>  struct liveupdate_file_handler {
->>         const struct liveupdate_file_ops *ops;
->> -       const char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
->> +       const char name[LIVEUPDATE_HNDL_NAME_LENGTH];
->>
->>         /* private: */
->>
->> @@ -209,11 +207,9 @@ struct luo_flb_private {
->>  /**
->>   * struct liveupdate_flb - A global definition for a shared data object=
-.
->>   * @ops:         Callback functions
->> - * @compatible:  The compatibility string (e.g., "iommu-core-v1"
->> - *               that uniquely identifies the FLB type this handler
->> - *               supports. This is matched against the compatible strin=
-g
->> - *               associated with individual &struct liveupdate_flb
->> - *               instances.
->> + * @name:        The FLB name string (e.g., "iommu-core-v1") that uniqu=
-ely
->> + *               identifies this FLB type. In the target kernel, it is
->> + *               matched against the name stored in &struct luo_flb_ser=
-.
->>   *
->>   * This struct is the "template" that a driver registers to define a sh=
-ared,
->>   * file-lifecycle-bound object. The actual runtime state (the live obje=
-ct,
->> @@ -221,7 +217,7 @@ struct luo_flb_private {
->>   */
->>  struct liveupdate_flb {
->>         const struct liveupdate_flb_ops *ops;
->> -       const char compatible[LIVEUPDATE_FLB_COMPAT_LENGTH];
->> +       const char name[LIVEUPDATE_FLB_NAME_LENGTH];
->>
->>         /* private: */
->>         struct luo_flb_private __private private;
->> diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveup=
-date.h
->> index 4043d4038712..509c6236720d 100644
->> --- a/include/uapi/linux/liveupdate.h
->> +++ b/include/uapi/linux/liveupdate.h
->> @@ -46,6 +46,9 @@
->>  /* The maximum length of session name including null termination */
->>  #define LIVEUPDATE_SESSION_NAME_LENGTH 64
->>
->> +/* The maximum length of file handler name including null termination *=
-/
->> +#define LIVEUPDATE_HNDL_NAME_LENGTH 48
->> +
->>  /* The /dev/liveupdate ioctl commands */
->>  enum {
->>         LIVEUPDATE_CMD_BASE =3D 0x00,
->> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
->> index a39992da504f..fb81239bedf3 100644
->> --- a/kernel/liveupdate/luo_file.c
->> +++ b/kernel/liveupdate/luo_file.c
->> @@ -50,7 +50,7 @@
->>   *
->>   * 2. Freeze (Pre-Reboot): Just before the kexec, luo_file_freeze() is =
-called.
->>   *    It iterates through all preserved files, calls their respective .=
-freeze()
->> - *    operation, and serializes their final metadata (compatible string=
-, token,
->> + *    operation, and serializes their final metadata (handler name, tok=
-en,
->>   *    and data handle) into a contiguous memory block for KHO.
->>   *
->>   * 3. Deserialize: After kexec, luo_file_deserialize() runs when sessio=
-n gets
->> @@ -220,7 +220,7 @@ static bool luo_token_is_used(struct luo_file_set *f=
-ile_set, u64 token)
->>   * 1. Validates that the @token is not already in use within the file_s=
-et.
->>   * 2. Ensures the file_set's memory for files serialization is allocate=
-d
->>   *    (allocates if needed).
->> - * 3. Iterates through registered handlers, calling can_preserve() to f=
-ind one
->> + * 3. Iterates through registered handlers, calling .can_preserve() to =
-find one
->>   *    compatible with the given @fd.
->>   * 4. Calls the handler's .preserve() operation, which saves the file's=
- state
->>   *    and returns an opaque private data handle.
->> @@ -238,7 +238,7 @@ static bool luo_token_is_used(struct luo_file_set *f=
-ile_set, u64 token)
->>   *         -EBUSY if the file descriptor is already preserved by anothe=
-r session.
->>   *         -EBADF if the file descriptor is invalid.
->>   *         -ENOSPC if the file_set is full.
->> - *         -ENOENT if no compatible handler is found.
->> + *         -ENOENT if no compatible handler is found for the file type.
->>   *         -ENOMEM on memory allocation failure.
->>   *         Other erros might be returned by .preserve().
->>   */
->> @@ -456,9 +456,10 @@ static void __luo_file_unfreeze(struct luo_file_set=
- *file_set,
->>   *    private data handle during this step.
->>   *
->>   * 2. Serializes Metadata: After a successful freeze, it copies the fin=
-al file
->> - *    metadata=E2=80=94the handler's compatible string, the user token,=
- and the final
->> - *    private data handle=E2=80=94into the pre-allocated contiguous mem=
-ory buffer
->> - *    (file_set->files) that will be handed over to the next kernel via=
- KHO.
->> + *    metadata - the handler's name string, the user token, and the fin=
-al
->> + *    private data handle - into the pre-allocated contiguous memory bu=
-ffer
->> + *    (file_set->files) that will be handed over to the target kernel v=
-ia
->> + *    KHO.
->>   *
->>   * Error Handling (Rollback):
->>   * This function is atomic. If any handler's .freeze() operation fails,=
- the
->> @@ -495,13 +496,13 @@ int luo_file_freeze(struct luo_file_set *file_set,
->>                 err =3D luo_file_freeze_one(file_set, luo_file);
->>                 if (err < 0) {
->>                         pr_warn("Freeze failed for token[%#0llx] handler=
-[%s] err[%pe]\n",
->> -                               luo_file->token, luo_file->fh->compatibl=
-e,
->> +                               luo_file->token, luo_file->fh->name,
->>                                 ERR_PTR(err));
->>                         goto err_unfreeze;
->>                 }
->>
->> -               strscpy(file_ser->compatible, luo_file->fh->compatible,
->> -                       sizeof(file_ser->compatible));
->> +               strscpy(file_ser->name, luo_file->fh->name,
->> +                       sizeof(file_ser->name));
->>                 file_ser->data =3D luo_file->serialized_data;
->>                 file_ser->token =3D luo_file->token;
->>         }
->> @@ -747,7 +748,7 @@ static int luo_file_deserialize_one(struct luo_file_=
-set *file_set,
->>
->>         down_read(&luo_register_rwlock);
->>         list_private_for_each_entry(fh, &luo_file_handler_list, list) {
->> -               if (!strcmp(fh->compatible, ser->compatible)) {
->> +               if (!strcmp(fh->name, ser->name)) {
->>                         if (try_module_get(fh->ops->owner))
->>                                 handler_found =3D true;
->>                         break;
->> @@ -756,9 +757,9 @@ static int luo_file_deserialize_one(struct luo_file_=
-set *file_set,
->>         up_read(&luo_register_rwlock);
->>
->>         if (!handler_found) {
->> -               pr_warn("No registered handler for compatible '%.*s'\n",
->> -                       (int)sizeof(ser->compatible),
->> -                       ser->compatible);
->> +               pr_warn("No registered handler for name '%.*s'\n",
->> +                       (int)sizeof(ser->name),
->> +                       ser->name);
->>                 return -ENOENT;
->>         }
->>
->> @@ -789,9 +790,9 @@ static int luo_file_deserialize_one(struct luo_file_=
-set *file_set,
->>   * in-memory linked list of 'struct luo_file' instances.
->>   *
->>   * For each serialized entry, it performs the following steps:
->> - *   1. Reads the 'compatible' string.
->> + *   1. Reads the handler 'name' string.
->>   *   2. Searches the global list of registered file handlers for one th=
-at
->> - *      matches the compatible string.
->> + *      matches the handler name.
->>   *   3. Allocates a new 'struct luo_file'.
->>   *   4. Populates the new structure with the deserialized data (token, =
-private
->>   *      data handle) and links it to the found handler. The 'file' poin=
-ter is
->> @@ -884,9 +885,9 @@ void luo_file_set_destroy(struct luo_file_set *file_=
-set)
->>  /**
->>   * liveupdate_register_file_handler - Register a file handler with LUO.
->>   * @fh: Pointer to a caller-allocated &struct liveupdate_file_handler.
->> - * The caller must initialize this structure, including a unique
->> - * 'compatible' string and a valid 'fh' callbacks. This function adds t=
-he
->> - * handler to the global list of supported file handlers.
->> + * The caller must initialize this structure, including a unique 'name'
->> + * string and valid 'fh' callbacks. This function adds the handler to t=
-he
->> + * global list of supported file handlers.
->>   *
->>   * Context: Typically called during module initialization for file type=
-s that
->>   * support live update preservation.
->> @@ -908,11 +909,11 @@ int liveupdate_register_file_handler(struct liveup=
-date_file_handler *fh)
->>         }
->>
->>         down_write(&luo_register_rwlock);
->> -       /* Check for duplicate compatible strings */
->> +       /* Check for duplicate handler names */
->>         list_private_for_each_entry(fh_iter, &luo_file_handler_list, lis=
-t) {
->> -               if (!strcmp(fh_iter->compatible, fh->compatible)) {
->> -                       pr_err("File handler registration failed: Compat=
-ible string '%s' already registered.\n",
->> -                              fh->compatible);
->> +               if (!strcmp(fh_iter->name, fh->name)) {
->> +                       pr_err("File handler registration failed: Handle=
-r name '%s' already registered.\n",
->> +                              fh->name);
->>                         err =3D -EEXIST;
->>                         goto err_unlock;
->>                 }
->> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
->> index cd715a7c1d99..222c6d7f821e 100644
->> --- a/kernel/liveupdate/luo_flb.c
->> +++ b/kernel/liveupdate/luo_flb.c
->> @@ -178,7 +178,7 @@ static int luo_flb_retrieve_one(struct liveupdate_fl=
-b *flb)
->>                 return -ENODATA;
->>
->>         for (int i =3D 0; i < fh->header_ser->count; i++) {
->> -               if (!strcmp(fh->ser[i].name, flb->compatible)) {
->> +               if (!strcmp(fh->ser[i].name, flb->name)) {
->>                         private->incoming.data =3D fh->ser[i].data;
->>                         refcount_set(&private->incoming.count, fh->ser[i=
-].count);
->>                         found =3D true;
->> @@ -337,7 +337,7 @@ static void luo_flb_unregister_one(struct liveupdate=
-_file_handler *fh,
->>
->>         if (!found) {
->>                 pr_warn("Failed to unregister FLB '%s': not found in fil=
-e handler '%s'\n",
->> -                       flb->compatible, fh->compatible);
->> +                       flb->name, fh->name);
->>                 return;
->>         }
->>
->> @@ -442,9 +442,9 @@ int liveupdate_register_flb(struct liveupdate_file_h=
-andler *fh,
->>                 if (luo_flb_global.count =3D=3D LUO_FLB_MAX)
->>                         return -ENOSPC;
->>
->> -               /* Check that compatible string is unique in global list=
- */
->> +               /* Check that FLB name is unique in global list */
->>                 list_private_for_each_entry(gflb, &luo_flb_global.list, =
-private.list) {
->> -                       if (!strcmp(gflb->compatible, flb->compatible))
->> +                       if (!strcmp(gflb->name, flb->name))
->>                                 return -EEXIST;
->>                 }
->>
->> @@ -596,9 +596,9 @@ void __init luo_flb_setup_incoming(u64 flbs_pa)
->>   * preserved (i.e., its reference count is greater than zero), it write=
-s its
->>   * metadata into the memory region designated for Kexec Handover.
->>   *
->> - * The serialized data includes the FLB's compatibility string, its opa=
-que
->> - * data handle, and the final reference count. This allows the new kern=
-el to
->> - * find the appropriate handler and reconstruct the FLB's state.
->> + * The serialized data includes the FLB's name string, its opaque
->> + * data handle, and the final reference count. This allows the target
->> + * kernel to find the appropriate FLB and reconstruct its state.
->>   *
->>   * Context: Called from liveupdate_reboot() just before kho_finalize().
->>   */
->> @@ -614,7 +614,7 @@ void luo_flb_serialize(void)
->>                 long count =3D refcount_read(&private->outgoing.count);
->>
->>                 if (count > 0) {
->> -                       strscpy(fh->ser[i].name, gflb->compatible,
->> +                       strscpy(fh->ser[i].name, gflb->name,
->>                                 sizeof(fh->ser[i].name));
->>                         fh->ser[i].data =3D private->outgoing.data;
->>                         fh->ser[i].count =3D count;
->> diff --git a/lib/tests/liveupdate.c b/lib/tests/liveupdate.c
->> index 4c08a7c6fb78..e4df09eed1f3 100644
->> --- a/lib/tests/liveupdate.c
->> +++ b/lib/tests/liveupdate.c
->> @@ -17,7 +17,7 @@
->>  static const struct liveupdate_flb_ops test_flb_ops;
->>  #define DEFINE_TEST_FLB(i) {                                           =
-\
->>         .ops =3D &test_flb_ops,                                         =
-  \
->> -       .compatible =3D LIVEUPDATE_TEST_FLB_COMPATIBLE(i),              =
-  \
->> +       .name =3D LIVEUPDATE_TEST_FLB_NAME(i),                          =
-  \
->>  }
->>
->>  /* Number of Test FLBs to register with every file handler */
->> @@ -34,7 +34,7 @@ static int test_flb_preserve(struct liveupdate_flb_op_=
-args *argp)
->>  {
->>         ptrdiff_t index =3D argp->flb - test_flbs;
->>
->> -       pr_info("%s: preserve was triggered\n", argp->flb->compatible);
->> +       pr_info("%s: preserve was triggered\n", argp->flb->name);
->>         argp->data =3D TEST_FLB_MAGIC_BASE + index;
->>
->>         return 0;
->> @@ -42,7 +42,7 @@ static int test_flb_preserve(struct liveupdate_flb_op_=
-args *argp)
->>
->>  static void test_flb_unpreserve(struct liveupdate_flb_op_args *argp)
->>  {
->> -       pr_info("%s: unpreserve was triggered\n", argp->flb->compatible)=
-;
->> +       pr_info("%s: unpreserve was triggered\n", argp->flb->name);
->>  }
->>
->>  static int test_flb_retrieve(struct liveupdate_flb_op_args *argp)
->> @@ -52,11 +52,11 @@ static int test_flb_retrieve(struct liveupdate_flb_o=
-p_args *argp)
->>
->>         if (argp->data =3D=3D expected_data) {
->>                 pr_info("%s: found flb data from the previous boot\n",
->> -                       argp->flb->compatible);
->> +                       argp->flb->name);
->>                 argp->obj =3D (void *)argp->data;
->>         } else {
->>                 pr_err("%s: ERROR - incorrect data handle: %llx, expecte=
-d %llx\n",
->> -                      argp->flb->compatible, argp->data, expected_data)=
-;
->> +                      argp->flb->name, argp->data, expected_data);
->>                 return -EINVAL;
->>         }
->>
->> @@ -69,10 +69,10 @@ static void test_flb_finish(struct liveupdate_flb_op=
-_args *argp)
->>         void *expected_obj =3D (void *)(TEST_FLB_MAGIC_BASE + index);
->>
->>         if (argp->obj =3D=3D expected_obj) {
->> -               pr_info("%s: finish was triggered\n", argp->flb->compati=
-ble);
->> +               pr_info("%s: finish was triggered\n", argp->flb->name);
->>         } else {
->>                 pr_err("%s: ERROR - finish called with invalid object\n"=
-,
->> -                      argp->flb->compatible);
->> +                      argp->flb->name);
->>         }
->>  }
->>
->> @@ -103,7 +103,7 @@ static void liveupdate_test_init(void)
->>                 err =3D liveupdate_flb_get_incoming(flb, &obj);
->>                 if (err && err !=3D -ENODATA && err !=3D -ENOENT) {
->>                         pr_err("liveupdate_flb_get_incoming for %s faile=
-d: %pe\n",
->> -                              flb->compatible, ERR_PTR(err));
->> +                              flb->name, ERR_PTR(err));
->>                 }
->>
->>                 if (!err)
->> @@ -124,18 +124,18 @@ void liveupdate_test_register(struct liveupdate_fi=
-le_handler *fh)
->>                 err =3D liveupdate_register_flb(fh, flb);
->>                 if (err) {
->>                         pr_err("Failed to register %s %pe\n",
->> -                              flb->compatible, ERR_PTR(err));
->> +                              flb->name, ERR_PTR(err));
->>                 }
->>         }
->>
->>         err =3D liveupdate_register_flb(fh, &test_flbs[0]);
->>         if (!err || err !=3D -EEXIST) {
->>                 pr_err("Failed: %s should be already registered, but got=
- err: %pe\n",
->> -                      test_flbs[0].compatible, ERR_PTR(err));
->> +                      test_flbs[0].name, ERR_PTR(err));
->>         }
->>
->>         pr_info("Registered %d FLBs with file handler: [%s]\n",
->> -               TEST_NFLBS, fh->compatible);
->> +               TEST_NFLBS, fh->name);
->>  }
->>
->>  MODULE_LICENSE("GPL");
->> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
->> index 6b68220275eb..64f8b8cb75bd 100644
->> --- a/mm/memfd_luo.c
->> +++ b/mm/memfd_luo.c
->> @@ -602,7 +602,7 @@ static const struct liveupdate_file_ops memfd_luo_fi=
-le_ops =3D {
->>
->>  static struct liveupdate_file_handler memfd_luo_handler =3D {
->>         .ops =3D &memfd_luo_file_ops,
->> -       .compatible =3D MEMFD_LUO_FH_COMPATIBLE,
->> +       .name =3D MEMFD_LUO_FH_NAME,
->>  };
->>
->>  static int __init memfd_luo_init(void)
->> --
->> 2.56.0.212.g129ede20d9-goog
->>
+diff --git a/mm/ksm.c b/mm/ksm.c
+index dbfb8f98b189..910a1307ac9f 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1463,6 +1463,10 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
+ 		dec_mm_counter(mm, MM_ANONPAGES);
+ 	}
+ 
++	/* Preserve soft-dirty when replacing the page. */
++	if (pte_soft_dirty(orig_pte))
++		newpte = pte_mksoft_dirty(newpte);
++
+ 	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
+ 	/*
+ 	 * No need to notify as we are replacing a read only page with another
+
+base-commit: fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6
+-- 
+2.53.0
+
 
