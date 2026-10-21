@@ -1,109 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B873606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390D0606A335
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 22:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IISonUq6
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=EkXBXChn
 Received: by kanga.kvack.org (Postfix)
-	id 1DC816B07CD; Wed, 21 Oct 2026 17:55:27 -0400 (EDT)
+	id 428296B07CE; Wed, 21 Oct 2026 18:00:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15FF16B07CE; Wed, 21 Oct 2026 17:55:27 -0400 (EDT)
+	id 3D9926B07D0; Wed, 21 Oct 2026 18:00:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04E996B07CF; Wed, 21 Oct 2026 17:55:26 -0400 (EDT)
+	id 2C7E66B07D1; Wed, 21 Oct 2026 18:00:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DB1156B07CD
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:55:26 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B8C91A06C4
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:55:25 +0000 (UTC)
-X-FDA: 85347990210.26.6271DD6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B3919140002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:55:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IISonUq6;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792619723;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E97316B07CE
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:00:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6259D120653
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:00:32 +0000 (UTC)
+X-FDA: 85348003104.20.603FB1E
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5D6F7180014
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:00:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EkXBXChn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf24.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792620030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XbblKzcGrmO5Ko5Ulj3O9NpL7GMqStGr4Qlbbk//Src=;
-	b=JAQ7oTGoaSlmo3QX8rBdCiGApBCWSTPCWolV+cJcFW/LRPeQBtiZaRV9VNeI9IjgNAGmZT
-	QASX44y1C3TeLf6JglCW04/cOdlc1TagUxMalSik1O0BKcJKOJ6SLe8jYOqT+QiqN3CuAu
-	ekXUcp+0E0H6b5lV5M3yKi2bWaMFUQY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792619723;
-	b=QaLiSs+g7KDlv3E7h+DSRX8oWrRoJWs0xi5vmj2DrLv8h2PkK3/BDPntoNuqDAdz45Brck
-	/6S0gv5ammkT43F80t/893K7+ozKb4iqQJh8eJIz2f17Pw87+rFtCv85GLYjZwvEvuqEyD
-	Fz8E0sjWwQZnTI9nJIevbuvSWdusFnw=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IISonUq6;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F12EC60A8B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:55:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBE11F000CC
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:55:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792619722;
-	bh=XbblKzcGrmO5Ko5Ulj3O9NpL7GMqStGr4Qlbbk//Src=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IISonUq6PPuILhouWjN3XrAW4TyXV7DF3zaY8rj73hwsu87lHUbm7/wCuPYWIUUGN
-	 8ZftC/Ff2TTDpONhLu53ut7cLLqdIqZXBwzAdvxWQbq47jwrPovWDAE/Tt76Zq3T5R
-	 kPm51HL6vRRV7QXn5fQxZSOcFr6oAhKA4BvHrs/R0/8n/liPhhLQ9FR4A3qg67Xchq
-	 TZtOu2d0rvMJQZbiV/Zy+ZGvKvlQ2V4IWyIN4Yv+EJeVZ4vZuu+bCZeoooHC41Tdzt
-	 WFWQNjX0tLWsmxdqi/N4N/E3qYkmaoctEzucIXURHvImXewhcFnRyuQABNJytfwpLt
-	 uefPyP0cEaZZQ==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93efc0452b5so95570185a.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:55:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwPlKTCWXkqdaP1IxBBtm22EyWfaeW78RIqApNDL0WGxDVaLjbOqLap3qS+/yQsYbl8cC4RH0sNOA==@kvack.org
-X-Gm-Message-State: AFq9FYIdc6RNwwroiEubGEAzBRP4AHw6V5KubgPyp1/MPHYfLb/2A37Y
-	TJop1HUXl+69EA4s4hBP3rhURlSQosdmzmEM/+led7+SyyYmi83B3nZy4RJF0oI8Byda2shH+gu
-	PlfsR9DIWLWS+WrynsogDSa/UW5cUQkY=
-X-Received: by 2002:a05:620a:4113:b0:93e:48fc:aa88 with SMTP id
- af79cd13be357-93f57f81db1mr689549385a.44.1792619721658; Wed, 21 Oct 2026
- 14:55:21 -0700 (PDT)
+	bh=Zovsq29UQ2TeLumV7ABI3SWyvg5qGuaPKJLreulBem8=;
+	b=V6oG/oY6Fgl503v4n66paFGSxYJRiqTBpKjeXCgBbCUsFxugbaC42FoH2WyjWy51BpkwpY
+	8TnheyQAzDwCvzz8Nu49LIIx3lakAGExDiGFphO6c/sbw9/SdAub/7qxNDTlpq0MqflD9h
+	DeG/YVOTbSxwYLFvGUC7yeGodKLbtM4=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EkXBXChn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf24.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792620030;
+	b=wgLs5uv4zt4Z9/B4ZOsEeLXO4OV1n4G6hDeAItWdhyNtpOQm7BDiH4P6RoPK3cq4DVG7K7
+	sNUnHDgpnZnGarqKdm68I/CAL2S94ZII6cBbnBxV8GvwykZ3F8Spuk2SaOdjdPAX/XQPic
+	ys01D4FWEiHqvC71lSVvE0ji3mIDWmE=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c445c95d553so158156566b.1
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:00:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792620029; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AjDGQmtkE23lUoWwjFkm71M2l3wjnJbjgsDlcY6wPAvYmGShZQJXdSohHMn4O42WtP
+         KcJpd+bFUheubQ//ZjgK8I+7+rmK3kwM+9BqQSaFUlOPgM4QHf2VUln+4/Ytlv3JNiRY
+         ZSv/acTetqtxJu0rFNH738WI6EawQMkLV79rlg1/hLBF7ujZItyCoQKYvdtTtOvXeFD3
+         2PUTBgPVYYp5T5qunV3hNSoA7qIAmRUs1Vq2RJB2wg/6j8cfF9t5jrOpAaUXYjoh5jze
+         7aI69Dc+CWQSO3gLocz4mu/IXXXLQUagApdzcVnBjjRcXVQUhVjpd7zCFTgqKUErWHgF
+         BDZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Zovsq29UQ2TeLumV7ABI3SWyvg5qGuaPKJLreulBem8=;
+        fh=M1T4Udxf8Z5HHINa8l31xwU0b1aKCD+u4RkT+47482U=;
+        b=qDK2fU776HnI0R1wqCxCWazGhGPJwo3eQwb4fkiIMx2hTbZGPs6XaSzM1jefB/FzvZ
+         2jI83UNjN6SSsuytrteuQgyalwx9g5X2TlIrRm3mh4XK7H5Y5hfFNeRdPQFAK3cUQSyL
+         yh8+mAiUfQlqTv00QFwvU283fVOR+GZJp2SvuAkbiZZMQkJqlmxL9w/lfbi6CshD28YF
+         SpQap7s5jNLXZMVi/m3PO0lNS8JdRLxzqtLGb7V9n7S8/KuRPRlRvEFe38NqEIA1YAZV
+         5VnR2o/iRmCUKRd9PFIqCUoN0jFpt8EWc3PiAYbf4bMmZSlHjmz48JS6AQE6M3gKSTwo
+         SfLw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792620029; x=1793224829; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zovsq29UQ2TeLumV7ABI3SWyvg5qGuaPKJLreulBem8=;
+        b=EkXBXChnQCXmt5LBhutplfrGO8bre9qw2mLaLxME2d+VS4BCIW3K4l97AnRz472ri2
+         CnhXaykurZ/SzuETksQU/RrQLs19edGf+OiGFdPpbalNnuNYcK5zIAw6m3GYMbtZpGq6
+         UIcvTo1n3XX+GRVS7Hm4wAhjDu8z8wSYI+ZKRuxUWWKJr7dyvbl3q2RCqQXXxvaHuk8e
+         GvT6hXtWKhWZct5YiiQ8zk38D9P6Jj37FdAEmv9DOHSzj/4sP1vQ5YVKzM1Sec+lWvT8
+         izPlWoC3X7+gUWtkwavGEnyFGVF35qGqTHSWsFY1hOhwqrMNumcCZMlS/++0DvVt4hEt
+         muyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792620029; x=1793224829;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zovsq29UQ2TeLumV7ABI3SWyvg5qGuaPKJLreulBem8=;
+        b=PPn4HGMdhrfQ/prEfexzzxhH5nxrSGKxPJcwKmG8CfdIQ5lMhTvWd5zR1Isifn63jL
+         r3IhLBgeEWk6oiZQB6FLFo49nD5LC99c7hDNYAwHUGBSucvxW8nCY22bsKoUbq1ESLkt
+         9dcmdxJ+PXMQoAXcVIUGHed0Hi4pHHi8atxrHqbw7pdafFhszoH3FSGjFM8bpMKHJRml
+         6Gb8gEh1qNs2Q8Zj0GYXoS7lOTuo5+8qhubqz4AXNyfevx3SLSlcEF2eWgb1uKU42Aj+
+         EPbm7kIQ1h3BZ8QpLDWv9u3DBhPxYgrnpN6uyvMZKbad5iAD2UI15u/FX1/d8h3/5D2W
+         ElaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwvW4p+CC4X3CY7cb0d2vKp34OWNwPjGE89E+XFVi6qy093VkZlxMQz12K29zv3aqqjmAiQ8TfDcA==@kvack.org
+X-Gm-Message-State: AFq9FYJpVrpoLU89AaA/NTAwYokv7f2qPblPsr2jSOJh7zzcAFrSDveo
+	kR3Fg6K3yHONVP8RHXqtfRspmHWCjjashMWQzBOyoxwcle02nM2ROFvpBurKJdGVW2vhBgIZhhr
+	jHR93J0qTjU9hy8YF2nFo+2kJEICjB2BdjhostLwC
+X-Gm-Gg: AYBFou3F4fyWmmr/WDAC2KyI7PAEms1SvOSOgPobIeY6ukPltX+2kHYbw7IF8SKFuy0
+	gT4pV8cdD+BqOR2AbSj1+Sp+cgGsDY4ot8ygI1UndZxfdERJ1RKF2i/5pbSlFfA5l/B5CeTkmct
+	F0Y5vEh9oS5jPnW6ql2pqMH8HPB7sEqyo2r/v+XI1kIPeJxDuzfPpDpiGLY6jcs/E4gl+gWR0a9
+	V1icPB/sgyUyeqIry81tKpoKsKxQZTvmFajEz9q1VsyNB8y4a4N+n6oWClFXyK2+gDAv0IWivjD
+	A5kxggFHFs0fV8NgvI7k0BAGDcWaaeF1rv++r2XeWG9+wQK2ucNS3+z++AIudPtNxDPf38qXpJE
+	RMwR0Txw9CCmgA/LWfWBH79l20frsjMBqxbjtYEhYC/ymi3+wGd1c0e3eiL3bsEAsqKCobba1Kt
+	Xr4iF9bPSU9rOpp2j7Ht/ItGSv/MCtACMsC7YngZMmIC+YRINJ5XKvXG4gdw1sSMN3RfPa7zfDn
+	MJNZn6i
+X-Received: by 2002:a17:907:7208:b0:c31:7495:e57 with SMTP id
+ a640c23a62f3a-c4679a0bcd0mr297358566b.44.1792620028316; Wed, 21 Oct 2026
+ 15:00:28 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <179248830836.1744016.8424217811286616919.noio-mglru-rfc-v2@bytedance.com>
- <7f4daafd-a3c5-4ccc-80bd-05a7ac09e4ab@linux.alibaba.com>
-In-Reply-To: <7f4daafd-a3c5-4ccc-80bd-05a7ac09e4ab@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 22 Oct 2026 05:55:08 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wV8A5snz-XE+5ht931=07SvCs_k4xvUCE1yphKyQd8tw@mail.gmail.com>
-X-Gm-Features: AclHuK-Lm3ETeKvlfdxyvGOhePGX8_fdCxCFPiSQfmBetlKnWoeOhvEVMJZjPbw
-Message-ID: <CAGsJ_4wV8A5snz-XE+5ht931=07SvCs_k4xvUCE1yphKyQd8tw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] mm: vmscan: avoid anon scanning for GFP_NOIO with
- low swapcache in MGLRU
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Xiang Liu <liuxiang.277@bytedance.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Bo Zhang <zhangbo56@xiaomi.com>
+References: <20261003002123.505555-1-jthoughton@google.com>
+ <20261003002123.505555-4-jthoughton@google.com> <B8A44041-1516-4405-976D-534AA2412A49@linux.dev>
+In-Reply-To: <B8A44041-1516-4405-976D-534AA2412A49@linux.dev>
+From: James Houghton <jthoughton@google.com>
+Date: Wed, 21 Oct 2026 14:59:49 -0700
+X-Gm-Features: AclHuK8yX8_UlxZwp8Wau4tISOxPTXz9_QA6ij9ZqSUUyry48bT72riHBjGZz-Q
+Message-ID: <CADrL8HUOJwEgjUzefxSUa=AZHj4JO7koonj2_-WYhcL8QcXPZA@mail.gmail.com>
+Subject: Re: [PATCH v2 03/20] hugetlb_vmemmap: Always flush TLB if needed upon
+ PTE remapping
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.com>, 
+	Mark Rutland <mark.rutland@arm.com>, David Hildenbrand <david@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>, 
+	Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>, 
+	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B3919140002
-X-Stat-Signature: oai9xbpne74smqqdpsx1eaenkkg3dwqx
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5D6F7180014
+X-Stat-Signature: wos7uh44g4d6eiecx1bmip6noruxpckh
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792619723-506535
-X-HE-Meta: U2FsdGVkX1+tdekWxH9CTwcOqNQACTmnHM83LwCQHhz694g7/jr27tPzGhCi1w9CpVHoESz3w6YScJ9WytvWvoIVmMFGENgBtLfmKSPXjbwKDipyQ6bcH8s7Ovhk+C/xlMBd2+NzgL/SdQNuRTQQMmL+A2ECaxHhgJNoAWUY3h4L75eHjVThih5x+0vIBtuvfg86yjEax8D5/q78tjzbkEBO1f/dAZnnh544MtSb6Odm0D76UKg/JCDlM8inWwCS99zV3tBsv94mIiLgrsp1ZlBHWShM7ffkyp9ccGoX2GkQHOlDNEOLC22YxEgDc+NgH0KO/Fmfi1CSk+U8EZQ2PvCvBORHB7Dl3wkDD4JWHgJwx4dEvEMgnNFB6ZFPfauuBHsDIWAcwlSSWrfVyGpi4ciOqjahvdu6z2QJYUXBJ6PpMjblls6hpnEpAJN0CsneN0Rizc32Q67JO2Yu9A4RTSIijasrO1+PcXzF0nrGgNVh6Azk2WO1KKH3SFf7TBm17Ai6u7Wn0njhFiOXUmOV0wpmZIFWCzFHM+LkvuqlW2lbirKYIB0vRpxXwZdwxHsfQCvUY8Nakj9Vz3MJYJbvWHTke2YI07LA2lPKJ6xIZnzcU2mrMmj0oAzSLZY2NfGuIkFp4+lFLQC+wutPQGN6Z7ALXgGta5smwsSIAQfpDKgwvRNFgGchiz7hMbFggrA0CBD+dIUeqiPELP9sNjrJjzm+dFHOeSEmpVM27BmoK8M39JoMsnLm5JHNbmmrGeQIxM9tI6EZShe1nLP4AQ3rZianV9c7D0RQn2B4ppdKImJXqhG+TDrKSub/Hl8Xc34SRXEJ4n4rNy0Agf3+XmYOWeWmwuniG8oYy11GN4ATu6vsBVsyy+xsFvEgUG0029H1LhlVCj5+gr1QnDaBlIUaCpCyJVpLrt8RPQxeDqczVij0Cd73TAVhewY4y7Mv3T9+PUYq8tMIRUdnSDgPngB
- CvUoePLc
- CCr4HAfNnAXosewOc6q90l5ibRqjgoVtINb9bXSoTYqlyxfI2BM4ZZedRWUxFf8q2LdRLg7mZwYO+EOhZVSDlmmdNx8p9C/po/CWc/9eIGDmtJvAth/J0ESmME/KX7+bbIMDCKugaiWKhG+qoXQpwExtnUJQcXj4cIEE7UNIMOv6xbbUW3iP14OOhZVYHIIBz4ZPrYq0KBKXHOR3HbGqKlSuVPPp4CagwGPsJ6X1i8G8zshBbvh4ZTm5MB+RzI6S+46StiYlnzuWmc1boMoHZiCJzjT0DLagXNf2Yz6RCPYSteC817l1t9qknKPTahYhpiz8UHXyiyT/dPcAe3C0wOVwQNBCgfJaCg8u7dlQ71Fdu5T43vEi9Yyzi7A==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792620030-764458
+X-HE-Meta: U2FsdGVkX18tmZPd1qTgc7eZr1EgCliXBWSbRTvUcxDsDe6XmUKAdEVA9kIvQKqSQ96O8k6SyPQtWAv05JnmxWZqlpkKppzg5cMav/kyBoEgwNcyaDhuFyahhzbHZcZ2pmWhlrcC2Fy+X3k8Ck76nwh3doEJO94KX2EgLq9llIMuDcYTKSdXTuqecqgF63o+8/+O6BaaQbJ5vvmvek9Jjmk5K1g/dUFmHoDKZdwm8u3xLvaCTjMF67XNgDGa7yic/Nls5l/RJZ8+OsLM6KvmHSxI8JghNdfuyZFEEfu683EjcqiqMGQV5woyAJQCrc7wegMq/ZCk3fmDZPZp+b2PFFu5bVc+2e8vVZkyM0ehyWx5GWi3Ki328r8Gms5e0vfrLUjHTldma112aHOhRKHw5Y3WxH44JdLLdvVsjO8hxcEQaAHNGsBdjK4cR0MIohZbpohdV5R6/gvpYA8r4VPm6KWDZPbFD7mbz+ngnlf96z06tH2CdNq7tBFYu9Ow33t3N52YL5h0SCAqAXg2GwZ7nlmFSzZ4riL5hxaO957jVOtIE3ak4Usa1vlE0AADHA+ffj9o+pok4lDZNlo1612nsydlIXtxz+T9idKDUSJq7NISOPjPIu849sIzDiwcvzQeHZXJbe2lIUsNx1PrNSlHCfZqZLkn1jLo2kHEbN/EaDE8cCX1EjpVEkOqWCFtbhry3P1ooA8GhrW8gVS6nin+Mxdf64ZJcrTWOjL1W4GFQdf2GA6SNSHpBCemjlFNVJ1MQ8ulS5w+l1IrbioT9drze3XR/WJgoWhQ2hmR4RsItkqupG0Y0jfkjS/9R0ynBUQGQCBshmpsy3/FUHd1An6lDnCkdczBpzEqzh3GyNtNSVEqSIGCyVqvUB915LKTNmJST002I9BnLJ9pCRPksp0RFTSMmtUWhpSj9HPnaC4I/4pvxYjJu8oe9wBZS34aRvGjSAJQpcVxSGUwR+3+4bR
+ OHPTDRrE
+ simbuFSlUp/wRxqpIBKAOatHBQBhnjEe74nmA480DpdcPCTx8Vx2xTQDIQXy/AuD51ZjgBK68KWJvVqCgz4HHLlp3SvNuC9P5KuU7EQnontGdF/hhF9Ci/4UfVHQKpTbxkM8Vz4PVbi0O3sGu3K2s7baKJurHO430G1Sp8IKda5IIzwWTJMtx1a4bzaVrK/2BW8FageHY9QepwlBJMlALCb2lNEJ+JQL7wz3Vgo8YdmE14ZCQoSMjMLVQjC1NXZGZcAincPUIpMfC2dR0aNT8jSOp5mayI44xFqRnlu0nX/yRXIBn9jFstim9pcKYTawz9fm/Hv7beofM/2akmvyeMWfiSplDzBieZB1Fc7p2DFRu75qMxnfMMBLnSeonbjW/BYOb7N/h6H60TMM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,68 +153,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 3:28=E2=80=AFPM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
-[...]
-
-> >   static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_cont=
-rol *sc)
-> >   {
-> >       unsigned long total;
-> >       int swappiness =3D get_swappiness(lruvec, sc);
-> >       struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> >
-> > +     swappiness =3D get_scan_swappiness(lruvec, sc, swappiness);
-> > +
-> >       total =3D lruvec_evictable_size(lruvec, swappiness);
-> >
-> >       /* whether the size is big enough to be helpful */
-> > @@ -5249,9 +5265,10 @@ static bool try_to_shrink_lruvec(struct lruvec *=
-lruvec, struct scan_control *sc)
-> >       bool need_rotate =3D false, should_age =3D false;
-> >       long nr_batch, nr_to_scan;
-> >       int swappiness =3D get_swappiness(lruvec, sc);
-> > +     int scan_swappiness =3D get_scan_swappiness(lruvec, sc, swappines=
-s);
+On Wed, Oct 21, 2026 at 2:54=E2=80=AFAM Muchun Song <muchun.song@linux.dev>=
+ wrote:
 >
-> IMO, 'swappiness' and 'scan_swappiness' are really confusing. Why move
-> this logic into get_swappiness()? In get_swappiness(), we already have
-> some similar logic to adjust swappiness when there is no available swap
-> space.
+> Hi James,
 >
+> > On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> wrote:
+> >
+> > vmemmap_remap_range() can potentially leave the vmemmap in a partially
+> > optimized state. In this case, a TLB flush should be done if the walk
+> > caller asked for it, even if the optimization was not fully applied.
+> >
+> > A follow-up patch will more completely deal with partially-optimized
+> > folios.
+>
+> Why are we dealing with partial optimization cases right from
+> the start?
+>
+> I know that in patch 12, you try cmpxchg 16 times, and if it
+> fails, it leads to the partial optimization state. What I want
+> to ask is, why do we limit the maximum number of attempts? Is
+> it because during testing you found that this kind of failure
+> is very common? If we did not limit the number of attempts,
+> was it because during testing you found that the scheduling
+> latency caused here is very large? Or is this just defensive
+> programming? In my view, scenarios with such intense
+> concurrent access to these struct page structures should be
+> very rare.
 
-Yes. It is very confusing. we can't do that in get_swappiness() as otherwis=
-e,
-we will get cold/hot inversion due to GFP_NOIO. for a real swappiness=3D0,
-we allow cold/hot inversion for anon, but for GFP_NOIO, this is not the
-case.
+This was done defensively, yes. With 16 retries, I never hit this
+without fault injection. (Perhaps I should try with no retries...)
 
-static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
-{
-        ...
-        /* For file type, skip the check if swappiness is anon only */
-        if (type && (swappiness =3D=3D SWAPPINESS_ANON_ONLY))
-                goto done;
+> If your testing did not find any problems, my suggestion is
+> not to set an upper limit on the number of cmpxchg attempts.
+> This should be able to simplify the design of the initial
+> version of the code to a certain extent. If we want to
+> determine whether an upper limit should be added in the
+> future, I think we can add timing monitoring in the arm64
+> try_update_vmemmap_pte function and trigger a warning when
+> the measured time exceeds a certain threshold. If someone
+> reports this kind of warning to the community in the future,
+> then I think we can improve it at that time.
+>
+> What do you think?
 
-        /* For anon type, skip the check if swappiness is zero (file only) =
-*/
-        if (!type && !swappiness)
-                goto done;
-        ...
-}
+From userspace, you could use kpageflags or page_idle to continuously
+access a single struct page over and over again. I think that's a
+pretty good reason to have a bound. Also, the AF can be set even
+without an architectural memory access (so a mispredicted branch can
+still set AF, for example); that also makes me want to have a bound.
 
-So the trick here is that Xiang is doing scans by tuned swappiness but does=
- age
-by the original swappiness.
+Catalin also said wanted a bound here. See the bottom of this reply at [1].
 
-IMHO, this is confusing but this is a possible way to fix it before we
-land something
-like:
-mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO allocation
+So I think we should leave it in. The extra complexity is pretty much
+entirely in patch #4[2], and I don't think it's too large of a change.
+I hope you agree. :)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/baohua/linux.git/commit/?h=
-=3Dkairui_scanbalance_0.4
-
-Best Regards
-Barry
+[1] https://lore.kernel.org/linux-mm/aoRn3Fn1dhTdsk6d@arm.com/
+[2] https://lore.kernel.org/linux-mm/20261003002123.505555-5-jthoughton@goo=
+gle.com/
 
