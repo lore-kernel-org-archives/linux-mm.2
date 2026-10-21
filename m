@@ -1,138 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252EE606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 22:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9601606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 22:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kkbXIFTv
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=OfOoJvBW
 Received: by kanga.kvack.org (Postfix)
-	id 26C5B6B07DE; Wed, 21 Oct 2026 18:55:26 -0400 (EDT)
+	id E81E06B07E0; Wed, 21 Oct 2026 18:59:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21D486B07E0; Wed, 21 Oct 2026 18:55:26 -0400 (EDT)
+	id E120E6B07E2; Wed, 21 Oct 2026 18:59:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10B556B07E1; Wed, 21 Oct 2026 18:55:26 -0400 (EDT)
+	id CD28F6B07E3; Wed, 21 Oct 2026 18:59:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA26A6B07DE
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:55:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43969140680
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:55:25 +0000 (UTC)
-X-FDA: 85348141410.04.1CC9091
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7FAF98000A
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:55:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kkbXIFTv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792623323;
+	by kanga.kvack.org (Postfix) with ESMTP id 9FDF96B07E0
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:59:58 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F0E13A8305
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:59:57 +0000 (UTC)
+X-FDA: 85348152834.29.3775959
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DF590180005
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:59:55 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=OfOoJvBW;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf06.hostedemail.com: domain of deborah.brouwer@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792623596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WwOVRaeIHz9zAbT7euRoVVtSbXMHrTnxV5h5/F0jgC4=;
-	b=l2wOeAwo3npICtDBd2ZUhTaHYv/WZZSgjr+6fIrh4wy9tcZIRhOWHZmoFhmwEWDPxTDuKA
-	UiKNH8kPXU4IYO5eC8T1fCMyRbv1HejAwwbyGbMPTdysNa36r98JWFdTwpEz0tF0U3esoU
-	aKB+kiSMlkVFVqHfX/ktoHriX0qwN28=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kkbXIFTv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792623323;
-	b=P2fVwKpL/GNybWxQJjsnE5qNYcOJ0Zt07o6B5CcF2qjD6SLo/MOubTToAVyx6YKSI/ioIf
-	FmYpslGr2fpfHHV93L3Gn72ajGkvznnSDIMRetvmZ+mqjovPywzV3z4JqqgHZAab6J71oQ
-	+d+mHB5ph/ep+ouGXMRaED3n+Qo0F3o=
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-6768403e9bbso1321662d50.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:55:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792623323; x=1793228123; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WwOVRaeIHz9zAbT7euRoVVtSbXMHrTnxV5h5/F0jgC4=;
-        b=kkbXIFTvWNUXKxBM301D9rgXqSoHVtI/3l6UO4JPrig8UdRzpQHeXIa/8RnbfIQ0pE
-         DVZSuh5J/kaBlXXKr3TF3jD6box2JJAjoSgjOVwV7XRWbJa6N9O8JSZcp8THxn9u43/m
-         vkbsGK0uhSQLfK2BP0fBKHY9ey9mLrEQR7vN2UPN2tLZBK+vRRLroKjuPoFhG6OCZBc1
-         BiU0cPeeZRI1psZk7+nwxsuKHw8SFJ0x+PNqjHqlVir8YjnaLaiv8tiQy6T5NjTmVzDP
-         1/CWj3K24lhOKs63brhzk5RqmKBbFlYjU0awKHlA26OZNUsD0iwoHt2CGQsvlzd4iXrS
-         +SHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792623323; x=1793228123;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WwOVRaeIHz9zAbT7euRoVVtSbXMHrTnxV5h5/F0jgC4=;
-        b=omHnecmUNLU02m0oPtgTyV6cfvpUWvREzeV7JW4UxYVh8xtHYGxhlS4oGJDzJr84rO
-         oAQnYCTzEvUrGZ9mbWTVile9STcrCFyfr83M2Lll6cBuUFGKJ/c53Zbvfg8u+7OPEcxt
-         q2B7ufzviVTGahsRv9trtgPnxaYjiRf8vXMLiay5CC9+ZEv11UmZqFl7UiBRaxEM1Hku
-         kahxZ/nJaedX0nke18N2RGN2/2aopL6hYEzHMcAz1s1xY+DulT23AddPCdJFG7CzuasT
-         5SUGo1ZVKH2HSxSs9x9XQz242lv3DS3FliVXHct8INan1wZc/bIpF3MPw73gqT3EfRNd
-         kyaA==
-X-Forwarded-Encrypted: i=1; AKwUvBwBFSB+8W/62dUcweI2Qw7bSEr0XpQz3CvdUf7xFx+Hwlei9VCvOyYZ741fnU3eZg3zG8fcO3+nZQ==@kvack.org
-X-Gm-Message-State: AFq9FYJcdGsnf7LoceBM+/siGhFnPuEVxY4+/h4jZx3Hu7h/l84NNije
-	M55g/4aFfKIkP4y87LN9SHkAolyix26a6nS06ZSGFzJZu2hdUrO5HFor
-X-Gm-Gg: AYBFou2TCY/n4BXuGwHiF8HphjXKUEkUo0wtod/YROZjy0ih1F1QFx0hW0Uhmd4nF7W
-	CrFf2VNEYiivVaM8RmuyBbQJxpxYkHI6sKtGFnXXap9w8GGnQYpjoHPgmiWaCNkEvNEUnqtqkFP
-	+0cjNuqx2Aw/V7JoYtsWGcGfQOGpnoh+gW/gLTP7Y6x5fG9Eue8qKWCOxfDAafARGMza8gIHmad
-	0xNsQ5QoaLje6r1reHHW39ih8+/gReu+bS4bkuxVhX46uCW7Zupa5wHP5G8CKz8wYuuF4HjM4Sq
-	N7jjpSqkToBwhTYwytCxCbWYoHJSaxU9b7s1lq490prNDJZyhZWlsZuAnYEKh+Hyhd+6WhdVnF/
-	Fsh2YYgQKM6/wpvR3aHdH5S1+EfdZNw92c/Hnxp3rx/cElQ5TnT2AoB2h4YDKQLBmiXVMyMeU2K
-	jEB9mkYd8PwG5IgeTgxw405eYgs6QpF5npYQS6oJcSVdYVWIPOugcqiYgxxaOSfvLPegvyjZzPE
-	SOuxoOBybfO6UE5gF2pkvvcWuJRHHimn5VYRnfhzsUEXNBUpq+l7JbOYyS4Txf66kt1wgHn0dlH
-	rQtrl+N85g==
-X-Received: by 2002:a05:690e:4381:b0:679:c12b:ec09 with SMTP id 956f58d0204a3-67a0e4acf74mr1765499d50.51.1792623322691;
-        Wed, 21 Oct 2026 15:55:22 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:b::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a0e539f46sm1754377d50.17.2026.10.21.15.55.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 15:55:22 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
+	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=;
+	b=QZEJGOGYmqXJ+z5BYXZbTRinmo9O/31pwuTmsB4XqEVzJSP6ZCDU/2Jz5Tfpxr5yDqTPF4
+	R7oMbsRRvc1ozVCtuAD0iStrp/4D/LsFgpVi9UzhS5Sz3CaQOQNFedzWkitBrtnydVPAP3
+	QoVli8sSaFNBYuFNZlEfFSwIE9hEb0w=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=OfOoJvBW;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf06.hostedemail.com: domain of deborah.brouwer@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792623596;
+	b=DSjPUbpVOWP1voows/Ww+LYt9QCV3JrIhLiX95H4YjRCiwyjqOutBJ2ELYD3UeV9lBe2IK
+	JqK+HJlz6MLKqjefOZQEFV2OHpjaxWwi6l0IIMuJO4kLN/f/LcM7PtybakqAeZ0mJccdn6
+	3fNcWylJA8aQ0IGWxqj0uiMtOVoyvBE=
+ARC-Seal: i=1; a=rsa-sha256; t=1792623577; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=YxVBf2r3nDwKMI/w4Cfj6wBPEhOJrYrOvgbHQuNF1ywKWQm7TKXl1BxN0MCzVhGnVPMmrOcH6Y7vwHRpSGH/RcyW4o/9bbNlAwDyJXiUXdg5ErkLkwoq1J2TXCQPoltJqCXeE7TykTIHOmTKyvOGdSm6I7BjWVq1/ZLJ0hXuUmw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1792623577; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=; 
+	b=khUxgC7K6Dump7HNsU+T7sITG0K+jmATCHUoast6WPDxWHGGdTDBC0/QIMUIlIBg2Ki/G7lkO1OKQptby+w0tcfAj8SqJX6EGe78xbKaBP5tEaQXn0e3LAwEtnAJ4oJ2vyHWOXNz8bzWJ2c4vg/iUCx6qvZl2sHz8MuJup+spKc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792623577;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=;
+	b=OfOoJvBWtQLZeQ1qUOZGpKI9LGZH2kuAFdLAMNQV3geS/kzBnYy8rznRYzbMbVBM
+	HFcT0dwlhYAlcWgqtInVd0oIjVSrKah+jST9FZrq3K24sTSH9+BXxBAmWKElb0bJ6GL
+	HYDwBvjQDUlcmMPboCn0WDmQXXbUEACnRUzHCU1w=
+Received: by smtp.zohomail.com with SMTPS id 1792623575793141.6930617524606;
+	Wed, 21 Oct 2026 15:59:35 -0700 (PDT)
+Date: Wed, 21 Oct 2026 15:59:34 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Maxime Ripard <mripard@kernel.org>,
-	Natalie Vock <nat@pixelcluster.dev>,
-	Tejun Heo <tj@kernel.org>,
-	Michal Koutny <mkoutny@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v7 5/5] mm/memcontrol: add stock to the memsw page counter
-Date: Wed, 21 Oct 2026 15:55:14 -0700
-Message-ID: <20261021225516.1620680-6-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261021225516.1620680-1-joshua.hahnjy@gmail.com>
-References: <20261021225516.1620680-1-joshua.hahnjy@gmail.com>
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH v4 04/11] drm/tyr: add per-file VM pool
+Message-ID: <atlD1jzWqQhKE3w5@um790>
+References: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
+ <20261020-tyr-ioctls-v4-4-704de77da223@kylinos.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7FAF98000A
-X-Stat-Signature: tm888txoac5eng7dcuj57kkhpuguyiog
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020-tyr-ioctls-v4-4-704de77da223@kylinos.cn>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/292.612.36
 X-Rspam-User: 
-X-HE-Tag: 1792623323-313767
-X-HE-Meta: U2FsdGVkX1/jwdvPhBh53WNKQizbv/p9bKOU1FxNCkAmEhs89L+Qw+exOP5A8AepDHlsXORGtoGolZNJ8VhiuRP3WAyi+JNFjzsuPDa0mR9smgudFcDnjBoYCKryrrB+gEz6lrlEobZfDOhjh8QrSmxBS3r6+nc80SPU3Frq3PTVz/4xk3P4ki1unpOhBlBHHQ4a3yCyWGg13hi3DhM8kYFFu+h1rJZ5G45+qOkW00lIBcu3UTPndZswgmnlz5/fnzqgmzuAjCn/SOnA9XC9DHmW+aygI32Lugo9FJwiMkJxjErM1AyKnehlqutVXIGQwtlnoF2/ihIViaxy2OURCOzOw5bqroFdCz6M5RZSXBFRrKQpTEZ8Ca5ABHodTFUEYxHpMOZey9vvzEKdYoUNzYhL73XntpI8IrtCl1ED3WUgtKg9QUMRkyCar4TZI9QyJne3oNCJzm9oGPD2CK/BWwXKXnAkTVybDSpKyVA7D/SpLyoLKGzjrILeuq3Gol5lj+GqS7bF9gV0GDH8sDiE7lMYvidy4johvo9aWFvi1j3OwV1FXcVSo5GBBY08YUY1kvgEPvl26SgKK0CHQPynOKS80b/0/AOJd51GtlZl7PFhRLfqMSyGCm57qoZp1qRvZWHeHGsCXNsetwf2HkfXbeXFrqNqYEx77Od0gqUnS4atlVIq76DgqU+KreNRYBMNjZUe2WNkW/soCFoqaogSMEPplUlX/T4cBRS0pJgOnfjSGeSgBtnUw5dz33LJheZDnkH5Y+4ODHBt6V9PdE/Xyiv7PjqYE6Z4feG8KV6RuQ+gU3gwzUd4IPhAzHa73xZQB8465dsUBD7bEH8vnCsS38e76/HOHrK/owj3+pQUe1gWNXfpjtrwcDuWRCD8vkMSM9TO+qs15uB0VGovEQGAycrj1o9FWafucXHynVYZM3c2KybgTkSIjpJDkdRBcMJGQiRjyQUGE1IWMso6thG
- inXlz2ZI
- FqcRSwnt+TmWEKw4FEgdaMGyxCGrZ8eU8T8Eop0oN8PRG39634vcBKkTL8LrfzgBawKWrHaQNKqalpCgGZY69PZIl7voGwvItiWusB35HZJqW+ijWcsCizJUpBboL6Yge5ykyygruLKrYkeX/87cdJwEeWHzjEZlbZhQaEEqjh1ndofv/OXjFronMQ2NH68IJZzHi2bMk6x69IAl+XZ4kAQfSFaTOdCaKVwpX44QG3GjepjzYSx64ISWwAw8wWSiMkOMpE0FBnRIgjdlsxu/7HS8eTub2LbwSi3SqKn8jxmb0ieCh8nSFXEZpsL6TNIBBYsd7t0Gzo027rGZyfAdV7zNOF/7tYP9es33ZcNSY4PjkbUi+PAhSQFbLHrrsxUqXOpM/4FG+sIiI+5zAKI3bKBgtvUrRXJJw/1v+pKqDzcrR+VSLkjJM9pPzl8Q7jqckOIMnALuWTki66D8SjGe7v1ADAAiJWR7pT/lc280oL02kY/E3oLmV08ImTQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DF590180005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: d81hxq18miib1m9i6icwy1hobendgrne
+X-HE-Tag: 1792623595-224844
+X-HE-Meta: U2FsdGVkX1/Uvj5TqgyaVMxyQAo8zaNljLer7Bt4kRulLZ3Gud8L7PxFjL7ToC0dfSAjQLXrgySvQcYLMmSeDeE3O3YbXCwc59N+TA7BpbFlfqadNySFlwBXTIvNxmL6K+bdbS7YrYBj3aODr2hoIsKvNgjfqt2JEgnWLe1iyirAosmN1L/N9cnZ4xAFfFw2L6BEWM5dCZQM0ig+XrHLcEZOsZXXA+ivKPKSSX9zx6lUCnx6LbUFa2Wh+loXeAza/HQ+8w8+8YfT1Pf0Qk4kmqY0d9EMqDQhGjoPsjqvC7Oy7bOJ5ZbZwfty4KEARe9my7IMoze7OdtCkNgRi6tXS5OtQQx73cegAICfHM0C8KXnOHh8Y7T5dgEFO7z3kK0QTy+aNrDOI+kEn3RoS1QbuSZKTmkNgmVNEcg9MfqHstZyCZ/aVOB0ydyJpMfK6q69W+Y1ip4+IazJqrF9DSPL0pHsa22x/LH9pQ6sjKxcue5yN+zJwJZkqq2Ok+pvdtkQyzvPZbwN7jJAFBNfq5s7P5uafNBNZ4asmD8OpvSJ6VqY1VboJXh95SpHTlxUOmfJGOGjSap/YYZPKVHym5CY6CCFbhPHCcgv8iwjC6Z8JTqbzAhU0xwVyNaDKH9/7QgwsNEkZ8CTShI16r0Ch/yYhrXtEWu0f9wULYi9uVBTvQ4ra3SxXU08ibZ0Mq/m44Ss/WP97tZV37b4iO6ai2IKGkioeHREFwjO8ku0RGwh0t8K3xbJPPyFxh0n5YS2uAutifYp6vSxmsSDUxOZUMgrwdp132zJxyDLzinf2sf10XijsD4Ec3b/TkgaEsTsOZt3cHTH3quQ8YS5Yl1Uu6+X0u1rpg76uzDA3Ybs51DZ56MK9GdANoIgD8x9PivyTCUfKB7iW+CEWkXC0PC19NOZuUdz1MF0QHESxLShN5kz9wTTg4XVM7OIk29cQhyPK/9rbOLIVY5XYEcyvzBReKd
+ v9ODPIE+
+ iXbl/RBRLDtn45YVdBejil2NZPwKZDBUFuE1vHbuvg3Un4QFjIJFhxmDYQbQAbs2UvPzBuiDWtCEQKPbLVN10HRx67CK57UnLL/xkfMVPGLakQpRm9BK2FuynFZTyDIHVdbz0G+K0h+NNn1tc9kjai4S3wdGhUb1LlJKrk2fgnsIIWpXVeJlIwXU+LR0QxzECv1XHOUscr0Wb5xoy1znRhr4SrDJtf2DZXdGTPoZhvhyhWkNfoDOzmF5YhfSy8pD3fCb8u7UftUobz688kQbo7wTcO8D+MXfxGLz0yk+PIkqASK0pZHYgLA6/tatgeLoHtpT7V1czZp5hUao=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,159 +122,214 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Attach legacy memsw page counters to their own seven-slot per-CPU
-stock. Charge, refill, drain, and hotplug handling now operate on the
-memory and memsw banks independently.
+On Tue, Oct 20, 2026 at 04:25:21PM +0800, Ke Sun wrote:
+> From: Alvin Sun <alvin.sun@linux.dev>
+> 
+> Userspace needs multiple independent GPU address spaces per file,
+> addressed by ID through the VM ioctls as in panthor. Store them in an
+> IdPool (capped at 32 for panthor parity) plus an XArray. On a failed
+> insertion the caller tears the VM down through the returned error, so
+> an aborted creation never leaks a VM. The pool kills every VM still
+> stored when the file closes.
+> 
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> ---
+>  drivers/gpu/drm/tyr/vm.rs | 138 +++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 137 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+> index c5e307b1e2416..6935e4db667b9 100644
+> --- a/drivers/gpu/drm/tyr/vm.rs
+> +++ b/drivers/gpu/drm/tyr/vm.rs
+> @@ -33,6 +33,7 @@
+>          }, //
+>      },
+>      fmt,
+> +    id_pool::IdPool,
+>      impl_flags,
+>      io::PhysAddr,
+>      iommu::pgtable::{
+> @@ -53,7 +54,11 @@
+>          ArcBorrow,
+>          Mutex, //
+>      },
+> -    uapi, //
+> +    uapi,
+> +    xarray::{
+> +        AllocKind,
+> +        XArray, //
+> +    }, //
+>  };
+>  
+>  use crate::{
+> @@ -948,3 +953,134 @@ fn pt_unmap(dev: &Device, pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>)
+>  
+>      Ok(())
+>  }
+> +
+> +/// Maximum number of VMs a single file may hold, matching panthor's
+> +/// `PANTHOR_MAX_VMS_PER_FILE`.
+> +const MAX_VMS_PER_FILE: usize = 32;
+> +
+> +/// Per-open-file pool of VMs.
+> +#[pin_data(PinnedDrop)]
+> +pub(crate) struct VmPool<'drm> {
+> +    /// Parent device, for error reporting.
+> +    dev: &'drm Device<Bound>,
+> +    #[pin]
+> +    ids: Mutex<IdPool>,
+> +    #[pin]
+> +    vms: XArray<Arc<Vm<'drm>>>,
+> +}
+> +
+> +/// Error returned when a VM cannot be added to the pool. The caller
+> +/// owns the teardown of the VM in [`AddError::vm`].
+> +pub(crate) struct AddError<'drm> {
+> +    pub(crate) error: Error,
+> +    pub(crate) vm: Arc<Vm<'drm>>,
+> +}
 
-Factor the common drain scheduling into schedule_stock_drain() now
-that both stocks use it.
+When I try to compile just this patch i get an error about
+this being unused so better annotate it with #[expect(dead_code)]
+like the others.
 
-If the memory charge fails, roll back only nr_pages from memsw. Any
-batch surplus the memsw charge already placed in the memsw stock
-stays cached, like any other stock slot.
+> +
+> +impl<'drm> VmPool<'drm> {
+> +    /// Creates a new [`VmPool`].
+> +    #[expect(dead_code)]
+> +    pub(crate) fn new(dev: &'drm Device<Bound>) -> impl PinInit<Self> {
+> +        let ids = IdPool::new();
+> +        pin_init!(Self {
+> +            dev,
+> +            ids <- new_mutex!(ids),
+> +            vms <- XArray::new(AllocKind::Alloc),
+> +        })
+> +    }
+> +
+> +    /// Stores the VM and returns the allocated ID.
+> +    ///
+> +    /// On failure - ID space exhausted or a store failure - the VM is
+> +    /// returned in an [`AddError`] so the caller owns the teardown.
+> +    // TODO: allocate IDs with the XArray directly (once it grows range
+> +    // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32, AddError<'drm>> {
+> +        let id = (|| {
+> +            let mut ids = self.ids.lock();
+> +            let unused = ids.find_unused_id(1).ok_or(ENOSPC)?;
+> +            if unused.as_usize() > MAX_VMS_PER_FILE {
+> +                return Err(ENOSPC);
+> +            }
+> +            Ok(unused.acquire())
+> +        })();
+> +        let id = match id {
+> +            Ok(id) => id,
+> +            Err(error) => return Err(AddError { error, vm }),
+> +        };
+> +
+> +        let mut vms = self.vms.lock();
+> +        match vms.store(id, vm, GFP_KERNEL) {
+> +            Ok(prev_vm) => {
+> +                if let Some(prev_vm) = prev_vm {
+> +                    // An existing VM at the freshly allocated slot means the
+> +                    // IdPool and the XArray are out of sync: the stored VM is
+> +                    // a pool entry, so the pool kills it and the caller's VM
+> +                    // is handed back for the caller to kill.
+> +                    let stored = vms.remove(id);
+> +                    drop(vms);
+> +                    prev_vm.kill();
+> +                    self.ids.lock().release_id(id);
+> +                    dev_err!(
+> +                        self.dev,
+> +                        "IdPool/XArray out of sync at VM pool id {id} (stored VM conflict)"
+> +                    );
+> +                    return Err(AddError {
+> +                        error: EBUSY,
+> +                        vm: stored.expect("VM was just stored"),
 
-The separate banks can hit, contend, evict, and drain independently,
-so their raw counters can temporarily drift by their cached amounts.
-The previous patch preserves the user-visible cgroup-v1
-memory <= memory + swap invariant by reporting memory.usage_in_bytes
-as the smaller raw value.
+Since the rust for linux coding guidlines say:
+    panicking should be very rare and used only with a good reason.
+    In almost all cases, a fallible approach should be used, typically returning a Result.
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/memcontrol.c | 62 ++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 46 insertions(+), 16 deletions(-)
+I'm wondering if there is a way to avoid this expect().
+For example, you could store a vm.clone() in the xarray and keep the vm
+that was passed to this function so that it can be returned on error.
+And on success, the vm would just drop so the overall ref count wouldn't
+be incremented.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index ee1e46e58e38f..aa3531a3828e5 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2070,6 +2070,13 @@ static DEFINE_PER_CPU_ALIGNED(struct page_counter_stock_pcp, memory_stock) = {
- 	.base = &memory_stock,
- };
- 
-+#ifdef CONFIG_MEMCG_V1
-+static DEFINE_PER_CPU_ALIGNED(struct page_counter_stock_pcp, memsw_stock) = {
-+	.lock = INIT_LOCAL_TRYLOCK(lock),
-+	.base = &memsw_stock,
-+};
-+#endif
-+
- /*
-  * NR_OBJ_STOCK is sized so the entire hot path of obj_stock_pcp
-  * (lock, accounting metadata, nr_bytes[] and cached[]) fits within a
-@@ -2174,12 +2181,30 @@ static bool schedule_drain_work(int cpu, struct work_struct *work)
- 	return true;
- }
- 
-+static void schedule_stock_drain(struct page_counter_stock_pcp __percpu *stock,
-+				 struct cgroup_subsys_state *root_css,
-+				 int cpu, int curcpu)
-+{
-+	struct page_counter_stock_pcp *pcp_stock = per_cpu_ptr(stock, cpu);
-+
-+	if (test_bit(FLUSHING_CACHED_CHARGE, &pcp_stock->flags) ||
-+	    !page_counter_stock_flush_required(pcp_stock, root_css) ||
-+	    test_and_set_bit(FLUSHING_CACHED_CHARGE, &pcp_stock->flags))
-+		return;
-+
-+	if (cpu == curcpu)
-+		drain_local_stock(&pcp_stock->work);
-+	else if (!schedule_drain_work(cpu, &pcp_stock->work))
-+		clear_bit(FLUSHING_CACHED_CHARGE, &pcp_stock->flags);
-+}
-+
- /*
-  * Drains all per-CPU charge caches for given root_memcg resp. subtree
-  * of the hierarchy under it.
-  */
- void drain_all_stock(struct mem_cgroup *root_memcg)
- {
-+	struct cgroup_subsys_state *root_css = &root_memcg->css;
- 	int cpu, curcpu;
- 
- 	/* If someone's already draining, avoid adding running more workers. */
-@@ -2194,21 +2219,13 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
- 	migrate_disable();
- 	curcpu = smp_processor_id();
- 	for_each_online_cpu(cpu) {
--		struct page_counter_stock_pcp *memory_st =
--			per_cpu_ptr(&memory_stock, cpu);
- 		struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
- 
--		if (!test_bit(FLUSHING_CACHED_CHARGE, &memory_st->flags) &&
--		    page_counter_stock_flush_required(memory_st,
--						      &root_memcg->css) &&
--		    !test_and_set_bit(FLUSHING_CACHED_CHARGE,
--				      &memory_st->flags)) {
--			if (cpu == curcpu)
--				drain_local_stock(&memory_st->work);
--			else if (!schedule_drain_work(cpu, &memory_st->work))
--				clear_bit(FLUSHING_CACHED_CHARGE,
--					  &memory_st->flags);
--		}
-+		schedule_stock_drain(&memory_stock, root_css, cpu, curcpu);
-+#ifdef CONFIG_MEMCG_V1
-+		if (do_memsw_account())
-+			schedule_stock_drain(&memsw_stock, root_css, cpu, curcpu);
-+#endif
- 
- 		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
- 		    obj_stock_flush_required(obj_st, root_memcg) &&
-@@ -2235,6 +2252,11 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
- 	stock = per_cpu_ptr(&memory_stock, cpu);
- 	page_counter_drain_stock_fully(stock);
- 	clear_bit(FLUSHING_CACHED_CHARGE, &stock->flags);
-+#ifdef CONFIG_MEMCG_V1
-+	stock = per_cpu_ptr(&memsw_stock, cpu);
-+	page_counter_drain_stock_fully(stock);
-+	clear_bit(FLUSHING_CACHED_CHARGE, &stock->flags);
-+#endif
- 
- 	/*
- 	 * A drain work queued before the CPU went away is executed by an
-@@ -2557,8 +2579,8 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 
- retry:
- 	if (do_memsw_account() &&
--	    !page_counter_try_charge(&memcg->memsw, nr_pages, &counter, false,
--				     NULL)) {
-+	    !page_counter_try_charge(&memcg->memsw, nr_pages, &counter,
-+				     may_batch, NULL)) {
- 		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
- 		goto reclaim;
- 	}
-@@ -3038,7 +3060,7 @@ static void obj_cgroup_uncharge_pages(struct obj_cgroup *objcg,
- 	if (!mem_cgroup_is_root(memcg)) {
- 		page_counter_refill_stock(&memcg->memory, nr_pages);
- 		if (do_memsw_account())
--			page_counter_uncharge(&memcg->memsw, nr_pages);
-+			page_counter_refill_stock(&memcg->memsw, nr_pages);
- 	}
- 
- 	css_put(&memcg->css);
-@@ -4190,6 +4212,10 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- 		memcg->memory.stock_css = &memcg->css;
- 		page_counter_init(&memcg->swap, &parent->swap, false);
- #ifdef CONFIG_MEMCG_V1
-+		if (!memcg_on_dfl) {
-+			memcg->memsw.stock = &memsw_stock;
-+			memcg->memsw.stock_css = &memcg->css;
-+		}
- 		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
- 		memcg->memory.track_failcnt = !memcg_on_dfl;
- 		memcg->memsw.track_failcnt = !memcg_on_dfl;
-@@ -5818,6 +5844,10 @@ int __init mem_cgroup_init(void)
- 	for_each_possible_cpu(cpu) {
- 		INIT_WORK(&per_cpu_ptr(&memory_stock, cpu)->work,
- 			  drain_local_stock);
-+#ifdef CONFIG_MEMCG_V1
-+		INIT_WORK(&per_cpu_ptr(&memsw_stock, cpu)->work,
-+			  drain_local_stock);
-+#endif
- 		INIT_WORK(&per_cpu_ptr(&obj_stock, cpu)->work,
- 			  drain_local_obj_stock);
- 	}
--- 
-2.53.0-Meta
+> +                    });
+> +                }
+> +                Ok(id as u32)
+> +            }
+> +            Err(err) => {
+> +                // Drop the XArray spinlock before acquiring the `ids` mutex.
+> +                drop(vms);
+> +                // Release the pooled id; the VM never entered the pool, so it
+> +                // is returned to the caller for teardown.
+> +                self.ids.lock().release_id(id);
+> +                Err(AddError { error: err.error, vm: err.value })
 
+When i run rustfmt on this patch it reformats this line, can you double
+check you ran rustfmt?
+
+
+> +            }
+> +        }
+> +    }
+> +
+> +    /// Removes and kills the VM with the given ID.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn remove(&self, id: u32) -> Result<()> {
+> +        let mut vms = self.vms.lock();
+> +        let vm = match vms.remove(id as usize) {
+> +            Some(vm) => vm,
+> +            None => return Err(EINVAL),
+> +        };
+> +        // Drop the XArray spinlock before killing, since `kill()` may sleep.
+> +        drop(vms);
+> +        // Kill the VM before handing the id back to the pool, so a VM is
+> +        // never reusable while still alive.
+> +        vm.kill();
+> +        self.ids.lock().release_id(id as usize);
+
+Since i just learned about this myself, I should mention that you can
+now use num::casts::FromSafeCast and then write
+usize::from_safe_cast(id).
+
+> +        Ok(())
+> +    }
+> +
+> +    /// Gets a shared reference to the VM with the given ID.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
+> +        let vms = self.vms.lock();
+> +        let borrow = vms.get(id as usize)?;
+> +        Some(Arc::from(borrow))
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for VmPool<'_> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        let this = self.project();
+
+I don't think you need to project the VmPool here because we only
+need a shared ref to the pool, and the vms guard gives us the interior
+mutability we need to modify the xarray anyway.
+
+> +        // Kill every VM left in the pool. The ID range is bounded by
+> +        // `MAX_VMS_PER_FILE`, so this loop is cheap and runs at file close.
+> +        for id in 1..=MAX_VMS_PER_FILE {
+> +            // Release the XArray lock guard before killing: `kill()` may sleep.
+> +            let vm = this.vms.lock().remove(id);
+> +            if let Some(vm) = vm {
+> +                vm.kill();
+> +            }
+> +        }
+> +    }
+> +}
+> 
+> -- 
+> 2.43.0
+> 
 
