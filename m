@@ -1,93 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB038606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 00:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A259606A31B
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 01:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C8rASglm
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MaWJkPnQ
 Received: by kanga.kvack.org (Postfix)
-	id E30076B058F; Tue, 20 Oct 2026 20:52:44 -0400 (EDT)
+	id DF2D46B0591; Tue, 20 Oct 2026 21:00:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE0D76B0590; Tue, 20 Oct 2026 20:52:44 -0400 (EDT)
+	id DA40D6B0592; Tue, 20 Oct 2026 21:00:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF60B6B0591; Tue, 20 Oct 2026 20:52:44 -0400 (EDT)
+	id C93456B0593; Tue, 20 Oct 2026 21:00:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A5B006B058F
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 20:52:44 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1E67712041D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 00:52:44 +0000 (UTC)
-X-FDA: 85344808248.22.07DE9A7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 745DA80006
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 00:52:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8rASglm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 99C6C6B0591
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 21:00:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07AAD12041B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:00:56 +0000 (UTC)
+X-FDA: 85344828912.21.BD2CCB1
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 50C4218000E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:00:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MaWJkPnQ;
+	spf=pass (imf16.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792543962;
+	s=arc-20220608; t=1792544454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qb7Js6jWEBpRBnpheoU8QyOWSaJyuXRnZgnX25ZrCeE=;
-	b=W5fCu96+yLuSxzsg/XnvdlisZY6WhAxHL8Qw/RXV3gYupfnaCmdqVTQSm2WEknYJiltO65
-	6XXa80tVhR6uTaxS95btPvCRCBds3Ve6tHXpuFjD+Hgob5ngrLEZ62twY++SIdhYwPuqJb
-	2tHs87w+oV2XKnwawXlY2UlSplHxzgc=
+	 in-reply-to:references:dkim-signature;
+	bh=brjSVHHjkTm3a15jKpejTsFNYVkjpbbbJOFcNDM0Mpk=;
+	b=AOl7w3EuO0Fi8ALbd/I4tryG/SBc51SIdwRXwN4EMK2/gl0sMOV5fiIBzT7QW3JQtUS/HN
+	Ein80RlQZzaOUNOrzeX3r1l7OvcrY64HX5kuRLkH8rHuF9ILomwFeqivwnk97OUYCyeqlV
+	mqplKymdI+pGhbPnEde4gWId7VcE33k=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8rASglm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MaWJkPnQ;
+	spf=pass (imf16.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792543962;
-	b=6H1wE3BXai1KAVivDLvy//0r32vjlPPD327rzr2Q8bJUgLtCbGyZ79HJB3X7Vd5KdWk2YI
-	kVlSs2diMEUYB9fWJh+nvvEoV/KOGRQ7TwLHxQC3kqm95Rxli1fA7lTLOUYqjUYDO5MTs7
-	dsEwxpKpRc3yLe3cMTEeg0mgmY+lai8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6663140483;
-	Wed, 21 Oct 2026 00:52:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2DE1F000C9;
-	Wed, 21 Oct 2026 00:52:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792543961;
-	bh=qb7Js6jWEBpRBnpheoU8QyOWSaJyuXRnZgnX25ZrCeE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C8rASglmwgB/cfgmQpR3BhfADDtX2fNF7GWL6In14mCOE+7W/rqFn5M3uhVDLpxJr
-	 6S28YT++pE4ykJTY0DVVUSv1WsetHBeFietptrPkMiJZtpk8SzuRmmvEdQEt5yYoKN
-	 uBYX9dN2xveE/0IHIFcPHw9up4OccSABaDGN64neWWm2VvzKYZkiTVgPmgghjnzENW
-	 ayrOjrG8ZuyxMLPv/KMvx+OCmp9stf8zU2s5OUr3MjUoVLguMvTUW52jxYcckGHHgN
-	 FrJOrAztHPAb9fz2Gryaa2n9u9k2udQ+58y8Yflb2Kvnp4Z7Eiq3l9jM1125SgNBP7
-	 BO2ISMCwFpdAw==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: stable@vger.kernel.org,
+	t=1792544454;
+	b=DiFCnGOJIicRQZunZjDQxransq1UVhBgrqVenuip4Dc83qoZTHuF+/QkXaQky03sXoLHJH
+	EWCGlO5Z4CsZRUvhXeQK3Ute5ASFI5jQQJkPm5dhKgDnEOJCDJ3UahmOJtNBPV/Yzzgywr
+	BM1x63tFeUbp3b6/U46Vo/yWGDaOeIA=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8b09e07e149so2112167b3.1
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 18:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792544453; x=1793149253; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=brjSVHHjkTm3a15jKpejTsFNYVkjpbbbJOFcNDM0Mpk=;
+        b=MaWJkPnQRsBjjt+dcNOnB3BlsNSSxdrOqwKCH0XRZ/LBmybXt+AL/Egxvf4igVSMDc
+         XGUhCto54WI1wl7AziajZZc1IUVBicppf7tXTimmOu0eocXR0EINrjJab+UyfH6NV2Hw
+         B0kTdl0s0l9h084c0L+lbKd/5AI5a6F7AcX40fxg7JSkVB4/BAFDkXj7ko3wZTB3slsC
+         vbNqB2FdxQhF2CsbuCmWcdNV6YqPWGPyLTKrkPX93uvHGs2e5M1dJ7179qIg0RpkL9xx
+         bTzRK4zKhK57w398LU7kq2g45bnCo1omgJMcTKpQEES5YtCL3qHlGuTnY0vc8pU+OmLD
+         orPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792544453; x=1793149253;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=brjSVHHjkTm3a15jKpejTsFNYVkjpbbbJOFcNDM0Mpk=;
+        b=1tXdxArzbMX1ZuTzrB9YjmEDlrG4Cht9W6aCo3TMQDP8xc85W7K8WcztB2cKezXedc
+         JpUbiV5y2XApsuOyVLcT9txMHX6QUrMpBNCC+w1d7z+MrCawVadVgAbcnHbl80znzQTS
+         nruAtzTCqfmcWQDTb+b/UXZMkqeyHJNO1zUgj+ymQ2CVtd8/r0IleT5eLNUWFLGhdKV1
+         9Vd90sxx4D7783FLIBkoyl+6qqi0WRxGYMrDHmyUxS/OIP6RdA4wa6TpeqZffwYT0lzf
+         3/In4ka/eGEzSBuDDE5owyDk86I67tJs3KTNc2MJV9oBqdm7uSrXUsQOP9I7YHqTbnBw
+         21Fg==
+X-Forwarded-Encrypted: i=1; AKwUvByDArhh5EjozfaDyybQbu1pakBZmTxoCy8gYOQaTQ9Y9qLo+nsFf1eSEC0qNDpVr8uUecgMqcvc5Q==@kvack.org
+X-Gm-Message-State: AFq9FYI91IGJHAvFCOQ66FkXmNwOuFf/s52sqm8PCzWZp25u69/fNNqx
+	mV1iWR3xSRGjm3o+M/2RjqMF57Ez5gUxsrG3c9stdsouvFgWykLrr9Q7
+X-Gm-Gg: AYBFou1A9v2wLZ3bRW6LtxEfpkgJ7xDEqp04oQcReQJQuMfD+IArm8VtvO71qlSv42V
+	IYQ8MnSOyQBXVuBsSUoBE+LIGxBIYvl66IfqozgW8/B+zZkfY7SFld0PT6e5MTGv/tBkb/OH07p
+	raDJTZvx5HD8SCHzArL4osGR2vLt68wGITrXztdKXI0RdXHZgs9AuKpVw26YJNh/UnK+YmZ6Udf
+	KQTFdV81cYCFxGt0d+X0ac0nYZCQ3sfp8wMFA5ZQpPH4Zq8Z0GT6lM5xnPASYkqCIRRd7diT5zn
+	wfQcMERMTTtsaMsWjjpF/N3tJ10xEj21zscjlYCs5L92BnoRFqNq8G8C8Q0+qBiTOrdGJQdFws9
+	B+S2gDaWrBpRHB0UDdXMxmNu6uzzW7uvl7DamntYyuRjwVOjY2u9WqLBaZ4uy/q0RcRdPCeN993
+	kp2SEE1g9+4UbVXXOM6xJg7jznt0iZ2Xgu5SD3vBDqykkLMvD7qMnIjIyxH7SDNwSKsenfDOYDe
+	xIi8hJZKtySB4/Qz7MbQG7v8UX5EBVgd8T2pp6p2/DDg5dnlgP3yq4QouXi735fNOsXvLtHWo4j
+	21r0rUAO1Q==
+X-Received: by 2002:a05:690c:e1c3:20b0:8b0:702f:3554 with SMTP id 00721157ae682-8b133d0edeamr2195557b3.8.1792544453129;
+        Tue, 20 Oct 2026 18:00:53 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:3::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b1300ae0c2sm5192247b3.18.2026.10.20.18.00.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 18:00:52 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon/sysfs-schemes: hold damon_sysfs_lock in target_value_store()
-Date: Tue, 20 Oct 2026 17:52:33 -0700
-Message-ID: <20261021005234.94107-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261020144726.88978-1-sj@kernel.org>
-References: 
+	kernel-team@meta.com
+Subject: [PATCH v2] mm/memcontrol: publish null pointer before dropping css reference
+Date: Tue, 20 Oct 2026 18:00:50 -0700
+Message-ID: <20261021010051.1529261-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 745DA80006
-X-Stat-Signature: kpijofjrhzhgakjnxr45ys5q58ojx8fy
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 50C4218000E
+X-Stat-Signature: x1xx43fdqtqgdjdjkzxsuz5duexu8b4i
+X-Rspam-User: 
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792543962-851887
-X-HE-Meta: U2FsdGVkX18JX2TB1bLMfXwaiRuorDXgtC8FfhmS0w5a12igRvRfbEGp9+UxaFdJ7PchCcIdOAqqMZDRDGzHLCzq9/iC74ejSHEBz6rNN0CeqeVxQ8vqRH2GvNNF8KBbGbpvwr+vXI/7wyVKivXacmxCMee1wKqoixRyiYVsgghvSSJgBrU718IGMWTsMiS+hQ1/3kF0zH6rWL1bi1Vt3KfLM/hUmR+Lb4r5RApFintgYon5r+8TPuByO4gddaQMaY387o0ozTzMGkXawMvpr1cwrH9zJBF6yLaHhdm/6kpEg5M1pah8YkublDbT3lBlxruE1YD44q4EsQ68cv8qGCyIZle+G6ekTLHZNkvVuwt0MOG7A3RUrwDRKHLLVKLRSmA8MYscdyol5LSCMOiuor4BZOxx/u5zWMA9cPtJg3ny8R7ehypPof+WueNTg2Rs4ImvxpQq7fGk9pz6Jzoffhut8zj8LAFr15y9joqAmJeUw7++g/Y5pK7USU4IG2OfFxDxI2fcHNq9T2jiF5fODV4xAsaqmxwCKNi67nS690hj9JOrtaPBWpDW7HCAFG4L1H5MTjIK0axTTq0fgmYF0xnTxVzLG2b928y9p0CeFNvENR1D+SjcQJd2yX75Z7jrXp8HGiI4w6zZO/pPJQ0ySRzakBd7A3oWrf+wdpG/9C0Xuge5m3ynrFYUo+gnGWwx6CG2TROOTD75d+kGh5pplm5IZ0cxT56Yf1V7mUxddO/qfA5HF6PWhA0fORNi17u4RzVA+xkCi4E4/RpjuSeA8dU30HRCwXYbUeocmKYRzh/yDGuPYWeI3VRzX+WEG4TzGY0IHgE+p9TThZkutyKmxkYMHjKcM24Q/XjMXlrA6MXqSLfgsvlrMFhdwu9akTbwvc8D9zyup3zC71/MqtANAlhY9R2L9uDRzMfE/JJgIFFvhF7gbt1I49d3v6PRq9hJLrwMEjF0nX05w/VUK0V
- 1ah2yeL5
- 93DF524v0hYlgTMiyMpRyjdrZJOYIQL+8ca9KfJlxS1Jx0orvuY2VZK1jiixvRlSs0OH48bYlj6Na1aspCYtSSTUWcKdAgjwu1JjjNgf4AzOO7FHggA8Pf9ypvy+WLqRFKG4qQAzL0wjFVYTndFtKq+BoeJby5nroVZp+eMjfOrUrC58h9lXKwh6/WQ0JUOsSzPFHDIm1ALGhh0DZdH7RyXWOpJI7p4oBWMA+qczfWR8SVEsoCpHMWmiD/KTh69ASLsvpsk068OUzX1IN6x+JYFp6GD0O/qzQ4rx8a964LEXXipWR6/Xmk8d9rAqJJYGEfCJJPPBEfAsux0viFndAJ8vsyg==
+X-HE-Tag: 1792544454-580811
+X-HE-Meta: U2FsdGVkX18aQWmlUjQeVX44zaqY3p1p6lc9nmotWcLgGRAE6J0r/1kMEctizk4fl0ZbXN61jUODJ5Q85VsOHgsWQrCwaECrAtAdoFEY3/tnq9PF2kUkxS9weNqKkMYMCyblvUKgvarV0jF5O+RvlYeqKVas5dg6ptujqJm5/vG6ub7qOU/OhAvrYbO9r3/8wzl6E1ctIVb6vQHN6vBTk8xF7QGIw3PVNk/WJE61HJ3gjiga4Dkx4XWjd4abw0hqD2C4/itaZofc/kmQenBT9wGnUiWtLwa7oo5DDGuI6C5U88OnpOeoP4msG/9k2YiQsZPlsa29u6m6wYLBRqFGHqWXU5hbkblTD7e6QrdLf6pqA7cli7JUdw46fbkT7rjZf8XMCALQSABtH4BheuOEuObol7WUfeDcYWZDWCJwfi1RawlMv4eM32w1BU2GqiYWu6D2oQTi5P7iOQYyT7uiAmbnQ1w8E4b+PrDXIrDTTjnw0Rwz+SgX7hcEuR3aLn0kp3SgykrpTbBWNURLIIr5b7evvEcq+16cw/Qo59ApOZwi3P0w94VLr125Fz3p6joz9D/wzp6RiSKAuo5l9W26a77SFw3XLudQgIkT1wa2Z1pX5QAAV+QsoeDJsFTCiMakS7X5mHJanhxOqgnObTbIxp5uG8oZa+sAvAGrM00dLY7h7N5JUloZXt2upMNrF0Lu+nM0dRWr9z/g57wFUjpb2J5ouCFJJIUGxbFCLhJeff5pSeMeb4yc7T0fjh91vcjbkZULNKnz7BAfpqTakpjMf2kATNKPeM2ws2du/niArk3D5PLyrsVFedcdbacBAK51/DAQLz1/GnQHRhUaCFV3P5fFICf96ZWdrDMFtZpRspk/Wtkmi5zjIfuJR2K3AAZLerKCuydvE/s6P2WAXLQgeqC/KpylpaN1C5aw7Tn0gfjUoEzTLsOzi6GWxJNDx79EC7wXjdYXvmFbf46JDvJ
+ dlDjinWH
+ Nb5saCgyRIgJ0iL+SSN1AQ+uODgDS6DtG7H90iv9HWNZOdnmN5yHvpghTVq68rHDAGCBmDbNjbm2nUww4kTOmuNmsjMRPSVZgizQUjty/jjUdRlWVALB2YIh3p4trUAf//tsAV7N6Z+NPSphhyxR6EuM6OkWQA6QOr/dYIlghAJwrzK+NvZcrUSx9Tg1Jath8E0SJYYHnC3AF7OUCrQpotiHiRgNNx+6aqSORzkOW7o7v0gvPWvZNsVFSMey2gb86Qxfr2z91heEIHEie1s+Z7bE8a0yRjZANHbiDiqtq7X2k3zxDsIX6AWkiSAGtX87PqgCLXjXbT8IZiithLpBK0U6gK/xXiJ3nOteu8XeUQmSEzKczPrfsYeZQ7dXVio0b0c6Qn1U6ySPTZGRcV/0uXwEaOlOTIFu4cOjU5XA9rUiO9q7/WhALgZkyOnxN72AEIh52y67H/UdFEUIgPU883oDbw5iOhRUe7T6B81PJrQtd+9wxDjGS5zudL/Sm9d7Si/PAE6p/11gd3Wqh0RCDEi295Ji1GSlmUpSiHWJzUkB7+NY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,70 +127,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 20 Oct 2026 07:47:25 -0700 SJ Park <sj@kernel.org> wrote:
+struct memcg_stock_pcp hold references to cgroups that it tracks to make
+sure that the memcg never gets freed with unaccounted charges still
+living in the stock. When the cached stock goes to 0 for a memcg, its
+reference is dropped and the cached memcg pointer is set to NULL.
 
-> Remove a race condition under certain use cases that can trigger
-> divide-by-zero.
-> 
-> damon_sysfs_add_quota_score() setup damos quota goal as user configured
-> and pass to the core layer.  Because it could have a race with
-> damos_sysfs_quota_goals_rm_dirs(), which destructs the files that carry
-> user configuration, both are called under damon_sysfs_lock protection.
-> 
-> The damos quota goal setup disallows zero target_value parameter because
-> it can be used as a denominator later in the core layer function,
-> damos_quota_score().  Otherwise, divide-by-zero can happen.
+If that was the last reference, the css_put would free the associated
+cgroup before publishing the NULL pointer, which can be racy on 
+PREEMPT_RT. To summarize Shakeel Butt's analysis in [2],
 
-This is no more true due to another patch [1].  The patch added the zero
-target_value case in the core layer central validation pass.  But it forgot
-removing the redundant check in sysfs.
+CPU 1					CPU 2
+local_trylock() takes a per-CPU
+spinlock, which is an rcu read
+lock along with migrate_disable
 
-> 
-> For the zero value check and final assignment,
-> damon_sysfs_add_quota_score() reads damos_sysfs_quota_goal->target_value
-> twice.  And user can update damos_sysfs_quota_goal->target_value via
-> target_value_store(), which doesn't hold damon_sysfs_lock.  As a result,
-> a time-of-check-to time-of-use (toctou) race can happen.  If the user
-> sets the value to zero between the zero value check and final
-> target_value assignment, zero target_value is passed to the core layer
-> and results in divide-by-zero.
+drain_stock
+css_put drops the last reference
+release work is queued
 
-So toctou race exists, but it cannot result in divide-by-zero.
+kworker runs css_release_work_fn()
+call_rcu() starts grace period G
+which waits for the refill task.
 
-> 
-> Fix by holding damon_sysfs_lock in target_value_store() while saving the
-> value.  The read side, damon_sysfs_add_quota_score(), is already called
-> while holding the same mutex lock, so it avoids the race.
-> 
-> Users could reproduce the race by writing zero to the target_value sysfs
-> file while DAMON is starting, or online parameters update is ongoing.
-> The issue will only rarely happen in the real use cases.  It requires
-> sysfs write permission.  The race window is short.  Sane users wouldn't
-> write zero target_value.  Especially, they wouldn't do that while DAMON
-> enablement and/or online parameters update is ongoing.  That said, the
-> probability is not zero, and the consequence (divide-by-zero) is quite
-> bad.
-> 
-> Closes: https://sashiko.dev/#/bug/linux-7f814c9a-986f-4103-a55a-ef9537dcf62b
+<preempt>
+					drain_all_stock
+					is_memcg_drain_needed()
+					enters rcu_read_lock(), but
+					 grace period G does not wait
+					since it started after G did
 
-Maybe Sashiko found the issue before the other patch [1] is applied.
+					<prempt>
 
+stock->cached[i] is cleared and
+unlocks. Grace period G ends,
+old is freed
 
-> Fixes: 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota goals user input to DAMOS")
-> Cc: <stable@vger.kernel.org> # 6.8.x
+					mem_cgroup_is_descendant() reads
+					old->css.cgroup which has just
+					been freed.
 
-So this patch is unnecessary for the mainline.  But still need to be added to
-older kernels.  Backporting the mainline fix [1] would be one simple way.  The
-backporting would be not that straightforward because the core layer parameters
-validation was introduced on 7.3 via commit b90408ef1163 ("mm/damon/core:
-safely validate src on damon_commit_ctx()").  Hopefully doable.  I will take
-time to do backports for relavant LTS and stable kernels.
+To close this gap on PREEMPT_RT, switch the order of the referene drop
+and the publishing so that we publish the NULL pointer before dropping
+the reference. Note that this can only happen from drain_stock who can
+hold the last reference, but not on consume_stock since another
+reference will always be held. But fix this in both sites to maintain
+consistency. 
 
-[1] https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
+This is based on a report from Sashiko, who found this pre-existing
+issue in my page_counter_stock series [1].
 
+[1] https://sashiko.dev/#/patchset/20260928192349.3432886-1-joshua.hahnjy%40gmail.com
+[2] https://lore.kernel.org/all/atfMngq7nyZpt4u-@linux.dev/
 
-Thanks,
-SJ
+Fixes: e1a366be5cb4 ("mm: memcontrol: switch to rcu protection in drain_all_stock()")
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+v1 --> v2
+- Rewrote cover letter for clarity on what the actual condition to hit
+  the race condition, which Shakeel Butt provided. 
 
-[...]
+ mm/memcontrol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index e7d7db5718f9a..a05d9a8baa1b6 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2172,8 +2172,8 @@ static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+ 			stock_pages -= nr_pages;
+ 			WRITE_ONCE(stock->nr_pages[i], stock_pages);
+ 			if (!stock_pages) {
+-				css_put(&memcg->css);
+ 				WRITE_ONCE(stock->cached[i], NULL);
++				css_put(&memcg->css);
+ 			}
+ 			ret = true;
+ 		}
+@@ -2209,8 +2209,8 @@ static void drain_stock(struct memcg_stock_pcp *stock, int i)
+ 		WRITE_ONCE(stock->nr_pages[i], 0);
+ 	}
+ 
+-	css_put(&old->css);
+ 	WRITE_ONCE(stock->cached[i], NULL);
++	css_put(&old->css);
+ }
+ 
+ static void drain_stock_fully(struct memcg_stock_pcp *stock)
+-- 
+2.53.0-Meta
+
 
