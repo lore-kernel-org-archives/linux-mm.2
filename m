@@ -1,100 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D048606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC24606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NraaEPkS
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XsGPmHEb
 Received: by kanga.kvack.org (Postfix)
-	id D9F226B0621; Wed, 21 Oct 2026 02:06:06 -0400 (EDT)
+	id A91A76B0622; Wed, 21 Oct 2026 02:06:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D28E86B0622; Wed, 21 Oct 2026 02:06:06 -0400 (EDT)
+	id 9F5446B0623; Wed, 21 Oct 2026 02:06:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF0196B0623; Wed, 21 Oct 2026 02:06:06 -0400 (EDT)
+	id 81FE26B0624; Wed, 21 Oct 2026 02:06:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 95C116B0621
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:06:06 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 255FDA0478
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:06:06 +0000 (UTC)
-X-FDA: 85345597932.13.FE92473
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C2446B0622
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:06:09 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD096A7C24
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:06:08 +0000 (UTC)
+X-FDA: 85345598016.21.6757524
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CE8AD140003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:06:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NraaEPkS;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+	by imf31.hostedemail.com (Postfix) with ESMTP id ED54F20006
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:06:06 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XsGPmHEb;
+	spf=pass (imf31.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792562764;
+	s=arc-20220608; t=1792562766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xEEzUKmwPcuLDb8KHUBfxekosp3Yw5qO1BP0yTFVDsQ=;
-	b=FL7e/qJTnnrZocam4IbAYqv1i2Ngr4BiS8ukYdMeOijeVemVsLIp6f1ua7LZ+c9B261viw
-	PIxLYdIohXIy5XG6CMIdymOJmhsWT0zPyuuccXbedbmi/n7RqAPHv5tLCvGeFHnMQUX6xd
-	6dYmcd5QvY7r3SMU3DyHZaXZMfoLuf4=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NraaEPkS;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+	bh=GgUN3PXGarkTKLbmZsGJ5nfMapb3HVw3zfaBFxuYjaw=;
+	b=iAnajVk8m1y5UqQ0ickFJMsRtXQZj6YAejn/9W9meZKc9fskHHqstEj+XYQlxlhctJAepm
+	LVg0G6SeNSbDNjT2IcD30BkII3dbL6ElSBjx1wsIkhN1pvm9A09xsVMLkhqeVzCCRsJMHq
+	6fNUG97YC5oHN5Ng4qg5fJs2rg8KSok=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792562764;
-	b=FemYcezvooi0eqmVFAgBm1B2va6PsZ1M/QNTasJcSWYiCEd1LEGAERwoBRJZ0vl5+RWbZJ
-	fz4Bz8w4FtlZZR1W2Y96st/joY0e3YVXEQe6ISi8Xwiq21jZRX6CbpdS2N7fDDhQxLDUk6
-	DL5cvcFFiI+3+cxLArYIEIYVZEyCgcE=
+	t=1792562766;
+	b=MdqZHymXJBtve3s3TN7uS9xOgquZcUjQ493KAko/6VpRdaFrWqys3ZX8FMM2ftLcfwMa63
+	yLWFZRH8/6aOf9/F02cecfEujNibxHFhn0iDAHhgCJrdrZX3QiRIYgERYgTVML6t9T5UD4
+	F/Oq8ArFsOrGLoSLGN9/dFuqYrQa538=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XsGPmHEb;
+	spf=pass (imf31.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792562763;
+	s=mimecast20190719; t=1792562766;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xEEzUKmwPcuLDb8KHUBfxekosp3Yw5qO1BP0yTFVDsQ=;
-	b=NraaEPkSN/Hr3WuxJQQo5paoUHrhftKerHAxndKyvxulEm473l9ApyHWUOCmKzPwcJRPMh
-	1Qbw5RJ/0zzSZfnHEW6/dOe5RkrcKQJpuCeTTB2v2oTlvpG20yzBe/IFb5WqwTRVoqii13
-	WNl2V4gisMNzVGSnaUgvigB4ohhX3Ao=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=GgUN3PXGarkTKLbmZsGJ5nfMapb3HVw3zfaBFxuYjaw=;
+	b=XsGPmHEbPn7Xw95liB8SRqICxGL7lG3Kd67+baZMB38j6u61r4QkUZOTrre6c4oL+hYU1a
+	DicrMJ2OUHQHdzkr0PAt9PadLLsTBFXvFA4D86JYzGwrglOWO93Tmt06G7Rexvi4cEVuY7
+	4huXOmTOTMkJUjjbj35fqPstjYij8Yk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-H9_TFkvNPmyReYGQmMN0Yw-1; Wed, 21 Oct 2026 06:05:59 +0000
-X-MC-Unique: H9_TFkvNPmyReYGQmMN0Yw-1
-X-Mimecast-MFC-AGG-ID: H9_TFkvNPmyReYGQmMN0Yw_1792562759
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48af5a07314so224635f8f.2
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:05:59 -0700 (PDT)
+ us-mta-12-3nllJb-WOLO7HJDVJZ8ysg-1; Wed, 21 Oct 2026 02:06:04 -0400
+X-MC-Unique: 3nllJb-WOLO7HJDVJZ8ysg-1
+X-Mimecast-MFC-AGG-ID: 3nllJb-WOLO7HJDVJZ8ysg_1792562763
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48df730c035so224715f8f.0
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:06:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792562759; x=1793167559;
+        d=1e100.net; s=20260707; t=1792562763; x=1793167563;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xEEzUKmwPcuLDb8KHUBfxekosp3Yw5qO1BP0yTFVDsQ=;
-        b=Lh8AfKI3vI9YDoMr/lzAfLshiIG+MKqnBsVP8yjrVYEOzf/jmKSSijqiTuU/ifbVEz
-         sCakhYRWnDcwC9l5MJdZf7mCl40dZ81dCh5A5jqGB7o8dj9fUvFfnNy+wcI6V3jKv+JP
-         B4QDJvAPkdi+ZWGVGOv/otwcxfH1qU75CYT8bp7vp4Tr05P8CjbMUFrxMnAio1zJpImI
-         i6I0Ltk6ldaaUMwKykxGvtXEYrNtR/BEg/W/5GeppkGWgeNcMPLx9OfHGn0uPIvZ/i7C
-         iPa6XegC/xPZJsOgt16zQ13fmX24BHT9dFEXHue8ZRjQtm9gZ+6DpU53kAuI+UXWVSov
-         xN3g==
-X-Gm-Message-State: AFq9FYIKzQLDtgT2lwzpf5oYRGrziJvf67u5dZRNlQ/+eS3jm4f2X8ny
-	tPNDUg+fiGz2WxcBrpfBBasmIr0SWC/54mAKnikLDeVfvf5fZ/eepwmOnEmoJyWocpnnJktQPCq
-	Lf0SuuusBTj7Fbfp3ZFlDFoGTEHYK3kaqpCR/WzOBnKDID4BUL36VPKmBh5F6tqxeuF5wLKPww7
-	hTGS2F6IpZ3SVf5ADOAAWzJnW3t1RoOaz0Oe3blA==
-X-Gm-Gg: AYBFou1Gw1UAlVyd7fipjZyPmF/Sun9d3C1YUaXWyaUI8of6WGZFpE46iv/WN0mNr9N
-	yWvEABH9kiWRXyKXC9l2Jb02hV3p2hqZgk4OEKZouDvpwRe6FjVa4movh9rV2txIkn7KACyRtJe
-	qbk3aY+JgSR2NBVhQZ4fIkaQD70VhhW6ogdNI1HcRprtFy21Rvr9BxdCeXxNK2XkhYhKt6Sr7Lb
-	/mZO/+rvNCPTE4+5BppUmp22LerT2Jmy2fi7Xj7rZrENq87A/1hJD03drTudkZcuUwQOw3GLCoc
-	XUnGScFJkMDzCB+CtCJNwpCSNujTA9JiHFqd09/eI5T/NRap2sA4nGK/t18N28oN6LM8LEEqwDz
-	Z8yOPFjVcifvBTB41fWd4IdVxwxTHpthflr9b
-X-Received: by 2002:a5d:5d03:0:b0:48b:69d4:bb35 with SMTP id ffacd0b85a97d-48e26493dfamr1855076f8f.12.1792562758655;
-        Tue, 20 Oct 2026 23:05:58 -0700 (PDT)
-X-Received: by 2002:a5d:5d03:0:b0:48b:69d4:bb35 with SMTP id ffacd0b85a97d-48e26493dfamr1855003f8f.12.1792562758183;
-        Tue, 20 Oct 2026 23:05:58 -0700 (PDT)
+        bh=GgUN3PXGarkTKLbmZsGJ5nfMapb3HVw3zfaBFxuYjaw=;
+        b=gK0Ur34PGUoQ/vFmH77K/RM9SaNPVh/AYmCjU7XpLj/9Nd+nExM8lSRDlOuaraIrGX
+         zLOaM4oaqnADsPNgJbY8XYV5nh8D+43Ml3gd0HUyAvyBIL/+MfapQtfAq7NJmWYHaLK5
+         dw1om0I8Xu1GkloK2KY6ZliQJR3fk5lEzJvsSA7ShLGgFwIGRVWjbjm7HmG/QyNFxmRF
+         I/CP0/0aM/2wGf/uwtMYqplFuIiXPu48XeR4qT10xlPxmWgNgtpRoFCJOnRcxwlnsDzB
+         QaVM09To0jLeE+FQEvXInd5HCLva+KjmI0JdjZFHQ2B4ca8j0PQCRHonP9fnrNGE7PVx
+         LKYA==
+X-Gm-Message-State: AFq9FYIX03h1osm747dRmz4txsY7u5UJFla9ORWfusLT6le9OXlhlN+Q
+	IdhRo0c2ugTOOElb/vIq0cg9617rvTyM01iUTuSVA/SUu8jzi+0UZPghJADa75UjEdwB+aZN4jh
+	Zt7TiTkbpipFuriERnanwPK+GWqSodbpvUYJ/oGaOulTjywT1dV6X/S+QzELf23X/n0B88agz+B
+	S22T9ovdo+Q8n4/V2HkL2HGND58l6hODWmfO1J1w==
+X-Gm-Gg: AYBFou0SsLAasm4+hCzqLB7WRenm49JDMbRup98D8asijNAtB0xW1DbUh+V4G1mtW8k
+	ib0SDUR5qJdSLoobd43Bhs7NcMX7LkmtlEfBpeCJwpRwJSBN5NNuENXtEMcERiKDGlZrCiDbhJP
+	XZ9eKJPOb1yE0D3XOOwcqix7KbgOhEsCLjxjOrzW8kGHiucof35r4Jatq1PENcn6cEXm1KiL+jG
+	ko63mpLKIEI2wKiZYjSw2zHkAsGZb0KWJoCSCg1MecaxV6MV/dmbBRodQPIpgIhwWzxltn8hT7H
+	ZMzJFoG7rgBjr0StyMreVhBtmSpgo6rj/Pphmt0nEw4pCKt/ltFIHVCzFiefw2RZCKfdtp2aCHl
+	glic8p4Dm882d9cQRuB77iq4ihQss3IHabdX1
+X-Received: by 2002:a5d:5f55:0:b0:48d:ca32:e90f with SMTP id ffacd0b85a97d-48e264e905cmr1635335f8f.55.1792562763080;
+        Tue, 20 Oct 2026 23:06:03 -0700 (PDT)
+X-Received: by 2002:a5d:5f55:0:b0:48d:ca32:e90f with SMTP id ffacd0b85a97d-48e264e905cmr1635242f8f.55.1792562762356;
+        Tue, 20 Oct 2026 23:06:02 -0700 (PDT)
 Received: from fedora.redhat.corp (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e254f02f1sm3413741f8f.3.2026.10.20.23.05.55
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e254f02f1sm3413741f8f.3.2026.10.20.23.05.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 23:05:56 -0700 (PDT)
+        Tue, 20 Oct 2026 23:06:00 -0700 (PDT)
 From: mpenttil@redhat.com
 To: linux-mm@kvack.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -117,31 +117,31 @@ Cc: dri-devel@lists.freedesktop.org,
 	Michal Hocko <mhocko@suse.com>,
 	Lyude Paul <lyude@redhat.com>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v16 11/12] Documentation/mm/hmm: document migration through hmm_range_fault()
-Date: Wed, 21 Oct 2026 09:05:05 +0300
-Message-ID: <20261021060506.2377545-12-mpenttil@redhat.com>
+Subject: [PATCH v16 12/12] drm/nouveau/svm: add support for migrate on fault
+Date: Wed, 21 Oct 2026 09:05:06 +0300
+Message-ID: <20261021060506.2377545-13-mpenttil@redhat.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261021060506.2377545-1-mpenttil@redhat.com>
 References: <20261021060506.2377545-1-mpenttil@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: VNArv0ntEofwag9C3T7VIp-Y6S_cP2z6qWSz-C5hK_4_1792562759
+X-Mimecast-MFC-PROC-ID: 21vl22Yn33j_9BLc6nuWFe9gPELiD6HmxM-D6NSm39A_1792562763
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CE8AD140003
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ED54F20006
+X-Stat-Signature: c3bd4oqx3x9zibws1dsfhfmi1yf43mq7
 X-Rspam-User: 
-X-Stat-Signature: z5q4hobi5q536k7o7ajwffe4sjrbihzx
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792562763-269201
-X-HE-Meta: U2FsdGVkX1/mOQjNomlFaiI6IvlHkrUJO/Ktb3uVLyx0fVZvoOyv6+fJrA1n2KUPP2+OzYpuZHQEGVupdrEvJrDrhZv5MdjW+YHRWK8t8Un7mPeNJl3RodsBfUomWv511Od4W5kOzYs3jt3PI71aVVflOnDIGJhwJBfyrvnk63FV6lA9AhNM7fO85GFc7GQZ9ebzdZKc6vtIE5J+/unYdC8cr84NiVA9+ie48iJKWWNoWhkeYek2WwuvFp5s9TlQB0U9VijEueQrFLKXe24Ew0Q+CO8x/kpNQFO0ZXrlCkCeg7z8pLTxSG7+RrBG2IHDCCjcpiea3r+6Hp2/LU31ztSWZjz3MnPTZXdH0MjVYpWLnK4jWMbRwcFABE9aLY/da2AVXSwof/dIDB00ScMRMEbN6ey0Pgl7AcZQSP/8mmEMXr64GOHbBpNfwcHqtLXrfa+j8C10rNXA496xNuhPz8x39kHHseiOW/VHV7dMI1U6LnJEJIcBWSVABTuGb7X9reGpWMK+wS+F8dQzhUPTMzzSueqzvbXyu0zrM6uYDr7ENYK0S6NqNiaX089MlanIhb8HPM7CLpSea6gves9n/okBrJ6tXb2S98vmcN9othkDWma8rTKKQ/c/JPkUCVZu9/ek5mcNLqeC/whFvYHjOxegdjJ/Y3KFFHL188YYpt4wOWKAdEzql2NDKfUQI96JzuPvRTvdl+V3oTR+nh/byD3Pp8z1hhjta4oBonRH8toMdDSwLoK/gw/ugJ0O+7O7aJ9JdAKNMJ4XU5hlPE9jajRBikUYl1isBc5hhGx7vkUgo4y++YvC+zwe5v1PeSpsDTmQdqvWgosB/B4NfQs86s5279zA/3pmClFEnsk3HgIJuVWf9WKGhUYAH2JUib0JTbO59MRwovHPuyXRDHkRqZ9o0NxKzfIOOsfDt5+mgZI4hLR6JD0PRXP5KMeyhD2L36QeMnwzgXee3g/NCgK
- qw5xKcCe
- GeRzKog3YlzaphoM6EpwVm3Dozfr6NaX/s1hyJGJCC8mfOMq8DUE1V5zV7rJUQnw7d8arrYy3wjtgcdd19WQo1KByyXDUA1YM5B+PsrBnw/hylmJZspXbtFLtN7K78v0qYHWprbDUawKXSduFFMAqcQCZgVvAgrNb3B9nvmwAKRpq41qoiccmV8185b64QzoTL4rhf0x1ZILhxIDfJfeZVrBr1WiRDraye/eV3g9r4Lk0DLZ0WjH5SrrWqIs939khIguW0PNGADwC0f/hwgiFweJJt+piB+fPnJ5JjWqTJXvqh7Htk4afIpbOg+qjZoyXZjeDpz/oqq2I4lhnZHBIFpJRiS3CjLhIUArX4ejM9bqyDUf+Zfnvhjm0T8wREzlfE0j+VoXb5LcHhi4JKtIP6ctv3JN4aqzlTuHqPCD7DN80zEkvxeY3U2OlDxMMMbUDmYb8p4NWKgmOoYW0L5on32yMQw==
+X-HE-Tag: 1792562766-524421
+X-HE-Meta: U2FsdGVkX19szFTgyxuMbh46McpK8wMqbhlcDP8YfAh/RZOz3IIr9AkvG6IHC9SYpq9ooLgkBv2HgRDJXadh8KosrHnhF5NFE7t5BMahRvEkKNiYcZeIQqmtCVJfmigs8i+v4J30SZvzaBObZajph7DI1PF3wAWMehDRNhwMI167FiuCn34LpebMNPkV6wfxeXEukMVuZeGqtDe+C37iC53ZKoHEL0Ux357FTPbszQ8yDEGq+NKCVJwT6wFDecLAa/H/aYGYoaKmpndQWOHNkCkQzW/IXo3mRzldb6VOXpPD08K7yCdVybILDvyMm3MpiKImNcVQ+BzZoprL2DKmvq20c2YQPqIC+pW7DnWXzMtqk4plY2YTtjfUHMuHJ7unv7mZRtjfDBk/mkEM6gIHK/Ba5cPmaenvm14gVAAHgUmjtnhZ4U86jiA+ubbNJZXCQFBj22g1iNNpVtRqpgzb/mU5R+gD1F7N52jWeAY6kKYon3ndsmZh9GHd93qXLBtxExGqOzcsJYskxsxDYnMjbhOXnMUHsh2IHQPIv6ykZWm9WbBCYYIoY/W7NTMHFozNocaTIVGqAZi6mTRHWQ0Y+KHQuK0ArU/4mOcR4w4h4S1rUeTLx6mR7UrPMxBIOVvFPPr1+ouc32iM1PyMn1I31ssJSOWcnfL3akMxY9Wqx92DxhvPiiwaK9UpJaZLodAXPmJEEyVnvCKPfMpwPgUd2/CvIA/Mzpy66g5SxbLpE56Pt9SbKxCM4x3PYSlMFh8xvUtACCzoUut1gZUkrX2rzRWfkgq2I5jlHIO77JC/lnJNNFTB1KBqelr7abfegFWoc7gZNWsvMv7wlRvgdMTfnG5g5fqO5YUGYekP/AxLhbVBohNMUrsDw6ipnMoR5wfM+o8b/LFMbdlRxYk3oCvJazXbfsmots6EdwMjYYsRFvd/RRNonYnFQvGUXj0Q+J1G3olFE+Wb1TcLTrXQRUC
+ oOJZXGvL
+ N4shuBDjYuCnKutsFNEKNLH58h7FyS9HW74kRQyA+JjlU4ntADHBRg69WIdk6VrklknaW4512UhIBfuoBkND29sT3ttoWDFrfro3Du07nRHwLeKhnpCCsnbZ5/V4eqZN20YFBlQ7iZkb4HFL/PBZTlCmrkn95a/4ts/jSJ1fpcSSPr3hSLxlR/nA9Gvwvj5BFv4fYM3zJTaT7O0IDQEcIcWMcxtgNbaupe//oxEwmf5fxkHQ9fYiby2meHliCGVEy01aiBz1miOauGPLbDLJhKD90FZSPBWtCX7sX2+QyhB0yj2Y8XlEyHYynCStDSJ2Vckk/ej/C/uZiatI6Yn13kM5YBIuQGSVnFz71V2RDLWuf9CYPx0Ae6wHAaMT1oQSVuN60TWPxL6OTwe2ySt5EMndaKgaKmYL8x8Hje/Ketxk57c8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,73 +152,668 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Mika Penttilä <mpenttil@redhat.com>
 
-Describe the two new MIGRATE_VMA_FAULT / MIGRATE_VMA_WRITE flags of
-migrate_vma_setup(), and add a section on driving the migration
-collection phase directly from hmm_range_fault() via HMM_PFN_REQ_MIGRATE
-and migrate_hmm_range_setup().
+Add a direct user for the new HMM_PFN_REQ_MIGRATE flag and
+implement migrate on fault for nouveau driver. It is gated
+by the svm_migrate_on_fault module parameter, default off.
+
+Added nouveau_dmem_migrate_fault() that faults a range in and
+does migrate collecting in a single hmm_range_fault() walk.
+
+As an optimization, a migration policy - deciding which faulting
+ranges are worth migrating to VRAM and which are better left
+mirrored in system memory - would be useful. This patch
+establishes the migrate-on-fault mechanism as a basis for later
+refinement.
 
 Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
 ---
- Documentation/mm/hmm.rst | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_dmem.c | 281 ++++++++++++++++++++++++-
+ drivers/gpu/drm/nouveau/nouveau_dmem.h |  12 ++
+ drivers/gpu/drm/nouveau/nouveau_svm.c  | 141 +++++++++----
+ drivers/gpu/drm/nouveau/nouveau_svm.h  |   5 +
+ 4 files changed, 384 insertions(+), 55 deletions(-)
 
-diff --git a/Documentation/mm/hmm.rst b/Documentation/mm/hmm.rst
-index fc1b8dc19825..58424e5f5873 100644
---- a/Documentation/mm/hmm.rst
-+++ b/Documentation/mm/hmm.rst
-@@ -348,6 +348,13 @@ between device driver specific code and shared common code:
-    Currently only anonymous private VMA ranges can be migrated to or from
-    system memory and device private memory.
+diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+index e74d7bb975a8..998c63e2ae78 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -40,6 +40,9 @@
+ #include <linux/hmm.h>
+ #include <linux/memremap.h>
+ #include <linux/migrate.h>
++#include <linux/jiffies.h>
++#include <linux/delay.h>
++#include <linux/mmu_notifier.h>
  
-+   By default only pages already present are collected. Two additional flags
-+   ask migrate_vma_setup() to fault in missing pages first:
-+
-+   * ``MIGRATE_VMA_FAULT`` faults in missing pages with read access.
-+   * ``MIGRATE_VMA_WRITE`` faults in missing pages with write access
-+     (implies faulting).
-+
-    One of the first steps migrate_vma_setup() does is to invalidate other
-    device's MMUs with the ``mmu_notifier_invalidate_range_start()`` and
-    ``mmu_notifier_invalidate_range_end()`` calls around the page table
-@@ -427,6 +434,38 @@ between device driver specific code and shared common code:
+ /*
+  * FIXME: this is ugly right now we are using TTM to allocate vram and we pin
+@@ -139,10 +142,12 @@ static void nouveau_dmem_folio_free(struct folio *folio)
+ 	spin_unlock(&dmem->lock);
+ }
  
-    The lock can now be released.
+-static void nouveau_dmem_fence_done(struct nouveau_fence **fence)
++static int nouveau_dmem_fence_done(struct nouveau_fence **fence)
+ {
++	int ret = 0;
++
+ 	if (fence) {
+-		nouveau_fence_wait(*fence, true, false);
++		ret = nouveau_fence_wait(*fence, true, false);
+ 		nouveau_fence_unref(fence);
+ 	} else {
+ 		/*
+@@ -150,6 +155,32 @@ static void nouveau_dmem_fence_done(struct nouveau_fence **fence)
+ 		 * the hmem object.
+ 		 */
+ 	}
++
++	/* 0 on completion, -EBUSY on timeout, or other errno; propagated. */
++	return ret;
++}
++
++/*
++ * Poll the copy fence instead of the lazy (interrupt-driven) wait since
++ * completion IRQ is randomly missed, hitting the timeout.
++ *
++ * Returns 0 on completion, -EBUSY on timeout. Consumes the fence reference.
++ */
++static int nouveau_dmem_fence_poll(struct nouveau_fence **fence)
++{
++	unsigned long deadline = jiffies + 30 * HZ;
++	int ret = 0;
++
++	while (!nouveau_fence_done(*fence)) {
++		if (time_after(jiffies, deadline)) {
++			ret = -EBUSY;
++			break;
++		}
++		schedule_timeout_uninterruptible(msecs_to_jiffies(1));
++	}
++	nouveau_fence_unref(fence);
++
++	return ret;
+ }
  
-+Migration collection through hmm_range_fault()
-+==============================================
-+
-+The collection phase of migration (steps 1 and 2 above) can also be driven by
-+hmm_range_fault() directly, sharing its page table walk. This lets a driver
-+fault in and collect a range for migration in one walk, which is useful for
-+migrate on fault.
-+
-+To do so, the driver sets ``HMM_PFN_REQ_MIGRATE`` in ``range->default_flags``
-+and points ``range->migrate`` at a ``struct migrate_vma`` it has filled in
-+(``flags``, ``src``, ``dst``, ``pgmap_owner``). Usually ``HMM_PFN_REQ_FAULT``
-+(and ``HMM_PFN_REQ_WRITE``) is set as well, so missing pages are faulted in
-+before being collected. The mmap_read_lock() has to be held for the whole
-+migration, since the vma must stay stable.
-+
-+hmm_range_fault() collects the entries the same way migrate_vma_setup() does,
-+taking a folio reference, locking it and installing a migration PTE. Collected
-+entries are marked with ``HMM_PFN_VALID | HMM_PFN_MIGRATE`` in
-+``range->hmm_pfns``. If the page tables change while locks are dropped the
-+partially collected entries are rolled back automatically.
-+
-+After hmm_range_fault() returns, the driver calls::
-+
-+    void migrate_hmm_range_setup(struct hmm_range *range);
-+
-+to translate ``range->hmm_pfns`` into ``migrate->src[]`` (``migrate->dst[]`` is
-+zeroed) and initialize ``migrate->cpages`` and ``migrate->npages``. From here on
-+the ``range->migrate`` struct is ready for the rest of the flow (steps 3
-+onwards), i.e. migrate_vma_pages() and migrate_vma_finalize(). This should be
-+called even on error, since hmm_range_fault() may have collected part of the
-+range before failing.
-+
- Exclusive access memory
- =======================
+ static int nouveau_dmem_copy_folio(struct nouveau_drm *drm,
+@@ -188,7 +219,7 @@ static vm_fault_t nouveau_dmem_migrate_to_ram(struct vm_fault *vmf)
+ 	struct nouveau_svmm *svmm;
+ 	struct page *dpage;
+ 	vm_fault_t ret = 0;
+-	int err;
++	int err, fret = 0;
+ 	struct migrate_vma args = {
+ 		.vma		= vmf->vma,
+ 		.pgmap_owner	= drm->dev,
+@@ -233,10 +264,12 @@ static vm_fault_t nouveau_dmem_migrate_to_ram(struct vm_fault *vmf)
+ 	 * than just one page on CPU fault. When such fault happens it is very
+ 	 * likely that more surrounding page will CPU fault too.
+ 	 */
+-	if (migrate_vma_setup(&args) < 0)
+-		return VM_FAULT_SIGBUS;
++	if (migrate_vma_setup(&args) < 0) {
++		ret = VM_FAULT_SIGBUS;
++		goto err;
++	}
+ 	if (!args.cpages)
+-		return 0;
++		goto done;
  
+ 	if (order)
+ 		dpage = folio_page(vma_alloc_folio(GFP_HIGHUSER | __GFP_ZERO,
+@@ -266,9 +299,12 @@ static vm_fault_t nouveau_dmem_migrate_to_ram(struct vm_fault *vmf)
+ 
+ 	nouveau_fence_new(&fence, dmem->migrate.chan);
+ 	migrate_vma_pages(&args);
+-	nouveau_dmem_fence_done(&fence);
++	fret = nouveau_dmem_fence_poll(&fence);
+ 	dma_unmap_page(drm->dev->dev, dma_info.dma_addr, dma_info.size,
+ 				DMA_BIDIRECTIONAL);
++	if (fret)
++		/* Copy failed; the pte now points at possibly stale sysram data. */
++		ret = VM_FAULT_SIGBUS;
+ done:
+ 	migrate_vma_finalize(&args);
+ err:
+@@ -794,11 +830,12 @@ static unsigned long nouveau_dmem_migrate_copy_one(struct nouveau_drm *drm,
+ 	return 0;
+ }
+ 
+-static void nouveau_dmem_migrate_chunk(struct nouveau_drm *drm,
++static unsigned long
++nouveau_dmem_migrate_alloc_and_copy(struct nouveau_drm *drm,
+ 		struct nouveau_svmm *svmm, struct migrate_vma *args,
+-		struct nouveau_dmem_dma_info *dma_info, u64 *pfns)
++		struct nouveau_dmem_dma_info *dma_info, u64 *pfns,
++		unsigned long *nr_dma_out, unsigned long *order_out)
+ {
+-	struct nouveau_fence *fence;
+ 	unsigned long addr = args->start, nr_dma = 0, i;
+ 	unsigned long order = 0;
+ 
+@@ -820,6 +857,21 @@ static void nouveau_dmem_migrate_chunk(struct nouveau_drm *drm,
+ 		addr += (1 << order) * PAGE_SIZE;
+ 	}
+ 
++	*nr_dma_out = nr_dma;
++	*order_out = order;
++	return i;
++}
++
++static void nouveau_dmem_migrate_chunk(struct nouveau_drm *drm,
++		struct nouveau_svmm *svmm, struct migrate_vma *args,
++		struct nouveau_dmem_dma_info *dma_info, u64 *pfns)
++{
++	struct nouveau_fence *fence;
++	unsigned long nr_dma, order, i;
++
++	i = nouveau_dmem_migrate_alloc_and_copy(drm, svmm, args, dma_info, pfns,
++						&nr_dma, &order);
++
+ 	nouveau_fence_new(&fence, drm->dmem->migrate.chan);
+ 	migrate_vma_pages(args);
+ 	nouveau_dmem_fence_done(&fence);
+@@ -832,6 +884,215 @@ static void nouveau_dmem_migrate_chunk(struct nouveau_drm *drm,
+ 	migrate_vma_finalize(args);
+ }
+ 
++/*
++ * Encode an hmm_range_fault() pfn for @start into the nouveau PFNMAP format,
++ * shared by nouveau_hmm_convert_pfn() and the in-place map in
++ * nouveau_dmem_migrate_fault().
++ */
++u64 nouveau_dmem_hmm_pfn_to_map(unsigned long hmm_pfn, unsigned long start,
++				unsigned long *map_addr, unsigned int *page_shift)
++{
++	unsigned long order;
++	struct page *page;
++	u64 pfn;
++
++	*map_addr = start;
++	*page_shift = PAGE_SHIFT;
++
++	if (!(hmm_pfn & HMM_PFN_VALID))
++		return NVIF_VMM_PFNMAP_V0_NONE;
++
++	page = hmm_pfn_to_page(hmm_pfn);
++
++	order = hmm_pfn_to_map_order(hmm_pfn);
++	if (order) {
++		*page_shift = order + PAGE_SHIFT;
++		*map_addr = start & ~((1UL << *page_shift) - 1);
++		page -= (start - *map_addr) >> PAGE_SHIFT;
++	}
++
++	if (is_device_private_page(page))
++		pfn = nouveau_dmem_page_addr(page) |
++			NVIF_VMM_PFNMAP_V0_V | NVIF_VMM_PFNMAP_V0_VRAM;
++	else
++		pfn = page_to_phys(page) |
++			NVIF_VMM_PFNMAP_V0_V | NVIF_VMM_PFNMAP_V0_HOST;
++	if (hmm_pfn & HMM_PFN_WRITE)
++		pfn |= NVIF_VMM_PFNMAP_V0_W;
++
++	return pfn;
++}
++
++/*
++ * Fault a range in and migrate it to VRAM.
++ * Returns 0 on success, or an error (so the caller
++ * falls back to nouveau_range_fault()) if nothing could be mapped.
++ */
++int
++nouveau_dmem_migrate_fault(struct nouveau_drm *drm, struct nouveau_svmm *svmm,
++			   struct mmu_interval_notifier *notifier,
++			   unsigned long start, unsigned long end,
++			   unsigned long hmm_flags,
++			   u64 *out_pfn0, unsigned long *out_addr,
++			   unsigned int *out_shift)
++{
++	unsigned long timeout =
++		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
++	unsigned long npages = (end - start) >> PAGE_SHIFT;
++	struct mm_struct *mm = notifier->mm;
++	struct nouveau_dmem_dma_info *dma_info;
++	struct nouveau_fence *fence = NULL;
++	struct migrate_vma migrate = {
++		.start		= start,
++		.end		= end,
++		.pgmap_owner	= drm->dev,
++		.flags		= MIGRATE_VMA_SELECT_SYSTEM,
++	};
++	struct hmm_range range = {
++		.notifier		= notifier,
++		.start			= start,
++		.end			= end,
++		.dev_private_owner	= drm->dev,
++		.migrate		= &migrate,
++		.default_flags		= hmm_flags | HMM_PFN_REQ_MIGRATE,
++	};
++	unsigned long nr_dma, order, n, i;
++	unsigned long hmm_pfn0 = 0;
++	bool migrated;
++	u64 *pfns;
++	int ret, fret = 0;
++
++	if (!drm->dmem)
++		return -ENODEV;
++
++	migrate.src = kcalloc(npages, sizeof(*migrate.src), GFP_KERNEL);
++	if (!migrate.src)
++		return -ENOMEM;
++	migrate.dst = kcalloc(npages, sizeof(*migrate.dst), GFP_KERNEL);
++	if (!migrate.dst) {
++		ret = -ENOMEM;
++		goto out_free_src;
++	}
++	dma_info = kmalloc_objs(*dma_info, npages);
++	if (!dma_info) {
++		ret = -ENOMEM;
++		goto out_free_dst;
++	}
++	pfns = nouveau_pfns_alloc(npages);
++	if (!pfns) {
++		ret = -ENOMEM;
++		goto out_free_dma;
++	}
++
++	/* hmm_range_fault() shares the source pfn array with migrate_vma. */
++	range.hmm_pfns = migrate.src;
++
++	do {
++		mmap_read_lock(mm);
++		range.notifier_seq = mmu_interval_read_begin(notifier);
++
++		ret = hmm_range_fault(&range);
++		/*
++		 * Snapshot the pfn before migrate_hmm_range_setup() overwrites the
++		 * shared array; used to map in place if nothing migrates.
++		 */
++		if (!ret)
++			hmm_pfn0 = range.hmm_pfns[0];
++		migrate_hmm_range_setup(&range);
++		if (ret) {
++			migrate_vma_pages(&migrate);
++			migrate_vma_finalize(&migrate);
++			goto unlock;
++		}
++
++		n = nouveau_dmem_migrate_alloc_and_copy(drm, svmm, &migrate,
++							dma_info, pfns,
++							&nr_dma, &order);
++
++		/* Only a migrated page has an in-flight CE copy to unblock below. */
++		for (i = 0, migrated = false; i < npages; i++) {
++			if (migrate.dst[i]) {
++				migrated = true;
++				break;
++			}
++		}
++
++		/*
++		 * Track a copy fence only when a copy was enqueued; waiting on an
++		 * empty fence would block until the fault's CTXSW_TIMEOUT.
++		 */
++		if (migrated)
++			nouveau_fence_new(&fence, drm->dmem->migrate.chan);
++		migrate_vma_pages(&migrate);
++
++		/*
++		 * The fault-in path must replay the faulting channel before waiting on
++		 * the copy fence: with the fault still unreplayed the copy does not
++		 * make progress. GPU has no mapping so it might refault, until it
++		 * gets the migrated or mirrored mapping.
++		 */
++		if (drm->svm && migrated)
++			nouveau_svm_fault_replay(drm->svm);
++
++		if (migrated)
++			fret = nouveau_dmem_fence_poll(&fence);
++
++		mutex_lock(&svmm->mutex);
++		if (fret) {
++			/* Copy did not complete; don't map a half-copied page. */
++			ret = -EIO;
++		} else if (mmu_interval_read_retry(notifier, range.notifier_seq)) {
++			ret = -EBUSY;
++		} else {
++			unsigned long map_addr = migrate.start;
++			unsigned int page_shift = PAGE_SHIFT + order;
++
++			/*
++			 * If nothing migrated might still be able to mirror.
++			 * In that case use the snapshot hmm_pfn.
++			 * npages == 1 always today.
++			 */
++			if (npages == 1 && !(pfns[0] & NVIF_VMM_PFNMAP_V0_V))
++				pfns[0] = nouveau_dmem_hmm_pfn_to_map(hmm_pfn0,
++						start, &map_addr, &page_shift);
++
++			__nouveau_pfns_map_locked(svmm, map_addr, pfns, n,
++						  page_shift);
++
++			*out_pfn0 = pfns[0];
++			*out_addr = map_addr;
++			*out_shift = page_shift;
++		}
++		mutex_unlock(&svmm->mutex);
++
++		if (fret)
++			NV_ERROR(drm,
++				 "svm: migrate copy did not complete (%d) for %lx-%lx\n",
++				 fret, start, end);
++
++		while (nr_dma--) {
++			dma_unmap_page(drm->dev->dev, dma_info[nr_dma].dma_addr,
++				       dma_info[nr_dma].size, DMA_BIDIRECTIONAL);
++		}
++		migrate_vma_finalize(&migrate);
++unlock:
++		mmap_read_unlock(mm);
++	} while (ret == -EBUSY && !time_after(jiffies, timeout));
++
++	/* Nothing migrated or mappable in place, fallback to nouveau_range_fault(). */
++	if (!ret && !(pfns[0] & NVIF_VMM_PFNMAP_V0_V))
++		ret = -ENOENT;
++
++	nouveau_pfns_free(pfns);
++out_free_dma:
++	kfree(dma_info);
++out_free_dst:
++	kfree(migrate.dst);
++out_free_src:
++	kfree(migrate.src);
++	return ret;
++}
++
+ int
+ nouveau_dmem_migrate_vma(struct nouveau_drm *drm,
+ 			 struct nouveau_svmm *svmm,
+diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.h b/drivers/gpu/drm/nouveau/nouveau_dmem.h
+index 64da5d3635c8..91e8910cadbf 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.h
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.h
+@@ -27,6 +27,7 @@ struct drm_file;
+ struct nouveau_drm;
+ struct nouveau_svmm;
+ struct hmm_range;
++struct mmu_interval_notifier;
+ 
+ #if IS_ENABLED(CONFIG_DRM_NOUVEAU_SVM)
+ void nouveau_dmem_init(struct nouveau_drm *);
+@@ -39,7 +40,18 @@ int nouveau_dmem_migrate_vma(struct nouveau_drm *drm,
+ 			     struct vm_area_struct *vma,
+ 			     unsigned long start,
+ 			     unsigned long end);
++int nouveau_dmem_migrate_fault(struct nouveau_drm *drm,
++			       struct nouveau_svmm *svmm,
++			       struct mmu_interval_notifier *notifier,
++			       unsigned long start,
++			       unsigned long end,
++			       unsigned long hmm_flags,
++			       u64 *out_pfn0,
++			       unsigned long *out_addr,
++			       unsigned int *out_shift);
+ unsigned long nouveau_dmem_page_addr(struct page *page);
++u64 nouveau_dmem_hmm_pfn_to_map(unsigned long hmm_pfn, unsigned long start,
++				unsigned long *map_addr, unsigned int *page_shift);
+ 
+ #else /* IS_ENABLED(CONFIG_DRM_NOUVEAU_SVM) */
+ static inline void nouveau_dmem_init(struct nouveau_drm *drm) {}
+diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
+index c519c28164fa..960cbf8af974 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_svm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
+@@ -37,6 +37,7 @@
+ #include <linux/hmm.h>
+ #include <linux/memremap.h>
+ #include <linux/rmap.h>
++#include <linux/moduleparam.h>
+ 
+ struct nouveau_svm {
+ 	struct nouveau_drm *drm;
+@@ -78,6 +79,13 @@ struct nouveau_svm {
+ #define SVM_DBG(s,f,a...) NV_DEBUG((s)->drm, "svm: "f"\n", ##a)
+ #define SVM_ERR(s,f,a...) NV_WARN((s)->drm, "svm: "f"\n", ##a)
+ 
++/* When set, migrate the faulting range to VRAM on GPU fault (default off). */
++static bool nouveau_svm_migrate_on_fault;
++module_param_named(svm_migrate_on_fault, nouveau_svm_migrate_on_fault, bool,
++		   0644);
++MODULE_PARM_DESC(svm_migrate_on_fault,
++		 "migrate system memory to VRAM on GPU fault (default off)");
++
+ struct nouveau_pfnmap_args {
+ 	struct nvif_ioctl_v0_hdr i;
+ 	struct nvif_ioctl_mthd_v0_hdr m;
+@@ -182,9 +190,10 @@ nouveau_svmm_bind(struct drm_device *dev, void *data,
+ 
+ 		addr = max(addr, vma->vm_start);
+ 		next = min(vma->vm_end, end);
+-		/* This is a best effort so we ignore errors */
+-		nouveau_dmem_migrate_vma(cli->drm, cli->svm.svmm, vma, addr,
+-					 next);
++		/* Best effort; skipped when migrate-on-fault does the migration. */
++		if (!nouveau_svm_migrate_on_fault)
++			nouveau_dmem_migrate_vma(cli->drm, cli->svm.svmm, vma,
++						 addr, next);
+ 		addr = next;
+ 	}
+ 
+@@ -390,7 +399,7 @@ nouveau_svmm_init(struct drm_device *dev, void *data,
+ }
+ 
+ /* Issue fault replay for GPU to retry accesses that faulted previously. */
+-static void
++void
+ nouveau_svm_fault_replay(struct nouveau_svm *svm)
+ {
+ 	SVM_DBG(svm, "replay");
+@@ -527,6 +536,14 @@ static bool nouveau_svm_range_invalidate(struct mmu_interval_notifier *mni,
+ 	    range->owner == sn->svmm->vmm->cli->drm->dev)
+ 		return true;
+ 
++	/*
++	 * Ignore our own migrate-on-fault invalidation; otherwise its
++	 * MMU_NOTIFY_MIGRATE bumps the seq and read_retry() spins to timeout.
++	 */
++	if (range->event == MMU_NOTIFY_MIGRATE &&
++	    range->owner == sn->svmm->vmm->cli->drm->dev)
++		return true;
++
+ 	/*
+ 	 * serializes the update to mni->invalidate_seq done by caller and
+ 	 * prevents invalidation of the PTE from progressing while HW is being
+@@ -551,48 +568,25 @@ static void nouveau_hmm_convert_pfn(struct nouveau_drm *drm,
+ 				    struct hmm_range *range,
+ 				    struct nouveau_pfnmap_args *args)
+ {
+-	struct page *page;
++	unsigned long map_addr;
++	unsigned int page_shift;
+ 
+ 	/*
+ 	 * The address prepared here is passed through nvif_object_ioctl()
+ 	 * to an eventual DMA map in something like gp100_vmm_pgt_pfn()
+ 	 *
+ 	 * This is all just encoding the internal hmm representation into a
+-	 * different nouveau internal representation.
++	 * different nouveau internal representation; see the shared encoder
++	 * nouveau_dmem_hmm_pfn_to_map() (also widens to the CPU folio order).
+ 	 */
+-	if (!(range->hmm_pfns[0] & HMM_PFN_VALID)) {
+-		args->p.phys[0] = 0;
+-		return;
++	args->p.phys[0] = nouveau_dmem_hmm_pfn_to_map(range->hmm_pfns[0],
++						      args->p.addr, &map_addr,
++						      &page_shift);
++	if (page_shift != PAGE_SHIFT) {
++		args->p.addr = map_addr;
++		args->p.page = page_shift;
++		args->p.size = 1UL << page_shift;
+ 	}
+-
+-	page = hmm_pfn_to_page(range->hmm_pfns[0]);
+-	/*
+-	 * Only map compound pages to the GPU if the CPU is also mapping the
+-	 * page as a compound page. Otherwise, the PTE protections might not be
+-	 * consistent (e.g., CPU only maps part of a compound page).
+-	 * Note that the underlying page might still be larger than the
+-	 * CPU mapping (e.g., a PUD sized compound page partially mapped with
+-	 * a PMD sized page table entry).
+-	 */
+-	if (hmm_pfn_to_map_order(range->hmm_pfns[0])) {
+-		unsigned long addr = args->p.addr;
+-
+-		args->p.page = hmm_pfn_to_map_order(range->hmm_pfns[0]) +
+-				PAGE_SHIFT;
+-		args->p.size = 1UL << args->p.page;
+-		args->p.addr &= ~(args->p.size - 1);
+-		page -= (addr - args->p.addr) >> PAGE_SHIFT;
+-	}
+-	if (is_device_private_page(page))
+-		args->p.phys[0] = nouveau_dmem_page_addr(page) |
+-				NVIF_VMM_PFNMAP_V0_V |
+-				NVIF_VMM_PFNMAP_V0_VRAM;
+-	else
+-		args->p.phys[0] = page_to_phys(page) |
+-				NVIF_VMM_PFNMAP_V0_V |
+-				NVIF_VMM_PFNMAP_V0_HOST;
+-	if (range->hmm_pfns[0] & HMM_PFN_WRITE)
+-		args->p.phys[0] |= NVIF_VMM_PFNMAP_V0_W;
+ }
+ 
+ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
+@@ -728,6 +722,44 @@ static int nouveau_range_fault(struct nouveau_svmm *svmm,
+ 	return ret;
+ }
+ 
++static int nouveau_range_fault_and_migrate(struct nouveau_svmm *svmm,
++					   struct nouveau_drm *drm,
++					   struct nouveau_pfnmap_args *args,
++					   unsigned long hmm_flags,
++					   struct svm_notifier *notifier)
++{
++	struct mm_struct *mm = svmm->notifier.mm;
++	unsigned long start = args->p.addr;
++	unsigned long end = start + args->p.size;
++	unsigned long map_addr;
++	unsigned int page_shift;
++	u64 pfn0;
++	int ret;
++
++	ret = mmu_interval_notifier_insert(&notifier->notifier, mm,
++					   start, args->p.size,
++					   &nouveau_svm_mni_ops);
++	if (ret)
++		return ret;
++
++	ret = nouveau_dmem_migrate_fault(drm, svmm, &notifier->notifier,
++					 start, end, hmm_flags,
++					 &pfn0, &map_addr, &page_shift);
++
++	if (!ret) {
++		args->p.phys[0] = pfn0;
++		if (page_shift != PAGE_SHIFT) {
++			args->p.addr = map_addr;
++			args->p.page = page_shift;
++			args->p.size = 1UL << page_shift;
++		}
++	}
++
++	mmu_interval_notifier_remove(&notifier->notifier);
++
++	return ret;
++}
++
+ static void
+ nouveau_svm_fault(struct work_struct *work)
+ {
+@@ -843,14 +875,25 @@ nouveau_svm_fault(struct work_struct *work)
+ 		}
+ 
+ 		notifier.svmm = svmm;
+-		if (atomic)
++		if (atomic) {
+ 			ret = nouveau_atomic_range_fault(svmm, svm->drm, args,
+ 							 __struct_size(args),
+ 							 &notifier);
+-		else
++		} else if (nouveau_svm_migrate_on_fault &&
++			   buffer->fault[fi]->access != FAULT_ACCESS_PREFETCH) {
++			/* Fault+migrate in one walk; fall back if nothing migrated. */
++			ret = nouveau_range_fault_and_migrate(svmm, svm->drm,
++							      args, hmm_flags,
++							      &notifier);
++			if (ret)
++				ret = nouveau_range_fault(svmm, svm->drm, args,
++							  __struct_size(args),
++							  hmm_flags, &notifier);
++		} else {
+ 			ret = nouveau_range_fault(svmm, svm->drm, args,
+ 						  __struct_size(args),
+ 						  hmm_flags, &notifier);
++		}
+ 		mmput(mm);
+ 
+ 		limit = args->p.addr + args->p.size;
+@@ -935,21 +978,29 @@ nouveau_pfns_free(u64 *pfns)
+ }
+ 
+ void
+-nouveau_pfns_map(struct nouveau_svmm *svmm, struct mm_struct *mm,
+-		 unsigned long addr, u64 *pfns, unsigned long npages,
+-		 unsigned int page_shift)
++__nouveau_pfns_map_locked(struct nouveau_svmm *svmm, unsigned long addr,
++			  u64 *pfns, unsigned long npages,
++			  unsigned int page_shift)
+ {
+ 	struct nouveau_pfnmap_args *args = nouveau_pfns_to_args(pfns);
+ 
++	lockdep_assert_held(&svmm->mutex);
++
+ 	args->p.addr = addr;
+ 	args->p.size = npages << page_shift;
+ 	args->p.page = page_shift;
+ 
+-	mutex_lock(&svmm->mutex);
+-
+ 	nvif_object_ioctl(&svmm->vmm->vmm.object, args,
+ 			  struct_size(args, p.phys, npages), NULL);
++}
+ 
++void
++nouveau_pfns_map(struct nouveau_svmm *svmm, struct mm_struct *mm,
++		 unsigned long addr, u64 *pfns, unsigned long npages,
++		 unsigned int page_shift)
++{
++	mutex_lock(&svmm->mutex);
++	__nouveau_pfns_map_locked(svmm, addr, pfns, npages, page_shift);
+ 	mutex_unlock(&svmm->mutex);
+ }
+ 
+diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.h b/drivers/gpu/drm/nouveau/nouveau_svm.h
+index 3fd78662f17e..0e7ff03f80ea 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_svm.h
++++ b/drivers/gpu/drm/nouveau/nouveau_svm.h
+@@ -5,6 +5,7 @@
+ struct drm_device;
+ struct drm_file;
+ struct nouveau_drm;
++struct nouveau_svm;
+ 
+ struct nouveau_svmm {
+ 	struct mmu_notifier notifier;
+@@ -35,6 +36,10 @@ void nouveau_pfns_free(u64 *pfns);
+ void nouveau_pfns_map(struct nouveau_svmm *svmm, struct mm_struct *mm,
+ 		      unsigned long addr, u64 *pfns, unsigned long npages,
+ 		      unsigned int page_shift);
++void __nouveau_pfns_map_locked(struct nouveau_svmm *svmm, unsigned long addr,
++			       u64 *pfns, unsigned long npages,
++			       unsigned int page_shift);
++void nouveau_svm_fault_replay(struct nouveau_svm *svm);
+ #else /* IS_ENABLED(CONFIG_DRM_NOUVEAU_SVM) */
+ static inline void nouveau_svm_init(struct nouveau_drm *drm) {}
+ static inline void nouveau_svm_fini(struct nouveau_drm *drm) {}
 -- 
 2.55.0
 
