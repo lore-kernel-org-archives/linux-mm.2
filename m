@@ -1,133 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B533B606ACB6
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 15:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCD6606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 16:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Pa/FqvJB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KP8uE2X/
 Received: by kanga.kvack.org (Postfix)
-	id D6D066B024D; Wed, 21 Oct 2026 11:44:04 -0400 (EDT)
+	id 846A96B073D; Wed, 21 Oct 2026 12:11:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D442A6B0737; Wed, 21 Oct 2026 11:44:04 -0400 (EDT)
+	id 81EAC6B073E; Wed, 21 Oct 2026 12:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32126B0738; Wed, 21 Oct 2026 11:44:04 -0400 (EDT)
+	id 70D9D6B073F; Wed, 21 Oct 2026 12:11:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A7726B024D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:44:04 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25926405D9
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:44:04 +0000 (UTC)
-X-FDA: 85347054408.24.9ABB57E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EF20A80005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:44:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Pa/FqvJB";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E7286B073D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:11:27 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF2A51C3DC4
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:11:26 +0000 (UTC)
+X-FDA: 85347123372.05.1083E90
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 287CF18000D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:11:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KP8uE2X/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792597442;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792599085;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RjGOYRUf0Y+B9ZDhIJSD2m7RsQOzRHJCpxoMzZ6vguY=;
-	b=xCSEifZLLyjcdheuyXRfHYlyg0MXwHmHc64Ztpj2M1RkEP79AkPoQ3TCGmxm9oorsnaHXS
-	Z0r0RLjCpScSkbd/ZqsNY3hy7KJAzhmrzaBXZpFLkgnXkgZIoUv2SU67TtSbAd85cX++q2
-	01X6+wjJQ+mewHiE4f22NAJEFTHLS2U=
+	bh=g2ZCu6NwHs09mDefN9txWy7FuQyr4dGTj++ZockRsfU=;
+	b=S8xSOBIAn96CPGbXVupDKJHswOstpbjEZxm3LyY0s3iBjUZFTC1GbwgoCpj3aPSUR5xy0n
+	PgIBTmLsaTSjx0sk7+Tr23PQ3SeZj9oYazTKX4oa1i0qO+UO4ycjA3WD1pI31HXnizK7Sh
+	+kQokTPSk40wU+sefTMfBiRpRUw8Ndo=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Pa/FqvJB";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KP8uE2X/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792597442;
-	b=6SyKMVNVxuSZDuwnF1PIkRHOV/wZT3AJgqgL9uJqzIjQs/w6B7zEN6T8cdnrwi+Ql6Yr0J
-	sryc1Bh9UC6tz0c0Lpu2FHGiiSgvGsq6OXV/CKu3Uy86DXKoWEycfJlaKgwVgByRPtz8c4
-	pe1niONbikWvGCJ4q22/rQvDix0o0mI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792597441;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RjGOYRUf0Y+B9ZDhIJSD2m7RsQOzRHJCpxoMzZ6vguY=;
-	b=Pa/FqvJB8rsZrZt3VRN2pYAlgB8sSuIrwYCD1LjJf4x4lN6yj4sM6AjcwJQWiNWQrMTlCW
-	jTS19tEXhlL9Bgu15E6ehiKdKRkb/t3IAkC2udZJrQXV7FPPYqQgFSyEdShLWbzuaCFNfb
-	juE14W/RqHBx/CLCZvYz/vvbzFAtNiQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-UOqZC02GNeeaQLFHj3gErg-1; Wed,
- 21 Oct 2026 11:43:57 -0400
-X-MC-Unique: UOqZC02GNeeaQLFHj3gErg-1
-X-Mimecast-MFC-AGG-ID: UOqZC02GNeeaQLFHj3gErg_1792597433
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 619E8180034A;
-	Wed, 21 Oct 2026 15:43:53 +0000 (UTC)
-Received: from aesteve-thinkpadp1gen8.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1DADB18005B7;
-	Wed, 21 Oct 2026 15:43:45 +0000 (UTC)
-From: Albert Esteve <aesteve@redhat.com>
-Date: Wed, 21 Oct 2026 17:42:29 +0200
-Subject: [PATCH RFC v2 8/8] selftests/dmabuf-heaps: Add dma-buf memcg
- accounting tests
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Message-Id: <20261021-v2_20230123_tjmercier_google_com-v2-8-ef6ee2dd8c5c@redhat.com>
-References: <20261021-v2_20230123_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com>
-In-Reply-To: <20261021-v2_20230123_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com>
-To: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
- "T.J. Mercier" <tjmercier@google.com>, 
- Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, 
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
- =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
- =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>
-Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
- linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
- selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Albert Esteve <aesteve@redhat.com>, mripard@kernel.org, echanude@redhat.com
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792597359; l=19784;
- i=aesteve@redhat.com; s=20260827; h=from:subject:message-id;
- bh=HxfkVP8GLBe8y0t/RSIZ/YKMr+ptfQb+slP9wFk4nRc=;
- b=Rd/cbLytLGJKMcguCwfcVrN8HGihF0MnFMVhe64tLoTz646HHpwwc+j3ahMYE3sbWz9vyzXKo
- l5vN8irFBYKCk2ZZiEqLTOTch2WrEpXxsSL+COTqcemYgiXdn857+nq
-X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
- pk=zI2RBeZgocwYm3AkJW4CtjoJnKoDZrfBl1xe5Ed6h+U=
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: 3ef5zlXk-GbgsHEuduRbKDz4kYhDLpWR1KV3CFox4W4_1792597433
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EF20A80005
-X-Stat-Signature: rb5h3ikqao7jqwhrrec5huoiyq7ondmq
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	t=1792599085;
+	b=Ij3xIhr5ge4JEDO+P9ezvGsyeOgj5fja0akEGiy0PXVsE9g1HU0TzdIo9VL568MxEalqrR
+	dyhsK8Bb8nuv31g/ExiztMFbDZXqKD2zee5E8wKTuElHy2lKiPhSGMIoeY/4p3UFStMQ6h
+	fasTBiYogQlZLsTky6Hx13/2jviD6zY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7E2496020C;
+	Wed, 21 Oct 2026 16:11:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12201F000C1;
+	Wed, 21 Oct 2026 16:11:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792599084;
+	bh=g2ZCu6NwHs09mDefN9txWy7FuQyr4dGTj++ZockRsfU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KP8uE2X/b0TrrayohdZ7OMWlDWru2ha2D2MpN8YYs6wqx+bALaCGvijd050HnOzkR
+	 CDmg09nDajxyfyks3IDcikn89UzIJ9l/ltvbhJj8I9ivXic1+fh9TUTuieVR3aoCZH
+	 q00tqdQUi1ZaSJZRurW64T8+dA6tWDNM4JSz0vBRQchhVfiJeyyVWzKUvcpRje9qDG
+	 axOLki4WZH6ULGPxI6IrXF6XoINxOYVDetNUzBl8P9kZLh2nPOJkEmUnE4TLPJTq4M
+	 TiAKVQZGvY4gJfn6vzUadnlM7yox237u6zU0BgvKVo7uLSGwAiWipi+TIkSzwEpYr0
+	 1FP/CJwkOxrkQ==
+Message-ID: <sashiko-outbox-180460@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/page_alloc: clear page tag refs when onlining
+ hotplugged memory
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zenghui Yu" <zenghui.yu@linux.dev>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com
+In-Reply-To: <20261020161053.59879-1-zenghui.yu@linux.dev>
+References: <20261020161053.59879-1-zenghui.yu@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 21 Oct 2026 16:11:23 +0000
+X-Rspamd-Queue-Id: 287CF18000D
 X-Rspam-User: 
-X-HE-Tag: 1792597441-901074
-X-HE-Meta: U2FsdGVkX18xKOzmwTeH+pWI9ciEJflhvn1WTfINYgA865a+TDFddv9gHqkWhz4jKfXUpk2pGBT4XTzRZa5eEVMwq3kMd4u9X3IF7hm6xYEMAhF5OHYzLT9sEPnarZtpu3B9AJlzjhExeHwsoRkTi98cx9+Ni8yE0jjtKYv6/b3zDr2/Qa1I6QNm4Qg9OMyhbuQEcgMSLdcw5FGs6r1INZ68jS5zQ2lUkb+DjdVWxib/R21oUulS+RL01uMvIbDyyMtY/KlZ0w0MQYMgnHRmlF15UFAGPPFHz1gi/znRIizbGnQG8+Frnyr1GFvQznPf7JlkAR8+AZA4/iKVvPE5w/5pqP7WHwUOJbM/Ljv5Ap8JumnvL8uIx1c9dnp2KnZMdPFzHjrhkOM/CM0vFtbDQov9iYIOgxe4dyvn51ZWWbpklnkVfFn2Y+xJOl+5aPOEBkNUbtP5Tf0GsdptM3LJlPxpLr4HFR/E0CpgBLhuX8919e82f7lEA4SArkxLqjavBeMw0n0d4eYHj2pXkxn8ciOD814Bz1LImL8EvydzUJq5GqBANKBQUjqxFmz7wntwGEiSTCZOTKFrBUAd3VeLlQjMbcKPZaZcPMHQdNag2MoCTq8bxpxxwPwYjAbukdDPrx4FnZcZVJOA6Ol6q9daR9l5ehPn7Rp7wx2eJZqaWTYoowPg2MJncgX9KS3e6iQpsmErNhVU+d2xS8RyaAiyZRlN8uzeqzJ1Lv/nZvLy/z3PPzi7fI3qIlsnbfM2NK8pFtdQBiU/aAvwgsgXy9ttfP9s/Od5/nPFHPqaH9SlHzjfBX5rJS2hAROYnqC49DOg3NKC+0VQ6dbPtshI+obvaNanRLksy+Hy0MXX/1f8w3IxEMAnQ11j6QCtIC/FLkXSacj0FOr7EY3NRQVyNZcyPmrd1DBBk95Kz/TQ6VopiwI5q8Qx00xHjMTMaSzKRoA71KlEJZM/AvJw8uJfBw0
- NDpJ0IoH
- NRsC+VPndgyRKaR01bKoSiiA0BaAJLECBUvn5//xrwYm5HabgJQ/dtYLhK9yvyJE8/byr/wAYs4cCDUjD5HgKp/AIm4+xN/4WKyvh1z3fkjCq6rP1Jk6tmWdjm8qwmg4RYXMWW/a0QyK/jd1gmxRbWLFhDco9bdSEIgcwcLr0LFOpcog/dREoQZiyAM1wm3+PZ7ByjMw38AyeOKP0oIA3JMu9JrbjMZ3mYp7LcQcM0poJDjiCD8MpkaMiuRNCaAx0XqCwCxkgNsZbG71IRLGjX1uXAU082IEt123T7I7195k1baTODznB1zqZVPZxDddswCQNuPQAydMXSUOdYtXWADFeQvFrK8+IKaia+0oTmuOtiqRut6MzoTxJnMLXN15vcERGmuAzQbq4Yfn0C26f0aaAdJ4vAJxikImzsYO1sjPAk1U=
+X-Stat-Signature: 7ez9y3xwopyzw7fkjm7xi18i18mtsixy
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792599084-808457
+X-HE-Meta: U2FsdGVkX1+fj08l+MzsJcDTEuoii5hUJBub6kewquuBbMvHI66nVis2fo0fH1Q2Ks7XlEOHaUi9Mxy9JBTt7GzS+cm3axXg/j7YIfdt1Nb6whj0paCsWWi+uZ1t3xWYaIdA/dSOaMrOd22KhVo3oChyeEPDtlt/dB9VhJX+tQDM+rAOqCK0pQSHuQQXMiKmZUSkGL3KkkSVUc3TjFl6bZy6yHztYFRmlt+y0YNipH48tGc5D4FFlAU+nfcK99L4XAqzURk9eBU9viIW2alS9NmZAwvqcG+sW/NP105LtvFE0Kz/bfuAC4Cu+dG71/lk8EdOnKA/MKt+mVmdm1czvn5NhTC7Ey7e47FJ6UFjblG3sDN5BSdYlTs5OLVyYkU9rRbq+hNh89XVdmvc/vDNGPOq9CrCL4cBGo7ehcS4CojwMLz+VdcEOyrTO8VCV12MQuKQo/t58fVC/uzCzFT0OrKL6oHfoOJqxR0W15GZ8DGl2AraB+T8T5fgJ+nyxeV8aYvOvKeVgFUiHWEs5Si/NW8QSCMEqrFx9gC1DPszGUoroMXCXbhfqNHSwv7aim4tgLB67Y/dwX1QfQlVmwBGMz2dUqcHmDbtx1pll2s4L4rQYsg2LZZET9XW9xjr5Ge9LXYDmeGjTJD4yS15IQdbpv3eB5qF3Cy64EbC/XSOb+5mpw7ZYH8M0eKWQHi6s1S6vKlQcyGPaLSwJxMap1J9UncQwK7jllP+KKtMFnt9GluYfW0V52llSWEd4lRtvdrBcBjMXSJOez8OEj1AYQQqjK/QS/ziHLLNayhuIPZeH2wFxW8qYuBMZF7h+gOZn192Wat57W1zHakjPe9EZZLBgiCzVycPc/P+fYbHnqAX5QVwlyYkMfU46DDkduqze9Xn2QXh1xFK/ZgCcKGj9qK/G1O7TDXletauZBVpVqKnyE43Nf/0o5sAgXR7j1yBIjiG05lqrLBIagNBTEegXF+
+ p5P/WIPt
+ zFKeW/0Ohs0Q2voBpMBlD/DZt2fGYptgw1JxzpdRspY6T2L3EmoiohoYS6aVeueki96dVJqvLFPvVKDWqYVNrrVvxH4RYntcPHVYhfqdzwxCuKkOpCiu25psWRCAuImZngC9H3E7ZPfSfH4oP1xeDakhaRDBVZvm82euhP9i/ItcsNC3tjO7MMBdhJ1v6jZzNDoh3kDRlLcsPUAjfFnXGc9uVo7MKoTE+cr4F2I5SAN1CiErcZ8dwg2Sx9H4PV2ciw4r6+Ex1e23WZnWzwOyY28sYAWQID5xJkDQBl4zJ6v53xE0ic2Mo/m1ykKlniApk2MJzPexFBMPWBJXycoy3J7YN30B7dMzsk7lUuZ8odhoYFlbkGTkrvJOVXbRY7H96wEtE/9e98HtvD5wI+Eoqc0aI4I4e/Cc4sznFY0nD4rcF1tkLvx3NDTU1678J9MGpyRjyVKp4H6yHPvzgPLMwuSh9MmVUSFdQDvMMKA9JH0PjOPxCyr4jEHIpxKOhKM436h0fvBCMTt80oKRHQTxT+dQpbNsCNlqVZmB/80ZWBJZV9PzoNPhAyaeFviMSi0CNZ36gdFj+4zPuE6IhbjdsSAsg3lupAGfcXXTiqliG/OQ0ujw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,737 +91,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Add tests for the new charge_fd field in struct
-dma_heap_allocation_data.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/page_alloc: clear_page_tag_ref() called on tail pages in __fr=
+ee_pages_core()
+--
 
-When the charge_fd feature is absent (unpatched kernel),
-the probe in pidfd_alloc_supported() detects this and the
-tests are skipped gracefully.
+commit e2abce3265909945612b858336381b3dbe9dca76
+Author: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 
-Add vmtest.sh similar to other subsystem suites, to orchestrate
-building the selftests (optionally with a freshly compiled kernel)
-inside a virtme-ng VM, so the tests can be run without modifying
-the host system. Add a config fragment with required Kconfig symbols.
+mm/page_alloc: clear page tag refs when onlining hotplugged memory
 
-Also add test_memcg_dmabuf() to the existing test_memcontrol suite
-to verify end-to-end cross-cgroup accounting: a parent process opens
-a pidfd for a child in a separate cgroup, allocates a dma-buf via
-DMA_HEAP_IOCTL_ALLOC with that pidfd, and asserts that memory.stat
-dmabuf in the child's cgroup reflects the allocation. If the dmabuf
-key is missing (unpatched kernel) or /dev/dma_heap/system is absent,
-the test is skipped.
+This commit calls clear_page_tag_ref() on hotplugged pages in
+__free_pages_core() so that freeing never-allocated pages into the buddy
+allocator does not trigger a warning under CONFIG_MEM_ALLOC_PROFILING_DEBUG.
 
-Assisted-by: LLM
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
----
- tools/testing/selftests/cgroup/Makefile            |   2 +-
- tools/testing/selftests/cgroup/test_memcontrol.c   | 145 +++++++++++++-
- tools/testing/selftests/dmabuf-heaps/config        |   1 +
- tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c | 222 ++++++++++++++++++++-
- tools/testing/selftests/dmabuf-heaps/vmtest.sh     | 205 +++++++++++++++++++
- 5 files changed, 571 insertions(+), 4 deletions(-)
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 2daf358269ae7..9cef0e9294abb 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1603,6 +1603,7 @@ void __meminit __free_pages_core(struct page *page,=
+ unsigned int order,
+>  			VM_WARN_ON_ONCE(PageReserved(p));
+>  			__ClearPageOffline(p);
+>  			set_page_count(p, 0);
+> +			clear_page_tag_ref(p);
+>  		}
+> =20
+>  		adjust_managed_page_count(page, nr_pages);
 
-diff --git a/tools/testing/selftests/cgroup/Makefile b/tools/testing/selftests/cgroup/Makefile
-index e01584c2189a..9edfc9f1de5c 100644
---- a/tools/testing/selftests/cgroup/Makefile
-+++ b/tools/testing/selftests/cgroup/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
--CFLAGS += -Wall -pthread
-+CFLAGS += -Wall -pthread $(KHDR_INCLUDES)
- 
- all: ${HELPER_PROGS}
- 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 0ed82347044e..51eb60e7cdd4 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -19,9 +19,17 @@
- #include <errno.h>
- #include <sys/mman.h>
- 
-+#include <linux/dma-heap.h>
-+#include <signal.h>
-+#include <sys/ioctl.h>
-+
-+#include "../pidfd/pidfd.h"
- #include "kselftest.h"
- #include "cgroup_util.h"
- 
-+#define DMA_HEAP_SYSTEM		"/dev/dma_heap/system"
-+#define ONE_MEG			(1024 * 1024)
-+
- #define MEMCG_SOCKSTAT_WAIT_RETRIES        30
- 
- static bool has_localevents;
-@@ -1764,6 +1772,125 @@ static int test_memcg_inotify_delete_dir(const char *root)
- 	return ret;
- }
- 
-+static int memcg_dmabuf_child(const char *cgroup, void *arg)
-+{
-+	pause();
-+	return 0;
-+}
-+
-+/*
-+ * This test allocates a dma-buf via DMA_HEAP_IOCTL_ALLOC with a pidfd
-+ * pointing to a child process in a separate cgroup, then checks that
-+ * memory.stat[dmabuf] in the child's cgroup rises by the allocation size
-+ * and returns to zero after the buffer fd is closed.
-+ */
-+static int test_memcg_dmabuf(const char *root)
-+{
-+	char *parent = NULL, *child_cg = NULL;
-+	int ret = KSFT_FAIL;
-+	int heap_fd = -1, dmabuf_fd = -1, pidfd = -1;
-+	pid_t child_pid;
-+	int child_status;
-+	long dmabuf_stat;
-+	struct dma_heap_allocation_data alloc = {
-+		.len      = ONE_MEG,
-+		.fd_flags = O_RDWR | O_CLOEXEC,
-+	};
-+
-+	if (access(DMA_HEAP_SYSTEM, R_OK | W_OK)) {
-+		ret = KSFT_SKIP;
-+		goto cleanup;
-+	}
-+
-+	parent = cg_name(root, "dmabuf_memcg_test");
-+	if (!parent)
-+		goto cleanup;
-+
-+	if (cg_create(parent))
-+		goto cleanup_parent;
-+
-+	if (cg_write(parent, "cgroup.subtree_control", "+memory"))
-+		goto cleanup_parent;
-+
-+	child_cg = cg_name(parent, "child");
-+	if (!child_cg)
-+		goto cleanup_parent;
-+
-+	if (cg_create(child_cg))
-+		goto cleanup_parent;
-+
-+	child_pid = cg_run_nowait(child_cg, memcg_dmabuf_child, NULL);
-+	if (child_pid < 0)
-+		goto cleanup_child;
-+
-+	if (cg_wait_for_proc_count(child_cg, 1))
-+		goto cleanup_kill;
-+
-+	pidfd = sys_pidfd_open(child_pid, 0);
-+	if (pidfd < 0) {
-+		ret = KSFT_SKIP;
-+		goto cleanup_kill;
-+	}
-+
-+	heap_fd = open(DMA_HEAP_SYSTEM, O_RDWR);
-+	if (heap_fd < 0) {
-+		ret = KSFT_SKIP;
-+		goto cleanup_pidfd;
-+	}
-+
-+	alloc.charge_fd = (__u32)pidfd;
-+	if (ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc) < 0)
-+		goto cleanup_heap;
-+	dmabuf_fd = (int)alloc.fd;
-+
-+	dmabuf_stat = cg_read_key_long(child_cg, "memory.stat", "dmabuf ");
-+	if (dmabuf_stat == -1) {
-+		ret = KSFT_SKIP;
-+		goto cleanup_dmabuf;
-+	}
-+	if (dmabuf_stat != ONE_MEG)
-+		dmabuf_stat = cg_read_key_long_poll(child_cg, "memory.stat",
-+						    "dmabuf ", ONE_MEG,
-+						    15, 200000);
-+	if (dmabuf_stat != ONE_MEG) {
-+		fprintf(stderr, "Expected dmabuf stat %d, got %ld\n",
-+			ONE_MEG, dmabuf_stat);
-+		goto cleanup_dmabuf;
-+	}
-+
-+	close(dmabuf_fd);
-+	dmabuf_fd = -1;
-+
-+	dmabuf_stat = cg_read_key_long_poll(child_cg, "memory.stat",
-+					    "dmabuf ", 0, 15, 200000);
-+	if (dmabuf_stat != 0) {
-+		fprintf(stderr, "Expected dmabuf stat 0 after close, got %ld\n",
-+			dmabuf_stat);
-+		goto cleanup_heap;
-+	}
-+
-+	ret = KSFT_PASS;
-+
-+cleanup_dmabuf:
-+	if (dmabuf_fd >= 0)
-+		close(dmabuf_fd);
-+cleanup_heap:
-+	close(heap_fd);
-+cleanup_pidfd:
-+	close(pidfd);
-+cleanup_kill:
-+	kill(child_pid, SIGTERM);
-+	waitpid(child_pid, &child_status, 0);
-+cleanup_child:
-+	cg_destroy(child_cg);
-+	free(child_cg);
-+cleanup_parent:
-+	cg_destroy(parent);
-+	free(parent);
-+cleanup:
-+	return ret;
-+}
-+
- #define T(x) { x, #x }
- struct memcg_test {
- 	int (*fn)(const char *root);
-@@ -1785,13 +1912,18 @@ struct memcg_test {
- 	T(test_memcg_oom_group_score_events),
- 	T(test_memcg_inotify_delete_file),
- 	T(test_memcg_inotify_delete_dir),
-+	T(test_memcg_dmabuf),
- };
- #undef T
- 
- int main(int argc, char **argv)
- {
- 	char root[PATH_MAX];
--	int i, proc_status;
-+	int i, proc_status, count = ARRAY_SIZE(tests);
-+	const char *filter = NULL;
-+
-+	if (argc > 1)
-+		filter = argv[1];
- 
- 	page_size = sysconf(_SC_PAGE_SIZE);
- 	if (page_size <= 0)
-@@ -1822,8 +1954,17 @@ int main(int argc, char **argv)
- 		ksft_exit_skip("Failed to query cgroup mount option\n");
- 	has_localevents = proc_status;
- 
--	ksft_set_plan(ARRAY_SIZE(tests));
-+	if (filter) {
-+		count = 0;
-+		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+			if (!strcmp(tests[i].name, filter))
-+				count++;
-+		}
-+	}
-+	ksft_set_plan(count);
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+		if (filter && strcmp(tests[i].name, filter))
-+			continue;
- 		switch (tests[i].fn(root)) {
- 		case KSFT_PASS:
- 			ksft_test_result_pass("%s\n", tests[i].name);
-diff --git a/tools/testing/selftests/dmabuf-heaps/config b/tools/testing/selftests/dmabuf-heaps/config
-index be091f1cdfa0..94c8f33b71a2 100644
---- a/tools/testing/selftests/dmabuf-heaps/config
-+++ b/tools/testing/selftests/dmabuf-heaps/config
-@@ -1,3 +1,4 @@
-+CONFIG_MEMCG=y
- CONFIG_DMABUF_HEAPS=y
- CONFIG_DMABUF_HEAPS_SYSTEM=y
- CONFIG_DRM_VGEM=y
-diff --git a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-index 1d49df671919..b1c58e5883f6 100644
---- a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-+++ b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-@@ -3,6 +3,7 @@
- #include <dirent.h>
- #include <errno.h>
- #include <fcntl.h>
-+#include <signal.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <stdint.h>
-@@ -10,11 +11,15 @@
- #include <unistd.h>
- #include <sys/ioctl.h>
- #include <sys/mman.h>
-+#include <sys/syscall.h>
- #include <sys/types.h>
-+#include <sys/wait.h>
- 
- #include <linux/dma-buf.h>
- #include <linux/dma-heap.h>
-+#include <linux/limits.h>
- #include <drm/drm.h>
-+#include "../pidfd/pidfd.h"
- #include "kselftest.h"
- 
- #define DEVPATH "/dev/dma_heap"
-@@ -320,6 +325,8 @@ static int dmabuf_heap_alloc_newer(int fd, size_t len, unsigned int flags,
- 		__u32 fd;
- 		__u32 fd_flags;
- 		__u64 heap_flags;
-+		__u32 charge_fd;
-+		__u32 __padding;
- 		__u64 garbage1;
- 		__u64 garbage2;
- 		__u64 garbage3;
-@@ -328,6 +335,8 @@ static int dmabuf_heap_alloc_newer(int fd, size_t len, unsigned int flags,
- 		.fd = 0,
- 		.fd_flags = O_RDWR | O_CLOEXEC,
- 		.heap_flags = flags,
-+		.charge_fd = 0,
-+		.__padding = 0,
- 		.garbage1 = 0xffffffff,
- 		.garbage2 = 0x88888888,
- 		.garbage3 = 0x11111111,
-@@ -496,6 +505,213 @@ static void test_alloc_no_fd_leak_on_efault(char *heap_name)
- 	ksft_test_result(fd_before == fd_after,
- 			 "fd leak on EFAULT: before=%d after=%d\n",
- 			 fd_before, fd_after);
-+
-+out:
-+	close(heap_fd);
-+}
-+
-+static int dmabuf_heap_alloc_pidfd(int fd, size_t len, unsigned int heap_flags,
-+				   unsigned int charge_fd, int *dmabuf_fd)
-+{
-+	struct dma_heap_allocation_data data = {
-+		.len = len,
-+		.fd = 0,
-+		.fd_flags = O_RDWR | O_CLOEXEC,
-+		.heap_flags = heap_flags,
-+		.charge_fd = charge_fd,
-+	};
-+	int ret;
-+
-+	if (!dmabuf_fd)
-+		return -EINVAL;
-+
-+	ret = ioctl(fd, DMA_HEAP_IOCTL_ALLOC, &data);
-+	if (ret < 0)
-+		return ret;
-+	*dmabuf_fd = (int)data.fd;
-+	return ret;
-+}
-+
-+/*
-+ * Probe whether the kernel honours charge_fd in DMA_HEAP_IOCTL_ALLOC.
-+ */
-+static bool pidfd_alloc_supported(int heap_fd)
-+{
-+	int devnull_fd, dmabuf_fd = -1, ret;
-+
-+	devnull_fd = open("/dev/null", O_RDONLY);
-+	if (devnull_fd < 0)
-+		return false;
-+
-+	ret = dmabuf_heap_alloc_pidfd(heap_fd, ONE_MEG, 0, devnull_fd, &dmabuf_fd);
-+	if (dmabuf_fd >= 0) {
-+		close(dmabuf_fd);
-+		dmabuf_fd = -1;
-+	}
-+	close(devnull_fd);
-+	return ret < 0;
-+}
-+
-+/*
-+ * Test: allocate charging the calling process's own cgroup via a self pidfd.
-+ */
-+static void test_alloc_pidfd_self(char *heap_name)
-+{
-+	int heap_fd = -1, pidfd = -1, dmabuf_fd = -1, ret;
-+
-+	heap_fd = dmabuf_heap_open(heap_name);
-+
-+	if (!pidfd_alloc_supported(heap_fd)) {
-+		ksft_test_result_skip("charge_fd not supported by this kernel\n");
-+		goto out;
-+	}
-+
-+	pidfd = sys_pidfd_open(getpid(), 0);
-+	if (pidfd < 0) {
-+		ksft_test_result_skip("pidfd_open not available\n");
-+		goto out;
-+	}
-+
-+	ret = dmabuf_heap_alloc_pidfd(heap_fd, ONE_MEG, 0, pidfd, &dmabuf_fd);
-+	ksft_test_result(!ret, "Allocation with self pidfd %d\n", ret);
-+	if (dmabuf_fd >= 0)
-+		close(dmabuf_fd);
-+	close(pidfd);
-+out:
-+	close(heap_fd);
-+}
-+
-+/*
-+ * Test: allocate charging a child process's cgroup via a child pidfd.
-+ */
-+static void test_alloc_pidfd_child(char *heap_name)
-+{
-+	int heap_fd = -1, pidfd = -1, dmabuf_fd = -1;
-+	pid_t child_pid;
-+	int status, ret;
-+
-+	heap_fd = dmabuf_heap_open(heap_name);
-+
-+	if (!pidfd_alloc_supported(heap_fd)) {
-+		ksft_test_result_skip("charge_fd not supported by this kernel\n");
-+		goto out;
-+	}
-+
-+	child_pid = fork();
-+	if (child_pid == 0) {
-+		pause();
-+		_exit(0);
-+	}
-+	if (child_pid < 0)
-+		ksft_exit_fail_msg("fork failed: %s\n", strerror(errno));
-+
-+	pidfd = sys_pidfd_open(child_pid, 0);
-+	if (pidfd < 0) {
-+		kill(child_pid, SIGTERM);
-+		waitpid(child_pid, &status, 0);
-+		ksft_test_result_skip("pidfd_open for child failed\n");
-+		goto out;
-+	}
-+
-+	ret = dmabuf_heap_alloc_pidfd(heap_fd, ONE_MEG, 0, pidfd, &dmabuf_fd);
-+	ksft_test_result(!ret, "Allocation with child pidfd %d\n", ret);
-+	if (dmabuf_fd >= 0)
-+		close(dmabuf_fd);
-+	close(pidfd);
-+	kill(child_pid, SIGTERM);
-+	waitpid(child_pid, &status, 0);
-+out:
-+	close(heap_fd);
-+}
-+
-+static int open_self_cgroupfd(void)
-+{
-+	char cgroup_path[PATH_MAX];
-+	char buf[PATH_MAX];
-+	FILE *f;
-+
-+	f = fopen("/proc/self/cgroup", "r");
-+	if (!f)
-+		return -1;
-+
-+	cgroup_path[0] = '\0';
-+	while (fgets(buf, sizeof(buf), f)) {
-+		char *p = buf;
-+
-+		if (strncmp(p, "0::", 3) == 0) {
-+			p += 3;
-+			p[strcspn(p, "\n")] = '\0';
-+			snprintf(cgroup_path, sizeof(cgroup_path),
-+				 "/sys/fs/cgroup%s", p);
-+			break;
-+		}
-+	}
-+	fclose(f);
-+
-+	if (!cgroup_path[0])
-+		return -1;
-+
-+	return open(cgroup_path, O_RDONLY | O_DIRECTORY);
-+}
-+
-+/*
-+ * Test: allocate charging the calling process's own cgroup via a cgroupfd.
-+ */
-+static void test_alloc_cgroupfd_self(char *heap_name)
-+{
-+	int heap_fd = -1, cgroup_fd = -1, dmabuf_fd = -1, ret;
-+
-+	heap_fd = dmabuf_heap_open(heap_name);
-+
-+	if (!pidfd_alloc_supported(heap_fd)) {
-+		ksft_test_result_skip("charge_fd not supported by this kernel\n");
-+		goto out;
-+	}
-+
-+	cgroup_fd = open_self_cgroupfd();
-+	if (cgroup_fd < 0) {
-+		ksft_test_result_skip("cannot open self cgroupfd\n");
-+		goto out;
-+	}
-+
-+	ret = dmabuf_heap_alloc_pidfd(heap_fd, ONE_MEG, 0, cgroup_fd, &dmabuf_fd);
-+	ksft_test_result(!ret, "Allocation with cgroupfd %d\n", ret);
-+	if (dmabuf_fd >= 0)
-+		close(dmabuf_fd);
-+	close(cgroup_fd);
-+out:
-+	close(heap_fd);
-+}
-+
-+/*
-+ * Test: transfer a dma-buf's charge to self cgroup via DMA_BUF_IOCTL_XFER_CHARGE.
-+ */
-+static void test_xfer_charge_cgroupfd_self(char *heap_name)
-+{
-+	int heap_fd = -1, cgroup_fd = -1, dmabuf_fd = -1, ret;
-+	struct dma_buf_transfer_charge xfer = { 0 };
-+
-+	heap_fd = dmabuf_heap_open(heap_name);
-+
-+	ret = dmabuf_heap_alloc(heap_fd, ONE_MEG, 0, &dmabuf_fd);
-+	if (ret) {
-+		ksft_test_result_fail("Allocation failed %d\n", ret);
-+		goto out;
-+	}
-+
-+	cgroup_fd = open_self_cgroupfd();
-+	if (cgroup_fd < 0) {
-+		ksft_test_result_skip("cannot open self cgroupfd\n");
-+		close(dmabuf_fd);
-+		goto out;
-+	}
-+
-+	xfer.charge_fd = cgroup_fd;
-+	ret = ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer);
-+	ksft_test_result(!ret, "XFER_CHARGE to self cgroupfd %d\n", ret);
-+
-+	close(cgroup_fd);
-+	close(dmabuf_fd);
- out:
- 	close(heap_fd);
- }
-@@ -530,7 +746,7 @@ int main(void)
- 		return KSFT_SKIP;
- 	}
- 
--	ksft_set_plan(12 * numer_of_heaps());
-+	ksft_set_plan(16 * numer_of_heaps());
- 
- 	while ((dir = readdir(d))) {
- 		if (!strncmp(dir->d_name, ".", 2))
-@@ -546,6 +762,10 @@ int main(void)
- 		test_alloc_compat(dir->d_name);
- 		test_alloc_errors(dir->d_name);
- 		test_alloc_no_fd_leak_on_efault(dir->d_name);
-+		test_alloc_pidfd_self(dir->d_name);
-+		test_alloc_pidfd_child(dir->d_name);
-+		test_alloc_cgroupfd_self(dir->d_name);
-+		test_xfer_charge_cgroupfd_self(dir->d_name);
- 	}
- 	closedir(d);
- 
-diff --git a/tools/testing/selftests/dmabuf-heaps/vmtest.sh b/tools/testing/selftests/dmabuf-heaps/vmtest.sh
-new file mode 100755
-index 000000000000..434857b765b8
---- /dev/null
-+++ b/tools/testing/selftests/dmabuf-heaps/vmtest.sh
-@@ -0,0 +1,205 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2026 Red Hat
-+#
-+# Dependencies:
-+#		* virtme-ng
-+#		* qemu	(used by virtme-ng)
-+
-+readonly SCRIPT_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-+readonly KERNEL_CHECKOUT=$(realpath "${SCRIPT_DIR}"/../../../../)
-+readonly CGROUP_DIR="${KERNEL_CHECKOUT}/tools/testing/selftests/cgroup"
-+
-+source "${SCRIPT_DIR}"/../kselftest/ktap_helpers.sh
-+
-+readonly DMABUF_HEAP_TEST="${SCRIPT_DIR}"/dmabuf-heap
-+readonly MEMCONTROL_TEST="${CGROUP_DIR}"/test_memcontrol
-+readonly TMP_DIR=$(mktemp -d /tmp/dmabuf-vmtest.XXXXXXXX)
-+
-+VERBOSE=false
-+BUILD=false
-+BUILD_HOST=""
-+BUILD_HOST_PODMAN_CONTAINER_NAME=""
-+
-+usage() {
-+	echo
-+	echo "$0 [OPTIONS]"
-+	echo
-+	echo "Options"
-+	echo "  -b: build the kernel from the current source tree and use it for the VM"
-+	echo "  -H: hostname for remote build host (used with -b)"
-+	echo "  -p: podman container name for remote build host (used with -b)"
-+	echo "      Example: -H beefyserver -p vng"
-+
-+	echo "  -v: enable verbose vng/qemu output"
-+	echo
-+
-+	exit 1
-+}
-+
-+die() {
-+	echo "$*" >&2
-+	exit "${KSFT_FAIL}"
-+}
-+
-+cleanup() {
-+	rm -rf "${TMP_DIR}"
-+}
-+
-+check_deps() {
-+	for dep in vng make; do
-+		if [[ ! -x $(command -v "${dep}") ]]; then
-+			echo -e "skip:    dependency ${dep} not found!\n"
-+			exit "${KSFT_SKIP}"
-+		fi
-+	done
-+
-+	if [[ ! -x "${DMABUF_HEAP_TEST}" ]]; then
-+		printf "skip:    %s not found!" "${DMABUF_HEAP_TEST}"
-+		printf " Please build the kselftest dmabuf-heaps target (or use -b).\n"
-+		exit "${KSFT_SKIP}"
-+	fi
-+
-+	if [[ ! -x "${MEMCONTROL_TEST}" ]]; then
-+		printf "skip:    %s not found!" "${MEMCONTROL_TEST}"
-+		printf " Please build the kselftest cgroup target (or use -b).\n"
-+		exit "${KSFT_SKIP}"
-+	fi
-+}
-+
-+check_vng() {
-+	local tested_versions=("1.36" "1.37")
-+	local version
-+	local ok=0
-+
-+	version="$(vng --version)"
-+	for tv in "${tested_versions[@]}"; do
-+		if [[ "${version}" == *"${tv}"* ]]; then
-+			ok=1
-+			break
-+		fi
-+	done
-+
-+	if [[ "${ok}" -eq 0 ]]; then
-+		printf "warning: vng version '%s' has not been tested and may " "${version}" >&2
-+		printf "not function properly.\n\tThe following versions have been tested: " >&2
-+		echo "${tested_versions[@]}" >&2
-+	fi
-+}
-+
-+build_selftests() {
-+	make -C "${KERNEL_CHECKOUT}" headers_install \
-+		INSTALL_HDR_PATH="${TMP_DIR}/usr" -j"$(nproc)"
-+
-+	local khdr="-isystem ${TMP_DIR}/usr/include"
-+
-+	if ! make -C "${SCRIPT_DIR}" KHDR_INCLUDES="${khdr}" -j"$(nproc)"; then
-+		die "failed to build dmabuf-heaps selftests"
-+	fi
-+
-+	if ! make -C "${CGROUP_DIR}" KHDR_INCLUDES="${khdr}" \
-+		"${MEMCONTROL_TEST}" -j"$(nproc)"; then
-+		die "failed to build cgroup/test_memcontrol selftest"
-+	fi
-+}
-+
-+handle_build() {
-+	if ! ${BUILD}; then
-+		return
-+	fi
-+
-+	if [[ ! -d "${KERNEL_CHECKOUT}" ]]; then
-+		echo "-b requires vmtest.sh called from the kernel source tree" >&2
-+		exit 1
-+	fi
-+
-+	pushd "${KERNEL_CHECKOUT}" &>/dev/null
-+
-+	if ! vng --kconfig --config "${SCRIPT_DIR}/config"; then
-+		die "failed to generate .config for kernel source tree (${KERNEL_CHECKOUT})"
-+	fi
-+
-+	local vng_args=("-v" "--config" "${SCRIPT_DIR}/config" "--build")
-+
-+	if [[ -n "${BUILD_HOST}" ]]; then
-+		vng_args+=("--build-host" "${BUILD_HOST}")
-+	fi
-+
-+	if [[ -n "${BUILD_HOST_PODMAN_CONTAINER_NAME}" ]]; then
-+		vng_args+=("--build-host-exec-prefix" \
-+			   "podman exec -ti ${BUILD_HOST_PODMAN_CONTAINER_NAME}")
-+	fi
-+
-+	if ! vng "${vng_args[@]}"; then
-+		die "failed to build kernel from source tree (${KERNEL_CHECKOUT})"
-+	fi
-+
-+	build_selftests
-+
-+	popd &>/dev/null
-+}
-+
-+make_runner() {
-+	# virtme-ng shares the host filesystem, so TMP_DIR is accessible
-+	# inside the VM at the same absolute path.
-+	cat > "${TMP_DIR}/run_tests.sh" <<-EOF
-+	#!/bin/sh
-+	set -u
-+	PASS=0; FAIL=0; SKIP=0; N=0
-+
-+	run() {
-+		name="\$1"; shift
-+		N=\$((N+1))
-+		"\$@"; rc=\$?
-+		if   [ \$rc -eq 0 ]; then echo "ok \$N \$name";        PASS=\$((PASS+1))
-+		elif [ \$rc -eq 4 ]; then echo "ok \$N \$name # SKIP"; SKIP=\$((SKIP+1))
-+		else                      echo "not ok \$N \$name";    FAIL=\$((FAIL+1))
-+		fi
-+	}
-+
-+	run "dmabuf-heap charge_fd ioctl"	${DMABUF_HEAP_TEST}
-+	run "memcontrol dma-buf memcg"	${MEMCONTROL_TEST} test_memcg_dmabuf
-+	echo "# PASS=\$PASS SKIP=\$SKIP FAIL=\$FAIL"
-+	[ \$FAIL -eq 0 ]
-+	EOF
-+	chmod +x "${TMP_DIR}/run_tests.sh"
-+}
-+
-+run_vm() {
-+	local verbose_opt=""
-+	local kernel_opt=""
-+
-+	${VERBOSE} && verbose_opt="--verbose"
-+
-+	# If we are running from within the kernel source tree, use the kernel
-+	# source tree as the kernel to boot, otherwise use the running kernel.
-+	if [[ "$(realpath "$(pwd)")" == "${KERNEL_CHECKOUT}"* ]]; then
-+		kernel_opt="${KERNEL_CHECKOUT}"
-+	fi
-+
-+	vng --run ${kernel_opt} ${verbose_opt} --user root --memory 512M \
-+		--exec "${TMP_DIR}/run_tests.sh"
-+}
-+
-+while getopts :hvbH:p: o
-+do
-+	case $o in
-+	v) VERBOSE=true;;
-+	b) BUILD=true;;
-+	H) BUILD_HOST=$OPTARG;;
-+	p) BUILD_HOST_PODMAN_CONTAINER_NAME=$OPTARG;;
-+	h|*) usage;;
-+	esac
-+done
-+shift $((OPTIND-1))
-+
-+trap cleanup EXIT
-+
-+check_vng
-+handle_build
-+check_deps
-+make_runner
-+
-+echo "Booting VM and running tests..."
-+run_vm
+[Severity: Medium]
+Should clear_page_tag_ref() be called once on page outside the per-page
+loop (and for both MEMINIT_HOTPLUG and MEMINIT_EARLY contexts) rather than
+on every p inside the MEMINIT_HOTPLUG loop?
 
--- 
-2.55.0
+Under CONFIG_MEM_ALLOC_PROFILING_DEBUG, clear_page_tag_ref(p) sets the
+page's tag reference to CODETAG_EMPTY (or CODETAG_ID_EMPTY when compressed
+profiling is enabled) rather than NULL. When __free_pages_core() calls
+__free_pages_ok() -> __free_pages_prepare(), only the first page's marker
+is consumed and reset back to NULL:
 
+mm/page_alloc.c:__free_pages_prepare()
+    pgalloc_tag_sub(page, 1 << order);
+        alloc_tag_sub(ref, bytes)
+            if (is_codetag_empty(ref)) {
+                ref->ct =3D NULL;
+                return;
+            }
+
+Calling clear_page_tag_ref(p) on all nr_pages leaves CODETAG_EMPTY set on
+the remaining (1 << order) - 1 tail pages in the buddy allocator. If one of
+those pages is later allocated without a tag (for example via an _noprof
+allocation where current->alloc_tag is NULL) and subsequently freed, the
+leftover CODETAG_EMPTY marker prevents alloc_tag_sub_check() from warning.
+Other callers such as init_cma_reserved_pageblock() and
+memblock_free_pages() only call clear_page_tag_ref(page) on the head page:
+
+mm/mm_init.c:init_cma_reserved_pageblock() {
+    do {
+        __ClearPageReserved(p);
+        set_page_count(p, 0);
+    } while (++p, --i);
+    ...
+    /* pages were reserved and not allocated */
+    clear_page_tag_ref(page);
+    __free_pages(page, pageblock_order);
+}
+
+In addition, placing clear_page_tag_ref() only in the MEMINIT_HOTPLUG
+branch misses MEMINIT_EARLY callers of __free_pages_core() that run after
+allocation tag references are initialized and do not call
+clear_page_tag_ref() themselves, such as deferred_free_pages() in
+mm/mm_init.c (when compressed profiling is enabled) and do_collection() in
+mm/kmsan/init.c (where KMSAN intercepts pages in memblock_free_pages()
+before clear_page_tag_ref(page) and releases them later via
+__free_pages_core(..., MEMINIT_EARLY)).
+
+=E0=B9=80=E0=B8=84=E0=B8=A3=E0=B8=94=E0=B8=B4=E0=B8=95
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020161053.5987=
+9-1-zenghui.yu@linux.dev?part=3D1
 
