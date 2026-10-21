@@ -1,118 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454FD606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBF8606A31B
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=iDAQ2JjN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EReoPclS
 Received: by kanga.kvack.org (Postfix)
-	id 65EA66B025B; Wed, 21 Oct 2026 17:27:43 -0400 (EDT)
+	id EA1496B07C7; Wed, 21 Oct 2026 17:48:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60F786B025F; Wed, 21 Oct 2026 17:27:43 -0400 (EDT)
+	id E4A8C6B07C8; Wed, 21 Oct 2026 17:48:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 525856B0261; Wed, 21 Oct 2026 17:27:43 -0400 (EDT)
+	id D61A66B07C9; Wed, 21 Oct 2026 17:48:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B2CC6B025B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:27:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B44701206C3
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:27:42 +0000 (UTC)
-X-FDA: 85347920364.17.5383309
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D070440007
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:27:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iDAQ2JjN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3Sy7ZagoKCGoRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3Sy7ZagoKCGoRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AEE706B07C7
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:48:02 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 256418065D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:48:02 +0000 (UTC)
+X-FDA: 85347971604.04.AEC86ED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3176FC0004
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:48:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EReoPclS;
+	spf=pass (imf22.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792619280;
+	b=pUOqdiiGbaZM/tCNmfWnBHBdM/QWnXj7hGR3LmGe1UcEoN0Ck0MqGWW6zrxZvquqpB+VNO
+	zOrX24gm37BKUXQ2CMWXNAi/xFhy6IYzn+DCZAVkOqFNPzmG3hnFXhKHwS+rStZ/YUzu4i
+	D/kJBWYMohxzA6JB73W5ri5jTbPWm1I=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EReoPclS;
+	spf=pass (imf22.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792618060;
+	s=arc-20220608; t=1792619280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4wmdHTAA1AuKVW6+MMratQ3OvnpQ7OBK1Rv6piTCmyQ=;
-	b=dWfb8lT0RBvWNyNToT3IhqBny5BrQk99Wc11dwuhcgen1b4FITij2bxlz5XWNUY3IdQ/OB
-	C5V+73HfqPZHYM7VqWJdRXxCGg+Ct2dMsXbfWkrnHArys/GNEc0b7PHsBsm7/ykUSNMC7k
-	v5Po/xt/JEkYLMR/aoEu8dRlFYUfj8Q=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iDAQ2JjN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3Sy7ZagoKCGoRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3Sy7ZagoKCGoRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792618060;
-	b=okQmGqnPmV3b4P2jqCvIHJMoOMu0/T7eyldLnNzVFvijj1V9LGCCiOUnn5NDF8nN4l0O0v
-	GrnulYj2UYEUo1uJ6CZ1iN4Ud9N87HU0DXpwFNoa8BTMm6cYaygy+aQbwtxm/Ykh0Y6mkh
-	tDEnzJLOvEsWz/8vQtn7Plduv0NlizA=
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc7e0321ec1so1146530a12.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792618059; x=1793222859; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=4wmdHTAA1AuKVW6+MMratQ3OvnpQ7OBK1Rv6piTCmyQ=;
-        b=iDAQ2JjNBXQu7hsvL5n5BVMfkr8I2/j4x0HeM/LnB6iZuHMVT9LJ+I6IUJ2dP/0JIB
-         3uhB/fIR90Cz07xz1xVG+DfpVTETE31naXFct5nS2Qua2MMkDfcOB+sS7fKA9LerUlt8
-         cJRQVEoJMG9VhETJ91I1XdQYb/KrdQ6ITF13ou/ubl4UInnhusd1m7HsnWjE1ZuI47BU
-         t1A4zkEMO5N/3+QLcxa+Tpah7SouwxxC+phy/E1G0py+lVelxVdfO1fHi/Z7T3tQtUEB
-         qDHynX0yoEIlhZ7yL0ZEn3yLDtWw8I93TbqCJo62gzY8zYaH8EqdQLIXNMRWo4wn7Rnz
-         6hrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792618059; x=1793222859;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4wmdHTAA1AuKVW6+MMratQ3OvnpQ7OBK1Rv6piTCmyQ=;
-        b=waha3LgQPVkdhQog7SyXowky103uslHpu8xTxq0FneEBzEKDwg/Wyr82BvBElE3Bw8
-         4u1rGCPeYv2SZLMcs8wcGlmQMyhoWxontO7rSYSgCRBTl/tsW5go5kRQmqiQHOO8Z9ME
-         P9V8efC2ZDX8A7UIkCmAQ9JUdLQIkaFZuyiomtqtb2b1K+76kjRFoqs2KI7rPCew+USd
-         9cCfomOdWVVBUYllDr1gF//lZBtmC76PpJStc21xdNsCUi13x3+tYRWtHW2GOdT5LHdt
-         QH/EBFDGgPmkoVEihUcq5EBGbxS/hb4UhwjNr07p2NS16vdLsr3WFEzp+oDCGr6RLVZL
-         36qg==
-X-Forwarded-Encrypted: i=1; AKwUvBwidwzf0QALZMkw/TEQxktNrFqzVcHRd7uzYlSWhfxNz9dMZa1nrnr7v0vDYPWw0ZXqkxL6cLu5+Q==@kvack.org
-X-Gm-Message-State: AFq9FYLbxD6Ii20imwsT3IATTFpesGbqYujYt959k3WfXmsdL8J5yPiN
-	XmSxCNVi9VHYVwNDv1VusVe9trrMl533VNhciqHIO3BCZEwMqkIktTFfUZR4HyMxDghy1Po/mXe
-	zoDiZ7fs2X1Wpq5f3P3+KWQ==
-X-Received: from pjboj12.prod.google.com ([2002:a17:90b:4d8c:b0:3a8:645b:da8e])
- (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:35c7:b0:3ab:e588:c29b with SMTP id 98e67ed59e1d1-3ad86dcac60mr3082798a91.5.1792618059129;
- Wed, 21 Oct 2026 14:27:39 -0700 (PDT)
-Date: Wed, 21 Oct 2026 21:27:37 +0000
-In-Reply-To: <491B482A-8177-447A-8CDB-AF83C13A5DEE@linux.dev>
+	bh=lNlfmBmtfiESOniOkWbpwP2+Kbv356q2HSZrSlUKiAI=;
+	b=fi4K9wmtravlqWhMr4gGKJVMjXCYxTlFNSLQCXXdJGgPe1un8Eqx7bSt+ZMBR0RnbtxsH9
+	3ozi15G6MnoP27UntHDYZy5ku+fWQvpdVPuuy04I8GQiAPwQeQCxhnYyo3+IZwIg08HKIw
+	5Vj6cgWKYaJx8izZ9pZyu/XsUBa47Gc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C15B43EA4
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:47:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215611F000C3
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792619279;
+	bh=lNlfmBmtfiESOniOkWbpwP2+Kbv356q2HSZrSlUKiAI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=EReoPclS6CGlBuqPgcg18O5SMm3/5LhGzjWMr6HSGDtx4kfjBAAnYXMpGDcL/OreR
+	 O/CXbo9BVRGQTpBiJtTktJhZ64QXVsP2XWUjq1xN7okV7FdWm4gJUc5P+CMlZldkdO
+	 OkxVk+07qGBPF6Tbwe8dJ+ID1E9kb8eToCOvAES40Tu9+yumt5dcz5h+3s2KNngjlq
+	 tHL1rLFAbWABCd2KvIpvlu2veqGIdoQ1q9Hg/MvQWPV38nT1iSkN7IvHb7QZuEWh7y
+	 GFYIwPbiqAvuAl0oahBTBS6gv4qEE6UqbxArSiwa44c2/eUTlXkalQHQKTh3Jv+ZWS
+	 20X3q5oYDj7jw==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c40f29667e6so191938566b.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:47:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwwKfecvL810plU7MGvPVOUS61MdDyOS5OTUO+FzI0EMW8wWrfp/VfEFDKXUuqsCWYPNyH1J+ipXQ==@kvack.org
+X-Gm-Message-State: AFq9FYLbdV/SjdPRfHH7i8P2cHSsOj3BjRDPIvhSdfVmq1hUwNH9CORn
+	Tu4/BNEodsjyp7dvfzbC9eHK8ZufDK0FzRVaOw7+/HMqd/wv0+1/B0mPweBQxpKzD7+4oVroUiF
+	F9rqxUrh8+Gkl9cOppPgK+V9Hl8LPu48=
+X-Received: by 2002:a17:907:9608:b0:c28:599b:7782 with SMTP id
+ a640c23a62f3a-c467959800cmr282913866b.21.1792619278019; Wed, 21 Oct 2026
+ 14:47:58 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <491B482A-8177-447A-8CDB-AF83C13A5DEE@linux.dev>
-X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261021212738.321547-1-jthoughton@google.com>
-Subject: Re: [PATCH v2 01/20] hugetlb: Don't restore vmemmap of non-HVOed
- folios on bulk restore error
-From: James Houghton <jthoughton@google.com>
-To: muchun.song@linux.dev
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, david@kernel.org, 
-	fvdl@google.com, jthoughton@google.com, linu.cherian@arm.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, mark.rutland@arm.com, nikos.nikoleris@arm.com, 
-	osalvador@suse.de, rientjes@google.com, ryan.roberts@arm.com, 
-	sunnanyong@huawei.com, will@kernel.org, yuzhao@google.com
+MIME-Version: 1.0
+References: <20261021205626.3286270-1-suseendranb@google.com> <20261021205626.3286270-3-suseendranb@google.com>
+In-Reply-To: <20261021205626.3286270-3-suseendranb@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 21 Oct 2026 14:47:46 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
+X-Gm-Features: AclHuK-8jo-f_F6DT-y6k_PMr4phWvWZnvu-2n_VUIdKUsZEm6R5LdMzF9aUhcU
+Message-ID: <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor compression
+To: Suseendran Bhaskaran <suseendranb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S . Miller" <davem@davemloft.net>, Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
+	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D070440007
-X-Stat-Signature: mynryn3q6si5nhw1z3o1hq11z5gccmq6
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792618060-983859
-X-HE-Meta: U2FsdGVkX19v/xrp54/HPz16jz8C98udAXiYy9ANEOLW7DHOpLDqymVF8ZjTaabc2vP1bpT4yInNT+OitudDMfDk6ace2T/z2j6Syw5Ak8wEBNmNDtGpc9YPB3N7CiIVqFCMABFKmLZxlJtS9KPhI8sIWLpsDAMnZ89FRLHBw6xDqPL2W3aH2cRHvbDqvO8/VMiZxsNoRb3/8UoiLkNY+/I97Ry97WlyOjbulVx2Y8x2N6yBKO9gHivbIi6/pX/QxhKg71UUrtXSVn7LBc1cG9luSP/t6+l4etrOQ50JZNu7/CwG2tFlN2oecJEBVKGy8dwsiQ/s/F0llNy+yTgR5cuYzkqjr69F6lWsTOkImanfsk/aSC08LOagbF9cbFtVwN6t6x04AdEwC1D0E/XrfRhxx07wukuOUgOKLz/DlwLZP0OuGgUvdKsF6h9xd6ozKL2MyqtFKBbZSALPUXDkHQqIibnfE/Uj8LHVhiu21c+cqZyXdrIs9euPWqBZOt9KtJBPxtND+lHZjLmCmtCN1gxtT6uqgVh8nZXMHkm0Ky5gw7mwuB3k8kAMImmV6piboLc6GCSV0zEouIn3txX191fNEFQuZ3vTcoxWZ4UI+cWkwN5UhzGVI30f6M9zD9wRV4OkV5zFuttLVomYKl6U5Abr2H1O17xynFq7wS1WkIuvu/PVr8w5wTHlyb0S7v56AEo5IHz9JnndciEqs45NNnJCIQ8Uexul5UGzve9jX6TG55uKlw4DAHV5ZpJZ++YRt1oJw8i10JIp355UaVa4vw6hdyXcHS4rEcUFr746gxHEAQPPL59BXHgsi2Vgv/m+/w7tgZOoZz5GH+GEYYzKNXuv29Wv9MzGmcpsDWwnceMOWXrfolduWyAxJkR2PiIEfmLdzEcHlMsVapj7bwGXaQSzHL1oKNj/R+MIwy6Uesqr7NMAuk6Ck7l3gE3MSBFf81MpSabzU37iUTq5vdj
- 2KPViYkR
- lkL/R8bJupllkfm0AgsZC/97jdAg8SGEuWz2aljiec/Brntn6hA4ZxtXdRzej1ko3D5M/GK2HYU8NtU7arsaijfgIgxPVAOoodrdODPd/634sZWIJadHyauX3osebnqQmDaeXO16gNXuLg6KQACYzqnexnfC9/KP8Nue0vcCILAgBxG+Oe3OJoUKbtxiW15AoLNjlhYqwacS7ttKk2OFlla7+1MHGDokPrPHYO3bh842Lw99duZzlgN++hp3rSqrRdtNxKTKYubmNkMfAEKIJcXoGDLQWDYe6itIQS5XMZXG9NxuPc8do4Xvd/d/zbt4J9Jj65A6Llw1xjpXuK/P4w75fWcPQFisvACX1nq0Lw6zXHT0601Q9oiPNQUntO/giYxZ7hFaDw3CXrx0T9Wm5NEmbYr+W2JsqeSckZR73S1UWLwnBsOm+ii4v4IaPdAESTz7YYn1HUprjjcaUMpnbvTjaM1rj8nG5iw+Ul+8cGaNzcMzDBmz8lCT93Bs76wf0mXuFpolLvleieq6+uhgQuILQk/C7CW5WSRh+/7H1sLGST2I2ySd/DXuX92O9bras2aNQmHddyrO+7Kr/mG49qZuDWDBFVmBPLVpUTudl4IBoi1A=
+X-Rspamd-Queue-Id: 3176FC0004
+X-Stat-Signature: 6inkzf5n588sy33gcpycro8r8fyyjxdc
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792619280-971116
+X-HE-Meta: U2FsdGVkX189yfc3UYgUfKU3F3N9WOxG437SOMGz/3F8TRAuA4QPVC+8WNQc3PWdfe4djsZiQnmLxAF5ZR0jPHz6HwJW/4IYAeK3n4X7fw56iwOC/OI2R5Ewk7UYD3Dcy6zS0ccPxk1et2p5VkyN4D4whh2RiSVauIcuS51OVLHiiMcR2MiCJvFCCgDftTvLxc1uuEK4JA9aJV8TkUFvAChprzvP4Dicpg2XCIEgbxyxMfnHQ4GNB/V7Q/tvtdrsUQkAAQoMIE9JK14jWCZBYVJGl/LOdL1m4K9mgSL2lt55SbiinYXh6g8dYcZOM8dDPPZDmRsKpjJhPf9BESEtE5Qe9E718apPKQrOK9mO7zRacfI1prXgO+hd7guHHWr8OFmquKy8O+GCEqSMb277uNM5znHbhIgPJTg6BIQQegnOhs1EvN168OEGx39nI2OEHXoDl/5falf620XF03TunyOHPqd+yjiVOcyKR+77+JI+25HpE542OA2u73wk89jMnlqB3nykFb1A/pUzDuLuM3oIRw3AO9nL1PxIX7MkaeWXNbcZ+YcnVUsWjYKWYRk38PfUJqkB0QMvWCvXIBUuq8zmsiw41PawIiXn1uYVxazrPvFLv97CPweOwgGxSA7hlQSXInA4pEEe7MEuEnYRoEvwI7pITgtGyOpJfNS+qa0bDJdCuyjGhEJ7UmM+Gyr3FisOhBgfG8jiHcWIOiFx6it2VfHkA8PpHIhJlI57qlExSdDtooOg08e6Vb7Ss46ZuCyASW7f5BRRWMVqscFgDP73K35pSRokW/tiCmLoQlYzeZ/p5I5FJyYEb+82raJXpw8ofxv4haIKWWAzwWmIpmAKUCAzRveNIUjaQ59aYbtu8cfSwEAVd5Qz08p+KOg2oNAdersQ8rwxfiF0sgK2w6UGkyoVcoWac342YfwSztsbJVZlNq8sIez1USubQlhOtlbIFGvDh3s37WiUQw0
+ dbsw95nw
+ 2JTEtkisuAxIUaukBC1dBmtNha+zaFd4HPAzbegByKRCEM+YDUZck0eVW2+U4RI3cAe2v6Q83XiGC5LARPe2DnS+8422wP4X2eU1tH2QRSGHOjth3e9xp82m0th0siZHzWF7bG1THuQpueWYz3KltkDrDDqpMost9WixZTel1EzG/XsjMeBTqtolLkSaAEmHP9uz3hXAiGYWBI+R8PC1qxgzsaORHEC+zG9hyCtvCTuh8q/ryfmSNp6BAFN9QBbAbuYbpjPlI/aBkbSl5EvlppDH++hciXYFMGSWK+Y1NVzwwDzTbS+lE25mGIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,117 +110,103 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 2:33=E2=80=AFAM Muchun Song <muchun.song@linux.dev>=
- wrote:
-> > On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> wrote:
-> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > index a1b51251103b..4dac7ed1df57 100644
-> > --- a/mm/hugetlb.c
-> > +++ b/mm/hugetlb.c
-> > @@ -1613,9 +1613,14 @@ static void bulk_vmemmap_restore_error(struct hs=
-tate *h,
-> >               * page is made a surplus page and removed from the list.
-> >               * If are able to restore vmemmap and free one hugetlb pag=
-e, we
-> >               * quit processing the list to retry the bulk operation.
-> > +             *
-> > +             * Folios whose vmemmap was never optimized (e.g. because =
-HVO
-> > +             * failed when they were allocated) can be freed right awa=
-y;
-> > +             * remove_hugetlb_folio() has already cleared their hugetl=
-b flag.
+On Wed, Oct 21, 2026 at 1:57=E2=80=AFPM Suseendran Bhaskaran
+<suseendranb@google.com> wrote:
 >
-> Since you mentioned the hugetlb flag is cleared. So it's unnecessary to c=
-lear it again.
+> Commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
+> as-is") and commit 0b1bf60c324a ("mm/zswap: reduce the size of the
+> compression buffer to a single page") updated zswap_compress() to pass a
+> PAGE_SIZE destination buffer to crypto_acomp_compress() (so
+> incompressible pages typically overflow the PAGE_SIZE buffer due to
+> compressor metadata overhead) and check:
 >
-> >               */
-> >               list_for_each_entry_safe(folio, t_folio, folio_list, lru)
-> > -                     if (hugetlb_vmemmap_restore_folio(h, folio)) {
-> > +                     if (folio_test_hugetlb_vmemmap_optimized(folio) &=
-&
-> > +                         hugetlb_vmemmap_restore_folio(h, folio)) {
-> >                               list_del(&folio->lru);
-> >                               spin_lock_irq(&hugetlb_lock);
-> >                               add_hugetlb_folio(h, folio, true);
+>     if (comp_ret || !dlen || dlen >=3D PAGE_SIZE)
 >
-> Something like following:
+> Because crypto_acomp_compress() previously returned -EINVAL on
+> destination buffer overflow, this check conflated destination buffer
+> overflow (incompressible page) with unexpected compressor failures and
+> did not set comp_ret =3D -ENOSPC when rejecting incompressible pages,
+> resulting in two user-facing issues:
 >
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 6a011b627986..1ab3e61f4704 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1616,21 +1616,31 @@ static void bulk_vmemmap_restore_error(struct hst=
-ate *h,
->                  * If are able to restore vmemmap and free one hugetlb pa=
-ge, we
->                  * quit processing the list to retry the bulk operation.
->                  */
-> -               list_for_each_entry_safe(folio, t_folio, folio_list, lru)
-> -                       if (hugetlb_vmemmap_restore_folio(h, folio)) {
-> -                               list_del(&folio->lru);
-> +               list_for_each_entry_safe(folio, t_folio, folio_list, lru)=
- {
-> +                       list_del(&folio->lru);
-> +
-> +                       /*
-> +                        * remove_hugetlb_folio() already cleared the hug=
-etlb flag
-> +                        * for folios whose vmemmap was not optimized, so=
- they can
-> +                        * be freed without restoring vmemmap.
-> +                        */
-> +                       if (folio_test_hugetlb(folio) &&
-> +                           hugetlb_vmemmap_restore_folio(h, folio)) {
->                                 spin_lock_irq(&hugetlb_lock);
->                                 add_hugetlb_folio(h, folio, true);
->                                 spin_unlock_irq(&hugetlb_lock);
-> -                       } else {
-> -                               list_del(&folio->lru);
-> +                               continue;
-> +                       }
-> +
-> +                       if (folio_test_hugetlb(folio)) {
->                                 spin_lock_irq(&hugetlb_lock);
->                                 __folio_clear_hugetlb(folio);
->                                 spin_unlock_irq(&hugetlb_lock);
-> -                               update_and_free_hugetlb_folio(h, folio, f=
-alse);
-> -                               cond_resched();
-> -                               break;
->                         }
-> +                       update_and_free_hugetlb_folio(h, folio, false);
-> +                       cond_resched();
-> +                       break;
-> +               }
+> 1. When zswap writeback is disabled (e.g. memory.zswap.writeback =3D 0),
+>    zswap_compress() sets 'comp_ret =3D comp_ret ? comp_ret : -EINVAL' and
+>    jumps to unlock. Whether the compressor fails on destination overflow
+>    with -EINVAL or succeeds with dlen =3D=3D PAGE_SIZE, comp_ret becomes
+>    -EINVAL. Consequently, incompressible pages are misaccounted in
+>    debugfs under reject_compress_fail instead of reject_compress_poor
+>    (leaving reject_compress_poor stuck at 0 and triggering false
+>    compressor failure alerts on normal incompressible workloads).
+
+Hmm IIUC this is completely fixed by patch 1, so it doesn't belong here, ri=
+ght?
+
+>
+> 2. When zswap writeback is enabled, any non-zero comp_ret (such as
+>    -EINVAL from an invalid compressor context, -ENOMEM, or a hardware
+>    accelerator error) is treated identically to an incompressible page:
+>    comp_ret is cleared to 0 and the raw page is stored uncompressed in
+>    zsmalloc. This silently masks genuine compressor failures
+>    (reject_compress_fail is never incremented) and miscounts pages that
+>    encountered a compressor error under stored_incompressible_pages.
+
+Storing pages in zswap when compression fails to avoid LRU inversion
+was intentional in commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE
+compression failed page as-is"). Unless we think this needs to be
+changed, I think all we really need to do is make sure we account
+debugfs correctly for -ENOSPC vs other error codes? Or am I missing
+something?
+
+>
+> Update zswap_compress() to treat only comp_ret =3D=3D -ENOSPC or
+> (!comp_ret && dlen >=3D PAGE_SIZE) as an incompressible page (storing it
+> uncompressed in zswap when writeback is enabled to preserve LRU order,
+> or rejecting it with comp_ret =3D -ENOSPC when writeback is disabled so
+> zswap_reject_compress_poor is incremented), while jumping to unlock on
+> unexpected compressor errors (comp_ret || !dlen) so
+> zswap_reject_compress_fail is properly incremented.
+>
+> Fixes: dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page =
+as-is")
+> Signed-off-by: Suseendran Bhaskaran <suseendranb@google.com>
+> ---
+>  mm/zswap.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 37f34e406c8e..5f2a941fcaf1 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -881,12 +881,12 @@ static bool zswap_compress(struct page *page, struc=
+t zswap_entry *entry,
+>          * only adds metadata overhead.  swap_writeout() will put the pag=
+e back
+>          * to the active LRU list in the case.
+>          */
+> -       if (comp_ret || !dlen || dlen >=3D PAGE_SIZE) {
+> +       if (comp_ret =3D=3D -ENOSPC || (!comp_ret && dlen >=3D PAGE_SIZE)=
+) {
+>                 rcu_read_lock();
+>                 if (!mem_cgroup_zswap_writeback_enabled(
+>                                         folio_memcg(page_folio(page)))) {
+>                         rcu_read_unlock();
+> -                       comp_ret =3D comp_ret ? comp_ret : -EINVAL;
+> +                       comp_ret =3D -ENOSPC;
+>                         goto unlock;
+>                 }
+>                 rcu_read_unlock();
+> @@ -894,6 +894,9 @@ static bool zswap_compress(struct page *page, struct =
+zswap_entry *entry,
+>                 dlen =3D PAGE_SIZE;
+>                 dst =3D kmap_local_page(page);
+>                 mapped =3D true;
+> +       } else if (comp_ret || !dlen) {
+> +               comp_ret =3D comp_ret ? comp_ret : -EINVAL;
+> +               goto unlock;
 >         }
->  }
-
-Thanks, Muchun. :) I think it's slightly easier to read without the second
-folio_test_hugetlb(), like this:
-
-	list_for_each_entry_safe(folio, t_folio, folio_list, lru) {
-		list_del(&folio->lru);
-		/*
-		 * remove_hugetlb_folio() already cleared the hugetlb flag
-		 * for folios whose vmemmap was not optimized, so they can
-		 * be freed without restoring vmemmap.
-		 */
-		if (folio_test_hugetlb(folio)) {
-			if (hugetlb_vmemmap_restore_folio(h, folio)) {
-				spin_lock_irq(&hugetlb_lock);
-				add_hugetlb_folio(h, folio, true);
-				spin_unlock_irq(&hugetlb_lock);
-				continue;
-			}
-			spin_lock_irq(&hugetlb_lock);
-			__folio_clear_hugetlb(folio);
-			spin_unlock_irq(&hugetlb_lock);
-		}
-		update_and_free_hugetlb_folio(h, folio, false);
-		cond_resched();
-		break;
-	}
-
-Applied this in the v3.
+>
+>         gfp =3D GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABL=
+E;
+> --
+> 2.56.0.218.g1ec904b173-goog
+>
 
