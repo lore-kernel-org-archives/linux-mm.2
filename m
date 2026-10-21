@@ -1,96 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC5A606A324
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 07:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=BLrygvfM
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EA1606A31B
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 07:53:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CE096B0659; Wed, 21 Oct 2026 03:46:19 -0400 (EDT)
+	id AC23C6B065A; Wed, 21 Oct 2026 03:53:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77F116B065A; Wed, 21 Oct 2026 03:46:19 -0400 (EDT)
+	id A73F86B065C; Wed, 21 Oct 2026 03:53:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66E146B065B; Wed, 21 Oct 2026 03:46:19 -0400 (EDT)
+	id 9895E6B065D; Wed, 21 Oct 2026 03:53:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46F6F6B0659
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:46:19 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C830C40345
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:46:18 +0000 (UTC)
-X-FDA: 85345850436.02.877F9B6
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5EEC9140005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:46:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BLrygvfM;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7024C6B065A
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:53:43 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E9C981A048B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:53:41 +0000 (UTC)
+X-FDA: 85345869042.18.2CA39FE
+Received: from smtp153-165.sina.com.cn (smtp153-165.sina.com.cn [61.135.153.165])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D1C40140005
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:53:37 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=aV8uqU9K;
+	dmarc=pass (policy=none) header.from=sina.com;
+	spf=pass (imf23.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.165 as permitted sender) smtp.mailfrom=hdanton@sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792568777;
+	s=arc-20220608; t=1792569220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UsgCJpn8EzeKkLQx/vx3qRMApsmab4c/NyjKdecWpLQ=;
-	b=IwiZGTNBHhWMy0FUgrfPaVGk/MOag1LjPDKsMmGV4cXcZE9DdMG56B5H3GeSd8Znsqjmvk
-	NS/p5VW+FL2To8FBB8MwkY3aL5zUI7Bqv5uOJwTF/bX/w4dHXtlUfjUKJQWVbadFLNiXfT
-	r6s/vFOtOeO/TYenG8tCdwCQX0vp9ec=
+	bh=bhy0oyRetX168I3CYw/iHInrZZxLMV6KJR6cfcucIJA=;
+	b=a4YrCKV9r/GZPbefnaMSdLqpooPKZi/43fx3V4FgsLdUFFpTg9LDksvZWfMHlfd4pnHL3G
+	kvIojFEHfWHhTX7XF8burTOvR9mD3fC2iHBpnVVfcfFRCPVB4vYzZvXCZFYyKJ2g+/789I
+	slY+CemYPBZ2Os/qnDYk5G7ecbm8heg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BLrygvfM;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=aV8uqU9K;
+	dmarc=pass (policy=none) header.from=sina.com;
+	spf=pass (imf23.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.165 as permitted sender) smtp.mailfrom=hdanton@sina.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792568777;
-	b=0lkQMkdk242+V9s6oOhNP2OB7qpIJxo1Mj6BmRDCLhGuBO2gkgbmxxc4RO8ZqTsTvdp3L+
-	GfJ7mg8o8LIiyog9o7Si3vcahTOHryfIC0nMIAIJPPSVYj/YHuAq3joeDZ/pVFSkbdPJZW
-	b1oXlb/Vs/8dQtPhe99UviF0fASvKok=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1792568769; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=UsgCJpn8EzeKkLQx/vx3qRMApsmab4c/NyjKdecWpLQ=;
-	b=BLrygvfM/P0H/s6l5wlCrsdjotjcQjmZuoo/q5gVAYz8kevRa/E+V65l79YweNorkvDbRiZZ8QJN2XgGDDj8HJwA98f+zZvGQAbrThtGl82XCokSntz8DVPR2ufyOLXR3giGV7j3nYmWeRG7+ot2amxfOnEtp7D+4o2tcrXvj5Q=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XDFhPZN_1792568765;
-Received: from 30.74.144.135(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDFhPZN_1792568765 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 21 Oct 2026 15:46:06 +0800
-Message-ID: <6462de1a-b141-4f20-94a8-973708a71ba2@linux.alibaba.com>
-Date: Wed, 21 Oct 2026 15:46:05 +0800
+	t=1792569220;
+	b=TKYqVfWptwxIqJhFaDdagKk9S9UITUKHyLi88MtbFW770QQEj6S7W6axg0L6X57CKwAnUL
+	jmLcYlsgNWUeIWjfQN1k0twfkQpN8HHmQ7ob4GtOvQsu1Nu6mRuu5qfBDIH0kgWT17BGwJ
+	dr1pjEIV/BM6Z77ZJcb5Nbx/g1nlCqs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1792569218;
+	bh=bhy0oyRetX168I3CYw/iHInrZZxLMV6KJR6cfcucIJA=;
+	h=From:Subject:Date:Message-ID;
+	b=aV8uqU9Ko0owg2WYvOD+Myng8ppxQGjd6SQrAE6PxAQHJ1ysStyFJgOnqWNB5i26H
+	 UqhmpSChGujNbw02V/3TmZR88vJUrDcAQZuiE3hajbbneS503/1fD1gTOwn645ejA3
+	 bYt1rP2LOoJGdPYtymqQQ9ncXu2ZKcP2CvhBjCIQ=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.254.3.56])
+	by sina.com (10.54.253.32) with ESMTP
+	id 6AD86F7A00002678; Wed, 21 Oct 2026 15:53:33 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 5760734456874
+X-SMAIL-UIID: A986B4A8D67249C0A2750D2D5F8A8120-20261021-155333-1
+From: Hillf Danton <hdanton@sina.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Date: Wed, 21 Oct 2026 15:53:21 +0800
+Message-ID: <20261021075322.923-1-hdanton@sina.com>
+In-Reply-To: <athFf0kXopUKh2-V@google.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: memory: fix truncation removing mapped folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com>
- <8245424a-f068-4be5-9e58-713cbff1f8ae@kernel.org>
- <405811f5-ee36-4b3c-80d0-7dc6827ab5d4@linux.alibaba.com>
- <6660d3bb-3485-4c34-8734-3ea99df920f1@kernel.org>
- <02c9a968-92e2-49e2-bffc-74d264a5c911@linux.alibaba.com>
- <f7735584-e020-4ee1-8afb-2b5d580cfa49@kernel.org>
- <b1a9b500-0ddc-4791-9e1f-00087e367426@linux.alibaba.com>
- <938e215b-a2fd-4f1a-b4c5-e46b8af0f00b@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <938e215b-a2fd-4f1a-b4c5-e46b8af0f00b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5EEC9140005
-X-Stat-Signature: 6jjy93woz4486x6cndpca4ad8z6s6gop
-X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
-	version=4.0.1
+X-Rspamd-Queue-Id: D1C40140005
+X-Stat-Signature: cuf9sh13u44k76qkjre7w35nzypp65yp
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792568773-973606
-X-HE-Meta: U2FsdGVkX19pwsqiEJmNA3zUEJF9HnQnvwFqFylPnV6akC7Nm5YrG05BqIrJICkh8npJOSylq1+vLtJcyONYlZHXvWA/G8KdjkZdbhuRLeNKyN5Scbbvi2Qjd7oZIwSVoQmSCXB9Ib56EGbJS9x2xxR+sXnxppdcx0kIGG6JZcyoZoczJjvbYoyFxF/GF/Dn+I4RU+988RNbi4317mWgSZvdVbaow+I/EDDdWPKJ//vDhlyJKEyvMb+z1r8qqQRvV+c+hJlvRPmporjCGvxOJEk/R99iyzp/MbziyT1+7lPhFrfubHQ2mRaSM7wsH4TpFJsZ1m7rjCDCEtgtl+6nMloMSoCpWHbBx6DC5kweyZXtEP2QKiaVb+NWdn8A+gGFeRsoJUNFpgWMFQ9ORrkvVIeoF6bIAuRYOMYssO8l4sLs1cAw/iGA1R0wtOLdbUkGiDMAqhsmgnlmO9x/Hapz9uZY+YX53BkWT+R/ePWp4nZvCds/U36SKxccAsIZ3hVX4MyqDYfWyc79givEf8lwG97p5mygC2LTaehwVNlCIv2JkSeUkVLaQKczeKDHo5gacZ1+YWpFS307HeLHsOb0Ad2RzPvcxAOm27JrlhB2YsVVjQ9yxrzuACbz41BSOFYzDvGnff5/Chz2vW4Zz3mv6wjQEGkgyfzJd9Ayk0bPQW2PgN9+Mo8eTSIAM7XMUg++1M8ouaeRQMWXzX/XgqqGDTxWDE3BBm/HaG9zVK9w83EumkVEozYtWyraWHQhiryXreyP09Hnj83s575dLDj/tcVgVLS7qCde2HF4/8B6D/XUvQhLnEiq87VMgPR4LYjFkX8SUp9G1oZ80/0ZveipgDsJfILKxpam5vMCoj0wg1k2wPhrVgJnH4zQMke2k3k8gSKd6SHG7K6S/4qid9N3t+SA3BdbbzU7ZHaY0HbrataH9NC4rmrQASOBMOGTk4T048uNAekA0wTVY4UZNG6
- gIfXonkm
- uuASwIa7aYYVoq27cRNYVi/5nSru8fA84H85o05UsM44heHKRlkMj77CpaExyvOKKTPvYKOgXXHsQwYjdfudowwLkc3LgUfBxkzNemVr1GtI5iCvtSRUPk+kM8hNc/4uw1K3uMy2uUrtPvERkyvno1LVRo4pD472+kE7qxJ53YwLCNWDE7pSF3HQ1KbS+ZwcCYu1Ob8T24JxsJfYFSGjqCqONLUKyk0tYVyfzl4aSoSdY3DstYksbL5iJS0ECKZKL456DnOPylAQFPvpxtgVjs7wNCHbag04bJSrI14W+/BqxgbeJBFfm7cq/l/bMLjy2lPgck4PBDsT0vLvnt3rU/UPYVecQEZAzG59R
+X-HE-Tag: 1792569217-818324
+X-HE-Meta: U2FsdGVkX1+9QxdUYiLtXY14U7PLi52jH49FeA2wcOa7YNZhD9Y9/knQme5RYohxSbdOeThoquqv/HsjcF531+3srcH/KBEM1i5X5OuEec2S/eAo0WNQxvmy8BeezxJcWIfmurEIbvCvBbK9prA0iuGtOe4aqoN/9TCQZnhpzybSNSvckr0GKQBaLkbdSNzsGyNc6D30J/FTVVdf5r4OqHi1eXEAJk5jmlyDVKKyMgbopiJf5/46kHQHzuT/YsfeDDjdP+/o8hNA76glrbvDQasN/PwbPmg2LI73VsLAMA+f+6r1SHksle7HmZHuJm1VrDTPKBJJG+izFXGk9n/eLVedML2zwiAozE6OJTUeQ3dXpdHnbCfbPxtNhWs1YXUOUFkgAWeTCoxanPbQ835ufrkimhf0AgH5nCjoYwZHYGteneSF9lqzZCXWE5g+YwBLGIgBGVxwh1mADGTGKdLGfK/nPkeJBe4LMKM46eJ+parOX+QFGSSeXcW+vM+K1GcPS3TTsAEiUqC4cmq3xK1SchtbJQ40qlA11PDPDaEbD//dSlrPQBtBy38ZV3yQYrPhoGiuRpUtg8Akkz3oO+EuA7BUQPaKUhRgM9frR9h8jp+BFwq/IYwCZvyEm8n9+QzQS66KrohqUdYAkZ0r4pXdygzn7Qy4UC1Gr1Xene1MB6xqnL0hEgzvF8mmqWhR5zVcQHVChGcdRlw0BgaxRNCHqhq2asgKSW8sjUXqTr5ObnAnYzezrXYs/pZl3GQS+TH5oNI/ZYkD43FvcJT5HcwwgNh9dZ5+pexq3Hzs3l9QUak1tb+qXV3XfGINgcUM6uTS3+18jHj8FTRIyYewUN9lJ4AVAXwPOPcU2O57rpOpb+Z3LqH6dqTX1WQ/I4UkDdpuLO7HYTGYslzeABMCeYp+RqWFuvbTLLuWG42IDW2ZhtcDaeVWiGfhcE8BW6Gc2kfCpJBKBp6XZixm3VHqpUG
+ XEy/Ide+
+ qS262PWU+qxZdTIct0cabKrsdWIpN1o2UO+cmpwe/37LjzLQU/NVESzc/MK4xK3kIfmnrZAp/Nwq7aYSHaMICx9zsJPOB03CH9mtElTXjeYZVBhHcWFToNWGI8m75sp2UFDyjyJS28k6pbQ2RZ9kpk50aDZvp3a/5Bm8wcjVpXJ023X5fYflezT7NIdsZMGIz5gwVAqtxGYrGJiM9ZNA8qrdbHazbWaBh/wKiqxKT4Dkve5bFQBV0zd5CLc3ZrpoAgFP/Hd70s1QchQYrlh1mfeHgcT8BbZLzLC+VNH0ry4qXTl7mgOK8ytEfLsiB+TstxrxkOnod9XFVzAVFgOEPkN97zIPRid9nL5zj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,30 +92,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 10/20/26 4:36 PM, David Hildenbrand (Arm) wrote:
->>>>                   if (pmd_none(*pmd)) {
->>>> +                       if (details && details->single_folio)
->>>> +                               sync_with_folio_pmd_zap(tlb->mm, pmd);
->>>>                           addr = next;
->>>>                           continue;
->>>>                   }
->>>
->>> We do have another sync_with_folio_pmd_zap() user in page_vma_mapped_walk(),
->>> does that one need care as well?
->>
->> Good point. But I don't want to add page_vma_mapped_walk() changes into this fix
->> patch. I need to analyze all callers of page_vma_mapped_walk() and the potential
->> races. I'll look into whether it should be changed in a follow-up patch.
-> 
-> Yes, please have a look. I am 99.9% sure that we face the exact same issue there
-> as well.
-
-Sure. Add it to my TODO list.
-
-BTW, could you take a look at my reply to your concern about v3 when you 
-feel free? Thanks.
-
-https://lore.kernel.org/all/179c26ed-1764-4e5b-a7ee-047ddabbfea1@linux.alibaba.com/
+On Wed, 21 Oct 2026 13:56:17 +0900 Sergey Senozhatsky wrote:
+>On (26/10/21 12:23), Hillf Danton wrote:
+>> On Wed, 21 Oct 2026 11:42:19 +0900 Sergey Senozhatsky wrote:
+>> > Split struct zcomp_strm into separate compression (Write zcomp_cstrm)
+>> > and decompression (Read zcomp_dstrm) streams, and split zcomp_ops
+>> > context creation/destruction into create_cctx/destroy_cctx and
+>> > optional create_dctx/destroy_dctx callbacks.
+>> > 
+>> > This decouples Read (decompression) and Write (compression) paths so
+>> > they no longer contend on the same per-CPU stream mutex (Writer vs
+>> > Reader priority inversion).  Currently, a (low priority) Writer that
+>> > holds the stream mutex can be preempted by a (higher priority) Reader
+>> > on the same CPU, which then blocks on that mutex until the Writer gets
+>> > to run again and releases it, which can take a long time when there
+>> > are other runnable tasks on that CPU.
+>> >
+>> Given lock like mutex, priority inversion happens from Monday to Friday,
+>> but I wonder if you are inventing some wheels in 2026 if proxy excution
+>> works for you.
+>
+> Reader-Writer split is a foundation for further improvements (like
+> singleton recompression stream and so on).
+>
+But that split is not needed at all if PE works, yes?
 
