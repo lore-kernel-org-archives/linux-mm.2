@@ -1,94 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE130606A324
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 20:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3913606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 20:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kNHzWUKh
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=VWbVcrow
 Received: by kanga.kvack.org (Postfix)
-	id AF4776B07B0; Wed, 21 Oct 2026 16:48:29 -0400 (EDT)
+	id A99706B07B3; Wed, 21 Oct 2026 16:57:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACC706B07B2; Wed, 21 Oct 2026 16:48:29 -0400 (EDT)
+	id A68E56B07B4; Wed, 21 Oct 2026 16:57:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0A666B07B3; Wed, 21 Oct 2026 16:48:29 -0400 (EDT)
+	id 930986B07B5; Wed, 21 Oct 2026 16:57:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E8606B07B0
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:48:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 603AAA06C1
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:48:27 +0000 (UTC)
-X-FDA: 85347821454.12.4470C67
-Received: from mta0.migadu.com (out-160.mta0.migadu.com [91.218.175.160])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 49297C0006
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:48:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kNHzWUKh;
-	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.160 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FE4A6B07B3
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:57:10 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF8B91206B5
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:57:09 +0000 (UTC)
+X-FDA: 85347843378.23.C013D7D
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2D53D10000D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:57:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VWbVcrow;
+	spf=pass (imf05.hostedemail.com: domain of 3IifZagsKCDMhjhTTcSgPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--suseendranb.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3IifZagsKCDMhjhTTcSgPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--suseendranb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792615705;
+	s=arc-20220608; t=1792616228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6rUMDLFXufXDaESzYj+9ZndTGVI79zhxIDwrHIe4u+k=;
-	b=LdoqgzxkMhRz454+1H2TymZB+yW1gooag8DPiJa2XUYjAXGkS3LuV9UAoLCnD40j58LT9w
-	4CLrTSwBFc72IL7PMdAx3hdETLSDCE4fq/NUOw53TW3RVleb3ukCUvWNph6vf6R57cGAQw
-	M98rNZxIFXUB8TdyOXA+QdD4JvWwEL8=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=TjGoXIwxwvYJCfSB4uUwJbeswXlbVh5GTXRCoqO+ToQ=;
+	b=gFtoevp1jFKNIxpFBU+0XMmzL4KHEhB4J+9O+2cm5KR+8Eea57wNCyWI/aW0KzMEuRhRgK
+	NJnWJsv5mobqqt2rbGh7Hw+lIBFL4XIeqXjmJfBrH+w/3UA82RkSFqlQysx7pIukuRQ9oS
+	XbGMHAx8FZke6LV8zxLj4WObf3jYPMg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kNHzWUKh;
-	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.160 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VWbVcrow;
+	spf=pass (imf05.hostedemail.com: domain of 3IifZagsKCDMhjhTTcSgPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--suseendranb.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3IifZagsKCDMhjhTTcSgPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--suseendranb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792615705;
-	b=6mLaGyGkwIUHx3VYhu3FEp++YGHwocUlHAmfnY2lTjQJTC+53VyPCNf0v2j85H5VHqXftO
-	dMofLBWIFcZCXKzKuYQlcb37UMX3eOCz3uso7P3QDrokB1IkM90T3fwo6hm2iwBoVj1e8d
-	A0XLi07SQHJp7D+biumhPFsKFOVz76w=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+AiOmE1TdqOARmJDv1cMb8HWamB96s35l1LjYS9KVD8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792615704; v=1; x=1793220504;
- b=kNHzWUKhUT6nfr8AUMoVmehPg7pSMDXUvzGPCSWVkfW8+8hj3iBIwTl5vLKnjA4HooFqZjGN
- o27gI6gi9HqO6BHsWSGUz/6EJ33QNGdawWOPFRDKLQYCV6LTVbtujHTuvam0Vr89bh+DCQKT8UI
- w/4Ntz3+6lziqgcxX8gYUTsU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 16fb233232d2ba21;
-	Wed, 21 Oct 2026 20:48:23 +0000
-X-Mizu-Trace-ID: 16fb233232d2ba21
-X-Migadu-Flow: FLOW_OUT
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Chris Down <chris@chrisdown.name>,
-	Meta kernel team <kernel-team@meta.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH] mm/page_counter: use WRITE_ONCE() for emin/elow when parent is the root
-Date: Wed, 21 Oct 2026 13:48:18 -0700
-Message-ID: <20261021204818.3431099-1-shakeel.butt@linux.dev>
-X-Mailer: git-send-email 2.53.0
+	t=1792616228;
+	b=qH+ZOgcC6jnlPpr/UZ3YQ5a6dx3M7EmRDyEY+0iYrzY23Npjepax16HrpN2JqPVh6IyBJb
+	wZMur3Bz9juBY9UDIwOih9fxargeYpdWdGMnUKMdcNenG8FqxGwVAK18oRTcASv+Wnxpa7
+	+kQIebbMKyBka/BqC7W8E8PmV2ns3qk=
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e60770381cso11401915ad.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 13:57:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792616227; x=1793221027; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TjGoXIwxwvYJCfSB4uUwJbeswXlbVh5GTXRCoqO+ToQ=;
+        b=VWbVcrowvCDwFHv8NalVj9uZJaryhAO5H6M7Km7e0MaQ5KBob74kprtBeeDiq/ZyCf
+         Lz3AY7cc7dCbjIO58QgeFTnnB/xNqAIRMQQsHdtsaSmciVBheM3pInnzzI3xo0AoGrK4
+         ISbYPS2bCW6mbwCuQ7NM3eAlZaDI3lKs57I3c3lpVePr2Rw/fsf1JjCUOHqgXP6H1YfW
+         zzFnGJHWEzoZFLc0IKiHf0WDcu5Je2TGSgI+bW3n+RTF/wfgSY8eC82q2xf8dGnrUU22
+         n/3udO8zDR4ejcgxDLa7WLBu9CF8eoVPNXWuBQc1oqAYIR08hgeMoXvTGIPdn6P5vIKk
+         7tIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792616227; x=1793221027;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TjGoXIwxwvYJCfSB4uUwJbeswXlbVh5GTXRCoqO+ToQ=;
+        b=sQnrfWc77BE80B9UcVoU+l5w+3tRYp8xwQ2g8qaTc5Uyw4S0rKdtJbxXDVLEhdwIFo
+         WS4mwdftcZjnH0UFPegl5KEkuSElYrjcyysqg/nh39tg9/UfyiLxifH4MGfe4YqNkAip
+         jiQ6NbwSCIQGwjWov8M4IJvv5hO/jM6zlG6pYC0FK6q4xR9n/m7poTyHrOM25VivRRq1
+         Pf8/N9m/ucblES6Xdemuemec/ktEJ4RiHYECnLNanum6rmkturScpXkrOWS25oJKtBAW
+         j/V0yzGV+yYX8CrjCAY11LOkiQcK4e86W1KI78Y7aeMKxG7wua0S32aHQiTRw4W42Rgk
+         ZwqA==
+X-Forwarded-Encrypted: i=1; AKwUvBxTBnKi2TVd2dWhdkqjIU5ETTBJH7s83COkD9/L59C/Po0iN3jb4Cz1yn+YDIouvcXaHjq6Eh41AA==@kvack.org
+X-Gm-Message-State: AFq9FYLoIaA00tKYxHPFE5f8tZQRQgvTWMq8mvjtZPF0DuufnLvWRr2q
+	qmhQromfj1ra7/OCyjJ5atVfGB2R4ISA+opJgoR8fJx8xzvOd1ItX0eNKGRqQOxUhWPLFEhZl8+
+	Vpy4x9z5mpCcZR6bpS5nLgtQIZg==
+X-Received: from plot22.prod.google.com ([2002:a17:902:8c96:b0:2e9:8ef0:cf73])
+ (user=suseendranb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:26c8:b0:2e6:7c6:8d40 with SMTP id d9443c01a7336-2ea43c0b534mr25135175ad.27.1792616226856;
+ Wed, 21 Oct 2026 13:57:06 -0700 (PDT)
+Date: Wed, 21 Oct 2026 20:56:24 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 49297C0006
-X-Stat-Signature: bujaohz31u75gn5i5frjn3k4s99b9wx7
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.218.g1ec904b173-goog
+Message-ID: <20261021205626.3286270-1-suseendranb@google.com>
+Subject: [PATCH 0/2] mm/zswap: distinguish incompressible pages from
+ compressor failures
+From: Suseendran Bhaskaran <suseendranb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S . Miller" <davem@davemloft.net>, Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
+	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Suseendran Bhaskaran <suseendranb@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792615705-189527
-X-HE-Meta: U2FsdGVkX19eBwrJkyOxHnaU2b+8I/0URJXEF7IbU8HNDx+uMHt5DhyXC6auhB4LIkok0E0qGIX2W/ZUNzLeExQU92I6vK+GoNh79wN9w3ExE+uCDepdTNNbBCer5MT7eSvJlG6AvKF96ffvB7NUojqjP0tJ4jlGDsZvb8uYPcg4SkZJB8tMakmQT/+hf61UsVYYYpeRakAEsi+cmqRascT4LRZN1LQcN6tDbltv6+joHpPEfbUfOosLT9vvS7Gkq9ddB+lvE3CcO74ORjRoox5IqLT2O9qw40O370E/9XVTCWEzIuWCgqqrinBCoKY7YFFkiumfy9uKofwDuSdL/g/uYr6mf2uRvf8KxqhjZH8lLgIoOYP35skVNS9BlauwtlvCi9YRyIuUJ6UeLY6m6lPyJr6KWPp+BLQIBbbAsAjqnUBW1UYU5TpdWCjuXO2wmaAmYpJbvBR4kjeQOM/FEJ/vzRnc8N7YpGbmqCKYZqwgQexMezkvHEV4atUUUZWokYnDjMjEfAeHa9z9rMrfgzceEXcaeDwprOpksTFJKihcS+3nRkXq6DpBICUe7iO44IS8zlLQmT0BTqC/TtqtVZxJq07LFxW+zT95VTaJQEMztU23RPfOu9ht3InV021hxTAZ2buvk4ZuFzEbZ9423RElskKMZTTtVzSCOz8DS0bNZdH/2pbM4e7d09Eil6IqOdHm/d9r1LlXTFAwuWdQYg5n5KEKHlxjHJ1Kf6mdRF/w69wRwmkfpGwoHV+B2cSkbWSiQWk8PUmlMpiCFxod/CzU6l5bCGwlfJcZYBezkOPi1zgFfrGG8oRnfPhzW23pZ+ldosi9y6FVRiOd2o9rkRWbL5tGXVR4JB3KlOWn8NBjnGhXDmGWTZ1aHZtqUIgYPNZfwnrpoFGDxT63GkOYRUzIcH/6BjbzN72+Pb7FnGt/IiK/uwtYh+0EnhqHOVz2AO/pZDpcFCA28pNxqIe
- ruWoGJHi
- wD3tsqWEr1jThDmc16ua2ukQSDkOfxxUoX01PZH8WobDECUQZeIl+BmyAVveWbfE+VhAAodMiMl8AMAv08Wezs5J4oMFKcWoG4jtZu3mHfAkEksuzDsMqYT3PedC9RzuVAmubPP2AkKOE4vtPL/d5ZjCsOOve/o6tK4UOLJl+x3ElE+d1aFubo5yx+bCuPJIEyhfKGI4AphAJJ3IDTOccQRmgcx9RgZTUjZTl+LmYJ6eYCjwgaM+ZX6ixgRliTuWgP7oXJrqsDEBTFaWzvHJzeRErTIPoKTcaPkI0uskomVyqmkE=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2D53D10000D
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: hihhqhmwmiprjzo5bmn1u3othw8es5d3
+X-HE-Tag: 1792616228-666926
+X-HE-Meta: U2FsdGVkX1+8/dr5ZMFKjri7ojSMh7YaIQq6mzDxSq5U0bYRZNO4BmTYlZH131ROqTCJcPMoySoJvD5fdadlYBUObE22f/oQmbPXHBSryev+yl1XMic45fnKyRIOszujtYs1eQ9ysVx/tiRSXu/cMuggWRQEMWyic/0jz9BNs+hqXGA6Dw/pU2Hww4Nrw9XHN+FC3YFFbkmsPncVAz6s4fFW8v0GcqEPL36OfNKOvUSzu50YJPsMB1gmLbonnm7S32nUUJCX4v0xXE6e0ugDhkjqqJfEpz7PGThxY98oS6OZPWlGZIUePxTLxmwvlrVI5De6a/5Gha6O3xS0SnrFDLCWfyiMCjg4Hx7MrSl/xq2P+x+vca7+8QYsUfHXicJpUF04jUvoeDanXw1Z1BFJ2HGIQGxzYe7lDySnR359hl9ByL66FLxPDfDP2pNXITtNvFt0mh1y1s3FFy9WRBry56J1fRq7kuAB8i79XZZb8D/MYq5XgiHq2qZOamLnghnYqhXF1vlFugVoxFG0Nooe41EbNAhQuWwW++6Ra2UgPHuJUNBhRcNqf2JLv9EOCFamcuD3CuzvcarX6HRfVv75JJwauKWGF6lmccml7wEhMHmtQPm58htmKOOikrXfvobAdNETlrfYUJ5F3yA+jNrkw5Iv1ClMsUGIGDbWGUHlvpGZMZxWvYsH5F2EGE7AWKJZVf0HuqWMwZ6aiC2PGIz7PIwPGRegeUhqCAvfCK1IaO/B5hm/wnLjuMKpEyhcsuHvyR+x5etvuSIHQOvqZd0xshYfGCQHKrSKj4bnP8Glqi503pp7dZuXeAXZxKT5hQK8tQ14PVwRMof2caLH9A+Tok6KF7LCGreaKUBEapXf7+MJpHFMzN75xzsqQ8S3RuJjEbQJgZUGZWpPbkxER7GgZLw1oNprQ+DQiXZtmpl+HrULjVlIH0yKHfr3vqOTS9q/b/JTrAi/Xo/FP0dEeZ9
+ rzG6xkpH
+ P6tn/BIP9DiDMngcion3ZmhVyTGEPS1vrr3UpF+lQ6HXoxgYCbT3jEuPBGJnfAW8ujpXJCv8ctlridWAWQRtUkPMG++CTXmrmv+2NdK4htZdWBi7mYsDAEORSP1cG5yQMvjbcExFH3Ie/WtEry/xDqY64VluKMcaxfzomHpRzicq8LUfuAO7iz2WhPsfWVClp06xLvfOHdKHZy38FsOaNG+6RQRPUH8GJQw8OHAvZzzmAyui1Xr5CpG4QqqscugMkHxAeFclfZIzON/vChk16DZJL4r9qn64KU8Vgu0pnhSjp1/N6r7cZElmvJjyRtbMf0L0cFxjixwuHvZGC5NxauNbNLEMVWpDp/XqkQqQSWFQq3+UvpVWALBVvZ6GK9M8d8funKPyyQr5FozhDa+Noe86uexn5oVotdG82lQrcjN8BkTgiPCe4m6K+iu7Tf/CY5BjA1zT587u0YlPyRpQB7KiEwUB7R8pfLvm01KRsQS1DBdrIUoCq8aYV8H4AAO/g3fqUW+4RIYoj8HiCDrJd4/u78ubnLEMmRcdA3mgbevwZnW6rIBZCoVjVg/a4QvLu/yVeOczB1eF2DAqgJr+J82ewz6ZJl3GTqt5da6aYOtPOSwlYNjArkCvgXLNZZZjb3cUe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,68 +116,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-page_counter_calculate_protection() runs without locks. Several
-reclaimers can update the same counter's emin and elow at the same
-time, and readers such as mem_cgroup_below_min(), mem_cgroup_protection()
-and the dmem eviction code load them with READ_ONCE().
+Commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
+as-is") and commit 0b1bf60c324a ("mm/zswap: reduce the size of the
+compression buffer to a single page") updated zswap to pass a
+single-page (PAGE_SIZE) destination buffer to crypto_acomp_compress()
+(so incompressible pages typically overflow the PAGE_SIZE buffer due to
+compressor metadata overhead). Because the single-buffer software
+compressors return -EINVAL on destination buffer overflow and
+zswap_compress() checks 'if (comp_ret || !dlen || dlen >= PAGE_SIZE)',
+destination buffer overflow (incompressible page) is conflated with
+unexpected compressor failures, causing two user-visible bugs:
 
-Commit b3a7822e5e75 ("mm, memcg: prevent mem_cgroup_protected store
-tearing") made the main path store emin and elow with WRITE_ONCE(), but
-it missed the early return for a counter whose parent is the reclaim
-root. Those two stores are the only plain accesses to emin and elow
-left.
+1. Broken debugfs telemetry when writeback is disabled
+   (memory.zswap.writeback = 0):
+   Single-buffer software compressors (zstd_compress_one(), lz4, lz4hc,
+   lzo, and lzo-rle) return -EINVAL on destination buffer overflow
+   (whereas the multi-segment streaming path in zstd_compress(),
+   deflate, and 842 return -ENOSPC). Furthermore, in zswap_compress(),
+   'comp_ret = comp_ret ? comp_ret : -EINVAL' forces comp_ret to -EINVAL
+   even when comp_ret == 0 and dlen == PAGE_SIZE. As a result,
+   incompressible pages are misaccounted in
+   /sys/kernel/debug/zswap/reject_compress_fail instead of
+   reject_compress_poor, leaving reject_compress_poor at 0 and causing
+   false-positive compressor failure alerts in monitoring.
 
-With CONFIG_KCSAN_STRICT=y, a few tasks writing to the same cgroup's
-memory.reclaim trigger reports like this within seconds:
+2. Silent masking of real compressor failures when writeback is enabled
+   (memory.zswap.writeback = 1):
+   Because zswap_compress() checks 'if (comp_ret || !dlen || dlen >=
+   PAGE_SIZE)' and unconditionally clears comp_ret = 0 to store the raw
+   page in zsmalloc, genuine compressor errors (such as -ENOMEM,
+   -EINVAL from an invalid context, or hardware accelerator errors) are
+   silently masked as incompressible pages. Users see 0
+   reject_compress_fail events, and pages that encounter an unexpected
+   compressor error are miscounted under stored_incompressible_pages.
 
-  BUG: KCSAN: data-race in page_counter_calculate_protection / shrink_node
+Patch 1 updates zstd_compress_one(), lz4, lz4hc, lzo, and lzo-rle to
+return -ENOSPC on destination buffer overflow, matching the streaming
+path in zstd_compress(), deflate, and 842.
 
-  read (marked) to 0xff1f91b146d40e40 of 8 bytes by task 163 on cpu 4:
-   shrink_node+0x57a/0x1210
-   do_try_to_free_pages+0x194/0x930
-   try_to_free_mem_cgroup_pages+0x204/0x3f0
-   user_proactive_reclaim+0x28a/0x4d0
-   memory_reclaim+0x35/0x50
-   ...
+Patch 2 updates zswap_compress() to treat only comp_ret == -ENOSPC or
+(!comp_ret && dlen >= PAGE_SIZE) as an incompressible page (storing it
+uncompressed in zswap when writeback is enabled to preserve LRU order,
+or rejecting it with comp_ret = -ENOSPC when writeback is disabled so
+zswap_reject_compress_poor is incremented), while jumping to unlock on
+unexpected compressor errors (comp_ret || !dlen) so
+zswap_reject_compress_fail is properly incremented.
 
-  write to 0xff1f91b146d40e40 of 8 bytes by task 167 on cpu 6:
-   page_counter_calculate_protection+0x1fa/0x360
-   mem_cgroup_calculate_protection+0x4e/0x70
-   shrink_node+0x53e/0x1210
-   ...
+Suseendran Bhaskaran (2):
+  crypto: return -ENOSPC on compression destination overflow
+  mm/zswap: classify compression dst overflow as poor compression
 
-The default KCSAN config does not report it, because it treats aligned
-word-sized plain writes as atomic.
+ crypto/lz4.c     | 2 +-
+ crypto/lz4hc.c   | 2 +-
+ crypto/lzo-rle.c | 2 +-
+ crypto/lzo.c     | 2 +-
+ crypto/zstd.c    | 5 ++++-
+ mm/zswap.c       | 7 +++++--
+ 6 files changed, 13 insertions(+), 7 deletions(-)
 
-Use WRITE_ONCE() for these two stores as well.
-
-There is no functional change. Readers already accept stale values, and
-compilers emit a single word-sized store either way: with GCC 14 the
-x86-64 object code is the same before and after this change.
-
-Fixes: b3a7822e5e75 ("mm, memcg: prevent mem_cgroup_protected store tearing")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- mm/page_counter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 9167ffd1380c..5293460831f8 100644
---- a/mm/page_counter.c
-+++ b/mm/page_counter.c
-@@ -472,8 +472,8 @@ void page_counter_calculate_protection(struct page_counter *root,
- 		return;
- 
- 	if (parent == root) {
--		counter->emin = READ_ONCE(counter->min);
--		counter->elow = READ_ONCE(counter->low);
-+		WRITE_ONCE(counter->emin, READ_ONCE(counter->min));
-+		WRITE_ONCE(counter->elow, READ_ONCE(counter->low));
- 		return;
- 	}
- 
 -- 
-2.53.0-Meta
+2.56.0.218.g1ec904b173-goog
 
 
