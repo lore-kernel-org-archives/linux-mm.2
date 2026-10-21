@@ -1,138 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CED606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 15:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDB860A2628
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 15:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=kFdhW9k8;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=fjGwKxnF;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Afx3HhuS;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=41gz4xnp
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=AGczIQhJ
 Received: by kanga.kvack.org (Postfix)
-	id B2D5F6B071D; Wed, 21 Oct 2026 11:07:58 -0400 (EDT)
+	id 9526C6B071F; Wed, 21 Oct 2026 11:25:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADE066B071E; Wed, 21 Oct 2026 11:07:58 -0400 (EDT)
+	id 902DD6B0720; Wed, 21 Oct 2026 11:25:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A6206B071F; Wed, 21 Oct 2026 11:07:58 -0400 (EDT)
+	id 819346B0721; Wed, 21 Oct 2026 11:25:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD736B071D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:07:58 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0123C80568
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:07:57 +0000 (UTC)
-X-FDA: 85346963436.02.3C0690D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A5F9640003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:07:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kFdhW9k8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fjGwKxnF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Afx3HhuS;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=41gz4xnp;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 575936B071F
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:25:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E426216058A
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:25:32 +0000 (UTC)
+X-FDA: 85347007704.16.6A63F11
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 40D612000C
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:25:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AGczIQhJ;
+	spf=pass (imf03.hostedemail.com: domain of 3adnYagkKCNwR8PSLQ8FSEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3adnYagkKCNwR8PSLQ8FSEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792595276;
+	s=arc-20220608; t=1792596331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4IL+wAUg2YMioNglotQqAajEtIi50oQ+jrWGTenLzTU=;
-	b=lxYopoxX0Wm6DqZoIrCw0M6np9DeUP6DowpfCgyVqACK33Ej8E/y3hHGUJTyX09Pmh1Vp6
-	PMBzsEUmN1DuL1LHIBYwDG2BG1o5jvETAJUggqI1CQeVyn2Cd63gIOLaEYdxB9vwZE8Eku
-	Kw7nDDJROwUTRD4LLpFcoWYe2cm3C7w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792595276;
-	b=V+lMkSKBT5vVPOlsXE38BG4bz/G0r6bO2Xk8e3FsT4VIBqghK0PtlQbvhtqs91CsTS9dv2
-	NXvOiKvwcuN8eZctHGTEsNdmnXG/XSV27C1LGm1rSDdbdWEkVRinST4NhZoFqSIGpPdt1+
-	JeC11GgHyuS67fuODRVV65kF1Dalvd4=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=W0oLRP7RmrwK+s1WyDoN9zSSlBczsPl1G7flMYO8vs0=;
+	b=8paOp1iVLAEY3BcIWOsK59kXJx6UlM/33rzpaUs/7EQqeihsYSPywRUlQtiygwU6IGyCSO
+	9DUHNiGDb3TP8CpWYPIOWSY0SJWmebr9/IdqvgI60xu5Tyyo6GTk2Yqsp2zDPfjHFn1nL4
+	3qehOJoSvg63+c/ECpyM7NPgnUTzaLY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kFdhW9k8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fjGwKxnF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Afx3HhuS;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=41gz4xnp;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 04DAA21F93;
-	Wed, 21 Oct 2026 15:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792595274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4IL+wAUg2YMioNglotQqAajEtIi50oQ+jrWGTenLzTU=;
-	b=kFdhW9k85lZxkLuQFkoMN1Di1Ys1mAf090DUb/Ji7ixNmKq/7S+1NpATauaLFaNpF2ZyKE
-	tXYT4LFJFLCQW6Wl5eY6+3oDi5TVAEBQBS+HK0BUM8yMIN0itndeky0yVmXyMcz0xLZERu
-	JjA5PGnQ6zMwRZ3Avq2mAccSo0Trsew=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792595274;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4IL+wAUg2YMioNglotQqAajEtIi50oQ+jrWGTenLzTU=;
-	b=fjGwKxnF9K6US9y2Fxt0YOsr+du6LfzBFo8MYsB1tqkvVrOz6L1nti9tJZ0e46/PicKWhJ
-	UkJp5qKsFSvUBUAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792595272; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4IL+wAUg2YMioNglotQqAajEtIi50oQ+jrWGTenLzTU=;
-	b=Afx3HhuSSFNpkakRqGh9I0RnIMjicwBbxKLXHp6MhGJOvuIdqA/BJL7AlsjoNTaBsB/05H
-	z0sM9DHquMUjpDCt6FqUdatEvbRv/JdU/JxnuhdM7WMYaWmTW4LW2MuC06qcQYUS2xxWnX
-	3ZCc8J8qQq6KJ/QMrwNHb9GahepSSYQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792595272;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4IL+wAUg2YMioNglotQqAajEtIi50oQ+jrWGTenLzTU=;
-	b=41gz4xnpCASbZfXud9a6C7Kcx7fCf3dbp8s0+8/xXgef7skC4pF/NTncrOEb2ewFJVQE7M
-	AI7f5EUdBu7Y/pAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CFF70134A5;
-	Wed, 21 Oct 2026 15:07:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ixtZKUbV2GrnfAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 21 Oct 2026 15:07:50 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 59E92A13C6; Wed, 21 Oct 2026 17:07:46 +0200 (CEST)
-Date: Wed, 21 Oct 2026 17:07:46 +0200
-From: Jan Kara <jack@suse.cz>
-To: Hungyu Lin <dennylin0707@gmail.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, jack@suse.cz, 
-	shr@devkernel.io, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page-writeback: avoid 32-bit overflow in dirty
- threshold shares
-Message-ID: <n6sci6hug3mywpnhcylk5b3fldm3xjekiexwugqgmxx35sotsc@wcdhaetb23jr>
-References: <20261021060654.27855-1-dennylin0707@gmail.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AGczIQhJ;
+	spf=pass (imf03.hostedemail.com: domain of 3adnYagkKCNwR8PSLQ8FSEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3adnYagkKCNwR8PSLQ8FSEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792596331;
+	b=7dsOpegWJH6nVYpeCZFHWGwTZrDHC5gelk/HdRoVTPVUgOdikdwpjfX8VHuxADV1Eyb3I/
+	nBwTYHCE4pS+TeiD28w3VkjSdSknRoTN3Pzk3Mzjr9mf1mZ+7AT55drJZJXw5DhGWk3XdW
+	CBEt7HTyM6jlbA/ZF1LIyFq523ZAgLo=
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c293e604f0eso78283766b.3
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:25:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792596330; x=1793201130; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W0oLRP7RmrwK+s1WyDoN9zSSlBczsPl1G7flMYO8vs0=;
+        b=AGczIQhJFPtE5xlv1XSQSzTsg71QQjlMvb7wewvFjTIMrP2PnmMcUTj5L2xypGKuhs
+         SzD2qWkm/0Bcz1/75WadajY9qefhNE8T3TFvz+5PJzP8ADXgcHwVITcKF4AWct2NIau3
+         nVPj8n4e4ZN58LIIKuvhBgdXLeSMOTzLDtJvS4vbJRIJaxomhoovc7dnql5u7A7ptmd1
+         Bf4sx33jNZFhDaKGeKF2NwK7RXVxkEyh1HU7AfICbS3ual5wyt+mFPIT7kDw0vZSKUK3
+         AllcZYrgVSE++nNFMC54B+JP+vSq9ESqDAm9xmhIklY4pyJysOpdbIPOpQKTaQvoTUZI
+         B5ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792596330; x=1793201130;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W0oLRP7RmrwK+s1WyDoN9zSSlBczsPl1G7flMYO8vs0=;
+        b=xJSI2l0kR9DgcGepU5fa6QCmzXazkGpQM8ZTllauAPaQQ/saJnzmrDh8xHccbxd453
+         iOfAcg0UQFzS4NobieYWPIWT3k/dh4wwEm44g9Vwn0nm9NbKHDacclsRWETohiailtiH
+         pdWga2rGrNESBzTICqwd7wh2PVqgyeT8fxPSvty3Fih9wm+ogUJ13Dn8tLOjdVDwCIW0
+         NWx/6vHRaHsKQ8H9+jgvMqJXtu+n8OK/WYdS5iu2eyBb4+kbgHnwinst1nqkciNmjk1G
+         VpeTpObY05hRvaTD/CVxwiAipzDD/C4iB0+r8Rzxc93V8rvpV+PSukrbba7dbFoRYGCl
+         3Mkg==
+X-Forwarded-Encrypted: i=1; AKwUvBz2mlKNQc9ZzRF9qVnUbJ8TYq83yy2tt85MebfTPFLwVYuhrZyjv1/mi9sIMbPtuG6z4qM8/TaDRw==@kvack.org
+X-Gm-Message-State: AFq9FYLp1UwXVONMTkc9IxQDIIQSTD1Tb6uEXr6EbftoBN9sas0RZizL
+	rtUsDU4Q27mLN5QOVI9qLoW1vaqmatWOl/agVW+ZDokUYraKlM2x2nFsdfc3igTdZXB1AZLXDKx
+	Ekcqxg3Wy+I1Ks0artg==
+X-Received: from edqo20.prod.google.com ([2002:aa7:c514:0:b0:6b1:dfff:2ee9])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:dc8e:b0:c44:14d:d95d with SMTP id a640c23a62f3a-c46796ec9bcmr208718966b.23.1792596329153;
+ Wed, 21 Oct 2026 08:25:29 -0700 (PDT)
+Date: Wed, 21 Oct 2026 15:25:23 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021060654.27855-1-dennylin0707@gmail.com>
-X-Spam-Level: 
-X-Spam-Score: -12.80
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A5F9640003
-X-Stat-Signature: h97nn8q6mqbhmsizcnkux4zyjgz1ehgq
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+Message-ID: <20261021152527.375070-1-tarunsahu@google.com>
+Subject: [RFC PATCH v2 0/4] liveupdate: Feature header ABI and named handler
+From: Tarun Sahu <tarunsahu@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
+	David Matlack <dmatlack@google.com>, jgg@nvidia.com, robin.murphy@arm.com, 
+	loganodell@google.com, oupton@kernel.org, kevin.tian@intel.com, 
+	alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, 
+	will@kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com
+Cc: linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
+	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Tarun Sahu <tarunsahu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 40D612000C
+X-Stat-Signature: inewbu5rfkxchkocqk7u7sarhyfi7xg7
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792595275-665630
-X-HE-Meta: U2FsdGVkX1/bTCot2w4+hLySTfcmnjXSAnP6xA1b+Vr6A9f7lEEgXcodMSsuYCZf4hx+5d3tT+kjaqGifJvA2/Yt96pgvhsiY0WXqVsyzXXlVYI6vmOXez6wvUnDmfVACy5McvpoT5h65Zu3WuHdyxB2DhQ7MiJlWCwsRxA93a6LVESymxqDIFe0potlfn7eEClOfx/wtIH1QzW3h/PhF5ay+hPNhGbTInx24lhsQUunGolJdAzwePBLd3pjQq88IstmJdHsQRsyM3HbI1TVEZvrdZF+RdmN5v8ukPy3wWbh2Ok8W1uo2ccSpS1B6jo/zAlWXgRo9PmIXW9oF8394Fe8W6x7YO2nw+ENugeshH+dQuBLkA1KC6orSDzVLY6kJFDopeKM8fltbLcyl33fvQJRyDj6sjXEWcaYJG1PGQ6PRfnVGxRtejD/QliVld7xNeans8gqrCGwZd3CnbYSD2gzPj8BuZCrDAjfiy6hSxSHhbZTZXWvz1eggVnFBQcBe5pTNCuCnyX4BPIbOUGcKKsHnVTX/QJWa1xzAbLQJOYqrqdaRCU0ydqxEe+QxvJa3iR8bVDrCurOMvZqJ9yqwINrr76ikYvfUaL3Uh/Gz/VIJHoEZLqE4cDoTKtKQpDO7aWmUTfvLilApaTuSGqZq8YXPtP9Q0msyYex1kbfMzbTUWblCL3D7Aewk+ZmIEgLmPuyQgic5gffFR4cKJuyWhXY14Li9YIibBD30NB5Okg+vQ3vQlydUaxgTZhvnKBorTEWUr0JiePDwHH0ViCpO+m9j4jCh0h7IWUfDhlueeJ+1rCTHnvm2IjipPzGIq5l8bPIUyIEbof/lCHlYzNh6cG/WP1lzRARKJ1c5j3Cgg8OtoiENob2+teozlStMwABI2ycemnP4AOd7uCe7jUFHgyBmQPePDK1CRhdN2dPWlflmYcQm/LBMkXeU7Ha9W6DME5oXrm6f0MIzOiMwL0
- YJ7bW6IH
- U6u1h0O4nLTHcB+L3lLCVsPcbQjXNEG27HprV+u6zpB4f5G4izWr9KkN6IzweVOtm00W1dh4AqGOBFewICNaiaQlsjogc1Dnb+60K6TaDpMLHN4WWLPKEHdafyEhQEyBn5DsW4a8LlNy/lXIujih6S+T/AfxLIM+/e4dyM8u/uzMegRf/OCE/GI+d+ALds3/Ze/N1iZGPFMq3mnXukJXtyQCDHMMMR4I0G4xOHcszlH+Kb1Fp7V571aDlGrChEecoR8Yj2KeG6TOPjYxseZ9IeJ5nFbAzc1GhpL9NPyPmMjWLXYcBeBOO2itmRl4mZJ5hxeBD9qmL3Kze6tSyYwkF05dlC+AFSiCsNKcqbjd79T8xNQ95ENO0N4mnz2Jnkwf9pEpx
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792596331-254392
+X-HE-Meta: U2FsdGVkX19zek0I2Fb+lz9TUrEYmqqNDDenxx3eOZuWL/AxTEpAnYXbq+8kaB0Wvlez+SuuKIazSIcgs9PqojFbZg0cw8VQeoma/9rsy7FK2k4E6MASATExO33w86dIm3ZzStLcVmVVPTD24RNg9sGdziyIapVBK15C3mv1/NDC6qluZ/MWw6XOcj0120Ig4NXoRuFqnD4a3yZjBbm+pf+LWdGQSmad3gj9myqoklPJZnL4oEOL8cr2I5YafMkeas8oBZPFOCMl7xgV6sB9MHI9JArc7jEEDMxLonG3PHNApQdhnGuMIVA012L/wIWeKBzUNC1sHochf/5pDYpYpa0phbAFmO0yqlgR77L+Azt11v2QNvMmoozQuARnHvuwBuCT8UFUMQqRwpWxs8OjufbhVmufPggm+bAM6co92a0xZiC9AaSne04qG+gDwq/mu1DHD/YOIf1yiIjRuvR8QQ2PZdQko+TjzwMFbFW6G6OBmXSJolDi+JhCWRuNYIHNXv2OmabMPbk1e3wpgp5xMEQO/U8HdGEOUYzE0KevIyMEGvqpkVR8d8T0KPc1AgHYnXt2xZ89R2OFLSVRGglytK+3Q+gaK32KzhZCsE5L7EPdd13U//tJME5psM/EJu/XLpiMkuh0Xi6fddGoiH5K5nA3dmKCucFhLeqL1auv+/57czfcwuyQGWzDZJUIggAzCobsrrjXnDSXtSackvJCTS8yQfLGPcoiMQ1ghCdcP2Ef2tK+BxY1/0fORYPLbpXJiIgUQ5O4Gd+WApbbyPsp+zChKbC4kKhHkYEcWtCR94Dlf/0q9eCnnvZR51Yin0MqCrWDKpMCmwd/d6tdQVNNqDmie+MVAcnSvYa9hW/MheP7d6xStPVlg7e6qliS8cXa8VRJhHPzl6OO10K95SWt9+Mw/ci60F4foPJtlXhVMYIggD6j7HQtdgDP9bufNIdjeJsy21cYxysI4UhrO8a
+ lfk2rWn4
+ h2dlEB1jvEj6eeSNXSdrjXBN2hvWvqMX+TPPfgfhAx/Svq+cNteXgO9kPWwfNWefV6zRTZCvMuntvlUCD3M9oufV95CWJbrDGV0+HF8wwi9lTKR+JA1oA6jQG7QlrwwF0aiejPmk2UyljpsGRt2tsKlbI5pTu0c/6s3gsHb/IVNsJWCws/LaxxA1U9YNHdbk6notF21gd7GpEVwCRZwJdayiKux43vbowUT2KDM2ji9ud12f/z8VMoSIbKzzE81enLTocFFQkKmJcAWULTHtgImnIchci1bNFJujQoWeglgCwCNEKLCWvRZ0l5rjTK01Tbxq7hVuXdOyDtvJ9KWvm1iEoq+Ktpwrwyu9povV0idy+F1ynVaptApNAx5Jd/psOZFY8WA78RITPy0+yi5WVZPZTVw+A28AX03yR1MvI9c/0wEDKQbhHhxUqXRon0R1oQ2UXflEV/iWWmueCKR4pv9QOKuywWMUqkZ/B899l8GNPSGv2sipNipFTDiiX4fjnTXqdNJ4V4/vRUD0/A2bJBXl1RrDzcjaPGc4Q7WbCqexpEpxbIriN4e9dqBbPfhOE22yhxBQFx6aZvzHhUW8+X0OvuO8bzWkxK4w4JuUbu9na/nQRuVdsgHv9tg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,80 +118,127 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed 21-10-26 06:06:54, Hungyu Lin wrote:
-> The ratios used by __wb_calc_thresh() are scaled to parts per million,
-> but the threshold and ratio operands are unsigned long. On 32-bit
-> kernels, their multiplication can wrap before the result is assigned
-> to u64.
-> 
-> For example, with a threshold of 25600 pages and the default maximum
-> ratio of 1000000, wb_max_thresh becomes 4125 pages instead of 25600.
-> The shared threshold and minimum share calculations can overflow in
-> the same way, producing incorrect per-writeback dirty limits.
-> 
-> Use a u64 threshold for the three ratio multiplications and div_u64()
-> to retain the existing division order and rounding.
-> 
-> Fixes: ae82291e9ca4 ("mm: use part per 1000000 for bdi ratios")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+Live Update Orchestrator (LUO) and its file handlers currently validate
+handed-over KHO state using monolithic compatibility strings ("luo-v5",
+"memfd-v2"). Any change to a serialized structure, even an optional
+additive field, requires bumping the compatibility string, breaking live
+update between adjacent kernel versions across both forward updates and
+rollbacks. This series introduces the feature flags per serialized
+struct to communicate between the kernel about their active and required
+features. Having feature flags increase the compatibility matching
+granularity.
 
-Looks ok. Feel free to add:
+This series also renames the file-handler and FLB compatible identifier to
+name, extends LIVEUPDATE_SESSION_PRESERVE_FD so userspace can
+optionally select which registered file handler preserves a file
+descriptor by name, and replaces monolithic version strings in serialized
+payloads with a fixed-size 2-bit pair feature header
+(struct luo_feature_hdr). So in future, If a change to a subsystem
+preservation can not be handled with feature flags, we can attach a new
+handler to support the preservation.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+This change is motivated by the LPC discussion.
 
-								Honza
+Named File Handler Selection
+============================
+With fine-grained compatibility tracked via feature headers, the
+handler and FLB compatible field is renamed to name. When a subsystem
+needs a genuinely incompatible new handler alongside an existing one for
+the same file type, struct liveupdate_session_preserve_fd now includes
+char handler[LIVEUPDATE_HNDL_NAME_LENGTH] after token (keeping
+min_size at 16 bytes for backward compatibility):
+- Empty handler (or 16-byte struct): selects the first registered
+  handler whose .can_preserve() accepts the fd, keeping default callers
+  on the original rollback-safe handler.
+- Non-empty handler: selects the registered handler with that exact
+  name and verifies .can_preserve() accepts the fd.
 
-> ---
-> Changes in v2:
-> - Use a u64 threshold variable instead of repeated casts, as suggested by
->   Andrew Morton.
-> 
->  mm/page-writeback.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index eeab25d6ce36..1d6aab8781a5 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -883,6 +883,7 @@ static unsigned long __wb_calc_thresh(struct dirty_throttle_control *dtc,
->  {
->  	struct wb_domain *dom = dtc_dom(dtc);
->  	struct bdi_writeback *wb = dtc->wb;
-> +	u64 threshold = thresh;
->  	u64 wb_thresh;
->  	u64 wb_max_thresh;
->  	unsigned long numerator, denominator;
-> @@ -894,13 +895,14 @@ static unsigned long __wb_calc_thresh(struct dirty_throttle_control *dtc,
->  	fprop_fraction_percpu(&dom->completions, dtc->wb_completions,
->  			      &numerator, &denominator);
->  
-> -	wb_thresh = (thresh * (100 * BDI_RATIO_SCALE - bdi_min_ratio)) / (100 * BDI_RATIO_SCALE);
-> +	wb_thresh = div_u64(threshold * (100 * BDI_RATIO_SCALE - bdi_min_ratio),
-> +			    100 * BDI_RATIO_SCALE);
->  	wb_thresh *= numerator;
->  	wb_thresh = div64_ul(wb_thresh, denominator);
->  
->  	wb_min_max_ratio(wb, &wb_min_ratio, &wb_max_ratio);
->  
-> -	wb_thresh += (thresh * wb_min_ratio) / (100 * BDI_RATIO_SCALE);
-> +	wb_thresh += div_u64(threshold * wb_min_ratio, 100 * BDI_RATIO_SCALE);
->  
->  	/*
->  	 * It's very possible that wb_thresh is close to 0 not because the
-> @@ -916,7 +918,7 @@ static unsigned long __wb_calc_thresh(struct dirty_throttle_control *dtc,
->  			wb_thresh = max(wb_thresh, (thresh - dtc->dirty) / 8);
->  	}
->  
-> -	wb_max_thresh = thresh * wb_max_ratio / (100 * BDI_RATIO_SCALE);
-> +	wb_max_thresh = div_u64(threshold * wb_max_ratio, 100 * BDI_RATIO_SCALE);
->  	if (wb_thresh > wb_max_thresh)
->  		wb_thresh = wb_max_thresh;
->  
-> -- 
-> 2.43.0
-> 
+2-Bit Pair Feature Header (struct luo_feature_hdr)
+==================================================
+Each serialized ABI structure (struct luo_ser, struct memfd_luo_ser)
+starts with a fixed 128-byte struct luo_feature_hdr containing:
+- size: byte size of the enclosing serialized structure from the source
+  kernel.
+- flags[15]: 15 chained 64-bit feature flags entries. Each entry
+  encodes up to 31 features as 2-bit pair (req, active) states
+  (enum luo_feat_state: LUO_FEAT_DISABLED = 0b00,
+  LUO_FEAT_OPTIONAL = 0b01, LUO_FEAT_REQUIRED = 0b11) plus
+  LUO_FEAT_EXT_MASK (bits[63:62] = 0b11) chaining to the next entry
+  (up to 465 features total). Because the header is fixed at 128 bytes,
+  payload field offsets never shift when extended flags entries are used.
+
+Each subsystem defines its feature states as a static const u8 array
+indexed by its feature enum, which luo_feature_hdr_init() packs into
+the payload feature header. During deserialization,
+luo_feature_hdr_validate() checks the header from the source kernel
+against the feature array in the target kernel according to the
+per-feature (req, active) truth table:
+
+  Source Target Action
+  (1,0)  (x,x)  Reject -EINVAL: invalid source kernel (req without active)
+  (x,x)  (1,0)  Reject -EINVAL + WARN_ON_ONCE: invalid target kernel
+  (0,0)  (0,0)  Accept: feature absent
+  (0,0)  (0,1)  Accept: feature absent
+  (0,0)  (1,1)  Reject -EOPNOTSUPP: target kernel requires the feature
+  (0,1)  (0,0)  Accept: ignore payload data
+  (1,1)  (0,0)  Reject -EOPNOTSUPP: source kernel requires the feature
+  (x,1)  (x,1)  Accept: use payload data
+
+Structure Evolution
+===================
+The relative order and offsets of fields in serialized structures must
+remain unchanged as features are added or retired. New fields are always
+appended at the end of the structure under a new feature flag, and
+retired fields are kept in place so that the offsets of subsequent
+fields never shift. If the type or format of a field needs to change,
+the existing field and feature are kept intact (and retired when no
+longer needed) and a new feature flag with a new appended field of the
+new type is added.
+
+In the target kernel, fields of a LUO_FEAT_REQUIRED feature are
+guaranteed to be present once luo_feature_hdr_validate() succeeds,
+whereas fields of a LUO_FEAT_OPTIONAL feature should be accessed only
+after verifying that the feature is active in the source kernel header:
+
+  if (luo_feature_is_active(&ser->features, FEAT_X))
+          val = ser->x_field;
+
+Changes since RFC v1 [1]:
+- Renamed file-handler and FLB compatible to name and added optional
+  handler selection by name in LIVEUPDATE_SESSION_PRESERVE_FD.
+- Replaced the 3-mask (supp, req, active) + variable-length FDT and
+  feature-section design with a fixed 128-byte struct luo_feature_hdr
+  embedding size and 15 chained 64-bit 2-bit pair (req, active)
+  flags entries directly in struct luo_ser and struct memfd_luo_ser.
+- Replaced compile-time bitmask macros with a static const u8 feature
+  array per subsystem packed by luo_feature_hdr_init() and validated
+  in a single pass by luo_feature_hdr_validate().
+
+[1] https://lore.kernel.org/all/20260903023452.721732-1-loganodell@google.com/
+
+Tarun Sahu (4):
+  liveupdate: Rename handler compatible to name
+  liveupdate: Select file handler by name in the preserve ioctl
+  liveupdate: Replace compatibility string with a 2-bit pair feature
+    header
+  mm: memfd_luo: Add the 2-bit pair feature header
+
+ drivers/pci/liveupdate.c         |  10 +-
+ include/linux/kho/abi/luo.h      | 367 +++++++++++++++++++++++++++----
+ include/linux/kho/abi/memfd.h    |  39 +++-
+ include/linux/kho/abi/pci.h      |   2 +-
+ include/linux/liveupdate.h       |  18 +-
+ include/uapi/linux/liveupdate.h  |  15 +-
+ kernel/liveupdate/luo_core.c     |  27 ++-
+ kernel/liveupdate/luo_file.c     |  64 ++++--
+ kernel/liveupdate/luo_flb.c      |  16 +-
+ kernel/liveupdate/luo_internal.h |   3 +-
+ kernel/liveupdate/luo_session.c  |   7 +-
+ lib/tests/liveupdate.c           |  22 +-
+ mm/memfd_luo.c                   |  16 +-
+ 13 files changed, 481 insertions(+), 125 deletions(-)
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.56.0.212.g129ede20d9-goog
+
 
