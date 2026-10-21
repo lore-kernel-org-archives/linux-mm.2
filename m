@@ -1,113 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8577606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 20:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8558E606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 20:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c8C3R6P5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OVPYEOJF
 Received: by kanga.kvack.org (Postfix)
-	id C6A856B07A8; Wed, 21 Oct 2026 16:40:06 -0400 (EDT)
+	id 89E0F6B025C; Wed, 21 Oct 2026 16:41:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1B296B07AA; Wed, 21 Oct 2026 16:40:06 -0400 (EDT)
+	id 875406B0266; Wed, 21 Oct 2026 16:41:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B58A96B07AB; Wed, 21 Oct 2026 16:40:06 -0400 (EDT)
+	id 78D4B6B026B; Wed, 21 Oct 2026 16:41:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 945776B07A8
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:40:06 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38021A06A0
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:40:06 +0000 (UTC)
-X-FDA: 85347800412.26.0FB5E89
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 620F7120007
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:40:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c8C3R6P5;
-	spf=pass (imf29.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4C5446B025C
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:41:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA60CA0699
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:41:46 +0000 (UTC)
+X-FDA: 85347804612.13.11E06DA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 34492100006
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:41:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OVPYEOJF;
+	spf=pass (imf05.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792615204;
-	b=oomkG0RHTHXkaJUDyqWLFVw9nyjD+IEnm8ac434GrHr2O3Q6ST9aRukQffuNp30yRe2h03
-	SJSWv/3h2/sCDoOBSXHk5HDZ808wTCkuJhido9lixUc17yDLEDzHznVhPlFDRoyv3H6ltC
-	wHhORKc19bc11oLa3iWhBL/iu1lLeoI=
+	t=1792615305;
+	b=5+wi0SJr8cKO/N3xeLmrNVdHghUa7kMiVl2YYBD7BxiNCDdJk/Jd2gJOLtCbB2Mzs6Lw4p
+	OUUfejBDjOu7RVhVnPEH+yPceoKE5U31TbNqsep0qf1yYFuX72ZC6H9l4QOsMbPXYH7MDM
+	Zx/g5Jy33/+MbsVXPG03OeXOCLpTjh8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c8C3R6P5;
-	spf=pass (imf29.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OVPYEOJF;
+	spf=pass (imf05.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792615204;
+	s=arc-20220608; t=1792615305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=juErZhvjoSkm5e8GzLZMCvXuam8Gd7RIkFvc7uAIv/w=;
-	b=g45PvARqAyM7kcpWOaOqaiv6UaUgOTlssLleKXI/1b6C57wjwJuQsB8KjIDSGTVRIImEWi
-	ZjmsmEA2XMDI6I0CipnJrvYRaPZnjVZ0dE2ZcfuN2A78ksNGcBj6XxbaBETH1JleaknfE0
-	LftMLf30y7Pa6DL3kBpfEDOzk9jtp2E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792615204; x=1824151204;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=J5q7gxHb9njBGGMG4RpHoR7VIzzwmBGZbkkvnhJBKA0=;
-  b=c8C3R6P56SfYYYpv5JB3yw+2y+POPiEJ9U3WvHJiHmWaosw2cDrJ37LF
-   yOjDDKONxjAroUTIiCFSgbLn2uVrWpjrOBjsXNz+9u5VOjed3IQf0jxKd
-   uniulLptGKs7GhqEsvnMk/CCzrgE9NOP+YVmIQj+03cTS2zQpIp9cNPJP
-   lv56yfCCK7GlAkb+r5bkS8Etu29UCLoLvicRwyR7k00U0RopOU3BzE4eK
-   UdY2Fba18NpVBtvPrnqwURX6/UFkWgLrj0jL/AUlffg7BaZGbraAi7voK
-   9X0d1ZfND0TNzn3z8ofc5VdDcUZRg86EAAsp1r7ZErS8n2q0h00sbti+z
-   w==;
-X-CSE-ConnectionGUID: GosAbcSPQp2iWLfLiHO0NQ==
-X-CSE-MsgGUID: Hw3FuWMKTkuxGn84NXPqBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1257295"
-X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
-   d="scan'208";a="1257295"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 13:40:02 -0700
-X-CSE-ConnectionGUID: x2Z9GKP8TG6vbIsZ4Fic/A==
-X-CSE-MsgGUID: 3/BEZK9pTXOVpTGnUawn+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
-   d="scan'208";a="4982516"
-Received: from unknown (HELO [10.241.242.209]) ([10.241.242.209])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 13:40:02 -0700
-Message-ID: <cbf93381e02861620b012ace93c816f2c0822fea.camel@linux.intel.com>
-Subject: Re: [RFC PATCH v3 bpf-next 1/5] sched: fix stale get_pref_llc()
- stub for !CONFIG_SCHED_CACHE
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Yafang Shao <laoar.shao@gmail.com>, ast@kernel.org,
- daniel@iogearbox.net, 	andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, mingo@redhat.com, 	peterz@infradead.org,
- juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	akpm@linux-foundation.org, david@kernel.org, gourry@gourry.net,
- tj@kernel.org, 	hannes@cmpxchg.org, mkoutny@suse.com,
- shakeel.butt@linux.dev, 	roman.gushchin@linux.dev, yu.c.chen@intel.com,
- zhao1.liu@intel.com, 	lizhe.67@bytedance.com
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 21 Oct 2026 13:40:01 -0700
-In-Reply-To: <20261019064157.29885-2-laoar.shao@gmail.com>
-References: <20261019064157.29885-1-laoar.shao@gmail.com>
-	 <20261019064157.29885-2-laoar.shao@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	bh=Bq3V9J9F4ZHKrQtjacM7Tw7YXz58yMhcGPTw8dbAFrA=;
+	b=R0ImgTfp9xFFRK4H/N7Ihbj9yy0pS72RcjgwC4dRIHcz2uMvvkvXfXaf1n+qpB079P1ZW3
+	nzhSUmz2uJBZryqWuNJWcA84ugNgr8sJWdOBjkP7xREJj6SUl+QQtm9FqsWO+t+k7q5IW3
+	NGjQcZFz6EEqE5u4AEZz1g1kEBX2KlE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5ED1441A43;
+	Wed, 21 Oct 2026 20:41:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1411F000C1;
+	Wed, 21 Oct 2026 20:41:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792615304;
+	bh=Bq3V9J9F4ZHKrQtjacM7Tw7YXz58yMhcGPTw8dbAFrA=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=OVPYEOJFHxyq2Jn+Mw16KBU0u4plWBYpqFAxZfQIetwIc4UlXVDL+weM0LK9cj2UC
+	 RC8KozZM3bGjca4q5PGzfvxdvRwJkWOWFr6SOq4BzyWUPITiKI+LTe8X4uRMjUNDux
+	 o0kFUr2WR0J0IuQvKhY7daAWRScMmQNEfuGX59yDrN/yz3Hl/bb5wylqgz1rXnJ+Ur
+	 /wF7jX7kB1baY0FPJKzEoyCnvxxQdcgleWPu3ZsAxN84jz62ON9Shl1lw5DnEbGgH1
+	 K1xe68vud9jyiFi7OU8IJFoVYDnBTVZsrdy2H4RReHnjjJZsPrfO+X/SdQsVJCsXVB
+	 B/Xex9h+p1tyg==
+Content-Type: multipart/mixed; boundary="===============3655339663897498520=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Stat-Signature: gjr6unjzc35onjpdnqhj55yzgcwubrs4
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 620F7120007
+Message-Id: <ff53ef1657f7ecedb34c148ab05588f657dac0d092ffb55923d7bc6fd375bf84@mail.kernel.org>
+In-Reply-To: <20261021195759.119421-5-jolsa@kernel.org>
+References: <20261021195759.119421-5-jolsa@kernel.org>
+Subject: Re: [RFC bpf-next 4/9] bpf: Add kfuncs to allocate and seal user pages
+From: bot+bpf-ci@kernel.org
+To: jolsa@kernel.org,ast@kernel.org,daniel@iogearbox.net
+Cc: bpf@vger.kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,linux-mm@kvack.org,akpm@linux-foundation.org,liam@infradead.org,ljs@kernel.org,linux-kselftest@vger.kernel.org,shuah@kernel.org,john.fastabend@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Wed, 21 Oct 2026 20:41:43 +0000 (UTC)
 X-Rspam-User: 
-X-HE-Tag: 1792615203-296095
-X-HE-Meta: U2FsdGVkX18do/O6SEVPgEu3bzafRR8RqpGIiCtU/jBhPaFqJjw3r3FD7OMCZyj64koETMPw/FzUxEm68JNGnJYzgMQQ3h0ppzo6IgavVkPAdJUiXbYwaxr3ugqB0URr8sfDu+HlKxwMkl2QfMPiTk9jtym1g/6ePK+r0PzXseOeVfXCWO+lCa01ts7Iks8U2VKDdJuIeCTXURnbVWQvqsxl7JvcaoUuijOj633zvLBHVAN+zbfvI0ucESSvdGFgc3sKhyIr1CEVdWWXOJ56MS6/v+zzSJUN2SmTuyzC1saB7RELp1f+E1ZO2SV6OAqHrmNgbMcs00+Pxl2dy7Qo1jqz0eLmaO8Y1ykpXs3l5xQfwFHVcuupZPNzaflzHCdeMc9xV5hCeKbBUqrWy4KC0J1ghmZl21/P/Pq/3rEWXBYNao8ObgHsxcBeZKaGBx/zsLVlYPrinECEaw1bLa3vAL+gPp41sJjZF2ZZZQAEywTeAiqN9UvVyt2OBzqA7fQofEKfHsg1pomw3c4XEVRhCnpORdFo1SX3Jef8PEVpf+7Hs5w56mpa7qruyTsLZGAybFB+aAmOUqIrWKhU7WVvaaXR1vxRzOJjN+ZHQixzv1HIcqI00hGJk5FReXbwxGKg7ZPwrKevRtc/4HLTrX60FeGTK3VZ8ok/wifYAXhtxqObogFIClaIO1E1WAXdROCZZLbBVw5BPLTWaQEsFNIBIDI5V/HL8Pkhwx8bVIIuY9zIp6uWSqM4FUwaMgrmTIXHcsgrX9UZHqfRkPI9P6tVzp40JsMHC6ALYBB2X8v2/lDF2HyFfM4y3mWL0HcBXrXNH7Yyg7sYEN59QXQV8mIfZgsgC/tMJIjkLeMk63dG5ztKXd1NCGx/H3KB62o9qzyGHkaiVUBlAFV9AouYmQX8D5+s4b4g9fKgaGLtlYYRxAF24WKDsGzCOelqa2UriLYpN5dENBxu4Qa7e+THfD+
- 8wFxcHsB
- 3afgX29KaDp/GayVeSFa7724tIWllSVV4zotZTACR4MihYHkXcDG11nXFGKm6a7/R36cJHMdhfD2Y4OXD9NNSOHjB8JA8VTh8rfKg4vf+GabK/VpsmszpA9B27OjFHkCz0r/nRo//xe7rWIrncWAT7cNYdbQ84++nvEjnVwwALpriAJ8Tuofi/rJ6mVJ8b41T3hrFCC82auibGIDC6ALaP0o1YnZuJbRwEvOKWX9/g7QEqk6uYcPQvSzTfmeILIphf6gdQFCQkfSYwmzukLdwdE3VSvP65GnEacepgsg8jSYMQ2kbkYNn+Xv/djmN7bup4rlpCwBgFPCuuBhokXTfpmb8NVmTgwWRnB4bBWZyeEFd/qdInqmHKBwy1riakXV2tv+KF46lxN7AFk6FMKplwpZvPuQCorAnmxZW9XxtBTpg3KsG5e5965S7lKdSO6EPW6s3
+X-Rspamd-Queue-Id: 34492100006
+X-Stat-Signature: 1xz5tespzs9ucij9cfkgrn1dnqx8mw3h
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792615305-644474
+X-HE-Meta: U2FsdGVkX1+nC9KNiY+vw2JFzmB1EgIrfXN5x4wQnN5aNlNdTxNMEatVtFA6ZVGfioKyIZeMyceyBHpn5GcrCa76BvJEA5Tnzb8mshILcCyCzaXHvF0buskTfRFJIGBWrwGgY2j6DjzqVivpXS5nzPzkiGR0fvg8oeJYGw5b8xIf8FEWspF9AKKodcr4Z4ih7EzJcQGyNZ9S5VtvLjg2dCHteaPBCS8Ka4+jljgXLvN0nQJT7yPVwJ8irPyUwzFnsEY19koIVGxv/QXaX83XtLN17BdMJulQF9HLw/ZK8M63ERq+TAys0CSm5CqlbJ8LneUEpFxgIjKcRATFELiwX3flA54mqZ8n4KvJbxxYHmrCzotfkxqrpDEeS9r5+ziYUN+ot0r5H055mLT/naa1ZTQzdVLPLxJDcQBH36erBsRlIQmR8/NuPuMl7zV+y0IpeKgmpbNXnCptkVr8uN2vXO9Z51KuUvn7s1+MGE/U+qkbar6ku/+4qxhP52Y+DUsE+/kflGHSECVyQ590sxKvhEvy9fr/L9FZ8qY2f+kDjHKvRSkkf+xYEnlHLimmZ46gq1iMlqq91CLpqXfEDbqJZ6yZ9DbXRHJnB0Mny6gXJyLc+1IWuSWh+iprAocgiYxImn0Iuaeh5uK1GJrgFWazjH/XJCMjH6inhlT2k7OeE9OV6pdoa5PwjMald6SoCeT4lRaZY8jpYEExIH1gDawYCrdKn/5/BcSp8NFVJvwrsrPr5tDLFZhvueL6yWIPDFLgqT2AHl0WWGKnMj4RCO9Hk6GeQ10dUE46VOr+iGH0bZyk5EXYuYnGk7Z/vXY0o8e+IFAu/YBTWmIniMYc/22ZnA0vNnfjiVVKnOIP/g/Eoz+FYFGVHrmY1zOc7lVtXi+y+NdckvBGwtjTDzd5HCeXPWFYm89iSOO0nxPEarRhjsFK7dvmQc9r0AuKGq5cW1LEB/EZ/9Ptn+ELO98+yso
+ yW0pR3+1
+ UvYjhc5+61JjPUrEdwmLsmNReLYMilw8Vw29V9lGJD/e8OT7lNUz71DeeR0lVgdXw4xZbWpx9pE72zY6KHf75kOUgLbJmvvLeCV1Zauoyy2K0qw/uax1GexaN0TjQ/l64nFSFYtq+c37VoidhRNQxo2NJeKcuS3HXfnfyelRcG92U/aNNgPyH3EYmF2IdJAkulZEvV4HY8aYHh2QGMZqYJ8e+gi3C3hs45xaw932uDLVy2MUuzf2R8s6x37889foT2YcGY5O+Kok5Z3KhAl72TYBQrfUeO0UcchbdifI0nuV2lzOmo29y3e75LZ16VZw/1fyeASmqL+5Knfw54XPvFIMhM2QfbCzPsSqdQ66PKSoRnhiyNweOXgWSsqtThFQMlbVJL85/j/sDZN86kb4nusN6jbBy2Cca8jRkDA5cX1Smmm4DB7Vsl1opRAaMB7O44oy7yR6CUtmPcW2Bz4m/N6JScM75rnnP9I33dNeF98+NXx64p2Cu7NLIe4NZ8rKtq43ovh1Nb3tFBGM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,45 +91,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 2026-10-19 at 14:41 +0800, Yafang Shao wrote:
-> Commit b636fef85bda ("sched/cache: Introduce task_struct->sched_cache_grp
-> to fix UAF") switched get_pref_llc() from taking a struct mm_struct * to
-> taking the task's struct sched_cache_group *, but only updated the
-> CONFIG_SCHED_CACHE definition and its caller: the stub in the
-> !CONFIG_SCHED_CACHE branch kept the old mm_struct parameter.
->=20
-> Fixes: b636fef85bda ("sched/cache: Introduce task_struct->sched_cache_grp=
- to fix UAF")
+--===============3655339663897498520==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: <stable@vger.kernel.org> #v7.2.x
+> bpf: Add kfuncs to allocate and seal user pages
 
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> Cc: Tim Chen <tim.c.chen@linux.intel.com>
-> Cc: Chen Yu <yu.c.chen@intel.com>
-> ---
->  kernel/sched/fair.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 57360f5cdde4..973647ad6c2d 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -2194,7 +2194,7 @@ void init_sched_mm(struct task_struct *p) { }
->  static void task_tick_cache(struct rq *rq, struct task_struct *p) { }
-> =20
->  static inline int get_pref_llc(struct task_struct *p,
-> -			       struct mm_struct *mm)
-> +			       struct sched_cache_group *grp)
->  {
->  	return -1;
->  }
+TL;DR: bpf_user_page_exec() may skip the icache flush on arm64/riscv, since
+flush_icache_user_page() runs before VM_EXEC is set, so with THP a task could
+execute stale instructions.
 
-Thanks for catching it.
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index 4d9e9423826a..246f4969a144 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
 
-Should be backported to 7.2.x kernel as commit b636fef85bda
-that this patch fixes has been backported to stable.
+[ ... ]
 
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+> @@ -3739,6 +3743,127 @@ __bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
 
-Tim
+[ ... ]
+
+> +__bpf_kfunc int bpf_user_page_exec(unsigned long addr)
+> +{
+
+[ ... ]
+
+> +	err = get_user_pages(addr, 1, FOLL_WRITE, &page);
+
+[ ... ]
+
+> +	flush_icache_user_page(vma, page, addr, PAGE_SIZE);
+> +	err = do_mprotect_pkey_locked(addr, PAGE_SIZE, PROT_READ | PROT_EXEC, -1);
+
+Does flush_icache_user_page() do anything here on the architectures that
+need it?
+
+At this point the VMA is still the read/write mapping created by
+bpf_user_page_alloc(), so VM_EXEC is not set yet.  On riscv the macro is:
+
+    #define flush_icache_user_page(vma, pg, addr, len)  \
+    do {                                                \
+            if (vma->vm_flags & VM_EXEC)                \
+                    flush_icache_mm(vma->vm_mm, 0);     \
+    } while (0)
+
+so it is skipped, and VM_EXEC only gets set by the
+do_mprotect_pkey_locked() call on the next line.  arm64 does not define
+flush_icache_user_page(), so it falls back to the empty stub in
+include/asm-generic/cacheflush.h.
+
+That leaves only the set_ptes() hook that runs when change_pte_range()
+installs the read/execute PTE.  On arm64 it is
+__sync_cache_and_tags()->__sync_icache_dcache(), and on riscv it is
+__set_pte_at()->flush_icache_pte().  Both only do cache maintenance when
+PG_dcache_clean is clear on the folio, and then set it for the whole folio:
+
+    if (!test_bit(PG_dcache_clean, &folio->flags.f)) {
+            sync_icache_aliases(folio_address(folio),
+                                folio_address(folio) + folio_size(folio));
+            set_bit(PG_dcache_clean, &folio->flags.f);
+    }
+
+The BPF program writes the instructions through the user address with
+bpf_probe_write_user_faultable(), which uses copy_to_user() and never calls
+flush_dcache_folio(), so PG_dcache_clean is not cleared again after the
+first exec mapping of the folio.
+
+With THP enabled (arm64 or riscv, 4K pages), can this sequence happen?
+
+  bpf_user_page_alloc(512) returns a PMD-aligned address
+  the program writes page 0, and the fault maps a 2MB anonymous THP
+  bpf_user_page_exec(addr) splits the VMA and the PMD, the read/execute
+    set_ptes() for page 0 syncs the whole 2MB folio and sets PG_dcache_clean
+  the program writes code into page 1, which is still read/write
+  bpf_user_page_exec(addr + PAGE_SIZE) calls flush_icache_user_page() again
+    as a no-op, and the read/execute set_ptes() sees PG_dcache_clean set and
+    skips maintenance
+
+The task would then execute page 1 without a D-cache clean to the point of
+unification and I-cache invalidate (arm64 without CTR_EL0.IDC/DIC), or
+without fence.i (riscv), and could fetch stale instructions.  mTHP sizes
+give the same result for smaller allocations.
+
+The uprobe XOL code, which also writes instructions for user space, does
+explicit maintenance through the kernel alias: arm64 arch_uprobe_copy_ixol()
+calls sync_icache_aliases(), and riscv, loongarch and mips call
+flush_icache_range() on the kmap address.
+
+Should bpf_user_page_exec() do the same, for example with
+kmap_local_page(page) followed by flush_icache_range()?  Alternatively,
+would calling flush_dcache_page(page) before the mprotect, so the arch
+set_ptes() hook redoes the sync, be enough?  Either way the flush would no
+longer depend on VM_EXEC being set at the time of the call.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39668036298
+--===============3655339663897498520==--
 
