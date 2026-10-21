@@ -1,103 +1,156 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0270C606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3396606A31B
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HLU6OErr
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=FBC8OEah
 Received: by kanga.kvack.org (Postfix)
-	id E9DBC6B0373; Wed, 21 Oct 2026 19:35:17 -0400 (EDT)
+	id C90686B07EA; Wed, 21 Oct 2026 19:46:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4CE66B07F4; Wed, 21 Oct 2026 19:35:17 -0400 (EDT)
+	id C42296B07F4; Wed, 21 Oct 2026 19:46:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D62FE6B07F5; Wed, 21 Oct 2026 19:35:17 -0400 (EDT)
+	id B2FFB6B07F6; Wed, 21 Oct 2026 19:46:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D783D6B0373
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:35:10 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5603E120710
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:35:10 +0000 (UTC)
-X-FDA: 85348241580.05.B735F5F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AD90C1C0006
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:35:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLU6OErr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FC126B07EA
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:46:52 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1EF66A7C53
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:46:52 +0000 (UTC)
+X-FDA: 85348271064.15.B5F5543
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 331A680006
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:46:50 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=FBC8OEah;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792625708;
+	s=arc-20220608; t=1792626410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UiwpltmOBAEqC1E507in2t/reGPJ/SwkyjEVEuoAspA=;
-	b=DZxdYUVNWpZSXZDU4BLt436y+0rQtIKq9cZdWwYOHr30PbFTDFoE82ByE5gdH09HPYPMv8
-	Naz0l0a40iRkNztoG2bUuMuCtuokil7WtRObhJqL8dOerwmBQd4/CgV/wLMsR0HH18xuLg
-	5/ihMJj/oF310abmk8SQV+ueJzGGkqk=
+	bh=n5hOymfjgaz7xpjT1ssIdHSQ+wD4cuNPKUAfRnejzdg=;
+	b=s/C0HAK7lU7WZD7OWuqMH16CrB5VDVKRDeS5NGZT3yZI/TZsY03rs4WFGI5LQirZLfZVGF
+	+2wQemjziK+97yD6+K2vs7BwneRpLzZOn9fbpwJw736mF2lE3cfEjuQxN+Geov2pgdH0TF
+	1uo+vuiGbmPqBxKia9LZSor1clo6CV0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLU6OErr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=FBC8OEah;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792625708;
-	b=txBtCZ5SeUANByfXHveTQQwwgUwOFYlqGwjIRV8Vtl+95MMdFTpTMhjMYS/5Ytlk4/YQfE
-	E90i15oxOMaWaHfNqCghX6F1KzB3l7OmSEZQQc5+A7vRraap7d4S6eCDQ6aTztQzwNEU7b
-	obYxApOj96W5dzfJnKWy3KDAYun8jVg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EBC4E43667;
-	Wed, 21 Oct 2026 23:35:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295B81F000CD;
-	Wed, 21 Oct 2026 23:35:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792625707;
-	bh=UiwpltmOBAEqC1E507in2t/reGPJ/SwkyjEVEuoAspA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HLU6OErrutYdmJLqV6sgxwlWNOzyDV0FO0p7+QzyIe4739dv8OYNKwqyytbiDjcLo
-	 YtZGqB0nphuc4hbRrg58AW3vskzoE1XcdudEIIdh5Wx6J6CerqjAaOc2tnv9Qj1iar
-	 P9GvZNk13xyhf6KOJzb7if6iBT/d0kBMKx5E9xi4k3Zr0ONap9uIQltEyE36vTFXNd
-	 VneUbALFVd2ABpxmlOcbku6XmrKA+/MHN73hlFaSgsCpYbBQ1XeDmF2Xl8rRr2u4am
-	 W0ilwPVMAnoAW2t4xmauaNUVyPv6Xhln7uJ1uXInPm9HzI8ThYLagzYzR1tTbgYzdP
-	 BYfTPz2c9KpeQ==
-From: Imre Kaloz <kaloz@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	t=1792626410;
+	b=N0Z8zwtuEg91X6InoQYPlU29zMPlkkfn/4QZvJK7zY0/OmLvroW93QUGfFgvfIsFkKvg+l
+	b2hcGzYbJQ32Eihc5+FIksKhozHhJJUpgSZLtwTYimb6QPfafdB4xA7VOSk2NtxLY8RqY4
+	Eshw1Aa6uM/X6vZDQwYqRPpIx/nOIe8=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f1cf92c9eso127759685a.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:46:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1792626409; x=1793231209; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=n5hOymfjgaz7xpjT1ssIdHSQ+wD4cuNPKUAfRnejzdg=;
+        b=FBC8OEah+MVn+W58llvkn4TOv17IEck4g7hz8zeQMKTR5s3OCDTQa/YzIooRKkZoyF
+         j2bfvNLxsRDhzmZR8ql5nvuzR0XZkqyyr1BSKJFQJVSAzed8T+5FX4utcVJITtxuzPkL
+         NvVuJxT7FF7YIfoKBe30XPrnZqieuz+kkilkFJwxs5+rYaj6Mp+A7hKZuhA/2INrdemD
+         aOy8l7pxY8ZqgVqeWWuU4vKVRFlHhC9mVWf7R82XWeLj8IO8sjKHfMWdGZ62UQUMRK+2
+         JFs+apxTxMDLxmC/hHeVDtzvt5mt1wU3HwL6hMoU20Zt4j1VcufYk/NA+ggql1UEPfq8
+         S1Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792626409; x=1793231209;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=n5hOymfjgaz7xpjT1ssIdHSQ+wD4cuNPKUAfRnejzdg=;
+        b=po4mJ1/ND2CQzw6z7UyKju4wEwdYcpWIqyZpD25JvJg0rpchELcCxR18cPJrmaA2vm
+         ++tufXoe3M7n7g9P2VQmS1uz3R+3q0q47MAzJlSysUcRnpFTpVBPudHWOu4LmEqtRQvD
+         sc23F8dip7QTGgnbkayOE0C8UNP3iq9RCi1ms9HJnZxjL0tctOT1M826ZsqXOipj8y+b
+         rOLj7htf6lXv1idUmF2DePasOPJ+YdtLdliugq+M0shxNx5y3e8iSYXKfYrLthWpgXjg
+         mgoXShkmn+vDwkfY6EJ4omsEwMQsAqLalk6m1cRZ8PbYASnQXx8nMEJ04kl2B0n91W0Y
+         WoBA==
+X-Forwarded-Encrypted: i=1; AKwUvBwfru5qcDIoZ4ZBGmmVBZCX4EvCTK6JNMFjpAs3sGJw/BUZ9qwW96Gjhd24ZIWyyM1E9Y0zaIHQzw==@kvack.org
+X-Gm-Message-State: AFq9FYIz4KD22Ask5XuyBMn/3lrmu1vD2nwOf0wx1XxUPNfBL9zS1yZp
+	Q3gKawEfTOnj3L2dJobpOvkHS9w9YxMJDtCZ/xUe4suAt5JSP5J6nTy5SnFOaf7jHr8=
+X-Gm-Gg: AYBFou3/5OLD41FSQFBne6/3AGCzuRKOS88jmIgIOqpQ81D8n7F8Wc4MtK2YDvfRqN1
+	kJI/LYj2JbdnVtDjAB3gsPv6A7496WS0r7ONORmOTlA//hoPCVYhxhmGSpLTpt72sYZ7MSg4kwP
+	d5dXSXEFjJHWcmNwX45pFeXXPYqodiEEpxL8WhVrKGRgJnA95cgfZyGR2BuNb/bRzES86fyhAgZ
+	/n//rIPJxyUcwb9d5BEzXhunKhdOz6uaK9X7QuGcb8CyT+IjbvhRJI2Kgwm1IcKqAy0E6FyE/gb
+	zVtpkxljWyzPqw67AyCalvtTHKe9NwXRpTNUgPr12MA0itITn0TmrPZcBdH0FJ57ItqwunPm32s
+	NIRFQLmIVHDADTvivpSfLQllJ2xdG0Y5d9sXeQBS1mZx5U1FapGWA8TBzYvxW0xub6tZbcr6sBk
+	DyI0dj1NoED1FEC2VcU84N/Xl3cgRlqIGEX3Mc0tXCNIc6ajpAwf5yOAtCYNhZVMRR7VZzsFw5r
+	OSBZibwn4mAFhZ1kpvzCNm4JYKdyDBSrX3wg/yOtKLzCY+OAgw7fEPJsTyunvucAZYPqkcg7BoN
+	yQdbOCJjT5OJGqTqM+odWM+SbUFci1sr4F8OYBX4uiswdF3D40TY2i+g6ME=
+X-Received: by 2002:a05:620a:17a1:b0:93f:22f1:97be with SMTP id af79cd13be357-93f5800e406mr694136885a.72.1792626409239;
+        Wed, 21 Oct 2026 16:46:49 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56e2bee2sm373858385a.42.2026.10.21.16.46.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 16:46:48 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xJg19-0000000EWG8-3cjA;
+	Wed, 21 Oct 2026 20:46:47 -0300
+Date: Wed, 21 Oct 2026 20:46:47 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Fred Griffoul <griffoul@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Ackerley Tng <ackerleytng@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
-Date: Thu, 22 Oct 2026 01:33:40 +0200
-Message-ID: <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1792609488.git.kaloz@kernel.org>
-References: <cover.1792609488.git.kaloz@kernel.org>
+	Michal Hocko <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH v2 06/11] iommufd: Map memory provider files
+Message-ID: <20261021234647.GA3381610@ziepe.ca>
+References: <20261014093733.90312-1-griffoul@gmail.com>
+ <20261014093733.90312-7-griffoul@gmail.com>
+ <atkO08eCJzLX6R58@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AD90C1C0006
-X-Stat-Signature: ea6wzjjafiquzfyfi3sq8u9wxhk8mbtf
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atkO08eCJzLX6R58@google.com>
+X-Rspamd-Queue-Id: 331A680006
 X-Rspam-User: 
-X-HE-Tag: 1792625708-803923
-X-HE-Meta: U2FsdGVkX1+lXG9/LPW0YhrGGlvul4/wbfPh8wHrFnL67ee1lvbj5k1MFArEK+ITA0IlrpMzSHdj5TbzdkG3LuDgdD+J2AvVxl5clK6z1YQ7eHEAQrVfekv5WzmwzYWN6uEH9H5Va6cCL2TxaedICD90Fr26piCey0sJ0e1URB3tprZjhJMAyhaLhDbheZRAdMwDWFzYOc1waT5ho2qdN4juk1zSormesB8k+q09qGGI8+z5mJEzGCsm35hKVp5bgxfEBadmDgGQ4cn8rqajtXOITeA17oACdHukDpNpojtYL8cB9Y7U1VthMXEituciC1QSIn/DdOX2o3pg3jXMT3LpUgENsdkpMRt5xqZC/zCalV5T4usub00c3iq1U2WJkG2xEf8eR/bpLB4lrpHMuydhJhtqXREmH+WaLNvuWlN48vDJ5oxnXyhhBic2dPApgq13qTkEmwC8xRKRIrTgZZ5ZvEVqAB39CrL012+xNwwoD+eNX4h68UgRTFtiOiFi0sQ5NAf2C/IdkxN3MNhij+NlbM2LXsOnuFoXyPdQdAshRj7evgHq/TymtqOFFDPT2zOreYSVTBpDZbYpGdEOxO5y4nhNLgL7uAqPrl0YaYMJsxyYiuaEtLcKhNYdj4z5sDCaYMJPC793v4XIsv//9Lg8QjDG5OVL5E4sbvSF1u2rwYucDUzxy/5FifP6/Srkf/WKTnkbePnw7w4Tlh906ksUgJxJ5LQuOfmXoiBmVkeAr9XOLN4Py2u2xh6oCUvakO36kP+FWn8NozAfTcVne7RJQTEd9H7ILFPcGe2Y6b8v4j1EWywDqeIU+hDiJFwzA/abNQn9jW4tDeYNKV8UmwHNVDH2atehpQ/iCDM9aM6N/3gnbqltKw9LcvTYSa3an9kGR0pOeEFHyAEQCUBME1V8F4wJD4a33/nTZPefWw3QqYG2IqZ0PKVhIyRplIuBRDKQ7rpgMpnVymr8eX7
- Q8Y8ALON
- O/l+gNUoKtNE+HnGbqJ0TPxZQz5Y/sZ8HvEAkB0iGIUZWalSjrCIyCtfCC7gsvMEyr0Ixgey4ozPvE4kwzglLi5AGiMWl+0G88AHajEQKkNGYRMFS31R0/RD0o61tbxo08fBNyfVZ1peQmU6kw1cgOVzI38HqDfPCOlGFCWkYnWdeXRwXaGAwg5UzxK6+Et/aoYdAreAUB09L1iDJDaIQyP+5xphnYc6hunFipvC1iwEkvShBQZkQ41yGvWKc8+e31c4TOFHgEq8EgHiSTPLqrwe6XMVeakAoaxB8
+X-Stat-Signature: cmd9h35mzw95is8yrnt33fnccyj8pa4f
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792626410-957742
+X-HE-Meta: U2FsdGVkX19SHBeMY7ZAa47EUT1f16SWSohS1y1jslsGKqPpewym+NhxHZrvox9BCnVtQdkHte8i5YyQ0mJmx/yTlG9KWYWiA7SkiSf0tTMqZppwFPrtbW/l/TKNM5E5efBGWc22cKNakwMDuqvbQCqwUNbAA9iwWNUj2qQPk+jiYpkNBRkpqqt02NiHASoNrOeuWnsU8/9TfxcZ1dRHLL96nWqxrjQYyma2rfkFdY7Vg1/GwMG0vO8CPf3X3WJq1hFVwD/IDUAnSsXxC/69B89uE4D1Qc3jRC9aSLokeki9jzYFaiAhx0OOFAYacAy30dnfx3HoV8CpWfI5gzRLadSHf3NT4NdZ9KfCEXNhRWum6YvMV/Kl3H/b+NbYxgMKEQncqUS/G8aX4wRANwywfFwSWkqh7Ql17GkzyhT/EsW0NQ5mCX5WBlYJG4FAv3kAPXjfjSYYZoIfMonyLrg18fw5OPZCN7RL8wdGhIjbfhQzHdTqMDNvhU4XPym7U+FZGbcWsnwdvOvp4AxQQBJoW3X/R1JcRKRZS6aL8s2s7fechWIEIPExF0tTpdhKT9l2xhjMVP+AMEidBwE7IDlivG3neJ51M+IqmRWCdkcyd+qWW3gJrijYYDwzTZ/lepkK78UKLDfmWqIFCzyTPHlsCqw2YqxCM9AlXw7dXJ8lZ03nV4mfvvL/lVVrdKd85V3tbPKo3abciQOBCoIojFCpt118fEjjZPF920DcIqbgwasnmrVSKdByksFCzkji11FrX8huu3UugJ/fZN2Uq3b5NPOkJMMI4BXz9sqMEHethQxZ3T1L3oyTIaQmDUqUMCCLmO3RDP3awIydCItMZ8jZA90GFVCIISgsCxzVoxdb1WXumSL7ilqZQ/ySXLllsQlqHhX3e4BRAI74KKsYYL/uvEM7JVXaJFQbwfy1S6PqJAQB2Om0aJhwzPS8J2M3mbBUNRXhQbIEg3bugcqIw7r
+ 0pTlAoW8
+ 1dtTkKeSiEx7G2jIJdGTWqx+9+4D5TXDrraIGyMiawOFg7n8PT29fxXsweJNbLoeOd6DNNefih106Xjxh/LHqEdL5SqscxMTnzwkf9ibHUARg+1rTVvVQYRbYm4SX1YzD2l3VKusPrGYvicUH4f3S4rol4Sniv/hNgGC2tK8aeKzChW29SHYoCyKuKtzFuizrlxSwno8zh3jWKPzcLhMDqUH05yph7IoyGGhMbUC3UJ+1TcSd28o4cjocT9yZTyDgEAGEjvzUqur5EG++mfuZnOSBCBhd419gZnHlAPXS0dn90OHONqyNZNJp2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,88 +159,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since commit f822a9a81a31 ("mm: optimize mremap() by PTE batching"),
-move_ptes() moves a batch of PTEs mapping consecutive pages of a folio
-at a time, but calls move_pte() once per batch with the first PTE
-only. sparc64, the only architecture that overrides move_pte(), flushes
-from the D-cache the page that PTE maps when the move changes its
-colour, so the other pages of a batch would keep lines of the old
-colour. This cannot happen today only because sparc64 has no
-pte_batch_hint(), and mremap_folio_pte_batch() then never batches.
+On Wed, Oct 21, 2026 at 08:17:05PM +0000, Samiullah Khawaja wrote:
 
-Pass nr_ptes to move_pte(), as get_and_clear_ptes() takes it. The
-generic version ignores it, and sparc64 flushes every page of the
-batch.
+> With this approach, silently skipping holes during IOAS_MAP_FILE means
+> iommufd has no tracking of which IOVA ranges in the area are actually
+> mapped, which complicates unmap and could also hide a bug if a hole in
+> the range was not expected?
 
-Signed-off-by: Imre Kaloz <kaloz@kernel.org>
----
- arch/sparc/include/asm/pgtable_64.h | 16 +++++++++-------
- include/linux/pgtable.h             |  2 +-
- mm/mremap.c                         |  2 +-
- 3 files changed, 11 insertions(+), 9 deletions(-)
+I think if we are going to do this it should only work with iommupt
+and iommupt should provide an unmap that is compatible with the holes.
 
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 1430489b9ac5..9ca787b3cbfe 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -946,21 +946,23 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 	set_pte_at((mm), (addr), (ptep), __pte(0UL))
- 
- #ifdef DCACHE_ALIASING_POSSIBLE
--/* This flushes only the page the PTE maps, so it relies on move_ptes()
-- * calling it for one PTE at a time, which the default pte_batch_hint()
-- * guarantees.
-+/* The nr PTEs map consecutive pages of one folio and all move by the
-+ * same offset, so either every page of the batch aliases or none does.
-  */
- #define __HAVE_ARCH_MOVE_PTE
--#define move_pte(pte, old_addr, new_addr)				\
-+#define move_pte(pte, old_addr, new_addr, nr)				\
- ({									\
- 	pte_t newpte = (pte);						\
- 	if (tlb_type != hypervisor && pte_present(pte)) {		\
- 		unsigned long this_pfn = pte_pfn(pte);			\
-+		unsigned int i;						\
- 									\
- 		if (pfn_valid(this_pfn) &&				\
--		    (((old_addr) ^ (new_addr)) & (1 << 13)))		\
--			flush_dcache_page_all(current->mm,		\
--					      pfn_to_page(this_pfn));	\
-+		    (((old_addr) ^ (new_addr)) & (1 << 13))) {		\
-+			for (i = 0; i < (nr); i++)			\
-+				flush_dcache_page_all(current->mm,	\
-+					pfn_to_page(this_pfn + i));	\
-+		}							\
- 	}								\
- 	newpte;								\
- })
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 8c093c119e5a..b58c0e98994e 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1471,7 +1471,7 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
- #endif
- 
- #ifndef __HAVE_ARCH_MOVE_PTE
--#define move_pte(pte, old_addr, new_addr)	(pte)
-+#define move_pte(pte, old_addr, new_addr, nr)	(pte)
- #endif
- 
- #ifndef pte_accessible
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e8df5cdb0ac9..7fcae7f0082d 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -289,7 +289,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
- 			force_flush = true;
- 		}
- 		pte = get_and_clear_ptes(mm, old_addr, old_ptep, nr_ptes);
--		pte = move_pte(pte, old_addr, new_addr);
-+		pte = move_pte(pte, old_addr, new_addr, nr_ptes);
- 		pte = move_soft_dirty_pte(pte);
- 
- 		if (need_clear_uffd_wp && pte_is_uffd_wp_marker(pte))
--- 
-2.47.3
+There are other places that would like such an operation, IIRC.
 
+This will have to block an access reaching into a guest memfd mapping
+as well, so that should be OK.
+
+Jason
 
