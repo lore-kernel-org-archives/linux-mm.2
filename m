@@ -1,142 +1,175 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52983606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 08:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E87606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 08:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R8Ftrnix
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RfbpjplM
 Received: by kanga.kvack.org (Postfix)
-	id 565FA6B065D; Wed, 21 Oct 2026 04:11:58 -0400 (EDT)
+	id F37676B01F6; Wed, 21 Oct 2026 04:18:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F0C36B065E; Wed, 21 Oct 2026 04:11:58 -0400 (EDT)
+	id F0F2F6B01F7; Wed, 21 Oct 2026 04:18:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 390266B065F; Wed, 21 Oct 2026 04:11:58 -0400 (EDT)
+	id DFE626B01FA; Wed, 21 Oct 2026 04:18:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 096796B065D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:11:58 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 09CA914048D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:11:57 +0000 (UTC)
-X-FDA: 85345915074.22.C9F7D92
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4BB9B140004
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:11:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=R8Ftrnix;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9BB426B01F6
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:18:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC806A798D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:18:49 +0000 (UTC)
+X-FDA: 85345932378.04.5B668E0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EE9E540004
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:18:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfbpjplM;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792570728;
+	b=v8egk47UMAC3Q/2QJG6K0NoyUJ8gypWkIJy8xjpWGzbCd5dLXnwjgzJtOL/+yhBlcJO33l
+	ghXNGElGH+/3mTX+7yT6ZalHhmOE3F56hirzQWn6lroV/XV/BOmx67/ANfcp170HVwBVWA
+	fMMKVGnY1/zE7jwi66M9ZBldYdfaL8U=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfbpjplM;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792570314;
+	s=arc-20220608; t=1792570728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x9nlbn0Kjji4QycL/33Denq/qFQLa7BpbrMZy29ygbI=;
-	b=vLxKDlUtKOOzonUeKzo4hi7HyGT1tz3KMCodKYpj6i7o/c8n4n/JafGOhElj3wUtk/2jok
-	Ca4zqs6fPlopWN7FxkZPROBEkZUSFoVZ3pqGVU+ssuPawYB6iEVxJ+gr9OY/UycHUHvU0X
-	hsAZLNgxWvtoXKZbkvFFyPJNcWne5fA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=R8Ftrnix;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792570314;
-	b=bnbh8D38VBVkS6tEhIh9w5OG6pCExRy/rqnmm7ee4busuvF0Q1khYRk8z9SseAHzsbM/di
-	f89DcymdwA7FRKzdn92J+c6kBAaHiZoyRCtHP4saNzi6iPGNgX1tpjXsPdntKjYF5Ptyq5
-	vQqlOXKdHi2UwUFDQUon6KE+pcr587w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792570313;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x9nlbn0Kjji4QycL/33Denq/qFQLa7BpbrMZy29ygbI=;
-	b=R8FtrnixmJfx7YT5jQNxeY4qw4NSSxeW3645PxFJunc5J9wqR0vpTy4iMjqN3N2BOi/yKn
-	+HmbW/J9t3y+PO/Wm9c5ebc1B9JrP+AArA4vuOHCdmovkFlG1oLSbskKOncIgztLg+DXMW
-	QbYCsNbXD+dsQZ9+ovborl7qZvo/klg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-LNbOb3EONva_63RNaL0U7Q-1; Wed, 21 Oct 2026 08:11:52 +0000
-X-MC-Unique: LNbOb3EONva_63RNaL0U7Q-1
-X-Mimecast-MFC-AGG-ID: LNbOb3EONva_63RNaL0U7Q_1792570311
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1e672580aso2908705e9.3
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:11:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792570311; x=1793175111;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x9nlbn0Kjji4QycL/33Denq/qFQLa7BpbrMZy29ygbI=;
-        b=CZQ9zAX3mmyTroyX+dtrLLn+zC/aMmLliopD2Fh7BetVdWHDPABrU6nsgWo9ZB8aNW
-         HtV/gk8oQmWlFwQw+9nSsVzC3c+NmErvXbn+IiIlHpgF9NiH2ncyexj/R3Wm2HFG/6i9
-         xJnp0lJgBK4KFVO+OwTEu1c8j5ocdpjJwvvqBoykvg5YjiRUrxc3x/EDhpP+x5evfgEP
-         fDAcBgVoHtXNYBih0GnUaedfACbnWVhwrXXw8PNSaXhPAGSx9WTkzaqTBIXMyzuu1AHf
-         0OEFA2U1IiaUKjoY1vNeVGjXwOB2cQYnhmK7pTOvSThLGBVMzttmYJwOVx9Tsk+uJjdN
-         ojyw==
-X-Forwarded-Encrypted: i=1; AKwUvBzu3dW2f2CbV20/OYarUfLLUimuj5rHPvHq8sJiEv0wB2swG8T8E2vc+Ky/4os4A0Z2GO10eLxXkA==@kvack.org
-X-Gm-Message-State: AFq9FYKtmu3GD4WWbqX62B+daNObjmhu38JrTc9RpnQfpvxpGtC7v4Ml
-	Xcy+/6Y97+4//JMXJPqPuJFBpV/hdJEBTWyEZyEKAwx60EKk2G8YX8dqCjrs4ghMZdOBgHfO4wc
-	5gSGmQwsu4xk/En36U4oPcfqjfGDm2O/jzS+mBR8GXwA/TR31G6U=
-X-Gm-Gg: AYBFou2JeWwuZhrKLwnOxuu5eObV2mVyARyB0oAPX9Y+N5lABqyDsbvTAqJwUL46r7r
-	SCr0YSSg+te8ohVKHXZfjBQDj4k2EJwy5cVwXDnylJwQ2s8oo9oIAJURiWJ+wg7GfStJOXsY0kr
-	2YT9sry0tDTCTQPJBZVxbYYMDakTJC6LjX1bUZcKeV9PwAgJGlUaGr82dxr3v8u5v7w+6o6KNdz
-	C+zmbC4U4pLspPlYpTvdLjTQn/ChczuSCesR+VQL2OcEmv/belm1m0xcRWa1JiA3vbqKfLpApEn
-	B//yro+6dnl/9bcVfDg25R1PPA4a2qv8HvakBmaRDtDpkLMlVZj9YcO4sigqhaQmu4/tiL5phnx
-	wDuFl6dnVN0cXPHYOFeeGj9BYRl8/Ky8=
-X-Received: by 2002:a05:600c:1d21:b0:4a1:cef3:fb3a with SMTP id 5b1f17b1804b1-4a1fdb1d85amr25860795e9.9.1792570310842;
-        Wed, 21 Oct 2026 01:11:50 -0700 (PDT)
-X-Received: by 2002:a05:600c:1d21:b0:4a1:cef3:fb3a with SMTP id 5b1f17b1804b1-4a1fdb1d85amr25860095e9.9.1792570310261;
-        Wed, 21 Oct 2026 01:11:50 -0700 (PDT)
-Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835247sm3779888f8f.41.2026.10.21.01.11.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Oct 2026 01:11:49 -0700 (PDT)
-Message-ID: <8affcad2-7489-4f6a-aa64-3e5911073afb@redhat.com>
-Date: Wed, 21 Oct 2026 11:11:47 +0300
+	bh=xo+JzSQhiEofQvNOiUlWPXkowrlnPBOASaEQMBovAy4=;
+	b=F5b2/InvqGPYWBJFOZd9t1MCNVpHmoA2nqXOKq7cqGw90vKCAP4sL7/Wa1nbHddKOL7oHu
+	oLQqvkO8UMVMly0gVa7qRzjPOcabk7jtGbIoUxMltfGy1u+ty2zf45gIKPcovUfX0kGOHy
+	dcXAp0PTAmWa/TWhsyn5d3vWc5KkIDY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D8F740806;
+	Wed, 21 Oct 2026 08:18:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FCA1F000CB;
+	Wed, 21 Oct 2026 08:18:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792570726;
+	bh=xo+JzSQhiEofQvNOiUlWPXkowrlnPBOASaEQMBovAy4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RfbpjplMrfPSk34Pv3KtXQK58k7yISpHx1oAInBKxIuNfC0uzLZjbgZAWCkMNfdb+
+	 bp5V0AZKxg3cobCO087/ZWgIjPsFHDXatJwCduwnuMSWFPjzYboDTj/3DU0YRuZpva
+	 nkDpTKMY52GiGPf9sfoGjdXj26CyfIHqVhMFIYQIms4odzIxobbv3MqdYCTgk+OQYe
+	 p7COrzkmAUdBobZgFxaam0Kx+z4ftbk2xj6lvFiPAdp0fmqjCcxqEWMpM0GT+DUJnd
+	 cHTMWZAkXhrlIMPae3y/WlLFm9u8NiY8CBXt+vVBiwhLkbnSO/NGVOkdxyv/bB6glv
+	 ds6w5z8Uzwg4w==
+Message-ID: <7e998cd5-57e0-432b-a8e0-676a5b773436@kernel.org>
+Date: Wed, 21 Oct 2026 10:18:35 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 03/12] mm/hmm: preparations for HMM to participate in
- migration
-To: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org
-Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>
-References: <20261021060506.2377545-1-mpenttil@redhat.com>
- <20261021060506.2377545-4-mpenttil@redhat.com>
- <017202b1-1c48-4fb1-a951-6d909fb30016@nvidia.com>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <017202b1-1c48-4fb1-a951-6d909fb30016@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OvWUCqmszhAljbmEzswVaLQyl3yjse1Oog7RinK1sZo_1792570311
-X-Mimecast-Originator: redhat.com
+Subject: Re: Path forward for Virtualized Swap?
+To: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>,
+ Kairui Song <ryncsn@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
+ <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
+ Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-doc@vger.kernel.org,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
+ <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
+ <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora>
+ <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
+ <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
+ <20261014195354.GA371161@cmpxchg.org>
+ <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
+ <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org>
+ <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
+ <CACePvbVbMPZTrD5y=--XgBS+sa4CHb7e4RFTYCbWfzHzVc3vXA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CACePvbVbMPZTrD5y=--XgBS+sa4CHb7e4RFTYCbWfzHzVc3vXA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4BB9B140004
-X-Rspam-User: 
-X-Stat-Signature: wn4iy6fo3dueds7hc9in3po8g5mftqq5
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: j95uyjw94df5awfuzns4wmeosicy9zuw
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792570314-711181
-X-HE-Meta: U2FsdGVkX1/uiJ5XgdqFuhsRtCFOeVyS4WQDeYTrIKPjlDsD5RgqRauJGuMvzmtgJfZ1UUoJU7j7IwoqMVOlDPRt0slq5OxMqawqNDOMImJkG5cUUs+Cu7EHCZtjBonHle9iFrjZUCZ/SbjHq1CtKuYI/3IHvCm5OqYbWOeiDW0sucJvkHV9nOKEJSLRDUA6KNhudkNATtg8WclK6a/HsRKRRtiMatSBqxh0RsGCmgPTI9UjcagZYxkaAVK6cozHhLY/SC7qMfq4dGo7iVvmU+L6Fj5gAkwqFY/XAChOwgjN649jYhuXcfzt6dPbsFFzt+sbLh4a0gj5XcOX48RQE41rri9rrH/Yf8Ed6nGVOnLxs0EXZ49CIgqS+Ye/UAIMirS6taGkw3OEGyAk/Hd7hwU+kPDdsDL2NZpZQQ/CZNMPhKYyT7kWClPxvlC6Bjm2lWfwzwop2gcR2RZ5Y1NQV+b+KXMWe71xwWCHVV/bCWGXyrfcnVK15dfJxlBXezAB7hiQK2lRpUbUptxl5/7lWa93I5z/S+NgHsVfSIu5wKrfljhv4nY/jy8/iZM/oUSYmrDda0k7nFT3K84lLvMLmSqwj7advkFdI6dTa2sO2CLLkGsNB7Ff8oDqs80sj3WRXQQGB5g/3Zbo6IbADz+Anr+uB9O1pqWpymApbt/9FasCac42PJQNpztUm/RymaUUZyLPZMIoV8SrzRWzSASP/VuhiN+KxvyNvLNZcbbdsxRZfpPswYCkTR78HtyvG34UNr2HdMjgnKr11EcZNwZSjd0wT3deW3AOf9gbNTTgzjsUDQMk4QbKPAbseKa77MBUo1IVLssShuQnJjeBuAB9JfvrZhvk+egnzivc3v62EEqiT7awjcx8cFtIApJMKg7cBwJWT1lNgY6SlQX68spDsUb9tRtOq4pAzGVFlhA8dgQj+JIurS0SddEgalM7Em8VtLmOYQDZWBRnZCJX7fy
- U4qh1M59
- dP/MI+6vGonPrDPGy7PzrGKol8x8amvkc2W5fTABKSzeqXWj3AsixvlAq4teAIke65A6CrmclIK8hufQkGjmlkaEndX0Tejh2j6xJGrJoyERIcdfypbjD/HInYqXV9oX8ptpPcIDH8/cGCY6NLk339/h3X3T4pXtvF6NsP+yrIpo2WPcP5NwFsS+Gg0O3lzByIctqicuMSk2PepbIY6yQUnWh4S1vPlMief8ufHoN1rY+JkKvH3a4Q+YT6UHxIWVNPe4rXVyoF+sDfBsHBiFl/cllJTjmlBsPfxr8ePpDOyia7vFOE0h+9qEMQH2kQh+9PVyBLRfFK4NQfImjZaAkSEjsq/GF8iP7ir+uy9ApBIvPUwkIKZITjVsEUQl9p35LjD4czZ7MZeH/xQ67l8ePuU9kXflVqVOJByJO9wWx5+Oa72/PBou9VgZ/PG4vkYKl2zkfy7Aqo6jaYj16qdQhJsYz5tJI+vgjKj/aC0MBy9NYBCrIrkn+5T3Qxyyb4Y9cjqxPoX6IKxKLCw5nUKVUMXzQQvV6rt+OVhRFJ8l7dKciUPUdvSIpwf3Tkw==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EE9E540004
+X-Rspam-User: 
+X-HE-Tag: 1792570727-230684
+X-HE-Meta: U2FsdGVkX1+8OkFrDxIj8TIO4hlZ2iSS2pqxUx8Fj2j0fF86rsj0MLE5UdcO3+qXRCstSbkIskZnm1iLRLRVS0B3fSD9G29l4laRfaEp8YY4fSJuwwCgDahcNgNjRQd4tJZvg4ZjbSJwP41vjRpRLEAPtrfhi5Me7GRyXiA48732dBCJCKZ6u+Oy0iXHzuWOzdlMcS2vpFURiUZXyPtuAlOMOJ3KpjZRCZERV2pP/3rfIpbs4X9Sq+QlTQEitEfpoAKlPk9ozb0jlAMUR146/Tif50dvekSHMEZ08E8JsjKl9eFD6AZB5lMl+coq8fG3k6fO70bdBA+awzNKHfMdgoScKQwIltebofhS4lJos8aTwsBT/VXXeNlsi8b0kOqvTayemW/WN6H+sUGQZGZAMkDr3d6PeKmYs8/Xkvyml5mH6o6K/Jo8Kcr0i/CK7vE01HoQBqVXsBdZXOHwW8qR5BKcRhmcbPHLm0iFqg+VqdKlY6YlUtNpCmytqDn7rAait8hOO6V+S+x8EJgeQDXbuGyDxHeiKvfFjgn7ikL8z5fkxQcIJYogM9qNnF2ZdOmZtw+FY5OMNRe/puOD2Au8MEJqJjIgOnMrmduYRSWWyGwet571TRULuIV7lfd9SxzW6bx2QZHlu5jRvG5oD6l7dsFIey+z17Zawya/iRq262vLiQoS+fGQOXlxBnxanuD1ozKlHYCyAhP7vkF7fiI0bGUjo0TFEItWWSuIBELSwgiyqReENMbOQA5WPDSFUpbfKzV5agws+uC9UtYQYo4fr1EUAukR1QUpnf5htizO7bbLreMSCM2/T8eSOOwRzAwXgkXiISCKAe+lxygTrINzf23oN792Hnmz0o3pyOCvG8MQzt0Z9AqEpkUqiwBpe+1au32FsoaHqwcMSAfLSPcup8PFwkUszdWbWNBBvo2trE6wnygBgLq1CArIFKLCI2mt68Vp0kH7RqXJcakl55e
+ 17CFM6rh
+ wP8rCBdDUpWHMvpM8ayN7ChgxqIRvjGBWt/Ldui/+1Y3hacuPRQRIG6yPZPQLkIWA9F/1N+3kuaLaDE3bZJc6gFrn+RsBpfb4bdDSHYjbdwjC1R+R5GiAsE7AL5wqVyidQorSWRpKKgSiGj7RYFhxrvvQAEeENc9Eo/8wvNXXDCm1Q17LCyM2IP+O8a+BI5mKBdEFcP+AkBRBffSUUsPnrPl5mXDkl/ICAjSyKefSXh3SjpNIvPvxswjlvHb6hmRZ+CBbd2qdCJOd1fSs55TgZK8Ji78xewOE1cfseHjBeDeJa2AJD8C8P/YJndLSYPpifijDl/PJgmfCAZzJj7YiZDK62Ho5cE36sLQg79lFBzaG7Xy7Nht5snWvRKwt+ecyCJ3sdwYU+uGUaPgh4Ye3SD34edUvOxetLImqlYJvIuQCy31QVI4thyymhGtjlTWrbPEr4S0ud29f5Vs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,365 +178,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-On 10/21/26 10:17, Balbir Singh wrote:
-
-> On 10/21/26 5:04 PM, mpenttil@redhat.com wrote:
->> From: Mika Penttilä <mpenttil@redhat.com>
+On 10/21/26 09:41, Chris Li wrote:
+> On Mon, Oct 19, 2026 at 5:35 AM Nhat Pham <nphamcs@gmail.com> wrote:
 >>
->> For migration to happen after hmm_range_fault(), the vma has to
->> retrieved. Luckily, pagewalk already resolves that for us, so
->> just have to save it for further use. For migration, mmap_lock
->> has to be hold for the whole operation, so vma stays stable.
->> In case lock-drop behavior is requested, return an error while
->> migrating. Also, rename some struct hmm_vma_walk fields to solve
->> namespace collisions, and we are later introducing more
->> xxlocked fields so be unambiguous.
+>> On Mon, Oct 19, 2026 at 5:28 AM David Hildenbrand (Arm)
+>> <david@kernel.org> wrote:
+>>>
+>>>
+>>> I'm traveling this week, so it's a bit tricky. I cannot make Thursday morning.
+>>>
+>>> On Thursday I'll be traveling back from Cambridge. But hang on.
+>>>
+>>> My plan lands on Oct 22, 11:10 PM. I should be home around Friday 1.30am - 2am.
+>>>
+>>> I could just naturally join that day.
+>>>
+>>> So one day later would work for me.
 >>
->> Take care also of firing the mmu_notifier when migrating.
+>> Would that be too rushed for you? :)
 >>
->> Also, prepare for differencies of how mm_struct * is retrieved
->> in fault and migrate_vma paths.
+>> For everyone's convenience, this would be the time slot:
 >>
->> Cc: David Hildenbrand <david@kernel.org>
->> Cc: Jason Gunthorpe <jgg@nvidia.com>
->> Cc: Leon Romanovsky <leonro@nvidia.com>
->> Cc: Alistair Popple <apopple@nvidia.com>
->> Cc: Balbir Singh <balbirs@nvidia.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Suggested-by: Alistair Popple <apopple@nvidia.com>
->> Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
->> ---
->>  include/linux/migrate.h |  50 +++++++++++++++++-
->>  lib/test_hmm.c          |   2 +-
->>  mm/hmm.c                | 110 ++++++++++++++++++++++++++++++++++------
->>  3 files changed, 145 insertions(+), 17 deletions(-)
->>
->> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
->> index 280ec9a866c7..dd7dd7ec6995 100644
->> --- a/include/linux/migrate.h
->> +++ b/include/linux/migrate.h
->> @@ -5,6 +5,7 @@
->>  #include <linux/mm.h>
->>  #include <linux/hmm.h>
->>  #include <linux/mempolicy.h>
->> +#include <linux/mmu_notifier.h>
->>  #include <linux/migrate_mode.h>
->>  #include <linux/hugetlb.h>
->>  
->> @@ -108,6 +109,29 @@ static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *p
->>  	spin_unlock(ptl);
->>  }
->>  
->> +enum migrate_vma_info {
->> +	MIGRATE_VMA_SELECT_NONE = 0,
->> +	MIGRATE_VMA_SELECT_COMPOUND = MIGRATE_VMA_SELECT_NONE,
->> +};
->> +
->> +static inline enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
->> +{
->> +	return MIGRATE_VMA_SELECT_NONE;
->> +}
->> +
->> +static inline void hmm_fill_migrate_vma(struct hmm_range *range,
->> +					struct vm_area_struct *vma,
->> +					unsigned long start,
->> +					unsigned long end)
->> +{
->> +}
->> +
->> +#ifdef CONFIG_MMU_NOTIFIER
->> +static inline struct mm_struct *hmm_range_fault_mm(struct hmm_range *range)
->> +{
->> +	return range->notifier->mm;
->> +}
->> +#endif
->>  #endif /* CONFIG_MIGRATION */
->>  
->>  #ifdef CONFIG_NUMA_BALANCING
->> @@ -151,7 +175,8 @@ static inline unsigned long migrate_pfn(unsigned long pfn)
->>  	return (pfn << MIGRATE_PFN_SHIFT) | MIGRATE_PFN_VALID;
->>  }
->>  
->> -enum migrate_vma_direction {
->> +enum migrate_vma_info {
->> +	MIGRATE_VMA_SELECT_NONE = 0,
->>  	MIGRATE_VMA_SELECT_SYSTEM = 1 << 0,
->>  	MIGRATE_VMA_SELECT_DEVICE_PRIVATE = 1 << 1,
->>  	MIGRATE_VMA_SELECT_DEVICE_COHERENT = 1 << 2,
->> @@ -193,6 +218,29 @@ struct migrate_vma {
->>  	struct page		*fault_page;
->>  };
->>  
->> +// TODO: enable migration
->> +static inline enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
->> +{
->> +	return 0;
->> +}
->> +
->> +#ifdef CONFIG_MMU_NOTIFIER
->> +static inline struct mm_struct *hmm_range_fault_mm(struct hmm_range *range)
->> +{
->> +	return range->notifier ? range->notifier->mm : range->migrate->vma->vm_mm;
->> +}
->> +#endif
->> +
->> +static inline void hmm_fill_migrate_vma(struct hmm_range *range,
->> +					struct vm_area_struct *vma,
->> +					unsigned long start,
->> +					unsigned long end)
->> +{
->> +	range->migrate->vma   = vma;
->> +	range->migrate->start = start;
->> +	range->migrate->end   = end;
->> +}
->> +
->>  int migrate_vma_setup(struct migrate_vma *args);
->>  void migrate_vma_pages(struct migrate_vma *migrate);
->>  void migrate_vma_finalize(struct migrate_vma *migrate);
->> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
->> index 6911daa9f854..cd88e8177d0a 100644
->> --- a/lib/test_hmm.c
->> +++ b/lib/test_hmm.c
->> @@ -145,7 +145,7 @@ static bool dmirror_is_private_zone(struct dmirror_device *mdevice)
->>  		HMM_DMIRROR_MEMORY_DEVICE_PRIVATE);
->>  }
->>  
->> -static enum migrate_vma_direction
->> +static enum migrate_vma_info
->>  dmirror_select_device(struct dmirror *dmirror)
->>  {
->>  	return (dmirror->mdevice->zone_device_type ==
->> diff --git a/mm/hmm.c b/mm/hmm.c
->> index 2f1e98c6b644..4e9542aedc25 100644
->> --- a/mm/hmm.c
->> +++ b/mm/hmm.c
->> @@ -21,6 +21,7 @@
->>  #include <linux/pagemap.h>
->>  #include <linux/leafops.h>
->>  #include <linux/hugetlb.h>
->> +#include <linux/migrate.h>
->>  #include <linux/memremap.h>
->>  #include <linux/sched/mm.h>
->>  #include <linux/jump_label.h>
->> @@ -28,15 +29,23 @@
->>  #include <linux/pci-p2pdma.h>
->>  #include <linux/mmu_notifier.h>
->>  #include <linux/memory_hotplug.h>
->> +#include <asm/tlbflush.h>
->>  
->>  #include "internal.h"
->>  
->>  struct hmm_vma_walk {
->> -	struct hmm_range	*range;
->> -	bool			*locked;
->> -	unsigned long		last;
->> -	unsigned long		end;
->> -	unsigned int		required_fault;
->> +	struct mmu_notifier_range	mmu_range;
->> +	/* Set once mmu_range is armed with mmu_notifier_invalidate_range_start() */
->> +	bool				mmu_armed;
->> +	struct vm_area_struct		*vma;
->> +	struct hmm_range		*range;
->> +	unsigned long			start;
->> +	unsigned long			end;
->> +	unsigned long			last;
->> +	/* fault and lock drop related fields */
->> +	bool				*mmlocked;
->> +	unsigned long			fault_end;
->> +	unsigned int			required_fault;
->>  };
->>  
->>  /*
->> @@ -95,7 +104,7 @@ static int hmm_record_fault(unsigned long addr, unsigned long end,
->>  
->>  	WARN_ON_ONCE(!required_fault);
->>  	hmm_vma_walk->last = addr;
->> -	hmm_vma_walk->end = end;
->> +	hmm_vma_walk->fault_end = end;
->>  	hmm_vma_walk->required_fault = required_fault;
->>  	return HMM_FAULT_PENDING;
->>  }
->> @@ -400,6 +409,58 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
->>  }
->>  #endif  /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
->>  
->> +static int hmm_vma_capture_migrate_range(unsigned long start,
->> +					 unsigned long end,
->> +					 struct mm_walk *walk)
->> +{
->> +	struct hmm_vma_walk *hmm_vma_walk = walk->private;
->> +	struct hmm_range *range = hmm_vma_walk->range;
->> +
->> +	if (!hmm_select_migrate(range))
->> +		return 0;
->> +
->> +	if (hmm_vma_walk->vma && (hmm_vma_walk->vma != walk->vma))
->> +		return -ERANGE;
->> +
->> +	hmm_vma_walk->vma = walk->vma;
-> I don't quite follow the check for -ERANGE, it checks for hmm_vma_walk->vma !=
-> walk->vma, but then set's it later to be the same?
+>> PDT: Thu Oct 22, 5:00 PM
+> 
+> Works for me :-)
+> 
+>> EDT: Thu Oct 22, 8:00 PM
+>> Europe: Fri Oct 23, 2:00 AM
+> 
+> Ouch, David. If you commit to that, I understand it is very
+> challenging. Thank you for taking one for the team.
+> 
+>> China: Fri Oct 23, 8:00 AM
+> 
+> Other swap developers: Kairui, Baoquan, YoungJun and Barry, when you
+> have time, please comment on whether you can make the meeting as well.
 
-The intention is to catch a range that crosses a vma boundary. hmm_vma_walk lives across the restart loop in hmm_range_fault_locked(),
-so test_walk can run again for the same vma after an -EBUSY re-walk. The first call records the vma, a re-walk of the same vma passes,
-and a different vma means the range spans more than one vma, which migration doesn't support, so -ERANGE. 
-The assignment only takes effect on the first call. I'll restructure it as "record if unset, else -ERANGE if different" and add a comment.
+I took the liberty to schedule the meeting and send out google calendar
+invitations to everyone on the CC list (to keep it simple on my end ;) ).
 
->
->> +
->> +	if (end - start > range->end - range->start)
->> +		return -ERANGE;
->> +
-> Have we established that end > start and same for range->end > range->start?
+If anybody did not receive an invite but wants to join, please let me know.
 
-Yes. walk_page_range() rejects start >= end before calling any callback, and hmm_range_fault_locked() walks from hmm_vma_walk.last 
-(initially range->start) to range->end, so range->start < range->end holds whenever test_walk runs. 
-The test_walk start/end are a sub-range of that walk clamped to the vma, so start < end too. 
-That also means end - start can never exceed range->end - range->start, so the check is redundant. I'll drop it in v17.
+If anybody received an invite and does not want to join, just ignore :)
 
->
->> +	if (!hmm_vma_walk->mmu_armed) {
->> +		hmm_vma_walk->start = start;
->> +		hmm_vma_walk->end = end;
-> Does the walk range matter here?
+-- 
+Cheers,
 
-The walk range is the caller's range clamped to the vma: with the caller's range inside a single vma the two are the same,
-and the clamp keeps the walk range's end within the vma (migrate_vma needs that) if the caller's range extends past
-the vma into a hole. The walk range is used as both the MMU_NOTIFY_MIGRATE invalidation range and the migrate_vma start/end,
-and is set once on the first test_walk call. I'll also add a check that the walk range starts at range->start,
-since migrate_vma indexes src[] from there.
-
->> +		mmu_notifier_range_init_owner(&hmm_vma_walk->mmu_range, MMU_NOTIFY_MIGRATE, 0,
->> +					      walk->vma->vm_mm, start, end,
->> +					      range->dev_private_owner);
->> +		mmu_notifier_invalidate_range_start(&hmm_vma_walk->mmu_range);
->> +		hmm_vma_walk->mmu_armed = true;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static void hmm_vma_post_range_fault(struct hmm_vma_walk *hmm_vma_walk)
->> +{
->> +
->> +	struct hmm_range *range = hmm_vma_walk->range;
->> +
->> +	if (hmm_select_migrate(range) &&
->> +	    hmm_vma_walk->mmu_armed) {
->> +		/*
->> +		 *  The migrate_vma path has the following initialized,
->> +		 *  so take care of fault path below.
->> +		 */
->> +		if (range->notifier) {
->> +			hmm_fill_migrate_vma(range,
->> +					     hmm_vma_walk->vma,
->> +					     hmm_vma_walk->start,
->> +					     hmm_vma_walk->end);
->> +		}
->> +		mmu_notifier_invalidate_range_end(&hmm_vma_walk->mmu_range);
->> +	}
->> +}
->> +
->>  static int hmm_vma_walk_pmd(pmd_t *pmdp,
->>  			    unsigned long start,
->>  			    unsigned long end,
->> @@ -594,6 +655,11 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
->>  	struct hmm_vma_walk *hmm_vma_walk = walk->private;
->>  	struct hmm_range *range = hmm_vma_walk->range;
->>  	struct vm_area_struct *vma = walk->vma;
->> +	int r;
->> +
->> +	r = hmm_vma_capture_migrate_range(start, end, walk);
->> +	if (r)
->> +		return r;
->>  
->>  	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)) &&
->>  	    vma->vm_flags & VM_READ)
->> @@ -646,12 +712,12 @@ static int hmm_do_fault(struct mm_struct *mm,
->>  			struct hmm_vma_walk *hmm_vma_walk)
->>  {
->>  	unsigned long addr = hmm_vma_walk->last;
->> -	unsigned long end = hmm_vma_walk->end;
->> +	unsigned long end = hmm_vma_walk->fault_end;
->>  	unsigned int required_fault = hmm_vma_walk->required_fault;
->>  	unsigned int fault_flags = FAULT_FLAG_REMOTE;
->>  	struct vm_area_struct *vma;
->>  
->> -	if (hmm_vma_walk->locked)
->> +	if (hmm_vma_walk->mmlocked)
->>  		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
->>  
->>  	vma = vma_lookup(mm, addr);
->> @@ -670,8 +736,8 @@ static int hmm_do_fault(struct mm_struct *mm,
->>  		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
->>  
->>  		if (ret & (VM_FAULT_COMPLETED | VM_FAULT_RETRY)) {
->> -			if (hmm_vma_walk->locked)    /* needed by sparse */
->> -				*hmm_vma_walk->locked = false;
->> +			if (hmm_vma_walk->mmlocked)    /* needed by sparse */
->> +				*hmm_vma_walk->mmlocked = false;
->>  			else
->>  				WARN_ON_ONCE(1);    /* broken fault handler */
->>  			return HMM_FAULT_UNLOCKED;
->> @@ -694,19 +760,31 @@ static int hmm_range_fault_locked(struct hmm_range *range, bool *locked)
->>  {
->>  	struct hmm_vma_walk hmm_vma_walk = {
->>  		.range = range,
->> -		.locked = locked,
->> +		.mmlocked = locked,
->>  		.last = range->start,
->>  	};
->> -	struct mm_struct *mm = range->notifier->mm;
->> +	/*
->> +	 *  Could be serving a device fault or come from migrate
->> +	 *  entry point. For the former we have not resolved the vma
->> +	 *  yet, and the latter we don't have a notifier (but have a vma).
->> +	 *
->> +	 */
->> +	struct mm_struct *mm = hmm_range_fault_mm(range);
->>  	int ret;
->>  
->> +	/* Migration is incompatible with mmap lock drop */
->> +	if (locked && hmm_select_migrate(range))
->> +		return -EINVAL;
->> +
->>  	mmap_assert_locked(mm);
->>  
->>  	do {
->>  		/* If range is no longer valid force retry. */
->> -		if (mmu_interval_check_retry(range->notifier,
->> -					     range->notifier_seq))
->> -			return -EBUSY;
->> +		if (range->notifier && mmu_interval_check_retry(range->notifier,
->> +								range->notifier_seq)) {
->> +			ret =  -EBUSY;
->> +			break;
->> +		}
->>  		ret = walk_page_range(mm, hmm_vma_walk.last, range->end,
->>  				      &hmm_walk_ops, &hmm_vma_walk);
->>  		/*
->> @@ -732,6 +810,8 @@ static int hmm_range_fault_locked(struct hmm_range *range, bool *locked)
->>  		 * output, and all >= are still at their input values.
->>  		 */
->>  	} while (ret == -EBUSY);
->> +
->> +	hmm_vma_post_range_fault(&hmm_vma_walk);
-> Have you checked to see if we could end up with notifier start/end inbalance?
-> For example if hmm_select_migrate returns false?
-
-Yes. invalidate_range_start() is only called from hmm_vma_capture_migrate_range(), after the hmm_select_migrate()
-check and only once (mmu_armed). invalidate_range_end() is only called from hmm_vma_post_range_fault() when mmu_armed
-is set. hmm_select_migrate() doesn't change during the call, so if it returns false neither is called.
-Every exit from the loop goes through hmm_vma_post_range_fault(); except after test for lock drop which happens before walks.
-
->
->>  	return ret;
->>  }
->>  
-
-Thanks,
---Mika
-
+David
 
