@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1FC606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C7F606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g7QSiiX5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M5sHW2cn
 Received: by kanga.kvack.org (Postfix)
-	id 9E2456B0261; Wed, 21 Oct 2026 19:34:58 -0400 (EDT)
+	id EC4016B026E; Wed, 21 Oct 2026 19:35:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9915F6B026E; Wed, 21 Oct 2026 19:34:58 -0400 (EDT)
+	id E74986B0271; Wed, 21 Oct 2026 19:35:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A9296B0270; Wed, 21 Oct 2026 19:34:58 -0400 (EDT)
+	id D68186B026E; Wed, 21 Oct 2026 19:35:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 69F6C6B0261
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:34:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC05F404EE
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:34:57 +0000 (UTC)
-X-FDA: 85348241034.29.0794C43
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 328A240009
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:34:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g7QSiiX5;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B2B206B026E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:35:00 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D28912070A
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:35:00 +0000 (UTC)
+X-FDA: 85348241160.04.306D820
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 838021C0004
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:34:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M5sHW2cn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of kaloz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kaloz@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792625696;
+	s=arc-20220608; t=1792625698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=s5GCFuOcmjehv03gf2ljnWIxHgzVxKtBI4zuJ/1eB5M=;
-	b=kgO+MtJ5bUHwkPo3VqQ3pfGgE70KTXVj5VxsAUZBwQVW7fH4fhN/USksw7h3GXkrQ3s0mu
-	20LdwawyiP9WNjPYepoALD5nkEwkXfKmCCp8XBpyrU66PmnIRR5hL+a0CJTEwmVe8xkq5C
-	9Ux7C+14i4C91g4Inw67KHtpV1+wZrI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b+mC8VYd4OIdAs5s1Sr2HQYuGE+BUuD12RZl8Figbho=;
+	b=sUHIvWVSsOREV5b0/l4Et+opl/9tCqpLcWARKxzXcTUdKhmtpb0poD3Jwjl0iGrIKko1+m
+	VgeLLLVD0GV0apdEskndnWyX2Sg0jFdFLunVYVwGGIctX70KuxsAvITNzj+SruWt/qBujy
+	uXurLefEDkadoNA26qaAruxrps1C//c=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g7QSiiX5;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M5sHW2cn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of kaloz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kaloz@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792625696;
-	b=TABLZyTS8IA+FYvo6ZLHnqPfkUCgaTpRaTSp4ZuGfUnSZjS991Dv/dSqsyZeDNiGpHqBLx
-	hQiTzjYDkqZ3mvWnK8YEdERwy50mbwFyLy3y6Ij7PIZZghJDgbcxWtRr/Ew7wZDS2uLZ+S
-	ZLHreCyztGSW/13/uN7EzwW952REssA=
+	t=1792625698;
+	b=4SpLhADqxE1Qarg+Tazj2tqD2nFpsOOFjhqVy3GSGwuCWa07VwgF1fJZ1jtoV7mx07MdnB
+	/Cfbx31rdDAm0I0jnccsP7fPB4LtgSMJ5BSsblAbXbE5xMk3hU/FRwnxXB1kqWTSQ1Gx8c
+	4sIEUOd0kwlBjITSdnrCj05L6HnxcCk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19E8E4059F;
+	by tor.source.kernel.org (Postfix) with ESMTP id C0D5B60052;
+	Wed, 21 Oct 2026 23:34:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772431F000C2;
 	Wed, 21 Oct 2026 23:34:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49211F000C1;
-	Wed, 21 Oct 2026 23:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792625695;
-	bh=s5GCFuOcmjehv03gf2ljnWIxHgzVxKtBI4zuJ/1eB5M=;
-	h=From:To:Cc:Subject:Date;
-	b=g7QSiiX5u84k62YLZ3c1x3+ueZUgWrw+FaS8iLWpFy0ypur0rpeshW6hISOU3LpYX
-	 q3LMdDTnMxORG/nxYgtnD0CXjNK8MnxAqtqbWxg2MKfUZuBonSM6Qr4rQFgK80bn3W
-	 ZXOfZwioE33FPbSA7dgVdF4F/+gOyhGEXfpso+uOr/gnugw3cI15IifZZ6Xa0rI84d
-	 Z8/oljAK0C56CAxKlujvNRho9+H+tS3+1hH9PqcAKAl4t0ex3rl2ORUxbxj+EdygHm
-	 g12QQU5IEvMSlmKsEbOwIj5paUUVN/lUxzNfgfeoO+vCq9caYtyD8jyXZwdrmX0MCd
-	 vCT6K/814OCtQ==
+	s=k20260515; t=1792625697;
+	bh=b+mC8VYd4OIdAs5s1Sr2HQYuGE+BUuD12RZl8Figbho=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=M5sHW2cnzWwkaf3Qjkf0OZTU7gUHdmKDYHdaTqfMhbjdkZjbnRg84RuEDsypeG6lp
+	 bOp3H6s/TgsDqqE+JOQA59IpEbc+6OWNPbTQj6AMOLah9E9ht6OLOXdDCHBctcYMH3
+	 hTtZmgQSBd3PJgLG5CoLHsRTA9AwVHa01J2AilkqIMHJui8LrU8MPgvTFVvxmJihoA
+	 lAFSKomWZsB5yTPqBmcWm0vf6bczeXn5eOyk9SZV1Mnn8jqluU+Mn33sGq90m6NFic
+	 CbALjsYjmcaM5tQBzI0Na6qKNsVvwT1QZOgS5g1qOhjQOfjFRqBNyhQ2ro7V8/agdk
+	 xDuHDfWUC221A==
 From: Imre Kaloz <kaloz@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>,
 	Andreas Larsson <andreas@gaisler.com>
@@ -69,25 +69,27 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 0/4] sparc64: D-cache alias flushing fixes
-Date: Thu, 22 Oct 2026 01:33:36 +0200
-Message-ID: <cover.1792609488.git.kaloz@kernel.org>
+Subject: [PATCH v3 1/4] sparc64: skip the trap block in xcall_deliver() when there is no target
+Date: Thu, 22 Oct 2026 01:33:37 +0200
+Message-ID: <3bf5d270153bf6b8efb1673a9500df826ec28678.1792609488.git.kaloz@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1792609488.git.kaloz@kernel.org>
+References: <cover.1792609488.git.kaloz@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 328A240009
-X-Stat-Signature: ihhrp314wkpy9tky6gjwd3hc9qrkgodw
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 838021C0004
+X-Stat-Signature: ya539mz1pwzcmj76n5swmpsbtaw5yf3u
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792625696-872793
-X-HE-Meta: U2FsdGVkX18zEKZD+sVBfkyRFq7dVJpVL/ssW8afF7LXkEOuoRm5EQzaYsbJFXTvDZfoelidgN+2NY8vV2by67RgUGZxeAfYCRy4kGy3sAAxA8ZmXaaiuunb5bKmp5BjgRXFG9OnQQciwWICKHVNipjgAIkHxSuW2LSosRZlHrIhl4Q9RYOv/rCZAmvpYpwUaGRmAxLKnwvhnyfoj4dGc6Il7/5sP6g+DD5z6uPBDrQ6xZxcq3lgrXLt044Jp5/AUL3MuzEkIfgga+fkUKo/8Nwr4hHKmMlfCknZw1dE6Wc7U6M8CUy3cZMT/re8MTLILlg70DA5BV1OOUqc6i9eyHGB4eLame5rVZh+MUx/m+UW0Z9F9MdcfF5jmeDkUO5ZKbQ6bXaWt8UAUGEHwP5df2GVAI8DTgXdCl+NH71V+ndS1XjoBM6N//4I0se+dtzpcOS7iFuBMd8/zx98a6K57ydToQvFhgQGJEdoi+TD8ZfAPz4wtyzPEvbTf/pkvAK7/J6oOFJlNB7JuJh57793mll2wIIIzRDaWr+WEbF1QiwE8oxNegacv3xDAh2XGh6pO4gIbDoy1Qn4loPwBbJIu+haJhYziZSJzB3I1MUo/tBCGMcWKTPg0oyONfxPTzjTLqAmBSXU6WZZymzbTOrKx3kCmOw9LfLxUOzxxywasTfiNCEX9p67ieaWp/iAVhXXjBbRTxWXq4PvutinFZQn0C2D9BkQaIxya5wtzWhvT129+O84U294P5h6qXfsYaxeRJySBuy3b8UreCM39Vf3SI9JuO8VRRaE4FJAN3WQlP/KXaX3Riw+0KZqc5kvJuT5/WRkAImWKW32CNJLWB9kSo+5QVxAKkdNoF3gKS++xZxsiaiqCnF8RgCGfTWie++XaiGT0kPZImNuSceRUs0kcwP573wY59k2yO67Ynk9/VOFR27vXSsEB+a6xdIGpo2HCXqp+lz+AhSZEBF9C+m
- 8+5X44RB
- TeFLfBD1sVU7lmJtzt/ASbpR8TkiRNMsi0pT6eSrf9h4gOAgVPrVnSE4x3ytBPT/xiKCmWaU946OAuU1kw0yn7qAiSr8PQ6a5urrI5/0T5LTRsQ91alloysQErWxMUn2tdAsiU0+pefXIW8l/OihQ0PAXaZsYsWgMmdFFY1urFD+9CR2Qp5bolNXalhyY/G1sclQe8RWy+z2+UmF2KdgBVsUdTRixF80+hRY4m5GtyOPdQ2Q=
+X-HE-Tag: 1792625698-61313
+X-HE-Meta: U2FsdGVkX1/23RIkxg4yKTabdm4qt/7cfqz5LjQOpNPBwgxHcKq+hwHzE4rg3KGE7DypT7aAkg5ddltUIWYnU+euLm5Mhlh4mjh2IFe6i8zf+MfMkLU5oePMQL7KHzAOiARaYx1xmEw5d1hswDTaOLqeoF6nvd5fCwO/Xmn0R1cVs2ZQ17g9qpFc1lHwjO2gx+2RGS0xf6W+Pq92zbdljiKB/IMIGE9Ws1+x2vN4Z0VEyslQCH7/QtmiIQZjjKVdU0DpUP3Jrx80TwxLo5/OsQfFH5ksG1L/k0pfOLZKk/TVjYHuE6DoGHq+wnhxWD8yag5ZgcpDYDRmrKkyyaL0+EJZDtQqsECOGvU9nJP+mrePoRvzRIzIAum0h/Nwz8axr0mtHwCnQCAkrfB+BXj9pwdq9z8iCLUH9Ex1Png2t3BNoLI0dWB1TU5GuMC/SmNnGTLiUz5fLk73+2f/jLm9vQzeq/WNhJQI+5M40q9V9iDI3vBwRqiz2ZiuXiEPFJZkh13hO8XC0ysR0BHKGdUz6PEiO3sSCWFoJRGBJBdcI8AS8fBfw5QT3NZNfed8JaSeipSwnJSar0PXGEjMPD6xE5HKq8JyYJfFLsJFLZJROAIzCwHLuAy5L53e0Zi5TWq2KsB9KMgMAPIlou1rCCWrPPQbToC7qwnBh6EpkoNWJKIYITb+NjrbcfbhycIPiiJGUcd5SAl7k/oSrbK3pH/aHDSR0Nds/zxj2Mihbx3fKsrNwy4g5q5/K7oAud9nbFrxTE6lHqzxF1Rr+fnqRhTkHPdQf3uJuVhj5jvETZhLZ1fjzPYJWgR5fWVChv4nPzORp/pqNtMDMGsW3ff8DHww7kqzNSIC6MU04vzhJrGNsrOoO81SIS7CEZdBvg8ivooE7WBjnzr6WD2krBteADVzGpG4DilL/NsoesCqGsUVYB9NE5fXYDAanwybdUu+eFEfmglpEYPNe68pkiR2lJQ
+ BFMUVp/B
+ xWdzViA9L3kJD38o5iOr3+OvKN5OTPxzTg4FYD09DngsFbhnuVho5E6o2+HpLKpcZ1wV+leeKcUiFGRPlWXd+usYcvLYLvRTeRM8OHlpnme7uAoYrIGYYs3uKYxQ2cu6x4BCXhA3n5DwiU1vkkNVG9xJKjC486jjVMPTJL8t/Rm/DA1NhFYvxjLtw7nBhGHb09ghKgv1bpAnIDgJBx4fJYRhFcBF0nLnq/FseMJpKVKlyFmn/eCjEvgsIczi/fH2MXF/eTSnnJsAp0C/SAXGHuQVGZElvBdnosoZG2RLkIB02P/SyGcbJMbxxHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,60 +98,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-These fix D-cache alias flushing on sparc64 CPUs with a virtually
-indexed L1 D-cache (Spitfire and Cheetah).
+xcall_deliver() writes the mondo data and the target CPU list through
+the trap block's physical addresses before it knows whether any CPU is
+targeted. These addresses stay zero until init_IRQ() sets them up, so a
+cross call made earlier, while only the boot CPU is online, would write
+starting at physical address 0.
 
-1/4 makes xcall_deliver() bail out before it touches the trap block
-when there is no other CPU to call, so an early cross call, before
-init_IRQ() sets up the mondo blocks, can't end up writing to physical
-address 0.
+Return before touching the trap block when no other online CPU is in
+the mask.
 
-2/4 flushes only the page a PTE maps instead of its whole folio, which
-removes about a million redundant page flushes from a colour-changing
-mremap() of a large folio (7.3 s on a Sun Fire V240).
+Signed-off-by: Imre Kaloz <kaloz@kernel.org>
+---
+ arch/sparc/kernel/smp_64.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-3/4 implements flush_cache_vmap() and flush_cache_vunmap(), which have
-been no-ops. Stale vmalloc lines corrupt BPF programs and module data
-on UltraSPARC III.
-
-4/4 passes the number of PTEs to move_pte(), as Andreas suggested. It
-touches mm/mremap.c and include/linux/pgtable.h, so it needs an ack
-from the mm folks.
-
-1-3 don't depend on 4 and can go in on their own. 2 and 3 are for
-stable (3 needs 2), 1 and 4 aren't. The series is on top of the sparc
-for-next branch.
-
-Changes in v3:
-- new 1/4 and 4/4, following Andreas' review
-- 2/4: reworded the message and the move_pte() comment, marked the
-  UP #endif
-- 3/4: reworded the message, dropped the Suggested-by (I have no
-  email address for nsafran1217, the Link credits them), noted the
-  stable dependency on 2/4
-- picked up Stian's and Adrian's Tested-by tags
-
-v2: https://lore.kernel.org/r/20260928132102.1707-1-kaloz@kernel.org
-
-Imre Kaloz (4):
-  sparc64: skip the trap block in xcall_deliver() when there is no
-    target
-  sparc64: flush only the aliased page, not its whole folio
-  sparc64: flush vmalloc ranges from the D-cache on map and unmap
-  mm: pass the number of PTEs to move_pte()
-
- arch/sparc/include/asm/cacheflush_64.h |  9 ++--
- arch/sparc/include/asm/pgtable_64.h    | 14 ++++--
- arch/sparc/kernel/smp_64.c             | 51 +++++++++++++++-----
- arch/sparc/mm/init_64.c                | 65 ++++++++++++++++++++++++++
- arch/sparc/mm/tlb.c                    |  2 +-
- arch/sparc/mm/ultra.S                  | 25 ++++++++++
- include/linux/pgtable.h                |  2 +-
- mm/mremap.c                            |  2 +-
- 8 files changed, 148 insertions(+), 22 deletions(-)
-
-
-base-commit: 2bc58762a3d74e42de129d717ae3ba10ecf0ab96
+diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+index 371460e34484..4240c129c5fe 100644
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -801,6 +801,15 @@ static void xcall_deliver(u64 data0, u64 data1, u64 data2, const cpumask_t *mask
+ 	local_irq_save(flags);
+ 
+ 	this_cpu = smp_processor_id();
++
++	/* The mondo block and cpu list are not set up until init_IRQ(),
++	 * so do not touch them unless there is a cpu to send to.
++	 */
++	if (cpumask_any_and_but(mask, cpu_online_mask, this_cpu) >= nr_cpu_ids) {
++		local_irq_restore(flags);
++		return;
++	}
++
+ 	tb = &trap_block[this_cpu];
+ 
+ 	mondo = __va(tb->cpu_mondo_block_pa);
 -- 
 2.47.3
 
