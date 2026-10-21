@@ -1,125 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BA7606A31D
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454FD606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=pH9QIB8Z
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=iDAQ2JjN
 Received: by kanga.kvack.org (Postfix)
-	id 945946B07C3; Wed, 21 Oct 2026 17:24:38 -0400 (EDT)
+	id 65EA66B025B; Wed, 21 Oct 2026 17:27:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F0816B07C4; Wed, 21 Oct 2026 17:24:38 -0400 (EDT)
+	id 60F786B025F; Wed, 21 Oct 2026 17:27:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DF3F6B07C5; Wed, 21 Oct 2026 17:24:38 -0400 (EDT)
+	id 525856B0261; Wed, 21 Oct 2026 17:27:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 55B4F6B07C3
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:24:38 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B2CC6B025B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:27:43 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3747E160683
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:24:37 +0000 (UTC)
-X-FDA: 85347912594.17.250D1B4
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 48395160005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:24:35 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=pH9QIB8Z;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B44701206C3
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:27:42 +0000 (UTC)
+X-FDA: 85347920364.17.5383309
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D070440007
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:27:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iDAQ2JjN;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3Sy7ZagoKCGoRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3Sy7ZagoKCGoRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792617875;
+	s=arc-20220608; t=1792618060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8IEZ9olq160T2eeN056hVBHNHsrJXJMeuGcg8w/hmqY=;
-	b=tYaVCWyi8rpWloffAZgsvHAs+NCCqWbDXXp+mgik2KPluQk5pM9760vFW0FtUI8n9tn0uL
-	nSEOyEe0Iq0w1ASlnymol3oZ35LRaaKp4S3rTULQbhL2qjTCf/cgU0jiUyWvr7n3yS0qOl
-	sfFv2arYxg8vANKCYj7rB4hrm9c/e3Y=
+	bh=4wmdHTAA1AuKVW6+MMratQ3OvnpQ7OBK1Rv6piTCmyQ=;
+	b=dWfb8lT0RBvWNyNToT3IhqBny5BrQk99Wc11dwuhcgen1b4FITij2bxlz5XWNUY3IdQ/OB
+	C5V+73HfqPZHYM7VqWJdRXxCGg+Ct2dMsXbfWkrnHArys/GNEc0b7PHsBsm7/ykUSNMC7k
+	v5Po/xt/JEkYLMR/aoEu8dRlFYUfj8Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=pH9QIB8Z;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iDAQ2JjN;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3Sy7ZagoKCGoRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3Sy7ZagoKCGoRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792617875;
-	b=e69qYRIdJqdo+wZKK7g8ycmOqDyf0GfRTHFuKYWsSM0qHHDqlqMemCqaRYrkbx9nhoOehK
-	6aOjmUj46ZieefPPLgUN6fjWh6Pa57tsHlE4r4J7bBYx1F87WzWhOzSxKaMWOwqaZUMc16
-	NbPda8xt+anc5Wdu8NmnmaCLo15v0RQ=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93f079a63b8so121011185a.3
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:24:34 -0700 (PDT)
+	t=1792618060;
+	b=okQmGqnPmV3b4P2jqCvIHJMoOMu0/T7eyldLnNzVFvijj1V9LGCCiOUnn5NDF8nN4l0O0v
+	GrnulYj2UYEUo1uJ6CZ1iN4Ud9N87HU0DXpwFNoa8BTMm6cYaygy+aQbwtxm/Ykh0Y6mkh
+	tDEnzJLOvEsWz/8vQtn7Plduv0NlizA=
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc7e0321ec1so1146530a12.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:27:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792617874; x=1793222674; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8IEZ9olq160T2eeN056hVBHNHsrJXJMeuGcg8w/hmqY=;
-        b=pH9QIB8ZnDQjO0T841BXaMLWx2yJnlcIpHJTTQ+tWk/V1A/gvxUV1QrWWr63JAmHLL
-         t2Mf4iixwRvuQ24Vba9odWSD8nDtuQLLkATQ/D64YZerR1U03eT4ajYy6F8QrrAaUITQ
-         ecwEHU0/5zBsgLmQwSN1mUqHTO3Xc3n0QZr1c9nNQkquhvzXZmKC6W7GLmVynec5fB7T
-         6rW1zov4dRZIYdfTdsOaB3sioD+Ye0Rxw8S0SaMwdTcJ7y8FARFEjrQ0WC+ma3Kwf4Da
-         EyFzyF4HjKk3GgRIUHmG07WVsJpHYoJOb54qLS/WoyauZv6z8kJ4l1WzyIOyH0LmT42f
-         u4gQ==
+        d=google.com; s=20251104; t=1792618059; x=1793222859; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4wmdHTAA1AuKVW6+MMratQ3OvnpQ7OBK1Rv6piTCmyQ=;
+        b=iDAQ2JjNBXQu7hsvL5n5BVMfkr8I2/j4x0HeM/LnB6iZuHMVT9LJ+I6IUJ2dP/0JIB
+         3uhB/fIR90Cz07xz1xVG+DfpVTETE31naXFct5nS2Qua2MMkDfcOB+sS7fKA9LerUlt8
+         cJRQVEoJMG9VhETJ91I1XdQYb/KrdQ6ITF13ou/ubl4UInnhusd1m7HsnWjE1ZuI47BU
+         t1A4zkEMO5N/3+QLcxa+Tpah7SouwxxC+phy/E1G0py+lVelxVdfO1fHi/Z7T3tQtUEB
+         qDHynX0yoEIlhZ7yL0ZEn3yLDtWw8I93TbqCJo62gzY8zYaH8EqdQLIXNMRWo4wn7Rnz
+         6hrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792617874; x=1793222674;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792618059; x=1793222859;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8IEZ9olq160T2eeN056hVBHNHsrJXJMeuGcg8w/hmqY=;
-        b=M5nZ7AFq/gfOpHvmTdYj3eSr0McT2JOVOLeRUg0pZiD2Fs/ogPfv92ODn3dg206F3b
-         TaeELHIRwKHt8d/Do5paFinzjgeD7S/j3E0xV/ornu39lynOXde08tuAKBOVbTKu1snP
-         A6Su5IO5erw2OLYmW/mguFIWuToXDJdDmnaTHUlb/HBns6x8ywPLAy7DBAhJ8/8yL+Kx
-         OPtoJ2yVH7poGNGlJ9/0y9sk9Zud3oYIinVHbcOOjBZ5q6j4Nz4884sCfIpM+V3vhcr9
-         iVRh/dQ38U1JbTU/6XLU9ycV3RtS2Ci6QF63AkYIZkRFRFFQgsIxQLnAv9Ayys++AaLH
-         V88w==
-X-Forwarded-Encrypted: i=1; AKwUvBx2KcrHwTtqaRDPetT6Bq2K+54SB1ffhktpQjhNKzQp0sSI2c/44pu/E2ucifW6nmZtOvhrqjPSpA==@kvack.org
-X-Gm-Message-State: AFq9FYJPxuTcA+Ggi6EeWegYzfJX2Yv1LFfXbJqX8DVheVC0KXGJ3hUy
-	Swtmw72t/xF3KUSqrf5j/EdMJ9of1xQKsrKg0/BCcGdDXuUS0rGv1icanJ226zRgfxCBYyfIGmi
-	OWeIk
-X-Gm-Gg: AYBFou2ZqdGtkglRRSY3HfFam3sRL+sUXu9VUqv92n3r0f+FfBXg+Hodqs1Vnm6hEE2
-	BA6nB0lanCV5RdoJKmZLGHBTiiteEIyTtmD3rMi68Mtkxrv6DyLzu5hjsFAitUA2KYmS86BI9ry
-	grWCCjivVZSC0+FRf1Gw5uABaizpezSmXn2AlaWi8NangszduhDsauBBh91nNNumFEjlwG6bSt2
-	s/1Kii0B11kbH+P5t1MxmmHglf6Gp/yrwOtVNpDNDabnplqJKDD8qndnlgv/gN5XbMFsFRO5588
-	nSREbkhxYwqbzys8LZE77pNnDg9ClfbhRaXIGSj9q5eu8fHY8cPbdGxoSFGEsfxSQZXjhzS/iUq
-	2q66jT+8eFlvZj9CIPIvGoh8k5PSXTVxbyZZdFdY4txLU6rAq9iGaC0124rBxA/SJElvgB2FQb1
-	7+7dm0tRrbQfEc1tnWLX5YYlCsIIyHFqlPdAmhYsNM6uzR67uj1/WTARGE61aN+3R+4XME/guwK
-	fXfnnIle7HoBKSAyZfL12eWJa5L8veg01wBwoSBmd9TFRJFrzHf/wMeweUdkVnWdy2yOMYSeVrP
-	DrRUF40G0rQccJCRU1ZvmE3rt6XiecwyS8hr
-X-Received: by 2002:a05:620a:4414:b0:93f:16d4:3bf0 with SMTP id af79cd13be357-93f57f23fa4mr670081285a.42.1792617874277;
-        Wed, 21 Oct 2026 14:24:34 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56df2ad5sm349884785a.27.2026.10.21.14.24.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 14:24:25 -0700 (PDT)
-Date: Wed, 21 Oct 2026 17:24:20 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Chris Down <chris@chrisdown.name>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] mm/page_counter: use WRITE_ONCE() for emin/elow when
- parent is the root
-Message-ID: <atktYGL3OP088D9P@gourry-fedora-PF4VCD3F>
-References: <20261021204818.3431099-1-shakeel.butt@linux.dev>
+        bh=4wmdHTAA1AuKVW6+MMratQ3OvnpQ7OBK1Rv6piTCmyQ=;
+        b=waha3LgQPVkdhQog7SyXowky103uslHpu8xTxq0FneEBzEKDwg/Wyr82BvBElE3Bw8
+         4u1rGCPeYv2SZLMcs8wcGlmQMyhoWxontO7rSYSgCRBTl/tsW5go5kRQmqiQHOO8Z9ME
+         P9V8efC2ZDX8A7UIkCmAQ9JUdLQIkaFZuyiomtqtb2b1K+76kjRFoqs2KI7rPCew+USd
+         9cCfomOdWVVBUYllDr1gF//lZBtmC76PpJStc21xdNsCUi13x3+tYRWtHW2GOdT5LHdt
+         QH/EBFDGgPmkoVEihUcq5EBGbxS/hb4UhwjNr07p2NS16vdLsr3WFEzp+oDCGr6RLVZL
+         36qg==
+X-Forwarded-Encrypted: i=1; AKwUvBwidwzf0QALZMkw/TEQxktNrFqzVcHRd7uzYlSWhfxNz9dMZa1nrnr7v0vDYPWw0ZXqkxL6cLu5+Q==@kvack.org
+X-Gm-Message-State: AFq9FYLbxD6Ii20imwsT3IATTFpesGbqYujYt959k3WfXmsdL8J5yPiN
+	XmSxCNVi9VHYVwNDv1VusVe9trrMl533VNhciqHIO3BCZEwMqkIktTFfUZR4HyMxDghy1Po/mXe
+	zoDiZ7fs2X1Wpq5f3P3+KWQ==
+X-Received: from pjboj12.prod.google.com ([2002:a17:90b:4d8c:b0:3a8:645b:da8e])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:35c7:b0:3ab:e588:c29b with SMTP id 98e67ed59e1d1-3ad86dcac60mr3082798a91.5.1792618059129;
+ Wed, 21 Oct 2026 14:27:39 -0700 (PDT)
+Date: Wed, 21 Oct 2026 21:27:37 +0000
+In-Reply-To: <491B482A-8177-447A-8CDB-AF83C13A5DEE@linux.dev>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021204818.3431099-1-shakeel.butt@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 48395160005
-X-Stat-Signature: mzim9gk3nwsjiy74bji3np4ikffewwfj
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+References: <491B482A-8177-447A-8CDB-AF83C13A5DEE@linux.dev>
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261021212738.321547-1-jthoughton@google.com>
+Subject: Re: [PATCH v2 01/20] hugetlb: Don't restore vmemmap of non-HVOed
+ folios on bulk restore error
+From: James Houghton <jthoughton@google.com>
+To: muchun.song@linux.dev
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, david@kernel.org, 
+	fvdl@google.com, jthoughton@google.com, linu.cherian@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, mark.rutland@arm.com, nikos.nikoleris@arm.com, 
+	osalvador@suse.de, rientjes@google.com, ryan.roberts@arm.com, 
+	sunnanyong@huawei.com, will@kernel.org, yuzhao@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D070440007
+X-Stat-Signature: mynryn3q6si5nhw1z3o1hq11z5gccmq6
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792617875-659696
-X-HE-Meta: U2FsdGVkX19vU85ZCOoQBUSa7sa8M8AOKeNRNjaUtJM3G/gAa2yhq9D0swjsCW7LMXCwLt4G258qTRcQkNADP2BTdVQ6Xx9b9DU7Kh9DmoB21jzL32tnyZaeHF9pdqPL01Z7PAVQuW/nrPhQlSiWl96HkfbpQ47GQlWdpl0Lo04mp30iDFKGpHkmQAcV/dxmFmN0fajRTgfy+34X+ZXjwSvnRKAfBC7Z8zWuYN8VqW5pHViKHSNR/zD7qiMSWTIC8e36Zij0oj8C7/Qws9YJTK/X0mGr9B8g3D2S/DLaJAdPTfYJ6slipECY6YuYSxrI9Uo9MqFP3gr+DsUXVJXZnuo4vBf9Qd+MEmCLIbx9Zz66mOkuIFIkDengqfG0iZsMd9v12Z4ea5JptfY2WEUwdFEF9BeBzmSHmWrpSzmz/BL7qWCicYLs+ZGK25CW1Z/OiWBE2zaMxBi+8mGr9R7l9yn5ts+2XDRr//I9ntwzom/emhxjJtuJqgn2vQD0aLvyi5DPRcgGp/1C+RwbWAm5AGB7pzEg8G6vyz+qQFC3xAd1g5w8gIjPtqKZM/0ksGtXqpzLCUv9hiof78f9KTBNvl/dkxG7LWW6KsHePOAOH9f7518g22GUoEiG/6iG6jui7lawyCjKiLoP/4Fn0rbAOaN+3nkG+Vom8UyakwDt0KYnDLXMXsUB4B3jI0m7zfPbO+l/AkxB0/J09puykz1/SX7yMpD823ixl83GgQZVqSWziGQxdVUeD7gLsrQcgxGkDdk//y3wwzvGgDNsw4bMlldM4O2Lay4+JYEyb1hK4eo/UWMKuAw2CAA5Bt52jZ3vua3WyDBpXZw/4ySmZRedNrEjINhnKxlwqCfqt036YZ5NVIaI2PI5Mfr7SkocHg7BnqTa3GjhGfbgXLRaFwJ31qdclzpZ/9UdK/7FcK6TnLlBopntOMcdLbFjLrcaEFQgyTHwzSwc6dARKkgX08c
- eoxreX6M
- WDLbLjvg9qlobP7B9I5L2X3x9iwzs8oVfdmm1rNBtxR5LtGXZrfmZ6uLgUvbmAL/JmrGlymN/zrFXN3Fy+I0lXZnyZ/ehpZKIcXa7GVl+ihhSk1NjvvusXulC/LODbcq5XU0HolRpVFlQm6O+Nl0jR7kF9VTLrqt+rycO1ej6H4AT6Xb5z2od3/1iTIe86mILwKvF/qvfMoHPi613OsDDir++1SB1bxt/ESFnY8FID6LkiPATxhrahPyrdaBZLBFSHrGInvlF0XTvjpQ3v34CzuIu0ABDkxj2a52kFGmFZtICavDNi2WA375D6bN7FIIi2pzMMHsFUdoOn3yWQlc3In8V9IaXzD81dLw+lVPvbOnkAazmizOlLTgjMTtlAX4K5inziDnnH9tnhnqYBbeA/6a2Vgr4Rn6e18LCG2EYADtaXRo/fhigBsDUwiSIC4ej1jQhR+3NsmvNZ94=
+X-HE-Tag: 1792618060-983859
+X-HE-Meta: U2FsdGVkX19v/xrp54/HPz16jz8C98udAXiYy9ANEOLW7DHOpLDqymVF8ZjTaabc2vP1bpT4yInNT+OitudDMfDk6ace2T/z2j6Syw5Ak8wEBNmNDtGpc9YPB3N7CiIVqFCMABFKmLZxlJtS9KPhI8sIWLpsDAMnZ89FRLHBw6xDqPL2W3aH2cRHvbDqvO8/VMiZxsNoRb3/8UoiLkNY+/I97Ry97WlyOjbulVx2Y8x2N6yBKO9gHivbIi6/pX/QxhKg71UUrtXSVn7LBc1cG9luSP/t6+l4etrOQ50JZNu7/CwG2tFlN2oecJEBVKGy8dwsiQ/s/F0llNy+yTgR5cuYzkqjr69F6lWsTOkImanfsk/aSC08LOagbF9cbFtVwN6t6x04AdEwC1D0E/XrfRhxx07wukuOUgOKLz/DlwLZP0OuGgUvdKsF6h9xd6ozKL2MyqtFKBbZSALPUXDkHQqIibnfE/Uj8LHVhiu21c+cqZyXdrIs9euPWqBZOt9KtJBPxtND+lHZjLmCmtCN1gxtT6uqgVh8nZXMHkm0Ky5gw7mwuB3k8kAMImmV6piboLc6GCSV0zEouIn3txX191fNEFQuZ3vTcoxWZ4UI+cWkwN5UhzGVI30f6M9zD9wRV4OkV5zFuttLVomYKl6U5Abr2H1O17xynFq7wS1WkIuvu/PVr8w5wTHlyb0S7v56AEo5IHz9JnndciEqs45NNnJCIQ8Uexul5UGzve9jX6TG55uKlw4DAHV5ZpJZ++YRt1oJw8i10JIp355UaVa4vw6hdyXcHS4rEcUFr746gxHEAQPPL59BXHgsi2Vgv/m+/w7tgZOoZz5GH+GEYYzKNXuv29Wv9MzGmcpsDWwnceMOWXrfolduWyAxJkR2PiIEfmLdzEcHlMsVapj7bwGXaQSzHL1oKNj/R+MIwy6Uesqr7NMAuk6Ck7l3gE3MSBFf81MpSabzU37iUTq5vdj
+ 2KPViYkR
+ lkL/R8bJupllkfm0AgsZC/97jdAg8SGEuWz2aljiec/Brntn6hA4ZxtXdRzej1ko3D5M/GK2HYU8NtU7arsaijfgIgxPVAOoodrdODPd/634sZWIJadHyauX3osebnqQmDaeXO16gNXuLg6KQACYzqnexnfC9/KP8Nue0vcCILAgBxG+Oe3OJoUKbtxiW15AoLNjlhYqwacS7ttKk2OFlla7+1MHGDokPrPHYO3bh842Lw99duZzlgN++hp3rSqrRdtNxKTKYubmNkMfAEKIJcXoGDLQWDYe6itIQS5XMZXG9NxuPc8do4Xvd/d/zbt4J9Jj65A6Llw1xjpXuK/P4w75fWcPQFisvACX1nq0Lw6zXHT0601Q9oiPNQUntO/giYxZ7hFaDw3CXrx0T9Wm5NEmbYr+W2JsqeSckZR73S1UWLwnBsOm+ii4v4IaPdAESTz7YYn1HUprjjcaUMpnbvTjaM1rj8nG5iw+Ul+8cGaNzcMzDBmz8lCT93Bs76wf0mXuFpolLvleieq6+uhgQuILQk/C7CW5WSRh+/7H1sLGST2I2ySd/DXuX92O9bras2aNQmHddyrO+7Kr/mG49qZuDWDBFVmBPLVpUTudl4IBoi1A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,24 +121,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 01:48:18PM -0700, Shakeel Butt wrote:
-> page_counter_calculate_protection() runs without locks. Several
-> reclaimers can update the same counter's emin and elow at the same
-> time, and readers such as mem_cgroup_below_min(), mem_cgroup_protection()
-> and the dmem eviction code load them with READ_ONCE().
-> 
-...
-> 
-> Use WRITE_ONCE() for these two stores as well.
-> 
-> There is no functional change. Readers already accept stale values, and
-> compilers emit a single word-sized store either way: with GCC 14 the
-> x86-64 object code is the same before and after this change.
-> 
-> Fixes: b3a7822e5e75 ("mm, memcg: prevent mem_cgroup_protected store tearing")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+On Wed, Oct 21, 2026 at 2:33=E2=80=AFAM Muchun Song <muchun.song@linux.dev>=
+ wrote:
+> > On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> wrote:
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index a1b51251103b..4dac7ed1df57 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -1613,9 +1613,14 @@ static void bulk_vmemmap_restore_error(struct hs=
+tate *h,
+> >               * page is made a surplus page and removed from the list.
+> >               * If are able to restore vmemmap and free one hugetlb pag=
+e, we
+> >               * quit processing the list to retry the bulk operation.
+> > +             *
+> > +             * Folios whose vmemmap was never optimized (e.g. because =
+HVO
+> > +             * failed when they were allocated) can be freed right awa=
+y;
+> > +             * remove_hugetlb_folio() has already cleared their hugetl=
+b flag.
+>
+> Since you mentioned the hugetlb flag is cleared. So it's unnecessary to c=
+lear it again.
+>
+> >               */
+> >               list_for_each_entry_safe(folio, t_folio, folio_list, lru)
+> > -                     if (hugetlb_vmemmap_restore_folio(h, folio)) {
+> > +                     if (folio_test_hugetlb_vmemmap_optimized(folio) &=
+&
+> > +                         hugetlb_vmemmap_restore_folio(h, folio)) {
+> >                               list_del(&folio->lru);
+> >                               spin_lock_irq(&hugetlb_lock);
+> >                               add_hugetlb_folio(h, folio, true);
+>
+> Something like following:
+>
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 6a011b627986..1ab3e61f4704 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1616,21 +1616,31 @@ static void bulk_vmemmap_restore_error(struct hst=
+ate *h,
+>                  * If are able to restore vmemmap and free one hugetlb pa=
+ge, we
+>                  * quit processing the list to retry the bulk operation.
+>                  */
+> -               list_for_each_entry_safe(folio, t_folio, folio_list, lru)
+> -                       if (hugetlb_vmemmap_restore_folio(h, folio)) {
+> -                               list_del(&folio->lru);
+> +               list_for_each_entry_safe(folio, t_folio, folio_list, lru)=
+ {
+> +                       list_del(&folio->lru);
+> +
+> +                       /*
+> +                        * remove_hugetlb_folio() already cleared the hug=
+etlb flag
+> +                        * for folios whose vmemmap was not optimized, so=
+ they can
+> +                        * be freed without restoring vmemmap.
+> +                        */
+> +                       if (folio_test_hugetlb(folio) &&
+> +                           hugetlb_vmemmap_restore_folio(h, folio)) {
+>                                 spin_lock_irq(&hugetlb_lock);
+>                                 add_hugetlb_folio(h, folio, true);
+>                                 spin_unlock_irq(&hugetlb_lock);
+> -                       } else {
+> -                               list_del(&folio->lru);
+> +                               continue;
+> +                       }
+> +
+> +                       if (folio_test_hugetlb(folio)) {
+>                                 spin_lock_irq(&hugetlb_lock);
+>                                 __folio_clear_hugetlb(folio);
+>                                 spin_unlock_irq(&hugetlb_lock);
+> -                               update_and_free_hugetlb_folio(h, folio, f=
+alse);
+> -                               cond_resched();
+> -                               break;
+>                         }
+> +                       update_and_free_hugetlb_folio(h, folio, false);
+> +                       cond_resched();
+> +                       break;
+> +               }
+>         }
+>  }
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Thanks, Muchun. :) I think it's slightly easier to read without the second
+folio_test_hugetlb(), like this:
 
+	list_for_each_entry_safe(folio, t_folio, folio_list, lru) {
+		list_del(&folio->lru);
+		/*
+		 * remove_hugetlb_folio() already cleared the hugetlb flag
+		 * for folios whose vmemmap was not optimized, so they can
+		 * be freed without restoring vmemmap.
+		 */
+		if (folio_test_hugetlb(folio)) {
+			if (hugetlb_vmemmap_restore_folio(h, folio)) {
+				spin_lock_irq(&hugetlb_lock);
+				add_hugetlb_folio(h, folio, true);
+				spin_unlock_irq(&hugetlb_lock);
+				continue;
+			}
+			spin_lock_irq(&hugetlb_lock);
+			__folio_clear_hugetlb(folio);
+			spin_unlock_irq(&hugetlb_lock);
+		}
+		update_and_free_hugetlb_folio(h, folio, false);
+		cond_resched();
+		break;
+	}
+
+Applied this in the v3.
 
