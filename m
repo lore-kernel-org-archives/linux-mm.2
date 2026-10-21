@@ -1,88 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74140606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 20:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2842606A328
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 20:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LGcJTwNS
+	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=ShpT2mht
 Received: by kanga.kvack.org (Postfix)
-	id 8FB9E6B079A; Wed, 21 Oct 2026 16:30:27 -0400 (EDT)
+	id BF46F6B07A1; Wed, 21 Oct 2026 16:36:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B4476B079D; Wed, 21 Oct 2026 16:30:27 -0400 (EDT)
+	id BC6876B079E; Wed, 21 Oct 2026 16:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A286B079A; Wed, 21 Oct 2026 16:30:27 -0400 (EDT)
+	id A66526B07A1; Wed, 21 Oct 2026 16:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4606B6B079A
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:30:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B1358A0693
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:30:26 +0000 (UTC)
-X-FDA: 85347776052.04.13EA225
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 29F484000D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:30:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LGcJTwNS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 70FB76B079D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:36:30 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 783071206A4
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:36:29 +0000 (UTC)
+X-FDA: 85347791298.21.71EDC22
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AD685160003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:36:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=ShpT2mht;
+	spf=pass (imf08.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792614625;
+	s=arc-20220608; t=1792614987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KBK4LZ76/LMHs38+RcqRgWOhkYyz4na1Z6dIKP/tOqk=;
-	b=iOOHN0+1JqknHyscx8blV6UgbSOhZ8FvZY8E5WgYxvxG/y+bcuq8RFN0I450J/4em9J3sR
-	OApGrHVqiVFBKtXQYJaqdF7+XZlKB2VeHYEl2ph2buLreseIieMr2ZHjOuaZ0m3zPlkV9o
-	hfHipxMnT6ytob1CDaiVUTBqXn9LpBQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LGcJTwNS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	bh=tbceIaRF0sAuckuiO6cyxQdP9/vX0G/uVvpCY2YPfrc=;
+	b=EjMhNgF5hghsV1sAPo+T+DUe4YPVuaq0W92tF5Fo7U5GbQtfIwAkg/yzsAwPRMC3XiOnz7
+	jVPc0mBdAGa5ROFC/UNhFtOHQbspFa0QQ7REBJSSoRXOzOTbWLsseD+Gt4ebYnNeQXjXZP
+	dx09GaDa65mvL3oyGi2r0li83e2yRFs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792614625;
-	b=t4l+BRbLozSSTymXO7p6l+Dx/njXNLAReCo+9Q+aBc9yn5usDpkkVKklWUkIgAHavbY6X6
-	+pwePTczkhkmc1nqL5h7y0u9LdIgAYYwlhyc+I3wH/x8DVr92hd7ZnCjf3HO/2WdVIovmN
-	1TrUVccCqihDXTUXBa5Zgxq3WH9OkuU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9E3D601F6;
-	Wed, 21 Oct 2026 20:30:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BE01F000C2;
-	Wed, 21 Oct 2026 20:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792614624;
-	bh=KBK4LZ76/LMHs38+RcqRgWOhkYyz4na1Z6dIKP/tOqk=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=LGcJTwNS+wrlBBLVvQ9ovngE23Noc9VOmWvk2FRS75Y/m/cgQwVkUTonRoFDY/Frv
-	 WLGOMZ04f4qVLz7PtsOIxRPvCKIlgUMIi/7JVI9zP9SDlYdI2+ZlT5rje/up+3NVHe
-	 q+Q8DK4stx0Zuum4v4z2Jdf76/uRakBFa3nwABCIzPQoGRfndK1P1ObqSfPI26ryJt
-	 KXBcJe91FoGxwtKVgEN3R6jj7JkhTMa29qbJv/83ZBzdgKhDvYfpzUJFGBQan4wmES
-	 MAQpQVk/1Rd17mCrUwpUqfXmUgsYdU0nlaFIaXpIifjnPcAtJJf7s9OmsW2QsJPYrr
-	 SizUAhXRnvmiQ==
-Content-Type: multipart/mixed; boundary="===============0931245153222694076=="
+	t=1792614987;
+	b=ohkKJNzLSw1V/c+ehD3NjW9yx//kDOPd9qdnfShnTfdVybEFHcXFKmbV56bMceC06znC2R
+	u5NGuWqnbhuq6acnD9y6kMviSYUlPk2aMOs91ySmib+i15OKZGLgHBWG1clR+gb1BDSaEf
+	xc9YiPN+MeqMisGlS6IIy1FBXy1jYRU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=ShpT2mht;
+	spf=pass (imf08.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
+	:From; bh=tbceIaRF0sAuckuiO6cyxQdP9/vX0G/uVvpCY2YPfrc=; b=ShpT2mhtcIjao9HMfss
+	jXF7S4rKU1qxrdXq/oerjb+AA9xKx86xQW4rVJcpTdwN6GZi3Ko03fok6bTdeQmb9HLFJhC/LurPW
+	1vQvll05taTdW0NaVp8f8eYgYZe+1epvUyhyliWeJsPezDRk3ikw09d6PCLoOfsOIvbJnLtepWDc7
+	770hBdGBt5KnoFXUorGIvPN4bqx6So+zy2P1wOKtrmnLIHwIBZjXTG8O3dnlK/61VVFjzmJad2pU6
+	uuZzEx1oTR8I+jU8m2RTFniKH0ugGCrSddrm0qHfJ1vCBbLSvq8/mQ5Qr0H1zCbcujPoWNMgHY7+g
+	nBKgoTqn5gaSY7w==;
+Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <khorenko@virtuozzo.com>)
+	id 1xJcz4-00D9zC-2y;
+	Wed, 21 Oct 2026 22:36:09 +0200
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+Date: Wed, 21 Oct 2026 22:36:00 +0200
+Subject: [PATCH v4 1/4] mm/rmap: duplicate a PMD mapping as one in
+ folio_dup_file_rmap_pmd()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <409d58c6952c879c08413c5f5b00b325789263b4704147098dc43d9a4fd93b33@mail.kernel.org>
-In-Reply-To: <20261021195759.119421-3-jolsa@kernel.org>
-References: <20261021195759.119421-3-jolsa@kernel.org>
-Subject: Re: [RFC bpf-next 2/9] bpf: Add uprobe faultable user copy kfunc
-From: bot+bpf-ci@kernel.org
-To: jolsa@kernel.org,ast@kernel.org,daniel@iogearbox.net
-Cc: bpf@vger.kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,linux-mm@kvack.org,akpm@linux-foundation.org,liam@infradead.org,ljs@kernel.org,linux-kselftest@vger.kernel.org,shuah@kernel.org,john.fastabend@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Wed, 21 Oct 2026 20:30:23 +0000 (UTC)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 29F484000D
-X-Stat-Signature: rrzk6poaiqqtjrxirucgqhqosigarxnn
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
+References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
+In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
+ =?utf-8?q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1546;
+ i=khorenko@virtuozzo.com; h=from:subject:message-id;
+ bh=zhntYNSyNOhAa1ZPHwaiFUV3wOk6ing6WAMJ8CgrgUQ=;
+ b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq2SI3kTt0eGcvGYVZkf1nokMQHDfejBZY7fajV
+ 0TyI+y7YxiJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCatkiNwAKCRBRlgpH+WFc
+ KgnAD/4ojtuF4NBnUvfl/Psk86uzqUN1kVtoLEKMaMThvlqW1s3hK5DewNJbbtEf8Kazy+pGsy7
+ 2MNBKYRUNiZDEhZn/2DHUE1gt+A1tVbizNXBa/MWAiM0mHN4ngFsKzIt8G4YzVFPRIiFTv47n4W
+ UzZ9V4zYqU+0s0nv2SkSdgabyHn+IOd37dsdB1FOWbqkMfFafvXpi338tn8jdGLrv9NurDGPBXa
+ JZN7A4rUTj1hDfc6KXc2+NthJvKbdfaeHECDDIrCgp96JMX4YtV1Oq6Vo4PNsA+spLXB6gm22vs
+ bt8zKJcN2+rdAim5R+CHKro0V0Fp0XAZp4Xj82XaDXiCzDfPcKc8FDuP9RDDvxj6RzW+X2RIO0E
+ 612Fj+ImIt3/D5SW82Dj9MLXESvv7BYtG4DMGFZ7XcgRqlHZpzwiWRnWvsGrxcJKt2wKFFMBlJH
+ cuLulc+7fr3I4ndV99zx4sbup7C77YzhIsIspwXhd6cDjs9nPaznCZrSIcs5vKegskyHFrqx+Db
+ rqe+t05922C0eCwL1UxqL2hupnKSl4lwMd1mwvKy9yhaHtuSKLRavqalIHyXq5zh+tUCFdTvAP+
+ kEDIzV2/fARqYVLPRiGeTeSch5+t8I9q8grSh7VIqydeFZPMIov/cihVtwGD8oOVUOK0w5eQsBw
+ F++lxfRANMnnNdQ==
+X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
+ fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AD685160003
+X-Stat-Signature: umm9th8hjn8mjr6c1pwt736qz8rsfwpy
 X-Rspam-User: 
-X-HE-Tag: 1792614625-713129
-X-HE-Meta: U2FsdGVkX1+n+l8d5fKLS+Q7FuxOva7+2L9+Vfs52ir5ArROyvmEXU0E3iThcNqAcoBFKV6xwGKdm9ed6lFzjgfvfXeRkfjmk2hTJBggHhiW0x8IGamzls1U/hJj6S1/Rs8L+sYegDXO5Q4ZxhVw0aYYDSoUFcNc7cUy5cTHRQHQ17Xr0Euzh/FvZ6eLlLPCtAxdx/ehu/J/2kcYzZ6OZcFBpHSQPT1nFPSW6sSrv7P1HmCoJG3GBiPnAtp9vyJgCJ/4q9BfCuo6WWdHVfY9v3q4QWJvxPBmPKoNjbJfv/CnfP9wcIoDEM0HaxETiIWCQ2BpaBDlTc/SRJ6TcMGly8Zjw6BWCSNLphinpwItwpLteOH1lIehUJC8ugh4BTskpSEcXwDUAgXoiFJEYftQTLwDtjiEiyuG+xYRDthbc6weVCuHUEcCowXtJeK+5knhFAJPJMM6ez03z/5ptLMu88Pdkq4TrLErEzyBgoSn222d1mPrtDgtUvJr1YCXLyTJV2BTiGse9FAI7f3Kkp7oCW5GJ/fAmpe3ohj84d6YdLx4/BukGJ55OMtxbJ3zTpG+3BrMc6xFDJbtvWLse+TGJkzNRrpEy/+ONVBmyXfku8cNYBwb+q8FDA58bfM7ffeLE3KTrm9RPG5PetiM9A1ZMFpvx6boBh0mJ23TdLOQqF5CIvYhW3FIx1afYzqXFsedMsE+oZnrRUoEymJS5vho3r+rcvfQWbECgqftVbBhc/JPZTG/YoHw6dLhVCkCP8w61HqcBUqGXGD5irJ1oLbOlhBTKc84cskRfg8GmedaLVbqgTXE6tdX+VP1BB2o2tipiDkR5lIciTYEW3qby7rpyuMolP5GC5jJR5GfV6BcXPA2bmt5k/ABSz7cqnw/ey616sirMkdolpECVC9/JKigY57uue8Gzt1yoVi1nKSXnOB6pPtLzwSG3Be5qou9Bz1t90AvSku+s8uWnY3GT1l
- rYLS4tPQ
- zZcxNN4s4XJrSqjoy7K3lJHXI+iBadlwTUXXTc9XFdpVEHCeLLtCYoGrA5sfhW3C9edyHjVcttiiS9E7rbikWvGDHsg53u5zB9JR0/6DL1VgcgHaSpU08jqcJk5JCvtMoaA2yXtWp04t4PP/h7LBdfxt2gbtX6qI0kNRZN4JWE/y6D2F6edfgYDPE2te9K8ccJuN2ElQRSGiIXE+lTMRPyHaYP1x6NJZdSDovda3U8tvXQkDGkH0IcBnIMNZpr6zd/si7gd8XlF2RIbjuQbGnEUUfJI/3W6jNxZSGdOWHq9BlVfHUN6z4upwuLtSG1wBTA3uZmwYmkrOPmmcZLMzH+mbbAflIP3Gg497emBmLbzhX5He8hYW51p1wrORV9Usf0xpXS4dJgqacuN9b2zmvTaFm6/SXqkEekWnl4/Jywno7yL9AsQZXfJxAT2Vu3Br+2rZV/JLMR0ez3QC2oq8x2Gbu5zm3y2X7a5iVQ97a4QmjoVlTbl3U+Wek8Q==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792614987-852329
+X-HE-Meta: U2FsdGVkX19/HeEXSSkigdSxJZVEjL3IzD5Dpr48IAfX7gKSnYfsMzpF0e/eqs2iLyGhZIPO5HjKIwZIojVzACu2dBgfQLzivUNBk6VgIsSP/1AG+/OUorpOKyOQ9bfyE/NIkKBU9wRknJ1jCrYlC4qYgEoePiB6kTqTsI1PDKmH9vcTYrOzZCaNwbU4YGNBX0IhItis48bIagzM0P55hmHcDwJMs4B8jeNqRj+qG9WJEeHd2jT/WQeBJOq22iHkqzHRcLWOwytCnsymDaokPK9UjcxIr7PZq/8cvkl8yR7Z60eCOUemzu21ss14QH0e5Ad+92YQxj3caFswsPZW1Kdl38U4JVczgvj9sYHcHCymJnMrkfNof6xZW2cupLunm1O4ouv8+SviMHmhqwdMxaQkLMjSqdrP+hMaylWlLKyhnQ2bcv8wknsvhxtzARUm84zbXQsf8BUfR45MSUpWwYqAlF2aWjFGCw0QAKfo2txN/+Ivo19GUwVj5oRTZ+LHYd8FpSOfOn0hgqeRIp4WhOupkbjGwQc9nDnqztDUPnWy5ZH5lAvGUPIE5XQFxhSsuWKHAahohqlPC8F+aeUamgOzs4a9AdceMeVRvZjcT/rcpKBw4v9igRtoexXeGIj4RlCR+XB/9ZxQDl/Ihx1P7WtNrSBx9VeCbYiM5+fRb9RFHzUlpD4/zOHbuceVTYveve2A/ESreeI7PqUzkmYI/5Z7vibzDdTq++vqXKkwGVaT5R5OPhIIFbAXURkqBZsucROM+PJvJi+aGBWglI43MFdeD8An/2p8R+CtENozIeDvU1qZhgCs9lavfjELGImdNgiYGqODHTdd7JktIXTHUZFPAKZrVouNFkhVWZaNQ5RUSV1SAkyIRWbtKZoQfSiJuBaZIZSr/6ulqK/4txD1PDq1Okspxij/taPzbtzKtUUAgMHfBnEMkzL3vMMo72pMYbSuLdI/DHgKNAtIRYg
+ tnxklFAQ
+ UJ8IRVMOKdtLgJk2bNBLll6OmWPhtdm8ec7t5q6vN+xClu7uqlhS/SdGFJPNZgHRhVP5hAxewXJQMyBf1Cn/b/o+ukYHERP3yBNXqFo0ZiRyfHc7mwWv0IerFlFWPlnPyhsrpLGS4vGEygXOGIVRHM8LUEwCotSqK4gsKq7njLI0GppXhgiE5ZUL3WXpfPgBbib6P8qUz+ERpUxe8E8PaNI1jFklsA/0jPHlr925z/Ik0mQnuSg7PQ1PckDXtItMoDxautFOBh9pYWLBNCoYupJmEktiEwzd85Sac7tyEHeYMygIrpTGYj9K4Gf6Aj/9N4GvEOW6sMg3Zm+pvP6Y0HNYj2cYr91BPv47bvWzcvsX1tKeVJB1fo9pkXuWfyV7Aq+LZ/GulKouC8ToZYbneGisJgg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,95 +126,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============0931245153222694076==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+folio_dup_file_rmap_pmd() passes PGTABLE_LEVEL_PTE to
+__folio_dup_file_rmap() for HPAGE_PMD_NR pages, so it adds HPAGE_PMD_NR
+PTE mappings to the folio instead of one PMD mapping. Each unmap of the
+PMD removes one PMD mapping:
 
-> bpf: Add uprobe faultable user copy kfunc
+- the folio's mapcount never returns to zero, and removing the folio
+  from the page cache reports "Bad page cache", or hits a VM_BUG_ON
+  with CONFIG_DEBUG_VM;
+- the first unmap already counts as the last one and drops the
+  PMD-mapped statistics while the other mm still maps the folio;
+- the second one drives the entire mapcount below zero and drops them
+  again.
 
-TL;DR:
-- New write-to-user kfunc may let CAP_BPF+CAP_PERFMON loaders write user
-  memory, bypassing the helper's CAP_SYS_ADMIN requirement
-- Unused enum (nit)
+The helper has no caller yet, the next patch adds the first one. Pass
+PGTABLE_LEVEL_PMD, as folio_try_dup_anon_rmap_pmd() does.
 
-> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-> --- a/kernel/bpf/helpers.c
-> +++ b/kernel/bpf/helpers.c
-
-[ ... ]
-
-> @@ -5139,6 +5170,31 @@ static const struct btf_kfunc_id_set generic_kfunc_set = {
->  	.set   = &generic_btf_ids,
->  };
->
-> +BTF_KFUNCS_START(user_mem_btf_ids)
-> +BTF_ID_FLAGS(func, bpf_probe_write_user_faultable, KF_SLEEPABLE | KF_PERFMON)
-> +BTF_KFUNCS_END(user_mem_btf_ids)
-
-The new kfunc does the same job as bpf_probe_write_user(), but it is gated
-only by KF_PERFMON.  The verifier checks that flag as env->allow_ptr_leaks,
-which is bpf_token_capable(token, CAP_PERFMON), and loading a
-BPF_PROG_TYPE_KPROBE program already requires CAP_PERFMON (see
-is_perfmon_prog_type() in syscall.c).  For this program type KF_PERFMON
-doesn't seem to add any restriction.
-
-The existing helper is gated on CAP_SYS_ADMIN in bpf_tracing_func_proto():
-
-    if (!bpf_token_capable(prog->aux->token, CAP_SYS_ADMIN))
-        return NULL;
-    switch (func_id) {
-    case BPF_FUNC_probe_write_user:
-        return security_locked_down(LOCKDOWN_BPF_WRITE_USER) < 0 ?
-               NULL : &bpf_probe_write_user_proto;
-
-and include/uapi/linux/capability.h documents "CAP_SYS_ADMIN is required to
-use bpf_probe_write_user."
-
-With this patch, can a loader holding only CAP_BPF and CAP_PERFMON write to
-user memory through the kfunc even though the helper refuses it?
-
-The commit message carries over the LOCKDOWN_BPF_WRITE_USER restriction from
-the helper but says nothing about the capability requirement.  Should
-user_mem_kfunc_filter() also require
-bpf_token_capable(prog->aux->token, CAP_SYS_ADMIN) for this kfunc?  If
-CAP_PERFMON is meant to be enough, could the changelog and capability.h
-explain why?
-
-> +
-> +enum user_mem_kfunc_id {
-> +	KF_bpf_probe_write_user_faultable,
-> +};
-> +
-
-This isn't a bug, but enum user_mem_kfunc_id and its enumerator
-KF_bpf_probe_write_user_faultable don't seem to be referenced anywhere, in
-this commit or later in the series.  user_mem_kfunc_filter() compares against
-bpf_probe_write_user_faultable_btf_id[0] from the BTF_ID_LIST_SINGLE below
-instead.
-
-The similar pattern in verifier.c (enum special_kfunc_type) works because it
-indexes a BTF_ID_LIST, and there is no such list here.  Can the enum be
-dropped?
-
-> +BTF_ID_LIST_SINGLE(bpf_probe_write_user_faultable_btf_id, func,
-> +		   bpf_probe_write_user_faultable)
-> +
-> +static int user_mem_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
-> +{
-> +	if (kfunc_id == bpf_probe_write_user_faultable_btf_id[0])
-> +		return security_locked_down(LOCKDOWN_BPF_WRITE_USER);
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-
+Fixes: d8ef5e311d7b ("mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()")
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ include/linux/rmap.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39668036298
---===============0931245153222694076==--
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 0b332770abeed..7562017416094 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -558,7 +558,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
+ 		struct page *page, struct vm_area_struct *dst_vma)
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PTE);
++	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PMD);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
+
+-- 
+2.43.0
+
 
