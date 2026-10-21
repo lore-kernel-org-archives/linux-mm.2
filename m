@@ -1,99 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB42606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0270C606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hYOuMxLC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HLU6OErr
 Received: by kanga.kvack.org (Postfix)
-	id 2DC8F6B0271; Wed, 21 Oct 2026 19:35:07 -0400 (EDT)
+	id E9DBC6B0373; Wed, 21 Oct 2026 19:35:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28DCF6B0272; Wed, 21 Oct 2026 19:35:07 -0400 (EDT)
+	id E4CE66B07F4; Wed, 21 Oct 2026 19:35:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A34B6B0276; Wed, 21 Oct 2026 19:35:07 -0400 (EDT)
+	id D62FE6B07F5; Wed, 21 Oct 2026 19:35:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E27146B0271
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:35:06 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3714640743
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:35:06 +0000 (UTC)
-X-FDA: 85348241412.26.2D379A2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D783D6B0373
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:35:10 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5603E120710
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:35:10 +0000 (UTC)
+X-FDA: 85348241580.05.B735F5F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 81FA018000B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:35:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hYOuMxLC;
+	by imf18.hostedemail.com (Postfix) with ESMTP id AD90C1C0006
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:35:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLU6OErr;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792625704;
+	s=arc-20220608; t=1792625708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DEOUCmLCD5QmSlPVT91FgaQC8nC2swbBcRqpaDjjQfI=;
-	b=tkLDOxy1bwm4QMKO4a20pb8o3N6Y9zFgclt4QWTpJFSEl/M3xaGErM6xzZlKhs7/h6MXWP
-	T2hc2SA2Q1khDm54+YX5J5hzM8siOkiq5CemXk0/Hed1do93dD64vdFBH3gYUQ4p8m5gdo
-	eGlyAfRLHybF/pMxfgd8AdGuT7pAczU=
+	bh=UiwpltmOBAEqC1E507in2t/reGPJ/SwkyjEVEuoAspA=;
+	b=DZxdYUVNWpZSXZDU4BLt436y+0rQtIKq9cZdWwYOHr30PbFTDFoE82ByE5gdH09HPYPMv8
+	Naz0l0a40iRkNztoG2bUuMuCtuokil7WtRObhJqL8dOerwmBQd4/CgV/wLMsR0HH18xuLg
+	5/ihMJj/oF310abmk8SQV+ueJzGGkqk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hYOuMxLC;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLU6OErr;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792625704;
-	b=lUj9ZbCQ9nufwLvsYIsLoD8O7pdKRE8CF8YKJAkmh2VoCQuP39Wt3iXIV81GRrsHZrBDWb
-	z5DxmBLAOjkxwKnpO17ImBNAAouCj1Yk9bA5Pg07W4vvFv6cU6TBsV/jLlzG96Dz2C3l8D
-	BAIKnKeEDHTrXzw/4XrIuvA6Oz4Mie4=
+	t=1792625708;
+	b=txBtCZ5SeUANByfXHveTQQwwgUwOFYlqGwjIRV8Vtl+95MMdFTpTMhjMYS/5Ytlk4/YQfE
+	E90i15oxOMaWaHfNqCghX6F1KzB3l7OmSEZQQc5+A7vRraap7d4S6eCDQ6aTztQzwNEU7b
+	obYxApOj96W5dzfJnKWy3KDAYun8jVg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF62D44792;
+	by sea.source.kernel.org (Postfix) with ESMTP id EBC4E43667;
+	Wed, 21 Oct 2026 23:35:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295B81F000CD;
 	Wed, 21 Oct 2026 23:35:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1136D1F000C5;
-	Wed, 21 Oct 2026 23:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792625703;
-	bh=DEOUCmLCD5QmSlPVT91FgaQC8nC2swbBcRqpaDjjQfI=;
+	s=k20260515; t=1792625707;
+	bh=UiwpltmOBAEqC1E507in2t/reGPJ/SwkyjEVEuoAspA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hYOuMxLCYjqvimZsnFLqsnr3/JOHhHgPWYktNKOG+xa58rA/PdajZ93TkVMaAE9u/
-	 z9wRqTy3u+ueUpn1AjkmWnuIiREYvygff12YHIlpDGJRkBqLF2CGRhYj0ncj+oXmNl
-	 LzcvebJMEjfbpM6b2VaBVlQ83xSjdC2YAEbS5eRPaPpZUkKOoXSr3nQWGM2ot83rwK
-	 GCFlL0IW+gillXAiO0AeOMcgiiiDbPU/aLiP08fQbq5A9ulC3iRYnDI0B4NnGt4Gy/
-	 MTaybh72CKj1z5smIElrxh74E0jVGtMDfTVB5XQwIVDbB1sOrh76/0j6SgpLB0VS5Q
-	 D0NkMloHM9pzw==
+	b=HLU6OErrutYdmJLqV6sgxwlWNOzyDV0FO0p7+QzyIe4739dv8OYNKwqyytbiDjcLo
+	 YtZGqB0nphuc4hbRrg58AW3vskzoE1XcdudEIIdh5Wx6J6CerqjAaOc2tnv9Qj1iar
+	 P9GvZNk13xyhf6KOJzb7if6iBT/d0kBMKx5E9xi4k3Zr0ONap9uIQltEyE36vTFXNd
+	 VneUbALFVd2ABpxmlOcbku6XmrKA+/MHN73hlFaSgsCpYbBQ1XeDmF2Xl8rRr2u4am
+	 W0ilwPVMAnoAW2t4xmauaNUVyPv6Xhln7uJ1uXInPm9HzI8ThYLagzYzR1tTbgYzdP
+	 BYfTPz2c9KpeQ==
 From: Imre Kaloz <kaloz@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>,
 	Andreas Larsson <andreas@gaisler.com>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	"Mike Rapoport (IBM)" <rppt@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
 	sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	Stian Halseth <stian@itx.no>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [PATCH v3 3/4] sparc64: flush vmalloc ranges from the D-cache on map and unmap
-Date: Thu, 22 Oct 2026 01:33:39 +0200
-Message-ID: <55b4691ea87be7f4a679197bc2ec35b81b45d233.1792609488.git.kaloz@kernel.org>
+	linux-mm@kvack.org
+Subject: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
+Date: Thu, 22 Oct 2026 01:33:40 +0200
+Message-ID: <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1792609488.git.kaloz@kernel.org>
 References: <cover.1792609488.git.kaloz@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 81FA018000B
-X-Stat-Signature: gpn5r5w4n3nitb6jpbh5uoue44yx8dju
-X-Spam-Status: No, score=-24.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: AD90C1C0006
+X-Stat-Signature: ea6wzjjafiquzfyfi3sq8u9wxhk8mbtf
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792625704-471242
-X-HE-Meta: U2FsdGVkX1+M3i18Jxh5ZZE7/wzvjWOHjyKB77Lj8YvcpA/ODzAObMPgwnmLLZtIUZBBEd628+w4h/J2AyP4hyKm+7/HTJ0KEMcGEDlKAobBY0HfWyOCBlFe57NA9nIPryu42dPKsdOHNZifNNYKqEWFNVTHibHDUKPf6GA/x5e56dRrsr/vkcrBtWeqoeBKqoZ8LONX50IIi0NoYn/5XsiyG4xNGNlNm5GmFhnbQP8T7N+7yR6Io3RawwZBGl56TfkXeK0ZtTbdsF/2UeWx1OOx3JWe1g4Seca0LeEhH7gHUUfDuh8SpdonZXO/Ln1xvIm52Zlb9QHVyhsJHXtISJDUgyFEVl3GNXtga1sVT4WQSqZZdY5oEwZ6JX9uTR2IqJWvpehFxTkIfCzs5lS0ac8qHGsOUuy0Q5BqDkvsL9RWOaGcAJ0kQ0q6yvZd6Wr+ALrvA3+utT5WCDXPdDhRdi41c4uwvejShBwJ2SmQI+kql3PNVjAO0SEGOjSPVu6bO3kesvTiEAe6sL7hwx8eZ2DgKGLWcG7ycNLkvCo4Eo5eNGPhiESqDRS/UHbr/LpphUEvVpzR3zoYVsWqsg1Imkla2Ay9kr2/tIAslBUekaNdZLQ20s3w49NsWPWM3/+MLg/Wnx+xrEP57SY8QTQuzmWOqEy/C40OoW/Zi3m6pxcxS2kSVicC9uwDPiafpNWE3wX3J+hnGrO6kma0oQEJ2eiwlW2CyzTO/+icS3eMxUtymhnQzMZsSf5TaOLEbG8yJK5azorWC27ijqIcQmNzzT8jNCpfz16RWrv3LwrKvuk1SbR90o4YWjRPkt3sRcT3gEnKlQdkJe9HDt81ar71R/FMN3GNaZjN1n68I3OMQ3DbZ+TbwIOo/078ouB35kEdjBQDj9DHn2lfrLxG90LOjoOqvgZY9gthpWsySNNaD9Y78PuMH1GuMk/1nyaspHBmVSgekztjmbwG2qLn0Yh
- FOV9ErxR
- 1xnTpFvy7KUgb2vTRJjCSBaII5YSHBW2bTnM44i0EqCUPmagFIyoapTWvH4i6uynGs/VeOeDxPdoISQ6brFbrQ1qqQ/bwWhR38GYWJCOXC+bDrZdR/amwJjBy6Tg9iSfZyhUIKXzL8d0+En97G+0JUxLYo4MC0d0nFZdU36aLkKj9K1uqXlL+SmvVOcNSGelkVQjebLoubSBfTpayXjgQzNgrK8DYZK0zoKY/p52p3bGqj1qZrmeT0rEDwE4v8MRQlDvI
+X-HE-Tag: 1792625708-803923
+X-HE-Meta: U2FsdGVkX1+lXG9/LPW0YhrGGlvul4/wbfPh8wHrFnL67ee1lvbj5k1MFArEK+ITA0IlrpMzSHdj5TbzdkG3LuDgdD+J2AvVxl5clK6z1YQ7eHEAQrVfekv5WzmwzYWN6uEH9H5Va6cCL2TxaedICD90Fr26piCey0sJ0e1URB3tprZjhJMAyhaLhDbheZRAdMwDWFzYOc1waT5ho2qdN4juk1zSormesB8k+q09qGGI8+z5mJEzGCsm35hKVp5bgxfEBadmDgGQ4cn8rqajtXOITeA17oACdHukDpNpojtYL8cB9Y7U1VthMXEituciC1QSIn/DdOX2o3pg3jXMT3LpUgENsdkpMRt5xqZC/zCalV5T4usub00c3iq1U2WJkG2xEf8eR/bpLB4lrpHMuydhJhtqXREmH+WaLNvuWlN48vDJ5oxnXyhhBic2dPApgq13qTkEmwC8xRKRIrTgZZ5ZvEVqAB39CrL012+xNwwoD+eNX4h68UgRTFtiOiFi0sQ5NAf2C/IdkxN3MNhij+NlbM2LXsOnuFoXyPdQdAshRj7evgHq/TymtqOFFDPT2zOreYSVTBpDZbYpGdEOxO5y4nhNLgL7uAqPrl0YaYMJsxyYiuaEtLcKhNYdj4z5sDCaYMJPC793v4XIsv//9Lg8QjDG5OVL5E4sbvSF1u2rwYucDUzxy/5FifP6/Srkf/WKTnkbePnw7w4Tlh906ksUgJxJ5LQuOfmXoiBmVkeAr9XOLN4Py2u2xh6oCUvakO36kP+FWn8NozAfTcVne7RJQTEd9H7ILFPcGe2Y6b8v4j1EWywDqeIU+hDiJFwzA/abNQn9jW4tDeYNKV8UmwHNVDH2atehpQ/iCDM9aM6N/3gnbqltKw9LcvTYSa3an9kGR0pOeEFHyAEQCUBME1V8F4wJD4a33/nTZPefWw3QqYG2IqZ0PKVhIyRplIuBRDKQ7rpgMpnVymr8eX7
+ Q8Y8ALON
+ O/l+gNUoKtNE+HnGbqJ0TPxZQz5Y/sZ8HvEAkB0iGIUZWalSjrCIyCtfCC7gsvMEyr0Ixgey4ozPvE4kwzglLi5AGiMWl+0G88AHajEQKkNGYRMFS31R0/RD0o61tbxo08fBNyfVZ1peQmU6kw1cgOVzI38HqDfPCOlGFCWkYnWdeXRwXaGAwg5UzxK6+Et/aoYdAreAUB09L1iDJDaIQyP+5xphnYc6hunFipvC1iwEkvShBQZkQ41yGvWKc8+e31c4TOFHgEq8EgHiSTPLqrwe6XMVeakAoaxB8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,211 +106,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The L1 D-cache of Spitfire and Cheetah is indexed with VA bit 13, but
-flush_cache_vmap() and flush_cache_vunmap() are no-ops. Lines loaded
-through a vmalloc address survive the unmap, and once the page is
-written through the other colour, e.g. zeroed through the linear
-mapping, a later mapping of the old colour reads stale data. Anonymous
-user pages arrive the same way, as tlb_batch_add() does not flush them.
-On UltraSPARC III this corrupts BPF programs and module data.
+Since commit f822a9a81a31 ("mm: optimize mremap() by PTE batching"),
+move_ptes() moves a batch of PTEs mapping consecutive pages of a folio
+at a time, but calls move_pte() once per batch with the first PTE
+only. sparc64, the only architecture that overrides move_pte(), flushes
+from the D-cache the page that PTE maps when the move changes its
+colour, so the other pages of a batch would keep lines of the old
+colour. This cannot happen today only because sparc64 has no
+pte_batch_hint(), and mremap_folio_pte_batch() then never batches.
 
-Flush each page on every CPU on map and unmap, or the whole D-cache in
-one cross call once the range exceeds its size.
+Pass nr_ptes to move_pte(), as get_and_clear_ptes() takes it. The
+generic version ignores it, and sparc64 flushes every page of the
+batch.
 
-flush_cache_vmap() also runs on the vmemmap, from sparse_init() before
-init_IRQ() sets up the cross-call mondo blocks. The vmemmap has no
-aliases to flush, so skip addresses outside vmalloc and module space.
-Now that xcall_deliver() leaves the trap block alone when there is no
-target CPU, this check only saves pointless flushes. Stable kernels
-lack that change and need the check, since without it
-flush_dcache_all()'s cross call from sparse_init() would write starting
-at physical address 0.
-
-Link: https://github.com/sparclinux/issues/issues/29#issuecomment-5041121375
-Closes: https://github.com/sparclinux/issues/issues/29
-Cc: stable@vger.kernel.org # requires "sparc64: flush only the aliased page, not its whole folio"
-Tested-by: Stian Halseth <stian@itx.no> # Sun Fire V240, SPARC T4-1
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Imre Kaloz <kaloz@kernel.org>
 ---
- arch/sparc/include/asm/cacheflush_64.h |  6 ++--
- arch/sparc/kernel/smp_64.c             | 18 +++++++++++
- arch/sparc/mm/init_64.c                | 43 ++++++++++++++++++++++++++
- arch/sparc/mm/ultra.S                  | 25 +++++++++++++++
- 4 files changed, 90 insertions(+), 2 deletions(-)
+ arch/sparc/include/asm/pgtable_64.h | 16 +++++++++-------
+ include/linux/pgtable.h             |  2 +-
+ mm/mremap.c                         |  2 +-
+ 3 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/arch/sparc/include/asm/cacheflush_64.h b/arch/sparc/include/asm/cacheflush_64.h
-index 02c969417e7b..54a2d37008e6 100644
---- a/arch/sparc/include/asm/cacheflush_64.h
-+++ b/arch/sparc/include/asm/cacheflush_64.h
-@@ -42,6 +42,8 @@ void smp_flush_dcache_folio_impl(struct folio *folio, int cpu);
- #define smp_flush_dcache_folio_impl(folio, cpu) flush_dcache_folio_impl(folio)
- #endif
- void flush_dcache_page_all(struct mm_struct *mm, struct page *page);
-+void __flush_dcache_all(unsigned long size, unsigned long line_size);
-+void flush_dcache_all(void);
- 
- void __flush_dcache_range(unsigned long start, unsigned long end);
- #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
-@@ -73,9 +75,9 @@ void flush_ptrace_access(struct vm_area_struct *, struct page *,
- #define flush_dcache_mmap_lock(mapping)		do { } while (0)
- #define flush_dcache_mmap_unlock(mapping)	do { } while (0)
- 
--#define flush_cache_vmap(start, end)		do { } while (0)
-+void flush_cache_vmap(unsigned long start, unsigned long end);
- #define flush_cache_vmap_early(start, end)	do { } while (0)
--#define flush_cache_vunmap(start, end)		do { } while (0)
-+#define flush_cache_vunmap(start, end)		flush_cache_vmap(start, end)
- 
- #endif /* !__ASSEMBLER__ */
- 
-diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-index 6681f5263865..ed6900b5d562 100644
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -924,6 +924,7 @@ extern unsigned long xcall_kgdb_capture;
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 1430489b9ac5..9ca787b3cbfe 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -946,21 +946,23 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 	set_pte_at((mm), (addr), (ptep), __pte(0UL))
  
  #ifdef DCACHE_ALIASING_POSSIBLE
- extern unsigned long xcall_flush_dcache_page_cheetah;
-+extern unsigned long xcall_flush_dcache_all;
- #endif
- extern unsigned long xcall_flush_dcache_page_spitfire;
- 
-@@ -1034,6 +1035,23 @@ void flush_dcache_page_all(struct mm_struct *mm, struct page *page)
- 	preempt_enable();
- }
- 
-+#ifdef DCACHE_ALIASING_POSSIBLE
-+void flush_dcache_all(void)
-+{
-+	unsigned long size, line_size;
-+
-+	if (tlb_type == hypervisor)
-+		return;
-+
-+	preempt_disable();
-+	size = local_cpu_data().dcache_size;
-+	line_size = local_cpu_data().dcache_line_size;
-+	smp_cross_call(&xcall_flush_dcache_all, 0, size, line_size);
-+	__flush_dcache_all(size, line_size);
-+	preempt_enable();
-+}
-+#endif
-+
- #ifdef CONFIG_KGDB
- void kgdb_roundup_cpus(void)
- {
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 8d01aab43cc3..d1f94b8d6312 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -27,6 +27,7 @@
- #include <linux/percpu.h>
- #include <linux/mmzone.h>
- #include <linux/gfp.h>
-+#include <linux/vmalloc.h>
- 
- #include <asm/head.h>
- #include <asm/page.h>
-@@ -234,6 +235,17 @@ void flush_dcache_page_all(struct mm_struct *mm, struct page *page)
- 		__flush_icache_page(page_to_phys(page));
- #endif
- }
-+
-+#ifdef DCACHE_ALIASING_POSSIBLE
-+void flush_dcache_all(void)
-+{
-+	if (tlb_type == hypervisor)
-+		return;
-+
-+	__flush_dcache_all(local_cpu_data().dcache_size,
-+			   local_cpu_data().dcache_line_size);
-+}
-+#endif
- #endif /* !CONFIG_SMP */
- 
- #define PG_dcache_dirty		PG_arch_1
-@@ -3072,6 +3084,37 @@ arch_initcall(report_memory);
- #define do_flush_tlb_kernel_range	__flush_tlb_kernel_range
+-/* This flushes only the page the PTE maps, so it relies on move_ptes()
+- * calling it for one PTE at a time, which the default pte_batch_hint()
+- * guarantees.
++/* The nr PTEs map consecutive pages of one folio and all move by the
++ * same offset, so either every page of the batch aliases or none does.
+  */
+ #define __HAVE_ARCH_MOVE_PTE
+-#define move_pte(pte, old_addr, new_addr)				\
++#define move_pte(pte, old_addr, new_addr, nr)				\
+ ({									\
+ 	pte_t newpte = (pte);						\
+ 	if (tlb_type != hypervisor && pte_present(pte)) {		\
+ 		unsigned long this_pfn = pte_pfn(pte);			\
++		unsigned int i;						\
+ 									\
+ 		if (pfn_valid(this_pfn) &&				\
+-		    (((old_addr) ^ (new_addr)) & (1 << 13)))		\
+-			flush_dcache_page_all(current->mm,		\
+-					      pfn_to_page(this_pfn));	\
++		    (((old_addr) ^ (new_addr)) & (1 << 13))) {		\
++			for (i = 0; i < (nr); i++)			\
++				flush_dcache_page_all(current->mm,	\
++					pfn_to_page(this_pfn + i));	\
++		}							\
+ 	}								\
+ 	newpte;								\
+ })
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 8c093c119e5a..b58c0e98994e 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1471,7 +1471,7 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
  #endif
  
-+/*
-+ * The L1 D-cache is indexed with VA bit 13, so lines loaded through a
-+ * vmalloc address outlive the mapping.  Stores through a mapping of the
-+ * other colour do not update them, and a later load through their colour
-+ * returns stale data.  Flush at unmap so vmalloc's lines do not follow
-+ * the page back to the allocator, and at map time since anonymous user
-+ * pages are freed without a flush (see tlb_batch_add()).  Past the
-+ * D-cache size, one whole-cache flush is cheaper than a cross call per
-+ * page.
-+ */
-+void flush_cache_vmap(unsigned long start, unsigned long end)
-+{
-+#ifdef DCACHE_ALIASING_POSSIBLE
-+	/* The vmemmap has no aliases and is mapped before cross calls work. */
-+	if (tlb_type == hypervisor || !is_vmalloc_or_module_addr((void *)start))
-+		return;
-+
-+	if (end - start > cpu_data(raw_smp_processor_id()).dcache_size) {
-+		flush_dcache_all();
-+		return;
-+	}
-+
-+	for (; start < end; start += PAGE_SIZE) {
-+		struct page *page = vmalloc_to_page((void *)start);
-+
-+		if (page)
-+			flush_dcache_page_all(NULL, page);
-+	}
-+#endif
-+}
-+
- void flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
- 	if (start < HI_OBP_ADDRESS && end > LOW_OBP_ADDRESS) {
-diff --git a/arch/sparc/mm/ultra.S b/arch/sparc/mm/ultra.S
-index 70e658d107e0..ff190670a235 100644
---- a/arch/sparc/mm/ultra.S
-+++ b/arch/sparc/mm/ultra.S
-@@ -242,6 +242,20 @@ __flush_dcache_page:	/* %o0=kaddr, %o1=flush_icache */
- 	retl
- 	 nop
+ #ifndef __HAVE_ARCH_MOVE_PTE
+-#define move_pte(pte, old_addr, new_addr)	(pte)
++#define move_pte(pte, old_addr, new_addr, nr)	(pte)
+ #endif
  
-+	/* Zeroing every D-cache tag invalidates the whole cache on
-+	 * Spitfire and Cheetah alike.
-+	 */
-+	.align		32
-+	.globl		__flush_dcache_all
-+__flush_dcache_all:	/* %o0=D-cache size, %o1=D-cache line size */
-+1:	subcc		%o0, %o1, %o0
-+	stxa		%g0, [%o0] ASI_DCACHE_TAG
-+	membar		#Sync
-+	bne,pt		%icc, 1b
-+	 nop
-+	retl
-+	 nop
-+
- #endif /* DCACHE_ALIASING_POSSIBLE */
+ #ifndef pte_accessible
+diff --git a/mm/mremap.c b/mm/mremap.c
+index e8df5cdb0ac9..7fcae7f0082d 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -289,7 +289,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+ 			force_flush = true;
+ 		}
+ 		pte = get_and_clear_ptes(mm, old_addr, old_ptep, nr_ptes);
+-		pte = move_pte(pte, old_addr, new_addr);
++		pte = move_pte(pte, old_addr, new_addr, nr_ptes);
+ 		pte = move_soft_dirty_pte(pte);
  
- 	.previous
-@@ -801,6 +815,17 @@ xcall_flush_dcache_page_cheetah: /* %g1 == physical page address */
- 	 nop
- 	retry
- 	nop
-+
-+	.align		32
-+	.globl		xcall_flush_dcache_all
-+xcall_flush_dcache_all: /* %g1 == D-cache size, %g7 == D-cache line size */
-+1:	subcc		%g1, %g7, %g1
-+	stxa		%g0, [%g1] ASI_DCACHE_TAG
-+	membar		#Sync
-+	bne,pt		%icc, 1b
-+	 nop
-+	retry
-+	nop
- #endif /* DCACHE_ALIASING_POSSIBLE */
- 
- 	.globl		xcall_flush_dcache_page_spitfire
+ 		if (need_clear_uffd_wp && pte_is_uffd_wp_marker(pte))
 -- 
 2.47.3
 
