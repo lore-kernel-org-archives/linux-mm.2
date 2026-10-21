@@ -1,130 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C33606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 16:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A02606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 16:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eZA/dDYv
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=qMQnfBDi
 Received: by kanga.kvack.org (Postfix)
-	id 866CE6B0251; Wed, 21 Oct 2026 12:48:16 -0400 (EDT)
+	id 39A986B0749; Wed, 21 Oct 2026 12:59:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83EA76B0253; Wed, 21 Oct 2026 12:48:16 -0400 (EDT)
+	id 3248F6B074A; Wed, 21 Oct 2026 12:59:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 757A66B0255; Wed, 21 Oct 2026 12:48:16 -0400 (EDT)
+	id 1EC506B074B; Wed, 21 Oct 2026 12:59:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C9BA6B0251
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:48:16 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1627805C3
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:48:15 +0000 (UTC)
-X-FDA: 85347216150.19.E9B48DE
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F3914A000F
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:48:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="eZA/dDYv";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of danishkhateeb03@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=danishkhateeb03@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CEA016B0749
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:59:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 555EFC0248
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:59:26 +0000 (UTC)
+X-FDA: 85347244332.07.915B2BE
+Received: from sonic305-27.consmr.mail.ne1.yahoo.com (sonic305-27.consmr.mail.ne1.yahoo.com [66.163.185.153])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 41FDD80006
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:59:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=yahoo.com header.s=s2048 header.b=qMQnfBDi;
+	dmarc=pass (policy=none) header.from=schaufler-ca.com;
+	spf=pass (imf02.hostedemail.com: domain of casey@schaufler-ca.com designates 66.163.185.153 as permitted sender) smtp.mailfrom=casey@schaufler-ca.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792601294;
+	s=arc-20220608; t=1792601964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dXeINQ4QIp7Up68Y8ta4qvgRYMF1gZWIV5kShFfvhqw=;
-	b=QC+ynLgU0J5z9nFhDZz0kZH5SgQ3bKd3S2aOGRrJz4Q5ehWLGaYDhMqmtPlrOdp7QOA1j2
-	Zw0PCiFLso8fdB9r/r4uixe/iAKzSEfMm4KsHi0ee0aDfsfehavY6FJzcrdu9KVydS8ZFV
-	j1uIbeHKMNIZSg5bYe6keILvkrebUe0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kah1CZOWcJGjnZrMGrCQ0VvDoaKkFOiqXfkmX5BbHr8=;
+	b=dDbLOlTWWufUetm50M7Bz1BaK108iJdrPsK09/5ExDSrk/qU7o+7JKfz5vyfnMB4pP7X8q
+	XcDRPsSiH3OPl0U+pdct9ZrNgWLHZhSEw1gfRdwpioYqUh3ccATlY7mEEqTHwwxOcPhvnW
+	R+S6SQu+mnxK1NX5rHeBAFGJWqsjJhc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="eZA/dDYv";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of danishkhateeb03@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=danishkhateeb03@gmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=yahoo.com header.s=s2048 header.b=qMQnfBDi;
+	dmarc=pass (policy=none) header.from=schaufler-ca.com;
+	spf=pass (imf02.hostedemail.com: domain of casey@schaufler-ca.com designates 66.163.185.153 as permitted sender) smtp.mailfrom=casey@schaufler-ca.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792601294;
-	b=Ddr5BKhCt6p9f2Lzp+rXH2ZysIJzJr+0PT2n7PSTHmEhcYGVFTC94LfjbUh/GDSdsfJjNK
-	d89ZrgQfippfLNzoHQ0ANL1NdYIHB1Vp5RNBxa4/qqur+ZrJ2ZEQcVZSs37OBNO2XkLrWF
-	9gb3Qa5n8sPMlHaQlELhhtCSc+1e7tc=
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-702dedeb70dso546799eaf.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 09:48:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792601293; x=1793206093; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dXeINQ4QIp7Up68Y8ta4qvgRYMF1gZWIV5kShFfvhqw=;
-        b=eZA/dDYv+M1b0Hz2MXaJEonNZBWCf1LtNfBF0DwAra2Xs0BI07pCUQx06wcKqYwwTn
-         sv/C+GHzHZqadlNY7a6BoOhqwBTfCHxuwa9gotR2D6xva3fDNML20lz35Vre2d0F3Jei
-         0KLlwPFzJwl7H71/nscRFbf9HcMzZ1u4hlt02RbfNQXekRdwvKM6Z4/19SQlk8mBfxmT
-         R0o2Sw4Nml17gCDHDHMoLylrvu7z13R96iXq13jB98iJLs0276euozIoN5et6d7m9NGC
-         JFKDDEVmeQAkUOthDf23CNXc0xmrZyIbMkfwPhfrMQCMxGRmayzsiFsKOW+V0QQMlehP
-         C3RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792601293; x=1793206093;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dXeINQ4QIp7Up68Y8ta4qvgRYMF1gZWIV5kShFfvhqw=;
-        b=C1W+9vVWq3eMP0Z5aUNWxcmiNnMTUrHGB48uZp+pSXEriq48UeGbjXV2HKPfBonxu2
-         gtVC2FOk1q/aXYbrl+U7JP3cxJR5sNqPo9B1MgILH/IaX/agBZH1cJQtF+yRpe3LJkmp
-         TSNvQTFGrRAzlyrOPs0NPy4+A4Ub+iCzb+kX1tDBYfhwAkgHY2K70iQPdgBNEIMu63ai
-         LFIKWJTpTily/rODLJmcqcjAtOAq+Ju2yR1F8IRqnt9fDVDyb3jZMusCfXcmbkx6kInF
-         IHzxQy31rQ3az2F9kxA+J8E1gWqhxToFk3bH7L6CzQXDuDwxIEhnyb66zjUfNHYQz1oz
-         Hojg==
-X-Forwarded-Encrypted: i=1; AKwUvBwD5fOiGNIprVWJ/8v79FaPKPgQVDfchwDNGMTT6qebHpM4nWWFUU4QaCDWbynFXZ+r17P/Flm8sg==@kvack.org
-X-Gm-Message-State: AFq9FYJX5rCjPiVmP7FFc3zGbTzLUCIRbexmIN5gjAjO4MPk/tKUQc3o
-	oDf+KjUuhWLnGCiRjrx3ymZZ0bBl8f/oxScqNekkiQ7sKmPPIL5ipyAQ
-X-Gm-Gg: AYBFou3jFQK2DsQ1oSSZt7TPNvSQ7qNPgG0X3JwvUqdj6JQbANWlowkzNtW1cb+okUO
-	vIygcQGYiRxpJmBhBh4jjpfFaF/HgMo3PheKoaiKhPo+YWZ0zvYAf7OVxOdspvkHlI2yOwLzEsJ
-	lS2qknZEB0fCgRQWvUAANaFgs/gDWZ7zIHfXZz+9xHwhZOFNIwc2zVU/sWPvD6poS8mNzan0pDY
-	bsZ1RVaMENam6vmanH7ACcAgVkMEO11mTt9drUSduURBIWMDfAMl4ZF5TPO++ScEsSQXb6PMV8d
-	waS2zJVvg/Aqwn3trEl1NBmV5yhPagpXjVQqLAOV1dpfmfBB1SP0fqZY19hLhxyizmG9DjQ+tAC
-	IXsKzeQhFnbyziy66UYbfY620ec0cAqD+2xSv/B5hB+vzQAG1ql0FrU2BMbC9x6ErHuR+BUsyZy
-	NFLTb2qUoPQOHdFheMI188sh0UOg54Ui6ChsRz0T7DMgUQNHvdbzQM937edXp5UEu6VAcpYQmsc
-	UURhQtZ+/fFY2FkZyQS4IlVbtNz68yMeRMN8/TqAdo76nkApcemHFiQazRnmzWCOpYB3JMjS8IW
-	rM7tiKrQWjx7Po63pBYsZw==
-X-Received: by 2002:a05:6820:821:b0:6bd:f79e:501c with SMTP id 006d021491bc7-7093f8b08f4mr1720613eaf.16.1792601292924;
-        Wed, 21 Oct 2026 09:48:12 -0700 (PDT)
-Received: from archlinux.lan ([136.34.156.120])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a7d5ebc240sm2352610fac.2.2026.10.21.09.48.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 09:48:11 -0700 (PDT)
-From: Danish Khateeb <danishkhateeb03@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Gregory Price <gourry@gourry.net>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danish Khateeb <danishkhateeb03@gmail.com>
-Subject: [PATCH v2] selftests/mm: merge: keep the far mremap() targets in the carveout
-Date: Wed, 21 Oct 2026 11:48:10 -0500
-Message-ID: <20261021164810.45846-1-danishkhateeb03@gmail.com>
-X-Mailer: git-send-email 2.56.0
+	t=1792601964;
+	b=Ug3ygzDh0sOJNRE2STEY0UebxqDHSQNh30qDKeI+NAlBs3AIxMSErV/iMoTUB43yaT8l80
+	SCQorz/InamDQ51Y+q5+XlMKdYno1Dsz0GlluZVO1Lx3oD5rSA5dGG4F6UUoTDyr1IOEkr
+	rxCMoyNZFVdGE4QCVawO3gMeujtsN/E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792601961; bh=kah1CZOWcJGjnZrMGrCQ0VvDoaKkFOiqXfkmX5BbHr8=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=qMQnfBDia3rzQvnbPH1rRInnCtXPAP7wZxUN69jQdmj3/feNJUurhHOMBlYlDz6noeiMmcDw8D3O4VsFGFMc68sBU7kW9UooBIYSAnN7sc8q3CgvnBl6SlrGNLvn7X4DjI+bv+1/2OFC1fgQpEobvfQx3Or0w1h7HgHC2zANGhnkDTNdehZRGNSM1vY3+aw5PHGXjvaNz7toI9rFfbZ2qV0WaNHY8pYG+ddiJ+VuwMU2+a63TXX+xbcSlJxQUSFdKWWayhUQB0h5zMg4Ry2fjOtSIJ7w2qFcn5BK5OkWXtbSjDELJvZ5JhzuDfy9VaDrWDF0kYau8YoH/wgolRUgzg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792601961; bh=9PleWcYR8e2xn5hY7aHEeHxiIX60ZkmF9ZqouUvxMwn=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=BiFURWH2inSJa7DFCFcZJwzBVBrLuIxN0cdXYla1/FI4QIgnjpsEUnivZv112EPYGJnvKMXlWURjSGrxzegCZc6npQ8F8GiIkCMZVHdqD/+vr/67no8e8pPnQFvpXgYs19P/40Y+1rFyltkA2GxCcMRtn3fBmBSZ1yrvhkz1/K5ccD2RgnOUD5ppzYTYrRHoNMfuGYU3z57cFbJXfZgehmzAs6YmxbKSKO4m/l89JzNp/t2GQP3OSvDH4hedXG4DzZC1LcRgTsNN3VILCvMirXj+L1Hx9eLf3/UbEFkKx+58zNXuLh5W5G+/bZFUkKTTPNqqVqyEJJ2flRpRVQZ8JQ==
+X-YMail-OSG: LCA5RiIVM1mFSCBMSGrvZTC8G7qdX_QeTDLQPq11oZ4Qs99RUpqqME0f_B_mElZ
+ l6.tE9BmQSqjGHTZGbu5..066d1.QaQxFtWQhzSbQaXqKv9BGyIywqx2ethhepd5Le6FRRzaBgvT
+ IA5kBQUdG3bOvzIV8Mdg3nBI_l1Vw6U2HLt6PO4KsNeIahFcgcofhYolkU_geZBbhLYIVAuC407Y
+ HvbLmP_rwk5D5uBG9Ck5xRyetpLcpQKf7QbYsUtP.8bAQyx5Q_DKSiBUK9W77Zo1DwP2joi6nKId
+ azCcKYp3M3lk7toaR7qnZ3jmWyj0ZHcrPeGPdva5QynQCq7tx4Wf3_uUjq_gO03SL1p4T99TNaa0
+ sIDF3HL.BTRJJ9wG4tWNiGQdpFQfzXDg0ZLx7ReBnXGGuaGQM.7Mf6WDB7BOPA2rFMF.jRlOy.PF
+ YkK8ScMuhQFMupMZzQI9r0jBzRPPvY.AP2NJ2Bm_uVycbuEGE3k11XU2g_x_1vnZVgoQ70hoshl5
+ c7DtDzSnTv8o3modT6ZdSdrlcQul8Ml4gUOdlQfZwJ5NplHl9tEgyua5GAx8vvnlM2XAPrFW5CjL
+ hWFjiv0R_G90utoxLyOtsCsynU1DK0YWmKR0aHelhshp9Ik92VJfRLjPAapXvR1ZrT0z1LEb7kRc
+ 5E317PXytnV8Jp7oYSDMdHjrJZUMw_vdyRU5ecKfsC7Xmb0bgD6JRw9EH9XOLs5PXcvAZodtbQkK
+ 4FoVtN.J9jgRMVbRgqjsudq2xYgpq6ntEtCqoT0TSwWD8nORuSBy.3C1343SDhg7Y7H9woZcCjj4
+ j3ym21r4ATvK8faXoConUY68Ct2M_v0k0r9ZafLWBaDmRxVHvMTean.IKYrqq8XvN5Ig7xk129vG
+ HILg1N144lXulDiXI1UYiZKVOKuW9JXGXWk0bvw1wzqGUi.oLuG2IgPMuBvtGQgmXDrRsGkS8oKe
+ wjjXUU5xri6qnDyGVb1EY0.4H6raaNgpLrBwb.spG0hbAJPhfSxgBns.YZpiVOH8F9yDWkogQ3CF
+ Oc5sfT3VLkLCxu1.EfkYQsI1WbW6xjmcpPVawbpHSyX98Nf5fM1_1QD3MuUmaC6ehO55_yB9l.z6
+ Re9XZczDI_95HTzLLfNiOIEI3qT.soQ5bTtLQsMcJk03ETZsfAyKc0ylSYplHM9e_iMNHjUPY0uM
+ EVbxOX8_hf2rgWLMEawC9ES5oz9t7CFtGXLiNes2Jpev5e43XzLY28mQt6l.F5mw84Gx8D9rgKwt
+ Hrxag5HrDqh0Pe5t8.HTz45sXVQqt7sq_0pak4Xvya6Ztzesc0XT9EfCuPq_9gjHBG2Pp0BZUPvM
+ 7GjTYYNV9nGProtYkPF70ABSabjDdYOOHJco2neGyV28BQm6flQyvfXC2DsXLUIA8MWd9iaJcXIO
+ 3snVF99t2NwPTCF825eJhnIjdPTxQSoACtUtGyZ7qj5lR9ck1wpavjNaU2YxsOlnJh9MPANCcWzG
+ grDz5WAW3VtLpPUC.wjvvz.iYd_aGqnrQWtIBnB0.FvtevthzWTMu5UpFIboJfDL5qfkneyaX24c
+ uKj7xwMxTsK03KM8wvImj5ZuXnRozbbeU0HZpaPElt_QyVpuv4JYRMcHm__iCAo.rOj7g07TUkcH
+ dEBlnRsD0E7s3MHPqx8C6WN21R6vsy5X2ZbDXxbh1C2ZmRKkSadL0QqxNRcJ9e46FnF.1PdafapW
+ 9AyUruX88Y4VUp1EPcuU.34N7QRKobQ7N98TjaYtOsBV0cTF3oHfD3J8pCQ27V22nsqVoFaddqgy
+ JdDWkDKsocrnRJn7l01fOgJovbUa3sRWC2YuDIEEHtlkEO8VFw18XzuC30JLHXC98rj5r0lPR5g5
+ D7gOW3y_hng_S.bbgnIDbGwv3xuA0Vv_eawLObYrhnEBms1PDU7i28IufTfcYJqckL7WKnh3psBi
+ 0VJ_5yABobEbzCFT6Xv9kIJNCui0UgR4VSpUx1CQtqG12WwTIFsnXGRfQg0xZE.LVcMFPMTGrFQ8
+ aI982JBxQoWpacnVh3SKkzmojx1r04A6WI7.AZTv1YnHu8aoZTDWiQz_aqeGisA9GNb2BiB4SCaA
+ pqB0t7kUCPvh0Ic8i.cszWuYosiBbEy.dyTUNI_Hd5QZbcp3xMThX9eqxEpJR3Prooszu0RgBUWu
+ gRUeji98ltpVfBZgpC8HqsDSaSwYhH7Qx5RS2ZcQrpV3PlazGfrWnwNktaL6IvnpxsZ84ZIk_q45
+ N2vKv5blDyT86KvsV_F7z8m7hnVaLFROlo.sESARl5kSsfbP3jG1rMz_px8rm
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: e7a1fa82-6891-4739-95f8-4de5b52417d8
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ne1.yahoo.com with HTTP; Wed, 21 Oct 2026 16:59:21 +0000
+Received: by hermes--production-gq1-fd7994565-ftb5j (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9de1ca094d9183894955e8f06f19efe4;
+          Wed, 21 Oct 2026 16:59:17 +0000 (UTC)
+Message-ID: <0aeea80c-e3ac-4b6f-b1c9-ef18ea2964b3@schaufler-ca.com>
+Date: Wed, 21 Oct 2026 09:59:15 -0700
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F3914A000F
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab/for-next 11/14] smack: specify SLAB_MAY_ACCOUNT for
+ smack_rule cache
+To: "Harry Yoo (Meta)" <harry@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>,
+ Hao Ge <hao.ge@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org,
+ Casey Schaufler <casey@schaufler-ca.com>
+References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
+ <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-11-096800aa3330@kernel.org>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-11-096800aa3330@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26740 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 41FDD80006
+X-Stat-Signature: 8btt1bjyozz5b3mdb4ekja3g6s6mc835
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: dsymiqgjqb1ipbxowhzapeam69qff9fg
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792601293-789822
-X-HE-Meta: U2FsdGVkX18TpguH9iQgITw7zJpWgMWW/FqDX1sQ7Cgy5VKEm38MXVyMC96UIg/xIHfb64VMWBLMROk7Ls8xg34Kjbi+UhRWXp1ZI97j51WjAwOWxAfPMA46UnsE6iTW/qPNoE8jxs7WtRrZ7bCsUrmOmXeFBogMxF5k60TbY7kp0fa/2nJBbhNVSZPrDVI/1G+DXo2jKBpGDo9fCg58M0nXgmSng47mDeMZv8lMXSpCflyLQ29e4br2CRg75BzYMYh8TV700/w/W+Nt5tbs79K23DPY+QveufAz66Ibh3XMiGCgud7GnZclmB4WqHLNPq1IA7tWHPD41dPmoTNnTCrO3isXo8mkICCTOY7W9Z1cDiowGBvmgtTY/0dycp4YNeXwgwoQo80h0MlflxGGCY+sp4Z7r5YSCLfWHsUu7t9M4tX6JoiQHPj7qzl+w0fmIbnaFHqQ3BC2YO3FiV5hSam/813UuNswvi4fjXB1K0lHE5xodelrAazdzdFIdyUM3fRLuX7TIwGX0Qt1Ts3HTrGLH+sSW424UZviUX9EKMHxM02GGmOJtgbNIynDWqRWOjFVWX+SxP/tl/lSfEhhlPhKB5MgRfMYU41IF+iqC5bahpnV2u7ZTGTuHjP2zahLxBN2y7Hia5vqiZHpDhWOc8suhbbCjTUpRXXTGs4+mcERaXgD15O/8X11R/YlRh95LuUPijiUfe1X60oRST0uIkQzawmCKJ9ar4dpVCOhULUA4f0BuI4L5Kf7xPPcJzQ8tnu0Q+PB0tIG/nUEAPM/6D8H7e56D0cu+S9SKTRh8sqhKTLH6NkDT1TigcFYTApRf0k4zHKP5hZ9bn5ZCxBJ44xq320WLPkBzyghyA4I5xlq1ywvFH8YkKhi3zK1sPwW0fx2cLAzycbN7Jsjf1pYJub8/vVg4ZZQiUqeLzNDOwVo/h2+rXO3Pxe5YOB3T9a7TVilq0jO9GcVVuwE6iC
- mMlEcP2P
- OGO/2P35BHaCEQgx6X8b7xkX6K215crleTOaJ8UD1adOselFwqt9UvWK6WxR9h1Xg3VYb6/bk8DGR+h3u7bULOjOLh3u+SBqiJrHMClukKcd8VbWR5cDlr9wJVvkrLkwcCvVVr+vOMbDtSAkH+etUqp+7gnfzOIfGmkfWZOyDaMZlk/ZC0dnzArT3TUo+sMKRr3b5/y17JuLmyn9brvR0g6uU8tLJNj7JnQp0Xcp/gS/J9BwrsU30KxkjjYYOzBM20ygEls7E91MfPWF9YpkcxAN5Fb8qoWGwkHLXEAjbPPjojVoO3zaD7BnKqzxHGUXA0cBDJXCx1NOti0JyUiD1k9iFfnhwQr8RmXrvc394HRzA1xm+w2WiTTPZOTguGiUQeAK8sUGRAHLcIrYspCWReilPIxNpCIKVlLA/KfR0Dgd3f0+tid+6V4p2mQ==
+X-HE-Tag: 1792601964-676040
+X-HE-Meta: U2FsdGVkX18VxmpgpquiJ4amEu2NErorS10A+f3J1FACnv0Q30pW/S9EMrK5s7v8jOe/9zurJrlO5g01sxnfCrEGjgRHfeOL8H3auoH5j0G+U9yNeVpfaDCBAoxWULzBttjqxx4Dy1zaaCdv9r5cmjboOLdj/DhZkHcbXoSx7Z6jGutz8Cwjzb2yoVAC62Arvl2y74ktty/CCJdl36SrC85e5NKG3AjiALpLK1ClxvTpsKVJJNu6oZwjo64tnLQaSLxZ7wzAC2R/pkR2J2PbmCeYNz7Ze43rTi3kfJbuljeu9GLKxmNuK/Zj60dWMZyl1KUf1AdA2qTRKk+CZNhXCDMM5hUdK8RUXXGWJloWKmUskRgNxEBobI3k8rveL6upPk1X+wHxFsJswJqySm0vjnisDeyo69tC4BeT3uyA/gLe+DISkYBSbzb0qC9EZR++FXfhQ9YP42oiF4XZmyOPvdBwTeVAW59jnh7R4FLJoLsIti+iOOc/pkH/azIF44qJdIPmfWSwKalZNe+f+rXKDU6LSuoUT4Y4fGjRnE8ltotQnG8kIbihMZFeZws863Ymi/FCusikEM0lcMpSvfxvhMbZ6A43sGq+2IxDyB01c3RmDse5ZdMY1yP0tx77BTW39/i1K4U85g1JFf/g6AhlKPrUgGmNUL7W+4Yw+AuvW6bDs0LiYnEDuegrXpmEzFMGYKp3u+2olOQY4T1FnbvLkmJDrTemrC+SPCvvgELzFVbeQwct1p/qD5Psjt1D8+SVdxUEz3vda7HRTvDXh7vp8/a9fKlRuWzGNA5Fmns0Vzi0aKMYAdEiw7KupOFQeyTE4OYnA06gzUzwUw7It6M/XcdBaTyOn3VjAxfUEbgJsn1J4eSWco1BfccpQxjwZ1McdqQWfS7IbrxD0+EvFvppNA0joA0SMEj/0umwQhICLmNUpVit6sZ+62sddUKJho765V/hebY8ZJBpS3N2M3C
+ zEzEfn9h
+ CQPyZeMM0ndW6edzr2SWfGfXR8+dxTSYQchEORCnsr8USMQf9uqGvqLhny025ICK1yDKtQ8GqdkhqfSQ/gPLLpEu3ElyMZjtp9xdCQLszkvdkCNBk4Z2NROeLe8LDauq1Gzw6L2nFzIBKeTIy2aoBoMrBiLEYKRwoLXxmH5Ea49H/5HyM5hwOmhcdJAdHdxLOcckkHFTSaYVTVdWhSEJ1dtStY1mjoh562+NgaAZfR//x54LC7rhjO7rorWB0nAMWSEDlT02sclSzcK1lFD3YMaNxaisV8JBVN4k3sosxXIs4KHj84GlYQdZn7ce/v6B9hRv8IXySk/OtuRdH+zD1t0oRRePdS4YqLk2lZE8I7c6jmjinXwnftOyNQXrMdFNHVscNQUUdxmAJOoUHeOXTTcqDQozxT++iAg5/WfLb75rL8yEr7ViJfZEi6Zw3cA85hUNzh/2c+wQmAB4Q6AmGfXMWZTmxLGEVnW7kgbkDxEx8sDa9XnzQFBbO2AkJESlVyak9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,197 +132,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The merge tests map their areas at fixed addresses within a 30-page
-PROT_NONE carveout. Several mremap() tests move an area 1000 or 2000
-pages away to separate it from the others, but those targets are outside
-the carveout, and MREMAP_FIXED unmaps whatever is mapped there.
+On 10/21/2026 4:46 AM, Harry Yoo (Meta) wrote:
+> smk_copy_rules() allocates rules with the gfp passed from
+> security_prepare_creds(), which is GFP_KERNEL_ACCOUNT. Specify
+> SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
+> __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
+>
+> Path: fork() -> copy_creds() -> prepare_creds()
+>   -> security_prepare_creds(GFP_KERNEL_ACCOUNT) -> smack_cred_prepare()
+>   -> smk_copy_rules() -> kmem_cache_zalloc(smack_rule_cache)
+>
+> Assisted-by: LLM
+> Cc: Casey Schaufler <casey@schaufler-ca.com>
+> Cc: Paul Moore <paul@paul-moore.com>
+> Cc: James Morris <jmorris@namei.org>
+> Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> Cc: linux-security-module@vger.kernel.org
+> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 
-Under virtme-ng, the shared libraries are packed right above the
-carveout and the dynamic linker starts about 4 MiB above it. The moves
-then replace part of its text with an anonymous mapping, and the test
-crashes in its next lazily bound call:
+How was this change tested?
 
-  merge[6980]: segfault at 7f7ebb3c1e60 ip 00007f7ebb3c1e60 sp 00007ffd35fbaec8 error 14
-
-Two to four of the mremap() tests then fail with "Test terminated
-unexpectedly by signal 11", depending on the exact layout. On a host
-where libc is mapped at a 2 MiB aligned address, the targets happen to
-land above the dynamic linker and the tests pass.
-
-Since the areas are all within the first 30 pages, moving one by 30
-pages is enough to keep it apart from the others. Add FAR_PAGES for
-that distance, move areas by FAR_PAGES or 2 * FAR_PAGES pages, and make
-the carveout 3 * FAR_PAGES pages so that it covers every target.
-
-Fixes: 4e25f85b9f85 ("tools/testing/selftests: add mremap() unfaulted/faulted test cases")
-Signed-off-by: Danish Khateeb <danishkhateeb03@gmail.com>
----
-
-Notes:
-    v2:
-    - Replace the 1000 and 2000 page offsets in the tests with FAR_PAGES
-      and 2 * FAR_PAGES, and derive the carveout size from FAR_PAGES,
-      instead of only enlarging the carveout (Gregory Price).
-    v1: https://lore.kernel.org/all/20261021011929.89150-1-danishkhateeb03@gmail.com/
-    
-    Tested under virtme-ng (9p root, glibc 2.44) on next-20261020 with a
-    KASAN/lockdep kernel, three runs of each binary:
-    
-      merge before:  pass:22 fail:4 skip:1 (SIGSEGV in ld-linux-x86-64.so.2)
-      merge after:   pass:26 fail:0 skip:1
-    
-    On the host (glibc 2.44, libc mapped 2 MiB aligned) the results are the
-    same with and without the patch.
-    
-    An LLM was used to help with this patch.
-
- tools/testing/selftests/mm/merge.c | 39 ++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 15 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
-index 7dd2933417c1..208ad7e340fa 100644
---- a/tools/testing/selftests/mm/merge.c
-+++ b/tools/testing/selftests/mm/merge.c
-@@ -22,9 +22,18 @@ FIXTURE(merge)
- 	struct procmap_fd procmap;
- };
- 
-+/*
-+ * The tests map their areas within the first FAR_PAGES pages of the carveout,
-+ * and some move an area FAR_PAGES or 2 * FAR_PAGES pages up to separate it
-+ * from the others. MREMAP_FIXED unmaps whatever is mapped at the target, so
-+ * the carveout must cover those targets too.
-+ */
-+#define FAR_PAGES	30
-+#define CARVEOUT_PAGES	(3 * FAR_PAGES)
-+
- static char *map_carveout(unsigned int page_size)
- {
--	return mmap(NULL, 30 * page_size, PROT_NONE,
-+	return mmap(NULL, CARVEOUT_PAGES * page_size, PROT_NONE,
- 		    MAP_ANON | MAP_PRIVATE, -1, 0);
- }
- 
-@@ -73,7 +82,7 @@ FIXTURE_SETUP(merge)
- 
- FIXTURE_TEARDOWN(merge)
- {
--	ASSERT_EQ(munmap(self->carveout, 30 * self->page_size), 0);
-+	ASSERT_EQ(munmap(self->carveout, CARVEOUT_PAGES * self->page_size), 0);
- 	/* May fail for parent of forked process. */
- 	close_procmap(&self->procmap);
- 	/*
-@@ -115,7 +124,7 @@ FIXTURE_SETUP(merge_with_fork)
- 
- FIXTURE_TEARDOWN(merge_with_fork)
- {
--	ASSERT_EQ(munmap(self->carveout, 30 * self->page_size), 0);
-+	ASSERT_EQ(munmap(self->carveout, CARVEOUT_PAGES * self->page_size), 0);
- 	ASSERT_EQ(close_procmap(&self->procmap), 0);
- 	/* See above. */
- 	prctl(PR_SET_MEMORY_MERGE, 0, 0, 0, 0);
-@@ -660,7 +669,7 @@ TEST_F(merge, mremap_unfaulted_to_faulted)
- 
- 	/* Offset ptr2 further away. */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -721,7 +730,7 @@ TEST_F(merge, mremap_unfaulted_behind_faulted)
- 
- 	/* Offset ptr2 further away. */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -785,12 +794,12 @@ TEST_F(merge, mremap_unfaulted_between_faulted)
- 
- 	/* Offset ptr3 further away. */
- 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
- 	ASSERT_NE(ptr3, MAP_FAILED);
- 
- 	/* Offset ptr2 further away. */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -870,13 +879,13 @@ TEST_F(merge, mremap_unfaulted_between_faulted_unfaulted)
- 
- 	/* Offset ptr3 further away. */
- 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
- 	ASSERT_NE(ptr3, MAP_FAILED);
- 
- 
- 	/* Offset ptr2 further away. */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -1035,11 +1044,11 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 */
- 	ptr3 = &ptr[10 * page_size];
- 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
- 	ASSERT_NE(ptr3, MAP_FAILED);
- 	ptr2 = &ptr[5 * page_size];
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -1075,7 +1084,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 *                  ptr2      \       ptr       \       ptr3
- 	 */
- 	ptr = sys_mremap(ptr, 5 * page_size, 5 * page_size,
--			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + page_size * 1000);
-+			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
- 	/*
-@@ -1110,7 +1119,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 *                  ptr2      \       ptr       \       ptr3
- 	 */
- 	ptr = sys_mremap(ptr, 5 * page_size, 5 * page_size,
--			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + page_size * 1000);
-+			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
- 	/*
-@@ -1168,7 +1177,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 *      ptr                     ptr3      \       ptr2
- 	 */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -1203,7 +1212,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 *            ptr                         \       ptr3
- 	 */
- 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr3, MAP_FAILED);
- 
- 	/*
-
-base-commit: fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6
--- 
-2.56.0
-
+> ---
+>  security/smack/smack_lsm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+> index 8e88ac65fd7f..8a802578ac29 100644
+> --- a/security/smack/smack_lsm.c
+> +++ b/security/smack/smack_lsm.c
+> @@ -5352,7 +5352,7 @@ static __init int smack_init(void)
+>  	struct cred *cred = (struct cred *) current->cred;
+>  	struct task_smack *tsp;
+>  
+> -	smack_rule_cache = KMEM_CACHE(smack_rule, 0);
+> +	smack_rule_cache = KMEM_CACHE(smack_rule, SLAB_MAY_ACCOUNT);
+>  	if (!smack_rule_cache)
+>  		return -ENOMEM;
+>  
+>
 
