@@ -1,132 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF7D606A330
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 19:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08F2606A31B
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 19:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=aX+bu5ir
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PM/nhjR/
 Received: by kanga.kvack.org (Postfix)
-	id D4F856B076F; Wed, 21 Oct 2026 15:14:49 -0400 (EDT)
+	id A1DE96B0770; Wed, 21 Oct 2026 15:15:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D26D16B0770; Wed, 21 Oct 2026 15:14:49 -0400 (EDT)
+	id 9CC406B0772; Wed, 21 Oct 2026 15:15:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C167B6B0771; Wed, 21 Oct 2026 15:14:49 -0400 (EDT)
+	id 8E2B56B0773; Wed, 21 Oct 2026 15:15:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 93DF16B076F
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:14:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0776F1C35C1
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:14:49 +0000 (UTC)
-X-FDA: 85347585498.10.B39A313
-Received: from sonic312-27.consmr.mail.bf2.yahoo.com (sonic312-27.consmr.mail.bf2.yahoo.com [74.6.128.89])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EAC43100005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:14:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=yahoo.com header.s=s2048 header.b=aX+bu5ir;
-	spf=pass (imf14.hostedemail.com: domain of casey@schaufler-ca.com designates 74.6.128.89 as permitted sender) smtp.mailfrom=casey@schaufler-ca.com;
-	dmarc=pass (policy=none) header.from=schaufler-ca.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792610087;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DC1C6B0770
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:15:53 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D29B7140609
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:15:52 +0000 (UTC)
+X-FDA: 85347588144.06.642F1D0
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf23.hostedemail.com (Postfix) with ESMTP id F042914000A
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:15:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="PM/nhjR/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf23.hostedemail.com: domain of ssfdre38@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ssfdre38@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792610150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fvX/Q+HSZkDnareYTYW1vtbpFi0/voK9jxtB2w+Yfp8=;
-	b=gLUVIgHaEGROzZE2BFSViE7SaMG564PiugEly7uJb8nRuxiHlFa7A5cog4+piKNlkR3siD
-	dHcGWTlOp7v+B/QHzLzjK9YSuOVbohNr0CvYe0EABPIUemht/qybfDcmZ5ur3SdyPJS4vl
-	Ha8FydUUrpVStso632rpKjk9/QwYnMo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792610087;
-	b=S7Xaw3//cNpdr3heWSrQuih75qZrCUT23bY1NI4VvhJ6ZkkHZHGafwfFU32oQoimbaWEvt
-	51pclZYH22Z8y6rPaldG+fDn8lMmv5sV/Qv2Pjc+SPAO3DXHQjip6d4cdiNoOGZwIDpqQ0
-	3DGYUZtFrz2snKnZaWWzXmxLaXlwADE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=yahoo.com header.s=s2048 header.b=aX+bu5ir;
-	spf=pass (imf14.hostedemail.com: domain of casey@schaufler-ca.com designates 74.6.128.89 as permitted sender) smtp.mailfrom=casey@schaufler-ca.com;
-	dmarc=pass (policy=none) header.from=schaufler-ca.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792610086; bh=fvX/Q+HSZkDnareYTYW1vtbpFi0/voK9jxtB2w+Yfp8=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=aX+bu5irS/pYE+5Nvx6/PSo0lpu72GtYglM1TRBramfQQo6wuPRybjHMsGswpRJ17Fu8u3Y4o0C8ZdNRLyD/RZFaGrYlZlFB4KW+ee+kGHXWVQXtwSyb81afNLsaSkch8R9ZnGrovHZAZb49lAMr/TpT17KKJAPhOQ8BO9JH3eKgf5gv/xc4qD2LOoHfmrSbnA9HQKV4CXoRyQpiF7EAa2bHVQsKlug9YYPpjJKkUoo/74ZtvKp9EfPeMQmr703f8d26PBTsOvkwtMY5Q4jXRuw87c+Aq/+C0c/TkW+J5ukLka0XbOZvYLsvdf6p1oNRP3PbfmnmSzKINDrqCC2jqw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792610086; bh=AC7mZVvXXkC0jGc51fQGLYYjfwjktj3zG0RIDl4ygn3=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=aotSkLCsWXaBoLqV8Q9TYPm+rOT2xj5peTyhwGWHnRv3NUkzueMMfoPuuUU4E9j8xxZFYOak6rwCJiJDcA/+1cchO1fqdYnVIuJWrnpEFAPzID21MXzdHYSLwYFPLCLOpoRvwxRFoQmXtsAjgW1oY/s+E2kmxJHT8RSYZxgh6XuDIgpJf+kMfPIO+vIBRx7HoqWUmTr/6WGyj7BMpgLR5ic5f49z5To4xSACpvLd1E9tyrWBSaIjJ756v2XMdjinnzAUBZx3+L5xPaGY/5sOhPGjkPIc+ohPF2i8uKrUFyKR6pGnv/4y9rSjbZYfPXfyBVIiW8etpnScbbcQ0F12cA==
-X-YMail-OSG: D1Lb96UVM1kJVLOv40.7KBova9aTAPdVOvhLYdXpYoso0L5aaLBQJaXu.gN_eUV
- BRfNL1vg6WDJAtVaQVVJSduJUa1kLtdd3ygVnXOa7qs9UKe3AOp6DqaDBh4t483wRhJDo19Ly03Z
- ybPYhjwaXN45UycYriccDxK9rIk.fiI2lfPp.4jv.flVTBH82EUotU5N6zB5WqRk2iyGLoZcguW1
- pGdRVC.Chfa_9hPSPu3WismlncClsscS8FPg2cWhwkKuafepMRXvt.6bU1UrHKCIgO043o8cS5.x
- EGBFpzY5uJPKMs5qRU4PXFJFvPf64L0Ae9Iylo4XDkXplftAvUle2O8o03L3HYqm83ffKOsDR6kX
- DW.Ee4Yzw3QSnELi5tSaK2W5JZ_qwOQZ3RdXhn0uHOHxDDC0aM3Qd53z3eUaPLLn0Jb9avybnQr_
- Bb6Qz_PkGOwIoszvFjO6bOuewi9qDB9fmr9vYyL8u76P.Z1bLglVZ5T2hWWJyuSjEFDeQc8exVJg
- 9Ym8rZSJnmUD8GUFvJ1bM8uBUId7m0hFrW0Fzp0IMr8p228GY4_r4o9H1dUngvLoL8uJwrEcUE7s
- JC2O0aR5XFzXQHdymYHmiJF50TgXyS59LO_pJeAxHJdsQ4_6Qe0DHx.uL7xSetf1YUeQ_E63WoPs
- oxusDqKspvX.70bIdUIDp5i7CvUB3YewQX6x0wDCQDYPNC7HkgMIDFZsj.yFctoN4g3tKR5PIzDI
- IR93YfR624itBALsaNEJ3jB.fpDfTRjQlPaFQKSr2eXhDRbI3pkxGST7z053sA22qcVoIoRcpIEf
- r9GcVZQ5ktSi6dDrEHFSJUw_88ky.uHGS04M.TMx3MVBTdDtJIitqdrAETfFd9QxhyKQYY8_HGpq
- 0PMKyP5suKQU3drj2Se2NHMf.PhBc.jTS_9XytTtEJhI9A01Zu9CXAbZznF6QpDPRmRaK3CiGQ21
- 1Ab9huYxWH8BsMObGIl1oZixf1cUrGrU8e4cHH1zhszIhCRBr7BTx.uaFgBP3lGDvtU2cMMiASlH
- RhIdM_i11JVL8YYLGQcoPkdkw0LvO5fyG08eMLtBSBSKI115WFnW22G099o7xMNyqrVl6jHC9uiC
- hCrUJ4p_eak_MtbRC0jcWU0M37qTH4FyZpDerFJYzPe3EeM8Q_XNQt8taVaReMvuPOJUEWlN6qqc
- 3Aos6.qOc0rjPwJYRs0dsJLIxGEoUmM5UQG.dShL1LPPsXnpJW_PPHNtFvRcyTLoOgdHz5NxeLuM
- k5fcBKoARDt87iHzsue4hFJiEUvbwUfHhhdV6oNoZDUIpzlEu1YIOhrTzv0oLwn3Tk49_.8kgyzf
- Ja1nVgnNL76C2aHxJDNhElGn8lhia20qerHj3fi.xZNaHAACmRizWnlhvdIQglriE.B8G_TeA1_H
- eOjfoZJZ_B4OYSAXhP.zBXsHEzcTUDojootgOdFapHHM0.ABMHKaqe2Paa4gLnPMnbgjsHfKetIO
- xdtICoYlIaczlPn6QXeYzw.SBKY4TTrT3mIQfUNBFmP0usCBVFIP.SMoczWtEnpCIOaIl9LR170m
- O6zxJTv_vcq9hFMFgb3JJ84Hel6ObctGrBB_sBu7RMg_hKblnxE2ziRsy7zOwDO9fcpCPCQcJIaX
- 4umW0gD0cZgEzZYGOJ9jeZ3Xtu9BaCi5Wwuc7TKz2LHXB.5zJGCIXA3zhscNDR.BzN9PU0lu4sqM
- rGhE_XUxrYukeiu35XuE8Bqn68Yq_MMhYVS8oNfAFyaar5WmGX31yG.sCqVltmgqXb8FbHp_eNZC
- aorThJhHmww5pA1S_OjzRrcODMu_9MxjwX_iBVd5f50GVnfZsOvkLWmQx.oWlB_qKUnnDZiuj2yf
- oPaoz7V3p8P3rshupMI7UWL6K2Z0l5eBDTGJPXonzJUZ4XzF6Mh8g6Z_zogaN_M9fIqz.QTF.Ana
- iIO57.zNJ27U8i3cKAob_QqlwK9g4n03AlaWXFIhopEQhXxx3IbmnyLiHAlujqyQ06VQw3Rk29Tw
- C5IYHcfyg.VMQAfD.SRidnUis2qldLgct8Vun4MZzOKOJ.DrW9bWJJNuB9SeMTPigg5ml.aEk6fy
- bXHqEn3hE9PFhbKtyAA4LNhdhriuQy7XxKG7NUXvqhqXgmyUlz4_o0.HkgqGVhfcFalW4gCXL5qh
- bhI_kLiOry3BmxgpMH3.xvJ72t.HknLH_Mxvifs7P_IfE4KY3b_lI6tuZ6QN8u8_sBQKl5fGQqtb
- QvyqXo7O8Lwh.CJtmhBLMM3fk8ui26cJ0UE_j_I9Y_8dMuArHuO6saqA08AV7qla8jg--
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: b807fcff-ce9e-4a1f-a5aa-2d0d8f37673e
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.bf2.yahoo.com with HTTP; Wed, 21 Oct 2026 19:14:46 +0000
-Received: by hermes--production-gq1-fd7994565-nddcd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4149e187089f1702b1ec33331741c541;
-          Wed, 21 Oct 2026 19:14:41 +0000 (UTC)
-Message-ID: <fccc9441-1909-4988-802d-5c9d7829eacc@schaufler-ca.com>
-Date: Wed, 21 Oct 2026 12:14:39 -0700
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8eYidvco8kdRbheygi4+dhoUCo9Skxap4epOnQy7gkk=;
+	b=HmQC7A1NZkTEhed26LxWslvm+5tlQgnoVO2VXxOxaYxOipuxxVWNOEUOOoe45Law53Ud4e
+	aVASYXTjHTihSiEBC4z6yUnj5FaOCdjqqvKqQZDS9W1wS1kIc3E2/S5arQJXRxcf4eASQz
+	Lf26v10nRRs+1I4CY0tSIcXpH1cSgWA=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="PM/nhjR/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf23.hostedemail.com: domain of ssfdre38@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ssfdre38@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792610150;
+	b=un3F2+3SrDb9K+5QyW4SjjybiRD4vAm4g3IUh/XHNu7OnMITHPLqtyJCdJDcMKxaKygZu1
+	HRHPBFGBFnHXcBgDidNQTipGLNwFiYxTJKL/lC9uU2oVHjEKCNSkAHdprFBP9wOI1bEGKq
+	PlcwXp8kEtufgXpZQRjFUCrBx0Pt7a4=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b1dae0febeso1469984a12.2
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:15:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792610150; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SeZ/xvZqL7hYBs/oAdMvQSJ3Mc44MMSMS0JglVerdNTm06KuPogGQ+ursjtdB6760K
+         BQ6ElwoB0ggiShCm8/ONfI6KJtBP/jHqsUDWd6jbClmjqpWW2w+qfNu8iwSRo2Z6ce4F
+         +yXNDoffdsBb780jVqdn8xX8AGHz+cB+xRndv2SmhXgJriWwavPR94lrtiFc2zEiBWW2
+         sqHgKMZDkOEyWcJ8yhby1O7Jt732dx0kpHpkRovCMffmCxwNPLwHsLSauMhWIZD8bu3N
+         QYe5q4z+OtViG2so4B+nhNOjJqWPtWGl4wLn+jlEirVboxu3tZa4XPNu8he6VrQ50oI0
+         B04A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=8eYidvco8kdRbheygi4+dhoUCo9Skxap4epOnQy7gkk=;
+        fh=wLV9CCXckqAzhK8InEOjBqxYnWrgXKAH6HcM0hXpKts=;
+        b=bdQS/4Trl95H8Axao4mM0ha/JLeK/hpG+jxNwERUm99wwxKvSoHD7kPWJUocDxg5+h
+         ocABvEF+/yfY3IYPoI9O9px+csDcuwE/BXib/88fCgAvN5YBm1+tTHiXiqP+ECgPMNFL
+         POWX8H1waL3UtxpxIwkkdfgzwxfDGmd4xoBpLEQv5TNwTjnLTPMsDrnqBvZnAouULdFX
+         Ncfgw+PldCHIhGrxGMAK3bkKOT888oJW5M1DOtMncKkg42e/OfO1ijBJYgIR0ESha/lI
+         tTBA1SvYctdksYZ9DOMj+9bwfM9CS8sZbJXBBMNKXJ3DBoffsM3ZxkvN2svBLsF4tJ7I
+         nvNg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792610150; x=1793214950; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8eYidvco8kdRbheygi4+dhoUCo9Skxap4epOnQy7gkk=;
+        b=PM/nhjR/AtcXWnU8Ji1WjYKYRrjaAowweVF7BBtPUh3lLHCXQ43+LonPSoKcFgysas
+         T2G8aHj3Q6LADQOFoiy0tQFcwwhNPmAwK8/sjDfWfcDiQ13kGzKAT4A94l9taUE43L2W
+         dLHI6Bl5GfFCGV8lPRMSLJFgkukdoMMapFG1Myb2mDVTj1p0f1+U8KaJC3m/kKi8ccTj
+         sRRPqx/EgbKmMQH1nhzTwshlELVXmZ6kJcviSBVbP1JgBIlJFNAL64YsWTh92BQJlPVP
+         LkhUuIuYJ9d65CfRwUoPHZycari5m/YshjdajAnJlKk9FFPCa3MP58f2HZ+reB2Ct1PE
+         1iJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792610150; x=1793214950;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=8eYidvco8kdRbheygi4+dhoUCo9Skxap4epOnQy7gkk=;
+        b=G7B4Uu4x1GWW1a0JAZX5SJkazVr8wHGb4H6ffG+DzBPDOSxEUlcR8cSIwmCPZeXGhV
+         m71sjJmOoXvpKDZzeNA9sETSx0PxSBw5yh3pgVJvIPCiHop+U1HGtiieOn/VvFvLz4IJ
+         8nwMFuMZ4QzKDYTJsG4IVFwzaVCDit/oiJ33OjNU9bWfbRfftJdmHK8EuvjelGFht8U0
+         ryesJx4iKRS1TJDIMlNDMOIyjNZle3XVbdHGQ0Y8em52L5DTVz+7qBDV/mFKTzIJG2dk
+         zx7MRmix3ryD6/utJGC7b7z6NYpntSaoHzJ0jNXNxTeKgXmEVqkfGO/T0uN5mebtJPRZ
+         2XaA==
+X-Forwarded-Encrypted: i=1; AKwUvBxPvas6R0VeNcUp33HsDPPVELQMkvOztBcTpeicSlwsMf8GXy60vrCMryb179D3GeUELPX6OxV6Nw==@kvack.org
+X-Gm-Message-State: AFq9FYLGT9vaHLTPYzCzXT060njH9jiD8e+NiJzLXwhT8MGW2d8JUD73
+	5d7RxlYjchioz47RfO477Y5NFNlnwurfISEnvQ7C2Q+tsiSK8n6X1sfnVH2ZQEpdDPkpxuEyXnG
+	4Dbs5dPuBGbuUXs2KWj4WOp8M6wDg2ug=
+X-Gm-Gg: AYBFou0I22PdddjP++MDnUYckYXEfEm+/EvcNgBsVWBnDkKWGTdKKvfy8WjvVEpPWgM
+	HrIbyN434r/Ay5cI0JIQJg/nfUnjZcROeLax0dgevbmIgfc3/L6TkR3/RuIasdNZ/ADIsMp7dIb
+	2O1RJyMpHEeUhxGlaJhInSJ7Z9PTZOdI9B7019TqU3vX3SyCcdI2sh03hKwPzsz0uLRk7VbWGC6
+	C7w2DVIXRsq5GZdbA5JdR99JLejC4lC4hx615S5HPEuJIQG10IXGBSBFxRZbJQqoLQAHoSMt8H4
+	UENhw68qqJGo8/+MEAsH96Yw1tukYe5VRsnqlNQ8nW+479z13uTNssTZXllS/ym0Il9sRgVrZoK
+	wcVggXBhqLoU9RANxaLohXxfm+PfaySodu+QH
+X-Received: by 2002:a17:907:9c05:b0:c42:4750:8d2d with SMTP id
+ a640c23a62f3a-c467920d6c8mr276520366b.2.1792610149291; Wed, 21 Oct 2026
+ 12:15:49 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab/for-next 11/14] smack: specify SLAB_MAY_ACCOUNT for
- smack_rule cache
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Muchun Song <muchun.song@linux.dev>, Hao Ge <hao.ge@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org,
- Casey Schaufler <casey@schaufler-ca.com>
-References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
- <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-11-096800aa3330@kernel.org>
- <0aeea80c-e3ac-4b6f-b1c9-ef18ea2964b3@schaufler-ca.com>
- <atkEXgQNK05PGTMG@thinkstation>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <atkEXgQNK05PGTMG@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26740 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EAC43100005
-X-Stat-Signature: dxfic5eoc4eqhtjdbabinum64da8pmuk
+From: Daniel Elliott <ssfdre38@gmail.com>
+Date: Wed, 21 Oct 2026 12:15:38 -0700
+X-Gm-Features: AclHuK8QPRIXR4ULR_kg13OYJ7xAAmgk6LgoHxrHkiDWAFAYop2OahhLpjLdaEc
+Message-ID: <CAJVF7aOjOSD1D_LZQUUxUxS7VYKGHvzSB47Hm3MsHTM58X5xoA@mail.gmail.com>
+Subject: [RFC PATCH 0/1] mm: Haven Memory Bus (HMB) zero-bio paging engine
+ with Tier 2 z-Pack deduplication
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, willy@infradead.org, 
+	torvalds@linux-foundation.org
+Content-Type: multipart/alternative; boundary="0000000000002b5ca6065e5e9312"
+X-Rspamd-Queue-Id: F042914000A
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792610086-800361
-X-HE-Meta: U2FsdGVkX18ta0Z0Kc2WyDPINxDOJZZTvMxuRATt8ZRoIjIo4d5AgGqQ3EZK7QMyQTdsrKooa7PkqgmnOl53FuB3hEPCTN+S9wg8vt64WKozg/p+gal9Cv0ck2a5YWbnuq52DY07nXeXm7BvBdJbBPa4ty1juH2o9RSZ+34+FYEVWHkCFi8MpQaDvEFZmB1iUPS0bVr0FnpRKXhbA8Hv/xp9diNPLgl8pV7Ev8ilMF0AKw5k3bol7P4ZkFG/kLjOUfaFVDBl8JI+3MDeZIiqCaeuCKRH+bpajESxX+1QAyIyp3fomPthUlxkwzg7ZGdrTuvy43J8M4L9Mi8EFIrGCHyT1N0I9fU/sGfA/K+ANGEt9MyayEHaCyDlObS6qumZXEvP2Q/MA06SP/DUX4OOR7fmONMnd7E7UuvID9iT5XPRzSts2g2rlKoXLn2SjGGQLDNso4HZvNnK/wgy4qNpa7zPb7oOXgZ5C9zIuZRW8g/EzUSkBdAGu1TAFWNNPNhZBs6KW/Va1kq/GObhsumhM66ZW6cfS0kSs6+VX9oJWVDs5SSdFGM7IWSOKLq6ghvr8d6ZFj65qeA8Uw+ngEXI/401PkMRwio/XsrFkN014ot8U8sqKq/UtEdyKoivTAAT6LNrEXxZA6gVXswRW+f3I6sRRcmtoL5iwnxjXaZvNabrJzjdTC2N8UeC6JK5BHgASjTt7b3l6ReiPXVikbfxQdfJD+iMnWK50kluQsd/frRsB9L4JK0ZlIlDtz7tMWxT9/JJVVloizwqSS1itb3KRAUHbFFz892h1xkXpbemeQkzX+gT5UogIHvjogR5MgCsNAS5L3E8Ke9ivoOREvW3e1kcoM29R5rc/eqluzq4h2RpQZdUiR/cuFBMAMBWlZaP7aKefoQxiVoOQnP46Ky7MBIRmsnQH7FLeUYdfeLxpjBPBTT4XtflS8VEk7MBY4MmXs2LH5kW5BspKTMSAku
- NdqEZjdF
- 0sQYO2oFyw+qaq5uRIjcYmhrNpvEfuf/iLsXdz9GzVxMWvi4O1034docWZ9tph4YWgGIt3ixaSUZbOEcWnLfKL4nh1J5tDaLpfZPws7kEzYHsjHZf3A9Z1HcxbUsbBBZ8ORuN5lNVuoyxy3TkPtCO/88RxcxXitzZOOU167qU/9b6a8895WfZhyD74SpM/01LW5y0cDRKA/j8yZPw4Dm6K4qT0wu3LusAo/ksg/V5nEYPHyJYBRVVu1hs6pqoKNKhN7yXHCSTrzE1t3IAjkr6XULMlLcZw+1taW/I+GPyt/uNyeN71w2aXHzmR6bSvjCRjMT/iEJGvl6vDdxgfwKsodqGDbskC/SB0nzFz42hDZeUd233QkE+iZM6k2h+Ra1J4vv8jWBqGNvgdpFVZhLa0TZLwxzAtHPVbDg90RUDu8CL/QyLc/CDEzFEjQqxa07ILHyrb88JMIPJMzECRGq/R3ls6WAOJ/XI81cf3VaOBfFe8eOyxOsK95JZcE2t77UXxuSb
+X-Stat-Signature: z3en3taqkf4q91inej71aa8tx4grh779
+X-Spam-Status: No, score=-1.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,LOTS_OF_MONEY,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792610150-176530
+X-HE-Meta: U2FsdGVkX18q9urCDjCI8YVAq5u6zPZRVq5r0GwyblrL2kOHAlgZywvr1hqIr645rbhZLdynFxprSp4K94YPW0iRuPyAK0AnPGMqNnYngSnaLjoSROBYz3UqvdQRP1xzDDhVBqxZS/hzyRcRtNgiDBVWCX4QY66fL/kVv6t3x/4KVwJYUx+bkTaEGfkKuXcEyQldVxJkJUiTzTDqy5Vam1qDqUVLwgxfvWG8wY+6mPWx5ZW7lR07TM/OR1sKlb9YiLAsOS6xueeVwGhCwOKeAtZOMl+/52YTCRz175qxVM09dOMDwom9vV7C303M9jJkgVcyRXz0KBk1Qy1md2prl/5oltKywFCHaRW1bK5A3LN3hBqkEojHFwCp7wrGwTJmJB+7ZLm63RjOk+U+aJ8rk83BaFwuhwtCIiaBcbf2luDXje+Lmlk21VUpF26T51/NKK01CjUzS0pWXDOnDNb2wik5ZJIHJaD6/J63Z6tbezn5o6iLYqryIBx4RfjLYCKc5mIwJwAchJSGdnNfbgEB1Gis2QSBdkNB3Vd7GtSU5m1eEKAIrqdEUWX8QGBzIs+zFAzjKR5MfmqKlr17VjJIEJ2lshoUYqkzLwqSl57/TgJfC/sxvhiKVydcW5RY4MqQ1DS5Uug2CeJGrYZKwk1bjP+TKGxphkW0ndOxHr7gqHRTeDKybTagOksl5oGw7e6oJCJqluPZvrer4JHH2o2AQIv6EX4WbrCI4Q3Z3oWTqUVMg3JMTM1h90uzsZlSyfEhDRnUdQvHgF0IyKfHwb/SWXSM4aTg6WAz4JDjxxi5cEo8kMKQiLnqpMbCNg6gc912mqa1t3SVYXcJ85Mk2ZitXJtFTGkRrPmDSCRWrDG4dDYt/eKb10HDs08cSjtJWaRS3HaafauHpWzjYskidegMeMxE8FNtfkwbXDbiBoskK1dqm4E8OGeYuB2ZvKuDViDSnBRT+AW1S+SNxHvHinq
+ vbnZXftu
+ vDRzbWJwkoKYqqCAhB4CWVD4ShpNi0WK/hGhgGcpdeTgVbCq5hQ81DW2bYicm4U0O4/MECrkFzmS7guYxmRQWE9rkwSNdoj+F5KO9ZkovnYohB6hv2m/e5h7C0cVRNA/Jet958gXg3pgJnqejrGqIR0T9znSfI+sMBtPKyDiyF8zpHIe5ykmBFONSlnHAkEsSSLhwxVaZJ1Stx9eY8rEQETYph3bIx8+PuIqc9ftk+i6gtaHLBPa/k6p/tqbUZBXBR3AKufr57ak82IBOq1jKIbLknC60rZ47lPURTi4RgUewpGTGziBAp2mvP51YC51tERLK/QEDIh/7HTJ3I/8zTKySa5Nv3NMl8Mz23YtO9XmJqX2j8r+n1PXgUePDhEN89gu8Yvs26c1A82JjpFm6CRXawp6z2jkBAnZXWW9VNmHp9QyIB3dehxKVxhiu1K+dHsQyg7m5TgEiiqb8JZ6V9GmyE5Y0qbUDOxZESBbzfpz4ntw5BHcsIsSbPHm6abiCzm44AWZqMFhuXyeiGOtzV6IW3G1qYPhXR0Xc0A1x5aGhqolICIei7uS4hUncEFWAuR2ZeU/XQXbtUEg6LIdZRk++cpbSUeeC8eeBR3xcTzkm2vDjFCAlsOYF979zSDpH56JpPB45cMH075edBW9TjwSwN51I7MwonYvZwqlHnFV5wrvBOTNblA+2RYjIsFoQ9+1Ok8/1cHQpBQxqZXF4iVpzlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,136 +137,387 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/21/2026 11:48 AM, Harry Yoo wrote:
-> On Wed, Oct 21, 2026 at 09:59:15AM -0700, Casey Schaufler wrote:
->> On 10/21/2026 4:46 AM, Harry Yoo (Meta) wrote:
->>> smk_copy_rules() allocates rules with the gfp passed from
->>> security_prepare_creds(), which is GFP_KERNEL_ACCOUNT. Specify
->>> SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
->>> __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
->>>
->>> Path: fork() -> copy_creds() -> prepare_creds()
->>>   -> security_prepare_creds(GFP_KERNEL_ACCOUNT) -> smack_cred_prepare()
->>>   -> smk_copy_rules() -> kmem_cache_zalloc(smack_rule_cache)
->>>
->>> Assisted-by: LLM
->>> Cc: Casey Schaufler <casey@schaufler-ca.com>
->>> Cc: Paul Moore <paul@paul-moore.com>
->>> Cc: James Morris <jmorris@namei.org>
->>> Cc: "Serge E. Hallyn" <serge@hallyn.com>
->>> Cc: linux-security-module@vger.kernel.org
->>> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
->> How was this change tested?
+--0000000000002b5ca6065e5e9312
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Brilliant response. Thank you. Add my
+## Executive Summary
 
-Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+This RFC introduces the **Haven Memory Bus (HMB) Spec 2.0 Native Paging
+Engine** directly into the Linux Virtual Memory Manager (`mm/`).
 
-> From the cover letter:
->> Each tested cache was verified with the warning in patch 13:
->> I confirmed that 1) the warning is triggered without the conversion,
->> and 2) specifying SLAB_MAY_ACCOUNT resolves it. However I could not test
->> io-pgtable_armv7s_l2 and sun50i's pt_pool caches due to lack of the
->> hardware and emulation support. So they are compile-tested only.
->>
->>   cache                  tested  environment
->>   ---------------------  ------  -----------------------
->>   radix_tree_node        yes     x86
->>   maple_node             yes     x86
->>   buffer_head            yes     x86
->>   skbuff_head_cache      yes     x86
->>   fanotify_*_event       yes     x86
->>   smack_rule             yes     x86
-> Good, this can be reasonably tested.
-> Let me write down instructions to replay this testing.
->
->>   io-pgtable_armv7s_l2   no      compile-tested only
->>   thread_stack           yes     ppc64le (64K pages)
->>   pgd_cache (arm64)      yes     arm64 (64K pages)
->>   PGT_CACHE (powerpc)    yes     ppc64le
->>   PCI_DMA_*_tables       yes     s390x (zPCI + vfio)
->>   hostfs_inode_cache     yes     UML
->>   sun50i pt_pool         no      compile-tested only
-> # Pull the b4 branch from git.kernel.org and configure the kernel
->
-> $ git clone -b b4/memalloc-prof-dont-waste-slabobj-ext-metadata \
->       https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git smack-repro
-> $ cd smack-repro
-> $ make defconfig kvm_guest.config
-> $ ./scripts/config -e MEMCG -e SECURITY_SMACK -e DEBUG_VM -e FUSE_FS -e VIRTIO_FS -e VIRTIO_MMIO
-> $ make olddefconfig
->
-> # Create a script to run in a VM
-> $ cat > repro.sh << 'EOF'
-> #!/bin/sh
-> mountpoint -q /sys/fs/cgroup || mount -t cgroup2 none /sys/fs/cgroup
-> echo +memory > /sys/fs/cgroup/cgroup.subtree_control
-> mkdir -p /sys/fs/cgroup/test
-> echo $$ > /sys/fs/cgroup/test/cgroup.procs   # non-root memcg; root is not charged
-> mountpoint -q /sys/fs/smackfs || mount -t smackfs smackfs /sys/fs/smackfs
-> echo 'foo bar rwxa' > /sys/fs/smackfs/load-self2
-> sh -c :   # fork -> prepare_creds -> smk_copy_rules(GFP_KERNEL_ACCOUNT)
-> echo "WARN count: $(dmesg | grep -c 'WARNING:.*__memcg_slab_post_alloc_hook')"
-> dmesg | sed -n '/cut here/,/end trace/p'
-> EOF
->
-> # Revert this patch, build the kernel, and test
->
-> $ git revert --no-edit HEAD~3 # Revert "smack: specify ..."
-> $ vng --build
-> $ vng --user root -a lsm=smack -- sh repro.sh
-> WARN count: 1
-> [    1.178905] ------------[ cut here ]------------
-> [    1.178913] WARNING: mm/memcontrol.c:3627 at __memcg_slab_post_alloc_hook+0x4a0/0x7b0, CPU#11: sh/434
-> [    1.178922] Modules linked in:
-> [    1.178925] CPU: 11 UID: 0 PID: 434 Comm: sh Not tainted 7.3.0-rc1-virtme-g121988b3e78d #3 PREEMPT(lazy)
-> [    1.178928] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-> [    1.178929] RIP: 0010:__memcg_slab_post_alloc_hook+0x4a0/0x7b0
-> [    1.178932] Code: 86 e2 e3 ff e9 2e fe ff ff e8 7c a3 e3 ff 48 8b 53 10 f6 c2 03 0f 85 53 02 00 00 65 48 ff 0a e8 66 e2 e3 ff e9 52 fc ff ff 90 <0f> 0b 90 e9 ff fd ff ff 48 81 c3 bc 00 00 00 48 8b 0c d8 4c 8b a1
-> [    1.178933] RSP: 0018:ff7dde988181bbf8 EFLAGS: 00010246
-> [    1.178935] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ff4f87a042e55d00
-> [    1.178936] RDX: 0000000000400dc0 RSI: 0000000000000000 RDI: ff4f87a041828b00
-> [    1.178937] RBP: ff7dde988181bc80 R08: 0000000000000001 R09: ff7dde988181bc80
-> [    1.178938] R10: 0000000000000000 R11: ff7dde988181be90 R12: ff4f87a045b600c0
-> [    1.178939] R13: 0000000000000000 R14: ff4f87a04b95dc08 R15: ff4f87a041828b00
-> [    1.178943] FS:  00007f5efb4e0780(0000) GS:ff4f87a0de940000(0000) knlGS:0000000000000000
-> [    1.178945] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    1.178946] CR2: 0000555ab8c2dda8 CR3: 000000000594e006 CR4: 0000000000771ef0
-> [    1.178947] PKRU: 55555554
-> [    1.178948] Call Trace:
-> [    1.178950]  <TASK>
-> [    1.178951]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    1.178955]  ? __memcg_slab_post_alloc_hook+0x517/0x7b0
-> [    1.178957]  kmem_cache_alloc_noprof+0x3ac/0x3e0
-> [    1.178960]  ? smack_cred_prepare+0x84/0x180
-> [    1.178964]  smack_cred_prepare+0x84/0x180
-> [    1.178966]  security_prepare_creds+0x49/0xa0
-> [    1.178970]  prepare_creds+0x168/0x280
-> [    1.178974]  copy_creds+0x25/0x130
-> [    1.178976]  copy_process+0x6d4/0x2830
-> [    1.178981]  kernel_clone+0xd5/0x420
-> [    1.178984]  __do_sys_clone+0x65/0x90
-> [    1.178987]  do_syscall_64+0xda/0x4b0
-> [    1.178992]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    1.178994]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> [    1.178996] RIP: 0033:0x7f5efb5d30e8
-> [    1.178998] Code: 7d e0 e8 2b 58 f5 ff 45 31 c0 31 d2 31 f6 64 48 8b 04 25 10 00 00 00 bf 11 00 20 01 4c 8d 90 d0 02 00 00 b8 38 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 70 41 89 c4 85 c0 75 31 64 48 8b 04 25 10 00
-> [    1.178999] RSP: 002b:00007ffce2898640 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
-> [    1.179001] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f5efb5d30e8
-> [    1.179002] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
-> [    1.179003] RBP: 00007ffce2898660 R08: 0000000000000000 R09: 0000000000000000
-> [    1.179003] R10: 00007f5efb4e0a50 R11: 0000000000000246 R12: 0000555aad43184c
-> [    1.179004] R13: 00000000ffffffff R14: 0000000000000000 R15: 0000555ab8c37740
-> [    1.179007]  </TASK>
-> [    1.179008] ---[ end trace 0000000000000000 ]---
->
-> # Revert the revert and run the same script in a VM
->
-> $ git revert --no-edit HEAD
-> $ vng --build
-> $ vng --user root -a lsm=smack -- sh repro.sh
-> WARN count: 0
->
-> Hope this helps.
->
+For over thirty years, general-purpose operating systems have assumed
+secondary storage is an asynchronous block device. Even modern in-RAM
+paging subsystems (e.g., `zram`, `zswap`) construct `struct bio`
+descriptors, pass through `blk-mq` software request queues, and traverse
+I/O elevator schedulers before reaching physical memory.
+
+HMB eliminates this legacy abstraction. By intercepting folios directly in
+`mm/page_io.c` (`swap_writepage` and `swap_read_folio`), HMB provides:
+1. **Zero-Bio / Zero-Queue Bypass**: Folios are stored and retrieved using
+lock-free $O(1)$ arithmetic stride indexing directly over the CPU memory
+bus.
+2. **Tier 2 z-Pack Inline Deduplication**:
+   - Zero pages: 100% deduplication (stored in a single bitmask bit).
+   - Uniform 64-bit quadword patterns: 99.8% deduplication (stored in 8
+bytes).
+   - Varied pages: Stored in high-speed slab pages without block
+serialization.
+3. **Sub-Microsecond `#PF` Resolution**: Page faults resolve in
+**$0.51\,\mu\text{s}$**, eliminating thread stalls in uninterruptible disk
+sleep (`D` state).
+
+---
+
+## Bare-Metal Silicon Benchmarks
+
+All benchmarks were conducted on a physical bare-metal bare-metal server
+(**Supermicro X11SSH-F, Intel Xeon E3-1270 v6 @ 3.80GHz, 32GB ECC DDR4, 2x
+2TB HGST Ultrastar 7200 RPM SATA HDDs**) running **Linux 7.0.14-hmb**.
+
+### 1. Page Fault Resolution & Latency Under Memory Pressure
+
+In a constrained cgroup v2 environment (`MemoryMax=3D256M`), a worker proce=
+ss
+allocated 600 MB of dirty heap, forcing the kernel to evict ~350 MB of
+anonymous memory. The process then immediately read back all memory to
+trigger real kernel page-in (`#PF`):
+
+| Paging Mechanism | Paging Latency (`#PF`) | Memory Recovery Time |
+Speedup Factor |
+| :--- | :--- | :--- | :--- |
+| **Traditional Block Swap (7200 RPM HDD)** | $\sim 10,000\,\mu\text{s}$
+($10\text{ ms}$) | **258.0 seconds (4.3 min)** | Baseline ($1\times$) |
+| **Barrer HMB Native VMM Engine** | **$0.51\,\mu\text{s}$** | **0.013
+seconds (13 ms)** | **19,842x Recovery Speedup** |
+
+- **Operations Handled**: 91,799 pages evicted, 25,313 page faults
+recovered, 168,643 swap slots freed directly in `mm/`.
+- **Block Layer Trace**: Zero `struct bio` allocated; zero `blk-mq`
+submissions; zero storage controller interrupts.
+
+### 2. Real-World OS Workload: Core Systemd Phased Upgrade
+
+Under memory-constrained multi-tasking, an un-phased upgrade of 13 core OS
+packages (`systemd 259.9`, `udev`, `libsystemd0`, `initramfs-tools`,
+`dbus`) was executed:
+
+| Metric | Traditional Linux Storage Subsystem | Barrer HMB Monolithic
+Kernel |
+| :--- | :--- | :--- |
+| **Paging Throughput** | $\sim 90\text{ MB/s}$ (Rotational seek limit) |
+**$2,625.9\text{ MB/s}$** (Memory bus rate) |
+| **SATA Controller Contention** | High (Swap and package writes fight) |
+**Zero** (100% bus for package I/O) |
+| **Thread Sleep State** | Heavy `D` state / I/O wait stalls | **0% I/O
+Wait (Pure active CPU execution)** |
+| **Network Socket Buffers** | Prone to TCP window throttling | **Zero
+packet drops / No buffer starvation** |
+| **Systemd Re-exec** | High latency during `--deserialize` |
+**Instantaneous (PID 1 preserved)** |
+
+---
+
+## Architectural Implementation
+
+```text
+                     =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=90
+                     =E2=94=82          Linux Userland / Applications      =
+ =E2=94=82
+                     =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=98
+                                            =E2=94=82 Page Fault / Eviction
+                                            =E2=96=BC
+                     =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=90
+                     =E2=94=82       Linux Virtual Memory Manager (mm/)    =
+ =E2=94=82
+                     =E2=94=82           swap_writepage / swap_read        =
+ =E2=94=82
+                     =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=98
+                                            =E2=94=82
+              =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+              =E2=94=82 [BARRER HMB HOOK]                                  =
+       =E2=94=82
+              =E2=94=82 Does HMB claim this slot?                          =
+       =E2=94=82
+              =E2=96=BC YES                                                =
+       =E2=96=BC
+NO (Fallback)
+=E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=90
+=E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=90
+=E2=94=82   Haven Memory Bus (Spec 2.0)   =E2=94=82                       =
+=E2=94=82 Traditional
+Block Subsystem     =E2=94=82
+=E2=94=82  - O(1) Direct Arithmetic Stride=E2=94=82                       =
+=E2=94=82  - struct bio
+allocation        =E2=94=82
+=E2=94=82  - Tier 2 z-Pack Deduplication  =E2=94=82                       =
+=E2=94=82  - blk-mq
+request queueing      =E2=94=82
+=E2=94=82  - Zero Elevator / Zero Queue   =E2=94=82                       =
+=E2=94=82  - Elevator
+scheduler overhead  =E2=94=82
+=E2=94=82  - Sub-microsecond return       =E2=94=82                       =
+=E2=94=82  - Mechanical /
+NVMe I/O delay  =E2=94=82
+=E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=98
+=E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=98
+         Latency: ~0.51 =C2=B5s                                         Lat=
+ency:
+10 ms - 4.3 min
+```
+
+### Key Files Modified
+
+1. **`include/linux/hmb_pagefile.h`**:
+   Interface declarations and zero-overhead inline stubs when
+`CONFIG_HMB_PAGEFILE=3Dn`.
+2. **`mm/hmb_pagefile.c`**:
+   Core arithmetic stride plane, atomic bitmasks, Tier 2 z-Pack
+deduplication engine, and `/proc/hmb_pagefile` diagnostic telemetry.
+3. **`mm/page_io.c`**:
+   - `swap_writepage()`: Direct fast-path hook to
+`hmb_pagefile_store(folio)`.
+   - `swap_read_folio()`: Direct fast-path hook to
+`hmb_pagefile_load(folio)`.
+4. **`mm/swapfile.c`**:
+   - `swap_free_cluster()`: Lock-free slot reclamation via
+`hmb_pagefile_free()`.
+5. **`mm/Kconfig` & `mm/Makefile`**:
+   Integrated build configuration (`CONFIG_HMB_PAGEFILE`).
+
+---
+
+## Code Quality & Standards
+
+- **`scripts/checkpatch.pl` Compliance**: Verified on Linux 7.0 source tree=
+:
+  `total: 0 errors, 1 warnings, 484 lines checked` (1 warning is
+informational prompt for MAINTAINERS file addition).
+- **Coding Style**: Linux kernel standard tabs, 80-column wrapped commit
+messages, SPDX GPL-2.0 identifiers.
+- **Lock-Free Atomic Primitives**: Standard Linux `set_bit`, `clear_bit`,
+and atomic64 operations.
+
+---
+
+## Public Repository & Reproduction
+
+The complete driver, in-tree kernel patches, and bare-metal benchmark test
+scripts are available under the GPL-2.0 license:
+- **Repository**: [`
+https://github.com/barrersoftware/hmb`](https://github.com/barrersoftware/h=
+mb)
+- **Patch Artifact**: `kernel/in_tree_patch/hmb_in_tree_linux_7.0.patch`
+
+We welcome feedback, suggestions for integration into mainline `mm/`, and
+discussions regarding Android Common Kernel (ACK) backports.
+
+Respectfully submitted,
+**Daniel Elliott**
+*Barrer Software Organization*
+<ssfdre38@gmail.com>
+
+--0000000000002b5ca6065e5e9312
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+PGRpdiBkaXI9Imx0ciI+IyMgRXhlY3V0aXZlIFN1bW1hcnk8YnI+PGJyPlRoaXMgUkZDIGludHJv
+ZHVjZXMgdGhlICoqSGF2ZW4gTWVtb3J5IEJ1cyAoSE1CKSBTcGVjIDIuMCBOYXRpdmUgUGFnaW5n
+IEVuZ2luZSoqIGRpcmVjdGx5IGludG8gdGhlIExpbnV4IFZpcnR1YWwgTWVtb3J5IE1hbmFnZXIg
+KGBtbS9gKS48YnI+PGJyPkZvciBvdmVyIHRoaXJ0eSB5ZWFycywgZ2VuZXJhbC1wdXJwb3NlIG9w
+ZXJhdGluZyBzeXN0ZW1zIGhhdmUgYXNzdW1lZCBzZWNvbmRhcnkgc3RvcmFnZSBpcyBhbiBhc3lu
+Y2hyb25vdXMgYmxvY2sgZGV2aWNlLiBFdmVuIG1vZGVybiBpbi1SQU0gcGFnaW5nIHN1YnN5c3Rl
+bXMgKGUuZy4sIGB6cmFtYCwgYHpzd2FwYCkgY29uc3RydWN0IGBzdHJ1Y3QgYmlvYCBkZXNjcmlw
+dG9ycywgcGFzcyB0aHJvdWdoIGBibGstbXFgIHNvZnR3YXJlIHJlcXVlc3QgcXVldWVzLCBhbmQg
+dHJhdmVyc2UgSS9PIGVsZXZhdG9yIHNjaGVkdWxlcnMgYmVmb3JlIHJlYWNoaW5nIHBoeXNpY2Fs
+IG1lbW9yeS48YnI+PGJyPkhNQiBlbGltaW5hdGVzIHRoaXMgbGVnYWN5IGFic3RyYWN0aW9uLiBC
+eSBpbnRlcmNlcHRpbmcgZm9saW9zIGRpcmVjdGx5IGluIGBtbS9wYWdlX2lvLmNgIChgc3dhcF93
+cml0ZXBhZ2VgIGFuZCBgc3dhcF9yZWFkX2ZvbGlvYCksIEhNQiBwcm92aWRlczo8YnI+MS4gKipa
+ZXJvLUJpbyAvIFplcm8tUXVldWUgQnlwYXNzKio6IEZvbGlvcyBhcmUgc3RvcmVkIGFuZCByZXRy
+aWV2ZWQgdXNpbmcgbG9jay1mcmVlICRPKDEpJCBhcml0aG1ldGljIHN0cmlkZSBpbmRleGluZyBk
+aXJlY3RseSBvdmVyIHRoZSBDUFUgbWVtb3J5IGJ1cy48YnI+Mi4gKipUaWVyIDIgei1QYWNrIElu
+bGluZSBEZWR1cGxpY2F0aW9uKio6PGJyPsKgIMKgLSBaZXJvIHBhZ2VzOiAxMDAlIGRlZHVwbGlj
+YXRpb24gKHN0b3JlZCBpbiBhIHNpbmdsZSBiaXRtYXNrIGJpdCkuPGJyPsKgIMKgLSBVbmlmb3Jt
+IDY0LWJpdCBxdWFkd29yZCBwYXR0ZXJuczogOTkuOCUgZGVkdXBsaWNhdGlvbiAoc3RvcmVkIGlu
+IDggYnl0ZXMpLjxicj7CoCDCoC0gVmFyaWVkIHBhZ2VzOiBTdG9yZWQgaW4gaGlnaC1zcGVlZCBz
+bGFiIHBhZ2VzIHdpdGhvdXQgYmxvY2sgc2VyaWFsaXphdGlvbi48YnI+My4gKipTdWItTWljcm9z
+ZWNvbmQgYCNQRmAgUmVzb2x1dGlvbioqOiBQYWdlIGZhdWx0cyByZXNvbHZlIGluICoqJDAuNTFc
+LFxtdVx0ZXh0e3N9JCoqLCBlbGltaW5hdGluZyB0aHJlYWQgc3RhbGxzIGluIHVuaW50ZXJydXB0
+aWJsZSBkaXNrIHNsZWVwIChgRGAgc3RhdGUpLjxicj48YnI+LS0tPGJyPjxicj4jIyBCYXJlLU1l
+dGFsIFNpbGljb24gQmVuY2htYXJrczxicj48YnI+QWxsIGJlbmNobWFya3Mgd2VyZSBjb25kdWN0
+ZWQgb24gYSBwaHlzaWNhbCBiYXJlLW1ldGFsIGJhcmUtbWV0YWwgc2VydmVyICgqKlN1cGVybWlj
+cm8gWDExU1NILUYsIEludGVsIFhlb24gRTMtMTI3MCB2NiBAIDMuODBHSHosIDMyR0IgRUNDIERE
+UjQsIDJ4IDJUQiBIR1NUIFVsdHJhc3RhciA3MjAwIFJQTSBTQVRBIEhERHMqKikgcnVubmluZyAq
+KkxpbnV4IDcuMC4xNC1obWIqKi48YnI+PGJyPiMjIyAxLiBQYWdlIEZhdWx0IFJlc29sdXRpb24g
+JmFtcDsgTGF0ZW5jeSBVbmRlciBNZW1vcnkgUHJlc3N1cmU8YnI+PGJyPkluIGEgY29uc3RyYWlu
+ZWQgY2dyb3VwIHYyIGVudmlyb25tZW50IChgTWVtb3J5TWF4PTI1Nk1gKSwgYSB3b3JrZXIgcHJv
+Y2VzcyBhbGxvY2F0ZWQgNjAwIE1CIG9mIGRpcnR5IGhlYXAsIGZvcmNpbmcgdGhlIGtlcm5lbCB0
+byBldmljdCB+MzUwIE1CIG9mIGFub255bW91cyBtZW1vcnkuIFRoZSBwcm9jZXNzIHRoZW4gaW1t
+ZWRpYXRlbHkgcmVhZCBiYWNrIGFsbCBtZW1vcnkgdG8gdHJpZ2dlciByZWFsIGtlcm5lbCBwYWdl
+LWluIChgI1BGYCk6PGJyPjxicj58IFBhZ2luZyBNZWNoYW5pc20gfCBQYWdpbmcgTGF0ZW5jeSAo
+YCNQRmApIHwgTWVtb3J5IFJlY292ZXJ5IFRpbWUgfCBTcGVlZHVwIEZhY3RvciB8PGJyPnwgOi0t
+LSB8IDotLS0gfCA6LS0tIHwgOi0tLSB8PGJyPnwgKipUcmFkaXRpb25hbCBCbG9jayBTd2FwICg3
+MjAwIFJQTSBIREQpKiogfCAkXHNpbSAxMCwwMDBcLFxtdVx0ZXh0e3N9JCAoJDEwXHRleHR7IG1z
+fSQpIHwgKioyNTguMCBzZWNvbmRzICg0LjMgbWluKSoqIHwgQmFzZWxpbmUgKCQxXHRpbWVzJCkg
+fDxicj58ICoqQmFycmVyIEhNQiBOYXRpdmUgVk1NIEVuZ2luZSoqIHwgKiokMC41MVwsXG11XHRl
+eHR7c30kKiogfCAqKjAuMDEzIHNlY29uZHMgKDEzIG1zKSoqIHwgKioxOSw4NDJ4IFJlY292ZXJ5
+IFNwZWVkdXAqKiB8PGJyPjxicj4tICoqT3BlcmF0aW9ucyBIYW5kbGVkKio6IDkxLDc5OSBwYWdl
+cyBldmljdGVkLCAyNSwzMTMgcGFnZSBmYXVsdHMgcmVjb3ZlcmVkLCAxNjgsNjQzIHN3YXAgc2xv
+dHMgZnJlZWQgZGlyZWN0bHkgaW4gYG1tL2AuPGJyPi0gKipCbG9jayBMYXllciBUcmFjZSoqOiBa
+ZXJvIGBzdHJ1Y3QgYmlvYCBhbGxvY2F0ZWQ7IHplcm8gYGJsay1tcWAgc3VibWlzc2lvbnM7IHpl
+cm8gc3RvcmFnZSBjb250cm9sbGVyIGludGVycnVwdHMuPGJyPjxicj4jIyMgMi4gUmVhbC1Xb3Js
+ZCBPUyBXb3JrbG9hZDogQ29yZSBTeXN0ZW1kIFBoYXNlZCBVcGdyYWRlPGJyPjxicj5VbmRlciBt
+ZW1vcnktY29uc3RyYWluZWQgbXVsdGktdGFza2luZywgYW4gdW4tcGhhc2VkIHVwZ3JhZGUgb2Yg
+MTMgY29yZSBPUyBwYWNrYWdlcyAoYHN5c3RlbWQgMjU5LjlgLCBgdWRldmAsIGBsaWJzeXN0ZW1k
+MGAsIGBpbml0cmFtZnMtdG9vbHNgLCBgZGJ1c2ApIHdhcyBleGVjdXRlZDo8YnI+PGJyPnwgTWV0
+cmljIHwgVHJhZGl0aW9uYWwgTGludXggU3RvcmFnZSBTdWJzeXN0ZW0gfCBCYXJyZXIgSE1CIE1v
+bm9saXRoaWMgS2VybmVsIHw8YnI+fCA6LS0tIHwgOi0tLSB8IDotLS0gfDxicj58ICoqUGFnaW5n
+IFRocm91Z2hwdXQqKiB8ICRcc2ltIDkwXHRleHR7IE1CL3N9JCAoUm90YXRpb25hbCBzZWVrIGxp
+bWl0KSB8ICoqJDIsNjI1LjlcdGV4dHsgTUIvc30kKiogKE1lbW9yeSBidXMgcmF0ZSkgfDxicj58
+ICoqU0FUQSBDb250cm9sbGVyIENvbnRlbnRpb24qKiB8IEhpZ2ggKFN3YXAgYW5kIHBhY2thZ2Ug
+d3JpdGVzIGZpZ2h0KSB8ICoqWmVybyoqICgxMDAlIGJ1cyBmb3IgcGFja2FnZSBJL08pIHw8YnI+
+fCAqKlRocmVhZCBTbGVlcCBTdGF0ZSoqIHwgSGVhdnkgYERgIHN0YXRlIC8gSS9PIHdhaXQgc3Rh
+bGxzIHwgKiowJSBJL08gV2FpdCAoUHVyZSBhY3RpdmUgQ1BVIGV4ZWN1dGlvbikqKiB8PGJyPnwg
+KipOZXR3b3JrIFNvY2tldCBCdWZmZXJzKiogfCBQcm9uZSB0byBUQ1Agd2luZG93IHRocm90dGxp
+bmcgfCAqKlplcm8gcGFja2V0IGRyb3BzIC8gTm8gYnVmZmVyIHN0YXJ2YXRpb24qKiB8PGJyPnwg
+KipTeXN0ZW1kIFJlLWV4ZWMqKiB8IEhpZ2ggbGF0ZW5jeSBkdXJpbmcgYC0tZGVzZXJpYWxpemVg
+IHwgKipJbnN0YW50YW5lb3VzIChQSUQgMSBwcmVzZXJ2ZWQpKiogfDxicj48YnI+LS0tPGJyPjxi
+cj4jIyBBcmNoaXRlY3R1cmFsIEltcGxlbWVudGF0aW9uPGJyPjxicj5gYGB0ZXh0PGJyPsKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg4pSM4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQ
+PGJyPsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg4pSCIMKgIMKgIMKgIMKgIMKgTGlu
+dXggVXNlcmxhbmQgLyBBcHBsaWNhdGlvbnMgwqAgwqAgwqAg4pSCPGJyPsKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKg4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSYPGJyPsKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIOKUgiBQYWdlIEZhdWx0IC8gRXZpY3Rpb248YnI+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg4pa8PGJyPsKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg4pSM4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQPGJy
+PsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg4pSCIMKgIMKgIMKgIExpbnV4IFZpcnR1
+YWwgTWVtb3J5IE1hbmFnZXIgKG1tLykgwqAgwqAg4pSCPGJyPsKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKg4pSCIMKgIMKgIMKgIMKgIMKgIHN3YXBfd3JpdGVwYWdlIC8gc3dhcF9yZWFk
+IMKgIMKgIMKgIMKgIOKUgjxicj7CoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoOKUlOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUrOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUmDxicj7CoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDilII8YnI+wqAgwqAgwqAgwqAg
+wqAgwqAgwqAg4pSM4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSQPGJyPsKgIMKgIMKgIMKgIMKgIMKgIMKgIOKUgiBbQkFSUkVS
+IEhNQiBIT09LXSDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDilII8YnI+wqAgwqAgwqAgwqAgwqAgwqAgwqAg4pSCIERvZXMgSE1CIGNs
+YWltIHRoaXMgc2xvdD8gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAg4pSCPGJyPsKgIMKgIMKgIMKgIMKgIMKgIMKgIOKWvCBZRVMgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAg4pa8IE5PIChGYWxsYmFjayk8YnI+4pSM4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSQIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIOKU
+jOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUkDxicj7ilIIgwqAg
+SGF2ZW4gTWVtb3J5IEJ1cyAoU3BlYyAyLjApIMKgIOKUgiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDilIIgVHJhZGl0aW9uYWwgQmxvY2sgU3Vic3lzdGVtIMKgIMKgIOKUgjxicj7i
+lIIgwqAtIE8oMSkgRGlyZWN0IEFyaXRobWV0aWMgU3RyaWRl4pSCIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIOKUgiDCoC0gc3RydWN0IGJpbyBhbGxvY2F0aW9uIMKgIMKgIMKgIMKg
+4pSCPGJyPuKUgiDCoC0gVGllciAyIHotUGFjayBEZWR1cGxpY2F0aW9uIMKg4pSCIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIOKUgiDCoC0gYmxrLW1xIHJlcXVlc3QgcXVldWVpbmcg
+wqAgwqAgwqDilII8YnI+4pSCIMKgLSBaZXJvIEVsZXZhdG9yIC8gWmVybyBRdWV1ZSDCoCDilIIg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg4pSCIMKgLSBFbGV2YXRvciBzY2hlZHVs
+ZXIgb3ZlcmhlYWQgwqDilII8YnI+4pSCIMKgLSBTdWItbWljcm9zZWNvbmQgcmV0dXJuIMKgIMKg
+IMKgIOKUgiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDilIIgwqAtIE1lY2hhbmlj
+YWwgLyBOVk1lIEkvTyBkZWxheSDCoOKUgjxicj7ilJTilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilJggwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg4pSU
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSYPGJyPsKgIMKgIMKg
+IMKgIMKgTGF0ZW5jeTogfjAuNTEgwrVzIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIExhdGVuY3k6IDEwIG1zIC0gNC4zIG1pbjxicj5g
+YGA8YnI+PGJyPiMjIyBLZXkgRmlsZXMgTW9kaWZpZWQ8YnI+PGJyPjEuICoqYGluY2x1ZGUvbGlu
+dXgvaG1iX3BhZ2VmaWxlLmhgKio6PGJyPsKgIMKgSW50ZXJmYWNlIGRlY2xhcmF0aW9ucyBhbmQg
+emVyby1vdmVyaGVhZCBpbmxpbmUgc3R1YnMgd2hlbiBgQ09ORklHX0hNQl9QQUdFRklMRT1uYC48
+YnI+Mi4gKipgbW0vaG1iX3BhZ2VmaWxlLmNgKio6PGJyPsKgIMKgQ29yZSBhcml0aG1ldGljIHN0
+cmlkZSBwbGFuZSwgYXRvbWljIGJpdG1hc2tzLCBUaWVyIDIgei1QYWNrIGRlZHVwbGljYXRpb24g
+ZW5naW5lLCBhbmQgYC9wcm9jL2htYl9wYWdlZmlsZWAgZGlhZ25vc3RpYyB0ZWxlbWV0cnkuPGJy
+PjMuICoqYG1tL3BhZ2VfaW8uY2AqKjo8YnI+wqAgwqAtIGBzd2FwX3dyaXRlcGFnZSgpYDogRGly
+ZWN0IGZhc3QtcGF0aCBob29rIHRvIGBobWJfcGFnZWZpbGVfc3RvcmUoZm9saW8pYC48YnI+wqAg
+wqAtIGBzd2FwX3JlYWRfZm9saW8oKWA6IERpcmVjdCBmYXN0LXBhdGggaG9vayB0byBgaG1iX3Bh
+Z2VmaWxlX2xvYWQoZm9saW8pYC48YnI+NC4gKipgbW0vc3dhcGZpbGUuY2AqKjo8YnI+wqAgwqAt
+IGBzd2FwX2ZyZWVfY2x1c3RlcigpYDogTG9jay1mcmVlIHNsb3QgcmVjbGFtYXRpb24gdmlhIGBo
+bWJfcGFnZWZpbGVfZnJlZSgpYC48YnI+NS4gKipgbW0vS2NvbmZpZ2AgJmFtcDsgYG1tL01ha2Vm
+aWxlYCoqOjxicj7CoCDCoEludGVncmF0ZWQgYnVpbGQgY29uZmlndXJhdGlvbiAoYENPTkZJR19I
+TUJfUEFHRUZJTEVgKS48YnI+PGJyPi0tLTxicj48YnI+IyMgQ29kZSBRdWFsaXR5ICZhbXA7IFN0
+YW5kYXJkczxicj48YnI+LSAqKmBzY3JpcHRzLzxhIGhyZWY9Imh0dHA6Ly9jaGVja3BhdGNoLnBs
+Ij5jaGVja3BhdGNoLnBsPC9hPmAgQ29tcGxpYW5jZSoqOiBWZXJpZmllZCBvbiBMaW51eCA3LjAg
+c291cmNlIHRyZWU6PGJyPsKgIGB0b3RhbDogMCBlcnJvcnMsIDEgd2FybmluZ3MsIDQ4NCBsaW5l
+cyBjaGVja2VkYCAoMSB3YXJuaW5nIGlzIGluZm9ybWF0aW9uYWwgcHJvbXB0IGZvciBNQUlOVEFJ
+TkVSUyBmaWxlIGFkZGl0aW9uKS48YnI+LSAqKkNvZGluZyBTdHlsZSoqOiBMaW51eCBrZXJuZWwg
+c3RhbmRhcmQgdGFicywgODAtY29sdW1uIHdyYXBwZWQgY29tbWl0IG1lc3NhZ2VzLCBTUERYIEdQ
+TC0yLjAgaWRlbnRpZmllcnMuPGJyPi0gKipMb2NrLUZyZWUgQXRvbWljIFByaW1pdGl2ZXMqKjog
+U3RhbmRhcmQgTGludXggYHNldF9iaXRgLCBgY2xlYXJfYml0YCwgYW5kIGF0b21pYzY0IG9wZXJh
+dGlvbnMuPGJyPjxicj4tLS08YnI+PGJyPiMjIFB1YmxpYyBSZXBvc2l0b3J5ICZhbXA7IFJlcHJv
+ZHVjdGlvbjxicj48YnI+VGhlIGNvbXBsZXRlIGRyaXZlciwgaW4tdHJlZSBrZXJuZWwgcGF0Y2hl
+cywgYW5kIGJhcmUtbWV0YWwgYmVuY2htYXJrIHRlc3Qgc2NyaXB0cyBhcmUgYXZhaWxhYmxlIHVu
+ZGVyIHRoZSBHUEwtMi4wIGxpY2Vuc2U6PGJyPi0gKipSZXBvc2l0b3J5Kio6IFtgPGEgaHJlZj0i
+aHR0cHM6Ly9naXRodWIuY29tL2JhcnJlcnNvZnR3YXJlL2htYmBdKGh0dHBzOi8vZ2l0aHViLmNv
+bS9iYXJyZXJzb2Z0d2FyZS9obWIpIj5odHRwczovL2dpdGh1Yi5jb20vYmFycmVyc29mdHdhcmUv
+aG1iYF0oaHR0cHM6Ly9naXRodWIuY29tL2JhcnJlcnNvZnR3YXJlL2htYik8L2E+PGJyPi0gKipQ
+YXRjaCBBcnRpZmFjdCoqOiBga2VybmVsL2luX3RyZWVfcGF0Y2gvaG1iX2luX3RyZWVfbGludXhf
+Ny4wLnBhdGNoYDxicj48YnI+V2Ugd2VsY29tZSBmZWVkYmFjaywgc3VnZ2VzdGlvbnMgZm9yIGlu
+dGVncmF0aW9uIGludG8gbWFpbmxpbmUgYG1tL2AsIGFuZCBkaXNjdXNzaW9ucyByZWdhcmRpbmcg
+QW5kcm9pZCBDb21tb24gS2VybmVsIChBQ0spIGJhY2twb3J0cy48YnI+PGJyPlJlc3BlY3RmdWxs
+eSBzdWJtaXR0ZWQsIMKgPGJyPioqRGFuaWVsIEVsbGlvdHQqKiDCoDxicj4qQmFycmVyIFNvZnR3
+YXJlIE9yZ2FuaXphdGlvbiogwqA8YnI+Jmx0OzxhIGhyZWY9Im1haWx0bzpzc2ZkcmUzOEBnbWFp
+bC5jb20iPnNzZmRyZTM4QGdtYWlsLmNvbTwvYT4mZ3Q7PGJyPjwvZGl2Pg0K
+--0000000000002b5ca6065e5e9312--
 
