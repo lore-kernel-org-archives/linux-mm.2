@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D32A60A263E
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA38160A4AE2
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Q1SYo9zg
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tMxWkwOy
 Received: by kanga.kvack.org (Postfix)
-	id 66F146B0606; Wed, 21 Oct 2026 02:03:46 -0400 (EDT)
+	id 3A8D06B0608; Wed, 21 Oct 2026 02:03:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 646ED6B0608; Wed, 21 Oct 2026 02:03:46 -0400 (EDT)
+	id 312EF6B060A; Wed, 21 Oct 2026 02:03:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50EC36B0609; Wed, 21 Oct 2026 02:03:46 -0400 (EDT)
+	id 228DB6B060B; Wed, 21 Oct 2026 02:03:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 30D206B0606
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:03:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1D3B16046A
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:03:45 +0000 (UTC)
-X-FDA: 85345592010.12.D1F8B5C
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D5DF5120007
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:03:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q1SYo9zg;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E856C6B0608
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:03:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 796361A041D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:03:48 +0000 (UTC)
+X-FDA: 85345592136.28.9037231
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A08FE180003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:03:46 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=tMxWkwOy;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792562623;
+	s=arc-20220608; t=1792562626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+TsRxErWT6koYb6Xgo6QbB8vqh49N8f3WZDdlHz9iT8=;
-	b=nd112B0+ZeQEejIWEhqIMZipJSdHIGwSUdnMSEisPMz/ewldI+NIeLC+WwL00vYW4T74VN
-	7Nu4pr7w3S8jbfuQMTGeOwd1NBwvUEKr/CKSoehheIdLz4P3/qSWSid8ISt20z6UcBdt4k
-	WsGaEr4GMjyjAbkihEOJPGLu/2LdkWs=
+	bh=hXV3pXzpnzs8U7BbqpWsaUJNBuB8eNBkejRWaj9fiJ0=;
+	b=Y25mcl+T8I2vJTy816j9lOghIhiKyWOMdPGLqdZ8SwBUiKsCOGrxaz6QZNNjJRgJ6hBvaW
+	mqMGwGN/0BfAG29s2RNqudn1gotML96XZV9PMc/TLty9TbXAPH8FX5ds8KG9KGTqkfZyfm
+	2LfyU+yMw5xopfSoBOK03CJqf/OhrrE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q1SYo9zg;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=tMxWkwOy;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792562623;
-	b=GTQR0V524UQIsdobUR8vX6YvhBiPTl5wVJkGFywahUF1LiSQ+D98TvS5JWhT0ALIUcCKM2
-	riUC1/BrVjFp308O56lLwAH3xeYFPUWe1LmgQOTXBAfb9trxsGbNQWgiFzOjT37zIbtig4
-	SFvwkL5OpB+z0K1uvCryLW/vZaqk7lo=
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-677d35fd1d2so345207d50.1
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:03:43 -0700 (PDT)
+	t=1792562626;
+	b=jJHEek1vUj0UYD69IzUD5nEDfBNOWbMcOweoq2cemlGRSrvsXxX56wKqNQT4SMOTCbOXTq
+	PdFuVvWcRrv5kgKBf10OxESOt2H4Md21Y/TlFuu2f6/WeUfO7s8dl3Cy0qUILOqpoVFM2i
+	PRThUC+in9RohCiSJAyCEQpc/5d1j7E=
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-8ab38a051aaso2816487b3.3
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:03:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792562623; x=1793167423; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792562626; x=1793167426; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+TsRxErWT6koYb6Xgo6QbB8vqh49N8f3WZDdlHz9iT8=;
-        b=Q1SYo9zgFjBLSg2xKa/MAdbFLVEK2+s7S46rO+2TjifldQKcZzFOhmaUjNCRA/mVqf
-         UL1K1fBjioJ0a92sg2FreWSxlQom8RIPIliL75g1CsQqEX4OFipxjHefDzSdE+bOCZV6
-         5/jjjFpD+CtQ//Iya3TK80cAaSE8W+8jPWAM6b8oOe8EOaPR82YwurXwFh9SH8P2fZXe
-         YlACs3gMfgc6+0XjZhau+M5rm4EyWNcgTgwyVOgA5B0tqQGmGWPIBCxnve2HYHf5/dkb
-         4RS56QaPuD4RMhSg5Vu7CfZocz1iWZCHDIEXEMQbuXFXIg1x2U3R075umjPusOAs7ZvB
-         PEAw==
+        bh=hXV3pXzpnzs8U7BbqpWsaUJNBuB8eNBkejRWaj9fiJ0=;
+        b=tMxWkwOya1NB9XeUpBCy6hjRBnWfuSgNWTTGMAgafpKRph+IPiax+zotiCpzzLvJdd
+         Q5cgo/NNQU2rgSvpKxkfkfal6GR2HccLoubSXCN7F/ptCvOMiHKiwPdd/ABuRIzsITGR
+         sfOLiwEnaYECkJbteHpquMuEe6K+TnawdlpMgGYI+uwFGOEy2IkksD5YWhRiDs44ZQxx
+         xoGm4wd95dV5MGKW3x9u1Vzwj9SJVSHhdtarUa64l4/addT8UTvM5c02nJplcVsCTXiR
+         KloN3wpshcgHudOv9sPs5alY7huHwz15jO02poUv2eKJ6dELpcRehlKO0cIoZDsa2qKn
+         qo7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792562623; x=1793167423;
+        d=1e100.net; s=20260707; t=1792562626; x=1793167426;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+TsRxErWT6koYb6Xgo6QbB8vqh49N8f3WZDdlHz9iT8=;
-        b=Oit2Pm8wUT/cF8vuB0L9L/bd5+sBPq9lRXqpI7ouDI+1bOB/qTr8Ew9JyRMSHhs8GI
-         6RFV1jW78NIfM6e0Hxmgtcn84TCH0T1wiqVzcs5o+EVfmwDTeN7oA73OMxYEnwyVgQH1
-         MTjjPbsv9zPyqHfT3b9ffJllNiExXy/uc76N0ZF5nbjQ3Uy0qIUVhe/fMFQcvsMPTT/u
-         /X81auMxI/5R8Y5DvzdqwXgLWe3rdHFklk9ScRoEV3trYyAL+N2fTXHWkN6yEgkw2dYV
-         YBTvqlFgE3zpxMul0XxarYivrfv9k59aP7cRWK7fu5z1MkzkzureUYMfZD9LImufYhpu
-         5teA==
-X-Forwarded-Encrypted: i=1; AKwUvBxfFjAw53RCVHux69vufX0SemKb5Pi3j2zSBwC0WNNVoa56/MaaWQ7DKWBslK3oU2XwYqmCXQj0CQ==@kvack.org
-X-Gm-Message-State: AFq9FYJb83591cg7ft2yiXUa17Ef37g/JmydM4TLYaPD6PVRabclJcnf
-	ceaMc7Fi1b1wB6/6XNV1kyxmc9dmn0QPgm7Ot78oyQ8AdcgidZoKplOB
-X-Gm-Gg: AYBFou3e7mI2t0VplyYhJkL5qckfuVVUHDP4Nhjh1jfYcCTTlKfiR1rFxi3QPsr4eTK
-	OqVnrHc0lCIaPqT4Db1cnjNu15qKPBzm0lWFVItpr6Urb/KGlhG6ZvWr4FZFRRPoY1bFXE/awft
-	e3kMhFjhq7lIKrre84Gm+xa6+74YCthFtDpsp7Pl5jJalyyA7NYm1HjUAOhUB3H14VQj0PvnJso
-	XiqKgiAPTMwz4OkZN2CDNiLwInFx3ThaZ7517RPCzoZpPA5MjOs46vbqXzdExmJhdlyRwZ6rMKB
-	VOzgkY9wo8UTB677Q3QQq3HZPQ3rysJhPuyAdWb+xC+3GmHDwpS1wYeaYVxlpU380BjNSWsnCii
-	sfMTd6au9juukT30KAYjfOOR2M1RqLlmNMTLnCivTQad0RdG2VL5yL1Hb7rgXjxx8SQ/D1SJKS7
-	WI1qAdWEx1pAaJQBQd/8DzSjGIiKgAwZmLMVsbGmTW/GEpO67LTialilTFrVeKXx3N2tJSG8/Ls
-	jyq2bJ3Td3TKWaDXnQM7Oq7/mQZjeENm8OujIsyOalwbz+DhTBV69SK4DCINAffZrwwISWPi4pw
-	6pzC3+0wNVRO3j/EG2zfymnxpwVd7i/cQK//4cV48tmm8EwYgE42+hG/jewIjrAsYg1f/bjTD16
-	YCXbMag==
-X-Received: by 2002:a05:690e:488d:10b0:679:8c5f:3fb6 with SMTP id 956f58d0204a3-67a0e0417acmr381635d50.9.1792562622988;
-        Tue, 20 Oct 2026 23:03:42 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a0e496732sm619480d50.5.2026.10.20.23.03.40
+        bh=hXV3pXzpnzs8U7BbqpWsaUJNBuB8eNBkejRWaj9fiJ0=;
+        b=mxsvesNWE9EgAOC1ta/2MTgnx6Ddqx+X87OUIX+1nGaYSyUgpl0nQ7Yq2PXXlz4liH
+         IQrRrl5UDLpo806+9VPCXcOClsFx7VIh8CEtIvyghxz8RW6D4eJHnunHBtIQMT9s6EGm
+         wh63Cx8FSNuAMvRoVH668WkXJMPHcCwWSPa9ioNKjzSKpER+v+tNgZAAS3X4gELNOKxp
+         PXpTDhAOCKRFKri/JoUclRopHyu098LYZ1132HDaoAVmwiK2rDnG8mwTcFDBScns7iLh
+         m9BbdJU51S33zSycwn1fKSAQXi/VxYyGkZMCqVqnJFblKvy2b/V+bVrWgPHXJBs5LNfV
+         jq/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxQySciQ+ZcwqAyNAckhQo4gq9+fkSbFQb0V8O6ZtS8CKUVVw40XlmhymVh5dN8izYU9BjJImoTqQ==@kvack.org
+X-Gm-Message-State: AFq9FYL5SJHxC0WcsQtycbAGILm3LQdC99AOqGmQTqvFP7A9oPhezZ/s
+	QW/ixGaGK/qoWAL5LWF2HR+zOcM4VucCYOJToy/cpE3JBcJfmFM/gOsP
+X-Gm-Gg: AYBFou2BpplBJCSjG2cEh1H4cyuwWbmokBVIt+qxCNFnQuA1OqfRwvp0N7VihHM7Uql
+	kNjmBdJo34RN4p5LpklmaZPsqq06jBcVSTA/pzmgJKARI8VqtzL5OM4Q+RKnVdYohKibUDWafsM
+	6aXWbWP3W5V8qR+0cCDCYj4EXIk9U89uTzjlmlkam2Al+sUg/yKxmeZ2lf2jChFeO6RxMQLkzdr
+	FGOVwFMt6dehhdd3ew/LjdwlUvXfjlncjrcOZi1TKjcJ7IiYW9PSj4e/1QFZRwoASPPsVmd/ZYF
+	Vht/m7ZSj1KhEBWzxSiic/Kf+Gj5pMdMcHJcbSifO9Wc68IolAiPAMBAp7MNabewWLx7gBtNpP1
+	cvWTwbzjYLyNVU0gHspprmrpjJTgLUCv6PrpzI72dny5onaPIhwX7MHUV8FW2Npf2J7bC8yNTqk
+	dLPJGqxfYOFUUHPbjJAlMrm3tlWmIoNKNNV7sFQP8skoJynq+lluXsEQF/lkQrNx9sDCCX33Tzh
+	pXCor7Y06o7oAHu4A2tENft68DTdS47wq4ES5MV2f66RsukkklAaeN21tJfsQE21UZkWXJmeKSE
+	9DyVV8nTt67UyVWNZheHkeRwIuDmf7Dipbsmv5uDmNAsOxETMuXs9ylW8FCh4Pam
+X-Received: by 2002:a05:690c:e3eb:b0:8b0:89ea:6aca with SMTP id 00721157ae682-8b133cdd929mr5826817b3.6.1792562625774;
+        Tue, 20 Oct 2026 23:03:45 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:50::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b1300ae0c2sm7348597b3.18.2026.10.20.23.03.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 23:03:41 -0700 (PDT)
+        Tue, 20 Oct 2026 23:03:44 -0700 (PDT)
 From: Nhat Pham <nphamcs@gmail.com>
 To: akpm@linux-foundation.org
 Cc: chrisl@kernel.org,
@@ -132,28 +131,28 @@ Cc: chrisl@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	cgroups@vger.kernel.org
-Subject: [PATCH v6 05/12] mm, swap: enable THP swapin for vswap entries
-Date: Tue, 20 Oct 2026 23:03:16 -0700
-Message-ID: <20261021060323.553433-6-nphamcs@gmail.com>
+Subject: [PATCH v6 06/12] mm, swap: write back vswap zswap entries to physical swap
+Date: Tue, 20 Oct 2026 23:03:17 -0700
+Message-ID: <20261021060323.553433-7-nphamcs@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261021060323.553433-1-nphamcs@gmail.com>
 References: <20261021060323.553433-1-nphamcs@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D5DF5120007
-X-Stat-Signature: iramf43n9p9qn4855kqbigg7mi7zbbjq
+X-Rspamd-Queue-Id: A08FE180003
+X-Stat-Signature: tty4qby7a7mabkz7ft3cc1jh3wdcac5w
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792562623-53314
-X-HE-Meta: U2FsdGVkX19X1VMyUO7zi03gmtC8eH1gKUWW/IzbbH13ujamr8Racixe1Yn1aTrm2TN7gl+B/4NFKFur9bskr9du+wu5AahJJWDQqIRi0CV5w6apskIJg5oxClEZTaWoUI0HIMVB8IjNgFf4DBHtA0Y8DLxWTcxvewwOmt6F/WjDuwX9B1Dwwc1mTW3bX5x/lFFbt7iL3dq2N9fcNLaH+UnbQgFAewtYkxsVYZe9QAnWyOT4WaruhXzlulrJ1S7tWkXPQbpXip/PkTpeGHnWTQ57DfCa+VOA6Wtj6qwJbtowBGbaUgKxcnzySXD1sGOoqdkwB22X9hEqGiUlZNQI6EBUjtvUNRlAn2iRaJKA/J+2Y6INq0+d3uNvjKUZtPVk0Sz+mkbtftCOhmTC0TZIVYF52vbU4Dk1+BhbZNCuBKK4PobckxRjDiIh6VsjdTxjKLKy1D/gqmPsIwViRmIYRSrsJO8SRAxgrzWXmtDtklUBiyoly0c+YyCBDaC2Nlixu2w5EVuC18QSwq9wemT/LOX0DDP1jAy16js5q2GKn2zZPRwlIHGNF/qSMJzgwS9hJwoYh69iBM3/bOdqurSOHvtMjr5BLckLPG5+c/s933oiPZiall11j5r1+gZnNxjwSSquo33u9zFh496hg+1oQ7Cwr96sFit0cCmCx9SgxO20uCJGRf4SYAvDY1y1EfmF3rDHGzzHp/Q1LrID+4rlAwcS/2hbyXwdsy+SqjmGYZ+DmrH9yReIabaeZwhKdk6V9azOtxBfd0sWlmWeFBhEjQ8hQYz7tI/XWFf0zma+C9+gliZBEFuIAmg37RNHAURJi0d2bhVRfEK/9ScBUrmXSCmMEnRZpgY8Qliz4o5EAUS+bf2e8ZWNaq/FMAWwRUd0Csz7LiCOq5jvlfdaL0Mm6k7SJQomx4Kle3FyyUgyIss7NQBf6m7ggJeYdDQ10Ur8SODm1SbLeWQZHNE1irN
- fl/ZoLJS
- 1TS/zKdHkLZkDCYnQ3vlnUtrsQux+QxvbU08BxGNVR9V1xj3FY+SOvUmH8KPkhesKZmXECUDDI+KwIv4XHp+zu0x6vFq6pijpfrNMUCMNStEmujlKWqTOym2QvB5DORXYnVOmE8KtGQMR0GNaCyoTesq5JrLoA2yn+RmOl5f0sn23Rm4aV42otzWN5PwLtSKug1XSfdGYZwKNCxgCkxPlUTzPIesFEiLyAjr9CKF0RWPCGjwp1/75FIwTlQ676M3ymRuRX/TYrh76tqoCbc18PoZongZ8+Sydq7ANdfpiLVq+pA2oXkKOcUsAlTMUe/DNxKPBD0snoIJxRIV/plXNyPfIIMlWa4UBDTyK0J8EA6mUsPebK33rjBFnP4qUeu2kw3u59k9aL7oYADuVEsvaEHK3I3oJhmh9lW3lp5LDvEWPCkmlhKVDdD/J9d540cYjkln1voFG3DumfIoJRmz4/QqBXA==
+X-HE-Tag: 1792562626-397179
+X-HE-Meta: U2FsdGVkX19LInGCzocN5PWbIfu8ViE2sUR7KBzUiDVi8JdJAREITdCguaK1EK6HRzHbF639v58BNi5QC5yFQrzJf/H9wagDXMCdgVO7CIljiQZ0kpbHSamh2t7i5/twZS/LoZ4h6bVCCYvksH6aiJ0DnxH6bm8rXUmqdHzyhcEtSYC3Ggpg+FIdgWaE8IliCeMZa6sbI9Wpl8c26uP4bAs1lzKPkgN04vvG2mnTNfoRxZYd3+KBz0Rm+rK6+6uTbAE+vZqIPy86v1FYfR3GYuH9svBMH887s/gOtjYMqoASKkqqDVQGSfT2IWvkYUh5u3MB5dE7Rdno/E700mfFaZN1Q1OQObCXwOFSs+0npITwHD+VNij/pwYi+lOR0lUYIUj/Xv9e62CB/mVNbmH05R1j/Olqm/Wnj8mdGLXIpNMcWhN45CwC1LOoWZz4D38gdXpQbi99Zc08i8zeDNSXZP7r9qgmG+wSRJhgDrRmoILl9uLgFgZoy7Ju/RMJ9hBB8BhDpWr5AeZ49YXUpzVv+uw/ycw/ew+Q88mFb0vfJHaIcWxJwSKUoDZbjTBKJCeraeuStlmCxIoWnC3sTWeFtkgUHedbXCHcwjkT0Ypka4S/Vn+ewjsdCx/5Td93jMK48lmjwsbubKwBNCJk6VCCHqpFP3FHR3fxkr9XC9nOFdEMgEoyDf1gTzU+GQTw30N5wJFAJtNGsh7wqyP7odGRGcnAxb0TtOy+m/aj0iTrkdVG8EkOtnFv0xy6ZUsKkAG9AhJYl/R0mOv2sc/LJx+DAgfHLMmgcOy3ZU8hBnHZRlLDMi3lZn9mkSaLMc80QGTrJUfLNk+Elu9UCZ3UlYreyKdQ2qPKvlBD16H9zq2zB24DBiuX3BEualswG3VRTr6KiLQyiB1PW8Cw4S0T4uKgko38Xkxp/Rc70Lu60mb/TXK6z5aMfnPCwevXrNSD6JQwN4Bg1Q+ERbj2vl6RHr6
+ 2VNa8HkL
+ 0PXakFxg+I83BcgSfM/bbOf4qkCv48a8QpOdvU+ORxJjbouMt9F5EsrX3wnbOeEAE5vVTrr/wPatX66yJ3U5aih2ch+1BTfO4JgXvaFIms/rv2RBx8I7RLoykqMYMsf6YFrEnFW9DigbvAFDB6T3zk+pmf01tgH/NRjLuh0BiPOYYVhrY/fMjzfxYpd1eOrye6+l17+L2pfcgwoQ41fRE1xq/L2RxWIiSOo5E+/HWPWhq/owLnucja7l1oH75tVP7CJsnplseSTr4D8JXmkvpOh8oLWu6j1emDVi0l8odw2tAemAjCKkpPGR2wyqUbT05CS3RGJcUXpgCCz3u8hYkh+9v8GSBsIsShQdWM+N7YJTfo+sYQ5BwsYolNT6wgfkua5Cm9ywaufQm213nyACsjpqr9qEFuavzIiSq4wdLiMCYqmUx6LcjfFuDWFuSnWz4cc3gQZNLvuxwUbvj2s+tEzPpYA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,92 +161,181 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Swap a large anon folio back in as a unit when its vswap entries share a
-contiguous run of physical swap slots on a synchronous IO device,
-instead of always falling back to order-0 faults.
+Add support for writing back zswap-backed vswap entries to physical
+swap. The mechanism mirrors the existing zswap writeback path, except
+the backing physical slot is allocated on demand at writeback time
+rather than already being pinned by the PTE.
 
-A zswap-backed or mixed-backing batch is still refused, and the fault
-retries at a smaller order.
+Zswap shrinker only skips vswap entries when we're out of physical swap
+space.
 
 Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 ---
- mm/memory.c     |  5 +++--
- mm/swap_state.c | 17 +++++++++++++----
- mm/zswap.c      |  6 +++++-
- 3 files changed, 21 insertions(+), 7 deletions(-)
+ mm/zswap.c | 69 +++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 48 insertions(+), 21 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 9f651d247eef..430b83900ba8 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4885,9 +4885,10 @@ static unsigned long thp_swapin_suitable_orders(struct vm_fault *vmf)
- 	 * lack handling for such cases, so fallback to swapping in order-0
- 	 * folio.
- 	 *
--	 * THP swapin for vswap is not supported yet either.
-+	 * Vswap entries are checked later, under the cluster lock in
-+	 * __swap_cache_add_check().
- 	 */
--	if (is_vswap_entry(entry) || !zswap_never_enabled())
-+	if (!is_vswap_entry(entry) && !zswap_never_enabled())
- 		return 0;
- 
- 	/*
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 3900975c675f..6c8e8f49e349 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -174,6 +174,9 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
- 	unsigned int ci_off, ci_end;
- 	unsigned long old_tb;
- 	bool is_zero;
-+	struct swap_cluster_info_dynamic *ci_dyn;
-+	enum vswap_backing_type type;
-+	int ret;
- 
- 	lockdep_assert_held(&ci->lock);
- 
-@@ -202,11 +205,17 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
- 		return 0;
- 
- 	/*
--	 * Reject a vswap batch so __swap_cache_alloc_folio falls back to
--	 * order 0.
-+	 * For a vswap entry batch, reject if the backing is not THP-amenable
-+	 * (e.g. uniformly ZSWAP, or mixed). The order-fallback loop in
-+	 * __swap_cache_alloc_folio will retry with a smaller order on -EBUSY.
- 	 */
--	if (is_vswap_entry(targ_entry))
--		return -EBUSY;
-+	if (is_vswap_entry(targ_entry)) {
-+		ci_dyn = container_of(ci, struct swap_cluster_info_dynamic, ci);
-+		ret = __vswap_check_backing(ci_dyn, round_down(ci_off, nr),
-+					    nr, &type);
-+		if (ret != nr || type == VSWAP_ZSWAP)
-+			return -EBUSY;
-+	}
- 
- 	is_zero = __swap_table_test_zero(ci, ci_off);
- 	ci_off = round_down(ci_off, nr);
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 24c4e7a73d56..1b91dba992ab 100644
+index 1b91dba992ab..fd0c2f126b57 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -1753,9 +1753,13 @@ int zswap_load(struct folio *folio)
- 	 * range on the backing device, so scan the range rather than rejecting
- 	 * it outright. The caller has pinned every slot, so zswap cannot start
- 	 * a store or a writeback into the range while we look.
-+	 *
-+	 * A vswap batch is checked when the folio enters the swap cache, and
-+	 * its backing cannot change after that.
+@@ -1076,12 +1076,13 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 				 swp_entry_t swpentry)
+ {
+-	struct xarray *tree;
+ 	pgoff_t offset = swp_offset(swpentry);
+ 	struct folio *folio;
+ 	struct mempolicy *mpol;
+ 	struct swap_info_struct *si;
+ 	struct swap_io_ctx ctx = {};
++	swp_entry_t phys = {};
++	bool is_vswap;
+ 	int ret = 0;
+ 
+ 	/* try to allocate swap cache folio */
+@@ -1089,12 +1090,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	if (IS_ERR_OR_NULL(si))
+ 		return -ENOENT;
+ 
+-	/* Vswap entries have no physical backing to write to. */
+-	if (swap_is_vswap(si)) {
+-		put_swap_device(si);
+-		return -EINVAL;
+-	}
+-
++	is_vswap = swap_is_vswap(si);
+ 	mpol = get_task_policy(current);
+ 	folio = __swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
+ 					 NO_INTERLEAVE_INDEX);
+@@ -1115,24 +1111,44 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	/*
+ 	 * folio is locked, and the swapcache is now secured against
+ 	 * concurrent swapping to and from the slot, and concurrent
+-	 * swapoff so we can safely dereference the zswap tree here.
++	 * swapoff so we can safely dereference the zswap tree (or vswap
++	 * vtable) here.
+ 	 * Verify that the swap entry hasn't been invalidated and recycled
+ 	 * behind our backs, to avoid overwriting a new swap folio with
+ 	 * old compressed data. Only when this is successful can the entry
+ 	 * be dereferenced.
  	 */
- 	if (folio_test_large(folio)) {
--		if (WARN_ON_ONCE(zswap_is_present(swp,
-+		if (WARN_ON_ONCE(!swap_is_vswap(si) &&
-+				 zswap_is_present(swp,
- 						  folio_nr_pages(folio)))) {
- 			folio_unlock(folio);
- 			return -EIO;
+-	tree = swap_zswap_tree(swpentry);
+-	if (entry != xa_load(tree, offset)) {
++	if (entry != zswap_entry_load(swpentry)) {
+ 		ret = -ENOMEM;
+ 		goto err;
+ 	}
+ 
++	if (is_vswap) {
++		/*
++		 * Allocate physical backing before decompress so a failure
++		 * wastes no work.
++		 */
++		phys = folio_realloc_swap(folio);
++		if (!phys.val) {
++			ret = -ENOMEM;
++			goto err;
++		}
++	}
++
+ 	if (!zswap_decompress(entry, folio)) {
+ 		ret = -EIO;
++		/*
++		 * The phys allocation above took the entry out of the vtable.
++		 * Restore the zswap entry to the vtable, which also frees the
++		 * allocated physical swap space.
++		 */
++		if (is_vswap)
++			vswap_zswap_store(swpentry, entry);
+ 		goto err;
+ 	}
+ 
+-	xa_erase(tree, offset);
++	if (!is_vswap)
++		xa_erase(swap_zswap_tree(swpentry), offset);
+ 
+ 	count_vm_event(ZSWPWB);
+ 	if (entry->objcg)
+@@ -1159,7 +1175,10 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	folio_put(folio);
+ 
+ 	/* start writeback */
+-	__swap_writeout(&ctx, folio, folio->swap);
++	if (is_vswap)
++		__swap_writeout(&ctx, folio, phys);
++	else
++		__swap_writeout(&ctx, folio, folio->swap);
+ 	swap_write_submit(&ctx);
+ 
+ 	return 0;
+@@ -1174,6 +1193,17 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ /*********************************
+ * shrinker functions
+ **********************************/
++/*
++ * With vswap disabled, all zswap entries use directly mapped physical swap
++ * entries. With vswap enabled, such entries are rare.
++ *
++ * A zswap-backed vswap entry needs physical swap capacity for writeback.
++ */
++static bool zswap_writeback_possible(void)
++{
++	return !vswap_is_enabled() || get_nr_swap_pages() > 0;
++}
++
+ /*
+  * The dynamic shrinker is modulated by the following factors:
+  *
+@@ -1311,7 +1341,7 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
+ 	if (!zswap_shrinker_enabled || !mem_cgroup_zswap_writeback_enabled(memcg))
+ 		return 0;
+ 
+-	if (vswap_is_enabled())
++	if (!zswap_writeback_possible())
+ 		return 0;
+ 
+ 	/*
+@@ -1397,7 +1427,8 @@ static struct shrinker *zswap_alloc_shrinker(void)
+  * were scanned but none could be written back, or -ENOENT if @memcg has
+  * writeback disabled, is a zombie cgroup, or has empty zswap LRUs.
+  *
+- * Also returns -ENOENT when vswap is enabled.
++ * Also returns -ENOENT when vswap is enabled and there is no physical
++ * swap to write back to.
+  */
+ static int shrink_memcg(struct mem_cgroup *memcg)
+ {
+@@ -1406,7 +1437,7 @@ static int shrink_memcg(struct mem_cgroup *memcg)
+ 	if (!mem_cgroup_zswap_writeback_enabled(memcg))
+ 		return -ENOENT;
+ 
+-	if (vswap_is_enabled())
++	if (!zswap_writeback_possible())
+ 		return -ENOENT;
+ 
+ 	/*
+@@ -1437,11 +1468,7 @@ static void shrink_worker(struct work_struct *w)
+ 	int ret, failures = 0, attempts = 0;
+ 	unsigned long thr;
+ 
+-	/*
+-	 * When vswap is enabled, zswap entries are almost all vswap backed,
+-	 * with no slot to write back to.
+-	 */
+-	if (vswap_is_enabled())
++	if (!zswap_writeback_possible())
+ 		return;
+ 
+ 	/* Reclaim down to the accept threshold */
+@@ -1522,7 +1549,7 @@ static void shrink_worker(struct work_struct *w)
+ 			break;
+ resched:
+ 		cond_resched();
+-	} while (zswap_total_pages() > thr);
++	} while (zswap_total_pages() > thr && zswap_writeback_possible());
+ }
+ 
+ /*********************************
 -- 
 2.53.0-Meta
 
