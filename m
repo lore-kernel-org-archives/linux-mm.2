@@ -1,104 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB3F606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 03:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22929606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 03:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HuUipxgR
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=KAqpMnqf
 Received: by kanga.kvack.org (Postfix)
-	id C5A056B0196; Tue, 20 Oct 2026 23:33:56 -0400 (EDT)
+	id 3D8966B019A; Tue, 20 Oct 2026 23:37:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0B5B6B0199; Tue, 20 Oct 2026 23:33:56 -0400 (EDT)
+	id 386A06B05E9; Tue, 20 Oct 2026 23:37:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B21346B019A; Tue, 20 Oct 2026 23:33:56 -0400 (EDT)
+	id 2766D6B05EA; Tue, 20 Oct 2026 23:37:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 933986B0196
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:33:56 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25624803CF
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:33:54 +0000 (UTC)
-X-FDA: 85345214388.18.9F4DB42
-Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0405E40003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:33:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HuUipxgR;
-	spf=pass (imf12.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 024776B019A
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:37:34 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0345FA7F81
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:37:33 +0000 (UTC)
+X-FDA: 85345223628.07.F5B8C8E
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A63AF100003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:37:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KAqpMnqf;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792553632;
+	s=arc-20220608; t=1792553851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RbLlIDBzxSpd5cJfPOd2N3zvhSlGP9L2jcWxKocz/10=;
-	b=y2cDY5QO3bVPiGFfX0L/2FgI/OLok5ZNap5JZdo6jgsizaRtN62w+OuJFsTe0nMsUyL7Vk
-	AeU5Ppe/k/iE34I69XHXFiaHactPtY60ZIibVcMSKg/czD0FxCbkUC+Dk2RWcp9BDcsFOc
-	rvvBq9sRpO43JoURkiS+VOmPi3i1Tl0=
+	bh=JlRmug8M8jL+izLY5CnmCZpoNqlaHo91H3D4D0KORIQ=;
+	b=KmZmRXd1E16rF70xbGyfxsamZD9U729VEyBv8PbpvVrsRxoffBSjqIZnuChs4fXB9HRGJb
+	NfL55E4n6w9JYLZzN4WudSEwOlAiLhr+qwJJuCbz7VwCdmNuiQC0xgMuPRFiU7/rh3hW5n
+	Fhn4priw35gmTfW5Z6UtqfBe/l11glA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HuUipxgR;
-	spf=pass (imf12.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KAqpMnqf;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792553632;
-	b=vHEVWpSmsjYwuqvCWVnqaufBVOQvrYd3xJ+q+OKecK9b7VVE9RuYOzlQuX0sJo+/G/Uf8A
-	mQT1CYRpURw2D9nT7LCEg0sD4gVADHwRW4IPiL9qn2KeZVjfpecY/l9of5cxswq/uUQ/rV
-	cd5/oWsc5ItwOrkY5kOt0bt/AkTK8pA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=y927hDeFwTRi1uuF8AFccBXiuWM2sJNn4YnO+caicLI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792553630; v=1; x=1793158430;
- b=HuUipxgRWS3e7sDvPB7ilyEUPgRtTmYZ+Pmv+0G7aSfoBB64N9Ezdvggr7cyCJYhNYRoNABQ
- 1NIALLv0lL+pT7s1Ta2HlXtIcSDzHQRv1LjU8Bz41eNK1xug9eM3nBz5/ICuWBm7aW60JdMJAdN
- h6MPK5xaXrRLUQqt3HGTojB0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 071bc8b21379f3c8;
-	Wed, 21 Oct 2026 03:33:50 +0000
-X-Mizu-Trace-ID: 071bc8b21379f3c8
-X-Migadu-Flow: FLOW_OUT
-From: George Guo <dongtai.guo@linux.dev>
-To: pratyush@kernel.org
-Cc: rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	chenhuacai@kernel.org,
-	ardb@kernel.org,
-	shuah@kernel.org,
-	ilias.apalodimas@linaro.org,
-	akpm@linux-foundation.org,
-	baoquan.he@linux.dev,
-	ruirui.yang@linux.dev,
-	guodongtai@kylinos.cn,
-	kernel@xen0n.name,
-	graf@amazon.com,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v5 1/5] efi: add a KHO configuration table channel
-Date: Wed, 21 Oct 2026 11:33:42 +0800
-Message-ID: <20261021033342.3110-1-dongtai.guo@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2vxza4p95v6e.fsf@kernel.org>
-References: <2vxza4p95v6e.fsf@kernel.org>
+	t=1792553851;
+	b=MefgXCueG/cXTkxAZ7K7d+eT4ej/25Ax58KdPS0LAP7o8cR5bnBYGBML2ustg6+EvqpEKs
+	tC98XheVSatIBI9k+hnaMaBltKbBdIKGj7IiGhho5FR/bXzxl41V4xT2agb3zXOHgjSz6L
+	ddKh2qessRJ1uRkqlqaMt+zi0FvbC+s=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792553848; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=JlRmug8M8jL+izLY5CnmCZpoNqlaHo91H3D4D0KORIQ=;
+	b=KAqpMnqftsq9Vh76BCQw5o/ftHsSv60bCJPdslWGu5RbzsaqKScMrnR2n8nft6vT2AHW2nwTLRUtlgcEc07XyQa18mWlUC2MFI08zk+h4kPpHbIhVo0ZsQBJAeWF3+mOseyBA0plsS3vTKcTwPtoTfrwaqHODfAfSN9Xc9l0qmQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R811e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0XDFBTxn_1792553844;
+Received: from 30.74.144.135(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDFBTxn_1792553844 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 21 Oct 2026 11:37:25 +0800
+Message-ID: <0d0e6e7a-eb2f-4435-9be8-0c82d39b4cb1@linux.alibaba.com>
+Date: Wed, 21 Oct 2026 11:37:24 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0405E40003
-X-Stat-Signature: edcyhu9ykqhojfyky33ycmqs5frbwf96
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: unqueue deferred split folios outside the lruvec
+ lock
+To: Joanne Koong <joannelkoong@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Lance Yang <lance.yang@linux.dev>,
+ Hugh Dickins <hughd@google.com>
+References: <20261019230646.3510790-1-joannelkoong@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261019230646.3510790-1-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A63AF100003
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Stat-Signature: o7jsb41r7ihbhwp69berss84ectp3t4p
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792553631-723568
-X-HE-Meta: U2FsdGVkX1//aCbd9LIjLZN5gT4NKu1VWuU7lyjTXjYxvJREE4IgOZGbPtr6GbE9yzyEnlDb31iGcyEEcQat7hHp1/lEIZ+TtVO5GsYIdWW7re9fFf7aX0lN0wbSMOYvRb6suHShpwWaUHVhb/128Fu7VLKl/OnSBvnCu6S9/Q/GNxtkQ3t8Nx/WgR14waq3y+6oMtOjes+BjwFWr0LlmRBPIRWU+7SwX9XVq1HxefXLyFRY1UBBY39qVrwRd03B/0/jta2JDqaKjxiVJikqRm/JmmPNw1RAHVQywl3JRtV1T4HlTBJSkLGU8xz82Arbo29zjp5Uq1lCjEtynIJvWUzchNM5nDrlXWEvfvmVGQIWmJGTtWg3snKZ9rIyPcAb3lX16Dc0pOtOg8IpbVPByIXLAaT5ufz15Tpaakg3zcIaXmPjP3n6ifQXljuFdcsa7WhyOHUHDB3E5AUcex0YNPa3fA5nzj6UpMUZgV/pWgT2dnm07OqPnTOUgvknzWxMMcYo60u7uJwytr5H+StyueN8Lixqz4e8NKkwB8JxhyO7Vk9P4447fybMZ+GBdsoK3yqvZjk3gBMDRjyDnAr3L714Q9RurGSkVnYkAanAm4bcT0ntXsDF3JPF3tdvdE9HWiiye4V6MCYKQy52Nc2Nf2S39l7U7jJEjLqUOu4lwogKa+0eBnld1tpOCl8b5CkNBYNY28TDYB76XqyIrfArAwKtn+oKkOEitgl9qVPrTwBcD/2DWOBPCCCm9Y6lJS01eH98YuXLxMFEgTMsBVi59dawhTss0qYmL8Hg9sEHXmLUBy6uAE9Wvr5fNA6hTKSJOqP7TFuulejvPlNOlXkNhEtMv2nsBh/VD4Lw4xROyryH+8Ot9JIjrfuF9ceYpreRo20Rc9JRFq4cSjSn1EihF5hV9cRdcaH66YEnzxxZ+5Rmxfm46VINSTojVEFfhZM6rqhA+PsouhV0akEuN5k
- cO8/2GYE
- 53uT2+a4Yu+ti4oBZUE+fBN6lQZGARJl09xzEiT5i65IoagrxGB+kYf+lXkYY2VMhnTk1La2pTOVnuatO4L/9GBwv8MvCR/mkmlYcjm/wsgaQC7pjRUQhxq6NOVYuvU/O0YKwRRh1CllKhyXmzDHdXLHbq0jAOiKpUD7qLEbAQCW3MrKPU1CjHhln+/NP6uirK39YUZCExoHEkYT3JKF59O8UuUUQFtfn19I9
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792553850-673253
+X-HE-Meta: U2FsdGVkX1/WTC5p90MYW6/NgJV3uGaREj8N0IKTto3ClbiKUEAfG0SGMsJyUprntzDxF2j0t9oFhrelyKEpZ9S91I/ncoZ2UswtfW6yX+omLuahcbWluBPWtHQmPvvKmRpdrN2+CAIp2T6mJczt/wxpyWsiafent1z1jkicSM5NOuhXCeSNS6aajeXyTZ9G0n0HkZ1QPQNXWq7UtBnMgtmrXLDYv33Gaq/vK3MgdSgtXcjQnNWzLQwVHgiyrNH83DcoXtcHy85VXRXu8n+vCMV/Yvnq6JeHHrQD63ktDiqDkgARBMi+GmbeL7cTsNBCyomzkbO5xNJkrVAu2ifaZjb7HnEhSYua0V778+OJbctdS+CLkzGW5XyPuWv+1c5F4l7/up9OiaIvduskn/hj9HHk349+YU3gQGukBLQtosNkEaoHizoZ7+14qlffEjh6acm524QEW7INa0zgib6f/oIW4HRjZptmKyii1XDelgoCZiPewM77STwOYaE/+OePwRyFxyrdoku6zppdzZCKSku9nqpHjEQu7LJQwXsQBEoHu/EPVqJxGY4T8h8XHc7hPrljzjWs75kzcKObfHOftHHzihxRc2vKUcMgSBPr8eY1yuSqs4KVUjsFkPQnmuqYcwW2kf5S1yG4MdA+4oddIrh6y0+bkmL32ccHT2Z346l85UWOgca6lL2hrv40er5P1rBqoONUMqgpxo9QenC5D+04F3WLlLf/RS9UxOU4BT8mGjYI/h8Ss0bpuCh9fXRHOajkLly8x6v/pMxj7BvcbqE42a4mlSBbQr7GPYgDYxWsR0eHwuqBPoWH3NlJXBjbReRE+BDbphU4JIr1aloBMxPOMK17yay9LbHnFGDWyZ69iLOQPs7cQRu8wzF92kyEY4uahcNTIhRy5rvmAtuEjobEgrpF7Qn05BahdhE2duuCcYV0C/oBk3p++oFlTY6gkEn3iCRMM9M/lL7D+T6
+ USuYTSDr
+ xVK07A8FzlZF2ZeaUdtRC2ldz1RnK/nSZ7sPG6hyjGaRlLVnNI3YTJmXC/bBzNm14ijd4hkBfdYOM5SzB74Fh+TNVLHE1+wWViYdefkEaU1AQjUXkovEUlMjL37deA4Any7eyzf3nCaG3epgoA7gGunUT8ypGuFj10sESryx+Hg2VIHgQUz6fpz5UVljZXJLg1TmFDL8vy7VxpH1srNvz/kzjfYEBcAlXrmbM50kR+d3QBjb2bR0Atzf2cMZLytl6SQwQrLOvY5+t6eQchn+2srUFZL28fo0qS2purt1wdwHFKuQrB1wI8x/PzEs0xe81b4cE+blFfSI7QHjjLwG6jJUFkWZiQDe8p1mP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,124 +102,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Pratyush,
 
-Thanks for the detailed review. I've rewriten the comments and commit messages
-myself for v6. Replies inline.
 
-On Tue, Sep 22 2026, Pratyush Yadav wrote:
-> > +config EFI_KHO
-> > +	bool
-> > +	depends on EFI_STUB && EFI_GENERIC_STUB && KEXEC_HANDOVER
-> > +	help
-[...]
-> I don't like adding a config for this sort of thing. Do we really need
-> this? Why not just have the code always compiled and only used by
-> loongarch? I don't really see we need a user decision for this sort of
-> thing.
+On 10/20/26 7:06 AM, Joanne Koong wrote:
+> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
+> folio_unqueue_deferred_split() on folios where the refcount has dropped
+> to zero. In these paths, folio_unqueue_deferred_split() is called with
+> the lruvec lock often held (move_folios_to_lru() always holds it and
+> folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
+> in the batch except the first). However, it's not needed to hold the
+> lruvec lock.
+> 
+> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
+> the deferred split queue lives on folio->_deferred_list in
+> deferred_split_lru. The deferred_split_lru is a list_lru with its own
+> per-memcg per-node lock.
+> 
+> There are already other existing callers that call
+> folio_unqueue_deferred_split() without holding the lruvec lock (eg
+> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
+> 
+> Add folio_batch_unqueue_deferred_split() and use it in
+> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
+> unqueue each batch of zero-refcount folios from the deferred split list
+> after the lruvec lock is released and before
+> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
+> critical sections, which run with IRQs disabled and are highly
+> contended.
+> 
+> This came out of the discussion on v2 of the mTHP shrinker series [1],
+> where queueing small mTHP folios on the deferred split queue was found
+> to regress Barry's fault microbenchmark. With [1] applied and
+> khugepaged/max_ptes_none=0 so that every folio is queued, perf lock
+> contention showed that the extra cost came from waiting on the lruvec
+> lock in the free path.
+> 
+> Test setup: 2-socket Intel Skylake, 40 cores / 80 threads, memory bound
+> to node 0 so that all threads contend on one lruvec, with each of 80
+> threads faulting in and unmapping 16 MB of anonymous memory 200 times.
+> With only 16K mTHP enabled, this patch reduces the queueing cost from
+> 15% runtime to noise, and lruvec lock wait time (summed across threads)
+> drops from 491 seconds to 38 seconds. Most of the remaining contention
+> moves to the deferred split list_lru lock, but runtime still drops back
+> to the unqueued baseline. This test uses a worst-case configuration ([1]
+> is expected to only queue folios of 2M and larger).
+> 
+> [1] https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1MaU9bXs99w@mail.gmail.com/
+> 
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ---
 
-Agreed, v6 drops it.
-
-> > +		/*
-> > +		 * Reserve the stub-allocated table so it is neither handed
-> > +		 * out by the buddy allocator nor placed on by kexec
-> > +		 * segments, mirroring the memreserve handling above.  This
-> > +		 * runs on every boot, so it also protects the table in the
-> > +		 * next kernel until it reads it.
-> > +		 */
->
-> Nit: this comment is too wordy. Can you please make it more concise and
-> to the point?
-
-v6:
-
-	/* Keep the buddy allocator and kexec segments off the table. */
-
-> > +			if (kho->fdt_addr)
->
-> When can kho->fdt_addr be NULL? Also, perhaps print a warning if
-> early_memremap() fails?
-
-It is 0 when there is nothing to restore:
-
-  - on a cold boot, because the stub installs the table zeroed;
-  - after a kexec into an image without KHO state, such as a crash
-    kernel, because the table is zeroed just before that kexec.
-
-v6 says this in the struct documentation, and adds a pr_warn() when
-early_memremap() fails.
-
-> > +	/*
-> > +	 * Keep a persistent mapping of the table, the same way
-> > +	 * efi_memreserve_root_init() keeps the memreserve root mapped:
-> > +	 * efi_kho_update() is also called on the crash kexec path, where
-> > +	 * memremap() is no longer an option.
-> > +	 */
->
-> No need to mention memreserve. Just explain the reason here. And keep it
-> as short and to the point as possible.
-
-v6:
-
-	/* Map it now: the table is also written at panic time. */
-
-> This is unreadable. Please add a human touch to this.
->
-> And once again, the fact that it mirrors efi_mem_reserve_persistent()
-> isn't important.
-
-v6:
-
-	/*
-	 * Write the KHO addresses the next kernel should use, or zeroes
-	 * if it should boot without KHO.
-	 */
-
-> Why ENODEV? Wouldn't ENOENT be a tiny bit better?
-
-Neither, in v6. No table is the normal case outside LoongArch, so
-efi_kho_update() now returns 0. The only error left is a table that
-could not be mapped at boot, which returns -ENOMEM.
-
-> This has too much information. You need to make it more to the point.
-> For example, "without a device tree" already implies there is no /chosen
-> property in the first place. No need to mention the function either.
->
-> The lifetime of the table is certainly useful information but again,
-> should be much more clear and to the point.
->
-> Also, you should document what each of the members of the struct mean.
-
-Agreed. v6:
-
-	/**
-	 * struct linux_efi_kho_data - KHO state passed to the next kernel
-	 * @fdt_addr: physical address of the KHO FDT, 0 if there is none
-	 * @fdt_size: size of the KHO FDT
-	 * @bootmem_addr: physical address of the bootmem area list
-	 * @bootmem_size: size of the bootmem area list
-	 *
-	 * Pointed to by the LINUX_EFI_KEXEC_HANDOVER_GUID configuration table.
-	 *
-	 * The EFI stub installs this table zeroed on a cold boot. It stays
-	 * in place across kexec; the running kernel rewrites it just before
-	 * each kexec, and the next kernel reads it during early boot.
-	 *
-	 * The layout is fixed. Changing it requires a new GUID.
-	 */
-
-> Note: I recently sent a series that renames scratch to bootmem [0]. It
-> looks close to landing. So you likely need to rename this to
-> bootmem_{addr,size}.
-
-Thanks for the heads-up. It is in liveupdate/next now, so v6 is based
-on it and uses bootmem_{addr,size}.
-
-> Why __packed?
-
-No good reason. All four members are u64, so there is no padding
-and __packed changes nothing. Dropped.
-
-Thanks,
-George
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
