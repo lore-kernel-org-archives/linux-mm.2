@@ -1,100 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0666F606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 19:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE96606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 20:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BYG6kLv4
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=f0Tuv9wq
 Received: by kanga.kvack.org (Postfix)
-	id 20CAE6B0788; Wed, 21 Oct 2026 15:59:47 -0400 (EDT)
+	id 065C66B0789; Wed, 21 Oct 2026 16:05:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F7B26B0789; Wed, 21 Oct 2026 15:59:47 -0400 (EDT)
+	id 016C36B078C; Wed, 21 Oct 2026 16:05:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F28C26B0788; Wed, 21 Oct 2026 15:59:46 -0400 (EDT)
+	id E47326B078D; Wed, 21 Oct 2026 16:05:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CE7F96B0786
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:59:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62D3F16066B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:59:46 +0000 (UTC)
-X-FDA: 85347698772.19.94854BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B5863A000B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:59:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BYG6kLv4;
-	spf=pass (imf15.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792612784;
-	b=EWZDjwGfX+PRWi+KZt2WczvZlRM1JVwY9uFABP9Jeo022dX51fmWxtcnOyJ/k77K1uKi59
-	+W+OTRyWSZAIiPvz/UpSq44ObGHBzItBmsjLMmg6WrTOif1Xmo1L0vsxzXjHC1oU/Xw4oo
-	RO7LkUriTxSxxvaR9ZAf1Cyvf68Sm5Y=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BYG6kLv4;
-	spf=pass (imf15.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792612784;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BA4706B0789
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:05:04 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6502C063F
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:04:51 +0000 (UTC)
+X-FDA: 85347711582.27.9319E67
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E113F1A0010
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:04:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=f0Tuv9wq;
+	spf=pass (imf19.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792613089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fiJLJWbXoWyY6A/386yIPXP7rjQV8aKUb+bgkajzRr4=;
-	b=0vKrfgDcRBQCPEgBtgw86lQ1WTeovvazmUEb/vc7cZcxcgbkxIGJ7SPPM2OzalwgANTs9g
-	KtgmNQswGrSbtuz3CASsMa/K6y8uRF4g+0me4rpoc/VDhBmqL77hQZbS42WNBbhwWJUgH9
-	iN3jbBVWI4Rfsztbk8MImqMCInb1gAA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0333843A5E;
-	Wed, 21 Oct 2026 19:59:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48071F000C1;
-	Wed, 21 Oct 2026 19:59:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792612783;
-	bh=fiJLJWbXoWyY6A/386yIPXP7rjQV8aKUb+bgkajzRr4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BYG6kLv4j2Puk+9eO0FeXpoWN0S5OYiv4Z2dAOAp300aRxiMh1caa0v9DwJ8TXxUX
-	 FlMSDK0CpLysgrhQ11psU0siBYFKixWQ/FdFqM6WQxzUl2nw6gDZJyxECIXY5lSun+
-	 MZzhdFcoRvE0UcLF7rcEbR+axF3cQNo7+qvQmH5a2KCIyBoqq1f/YPy3RepCAJ4xL1
-	 ZYLoTkqMQdSKWSnYLptlu24+5OlBYFkYXAAmykYFnnCgfniV2YLitNVOvAvzcgag/a
-	 HliuwSFSCmiUkJkqdKXIP5xHceZ5jibgq39fQKTjUCWpVjyzzxU0eps+7XG38X4KAi
-	 FF6Def+IAnCWQ==
-From: Jiri Olsa <jolsa@kernel.org>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: bpf@vger.kernel.org,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	Shuah Khan <shuah@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [RFC bpf-next 9/9] selftests/bpf: Add user page failures test
-Date: Wed, 21 Oct 2026 21:57:58 +0200
-Message-ID: <20261021195759.119421-10-jolsa@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261021195759.119421-1-jolsa@kernel.org>
-References: <20261021195759.119421-1-jolsa@kernel.org>
+	bh=j1fxjuCDrdT5GfjnmUrHWkbOyMdCUNguBpXdd1GdKyo=;
+	b=wiir8VSFJv/IBw/saN4DaEu64+7nbwqFUz4S9Wvd575kjcS6dTiJ46fYeT3A05ecNzXYp4
+	INUBvDV+I2NGTcrZJWXDPsZm+EkHdxUjqdFG5FKnBW0FILLIwedGX5Z4zWCFBHS7qhpPU4
+	Tm9t3DTqz11qXI/RhhBtM7lXeq8Jv6w=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792613089;
+	b=v65x0tNsun9G5CBaHfuVUCockg5ifSL+y/UG+o88WLrTqjzgQ72HtRi7fQEPPtnBI9ljy2
+	jWzAOgiaTlh78bTaUVh90GCQfxzw3pwl7q9LudLeek4OLEINpBTaa3U1l+NZkmD14/n0l3
+	ALXJb594QiM3DxoY0oXOdMPxF/2ZcvM=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=f0Tuv9wq;
+	spf=pass (imf19.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1cef0439aso10806895e9.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 13:04:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792613088; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dvs3p7KeI4RJOisHGx2QVUF2gkx5zSKsO0OqD3f/vhUODx1smTW8hfH8kk/7GY88Se
+         kheVDcleNxng9Kfny0x+Rb/U2WAfAUqFvcRTAQhOLP3I5XcluR/JpHhbFRtuo6ByTQWV
+         pNTI6UzKu8+YxohfLepJumkiO8Tu2OakspJWRa+IGThHxLSU/jgpTwhiMpQqMEufI6cs
+         6k0LuFScnuUpR4XgrO6xzvrW8mZyz6+1Dg1lokO++PV15h/j1dxEVfDzJ3lF7SZfgY4f
+         rbTELXt6J/8kE5+w61XDQOGwfv0Lo5QQ8VUgFHhBeZPwMgE4rs+lKcVH5BDVgo6qsAhN
+         qLfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=j1fxjuCDrdT5GfjnmUrHWkbOyMdCUNguBpXdd1GdKyo=;
+        fh=/XH84YdYRwPtEoxmeb19p7BmY1SLLXoe7LxqSMbiJHE=;
+        b=oTUn8B/n6Q+caN5Lp69ESX0dU7gBqLmU2GxOPafe5FPy8MmmEeGwBI0DuWc0SSEzgo
+         U0MuZaLvtTz1Zvz6hwklD3T1kgtx5qdR9dwPaQxsLtY9SNLvIGB/EwweYtsndHz8PsvB
+         QU+kgY2XXcDJjBbrq3DsZykO0lb64Ax2aCrA+DAf4EjxEt+22PCbWOQ4pNYWK7dFGHpx
+         0QFsPUR90jFgsfCT3YfZLPJ6duxVL+nnfwb5oCohkZ7poZyh77wc3dIfVEvlWET+ggTF
+         0L5tE2EYAU7Ri6hhyz3Z1Shv57/IY0sjFw1zI6FOD9ERdDBF7QS46rplQzAHzw9/FyT/
+         V3ew==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792613088; x=1793217888; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=j1fxjuCDrdT5GfjnmUrHWkbOyMdCUNguBpXdd1GdKyo=;
+        b=f0Tuv9wqHTTjkusE5KFUcmf2cRlCPzmtoZcR1bfYKhwUd1bgFrcwrPOOecVbGP/S+d
+         e7IKz+KizYnl/sqajSaBBEMrlcKR0eAW88uvplSaxgtV8Kk/MVaRndC7hj0T2fQdMXsQ
+         5G2dMRuAN8+u6nDLYNPg7dmMWkL4eSXuASdzz/YM+hDThwg1GqqlLRPOwO0TLvWabk21
+         2EofNyyrXMcemf/FL4yWlzBL9Vnq+qmgZIB1ODIMHgdiQQxVjMMa2MMOYeDK/QYpHsC/
+         qX05yTfLFIbr0/mjcBLOEXQGToRjL9411iVAeucGm8tjia0XwyDcn4kI98PPkGfWZJom
+         beqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792613088; x=1793217888;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j1fxjuCDrdT5GfjnmUrHWkbOyMdCUNguBpXdd1GdKyo=;
+        b=JSIfl2WssROCOp2SBd+aTEmbd4XwN04v6Qypm/2q80rU98J3atG61AcmC4LSMplS51
+         OfYjoT76STpw+GEJ6vRx9GZJiwFpSzzngESLKlqRkLO89OboYOMddu/YXvc1TSaOhMnl
+         4h7If90evnkyrCBUokn81pHU8uKeZr0nhd8cvASwj3q/2R1oTkKztf1EIgpFLYXjHQxc
+         T2LKNb3dSW6hHY54LcDgYK0yVoscAVkYzvfDdGjO4+7RGQxn+e3nulFyhTZ039xaViC7
+         LUkcMLHlYday1hYZBlgRMxSaReOPwZUefmOUBIEotBnXmkCRrSDIpUicWnDeq35QYaEU
+         bUZg==
+X-Forwarded-Encrypted: i=1; AKwUvBxAa+13DmFL4PYshSclLj8a+Crq3FHBHNMnuTECp+ZeEbwN6EkZdOR4RC7MxNH8iIPHAacyindFZQ==@kvack.org
+X-Gm-Message-State: AFq9FYKag0y0uZxTm+8XSzG8oMSDbiHu7PM/vJKoCe8InimS/UU3UKP+
+	f2Q8W28+xAS3RRAGw43dZ089XyVlDapSklKYRNdxvecwg0P2yckizCRqCsraOpYs79j79MwTBqR
+	5vAc65TpEVooKXX68NJ0fi0w+zTbXc9s=
+X-Gm-Gg: AYBFou2De1Xev+BMj+35u9UXRT7yEs/PkkKlojBGGQMfgOMZ6iQhgtY3CPTuW33IBbF
+	z+jRU4+qbDgZG7Nl7n68BRQGsQ/yH/bUVj/2bMMY7CjE+Zm96vmkBbu3D9YJApoPH7MU+AL8eFQ
+	RzlX7nssazdiRj9fVCfW1iMmuu5QySZfklPVwFmUfFsGIoAY6pX8x/EIuSX2b4QrUNWlY0yu2T0
+	eCoh1HiiwFLoo+JZBN4JyZ4M1f08P3Vw1ZdsBbaU/D3c25QCg+BFm/c8SPlM1rqVr7Y4Do0lpXx
+	UYjUJ8C/84RKLDSWl1GZXQIJg1VtAdHs9MvrM/bi9V6p6bihvrGW/xADkGJ3bQ8TTZqp9I8uiX4
+	t8TsZT9bAq8QbfY0R5U4voV8Iyq3563pEWs54tzt91DLP1qoJcM6+HZZURdz/a7RHKw9wYu/Or6
+	1pstgKtHE4NMhKQIQTMDnrAFpPvRJ6mCjEtg==
+X-Received: by 2002:a05:600c:a11b:b0:4a2:5db:1f35 with SMTP id
+ 5b1f17b1804b1-4a205db30famr3506195e9.11.1792613088329; Wed, 21 Oct 2026
+ 13:04:48 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: eqkegnzyghyhgs1togukzimht9xpwo3q
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B5863A000B
+References: <20261020200730.250189-1-joannelkoong@gmail.com>
+ <atfrhsr6bft4t7SI@linux.dev> <atjhiAxEyoP48e0X@linux.dev>
+In-Reply-To: <atjhiAxEyoP48e0X@linux.dev>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Wed, 21 Oct 2026 13:04:36 -0700
+X-Gm-Features: AclHuK-XJg9p2pKQVLaqzPUQYnGGSxOsrQ6EL7MNtlukpZPxKO3UA7_Kxk1IV7I
+Message-ID: <CAJnrk1Z=ZqTvfO_VYjG=KnHRvwmhNBfYfxpiZiKWPdMYnsA2qg@mail.gmail.com>
+Subject: Re: [PATCH v1] memcg: fix cacheline contention between lruvec stat
+ updates and LRU lists
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E113F1A0010
+X-Stat-Signature: 6hknwajj7cfaoq8ktzqq6cpxiij3kahr
 X-Rspam-User: 
-X-HE-Tag: 1792612784-104131
-X-HE-Meta: U2FsdGVkX1/nYhnSQcw5Rf+MRpNiznIXALuOX3kVUZ8kL6y/t+A9YcSzsRXy99Q+KeWpBrT1IpKpMVoJH5IcGDQ2Pf0g8cMkMn29KYo0Cm+gUCGKBqfTqdA9o+3YLqn5PmGF9CNJoKDxvoJXqITfoQ1HivWfX2ftWCjKR8GZ7v3R9VaFnl3EWlTR/sLJ5a54x8H82hDL4tw/Jio2f6nqh3BHceXQKcL66Uqi7w8ZQnXlFdXmL7IfSVOcHYHR1o9eaK1LTuyDa2xeMp04BqeaIyquUW2Hc4sZ5EmOBoZejGVZL1jthtcxR8QhvoFjgVHgfcOaTuA36qUdsGSoV7IZ9e28i5/l5+goZEVWIQ9K+iTg+JLEpPsxNdGq6YLTqUz/TG1TVekSWK6I/zWFfGHDLkvSbwXs8wD5aA1KSkugp5h/rdq8gdiNBCzvuQKy+FJKJHFR1Qtu1DOQVRq4Mm3WvIVPXPVWqyW+v1c1784cjioTHx19QY1Hs3tWuvkCpB31NVphTB/Ee12/EvjOrN2nHTvovkyPxXTCWq9WcTK3+Mk6v6TlgQ5jhR7EF/7FvrPxlewtki3BDUc1+ep3vGtgD9FH13kz3o2ZnMUVLkK8UhUGFl84gMfriaEJBp4QW9cVsMm22gPyFxDre24Cfx3/1AdSQd2kVuxFN1JYXPtSgqfhKMjwMEQjoSxjAF1UVgS2lOBNZa9rCOMwWUO73JOE5VWzlAXDGiB00485r73NDE/rv7uAyto7PkMSXz2tjo7XC1maJeDmMcG9UTADlljo7XJBUs8Y44Xt3Nx0eN6AyNITBTsj9V8QpI8DEKqPr4HZVPGRLPQhEvPzif5M525UDGoboNXVOK0TGhI1wdb0RQHgPu1/COHnFhJx8ZU4f/nSR+Ez+uVS9EMP8gHQ/inCo/V8GobZmar8fAHb4lmZyxlmcd3kv8N/J8MP8cacep11nQAHNNdLO6xS1SLOUhZ
- 2w1LfiD2
- cXGYpEtFZnBLWzrwTW9enFu165zgBr4reN7VPTvodjzq7AJTrxFNWsMzrExjTEN3ZmcA+KjdkKgmQ87sxV6ATRwD1l9MyXNhC2yFMLL5TY8oCecz5SrDJaJUmmS4xEMIlYO4J8ydsc/ZVh/yIIUcFXkHSNrkioPKoCMOQ/WH7zNlGvipD6+NzfH9rGprxlWgIASyZ+yc26Qo8DJIZTMMZiC/i6BIaG+L3VxDMJPkTIB1wEbMCq3jfeAxy6+gP+LoZhu6eaiQR/zdzNqYPldDDeiOUPr3Hu8Jmpk/w7lJxr/s/epmf5FTpv5KxVlzsEkrdschvMMvkMpbfbQ75dF5cdUh4Ow==
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792613089-87913
+X-HE-Meta: U2FsdGVkX1+vurpjxeUMPljEm4wLfvMsrBESprcOa6mkRc+3812BbA/as/IO0I+sMHe1ioKIKzcQLpqzxuFXDLrw3cl+77zkkkUgfoCYncwAPTPTKgseWhczSFaagxfm6O9mcTvQPV5QJNWISf2Wg9ndZPbNscidOcQPgYkDjNqZZZd92E/0ScdxNLDs/j+1B5aol3qLO78/7+t6gBALni7HTbIxUeXJxRsYrhGQIYm/u7UQqurp4EejrUu/+qUiDqRpTftGg3SWo+CVqstbDCXOVr8jfbOP7nGRmV2fe5+nZERq7OksLCCS/wOXIdCOMOe+tA8NsSYysNUVsRILPgT6vZuVOY8QYIKs16+07pqJeMAmw6zo1UO3TcbEulIe6UPbNbQeb0uENVhwK1Mj5khe7UJblY2ESBbWzUTGSsWy5kHJiMoLiYoqKa76zIXubzYZ5HfpifZdZ86amBVUgM+h2LaeXh5L/MzBvFpHBekwXDFZyIYqYilgIIBHnmnF5XoGFk5dDoipTRN6VOsqE/1ZbmoOpHS555/iKWRc+W6Hzc0hbMeMmhsJJCzwx1yy/CkVScOna387soN83YYGfQZoS+KPQU/PaRtLy+vl91Oi4XK23MPWUmDxDTnWBTQMEzVnluAA9ujRGDquCRIP8PRJpVgOI947dT9dPGNM+7UOzYJLzKccHpIhGMmsLPrB92+On8oaz4ahCjJtlzN/Ul2cH7ZGK2/WzdEcpUVzAxC9/zumvYR6qbM3I5oQx6L/DwQAI7BAuwf5f9iIrC5ORXc3lbaAOo983wjMsXelvZIH+VsfaJ0AVQrd8HqdNah92zUA8ft8KbveRI8sYBQQzCIaWd9J8P8PhXVlo2AyLivfx8HOOxitK03wNJfYMzsKrRNYGCEeZPdUD4tkzWV8J8YdDC/RKGNz3tfhGzVamyLgWNbWdWMklD+2lcP2yrY/UTKuiEZKX5gVc06ZCOY
+ UOlL1FWd
+ UC3v9c4l86IrBOvkHNCSSTOKGGSaY8sQGztHeOh0Mk8xo9fa2R6sQnLwFPGk5yOuOO2YsewjOWC+ycOv+ZRHcoK2f84qJeHCES/pSWhJ6h7RkFvRcfPzOJaGFOBpG+TDK2prBIFYopO1K87UTTAQrP7ak16RuR/g3EM4ZYn//lQaUIf91lmpCBR2SwnO1qFa0HkBT1/V2kwAec85O+t4GTgWw2scWgBZh4It2m8t0lpYyRlyBc2m1q1rHi36m8qi0JWeQHWLh9oz9slF3U94BHT+fFQvjrA8UDm3oAgOVLaRsapnKc+X2cZl3Rjfc7vUJ9IVkFzgtVxb51G7oV4TYYHjhd8hJDSCVLgQ0D9+hWODFllXK3kPqDNVmDgjGY04T5Out9kVTE/HmFUY6z098C1URVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,207 +148,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Cover expected failures for invalid allocation sizes, misaligned or
-unrelated exec requests, replacement of sealed mappings, repeated
-execution, bad writes and attempts to restore write permission.
+On Wed, Oct 21, 2026 at 9:12=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> On Tue, Oct 20, 2026 at 03:35:59PM -0700, Shakeel Butt wrote:
+> > On Tue, Oct 20, 2026 at 01:07:30PM -0700, Joanne Koong wrote:
+> > > Every memcg lruvec (per-node) stat update reads the memcg and
+> > > lruvec_stats_percpu pointers in the first 64 bytes of struct
+> > > mem_cgroup_per_node, and the ones that go through mod_lruvec_state()
+> > > (such as lruvec_stat_mod_folio()) also read lruvec->pgdat. These upda=
+tes
+> > > are extremely frequent (eg these updates happen several times for eve=
+ry
+> > > page that's faulted in, freed, dirtied, or written back).
+> > >
+> > > The memcg_pn_read_mostly cacheline group keeps those read-mostly fiel=
+ds
+> > > on a different cacheline from the lruvec, but on CPUs that do spatial
+> > > prefetching [1] (which is most Intel CPUs / modern CPUs), cachelines =
+are
+> > > fetched in 128-byte aligned pairs. Depending on where struct
+> > > mem_cgroup_per_node lands in its slab, that cacheline can be paired w=
+ith
+> > > the cacheline holding the LRU list heads, and the lruvec->pgdat
+> > > cacheline with the one holding lru_lock.
+> > >
+> > > When this happens, every stat update also pulls in a copy of the LRU
+> > > list heads and lru_lock cachelines, which are written to constantly b=
+y
+> > > other CPUs under the lru_lock. The stat update has to fetch them from
+> > > another CPU, which is unnecessary overhead since the stat update does=
+n't
+> > > use the LRU list heads or lru_lock at all. But even worse, the lru_lo=
+ck
+> > > holder then has to invalidate those copies and wait for the
+> > > acknowledgements to come back before it can do its next write, which
+> > > makes the lru_lock critical section longer for everyone waiting on th=
+e
+> > > lock.
+> >
+> > Can you please reproduce on a non-intel machine?
 
-Assisted-by: Codex:GPT-6
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
----
- .../selftests/bpf/prog_tests/user_page.c      | 141 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/user_page.c |   5 +
- 2 files changed, 146 insertions(+)
+I ran this on an arm64 machine but the results don't reproduce, so
+this looks specific to intel's prefetcher.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_page.c b/tools/testing/selftests/bpf/prog_tests/user_page.c
-index 74ce52d726ec..107349aace94 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_page.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_page.c
-@@ -12,6 +12,7 @@ enum {
- 	USER_PAGE_EXEC = 2,
- 	USER_PAGE_EXEC_ONLY = 3,
- 	USER_PAGE_WRITE = 4,
-+	USER_PAGE_BAD_WRITE = 5,
- };
- 
- static noinline void user_page_trigger(void)
-@@ -209,6 +210,144 @@ static void test_faultable_write(struct user_page *skel)
- 		munmap((void *)addr, page_size);
- }
- 
-+static void test_invalid_allocation_size(struct user_page *skel)
-+{
-+	skel->bss->action = USER_PAGE_ALLOC;
-+	skel->bss->nr_pages = 0;
-+	user_page_trigger();
-+	if (!ASSERT_EQ(skel->bss->user_addr, -EINVAL, "zero_pages_ret"))
-+		return;
-+
-+	skel->bss->nr_pages = ~0UL;
-+	user_page_trigger();
-+	ASSERT_EQ(skel->bss->user_addr, -EINVAL, "overflow_pages_ret");
-+}
-+
-+static void test_misaligned_exec(struct user_page *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	long addr = -1;
-+
-+	if (!alloc_user_pages(skel, 1, &addr))
-+		return;
-+
-+	skel->bss->exec_addr = addr + 1;
-+	skel->bss->action = USER_PAGE_EXEC_ONLY;
-+	user_page_trigger();
-+	ASSERT_EQ(skel->bss->exec_ret, -EINVAL, "misaligned_exec_ret");
-+
-+	if (addr >= 0)
-+		munmap((void *)addr, page_size);
-+}
-+
-+static void test_reject_replacement(struct user_page *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	long addr = -1;
-+	void *ret;
-+
-+	if (!alloc_user_pages(skel, 1, &addr))
-+		return;
-+
-+	ret = mmap((void *)addr, page_size, PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
-+	if (!ASSERT_EQ(ret, (void *)addr, "replace_mmap"))
-+		goto out;
-+
-+	skel->bss->exec_addr = addr;
-+	skel->bss->action = USER_PAGE_EXEC_ONLY;
-+	user_page_trigger();
-+	ASSERT_EQ(skel->bss->exec_ret, -EINVAL, "replacement_not_bpf");
-+
-+out:
-+	if (addr >= 0)
-+		munmap((void *)addr, page_size);
-+}
-+
-+static void test_bad_write(struct user_page *skel)
-+{
-+	skel->bss->action = USER_PAGE_BAD_WRITE;
-+	user_page_trigger();
-+	ASSERT_EQ(skel->bss->write_ret, -EFAULT, "bad_write_ret");
-+}
-+
-+static void test_unrelated_mapping_exec_rejected(struct user_page *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	void *unrelated;
-+
-+	unrelated = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
-+			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (!ASSERT_NEQ(unrelated, MAP_FAILED, "unrelated_mmap"))
-+		return;
-+
-+	skel->bss->exec_addr = (long)unrelated;
-+	skel->bss->action = USER_PAGE_EXEC_ONLY;
-+	user_page_trigger();
-+	ASSERT_EQ(skel->bss->exec_ret, -EINVAL, "bad_exec_ret");
-+
-+	munmap(unrelated, page_size);
-+}
-+
-+static void test_repeat_exec_rejected(struct user_page *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	long addr = -1;
-+
-+	if (!alloc_user_pages(skel, 1, &addr))
-+		return;
-+
-+	skel->bss->exec_addr = addr;
-+	skel->bss->action = USER_PAGE_EXEC_ONLY;
-+	user_page_trigger();
-+	if (!ASSERT_OK(skel->bss->exec_ret, "first_exec_ret"))
-+		goto out;
-+	user_page_trigger();
-+
-+	ASSERT_EQ(skel->bss->exec_ret, -EINVAL, "repeat_exec_ret");
-+
-+out:
-+	if (addr >= 0)
-+		munmap((void *)addr, page_size);
-+}
-+
-+static void test_exec_write_protection(struct user_page *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	long addr = -1;
-+
-+	if (!alloc_user_pages(skel, 1, &addr))
-+		return;
-+
-+	skel->bss->exec_addr = addr;
-+	skel->bss->action = USER_PAGE_EXEC_ONLY;
-+	user_page_trigger();
-+	if (!ASSERT_OK(skel->bss->exec_ret, "exec_ret"))
-+		goto out;
-+
-+	errno = 0;
-+	if (!ASSERT_EQ(mprotect((void *)addr, page_size,
-+				PROT_READ | PROT_WRITE), -1, "restore_write"))
-+		goto out;
-+
-+	ASSERT_EQ(errno, EACCES, "restore_write_errno");
-+
-+out:
-+	if (addr >= 0)
-+		munmap((void *)addr, page_size);
-+}
-+
-+static void test_fails(struct user_page *skel)
-+{
-+	test_invalid_allocation_size(skel);
-+	test_misaligned_exec(skel);
-+	test_reject_replacement(skel);
-+	test_bad_write(skel);
-+	test_unrelated_mapping_exec_rejected(skel);
-+	test_repeat_exec_rejected(skel);
-+	test_exec_write_protection(skel);
-+}
-+
- void test_user_page(void)
- {
- 	struct user_page *skel;
-@@ -233,6 +372,8 @@ void test_user_page(void)
- 		test_partial_exec(skel);
- 	if (test__start_subtest("faultable_write"))
- 		test_faultable_write(skel);
-+	if (test__start_subtest("fails"))
-+		test_fails(skel);
- 
- out:
- 	user_page__destroy(skel);
-diff --git a/tools/testing/selftests/bpf/progs/user_page.c b/tools/testing/selftests/bpf/progs/user_page.c
-index a855b0b46350..530a0be3737b 100644
---- a/tools/testing/selftests/bpf/progs/user_page.c
-+++ b/tools/testing/selftests/bpf/progs/user_page.c
-@@ -12,6 +12,7 @@ char _license[] SEC("license") = "GPL";
- #define USER_PAGE_EXEC 2
- #define USER_PAGE_EXEC_ONLY 3
- #define USER_PAGE_WRITE 4
-+#define USER_PAGE_BAD_WRITE 5
- 
- int monitored_pid;
- int action;
-@@ -50,6 +51,10 @@ int user_page_test(struct pt_regs *ctx)
- 		write_ret = bpf_probe_write_user_faultable((void *)user_addr, data,
- 							   sizeof(data));
- 		break;
-+	case USER_PAGE_BAD_WRITE:
-+		write_ret = bpf_probe_write_user_faultable((void *)1, data,
-+							    sizeof(data));
-+		break;
- 	}
- 
- 	return 0;
--- 
-2.54.0
+> >
+> > Second, can you try the following patch instead of your on the intel
+> > machine?
+>
+> I see there is also removal of access of lruvec->pgdat from stats update
+> function. Let's break up the patch into two. One will remove lruvec->pgda=
+t
+> access and the other one rearrange the fields in mem_cgroup_per_node (I p=
+refer
+> rearraging than removing the lruvec stat pointer).
+>
 
+Sounds good, I'll go the layout rearranging route then. I verified on
+the Intel machine that rearranging + the pgdat change gives the same
+results as this v1. Do you want me to include your rearrange patch in
+v2 (with your authorship and signed-off-by) or do you prefer to post
+it yourself and I'll send the pgdat change on top?
+
+Thanks,
+Joanne
 
