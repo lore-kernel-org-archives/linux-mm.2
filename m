@@ -1,114 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E87606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 08:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D6D606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 08:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RfbpjplM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9AKER0x
 Received: by kanga.kvack.org (Postfix)
-	id F37676B01F6; Wed, 21 Oct 2026 04:18:51 -0400 (EDT)
+	id 32F356B01F0; Wed, 21 Oct 2026 04:22:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0F2F6B01F7; Wed, 21 Oct 2026 04:18:51 -0400 (EDT)
+	id 306616B0661; Wed, 21 Oct 2026 04:22:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFE626B01FA; Wed, 21 Oct 2026 04:18:51 -0400 (EDT)
+	id 1F5DB6B0662; Wed, 21 Oct 2026 04:22:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BB426B01F6
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:18:51 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC806A798D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:18:49 +0000 (UTC)
-X-FDA: 85345932378.04.5B668E0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EE9E540004
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:18:47 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfbpjplM;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792570728;
-	b=v8egk47UMAC3Q/2QJG6K0NoyUJ8gypWkIJy8xjpWGzbCd5dLXnwjgzJtOL/+yhBlcJO33l
-	ghXNGElGH+/3mTX+7yT6ZalHhmOE3F56hirzQWn6lroV/XV/BOmx67/ANfcp170HVwBVWA
-	fMMKVGnY1/zE7jwi66M9ZBldYdfaL8U=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfbpjplM;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E28E16B01F0
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:22:01 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1C5B1603BC
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:22:00 +0000 (UTC)
+X-FDA: 85345940400.26.9838275
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2E63240002
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:21:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D9AKER0x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792570728;
+	s=arc-20220608; t=1792570919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xo+JzSQhiEofQvNOiUlWPXkowrlnPBOASaEQMBovAy4=;
-	b=F5b2/InvqGPYWBJFOZd9t1MCNVpHmoA2nqXOKq7cqGw90vKCAP4sL7/Wa1nbHddKOL7oHu
-	oLQqvkO8UMVMly0gVa7qRzjPOcabk7jtGbIoUxMltfGy1u+ty2zf45gIKPcovUfX0kGOHy
-	dcXAp0PTAmWa/TWhsyn5d3vWc5KkIDY=
+	bh=eKJ8A+o8IpNbD03Ii9Xprch/mNMzpL/05Y7zRrPcQVo=;
+	b=2sWhAVrXlR1lVLqPFb9OEq2hXFU7iaovYx6h00Gb5I+a1ns5pfW4WSnIiJD52zCIFijfFD
+	+Wtlk7ocdq+jEw3svLboIR8M7Go6e8fT+DVPvFye31FodZ37HZL72KGfwpUHjikHRaPGvv
+	j0zhtf5nzGysV/xVA/mj0mJ5d0QMfD4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D9AKER0x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792570919;
+	b=uuyyQaYyp8q2sgUiuyTPaOm6YlddTXs8GIEitE70SXq2yTKT6FiQbkOBGMj4F+/Y9zz0rI
+	QG0ESqThropifL48R9n5umiaGeETq3hTD4mUUT4U2SDMifT1YAL2neoLmZbA8jih/zM4o/
+	EVFVnFEFTfbpcRgBCgtTbczrEm6dn2s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D8F740806;
-	Wed, 21 Oct 2026 08:18:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FCA1F000CB;
-	Wed, 21 Oct 2026 08:18:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7659360142;
+	Wed, 21 Oct 2026 08:21:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1341F000CA;
+	Wed, 21 Oct 2026 08:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792570726;
-	bh=xo+JzSQhiEofQvNOiUlWPXkowrlnPBOASaEQMBovAy4=;
+	s=k20260515; t=1792570918;
+	bh=eKJ8A+o8IpNbD03Ii9Xprch/mNMzpL/05Y7zRrPcQVo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RfbpjplMrfPSk34Pv3KtXQK58k7yISpHx1oAInBKxIuNfC0uzLZjbgZAWCkMNfdb+
-	 bp5V0AZKxg3cobCO087/ZWgIjPsFHDXatJwCduwnuMSWFPjzYboDTj/3DU0YRuZpva
-	 nkDpTKMY52GiGPf9sfoGjdXj26CyfIHqVhMFIYQIms4odzIxobbv3MqdYCTgk+OQYe
-	 p7COrzkmAUdBobZgFxaam0Kx+z4ftbk2xj6lvFiPAdp0fmqjCcxqEWMpM0GT+DUJnd
-	 cHTMWZAkXhrlIMPae3y/WlLFm9u8NiY8CBXt+vVBiwhLkbnSO/NGVOkdxyv/bB6glv
-	 ds6w5z8Uzwg4w==
-Message-ID: <7e998cd5-57e0-432b-a8e0-676a5b773436@kernel.org>
-Date: Wed, 21 Oct 2026 10:18:35 +0200
+	b=D9AKER0xD7Kbyst88Kckbv8qUgnelLQ/7HJT4N37dMWUUEBKjd8IfOAKvbgDVtQnQ
+	 HS6nsDejSBSCuybh4RkOE9kS+JmsRRXkO0GgaG/ZI8MGwUKymloYnPlRNyJXQCwpyU
+	 PW7XANt6UuYKYogYoNqZo/8+AEHNzkjofFHAJwqTatjz42f68N3Qn/dCNFuKNshK0K
+	 ystYSMrzWQCdOszrv+wYOWPi3ffkfSsWL0TateeyYAVB6O5A0agzwvMizMEtoCy4/h
+	 Kv8374hTKYtgtrMXUfJIlW6j4DMPYc760OSnCmx4Iv+dKK61gcc7dUoOvLBoxeIe/g
+	 Ty/oKIAx1avQw==
+Message-ID: <68f17ee7-d272-4475-8a59-645442e2c210@kernel.org>
+Date: Wed, 21 Oct 2026 10:21:53 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Path forward for Virtualized Swap?
-To: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>,
- Kairui Song <ryncsn@gmail.com>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
- <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
- Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
- Meta kernel team <kernel-team@meta.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-doc@vger.kernel.org,
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Joshua Hahn <joshua.hahnjy@gmail.com>
-References: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
- <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
- <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora>
- <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
- <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
- <20261014195354.GA371161@cmpxchg.org>
- <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
- <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org>
- <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
- <CACePvbVbMPZTrD5y=--XgBS+sa4CHb7e4RFTYCbWfzHzVc3vXA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/ksm: keep soft-dirty and uffd-wp when merging a
+ page
+To: Lance Yang <lance.yang@linux.dev>
+Cc: samarth.colleges@gmail.com, akpm@linux-foundation.org, xu.xin@linux.dev,
+ chengming.zhou@linux.dev, peterx@redhat.com, kas@kernel.org,
+ rppt@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <efa6a28c-f0f9-4d1e-9cce-fec2c08e7d9f@kernel.org>
+ <20261020055518.36087-1-lance.yang@linux.dev>
+ <3da45e6d-2b46-4fff-9ff3-241f70d68296@kernel.org>
+ <f6bdf823-be42-4184-87d2-fc7c128f4786@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -155,21 +123,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CACePvbVbMPZTrD5y=--XgBS+sa4CHb7e4RFTYCbWfzHzVc3vXA@mail.gmail.com>
+In-Reply-To: <f6bdf823-be42-4184-87d2-fc7c128f4786@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: j95uyjw94df5awfuzns4wmeosicy9zuw
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EE9E540004
+X-Rspamd-Queue-Id: 2E63240002
 X-Rspam-User: 
-X-HE-Tag: 1792570727-230684
-X-HE-Meta: U2FsdGVkX1+8OkFrDxIj8TIO4hlZ2iSS2pqxUx8Fj2j0fF86rsj0MLE5UdcO3+qXRCstSbkIskZnm1iLRLRVS0B3fSD9G29l4laRfaEp8YY4fSJuwwCgDahcNgNjRQd4tJZvg4ZjbSJwP41vjRpRLEAPtrfhi5Me7GRyXiA48732dBCJCKZ6u+Oy0iXHzuWOzdlMcS2vpFURiUZXyPtuAlOMOJ3KpjZRCZERV2pP/3rfIpbs4X9Sq+QlTQEitEfpoAKlPk9ozb0jlAMUR146/Tif50dvekSHMEZ08E8JsjKl9eFD6AZB5lMl+coq8fG3k6fO70bdBA+awzNKHfMdgoScKQwIltebofhS4lJos8aTwsBT/VXXeNlsi8b0kOqvTayemW/WN6H+sUGQZGZAMkDr3d6PeKmYs8/Xkvyml5mH6o6K/Jo8Kcr0i/CK7vE01HoQBqVXsBdZXOHwW8qR5BKcRhmcbPHLm0iFqg+VqdKlY6YlUtNpCmytqDn7rAait8hOO6V+S+x8EJgeQDXbuGyDxHeiKvfFjgn7ikL8z5fkxQcIJYogM9qNnF2ZdOmZtw+FY5OMNRe/puOD2Au8MEJqJjIgOnMrmduYRSWWyGwet571TRULuIV7lfd9SxzW6bx2QZHlu5jRvG5oD6l7dsFIey+z17Zawya/iRq262vLiQoS+fGQOXlxBnxanuD1ozKlHYCyAhP7vkF7fiI0bGUjo0TFEItWWSuIBELSwgiyqReENMbOQA5WPDSFUpbfKzV5agws+uC9UtYQYo4fr1EUAukR1QUpnf5htizO7bbLreMSCM2/T8eSOOwRzAwXgkXiISCKAe+lxygTrINzf23oN792Hnmz0o3pyOCvG8MQzt0Z9AqEpkUqiwBpe+1au32FsoaHqwcMSAfLSPcup8PFwkUszdWbWNBBvo2trE6wnygBgLq1CArIFKLCI2mt68Vp0kH7RqXJcakl55e
- 17CFM6rh
- wP8rCBdDUpWHMvpM8ayN7ChgxqIRvjGBWt/Ldui/+1Y3hacuPRQRIG6yPZPQLkIWA9F/1N+3kuaLaDE3bZJc6gFrn+RsBpfb4bdDSHYjbdwjC1R+R5GiAsE7AL5wqVyidQorSWRpKKgSiGj7RYFhxrvvQAEeENc9Eo/8wvNXXDCm1Q17LCyM2IP+O8a+BI5mKBdEFcP+AkBRBffSUUsPnrPl5mXDkl/ICAjSyKefSXh3SjpNIvPvxswjlvHb6hmRZ+CBbd2qdCJOd1fSs55TgZK8Ji78xewOE1cfseHjBeDeJa2AJD8C8P/YJndLSYPpifijDl/PJgmfCAZzJj7YiZDK62Ho5cE36sLQg79lFBzaG7Xy7Nht5snWvRKwt+ecyCJ3sdwYU+uGUaPgh4Ye3SD34edUvOxetLImqlYJvIuQCy31QVI4thyymhGtjlTWrbPEr4S0ud29f5Vs=
+X-Stat-Signature: 7n4yrkptokqoy5hua69dem14i3wo5gzp
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792570919-907885
+X-HE-Meta: U2FsdGVkX1+1zV8YlgmioXz6sQVph3sf2qqwRff/lUFHBihaGbnJdrCRoZe5FF0C8VZ1zVAmvc1MOz8UTdkFOsN3zPrMfHdKr/8IhQIR0Pu3TBBmxZZI1yI9FaiJ5bZB0/FLjHc9yJFUGU0OupffqrX523Kzrhp9Ikjs555xNI0jWyXv4yMj4FsLOM/FJTEaD6ZazhWv1qBj0J2FhjKzM0wVc1jDYThefmSFLgj9K4aypWbVcZ+bnJvHekGTZX/tWSDgnVAVUHp/RiyO057E3Ks90TMVPUmuBDeoS1o6fXvzDBo/FqOyEKcv5+e0Wmn6nSZVtKZC5349X4RBiiCT5WQ+GGSeSsZTPZUge4cxptypm53RrZBb+4Ym/qPkZADN0pwNp6EHoyqSOfI4nrMXas0wlBihsACLxPfZNtOfeyOskKRtfDQ4lJbudJ1vQNWPQLaP5cWi4H6woxV5xT8xN17np2NE3fvkdFBrUiSgYnw2yiO999hwKvB5Q5fNoTwddLr94XrRJwKNTzIt/Sz5ussLjrPSInik4RJ8U8L9+bovzvrq+0Plt98BfqJIaAy+lR8jCPw4zLEDbmrESj0o2+qQ8EiFc0jr0qW7wMrZO/inYpAMoKPT670Ly5CwH5uYhLTLeINYqktCn9YuB+iixOwFTGkAcFDxjexNSgj1ty81AT2vqu2y0wpdNS7LUIXg8DKLxLlB4ssbiUGYV81cJWq6phhdlXpaTTEPNrAg5JzMpRJ1aeGWRQLZafSHJ3etAcOKEqgFQwbpKgnPXZvL3+f0s3u8nVi5Ywh2R5I5PKf0kZJgHaB4DYpL8nvxr+K+jOYcU6GBy8Nu7paE5xisGPDdvXy7dr/0Igj1rbcvpml7J4HKkm9GSoLvIderLC36hDDLDUnNMpWkSNxUQhldm0YB2qilm6U3Jq5FakduNgHqeJrh1sMeTfqcPXK4yxoSm4BTqoDxRSRbfmcJLrC
+ i8FBwii0
+ 7Ys11Y1X+IcFGXFr61RTvyNl6AvVRWexAQW74SapyQGzbkgZAdVAVTaaKIPIdyVC/LwCtvz9ej+tZfIE69VuxN23DVqlFMXWG547gf+ojDqVnH5OmXn8bD4pVV0+Q+toR7qdERN8Yiem712FLmDG8VN9ONg4m0JyUfLv6zQd9vybsJ7wWEvuXyuAMR6o1ez2VTzA3z/8w3axFiEY1oixtYCA/GSLTDXPRKVQArc6CY8Zqbi5lC/NWBVSt/GUICvVcGoc4LcuSLV2lgfcm8afyIZPXhEmmg2r4I4gOxnaCvDWthxoJ96pLByyUifjaklKJQubyQyQjvv/V4EouSKqB0lPzhda0136FauLnvIJcjn8uM74=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,48 +146,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/21/26 09:41, Chris Li wrote:
-> On Mon, Oct 19, 2026 at 5:35 AM Nhat Pham <nphamcs@gmail.com> wrote:
+On 10/20/26 15:29, Lance Yang wrote:
+> 
+> 
+> On 2026/10/20 21:03, David Hildenbrand (Arm) wrote:
+>> On 10/20/26 07:55, Lance Yang wrote:
+>>>
+>>>
+>>> Right.
+>>>
+>>>
+>>> Haha, yeah, I stared at the code a bit. Say we arm RWP on an existing KSM
+>>> mapping, then do MADV_UNMERGEABLE. We're just replacing the shared page
+>>> with a private copy. That shouldn't count as an access to the mapping ...
+>>> no?
+>>>
+>>> But the protnone check sends us to do_uffd_rwp() before the
+>>> FAULT_FLAG_UNSHARE handling. No FAULT_FLAG_ALLOW_RETRY here, so sync RWP
+>>> gives us VM_FAULT_SIGBUS. Then break_ksm() does this:
+>>>
+>>> static int break_ksm(struct vm_area_struct *vma, unsigned long addr,
+>>>         unsigned long end, bool lock_vma)
+>>> {
+>>>     vm_fault_t ret = 0;
+>>> ...
+>>>     do {
+>>> ...
+>>>         ret = handle_mm_fault(vma, addr,
+>>>                       FAULT_FLAG_UNSHARE | FAULT_FLAG_REMOTE,
+>>>                       NULL);
+>>>     } while (!(ret & (VM_FAULT_SIGBUS | VM_FAULT_SIGSEGV | VM_FAULT_OOM)));
+>>> ...
+>>>     return (ret & VM_FAULT_OOM) ? -ENOMEM : 0;
+>>> }
+>>>
+>>> So we report success with the page still merged. Async RWP does unshare
+>>> it, but only after clearing the uffd bit.
+>>>
+>>> I'd let FAULT_FLAG_UNSHARE skip do_uffd_rwp(). We'd still need to carry
+>>> PAGE_NONE over in wp_page_copy(), though. That PTE is rebuilt from
+>>> vma->vm_page_prot, so the uffd bit alone won't stop reads.
+>>>
+>>>
+>>> Tested, this is what I had in mind:
+>>>
+>>> ---8<---
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 976cd03954e3..d99f5ef1dd8c 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -4119,8 +4119,11 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+>>>           if (unlikely(unshare)) {
+>>>               if (pte_soft_dirty(vmf->orig_pte))
+>>>                   entry = pte_mksoft_dirty(entry);
+>>> -            if (pte_uffd(vmf->orig_pte))
+>>> +            if (pte_uffd(vmf->orig_pte)) {
+>>>                   entry = pte_mkuffd(entry);
+>>> +                if (userfaultfd_rwp(vma))
+>>> +                    entry = pte_modify(entry, PAGE_NONE);
+>>> +            }
+>>>           } else {
+>>>               entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+>>>           }
+>>> @@ -6656,9 +6659,12 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+>>>            * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
+>>>            * NUMA hinting and must still fall through to do_numa_page().
+>>>            */
+>>> -        if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
+>>> -            return do_uffd_rwp(vmf);
+>>> -        return do_numa_page(vmf);
+>>> +        if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte)) {
+>>> +            if (!(vmf->flags & FAULT_FLAG_UNSHARE))
+>>> +                return do_uffd_rwp(vmf);
+>>> +        } else {
+>>> +            return do_numa_page(vmf);
+>>> +        }
+>>>       }
 >>
->> On Mon, Oct 19, 2026 at 5:28 AM David Hildenbrand (Arm)
->> <david@kernel.org> wrote:
->>>
->>>
->>> I'm traveling this week, so it's a bit tricky. I cannot make Thursday morning.
->>>
->>> On Thursday I'll be traveling back from Cambridge. But hang on.
->>>
->>> My plan lands on Oct 22, 11:10 PM. I should be home around Friday 1.30am - 2am.
->>>
->>> I could just naturally join that day.
->>>
->>> So one day later would work for me.
+>> Looks like a reasonable direction (without looking into all the details).
 >>
->> Would that be too rushed for you? :)
->>
->> For everyone's convenience, this would be the time slot:
->>
->> PDT: Thu Oct 22, 5:00 PM
+>> I've been also wondering whether KSM should simply skip these uffd regions, they
+>> it never worked properly ... but I'm sure we'd run into issue with leftover uffd
 > 
-> Works for me :-)
-> 
->> EDT: Thu Oct 22, 8:00 PM
->> Europe: Fri Oct 23, 2:00 AM
-> 
-> Ouch, David. If you commit to that, I understand it is very
-> challenging. Thank you for taking one for the team.
-> 
->> China: Fri Oct 23, 8:00 AM
-> 
-> Other swap developers: Kairui, Baoquan, YoungJun and Barry, when you
-> have time, please comment on whether you can make the meeting as well.
+> +1. Did it ever actually work there :) Why not just skip them and
+> call it a day :D
 
-I took the liberty to schedule the meeting and send out google calendar
-invitations to everyone on the CC list (to keep it simple on my end ;) ).
+I think QEMU just always sets MADV_MERGABLE and later activates uffd. So that
+needs some care to not disable them. So let's rather try to get it fixed properly.
 
-If anybody did not receive an invite but wants to join, please let me know.
-
-If anybody received an invite and does not want to join, just ignore :)
+Can you send out proper patches? Thanks!
 
 -- 
 Cheers,
