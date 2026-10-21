@@ -1,121 +1,171 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4E5606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 14:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8BD606A31D
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 14:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hI8C9KMt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V+Mok6uc
 Received: by kanga.kvack.org (Postfix)
-	id AA82C6B0213; Wed, 21 Oct 2026 10:18:19 -0400 (EDT)
+	id 153AA6B0249; Wed, 21 Oct 2026 10:36:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A58536B0713; Wed, 21 Oct 2026 10:18:19 -0400 (EDT)
+	id 1049A6B024A; Wed, 21 Oct 2026 10:36:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9478A6B0714; Wed, 21 Oct 2026 10:18:19 -0400 (EDT)
+	id F0FD36B024B; Wed, 21 Oct 2026 10:36:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D2756B0213
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:18:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8D8BA1C3D38
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:18:18 +0000 (UTC)
-X-FDA: 85346838276.26.0944825
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BF5354000B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:18:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hI8C9KMt;
-	spf=pass (imf01.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C3DDE6B0249
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:36:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3A2A80554
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:36:13 +0000 (UTC)
+X-FDA: 85346883426.21.2DD2AF5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 05EAB1C0006
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:36:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V+Mok6uc;
+	spf=pass (imf18.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792592296;
-	b=7iHBe+Cd/InixZYS733Ox41o+cXSKR7wnM8M+qvmIvIHanpJsDzzevLbnXc7GHfLFcrWHj
-	JfiNSLNlOGBe6rcT0dfWn37IN2slB86vRH0EiIRO5ETlZOfp8kT9nJ68UiEtoUHQmX5ZQx
-	GWgGsQ+7uzS4X/yxYW0oJapvFocxsXc=
+	t=1792593372;
+	b=w2bQCQWpVgCrVlZLd/7wJNc3JunThuAYfWOBy3u6pkfWjH9CAkObxpnL+k0Zs2394J8AUB
+	F6AqitTCP3ZKyY5auFvcXkwgJ1eMpnl+ljwa8EX7SuSMn8JPoeobtqtyiwTkAT/HsRyW+c
+	QUZ58QeonbF/NZ73sIgmsTqn0HWi9D4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hI8C9KMt;
-	spf=pass (imf01.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V+Mok6uc;
+	spf=pass (imf18.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792592296;
+	s=arc-20220608; t=1792593372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UB6olZU7ZLzTbxUpiAFh+ywDR7VP8bDfcRYcAe3Rk3o=;
-	b=w1p9r9HHJ61+JVXz9H29sfu30Oh97ao1hSe+WwiIITahijuwxPc2vpaBBhC8tk291whpLW
-	sY74Sny83sRHr17PvEFo1BerQDn3CvTjY3Mt86z1SUe0j8TZP4DTwKvvnicHn1I1ToT1XB
-	//JzznYa5XdF/UNaA5aSfqF8FWWec8A=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1dec056ddso4946545e9.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:18:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792592295; x=1793197095; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UB6olZU7ZLzTbxUpiAFh+ywDR7VP8bDfcRYcAe3Rk3o=;
-        b=hI8C9KMtl/M6dSO+YaY6s8pqOxodDCeyCnzkfIpsVL0BAO4hqY1howcOnWkwxUpgR0
-         k3QGAZkW5rMxHc2Uph1ryies+qkGqfaD1kBhotO4eCSEZY6NGfBiIaiH5lzc4/142HDD
-         Lw0Q0j+LWqbH3su5PiSOmbzoDKSBOLKkXHmE/fale1Dff/Ex9WclVZT0NxmQoVg1UJ5W
-         DBPyMTtLgdsUInYpNj/k4D7nJRLi78ogWHb9eoG8Wasv/Z4T+/q3WGOztr++3fQpt070
-         XIEvpA0jVtmyEByzOIurS184crSHCBXQNa030YIJZY8F1vDQit2BXSHhwWrVrUOacaNF
-         kXsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792592295; x=1793197095;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UB6olZU7ZLzTbxUpiAFh+ywDR7VP8bDfcRYcAe3Rk3o=;
-        b=D3KTwo+irrUfBYiUgXUskBZ9YkuohYg+jRCQXX0igeui9NFdojLH62YLMhkq1bvzP/
-         5NNh4aj/qmrTUJRSm6D7thHDN934CnvBGaSLK3igkZ/tBgn7MyrhZFhW5efpADi0k14Q
-         NttsKcNQljZQzQKHNSYm0SyHfWTOrYxhA/f0Xx7h7/8x1y2ZJ+6WMlUQMcKzQQQcjwcb
-         +JDfOi4zdxLLVuEXXfG7emGZBGjQGRBvRmnqo03yZAIIZIoGASL8cNV4Fqo0ymjhdkr7
-         ZdtYIReN3xBiezrelMV8m0gOUlGl7lCjcjJDsk/LSZKP78DWhsar9oiiP+yheYJUBE3U
-         +Q0w==
-X-Forwarded-Encrypted: i=1; AKwUvBwz9cs0S16wHt8w91NAM0NQBDNGgJxA3NqAQnzXDUlHnbjgXCvG1o9fCKBthshsmYqe5lkb123mFw==@kvack.org
-X-Gm-Message-State: AFq9FYK1cw167aRa80WDj2DAQHyqsEZVGlbayv7i1/4S1TB7yQ49pCEU
-	4oW1cEA5RiJ6h9WpYRHCCwl6ei9z2xOlSSubFQUjSSQ4wpZyj32k0Tgn
-X-Gm-Gg: AYBFou19NSm8TmqX69ZEB4zylOW9xCjgCF2dAP2s1wbEv8yUylLm07eWohf9KPVLrFW
-	7YsGMX1gFkdXvznu4pO/PXD3+9D5M1NZMGFfvf66+CZ3The14LhgcXvWvZvESZLfaRClDFE68hy
-	87cQvUyCZg2iPQZ5IaOoWL0u4F73vdiN9+cVzUKBxPIPLuS5sPk1dzx8AKBq2aUvryE2mTMygCt
-	aBEduX5KSX1YxIOO0uiJypl7AZvP+UWVjCPqIFIhiGDnpX4zebzvpcY+obSpqAESjIEO3mKvXog
-	DJm54QItkxJcaQq5D+wM+NbyFBZrqb3vjxSrqkCeoc41vqendFnOaPuhDni15rj2ZmqfRFT5VS+
-	n6rFYSTupIOkDxw7IEE6BYJHWUhy5OeoNO5hMwRO5BxRMPc6mYSO5y7dCOiwQtbaaOfy8b1TxTk
-	56H/FJaQ5RV0FSokMCDcK7AGgenv7P4sNDctN/+Ix3MZSf5C/voWKAix6xJIKyG8rm6rPcTcCw5
-	5ae4eU2PT55ibIUBOeCC1v062VA/Slxo5GNHRWaFxEB8X+/s6xX2ZCmy0BI3D+RThAOdVJXBAi5
-	Q7E8TLR41Fj1AtqpF+gX8vKQGiNhpZ0A1LpEU+U=
-X-Received: by 2002:a05:600c:3b82:b0:4a0:108:3b48 with SMTP id 5b1f17b1804b1-4a1fdaf7464mr51669615e9.7.1792592295070;
-        Wed, 21 Oct 2026 07:18:15 -0700 (PDT)
-Received: from C422HJQPQG-Fractile ([150.251.170.8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fc1060f3sm48926635e9.1.2026.10.21.07.18.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 07:18:14 -0700 (PDT)
-Date: Wed, 21 Oct 2026 15:18:12 +0100
-From: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
-To: Enze Li <lienze@kylinos.cn>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/hugetlb: drop unused mm parameter from
- unmap_ref_private()
-Message-ID: <atjJpB8d1DkMev_R@C422HJQPQG-Fractile>
-References: <20261021061901.376104-1-lienze@kylinos.cn>
+	bh=0/DZA0XSq4zWQqR92u51BiCE+QM/y2vLsi5z1/3NCwY=;
+	b=hsUdfPtu2IVpqwQh3XLt260bL5roNA2Zoyv8dSGP1NdgAFQCKFgFHWqP1wzf2y0ibDTQhx
+	dxnQPgskyYg6aE5p7OH14K+/9mggZ6Zr/1EYMTMeZ2yeBxvyDBLklW9MottfNcJT1HL7Nm
+	j+GuwAT1ededoeoibD9e9J1HkVhdJTQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0A22A601F0;
+	Wed, 21 Oct 2026 14:36:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83FB1F000C1;
+	Wed, 21 Oct 2026 14:36:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792593370;
+	bh=0/DZA0XSq4zWQqR92u51BiCE+QM/y2vLsi5z1/3NCwY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=V+Mok6ucfzzQtXkUSDemQyWLpiIB8chSnQn2edncNpTvz73tnOPq/gyXgZXCpxc+B
+	 71VEqYOiMs+JDomAwP6farAOge+AM7kKPbiKlnISXHkw+q6eLBItyXfBgh1J2lTjpQ
+	 kbCC+zFk7hd/GnUYSY+Ku86LQboRBXGaFXvtEYM0UgydfPfIH4W9hkGgeyIldypEzO
+	 vFO62viaHJXrQ2a9kXcKwnNPBjK6l5D7lFj66Zv5kOLNAoTsAR6p6XCBnM0IvZ6Zgw
+	 qLqboxHmmnePuG1abV1oVMiLXJba+fyiG6KIxcCJZmVQZCpy6FFOsLSwX4xD9BhltE
+	 gZzXBCSBKYKEQ==
+Message-ID: <c3842f844845a0c461ed7a895cff3a6d3d3f74c0.camel@kernel.org>
+Subject: Re: [PATCH v7 3/5] mm, iomap: keep a partly covered page until an
+ uncached write completes it
+From: Jeff Layton <jlayton@kernel.org>
+To: Mike Snitzer <snitzer@hammerspace.com>, Chuck Lever <cel@kernel.org>
+Cc: linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>, Olga
+ Kornievskaia	 <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom
+ Talpey <tom@talpey.com>,  Christoph Hellwig	 <hch@lst.de>, Jens Axboe
+ <axboe@kernel.dk>, Matthew Wilcox <willy@infradead.org>,  Jonathan Corbet	
+ <corbet@lwn.net>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Date: Wed, 21 Oct 2026 10:36:07 -0400
+In-Reply-To: <20261020220346.28020-4-snitzer@kernel.org>
+References: <20261020220346.28020-1-snitzer@kernel.org>
+	 <20261020220346.28020-4-snitzer@kernel.org>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021061901.376104-1-lienze@kylinos.cn>
-X-Stat-Signature: xodu4gyg8naeqwbc81947exgsntetueq
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: z5483xb93474bd9kgkysmaj5qegirbpk
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BF5354000B
+X-Rspamd-Queue-Id: 05EAB1C0006
 X-Rspam-User: 
-X-HE-Tag: 1792592296-54154
-X-HE-Meta: U2FsdGVkX19uOXbhPnpfN0Vv7IO6Uy4fNW1hA+qUzExXGgbVhVm4/SWqOMhz7VRAGbzrTp+gmEbUS/6SOHPXfo5PZNEEiEaHlUv5oocWMszyOYhiIBpDUWxHcVLwbicz7fEwZ65lCH6jtASA3xpwJoAf54FgiboV7Yh3Et+MjZoADLtbtVyOt1z/bOXfAutdThSfPyd143otpZvvd/41No5wBGKLFJFBzZQUw96CyqK7tIxWfdxwihZZKZiTe9NS88819sesBpACs9kT/lAyoGy1vXGaYlRVTH1/aQBEyxz9K/qBG6gSf6CdNb1h8C1xjkIsdM09n7XZjORFOrE6w7KAekbzZbReqjth3WxTJA65Y8vXgYdebAwVHhHVmtW9rcsC9CLShCQG4PXJKrI82e6TymTcP7zBytno8UhDdLGI0DlbpxOVWpgRRc1vdNrpTByECRISmlgmCaW+tN2kFxP5DBCuyDsKs/MwbS35yLhazHHawbHilUefpZLRMnnZG4bx4xiiyldoOLHfUL7KhiUVD2z2e65BEJk8miWhIOrSTCC1MJ2pfARtaUniqx01+uenmhFdXq7MLtCXC1zmngfY5Ua8+DBMOeH5Q5ULls2KMKOr/dA7YK12ceOX/Ip+ZcIWr6hPmdk95V1534ov50J2QVNyPHIJOkBNP33dkpj9vIlbXHlUnMCwhz2Rdl7DuBNErpbwkAIqXDx3zYD45b3UeJBANZ+zAjm/v8Box1bUxaeCIAeyVW8CTqsLtDSXkeaKHSLm6ytcR2L5mR5FTlx10aVtydHL9L4G/NcHpW64Rg/MfvwHcGF9R5C/QRL494uUsECqXHtdSbkmA0BfPTNVdbtYO/8UEJJThNtfh4KEiuTKwur7w5UxramyOJB/xKL89PLCUoS7ravV7PWA5JIED109afPxeyIa243PkKdbP3TOmEzIFSjgkCLR6FgM4tcrF1XNoP6/pfBvwFb
- yq9+k4bi
- 8gl7n8cPer01EUcJht0IWSUk8H2Yq9yPKmCCXI+WCdP7Mr0EBZx8vu3uHWGbkM2jwnFmYoSS78+TqMRL7Tb6jB0tuu3kIfLHPWlCF1DaaZlpNWeqAzZe+qvnzf9BrE58eCEZ8bMTz54ISmebm7hS/oJz97yYkzZ5w2oYvoZyZoCyxB5Lbnrb6jWgnMcNUnp8Olq5ZU4WJTkcxsLuyN313h8AXa4bFqrRgrCvC2YiANinZkMUGSgzoFyZXO4EJPc6RCYvv0ZeO8VFqyER8yhtVwQuDFsc1S6DJ2A15TmiDvEjoBUculChdZLLu1pFipCt2cDQcj9FBrJ6aLb1OE4pOglDqmJ7BQvnaaMBS53/xr17BwlQEVHA9l2D6zd8JVdQanYHPlHYhPVDGdI2wT+5Dv5ly6xqICL4XLYlkoTCp7984MRPYDzXWDD/d4MzhGid5bWq0hWCJM4vGllKR+bZGTvzbRR5hZXG1s6Glh0ZTc/C/6lOqUzaSmqbETHwhpu9dSovkln1VC6hYF7k9io51Dv+ds5mzQKD/h54fIURbM8NE/rkzzZhzeyItKRdwgltoPU4kU3kRf/alvws=
+X-HE-Tag: 1792593371-380024
+X-HE-Meta: U2FsdGVkX1+Uw4YRXqVxzaLf4kVW7OU0QZVjK7rmrxqcBy4MoTCyLVrImJtFrV1VcdyjOmo70bKcTd2X7oWwsN6xGg7j38oovQwIpNoctQWizkp6U+C1MLbCc0By3KZoq781WSnswW0LnoJ/2TLtTNzbYe7j3hNsqK+z6znpz73tBhDv8vtj/0yxFclZalrM9HzledvyzXtO0FksHH8k9gA7YRyMezgLmEMlggNQsRaDVElziqGbRfGYhqF43MFhiVUBmxAKOhdXI9usGa1tKm2QZta/oTOrfSM+pRj6BS2sgbjco1OEyoNSA575YwNpuOqHwZX575FZGXjA776dF6xxY92ZjM+iTLwIfMimgzZ31xPdb+5tN9zzVs9lWHRNUwXRd6qGZE5vVsifqlydO7aFSHkCuLtlb0stoZWOqWFPCC4qW0AtyhVfKqpuOSPQEN30W1tKCtffJNG70mPMUQw+Ey+1+ggsDjY6dIwOtR8RnXKw25q80gL2SZmNJZQkm3vDx3U/e5mzVj1P0R+uiJ2fjUIfJGJVoNQzqwQQbiLnvQEM9HUpgnC/vWHLU4BAEcjSGYShwRQafjhlLYGAxDzhL/LJuVpqobUAOBpOoghFthsr8Pw9vP/HDS7kop9RC0CQ4nQw/m5+NhK+OUJFGQTmlFG66HJfFpEZ7EmzgejXp6KcO3IQDoZK9D5UpVT+EtmWy7OJyRPiO+r4cnpJdy+N19KvezWNifhGZ9emQUeW9FQmeKnZyp7ColyKiCp56s/Kn0S8PmsYH1oZ8iaz2NQrVV66Z0LMnUyLRan6Gc3VjrpZ0zESYxuK9bumTgi9VQsXkoy+46x6/VQjo1r8pj7ItIdcCARGqv675vPAaxlsAtmjaf7fCrS+mbjypjagGtjGSouyabgfUc+VwJKlmv/e1NvQ5hqHMDHByNKZEHOOTero9XFS0ErclCVZ7AGTP5ZpdQ7epoaNXpla5kg
+ USUKUWoG
+ lq+biOcMVqF5iV2Dsw3mxy6kAGCam8gm18JTbQzEMmnZv+oR2n46EgtnisaeY7QW+SkE8FkgSrlllXqv07+IoZkB/1BtDoXfcNkGkRhn9JS2q+eGkbXDwmvUI8v/7d6SSpI5hER0D4d1oqMaUYzuP2tGxXlCbGAzrMTlLSS4jLOyzJJyMmHWFfesc1YcWUekXCbDnwmDK0P7Yp86vcXZTATUebLh1ZR6dLkl5cvg7fFhe8ORO+d96cUGMCc1iruMD7zuI+ifizXpnx777rW2GSUsbsNZYXckgkchCF7BdyTU0Fdvf/MFo05dH/FCisjf5Vbb2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,15 +174,178 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 02:19:01PM +0800, Enze Li wrote:
-> The mm parameter has never been used since the helper was introduced in
-> commit 04f2cbe35699 ("hugetlb: guarantee that COW faults for a process that
-> called mmap(MAP_PRIVATE) on hugetlbfs will succeed").  Remove it and drop
-> it at the sole call site.
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
+On Tue, 2026-10-20 at 18:03 -0400, Mike Snitzer wrote:
+> An uncached (RWF_DONTCACHE) buffered write marks drop-behind every folio
+> it creates, so writeback drops each one as soon as this write's data is
+> on disk.  A page the write covers only partly is usually shared with the
+> neighbouring write, the one that ends or starts in it.  Once the first
+> of the two has been written back, the page is gone, and the second has
+> to read the block back from disk before it can write its part: one read
+> per misaligned write.
+>=20
+> Measured locally on XFS (emulated 4Kn NVMe, 4 KiB pages), 32 threads
+> writing interleaved records to one file with pwritev2(), 1 GiB per run,
+> before and after this patch:
+>=20
+>   record  flags                     4 KiB device       MiB/s
+>   bytes                             reads per write
+>                                     before   after     before  after
+>   47008   RWF_DONTCACHE             0.97     0.000     831     2281
+>   47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.000     601     1227
+>   6000    RWF_DONTCACHE             0.97     0.000     121      488
+>   6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.000      90      206
+>=20
+> Before this patch every write waited for its read, and because XFS holds
+> its IOLOCK exclusively across a buffered write, the other 31 writers
+> waited too: both record sizes ran at about 20 thousand writes a second,
+> one device read per write; after it nothing is read back.  With
+> RWF_DSYNC each write still waits for its own sync, so the gain is
+> smaller: the uncached write now runs as fast as the same write without
+> RWF_DONTCACHE, 1237 and 209 MiB/s against 1227 and 206 in the table.
+> Records of 49152 bytes, which cover only whole pages, read nothing
+> before or after.
+>=20
+> NFSD DIRECT issues the misaligned ends of a WRITE as buffered uncached
+> segments and gains the same way.  Without any handling of the shared
+> page, 32 interleaved writers of 47008-byte records read 45144 blocks
+> for 45664 WRITEs; with this patch, and no NFSD code for the shared page,
+> 0.0001 to 0.0008 blocks per WRITE whether each record is sent as one
+> FILE_SYNC WRITE, as two one after the other, as two together, or as two
+> UNSTABLE.  The page cache then marks the completed page while it is
+> still dirty, so each segment of a stable WRITE wakes the DONTCACHE
+> writeback kick (23 to 65 thousand rounds a run); the next two patches
+> let NFSD mark it after its sync instead.
+>=20
+> Let the write path say which pages a write covers only partly
+> (FGP_DONTCACHE_EDGE, set by iomap when the write starts inside a page or
+> ends before its end) and get such a page as a single page.  A folio
+> created for it is not marked, so writing back this write's part does not
+> drop it.  A folio found uptodate is the neighbour's, already written:
+> this write completes it, so mark it, under the folio lock and before its
+> own data goes in, and the writeback that cleans both writes' data drops
+> it.  The folio lock orders the two writes, so the second always finds
+> the first's data in place.
+>=20
+> A page whose neighbour never writes, such as the last page of a file,
+> stays cached until reclaim.  A partly covered page another task had
+> cached and that is uptodate is now dropped after the write's writeback,
+> where before an uncached write never dropped a page it did not create.
+>=20
+> Only iomap file systems say which pages a write covers partly so far;
+> write_begin_get_folio() users such as ext4 and the NFS client do not.
+> With blocks smaller than a page, a write that crosses an extent boundary
+> inside a page asks for it as two partly covered halves, so the page,
+> though one write covers it whole, stays cached until reclaim.
+>=20
+> Assisted-by: LLM
+> Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+> ---
+>  fs/iomap/buffered-io.c  | 12 +++++++++++-
+>  include/linux/pagemap.h |  5 +++++
+>  mm/filemap.c            | 19 ++++++++++++++++++-
+>  3 files changed, 34 insertions(+), 2 deletions(-)
+>=20
 
-Quite interesting that this has been sitting around for so long.
+The nfsd case typically uses buffered or DONTCACHE for the unaligned
+sub-page-sized "ends" when direct is in force, so mostly these ends get
+submitted as small (< PAGE_SIZE or folio_size()) buffered I/Os.
 
-Reviewed-by: Vishal Moola (Fractile) <vishal.moola@gmail.com>
+Why do we need this special casing instead of just making those
+unaligned ends use regular buffered I/O? Isn't it basically the same
+thing?
+=20
+> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> index 0a5ebfda90f1..780a0186045d 100644
+> --- a/fs/iomap/buffered-io.c
+> +++ b/fs/iomap/buffered-io.c
+> @@ -802,8 +802,18 @@ struct folio *iomap_get_folio(struct iomap_iter *ite=
+r, loff_t pos, size_t len)
+> =20
+>  	if (iter->flags & IOMAP_NOWAIT)
+>  		fgp |=3D FGP_NOWAIT;
+> -	if (iter->flags & IOMAP_DONTCACHE)
+> +	if (iter->flags & IOMAP_DONTCACHE) {
+>  		fgp |=3D FGP_DONTCACHE;
+> +		/*
+> +		 * A page this write covers only partly is shared with a
+> +		 * neighbouring write: get it as a single page, which is
+> +		 * kept until the write that completes it.
+> +		 */
+> +		if (offset_in_page(pos) || len < PAGE_SIZE) {
+> +			fgp |=3D FGP_DONTCACHE_EDGE;
+> +			len =3D min_t(size_t, len, PAGE_SIZE - offset_in_page(pos));
+> +		}
+> +	}
+>  	fgp |=3D fgf_set_order(len);
+> =20
+>  	return __filemap_get_folio(iter->inode->i_mapping, pos >> PAGE_SHIFT,
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 3012bd95812a..0c1d6bd09aa0 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -701,6 +701,10 @@ pgoff_t page_cache_prev_miss(struct address_space *m=
+apping,
+>   * * %FGP_NOWAIT - Don't block on the folio lock.
+>   * * %FGP_STABLE - Wait for the folio to be stable (finished writeback)
+>   * * %FGP_DONTCACHE - Uncached buffered IO
+> + * * %FGP_DONTCACHE_EDGE - With %FGP_DONTCACHE: the write covers this pa=
+ge
+> + *   only partly, and a neighbouring write may complete it.  A folio cre=
+ated
+> + *   for it is not marked drop-behind; a folio found uptodate is, as the
+> + *   write that completes it.
+>   * * %FGP_WRITEBEGIN - The flags to use in a filesystem write_begin()
+>   *   implementation.
+>   */
+> @@ -715,6 +719,7 @@ typedef unsigned int __bitwise fgf_t;
+>  #define FGP_FOR_MMAP		((__force fgf_t)0x00000040)
+>  #define FGP_STABLE		((__force fgf_t)0x00000080)
+>  #define FGP_DONTCACHE		((__force fgf_t)0x00000100)
+> +#define FGP_DONTCACHE_EDGE	((__force fgf_t)0x00000200)
+>  #define FGF_GET_ORDER(fgf)	(((__force unsigned)fgf) >> 26)	/* top 6 bits=
+ */
+> =20
+>  #define FGP_WRITEBEGIN		(FGP_LOCK | FGP_WRITE | FGP_CREAT | FGP_STABLE)
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index ed7e4dbea653..0397ec771547 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -2016,6 +2016,16 @@ struct folio *__filemap_get_folio_mpol(struct addr=
+ess_space *mapping,
+> =20
+>  	if (fgp_flags & FGP_STABLE)
+>  		folio_wait_stable(folio);
+> +
+> +	/*
+> +	 * An uncached write that covers this folio only partly, finding it
+> +	 * uptodate, is the write that completes it: the neighbouring write
+> +	 * that left it here has written its part.  Mark it now, under the
+> +	 * folio lock, so the writeback that cleans both writes' data drops it.
+> +	 */
+> +	if ((fgp_flags & FGP_DONTCACHE) && (fgp_flags & FGP_DONTCACHE_EDGE) &&
+> +	    (fgp_flags & FGP_LOCK) && folio_test_uptodate(folio))
+> +		folio_mark_dropbehind(folio);
+>  no_page:
+>  	if (!folio && (fgp_flags & FGP_CREAT)) {
+>  		unsigned int min_order =3D mapping_min_folio_order(mapping);
+> @@ -2053,7 +2063,14 @@ struct folio *__filemap_get_folio_mpol(struct addr=
+ess_space *mapping,
+>  			/* Init accessed so avoid atomic mark_page_accessed later */
+>  			if (fgp_flags & FGP_ACCESSED)
+>  				__folio_set_referenced(folio);
+> -			if (fgp_flags & FGP_DONTCACHE)
+> +			/*
+> +			 * A folio the write covers only partly is left
+> +			 * unmarked, so that writing back this write's part
+> +			 * does not drop it before a neighbouring write has
+> +			 * written the rest.
+> +			 */
+> +			if ((fgp_flags & FGP_DONTCACHE) &&
+> +			    !(fgp_flags & FGP_DONTCACHE_EDGE))
+>  				__folio_set_dropbehind(folio);
+> =20
+>  			err =3D filemap_add_folio(mapping, folio, index, gfp);
+
+--=20
+Jeff Layton <jlayton@kernel.org>
 
