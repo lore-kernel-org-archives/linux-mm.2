@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8BE60A382F
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A446060A3807
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h1s+5KSD
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VAQEqFAq
 Received: by kanga.kvack.org (Postfix)
-	id EE6576B06E6; Wed, 21 Oct 2026 07:48:08 -0400 (EDT)
+	id CA47D6B06E7; Wed, 21 Oct 2026 07:48:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E977C6B06E7; Wed, 21 Oct 2026 07:48:08 -0400 (EDT)
+	id C74E46B06E8; Wed, 21 Oct 2026 07:48:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D383C6B06E8; Wed, 21 Oct 2026 07:48:08 -0400 (EDT)
+	id B8A926B06E9; Wed, 21 Oct 2026 07:48:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A762E6B06E6
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:48:08 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 424A7403F0
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:48:08 +0000 (UTC)
-X-FDA: 85346459856.20.ED367E8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A7548100008
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:48:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h1s+5KSD;
+	by kanga.kvack.org (Postfix) with ESMTP id 522316B06E7
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:48:12 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE4184052F
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:48:11 +0000 (UTC)
+X-FDA: 85346459982.24.15F9414
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 39C804000B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:48:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VAQEqFAq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792583286;
+	s=arc-20220608; t=1792583290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a5DIL4uZz39TVq6ZW2xMCikSAQz9J2d8P4Q3iHPEMlU=;
-	b=ys5IVfF8RPG5Uq7KMK23Eaf8gj6nJqaNeSaUiOfmgJaaJd8p8kYaFVCqeJ8nJ+q7mvdBq8
-	emS6Z/Q99FJ0jfOvo7BfgVGJE0uSdvRQOiltLujSawdW94aQAb+IDF38lAFK5ZnGwrQTBd
-	DTr4NYi226941QL08RjjHoDQf5c8s1I=
+	bh=v5h8ao2sl0gSDsVo7bAD/bZpeGjj83T87XQIb40RcPU=;
+	b=DuwSm3cTn+jPuWEf7wTzKNIshy9CNTVpznd7+47z6dlbGMdO7BCQGgAOZwDhvdyRrPf7Yf
+	sOES4aZM7Sgh0Syms1ThFlS0eit4prxgyoVksxOcqTUUF5RS8jCTJ9wTSQuNlg3uepjldT
+	AqILSQdJQhSMCaQUYQMCPATdcyxmOqQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h1s+5KSD;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VAQEqFAq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792583286;
-	b=hXy0OVzS/PrDHWCgCOvtDPUBpXz3k6bP32usa/OQWFqNRdZR/T0TQEoLkNwEtPYjX77Ow2
-	Y4BfvgYcp5tEq2UpUxPJ6xws6NzG0gARP6bYzvlhC09LeX03w8RG3OjMRarK52OmaNDLwL
-	1rIdAFx7/qD5X8u1xION4rnHBT1iGHk=
+	t=1792583290;
+	b=kvtp2hidXrWyQv93XFn9BnfFbuOablvQX1YaGIhVla6SfgxNpWZF4mwg64Q9V+GNyGx5Hg
+	MKtLNvoYH/DwkvraADG5QRSWTp+6R5IqnzaByDEXXy6Z4JblZepfly/NvaG8ETbpZyT1q0
+	TpASbnuHCtn8ng6zu9JDMKHtnVQJtPU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C18460A8C;
+	by sea.source.kernel.org (Postfix) with ESMTP id 88EEE4021A;
+	Wed, 21 Oct 2026 11:48:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA461F000C6;
 	Wed, 21 Oct 2026 11:48:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43461F000C4;
-	Wed, 21 Oct 2026 11:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792583286;
-	bh=a5DIL4uZz39TVq6ZW2xMCikSAQz9J2d8P4Q3iHPEMlU=;
+	s=k20260515; t=1792583289;
+	bh=v5h8ao2sl0gSDsVo7bAD/bZpeGjj83T87XQIb40RcPU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=h1s+5KSD/LYCP7ujuSgohzesMNYwc10Y5bulYUJ3+UGxRRMiXU8KIh/FMzTSkkOgg
-	 Ufb1lNPdWnAwJkPD+5pPsMl00dCLEJtYEcZ5dgk7xvWvNFSf9NF8tAw9fLrL92Udtq
-	 rkCwSaHww/7ShJR8WNBFhX3BEmczD6eiIqmEqfE4h3ZQBj5hEBCMdieZXz6KXZnfnY
-	 vL0H90KeuQ3mq8ysW2MgvMESaxPP6RG8H6YO3dQrER98Wb/RMRvOKwoYW9WDddVBrr
-	 8Au2xU06dRcOWEMBVFD5KjcFr8UPYLCSePft0eZSLwI+ytPIPqJxEKwulLs/dyKvz8
-	 nqlTDpL98W6NA==
+	b=VAQEqFAqztqAv3qcxYHFlzZ1jnwzQHztkQm2Ku6wB0q3Zn6zx9WSz/DftIPSC4uQW
+	 UQEGhZzE8CTFEjNhoxKw6waO8eavv3OLCCMKLx1GMsRQ9ICbb+Mox0wzsrZ1867sBL
+	 aruuh8VMrFgTIUoyxKK4IXRW4dLn158hDVknl84KDCH0v2DbNKnSO/snpqe1npTURl
+	 GRaxsmZQIx2WoRZi/tK+3tf9KSujh1BQnvJPcZk4NjeHAeE5TaNft5yEaxTDGnru43
+	 KMZoUuUMx6pEJeQlPxds41+IXvnl0aoR1n+LeH4ZuyqzqPYAlaVVAINqpFtQKt6k6I
+	 FLmCIoTGX4RiQ==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Wed, 21 Oct 2026 12:46:52 +0100
-Subject: [PATCH slab/for-next 11/14] smack: specify SLAB_MAY_ACCOUNT for
- smack_rule cache
+Date: Wed, 21 Oct 2026 12:46:53 +0100
+Subject: [PATCH slab/for-next 12/14] hostfs: specify SLAB_MAY_ACCOUNT for
+ inode cache
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-11-096800aa3330@kernel.org>
+Message-Id: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-12-096800aa3330@kernel.org>
 References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
 In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -82,23 +82,23 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>, 
  Hao Ge <hao.ge@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- "Harry Yoo (Meta)" <harry@kernel.org>, 
- Casey Schaufler <casey@schaufler-ca.com>, Paul Moore <paul@paul-moore.com>, 
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
- linux-security-module@vger.kernel.org
+ "Harry Yoo (Meta)" <harry@kernel.org>, Richard Weinberger <richard@nod.at>, 
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org
 X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A7548100008
-X-Stat-Signature: f85n7bft4nh3xgc7hskwg7wf6x65zukn
+X-Rspamd-Queue-Id: 39C804000B
+X-Stat-Signature: qecba865agtmdyr7x11njx54gzc8sxf7
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792583286-418703
-X-HE-Meta: U2FsdGVkX1+2VGC8EWvlDEAg0pvESuqM8ga5plnR8HPrvc9Dm0xh8+OZhcWDOJ7pXZeWIZID/nhcGYIqBh8Xf4NriJld57aGhsbwbAfCoatBcLmUJhxiXWYBFWx6ToPwCUZXQ85Pr1Sp352D0WH3C5GIhzf6YWc75UupU8HotjyGojVL4Ur7YCCEE3ReJocCijzmtl4+WRF6SqHdlXsZBIwWrOKd9BmkGH9R7RikzxXRhKVV/lCh5BRk9yh7TOcSSCqT7+/smjh8eIF6b9ucb93JS8mHbKRzbI2SAhalqEG+wL9JzdINtVPHKViecygv1+8vaxHbBwGesRvB1r0fg5b7QOH5RDnTfgBcOyYrU7SIeBhVLF120D0mQnc3WmSApihxDjzfq18J1YHW9hVpfzA54YonbU6XNjyBrgTpqgq9ioci8IHYV3UCFSDLkVm9XgBB9ExQnP89PilhBzxVCFGUdv94cVTOfFZVGHGjwE6gNGuTB8lHgXK3La8l423mebhyftIuq6Gdj69ohiKUAz9gmHNLwnFIa4xSzURRJ1r/CkNKvcuMAI1FzAmWU9leewZ+2RJjSvSZD3YNGvH4qD21EYM49TOBZoLBL7OvxMziDdD6l1t70L31920Zde/011QYcMI7+Mb8IA4uHuPXPmRHIDfgHWFQl20x31495+dDGLrlt0WcwWiyqValyScNxKk3oXmxWIpirBt/1K0S9VeluV6cwlbgS2X5jBeI0TRgwIukQI1PiBv5LFBUFY4HKyhdtQxp7PgP1XgJAdpFwQ7JBeI2Vzx/yCmf2l2MSAxfNah9OrJV5SDAvjm7tUbOck4uaCDC4bi3mXdNCoMKBpphsfCwFNkwuezODwwbcteBR+3c14dfkUrFbfHvj6bSNBFQMOfxRpk3gnWTMAhC4xnQSGLvLvZm7iLDNkdRs9rF5eX+YORoVuihnc2ymxBXeQ7IBE2YhXUZYg5pbNh
- fID206B7
- B/+yLGunEbejLcNyqebMSFkq0bJ33ABxIf1R0InFhPRbPn7UrONFq3Z4PrsB5Wn3PxNpA7PWYxYVyi3d1D/nIf2DZZnJqX1C0xv316FuPYHekadiGAg928d/im96NER2n7m9KGj2Y+E53AGGRToOFA+0iZADD46b3x/kP1Iszlj8pfseo5837LxtX1YRQ4TK6dPUKdQVU1lkE39q4yJqjlLq+wOG6KQwH32SiQ+IVGOP+Hh/EeAf3SZ7fCF8N17J6yMYJKf3I64mGi3DImppX2sP8VAmGHeTs3uOd6KlS1P1vneGykXLmBsEgDrAXFrpXpSbrh5wVEwB6EpiyCpRXLTVLmeEQw3DbCCOp8BRNJyrA7pc+eNIPhmFjRrJ6GsWZ4lPdTBo4R6ptNIB/Zuo5djVzbEie+/Y/qV08wKHb8gHGXNO0ipqlBWJ6j/6mXintfm4Sh8tGzZr/cX7ohjKzX4BoF/9O7PuAEdjumA9gX0CGRFe90gc0wkmr+lVUQH9VR3T6iNIvR7OqNEv1Xpy1P1cMeA==
+X-HE-Tag: 1792583290-374197
+X-HE-Meta: U2FsdGVkX18Q7IedjW5PVG08eDiqO9GU87dPf1mu9bCOMQ6fXJiaTMWslKKQwnkJglqGZIqeXBZw0FfPQoo7Q8XblURX7Lk54SFXPrxogGNCzKQIXYtEImnVHd0OO6NsN7Mpy7s20QRBCKmy/Bhmoub80JIzjuIfAWaHco3lPER6t82rgquUTfW8wFLiwqUMtxF50f1Y/j+znNAIbnd3DTTJLcZgl5l2vSPoX0R2xQ5YLDHF9m3TdvXvvgExSsCc6oIrFjJTTm/qjsZf6chee8r24zPqpdsFjlO9/c+7U8aPj1ftQ+2jTijr7MRcuOt9Dfwr7JjTZ+a3/2MN18wVwYfX0fUHk6/d+afSb+VDrRBSfPoWF19vuHOYEozVHLZaGZNeLoujoj1LofUe4GiqMG2HNFKBJfA7/IQf3S84d+QDxHaO0RWvIjI0otP2wJ88C190tDSjr1/I+EZ3SOq7rOkvZ5+J6QUGB5aVFo6CM8avGzcxAMWTzUGfXHunHCeP38vCp4K1OQYgenRmVDKQ65yr7jLPfk7iHOASGlWy6xE90Wwx15K5Bcmj9n29Q/QsUlYWgj5REuFyw+pct6VSZLS7TfQo1hauHjgTT7t5CruvJEfHtB28lzRoF+PXsTvMryg2w9Rxpz6Gon7lkh8kqtos1v0kwbJ8icsYZGoJVeTfr0ML0kc3qFWV0p6QMjPxRjDgpnwzS8tC2hqtIi0k7IdQIP4Sz9BbtUTF190/aUmWxemPwvllmrB4aPba1zZVDzewPPSPr6oGj45ywgQYe2Utqt5w54G8y3SVBH0qyxX7l97i01JzDGy02cVIBycEOv75gICBp2OJqAAQr2sHDq6q4CSIrg66mqqt4Itb/4tylFkG9q+PHb+DWhk5AG+yZwdilAGjPRrVP+CQTfgXq6CKKlotVHnhkxWqWoVSPCfwYIszrzh9sLemTsyvPt6xRFUA8ryW7/PY2SP9Uk5
+ F2GWft0i
+ 9cZctH3wBu4Sx3eaIwGMab+UJu8+lr7theu2nTguvbxYVJKrKVA7onvuOEfz5Y1f/yhl0PT2QceGkGveG/fFmSbDRglZd2M6ZrJb+5/0bTZ7XLQY+zf2D8ITCfTi0Npq9JlxXG/Dp4Yx02kieQltev4bgTxvTxgJGjJaAkc1uJux3HsEZlNk6bKc37b9FeFE5fhp3lxSuPP+co3ieZNxW+q6eD1vK1dhVl/wVWw/rBQ4SHgTZSBhA+gblvJu06WmiqT1uCPK6EVFxal+JoxHImVOnC0j/mmCRkRWsH9GjAUUEH3XAOuqjDdqMjNLTKV6dF/3Y91cpfVQ5oa1t9LcTOp1vMGoApZZ5N7zK3pWVEiRz0ld9xxCIxDiKtnSOZQEiBQa8Ua03eImPqXLqDZIt/4bKHUPPiUJp8rQmfmtzGty45MBKwcI/TrDFPg7xk3cMH82owEL2GrgzKI1gJmlNetFKzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,39 +107,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-smk_copy_rules() allocates rules with the gfp passed from
-security_prepare_creds(), which is GFP_KERNEL_ACCOUNT. Specify
+hostfs inodes are allocated with GFP_KERNEL_ACCOUNT. Specify
 SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
 __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
 
-Path: fork() -> copy_creds() -> prepare_creds()
-  -> security_prepare_creds(GFP_KERNEL_ACCOUNT) -> smack_cred_prepare()
-  -> smk_copy_rules() -> kmem_cache_zalloc(smack_rule_cache)
+Path: lookup -> hostfs_iget() -> hostfs_alloc_inode()
+  -> alloc_inode_sb(sb, hostfs_inode_cache, GFP_KERNEL_ACCOUNT)
 
 Assisted-by: LLM
-Cc: Casey Schaufler <casey@schaufler-ca.com>
-Cc: Paul Moore <paul@paul-moore.com>
-Cc: James Morris <jmorris@namei.org>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>
-Cc: linux-security-module@vger.kernel.org
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-um@lists.infradead.org
 Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 ---
- security/smack/smack_lsm.c | 2 +-
+ fs/hostfs/hostfs_kern.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 8e88ac65fd7f..8a802578ac29 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -5352,7 +5352,7 @@ static __init int smack_init(void)
- 	struct cred *cred = (struct cred *) current->cred;
- 	struct task_smack *tsp;
+diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
+index 7add056d47d8..2d55f53569ca 100644
+--- a/fs/hostfs/hostfs_kern.c
++++ b/fs/hostfs/hostfs_kern.c
+@@ -1078,7 +1078,7 @@ MODULE_ALIAS_FS("hostfs");
  
--	smack_rule_cache = KMEM_CACHE(smack_rule, 0);
-+	smack_rule_cache = KMEM_CACHE(smack_rule, SLAB_MAY_ACCOUNT);
- 	if (!smack_rule_cache)
+ static int __init init_hostfs(void)
+ {
+-	hostfs_inode_cache = KMEM_CACHE(hostfs_inode_info, 0);
++	hostfs_inode_cache = KMEM_CACHE(hostfs_inode_info, SLAB_MAY_ACCOUNT);
+ 	if (!hostfs_inode_cache)
  		return -ENOMEM;
- 
+ 	return register_filesystem(&hostfs_type);
 
 -- 
 2.54.0
