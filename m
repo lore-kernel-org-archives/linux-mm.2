@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A7C606A338
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA4F606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=OORxJcUP
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ByFMGpbm
 Received: by kanga.kvack.org (Postfix)
-	id 0D5D66B05D0; Tue, 20 Oct 2026 22:43:23 -0400 (EDT)
+	id 654556B05D1; Tue, 20 Oct 2026 22:43:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 086D86B05D1; Tue, 20 Oct 2026 22:43:22 -0400 (EDT)
+	id 62B476B05D2; Tue, 20 Oct 2026 22:43:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E68E66B05D2; Tue, 20 Oct 2026 22:43:22 -0400 (EDT)
+	id 4CC476B05D3; Tue, 20 Oct 2026 22:43:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE6A56B05D0
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:43:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 427B61A044E
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:43:22 +0000 (UTC)
-X-FDA: 85345087044.18.24C53B2
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 75B01180003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:43:20 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=OORxJcUP;
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	by kanga.kvack.org (Postfix) with ESMTP id D95C06B05D1
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:43:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2C1B81A044E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:43:25 +0000 (UTC)
+X-FDA: 85345087170.04.3BD5D6D
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5BCB5100007
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:43:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ByFMGpbm;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792550603;
+	b=pKH/YIm/I+J+sKXvUKEGaxiiHILMI2go+3WWyodWL1taNgbovwz22TJxJDAa2Av2lmMJQ7
+	XHghS1K5pzNP6wJB6HLPbFNw5TN0T5j33dfrIlyBZtn2iKdB7/EoBn9w4D/N7MVUuznuLW
+	wyDmAzMh+Z4jEZd+WtJUfC8r0mSaVlU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ByFMGpbm;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792550600;
+	s=arc-20220608; t=1792550603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xD8kSU/9QToLj3D/xT0dXUhUgFwrafcIQWn78ImkF5s=;
-	b=pbt4ajUq7CUOaw1Pl/MI087i6MbbPTAC1uj22dORPkKD03BCLmNhObCqDvjHqOPkLZ4Qk4
-	TQblw9G0pirVvUA4SL0Kdg9AqzRnlC6CCBTGUjOOJS2AU24GuqrbKIp0pJ6caRAXC0+WqZ
-	ZcuygL42aTdEhDpF9RyH53+9lWt/ttU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792550600;
-	b=gVVivL5bUQOhP7B1yQQuGnLpO7DYRC8XSyj6DwDKxk7oG4l1raAn5eGX9vSV6sPNTw27sX
-	ao5zw9nIQnWuqSylyoxa1cKIdAInhkPOQq0zMf/3O3GnodF6xkPPcHsKiOIOiSQpBCSjLe
-	VwQ0Qx8yGI/3ptkNIOt9VYK7S+lVYZE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=OORxJcUP;
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso763881eec.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:43:20 -0700 (PDT)
+	bh=jeOSor/7asw+7lrqLJjpFf8NPmnjTqTqBdeuEnm5rMc=;
+	b=gZul0Bq28Nv8yLnYZ/AkL9iHEEGX2dASPpdEU1GAX2xRIGMQjbsCzw/w4x4K1EIpQcLTtZ
+	F2/tyAR6A+XHoUe5uCDsPMPNWj12w6TozwBiURfSf1O3nKmyjO4edY9JS0qWHhCfMu69jb
+	Rbw5mkFEdXoU01zMVEa9Sk4eetR4BsM=
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-15354aa70e8so779112c88.1
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:43:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792550599; x=1793155399; darn=kvack.org;
+        d=chromium.org; s=google; t=1792550602; x=1793155402; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xD8kSU/9QToLj3D/xT0dXUhUgFwrafcIQWn78ImkF5s=;
-        b=OORxJcUPLcv/DztMlLvVtA9lXsrrla0FNfZ5RUHxxJ1qIwLxcfOzezKrGxQ4X3PxTG
-         L9MF4ycVRpR6N4OVPHuHSCGRsNx4Twa+JeOtS5ruLLeEesNwzKEKq2tZm39QvudjFN7v
-         ghLnvfKQvG4wfY3hIF8jv6ZX0IdAY99VR0uMQ=
+        bh=jeOSor/7asw+7lrqLJjpFf8NPmnjTqTqBdeuEnm5rMc=;
+        b=ByFMGpbmNsS3Y1uTI7dbHdFsi6bfJuypOKJdgtvNQvECHcI89fNhu5NrSIX/wheZzw
+         nZh9wZLh4UHcDeLiahp+b1XgM3JmjIpw2PvmSXcBrBtxyRQLVLz9rHVr39298dpEHkLf
+         4we3/0JB5xsZDWdxEMeXwpwi0lMCxuquz9XK0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792550599; x=1793155399;
+        d=1e100.net; s=20260707; t=1792550602; x=1793155402;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xD8kSU/9QToLj3D/xT0dXUhUgFwrafcIQWn78ImkF5s=;
-        b=jbnKIVzkTSgqg/en4WQpDSWviv91+YlQMPEEfyaxP3Yvuj3XrEPrricCzIbvLs7p5E
-         RpyxJKNciblpqovR4kKztSn0N5LhLfqSUUyIMaJsFz1DxFtlbRvPWnQGSB+uY1NojioH
-         VBC81gehacpiFHAZe6eBao/wB+PjSTOeO3SgVSt3qVEbVTyLlTF5eSv3/5uiCNA/QxsL
-         cfkAbiBAFlKiqI1digDrHJ7DqwloG9Vca9Mlz8TAhKjeiWT8Ech2OGJ1pg+z2ckB//6W
-         C4w4oL4eIu2PK6wpqLW4pl75vbA7FFfrTcZD+G7AQNwGrRnuYpnu9D4LBH9x627IfVSs
-         Lq+g==
-X-Forwarded-Encrypted: i=1; AKwUvByWr7+pdLJIYdbqpTFEoeOTL0pwnJXmnmiHOsUpXQBOUk5S4OZBSJRGS1/gWaCD/98u/YYxcpW3Qg==@kvack.org
-X-Gm-Message-State: AFq9FYIUFUXXfirV3OfSZxsgKB+Vg8MQvT5sbFOs9tRbCaRuLu3jaEqY
-	5vBHevIsIeY2jJIYYaqBDSeN6De5RGoqz2ZmeALw4O15fANXCu7bMjJZlZhVn74oBg==
-X-Gm-Gg: AYBFou0BjgqBN0Rdq53mHJkR8u8tlw27bgVCOxo6RESOEBxRkAJ3YGGnlmx0EXgdUFm
-	6LGnOE3F7knSon/KzKfyEd8117JXewgGg670cOhmU18LF0v9jTuI+ccuWdb1lWufijh3Y2RetrJ
-	N8L6HlB/G1JweR9SJ2+sAyL2yPHeD+2356N6E0W7XfhpLYrY3ARTcLUwPRVt2lTgmMBtGlrdnmp
-	IaPQgzBfPSuGF44H21RYT0yDaaNdayWMa1LnEdT7GzQF2TE2etr6cy3WKWnVNyCMBK5wqqKcZOX
-	zsCV0cQH3biZHds88q8hK3jB5XOHFCgMVWA5c+KYDOkubGW1N1DqHHVuw+XbQjBNMkUfiJZblw5
-	1wvvdBgo52c1gKtkA884aeS47HVul1o4ieUigg5ASjENq9eZd6rzo0x8VhL84W9Zd+rmuX2h89U
-	bnGj0xAWUrTOJ+x0aDo0jeKOOVnA3y76OH7eh3HhVL2YybeJ7k3HRWk6artVqs9wUvOCqpZr3BO
-	0COZm6z2s6EcHNu+aF+zF3jiPfEazPz1anQ4jysd0W7F99dZJZxhvO92IU84+B9GIPPMXj9dWYv
-	YUPZbSOQU2fZTM4DTgPmCxKt/ZJNRV5a3IjKbVMpNEsa
-X-Received: by 2002:a05:701b:42cf:20b0:150:6c0e:2ce2 with SMTP id a92af1059eb24-190a87a48bemr939881c88.31.1792550597905;
-        Tue, 20 Oct 2026 19:43:17 -0700 (PDT)
+        bh=jeOSor/7asw+7lrqLJjpFf8NPmnjTqTqBdeuEnm5rMc=;
+        b=gVaPbf747mkQj6olVeZn+Rf2kacD857bKzNTF9rKxfQ8QyBq1jUFNgK06Ob33VR4mF
+         BtoVHKQpDsg3Tc67urtYNDufca0SLpmcfBX+mqqgXDXYIpmttUEt+TiJwmCq58+PwSjs
+         w7XMoqjnyyFIAXGeO1Sk2dQpFU1fmUuFjZoARr3Xjb5GAwt1I0QusxMCR5RU7PzP2t0w
+         PZZZCdR4JFLQDfDzFu7rari2cFhuH0jNy/UDG7PVjg7vsWH0jTMfAx3Kl6oxBS87Om0l
+         AqBtJKsFmxD3jpNWb2FFbW2GPe6cPsiZ+bJYVo9/Cdi4lNQmRnrfi0eLVy7Cmrikjbs7
+         cWgw==
+X-Forwarded-Encrypted: i=1; AKwUvBx5ORPhGGWVJNkbNwNWSCyrvjOGy1Mkji0Z7njhUti2uKArY2IdeylQEbOCee9SXpAXq5SjIE+20A==@kvack.org
+X-Gm-Message-State: AFq9FYKReXsdFBSmfY9vRRPI3spd9GJrPocLXoaKrtowqPUYCYTI2TTv
+	26J3csazrHD9fAQA69CKzYjfBrLmTNQRZ5YaBMVFYmJd8Yo62UxJRy2Bxbg4Zhv89A==
+X-Gm-Gg: AYBFou3ssbYE/Bn8bcXtUEvihQOeDbGkpXsEjKrRB/fHvh3f9LzllkfQ+RKOzTrF+H4
+	Q58Wbdj79BywlQ7C6vtaXYo+Gbcwtsc20TXUf9Hp1AQ7Tqn2mIC5cL4dvcWhZWDp4jrO40mRu9B
+	4n/TVU7JDzKnKowBc1NGo3/llLmSUeQxgwmLHK6UsUHJBFegOiEXFcDRKY1adYpT5FyyZ4TGSEM
+	altkKs1uwVLT91oJiO9IKu6EZ+g3YTR80A6jaVD/iaxTdVczUPtqGIQdyAyf7eS9wWdbzAb7W4P
+	Ytc0KT1PH3qPN2983AGnmKOlKQzVrKbM+7OYkXdF0VyL7epgNx78pw7apBxy3g5EwEP/yG/rEHf
+	7iDq2uqyPmpxOkF2lc4tcR6tZqwkZrrAm7J8PqC4TLVV416K0XwJJLpYalJTVoi37j22VGkRNIW
+	vhSqZx79qAXV2BJnO9Ew/BveqULfQkqSxbm6sRm9IhKNK3C5jyEwyexfUqzmGZ3zzlfErN+HIaJ
+	6E31d4D+cUKs/6J2nzJKm4d+Wsgk3FKYYXEGKtWsqORIqeuK7IXTnZwF/nEzIpVDSb6im/+ppeZ
+	3jsKmtOBMe+xtiFSzrSDmB7f7XnH2JnOlCsij8O9aLO+Jg==
+X-Received: by 2002:a05:7022:929:b0:14c:be8e:69fe with SMTP id a92af1059eb24-190a051dd50mr1271104c88.5.1792550602131;
+        Tue, 20 Oct 2026 19:43:22 -0700 (PDT)
 Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:97d1:a8be:236d:bf79])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035c0c9a6sm2392047c88.3.2026.10.20.19.43.15
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035c0c9a6sm2392047c88.3.2026.10.20.19.43.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 19:43:17 -0700 (PDT)
+        Tue, 20 Oct 2026 19:43:21 -0700 (PDT)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Brian Geffon <bgeffon@google.com>,
@@ -97,27 +97,27 @@ Cc: Brian Geffon <bgeffon@google.com>,
 	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v6 12/13] zram: borrow idle decompression streams in exclusive mode
-Date: Wed, 21 Oct 2026 11:42:22 +0900
-Message-ID: <20261021024236.1787884-13-senozhatsky@chromium.org>
+Subject: [PATCH v6 13/13] zram: use a singleton compression context for recompression
+Date: Wed, 21 Oct 2026 11:42:23 +0900
+Message-ID: <20261021024236.1787884-14-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
 In-Reply-To: <20261021024236.1787884-1-senozhatsky@chromium.org>
 References: <20261021024236.1787884-1-senozhatsky@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 75B01180003
-X-Stat-Signature: f6ybef6zrwb4ca7hg8ym9x174ioekhoi
-X-Rspam-User: 
+X-Stat-Signature: z3wygkon7sdxtcg9gmuwxu8sp68hkuxr
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792550600-759240
-X-HE-Meta: U2FsdGVkX1+OLcjO1envQ0hz4kDvaO4cDTFJum/79rkgjxQhCVLYlGZDpAGmPxH1q/RhFwA6r5nQerD+tfEdH4WdQgln32jstYncuLtYPz6kIAw4P5fpbGiMC4WaxjWAZH20n+zDERaPuJjdNTahROXWPSJg0tRnQdR9Dp/emmD4gDSfqUAtvymz8/iZTXDHkUZfpMqzWPP/ucHGWR5FRLF+pdA//pWf0ar1QjbAZvNCoSZrplghOXVTOlBCoGYRc42mZl+EMKDW1W1RjNTcqKwndRA5OLPcv0+xiM1TVVfawWEgqGxy6tdbVeKmq8ACGJD5hYFyLvUIZ0MoGblAJh/7Ho1kmpYIYa+bvQagmcpc7/Hax/4C8U99jaNHaMmem1jEBo46iHiNJF3+/xHA3Nki0IBN5WhFSHPCbSADZtlOGMDCTny8qHSt/rVKKlvBWE1rovHjP0p2yo3QP5yaV+9xwkG01MEhNzebPII1gfmELi/j3EPuwyJYvWK8/Kxzoz3+OTn3Yy98NyebZhMoRMJvPP569nGh0ROk/EOpXVB2tjaZN9BSB+d8LycjtzfSIfg/kuPO3EMPME+wb/3gjKqfVaQCe+wKGbqX/mFrADdfAMjk1l9eKIvfDAxJ2GVUao57aAD5t37mQzjb9boVNuQvfLV9nAJuHchcsgclRlXESoh8A5fFwY4R9VFdBXv2ipLd6Sx5u2bVrBeHpqHCHSazYpiJzBFSEh5WNmFL1mwbb3VaDQtqrcaFdqyNVLJJZwALuU9+VcG87yY26X2JXzQ4fjhxWD92Fj/FscaFvLzkJtnIId6r+8KGBzeB/1zxnHqxilnMO3jIXBQToZKe+35Z9fqQz5QIEIfho7b7m9UTHJkw/HwY9/2IAjH4+KCVeB6QU8dkEHF/jQm9OSZNFST7KgHdNhPHWP4nY+b4LAi7JhiCmwaH/gw0N4TBnbGLUACeEeCY6Pum1woO1qn
- xPxDSxKV
- rcqbo5a1VPXosdySvnfYFk84xozpWD0wEVVfdFy13uyVQ6C5303Zfi/uFVbYcDoz9cqR8vXF/7fo4+MkB6Rfros4vIzO+VEZopMt3o7xs89N7Bohm+H/jZow3Zg6TbUiq5f/0cPa+KNaBdU/bXkomqnYXj4GmLK2wxymzXTCjWQEfDA6NbomDz5rnOEIaiHJo10h4AgeLVHtDQMV0r3TnMHUzBiMWBWIW8Zg0m8XXOqKX6XwJ2f0DQmIkndMXwJXh66S7FIfBCgXJJ4QVbkHfNMrqLES1gAi5XqRmsIzaAjKOj0+IdU+J3AYnH3CN33MaX/+YxRQiAMRS+61ScFBO4dC91R6CHHLBXdpz8F4a9geSYDiURZZgK0NjdQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5BCB5100007
+X-Rspam-User: 
+X-HE-Tag: 1792550603-147471
+X-HE-Meta: U2FsdGVkX1/yj1v9IvrV0x6XbIbmPVYzUvHNNRufImlAFX/bqIFUJtnsOfmIiko5dLI0L0E9th68dlDT39Jp5QYBJLjIk/7plka070CuACirSeAQCwgrp3Usb8a03i80BIThu8mPaZHbpk8kITp2ONZ5oChIZDfL3s0zInS/vj8e3p4VACTo3pmdZmMvceq6eBifQO77s8dO888YgvtyWREzHX7/yPw2MIRLK/T9Kqd3zfy6Hik4W2Zu2DsY1zEd8DY1FzjhpN52CXpmonEPAIdv7RPN0mRRnvtOqbryAtYpmf7KErH9uEbFwsiFToZSD5K5Jzp05cO1UY7IBr4d1UtnMyOYZEkDMYiHHAxuIxTzwv4kbqIG6UUeufKKK1ehNmGPbO5CXjEKPhn5PRiXadpWRMmIWaRftEelCZ8K6QN9lryzEPGD1r1Ruw3kLexjaNC9mDNdK/oYOxY+vUVbpbP1meMnHlASSsL3jqeC6/PMvri02pyr5JcUH9VD9HN4P+OgO1S/bZZvNSjn+TEqxLI714ynE26vvCCRGv/RKVhfztVXr+BCTVLyGVYD7nRc/JfT61O/MlWcwNuPQQqY9NHw/SzE2bT6xGJNw6LS1dUW4BZLabFo6tLF4/jMymcGGXIY6oOYvsYbeQ+F53r+mprloWnKknptSvIgZpuJmTKXUu2CzM/rp+VROAmt0FDwDw3IuMoGMJVROBiY3Tx4qVmXXkcgUhpdTaVlD9HlnZQynrMBeQoebRqlfMf3E/ebrbZznNLJdctO1mp4c58gEvKZtnISTy/XqLsu2TElPS41lROsUxJGkNqwfR5d1Sf43o4cM1B3ye3hIeB7uekls8KrNEfO2IpURaZQsQqQ3qwdPc2q0Qxiu0xGuWQVVHMSpQngJfwmFKrZ+NgQakKhkNkg5qFoXE+wo1vRgePMskNAao7lKiBgyqKgTT17GENd/8vqgs2z9mCUBi1d+jg
+ uVdUByDg
+ GP1tf8cpNCxX8xEkykk61OpCAhJwk29mIzh3FjkgmHWVb3ucIaI8Q45GMvrSOF5X96CBYrKYEtfqbjE2v86SciLzc955YD42CkCgLkPGz2G0lPELQaiBqY+NZsRLZ5uGc6C33BPWnmQk321bsua8/gM2C36z65AcNVuhT2SwGln1bEKlwAuOB9y8LdR4qzDGcM5gCWWLoj2gJVHxFeLKg+qf1wqDlLSOeGmS/nfcqyhaMzMwNPvTdOknSAM74gVjb+J3nyg+byuHMkBB3FYyqQ/upUBIv3Tz0HWOIdyLSKvbeeEoqfvpgBtBUag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,213 +126,248 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Shared decompression streams eliminate Reader vs Reader priority
-inversion for backends with stateless decompression.  However,
-backends with stateful decompression contexts (zstd, deflate)
-still require exclusive access to the stream [1].
+Secondary compressors are only used by recompress_store(), which is
+serialized under zram->dev_lock, so we only ever use one secondary
+compressor at a time, yet we still allocate them on each CPU, which is
+just a plain memory wastage.  However, we do need per-CPU decompressors
+in order to support concurrent reads.
 
-When a low priority exclusive stream Reader is preempted by a high
-priority exclusive Reader, instead of unconditionally blocking on
-the local CPU's ->excl_lock, we can scan online CPUs starting from
-the current and try to borrow first free stream.  Only when all
-online streams are busy, sleep on a per-zcomp waitqueue until any
-CPU releases an exclusive stream, which significantly drops
-contention and wait time, per Bo Zhang's measurements [2]:
+Now that Read and Write contexts are split, we can allocate just a
+single compression stream (recomp_cstream) for secondary algorithms
+instead of per-CPU streams, avoiding unused per-CPU compression
+contexts and 2 * PAGE_SIZE buffers.
 
-  Metric              Base      cross-CPU borrow
-  ----------------------------------------------
-  dexcl_contended     15,919    1,447
-  dexcl_wait_ns_total 109.6 s   3.66 s
-  dexcl_wait_ns_max   145 ms    26.6 ms
-  dexcl_avg_wait      6.88 ms   2.53 ms
-  dexcl_acquire       2.21M     2.94M
+For example, on an 8-CPU x86_64 system (4K PAGE_SIZE), this saves:
+- zstd (level 3, default):        ~700 KB (~100 KB/CPU)
+- zstd (levels 12-22, no dict):   ~1.91 MB (~280 KB/CPU)
+- zstd (levels 14-22, 110K dict): ~5.33 MB (~780 KB/CPU, lazy)
+- deflate (winbits=-11, default): ~1.04 MB (~152 KB/CPU)
+- deflate (winbits=15):           ~1.86 MB (~272 KB/CPU)
+- lz4hc:                          ~1.84 MB (~269 KB/CPU)
 
-A quick synthetic fio test for Reader vs Reader inversion on 24 CPUs
-(preempt=full, zstd, 48 low priority (nice 19) bg readers, 24 normal
-priority (nice 0) CPU hogs and 24 high priority (nice -19) fg readers),
-fg reader results (average of 3 runs):
-
-  Metric           Base               Patched
-  ----------------------------------------------------------
-  Read IOPS        396k               1,064k        (+2.7x)
-  Read clat avg    48.32 us           9.66 us       (-5.0x)
-  Read clat stdev  7,571.00 us        31.92 us      (-237x)
-  Read clat p99.99 5,707.10 us        2,233.68 us   (-2.6x)
-  Read clat max    3,555,300 us       6,287.57 us   (-565x)
-
-[1] https://lore.kernel.org/linux-kernel/20261015112440.1491168-1-zhangbo56@xiaomi.com
-[2] https://lore.kernel.org/linux-kernel/20261016134847.1620103-1-zhangbo0325@gmail.com
 Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 ---
- drivers/block/zram/zcomp.c    | 77 +++++++++++++++++++++++++----------
- drivers/block/zram/zcomp.h    |  5 ++-
- drivers/block/zram/zram_drv.c |  4 +-
- 3 files changed, 61 insertions(+), 25 deletions(-)
+ drivers/block/zram/zcomp.c    | 75 ++++++++++++++++++++++++++---------
+ drivers/block/zram/zcomp.h    |  9 +++--
+ drivers/block/zram/zram_drv.c |  5 ++-
+ 3 files changed, 65 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/block/zram/zcomp.c b/drivers/block/zram/zcomp.c
-index 4fda13aac896..72683f91313f 100644
+index 72683f91313f..ad8c7dc73922 100644
 --- a/drivers/block/zram/zcomp.c
 +++ b/drivers/block/zram/zcomp.c
-@@ -185,38 +185,67 @@ bool zcomp_shared_decomp(struct zcomp *comp)
- 	return !comp->ops->create_dctx;
- }
+@@ -151,6 +151,11 @@ ssize_t zcomp_available_show(const char *comp, char *buf, ssize_t at)
  
-+static bool zcomp_dstrm_excl_trylock(struct zcomp_dstrm *zstrm)
-+{
-+	/* Cheap pre-check: don't touch a busy stream's cachelines */
-+	if (mutex_is_locked(&zstrm->excl_lock))
-+		return false;
-+	/*
-+	 * Pin the stream.  The write side of ->lock is only taken by
-+	 * zcomp_cpu_dead(), which also sets ->local_copy to NULL.
-+	 */
-+	if (!down_read_trylock(&zstrm->lock))
-+		return false;
-+	if (zstrm->local_copy && mutex_trylock(&zstrm->excl_lock))
-+		return true;
-+	up_read(&zstrm->lock);
-+	return false;
-+}
-+
-+static struct zcomp_dstrm *zcomp_dstrm_excl_tryget(struct zcomp *comp)
-+{
-+	unsigned int cpu, start = raw_smp_processor_id();
-+	struct zcomp_dstrm *zstrm;
-+
-+	/* Best-effort start CPU hint; migration during the scan is fine */
-+	for_each_online_cpu_wrap(cpu, start) {
-+		zstrm = per_cpu_ptr(comp->dstream, cpu);
-+		if (zcomp_dstrm_excl_trylock(zstrm))
-+			return zstrm;
-+	}
-+	return NULL;
-+}
-+
- struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
- 				    enum zcomp_dstrm_mode mode)
+ struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp)
  {
--	for (;;) {
--		struct zcomp_dstrm *zstrm = raw_cpu_ptr(comp->dstream);
--
--		/*
--		 * Pin the stream.  The write side of ->lock is only taken
--		 * by zcomp_cpu_dead(), so this never contends with other
--		 * decompression requests, regardless of their mode.
--		 */
--		down_read(&zstrm->lock);
--		if (!zstrm->local_copy) {
--			/* The stream has been destroyed, re-try */
-+	struct zcomp_dstrm *zstrm;
++	if (comp->recomp_cstream) {
++		mutex_lock(&comp->recomp_cstream->lock);
++		return comp->recomp_cstream;
++	}
 +
-+	if (mode == ZCOMP_DSTRM_SHARED) {
-+		for (;;) {
-+			zstrm = raw_cpu_ptr(comp->dstream);
-+			down_read(&zstrm->lock);
-+			if (zstrm->local_copy)
-+				return zstrm;
- 			up_read(&zstrm->lock);
--			continue;
- 		}
--
--		/*
--		 * Exclusive requests additionally own ->local_copy and
--		 * ->ctx and hence can only wait for each other.
--		 */
--		if (mode == ZCOMP_DSTRM_EXCLUSIVE)
--			mutex_lock(&zstrm->excl_lock);
--		return zstrm;
+ 	for (;;) {
+ 		struct zcomp_cstrm *zstrm = raw_cpu_ptr(comp->cstream);
+ 
+@@ -326,22 +331,25 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
+ int zcomp_cpu_up_prepare(unsigned int cpu, struct hlist_node *node)
+ {
+ 	struct zcomp *comp = hlist_entry(node, struct zcomp, node);
+-	struct zcomp_cstrm *cstrm;
++	struct zcomp_cstrm *cstrm = NULL;
+ 	struct zcomp_dstrm *dstrm;
+ 	int ret;
+ 
+-	cstrm = per_cpu_ptr(comp->cstream, cpu);
+-	ret = zcomp_cstrm_init(comp, cstrm);
+-	if (ret) {
+-		pr_err("Can't allocate a compression stream\n");
+-		return ret;
++	if (comp->cstream) {
++		cstrm = per_cpu_ptr(comp->cstream, cpu);
++		ret = zcomp_cstrm_init(comp, cstrm);
++		if (ret) {
++			pr_err("Can't allocate a compression stream\n");
++			return ret;
++		}
  	}
-+
-+	/* Checks zcomp_dstrm_excl_tryget() before touching the waitq */
-+	wait_event(comp->dstrm_waitq, (zstrm = zcomp_dstrm_excl_tryget(comp)));
-+	return zstrm;
- }
  
--void zcomp_dstrm_put(struct zcomp_dstrm *zstrm, enum zcomp_dstrm_mode mode)
-+void zcomp_dstrm_put(struct zcomp *comp, struct zcomp_dstrm *zstrm,
-+		     enum zcomp_dstrm_mode mode)
- {
--	if (mode == ZCOMP_DSTRM_EXCLUSIVE)
-+	if (mode == ZCOMP_DSTRM_EXCLUSIVE) {
- 		mutex_unlock(&zstrm->excl_lock);
-+		up_read(&zstrm->lock);
-+		if (wq_has_sleeper(&comp->dstrm_waitq))
-+			wake_up(&comp->dstrm_waitq);
-+		return;
+ 	dstrm = per_cpu_ptr(comp->dstream, cpu);
+ 	ret = zcomp_dstrm_init(comp, dstrm);
+ 	if (ret) {
+ 		pr_err("Can't allocate a decompression stream\n");
+-		zcomp_cstrm_free(comp, cstrm);
++		if (cstrm)
++			zcomp_cstrm_free(comp, cstrm);
+ 		return ret;
+ 	}
+ 
+@@ -354,10 +362,12 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node)
+ 	struct zcomp_cstrm *cstrm;
+ 	struct zcomp_dstrm *dstrm;
+ 
+-	cstrm = per_cpu_ptr(comp->cstream, cpu);
+-	mutex_lock(&cstrm->lock);
+-	zcomp_cstrm_free(comp, cstrm);
+-	mutex_unlock(&cstrm->lock);
++	if (comp->cstream) {
++		cstrm = per_cpu_ptr(comp->cstream, cpu);
++		mutex_lock(&cstrm->lock);
++		zcomp_cstrm_free(comp, cstrm);
++		mutex_unlock(&cstrm->lock);
 +	}
- 	up_read(&zstrm->lock);
+ 
+ 	dstrm = per_cpu_ptr(comp->dstream, cpu);
+ 	down_write(&dstrm->lock);
+@@ -367,7 +377,8 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node)
+ 	return 0;
  }
  
-@@ -289,6 +318,8 @@ int zcomp_decompress(struct zcomp *comp, struct zcomp_dstrm *zstrm,
- 	mutex_lock(&zstrm->excl_lock);
- 	ret = zcomp_decompress_buf(comp, zstrm, sg, zstrm->local_copy, &req);
- 	mutex_unlock(&zstrm->excl_lock);
-+	if (wq_has_sleeper(&comp->dstrm_waitq))
-+		wake_up(&comp->dstrm_waitq);
- 	return ret;
- }
+-static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
++static int zcomp_init(struct zcomp *comp, struct zcomp_params *params,
++		      bool recomp)
+ {
+ 	int ret, cpu;
  
-@@ -357,6 +388,8 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
+@@ -376,10 +387,28 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
+ 	if (ret)
  		goto cleanup;
+ 
+-	comp->cstream = alloc_percpu(struct zcomp_cstrm);
+-	if (!comp->cstream) {
+-		ret = -ENOMEM;
+-		goto cleanup;
++	if (recomp) {
++		comp->recomp_cstream = kzalloc_obj(*comp->recomp_cstream);
++		if (!comp->recomp_cstream) {
++			ret = -ENOMEM;
++			goto cleanup;
++		}
++		mutex_init(&comp->recomp_cstream->lock);
++		ret = zcomp_cstrm_init(comp, comp->recomp_cstream);
++		if (ret) {
++			/* zcomp_cstrm_init() cleans up after itself */
++			kfree(comp->recomp_cstream);
++			comp->recomp_cstream = NULL;
++			goto cleanup;
++		}
++	} else {
++		comp->cstream = alloc_percpu(struct zcomp_cstrm);
++		if (!comp->cstream) {
++			ret = -ENOMEM;
++			goto cleanup;
++		}
++		for_each_possible_cpu(cpu)
++			mutex_init(&per_cpu_ptr(comp->cstream, cpu)->lock);
  	}
  
-+	init_waitqueue_head(&comp->dstrm_waitq);
-+
+ 	comp->dstream = alloc_percpu(struct zcomp_dstrm);
+@@ -393,7 +422,6 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
  	for_each_possible_cpu(cpu) {
  		struct zcomp_dstrm *zstrm = per_cpu_ptr(comp->dstream, cpu);
  
+-		mutex_init(&per_cpu_ptr(comp->cstream, cpu)->lock);
+ 		init_rwsem(&zstrm->lock);
+ 		mutex_init(&zstrm->excl_lock);
+ 	}
+@@ -405,6 +433,10 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
+ 	return 0;
+ 
+ cleanup:
++	if (comp->recomp_cstream) {
++		zcomp_cstrm_free(comp, comp->recomp_cstream);
++		kfree(comp->recomp_cstream);
++	}
+ 	comp->ops->release_params(comp->params);
+ 	free_percpu(comp->dstream);
+ 	free_percpu(comp->cstream);
+@@ -414,13 +446,18 @@ static int zcomp_init(struct zcomp *comp, struct zcomp_params *params)
+ void zcomp_destroy(struct zcomp *comp)
+ {
+ 	cpuhp_state_remove_instance(CPUHP_ZCOMP_PREPARE, &comp->node);
++	if (comp->recomp_cstream) {
++		zcomp_cstrm_free(comp, comp->recomp_cstream);
++		kfree(comp->recomp_cstream);
++	}
+ 	comp->ops->release_params(comp->params);
+ 	free_percpu(comp->dstream);
+ 	free_percpu(comp->cstream);
+ 	kfree(comp);
+ }
+ 
+-struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params)
++struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params,
++			   bool recomp)
+ {
+ 	struct zcomp *comp;
+ 	int error;
+@@ -443,7 +480,7 @@ struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params)
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	error = zcomp_init(comp, params);
++	error = zcomp_init(comp, params, recomp);
+ 	if (error) {
+ 		kfree(comp);
+ 		return ERR_PTR(error);
 diff --git a/drivers/block/zram/zcomp.h b/drivers/block/zram/zcomp.h
-index 362a6da014aa..ca1ebc70ad0a 100644
+index ca1ebc70ad0a..39efefc43a13 100644
 --- a/drivers/block/zram/zcomp.h
 +++ b/drivers/block/zram/zcomp.h
-@@ -5,6 +5,7 @@
+@@ -40,7 +40,8 @@ struct zcomp_params {
+ /*
+  * Run-time driver context - scratch buffers, etc. It is modified during
+  * request execution (compression/decompression), cannot be shared, so
+- * it's in per-CPU area.
++ * it's in per-CPU area (except for recompression, which uses a single
++ * per-device compression stream).
+  */
+ struct zcomp_ctx {
+ 	void *context;
+@@ -95,9 +96,10 @@ struct zcomp_ops {
  
- #include <linux/mutex.h>
- #include <linux/rwsem.h>
-+#include <linux/wait.h>
- 
- struct scatterlist;
- 
-@@ -96,6 +97,7 @@ struct zcomp_ops {
+ /* dynamic per-device compression frontend */
  struct zcomp {
- 	struct zcomp_cstrm __percpu *cstream;
+-	struct zcomp_cstrm __percpu *cstream;
  	struct zcomp_dstrm __percpu *dstream;
-+	wait_queue_head_t dstrm_waitq;
+ 	wait_queue_head_t dstrm_waitq;
++	struct zcomp_cstrm __percpu *cstream;
++	struct zcomp_cstrm *recomp_cstream;
  	const struct zcomp_ops *ops;
  	struct zcomp_params *params;
  	struct hlist_node node;
-@@ -115,7 +117,8 @@ void zcomp_cstrm_put(struct zcomp_cstrm *zstrm);
- bool zcomp_shared_decomp(struct zcomp *comp);
- struct zcomp_dstrm *zcomp_dstrm_get(struct zcomp *comp,
- 				    enum zcomp_dstrm_mode mode);
--void zcomp_dstrm_put(struct zcomp_dstrm *zstrm, enum zcomp_dstrm_mode mode);
-+void zcomp_dstrm_put(struct zcomp *comp, struct zcomp_dstrm *zstrm,
-+		     enum zcomp_dstrm_mode mode);
+@@ -108,7 +110,8 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node);
+ ssize_t zcomp_available_show(const char *comp, char *buf, ssize_t at);
+ const char *zcomp_lookup_backend_name(const char *comp);
  
- int zcomp_compress(struct zcomp *comp, struct zcomp_cstrm *zstrm,
- 		   const void *src, unsigned int *dst_len);
+-struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params);
++struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params,
++			   bool recomp);
+ void zcomp_destroy(struct zcomp *comp);
+ 
+ struct zcomp_cstrm *zcomp_cstrm_get(struct zcomp *comp);
 diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index b429c52cb37d..52341f05da83 100644
+index 52341f05da83..079f3723db31 100644
 --- a/drivers/block/zram/zram_drv.c
 +++ b/drivers/block/zram/zram_drv.c
-@@ -1382,7 +1382,7 @@ static int decompress_bdev_page(struct zram *zram, struct page *page,
- 		copy_page(dst, zstrm->local_copy);
- 		kunmap_local(dst);
+@@ -2526,7 +2526,7 @@ static int recompress_slot(struct zram *zram, unsigned long index,
  	}
--	zcomp_dstrm_put(zstrm, ZCOMP_DSTRM_EXCLUSIVE);
-+	zcomp_dstrm_put(zram->comps[prio], zstrm, ZCOMP_DSTRM_EXCLUSIVE);
- 	slot_unlock(zram, index);
  
- 	return ret;
-@@ -2135,7 +2135,7 @@ static int read_compressed_page(struct zram *zram, struct page *page,
- 	dst = kmap_local_page(page);
- 	ret = zcomp_decompress(zram->comps[prio], zstrm, sg, size, dst);
- 	kunmap_local(dst);
--	zcomp_dstrm_put(zstrm, mode);
-+	zcomp_dstrm_put(zram->comps[prio], zstrm, mode);
- 	zs_obj_read_sg_end(zram->mem_pool, handle);
+ 	/*
+-	 * We are holding per-CPU stream mutex and entry lock so better
++	 * We are holding compression stream mutex and entry lock so better
+ 	 * avoid direct reclaim.  Allocation error is not fatal since
+ 	 * we still have the old object in the mem_pool.
+ 	 *
+@@ -2928,7 +2928,8 @@ static ssize_t disksize_store(struct device *dev, struct device_attribute *attr,
+ 			continue;
  
- 	return ret;
+ 		comp = zcomp_create(zram->comp_algs[prio],
+-				    &zram->params[prio]);
++				    &zram->params[prio],
++				    prio != ZRAM_PRIMARY_COMP);
+ 		if (IS_ERR(comp)) {
+ 			pr_err("Cannot initialise %s compressing backend\n",
+ 			       zram->comp_algs[prio]);
 -- 
 2.56.0.212.g129ede20d9-goog
 
