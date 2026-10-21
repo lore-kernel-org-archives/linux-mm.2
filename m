@@ -1,146 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE1F606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23347606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=pRs1uIBU
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=h5ZIXq0N
 Received: by kanga.kvack.org (Postfix)
-	id 9AA786B0198; Tue, 20 Oct 2026 22:40:46 -0400 (EDT)
+	id 2D0146B05BD; Tue, 20 Oct 2026 22:42:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95A966B019A; Tue, 20 Oct 2026 22:40:46 -0400 (EDT)
+	id 280B16B05BE; Tue, 20 Oct 2026 22:42:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 849836B0199; Tue, 20 Oct 2026 22:40:46 -0400 (EDT)
+	id 197336B05BF; Tue, 20 Oct 2026 22:42:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (unknown [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C3726B0196
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:40:46 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 563231A045F
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:40:01 +0000 (UTC)
-X-FDA: 85345078602.04.86CAC34
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9D2B5140006
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:39:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=pRs1uIBU;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E4B206B05BD
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:42:47 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E126240445
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:42:46 +0000 (UTC)
+X-FDA: 85345085532.24.20E8CE0
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3A93A40003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:42:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=h5ZIXq0N;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.54 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792550399;
+	s=arc-20220608; t=1792550565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=abLwrGFXoJBlnSAGPYLFFR7ZpE8C/Ap31b+sTibNse0=;
-	b=PYoqUgP1Qb8jy8IA+ICHztbsgSQWsaaz6NKAcNXzOUjPkSYXJ0p0k0Ak6s5llBhwzQrYgc
-	YRhEW1E/WUO6Ljgsr9lRk1/96GDDQqvYmHBW+kdgK+pZjh67dIxWIA/6EAF2KPMXIDWpVc
-	aHeVoD53m8LIFo0xNEMbu9sXux88uTU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792550399;
-	b=3cJEbQVEU0I22GlrMKMD78gvMfLpFtiXox9t4yQJdGdlx8XwA3IhWEqwSzRogPoc+Ujd9f
-	2YCFo9OxGhKWpxiKhpXxqfXrt5GntT02toVZdS5QedRKEysbnxmJHDod+GxW4W1CxklWyo
-	CiAv+8m75G3Irm8F+dH9+7wQqQpRdis=
+	 in-reply-to:references:dkim-signature;
+	bh=1qRBobvsLUCIbGsbEwiV9kaRSV7ZvIaGMjGH4r35+uk=;
+	b=ssAUZGrCoVpgYYLLp+l0jSzCmGdbnG+XTjZwyjFfIGeliRYwr7ZlxeCxsofDj1fhin84Q1
+	fadlxOdRvs3omO94symbHgyYN1bO9aN2Wk66ACxhD2Vl6dzKulliQFptSJIoZwI7/B0oPJ
+	EP1UP1gZ7ujCkJHonK3Y1MiJq89Z41k=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=pRs1uIBU;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-93e64d52949so25157685a.1
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:39:59 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=h5ZIXq0N;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.54 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792550565;
+	b=wOJ4+7wd2yH6kmW9RuFc7mi/fiSw4SNRrzYVu+fWy0vjKTigCkd5El6So90LqR2fLNzdkA
+	93En7irJb3tqL/rYOB9he8geK2f5hL9DdfA4SxM7M3Z7QfLvlYi6Q4VPLLHIMOvru13JE+
+	4OVSgd/udrrAQHuh8BPD+XScFXGG3tw=
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-15354aa70e8so777738c88.1
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:42:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792550399; x=1793155199; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=abLwrGFXoJBlnSAGPYLFFR7ZpE8C/Ap31b+sTibNse0=;
-        b=pRs1uIBUrk5SHxhZ8AWIX4LyehzkftoDliJCKAtXKEuvHayAlBxIuPMWPWJ90jeu//
-         EThM7z7xMFAbDwyonz4/gyPRHZ9t/suNU6P6q+8OeXuiPMcW5XjXoqZFTwigSsNnBlYj
-         gOICAWeh8LBd8rGBJaUP7W99CrgKKwQ+aizlmfTZhLbOip10Ss/md+0qucYOd1tM9y9G
-         7rfjVeg6aDhXdsyTCr+zC9YlJaCq3Pnn2E38g7+lV29MfLVgmbQ7CuXwimP0MpnIfQN3
-         OotJajMU0czvaQfpjShE32Co0udjAj9AcUVvbJLhNhzD1mM2pZS1BJycUpCxV1h0zMo1
-         4kLQ==
+        d=chromium.org; s=google; t=1792550564; x=1793155364; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1qRBobvsLUCIbGsbEwiV9kaRSV7ZvIaGMjGH4r35+uk=;
+        b=h5ZIXq0N3eKtwcsIe6PR69/C/PxXUIIa0AnkUgaEWZsLD+OfpwQ6XguIbXDcGUiJpz
+         au5c3f/u64ziVZcS3qXs/2nmDFlZ4PAwzb4ahTJ/HNb1OZSvRlBBfCzDFcHihN1H0QjN
+         LJyzL3XkBiNSRS8dIeEqol6O9eFWAEksXflJY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792550399; x=1793155199;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=abLwrGFXoJBlnSAGPYLFFR7ZpE8C/Ap31b+sTibNse0=;
-        b=gnUXrhfsJf0q95QbceCIaW6PCgsV4jvt44ON8s83Pv/2GwJzT7+y3AB51Rw4dEaWgl
-         ty+9qpQ/6ZMQHv9a90Vogqw3gHYtpBy8amKfYKbThS+50wayftPpBkW+0ofjHI2HX2qf
-         CAF7VDdp0Xa0ILmp+9tOXzBY1ug23Fca/LL3H6UtXM4fSTov+8bYvn5J8c/a+iiuV3i2
-         8OVFM9skntUYmx/bnMT0LTYKzgkzUFVsmLyatgKIIid97NyZiyZUR5ro8rAI4Bd7OYLd
-         yqW0LDuCker8Phm9v/tMKt4fUuYy9grYogaLemhwyGSGkDxKqHnhZCLPTB5qBOBopbf+
-         /uYA==
-X-Gm-Message-State: AFq9FYKJAfp2HtsFtAniUpOeBzK1jV6HckUGPLyheeD6MzXpZGrQtbhp
-	uKqUFvyC1BDFZ2BCBiGzDk7ppDcUAISSnp8ilpI3TfvZLXRqxCA6EsC7r7oTZ/H9XHc9/YOfIbT
-	7GoDz
-X-Gm-Gg: AYBFou1PsQuxodv35jgOU0REF7pJLLdOBD57LqhbFOZ8RK69fSucHrSP0eq7HrtUIxI
-	dlrmsn546cJH63yA/aK7lRkbgVQXn1K3i4yt2Dggqt11XMUsq+O7di/dD9/Ouovv28ap8vyXFIv
-	J4fOIdmWLGN3GvgthjMUPmrDkZ+ZE7Alcas28zKRYzi9Zp2O487DU42FzH8MNTSRFl/WwRa8MkR
-	bsUF0fX8p75RB6GyZeMYFCJWKYLgUYBf0NiciiNWgCB3Xi71Dga3b2ZO2xy06LirDezFWbSoAT9
-	q6vDlrgXpLrTA6blIwasd1K8/89Y/V4QWMEAnYWFyNMHW+FAmnUUM6JMYmVxU9Q/P6+n9T5ejRh
-	qBVnzGY4E4mER0i2KA8vZG45bSau5mbPY0jkyH9GXefr2ZSvYHEegQLimIoKro3+c77X/H1n5tv
-	J1YDmerFVXvjHfcZOvyk8QU9BPmX9/KtHxr9MWHgdY+h8Fh/daj+ETS6Ku+mzFACT/xL8klg/W7
-	gZ1rr7AL/dxoXavkkwUOGggkpy6OsWsHuoXfElC5uQZ1nTYDpuEj59aM4W9ndBIuSANEtQj3LwS
-	uuI3VcFqIxx5stZQ7ZAMYaI3GzdZnpyEbUNsIioZVw==
-X-Received: by 2002:a05:620a:3187:b0:93f:1823:308f with SMTP id af79cd13be357-93f57fe8708mr199104685a.81.1792550398715;
-        Tue, 20 Oct 2026 19:39:58 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c10a45336sm13819426d6.3.2026.10.20.19.39.57
+        d=1e100.net; s=20260707; t=1792550564; x=1793155364;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1qRBobvsLUCIbGsbEwiV9kaRSV7ZvIaGMjGH4r35+uk=;
+        b=kxkd66MglZzOcn20ydYR+ugy1Ww7T4XN/fdQokZlQj/FsUxsLyBFCKmy+TNaW7kAMC
+         TM2uwZTa3t9kmxzsVgzhM/vd41QSnCgr2yzkPMSX+ctOBhUcpgTM5IjewXU+FUlZJE66
+         iakzx9P8GXFl0kTUlnuN2YK/EKkUEtPBumGYCQrLnx9yTbZmL3dVezItvqp+aBoHQLTn
+         HH4NNGMV9fBXlrf9LRzO/oj0NOHNAzhBnFMb4x+E7RE6SGslXU92x/dYX/fKzzLkcIgJ
+         awVjJnq/Hmxv0/WTk0gtNeffLQhsGM/hJkDVRBtqDBYiCbozJxN/asIpzbVYHtu+ee3O
+         dJZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzK2XPcRdmmP/PxMvTVTWSHD+kMk8XhVnoJcv3P/tuYhQKAOMDI/mvu3Rx8hgcuNZBk27tf/yO/jA==@kvack.org
+X-Gm-Message-State: AFq9FYKVO4Z4cRet28TIR0nVYmoA3f3RDXPXcMB635+mKHQg4LACuHKh
+	yrl5YfXh8ax2ovcmzPTDrrBRAFiWLrR3u51dCO6Uey6obxzRCbBM1NE/pFSPvv9WCQ==
+X-Gm-Gg: AYBFou2y3GcFqRwhs5ZVK0naHevxY2bNaNnJ4jl+r8CWDTapddYdSQhjA+cr2aJAKGN
+	QLvnZ9piJ2yfXlgk0CgKwYk1W/veYWCTjPU/qnoIA2MLU9d+mM5B+74vzoFertkb45KXskRNGR5
+	jXrPLfI+4TyVXdawoiKYcoYbz9bIhEyz+Srbz8rAGbTtHQ3UfsLM0VzYh5xOaeTLWvZZd30je+A
+	Ub/T2n7zvyQuTOwpRaEbx3RTLcan8xSZ8SQbRqDl/jwCdrIy462z/HZxx5KIfrEvTJLJf+lV7oA
+	N2yFIHgaoHmE09dbzUnoKBPIlxw3f28TI/g4A8fmk5tk5qROI2TUMbG54EO2KMh4WO2ranMdcEF
+	ulWa8rXZGeYgHtthk+aywZ2gyUg0XbFCQFatnc50l5JqvjQyW7mOooV2tVKvvGYqD8Zb7giz8k3
+	nlqnzp0ZGrsJJGXj91DNWOHqruxrBc9I+Ct2FxD+Zu/UlJ6fkjyl4rtDuUIT4uUXD0hTx0xYQY2
+	aP4C/zbP68/jAx8z9KoF4/3rlDsz8QWg3yFEQU8uzXX+t1Ua8t/X762Oj+M64P0v1lFOkCS2tCi
+	atz3SpBliL2nSnYfqiaIZ1tlBTwjJ74gVWlAPf6EyFSq
+X-Received: by 2002:a05:701a:c90a:b0:152:92c6:8b58 with SMTP id a92af1059eb24-190a6adaa1emr781617c88.35.1792550563732;
+        Tue, 20 Oct 2026 19:42:43 -0700 (PDT)
+Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:97d1:a8be:236d:bf79])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035c0c9a6sm2392047c88.3.2026.10.20.19.42.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 19:39:58 -0700 (PDT)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	mhocko@suse.com,
-	rientjes@google.com,
-	shakeel.butt@linux.dev,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	mgorman@techsingularity.net,
-	anshuman.khandual@arm.com,
-	Bessel.Wang@huawei.com,
-	jiang.liu@huawei.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3 8/8] mm/page_alloc: keep a zone's pagesets when it goes empty
-Date: Tue, 20 Oct 2026 22:39:40 -0400
-Message-ID: <20261021023940.1940971-9-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261021023940.1940971-1-gourry@gourry.net>
-References: <20261021023940.1940971-1-gourry@gourry.net>
+        Tue, 20 Oct 2026 19:42:43 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Brian Geffon <bgeffon@google.com>,
+	Barry Song <baohua@kernel.org>,
+	Bo Zhang <zhangbo0325@gmail.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Richard Chang <richardycc@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH v6 00/13] zram: redesign zcomp and rework backends
+Date: Wed, 21 Oct 2026 11:42:10 +0900
+Message-ID: <20261021024236.1787884-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9D2B5140006
-X-Stat-Signature: e9qbak3gpznrkpdmkmuqgz8wkhod5qr9
+X-Rspamd-Queue-Id: 3A93A40003
+X-Stat-Signature: dsgf9gnhmmh4bqa4txsbf3cxfa4wwfmx
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792550399-300418
-X-HE-Meta: U2FsdGVkX19LieAqXImtfHerd0P7XYktYxsE5sqKKQ0AeTqS0cDbuO9+mcMuWHOlppbw1ldcLsf6bWWOeaWR9X6Yq11TlmnNwUtEvr301uR6egvYljQEGJhgn3A6QtfnV4+VdiQ49FiUTT8tC6L4ys3UFiiVojNJzhzFsggLp+vPkcgIkotIT/IUw6cQOM1n4jrXF07ydL8vfJXDEuYxmSwXRmSLNLqYbwBra1ta70H5TxHd1hbHGh9NYJUV5VjEk5saU1RXmRkKpIm3JnOzEqwMY2aL6uN8CZxE4Ngbk5WZAkLo/Q8VNWBy/GPKWn1AAubNVt81T/up6tPm0lo7fUUAGtU8nAp1B3Gk0ajLhbw43dkLbq8FhHvlmhZ4DOOJlUGEG9Dix+q1xxlC2ANjwWRouMmCn1DQGJIN4lo+BQG4g/gBKsB9t9mpYalJu3aVeHj3ZyPJWP4H4TP9XqXs1AR5nrKMkkc2aLCbKWQQc656bNOHL6GwU6BS4wNcZzUPFMZK2yxbqBCOlHsyr07IFGx/eHC9ABrXG5wf3I8KNGyT2M07zi9QvK4leSYqutktT5x4/L9t16lftKDjrt83mihjmZ4WdfWMaILCEdabxCrF0bLwblkqflHvkCQcUxWSn8RggQWy5B9Yb6K41rZSOA9Z4COVx5kRB/q46HrzYsKq16HyYWOr+v4EzX6mgtSWazj2iO03S8GCAAZv7vbl7r1BDlXEOC/NLHTVvVUHfumDcUHIGOX1F+TESlnCfqkoZERUulRKGRxz0D+7QOh3p7kx0w3f9IYdZCj2vZFINew1nP3ctKq0JBIH5k5w+urzVdQfq0D0a0QS9elXjCFohZL9Q71/+tYiZCyi0FKQTHt2WkiXBDQyq0aCFLX09Txmtvl3r360o48EvMFYWlePSkj+76Te+jbI7+GlcoVUrGJJyDXInsaG3u35Kstr8yhSUpGFOim0UbwS0trpvee
- ZsFzv9th
- trb6ByrhMAUmbKUsER8RzPPj/aSH9lhavumML1wTs2ux4sQyNi4qfwrxe1NyunERpb50exQoBJiP2D9WcDOb2As9cBig4EUqtwySOP30kZ32YFH0wN4GcJ8CSdZ7kPtt80bv6IP7Ja2GIsQfjFWeiZmso9Cp7c/du4VkJkAyl0KiPXIUaEe1D6BzNOLFgsz5FGiFJA7vwQYNYC/NBGdq51JHhzEkhR79Ny9U4OjB+2Aami2p1tNAgsrtm+EXy9v1RRBkdiV0BzHBziKP0ubN66wRO/sygy5nmYDogCKZUqdo+Wiuh3dOrbDc3XiEnjTBS0aIEfR95kweXBxe9wVDGSOm9qDOLiVqOO9vA6QZZc5T67HZ/gtsBN/CQFg8k2kzsb7JrbiYkn40PCgPPUu3TeTdOA4HFl8UN2GnZNBAiKaSHRx4qVFmtc1hBxglE6UcRaXhJ
+X-HE-Tag: 1792550565-258879
+X-HE-Meta: U2FsdGVkX18ZzWZLZAjqdSbZpkDV1Lhu2SlOByNHLl2YTHFs3EhsvssRThmO0SFyo5mZ7hcKJ6Ad58VupoMvfUaAiF651pnBY/X3ZaiKV1aPQtzx52MWymTsitgKkZ5iI1pqQjOpljgD+fTYKlcgg4bJOFLpovs9+LVtsB5lmiL83cnnGW2VDtne+UgUU6gxJA/gI31XnM336IeCTrhuuR1kVZ5wnKmlAMSYmLMRpFdkW+dCoFlXD17k6LGekXhfM/6VVRBJ+UiZieIdZL9vZClUgs64V6OGLfXXwr2XNTfi5f8ZZ6T5224zAFj2SrBWP9LMD7X3SaQRMg9mT4NVBFBxEq8XkNYBcb5hexp8bz04HhJ5ZRjv2+LzLKNHkWT71B+adwMQly0Jm03G21FHY5yvQuqCTNizJfD66LHf7YQgO7y9CPfjGQlHh6qgbqupPIeN2Fnrhdd7V5RZmXdrUl+4OyS9OPoMXd1utBfPI+ayTcUFzmqDRj9P0rKJjDHThLGS3FiEI2tKaSwh2spATBxadQGVa/Goa0EJpOiIH5+5GDnzaUz3v/yd5n6Aks5pptMyyiHH9zAtAMcEFGytA3IfSE7m/gUJV2+lYpwtbpoeOe2oN1hEmC3Xt+vTkyJVfPhVvN8/ypegubU3vabaqrZiB7Uu5t34SmtBDqzMlbLOLSPLSVvI/QkwUb+71KF9x450x9ijUEju1FfZ+ndzOxdUbqbRo3uf92s852gyR1O+HSXmHRo8L8ajECl8zm4IM/jUILIHFn0++FNep1vzjGvJGaN3M76O5ydkrgqu+AOsc3TqnjfU5g9miz7P2Ygy4E9gokm3PJNuDhncLvO8CHqTpF7PXo2oB8pCGSWwOs5ncuDSQgewCj2BhVoTA63orIFtpxrmX1XoN+akyDR1f8UUrGI5gI3pvWc1j5e8Dp4DTgamyEpl8sQ6qkK44I6bVNS7eIB/kb9sLFm+9bu
+ rTLe+/TP
+ 8nn82nzncNiTXFARrdaqgIqZeQTroBwG4P6mUnhYp28CYHCbXPeEKmQFblyRtVnNav/rjC6cuxGTxYL1gvhm5gCKplWjkdS64c8aeIWLBRoN35wHbYLowqAA0esEDZqjh0ZgHAaXCqkoIRqYZvA/HDC1vaxmGmbjnsgRT2txRnRsk0hKtWP2ZiioeOrhE/GV45V7Dc2nY5fbxlQyEQLC/lXw6S0EVVV9Dg3VAr5jHxQdx8FXqAjuBCxWpG5Vn+tWiaqXQK5KdZzrGDnJN0tKRZFAESclub88yfoTMHMrQ5qDfZh+olyWHVfX558qLwzR3LOHn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,101 +123,109 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When offlining empties a zone, zone_pcp_reset() frees its pagesets while
-the vmstat worker can still hold one across cond_resched():
+The series has a number of memory usage optimisations and fixes
+that result in savings from double digits KB to triple digits
+KB per-context/per-CPU, depending on backend and its configuration.
+More details are in the corresponding commit messages.
 
-  CPU 0                             CPU 1
-  refresh_cpu_vm_stats()
-    pcp = zone->per_cpu_pageset
-    cond_resched()
-                                    offline_pages()
-                                      zone_pcp_reset()
-                                        free_percpu(zone->per_cpu_pageset)
-    decay_pcp_high(zone, this_cpu_ptr(pcp))
+The zcomp redesign and backend rework happen in the final three
+patches.  zcomp part, basically, attempts to address the priority
+inversion problem, that is seen on some setups.  In zcomp, we have
+always kept Read and Write contexts together in per-CPU streams.
+With preemptible zram this becomes a bit of a problem, as a higher
+priority Reader can preempt a Writer, which may hold a stream
+lock, but since the compression stream is locked by the preempted
+Writer, the Reader gets blocked on the very same stream lock.
+However, we don't have any reasons to have Read and Write contexts
+share and compete for the stream, because Read (decompression) and
+Write (compression) paths are completely independent, they never
+touch each other's buffers.  Thus, we can split compression streams
+into per-CPU Read streams and per-CPU Write streams (Barry Song),
+so that Readers and Writers don't block each other anymore.
+Decoupling Reads and Writes results in noticeable performance
+improvements on synthetic tests.  The Reader vs Reader priority
+inversion is still possible.  To attack this problem we introduce
+shared decompression stream (Brian Geffon) which can be used when
+decompression is stateless.  There, however, stateful backends (zstd,
+deflate) that cannot have shared decompression contexts.  For those
+backends, we introduce a remote CPU borrowing of idle exclusive
+decompression contexts, if an exclusive Reader get preempted on
+current CPU.  We also now allocate a per-request (Read) bounce
+buffer for linearisation of spanning zsmalloc objects, so stateless
+decompression contexts do not block each other.
 
-decay_pcp_high() then reads, and can write, memory the percpu allocator
-may already have handed out again. With kprobes holding the worker
-across the offline, it used the freed pageset in 6 of 6 runs, and
-rewrote a new allocation at the freed address in 1 of them.
+Reader vs Reader priority inversion tests:
 
-Keep the pagesets for the life of the zone, as pgdat->per_cpu_nodestats
-already is, and only fold the stats in zone_pcp_reset().
+  exclusive zstd (fg reader, average of 3 runs):
+  Metric           Base               Patched
+  ----------------------------------------------------------
+  Read IOPS        391k               1,064k        (+2.7x)
+  Read clat avg    49.07 us           9.68 us       (-5.1x)
+  Read clat stdev  7,179.16 us        30.64 us      (-234x)
+  Read clat max    3,208,867 us       5,880.87 us   (-546x)
 
-Commit 340175b7d14d ("mm/hotplug: free zone->pageset when a zone becomes
-empty") freed them because onlining the zone again allocated a new set
-and leaked the old one. setup_zone_pageset() now reuses the existing
-set, and zone_pcp_init() keeps it when the node is re-added, so nothing
-is allocated twice. The pageset address stayed the same across repeated
-offline/online cycles and across removing and re-adding the node.
+  shared lz4 (fg reader, average of 3 runs):
+  Metric           Base               Patched
+  ----------------------------------------------------------
+  Read IOPS        972k               1,466k        (+50.9%)
+  Read clat avg    11.56 us           3.29 us       (-3.5x)
+  Read clat stdev  2,738.84 us        16.57 us      (-165x)
+  Read clat max    2,204,467 us       6,442.50 us   (-342x)
 
-The pagesets take 320 bytes per possible CPU: 30KiB per zone with 96
-CPUs, 160KiB with 512 and 2.5MiB with 8192. A populated zone already
-holds this memory, we just no longer give it back on offline.
+Writer vs Reader priority inversion tests:
 
-Fixes: 340175b7d14d ("mm/hotplug: free zone->pageset when a zone becomes empty")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- mm/page_alloc.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+  lz4 (fg reader, average of 3 runs):
+  Metric           Base               Patched
+  ----------------------------------------------------------
+  Read IOPS        642k               1,472k        (+2.3x)
+  Read clat avg    23.97 us           3.28 us       (-7.3x)
+  Read clat stdev  4,303.64 us        14.85 us      (-290x)
+  Read clat max    2,393,767 us       5,710.53 us   (-419x)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 96ae09c8099be..dfca77764f1fb 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6369,6 +6369,12 @@ void __meminit setup_zone_pageset(struct zone *zone)
- {
- 	int cpu;
- 
-+	/* Reuse the pagesets zone_pcp_reset() kept. */
-+	if (zone->per_cpu_pageset != &boot_pageset) {
-+		zone_set_pageset_high_and_batch(zone, 0);
-+		return;
-+	}
-+
- 	/* Size may be 0 on !SMP && !NUMA */
- 	if (sizeof(struct per_cpu_zonestat) > 0)
- 		zone->per_cpu_zonestats = alloc_percpu(struct per_cpu_zonestat);
-@@ -6465,9 +6471,12 @@ __meminit void zone_pcp_init(struct zone *zone)
- 	 * per cpu subsystem is not up at this point. The following code
- 	 * relies on the ability of the linker to provide the
- 	 * offset of a (static) per cpu variable into the per cpu area.
-+	 * A re-added node keeps the pagesets zone_pcp_reset() kept.
- 	 */
--	zone->per_cpu_pageset = &boot_pageset;
--	zone->per_cpu_zonestats = &boot_zonestats;
-+	if (!zone->per_cpu_pageset || zone->per_cpu_pageset == &boot_pageset) {
-+		zone->per_cpu_pageset = &boot_pageset;
-+		zone->per_cpu_zonestats = &boot_zonestats;
-+	}
- 	zone->pageset_high_min = BOOT_PAGESET_HIGH;
- 	zone->pageset_high_max = BOOT_PAGESET_HIGH;
- 	zone->pageset_batch = BOOT_PAGESET_BATCH;
-@@ -7749,6 +7758,10 @@ void zone_pcp_enable(struct zone *zone)
- 	mutex_unlock(&pcp_batch_high_lock);
- }
- 
-+/*
-+ * Keep the pagesets of an emptied zone: refresh_cpu_vm_stats() can hold
-+ * one across cond_resched(), and nothing waits for it to let go.
-+ */
- void zone_pcp_reset(struct zone *zone)
- {
- 	int cpu;
-@@ -7759,12 +7772,6 @@ void zone_pcp_reset(struct zone *zone)
- 			pzstats = per_cpu_ptr(zone->per_cpu_zonestats, cpu);
- 			drain_zonestat(zone, pzstats);
- 		}
--		free_percpu(zone->per_cpu_pageset);
--		zone->per_cpu_pageset = &boot_pageset;
--		if (zone->per_cpu_zonestats != &boot_zonestats) {
--			free_percpu(zone->per_cpu_zonestats);
--			zone->per_cpu_zonestats = &boot_zonestats;
--		}
- 	}
- }
- 
--- 
-2.53.0-Meta
+The final patch builds atop of decoupled Read and Write streams and
+reworks the way secondary streams are handled.  Secondary compression
+streams are only used from recompression, which is serialized by
+device lock, IOW it's single-threaded.  However, we still allocated
+secondary streams per-CPU (we needed to permit concurrent Reads
+of recompressed objects).  Because we now have dedicated R/W
+streams, we can allocate a singleton compression context (for
+recompression) yet still have per-CPU decompression contexts.
+This saves a notable amount of memory with some backends and
+configurations (e.g. zstd, deflate, lz4hc).
+
+v5 -> v6:
+- fixed for_each_online_cpu_wrap() argument evaluation bug (Sashiko)
+- moved the "reset writeback state" patch up
+- updates some commit messages
+
+Sergey Senozhatsky (13):
+  zram: prefix backends printk-s
+  zram: remove debugfs entry on init failure
+  zram: reset writeback state in zram_reset_device()
+  zram: zstd: do not allocate empty C/D-dictionaries
+  zram: lz4hc: pre-initialize dictionary stream in setup_params
+  zram: lz4: use LZ4_decompress_safe_usingDict()
+  zram: lz4hc: use LZ4_decompress_safe_usingDict()
+  zram: zstd: do not use kvzalloc() for zstd allocations
+  zram: split zcomp into separate R/W streams
+  zram: introduce shared decompression streams
+  zram: allocate bounce buffer for spanning objects
+  zram: borrow idle decompression streams in exclusive mode
+  zram: use a singleton compression context for recompression
+
+ drivers/block/zram/backend_842.c     |   6 +-
+ drivers/block/zram/backend_deflate.c |  98 +++++----
+ drivers/block/zram/backend_lz4.c     |  85 ++------
+ drivers/block/zram/backend_lz4hc.c   | 105 ++++------
+ drivers/block/zram/backend_lzo.c     |   6 +-
+ drivers/block/zram/backend_lzorle.c  |   6 +-
+ drivers/block/zram/backend_zstd.c    | 133 +++++++-----
+ drivers/block/zram/zcomp.c           | 298 +++++++++++++++++++++++----
+ drivers/block/zram/zcomp.h           |  53 ++++-
+ drivers/block/zram/zram_drv.c        |  55 +++--
+ 10 files changed, 542 insertions(+), 303 deletions(-)
+
+--
+2.56.0.212.g129ede20d9-goog
 
 
