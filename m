@@ -1,87 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31E6606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 15:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95B6606A335
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 15:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RU61zTPD
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YZlNnLtz
 Received: by kanga.kvack.org (Postfix)
-	id BBE9D6B072B; Wed, 21 Oct 2026 11:43:02 -0400 (EDT)
+	id F19EA6B072C; Wed, 21 Oct 2026 11:43:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B94366B072C; Wed, 21 Oct 2026 11:43:02 -0400 (EDT)
+	id EEF7C6B072E; Wed, 21 Oct 2026 11:43:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA9E26B072D; Wed, 21 Oct 2026 11:43:02 -0400 (EDT)
+	id E05336B072F; Wed, 21 Oct 2026 11:43:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F17A6B072B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:43:02 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C093AA8142
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:43:01 +0000 (UTC)
-X-FDA: 85347051762.21.0EED267
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B85196B072C
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:43:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B53F1A05D5
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:43:13 +0000 (UTC)
+X-FDA: 85347052266.24.E0DF002
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 70B63C0004
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:42:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RU61zTPD;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 961751C0009
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:43:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZlNnLtz;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
+	spf=pass (imf20.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792597379;
+	s=arc-20220608; t=1792597391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Zq0meheIWFxmeUOFFDG2C2Iy+OUkZpOHMmtcorZaUXs=;
-	b=46+uMuH2zwAOpbD05H6EfbusVN62u3TXjdq7X5NGd++gQz8pcOH10Q4eCgVs94X+ymPcMf
-	wxUQERYNJXfF20Zb3pufPDg6PCWNIM44ZchLw6FFQ2HI1lDzM4BGEjz+s+sQDUnah5fuV9
-	pUOOHz83XgsoSFce7/1gkwyReGIaUEU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bWkWUhRxPDvXoa6KMlal8YtHGvJibFgZ+pmIbzWzfpI=;
+	b=f8Q9AkExZBENibpLezl7KttUHUkUFtAZF4+MW+Pgb8Bql545L2mJvFrF22wQID8xeVMEJQ
+	lN52PEnjsR3BjEfMYjnOkOJ77XDMycYUZGerNCPphOltN+79A7GLdicmO988O/v8S2fowO
+	sbaOrIzyx6wOu9f05noUkI09hr4pREs=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RU61zTPD;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZlNnLtz;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
+	spf=pass (imf20.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792597379;
-	b=3U1xK3jcDAsO0LMQXzifV1AnaqOP82+xyur5wdQJZQZMB2tRAfobeCPu5mHJgc4FGYdFtj
-	dvOCk5azqy6AqEzezevUidcZaoF6ms3P3j4DX4eWw08F/YcokDpOKISpu6DB91L6MlUIJH
-	XVG8vy2/g5PdfWA/GyZVLgEno+UkBzI=
+	t=1792597391;
+	b=oKIzg2xG0rFRoxo8MDMe9IKz7hvQI61C8zlY39R/YNpnvl0vBkM/xAU04fXTTMJZl34wie
+	HM0t9rYhoEhE10it9cGdk+zzVOE61XI1R8l5x36dRGg75Wts0UiLQSo22x0xOwtiYGiogI
+	zOZGo1sOhRsUurQ7XVUEZLWm8WiWg6U=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792597378;
+	s=mimecast20190719; t=1792597391;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Zq0meheIWFxmeUOFFDG2C2Iy+OUkZpOHMmtcorZaUXs=;
-	b=RU61zTPDJEkBlDkw44FKUfHRuKMrB2ILdzxIelgp0wvSNY8UZxhMmT+lKvv+OxTDz0P0mk
-	6HMYjIslyBacAkdKckGfGay1fRUhxDQ+8tH1AMfPnzkNmuY69OZORv1ZQ1FK3XVM/kfkI+
-	yQlQqVZnDnwHjdwSNpoyS1O8Nh+mUeU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bWkWUhRxPDvXoa6KMlal8YtHGvJibFgZ+pmIbzWzfpI=;
+	b=YZlNnLtzjDroS/CylxgZx07/wVdVLH0WtPqFdtvQY6wN5Kj0iKyTHYE1qJuLG2qweUMpUv
+	WEyowrhEKF8NOleTO0racNfsqlK7Xmw7ZLB2G2uu/Onmn3U+0ihjRVO5bJh9r+JbiAZi0q
+	q3N7c5RMc/Nt25mjIX/zj54/Au7Xyks=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-EmzSbsWyOMaIy7nlffsu5w-1; Wed,
- 21 Oct 2026 15:42:55 +0000
-X-MC-Unique: EmzSbsWyOMaIy7nlffsu5w-1
-X-Mimecast-MFC-AGG-ID: EmzSbsWyOMaIy7nlffsu5w_1792597371
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-274-jFNxnYdKMlaImvgI6R0zEg-1; Wed,
+ 21 Oct 2026 11:43:03 -0400
+X-MC-Unique: jFNxnYdKMlaImvgI6R0zEg-1
+X-Mimecast-MFC-AGG-ID: jFNxnYdKMlaImvgI6R0zEg_1792597379
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A3731955F40;
-	Wed, 21 Oct 2026 15:42:49 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3BCC718007FE;
+	Wed, 21 Oct 2026 15:42:58 +0000 (UTC)
 Received: from aesteve-thinkpadp1gen8.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4760518002B1;
-	Wed, 21 Oct 2026 15:42:39 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2202E18005AD;
+	Wed, 21 Oct 2026 15:42:49 +0000 (UTC)
 From: Albert Esteve <aesteve@redhat.com>
-Subject: [PATCH RFC v2 0/8] memcg: dma-buf cgroup accounting and charge
- transfer
-Date: Wed, 21 Oct 2026 17:42:21 +0200
-Message-Id: <20261021-v2_20230123_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com>
+Date: Wed, 21 Oct 2026 17:42:22 +0200
+Subject: [PATCH RFC v2 1/8] memcg: Add MEMCG_DMABUF accounting
+ infrastructure
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQrCMBSEr1Le2kjy0saflSB4ALdSQk1f2ohtJ
- ClBKb27oR7A3cx8MN8MkYKjCMdihkDJRefHXHBTgOmbsSPm2twBOSpe8T1LqHOWXKDU02OgYBw
- F3XnfPUkbPzBbltbYu1CV5JBvXoGse6+KG1wvZ6jz2Ls4+fBZtUms6GcQ+N+QBONMSVQ7LoxUB
- 3EK1PbNtM0Q6mVZvsLwuMfWAAAA
-X-Change-ID: 20260508-v2_20230123_tjmercier_google_com-f44fcfb16530
+Message-Id: <20261021-v2_20230123_tjmercier_google_com-v2-1-ef6ee2dd8c5c@redhat.com>
+References: <20261021-v2_20230123_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com>
+In-Reply-To: <20261021-v2_20230123_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com>
 To: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
  =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
  Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
@@ -105,30 +104,30 @@ Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
  selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  Albert Esteve <aesteve@redhat.com>, mripard@kernel.org, echanude@redhat.com
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792597359; l=5394;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792597359; l=8161;
  i=aesteve@redhat.com; s=20260827; h=from:subject:message-id;
- bh=MS4zwLlyVCfwhsSvb1IeSKwj4iG/Qm98gmNYNJOwbsM=;
- b=agyIVdfvg7HqBQCD4OxEOrWUHQwfY+kfAKV8I5NR48qkBfOIAqjk9GzNSjeD7lsMVDMJTFUqg
- g2gQ3mohTjRADVTwZUpCc8K+uUr31IpGojhy7WEy0K4qRkTd2hYgodF
+ bh=uQH7UhskNWoMAVf3cHwhudyW2OlVTtHrF31AhHpWtUI=;
+ b=nsHRl/ZgVbi4E0QPaytAAh7L9X39h8F5H46BFOjlKcT/OoYIbi+O9KCY/PcAh1aGuaUi8pmr9
+ wKtBuHz9OvPDC1QNK62PhlWdcIGbE5BuOq8HpfQc47zUtc4UjR1IJc9
 X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
  pk=zI2RBeZgocwYm3AkJW4CtjoJnKoDZrfBl1xe5Ed6h+U=
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: b7D9V0twLEexJi0RIyT-9MPT2GE-8CYoJYbQbD69k5M_1792597371
+X-Mimecast-MFC-PROC-ID: TtquTGmiD4kHRPiqewwAH9poJCGrFvpuclTzrJdIfEw_1792597379
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 70B63C0004
-X-Stat-Signature: 9ytcix11uufjxe3nuw6e36h6sun7so49
+X-Rspamd-Queue-Id: 961751C0009
+X-Stat-Signature: qogkt5ougcygdwsbi5y3y5uayo863dsb
 X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792597379-438813
-X-HE-Meta: U2FsdGVkX1/akTqU7AWTFTT1Mu1E0JIYafUiOnS9DptS9hlYfR6JRqUyVIUjYbsUURSimK0JeLrL2sKd9UMR2rZ2DmZb9xb3pAFpSRJ2CCVhBB+6bUaPf7BTaOpr9APIr0F38hXj4nfYCQIZTt52e6+LDS50z1Gtm53KoMp6fMjlw3N/grOKoC/wbEyKIArHFgqHik5d/llq0I21/lO8jipmAuxJe0X6e4ZHLE7acn3/wBlFj0Ys7ehGYKCm+mhKjHuoAHPPQBLU4pvbqYj92+TYiSiUqjoE6Elqpb76Ne5HHnhBvi/RnR6OEeu9AabxTme8MahovVZ6bk3XXH7unpU3JPrEDX5p4++5zn8e/bCNgS7JjXcV7GfTfWnhTTVW6xz/HoUJb/8uqo/1Sp523CYLx3Z63Qiimkfiu6qWAtDwz8nEWAwtIL+YcpQQsc1a+3zqV8JRDAujqhZYaaDYPawLk7qlhOeGoH6QsXQQKMBrjffGj6M0Bglaetl5SgSHBt311cwpt6ArLKCC99rmp6rrJieolD7GzLioXMzV57IQaE2Rgk3bNiOOL1RTA1uRRfWxCprF79pWC7TIChsqXPsOodRTAS59j711rjcKrt/2b6o1dy+BnZjdJ8saVsnr7TyOGS1D//PGvE5lZitOH5cskiUoZXYuhD3bgbh6MGCKfHz8JS+bz7rhBdi5Vt6su+dS3ovNSCJ0Q4P/RJyHxjIm+7Ij5jnX7OSRZcqZboUN/nSzIh8cMHodtJilb2hFf5e3sgugAxMD82I4iCkj4SqBnkS7tUwd9AxgSfMkc6kcdsiSUiwiCBoICyBdwC0GT9MrE365LnVRqOBFFuE8JflW+IF35wh1lYEjorLHf4SKbT5mGfPx0zb6YBdoHZm/opabI9H2B1Bn0Wn88DuekTg11/b2ew+2/JSjNu8RelkicaGospKdf5FHkkFJNa48bVtwaGmhDPGlQVh0hfn
- 4SBoOCJS
- 6Ba0gATVWDS9PzEoOYpbNV3cJZlHGM8HGWFoPM9XW66TLsKI5zEk9oI7h6fiqfoLgYUZjz7VqmJuEUwqSpe7VQFzmd6E2b1JT/dN7i9W0cQPThSpTNQk2cMgBxAN34ULfW6l0Gc/YO021juRJdjiaMVGqhtv2/8ZfdmT1DeKYLV1Hhwk1H8zjZijw2qSc3/m/cpGilVPsSD0JRXrGMpnt2rMEvzlgNDmtcPBuUT94fFC4z+Bsy0Uk5z36nP+Pc5HTvtSZmda9Zv/4Iv/bfsYCswYC9VGphRJNdRfGpitCfTqSde+GYUu+iemV44lcOTte1o+TtxQrTmxhpeS6iefdhGeoyr6qVNB2TkD0Z684NQFDKRYmkFLScMkN5ZwIpRiwdA/Zi4QQ5yObfxZXB8B65LcaWM/11JHiay3KUtmQywXzEuVyV1wEFy25RMk+ePq3HYsvF/9TeHCh8LrtsWkVHA68aWBvk9aOe3zEbI3mblKD6cw=
+X-HE-Tag: 1792597391-184249
+X-HE-Meta: U2FsdGVkX19ZPi81yinKB7EvTIsgg5EcoVdef5kSABmc3fptovx/voVwCGvVRCRRNdimjUteDIsFPI4q2CWyAZQmNRjzqbbNXQj/g2/i5UlAMZToGMRrQBXTCJficxlYw+Co++ASPKnbsbL5NUjR5uwWFteaBcmtXM2sUlNwBwiFs7drYxNCBZi8uGSr9ijs0YhtzetTDhhEyNMyMN1Z3230apFt+uP33xaJS7M2COoHtrrCryyjGRVotnGCVvNpS2omo9iBZSoAbKHE78cdjlb8VNsaACQyTKGSyeOwA8IfulEIKogK8h+jc2ereMdRgG6IdVIFZRRG0NAk6Vhhlz45si7CqLIcLnhSjcmc7Vi6aWMnPHoTQvofV/XBHwK1oOttWs+cKrFNWak+RCMsvqBqyHfT2WQr7/Und1jp6wcjIjT0y3s+WmgrNkQON1J4pSPsmfRQ/utt2ZkU6UYJx3EsyrnDYk16kNEbniMRkTqEt6GIpGwuL36gRXrWknSY9FbS1CLmfstgL/Ij+wc+rozCRvAGlh55QuICvcTMdnUpJAxxlK9W9D0rmC0m8zJUAfeaJHCKF4+kiWDYcSNAiAm3aRsKerSLXHrynZyNTg4GA4zo3aHRv/dHkONd2bwNr0TeCoho71YrHWs2Y2ME3mGX9Msgn3/iqaXyr8FSdPAhn0z8X1iUO5d+eTIsXTNsZ1TegOApN2WmkIjT4VwXnZaUtyPfREIh1WipasqFgEK5/C0+bPZq/nA5/J1JF0oulA4a5wNsPx50GbXGD859Oy/m0lPw2ZZ8/hwSgmM9VGs1SNosi2AynhQin9KJVh5kCMHSafEzPbUtu5rVcOBHpIK6//JycXH+SErqDixr5keHIeHIqui0YX/l9jX0JF/DRJgS2WW5+cU5E7NvGieiPK0W/gLWLo8Fq1klNAMNQqVIcHiB9MVX4qOKjttuSxoG1nmDPEfAknD3LQlEZNK
+ JwGr72V+
+ t5hU5EFCsyaxtHX3xzHlDX1zrheLWUezg0dZ3Wau0FRh/rfTOJSzbDo0FQ0Xbq+bQpVCpUH8HKvFBpJ+tfslA3WqTJBAQiIE3Bj8nUSR7h9Dj4hK6j7vY8U3UEyGjd2I1QWN5u3C434eoBHhYxeVcspopluHOYEt//XKPiBg8u0gN8cw2vAOxaXM5aI4F15inVSP9Ce60n6ZqW9SI+BsAwhP42U9afcqp7568Z9RfH7XKP4c29pmx/a3jamWw6buc5F0gxvRMgeXEI7kk9RHLC3izk/9HadowYrCbghWml5KFL+el+D1RUj6AyXnfILxKD/kWY7NSWgp7nt1p0lzcMfWhqEiJ6nVt0lJ6LL9U0xc+9I0+lw7cgH/p/XKzqXcsWwPlB9kbcxBuhT4sZFfGiCPpCh+lp1rL20yYUPfQKE9ybax5Iz5x7FYFYfA4mHNwNCsjfpMewf/P7Esgbks6Q0qSMCNjOUCGBe1eaAiGcB1zMx0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,115 +136,262 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series adds memory cgroup accounting for dma-buf allocations,
-building on T.J. Mercier's earlier series [1] and incorporating
-feedback from the v1 and LPC discussions.
+From: "T.J. Mercier" <tjmercier@google.com>
 
-Patch 1 introduces the MEMCG_DMABUF stat and charge/uncharge helpers.
-Rather than charging at the page level via __GFP_ACCOUNT (which would
-require every dma-buf exporter to implement charging, and makes
-cross-cgroup transfer impractical without access to backing pages),
-we track charges externally on struct dma_buf via a MEMCG_DMABUF stat
-counter and route all accounting through a single path, removing the
-__GFP_ACCOUNT flag from system-heap allocations to avoid double
-counting.
+Introduce a MEMCG_DMABUF stat counter and helpers for charging,
+and uncharging dma-buf memory against a memory cgroup:
 
-Patch 2 adds a charge_fd field to DMA_HEAP_IOCTL_ALLOC, accepting
-either a pidfd or a cgroupfd to identify the target cgroup at
-allocation time. If the target cgroup cannot accommodate the charge,
-the allocation returns -ENOMEM.
+The charge is tracked on struct dma_buf via a new memcg pointer. The
+page count is derived internally from PAGE_ALIGN(dmabuf->size), and
+the memcg reference is stored into (or cleared from) dmabuf->memcg by
+the helpers themselves, removing the need for callers to manage those
+details. The release path in dma_buf_release() is reduced to a single
+mem_cgroup_uncharge_dmabuf() call.
 
-Patches 3-4 add LSM hooks for the two charge_fd flavours:
-security_dma_buf_charge_task() gates the pidfd path (target
-identified by task credentials) and security_dma_buf_charge_cgroup()
-gates the cgroupfd path (target identified by cgroup directory label).
+This decouples accounting from the backing page allocator, avoiding the
+need for every exporter to pass __GFP_ACCOUNT and enabling cross-cgroup
+charge transfer, which is impractical with page-level accounting.
 
-Patches 5-6 implement the SELinux side under a dma_buf object class
-with charge_task and charge_cgroup permissions. For charge_cgroup,
-the target SID is derived from the cgroup directory's SELinux label.
+Remove __GFP_ACCOUNT from system-heap page allocations (added by
+commit 3c227be90659 ("dma-buf: system_heap: account for system heap
+allocation in memcg")) to avoid double counting once callers adopt
+this path.
 
-Patch 7 adds DMA_BUF_IOCTL_XFER_CHARGE, a general ioctl on any
-dma-buf fd to transfer charges (or charge) post-allocation. This
-covers the double-hop allocator case (SurfaceFlinger -> gralloc) and
-works for buffers from any exporter (DRM, V4L2, etc.). If the
-receiving cgroup lacks capacity for the charge, the ioctl returns
--ENOMEM and the original charge is preserved.
+The next patch wires up the charging policy in the dma-heap ioctl.
 
-Patch 8 adds selftests.
-
-Known limitations:
-
-- Single-owner model: a dma-buf carries one memcg charge regardless
-  of how many processes share it.
-- Only memcg accounting. CMA heaps would additionally need dmem
-  controller integration.
-- Charging CMA-backed heaps to memcg charges unreclaimable memory:
-  when a cgroup hits its limit, try_charge_memcg() may trigger a
-  reclaim pass that cannot free CMA pages. A future version could
-  move charging into per-heap callbacks.
-- If a transfer of an uncharged buffer fails, the buffer remains
-  uncharged. The allocator (userspace) is expected to handle this
-  (e.g., retry, free, ...).
-- The LSM hook is intentionally narrow. Broader cgroup access controls
-  could be a separate effort.
-
-[1] https://lore.kernel.org/cgroups/20230109213809.418135-1-tjmercier@google.com/
-
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
 Signed-off-by: Albert Esteve <aesteve@redhat.com>
 ---
-Changes in v2:
-- Move charge_pid_fd to charge_fd, accepting cgroupfd in addition
-  to pidfd per Christian König.
-- New DMA_BUF_IOCTL_XFER_CHARGE ioctl for post-allocation charge
-  transfer on any dma-buf, not just dma-heap buffers per Christian König
-  and T.J. Mercier.
-- Moved __GFP_ACCOUNT removal to patch 1 per Barry Song.
-- dma-buf charge/uncharge helpers take struct dma_buf * directly
-  to avoid the need for caller to manage size calculations.
-- Added test_xfer_charge_cgroupfd_self to dmabuf-heap selftests.
-- Added LSM and SELinux hooks for cgroupfd-based charging.
-- Rebased to v7.3-rc7.
-- Link to v1: https://lore.kernel.org/r/20260512-v2_20230123_tjmercier_google_com-v1-0-6326701c3691@redhat.com
+ Documentation/admin-guide/cgroup-v2.rst |  4 +++
+ drivers/dma-buf/dma-buf.c               |  3 ++
+ drivers/dma-buf/heaps/system_heap.c     |  2 --
+ include/linux/dma-buf.h                 |  4 +++
+ include/linux/memcontrol.h              | 20 ++++++++++++
+ mm/memcontrol.c                         | 54 +++++++++++++++++++++++++++++++++
+ 6 files changed, 85 insertions(+), 2 deletions(-)
 
----
-Albert Esteve (7):
-      dma-heap: charge dma-buf memory via explicit memcg
-      security: dma-buf: Add dma_buf_charge_task LSM hook
-      security: dma-buf: Add dma_buf_charge_cgroup LSM hook
-      selinux: Restrict cross-cgroup dma-buf charging
-      selinux: Restrict dma-buf direct cgroup charging
-      dma-buf: transfer memcg charges via DMA_BUF_IOCTL_XFER_CHARGE
-      selftests/dmabuf-heaps: Add dma-buf memcg accounting tests
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index 86a2a0099178..a3265a4a953e 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1662,6 +1662,10 @@ The following nested keys are defined.
+ 		Amount of memory used for storing in-kernel data
+ 		structures.
+ 
++	  dmabuf (npn)
++		Amount of memory used for exported DMA buffers allocated by the cgroup.
++		Stays with the allocating cgroup regardless of how the buffer is shared.
++
+ 	  workingset_refault_anon
+ 		Number of refaults of previously evicted anonymous pages.
+ 
+diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+index 4c9add51f9ef..f31f49ebd0af 100644
+--- a/drivers/dma-buf/dma-buf.c
++++ b/drivers/dma-buf/dma-buf.c
+@@ -14,6 +14,7 @@
+ #include <linux/fs.h>
+ #include <linux/slab.h>
+ #include <linux/dma-buf.h>
++#include <linux/memcontrol.h>
+ #include <linux/dma-fence.h>
+ #include <linux/dma-fence-unwrap.h>
+ #include <linux/anon_inodes.h>
+@@ -180,6 +181,8 @@ static void dma_buf_release(struct dentry *dentry)
+ 	 */
+ 	BUG_ON(dmabuf->cb_in.active || dmabuf->cb_out.active);
+ 
++	mem_cgroup_uncharge_dmabuf(dmabuf);
++
+ 	dmabuf->ops->release(dmabuf);
+ 
+ 	if (dmabuf->resv == (struct dma_resv *)&dmabuf[1])
+diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
+index c8959eadc71d..0a99ac0183a8 100644
+--- a/drivers/dma-buf/heaps/system_heap.c
++++ b/drivers/dma-buf/heaps/system_heap.c
+@@ -388,8 +388,6 @@ static struct page *alloc_largest_available(unsigned long size,
+ 		if (max_order < orders[i])
+ 			continue;
+ 		flags = order_flags[i];
+-		if (mem_accounting)
+-			flags |= __GFP_ACCOUNT;
+ 		page = alloc_pages(flags, orders[i]);
+ 		if (!page)
+ 			continue;
+diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+index d15b2b31d3c9..23ec0ff23fba 100644
+--- a/include/linux/dma-buf.h
++++ b/include/linux/dma-buf.h
+@@ -27,6 +27,7 @@
+ struct device;
+ struct dma_buf;
+ struct dma_buf_attachment;
++struct mem_cgroup;
+ 
+ /**
+  * struct dma_buf_ops - operations possible on struct dma_buf
+@@ -429,6 +430,9 @@ struct dma_buf {
+ 
+ 		__poll_t active;
+ 	} cb_in, cb_out;
++
++	/** @memcg: the cgroup to which this buffer is currently attributed */
++	struct mem_cgroup *memcg;
+ };
+ 
+ /**
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 7d1c0ce189a8..aa08fbb0c26c 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -10,6 +10,9 @@
+ 
+ #ifndef _LINUX_MEMCONTROL_H
+ #define _LINUX_MEMCONTROL_H
++
++struct dma_buf;
++
+ #include <linux/cgroup.h>
+ #include <linux/vm_event_item.h>
+ #include <linux/hardirq.h>
+@@ -40,6 +43,7 @@ enum memcg_stat_item {
+ 	MEMCG_ZSWAP_B,
+ 	MEMCG_ZSWAPPED,
+ 	MEMCG_ZSWAP_INCOMP,
++	MEMCG_DMABUF,
+ 	MEMCG_NR_STAT,
+ };
+ 
+@@ -667,6 +671,9 @@ int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp);
+ int mem_cgroup_swapin_charge_folio(struct folio *folio, unsigned short id,
+ 				   struct mm_struct *mm, gfp_t gfp);
+ 
++bool mem_cgroup_charge_dmabuf(struct dma_buf *dmabuf, struct mem_cgroup *memcg,
++			      gfp_t gfp_mask);
++
+ void __mem_cgroup_uncharge(struct folio *folio);
+ 
+ /**
+@@ -682,6 +689,8 @@ static inline void mem_cgroup_uncharge(struct folio *folio)
+ 	__mem_cgroup_uncharge(folio);
+ }
+ 
++void mem_cgroup_uncharge_dmabuf(struct dma_buf *dmabuf);
++
+ void __mem_cgroup_uncharge_folios(struct folio_batch *folios);
+ static inline void mem_cgroup_uncharge_folios(struct folio_batch *folios)
+ {
+@@ -1167,10 +1176,21 @@ static inline int mem_cgroup_swapin_charge_folio(struct folio *folio,
+ 	return 0;
+ }
+ 
++static inline bool mem_cgroup_charge_dmabuf(struct dma_buf *dmabuf,
++					    struct mem_cgroup *memcg,
++					    gfp_t gfp_mask)
++{
++	return true;
++}
++
+ static inline void mem_cgroup_uncharge(struct folio *folio)
+ {
+ }
+ 
++static inline void mem_cgroup_uncharge_dmabuf(struct dma_buf *dmabuf)
++{
++}
++
+ static inline void mem_cgroup_uncharge_folios(struct folio_batch *folios)
+ {
+ }
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 856a7d07586c..e94222237d31 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -69,6 +69,7 @@
+ #include <net/ip.h>
+ #include "slab.h"
+ #include "memcontrol-v1.h"
++#include <linux/dma-buf.h>
+ 
+ #include <linux/uaccess.h>
+ 
+@@ -442,6 +443,7 @@ static const unsigned int memcg_stat_items[] = {
+ 	MEMCG_ZSWAP_B,
+ 	MEMCG_ZSWAPPED,
+ 	MEMCG_ZSWAP_INCOMP,
++	MEMCG_DMABUF,
+ };
+ 
+ #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
+@@ -1625,6 +1627,7 @@ static const struct memory_stat memory_stats[] = {
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	{ "hugetlb",			NR_HUGETLB			},
+ #endif
++	{ "dmabuf",			MEMCG_DMABUF			},
+ 
+ 	/* The memory events */
+ 	{ "workingset_refault_anon",	WORKINGSET_REFAULT_ANON		},
+@@ -5658,6 +5661,57 @@ void mem_cgroup_flush_workqueue(void)
+ 	flush_workqueue(memcg_wq);
+ }
+ 
++/**
++ * mem_cgroup_charge_dmabuf - charge a dma-buf to a memcg
++ * @dmabuf: buffer to charge
++ * @memcg: memcg to charge; caller must hold a reference
++ * @gfp_mask: reclaim mode
++ *
++ * Charges the memory backing @dmabuf to @memcg and, on success, stores
++ * @memcg in @dmabuf->memcg (transferring the caller's reference).
++ * Returns %true on success, %false if the charge would exceed the limit.
++ * On failure the caller retains its reference to @memcg.
++ */
++bool mem_cgroup_charge_dmabuf(struct dma_buf *dmabuf, struct mem_cgroup *memcg,
++			      gfp_t gfp_mask)
++{
++	unsigned int nr_pages = PAGE_ALIGN(dmabuf->size) >> PAGE_SHIFT;
++
++	if (mem_cgroup_disabled())
++		return true;
++
++	if (try_charge(memcg, gfp_mask, nr_pages))
++		return false;
++
++	mod_memcg_state(memcg, MEMCG_DMABUF, nr_pages);
++	dmabuf->memcg = memcg;
++	return true;
++}
++
++/**
++ * mem_cgroup_uncharge_dmabuf - uncharge a dma-buf from its memcg
++ * @dmabuf: buffer to uncharge
++ *
++ * Reverses a successful mem_cgroup_charge_dmabuf(). Drops the memcg
++ * reference stored in @dmabuf->memcg and clears the pointer.
++ * Safe to call when @dmabuf->memcg is %NULL.
++ */
++void mem_cgroup_uncharge_dmabuf(struct dma_buf *dmabuf)
++{
++	unsigned int nr_pages;
++	struct mem_cgroup *memcg = dmabuf->memcg;
++
++	if (!memcg)
++		return;
++
++	nr_pages = PAGE_ALIGN(dmabuf->size) >> PAGE_SHIFT;
++	mod_memcg_state(memcg, MEMCG_DMABUF, -nr_pages);
++	if (!mem_cgroup_is_root(memcg))
++		refill_stock(memcg, nr_pages);
++	mem_cgroup_put(memcg);
++	dmabuf->memcg = NULL;
++}
++
+ static int __init cgroup_memory(char *s)
+ {
+ 	char *token;
 
-T.J. Mercier (1):
-      memcg: Add MEMCG_DMABUF accounting infrastructure
-
- Documentation/admin-guide/cgroup-v2.rst            |   5 +
- drivers/dma-buf/dma-buf.c                          |  80 ++++++++
- drivers/dma-buf/dma-heap.c                         |  72 ++++++-
- drivers/dma-buf/heaps/system_heap.c                |   2 -
- include/linux/dma-buf.h                            |   4 +
- include/linux/lsm_hook_defs.h                      |   2 +
- include/linux/memcontrol.h                         |  29 +++
- include/linux/security.h                           |  14 ++
- include/uapi/linux/dma-buf.h                       |  26 +++
- include/uapi/linux/dma-heap.h                      |   7 +
- mm/memcontrol.c                                    |  94 +++++++++
- security/security.c                                |  32 +++
- security/selinux/hooks.c                           |  40 ++++
- security/selinux/include/classmap.h                |   1 +
- tools/testing/selftests/cgroup/Makefile            |   2 +-
- tools/testing/selftests/cgroup/test_memcontrol.c   | 145 +++++++++++++-
- tools/testing/selftests/dmabuf-heaps/config        |   1 +
- tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c | 222 ++++++++++++++++++++-
- tools/testing/selftests/dmabuf-heaps/vmtest.sh     | 205 +++++++++++++++++++
- 19 files changed, 974 insertions(+), 9 deletions(-)
----
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-change-id: 20260508-v2_20230123_tjmercier_google_com-f44fcfb16530
-
-Best regards,
 -- 
-Albert Esteve <aesteve@redhat.com>
+2.55.0
 
 
