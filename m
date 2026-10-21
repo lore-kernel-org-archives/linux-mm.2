@@ -1,138 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DF460A3817
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 12:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C5160A260C
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 12:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Sw+K+Upy
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XcyyqX1c
 Received: by kanga.kvack.org (Postfix)
-	id 4B1516B0701; Wed, 21 Oct 2026 08:32:11 -0400 (EDT)
+	id 414336B020C; Wed, 21 Oct 2026 08:52:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4614C6B0702; Wed, 21 Oct 2026 08:32:11 -0400 (EDT)
+	id 3EB326B0703; Wed, 21 Oct 2026 08:52:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34FCF6B0703; Wed, 21 Oct 2026 08:32:11 -0400 (EDT)
+	id 2D91E6B0704; Wed, 21 Oct 2026 08:52:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A0836B0701
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:32:11 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2186D80506
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:32:10 +0000 (UTC)
-X-FDA: 85346570820.27.7A3C046
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3870E100002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:32:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Sw+K+Upy;
-	spf=pass (imf05.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792585928;
-	b=3kCG+SFfXzQIyWEqBMaWOn+t4Ib2+hq24n3DjQyPMpAsh2rik20bpbQz2tjwW0v2t3EIa3
-	SyumjSy8hmVxGWP8H8MRpnRLp5xWKXn7zedNhCLXTXB+Z2jI8FTooiZM0EC31+tsWpLRs3
-	6egFJkG+e8de78iu6BSo3Ap34jYj79Q=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Sw+K+Upy;
-	spf=pass (imf05.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EFFDB6B020C
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:52:02 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9108A4054E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:52:01 +0000 (UTC)
+X-FDA: 85346620842.06.D21278E
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B9AA8A0003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:51:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XcyyqX1c;
+	spf=pass (imf25.hostedemail.com: domain of krystianmkaniewski@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=krystianmkaniewski@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792585928;
+	s=arc-20220608; t=1792587119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ce1C2Fjg1s3ZxxFhfwNc4CspMfGOZG4qRjZvIxl9lQ=;
-	b=YaJrr8s5arnYri7dWjU0zk3Vheck/3MTeMqC6D2ERveJO0QJCYgsnwdrZKoVwg4vmBiUPg
-	4XCxRaBmBNToTq3h5b89xLdhKTUhaYRtp9cEupOxLOh4EK+dwZVyHFYVTKJFnvwJjCMC5W
-	5pLYm1UJKepHEv2PCjwVT5RTqPqfiHk=
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-15dd124bbe7so1202496c88.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:32:07 -0700 (PDT)
+	bh=Mn8oXMgO7ys8gs1NirtIayuQ3LSb5RT+jR9DaBN+G6Q=;
+	b=2eci5bVCcCKG1lCrDaxWJWVlP2KmgMnwo+Q4jFm/N0HPti2MDvjqlFWH1xbTG3YdbHr6PB
+	LQ6aZS9veeiwU3sfHMiz99XvxgVRGdWW8bq/K/A0mp/L9QSwccjGjPB7tI/BGRzKIEAvq8
+	UVRp+h1Bz6iGdEHIzI3SKDJjCOD9/M4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XcyyqX1c;
+	spf=pass (imf25.hostedemail.com: domain of krystianmkaniewski@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=krystianmkaniewski@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792587119;
+	b=dU3f9oCjpvFGg5Xl+4ircFC+5ghJsiLj7wfHT8aAFoFMx1MmLrWbl/Z9xby/iMMuNIuAMa
+	JzCjrb/9kUnEo6eCu7vzl0YsaZYICVTOwJP6sspNX/SKw0velPNNDpAfroRmiNGYQsHYoa
+	H3mEunvApX9lqxi4RsrfFivF9vHP3jA=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c40f29667e6so102737166b.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:51:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792585927; x=1793190727; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792587118; x=1793191918; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/ce1C2Fjg1s3ZxxFhfwNc4CspMfGOZG4qRjZvIxl9lQ=;
-        b=Sw+K+Upy1SdZGaZfnaz3HIAeDdHAOsAqsgJXyGYNmT3SS+9m1Bjie5XjzMg5cPDL49
-         i1RYJDQADf8U/eLtL4HGZ5P3qSFSkGqJYGBedPxsos8crool0sjvq21i6eGAFCPC8nE9
-         Y2sngq1Mh1bDb6ZGGtxbSWIR9C0zd6JQ3NgF4Rg4repoRaeHL1hbKkDNygtk1SnK07QK
-         C6jMIFlq7uYBKW/ND6e9HSmjB4WK53B+8DNolnc6CkWveR444e+3Pj7zWBDEcbUPgt1D
-         XpyZfdEFA8I7O0IrAdWnEl5KFMFgdOvAdQXW07PgbkMp28WZSB4d4tH+UsTe1QqXacky
-         yCPw==
+        bh=Mn8oXMgO7ys8gs1NirtIayuQ3LSb5RT+jR9DaBN+G6Q=;
+        b=XcyyqX1cjkhZ8317NeC9rG6n2RK+7MGvr+IcGLHQHAwj8VdK3er1ZCTyfjz5c32DRy
+         zDAfA1nLXlDk0KTh8/8gplUfnOuHvtp5IkWSB0G8yVs2fRIG4ByHsEKiigqD1RK3dBBC
+         KzSceJwsb4W6x10mPS/kwWXo6jESmMmv1yfRmZeLMAmRCxZf4SIhgLdaeHyZjIn5vPbP
+         YPyB0qTDMX1dlG6D+LB5rRjuVjY0wkMyEvwZx9boPf+apq5u9cNY+vvszAyyUBJuO3Gn
+         iT7XKA61n1qj+GhSlvbIlq9t1n+nFBdiIbFnOcFx+MKBhJXbHgdYxhtHkXyoLK0I8AX6
+         Pbcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792585927; x=1793190727;
+        d=1e100.net; s=20260707; t=1792587118; x=1793191918;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/ce1C2Fjg1s3ZxxFhfwNc4CspMfGOZG4qRjZvIxl9lQ=;
-        b=EisxZon6zxt1zpaIhfB1Fa99MMkXRFEKaN/KTxImQXBOcEYGyhNPOB5tlP0CYm5uN5
-         rvKtQ2bzELVuGN5F2v86gMeCiwhwWXMlMOBmGnmGsQMx0/GOU41vwZvRkjQtx/JMrfx3
-         B/Si72VQq9wo7eW+P2o+03Kz0kNP5VmgQI2RkkMjNHLwllHsRqiglMDR3PnaEPkCf1uD
-         cwsZ3e10m8f67bp2fHYYaC6OBhnJO+m3g0oqgG4mXmXfuGzenHfMadp+bhVYEhhjXLE5
-         ti7KpJ22t2QrWYtR0WHgDeR9lu7/HCbvC0vCI0FskyNdA2cxfxsuSGvTb8hmxLfb0B05
-         whcg==
-X-Forwarded-Encrypted: i=1; AKwUvBxEn1oPyQfCM0gCs/JyExtkn/ecI/Mga1EztZla1ldm/qDZVTvXz+wGtc2nkjB9H1G3iV7g5zfsyQ==@kvack.org
-X-Gm-Message-State: AFq9FYKlUV9lIqkPxXOez8PP/prkviA2/nO5dDvHEmkrHSqxrtMZvlOV
-	dCizrAdkg52/+iv9XTiw0+iFsAVQIgBJBG6UDqcPSj5W44PI45RuNKj2
-X-Gm-Gg: AYBFou2RROBnXMf+Oax1eK7qIS7yn73xpRggdBb1M51xBAu4yr5YD0Wl1j3dCkNoY5V
-	BkCy4mCUoCVwp7vulERz+TObDq/Id2zfsIifCfFxiGso8iR/DoDPRQh0kqrs0nHjbK8ysAWYshp
-	oKIhQIM9CX1Tro3vH0QzbejY6OOmBWA5j84V4/BJweVMkl490XYp4tEEl3qsJWx2G0R47vDNkzF
-	HUHZJlDAqL5LC8+QMb/PMqRsP6y1jFLWBVP3fskC+HBPR1D57CeabJfJTPTy+dZTeSIsCHESZdQ
-	mhqkcLeKlcRLyh7KO052yQBkelBQWcS8Ek0G/+D3j5jyBYxPVKlQUPIIy/o9V4WknUmC/Vmp9P2
-	4pc65nQ96nmw8fXmmZDBsAnRuYsjDbK03D75XMvmwwPrWqiU5WaxL/ZLS8cxlCNOqs0LeOjAMh9
-	rWC9sYvgNlEwiyUhy9pCngaY+8SeP5uJh8J46Nno6ZeJg2RTIMOAt1kdfpnvh2dWFePWGj5TuCA
-	f7IuxKbP2sT39aeNIf0LXXvwrMsw+OOibFptUrL2oEzYcdCjC9yYMDFyMHSXwn4rWl1T6m6Cw==
-X-Received: by 2002:a05:7022:5f1b:b0:14d:baf5:c419 with SMTP id a92af1059eb24-1909f5c8400mr1785476c88.6.1792585926762;
-        Wed, 21 Oct 2026 05:32:06 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903e02901fsm6268475c88.22.2026.10.21.05.31.58
+        bh=Mn8oXMgO7ys8gs1NirtIayuQ3LSb5RT+jR9DaBN+G6Q=;
+        b=TBimhAxDDHLXoyA/bXYMBRznnqnfJN0vgxq+Eq6dSikUYjBHw6nT/QrHvEY9LWFl2f
+         TVyRRSiLuzNbW8OW1gx7Fmea5DtB5Xq1LMyUZKD4xOEWWtBRqPFlzCbWqP83bOQ9sA48
+         yeC0yWFSSo0aqhnS6oJU1ao94caqGGCtidsgJXP8eWFS/f8CorNfTzu6FFdzBZNRv3+9
+         WA6AootoFc6NmgKMLsMy7cdxAqmcKfV8Hfju7kF4cCg7qFS5YqzR5qxz2yXMKME6RCzO
+         EpA0mcAYYSx82eYosq9dcQBlkngz1hcsuRdH9ejMKr9WQK3FKDb50q923T0gq89J64iD
+         AE6w==
+X-Forwarded-Encrypted: i=1; AKwUvBzOqzdLwTQ4NjhdTKl4gi97McC08/lQwoxf+dHizB0zfUFGlH09MGEVYfGHauNvBI4jbrlJ3oyK6g==@kvack.org
+X-Gm-Message-State: AFq9FYKWxGQgFhDiFwUY43DXohOroXDQLpnL/HtzDkvJyF5L5Vopd9wo
+	62gROAYTG8pC4wQ4XFtoyeg3cvzqa9GH4StIaVgixNP3mmRNNKJ3kWz4
+X-Gm-Gg: AYBFou3MIbk86QtC/JdHA9CFl+1Va0a3sXvk7NA1Vu2m3cxKwtayaLu0ZQHJ3/18BKV
+	41M+zbyHs3UwxqwgJtK37Xu+u/EWkFk/Bbkvwej9SNKUs6JDL4k6Pddm4LNR4no1uBJtmKUEVNL
+	4Ox63JEFdyq6alAgCG//FniwBfq+RgNw4dwDm7ywxtLu1u1T/DaGbkX1oWM6yQBqgrGMKVZEo8i
+	/o0+QTcwQyFHBB7u8NDqfygWc78V8KzcYO7ram86GOH6CLhBfQvCkjJa/+ISX2EFYRI9rfUrw6f
+	Cz26jiBoa7quuzStdx8tAx9W+Ni3d5Uutexv4nBBZr7Cn8/7jj1y5EgsuRfATagJGa6Mhw+rl0a
+	vBXfoVibYSos0aX0NRKZy1l9DQaCixA2hDnrGoRNrpq9MxtjrOop/ewg8/XcRtvHErK+0h8y/OG
+	vgV74Iqo/1/pCeJSM2jSC1didqGaoupjvn3qoQBA53L5Md8Vxv0vEN56CB1id/NA2sdXPr/WMQ4
+	r7u9WgUV5arnV9H6ENEqoD8ikqWKBTagA2KBgeezHskUePCnAbQJ55vEwfzYleg+c71W416eoOy
+	gJ2eewZ68ytRxkTvMogmQnMFN7io5b+0IE3MwK9b7BxeRmk8kTKgmFsbph4qMLUuXk4iRa0U/Mp
+	pKAU7jLofk5sznASX5BXpECJR4O4rearCRsHQ5lm00oT6k0z0rGlNa9HIalgBEbilAjxFCMOwds
+	1Hpe39eremNYmDRG7T333qgaJ7
+X-Received: by 2002:a17:906:99ca:b0:c40:9839:c892 with SMTP id a640c23a62f3a-c4679594c9bmr175067366b.19.1792587118009;
+        Wed, 21 Oct 2026 05:51:58 -0700 (PDT)
+Received: from Ubuntu.tail0f733b.ts.net (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4679004464sm73128366b.67.2026.10.21.05.51.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 05:32:04 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: vbabka@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ljs@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	zhaonanzhe@xiaomi.com,
-	lipengfei28@xiaomi.com,
+        Wed, 21 Oct 2026 05:51:56 -0700 (PDT)
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ian Kent <raven@themaw.net>
+Cc: Tejun Heo <tj@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	driver-core@lists.linux.dev,
+	autofs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/4] mm: compaction: mTHP-friendly memory compaction
-Date: Wed, 21 Oct 2026 20:31:55 +0800
-Message-Id: <20261021123155.2295447-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <e6ba0e36-c0b6-4cd0-b2fb-fc288468bce4@kernel.org>
-References: <e6ba0e36-c0b6-4cd0-b2fb-fc288468bce4@kernel.org>
+	linux-kernel@vger.kernel.org,
+	syzbot+002fb7b2d0bc53bf7e75@syzkaller.appspotmail.com
+Subject: [PATCH 0/2] kernfs, autofs: fix pipe lock cycles through sysfs stores
+Date: Wed, 21 Oct 2026 14:51:48 +0200
+Message-ID: <cover.1792577179.git.krystianmkaniewski@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
+References: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B9AA8A0003
+X-Stat-Signature: ueampn6r4hcf8oaunxoj1ejjudfinhew
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3870E100002
-X-Stat-Signature: eo6zp1qsc5bmgmus3rgps5acqmnmub7c
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792585927-960094
-X-HE-Meta: U2FsdGVkX18wiVMGnnlltrDBWTS0SdguyqTMNvxVmEHwl3MTsj0bSU5yw8/YjuM+NiAbfCAiYurimApNeuEoCXbic/Mvw11eduRZMbmXuVv183hyYSKWhOP+nj0Ul6JgADb/tIbE1S6rcxeh6KuA7SXy+yCWNkKm98f1umdCoEcG1gbJRVUNGcuvUf4gR20XiZniIzfoHLR3AvkoaAuKz6mALJsiwSkfxa5PDSg+VSP8Tc/Vbm+3MyZi7oKuYJwMqWjF3S8NASoHFE2KZ6Bj6EBq/hHegiQTRSqWZT+L6yboY31g3zvpTwHXE0aNZTU4pRJNIHna2F2v3DUr77VA8/0ZmgKdka2UqG2NBB6zopOsXjo7+AmwJX7OcHhcl60mv1gQcO1vW0Jhu4u+vfs2sHF8eCAGB6b1AwXD0Ss7YXLIBV0Y1jH2CsuDZBN2ppom9gwjUTLT2nWfCuRVfrsdtVrdzM5VtiUHIBIG70ANlpygI378ITFXtyJRVS74ZGgHn2i4xVu4Qa5bB8F6VtRM5Gt7Mb+kCEXdsDhArOJ0vhek30DzxtMCxwBgDnRIE9fLVSbIRbxtSt3foeKd5D3O584F1Kz4E6/QVDMZpWxa+rGrm0CkspCMK9dDUXpUERv7W8odMAsAxFb/CGP7YhH1fl6ufJr1qYFsdNV9rqNI1z32kYwA7VuTkC1ruqdSVvH+Z6W/E535+teVhRcK9uxs3M1iJZ/H5R6NRNU/rQUcXQNlr+Mbtulxj6JY8R2w/BKJEckG87rz3eumXx3H9kZxfxp6C+U6qA4/PzILGpy8caafRHQE77wqTIwEiR5HC/yHDqm/mTknkYJFb7eJuTj/BDa9fs4rPHUvWkaJRcy2lxa56C/3lY9M9wfEXxE3uhseyfTHoV9oEFD4ujNKmMIX7OYiuYwi0KHF4LbJTdb2TZSQW8V+zAfHam6fSNEeV6aQZPoQMVbOl9zTU1JH0r7
- xN5+XAZx
- 70MdrDcg206GWRse51eL4Fpb4Wxr403Jhs8QL0FQ8MW8SbIs8EpHEalt627FIWrOqD7LzJpop7ZzR1N5SnJqCilCucg8taDz279Uh2gULXZxdlhOSyVKIjUr/DS68YMlePeetKqz4qdkr3Ils3ieO662tZtnlP2mIe9sdVTsVRltjKPrlSeKfnyhd3UXQjn0U8q1i+13H7QLtGgQGk8Wim+CRyxZdjg1DejcXdoLhspr1Y/5YDKOQ7DLG4206H/LcK8nZr6QJgXllYUATxEbxYrp8IVYfSHizJxPeAy+O/Hrj/2SebzBdG+Ewxj3+Nf8WKMXYuHTjKoLd4kcj1KZO54RHXXUnJPSO3lr+
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792587119-596090
+X-HE-Meta: U2FsdGVkX1/NxE6zGxe1lBYp+RsFcDhuzJnVF3usBNSDI7mms+q8DDF0dSV7SD5JzBdiMcow/fZms7Cw2JV2YfdoZld8GkTtxOp4Qi+jHOc8bA/yj/sIVBupxjKdD8sOSeh9PdQttuYK3SwHCcWLsa3BRl6PpB2hqIIRj+IbM94a84WGN8kGltFj2B6P0OlfsawiD1txZ8inzqwxVK7Seyqzui3iZK3QdPjHHl6e0h2RZdzsTPRgsYSCOqcT45kfTCB7W1UOYZbjYOYteNza9cuT9vVT7OePGlW8Od80TgkZJztYupa87Uw4cxpltTsMtoa580SVSoAMITrUYtUqBFzx3qcsq4heSadD9C6ZOrxE/oLoJBaDWz4gz6szEfYR9qDG07I/2fT85UpzSoo0nSwWnhzb+EYzPFrhWdujeR0P4eSJsE/A8J5fr8MwOqPJMR3lPIX61MAiyWURwqnYtBg9dsb0HUmvsKRaKdOw9skg83W/DhP3MsSL5+ODzf08LY3prR9yqL+d2DyEpd7crTUYpCBs1H+o+MaKzPR0FOwHjv1rw8AvzA4Yy5Atezoii+oAFI6n4hSQy7oEBL40ouOU60NASOqCGsbLfMH8PpRpnOeNJcpPrQr/wI/0itXKKFh8BvmNOUHZQSpHc0rUIwzPWQWXvJGhmrHYMQRycB7foNFdLy+njSxJWzNvQ9PPkyJ0m5y7wLLerFtlgGArPBL4q35T/zq6sxTxyfjvh+VQuhfXva/DXzYRo6ySO2UlRM9eUkIU/GOhGXigAIkHFj+M4Ikcb+CiNxngmgEeSAdJYW39ylfXXwvFX4GZue7/wCI94jTsC8RKgdmeYkeSdYbXULxa38n+RX7j8nvyJFwOjBvGftABHMOt9ly0Ce8NMz2n3JUpYI35V5MnoL9YKJn3QizFqS69yyZs74/EsSnaPcsXN5N//MDsWJBzYA32Hd87CzIqmI6cuz0PxAx
+ 7tazO5Sz
+ nCMM0p9m5DGWupvi2Y+123dS6LBBaYPrlZhtQWnFxj87Vy6XFuuKdr5ug0iO9WK3j2nMhswMJWHXFTy6B71G1jccPm+aMzQrIbJB2sHrFwasWGqrkGGfSYHRCPKXeBjqDbLLV6jYtbIfoqDdvZr/gSK3mm+Fmc9jwG5d+atTrXY8ElVSzxWnJTtgFygmXPpiLCSeCYu/DsVmzUE1tXSV0z2tbYlSaxq1tFJP5LtOHl8s1hasP60J4ml7s7RT3DFzJCH2l/nO35pFI8EBlFu/+88zF/Jev8t2eLTvpIOCH+TtKgVUgI45//5kxDUIReumrFIiZN58YUm9wQRDURLjK4Juvf5SCGf+owZnmfxiFIv8fAMFZVgVhUxir7ccdvuk8EG4L8Tw+fs2nJivOSD0jlk9deBkwnsokBzlbkmDltCAmLfmLAtbBCAnwjRdnOhIGHoayHiEaiRVukBt81CyQ6idBpTaUQlfZ1zyqPLml8hfRnMEzThEEZGwqQ7eP/EfW17FpSIYcBAPTIcE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,34 +140,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/21/26 11:31, Vlastimil Babka (SUSE) wrote:
-> I'm not going to answer your LLM's questions for you.
+syzbot reports a lockdep cycle &pipe->mutex --> &of->mutex -->
+&sbi->pipe_mutex. splice holds a pipe mutex while it calls the write or
+read handler of a kernfs file, kernfs takes of->mutex there, and a write
+to /sys/power/resume looks up a path that can make autofs write a request
+into its daemon pipe and wait for the daemon.
 
-Sorry for the previous mail, which polished my English by AI.
-Let me put it in my own words.
+Patch 1 stops holding of->mutex around the ->store() callback of regular
+sysfs attributes, which do not get the open file and already run
+concurrently for separate opens.
 
-Last mail you advised me to use cc->order to pass the target order,
-however /proc/sys/vm/compact_memory and kcompactd work could
-only be distinguished by order. Because in both cases the variable
-direct_compaction and proactive_compaction are false.
+Patch 2 handles the case that patch 1 leaves. A store called from splice
+still runs with the pipe locked. autofs no longer sends or waits for a
+request in that context and returns -EAGAIN instead. A new mount is
+refused before it is marked pending, so no other lookup sends the request
+in its place. This also removes a deadlock in which the spliced pipe is
+the autofs daemon pipe itself.
 
-Without adding new members to compact_control, it's impossible
-to use the bool instead of is_via_compact_memory to achieve the 
-same goal (Or maybe I missed something)
+Patch 2 changes behavior for one narrow case. A lookup from a splice
+callback that needs an automount fails with -EAGAIN instead of waiting.
 
-For skip_isolation_on_order, I want the new logic to take effect:
-with a real order it will skip folios already >= the target order.
-This is what patch 3 does.
+The series was tested in QEMU with lockdep using the original C and syz
+reproducers and focused splice and autofs cases. The target reports were
+not reproduced with the series applied, and the paired functional cases
+matched the unpatched baseline.
 
-I will keep the original behaviour for fast_isolate_freepages,
-suitable_migration_target and compact_zone functions. I will use
-the bool variables to express the same logic.
+Krystian Kaniewski (2):
+  kernfs: do not hold of->mutex across sysfs ->store()
+  autofs: do not wait for the daemon while splice holds a pipe
 
-But in compact_zone, should we exit the compaction when the order
-is already satisfied by the watermark? That is I want to discuss.
+ fs/autofs/expire.c     |  6 +++++
+ fs/autofs/root.c       | 28 +++++++++++++++++++++--
+ fs/kernfs/file.c       | 52 +++++++++++++++++++++++++++---------------
+ fs/splice.c            | 13 ++++++++++-
+ fs/sysfs/file.c        | 18 ++++++++++++++-
+ include/linux/kernfs.h | 11 +++++++++
+ include/linux/sched.h  |  2 ++
+ kernel/fork.c          |  1 +
+ 8 files changed, 109 insertions(+), 22 deletions(-)
 
-Thanks
-Bo
 
+base-commit: 93f51579e7df248780214094418f205253383cc5
+-- 
+2.53.0
 
 
