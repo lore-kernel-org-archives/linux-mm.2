@@ -1,133 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAD1606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 10:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AkHKS07S
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E9D606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 10:36:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A2206B06AB; Wed, 21 Oct 2026 06:34:32 -0400 (EDT)
+	id 561E36B0206; Wed, 21 Oct 2026 06:36:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07A316B06AC; Wed, 21 Oct 2026 06:34:32 -0400 (EDT)
+	id 5396A6B06AC; Wed, 21 Oct 2026 06:36:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED1B46B06AD; Wed, 21 Oct 2026 06:34:31 -0400 (EDT)
+	id 44F946B06AE; Wed, 21 Oct 2026 06:36:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CCC476B06AB
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:34:31 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D247DA805B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:34:28 +0000 (UTC)
-X-FDA: 85346274216.25.90556BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BFE9D80005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:34:26 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AkHKS07S;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 214FE6B0206
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:36:54 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9E29280494
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:36:53 +0000 (UTC)
+X-FDA: 85346280306.20.B43926A
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 407C540008
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:36:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	spf=pass (imf01.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792578866;
+	s=arc-20220608; t=1792579011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y2v57bUWAG26s2bm1BoDK2qEh8HhgMjugrP4Ic/x+w0=;
-	b=e8gaIORHH/oIZvlVH6L4wkRGcU2vMhl4WlYC1KmFmmxWpaCO5YNNAF90TMgRHK4wR1RbOk
-	UHXrjdkfRMCme0siNGb9o4I6Q9255Bc3Onl6jvrdCh0Pu9Gtojw1I2zjefUt2YszjNoRYd
-	y6370/5D+bwExZp7OXiIWXdoxHa4z5s=
+	 in-reply-to:in-reply-to:references:references;
+	bh=4a8dTd8W549kARPYgxWqM4QrBiNO4UU5WeCrYJf8hzI=;
+	b=Ynr6c/KMHwLbDSx+HI0y8ZEna0mheZuDO24iO1YuhTd3apMqELM/5SfjZ1DE+/2wDLlxV5
+	y/fReLpTiuXruCcKFbVtYAvtYtLv/EbMwN/aFY6lSgAMmthxFFEgmTTyHu07et/CVb1aDK
+	pSVZtAv1xji5UWG4klAbnUHGb1QDHJ4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AkHKS07S;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792578866;
-	b=Rsl0HEUw4u1tbRt1hh6XiV/XhobVKwQXI+L30cztoLBhHGF0NIPv4rBTJbJjmccUdVWTt4
-	T8y+PsstV9mHGcU4Wc4zvB5rm2GJEbxcnvirEvGQ6l+nuNb91zXgnfCvpflRMoziSs2PjH
-	hnby5z+edd/ml8hkOWdLoW68nkpf/go=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5B9243A13;
-	Wed, 21 Oct 2026 10:34:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BB21F000CB;
-	Wed, 21 Oct 2026 10:34:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792578865;
-	bh=y2v57bUWAG26s2bm1BoDK2qEh8HhgMjugrP4Ic/x+w0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AkHKS07SreEz44Ef4ECOlzOb5mnzP9iJk7YT0+qqP0xIFFHOlPZnphtCXRGztYfAq
-	 qvuTG5kksnxWd6wmtukEXn3W4Bi1Z/sh4PcmQPLBmEBCqaI29KXc2F8HoAJfhwjANl
-	 u9lO4OIKSlKv2Zb9hhS+4jUHOY/wMC8qsjnR1wfOGgLVrDs15QS+fUNc3RSGGwPk2E
-	 mq68vp3vBAHIROeSLvcSEtnc+4N1kNMYrnaM1lcBkxK9+0F8yeFMXbWkcmwAkXyfoU
-	 vh0PrK+yzlzEgHwlrQ9+RTsCdkQlgw5iW/i0abyKid8g8Wg/brLKmcQLcpenLi7OD4
-	 5TexAVkROVpLg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 91E29198003A;
-	Wed, 21 Oct 2026 06:34:18 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Wed, 21 Oct 2026 06:34:22 -0400
-X-ME-Sender: <xms:KZXYap-B1gdwwfApnDe96FzTIIISa4dxNma1SHwQYQt7uxZ-8Bm4zg>
-    <xme:KZXYasM08_wpU5LkFYXYcHzCfKFMAJ7WQjGe1RwK56Fxo4os8ZSMEYTD9u5Rg-G88
-    SUSAOl2YAaSd7hWMd7uA4AmvoElK-byuHUVADO6n7byjAqbdPAJMs_E>
-X-ME-Received: <xmr:KZXYah3QKPZaSBtpYFY5KUUNTd1z2Bw39JqeYr7iYE525tekLHR7lzTE4vw>
-X-ME-Proxy-Cause: dmFkZTFQXCLhgM1j6Uol95BZ6fYJcKahMN2vJQx7GcVvkHkXemtg13fKccd2t/ueNjJM1R
-    NZNDI4Gh+RldPGTb1bpmZejKabh2JDquyTm3SXJ/srOft1k+cpto6f5YKWNDAQFuIJ7ff+
-    qQWH455eQHrQF1lsqcQvBmZn4xyB4v+poc3u9QnXsJ6qRNPfCIDd8yV7fbhTXFgHvUzpsG
-    SKDwbvYu1qlrIXYGiSHoxu9xNNJCEKRtsPuXelRWYRCEtvWD3CgaRD2lyuw0MMIHgO5r9+
-    QhijrY6ZhmtL9PQUWhLSIkqUi6Czh066+c2VSkDAhDkzsmqHcpvQWWqmoVAuBOSEen2IEG
-    I8DRubFCdnteHWcaCg7+ep2GmCV6a1jAygX7y9kBDDwtZox33QjkNDf89pfnetl5BFphag
-    esd6Iv+6E+XFUU5a7adlxlJKyfbeOFFX8yHu6SdKamKUNU0hZgDKHalndbHtyq3+LEb62x
-    Y8+X5Z7xk48UcOEHntNXppBaLzSeoD1M5mm9z8M/gu8fpTer3OE62V2mnqdvYet/j4fOhA
-    VzOL8tdmklPthIG33/HCqULQeuHbqhaerqtfo4myPpP3qcxdkvVfKyzASxaTnikmGpx311
-    0eSuN4plxEUs3JjUKHKxQQBKybUwylz4/QGqFAXTXmK4Rg3qtoNFogtp1WfQ
-X-ME-Proxy: <xmx:KZXYajo2jWD3StK13oUCJD-bGc_sbcHvNfCY5u_rCvtEr6pN-GzdKA>
-    <xmx:KZXYaps7lW8jncdcwOVb7MM6OQebOJocgq2ri3h-HpT1YcojzLb_Ew>
-    <xmx:KZXYamJdmolfEHZ4N9B2f3rCJtpC50qh_FSaAdT57208BdoilWH_-Q>
-    <xmx:KZXYan3cSU_fMf1efCGtB0ld1kj8lPH2JDBXx9fkIFzQzBz41yU-gg>
-    <xmx:KZXYatoOQIPIzFknbNSPFv0KFOSG5WppE3zZ9dp0DwcE0SJbICUTLnjA>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 21 Oct 2026 06:34:16 -0400 (EDT)
-Date: Wed, 21 Oct 2026 11:34:15 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Usama Arif <usama.arif@linux.dev>, 
-	"Nico Pache (Red Hat)" <nico.pache@linux.dev>, Zi Yan <ziy@nvidia.com>, Barry Song <baohua@kernel.org>, 
-	Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
-	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Michal Hocko <mhocko@suse.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, kernel-team@meta.com
-Subject: Re: [PATCH v6 16/19] selftests/mm: add khugepaged race harness
-Message-ID: <atiU94VjdEsWzdBr@thinkstation>
-References: <20260919002451.496763-1-kirill@shutemov.name>
- <20260919002451.496763-17-kirill@shutemov.name>
- <85b3725a-6dde-4a57-b303-4ae2b53b60a5@linux.dev>
- <6e3c298f-9b93-43b2-840d-65c5ffa3bc36@arm.com>
- <248431ea-4bbf-4a48-a80e-72287ffbae22@linux.dev>
+	t=1792579011;
+	b=mCzNojqIY6jUJLGY7766dUakIV6ixE6Z9LNHvqitP0pDWQ6UuBsaeQNT2h9AmDuq1Ak/3f
+	d2q8YRYoJePbVUichYvmuCKSnXZ9XvFX9I+q12m5tg9hfJjKBFE2jSUTH1+svgZbqcCG9I
+	FXrERLndOPI+xXGsLu1DPmncIkpJFMA=
+X-UUID: 4ab90578cd3b11f19a56ed5b684f684d-20261021
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_TXT
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
+	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
+	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME
+	IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, UD_TRUSTED, CIE_BAD
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI, GTI_FG_IT
+	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, AMN_C_TI
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:5cdad1f0-615d-41c5-809a-f2fe534bd61e,IP:20,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:20
+X-CID-INFO: VERSION:1.3.19,REQID:5cdad1f0-615d-41c5-809a-f2fe534bd61e,IP:20,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:20
+X-CID-META: VersionHash:7db8b62,CLOUDID:1bd38fda213d37dd9cd1ec9cf075d221,BulkI
+	D:261010210608FCZ9WBJC,BulkQuantity:7,SF:10|64|66|78|80|81|82|83|102|127|1
+	36|841|850|865|898,TC:nil,Content:0|15|50|99,EDM:-3|-100,IP:-2,URL:1,File:
+	nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:
+	0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 4ab90578cd3b11f19a56ed5b684f684d-20261021
+X-User: duanchenghao@kylinos.cn
+Received: from localhost [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <duanchenghao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1052165201; Wed, 21 Oct 2026 18:36:36 +0800
+Date: Wed, 21 Oct 2026 18:36:33 +0800
+From: Chenghao Duan <duanchenghao@kylinos.cn>
+To: Luca Boccassi <luca.boccassi@gmail.com>
+Cc: jianghaoran@kylinos.cn, avagin@gmail.com, linux-mm@kvack.org,
+	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	systemd-devel@lists.freedesktop.org
+Subject: Re: Question about obtaining LUO session FD for non-systemd-managed
+ service
+Message-ID: <20261021103633.GA1324331@chenghao-pc>
+References: <6ac99eb9.6b935c14.1905ce.7c50SMTPIN_ADDED_MISSING@mx.google.com>
+ <CAMw=ZnTTUxO2ZCobEDTQUY7OZxmyJUQxg4DkhC9gTWXaDaK1dQ@mail.gmail.com>
+ <20261013110237.GA836401@chenghao-pc>
+ <CAMw=ZnTksVT1wuQwAjzz_2tYSCvLSxeUBa3mYQvCFuKUtcydaA@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <248431ea-4bbf-4a48-a80e-72287ffbae22@linux.dev>
-X-Rspamd-Queue-Id: BFE9D80005
-X-Stat-Signature: 461tdwxg6fu5kzzbmn1sopd6sqeiuu57
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+In-Reply-To: <CAMw=ZnTksVT1wuQwAjzz_2tYSCvLSxeUBa3mYQvCFuKUtcydaA@mail.gmail.com>
+X-Rspamd-Queue-Id: 407C540008
+X-Stat-Signature: uh87dbqpkgadi7xqux4kkjryok6xew6c
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792578866-970758
-X-HE-Meta: U2FsdGVkX1/xq/pprU3wR78d6C4y/ikjLldrWv1eIVOuIKhQAKdEKM2q/z1vSANZeWMZhTt/vSDUNnjJaaoCsxN/JtQjpbm4tQnu8ujOwsJ63sGmeauz2CKlMdMpUnEi53GC0YxhjrOstVWZi55bjjPblYfe+qXzQr7PoIuv5xuEEPAOwv1zBgpzSv4bx+yTcFgq+S230JhN3y+y9LxAoue3jkRZziJhY4G5kry+jFyELDANVlUZ3mmMWwpST7v3PInUUkYZsKLKYc1wE8sXQGwqHC3fjxLXrF0ixDBQu6xUDmDq3mnCgEAnJAZWpO7l9IsuimElxRuknl7QjWYd1y1C5F0wYZpPyt4ffhpoAd6/IzmeHRSpfQIBgNhn00ab7Y/E9O4IzOZ/IXJOiXgrfv5gtB/xk1ghTm1LbRmX9gLC0uVW/EXo7/IVlaWyLNJUWbiLhIM+FLS2pL7HFP6C81KdpOMoh68QOSVGjqEoMLcKi2QX63W9D4Zn+w+Ug6wp0oDQlcqKCjv3RgJ2K15C56hR+LX6aqdYTUgj9vygVACQ+65ja4x3XXA1uE4IAwyj1/on/EjqLh9lfFdC23I2IfL+kiL9MznbJgy7aY28dMw93qCuJOHzY+qRPZwLhJG9N5B5I49cyI0pHyw3UnmmsbTd9DeIDL1cwc2rR5e5skfRvVQN0KiRG+p/ALDzZjW36zWkKJsvBG7EnMC5slzyzjPYCPmLwLQnncjScLMs8VAENvGfx5UTn1+awo6G6otwgUzAQH4WFYzzRzUzLf7PzTjDXw24gj9IpmdgZjBmGCT1NfzwOJvGuzrZTY+c52Wy06zjYqn06nDEkIfC+coFKdZNoQqh3GqHEt0DBpyMCal26dKznGO7xQR8gsPa+3MeGhcRRULhAKMGRXFZuHSxHT2hYq8nkD8ALUs5MfZyrbxOKyRkdre35y2liskNEKfBZWZGUUPBN/9UI+vYRKZ
- HsuZn0ui
- rYK9R1a0atWZ3Qvj7i/6M3D1cdBlVIZb739MHQTHb8senIAXbvpc/5f1FLVsnOISBy7rjsfDvSG2vzUvYdsiVK5ngcFPyhZ4auofyzVYeXxCvmzJz0aXUn5O/5L+J7zeOB9hKTwE82pWHfys3z0dddoE6Ow6qmxkacaIlPrLoIP2DVZqz6pCuVHlJDTRJr1+JDWkWh2PSPaDmz0gA7FKir7DqIgxYRhlZOb0e3oAbJ7BhOK1Dq7jvWnmMrVpQhM6RhJbXvBe7krqXbF4QZKQuJbB5G6nOEOmNBGrMG8UW/jzf4T4=
+X-HE-Tag: 1792579009-495589
+X-HE-Meta: U2FsdGVkX1+MPxIun75HVGvkHD1ZLWzOhfnfyo8qVJ71WlR9J/uxNjStUMN7AfUDsHzrErQHsdUpwbX4c6AddpreYM9WGunHifAd789MpcLadyuuFDxxjt1dXZPuLG8OacuiyOOIuKb/bjXw1kHGWnXsJ88PsTQN44xq3TWvO+w8X/OtKbAmfa4PW6IucK2PDdVytArwodF1HIVrcagTrdzTzJ4bi7vGK5xp4xZTPxAysfIehkAozSX5UDgcD+Mwp3HiGFFuw6ttGNB1/ewp5Dsqqtfj2nRaewvXYp2VO4njC20csUsDFzJtNX1FHsNh3o6ypRZMbd694mXGaNGGgPslHK/7el8LlvXZ3RNpt9rH41Cn8bQMPkoavSals39UgXPTKmex8lxfH4DQaWyMu/JIUUXDRQG6b6uKq+Ko5b7JOJ54E5kADn1EiwSQl83FhqRB6RlIovNB0y7G5vaBixDTD9TAJR8rj6IIxaMhHryT17+p1Wn5397xRktUvrH6UXqmdD/gim8srhonchBCaNo30klDBrs7DodkCJkg2Hl4s26i50ajohCURJMz70/KvulQA7ke/IyQVCYyi/oE7hCLDOFNAp5LlAboUII2ug/MqsGI50olm6/wGjN3t7/YdOFHsszA2LCRA5JD5r5guoxxiuBXU1v4jBKESXwh3XAnV1qu4Lgs4RxBUAz2J+B0t1ggFMwm8iLLaMKaIt71j7dIFU/p8qLlDIkhYrXM+P8Ss1HlzlSCQRTNK5V2x+HZoN73VczBAjyFasnlnsfQES25EgYE88JmNBdhkossSSXV7+YFlLewZV/bjcfIqzxuMZXLKND74GyawIDG3QKPyv4BfCOmCnaMh3XANIJHqg8RdhLSymXd+ByEN4bQMnoCDWauWAArUHuQK+yKR9V+nVj3tvwhiiGHZLYIQopAfaGfK8SpU7yAXMszSXtrrikMi895RaWbuHV3RN5Hwk6
+ maInKY53
+ 9obvtvAf5C+dOw8xbw2n08XX2DWCWxBoZYVXVVwce/Y0bHtz+7PSyU9GL4WdbjMg5dhfauaUvjnMfvEk+8DCtZO6+6DSXA02pFQDeFYVSfRf9elc4EmG6x8FApXUfyX/05FuyEAiYeH9AGXT8EfSQSYiwxqYrkNuHtwRLVQnLe1tAHJduMvX0zRxI2WZb4Uw3oEbEQ9OYlluHybWGQ/2f5SBWF9JqqePnugFcQxlFShdg/F/GWvRxliKxglXTissbsZEz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,37 +114,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 08, 2026 at 10:23:22PM +0800, Zenghui Yu wrote:
-> On 10/8/26 4:18 PM, Muhammad Usama Anjum wrote:
+On Mon, Oct 19, 2026 at 01:13:28PM +0100, Luca Boccassi wrote:
+> On Tue, 13 Oct 2026 at 12:02, Chenghao Duan <duanchenghao@kylinos.cn> wrote:
+> >
+> > On Sat, Oct 10, 2026 at 03:05:40PM +0200, Luca Boccassi wrote:
+> > > On Sat, 10 Oct 2026 at 04:11, Chenghao Duan <duanchenghao@kylinos.cn> wrote:
+> > > >
+> > > > Hi Luca,
+> > > >
+> > > > I watched your excellent presentation from the LPC conference in Prague.
+> > > >
+> > > > I have a question I’d like to consult with you.
+> > > >
+> > > > I am currently working on the `memfd_luo` feature in CRIU. My goal is to
+> > > > leverage the LUO capability to store checkpoint images inside memfds.
+> > > > After a kexec reboot, the image data will be retrieved directly from
+> > > > memory instead of from disk.
+> > > >
+> > > > Here is my pull request on the CRIU GitHub repository:
+> > > > https://github.com/checkpoint-restore/criu/pull/3152
+> > > >
+> > > > In the PR discussion, avagin suggested using systemd as the CRIU daemon
+> > > > to centrally manage LUO sessions and access to `/dev/liveupdate`. I have
+> > > > watched your talk and read parts of the systemd source code.
+> > > >
+> > > > From my understanding, systemd currently provides a unit‑based solution
+> > > > where child processes can inherit LUO session file descriptors. However,
+> > > > this approach requires the target service to run as a child of a systemd
+> > > > unit. As far as I know, CRIU does not run as a systemd‑managed service.
+> > > >
+> > > > So my question is: for services such as CRIU that are **not systemd‑managed
+> > > > child services**, how can they obtain LUO‑session‑related file descriptors
+> > > > managed by systemd?
+> > > >
+> > > > Thank you very much for reading this email. My knowledge of systemd is still
+> > > > limited, so please feel free to correct me if I have misunderstood anything.
+> > > >
+> > > > Thanks & best regards,
+> > > > Chenghao Duan <duanchenghao@kylinos.cn>
+> > >
+> > > Hi,
+> > >
+> > > At some point up in the stack, everything runs as a systemd unit, so
+> > > it's only a question of figuring out in your setup how to pass the
+> > > FD(s) up and down the stack.
+> >
+> > Hi Luca,
+> >
+> > Thanks for your reply.
+> >
+> > The `LUOSession=` configuration only takes effect for services managed
+> > by the system manager. If I run the CRIU command from an SSH login shell
+> > as I am doing now, the environment belongs to a transient unit under the
+> > user manager. In this case, we cannot use `LUOSession=` to obtain the
+> > LUO session fd via systemd. Does this mean the process needs to open
+> > `/dev/liveupdate` by itself to create the session fd?
+> >
+> > Below is the attached service of the process found via `systemctl status`.
+> >
+> > [root@localhost criu]# ps -ef |grep criu
+> > root       57589    7729  0 18:25 pts/2    00:00:00 ./criu/criu dump -D ../test -t 52922 -j --memfd-images -v4
+> > root       57784    7571  0 18:27 pts/0    00:00:00 grep --color=auto criu
+> > [root@localhost criu]# systemctl status 57589
+> > ● session-5.scope - Session 5 of User root
+> >      Loaded: loaded (/run/systemd/transient/session-5.scope; transient)
+> >   Transient: yes
+> >      Active: active (running) since Tue 2026-10-13 10:03:55 CST; 8h ago
+> >       Tasks: 4
+> >      Memory: 148.9M (peak: 1.3G)
+> >         CPU: 47.000s
+> >      CGroup: /user.slice/user-0.slice/session-5.scope
+> >              ├─ 7712 "sshd: root [priv]"
+> >              ├─ 7724 "sshd: root@pts/2"
+> >              ├─ 7729 -bash
+> >              └─57589 ./criu/criu dump -D ../test -t 52922 -j --memfd-images -v4
+> >
+> > I'm not sure whether my understanding is correct. Could you please
+> > provide your feedback?
 > 
-> > On 08/10/2026 8:30 am, Zenghui Yu wrote:
-> > > On 9/19/26 8:24 AM, Kiryl Shutsemau wrote:
-> > >
-> > > > +		} else {	/* madvise */
-> > > > +			while (now_ms() < end_ms && !corrupted) {
-> > > > +				for (i = 0; i < nr_shared_areas; i++) {
-> > > > +					madvise(region + i * hpage_pmd_size,
-> > > > +						hpage_pmd_size, MADV_COLLAPSE);
-> > >
-> > > I got the following error when compiling it:
-> > >
-> > > khugepaged_race.c: In function ‘main’:
-> > > khugepaged_race.c:506:23: error: ‘MADV_COLLAPSE’ undeclared (first use in this function); did you mean ‘MADV_COLD’?
-> > >   506 |       hpage_pmd_size, MADV_COLLAPSE);
-> > >       |                       ^~~~~~~~~~~~~
-> > >       |                       MADV_COLD
-> > > khugepaged_race.c:506:23: note: each undeclared identifier is reported only once for each function it appears in
-> > > make: *** [../lib.mk:225: /data/code/mm/tools/testing/selftests/mm/khugepaged_race] Error 1
-> > 
-> > I've just tested with and without make headers on linux-next
-> > which has this patch and I've not received such error.
-> > 
-> > If your system headers are old, running make headers can help.
-> 
-> I forgot to mention that this can be fixed like fd5295afae91.
+> That's a user unit, and as per the documentation LUOSession= is only
+> supported for system units. So yes you have to provide your program
+> with privileged access to the character device and create the session
+> yourself, and then stash it in the FD Store as normal.
+Hi Luca,
 
-Right. Would you like to send the fix?
+Thanks for your clarification.
+I now have a rough idea for the implementation: CRIU will leverage the
+FD Store facility to deposit the memfd into systemd’s file descriptor
+store. As FD Store is tied to a service unit, a criu.service is
+required. The unit file I intend to use is shown below:
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+FileDescriptorStoreMax=10
+FileDescriptorStorePreserve=yes
+ExecStart=criu command
+
+Does this setup conform to the original design intent of systemd FD
+Store and LUO? Please feel free to point out any mistakes.
+
+BRs,
+Chenghao
 
