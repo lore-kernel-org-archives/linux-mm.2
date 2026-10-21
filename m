@@ -1,99 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22929606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 03:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D05606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 04:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=KAqpMnqf
+	dkim=pass (1024-bit key, unprotected) header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b=Wivbp6J+
 Received: by kanga.kvack.org (Postfix)
-	id 3D8966B019A; Tue, 20 Oct 2026 23:37:35 -0400 (EDT)
+	id A8FDF6B05EB; Wed, 21 Oct 2026 00:24:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 386A06B05E9; Tue, 20 Oct 2026 23:37:35 -0400 (EDT)
+	id A1F0D6B05EC; Wed, 21 Oct 2026 00:24:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2766D6B05EA; Tue, 20 Oct 2026 23:37:35 -0400 (EDT)
+	id 934E36B05ED; Wed, 21 Oct 2026 00:24:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 024776B019A
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:37:34 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0345FA7F81
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:37:33 +0000 (UTC)
-X-FDA: 85345223628.07.F5B8C8E
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A63AF100003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:37:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KAqpMnqf;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EF056B05EB
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 00:24:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC160C0468
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:24:12 +0000 (UTC)
+X-FDA: 85345341144.25.6141A60
+Received: from r3-11.sinamail.sina.com.cn (r3-11.sinamail.sina.com.cn [202.108.3.11])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D79DC40007
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:24:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=Wivbp6J+;
+	dmarc=pass (policy=none) header.from=sina.com;
+	spf=pass (imf01.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.11 as permitted sender) smtp.mailfrom=hdanton@sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792553851;
+	s=arc-20220608; t=1792556651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JlRmug8M8jL+izLY5CnmCZpoNqlaHo91H3D4D0KORIQ=;
-	b=KmZmRXd1E16rF70xbGyfxsamZD9U729VEyBv8PbpvVrsRxoffBSjqIZnuChs4fXB9HRGJb
-	NfL55E4n6w9JYLZzN4WudSEwOlAiLhr+qwJJuCbz7VwCdmNuiQC0xgMuPRFiU7/rh3hW5n
-	Fhn4priw35gmTfW5Z6UtqfBe/l11glA=
+	bh=A7l7G7i+k9QsTVZdhBJhV0zpS6MyADVD/+C82vITnO8=;
+	b=Eany/O/DTOR41zCh40KLNq1DEI1BOvqprVEx4CUScGP9G9ISdwEKGCpt1dpN8Thl4sz/0x
+	yfoxXqulskBHpbL8N+oyLbtCgx53iFlel8M8s62XlFMKxsmUpIkiXbW1T5cND7/PeySLpA
+	1OVuR+nOk+dve80U8vBmIwpSzhVJ3/4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KAqpMnqf;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=Wivbp6J+;
+	dmarc=pass (policy=none) header.from=sina.com;
+	spf=pass (imf01.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.11 as permitted sender) smtp.mailfrom=hdanton@sina.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792553851;
-	b=MefgXCueG/cXTkxAZ7K7d+eT4ej/25Ax58KdPS0LAP7o8cR5bnBYGBML2ustg6+EvqpEKs
-	tC98XheVSatIBI9k+hnaMaBltKbBdIKGj7IiGhho5FR/bXzxl41V4xT2agb3zXOHgjSz6L
-	ddKh2qessRJ1uRkqlqaMt+zi0FvbC+s=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1792553848; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=JlRmug8M8jL+izLY5CnmCZpoNqlaHo91H3D4D0KORIQ=;
-	b=KAqpMnqftsq9Vh76BCQw5o/ftHsSv60bCJPdslWGu5RbzsaqKScMrnR2n8nft6vT2AHW2nwTLRUtlgcEc07XyQa18mWlUC2MFI08zk+h4kPpHbIhVo0ZsQBJAeWF3+mOseyBA0plsS3vTKcTwPtoTfrwaqHODfAfSN9Xc9l0qmQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R811e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0XDFBTxn_1792553844;
-Received: from 30.74.144.135(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDFBTxn_1792553844 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 21 Oct 2026 11:37:25 +0800
-Message-ID: <0d0e6e7a-eb2f-4435-9be8-0c82d39b4cb1@linux.alibaba.com>
-Date: Wed, 21 Oct 2026 11:37:24 +0800
+	t=1792556651;
+	b=LbYpkxBGRV8qDVKJpDyyEH9OUScf5ix+Jo51xjxBU0VdF/xT8sw9n4oRxmjvseGirSqZ3R
+	pFAOsgMHdlBgLtdDoyYbWZd91wo98Ql8Fdp6dNDa1oiG/mghUysjQoZnmfNGqKhNUl6avy
+	xh7CBl9tHN7eA0h1EdI8P0hp8pfB6uM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1792556649;
+	bh=A7l7G7i+k9QsTVZdhBJhV0zpS6MyADVD/+C82vITnO8=;
+	h=From:Subject:Date:Message-ID;
+	b=Wivbp6J+N8VN9y0lg7HGEHoTnV9guWNNoUH/ucN8DlzzbwliNCVrTuqn9+mhB4jfq
+	 hkrvsCyBQlMVZXrIugEO5e6qYUnllQe/kJZf32PQnX4bulXYjVQMidteLI2PpRePQt
+	 wYt7w7EWn2HuswyqfKP6ALKT8m4DkDdT7f5mfsWc=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.254.2.239])
+	by sina.com (10.54.253.34) with ESMTP
+	id 6AD83E5F0000427C; Wed, 21 Oct 2026 12:24:02 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 8999416291657
+X-SMAIL-UIID: F14EAB6385CA47FAA0CA6358ECCCDE05-20261021-122402-1
+From: Hillf Danton <hdanton@sina.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Date: Wed, 21 Oct 2026 12:23:48 +0800
+Message-ID: <20261021042350.907-1-hdanton@sina.com>
+In-Reply-To: <20261021024236.1787884-10-senozhatsky@chromium.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: unqueue deferred split folios outside the lruvec
- lock
-To: Joanne Koong <joannelkoong@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Lance Yang <lance.yang@linux.dev>,
- Hugh Dickins <hughd@google.com>
-References: <20261019230646.3510790-1-joannelkoong@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261019230646.3510790-1-joannelkoong@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A63AF100003
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D79DC40007
+X-Stat-Signature: p1xj8i8i38r55jk37gox7x99quy8x89s
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: o7jsb41r7ihbhwp69berss84ectp3t4p
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792553850-673253
-X-HE-Meta: U2FsdGVkX1/WTC5p90MYW6/NgJV3uGaREj8N0IKTto3ClbiKUEAfG0SGMsJyUprntzDxF2j0t9oFhrelyKEpZ9S91I/ncoZ2UswtfW6yX+omLuahcbWluBPWtHQmPvvKmRpdrN2+CAIp2T6mJczt/wxpyWsiafent1z1jkicSM5NOuhXCeSNS6aajeXyTZ9G0n0HkZ1QPQNXWq7UtBnMgtmrXLDYv33Gaq/vK3MgdSgtXcjQnNWzLQwVHgiyrNH83DcoXtcHy85VXRXu8n+vCMV/Yvnq6JeHHrQD63ktDiqDkgARBMi+GmbeL7cTsNBCyomzkbO5xNJkrVAu2ifaZjb7HnEhSYua0V778+OJbctdS+CLkzGW5XyPuWv+1c5F4l7/up9OiaIvduskn/hj9HHk349+YU3gQGukBLQtosNkEaoHizoZ7+14qlffEjh6acm524QEW7INa0zgib6f/oIW4HRjZptmKyii1XDelgoCZiPewM77STwOYaE/+OePwRyFxyrdoku6zppdzZCKSku9nqpHjEQu7LJQwXsQBEoHu/EPVqJxGY4T8h8XHc7hPrljzjWs75kzcKObfHOftHHzihxRc2vKUcMgSBPr8eY1yuSqs4KVUjsFkPQnmuqYcwW2kf5S1yG4MdA+4oddIrh6y0+bkmL32ccHT2Z346l85UWOgca6lL2hrv40er5P1rBqoONUMqgpxo9QenC5D+04F3WLlLf/RS9UxOU4BT8mGjYI/h8Ss0bpuCh9fXRHOajkLly8x6v/pMxj7BvcbqE42a4mlSBbQr7GPYgDYxWsR0eHwuqBPoWH3NlJXBjbReRE+BDbphU4JIr1aloBMxPOMK17yay9LbHnFGDWyZ69iLOQPs7cQRu8wzF92kyEY4uahcNTIhRy5rvmAtuEjobEgrpF7Qn05BahdhE2duuCcYV0C/oBk3p++oFlTY6gkEn3iCRMM9M/lL7D+T6
- USuYTSDr
- xVK07A8FzlZF2ZeaUdtRC2ldz1RnK/nSZ7sPG6hyjGaRlLVnNI3YTJmXC/bBzNm14ijd4hkBfdYOM5SzB74Fh+TNVLHE1+wWViYdefkEaU1AQjUXkovEUlMjL37deA4Any7eyzf3nCaG3epgoA7gGunUT8ypGuFj10sESryx+Hg2VIHgQUz6fpz5UVljZXJLg1TmFDL8vy7VxpH1srNvz/kzjfYEBcAlXrmbM50kR+d3QBjb2bR0Atzf2cMZLytl6SQwQrLOvY5+t6eQchn+2srUFZL28fo0qS2purt1wdwHFKuQrB1wI8x/PzEs0xe81b4cE+blFfSI7QHjjLwG6jJUFkWZiQDe8p1mP
+X-HE-Tag: 1792556648-290544
+X-HE-Meta: U2FsdGVkX18UpHMLEiLoOLNdFcwJ38hr/KzrMadgXHZi4hx4o1auX8DHTGAeGd595kihJRBFQcahsvLuZpBsQvOxWwEQmgvXfBhb8K5Pq7dng3ElQ6UEcOn2TJuf26VEbpgTj7FjneiOHDlEZ/vKIyYus4ATiDJTsjSFEN4DCdmF8KNh9U4Hx4rlvzeHlXGMm5rR65e9HOIURlJEr+p6LacKHUnX7kHSrbwzMpncOq0QLIQUbUBmM1n5EitKHsFLC8uK8kFBQHGgwvxffy6ecbLxrw8fg6sGJQ9s0XPTfR47/9RGrGZ900jsbf8J2ByJTIJcDUmHiFiO/MiAQz0Ae5lQao4mmMtXU5bcSqrJ25gNT86JVBNbIT4nWaT4rzYMiYeVMuewb00WNaIEjXsTpv+Ee1cSsdiZdhbAiLRww8srs9Baqqs2aVoAp02qq/SjpB64vF8QF4Qm3AeHIp19MpURq+YNSrkR17/OO50gqNxadHZt/wJKoeqAsStnURMZ52Ya1maduGrceqIFtah0faTUybDe6ExYQT7Kxl4SKs/qGleY+IT3+6YioccUV0cHPHWVwIIIJ9vAV4Fe46e2yqVIPwP4Lzd/TTaZAozq0I8EYIJD+PNJybOSKSAHrGENYWtbxYSnOiHruaY/GV19PVQ7gf7whSEtjmfiJtn1UZqgo9sn6xjFn8Ynz0tC1J5iEIo8omj9g3XnKyh1NpRuwR+NmopPotDXyVuoVxBZxuepBw0OiAojuWHtD3Md864ajs9M7rUcxME7hBFm4K9iHz7Xkx/6P6FiLl7YWMJtrpYt66/pUf6vEgLep2rhYWTJRRc3sz/KTuhBsdWfTMJdWtqzEallHBLnfuN4XpsD8H1SPYOdyaLeFhhJshsIevPBR0ERU0r1Jz0vdoXw5VAuYa3vYSFLEqDDabFoMtnxiZ3rokWYkkKppxTwolqQfNSAgZKVUMMtwVjCG/9Rvbz
+ AOvEoAi5
+ WrYrLOHhek+7ME+n+nLueHXVBc33Cgcy/V0i5C/XWT2/oMWfGB3mE87uvcg+8I96yqex1phjUSsGLHfP8FlYC/n0VNMAdGRu7OlRPCrsSdVYOValM0TBy8Pel5inmtQFMrSspVrJDuXL7LjziUp340WqHH9KjnFxflH3ziEDvlqwbPGyXYSWvWpYdr9yzg+ptSDUPDLViSAZT9/hENQ03LTHOv1XZHL3hLA6pvE9z4Nc05v4N2denYsEkvf3AMZ6ZCzSk8CRoD97tIw8wZcNnsa/jINW/c+AW0Ak3S9VTfyHuLuOpvP8LoYP+Nw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,57 +94,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 10/20/26 7:06 AM, Joanne Koong wrote:
-> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
-> folio_unqueue_deferred_split() on folios where the refcount has dropped
-> to zero. In these paths, folio_unqueue_deferred_split() is called with
-> the lruvec lock often held (move_folios_to_lru() always holds it and
-> folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
-> in the batch except the first). However, it's not needed to hold the
-> lruvec lock.
+On Wed, 21 Oct 2026 11:42:19 +0900 Sergey Senozhatsky wrote:
+> Split struct zcomp_strm into separate compression (Write zcomp_cstrm)
+> and decompression (Read zcomp_dstrm) streams, and split zcomp_ops
+> context creation/destruction into create_cctx/destroy_cctx and
+> optional create_dctx/destroy_dctx callbacks.
 > 
-> The lruvec lock protects folio->lru and the reclaim LRU lists whereas
-> the deferred split queue lives on folio->_deferred_list in
-> deferred_split_lru. The deferred_split_lru is a list_lru with its own
-> per-memcg per-node lock.
-> 
-> There are already other existing callers that call
-> folio_unqueue_deferred_split() without holding the lruvec lock (eg
-> __folio_put(), shrink_folio_list(), __folio_migrate_mapping(), ...).
-> 
-> Add folio_batch_unqueue_deferred_split() and use it in
-> move_folios_to_lru(), folio_batch_move_lru(), and folios_put_refs() to
-> unqueue each batch of zero-refcount folios from the deferred split list
-> after the lruvec lock is released and before
-> mem_cgroup_uncharge_folios(). This helps shorten the lruvec lock's
-> critical sections, which run with IRQs disabled and are highly
-> contended.
-> 
-> This came out of the discussion on v2 of the mTHP shrinker series [1],
-> where queueing small mTHP folios on the deferred split queue was found
-> to regress Barry's fault microbenchmark. With [1] applied and
-> khugepaged/max_ptes_none=0 so that every folio is queued, perf lock
-> contention showed that the extra cost came from waiting on the lruvec
-> lock in the free path.
-> 
-> Test setup: 2-socket Intel Skylake, 40 cores / 80 threads, memory bound
-> to node 0 so that all threads contend on one lruvec, with each of 80
-> threads faulting in and unmapping 16 MB of anonymous memory 200 times.
-> With only 16K mTHP enabled, this patch reduces the queueing cost from
-> 15% runtime to noise, and lruvec lock wait time (summed across threads)
-> drops from 491 seconds to 38 seconds. Most of the remaining contention
-> moves to the deferred split list_lru lock, but runtime still drops back
-> to the unqueued baseline. This test uses a worst-case configuration ([1]
-> is expected to only queue folios of 2M and larger).
-> 
-> [1] https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te8G1MaU9bXs99w@mail.gmail.com/
-> 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> ---
-
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> This decouples Read (decompression) and Write (compression) paths so
+> they no longer contend on the same per-CPU stream mutex (Writer vs
+> Reader priority inversion).  Currently, a (low priority) Writer that
+> holds the stream mutex can be preempted by a (higher priority) Reader
+> on the same CPU, which then blocks on that mutex until the Writer gets
+> to run again and releases it, which can take a long time when there
+> are other runnable tasks on that CPU.
+>
+Given lock like mutex, priority inversion happens from Monday to Friday,
+but I wonder if you are inventing some wheels in 2026 if proxy excution
+works for you.
 
