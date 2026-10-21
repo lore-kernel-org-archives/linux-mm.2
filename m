@@ -1,104 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B7C606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0582C606A328
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KyAaAhH/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=U0pFtW0S
 Received: by kanga.kvack.org (Postfix)
-	id BD6916B062E; Wed, 21 Oct 2026 02:11:14 -0400 (EDT)
+	id 21A906B0630; Wed, 21 Oct 2026 02:16:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAB7A6B0630; Wed, 21 Oct 2026 02:11:14 -0400 (EDT)
+	id 1D02E6B0632; Wed, 21 Oct 2026 02:16:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE9566B0631; Wed, 21 Oct 2026 02:11:14 -0400 (EDT)
+	id 0D0816B0633; Wed, 21 Oct 2026 02:16:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A44B6B062E
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:11:14 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F89280453
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:11:14 +0000 (UTC)
-X-FDA: 85345610868.30.91FACD0
-Received: from mta0.migadu.com (out-217.mta0.migadu.com [91.218.175.217])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 97271140002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:11:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KyAaAhH/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id DED176B0630
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:16:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D494780451
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:16:05 +0000 (UTC)
+X-FDA: 85345623090.02.4698E42
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf31.hostedemail.com (Postfix) with ESMTP id F0E1120005
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:16:01 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U0pFtW0S;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792563072;
+	s=arc-20220608; t=1792563364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RoigheuXlEgEVVeOm0wqZxiwY5/DXHnZexKpxuh+vtk=;
-	b=w7opRstwcyXQWvsLTA714f6qUaoc6N7gBqOZ48ZQzj5CoYPQH6H5H41Bv5DOxriof52Ku4
-	8NavCjYe31KysIYZnbeHOnxXwJJ8Hw2dGrDYqI6EIfHiGe57kU2u1Is1pjCIchSQN1XBwo
-	WsHOnflIupcJ09kIn795XitpPjCG94Y=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KyAaAhH/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+	bh=NwxXxk3IG/0jN67Jp1dQn6a0zeAIazOAnBJBfQ5pj78=;
+	b=CggG7uw6XA27YY3rWpW/yiJo5H9fMpG/FngKaJsKixTT9wtipTkmcSMttAMbAoNUinMHvu
+	39QHhjslV37z1xO3ar/Iv6dje75tUw3GqYivYpMvLqFNeoZQvE2xZtAxH0HydnLE1wJlUs
+	5FjTRooD31KYazfN+32sAb0o0JLnJoQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792563072;
-	b=hWt7rhGTYBrUbqF9UtZyJde7q+YubwVTYhkB/rJPDKU2R1TL7M+gGyaOyzEsi+PUZdXxQM
-	B83p4VP/5OgN4ldANCj3PuuIn9svQNgpaNtFN5N9Alfmb9/eGiliK37ajtEUUfMnARKyUK
-	PibuLrcTXm11MC1CmxOVZxLRIb58kMI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RoigheuXlEgEVVeOm0wqZxiwY5/DXHnZexKpxuh+vtk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792563069; v=1; x=1793167869;
- b=KyAaAhH/eYfv2EtlnJFOXQeqVG+6ADHWw8k6iQd17UIBgcsZIaW1WIf+o+/Q81kvO7aqjckN
- k9gsBbyAi4mn1MRj7Lgh/OA4smyfnFbNsOgKeACNDfbNnJViy7hw/dO6dgnysEK4hYW6c25EUpP
- Ur5IANeC4CF42e1c02Tz/W/U=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 73700c2a578380af;
-	Wed, 21 Oct 2026 06:11:08 +0000
-X-Mizu-Trace-ID: 73700c2a578380af
-X-Migadu-Flow: FLOW_OUT
-From: George Guo <dongtai.guo@linux.dev>
-To: pratyush@kernel.org
-Cc: rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	chenhuacai@kernel.org,
-	ardb@kernel.org,
-	shuah@kernel.org,
-	ilias.apalodimas@linaro.org,
-	akpm@linux-foundation.org,
-	baoquan.he@linux.dev,
-	ruirui.yang@linux.dev,
-	guodongtai@kylinos.cn,
-	kernel@xen0n.name,
-	graf@amazon.com,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v5 2/5] liveupdate: synchronize EFI KHO channel at execution
-Date: Wed, 21 Oct 2026 14:11:05 +0800
-Message-ID: <20261021061105.3697-1-dongtai.guo@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2vxz1pal5u64.fsf@kernel.org>
-References: <2vxz1pal5u64.fsf@kernel.org>
+	t=1792563364;
+	b=ulw+nzmOlJKEJ1bzDOkgmaY8DvezHB0i/MGkrjUzddIXZQL6ogQow7a6bKTdvUDBepdh/7
+	x7b7o7AfW/AeFPH4mAZFczudoXt29VM5+gT5sGU5vNnzthGZJX+iLE1UuJq0+X0/4rDNq2
+	07LXjOit4n85T/+wLIb/6jXaejW3Q0w=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U0pFtW0S;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792563358; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=NwxXxk3IG/0jN67Jp1dQn6a0zeAIazOAnBJBfQ5pj78=;
+	b=U0pFtW0Sui7thy/yL1k4jld9obWiQV8yq9WmIOr0c7wpIYrKNDSRLNFBO+lekbvaaJWu7xq/gfpwb/e63M4AHod7OecW5+8SeVcfnJkFqAlj4iwUXEdTs/q2UH8g7WyxpjFOrVa8rq/AAOzvaFUdSLd40elDYUWJxr/mWCcuHQU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R461e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XDFS7Kq_1792563356;
+Received: from 30.74.144.135(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDFS7Kq_1792563356 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 21 Oct 2026 14:15:57 +0800
+Message-ID: <214aa9dd-33c2-4877-8a2d-18bf677d1426@linux.alibaba.com>
+Date: Wed, 21 Oct 2026 14:15:55 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97271140002
-X-Stat-Signature: ozfkigksn1rhirwuw3ufxz71ate3imio
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm: multi-gen LRU: fix NULL lruvec->pgdat deref
+ with memcg disabled on cmdline
+To: Siddharth Chintamaneni <sidchintamaneni@gmail.com>,
+ akpm@linux-foundation.org, hannes@cmpxchg.org
+Cc: david@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, ljs@kernel.org, kasong@tencent.com,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, baoquan.he@linux.dev, yuzhao@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, apais@microsoft.com,
+ rlmenge@gmail.com, stable@vger.kernel.org,
+ Hardik Garg <hargar@linux.microsoft.com>
+References: <20261017050928.128582-1-sidchintamaneni@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261017050928.128582-1-sidchintamaneni@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F0E1120005
+X-Stat-Signature: ri3teszpr65ntny41rgmdky5pcf3rmba
 X-Rspam-User: 
-X-HE-Tag: 1792563070-165573
-X-HE-Meta: U2FsdGVkX19o4y4LE4D/2cI3jFt3oPlYtQax/lhkdbMbmFvtEmcVbxhSoEYLR3542qUqV1jw2ybBs2bCFys+UwUaix3hMNS9IlWR7yrjZUOLDd5b8tWiR9zm7HIC5d7ntCUlqUxkMlsO86FjP0lpw0+zLa7VaLVTaFqwy823uDtQrsOSiuqFbu8yzd5pG9IeOR5MXY+l3BJoGZ28INLthAZl/mw0KQuX8dgRZumaouwV+18gr2SxYeULMLDZameJI2Yyxrj1sOsvbaW7HIGnUEDC3GDVwbyMWzOLHgrMKJP0gYoU1ZOvwcQ+Yi7CZk1m+B5dpiheqhJUMgTCEbKOrlZTBywWa/aaKt602SBTOceioLzy1ihseaqykbgGNoqxlnhWTqEdI9RwZyD2DqWcRWbHludejArYLCQLiU06ZNr/LZkvduVosa2k/sWRzuw8ejCRMaDpp+mwLK/L5rmc3KapOSGW8u2XZyGnrxXD2RH8FXeSZnQlpZI7i0perD4hT+lawp/e7B+34G6ctIpyDiiuOKs5BPOtl3TxL1ytxO3TbKLaXC1wAjpx3HALd04FS33n4FPGkVkYp1odTY1LDNkxeg/x8LOm5BUJusx63d+s7x517/FyD34ONh3v+pUrmhjpihraLW+Vhz1zEHMgA87mzqDM0d0IN62XB1MZ6FKQoufZuAYJlomznSMmOvQB2W1gh/ZFwbRUVbSgzOY2SRAhCtu7JyviJXe5a+iLGlausmQeMZ2QAWraA5S/tDG3CjonRvcdn1vW/Fn9fYhSyBr1+5eQAaoIZR0akUrD11k4dXYCULLIzIiDxv7eaEKrh6wDZG7cURlzrOiZOwmV3cdEw/RrOZvpE7Xa65pgcArw9njHBz+hQoRV/SE19GFD8jDfX/oWyfEJ/1ojW3no3ELoMFo3d3sL4iOh7T9TNFSEuAFgpEc2zW0kIPhyNzgnCGXvjE9cMdOojg7tmFC
- jFeAO70c
- aJkQAECN4wjmLA3JDtAEkU7X3MMld19t7QHNKiHeGNpxk3Jka295uxiUAfZvLQaMoeYUmfJNUPiiHFNGyhYu38S36EbARRJIDbRP3Ud74Miw6ZVaC2ciiCqfB35EIRzOsvKilSq+GMjWNOeXdVGlPdeCd+qjc1825R7Q13PgcAPJ23kdXsboKb5jRPvyzr6+5Fn17x5ZPp9HsacHCCjwt/fQxruntEDl7W7LBJ20s4CW60EM8p4D50VLGASGvI73c3Y//
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792563361-813455
+X-HE-Meta: U2FsdGVkX1+EFSDo+2k2pkiHHCTnJKHHC7yu+oVjZVmsxtB4mmLlr8LIz5WVxLheCypfy512bNGgblMGW1JxUIDjYSBM97GmBz4iz8eEM8QwTSJWZFCNJLbnIfuwmUfO27PqNPPlXliYlc1nclbtxA0/wi1/VDsVuLRAMlMdwzd0yRAnEOsx+ONR/RO+YYGSIrSHCBGi6qminRMLAdpwi/FwsdTC28GM54Pv0r2Hvge8iucjQ3NJivCTnannRiR5J8B+BCoi2x1uK88EpkgQs5iI057i9LSGf723zxJ42hCLk6xYKXDhkrZDlVFVXcIGUn9xQnGiDqsRl2B9s1oT2lpciKB88oB40oLSAlL5nx0Q0kcelhlQSF3v4kYaexjpJnqhl6F1+TwZLnxzKE1ZBhQ71xJ/ItdP2vjiW00qAysqUKpq7qql6uy09Dq9Xtq6Kw0V1ToH013SvQhvN3Cfy6ipOPprj3fdWfUl0TYbzTypx1bpaJzwtwOir6sN67uGkpeyVt7SMXzUMefgDi2W72O95pKuOBllNAEuQ/NR4dBQQJ0ZveZClmoajRx7sKoEdw5TJXcHO6S/RCld6UHqiebyBpICISQuQpSVltTGBfvyvC2IG6Hi09S8DdlnjJKV5H/CxOkhd1eNMVY4rLyjSbuk0v+j6IvD/I0O/mUK3vcHUvl+CM2nvhtYKXVglJerE9+1yk3FgGOwBQuyOIIzZyYrdkDUA3skVEdsp46d1zTqWZP+6Zi/0MAduThmjdXAzkne8Gh3OQKdPqRGk/aNGNSTozaHRgFi53CIeQOhFx5Rix6KBxDCOX59szDgvt+g5jrP47jT/4rQwI1q7RLi0s5mp8zeLkVyHJSlXNSnv1XVBTHv/UKIXs5ZEq2If2F99/E3/iBsyz/f153bLpiitT8Bqx/eqU7GkyB5L6sKKBUtMf3Ui1NsLyZX0j4K2CzgzgDS4cGhTATxxUW5361
+ xVXuvNoo
+ WianZzV3Q1eDGx2CWFPDkFA5bTQqA85JPOdwTPDdDD34efKMYb6WVgwZSjYP08LLnhFsNKdf+xVa3CUwYn3MQzLPRVSagSBVNMs40TJxYOhnZfBzc7v2nLW04ZJGj0nh1DuSwr2vB7LyJRVmhnpOioHxdzEOesLdcmvqcSp6Pfe63e15cXttEb9J0o5luRuZNNHxP4U/05XAhNYLjywQTB+qoT1lr6XM7+ijreW1vGl56smcgGXQM2ctHnceG4QexCFBA4JLzUeu5pmVczHoHiAMUh612YQrFzPM43HxMl2m42/S7z3VELdXUHnASEvCeRcKuBGl7mWTmM4MTT0m00R7cLGcoEr2jaDaa+EPlD9SI5AVNfTSMVdTKqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,59 +97,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Pratyush,
 
-You are right about the text, and I am sorry. I used an LLM to help
-write this series. I meant to check every commit message and comment
-word by word myself before sending, but I made a mistake and sent v5
-to the list before doing that check. That is my fault, and it cost you
-time trying to read it.
 
-For v6 I am rewriting the messages and checking every line myself before
-sending.
+On 10/17/26 1:09 PM, Siddharth Chintamaneni wrote:
+> When CONFIG_MEMCG=y, lruvec_pgdat() returns lruvec->pgdat, which for the
+> per-node pgdat->__lruvec is left NULL by lruvec_init() and only filled in
+> lazily by mem_cgroup_lruvec(). Normally that happens early, e.g. on the
+> first folio_add_lru().
+> 
+> With cgroup_disable=memory, lru_gen_shrink_node() passes &pgdat->__lruvec
+> directly to shrink_one(). If direct reclaim runs before anything has
+> called mem_cgroup_lruvec() for the node, which can happen during early
+> boot under memory pressure (e.g. a kdump kernel), get_swappiness() ends
+> up dereferencing a NULL pgdat:
+> 
+>    Unable to handle kernel NULL pointer dereference at virtual address 0000000000005040
+>    pc : get_swappiness+0x68/0xb0
+>    lr : try_to_shrink_lruvec+0x54/0x2c0
+>    Call trace:
+>     get_swappiness+0x68/0xb0 (P)
+>     try_to_shrink_lruvec+0x54/0x2c0
+>     shrink_one+0x8c/0x240
+>     shrink_node+0xc6c/0xe08
+>     do_try_to_free_pages+0xdc/0x570
+>     try_to_free_pages+0x124/0x278
+>     __alloc_frozen_pages_noprof+0x6e8/0xf78
+>     alloc_pages_mpol+0xc4/0x1c0
+>     alloc_frozen_pages_noprof+0x54/0xe8
+>     alloc_pages_noprof+0x1c/0x40
+>     atomic_pool_expand+0x98/0x300
+>     __dma_atomic_pool_init+0x58/0xd8
+>     dma_atomic_pool_init+0x154/0x170
+>     do_one_initcall+0x64/0x350
+>     kernel_init_freeable+0x214/0x430
+>     kernel_init+0x2c/0x208
+>     ret_from_fork+0x10/0x20
+> 
+> The classic LRU path and MGLRU before per-node lru_gen_folio lists
+> obtained the lruvec through mem_cgroup_lruvec(), which sets
+> lruvec->pgdat.
+> 
+> The above was hit on an arm64 kdump kernel (6.18-based) booted with
+> cgroup_disable=memory nr_cpus=4. It also reproduces on mainline on an
+> arm64 VM with CONFIG_ARM64_64K_PAGES=y, CONFIG_MEMCG=y,
+> CONFIG_LRU_GEN_ENABLED=y and:
+> 
+>    mem=160M nr_cpus=4 coherent_pool=512M cgroup_disable=memory
+> 
+> These options only serve to force direct reclaim early in boot; with
+> 160M the boot eventually ends in OOM regardless. On mainline the first
+> LRU reclaim happens while unpacking the initramfs, and faults the same
+> way:
+> 
+>    Unable to handle kernel NULL pointer dereference at virtual address 0000000000005040
+>    pc : get_swappiness+0xd4/0x150
+>    Call trace:
+>     get_swappiness+0xd4/0x150 (P)
+>     try_to_shrink_lruvec+0x44/0x2b8
+>     shrink_one+0x80/0x1a0
+>     shrink_node+0xd98/0xea8
+>     do_try_to_free_pages+0xf4/0x4b0
+>     try_to_free_pages+0x110/0x360
+>     __alloc_frozen_pages_noprof+0x8b0/0x1718
+>     ...
+>     __filemap_get_folio_mpol+0x2ac/0x548
+>     simple_write_begin+0x44/0xf8
+>     page_symlink+0x178/0x198
+>     ...
+>     do_populate_rootfs+0x13c/0x200
+> 
+> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+> Cc: stable@vger.kernel.org # 6.3+
+> Assisted-by: LLM
+> Signed-off-by: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+> Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
+> ---
 
-On Tue, Sep 22 2026, Pratyush Yadav wrote:
-> > The EFI KHO configuration table is a global channel. Updating it while
-> > a candidate kexec image is still being loaded can leave the channel
-> > pointing at the failed candidate even though the previous image remains
-> > installed. Synchronize it instead from the image selected for execution.
->
-> Huh? Sorry, I don't understand this is supposed to mean at all. What
-> failed candidate?
-
-Rewritten in v6.
-
-> Why are you setting this at kexec time? Why not set it at load time like
-> every other architecture?
-
-Other architectures store the KHO addresses in the loaded image itself,
-so each image has its own copy.
-
-The EFI table is shared, but the normal and the crash image can both be
-loaded, and they need different contents: the normal kernel needs the
-KHO addresses, the crash kernel must find the table zeroed. Whatever is
-written at load time is wrong for one of them. For example, after
-"kexec -l" with KHO and then "kexec -p", a panic boots the crash kernel
-with KHO addresses that were meant for the normal kernel.
-
-kernel_kexec() and __crash_kexec() know which image is about to run, so
-v6 writes the table there: filled from that image, or zeroed if it has
-no KHO state.
-
-> Also what's this "sync channel"? Use simpler words that _actually
-> describe_ what they do.
-
-Renamed to kho_update_efi_table() in v6.
-
-> > Use the actual scratch payload size rather than its page-aligned segment
-> > size, and propagate update failures before live-update serialization.
-> > Keep clearing the channel for cold and crash images best-effort.
->
-> Huh? This is word soup and I don't understand what any of this is
-> supposed to mean.
-
-Rewritten in v6.
-
-Thanks,
-George
+Good catch. LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
