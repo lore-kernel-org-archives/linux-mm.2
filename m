@@ -1,129 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBF4606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 05:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DAD2606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=az3SLXgj
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ooF8CRjx
 Received: by kanga.kvack.org (Postfix)
-	id ACF016B05F9; Wed, 21 Oct 2026 01:56:35 -0400 (EDT)
+	id 705E36B05FA; Wed, 21 Oct 2026 02:01:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A80BF6B05FA; Wed, 21 Oct 2026 01:56:35 -0400 (EDT)
+	id 6B6FD6B05FC; Wed, 21 Oct 2026 02:01:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96D516B05FB; Wed, 21 Oct 2026 01:56:35 -0400 (EDT)
+	id 5A53B6B05FD; Wed, 21 Oct 2026 02:01:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E0FF6B05F9
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:56:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BFC671602EC
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:56:32 +0000 (UTC)
-X-FDA: 85345573824.20.6924237
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 09638180004
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:56:30 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=az3SLXgj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CE026B05FA
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:01:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 980F9C02D6
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:01:11 +0000 (UTC)
+X-FDA: 85345585542.09.A38ED44
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B69AF40005
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:01:09 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ooF8CRjx;
+	spf=pass (imf01.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792562191;
+	s=arc-20220608; t=1792562469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=noqW2q3tliwA7l9SCHRgFT9oXvb7LtEfC22fYjKJb5s=;
-	b=XB3Iab1osWmeG+xqM05tyx4ze4EEiRuXDyV4O84ZDvyoM4RhLPfxvnlej9ZmTjAYYmLauv
-	oXsNf8bvaT15/wfpQYRFEa24EA2EubVdB1S+l8KnnTKEEyUfEINlxILBpA5GcBXsOIkAoH
-	tZUFQLVTHEBbtQgYK4A+5JBLmX17seQ=
+	bh=9AgnBFgzwSTx7fvIgDbapaFFdCAQNBedUyXmODA5aYw=;
+	b=C9WguNgn41OWPzdrvf9SfSilToNHPNjqnftBGEseD3gm3/Vf3hhB10Au2mku19dSzivgKA
+	i3AHHxDb2bJmYFDnCW9I23UJKOEhysZdk2iMhoPSgJBATdpsqvH4qVAH19jGdO55XUXit7
+	ESrQ/EwJlS4bDYuiF+dSGg1sK3GznFo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=az3SLXgj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ooF8CRjx;
+	spf=pass (imf01.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792562191;
-	b=JsGNm1XLoKufmp02o6zNDVO7ao9BAYH+TlkUYogw8TZwmuMFlZVBsIQawmajJ8DhUMtxBG
-	0Q/sREUD9MugxLBXwsrUeISTkCihF5EQ8eK47ii/5+dvSrngf3P8fOZVvW/+8mlOJDVcIv
-	6211O4tc/s2rg5NTxNGK5Z6T9yG9qS4=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a1df4c0966so1783025e9.1
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:56:30 -0700 (PDT)
+	t=1792562469;
+	b=zjLFcLeY5ChXijLWLgmw339vxN0w4Gu83lvtWwvr6Ljknzxum1WFOlRMQtuQhLm0oCchEn
+	+uHnyxBjPk1Jn1m2qmnyECTveudm5+C4Qxxbmv71gCFz4UDiNZ3COmfRHvHidE1lbR2CMA
+	E7ObxtXoMmdnHCVmOlhzdWtznuu3tv4=
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso1110870eec.0
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:01:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792562189; x=1793166989; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=noqW2q3tliwA7l9SCHRgFT9oXvb7LtEfC22fYjKJb5s=;
-        b=az3SLXgjC8SDd+HfKFWziWASsfUFu+jwLIGQNb7vZLj52ELkjHkTIK/eJ/fiqHzOLI
-         n0oquIWPdLu7RFVqBq0VwkG5Tnzu9aPYyM13pmzAa3xaDpuclC9k2LJnuA/eqE+BtE2v
-         1m/EdAoi4fdNQy710RIPv5QXxGTUWE+qb+h+y204lbZxH33noIxcHj5doolpfAfTwA8g
-         MxVT3MnCThV/q1mdSUTSwqfipbJ237q9/HbnTsNkuY1W96dCGI8LjDu3lfR6O/WlkZi+
-         5YS54KO6R1SH71LelZwBxW2OQukr4UWqIGADYE1JG31WSTHlynqVdhCq4AblEl8BFZzS
-         p3WQ==
+        d=gmail.com; s=20251104; t=1792562468; x=1793167268; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9AgnBFgzwSTx7fvIgDbapaFFdCAQNBedUyXmODA5aYw=;
+        b=ooF8CRjxYufXURUDlcNnAWGrfDNM3iniCTuJzgx9laA4NaumC1Cmqjq85cEdfGlc/K
+         I9ox4fvMIQ0wNPPKSPIjWtnunPBo+LpjfVvlxD7zITgraJlrttLqy0E8Il2v6tasz18u
+         ZYTQTwoDiSs84NySrzMbnlgDK6X6c2or0UTHry/Kzr6PRPjYxspt2GmtDAeZbTBm6avu
+         O3y7+o86+FDAf3EBydDwp381Zv8Xp6VgSpckMTvK6Gp2IKd6aYKUwNDTNExpvufuawCY
+         NqoDSHV9XuPy0B+IepGlPe0bYCm7EvL9Kuix0RWA/OtH9meE8E4TZYPonPaK5M28F6kL
+         fvNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792562189; x=1793166989;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=noqW2q3tliwA7l9SCHRgFT9oXvb7LtEfC22fYjKJb5s=;
-        b=sHsfR9HfCzTvqM2jPe3VXVW/835BGk7DwePvKcL/Q5q7U2MGp0xpA9zVBBKJcObzjk
-         l1le8cADhbaXSaFBfQH/ZMN02oDbJxEEI25fI+jlijPCU+k62Ar1pjoexO9VvOVXG6sz
-         zX1MPwWj4L1yqKiY1S7sahQLobd66cce312AyyrQlUquBw7r1sju7mxWo1uktJ2AOwxO
-         JtPhrn3YIfeLA/XFZCJkX9AYC4wvj/oSAW5C3doHlN3R1sVo4MVamH8jMCD5NlmjlVnm
-         Z6BUC1N9FhkpZ774Sh6cS2Gcnceg2PImhyHaukUyf8MoWwDitV3yQpDg2HwO2xTO0QVq
-         J94g==
-X-Forwarded-Encrypted: i=1; AKwUvBx/8VlQQBBbVUF8jc+UshnrG+al3DMZwjz42Jf7ycCvMTVwWu25wil7K75acOxpxg8hXORiVw2FCQ==@kvack.org
-X-Gm-Message-State: AFq9FYIox7KLQzrSxLnFVPkv7U/+7w0y2KcLoRZmI2wSjDNUUA9f8V/z
-	qSzN+bqTw8ON+Kgp0GCOsY+0y7ccBDQE88xc+B4Qg3Qx5mtnGLtUeRtn
-X-Gm-Gg: AYBFou2F3GwmljhB8HwKmOMY+9wfkqS9IvVNzjIsL9ztf9p4+BF61gJi27l+AF4DR24
-	Qg4YFIgL3Kxv+UI+mOnuaIqBTQbeBNkmqqdyspeDlxcKUrUJ9ZVl7SnNWXZKN9P7TOwvQ0P5x3g
-	tAbgdtDoqScbHfmKE9qBZklShCptnv5aDuyd82F81tpRgB/PYMBBrW3f36huEqr+ve2wcVieD0d
-	fzgDwh9cKBxWnExsIWaET902QOj/TtPVlKH3gfuN9pnC0CGWMnstOW5bN3Pcr4Foqr2ovqLm4E2
-	aMTLIkjfHKGiVosFrJaxFeRCUB8DwcqVzDa3tjfAtRhYFtJoCHoHZG78/O0+jywo+9yqKFZ/tuT
-	8i9OgMrPyqHqUWznbiMIkbX7efI0mn0Y9HuUaEAvsyV0j5Tp0Y3AX8UgEO3k/vr8dmyTdJh4LzA
-	/vQr/gRVJpHrm8YmIOSWoumUxOKNeOwWb9X/VM/qdYnfkcy1QfJonCoYckIN2S7BlTzCONGnN00
-	OnCsRLC7+E4amRANdhRQZKRJXdJ5kY+P/jCj/tGxEAqTYYUwryVSta1CY4D83QEPxzCeIR7YUa1
-	+uPq2adug8yArQp653c+LyqPFJrbjQ3NkdCQPZN3OrNnSgIf09N2v8SvX429Xy1Pn6fKC/oM39R
-	gbgd1SRcf9C7KTQ==
-X-Received: by 2002:a05:600d:864f:20b0:4a1:d49e:9ce with SMTP id 5b1f17b1804b1-4a1f4c4d55bmr73200075e9.2.1792562189221;
-        Tue, 20 Oct 2026 22:56:29 -0700 (PDT)
-Received: from unknown748F3CBA5068 (dynamic-095-117-105-001.95.117.pool.telefonica.de. [95.117.105.1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835b1dsm3374756f8f.40.2026.10.20.22.56.27
+        d=1e100.net; s=20260707; t=1792562468; x=1793167268;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9AgnBFgzwSTx7fvIgDbapaFFdCAQNBedUyXmODA5aYw=;
+        b=N9T+Y94kuQ1Zle9oUmMpLjkrlUJZlBeD8rwZEv59odOxpwLQcRDuSnxBAgNAOi+XHn
+         PRQhZLcwi6fBtah+GT3vK2QGdSJ1z+pI7rgBmy0MC7f8BFCBA2QDLWQaw6L2wAbqTxL1
+         VBQmpx4UcPKveFcW/V0pNj8mvJDYLrEHSB85vxSRVRd81P4Ae5aSOwrtOxmEhDeK/tEu
+         e8a9REn/eArqgzY0QVwk6xiS60kqAO/c6nM6uSBiBEOp/q3b5IvMSl2Unv5lBwynSEqi
+         8Y0m51/sekwiHJuZoqTHGGtTD6dXT3683dPwExtMk4+ObOA2E6u5D1Yc0YGG6mjwkX5H
+         8TMw==
+X-Forwarded-Encrypted: i=1; AKwUvBxqkBq/0uvoNVeMk5TDRu8mu01NGnJF8HT+StRMQi3vV6OQL6hYl61El8w3qqrJUoSAQQ36cbPZBw==@kvack.org
+X-Gm-Message-State: AFq9FYLdCpiBbptrWeozvxwFkmu3WILEmR/ISz7WWSwUikG8ORL3V60h
+	KpaqLDbd1lZycF56v10beD1RFtbIX+0Kj3RzbJpLybZard8uxas8ShMf
+X-Gm-Gg: AYBFou3Y+jrpw6PwX/P6jjo5IMV4iVlkaY0SVj4T7lQqNaYFZdcaOQbQ2zo/JFpJxzP
+	GoywX687oO3Y35tpfBggyh1N8i+c/VPMDS9Yzx8ywLV5Ps9bjVCKjQhO1fvAFSuGysCGRQy/I+T
+	TT0Qlx45ZjaVC/sa1idWR/PtlJLhn+IHPaKvWsBCLM8gtfureygpJjC5KGESpVvb45MW73rRX+R
+	SiTLyWtiw6+yQaUaX0Bbcb+RzpYY6fiydGE/EccwMUa4kzIciILCN12tw1718C0v8rcMzqHk+jU
+	eotTwOFEm1ttq9UqQf6kGPCG/hLd8sJV8BZAKPFHhnWx6Pl7sDXYieKCdNfP+csSCZKsNWtwX+f
+	oca6B+fDcLQSmUTMqFTf7n/vKRmLdBE+8wqoslcMpUQe1MMZpGxNz91xeY7Sg1Xid8s8cvzrDrH
+	lnPggSQrCzfC2iqqm+1N0ACzrfRarlRqb894yJzW4W3BXLsnnzmcWyV84zFYSphWMrQ3TZgI1O8
+	08gDcjqjGLUE3VV2MJGZBVO9WfZ0dc08VipwqSmvpeJitOQbTfH+s23re3ibQE3mBhZlzCIsA==
+X-Received: by 2002:a05:693c:414c:20b0:358:2e30:8e5 with SMTP id 5a478bee46e88-3674b62ecdbmr2229193eec.1.1792562467921;
+        Tue, 20 Oct 2026 23:01:07 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36740cc8c6dsm4408666eec.12.2026.10.20.23.01.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 22:56:28 -0700 (PDT)
-Date: Wed, 21 Oct 2026 07:55:55 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Alexander Duyck <alexanderduyck@fb.com>, David Hildenbrand <david@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: skip shuffling and reporting for no-lock
- frees
-Message-ID: <athTqt0vljgHb8q-@gmail.com>
-References: <20261005063515.6312-1-kmehltretter@gmail.com>
- <f5e7b114-2bda-49e3-974f-170211501203@kernel.org>
- <20261020110948.wv_yGAhQ@linutronix.de>
+        Tue, 20 Oct 2026 23:01:07 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: vbabka@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	zhaonanzhe@xiaomi.com,
+	lipengfei28@xiaomi.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 0/4] mm: compaction: mTHP-friendly memory compaction
+Date: Wed, 21 Oct 2026 14:00:59 +0800
+Message-Id: <20261021060059.2253219-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <11264869-00ad-44ea-b39c-a78347af0ee1@kernel.org>
+References: <11264869-00ad-44ea-b39c-a78347af0ee1@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020110948.wv_yGAhQ@linutronix.de>
-X-Rspamd-Queue-Id: 09638180004
-X-Stat-Signature: keum8xwtnezym35f1bndxsmyoj7gcctn
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B69AF40005
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792562190-558234
-X-HE-Meta: U2FsdGVkX18JboR78L/QbOkHyAbXoSOo2ZWa/pDokv2yK0OA+du/ep0pLPFEwjBv+jb+3dXiUjM/r8oz1xlv6z++uCwApEbIY3/e6CzqLI/JIpyekjddfE+lSJqodohsquWfYCUmSX8rBiI2Vj2YI8xVbFzEVkbgt9CWG+2l8mrgfna8bSU1ploK2bXlYOvvvGHOQvDbPnH960g6/OoS2hHnSuXUnYukd2Ii1IWU1O/I/M4IBDdJS1BOaVEh+Z8zU9VBJWXTph5xJtd+kmcI8SABy14NtoJX9pzXLPkHqgsMQ7KAQT+QfR4KLkTs8ttOAsQmUA//9hmLZ0ytfuxJzBamQl9FfQZ4bhCu+6LYAjknIVU5inRhOra5/C4/vYR03neLfhtLWUMpUDq8VbEnbpIOuJp6aTBBJAdTOGpUP3JEscbw19XIugf/nG0mtqXdQL8oXFYo5WBkT3gDKFqLPIJSRD2f3GmFmFt+fpdYbDtrmn9ySItMUQvukgN/LV1QOS/wbdZBO0Tw5y7WUE5lL9ULKQ7TeD2rT4VvLQ1x+rS35A9of4Lqq0tboLkzSmJ1v58cHED6/WrLidJ5BSkR+CWlBUD/0qllxAFi9THa41Zu4NzIUVL6afYqucuR4jC/lNagI0IBVksrjartl1V96cJIg+D8GotxBxL+ODppKmPWb1HzoORNtFVpzARI/T8t/8psogN4vay3oZ3ngDWktQz974GzuzOZXfydIlSVS4G8SYC5IpgEwT8kDz0yQSs2VtX2pCUTntj1qOBGy0KBmvUjq6mIFW1neFcnZ9veonI2fo0oAbUvUlvq2vRgPyx4PLyxs3En/fqYGu2yb0opQQ68TL8V6UbcBLwQSFAKbaMYhr9s/EIjsDyEX4WpszFzx7CZNxBCLCXo97hYA5uzZsUz7Y27Rsdns+ZxGzqDOerX4tHGpzDkp5zpFIOKp81mcG84/BqlYtt3lHIF77u
- 6YzFEr9i
- b5wpyg62InERNsCAOri8OnAAtu9KQjR0JYa5Fv5muuE7ZTWSpDhzOELa9TDSUoYVaVB1xJ1jmlWgpC8Wd3uXChNv8Eji/Xf1rkxmFw7O4mEhrgdsOshtD5cPHBatf+xry8BJUZoLtJGWNdba3vERHgdxle8qozQnEDvc1z1RuEQpS2k/r2/l80TnKNF+Ve/8X3P1n+JC1DL5k5zKLFec4psv8wX1LuqJMcmJVS4j4H3nQyVhi0mQKM+CxyLyFzBj0It3FZ8RG+x6mBqTxPtWQoGuBpdy2GWhqiU9RPJluPiFFS7PTrArqlyq0eNmelc2R70V+X/vWCCvixtZ8MliovDvAZ05n1awbP0yLaXEllZ69SLH2yCYr1fLy40MXBDumq9KL6w1rK6hchaXxxZEh2OBEnr1PcsxNxnwD6nOjGvhsY/B1EODc3ElRUl0/+Ia9l5WiTivU86Q8tuwHIt5tJolwRakUO5Y/FxNa/59WNQsK+e0=
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: ekx1nki5pgy3km4kbe3f71qwmsk94kor
+X-HE-Tag: 1792562469-611745
+X-HE-Meta: U2FsdGVkX18Y01ObQhXCTZUMnB0k+wkLOdaQzNltfIIVekbikNfQXdv+d5BDL61GAdWy90UTN52BdLDu0bSI4gtg9iPfCXDWySiLA1flywPkKTVdr83HVInKQHLvFmNnqoDZzFlhqpikpcUpM2NCnRy5cfK3hf3tQa97s+yRARWpYFSCTl2n8hiNbWm7OZU5wH8+BXnRlhaZ/O7l3Kjq7CntWOmWv3qoY84ZsH7xO8r0mckKyYj8n5Qo/QhpAGOALl+jz1vS7lvs2kV4BqluPTeFOzOJbjGre1F2KEjNFxK0h98aUkMhhjnWLMrLOZ84+6ioJv0ZIGbzUJ4hTPMWkQxgHOgxN6hbicqec3VKZtYxhcZIRHX0ebdydU+BamBrQ6F1CTuYa6qsuTMekcD/7q7G6FCk/6mxb1GUgAnev/Dsi685Kru2ciKrIYyrd3mZrm5ClSkRT2QIG82q8Z4RXFMSMk2oaja5HNK/w5XPxLrBHToUD19dWFjlI2s09NXKwbHdpHgq8JBOtC+lGerH8MPn02Ivx6ZAtqriobdyhR7f0grlgIW53VsQMYs0jM3qw5J8gH8whndThuiJqldai4mRUHIUp9Ywt4D1CgCUbLOEZ0sOZUB7tisSMgNJtWpJxOyQiIz3fkifu7xTETcYhVODsX5ZW8515WOmA8WD2jCLoebrfAP5HoST0JOPEGhiENzBobBNULbwpeOs8DZMr7758xmVLVgPQHgcLStVwGBPcn5MNLc10+IjF+1YAxngSvOfWF/ruain047M3jpiiZ90mq2d0MIpmm9w4/pyldBGnH9A/BlbyN5/h0qmVnfgdqpyL297YS/+rk+5jLnUNlbyRQI5nvnufa6CJrDtpasYdwc0sbJV3rcLsA3YNHUYBJ57r4Z7Enog0RrDIr/13W88fO2/3xP2+45+ukqYL9k7LzSkWo4l1yESVliVPgvTYo8ejy1T2yMqz4rkISJ
+ RqrPzumc
+ NdlwbRrnC9Ja0UldczVLcpMy6kITCNVaDJlP+iLgMNvp88Yx2M27Ih2kCDWczL98HGCdpwCe4vV9Km/pp8QNVyA1WBOdgKVIGvP7cAFJy1zfIs4ztSiZ4rxLnzZG/QwYnEtyyUpbTgQpJiUpOsWngo9XzvY55eHhg+BuPWwDbFNxNSBJKJUK0PtbfMD8Lg78YyQCq1ggGz6K1lVZcdE+M3+3ocZAF6bXkSDEB7MaDpjlIjinC4bG50j61q4B6VuupZ/AHhgyUNkBvGazu0d3Ek060jr0wmnncR57GIdEh3hefs60uVF+li9f3h2nWS/Ikwd+HVjzgNt4vGZvz9K5QzAAWRHmBgoHJj8pA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,35 +141,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 01:09:48PM +0100, Sebastian Andrzej Siewior wrote:
-> On 2026-10-20 12:02:01 [+0200], Vlastimil Babka (SUSE) wrote:
-> > > An instrumented PREEMPT_RT lockdep run forced a random-bit cache refill
-> > > while calling free_pages_nolock() under a raw spinlock. The unpatched
-> > > allocator reported:
-> > > 
-> > >     BUG: Invalid wait context
-> > > 
-> > > The attempted lock was batched_entropy_u64.lock in get_random_u64().
-> > > Lockdep showed the raw test lock and zone->lock both held.
-> > 
-> > In slab we solved this by using prandom - commit a1e244a9f177 ("mm/slab: use
-> > prandom if !allow_spin")
-> > Could be better?
-> 
-> I hated it at first but now that I looked longer at it, it is not that
-> bad.
-> 
+On 10/20/26 16:52, Vlastimil Babka (SUSE) wrote:
+> Isn't using  struct compact_control clean enough? There's already many
+> fields like
+>     bool direct_compaction;         /* False from kcompactd or /proc/... */
+>     bool proactive_compaction;      /* kcompactd proactive compaction */
+>
+> Who says is_via_compact_memory() cannot be refactored into something using
+> these kinds of fields and not 'order' being -1, which could be then used as
+> the target order.
 
-For v2 I can pass allow_spin to shuffle_pick_tail(), keep the cached
-get_random_u64() path for ordinary frees and use per-CPU prandom for
-FPI_NOLOCK.
+Thanks, that's a much cleaner direction than reading huge_anon_orders_always
+and would also address the race I raised in the second open question.
 
-For page reporting, the issue is NMI rather than raw spinlocks in
-general. free_pages_nolock() may be called from NMI, while the reporting
-path may queue delayed work. I would keep the FPI_NOLOCK check and add a
-comment explaining it.
+I tried to work out what it takes, and ran into one thing I'd like your
+opinion on before committing to an approach.
 
-I will also put is_shuffle_order() first as suggested.
+Today order == -1 (is_via_compact_memory()) covers two callers that both go
+through compact_node():
 
-Karl
+  - proactive compaction         (proactive_compaction = true,  order = -1)
+  - /proc/sys/vm/compact_memory  (proactive_compaction = false, order = -1)
+
+and the real order-carrying callers are:
+
+  - direct compaction            (direct_compaction = true,     order > 0)
+  - kcompactd normal work        (direct_compaction = false,    order > 0)
+
+The issue is that /proc/sys/vm/compact_memory and kcompactd normal work
+differ only in the order value (-1 vs > 0), and both have direct_compaction =
+= false and proactive_compaction == false. So with the existing bool fields
+aloneI can't reproduce is_via_compact_memory() exactly without adding a new
+field, which I'd rather avoid.
+
+If instead I give proactive compaction a real target order (and keep
+compact_memory on order == -1), the ambiguity goes away, but giving proactive
+a real order is not behaviour-neutral: several paths that proactive currently
+skips because order <= -1 would start running. I went through them:
+
+1) skip_isolation_on_order() - currently proactive takes the pageblock_order
+   branch, because target_order == -1 short-circuits the first test:
+
+       if (!is_via_compact_memory(target_order) && order >= target_order)
+               return true;
+
+   With a real target order the test starts applying and would skip isolating
+   folios with order >= target_order. That is close to what patch 3 does, but
+   not identical: patch 3 tests order >= compact_hpage_order() and
+   additionally gates on mthp_always_enabled(), whereas the native test keys
+   off target_order directly. Whether patch 3 can be folded into this depends
+   on exactly how the proactive target order is set, so I'd treat that as a
+   follow-up rather than a given.
+
+2) fast_isolate_freepages() - currently returns early for proactive:
+
+       /* Full compaction passes in a negative order */
+       if (cc->order <= 0)
+               return;
+
+   Here the order == -1 is doing something deliberate: it keeps full
+   compaction out of the fast freelist search and on the linear free scanner.
+   The fast search is meant to grab enough free pages of a specific order
+   for direct compaction and stops early, which is at odds with proactive's
+   goal of scanning broadly. With a real target order proactive would start
+   taking the fast path, so my plan is to preserve the current behaviour with
+   an explicit guard:
+
+       if (cc->order <= 0 || cc->proactive_compaction)
+               return;
+
+3) suitable_migration_target() - the free-block test changes:
+
+       int order = cc->order > 0 ? cc->order : pageblock_order;
+
+   A free buddy page is rejected as a migration target when its order is
+   >= this value. For proactive today the threshold is pageblock_order, so
+   only very large free blocks are skipped; with a real target order it drops
+   to the mTHP order. To keep proactive's behaviour unchanged here too, I'd
+   keep the threshold at pageblock_order for proactive, i.e. gate on
+   proactive_compaction rather than let the real order take effect.
+
+4) compact_zone() end-of-loop drain - this becomes active:
+
+       if (cc->order > 0 && last_migrated_pfn) { ... lru drain ... }
+
+   (capture is not a concern here, proactive passes capc == NULL.) This one
+   is harmless, but for consistency I'd keep it gated off for proactive along
+   with (2) and (3), so the order change does not alter the proactive path.
+
+5) compact_zone() start - this watermark check starts running for proactive:
+
+       if (!is_via_compact_memory(cc->order)) {
+               ret = compaction_suit_allocation_order(cc->zone, cc->order, ...);
+               if (ret != COMPACT_CONTINUE)
+                       return ret;
+       }
+
+   This one is different from (2)-(4): it may actually be worth having for
+   proactive, so I've left it for discussion below rather than gating it off.
+
+A couple of paths are not affected, since proactive already diverges there
+via existing flags: __compact_finished() handles proactive earlier through
+cc->proactive_compaction, and fast_find_migrateblock() returns early because
+proactive sets ignore_skip_hint.
+
+So my plan would be to let cc->order carry the real target order, but gate
+(2), (3) and (4) on cc->proactive_compaction so the proactive path keeps its
+current broad-scan behaviour - i.e. the order change is purely about the
+target, not about switching on direct-compaction paths.
+
+The one I'd genuinely like your opinion on is (5): the
+compaction_suit_allocation_order() watermark check. Unlike the others, this
+one might actually be desirable for proactive - it would stop proactive from
+compacting when the order is already satisfied by the watermark, which is
+close to the "don't compact when memory is already sufficient" point Dev
+raised on the sibling thread. But it layers a watermark gate on top of the
+fragmentation-score logic that drives proactive today, and I'm not sure the
+two should be mixed. Would you let this one take effect for proactive, or
+keep it gated off like the rest?
+
+The other open point is the one you raised: compact_memory and
+kcompactd-normal work can only be told apart by the order today (both have
+direct_compaction == false, proactive_compaction == false). So a fully
+behaviour-neutral "bool instead of order == -1" cleanup isn't quite possible
+without a new field. Do you see adding a field as off the table, or is it
+acceptable here?
+
+Thanks,
+Bo
 
