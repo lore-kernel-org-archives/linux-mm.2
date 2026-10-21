@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4028F606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 19:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7340A606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 19:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l8263bFw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aaHL1atm
 Received: by kanga.kvack.org (Postfix)
-	id 5B19F6B077D; Wed, 21 Oct 2026 15:58:45 -0400 (EDT)
+	id 872406B077E; Wed, 21 Oct 2026 15:58:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5893A6B077E; Wed, 21 Oct 2026 15:58:45 -0400 (EDT)
+	id 84A856B077F; Wed, 21 Oct 2026 15:58:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7116B077F; Wed, 21 Oct 2026 15:58:45 -0400 (EDT)
+	id 786756B0780; Wed, 21 Oct 2026 15:58:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 231EE6B077D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:58:45 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AEB491A0660
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:58:44 +0000 (UTC)
-X-FDA: 85347696168.29.92B1406
+	by kanga.kvack.org (Postfix) with ESMTP id 5907E6B077E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:58:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D1A401A0662
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:58:54 +0000 (UTC)
+X-FDA: 85347696588.14.4F1BA77
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0EBE0A0002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:58:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8263bFw;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2B1B140002
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:58:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaHL1atm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792612723;
+	s=arc-20220608; t=1792612733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yAydzIVAoeyERrjwsju4GbQSFXyp+3uvSqDPl/+MC38=;
-	b=SIsrBcVnnN+ylIamlR/P1tgKOhQ8UhrLd68Tft+yY1dedbWnCNo4Q5qT9r4O9HeFn/Usak
-	WNaXpv19VBYBKspRxI09Ks86ZnpZNk5qnmvuVDggnJkbmaowvq/oSJijyJ6olu5kLNJItF
-	amdlNZFP/6h0KABOaNaRplu5GTcxxWo=
+	bh=Jn7cYNwO2EebwQTtuyF9ZBF5UX2UIlTQdb3hKPwxsNE=;
+	b=BbcxX8zFjGqQabY6ThbMaiaxa0BdvziHP3penFoCAKrGgHo86QVKtSvqMApGx4KKFD6GJY
+	7coJdAiPK8lOs0tiNowT1uu0254P+bJ2Iz5kyk1l8KD7Xipip3Xz1LvOzITlp/cQHXdJGR
+	qFL9ojao17OCioeieiYJSHouCvtTW3c=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8263bFw;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaHL1atm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792612723;
-	b=jiEcu6ZXbl03l065cqQ1Iju58X/vlcwPJJURbyhojKyK3XWvFNvSdmDlnHpIYrdmNqV3w1
-	8FUoAbJMy2MltkCmt4N2MnIDvyrepj2sZknQ5scf/0HQtCAGcjeXnZ0meCHyMxN50gchfI
-	mRYN4EwWgnuYS8mIOHS0Qn9YzZKSSSE=
+	t=1792612733;
+	b=HWCPN60I0oNG6FoQMRLJmwADgJMx0ZWPdtNnE7yuWhP7LH5XHcqzybp742w1FtIiXho1zk
+	OYWOgyJbLMXO7XKfQTemLuJo6a02RZJiyKLxMKgtitIld0H/5k/Qx2mzc5m01cHZ4UxpcH
+	RRWsCYwOXBrWPrXu/cPiD+B1ID1R0ts=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5966C41EEF;
-	Wed, 21 Oct 2026 19:58:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A431F000C2;
-	Wed, 21 Oct 2026 19:58:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7227F4152A;
+	Wed, 21 Oct 2026 19:58:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F92E1F000C1;
+	Wed, 21 Oct 2026 19:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792612722;
-	bh=yAydzIVAoeyERrjwsju4GbQSFXyp+3uvSqDPl/+MC38=;
+	s=k20260515; t=1792612732;
+	bh=Jn7cYNwO2EebwQTtuyF9ZBF5UX2UIlTQdb3hKPwxsNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l8263bFwrjWQCX3skqmlYw9DM0UQgw+9ci9Lt62/2mojFUV7kkvumXst7+UErRWp9
-	 IINsXsZnkTi+e+xRuxpg/j4lucDxk5ISFSK5Q0je5vVM1l7G1h4C2H53E5vPbWRPe8
-	 DRoVtHs7oYWlCiZwf6deKaTupTnx7nxYuKH1eTg4XJ5PTv8/uw4fhwygv5BzQvDjW1
-	 qzKJ1ihZA96DUzQ/52wxhYsczbXLEpXyLvqisiLaLWg2Wrd24NLeZPchZswFJ1Tqhn
-	 b/Mf0diwZsLoTHwvZ1/6naes9QMbn8NUxIM/v577i+6DICb6m7iGDFLIAN3wYhi63K
-	 VevkQqnwtjBxA==
+	b=aaHL1atmE35nyOxsUVNKx824WP2YE1bRZTN24CLskPsbTsMWv0Rz9Py4LeD8cjWqo
+	 66nb6382hQ/iBEApI8d2qsL8uF29CgIVtpX0xaOtMR7TXdGzKLpPMJ+jX87imjE19m
+	 J/Z+W87/yHp3kROLG6lX2G/JwT0CD7qukSJX0OVlcdVYGnnVIn+2+20drOKW1AsT9W
+	 Q3x8NdIOw3DULa1TNc2wXHxMlFMDtA/xjO3vXoEZxRzr0rDf6aIL8Mc6DX6RMuCEUX
+	 v/tqtQJNknxoXBjfuENl5NL7QiuXMUcgXGQQsZYQjXIPNnTtVoA8EzTIpR1AtSDLN5
+	 D27bG18iA+sIA==
 From: Jiri Olsa <jolsa@kernel.org>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>
@@ -74,27 +74,27 @@ Cc: bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Shuah Khan <shuah@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>
-Subject: [RFC bpf-next 3/9] mm: Expose locked mprotect operation
-Date: Wed, 21 Oct 2026 21:57:52 +0200
-Message-ID: <20261021195759.119421-4-jolsa@kernel.org>
+Subject: [RFC bpf-next 4/9] bpf: Add kfuncs to allocate and seal user pages
+Date: Wed, 21 Oct 2026 21:57:53 +0200
+Message-ID: <20261021195759.119421-5-jolsa@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261021195759.119421-1-jolsa@kernel.org>
 References: <20261021195759.119421-1-jolsa@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0EBE0A0002
-X-Stat-Signature: on3txfie3y9c1i4i8gewmjme4zgwrxbs
+X-Rspamd-Queue-Id: 2B1B140002
+X-Stat-Signature: giuwrr7wei6f48zp4edd8md5tkt3sig4
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1792612722-637474
-X-HE-Meta: U2FsdGVkX18cWJHL59sCJOOo7kPjAjpvJ5dwH2N8f+YBGZlq/lolvG13Dx2beNKN7Qht3s7Ix44V0Eu0/C8uj8Ta4UN/83F3u/H6Ah/syLheT5ITzNKXyNDmRG5humB4wmfwMbc3Z1VrwWxFyxdLhV31SWs2cSebjn2WyaI0wksE4LgJJd4Qg5IZ6kRhKDOLf/+KW2PTbfQ/CYdZpfniqcX1fjWT5pMm7hA++nQUW3JNj4X9xehWgUXjJ0VKqPd6W4yezDcgiIVH3RAo5gHTRWHa4/W+alZfhGVNC3Slks4dNYHPg3V9Anv6TfFCWp34v7rDA6FbE0dmI8GAXmFf+TkONokeV47bW+EMVM30DUb/XC3aNzrEkIU2OvVZjVOf6RvJWdWZC4YVawMxt+tnq9iH6S4XhsQsb2JJfQ6I7xdtDOWWvSYRvNkc5x86QnxziJfQ/hxRZSGlUlM8kRuPCtTC8J1dndOIa024t59YNtu1h56JDxPXKtx92CHOqkx+YUhLA7qe8PI6ClKDonUiYMxHpk/N2+DnPTlgJiCMUP2rmguDIdaYYjqySpF/H9usrZ3shMZ2U6yZFnpDz8Rn3bzWvhh2j4W/lTWv7qowlUj1iu52IWSH1hZ8pyDtGXjN9QLDrnzJftTTBa+nJAMVsy2PlDAXf4Kyq7HEFIXAyQR0wxEY986qr7tFYUz2Ok1NfLpb2V1tS4rOmBdH3oyNY6bpUe4lEMAX5FLYiydRBw5kQp9kb/4iYdAK8AN2obh1Wh19QbKbVU8Jj/Mr65VfuNrJ+ZtK2xWT+E1ZK98tP47WElFxuaSCBxOhxS7zmsROkf0iPnh1KU8lvTKg9+MnJG4jDwwD7BbQe1Ny4RUP0cym0m+Z5Qgjs6s2kBtpSbcvJMTPDFuDBCgTCU1L8F3yn3Zs/pZ0SF51g8d1xZiYmzU/YrKs3Bz+Bkl8XF2zt2JhV0BFGCrJodTRMchDNOA
- qB1NYxAi
- BBQwwhsGJKeR02ZmLyHe+kyfSc8e+eay+OWYWEPtk/g6ahMzdv4x9//den4la7x4h3FAhre+r9HqpcOm4WH0b9qp2nj5oRsGufM3neSJR9GS64dcQphWJsx6mBAzKauQa4eX7b9AEXo4xmkToMFPosH8YJca5NzmOH0R/pwXqMZjPklNX9vOugTYuKaq+1EcPh93mLDajVOlidnsh0zZ63WkM+raerX38cT3ddA3WqJTxbEGdKG1BnuQtWDEUlRayQBYXsZuIXrPGGMj3WhmtKTXCRArjGKd/zoAB1XKz5sb7uG1jR1BC31YSPzUEPBQgvbVwZDrufXk2wNg=
+X-HE-Tag: 1792612732-910004
+X-HE-Meta: U2FsdGVkX19ql1s7FIASjlRcrrYDdJ4W65yjlhym6QUhreeGvEvxN1Zr7rTTBHSIDuwkRzWWmP3F2D+vaKVuLhS4yqorteP2QVqhHUPOmTeSQkK1e8Du8M0HC18g3jsbfZOHCsl/9P4nQaNUNRAIYdPWCx1abAhsF5Bl5zY8FyLAhjBd1L/3OlRt3IdIypisYC5+GZo6D4KhsheSxaq02TwWcahG1+qlv7jfETgHby2FO5p9SjEs51a8nkxm8xaAgGrQHOlpLml87jPKXHBYCnHX4XmWUc9qA4Iesu8SqG1wWX08PNYWYsRkdXGiqU4O5mwQU7IpD2AunG+EEglhV2xn+TBb+8rF8CynCFMQVrv0ulQs9E/+MwMA4camS//7vD8YTrXZ/m2FUhR/ZcNhi+vz7f1ol0bIAHu5bIyeye5vXCc8Tv4QTDGiT9c/7WTI8GKelxqCkJyhzgivemh27inI4woi7Z5eQtvGpQbf6LxyJmrCD3NLoo0BcrD8R+NlBalF34lu/GA47NR2qk8DVkyQnD6BfP85zL+9gWzcvlD9LMG1AioVO+fKuXf4CY8u3NktwD928uS+X8A9t/FJPTh8twoi66ERTnLsmuMIuMzmfNOBvu67Av2VN4Gtn8I/4t7jRpVhkvJ2VTNM272usr087pBb7mQAszkLhs9i2Q3u2hjHT23dP2j3vTg2n23QMsS+U80Y3k3pQ6UHRa0YpSQ+d8FvQmNjuDldVgbCBpb9nz25mmNtsw+sDHDJWqlt6Q/CbdjyuKRMY9E5fkxFbOanMfsrGvO9g/E/EWPR/GSdp0FmltKyaONcBeSuhNDO8eLh5h73yxLp6NtpdvY1Z3zlFH9KwmTf6RA33YkD70RQUfgtLrlC5yrIqg1IGZjj0ukc+MSzZQJdI8qMLPAC0mdSr4n5nrCrgC7gB+/BwXN9mYRcQdxe+98ZX3rITtZsSaUr0jszC5a0GRQycBp
+ WQb+L/9D
+ IWMitkZVjvWYpMg5PwZDAJKzwJuNAg62efAUjEPmenms2pN66G/+cQBfRzL+56X3GuvqERNKDOfzyZ2A0GpJzjQnKFJWY0YenotqbephQ+yIXaAe4tZpg6K5DgyOz2N7do54lbnLg/asvGAWM080Taurrgo4HKD9j5jki97VAXh/Pp1xb81DqxpLYxsuKGf91ItVtKJBP9icqDmDIyCFAavzK6XqRmLz22+Fr/0ExoBTBUXblMzTle8qLM1o7vcqM60z4VGQoFzj/jEe/ZbcMFTHIElPPiYu7wmMHOqcSLIETtuZbEO/UBnzZm48qivQ7zvyPIwrKSyQ78Li58Z8YpjyCeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,80 +103,172 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The bpf_user_page_exec() in following patch needs to change page
-protections while holding current->mm's mmap write lock.
+Adding sleepable BPF kfuncs for allocating anonymous pages
+in the current process and changing an allocated page to
+read/execute permissions. The mapping remains in userspace
+until it is unmapped or the process exits.
 
-Exposing the do_mprotect_pkey_locked helper for that.
+It's allowed only for sleepable kprobe type, which technicaly
+means only sleepable uprobe.
 
 Assisted-by: Codex:GPT-6
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 ---
- include/linux/mm.h |  3 +++
- mm/mprotect.c      | 20 +++++++++++++++-----
- 2 files changed, 18 insertions(+), 5 deletions(-)
+ kernel/bpf/helpers.c | 127 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 127 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 63f40e615754..47e853093601 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3435,6 +3435,9 @@ extern long change_protection(struct mmu_gather *tlb,
- extern int mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
- 	  struct vm_area_struct *vma, struct vm_area_struct **pprev,
- 	  unsigned long start, unsigned long end, vm_flags_t newflags);
-+/* Caller must hold current->mm's mmap write lock. */
-+int do_mprotect_pkey_locked(unsigned long start, size_t len,
-+			    unsigned long prot, int pkey);
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 4d9e9423826a..246f4969a144 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -29,6 +29,10 @@
+ #include <linux/task_work.h>
+ #include <linux/irq_work.h>
+ #include <linux/buildid.h>
++#include <linux/mm.h>
++#include <linux/mman.h>
++#include <linux/personality.h>
++#include <asm/cacheflush.h>
+ #include <asm/tlb.h>
  
- /*
-  * doesn't attempt to fault and will return short.
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 2888ee638d87..8d800830d3e1 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -868,8 +868,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
- /*
-  * pkey==-1 when doing a legacy mprotect()
-  */
--static int do_mprotect_pkey(unsigned long start, size_t len,
--		unsigned long prot, int pkey)
-+int do_mprotect_pkey_locked(unsigned long start, size_t len,
-+			    unsigned long prot, int pkey)
- {
- 	unsigned long nstart, end, tmp, reqprot;
- 	struct vm_area_struct *vma, *prev;
-@@ -899,8 +899,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 
- 	reqprot = prot;
- 
--	if (mmap_write_lock_killable(current->mm))
--		return -EINTR;
-+	mmap_assert_write_locked(current->mm);
- 
- 	/*
- 	 * If userspace did not allocate the pkey, do not let
-@@ -1013,10 +1012,21 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 		error = -ENOMEM;
- 
- out:
--	mmap_write_unlock(current->mm);
- 	return error;
+ #include "../../lib/kstrtox.h"
+@@ -3739,6 +3743,127 @@ __bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
+ 	return ret;
  }
  
-+static int do_mprotect_pkey(unsigned long start, size_t len,
-+			    unsigned long prot, int pkey)
-+{
-+	int ret;
++/* vm_private_data token for the unmergeable anonymous mapping below. */
++static char bpf_user_page_marker;
 +
-+	if (mmap_write_lock_killable(current->mm))
++/**
++ * bpf_user_page_alloc() - Allocate lazy anonymous pages in the current mm
++ * @nr_pages: Number of pages to allocate
++ *
++ * Creates a read/write anonymous mapping in the current task's address space.
++ * The mapping is kept non-executable even for tasks with READ_IMPLIES_EXEC,
++ * to avoid creating a writable executable mapping. The physical page is
++ * allocated on its first access. The mapping remains until userspace unmaps
++ * it or the process exits.
++ *
++ * Return: The userspace address on success, or a negative error code.
++ */
++__bpf_kfunc long bpf_user_page_alloc(unsigned long nr_pages)
++{
++	const unsigned long prot = PROT_READ | PROT_WRITE;
++	const unsigned long flags = MAP_PRIVATE | MAP_ANONYMOUS;
++	struct mm_struct *mm = current->mm;
++	unsigned long addr, populate, len;
++	struct vm_area_struct *vma;
++	int err;
++
++	if (unlikely(in_interrupt() || current->flags & (PF_KTHREAD | PF_EXITING)))
++		return -EPERM;
++	if (unlikely(!nmi_uaccess_okay()))
++		return -EPERM;
++	if (unlikely(!mm))
++		return -EFAULT;
++	if (unlikely(!nr_pages || nr_pages > (ULONG_MAX >> PAGE_SHIFT)))
++		return -EINVAL;
++
++	len = nr_pages << PAGE_SHIFT;
++	err = security_mmap_file(NULL, prot, flags);
++	if (err)
++		return err;
++
++	if (mmap_write_lock_killable(mm))
 +		return -EINTR;
-+	ret = do_mprotect_pkey_locked(start, len, prot, pkey);
-+	mmap_write_unlock(current->mm);
-+	return ret;
++
++	addr = do_mmap(NULL, 0, len, prot, flags,
++		       mk_vma_flags(VMA_DONTEXPAND_BIT, VMA_DONTCOPY_BIT, VMA_DONTDUMP_BIT),
++		       0, &populate, NULL);
++	if (!IS_ERR_VALUE(addr)) {
++		/* VM_DONTEXPAND prevents merging this mapping into another VMA. */
++		vma = find_vma(mm, addr);
++		vma_start_write(vma);
++		if (current->personality & READ_IMPLIES_EXEC) {
++			vm_flags_clear(vma, VM_EXEC);
++			vma_set_page_prot(vma);
++		}
++		vma->vm_private_data = &bpf_user_page_marker;
++	}
++
++	mmap_write_unlock(mm);
++
++	if (!IS_ERR_VALUE(addr) && populate)
++		mm_populate(addr, populate);
++	return addr;
 +}
 +
- SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
- 		unsigned long, prot)
- {
++/**
++ * bpf_user_page_exec() - Make a BPF-allocated user page read/execute
++ * @addr: Address of the page to change
++ *
++ * Changes a writable page created by bpf_user_page_alloc() to read/execute.
++ * The page cannot be made writable again after this call.
++ *
++ * Return: 0 on success, or a negative error code.
++ */
++__bpf_kfunc int bpf_user_page_exec(unsigned long addr)
++{
++	struct mm_struct *mm = current->mm;
++	struct vm_area_struct *vma;
++	struct page *page;
++	int err = -EINVAL;
++
++	if (unlikely(in_interrupt() ||
++		     current->flags & (PF_KTHREAD | PF_EXITING)))
++		return -EPERM;
++	if (unlikely(!nmi_uaccess_okay()))
++		return -EPERM;
++	if (unlikely(!mm))
++		return -EFAULT;
++	if ((addr & ~PAGE_MASK) || addr > ULONG_MAX - PAGE_SIZE)
++		return -EINVAL;
++
++	if (mmap_write_lock_killable(mm))
++		return -EINTR;
++
++	vma = find_vma(mm, addr);
++	if (!vma || vma->vm_start > addr)
++		goto out;
++	/* Allow to change only vma allocated by bpf_user_page_alloc. */
++	if (vma->vm_private_data != &bpf_user_page_marker)
++		goto out;
++	if (!(vma->vm_flags & VM_WRITE) || !(vma->vm_flags & VM_MAYEXEC))
++		goto out;
++
++	vma_start_write(vma);
++
++	err = get_user_pages(addr, 1, FOLL_WRITE, &page);
++	if (err != 1) {
++		if (!err)
++			err = -EFAULT;
++		goto out;
++	}
++
++	flush_icache_user_page(vma, page, addr, PAGE_SIZE);
++	err = do_mprotect_pkey_locked(addr, PAGE_SIZE, PROT_READ | PROT_EXEC, -1);
++	if (!err) {
++		vma = find_vma(mm, addr);
++		vm_flags_clear(vma, VM_MAYWRITE);
++	}
++	put_page(page);
++out:
++	mmap_write_unlock(mm);
++	return err;
++}
++
+ /**
+  * bpf_probe_write_user_faultable() - Copy data to userspace with page faults
+  * enabled
+@@ -5171,6 +5296,8 @@ static const struct btf_kfunc_id_set generic_kfunc_set = {
+ };
+ 
+ BTF_KFUNCS_START(user_mem_btf_ids)
++BTF_ID_FLAGS(func, bpf_user_page_alloc, KF_SLEEPABLE | KF_PERFMON)
++BTF_ID_FLAGS(func, bpf_user_page_exec, KF_SLEEPABLE | KF_PERFMON)
+ BTF_ID_FLAGS(func, bpf_probe_write_user_faultable, KF_SLEEPABLE | KF_PERFMON)
+ BTF_KFUNCS_END(user_mem_btf_ids)
+ 
 -- 
 2.54.0
 
