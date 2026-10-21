@@ -1,89 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCD6606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 16:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF8E60A261A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 16:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KP8uE2X/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dylggWgL
 Received: by kanga.kvack.org (Postfix)
-	id 846A96B073D; Wed, 21 Oct 2026 12:11:27 -0400 (EDT)
+	id 2F0CE6B073E; Wed, 21 Oct 2026 12:12:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81EAC6B073E; Wed, 21 Oct 2026 12:11:27 -0400 (EDT)
+	id 2CA786B0740; Wed, 21 Oct 2026 12:12:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70D9D6B073F; Wed, 21 Oct 2026 12:11:27 -0400 (EDT)
+	id 20E3A6B0741; Wed, 21 Oct 2026 12:12:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E7286B073D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:11:27 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF2A51C3DC4
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:11:26 +0000 (UTC)
-X-FDA: 85347123372.05.1083E90
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 287CF18000D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:11:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KP8uE2X/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F3BB26B073E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:12:30 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 170FF1205CA
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:12:30 +0000 (UTC)
+X-FDA: 85347126060.08.8ACB8AB
+Received: from mta1.migadu.com (out-32.mta1.migadu.com [95.215.58.32])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7208EC000E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:12:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dylggWgL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.32 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792599085;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1792599148;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g2ZCu6NwHs09mDefN9txWy7FuQyr4dGTj++ZockRsfU=;
-	b=S8xSOBIAn96CPGbXVupDKJHswOstpbjEZxm3LyY0s3iBjUZFTC1GbwgoCpj3aPSUR5xy0n
-	PgIBTmLsaTSjx0sk7+Tr23PQ3SeZj9oYazTKX4oa1i0qO+UO4ycjA3WD1pI31HXnizK7Sh
-	+kQokTPSk40wU+sefTMfBiRpRUw8Ndo=
+	bh=GoVehwAITRhrgajbGanUnUkbvqRYmp8dDi3iasZVBaU=;
+	b=uFeOe4fSyFKlW0+zZDztEG7WaxOhb+fky1IKOKbVXA+a/kpgz9lwZtVIw56WXso6Ln2YEQ
+	Zd8FbdJNlTc4Uwq/HaXJ4+Ow0A+9E7VsYr4Lwh1koGzdvm34JopST9QFwdcNTirdEsJcXu
+	Ctot2/l7Zeju5H/j3UUrf24VmvsqzX0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KP8uE2X/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dylggWgL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.32 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792599085;
-	b=Ij3xIhr5ge4JEDO+P9ezvGsyeOgj5fja0akEGiy0PXVsE9g1HU0TzdIo9VL568MxEalqrR
-	dyhsK8Bb8nuv31g/ExiztMFbDZXqKD2zee5E8wKTuElHy2lKiPhSGMIoeY/4p3UFStMQ6h
-	fasTBiYogQlZLsTky6Hx13/2jviD6zY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E2496020C;
-	Wed, 21 Oct 2026 16:11:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12201F000C1;
-	Wed, 21 Oct 2026 16:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792599084;
-	bh=g2ZCu6NwHs09mDefN9txWy7FuQyr4dGTj++ZockRsfU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KP8uE2X/b0TrrayohdZ7OMWlDWru2ha2D2MpN8YYs6wqx+bALaCGvijd050HnOzkR
-	 CDmg09nDajxyfyks3IDcikn89UzIJ9l/ltvbhJj8I9ivXic1+fh9TUTuieVR3aoCZH
-	 q00tqdQUi1ZaSJZRurW64T8+dA6tWDNM4JSz0vBRQchhVfiJeyyVWzKUvcpRje9qDG
-	 axOLki4WZH6ULGPxI6IrXF6XoINxOYVDetNUzBl8P9kZLh2nPOJkEmUnE4TLPJTq4M
-	 TiAKVQZGvY4gJfn6vzUadnlM7yox237u6zU0BgvKVo7uLSGwAiWipi+TIkSzwEpYr0
-	 1FP/CJwkOxrkQ==
-Message-ID: <sashiko-outbox-180460@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/page_alloc: clear page tag refs when onlining
- hotplugged memory
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zenghui Yu" <zenghui.yu@linux.dev>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com
-In-Reply-To: <20261020161053.59879-1-zenghui.yu@linux.dev>
-References: <20261020161053.59879-1-zenghui.yu@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 16:11:23 +0000
-X-Rspamd-Queue-Id: 287CF18000D
-X-Rspam-User: 
-X-Stat-Signature: 7ez9y3xwopyzw7fkjm7xi18i18mtsixy
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	t=1792599148;
+	b=yCTBefFE1qVM0vq2A/NS5erwoC2aSd2POY2mECObBuIlJbPWBB4DvBOFx/bvuXic7zJSjV
+	kI42EqNs/1DpKVtWl/he77l3+ZyfX5ogBQ6gKWzhdx9JNTBdVkOOB+WCj7V/GKOAUedtou
+	7cdfg+6oPBJnsTAOEaUQcMD9hfnRxwM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=QBsYVKIHXnHNdGjvTGIafzE1KeV3pLi8mLpEmKZblfo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792599143; v=1; x=1793203943;
+ b=dylggWgL2eO76s8PTrSlgObTWVR3Mn6SSrzgy9qF+ujgeGSRohPFBUXyOJRmpR+T8hRqajPD
+ Xz5I8dTXVckEdiZE9/0gvnoKI93OodqdwrAOaCr3vj3qijiQUDaX5wo+CKsawQSEEBNzKyL40UI
+ oRVvFMebZlhUlHSzkGL1Pv9M=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9724ad12acec2d11;
+	Wed, 21 Oct 2026 16:12:23 +0000
+X-Mizu-Trace-ID: 9724ad12acec2d11
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 21 Oct 2026 09:12:21 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1] memcg: fix cacheline contention between lruvec stat
+ updates and LRU lists
+Message-ID: <atjhiAxEyoP48e0X@linux.dev>
+References: <20261020200730.250189-1-joannelkoong@gmail.com>
+ <atfrhsr6bft4t7SI@linux.dev>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atfrhsr6bft4t7SI@linux.dev>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7208EC000E
+X-Stat-Signature: air5d7kp3twwgirazemuqy9sx5tefxy3
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792599084-808457
-X-HE-Meta: U2FsdGVkX1+fj08l+MzsJcDTEuoii5hUJBub6kewquuBbMvHI66nVis2fo0fH1Q2Ks7XlEOHaUi9Mxy9JBTt7GzS+cm3axXg/j7YIfdt1Nb6whj0paCsWWi+uZ1t3xWYaIdA/dSOaMrOd22KhVo3oChyeEPDtlt/dB9VhJX+tQDM+rAOqCK0pQSHuQQXMiKmZUSkGL3KkkSVUc3TjFl6bZy6yHztYFRmlt+y0YNipH48tGc5D4FFlAU+nfcK99L4XAqzURk9eBU9viIW2alS9NmZAwvqcG+sW/NP105LtvFE0Kz/bfuAC4Cu+dG71/lk8EdOnKA/MKt+mVmdm1czvn5NhTC7Ey7e47FJ6UFjblG3sDN5BSdYlTs5OLVyYkU9rRbq+hNh89XVdmvc/vDNGPOq9CrCL4cBGo7ehcS4CojwMLz+VdcEOyrTO8VCV12MQuKQo/t58fVC/uzCzFT0OrKL6oHfoOJqxR0W15GZ8DGl2AraB+T8T5fgJ+nyxeV8aYvOvKeVgFUiHWEs5Si/NW8QSCMEqrFx9gC1DPszGUoroMXCXbhfqNHSwv7aim4tgLB67Y/dwX1QfQlVmwBGMz2dUqcHmDbtx1pll2s4L4rQYsg2LZZET9XW9xjr5Ge9LXYDmeGjTJD4yS15IQdbpv3eB5qF3Cy64EbC/XSOb+5mpw7ZYH8M0eKWQHi6s1S6vKlQcyGPaLSwJxMap1J9UncQwK7jllP+KKtMFnt9GluYfW0V52llSWEd4lRtvdrBcBjMXSJOez8OEj1AYQQqjK/QS/ziHLLNayhuIPZeH2wFxW8qYuBMZF7h+gOZn192Wat57W1zHakjPe9EZZLBgiCzVycPc/P+fYbHnqAX5QVwlyYkMfU46DDkduqze9Xn2QXh1xFK/ZgCcKGj9qK/G1O7TDXletauZBVpVqKnyE43Nf/0o5sAgXR7j1yBIjiG05lqrLBIagNBTEegXF+
- p5P/WIPt
- zFKeW/0Ohs0Q2voBpMBlD/DZt2fGYptgw1JxzpdRspY6T2L3EmoiohoYS6aVeueki96dVJqvLFPvVKDWqYVNrrVvxH4RYntcPHVYhfqdzwxCuKkOpCiu25psWRCAuImZngC9H3E7ZPfSfH4oP1xeDakhaRDBVZvm82euhP9i/ItcsNC3tjO7MMBdhJ1v6jZzNDoh3kDRlLcsPUAjfFnXGc9uVo7MKoTE+cr4F2I5SAN1CiErcZ8dwg2Sx9H4PV2ciw4r6+Ex1e23WZnWzwOyY28sYAWQID5xJkDQBl4zJ6v53xE0ic2Mo/m1ykKlniApk2MJzPexFBMPWBJXycoy3J7YN30B7dMzsk7lUuZ8odhoYFlbkGTkrvJOVXbRY7H96wEtE/9e98HtvD5wI+Eoqc0aI4I4e/Cc4sznFY0nD4rcF1tkLvx3NDTU1678J9MGpyRjyVKp4H6yHPvzgPLMwuSh9MmVUSFdQDvMMKA9JH0PjOPxCyr4jEHIpxKOhKM436h0fvBCMTt80oKRHQTxT+dQpbNsCNlqVZmB/80ZWBJZV9PzoNPhAyaeFviMSi0CNZ36gdFj+4zPuE6IhbjdsSAsg3lupAGfcXXTiqliG/OQ0ujw=
+X-Rspam-User: 
+X-HE-Tag: 1792599146-806031
+X-HE-Meta: U2FsdGVkX192YFI2AyIBjYP7CwcU2SgF94NB3ocnVM3xLkSh8I+J2/vgieVnJyQuylyNoebfJh779D4nJ1MIqod+BiUeuqAKBfT83sGWSMjovSqC61SjEOGWXPR7gsLhWjsvS40eHJRf8cVHh3GmvRVFOVCZipd1N/nhkzuQwrgYDNmjQYMW05t/EtfncWuY9dIbsHJnm7cGgOq0esazSlJUTyYBP3V8ULuDRpV/aToRbA05FD+ko3FwyaAerch3HOoI46UZQ5fedppx8wDJc//Dqex3f6r+hTw0nmrqNr6phogwRQWyMHWSQ8/ko0uaOs0FnaiQIbBtQzuxTRVO9maegZ3grm35lPHl77xMiNQ8bvw7/eWxpQIkAHhKI4V7Tq+ItJ5o0imYGVcyRlhcUZIHG7Sbvw5isw5VKYnaBGfZ713+/7etpMpx4N+HWIzP5qKHPldkEQQDVDRdrhZTJrY6wa2dxaFeESZRTWDKgGf7GKkiCoc9iwXQ6XeKzY4pJZCJmfCxX1QntXO3BqXYM7ywHgq32xGkJTpc7x/6PW7K01G+49SMGfBx8T7KGroej8f/zzZjZgf05B2GSk5CsikAIyOFJ3optz0mvJOBJ/9ZhT3HHGfoOqQ9+zSWEvvuxXtYafeQ2uzYDy6MkGwWOoklROYjLMm2dNZ1HLf55A2Xot3OGA4CEcCNvHz20/EqVLbUorMDa4CQjzpJu1LdwUex4TrnFtggba0WWgOdecx67qnfimURUpneiSpNQVOObkekWeypK//pmmUw7KFKB+TClOx1Sj/CDNu/f9sASKoGcHvMhXG9rqDXxYQCsJ7gdiVtH8T1keoqPdY8V3V/ZM7/TM7qcBXaaVAnVQn81EE+0VvIthQwNB6rbe7N2GRuugpFNFl3q26U9fN2oTipX5e4YFoCmG0bUAYwJ4lOTVCt89bPwufLOP3Dg7BV/5f93bD73Te/0id2xWlmldh
+ 5ECLObPB
+ 1VmnCTAHxPvSauq+i90l485Jb/nrRwfvpj8hTaa7Nut0fZhjS1OIrndQQ5XX9GX1X9RCNLhINITuZufqTH6gR44nHykK2CUxBAVctLzF7e3P8P/8Bc00pLzDYGOPKa2AXjfKBWflB5H4W24bOtxUAMUMLdhIR53z/IGDfWWg5YhE/tjXwCzo5H9o7yCRejgRI/N589XSeIM6Je2ExD3z5jEkB8F4D2G7+K1bhY4KCmm9iQBd5pukdvF+yB5fprbwyVCP3/pQRopyXvSY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,87 +94,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm/page_alloc: clear_page_tag_ref() called on tail pages in __fr=
-ee_pages_core()
---
+On Tue, Oct 20, 2026 at 03:35:59PM -0700, Shakeel Butt wrote:
+> On Tue, Oct 20, 2026 at 01:07:30PM -0700, Joanne Koong wrote:
+> > Every memcg lruvec (per-node) stat update reads the memcg and
+> > lruvec_stats_percpu pointers in the first 64 bytes of struct
+> > mem_cgroup_per_node, and the ones that go through mod_lruvec_state()
+> > (such as lruvec_stat_mod_folio()) also read lruvec->pgdat. These updates
+> > are extremely frequent (eg these updates happen several times for every
+> > page that's faulted in, freed, dirtied, or written back).
+> > 
+> > The memcg_pn_read_mostly cacheline group keeps those read-mostly fields
+> > on a different cacheline from the lruvec, but on CPUs that do spatial
+> > prefetching [1] (which is most Intel CPUs / modern CPUs), cachelines are
+> > fetched in 128-byte aligned pairs. Depending on where struct
+> > mem_cgroup_per_node lands in its slab, that cacheline can be paired with
+> > the cacheline holding the LRU list heads, and the lruvec->pgdat
+> > cacheline with the one holding lru_lock.
+> > 
+> > When this happens, every stat update also pulls in a copy of the LRU
+> > list heads and lru_lock cachelines, which are written to constantly by
+> > other CPUs under the lru_lock. The stat update has to fetch them from
+> > another CPU, which is unnecessary overhead since the stat update doesn't
+> > use the LRU list heads or lru_lock at all. But even worse, the lru_lock
+> > holder then has to invalidate those copies and wait for the
+> > acknowledgements to come back before it can do its next write, which
+> > makes the lru_lock critical section longer for everyone waiting on the
+> > lock.
+> 
+> Can you please reproduce on a non-intel machine?
+> 
+> Second, can you try the following patch instead of your on the intel
+> machine?
 
-commit e2abce3265909945612b858336381b3dbe9dca76
-Author: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+I see there is also removal of access of lruvec->pgdat from stats update
+function. Let's break up the patch into two. One will remove lruvec->pgdat
+access and the other one rearrange the fields in mem_cgroup_per_node (I prefer
+rearraging than removing the lruvec stat pointer).
 
-mm/page_alloc: clear page tag refs when onlining hotplugged memory
-
-This commit calls clear_page_tag_ref() on hotplugged pages in
-__free_pages_core() so that freeing never-allocated pages into the buddy
-allocator does not trigger a warning under CONFIG_MEM_ALLOC_PROFILING_DEBUG.
-
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2daf358269ae7..9cef0e9294abb 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1603,6 +1603,7 @@ void __meminit __free_pages_core(struct page *page,=
- unsigned int order,
->  			VM_WARN_ON_ONCE(PageReserved(p));
->  			__ClearPageOffline(p);
->  			set_page_count(p, 0);
-> +			clear_page_tag_ref(p);
->  		}
-> =20
->  		adjust_managed_page_count(page, nr_pages);
-
-[Severity: Medium]
-Should clear_page_tag_ref() be called once on page outside the per-page
-loop (and for both MEMINIT_HOTPLUG and MEMINIT_EARLY contexts) rather than
-on every p inside the MEMINIT_HOTPLUG loop?
-
-Under CONFIG_MEM_ALLOC_PROFILING_DEBUG, clear_page_tag_ref(p) sets the
-page's tag reference to CODETAG_EMPTY (or CODETAG_ID_EMPTY when compressed
-profiling is enabled) rather than NULL. When __free_pages_core() calls
-__free_pages_ok() -> __free_pages_prepare(), only the first page's marker
-is consumed and reset back to NULL:
-
-mm/page_alloc.c:__free_pages_prepare()
-    pgalloc_tag_sub(page, 1 << order);
-        alloc_tag_sub(ref, bytes)
-            if (is_codetag_empty(ref)) {
-                ref->ct =3D NULL;
-                return;
-            }
-
-Calling clear_page_tag_ref(p) on all nr_pages leaves CODETAG_EMPTY set on
-the remaining (1 << order) - 1 tail pages in the buddy allocator. If one of
-those pages is later allocated without a tag (for example via an _noprof
-allocation where current->alloc_tag is NULL) and subsequently freed, the
-leftover CODETAG_EMPTY marker prevents alloc_tag_sub_check() from warning.
-Other callers such as init_cma_reserved_pageblock() and
-memblock_free_pages() only call clear_page_tag_ref(page) on the head page:
-
-mm/mm_init.c:init_cma_reserved_pageblock() {
-    do {
-        __ClearPageReserved(p);
-        set_page_count(p, 0);
-    } while (++p, --i);
-    ...
-    /* pages were reserved and not allocated */
-    clear_page_tag_ref(page);
-    __free_pages(page, pageblock_order);
-}
-
-In addition, placing clear_page_tag_ref() only in the MEMINIT_HOTPLUG
-branch misses MEMINIT_EARLY callers of __free_pages_core() that run after
-allocation tag references are initialized and do not call
-clear_page_tag_ref() themselves, such as deferred_free_pages() in
-mm/mm_init.c (when compressed profiling is enabled) and do_collection() in
-mm/kmsan/init.c (where KMSAN intercepts pages in memblock_free_pages()
-before clear_page_tag_ref(page) and releases them later via
-__free_pages_core(..., MEMINIT_EARLY)).
-
-=E0=B9=80=E0=B8=84=E0=B8=A3=E0=B8=94=E0=B8=B4=E0=B8=95
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020161053.5987=
-9-1-zenghui.yu@linux.dev?part=3D1
 
