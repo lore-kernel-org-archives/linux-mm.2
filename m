@@ -1,88 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63954606A338
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 12:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B05B606A31B
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 12:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oTb0PsEY
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=DYC3YpNR
 Received: by kanga.kvack.org (Postfix)
-	id 821996B06F9; Wed, 21 Oct 2026 08:02:14 -0400 (EDT)
+	id 767E36B06FB; Wed, 21 Oct 2026 08:28:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F9AC6B06FA; Wed, 21 Oct 2026 08:02:14 -0400 (EDT)
+	id 718A06B06FC; Wed, 21 Oct 2026 08:28:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70EE76B06FB; Wed, 21 Oct 2026 08:02:14 -0400 (EDT)
+	id 6074B6B06FD; Wed, 21 Oct 2026 08:28:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 506146B06F9
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:02:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB65080519
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:02:13 +0000 (UTC)
-X-FDA: 85346495346.29.7807B2F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3D58540018
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:02:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oTb0PsEY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DFAB6B06FB
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:28:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D25BD1C3228
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:28:09 +0000 (UTC)
+X-FDA: 85346560698.18.ED75A20
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0409F140009
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:28:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DYC3YpNR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792584132;
+	s=arc-20220608; t=1792585688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TB7v9N/W2xTmNch7MkNivf/9UIfr6xOKYhQd3i+ONPg=;
-	b=o6fcqd72MVzDFt0Tk5TwGEse+78m7MLcAEBrejvXR22HE5TU3JCquHpv4ZwSHUfGze1+ug
-	HsodnBmk5TaVAud/GCSbhrBTM9Cex3eEOC6O7Zg3122STMFemhVHewSatWF8wEOUFHXpBO
-	EEmtDKrvDqCfau6CFlM3zqmxg8lQULc=
+	bh=0eU6RtwaBGBVUdLrxzNH+pMOcJGbeX6TyDSST0DZFlQ=;
+	b=xGkZBptG95aPUHH41iWNeriU2VER68xfxoqfz6vK+5R4II4kPM2/yVt4n6l6skyRvapA6N
+	4PcGg1ESXMyc37bbDG1gHbrxTuTk1l3nIuT0jc33jemIb+qB/xXb8MNkuWZAlnA/xMNmdb
+	222cTgfQS0I1lW4A/gTCe6I3XWpJDTc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oTb0PsEY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DYC3YpNR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792584132;
-	b=jpFAYsUFJM4CG3ONBsrEnW/oVrib6Piz4txlIoCMHAFSy/Ya6SQ4v+vwiob5DVxYvzDtmf
-	xp2+WS9j0RzpPeFs21RJi9DCdgwVP1UQQ2PihBmUfLlo7xGFGj7O6BzUz9nPFC7e8n5nXp
-	ntlrL9wSntnoy1MxZLCmKlPZr1WkZwY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5081B40F47;
-	Wed, 21 Oct 2026 12:02:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDDE1F000C9;
-	Wed, 21 Oct 2026 12:02:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792584131;
-	bh=TB7v9N/W2xTmNch7MkNivf/9UIfr6xOKYhQd3i+ONPg=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=oTb0PsEYgwLw1y9tW1PiZ51FoiwOLqMvmA1ZNC242x9QOenanDFnyvuYdUAeVQ/Rn
-	 c2yAVy2IuhgPC35XIHJrcGXEWcQtaCr7K9R8jWFIWJx6OJh+luQtc1j/qEMlyU0ydt
-	 ZLOGzrVG5IDe9cyrOfb1infJBUv6P4UVyHzvYtDhWsiZNAlrkAtb6ApxrtB8TQrWxa
-	 tkTzQPC5PNL+3JMw9qPYvjZv2DD/sg4njywHCpRYzue+MLWOpZMqP326KSW7dDmF80
-	 3/SsINkZNkwf4y74LDrfjP69m8FuI48RDqx7JM+ZxAHvVDxjPcEG3AZO5R3/EXlMea
-	 n5YtHaDeqWe/g==
-Content-Type: multipart/mixed; boundary="===============5182620710229058046=="
+	t=1792585688;
+	b=WLVJV133TWxB0tcc/QNd3oDrNMX1SsWHqm+gaicqAoQwSlQm4OCIDsW0xWWWpaZVnxR7ZB
+	XgoMsQ/BlKwM5TzW3tuhTZ7UpQSfVIleVzJsfE/qSy4iXwtDC2W+MCxoP/0oMYIBJu7hxw
+	rzt2AwM4a0R94KaZYXQ2XOILn2VKo5Q=
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-14388db1a6bso13915c88.3
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:28:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792585687; x=1793190487; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0eU6RtwaBGBVUdLrxzNH+pMOcJGbeX6TyDSST0DZFlQ=;
+        b=DYC3YpNR82AyCNSl7pz29SUuYO2hb2bzaIpe1M8YQlDyCeMwmG7sEcC6QSQqIIVuD5
+         yB4OBFtwzmEaF4bLY+pZF/7dhnEA+RuMcYCSBaRG5ggVVidj0OrwIJC70VaDAF0nKRaM
+         Ar1oVhQudC5thyZKYod//nfZmgEJxyj9hQwt/lHUF2BW3TffV9eY7C60A/Aak7AS31Ib
+         wRyVBiAW8sKpXu7Sk3kLXqEgwBFMvANhCIGg8AbSA5ifXqmguVrcrWqeK0LaRQJEcT1w
+         Q99V5BYUnbj4kvHU6aBrkgXHWBd44cjSzZElx6fSbl2sx0O2C0JJ5mlYmMEqxLopVUnr
+         z+Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792585687; x=1793190487;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0eU6RtwaBGBVUdLrxzNH+pMOcJGbeX6TyDSST0DZFlQ=;
+        b=bi3hYpCSg34AtrWRouyZOVAlABYXS7EKizf2YwrtGWxlYRqUIABr3sDSHNuBLmfXsX
+         PBwgSZtth2vr4lOg/sCxeTNJ+WqTH+S3FaouFKoJVgki59n98fnLpropyR0LUAfEmsRp
+         dJuox+r2DHocGFmyBJcjzTv8QJzQq+CJE6u2ivj8Bz+frz9Cr4hS6EeQHNhs7mPEWske
+         mTQmJQYgA5tH3+WUA6tZUn0AQ5kHzqseyoSHJcvaDo8pAwo+R7ey0+afrswly/LcDtlj
+         pMie7/E9MMSqyo+1lTTpBB2jsm8V/L+sqUNB3z0wdLU6un0uPsXkTy/V+QmgtIPXsfXd
+         8BbA==
+X-Forwarded-Encrypted: i=1; AKwUvBy3u6BLM3CKAu0EkRFLBm9/UvJvLf2ArctOHRw97DWLieuXZ7NyIWo4RP1lwN5s/9lEf4gcQjQSpg==@kvack.org
+X-Gm-Message-State: AFq9FYJP2hZRgfa/zNYcAzwCZhB69ZvjbxcDkULOdWeXJB1iOlEiN4Zz
+	bO8UMhlFCAaknf3+HZUq6cPQIxW9/XEyCjcTbmA7jCXilwoto4ICMvbA
+X-Gm-Gg: AYBFou0LDFWK85tHUbivSAbNzJpfUO4GGTb3jfWLGNT2tEf45FPMpZLUsjX5+arftrf
+	hQazgSzaYzAjR03v+e+T6vcksTAnYIDOy9UP0OGmWckk4rJZdeG8YGpiNtkGigWUaxGuV746sR/
+	65LxPExBaZL1QwlTdAXkWFO3Pt+0NpfOUBlHjutDA9tK8343R5J4XUAsOjbD5HEQTSgG1EUIAEw
+	IwyS3WoVcISTWZxDgxikNuiMbQde8a1InTYDpTTU6uCW6o6Co5Bdwm+gVgv0E/Kp5EFuMO5ulRX
+	2a3/LZ4ezxyHyeg9L6/mLns8fAz2MRLunq85/LqQyymtZt6qM09bmSf8xEWV2xE59pVbvIXp/CV
+	FDoEnsCVe6TPh3z2es55d0yeyo651MkjLr+fy2/ZHnY3r87heE9Agrzl8lYwpAOS5y9ERHMFvxL
+	7TFX999k/vUIQ6/NWZlqGJU/LSry6BjVXVeHA9WdxF+AFHEbky16a/azEv+ubFPP0+r1eFslscr
+	8AvLq8DBeTv4VDFQ5G2xZJFt1wFFCBRA4jtCtdWhjP4rM7/0xoL3CtH9/6a6rDmj2pPVSP6qJUa
+	NEGfVOVybo2W2P1olQ==
+X-Received: by 2002:a05:7022:f519:b0:14b:edb2:c3bc with SMTP id a92af1059eb24-1909acc857bmr3334418c88.0.1792585686379;
+        Wed, 21 Oct 2026 05:28:06 -0700 (PDT)
+Received: from o6.lan ([2602:fce1:44f:115e::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035926fe9sm4935059c88.2.2026.10.21.05.27.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 05:28:05 -0700 (PDT)
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: gourry@gourry.net
+Cc: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	dave@stgolabs.net,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	kasong@tencent.com,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	stable@vger.kernel.org,
+	weixugc@google.com,
+	yuanchu@google.com
+Subject: Re: [PATCH] mm/vmscan: reclaim every zone in per-node proactive reclaim
+Date: Wed, 21 Oct 2026 20:27:56 +0800
+Message-ID: <179258562954.2.15216681747698947501.node-proactive-reclaim-review@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261019185002.3428594-1-gourry@gourry.net>
+References: <20261019185002.3428594-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <c4c7baf05581e93321e536d935a27b4c1da8b7d8879852664864bff8d3b269a2@mail.kernel.org>
-In-Reply-To: <20261021112437.1799213-3-zhen.ni@easystack.cn>
-References: <20261021112437.1799213-3-zhen.ni@easystack.cn>
-Subject: Re: [PATCH v3 2/7] mm/page_owner: protect page access with mem-hotplug read lock
-From: bot+bpf-ci@kernel.org
-To: zhen.ni@easystack.cn,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,akpm@linux-foundation.org,vbabka@kernel.org,surenb@google.com,mhocko@suse.com,brendan.jackman@linux.dev,hannes@cmpxchg.org,ziy@nvidia.com,shuah@kernel.org
-Cc: bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org,zhen.ni@easystack.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Wed, 21 Oct 2026 12:02:10 +0000 (UTC)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3D58540018
-X-Stat-Signature: x7ww9jo3hkqyq4q5hgyp1ge6rfiq14k3
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0409F140009
+X-Stat-Signature: xzirojtxaj7eudwdyuduofc7rprwqcr6
+X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792584132-959232
-X-HE-Meta: U2FsdGVkX1+hHt6AMAi5K7Merr2FdoixJ6BvZCQ4RtR8TR8b9Vq6pyWrhcrR89cCV9EWN6l+8VaqQ5He8eujI9gCvcaFjOKfhk4RuVE83karFcejkdSuWY4Ph+Os7pmIIdiBfAv7N89ZMQO0lbnZu/Wmk2Jxhw6q4k03quitPX2ZXo8FL2jQpBvWMWklXmndcPjtTx0A5PfDIFTBb3waRtSG+oX8BFd20a661ORpNr1Hdt3nflt9+L17PzqQrosSxJ7+jnOUfsYhKA9WyS5vejVCIFYeaWunzmuCN5MbbbUQzi0CeQz35jsZv694wRqYgt7z7BswmMhPNVlnaOcnU9YLWHGCW1LBMtd8ASLTAxVP8thOk7ZnmfpqaNnImC3uIVFgi3qIVbBux6nB741WZwgA73HKn39SchIIGtSadmtPiYULEjsNCMwsSdtjSpDGiQucINSsytNXqSRUuArl7ND9s0ry3Zxd7+EATRTmiANT1igB6Hsc2/fUde5CzovbwgM/ZvfcK7NXUiPhtzZcSZ5t2601GLI3+o6m4RniclLx27UXs0MHTkl8nHNoqKkyij5c9I+5bOjdMEpUV6oUzZnMS2w4eKpEASPRggzJdL2vjfXCGiokpBsJPOoOclGA/Wkm9AcImUDLcYvTjXpLUmgHonsL/y0+GFSAi2wVfQIWbmkYCLBTXQdCNptqdbwB8pz+eVulsHXG6Cgt7ifz2/5Hy/1pB82cXs3ZtUUioawG7YPtF9/pqjkAagWEM2OiJNcyUD7pnNByKW+5LSAfuVF9KGCNEC52gS466ySSJ5zXMCKdoGgS0YS3dAxPIO9h9KJc4N0ChgN9t9Wi2Yl2QB2EKy0W0kUbej0d1WqPoI4NGzYN/nulBpKz2xO+N07xMAEv5RNyQV4vfwc+r3d6kbIK2s5Qu+UTYFsxusmZK9UWdKHAO9OLEwTH8OhMQwqimRyinNYflntmt1/5aRd
- Sk6/OUlr
- pMsHInWruhgZxi2f+QZkaJGwSozxO1r8dhj82PGGLvtyV4rS6+zuk1zRJJ7zyPNwUw+jK8RlBRWv4NeCpHm4ES8E9p/mfEtvE7W+IhT1NuwltGyRdD51+hyGnFWWmgio2LS20AU16RBIqdpge6P1KaqFxVEQAZ+cMu5BKMmZiaeS4d07B4BlTn1RtuKKK3UKh26JjLpVwhtX8iUqkXNmG6+j7FaIzEDUJOwFPAp109+DDaIHjUJtT5AxSikNBSUuh2Y7zQUvgrTKZBrt0+EGS1M8wWsFxJKaBb3Sjz10De29lJNscRWjRA45VXCfxjtSV+J3tDzSBF7EetwOGWsNXULLN/gu6KOEoVV12wGPs+RQgQqFVgRXHDpJHXQOpFQ4WBC1s/KZBL8obgEOdzBaVYWEMZURkl2hp0wtFjD0Z0Zg+nvQdVQ9kOZzcspyk2JovnHiLCzytr4XJvoZcie7xyElz/FDtzyIj+0uakn0jnl8am15mGEn3c43vr5c+PKj2I5VsxyPEq6yqCfJCkabWb1toeZAHt/Deh+VK
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792585687-201641
+X-HE-Meta: U2FsdGVkX1+01Mj/zSZz27FZgP3JvWoGOt1SJwMDGiEcl5NuK5ifbViNV614XfqDwxodr/tZM4aX/syN0CBnuKzUc+2wkdgActKDnj5iE8SiW0ZR18k71AwUpXbjsvfoG6mVzQPSvpbFUqlsWGlIdOtG/7TATlsBnq4Ecb+89udSsuwGlGgRDLg6Il1tZzdYOx9YNteMrJh2X6w0M9AkGcxHIIeUTARbFVfiRYNx0muiYQkpW8ofvJQKRzcIZfe3T8hl37YARKIMr5DZyPWubmM+vm5jMkb4NXpGCQ+mLldygig/YjNhfroLaeWZXfma9wsQ61hbfgeQeFrv+yCi9iUKLKwAuvMSLCpGHOIOmJmE8ZxDfQe+BAT6DBXyNMtpIkm+cvEVBEY712lG0HxU657aSUhW5ucYd/NRzKMNTuowW45QmHZIuQbN4CBOByrQIECBREMLoK0OJbjTWBhkQ9zBEviKhrPBBDg3m/IJknEJpLhHgJHusAB/5PS2+YYPPKJsHg3mM/3yPfJKFXLlJhgvkHtxunEMJM4R7xxJZQUbTkbrpx+ncvjo/qQYneHsaIsf63bK1/9+a9Wo33FUpfSIkd4p4hJnaE8TqTAj0ir4bCPu4ccKiiI+vnXu7TOj+KU+NSIT+MJ9T+eUEIGxz7B57tKebdvnjAzIV+v8bjwa4pbzFxeQFzzNqoWk0BY059XiyBqP3mcm7PIgr7diwJ5tRgLKL/J9N2+ArReW3OkCnBbH3WX6hkcloOHwnyR99K7sfEc0r3bPRYFaoM4oSY1off6Sojc/SjtNiIaIBZ8ruzVRrXpxf+xYB9LjA4RJ7yIYeiSxxg05uvLpfv7A1KTpx6X1zJ58kttMLWSmrKl/0uByearjndoG/1Bmpvg3sTZRc8SuvhUx7Dm9TLxsJlaj96dSSkpV9mktbwQ3kvw7gveMZAQ3w+/AAD9K9jWg/H97blBMAOGr8cMA5ly
+ nw1HiLEi
+ 8hrxvPt4r60e0T+oaNPFu1xiwxziUkPH9FUdinyXV1AxH+aPjmiVCPfIq3iyPZM0bi6Osj8F+CMRvEBdSq9/GaFkwwmC6FtjWpAIh3IOosNrPpXztsmzBk8ki3SoJfGeXp4WxAF7E5v5GMxx4dQ7fy+jYZaR9c67gDrZlzdhz2i/sJ7SPW1XIzMXxLot05sXPnkVQygKkzQNblOKtj641dy/VAiUuj6kYfWWjUX3LLl4nS81rNndhfy/DCyel8HlE6LewTXjnzzAbo9PUtKCAT5/ereuTLmQoaJOtE6VKbmZH3GWh09QVFI3/et0J4lbSs6aYnwPb2uGRubDjimwF7n3SAcv6IVbeKVjYIcZLKfc/9VsiVoNtEwKQk+qcKxkKG0Xa6+40ZgwHthflyd4ha3mVfy/JHX1NvqHi5y12QwgTGr0jU0In+DF0WdeCtlHgfPMWpZVjuthMudinQZenvVc5oo45e6vLOikUNjiBvGpwycc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,144 +144,9 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============5182620710229058046==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Including all zones makes sense here, since per-node proactive reclaim
+is not serving an allocation. The existing GFP context restrictions
+and folio isolation checks remain in place.
 
-> mm/page_owner: protect page access with mem-hotplug read lock
-
-TL;DR: read_page_owner() holds the mem-hotplug read lock across
-copy_to_user(); a page fault there may deadlock against mmap_lock (lock-order
-inversion with memremap_pages callers) and userspace can stall hot-remove
-indefinitely.
-
-> diff --git a/mm/page_owner.c b/mm/page_owner.c
-> --- a/mm/page_owner.c
-> +++ b/mm/page_owner.c
-
-[ ... ]
-
-> @@ -831,7 +843,17 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
->
->  	/* Find an allocated page */
->  	while (page_owner_next_eligible(&scan)) {
-> -		struct page *page = pfn_to_page(scan.pfn);
-> +		struct page *page;
-> +		ssize_t ret;
-> +
-> +		/*
-> +		 * The scan is lockless. Re-resolve the page under a mem-hotplug
-> +		 * read-side lock so that we never access a hot-removed section.
-> +		 */
-> +		get_online_mems();
-> +		page = pfn_to_online_page(scan.pfn);
-> +		if (!page)
-> +			goto skip_continue;
-
-[ ... ]
-
-> @@ -851,10 +873,13 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
->  		/* Record the next PFN to read in the file offset */
->  		*ppos = scan.pfn + 1;
->
-> -		return print_page_owner(buf, count, scan.pfn, page,
-> +		ret = print_page_owner(buf, count, scan.pfn, page,
->  				&scan.po_snap, scan.po_snap.handle, state);
-> +		put_online_mems();
-> +		return ret;
-                ^^^^
-
-Can this deadlock against mmap_lock?  read_page_owner() now holds the
-mem_hotplug_lock reader across the whole print_page_owner() call, and that
-includes the copy_to_user() of the formatted record:
-
-print_page_owner()
-    ...
-    if (copy_to_user(buf, kbuf, ret))
-            ret = -EFAULT;
-
-Once kbuf is formatted, nothing in that copy touches struct page, so the
-reader isn't needed there.  A user page fault on buf taken inside this
-region takes current->mm->mmap_lock for read (on x86 a fault from
-kernel-mode uaccess always does, see the 'goto lock_mmap' path in
-arch/x86/mm/fault.c for !FAULT_FLAG_USER), and __might_fault() records that
-dependency for lockdep.  That creates the lock order:
-
-mem_hotplug_lock(R) -> mmap_lock(R)
-
-The opposite order already exists in the tree.  Code that hotplugs device
-memory while holding mmap_read_lock goes through memremap_pages() ->
-pagemap_range() -> mem_hotplug_begin(), which does cpus_read_lock() and then
-percpu_down_write(&mem_hotplug_lock):
-
-nouveau_svmm_bind()
-    mmap_read_lock(mm)
-    nouveau_dmem_migrate_vma()
-      nouveau_dmem_migrate_chunk()
-        nouveau_dmem_migrate_copy_one()
-          nouveau_dmem_page_alloc_locked()
-            nouveau_dmem_chunk_alloc()
-              memremap_pages()
-
-lib/test_hmm.c:dmirror_migrate_to_device()
-    mmap_read_lock(mm)
-    dmirror_migrate_alloc_and_copy()
-      dmirror_devmem_alloc_page()
-        dmirror_allocate_chunk()
-          memremap_pages()
-
-With three threads sharing one mm, could this sequence occur?
-
-T1 read(page_owner):
-    get_online_mems(), then copy_to_user() faults on buf
-T2 SVM bind ioctl:
-    holds mmap_read_lock(mm), blocks in percpu_down_write(&mem_hotplug_lock)
-    waiting for T1
-T3 mmap()/munmap():
-    queues on mmap_write_lock(mm) behind T2
-T1 fault:
-    mmap_read_lock(mm) blocks behind T3
-
-None of these waits has a timeout.  While T2 waits it also holds
-cpus_read_lock(), so CPU hotplug writers and every later get_online_mems()
-caller stall too.
-
-Even without that cycle, the reader can now be held for as long as
-userspace wants.  A buf backed by userfaultfd or by a slow or remote file
-mapping could stall memory hot-remove for an unbounded time.  Does that
-match the commit message claim:
-
-    "Taking the lock per-page bounds the writer's wait to a single page's
-    check-and-deref, keeping hot-remove stalls brief while all accesses stay
-    protected."
-
-For comparison, ptdump_walk_pgd() already takes get_online_mems() followed
-by mmap_write_lock(current->mm).  This new instance sits on a much more
-commonly used debug path, and here the lock isn't needed around
-copy_to_user() at all.
-
-Would it work to format the record under the reader (or snapshot the
-page-derived fields: pageblock migratetype, page->flags, memcg info), call
-put_online_mems(), and only then call copy_to_user()?  The kmalloc() in
-print_page_owner() could also move outside the locked region.
-
-The last commit in the series (5b123f2cd336 "selftests/bpf: add tests for
-the page_owner bpf_iter target") still calls print_page_owner() under the
-reader, so the series does not address this later.
-
->
->  skip_continue:
-> +		put_online_mems();
->  		scan.pfn++;
->  		cond_resched();
->  	}
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39593164040
---===============5182620710229058046==--
+Reviewed-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 
