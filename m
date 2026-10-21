@@ -1,124 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0707606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 10:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216E6606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 10:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=O2W4YJiw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yuw/Sekv
 Received: by kanga.kvack.org (Postfix)
-	id 7CE066B069D; Wed, 21 Oct 2026 06:14:10 -0400 (EDT)
+	id 3D84F6B069E; Wed, 21 Oct 2026 06:14:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77F5C6B069E; Wed, 21 Oct 2026 06:14:10 -0400 (EDT)
+	id 3AE5D6B06A0; Wed, 21 Oct 2026 06:14:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 695036B069F; Wed, 21 Oct 2026 06:14:10 -0400 (EDT)
+	id 2C5DD6B06A1; Wed, 21 Oct 2026 06:14:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D6986B069D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:14:10 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1226E1404AB
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:14:09 +0000 (UTC)
-X-FDA: 85346223018.21.743A4CD
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 404011C0004
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:14:04 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=O2W4YJiw;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf21.hostedemail.com: domain of guanwentao@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=guanwentao@uniontech.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 049076B069E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:14:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10356A04A4
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:14:12 +0000 (UTC)
+X-FDA: 85346223144.09.9EF9033
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5F9D140002
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:14:10 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yuw/Sekv";
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792577646;
+	s=arc-20220608; t=1792577650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SwQuEuaNDO3nid1ReGvMJRb42Hols1id3AV90RDfQ9s=;
-	b=L/tXvgJ1hFby3bK5I+qfLdZnh7z9taJDnJirWejMeCeR1F6S3K0Tfu3MdrBGdZ/ebPQcP5
-	ECYujQk+T+uRRh/pK+3ckWOnO6x+UZMtiHZBzVXBX6Qd32MUVyu+ttJt3gog7h9IWolZt1
-	wGw6ha+62v5PPBuviVcNf7IzUkbKMUQ=
+	bh=LZVDv/ifhL0pps23IxWAzGyzN5pLImGVnvohaaA3ul8=;
+	b=lcJNWOnuB9xnysXdpANKaqC0RcNCQrzMinvrknGVkPl8ggRIRxf905dn+Bp71OavW9uJ0P
+	6Z2vny/inTQtoZ3gcxAfTSIAV/syLvbkXqPbgr+/kfgF+vT1I03WpAaDMGdn8AMgenajRv
+	PN2dS14KJg1FF5X81VqBmEqEDuFdz6Q=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=O2W4YJiw;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf21.hostedemail.com: domain of guanwentao@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=guanwentao@uniontech.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yuw/Sekv";
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792577646;
-	b=jg47arQ8waNqyCcxXM9PJ0QT01W5xGolFiC2ZG5PMkLG4rYZ/1N2cQ9leb2Gl5C+roBQNx
-	QXSNBBRim6mJvpOz1vzme2AmJomMLhbeYWcZeY17zIuEr5fMDt0BFiJFxb8BjOH2CFXRcL
-	XxjGZVxsV5201YHtcJmSNeetz5fQ3Z4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1792577610;
-	bh=SwQuEuaNDO3nid1ReGvMJRb42Hols1id3AV90RDfQ9s=;
-	h=From:To:Subject:Mime-Version:Date:Message-ID;
-	b=O2W4YJiwNJYbTvmiRjZMhv2XTW7q4dsC4bE4lJ395R6raY2HIW+AON5uRRskWB6ZJ
-	 WuHmvXbmk4oCHGsXWnUjxReOM2WvydIxKi9FvGyloCo7g1mujoOZ4BwDljFmCT1lY4
-	 T1p8ZPep52Glrb7lR4ICNs3hNOepH2YK+2mFyEf0=
-EX-QQ-RecipientCnt: 9
-X-QQ-GoodBg: 1
-X-QQ-SSF: 00400000000000F0
-X-QQ-FEAT: D4aqtcRDiqTFsO9FnkdoVsnipN7HHR/15pCLdlumVjA=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: +3DOg1PzSdFwb2rZHtUROVuNle8zwNFRtV4KhKEjChE2yNkpCBjosYJTbFteg71B7L4zx2Rt0S7ynyhhnN9WDw==
-X-QQ-STYLE: 
-X-QQ-mid: lv3gz7b-6t1792577608t08ae0b56
-From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
-To: "=?utf-8?B?TXVjaHVuIFNvbmc=?=" <muchun.song@linux.dev>
-Cc: "=?utf-8?B?Y2hlbmh1YWNhaQ==?=" <chenhuacai@kernel.org>, "=?utf-8?B?V0FORyBYdWVydWk=?=" <kernel@xen0n.name>, "=?utf-8?B?bG9vbmdhcmNo?=" <loongarch@lists.linux.dev>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?utf-8?B?YWtwbQ==?=" <akpm@linux-foundation.org>, "=?utf-8?B?cnBwdA==?=" <rppt@kernel.org>, "=?utf-8?B?ZGF2aWQ=?=" <david@kernel.org>
-Subject: Re: [RFC PATCH] LoongArch: mm: avoid backing vmemmap beyond max_pfn
+	t=1792577650;
+	b=v3aXOldPGILNKvZWJUi9+ZP1GmDu99IJh/7313dtHIN8hW1z5gYQwzF3iW8g6T1KNCOAb4
+	M/9AuZU9p7zWadyNuqAWRBDal6k6+Bwm7JqM/GYdaADD/StoSuiWxDk2psD8Tt1+nvZ/Ab
+	944voiSzr4Kgyi6VFd2DBax29k57jZ8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 477D3402B5;
+	Wed, 21 Oct 2026 10:14:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066A21F000C9;
+	Wed, 21 Oct 2026 10:14:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792577649;
+	bh=LZVDv/ifhL0pps23IxWAzGyzN5pLImGVnvohaaA3ul8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Yuw/SekvpA8wouPa4hXTPQKwya21oUto+gEM/H+kyCUI1ePM0O9xLhf64F1ydeCJG
+	 EbLxMGYgsMgA32wr5KFIuEmy+ANcyot2YtVFDubrJRR6/+9bBxaNDGonlxbu7a26Mj
+	 5wnShYj59Y0sQTUF8T25Dt4EMpvo2TK3nLPkOTcIH7YcOg8vSMMZrGz6PQTZxZ7L9H
+	 vt9LIC9NtJHUdD/Np28olfMhroxRhdWvSQeWSWK4cZmB0fT+hZiPMniZF5vsC3g+kr
+	 xHCUCftCuYkI58iO2N8teTFYWBHOFWOzLH6t03tpgXmZSKhoWe63wqTTe7Ejk4nZpj
+	 cGz9F3R0PsP4w==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
+  akpm@linux-foundation.org,  linux-mm@kvack.org,  vipinsh@google.com,
+  linux-kernel@vger.kernel.org,  dmatlack@google.com,
+  kexec@lists.infradead.org,  pratyush@kernel.org,  graf@amazon.com
+Subject: Re: [PATCH v2 1/2] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
+ to freeze sessions early
+In-Reply-To: <20261020144710.4154339-2-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Tue, 20 Oct 2026 10:47:03 -0400")
+References: <20261020144710.4154339-1-pasha.tatashin@soleen.com>
+	<20261020144710.4154339-2-pasha.tatashin@soleen.com>
+Date: Wed, 21 Oct 2026 12:14:05 +0200
+Message-ID: <2vxz4iefgy36.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Wed, 21 Oct 2026 18:13:28 +0800
-X-Priority: 3
-Message-ID: <tencent_3FCCC1A500DEB6DD1A2BBFAB@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <20261021062115.116922-1-guanwentao@uniontech.com>
-	<EB4B2A6B-147E-4E7A-BAD7-A7C4699AF46E@linux.dev>
-In-Reply-To: <EB4B2A6B-147E-4E7A-BAD7-A7C4699AF46E@linux.dev>
-X-QQ-ReplyHash: 2681788507
-X-BIZMAIL-ID: 5298009908803815931
-X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Wed, 21 Oct 2026 18:13:29 +0800 (CST)
-Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NF3tN0JyXxqWB7XmuSvHXGnHQzbbPwKwcV0gQSWBSktEX4FIPEI/nZxM
-	DIlHvsjkX2WgVMnHhFqcCiCIJQx4XXKTO+mcduX9OBALOaF6ONRUyHpe2Zj3OpdMVDYURDL
-	ekIOgPRSstMlFZpu6RWobyZE9+RvVEOxwp4WHi82uWIOnazaBAusOqDu6WmkykrjfIu8YT/
-	2xdR3inKc+xaWiJ8FvBnlOEnUmwkv+8YWPSP1IQ51UnM7M2LhgKjriGbCbZPiA/FAIqvUkX
-	EfJ1YRai5SlqpEsjuKE+4S9gx8nlsCPj/SmMnDNG017IGpJZaD5IJV6SWBiSHz2iYstzQdt
-	4Z5hImYlcOXine2UYJzlvBHb7pDgsdDgc5HS057YbOKk5BWqx6Lfe3IkD0AYtF+WpDOycXV
-	lgAdk0p3KMFooLXRQAgJSlowabwuxsyDALRghoMN89Qe2AAGnOz6ub2Pv9kwboDzGjgyG9E
-	GG+I14H23Ic4qgZ4mBb4N3ScAKp4vc/PrSE5EDEguWa7wNzBexPSecuJMl6mRpJzlw7zLFi
-	wIaWAUrK9dndRTSmBxkHdvNO0lw/EF8naiCWFedD5QEdRCfu6OlsOQHtoy2lCNqbrwMD31p
-	fumH6/cUFYyfJAiMTAhbre+s09mwbdeC1+ncEUy84PM4Lb3nWjAqFXPCT1e04REA7jUm31P
-	C7+nr3H0NolqwPmgipMbIOF7CxQg08jA/z+2PZ8i6qQlmHPQKSHMThW0gFN1FIQC4VqzqMw
-	r7ni+/xbKQiQOHAAHdXMUVJ1QNfArRL0XmTlypVgXWQfImhEGJ0QqqWH0p4p5TpTzqViuP1
-	V1kN5tFee22jQbVsgw9NwZPyBAVCM13+/W9lsq+tdX10SB8XTq57KFB/xbUKQM2ziu7Cnl8
-	BPmUz+ycLcdVT0W1tmW86yNlVZpeoygyestP9cZw2UCxqPHGrUh0jdSBfKhvU3YUYdYxX/P
-	cml7BFDDSLKsr4B4RET8THuGf3uq1awKOn3Tv/d1by2Ueed0+hm/fHfZk1CUGNukebEBUnA
-	DCE0U/sXt4yZRp8MwhnRXSHimzZrrOb6dcRpHOhwDwwitWxoeK/gVxN994tkmaLTwDGfzOc
-	A==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 404011C0004
-X-Stat-Signature: kixyfcefsmjyqxiaqpwz5qo3t68b1uyx
-X-Spam-Status: No, score=-4.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FROM_EXCESS_BASE64,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,
-	RCVD_ILLEGAL_IP,SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no
-	version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5F9D140002
+X-Stat-Signature: xjabdsr1knczyasomaozmjknu6jbryuo
 X-Rspam-User: 
-X-HE-Tag: 1792577644-375305
-X-HE-Meta: U2FsdGVkX1+3CK2jDlNJj274YpZUsepQ8iWFpdHuUfm6UzuVCiO4AfcHJ5NUXPKOOYaFXknVXk9DIsQCgChrBlgh+TtYjDT7mM4i6OeMNXtu/imsUn8TfJdiNvflnfHc0/YolQHtZHTUkODpb3Yv68ZGUbP/b2cW86S8xgaeDyFa15RC9v9FYLwR3zVX2SUhfSMBh27ZdSt+iiKT0ZwKd9rWkyNHUweH5o0Zis2qREED3Q3CGwBEzJLilSVfWq0KY3Vub82baA8dnKiPLtO8BMNpzdq7/gOJoQI9rPefnng0dGXP1lDPoRYDiCnFY/z0ZPMohTBQN/evVNz6VjmITYymTDfVRiuvQNBx9PrOJJB2w4NYCjKYgZDFQlPWmxVb6Xv7e4XBpKVCIQXSuHnHOSEOyNinDudqHQlvEJdn5015M9pDUH3D2VWWaSc5E6Y5oxVxP9b//XxFVY4j8a2JDWi+kPlnZanwzUEfbwidFYcvpZl12enijc15CpnQ/3fiu8+yope+7m/EBRUHgUHXng5JBJqvlPqyvs95ZtxFMdKu2HOottOHTv4IHmqJCJXUwz2SPkzoki2NrjpxWTbVRE9i0TNUT0O12eB9WYkoyieLNl7CUPsKvk/VNlML+loTbyPbP4qTN9S5mWac1Z+HJ5mntUx2EUePHMGjyWwzFXgiFZHoJDLxfjjhCnNTs1WtDG0cBS5AmFMBXhKZPJ1Egc+3m60NY+p1E18+KWFkaTNM664LjEnxeO70cYwvo4S4892dbrClZs4Qt5ll6ZfCuE4hzDPrCuGbv9h88BSNEjdwYRUMdhwy14T4IgtoaKaCVpYvZDJSe79Ju3DOjCnWtje6IMkMqbaSDDK9zSpkEP56us0H6oMyLz2J531VZUCXOcKLYDKDOCibVyvl9nIg55RTFGnZZ2ihm8FrWJfkxD6A6kNjkpFuMZKSMzPPoRt8lAbowzY5qaz1vjTsIsk
- 4syh+tzm
- 7NYtnha7BTIhgLtF7a9s/YE1xrfGn+5v+N+Njb23rAxUAvT8INLKuf/cWFkjsW0SQsMFK8NvsqCDbmnBfMbIs6zpUKSRbdJb7oF3fVpS/lCkkWRIsIUTyuGrrfha6IOo2/tJkKcQ8WbJiOWzUq3hHombaQfBaPSsOD4V/a61ZnHrYh3zrNZnYEy5wotXxbQBwX9x7jT9NiqMJJT2PGEanCagpw8GCaWWVxAtw12cd7kytigQj73kFkccd9aXdJMLxzCnoE7/D/y3ZCHoQ5BHUjAc+aWN7ipL0nEJs0GSFLsc9RNkR6oQPefjfxghwwExhL5NisCB+nj95dHvUwOOPSQNtOMbnQ8fN1P3kRECGIxOvA3p/ztQVDDcxjupAdlsP83UVa+KXRDGFXZ1kXl4cAPP7lI4MUf0YJ6W1csa1BEZlVgHEpQPnA9HYI64RtNJr+GA8/wdF9vwJZ+CuOxnwYIZH3YUtatmScOY6idel5cgqUd/cfmje+C2k0DR93HQB8ZpFcM20x+a3pYA9nOJMJSiwRSztU1s4p5Fhfqc14JlphS4U/CDH6zf+zvOVcpfO5FnL2v5zZByGHC4257/epbwL3xulCsEevMGRNt+pflqlEbQ44VqammP/Gpcfebx8S615qYuAa1nLcCiYjaaFjfsRm05UCRpgQ5wFWnODUSdzpelgschMU5T5QoyKKqULnv1+gTUcTm0XUeMUcZGugHQE1tWwjOdM72T6LJEKXYkyEacElwAkFlZ+lRZ7jHD4OgQC
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792577650-774395
+X-HE-Meta: U2FsdGVkX19tHHbpY8LrBLGTDnYcg20Y6CBtm5nfbgD3o/zOHgh6FJM3ObfmPPJJ6T8zj1CLiybZzxdl0y7xHu4v8zzA2b6l0UyDrRqw2UTmBTegTZWAkjEEemQliHAlTIV7b2pGexiVj+hJDUkaWVxyzWGlI2VDNCLhFadGxQEbTOGorSnt4lc0qtZleWVpazp+DZPaj1BB/mC210FYLZQ4yGI6kZ5jAH/i5WF6LV2VRLZnEkRFZkYYwTGZfkOp7bzCYD6GJyRqn0uNXK9Uv1zl1rgOGx+3iZOkRQl/DwCSmSQizo6ZyuEpbstycmL00bn+ZyuEtynFI0t/Q8jVrfmhb50uX9GEUxldqUDH4ea/umGROmLUwqHZTPWT3CTnOrAXQx/uSdN1G9LJrt4OIdMRWiET7QdDCK/Jmm5zhoV43dFZ4yduRPVHlPO6To93mjy0AcTrhbUsJnepZlhr3Csv9DpFCVlf4ExtUWttKBimlnGSJc4ry45E90CH1hz4xns/Zu4gONT7+IDoPdDpP9t5fUtVtkqQo12r1tnM9eGNbJmaVqmnZtRi3Mzx9tqTKaa64aBgTXaE0qI7a5l8od3VwBM4oyFF2MIF1zDKKVaX2JNE1TIJIoy7Ph3Lg9bsHggfhc6A07Mm8G4SVGlWRlqgCeSmWTOvyDdqJCsPl+wqH38uW8TLHjSUDVS3NooL/5tmCrlK2LC18Ps7FX6XVbtiDGETI5dOL0UrGikYHPvwGhCwJwfILV2onHdDwuV530Y3lT6+Qu/obZtELaTqnDPFbc+GMotUNHZ65SfqNfZF3LeVBpfU/daeaS2bouIhI/r6oqlNFaRKs/HzRzi+1HULSxhlKFQQWDoNIsbzeSjwpz0pOfj4g/3kRoWCS3v+wgirSJTCfvfBwm7319YzgRAQlGnLaNuoI0cSTwdRMxG6NfjiiScQ4HU1oxyIn15GTW31FML/DTviY/G00eF
+ BO79JLKh
+ 8K5EZCKPMqPhb8kwgzNy9jKhdtmBmW/18g1YLWlDSqJOyhb9QGt8j3inKnVHCX2iRp6/aoVZCp8EopHMI7s1rxsN89+vAxiHuNSlmLFcFuGG5zgTR4mbkkdB2cKgAOVVR5x+DXyW7KiWb2d++VMWQrCk846YraRpOpmOcZofsSlFAX0Dw0eoRO72BGOjuzhckU3XRlRc7kFF32o8zT2rHZZEZfYrmre8eRN9WAVmgKLUyCS3FFo4QSZP55CAOcjPuJB9c0MEPx+gMC30Pej1cp4TL+7dtJpvHHOYH2C9hSyaR8hu1LJY5MCHkVFdVfEI9ARx408JpkfS0kWKsOolZbgqJhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,119 +99,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-PiA+IE9uIE9jdCAyMSwgMjAyNiwgYXQgMTQ6MjEsIFdlbnRhbyBHdWFuIDxndWFud2VudGFv
-QHVuaW9udGVjaC5jb20+IHdyb3RlOg0KPiA+DQo+ID4gQSBQTUQgbWFwcyAzMk1pQiBvZiB2
-bWVtbWFwIG9uIExvb25nQXJjaCB3aXRoIDE2S2lCIGJhc2UgcGFnZXMsIHdoaWxlIGENCj4g
-PiA1MTJNaUIgc2VjdGlvbiBvbmx5IG5lZWRzIDJNaUIuICB2bWVtbWFwX3BvcHVsYXRlKCkg
-aXMgY2FsbGVkIGZvciBlYWNoDQo+ID4gc2VjdGlvbiBhbmQgdm1lbW1hcF9wb3B1bGF0ZV9o
-dWdlcGFnZXMoKSBpbnN0YWxscyBhIFBNRCBtYXBwaW5nIGZvciB0aGUNCj4gPiB3aG9sZSBQ
-TUQsIHNvIHRoZSBsYXN0IFBNRCBhbHNvIGJhY2tzIHN0cnVjdCBwYWdlcyBmb3IgUEZOcyBi
-ZXlvbmQNCj4gPiBtYXhfcGZuLg0KPiA+DQo+ID4gT24gYSAzNEdpQiBzeXN0ZW0gMTYwTWlC
-IG9mIHZtZW1tYXAgaXMgbWFwcGVkIGFsdGhvdWdoIDEzNk1pQiBpcw0KPiA+IG5lZWRlZC4g
-IFRoZSBleHRyYSAyNE1pQiBkZXNjcmliZXMgUEZOcyB0aGF0IGRvIG5vdCBleGlzdC4NCj4g
-DQo+IFlvdXIgY29tbWl0IG1lc3NhZ2VzIGFyZSB2ZXJ5IGRldGFpbGVkLCBidXQgSSBkb24n
-dCByZWFsbHkgdW5kZXJzdGFuZCB0aGUNCj4gcHJvYmxlbSB5b3UncmUgdHJ5aW5nIHRvIHNv
-bHZlLiBXaGF0IGlzc3VlIGRpZCB5b3UgcnVuIGludG8sIGFuZCB3aGF0IHdhcw0KPiB0aGUg
-cmVzdWx0aW5nIGltcGFjdD8NClRoZSBjb21taXQgbWVzc2FnZSBpcyBtaXN1bmRlcnN0YW5k
-aW5nLCB0aGUgaXNzdWUgaXMgcG9pbnQgdG8gc2F2ZSBtZW1vcnkgY29zdCwNCg0KPiA+IE9u
-IGEgMzRHaUIgc3lzdGVtIDE2ME1pQiBvZiB2bWVtbWFwIGlzIG1hcHBlZCBhbHRob3VnaCAx
-MzZNaUIgaXMNCj4gPiBuZWVkZWQuICBUaGUgZXh0cmEgMjRNaUIgZGVzY3JpYmVzIFBGTnMg
-dGhhdCBkbyBub3QgZXhpc3QuDQpPbiBhIDMyR2lCIHN5c3RlbSB0aGUgcGxhdGZvcm0gbWVt
-b3J5IG1hcCBsZWF2ZXMgYSAyR2lCIE1NSU8gd2luZG93DQooc2VyaWFsIDEwMDgwMDAwLEFD
-UEkgMTAwZDAwMDAsTE9PTjAwMHguLi4gZXRjLCkNCmJlbG93IDRHaUIgYW5kIFJBTSBlbmRz
-IGF0IDM0R2lCLCBzbyBtYXhfcGZuIHNwYW5zIDM0R2lCLiAgVGhlIHZtZW1tYXANCmZvciB0
-aGF0IFBGTiByYW5nZSBpcyAxMzZNaUIsIGJ1dCAxNjBNaUIgaXMgbWFwcGVkOyB0aGUgZXh0
-cmEgMjRNaUINCmRlc2NyaWJlcyBQRk5zIHRoYXQgZG8gbm90IGV4aXN0LiBJbiA4R0Igc3lz
-dGVtLCB0aGUgY29zdCBpcyAwLjM3JSAoMzBNQi84R0IpLg0KDQpCUnMNCldlbnRhbyBHdWFu
-DQoNCkxvZzoNCiBjYXQgL3Byb2MvaW9tZW0gDQowMDIwMDAwMC0wZWRmZmZmZiA6IFN5c3Rl
-bSBSQU0NCiAgMDAyMDAwMDAtMDFiNmZmZmYgOiBLZXJuZWwgY29kZQ0KICAwMWI3MDAwMC0w
-M2MxMTNmZiA6IEtlcm5lbCBkYXRhDQogIDAzYzExNDAwLTAzZDM2Y2FmIDogS2VybmVsIGJz
-cw0KICAwM2QzNmNiMC0wM2QzZmZmZiA6IFJlc2VydmVkDQogIDAzZDQwMDAwLTAzZjRiZmZm
-IDogUmVzZXJ2ZWQNCjEwMDgwMDAwLTEwMDgwMGZmIDogc2VyaWFsDQoxMDA4MDEwMC0xMDA4
-MDFmZiA6IHNlcmlhbA0KMTAwODAyMDAtMTAwODAyZmYgOiBzZXJpYWwNCjEwMDgwMzAwLTEw
-MDgwM2ZmIDogc2VyaWFsDQoxMDA5MDAwMC0xMDA5MDAwNyA6IExPT04wMDA0OjAwDQogIDEw
-MDkwMDAwLTEwMDkwMDA3IDogTE9PTjAwMDQ6MDAgTE9PTjAwMDQ6MDANCjEwMDkwMTAwLTEw
-MDkwMTA3IDogTE9PTjAwMDQ6MDENCiAgMTAwOTAxMDAtMTAwOTAxMDcgOiBMT09OMDAwNDow
-MSBMT09OMDAwNDowMQ0KMTAwOTAyMDAtMTAwOTAyMDcgOiBMT09OMDAwNDowMg0KICAxMDA5
-MDIwMC0xMDA5MDIwNyA6IExPT04wMDA0OjAyIExPT04wMDA0OjAyDQoxMDA5MDMwMC0xMDA5
-MDMwNyA6IExPT04wMDA0OjAzDQogIDEwMDkwMzAwLTEwMDkwMzA3IDogTE9PTjAwMDQ6MDMg
-TE9PTjAwMDQ6MDMNCjEwMDkwNDAwLTEwMDkwNDA3IDogTE9PTjAwMDQ6MDQNCiAgMTAwOTA0
-MDAtMTAwOTA0MDcgOiBMT09OMDAwNDowNCBMT09OMDAwNDowNA0KMTAwOTA1MDAtMTAwOTA1
-MDcgOiBMT09OMDAwNDowNQ0KICAxMDA5MDUwMC0xMDA5MDUwNyA6IExPT04wMDA0OjA1IExP
-T04wMDA0OjA1DQoxMDBhMDAwMC0xMDBhMDAwZiA6IExPT04wMDA2OjAwDQogIDEwMGEwMDAw
-LTEwMGEwMDBmIDogTE9PTjAwMDY6MDAgTE9PTjAwMDY6MDANCjEwMGEwMTAwLTEwMGEwMTBm
-IDogTE9PTjAwMDY6MDENCiAgMTAwYTAxMDAtMTAwYTAxMGYgOiBMT09OMDAwNjowMSBMT09O
-MDAwNjowMQ0KMTAwYTAyMDAtMTAwYTAyMGYgOiBMT09OMDAwNjowMg0KICAxMDBhMDIwMC0x
-MDBhMDIwZiA6IExPT04wMDA2OjAyIExPT04wMDA2OjAyDQoxMDBhMDMwMC0xMDBhMDMwZiA6
-IExPT04wMDA2OjAzDQogIDEwMGEwMzAwLTEwMGEwMzBmIDogTE9PTjAwMDY6MDMgTE9PTjAw
-MDY6MDMNCjEwMGQwMDBjLTEwMGQwMDEzIDogQUNQSSBQTTFhX0VWVF9CTEsNCjEwMGQwMDE0
-LTEwMGQwMDE3IDogQUNQSSBQTTFhX0NOVF9CTEsNCjEwMGQwMDE4LTEwMGQwMDFiIDogQUNQ
-SSBQTV9UTVINCjEwMGQwMDI4LTEwMGQwMDJmIDogQUNQSSBHUEUwX0JMSw0KMTAwZDAxMDAt
-MTAwZDAxZmYgOiBMT09OMDAwMTowMA0KICAxMDBkMDEwMC0xMDBkMDFmZiA6IExPT04wMDAx
-OjAwIExPT04wMDAxOjAwDQoxMDBlMDAwMC0xMDBlMGJmZiA6IExPT04wMDAyOjAwDQogIDEw
-MGUwMDAwLTEwMGUwYmZmIDogTE9PTjAwMDI6MDAgTE9PTjAwMDI6MDANCjFmZTAwMWUwLTFm
-ZTAwMWU3IDogc2VyaWFsDQo5MDQwMDAwMC1mOWI3ZmZmZiA6IFN5c3RlbSBSQU0NCiAgZWE0
-ZjAwMDAtZjdhOWZmZmYgOiBSZXNlcnZlZA0KICBmOWFjYzAwMC1mOWFjZmZmZiA6IFJlc2Vy
-dmVkDQogIGY5YjAwMDAwLWY5YjdmZmZmIDogUmVzZXJ2ZWQNCmY5YjkwMDAwLWZkYWJmZmZm
-IDogU3lzdGVtIFJBTQ0KICBmOWI5MDAwMC1mOWJiZmZmZiA6IFJlc2VydmVkDQpmZTA4MDAw
-MC04N2ZmZmZmZmYgOiBTeXN0ZW0gUkFNDQogIDg3MzgwMDAwMC04NzQwMjNmZmYgOiBSZXNl
-cnZlZA0KICA4NzQ0MDAwMDAtODc0NDIzZmZmIDogUmVzZXJ2ZWQNCiAgODc0ODAwMDAwLTg3
-NDgyM2ZmZiA6IFJlc2VydmVkDQogIDg3NGMwMDAwMC04NzRjMjNmZmYgOiBSZXNlcnZlZA0K
-ICA4NzUwMDAwMDAtODc1MDIzZmZmIDogUmVzZXJ2ZWQNCiAgODc1NDAwMDAwLTg3NTQyM2Zm
-ZiA6IFJlc2VydmVkDQogIDg3NTgwMDAwMC04NzU4MjNmZmYgOiBSZXNlcnZlZA0KICA4NzVj
-MDAwMDAtODc1YzIzZmZmIDogUmVzZXJ2ZWQNCiAgODc2MDAwMDAwLTg3ZGZmZmZmZiA6IFJl
-c2VydmVkDQogIDg3ZTI0MDAwMC04N2ZmOTNmZmYgOiBSZXNlcnZlZA0KICA4N2ZmOTQwMDAt
-ODdmZjk3ZmZmIDogUmVzZXJ2ZWQNCiAgODdmZjk4MDAwLTg3ZmY5YmZmZiA6IFJlc2VydmVk
-DQogIDg3ZmY5YzAwMC04N2ZmOWZmZmYgOiBSZXNlcnZlZA0KICA4N2ZmYTAwMDAtODdmZmEz
-ZmZmIDogUmVzZXJ2ZWQNCiAgODdmZmE0MDAwLTg3ZmZhN2ZmZiA6IFJlc2VydmVkDQogIDg3
-ZmZhODAwMC04N2ZmYWJmZmYgOiBSZXNlcnZlZA0KICA4N2ZmYWMwMDAtODdmZmFmZmZmIDog
-UmVzZXJ2ZWQNCiAgODdmZmIwMDAwLTg3ZmZiM2ZmZiA6IFJlc2VydmVkDQogIDg3ZmZiNDAw
-MC04N2ZmYjdmZmYgOiBSZXNlcnZlZA0KICA4N2ZmYjgwMDAtODdmZmJiZmZmIDogUmVzZXJ2
-ZWQNCiAgODdmZmJjMDAwLTg3ZmZiZmZmZiA6IFJlc2VydmVkDQogIDg3ZmZjMDAwMC04N2Zm
-YzNmZmYgOiBSZXNlcnZlZA0KICA4N2ZmYzQwMDAtODdmZmM3ZmZmIDogUmVzZXJ2ZWQNCiAg
-ODdmZmM4MDAwLTg3ZmZjYmZmZiA6IFJlc2VydmVkDQogIDg3ZmZjYzAwMC04N2ZmY2ZmZmYg
-OiBSZXNlcnZlZA0KICA4N2ZmZDAwMDAtODdmZmQzZmZmIDogUmVzZXJ2ZWQNCiAgODdmZmQ0
-MDAwLTg3ZmZkN2ZmZiA6IFJlc2VydmVkDQogIDg3ZmZkODAwMC04N2ZmZGJmZmYgOiBSZXNl
-cnZlZA0KICA4N2ZmZGMwMDAtODdmZmRmZmZmIDogUmVzZXJ2ZWQNCiAgODdmZmUwMDAwLTg3
-ZmZlM2ZmZiA6IFJlc2VydmVkDQogIDg3ZmZlNDAwMC04N2ZmZTdmZmYgOiBSZXNlcnZlZA0K
-ICA4N2ZmZTgwMDAtODdmZmViZmZmIDogUmVzZXJ2ZWQNCiAgODdmZmVjMDAwLTg3ZmZlZmZm
-ZiA6IFJlc2VydmVkDQogIDg3ZmZmMDAwMC04N2ZmZjNmZmYgOiBSZXNlcnZlZA0KICA4N2Zm
-ZjQwMDAtODdmZmY3ZmZmIDogUmVzZXJ2ZWQNCiAgODdmZmY4MDAwLTg3ZmZmYmZmZiA6IFJl
-c2VydmVkDQogIDg3ZmZmYzAwMC04N2ZmZmZmZmYgOiBSZXNlcnZlZA0KZTAwMzAwMDAwMDAt
-ZTAwN2ZmZmZmZmYgOiBQQ0kgQnVzIDAwMDA6MDANCiAgZTAwMzAwMDAwMDAtZTAwMzAwZmZm
-ZmYgOiBQQ0kgQnVzIDAwMDA6MDINCiAgICBlMDAzMDAwMDAwMC1lMDAzMDAwM2ZmZiA6IDAw
-MDA6MDI6MDAuMA0KICAgIGUwMDMwMDA0MDAwLWUwMDMwMDA0ZmZmIDogMDAwMDowMjowMC4w
-DQogICAgICBlMDAzMDAwNDAwMC1lMDAzMDAwNGZmZiA6IHI4MTY5DQogIGUwMDMwMTAwMDAw
-LWUwMDMwMTAwN2ZmIDogMDAwMDowMDoxYS4wDQogIGUwMDMwMTAwODAwLWUwMDMwMTAwYmZm
-IDogMDAwMDowMDowOC4wDQogICAgZTAwMzAxMDA4MDAtZTAwMzAxMDBiZmYgOiBhaGNpDQpl
-ODAwMDAwMDAwMC1lZmNmZmZmZmZmZiA6IFBDSSBCdXMgMDAwMDowMA0KICBlODAwMDAwMDAw
-MC1lODAwZmZmZmZmZiA6IDAwMDA6MDA6MDYuMA0KICAgIGU4MDAwMDAwMDAwLWU4MDAwN2Vi
-ZmZmIDogQk9PVEZCDQogICAgICBlODAwMDAwMDAwMC1lODAwMDdlYmZmZiA6IHNpbXBsZWRy
-bQ0KICBlODAxMDAwMDAwMC1lODAxM2ZmZmZmZiA6IDAwMDA6MDA6MWEuMA0KICBlODAxNDAw
-MDAwMC1lODAxNGZmZmZmZiA6IDAwMDA6MDA6MTYuMA0KICBlODAxNTAwMDAwMC1lODAxNTBm
-ZmZmZiA6IDAwMDA6MDA6MTkuMA0KICAgIGU4MDE1MDAwMDAwLWU4MDE1MGZmZmZmIDogeGhj
-aS1oY2QNCiAgZTgwMTUxMDAwMDAtZTgwMTUxMGZmZmYgOiAwMDAwOjAwOjA2LjANCiAgZTgw
-MTUxMTAwMDAtZTgwMTUxMWZmZmYgOiAwMDAwOjAwOjA2LjENCiAgZTgwMTUxMjAwMDAtZTgw
-MTUxMmZmZmYgOiAwMDAwOjAwOjA2LjINCiAgICBlODAxNTEyMDAwMC1lODAxNTEyZmZmZiA6
-IElDSCBIRCBhdWRpbw0KICBlODAxNTEzMDAwMC1lODAxNTEzZmZmZiA6IDAwMDA6MDA6MDcu
-MA0KICAgIGU4MDE1MTMwMDAwLWU4MDE1MTNmZmZmIDogSUNIIEhEIGF1ZGlvDQogIGU4MDE1
-MTQwMDAwLWU4MDE1MTQ3ZmZmIDogMDAwMDowMDowMy4wDQogICAgZTgwMTUxNDAwMDAtZTgw
-MTUxNDdmZmYgOiBkd21hYy1sb29uZ3Nvbi1wY2kNCiAgZTgwMTUxNDgwMDAtZTgwMTUxNGZm
-ZmYgOiAwMDAwOjAwOjA0LjANCiAgICBlODAxNTE0ODAwMC1lODAxNTE0ZmZmZiA6IG9oY2lf
-aGNkDQogIGU4MDE1MTUwMDAwLWU4MDE1MTU3ZmZmIDogMDAwMDowMDowNC4xDQogICAgZTgw
-MTUxNTAwMDAtZTgwMTUxNTdmZmYgOiBlaGNpX2hjZA0KICBlODAxNTE1ODAwMC1lODAxNTE1
-ZmZmZiA6IDAwMDA6MDA6MDUuMA0KICAgIGU4MDE1MTU4MDAwLWU4MDE1MTVmZmZmIDogb2hj
-aV9oY2QNCiAgZTgwMTUxNjAwMDAtZTgwMTUxNjdmZmYgOiAwMDAwOjAwOjA1LjENCiAgICBl
-ODAxNTE2MDAwMC1lODAxNTE2N2ZmZiA6IGVoY2lfaGNkDQogIGU4MDE1MTY4MDAwLWU4MDE1
-MTY4ZmZmIDogMDAwMDowMDowOS4wDQogIGU4MDE1MTY5MDAwLWU4MDE1MTY5ZmZmIDogMDAw
-MDowMDowYS4wDQogIGU4MDE1MTZhMDAwLWU4MDE1MTZhZmZmIDogMDAwMDowMDowYi4wDQog
-IGU4MDE1MTZiMDAwLWU4MDE1MTZiZmZmIDogMDAwMDowMDowYy4wDQogIGU4MDE1MTZjMDAw
-LWU4MDE1MTZjZmZmIDogMDAwMDowMDowZC4wDQogIGU4MDE1MTZkMDAwLWU4MDE1MTZkZmZm
-IDogMDAwMDowMDowZi4wDQogIGU4MDE1MTZlMDAwLWU4MDE1MTZlZmZmIDogMDAwMDowMDox
-MC4wDQogIGU4MDE1MTZmMDAwLWU4MDE1MTZmZmZmIDogMDAwMDowMDoxMy4wDQogIGU4MDE1
-MTcwMDAwLWU4MDE1MTcwZmZmIDogMDAwMDowMDoxNi4wDQogICAgZTgwMTUxNzAwMDAtZTgw
-MTUxNzBmZmYgOiAwMDAwOjAwOjE2LjANCiAgZTgwMTUxNzEwMDAtZTgwMTUxNzEzZmYgOiAw
-MDAwOjAwOjFhLjANCiAgZTgwMTUxNzE0MDAtZTgwMTUxNzE0ZmYgOiAwMDAwOjAwOjA2LjAN
-CmVmZTAwMDAwMDAwLWVmZTFmZmZmZmZmIDogUENJIEVDQU0=
+On Tue, Oct 20 2026, Pasha Tatashin wrote:
 
+> Currently, LUO sessions are frozen automatically only inside the
+> reboot(LINUX_REBOOT_CMD_KEXEC) pathway, where luo_session_serialize()
+> iterates through all outgoing sessions under global write locks and
+> freezes them serially during shutdown. Allowing userspace to decide when
+> to freeze a session once it is done with it (and to freeze multiple
+> sessions in parallel, since luo_session_freeze() only acquires the
+> per-session mutex) avoids postponing this work to kexec shutdown and
+> reduces blackout time.
+>
+> Introduce LIVEUPDATE_SESSION_FREEZE on session file descriptors to freeze
+> a session early. The ioctl runs .freeze() across all preserved files in the
+> session and serializes their metadata. Once frozen, no additional files can
+> be added to the session, and subsequent freeze calls return -EBUSY. Freeze
+> is only valid on outgoing sessions and returns -EINVAL on incoming ones.
+>
+> During kexec, sessions that were already frozen early are skipped, while
+> sessions that did not invoke this ioctl auto-freeze as before. If an
+> early-frozen session is released before kexec, its files are rolled back
+> via .unfreeze() before being unpreserved.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+[...]
+> @@ -218,18 +219,33 @@ static int luo_session_finish_one(struct luo_session *session)
+>  	return luo_file_finish(&session->file_set);
+>  }
+>  
+> -static void luo_session_unfreeze_one(struct luo_session *session,
+> -				     struct luo_session_ser *ser)
+> +static void luo_session_unserialize_one(struct luo_session *session,
+> +					struct luo_session_ser *ser)
+>  {
+>  	guard(mutex)(&session->mutex);
+> -	luo_file_unfreeze(&session->file_set, &ser->file_set_ser);
+> +	if (!session->frozen)
+> +		luo_file_unfreeze(&session->file_set);
+
+"Wait, this looks wrong. If session is not frozen then unfreeze it?
+Should be the other way round, right?"
+
+This was my first reaction until I realized that you only unfreeze
+_automatically_ frozen sessions. User-frozen sessions stay frozen. Which
+makes sense, but is not obvious at all.
+
+Perhaps rename this to session->user_frozen and add a comment here?
+
+With that fixed, feel free to add
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+> +	memset(ser, 0, sizeof(*ser));
+>  }
+>  
+> -static int luo_session_freeze_one(struct luo_session *session,
+> -				  struct luo_session_ser *ser)
+> +static int luo_session_serialize_one(struct luo_session *session,
+> +				     struct luo_session_ser *ser)
+>  {
+> +	int err;
+> +
+>  	guard(mutex)(&session->mutex);
+> -	return luo_file_freeze(&session->file_set, &ser->file_set_ser);
+> +	if (!session->frozen) {
+> +		err = luo_file_freeze(&session->file_set);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+> +	strscpy(ser->name, session->name, sizeof(ser->name));
+> +	ser->file_set_ser.count = session->file_set.count;
+> +	ser->file_set_ser.files =
+> +		kho_block_set_head_pa(&session->file_set.block_set);
+> +
+> +	return 0;
+>  }
+>  
+>  static int luo_session_release(struct inode *inodep, struct file *filep)
+[...]
+> @@ -267,6 +286,9 @@ static int luo_session_preserve_fd(struct luo_session *session,
+>  	int err;
+>  
+>  	guard(mutex)(&session->mutex);
+> +	if (session->frozen)
+> +		return -EBUSY;
+> +
+>  	err = luo_preserve_file(&session->file_set, argp->token, argp->fd);
+>  	if (err)
+>  		return err;
+> @@ -340,11 +362,40 @@ static int luo_session_get_name(struct luo_session *session,
+>  	return luo_ucmd_respond(ucmd, sizeof(*argp));
+>  }
+>  
+> +static int luo_session_freeze(struct luo_session *session,
+> +			      struct luo_ucmd *ucmd)
+> +{
+> +	struct liveupdate_session_freeze *argp = ucmd->cmd;
+> +	int err;
+> +
+> +	if (argp->reserved)
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&session->mutex);
+> +	if (session->frozen)
+> +		return -EBUSY;
+> +
+> +	err = luo_file_freeze(&session->file_set);
+> +	if (err)
+> +		return err;
+> +
+> +	err = luo_ucmd_respond(ucmd, sizeof(*argp));
+> +	if (err) {
+> +		luo_file_unfreeze(&session->file_set);
+> +		return err;
+> +	}
+> +
+> +	session->frozen = true;
+> +
+> +	return 0;
+> +}
+> +
+>  union ucmd_buffer {
+>  	struct liveupdate_session_finish finish;
+>  	struct liveupdate_session_preserve_fd preserve;
+>  	struct liveupdate_session_retrieve_fd retrieve;
+>  	struct liveupdate_session_get_name get_name;
+> +	struct liveupdate_session_freeze freeze;
+>  };
+>  
+>  /* Type of sessions the ioctl applies to. */
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
