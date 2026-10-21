@@ -1,185 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EE7606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 17:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76502606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 17:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gBUv3QkW
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Pejk428l
 Received: by kanga.kvack.org (Postfix)
-	id 08F5B6B0753; Wed, 21 Oct 2026 13:40:18 -0400 (EDT)
+	id 62C236B024C; Wed, 21 Oct 2026 13:56:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03F556B0754; Wed, 21 Oct 2026 13:40:17 -0400 (EDT)
+	id 604666B0255; Wed, 21 Oct 2026 13:56:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E23256B0755; Wed, 21 Oct 2026 13:40:17 -0400 (EDT)
+	id 4F34D6B0256; Wed, 21 Oct 2026 13:56:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AEDB76B0753
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 13:40:17 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B8AFA05E6
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:40:16 +0000 (UTC)
-X-FDA: 85347347232.06.80A37D3
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011004.outbound.protection.outlook.com [52.101.57.4])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A53B4C0007
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:40:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gBUv3QkW;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of jgg@nvidia.com designates 52.101.57.4 as permitted sender) smtp.mailfrom=jgg@nvidia.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 269546B024C
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 13:56:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D1D6C0653
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:56:33 +0000 (UTC)
+X-FDA: 85347388266.12.C6A238C
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 289E814000D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:56:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Pejk428l;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792605391;
+	b=G0KZyJyZelMfIrOd7r3FYlsDAatcWtmrrS8ywPf7e9e1BC6xX/RB8Rfr8dLUkLec9prP6E
+	hopheWFT6DBd0SFcWRL20ut+W2HFHY2VSJX9Yp7ouM09n1UzEkWwaefI/Nzl1qeAaQrfGd
+	DLNdbLWMxvBNynYZeJCyCps+2dsEgSY=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Pejk428l;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792604413;
+	s=arc-20220608; t=1792605391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sh+BLdyawyu3x2WuC9w4sgPwmZXii/nWDIS0NOhyN2k=;
-	b=Rp7oTUeiINRhNpLgd9wR+qzx9ESMWJVQaSt/FUP0uxtlFRzXH5XAdpfR2bT8ahkTwpraIG
-	f5pzVGbGf9j29V5Q0fMqOrQ920GeQ8fa8sSe2Z9IblEBYsFojfeiE2o9cR+FxH77gYGPb+
-	Z49+PHAr/tqJd/C5+Pl6r+P5i2PjVz0=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gBUv3QkW;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of jgg@nvidia.com designates 52.101.57.4 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792604413;
-	b=t2SxSprRh9/Z/ZVY4Oz3dXzq8I9QuYjusaJGehrghqKErHWOy45Y0r63jmtsDsOFGVqAfI
-	rKu1HgMJsQcdgzYY9LFu6bqwK2pz96PNuLYjMcq9l8VM6EUkJEGhAoegoKVUd+dS2Yp07K
-	d/tvPHzEYrxodupB3Ipnk5cBu74eOKY=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k9HHKtENJG4+K2Rtawv6hGS2wcmr3NLX3/PslEZ62cpUbv+bGBj3/c92WBpYFRXWIO2qdt/ET2KujvOOwnrdBP/KqXA/ZYUaJxcNi8OEysWSDo+YE9cnmjXotbRkZuK+o8gy/E4s6/TwmGJDmTpGkSVzkGAnuDABgkpFevV4/0r6ju5Wk7E72Z3qA+fF/egWdQqb8A5I1Vrjr81F9eB5fL565+BttFWwP/I4M0Ldqh6i54Z9nqxcNDStHRu8PPj6Z9bKblLpUtpIc7jbvPGi5nh2VjCHzFfr3dhSSHGmU/ZM1aqrv8twI7SkxpqUqDgUrjAyqAeIf1DNJKAqKa+Rjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sh+BLdyawyu3x2WuC9w4sgPwmZXii/nWDIS0NOhyN2k=;
- b=wt248RjEHiIkbQhssKKM5/K7Vfe1tUo5iDO5YAKRtGUBV34YebQo+7iIqaAmYQvrabayQbGLTzNTEPu8WJSGPjZJzGAdBDvDiURPbwMFEaBxikHiDeA83zp+HJC4RnP0AkPNVrIyASrCWqlTaivr4dVLd42/zetcV8leD+rh95vJm1+GAC12RkR3S7z3J9jo+5HV7DNRfIpLLmO1Z9bwaBG5t2OWnR/2T2awVvfpfsfrxKxJPPkvnQzcbPs0fc0bJDZXGrE/AovCuGT0W7jUEgcH06n+iQeBeEYIOQYgQDDeBXSRyQd1toFI458eQgl+iE9SvUKrLvtGWzDpfT927g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sh+BLdyawyu3x2WuC9w4sgPwmZXii/nWDIS0NOhyN2k=;
- b=gBUv3QkWQY0wBPHaMuiCTJfpTge3T5nYTtyCosjuaD63aaMZAOeKWK+lE7wlKNsuw+Ks+Sp/HNrQkLRJbH3yirIO8FX1bNNmcsaDGFh8cy3d2fWS4CQmFjM6vir67JGEfrBp+34FSgexMniCcoySSmhU/D3GraABO8F8uPQDfiC5SsXsDiPmCG0WEdYYUBAqEdODDECrLRpifMkPcxqVx4fZbaOt+ooiWywwbMpX6papLdnzxi2HXIEsPpPjob8OOfJnv68H1pp+S/ZhZP7ploJvf0wZNtabZHVOKgeGCjRQa8ga8dOeIHyhIeQ9FgJ4HhrYRllRNaoSozgDUOkk7A==
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by PH8PR12MB7375.namprd12.prod.outlook.com
- (2603:10b6:510:215::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
- 2026 17:40:07 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 17:40:07 +0000
-Date: Wed, 21 Oct 2026 14:40:06 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Tarun Sahu <tarunsahu@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	David Matlack <dmatlack@google.com>, robin.murphy@arm.com,
-	loganodell@google.com, oupton@kernel.org, kevin.tian@intel.com,
-	alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com,
-	seanjc@google.com, will@kernel.org,
-	Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-Message-ID: <20261021174006.GU3008132@nvidia.com>
-References: <20261021152527.375070-1-tarunsahu@google.com>
- <20261021152527.375070-4-tarunsahu@google.com>
- <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
-X-ClientProxiedBy: BN0PR02CA0051.namprd02.prod.outlook.com
- (2603:10b6:408:e5::26) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	bh=l/9Q6vwSpHzLOuQcu+iZE9ek6ulZ0fAfcC9lHWm1vuA=;
+	b=Phfp/iqx8QtRMtV1AQLekW+cc2CSt5NOS6YgFAHoECSY5810S5L8MJpTRpYXng2bPicz9U
+	ZPhEC2/Nouityu8/MnAUGUuT3Xbk1VJMgx1yJGl860ilwJZlaAdPwQgSzoUg92sQxSZO3l
+	VhRjifM5mZ40Zy3enfuVW95ZMMNGBdM=
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6ae305e3bd9so1709158a12.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:56:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792605389; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YI5+Ffyh7SYSCV/ABG/i7A7nhynOcPh0LRcwQJKB7BcSit7yOPfHEaK5rJA4g8z1Gu
+         z/VXxp7r/Z59m03XSjl/BhPBNq3q7vNEXkW6S0wpmPpJFVqrdk1Z6wsuw+72LwXCKRN6
+         iw0mf0FDXJkHg3cJLs3k1E1gYelpk3udfNGF35ky+qb4+7/7LL15YTrIFF0GosLihRjy
+         QelPdJQNJiVPad7TcCQvnPCaK0Ll+w58O17iBpXDzY+hWcjy8jos9v2rupVug8bYMYaC
+         BU7NYNQbqJF0HakSSm7cwYgr0FoCtntY+EZ146Jv7fZ/qAWA9/FzvkZRY7kHa8aIl1yv
+         dx+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=l/9Q6vwSpHzLOuQcu+iZE9ek6ulZ0fAfcC9lHWm1vuA=;
+        fh=EOrXB3BTBHiK03CylFBXaysXgO4LjZji9uCCf8x3ZaQ=;
+        b=O5KPdx9Qok+RkKl0pPhrCHwnJTbpf62hV2RzYkqQ6H74oDmVR/nA/YRmt8bGRH9qLr
+         AWgXzrcWDJ6qFFIxEWafm8vk950HV7xGRN67lXqneBU8yMcZU2LFFenLcpWIupzNozQb
+         ZlMlk6mHyKvgqoWJalht4dgXLBBpI3AgUuR9lUCFKkrxz1B0vPca7ZmUNSa6iouy+0KV
+         xtbqKHfnIxTUDHWJGTaYJZB9m0dHoRB9lQ4jF+xJ5TrTMzM/sMxOoUxGP/xSwRLLydDT
+         QOCojQTpn2+q8FZln3kZJ1UE8n4b+MFjlU5WIV1tebsfGXN5KzKZ0sVJAdDnuXZzmMpa
+         pUGw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1792605389; x=1793210189; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=l/9Q6vwSpHzLOuQcu+iZE9ek6ulZ0fAfcC9lHWm1vuA=;
+        b=Pejk428l93mBWx1LWDvc2zldkTRcaro0aS7qdfQHUMcdVYuvx0F1aBErOxl4eZjgQl
+         LTk+GSVoIJm7YeQJbJ2y0Fw7JHWJhDsa8O0NNWxCXPeR/mXUptnS/CK5NgZ4dwytrake
+         XSsaXmnhss2E+PaiY+BxdSch5TaNwaJSCqkgFIgBxkIdD1S15Uyn1XPGHqKUAWZ0wvCx
+         HDr3GGHPeHV9E5MDP4Y2s1V51TMa93oyDRGZeHlzQnu4PKRpbkCdniqnOGWttTo6/Ete
+         EdDfxyPpnZigyIumKnEDOttUv9v9Be1xe1SEFQV3X1spafi1FtLVyrNO3Hp55ALPzg/Y
+         LQgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792605389; x=1793210189;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=l/9Q6vwSpHzLOuQcu+iZE9ek6ulZ0fAfcC9lHWm1vuA=;
+        b=hWJ9HqIG7bTjBFO6DgYj22uqAywDIP6g7ejAZY9uEFcTNXIgX/D0viKjVTuEKJR8EX
+         fOA2+yHiU4TgiwDoAaDZDA9eIIevGRFQMN+8f/MBgAKn1XgY4qJlLHiYSoxuGW/zjWxX
+         5Ylw/Yprd2+icaYqOwLQEV05FJbq+ijQfjZ+cNBcvBS9iXYMY3L4LgNGM2W+qlGlG4d4
+         ckXaiI1l4lgvejO109x4MKYK5WujdKHxrqI4/y25Vwr3xs4czG/6PSEfjAPRWsBMUzdW
+         R9htjf9XlegIe6uSw9S76gemBnjWAz9QVy+ZUheHn9FPNMq2N0JchwqhiqG424vHFtEq
+         rzeA==
+X-Forwarded-Encrypted: i=1; AKwUvBxpYuQ0ch47MjuTaelbAKcGtu3SP7TtyJ2o0PHt9T8bvNIe8tG2YQfbcYOC3vw9IyJaer/KmQ2+bQ==@kvack.org
+X-Gm-Message-State: AFq9FYLLidEz3yR7RR7epPNwwB72F/ZbnrGO7FFZvm033OlGqPEm7dRu
+	ki3aKrOaCBKNOF29hBP3vFtSrlbSRbfUbc9Xu/0AqXIQHtx/kJ8AOn68ndBf7HgYD2w2xsl6Q1k
+	r6eDNpmhx+W8ufwIdODSZywwWGJHnojfOuWDb//SSQQ==
+X-Gm-Gg: AYBFou1DP+0qRl+KIW4rbTwYBzQgQf7ZPFlLRE0Zitnx+P0lGULcQIQGUwIRZ7j6nNp
+	ProkN9jR/7l3+0hFHjhKzGVxGGhQr0cgjg0md8/D7Xkmi+YFw4v1V01EHYXqrs0X2/KdJ+Zl+Z3
+	4GX0DhDShpA4duPUHbtdB3oCmo/I2tBreUAE5ZxDOTD3qyTnqyashHXwDKBlB2mLK+sxQkC5Uo7
+	O97Bsbz2h7zOhTdltMG/VkCbMUsmppFA/yXDVjjFd3WBdop70H8jG2n7PttKjNzd7LLNd0FZPJi
+	X/tkzAu6M5p5kwWdXl1WKAM29ccF5tKPTOIll1LbKd/VlmIO5SPrZs5lYY64O0cM1oG0/cMYK/A
+	e/H9dQ9huwc4ZlmkNOJa0cdn5TQnlqjpg8c0W5HkPYe1pbnQA7Da5X9uhLSIpBnwTQms=
+X-Received: by 2002:a05:6402:458e:b0:6ac:686f:91db with SMTP id
+ 4fb4d7f45d1cf-6b408e9f045mr1964734a12.11.1792605389455; Wed, 21 Oct 2026
+ 10:56:29 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|PH8PR12MB7375:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0da19133-30cd-4aec-e6eb-08df2f9a58dc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|18002099003|10067099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	//Zveg7enEZjDC1odBo483/ecevc1uWMM/arC+UNUM1pW8mwHaLeIHpSa/T6IaFdUOWbx4pcfBk81LSSXOfcLo8V6vLWB8r44QQgSD67qmFdgoHI7aUwTkzjMGb/e9SGoNLYWHEw0NOcQIVp08zf3UtxUDsb/FGzFp4z299SSPu0iAa5tnU/1CAq+MqtHU/Iw0V4i1NvqNunASMq4PR8SEhaP6JK6hENH7P8jYt5tDfv2OxyhRTaRWPDy2By+Pv6IRBAt4IeQQnTq92i28hV0jctpJ7HEvrYYaKBp30y+LXmWBYjzM6Te5Cz4kSro4EOBnYxipKeWsP+YtNEAsJI8vhp4zsCb0Jz4H6KOHCz9QqCgOdK0zLHBf6wmFv6CYmzWKpwnx9Sgd4fLekcXTc1zfWGTebdRbZyDAO+rfoTeckn4UdUpXbDFyHKwlj/agfunYrMaYvkMX2RPxsynIAkSdR9qDryJiahCmINAiHYA6ErrkVr0oonCa7llCRl8wGpnwlJmIzSunCryePNFzGbuIvBdmLDht3CqdAomJwYguCKUV0yxjvNgqinvZfSVvYEX5SfEkRlKMnBCFKh2MFuiaVVhdfvQ199WCSFDkZVLqkKheEcbyb4HVzk/hclM8W8IqbGisJILv5z83ylzdhL7LsLYJ4uwRgVeCoaSxyr/fo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(18002099003)(10067099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S3QwM0xIQ1g0cEtSay9pZWEwSnlZd1M2Z2d2RUhYZzlubTc5dmovVnF5cldl?=
- =?utf-8?B?cGNwWjg1ZkJtSEViQXlQbHFzY29VNC8wSTlTSU9ObHRYY1ltUFZ3ZlVkc2dG?=
- =?utf-8?B?NGxjdEx0K1pDSVV0UWwzV2dvNUtYWHlzTEZXd3Y3WlFGUGlHb3Q3SkFVaWNx?=
- =?utf-8?B?WEEzcTFPSlVKd0JlcUJoYjc5eHVBa2xFWHU1ZStCd2ZqTzN0STdYOGlFNHM4?=
- =?utf-8?B?K2FMQnlRdk5YUFhzL1EwUWEwNUVwZ1IzQXhROGs1K2ZLT3ZxT2szai92VVdV?=
- =?utf-8?B?MytLcm96bENxL2U1TUtEM2hSdmE4NWh0M0NoK3NYclFVbm1xeWgrMXZ6STJK?=
- =?utf-8?B?TzVGTTc0bjJ6Y2loZ2Q0Tms2RytWamt5Z2NweUNWbDdtOHExUi8xclphaldG?=
- =?utf-8?B?VXhmWEs1RE5ESkxzM3doRWw4V29MZWJ5bnZOV2lBZFA4OU5YUjRwcGdjOVcv?=
- =?utf-8?B?dWNJOXIyaTMzWXpyY2JzSCtDUDU0a3NrRDFaMHVWclV3aEtoeHl3TGJDNXlV?=
- =?utf-8?B?aUIwWWlCWThKci90OEp3NWZFRWZvU0d2QTN3YStvc0NaK2JrY2xwRlpzcGc5?=
- =?utf-8?B?SWtaSTVuRDZ4cFRLZldaTklRRnNxYmxjZnpubXI5aXZ4cGhLK1RMQUhnZ0pV?=
- =?utf-8?B?b0hNL1VGUm9CcVRGUS9iUGNsaUpoaWVvK0lzZlZsNzZmaGN3cEJzb1RXVjdH?=
- =?utf-8?B?YUlkcHlzWGk2REg2MnJxOFBsT1NkWDFlSTh4a2NSMnk3OVgrUWVuczlEbUtV?=
- =?utf-8?B?MGpYcjg2ZEl1SFY2b0lkMFNmekJBTE9vRFJwMXJYK2swK1R0dXluOGdpLzJz?=
- =?utf-8?B?a09Cc0FwN3F0NkZKb1paWjZ0bFlaOXVmNnU3eDFNRHQyYkhjOTNSN2l6TUxo?=
- =?utf-8?B?cGdacjdWVGRsZ3p2YXlFMSt3dGpqQmtmSXBHQzR4czVCZnJRRkp3dFp3dDZt?=
- =?utf-8?B?bFQ5Mnc4bGE0WXBxZHV4TFNycTZIM1RKQzQvVUtpU1ZrSmlTRmc5Z1pzeCtT?=
- =?utf-8?B?Y3Z6bXc3MUt1cEZoYVd2Y0hTdmwwVCtDQ3k2VS9CdFEzTXV4M0p6WlVObzB1?=
- =?utf-8?B?aUVMdjhtL2l0ME5xbHgzMnkzeWVZRlovekxQK0k3ZXVKTGNOYTJXTUg0WnNt?=
- =?utf-8?B?Vml4ZWxUOUMrQWVtS3JoYXpGSk5KM0hxOG1RNkEzQmt5bS9ZUFN0akxZS1JZ?=
- =?utf-8?B?d2o0ZGcwYzQ0eEhFbkczSjg4S0MzVXB0SEVGczh5dkJRL2FiSlU0WTVZblJK?=
- =?utf-8?B?bzByLzA5Yy9kNVkwYjJoQVF4bXMvV0ZhVE5IVWxnd0dabFlaUy82cEVPS2pu?=
- =?utf-8?B?WGpLTDU5K01uM1p5Q05lcEFrRVovSHpqNDdaYTloeTNJSHhxKzdZaEZvMitJ?=
- =?utf-8?B?Tjg2M0dVYyt4SWZYcGN5a3IraDlxR3pTQTgvdG16RlAvSU5WSFVGWWxVVnJx?=
- =?utf-8?B?NGpDL0dmZkU3MVFVYUVjbEZGKzk1WXlPdzFxNFZSMGkrZVhxVlBOQ3B6OHRI?=
- =?utf-8?B?cmVPbFk3ZlNUdll1a3g0ZW9OdjNPdXRLaEQvUTBFNWtvVVVQSWpiS2ozUXRo?=
- =?utf-8?B?a1RhNGZXU2NKSHh1Yk53UnZsQlVOYnl3bDhSMmVaSG5rRDU0S2xVY2JqNk1E?=
- =?utf-8?B?ODNEYVRXTnFWWC9OdU5talFpOURJVm1SMTZxU0VZRytUc0dnd0M4VWdoSTB3?=
- =?utf-8?B?SUFvMmZSUWgrOExKd05SeDh4UGl2V0dqWFF4N1M5T1ltWk44U1U0YkdhVmhj?=
- =?utf-8?B?bVd1NmF1ZENqQkZMWWZxcTBncnI4RVNSaXd3K2V3WFA1Z0paak5JNEpvaWhp?=
- =?utf-8?B?RlR2cXQ1VjZhaFNIUy9WSEJlSTJrNWZqdUhvbDlKTFZ6c0tCSnN2N1NNdXhn?=
- =?utf-8?B?a1JCb3U1WDN2VTlHOC9qK05uUkVhc3ZUNHVhVzdLcHRRQ0NzMm1KbjNkYlR0?=
- =?utf-8?B?d0Z3NlJ4TGRSalRwMnQ1S3pMN2NQazIzQ2N3V3ZlRmRndXNRNXhkeTRYWFRB?=
- =?utf-8?B?TlRQdGpJVGpDdzQvcXhnSjd1QjlkRS81VTBiSmY2d3UvMjhjUzN4VDFjeTdn?=
- =?utf-8?B?dkx3eFVka2xUWCtYMGVreUdmek1lV05XalpNMDQ0NWorTDhDRzhuUit4TFhU?=
- =?utf-8?B?V1VKTVZLZnZ3eFpFbHcvYTNpYkc1QmVXbVhZZnQwbUVGRGdLYmJmYjhINUpi?=
- =?utf-8?B?d2JCcURlWksrazlRdHVJSllnSWY4SzNuRE1Qekp5bGRQS0w2ZmlQd1R3ZWhW?=
- =?utf-8?B?d213OWZ0SWpDQTc2RFZZdUdPT0I4VG9NNnBXVUJiMkwvck5hVlkyL3I3NEVN?=
- =?utf-8?Q?p/X4sLqUr2pBiB1mfb?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0da19133-30cd-4aec-e6eb-08df2f9a58dc
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 17:40:07.3422
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 794ZxyqdEjLv0iivdjt47az1uT9Z2XsAePZvyGVDFO6Lfz9QPB0c7U1IZHywYA9q
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7375
-X-Rspamd-Queue-Id: A53B4C0007
-X-Stat-Signature: qmzwzw6cj4ou9dmrcbg58uoeyshkhqor
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
+ <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com> <20261021174006.GU3008132@nvidia.com>
+In-Reply-To: <20261021174006.GU3008132@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 21 Oct 2026 13:55:52 -0400
+X-Gm-Features: AclHuK-Q6MQhxMIMUURzzci_OOwzGik9EFivN3YqqlGA_5OHu0xT6GsF67-BzDw
+Message-ID: <CA+CK2bDJzo44K0X-+5F77E9g2dmqKdwZvrUf-1SkC7ewrgEgzA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Tarun Sahu <tarunsahu@google.com>, Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
+	David Matlack <dmatlack@google.com>, robin.murphy@arm.com, loganodell@google.com, 
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
+	Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
+	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 289E814000D
+X-Stat-Signature: 87tqrb94h7ozjgdfmsr8wwc38xjdzh8j
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792604413-447733
-X-HE-Meta: U2FsdGVkX19iGBa2HHUbHrsIXI5PQR1OimbEwTWzKWY0Vr1WU6sDqBwLpQ3rKBllsOXRLgQi9vQn8u0MPpXt/6Dss5wGzkyTrJKNeCO96Go3OLBuLu0UIqqCMYf0gXn6x1AikIJ2+LH02lPBnWbVP0k15AkTIiNqWCe+WBO/pGS6kZ6s2jogw4xJYoITY/kxNJ6eo3ArQytUUv9blx2ue9jZS5RuZJyA8PjnJSEqYE2sK1HiiSQzrLxP3boY0xbXkTRSKrnLRWUJcavfJVBn1POqlcsQqV/M31JOz1ogdWMoNCnQGmXW2DptcQFMPvwWA/SiWtYIPWv2e4kb6HIutLoEUuHJHnpDAgRkZ8UF5fM3X5+UiEeqhDqcLLy1E9WKvYxpy/bq6QrRchZZA9FUDYUBZzbX0XmSRCKZIVFnnfnxE5Wi+z1nGzzFaa+QyCrB7Qf4XgpiA9gRZCzDFAGH62XvpH70oRHzuj1jc83wWCTxNk3hqBClWSasp9ZhCEbnObzf8LmzWIufWtfCkfjuTypNIchBnr/+vWDWpb8BeOzx/HtDp600Aj0DGqXCUmRlgafAzwGTR0KV5laS4sItJlzvLPRDFlceJXOFjl7ULtrQZEteV7y9kNmotPBHfuLo/S3HnodgcHIw6p4B3SW5MOWLcTCDLYFOdrA6fZjHJ4S5Tn3AlTtkFqe7Wf3UEp8hFZ96ntePVoc0k3oPcDe+RR9jQWhab7Zi69tkgJj0E+aDXqInbpXNJF+/LEdSLhaBnnaNNhAt7aRE+EK9E2hnVOR5sG3D8NBtqwpQ70VT63kXGT1N1YxojGOWR6bNhhZvrQVkr0SxhugnO6T+lRYmCs/Fh37yVtYESDl3SXNUbhDEZRmwGObCyuwyn2GnlCOP3a2pHoYqq5/v/13rhg7e1LhpARdCitwv3NPcWG/ztXXTudO0QfO2oMCwB0J8BucB19w3r4j0PZn4AoVN34d
- vpHGebYZ
- Uf6elROuDjNP0eSlLM8rrTJqtJ0DZ0rGyOahrudxfK9RnweOEfK03oW+YJmhqzsqd115m6ktXKBXkgIuzwQBcumCXginhDU5JKap7eUtXL06YNROTrBjQ9g9Gc23COpH/eZL96VxA5viekk7KETp8Png9Po9bUJzAeGP6/kJOHaqkQh0/QgKyOrUxt/pWNRxJIsgAusgZvhOwODJnO1a+7ZD0ckMJNTifmC+kFHceGoUs+zqUXuv3WeDAN6fxGFGi9Yecie7pUFlbO1XW0RsOWLPaJWubTRXHH61dJmipsCORGTv7AMdt6Xs3MqZ0V8OFF8WNPVnlXfuIcLVEAIjaTE5AdbYETA07sgxslWTVCs6novU/z5mlrz+Pm24wyo2nRQFoINv8aFKZAG2XS851ooLDma8NBUIJeQlK+zfLO9XymtixmRQ5A4sPwzJreHv4HKm+KYGE9TkrMN0=
+X-HE-Tag: 1792605390-837572
+X-HE-Meta: U2FsdGVkX1+/v4kWtJ0sm/dZHK1GWieqUJiuVoD8rxXHLiiViXVanFMmu+PEmYGf/C5QKgnrdfZWCm74MPRADhZhEjePGd8euk4k9/z9kRQ0EqLndC/6SQh88nEg9dP28Vu9YK6YH1RsQ05Fy+98AddD7YO7BL668PrnT7lOSgQYUs8gjny9taVWOjvYo7LLpMbb1FkxM95QcOHxhixtWgpdmwF3ULwwnyT8LVyfEXmgy60zBX0ivi+/2snR54lA+217hKn0hPTlSWP4d3kxG4t6gkAJy87ESfaMzmU2ibskWHbOWgstxXn/5j546kgYBRluy4dy0emDa3J76/dtiTTBGISgXh79qqpELL+1BIwM3j1+QTd7j7LbmWjxGPwuEHIc6CUoiM6YQtGNHLHqttUFiGJBkig1lFF0fVIZXOhNbA5t/5r09DqaKwfFpU2PRGxuQFZGo44KexkGz67A5Yr3aRkRMuxrvBCXGNc9/L6Dkuw5xsnCVXDKIUX2scmFnRA+Hfa+Iz6oSf93Lm+C8OpLw6+kzIthHgaNzlx3syEFdaTB5y4RiMWmIZQUhzukEppdxIQtOUjzMvt4zJiqY1tZG+eT1sF0umSZvubJVBEzz8Vx84OO2+5u5eChArPMG6U9/b42B4ebCa3q+ZDsClVIOpqgazfCmRF1WeBdK4YfgQ0kpg7AMH8tCIdZfwapQiP+1gFZw0I6pOpuyh2nXmKE/ceT8mKkobB07rYNdSFTz8rYCbfm++DHhd8FRD21yLGl0V6zgr3HvRiUFSP3WLrw4K7yXy02uRU+XRiPJ9gaTYOU93Sl2Fu+oTu/5Y8ilTB3+eCn4KbyYkhBype7lAnZafArmH+dzJik+6aHwYk71dp0f8qHITfv2RflG3TZSV6AOqdR6WsMRAwrSE315wnt2Iyh+3l6ZyRiQd1H//i6IFgk7/GN2awkSCZqaTpftRd2XWQeX4iiBpHBJtw
+ gzGbmI7k
+ FqYmJBXXZEZhiO7wQxYeVJsX1Ahlnpcal+/VKLixJDMFndP9id/0habp0ktstavs/GrtOzBxNnGoOFQk8jcnFOZCa0n6BoMIM96YKf5/DLhmjaRMOnPzDKNZ/mwf32ZAvUk8AC2YJQ21F6eey59hpNyQDG1walfyFz9wndGoKIf4TM5ea5BR3UTsB0mnPJmsgU2jg/tXO77CTDhDHTvTZU3SvpiggBr0mJabSCZFa/UEOCFFNPGfxv5Ds+4t+3GRA8ArXnMgj+OjxzVKTUO5vbebRtARX8dq5ZG7F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,31 +153,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 01:27:22PM -0400, Pasha Tatashin wrote:
-> On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
+On Wed, Oct 21, 2026 at 1:40=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
+ote:
+>
+> On Wed, Oct 21, 2026 at 01:27:22PM -0400, Pasha Tatashin wrote:
+> > On Wed, Oct 21, 2026 at 11:25=E2=80=AFAM Tarun Sahu <tarunsahu@google.c=
+om> wrote:
+> > >
+> > > LUO and its file handlers validate handed-over state with monolithic
+> > > compatibility strings ("luo-v5", "memfd-v2"). Any change to a seriali=
+zed
+> > > structure, even an optional additive one, must bump the string, which
+> > > breaks live update between adjacent kernels. Replace the string in
+> > > struct luo_ser with a feature header, so that the target kernel can
+> > > accept or reject the source kernel state per feature.
+> > >
+> > > struct luo_feature_hdr is a fixed 128-byte header: the serialized
 > >
-> > LUO and its file handlers validate handed-over state with monolithic
-> > compatibility strings ("luo-v5", "memfd-v2"). Any change to a serialized
-> > structure, even an optional additive one, must bump the string, which
-> > breaks live update between adjacent kernels. Replace the string in
-> > struct luo_ser with a feature header, so that the target kernel can
-> > accept or reject the source kernel state per feature.
+> > This patch is all wrong; 128 bytes is far too large. For every _ser
+> > struct, we only need 8 bytes instead.
 > >
-> > struct luo_feature_hdr is a fixed 128-byte header: the serialized
-> 
-> This patch is all wrong; 128 bytes is far too large. For every _ser
-> struct, we only need 8 bytes instead.
-> 
-> The first 4 bytes are the size, and the next 4 bytes are flags (i.e.,
-> 30 feature flags + 2 reserved bits for flags extension). The last two
-> bits of the flags indicate whether an extended flags field is present.
-> Each extended flags field is 8 bytes, and its last two bits indicate
-> that yet another extended flags field follows.
+> > The first 4 bytes are the size, and the next 4 bytes are flags (i.e.,
+> > 30 feature flags + 2 reserved bits for flags extension). The last two
+> > bits of the flags indicate whether an extended flags field is present.
+> > Each extended flags field is 8 bytes, and its last two bits indicate
+> > that yet another extended flags field follows.
+>
+> I thought we agreed not to loose the string too, it was a tree
+>  string -> feature flags -> individual values
+>
+> The string is the emergency if we really badly mess it up.
 
-I thought we agreed not to loose the string too, it was a tree
- string -> feature flags -> individual values
+Yes, we'll still have the file-handlers/flbs compatibility strings.
 
-The string is the emergency if we really badly mess it up.
-
-Jason
+>
+> Jason
 
