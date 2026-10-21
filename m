@@ -1,89 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D313606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757C760A260B
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h33VLacb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CYoDM5Pa
 Received: by kanga.kvack.org (Postfix)
-	id 2F2B26B020B; Wed, 21 Oct 2026 07:40:34 -0400 (EDT)
+	id 8A38A6B06D3; Wed, 21 Oct 2026 07:47:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CA8B6B020C; Wed, 21 Oct 2026 07:40:34 -0400 (EDT)
+	id 82E2E6B06D4; Wed, 21 Oct 2026 07:47:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E7696B020D; Wed, 21 Oct 2026 07:40:34 -0400 (EDT)
+	id 6F7216B06D5; Wed, 21 Oct 2026 07:47:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EC8196B020B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:40:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F1ACE120505
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:40:32 +0000 (UTC)
-X-FDA: 85346440704.23.2ED19F7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4E46480007
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:40:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h33VLacb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44D756B06D3
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:47:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CABF11C3B7D
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:47:26 +0000 (UTC)
+X-FDA: 85346458092.27.BF70776
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2CFEF1C0004
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:47:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CYoDM5Pa;
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792582831;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hRvoRPccK0ObKuMf62aLb3R3R+A968xeDh5CRkvKhSM=;
-	b=TNdpiefT0Hdm42q+DHLDJZqMgUmxvu6UNzHd1wBPvE9PjenStgPNAgU65BLgR1e6JJjecT
-	xboe8nm9+B/bAbrfNjjyjUQMQG1AtORmbCL1G9NXsmQhFlA3fOODWFxWO0qP0+75tDD+8x
-	3HKOGTbIhuofXI6rEasBKMNbgKWyifI=
+	s=arc-20220608; t=1792583245;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ni/h9FbFXhjgUwMn3rSI6p6WKM6vJUoZQ7p4kXWNy5U=;
+	b=rytOZT8JUID0Ne5kCJa9oESMrilEUaUE9CVccSTCI3UY24zMzH2LMsvkcEEZFe8tnDvQwt
+	Lk0eW3FAaCyunWY2nfx4w0j5wruucb9ERtYKy87VAq4TjwsDtd3a6qJxFnSmFweBVVLlhX
+	C5ckxplLA8cZBAE2KlMchvfHzeqdME0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h33VLacb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CYoDM5Pa;
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792582831;
-	b=ByZXDBpj9iGZ3ZLMhQzHToBkrwsIktgBoOnEnlzopSEmRGmBhFLYX8duoXpe56367f0TTp
-	8glzYcHA84mzjLguxWwsQrcFdEC8B4eFN0CKHKB0KTrGWmp/77mNffloGf/bWi9G1ybkt9
-	n8j8wBGgYLHIp8aF+U9I6FslxPInH6U=
+	t=1792583245;
+	b=PCij5/Ua49BC4wDkPuSzHSFzOVCZ2ho1hIH5CAGouBzAimmRiHGBW1w5ZlJZVkTBF5T01w
+	JT3O1n+tMb9G+ik9947MajqxgOwOyk3sFfM1PL2BuWKeN0j7NTpVFwD8GuFX+gt6WrZ3Gy
+	+6ssCWYOFK8o/Kqziqwxe0VI12ark5c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 673FA43AC0;
-	Wed, 21 Oct 2026 11:40:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D781F000C4;
-	Wed, 21 Oct 2026 11:40:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 29C9B60A81;
+	Wed, 21 Oct 2026 11:47:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6273E1F000C9;
+	Wed, 21 Oct 2026 11:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792582830;
-	bh=hRvoRPccK0ObKuMf62aLb3R3R+A968xeDh5CRkvKhSM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=h33VLacb4OUhHA+wtY+sI5cKdIF2czPPGRkYnihor+xX2FmPSsm/mqo/QiZqMFjow
-	 AWYjJG36aosVWVeXvHZChQ5jWXg+Q+oR2yr5m/DQhWJEZIiWeIdlNTiAofFOB5pyNg
-	 4W3Wdi2W3qApZEwrYm7vcqQ4veFz9Xnou+P1J97+XeyCUi2dle9mB+e4iR983+W2Yc
-	 9FbNOcVqAvzhSOstPejbBtPTzeuxZvk5ysHsMmFyxOGwgx3f0frTjmVSMMS0M4XvN/
-	 VsBg7vOfqimxPriV6iNz/idPoeoE5TeH0UpoQ7OqFzLNAV5J07eXOSiZYho022gVY8
-	 dqGkF2mK39x3A==
-Message-ID: <sashiko-outbox-180175@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/7] mm/page_owner: add bpf_iter target "page_owner"
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zhen Ni" <zhen.ni@easystack.cn>, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev, akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, shuah@kernel.org
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261021112437.1799213-4-zhen.ni@easystack.cn>
-References: <20261021112437.1799213-1-zhen.ni@easystack.cn>
- <20261021112437.1799213-4-zhen.ni@easystack.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 11:40:28 +0000
-X-Rspamd-Queue-Id: 4E46480007
-X-Stat-Signature: 5daw9po8pzicwswaijhetc1aw77iw8yz
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	s=k20260515; t=1792583243;
+	bh=ni/h9FbFXhjgUwMn3rSI6p6WKM6vJUoZQ7p4kXWNy5U=;
+	h=From:Subject:Date:To:Cc;
+	b=CYoDM5Pavgm81Nyqql/3raaF54bJHC58QBIN2LWkciYwVz/5h0B59Mzqf+MizWhuG
+	 jz1jqdZBrCVcOiuBlNKByULWJ1opgAfsu6rGbrXchF6lDKL0n3E7YBPLDmlvH4SomP
+	 EwK6xf91kUvpKSYBLoN93tqkZEIIM+EQDd/MtGC+CkW8ELRb6JoLU0YWJID6o1xYYu
+	 ytarFAlqWQwFi5zehp/FR0wZedTqnzpswlsUkOJFSN4QGs/PJzNH/hWIdpDpjg095M
+	 iA9tNi2+MjR+D9YSXEgR0LJTuWJVOUDhF/C3a3+5nVsnJMgWNwZEK8lVMtS2+tpncg
+	 hi/X40TnN+WtA==
+From: "Harry Yoo (Meta)" <harry@kernel.org>
+Subject: [PATCH slab/for-next 00/14] mm/slab: mandate SLAB_MAY_ACCOUNT for
+ __GFP_ACCOUNT allocations to avoid wasting memory for slab metadata
+Date: Wed, 21 Oct 2026 12:46:41 +0100
+Message-Id: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACGm2GoC/yWN2w7CIBBEf6XZZzf2go31VxofFliUhkIDqE2a/
+ rtUHyczZ84GiaPlBLdqg8hvm2zwJTSnCtST/IPR6pKhrdu+qRuBM8/kXFC4xGBQB5/xQykzJkc
+ yyAl5zWWUSVMm7IQZRMdm6C9XKJ9LZGPXn2+EgzibENEXBu7/Or3kxCofTtj3Lz+lqCygAAAA
+X-Change-ID: 20261014-memalloc-prof-dont-waste-slabobj-ext-metadata-34f943ef9658
+To: Vlastimil Babka <vbabka@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>, 
+ Hao Ge <hao.ge@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ "Harry Yoo (Meta)" <harry@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
+ Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Mina Almasry <almasrymina@google.com>, 
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org, 
+ Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Michal Hocko <mhocko@suse.com>, Ingo Molnar <mingo@redhat.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
+ K Prateek Nayak <kprateek.nayak@amd.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Mark Rutland <mark.rutland@arm.com>, 
+ Anshuman Khandual <anshuman.khandual@arm.com>, 
+ linux-arm-kernel@lists.infradead.org, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ linuxppc-dev@lists.ozlabs.org, Robin Murphy <robin.murphy@arm.com>, 
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+ Niklas Schnelle <schnelle@linux.ibm.com>, 
+ Matthew Rosato <mjrosato@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, iommu@lists.linux.dev, 
+ linux-s390@vger.kernel.org, linux-sunxi@lists.linux.dev, 
+ Amir Goldstein <amir73il@gmail.com>, 
+ Casey Schaufler <casey@schaufler-ca.com>, Paul Moore <paul@paul-moore.com>, 
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+ linux-security-module@vger.kernel.org, Richard Weinberger <richard@nod.at>, 
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org, 
+ cgroups@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2CFEF1C0004
+X-Stat-Signature: qa9p1z6p9p8wf9e5j8uuc8az1t6ewrgp
 X-Rspam-User: 
-X-HE-Tag: 1792582831-474874
-X-HE-Meta: U2FsdGVkX18qrnE5K90n7ptA6X2OpFEhP29T0sNQUWK87pwNcccv+f68UTcj/A1hFim16Uw9jptdGdOFYwlGKrvyRUtHsHqZt9Vuq+nS2dwOgNy9OUyy5E2mLnG0OWetNKANzv3YO3kLQnh6K7F1p+9UOAU1CAwAstg1tls5hHWHR4adpSlS12IuIAMkF+h/HH3dvaGqCvnHMESbJJqfBeQYquoY1007D1A/5mCsUYIQoQvcMBtdD8eFdFHI+OOaSfTkuQKr0ZmPWtPhml6mgtgmwEP/Vrx8AvKlnx3BcC17nOz/IRDSbqp1/7KO+wImfUpJINxaGLANNvsjCABch+IqT5ypqpWM6Vtvo3l2H7cvVuxUDQXc7Xu7NvHRbFMLqYG5NXsa+smcRv6RWT7M8U/X2TTGu3fkRXjxapAjcUk5NiEvi+SV7J7bOhhdL/7F7LEAqaPhBszQcLOgX5czVqUyi5ty03wQiUUY2nSYKfAWnFye+FgaUFyX2X6tGvDD+9tTMNMeRD8zevDP3raFXhAkI5YcKeqntLZ9PhQuJHPks9B3xMDIO4WmLOxWw1bVv78GyfnbXnfhdCuZAdNBHsFJeeOsO8RBg1Fj79/mzDbV0zCmQZxoA6jT1BjIrJAiLP0ZmVTocz+uzwsbyt4fJtJRVmFoEc6MvsqvGHzxiOebMKrF88UwHoRRNYVCTcqiz48U1MoQg9Ty7m9rWbqGmkBk9kB6ushlZEnSskkjGkMweFvXNiWF4Xr4QxIsYnVapSFOksPyky5Oep9xH19Wl8+XliHQ6uzqIzcRjRXK1+GI5yvmrxHcqxyl3+r8BS2Cl24C6yf0Xzmo18JH7gldgSHNZgMEu42OPV6BFTGZ2C8hvovIoTezmSeg76sdBdx0lZU9PGk60M0lASuc0MZKccE8q+v4767yOE3pdtiozIDG/f3KjP3OeLpGbJ2aghH3jb/eKiJHtkl1kUovm34
- 90vN4qJb
- zlzMZgtIHeVnpH4gdWpHJw5BF5suWdZi3Xw4UAWS7JR/ijeqTsGkle4/1qxoK6C0vQWSEpH4bPd8L7raXTzcz/vNAbtHPz2ISYYp1qNPjBM2OWBti9WLzC9iS0m0l1dEC9ZGHvloPJI6g4Fi9BoB9Tcm7569dtyDRHsISr/vyD3w3Zml5yCxxd7cUQT4gv+tlzJ2uBCJvhyCSlTvcHh1BykMvN8lhaGDINpAyZBFZ9ZeSnzT3GXxTk+RgVFwGpF19vkLYLcPI4+ZuUoK8ksTXLwMOH0i9VvwOY4WIQ28HeVdm/zEhXjKJUIaBA9TYmYENcjPqFsjqdQrvs0IvNRij6/ZXINQewIlC6QiysHMYdQfuEK23on0KSDOXZ776MvAbAd4+d0FfPZ2pgsRUzQpdLR2DvvBZS55T/4lQ9fZtf8bHQITuzVXv8eMb1BiXHNITBrN2kAHoTBJxEFkVvsuZ79GnEf2a2vBLgxuww+1o5x2W+Upxwhc1UCH514PWLZo5HJzW27yAj1uYpHR3CkIoaLGW3vZVj3ZXZDfZqU4uA6TwXvPjsOC3Huv263ZrAhhzrIjcfsabiI33pyuU+NoDn7Z7/Eu8vq+fPIFrtf4qWsE5/MY=
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792583245-716747
+X-HE-Meta: U2FsdGVkX18YyAR3fCi2P0+XkLqm2U7UEgDKZaNDe7sD/2YCeZvH7ujhEadCS+uqj3HbVq70jvAcuBfQr4eFqAe0ha3mOkCtuxg8paPndfyxKwJlpPwoduhoMYHNAvPQXW+u0+xA/s6dN0HeJ5pwre2BQvBYd14Mwa8siXliXKo+Eoktk9qOIQZcjZ8RfWiikHWCo1zK//kxBKDNqaEl1eRbr/ImTW8DsXYp6OR7t+QI0Mut9p/GDrnFZmC8k8LV8zdF4R3zUNAp0b0MEkMUdcpI84wNFVMdI9uiMwncaApodedj9134VaUvVv30jUekTYFBfPHpPRp9waOIIcvrw6elhEJcEYZ2X0SWlRsWfb36poHu40G+5/O3ukmHoQ5n+n+0uy5rKPkb/DyBGsTQo4RgkFDiI/YLTfjY1pi9iSMRl/5OHc174ML14LQ1mpIEcEq1Ofu4XL4TDoygiosLDpchoZ2phGlODAYJ+NwHJhda7BeJjEB0OT8q5ZkJ4GIAdzlyVD4D2X/XWPdLtcZR2S/Hbp9trlTNrTXWrsO8/lpnw/1XrK4OkBNqyWH3ItxhVW3KozBANNviONa4lT+4rQZllRsywdPZxsLHNrBZ1JwpwDPkYCuZyFrFv+aih/lwm5qCvKwwlJ9/uD+NpZ/coUYPkpkcA+0FeEHSu8RGc1bXd0bPjocZW0QssXXpYimWBNH4ytDOmIFPbop9idOgfW+lBRqKeZuke0lrqfkRu6E1s17ZJi4fYIc5W1EB3kopiPwi1vxJ0HyXACYq0HCXVNWftd0Ow5MCtqFNgedRsADkaM6b1GOAm+Sp8VOlhDpX46Zj24xCdPHPzlcYMTbqajQqcsBFxQ2VrMNlleZMVB9bmzbDtcReEq+6fGi9z9f4g/ZwjcOWGnT2u/PEJc//1TMpCaRGCHJ/FH8gJfI0PZsEJ10JEOWOM5gy+XutMBzD6rQ4hjCknspqyCAgzeJ
+ XR8fz8Kt
+ sNBWNnpYKn+zE8W+Vmym5JU6d4bTDaV5VYJhjNjjHJ8z8otlVhvfA5aRFIVa1t/jkcxCWdahgZdNrCsiCgypGvtVkTTdxdYvzoQATjvK3C7Rgtd4fXZ5s/Zat3bGIlC0dirwe4Vr8wmb3WQoHiqWvb1XZxi6A6ZY8foNvqTgeEGm3dRn2UjTZcxG5vplUdvygaYB9OzcRYYFLEy7H/nXkQDz3+znbLOUe79RkwjWNK+cCYfLvX7dF1OZNQY549zM1H3AJVKe+8YDMZTkMKUlUyuCMsU1iOXFcH+OYulquHgXhRNZKUUfp9xz1IdaealV9ebyOdNc/x5tjSl7B8jRExIyJYCDbmccA/z4j1iFB1HTlfgM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,120 +148,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm/page_owner: rescan and post-stop show() in page_owner_seq_sta=
-rt() at EOF
---
+The purpose of this series is to convert existing slab users that
+specify __GFP_ACCOUNT on allocations to specify SLAB_MAY_ACCOUNT on
+cache creation, to reduce memory waste for slab metadata with
+CONFIG_MEMCG=y && CONFIG_MEM_ALLOC_PROFILING=y.
 
-commit a6ba125169596a18417440d179f83a946227810e
-Author: Zhen Ni <zhen.ni@easystack.cn>
+Currently, there are two ways to charge slab objects to memory
+cgroups: 1) specify SLAB_ACCOUNT during cache creation, or 2) specify
+__GFP_ACCOUNT on allocation. The latter method made it impossible to
+assume that certain slab caches are never charged to memory cgroups.
 
-mm/page_owner: add bpf_iter target "page_owner"
+Since commit d4404b0f5b8b ("mm/slab: stop allocating objcg pointers when
+unnecessary"), slabobj_ext allocates the space for the objcg pointer
+only for caches with SLAB_MAY_ACCOUNT. However, kmem_cache_create() sets
+the flag on every cache, because any cache may be used with
+__GFP_ACCOUNT.
 
-This commit adds a "page_owner" bpf_iter target that iterates over pages
-eligible for page_owner output using page_owner_next_eligible() and passes
-the PFN and a snapshot of struct page_owner to the attached BPF program.
+As a result, sizeof(struct obj_cgroup *) bytes are wasted for each
+unaccounted slab object when both memalloc profiling and memcg are
+enabled. This is suboptimal when memalloc profiling is used to
+profile memory allocations on production.
 
-> diff --git a/mm/page_owner_iter.c b/mm/page_owner_iter.c
-> new file mode 100644
-> index 0000000000000..529b2c4a589a9
-> --- /dev/null
-> +++ b/mm/page_owner_iter.c
-> @@ -0,0 +1,118 @@
+So, let's make memcg charging opt-in and stop wasting memory!
 
-[ ... ]
+New rule for slab users: a cache must specify SLAB_MAY_ACCOUNT
+(explicitly or implied by SLAB_ACCOUNT) for its objects to be charged
+to a memcg. Otherwise __GFP_ACCOUNT is ignored and triggers a warning on
+debug kernels (CONFIG_DEBUG_VM=y).
 
-> +static void *page_owner_seq_start(struct seq_file *seq, loff_t *posp)
-> +{
-> +	struct page_owner_scan *scan =3D seq->private;
-> +
-> +	if (*posp =3D=3D 0)
-> +		scan->pfn =3D min_low_pfn;
-> +
-> +	if (!page_owner_next_eligible(scan))
-> +		return NULL;
-> +	return &scan->po_snap;
-> +}
-> +
-> +static void *page_owner_seq_next(struct seq_file *seq, void *v, loff_t *=
-posp)
-> +{
-> +	struct page_owner_scan *scan =3D seq->private;
-> +
-> +	++*posp;
-> +	scan->pfn++;
-> +	if (!page_owner_next_eligible(scan))
-> +		return NULL;
-> +
-> +	return &scan->po_snap;
-> +}
+The approach is quite straightforward, but converting all caches that
+may pass __GFP_ACCOUNT without SLAB_ACCOUNT at once is not.
+As a best-effort approach, I swept the whole tree (with help of an
+LLM) for paths that pass __GFP_ACCOUNT into slab allocations either
+directly or indirectly.
 
-[Severity: Medium]
-Can this rescan PFNs and invoke page_owner_seq_show() again after the final
-page_owner_seq_stop() callback has already run?
+While I tried to make sure the sweep is exhaustive, there can be a
+missing conversion. However that is not a correctness problem:
+the objects are just no longer charged to memcgs. Patch 13 adds
+VM_WARN_ON_ONCE in __memcg_slab_post_alloc_hook() to catch such a
+missing conversion.
 
-In mm/page_owner.c:page_owner_next_eligible(), scan->pfn is copied into a
-local variable and only written back inside the loop before checking
-scan->po_snap.handle:
+Patch 1 allows passing SLAB_MAY_ACCOUNT to kmem_cache_create(),
+patches 2-12 specify SLAB_MAY_ACCOUNT for the caches found by
+the sweep, and patch 14 stops setting SLAB_MAY_ACCOUNT on all caches.
 
-mm/page_owner.c:page_owner_next_eligible() {
-	unsigned long pfn =3D scan->pfn;
-	...
-	for (; pfn < max_pfn; pfn++) {
-		...
-		scan->pfn =3D pfn;
-		scan->po_snap =3D *page_owner;
+On an idle x86 VM with both memalloc profiling and memcg enabled,
+slabobj_ext memory (the alloc_slab_obj_exts entry in /proc/allocinfo)
+drops from 1,280KB to 910KB (-29%) after boot. The savings are expected
+to be larger on real workloads, which allocate far more unaccounted slab
+objects (8 bytes per unaccounted slab object).
 
-		if (!scan->po_snap.handle)
-			goto ext_put_continue;
-		...
-		return true;
-		...
-	}
+Each tested cache was verified with the warning in patch 13:
+I confirmed that 1) the warning is triggered without the conversion,
+and 2) specifying SLAB_MAY_ACCOUNT resolves it. However I could not test
+io-pgtable_armv7s_l2 and sun50i's pt_pool caches due to lack of the
+hardware and emulation support. So they are compile-tested only.
 
-	return false;
-}
+  cache                  tested  environment
+  ---------------------  ------  -----------------------
+  radix_tree_node        yes     x86
+  maple_node             yes     x86
+  buffer_head            yes     x86
+  skbuff_head_cache      yes     x86
+  fanotify_*_event       yes     x86
+  smack_rule             yes     x86
+  io-pgtable_armv7s_l2   no      compile-tested only
+  thread_stack           yes     ppc64le (64K pages)
+  pgd_cache (arm64)      yes     arm64 (64K pages)
+  PGT_CACHE (powerpc)    yes     ppc64le
+  PCI_DMA_*_tables       yes     s390x (zPCI + vfio)
+  hostfs_inode_cache     yes     UML
+  sun50i pt_pool         no      compile-tested only
 
-When page_owner_seq_next() advances scan->pfn past the last eligible page
-and calls page_owner_next_eligible(scan), the loop reaches max_pfn and
-returns false without updating scan->pfn to max_pfn. As a result, scan->pfn
-is left at the PFN right after the last hit (or at an intermediate PFN where
-po_snap.handle was zero).
+Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+---
+Harry Yoo (Meta) (14):
+      mm/slab: allow passing SLAB_MAY_ACCOUNT to kmem_cache_create()
+      lib/maple_tree: specify SLAB_MAY_ACCOUNT for maple_node cache
+      lib/xarray: specify SLAB_MAY_ACCOUNT for radix_tree_node cache
+      fs/buffer: specify SLAB_MAY_ACCOUNT for buffer_head cache
+      net: skbuff: specify SLAB_MAY_ACCOUNT for skbuff_head_cache
+      kernel/fork: specify SLAB_MAY_ACCOUNT for thread_stack cache
+      arm64/mm: specify SLAB_MAY_ACCOUNT for pgd_cache
+      powerpc/mm: specify SLAB_MAY_ACCOUNT for pgtable caches
+      iommu: specify SLAB_MAY_ACCOUNT for slab-backed page table caches
+      fanotify: specify SLAB_MAY_ACCOUNT for event caches
+      smack: specify SLAB_MAY_ACCOUNT for smack_rule cache
+      hostfs: specify SLAB_MAY_ACCOUNT for inode cache
+      mm/memcontrol: do not allow charging objects without SLAB_MAY_ACCOUNT
+      mm/slab: do not set SLAB_MAY_ACCOUNT for all caches
 
-In kernel/bpf/bpf_iter.c:bpf_seq_read(), when page_owner_seq_next() returns
-NULL, bpf_seq_read() calls page_owner_seq_stop(seq, NULL) (running the BPF
-program with ctx.po =3D=3D NULL), marks iter_priv->done_stop =3D true, and =
-flushes
-any buffered output in seq->buf to userspace with a positive return value.
+ arch/arm64/mm/pgd.c                |  2 +-
+ arch/powerpc/mm/init-common.c      |  3 ++-
+ drivers/iommu/io-pgtable-arm-v7s.c |  2 +-
+ drivers/iommu/s390-iommu.c         |  4 ++--
+ drivers/iommu/sun50i-iommu.c       |  3 ++-
+ fs/buffer.c                        |  2 +-
+ fs/hostfs/hostfs_kern.c            |  2 +-
+ fs/notify/fanotify/fanotify_user.c | 10 ++++++----
+ include/linux/slab.h               | 16 +++++++++++++---
+ kernel/fork.c                      |  3 ++-
+ lib/maple_tree.c                   |  2 +-
+ lib/radix-tree.c                   |  2 +-
+ mm/memcontrol.c                    |  6 ++++++
+ mm/slab.h                          |  2 +-
+ mm/slab_common.c                   |  8 +++-----
+ net/core/skbuff.c                  |  2 +-
+ security/smack/smack_lsm.c         |  2 +-
+ 17 files changed, 45 insertions(+), 26 deletions(-)
+---
+base-commit: d15d7703166daf7bd62c844a3cb1b3a6279adb4c
+change-id: 20261014-memalloc-prof-dont-waste-slabobj-ext-metadata-34f943ef9658
 
-When userspace issues the next read() call to observe EOF, bpf_seq_read()
-calls page_owner_seq_start(), which calls page_owner_next_eligible(scan) and
-rescans from the stale scan->pfn up to max_pfn. If any page in that range
-was allocated between the two read() calls, page_owner_next_eligible(scan)
-returns true and page_owner_seq_show() invokes the BPF program again with
-ctx.po !=3D NULL after the terminal ctx.po =3D=3D NULL stop callback has al=
-ready
-run.
+Best regards,
+--  
+Cheers,
+Harry / Hyeonggon
 
-Similarly, if the initial scan finds no eligible pages (*posp remains 0) and
-the BPF program writes output during page_owner_seq_stop(seq, NULL), the
-follow-up read() enters page_owner_seq_start() with *posp =3D=3D 0, resets
-scan->pfn =3D min_low_pfn, and rescans the entire PFN range.
-
-Should page_owner_next_eligible() update scan->pfn =3D pfn when the loop
-terminates at max_pfn (and only store scan->pfn =3D pfn on a hit after chec=
-king
-scan->po_snap.handle), and should page_owner_seq_start() also ensure *posp =
-is
-advanced so a follow-up read() after an empty scan does not reset scan->pfn
-to min_low_pfn?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021112437.1799=
-213-1-zhen.ni@easystack.cn?part=3D3
 
