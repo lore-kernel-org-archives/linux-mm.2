@@ -1,192 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E47606A31B
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 01:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E274E606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 01:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UyNp6vWa
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uJEUkpII
 Received: by kanga.kvack.org (Postfix)
-	id 445226B0597; Tue, 20 Oct 2026 21:32:14 -0400 (EDT)
+	id 1B3C76B0599; Tue, 20 Oct 2026 21:35:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CF0A6B0598; Tue, 20 Oct 2026 21:32:14 -0400 (EDT)
+	id 1647B6B059A; Tue, 20 Oct 2026 21:35:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2704B6B0599; Tue, 20 Oct 2026 21:32:14 -0400 (EDT)
+	id 07AD46B059B; Tue, 20 Oct 2026 21:35:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F1BB16B0597
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 21:32:13 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 643D8C041E
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:32:13 +0000 (UTC)
-X-FDA: 85344907746.27.CBEC29C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 88258180002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:32:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UyNp6vWa;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf24.hostedemail.com: domain of philip.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=philip.li@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792546330;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D86C86B0599
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 21:35:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61FA31403CD
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:35:38 +0000 (UTC)
+X-FDA: 85344916356.08.96D2039
+Received: from mta0.migadu.com (out-168.mta0.migadu.com [91.218.175.168])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BB5A0100005
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:35:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uJEUkpII;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.168 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792546536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m5RsMNXArVYqGN+S8VYLIOXH9gIm1UFEKfS7YzbLOf0=;
-	b=NKMssuLemM2sY4FzXzFeceL0wUSSkoy0OkkHF8Pap7sllRawWsq5gOuHIwaSHjcW2aQlET
-	YEOihz/cMwRvQoehRrvbSuSU9XiobO9aH0Zid4hRLzt4T7PRNbRvqtlBlvAQcEXwTon33w
-	6oOvmtaf2jiByCHsUbQ4oU/+LMJsCkU=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UyNp6vWa;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf24.hostedemail.com: domain of philip.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=philip.li@intel.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1792546330;
-	b=MzikuwsX96Ys1xHsoyFLmymHX8RgzqZZH547/x71lbUhPrRB9Rg9W1b4C1rAjxAC2mqaVB
-	ZJm2xOt1IN/VHYTR2PSH1lWbpjvAyeFa+IIHY+tsbqHgMotUb+a1iH7UIWvDcUHigTtvVy
-	uveVB9gBbHi+DAkFpv/6ZGHVQ/XLp9s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792546328; x=1824082328;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=+xr7D9w5F/pFkAc1TGZXBGUR2j72lSNqnt+ivGdfoOY=;
-  b=UyNp6vWayYb5pwSIE1Qd7Uig6O80JA23H4Y+R7NmGhXoCbmqTzhq0p8O
-   RPaOdyEjRug9V1f5GaTGy/jAAtCECIussBWVrW91XQyCtTYDdG8VGPV0a
-   6emhnKceKoeOsTHR5t7L5RFe3aLWfil4BRqf+lbvFM8qthXwGW3FfTals
-   sVitQp4sN4T6DxGx9Ho6x8sphfmbkr0sy+2orz8zupb7dVUPzlF3YgoHW
-   Aq2qG2J6e+QXWGMEJ3CdlGl6BDMzZu4vxGtYfqEFIpmA5cJfTeatCdnXW
-   2upf7RmfiQFTOwhOOLWnMvDoxELw8djK4Z9SydmWQ3I5Na14nLpn6ZzIN
-   w==;
-X-CSE-ConnectionGUID: xXcsAvmBQkmBPqjxAbALLg==
-X-CSE-MsgGUID: SUiJy5KOQ4aF7jFrXpPcHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11941"; a="1137009"
-X-IronPort-AV: E=Sophos;i="6.27,169,1787036400"; 
-   d="scan'208";a="1137009"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 18:32:07 -0700
-X-CSE-ConnectionGUID: XXegvsyLRvuhHhaxWR4LkA==
-X-CSE-MsgGUID: SYqggdchQtulY72BfC7s0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,169,1787036400"; 
-   d="scan'208";a="4790742"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa011.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 18:32:07 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 20 Oct 2026 18:32:06 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 20 Oct 2026 18:32:06 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.48) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 20 Oct 2026 18:32:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pKzzCz3774lAQBkGwXLS4ExgcOOMEK39JW+vDDkxirP7pSv4+R2xWHST5jaZdI02HLKla05myL827LteA+vDdsZZhboLzCvykM1r429Os48yJkJIhrstkDs0owse/eoX0/lXFZTHzTojoFcOb58vA/J3MO9kbPjNdCjbN0AAyXUypRXIfFu36h2HRwJot+1NIg/hVtJx/gn4N8hfZjg03U4CvjDqGcBpr5o5cGmMwj4EhSjIwG1FJgYqpcKhPSFCjJQX6c3osWmeOW4y/3hsu/6G7kZjBY/msFQ30XBRLpaj7w3HKnOuW9hOGnDTttHLmeun2OJPvFbtsjVOgDMiYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m5RsMNXArVYqGN+S8VYLIOXH9gIm1UFEKfS7YzbLOf0=;
- b=Y7gdbhF0JweM/OXXSydAa8/so+J/z/BgXlpiSC1Ut9ysrugwomuSNDz8xc5AD1IsAyBl/K7NyKGIpMTgGFuA2/Yw1ant2s5pNz8UMx0uPaqpEt902XyYUYDNxvSFpfM2wj66g3214YylHAhagRU7WdDF1SIfunkvt0sjDt7Ht6H5E93827dCPccdCp28nCq5Y08nVKpljW1VzwR6whtWClDQtNWn4w3DKmV+N4ZTOFy7vj9xu3QZjxIciVv1UbxMi/96xTGN9QsaQPgIxqoSLcUn29v5HlYwKIt5tU59duYNN9BnVuXixv4jrzcznDv/xi61424C+ZQBUtbZBZMyFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS6PR11MB362586.namprd11.prod.outlook.com (2603:10b6:8:4c4::14)
- by SA1PR11MB6808.namprd11.prod.outlook.com (2603:10b6:806:24f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
- 2026 01:32:00 +0000
-Received: from DS6PR11MB362586.namprd11.prod.outlook.com
- ([fe80::71a6:38f9:43ed:8f8a]) by DS6PR11MB362586.namprd11.prod.outlook.com
- ([fe80::71a6:38f9:43ed:8f8a%6]) with mapi id 15.21.0522.017; Wed, 21 Oct 2026
- 01:32:00 +0000
-Date: Wed, 21 Oct 2026 09:31:53 +0800
-From: Philip Li <philip.li@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: kernel test robot <lkp@intel.com>, Linux Memory Management List
-	<linux-mm@kvack.org>, Mark Brown <broonie@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 3d229ce89862b8e82d71a9e11d6f840ca272a6d6
-Message-ID: <atgWCS/iCtGXVa5W@rli9-mobl>
-References: <202610210624.L8z54cjt-lkp@intel.com>
- <20261020163928.ce045b68bf2ff27ee10cf01d@linux-foundation.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261020163928.ce045b68bf2ff27ee10cf01d@linux-foundation.org>
-X-ClientProxiedBy: SJ0PR03CA0384.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::29) To DS6PR11MB362586.namprd11.prod.outlook.com
- (2603:10b6:8:4c4::14)
+	bh=2DrsebUbLp13fzrXzEa+wLSyr3pCfG+dstsywGVgOW8=;
+	b=SWxEaucjrTH7YCifk6XW/6DFcw+d5dhCx2E507aSVZ3pf+MpNseXTTPIk5jUhyoUNoU3cE
+	Ic1yuDGXPtGomVHad1k7mV24aHEDtkhjgbNHDaJE1QFusSncqafJJLoB8wIBIxNcdFZPBZ
+	xd0it3ZR5pXTHbDr3SvPCAEPLor1hgI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uJEUkpII;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.168 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792546536;
+	b=qVp3VQV2lgBuFlQwRl8xxmfLvgl7xNEeXhbQdEACUMu7LLFm8szvOaPGTu5r5kTS5k1QgY
+	ym2TIj3XQU6s9cUNBOxe9aMdVmGDafCIC/STIpxJ8509cKcxyVJgjXiQgU95aLcmBU4qyX
+	3iWpscD+NyW0UaX3PS/PtxP3+X+JEO8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=U4cwMEsU5qtx0w9jQC7lKQe8YciLG2ZHaqb1h0PZGWo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792546533; v=1; x=1793151333;
+ b=uJEUkpII0xASAFqy+OyFz21nWdXbOvPvi06zXr7G/p7WjwYCqAgEbjhmxN5aDi6MqQfNzXEV
+ 1HRn1mT8xnhJBgSdHeJ20VjONagAJncpXCIKbWHS5ia8nNFOT6TQveSqergfFbO2unjJNmed1o9
+ lWGx6b1iBzmzWg69aybEyxD0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 6f2b2204164ec746;
+	Wed, 21 Oct 2026 01:35:19 +0000
+X-Mizu-Trace-ID: 6f2b2204164ec746
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 20 Oct 2026 18:35:16 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/memcontrol: publish null pointer before dropping
+ css reference
+Message-ID: <atgWux9N9a47BHE7@linux.dev>
+References: <20261021010051.1529261-1-joshua.hahnjy@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS6PR11MB362586:EE_|SA1PR11MB6808:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac4bbcb9-f077-45cc-0224-08df2f131a5c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|56012099006|4143699003|11063799006|261009223027099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info: oK+CQcMlEXKFQi07JkDNSykxwIwMIt5hDuN1zn8oH29TZGoDn/cGiga0gS8LGlElNvxvkSFZQRe89k6i99yqT1PDO7Dnbp5xv3pwemC/EzjLd/auz7e4vWeHICaliIpbJDT8uD2hQr5hETOye6A1/U3oErAY+4cdSIaEqPR2J/+KX74EjOYq3A878+gMrEqFrH/2gD7YQnvzD2egeb5iEels7Sr1nF7mnPZN09eOXAitL/1gzJHk3CkvIPlO/uOjcX3IIcculD4AfSn7lFMkTVxu3KoLyhLPUTVht/6WDccH+aL07ikIYdffTh+q5tXg606RtGqsGpnjHV8EPxF31ILFRtDd7ukImKY/ipyVmJgcusbbTNf5rxdEGJrd5YGZ1lSprM2UQqSaVTBXAUPOEVLI9AcgEawid56EXfnjoLUs6PKGjaX721vPkvIa6pHIKmnoj6VZ7rQO5gC2cOpyKW6Nu91NOTY7fpfdrbH09KEycN3MPuFD9UiT7RDrwxXq5CI29W7Qe2sbJjmyL3vyBG2VADwTF8nx+aoHOnikLy22tLNsyjeA+bnwEBx6amKIO3BW11XnsAPr4aSYL2AKJUAaTeN4UHdzaFUp8TW2KHgcFJY/HKb357vauNqd8hhG
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS6PR11MB362586.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(56012099006)(4143699003)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uetk/1kIIvMM5Zmfh3QehmOYmuT1ZkypSrqXkRPjlm507biMNSvZsfd1d7iD?=
- =?us-ascii?Q?UpcSt0zC9UHskcJqgDXgZNpiQAjS5gQUIj7OwlbgOE/G8UDrZJRzGBYxGVyP?=
- =?us-ascii?Q?UUebTGsHpxi3ZAm9gHVlOn1JUa8NiNtVGlfke8ZBIvH0chQu9Hgqb0O+azy2?=
- =?us-ascii?Q?weBXaEmY1yVYRG/JSRNzCC1FUbQhd5bDyv9RN9vT5eZEkJN/4vifwZzmq15O?=
- =?us-ascii?Q?9bp9q62IGlqXDCgLFEcyliBZMXoznaol0byHaPIsIZAdzWZLij9mTXtUdsV5?=
- =?us-ascii?Q?GGWqLHuwKb1rnjFOe5uJ8UUPnC3+Kx404CTcpwzxvejdIfaSJqF9O/n1D0HZ?=
- =?us-ascii?Q?/Mk3ujwdcBYW+G/ycjsdRRpl+Ae/rgABA7kUuBu+T/Z/HMZ4TAn0SxgOl1X+?=
- =?us-ascii?Q?tqlqzKx9I7VoFp9j0RzkmH7sJagQn/ipLPdW3VMFrDhrZNy729oSUMp7IOCh?=
- =?us-ascii?Q?I0cSDnT6vI94AHA+P6Y24WuC77Y4/dpgfGBlyIgD9Z2HFX26RFHNScfO12uS?=
- =?us-ascii?Q?5+n/rLTpDeWE2stODwUVub2HYHrtemMKGP5+bVWG2bf6POnwDkybfO9Ugi0X?=
- =?us-ascii?Q?UoWsOfAJvppYVLOvxYNIC6oEcvQMlUf0qVYv2cG309kx5Np31XqHUKtyZ4rW?=
- =?us-ascii?Q?5bvgN7z31woT6Lf7Ux2gWdMcvFt7VpTtJ2NM93s4+Z9dQV2JzD4CEHYuQvC6?=
- =?us-ascii?Q?2jJVfX63qWeahnDiy2XLcKPZZU0GE3E8FFA2mu5rcseWLrJNZ6Y93oz/XIRI?=
- =?us-ascii?Q?O0vUUoKavVZx5rh5Eqb0ZvuDO/b6pso9qPo85mpQ0zu7S7PpFUbCU1my2GbG?=
- =?us-ascii?Q?T22sg5HnSRWKerG4ZI3g6rVvkTJgj0NnJDQckSBVj+kXj27IH/oK5qkYHj4S?=
- =?us-ascii?Q?/2EimFkTjOhIJTfVa//AGVZJATLGeovZJen8cpK+9FlKbKXxOI2U79UBWhvs?=
- =?us-ascii?Q?g6gRTUH2S616TMyCaSE/iFA/hN9LMtZWesHLYk7uIXwez5l1myYJtE44JlEx?=
- =?us-ascii?Q?KVZbi/ymiedKPvWMIPWivYeA4YSZav3aaFV6PKuLloRn5dCIYMJ+0hqOnIDM?=
- =?us-ascii?Q?8oPV6NdrgYnBuSiChmm2GoaA0QWevajsQWCtey5SPIEIL88YY11Y4CIS1VKc?=
- =?us-ascii?Q?5Uwl0sJXCbKiNJ/N8vNUBFgNQcvhCWtiso5qgMH6/foZM2ARXqNyBdr9Q3NG?=
- =?us-ascii?Q?oUSpgf0cW4CVxg+zklkICOVr5rkAgXHg1Xs7K4P4SD7/WP8YanI/DQDdTm+j?=
- =?us-ascii?Q?BwNPqzkAxZqq7a0dfhg0T9SimFifDnU2puShmm8Mc8JYvNZ/0RKlRwVxom5y?=
- =?us-ascii?Q?HHnvvBdCDU9sWF5lJgJ3lmUZQ0yhllM7ohaQp6NyF6b3YdHOKO3cxcBNQdQo?=
- =?us-ascii?Q?AykYOtMYWS60YhJ547iEEjm7hBkfIM9c3bWMzuFMW6G8MvnC2Okw0dkwWLA5?=
- =?us-ascii?Q?Zx7yQKe0hbbNnaCOAA+HMkTGgJFlGuXxJqTPC8r4oVJmvhzhVwVcJC3pCSXr?=
- =?us-ascii?Q?l00c3g4VfQ1K3X3Cb2kiX6+j4uMpyByI6Nbk2Wkufo3oE10Z1pX25sm9CXGo?=
- =?us-ascii?Q?rgeNVml2NL2uqhT6gqZ2+Rz1bT/IkefkDaiTnoioVyBcV8UFMFncRtCNjXfz?=
- =?us-ascii?Q?j3+oxXmYp1+OR/DnRE3W4TUVrwc+O04KH+B8Rqhq7YNXrjfRptb/H5y2cLGg?=
- =?us-ascii?Q?At1/it7kyCg+CgZUodvurMITC05NOh+V+kvLA4RuxeBVzihk9a/X2amrBMZF?=
- =?us-ascii?Q?zQBzgMI14Q=3D=3D?=
-X-Exchange-RoutingPolicyChecked: cr2dV22U5ClHObOPsrwnUZH0Q1aly9kFANOfd4OTS3bTES0pZIHSMIIiQdEkOs4aqekldT3EnQYzXgOpg19lEHHKZ54vIPhvfDYzxrmW5yOl6bZtNtjV0DrWOy/mr7A43ZnP+SkbR73+eDhWPfXov1hcivxw5Fa+Pu5Xg0SpF3w9sscRYsgb8M93Ee0GSnrI8/lVuLBcVSzk0A0Y+70WliTr1gFMzjN88xRACEqNhFXMmD50enRg8a/EWVjKxAWDj5obLRpEjkpp0RSjfvlKlECFo9X0cEYI/0Rk9G4GAl+tdE6d37YKFHvFRXh1d7IafStZSol/gAwoQ236MrfdQQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac4bbcb9-f077-45cc-0224-08df2f131a5c
-X-MS-Exchange-CrossTenant-AuthSource: DS6PR11MB362586.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 01:32:00.4084
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E2sh6fFs7QiyYbeq0E9T4H50ToFoWUoQpEZHg9fu18V4ftUTjkLOO/aLmFnbVql2m5tVT7RK3GCBizDAyN23ig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6808
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 88258180002
-X-Stat-Signature: b69be7erke93px953ndd8o47s6ogra9q
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261021010051.1529261-1-joshua.hahnjy@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BB5A0100005
+X-Stat-Signature: 7p9zzkpfih76fihwmkiy9cwtygqgib7o
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792546328-235368
-X-HE-Meta: U2FsdGVkX194YOnQmW7B17LugA02RIomSLu/U1uIRAktyJPaCLzEXcB/Q3XBkIHgeo9PSH9svR0j3AeoeYi7htIlzLoSAO6LHJKuyhuYLdqOvXyGKOVzhL0X0cIaDjZ9R9ixayAsPHpp2bjZUgjquVd/DnPzTVDfkL4rTFSLdGT4pxGnUcVXkLLmdJcLc1PyLoerosh9rlQ3DwiR86qHnTdIhXjCN9KktM3kOaqOOB/WMLW4MV6PDGCNjkk8pYCqrwIyukOfqMiRC2Ixdn8OFjuyFJbHWulra8yK6B+rg3N51JVRicLk6K/5OIIheUYzP7gyiIXOpbYEt/f/xHQYMdlBfkCMG3dEobx2+IYzOtM3ZqmEJ06IxTxzYgwe98DErZvMZIaHUjhkhuZofwrNyfbtDswWLoFjiuHJQm11rZwmbw3XiMFZ51pvSqoLzpkLOEEgoGk/9QHPFUXrb4lexwB3bVxDBCLPG3ne1y0ZT61b5VBDwjYH+F4q8ajIwBAP+ZZE0DJjrH+kqarzmCnV2bD7NFJOXivW6dcGUGZmPoFzvNTbq5/+vYjNpbMWcPzCj1ys7wVeYO52gn/2aLP+T2HMyWsLvPR6Zj/adxDGRlIohFbmOovVkwwa5DBfvA6sDHAZT6jF5hS0iD1orkD0/myXoj9R7YQnAFcmHfY7htdG3aDJBKuy8+XDBsdIiPwcvYctKt0+GWnKR4cyeZHEzX5OOJxqBype8QNZGlZDxzQr6aP15WMKLyvJui2lHiGJD6S0w9TKDuoX6SygxCbMHv2nD/BmfYsWsJSQoUXvHcLopkwZ8zVDJuq4YxBmqhgt0hJNIs+8h4Rv1iFdRFvZpF1vMeryEG3FPjvz573t2/kFnDtxpSUFa2ws5OGHf1yvyccipA2tVekS/GQU3IVPt/QBRR3QyUBMGWXXflL73JpuZ56Ww5TdU/57hg9X6Ewi5doFfHXVqA2VpXqmIxl
- DcWrdEvX
- 62wxxdEoAcxRKiOsITl2SrpH2+COofm+VG/M2zvljo/hTQsVuXTGyvhAlNAZwXXZ07Vz9mONwJtJAKSKCABAAbUq3Y78JAcBuPYDujn+je4ea8mUkAz01o2GhUp1uhrXYPgH41rSMnciFn/9BwcvrviLQl6qF2Wbe9LomIYiVV4TPpb9hiqEwioHTdMYTGZPJ6GCiirIPeEIEmoMXly3ofoL9Rtn69O4BaKAJzWe5Y6TKmzrUVCufQdfj2Ici4ZBxEKEZVGwhj3TkCSaeTWGJ7YjeEtk8dJlDjSBYtevWCVIYPZirTiFFiU9loaHZEkC8mV50ensQfKw+5w5dIUahGkFeBZxxj7HOYHyl9j8IIKdFyQmzppJOQJleqJzJIAbXeLNzy8vQqKc0rMJoVWchKjIrlmKWMofm3Dzw7rH+GaZH51c40UF5HZT0TUdo7DyMgZEjeNJPALMGL/uy2e7AJLbz6R1HrrbHJvj89PW8xuXO2EnleCeXhVHhos5s6S89wXUG4Rg5nGgtKlW7jDwiW4nJl768ky89vYlk
+X-HE-Tag: 1792546534-641624
+X-HE-Meta: U2FsdGVkX1+QN96Z6PX8tlkjXmV0aGClgOxOJxQuYauGUqxsB2/c5rZl3P3ZSV36lRa4GosCHNd6fjXpjrWBLrpm64LD93trkAZITJ0CpnPXVJlM/tVQPblyKiKf1JhYEMYM3cHX628wNeRSpzANSZZWKAcmn51GrsTH78hFVPVd+4M25QZ7DdIQxMALOt2oQJwt2V5nhoVm+VU0XVr93Ve9tMJoP21b1m85zxaNEkLnvLazmwVLlGKi5Zh6rpPUh3fSy7Ac+eOTEXAvUs1NSEsTvg+RDwrXchpIrb8JTamG4Svf4x/HcUHYhzvhI/wg8s9DE29DYEQ6FaAk+801RI6jC5Hqbsw9wL9TlHdAtUBWB832m6JNIzOEEcgFClWdNy1C3nfllSUSWfuhLmzXDQYQnBiO7I5Ah5loYRNRZbJy018vKbaKWg1o49uzjy9xziMic4QIAz6JfE6sYCOR1kHPhQVO27etv1/s47lEVTzcNnaGFw7fdjp4pQZzKp770fsHotHeeMtUE9yDDNcy9jvNtXCm9/mOjoEY3Mfgm1JXRbmRUELR7HLMZiNDDRNIdTEJVAXL9q1vn0G1ODpUXiCgMB1r9wA/f2AwgKwz8w5s8cwaASqDT34qnXAnM2cMBFxVcTfYLA0zY3PDnLL44vR4jhZ3gsZlpqU0X4yf/jkMbT+vbr8K0OJjqTfTqax76GIeBCrtkanR5HsUn3TxxN38FPInoXjeCL1on5Hhp5sdrf8MFFfLrPzdCB+mSDe4E8Qjxe28ppegrYVoEeyrtEMNaQNcyQtCVSafa+shIEy/SLWfQQEmvzsi8ZLHaZrUOP+5iKiMWZbbShgo8AXYQvAwA+Jyq5cb2tK2scdhhkwmt/FCjvCTpLbwxoJq1XOQugbGI7AB+mUJc4wTxPNxUsdXRndnu0/DUYVaRLn7kCi1Pvx8T4heG06ywBu2Xg8IPb608JzBVKZOVV+bFns
+ MKTERyCn
+ ZRSLNw1JzIjpAcYoD3Vn83YDW+GyF3+JIXg3KCpUyVGFkXnpyRUV/G0MmXFanHlcW3AL9dizX9wpxs8fw8QeVmVbWrRctGYAKDxlNhvm4vwbPt6fXqNmqfJl5cD2wj+sZQvBq9iHDmiAienaPAez8Jge2mIhlXw12iF0+lE2553UX0rGN137WfjMcAA0IZ5DUUOGCvtPxJgNi18ky7mpqCWEnO8MqfEMa7aY2mt3rkNc8TcnZpRmPxPL7K2f8/thNmZxcItc+lqViKFu+mgcmynJHkeeBUXDt+iFL5vGq/gM8fC/1uGj6sHKeChk37ffyWAXJkY4YT21p3skUIrqN2qQt8k4RkdktdOnMzcrXemL37tumZGHt3Nl0iNi0SVkRmewmm6ulf3t9VSBR5NRIV1Dr7imdYljHQZ5fSXZQutfk87aqYrC3TeoYksaYAjcAOkXlJ9rc5QIR8e4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,44 +94,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 04:39:28PM -0700, Andrew Morton wrote:
-> On Wed, 21 Oct 2026 06:38:27 +0800 kernel test robot <lkp@intel.com> wrote:
+On Tue, Oct 20, 2026 at 06:00:50PM -0700, Joshua Hahn wrote:
+> struct memcg_stock_pcp hold references to cgroups that it tracks to make
+> sure that the memcg never gets freed with unaccounted charges still
+> living in the stock. When the cached stock goes to 0 for a memcg, its
+> reference is dropped and the cached memcg pointer is set to NULL.
 > 
-> > tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> > branch HEAD: 3d229ce89862b8e82d71a9e11d6f840ca272a6d6  Add linux-next specific files for 20261019
-> > 
-> > Error/Warning (recently discovered and may have been fixed):
-> > 
-> >     https://lore.kernel.org/oe-kbuild-all/202610210232.uzFGXnjw-lkp@intel.com
-> >     https://lore.kernel.org/oe-kbuild-all/202610210332.DDqYQv5K-lkp@intel.com
-> > 
-> >     arch/arm64/kvm/vgic/vgic-irs-v5.c:1016:15: warning: variable 'addr' set but not used [-Wunused-but-set-variable=]
-> >     kernel/sched/ext/ext.c:5178:17: error: implicit declaration of function 'scx_reenq_wait_dispatching'; did you mean 'scx_wait_dispatching'? [-Wimplicit-function-declaration]
+> If that was the last reference, the css_put would free the associated
+> cgroup before publishing the NULL pointer, which can be racy on 
+> PREEMPT_RT. To summarize Shakeel Butt's analysis in [2],
 > 
-> Thanks.
+> CPU 1					CPU 2
+> local_trylock() takes a per-CPU
+> spinlock, which is an rcu read
+> lock along with migrate_disable
 > 
-> cc sched peeps.
+> drain_stock
+> css_put drops the last reference
+> release work is queued
 > 
-> hp2:/usr/src/linux-next> git grep -r scx_reenq_wait_dispatching . 
-> kernel/sched/ext/ext.c:         scx_reenq_wait_dispatching(p);
-> hp2:/usr/src/linux-next> 
+> kworker runs css_release_work_fn()
+> call_rcu() starts grace period G
+> which waits for the refill task.
 > 
-> yeah, that'll do it.  Probably already fixed.
+> <preempt>
+> 					drain_all_stock
+> 					is_memcg_drain_needed()
+> 					enters rcu_read_lock(), but
+> 					 grace period G does not wait
+> 					since it started after G did
 > 
-> > Unverified Error/Warning (likely false positive, kindly check if interested):
-> > 
-> >     fs/ext2/super.c:1040:7: warning: writing variable 's_mount_state' requires holding spinlock '_res->s_lock' exclusively [-Wthread-safety-precise]
-> >     fs/ext2/super.c:1138:8: warning: writing variable 's_rsv_window_root' requires holding spinlock '_res->s_rsv_window_lock' exclusively [-Wthread-safety-precise]
+> 					<prempt>
 > 
-> I doubt if anything else can see these things within ->fill_super(). 
-> What tool generated these warnings?
+> stock->cached[i] is cleared and
+> unlocks. Grace period G ends,
+> old is freed
+> 
+> 					mem_cgroup_is_descendant() reads
+> 					old->css.cgroup which has just
+> 					been freed.
+> 
+> To close this gap on PREEMPT_RT, switch the order of the referene drop
+> and the publishing so that we publish the NULL pointer before dropping
+> the reference. Note that this can only happen from drain_stock who can
+> hold the last reference, but not on consume_stock since another
+> reference will always be held. But fix this in both sites to maintain
+> consistency. 
+> 
+> This is based on a report from Sashiko, who found this pre-existing
+> issue in my page_counter_stock series [1].
+> 
+> [1] https://sashiko.dev/#/patchset/20260928192349.3432886-1-joshua.hahnjy%40gmail.com
+> [2] https://lore.kernel.org/all/atfMngq7nyZpt4u-@linux.dev/
+> 
+> Fixes: e1a366be5cb4 ("mm: memcontrol: switch to rcu protection in drain_all_stock()")
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-Sorry, this is a false positive that there's reply from Marco Elver at [1] to
-metion this is an unstable Clang issue.
-
-I will update bot to filter this issue to avoid showing it in the report.
-
-[1] https://lore.kernel.org/all/ataR1cznaBt-6ge2@elver.google.com/
-
-> 
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
