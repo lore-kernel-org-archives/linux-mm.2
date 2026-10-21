@@ -1,156 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3396606A31B
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA82606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=FBC8OEah
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=FJVj8kti
 Received: by kanga.kvack.org (Postfix)
-	id C90686B07EA; Wed, 21 Oct 2026 19:46:52 -0400 (EDT)
+	id 8F84E6B0278; Wed, 21 Oct 2026 19:55:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C42296B07F4; Wed, 21 Oct 2026 19:46:52 -0400 (EDT)
+	id 8D01F6B027B; Wed, 21 Oct 2026 19:55:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2FFB6B07F6; Wed, 21 Oct 2026 19:46:52 -0400 (EDT)
+	id 7E6246B027C; Wed, 21 Oct 2026 19:55:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FC126B07EA
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:46:52 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1EF66A7C53
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:46:52 +0000 (UTC)
-X-FDA: 85348271064.15.B5F5543
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 331A680006
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:46:50 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 55EC96B0278
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:55:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 35FD4805F4
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:55:50 +0000 (UTC)
+X-FDA: 85348293660.20.65AD4DD
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6848580004
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:55:48 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=FBC8OEah;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	dkim=pass header.d=google.com header.s=20251104 header.b=FJVj8kti;
+	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792626948;
+	b=oMzja2j+Pezt1nzdfdm7dn2tk3BCLE2qo39qo82VDSW6Tk2rrMoxnU5rodrzzC17xLGqqW
+	Eo1jzvUDt1VFqn9C3gPJTgl5U0wgnMPoMmmAL/7zQqIU3KF04Z/FL9Si7mHxQNKnvwd3xT
+	v8zJU9nPxOe8TZ/QZLBPyumj8+P+j0Y=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FJVj8kti;
+	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792626410;
+	s=arc-20220608; t=1792626948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n5hOymfjgaz7xpjT1ssIdHSQ+wD4cuNPKUAfRnejzdg=;
-	b=s/C0HAK7lU7WZD7OWuqMH16CrB5VDVKRDeS5NGZT3yZI/TZsY03rs4WFGI5LQirZLfZVGF
-	+2wQemjziK+97yD6+K2vs7BwneRpLzZOn9fbpwJw736mF2lE3cfEjuQxN+Geov2pgdH0TF
-	1uo+vuiGbmPqBxKia9LZSor1clo6CV0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=FBC8OEah;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792626410;
-	b=N0Z8zwtuEg91X6InoQYPlU29zMPlkkfn/4QZvJK7zY0/OmLvroW93QUGfFgvfIsFkKvg+l
-	b2hcGzYbJQ32Eihc5+FIksKhozHhJJUpgSZLtwTYimb6QPfafdB4xA7VOSk2NtxLY8RqY4
-	Eshw1Aa6uM/X6vZDQwYqRPpIx/nOIe8=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f1cf92c9eso127759685a.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:46:49 -0700 (PDT)
+	bh=1fqUHRqztpFhXjrNb+RX+YalUvUHW60343cq6Q4Whxw=;
+	b=KMANCEKf1Fr9B+2/q9nmJ+7bHRskOINRaPg8wrCpHMVu38KOg5uxMYTo5FX/+eFZabBCtj
+	ZrOI1VKHK/adtHaOlyktlo5kuMe+2295Mo3So/0xeqpEk/U6dUyLvjJNZPHaf6bTqXBVW3
+	TNYQaxUUevEhG0O187t3Eevaw3MMghM=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2dd76b1361dso8788015ad.1
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:55:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792626409; x=1793231209; darn=kvack.org;
+        d=google.com; s=20251104; t=1792626947; x=1793231747; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=n5hOymfjgaz7xpjT1ssIdHSQ+wD4cuNPKUAfRnejzdg=;
-        b=FBC8OEah+MVn+W58llvkn4TOv17IEck4g7hz8zeQMKTR5s3OCDTQa/YzIooRKkZoyF
-         j2bfvNLxsRDhzmZR8ql5nvuzR0XZkqyyr1BSKJFQJVSAzed8T+5FX4utcVJITtxuzPkL
-         NvVuJxT7FF7YIfoKBe30XPrnZqieuz+kkilkFJwxs5+rYaj6Mp+A7hKZuhA/2INrdemD
-         aOy8l7pxY8ZqgVqeWWuU4vKVRFlHhC9mVWf7R82XWeLj8IO8sjKHfMWdGZ62UQUMRK+2
-         JFs+apxTxMDLxmC/hHeVDtzvt5mt1wU3HwL6hMoU20Zt4j1VcufYk/NA+ggql1UEPfq8
-         S1Rw==
+        bh=1fqUHRqztpFhXjrNb+RX+YalUvUHW60343cq6Q4Whxw=;
+        b=FJVj8kti9+MgE1lHLKKIuxnowUFA5Z+l6iS8ra1HuU7x9LA1mRyD7wIuNuzlTIlfbQ
+         mN8rWUGLhDiTGF8Qz9LU02cHlhKLdDT1o0y/1oQiaTWRsbp7fB89VIPHCz0GOhKTjkv5
+         6GIj8nPm1wGi6c25i5LJODyBeZ4LvYo+FFvhg2vZD9ImKMYbpeAOcTuONnXamsSs/iW7
+         q3Ghinm5+s/QSPZijSmyfp9WjMuL+wnJnisNOwUn+MlHnxutAbLDsCrhv2IeUdWu6Y3Z
+         AKppGOpQEa+Iay9dPRY4ghvZvZBxiFIi/n9swezVAV0d4RmchkQSGAOAlzaUK4I/vGRq
+         FVyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792626409; x=1793231209;
+        d=1e100.net; s=20260707; t=1792626947; x=1793231747;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=n5hOymfjgaz7xpjT1ssIdHSQ+wD4cuNPKUAfRnejzdg=;
-        b=po4mJ1/ND2CQzw6z7UyKju4wEwdYcpWIqyZpD25JvJg0rpchELcCxR18cPJrmaA2vm
-         ++tufXoe3M7n7g9P2VQmS1uz3R+3q0q47MAzJlSysUcRnpFTpVBPudHWOu4LmEqtRQvD
-         sc23F8dip7QTGgnbkayOE0C8UNP3iq9RCi1ms9HJnZxjL0tctOT1M826ZsqXOipj8y+b
-         rOLj7htf6lXv1idUmF2DePasOPJ+YdtLdliugq+M0shxNx5y3e8iSYXKfYrLthWpgXjg
-         mgoXShkmn+vDwkfY6EJ4omsEwMQsAqLalk6m1cRZ8PbYASnQXx8nMEJ04kl2B0n91W0Y
-         WoBA==
-X-Forwarded-Encrypted: i=1; AKwUvBwfru5qcDIoZ4ZBGmmVBZCX4EvCTK6JNMFjpAs3sGJw/BUZ9qwW96Gjhd24ZIWyyM1E9Y0zaIHQzw==@kvack.org
-X-Gm-Message-State: AFq9FYIz4KD22Ask5XuyBMn/3lrmu1vD2nwOf0wx1XxUPNfBL9zS1yZp
-	Q3gKawEfTOnj3L2dJobpOvkHS9w9YxMJDtCZ/xUe4suAt5JSP5J6nTy5SnFOaf7jHr8=
-X-Gm-Gg: AYBFou3/5OLD41FSQFBne6/3AGCzuRKOS88jmIgIOqpQ81D8n7F8Wc4MtK2YDvfRqN1
-	kJI/LYj2JbdnVtDjAB3gsPv6A7496WS0r7ONORmOTlA//hoPCVYhxhmGSpLTpt72sYZ7MSg4kwP
-	d5dXSXEFjJHWcmNwX45pFeXXPYqodiEEpxL8WhVrKGRgJnA95cgfZyGR2BuNb/bRzES86fyhAgZ
-	/n//rIPJxyUcwb9d5BEzXhunKhdOz6uaK9X7QuGcb8CyT+IjbvhRJI2Kgwm1IcKqAy0E6FyE/gb
-	zVtpkxljWyzPqw67AyCalvtTHKe9NwXRpTNUgPr12MA0itITn0TmrPZcBdH0FJ57ItqwunPm32s
-	NIRFQLmIVHDADTvivpSfLQllJ2xdG0Y5d9sXeQBS1mZx5U1FapGWA8TBzYvxW0xub6tZbcr6sBk
-	DyI0dj1NoED1FEC2VcU84N/Xl3cgRlqIGEX3Mc0tXCNIc6ajpAwf5yOAtCYNhZVMRR7VZzsFw5r
-	OSBZibwn4mAFhZ1kpvzCNm4JYKdyDBSrX3wg/yOtKLzCY+OAgw7fEPJsTyunvucAZYPqkcg7BoN
-	yQdbOCJjT5OJGqTqM+odWM+SbUFci1sr4F8OYBX4uiswdF3D40TY2i+g6ME=
-X-Received: by 2002:a05:620a:17a1:b0:93f:22f1:97be with SMTP id af79cd13be357-93f5800e406mr694136885a.72.1792626409239;
-        Wed, 21 Oct 2026 16:46:49 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56e2bee2sm373858385a.42.2026.10.21.16.46.48
+        bh=1fqUHRqztpFhXjrNb+RX+YalUvUHW60343cq6Q4Whxw=;
+        b=oKYTi0h35n0thYKOIRxhNgBg3OqyBaqjpy+bbzKWWc6fULiQWpc3O+Hmdh/h2H7r0S
+         Jl2uMFFDDSxEjiqHd5dIkuro/ZJCAuv53hhQ9enZBW4Lwf32zpCO1mDT561d5aUwHCdM
+         lSFWUsnsmJg2hWdrFHSUZles9wj7Ve8f3ER2beXiVv2najJQCMMPxh3VIBEoCeq+Qn18
+         qIGf2McuQLsycl4A2d8GA03dKEnXgXzAZM1b65dGUTOD8NeKxwHeQEqVG4ztfoVjotdl
+         9pkNA2GULAQfc9hA4l3RIJZW2X99spS2MjdeU4SL7y4/azEPkuLtvMJLcLp8yyG1ibLw
+         COxg==
+X-Forwarded-Encrypted: i=1; AKwUvByQBa9Oyn1jYQ4FVX2vRboiK1H4x+Y+EWT3eJIaos/oYYL7myD/xrR2dt/ElPMX7V76ZKeOAW01Xg==@kvack.org
+X-Gm-Message-State: AFq9FYKoVY6GJR5touvL7KuS89xaBvh9+6NI3JEn4Oo2Rqwp68+Y692n
+	il+I+EZEekyBH0YExLonmWCJY6wgKUpHtUDr5rYEMlmmuNnvEaSQ+73BqgLcN3PJDw==
+X-Gm-Gg: AYBFou2z3LErLgKCkCPmSOCrcyXQJGk2OmaWfSUotdT6Ux7Zu/iKF2rkln0D4EOvZOb
+	L7A0YH0UN4DBpDXazYP66M8h+HU0yUiSUmTCiXiG59Fc0v8KhZOCJcmzJuuBuvbxzHno0R90OwN
+	lxJY6RETKG79SF6yxc/2iAJOtjSDlnjqmgDLDFb1HsqHemLtO7DGUkkTeteMTzAR6E2rslG1OI2
+	shCo8kRGH871EEuqkvEIstVyGEFGUBCeqdf1igQmDuavJ20DjXuTzwvtbcsDOBZ1sJ1+Y2oyPA1
+	K0d6c/+u9HYmtsZW3dtJ3CUgHIu7p/p+82SLEoDzm4YEPTJdDU+DjUU+LqEjOIOcvT9nvGCJMmU
+	aIvJoiOEb30FpJogqmwIhQO2jyJBL3f8z3ZqEeLMi2tTsj04uJXJWYTHsn43HjStMpgdXSbsOl4
+	L7butAki6pjJDt09gb03OgUSRLU0MzSzhlqmMGQd2BIOdTNJfm6Mkaw+9HSWdEOY0kV5BosralK
+	wY6L5pSm6Ehl+JLQlt2KmC5ZYydnIwinq1R2aCdVp4XtxfYR9GEKoOeTwMLpEgyR0tBDB31J3oF
+	lGOwpAVv2J4kqNlh
+X-Received: by 2002:a17:902:f70d:b0:2e8:3190:73a with SMTP id d9443c01a7336-2ea44075412mr31011645ad.58.1792626946744;
+        Wed, 21 Oct 2026 16:55:46 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b30829csm16784705ad.11.2026.10.21.16.55.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 16:46:48 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xJg19-0000000EWG8-3cjA;
-	Wed, 21 Oct 2026 20:46:47 -0300
-Date: Wed, 21 Oct 2026 20:46:47 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Fred Griffoul <griffoul@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
+        Wed, 21 Oct 2026 16:55:44 -0700 (PDT)
+Date: Wed, 21 Oct 2026 23:55:40 +0000
+From: David Matlack <dmatlack@google.com>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
 	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH v2 06/11] iommufd: Map memory provider files
-Message-ID: <20261021234647.GA3381610@ziepe.ca>
-References: <20261014093733.90312-1-griffoul@gmail.com>
- <20261014093733.90312-7-griffoul@gmail.com>
- <atkO08eCJzLX6R58@google.com>
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <atlQ_Er0Ig7CCSxv@google.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-4-tarunsahu@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <atkO08eCJzLX6R58@google.com>
-X-Rspamd-Queue-Id: 331A680006
+In-Reply-To: <20261021152527.375070-4-tarunsahu@google.com>
 X-Rspam-User: 
-X-Stat-Signature: cmd9h35mzw95is8yrnt33fnccyj8pa4f
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792626410-957742
-X-HE-Meta: U2FsdGVkX19SHBeMY7ZAa47EUT1f16SWSohS1y1jslsGKqPpewym+NhxHZrvox9BCnVtQdkHte8i5YyQ0mJmx/yTlG9KWYWiA7SkiSf0tTMqZppwFPrtbW/l/TKNM5E5efBGWc22cKNakwMDuqvbQCqwUNbAA9iwWNUj2qQPk+jiYpkNBRkpqqt02NiHASoNrOeuWnsU8/9TfxcZ1dRHLL96nWqxrjQYyma2rfkFdY7Vg1/GwMG0vO8CPf3X3WJq1hFVwD/IDUAnSsXxC/69B89uE4D1Qc3jRC9aSLokeki9jzYFaiAhx0OOFAYacAy30dnfx3HoV8CpWfI5gzRLadSHf3NT4NdZ9KfCEXNhRWum6YvMV/Kl3H/b+NbYxgMKEQncqUS/G8aX4wRANwywfFwSWkqh7Ql17GkzyhT/EsW0NQ5mCX5WBlYJG4FAv3kAPXjfjSYYZoIfMonyLrg18fw5OPZCN7RL8wdGhIjbfhQzHdTqMDNvhU4XPym7U+FZGbcWsnwdvOvp4AxQQBJoW3X/R1JcRKRZS6aL8s2s7fechWIEIPExF0tTpdhKT9l2xhjMVP+AMEidBwE7IDlivG3neJ51M+IqmRWCdkcyd+qWW3gJrijYYDwzTZ/lepkK78UKLDfmWqIFCzyTPHlsCqw2YqxCM9AlXw7dXJ8lZ03nV4mfvvL/lVVrdKd85V3tbPKo3abciQOBCoIojFCpt118fEjjZPF920DcIqbgwasnmrVSKdByksFCzkji11FrX8huu3UugJ/fZN2Uq3b5NPOkJMMI4BXz9sqMEHethQxZ3T1L3oyTIaQmDUqUMCCLmO3RDP3awIydCItMZ8jZA90GFVCIISgsCxzVoxdb1WXumSL7ilqZQ/ySXLllsQlqHhX3e4BRAI74KKsYYL/uvEM7JVXaJFQbwfy1S6PqJAQB2Om0aJhwzPS8J2M3mbBUNRXhQbIEg3bugcqIw7r
- 0pTlAoW8
- 1dtTkKeSiEx7G2jIJdGTWqx+9+4D5TXDrraIGyMiawOFg7n8PT29fxXsweJNbLoeOd6DNNefih106Xjxh/LHqEdL5SqscxMTnzwkf9ibHUARg+1rTVvVQYRbYm4SX1YzD2l3VKusPrGYvicUH4f3S4rol4Sniv/hNgGC2tK8aeKzChW29SHYoCyKuKtzFuizrlxSwno8zh3jWKPzcLhMDqUH05yph7IoyGGhMbUC3UJ+1TcSd28o4cjocT9yZTyDgEAGEjvzUqur5EG++mfuZnOSBCBhd419gZnHlAPXS0dn90OHONqyNZNJp2A==
+X-Rspamd-Queue-Id: 6848580004
+X-Stat-Signature: zzo1ee7juzz73kuey9sy64rrnsxmd5dj
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792626948-396225
+X-HE-Meta: U2FsdGVkX1+Pciwjq/fRwh24WFus+Z9/tH1V/Bp1ZEOLWzlq6fK/lKziKqXrNWMHgSsFYyTlX7LttG6D0v834Bmy0BenLOTkXnGZnjvgpuao915ZuNeIVCDODqaLD589EPo2r4NfHahTNNywvh3voQfqn3ZPHKL280hcitfunhY/z5+I2xNF0Xzq8kCaCby8Ump6gaItGXBViDpkFzAAveaDoD75zpbMBPqBYsGchEyTGaVA5cjYSZqdjxWyhQr9Tm6B9uBrk/KzWOrBBymyQ0XGP0HPhi7bLH5I8BYOoFiS//+vv7r4GaYgB5cDTznaMv8h8pjx6D627UNqJ6AVjE67Qbsf427X+uLuAJaZrnk5K418rrCqtFVcS09XoFDiPoYNI7iNy/hMdRwb81RQrqhftAF1Zy+V28c9DnT98/6+JI4IeXKJqLaqmI0LqgEqKxKR0Lg24KedlTZk2Y95bLHf/wF/rmEI+sDqYZiaw6zVL6zY7/94fmY+F4N6QZ/VZsqx/pqcdc6obUyx7XgayaaLrXbw9pR7AZylRFzTx48FUkuGyU3FtzIuKMoMHGeb+T/6eJiS/r4Tao2QN8UA49GDargU8GBVROOtNsDGgE8P13TY76OSshjNVerRH3IJcHGlxhBR5arzVugGmGBL3zbnxS+vabyea264a08t07jzZN/eaZErRRwy3CxicUAj9Ln7msS2D7M2WxetBOlhUVifa8jo3y1w6qJQ1TNIKj76gpnU2enHejIS4wyaDovGQKeTkPOSS5y+ZU1Xwa2v6NYXxlELaOcI31Y8F7C3JpU3mdAlBFQu58pR+ydyKk4ObHd/I8Vdc6BHpSgS/xWkcYwpfNkzHCDKrMzyDKlUSla5TAepYXCa646zRzbM5iYWXBOl4QNlcL5P053Gdcd1vf51agAqeFp6kY2mKvz9sm7k0wz0phrRpEZI1qSfRW/eaJvqkndCYJxGTjMW9n5
+ wuqJVJt+
+ Xm0dY/29P7MPv4gFLBYBhwtcoV99bpxrIRp7pV3EDnk4U7nVh9ODK9kV/5/oaSidHcQmKBCIjEXemJZ1ZFPPDk+dnZ7kD3+Qn9yDWKwzhiKIymj52XLgS6XzL4BrFyVx80Ny0idzM+y9j8Aj6M2fGEUbwFVfOyNCNSYhpmyG1ODjFzWVH7OG0IEi7n7lgKMUCgcBHD65/fHvsGJN4b1dIMvAdnqhfDVLu50elNQP+uzfrIMqkoI1Qq8NxkJlo2obXgktiNrWgFbNP2Urjq6EwEa4iFEXtrnTH6rguJwAGey1UGf0M35Y+9cxHPaQ5Zkaz9Qa3JVF3S8WL1q4dJqDZNPt0TW595RL7COOJwBsgsy5WFDhctkOpph83Sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,20 +137,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 08:17:05PM +0000, Samiullah Khawaja wrote:
+On 2026-10-21 03:25 PM, Tarun Sahu wrote:
+> LUO and its file handlers validate handed-over state with monolithic
+> compatibility strings ("luo-v5", "memfd-v2"). Any change to a serialized
+> structure, even an optional additive one, must bump the string, which
+> breaks live update between adjacent kernels. Replace the string in
+> struct luo_ser with a feature header, so that the target kernel can
+> accept or reject the source kernel state per feature.
+> 
+> struct luo_feature_hdr is a fixed 128-byte header: the serialized
+> structure size from the source kernel followed by 15 chained u64 feature
+> flags entries. The fixed size keeps payload field offsets identical in
+> every kernel, regardless of how many flags entries a source kernel uses.
+> 
+> Each feature has a 2-bit pair (req, active) state (enum luo_feat_state:
+> LUO_FEAT_DISABLED, LUO_FEAT_OPTIONAL, LUO_FEAT_REQUIRED). A flags entry
+> holds 31 features, and bits [63:62] = 0b11 chain to the next entry (465
+> features in total). Each subsystem defines its feature states as a
+> static const u8 array indexed by its feature enum, which
+> luo_feature_hdr_init() packs into 64-bit flags entries with
+> LUO_FEAT_EXT_MASK chain bits. The target kernel validates the header from
+> the source kernel against its own feature array via
+> luo_feature_hdr_validate() according to the per-feature (req, active)
+> truth table:
+> 
+>   Source Target Action
+>   (1,0)  (x,x)  Reject -EINVAL: invalid source kernel (req without active)
+>   (x,x)  (1,0)  Reject -EINVAL + WARN_ON_ONCE: invalid target kernel
+>   (0,0)  (0,0)  Accept: feature absent
+>   (0,0)  (0,1)  Accept: feature absent
+>   (0,0)  (1,1)  Reject -EOPNOTSUPP: target kernel requires the feature
+>   (0,1)  (0,0)  Accept: ignore payload data
+>   (1,1)  (0,0)  Reject -EOPNOTSUPP: source kernel requires the feature
+>   (x,1)  (x,1)  Accept: use payload data
 
-> With this approach, silently skipping holes during IOAS_MAP_FILE means
-> iommufd has no tracking of which IOVA ranges in the area are actually
-> mapped, which complicates unmap and could also hide a bug if a hole in
-> the range was not expected?
+I think we have different definitions of "required".
 
-I think if we are going to do this it should only work with iommupt
-and iommupt should provide an unmap that is compatible with the holes.
+In the PCI series [1], required and optional flags describe the _data_
+the previous kernel handed over, not the kernel itself. A required bit
+means "this preserved state depends on feature X; a kernel that does
+not understand X must not take it over". An optional bit means "the
+data for X is here, but you can safely ignore it". The source kernel
+only sets a bit when the preserved state actually uses the feature.
 
-There are other places that would like such an operation, IIRC.
+It's up to the FLB/FH retrieve how to handle the scenario where a
+required bit is set that the target kernel does not understand. For the
+PCI FLB we panic since failing to adopt the PCI state could lead to
+memory corruption as preserved devices can be doing DMA.
 
-This will have to block an access reaching into a guest memfd mapping
-as well, so that should be OK.
+The target kernel never requires anything from the source. If a
+feature is absent, the target kernel must handle that, e.g. by
+falling back to default behavior. If it can't, that is a compatibility
+break and should be handled by the compatible string.
 
-Jason
+In this patch each kernel has a single static feature array that is used
+both to generate the header and to validate the incoming header.  So if
+kernel N marks a new feature X as required (so that older kernels reject
+data they cannot understand), then kernel N will also reject every
+kernel that does not have X, because of the (0,0) -> (1,1) row in the
+truth table. That breaks forward updates from N-1 to N, and rollbacks
+from N to N-1 even when **nothing being preserved uses X**. Therefore,
+every new required feature becomes a compatible string bump.
+
+I would drop the target-side required state entirely and let the source
+kernel decide which flags to set for each Live Update based on what is
+_actually_ preserved. Accessing a field added after the original struct
+then always requires checking its flag.
+
+At the end of the day it is up to userspace to never start using a
+required feature while they can still rollback to a kernel that does not
+support it. Cloud Providers know how to do this since Live Migration has
+the same problem. This also means we must be very careful when adding
+new required features, as they need some way for userspace to explicitly
+opt-into them. I do _not_ think we should try to have some generic LUO
+opt-in for required features. That is up to the File Handlers and FLBs,
+as they have their own uAPI.
+
+[1] https://lore.kernel.org/linux-pci/20261013162529.1928093-1-dmatlack@google.com/
 
