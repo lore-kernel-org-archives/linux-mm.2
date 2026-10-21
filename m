@@ -1,51 +1,51 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A156160A3808
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A795560A261D
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:25:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 506C36B06C4; Wed, 21 Oct 2026 07:25:02 -0400 (EDT)
+	id 71BF06B06C6; Wed, 21 Oct 2026 07:25:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 483096B06C7; Wed, 21 Oct 2026 07:25:02 -0400 (EDT)
+	id 6F31F6B06C7; Wed, 21 Oct 2026 07:25:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 286766B06C5; Wed, 21 Oct 2026 07:25:02 -0400 (EDT)
+	id 5BC906B06C9; Wed, 21 Oct 2026 07:25:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E9F676B06C4
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:25:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9639E1C3C1B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:25:00 +0000 (UTC)
-X-FDA: 85346401560.21.CA6028B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 25DFC6B06C6
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:25:03 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1813740397
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:25:02 +0000 (UTC)
+X-FDA: 85346401644.04.491F7D4
 Received: from mail-m607.netease.com (mail-m607.netease.com [210.79.60.7])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 24B7140008
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:24:57 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id D8F44C0007
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:24:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of zhen.ni@easystack.cn designates 210.79.60.7 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	spf=pass (imf22.hostedemail.com: domain of zhen.ni@easystack.cn designates 210.79.60.7 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
 	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792581898;
+	s=arc-20220608; t=1792581900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EPDlZMTSTVQ5eCE68sbvYSTGTpxshvufAloZkiCKtC0=;
-	b=bUU1RkN0uKXb/DN2ANYXoEGlT64SxAyyl5NPlt+BwphBvYVcLbv/la0uvMdQVO5/RnX16M
-	f4YRApQEk2oYZlqUsuQP4Ekv8uD5TpQkhgT5p8ceAf3HAC/HEuQRKzjvpQKgLOOFkCMUI4
-	jVd50fyzh4rY9OH+gKXIkDjB3RM0Dno=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of zhen.ni@easystack.cn designates 210.79.60.7 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+	bh=mBXfKVl4/Kl4meR18VHWKqXqUs3LmwtSo20MC6ZTq7c=;
+	b=VBQR2vjFtDOInQOsurIcsdG0erY1O5eKtfDGhK7eHkEANjfsFLxN6QTV2JD07tfi39zC7F
+	2ibNyNOUhqL6CrhxB3Y1fVm7IQ8RkgvbogjwJBfPuMDAgN29c1wjHtZ48ZSc5M+/VtxgKa
+	ugikwPj1NOcC3fARpgTxu+JNm2ybtUE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792581898;
-	b=FdXuAm4qbhTQGXknI19FGfEHQNdHrQkGrSc0s+12QqSTgRJJs51GK1bQHRKyWd6dvbTHPm
-	jpPXtR8dGWzePZDSPdCBEvtkTfWoULBhqdWnhr2fG+eEodh3G5wOysjgdUBsO4Yqp9OZun
-	5oNqVP1uPuJfEgn4/GV8H2vPFGTqgU4=
+	t=1792581900;
+	b=ers+UQb5e7DBpSl5P2SbGqsy9jAANrsG4aWy6GoamWfgqu9bbX11rJiVz7M1xm2U6nJbHP
+	gzYgF+qzAIjQZP+5Hu5SKdm3IuvgQc4d/8vfj2V+3f2miaqiJBC0MZnc7zIuLqWN5ChzMq
+	YguS5BeNj5PSeRqCKLUmSPdwoIff4O8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of zhen.ni@easystack.cn designates 210.79.60.7 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 204f151ab;
-	Wed, 21 Oct 2026 19:24:53 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 204f151ad;
+	Wed, 21 Oct 2026 19:24:55 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: ast@kernel.org,
 	daniel@iogearbox.net,
@@ -71,33 +71,33 @@ Cc: bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v3 4/7] mm/page_owner: add open-coded page_owner iterator
-Date: Wed, 21 Oct 2026 19:24:34 +0800
-Message-Id: <20261021112437.1799213-5-zhen.ni@easystack.cn>
+Subject: [PATCH v3 5/7] mm/page_owner: record the NUMA node in the scan cursor
+Date: Wed, 21 Oct 2026 19:24:35 +0800
+Message-Id: <20261021112437.1799213-6-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20261021112437.1799213-1-zhen.ni@easystack.cn>
 References: <20261021112437.1799213-1-zhen.ni@easystack.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa15e34fe6f0229kunme08c1fd526ace2
+X-HM-Tid: 0aa15e35045c0229kunme08c1fd526ace7
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSkNMVk9KT0JPSk5NGB5CT1YVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGkkdVk4fTklKTR5KHUlOHlYVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 24B7140008
-X-Stat-Signature: mwgou7byrjuuwnfsj8ihq7u1ipimnfop
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D8F44C0007
+X-Stat-Signature: cx3dfn8guffyjaec4zw7qwfrun3xy9nu
 X-Rspam-User: 
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792581897-809461
-X-HE-Meta: U2FsdGVkX18jt11zdEwVyPd01uabyhwpeDIYKAP7gs5naoxbXX96SzxUbZZOGKMMz6aOAjY1T7jabkd5y+EiexCnOxW9qzZXY6GRjo/JhhMBR6CmMYCl9mryr8aMZOlrzkpAwzmZvK+ewI2yYXjg7O/Qy1CZTHQS5DGYfghSoWyzihv5NLRcmD+E5A4zeo4uIH6fjBhCOL5MHqdkDbj/99enah/JEnFBNxAAc+t5ObmqtgwOi6+lJeBShy3oOAQtkMjRrCA65fnG+z1Ciqd0hqfcFVUu3965KxaeZBexwIU+0uO+PyJCAkpHc304iG9Y/2MW6UqbGnRYzBrcqvhHAMSBLVSeIO+/nsTtE0u0HiDXpZfG1pThzWJRQC73E2SugAF0GV/4oXbpT4aafv8+zcQVkj/JlJgvXU6lu7DMT3Z5NxYqgCCUVl3LwhWu+ZKCB1bxWfjtX9BHFU+jPmgRx7r80zw8Bzq5PgVcYIw/ZTvP3BODg9j/zMiJPCZ5z+3TA0hVGYzqH9CrBWhzpji/ZEPTgKxdK5RQ2gV+UxHa+n93PuXI9Zja0g+TEwsryiZClSsDNfjxO3L8yl3oyhW+xVKhekjm4V/oBprJYfswNG2lznefrIYoWf0xwnLFD8omXVmskEItmn0XuUeaZB0TWDC1Gfwh+99K9PI+zIf2OmGXVBPSiXeCLHVnWY0KJRiWbVpocbjV7SfNU7j23YLSSK/lpQAlF6yO54dXqy/PvsGXfYJa5inLiih+WZb5GwfAfSe2RJofJgDkzgFaUjUq4EFoJ5sBYAgcZIIMVOZd2ZPml6RuctsfjAbqGWoThE/5QWDsSUxphgvJ/sfGkp3BwpUup79uBCiSs/2Nmc0MI1GUsUqPceyKSUgbwWEDxPED7fuZSfBMwYIiYxV9PGE2KTVaksW5Q0TBW2XWP1esBTGnAUYgryAiKUFgst1QwGDhSMQxZgbTmjjWbJp3ryQ
- mfXtl4uz
- ik3l7wutXodhpuUyi5AHZVx3bAdK08atcvNZVMjYkPoDq0rayj02z1E6lH0rfzc8pMk2AmPviWrMQNRhUruHO8f0d+/Um26hgJQuc5r+Cqq2vnind9rXvhLaXN4+sH/S1VVPDmaoiKrs9upnesXbseFMBhr/agNg3DNyVqfXvp2f97XXjW9QkfS/q9+0uIqOl8eiLrmzNeryNy3E3PLyawRpNL0+TJfMc4STjmFTFYSBaqjPPQbYrXkxhlU4nCzHO8owxisBQS53H4x90xTnSOy/tWSq5Kbq4O4v0
+X-HE-Tag: 1792581899-790423
+X-HE-Meta: U2FsdGVkX19Z43rgUFtRhTkbM3zmoWpx0WxWlekdVL5lt7BZlu3MYeIoXNFUKZ46BOADOMc/6SrL+QKdTuzqh87EZvF6kjw9adjCOGGAt9SCAeEzluS+Jx8CG6MmsZuNY4C7aTI0MuYXGk3+62/0xAlS7up9FvrRaj2oE3OeUUl8vzgvqt1XXdXBw7sZCldSqdFPWVYPvo8OXpVcr4DMowVdOuMQ1yCYh7nT9U8hDJ1l/u/miJdzLP3WP4RPG1adxhXFzqDc5Rvs8s6EDeTJbrpvtgoZZc5mWGQCFL7R7JDbfIx8XMIj11Qu6lUXKP9xed3arEqxmDqtNVT63Kk6A6yZ86wdy5Cg3oMFPf4nUcal3fBRYzLrfd7mADGUhaMcv7uzYu1cOa7qrhM6fRLhafuqMmIeR8oaOljKrWJO12RZfKtfPpwp0G/QdYM07POxCU/I9JT0aqwB2vaw4j3hBi50cuC/QaTKnCQJB8grxQA3CdBzhI+I81Lv9+WQ498acAMSmaaVTDPJKejMZqmJbEVGQyuS1Iyl6imEuDG4+oCiRtmCCPpFTaXGiL0cMFQf4ffcGXs4XXQW9VHM+Xa8DlRiQzX33e+27db7wxUfTEc+Kk4DX+fMG7mElTsJFC9qkdPVJxkV/NlCLQjSVZb8lSMTiz5svwEeGqVcI+cJ62v0FE3GW1qgqmw2vzrhYi/8oGoRXLO2AhqBGudQRfKXdTYmSPqFsVgaOjZUdzb6tYUjpYEwx5bBrQcdvzTo5QcvwrqOckrMFQAwZtDr8CaxW/6wC+NM9fNxNcI4dI1JitTFWRSr2B6riPjw+nLw8lSYhQmbpY1yh55fR6uSpHJgimSQibHC56bWfYejiT5ORV0iG0q3BgavHfXgPJBUfZAeib6YYFaw6fFabYDHkmbED5/buM30lnlx6zvpSVw5sLspe/WvJvVGvdBPElf9mIlMlgELb3wyzpGJYELB0I5
+ zLYMNBwa
+ h8RCXl4sBERT02T5qhLaoXjdzvGn23IGjl8LU1BC0bZS29pwXjMA7PDloewbQtRcYTJOmtVBbnec8IpM4BroBM5SBr1Uc4xFZoyOB5RdaO1zqVp/FnVpZrVwfyhQMfaSkRLJSqCSYYc7Hvt1rqf1v2fa6xosRIG9xu0CkSQqyiDkLXibbp9k30fWeL6TRrt6t6Pl/TSqpGTiYkUraErxRte2wcaUQgahUJI8No1ywE1QXuGDxj/pDMx3NbTg6w2ThyPRV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,157 +106,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add an open-coded bpf_iter over the pages eligible for page_owner
-output, reusing page_owner_next_eligible().
+Compute the page's NUMA node in page_owner_next_eligible() while the
+page is still valid, and store it in scan->nid.
 
-A sleepable BPF program drives it with
-bpf_iter_page_owner_new()/next()/destroy(); each next() returns the
-page_owner_scan. po_snap is copied inside the page_ext RCU window, so
-the program needs no RCU section when it reads it.
+The debugfs nid filter reads scan->nid instead of recomputing it, and a
+BPF program iterating the cursor reads the node straight from scan->nid.
 
-Also add bpf_page_owner_stack_snprint(), which renders the stack trace
-of the current page into a caller-provided buffer.
+Resolve nid at scan time to avoid dereferencing a possibly-unmapped page.
+Keep it in the transient scan cursor rather than struct page_owner, so
+nid does not add per-page memory overhead.
 
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 ---
 Changes in v3:
-- Gate the kfuncs with KF_PERFMON.
-- Check the page_owner_inited static key in the iterator.
-- Without scan->page, start at min_low_pfn - 1 and let next() pre-increment.
-- bpf_page_owner_stack_snprint() rejects a NULL or zero-size buffer.
+- Add @scan->nid to the comment describing what is filled.
 
 Changes in v2:
-- bpf_page_owner_stack_snprint() now takes the scan cursor.
-- Buffer args renamed to buf__uninit/buf__sz.
+- Removes the v1 get_nid() kfunc. The node is now stored in scan->nid.
 
-v2: https://lore.kernel.org/linux-mm/20261013122125.843451-4-zhen.ni@easystack.cn/
-v1: https://lore.kernel.org/linux-mm/20261009112308.240769-4-zhen.ni@easystack.cn/
+v2: https://lore.kernel.org/linux-mm/20261013122125.843451-5-zhen.ni@easystack.cn/
+v1: https://lore.kernel.org/linux-mm/20261009112308.240769-5-zhen.ni@easystack.cn/
 ---
- kernel/bpf/helpers.c |  9 +++++++
- mm/page_owner.h      |  3 +++
- mm/page_owner_iter.c | 64 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 76 insertions(+)
+ mm/page_owner.c      | 29 +++++++++++++++++------------
+ mm/page_owner.h      |  1 +
+ mm/page_owner_iter.c |  4 +++-
+ 3 files changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 712dca5a2c5b..0ba836f77957 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -4946,6 +4946,15 @@ BTF_ID_FLAGS(func, bpf_iter_dmabuf_new, KF_ITER_NEW | KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_iter_dmabuf_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_iter_dmabuf_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
- #endif
-+#ifdef CONFIG_PAGE_OWNER
-+BTF_ID_FLAGS(func, bpf_iter_page_owner_new,
-+	     KF_ITER_NEW | KF_SLEEPABLE | KF_PERFMON)
-+BTF_ID_FLAGS(func, bpf_iter_page_owner_next,
-+	     KF_ITER_NEXT | KF_RET_NULL | KF_SLEEPABLE | KF_PERFMON)
-+BTF_ID_FLAGS(func, bpf_iter_page_owner_destroy,
-+	     KF_ITER_DESTROY | KF_SLEEPABLE | KF_PERFMON)
-+BTF_ID_FLAGS(func, bpf_page_owner_stack_snprint, KF_SLEEPABLE | KF_PERFMON)
-+#endif
- BTF_ID_FLAGS(func, __bpf_trap)
- BTF_ID_FLAGS(func, bpf_strcmp, KF_PERFMON);
- BTF_ID_FLAGS(func, bpf_strcasecmp, KF_PERFMON);
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index ece3b69a2579..8bc15bcdc24e 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -711,9 +711,22 @@ void __dump_page_owner(const struct page *page)
+ 	page_ext_put(page_ext);
+ }
+ 
++/*
++ * NUMA node of @page, bypassing PF_POISONED_CHECK() in page_to_nid() to
++ * avoid VM_BUG_ON on poisoned pages; -1 for poisoned pages.
++ */
++static int page_owner_get_nid(struct page *page)
++{
++	memdesc_flags_t page_flags = READ_ONCE(page->flags);
++
++	if (page_flags.f == PAGE_POISON_PATTERN)
++		return -1;
++	return memdesc_nid(&page_flags);
++}
++
+ /*
+  * Advance @scan to the next page eligible for page_owner output.
+- * On a hit, fill scan->pfn/po_snap and return true; the caller
++ * On a hit, fill scan->pfn/po_snap/nid and return true; the caller
+  * must advance scan->pfn past the hit before calling again to resume
+  * the scan.
+  */
+@@ -790,6 +803,7 @@ bool page_owner_next_eligible(struct page_owner_scan *scan)
+ 		if (!scan->po_snap.handle)
+ 			goto ext_put_continue;
+ 
++		scan->nid = page_owner_get_nid(page);
+ 		page_ext_put(page_ext);
+ 		put_online_mems();
+ 		return true;
+@@ -833,17 +847,8 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 			goto skip_continue;
+ 
+ 		if (state->nid_filter_enabled) {
+-			int nid;
+-			memdesc_flags_t page_flags = READ_ONCE(page->flags);
+-
+-			/*
+-			 * Bypass PF_POISONED_CHECK() in page_to_nid() to avoid
+-			 * VM_BUG_ON when accessing poisoned pages.
+-			 */
+-			if (page_flags.f == PAGE_POISON_PATTERN)
+-				goto skip_continue;
+-			nid = memdesc_nid(&page_flags);
+-			if (!node_isset(nid, state->nid_filter))
++			if (scan.nid < 0 ||
++			    !node_isset(scan.nid, state->nid_filter))
+ 				goto skip_continue;
+ 		}
+ 
 diff --git a/mm/page_owner.h b/mm/page_owner.h
-index 0aa7695bec82..4ab513f17fc9 100644
+index 4ab513f17fc9..934bc9f84d6f 100644
 --- a/mm/page_owner.h
 +++ b/mm/page_owner.h
-@@ -6,6 +6,7 @@
- #ifndef __MM_PAGE_OWNER_H
- #define __MM_PAGE_OWNER_H
+@@ -38,6 +38,7 @@ struct page_owner_scan {
+ 	/* resume point */
+ 	unsigned long pfn;
+ 	struct page_owner po_snap;
++	int nid;
+ };
  
-+#include <linux/jump_label.h>
- #include <linux/page_ext.h>
- #include <linux/sched.h>
- #include <linux/stackdepot.h>
-@@ -13,6 +14,8 @@
- /*
-  * mm/page_owner.c
-  */
-+DECLARE_STATIC_KEY_FALSE(page_owner_inited);
-+
- struct page_owner {
- 	unsigned short order;
- 	short last_migrate_reason;
+ bool page_owner_next_eligible(struct page_owner_scan *scan);
 diff --git a/mm/page_owner_iter.c b/mm/page_owner_iter.c
-index 529b2c4a589a..4b9741a2de53 100644
+index 4b9741a2de53..b7e0ce1dfa80 100644
 --- a/mm/page_owner_iter.c
 +++ b/mm/page_owner_iter.c
-@@ -4,6 +4,7 @@
- #include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/seq_file.h>
-+#include <linux/stackdepot.h>
+@@ -12,10 +12,11 @@ struct bpf_iter__page_owner {
+ 	__bpf_md_ptr(struct bpf_iter_meta *, meta);
+ 	__bpf_md_ptr(struct page_owner *, po);
+ 	u64 pfn;
++	int nid;
+ };
  
- #include "page_owner.h"
+ DEFINE_BPF_ITER_FUNC(page_owner, struct bpf_iter_meta *meta,
+-		     struct page_owner *po, u64 pfn)
++		     struct page_owner *po, u64 pfn, int nid)
  
-@@ -116,3 +117,66 @@ int page_owner_iter_register(void)
+ static void *page_owner_seq_start(struct seq_file *seq, loff_t *posp)
+ {
+@@ -52,6 +53,7 @@ static int page_owner_prog_seq_show(struct bpf_prog *prog,
+ 		/* @po: hit-time snapshot, no RCU window needed. */
+ 		ctx.po = &scan->po_snap;
+ 		ctx.pfn = scan->pfn;
++		ctx.nid = scan->nid;
+ 	}
  
- 	return bpf_iter_reg_target(&page_owner_iter_reg_info);
- }
-+
-+/* opaque to BPF programs */
-+struct bpf_iter_page_owner {
-+	__u64 __opaque[16];
-+} __attribute__((aligned(8)));
-+
-+struct bpf_iter_page_owner_kern {
-+	struct page_owner_scan scan;
-+} __attribute__((aligned(8)));
-+
-+__bpf_kfunc_start_defs();
-+
-+__bpf_kfunc int bpf_iter_page_owner_new(struct bpf_iter_page_owner *it)
-+{
-+	struct bpf_iter_page_owner_kern *kit = (void *)it;
-+
-+	BUILD_BUG_ON(sizeof(*kit) > sizeof(*it));
-+	BUILD_BUG_ON(__alignof__(*kit) != __alignof__(*it));
-+
-+	kit->scan.pfn = min_low_pfn - 1;
-+	return 0;
-+}
-+
-+__bpf_kfunc struct page_owner_scan *
-+bpf_iter_page_owner_next(struct bpf_iter_page_owner *it)
-+{
-+	struct bpf_iter_page_owner_kern *kit = (void *)it;
-+
-+	if (!static_branch_unlikely(&page_owner_inited))
-+		return NULL;
-+
-+	cond_resched();
-+
-+	kit->scan.pfn++;
-+	if (!page_owner_next_eligible(&kit->scan))
-+		return NULL;
-+
-+	return &kit->scan;
-+}
-+
-+__bpf_kfunc void bpf_iter_page_owner_destroy(struct bpf_iter_page_owner *it)
-+{
-+}
-+
-+__bpf_kfunc int bpf_page_owner_stack_snprint(struct page_owner_scan *scan,
-+					     char *buf__uninit, u32 buf__sz)
-+{
-+	int len = 0;
-+
-+	if (!buf__uninit || !buf__sz)
-+		return 0;
-+
-+	if (static_branch_unlikely(&page_owner_inited))
-+		len = stack_depot_snprint(scan->po_snap.handle, buf__uninit,
-+					  buf__sz, 0);
-+
-+	if (!len)
-+		buf__uninit[0] = '\0';
-+
-+	return len;
-+}
-+
-+__bpf_kfunc_end_defs();
+ 	return bpf_iter_run_prog(prog, &ctx);
 -- 
 2.20.1
 
