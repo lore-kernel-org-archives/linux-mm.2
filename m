@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9EE606A31D
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 19:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A438606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 19:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XdQLUuTe
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dzxUeoNA
 Received: by kanga.kvack.org (Postfix)
-	id 032B36B0778; Wed, 21 Oct 2026 15:58:25 -0400 (EDT)
+	id 7AD126B077A; Wed, 21 Oct 2026 15:58:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F26336B077A; Wed, 21 Oct 2026 15:58:24 -0400 (EDT)
+	id 785136B077C; Wed, 21 Oct 2026 15:58:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3B556B077B; Wed, 21 Oct 2026 15:58:24 -0400 (EDT)
+	id 69AB16B077D; Wed, 21 Oct 2026 15:58:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5B3F6B0778
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:58:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3823480647
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:58:24 +0000 (UTC)
-X-FDA: 85347695328.30.A706717
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A3C938000A
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:58:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XdQLUuTe;
-	spf=pass (imf30.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792612702;
-	b=2LD02PEISQnPYFaY8f1m5eUqdKTrv1bALozhmIy5F6W168Qz4I0YTebH1n6iozeakz/Dhn
-	PbA0AjiOehdaQrD34WbFi4uEWKNh6pTo1e1FhWgSm/hx0ks68p8kHi5vWRPnWvk6+xSV7b
-	mvR1iPrzAiKOlxIQQN9r7jqCMT8rzgw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XdQLUuTe;
-	spf=pass (imf30.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 426296B077A
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 15:58:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6386B804DA
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:58:34 +0000 (UTC)
+X-FDA: 85347695748.06.47940B1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AF1F91C0007
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:58:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzxUeoNA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792612702;
+	s=arc-20220608; t=1792612712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pF5l050qT/qvl0GvCxGIiAGvWNtowoG+RzEclp/R9Dk=;
-	b=fEmi3fiAT+xhDuFFQTI1dbpa+LmTpdh0NUEGQ71OXJos99RKiIW2mim6SoKvkiml1dmImk
-	QRdt3ZjQ9glwKvIkrEeiL9BQwicjOLlvJ8vLH0fIf1dlrm3jTApREt6Rn4uqmNRngMHuhy
-	7TCBp+p7cSPi0k87tX7xha9A1BEoTq8=
+	bh=u+4xmbdLU1mrrwnt1X/d3bWQL9p1KJ5CSL5nr0RSS6A=;
+	b=6FSrbW8Go68mffS848XZdG1p0fiiAzLYuWLYkDddhJEDlvCFK/xekqeaMgdQV3+iA0g7Nv
+	Se+6JdL/EsLa3llPxTI0MDzJLtAIhrazpjG8xQQrYdrOb+B+V5u/HLKrRzUNnd9KjL3Mhi
+	wKpJRgmcPBxy4cYPPkpqBHCMpCK3zq8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzxUeoNA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792612712;
+	b=ZhRb+0EWB2CVktUKoqOxbJkas7brATLr9JQgdyrbGPcFugZOr2znGXO75v462vbjGtuLLB
+	iOc2x9Q9c4BpC51V9ZTSv2Fb0ot7ARuPZfikOkIZP/C0cq2fk6166fyj1zzTqHm3KCRBfV
+	9FAGs24pY7W6zooUltFK9mGLbu85UDI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D508C602C5;
-	Wed, 21 Oct 2026 19:58:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3BB1F000C1;
-	Wed, 21 Oct 2026 19:58:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 063F04323F;
+	Wed, 21 Oct 2026 19:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59201F000C1;
+	Wed, 21 Oct 2026 19:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792612701;
-	bh=pF5l050qT/qvl0GvCxGIiAGvWNtowoG+RzEclp/R9Dk=;
+	s=k20260515; t=1792612711;
+	bh=u+4xmbdLU1mrrwnt1X/d3bWQL9p1KJ5CSL5nr0RSS6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XdQLUuTewF4k8NfDtfZnVjrCcWWNNTSRvZUzNe9JJUpWZusfLOgbRtGQdp8bCFhZB
-	 lFy9m/6IvJJUZjVXFmtiB2GddcVcUsEpWBrJzFXuTZ3QfcJ2dueLFN+VMt4Mnf4R8d
-	 DhTph084b8r5OZeiBC3plGVw0mjlZ1RJP2Nir/r/8pHt0geTDNdox+Cj/+qveEkp+R
-	 WIU1iCR+BeRi71dMRNPZtRkMKOjUQf8OijbtavQj/wm7jaP2iZgFo0Z+OoW2T7gJuC
-	 5AGbG/3rV0eao5zeSHtKjjGI3WfTB6IgVoKjhZr84eQecxXajsoyVk8/+oHLSOXCiV
-	 rHTqSnN3R+o0g==
+	b=dzxUeoNAVzeREkTXx4wpn4Qz9g7BTqmPmF8DOIwyFvv1g+LB0blfX5Y57KNABZV3A
+	 g/2/BZq5FB2fi4SqTH8eeQH3T1SB7A0SrDT7nGObuHcG62icIencAySky6nGXKpq/2
+	 R+9IzIjT8qrlXaXGzWWeehkxVZQZon14itVD+u1iAvpxC7Z+BTCz81RFliiVDfL3DB
+	 YX9QlkVG+ZNID3JwLLjIAmAQ3YKlf+dptoW308wFGqrtufjlooN5qUCIOv0wYOIXas
+	 0wJPDbnWuSP0Sjzf1rici8Dpu956XQPnaMdKE8UIKBEDwtyNWDATkLxKhjR8rmygEf
+	 a/U1O3MJ9GYMA==
 From: Jiri Olsa <jolsa@kernel.org>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>
@@ -74,27 +74,27 @@ Cc: bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Shuah Khan <shuah@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>
-Subject: [RFC bpf-next 1/9] bpf: Add __srcptr kfunc argument suffix
-Date: Wed, 21 Oct 2026 21:57:50 +0200
-Message-ID: <20261021195759.119421-2-jolsa@kernel.org>
+Subject: [RFC bpf-next 2/9] bpf: Add uprobe faultable user copy kfunc
+Date: Wed, 21 Oct 2026 21:57:51 +0200
+Message-ID: <20261021195759.119421-3-jolsa@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261021195759.119421-1-jolsa@kernel.org>
 References: <20261021195759.119421-1-jolsa@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: A3C938000A
-X-Stat-Signature: exbbe6ytjt394ssfptbjjagycmfrhhe4
-X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AF1F91C0007
+X-Stat-Signature: wx5cdh8q6fnrq71ek3yaj7h34seij3qg
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792612702-966617
-X-HE-Meta: U2FsdGVkX1+IdhpztmqjDa7HJtIROgc6uDb1sZvx149pMNf6Zrb96OZ1uFsiNFdDYQKSUNOoRgXEpqLd20b1BZawxLmXCBIAatKjR6TAOolgmEODUrfQMsL94o5JV8TymAi05Zq/mWl56eEpYaJTL30mZ3MswLTI/+wZ0u/uFZgGKcy1uQPbfNTNBVmh/coFcQdudfqf1NSxpSaEWjjfSHL0DwbCfgG216IDYCuLEVlKru0sLRLKp2B7yGjRTLvTB2niwAHU+e/V/3gPvpWz/MW3A4IE2L5ph6zUtZowAI5bHfM4dstqVLncuep7SuC3dM972LtqPwtD3RPEnXuDe2dg51ttYf7iKkNXVlyqRfsYXwbYZBziv4xPEG5BFIiWNP8krbxCx/sNivOqh/C6OVm6ocUbp3e5/6ICmqdkrnMIVVixxIqmNu6GE9zFLjyqFcyHEUXGpdLKL8+/6cc2MrXrPnCpyNYD1M09yHXB7JxknhjhjS1HcBLQzKEbqCmxgi6t+2+mju+rgFeUcTr9xCT1xd2H1xncPH9IRJPS+ZjU0jbFsGKYW/nrKj8o0A9pRgzk9rA+Jqzqvc0C3wi8QovxWVEH0KSry7oKUojHhOV9n/DECccDRIZZQO9irUHMifYSdlvoQAwP0URvmmZ7wWbs5ivHUQukrME0uic21QWNvAjX3u+OEXJ4vIR0VhDo9ZLGaUx6w+kiPlGau++j7ZeEun/2se1DK0+9HmHKGbrJHk5oQJTfyHoihNciQoG70Nr/2E7qFQK0bES8/hplS1lMdn7WAv1NcZH9Ly3vZAaFJjSTgj65pLJgGX8yfCfhBAX286+HLHECnM0vcX+kb4z7FpXS1NsVuWjwvaKtRaZVEZw43wl6QAJ3zDanFTDMCFniYppdAxanDMs6v4KQeVbPzGqgxs4Z9SgW3R591FPOAJppkiexpsd7/SEQYXvT8O59wQrMaZPyncSiOQM
- outOFC3E
- JofizsP3k/arPwWeb3htHu511FaZd2EC97mPUAy1/GDcrxSAkVqZibU1DaLeMP4eOyiov2Jy57ZwHGYOhOLaTCKycILk0a6CYxY39/+stWXloGLaxtyQ4LLdAq0lQgDdIx+9MaaPoBCez/5P6z6AwLdDdfzp1cXfvtRHD63/IBiH58AFo13v+lOFHygQ6qLTxRAgCUqlDoKT2h1ZScf67sRsYbQq+sALKt5S++/HoPO7sioxIn7UDwX7fzTDEFJTAPWWZw4KG0od5L6jMr/fXFgWStybXQS6GVYuI8nn5a+FxmMBSNPViIcYhXga/CgFkh4A8HpnkFnEOLl8tw30RcY1KAb2Jt8Yneum4
+X-Rspam-User: 
+X-HE-Tag: 1792612712-225752
+X-HE-Meta: U2FsdGVkX1+Jg68S5CWCGN2NTH1pECXWVnWQvc1lgSHU/2L+nqDMnfKi6dbMIk6vebNGsHTUemTHql3oOlunH1NkxliAYfW6a3yOmULhipAEwt0GmgqwsQIug8VzawvGY0itJOpdxir+OGsJ+7pBYOUSbC9Emmr5aeYrdSt8vqNkHnAqgQTME3I9IdOolms0pDf7bizWg/riFi+hku+eXxGGSj8EQ19ki4qcmVTsZzdK4JHWK/nKJTr6zO/JjFfuYJp6Dlr8ioKbTpZyfT5tjjzeBkH+K0LDvj2yIQto6jSQt7yKe6NCxiLpSRG+aXhJsels/QZMdB1fzD/a8W3xEasPCwMgAAeh7qGsgz2NaU0NsSEGZefXcegvLgjhFgUv9qUecCZDIWPfWijxhgTkSN8vASkIx0mMyoO+KjG4tZG+sJaVwP/qKEnBkEDHUsJzUdMGnBZLVXDF/+uL2JYM1S0CtByo5++DdHamgvoNljC/vP+DbYaOzFQH1J2U0GqerTADpIgANACz/2NT9mgyznt22/undvKW7Tvccnd2JzRigksJtLA2a77NzQQpiCCcnl5ZoYS43mnmZrunGVtUo4RN3vj1TUHM3ARastmB4nRBVddMWSlDS+dfEDJnmLPZh31ZkOb29q3kdKunHyG+E5639zMTTQuAbgRDeftN1RgTklI8wtENfXemqSUZlFNpYXd67TaJ81N/qihr8+wscn7srFl6nyYcQiTi/b3z/vH3G5eogFB0h9yjJyOxXdko9lo7QCFeOHYm7e4ioJm0zGAd+JgS2L6WRDDvCGpehsv84kMMtANzsn3ZHrICpSe+44S3ufBZBOyp6faOiizN+ZfbNHit1P7CqMlYVgaDcD1ZAnlllBo7ic2bU7rStB4fTzEcN300JNrHe4HMJnf58otnMrkjVjXzGP7+9Es3BqqJ/IzWwYWJBUA27tzaFGngEH18Bwm8KT+KoeCosDt
+ gtbCY/MF
+ vKoovFyF/UpBVhypj8moyNZtGIW5pW9/CUjfd9IqX4Tjzsujwx2a66u7lI14oftHa8+/e+fG09u1d0lB8Nor4Zbwy6OXsdbb8JhMjl+d8Dqxx1aJOXsS3nfmoSH1+Uzpf745b9hDCKO7jYgP+1YolrwT92cnkj7AOo6TKMUYXyS0z18Ixvhc1aHF21/pjS6FC/Co3P7ryL2D/7drw4Hs7SbiUUNATyRrFbcSZG6nJfLaNsy7FMyM5ux3TUL6cXfBSWAUrnxNju28O4jkIr1e5Z4bwq3u0e8TmvW8QckGAxPL15AaBM6K24raNlXcDjTQmLPSm/xJ9zST96brPNBVt9J3zsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,103 +103,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Generic sized pointer arguments are treated as writable memory. This
-prevents kfuncs that only read from a source buffer from accepting
-read-only BPF memory, such as const data.
+The bpf_probe_write_user() helper uses a no-fault copy. Adding kfunc
+that can fault in the destination pages while copying to user memory.
 
-Adding __srcptr to mark pointers the kfunc only reads.
+Restricting it to sleepable uprobes and to LOCKDOWN_BPF_WRITE_USER.
 
-Assisted-by: Codex:GPT-5
+Assisted-by: Codex:GPT-6
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 ---
- Documentation/bpf/kfuncs.rst | 23 +++++++++++++++++++++++
- kernel/bpf/verifier.c        | 18 ++++++++++++++++--
- 2 files changed, 39 insertions(+), 2 deletions(-)
+ kernel/bpf/helpers.c | 57 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
-diff --git a/Documentation/bpf/kfuncs.rst b/Documentation/bpf/kfuncs.rst
-index 73578a4c3b1f..6466b76fd721 100644
---- a/Documentation/bpf/kfuncs.rst
-+++ b/Documentation/bpf/kfuncs.rst
-@@ -351,6 +351,29 @@ In this case, a program attached to the ``inode_init_security`` LSM hook
- can pass the hook's own ``xattr_count`` argument through to the kfunc,
- which claims xattr slots by writing through it.
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 648abe1ba63a..4d9e9423826a 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -29,6 +29,7 @@
+ #include <linux/task_work.h>
+ #include <linux/irq_work.h>
+ #include <linux/buildid.h>
++#include <asm/tlb.h>
  
-+2.3.10 __srcptr Annotation
-+-------------------------
-+
-+This annotation marks a pointer argument as a source buffer that the kfunc
-+reads without writing. The verifier requires read access, so the source may
-+point to read-only or read/write memory. Pair variable-size buffers with a
-+following ``__sz`` or ``__szk`` argument. For a scalar pointer, the verifier
-+uses the pointee's BTF size; a ``void *`` requires an explicit size.
-+
-+For example, the first kfunc takes a variable-size buffer, while the second
-+takes a scalar source::
-+
-+        __bpf_kfunc void bpf_consume_data(const void *src__srcptr,
-+                                          u32 src__sz)
-+        {
-+        ...
-+        }
-+
-+        __bpf_kfunc void bpf_consume_scalar(const u32 *src__srcptr)
-+        {
-+        ...
-+        }
-+
- .. _BPF_kfunc_nodef:
+ #include "../../lib/kstrtox.h"
  
- 2.4 Using an existing kernel function
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 5601d2056218..7dd7b172a297 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -13205,6 +13205,12 @@ static bool is_kfunc_arg_mem_size(const struct btf *btf,
- 	return btf_param_match_suffix(btf, arg, "__sz");
+@@ -3738,6 +3739,36 @@ __bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
+ 	return ret;
  }
  
-+static bool is_kfunc_arg_srcptr(const struct btf *btf,
-+				const struct btf_param *arg)
++/**
++ * bpf_probe_write_user_faultable() - Copy data to userspace with page faults
++ * enabled
++ * @unsafe_dst__ign: Destination address in the current task's address space.
++ * @src__srcptr:     Source buffer in BPF-accessible memory.
++ * @src__sz:         Number of bytes to copy.
++ *
++ * Copies data to userspace, allowing page faults to resolve the destination
++ * mapping. A failed copy may have written a prefix of the source buffer.
++ *
++ * Return: 0 on success, -EFAULT if the copy is incomplete, or -EPERM if the
++ * current task cannot safely access userspace.
++ */
++__bpf_kfunc int bpf_probe_write_user_faultable(void __user *unsafe_dst__ign,
++					      const void *src__srcptr,
++					      u32 src__sz)
 +{
-+	return btf_param_match_suffix(btf, arg, "__srcptr");
++	if (unlikely(in_interrupt() ||
++		     current->flags & (PF_KTHREAD | PF_EXITING)))
++		return -EPERM;
++	if (unlikely(!nmi_uaccess_okay()))
++		return -EPERM;
++	if (unlikely(!current->mm))
++		return -EFAULT;
++	if (copy_to_user(unsafe_dst__ign, src__srcptr, src__sz))
++		return -EFAULT;
++
++	return 0;
 +}
 +
- static bool is_kfunc_arg_const_mem_size(const struct btf *btf,
- 					const struct btf_param *arg)
- {
-@@ -13966,6 +13972,14 @@ u32 btf_func_arg_align(const struct btf *btf, const struct btf_type *t)
- 	return __btf_func_arg_align(btf, t, 0);
- }
+ /**
+  * bpf_copy_from_user_mm_str() - Copy a string from an address space
+  * @dst:             Destination address, in kernel space. This buffer must be
+@@ -5139,6 +5170,31 @@ static const struct btf_kfunc_id_set generic_kfunc_set = {
+ 	.set   = &generic_btf_ids,
+ };
  
-+static int mem_prot(const struct btf *btf, const struct btf_param *arg)
++BTF_KFUNCS_START(user_mem_btf_ids)
++BTF_ID_FLAGS(func, bpf_probe_write_user_faultable, KF_SLEEPABLE | KF_PERFMON)
++BTF_KFUNCS_END(user_mem_btf_ids)
++
++enum user_mem_kfunc_id {
++	KF_bpf_probe_write_user_faultable,
++};
++
++BTF_ID_LIST_SINGLE(bpf_probe_write_user_faultable_btf_id, func,
++		   bpf_probe_write_user_faultable)
++
++static int user_mem_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
 +{
-+	if (is_kfunc_arg_srcptr(btf, arg))
-+		return MEM_RDONLY;
-+	else
-+		return MEM_WRITE;
++	if (kfunc_id == bpf_probe_write_user_faultable_btf_id[0])
++		return security_locked_down(LOCKDOWN_BPF_WRITE_USER);
++
++	return 0;
 +}
 +
- static int
- get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
- 		   const struct btf_param *args, int arg, int nargs, u32 slot,
-@@ -14137,7 +14151,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
- 				reg_arg_name(env, argno), btf_type_str(ref_t), ref_tname);
- 			return -EINVAL;
- 		}
--		arg_type = ARG_PTR_TO_MEM | MEM_WRITE;
-+		arg_type = ARG_PTR_TO_MEM | mem_prot(meta->btf, &args[arg]);
- 	} else if (btf_type_is_struct(ref_t))
- 		/* A pointer to a struct without a size argument is classified as ARG_PTR_TO_BTF_ID */
- 		arg_type = ARG_PTR_TO_BTF_ID;
-@@ -14162,7 +14176,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
- 			return -EINVAL;
- 		}
- 		proto->arg_size[arg] = type_size;
--		arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE;
-+		arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | mem_prot(meta->btf, &args[arg]);
- 	}
++static const struct btf_kfunc_id_set user_mem_kfunc_set = {
++	.owner = THIS_MODULE,
++	.set = &user_mem_btf_ids,
++	.filter = user_mem_kfunc_filter,
++};
++
+ BTF_ID_LIST(generic_dtor_ids)
+ BTF_ID(struct, task_struct)
+ BTF_ID(func, bpf_task_release_dtor)
+@@ -5266,6 +5322,7 @@ static int __init kfunc_init(void)
+ 	};
  
- 	if (is_kfunc_arg_uninit(meta->btf, &args[arg]))
+ 	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &generic_kfunc_set);
++	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_KPROBE, &user_mem_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &generic_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &generic_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &generic_kfunc_set);
 -- 
 2.54.0
 
