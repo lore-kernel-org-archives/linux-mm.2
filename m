@@ -1,128 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E86606A31D
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515D2606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 03:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=X3mqHfzr
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=bjlIvEcG
 Received: by kanga.kvack.org (Postfix)
-	id C84066B05E2; Tue, 20 Oct 2026 22:54:43 -0400 (EDT)
+	id 3F28D6B05E5; Tue, 20 Oct 2026 23:11:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C34C46B05E4; Tue, 20 Oct 2026 22:54:43 -0400 (EDT)
+	id 3A36A6B05E6; Tue, 20 Oct 2026 23:11:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B24D86B05E5; Tue, 20 Oct 2026 22:54:43 -0400 (EDT)
+	id 2B99D6B05E7; Tue, 20 Oct 2026 23:11:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 87FCC6B05E2
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:54:43 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E1761A0443
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:54:43 +0000 (UTC)
-X-FDA: 85345115646.20.07A2556
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4017880002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:54:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=X3mqHfzr;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792551281;
-	b=vxCpoNQfSNkRkcF5uW4R123S8KSF8ERXNj7CGe+bdgvEs4XJOjPE/2JlwrHjbM0WRmBL6y
-	y+3q4jW0pgd1/LeZS9kGWZzIV/bxreszmcc9OM36X0AI+/zMuapF3JV/o8WEEQQEs6B2Oh
-	xTz78e1w5gL/dPrZX5gKFpzOHDr4nZ8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=X3mqHfzr;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A6DF6B05E5
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:11:38 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74662802F4
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:11:38 +0000 (UTC)
+X-FDA: 85345158276.05.EC5EB57
+Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E4D32100003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:11:35 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=bjlIvEcG;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792551281;
+	s=arc-20220608; t=1792552296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dSA8sP/l7jXaX7+Oajvaq7NlGy6nqeA0l/fafopK+Hk=;
-	b=2sNPeaerdml8uGHNVwdCOMGoXECEElWe7eechaL0fp9KHv2+mCEyGWgbw5Q5vJP5zD3VOA
-	Nm89y3Y0/KuN7Pua6t7q/e3sqtHpDpvFoQ8zjnAMp+Qkv4ZIO0sC8l2KAJlLIeTgQrxA7w
-	pbcqqHAFSHxQoR/D+rP32o2v5Feq6iU=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-53667180af3so2999491cf.2
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:54:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792551280; x=1793156080; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=dSA8sP/l7jXaX7+Oajvaq7NlGy6nqeA0l/fafopK+Hk=;
-        b=X3mqHfzrVTTzIdiMHNl37KwaNbn9lMFsRweOIdeitjqQCUuETuoWgpnXPEKhAtvMla
-         M48IOUCwfzxjjS34kJxB98P0C0aA2gL3bNgfdAIlrVz7xcO6zy1Op+EKVj3ycqyUjw4k
-         5XUyY2kHiNG3F9VLt/nPqwbTxdHNuySB5JjSgxhbUOg7RDT7PStFs+EjBV/osrGAMsso
-         MfUnWVZm69PFu3n0f/kUAUfv7RDK3s3hAPtsiG8FXapM5x7zqrJ/hg56GnIw1M0aXSkC
-         BgaEkXpy8jAxhorNEsejeH/cN2OD2g5+xq1ah4DC5jac2COBYDWBTuLG83i1orF2+Q9s
-         65JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792551280; x=1793156080;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dSA8sP/l7jXaX7+Oajvaq7NlGy6nqeA0l/fafopK+Hk=;
-        b=tlIJOcmaXpOE8nT9a2ZCmh83bXySdrUoFM1eD1BrJSkIzgK/luLszNxW6fSljfcg2g
-         Rz9S/OtCOKxE1PAT3CoFQAq16Ph7gmPlcGxOzbUtTX/8o7AeWNrhmX5ju2mLXHWyq5BI
-         xpgfCa2qkjVN8ed3hPAojye7XSQGx6IQTmsqKDdbUQzUa0D5Z3VL6ksvVO3Fd1Kp1O1x
-         OTQ6rdvnTKVb4Ckjv9SvYDFyg4xE57hWH99egp17k8cSaEiIB1d7Dn2E7S9ixRXVw3/r
-         t6Wn5RprZwD/DlYpnjjntkrYCYsqfzM1fweVK224Nx2IKLn2XIngrtlqg32QWTTP3N3I
-         WqTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy90qVOS1SGo8DTHSFNbeKTqDdvd7H6T0STLYBzqIW/ZuUtgzjbqTQ5n0SY1fdfzXG4F1O4nsS5Dg==@kvack.org
-X-Gm-Message-State: AFq9FYIzyvxxgXARy+/h1ht+POwDCfkp+HqH/HQ0Nxh4mhCDB5ZuIAOB
-	QpA+NrQVwAUznr7GN8xmDMU6SndLfpOuVZ2kzLOQK1CroiOOvKuJ24WukbZyyQtZW3k=
-X-Gm-Gg: AYBFou2pfErVwGtkCGxl4EYO7vonxuZ3/b4QHnlp2G4zkHcpXu97t63rbSnE9+r4uAq
-	CxswkHUbscRFGzzQGWFVhjGAYVh1r3DxUnyrvuGsp06dCLEO9yPQB3MFgnSm0XY2BLShlpwFy/y
-	lO+9bRMj/w91txrgvn+nNmffEN0wqYd4N/3JL69ARFEJga1N6e8fgTWnzXnXB2o4LZcnFz3eTiZ
-	Znm5JTm/nr2DHa8j5fyNZSJTCy0HYrGEafA0xoE3wAI5/9A7dVcdae7FcYDCswh9zhQ+jylMzNn
-	mczJkI25ZPvvguNd+qFgwT1wP4CfPqtrMDwB64dTA05PMXqQt9tDC35vl3H2TYGpz+z/YC4+xh3
-	8jGzgYP2WpVNXEkYw0Nulm9v0PKJIzkKYldsErEWuUdnn+oEiu2Jrb9MeqldfgSrzeLpOg+U1YS
-	gUccM0IGBpiss5JxK0UekhEKlQE65wfcHCwOUgdP478yjQ9VDaXw6AwnSeqjcqHuE54aD+o6W/5
-	OwoDheBJU2YaSjiQOaEOBE88lnXYy0l8ipYllDYBjZ+OaqEVQiCJbdotguOo2sc3v94rdHINW5p
-	pWqhMYKvnk8r/vRBPiJJBBsMF4g=
-X-Received: by 2002:a05:622a:a15:b0:535:a5fb:645b with SMTP id d75a77b69052e-5369b8fb767mr11805941cf.70.1792551280390;
-        Tue, 20 Oct 2026 19:54:40 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53698b290c4sm9952991cf.12.2026.10.20.19.54.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 19:54:40 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	bh=ufXaEJ5FT5/RcC09d0BBVVpoSwGEekPNmNdSpG+1s5Q=;
+	b=yF6MZrYH38Xr2BuS5GCVc0T8ZNQiWosR2DAcVndnxI98QxuRcmebWkkyVdwWVA/eSaSFeJ
+	P75Ud533qGWPSkZi1EAZXScAGcViDyRcTSWs28PY46SQFFv0m1G8Q1j/dCKa5A4oFiKJWl
+	V0vkMDj0T1fHG2YXAvN3W1f7Yw+5nns=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=bjlIvEcG;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792552296;
+	b=aNXO2K7K+1lRwMr/9QYMM9AIVF0Gt6XQ+2X68w0VsXnbcCSnHnL3og8X4R3tTTC0md7zOB
+	8JgR+kmrLYk/O6WSSkHwU0Xby4mj/9UgU59BA868a3OU2PGUvC14HRk+ABgp8STzIY9MIW
+	tg1nvfmebBkKoE/YUqqMt3ESuw3rGtw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1792552286; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=ufXaEJ5FT5/RcC09d0BBVVpoSwGEekPNmNdSpG+1s5Q=;
+ b=bjlIvEcG7mR9NgMp+3NsPYPUmhmOvkQUGRjzhjrU1BdLdiXA4xNxdAFq853+S/ajbBMLCW
+ 0yO7aSHtUDiGlWupdjY/g9W9JpBeXiCclLhpoXoQ+IZp/6fzk5Z4bBMeRTsYWhdXlrKYDy
+ gXNTYc0XYFTcmgqryLHqHrdRNH3R9qEoXJ8JIrZLpSbtSXw1KNYK+5PeDUtq/it6IjlDKV
+ FrvX4oUed1tucv0GGBasEY1kjU/+5CqhvkGDB8/R3mTALh753iX3AHRYpo2DDpfLWQhHyJ
+ 2QQb9jWOXXRTwXu/NVv7IwrmGd9GrAHxr8bYMCsk+dNPSJCOo3i/tiTUKIDpug==
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Wed, 21 Oct 2026 11:11:05 +0800
+In-Reply-To: <baf5943f-b3fc-4a8d-85cf-bd897bb9a08a@kernel.org>
+Subject: Re: [PATCH V2 2/3] mm/hugetlb: disable PMD sharing for UFFD missing mode
+References: <20261019113034.97690-1-lizhe.67@bytedance.com> <20261019113034.97690-3-lizhe.67@bytedance.com> <atc-PW2PirXZzNZh@kernel.org> <baf5943f-b3fc-4a8d-85cf-bd897bb9a08a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, 
+	<akpm@linux-foundation.org>, <peterx@redhat.com>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] selftests/mm: merge: reserve the far mremap() targets
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Danish Khateeb <danishkhateeb03@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261021011929.89150-1-danishkhateeb03@gmail.com>
-References: <20261021011929.89150-1-danishkhateeb03@gmail.com>
-Date: Tue, 20 Oct 2026 22:54:36 -0400
-Message-Id: <179255127693.1919196.16421147648649712106.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 4017880002
-X-Stat-Signature: nid7run7ne5unr6n894ya8gj4mh335bf
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Lms-Return-Path: <lba+26ad82d58+a6dc5c+kvack.org+lizhe.67@bytedance.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	"Mike Rapoport" <rppt@kernel.org>
+Message-Id: <904487b4-a838-4d57-a297-12163136279d@bytedance.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+User-Agent: Mozilla Thunderbird
+X-Rspamd-Queue-Id: E4D32100003
+X-Stat-Signature: of3u9mfqsb4pgefkhkofunz63icg5jj9
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792551281-235382
-X-HE-Meta: U2FsdGVkX19KurTh4zQNuE0BswFzyUr4BjROCwEmIgGBzicaewfdQAtFKnbpLuv8ugnydubpP9fqnc0lSi2Bb3gdYrcHoiH9vqHDShM10YkNC8GmnnPMxmmvle9JAzOuSQak5LaDWn8NB8Hf+Skji4pA236gnMt4/UOvrjUjZWqCPmsu+tKt0V8zOc450ArzeUUwDbO8emysNaiVYBLdFyBZOjOe0+wc524JklxyAS+3/fAzQV/Zxz0KJKAkRPUZcehqCFgeOYf92IIgxwwIXM6UWur0KJhm1Zg4HJ0vJPnpIs8T+mR279n10tkNCcf81i7/jj9OTJ0igpZu8L0xzs8DGbWuY/773qNSZ8OtToSx/W6Q8rhimJUvKCU2S2o2+T/pVDiKr4zILVi7cSl2LXDGZYKuIMgfEvdMCgV4N5hunFwsUQkhREiWxy43fn8+/ps0BjUJypEE2Gt9kY5G7psQdz546nAZUjeY+Z6JRpAkQCkmcqsWrKiEHjb9kgsCKB/SvEBXV5DJ4HdrnKz6g1QEB8H1zu69gEpnI529CUYPeTg+uFLABDkA7Ruzt9JWDKQEFdhe0FAzSYj7f48oW84Qa3AnnK9Kj7WLO743jB/ZWLjLoQRrQ7YJquKp2z3StoSR+GNjg/S240MIJ9k5k+cwEILhFth7sv+y5YJxysuRh8G0ldHcOl64JU9RZF/xr2kli9aIRZ0Gtav69zqkrdJLcoCp8g1xPlj05AjB2WNxr55Q0oDQQ0//yK1SyUkjT70+33sNEly9wudTRc4YiLWQ/EHRfpXicr6b4WpCPuTfnLEre0A0HTWDDd8989sqas9Yr0MS+yEe3fGKSe6+SOg9JxXsUBDmJKRgQPTd2xt2W9QE/CpsMuPidIhppSppWB0AzVVmCb8yKu08a5FivCdq3C4C5C71gBuuB/dQI4l7EcNCaMBIPd3cE0mj0dQ0euPULiJY1lSviV/r8r+
- Pma2JDYs
- K6CWe6Ut6TPOXcQL0bcK7E5RbOZUYcQUtzxZS47/HY15U8g7pdN24Qm4rjlcK0zYQSJT6MBnYy8J5knvNyvlaepV/eZPdGMyXB8+mpd9wQN1fYW+QdOLVBWSbxu1+Kpc/WcbqNp1hQXboG6j3QX17tRSemdROEUGd97Fdu3c3XKF9G0VfFdXzmyFR8FkmjgcugV+KlBQfSi/NfS54nGInj5snDUU2eXOgtujn1nQeDnO30kOTU6l6vNbK2RSpgj4uO0YCgnWtTXiqkyiPyxQ/YgeRFjxJ2ocifznnZFcr4ExV0Bbkw8pUovAd6nWZe/KmLZ/40Yr81fjtzAnGUF+Aa6Le/Q==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792552295-314918
+X-HE-Meta: U2FsdGVkX19BPbS6e3K3Y9VxtvRWcE2wSocOR0MLaWYqULYb4tmK8hm3k4BBuPkkY9J9Fm5WUTgtc3PFNwBQLfAjoO7Qa0yca726MovrkORuAGAY8NL7YL27PM56br//JCdGhb+QnmO65062gEFW7Pvv54npU91+lcR0gPWL70BIg9AXuCiE+AtfHEeG4EFCJDibXONQruXyBhDRqS4ak/mEReaZQvKzZKz5LuK6j9wfvhZiJtqfDo3XM2nCVpkTl2/kd33YJjI1e8kKUozqxmhFr1djFQkQyuwPW/g9MK2pxLYXubRDMbpHihr9JkDqf0hItjUJHjH94WaMCgmu4UOoDkUDvsEIudU79HxEakaOWWQdv5RvQfpvv0qXU7OAEYjjrOtfH6F0HD+nTNQg3OSLgTUrmySYY4hK99KEqRrxT5u9hcIfNKh0AogEIkDQWLgNtMa5XBVxA7DU7bJET0vJWzReziNBy1O+6SQqnmQlNZG13P1AzFe6agxEU8i2iBFTqopckUJ4pdcwZ+aVQ2/nQEVMM+ycP03Pdl++FOrCam21ZV3m1PyQ0//r/C4NYifTXzPq4ppWrFw7P9dTnw6y9RIesT9LwWiuwbUwJzEVYBMfpINFmvk3HelCfw3mVc1aEaW8Lb6u7Av6g+oTBL8k+HGTrVxMp0q7vlq2ZWjYMbyQSDHRV26bIXviquUH33fYUx9jZcedQJ6GxlhUsvVwz5HdkaxrTj4oMXUJ99IaOF9Ie9LcYwQxCax6O7RiPngb1mWXA/rQcxbuhQoeNm24767hp8QhnZFlkAPDPGksg69A/S3dFbJSXCGdlpOiukFjLwfJ6mQcD2i5ckuHZQJnr+1CuXu7o9LCf9gex1H5qQMCmiwAP5ecGv/QwbhMhYvo7UikmBqffJ0XyhAh8B+LFAsBmQVWvD8ub3GaLMZfWrVI1zRXRNgD8j2uxHkOj2DKo8mfGDwKfncKm9y
+ lJ/Plhks
+ /hOla9iqVVLpAKcNZ3GbFXnBhcLipj91ICqYwBjcffG//7pqA3DW4JPjE9WlloQlebvfCmTjs43ZGa2vlrQsyVmV67C9fPYiAGRo16IbGDNusDandWaviuxyT+OzuJZO0EWx4MTX8HLwoDAUNiu80yS42FRyx7PQfwGIgtRXYoWx40nRtfsobFe0y2ufjvlb7cFuqmUlXupP4Z0Ii5iLbdRgj3GL0CN5YioYN2aNPAtwRwXxHc+WhbBv14jvYhykYuRrnl5Yjbht0gP7VsYcg2hq2olMq7pqGYYLdb672+d2jqPUmCmhKhTsmQLH3QGLjL+ga
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,39 +95,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-20 20:19 -0500, Danish Khateeb wrote:
-> The merge tests map their areas at fixed addresses within a 30-page
-> PROT_NONE carveout. Several mremap() tests move an area 1000 or 2000
-> pages away to separate it from the others, but those targets are outside
-> the carveout, and MREMAP_FIXED unmaps whatever is mapped there.
-> 
-> Under virtme-ng, the shared libraries are packed right above the
-> carveout and the dynamic linker starts about 4 MiB above it. The moves
-> then replace part of its text with an anonymous mapping, and the test
-> crashes in its next lazily bound call:
-> 
->   merge[6980]: segfault at 7f7ebb3c1e60 ip 00007f7ebb3c1e60 sp 00007ffd35fbaec8 error 14
-> 
-> Two to four of the mremap() tests then fail with "Test terminated
-> unexpectedly by signal 11", depending on the exact layout. On a host
-> where libc is mapped at a 2 MiB aligned address, the targets happen to
-> land above the dynamic linker and the tests pass.
-> 
-> Make the carveout large enough to contain the targets.
-> 
-> Fixes: 4e25f85b9f85 ("tools/testing/selftests: add mremap() unfaulted/faulted test cases")
-> Signed-off-by: Danish Khateeb <danishkhateeb03@gmail.com>
+On 10/20/26 6:33 PM, David Hildenbrand (Arm) wrote:
+> On 10/20/26 12:11, Mike Rapoport wrote:
+>> On Mon, Oct 19, 2026 at 07:30:33PM +0800, Li Zhe wrote:
+>>> From: "David Hildenbrand (Arm)" <david@kernel.org>
+>>>
+>>> For UFFDIO_POISON to install a poison marker in a hugetlb mapping, it is
+>>> sufficient to have the VMA registered for missing mode.
+>>>
+>>> However, UFFD missing mode does currently not block PMD table sharing, so
+>>> installing the marker will be visible to everyone using the shared PMD
+>>> table, which is wrong as UFFDIO_POISON must stay local to the process.
+>>>
+>>> To fix it, include VM_UFFD_MISSING in uffd_disable_huge_pmd_share(). Add
+>>> a debug check on the marker installation path.
+>>>
+>>> The existing registration path will then unshare PMD tables, and
+>>> subsequent faults will not share them while the mapping remains
+>>> registered.
+>>>
+>>> The alternative would be to unshare PMD tables selectively when
+>>> installing poison markers, which results in way more complexity. Or
+>>> alternatively, simply failing the marker installation, which might break
+>>> some use cases.
+>>>
+>>> This effectively disables PMD sharing for missing-mode registrations
+>>> that never use UFFDIO_POISON.
+>>>
+>>> Suggested-by: Li Zhe <lizhe.67@bytedance.com>
+>>> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
+>>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>> ---
+>>>   include/linux/userfaultfd_k.h | 13 +++++++++----
+>>>   mm/hugetlb.c                  |  1 +
+>>>   2 files changed, 10 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+>>> index a4351cffc60c..fe78ba14dc68 100644
+>>> --- a/include/linux/userfaultfd_k.h
+>>> +++ b/include/linux/userfaultfd_k.h
+>>> @@ -169,7 +169,10 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+>>>   }
+>>>   
+>>>   /*
+>>> - * Never enable huge pmd sharing on some uffd registered vmas:
+>>> + * Never enable huge pmd sharing on the following VMAs:
+>>> + *
+>>> + * - VM_UFFD_MISSING VMAs, because UFFDIO_POISON may install markers and we
+>>> + *   want PMD tables to be unshared when installing these markers already.
+>>>    *
+>>>    * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
+>>>    *   tracking information is per pgtable entry.
+>>> @@ -182,9 +185,11 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+>>>    */
+>>>   static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+>>>   {
+>>> -	return vma_test_any_mask(vma,
+>>> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
+>>> -					VMA_UFFD_MINOR));
+>>> +	const vma_flags_t uffd_flags =
+>>> +		mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP,
+>>> +					VMA_UFFD_RWP, VMA_UFFD_MINOR);
+>> Since this essentially disable pmd sharing for any uffd mode, maybe replace
+>> the flags check with the check for non-NULL userfaultfd_ctx?
+> That would likely even better and we can just simplify the comments as well.
 
-A better improvement would be to tweak the tests so they don't use
-magic numbers like (page_size * 1000) and it matches more statically
-to what the mmap'd region size is.  Otherwise it'll get copy/pasted
-again later.
 
-(e.g. please don't just update the mmap, please update the tests as
-well)
+Agreed, thanks Mike and David.
 
-~Gregory
+I will update uffd_disable_huge_pmd_share() in v3 to check whether the
+VMA has a userfaultfd context instead of checking the individual UFFD
+mode flags, and simplify the comment accordingly.
 
--- 
-Gregory Price (Meta) <gourry@gourry.net>
+Thanks,
+Zhe
+
 
