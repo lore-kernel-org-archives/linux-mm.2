@@ -1,113 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A76B606A330
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 04:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED97606A328
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 05:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=P1nAFsAZ
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=hyzm2CuX
 Received: by kanga.kvack.org (Postfix)
-	id A89886B05EE; Wed, 21 Oct 2026 00:57:56 -0400 (EDT)
+	id 9A0566B05F1; Wed, 21 Oct 2026 01:20:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A39A26B05F0; Wed, 21 Oct 2026 00:57:56 -0400 (EDT)
+	id 9515B6B05F2; Wed, 21 Oct 2026 01:20:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9570E6B05F1; Wed, 21 Oct 2026 00:57:56 -0400 (EDT)
+	id 83F846B05F3; Wed, 21 Oct 2026 01:20:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7921E6B05EE
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 00:57:56 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CCAA6B05F1
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:20:04 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 751F1160322
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:57:54 +0000 (UTC)
-X-FDA: 85345426068.01.44DA8BE
-Received: from mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 43A46C0005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:57:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=P1nAFsAZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792558672;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4C079A5D88
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:20:03 +0000 (UTC)
+X-FDA: 85345481886.01.A5946D4
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6988F1C0003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:20:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hyzm2CuX;
+	spf=pass (imf21.hostedemail.com: domain of jrhilke@google.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=jrhilke@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792560001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zx+oBx+DrGbWNeI4VpjTvUMhvmqGs16Tkaf005DeV3I=;
-	b=v4Txtf0a8xunW1caXF4GB0dyyEc2h3FO55EZ8owWfsJevyJf69G8dyCw/O5YTUQNHg9+Cr
-	oamAIp6V+/1H0e0oPO4qCSLw/+yeWijhdqaVw5zFtmqA4eJdox/Z+C8PYg9ZnniQuHPvdx
-	laYoWEDqsrxDGDjshOc3RCYqvwCrb1Y=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=P1nAFsAZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792558672;
-	b=k+rpL+3hROH9Uzz0uzvJRH1EvKEfijp36cPkxglNjwB4lmEuKUdUr6SDB0OLx+fTXlkQrW
-	6MwrirfgFW0UF2VbgiputbDY9JcaUQtNOaNNU6959dqpsfrtwfJoAmeahrhIqf9sxzjFZF
-	rsFqaEAiYU6xJzB4pcm4xrjQOR5dBHQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sjeGNUTRu2TxaiR+y3T0ejou+De0JFn1tmqrXPbKj/s=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792558670; v=1; x=1793163470;
- b=P1nAFsAZzDdN1cB/IenFnLQPPipDFBuS9xym0lWq5mfYtRLAmQt3QeAFqd9UdI9Z5L9z2SEB
- NkcYKNd/A305qIJHE0prhUlfm8WKsSHDgxEauR4yWMbISsWDa+qtw2breNYExxYCEAtViGNp8eK
- VBrXq8Bz1w3n/fLR8eQeH2sQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7971245a92a56791;
-	Wed, 21 Oct 2026 04:57:50 +0000
-X-Mizu-Trace-ID: 7971245a92a56791
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: songmuchun@bytedance.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	osalvador@suse.de,
-	maddy@linux.ibm.com,
-	corbet@lwn.net,
-	muchun.song@linux.dev,
-	lance.yang@linux.dev,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	ritesh.list@gmail.com,
-	sshegde@linux.ibm.com,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	qi.zheng@linux.dev,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] mm/sparse-vmemmap: map shared vmemmap tail pages as read-only
-Date: Wed, 21 Oct 2026 12:57:44 +0800
-Message-ID: <20261021045744.93554-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261019090830.1917657-2-songmuchun@bytedance.com>
-References: <20261019090830.1917657-2-songmuchun@bytedance.com>
+	bh=xqmI5oTYDX1SfPqyVBb8xiQJ7sNcHlpo9oEZ0gRtz5M=;
+	b=qWwBlbJeuh90egoC5zPK7wmaRx26dIFeFeB+48tmBosetorDaAg95zZDGAt5GCXEcudVGa
+	LQ5G1QoTIEvc+8ASJvMHztKfy0xuQ+2WlqUHfBuuXi25vfemoy84ayli6wlb47jWwyWja+
+	XwkW+g76mHrebD0jkDQ9RA+1/9pUJXE=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792560001;
+	b=UY+n42k7/mAxa2GwSwgBRRSKoHTHX0h8FdAAp9nHwukuH+HbO+jvsmkbgapFEubof23Csh
+	wI2UZKmMIdklvJc4gaWdrUVLEpCOS5tPVW3PUPeFgifculRUXmdViKax50VRkZ0j/qhebR
+	cQctZz6zHOtBVBPjDqbQDEYr8jkNN14=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hyzm2CuX;
+	spf=pass (imf21.hostedemail.com: domain of jrhilke@google.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=jrhilke@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-151de818519so1652c88.0
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:20:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792560000; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jI5/2EEhpVMXVLTQ8OibLDzTZLMNkF51UkBmMWzp1XbxtkYadfRyjVJ9WUq5EMmXV8
+         L99tqLqXvxAoghCC694no+uWdojIJe/q9YDDdhAl1DyephI4HBAk7m13oktgATIy8CuG
+         Y0Qx7qyLYCBAUdpPba0/izyULodfl4ZjNcgBJnBGvanebNZU0jWnY2y9Zs1yqTSH7msj
+         IiZjrDqzLV0OUNlGzefjngpzB25VNx8PcwFayT5VdSE20RFU3r/0qvk9lOn+Ziw8wMcp
+         A+ANEk7skv1QZUKJvLrRdeRG+J+IU8nDGrdlM5GS6qu8lZfB0Df/68m7hpw0dfvmQy4j
+         dcMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=xqmI5oTYDX1SfPqyVBb8xiQJ7sNcHlpo9oEZ0gRtz5M=;
+        fh=KLmi0Q0mpD6XDoizul/kaAQfqZVT5wXwoEfldRYAmaw=;
+        b=ipy2Kni0mOr75ba9Ere4SaeaNfEyvh/QajSzT7muyZRo6c1rVodv9Ul3q5z8XTXUrm
+         NxBboSfgAFEPY31Gzfbpu1CDA5w5klUU6IJNX6f7r4spsJ75clBAhLi6kG7mup9yNUAS
+         s9NPngeyOGx+rW4VKop7YCgl28646ayWHUMNJS+qzSaygKG1Uzm+jVGp5cnSQyXIQH6X
+         cQtyn0w/1pflZHUjZoUFmw0La4uRBtp8Bz+hD8NNO4bU23QFxqb0euGhlkClFDEh79fF
+         W+zG3eFr1PmQcE980Bc6UkAYqTR7u2uLSEB4Ldle/vG3j9kTHxLFNhzRdiVJxr5G4nyI
+         8/ZA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792560000; x=1793164800; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xqmI5oTYDX1SfPqyVBb8xiQJ7sNcHlpo9oEZ0gRtz5M=;
+        b=hyzm2CuXk/AIIapApB/VRPgdn9Yi20aXK8IUDM50flVRabiqklKf6gCDXDquJ6js+s
+         toNFxIb/0bkwfI1RzsoGMoTiYkU0cOfO+kAzhwLoDhOPjstM4+ugRYQ5uQx6BVEnPEKI
+         BRMq/hf8Ec8RAV/P+QXAf25zCHjKdBaLmcZ5rj/UCNxTxnvQXqyM9MmA+h2uV93I80hD
+         IBuBz1dOgaqRX4a+AXVM8zi1Cq9X2eg8zB1gy3lTEKzrg+eGvBxsztun1ad5ajdn+EVH
+         5u1xjq2y/ZnOsmxE8NvGnWMZ1AALB3jq0wTLFoIXxTJxehG37wDy8A9XezhBsfarGPxb
+         XBug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792560000; x=1793164800;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xqmI5oTYDX1SfPqyVBb8xiQJ7sNcHlpo9oEZ0gRtz5M=;
+        b=IcDE/2HzYLvJo23KNPiKgnrWUas3zUxcSZlOfnYqJHjS/scmfDKT81YtSNFdd6eWh8
+         M1oPv6jq3EJa1+AjIkHcTLoohHXR1Rop71z6B20Uuao3rC36dmuU4rVfobGcS/0HRj0O
+         5zyWtEKuyd9EOGfb7s0I5NIGLYDMFlgk/AzBXw7KKq25aIisZF/i+n0wmautyzEIOxt4
+         Qde3arxAyTdueLQA5KeglOizQ1dVKBJUyOQIywJnZowy3JCABN3XgMQDHOlBd5EXdepI
+         6+zl2NAgy73FlJJZm21GznbjGY6wsdYL4b1+Mt8RFCFClwY5isawIY+D34kSP2vrHgau
+         Jesw==
+X-Forwarded-Encrypted: i=1; AKwUvBwD2M3KfaxTOPVPi5uCKufCh0NR1g18GqS6MEczy56BLScF9m7zmqWAoW85HvfNudqSVJoveYTnnQ==@kvack.org
+X-Gm-Message-State: AFq9FYL192T1cXBoc3CaahUh/9v7iiU6o30WJNxGbcurNFQtxEuEI9Du
+	oFjdpfOmVG7WsoMaFrUUuTu5iD5o6rCKMnigi0tc90VFp2bNQDxnjw9p0rjRLBa4Z48DAZH5ymm
+	p8UE5MZ+JYGv+wtDoVgP6tBK9doo8PS30chupyig=
+X-Gm-Gg: AYBFou0gq7jq4fEWk5Tvi32QIveqbfXZMphwAcWyvZtPGdlZaeDHONdMQrp7E65EsBY
+	R4g3GfOtMYg6hABKfF12lPy+ncU2tRKj04pmcKMCfrH8FclzrR68RhcHH6M8VsObqylc6yPszx4
+	b9G+Yi3qbYjPApHhR3kcvT4MYuiZfrFcOPMmliUUXs6HQT0vVSseyiMG1MMKWSRI8taB1QrRDMw
+	0aLSpuwnzbUmOxMeLIxvGT+va608+amaggU+ROGt71Ma+FQ58nvI7ZpEEUMheZrLcylsFBsbr3c
+	ers6QU+guPz8zy01LPXK5uhjv2DyMduBBcQjdalzQx6m+wYzhqE55BelfQ2hg/7mtPDizRKmIUR
+	wrgeqRzGn/hbe6cUuj2NhBndSvcp4wuI1o0XtJQWhC+IC08xwvNXAcN24JR9txjuKcoIelBQCt1
+	5wz2/4yfmHzCDEEgnlIg==
+X-Received: by 2002:a05:7022:5f1a:b0:18a:392f:abb4 with SMTP id
+ a92af1059eb24-18dca4525e1mr532164c88.8.1792559998707; Tue, 20 Oct 2026
+ 22:19:58 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 43A46C0005
-X-Stat-Signature: kappn4wz6gcuag5ichnbnk9tuy6smyxr
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+References: <20261019213054.3157159-1-dmatlack@google.com> <20261019213054.3157159-4-dmatlack@google.com>
+In-Reply-To: <20261019213054.3157159-4-dmatlack@google.com>
+From: Josh Hilke <jrhilke@google.com>
+Date: Tue, 20 Oct 2026 22:19:46 -0700
+X-Gm-Features: AclHuK8_I0lbhT2Ykck25LC8FtHxcLqDsxEKAtZfCcYcVX3702p2AtjdvdGdqto
+Message-ID: <CAAdrzjuxL-RCLUK33WYpdvDV38+kFTmoTBVoxK9cw9Voj38wcw@mail.gmail.com>
+Subject: Re: [PATCH 03/10] PCI: Factor out bridge window probing from pci_read_bridge_windows()
+To: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	Logan Gunthorpe <logang@deltatee.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
+	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6988F1C0003
+X-Stat-Signature: 5yx6e5e5khjg383dn615qc7ei7w9ewcz
 X-Rspam-User: 
-X-HE-Tag: 1792558672-244571
-X-HE-Meta: U2FsdGVkX1+WphMX4InuQu63MHKQTnEtB6QEiwkShjhj2VhGJu0Br6+hhqdhIUAW0PWMztZHWydpWQ3MzMz563lWZZVPFalfWJGnC+oR0tiVlBIsyXJVokA8Jbo4ITVASZTKcgIQTAUjsjri+BQC+eG7fNfMWC0r3oQYByd1Mdx3OhfxbxHgKvvg8NjtIikZsj2kMT/6pDQLqJHd3WDiRxdzv5EnCxWQI+hM7qihzQkcjG5vLm0BpjMOToN4lJfxINdvQczjKxx1K3fX2VoKV+f+OFSs9r6lQdkrXTuavkixeIcmLpaKg9IEviH7gnJKP6H9IIlkjCmOrEamttLUL4RpQdNdzfWhp1lw0JzpEoPLD2WCLEkZ07LgkC3eGnqpkFzcOMcKDpOfWvZf8EAx3M98xgoCGk9yAcCeTHAYpIWc+viYE+rd/fq0W7A6vQPuOu7j3ronAXC6Ty5DO+/FWbphrxrP967aO02iGSqsq9uZXhQJZarJKes5VelFEDlqVw+kUy4nNa0/8vA0XblCHSAaJPx6Jg3JZOzJb3EJrsiUtX1n3ekVT7lo0oSi7YvrO9ADSVIAKrHWIrBhnt3tnriXewMryhqQLPmgT+02Y0m98+BKR0c9srHTEeYSFGKrODukz6+yDTwLn/gVh8tKC5j59yBoCa91T8w6ZXQ/J8amSwRoPQqHOWaE1g+BNxQbieRFIR/x1JBdYXeOM2S0/gWNq4/82BRMsUulikDUPfornNXvCNmaN1dn85V9YJDjj52f+3kuB3NNdgPAO+ick9I6VR4A+klMv2DB/fpiffLp4Y9Bf4hDFcHhUKCsI9Ehap8u6pxtEwJNYIlTbUxHS9e/6su8S/c3gZDrc6/nh9iHX2dwsdGUEUueU3PgBJkPzZLrZAqoWGSyHxrQ/aQEItKNBwYRpuQLF5lYNWF791yWnNKe4o8BmIDEvQzMKsTJJ8uyk7c5lKEed41VZct
- LbjwVhh4
- T83dNK1MQS/nWpyWJZOgEFmhahflQTdshypSCxsWEq5Bmwm5hCpuu+8NwoSz8mvTDjp+IruqmpMLkd9ZFkTfg5+1NPtzco9rC37Ev0dS4NGko9YlpCQrijPhxwvu+kvIZl7B7dj2NfKjvd3rIuPYclRcNYkpvia+QkBeVHrzkZEL5+qDDuTOibi+bg/EUTw4HRr7IeG+R8AtD4n1XtbMbDgOFiAgdTN77nZum35ldFVK0jLqRVfHSz1gcNyJOH8S+IzKGUz0UuRa8t1k9nAFTDrqZ4FAC1iSGCJOcu8+rUmhsbFs3XgiBemEHImXGy1DXc7KfvfTcKwbXkEU=
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792560001-64003
+X-HE-Meta: U2FsdGVkX18iQTWILTgWAcJFdRchmF1HwwgeYX63Qv1C4udQc3m7H9hCj5Oy3+z58Jlg5CAm1ohBWznnYsFtFs+VaIDRauHfqKkdvo8nXIeyUM4YPlfArSIodHbowXOC/6xYOnO4VT+CbQvx7naERupsAJ/qsRLLjc927qupC88N5F9n8861OLdTw0r93a8jv5ETVcY2Zl4aQ4dp8X3+YYDkjjVjI5KLMq5Jdre7BCHDmAxx7GABZhQ5vqPgqIDLmxs9KAccZ+UiACJXr8DfyDpDYX3bm6DHc7TKXlIDCWx1xosmE5/bDOp5r5QHtQvAYQ3qp0br021iyB8Mj/vrkrE4/ejFZ7UUfQWEllMr8ae02Fa2eLynfREO6Sv2RNIglyjHnOutfucs/PrcSoJJBN3WnC/NN7VqMYu8avqBkkQeh5hZPg4can7be01o+CqJnqfweC/Lqof1W2Jruy1XdnrYXrqLIElYdGmx4teasZ+KUk4jrjeV8FBEOJQ89oVjpT4gNXjRQj1/0f/W+pxh4vj4Q4IpPmN10mIG8aiqyKvbmavkfzIl/j1StZppgDiqcVTMIARX3XGvCav3y5mnGfQEFfS+l6T2gEXdNQ9SiVmfRQNmncn/i4a/Ls5vjU7kNDkIUpY4/HJkC5XmnaRcPlQNiQZ3/RDYpB4fmTXHE+/zoBdGSXN7gxYz8arxuZtHGL0qF/YsoOnyLhTYet2ngYOGwOMAetQakScIKjnZ6mfgoN4G+x2OeN2N/U7sbG5St5CCGnEt5F5qwTdCDJxN7vX1Blcw+2QHeRTXLo0WqpTssesHEweZ69JXznEmC32zVPfCUzwlW4PBDds67G6Z18gBQUwZenC6h4CmrNl0g5tKiCBQoWxvEcLOiwVS4jRR1AFGLMWoFgfmhDYyMj37Jp0n3jHwkrPBDF4GYCAmqumDbrUV4oFG0K6uloNcE0rsy/xnVAkyOwmKBugEnzq
+ FXrKBMrE
+ hPd9xLmpjjkAn975BEo9/vQt/bPhRNePHQhj31U/KeXmGbf2KpYpJYk4eq3W/PcAdoOb+0SDYphLsaVrEmeeF+P8oXKC+r8D3rSCSQ0y7ZJltuJTqLzS5/o52dGf3z3M8hftPXPRKpoWCbuOaMuEdy5Rf2ObR5CAFOuzn7vct8pYdOTJ5JDZRvCAT8qjsKUw/2Fef6XHU2OxHsSuhea5MB9DuNNUGqmBdmEU+wxnNsgW6+L/87IbIbS1sR5F1vq79Wby62f8wiygr4Yl5EWsazNbx0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,56 +150,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-On Mon, Oct 19, 2026 at 05:08:27PM +0800, Muchun Song wrote:
->Both early HugeTLB HVO and device DAX use the common vmemmap population
->path for shared tail mappings. Map these pages read-only so that illegal
->writes fault instead of corrupting metadata shared by multiple tail
->pages.
+On Mon, Oct 19, 2026 at 09:30:47PM +0000, David Matlack wrote:
+> +     pci_probe_bridge_windows(bridge);
+> +
+> +     if (bridge->io_window)
+> +             pci_read_bridge_io(bridge, &res, true);
+> +
+> +     pci_read_bridge_mmio(bridge, &res, true);
 >
->For early HugeTLB, this moves existing write protection into initial
->population without changing the final mapping. Device DAX gains the same
->protection.
->
->Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->---
-> Documentation/mm/vmemmap_dedup.rst | 3 +--
-> mm/sparse-vmemmap.c                | 3 +++
-> 2 files changed, 4 insertions(+), 2 deletions(-)
->
->diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
->index 8c287ae3f86c..76f903975a40 100644
->--- a/Documentation/mm/vmemmap_dedup.rst
->+++ b/Documentation/mm/vmemmap_dedup.rst
->@@ -193,5 +193,4 @@ There's no remapping of vmemmap given that device-dax memory is not part of
-> System RAM ranges initialized at boot. Thus the tail page deduplication
-> happens at a later stage when we populate the sections.
-> 
->-Deduplicated tail pages are not mapped read-only. The mapping layout is the same
->-as HugeTLB.
->+The mapping layout is the same as HugeTLB.
->diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->index 40eba70c0048..ba0496daf4de 100644
->--- a/mm/sparse-vmemmap.c
->+++ b/mm/sparse-vmemmap.c
->@@ -295,6 +295,9 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
-> 			return NULL;
-> 
-> 		entry = pfn_pte(PHYS_PFN(__pa(p)), PAGE_KERNEL);
->+		/* Map the shared tail page as read-only to catch illegal writes. */
->+		if (vmemmap_optimizable_pfn(pfn))
->+			entry = pte_wrprotect(entry);
+> -     pci_read_bridge_mmio_pref(bridge, &res, true);
+> +     if (bridge->pref_window)
+> +             pci_read_bridge_mmio_pref(bridge, &res, true);
 
-LLM pointed out that an AO MCE before bootmem gather could still reach
-TestSetPageHWPoison() on a shared tail, since the head isn't marked
-hugetlb yet.
+These two if-statements are redundant and can be removed.
+pci_read_bridge_io() and pci_read_bridge_mmio_pref() already return
+early when io_window and pref_window are 0.
 
-Wouldn't that trigger an Oops ... Anyway, I wouldn't expect to hit that
-during boot.
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
-[...]
-
-Cheers, Lance
+Thanks,
+Josh Hilke
 
