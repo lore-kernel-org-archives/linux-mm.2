@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AF9606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A303606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=smBs6Cta
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=lovLgu/T
 Received: by kanga.kvack.org (Postfix)
-	id CDCE46B05AE; Tue, 20 Oct 2026 22:39:52 -0400 (EDT)
+	id 2F15E6B05B0; Tue, 20 Oct 2026 22:39:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8D1C6B05AF; Tue, 20 Oct 2026 22:39:52 -0400 (EDT)
+	id 2A1B16B05B2; Tue, 20 Oct 2026 22:39:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7BEA6B05B0; Tue, 20 Oct 2026 22:39:52 -0400 (EDT)
+	id 143206B05B1; Tue, 20 Oct 2026 22:39:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 859466B05AE
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:39:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E297C40445
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E2AF56B05AF
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:39:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 730AEA7EE6
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:39:53 +0000 (UTC)
+X-FDA: 85345078266.04.A28BCFB
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B0CC780005
 	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:39:51 +0000 (UTC)
-X-FDA: 85345078182.30.E77A9B8
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2FED6120007
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:39:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=smBs6Cta;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="lovLgu/T";
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792550390;
+	s=arc-20220608; t=1792550391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UZtXCeX4FNS8qck5gj1e2IPK+BPL6kr+hoWf2wAHxQg=;
-	b=giid7tGZ4PZD1t1p6KcH9CH0ChPDExNjbbBIZf06Px40SLiucHhf6AdEkX6ZDxo0AZtCq7
-	IFbC9feYZ3lBCjW6OgLFBbEfDj0uv6XENa27y0c+AYKjYFzmR1GSAoiHYPc2UYo2kYIMUn
-	BlPLiZKpRlizCJqFUAXr7fJPXS2pjUc=
+	bh=/jQfbSOqJoBgAbQs/XcGflZND2lk7u6m7SNdjISK0qQ=;
+	b=WfZyBzH5WozALpkvSTucr18Q7kM7c83D7DmVcVsdr5n9bfJLh8KKnRVHnomBgpoIXeR7ga
+	klyVrCI5mZpPd/UbY9G0HeU8dPl/xtACgkkqOOAbX9Z365wz27OhnpNDesP74S++S5hERx
+	qtPzF6Hk3uWIu7E72zBBoW25oXyddE0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=smBs6Cta;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="lovLgu/T";
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792550390;
-	b=JqHmvAZyUFpWLjPH4VxP0UnNRR21ZOLlkFzup15ikpNSneFWFqB91SZ5POlnIFxWoB06H2
-	XshSqn0bvVxZS5BkMq3ya9TAScqnjf9kRzvQNr2tuGWdMpiGlvJFFySWbVC7yVBoTSmJTH
-	algDOD145WG0kLtH/EmydQa+SNJzzic=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93ece7a73b9so33907585a.3
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:39:49 -0700 (PDT)
+	t=1792550391;
+	b=UZlDJvhMM2m6/rrYJc4IsI3CcYgvfUW/hX81HH3AIKV7v3SznWhdXJdc9GwVU1eQt4i6Qq
+	XrYlH2uyAPCESdPSgUjQto2xoitRpZ5tSzrZgUzeQE4IzukCKxWB2coLL+1w3hxcfxwvIR
+	4otxq3HWKri/dsuulE3VH4cV3Xx4lvI=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-91b83459526so3423106d6.2
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792550389; x=1793155189; darn=kvack.org;
+        d=gourry.net; s=google; t=1792550391; x=1793155191; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UZtXCeX4FNS8qck5gj1e2IPK+BPL6kr+hoWf2wAHxQg=;
-        b=smBs6CtaM/4tdRfQ8gWg9UAK5g1Rqp2HzLawghSB16io/K5oWQ/Yv3xThDt6ZFJ9iy
-         WWM64HKk0UFps8WDAEqSWx4z7thzrgDNjtLjAs48f+GvlDuUFsz0I+ESm4iRHHTnkD5q
-         lebke05S390qYXIr+XXvY7g/gwQHTsff/MCZYsKXarYwPU/uJ050s7kAIjwGeZBLI02w
-         h65Ozb1d9lszaHscY8Nw5G61TF9biAtmypDmhtHnyfXjj3AlmPH83WCcUHnW2KScpCrX
-         m3dx7OQFXJINTa11/GjVgpLYI59j9EH70f3bFLQKJp3QHlZZSqEEYg+GPOiT2M2IqcFD
-         dB9g==
+        bh=/jQfbSOqJoBgAbQs/XcGflZND2lk7u6m7SNdjISK0qQ=;
+        b=lovLgu/T5zDOvHGotB9o9kqlajZvspw4YM8DkmoIes/uyzexC7U7p53WulOkX52e13
+         0CCrKaKl+kk3ItHtHZY2lUSJVX+u/ci8cpzsH3ysL2I310xP2NnldjudvJ1u7wgKQxtf
+         8Fr+2qjC/RM5WF7ugqq8kmB3yCIHY1Bvy3NqRyWp0PTlCujr/RvRyOcpqjA8FUI6V3i3
+         PW5CWzGKtt7y7s3wT664VGMkOexSx9mXYrt7pmR/3Uo/wWSGVuiw0nwgu9pA24Z0L61X
+         VcLVFoy3gpd1gVamf2UiORzcXntrzZYh3UO9ZSqAdZebl8vfodVwLiMTPtAA2stJYgg1
+         yNaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792550389; x=1793155189;
+        d=1e100.net; s=20260707; t=1792550391; x=1793155191;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UZtXCeX4FNS8qck5gj1e2IPK+BPL6kr+hoWf2wAHxQg=;
-        b=2BrLV77F+CXV8RHtBC9Ad62BjdOKYZeaajYwEFQxoqgdEGqR5rtlP552kmr/+fpTZV
-         P/Ue363ELV2TSqHyUfqAyWkAfLnjaW9OkOZZUEg69tKMS6YJlvSpWGOP3QtIm1qHnPmn
-         sJSFPf2czRhpqTlTbCv8HOwsum8XrM/LGrxX9ZyGMl9ed09GvL623HYl+lAsHAH3l0rS
-         dfli6jjvQulx2FiZ0Zt3HSgU5fuJjj7OXq1+8dWJQHgBqLKgsYQfAvEQsUCoxvINhoLz
-         qnKqE12cNgnaNYeEPyKwBmWO90WUT91BBLu+fgt/dZcfePrzA5pHybcI/aMyToKSjC1X
-         XxjQ==
-X-Gm-Message-State: AFq9FYKPu319XQDQVclNnhJMjFPtQ8rWiBGAyZQwgRS6EgfgmZSpwolv
-	ZTHu29WyMLbwefO7TOe7K8p/agsdT5b0VoOAx7NN8+mLWgLBsECQlCcD11DtO2Qa4AQ/95mCAua
-	lj+M+
-X-Gm-Gg: AYBFou39dlMYMvwZqOe54m8Y56NN+8+mIJg1N/XHmLrJtQqXYO7s8mgUvhf085v0LPf
-	KU68+FWdQgF4KtnTsvGVfNYNDRuLqJpVgtpnUVLaIZB2OPjMzbXabBw9oaIV0dFRuXZCoATrDhS
-	U5cYet4nA2HPaG2CfSgGtw3Q69+CTq24v17cFvd2HzyreTA0OfTWCbztD9UdSKGy13s62tQvOtz
-	3ZugD0bWBtR/VV2K7NebbkLQTHCudZLKOBDcV5q0QAJPLJVgKTjPTB/4oFW9zrMAqX58UWgymTC
-	lDTwLxfvfddJd7f/ixIuvr0XOpFetzDWcUDRVYi4eCjC46pFSTVqabvSYhAqZ6Erb7+f51fhLlM
-	mSatWgetE1FweyIgvNuLBVBgVI690fJ09yJaGfQuXEestUOfwd3JVBAgrprq01L5pAHsgY+2SbF
-	3+p4JpiLHui1Io4HIxgASB+RVzAuYIfFEJv5nLpc9w82xhi9hpUwaAxKpPYP4sqyfd1+G/K2Hl7
-	4wmTPFKVtH6egpfSS22zucgArTtcd5yE8/4LQDcfWBU6hj9XwJBIatbX0dewUl9nahav0SXcK5X
-	VT15B7Puvo4NqNrlZPHpWPe2XXCdjfRaEqvxjboEDA==
-X-Received: by 2002:a05:620a:3913:b0:93e:66e6:fa4 with SMTP id af79cd13be357-93f57f05079mr224040885a.16.1792550389393;
-        Tue, 20 Oct 2026 19:39:49 -0700 (PDT)
+        bh=/jQfbSOqJoBgAbQs/XcGflZND2lk7u6m7SNdjISK0qQ=;
+        b=PTCRo5FNMJ/JzGPeakc1HDtFNmhR1XHqS+Vf7OvDSJjyc+I3gsuMt7tt7dJuBd6JEy
+         zom8KcO+FZoj/itSVgwhuC6AMtUcFdkRUs+SguX+Zb5mrNqAXSoAevArZVYCAls80pSf
+         T50sZZzQ2lYh7p0YEitZuLLUWQWzYWxrUjSwAye6qjUPOtxQjSKywcWWB0J5aQwmfd0d
+         k6/+0p9kO1DElxH15NA+ECoH4LX0tsDID0GarPSoJVkpIDt0ZnZOH/EvhRMerSPdu+Jm
+         iKBKFsxCx/BeKACmDZ34ETQTcdLRHOLGac24UygEnF5mpE2Zb5a4MEe4vkoi+DDucrHy
+         sh5g==
+X-Gm-Message-State: AFq9FYJ5OKiRCi/kRgdB6bs2Rj9y5nNe3WtZAL53zg07vK6uXCih3LEX
+	QQHLLJsNBtDIx3OuqnFOO1kjPB/iPGw4v04FV0M7qpT0VylBg6OxK0sWRHILHvKCNTaIb8RvGo7
+	xSFoN
+X-Gm-Gg: AYBFou31gBxHUk1SW6dN6tGq1hUfuzERbJgjDZKWoqLjL+q4fiLDb5NI0rTrKuGXo1I
+	ruq2BBVFoLln1tTUEjaNJLCh2bnfpthA5Uy7Djmdg46p7+7w7njV5tnBV6kHZJc4PkMh0NTMOTh
+	o7tCWNjI9PlyKf593GLAfg3jfN0N7sDgeMTr8vgTqhbmfLW0PM68fYdwywx+H5B7bQ3ZllMPoBD
+	ZEzt4//J91K7k6Qu7zTjEaHJA+iFx2QGPFHAnInsOwjUvpy8GwowrJ3rIHOnQKZfnnSwYEm+FHN
+	+c7efOPkkeWyoaAuc6jBfg0lK2UwnJo0ZzfrKEekIkurnmSsC9IJxKPKzXqpro0wGPpRl/naa/W
+	02x0vWSTc7KQsRoxZakITxvaWsCcTepVumSFwwV2EjA26dmYMv4u1Esicoh0EblAbilwOSy1B5E
+	ORmCZ3Qx1VIDY1kQUu4GPrJHHAXHMMgAwAP7kCN8mhn6Zb8EPwjDKyq2rELYKNJoVUJCFnUWhuI
+	jueHDNAp5Uc7rtbYlRIyCpn/nmce3wPUtlgR84x+zFlQr+Lg/wTwJ3BIZ/Jr9UvrfX3M7jZUZ1J
+	gRaSMf3BCv2GCvhzj2VKxGq7CsiHzmJO59gb1CJdQw==
+X-Received: by 2002:a05:6214:20e5:b0:919:5a24:d77c with SMTP id 6a1803df08f44-91c12f1d462mr11333536d6.31.1792550390950;
+        Tue, 20 Oct 2026 19:39:50 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c10a45336sm13819426d6.3.2026.10.20.19.39.48
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c10a45336sm13819426d6.3.2026.10.20.19.39.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 19:39:48 -0700 (PDT)
+        Tue, 20 Oct 2026 19:39:50 -0700 (PDT)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -120,9 +120,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Bessel.Wang@huawei.com,
 	jiang.liu@huawei.com,
 	stable@vger.kernel.org
-Subject: [PATCH v3 3/8] mm/mmzone: read each zoneref slot once when filtering by nodemask
-Date: Tue, 20 Oct 2026 22:39:35 -0400
-Message-ID: <20261021023940.1940971-4-gourry@gourry.net>
+Subject: [PATCH v3 4/8] mm/page_alloc: pass the zone, not the zoneref, to reclaim_retry_zone
+Date: Tue, 20 Oct 2026 22:39:36 -0400
+Message-ID: <20261021023940.1940971-5-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261021023940.1940971-1-gourry@gourry.net>
 References: <20261021023940.1940971-1-gourry@gourry.net>
@@ -131,16 +131,16 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2FED6120007
+X-Rspamd-Queue-Id: B0CC780005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3phdhee4zxoy7r54im1heneu84ms85qn
-X-HE-Tag: 1792550390-815739
-X-HE-Meta: U2FsdGVkX1/IvQjs4sUMDsNr3VGepw+Iz8cFDvKi7x/doFPb1hJ+5RTjPHndTNA7aeJukyBzvwr+f7GEbZVQscfolz3L+laI4sZIhbnC6S98cSF4hf9VvDiDl9Ks7j/UI0azSAKK2Fgu6fNacsWOnggByUX0/sQmEdOG7rT/SsLs4dUoDjAmW/VfOp465H8MLqEstKx687H4sHf9imkuuzUPgnQ8fk/u+bAi9FZQ3qOqAZcxrx+2tNJDo1kp7smcoYuNLP3ho5AaLPMPxOU+n15Eu+pwqd/7rBVV7hggfeJdG1chf1Q5lex2DYQ2Oq0Xo1cUUlceLtM8HPAwdYIhz83zXZcnCBtjbZykLIz8lGyKiJcIXqziQuu48ZwtVjtGydEA+DrNJJWq0Vs2s1SolcmIduund1YGJMvKPz0msRaq5QDB+++5JHbgJZhobwDdstqK0WjUMu83hFqbUL7MBCQJwhRamVyXZ18QewafyjSdzh652NII1r77lVO0H/6NtNxSUci9m0w7Ny65kTVdkgmELvUV1Plcl0LIXbx8+v9fiZn3AOAoJQraVLDo9C5FFp8hGEcAkmVqXjA1e7wLElZ7figmrPhI/9T66wprqHBoDuHEZycBctrtsFrGjgMsOpT6HvWDMuNB2KK18YB8cJVic1GW9lcWKSRQ5i9qL9HDH/2GLqunhT93W0PMNX8fPVYWlv5pULx5/wd68zCmUO+mZGERDt8I8c0OaDwmsWVPeXb9ZpkJLdXrnc7hCsq99Xj78C3ZaAIxjdshlAwXWXuKPvqkSf1vqgFJ1tv3vcJvUdunoTNgMGtkCiKtjb+F9xKWo42aWn3/bK5dsTlksqb4lTzuY3px8wFoJOE7QM1knLTd+egM+u+kgdNCEJlwX+mw3vAkJPNHjiE9TBK0NqqfNvWLy28rnHMB0nlPoSOQUuDxzBqRxckGHKDJ3KI+nbx2Evh51UlIc/1DitD
- L1Pwngvr
- csUhqwLR003zem/nmfD7h/cGsoFfUB1KLNAN+hWjY53iOJI3I7GNb51j9ID7mr8XHI8HyA3mYx/qkLmOdMzGCMs6u8Jv3arJ3zaEHKYrtap08J1yapSxZvGdeLDcwdFbmrxOs3x8cjmaD9fFnMNk0p/k6LkRjpALYZ/YVqrmGuOkCD2nNNPWBzZHQxV/d3qRDmvUvjBtHHLQ0hGU3tXVsSQBLDcxtm01lerHWhIOUO6I0ZxV9S5lMBy/i2WNF3Ww0r8xuR/R4kJrVMRrjjFLkQ33xluYoXha7s0ODfQ2D1d6DeY0jOTvZXIHOtk3E9YfDGd2FU3oJovkMdTceH721ZUhRcU48c4pH7ejiAnt9kkdWvOLZ9Wfhk5zQIiw/kybFaQEE8iiRzowUA2xVv3TEa3t+aA==
+X-Stat-Signature: zqe4qccjdibw64e1iejxreeupdmy56zx
+X-HE-Tag: 1792550391-342044
+X-HE-Meta: U2FsdGVkX1+me30uq6ZNbDHUKnhIwh5/+DqiJluLPug6V2470kNqC5OPTo/A7BoWL921+hOLG93G36wVIFvWGRyiABVEa8zivT3ZR+7Jfw7QC6hdFbRkJI/dK1V7JCjaa+ixbsPMnwgWimhQ1hLJ1gnvYNHPf/F23KF5LNPJ/ikTbH7NFPJNpthys+J/rv8Hn+368GRgE0XIfels8bSCgwJ1gPqTUTXAXq41g9wnODvjAii6OUuhdf83HNgiBzWbNGboffJtnAbItyzbZwk+bVbBLFcRRG6mOCYRSQawBalWI5bRjawTNPsPR36TRysM+bpJ29ncVFhhy3MR+ucHrux/9O7Y2wWDrVHMoqfmRec0pssw+lqyJ2PLLt3Pkt9WzBtI893GrACngimaO0qsqDCt4nKfvQKTOhFDCBa/+A0ep+sfGdFDsOuOpxSIkow8XiUrE77mkD1p9/OkKLHZH7cbxUX7Cd9xyJQqpxw+LBoNcGVhTpwrS05U+QyFFddFiYrqt1l+5vAx4LmHl80LVArwLfcNcL5zF5OQntFpvpsHfsxJcGN4SiPmS6JjMgCYJtwVa8fzcDPTW7aTR8/mp21y57BuongHkVuBmib7UCqbVD/ESL0DdBnWbnTRTu4WVtyBchx1nsUfWFA+N3/b+6Q13PjRe+l2AkGjgqxzFM/JYGmCwx2rrspIQbgih9jahkWnAeALlejKT8Aiv6QSIdLuWfrNFmeha1GnkU0U6xKFKal8tRwcdgRq7uY3P9J2bIwkEoSiGyBkphal7ylJAR4P4+vKGWNrPYhwcHgipWybeZGIT4OI7ePjlVqf+2zrq/smcciqV7zuQi+HLk/fmsGQTQvxqLnkrj66bDTFBY05OMTHDswxXPhcnBQBJkk6Cdd/lMHRpyvxbuBsc6Ufz+c/gc1ttH0V1xAP12d2U3Jd1PFd4iycImmbQl8CyC5djKMEvVy09Q979K7vOxa
+ crKOcOYZ
+ HCTVzIF2U+JTKHVKq9VyJ0KMx3dv/O+qhFf8ffqApnsbIh4DhiV2dSrVjv3UD3w5kehX3rzUo2tqV1mbUFqyIkBhGlMK6NcQXQ/X8ujZaVOjixZnd5Rc3d5w9r6jAgrLeM7/6nWVeqc+QkR4juaH+OaCaL2bUA5ZuBBWrnfZmdmIZYT1Dkwoj9LbiUNq770JER2KYqLjlaBHK1a/PRjfmcgl7FUJauVjfMsJGDyAXUSHeXITugZtgr8TfI0BOY1lCBRFcmRKOhXDLMYMj/c+e9vs9fvSiei6Mof6dAwrAopSXHHzaqN60RpNFJmvYUOtYG3CBpV9ExXRXKgsY0IKG0cYwhwQfHA3u0bhZIvyrMWygbYtExlK9Vr0cbp5WO1/jph3c7kJjjvdjixuoqhy403OiXzi+yQTDLKo4CEITPe02FrosFnWWkQOaIrfnlS63iRe1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,75 +149,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__next_zones_zonelist() tests a slot's zone for NULL, then reads the
-slot again to look up the zone's node. Offlining a zone's last block
-rebuilds the zonelists in place, so the second read can return the
-terminator:
+should_reclaim_retry() hands the reclaim_retry_zone tracepoint the
+zoneref it is walking, and the tracepoint reads the slot again for the
+zone's node and index. Offlining a zone's last block rebuilds the
+zonelists in place, and the shrunk list's NULL terminator can land on
+that slot in between:
 
   CPU 0                             CPU 1
-  __next_zones_zonelist(nodemask)
-    zonelist_zone(slot 1) = NORMAL
+  should_reclaim_retry()
+    zone = zonelist_zone(slot 1)    /* NORMAL1 */
+    zone_reclaimable_pages(zone)
                                     offline_pages()
                                       build_all_zonelists()
-                                        [MOVABLE, NORMAL, NULL]
-                                        -> [NORMAL, NULL]
-    zref_in_nodemask(slot 1)
-      zone_to_nid(NULL)
-
-Current GCC and clang merge the two reads, but nothing requires it. With
-mm/mmzone.o built with -fno-inline -fno-ipa-sra, holding a nodemask
-allocation between the reads while the node's last movable block goes
-offline oopses every time:
+                                        [MOVABLE1, NORMAL1, NULL]
+                                        -> [NORMAL1, NULL]
+    trace_reclaim_retry_zone(slot 1)
+      zonelist_node_idx(slot 1)
+        zone_to_nid(NULL)
 
   BUG: kernel NULL pointer dereference, address: 0000000000000060
-  RIP: 0010:zone_to_nid+0x0/0x10
+  RIP: 0010:trace_event_raw_event_reclaim_retry_zone+0x57/0xd0
   Call Trace:
-   zref_in_nodemask+0x9/0x20
-   __next_zones_zonelist+0x23/0x70
-   prepare_alloc_pages.constprop.0+0x16c/0x190
-   __alloc_frozen_pages_noprof+0xaf/0x330
+   __alloc_pages_slowpath.constprop.0+0xa80/0x16d0
+   __alloc_frozen_pages_noprof+0x2d5/0x360
+   alloc_pages_node_noprof+0x53/0xe0
 
-Read the slot once and test that zone. A NULL zone still ends the walk.
+The second read follows zone_reclaimable_pages() and a per-CPU vmstat
+snapshot, so unlike the iterator's double read no compiler merges it.
+
+Pass the zone the loop already loaded. The event's fields are unchanged.
+
+With the tracepoint enabled and kprobes holding should_reclaim_retry()
+across the offline, the base kernel oopsed in 3 of 3 runs and this
+change in none.
 
 Fixes: 11cd8638c37f ("mm, page_alloc: remove stop_machine from build_all_zonelists")
 Cc: stable@vger.kernel.org
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/mmzone.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/trace/events/oom.h | 8 ++++----
+ mm/page_alloc.c            | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/mm/mmzone.c b/mm/mmzone.c
-index 9cc9ef588580d..009f1dd75dde8 100644
---- a/mm/mmzone.c
-+++ b/mm/mmzone.c
-@@ -43,13 +43,14 @@ struct zone *next_zone(struct zone *zone)
- 	return zone;
- }
+diff --git a/include/trace/events/oom.h b/include/trace/events/oom.h
+index 9f0a5d1482c44..cbcf6fe4cc615 100644
+--- a/include/trace/events/oom.h
++++ b/include/trace/events/oom.h
+@@ -33,7 +33,7 @@ TRACE_EVENT(oom_score_adj_update,
  
--static inline int zref_in_nodemask(struct zoneref *zref,
--				   const nodemask_t *nodes)
-+/* A NULL zone terminates the zonelist, so it ends the search. */
-+static inline bool zone_in_nodemask(const struct zone *zone,
-+				    const nodemask_t *nodes)
- {
- #ifdef CONFIG_NUMA
--	return node_isset(zonelist_node_idx(zref), *nodes);
-+	return !zone || node_isset(zone_to_nid(zone), *nodes);
- #else
--	return 1;
-+	return true;
- #endif /* CONFIG_NUMA */
- }
+ TRACE_EVENT(reclaim_retry_zone,
  
-@@ -67,7 +68,7 @@ struct zoneref *__next_zones_zonelist(struct zoneref *z,
- 			z++;
- 	else
- 		while (zonelist_zone_idx(z) > highest_zoneidx ||
--				(zonelist_zone(z) && !zref_in_nodemask(z, nodes)))
-+		       !zone_in_nodemask(READ_ONCE(z->zone), nodes))
- 			z++;
+-	TP_PROTO(struct zoneref *zoneref,
++	TP_PROTO(struct zone *zone,
+ 		int order,
+ 		unsigned long reclaimable,
+ 		unsigned long available,
+@@ -41,7 +41,7 @@ TRACE_EVENT(reclaim_retry_zone,
+ 		int no_progress_loops,
+ 		bool wmark_check),
  
- 	return z;
+-	TP_ARGS(zoneref, order, reclaimable, available, min_wmark, no_progress_loops, wmark_check),
++	TP_ARGS(zone, order, reclaimable, available, min_wmark, no_progress_loops, wmark_check),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(	int, node)
+@@ -55,8 +55,8 @@ TRACE_EVENT(reclaim_retry_zone,
+ 	),
+ 
+ 	TP_fast_assign(
+-		__entry->node = zonelist_node_idx(zoneref);
+-		__entry->zone_idx = zonelist_zone_idx(zoneref);
++		__entry->node = zone_to_nid(zone);
++		__entry->zone_idx = zone_idx(zone);
+ 		__entry->order = order;
+ 		__entry->reclaimable = reclaimable;
+ 		__entry->available = available;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 4cf2982c5b107..1bb308296fcdc 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4679,7 +4679,7 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+ 		 */
+ 		wmark = __zone_watermark_ok(zone, order, min_wmark,
+ 				ac->highest_zoneidx, alloc_flags, available);
+-		trace_reclaim_retry_zone(z, order, reclaimable,
++		trace_reclaim_retry_zone(zone, order, reclaimable,
+ 				available, min_wmark, *no_progress_loops, wmark);
+ 		if (wmark) {
+ 			ret = true;
 -- 
 2.53.0-Meta
 
