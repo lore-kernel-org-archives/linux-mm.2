@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5E360A2627
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEFC60A2631
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=k0KvZFyG
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YXd1NmHD
 Received: by kanga.kvack.org (Postfix)
-	id 960716B05C1; Tue, 20 Oct 2026 22:42:56 -0400 (EDT)
+	id BF84A6B05C2; Tue, 20 Oct 2026 22:42:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 911296B05C2; Tue, 20 Oct 2026 22:42:56 -0400 (EDT)
+	id BA8A66B05C4; Tue, 20 Oct 2026 22:42:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 828616B05C3; Tue, 20 Oct 2026 22:42:56 -0400 (EDT)
+	id A984D6B05C5; Tue, 20 Oct 2026 22:42:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 556026B05C1
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:42:56 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 510B41603B5
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:42:55 +0000 (UTC)
-X-FDA: 85345085910.01.12967DB
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7F76380002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:42:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=k0KvZFyG;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 848B26B05C2
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:42:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0EA3B40445
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:42:58 +0000 (UTC)
+X-FDA: 85345086036.02.589E3F7
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5C7F91C0003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:42:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=YXd1NmHD;
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792550573;
+	s=arc-20220608; t=1792550576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YqvLnWab+0OyPrxtGw/AiXaMLQ8o5EGXMAvfXVZT4qc=;
-	b=tHUqrl3xY4FiIlgHtCSlkwSKZ/oV920OOv14lprBYzYzNG2HPzfuhUFmx1ut5hwXHSHIg7
-	7z+arR0ev7hRmAFhbzK/qXufGc+H06dKFUnnHeBlJDBTKZuoDWssO1H0TDTSP+ZMIkxcZp
-	X7W/xwOYNhuXG91HTyJaelTCoGX3r5s=
+	bh=NSNm3PGjiMFoOsDzDjaZU4Z4GyR4rNUbLgx0Nkj+0wk=;
+	b=TWCr/BmOmXyiKmMeSQN8rc32EHmHakoEmGHlHX0giWeag6+CpaokaG7rZsfdEEcoVFzhOp
+	+RNxpJyUdfx/mIbK0lql7/QiUOrx7Fzc4yh92CVx4fKsAQj5Lp+LPcoc8+eW/MCbOZoiXu
+	I1dRcEB3ZUDg23gsOBjNIhcxoRzAW6A=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=k0KvZFyG;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=YXd1NmHD;
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792550573;
-	b=Otng+kXgj9lRTnu5tnHv4gjA5+/te6cZkK8U27AOIPetK/mNZjDFBNqi8umxRxpngTP/ad
-	1EIlg3ksL3kkcGBlkd1Nso6rV3JtbXqVajWZIM68P8mcG27oOjslqVXc4Zk8ACNuB2GbLI
-	jSmFuSSImoH/cyd3KIzZKzhgnQu4NfE=
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso447549eec.1
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:42:53 -0700 (PDT)
+	t=1792550576;
+	b=SP5XkKVc94fddVpFO5YduLDkrMqTx7DFfyWBfoqrUPILfXq5WUlkLNt9MeiaZZ5Mgm+Cif
+	Gktn1Vq8+joia6E5m5UNZARpezSq3fec2Zf32P9Tm4Ji94re5RGjfVf0edWVjDT/vIK51Z
+	W16MuR7Zs70E9lPUUFtEYozwdzhHFEs=
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-15dd124bbe7so461817c88.1
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:42:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792550572; x=1793155372; darn=kvack.org;
+        d=chromium.org; s=google; t=1792550575; x=1793155375; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YqvLnWab+0OyPrxtGw/AiXaMLQ8o5EGXMAvfXVZT4qc=;
-        b=k0KvZFyGPlzTzxQPFV5LW3/JEHCHcehdLRRUZixaESuTEPS4iun6gMd7uWElpUF5AI
-         u49MxQpC246+4ebb9dq6FwXL1GkfTbCQoNHB/MXDBuOsbvmkV8W9rNaChFkK2cFsKnYK
-         Cd+Ndny6D7b/DOfdvAiuDelb1nGUtGrvAdddM=
+        bh=NSNm3PGjiMFoOsDzDjaZU4Z4GyR4rNUbLgx0Nkj+0wk=;
+        b=YXd1NmHD5HWOG7pLBXvSpTd6/yMjxQutCAwP+cDRpryNXpZOdGjUSriiYTsKAbm9qz
+         8TTOJfOau0z8oIt0MP2iLIx3GOsQsrvCiUqdjXSFJ4mdX7fmuEt9DjJ/UiKcgauM53cT
+         IH4Tmhzgsr1vWTNBnyFFsVCKbobP/eT4KW5bo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792550572; x=1793155372;
+        d=1e100.net; s=20260707; t=1792550575; x=1793155375;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YqvLnWab+0OyPrxtGw/AiXaMLQ8o5EGXMAvfXVZT4qc=;
-        b=xovbb7nbABhuvSqQrQfChE4PR8vY3c4PFM/PB1QEbtx9DbUMecRd1GoO9OLRpb5xs5
-         z8GDkChdZtMA0LKEuWzQhU+OSCr2pk1uwpwNs4dVhZ1CmUwQOU3Z2zDrXKfoO+fScTCS
-         mnaMlhcrHeBbdS2nGVkvCreAkghYV/WButmxzK/U50OKJzI/fzdb2GzTD93053RaY91R
-         mD4Ln4QzlV651/C13rVhNcuWulEQJc9fp7BKuGRqCi6W+kuLH3E52EFikzp4V4YVO9e+
-         7LjFJV6OQjJxzrouvISHxeZZQFiHX9oq333rjJe71LDVB42SVx3uGIWUuChwrs2Gi3c1
-         V4sw==
-X-Forwarded-Encrypted: i=1; AKwUvBxbFXvD02xSNzd+XeBltGBicAiAleSfagmzsVh/U6XK2hCohBELp5gNgG+TZ703zssKlrtC48nMDA==@kvack.org
-X-Gm-Message-State: AFq9FYL14/SIXbj+FoTehCVHNQ+0M+p6oWM/c5SdV1UdLj9+g4naNfcB
-	+Fh24MuFcFZPhyZzADqy4B/wr3GqNtBwQRH1JZtW1B/xry4Y0Cj/95nJFg8nXQeuEQ==
-X-Gm-Gg: AYBFou3evOsueSbGrwiNQiAeCaGCJzLkmgm7alwBT1XeLasEZdlNfTMKCJe2nwAFMI9
-	oqcXI/cj3G224KeVa4jGHjgmXpELPvPL+KMWKgOiL/q4V09AyFV2ZFGO1Atk2Rf1y99fmvYC2mF
-	NIJyo0M4eLfdThtVz9vfu+efpX4RpcK8R3VXz3JK2Zb4IX4vjKWQb0CgBcPtRSr72C85rSpl3Ye
-	Eoc0b6t/MFTAgIWohql67oWjNa7IzOPYGatVSKn/++J+djpWZ6VhduWQe178cxSkmqMjWRbpAQO
-	rk8xHWRcrX5N6VzOvvncxkaJ/YCwlhUg7WCDXQqfAvbf2MwGeWZl2cpnBuULJwtDOB2r2Lf9W3w
-	DirAcSPkkxbcuhQFsU08Fiezdphx1+88SY/79Vx+rpBvuriBzlQNeOnOClQveJqqqTqwciDh1Qa
-	OUb9tTPycvXFT+ReY/68ORpr8ZV7BWC+oJ6b71Ap9mkvcTnzimvVwVk+YZ1r3KXm8NA7eulFWtJ
-	7sK4axsjnbR+F5/GME13w+qAFX+eGs9O6uA+GhsMC2HoFSf3xDJhwoZcbj551PreLUr3l3klW6q
-	s4Bne/1RlSB4MgJMPHFf1kK8ymmY03dj+ugYH+hHZ3GB
-X-Received: by 2002:a05:7022:f515:b0:155:7721:3a4c with SMTP id a92af1059eb24-190a660fd4fmr846137c88.35.1792550572267;
-        Tue, 20 Oct 2026 19:42:52 -0700 (PDT)
+        bh=NSNm3PGjiMFoOsDzDjaZU4Z4GyR4rNUbLgx0Nkj+0wk=;
+        b=CNY9lK+6d1gii2H4GmdGM01hWcJS+1hN6RttuT6Baz9f0v8AtdJ0F53NBUQzqDrGV5
+         d4G0RfMETagAi8O6qwvyRAGPMENxv805RvursdR6qs8FK4OEjkrER23d39cXQ9lWXCrN
+         m8BlIySSLGGtZeg/O5Z5SjpBAzA7efsOzOm/s8azMqWX4XPs6QN75JPeWoI2tFIs5LIp
+         cv9zEL/gH5IphcGu+5Kn5IiVNDSS1z/Ax2d4BIc5chBIPmHUZSas6bjtI9HIzntQhFW0
+         +H+4XmZLROouEgRHiqSbajWc1eGA7QWmCCEIgP9GDF+AAzIHyaenlXL3AuecusRyssbS
+         SBcQ==
+X-Forwarded-Encrypted: i=1; AKwUvByXNKZ92TMAWlq7q5nCqWFgzrZNNldtX+za+fAZcf1XP6d9rhYTbOkczzUkFvDUml2IoI/k/Rr/BQ==@kvack.org
+X-Gm-Message-State: AFq9FYLjR7D6ugzIftZrraECYEf99QfeXUxHkvIbLd8dJZmCd3LV3CB3
+	2PYkEaZ9cO0a+TL+IN4K6dbrHKq6pySGYNbkaWkHegmRAIZIld9V9maRyNE66dlJpA==
+X-Gm-Gg: AYBFou0bBV3JBgJvC9L1ht11loX2qGd304BV2up3Qvjtm4hKSBv6u0NaEHvqtIX2HGS
+	GBkO+1Ezax5b+i6A89p47av/lIvuoAxI4UVZT8Byx3pu4cqsze2JX6S6wA6aObsMw9DChTDET6n
+	vig6QsD7eb/6+OVVpbVz69r9iAr5E4kVdbdNUTwp/8a3BUfhT10cmKc5FDHiQ5YRoJ9abcRxMtM
+	FqkvakVv+UVFHWjEyfUiJW3NyhuWVs62gxpZuqn/7hwyCW0au2Y0a0XKpf6z0VkfdnmCLvAvsUG
+	5S9a5lKFYelhkYrKUhfU2qg73wFfV7PFx+IeFlif6Xwd5Ai9df1nIbwVccGkaP03FWZNJ+sqfJ3
+	oIMJXmG/qefLKJ5LmBQsoKbcD88QCR4She6hxaLalMrLFw9wT44snIy+n1/Re6t486PWRHL+YmF
+	9cCpal3yvLcv92b7MWS/4QRLwvZp6PtwGlK4PC3LldpcNCBZDNo13HKxGguKNTdllGBpYvQXqsR
+	LH965aUY9aa+ncZK/1cBbHiQnX/eXZvOqwyf29IrlW5eDYv67TQtYUNQq7socZWlo1lnqnWmwRf
+	vDxxa8MkdXEHs+u850l+19pYivjk8bihQt10SP3arv3k
+X-Received: by 2002:a05:701b:428e:20b0:18c:ad6d:b790 with SMTP id a92af1059eb24-190a81e3c24mr914391c88.45.1792550575181;
+        Tue, 20 Oct 2026 19:42:55 -0700 (PDT)
 Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:97d1:a8be:236d:bf79])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035c0c9a6sm2392047c88.3.2026.10.20.19.42.49
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035c0c9a6sm2392047c88.3.2026.10.20.19.42.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 19:42:51 -0700 (PDT)
+        Tue, 20 Oct 2026 19:42:54 -0700 (PDT)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Brian Geffon <bgeffon@google.com>,
@@ -97,9 +97,9 @@ Cc: Brian Geffon <bgeffon@google.com>,
 	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v6 03/13] zram: reset writeback state in zram_reset_device()
-Date: Wed, 21 Oct 2026 11:42:13 +0900
-Message-ID: <20261021024236.1787884-4-senozhatsky@chromium.org>
+Subject: [PATCH v6 04/13] zram: zstd: do not allocate empty C/D-dictionaries
+Date: Wed, 21 Oct 2026 11:42:14 +0900
+Message-ID: <20261021024236.1787884-5-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
 In-Reply-To: <20261021024236.1787884-1-senozhatsky@chromium.org>
 References: <20261021024236.1787884-1-senozhatsky@chromium.org>
@@ -107,17 +107,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7F76380002
-X-Stat-Signature: hened3h9dtoi5mdioiygddmzih1tg38y
+X-Rspamd-Queue-Id: 5C7F91C0003
+X-Stat-Signature: 7r18hmenj1uz9cz9irkbicg4uzmffbnj
 X-Rspam-User: 
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792550573-635553
-X-HE-Meta: U2FsdGVkX1+UduvLRgWWCUIv+bjNPuFv1MsaD4IBqrRPla4cngfAzKI+F1PX16h3QEOxZH59uMHiayXdAPmVUUuSm3+ydh1FOtw+tWIQ3dL5MHgYNoJo8OJZDXP9HT31Ho8KzFjc/aFs1ckIpv1XDk/hOifjL+eVrfiSsZ84tCcRPFdLRR/0fC0yNahsGaRORTOozBE38xfqD3mIBEs9bRqLDfo06keYJ12Hvl7PILOtcpx0gVnqdIE1S/A6DEzuoKedjtzMc6ZMvQbYEzzydXmXphacLgr0ZHodq38jbFVSDaWqALMUCaOgXZl9EdEcCH2Wo4zSNwEH6Y9xTXLNQVBtsnC34XYovNczZHR0DRTl6Vhz28TcWgaJ1IZtdW2RFYjLO4YuDzmIkM2glf5PJaQww0lyYCJRDgB8VOyRYvAVSMZcEbKEePbn7m7OTtkbyagYHy8u1Ej2Ctfh++8gtebjcS4JS5+nelLJDQh8p+Q3RcNF5fftY8kWLZn57lS7jiUQQLoi/WhRt3Bgh+QWC9U8dlMiFgpY7tJq5mD03RUzA0cnojBlPnd9VccQC5FsRXRqmbu4MpKR22/kt8NPugsgTaED9VU9m9roEG5FVGKz6wqaOK2+xbnjSvMSDFbhK4NyePJx4AnrAC1prEohxHJHJhCLxxEQ79TciKTGntBM7WJb3RZ/plzUBJG7p6+yP2leNRW6ioO8AteGVBy9CyOl+IRqJ+qv13DKTeS7N9K+6qvoXAGcvuszhM3P15q/OaN1EUKWynJB8ONnTjShrz6JE1GAf7TRuw2Wv7JGaNs115iYjrDq+34/rXG0Gs4NboYvEnJXLvHfdUu4lPQ5pDOAvwKHtM6SPzAesL8JIZ7BX9ETLGi7nPXo4oMq/G4bjb9jNagPT2wRfsYf/5z+WK6utagLgqZZLx9xioqMZN03Q4RUzyoSUj9/a1AqSOaJFEKBwrrMlMaDKQvJ2iy
- vNN86czJ
- pbXVT7HzB2hR0G/hvg2ngsrglefN/rer2Vl4wQRijoql4MjFmsuqIuWIejjBYvwMQzcdNRZgdPwp7PVdwg/hEjasZ1t0c3wp3GE0Zh9YzsbByeUGiLSUteYGW/qd+ZNUslJPZ+Ors+eLt5gxF6xYqky8f5b+hqSm2CCWLUuIAA8hgqqd72zVSAwD4Ya0jLtjPkNS6w0wlORCmnZUc9EyvylMfIk+kz6GPViYruWijFxmenmHm7beT4b7cL3F9hP3yUywcZShVFtLrHGqI2RDlznf1QQPIToo+YK+I1RpU+UyFtkhXMcRhPOfWn5TF5XHf+0lYFiKiWXM+LzLgAaoaahamIlEzTLPb+Hz2mc5e9FZA7mgk3JbpbgJlpQ==
+X-HE-Tag: 1792550576-351224
+X-HE-Meta: U2FsdGVkX1/9wARNdfrIT934lVwIA56lM9RTUlejUvsp9pjjM9JVLcjO6vV5BGS3Vb1tEvFxmlIbNpLsfsZI2jDywCXE8FLGr9X2bjkB6HQdTtBIpHaYe2w7aun1iofuLYVTyneLvE4Il7f5m6jWfqh6Qj1uv0qvZxjZmBVOPKaCJxRUwfei7hi2/JsuwM4UKgbzAnBbBjSg76yQd/uOuDcnvghV5cBY5yGd1nB5LGCXCp6g2b8mC2Bop9yXAeFn3/DFNWVygYNY0S+PvnIF6RN1YzxHSZ20Vy9y/z22UJ27Ex3bDv0PbiYge2P0rSpXoI1KvxoUfBu5c1pxfawccOcJTxSDO63h6TqZdw1054LKByLEG+PCxKmSDxywjjagOlm0ydnoYEivKG69Hh+aYJ9aJAvaW/DB8kCag8bp3h9Uo4EFsoaFV0qdYRNQxIbH4OaEIJiDFfP8fw9YGl5g75PqKc5BzDXc7RT7Ki2kYy7Bot/87IbxGJIzccw9H1YZYyI5v+mQz1ksKlcmoalESOSQmUsvxIIVkwQgP1lCHCpI0Hp6fPGUIcatyiGPWkhqtI1NVugP/XDcmB6L2bwMc5tAVJBy3xgCJd8fmaNeqdFamKNqHMIgoS1z4U2DV/gFKm/MVWwDnh2/5L6q/4WVWETEq/L1/cQX7odcEKKgz8RIdXY9Pb594wdcBYK1nCOtrbkgePQmQDNELA49qYhrgQHTnz9ErYRiC+2SmkZCRjaLpMW5y3nDYjOlTyNnRHo6voXVF8Lkg0K1u2grXupsM/kg+K3HbmUfXMrIjm9reCxTiPlp+u3USZWJ9us1R4gdj5G1KIPYieT4R09jWKl0kDSW2lrMFhQ0tGhI4PJZWuQwZPNlmdHZKPI5BIb0Bgb2WlJBKVQHWu4KwKgVPgkuvworEKUIoIbpnk0KefNFkBOv6ZTn1/xDh0ZsUhdgb4/AfdTqqAlaAAq8E+82K7X
+ 7PRbk+ph
+ KzGO+2q7600Y6Vc1acauP6y06f3zBhudaf3OzqlfJXRhW2NTrKd0f2J/wjTAEnAFqZGxPfRrYrJQtrpl5PNFIH9mP8VaM1bBidaLlpHf9IAZQn/WVdLeZFcwJAXDq46M/oEke5N30iF0FvuGNioD33L+U33z9qCCgkuxBqgbidlaxHIYJR583NOvcVhaPLjYwj0cV0p5hSNEkj7MMYUDZyO1P/3uqVThWVu8nVEXLy8e8li/THtZS71J6jjq70CZ9tKLQAhOfILRRTtr18YMLRs62eJQMjK0QdXSQpXIKKaXtM3xm5+miovNkNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,47 +126,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Reset all writeback state to its initial defaults on device reset.
-We used to keep writeback related data in zram->stats, which
-zram_reset_device() clears, but commit 1d69a3f8ae77 ("zram: idle
-writeback fixes and cleanup") moved it (along with the newly added
-wb_limit_enable) to struct zram, after which neither of them was
-reset anymore.  wb_batch_size and compressed_wb, which were added
-later, are not reset either.
+Do not zstd_create_cdict_byreference() / zstd_create_ddict_byreference()
+C/D dictionaries when no dictionary was provided in the first place,
+because zstd still allocates internal memory for such calls (~96 KB at
+default level 3, and ~160 KB at levels 9+ on x86_64).
 
-The patch is more about just being pedantic.
-
-Acked-by: Brian Geffon <bgeffon@google.com>
 Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 ---
- drivers/block/zram/zram_drv.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/block/zram/backend_zstd.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 593fa4ae47c4..0e1aa0da11aa 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -694,6 +694,7 @@ static void reset_bdev(struct zram *zram)
- 	zram->disk->fops = &zram_devops;
- 	kvfree(zram->bitmap);
- 	zram->bitmap = NULL;
-+	zram->nr_pages = 0;
- }
+diff --git a/drivers/block/zram/backend_zstd.c b/drivers/block/zram/backend_zstd.c
+index 127976b5455b..b367049f131d 100644
+--- a/drivers/block/zram/backend_zstd.c
++++ b/drivers/block/zram/backend_zstd.c
+@@ -76,6 +76,9 @@ static int zstd_setup_params(struct zcomp_params *params)
+ 	prm = zstd_get_cparams(params->level, PAGE_SIZE,
+ 			       params->dict_sz);
  
- static ssize_t backing_dev_show(struct device *dev,
-@@ -2881,6 +2882,12 @@ static void zram_reset_device(struct zram *zram)
- 	zram_destroy_comps(zram);
- 	memset(&zram->stats, 0, sizeof(zram->stats));
- 	reset_bdev(zram);
-+#ifdef CONFIG_ZRAM_WRITEBACK
-+	zram->wb_limit_enable = false;
-+	zram->bd_wb_limit = 0;
-+	zram->wb_batch_size = 32;
-+	zram->compressed_wb = false;
-+#endif
- }
- 
- static ssize_t disksize_store(struct device *dev, struct device_attribute *attr,
++	if (!params->dict || !params->dict_sz)
++		return 0;
++
+ 	zp->cdict = zstd_create_cdict_byreference(params->dict,
+ 						  params->dict_sz,
+ 						  prm,
 -- 
 2.56.0.212.g129ede20d9-goog
 
