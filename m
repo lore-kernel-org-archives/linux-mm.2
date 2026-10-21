@@ -1,119 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9601606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 22:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C532606A31B
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=OfOoJvBW
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=whvLB52o
 Received: by kanga.kvack.org (Postfix)
-	id E81E06B07E0; Wed, 21 Oct 2026 18:59:58 -0400 (EDT)
+	id 759B66B07E3; Wed, 21 Oct 2026 19:02:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E120E6B07E2; Wed, 21 Oct 2026 18:59:58 -0400 (EDT)
+	id 70AE26B07E4; Wed, 21 Oct 2026 19:02:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD28F6B07E3; Wed, 21 Oct 2026 18:59:58 -0400 (EDT)
+	id 5F9B16B07E5; Wed, 21 Oct 2026 19:02:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FDF96B07E0
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:59:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F0E13A8305
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:59:57 +0000 (UTC)
-X-FDA: 85348152834.29.3775959
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DF590180005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:59:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=OfOoJvBW;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf06.hostedemail.com: domain of deborah.brouwer@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792623596;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C1BA6B07E3
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:02:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 96F29A0693
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:02:23 +0000 (UTC)
+X-FDA: 85348158966.27.6EA57D1
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B5D0BC0009
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:02:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=whvLB52o;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792623741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=;
-	b=QZEJGOGYmqXJ+z5BYXZbTRinmo9O/31pwuTmsB4XqEVzJSP6ZCDU/2Jz5Tfpxr5yDqTPF4
-	R7oMbsRRvc1ozVCtuAD0iStrp/4D/LsFgpVi9UzhS5Sz3CaQOQNFedzWkitBrtnydVPAP3
-	QoVli8sSaFNBYuFNZlEfFSwIE9hEb0w=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=OfOoJvBW;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf06.hostedemail.com: domain of deborah.brouwer@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792623596;
-	b=DSjPUbpVOWP1voows/Ww+LYt9QCV3JrIhLiX95H4YjRCiwyjqOutBJ2ELYD3UeV9lBe2IK
-	JqK+HJlz6MLKqjefOZQEFV2OHpjaxWwi6l0IIMuJO4kLN/f/LcM7PtybakqAeZ0mJccdn6
-	3fNcWylJA8aQ0IGWxqj0uiMtOVoyvBE=
-ARC-Seal: i=1; a=rsa-sha256; t=1792623577; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YxVBf2r3nDwKMI/w4Cfj6wBPEhOJrYrOvgbHQuNF1ywKWQm7TKXl1BxN0MCzVhGnVPMmrOcH6Y7vwHRpSGH/RcyW4o/9bbNlAwDyJXiUXdg5ErkLkwoq1J2TXCQPoltJqCXeE7TykTIHOmTKyvOGdSm6I7BjWVq1/ZLJ0hXuUmw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1792623577; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=; 
-	b=khUxgC7K6Dump7HNsU+T7sITG0K+jmATCHUoast6WPDxWHGGdTDBC0/QIMUIlIBg2Ki/G7lkO1OKQptby+w0tcfAj8SqJX6EGe78xbKaBP5tEaQXn0e3LAwEtnAJ4oJ2vyHWOXNz8bzWJ2c4vg/iUCx6qvZl2sHz8MuJup+spKc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792623577;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=;
-	b=OfOoJvBWtQLZeQ1qUOZGpKI9LGZH2kuAFdLAMNQV3geS/kzBnYy8rznRYzbMbVBM
-	HFcT0dwlhYAlcWgqtInVd0oIjVSrKah+jST9FZrq3K24sTSH9+BXxBAmWKElb0bJ6GL
-	HYDwBvjQDUlcmMPboCn0WDmQXXbUEACnRUzHCU1w=
-Received: by smtp.zohomail.com with SMTPS id 1792623575793141.6930617524606;
-	Wed, 21 Oct 2026 15:59:35 -0700 (PDT)
-Date: Wed, 21 Oct 2026 15:59:34 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
-	dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v4 04/11] drm/tyr: add per-file VM pool
-Message-ID: <atlD1jzWqQhKE3w5@um790>
-References: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
- <20261020-tyr-ioctls-v4-4-704de77da223@kylinos.cn>
+	bh=Rh1ct0ynFCJmpIeBgUsQvZu9SOoIsv6E2A9BdvVwioc=;
+	b=GHldD+wK3NzURIk99vplSuooObdaU2f1jIMXKBjSiwkovfipuZ/6I7cnosRewH2AcKi3YO
+	zB1aXOM7hS0nLBjXxkAyX3hz7z1gVux0vsQhvnIeuTnJSbl7lN93jhr68VTBDFqYCRib5j
+	42ZdS50NonEbPCuRLOMIh5XqKn9cJxw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=whvLB52o;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792623741;
+	b=j4bPxK0gyomqUAOSY/BDElkEYG63kekvRq6gqGPeh4dl4hjKQTW5WDgObjQQZTmj31BGDt
+	/dHRLst4Prnx3rcCGi84aUT3s0kywDttj9dpNJbqRkJZ9NJpcAE2UVmEvf04FoTDqPSO+U
+	UoqLWfEXGPKJe8HFOs66YDTJe/PsNQc=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso766548a91.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792623740; x=1793228540; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Rh1ct0ynFCJmpIeBgUsQvZu9SOoIsv6E2A9BdvVwioc=;
+        b=whvLB52oiOOtSQql5RL89pq5sgLTZZ5p24RPvHYGXouUgJJsMFU1zw1RyXp8KjuPu3
+         usenShgOgy4N5OiPtIfOgFp/BdQR8/ks5aJW0nRqCW2O+RrfccLq5/8Opo1vsa1obICh
+         YAqjGoqAITROb0CGtWn6V5vxbnDRjna3jxykYU0wxEife/gMkGH5sfVjz2XvmTvFjwzq
+         a4CyplfK2uylucMyOeTCNOL0JgR9pT0XbyA+NDNVIdKMyIIEDViWnCTpx5S29LUvx5Vd
+         H/N9ZzazxLK0RgKdqSn6PBrTiGFuYopRjnR2SVOaSaaGDALOq6eYcdaFhq9A9ybJdZC1
+         iHtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792623740; x=1793228540;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Rh1ct0ynFCJmpIeBgUsQvZu9SOoIsv6E2A9BdvVwioc=;
+        b=wHt6BaLH2OsP6okbITLhrRzAkITUI8wXDGVVV2dA+/qpHIvCgyk2I1QhTFev2ji6UI
+         xo80M2Jh0XYtDck685eOj98YouTd0XeTN586HhIdxX9h9ySTUhy/p/HB1F+Tw8ptBRIA
+         Yxbz0bvWHr6j+eBw4gVh6kkl0a56hPw8JMZKbV12+qeO2sXH9KrPvOErxv8j1Xla4tYU
+         sNFCTlHh3M68avQOPmRkgXwvvUIHGeJwPIiOORnIIB7pJqFjv5N1iAX04YTXjZSsH75x
+         9u5SdcplfBOoIia6zn+zrXN/2H5JWWVJ7F6bA5mUhs4RKWPhViIEtJcLgeFeg4QFPTYG
+         06nw==
+X-Forwarded-Encrypted: i=1; AKwUvByULHGZxJNDMI2dKjgCQdqaGr6sDI744i810xeTOXBWU2CggJrSy8bPU3QRliPgqAVbA5aeqnm1Rw==@kvack.org
+X-Gm-Message-State: AFq9FYL0Fg6Eq7tjc+8ClvjEE7QHaHWvfaWi2/LwgInR7lHr4VVXAR9q
+	vHNE9DkD79c/wA6IO9st6bXZUTkpMDXbhb2IlBSuRLt/Lavd1o14+bLJYpfptXoNOw==
+X-Gm-Gg: AYBFou2SB4Sq/RFIKH/VrqDd0hdaLrJlpkr5+AEdIHF1lLcKzZuVACNaPgK1uP2l5n8
+	or8MdQSY0SmeYwVei/FErQUA8vhvJ9ikfiKii9oQ/M5rP4nGiC9Uj63Ts6Xgve+ajEfeYaJKQWI
+	TPK4hFTiow+46JHiGDYuRcyolxMmaafPPzJt368eR0u9w47bAuWSxTj/9bEAoM+4C0UqMoLyNU6
+	YGzvoksNmNoZSZwX5p4qhQXgw1c2no8ol6EPKrJy6HY7h7GLuElgs7lxyHmMM4a/pYuGrL3ftaZ
+	cJI36Wb8NViTylwc8ndB9ZidgDR0WCL448sWqurpEyojmkFK9S9ujxZ3LHR+M1434pXxNiYyQhK
+	7YCAiCs6Uy28wTypJJGqxxMTJAjTQnuLueq6EwR0io06ytPMO4uamTPuFq6UaVH/t9hIJalRdSe
+	7n3g6fpTzslTagSK5N/UY2KqkITJ/8kNRjnfZie0JBRp7LPLIRYabbyFweR6scDoMuxqZ1NDuIt
+	h3jnNMwvtselvihj/+u4rgpmClfin5ahc60jabS9EjkfuRuFJyWRDA20a9rbirMwiha0DZs86Nm
+	h15l6ap4vbaSR4IQLKvhSneEnFyl171DZQDTZw==
+X-Received: by 2002:a17:90b:2f85:b0:3ac:7c4d:8be6 with SMTP id 98e67ed59e1d1-3ad86d9e088mr2829501a91.40.1792623739843;
+        Wed, 21 Oct 2026 16:02:19 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada4896c4dsm1314919a91.7.2026.10.21.16.02.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 16:02:18 -0700 (PDT)
+Date: Wed, 21 Oct 2026 23:02:14 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Tarun Sahu <tarunsahu@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] liveupdate: Select file handler by name in
+ the preserve ioctl
+Message-ID: <atlEdhPjlyTPDWmG@google.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-3-tarunsahu@google.com>
+ <CA+CK2bCnS8wcVDbOymBGeJB6pDUkknOpF22EynbwSV=D5=J4ow@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261020-tyr-ioctls-v4-4-704de77da223@kylinos.cn>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/292.612.36
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bCnS8wcVDbOymBGeJB6pDUkknOpF22EynbwSV=D5=J4ow@mail.gmail.com>
+X-Rspamd-Queue-Id: B5D0BC0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DF590180005
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: d81hxq18miib1m9i6icwy1hobendgrne
-X-HE-Tag: 1792623595-224844
-X-HE-Meta: U2FsdGVkX1/Uvj5TqgyaVMxyQAo8zaNljLer7Bt4kRulLZ3Gud8L7PxFjL7ToC0dfSAjQLXrgySvQcYLMmSeDeE3O3YbXCwc59N+TA7BpbFlfqadNySFlwBXTIvNxmL6K+bdbS7YrYBj3aODr2hoIsKvNgjfqt2JEgnWLe1iyirAosmN1L/N9cnZ4xAFfFw2L6BEWM5dCZQM0ig+XrHLcEZOsZXXA+ivKPKSSX9zx6lUCnx6LbUFa2Wh+loXeAza/HQ+8w8+8YfT1Pf0Qk4kmqY0d9EMqDQhGjoPsjqvC7Oy7bOJ5ZbZwfty4KEARe9my7IMoze7OdtCkNgRi6tXS5OtQQx73cegAICfHM0C8KXnOHh8Y7T5dgEFO7z3kK0QTy+aNrDOI+kEn3RoS1QbuSZKTmkNgmVNEcg9MfqHstZyCZ/aVOB0ydyJpMfK6q69W+Y1ip4+IazJqrF9DSPL0pHsa22x/LH9pQ6sjKxcue5yN+zJwJZkqq2Ok+pvdtkQyzvPZbwN7jJAFBNfq5s7P5uafNBNZ4asmD8OpvSJ6VqY1VboJXh95SpHTlxUOmfJGOGjSap/YYZPKVHym5CY6CCFbhPHCcgv8iwjC6Z8JTqbzAhU0xwVyNaDKH9/7QgwsNEkZ8CTShI16r0Ch/yYhrXtEWu0f9wULYi9uVBTvQ4ra3SxXU08ibZ0Mq/m44Ss/WP97tZV37b4iO6ai2IKGkioeHREFwjO8ku0RGwh0t8K3xbJPPyFxh0n5YS2uAutifYp6vSxmsSDUxOZUMgrwdp132zJxyDLzinf2sf10XijsD4Ec3b/TkgaEsTsOZt3cHTH3quQ8YS5Yl1Uu6+X0u1rpg76uzDA3Ybs51DZ56MK9GdANoIgD8x9PivyTCUfKB7iW+CEWkXC0PC19NOZuUdz1MF0QHESxLShN5kz9wTTg4XVM7OIk29cQhyPK/9rbOLIVY5XYEcyvzBReKd
- v9ODPIE+
- iXbl/RBRLDtn45YVdBejil2NZPwKZDBUFuE1vHbuvg3Un4QFjIJFhxmDYQbQAbs2UvPzBuiDWtCEQKPbLVN10HRx67CK57UnLL/xkfMVPGLakQpRm9BK2FuynFZTyDIHVdbz0G+K0h+NNn1tc9kjai4S3wdGhUb1LlJKrk2fgnsIIWpXVeJlIwXU+LR0QxzECv1XHOUscr0Wb5xoy1znRhr4SrDJtf2DZXdGTPoZhvhyhWkNfoDOzmF5YhfSy8pD3fCb8u7UftUobz688kQbo7wTcO8D+MXfxGLz0yk+PIkqASK0pZHYgLA6/tatgeLoHtpT7V1czZp5hUao=
+X-Stat-Signature: 7kthrzjxm8b14qfeaypsqbced5jtcrx8
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792623741-782811
+X-HE-Meta: U2FsdGVkX18Um162YaYIXwQO4hS0pTv0Y/oAyL8dbxRXNfYQy5Ztv+sGDFNXU2/Oal4tB056+KXOGHY2UVq6a4M1wjC042u96nBndFBUv7YS6TyUdjE8fyED4U+Crq+68F5FYf+WzaWi6o27ce3i3fukOgJ4FfDG4Ktq1RuNorCpxwjHmXK5MBxae1phIgtV0Qkiyd0PqnluAuKTrm2cc2Om2nmVa14CBrd+syhmCzV+PTOjJIDINOn0ehuqO9PwaxXZbs4Z7dZNdI5yCiA47xrL7ViBvam/+fFlJ+msW5kgAu38dCGjCW5tEGvP1KbHl3Ja4Ly1qO1//oZboPrX714vvusOi21zqG2zgr58ImDa6mfRhkqiLXFkq547brxP2LH3hUGmTo4fDnsWNuS//9U5raYmvnACbHwve1cfGNc351ZWZEWfxdKhZk4UbPRjdlfmnIiSGzdfs+3NMe7ybdMZnDKqiet42cOjW7p8E9uIN7PxGjszsplct6mfkS6WqCWrVPvPtK94fiPTNODbJa99IGv/riCMynXSw1U6R8J1vQMWLEoSCxjhEPqoPF9FrZ3Ll1IGYnb7CelP1dn3GDV4H73zf0NzERJvT/qkyHdQRUL2JkC46VP4xUdQGgrKVPyUkkh/z9IqVvHMQ80gmaycjyzMVkHwvKxbPFtCfWYAMA0pb1FaI/Xjdep+4qNpGkWNicbO6pmv3aLB2tHvb32dWaIzpKrpY+rCVKZW8pMIC228XqlXUkan553KlHzrC2o0TIf4PtnFynNiuchN5aerAuVdeD0djQFsveSebgIFgMERHsyzKXgFUAkfl2jqRjM2H81PA1+HmuOgCSAZF2lasRCXUyUpWvbcF/dCIARh6uzhIogq5InJDd07oKbRleM7HhIwDpO+PO8KXooDFHCFhoJ8SNH7F5K43ZlSKfWjRwcPijsbST8GIXKOSz2Yjzj7OZjPoDupQNAIIU1
+ dmXae1Ih
+ al6eTYnJA6+B59/9k/9MNiXJrK5UkAYFJ7gushEPtL+mUTGNQuGb11wvDrleyphvuwWKwwwL0ZvaFwU8UxFy/igNMjiZ3UyYjiHk8NBPWVPptH67nrAWkdyudR7avUG+hQk8h7jLerqir9xPh7Kg2+cXmuI5Svy2eSiClXvWVbKPEVaZ6dQ05DpYxp9wISuA5T1vnZ/OoB2gTJ+e90qyEeXAlYtsizVjEKqDDtDDVc1inwbp6Of9ty2Z8uo2aqgPWj+PzoBb+eAbIXclN6LScvBmfH9otm1xO8lTVXlcD6BojIufzJX4Ne4dPtA4TpCoP37jmzeDKqlhsREAQfhWoUCo/eVkEbMvs0qy6UjgpZn2tevYu1gMrEg93LQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,214 +140,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 04:25:21PM +0800, Ke Sun wrote:
-> From: Alvin Sun <alvin.sun@linux.dev>
+On 2026-10-21 01:17 PM, Pasha Tatashin wrote:
+> On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
+> >
+> > Currently luo_preserve_file() iterates over luo_file_handler_list and
+> > picks the first registered handler whose .can_preserve() callback
+> > returns true. When a subsystem introduces a new, backwards-incompatible
+> > file handler alongside an existing one for the same file type, userspace
+> > has no way to choose which handler preserves a file descriptor, nor can
+> > the kernel keep the existing rollback-safe handler as the default while
+> > allowing callers to opt into the new handler.
 > 
-> Userspace needs multiple independent GPU address spaces per file,
-> addressed by ID through the VM ioctls as in panthor. Store them in an
-> IdPool (capped at 32 for panthor parity) plus an XArray. On a failed
-> insertion the caller tears the VM down through the returned error, so
-> an aborted creation never leaks a VM. The pool kills every VM still
-> stored when the file closes.
+> That is not how it will work. If we are in the .can_preserve() call,
+> it means the user has already decided which file handlers to use. We
+> need to do that before any preservation happens; otherwise, we could
+> run into conflicts on FLBs i.e. FH of different version require
+> different FLBs.
 > 
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
->  drivers/gpu/drm/tyr/vm.rs | 138 +++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 137 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-> index c5e307b1e2416..6935e4db667b9 100644
-> --- a/drivers/gpu/drm/tyr/vm.rs
-> +++ b/drivers/gpu/drm/tyr/vm.rs
-> @@ -33,6 +33,7 @@
->          }, //
->      },
->      fmt,
-> +    id_pool::IdPool,
->      impl_flags,
->      io::PhysAddr,
->      iommu::pgtable::{
-> @@ -53,7 +54,11 @@
->          ArcBorrow,
->          Mutex, //
->      },
-> -    uapi, //
-> +    uapi,
-> +    xarray::{
-> +        AllocKind,
-> +        XArray, //
-> +    }, //
->  };
->  
->  use crate::{
-> @@ -948,3 +953,134 @@ fn pt_unmap(dev: &Device, pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>)
->  
->      Ok(())
->  }
-> +
-> +/// Maximum number of VMs a single file may hold, matching panthor's
-> +/// `PANTHOR_MAX_VMS_PER_FILE`.
-> +const MAX_VMS_PER_FILE: usize = 32;
-> +
-> +/// Per-open-file pool of VMs.
-> +#[pin_data(PinnedDrop)]
-> +pub(crate) struct VmPool<'drm> {
-> +    /// Parent device, for error reporting.
-> +    dev: &'drm Device<Bound>,
-> +    #[pin]
-> +    ids: Mutex<IdPool>,
-> +    #[pin]
-> +    vms: XArray<Arc<Vm<'drm>>>,
-> +}
-> +
-> +/// Error returned when a VM cannot be added to the pool. The caller
-> +/// owns the teardown of the VM in [`AddError::vm`].
-> +pub(crate) struct AddError<'drm> {
-> +    pub(crate) error: Error,
-> +    pub(crate) vm: Arc<Vm<'drm>>,
-> +}
+> Therefore, there should be a luoctl call (i.e via a new ioctl to set
+> compatability) that provides the kernel with the specs file of the
+> target kernel we are updating to, allowing the kernel to select the
+> compatible file handlers. Since .can_preserve() is called when the
+> user is already preserving files, the specification must have already
+> been supplied, or the kernel should fall back to using the default
+> (i.e., latest) file handlers.
 
-When I try to compile just this patch i get an error about
-this being unused so better annotate it with #[expect(dead_code)]
-like the others.
+I don't think that is the right direction. IMO the kernel should not be
+choosing which file handler to use, userspace should be. If userspace
+gets it wrong and chooses a file handler the next kernel does not
+support, that's on them.
 
-> +
-> +impl<'drm> VmPool<'drm> {
-> +    /// Creates a new [`VmPool`].
-> +    #[expect(dead_code)]
-> +    pub(crate) fn new(dev: &'drm Device<Bound>) -> impl PinInit<Self> {
-> +        let ids = IdPool::new();
-> +        pin_init!(Self {
-> +            dev,
-> +            ids <- new_mutex!(ids),
-> +            vms <- XArray::new(AllocKind::Alloc),
-> +        })
-> +    }
-> +
-> +    /// Stores the VM and returns the allocated ID.
-> +    ///
-> +    /// On failure - ID space exhausted or a store failure - the VM is
-> +    /// returned in an [`AddError`] so the caller owns the teardown.
-> +    // TODO: allocate IDs with the XArray directly (once it grows range
-> +    // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32, AddError<'drm>> {
-> +        let id = (|| {
-> +            let mut ids = self.ids.lock();
-> +            let unused = ids.find_unused_id(1).ok_or(ENOSPC)?;
-> +            if unused.as_usize() > MAX_VMS_PER_FILE {
-> +                return Err(ENOSPC);
-> +            }
-> +            Ok(unused.acquire())
-> +        })();
-> +        let id = match id {
-> +            Ok(id) => id,
-> +            Err(error) => return Err(AddError { error, vm }),
-> +        };
-> +
-> +        let mut vms = self.vms.lock();
-> +        match vms.store(id, vm, GFP_KERNEL) {
-> +            Ok(prev_vm) => {
-> +                if let Some(prev_vm) = prev_vm {
-> +                    // An existing VM at the freshly allocated slot means the
-> +                    // IdPool and the XArray are out of sync: the stored VM is
-> +                    // a pool entry, so the pool kills it and the caller's VM
-> +                    // is handed back for the caller to kill.
-> +                    let stored = vms.remove(id);
-> +                    drop(vms);
-> +                    prev_vm.kill();
-> +                    self.ids.lock().release_id(id);
-> +                    dev_err!(
-> +                        self.dev,
-> +                        "IdPool/XArray out of sync at VM pool id {id} (stored VM conflict)"
-> +                    );
-> +                    return Err(AddError {
-> +                        error: EBUSY,
-> +                        vm: stored.expect("VM was just stored"),
+The problem with the kernel making a decision about file handlers is
+then userspace does not know what arguments to pass in. We are adding
+custom per-file handler arguments to PRESERVE_FD and RETRIEVE_FD. If the
+kernel is picking which file handler to use, say for a memfd, then
+userspace doesn't know which arguments to pass in.
 
-Since the rust for linux coding guidlines say:
-    panicking should be very rare and used only with a good reason.
-    In almost all cases, a fallible approach should be used, typically returning a Result.
+Sure you could add some method where userspace could query which file
+handlers are active and decide arguments based on that. But it feels
+backwards.
 
-I'm wondering if there is a way to avoid this expect().
-For example, you could store a vm.clone() in the xarray and keep the vm
-that was passed to this function so that it can be returned on error.
-And on success, the vm would just drop so the overall ref count wouldn't
-be incremented.
+I think a much cleaner solution is that userspace chooses file handler
+during PRESERVE_FD. I would even require it for RETRIEVE_FD so that we
+are guaranteed that the args the user is passing in are being sent to
+the right file handler. Passing to RETRIEVE_FD also opens the door to
+transforming across Live Update (similar to how AWS did LU from Xen to
+KVM as discussed at LPC).
 
-> +                    });
-> +                }
-> +                Ok(id as u32)
-> +            }
-> +            Err(err) => {
-> +                // Drop the XArray spinlock before acquiring the `ids` mutex.
-> +                drop(vms);
-> +                // Release the pooled id; the VM never entered the pool, so it
-> +                // is returned to the caller for teardown.
-> +                self.ids.lock().release_id(id);
-> +                Err(AddError { error: err.error, vm: err.value })
+Regarding FLB conflicts, today we don't support multiple FLBs for the
+same global state, so there is nothing to conflict. Selecting a file
+handler during PRESERVE_FD doesn't change that.
 
-When i run rustfmt on this patch it reformats this line, can you double
-check you ran rustfmt?
+If we ever need to support multiple FLBs for the same global state
+(e.g. an incompatible change to the PCI FLB), we can add an ioctl that
+lets userspace select which FLB to use before preserving any files.
+After that, only file handlers registered with the selected FLB can be
+used to preserve files. PRESERVE_FD with any other file handler fails.
 
-
-> +            }
-> +        }
-> +    }
-> +
-> +    /// Removes and kills the VM with the given ID.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn remove(&self, id: u32) -> Result<()> {
-> +        let mut vms = self.vms.lock();
-> +        let vm = match vms.remove(id as usize) {
-> +            Some(vm) => vm,
-> +            None => return Err(EINVAL),
-> +        };
-> +        // Drop the XArray spinlock before killing, since `kill()` may sleep.
-> +        drop(vms);
-> +        // Kill the VM before handing the id back to the pool, so a VM is
-> +        // never reusable while still alive.
-> +        vm.kill();
-> +        self.ids.lock().release_id(id as usize);
-
-Since i just learned about this myself, I should mention that you can
-now use num::casts::FromSafeCast and then write
-usize::from_safe_cast(id).
-
-> +        Ok(())
-> +    }
-> +
-> +    /// Gets a shared reference to the VM with the given ID.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-> +        let vms = self.vms.lock();
-> +        let borrow = vms.get(id as usize)?;
-> +        Some(Arc::from(borrow))
-> +    }
-> +}
-> +
-> +#[pinned_drop]
-> +impl PinnedDrop for VmPool<'_> {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        let this = self.project();
-
-I don't think you need to project the VmPool here because we only
-need a shared ref to the pool, and the vms guard gives us the interior
-mutability we need to modify the xarray anyway.
-
-> +        // Kill every VM left in the pool. The ID range is bounded by
-> +        // `MAX_VMS_PER_FILE`, so this loop is cheap and runs at file close.
-> +        for id in 1..=MAX_VMS_PER_FILE {
-> +            // Release the XArray lock guard before killing: `kill()` may sleep.
-> +            let vm = this.vms.lock().remove(id);
-> +            if let Some(vm) = vm {
-> +                vm.kill();
-> +            }
-> +        }
-> +    }
-> +}
-> 
-> -- 
-> 2.43.0
-> 
+That keeps the FLB decision up front and global, like you want, while
+still letting userspace pick the file handler for each fd. I'd also
+expect this to be rare, since FLB serialized state can use the same
+feature flags as everything else in this series.
 
