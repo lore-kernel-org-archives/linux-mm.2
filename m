@@ -1,139 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E649B606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1FC606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=G5/BThqd
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g7QSiiX5
 Received: by kanga.kvack.org (Postfix)
-	id 0FB7F6B07E9; Wed, 21 Oct 2026 19:28:58 -0400 (EDT)
+	id 9E2456B0261; Wed, 21 Oct 2026 19:34:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AC8B6B07EA; Wed, 21 Oct 2026 19:28:58 -0400 (EDT)
+	id 9915F6B026E; Wed, 21 Oct 2026 19:34:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDDEE6B07EB; Wed, 21 Oct 2026 19:28:57 -0400 (EDT)
+	id 8A9296B0270; Wed, 21 Oct 2026 19:34:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C73986B07E9
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:28:57 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A487C0708
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:28:57 +0000 (UTC)
-X-FDA: 85348225914.28.4995E18
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8289BA0008
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:28:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="G5/BThqd";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 69F6C6B0261
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:34:58 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC05F404EE
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:34:57 +0000 (UTC)
+X-FDA: 85348241034.29.0794C43
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 328A240009
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:34:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g7QSiiX5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792625335;
+	s=arc-20220608; t=1792625696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j1gtu/2ECGchElAdjQsJmcTzWPpoWAuSh1B1l3W6hUU=;
-	b=xF35/yXhmDbaHzIYzUTBphos1+jxkBviRgpe3N0UVUPGmMHZkreC6T9RsX8WWyDGCvEGr2
-	H6jycm0Ew6JqkDauywuSFE0kY885Q/HISVcejZEABXMTIskZAFRpwzzo0ewzAn1xz/tLbv
-	Ggl7kEviwF3NQHhj4cv70V5byqafIOY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=s5GCFuOcmjehv03gf2ljnWIxHgzVxKtBI4zuJ/1eB5M=;
+	b=kgO+MtJ5bUHwkPo3VqQ3pfGgE70KTXVj5VxsAUZBwQVW7fH4fhN/USksw7h3GXkrQ3s0mu
+	20LdwawyiP9WNjPYepoALD5nkEwkXfKmCCp8XBpyrU66PmnIRR5hL+a0CJTEwmVe8xkq5C
+	9Ux7C+14i4C91g4Inw67KHtpV1+wZrI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="G5/BThqd";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=dmatlack@google.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g7QSiiX5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792625335;
-	b=QfhMKb1WLarprL19NNZOTEFBv4qmIgqBnY4UbNwD8BtJyxOXcgIbccmXJGry3qSGVYMV9+
-	8yXhkwDeCxW5upa8LoMNadz4kO8QJYpUa0zlJPo7MqHpOZQCLf08K10GARG241vkqPAM/c
-	+jmfVRgKdjQSn6XcAzUCOFtGaeEuyoo=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a0673d9bd2so686296b3a.3
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:28:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792625334; x=1793230134; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=j1gtu/2ECGchElAdjQsJmcTzWPpoWAuSh1B1l3W6hUU=;
-        b=G5/BThqdklaTbMMpc6QwfOZ/i0d4gjLBXbkVleKvYQiz3pQdtM3ShaTW6c3760o2/d
-         8uL9VwgE+u2rFf1brWtD91PxEvTedKAnPNyAuc7FllGvTgSHhJ0ZWRPRI71ypmzMWeWT
-         hB4pY4gSq/52/bhukVpIjcDYnslFTy/wRMhHr9PpBJeG8BFy7pgT21iOmLxiGj57HeOS
-         srPI41xRa5zsdz1DSWUKS+iY+18JCWZzM3BfB6FIxU9qZVO1WoPRX4pFfEuenfut+mM9
-         96y52YtAaH/BSK7iDRsazGy+syRELT6eiQLJgRmrQHuLfFPe3Tv9lbeVUjgrXjFugL3i
-         wwjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792625334; x=1793230134;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=j1gtu/2ECGchElAdjQsJmcTzWPpoWAuSh1B1l3W6hUU=;
-        b=oFRRrNLkDESj62Sxl/Gu6Y4ignZ7ZzCw+sHPhoS52JbjIA0JNVX8kgBkaa6thnPWDm
-         6FAobnUEQcNhVlY2o06gKCsu/EdXN8dh3OE7hm1j/IpJPOOb9JLWZVDOZFsfJvW6wn5w
-         9PY5EP13QHHVlb509jQDyeYHJyCKPl/eK6W3TRuNvzLr/0dKNVHUae/6TE79x14s19K/
-         p4lTqHGsnWsibPMx2aNbr9WibIHwwCUEw/ByhPdPFOi2By42g/yCncbLyoiBhuygKyi6
-         aw9b5hUZiWF7r2d7YYuakCgNMc/rsEFlrNJo6FhEjboNOeu8ej+Fw6tiAeJo7TeKy4MK
-         /CUA==
-X-Forwarded-Encrypted: i=1; AKwUvBwMYady/q0tRYPUOQTSuqzGdXA6KI4x8VTxGTxEpHJ9yMjySJL7WlsMOmhnNiWRugKvJpsHNRuxGw==@kvack.org
-X-Gm-Message-State: AFq9FYLZjoBVu6YH61j1WJEyi1zTeSIXCMKBa/DjKB5nnXUwnZIET3DC
-	qghrmaSUhsGdxh9ZgN8idjv4dpEA7XCUZOJsKTNwf3iVaROaI3HHKmt62fZJLapJWA==
-X-Gm-Gg: AYBFou2OUWZEnW1oOYfH9lGqMO6ocHPlPqxqgVTbTcOWp6jA7Y4q68BBC/LNbxEC/z9
-	W+shxu00/1P2mAa17cca+vIFbsuFQxAuCydokO3DUnePtBBRZTth1b56bZvbkuFAiuPhbbafuzM
-	H7abtKqLdCo2bEYLYBgn+HeyfNqo7tEuJT4Peq48RX2MThTASG5w1erIV/I9osSiz8qtx3L7NTN
-	ScrlbqmMTREFm6TzGZKiC9af2G2eK8QCdM+TmQ5c7U4i0B9avLlsKviOVrLnYswsGvxK7aGX7nf
-	2YcYoyfNFGmGHg58uZLn6RzayPbkNojJuy4phB9UNX5h3N4iiSQAaTqw/hV1NbBt3WCI5yzphS+
-	CxABmJHfRkzVBw7ig9y/ByRaiZPCeRFTu4P0pdUXOH9TYStXLodFAj6ZEcuXrgFwea6OQulozqr
-	HMOE0n6uz1tATePFQtl+H/vu36qk7H1BFDHs4Gk0WE6xCQGF+h8wpQ6HJ7fi99FNA9kFqzYIXH6
-	rS6znJTSpraZgdC4Xrhel12Saw1MJGBDEKqH3PLrGmECODVyrm6ul7Zex3VHpQE1rbQIH5fvk6S
-	AW8l23ZMarzvDcpd
-X-Received: by 2002:a05:6a00:448b:b0:88b:7278:ebf4 with SMTP id d2e1a72fcca58-8a089dc6e77mr2781314b3a.18.1792625333734;
-        Wed, 21 Oct 2026 16:28:53 -0700 (PDT)
-Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a08933aec9sm1368611b3a.2.2026.10.21.16.28.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 16:28:52 -0700 (PDT)
-Date: Wed, 21 Oct 2026 23:28:48 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
-	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
-	will@kernel.org, Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-Message-ID: <atlKsD-aJB3mJr2j@google.com>
-References: <20261021152527.375070-1-tarunsahu@google.com>
- <20261021152527.375070-4-tarunsahu@google.com>
- <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
- <9huzecdi6go0.fsf@tarunix.c.googlers.com>
- <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
- <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
+	t=1792625696;
+	b=TABLZyTS8IA+FYvo6ZLHnqPfkUCgaTpRaTSp4ZuGfUnSZjS991Dv/dSqsyZeDNiGpHqBLx
+	hQiTzjYDkqZ3mvWnK8YEdERwy50mbwFyLy3y6Ij7PIZZghJDgbcxWtRr/Ew7wZDS2uLZ+S
+	ZLHreCyztGSW/13/uN7EzwW952REssA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 19E8E4059F;
+	Wed, 21 Oct 2026 23:34:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49211F000C1;
+	Wed, 21 Oct 2026 23:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792625695;
+	bh=s5GCFuOcmjehv03gf2ljnWIxHgzVxKtBI4zuJ/1eB5M=;
+	h=From:To:Cc:Subject:Date;
+	b=g7QSiiX5u84k62YLZ3c1x3+ueZUgWrw+FaS8iLWpFy0ypur0rpeshW6hISOU3LpYX
+	 q3LMdDTnMxORG/nxYgtnD0CXjNK8MnxAqtqbWxg2MKfUZuBonSM6Qr4rQFgK80bn3W
+	 ZXOfZwioE33FPbSA7dgVdF4F/+gOyhGEXfpso+uOr/gnugw3cI15IifZZ6Xa0rI84d
+	 Z8/oljAK0C56CAxKlujvNRho9+H+tS3+1hH9PqcAKAl4t0ex3rl2ORUxbxj+EdygHm
+	 g12QQU5IEvMSlmKsEbOwIj5paUUVN/lUxzNfgfeoO+vCq9caYtyD8jyXZwdrmX0MCd
+	 vCT6K/814OCtQ==
+From: Imre Kaloz <kaloz@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/4] sparc64: D-cache alias flushing fixes
+Date: Thu, 22 Oct 2026 01:33:36 +0200
+Message-ID: <cover.1792609488.git.kaloz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
-X-Rspamd-Queue-Id: 8289BA0008
-X-Rspam-User: 
-X-Stat-Signature: ofzk1qbfqhtacaxcuior93hhs6w39jj6
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 328A240009
+X-Stat-Signature: ihhrp314wkpy9tky6gjwd3hc9qrkgodw
+X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792625335-499132
-X-HE-Meta: U2FsdGVkX18alOD/rMU3DGPbNQ6bveiJIApyX8ZqKy1JePzjvuB8bvWlyJNgsfHg2RYIb2XVKsY3Jy46Sm7pKAcNpQYtWcHKw9pl1WEQffIpZjEoM6PG151LlXdLx7rRD8kkH0GxyrpGzt8CC6+XbyVXU+dOrW+m0odJUmzbRHyRCysFPxy54ScUfqkGLKK449eZJ0ypHNPnnD0HBx96MIiSqaAmi5n3xDvK6znkKaqxNymrdRpZEkDGA3j34uW9dgbZqWKfWbwjrvXdq454qKIIyNB3dGi4C8JrN2jpkPGjrWrfZ+/VfUWq390yPynSAZYoPFwg6J3pw9ilruy3i6SQokb7reRePvI94qU51hsBDBQJjbSVXnY2hcN+LL+JHkyZcleWWbNrCkcRuZhcl3lVVc4pHSsmucV8UjlwOOwoFmKkb2ESxjBqBeLgflwppFLyLBszrlxSd6RK66W+9Qj3JECYd3OaNpHvT3nQDaXrPHNhGTuBwfhFSDUP86F9G96tqOwyu1cC0VOdsRGVWvlYhDtYdcBlQRlpdF+eiEMyENN0PsJquZzQExmE+Z+b80xzWdlFBvXF4D02t+tcW6HBzNc2c/fTMGxoL+wKcvKcqYwngqxoXyzZaEsf6yoBz4k0ACDY1LI2ENdh+MujTPtjUbWUt50cl2RU4eTEaOyXJpchSP6G5Tu1uRFfQa9D7Tv0ckIWU0tdUqwvwwDYOhsovGQZA05Jr+1KksEv0yiRn7EDhpX3K/nIfMRRmTmUadbo1Bs5wRfIEgWuG7JD3wDJIXR0z3evQIv3B2FNVnaT6rB+HWUFthqDxRC4CFVw0EZmRnyIOvoRapQ7UEkO3hqT3P0tUl/nQTFahm5BVQJe8ubwk0BMGFcY9jfrV5UhHFfqNwRDpTf11Qr6FhH8GYgqZFuGnHIdbSkmSlQgE9JbI7cHyRL3womQF7/EMpxYdNvTOH90v05Y6/hSq1M
- cEsH9XnC
- KioieCCoCWH5tD9UEsuAdqxFDMNz7/YoH3UJcg7z+/a2jv0QFNFE/ZasE3C75pCbV9264QbSfqX2Spp4QJk+kW4Ihl4ktR4Tcpem5NoW0IqW7uy8gFEloAuDmKaTluRRXhKg0WdHnVVzOD+haXnGvJeNXsQ64ndiirYjhwakDlFDC0KeMZpVpWEhR84xC+O41dhbDEGuIVfAnoph/yG79UARTK4Sex/T4w1gDC6+vD866NXiyrWNu9kgqhrXnp78SY9b0J3RtMdSeUuDl2CLc0MyZJDLx/+T2hmdYrwJqHDaECkuFs+zGq6m9NRM3cxs3FDrQtkWNAmzIb8YbYG4gr0AmW25TQT4ZNFhstJV/46X9p4kzqWupHfbyhUw+RD7qKebBoLVnNt6lm5FFj+JsJbaRWupyQYlDVjYr+vlHx/htMIGLAirLQIEzFQ==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792625696-872793
+X-HE-Meta: U2FsdGVkX18zEKZD+sVBfkyRFq7dVJpVL/ssW8afF7LXkEOuoRm5EQzaYsbJFXTvDZfoelidgN+2NY8vV2by67RgUGZxeAfYCRy4kGy3sAAxA8ZmXaaiuunb5bKmp5BjgRXFG9OnQQciwWICKHVNipjgAIkHxSuW2LSosRZlHrIhl4Q9RYOv/rCZAmvpYpwUaGRmAxLKnwvhnyfoj4dGc6Il7/5sP6g+DD5z6uPBDrQ6xZxcq3lgrXLt044Jp5/AUL3MuzEkIfgga+fkUKo/8Nwr4hHKmMlfCknZw1dE6Wc7U6M8CUy3cZMT/re8MTLILlg70DA5BV1OOUqc6i9eyHGB4eLame5rVZh+MUx/m+UW0Z9F9MdcfF5jmeDkUO5ZKbQ6bXaWt8UAUGEHwP5df2GVAI8DTgXdCl+NH71V+ndS1XjoBM6N//4I0se+dtzpcOS7iFuBMd8/zx98a6K57ydToQvFhgQGJEdoi+TD8ZfAPz4wtyzPEvbTf/pkvAK7/J6oOFJlNB7JuJh57793mll2wIIIzRDaWr+WEbF1QiwE8oxNegacv3xDAh2XGh6pO4gIbDoy1Qn4loPwBbJIu+haJhYziZSJzB3I1MUo/tBCGMcWKTPg0oyONfxPTzjTLqAmBSXU6WZZymzbTOrKx3kCmOw9LfLxUOzxxywasTfiNCEX9p67ieaWp/iAVhXXjBbRTxWXq4PvutinFZQn0C2D9BkQaIxya5wtzWhvT129+O84U294P5h6qXfsYaxeRJySBuy3b8UreCM39Vf3SI9JuO8VRRaE4FJAN3WQlP/KXaX3Riw+0KZqc5kvJuT5/WRkAImWKW32CNJLWB9kSo+5QVxAKkdNoF3gKS++xZxsiaiqCnF8RgCGfTWie++XaiGT0kPZImNuSceRUs0kcwP573wY59k2yO67Ynk9/VOFR27vXSsEB+a6xdIGpo2HCXqp+lz+AhSZEBF9C+m
+ 8+5X44RB
+ TeFLfBD1sVU7lmJtzt/ASbpR8TkiRNMsi0pT6eSrf9h4gOAgVPrVnSE4x3ytBPT/xiKCmWaU946OAuU1kw0yn7qAiSr8PQ6a5urrI5/0T5LTRsQ91alloysQErWxMUn2tdAsiU0+pefXIW8l/OihQ0PAXaZsYsWgMmdFFY1urFD+9CR2Qp5bolNXalhyY/G1sclQe8RWy+z2+UmF2KdgBVsUdTRixF80+hRY4m5GtyOPdQ2Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,151 +96,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-21 02:50 PM, Pasha Tatashin wrote:
-> On Wed, Oct 21, 2026 at 2:47 PM David Matlack <dmatlack@google.com> wrote:
-> >
-> > On Wed, Oct 21, 2026 at 11:40 AM <tarunsahu@google.com> wrote:
-> > >
-> > > Pasha Tatashin <pasha.tatashin@soleen.com> writes:
-> > >
-> > > > On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
-> > > >>
-> > > >> LUO and its file handlers validate handed-over state with monolithic
-> > > >> compatibility strings ("luo-v5", "memfd-v2"). Any change to a serialized
-> > > >> structure, even an optional additive one, must bump the string, which
-> > > >> breaks live update between adjacent kernels. Replace the string in
-> > > >> struct luo_ser with a feature header, so that the target kernel can
-> > > >> accept or reject the source kernel state per feature.
-> > > >>
-> > > >> struct luo_feature_hdr is a fixed 128-byte header: the serialized
-> > > >
-> > > > This patch is all wrong; 128 bytes is far too large. For every _ser
-> > > > struct, we only need 8 bytes instead.
-> > >
-> > > NOO, It is not. It is intended to avoid complex mess with unnecessary
-> > > over-engineering.
-> 
-> 128-byte per serialized struct is not starter.
-> 
-> > >
-> > > >
-> > > > The first 4 bytes are the size, and the next 4 bytes are flags (i.e.,
-> > > > 30 feature flags + 2 reserved bits for flags extension). The last two
-> > > > bits of the flags indicate whether an extended flags field is present.
-> > > > Each extended flags field is 8 bytes, and its last two bits indicate
-> > > > that yet another extended flags field follows.
-> > >
-> > > If we will have dynamic extension of flags, Think about this.
-> >
-> > To support dynamic extensions in a backward compatible way you want
-> > something like this:
-> >
-> > struct luo_feature_hdr {
-> >    size
-> >    flags
-> 
-> __u32 size
-> __u32 flags
-> 
-> >    extensions  // offset of first luo_feature_extensions (or 0)
-> 
-> __u64 extensions[0]  --> but the size should be specificed in
-> declaration macro that I showed in the next patch.
+These fix D-cache alias flushing on sparc64 CPUs with a virtually
+indexed L1 D-cache (Spitfire and Cheetah).
 
-I think you may have misunderstood what I meant. In my proposal,
-extensions is an offset to the first extension, not an array of
-extensions that immediately follow the header.
+1/4 makes xcall_deliver() bail out before it touches the trap block
+when there is no other CPU to call, so an early cross call, before
+init_IRQ() sets up the mondo blocks, can't end up writing to physical
+address 0.
 
-If the extensions immediately follow the header, then the number of
-extensions is baked into the struct layout. Every field after them sits
-at an offset that depends on how many extensions there are. If we ever
-need one more extension, all the fields shift and old and new kernels
-can no longer read each other's struct. That is the problem Tarun
-pointed out. So in practice the number of extensions is fixed forever
-when the struct is first declared, and we have to guess up front how
-many features a struct will ever need. That's the same as Tarun's
-128-byte header, just with a smaller guess.
+2/4 flushes only the page a PTE maps instead of its whole folio, which
+removes about a million redundant page flushes from a colour-changing
+mremap() of a large folio (7.3 s on a Sun Fire V240).
 
-What I'm proposing is a linked list of extensions, where each link is
-an offset from the start of the struct. A new extension is never
-inserted into the middle of the struct. It is appended at the end along
-with the new fields that need it, like any other new field, so existing
-field offsets never change.
+3/4 implements flush_cache_vmap() and flush_cache_vunmap(), which have
+been no-ops. Stale vmalloc lines corrupt BPF programs and module data
+on UltraSPARC III.
 
-Something like this:
+4/4 passes the number of PTEs to move_pte(), as Andreas suggested. It
+touches mm/mremap.c and include/linux/pgtable.h, so it needs an ack
+from the mm folks.
 
-struct luo_ser_hdr {
-	__u32 flags;
-	__u32 next;    /* Offset of first struct luo_ser_ext, or 0 */
-};
+1-3 don't depend on 4 and can go in on their own. 2 and 3 are for
+stable (3 needs 2), 1 and 4 aren't. The series is on top of the sparc
+for-next branch.
 
-struct luo_ser_ext {
-	__u32 flags;
-	__u32 next;    /* Offset of next struct luo_ser_ext, or 0 */
-};
+Changes in v3:
+- new 1/4 and 4/4, following Andreas' review
+- 2/4: reworded the message and the move_pte() comment, marked the
+  UP #endif
+- 3/4: reworded the message, dropped the Suggested-by (I have no
+  email address for nsafran1217, the Link credits them), noted the
+  stable dependency on 2/4
+- picked up Stian's and Adrian's Tested-by tags
 
-That's the same 8 bytes as your proposal. And because "is there an
-extension" is next != 0 instead of reserved flag bits, all of the flag
-bits are available for features.
+v2: https://lore.kernel.org/r/20260928132102.1707-1-kaloz@kernel.org
 
-For example, a struct starts out like this:
+Imre Kaloz (4):
+  sparc64: skip the trap block in xcall_deliver() when there is no
+    target
+  sparc64: flush only the aliased page, not its whole folio
+  sparc64: flush vmalloc ranges from the D-cache on map and unmap
+  mm: pass the number of PTEs to move_pte()
 
-struct foo_ser {
-	struct luo_ser_hdr hdr;        /* hdr.next = 0 */
-	__u64 a;
-	__u64 b;
-};
+ arch/sparc/include/asm/cacheflush_64.h |  9 ++--
+ arch/sparc/include/asm/pgtable_64.h    | 14 ++++--
+ arch/sparc/kernel/smp_64.c             | 51 +++++++++++++++-----
+ arch/sparc/mm/init_64.c                | 65 ++++++++++++++++++++++++++
+ arch/sparc/mm/tlb.c                    |  2 +-
+ arch/sparc/mm/ultra.S                  | 25 ++++++++++
+ include/linux/pgtable.h                |  2 +-
+ mm/mremap.c                            |  2 +-
+ 8 files changed, 148 insertions(+), 22 deletions(-)
 
-Over time we add features and fields until the header flags run out.
-Then we add one more feature, FOO_FEAT_C, which needs a new field c:
 
-struct foo_ser {
-	struct luo_ser_hdr hdr;        /* hdr.next = offsetof(struct foo_ser, ext1) */
-	__u64 a;
-	__u64 b;
-	/* ... fields added for features in hdr.flags ... */
-	struct luo_ser_ext ext1;    /* ext1.next = 0 */
-	__u64 c;
-};
+base-commit: 2bc58762a3d74e42de129d717ae3ba10ecf0ab96
+-- 
+2.47.3
 
-- a, b, and every other existing field stay at the same offsets. Both
-kernels can keep casting the KHO memory directly to struct foo_ser.
-No memcpy() or variable offset math.
-
-- An old kernel that knows nothing about ext1 can still find it by
-following hdr.next, because the chain describes itself. So the old
-kernel can still reject the struct if ext1 has a required feature it
-doesn't support, and ignore ext1 otherwise.
-
-- A new kernel receiving the struct from an old kernel sees
-hdr.next == 0. It treats every feature in ext1 as absent and never
-touches c, so it never reads past the end of the old, smaller struct.
-
-The only rule for subsystems is that a field can only be accessed after
-checking its feature, which a LUO helper can do by walking the chain:
-
-if (luo_ser_has_feature(&ser->hdr, FOO_FEAT_C))
-    c = ser->c;
-
-If we keep size in the header, this is where it would be useful: LUO
-can check that every next offset is within size and strictly increasing
-(so there are no loops) before walking the chain.
-
-> 
-> > }
-> >
-> > struct luo_feature_extentions {
-> >     flags
-> >     extensions // offset of next luo_feature_extensions (or 0)
-> > }
-> >
-> > And then an example serialization struct would be:
-> >
-> > struct foo_ser {
-> >     struct luo_feature_hdr header;
-> >     ... fields ...
-> >     struct luo_feature_extension extensions1;
-> >     ... fields ...
-> >     struct luo_feature_extension extensions2;
-> > }
 
