@@ -1,107 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBF8606A31B
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C59606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EReoPclS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N47QG1bj
 Received: by kanga.kvack.org (Postfix)
-	id EA1496B07C7; Wed, 21 Oct 2026 17:48:02 -0400 (EDT)
+	id 0E0B26B07C9; Wed, 21 Oct 2026 17:48:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4A8C6B07C8; Wed, 21 Oct 2026 17:48:02 -0400 (EDT)
+	id 08FC06B07CA; Wed, 21 Oct 2026 17:48:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D61A66B07C9; Wed, 21 Oct 2026 17:48:02 -0400 (EDT)
+	id F0FAD6B07CB; Wed, 21 Oct 2026 17:48:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AEE706B07C7
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:48:02 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 256418065D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:48:02 +0000 (UTC)
-X-FDA: 85347971604.04.AEC86ED
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CBD3E6B07C9
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:48:28 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 486671606BE
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:48:28 +0000 (UTC)
+X-FDA: 85347972696.16.C1BEA94
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3176FC0004
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:48:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EReoPclS;
-	spf=pass (imf22.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792619280;
-	b=pUOqdiiGbaZM/tCNmfWnBHBdM/QWnXj7hGR3LmGe1UcEoN0Ck0MqGWW6zrxZvquqpB+VNO
-	zOrX24gm37BKUXQ2CMWXNAi/xFhy6IYzn+DCZAVkOqFNPzmG3hnFXhKHwS+rStZ/YUzu4i
-	D/kJBWYMohxzA6JB73W5ri5jTbPWm1I=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EReoPclS;
-	spf=pass (imf22.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8D51D18000C
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:48:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N47QG1bj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792619280;
+	s=arc-20220608; t=1792619306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lNlfmBmtfiESOniOkWbpwP2+Kbv356q2HSZrSlUKiAI=;
-	b=fi4K9wmtravlqWhMr4gGKJVMjXCYxTlFNSLQCXXdJGgPe1un8Eqx7bSt+ZMBR0RnbtxsH9
-	3ozi15G6MnoP27UntHDYZy5ku+fWQvpdVPuuy04I8GQiAPwQeQCxhnYyo3+IZwIg08HKIw
-	5Vj6cgWKYaJx8izZ9pZyu/XsUBa47Gc=
+	bh=R1UQ9FNkc8l5nyatttnspRCQVclcdetrGbMkAG+XPp4=;
+	b=KR2ImPS/SpledipHShgf7qjoC5zkLSDjzq27HokIv4xmLPK7CniQB/CK+CVYBkGH57MEL2
+	kzV0lTxyWLueJk0SkGgl/AvXIABZgEPDmJ/TIBS443EfY9vLBj7PMRzJYodzqBICtbYMR7
+	lpflM2FCUFDXGZVo7pCvzITVvrep/ng=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N47QG1bj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792619306;
+	b=hk5IaAOgXf2t0ZyEAtqaeHCXR7YWZTZ5t6yN4lg6meK/jTLWdMXqX2qszVhB06nc55K3BU
+	KFj44eE511rGTEqsTIsDAjHLfHKX341Y8dSff6QtgXqskJnDgyLct+bLvaRBV/k19d+1JP
+	EFJ9+YdDnbaWv52ijMdJARTuio9JNXE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3C15B43EA4
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:47:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215611F000C3
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:47:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DED7F409C1;
+	Wed, 21 Oct 2026 21:48:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949B61F000C4;
+	Wed, 21 Oct 2026 21:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792619279;
-	bh=lNlfmBmtfiESOniOkWbpwP2+Kbv356q2HSZrSlUKiAI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EReoPclS6CGlBuqPgcg18O5SMm3/5LhGzjWMr6HSGDtx4kfjBAAnYXMpGDcL/OreR
-	 O/CXbo9BVRGQTpBiJtTktJhZ64QXVsP2XWUjq1xN7okV7FdWm4gJUc5P+CMlZldkdO
-	 OkxVk+07qGBPF6Tbwe8dJ+ID1E9kb8eToCOvAES40Tu9+yumt5dcz5h+3s2KNngjlq
-	 tHL1rLFAbWABCd2KvIpvlu2veqGIdoQ1q9Hg/MvQWPV38nT1iSkN7IvHb7QZuEWh7y
-	 GFYIwPbiqAvuAl0oahBTBS6gv4qEE6UqbxArSiwa44c2/eUTlXkalQHQKTh3Jv+ZWS
-	 20X3q5oYDj7jw==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c40f29667e6so191938566b.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:47:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwwKfecvL810plU7MGvPVOUS61MdDyOS5OTUO+FzI0EMW8wWrfp/VfEFDKXUuqsCWYPNyH1J+ipXQ==@kvack.org
-X-Gm-Message-State: AFq9FYLbdV/SjdPRfHH7i8P2cHSsOj3BjRDPIvhSdfVmq1hUwNH9CORn
-	Tu4/BNEodsjyp7dvfzbC9eHK8ZufDK0FzRVaOw7+/HMqd/wv0+1/B0mPweBQxpKzD7+4oVroUiF
-	F9rqxUrh8+Gkl9cOppPgK+V9Hl8LPu48=
-X-Received: by 2002:a17:907:9608:b0:c28:599b:7782 with SMTP id
- a640c23a62f3a-c467959800cmr282913866b.21.1792619278019; Wed, 21 Oct 2026
- 14:47:58 -0700 (PDT)
+	s=k20260515; t=1792619305;
+	bh=R1UQ9FNkc8l5nyatttnspRCQVclcdetrGbMkAG+XPp4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=N47QG1bjuudhcobU3keo853c+bzAg5T+d+/lpJoagyVzzFNZEqk1sjb5MPt+yF90L
+	 GXUBw8zE/7EmUjPZN2evYSV17aUp7PqJaJGLShWb7hXgAJpX3+Zlxmav4kanqnPCUl
+	 5vC8mbRbn7YgHr6rHylcBcqgn8U1ZLCEdFTAiLt+gVJpMlvd6FhxP3rSnpuOjfTwsE
+	 ikMk9w33nXjmCB5cG3aR7Cd2hBsqN1UYaHsAeSbZhhf63nqq5uQ0A9ad48TSDa8xpa
+	 zSTG/x7BjBAgaAqepceMn5aozu30SmHatv/GE5Gy7DU3iIXFa1SiCcm+QcuwVXdc0g
+	 oBNnFkSXt/EAA==
+Date: Wed, 21 Oct 2026 11:48:24 -1000
+Message-ID: <649966b83b39fcdd25e892fc3c6732a1@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ian Kent <raven@themaw.net>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>,
+ driver-core@lists.linux.dev, autofs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+002fb7b2d0bc53bf7e75@syzkaller.appspotmail.com
+Subject: Re: [PATCH 0/2] kernfs, autofs: fix pipe lock cycles through sysfs stores
+In-Reply-To: <cover.1792577179.git.krystianmkaniewski@gmail.com>
+References: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
+ <cover.1792577179.git.krystianmkaniewski@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261021205626.3286270-1-suseendranb@google.com> <20261021205626.3286270-3-suseendranb@google.com>
-In-Reply-To: <20261021205626.3286270-3-suseendranb@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 21 Oct 2026 14:47:46 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
-X-Gm-Features: AclHuK-8jo-f_F6DT-y6k_PMr4phWvWZnvu-2n_VUIdKUsZEm6R5LdMzF9aUhcU
-Message-ID: <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor compression
-To: Suseendran Bhaskaran <suseendranb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S . Miller" <davem@davemloft.net>, Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
-	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 3176FC0004
-X-Stat-Signature: 6inkzf5n588sy33gcpycro8r8fyyjxdc
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8D51D18000C
+X-Stat-Signature: mgr7i4n3jkwxuyiyzomk5zk181kxcjim
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792619280-971116
-X-HE-Meta: U2FsdGVkX189yfc3UYgUfKU3F3N9WOxG437SOMGz/3F8TRAuA4QPVC+8WNQc3PWdfe4djsZiQnmLxAF5ZR0jPHz6HwJW/4IYAeK3n4X7fw56iwOC/OI2R5Ewk7UYD3Dcy6zS0ccPxk1et2p5VkyN4D4whh2RiSVauIcuS51OVLHiiMcR2MiCJvFCCgDftTvLxc1uuEK4JA9aJV8TkUFvAChprzvP4Dicpg2XCIEgbxyxMfnHQ4GNB/V7Q/tvtdrsUQkAAQoMIE9JK14jWCZBYVJGl/LOdL1m4K9mgSL2lt55SbiinYXh6g8dYcZOM8dDPPZDmRsKpjJhPf9BESEtE5Qe9E718apPKQrOK9mO7zRacfI1prXgO+hd7guHHWr8OFmquKy8O+GCEqSMb277uNM5znHbhIgPJTg6BIQQegnOhs1EvN168OEGx39nI2OEHXoDl/5falf620XF03TunyOHPqd+yjiVOcyKR+77+JI+25HpE542OA2u73wk89jMnlqB3nykFb1A/pUzDuLuM3oIRw3AO9nL1PxIX7MkaeWXNbcZ+YcnVUsWjYKWYRk38PfUJqkB0QMvWCvXIBUuq8zmsiw41PawIiXn1uYVxazrPvFLv97CPweOwgGxSA7hlQSXInA4pEEe7MEuEnYRoEvwI7pITgtGyOpJfNS+qa0bDJdCuyjGhEJ7UmM+Gyr3FisOhBgfG8jiHcWIOiFx6it2VfHkA8PpHIhJlI57qlExSdDtooOg08e6Vb7Ss46ZuCyASW7f5BRRWMVqscFgDP73K35pSRokW/tiCmLoQlYzeZ/p5I5FJyYEb+82raJXpw8ofxv4haIKWWAzwWmIpmAKUCAzRveNIUjaQ59aYbtu8cfSwEAVd5Qz08p+KOg2oNAdersQ8rwxfiF0sgK2w6UGkyoVcoWac342YfwSztsbJVZlNq8sIez1USubQlhOtlbIFGvDh3s37WiUQw0
- dbsw95nw
- 2JTEtkisuAxIUaukBC1dBmtNha+zaFd4HPAzbegByKRCEM+YDUZck0eVW2+U4RI3cAe2v6Q83XiGC5LARPe2DnS+8422wP4X2eU1tH2QRSGHOjth3e9xp82m0th0siZHzWF7bG1THuQpueWYz3KltkDrDDqpMost9WixZTel1EzG/XsjMeBTqtolLkSaAEmHP9uz3hXAiGYWBI+R8PC1qxgzsaORHEC+zG9hyCtvCTuh8q/ryfmSNp6BAFN9QBbAbuYbpjPlI/aBkbSl5EvlppDH++hciXYFMGSWK+Y1NVzwwDzTbS+lE25mGIw==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792619306-42639
+X-HE-Meta: U2FsdGVkX18AnVoJefW9WGIQ7SnlbKSbWntfNIakjBFwZvTT7xrphpaouqYj+hJQEppEpWGfhz4GxiXvNXUup99vawVURppMWOxsk5m1ksQ0QDwZRxOdTbDCP/KZifUYlAMibtKlSn2tBTv19x58MHD8jNF0q3eNoCP8h4yJ0EzRRh2Z4AC+QZbgpSOxFzClikSUVl0NQLR0rPHLnip5bK0hb489ukchg+/eNsU2etqfxnVWI2326RXoeo/dzNciOH8SiEdsM8Sf/nz/QYx8Ez1f2LChMiWLcJd0342R2TMDZ7KrShOR3M8K1G8YY1wMSmdsjQe2AZrWA1Rg17N03F00Zz8oTrXIPJH6bJ0ra1nfMJItPLVKLI5YvHmy1nAvn+6Bgc7oSWzRMqz3p6FQaFbpDRk3z1OHD8rZWNiKdof4iQ1l81zXrAHbKWeNmI9lTciQq3556mTlJgn5viq9GaL+qKs5alSRmLhkXdfBlMnwQIHYTIgwvXkLHfz8MGVJLhXYAqSJFGRiK0s6jCuCm28BbBZT7VPEavv6tftuhcbFgwqMdYRfOpB3rnob/1+LL8Zmg+BM18ghmz+L+Ugbk0JGuNwdpXaHVoRKY3gip0qV3h5RANQK2HkkdDjvFTdbneDuSwZSco+vpZTMVqXVQ691u50RB4rHIaH0GjZgnhXO0p7B5QRm0NLanla7Ska7JxTiSB/lzw9kTWEgmE5hJOff3j7nICb1V6ZicoGTMobAAZlJ5UIpCFIlDKK/UP028nY1M8H+8AahGJ6/HHEpyqRlXsW/u6kcj1Hmqu5xm03msfk5cs+26AwwRYqQMLKHmUo1p/9isDttcOxuLxSPx/0A6x3rmEd3LGWVXUZPjqSBYtStivN1+RfrTWUL2dnRonppcXKNaHuamqMgqIuWLss0x3DgYe5oUf8LB4WFSVSxHA1LNojynL5nd9ft8hSgtp1kbPUyvA4NP9JjWBu
+ X0WMRHXc
+ IO7I1cCEswrjcHNRr3VgTDlrdV+gBv4ekoU7V3K71nDREJjXAOHHfIJK7oml06DpYJ35FILZcSUaYdKAy2/RijmhpH1ipp1KM6p44qoYVY5mrlfkdBDvZiKSdnfsgeWcWN7CR8DBXIUret80DHBx1YzcN62u14WqyO1qz6RP73nz2PTX5aytPWDpftyqyA9ESgnHdlDCiI0769X5eAsYvYFZzSWJEN6xLD8hqdsZFUOTe1Iit0aNaF1NFTzDsBPrqZjRR16/Q5RBz99JpeFaIFVt3Z5OXXTY0kvjvrNYqJS+KVYRmOxP6MTuyzHLt/lSweZIFWkH7xrIIFB30q05do7VZwdRhaGz/DratrAn+OWgPdeEggZ5uR4uN71CvG2OZ+mVcQDqrXepnLdA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,103 +103,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 1:57=E2=80=AFPM Suseendran Bhaskaran
-<suseendranb@google.com> wrote:
->
-> Commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
-> as-is") and commit 0b1bf60c324a ("mm/zswap: reduce the size of the
-> compression buffer to a single page") updated zswap_compress() to pass a
-> PAGE_SIZE destination buffer to crypto_acomp_compress() (so
-> incompressible pages typically overflow the PAGE_SIZE buffer due to
-> compressor metadata overhead) and check:
->
->     if (comp_ret || !dlen || dlen >=3D PAGE_SIZE)
->
-> Because crypto_acomp_compress() previously returned -EINVAL on
-> destination buffer overflow, this check conflated destination buffer
-> overflow (incompressible page) with unexpected compressor failures and
-> did not set comp_ret =3D -ENOSPC when rejecting incompressible pages,
-> resulting in two user-facing issues:
->
-> 1. When zswap writeback is disabled (e.g. memory.zswap.writeback =3D 0),
->    zswap_compress() sets 'comp_ret =3D comp_ret ? comp_ret : -EINVAL' and
->    jumps to unlock. Whether the compressor fails on destination overflow
->    with -EINVAL or succeeds with dlen =3D=3D PAGE_SIZE, comp_ret becomes
->    -EINVAL. Consequently, incompressible pages are misaccounted in
->    debugfs under reject_compress_fail instead of reject_compress_poor
->    (leaving reject_compress_poor stuck at 0 and triggering false
->    compressor failure alerts on normal incompressible workloads).
+Hello, Krystian.
 
-Hmm IIUC this is completely fixed by patch 1, so it doesn't belong here, ri=
-ght?
+On Wed, Oct 21, 2026 at 02:51:48PM +0200, Krystian Kaniewski wrote:
+> syzbot reports a lockdep cycle &pipe->mutex --> &of->mutex -->
+> &sbi->pipe_mutex. splice holds a pipe mutex while it calls the write or
+> read handler of a kernfs file, kernfs takes of->mutex there, and a write
+> to /sys/power/resume looks up a path that can make autofs write a request
+> into its daemon pipe and wait for the daemon.
 
->
-> 2. When zswap writeback is enabled, any non-zero comp_ret (such as
->    -EINVAL from an invalid compressor context, -ENOMEM, or a hardware
->    accelerator error) is treated identically to an incompressible page:
->    comp_ret is cleared to 0 and the raw page is stored uncompressed in
->    zsmalloc. This silently masks genuine compressor failures
->    (reject_compress_fail is never incremented) and miscounts pages that
->    encountered a compressor error under stored_incompressible_pages.
+This is an extremely convoluted case that isn't going to happen in any
+realistic scenario, and it doesn't make sense to change the locking scheme
+for it. Can we just disallow splice on /sys/power/resume instead?
 
-Storing pages in zswap when compression fails to avoid LRU inversion
-was intentional in commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE
-compression failed page as-is"). Unless we think this needs to be
-changed, I think all we really need to do is make sure we account
-debugfs correctly for -ENOSPC vs other error codes? Or am I missing
-something?
+Thanks.
 
->
-> Update zswap_compress() to treat only comp_ret =3D=3D -ENOSPC or
-> (!comp_ret && dlen >=3D PAGE_SIZE) as an incompressible page (storing it
-> uncompressed in zswap when writeback is enabled to preserve LRU order,
-> or rejecting it with comp_ret =3D -ENOSPC when writeback is disabled so
-> zswap_reject_compress_poor is incremented), while jumping to unlock on
-> unexpected compressor errors (comp_ret || !dlen) so
-> zswap_reject_compress_fail is properly incremented.
->
-> Fixes: dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page =
-as-is")
-> Signed-off-by: Suseendran Bhaskaran <suseendranb@google.com>
-> ---
->  mm/zswap.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 37f34e406c8e..5f2a941fcaf1 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -881,12 +881,12 @@ static bool zswap_compress(struct page *page, struc=
-t zswap_entry *entry,
->          * only adds metadata overhead.  swap_writeout() will put the pag=
-e back
->          * to the active LRU list in the case.
->          */
-> -       if (comp_ret || !dlen || dlen >=3D PAGE_SIZE) {
-> +       if (comp_ret =3D=3D -ENOSPC || (!comp_ret && dlen >=3D PAGE_SIZE)=
-) {
->                 rcu_read_lock();
->                 if (!mem_cgroup_zswap_writeback_enabled(
->                                         folio_memcg(page_folio(page)))) {
->                         rcu_read_unlock();
-> -                       comp_ret =3D comp_ret ? comp_ret : -EINVAL;
-> +                       comp_ret =3D -ENOSPC;
->                         goto unlock;
->                 }
->                 rcu_read_unlock();
-> @@ -894,6 +894,9 @@ static bool zswap_compress(struct page *page, struct =
-zswap_entry *entry,
->                 dlen =3D PAGE_SIZE;
->                 dst =3D kmap_local_page(page);
->                 mapped =3D true;
-> +       } else if (comp_ret || !dlen) {
-> +               comp_ret =3D comp_ret ? comp_ret : -EINVAL;
-> +               goto unlock;
->         }
->
->         gfp =3D GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABL=
-E;
-> --
-> 2.56.0.218.g1ec904b173-goog
->
+--
+tejun
 
