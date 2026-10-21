@@ -1,113 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3F960A262B
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B7C606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p02NDSmT
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KyAaAhH/
 Received: by kanga.kvack.org (Postfix)
-	id 2A7F76B062C; Wed, 21 Oct 2026 02:08:09 -0400 (EDT)
+	id BD6916B062E; Wed, 21 Oct 2026 02:11:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 257F26B062E; Wed, 21 Oct 2026 02:08:09 -0400 (EDT)
+	id BAB7A6B0630; Wed, 21 Oct 2026 02:11:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 148B26B062F; Wed, 21 Oct 2026 02:08:09 -0400 (EDT)
+	id AE9566B0631; Wed, 21 Oct 2026 02:11:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E02756B062C
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:08:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4141D40482
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:08:08 +0000 (UTC)
-X-FDA: 85345603056.28.047661A
-Received: from mta1.migadu.com (out-116.mta1.migadu.com [95.215.58.116])
-	by imf23.hostedemail.com (Postfix) with ESMTP id ED1ED140005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:08:05 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A44B6B062E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:11:14 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F89280453
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:11:14 +0000 (UTC)
+X-FDA: 85345610868.30.91FACD0
+Received: from mta0.migadu.com (out-217.mta0.migadu.com [91.218.175.217])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 97271140002
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:11:10 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p02NDSmT;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.116 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792562886;
-	b=lk1n7MYg2gbGI9hIqAFlgdmQhVh1/dbqxL6L1LkTZB+dEIzrOh1qyIKt2o9sYjlpQ706c0
-	RnS61Jt6VZIpac3FgExcSsvqiMlhTxjW+QyGj+v5MvtEn5pmH2gx1bH5BgJnOMQWD/fFfH
-	y1xMy8sHp8zoEyd1yTIsf5J5yIYelUQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p02NDSmT;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.116 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=linux.dev header.s=key1 header.b="KyAaAhH/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792562886;
+	s=arc-20220608; t=1792563072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZYe3wOkYMWAT9nEkJmHND9GUlXX8tkyrEnTbfn+hGAE=;
-	b=gWNgLA1u0LCMKgstTd1lwSAWjKpvWrxock49zvIbI9V+qdWdAhl+p2tVb/+BGUCnum2Nw1
-	QwRidkaYGqu2g+6A3Hn6UBecPfoSmvPDELwbbvletPg/1eEipIWSuyTxeQGhk3EMkTowx0
-	JOxL7BAOf1SKEoIiLAsy2bPue/PU18Y=
+	bh=RoigheuXlEgEVVeOm0wqZxiwY5/DXHnZexKpxuh+vtk=;
+	b=w7opRstwcyXQWvsLTA714f6qUaoc6N7gBqOZ48ZQzj5CoYPQH6H5H41Bv5DOxriof52Ku4
+	8NavCjYe31KysIYZnbeHOnxXwJJ8Hw2dGrDYqI6EIfHiGe57kU2u1Is1pjCIchSQN1XBwo
+	WsHOnflIupcJ09kIn795XitpPjCG94Y=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="KyAaAhH/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792563072;
+	b=hWt7rhGTYBrUbqF9UtZyJde7q+YubwVTYhkB/rJPDKU2R1TL7M+gGyaOyzEsi+PUZdXxQM
+	B83p4VP/5OgN4ldANCj3PuuIn9svQNgpaNtFN5N9Alfmb9/eGiliK37ajtEUUfMnARKyUK
+	PibuLrcTXm11MC1CmxOVZxLRIb58kMI=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4KIURn7WEb1ayotO22ZrkJ9wcqdsX7N260OoXXlEYTw=;
+DKIM-Signature: a=rsa-sha256; bh=RoigheuXlEgEVVeOm0wqZxiwY5/DXHnZexKpxuh+vtk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792562884; v=1; x=1793167684;
- b=p02NDSmTaSCB8KSHun2b3TBjbf1NxzTB/b6rDos/XyDiLhiG+2lxVTaZ4aTR24rWJ9/gY/mw
- cOxsxKQ8l4CCJ668HxHAkwzAjhfXpzA02MknKMDcP6EqNdBo6cYSi0IeK3sur8sTHobIbATp94K
- 8nj/4oIDDrwoxMYcccNwBXQE=
+ t=1792563069; v=1; x=1793167869;
+ b=KyAaAhH/eYfv2EtlnJFOXQeqVG+6ADHWw8k6iQd17UIBgcsZIaW1WIf+o+/Q81kvO7aqjckN
+ k9gsBbyAi4mn1MRj7Lgh/OA4smyfnFbNsOgKeACNDfbNnJViy7hw/dO6dgnysEK4hYW6c25EUpP
+ Ur5IANeC4CF42e1c02Tz/W/U=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id da1eddc643cb8bda;
-	Wed, 21 Oct 2026 06:08:03 +0000
-X-Mizu-Trace-ID: da1eddc643cb8bda
+Received: by smtp.migadu.com with ESMTPS id 73700c2a578380af;
+	Wed, 21 Oct 2026 06:11:08 +0000
+X-Mizu-Trace-ID: 73700c2a578380af
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: songmuchun@bytedance.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	osalvador@suse.de,
-	maddy@linux.ibm.com,
-	corbet@lwn.net,
-	muchun.song@linux.dev,
-	lance.yang@linux.dev,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	ritesh.list@gmail.com,
-	sshegde@linux.ibm.com,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	qi.zheng@linux.dev,
+From: George Guo <dongtai.guo@linux.dev>
+To: pratyush@kernel.org
+Cc: rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	chenhuacai@kernel.org,
+	ardb@kernel.org,
+	shuah@kernel.org,
+	ilias.apalodimas@linaro.org,
+	akpm@linux-foundation.org,
+	baoquan.he@linux.dev,
+	ruirui.yang@linux.dev,
+	guodongtai@kylinos.cn,
+	kernel@xen0n.name,
+	graf@amazon.com,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] mm/hugetlb_vmemmap: remove vmemmap_wrprotect_hvo()
-Date: Wed, 21 Oct 2026 14:07:56 +0800
-Message-ID: <20261021060756.4599-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261019090830.1917657-4-songmuchun@bytedance.com>
-References: <20261019090830.1917657-4-songmuchun@bytedance.com>
+	linux-kselftest@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH v5 2/5] liveupdate: synchronize EFI KHO channel at execution
+Date: Wed, 21 Oct 2026 14:11:05 +0800
+Message-ID: <20261021061105.3697-1-dongtai.guo@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2vxz1pal5u64.fsf@kernel.org>
+References: <2vxz1pal5u64.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: ED1ED140005
-X-Stat-Signature: 7mwed5g8kddhjrfqopx7jqprzkwxezcy
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 97271140002
+X-Stat-Signature: ozfkigksn1rhirwuw3ufxz71ate3imio
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792562885-941996
-X-HE-Meta: U2FsdGVkX1/jkpYPoJ826KG6cDO66JAQmowbANkQUcm5PQqrQY3wMKU4VpZIcPnYG61EyyxTIfL7SNXUNzC42f7Un6hf0ZRAW/RpopmoxK68gXy1Sjs9nhMAWXzEiPFOCcrAtW94z9hSlwYKEBlDbHOcg6+qVm0ruto7btXl9N8Fwi3oHlCG1FG3rXIRFqUIZ89ERb2zjiiheRPEjIFPHVxcpKIsMJvTXXbUdIe9NDRC9NaSvzUo6ERRdQ6LYkiVTDMPxR8MLkjikmqro3ajp/m/Hz3zeHCrzofkm+SGi+Zvdwyx+L0sXXibN6ndXDl/kpj4cdrpvrpudJ68KMolO8Se6/T5hA5zgxJSDvPhN7GWdfvoM8GTzu98RBibrC3933VxRHT1PQO4fePR6LJHb1V9ZTf0IHs0u71vg4cTvj9JHxIR/aKrL7R7RWT6Vi2MIFxjwx7vrLKwrAU8W1hcTETGBbBLCJ7S4Wr39TMbCrlJoD+wVpBZZzeHw/+jHN8wmc4AuLn9v9DpC1i7exkb1pEk723EiSUHq6g8CLFqeH0BudTaIYCxlmhfcbmYdmsjPqsWhmgU9Bq16MNBgKtXuriTDLVQjcS7gjNDadfXus3KOJrMKh6u09enxo4365nLufb/1Zbnl3A97JY/guQhURoX5C/zdAvmkN1xlaSLUnmquisFnG1NjMwJ2GtdWsw5DJzwp1Suf1GXS7t7LA+zv5WWuvv+VidVlD2LRY5Ndr73VXJAsimSG8t9p9X3F0hotd04SuSGPizz5h9e5OMALqVillB6y3hwTQzVhZElXS/C5Sj5OToPpOMA/n/FCNucXyc6WfM2agEL0prWU0jxNHOMx/gctcULYJ43RAsQZW8bJ2qzkVdfB/Mj6o0m+xAUsNGlCnBF24QM/C4EAxWKsEWg8FiRykcEelrdePkjUufuKwJlQDEGJbgvIkC0CeKq9IyRdJYKxr3/FsvKhbs
- jtsKjvAh
- f+rZ7pGD1zjZOk4MOEBgOLk/Q6jy0FkEvN8D2G+lEnSnTVdqQdG0Z6JOUly6fAumurek6IaM2lPgnGvbzMs3JIPh2QE1UAJgvbfbZXc69qeXgXs7ptIfLNenWj7LQ+REGMCq0JH8Asif3Des3hax/jR0XxliDLdZ3LLFEg1mLFLYSjF4YBHKl4rWDIVDoowmofAKjZPplqvU7WoLfdi7Fm+niisqEl0HLmRlDSdYfARfR8jhACo1Rqu8A4smnxAE+EuQSyoyRNyNltjhbQR1qg46aENPAnKtfBoPPxhzUHrQnwJWSln0BgF5MMjbKET6QuJxqzgKSMqcehQQBVi8bG4vkxAuz3ecvtExlTfXzR26o3xR7MnS4J1az7bjmS3/k3RUm
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792563070-165573
+X-HE-Meta: U2FsdGVkX19o4y4LE4D/2cI3jFt3oPlYtQax/lhkdbMbmFvtEmcVbxhSoEYLR3542qUqV1jw2ybBs2bCFys+UwUaix3hMNS9IlWR7yrjZUOLDd5b8tWiR9zm7HIC5d7ntCUlqUxkMlsO86FjP0lpw0+zLa7VaLVTaFqwy823uDtQrsOSiuqFbu8yzd5pG9IeOR5MXY+l3BJoGZ28INLthAZl/mw0KQuX8dgRZumaouwV+18gr2SxYeULMLDZameJI2Yyxrj1sOsvbaW7HIGnUEDC3GDVwbyMWzOLHgrMKJP0gYoU1ZOvwcQ+Yi7CZk1m+B5dpiheqhJUMgTCEbKOrlZTBywWa/aaKt602SBTOceioLzy1ihseaqykbgGNoqxlnhWTqEdI9RwZyD2DqWcRWbHludejArYLCQLiU06ZNr/LZkvduVosa2k/sWRzuw8ejCRMaDpp+mwLK/L5rmc3KapOSGW8u2XZyGnrxXD2RH8FXeSZnQlpZI7i0perD4hT+lawp/e7B+34G6ctIpyDiiuOKs5BPOtl3TxL1ytxO3TbKLaXC1wAjpx3HALd04FS33n4FPGkVkYp1odTY1LDNkxeg/x8LOm5BUJusx63d+s7x517/FyD34ONh3v+pUrmhjpihraLW+Vhz1zEHMgA87mzqDM0d0IN62XB1MZ6FKQoufZuAYJlomznSMmOvQB2W1gh/ZFwbRUVbSgzOY2SRAhCtu7JyviJXe5a+iLGlausmQeMZ2QAWraA5S/tDG3CjonRvcdn1vW/Fn9fYhSyBr1+5eQAaoIZR0akUrD11k4dXYCULLIzIiDxv7eaEKrh6wDZG7cURlzrOiZOwmV3cdEw/RrOZvpE7Xa65pgcArw9njHBz+hQoRV/SE19GFD8jDfX/oWyfEJ/1ojW3no3ELoMFo3d3sL4iOh7T9TNFSEuAFgpEc2zW0kIPhyNzgnCGXvjE9cMdOojg7tmFC
+ jFeAO70c
+ aJkQAECN4wjmLA3JDtAEkU7X3MMld19t7QHNKiHeGNpxk3Jka295uxiUAfZvLQaMoeYUmfJNUPiiHFNGyhYu38S36EbARRJIDbRP3Ud74Miw6ZVaC2ciiCqfB35EIRzOsvKilSq+GMjWNOeXdVGlPdeCd+qjc1825R7Q13PgcAPJ23kdXsboKb5jRPvyzr6+5Fn17x5ZPp9HsacHCCjwt/fQxruntEDl7W7LBJ20s4CW60EM8p4D50VLGASGvI73c3Y//
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,21 +107,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Pratyush,
 
-On Mon, Oct 19, 2026 at 05:08:29PM +0800, Muchun Song wrote:
->Shared vmemmap tail pages are now mapped read-only during initial
->population, so already optimized HugeTLB bootmem folios no longer need a
->separate write-protection pass.
+You are right about the text, and I am sorry. I used an LLM to help
+write this series. I meant to check every commit message and comment
+word by word myself before sending, but I made a mistake and sent v5
+to the list before doing that check. That is my fault, and it cost you
+time trying to read it.
+
+For v6 I am rewriting the messages and checking every line myself before
+sending.
+
+On Tue, Sep 22 2026, Pratyush Yadav wrote:
+> > The EFI KHO configuration table is a global channel. Updating it while
+> > a candidate kexec image is still being loaded can leave the channel
+> > pointing at the failed candidate even though the previous image remains
+> > installed. Synchronize it instead from the image selected for execution.
 >
->Remove vmemmap_wrprotect_hvo() and skip these folios during boot-time
->optimization.
+> Huh? Sorry, I don't understand this is supposed to mean at all. What
+> failed candidate?
+
+Rewritten in v6.
+
+> Why are you setting this at kexec time? Why not set it at load time like
+> every other architecture?
+
+Other architectures store the KHO addresses in the loaded image itself,
+so each image has its own copy.
+
+The EFI table is shared, but the normal and the crash image can both be
+loaded, and they need different contents: the normal kernel needs the
+KHO addresses, the crash kernel must find the table zeroed. Whatever is
+written at load time is wrong for one of them. For example, after
+"kexec -l" with KHO and then "kexec -p", a panic boots the crash kernel
+with KHO addresses that were meant for the normal kernel.
+
+kernel_kexec() and __crash_kexec() know which image is about to run, so
+v6 writes the table there: filled from that image, or zeroed if it has
+no KHO state.
+
+> Also what's this "sync channel"? Use simpler words that _actually
+> describe_ what they do.
+
+Renamed to kho_update_efi_table() in v6.
+
+> > Use the actual scratch payload size rather than its page-aligned segment
+> > size, and propagate update failures before live-update serialization.
+> > Keep clearing the channel for cold and crash images best-effort.
 >
->Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->---
+> Huh? This is word soup and I don't understand what any of this is
+> supposed to mean.
 
-Yep, already read-only, so there's no need to write-protect them again.
+Rewritten in v6.
 
-LGTM, so 
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Thanks,
+George
 
