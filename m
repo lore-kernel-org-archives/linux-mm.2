@@ -1,100 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C59606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2F5606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N47QG1bj
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AxZTXpap
 Received: by kanga.kvack.org (Postfix)
-	id 0E0B26B07C9; Wed, 21 Oct 2026 17:48:29 -0400 (EDT)
+	id 37FCB6B025F; Wed, 21 Oct 2026 17:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08FC06B07CA; Wed, 21 Oct 2026 17:48:29 -0400 (EDT)
+	id 30A126B0261; Wed, 21 Oct 2026 17:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0FAD6B07CB; Wed, 21 Oct 2026 17:48:28 -0400 (EDT)
+	id 1D5266B026E; Wed, 21 Oct 2026 17:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CBD3E6B07C9
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:48:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 486671606BE
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:48:28 +0000 (UTC)
-X-FDA: 85347972696.16.C1BEA94
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8D51D18000C
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:48:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N47QG1bj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D9BC16B025F
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:53:52 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A995A03E1
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:53:52 +0000 (UTC)
+X-FDA: 85347986304.28.3EE2DFC
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7DA4640002
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:53:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AxZTXpap;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792619306;
+	s=arc-20220608; t=1792619630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R1UQ9FNkc8l5nyatttnspRCQVclcdetrGbMkAG+XPp4=;
-	b=KR2ImPS/SpledipHShgf7qjoC5zkLSDjzq27HokIv4xmLPK7CniQB/CK+CVYBkGH57MEL2
-	kzV0lTxyWLueJk0SkGgl/AvXIABZgEPDmJ/TIBS443EfY9vLBj7PMRzJYodzqBICtbYMR7
-	lpflM2FCUFDXGZVo7pCvzITVvrep/ng=
+	bh=mtRYkql7bK2+Mk9/MALlnk6mIy+nScSi0K/oMYikPEc=;
+	b=k+WulmvHlsCWUyciHfSjyhWUT9ni6OIAWFLE/6nDG/AA1wAvZz+A5VKdTWgMliWCJ4mCDd
+	bLos4mDr824zIGS470V2Aw0X8qXIycCer6n2B1jJR2fLXwAUkc1xxZ/HAyVMd8F2w+U7k6
+	z6QfmcMoSMWjlTu/Y8ETfJxzkgE2u7o=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N47QG1bj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AxZTXpap;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792619306;
-	b=hk5IaAOgXf2t0ZyEAtqaeHCXR7YWZTZ5t6yN4lg6meK/jTLWdMXqX2qszVhB06nc55K3BU
-	KFj44eE511rGTEqsTIsDAjHLfHKX341Y8dSff6QtgXqskJnDgyLct+bLvaRBV/k19d+1JP
-	EFJ9+YdDnbaWv52ijMdJARTuio9JNXE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DED7F409C1;
-	Wed, 21 Oct 2026 21:48:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949B61F000C4;
-	Wed, 21 Oct 2026 21:48:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792619305;
-	bh=R1UQ9FNkc8l5nyatttnspRCQVclcdetrGbMkAG+XPp4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=N47QG1bjuudhcobU3keo853c+bzAg5T+d+/lpJoagyVzzFNZEqk1sjb5MPt+yF90L
-	 GXUBw8zE/7EmUjPZN2evYSV17aUp7PqJaJGLShWb7hXgAJpX3+Zlxmav4kanqnPCUl
-	 5vC8mbRbn7YgHr6rHylcBcqgn8U1ZLCEdFTAiLt+gVJpMlvd6FhxP3rSnpuOjfTwsE
-	 ikMk9w33nXjmCB5cG3aR7Cd2hBsqN1UYaHsAeSbZhhf63nqq5uQ0A9ad48TSDa8xpa
-	 zSTG/x7BjBAgaAqepceMn5aozu30SmHatv/GE5Gy7DU3iIXFa1SiCcm+QcuwVXdc0g
-	 oBNnFkSXt/EAA==
-Date: Wed, 21 Oct 2026 11:48:24 -1000
-Message-ID: <649966b83b39fcdd25e892fc3c6732a1@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Krystian Kaniewski <krystianmkaniewski@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ian Kent <raven@themaw.net>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>,
- driver-core@lists.linux.dev, autofs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+002fb7b2d0bc53bf7e75@syzkaller.appspotmail.com
-Subject: Re: [PATCH 0/2] kernfs, autofs: fix pipe lock cycles through sysfs stores
-In-Reply-To: <cover.1792577179.git.krystianmkaniewski@gmail.com>
-References: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
- <cover.1792577179.git.krystianmkaniewski@gmail.com>
+	t=1792619630;
+	b=NerMMC76gDDXzLvjx8JwQqVWscOJDr4DUcMpk6bKQEHyQ79sP162krsy6oJWQLjnXG+vIM
+	pqHr0oqfgppzrm2KlJVH+WEKFQ2DCffZ0J5Fz8hmwDeesuEte6uN559OAZYI4HQuGifhoM
+	pP8JKeLKMBSNuAFZ/TbKT+/A9zQj6nU=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a06e79e152so531526b3a.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:53:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792619629; x=1793224429; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mtRYkql7bK2+Mk9/MALlnk6mIy+nScSi0K/oMYikPEc=;
+        b=AxZTXpaphumknMknAfdcpv7Qhp1KylxAxYAcXmORZp6a2MH26wIwhjWy3pOgXwk/YK
+         qgLWAsmHCbkWsHOQu7e3TVRDkATIhcU2zdxKkV0pn+KI/hYZLgvrXGJBuUa+83g/vx28
+         0ymOfRPGR86rm2hUGOL7WV63NTzMbFLCk69kBd0z397mfwxjbpOGw9s9KztuXH3SL4cD
+         IHUaASufyWDlTmn7H4xhwzl3kvQ/feBEf6fks4aONgGb6ILdJwZ1qbUNHvK1r9QDtXDZ
+         85PSo3/ulb9+CKI+8FqlfqNfjYoWjJ0Ug8yPwFF6UckOonro2hHznvKcK30dxiwLGBw/
+         MqPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792619629; x=1793224429;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mtRYkql7bK2+Mk9/MALlnk6mIy+nScSi0K/oMYikPEc=;
+        b=VxLxLWZgxh7/hRSA8nEusMDB3vNHXOAsCE7kH6evtWGmhPHLcbfIBe3irTWZcX76rY
+         clXVfhb1LDNFJ2hFfB3jzeWHYalwN3MwilbjQMlB4HwdqD90QsHgUWcYsQa3YBoPrQ27
+         GxRL7GO9FqZhFkDPlGM3JJZLlv0slKyd6SJYEzHqvIQ0VEJlo+YIBKfakbT+rhjb3OSY
+         GRh756EdLyMxOkMEPKiNM+fSIjrMZD/yv+OHaGVmwiYsb+lI0adVyKe3ZlyU2faiJTrN
+         hgENK6SygNBKFSbpWXDieK0FOWYqdG9e9tcrpXb5EDPwM3ENjoJZqTuFhyClWnonZD1m
+         2j4A==
+X-Forwarded-Encrypted: i=1; AKwUvBzTpP+SZFcAvU3hfKFX7dM02iXOKq20tEopuM/OgaIeUOi21o05+bOOc7+s1u8JrBARwbC27n9J5A==@kvack.org
+X-Gm-Message-State: AFq9FYIN9hJWoR0yeISM82WSdVqIimVLv6zvYgUfnogcHlokB8pFSqq1
+	mTkpd/PYlGtihlRkoxmxiKfC82R5s6W4hN6jejfMD2G/bbXGf5aAHPq7
+X-Gm-Gg: AYBFou0pDV8begGl/X852Xk65O6wgDF33Gc8rwpTnJD98XLjwOI5gvpfFKPaBVaapY2
+	pFpUniqwYGf4EgLKhM4LsvHPMVLpSMp0hrL7JCwd0eBJzDLvidxpUhfC4PRY1KMdWOoiZcPlkwq
+	1qZ/YrqZcjU72+pVRe26QWqhNpQOsG0dSx9/dDo2WJsaQVfMtw/pKUGjd45U2v6qo33o86/XvHA
+	Oa4XcFmFIX4RdfUn7yfDXQ5bcf8Y4vmNegrZTRTWpS0YOPh7kf3YtBlTDVOXW22w7JsUG0WZbWs
+	srjK0b+//Nbt1+tMLLeRVlCe8qxWvsIalTIHdbh/g0QkwlF+fdZAnu2PnEp36ZOnPoPc2wbo0Im
+	MHO/0wmxDrhO9Kk2/JjaUUfclHaxvyLfnD4yEuX+x4XdzRdeE6Du8y7ye8PINzCLLRGHFqoZCTx
+	e13Z0w5jRWK5oOMDONv0P6E//PKmj2Z25+5QzyNMlKH6ZpptpO50Yc2HVysB2M+cgTEo1ptybtV
+	31qjJ84BbblmiBWkek4WCYFRujwUV+FTl2uHivTCO3QR3I1ICEnTIhIhpyIeQyKbaQmR4JnghTM
+	xW5eReHyeGkDLrTFx0fU9utkM6B1fV1RDkZLE/GLPpsAvyQ8Domb1FY7CQB3uA==
+X-Received: by 2002:a05:6a21:4ea3:b0:3e1:885f:b4ab with SMTP id adf61e73a8af0-3e287bca4bbmr2324254637.8.1792619629160;
+        Wed, 21 Oct 2026 14:53:49 -0700 (PDT)
+Received: from localhost ([153.61.198.248])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0895f8ca3sm1297288b3a.46.2026.10.21.14.53.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 14:53:48 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Oct 2026 21:53:47 +0000
+Message-Id: <DMAUMG9WL4X6.12UEJJMJSW54Z@gmail.com>
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jiri Olsa" <jolsa@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>
+Cc: <bpf@vger.kernel.org>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, <linux-mm@kvack.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, <linux-kselftest@vger.kernel.org>,
+ "Shuah Khan" <shuah@kernel.org>, "John Fastabend"
+ <john.fastabend@gmail.com>
+Subject: Re: [RFC bpf-next 0/9] bpf: Add support to allocate user page
+In-Reply-To: <20261021195759.119421-1-jolsa@kernel.org>
+References: <20261021195759.119421-1-jolsa@kernel.org>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8D51D18000C
-X-Stat-Signature: mgr7i4n3jkwxuyiyzomk5zk181kxcjim
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7DA4640002
 X-Rspam-User: 
-X-HE-Tag: 1792619306-42639
-X-HE-Meta: U2FsdGVkX18AnVoJefW9WGIQ7SnlbKSbWntfNIakjBFwZvTT7xrphpaouqYj+hJQEppEpWGfhz4GxiXvNXUup99vawVURppMWOxsk5m1ksQ0QDwZRxOdTbDCP/KZifUYlAMibtKlSn2tBTv19x58MHD8jNF0q3eNoCP8h4yJ0EzRRh2Z4AC+QZbgpSOxFzClikSUVl0NQLR0rPHLnip5bK0hb489ukchg+/eNsU2etqfxnVWI2326RXoeo/dzNciOH8SiEdsM8Sf/nz/QYx8Ez1f2LChMiWLcJd0342R2TMDZ7KrShOR3M8K1G8YY1wMSmdsjQe2AZrWA1Rg17N03F00Zz8oTrXIPJH6bJ0ra1nfMJItPLVKLI5YvHmy1nAvn+6Bgc7oSWzRMqz3p6FQaFbpDRk3z1OHD8rZWNiKdof4iQ1l81zXrAHbKWeNmI9lTciQq3556mTlJgn5viq9GaL+qKs5alSRmLhkXdfBlMnwQIHYTIgwvXkLHfz8MGVJLhXYAqSJFGRiK0s6jCuCm28BbBZT7VPEavv6tftuhcbFgwqMdYRfOpB3rnob/1+LL8Zmg+BM18ghmz+L+Ugbk0JGuNwdpXaHVoRKY3gip0qV3h5RANQK2HkkdDjvFTdbneDuSwZSco+vpZTMVqXVQ691u50RB4rHIaH0GjZgnhXO0p7B5QRm0NLanla7Ska7JxTiSB/lzw9kTWEgmE5hJOff3j7nICb1V6ZicoGTMobAAZlJ5UIpCFIlDKK/UP028nY1M8H+8AahGJ6/HHEpyqRlXsW/u6kcj1Hmqu5xm03msfk5cs+26AwwRYqQMLKHmUo1p/9isDttcOxuLxSPx/0A6x3rmEd3LGWVXUZPjqSBYtStivN1+RfrTWUL2dnRonppcXKNaHuamqMgqIuWLss0x3DgYe5oUf8LB4WFSVSxHA1LNojynL5nd9ft8hSgtp1kbPUyvA4NP9JjWBu
- X0WMRHXc
- IO7I1cCEswrjcHNRr3VgTDlrdV+gBv4ekoU7V3K71nDREJjXAOHHfIJK7oml06DpYJ35FILZcSUaYdKAy2/RijmhpH1ipp1KM6p44qoYVY5mrlfkdBDvZiKSdnfsgeWcWN7CR8DBXIUret80DHBx1YzcN62u14WqyO1qz6RP73nz2PTX5aytPWDpftyqyA9ESgnHdlDCiI0769X5eAsYvYFZzSWJEN6xLD8hqdsZFUOTe1Iit0aNaF1NFTzDsBPrqZjRR16/Q5RBz99JpeFaIFVt3Z5OXXTY0kvjvrNYqJS+KVYRmOxP6MTuyzHLt/lSweZIFWkH7xrIIFB30q05do7VZwdRhaGz/DratrAn+OWgPdeEggZ5uR4uN71CvG2OZ+mVcQDqrXepnLdA=
+X-Stat-Signature: y5y49yhgat7twjq6egehwiicn5w1jwnr
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792619630-55632
+X-HE-Meta: U2FsdGVkX18tS0lss8GrquaBdRwfQycklvgMpFtTidIw7/m329u8Vakmjvrm3ZUUC3q7SpxlMeZYwVlOy2K63Ug6NtCe6MdGt1bZMrLDZwigi6/GIgcpcV7j2hID+iAOzMuJzuE6Kw4LzPk5KKbt/u1JT8J7arc8ovPfb+oC9MJExBT6XWYijseCxjba8I2FP6s1KXp9/E9Y0CkZI6IcbASuPXPeEIeTL9dZ3RUMK4W+CiNnYkZmHUjNJZOABQhRp6O7DIElkZAJpgjPXkP70R+ZjNzUgJfFfwiD/rgz0UoQhsDiKcj5UYjjlffemclEYLObHwvwucKRP4u3RUDUZXCg2+jXfgWMDCxg3k4lseRk2isTz2X6F31nJ+ISo9kA9jQKPRFgLGBd3TfdF67FJadCX1GeMO62m1LlQmx8cHrku02E281x9Fhoa3oaAUD7M5SXJ2nzmPBqrximJDGlcFJWaoRT5fzzmyOXdSGbEK1cTH+xAqkGe5xxRNKiwRbYTFw2Wq+VIzWw/Rl80Abrxz4WFJYhRE1yc1afFezpqi9+XvnIvzgwNJiBoOLPoalQ7gdMLgFmEvf8zvkr3nnU/HY7+9R8dRVHSJan4Erfr9y0uxEoEOPrNJn0eb4+GXs/ervcXtTqi1ON0551NcBsNuGvm5nws1HFWf3tqObTbXw5Ob21FCRmhFFcaNvw1nsbGgRYp1e3u0My0uWur9Ux+TIFgAFodrvcu7ipRfbqCYY3zj+GYz0Z1bYWemSld/pDt5Qi5EfGRULcO+OdFDDAnp16Iem0fHXhMUQvNuUByAeDKpnROsZGHvxhQyOAHyikJIRSdGjwChx1DJUBsfwFNx5mxuS4ba5OPBwYeLTUZ7URaLgDQEqGNunSQdAS03osZ4MNordLcAVOGxnieFzBLyPKv1maAxLE/6Lj/3UZXknuFJSaokhLj0j5UrGzQ7IcVS9fDXQhAINc3/pcOfa
+ 6KEFfkB3
+ PqfncHV7y+6q/f7RUBDcY/Axc1c4oNHk54xC7/dppsZ5rXT6pINIWa0DzZOMTFxTy0ab/qDa9D2pa5ZM+GC0PTLSGOVG45zRZVZa5QsWi21qqRorfv69OiegRj89bKNqBnLAIwM/aloEWOoaMTlu7q59C3s6MujykssHlXZFWyCdiQkQ5YqXq/hJ24uW9vtjI66+LY8HB1dB17vEF6dwgld9Mc63TLpjWsZwZUNHisnRxubFWv9ZOTVQiMbfwwsy5wVQjSaSkvyyCwxxxDh+9aU0AuF8Q5re6dIIpcFuCmJsGi9aAt6mFT0mGOzGxlJkzOFIX+C7x2maMs7IS/4AxYN7/fCXg/Kprcbg9ryjxIuq8A2fqGYYdbm216eUtkpYfp75eI7KzEHB0ikCVvLjOOwHZTRe1thUUJZ6d0SvZ+bryLSrhXc6vML4Q/UBz+QNBMP+O6Ds9A7P81AffGStgjDl+ewpdB9vfmvxLubITX85i9cPlhwV2U1YbfP/i9xhhHNwY/jHaRBVthXXBvGPwvzuh4Q27yIBvNJmjJH4BAQWJ3jzRIY+9WE1niDKvlVFK+/ZyxWR8jda1UJhpfJrtC9UkBwd+hDoFzyznrftHvtS7+qU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,21 +130,134 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello, Krystian.
+On Wed, Oct 21, 2026 at 12:57 PM Jiri Olsa <jolsa@kernel.org> wrote:
+> hi,
+> we have few use cases where having the ability to allocate normal
+> or executable user space memory would help (like to replace function
+> in live process or change environment variables)
 
-On Wed, Oct 21, 2026 at 02:51:48PM +0200, Krystian Kaniewski wrote:
-> syzbot reports a lockdep cycle &pipe->mutex --> &of->mutex -->
-> &sbi->pipe_mutex. splice holds a pipe mutex while it calls the write or
-> read handler of a kernfs file, kernfs takes of->mutex there, and a write
-> to /sys/power/resume looks up a path that can make autofs write a request
-> into its daemon pipe and wait for the daemon.
+I think it's better to do what debuggers do:
+vm_mmap() with the final prot and
+access_process_vm(FOLL_FORCE | FOLL_WRITE), like PTRACE_POKETEXT,
+to fill it. It faults the pages in, writes into r-x private mapping
+and copy_to_user_page() takes care of icache.
+Then no need for bpf_user_page_exec(), do_mprotect_pkey_locked(),
+the marker, READ_IMPLIES_EXEC special case, get_user_pages(), etc.
+No mm changes.
 
-This is an extremely convoluted case that isn't going to happen in any
-realistic scenario, and it doesn't make sense to change the locking scheme
-for it. Can we just disallow splice on /sys/power/resume instead?
+Like:
 
-Thanks.
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 648abe1..ca1d88d 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -29,6 +29,7 @@
+ #include <linux/task_work.h>
+ #include <linux/irq_work.h>
+ #include <linux/buildid.h>
++#include <linux/mman.h>
 
---
-tejun
+ #include "../../lib/kstrtox.h"
+
+@@ -3834,6 +3835,60 @@ __bpf_kfunc int bpf_copy_from_user_task_str(void *dst, u32 dst__sz,
+ 	return ret;
+ }
+
++/**
++ * bpf_copy_to_user_task() - Copy data to a task's address space
++ * @unsafe_ptr__ign: Destination address in the task's address space
++ * @src:             Source address, in kernel space
++ * @src__sz:         Number of bytes to copy
++ * @tsk:             The task whose address space will be used
++ * @flags:           Reserved for future use; must be zero
++ *
++ * Faults in the destination and writes the way ptrace(PTRACE_POKETEXT) does:
++ * a private mapping doesn't have to be writable.
++ *
++ * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if the copy
++ * fails or is partial.
++ */
++__bpf_kfunc int bpf_copy_to_user_task(void __user *unsafe_ptr__ign, const void *src,
++				      u32 src__sz, struct task_struct *tsk, u64 flags)
++{
++	int ret;
++
++	if (unlikely(flags))
++		return -EINVAL;
++
++	if (unlikely(!src__sz))
++		return 0;
++
++	ret = access_process_vm(tsk, (unsigned long)unsafe_ptr__ign, (void *)src,
++				src__sz, FOLL_FORCE | FOLL_WRITE);
++	return ret == src__sz ? 0 : -EFAULT;
++}
++
++/**
++ * bpf_user_mmap() - Map private anonymous memory into the current process
++ * @len:  Length of the mapping
++ * @prot: PROT_* flags of mmap(2)
++ *
++ * Return: The address of the mapping on success, or a negative error code.
++ */
++__bpf_kfunc long bpf_user_mmap(unsigned long len, unsigned long prot)
++{
++	return vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
++}
++
++/**
++ * bpf_user_munmap() - Unmap a range of addresses of the current process
++ * @addr: Start of the range
++ * @len:  Length of the range
++ *
++ * Return: 0 on success, or a negative error code.
++ */
++__bpf_kfunc int bpf_user_munmap(unsigned long addr, unsigned long len)
++{
++	return vm_munmap(addr, len);
++}
++
+ /* Keep unsigned long in prototype so that kfunc is usable when emitted to
+  * vmlinux.h in BPF programs directly, but note that while in BPF prog, the
+  * unsigned long always points to 8-byte region on stack, the kernel may only
+@@ -5139,6 +5194,25 @@ static const struct btf_kfunc_id_set generic_kfunc_set = {
+ 	.set   = &generic_btf_ids,
+ };
+
++BTF_KFUNCS_START(user_mem_btf_ids)
++BTF_ID_FLAGS(func, bpf_copy_to_user_task, KF_SLEEPABLE | KF_PERFMON)
++BTF_ID_FLAGS(func, bpf_user_mmap, KF_SLEEPABLE | KF_PERFMON)
++BTF_ID_FLAGS(func, bpf_user_munmap, KF_SLEEPABLE | KF_PERFMON)
++BTF_KFUNCS_END(user_mem_btf_ids)
++
++static int user_mem_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
++{
++	if (!btf_id_set8_contains(&user_mem_btf_ids, kfunc_id))
++		return 0;
++	return security_locked_down(LOCKDOWN_BPF_WRITE_USER);
++}
++
++static const struct btf_kfunc_id_set user_mem_kfunc_set = {
++	.owner  = THIS_MODULE,
++	.set    = &user_mem_btf_ids,
++	.filter = user_mem_kfunc_filter,
++};
++
+ BTF_ID_LIST(generic_dtor_ids)
+ BTF_ID(struct, task_struct)
+ BTF_ID(func, bpf_task_release_dtor)
+@@ -5266,6 +5340,8 @@ static int __init kfunc_init(void)
+ 	};
+
+ 	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &generic_kfunc_set);
++	/* Sleepable kprobe prog can only be attached to uprobe */
++	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_KPROBE, &user_mem_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &generic_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &generic_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &generic_kfunc_set);
+
+But I'm not at all sure that it's a good idea
+to inject code into a process.
+
+pw-bot: cr
 
