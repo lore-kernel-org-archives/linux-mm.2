@@ -1,130 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A84606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 09:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44B760A2605
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 09:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v+0qIXZ/
+	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm3 header.b=dMlx8BfQ;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=gh24kUPn
 Received: by kanga.kvack.org (Postfix)
-	id 7F1DE6B0682; Wed, 21 Oct 2026 05:06:58 -0400 (EDT)
+	id B07496B0685; Wed, 21 Oct 2026 05:11:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C9816B0684; Wed, 21 Oct 2026 05:06:58 -0400 (EDT)
+	id AB8006B0686; Wed, 21 Oct 2026 05:11:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E05D6B0685; Wed, 21 Oct 2026 05:06:58 -0400 (EDT)
+	id 958C26B0687; Wed, 21 Oct 2026 05:11:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 354C76B0682
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:06:58 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8D082C01F7
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 09:06:57 +0000 (UTC)
-X-FDA: 85346053674.01.210A22A
-Received: from mta0.migadu.com (out-230.mta0.migadu.com [91.218.175.230])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 250D2140006
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 09:06:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="v+0qIXZ/";
-	spf=pass (imf23.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.230 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CE9F6B0685
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:11:29 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 727F6A7F99
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 09:11:28 +0000 (UTC)
+X-FDA: 85346065056.10.0362F85
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 48E68C0005
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 09:11:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="d Mlx8Bf";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=gh24kUPn;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792573615;
+	s=arc-20220608; t=1792573886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uwQSFZ3FSogyaone7anL8mKsD0j7h3eCsLGxjb5kG8A=;
-	b=i30hkNIT/KY7daXVNOzEDyZWjVCohIupNnUFuQAGOimUOIzSuixAP89FBKQ4/CKmsUX6Ax
-	vWHS2+m0xjTh8f0g7TGO4f34zAcUAPGVj04GTvHLSZ/UEZMyY47wThZRyZzkILEcZieckb
-	Pc4JGyKgRp+o60g+KhOHg7GpV+95Ix8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792573615;
-	b=yZpPEdTb7OugoGzfwLo7dOEIbjc7/DbN+HNCsG+GP8Kol1WqGPA5uR+OEpy5+/gBc/ZbxY
-	tPDfgPUm4qpeSG61UQdkFXQM80k6fkajGSsgaGrm9k50dF3QYJCzQeHt51W9twyCV+1/Ak
-	ZN/0zmvfd76BMeYQyaxz/ssUT9qOWxU=
+	bh=yPQ/niTPbDxR3MpsEpcgUMSUJ1Etb5QeryWpn+3WjQk=;
+	b=kQfILNDUNscfuU4PQoVVK8LKcDP3uUtn90Ve+a+/8jdIIQpqt7lWIt5/CRVwsZHkGhBPiH
+	sROjJmgeVoKROEClMEluw1oSY0GGAIdHRgZNueeQSmb9+bqkUmeE8y4MkVP5kdPMgOjGVz
+	+sRVDJiR7bMHBcQfB98WkvagDpSgqqI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="v+0qIXZ/";
-	spf=pass (imf23.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.230 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Po7qkO1SjHqn4Bxa+MKkPPqkGbMVv052HeJ8cSEw26c=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792573613; v=1; x=1793178413;
- b=v+0qIXZ/fyvbcF5DEGvAHUQqdC8Vl7VnleFjNNvwB8O5CT5ZoXIXYrNJIy831Jz/dY05pH7l
- QgOs/T/9Y0sIOi05TSaiQ1zfjYdvLp3Yo4cjFeizd4mzNhRxuwox8qePnGLTSoh5xpkJJjDvRKC
- +KxplTTdY6JdWL+MCk/Jy3oM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 6eab166210853d46;
-	Wed, 21 Oct 2026 09:06:52 +0000
-X-Mizu-Trace-ID: 6eab166210853d46
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 21 Oct 2026 17:06:44 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Chris Li <chrisl@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	Kairui Song <ryncsn@gmail.com>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <atiApNwSTKejgcor@fedora>
-References: <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
- <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
- <20261014195354.GA371161@cmpxchg.org>
- <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
- <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org>
- <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
- <CACePvbVbMPZTrD5y=--XgBS+sa4CHb7e4RFTYCbWfzHzVc3vXA@mail.gmail.com>
- <7e998cd5-57e0-432b-a8e0-676a5b773436@kernel.org>
+	imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="d Mlx8Bf";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=gh24kUPn;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792573886;
+	b=x9zwq7y3eYGKui91d8cju+h2vojz66PtCzWTTjLpxW2MAkJh5DjlhDY6lfv1q7ExsSwcY6
+	wpa5CcNndfFpF8rmdtyW95zI1r4R2Jpvyzd7jJwV4yAF8qL0WPf7gLzKzcU+OU+RDASRyZ
+	3BkSjOdp5vwjhus2ttg3Bs6okr6LPTU=
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 79E827A006C
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 05:11:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Wed, 21 Oct 2026 05:11:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1792573884; x=
+	1792660284; bh=yPQ/niTPbDxR3MpsEpcgUMSUJ1Etb5QeryWpn+3WjQk=; b=d
+	Mlx8BfQTxvyHTYu9IheLpNGX9rpuU57Dikae29m49ckW/QcQePqDSuh2EMmUjtHM
+	7C8rIfQVSaxULH3wdOoJj6XevbFABktAXH6eD9yltF4wKQlOZ++QRRr2fxlLMxXO
+	Ypi73jf/3Sxz826j7WRtXKXIJ+iuSCzALcnBaxTRtAUOy6256H2r3JkrFlzvIZIH
+	/BkLOSNGxSjj9OLH1BHT3LqnCpcGSQJX5vNPCkAX1tB6vYGuZtIhaoiHnw+kEM05
+	g3M+LfceC8CiU6SBt9kfQ3EDIj/6KABllufnau+NHEWXYqwU5kCOGqg3ZBuudifN
+	UwOZd3bpdpKRiqlSOkZRA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1792573884; x=1792660284; bh=yPQ/niTPbDxR3MpsEpcgUMSUJ1Etb5QeryW
+	pn+3WjQk=; b=gh24kUPnvU1GovUH1tV+S2Ptv6FXc0gdxtxV+4E06BVgB6maaL2
+	zw76y9L/XPCsGGcm7BvC9007fWA0b7DTg+8SbWckK1DZrEihyLqnVTteHWP/OLgf
+	yqlhS3RNmXNGMLg/y6ofpNi/NC5cnSnuYyRgc1WZpXkeH0wZA5OwgFNcNSMFEGIr
+	RT4VdmTnIOQmgIoGAEX8MiGgoMqwrUYgZMRo87UCRMAMJlGlfFqbveL65KON1tcQ
+	+KaFVGEndXGU3PzeeJhxOoUiVpviuY2FK65c9RW0zu/yYPtcVCXr5HxGMkvnAd/p
+	rfXFzjxCe+axgA4itVP4zeVwdrsgaih4A0w==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792573884; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm3:rsa-sha256:kvvVzYa1nV53Wrfef+wNRqlXzaROVb8pb4Aimvtc85PhOxB
+	zeOThHW1FuxMd95KofyuMS2dIZlkkNyKiqB2pHz3XHyNEBmKvVjAxBXDj5f3CxF8
+	2AMrss0o24UjUuw1HCRwX5x9q34EHeVg4Mky4s0CnDrqxXD1FfzqRiQId9tkpWLZ
+	bmdQT4jRipo8sLYKdYERlYc099ZCWYQOkLkkP6I0IhhCQIM8DPDWs/pQQM+RRftU
+	IBPSNaX40vB4woKWIFumv8WdxFPDsa/QdWt1Ih4ONwLXmK6DtX2jt96H6+YzHthl
+	s9zcZeHa9MDtjWv4m4jw9J+tM/8k+KCgy54ac+Q==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:Tc7ukHXWIvlZRrWSU2hLvegzEyJAUHfRT7hdKA32tuc=:H7eIvvta5zlDfEdK+OCeQCYCS9ry3TLuaH/l3ceYpYg=;
+X-ME-Sender: <xms:vIHYaoLbq_vOjgG9MuUSzn3yM4G2ekjnPNuMzYWS7ZtL-gN11qRNvQ>
+    <xme:vIHYatWJu9f2RPtUTXU3uKC44LD0SGVW997fLTuHyLtE64Gyv2NK5IdAlo0Y6pKvN
+    EN4kDys8mzrKVdpl7938CWaOBWvUVE79PBp0zFqFv7NTMmviN4JYWpq>
+X-ME-Received: <xmr:vIHYasGVdT5fjyoao5x102sz3KBM8YRx-ZZNmK5cIU52ledDpR81GEU13KY>
+X-ME-Proxy-Cause: dmFkZTF6nJZYKXks1Bk+zdjRqyvRREPlE6EyeftPs8J54NlJxNXTwVEDnsb75ebaKWGUdi
+    yUtaHEP1racnVl7qcL6IwppZun5muFsHcwTa9EhOdbeauVKGZOt786yRL7MjUpWkMNv4dA
+    6Br5zwahEqFGtKUqX+JUQPHeZOfiRQoBUWrAa/gjj5NNgI7tFOp/RtqPTRdWBWk3CV/QaA
+    n2jQBMWOr2wnnrTGRDDarS9m4P+kEs70/B3YxHkZ7rf1PVO2Ky+h8YrKzFe5ML9uYmoooG
+    Nj0W2ce69tdivcvcB4O/nqVDGRRb9MZAgvDioWBvUcDn7TDOYH3VRAfJ3m3/hHfsQx/kfz
+    0mMyqaXT6so9/lg5Yeuu+FdnwEUp3OX516ep7NrAZVy/F8WcCWHu3C2Eq3HXrwNzu+2TKZ
+    GM2aSLqF128X1QD5dUSPP55ts6wBWtnX8VNlu27EiPRiyyrSTly/0/oteQnA24x3AQa3km
+    EeVm6BApj3uwneRPvJ4UNRjqZ3nJzvbaaiu4RgBJKvvLZcqUV7bP+p1VE3/DOUHfJO0flS
+    zr+b97AnW9ox2FCtrN51tQV7JjwlX2F1nnRqCTCtSalSPsS5S92jio1vNV8G78x3k+fbiI
+    TRnQO6iePNvYg12YgOdRlwbeL7eeqw3jnOp9N9rYqUaE9atwboRXysIv8Wiw
+X-ME-Proxy: <xmx:vIHYak5opkajdHLvaXR5msfr_8VBsIgR2EyyzZvp5o_WTZr7dzA37g>
+    <xmx:vIHYaqcQ9ES_l2enZo1jQ2uIU6eV5yTuYuZbCQ3vSSJ9fDyO5RKBWA>
+    <xmx:vIHYagmhtQ-FjFkYyX5xknAQo47VkwX9i73nYd9ZX-M7Dpt9AtCvCQ>
+    <xmx:vIHYav83C2SKVO84e-QGQQfogkRDLA6tK4OtOGqryy23jhIJ4OWHOQ>
+    <xmx:vIHYar3OOgd-nJUs5WF9i_OXsUxBB3bUtDqgnW_axXkcqwbdk_vVo_qR>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Oct 2026 05:11:23 -0400 (EDT)
+Date: Wed, 21 Oct 2026 10:11:23 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: shaos <shawnq1@163.com>
+Cc: akpm@linux-foundation.org, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [BUG] mm: userfaultfd RWP drops a populated shmem PMD
+Message-ID: <atiAML2RPQlCEhbB@thinkstation>
+References: <20261020110759.960089-1-shawnq1@163.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7e998cd5-57e0-432b-a8e0-676a5b773436@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 250D2140006
-X-Stat-Signature: er73zuq18h6b1wrhexymm8bcz4h7it38
+In-Reply-To: <20261020110759.960089-1-shawnq1@163.com>
+X-Rspamd-Queue-Id: 48E68C0005
 X-Rspam-User: 
+X-Stat-Signature: ym95embxtca6e1txaadubijb9yc7pduh
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792573614-693463
-X-HE-Meta: U2FsdGVkX19tVvuS+6i2D+ERq+vAJmdn2aU/atlNztoL9oHppttLAPisjRHJ/4GW5Si7FWgiZutEOzivsiXg9YB3sdE0aVrYMC+6+thnHFtqPmexwTAiaYwV87vzGAi1qjXd2Mkqdy1foMs1luNT5unT+4l9qyUrZM8r82RwFb0CgC4yOw8kaw+/NfAd/kbeCJWnQr62swttU0TG2+lnD6S2mzTMKCTgMCcT0dkOwHIsyxhjWZVoaSewVHiZQ9N3li8KyCw4FfxPnUs89aHPh6OG1Rg2WvOLXj1QnL17v8Xx1AD4F+J1j0T4hFnrHjLMvUEAafnbLYbYu66XNUK2hPj3Mrvus7y3PSpXPRYAO0m3O+hC13ZKbl+FYrNo1aC76KOKXDQsSUYzDM1WeImgUnw0kw6PlK70xhrEFqzs9UE+P+y2+2wb1oS9wY5luvEWn/eQ6pqzNfVFOAulIidGRS11zO8SU+QHAX3O9upwgFUW+GKYpFRHQ6Aj3c/avDYllWW3BEiDTszpc8KM7v4s8FI2s6iQhYUHzLGI3mu8mIzmU3++aFojL6bCh60yEQAGfl9mXqKerZBz+2k4py5GLUdmcAGQvHPTIbmy+G8tJ1jWAJACtgmDV0lkD+RFtfma2UfR7HtGDDyrWyzw7Bv/ifGlIqM1krmMAOh9dJoe3jTubFa77JzSG7PPH+FRHNX+oh7C7aHB9+/EA1GQGH8u4V0Ztup5jXf+NFFJoddF3sLYSdF6TteaF+5c4rntFlzSIPvA+gUZw4kpf9Mdt0R/mCmI0D6G9IVtCAxwcHwGubshqxtD1fVExuhMcTxoA950+oG01PQoJxMntdFuw85BZoJcbhYunpIqng75IZ/Slmr6x4HdfRBVGusQEk9PQEg435CuirwhG2DmSmU/fpgNxJjVuLpVg70FIGT5ChTHRadSjhO1wneq7sh6xEC9Kf0edtscjey8hwKMKBKSwUc
- VgJdnXhN
- bv+GGzhOPI10EJJWF9Zy1XCHwXBXNZrejuZSi9bLUnMGr1hbnCoNh1fo5p2QVqmSL3IFz+RQHv0PEzXbRBjaqlhRsKD9sRhvIzALfL4HS653GOdXjseNFR/gayRtZTGX8X67JQGCA2r2L9APEA52RboME9kC3i4wDIckiOEuRYoYumgPn18HS+NC8LX66M6T4U+vGd8orA6kbM9/kBw8kYL93bHgzM4xXway8e+xTaaaOu4inHctuGsU4kO4/2x9wJs3gXtsXmmuMMp8YaZBxxLCHUYQ/O/mvxxetE2si/uh/F94XCJncK1d/tzeKQ8WCSZx84d2wlbNUyTIKRkesyq4AC+/B/T1mBUOVGJ7hVF4d12dlufC1YmOoiFkHpgZhVUC1V0KoG8IbS1zO7XJLlS+DBpVlH9HpBMSoav63vICqzIGFvPYh5H3FIE8e3vBv0Df9l1k4atOZAKG6LCZHNxVdEA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792573886-897905
+X-HE-Meta: U2FsdGVkX1+wg3/l3z4QUTZ1Rq1+aCwgz7GjXaS6jB+28wlzZn9iuItpmZHU4XMvrSoekuxxgFXxxQFjjFSObYn6d5P+pzrb74e8vjqF7ae2tyBcgdGxaveKOvYpp/HUZiRcr/46Y03QNmKJibvZ+UX5rhZiMcxt9zdvG8ceFJj6iO9NtZ1h4zzBK7CpzQkCyx6WUnkkJ96h3UrwVgZTuUS8hLSsAYRbTLDBL9sArRectCZFO3206bgwYDNhRRNsK7q9+m8f551T86fRZyJKkL3VwpFpwH0RCF3/Rmbm2ZmbH/CwCwChM7ug0uSUBv6p/MMxZE1sITJlEYN8bsY/l3dpb5iOysBoUP17dNg1RFY6m4rwGje5eUOUJhPwvdESWgahPG89c8hg3gL+MIe8CzGAbOcr6QJRkJtFPNFF/3cIYLJZbWnM1uGyadW4jj8Om3+Pxi84L8/oEsQPwTC9Laa1QP1yb8z4NUQlWEKwpgK81M0IxvcoRVk8Jpz1idwdMXmYqiaN82d+pZ3Mo9t7wwm49Ygq8wxPQAVmRkk5J/itLL1macyeB77hHizz1VqDPnboIldoMWOemZ4g+0BDETrYWflci22LUz5F7ehu9uZwzNmwhZ9YVTUdWvbTtprsUR7pWj0a2vM/Il7kknuCSbCaOXprI4FnrmFx7oZ+M+kAPgzVH0eea2uQYTTSfEPFvXRB+Qfj7UqHL09z7QkmDHpqchqArNWAQtHyPtyEDiejjkpdfprHHQQV1Nv+pWfWzJ5MRjaciDD9AIaFGhXrcG4FohQF58CVYI98rsFXE7oyu0neKiP+veOtph6dffAattjg/3KKbhK4lA7ssnYshfz9jqanpblzluPs+Sm5aCI0u7Wsqs+fphKDLjdqnPrkMQhhEn/8BkZ9azxLY85ZNMhgX+cTi+KbPUip5S5pGJrn4TcDLmfykhkfy+xB9byiMPX2c7K5JIMxZSGaABm
+ Ip3Udsa9
+ YjyA8Mvsirf04OrL3MC+23xi2VC1Wt2O7b6XAWOKb9o7f7f7hoYQbUr2KYTU497/2+3IMV+5oWKHtROOU78bnqfJkVAi+6p7b7N6GhGi83Zu6HeWhQwQNVRjBVi+UClsxHaV5ereUQeg4Bp2x8c11sgz2CfQNcv8SpUFMBne5T9OEkyf3gVCGFRjJ9wiFM4jfVQGbylyZjeksawIrTbIEH1RkPf+ZKHr5RpZyFxYs3s+u+0RcXXGgq6KeCDY1vh5HBBuMHosb/2MbcQetMhOUp1nTkHIyz9jENGxLjJ5tRdmzwItIp34DyUZw4vcv58iAyqy/IO7ywqlD3EOgD1slqrI9xzwmSO0zv7vBX/YwOMmLNYURvJMi7u2GpLuYDznyaw1GzcBOKFQnFD+l2oEv0bAIn9Fs7gm+mrbE5FyWzg3ZCzuLpZCNNPSWHHbODrtDSMjHS3kq/m+1+ghPDGYQKFp76vyP4gWUGA7yioHToZ6nRhC2GxCeenH4WrFlt9KJCW8hBTwpte+GSRHIfKHpsLs9uw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,55 +150,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/21/26 at 10:18am, David Hildenbrand (Arm) wrote:
-> On 10/21/26 09:41, Chris Li wrote:
-> > On Mon, Oct 19, 2026 at 5:35 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> >>
-> >> On Mon, Oct 19, 2026 at 5:28 AM David Hildenbrand (Arm)
-> >> <david@kernel.org> wrote:
-> >>>
-> >>>
-> >>> I'm traveling this week, so it's a bit tricky. I cannot make Thursday morning.
-> >>>
-> >>> On Thursday I'll be traveling back from Cambridge. But hang on.
-> >>>
-> >>> My plan lands on Oct 22, 11:10 PM. I should be home around Friday 1.30am - 2am.
-> >>>
-> >>> I could just naturally join that day.
-> >>>
-> >>> So one day later would work for me.
-> >>
-> >> Would that be too rushed for you? :)
-> >>
-> >> For everyone's convenience, this would be the time slot:
-> >>
-> >> PDT: Thu Oct 22, 5:00 PM
-> > 
-> > Works for me :-)
-> > 
-> >> EDT: Thu Oct 22, 8:00 PM
-> >> Europe: Fri Oct 23, 2:00 AM
-> > 
-> > Ouch, David. If you commit to that, I understand it is very
-> > challenging. Thank you for taking one for the team.
-> > 
-> >> China: Fri Oct 23, 8:00 AM
-> > 
-> > Other swap developers: Kairui, Baoquan, YoungJun and Barry, when you
-> > have time, please comment on whether you can make the meeting as well.
+On Tue, Oct 20, 2026 at 11:07:59AM +0000, shaos wrote:
+> Hello,
 > 
-> I took the liberty to schedule the meeting and send out google calendar
-> invitations to everyone on the CC list (to keep it simple on my end ;) ).
+> UFFDIO_RWPROTECT_MODE_RWP can return success for a present shmem THP
+> mapping while dropping the PMD mapping instead of leaving the
+> populated page resident and write-protected. The next read refaults
+> the page and completes without a UFFD_PAGEFAULT_FLAG_RWP event.
 
-Thanks, David, I received the gmeet invite. I will join the meeting.
+RWP only traps accesses to present PTEs. Arming a PMD-mapped shmem THP
+splits the PMD, and splitting a file PMD unmaps it, so nothing is left
+to protect. Populating the page table would not help: the PTEs are
+empty and there is no RWP marker to put in them.
 
-> 
-> If anybody did not receive an invite but wants to join, please let me know.
-> 
-> If anybody received an invite and does not want to join, just ignore :)
-> 
-> -- 
-> Cheers,
-> 
-> David
+I think the right way to deal with it is for userspace to register the
+range with UFFDIO_REGISTER_MODE_MINOR as well, and count the MINOR fault
+that follows as an access.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
