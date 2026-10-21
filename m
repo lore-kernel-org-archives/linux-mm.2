@@ -1,129 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A80606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 07:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E00F606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 07:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qvd/yrlh
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WFuZyBQu
 Received: by kanga.kvack.org (Postfix)
-	id 15D8C6B0655; Wed, 21 Oct 2026 03:42:03 -0400 (EDT)
+	id 3AA9B6B0656; Wed, 21 Oct 2026 03:43:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 136EC6B0656; Wed, 21 Oct 2026 03:42:03 -0400 (EDT)
+	id 381E06B0658; Wed, 21 Oct 2026 03:43:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 024296B0657; Wed, 21 Oct 2026 03:42:02 -0400 (EDT)
+	id 2BFC36B0659; Wed, 21 Oct 2026 03:43:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CEF946B0655
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:42:02 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CD65C04AB
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:42:01 +0000 (UTC)
-X-FDA: 85345839642.21.E512F0A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1FD95100003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:41:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qvd/yrlh";
-	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0065B6B0656
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:43:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CFB6880382
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:43:25 +0000 (UTC)
+X-FDA: 85345843170.20.FB288CE
+Received: from mta0.migadu.com (out-152.mta0.migadu.com [91.218.175.152])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A72A880004
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:43:23 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WFuZyBQu;
+	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.152 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792568519;
+	s=arc-20220608; t=1792568604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q2W6HW6t4FD7GiH02r1fl3fKehEEk60q+ai1/oJoOqY=;
-	b=sBdGA0s0WimgsunEEUW+Lycms+s9bOCG7Ils84oz0ypIezlvnNt65aYhJoED2dO0iZVm9e
-	2V3HkC7z+epe7oIYfmxzz2gsRHEraR8vXlb/SaklwgkyT3RSuLxvsz9feKqm/MZMq8HaRn
-	rkaAhWilIVKfyz8sN/OJCV/hjuIDh2E=
+	bh=bqvNx+nSFaoooaGDpoFgXiB2Eh7sDLhcG8Y6WkOQHNE=;
+	b=tzx1lNk3mqbc9jXFd8wKXDoVDOi5jzOHjx9VzON+kAx4wB1ZSDHsl03CRVWjJmZPvyhjEm
+	ak6kzVOWpMNU9nsU0gkWFz1/nJGL0nqRV45Vvf1k1uEmiKSmTrPV7gQgT+XU8OiQcRssnr
+	HdkewwE4rOwb5S07VWE7C+x0emE1wC4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792568519;
-	b=GJOf7qKLqRWG07eyNDguIt3i6POU+bOWZfK/ZKK1vKEFmVlpmTnLjMh8YWxN/GW0vpFxlB
-	DsfaJXJhKiLomJ/wTv327nv/MIhPFUxAYqWdYtiNBQ3MunRpDvCbEAGqlYW8jXAswg/Guj
-	mpmPkNopYYW067FaSBba6UzetKbo/68=
+	t=1792568604;
+	b=tSz9q9vHNjHWtw3nsOgVgDVnmZxhg3+zUMjGFapu7hLcsJ3CoNOQAQjn5z32/dAjbUFHPW
+	Ihq2jJqD5Ro0UcGI2KU2JRfTOi7mQX/L+tgGN7oe/U3hUx+3PXDppdBsdXCtlhhw37f+Ts
+	fK9Mex2wsUTybmBRXG46oULbPrd2+4c=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qvd/yrlh";
-	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F141F436FD
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:41:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99351F000CB
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:41:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792568517;
-	bh=Q2W6HW6t4FD7GiH02r1fl3fKehEEk60q+ai1/oJoOqY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Qvd/yrlh1PLhc1/2gXQqnk86EYYr9xscm0ZRiFB+pYPkP171xwBa5qs8KA0J4GdPF
-	 EaysR9xgCRhsZ+CmxlNq/eJC7Mz/tCuBS/VXHQsJP/PHwTBLjH8Chb89QAboeRvmeK
-	 64KfykPHw9QlqgQ1aFR7DlrRdjNLZIDBCtW0p5JIFEOaD3VtFljva5ulMn9X+6C6Cl
-	 shw3sIEgkmw2c9qyHF8NKywGG5S9P/X11QBGVPWMNGacDVNzrlCIZLb4Bsa9o70akQ
-	 ve9545LYU1TrY/LAyu97+QlshXiZFgvUphPwMYO7R/NrK5ysOWprNTvO86AvFUu//3
-	 6K7AJBaQu9hNw==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c43373ae89aso49405766b.3
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 00:41:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxyV73ZNyybaNkQ7NktzUSyUOdyywP/0vdvfsp46SoFUtxweBZPiVjufnI1J/WtddkaFJ2Ao0SIwA==@kvack.org
-X-Gm-Message-State: AFq9FYJL5UgQHCzJX33mQt+qJmskYdU6y5JwqqRKq6l/rlMMAvA9SFfG
-	08R3EaYe1dCWYm8UOKwPKlFRrrxToZLN3HXvMkpYvEWQz7BBekQ5Jez2BnPYp4FyiCz/LlQxSSp
-	5sz/tCJUme4NJsE4qclIvldTs4ieQBWXspVFgOKt2Ng==
-X-Received: by 2002:a17:906:dc93:b0:c46:645f:cedc with SMTP id
- a640c23a62f3a-c46799d0f16mr92139766b.46.1792568515652; Wed, 21 Oct 2026
- 00:41:55 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WFuZyBQu;
+	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.152 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=1tenPNde2ofLPho6d+i0Ie/+UXV53/Rdww8nZpiovVY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792568602; v=1; x=1793173402;
+ b=WFuZyBQuxADYHx+rU2yhqPLHRterWXJU0j79yIrNEAtsGpUOF85g1RBApMM1/rucscBbCRPL
+ wOAn1tFIo/tgDBpowrOKaItkSGCH1TCkI5tYOFgmjFDEI1cPDCAb2w/IAbEgsNyV3Xzg2eoQZz9
+ P/FURSW0ASSldsdaLWX+3GCk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9b75c6eb5203bb55;
+	Wed, 21 Oct 2026 07:43:22 +0000
+X-Mizu-Trace-ID: 9b75c6eb5203bb55
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <98855929-df9c-4615-84ea-b90acba8c2ae@linux.dev>
+Date: Wed, 21 Oct 2026 15:44:40 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
- <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
- <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org> <20261014195354.GA371161@cmpxchg.org>
- <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
- <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org> <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
-In-Reply-To: <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 21 Oct 2026 00:41:43 -0700
-X-Gmail-Original-Message-ID: <CACePvbVbMPZTrD5y=--XgBS+sa4CHb7e4RFTYCbWfzHzVc3vXA@mail.gmail.com>
-X-Gm-Features: AclHuK86lyz-XbdDB6Y-j0ii2s8PEPiP-QfZRMCvGYvdiUTKkHpNlLS-aItO5FE
-Message-ID: <CACePvbVbMPZTrD5y=--XgBS+sa4CHb7e4RFTYCbWfzHzVc3vXA@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] alloc_tag: Extend allocinfo_filter to support
+ tracing queries
+To: Abhishek Bapat <abhishekbapat@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org
+References: <cover.1792439751.git.abhishekbapat@google.com>
+ <9e49a8f68e4e7d25c5a9a73c1926f68e468ef320.1792439751.git.abhishekbapat@google.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <9e49a8f68e4e7d25c5a9a73c1926f68e468ef320.1792439751.git.abhishekbapat@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1FD95100003
-X-Stat-Signature: kchmckmsaaa1um5jxdo8xe8aa4uuuppm
+X-Rspamd-Queue-Id: A72A880004
+X-Stat-Signature: z76kukfpbpw589oibj7tc5nuyipij1a9
 X-Rspam-User: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792568518-481969
-X-HE-Meta: U2FsdGVkX19St3HxPk+W9TjKq4kQGDaV71tpHHhorO+LY19p+itYLu+wnroSbIddoEaiBtsTZOuDbhDYPC2HeYW5t76jxX9jRgcC7KhUufq3JAiRlIV2+jN0YtS5Sx5vlB6McUXFCoh2XT6L7pRN8DumbjBVfxsLt7n0s3YFwAxhMgPeiyhydM01kd85TZfTGjtBcOHqcS9c9ESuIhdO0bcyaxCYq1YGPkWJ102Vjbd2R7OlGijSETVqSfAFiD3f3LaL5Olm0QbhPYd7829+VR4oBq5nFS3IHlg7Szo6QGoFSh2bmwHdzC3F5bc02DrTbJnyG9PG5s6dNBargG1zQB5Va62WKjTe6ejZeBJNWodOPVNVlgAeuIRe5N1ZZvpzdCdhnQZloQCdd9CMTmUVoziABzBGpyXc/BZyaovplBesw9VHGbPuF2SxlB2RoO9eXvD4VFc4wa2RQODPkF2Vdj9/SKAmfBPx4Ytd3b4kTgZv+6HbpSrq3x4V57C6qVgPK1+M4/3rU0SfmgVcIMDlFE7kvdNCW97yI2hm+kPCgGqgK93yWkdkTcbiEPraCQxUGUTTDNiUHdC1gJH8ZwB0DOIz+ROVmlJRY5P6l00aZ26cjqkJdKQNUzi09MAPa0sqfjEEfW0pye1uwwk94eydzh5pAsivYVhuRq8w4fZUBuCDITzfRQOp7g/VfjALeANQxiMbXSJ/8vdz0niza/pOG7Zj78C0235Z2e5vyDwCAwlFhv8AkDIKXr9sAoUVFjwLiZtL7N/XHZXd8rTJ1UPsoYOp1V4R4YnqwK6ghw160Ut3MR174V5Y2noKeDXNJ/zbknyIZNgFaWKa1yyE/fYprXWE5g+750RCdad89BNUJAuwgYIbKOR4KtsdnaXD6+dNutAiypHlWw+U6an2URt6FDxH6ZIuU2Ci4CqphtbTpfrvULDLUhWRuhiD4fg7MO/UMMHC8cqPYZ2Pkpkr3ZP
- LlBkFihw
- bokozq4PNQhaj54iTtyds/lySfbcCuNpepJ008PDO7GJg7YqSCguVD21Ic/4AEQbYqQtc/FPO5I3xca9Le1MBXhZ/DATcBpw6s2qpfKv02w0MdRlqdxtWHgzcJcZR/UFE9HFHTKRQVoPqXZJd8nMF7kkrDxRTnL/CCa+j8ffQs/mkvnq2o8jTaQRTEXh30c4AP3Ii1mwYwJJlQP+xCtnyQVqNP+8DtEjswtoCNPeGIG6pFK1XOvzfLr3+TagheSYQXm2G6iA5WVY5u2o1Fy8lsdLZv1GIbHW3XrgX11fsJnydbN3xNO0HzqJPz4fm5Amp6dUAhPjwtNdUXfZN3Vu9MKHyzQZxtSIDrJaN55WQ/41mf9+I+yy/new76oy1b9OAoTP2h0Tb66AcVTWuQzkOrSsIZQ0Umr/TMSlRUeEq19VPDORPudJ6VCFcQekYz9Z1kWcG
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792568603-431438
+X-HE-Meta: U2FsdGVkX19L9mDXYm9yVXjT+fPFB9YjGUfcj8ticpSglT1WFoafG5U8Xhzjz2LkGT6Nz/nlH1VWvRYo6AEorhQWw1Na5natYMgw2uI2OFxb3mnw4HrFSjVOuXc8JqCOvgl1eG9ymcfckfWPOf9f867nP03zzCFkguyd1ensx5hwliFIC2xkOHgAcucYavt7vMn9bxSIPPHrsh5zntiV0phAaqBLbZ+TAzygpREVk3CJBf18yiP13QpgUnNqG5R4Sr447SWmV5hhW3mLsbaArVU7bm4+nY1V3KpoSLg7E+3iSGxhxu2QyYsMKy0/aOKeW51XEAiEZk4aeWzOFro7IxrimqbfEIHli8GoQQovVoWXWfJDq19hpfNh3cBsulQi7FpIePwlbIgO3U5VPjJHCFsZzACKSFatkHChUPDbrLLexw6X/fJcFZpZZwN3w3oFiWfWMQXS4pBTh1oqQikqOhHIz1Zlm90LcmMci+N20yRsEdcM1QjD2MiWghq3R6876FiM48ZSTUjuavszb0q7uT6XeXrawYS3qXHnGx3n8Fn+1cBRP9MBQqD+qcudsBWnJA56lHG5IP7uNRBCpKoo62VaE1EYsH5Jk4nIPykfCYXumyNLMStzci4kll+9oQ29t8sPE92aGwvuxmoyLt9u9ryzudgpyfaOETkgJ7Ax8ChO3HEjrsTgRo3ArjgL+uUXeIBsEvihP2DKC7esv6Eg9J7THigy7FuQ9WKgzdv0T4sdKP9IWTFmgo5p2sYGfDZOvuONHno0eQJ0ZFMOuU8UxWshSPJPkSBbBemZbgHbJA1GLdlCuLAYAtmFkVXMkNtPoQKT8Bp7npL1UQ8mOOf1d6l8dIRmVJyre/QR5IeNGIZvnLRbQIr0Nj0RRmqpzKd7E6qNFOoTMQtFkSRAY3ZI7dw1d8ug97b9Hn6z1/MGMcp7LBTurMIVgDiQl76Ej1NMWaAHWneWDuQhi7PM+VZ
+ 2u9AdOv9
+ ni8O1NHTaoZJrzvlnvx90ED4Y7/9cziThWkqTt8KY2IYUgTavLl8OkoePAGA7rfJYNvAohEBr0F7jjjyV9Z+xyApAHNS9xuG90P4QJd0hGBbijyX4Fe1u2KnvbCTYyEOA3qHCvbPHUuYBLTARZQhnZYklgGFl8vulJevmJffrSJvgccVkGx6WvcFSh1T2oA5yDQRtSUka8aNuBDvA9RZ3d6EfQsHpsm/PW4EqozWANgQdLFC5kqJYbPP2fzFAk4THKD3Q/28fbfK75ePBxFPCOvoYd999vJCQz1x2eT2rUfI5tFfoefcMIYEQGVqF5XujTGafdNI9Y3sn9YmguJwOk9iV7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,50 +99,90 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 5:35=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> On Mon, Oct 19, 2026 at 5:28=E2=80=AFAM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
-> >
-> > On 10/19/26 14:24, Nhat Pham wrote:
-> >
-> > I'm traveling this week, so it's a bit tricky. I cannot make Thursday m=
-orning.
-> >
-> > On Thursday I'll be traveling back from Cambridge. But hang on.
-> >
-> > My plan lands on Oct 22, 11:10 PM. I should be home around Friday 1.30a=
-m - 2am.
-> >
-> > I could just naturally join that day.
-> >
-> > So one day later would work for me.
->
-> Would that be too rushed for you? :)
->
-> For everyone's convenience, this would be the time slot:
->
-> PDT: Thu Oct 22, 5:00 PM
 
-Works for me :-)
 
-> EDT: Thu Oct 22, 8:00 PM
-> Europe: Fri Oct 23, 2:00 AM
+On 2026/10/20 04:00, Abhishek Bapat wrote:
+> Extend the allocinfo filtering mechanism to allow users to filter tags
+> based on their trace state.
+> 
+> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> Acked-by: Suren Baghdasaryan <surenb@google.com>
 
-Ouch, David. If you commit to that, I understand it is very
-challenging. Thank you for taking one for the team.
+Acked-by: Hao Ge <hao.ge@linux.dev>
 
-> China: Fri Oct 23, 8:00 AM
+> ---
+>  include/uapi/linux/alloc_tag.h | 8 ++++++--
+>  mm/alloc_tag.c                 | 8 ++++++++
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
+> index dafcba2f7e2c..a96054ac2237 100644
+> --- a/include/uapi/linux/alloc_tag.h
+> +++ b/include/uapi/linux/alloc_tag.h
+> @@ -38,7 +38,8 @@ struct allocinfo_counter {
+>  	__u64 bytes;
+>  	__u64 calls;
+>  	__u8 accurate;
+> -	__u8 pad[7];
+> +	__u8 trace_on;
+> +	__u8 pad[6];
+>  } __attribute__((aligned(8)));
+>  
+>  struct allocinfo_tag_data {
+> @@ -54,7 +55,8 @@ enum {
+>  	ALLOCINFO_FILTER_INACCURATE,
+>  	ALLOCINFO_FILTER_MIN_SIZE,
+>  	ALLOCINFO_FILTER_MAX_SIZE,
+> -	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
+> +	ALLOCINFO_FILTER_TRACE_ON,
+> +	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_TRACE_ON
+>  };
+>  
+>  #define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
+> @@ -64,6 +66,7 @@ enum {
+>  #define ALLOCINFO_FILTER_MASK_INACCURATE	(1 << ALLOCINFO_FILTER_INACCURATE)
+>  #define ALLOCINFO_FILTER_MASK_MIN_SIZE		(1 << ALLOCINFO_FILTER_MIN_SIZE)
+>  #define ALLOCINFO_FILTER_MASK_MAX_SIZE		(1 << ALLOCINFO_FILTER_MAX_SIZE)
+> +#define ALLOCINFO_FILTER_MASK_TRACE_ON		(1 << ALLOCINFO_FILTER_TRACE_ON)
+>  
+>  #define ALLOCINFO_FILTER_MASKS \
+>  	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> @@ -75,6 +78,7 @@ struct allocinfo_filter {
+>  	__u64 max_size;
+>  	/* filter criteria only; see allocinfo_counter.accurate for actual accuracy */
+>  	__u64 inaccurate;
+> +	__u64 tracing;
+>  };
+>  
+>  struct allocinfo_get_at {
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 9ff9dd04d692..0d4d267c065f 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -250,6 +250,7 @@ static void allocinfo_to_params(struct codetag *ct,
+>  	data->counter.bytes = counters->bytes;
+>  	data->counter.calls = counters->calls;
+>  	data->counter.accurate = !alloc_tag_is_inaccurate(ct_to_alloc_tag(ct));
+> +	data->counter.trace_on = alloc_tag_is_traced(ct_to_alloc_tag(ct));
+>  }
+>  
+>  /*
+> @@ -323,6 +324,13 @@ static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter,
+>  			return false;
+>  	}
+>  
+> +	if (filter->mask & ALLOCINFO_FILTER_MASK_TRACE_ON) {
+> +		bool tracing = alloc_tag_is_traced(ct_to_alloc_tag(ct));
+> +
+> +		if (tracing != !!(filter->tracing))
 
-Other swap developers: Kairui, Baoquan, YoungJun and Barry, when you
-have time, please comment on whether you can make the meeting as well.
+I recall Suren had a small nit on this hunk in the previous version.
+I don't see this change here, did I miss something?
 
-I want to clarify one thing: Swap is my hobby not my job. My opinion
-represents my personal view as a maintainer, not my employer's. I
-consider different users of swap to be my customers. I really wish
-some of those impacted customers could join the meeting and speak up
-for themselves as well.
-
-Chris
+> +			return false;
+> +	}
+> +
+>  	return true;
+>  }
+>  
 
