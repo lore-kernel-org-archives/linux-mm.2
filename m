@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F61606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 10:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FC2606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 10:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bD0aREKl
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VqkODNi8
 Received: by kanga.kvack.org (Postfix)
-	id E34EE6B06B8; Wed, 21 Oct 2026 06:53:14 -0400 (EDT)
+	id 1B4796B06BB; Wed, 21 Oct 2026 06:54:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE5BE6B06BA; Wed, 21 Oct 2026 06:53:14 -0400 (EDT)
+	id 164E76B06BC; Wed, 21 Oct 2026 06:54:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD49D6B06BB; Wed, 21 Oct 2026 06:53:14 -0400 (EDT)
+	id 02C516B06BD; Wed, 21 Oct 2026 06:54:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FC3A6B06B8
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:53:14 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 192B3804D8
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:53:14 +0000 (UTC)
-X-FDA: 85346321508.25.FC0694B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D19F96B06BB
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:54:29 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C62A1A04A3
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:54:29 +0000 (UTC)
+X-FDA: 85346324658.15.7A82F73
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6B18C10000E
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:53:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bD0aREKl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9D402120004
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:54:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VqkODNi8;
+	spf=pass (imf29.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792579992;
+	s=arc-20220608; t=1792580067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gMLVnnDM9TfSfMpUppQf1/87O9OPgyCoy93iqIcO2rs=;
-	b=MvGqdOP0Nkykt59a1wmWLJ2ee7Ejk6mqi+czgXmZ+2UU8VQig5QeCQeStHn3RX5IMIkycn
-	IaPvOsooDIizKs4tjwFO6haDPzLIWi7y+3uXFIswj8d2gpl+KEoaMbHvneT9fDp3rTMS1H
-	4s+79vAPWN3xoMy7LZ181qOdGPI+uYQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bD0aREKl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+	bh=zCYVniZFly3PgMtnN2QXPJZFmZMEuBDbCk5iztknPcQ=;
+	b=8e5kXCuLutNZPueYISh5ZhnKCEHxfDrcpb5tdKtUaaetYUt2qw9ZoI383as/Iu9KxtWfvg
+	iVv8m1YMVxnLG1OiIoAsx1a9ehnQBahCey6XVC9c0hIWiA4kyzQnudqGIU97x5x/+z8WZB
+	jk23FQtHO5mAistyqdcBnOjWiqDwgFY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792579992;
-	b=5dXC/BNEBXtxgW3nr03EnBrBlKxkPieLuC8VKJS2VtgyDFZTo9Vpd1Fg6CIwrvW02wtPfT
-	XkwsZEIedNXKqwYBkUNUKog9RbKynZ3kRQ3iC2IijmCRJuPCTWChpEcyf7gvPhmdYE1tfm
-	4qVLBO1hsCWU+s9OUOqDPridpmpE8wM=
+	t=1792580067;
+	b=i0DO6EveMMYP437vZiARIpZm3umv3HvzoWeFxY25TVEwAz+LVg7CzDke4CGElV5YBR7X5z
+	DDIvoPrnbhpMOxmPioZ1pfLJo8kmfmBdFSjyDGcVaFNoYssCPzDYtP0QApCMHdJYr/nC8a
+	Yuvto/TFkqAUQFE/KEvC2gTj1gzrln4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VqkODNi8;
+	spf=pass (imf29.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7DEE6021E;
-	Wed, 21 Oct 2026 10:53:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7363C1F000C9;
-	Wed, 21 Oct 2026 10:53:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 179ED60229;
+	Wed, 21 Oct 2026 10:54:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3CF1F000CA;
+	Wed, 21 Oct 2026 10:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792579991;
-	bh=gMLVnnDM9TfSfMpUppQf1/87O9OPgyCoy93iqIcO2rs=;
+	s=k20260515; t=1792580066;
+	bh=zCYVniZFly3PgMtnN2QXPJZFmZMEuBDbCk5iztknPcQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bD0aREKlvvHtB8UL3zZ3KTvP55m3iQg7PJbTukXdUEHg7Z2dHxMz4ywzNVpgDXmA4
-	 x0N631ipCR7GDV25tqOWNUBqXAPzTNxWGQ5PKl34pdD/kQdVkokz58K14imlZpWH3p
-	 kIJb34nBl/rO/8mBwmO0H52d/bqjQpAy36u+owlCnqRPLI4ZYwsmaWJaf/FimC2Iy5
-	 b3+/T4+hcAU00TFo/fhb1JlccM9ww5SARPvkUN5LuLgdEpaXRcvZl5VfrxJxpIkVjd
-	 jqfLdDUxdf1z45ir3D+Pwr6MqdpoZNUO18owuqfJTkSn+uYyf3D+WfGVzQ0jWvKw64
-	 7oPVl0BgaQdiA==
-Message-ID: <8b666ab283f58e5913b3e4c33c52742a1153e9bd.camel@kernel.org>
-Subject: Re: [PATCH v7 2/5] mm: add folio_mark_dropbehind() to mark a folio
- dropbehind and account it
+	b=VqkODNi8gJ70pwQfR6D9EDRyyxh5axW1MkIbPK59SPJng2jOcAaDxxj6UidmBWK8y
+	 Ran5QHkny0jU2tYLwBvYSIYMmygsM0M3ewvMd6KQ9OdPTPfhCQPaPk00K65yybWs69
+	 tsEzAtdcMFEX4W3LMK9kExNfLKDGbLiGX04x6aUoJfZNdzjXbGUf4a8r+6nT8f8euH
+	 G57xqiGVa197xfKUd23Ds+1mZ4aWvdzrSLoRD7kU/kDD/3vWPJIhEIqRhRvKjz0M2f
+	 texQDr/1r48IjnfkpPRE2UekhbdhrNuLrDtthl8mEToqcNNAihqZRkUYqycCKATyZv
+	 O+8wuEk1gOWRg==
+Message-ID: <39b14c2a978ec71138492debe95d883aebc3cfe5.camel@kernel.org>
+Subject: Re: [PATCH v7 4/5] mm, iomap: let an uncached writer complete its
+ shared pages itself
 From: Jeff Layton <jlayton@kernel.org>
 To: Mike Snitzer <snitzer@hammerspace.com>, Chuck Lever <cel@kernel.org>
 Cc: linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>, Olga
@@ -71,10 +71,10 @@ Cc: linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>, Olga
  Talpey <tom@talpey.com>,  Christoph Hellwig	 <hch@lst.de>, Jens Axboe
  <axboe@kernel.dk>, Matthew Wilcox <willy@infradead.org>,  Jonathan Corbet	
  <corbet@lwn.net>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Date: Wed, 21 Oct 2026 06:52:59 -0400
-In-Reply-To: <20261020220346.28020-3-snitzer@kernel.org>
+Date: Wed, 21 Oct 2026 06:54:14 -0400
+In-Reply-To: <20261020220346.28020-5-snitzer@kernel.org>
 References: <20261020220346.28020-1-snitzer@kernel.org>
-	 <20261020220346.28020-3-snitzer@kernel.org>
+	 <20261020220346.28020-5-snitzer@kernel.org>
 Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
  keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
  n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
@@ -154,18 +154,18 @@ Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 6B18C10000E
-X-Stat-Signature: d9whma3xad64bdm3t66w8p7xxz4wmqa5
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9D402120004
+X-Stat-Signature: npgemdh19zm7xcwg6ga7f4thhqnzwihi
+X-Rspam-User: 
 X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792579992-497039
-X-HE-Meta: U2FsdGVkX181AyzSJSV03JPXUC2UySdoD5zkpNCbSQJZQVyyvrue96o+jx4BDtolGGDDHDfxmGyVB3yMqfshgV8gkcaEsym8T1GExDAUSck9Zd4XXK5tJRPs4cBmqITh2KijhfoXwfxTpzf0BJLkjEFKEh5x+CBHZap8tto317oyYxA89P3IgdwvtBshn8nBVG3kA0T+7rO/G5C1bSVT1f4MTfV8AI2gwqo/DieWq/3ROPLzpRKkODUr8diOV3UGrfHMDVkr9plwsSH35r5LAbFVhpVFh12/A7Dkhfcs99Zmptf7TEdvRIgAfnOJ/EC+kXrVjC/ZbisU+nOoXB2ly06RewBfqbv53h5JDMt81kC+RtjFWScpHJ6KX1OcKIw8zNT+7KN2lczlg1Q1VfLxcrEzE9DbbacEcf0PUUd2/RK6AlrWM97UJ5W6kF8SEQVMwy/vnfQTFuzufUmJHJKi7o61qVF2C5yBn5mdOR0nQQPn+fGKadNNBqCzYqljX7ILfXbF6D0zvkea3mNJYeDjNXkFiS0ZdiMhZoIv9RL6iyR6tOyTpzd+EY1ZklUJ46C35BYrzK4cfma1Ts8Ec7bad4zPIfLNIDV4owVRwZO0k5vMYgdyTGdHs0+RP7dl+sC0weuA5nrAUfqmIiNCnnYxuxh1X2b9WN6c+AaNWbxeLOwQ2xYuEfwy25FntIkFHGrAEsJSUpb6UCbaC4smIsImEKfvvGp3454keiJZTCCTHAMkYKaN5HvDzqAk4D2U45edjOx9WX6aEtbNE62sa8w/Rft3uu8oFYS5RP1XbmTlcI5fn7RKMBp3xdrFuG1oCd2jazYbBfkcaL1GbtvHi7v7qoJCcJLga+WObjfzx55HrOLtdsFQlP+WQ8mh950El02xBFJngllzX4WBNJNRUPshbqRS8OG9QVjl40PHsxOY1/8uPFjWDmQNIoV01ALok/b7xjq2RHktHMhsQwTRS3c
- j8Q5gUAX
- Hy52wJFlFfHnWco4tu2axfRlJ1gJYnxRd7ZDehLL7lNqaXPcbhsazT3qAJUB1EZmOPi3CavKg7C20MQQbkT79IOkqAN4mxVJbgsbO44XgxUnOvjm+QKt7vMRpYcPIJfZa0S+8oXAKF2/oQLxhYapuh9RZHq07m35Yht/1LwJem7syAxT6wINnV4sRS4oFcMocaFogHcnXa0/hN0nbpfrsQbPgrkJsxrE3uj4qkfMPLASbm/v4xDMZpxqwx3qPuIg27WOryPiwPzZ9G08HdTN6qQ8Yt3GHhuLLh6CvF3PwsCfeO3ItW15i+jPYrZdgfo1qskQJnDenkFePr+wX7a0OMa6FTwfyuS2XpmUNtImWIciNxO7/fKIGrcqkHC8vtNgIJ1fK5v+tY3VjayBcR7JYSPFnh7k8b/SXMlqh8kEjsBDDhReZAmFNHHFEBpAqsx7omcD5qpPaPIGqhAIIJirSCk1znwJSIcbruo29tPjPJ/j/0s4=
+X-HE-Tag: 1792580067-945352
+X-HE-Meta: U2FsdGVkX1/gNlhZNQHBOScEzc26cDfOC0xsXzdoRWMSwYn3VlnQBeRNPwiejVsrjzOLJAxRwWZs8VWJT/uFjgWGtyJtxr4+eT1KcOMFxExQRB8zlYRXJeF9A9Z2OSuSo/C+TdEX/fvrYMth2D1+Lo/TpG5YPS3etCrs6wVTFe2zHoSDwAFbpNK5uLR8Gm/vV75GWx25363fYUliR+s4xU4Jl726XFaDS6pvwwjBkoLObVYnNfD6MZyr2/Ul2kwWEIMIvSz/WiciWpMHoZ0Ikx2dB8+VkHT37glro3l0N/sVMFrJTrJaHIQcNOsIG/jj94mslhRALdSWeRshBGi6GmZi3MXNc0zPPvET7gLLXDfnJ+2g5thaDhRz0PYNFU/TP+tW27KszLEelxdN4Lh/36CCcj//fNvn1awHDzpbHCQxnP9uasYFBXMGL/r3Go5kmQFSuU+neq3bROH6welpahYa9T1hQzX79SxBHo/oqmwWWDOS2i28OEyND80rJ1jLkC5Jr7ODohmzLIb/Nh4w2WsIXJla1PsbmRH4MZ/Ii6Dc3z6Pq3g+CqeqZmfw/Hbx+dQFt/ez4k9X8BjiGxEH14zzMaA/y/ZRYlGWxQJJ6TE7oErbopkyzomzbX+LU/a+c6W5RHX2yUGMKi3mz2rL4/oBMkRjskvsdOfhf0P0pavgU0ZwHUkdoAuV8Kje4dT6j7hBW4RhtMCwrD1EmQdQHG6RBZbhBceJAJ/JhXUjLHvn7fQNGKPeriL+JnCRdPCj7kMyhSbZhWewYRVPqqEA3qHehTNudNrOLPqQcFTOrVnSoiigjoVAjipu7TauQusOSdlW1dvTB0Ef8ZCy4vqPrzLbvnNF6lhUN8VF0SNzWvR1Tk6XjAYuHmSt+Li6snOEE4Ewkq/B40tWxy8v8H0Xi0aH4qfFxe4Mti8mxN6O6/PHhKHLu33JjuhPZlW0l/IlU+kxVbPqZIpLuthmvtt
+ 0SXU8An1
+ R1zJVZQ5dAqcn+Zgzw31/T0jNkfs282z5fCaDzNawNS6YEff616WUdIIaunkCTRsa0LYExzOmnblWeN2N7iXHUjeif7sDoOkF/6GpM0C0oo73enYGNQ0fQSrkzmyC0+fJRjvzp6oa0du5nWiQ9IQag6JN5Kk+G5fi4Laijao6vO1oO/w/Frxk2mrbZf0qsUhaELpjY52SCVZXKBeUqMCLD7oDCmzn70dyUBP4kwR3YLrjq1jltRlpqIdFMZsOHMBsVJR0TuvLIv1fJFCfOn7p6sYUrICwuooN77zFhZq8+Nl+Obd3ZN61UOR8Zvs+2ykR7PL6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,117 +175,278 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On Tue, 2026-10-20 at 18:03 -0400, Mike Snitzer wrote:
-> A folio allocated by an RWF_DONTCACHE write is marked dropbehind before
-> it is dirtied, so folio_account_dirtied() adds it to WB_DONTCACHE_DIRTY
-> and folio_clear_dirty_for_io() or folio_account_cleaned() subtracts it
-> when it is cleaned.  Nothing marks a folio that already exists.  A
-> caller that sets PG_dropbehind on a folio that is already dirty
-> unbalances the counter: the clean subtracts what was never added, and
-> once the counter goes negative, wb_stat_sum() reads it as zero and the
-> DONTCACHE writeback kick stops writing anything back for every writer
-> on that bdi_writeback.
+> The write that completes a page an uncached write covers only partly
+> marks it drop-behind as it writes, while the page is dirty, so the page
+> counts as DONTCACHE dirty and the DONTCACHE writeback kick writes it
+> back.  A writer that syncs its write itself, once, after several
+> segments -- NFSD answering a stable WRITE, the NFS client's LOCALIO path
+> -- issues each segment without IOCB_DSYNC, so every segment's kick
+> writes back pages its own sync is about to write.  Measured with NFSD
+> DIRECT and 32 writers of 47008-byte records: with the previous patch
+> alone, 23,000 to 65,000 kick rounds a run, where NFSD marking the pages
+> itself after its sync had taken 51 to 274; with this patch and NFSD
+> using it, a FILE_SYNC WRITE wakes the kick not at all.
 >=20
-> Add folio_mark_dropbehind(), the inverse of the clear in
-> __filemap_get_folio_mpol(): with the folio locked, mark it and, if it is
-> dirty, add it to WB_DONTCACHE_DIRTY.  The folio lock orders this
-> against dirtying and against folio_clear_dirty_for_io().  A concurrent
-> lookup without FGP_DONTCACHE that clears the flag again subtracts what
-> this added.
+> Let such a writer complete those pages itself.  IOCB_DONTCACHE_DEFER
+> (IOMAP_DONTCACHE_DEFER, FGP_DONTCACHE_DEFER) leaves a partly covered page
+> unmarked even when the write finds it uptodate.  Right before writing suc=
+h
+> a page the writer asks filemap_dontcache_edge_completes() whether it is
+> uptodate already, which means the neighbouring write has written its part
+> and this write completes it; once the write and its sync are done,
+> filemap_dontcache_edge_complete() marks it and, clean, drops it at once.
 >=20
-> The name follows folio_set_dirty() and folio_mark_dirty(): the first
-> only sets PG_dirty, the second also accounts the dirty folio.
-> folio_set_dropbehind() likewise only sets PG_dropbehind, and
-> folio_mark_dropbehind() also accounts it in WB_DONTCACHE_DIRTY.
+> Two writes that arrive together may both find the page absent before
+> either has written; that page is then left cached until reclaim, which
+> the folio-lock ordering of the default path avoids.
 >=20
-> A later commit uses it in NFSD to drop a page shared by two misaligned
-> WRITEs once both have written it.
->=20
-> Cc: Jeff Layton <jlayton@kernel.org>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: linux-mm@kvack.org
 > Assisted-by: LLM
 > Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 > ---
->  include/linux/pagemap.h |  1 +
->  mm/filemap.c            | 31 +++++++++++++++++++++++++++++++
->  2 files changed, 32 insertions(+)
+>  fs/iomap/buffered-io.c  |  4 +++
+>  fs/iomap/trace.h        |  3 ++-
+>  include/linux/fs.h      |  8 +++++-
+>  include/linux/iomap.h   |  1 +
+>  include/linux/pagemap.h |  6 +++++
+>  mm/filemap.c            | 58 ++++++++++++++++++++++++++++++++++++++++-
+>  6 files changed, 77 insertions(+), 3 deletions(-)
 >=20
+> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> index 780a0186045d..5ca82000e2ec 100644
+> --- a/fs/iomap/buffered-io.c
+> +++ b/fs/iomap/buffered-io.c
+> @@ -811,6 +811,8 @@ struct folio *iomap_get_folio(struct iomap_iter *iter=
+, loff_t pos, size_t len)
+>  		 */
+>  		if (offset_in_page(pos) || len < PAGE_SIZE) {
+>  			fgp |=3D FGP_DONTCACHE_EDGE;
+> +			if (iter->flags & IOMAP_DONTCACHE_DEFER)
+> +				fgp |=3D FGP_DONTCACHE_DEFER;
+>  			len =3D min_t(size_t, len, PAGE_SIZE - offset_in_page(pos));
+>  		}
+>  	}
+> @@ -1318,6 +1320,8 @@ iomap_file_buffered_write(struct kiocb *iocb, struc=
+t iov_iter *i,
+>  		iter.flags |=3D IOMAP_NOWAIT;
+>  	if (iocb->ki_flags & IOCB_DONTCACHE)
+>  		iter.flags |=3D IOMAP_DONTCACHE;
+> +	if (iocb->ki_flags & IOCB_DONTCACHE_DEFER)
+> +		iter.flags |=3D IOMAP_DONTCACHE_DEFER;
+> =20
+>  	while ((ret =3D iomap_iter(&iter, ops)) > 0)
+>  		iter.status =3D iomap_write_iter(&iter, i, write_ops);
+> diff --git a/fs/iomap/trace.h b/fs/iomap/trace.h
+> index e1ea8392cf47..4f0343eeed1b 100644
+> --- a/fs/iomap/trace.h
+> +++ b/fs/iomap/trace.h
+> @@ -104,7 +104,8 @@ DEFINE_RANGE_EVENT(iomap_zero_iter);
+>  	{ IOMAP_UNSHARE,	"UNSHARE" }, \
+>  	{ IOMAP_DAX,		"DAX" }, \
+>  	{ IOMAP_ATOMIC,		"ATOMIC" }, \
+> -	{ IOMAP_DONTCACHE,	"DONTCACHE" }
+> +	{ IOMAP_DONTCACHE,	"DONTCACHE" }, \
+> +	{ IOMAP_DONTCACHE_DEFER, "DONTCACHE_DEFER" }
+> =20
+>  #define IOMAP_F_FLAGS_STRINGS \
+>  	{ IOMAP_F_NEW,		"NEW" }, \
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index f9d1e05e8ae6..ad181b6ce6b4 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -357,6 +357,11 @@ struct readahead_control;
+>  /* kiocb is a read or write operation submitted by fs/aio.c. */
+>  #define IOCB_AIO_RW		(1 << 22)
+>  #define IOCB_HAS_METADATA	(1 << 23)
+> +/*
+> + * With IOCB_DONTCACHE: the caller completes the pages the write covers =
+only
+> + * partly itself, see filemap_dontcache_edge_complete().
+> + */
+> +#define IOCB_DONTCACHE_DEFER	(1 << 24)
+> =20
+>  /* for use in trace events */
+>  #define TRACE_IOCB_STRINGS \
+> @@ -374,7 +379,8 @@ struct readahead_control;
+>  	{ IOCB_NOIO,		"NOIO" }, \
+>  	{ IOCB_ALLOC_CACHE,	"ALLOC_CACHE" }, \
+>  	{ IOCB_AIO_RW,		"AIO_RW" }, \
+> -	{ IOCB_HAS_METADATA,	"AIO_HAS_METADATA" }
+> +	{ IOCB_HAS_METADATA,	"AIO_HAS_METADATA" }, \
+> +	{ IOCB_DONTCACHE_DEFER,	"DONTCACHE_DEFER" }
+> =20
+>  struct kiocb {
+>  	struct file		*ki_filp;
+> diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+> index bc7ae6327dbf..f3509d495a92 100644
+> --- a/include/linux/iomap.h
+> +++ b/include/linux/iomap.h
+> @@ -212,6 +212,7 @@ struct iomap_write_ops {
+>  #endif /* CONFIG_FS_DAX */
+>  #define IOMAP_ATOMIC		(1 << 9) /* torn-write protection */
+>  #define IOMAP_DONTCACHE		(1 << 10)
+> +#define IOMAP_DONTCACHE_DEFER	(1 << 11) /* see IOCB_DONTCACHE_DEFER */
+> =20
+>  /*
+>   * Return the existing mapping at pos, or reserve space starting at pos =
+for up
 > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 0adfa6605653..3012bd95812a 100644
+> index 0c1d6bd09aa0..a0a67e4c940b 100644
 > --- a/include/linux/pagemap.h
 > +++ b/include/linux/pagemap.h
-> @@ -1310,6 +1310,7 @@ void end_page_writeback(struct page *page);
->  void folio_end_writeback(struct folio *folio);
+> @@ -705,6 +705,9 @@ pgoff_t page_cache_prev_miss(struct address_space *ma=
+pping,
+>   *   only partly, and a neighbouring write may complete it.  A folio cre=
+ated
+>   *   for it is not marked drop-behind; a folio found uptodate is, as the
+>   *   write that completes it.
+> + * * %FGP_DONTCACHE_DEFER - With %FGP_DONTCACHE_EDGE: the caller complet=
+es the
+> + *   page itself (filemap_dontcache_edge_complete()), so a folio found u=
+ptodate
+> + *   is not marked either.
+>   * * %FGP_WRITEBEGIN - The flags to use in a filesystem write_begin()
+>   *   implementation.
+>   */
+> @@ -720,6 +723,7 @@ typedef unsigned int __bitwise fgf_t;
+>  #define FGP_STABLE		((__force fgf_t)0x00000080)
+>  #define FGP_DONTCACHE		((__force fgf_t)0x00000100)
+>  #define FGP_DONTCACHE_EDGE	((__force fgf_t)0x00000200)
+> +#define FGP_DONTCACHE_DEFER	((__force fgf_t)0x00000400)
+>  #define FGF_GET_ORDER(fgf)	(((__force unsigned)fgf) >> 26)	/* top 6 bits=
+ */
+> =20
+>  #define FGP_WRITEBEGIN		(FGP_LOCK | FGP_WRITE | FGP_CREAT | FGP_STABLE)
+> @@ -1316,6 +1320,8 @@ void folio_end_writeback(struct folio *folio);
 >  void folio_end_writeback_no_dropbehind(struct folio *folio);
 >  void folio_end_dropbehind(struct folio *folio);
-> +void folio_mark_dropbehind(struct folio *folio);
+>  void folio_mark_dropbehind(struct folio *folio);
+> +bool filemap_dontcache_edge_completes(struct address_space *mapping, lof=
+f_t pos);
+> +void filemap_dontcache_edge_complete(struct address_space *mapping, loff=
+_t pos);
 >  void folio_wait_stable(struct folio *folio);
 >  void __folio_mark_dirty(struct folio *folio, struct address_space *, int=
  warn);
 >  void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb=
 );
 > diff --git a/mm/filemap.c b/mm/filemap.c
-> index 00fd89cf6f55..ed7e4dbea653 100644
+> index 0397ec771547..7d7c56a42643 100644
 > --- a/mm/filemap.c
 > +++ b/mm/filemap.c
-> @@ -1644,6 +1644,37 @@ void folio_end_dropbehind(struct folio *folio)
+> @@ -1675,6 +1675,61 @@ void folio_mark_dropbehind(struct folio *folio)
 >  }
->  EXPORT_SYMBOL_GPL(folio_end_dropbehind);
+>  EXPORT_SYMBOL_GPL(folio_mark_dropbehind);
 > =20
 > +/**
-> + * folio_mark_dropbehind - mark an existing folio dropbehind
-> + * @folio: the folio, locked by the caller
+> + * filemap_dontcache_edge_completes - will this write complete a shared =
+page?
+> + * @mapping: the file's mapping
+> + * @pos: any byte offset within the page
 > + *
-> + * Mark @folio so that the writeback that cleans it drops it.  A folio t=
-hat
-> + * is already dirty is added to WB_DONTCACHE_DIRTY, as folio_account_dir=
-tied()
-> + * would have added it had it been marked when dirtied, so that the clea=
-n
-> + * that subtracts it leaves the counter balanced.
+> + * For an uncached writer that completes the pages it covers only partly
+> + * itself (IOCB_DONTCACHE_DEFER).  Call right before writing such a page=
+: it
+> + * is in the page cache and uptodate when the neighbouring write has alr=
+eady
+> + * written its part, and this write then completes it.  Two writes that
+> + * arrive together may both find it absent; the page is then left cached=
+,
+> + * unmarked, until reclaim.
+> + *
+> + * Return: true if the caller is to call filemap_dontcache_edge_complete=
+()
+> + * once its write, including any sync of it, is done.
 > + */
-> +void folio_mark_dropbehind(struct folio *folio)
+> +bool filemap_dontcache_edge_completes(struct address_space *mapping, lof=
+f_t pos)
 > +{
-> +	struct address_space *mapping =3D folio->mapping;
+> +	struct folio *folio;
+> +	bool ret;
 > +
-> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> +
-> +	if (folio_test_dropbehind(folio))
-> +		return;
-> +	folio_set_dropbehind(folio);
-> +	if (mapping && folio_test_dirty(folio) &&
-> +	    mapping_can_writeback(mapping)) {
-> +		struct inode *inode =3D mapping->host;
-> +		struct bdi_writeback *wb;
-> +		struct wb_lock_cookie cookie =3D {};
-> +
-> +		wb =3D unlocked_inode_to_wb_begin(inode, &cookie);
-> +		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, folio_nr_pages(folio));
-> +		unlocked_inode_to_wb_end(inode, &cookie);
-> +	}
+> +	/* FGP_DONTCACHE: a plain lookup would clear a drop-behind mark. */
+> +	folio =3D __filemap_get_folio(mapping, pos >> PAGE_SHIFT, FGP_DONTCACHE=
+, 0);
+> +	if (IS_ERR(folio))
+> +		return false;
+> +	ret =3D folio_test_uptodate(folio);
+> +	folio_put(folio);
+> +	return ret;
 > +}
-> +EXPORT_SYMBOL_GPL(folio_mark_dropbehind);
+> +EXPORT_SYMBOL_GPL(filemap_dontcache_edge_completes);
+> +
+> +/**
+> + * filemap_dontcache_edge_complete - drop a shared page both writes have=
+ written
+> + * @mapping: the file's mapping
+> + * @pos: any byte offset within the page
+> + *
+> + * Mark the page drop-behind.  If it is already written back, drop it no=
+w;
+> + * otherwise the writeback that cleans it drops it.  A dirty page marked=
+ here
+> + * counts as DONTCACHE dirty and wakes the DONTCACHE writeback kick, so =
+a
+> + * caller that syncs its write calls this after the sync.
+> + */
+> +void filemap_dontcache_edge_complete(struct address_space *mapping, loff=
+_t pos)
+> +{
+> +	struct folio *folio;
+> +
+> +	folio =3D __filemap_get_folio(mapping, pos >> PAGE_SHIFT,
+> +				    FGP_LOCK | FGP_DONTCACHE, 0);
+> +	if (IS_ERR(folio))
+> +		return;
+> +	folio_mark_dropbehind(folio);
+> +	folio_unlock(folio);
+> +	folio_end_dropbehind(folio);
+> +	folio_put(folio);
+> +}
+> +EXPORT_SYMBOL_GPL(filemap_dontcache_edge_complete);
 > +
 >  /**
 >   * folio_end_writeback_no_dropbehind - End writeback against a folio.
 >   * @folio: The folio.
+> @@ -2024,7 +2079,8 @@ struct folio *__filemap_get_folio_mpol(struct addre=
+ss_space *mapping,
+>  	 * folio lock, so the writeback that cleans both writes' data drops it.
+>  	 */
+>  	if ((fgp_flags & FGP_DONTCACHE) && (fgp_flags & FGP_DONTCACHE_EDGE) &&
+> -	    (fgp_flags & FGP_LOCK) && folio_test_uptodate(folio))
+> +	    !(fgp_flags & FGP_DONTCACHE_DEFER) && (fgp_flags & FGP_LOCK) &&
+> +	    folio_test_uptodate(folio))
+>  		folio_mark_dropbehind(folio);
+>  no_page:
+>  	if (!folio && (fgp_flags & FGP_CREAT)) {
 
-Chuck's sashiko had a comment on this one:
+2 comments from Chuck's sashiko on this one:
+
+[Severity: Low]
+Could filemap_dontcache_edge_complete() in mm/filemap.c avoid missing the
+immediate drop when another task acquires the folio lock between
+folio_unlock() and folio_end_dropbehind()? In that case folio_end_dropbehin=
+d()
+fails its folio_trylock() and does not retry; if the folio is already clean=
+,
+there may be no later writeback completion to drop it, so it can remain cac=
+hed
+until unrelated activity or reclaim.
 
 [Severity: Medium]
-Could this overcount WB_DONTCACHE_DIRTY if folio_mark_dropbehind() races wi=
-th
-filemap_dirty_folio() in mm/page-writeback.c? The dirtying path can set
-PG_dirty before folio_account_dirtied() checks PG_dropbehind, and it need n=
-ot
-hold the folio lock. If folio_mark_dropbehind() sets PG_dropbehind after th=
-at
-dirty transition but before the accounting check, both paths increment the
-counter, while folio_account_cleaned() subtracts it only once. The later NF=
-SD
-use of this helper retains the same interleaving. Could the flag update and
-dirty accounting be serialized so the counter is incremented only once?
+Could filemap_dontcache_edge_complete() in mm/filemap.c restrict marking to
+the boundary page when the mapping returns a large folio? iomap_get_folio()
+in fs/iomap/buffered-io.c limits a partial edge request to one page, but th=
+e
+mapping's minimum folio order can still cause __filemap_get_folio_mpol() to
+return a multi-page folio, or the lookup can find an existing large folio.
+This helper then marks the entire folio for drop-behind. For example, if a
+caller uses deferred completion on an XFS mapping with a minimum folio orde=
+r,
+marking one edge can account the whole dirty folio for DONTCACHE writeback =
+or
+invalidate the whole clean, unmapped folio. Could this path handle only the
+page covered by the completed edge?
+
 --=20
 Jeff Layton <jlayton@kernel.org>
 
