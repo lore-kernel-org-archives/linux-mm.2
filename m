@@ -1,90 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FC5606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D313606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kz5/tDiu
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h33VLacb
 Received: by kanga.kvack.org (Postfix)
-	id AB8D76B06CF; Wed, 21 Oct 2026 07:39:01 -0400 (EDT)
+	id 2F2B26B020B; Wed, 21 Oct 2026 07:40:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8F046B06D0; Wed, 21 Oct 2026 07:39:01 -0400 (EDT)
+	id 2CA8B6B020C; Wed, 21 Oct 2026 07:40:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CC2B6B06D1; Wed, 21 Oct 2026 07:39:01 -0400 (EDT)
+	id 1E7696B020D; Wed, 21 Oct 2026 07:40:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 76E566B06CF
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:39:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1296C1C3C65
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:39:01 +0000 (UTC)
-X-FDA: 85346436882.21.4C65F20
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC8196B020B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:40:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F1ACE120505
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:40:32 +0000 (UTC)
+X-FDA: 85346440704.23.2ED19F7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 64FEEA0003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:38:59 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kz5/tDiu";
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792582739;
-	b=ewSIbA6IvbJyCAwANthMcruTbDBNbOXIYBo1bCLAkELQSI9DRRPftKIhbKw2TPs6G9nziH
-	EciYxOErc8+r15oOn6BVVNVBP12U7aRZSSB7QpxJVSNRQhxcr9+SetysjR6U6943UQAmV+
-	QtpqOYgVOA9bBhYUQ3ShwU8YjRTJwZ4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kz5/tDiu";
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4E46480007
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:40:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h33VLacb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792582739;
+	s=arc-20220608; t=1792582831;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GtuTGfWk3H7E1gbYASmMIdUVMADE1R3RABXKZ9cs/xk=;
-	b=zPorHcopICU++GHDrWmwHVIVHbtpfSqGREQTmAjuk8HiHO1LJZCCFvjUDM+q7E/Lk+34B9
-	1erELjNcfjNmaOrzMYPNU7KnZLfBdY1p8cB/c7Y9pvDmgvMAutMyInwKLsVnrDhmOYVyFU
-	qSIoIZyI2pgGj0aodEjqyARG3spyLNc=
+	bh=hRvoRPccK0ObKuMf62aLb3R3R+A968xeDh5CRkvKhSM=;
+	b=TNdpiefT0Hdm42q+DHLDJZqMgUmxvu6UNzHd1wBPvE9PjenStgPNAgU65BLgR1e6JJjecT
+	xboe8nm9+B/bAbrfNjjyjUQMQG1AtORmbCL1G9NXsmQhFlA3fOODWFxWO0qP0+75tDD+8x
+	3HKOGTbIhuofXI6rEasBKMNbgKWyifI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h33VLacb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792582831;
+	b=ByZXDBpj9iGZ3ZLMhQzHToBkrwsIktgBoOnEnlzopSEmRGmBhFLYX8duoXpe56367f0TTp
+	8glzYcHA84mzjLguxWwsQrcFdEC8B4eFN0CKHKB0KTrGWmp/77mNffloGf/bWi9G1ybkt9
+	n8j8wBGgYLHIp8aF+U9I6FslxPInH6U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F2CE41704;
-	Wed, 21 Oct 2026 11:38:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3D61F01579;
-	Wed, 21 Oct 2026 11:38:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 673FA43AC0;
+	Wed, 21 Oct 2026 11:40:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D781F000C4;
+	Wed, 21 Oct 2026 11:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792582738;
-	bh=GtuTGfWk3H7E1gbYASmMIdUVMADE1R3RABXKZ9cs/xk=;
+	s=k20260515; t=1792582830;
+	bh=hRvoRPccK0ObKuMf62aLb3R3R+A968xeDh5CRkvKhSM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kz5/tDiuq8Zp96IVC2XIiPJGHoX+4gpgay7d0oEStfPLTU2WdUQTRgl1/EF1yoL0O
-	 BU7irob0rKb3sMVDKzMRpIZs7GvhX3Ayu3OQf8z24V8lqQlnUkb6vSsV6V1iO1PTal
-	 2WIyuUHLRX3g8T3i7fIc/icxzDroFXTTZxX6bGgQhbAJW7vma2lGUqci7DlhPF9Eh1
-	 VhktQ7JzWWWXBUBH3XxR7xxFb+Cw9hj6bqf1xYb50wxzrMAsSK9/pZ5BPX3DjHaAck
-	 Se2gn6259qUjypwwgez01jWaRFWrtB7zGEfTWYzVlsKdxq2/r0iUiW9A9w/I+Nd8Rf
-	 Tu90+yQSyJ59A==
-Message-ID: <sashiko-outbox-180173@kernel.org>
+	b=h33VLacb4OUhHA+wtY+sI5cKdIF2czPPGRkYnihor+xX2FmPSsm/mqo/QiZqMFjow
+	 AWYjJG36aosVWVeXvHZChQ5jWXg+Q+oR2yr5m/DQhWJEZIiWeIdlNTiAofFOB5pyNg
+	 4W3Wdi2W3qApZEwrYm7vcqQ4veFz9Xnou+P1J97+XeyCUi2dle9mB+e4iR983+W2Yc
+	 9FbNOcVqAvzhSOstPejbBtPTzeuxZvk5ysHsMmFyxOGwgx3f0frTjmVSMMS0M4XvN/
+	 VsBg7vOfqimxPriV6iNz/idPoeoE5TeH0UpoQ7OqFzLNAV5J07eXOSiZYho022gVY8
+	 dqGkF2mK39x3A==
+Message-ID: <sashiko-outbox-180175@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 7/7] selftests/bpf: add tests for the page_owner
- bpf_iter target
+Subject: Re: [PATCH v3 3/7] mm/page_owner: add bpf_iter target "page_owner"
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Zhen Ni" <zhen.ni@easystack.cn>, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev, akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, shuah@kernel.org
 Cc: bpf@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261021112437.1799213-8-zhen.ni@easystack.cn>
+In-Reply-To: <20261021112437.1799213-4-zhen.ni@easystack.cn>
 References: <20261021112437.1799213-1-zhen.ni@easystack.cn>
- <20261021112437.1799213-8-zhen.ni@easystack.cn>
+ <20261021112437.1799213-4-zhen.ni@easystack.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 11:38:56 +0000
-X-Stat-Signature: j6ynjduf5o4pucjmhkuk1g581m5ktxj6
+Date: Wed, 21 Oct 2026 11:40:28 +0000
+X-Rspamd-Queue-Id: 4E46480007
+X-Stat-Signature: 5daw9po8pzicwswaijhetc1aw77iw8yz
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 64FEEA0003
 X-Rspam-User: 
-X-HE-Tag: 1792582739-161525
-X-HE-Meta: U2FsdGVkX19nQiQwyexTF+or/eXd1M/Ab7i9wxhFu0UyeHhIT5OXy+yUT4LvIND9rsu+qI6JoA7Cmzq0NnM5pk7/MbeTJE7vVJTrgKOG6jNYWZSe4u5zyK76NHHmw2J4MzGgN3tNDeBwNeNFMdL6JsMdbHZtbKiVngK+Ib3s25X3phQOJ0OUNrszF67FUMLWLEEoJzfAcAP6X+i9o6OPyTDfmPKqwvma2SvwWvsbgo0KtLwONgk0fdUHnd4+Gsg5hhoTlmm8Ya0R/E6QrUS3pYViCY/p4J1mHE02dQgwgnj21FhBHa8mbAeIexLtm95hel8QFOYUV4Cv6oSnHPiarI09WlQ8x89RBMwtoN68PRexau3lDT56hhpHyL8QEJh9rTF+Ti2fXWBRM7qLtqBU4Xfx9fbgnDrm4oNcyrpmoDUpPBTEczfS6iFaHIIX5haX5cRsEKIBsXrJ3wv4W0FcziOdOFS/jiT5kFX435ZjrLYXG9C3VFd02UJLpYYwELHaj/XjLAe0nyOxxSWHTOJMe/Vl3bvAcjAq0IpL4yAQgXwIfTNUvhg63c7pQtdECEdEHHZ8b5XagCC4w2Tr0v4O21hRIIMJJ4dh24HDlZ+r8+cbya0SoKYKGeys3ixUgz/3hd00phz3wRLaYW908RFOWyQdowi8vkSlab8R4lD2qBDK+QkKx71iIeVsiV6efyOfVtXnFqAtbZHJj+figkfujUADz85gax7vzYqkQCMgGNh3oYF4FIJ8xUz4yIS9jJBisH5kWMrFKahMG96fUpeVuBCPjs++9YnsVBRaJTfOQRd7tPXT4rU4gotVa9k5D8ALJ0Vmu0XVkBsCmQZxvr81sga7745GB4dX6WPRr3EbGS/a1dAwUR3+6pCk64flKPq4Yyht/X39+UzSDpTpl224GRAKx6gtKxP4SGMOUzyn+wU5ftHxBovOHIt34PnvMZVkZZ0I4CggVXc13/uAf67
- gCfHZfLn
- EGpj0i19mCxTP8E8jYpCPgiJZr/ughoptM9UUAzJuBb2fjCFu6Hg8Me5/jjv3tr+y+q/4M8yVmv3HI9SOJdviXivkWkX6L2h6X8POlnO8G/P180EYxCcyNqbVj8jj0W5ot/9V05c+mxCUkkJvOfS0k1CijV+dOwuSKEGRoL5oCKl8iN37A53gUR+Ig+IioVsDcpeEzYXD+OLOvdAU/gptxsUP5SbWJqjrmd/ZyhFAR3LddPXqbfgY/cYCg21UbGd0H3pBgdW1JS06GOTKWamsXZkxr7TBav99e1oNtVGCaCVSzd1NcLWGEnORUX0SRr1ulHN+eMvmYmcT5U++RD3FBCT37/oClKzPuHxXwpk4vbngtXMfXYB5KHHUou9iHY4mzGWjiF9weXxbvU/9PWXhfNLnnCPTk13IF+4Iy+atv6oyRuOkIvm/8lR6jJjno0jFFVnlbUeevQ1rS+1o/aS0j92iNO4bzlOaAy/utDSkKeELA3PoVsIf8outWU2lHWyeiG9hO2KBTOjcJRwOeC4DvCAEOi+a5+JjkVKYsYiJz1JAi1vstZZ5Gdk+Y8yhTBSPVWuIA+XcygRAz0GfJ3gqcOhdMIlDM+QCWPPnCY4joN+D7Ns=
+X-HE-Tag: 1792582831-474874
+X-HE-Meta: U2FsdGVkX18qrnE5K90n7ptA6X2OpFEhP29T0sNQUWK87pwNcccv+f68UTcj/A1hFim16Uw9jptdGdOFYwlGKrvyRUtHsHqZt9Vuq+nS2dwOgNy9OUyy5E2mLnG0OWetNKANzv3YO3kLQnh6K7F1p+9UOAU1CAwAstg1tls5hHWHR4adpSlS12IuIAMkF+h/HH3dvaGqCvnHMESbJJqfBeQYquoY1007D1A/5mCsUYIQoQvcMBtdD8eFdFHI+OOaSfTkuQKr0ZmPWtPhml6mgtgmwEP/Vrx8AvKlnx3BcC17nOz/IRDSbqp1/7KO+wImfUpJINxaGLANNvsjCABch+IqT5ypqpWM6Vtvo3l2H7cvVuxUDQXc7Xu7NvHRbFMLqYG5NXsa+smcRv6RWT7M8U/X2TTGu3fkRXjxapAjcUk5NiEvi+SV7J7bOhhdL/7F7LEAqaPhBszQcLOgX5czVqUyi5ty03wQiUUY2nSYKfAWnFye+FgaUFyX2X6tGvDD+9tTMNMeRD8zevDP3raFXhAkI5YcKeqntLZ9PhQuJHPks9B3xMDIO4WmLOxWw1bVv78GyfnbXnfhdCuZAdNBHsFJeeOsO8RBg1Fj79/mzDbV0zCmQZxoA6jT1BjIrJAiLP0ZmVTocz+uzwsbyt4fJtJRVmFoEc6MvsqvGHzxiOebMKrF88UwHoRRNYVCTcqiz48U1MoQg9Ty7m9rWbqGmkBk9kB6ushlZEnSskkjGkMweFvXNiWF4Xr4QxIsYnVapSFOksPyky5Oep9xH19Wl8+XliHQ6uzqIzcRjRXK1+GI5yvmrxHcqxyl3+r8BS2Cl24C6yf0Xzmo18JH7gldgSHNZgMEu42OPV6BFTGZ2C8hvovIoTezmSeg76sdBdx0lZU9PGk60M0lASuc0MZKccE8q+v4767yOE3pdtiozIDG/f3KjP3OeLpGbJ2aghH3jb/eKiJHtkl1kUovm34
+ 90vN4qJb
+ zlzMZgtIHeVnpH4gdWpHJw5BF5suWdZi3Xw4UAWS7JR/ijeqTsGkle4/1qxoK6C0vQWSEpH4bPd8L7raXTzcz/vNAbtHPz2ISYYp1qNPjBM2OWBti9WLzC9iS0m0l1dEC9ZGHvloPJI6g4Fi9BoB9Tcm7569dtyDRHsISr/vyD3w3Zml5yCxxd7cUQT4gv+tlzJ2uBCJvhyCSlTvcHh1BykMvN8lhaGDINpAyZBFZ9ZeSnzT3GXxTk+RgVFwGpF19vkLYLcPI4+ZuUoK8ksTXLwMOH0i9VvwOY4WIQ28HeVdm/zEhXjKJUIaBA9TYmYENcjPqFsjqdQrvs0IvNRij6/ZXINQewIlC6QiysHMYdQfuEK23on0KSDOXZ776MvAbAd4+d0FfPZ2pgsRUzQpdLR2DvvBZS55T/4lQ9fZtf8bHQITuzVXv8eMb1BiXHNITBrN2kAHoTBJxEFkVvsuZ79GnEf2a2vBLgxuww+1o5x2W+Upxwhc1UCH514PWLZo5HJzW27yAj1uYpHR3CkIoaLGW3vZVj3ZXZDfZqU4uA6TwXvPjsOC3Huv263ZrAhhzrIjcfsabiI33pyuU+NoDn7Z7/Eu8vq+fPIFrtf4qWsE5/MY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,93 +95,116 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] selftests/bpf: ASSERT_OK_PTR() on strstr() and strchr() passes o=
-n NULL
+- [Medium] mm/page_owner: rescan and post-stop show() in page_owner_seq_sta=
+rt() at EOF
 --
 
-commit c911a68fd56ba0ae206e2cf17e238a8881f03bd2
+commit a6ba125169596a18417440d179f83a946227810e
 Author: Zhen Ni <zhen.ni@easystack.cn>
 
-selftests/bpf: add tests for the page_owner bpf_iter target
+mm/page_owner: add bpf_iter target "page_owner"
 
-This commit adds a sleepable BPF program and a userspace test runner to
-exercise the seq_file and open-coded page_owner BPF iterators and their
-associated kfuncs. It also enables CONFIG_PAGE_OWNER in the BPF selftests
-configuration.
+This commit adds a "page_owner" bpf_iter target that iterates over pages
+eligible for page_owner output using page_owner_next_eligible() and passes
+the PFN and a snapshot of struct page_owner to the attached BPF program.
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/page_owner_iter.c b/t=
-ools/testing/selftests/bpf/prog_tests/page_owner_iter.c
+> diff --git a/mm/page_owner_iter.c b/mm/page_owner_iter.c
 > new file mode 100644
-> index 0000000000000..3684ca3089355
+> index 0000000000000..529b2c4a589a9
 > --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/page_owner_iter.c
+> +++ b/mm/page_owner_iter.c
+> @@ -0,0 +1,118 @@
+
 [ ... ]
-> +/* Validate bpf_page_owner_get_memcg_info() results from the open-coded =
-run. */
-> +static void check_memcg_skel(struct bpf_iter_page_owner *skel)
+
+> +static void *page_owner_seq_start(struct seq_file *seq, loff_t *posp)
 > +{
-[ ... ]
-> +	if (skel->bss->memcg_first_name[0])
-> +		ASSERT_OK_PTR(strstr(skel->bss->memcg_first_path,
-> +				    skel->bss->memcg_first_name),
-> +			      "memcg_name_in_path");
+> +	struct page_owner_scan *scan =3D seq->private;
+> +
+> +	if (*posp =3D=3D 0)
+> +		scan->pfn =3D min_low_pfn;
+> +
+> +	if (!page_owner_next_eligible(scan))
+> +		return NULL;
+> +	return &scan->po_snap;
 > +}
 > +
-> +void serial_test_page_owner_iter(void)
+> +static void *page_owner_seq_next(struct seq_file *seq, void *v, loff_t *=
+posp)
 > +{
-[ ... ]
-> +	ASSERT_GT(skel->bss->stack_bytes, 0, "stack_snprint_ok");
-> +	ASSERT_OK_PTR(strstr(skel->bss->stack_text, "+0x"), "stack_frames");
-> +	ASSERT_OK_PTR(strchr(skel->bss->stack_text, '\n'), "stack_lines");
+> +	struct page_owner_scan *scan =3D seq->private;
+> +
+> +	++*posp;
+> +	scan->pfn++;
+> +	if (!page_owner_next_eligible(scan))
+> +		return NULL;
+> +
+> +	return &scan->po_snap;
+> +}
 
 [Severity: Medium]
-Will these ASSERT_OK_PTR() checks in serial_test_page_owner_iter() and
-check_memcg_skel() in tools/testing/selftests/bpf/prog_tests/page_owner_ite=
-r.c
-actually catch a NULL return from strstr() or strchr()?
+Can this rescan PFNs and invoke page_owner_seq_show() again after the final
+page_owner_seq_stop() callback has already run?
 
-In tools/testing/selftests/bpf/test_progs.h, ASSERT_OK_PTR() checks the
-pointer via libbpf_get_error():
+In mm/page_owner.c:page_owner_next_eligible(), scan->pfn is copied into a
+local variable and only written back inside the loop before checking
+scan->po_snap.handle:
 
-    #define ASSERT_OK_PTR(ptr, name) ({                                 \
-            static int duration =3D 0;                                    \
-            const void *___res =3D (ptr);                                 \
-            int ___err =3D libbpf_get_error(___res);                      \
-            bool ___ok =3D ___err =3D=3D 0;                                =
-   \
-            CHECK(!___ok, (name), "unexpected error: %d\n", ___err);    \
-            ___ok;                                                      \
-    })
+mm/page_owner.c:page_owner_next_eligible() {
+	unsigned long pfn =3D scan->pfn;
+	...
+	for (; pfn < max_pfn; pfn++) {
+		...
+		scan->pfn =3D pfn;
+		scan->po_snap =3D *page_owner;
 
-And in tools/lib/bpf/libbpf.c, libbpf_get_error() returns -errno when
-given NULL:
+		if (!scan->po_snap.handle)
+			goto ext_put_continue;
+		...
+		return true;
+		...
+	}
 
-    long libbpf_get_error(const void *ptr)
-    {
-            if (!IS_ERR_OR_NULL(ptr))
-                    return 0;
+	return false;
+}
 
-            if (IS_ERR(ptr))
-                    errno =3D -PTR_ERR(ptr);
+When page_owner_seq_next() advances scan->pfn past the last eligible page
+and calls page_owner_next_eligible(scan), the loop reaches max_pfn and
+returns false without updating scan->pfn to max_pfn. As a result, scan->pfn
+is left at the PFN right after the last hit (or at an intermediate PFN where
+po_snap.handle was zero).
 
-            return -errno;
-    }
+In kernel/bpf/bpf_iter.c:bpf_seq_read(), when page_owner_seq_next() returns
+NULL, bpf_seq_read() calls page_owner_seq_stop(seq, NULL) (running the BPF
+program with ctx.po =3D=3D NULL), marks iter_priv->done_stop =3D true, and =
+flushes
+any buffered output in seq->buf to userspace with a positive return value.
 
-Because strstr() and strchr() do not set errno when returning NULL on a
-non-match, if errno is 0 after bpf_prog_test_run_opts() succeeds,
-libbpf_get_error(NULL) returns 0 and ASSERT_OK_PTR() silently passes even
-when "+0x", '\n', or memcg_first_name is missing.
+When userspace issues the next read() call to observe EOF, bpf_seq_read()
+calls page_owner_seq_start(), which calls page_owner_next_eligible(scan) and
+rescans from the stale scan->pfn up to max_pfn. If any page in that range
+was allocated between the two read() calls, page_owner_next_eligible(scan)
+returns true and page_owner_seq_show() invokes the BPF program again with
+ctx.po !=3D NULL after the terminal ctx.po =3D=3D NULL stop callback has al=
+ready
+run.
 
-Should these checks use ASSERT_NEQ(..., NULL, ...) instead?
+Similarly, if the initial scan finds no eligible pages (*posp remains 0) and
+the BPF program writes output during page_owner_seq_stop(seq, NULL), the
+follow-up read() enters page_owner_seq_start() with *posp =3D=3D 0, resets
+scan->pfn =3D min_low_pfn, and rescans the entire PFN range.
 
-> +
-> +	check_memcg_skel(skel);
-> +
-> +destroy:
-> +	bpf_iter_page_owner__destroy(skel);
-> +}
+Should page_owner_next_eligible() update scan->pfn =3D pfn when the loop
+terminates at max_pfn (and only store scan->pfn =3D pfn on a hit after chec=
+king
+scan->po_snap.handle), and should page_owner_seq_start() also ensure *posp =
+is
+advanced so a follow-up read() after an empty scan does not reset scan->pfn
+to min_low_pfn?
+
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021112437.1799=
-213-1-zhen.ni@easystack.cn?part=3D7
+213-1-zhen.ni@easystack.cn?part=3D3
 
