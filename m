@@ -1,127 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2F5606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B873606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 21:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AxZTXpap
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IISonUq6
 Received: by kanga.kvack.org (Postfix)
-	id 37FCB6B025F; Wed, 21 Oct 2026 17:53:53 -0400 (EDT)
+	id 1DC816B07CD; Wed, 21 Oct 2026 17:55:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30A126B0261; Wed, 21 Oct 2026 17:53:53 -0400 (EDT)
+	id 15FF16B07CE; Wed, 21 Oct 2026 17:55:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D5266B026E; Wed, 21 Oct 2026 17:53:53 -0400 (EDT)
+	id 04E996B07CF; Wed, 21 Oct 2026 17:55:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D9BC16B025F
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:53:52 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A995A03E1
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:53:52 +0000 (UTC)
-X-FDA: 85347986304.28.3EE2DFC
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7DA4640002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:53:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AxZTXpap;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB1156B07CD
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:55:26 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B8C91A06C4
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:55:25 +0000 (UTC)
+X-FDA: 85347990210.26.6271DD6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B3919140002
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:55:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IISonUq6;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792619630;
+	s=arc-20220608; t=1792619723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mtRYkql7bK2+Mk9/MALlnk6mIy+nScSi0K/oMYikPEc=;
-	b=k+WulmvHlsCWUyciHfSjyhWUT9ni6OIAWFLE/6nDG/AA1wAvZz+A5VKdTWgMliWCJ4mCDd
-	bLos4mDr824zIGS470V2Aw0X8qXIycCer6n2B1jJR2fLXwAUkc1xxZ/HAyVMd8F2w+U7k6
-	z6QfmcMoSMWjlTu/Y8ETfJxzkgE2u7o=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AxZTXpap;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+	bh=XbblKzcGrmO5Ko5Ulj3O9NpL7GMqStGr4Qlbbk//Src=;
+	b=JAQ7oTGoaSlmo3QX8rBdCiGApBCWSTPCWolV+cJcFW/LRPeQBtiZaRV9VNeI9IjgNAGmZT
+	QASX44y1C3TeLf6JglCW04/cOdlc1TagUxMalSik1O0BKcJKOJ6SLe8jYOqT+QiqN3CuAu
+	ekXUcp+0E0H6b5lV5M3yKi2bWaMFUQY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792619630;
-	b=NerMMC76gDDXzLvjx8JwQqVWscOJDr4DUcMpk6bKQEHyQ79sP162krsy6oJWQLjnXG+vIM
-	pqHr0oqfgppzrm2KlJVH+WEKFQ2DCffZ0J5Fz8hmwDeesuEte6uN559OAZYI4HQuGifhoM
-	pP8JKeLKMBSNuAFZ/TbKT+/A9zQj6nU=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a06e79e152so531526b3a.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:53:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792619629; x=1793224429; darn=kvack.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mtRYkql7bK2+Mk9/MALlnk6mIy+nScSi0K/oMYikPEc=;
-        b=AxZTXpaphumknMknAfdcpv7Qhp1KylxAxYAcXmORZp6a2MH26wIwhjWy3pOgXwk/YK
-         qgLWAsmHCbkWsHOQu7e3TVRDkATIhcU2zdxKkV0pn+KI/hYZLgvrXGJBuUa+83g/vx28
-         0ymOfRPGR86rm2hUGOL7WV63NTzMbFLCk69kBd0z397mfwxjbpOGw9s9KztuXH3SL4cD
-         IHUaASufyWDlTmn7H4xhwzl3kvQ/feBEf6fks4aONgGb6ILdJwZ1qbUNHvK1r9QDtXDZ
-         85PSo3/ulb9+CKI+8FqlfqNfjYoWjJ0Ug8yPwFF6UckOonro2hHznvKcK30dxiwLGBw/
-         MqPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792619629; x=1793224429;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mtRYkql7bK2+Mk9/MALlnk6mIy+nScSi0K/oMYikPEc=;
-        b=VxLxLWZgxh7/hRSA8nEusMDB3vNHXOAsCE7kH6evtWGmhPHLcbfIBe3irTWZcX76rY
-         clXVfhb1LDNFJ2hFfB3jzeWHYalwN3MwilbjQMlB4HwdqD90QsHgUWcYsQa3YBoPrQ27
-         GxRL7GO9FqZhFkDPlGM3JJZLlv0slKyd6SJYEzHqvIQ0VEJlo+YIBKfakbT+rhjb3OSY
-         GRh756EdLyMxOkMEPKiNM+fSIjrMZD/yv+OHaGVmwiYsb+lI0adVyKe3ZlyU2faiJTrN
-         hgENK6SygNBKFSbpWXDieK0FOWYqdG9e9tcrpXb5EDPwM3ENjoJZqTuFhyClWnonZD1m
-         2j4A==
-X-Forwarded-Encrypted: i=1; AKwUvBzTpP+SZFcAvU3hfKFX7dM02iXOKq20tEopuM/OgaIeUOi21o05+bOOc7+s1u8JrBARwbC27n9J5A==@kvack.org
-X-Gm-Message-State: AFq9FYIN9hJWoR0yeISM82WSdVqIimVLv6zvYgUfnogcHlokB8pFSqq1
-	mTkpd/PYlGtihlRkoxmxiKfC82R5s6W4hN6jejfMD2G/bbXGf5aAHPq7
-X-Gm-Gg: AYBFou0pDV8begGl/X852Xk65O6wgDF33Gc8rwpTnJD98XLjwOI5gvpfFKPaBVaapY2
-	pFpUniqwYGf4EgLKhM4LsvHPMVLpSMp0hrL7JCwd0eBJzDLvidxpUhfC4PRY1KMdWOoiZcPlkwq
-	1qZ/YrqZcjU72+pVRe26QWqhNpQOsG0dSx9/dDo2WJsaQVfMtw/pKUGjd45U2v6qo33o86/XvHA
-	Oa4XcFmFIX4RdfUn7yfDXQ5bcf8Y4vmNegrZTRTWpS0YOPh7kf3YtBlTDVOXW22w7JsUG0WZbWs
-	srjK0b+//Nbt1+tMLLeRVlCe8qxWvsIalTIHdbh/g0QkwlF+fdZAnu2PnEp36ZOnPoPc2wbo0Im
-	MHO/0wmxDrhO9Kk2/JjaUUfclHaxvyLfnD4yEuX+x4XdzRdeE6Du8y7ye8PINzCLLRGHFqoZCTx
-	e13Z0w5jRWK5oOMDONv0P6E//PKmj2Z25+5QzyNMlKH6ZpptpO50Yc2HVysB2M+cgTEo1ptybtV
-	31qjJ84BbblmiBWkek4WCYFRujwUV+FTl2uHivTCO3QR3I1ICEnTIhIhpyIeQyKbaQmR4JnghTM
-	xW5eReHyeGkDLrTFx0fU9utkM6B1fV1RDkZLE/GLPpsAvyQ8Domb1FY7CQB3uA==
-X-Received: by 2002:a05:6a21:4ea3:b0:3e1:885f:b4ab with SMTP id adf61e73a8af0-3e287bca4bbmr2324254637.8.1792619629160;
-        Wed, 21 Oct 2026 14:53:49 -0700 (PDT)
-Received: from localhost ([153.61.198.248])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0895f8ca3sm1297288b3a.46.2026.10.21.14.53.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Oct 2026 14:53:48 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Oct 2026 21:53:47 +0000
-Message-Id: <DMAUMG9WL4X6.12UEJJMJSW54Z@gmail.com>
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jiri Olsa" <jolsa@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>
-Cc: <bpf@vger.kernel.org>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, <linux-mm@kvack.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, <linux-kselftest@vger.kernel.org>,
- "Shuah Khan" <shuah@kernel.org>, "John Fastabend"
- <john.fastabend@gmail.com>
-Subject: Re: [RFC bpf-next 0/9] bpf: Add support to allocate user page
-In-Reply-To: <20261021195759.119421-1-jolsa@kernel.org>
-References: <20261021195759.119421-1-jolsa@kernel.org>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+	t=1792619723;
+	b=QaLiSs+g7KDlv3E7h+DSRX8oWrRoJWs0xi5vmj2DrLv8h2PkK3/BDPntoNuqDAdz45Brck
+	/6S0gv5ammkT43F80t/893K7+ozKb4iqQJh8eJIz2f17Pw87+rFtCv85GLYjZwvEvuqEyD
+	Fz8E0sjWwQZnTI9nJIevbuvSWdusFnw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IISonUq6;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F12EC60A8B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:55:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBE11F000CC
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:55:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792619722;
+	bh=XbblKzcGrmO5Ko5Ulj3O9NpL7GMqStGr4Qlbbk//Src=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IISonUq6PPuILhouWjN3XrAW4TyXV7DF3zaY8rj73hwsu87lHUbm7/wCuPYWIUUGN
+	 8ZftC/Ff2TTDpONhLu53ut7cLLqdIqZXBwzAdvxWQbq47jwrPovWDAE/Tt76Zq3T5R
+	 kPm51HL6vRRV7QXn5fQxZSOcFr6oAhKA4BvHrs/R0/8n/liPhhLQ9FR4A3qg67Xchq
+	 TZtOu2d0rvMJQZbiV/Zy+ZGvKvlQ2V4IWyIN4Yv+EJeVZ4vZuu+bCZeoooHC41Tdzt
+	 WFWQNjX0tLWsmxdqi/N4N/E3qYkmaoctEzucIXURHvImXewhcFnRyuQABNJytfwpLt
+	 uefPyP0cEaZZQ==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93efc0452b5so95570185a.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:55:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwPlKTCWXkqdaP1IxBBtm22EyWfaeW78RIqApNDL0WGxDVaLjbOqLap3qS+/yQsYbl8cC4RH0sNOA==@kvack.org
+X-Gm-Message-State: AFq9FYIdc6RNwwroiEubGEAzBRP4AHw6V5KubgPyp1/MPHYfLb/2A37Y
+	TJop1HUXl+69EA4s4hBP3rhURlSQosdmzmEM/+led7+SyyYmi83B3nZy4RJF0oI8Byda2shH+gu
+	PlfsR9DIWLWS+WrynsogDSa/UW5cUQkY=
+X-Received: by 2002:a05:620a:4113:b0:93e:48fc:aa88 with SMTP id
+ af79cd13be357-93f57f81db1mr689549385a.44.1792619721658; Wed, 21 Oct 2026
+ 14:55:21 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 7DA4640002
+References: <179248830836.1744016.8424217811286616919.noio-mglru-rfc-v2@bytedance.com>
+ <7f4daafd-a3c5-4ccc-80bd-05a7ac09e4ab@linux.alibaba.com>
+In-Reply-To: <7f4daafd-a3c5-4ccc-80bd-05a7ac09e4ab@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 22 Oct 2026 05:55:08 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wV8A5snz-XE+5ht931=07SvCs_k4xvUCE1yphKyQd8tw@mail.gmail.com>
+X-Gm-Features: AclHuK-Lm3ETeKvlfdxyvGOhePGX8_fdCxCFPiSQfmBetlKnWoeOhvEVMJZjPbw
+Message-ID: <CAGsJ_4wV8A5snz-XE+5ht931=07SvCs_k4xvUCE1yphKyQd8tw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] mm: vmscan: avoid anon scanning for GFP_NOIO with
+ low swapcache in MGLRU
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Xiang Liu <liuxiang.277@bytedance.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Bo Zhang <zhangbo56@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B3919140002
+X-Stat-Signature: oai9xbpne74smqqdpsx1eaenkkg3dwqx
 X-Rspam-User: 
-X-Stat-Signature: y5y49yhgat7twjq6egehwiicn5w1jwnr
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792619630-55632
-X-HE-Meta: U2FsdGVkX18tS0lss8GrquaBdRwfQycklvgMpFtTidIw7/m329u8Vakmjvrm3ZUUC3q7SpxlMeZYwVlOy2K63Ug6NtCe6MdGt1bZMrLDZwigi6/GIgcpcV7j2hID+iAOzMuJzuE6Kw4LzPk5KKbt/u1JT8J7arc8ovPfb+oC9MJExBT6XWYijseCxjba8I2FP6s1KXp9/E9Y0CkZI6IcbASuPXPeEIeTL9dZ3RUMK4W+CiNnYkZmHUjNJZOABQhRp6O7DIElkZAJpgjPXkP70R+ZjNzUgJfFfwiD/rgz0UoQhsDiKcj5UYjjlffemclEYLObHwvwucKRP4u3RUDUZXCg2+jXfgWMDCxg3k4lseRk2isTz2X6F31nJ+ISo9kA9jQKPRFgLGBd3TfdF67FJadCX1GeMO62m1LlQmx8cHrku02E281x9Fhoa3oaAUD7M5SXJ2nzmPBqrximJDGlcFJWaoRT5fzzmyOXdSGbEK1cTH+xAqkGe5xxRNKiwRbYTFw2Wq+VIzWw/Rl80Abrxz4WFJYhRE1yc1afFezpqi9+XvnIvzgwNJiBoOLPoalQ7gdMLgFmEvf8zvkr3nnU/HY7+9R8dRVHSJan4Erfr9y0uxEoEOPrNJn0eb4+GXs/ervcXtTqi1ON0551NcBsNuGvm5nws1HFWf3tqObTbXw5Ob21FCRmhFFcaNvw1nsbGgRYp1e3u0My0uWur9Ux+TIFgAFodrvcu7ipRfbqCYY3zj+GYz0Z1bYWemSld/pDt5Qi5EfGRULcO+OdFDDAnp16Iem0fHXhMUQvNuUByAeDKpnROsZGHvxhQyOAHyikJIRSdGjwChx1DJUBsfwFNx5mxuS4ba5OPBwYeLTUZ7URaLgDQEqGNunSQdAS03osZ4MNordLcAVOGxnieFzBLyPKv1maAxLE/6Lj/3UZXknuFJSaokhLj0j5UrGzQ7IcVS9fDXQhAINc3/pcOfa
- 6KEFfkB3
- PqfncHV7y+6q/f7RUBDcY/Axc1c4oNHk54xC7/dppsZ5rXT6pINIWa0DzZOMTFxTy0ab/qDa9D2pa5ZM+GC0PTLSGOVG45zRZVZa5QsWi21qqRorfv69OiegRj89bKNqBnLAIwM/aloEWOoaMTlu7q59C3s6MujykssHlXZFWyCdiQkQ5YqXq/hJ24uW9vtjI66+LY8HB1dB17vEF6dwgld9Mc63TLpjWsZwZUNHisnRxubFWv9ZOTVQiMbfwwsy5wVQjSaSkvyyCwxxxDh+9aU0AuF8Q5re6dIIpcFuCmJsGi9aAt6mFT0mGOzGxlJkzOFIX+C7x2maMs7IS/4AxYN7/fCXg/Kprcbg9ryjxIuq8A2fqGYYdbm216eUtkpYfp75eI7KzEHB0ikCVvLjOOwHZTRe1thUUJZ6d0SvZ+bryLSrhXc6vML4Q/UBz+QNBMP+O6Ds9A7P81AffGStgjDl+ewpdB9vfmvxLubITX85i9cPlhwV2U1YbfP/i9xhhHNwY/jHaRBVthXXBvGPwvzuh4Q27yIBvNJmjJH4BAQWJ3jzRIY+9WE1niDKvlVFK+/ZyxWR8jda1UJhpfJrtC9UkBwd+hDoFzyznrftHvtS7+qU=
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792619723-506535
+X-HE-Meta: U2FsdGVkX1+tdekWxH9CTwcOqNQACTmnHM83LwCQHhz694g7/jr27tPzGhCi1w9CpVHoESz3w6YScJ9WytvWvoIVmMFGENgBtLfmKSPXjbwKDipyQ6bcH8s7Ovhk+C/xlMBd2+NzgL/SdQNuRTQQMmL+A2ECaxHhgJNoAWUY3h4L75eHjVThih5x+0vIBtuvfg86yjEax8D5/q78tjzbkEBO1f/dAZnnh544MtSb6Odm0D76UKg/JCDlM8inWwCS99zV3tBsv94mIiLgrsp1ZlBHWShM7ffkyp9ccGoX2GkQHOlDNEOLC22YxEgDc+NgH0KO/Fmfi1CSk+U8EZQ2PvCvBORHB7Dl3wkDD4JWHgJwx4dEvEMgnNFB6ZFPfauuBHsDIWAcwlSSWrfVyGpi4ciOqjahvdu6z2QJYUXBJ6PpMjblls6hpnEpAJN0CsneN0Rizc32Q67JO2Yu9A4RTSIijasrO1+PcXzF0nrGgNVh6Azk2WO1KKH3SFf7TBm17Ai6u7Wn0njhFiOXUmOV0wpmZIFWCzFHM+LkvuqlW2lbirKYIB0vRpxXwZdwxHsfQCvUY8Nakj9Vz3MJYJbvWHTke2YI07LA2lPKJ6xIZnzcU2mrMmj0oAzSLZY2NfGuIkFp4+lFLQC+wutPQGN6Z7ALXgGta5smwsSIAQfpDKgwvRNFgGchiz7hMbFggrA0CBD+dIUeqiPELP9sNjrJjzm+dFHOeSEmpVM27BmoK8M39JoMsnLm5JHNbmmrGeQIxM9tI6EZShe1nLP4AQ3rZianV9c7D0RQn2B4ppdKImJXqhG+TDrKSub/Hl8Xc34SRXEJ4n4rNy0Agf3+XmYOWeWmwuniG8oYy11GN4ATu6vsBVsyy+xsFvEgUG0029H1LhlVCj5+gr1QnDaBlIUaCpCyJVpLrt8RPQxeDqczVij0Cd73TAVhewY4y7Mv3T9+PUYq8tMIRUdnSDgPngB
+ CvUoePLc
+ CCr4HAfNnAXosewOc6q90l5ibRqjgoVtINb9bXSoTYqlyxfI2BM4ZZedRWUxFf8q2LdRLg7mZwYO+EOhZVSDlmmdNx8p9C/po/CWc/9eIGDmtJvAth/J0ESmME/KX7+bbIMDCKugaiWKhG+qoXQpwExtnUJQcXj4cIEE7UNIMOv6xbbUW3iP14OOhZVYHIIBz4ZPrYq0KBKXHOR3HbGqKlSuVPPp4CagwGPsJ6X1i8G8zshBbvh4ZTm5MB+RzI6S+46StiYlnzuWmc1boMoHZiCJzjT0DLagXNf2Yz6RCPYSteC817l1t9qknKPTahYhpiz8UHXyiyT/dPcAe3C0wOVwQNBCgfJaCg8u7dlQ71Fdu5T43vEi9Yyzi7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,134 +112,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 12:57 PM Jiri Olsa <jolsa@kernel.org> wrote:
-> hi,
-> we have few use cases where having the ability to allocate normal
-> or executable user space memory would help (like to replace function
-> in live process or change environment variables)
+On Wed, Oct 21, 2026 at 3:28=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+[...]
 
-I think it's better to do what debuggers do:
-vm_mmap() with the final prot and
-access_process_vm(FOLL_FORCE | FOLL_WRITE), like PTRACE_POKETEXT,
-to fill it. It faults the pages in, writes into r-x private mapping
-and copy_to_user_page() takes care of icache.
-Then no need for bpf_user_page_exec(), do_mprotect_pkey_locked(),
-the marker, READ_IMPLIES_EXEC special case, get_user_pages(), etc.
-No mm changes.
+> >   static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_cont=
+rol *sc)
+> >   {
+> >       unsigned long total;
+> >       int swappiness =3D get_swappiness(lruvec, sc);
+> >       struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+> >
+> > +     swappiness =3D get_scan_swappiness(lruvec, sc, swappiness);
+> > +
+> >       total =3D lruvec_evictable_size(lruvec, swappiness);
+> >
+> >       /* whether the size is big enough to be helpful */
+> > @@ -5249,9 +5265,10 @@ static bool try_to_shrink_lruvec(struct lruvec *=
+lruvec, struct scan_control *sc)
+> >       bool need_rotate =3D false, should_age =3D false;
+> >       long nr_batch, nr_to_scan;
+> >       int swappiness =3D get_swappiness(lruvec, sc);
+> > +     int scan_swappiness =3D get_scan_swappiness(lruvec, sc, swappines=
+s);
+>
+> IMO, 'swappiness' and 'scan_swappiness' are really confusing. Why move
+> this logic into get_swappiness()? In get_swappiness(), we already have
+> some similar logic to adjust swappiness when there is no available swap
+> space.
+>
 
-Like:
+Yes. It is very confusing. we can't do that in get_swappiness() as otherwis=
+e,
+we will get cold/hot inversion due to GFP_NOIO. for a real swappiness=3D0,
+we allow cold/hot inversion for anon, but for GFP_NOIO, this is not the
+case.
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 648abe1..ca1d88d 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -29,6 +29,7 @@
- #include <linux/task_work.h>
- #include <linux/irq_work.h>
- #include <linux/buildid.h>
-+#include <linux/mman.h>
+static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+{
+        ...
+        /* For file type, skip the check if swappiness is anon only */
+        if (type && (swappiness =3D=3D SWAPPINESS_ANON_ONLY))
+                goto done;
 
- #include "../../lib/kstrtox.h"
+        /* For anon type, skip the check if swappiness is zero (file only) =
+*/
+        if (!type && !swappiness)
+                goto done;
+        ...
+}
 
-@@ -3834,6 +3835,60 @@ __bpf_kfunc int bpf_copy_from_user_task_str(void *dst, u32 dst__sz,
- 	return ret;
- }
+So the trick here is that Xiang is doing scans by tuned swappiness but does=
+ age
+by the original swappiness.
 
-+/**
-+ * bpf_copy_to_user_task() - Copy data to a task's address space
-+ * @unsafe_ptr__ign: Destination address in the task's address space
-+ * @src:             Source address, in kernel space
-+ * @src__sz:         Number of bytes to copy
-+ * @tsk:             The task whose address space will be used
-+ * @flags:           Reserved for future use; must be zero
-+ *
-+ * Faults in the destination and writes the way ptrace(PTRACE_POKETEXT) does:
-+ * a private mapping doesn't have to be writable.
-+ *
-+ * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if the copy
-+ * fails or is partial.
-+ */
-+__bpf_kfunc int bpf_copy_to_user_task(void __user *unsafe_ptr__ign, const void *src,
-+				      u32 src__sz, struct task_struct *tsk, u64 flags)
-+{
-+	int ret;
-+
-+	if (unlikely(flags))
-+		return -EINVAL;
-+
-+	if (unlikely(!src__sz))
-+		return 0;
-+
-+	ret = access_process_vm(tsk, (unsigned long)unsafe_ptr__ign, (void *)src,
-+				src__sz, FOLL_FORCE | FOLL_WRITE);
-+	return ret == src__sz ? 0 : -EFAULT;
-+}
-+
-+/**
-+ * bpf_user_mmap() - Map private anonymous memory into the current process
-+ * @len:  Length of the mapping
-+ * @prot: PROT_* flags of mmap(2)
-+ *
-+ * Return: The address of the mapping on success, or a negative error code.
-+ */
-+__bpf_kfunc long bpf_user_mmap(unsigned long len, unsigned long prot)
-+{
-+	return vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
-+}
-+
-+/**
-+ * bpf_user_munmap() - Unmap a range of addresses of the current process
-+ * @addr: Start of the range
-+ * @len:  Length of the range
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+__bpf_kfunc int bpf_user_munmap(unsigned long addr, unsigned long len)
-+{
-+	return vm_munmap(addr, len);
-+}
-+
- /* Keep unsigned long in prototype so that kfunc is usable when emitted to
-  * vmlinux.h in BPF programs directly, but note that while in BPF prog, the
-  * unsigned long always points to 8-byte region on stack, the kernel may only
-@@ -5139,6 +5194,25 @@ static const struct btf_kfunc_id_set generic_kfunc_set = {
- 	.set   = &generic_btf_ids,
- };
+IMHO, this is confusing but this is a possible way to fix it before we
+land something
+like:
+mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO allocation
 
-+BTF_KFUNCS_START(user_mem_btf_ids)
-+BTF_ID_FLAGS(func, bpf_copy_to_user_task, KF_SLEEPABLE | KF_PERFMON)
-+BTF_ID_FLAGS(func, bpf_user_mmap, KF_SLEEPABLE | KF_PERFMON)
-+BTF_ID_FLAGS(func, bpf_user_munmap, KF_SLEEPABLE | KF_PERFMON)
-+BTF_KFUNCS_END(user_mem_btf_ids)
-+
-+static int user_mem_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
-+{
-+	if (!btf_id_set8_contains(&user_mem_btf_ids, kfunc_id))
-+		return 0;
-+	return security_locked_down(LOCKDOWN_BPF_WRITE_USER);
-+}
-+
-+static const struct btf_kfunc_id_set user_mem_kfunc_set = {
-+	.owner  = THIS_MODULE,
-+	.set    = &user_mem_btf_ids,
-+	.filter = user_mem_kfunc_filter,
-+};
-+
- BTF_ID_LIST(generic_dtor_ids)
- BTF_ID(struct, task_struct)
- BTF_ID(func, bpf_task_release_dtor)
-@@ -5266,6 +5340,8 @@ static int __init kfunc_init(void)
- 	};
+https://git.kernel.org/pub/scm/linux/kernel/git/baohua/linux.git/commit/?h=
+=3Dkairui_scanbalance_0.4
 
- 	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &generic_kfunc_set);
-+	/* Sleepable kprobe prog can only be attached to uprobe */
-+	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_KPROBE, &user_mem_kfunc_set);
- 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &generic_kfunc_set);
- 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &generic_kfunc_set);
- 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &generic_kfunc_set);
-
-But I'm not at all sure that it's a good idea
-to inject code into a process.
-
-pw-bot: cr
+Best Regards
+Barry
 
