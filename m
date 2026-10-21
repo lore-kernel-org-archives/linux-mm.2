@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430BC60A4ACF
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4179E60A2615
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 11:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ABx0n5+w
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fSTsVZbL
 Received: by kanga.kvack.org (Postfix)
-	id 12BDF6B06DF; Wed, 21 Oct 2026 07:47:54 -0400 (EDT)
+	id DAE3E6B06E0; Wed, 21 Oct 2026 07:47:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DB436B06E0; Wed, 21 Oct 2026 07:47:54 -0400 (EDT)
+	id D85EF6B06E1; Wed, 21 Oct 2026 07:47:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0D256B06E1; Wed, 21 Oct 2026 07:47:53 -0400 (EDT)
+	id C754A6B06E2; Wed, 21 Oct 2026 07:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA43A6B06DF
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:47:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C2686A807F
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:47:52 +0000 (UTC)
-X-FDA: 85346459184.07.C91E0F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3700D80006
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:47:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ABx0n5+w;
-	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A139E6B06E0
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 07:47:57 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A2DAE16052F
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:47:56 +0000 (UTC)
+X-FDA: 85346459352.29.74EB99D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 07DEC40002
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:47:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSTsVZbL;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792583271;
+	s=arc-20220608; t=1792583275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LamOgwOLGcvObJJ6uLyjNnr+OKxJmcO2SWrOkvHa4B0=;
-	b=xohMQ54dgH9DremfQLqvudqiQcZYXd+dQho3W3HyKIQGjTMkM9QIobcfsWwRIRHnT58Ld/
-	LxNydASEZewE3898/99WLcnh1Ye6Eq1c9ftcdWcB3lSfb97TvDVwgREL/UNC/c2yPjov5R
-	0Msso2LE9CKGrMgYkWOYOIhHzd9PvFQ=
+	bh=FdNzDMyikUDkRQM2Yx/R+UlgduqMmo5RYSj82aLvC8w=;
+	b=PKpmbU5H/hvaBxCxBWvBOlMfMTx8KmA+D6zCT6/wOLckBRTcGrK6xSIjtuaQ88jZv1M7VK
+	Lm9EmV/ykfP5A5SqTgyuEtSGfbDKZE99cH6LjCDgkQRrLmAAqM03EGMqK+DyBRkYC0lxtJ
+	HXjIMsGt3lkvy1XNAfJrQQIpTM0jSAE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ABx0n5+w;
-	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSTsVZbL;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792583271;
-	b=l3RCmpc8HtbeOQbFMhVeKC6z0KztfITEUFm8ECfT7f9nF8G7sy7Oa4Ra93gBiZlQ5qRjuk
-	ZjYzBtFP/l5c0IbDh7aTgR4nk5hOAeAZLLzB1I/0SwBI0oGq9laFgsEHJzd+CB1xrIG1gf
-	e7C7+kr8RJOf2Y4XyO1jgCb5+/oF/QU=
+	t=1792583275;
+	b=jtMPPa4mb7cBT8/ZYXNy4rYHQBOop2NV4jigbgKOIsNvPbPuf0ozMXl6XOP/Y1cAsEnjBY
+	cicPT9epLAFCunyrt+DTWJbHGOs8KCUHcmtL5HHU0nLinRere1sTVUnUkuRVN1RREZLWcY
+	OsRxUzVhBqscPQG404FwrVRtwh+wEUU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7E7A60D97;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A991447C1;
+	Wed, 21 Oct 2026 11:47:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EFB1F000CA;
 	Wed, 21 Oct 2026 11:47:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4EE1F000C4;
-	Wed, 21 Oct 2026 11:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792583270;
-	bh=LamOgwOLGcvObJJ6uLyjNnr+OKxJmcO2SWrOkvHa4B0=;
+	s=k20260515; t=1792583274;
+	bh=FdNzDMyikUDkRQM2Yx/R+UlgduqMmo5RYSj82aLvC8w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ABx0n5+wJXHhNQk6ZRp0wqw4Rw7NF+bXiYQq2SvsBPoBKUDyPS1FKlsineSsqAOud
-	 Ao6k/OkSWtjiesySf8tDYRaKmnk0uZRkpiMrIBtr1f2ZkErMR031WCq6j4RvxMdW9E
-	 TlL1ttZOyHC6ksfHTx30Mk27mlMpFbUMTGp9dAVK/qVF0j0+sTE9ckvhejDBOOP2fj
-	 g5edE9dWu6I9P5Qu8zdos9gI3ACgQlZET6Y0qNKIlglWaH78OpwE8XdhTD/l2cyU8Z
-	 uwCY+GDwkDoxGJhOXUQeOP7COA7+6xbWzdWZl02/XKQzVrtVPJcHxnP7SW1o4Rf2aG
-	 OXu998Y20Iu4g==
+	b=fSTsVZbLq+oG9k7aYHjUwtPMV2IMdRjBz/QrEGiTP+glW02RmmZw163JDRDdGuzXG
+	 ywJ1FSKJMY2U+wwwHaYftuUZPJFEuS+rwSxA3qjefkUKmt85gQX5cG+G6pO9lNJ98H
+	 ZD611ggfnEzxeVeI/KZr/eowxy1lXMgJEP6Ktem733QZ7eKIwIQcESDMaVeROgqNxu
+	 axrwIZcRoZLJpLln5ZhrCy5MDuufEYKyqgX7r/bcohNhL8/zAnDke1oQkn9JeFAir0
+	 jZ5NkJECpu/2s80E+IxbA1NYUZ+Tu8/sRif3MMhZ26ifDHLj4eFQHoiAH/GG6CSL8x
+	 MMe8xKQYEaOhA==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Wed, 21 Oct 2026 12:46:48 +0100
-Subject: [PATCH slab/for-next 07/14] arm64/mm: specify SLAB_MAY_ACCOUNT for
- pgd_cache
+Date: Wed, 21 Oct 2026 12:46:49 +0100
+Subject: [PATCH slab/for-next 08/14] powerpc/mm: specify SLAB_MAY_ACCOUNT
+ for pgtable caches
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-7-096800aa3330@kernel.org>
+Message-Id: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-8-096800aa3330@kernel.org>
 References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
 In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -83,23 +83,23 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Hao Ge <hao.ge@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
  "Harry Yoo (Meta)" <harry@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Mark Rutland <mark.rutland@arm.com>, 
- Anshuman Khandual <anshuman.khandual@arm.com>, 
- linux-arm-kernel@lists.infradead.org
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ linuxppc-dev@lists.ozlabs.org
 X-Mailer: b4 0.16.0
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3700D80006
-X-Stat-Signature: od1x9gfsshxcmxc6jjjp67pnqqr1nbru
+X-Rspamd-Queue-Id: 07DEC40002
+X-Stat-Signature: azejeiut3hk7hzxetw174qb9h4hy6xwh
 X-Rspam-User: 
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792583271-569506
-X-HE-Meta: U2FsdGVkX18rfCh4QeZzMXezCEHAnqwCdxcIRUGzKU705KQAY8YaH8lCJamo1UDcBQyD1r96PX6lBaKLyafYXcU3TgOHqJFOSuV1nanlegm97jRYyROxumBSlK/PL0rp7SbyZLhrAOdqWVyI/3TRsF/EGEP8RYhKDVwOGcRFXZbVBGJPqriZrJc/8SLQ+HM8eRMDrZm3sQ1R/XQa/GP5yhBlOAVHMvorjPfhp8o5lLsXDW8FxopOROGPKLJEFl97GHzy00SKgQMCL6gofugtJ4mMb9zce9hvecXYNw6ttHZhNMCjNqlvJLqj7vk/QsDNEeNMlym2uwzpVMFWr/ToTmkHnWAc263N0lWyz4r5O7oaSVyQfNSyyh6QZbaltjyTPxrlxjbkOh9jClIo/yEgN4Qz2FVe5yyYAOR/lO8xLbM46xS78GSVA//lOox3YpP0j2e87Q9YCchWoHd2RYyV4XQawSHQvweoDc/xpa+0ahZ9fH7hQDy57grPa/mWCEetBxysXh2gz63dy6aX3jFNFZLfFAl2LHiikWtXrykw5HxaABQIT6ke7KDlx1vDe6clHbsEmw38myZQfd7T7cvJ5VeF66ShzhyNvjzTFjn+A70rlEAdl15es/XWi5N4AB+FEDzcPGgavP/Jio4Eq8Kw/N1lNYzf5m1vYdZmLYVDEiuQ2mqsGZeVGrBURKiKL8uSgnX+tC86kVYkPqahBQVH/29rh8GasOjDIdpCk0O9EKOcP46/MJRZOYW7YLkaC4GJY6iwzG5nQygNCimtFzIno5Ozutzk/0VmrUjDHucCYTpRxkxqGpstD4OIqm1KlO7BjaOl7QI5AvDScC/A5x23NDU5vrNWVukFdiA7oxAba1r+23r6GMqWwHR8UT5Du+Gbk6y5syvSRlvlGbAObqKFcNlk2XvjhkGRUEiS5lMsFveOhpi0Rr0COTTzDePSIQq/Xd9e9G98SHxQiOBe/Nf
- 6ENp4miV
- Jtq7GqlWp55zeUbzYSY/Y8gvpjQFDg71evHYyoBVbgxN8Si+3L/KJxm1Z8VCxEgtuMAaescE0ekBYz6lq5p6I66kk91JatbeZB/z/2HzQ6V45EjreS2WVaOoUtIiih246i5A/RNudI4JcnNzXoJnff9t0D9GrZSTCW+QWjOlGJHyDNG7KfzZ1SprQzHpkuwHoh7U8KQkjoACtPDF+4s06JZjpVsgIXE4EmF91G7/ZmRrs1stI/LBlle6yo9zmfw38wyWvKEUojYiD378MfEgSLRmctiEKUkUQu1+k7+SjkZdkAoCO8sd781veO7PlSkq42/4jTgR0Nno6aHmHWqOtbz05CVPiJJA55jR2kmzy2z0/UI1S+ifON5dAPuXS6nY1xHd4cBFre3H9hDnSNi+ms/mvBA==
+X-HE-Tag: 1792583274-285953
+X-HE-Meta: U2FsdGVkX18qyFGk1+Gm+6mGPBY3REwKlPN2603CQfESyBmvTRUaggrTJRf2l9TRart7q1epS9dMHxzIMbntgWsuB7iugqsvu9+PFIBLAwZzWGefqxPbnLrvMM7zMSo6ZWz1cLZOhVBPAl1C84NlEVINOI7DwGDMh/+IbCDcVoYPqSKIZodIovrHOK6vrYcRwGH9z/fTPfXozjgVD1CUOl71xCw7kVLt4RU86YPV6SrOaIGlrIRKkQYKvqMHOe3Vlvy0oVn9X94jYskf5xN38LW9VXYT2JGTTMh/lPxuaZ1tzH96JuEP6azxNPTBX5ragqNnWSdVayyN2J0W+eX7H/P/NcKdsryeTxP6GE4w4zybyPfGWuQDvOpcUZc6SS7qANzHILWkldPJodNXYW2rykAbw2DYK1R5SgBaUNCv9Tqe2Vol1V8M5So6h20KN/Hc3jprQuG4mAohXLiIXkJqw07Av8EOakvbmFl8WqelZVtbShBUOrhWQUwEnmuyMh7biWC6NadiW3HqjSAPcaw2MCW/Ubg4Mg5aChXcKelMnwEj6nYPFCG7/lXk56HMQ1lLsj2mVYxrxYZrETWSe0FC43SsCu8CwiDa0mumpu9lNraCgcRWOZ3kRXXm2EKrTneE976CgitXi3qlRc6/h2XN36VwWVUc86Y0zOH+ZOKZRdWdiyIhqILbRkmvxg5eFU3PeogmTbJkMw/F4FcX800IS4rSQM9q09S3wU21qDhSsHLYYtEe92zV8MTZh2s9fQ3rg9D0nQm+qHPK9MYGQDw1KIqfGa/CE2WV4IIXkTX4rEEmj+qI4FXSBjxE/jrVWaLo+pqZO6giOGSmO2FdG1RqV4BLtT+j2Uw3/vS6IgYmLqhnjxwI9ArVnO1eyagY9XUHVTI41GCTjf3bOG3IX6Np9UcJfMt8Ia9DgxgJdccucUbVJ7MbLIefcgR639WbDT3m+Ie4gD8YEo3ZsQI+YuA
+ J19su6Vp
+ 6tOhvgxxhzk1nj1qpQF6D53XweP7RCMAX4HKIfpRVOXYfGn2OWtoCHsPdKOfEMtxXwguo1ySYJ45FsXMQBqI1L/lCAo1JaAcPQTr0OQh7KJ3gkC8QwmM6r/bfBbcsFnzueDZ10++RQyfQJpAxBmSMpfACkTmPwxVJmmHfg0Tq6vmTL3Ll3WwkwRr5puNP/vFY2Mdi0wqrAMO/Oqbf3C1dKPQZ/WcBdD7pr7yeZ6+TN8pU6LjpfoIBCHIJHu+YiJwMg8NXB0TBZ81JynDKwqhvCJ8amsXm8uRwN6hkPxml1sT+8YK2hSYdFKKWKk7hW8DwK3B0b85iUebG9ZEG62S3dyI2pJFqk4V6hlrOUdv2QRSkNO8OKrIlWMfZn+YLYAgxUsjKSmE6DRjwiYs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,36 +108,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When PGD_SIZE != PAGE_SIZE, user PGDs are allocated from pgd_cache
-with GFP_PGTABLE_USER, which includes __GFP_ACCOUNT. Specify
-SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
+User page tables are allocated from PGT_CACHE() with
+pgtable_gfp_flags(), which adds __GFP_ACCOUNT for non-kernel mms.
+Specify SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
 __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
 
-Path (e.g. 64K pages): copy_process() -> mm_init() -> pgd_alloc()
-  -> kmem_cache_alloc(pgd_cache, GFP_PGTABLE_USER)
+Path: copy_process() -> mm_init() -> pgd_alloc()
+  -> kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
+                      pgtable_gfp_flags(mm, GFP_KERNEL))
 
 Assisted-by: LLM
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 ---
- arch/arm64/mm/pgd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/mm/init-common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/pgd.c b/arch/arm64/mm/pgd.c
-index bf5110b91e2f..0fd5b90b5160 100644
---- a/arch/arm64/mm/pgd.c
-+++ b/arch/arm64/mm/pgd.c
-@@ -63,5 +63,5 @@ void __init pgtable_cache_init(void)
- 	 * Naturally aligned pgds required by the architecture.
- 	 */
- 	pgd_cache = kmem_cache_create("pgd_cache", PGD_SIZE, PGD_SIZE,
--				      SLAB_PANIC, NULL);
-+				      SLAB_PANIC | SLAB_MAY_ACCOUNT, NULL);
- }
+diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+index 745097554bea..72dfcc559630 100644
+--- a/arch/powerpc/mm/init-common.c
++++ b/arch/powerpc/mm/init-common.c
+@@ -140,7 +140,8 @@ void pgtable_cache_add(unsigned int shift)
+ 	align = max_t(unsigned long, align, minalign);
+ 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
+ 	if (name)
+-		new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
++		new = kmem_cache_create(name, table_size, align,
++					SLAB_MAY_ACCOUNT, ctor(shift));
+ 	if (!new)
+ 		panic("Could not allocate pgtable cache for order %d", shift);
+ 
 
 -- 
 2.54.0
