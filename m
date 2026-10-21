@@ -1,92 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515D2606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 03:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB3F606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 03:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=bjlIvEcG
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HuUipxgR
 Received: by kanga.kvack.org (Postfix)
-	id 3F28D6B05E5; Tue, 20 Oct 2026 23:11:39 -0400 (EDT)
+	id C5A056B0196; Tue, 20 Oct 2026 23:33:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A36A6B05E6; Tue, 20 Oct 2026 23:11:39 -0400 (EDT)
+	id C0B5B6B0199; Tue, 20 Oct 2026 23:33:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B99D6B05E7; Tue, 20 Oct 2026 23:11:39 -0400 (EDT)
+	id B21346B019A; Tue, 20 Oct 2026 23:33:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A6DF6B05E5
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:11:38 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74662802F4
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:11:38 +0000 (UTC)
-X-FDA: 85345158276.05.EC5EB57
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E4D32100003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:11:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=bjlIvEcG;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 933986B0196
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:33:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25624803CF
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:33:54 +0000 (UTC)
+X-FDA: 85345214388.18.9F4DB42
+Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0405E40003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 03:33:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HuUipxgR;
+	spf=pass (imf12.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792552296;
+	s=arc-20220608; t=1792553632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ufXaEJ5FT5/RcC09d0BBVVpoSwGEekPNmNdSpG+1s5Q=;
-	b=yF6MZrYH38Xr2BuS5GCVc0T8ZNQiWosR2DAcVndnxI98QxuRcmebWkkyVdwWVA/eSaSFeJ
-	P75Ud533qGWPSkZi1EAZXScAGcViDyRcTSWs28PY46SQFFv0m1G8Q1j/dCKa5A4oFiKJWl
-	V0vkMDj0T1fHG2YXAvN3W1f7Yw+5nns=
+	bh=RbLlIDBzxSpd5cJfPOd2N3zvhSlGP9L2jcWxKocz/10=;
+	b=y2cDY5QO3bVPiGFfX0L/2FgI/OLok5ZNap5JZdo6jgsizaRtN62w+OuJFsTe0nMsUyL7Vk
+	AeU5Ppe/k/iE34I69XHXFiaHactPtY60ZIibVcMSKg/czD0FxCbkUC+Dk2RWcp9BDcsFOc
+	rvvBq9sRpO43JoURkiS+VOmPi3i1Tl0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=bjlIvEcG;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HuUipxgR;
+	spf=pass (imf12.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792552296;
-	b=aNXO2K7K+1lRwMr/9QYMM9AIVF0Gt6XQ+2X68w0VsXnbcCSnHnL3og8X4R3tTTC0md7zOB
-	8JgR+kmrLYk/O6WSSkHwU0Xby4mj/9UgU59BA868a3OU2PGUvC14HRk+ABgp8STzIY9MIW
-	tg1nvfmebBkKoE/YUqqMt3ESuw3rGtw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792552286; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=ufXaEJ5FT5/RcC09d0BBVVpoSwGEekPNmNdSpG+1s5Q=;
- b=bjlIvEcG7mR9NgMp+3NsPYPUmhmOvkQUGRjzhjrU1BdLdiXA4xNxdAFq853+S/ajbBMLCW
- 0yO7aSHtUDiGlWupdjY/g9W9JpBeXiCclLhpoXoQ+IZp/6fzk5Z4bBMeRTsYWhdXlrKYDy
- gXNTYc0XYFTcmgqryLHqHrdRNH3R9qEoXJ8JIrZLpSbtSXw1KNYK+5PeDUtq/it6IjlDKV
- FrvX4oUed1tucv0GGBasEY1kjU/+5CqhvkGDB8/R3mTALh753iX3AHRYpo2DDpfLWQhHyJ
- 2QQb9jWOXXRTwXu/NVv7IwrmGd9GrAHxr8bYMCsk+dNPSJCOo3i/tiTUKIDpug==
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Date: Wed, 21 Oct 2026 11:11:05 +0800
-In-Reply-To: <baf5943f-b3fc-4a8d-85cf-bd897bb9a08a@kernel.org>
-Subject: Re: [PATCH V2 2/3] mm/hugetlb: disable PMD sharing for UFFD missing mode
-References: <20261019113034.97690-1-lizhe.67@bytedance.com> <20261019113034.97690-3-lizhe.67@bytedance.com> <atc-PW2PirXZzNZh@kernel.org> <baf5943f-b3fc-4a8d-85cf-bd897bb9a08a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, 
-	<akpm@linux-foundation.org>, <peterx@redhat.com>, <linux-mm@kvack.org>, 
-	<linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+26ad82d58+a6dc5c+kvack.org+lizhe.67@bytedance.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"Mike Rapoport" <rppt@kernel.org>
-Message-Id: <904487b4-a838-4d57-a297-12163136279d@bytedance.com>
+	t=1792553632;
+	b=vHEVWpSmsjYwuqvCWVnqaufBVOQvrYd3xJ+q+OKecK9b7VVE9RuYOzlQuX0sJo+/G/Uf8A
+	mQT1CYRpURw2D9nT7LCEg0sD4gVADHwRW4IPiL9qn2KeZVjfpecY/l9of5cxswq/uUQ/rV
+	cd5/oWsc5ItwOrkY5kOt0bt/AkTK8pA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=y927hDeFwTRi1uuF8AFccBXiuWM2sJNn4YnO+caicLI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792553630; v=1; x=1793158430;
+ b=HuUipxgRWS3e7sDvPB7ilyEUPgRtTmYZ+Pmv+0G7aSfoBB64N9Ezdvggr7cyCJYhNYRoNABQ
+ 1NIALLv0lL+pT7s1Ta2HlXtIcSDzHQRv1LjU8Bz41eNK1xug9eM3nBz5/ICuWBm7aW60JdMJAdN
+ h6MPK5xaXrRLUQqt3HGTojB0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 071bc8b21379f3c8;
+	Wed, 21 Oct 2026 03:33:50 +0000
+X-Mizu-Trace-ID: 071bc8b21379f3c8
+X-Migadu-Flow: FLOW_OUT
+From: George Guo <dongtai.guo@linux.dev>
+To: pratyush@kernel.org
+Cc: rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	chenhuacai@kernel.org,
+	ardb@kernel.org,
+	shuah@kernel.org,
+	ilias.apalodimas@linaro.org,
+	akpm@linux-foundation.org,
+	baoquan.he@linux.dev,
+	ruirui.yang@linux.dev,
+	guodongtai@kylinos.cn,
+	kernel@xen0n.name,
+	graf@amazon.com,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH v5 1/5] efi: add a KHO configuration table channel
+Date: Wed, 21 Oct 2026 11:33:42 +0800
+Message-ID: <20261021033342.3110-1-dongtai.guo@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2vxza4p95v6e.fsf@kernel.org>
+References: <2vxza4p95v6e.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-User-Agent: Mozilla Thunderbird
-X-Rspamd-Queue-Id: E4D32100003
-X-Stat-Signature: of3u9mfqsb4pgefkhkofunz63icg5jj9
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0405E40003
+X-Stat-Signature: edcyhu9ykqhojfyky33ycmqs5frbwf96
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792552295-314918
-X-HE-Meta: U2FsdGVkX19BPbS6e3K3Y9VxtvRWcE2wSocOR0MLaWYqULYb4tmK8hm3k4BBuPkkY9J9Fm5WUTgtc3PFNwBQLfAjoO7Qa0yca726MovrkORuAGAY8NL7YL27PM56br//JCdGhb+QnmO65062gEFW7Pvv54npU91+lcR0gPWL70BIg9AXuCiE+AtfHEeG4EFCJDibXONQruXyBhDRqS4ak/mEReaZQvKzZKz5LuK6j9wfvhZiJtqfDo3XM2nCVpkTl2/kd33YJjI1e8kKUozqxmhFr1djFQkQyuwPW/g9MK2pxLYXubRDMbpHihr9JkDqf0hItjUJHjH94WaMCgmu4UOoDkUDvsEIudU79HxEakaOWWQdv5RvQfpvv0qXU7OAEYjjrOtfH6F0HD+nTNQg3OSLgTUrmySYY4hK99KEqRrxT5u9hcIfNKh0AogEIkDQWLgNtMa5XBVxA7DU7bJET0vJWzReziNBy1O+6SQqnmQlNZG13P1AzFe6agxEU8i2iBFTqopckUJ4pdcwZ+aVQ2/nQEVMM+ycP03Pdl++FOrCam21ZV3m1PyQ0//r/C4NYifTXzPq4ppWrFw7P9dTnw6y9RIesT9LwWiuwbUwJzEVYBMfpINFmvk3HelCfw3mVc1aEaW8Lb6u7Av6g+oTBL8k+HGTrVxMp0q7vlq2ZWjYMbyQSDHRV26bIXviquUH33fYUx9jZcedQJ6GxlhUsvVwz5HdkaxrTj4oMXUJ99IaOF9Ie9LcYwQxCax6O7RiPngb1mWXA/rQcxbuhQoeNm24767hp8QhnZFlkAPDPGksg69A/S3dFbJSXCGdlpOiukFjLwfJ6mQcD2i5ckuHZQJnr+1CuXu7o9LCf9gex1H5qQMCmiwAP5ecGv/QwbhMhYvo7UikmBqffJ0XyhAh8B+LFAsBmQVWvD8ub3GaLMZfWrVI1zRXRNgD8j2uxHkOj2DKo8mfGDwKfncKm9y
- lJ/Plhks
- /hOla9iqVVLpAKcNZ3GbFXnBhcLipj91ICqYwBjcffG//7pqA3DW4JPjE9WlloQlebvfCmTjs43ZGa2vlrQsyVmV67C9fPYiAGRo16IbGDNusDandWaviuxyT+OzuJZO0EWx4MTX8HLwoDAUNiu80yS42FRyx7PQfwGIgtRXYoWx40nRtfsobFe0y2ufjvlb7cFuqmUlXupP4Z0Ii5iLbdRgj3GL0CN5YioYN2aNPAtwRwXxHc+WhbBv14jvYhykYuRrnl5Yjbht0gP7VsYcg2hq2olMq7pqGYYLdb672+d2jqPUmCmhKhTsmQLH3QGLjL+ga
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792553631-723568
+X-HE-Meta: U2FsdGVkX1//aCbd9LIjLZN5gT4NKu1VWuU7lyjTXjYxvJREE4IgOZGbPtr6GbE9yzyEnlDb31iGcyEEcQat7hHp1/lEIZ+TtVO5GsYIdWW7re9fFf7aX0lN0wbSMOYvRb6suHShpwWaUHVhb/128Fu7VLKl/OnSBvnCu6S9/Q/GNxtkQ3t8Nx/WgR14waq3y+6oMtOjes+BjwFWr0LlmRBPIRWU+7SwX9XVq1HxefXLyFRY1UBBY39qVrwRd03B/0/jta2JDqaKjxiVJikqRm/JmmPNw1RAHVQywl3JRtV1T4HlTBJSkLGU8xz82Arbo29zjp5Uq1lCjEtynIJvWUzchNM5nDrlXWEvfvmVGQIWmJGTtWg3snKZ9rIyPcAb3lX16Dc0pOtOg8IpbVPByIXLAaT5ufz15Tpaakg3zcIaXmPjP3n6ifQXljuFdcsa7WhyOHUHDB3E5AUcex0YNPa3fA5nzj6UpMUZgV/pWgT2dnm07OqPnTOUgvknzWxMMcYo60u7uJwytr5H+StyueN8Lixqz4e8NKkwB8JxhyO7Vk9P4447fybMZ+GBdsoK3yqvZjk3gBMDRjyDnAr3L714Q9RurGSkVnYkAanAm4bcT0ntXsDF3JPF3tdvdE9HWiiye4V6MCYKQy52Nc2Nf2S39l7U7jJEjLqUOu4lwogKa+0eBnld1tpOCl8b5CkNBYNY28TDYB76XqyIrfArAwKtn+oKkOEitgl9qVPrTwBcD/2DWOBPCCCm9Y6lJS01eH98YuXLxMFEgTMsBVi59dawhTss0qYmL8Hg9sEHXmLUBy6uAE9Wvr5fNA6hTKSJOqP7TFuulejvPlNOlXkNhEtMv2nsBh/VD4Lw4xROyryH+8Ot9JIjrfuF9ceYpreRo20Rc9JRFq4cSjSn1EihF5hV9cRdcaH66YEnzxxZ+5Rmxfm46VINSTojVEFfhZM6rqhA+PsouhV0akEuN5k
+ cO8/2GYE
+ 53uT2+a4Yu+ti4oBZUE+fBN6lQZGARJl09xzEiT5i65IoagrxGB+kYf+lXkYY2VMhnTk1La2pTOVnuatO4L/9GBwv8MvCR/mkmlYcjm/wsgaQC7pjRUQhxq6NOVYuvU/O0YKwRRh1CllKhyXmzDHdXLHbq0jAOiKpUD7qLEbAQCW3MrKPU1CjHhln+/NP6uirK39YUZCExoHEkYT3JKF59O8UuUUQFtfn19I9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,80 +107,124 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/20/26 6:33 PM, David Hildenbrand (Arm) wrote:
-> On 10/20/26 12:11, Mike Rapoport wrote:
->> On Mon, Oct 19, 2026 at 07:30:33PM +0800, Li Zhe wrote:
->>> From: "David Hildenbrand (Arm)" <david@kernel.org>
->>>
->>> For UFFDIO_POISON to install a poison marker in a hugetlb mapping, it is
->>> sufficient to have the VMA registered for missing mode.
->>>
->>> However, UFFD missing mode does currently not block PMD table sharing, so
->>> installing the marker will be visible to everyone using the shared PMD
->>> table, which is wrong as UFFDIO_POISON must stay local to the process.
->>>
->>> To fix it, include VM_UFFD_MISSING in uffd_disable_huge_pmd_share(). Add
->>> a debug check on the marker installation path.
->>>
->>> The existing registration path will then unshare PMD tables, and
->>> subsequent faults will not share them while the mapping remains
->>> registered.
->>>
->>> The alternative would be to unshare PMD tables selectively when
->>> installing poison markers, which results in way more complexity. Or
->>> alternatively, simply failing the marker installation, which might break
->>> some use cases.
->>>
->>> This effectively disables PMD sharing for missing-mode registrations
->>> that never use UFFDIO_POISON.
->>>
->>> Suggested-by: Li Zhe <lizhe.67@bytedance.com>
->>> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
->>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
->>> ---
->>>   include/linux/userfaultfd_k.h | 13 +++++++++----
->>>   mm/hugetlb.c                  |  1 +
->>>   2 files changed, 10 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
->>> index a4351cffc60c..fe78ba14dc68 100644
->>> --- a/include/linux/userfaultfd_k.h
->>> +++ b/include/linux/userfaultfd_k.h
->>> @@ -169,7 +169,10 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->>>   }
->>>   
->>>   /*
->>> - * Never enable huge pmd sharing on some uffd registered vmas:
->>> + * Never enable huge pmd sharing on the following VMAs:
->>> + *
->>> + * - VM_UFFD_MISSING VMAs, because UFFDIO_POISON may install markers and we
->>> + *   want PMD tables to be unshared when installing these markers already.
->>>    *
->>>    * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
->>>    *   tracking information is per pgtable entry.
->>> @@ -182,9 +185,11 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->>>    */
->>>   static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
->>>   {
->>> -	return vma_test_any_mask(vma,
->>> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
->>> -					VMA_UFFD_MINOR));
->>> +	const vma_flags_t uffd_flags =
->>> +		mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP,
->>> +					VMA_UFFD_RWP, VMA_UFFD_MINOR);
->> Since this essentially disable pmd sharing for any uffd mode, maybe replace
->> the flags check with the check for non-NULL userfaultfd_ctx?
-> That would likely even better and we can just simplify the comments as well.
+Hi Pratyush,
 
+Thanks for the detailed review. I've rewriten the comments and commit messages
+myself for v6. Replies inline.
 
-Agreed, thanks Mike and David.
+On Tue, Sep 22 2026, Pratyush Yadav wrote:
+> > +config EFI_KHO
+> > +	bool
+> > +	depends on EFI_STUB && EFI_GENERIC_STUB && KEXEC_HANDOVER
+> > +	help
+[...]
+> I don't like adding a config for this sort of thing. Do we really need
+> this? Why not just have the code always compiled and only used by
+> loongarch? I don't really see we need a user decision for this sort of
+> thing.
 
-I will update uffd_disable_huge_pmd_share() in v3 to check whether the
-VMA has a userfaultfd context instead of checking the individual UFFD
-mode flags, and simplify the comment accordingly.
+Agreed, v6 drops it.
+
+> > +		/*
+> > +		 * Reserve the stub-allocated table so it is neither handed
+> > +		 * out by the buddy allocator nor placed on by kexec
+> > +		 * segments, mirroring the memreserve handling above.  This
+> > +		 * runs on every boot, so it also protects the table in the
+> > +		 * next kernel until it reads it.
+> > +		 */
+>
+> Nit: this comment is too wordy. Can you please make it more concise and
+> to the point?
+
+v6:
+
+	/* Keep the buddy allocator and kexec segments off the table. */
+
+> > +			if (kho->fdt_addr)
+>
+> When can kho->fdt_addr be NULL? Also, perhaps print a warning if
+> early_memremap() fails?
+
+It is 0 when there is nothing to restore:
+
+  - on a cold boot, because the stub installs the table zeroed;
+  - after a kexec into an image without KHO state, such as a crash
+    kernel, because the table is zeroed just before that kexec.
+
+v6 says this in the struct documentation, and adds a pr_warn() when
+early_memremap() fails.
+
+> > +	/*
+> > +	 * Keep a persistent mapping of the table, the same way
+> > +	 * efi_memreserve_root_init() keeps the memreserve root mapped:
+> > +	 * efi_kho_update() is also called on the crash kexec path, where
+> > +	 * memremap() is no longer an option.
+> > +	 */
+>
+> No need to mention memreserve. Just explain the reason here. And keep it
+> as short and to the point as possible.
+
+v6:
+
+	/* Map it now: the table is also written at panic time. */
+
+> This is unreadable. Please add a human touch to this.
+>
+> And once again, the fact that it mirrors efi_mem_reserve_persistent()
+> isn't important.
+
+v6:
+
+	/*
+	 * Write the KHO addresses the next kernel should use, or zeroes
+	 * if it should boot without KHO.
+	 */
+
+> Why ENODEV? Wouldn't ENOENT be a tiny bit better?
+
+Neither, in v6. No table is the normal case outside LoongArch, so
+efi_kho_update() now returns 0. The only error left is a table that
+could not be mapped at boot, which returns -ENOMEM.
+
+> This has too much information. You need to make it more to the point.
+> For example, "without a device tree" already implies there is no /chosen
+> property in the first place. No need to mention the function either.
+>
+> The lifetime of the table is certainly useful information but again,
+> should be much more clear and to the point.
+>
+> Also, you should document what each of the members of the struct mean.
+
+Agreed. v6:
+
+	/**
+	 * struct linux_efi_kho_data - KHO state passed to the next kernel
+	 * @fdt_addr: physical address of the KHO FDT, 0 if there is none
+	 * @fdt_size: size of the KHO FDT
+	 * @bootmem_addr: physical address of the bootmem area list
+	 * @bootmem_size: size of the bootmem area list
+	 *
+	 * Pointed to by the LINUX_EFI_KEXEC_HANDOVER_GUID configuration table.
+	 *
+	 * The EFI stub installs this table zeroed on a cold boot. It stays
+	 * in place across kexec; the running kernel rewrites it just before
+	 * each kexec, and the next kernel reads it during early boot.
+	 *
+	 * The layout is fixed. Changing it requires a new GUID.
+	 */
+
+> Note: I recently sent a series that renames scratch to bootmem [0]. It
+> looks close to landing. So you likely need to rename this to
+> bootmem_{addr,size}.
+
+Thanks for the heads-up. It is in liveupdate/next now, so v6 is based
+on it and uses bootmem_{addr,size}.
+
+> Why __packed?
+
+No good reason. All four members are u64, so there is no padding
+and __packed changes nothing. Dropped.
 
 Thanks,
-Zhe
-
+George
 
