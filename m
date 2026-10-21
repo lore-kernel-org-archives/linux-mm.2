@@ -1,91 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E314B606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 01:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161D3606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=SW39g62m
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=b03RZIbc
 Received: by kanga.kvack.org (Postfix)
-	id CFFF16B0192; Tue, 20 Oct 2026 21:57:23 -0400 (EDT)
+	id 233416B0193; Tue, 20 Oct 2026 22:02:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB4A26B059D; Tue, 20 Oct 2026 21:57:23 -0400 (EDT)
+	id 1E4AC6B0194; Tue, 20 Oct 2026 22:02:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC6C16B059E; Tue, 20 Oct 2026 21:57:23 -0400 (EDT)
+	id 0D3936B0196; Tue, 20 Oct 2026 22:02:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F5206B0192
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 21:57:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6088B1203F8
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:57:22 +0000 (UTC)
-X-FDA: 85344971124.25.0590971
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8E35F1C0003
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:57:20 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DB6D56B0193
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:02:13 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6264EA7F83
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:02:13 +0000 (UTC)
+X-FDA: 85344983346.19.5EB8281
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 857901C0004
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:02:11 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SW39g62m;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=b03RZIbc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of hwenwur@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=hwenwur@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792547840;
+	s=arc-20220608; t=1792548131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+zMi/65hYb4icVfgLOTZNJ+TTD2i0/XvV1mGmiRSo5c=;
-	b=TY+Rc/H3v4e0hZ08q4z/BAgExqhiU/+GFvApLYF3Hs3GneS0y4SkJijG+qN1Qc60je/YGA
-	I50C/bseDETFGomxb7wtLoqAjTxR7WAl9aO+S6MEKpBpoVTzND9nLJzKI921XAI4k+mm21
-	c8hXvL4SjlPaNmhsLfnDAm/zDxpQiYg=
+	bh=OGwi9n/sjudDqRr2GLNZOw5hXvKMm5llKrzOU2BnbmA=;
+	b=hh4pXJY5TDF8nbphzbVlfGtwG+1IQAfdqZJKZ38EIYbrq1nqegT3qCYsr5fmGhfkKwYmmb
+	tMlAcQJh1cKB5OOmR+ZLVCQFdHXNHrYJuFWgNyHduk0FP1gtEyigZFKVUX1bX0BcWLg0uf
+	fLuR8quCEXZMMV5suVFs+er4K3CraQ4=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SW39g62m;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=b03RZIbc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of hwenwur@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=hwenwur@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792547840;
-	b=SC6wW6EVf0YW84x/dPM8RKFloy3HOe5u/jYxFvqEgXe8VDCHlmfFHIsfegmpjxbHpGL8td
-	iHZVv7sRzwZR7aOQX6efNhOkCt2ftIS75ohF0oAoAfy0uxNbyggClHhv154oCOS4Hy0fzR
-	jy+JuXrvlCTQ8bauGqjQjz3v2wc3tdc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 61718409A7;
-	Wed, 21 Oct 2026 01:57:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095571F000D1;
-	Wed, 21 Oct 2026 01:57:19 +0000 (UTC)
+	t=1792548131;
+	b=2oIqy5OFwT1r7Lc/JritwwOkS/JYu9/S+k1KmbYzEjvgLohPu7TcMFpxGOTeY4njR7AZRc
+	6JjGp4/9d38oZ2y0UN5iLCttnNyjhyz5hTT21M6elVOwSyon886lTbmA6KipuDYGSrBWNs
+	GTdfKjT5cOWQ9T68u3R6ESwFyuQTHrQ=
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cd69aa46f21so3365a12.3
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:02:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792547839;
-	bh=+zMi/65hYb4icVfgLOTZNJ+TTD2i0/XvV1mGmiRSo5c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SW39g62muPgqyFTckNU7VOgm5KdXvPYXlN7Q7nzq1dd+EbBcKNERDCXCQQTo4G1zP
-	 WcAhzipv9+PXjXeqgC4zSDyLZW5xMItrHbsi/+p5Q5NOhAkFTj3NRt3I8Ais5ZTyGQ
-	 qwMlSInX9oFUF43PdeuHmTZdM+fqdta9z+E1gcyo=
-Date: Tue, 20 Oct 2026 18:57:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hungyu Lin <dennylin0707@gmail.com>
-Cc: willy@infradead.org, jack@suse.cz, shr@devkernel.io,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page-writeback: avoid 32-bit overflow in dirty
- threshold shares
-Message-Id: <20261020185718.1d17aa486a19c4ba88a005fe@linux-foundation.org>
-In-Reply-To: <20261021013046.23997-1-dennylin0707@gmail.com>
-References: <20261021013046.23997-1-dennylin0707@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20251104; t=1792548130; x=1793152930; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OGwi9n/sjudDqRr2GLNZOw5hXvKMm5llKrzOU2BnbmA=;
+        b=b03RZIbcYUuYUApi6f2wEkurXX8mzAYEePHDHXVs29ggaGNG5Ou7L8NeS371wrwVUE
+         MQgSJdU+Q5kBd4NXyTBgHi/ZTSva0nRiemJYI8B7SZuLODiZTLwDxFYR7GHRZF7cooqG
+         j3k0W8L1kE4Q8wWu8jCyinLIG0ChjEILw7V11fIHrKsA41jRGCph0FlE5Tey/5UT+/dW
+         mjF78jcSBJN0FgrOiJ+2Ct2Xn8lV/j1PLPqNyC+9iawXiXBRqIOIJBWFAWpeNqGL3zVT
+         cCIuGtiTvWtEyHAN6FRHuVu/lgksRR/JGeRuXYJMUI4ykzuAFX1/yzvGADsv2UDjjXaW
+         hy7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792548130; x=1793152930;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=OGwi9n/sjudDqRr2GLNZOw5hXvKMm5llKrzOU2BnbmA=;
+        b=LeC52SWPoAJecy6bVpijUZPXjGWkyJ29Cv6SzpmFIV20mCNrgQCartIkmqUiDnPRld
+         D03kcPVrm6irIVM94D7EbAvFdGaUbnFdC/dklxJcL0LXR38EzT1Jw262U0upWC7eWL+b
+         UntbbY1h8gLmLfLyHoU06+Qxpp5H+8EIudrFpKp3nQhyh+DPhB8ZMucFtFQp0sw4Pu5u
+         HQIujPjlRMgDcuw8rNAdFkJ/U+Lx1hlzZUjCed6XRcXnDKpLmKosWSkHfHKRfyUHv/5Y
+         /74ZIfmUHwmkT9HkGt7dAUiwwMuVFnkWZKswvf1IsIHbS39/sKcHFC1dacSn1Xty+Tok
+         xQzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx/6x30v5pyhT+QcTky4jCMsWk7mvHq3Kfb4G1mI/w0+gUF8mZ5i+yrT8gps5ejIEhvkRt/ntDA9w==@kvack.org
+X-Gm-Message-State: AFq9FYKuS0Ieps5SW9TyPHvwusQrKFl3iQ2WKapihJUVQq8T1hEKXfdv
+	DX+YVvJIZCupIZm3wkmHBl0tja/n89uOppNWCuMpnOATLZwHc14ycZva
+X-Gm-Gg: AYBFou0i2MVYBn5XPCuCEQM8G0OKSHNngX/t/vLiMuG+Osf0knndoZs+JQLL6UE/eVi
+	PpJR/9Cw2oIQjiYDayyE6ZPKp61LJ0RMS2WVREtSoe/+URg9RRswX59UaQ4jfFoPAWwLncrQkhL
+	QQfiIKfqfzsBFnNj12K96GSQb8tzlFc64FxeanjHMvmlWO8aF6JlKRrzmeqMZ+0iPPoXi7Xw7Ay
+	vtgn7xKbkKbQ3CEhiUEsEN2P/ijrjfW0AEe0famAlzGGt7oykbPglKg4zN/4NrUKZqrM29FDdov
+	jNrxa+oze5sBxHvEVbVQnouno82CvWkhK+iIzw+bro2K9Qbwhfg/rPdrYGmF8VjUkiPHuGfPuFS
+	04AihelYC7c269z4/TLeZeqTxSR9Rd6t864hXDzaS/hF4WfSaQbxUhwaVis91BB9Yf4kRnkvaWn
+	DEYZibEi06iDJgIsaGNk8KjFZwsYZexEahAvkwDCPro8E8qexTKO9P4d+CoryVfR4eRSA3ZMpzm
+	ppXeAd0vt/YeXncrXJnbUf9NFTDr2DLaQAdS158d6G449GwMbw=
+X-Received: by 2002:a05:6a20:7350:b0:3e1:8890:83f1 with SMTP id adf61e73a8af0-3e287c9f7b7mr925934637.1.1792548130163;
+        Tue, 20 Oct 2026 19:02:10 -0700 (PDT)
+Received: from gmail.com ([43.224.245.234])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0895fa6c6sm219573b3a.48.2026.10.20.19.02.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 19:02:08 -0700 (PDT)
+Date: Wed, 21 Oct 2026 10:01:35 +0800
+From: Wenwu Hou <hwenwur@gmail.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: zswap: set zswap_ever_enabled when enabling zswap at
+ runtime
+Message-ID: <atgc_4y2dA4egqXs@gmail.com>
+References: <20261020122942.3477541-1-hwenwur@gmail.com>
+ <CAO9r8zNgnt=9UXN_FJ3zByVtC18MNe94-tXssAS-eAQfutNXRQ@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8E35F1C0003
-X-Stat-Signature: aqjrfssufmftnghe3uixgesdug3uzqsr
-X-Spam-Status: No, score=-8.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO9r8zNgnt=9UXN_FJ3zByVtC18MNe94-tXssAS-eAQfutNXRQ@mail.gmail.com>
+X-Rspamd-Queue-Id: 857901C0004
+X-Stat-Signature: m6enxwabw73kupbd8msmhzspttsrejoe
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792547840-11121
-X-HE-Meta: U2FsdGVkX18aUU/HtkfBqGSsJaXdq5X40RXEdVTpKnPlngNRL3fWA61eiruqvJOMqXztmv0j75LI+eNgYUF1sh4CdwvJCq1vSHmgKPjE5XQO0KE2qjjxU9Xp9oLXxMtV7YoiaMXmAzGOhCDydoqKOo4YrySeGRX1HmfJpBd3k+fNY0QFWezK/0JXQo8lP+j07T4AMd6KLgwjZuZX+xkMFXZgqinvGIgaiwpzzjwzmfo6tYEIH+UrorifERBE8ciYfJtcHAoNEB2RVA9yhJjz3xZR2CN9q+jc5Dk/c9qnG4GH9VHNtaMP1pY8DsTD609CdYcnOhYvNtD++yxoGBqQpHYgSPh0sp2CgcDTWlL39GmjNC2Zre/ISC1m/eKT1kgQJFKeVN/sAeANXF/AL3KycRd850OltuhoPsDafFVzJTX9KgNWVoS68KPEVUIeCh7vAsTXla7HC8uJeRZSc6zE9BT+9L+BOiH5IMK+OIF5E0l7idYy6s5gjRXApLY7LjO9WXCDS3oZEXHn2f39yfDmoxxGPy/U5UhB/3BLfCn0mDrFTH4tVbm2rFzschxdKDUTT6TvChbcR619VwPwPimTYaIeGPbEERDrZSCADdUFEuRfqwRoZ7rH6mBQvQx92KpXc552CdakoPkLeuZ2Z4uzkv4Cxp8L9CCwnyFUAp3sjW8OyAfdXdJyPLyKDuye+ppqmJfl71OgpAIPzMxhsg6/YSbJQXCr2flY4k/eodvVZYzvwQpHTLv/dNw474tJL5/jJJqyxld+bjtCSm7ld1i1tiH2g8J6vmab91vhcZCkdeqWSkoM+eW8f/XqgwRzODhDCy5cwaqQpZlvJJ6z1xQtAq3vP+OWajYjBlEfik+T3TUQBHuSncgsG1lGGxCMfoAmjIeAX6+GuRE6xy3vqn0/J7tY0bznIaIEHrAbdx6Cj27pNfAs335ZQQhcRNankDFgXZTouwNFPHiGWftH9oA
- uLDrgXLH
- VAbvTBn9NirNrRNvAZHdTGwyKx9cdn1VMIpryVlftDLuf0OPA82CUnfsfbLi2h8xe5Gb82Omo8wgZWUzHmSyhvfrGjpAgpTzH3OLpW1Cm/4BNk+1v324nrQ3Ag/DK3vBMkYpKMBgoh8JIvC464VTC+ipGuvcUqXXevT+zdcO3RodXL83RgxwfTnN19JiCjrfcQww+YUO6Jlpvaol28IbQjUB4hmF+9WY9nNV/RpoN9SFPY2hRpgGRs9637osUIVn4r7Zrk44MU5q9NoZFl6KQrWh93Q==
+X-HE-Tag: 1792548131-681093
+X-HE-Meta: U2FsdGVkX1/GXS5MgnXSjOkY0Xro8p9EcCygDsQNL/S6laErXhwTI1EnycMFvQVyffI+mLkiIeCQnC6HHbDGFNMyg2bqQa+OWMU84ZzyC4ugTcpiSMzfFUGbRBYMzGwRFpwu/33VpELmDw5u6yJi7Kp4vsbmoBM+56gjabDWDt5zqmNynWdEtAsQS94tcaN2xYPlRfsvwzqKHYfVBaCDzz4ShoUlL7qQLQFxQwlS2BqDs0cLE9S7F+AuJxy3aT67GfELbD9EHVKFV2ZBxKIbJtFR4z8VW6H7xKo0iT0bjWiKbFfTI9cDwBYuWtvpi8GJ9OJmPF28RLTrMeNpZI/wT2Fz/Cvp7irW2otGj9q/XON/AMt7DBZKFgr5qrAE9eNSwvG3K+krwbs47ETROA3ePqNS1O8wwaBl5ZxZ4Cd+juUHmv4v9Q6bVsJnH1HaYpHXMWlGHigEu1scKfZJ1fBVbqdC7Qy83sNY6C1spJFYX9lNm4qpQV+pTXE4UYapJgStK5EtwIjTqt0+Qsa71gMpAlRTfT+4pstSmsfAHZy8UQzTnEOLxQPT6ge7zdRm0IC38yrJVE1+V72QIELdmQGKdGKz5zLrOrDpKg2OA04ByOd7YtTYa4CUMnqSb8Te1Y/Qn6nqwxCwgvN8e20QXvSyOLDrWdBruBdCYemK7YQJytlDsnSrmlAA2nWprdExsWwBK3cMxs3Zvn4iGbz2X9eEgUJH0PqQRDNVutYanxycPrAQzjZgmhWpZAu8SJV4vOdvzKRiRzyDW9JkRynpqGE/IfjBLhkoMYeqTqU7nYDZk/PGcEutxw2cMnQMD3Z8QV9UNdkIRdTHfdylIGuWdQe/5ShIUbBlNSIZJy17xgf0RbC8i/vE0CbFc5TyZgpOAw3U8xQ23uFmPSlNqtvexlgxvQvVQYcuzdEz1Xcgt7D5LKREXMRQUU4QS68S6Z9f0ne5jvaq4dW1unSTuY+Nc2v
+ 4IGNnE5m
+ IBuhgLah8uwEPMcvNYtNzxb4ArNOEkGxxb+urPUb1x1OvkfoY1bo6NKiNoA/q/zulCHCrp5xmgMhzUs+H/yk/yg/S3bdMpgLkoog+ORazmeC4ATVk3A914qfA4CAqbpbHppHQ0McMgymXxezFIoXOFQceQMAFtgC8zp//ysCcalcKYjvCeLko8K+W+9n14Fq8cmprSF08V5YJkxz9F2YQdbpiMU/qricHOhV0yYj7OAkWEkiGULRmFfHmWvwgL1o66CjRIardtkITNTxmy6g4ZErcxY/YIuiw4/7bH9va6CLwhNlm43xvZtCvatJqNHhZE4uc/CTUvckqZFWRwT2olAH4oxqtTWvcvpohUuxBoVtqI/QPi7L7ApSyhrVLxLExubst4SXWSUh+QfT3QEjCuRI+s59u1EuNRK/SuFe07+jsRRPHuquh2HZr+x0MO5Vfya7Fm3wCcVrH/5wSYV5OkE2a1XOMXw/OUZ+4be2uZC0GFvMQKO2z0hd3GOcvsSzJOaE4JM4HQOCZAfUvWgHjApJUXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,31 +127,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 21 Oct 2026 01:30:46 +0000 Hungyu Lin <dennylin0707@gmail.com> wrote:
-
-> The ratios used by __wb_calc_thresh() are scaled to parts per million,
-> but the threshold and ratio operands are unsigned long. On 32-bit
-> kernels, their multiplication can wrap before the result is assigned
-> to u64.
+On Tue, Oct 20, 2026 at 08:57:15AM -0700, Yosry Ahmed wrote:
+> On Tue, Oct 20, 2026 at 5:30 AM Wenwu Hou <hwenwur@gmail.com> wrote:
+> >
+> > zswap can end up enabled without zswap_ever_enabled being set, which
+> > leads to data corruption. With CONFIG_ZSWAP_DEFAULT_ON=n:
+> >
+> > 1. zswap_setup() fails to create the initial pool. Setup still counts
+> >    as successful, but zswap_has_pool stays false.
+> > 2. The user writes a compressor name to
+> >    /sys/module/zswap/parameters/compressor.
+> >    zswap_compressor_param_set() creates a pool and sets
+> >    zswap_has_pool = true, but never enables the zswap_ever_enabled
+> >    static key.
+> > 3. The user runs "echo Y > /sys/module/zswap/parameters/enabled".
+> > 4. zswap_store() now stores pages in zswap, and swap_writeout() skips
+> >    writing them to the swap device.
+> > 5. On swap-in, zswap_load() first checks zswap_never_enabled(). It
+> >    returns true, so zswap_load() reports that the page is not in zswap.
+> >    The page is then read from the swap device, which holds stale data.
+> >
+> > Fix this by enabling zswap_ever_enabled in zswap_enabled_param_set()
+> > before zswap_enabled becomes true.
 > 
-> For example, with a threshold of 25600 pages and the default maximum
-> ratio of 1000000, wb_max_thresh becomes 4125 pages instead of 25600.
-> The shared threshold and minimum share calculations can overflow in
-> the same way, producing incorrect per-writeback dirty limits.
-> 
-> Promote the threshold before each ratio multiplication and use
-> div_u64() to retain the existing division order and rounding.
+> Wasn't this fixed by
+> https://lore.kernel.org/linux-mm/20260906133601.3563324-1-xialonglong2025@163.com/?
 
-Checks out, thanks.
-
-As usual, the need for typecasting is a signal that we're using the
-wrong types.  It's better to reexamine those typing choices, rather
-than casting away previous mistakes.
-
-I think that if you add a new
-
-	u64 threshold = thresh;
-
-then use that, things will turn out more cleanly?
+Yes, please drop this one, sorry for the noise.
 
 
