@@ -1,149 +1,185 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8005606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 17:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EE7606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 17:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=N4LTFVx0
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gBUv3QkW
 Received: by kanga.kvack.org (Postfix)
-	id C53826B024E; Wed, 21 Oct 2026 13:38:58 -0400 (EDT)
+	id 08F5B6B0753; Wed, 21 Oct 2026 13:40:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFCAF6B0253; Wed, 21 Oct 2026 13:38:58 -0400 (EDT)
+	id 03F556B0754; Wed, 21 Oct 2026 13:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEB3C6B0255; Wed, 21 Oct 2026 13:38:58 -0400 (EDT)
+	id E23256B0755; Wed, 21 Oct 2026 13:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 799E06B024E
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 13:38:58 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB9A9805FA
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:38:57 +0000 (UTC)
-X-FDA: 85347343914.13.AD6D67A
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4F33320005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:38:56 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=N4LTFVx0;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AEDB76B0753
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 13:40:17 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B8AFA05E6
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:40:16 +0000 (UTC)
+X-FDA: 85347347232.06.80A37D3
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011004.outbound.protection.outlook.com [52.101.57.4])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A53B4C0007
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:40:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gBUv3QkW;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of jgg@nvidia.com designates 52.101.57.4 as permitted sender) smtp.mailfrom=jgg@nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792604335;
+	s=arc-20220608; t=1792604413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=csULT7PmXNkTg9HaShgHK/UOyRj2pqW39WBnWQcueFE=;
-	b=GX4nsmkeR9BmRKhMbTqxP7A2kRUm8Nd4tcROQx4heTZ/P3yKmMjj/8kMJWpBtAdju4wppt
-	sm06cP/lQgRO2tJVNuAfC6cyVEemYYDWeo0J2P2bL+xfTrZXMWL0nGtOX8N/fWhP8+eaQv
-	K31B1BZHyUh7BSgHx+gpoWcD3Bn7e/w=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792604335;
-	b=qG/HiG5vlXPEGPwa8DUPcnGJ5eK2IyWPCf2O+YcteuB1ErITL2OJwqjFZUvukgrXf/VKBx
-	t7a1QwvCBrk9z5N7S5E1IsTbnf2Leu4TNhevyMtmO7gvC9+t8bKprU432t1PrJrWlCyy/F
-	p/NmEfJe6HQaXuIArx0/E2slyMBOIsw=
+	bh=Sh+BLdyawyu3x2WuC9w4sgPwmZXii/nWDIS0NOhyN2k=;
+	b=Rp7oTUeiINRhNpLgd9wR+qzx9ESMWJVQaSt/FUP0uxtlFRzXH5XAdpfR2bT8ahkTwpraIG
+	f5pzVGbGf9j29V5Q0fMqOrQ920GeQ8fa8sSe2Z9IblEBYsFojfeiE2o9cR+FxH77gYGPb+
+	Z49+PHAr/tqJd/C5+Pl6r+P5i2PjVz0=
 ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=N4LTFVx0;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3ab3dd9681fso9692941fa.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 10:38:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792604334; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hPvsGoLGsnpgKnAbWQ8FOMgC6XN7TfzLyl7IV1JC62k8ppZmbxQ71GvCxLlHi9dUJM
-         kRoVHjpKT7AIzgTvmj6GKh5VRes7fBbWkANW+DjvWO/pw3vxaOFQoOZLX6UEs8EPgH+O
-         SIz+m6YP6qteFKvB45ITC1WKir+vo9vsF34woo577m07GrzBnuOfixy4v5ykPzljpImR
-         J6m/9JdXcnnR2TwE7f4AUSG8ri9Aj26HZuu7epjHKCeVU7HC/2U6O/w/FUc/GS7RCNTF
-         3GinwwL3a/K9W14Jd0Ri5k3WqXNPzedmnwTZT7sW+xUZqFp5sU2GmYY2PTqKd1X7BzyK
-         7+8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=csULT7PmXNkTg9HaShgHK/UOyRj2pqW39WBnWQcueFE=;
-        fh=bvRp4+rLKslMY7KB/bVvdYyvgnSrKcfCpMfN9vhE3ZE=;
-        b=ipFObA4WrskTIXjwInzxSleynJB3Oq0wEX/x0J7V5G7FAXpzY297YgRhG3PXf2Bcas
-         1IOpVCXyKqOtcuYylQ+J7JmfJiNJmsdrKGw3BRD8turXyuMwek+OOezNyqElijnIkfrV
-         gxrJqXpdUXtFfo4FL+LxT3Jk4Aj5cbbjph+CtKew4RF07VEuu/qB2e/whfJBqjgqnhcw
-         wbVJ2rdWqqI5QMdXsOo/Gw5WrXeD3CZaeCp7lnldEpJRzz1xvfi6uq9d4C2exWDaWQ8f
-         3j3GEhDnCRv5t/2ds4GVRxdEbLhndqUr1Wtr9f/BWdcZiCElxFMCNT6e+aXVDYtFH2IM
-         qbJQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792604334; x=1793209134; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=csULT7PmXNkTg9HaShgHK/UOyRj2pqW39WBnWQcueFE=;
-        b=N4LTFVx0dorVL2aDwsoPoGWPOFjOBXtiafFDYpCuQPYcDTXEuRQnl9SX+Gn+3J8MPL
-         gDWGeJutJoyrdql4/no5sI58Ds7gnlRWuDbvlzmir4AV9co4i/t0uvAkvy1Hzwpn2KfM
-         jaQHzHPLev0NhCUCaMi3AtvOam4u2/460IgbwR5pxUfDU/8ZwPAajCkp+wXrC6JzxBOg
-         GQhu7o7k2GQmDqqZHb7K5d7JZ8aCskYzloz1xOulP6KNwHvknkteHMtSlEjOYzI8JFyW
-         ZZF3EyXAYdfjqmvD++YFgbUSqjSOByyvsSCkBUfJx1ywX6Rhvs49qERn7RfQVSrAhFNU
-         RJFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792604334; x=1793209134;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=csULT7PmXNkTg9HaShgHK/UOyRj2pqW39WBnWQcueFE=;
-        b=k7byKy3fqR6CZ0yFwvDMb38Y+xzauyszziz/OC7+oOAkjvrvHqlwAyZXmoFPfOgQf9
-         t0B81CFhIDX1GQZ1csEcMelK9wYvmSIGIjdNMOPmgQ1GK+0UoPiIw1oRWBIDpYve/Ci5
-         5mBNX3JlDs8pyjxaHTH6sT3cf5cW6rASHJOWJd38Gr2e8glTvmD/AISpMWf+VVAueXrv
-         CHwgwc1Nt6AkQOTTCXstk9bXkwHB+O7LRnvGbubE3lT+0VDeSdoGzwF1whWpdoGYbFq9
-         ChuPt51jlUbAT0PvCxU4CKNk/fvHIosHGsMDNvAapRVx0BU5Gr0yfIfNzanTZq7lYsrm
-         3zHw==
-X-Forwarded-Encrypted: i=1; AKwUvBzJw6YH75G3R3EikmzqdVqu/C1UViz7puKABpvws3CyMwgBlSKOh6oDh7h5CxDExifpgkQHdnWlBw==@kvack.org
-X-Gm-Message-State: AFq9FYKf/fTUJuH0YCOv7ud3Y73awW1znBRo1yDg0fJ0p8gJMsehfvZU
-	QH1xsiLlEyrKXl3hgZiyVZLVtbcI8YqheyaJN2o5GUmOo4/KTfTIfGj1Oq2FkiCd7mEnDKd9Gqh
-	X6UIB7YkornoPnnTXV+04fi3Py84geIPCZ9bfB3GLIg==
-X-Gm-Gg: AYBFou0f6zKLRgmSLAlFSSglxXQ9T5Lt8Vk4v5cT490TM7eTLZGztMPurI8PEE1HND+
-	zCuLSnaIn5mqJyGOlHJA0VzMJfSFU4oGMqSeKhRZesTOPDcAio607RHLLqbE7ps0pvQJSEA3JBW
-	W8b8PB6PhUKYt6BOffpoS5AwrwJGMsCLTcKj8A9lKjatnOtSjT5vCTfLNC20vr+yWJ8N0NL9n/G
-	Eh45ixtF4AD+uS0WMDKNCxQtCbNmTH5vXd2AgzgS7Sbic5VlPZ0nKHHZB23hI3SxH7X5JTnxikI
-	YPhsYh9tQ7DjvXL+ANbY0SnVawUkK8BKa3v0ElYAC2ajFyAy3a/SVwRpYSfHH+aOH9fSWtitX6T
-	g46q4HQCMty4gABwvg5B36it59PZ8Zu0J/dsksFKqKnZ+rJJj1tdZsRqqctOydlQKPX8=
-X-Received: by 2002:a05:651c:4210:b0:3ab:473f:4340 with SMTP id
- 38308e7fff4ca-3ac44229527mr7899791fa.25.1792604334224; Wed, 21 Oct 2026
- 10:38:54 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gBUv3QkW;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of jgg@nvidia.com designates 52.101.57.4 as permitted sender) smtp.mailfrom=jgg@nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792604413;
+	b=t2SxSprRh9/Z/ZVY4Oz3dXzq8I9QuYjusaJGehrghqKErHWOy45Y0r63jmtsDsOFGVqAfI
+	rKu1HgMJsQcdgzYY9LFu6bqwK2pz96PNuLYjMcq9l8VM6EUkJEGhAoegoKVUd+dS2Yp07K
+	d/tvPHzEYrxodupB3Ipnk5cBu74eOKY=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k9HHKtENJG4+K2Rtawv6hGS2wcmr3NLX3/PslEZ62cpUbv+bGBj3/c92WBpYFRXWIO2qdt/ET2KujvOOwnrdBP/KqXA/ZYUaJxcNi8OEysWSDo+YE9cnmjXotbRkZuK+o8gy/E4s6/TwmGJDmTpGkSVzkGAnuDABgkpFevV4/0r6ju5Wk7E72Z3qA+fF/egWdQqb8A5I1Vrjr81F9eB5fL565+BttFWwP/I4M0Ldqh6i54Z9nqxcNDStHRu8PPj6Z9bKblLpUtpIc7jbvPGi5nh2VjCHzFfr3dhSSHGmU/ZM1aqrv8twI7SkxpqUqDgUrjAyqAeIf1DNJKAqKa+Rjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Sh+BLdyawyu3x2WuC9w4sgPwmZXii/nWDIS0NOhyN2k=;
+ b=wt248RjEHiIkbQhssKKM5/K7Vfe1tUo5iDO5YAKRtGUBV34YebQo+7iIqaAmYQvrabayQbGLTzNTEPu8WJSGPjZJzGAdBDvDiURPbwMFEaBxikHiDeA83zp+HJC4RnP0AkPNVrIyASrCWqlTaivr4dVLd42/zetcV8leD+rh95vJm1+GAC12RkR3S7z3J9jo+5HV7DNRfIpLLmO1Z9bwaBG5t2OWnR/2T2awVvfpfsfrxKxJPPkvnQzcbPs0fc0bJDZXGrE/AovCuGT0W7jUEgcH06n+iQeBeEYIOQYgQDDeBXSRyQd1toFI458eQgl+iE9SvUKrLvtGWzDpfT927g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Sh+BLdyawyu3x2WuC9w4sgPwmZXii/nWDIS0NOhyN2k=;
+ b=gBUv3QkWQY0wBPHaMuiCTJfpTge3T5nYTtyCosjuaD63aaMZAOeKWK+lE7wlKNsuw+Ks+Sp/HNrQkLRJbH3yirIO8FX1bNNmcsaDGFh8cy3d2fWS4CQmFjM6vir67JGEfrBp+34FSgexMniCcoySSmhU/D3GraABO8F8uPQDfiC5SsXsDiPmCG0WEdYYUBAqEdODDECrLRpifMkPcxqVx4fZbaOt+ooiWywwbMpX6papLdnzxi2HXIEsPpPjob8OOfJnv68H1pp+S/ZhZP7ploJvf0wZNtabZHVOKgeGCjRQa8ga8dOeIHyhIeQ9FgJ4HhrYRllRNaoSozgDUOkk7A==
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by PH8PR12MB7375.namprd12.prod.outlook.com
+ (2603:10b6:510:215::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
+ 2026 17:40:07 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
+ 17:40:07 +0000
+Date: Wed, 21 Oct 2026 14:40:06 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Tarun Sahu <tarunsahu@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	David Matlack <dmatlack@google.com>, robin.murphy@arm.com,
+	loganodell@google.com, oupton@kernel.org, kevin.tian@intel.com,
+	alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com,
+	seanjc@google.com, will@kernel.org,
+	Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <20261021174006.GU3008132@nvidia.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-4-tarunsahu@google.com>
+ <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
+X-ClientProxiedBy: BN0PR02CA0051.namprd02.prod.outlook.com
+ (2603:10b6:408:e5::26) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-5-tarunsahu@google.com>
-In-Reply-To: <20261021152527.375070-5-tarunsahu@google.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 21 Oct 2026 13:38:17 -0400
-X-Gm-Features: AclHuK9EmTvcDrSPqjt_gHIG_UhFcRBGzP6kEtdhbGsx9XevNkAWoOmg1utImw8
-Message-ID: <CA+CK2bCWo7ixrNLKPvqETn3JSFwSNaB2UsPgy9RHVAhWroJURQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 4/4] mm: memfd_luo: Add the 2-bit pair feature header
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	David Matlack <dmatlack@google.com>, jgg@nvidia.com, robin.murphy@arm.com, 
-	loganodell@google.com, oupton@kernel.org, kevin.tian@intel.com, 
-	alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, 
-	will@kernel.org, Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org, 
-	linux-arch@vger.kernel.org, sagis@google.com, linux-mm@kvack.org, 
-	kvmarm@lists.linux.dev, iommu@lists.linux.dev, linux-pci@vger.kernel.org, 
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4F33320005
-X-Stat-Signature: nfhm8xojupsdkjjyx4jgynywxwg8wnqk
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|PH8PR12MB7375:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0da19133-30cd-4aec-e6eb-08df2f9a58dc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|18002099003|10067099003|22082099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	//Zveg7enEZjDC1odBo483/ecevc1uWMM/arC+UNUM1pW8mwHaLeIHpSa/T6IaFdUOWbx4pcfBk81LSSXOfcLo8V6vLWB8r44QQgSD67qmFdgoHI7aUwTkzjMGb/e9SGoNLYWHEw0NOcQIVp08zf3UtxUDsb/FGzFp4z299SSPu0iAa5tnU/1CAq+MqtHU/Iw0V4i1NvqNunASMq4PR8SEhaP6JK6hENH7P8jYt5tDfv2OxyhRTaRWPDy2By+Pv6IRBAt4IeQQnTq92i28hV0jctpJ7HEvrYYaKBp30y+LXmWBYjzM6Te5Cz4kSro4EOBnYxipKeWsP+YtNEAsJI8vhp4zsCb0Jz4H6KOHCz9QqCgOdK0zLHBf6wmFv6CYmzWKpwnx9Sgd4fLekcXTc1zfWGTebdRbZyDAO+rfoTeckn4UdUpXbDFyHKwlj/agfunYrMaYvkMX2RPxsynIAkSdR9qDryJiahCmINAiHYA6ErrkVr0oonCa7llCRl8wGpnwlJmIzSunCryePNFzGbuIvBdmLDht3CqdAomJwYguCKUV0yxjvNgqinvZfSVvYEX5SfEkRlKMnBCFKh2MFuiaVVhdfvQ199WCSFDkZVLqkKheEcbyb4HVzk/hclM8W8IqbGisJILv5z83ylzdhL7LsLYJ4uwRgVeCoaSxyr/fo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(18002099003)(10067099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S3QwM0xIQ1g0cEtSay9pZWEwSnlZd1M2Z2d2RUhYZzlubTc5dmovVnF5cldl?=
+ =?utf-8?B?cGNwWjg1ZkJtSEViQXlQbHFzY29VNC8wSTlTSU9ObHRYY1ltUFZ3ZlVkc2dG?=
+ =?utf-8?B?NGxjdEx0K1pDSVV0UWwzV2dvNUtYWHlzTEZXd3Y3WlFGUGlHb3Q3SkFVaWNx?=
+ =?utf-8?B?WEEzcTFPSlVKd0JlcUJoYjc5eHVBa2xFWHU1ZStCd2ZqTzN0STdYOGlFNHM4?=
+ =?utf-8?B?K2FMQnlRdk5YUFhzL1EwUWEwNUVwZ1IzQXhROGs1K2ZLT3ZxT2szai92VVdV?=
+ =?utf-8?B?MytLcm96bENxL2U1TUtEM2hSdmE4NWh0M0NoK3NYclFVbm1xeWgrMXZ6STJK?=
+ =?utf-8?B?TzVGTTc0bjJ6Y2loZ2Q0Tms2RytWamt5Z2NweUNWbDdtOHExUi8xclphaldG?=
+ =?utf-8?B?VXhmWEs1RE5ESkxzM3doRWw4V29MZWJ5bnZOV2lBZFA4OU5YUjRwcGdjOVcv?=
+ =?utf-8?B?dWNJOXIyaTMzWXpyY2JzSCtDUDU0a3NrRDFaMHVWclV3aEtoeHl3TGJDNXlV?=
+ =?utf-8?B?aUIwWWlCWThKci90OEp3NWZFRWZvU0d2QTN3YStvc0NaK2JrY2xwRlpzcGc5?=
+ =?utf-8?B?SWtaSTVuRDZ4cFRLZldaTklRRnNxYmxjZnpubXI5aXZ4cGhLK1RMQUhnZ0pV?=
+ =?utf-8?B?b0hNL1VGUm9CcVRGUS9iUGNsaUpoaWVvK0lzZlZsNzZmaGN3cEJzb1RXVjdH?=
+ =?utf-8?B?YUlkcHlzWGk2REg2MnJxOFBsT1NkWDFlSTh4a2NSMnk3OVgrUWVuczlEbUtV?=
+ =?utf-8?B?MGpYcjg2ZEl1SFY2b0lkMFNmekJBTE9vRFJwMXJYK2swK1R0dXluOGdpLzJz?=
+ =?utf-8?B?a09Cc0FwN3F0NkZKb1paWjZ0bFlaOXVmNnU3eDFNRHQyYkhjOTNSN2l6TUxo?=
+ =?utf-8?B?cGdacjdWVGRsZ3p2YXlFMSt3dGpqQmtmSXBHQzR4czVCZnJRRkp3dFp3dDZt?=
+ =?utf-8?B?bFQ5Mnc4bGE0WXBxZHV4TFNycTZIM1RKQzQvVUtpU1ZrSmlTRmc5Z1pzeCtT?=
+ =?utf-8?B?Y3Z6bXc3MUt1cEZoYVd2Y0hTdmwwVCtDQ3k2VS9CdFEzTXV4M0p6WlVObzB1?=
+ =?utf-8?B?aUVMdjhtL2l0ME5xbHgzMnkzeWVZRlovekxQK0k3ZXVKTGNOYTJXTUg0WnNt?=
+ =?utf-8?B?Vml4ZWxUOUMrQWVtS3JoYXpGSk5KM0hxOG1RNkEzQmt5bS9ZUFN0akxZS1JZ?=
+ =?utf-8?B?d2o0ZGcwYzQ0eEhFbkczSjg4S0MzVXB0SEVGczh5dkJRL2FiSlU0WTVZblJK?=
+ =?utf-8?B?bzByLzA5Yy9kNVkwYjJoQVF4bXMvV0ZhVE5IVWxnd0dabFlaUy82cEVPS2pu?=
+ =?utf-8?B?WGpLTDU5K01uM1p5Q05lcEFrRVovSHpqNDdaYTloeTNJSHhxKzdZaEZvMitJ?=
+ =?utf-8?B?Tjg2M0dVYyt4SWZYcGN5a3IraDlxR3pTQTgvdG16RlAvSU5WSFVGWWxVVnJx?=
+ =?utf-8?B?NGpDL0dmZkU3MVFVYUVjbEZGKzk1WXlPdzFxNFZSMGkrZVhxVlBOQ3B6OHRI?=
+ =?utf-8?B?cmVPbFk3ZlNUdll1a3g0ZW9OdjNPdXRLaEQvUTBFNWtvVVVQSWpiS2ozUXRo?=
+ =?utf-8?B?a1RhNGZXU2NKSHh1Yk53UnZsQlVOYnl3bDhSMmVaSG5rRDU0S2xVY2JqNk1E?=
+ =?utf-8?B?ODNEYVRXTnFWWC9OdU5talFpOURJVm1SMTZxU0VZRytUc0dnd0M4VWdoSTB3?=
+ =?utf-8?B?SUFvMmZSUWgrOExKd05SeDh4UGl2V0dqWFF4N1M5T1ltWk44U1U0YkdhVmhj?=
+ =?utf-8?B?bVd1NmF1ZENqQkZMWWZxcTBncnI4RVNSaXd3K2V3WFA1Z0paak5JNEpvaWhp?=
+ =?utf-8?B?RlR2cXQ1VjZhaFNIUy9WSEJlSTJrNWZqdUhvbDlKTFZ6c0tCSnN2N1NNdXhn?=
+ =?utf-8?B?a1JCb3U1WDN2VTlHOC9qK05uUkVhc3ZUNHVhVzdLcHRRQ0NzMm1KbjNkYlR0?=
+ =?utf-8?B?d0Z3NlJ4TGRSalRwMnQ1S3pMN2NQazIzQ2N3V3ZlRmRndXNRNXhkeTRYWFRB?=
+ =?utf-8?B?TlRQdGpJVGpDdzQvcXhnSjd1QjlkRS81VTBiSmY2d3UvMjhjUzN4VDFjeTdn?=
+ =?utf-8?B?dkx3eFVka2xUWCtYMGVreUdmek1lV05XalpNMDQ0NWorTDhDRzhuUit4TFhU?=
+ =?utf-8?B?V1VKTVZLZnZ3eFpFbHcvYTNpYkc1QmVXbVhZZnQwbUVGRGdLYmJmYjhINUpi?=
+ =?utf-8?B?d2JCcURlWksrazlRdHVJSllnSWY4SzNuRE1Qekp5bGRQS0w2ZmlQd1R3ZWhW?=
+ =?utf-8?B?d213OWZ0SWpDQTc2RFZZdUdPT0I4VG9NNnBXVUJiMkwvck5hVlkyL3I3NEVN?=
+ =?utf-8?Q?p/X4sLqUr2pBiB1mfb?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0da19133-30cd-4aec-e6eb-08df2f9a58dc
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 17:40:07.3422
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 794ZxyqdEjLv0iivdjt47az1uT9Z2XsAePZvyGVDFO6Lfz9QPB0c7U1IZHywYA9q
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7375
+X-Rspamd-Queue-Id: A53B4C0007
+X-Stat-Signature: qmzwzw6cj4ou9dmrcbg58uoeyshkhqor
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792604336-786822
-X-HE-Meta: U2FsdGVkX19oSgS+WDFBAhoSYBFoNAUEGbhBBGKRYb/hbte0P6QtWbhRZEeTy9MGuKbPRAX1ctaTdoKc60T7imCvWDBXnRBVzYFjrsvGAY6l6ahzij+Cm5Jqc2oWTxG8ZZGlxyBYQKT+wQbYgSuIpTC/Z7Ip6kBQSL3AyQW5yS/pwKTpF5va5GVAHpecFjix09zpF9VgUUdoOUxRvss8T6xcpgvFblNpogIYTLXXYr0owjmWzrXTQVBWUgHErk2zR8d/nAjCqsfUCmpAmkQm60E32BiWN+rA14fLCQyH+z+C0bOuRpRTudsgF5KAub73ZpEIBmoA3lYcCwom+LT+7Asd66n1QKXZKuJq2g63HjRhcge436FlN+fbLt4D2r3aLUxC/Hp4A5OQLdFoxSrLFgWeC2jmse4dLM6yClbaStVO447JNXjZE6KH4ziBvv1+QFHPuypym6dFaK0uuvnH6OleA7+9NtX9bsPsqrHAdMrDRMWg1QuKXSSvLaCmuRoSVicenXEQI9JtxbFHPxGLvPbrvKyyUireM1Acrm4SKeYmQOoUcfMBn7unV0nAn1N6dy+bWlyJcYuekT7fM8xvgc4lxWTBs/CaWSFzKyQGJXv6exq/LkxopsJ5vtxAMlwQJHCh4TIUNpVkVkgwLyaJX5j1vz4Z1ybfYy3BeuHyZdEY4o/NKcLV8HLfZenRz7umWaN48IQU5ntgzX8gCAgNG543vv5WT4E+cUtDz66q8D+LAj6R6/0knNghKHM/kuazvFYe9s4aZld2DI6jeok9aMtZp/XfBmA31u5pE60y+48LIsZYkmcxQ0uwunfzXMKWuKttAEgl/vfGYvwJ7jrYQzwaY4sEE+1awWTlHI6gRvRdwwNy62qXWsJoprxO8sNLOZdO7Leylfh0ymIySUyPDKN6IQpLhExHKFOzNTPU/oip6KwfTn5LjB5J4cwx5Tw7lwiqulekLr5mHeGxavD
- dv+P4yHH
- cBssMr8aAKAUWwpHIVaXnkNf9Qi+ufcPGs/UIQvmZgmtzShWjQLbgK1O8j2kKlUkrZfn1cq4qmwZYsGh7iYq9K2HrSy/2XCzqaUsoSRYiUhNTssgPlbTcmn8fe1NJwAy3ckG3kiD0KMnMCtQ0hje/Y95bBk+ep8aclCLO6mDTnxZA03csMAbHdRgcxXbv2FLQE/1VyqqOiMbxbLAensNsb10sCTFmLTCKlZ4Dm8dUmBkI+U4IlWhl4JVwwG1xMmUiT3rkils4u3I8fHEzDQzzsYsKSQ6L5t4P6n5pUrrvfKIwFAllWqHXeeNMarhzDBZONOYs7h3uqOAfj6iE28bw79lWZg==
+X-HE-Tag: 1792604413-447733
+X-HE-Meta: U2FsdGVkX19iGBa2HHUbHrsIXI5PQR1OimbEwTWzKWY0Vr1WU6sDqBwLpQ3rKBllsOXRLgQi9vQn8u0MPpXt/6Dss5wGzkyTrJKNeCO96Go3OLBuLu0UIqqCMYf0gXn6x1AikIJ2+LH02lPBnWbVP0k15AkTIiNqWCe+WBO/pGS6kZ6s2jogw4xJYoITY/kxNJ6eo3ArQytUUv9blx2ue9jZS5RuZJyA8PjnJSEqYE2sK1HiiSQzrLxP3boY0xbXkTRSKrnLRWUJcavfJVBn1POqlcsQqV/M31JOz1ogdWMoNCnQGmXW2DptcQFMPvwWA/SiWtYIPWv2e4kb6HIutLoEUuHJHnpDAgRkZ8UF5fM3X5+UiEeqhDqcLLy1E9WKvYxpy/bq6QrRchZZA9FUDYUBZzbX0XmSRCKZIVFnnfnxE5Wi+z1nGzzFaa+QyCrB7Qf4XgpiA9gRZCzDFAGH62XvpH70oRHzuj1jc83wWCTxNk3hqBClWSasp9ZhCEbnObzf8LmzWIufWtfCkfjuTypNIchBnr/+vWDWpb8BeOzx/HtDp600Aj0DGqXCUmRlgafAzwGTR0KV5laS4sItJlzvLPRDFlceJXOFjl7ULtrQZEteV7y9kNmotPBHfuLo/S3HnodgcHIw6p4B3SW5MOWLcTCDLYFOdrA6fZjHJ4S5Tn3AlTtkFqe7Wf3UEp8hFZ96ntePVoc0k3oPcDe+RR9jQWhab7Zi69tkgJj0E+aDXqInbpXNJF+/LEdSLhaBnnaNNhAt7aRE+EK9E2hnVOR5sG3D8NBtqwpQ70VT63kXGT1N1YxojGOWR6bNhhZvrQVkr0SxhugnO6T+lRYmCs/Fh37yVtYESDl3SXNUbhDEZRmwGObCyuwyn2GnlCOP3a2pHoYqq5/v/13rhg7e1LhpARdCitwv3NPcWG/ztXXTudO0QfO2oMCwB0J8BucB19w3r4j0PZn4AoVN34d
+ vpHGebYZ
+ Uf6elROuDjNP0eSlLM8rrTJqtJ0DZ0rGyOahrudxfK9RnweOEfK03oW+YJmhqzsqd115m6ktXKBXkgIuzwQBcumCXginhDU5JKap7eUtXL06YNROTrBjQ9g9Gc23COpH/eZL96VxA5viekk7KETp8Png9Po9bUJzAeGP6/kJOHaqkQh0/QgKyOrUxt/pWNRxJIsgAusgZvhOwODJnO1a+7ZD0ckMJNTifmC+kFHceGoUs+zqUXuv3WeDAN6fxGFGi9Yecie7pUFlbO1XW0RsOWLPaJWubTRXHH61dJmipsCORGTv7AMdt6Xs3MqZ0V8OFF8WNPVnlXfuIcLVEAIjaTE5AdbYETA07sgxslWTVCs6novU/z5mlrz+Pm24wyo2nRQFoINv8aFKZAG2XS851ooLDma8NBUIJeQlK+zfLO9XymtixmRQ5A4sPwzJreHv4HKm+KYGE9TkrMN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,210 +188,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 11:25=E2=80=AFAM Tarun Sahu <tarunsahu@google.com> =
-wrote:
->
-> Embed the fixed-size 128-byte struct luo_feature_hdr at the start of
-> struct memfd_luo_ser and define enum memfd_luo_feature
-> (MEMFD_LUO_FEAT_CORE and MEMFD_LUO_FEAT_MAX) for memfd preservation.
->
-> All current struct memfd_luo_ser fields (pos, size, seals, flags,
-> nr_folios, folios) and MEMFD_LUO_ALL_SEALS belong to
-> MEMFD_LUO_FEAT_CORE (LUO_FEAT_REQUIRED in memfd_luo_features). Future
-> changes add new entries to enum memfd_luo_feature before
-> MEMFD_LUO_FEAT_MAX and append any new fields to the end of struct
-> memfd_luo_ser so existing field offsets never shift.
->
-> Signed-off-by: Logan Odell <loganodell@google.com>
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> ---
->  include/linux/kho/abi/memfd.h | 35 ++++++++++++++++++++++++++++++-----
->  mm/memfd_luo.c                | 14 ++++++++++++++
->  2 files changed, 44 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.=
-h
-> index 371ffd108a79..f0b5235a408d 100644
-> --- a/include/linux/kho/abi/memfd.h
-> +++ b/include/linux/kho/abi/memfd.h
-> @@ -13,6 +13,7 @@
->
->  #include <linux/types.h>
->  #include <linux/kho/abi/kexec_handover.h>
-> +#include <linux/kho/abi/luo.h>
->
->  /**
->   * DOC: memfd Live Update ABI
-> @@ -21,11 +22,20 @@
->   * reboot using the LUO.
->   *
->   * The state is serialized into a packed structure `struct memfd_luo_ser=
-`
-> - * which is handed over to the next kernel via the KHO mechanism.
-> + * which is handed over to the target kernel via the KHO mechanism.
->   *
-> - * This interface is a contract. Any modification to the structure layou=
-t
-> - * constitutes a breaking change. Such changes require incrementing the
-> - * version number in the MEMFD_LUO_FH_COMPATIBLE string.
-> + * This interface is a contract. `struct memfd_luo_ser` starts with a fi=
-xed
-> + * 128-byte `struct luo_feature_hdr`. The relative order and offsets of
-> + * fields must remain unchanged as features are added or retired: new fi=
-elds
-> + * are appended at the end of `struct memfd_luo_ser` under a new feature
-> + * flag in `enum memfd_luo_feature` (before `MEMFD_LUO_FEAT_MAX`), and
-> + * retired fields are kept in place so subsequent offsets never shift. I=
-n
-> + * the target kernel, fields of a `LUO_FEAT_REQUIRED` feature are guaran=
-teed
-> + * present once `luo_feature_hdr_validate()` succeeds, whereas fields of=
- a
-> + * `LUO_FEAT_OPTIONAL` feature should be accessed only after checking
-> + * `luo_feature_is_active()`. All current fields (`pos`, `size`, `seals`=
-,
-> + * `flags`, `nr_folios`, `folios`) and `MEMFD_LUO_ALL_SEALS` belong to
-> + * `MEMFD_LUO_FEAT_CORE` (`LUO_FEAT_REQUIRED` in `memfd_luo_features`).
->   */
->
->  /**
-> @@ -58,7 +68,7 @@ struct memfd_luo_folio_ser {
->
->  /*
->   * The set of seals this version supports preserving. If support for any=
- new
-> - * seals is needed, add it here and bump version.
-> + * seals is needed, gate them behind a new feature flag.
->   */
->  #define MEMFD_LUO_ALL_SEALS (F_SEAL_SEAL | \
->                              F_SEAL_SHRINK | \
-> @@ -67,8 +77,22 @@ struct memfd_luo_folio_ser {
->                              F_SEAL_FUTURE_WRITE | \
->                              F_SEAL_EXEC)
->
-> +/**
-> + * enum memfd_luo_feature - Feature indices for &struct memfd_luo_ser.
-> + * @MEMFD_LUO_FEAT_CORE: Core feature covering `pos`, `size`, `seals`, `=
-flags`,
-> + *                       `nr_folios`, `folios`, and %MEMFD_LUO_ALL_SEALS=
-.
-> + * @MEMFD_LUO_FEAT_MAX:  Number of defined &enum memfd_luo_feature featu=
-res.
-> + */
-> +enum memfd_luo_feature {
-> +       MEMFD_LUO_FEAT_CORE =3D 0,
-> +       MEMFD_LUO_FEAT_MAX,
-> +};
-> +
-> +static_assert((int)MEMFD_LUO_FEAT_MAX <=3D LUO_FEAT_MAX);
-> +
->  /**
->   * struct memfd_luo_ser - Main serialization structure for a memfd.
-> + * @features:  ABI feature and size header for memfd_luo_ser.
->   * @pos:       The file's current position (f_pos).
->   * @size:      The total size of the file in bytes (i_size).
->   * @seals:     The seals present on the memfd. The seals are uABI so it =
-is safe
-> @@ -79,6 +103,7 @@ struct memfd_luo_folio_ser {
->   *             struct memfd_luo_folio_ser.
->   */
->  struct memfd_luo_ser {
-> +       struct luo_feature_hdr features;
+On Wed, Oct 21, 2026 at 01:27:22PM -0400, Pasha Tatashin wrote:
+> On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
+> >
+> > LUO and its file handlers validate handed-over state with monolithic
+> > compatibility strings ("luo-v5", "memfd-v2"). Any change to a serialized
+> > structure, even an optional additive one, must bump the string, which
+> > breaks live update between adjacent kernels. Replace the string in
+> > struct luo_ser with a feature header, so that the target kernel can
+> > accept or reject the source kernel state per feature.
+> >
+> > struct luo_feature_hdr is a fixed 128-byte header: the serialized
+> 
+> This patch is all wrong; 128 bytes is far too large. For every _ser
+> struct, we only need 8 bytes instead.
+> 
+> The first 4 bytes are the size, and the next 4 bytes are flags (i.e.,
+> 30 feature flags + 2 reserved bits for flags extension). The last two
+> bits of the flags indicate whether an extended flags field is present.
+> Each extended flags field is 8 bytes, and its last two bits indicate
+> that yet another extended flags field follows.
 
-I have not looked into this yet, but I would prefer to use some kind
-of macro constructor for serialized structs. That way, they will
-automatically include the header, making it easier to search the code
-for what is actually preserved versus what exists only in this kernel.
+I thought we agreed not to loose the string too, it was a tree
+ string -> feature flags -> individual values
 
-So, I think something like this:
-/* Base serialization header: 4 bytes total size, 4 bytes flags */
-struct luo_ser_hdr {
-    __u32 total_size;
-    __u32 flags;
-};
+The string is the emergency if we really badly mess it up.
 
-#define LUO_SER_INIT_HDR(obj, _flags) do {           \
-    (obj)->hdr.total_size =3D sizeof(*(obj));          \
-    (obj)->hdr.flags =3D (_flags);                     \
-} while (0)
-
-#define DECLARE_LUO_SER(name, expected_size, members)       \
-    struct name {                                           \
-        struct luo_ser_hdr hdr;                             \
-        members                                             \
-    };                                                      \
-    static_assert(sizeof(struct name) =3D=3D (expected_size),   \
-                  "LUO struct " #name " size mismatch!")
-
-Usage:
-/*
- * Header:  8 bytes (hdr: 4 bytes total_size + 4 bytes flags)
- * Payload: 8 (pos) + 8 (size) + 4 (seals) + 4 (_pad) =3D 24 bytes
- * Total:   32 bytes
- */
-DECLARE_LUO_SER(memfd_luo_ser, 32,
-    __u64 pos;
-    __u64 size;
-    __u32 seals;
-    __u32 _pad;
-);
-
-struct memfd_luo_ser *ser;
-...
-LUO_SER_INIT_HDR(ser, 0);
-
-Thanks,
-Pasha
-
->         u64 pos;
->         u64 size;
->         u32 seals;
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index 64f8b8cb75bd..ea1f4c8cd259 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-> @@ -84,6 +84,10 @@
->
->  #include "internal.h"
->
-> +static const u8 memfd_luo_features[MEMFD_LUO_FEAT_MAX] =3D {
-> +       [MEMFD_LUO_FEAT_CORE] =3D LUO_FEAT_REQUIRED,
-> +};
-> +
->  static int memfd_luo_preserve_folios(struct file *file,
->                                      struct kho_vmalloc *kho_vmalloc,
->                                      struct memfd_luo_folio_ser **out_fol=
-ios_ser,
-> @@ -284,6 +288,8 @@ static int memfd_luo_preserve(struct liveupdate_file_=
-op_args *args)
->                 goto err_free_ser;
->         }
->
-> +       luo_feature_hdr_init(&ser->features, sizeof(*ser),
-> +                            memfd_luo_features);
->         ser->pos =3D args->file->f_pos;
->         inode_size =3D i_size_read(inode);
->
-> @@ -525,6 +531,14 @@ static int memfd_luo_retrieve(struct liveupdate_file=
-_op_args *args)
->         if (!ser)
->                 return -EINVAL;
->
-> +       err =3D luo_feature_hdr_validate(&ser->features, memfd_luo_featur=
-es);
-> +       if (err) {
-> +               pr_err("memfd_luo_ser feature header validation failed (s=
-ize=3D%llu, flags[0]=3D%#llx): %pe\n",
-> +                      ser->features.size, ser->features.flags[0],
-> +                      ERR_PTR(err));
-> +               goto free_ser;
-> +       }
-> +
->         /* Make sure the file only has seals supported by this version. *=
-/
->         if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
->                 err =3D -EOPNOTSUPP;
-> --
-> 2.56.0.212.g129ede20d9-goog
->
+Jason
 
