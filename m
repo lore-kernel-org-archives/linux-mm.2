@@ -1,149 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B43A606A319
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 08:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97CD606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 08:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=n9w9ghqs
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QtpM+94P
 Received: by kanga.kvack.org (Postfix)
-	id 4A3576B0676; Wed, 21 Oct 2026 04:32:39 -0400 (EDT)
+	id CE2246B0678; Wed, 21 Oct 2026 04:33:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 453F56B0678; Wed, 21 Oct 2026 04:32:39 -0400 (EDT)
+	id C92D46B067A; Wed, 21 Oct 2026 04:33:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 343666B0679; Wed, 21 Oct 2026 04:32:39 -0400 (EDT)
+	id B82786B067B; Wed, 21 Oct 2026 04:33:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CFA56B0676
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:32:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 059CB1404A5
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:32:38 +0000 (UTC)
-X-FDA: 85345967196.22.367FE68
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3E063A0008
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:32:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n9w9ghqs;
-	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792571556;
-	b=0q0OwSfoUgIGIc40sAs41XS3eFGuQtcPk4J12dCMTqnfUyUSwG4hxruNSyyOitGaT0vWxY
-	3Hk5s1R6IYTXYIopYMIDHecwDa0DC2Cv15pGfvJqPAOk9l2fcucg7rYuTKUJ1B0UenSeGf
-	9TGJddQaGXJIlnr4isV4h93vjmC8w8s=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n9w9ghqs;
-	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D9E26B0678
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:33:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0C8921A04B4
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:33:16 +0000 (UTC)
+X-FDA: 85345968792.18.A124A9B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F28E2100006
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:33:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QtpM+94P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792571556;
+	s=arc-20220608; t=1792571594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKmXp2d3TpfvxuGqVqHnwKm3WEcWPeyk8O3QNAPgerw=;
-	b=Hpn2iOvmyoyJY9GJbX0ciI3CC5WvbMvKARRdrd1YPk2pBB6SDSjlTdJDtzEPKy2tXL/bxB
-	P/x4aTj3Dv6kzdcd7vH8414psX+SHHyeaJiOrq0jZRdzsNLMovQdZ9mjz8X82GoCXSMDoo
-	vizJs0tOp7WhqE8wrcQRu5LcB8viXJ8=
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-cd63952c9f2so54632a12.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:32:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792571555; x=1793176355; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oKmXp2d3TpfvxuGqVqHnwKm3WEcWPeyk8O3QNAPgerw=;
-        b=n9w9ghqsiPjOgwE+Bkfqkhw4xgBHYz68VexvV1rq6/QuN7CqH+z1AiC5wn8q0SKhIr
-         8pIDX7BKNpgYxM/mGjtWeEMOmkvNBdzFq5uKzEvruGukHKSD+fxm2MS8iar+dYe2VQX9
-         0YuIcof6Hq/Mog68wa02oRK3uwzJYOOiSGjDFebzNf6BxSAWsVoRQG/8p9RRRPUE9uac
-         /R5bWwJDAAUoR4TbQdM5TrCBjPNRK8gu40+t5TqUpIEngZdrrqN//scQCsi+yYVMsoAc
-         siV1G3wbuyGyv9jzyfp6KEYTVAncnZDnv//e/UaA4WUHpl/5SWaYWHhHPEth1KIDFTAb
-         YUyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792571555; x=1793176355;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oKmXp2d3TpfvxuGqVqHnwKm3WEcWPeyk8O3QNAPgerw=;
-        b=1KYtzlwQe7DJJ9kUNGnJ2ps55Tj+g1oUDM2rPCoEb75pEZ//3WctlVeMKKUmY/YnQi
-         WexD90PxGN7GwA2uu3SWR1BJE+8giAJ2QUiuqPwpKRwPlv0WFzXg6GJaohoN8vWuEnl0
-         NJDFNX4E38IGjU8yEfAvmRTIUH5OvwjKZ2mc3KC6zTi7ltXYcG6vsAY54V309OAUceZv
-         jqyU17M1ebnENG0rBdmXxqnbpi6X/vLrpYdavryg3CeWRMkcfeBtRw0SPypBw/4ocxDF
-         cTjFnW/p3pM2e6ae78J/0gmVBr/00yxC9NWQcT/G52pqFAQKjO/rBJReobMueh7WuT4C
-         s/Vg==
-X-Forwarded-Encrypted: i=1; AKwUvByw9wvekL5/oF2I9ykonKSS5bftq2jncfN+dxkFWluLLkG7aaZNROEiMxz7ESRY1HIZgU9mpXTUqw==@kvack.org
-X-Gm-Message-State: AFq9FYIULEHWWXO2RqN8y7ImnuAr3xyFMND0I9HdT1bqqX2Vh9KecOPE
-	MnFXygAqWxeUW7KYhOU4m9bMyLrufUL2AJYngXgWze6R2RUrDHywSgg3
-X-Gm-Gg: AYBFou0CZ99PY5Cl8GgekfDFqC+8DvWg/udzYyvKl/S9ib8fVPALQyDqpu6Y8JYSv7k
-	t3yHgBWWVSfyCOfzroylpfWLr+AFnkn63nnDGI3iERJq9Qar4yeJIwirf9UrD63sIhpZ+aAMVA5
-	oRPg2Xa/rpRIK8Nq1raq4oVDRJoEtbpzQYn3rTSmQsOiJ3kopgVxgTDuCRuWF+oXMLlbu9tk3F6
-	sJcwI4g4GPjAcEoARulaGFWKiSK2pndHeDtgPEot2Qk+pFSYrxKsJVgNjFm+tNVSJKgCbwcDUIJ
-	tPi9LAiZiA0G4NdjEsjiIFkZnaQrgrCTcxDlm0e6X24d7F1lqCB9hIs19ON2tPEfIeIrKpBLjEC
-	qh/KPwGQaJHaESl2mhhZDIn4UKVy6eisatR2SqZ5FkRrcRD9kVC+GhDi9tkhaq7zVJJu0gMVDKC
-	/Kt3MPC3pu4XT4e/OpE/XocgNRsUI9MpJlEBobM6cxvuiHvvTssXw9A4RMZMzPYSiHqjOyRhAJc
-	RHdDC34wKV1KVDvAiG83r7trRpLXqawMzWNTuqOZZfsQ89xRdHHeDUDgdbzxTwV901l
-X-Received: by 2002:a05:6a00:1786:b0:89f:3f60:cd81 with SMTP id d2e1a72fcca58-8a089d539cdmr1130152b3a.51.1792571555108;
-        Wed, 21 Oct 2026 01:32:35 -0700 (PDT)
-Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0895e273bsm600653b3a.41.2026.10.21.01.32.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 01:32:33 -0700 (PDT)
-From: Wandun Chen <chenwandun1@gmail.com>
-To: robh@kernel.org,
-	baoquan.he@linux.dev,
-	rppt@kernel.org,
-	m.szyprowski@samsung.com
-Cc: catalin.marinas@arm.com,
-	will@kernel.org,
-	mark.rutland@arm.com,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	saravanak@kernel.org,
-	akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	ruirui.yang@linux.dev,
-	robin.murphy@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	iommu@lists.linux.dev
-Subject: [PATCH v9 8/8] crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF header
-Date: Wed, 21 Oct 2026 16:30:11 +0800
-Message-ID: <20261021083011.2170525-9-chenwandun1@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261021083011.2170525-1-chenwandun1@gmail.com>
-References: <20261021083011.2170525-1-chenwandun1@gmail.com>
+	bh=MKByxw8dDW6HSJz8+UMbqi5YMYg3uB2cb2BltWyQmtY=;
+	b=hmHHIvJedsxic1JSINC8g9tKTIWNIvOhwCON6G6vsDoahA2yLNP/TBYFWk5caSB0Os2ckC
+	tB17mPpiKFktbT4YTrGKRnmUOuCfDdQtRC3gGBSgntDOY2gDFHpLVb9uog+E9itfpT2oII
+	xzLxoMtbGQ3lEjJL56zzwkx+wDInr+Q=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QtpM+94P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792571594;
+	b=AXMGNfPayFXkGlZAWIW8wMFIvToWzNQrqXRdzfLyEJydDyb+xw5ZnGHMhwsj6w1gri8MKm
+	U/UGUTBGvPoiBb289RhrfouO/iLe+hBpFUqcqGTYZnM8E3EeVw4+4eEh1uGR6ix/e2QwoF
+	MSWLN9wDgZzqWJf2yfVuNPYk8c/9CLQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2197843D26;
+	Wed, 21 Oct 2026 08:33:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F32E1F000CB;
+	Wed, 21 Oct 2026 08:33:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792571593;
+	bh=MKByxw8dDW6HSJz8+UMbqi5YMYg3uB2cb2BltWyQmtY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QtpM+94P0z/ja2LfWi1SKDPVylIFLra5YBht5Gdl4ToK7koxRMrqLfqlFA6US5oc3
+	 3+xUnVvo/Y7M+Izf5+pXUzsRxldK98M1KJrd5mNfp4ME9zkbgkkajDpOwKYTgtw/qj
+	 r1DUqsE4e8dj7RM7K+JilygqmHkigjTqfMnclTo1YQ/YNCp1YGE8NcrGv9LF9qln6a
+	 +OAHHmrFUeL9DW2HyspbiMqLPl5iXJX6S4GfOHC5geAqZpkLySVG2ImEaV4xp9J2LZ
+	 jIz1SbEL45Sunpjq0AFLoRcG9SE/lz9ACwk7ieWFZy79gzhKLxYKkn26a6SIOEvMvE
+	 AdV58TpRxBNYA==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 96A7C198004A;
+	Wed, 21 Oct 2026 04:33:01 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Wed, 21 Oct 2026 04:33:08 -0400
+X-ME-Sender: <xms:vXjYaqD4Edw4zlL5mp13NmLz3tRKqOiPZcTgJgIpShC3QPuWlBmNTA>
+    <xme:vXjYarPSQW8giGM80hU1G-6AKAFbQFhhzu6FP8FXkbGl_xwgSJXoZvt_wthwHPyXS
+    Agw8fpGcsh-UE5pbchgsNIVOkgnQW1hQUb4Mj9xsynjFrOLv644KYZW>
+X-ME-Received: <xmr:vXjYau6T3aVIkWBowCPXTm5p3pJwbJMNfUI5vSNXMq4n7tgqoQE6ZaLep5U>
+X-ME-Proxy-Cause: dmFkZTFrsjqyNAVpEK98oebWFXwZpI7LqX9Aov6fN8jUp2sNNep1ITMUB5YykhVbmPS/JW
+    hhu+Ze1IE7IQhEqDUpsMd7Cg7z0t93UpSSU3DYZM/EVADOuUVk+FjdtAeACf5DVZ07Qkhn
+    t/PA68gModROd74o4gybU16E1jPYQsNXGLetxZ7IOa6m+sCSckxL6wwATbX1RUo4X8mwkX
+    tvQzyXOt7I1CuCjEyKtXxHmz4HGj57DN9ITZyqARldyoDovSDBIwoWizcJ+AuScX7751LZ
+    GsLMiHVmGYyi+16tRQPq7oISzc69Z2qZ+zI4txcHKFEUanCWKZTYL39zREtM9rxHRO8Jhq
+    WH7pVuWso/HHzbbIyQWn+a0kjP0y4p2oz5+TPjDWJrRopIdu1nE5WVdG0PPJFjuufj8M0L
+    GJ//TWPi0snycliRS5JJ37gww9RykpVb7LoEMV6J/YhMqGDXlyLbJ0tx1TUjl9rfgYneJi
+    OKTrtcZU/jhXGREu335v/vLNLk3WQxS1jzpklNaJ7gFd3IhswJL1OmaUOh/+v2t6E1l+Bl
+    AWWX+tWL4e/AZIyHtWrbzT8WHj0a9UNa5jeHi82Da4a/8bdG8RYbXxatW9tRg0y2KQIITM
+    GFV8HOuowBhoXkp3irIUh2WZcBODF2cXEfd1sZfpqWHqGU10kSs+RI7+0DGw
+X-ME-Proxy: <xmx:vXjYauqfryVHxqE4auQn3axpAf2N62CEDED2JFHUY1W7ULceo2orXA>
+    <xmx:vXjYak-s_P_X8IEzwImFUarcxPBVPLP1kPrB88HbNgTTf78QDf_Xxw>
+    <xmx:vXjYapX7GsewJFLd_bHvVob-INQxR0pTumlNEYFqdaGdZvJll5VOVg>
+    <xmx:vXjYarAmMQmJsCyknzln-QjD_6RT5voeOhvjDeH7JEsjPXELfo-Org>
+    <xmx:vXjYagbgYiwyZnitRIjHGBhDBbxop9wsVdzJkQiMncCsOZqnbKYQxt5s>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Oct 2026 04:33:00 -0400 (EDT)
+Date: Wed, 21 Oct 2026 09:32:59 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Hugh Dickins <hughd@google.com>, Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, "Liam R . Howlett" <liam@infradead.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	"Paul E . McKenney" <paulmck@kernel.org>, Pedro Falcato <pfalcato@suse.de>, Harry Yoo <harry@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Ilya Gladyshev <ilya.gladyshev@linux.dev>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, kernel-team@meta.com
+Subject: Re: [RFC PATCH 13/18] mm/filemap: store the end of a read in f_ra
+ only when it changes
+Message-ID: <ath3Fk56VcWp7NPe@thinkstation>
+References: <20261019154913.1765974-1-kas@kernel.org>
+ <20261019154913.1765974-14-kas@kernel.org>
+ <CAHk-=wjJpuLXt5BHieXV1qBE-uoWDXKugcfGgR+DiVGVZQ8RvA@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hiimrj1xra5kdw1hhsc33718gf988bjz
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjJpuLXt5BHieXV1qBE-uoWDXKugcfGgR+DiVGVZQ8RvA@mail.gmail.com>
+X-Rspamd-Queue-Id: F28E2100006
+X-Stat-Signature: huzru845kx5h3js9f313jatrdyh6gq99
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3E063A0008
 X-Rspam-User: 
-X-HE-Tag: 1792571556-583113
-X-HE-Meta: U2FsdGVkX18oYcdKlYUoM2D0Duj32Pckmi9pN4U4Ix/UsS07i9O3IN4QHGlR5T7GvnYcy8IPRoeBPor3MwCSOKUn+FCfh9PpgbUytoHrflhfMZR8eiLCT3gtAnUs0xm5qNNKKEx/RVyQpZN9drf+jHs+MyCbkoh+KsgWXkdESwOgvF0YGxvq66hztKng3oND+RgbCnvu5aKtG0LSWLced66yF7tqHtNVf/NheaMQuvmnHRXiWtu57RSQsbGXp/VPZCKb3NY7LEYHSOmWCqG5elS5d0wZ1eaHTzNIfp0D+FdAa5CJgtf6t6CE3EezDIONVS9DHpW1gXa0XxgCy1o1Gpnwb/arXDyBS4gm11lDVtnNsY9wTU790fTqUU0IMP1K5FlDFBvaaD4xKZh/Hla9CTtlX7wttik6kZlK8DfGsel3sohwtki1uyjLwt510quB1ekNt68pC6XWp+5qF0cEoQKRRYkYn5SPdGzFWeuurWKcuudp0Qm8Wy5CDDVOdceCh69tdavNGFkWssRbXm8kW0o7hdUQ4j1AVPzhkJnBlBkHJ4zDo6s/nIEhFaZMi6DaJQ5Y06SsQJi77+3JsRAzyfAphJX9xJTn8J9tlUMOvUZM7wgRoaRDa2a1QImqXmydY4oYBAUJkHDTl8mIDhueLZp4hc87nhiU1qJpQ1O7lYQm2yCWK8sHA70/4kTW63WWrh85qNLbeQXQWDPaQRvoe8ofbiQq2+Qa9GtUzfKs1Vv0ZThmtJAukK84BYwdBs/uPP7u7WVMwNdufG3PhxUM/Vek6exlolYecuI4jZQiTBx9UMipS84OILL5Kg9itKP5SktfdfNrYrd+xpb1uu1eW6jVS7HD1qpFFfKSPaSmG/9HZDNed7YOLjIWfixwCpwXlBpP96FBZ0qgSJj5JGYE6A9DdZYX1fZeydHj1+KmDo9DLh6pDgVcV3gDZLjOAinz8qAJsSJQHTEH64xEGgW
- oO2FUgL1
- 3ZoyzP1w5U7KErBCsLylzPoStU/oU2TB4ULAS9GKWrK+ybNn6v6nyC4aq581Sp5kcL/2yDGNZGavBntU53lKt7HMAngi62X4pE0uAIPyugwgv1DLmqXh4Uox5iort3qWfckXh76blP/UcSsRNhKNLagFZkxO3rqB9sd7NKxXZmRzSsKaA7GVS9aSDH09HKe5k/KgC9LrnUc/3KnNlvrkfAncU8D7YydVTX+UV4tdWsGJUEjB2g9gOYkKf7nE2XvnOs5/H5mdzQLyp73T94Y4bsNjyn6rMajq9m3cHRu98c4lzYYg5hgj52T4uulIphUsoxjf2ZVcQC9iwRnyh8jRbrDQDCQV1ZJXEmG7Ue4eUdqvWvzNiQbJQZniO3ADzgkCH5WffCFd1Qx710OSQp1Z6Z5jGpWDzZGZZ425/8MAfan2KlABLAMStu5T0AtI3wLPAttS7u51GX7qNQq7NcnlinKm0vQnpOQm6IGQB7r+EendvTiiF0EqyRJwkRkyQ3t7NG2HWc5B4Rip860nPMYCgHu0dWr4kIaFr78CDH87B68bUMB4P2fawF23NLKxPx00wOM2kLpKvrvJ4Qb4rOee1ye3aZB/J7xpQjrKcfO8bltJG1Oj2pLBPf0Xk11fyyve2938ElopxJkA2Xv8=
+X-HE-Tag: 1792571593-741476
+X-HE-Meta: U2FsdGVkX194jeX6XQx/izGmZ1iiOSxcfnSx9oFQRA6nLw2S/w8PJhf3sFKHYBqxm5Z2oHnzmKl30VJMjaRwTOm/zHND0Zb3XVjhIUv9WSbmfZ5olhTfgudvzFwZxqM+kaCq9/vnei6GEPIix+TyQYZPEKgWZOcVpZ1D7BDWTfhiNonfhfO0riqkaFdahvlApnxWsKfXjPA0MhQQhfRGlSwOuDs3P0YcvOn4NZfsnbmF21lGM5RFLI259yXk/ruXzH9HC/Z60U45xo0hGoI80KHU8CZIJ011GCyIxnji9Tr3MOLsXNs2z7wK6y8+kluoae7ZlWHUVy56zef+zzmxB1C+4AXyEFyFwZVesIglOibPuNJN5ipFAa1UwHIrb8DnxE58oHN9H1D/tTZJayV7R/X9+yGRzEXfjyw5gOjtcHzCfgrSyY/eHqeEXlziTzaql42ldhcJU4w4wZn2w4Pwj5PjRVMm0gqnlqh3tFKh0ufyZKncnSaydKCVATb4gZhiiNWboF8kafNGoFADNqWYV0LoH6YQBK710wf/GzX3eEgjIuoUUqd9FJ1NjYNcwr3g3ukPU/GTwolK7SeJ2F2Tb735jK7UayygkUHCYg0khpvvx9Nf2affDS+691wdDbgo0BOOirMPlXBrTptvpoUiY7mU7/ICrHKp97tyfjT6XuaknmYC9MSE02lTuhL8alvtH2YB/JAbEHrFRHXeUxr+Mz0m9EArvZ653Bz/9pAff30GLh1GXRNcF8cUrNAfzHmnXnThSUr70NRNPW+AsuUI0HzxlxFeAsWBxg2bS5AX2XprdpERqqruD/0tQnt7+QAjbJ8KWhA8DUG9I+lZDp62uk0t6Hc2atLywEurRq55llCtjZ5YagFXGEIxVLya/fKQaDVxSi2AaT2K8Bo4NRYY86iI3YoNeEqv6kyNLU+ai8c1ejOG0ksiZFkIYZZ0NvCFVKl0lUetJ51TdDgIFK4
+ OvaGiNid
+ JjMLaUBoI+FWGPt8du6dEz+iW5P6P4a+KmvI+UKrwNqdFZq5TS28S0MAIjHfAsuVhOMqkzUdt50KXsvHjbVFNqZSd+aMTzaSA0DP9z/P5C2bASTn0UvRUCOVcMT3A46wvEScFfnD0zbUsybLyFfbjNSGMGFTdOC08vO9kqrEWjYKCAPG5eBFXQprfzkply2UJujM75IudDBRPmMrRRkNE0Op8vmNJThIVVBrc61jpEuY2+dnaBYCpBlCJzbnOmjIG8Sc0q7tIMoFCL5JdKJ7Etxn9oNRHlVsgGaVnlzwRvwc28KTPKyFCgTeiRHe0AT2QOFbLEb5uTiV3rUfdr8nSPtVNQuq/tInH2n5GEEKIJWL+Ot0Jo/FO1Nw/oC83LWlRsetKX/ipeVmIlf17UrfnDBNbIwuU6RdJ0UjWUyg/O9c6Hh6ENRjVGgCjbxJluZH9rTZlC115XFBarFc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,38 +141,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Wandun Chen <chenwandun@lixiang.com>
+On Tue, Oct 20, 2026 at 11:20:00AM -1000, Linus Torvalds wrote:
+> On Mon, 19 Oct 2026 at 05:50, Kiryl Shutsemau (Meta) <kas@kernel.org> wrote:
+> >
+> > filemap_read() writes the end of every read to file->f_ra.prev_pos.
+> > Threads that read through one open file all write that cache line, on
+> > every read.  The value often stays the same, as for reads that start at
+> > the same offset each time.
+> 
+> This seems silly. That "often stays the same" is only true for the
+> pointless benchmark, no?
+> 
+> I don't think it's ever true in any real load.
 
-Reserve regions (for GPU, DSP, ...) carry no data useful for crash
-analysis. Exclude MEMBLOCK_NODUMP regions from the vmcore ELF header to
-reduce vmcore size and capture time. crash_should_skip_region() now also
-returns true for MEMBLOCK_NODUMP.
+Right. The patch is bogus, not only the commit message.
 
-Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
-Acked-by: Baoquan He <baoquan.he@linux.dev>
----
- kernel/crash_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+It is worse than useless: for random reads prev_pos changes every time,
+so the compare reads the shared line and then writes it anyway.
+Bisecting a RocksDB slowdown led here: with patches 1-12 it runs at base
+speed, this one costs 4-5% at 16-64 threads.
 
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index e161c8b65e00..0e2ddc933b22 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -283,10 +283,10 @@ static struct crash_mem *alloc_cmem(unsigned int nr_ranges)
- }
- 
- #ifdef CONFIG_ARCH_KEEP_MEMBLOCK
--/* Exclude NOMAP regions from the vmcore. */
-+/* Exclude NOMAP and NODUMP regions from the vmcore. */
- static bool crash_should_skip_region(struct memblock_region *reg)
- {
--	return memblock_is_nomap(reg);
-+	return memblock_is_nomap(reg) || memblock_is_nodump(reg);
- }
- 
- unsigned int __weak arch_get_system_nr_ranges(void)
+The store itself does matter in a real load.  RocksDB threads pread()
+through one fd per SST file, opened with POSIX_FADV_RANDOM.  With the
+folio refcount gone, the prev_pos store on that shared struct file is
+what they fight over next.
+
+For an FMODE_RANDOM file nothing reads prev_pos but filemap_read()
+itself: readahead is forced and returns before looking at it.  Skipping
+the store there takes a small hot table at 64 threads from 10.7M to
+14.1M Gets/s, against 12.5M with the series as posted.
+
+I will replace this patch with that.
+
 -- 
-2.43.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
