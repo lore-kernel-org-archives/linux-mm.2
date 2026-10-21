@@ -1,122 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB535606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4877606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 02:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YLUSZFxp
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=KnZygorN
 Received: by kanga.kvack.org (Postfix)
-	id AA6526B05A7; Tue, 20 Oct 2026 22:30:16 -0400 (EDT)
+	id D27526B05A8; Tue, 20 Oct 2026 22:38:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A57356B05A8; Tue, 20 Oct 2026 22:30:16 -0400 (EDT)
+	id CD8256B05AA; Tue, 20 Oct 2026 22:38:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 945AF6B05A9; Tue, 20 Oct 2026 22:30:16 -0400 (EDT)
+	id BEE496B05AB; Tue, 20 Oct 2026 22:38:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 63FD96B05A7
-	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:30:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC1CAC0439
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:30:15 +0000 (UTC)
-X-FDA: 85345053990.18.62BF482
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1130814000A
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:30:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YLUSZFxp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BC8D6B05A8
+	for <linux-mm@kvack.org>; Tue, 20 Oct 2026 22:38:29 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DB69A7D2B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:38:29 +0000 (UTC)
+X-FDA: 85345074738.19.909FE75
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4484640003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:38:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=KnZygorN;
+	spf=pass (imf11.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792549814;
+	s=arc-20220608; t=1792550307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UpWlAbXZ3XIxfmYcSBSEV2A521nrJ8xRsK3NaAAoXRQ=;
-	b=JRLo90Kj2/87IRZCLUHwBgG7jtK+z8MTD7THP+rk6ztvp3J97haX12Lj4CeJv/xbhI7DDW
-	UCBcRcMosXqqyaf912QxX13z17Gbg58vBacmM0LfHFwS9VKywpQ63sIKFG0FuFavB4keM8
-	dyifcXiXwA8Bwd5lk17MiJsJxocGYlM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YLUSZFxp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3um0oSkFchI+VCovec//CZdEMgzXeLCw0E3DOZkZLFM=;
+	b=aSYBx59qfSdDxefYTs3iZd6my0SEJlZQjFq7Ni1kbKRMMrTLxcTb0WDn3w1lDG2r1kHZ4i
+	iNLF1SX4cWWwaDmZ/lu8WWo8KjrG5fkreLmxwgtAzKy37qpjaW7hcWezLOAorVuCnBSRUe
+	2ieDSxkWiCiqgMpX0WbtkHT6a8KI8z8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792549814;
-	b=W0dotqRXHiomkHTMYF+qbOox2JkORFKxZXnX6suPuNCDiYUC5I0Jmce97duJVLAakhn9Wv
-	ewagin1xtBjwoabF00+BrqkYs4v/yaZhvx0+zx27jLAZj9+aOAeOXAn5lDQNQywTr3gSux
-	3RWAEyVb6udvcKbMoaKbjge9YT9GV8Q=
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6767d92cde6so218330d50.0
-        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 19:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792549813; x=1793154613; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UpWlAbXZ3XIxfmYcSBSEV2A521nrJ8xRsK3NaAAoXRQ=;
-        b=YLUSZFxpEY/6TGYlj7JfxLPjjvaZEKz2CEAW4qKqGUr2Df+SE/AQSl32H8jaT2sFMu
-         A3XinZ5+oJ5VkfKTatOXqGvEImbF8rHj1XXoVFdwGKYoAgYyTLPNqM9wMJss44wWeTs8
-         cwP58NnZC4sZJUnwNMqPmiGQoHdvkSRxkebqrCJ0UuCPeNKcR+8MpvXzVgoe5N9woIhG
-         JhEbHoZQK26PGi3KEx/kRoAXRV5kN7FwvrmKQtDpbvo1feY3Suxd+6uIAcCF2uGNc/5f
-         yv5mwsfAfScjeHT6DlLzN8y/Kxl/B1n8g31nf70wEbVD6tKqdFSFohWdcL/xIJtPZWEc
-         NAXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792549813; x=1793154613;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UpWlAbXZ3XIxfmYcSBSEV2A521nrJ8xRsK3NaAAoXRQ=;
-        b=B192XG2siuZzrztkb6p4OobdUhlC/4YZZ6FDtykll5TWjiWfI6NFhpmfS95f2gS2yG
-         2sKksxbtXtQr/qP6VegZkHFd4uN6MAVA/v8JdLfn7lqO9kK/DgpusKlJ9+tGzcaqLX1m
-         k4yZMSr0IErRIka6Oqgdh4LPR8vSKYK/Zm/t0EhyFjAIvjD+tGWUnQqxLN7/ypSfBuJD
-         nOql5QvhUIkeh8LMDDs7R97JnIwCR8dYcPn5bXipCVEIatc/xHYlLAyF3tx4C0vuAZ9p
-         VPpUiQ8StgfZA900FHX20ZkOUV2YxGV4+qL3bX6ISZMT857dB8U8MMnKIz2EoYsd8n0u
-         djCA==
-X-Forwarded-Encrypted: i=1; AKwUvByc+WL5DkE6MnqHweaxTQ5zxmcnB6fK60eDcG/R0mkN6jWpWpOC8hlU/5I7f/LUWuqSFZ704t9egg==@kvack.org
-X-Gm-Message-State: AFq9FYLNLBhbdDIoglKKVT6tO1eANbLF6XBzPKiIpOm8AnJg5PHYw4dP
-	RzPCfGu1/wCJVJWOdePAnfndma92Z+06jUcXdkPur8H7rGFFST6gN1e9
-X-Gm-Gg: AYBFou36QR1eYVU90BxNIhRwPmrTJnn/6BzImb7MHzYTKs0xpRJNtn9RZ+Nn9j+nWVD
-	fEekgc2wfkSSWB6vu43t2YGYK2sAGMu1BiUVTpdPtQewqmllvO3If4ExaZ25tBX+/rjrnIGuxhj
-	o9yrsIC+tibsfWZy3wuu0+UUn339ZiJiwNWom0sNBdUYrgUncTtHHu0NglMOVDDti/Dhqz8/Mgi
-	pHyh6oGUpxXQigbCZX4pY9e2umoinHsq53jbuMF7GviCQXhG9gddkjq4Z9fgkph2UI5L3oQNkIr
-	iqRvBdMaWnOzfwwEIUkUQK0fx+A7WUADnzL5xaH+8pAJ9H6ZUfsjnfqHjDLcqmUEvWQcybJxLFl
-	DVrsW+8ldFzDERDBwlumeAHjBpGBATkG31+6hvC/ZFxuJXya45Pq2fMFsRexAGR/6W/2kgqhUJT
-	YbMDmRe8yu2ereol81VkpCbEwiC9mKCUMpFRIE5RJf4f9TxSk+Y5bUaQmkM2oiF04UY5x/VL78e
-	W1co4gsxgX4YmVYvRdJRIiBEgApwdS1tv+x8w2J0x20q5pGKC5xUKf4yB4UiDpklvdy7BnhuyGo
-	LiSB1EF44rHq0f2p+5L0vifq1uyetCBM
-X-Received: by 2002:a05:690e:b87:b0:679:98dc:b39e with SMTP id 956f58d0204a3-67a0e589c18mr438090d50.80.1792549813020;
-        Tue, 20 Oct 2026 19:30:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:4e::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a0e4914eesm468827d50.4.2026.10.20.19.30.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 19:30:12 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Harry Yoo <harry@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v2] mm/percpu: clean up callers of pcpu_obj_full_size()
-Date: Tue, 20 Oct 2026 19:30:11 -0700
-Message-ID: <20261021023011.3199331-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	t=1792550307;
+	b=O2AGGwhPIn9RfWhHOMWc7ZGgppeuBCBt4rNSVwD9OZFWGDCq/iWU+MMs+vIZL7UefRGY+Q
+	Do6y+cbjiHIYln2JTPIit99xQakPF/GHE1c/zpHBif7phWcshfudGTU0MJRy36rVHyf5kN
+	yfvHIvZvjKOFzx6dyv9Igpx5T2gGJXo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=KnZygorN;
+	spf=pass (imf11.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1792550298; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=3um0oSkFchI+VCovec//CZdEMgzXeLCw0E3DOZkZLFM=;
+ b=KnZygorNvUDC31e41SbkkHNOHcDVkQUtxHE7QIaAilN+Xrtg3MOGhJQCGd1244FNHb4DxH
+ fSkgJcPeHQi82+1mU/8C+c4EXFi6x5kXcPXuo6bou3hhpgvrPXdvEoE4gaYvlzPAPGfOLD
+ NjdtSP2xjfggH/Ka+CAIyQOv+K0FRoJ2afLebGYlDqrCuO+QU5BCrrFVHG8uYdBYnwb1r6
+ clEoByIUdJHgOqMus528jYmuPVojq8n1aFZCs3+ZkdrNo7KVYzJTYU6yurak56Tf4Kq3fi
+ 1iBhu1buvWkPvgk/vUfH/f4r3wZDc7Wltpm2Gg7rBMPCaixhAhrLIsmC5xIC+A==
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1130814000A
-X-Stat-Signature: 93yc47699qk7i5pp4uh5syknmgqdipms
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26ad82598+509b36+kvack.org+lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Oct 2026 10:38:03 +0800
+Message-Id: <6d3aafde-9082-4c74-bf50-a440671632bc@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: Re: [PATCH V2 1/3] mm/hugetlb: fix mremap move length truncation
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, <muchun.song@linux.dev>, 
+	<osalvador@suse.de>, <akpm@linux-foundation.org>, <rppt@kernel.org>, 
+	<peterx@redhat.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+User-Agent: Mozilla Thunderbird
+In-Reply-To: <b6d4de88-cf2c-444d-8050-da2a9b22c7b9@kernel.org>
+References: <20261019113034.97690-1-lizhe.67@bytedance.com> <20261019113034.97690-2-lizhe.67@bytedance.com> <b6d4de88-cf2c-444d-8050-da2a9b22c7b9@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4484640003
+X-Stat-Signature: ccrpmg9qyqgguj3xsp7jorcynxchs5or
 X-Rspam-User: 
-X-HE-Tag: 1792549813-285519
-X-HE-Meta: U2FsdGVkX19k62g0Fs8Zk/F+h2ejuSxzLPRHlDc2WHDnxDXMcH5c9qSykBhCka99zTo6QhJTUzxxTuibdukvgsfLYlVFa4o2BpiEF9wLtyfrzezILMyx/ivzB/mVn9JXxwl+dLBb8WM0QNVVzpUJ/F/dxNrjuS5QGAo16kli3872Kypid/J62trU5kKmSbkXwmVBMy5JwYVdG/GM9q6BIAaQxShzIp8YwJoMbOmEd3pzMoYnHjpXAg+Sqmgvl7IZdw6E+d8azy5Lcwh9PSJkAK0YWKRl1Y3a+8nsQIimQHxSYMjlydbw1W58wcUxRVD5YpXvYBF2n6DEgTevaOmBjulxl29dD/zEJ3MZO7NcqTi5msZ6I47XvrS0V7/W8+ZuFAbaE+pCbPo3iIpywhpXPTWbnJRzHVy61KT+GgR35NwZRKu7mIdWqYE49tuST0tQg2YPIeWH05PKhXbT2GYYd0qGZhCLUYkNOVaL1u6Y1paQ9aR7tHPukdFCdvroWr2GiSd4DXjdXGlegcKC27RlECVCFAYe5pRXvQlxCLXcNQVZwnmoY0kDeWxLR27GaePuCe6txK6iOuwlj84ENM7We9yUk7S1GdHjIntY0RQrDCghfb/V/aMY1XeSBVvmRBirMIy7r1cU08YUF7kizcXm9w7TeNcU0NRaW7YZz4dG+HGf5tYfeJn6deksAH/qXu7vcpd6HSwkC3RW21m1mOg2rdif2YExIf4Y4eqI5v+YgNsh5Vf6uJC0z4NubPAdUdGBiHxwG5asRIrShRST6gjwpDXgjE/F1RSdQSBBHX3iScnFwA0UFETIYgdoCzHy/szf8SkE/3M7OmZ2Bhq+yYZCJVSwofM8WN9wTzh8AAEOcbOsfcFv2AZxNYndLpGnDC1QMJSGU4sh/jKYurojL7ZjVkuAzVDNTtGgQ0RusQRAtzixzsj2ah5t5Uca6Gb/UbwyC3QMmpj96k0t+Rdj92q
- woCTcDoc
- mwzxo+EzAnaJ1ttfaw/a8yJPwrzAUM1PZmCxKjmbMF+RQoM/81+tDh/97vStrIo0/qrmO9lrnlmd9GKi0xkxlhyQ6EzHJZgq59eRTWqIM/CwuIWo8V5XICJYaZOl1N4MkvLzy0bKbUUkUKHlw8E7Dh0E80k5TfZW5DOykJewCDgeY7z12gjEKZZmWLx1ioNeP/gVpJ6iAws2EEy6dUjJqRFmlNMTH2kSF2nkp2+HrDZsTBSn7SmzIjjZNgg0egkfIO4lABX/l6tNWXTOZd32ftzJY9UeXoD8fRaoVhKhR1XCdWEqTY5SzdYxDOip0sISx9QvxgsrGa1wtNmb9kMVjbVU9g3JYcscU6EgjsGHYG/TEcmnttQWEHYm3Z6NhZ94ndn8F+KW8XcbXmZDmryCvVFwLF1tYThivhYcCtH86LljcdX9rcdnWCmnp6XoHnpk0kZ53Ddm31SUulCt15E4nGSQFcxcLDy3RZBKtUxTBbJli8jWG2RtXLtPh7ZSHCpwrpW3OUr3TTnEkUSB2tJJ1DmR+0B1AXvpUro4guVNeR4iRhQ8=
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792550306-125863
+X-HE-Meta: U2FsdGVkX19XhBUFbhrBMCvzkjwfxsQKQbN34/xSGoNpAkxx4PCinlzK9Z1TFXe8HEnEuwYwRNy/Nhaqj1JB86zqHwUYGTZk6bZZe3torecn5vnpwJ/6Nqzsl7OVUBVzLUCrE2qVYT02dKRHVAm48e2gcXOLlJA15AlLdEa11FVaT8A159+n4xSbLaUDkm/DI2Uq1Co9YPTge1wJy3AfqGaZ/AVDGu71hUoLqg393ifgP7ic+WHtmoxIGWW3s0rUx6KlSw0sXO4dkI9Sp4qqZ90c8e2SCAFoGpc35RaL4kF6Vzg3+ojcyUXrd4pK4U6QXDo6AfWBibMKCSqvh1R4VF0TsbEvUkEzxrzgOjJFMMptC+sMDrK2sELy6U2c57qC56+/jMsRxXMmoINb/wqOVm25Mf2jV2Y4NCfH4VSMB4FsHIpBLFzwCHstwJ7V3cb8o/ebR4nFyK1tg2Abd3Lu+Uv8Pi7JovHzOGILe1KzcBZDz+R+5H7jPQcnhAKXr2SRFqXeLV6/FAVWr1x4UU5xv3H6GEiY/HFmqScpkbTniT+nO8Pk5D64Lah8L7i7KTwavM3nr+wxAa4KZleOv0au3TEyFofnoisD4ZaEBz/sIwopbS87YG8Oy+j48KYVHKmAilpV4rAjx4ZfQCQqPb9cAbPAzTKlkZo0GATnjux0tquuSlsg/ZKYV4WJf3uInBx4s24dNGrb9sYRoF3KRVWabbTu4znyOrBRcA483gCox6JZ14XmZmSDjiIn3ANJ2i9YCDB8zW0kDo0LgtcZuOC/ydSAlY19+3vT7mxox1bzguzd6zMBOXarTOiy1I8UwO+TrtwtA2ghQcYlScE27JK05CNE7DRwFj6VghFSQu+TMRD/U7WfvHz1gJZVCR2reg5ScH/Kb50vGyzLoStP2OxZRz97r8mZ6R4wC/sfv6vG6uH9W8c9cgtTGAbqH1gLYQgRqyFEmgOgPrvadvY3AS8
+ mmdyL3jU
+ A9LOM2RWHwgRf5fVLOC15lGPgpcBZsKVss0qe8BFfp3jjPPLr825pul+6IppxfURZf/vCxcRTJJu5fm7DTaIFp6S1XT1Ib0HC5ufVie9KJRqDZTuJCF/0lVcVSTujx33Jca5GmXz+F6DXqKbTnrlZDhALhsw8E8+HUdmhovOMjQv5O97pF54ChJFmDrg8NEZOClNXr2hjzPK0JOklMZ73H5YHNWFRhtf9F2waM2eyK6jKbDBdWGfj1nhF2s+it6vG3AOs9EMGa341xSKPVglwakkZjTmE9rRfpQLMLr2lPfq6cAV9Wm1AIPMW2wWE8ykQwFE5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,235 +94,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The size of a pcpu allocation can be interpreted in two ways:
-1. The size of the allocation attributable to a single CPU.
-2. The total size of the allocation across all CPUs, including the
-   allocation overhead (for obj_cgroup membership).
+On 10/20/26 4:18 PM, David Hildenbrand (Arm) wrote:
+> On 10/19/26 13:30, Li Zhe wrote:
+>> move_hugetlb_page_tables() returns the number of bytes moved, but
+>> its return type is int while the generic move_page_tables() path uses
+>> unsigned long lengths.
+>>
+>> A hugetlb mremap() move length above INT_MAX can therefore be
+>> misreported to copy_vma_and_data(). The out-of-range conversion to int
+>> is implementation-defined; on common 64-bit builds, for example, a
+>> 4 GiB move can be reported as zero, making the caller treat the move as
+>> a failure and use the wrong length for rollback.
+> Sounds like we want to CC stable here, right?
 
-In most accounting paths for percpu memory, we need the second
-definition (full size). Make this more obvious by coalescing the
-callers of pcpu_obj_full_size() and renaming the parameter to full_size
-to distinguish between the two definitions above.
 
-No functional changes intended.
+Thanks, I will add Cc: stable@vger.kernel.org in v3.
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
-v1 --> v2
-- Renamed the function parameter from size to full_size where
-  appropriate now that pcpu_obj_full_size(size) is passed in, as
-  suggested by Harry Yoo.
-- Wordsmithing.
+>
+>> Return unsigned long from move_hugetlb_page_tables(), matching
+>> move_page_tables() and preserving the full byte count.
+>>
+>> Fixes: 550a7d60bd5e ("mm, hugepages: add mremap() support for hugepage backed vma")
+>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>> ---
+>>   include/linux/hugetlb.h | 18 +++++++++---------
+>>   mm/hugetlb.c            |  8 ++++----
+>>   2 files changed, 13 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>> index 16c4c4caa126..cc12040e4032 100644
+>> --- a/include/linux/hugetlb.h
+>> +++ b/include/linux/hugetlb.h
+>> @@ -121,10 +121,10 @@ void hugepage_put_subpool(struct hugepage_subpool *spool);
+>>   
+>>   void hugetlb_dup_vma_private(struct vm_area_struct *vma);
+>>   void clear_vma_resv_huge_pages(struct vm_area_struct *vma);
+>> -int move_hugetlb_page_tables(struct vm_area_struct *vma,
+>> -			     struct vm_area_struct *new_vma,
+>> -			     unsigned long old_addr, unsigned long new_addr,
+>> -			     unsigned long len);
+>> +unsigned long move_hugetlb_page_tables(struct vm_area_struct *vma,
+>> +				       struct vm_area_struct *new_vma,
+>> +				       unsigned long old_addr, unsigned long new_addr,
+>> +				       unsigned long len);
+> While at it, can you convert all these to use double tab indent instead?
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
- mm/percpu.c | 63 +++++++++++++++++++++++++++++------------------------
- 1 file changed, 34 insertions(+), 29 deletions(-)
 
-diff --git a/mm/percpu.c b/mm/percpu.c
-index d7883507dc151..b22a16980f646 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1611,7 +1611,7 @@ static struct pcpu_chunk *pcpu_chunk_addr_search(void *addr)
- }
- 
- #ifdef CONFIG_MEMCG
--static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
-+static bool pcpu_memcg_pre_alloc_hook(size_t full_size, gfp_t gfp,
- 				      struct obj_cgroup **objcgp)
- {
- 	struct obj_cgroup *objcg;
-@@ -1623,7 +1623,7 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
- 	if (!objcg || obj_cgroup_is_root(objcg))
- 		return true;
- 
--	if (obj_cgroup_charge(objcg, gfp, pcpu_obj_full_size(size)))
-+	if (obj_cgroup_charge(objcg, gfp, full_size))
- 		return false;
- 
- 	*objcgp = objcg;
-@@ -1632,7 +1632,7 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
- 
- static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
- 				       struct pcpu_chunk *chunk, int off,
--				       size_t size)
-+				       size_t full_size)
- {
- 	if (!objcg)
- 		return;
-@@ -1643,14 +1643,15 @@ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
- 
- 		rcu_read_lock();
- 		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
--				pcpu_obj_full_size(size));
-+				full_size);
- 		rcu_read_unlock();
- 	} else {
--		obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
-+		obj_cgroup_uncharge(objcg, full_size);
- 	}
- }
- 
--static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
-+static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off,
-+				 size_t full_size)
- {
- 	struct obj_cgroup *objcg;
- 
-@@ -1662,57 +1663,59 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
- 		return;
- 	chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = NULL;
- 
--	obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
-+	obj_cgroup_uncharge(objcg, full_size);
- 
- 	rcu_read_lock();
--	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
--			-pcpu_obj_full_size(size));
-+	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B, -full_size);
- 	rcu_read_unlock();
- 
- 	obj_cgroup_put(objcg);
- }
- 
- #else /* CONFIG_MEMCG */
--static bool
--pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp, struct obj_cgroup **objcgp)
-+static bool pcpu_memcg_pre_alloc_hook(size_t full_size, gfp_t gfp,
-+				      struct obj_cgroup **objcgp)
- {
- 	return true;
- }
- 
- static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
- 				       struct pcpu_chunk *chunk, int off,
--				       size_t size)
-+				       size_t full_size)
- {
- }
- 
--static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
-+static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off,
-+				 size_t full_size)
- {
- }
- #endif /* CONFIG_MEMCG */
- 
- #ifdef CONFIG_MEM_ALLOC_PROFILING
- static void pcpu_alloc_tag_alloc_hook(struct pcpu_chunk *chunk, int off,
--				      size_t size)
-+				      size_t full_size)
- {
- 	if (mem_alloc_profiling_enabled() && likely(chunk->obj_exts)) {
- 		alloc_tag_add(&chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].tag,
--			      current->alloc_tag, pcpu_obj_full_size(size));
-+			      current->alloc_tag, full_size);
- 	}
- }
- 
--static void pcpu_alloc_tag_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
-+static void pcpu_alloc_tag_free_hook(struct pcpu_chunk *chunk, int off,
-+				     size_t full_size)
- {
- 	if (mem_alloc_profiling_enabled() && likely(chunk->obj_exts))
- 		alloc_tag_sub(&chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].tag,
--			      pcpu_obj_full_size(size));
-+			      full_size);
- }
- #else
- static void pcpu_alloc_tag_alloc_hook(struct pcpu_chunk *chunk, int off,
--				      size_t size)
-+				      size_t full_size)
- {
- }
- 
--static void pcpu_alloc_tag_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
-+static void pcpu_alloc_tag_free_hook(struct pcpu_chunk *chunk, int off,
-+				     size_t full_size)
- {
- }
- #endif
-@@ -1744,7 +1747,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
- 	int slot, off, cpu, ret;
- 	unsigned long flags;
- 	void __percpu *ptr;
--	size_t bits, bit_align;
-+	size_t bits, bit_align, full_size;
- 
- 	gfp = current_gfp_context(gfp);
- 	/*
-@@ -1773,6 +1776,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
- 	size = ALIGN(size, PCPU_MIN_ALLOC_SIZE);
- 	bits = size >> PCPU_MIN_ALLOC_SHIFT;
- 	bit_align = align >> PCPU_MIN_ALLOC_SHIFT;
-+	full_size = pcpu_obj_full_size(size);
- 
- 	if (unlikely(!size || size > PCPU_MIN_UNIT_SIZE || align > PAGE_SIZE ||
- 		     !is_power_of_2(align))) {
-@@ -1781,7 +1785,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
- 		return NULL;
- 	}
- 
--	if (unlikely(!pcpu_memcg_pre_alloc_hook(size, gfp, &objcg)))
-+	if (unlikely(!pcpu_memcg_pre_alloc_hook(full_size, gfp, &objcg)))
- 		return NULL;
- 
- 	if (!is_atomic) {
-@@ -1793,7 +1797,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
- 		if (gfp & __GFP_NOFAIL) {
- 			mutex_lock(&pcpu_alloc_mutex);
- 		} else if (mutex_lock_killable(&pcpu_alloc_mutex)) {
--			pcpu_memcg_post_alloc_hook(objcg, NULL, 0, size);
-+			pcpu_memcg_post_alloc_hook(objcg, NULL, 0, full_size);
- 			return NULL;
- 		}
- 	}
-@@ -1903,12 +1907,11 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
- 	kmemleak_alloc_percpu(ptr, size, gfp);
- 
- 	trace_percpu_alloc_percpu(_RET_IP_, reserved, is_atomic, size, align,
--				  chunk->base_addr, off, ptr,
--				  pcpu_obj_full_size(size), gfp);
-+				  chunk->base_addr, off, ptr, full_size, gfp);
- 
--	pcpu_memcg_post_alloc_hook(objcg, chunk, off, size);
-+	pcpu_memcg_post_alloc_hook(objcg, chunk, off, full_size);
- 
--	pcpu_alloc_tag_alloc_hook(chunk, off, size);
-+	pcpu_alloc_tag_alloc_hook(chunk, off, full_size);
- 
- 	return ptr;
- 
-@@ -1938,7 +1941,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
- 		mutex_unlock(&pcpu_alloc_mutex);
- 	}
- 
--	pcpu_memcg_post_alloc_hook(objcg, NULL, 0, size);
-+	pcpu_memcg_post_alloc_hook(objcg, NULL, 0, full_size);
- 
- 	return NULL;
- }
-@@ -2242,6 +2245,7 @@ void free_percpu(void __percpu *ptr)
- 	struct pcpu_chunk *chunk;
- 	unsigned long flags;
- 	int size, off;
-+	size_t full_size;
- 	bool need_balance = false;
- 
- 	if (!ptr)
-@@ -2262,10 +2266,11 @@ void free_percpu(void __percpu *ptr)
- 		WARN_ON_ONCE(1);
- 		return;
- 	}
-+	full_size = pcpu_obj_full_size(size);
- 
--	pcpu_alloc_tag_free_hook(chunk, off, size);
-+	pcpu_alloc_tag_free_hook(chunk, off, full_size);
- 
--	pcpu_memcg_free_hook(chunk, off, size);
-+	pcpu_memcg_free_hook(chunk, off, full_size);
- 
- 	/*
- 	 * If there are more than one fully free chunks, wake up grim reaper.
--- 
-2.53.0-Meta
+Thanks, I will fix the indentation in v3.
+
+Thanks,
+Zhe
 
 
