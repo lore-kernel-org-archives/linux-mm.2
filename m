@@ -1,94 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DCF606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 08:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF8A606A319
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 08:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QVUyskAf
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Lj0ij21h
 Received: by kanga.kvack.org (Postfix)
-	id 627CB6B0670; Wed, 21 Oct 2026 04:31:45 -0400 (EDT)
+	id 518686B0673; Wed, 21 Oct 2026 04:32:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D8A96B0673; Wed, 21 Oct 2026 04:31:45 -0400 (EDT)
+	id 4C79F6B0674; Wed, 21 Oct 2026 04:32:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A6486B0670; Wed, 21 Oct 2026 04:31:45 -0400 (EDT)
+	id 38F836B0675; Wed, 21 Oct 2026 04:32:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 12C9E6B0670
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:31:45 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A0C821A04B4
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:31:44 +0000 (UTC)
-X-FDA: 85345964928.29.D5971AA
-Received: from mail-pz2-f2.google.com (mail-pz2-f2.google.com [74.125.228.2])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C6856160002
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:31:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QVUyskAf;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1325D6B0673
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 04:32:00 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0335A140491
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:31:58 +0000 (UTC)
+X-FDA: 85345965558.12.4DD7DF3
+Received: from mail-pz2-f7.google.com (mail-pz2-f7.google.com [74.125.228.7])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 213DE100003
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 08:31:56 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lj0ij21h;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.2 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	spf=pass (imf14.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.7 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792571502;
+	s=arc-20220608; t=1792571517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fKpfFiVoVVnNbFsiCGN8s68JTp1We4GBLmYun2RkI28=;
-	b=2H6Ot75G4/fuE6XbE2ZvScGocNqaJkAYX5b06iQmAAus8u+F5aTWLJN//44T94Hb3JYpfF
-	ltn3t0W5/Ps4q/TA0NWzaKRSNShq6GrJZCT1VzFcTU8W2YarDUOipiTIPYkKzlObuLdHe+
-	Qbf1RIksUOz+SIEz3/dnMniigNobjWU=
+	bh=EXuyqgfiF9x7HO7+fbFxeGIrd5nFUV6QECR0sZa4nrg=;
+	b=d7LzC/0IOdVe5c63Yhe9LM49cl6AHwnFoBYoRN3HTDSAINquoAXYiMxwID/Nf59PXVUzv2
+	3Z8W64JbJMKsDSQxm5ZqJqIatfATJshNyVcaCewsrYyz9YoLM5bkfMbPcm/UfKFJBG4shs
+	5yNa7LuHL+mhku6f5ctMwBMmiGmpd3U=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QVUyskAf;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lj0ij21h;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.2 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	spf=pass (imf14.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.7 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792571502;
-	b=KdRQPIzRJJTCYECmof6TjDU/L4kTV4fzOj8vZozLz60NesyfR/IpffTxUB1qfHW+or97em
-	X++7ilA5ergKcwt3opnCxadQjuY0iI5mADaJJ1FZph2X5LBMzi07PKGC0ezzPr1DoSS4Tc
-	dnt8cYB47PwncaPkL8AaUeR11J+aJDU=
-Received: by mail-pz2-f2.google.com with SMTP id 41be03b00d2f7-ccc451ef3a7so38755a12.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:31:42 -0700 (PDT)
+	t=1792571517;
+	b=gmj+JJBlRL1ViOh8rmnYwSTLuj+vekMSyCEVsk3QD5ibmJ4uo+ZCo9nlTFN7W3HvGsSt6r
+	Ydr47ab/xTL9p1rKNlsoK6a5CwYEa1Jio9YeYN4yGd5FBPsYFpK/Dv7cH5hUTmI31E+RKm
+	vxUC9X9OmWuRTSxrlmQJ8H/JKzfj39U=
+Received: by mail-pz2-f7.google.com with SMTP id 41be03b00d2f7-cc53988d9f3so139690a12.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 01:31:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792571502; x=1793176302; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792571516; x=1793176316; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fKpfFiVoVVnNbFsiCGN8s68JTp1We4GBLmYun2RkI28=;
-        b=QVUyskAfDnVF3TTimUk3ib1mKmmmkScd5AbC7q80GcgiPA1AfIU4it9sSIOZYqlB9T
-         C+3QMU+2uEHh1/XaRySmYDORvc0JIOtyZHSiVRx/FdoE0l9Pajj8LZ9q4UaURBrg9Nae
-         fOz9lNjoWVAW7lbgBxnUFSpsU+6ODAcq2j7fQuIHPgsS6KB3+LZqjPJfzRwaj6KbGNma
-         b/QrGlGU6dkU9cvge4T0aKJpM6dSfyIUrVMAO/n+Kh1NtjMLC7+DdS1mcGzKGw3ZHKrW
-         u1ogqzYK7SwhopTTPi+u+6ojoGsAPmmeYIGFCq4JMJ95Uzr1pPemEsIFZS9DWpA+csIx
-         za9Q==
+        bh=EXuyqgfiF9x7HO7+fbFxeGIrd5nFUV6QECR0sZa4nrg=;
+        b=Lj0ij21hlI7v/xT5KKmoATuS1REgOozH7l2djs0inSWJUGJZ6K9cjvw6YsKGu0/0OI
+         Uv0rhFo+HQLNImvZEa4Wq1fJEQffKkpS3yjRzDmcYcyLaL5s5BjexZI7GysdCJDq3hQW
+         Xd72AA6jpYjgOKkPbEI2QeBWhRfZiXc2KQhOGxSbami7pJO9bbZ1EA3hSeqBXvFNb5Mx
+         n+lK72dtRvUZbrtnkwxrKBY0S8G6yijYhM+1FlZsX8IREUdlrfxtCTSq85+51U2Q2+cx
+         2TGA7V72whrbTHlR1v60MJooP6oTmHCfDxjXJ6YhCwMFj3kntoID3a5yuIsT4xr82F7d
+         CUzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792571502; x=1793176302;
+        d=1e100.net; s=20260707; t=1792571516; x=1793176316;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fKpfFiVoVVnNbFsiCGN8s68JTp1We4GBLmYun2RkI28=;
-        b=O+JkeL40CNTETJbwY3CypccDKkqr0AZEw2jUc7kgIRdjx3S2vpsXCEUKpIL6ZKtrMA
-         UcUMi2OdDKbVJB1yXPsgp6n+c/j0j/l9IS2wb75PZQLgqU/hTfwMGqvwZuyoc/o+Fb+T
-         zZJvzHJSVjX66Jai8cJo+iXo2nvXwcEdwI/AWRwiRlr07wrC1vojCX8TpmkJgNmI0l0+
-         lFAZftzL//JuLQZcGbJgxgZCpuisoreBkU81vAQBNF93FXWj1zTCvbbW8vIVv15w0ik2
-         /PZ6UMyY9P8sUepEj2g3tkHoYBPLXK6Wp/L91GTBReZ66JnsPfVNdHB+lDUA8BqxjCTO
-         1jEw==
-X-Forwarded-Encrypted: i=1; AKwUvBxs9APab5Qem10EdVgitaqkH4BmYc6+cAJ5vo9tCh3Z7cnJyxBiZ3UqRDy17E5cAhraq1R71s2BYw==@kvack.org
-X-Gm-Message-State: AFq9FYKGyUPJP8p1lDbmtXfvvDYOnlsi7suP6Ig25AGJutaU4HEskteX
-	u4uKtO400ayN2rKMyiep5it4BP1qsqaqt2FEdv9/7XXWHzxXU8Nq58ws
-X-Gm-Gg: AYBFou0sDje+rHkSj9zjd18jFMt1h+nzjvJkDCOgOQ1coe4Y1WuTzmO041cZW29cz68
-	7quj6U0L2UOgpUgXWwdNoKyzKryB7cvZJDdE9EuZ3z56WEyw2rdqw64utBPV9R9JHepylpWRyo6
-	5q3aDWkVs9QKFsp9WocgBq7uCe5Z5xNPNMx8hWfR/owqw7gzlxNdgRQjX/N3QXq1JThpqeRzcbk
-	OAUbrJnNgK56oYGx9nSTUTQ8jzTy/fdrbXX9jh/J5+csvRZIiisN6tJnj+ZNtwFHux7PH+UaaI8
-	haHeJvh90bgl4k5Z+ch92E0UjdOzw8OIu4MsvPex4g0p2bAXLgZYxWuniJ27KOu6VRx3OmBU4Te
-	YuGw3I+rtWddXfpfI+od0nBITgWFB9Llyfsosa0lmmf7wvz6WDqWNX4+pp5E5wTVLJk7YANPH4g
-	zTtB+L6uvQTIjCXbT19j3RRgyGSKuNcb1haif9MvdSP7UHkN76jPxopg5m+1xCgRuuQl6pT7DQ+
-	xEYhod8OFfSEHQpYSXZH426+zAahJtqaN1wSmUcl1XtXG3yLat5IskuTwxUX5cvpmEke00E+yKk
-	sN1l6pUNqT7mqg==
-X-Received: by 2002:a05:6a00:2d12:b0:882:e366:d99f with SMTP id d2e1a72fcca58-8a089d871famr1118755b3a.51.1792571501524;
-        Wed, 21 Oct 2026 01:31:41 -0700 (PDT)
+        bh=EXuyqgfiF9x7HO7+fbFxeGIrd5nFUV6QECR0sZa4nrg=;
+        b=MLtq3rxYEJdYugp7Hbf8zScBzgZvmfG1ojbXgUZE2UE2GcaQJiVrDbAI52GCE9xOFk
+         BVme1c8hclJFNv2kEPy/187cDkdfVtsqAI403s1qbjlKrFzjR25y+tzLhkD+H57u/76O
+         fia0AqqyEAGayJLUDXXZXkai4K6qviFw605W62Qy2htYAWGhrtneGM3GyvrYsMWvrhqk
+         2mbGwmIvAZdrpoqR5b6cq+8Ffx8CodHULg5AFp1wmR2Hogj3XzqsCeM1GseUlVtcJlKP
+         AvJ5MaaoCNtxTsC0nYjnn1gQO+8sWQH73Oig1KatWmOnqNf3shG/wqC/Vr5fUfLQjUUO
+         h/9A==
+X-Forwarded-Encrypted: i=1; AKwUvBwkFxdXIp26pMcmmSix4uRDCUpbF4NihwF9qt/YyshymGPUuKnIL5A5Z4cTefZsn7+IR1Wmnr/71g==@kvack.org
+X-Gm-Message-State: AFq9FYJAf5smE3OFRjTxrKhV2V5vQaIHVRqkoeEAr9paaE9lziu6GKi1
+	BnHEt5hc4JDazwnyQtxHwg4wXI++Qo1URC2mazlBnYaGlQJrvL1VFoFp
+X-Gm-Gg: AYBFou3csKfoth/rOejCAG0o7hoMftpYoIifU8lD5tK/aTmEyMn6YY3d1usKf/XyIZQ
+	v8FAAuE9XJw6/kmxgZrEUxDC2AiqsPl7uyhmlohaSpM1vpG1O7GkeixDZYXBaQKnhjHpkXCnUcX
+	hWniUh5NIKT3AFkxNJabw0oDtl6qFlrPmsgJ1YvbO8hMhYm0FZCtnPmBJpA3ciFmKy+gUHrPZok
+	hv/requRGr595TH8l2ysVxxd2LExq4TZ0BnsrsOCWs33ZOEo7LdMqqDs38Plp5MHyp0iVVSX25g
+	6NmlykCWK/mXs4j2oqE0SX+7f/1OzxaiYt5+LhuPR1hmsX1pqi3FzJxeHIDjl7NFqLil82eJ5nA
+	yKzVyN372xGE1KRkcQDGIYVftuX9NxJdNJn76GxnfSOck5dO2h6XRDwsicByj4bj1iF+sLZsa4c
+	iC1Pu1cg2mnFzoNdfsz0wR32/BGB44LnBSExbT2wwlVBdsTulATvCkwPuxL+uOU5MSkl5rMMeuw
+	3ZVcByxpMBs+b6XwrxhViw1uJY8X+1yffhMZRYWGtVpoMEgRmcEIRXJi52wyeMnlAShPw==
+X-Received: by 2002:a05:6a00:21d5:b0:876:194e:b8fe with SMTP id d2e1a72fcca58-8a089de73admr1183835b3a.26.1792571515803;
+        Wed, 21 Oct 2026 01:31:55 -0700 (PDT)
 Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0895e273bsm600653b3a.41.2026.10.21.01.31.27
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0895e273bsm600653b3a.41.2026.10.21.01.31.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 01:31:39 -0700 (PDT)
+        Wed, 21 Oct 2026 01:31:54 -0700 (PDT)
 From: Wandun Chen <chenwandun1@gmail.com>
 To: robh@kernel.org,
 	baoquan.he@linux.dev,
@@ -123,28 +122,28 @@ Cc: catalin.marinas@arm.com,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	iommu@lists.linux.dev
-Subject: [PATCH v9 5/8] memblock: introduce MEMBLOCK_NODUMP flag
-Date: Wed, 21 Oct 2026 16:30:08 +0800
-Message-ID: <20261021083011.2170525-6-chenwandun1@gmail.com>
+Subject: [PATCH v9 6/8] of: reserved_mem: add dumpable flag to opt-in vmcore
+Date: Wed, 21 Oct 2026 16:30:09 +0800
+Message-ID: <20261021083011.2170525-7-chenwandun1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261021083011.2170525-1-chenwandun1@gmail.com>
 References: <20261021083011.2170525-1-chenwandun1@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C6856160002
-X-Stat-Signature: moj6kyzmrs8mqiooki858gkn4xe3ifus
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 213DE100003
+X-Stat-Signature: qx7866ynjdwqx8fam4c7tz7g1sa84c8b
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792571502-820154
-X-HE-Meta: U2FsdGVkX19DIYgsQHgLEhLe3teF1Hug4BgByim0zw4pj4N3Vyg70eQtItj6canavhJtPkAvbjYkJwCenisHcGKY/ckP6AazrHu5TxoA+HZ/6QG+xTeuqooRnNeJD/ufTijPfHohGRMwkTs0VlEyH0TGRxg206uDF9WOmu+19K5GLP78Bv2J4Uy5EvijoyuJk5UYtmPy723Uw3KHFVTVHFrgtnOIRsSQ0y6FMEHrHPUi2axls+Bz3+yrqDWXrvzE/bnjsQSKcWORnwAkSi8949cGg7BbIn3MQ/XoPcIh2wm16AIa8DMJdj1e+qsLOlmOYXSsqorG9zGXhnzU9BptlO6nQc50fSYDZjf9rqfCyLtl6zH39pv25ethuJS8gCPvoxBINXLSvE22Esx9JgYUZ2c3a54RqLqwSz8rcHhRzJ7IFPtqrXEpg+nQ389UjjQ5wHlyzNQa7CIWmn6zuZ4zlArQtIJctN1TJVDgDLd9TUXWASbGmKDft52PxV0a5kGtkOMRkgUGv2odRE8jJeW3oc57+3nejIvLpvkrcnnfJbpCh+UEk/jj++mLO0QeQsDc0Ufvwb1NoqnrkJ1YTeAraBnBteUQU1dwzaivmHYqMrfRBAEPe41ET+HEyPFF2Afm2+kv0jVDwjP3FL0L6A79n8FQZJRdhFskdLkblhLj26CVFYwXfN2gNwZg3Tnlf8K3Qp0ZRRzULcAhOugk3nRuWHI7vsIP460nSwEgnwQekiFAJS4HeHPyRIKbN+NW7svtDOkgt1i0uweXHUxkoeOlqYWhF9c1r3yyipileCCYhu+Zsxns+Lkjih0NgQNLU+5ZCDCkx8fTVlTkuehslKzuVU8SSR19V47bPov004Tbf5PTfwi98b8fgVJ+tyoU7OxtNLKtkhkS+HqcX3pkbSXd+eRInWJ9UCdhvUzxQxyvXgym5RBKwtb3+59XcH2umvVGggRSWXJ3IQCXPNe2iVT
- JjoQVbTk
- SJbF/AQdH3XrVEyGumzyPP1/0JBzN+8m3WWUfbC/wF11X7C8YA9O0BUphR5AYUBU3q7fbnUNPYLYUHGRk//d0jpGrVl+eFRHMQHkLi7TXNIoligCebG/LiabJ0LAlXSMMM8SgsZTowXHs1ka78dhbdvwmQLxcEFD+0fiC5tD53eKuvR73MKFbsJTnZ9tGLqmzhYWKy3nKUhFtszxYruK7LszAbW7/us1tQ5ywpN2r2Kxa+J70FbVoSuJqZI758bvlWhVpjBK76O/yasswPv3fgbrLs7a+mtx53VdHfb7kqEmTMPoyZHf1etElas4Q/w8MudyRSvM+z08k1RpKsybt1zGp7rb3LW4a5K2GuyGQvX0YlEPpBkZf76F4SeAg0RHSth1l78AlRmQk5x1WCEsU4BExMzliTOGN5sQvTLY+gUtiRsQhVtytAj4mD2MntXEqMrREJ/X0Y5+kEd8gS/oBLrm4Q979SMPrMonAGExv8IS0PI98jqnfdxp7iQENgw4DIivtn9L8Lrf1r+OOt5yS/V/XWpJHuLtUu3mqv+aZ8z+OE22/lDfaI78QT9dAP8sfZrfOIC0ga8lZLLvKHdFUeYzyvCHnsYxfJEeTlaUWcCTwp9pnv11DeccaQ/SPYck7lxeK
+X-HE-Tag: 1792571516-21961
+X-HE-Meta: U2FsdGVkX1+ulo280jTQYXl9U+pGjfTAFh7YEgrrnJY8Rjnifo65xqAa91y5LpTAgwbwUb32BlChJ1ZGz8i7x5irqWphMi0sMxkCISxlLvmW9mTCYsbwYXCKMkX5g6DEnFGiwziMpodRets/9mNfpFRnbVCvv7Us23BcHpqes7kbZ5TX9Xy/YVLMi1FUaxJkSu9E40XFuvldindxmAxaJe/Dn9eKhyedJUIl6ek2jkqsTHKdwoDIxmdheOIiavXKPzeOfdH/YaDFDGhJbsZKRQWr0H/Pfkd+qAjrC9cBKniBvxlxjBpe7fydJvi+4k0sn928PfjSQotbuv4unvbUbU7BUPmN42iPVsbebIphCnVj7KETA4BEHZ3/Q6M0HgOfBFYRxmdV+gni8bTbdT8Ioixc1OfiR2l1sLNQOD3Y6VSpy4Xyw6M58rRlDpVqGeZy8CYrnrvaxegvuAdjDCALk0xJrFmixd4df4d5JoFzYF3pNIT/Usn7vh7Lv1t7YHXIBkWdZNdLGiOguU75fFpwlXDQZjrAjivNbL7O/btnuHAlipbQn1VngE2mUwhMhsh2rM5RRqCjuRo4H2NbOZrvbiY5utpN/sxOXD9ZkpVkhzItlJ8qEQt/OFdbNSChX+zlfIrgL6VhMew5BmvUtCARARKXhyhuyBjlmWuN2PNZmt38Rmc1reObKJ9CN6HCenl3tLot2GVTXtYAtj6bU9eZ8XRP4IKrWSmMGOMUOqRndmvKRJbWKJ2s9keYA5zr8Eru9xaEhS8hRQqm6bA73lVN2T55Qj1t4/Ihbvot6EsWPYdKb/gCbjnmrL5KDTE0j/6puQxwLrmvgSkC1eP5gfpfFWQvKyB09bvHhp/UFv2eIEws1Rld5QVMjVbj6g7OYyHEzT08iF+yggXRRTsPDioBxxFFGg7QHlgw3G1j5L0WnPJGu1NTbhy9x32aFXZ4cWXS3x5nSK0kTFyUhFAfJhk
+ /cph7f8g
+ uiTQFT88iQnmD0v088MJswBtYVLXnoO6VhviEiOtAS3x3MyQon8l1rwllk1rLKlj2McqJ23sNvXvO6WOm5wjcxXKuhEX9esO5SrexptvESUtsQr1I+46JFNox2tMhJQpC4iO6D0fGrdgz5QBBrqL4CT6pHPdk5gbZn6l+CoatxzPRki5baytDcZzqw19parVtdl4hCmZNROS60tjHQUfx4iWTfig0kCRWcU4XIRPaXt0vf79xNLfUbCuuorFvH/26oMY3hexP1AxWIOoJ9QQbbdSXjz6DzFjHGODMarf57rQvn1VIab7/N7zuhj7dNt8uZVKtZt+ru/FblMe10RihqOsCbzoOrJ/R4Um5UpjWDYC+T/8kz+iRKY8NX2eUv5c6X+nBBRfpsZKt+jT8FPt3pVnvUrOo3FSwVUMQo61FNJypa7gi0H8JQK5ES+ovLPitykF39wnR7rgu+mfeUcuNDvw7O4f1DKGAdpjjt9uBw/A87xOg9raQ94AQwguwJNN1DCIOa3OkYnm1Z73Y6tuhUQYoQ8luRaVryYiRn+EWNHSI5ZRtikttLDLJLCfO7WuSA7zhmovmUP/SLxH/VzX9GpPs1/LvlUx+KOrYOPE9c5p5TfY2hyvcBZq3eMez4+1uODMKmRrYZPff63WpwnKZcS0lsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,98 +154,51 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Wandun Chen <chenwandun@lixiang.com>
 
-Add MEMBLOCK_NODUMP to mark regions that should be excluded from
-kdump vmcores.
+Add a 'dumpable' flag to struct reserved_mem to decide whether a
+reserved area should be included in the kdump vmcore. Non-dumpable
+regions are later marked MEMBLOCK_NODUMP; the filtering itself happens
+in memblock, keeping the arch kdump code independent of the DT API.
 
-The flag is meant for reserved memory that carries no data useful for
-crash analysis. Reusable reserved regions such as CMA may hold useful
-data, so these regions must not be marked MEMBLOCK_NODUMP. Subsequent
-patches wire this up for /reserved-memory entries.
+Most reserved regions are owned by devices and do not contain data
+useful for kernel crash analysis, so dumpable default to false.
+Reusable CMA regions are different: their pages are handed back to the
+buddy allocator and may contain key data for crash analysis, so set
+dumpable to true in rmem_cma_setup().
 
 Suggested-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
 Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- include/linux/memblock.h |  9 +++++++++
- mm/memblock.c            | 16 ++++++++++++++++
- 2 files changed, 25 insertions(+)
+ include/linux/of_reserved_mem.h | 1 +
+ kernel/dma/contiguous.c         | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 40e6e0aa2f8d..67dbcfda6f49 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -52,6 +52,8 @@ extern unsigned long long max_possible_pfn;
-  * know is good to use. It is the only memory that allocations may happen from
-  * in this phase.
-  * @MEMBLOCK_RSRV_HUGETLB: memory is reserved for hugetlb pages
-+ * @MEMBLOCK_NODUMP: exclude from kdump vmcore. It carries no data useful
-+ * for crash analysis (e.g. firmware carveouts).
-  */
- enum memblock_flags {
- 	MEMBLOCK_NONE		= 0x0,	/* No special request */
-@@ -63,6 +65,7 @@ enum memblock_flags {
- 	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
- 	MEMBLOCK_KHO_NOPRSRV	= 0x40,	/* memory with no KHO preservations */
- 	MEMBLOCK_RSRV_HUGETLB	= 0x80, /* memory reserved for hugetlb pages */
-+	MEMBLOCK_NODUMP		= 0x100,/* exclude from kdump vmcore */
+diff --git a/include/linux/of_reserved_mem.h b/include/linux/of_reserved_mem.h
+index 49da515859f2..99c0f3ccc297 100644
+--- a/include/linux/of_reserved_mem.h
++++ b/include/linux/of_reserved_mem.h
+@@ -15,6 +15,7 @@ struct reserved_mem {
+ 	phys_addr_t			base;
+ 	phys_addr_t			size;
+ 	void				*priv;
++	bool				dumpable;
  };
  
- /**
-@@ -160,6 +163,7 @@ int memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t size);
- int memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t size);
- int memblock_mark_kho_noprsrv(phys_addr_t base, phys_addr_t size);
- int memblock_clear_kho_noprsrv(phys_addr_t base, phys_addr_t size);
-+int memblock_mark_nodump(phys_addr_t base, phys_addr_t size);
+ struct reserved_mem_ops {
+diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+index 90937dc7c627..d7bfc38ac762 100644
+--- a/kernel/dma/contiguous.c
++++ b/kernel/dma/contiguous.c
+@@ -567,6 +567,7 @@ static int __init rmem_cma_setup(unsigned long node, struct reserved_mem *rmem)
+ 		dma_contiguous_default_area = cma;
  
- void memblock_free(void *ptr, size_t size);
+ 	rmem->priv = cma;
++	rmem->dumpable = true;
  
-@@ -305,6 +309,11 @@ static inline bool memblock_is_kho_noprsrv(struct memblock_region *m)
- 	return m->flags & MEMBLOCK_KHO_NOPRSRV;
- }
- 
-+static inline bool memblock_is_nodump(struct memblock_region *m)
-+{
-+	return m->flags & MEMBLOCK_NODUMP;
-+}
-+
- int memblock_search_pfn_nid(unsigned long pfn, unsigned long *start_pfn,
- 			    unsigned long  *end_pfn);
- void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
-diff --git a/mm/memblock.c b/mm/memblock.c
-index a450092a80fb..ab1432241432 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1221,6 +1221,21 @@ __init int memblock_clear_kho_noprsrv(phys_addr_t base, phys_addr_t size)
- 				    MEMBLOCK_KHO_NOPRSRV);
- }
- 
-+/**
-+ * memblock_mark_nodump - Mark a memory region with flag MEMBLOCK_NODUMP.
-+ * @base: the base phys addr of the region
-+ * @size: the size of the region
-+ *
-+ * Mark the region as not to be included in crash dumps.
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+int __init_memblock memblock_mark_nodump(phys_addr_t base, phys_addr_t size)
-+{
-+	return memblock_setclr_flag(&memblock.memory, base, size, 1,
-+				    MEMBLOCK_NODUMP);
-+}
-+
- static bool should_skip_region(struct memblock_type *type,
- 			       struct memblock_region *m,
- 			       int nid, int flags)
-@@ -2854,6 +2869,7 @@ static const char * const flagname[] = {
- 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
- 	[ilog2(MEMBLOCK_KHO_NOPRSRV)] = "KHO_NOPRSRV",
- 	[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
-+	[ilog2(MEMBLOCK_NODUMP)] = "NODUMP",
- };
- 
- static int memblock_debug_show(struct seq_file *m, void *private)
+ 	pr_info("Reserved memory: created CMA memory pool at %pa, size %ld MiB\n",
+ 		&rmem->base, (unsigned long)rmem->size / SZ_1M);
 -- 
 2.43.0
 
