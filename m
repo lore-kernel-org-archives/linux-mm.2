@@ -1,139 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECF7606AD15
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 16:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C33606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 16:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=sazbDk7J;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ymt8Kd2v;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=sazbDk7J;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ymt8Kd2v
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eZA/dDYv
 Received: by kanga.kvack.org (Postfix)
-	id 438206B0744; Wed, 21 Oct 2026 12:20:27 -0400 (EDT)
+	id 866CE6B0251; Wed, 21 Oct 2026 12:48:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 410446B0746; Wed, 21 Oct 2026 12:20:27 -0400 (EDT)
+	id 83EA76B0253; Wed, 21 Oct 2026 12:48:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FF676B0747; Wed, 21 Oct 2026 12:20:27 -0400 (EDT)
+	id 757A66B0255; Wed, 21 Oct 2026 12:48:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E76856B0744
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:20:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56AE9C05E4
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:20:26 +0000 (UTC)
-X-FDA: 85347146052.11.7519541
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1144B180008
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:20:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sazbDk7J;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ymt8Kd2v;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sazbDk7J;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ymt8Kd2v;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C9BA6B0251
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 12:48:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1627805C3
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:48:15 +0000 (UTC)
+X-FDA: 85347216150.19.E9B48DE
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F3914A000F
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 16:48:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="eZA/dDYv";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of danishkhateeb03@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=danishkhateeb03@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792599624;
+	s=arc-20220608; t=1792601294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tav5y5jFkau2LmUYqTnA1wpMJIvN6h4hM3tj4E8VzrE=;
-	b=DhvgPISYRhw3f3WMEN8V4tekfX4gnHx50uOHvzu9cCvLxfJmk1VhX6VCDOVhZJ5gzixaIR
-	6wZNA9j5BKGy7aIMbalRS/4ZYrc6qzlw8uwHapC3meX6+h1lRlHs07D1gG/f6ChZheCUmq
-	FBNPRK93WTiPpC1OyG0JaSuCHG4p4ps=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dXeINQ4QIp7Up68Y8ta4qvgRYMF1gZWIV5kShFfvhqw=;
+	b=QC+ynLgU0J5z9nFhDZz0kZH5SgQ3bKd3S2aOGRrJz4Q5ehWLGaYDhMqmtPlrOdp7QOA1j2
+	Zw0PCiFLso8fdB9r/r4uixe/iAKzSEfMm4KsHi0ee0aDfsfehavY6FJzcrdu9KVydS8ZFV
+	j1uIbeHKMNIZSg5bYe6keILvkrebUe0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sazbDk7J;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ymt8Kd2v;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sazbDk7J;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ymt8Kd2v;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="eZA/dDYv";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of danishkhateeb03@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=danishkhateeb03@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792599624;
-	b=VfVT5PpXZhderQiXniqYv7cdVhIq7fehCpNJ2/vNsBeX4iQOzSzF2W9z01tccuhn0Mu79O
-	/GV+re2M9W3/pQwaPtuSDv2ZQC1cTkjg2Xvjy3hJQxQIRB0jhP0t8JEjTimAna269LSUZy
-	oijqj+JnAnLRF7pF5EXKcaUf0nSdMpw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7232C21DD1;
-	Wed, 21 Oct 2026 16:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792599622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tav5y5jFkau2LmUYqTnA1wpMJIvN6h4hM3tj4E8VzrE=;
-	b=sazbDk7Jp42D9Z5NdeyLUE1OcGu1nRmZpajaw7CVCmsDZprfrotgkGsrQwQYe5/Bbxvcre
-	typgZVJwUShb1f0HcHtI6nycvsZTVVD5gDiTJAzIPvlyqRHKNvGgId6JCLI69hASVpJtBp
-	pwPTXZUruQuRogJc6W2aVTO+QOCGY6I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792599622;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tav5y5jFkau2LmUYqTnA1wpMJIvN6h4hM3tj4E8VzrE=;
-	b=Ymt8Kd2vfBHv+m/U7yEAQSPnS7zjXjOXil3bIAOaaAlo5Yt102QKVhbjyEMgJXB1Sg3xwY
-	B9MrwlRzWtDaHNCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792599622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tav5y5jFkau2LmUYqTnA1wpMJIvN6h4hM3tj4E8VzrE=;
-	b=sazbDk7Jp42D9Z5NdeyLUE1OcGu1nRmZpajaw7CVCmsDZprfrotgkGsrQwQYe5/Bbxvcre
-	typgZVJwUShb1f0HcHtI6nycvsZTVVD5gDiTJAzIPvlyqRHKNvGgId6JCLI69hASVpJtBp
-	pwPTXZUruQuRogJc6W2aVTO+QOCGY6I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792599622;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tav5y5jFkau2LmUYqTnA1wpMJIvN6h4hM3tj4E8VzrE=;
-	b=Ymt8Kd2vfBHv+m/U7yEAQSPnS7zjXjOXil3bIAOaaAlo5Yt102QKVhbjyEMgJXB1Sg3xwY
-	B9MrwlRzWtDaHNCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 45D5A134FD;
-	Wed, 21 Oct 2026 16:20:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TPcCCEbm2Gp9SAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 21 Oct 2026 16:20:22 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id C82A4A1418; Wed, 21 Oct 2026 18:20:21 +0200 (CEST)
-Date: Wed, 21 Oct 2026 18:20:21 +0200
-From: Jan Kara <jack@suse.cz>
-To: Dave Chinner <dgc@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Christian Brauner <brauner@kernel.org>, 
-	Christoph Hellwig <hch@infradead.org>, Mikhail Rudenko <xyzzy@yandex-team.ru>, 
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: Re: [PATCH 0/7 v3] fs: Deferred inode reclaim
-Message-ID: <pm2fqzpmq7pmv7csi7k7vmbugceblvjlzcaoq3a6itakkri3wz@oagg7akwqrjf>
-References: <20261009133253.20102-1-jack@suse.cz>
- <atfmukIp61u_dn6Z@dread>
+	t=1792601294;
+	b=Ddr5BKhCt6p9f2Lzp+rXH2ZysIJzJr+0PT2n7PSTHmEhcYGVFTC94LfjbUh/GDSdsfJjNK
+	d89ZrgQfippfLNzoHQ0ANL1NdYIHB1Vp5RNBxa4/qqur+ZrJ2ZEQcVZSs37OBNO2XkLrWF
+	9gb3Qa5n8sPMlHaQlELhhtCSc+1e7tc=
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-702dedeb70dso546799eaf.1
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 09:48:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792601293; x=1793206093; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dXeINQ4QIp7Up68Y8ta4qvgRYMF1gZWIV5kShFfvhqw=;
+        b=eZA/dDYv+M1b0Hz2MXaJEonNZBWCf1LtNfBF0DwAra2Xs0BI07pCUQx06wcKqYwwTn
+         sv/C+GHzHZqadlNY7a6BoOhqwBTfCHxuwa9gotR2D6xva3fDNML20lz35Vre2d0F3Jei
+         0KLlwPFzJwl7H71/nscRFbf9HcMzZ1u4hlt02RbfNQXekRdwvKM6Z4/19SQlk8mBfxmT
+         R0o2Sw4Nml17gCDHDHMoLylrvu7z13R96iXq13jB98iJLs0276euozIoN5et6d7m9NGC
+         JFKDDEVmeQAkUOthDf23CNXc0xmrZyIbMkfwPhfrMQCMxGRmayzsiFsKOW+V0QQMlehP
+         C3RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792601293; x=1793206093;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dXeINQ4QIp7Up68Y8ta4qvgRYMF1gZWIV5kShFfvhqw=;
+        b=C1W+9vVWq3eMP0Z5aUNWxcmiNnMTUrHGB48uZp+pSXEriq48UeGbjXV2HKPfBonxu2
+         gtVC2FOk1q/aXYbrl+U7JP3cxJR5sNqPo9B1MgILH/IaX/agBZH1cJQtF+yRpe3LJkmp
+         TSNvQTFGrRAzlyrOPs0NPy4+A4Ub+iCzb+kX1tDBYfhwAkgHY2K70iQPdgBNEIMu63ai
+         LFIKWJTpTily/rODLJmcqcjAtOAq+Ju2yR1F8IRqnt9fDVDyb3jZMusCfXcmbkx6kInF
+         IHzxQy31rQ3az2F9kxA+J8E1gWqhxToFk3bH7L6CzQXDuDwxIEhnyb66zjUfNHYQz1oz
+         Hojg==
+X-Forwarded-Encrypted: i=1; AKwUvBwD5fOiGNIprVWJ/8v79FaPKPgQVDfchwDNGMTT6qebHpM4nWWFUU4QaCDWbynFXZ+r17P/Flm8sg==@kvack.org
+X-Gm-Message-State: AFq9FYJX5rCjPiVmP7FFc3zGbTzLUCIRbexmIN5gjAjO4MPk/tKUQc3o
+	oDf+KjUuhWLnGCiRjrx3ymZZ0bBl8f/oxScqNekkiQ7sKmPPIL5ipyAQ
+X-Gm-Gg: AYBFou3jFQK2DsQ1oSSZt7TPNvSQ7qNPgG0X3JwvUqdj6JQbANWlowkzNtW1cb+okUO
+	vIygcQGYiRxpJmBhBh4jjpfFaF/HgMo3PheKoaiKhPo+YWZ0zvYAf7OVxOdspvkHlI2yOwLzEsJ
+	lS2qknZEB0fCgRQWvUAANaFgs/gDWZ7zIHfXZz+9xHwhZOFNIwc2zVU/sWPvD6poS8mNzan0pDY
+	bsZ1RVaMENam6vmanH7ACcAgVkMEO11mTt9drUSduURBIWMDfAMl4ZF5TPO++ScEsSQXb6PMV8d
+	waS2zJVvg/Aqwn3trEl1NBmV5yhPagpXjVQqLAOV1dpfmfBB1SP0fqZY19hLhxyizmG9DjQ+tAC
+	IXsKzeQhFnbyziy66UYbfY620ec0cAqD+2xSv/B5hB+vzQAG1ql0FrU2BMbC9x6ErHuR+BUsyZy
+	NFLTb2qUoPQOHdFheMI188sh0UOg54Ui6ChsRz0T7DMgUQNHvdbzQM937edXp5UEu6VAcpYQmsc
+	UURhQtZ+/fFY2FkZyQS4IlVbtNz68yMeRMN8/TqAdo76nkApcemHFiQazRnmzWCOpYB3JMjS8IW
+	rM7tiKrQWjx7Po63pBYsZw==
+X-Received: by 2002:a05:6820:821:b0:6bd:f79e:501c with SMTP id 006d021491bc7-7093f8b08f4mr1720613eaf.16.1792601292924;
+        Wed, 21 Oct 2026 09:48:12 -0700 (PDT)
+Received: from archlinux.lan ([136.34.156.120])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a7d5ebc240sm2352610fac.2.2026.10.21.09.48.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 09:48:11 -0700 (PDT)
+From: Danish Khateeb <danishkhateeb03@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Gregory Price <gourry@gourry.net>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danish Khateeb <danishkhateeb03@gmail.com>
+Subject: [PATCH v2] selftests/mm: merge: keep the far mremap() targets in the carveout
+Date: Wed, 21 Oct 2026 11:48:10 -0500
+Message-ID: <20261021164810.45846-1-danishkhateeb03@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atfmukIp61u_dn6Z@dread>
-X-Spam-Score: -12.80
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 1144B180008
-X-Stat-Signature: 9bxs6yuy4ic8z3hfkx8ah9sx78y96cfj
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F3914A000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792599623-221824
-X-HE-Meta: U2FsdGVkX18M/RLUEHXUmXDh7yqDiql9JrRyJcMOtPYU0vHSecCM/+3t8ehQ/Fji7QLHEiv4GozcYP5gS5YhhSJnQa+m2jdtOJUwWE42ME63jG1ie4LV2KtGPi3hRpPQ+mYi2Sw8etBghNVJPsHTimQ8WR/pdzvz3veB8gZt86DW41q2z6lzlHzF+Se3i3g/lpywSSxMWYDx3gWVbQCmT9zkZKTUJMTeGf7R25WAzYRCSesbchK8hos/7i7iya+Wg0jGO4VndzxdQbolvpl6KdaFN2M2V2O7odzgbL744H3QJK8C5kuVLb6+L6ZTrqKBrmebb9ThJ0BqE1TpaDRs+Yea1FgDdX9lySQz2C8r9TFc6MVBTvMQ84NS620WHNFUXzVzoVG1q+eUF72bcQz/BSdFZD1YtnZLmEYG2QKbrNrd/BJW8jX3tnsk5YR1yMm6NWDpjS49qPOSMPmXIcmj2hXMf6UddcFVt3Yo7lig85bwDpXwYb96e7ZZLzI8aPnDeR3M/stmNXR01/VKqhcq26H3/359N4JWWtbkO/YWbBb0CQOIJIKUAC1DoZJ+7pY1mhboL0TZbUYucDlQ01r3g5ur3hJ6bplmmDPJXjVWaEt1/ap9oFs1zEmTavllHlLAKHYdtChMZFI2WYQbXo6W1NYUV4+J7kNWP1RMveAePrhrEupLxhbUK5YqNsTQnKiXBHOnLIY9JQ4N9p9vVQMCNZtMKfAquaVkwmxBRgO1yc/sX7/USXWvAImaquo1JhqSEjQIaeJw+kKo0JXeGI4YhFQo2C9c9WWSac4zdfGemzj5oliisjMrTiuqNpDsq+ZFbAO1mKWkiQaZjpU+/TlGI1sRBGFb1jfbCzxWAl+UcaLODZ5GwXYpNxu+YcVysdxgu8DVoD7oxcent5dyHYk5wSIZ11bahJAtLUpkDmYSbs3WZNM/Gd+Qki3Un8z9Ohn1QDjCwMgO81MoJMAxobl
- AFASqfOJ
- ZhGiCLTmbjr8akG6Lq+hz3VDe9+GMQ++CFt8ZB1IMBIzGcy1XIoa1wvg1RsbyACv5tWZbFbxj6ODQtuTsmae0Oj1aO58akG6+QsabhaRXh6YylVaUt5QXAuN/dEYBgDa0oriLEEQwBbObPVLsC/d+ZeuPLHeBJ58CjyJghS7ZH6S+NmjtxULELEJXBAvvMSXEQq59mqcyEPUmjUtBbyGjHpl8PAHYFWaR8fh1xEhNZYUTPgRY90A8eZ7rExKD6u/tALqVTjPJf8uanfTPnV7325/Bb7fh/pNOqfsIZAFrTppOnO6LKK2A8C2ZRPWQRU0UOBZe4J7TQZVXFmDGtc8SWnVDbg==
+X-Stat-Signature: dsymiqgjqb1ipbxowhzapeam69qff9fg
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792601293-789822
+X-HE-Meta: U2FsdGVkX18TpguH9iQgITw7zJpWgMWW/FqDX1sQ7Cgy5VKEm38MXVyMC96UIg/xIHfb64VMWBLMROk7Ls8xg34Kjbi+UhRWXp1ZI97j51WjAwOWxAfPMA46UnsE6iTW/qPNoE8jxs7WtRrZ7bCsUrmOmXeFBogMxF5k60TbY7kp0fa/2nJBbhNVSZPrDVI/1G+DXo2jKBpGDo9fCg58M0nXgmSng47mDeMZv8lMXSpCflyLQ29e4br2CRg75BzYMYh8TV700/w/W+Nt5tbs79K23DPY+QveufAz66Ibh3XMiGCgud7GnZclmB4WqHLNPq1IA7tWHPD41dPmoTNnTCrO3isXo8mkICCTOY7W9Z1cDiowGBvmgtTY/0dycp4YNeXwgwoQo80h0MlflxGGCY+sp4Z7r5YSCLfWHsUu7t9M4tX6JoiQHPj7qzl+w0fmIbnaFHqQ3BC2YO3FiV5hSam/813UuNswvi4fjXB1K0lHE5xodelrAazdzdFIdyUM3fRLuX7TIwGX0Qt1Ts3HTrGLH+sSW424UZviUX9EKMHxM02GGmOJtgbNIynDWqRWOjFVWX+SxP/tl/lSfEhhlPhKB5MgRfMYU41IF+iqC5bahpnV2u7ZTGTuHjP2zahLxBN2y7Hia5vqiZHpDhWOc8suhbbCjTUpRXXTGs4+mcERaXgD15O/8X11R/YlRh95LuUPijiUfe1X60oRST0uIkQzawmCKJ9ar4dpVCOhULUA4f0BuI4L5Kf7xPPcJzQ8tnu0Q+PB0tIG/nUEAPM/6D8H7e56D0cu+S9SKTRh8sqhKTLH6NkDT1TigcFYTApRf0k4zHKP5hZ9bn5ZCxBJ44xq320WLPkBzyghyA4I5xlq1ywvFH8YkKhi3zK1sPwW0fx2cLAzycbN7Jsjf1pYJub8/vVg4ZZQiUqeLzNDOwVo/h2+rXO3Pxe5YOB3T9a7TVilq0jO9GcVVuwE6iC
+ mMlEcP2P
+ OGO/2P35BHaCEQgx6X8b7xkX6K215crleTOaJ8UD1adOselFwqt9UvWK6WxR9h1Xg3VYb6/bk8DGR+h3u7bULOjOLh3u+SBqiJrHMClukKcd8VbWR5cDlr9wJVvkrLkwcCvVVr+vOMbDtSAkH+etUqp+7gnfzOIfGmkfWZOyDaMZlk/ZC0dnzArT3TUo+sMKRr3b5/y17JuLmyn9brvR0g6uU8tLJNj7JnQp0Xcp/gS/J9BwrsU30KxkjjYYOzBM20ygEls7E91MfPWF9YpkcxAN5Fb8qoWGwkHLXEAjbPPjojVoO3zaD7BnKqzxHGUXA0cBDJXCx1NOti0JyUiD1k9iFfnhwQr8RmXrvc394HRzA1xm+w2WiTTPZOTguGiUQeAK8sUGRAHLcIrYspCWReilPIxNpCIKVlLA/KfR0Dgd3f0+tid+6V4p2mQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,125 +133,197 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed 21-10-26 09:10:02, Dave Chinner wrote:
-> On Mon, Oct 12, 2026 at 10:23:38AM +0200, Jan Kara wrote:
-> > here is the third revision of my patches implementing deferred inode reclaim to
-> > deal with MM warnings due to GFP_NOFAIL allocations from reclaim paths. This
-> > happens because to reclaim some inodes, filesystems have to do IO including
-> > complex operations using journalling and forward progress of these depends on
-> > successful memory allocations (which is impossible to guarantee from reclaim
-> > context).
-> > 
-> > Since the last revision the most notable changes include addition of automatic
-> > deferal of inode eviction from iput() when inode link-count is 0 and we are in
-> > reclaim (PF_MEMALLOC flag set). This path gets triggered e.g. by overlayfs
-> > whose inodes hold dentry references on upper filesystem and thus slab reclaim
-> > of overlayfs inodes can trigger the last dput() (and thus iput()) of already
-> > unlinked files. Since inode deletion is practically guaranteed to require IO
-> > (and thus possibly e.g. loading allocation information into memory) I've
-> > decided to unconditionally defer reclaim in this case instead of marking inodes
-> > in each filesystem.
-> > 
-> > Another bigger change in this series is that we now protect deferred inode
-> > reclaim from filesystem freezing. Otherwise inode eviction could block the
-> > reclaim worker on frozen filesystem which could stall deferred inode reclaim on
-> > the whole system. Deferred reclaim workers now skip reclaiming inodes on frozen
-> > filesystem and we block filesystem freezing while the worker is evicting
-> > current batch of its inodes.
-> > 
-> > The last bigger change is that mark_inode_reclaim_deferred() does not block
-> > when the queue of deferred inodes grows over limit anymore. Instead it queues
-> > task work to delay the task appropriately when returning to userspace. This
-> > solves possible lockups when tasks would get throttled when calling
-> > mark_inode_reclaim_deferred() with some locks or transaction started.
-> 
-> Hmmm. This re-implements the XFS inodegc infrastructure at the VFs
-> level, but without all the internal XFS knowledge of when background
-> inodegc processing is required. It looks rather complex compared to
-> the XFS inodegc code....
+The merge tests map their areas at fixed addresses within a 30-page
+PROT_NONE carveout. Several mremap() tests move an area 1000 or 2000
+pages away to separate it from the others, but those targets are outside
+the carveout, and MREMAP_FIXED unmaps whatever is mapped there.
 
-Yes, I took some inspiration from it. One big difference though is that
-deferred inode reclaim will be applied only to inode evictions done from
-SLAB reclaim and only for inodes explicitely marked for deferred reclaim by
-the filesystem. Just there's this exception that currently VFS would
-auto-offload (i.e. without explicit marking by fs) in the case SLAB reclaim
-happens to drop the last inode reference of unlinked inode. So in that case
-VFS could defer reclaim even for XFS inode but that is mostly performance
-irrelevant cornercase (in vast majority of cases unlink or file close does
-the last iput() of unlinked inodes and in that case we never offload in
-VFS). So I'm not sure we care about avoiding the extra offload for XFS for
-that case.
+Under virtme-ng, the shared libraries are packed right above the
+carveout and the dynamic linker starts about 4 MiB above it. The moves
+then replace part of its text with an anonymous mapping, and the test
+crashes in its next lazily bound call:
 
-> Whilst I agree that the VFS should be able to do this for
-> filesystems like ext4, we really don't want to be deferring inodegc
-> processing twice.  Hence for XFS we really want the VFS to call
-> evict() immediately for all inodes so that the filesystem can
-> correctly decide if deferred processing is necessary or not...
+  merge[6980]: segfault at 7f7ebb3c1e60 ip 00007f7ebb3c1e60 sp 00007ffd35fbaec8 error 14
 
-Yep, that should mostly happen. See above.
+Two to four of the mremap() tests then fail with "Test terminated
+unexpectedly by signal 11", depending on the exact layout. On a host
+where libc is mapped at a 2 MiB aligned address, the targets happen to
+land above the dynamic linker and the tests pass.
 
-> > The patches have survived full fstests run on ext4 when marking all loaded ext4
-> > inodes for deferred reclaim to stress the deferred reclaim paths. I have also
-> > tested (when marking all inodes for deferred reclaim) the patches by creating a
-> > memcg with 128m memory limit and then scanning from 10 processes 1m inodes in
-> > total which heavily exercises deferred inode reclaim paths. This also verified
-> > efficiency of throttling of marking of inodes for deferred reclaim. Basically
-> > we cannot guarantee any particular limit on the number of inodes queued for
-> > deferred reclaim as that is bound only by their number in memory and memory
-> > pressure. But as the number of queued inodes grows, the tasks creating them get
-> > slowed down so eventually some equilibrium is hit. In my VM this was at ~10k
-> > inodes (only slightly above the 8k limit when throttling kicks in) but this all
-> > very much depends on the reclaim pressure, speed of deferred reclaim etc. so I
-> > don't think this is some representative number.
-> 
-> XFS has a "almost-hard" queue limit is 256 queued inodes per CPU.
-> Anything larger than that sees reduced performance under sustained
-> inode cache pressure and latency problems when eviction processing
-> of individual inodes takes a long time (e.g. deferred unlink of a
-> set of inodes with millions of extents each).
-> 
-> In normal operations, however, the low queue limit means triggers
-> the scheduler to move the reclaiming thread to another CPU to allow
-> the queued cleanup work to run on the same CPU it was last touched
-> on. Performance testing showed that moving the reclaiming task was
-> much, much better than pushing the reclaiming work to other CPUs
-> whilst blocking on the throttle. Deep queues (like many thousands of
-> inodes) caused other problems with ongoing (non-reclaim) operations
-> then contending with resources with queued background inodegc.
-> 
-> i.e. for XFS it has proven better to have short queues, short
-> backoffs and schedule/process small batches concurrently than it is
-> to have deep queues, spreading the work out many kworkers and having
-> "end-of-queueing" throttling behaviour...
+Since the areas are all within the first 30 pages, moving one by 30
+pages is enough to keep it apart from the others. Add FAR_PAGES for
+that distance, move areas by FAR_PAGES or 2 * FAR_PAGES pages, and make
+the carveout 3 * FAR_PAGES pages so that it covers every target.
 
-Yes, I was considering XFS inode reclaim design as well. The big difference
-to XFS case which offloads everything is that we expect to only have to
-defer inode reclaim if something expensive (like allocating blocks)
-happened to the inode. At least all usecases I have in mind are like that.
-Also except of rare cornercase races the reclaim of unlinked inodes will
-not be handled by deferred reclaim workers but directly inline in iput().
-That is why I didn't bother with per-cpu thing as I believe the performance
-of the offloading mechanism itself doesn't matter as much at that point.
-But I could be wrong...
+Fixes: 4e25f85b9f85 ("tools/testing/selftests: add mremap() unfaulted/faulted test cases")
+Signed-off-by: Danish Khateeb <danishkhateeb03@gmail.com>
+---
 
-> > The first patch is a pure fix for a problem I've hit when running fstests.  The
-> > second patch deals with lazy timestamp updates which I've decided to handle
-> > better directly inside the writeback infrastructure instead of deferring
-> > reclaim. The remaining patches implement the inode reclaim deferal. Ext4 use of
-> > deferred inode reclaim is there mostly as a demonstration. Other filesystems
-> > need to determine which inodes need deferred reclaim and mark them as such
-> > which generally requires good internal knowledge of the filesystem. I'm hoping
-> > that once the infrastructure is there, fs developers prompted by MM warnings
-> > will start using it :). I know for a fact that besides ext4 e.g. gfs2 wants
-> > to use this infrastructure.
-> 
-> But XFS doesn't, so it needs to be optional. :)
+Notes:
+    v2:
+    - Replace the 1000 and 2000 page offsets in the tests with FAR_PAGES
+      and 2 * FAR_PAGES, and derive the carveout size from FAR_PAGES,
+      instead of only enlarging the carveout (Gregory Price).
+    v1: https://lore.kernel.org/all/20261021011929.89150-1-danishkhateeb03@gmail.com/
+    
+    Tested under virtme-ng (9p root, glibc 2.44) on next-20261020 with a
+    KASAN/lockdep kernel, three runs of each binary:
+    
+      merge before:  pass:22 fail:4 skip:1 (SIGSEGV in ld-linux-x86-64.so.2)
+      merge after:   pass:26 fail:0 skip:1
+    
+    On the host (glibc 2.44, libc mapped 2 MiB aligned) the results are the
+    same with and without the patch.
+    
+    An LLM was used to help with this patch.
 
-If you still want the rare cases where offload could happen for XFS optional
-after above explanations, I can do a filesystem_type flag for that.
+ tools/testing/selftests/mm/merge.c | 39 ++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
-								Honza
+diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
+index 7dd2933417c1..208ad7e340fa 100644
+--- a/tools/testing/selftests/mm/merge.c
++++ b/tools/testing/selftests/mm/merge.c
+@@ -22,9 +22,18 @@ FIXTURE(merge)
+ 	struct procmap_fd procmap;
+ };
+ 
++/*
++ * The tests map their areas within the first FAR_PAGES pages of the carveout,
++ * and some move an area FAR_PAGES or 2 * FAR_PAGES pages up to separate it
++ * from the others. MREMAP_FIXED unmaps whatever is mapped at the target, so
++ * the carveout must cover those targets too.
++ */
++#define FAR_PAGES	30
++#define CARVEOUT_PAGES	(3 * FAR_PAGES)
++
+ static char *map_carveout(unsigned int page_size)
+ {
+-	return mmap(NULL, 30 * page_size, PROT_NONE,
++	return mmap(NULL, CARVEOUT_PAGES * page_size, PROT_NONE,
+ 		    MAP_ANON | MAP_PRIVATE, -1, 0);
+ }
+ 
+@@ -73,7 +82,7 @@ FIXTURE_SETUP(merge)
+ 
+ FIXTURE_TEARDOWN(merge)
+ {
+-	ASSERT_EQ(munmap(self->carveout, 30 * self->page_size), 0);
++	ASSERT_EQ(munmap(self->carveout, CARVEOUT_PAGES * self->page_size), 0);
+ 	/* May fail for parent of forked process. */
+ 	close_procmap(&self->procmap);
+ 	/*
+@@ -115,7 +124,7 @@ FIXTURE_SETUP(merge_with_fork)
+ 
+ FIXTURE_TEARDOWN(merge_with_fork)
+ {
+-	ASSERT_EQ(munmap(self->carveout, 30 * self->page_size), 0);
++	ASSERT_EQ(munmap(self->carveout, CARVEOUT_PAGES * self->page_size), 0);
+ 	ASSERT_EQ(close_procmap(&self->procmap), 0);
+ 	/* See above. */
+ 	prctl(PR_SET_MEMORY_MERGE, 0, 0, 0, 0);
+@@ -660,7 +669,7 @@ TEST_F(merge, mremap_unfaulted_to_faulted)
+ 
+ 	/* Offset ptr2 further away. */
+ 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr2, MAP_FAILED);
+ 
+ 	/*
+@@ -721,7 +730,7 @@ TEST_F(merge, mremap_unfaulted_behind_faulted)
+ 
+ 	/* Offset ptr2 further away. */
+ 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr2, MAP_FAILED);
+ 
+ 	/*
+@@ -785,12 +794,12 @@ TEST_F(merge, mremap_unfaulted_between_faulted)
+ 
+ 	/* Offset ptr3 further away. */
+ 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr3, MAP_FAILED);
+ 
+ 	/* Offset ptr2 further away. */
+ 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr2, MAP_FAILED);
+ 
+ 	/*
+@@ -870,13 +879,13 @@ TEST_F(merge, mremap_unfaulted_between_faulted_unfaulted)
+ 
+ 	/* Offset ptr3 further away. */
+ 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr3, MAP_FAILED);
+ 
+ 
+ 	/* Offset ptr2 further away. */
+ 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr2, MAP_FAILED);
+ 
+ 	/*
+@@ -1035,11 +1044,11 @@ TEST_F(merge, mremap_correct_placed_faulted)
+ 	 */
+ 	ptr3 = &ptr[10 * page_size];
+ 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr3, MAP_FAILED);
+ 	ptr2 = &ptr[5 * page_size];
+ 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr2, MAP_FAILED);
+ 
+ 	/*
+@@ -1075,7 +1084,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
+ 	 *                  ptr2      \       ptr       \       ptr3
+ 	 */
+ 	ptr = sys_mremap(ptr, 5 * page_size, 5 * page_size,
+-			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + page_size * 1000);
++			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+ 	/*
+@@ -1110,7 +1119,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
+ 	 *                  ptr2      \       ptr       \       ptr3
+ 	 */
+ 	ptr = sys_mremap(ptr, 5 * page_size, 5 * page_size,
+-			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + page_size * 1000);
++			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+ 	/*
+@@ -1168,7 +1177,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
+ 	 *      ptr                     ptr3      \       ptr2
+ 	 */
+ 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr2, MAP_FAILED);
+ 
+ 	/*
+@@ -1203,7 +1212,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
+ 	 *            ptr                         \       ptr3
+ 	 */
+ 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
+-			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 1000);
++			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + FAR_PAGES * page_size);
+ 	ASSERT_NE(ptr3, MAP_FAILED);
+ 
+ 	/*
+
+base-commit: fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.56.0
+
 
