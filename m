@@ -1,150 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC58606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 18:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C524606A322
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 18:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=g7hHjPy1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HZ/WHhN8
 Received: by kanga.kvack.org (Postfix)
-	id 726F96B0762; Wed, 21 Oct 2026 14:47:31 -0400 (EDT)
+	id 729886B0764; Wed, 21 Oct 2026 14:48:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D7CA6B0764; Wed, 21 Oct 2026 14:47:31 -0400 (EDT)
+	id 6D98A6B0766; Wed, 21 Oct 2026 14:48:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A0BF6B0765; Wed, 21 Oct 2026 14:47:31 -0400 (EDT)
+	id 5F02D6B0767; Wed, 21 Oct 2026 14:48:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2211E6B0762
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:47:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BB3F16065E
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:47:30 +0000 (UTC)
-X-FDA: 85347516660.04.EC28AE0
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 94614100008
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:47:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g7hHjPy1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of dmatlack@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792608448;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 277356B0764
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 14:48:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7FFB51405FF
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:48:17 +0000 (UTC)
+X-FDA: 85347518634.26.362A08A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B973840007
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:48:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HZ/WHhN8";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792608495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dSTZtcyPK3yzGl0K7b9zLKEzjIcPw2EBeTAvW8QX6I8=;
-	b=a31TgloUrA1u+iAyW4uRAqM42RLdxlCvg3AEO3lMw9EnfeP0kfhg6jvLCUT/5fxC8qviM9
-	D3d6xDj0wYBApyuRzF0rxX2jzlk0ERDGBL5P5rmcNl6UK0Fgod5+prlkhGLzEFMHTSfPTd
-	HkDo+PaJYPxXXU0rLdlTIoqMu70EDyI=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g7hHjPy1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of dmatlack@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792608448;
-	b=yGOmPydFruL1kZl1CBLuUn0+cavRuRqguBc7cVM4rxYusreZP3hM3FKZqaMb8SkDVp6ZDU
-	ZHU7iQBTUQkledCmJyumL6kaOU16Voa+fhuCpPcDS4EYsIy0ww9kmAynVE6DlJaC7TDPjv
-	KqDGXU3msjkrD3ocSPdTCU41li0sjSs=
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1517bda04a0so1076349c88.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 11:47:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792608447; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iL2RUEoIsGPA4Va1DPIV5uzpdapER7tPO8Os3xM3j48JnEAb5Ygm7aqFatuZwvK9Dl
-         u7PNeO6+25heuV5lHPeglrpWWAnceQ8RsHvrIbkyD8S4Neo94K3Jg01LrV8Og5Z0zxda
-         lGESHv1gVK3JuRTruZx/IcrUvHFBS+ZOl/AEryltavywGwD7+VYRMuws5V9shVXb8H4R
-         OR96hGbSFAlCYp7oLVEdywtJ+xg5Y3+ENP2yeBe3QlA8a0VXx9xCjQSsySBZKCaVjOow
-         a4LPQhPMjFP4CGmTOjEP0Q806aF0F5GSxc0HUWg/CE0Te9n0tKzBKh57e4csnvPalkLU
-         DUhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dSTZtcyPK3yzGl0K7b9zLKEzjIcPw2EBeTAvW8QX6I8=;
-        fh=tQIK31c0+pBkerHPlu3B9QxqrGbigOmFACScnHv+EDs=;
-        b=nnOdTT54xBtqh4pvhmGmUvHFDjlXPc5cmIW95oMLMHraN/ymbWPIxP7X3710C9YAeT
-         AO2oewXOWr5U0irzSrgmT1GocIrYmKJUNr00AhSYmn8p7Qi/Ygq2FyCoVRtjPFgtW9i4
-         qWxMW3AJFbXDc/EwmesIQA1K7bu8tOgJ6N5/+CZHBQKYi7k+kP/oagnF96RZm8VZWbBY
-         pS2/uc9AfbETyg927NsNf8NRQPnDZxWcmw9p5vIBrXXeeR8mTuKe91udanvClt7i+SQY
-         99Ydo0IR4w7CMq/5cnvVtUFYFUGEDhF7j4ha4p1hqS528ixVr+igJ35wiPiIYz6G+Y8Z
-         85+Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792608447; x=1793213247; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dSTZtcyPK3yzGl0K7b9zLKEzjIcPw2EBeTAvW8QX6I8=;
-        b=g7hHjPy1tacfFQpQy6DU+RIlhqEOm66Cb5t8MwWeeK0l9liVmfw4/+7aMo9R3O8Bdg
-         xPxIbRpl86vdTwRdNpAgTW8mMGvo9n56G5544Tbavu3aA5ZZ0fipoDr/BMeT7VKuv7VN
-         ZhRcUdZaKLmsnshFVc9dHo5ZE/faP4kCnG8JKHOgEP7hAtxJiilG1HKR+0gv0xgNuDFA
-         m6GhfPk6R10tlNNh1kaY0azFbJbxDBVMDsWDNvcqjrC1Npde0ZLSc/EBEpMbxLkX23P2
-         lxU8v/2AqM4Q1nlUkuT4CK2Jkd/fSPHcWg6lbFZYKJ+sV0u2tQLuNvCLAtISU/1xLkMd
-         QSjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792608447; x=1793213247;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dSTZtcyPK3yzGl0K7b9zLKEzjIcPw2EBeTAvW8QX6I8=;
-        b=Z9XrGwg8RNt2LQGKD+qC2yZx8vyioLWO2S5rdHEAcTIhipTkuxOZjGy4SlzUrV9e0V
-         383KTbMAuoexwOaXA6wCyuAsyYgA+DPbpbfJrWP/E+jVz6AdNenItkJDimMcVGwJ7KT1
-         7oydmqYOMBzPiicVt6oclEeQuIiqcpcbPd5A50ocaYi1Bj1wScI+WR3Ev/R7/8xIaI5Z
-         Qy9ScUQ3GPqL1C9haAleap2P7P+CKiQeUraz8aNALFcTktqTve6AS1DH9BtHuRF5AjqQ
-         MiNxoftJTk2pjlfyVCPGYi3lQmFwsprTy6fJOZGSTfb96cL0xqfYDzeBgPz7ehy1wAGk
-         3vHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBytUABicUuNbqfnYTrbV2qJ9xTwDh3BxEXsmftgyhiYkdKwtW0YUquDFng5OphJsvOnyS71zELCkg==@kvack.org
-X-Gm-Message-State: AFq9FYLrOKv6plo1zaIarVXTP6km12/85UVLBKaZ2cadgnrf6JPLOgeL
-	ActZzk6Ni7BhKYEdo+s9mk3vaXcvo/GaYjhcSJYhbkFepJb+lnqpSTJg8iuEuY83Br4aPS5q5es
-	AwiPPdEJlJ6C4BQRq9sNnHbYqogvB1REHftR7SymY
-X-Gm-Gg: AYBFou3wkzTslqmWwVEkAR/DDuIIAPNTrCtOxyCCyf4s/4KBrHx4unfc58tGw6nI/eq
-	AKN+wiLaln5kV9ML91OcA5QEnN2jMKH92nYQ8jYtguBlio/JBWlN+MKsWDbfDNxeKV/GBTF0LV3
-	89uOT+hqNhOag4oGaB3mIXZ9Gh6DOfYb+EvSQREyQd3rlHHY25DzXJZXbrDvRljXFeI8oF1JWHg
-	DTuv4rEFv2eCMKWSRSrwfAFECSY99R+H8VhGlxKrq5s/FIFow/aKMkrhkZq7Pihr1d47joPgdok
-	IYlB3vnQe6f1rCBlULSJUjiv1AW1uxeW90p5uAjfi11TrQHBUxuKc10RpVb7/2SCcFWA11qjSzm
-	higTFu3GR1hUqe+8xTLvmXkpgLES89nrlR5JijXWqmwVZMW7Ze5rMWD0v280=
-X-Received: by 2002:a05:7022:2507:b0:14c:efa5:ee7 with SMTP id
- a92af1059eb24-190a4d18cc9mr4696437c88.14.1792608446024; Wed, 21 Oct 2026
- 11:47:26 -0700 (PDT)
+	bh=k41VHhw91SIJ/+9kJ/zui2CNjpfyi/O9zkcP938SdjI=;
+	b=wTZYxxjyQvxv+DFbjDXAoFcAsFMVFSR5iNcKBDAD9RUL7fyPCxiJYZ4OaU/F+ei7VCAvry
+	zkzLTNbyuI/mfR6l/Nx0AQDtKI55wd2cwGofUIasiXOHcZYsqrsYpXlxjqMBzBPQPI/mHS
+	FOgR22x7ANtBuM3/uZqFIj5T3hc6l5k=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HZ/WHhN8";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792608495;
+	b=NDv9DFnwDMg+f84sTSb9lo7jJoGrNCo//nJw2rZxATjOw8Bl0Y7uFew8H8kqt4PBR4kw1M
+	vXJ4aUJm8ZwR+4f7K5h8MWBYbBT1a0jNSXwQOHYn9wRO0VHcOkNugm3enc7kIgrarICZv1
+	CsgVXrV0q0dN8ZFaNPUOxg6CZC91j4U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2757A42EA8;
+	Wed, 21 Oct 2026 18:48:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B971F000C1;
+	Wed, 21 Oct 2026 18:48:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792608494;
+	bh=k41VHhw91SIJ/+9kJ/zui2CNjpfyi/O9zkcP938SdjI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HZ/WHhN8oklwMD0+O3/AocQolDLgMpBdi9zYFcrKNiszSGLT9yf9y8a0kUCCQ+nGx
+	 1pLR6F91DyD/3HKpCV8uQYRKjo63mGAKsyjv39D3zxXcL4oh2Fbqkcjescn7xXfQfU
+	 lvyG/rLzD5t3LMs+4xMTvZKtGJeAsH0ZrWQgbmDZ6+pCwb/1nZ2W5ZmbyQ7+r8BEMi
+	 vinxjzdv6Fr3UYCojbY8hiP1rzJ7n2Q6Peb5STKiMvnDI5ZIy6Brk6zFUZmaM/fzKh
+	 pw5WIjZhPCfwCBeSF/uuwZk1lW+LqQs+Kz8JWMS7dRtB56gCvo9pl7+bC/hyq7qUWz
+	 fJEMRfSCB26jQ==
+Date: Wed, 21 Oct 2026 19:48:12 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Casey Schaufler <casey@schaufler-ca.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>, Hao Ge <hao.ge@linux.dev>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH slab/for-next 11/14] smack: specify SLAB_MAY_ACCOUNT for
+ smack_rule cache
+Message-ID: <atkEXgQNK05PGTMG@thinkstation>
+References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
+ <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-11-096800aa3330@kernel.org>
+ <0aeea80c-e3ac-4b6f-b1c9-ef18ea2964b3@schaufler-ca.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
- <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com> <9huzecdi6go0.fsf@tarunix.c.googlers.com>
-In-Reply-To: <9huzecdi6go0.fsf@tarunix.c.googlers.com>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 21 Oct 2026 11:46:56 -0700
-X-Gm-Features: AclHuK9GVWu4pH4tc-A36maNXu-EHT2uwChCmCT-hqS2EBFk28gxkLJBLwcVEzg
-Message-ID: <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-To: tarunsahu@google.com
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, 
-	arnd@arndb.de, jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
-	Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
-	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 94614100008
-X-Stat-Signature: oqujzuugz7w8um8f13xcuo3cu4kzxydn
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0aeea80c-e3ac-4b6f-b1c9-ef18ea2964b3@schaufler-ca.com>
+X-Rspamd-Queue-Id: B973840007
+X-Stat-Signature: r6c6chyj58q1smsagbyk6wsp8md8139g
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792608448-415206
-X-HE-Meta: U2FsdGVkX18Uz+LuLbKs94/pFfc9DFM8KNrEr8xRaP97lA7ezCzKkzC3Gr727aVYxwOk5cMMiIBFoDluLGX9UprFMkFub3l6lCy0GF5LF8MScJSJtb+Jw2LrV59ErE2FMABPDH2jjkQbmzcThkSwiYo2HO2f5EgTYjO/HnGC2rPBc67Ayn+VIyFFy6E7tVgvPIlS/buLPipiLoLLJhUYkIBiyq5gUMS3mNFotc4fHUDYlH59tcSmuW2BOhzaGCPWqcyqf/p4uFSQilkiCo+cEgtxVB8YNTkBH1NLEoYzAEpn+KH6J1LyYW0TIHA1DMaKGigC3nS4JyFQzEYUPRruShn0Qsa/CSUqDNreNug4FZXTF5+0jXQkMsUiSVxNwcrdbQqWHJR1BgSigAJAwaN1AqWgfnhmcWJ8IA6KTdNqH6VsunGldZSXY1ApvgYapgZn9XxLZjr1GuVLxTsrBKS/7m8INm9WS+uh9BNkzDtT/lA0i4brFuVUAmaZl3wgtOBueBdkj3+fnw/uGawT2shrODa0n0OrrdZlQEwc4gpy4iXTyjSaTxYrCTJLMmia+A9zyDmxCB6SkYxZ7ssOAJ7YnE+VTHHcA61GACcuErI9u/5RUydQ3E1RjW6/fY7ikSd0n9liPvSnJdSCAsj7etGV7xKe1yp5CDS7oWfm5KPVmvtuLPPW8My0StRpHUGo34ScpHe9XLvy3NDGDvGXH3ZCduC+NZ9YtU5xTtrN2Zwdq7JfoAQjzyxLBSlLp0KN5kF114OeEiuc2M81fUH5QDRnu9eCY5KzDa94n81PPHdfwu62Ti9d79eQROjEkjgFFfN2jOJdPXCL1PV+OpDXFrpdOvPSx4RQ7S84TSVCBmgOT22Ca1n28sSIrnffIJru+kGHDEkzKKP29gEt/OM8z6IQWtOxWvdnmEq/MkyOr2WoqizCVXUl+YyrxvuGp2zxb9YjUzE1Al/m7kkdGGQOdQH
- sgzC2O3l
- Ud0Zy3lQucYUeWC2pceD3+gsxArCymwDHtEhrtqxIWjcwh9kSYLWsyS3SPx+thFow1RhqrgAp4Un1WJDa0uaYq82yQkyMmoqYI1+UWDY80OmbGJEhQTngnF4sRWtZyATWALFS0NtGpArUHqIZ6AHQzRtPjPNb5UZ03RDojkwzZpKcVr+4NmjN1yuKe08R4sbX/piZJ2K7+pKDSXuFHBFjfYj0n7uPhik9a5IA+PfojLso8JssYH8isa+YQnxhxi/9IQ3IjwpXv8d40WdZeA9pZ+8jjgsZMluHrMz0us+r7dEWFWgr3uri+RRe9G7uCqB/rv60
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792608495-958370
+X-HE-Meta: U2FsdGVkX18EaXRe6otEri+uas/keHSTlhJpvb/4h/91YNPRwlSf4TvlAyOy6hhpKN6RrmxPDzSYkC63/K8a3sUtS5+ftjwbGJTgxMqsVnEX+sMetgk2SGnyWsA+0MAnavrd6UmHPRsSRsrjAnFWQiRKQzYSy8BiGsAd50EUKR4v8MyRUaSjf6c9k3/wVRXBtSpRied7mWBmb5Xe7aEbI2eZQngtEo/3QwW2ZIvdQXBf65+rJ4Qk5wdWyGnJ0W5vHK6/GNK6qZCecQbKOGPu47FLMmUow8EGcYjyZX7wtslw9r8oP92YNcVB0zPgS56V62TFEYwmqYPReSqdGVaCYtLz0kiibka8ZeSIWCtjUlqKvvc1BBIwqqdkjEKVo3x1kRAMADh7bYbW4/d7Elae3g9NX28ybDBDl9NesBQ/5EgZ41VrzWF0HpZv/yyaPxegufbadzrsU3AOocQMFW7WQrEOYJ0j1OSvlkxoBFU5b6U7yzBzUgItCy/Mbo3k1SQ8NN+gI8ZL7KTxAJKiPzZiqMyQ3PBKa6XiuufGE2skyVm0/nG6mQXT2hYv5ememiumzp+0gYTlBH/+RqJHjyzt2cWuoIsF1f1CghIvkr3sFxNCT90Qg6NaRSZaNNLX+XYUHShMHbQp+VbvzvOJolM9wOakcnEF77keAXYirXBgYwYpE8neR7ee/CVZAzS9gTJeLHVXTz5NeMqw2LWbSequZTZe5mnzodJWtcmP1XA5jzh/0U7aJaZsVBRTnlH+1aCtGE5eFoXY0l6JGD7xv/cKSgmVesVbpbTJKbZlP9tH9wbU1JDY7jwih/qJs1TiNX1qKgCXR5dKo6fFymCUn7bsUwPpqGiATCZXL0pewCvyU5f9N5Wsh3vn1k0h3Jh1FrAomztzCCf8F2Nf7AGKx/xi6YoTMpEqJFFCsPui2+fKAtyDAMr7Bvp7Jspd7J5aIR/MP2vjxFVM9XRUJm6AJds
+ 76UYDO7j
+ RSLiMwYZY2NQQXbaMCnRLYWCtOs2w1GRz7aSY7a2Dot8ytJ1CWCgCEByCz20YU+UJj2lSoalRMtEgl+5FBsfGrqzvLEFFo7U1M1u0b0BjgunSutcWLtnaKJgprcZ8f4HfER6MOvXhwJPA7RdrNKVqJZrJPoQnDT2LfBmkXR938+t6qFNwOANw1+95G5s3U1dcQIa4GtROyVkVf9/h5MkFlt1JtP3tidcKTxmqeN7Rdknrabx8bp5Z9aNySxCCPmQI68yeJ0WhNo/TWvfZSD3eOK8xv+jgZOkZgfHW6cGHPMaE265DiWrziyiyxN+8qzdhitYHr7EtvuSYhfUuL63TVsEbrzy+8jhKHsWHqM3to7u9f9fMTIl/GOhjMO+G1L+TCOXvw413gpxc6V+ge/2tGtg7BoLMJ3swjreECl5cQFUIx3KKVb8jF9hRZYvU+yKrs1ZLcT0zw+NflP1JZ509bHICUsKpddsiYpq3UuTzjpY/0LwKjXMkFaJ9iFfeieOF+QR7ERvoH9gwt3COCjL7+SIxvt9F+3FiRcOK2twUA+0k0zX6FZSjpQvNtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,59 +104,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 11:40=E2=80=AFAM <tarunsahu@google.com> wrote:
->
-> Pasha Tatashin <pasha.tatashin@soleen.com> writes:
->
-> > On Wed, Oct 21, 2026 at 11:25=E2=80=AFAM Tarun Sahu <tarunsahu@google.c=
-om> wrote:
-> >>
-> >> LUO and its file handlers validate handed-over state with monolithic
-> >> compatibility strings ("luo-v5", "memfd-v2"). Any change to a serializ=
-ed
-> >> structure, even an optional additive one, must bump the string, which
-> >> breaks live update between adjacent kernels. Replace the string in
-> >> struct luo_ser with a feature header, so that the target kernel can
-> >> accept or reject the source kernel state per feature.
-> >>
-> >> struct luo_feature_hdr is a fixed 128-byte header: the serialized
+On Wed, Oct 21, 2026 at 09:59:15AM -0700, Casey Schaufler wrote:
+> On 10/21/2026 4:46 AM, Harry Yoo (Meta) wrote:
+> > smk_copy_rules() allocates rules with the gfp passed from
+> > security_prepare_creds(), which is GFP_KERNEL_ACCOUNT. Specify
+> > SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
+> > __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
 > >
-> > This patch is all wrong; 128 bytes is far too large. For every _ser
-> > struct, we only need 8 bytes instead.
->
-> NOO, It is not. It is intended to avoid complex mess with unnecessary
-> over-engineering.
->
+> > Path: fork() -> copy_creds() -> prepare_creds()
+> >   -> security_prepare_creds(GFP_KERNEL_ACCOUNT) -> smack_cred_prepare()
+> >   -> smk_copy_rules() -> kmem_cache_zalloc(smack_rule_cache)
 > >
-> > The first 4 bytes are the size, and the next 4 bytes are flags (i.e.,
-> > 30 feature flags + 2 reserved bits for flags extension). The last two
-> > bits of the flags indicate whether an extended flags field is present.
-> > Each extended flags field is 8 bytes, and its last two bits indicate
-> > that yet another extended flags field follows.
->
-> If we will have dynamic extension of flags, Think about this.
+> > Assisted-by: LLM
+> > Cc: Casey Schaufler <casey@schaufler-ca.com>
+> > Cc: Paul Moore <paul@paul-moore.com>
+> > Cc: James Morris <jmorris@namei.org>
+> > Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> > Cc: linux-security-module@vger.kernel.org
+> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+> 
+> How was this change tested?
 
-To support dynamic extensions in a backward compatible way you want
-something like this:
+From the cover letter:
+> Each tested cache was verified with the warning in patch 13:
+> I confirmed that 1) the warning is triggered without the conversion,
+> and 2) specifying SLAB_MAY_ACCOUNT resolves it. However I could not test
+> io-pgtable_armv7s_l2 and sun50i's pt_pool caches due to lack of the
+> hardware and emulation support. So they are compile-tested only.
+> 
+>   cache                  tested  environment
+>   ---------------------  ------  -----------------------
+>   radix_tree_node        yes     x86
+>   maple_node             yes     x86
+>   buffer_head            yes     x86
+>   skbuff_head_cache      yes     x86
+>   fanotify_*_event       yes     x86
+>   smack_rule             yes     x86
 
-struct luo_feature_hdr {
-   size
-   flags
-   extensions  // offset of first luo_feature_extensions (or 0)
-}
+Good, this can be reasonably tested.
+Let me write down instructions to replay this testing.
 
-struct luo_feature_extentions {
-    flags
-    extensions // offset of next luo_feature_extensions (or 0)
-}
+>   io-pgtable_armv7s_l2   no      compile-tested only
+>   thread_stack           yes     ppc64le (64K pages)
+>   pgd_cache (arm64)      yes     arm64 (64K pages)
+>   PGT_CACHE (powerpc)    yes     ppc64le
+>   PCI_DMA_*_tables       yes     s390x (zPCI + vfio)
+>   hostfs_inode_cache     yes     UML
+>   sun50i pt_pool         no      compile-tested only
 
-And then an example serialization struct would be:
+# Pull the b4 branch from git.kernel.org and configure the kernel
 
-struct foo_ser {
-    struct luo_feature_hdr header;
-    ... fields ...
-    struct luo_feature_extension extensions1;
-    ... fields ...
-    struct luo_feature_extension extensions2;
-}
+$ git clone -b b4/memalloc-prof-dont-waste-slabobj-ext-metadata \
+      https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git smack-repro
+$ cd smack-repro
+$ make defconfig kvm_guest.config
+$ ./scripts/config -e MEMCG -e SECURITY_SMACK -e DEBUG_VM -e FUSE_FS -e VIRTIO_FS -e VIRTIO_MMIO
+$ make olddefconfig
+
+# Create a script to run in a VM
+$ cat > repro.sh << 'EOF'
+#!/bin/sh
+mountpoint -q /sys/fs/cgroup || mount -t cgroup2 none /sys/fs/cgroup
+echo +memory > /sys/fs/cgroup/cgroup.subtree_control
+mkdir -p /sys/fs/cgroup/test
+echo $$ > /sys/fs/cgroup/test/cgroup.procs   # non-root memcg; root is not charged
+mountpoint -q /sys/fs/smackfs || mount -t smackfs smackfs /sys/fs/smackfs
+echo 'foo bar rwxa' > /sys/fs/smackfs/load-self2
+sh -c :   # fork -> prepare_creds -> smk_copy_rules(GFP_KERNEL_ACCOUNT)
+echo "WARN count: $(dmesg | grep -c 'WARNING:.*__memcg_slab_post_alloc_hook')"
+dmesg | sed -n '/cut here/,/end trace/p'
+EOF
+
+# Revert this patch, build the kernel, and test
+
+$ git revert --no-edit HEAD~3 # Revert "smack: specify ..."
+$ vng --build
+$ vng --user root -a lsm=smack -- sh repro.sh
+WARN count: 1
+[    1.178905] ------------[ cut here ]------------
+[    1.178913] WARNING: mm/memcontrol.c:3627 at __memcg_slab_post_alloc_hook+0x4a0/0x7b0, CPU#11: sh/434
+[    1.178922] Modules linked in:
+[    1.178925] CPU: 11 UID: 0 PID: 434 Comm: sh Not tainted 7.3.0-rc1-virtme-g121988b3e78d #3 PREEMPT(lazy)
+[    1.178928] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[    1.178929] RIP: 0010:__memcg_slab_post_alloc_hook+0x4a0/0x7b0
+[    1.178932] Code: 86 e2 e3 ff e9 2e fe ff ff e8 7c a3 e3 ff 48 8b 53 10 f6 c2 03 0f 85 53 02 00 00 65 48 ff 0a e8 66 e2 e3 ff e9 52 fc ff ff 90 <0f> 0b 90 e9 ff fd ff ff 48 81 c3 bc 00 00 00 48 8b 0c d8 4c 8b a1
+[    1.178933] RSP: 0018:ff7dde988181bbf8 EFLAGS: 00010246
+[    1.178935] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ff4f87a042e55d00
+[    1.178936] RDX: 0000000000400dc0 RSI: 0000000000000000 RDI: ff4f87a041828b00
+[    1.178937] RBP: ff7dde988181bc80 R08: 0000000000000001 R09: ff7dde988181bc80
+[    1.178938] R10: 0000000000000000 R11: ff7dde988181be90 R12: ff4f87a045b600c0
+[    1.178939] R13: 0000000000000000 R14: ff4f87a04b95dc08 R15: ff4f87a041828b00
+[    1.178943] FS:  00007f5efb4e0780(0000) GS:ff4f87a0de940000(0000) knlGS:0000000000000000
+[    1.178945] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.178946] CR2: 0000555ab8c2dda8 CR3: 000000000594e006 CR4: 0000000000771ef0
+[    1.178947] PKRU: 55555554
+[    1.178948] Call Trace:
+[    1.178950]  <TASK>
+[    1.178951]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.178955]  ? __memcg_slab_post_alloc_hook+0x517/0x7b0
+[    1.178957]  kmem_cache_alloc_noprof+0x3ac/0x3e0
+[    1.178960]  ? smack_cred_prepare+0x84/0x180
+[    1.178964]  smack_cred_prepare+0x84/0x180
+[    1.178966]  security_prepare_creds+0x49/0xa0
+[    1.178970]  prepare_creds+0x168/0x280
+[    1.178974]  copy_creds+0x25/0x130
+[    1.178976]  copy_process+0x6d4/0x2830
+[    1.178981]  kernel_clone+0xd5/0x420
+[    1.178984]  __do_sys_clone+0x65/0x90
+[    1.178987]  do_syscall_64+0xda/0x4b0
+[    1.178992]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.178994]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[    1.178996] RIP: 0033:0x7f5efb5d30e8
+[    1.178998] Code: 7d e0 e8 2b 58 f5 ff 45 31 c0 31 d2 31 f6 64 48 8b 04 25 10 00 00 00 bf 11 00 20 01 4c 8d 90 d0 02 00 00 b8 38 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 70 41 89 c4 85 c0 75 31 64 48 8b 04 25 10 00
+[    1.178999] RSP: 002b:00007ffce2898640 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
+[    1.179001] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f5efb5d30e8
+[    1.179002] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
+[    1.179003] RBP: 00007ffce2898660 R08: 0000000000000000 R09: 0000000000000000
+[    1.179003] R10: 00007f5efb4e0a50 R11: 0000000000000246 R12: 0000555aad43184c
+[    1.179004] R13: 00000000ffffffff R14: 0000000000000000 R15: 0000555ab8c37740
+[    1.179007]  </TASK>
+[    1.179008] ---[ end trace 0000000000000000 ]---
+
+# Revert the revert and run the same script in a VM
+
+$ git revert --no-edit HEAD
+$ vng --build
+$ vng --user root -a lsm=smack -- sh repro.sh
+WARN count: 0
+
+Hope this helps.
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
