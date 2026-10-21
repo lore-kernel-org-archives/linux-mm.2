@@ -1,117 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673E660A3831
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E798B606A32D
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 06:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=B4Gt3o48
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L5Sjfmtg
 Received: by kanga.kvack.org (Postfix)
-	id 5317D6B01A2; Wed, 21 Oct 2026 02:22:03 -0400 (EDT)
+	id 0D5B56B019E; Wed, 21 Oct 2026 02:30:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50A206B0642; Wed, 21 Oct 2026 02:22:03 -0400 (EDT)
+	id 0AD696B01F7; Wed, 21 Oct 2026 02:30:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 445B96B0643; Wed, 21 Oct 2026 02:22:03 -0400 (EDT)
+	id F04CA6B01FA; Wed, 21 Oct 2026 02:30:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D37D6B01A2
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:22:03 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18D57C02F5
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:22:02 +0000 (UTC)
-X-FDA: 85345638084.24.FDEF8FD
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D02BD20005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:21:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=B4Gt3o48;
-	spf=pass (imf13.hostedemail.com: domain of guanwentao@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=guanwentao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792563720;
-	b=tamggm6u48GzkVu48utAu8TaslUNRO/gTbnDcluTG6n1BU3IBgxz9nddyZe1VnuMa9LUlx
-	zuglkOxgckiAntLGs6NUmEVTv0KuoohCS1LyfiJNVUnHzqN+Z4jXk/atEGBBb0BYSPS4cE
-	DmOqkv98bpuiH7MFV6V2NXuHwxE8i7Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=B4Gt3o48;
-	spf=pass (imf13.hostedemail.com: domain of guanwentao@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=guanwentao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C64D86B019E
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 02:30:58 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4E3031C0C4F
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:30:58 +0000 (UTC)
+X-FDA: 85345660596.21.3CC4857
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CA4B540002
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 06:30:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L5Sjfmtg;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792563720;
+	s=arc-20220608; t=1792564256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=AsQZnRDvC0D3gP3oQhOuDZhnSM3XMIz82czrPE7tuD4=;
-	b=3JU9h66YaxYnz5RgUmBxinabBtUzUb93XUYC99lsahAjCyv+cdgyR3cMWe9SQwTPIgdy7o
-	sLuAUyHVZjA6f8450l57fz5NzW/6G8kgV3mmlHyJ8Mhx3GMt/hHk3watO1UhZ0eELc7KO4
-	gnV/QRY5AuFfhHy4dC8R8yFYEy7C6gU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1792563701;
-	bh=AsQZnRDvC0D3gP3oQhOuDZhnSM3XMIz82czrPE7tuD4=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=B4Gt3o48CKZcdUJM7kKyfvejkS7Od6tMdMud4VBGnIpcWwLkFFYnZwMkKuCHQDNe9
-	 EoASmRmAbdE2jN6D4rzQz9ByZH/09MdrHmLifYDPOIPAG2t8VFvq07aIgUXpU0EL9u
-	 5Mnb2ojhNhjDuba61y7Fl3A/VVQowsG26fW8x9Ag=
-X-QQ-mid: zesmtpip2t1792563681t96cc3f72
-X-QQ-Originating-IP: SGYOyl1bUWSgKy+cMFiCAF5bJZnqzi5KC2bcPI92i/4=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 21 Oct 2026 14:21:18 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6018804124745603915
-EX-QQ-RecipientCnt: 10
-From: Wentao Guan <guanwentao@uniontech.com>
-To: chenhuacai@kernel.org
-Cc: kernel@xen0n.name,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	david@kernel.org,
-	muchun.song@linux.dev,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [RFC PATCH] LoongArch: mm: avoid backing vmemmap beyond max_pfn
-Date: Wed, 21 Oct 2026 14:21:15 +0800
-Message-Id: <20261021062115.116922-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.39.5
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tRPKYkaZWE3FxBj2IxPUzKLdAP5rCGDFaBUV6kgkyzE=;
+	b=wZ2pxeOcxclarFbo1bYRBOvWiuYabdyeovEER4/3BmPWMAtCHq2O9O2VLKwfKCT6A6agyA
+	sIBeOmHAjri92t/JEX9gsGpjgkHauOgz7CMywB1pMTTod4vZxfEi64voqOmikUUsGkkrY5
+	1pSaogu4PUNwy/g6OuNecQQVUyJAVpg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L5Sjfmtg;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792564256;
+	b=JukvLMuAvXEB9yQ98bq8o8lTcmdc1bokCwek8lsBX48BE2l2EhJt0JrEhO6VwPDMqAQMER
+	3B8jWTbdhtI157T1RLE5Mir1yDVIrM8amzMxOy3zSiWdpN0rEJGRPs1/8Y2MV/mdCiVeS+
+	4nqe4trxI9iwMQyg31dtUi9tv6Pbl28=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792564255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tRPKYkaZWE3FxBj2IxPUzKLdAP5rCGDFaBUV6kgkyzE=;
+	b=L5Sjfmtgf4e4hDNvE+6p5yJQnBqiwM9GzT6V5fI+tSqjRLt2GYrAQr6vIVmTj9jdJ+KH0O
+	Dp3Opg3BzIlJ/8HYE6QaVWDvPuXLZ0tG6uSjSZo0AViDhTSINxiAbpQlWGYv0IE1Ouu89E
+	GmWF9bM1CxxNBfyoVt9gYJtWn3LoKvs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-367-fJaSi8TkN7yhADY-Yg2Olg-1; Wed, 21 Oct 2026 06:30:54 +0000
+X-MC-Unique: fJaSi8TkN7yhADY-Yg2Olg-1
+X-Mimecast-MFC-AGG-ID: fJaSi8TkN7yhADY-Yg2Olg_1792564253
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48c46582442so176663f8f.0
+        for <linux-mm@kvack.org>; Tue, 20 Oct 2026 23:30:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792564253; x=1793169053;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tRPKYkaZWE3FxBj2IxPUzKLdAP5rCGDFaBUV6kgkyzE=;
+        b=0hsE6WF7Aa0m9W8/kedsz0Rop4yCj6LeezTvEIZH6ugs6G7/OnPe25e3Ts5BmUBVTT
+         +7nTETakEksHqYzG6hILI9HJ/XTJ17LiQX/Bb9Kjr1IejtQxSXQ7BSyZx4DHH7aQPRdR
+         K5a7na8sISifq4lGJMtUIrJQLyloTjgRbOVUpJgJJUCFOYqSSZbe8cOMc2ULTFaoyVIt
+         GCMKSSpDP5EyRu6OukYrWYkzJLi18wfKIA6Gux+RJSsQ1M66HvNFCFkEJri5th4Pyx1O
+         14mh4k89LiMlN1M6OZZil/Q6PV9p1WOmE7CWbRdmozz9cMVzeOKGceTwb91+Azc+cpey
+         9vdw==
+X-Forwarded-Encrypted: i=1; AKwUvByC+G/g06OA8nRDnrLQM7guhcO4F7LMaLvwWRqaeaj+WxUYJF9cg7n5JmnLyiqRlkBYrmmi8/ksGw==@kvack.org
+X-Gm-Message-State: AFq9FYI9l6S7KLDw4wRTV5u0/0yB6IUdGeMiAvHnadCjccNU6Kxn/KE/
+	/12KPQkXFsrRbWr1htQnI+qdr/L56nnAKzl1MH63fqscSFt8tBlgn1vfjxN4L5Qb48EYZZxhniZ
+	tRNPoceB8bDVpsvZkCDl3onpq3egNq12a95fXPgniEQKmf5iHkj8=
+X-Gm-Gg: AYBFou0iN4HD4RTY5n9IVVsmFcJFVMG6t+gdb6BrtAw6y3ZsbLNRUI4nT7BzYOoQJ47
+	HvBItT8OwRvtncbZf2jgjcDuWsN9KINEH6JmeO+H4N1IS9xRn5w5GHrZKg1gDpowomCoKmvvVbp
+	UNdBKEzN1GRFEJZviGeOktqwV8keJ7dJcfygPLzcZZj+lyE2pLYL4r9ShgK5n5FBF141ZplAQB1
+	vCmJaNSbOmYAEeT9IrgqQ6wO3sam5AGuQHeGgsw5QLqpB2pJLHR3sqXPQRbDO/ybZeelb4JOw8G
+	0aTD9/aSB1wgxGbCfkVc9NlKe04DhZnoE+cTcdUzoyAvZFXVbCkHauhloGZQDF1GeGjxjpaL7X3
+	ZLOJ0/83LZA4ekCFdthcHljYdSiSrse4=
+X-Received: by 2002:a05:6000:40db:b0:488:8ab9:f74c with SMTP id ffacd0b85a97d-48e2644ef10mr2173403f8f.3.1792564252696;
+        Tue, 20 Oct 2026 23:30:52 -0700 (PDT)
+X-Received: by 2002:a05:6000:40db:b0:488:8ab9:f74c with SMTP id ffacd0b85a97d-48e2644ef10mr2173368f8f.3.1792564252246;
+        Tue, 20 Oct 2026 23:30:52 -0700 (PDT)
+Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828e72sm3174366f8f.26.2026.10.20.23.30.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Oct 2026 23:30:51 -0700 (PDT)
+Message-ID: <7b534ff3-699a-4c38-b6d5-b044383d956e@redhat.com>
+Date: Wed, 21 Oct 2026 09:30:49 +0300
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 09/12] mm: enable device page migration from HMM
+ pagewalk
+To: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org
+Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>
+References: <20261021060506.2377545-1-mpenttil@redhat.com>
+ <20261021060506.2377545-10-mpenttil@redhat.com>
+ <7c8c663f-cf31-40ff-bce4-784726f42a0b@nvidia.com>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <7c8c663f-cf31-40ff-bce4-784726f42a0b@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: -3bfB1Whx5-yImeYORX4x2kO-_WS2iS2XXiGk6kYjnI_1792564253
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MjZkc9TfnG+XR3/U2Vek5hNImTnjycVoFb0OssoGpvRmDpaVdTaHlEYh
-	I8xIb1fcBjURPhyXLJ/lUNrVI+jmJ/0Pm03Ye28Fl+h1WUkLZYSWUjdHQETqqmfDhs67h+b
-	uH7ORoE9K0YBoMxSGEAxRbZoeKyDz98WE3PmkrJRukX53rRZPGxMZg9rvWIZheRd3Iu6DiG
-	YN7pfIWW/BAaUPHjvK+JzmbKhCKEmGVyXoOn0GIJnz2QkhXMmqjcjg1AicDBDPAXv61ZYI5
-	8rq6SjP9+28IoOX2EuGY/lihMXP+scGGU0gFIRKf8uQEBEu2EvzJCaLCmheOf15n6c6qy+/
-	rDjitIYzvXBCVgMH5T25bJSXlY0l2O4ad4kL+yeOsWZZLqxbCUT3xXMuWXCB9qclPiGNwgC
-	+UXBLlU2ziFZX2r5K1c52P7rE02GGahzcMqLSAtG7iKTvo1ApqodvtLy1zTN8XWOx5j5V2H
-	5b8mSgNHZk9yeFUOCHLLHz048p7kvsJkndddaOmiNt3pvnnqM7+fRVoR5GzrXOGvSNM3/4w
-	klkcAp1jlXYSmbEX2y7yaTPUoPxQKwrdyXFdWtHSyQ6PAP0Ml6vhTS6IZQ2R2CfrgumkQJc
-	5OfXTdvbQnLUTVxdi2Db42yn3QodxwLzt+4YyZHwU5TJTdavc8ieHbJbhBfmZmHgy5W6Zdy
-	hDtHPkSI5GoZ6Yxtpu3QqERonqdRyrn+bIebizcmGvRZ+s8/WwYmcqkSIoXVbwje2L7gdn+
-	+ZHA/f0OmJLGyYEcgR8m36vlX0T76CTRZ0TxH4QS/xSvFNtdvLds4ua1Z8wiss5c7MpqnaZ
-	2RfxsS16AVPd6VgLUihsAj87+TPX8F1Cdqfk1EP6tvEFEVjOGoxGAueXHiKiC5ZfrmrEURH
-	ttk9bPWnB657lkYplt83LLrKh1A+2C76etEFvK4zzLV3F7iFOl69vx3ldruBi3TCrw1jo28
-	IsRD6mpjJ76SqUOy4H/eYzNeax/QsWr+PKPyLzeMnlEJqYcM5zqGk85dFAYB+Vtev+BfIjx
-	fSvL2RTT0Pz+E8e3MMkowRY+A0NHSBP+7I6aq9scrU8tPYZxUL
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
-X-Stat-Signature: qj6w4zqrq96fxb461t76crbkk9ep49jc
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Queue-Id: CA4B540002
+X-Stat-Signature: sinjtag7w5jg184ig5q3dmh8rx4y1rd3
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D02BD20005
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792563718-926850
-X-HE-Meta: U2FsdGVkX19Jh0fP+Z7UducgCj4iRKmX9eqnvNk6XLm9T0zUID5AtUJisiRvOLkYjOZslfyMgSIFfvUxfuhAMsRwMMnF+k+vYmOYfRP2MnIqn78qslywSm3wPhVwylUghZp5cLseaAMXLWONg5HhVDw/iQAtLmmvznvwhZx6yGPf5rp6+Fd3lN2i2PdHA5je9m/PaspeK1vNzCB5qV53gzTYoUFqCoTcLKg1wPpxM0N289WQSou0BUOAKDSx8+S/21NLs+vQf7uheHs7HNTYqQv5aPOsYMqaBSydVipkMrCfSh6ByMYSN1knrEtfIQQTdjihKYOGTLjnmOUgM9+qz1dvkS6f72wz6mXPNl9ADUtqbyvOuCLBhDTglBnbMCgx773ixzCzDeQctqG0+gK/H5sYdB8KxdQgsWO1nfK6lHUEBl7f1EODM25yIN/W7Gjs0FU09cCXdj0z7SmF1sxGmgipr8J3nuVvU4sjUw9uCScpXQOoLHHyDvGC+8LlUZKLrXXNL2S3FBSXlBzmfmKs4c7gSWEgXZltnr4+c777baWu+e/yRLx/5KTe3oesZAsKRcz4utKifd7zTkvC4pXWGEggnEw87byGYgt32FAgZe6BPycXr71rQ2OIhwk6Po0z/+9lqV3WB/z2jNe0JfHK+PJXvb+aN7q5gja70HvouZ380j61tShJsYEMBS3JBQEGt3VIxZwIo483/WZ3T7HvRVYIBtceq2dpIrvmxL1Kurtz06eo/jdinVUsuiAmeSWTAdAzS19iNUVPSJiNgpHzTH1YOe83NJEcbyxqLcP94LHaaHqZsJR1cNLdDFDjg5xenb4EdiPcS3PUztSbzuqWVzAA3R9hn62OhzRE9q42ztxCPNdo//S2iNJqNwhCszs19ztstC402eVRI8stQ8gO43mdMwzTvFspVR+70tETDOG6X9M8GMDKq3aZ4OKQi+/g1LGaIlTzdMUrOvJyLTw
- fD5HacJA
- Wi2ErufZYi2fCHkhqqLhBNJ8oWe1+gpOHQWkx97l+ag1ZN08gtbyb93kJm6iutzMM45LcXxTk5ID3r3zZ+zLukjyEvqYF/DhIJDPKpqhPXfrnKz0coFN/r38Qg+8IBnkCRZQsZtqdQy2SRuch8/WMeDy3+zECNSwRfTD3cjpsWplFB4xlagXZOxs8f+vgCee+714HODYKtc8RLE++yUmdKJv1gWmBcSC5UjFAPddEEiL0eu2JdEOS0nb4Y10EyBz/sVlbvdpa8unKj0pUiZH2qWsJIsHOaitQwR6J18KELeQwfEXQjZDP0VmnZxEo46Sy/xDrfguLVS+av2VJVCsvQrRKvNft5kVdw+te
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792564255-88034
+X-HE-Meta: U2FsdGVkX19KjC/a5AvEzoJ+B2Qofdwl6N5rhZHqWg8VJV/STorSFFWbKwzwooq8X/oFXwQFWinu5kw027VoVUzvZl5Vod96I+egKyRLnHpYmkFmCqSoXAHZ4ZFBipiEXwjk2pYhXyf7ny2qynTSREg6x5lWywRzftG6QQp3HAlwDf+TnDsfiqOKmIHUW3kteoYeuTbBDuXA/4TJtKzk6qQdaAS1OTepMCm03UKJtnkKhp36ITvxGCaJF15JOeq7FVwDH9kwG+9oYduXd8ZYC2U4PormZ2n0ghMG93pR0jharb/FU/kJQFvNeJmZ8JUkBQBv7u5tXk612plEfSRGyJDx+r/HP3kHsq/8Spml/TJYdSO54Ku4uept2Y9EgZgHn/YKlG/efOlV8g2ZQ3R1cW+EBAzg/eJdcpkMZVzz5NZeILyS7nE9+knPzOg1m2/y3twFkDJFYYHznW3HglGXqscS9Y39rfNuuUWuL9g3MXrWhCSttKcQoG2EfMa4WuHBZ9l1BWYT1VqyTy0NX3zK7Mhz34uSl+emZU4ilYOQ2tJeCuZH9JHVWjbbCSUM4Ol7/cWMHSEA/y9waumcPhEEJeb/cSBIPqviIiJqujSBAu0s1he5QLpOCMDcGDGUks+5jFygXLrGK5CjxJZe0n4hiqvAvKSUpTIDRIEzRIREATXYNRyfXZBBOJWn/WtVjfU9SYepUGoxMf97RRkQYpZAGSM5/NuZ1tVpdARf5LGP3jXMNRA8YcG6zj15E4sYdsUDTbZeZ0RdGFX/gabl2MRSYeuGOlnkknOYQtN5EaqfCi7/Bu02/frLzM7NTX2igYvTNR3VuBe5GV16LgJpjUS+rrOmOZQdVPDU+Chywl0hjCHTWOFdZAoTWenS9p9GpIR4Rnu2pJJamipChFe30OxOgkjo/hOY/tlTp0z8rwlST4MWG6fWxyQ+kj9YO1IBMjzUMB6ZdiliRtYvpFRuJoD
+ zL8ssIsC
+ RmNxmYz0EqnWP7q+ukiq1bd3SuZzuiq9qmLByQ9OiAJWHMNgW3qNIcu9/Fl+aQJk1KGjE1PbZjcTEQs5VK2GEe5zuTSz10D1XGe6w6PlNLufkAD2XIlLcr0MQMsV9Y7bR5z8T7wTKXJDuXbjcNW07j+cTEJ5Nay3NCWFdl1CUHfnTh7nadFgdTwTJ5YkXYQjG1elcr/jJVs7y6lCKuKJZHbVDAM67+ngt/b1UJALwROXMD6bQJwcMe3WqP6fMVOVsqfot6gFq8hMs47BSz161q5Mt1XaNkeyOiO0lVvTwCQj70t6d2VBKDydPkp8DiG98iofrLU+n1pLolhQ7jMbBB4iAx8/+YoQfjboh1dUQe5zbKsQpAWiQdsGEnjnPOQC1MYuMQ4DkaOwmikbFH27yMJgQySG0BYnnBrYU4SfwUtsVZKTUctcnHULGA0mEg1MsMDea1OQvo5RuVq9Do0oFWQF1J5o9zgsZ73NrOywdLiUGaksT5IgJWCMDMtG83xPtyd9t6kjFJZXkyS/yApYQsmg2kfcCzPiTsV4JbDuDNyCAXo8pi49kkM1+6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,57 +145,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A PMD maps 32MiB of vmemmap on LoongArch with 16KiB base pages, while a
-512MiB section only needs 2MiB.  vmemmap_populate() is called for each
-section and vmemmap_populate_hugepages() installs a PMD mapping for the
-whole PMD, so the last PMD also backs struct pages for PFNs beyond
-max_pfn.
 
-On a 34GiB system 160MiB of vmemmap is mapped although 136MiB is
-needed.  The extra 24MiB describes PFNs that do not exist.
+On 10/21/26 09:19, Balbir Singh wrote:
 
-Other architectures handle this differently.  On x86, arm64 with 4KiB
-pages, and riscv, the PMD covers exactly one section's vmemmap, so the
-huge page path never maps beyond the populated range; x86 tracks
-partially used PMDs with PAGE_UNUSED for memory hotremove.  arm64 uses
-base pages for 16KiB and 64KiB kernels.  s390 deliberately keeps using
-1MiB frames even for partially used PMDs because vmemmap_populate() is
-called per section and falling back would add page tables.  powerpc
-radix falls back to base pages only when the altmap cannot back a full
-PMD or the allocation fails, and powerpc hash maps the vmemmap with the
-linear mapping page size, which can exceed a section as well.
+> On 10/21/26 5:05 PM, mpenttil@redhat.com wrote:
+>> From: Mika Penttilä <mpenttil@redhat.com>
+>>
+>> HMM pagewalk has now the machinery to do the first phase of
+>> device page migration, collecting the pfns and installing
+>> migration ptes.
+>>
+>> Enable migration in hmm_range_fault(), and change migrate_vma_setup()
+>> to use HMM pagewalk path. Two new flags, MIGRATE_VMA_FAULT and
+>> MIGRATE_VMA_WRITE are introduced for migrate_vma_setup(),
+>> to request for faulting missing pages, and requesting write
+>> access.
+>>
+>> Also, the migrate_vma_collect*() based paths are now unused,
+>> so delete them.
+>>
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Cc: Jason Gunthorpe <jgg@nvidia.com>
+>> Cc: Leon Romanovsky <leonro@nvidia.com>
+>> Cc: Alistair Popple <apopple@nvidia.com>
+>> Cc: Balbir Singh <balbirs@nvidia.com>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+>> Suggested-by: Alistair Popple <apopple@nvidia.com>
+>> Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
+>> ---
+>>  include/linux/migrate.h |  10 +-
+>>  mm/hmm.c                |  33 ++-
+>>  mm/migrate_device.c     | 562 ++++------------------------------------
+>>  3 files changed, 83 insertions(+), 522 deletions(-)
+>>
+> I got a conflict applying this patch on the latest mm-everything with
+> mm: avoid use of VMA_SPECIAL_FLAGS in migrate_vma_setup(), quite a simple fixup
+>
+> Balbir
 
-With 16KiB pages the LoongArch PMD is 16 times the vmemmap of one
-section.  Moving the whole vmemmap to base pages, as arm64 does for
-16KiB and 64KiB, would also remove the tail, but it would give up PMD
-mappings for the 128MiB that is fully populated.  Use base pages only
-for the PMD that extends beyond pfn_to_page(max_pfn) and keep huge
-mappings for the rest.
+Ah okay - yes this is on drm-tip
 
-The altmap case is left alone because max_pfn does not describe it.
-
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
----
- arch/loongarch/mm/init.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-index 4b46c5d30708d..bb7a17bdb0e51 100644
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -146,6 +146,11 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end,
- #if CONFIG_PGTABLE_LEVELS == 2
- 	return vmemmap_populate_basepages(start, end, node, NULL);
- #else
-+	unsigned long vmemmap_end = (unsigned long)pfn_to_page(max_pfn);
-+
-+	if (!altmap && (start & PMD_MASK) + PMD_SIZE > vmemmap_end)
-+		return vmemmap_populate_basepages(start, end, node, NULL);
-+
- 	return vmemmap_populate_hugepages(start, end, node, NULL);
- #endif
- }
--- 
-2.39.5
+--Mika
 
 
