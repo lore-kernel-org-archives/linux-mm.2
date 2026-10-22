@@ -1,140 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FFE606A339
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 09:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F43606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 09:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wbSI6Tl0;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=v9AH22Wk;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=HiClQ7/t;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mzH+91u8
+	dkim=pass (1024-bit key, unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=TwDUOkBJ
 Received: by kanga.kvack.org (Postfix)
-	id C72596B08F2; Thu, 22 Oct 2026 05:58:26 -0400 (EDT)
+	id 34CB46B08F4; Thu, 22 Oct 2026 05:59:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C494B6B08F4; Thu, 22 Oct 2026 05:58:26 -0400 (EDT)
+	id 3247D6B08F6; Thu, 22 Oct 2026 05:59:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5F756B08F5; Thu, 22 Oct 2026 05:58:26 -0400 (EDT)
+	id 2624B6B08F7; Thu, 22 Oct 2026 05:59:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C1126B08F2
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:58:26 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7DB0E14076E
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:58:25 +0000 (UTC)
-X-FDA: 85349812170.29.391AEE2
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 65C9F160002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:58:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wbSI6Tl0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=v9AH22Wk;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="HiClQ7/t";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mzH+91u8;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F1E2F6B08F4
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:59:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F28A160787
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:59:53 +0000 (UTC)
+X-FDA: 85349815866.14.0D6DCF3
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B90FA180006
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:59:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=TwDUOkBJ;
+	spf=pass (imf16.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792663103;
+	s=arc-20220608; t=1792663191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mkeR2xN5aVTEbqa1hAMyTZXFJ5arxpgOVE21xANikHk=;
-	b=1Mb8gtmCmvN5bk7zZquO+X7i94K7eZW3mFAbJHFpaQKztb7ohKr9zeqfnSYhPlH6/Bxcoy
-	Wl5XUOcAIUklADnx+aoLCJQAk/h9hxSaswKnJVhS5x4rybjpm3py2yQDSXXUIuiNCxhsHz
-	/MnDMW+u6qXXV/1y42qkTUznw9LlZtQ=
+	bh=hv6E3isSN5uuykNiknQE/xC/PGsr4qd+KpdT1+FvHPg=;
+	b=tcjRIvQby5wzA5XxZGw0/dwPQcZ9CZEc3acO1oDPv73OPqPszPqIJELg20O7j2ArM9Jjyg
+	KkihqnvhhNq6EMjfTO6gFT5WcCvVh/Y8dSyjZzz7Y6E5qZ6Q3nEVe7gKcFklZJ9vBtNHGi
+	7MV8vOlO27jtfdDsBuHIwXZG3Gp0t/o=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wbSI6Tl0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=v9AH22Wk;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="HiClQ7/t";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mzH+91u8;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf16.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=TwDUOkBJ;
+	spf=pass (imf16.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792663103;
-	b=hZu3ltJcmEMjmGcvEb4dEuzW79rXhKVhVXvyw9Zy/6Rjo7uVftDGA8qIHK0Z7jpLvq4fVO
-	XZIcian27OryUc96wb07uGZmMJ/v0p89sKJV4FWjjFZzDR7p0lrumlk9p9ajN5DXB6Zxqz
-	WLDDp0NJHYqOuvQmNRcvnTn7IIWUzog=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E2B8322147;
-	Thu, 22 Oct 2026 09:58:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792663101; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkeR2xN5aVTEbqa1hAMyTZXFJ5arxpgOVE21xANikHk=;
-	b=wbSI6Tl0AyurldiYwrJmxhw/KQ+BB2YZ4Zt/QfcpU6aSnCtwVs+J3qwt7plCl0zeNbuIe0
-	D+IwOcthmkVubsDm/Q0Xfb62h+4NMlApFqXZ0wQfpe8wauFxFPPnUu5YiNZfkAkpJ0Gnyn
-	hTdodRnOsJHo1NxCK6+yY70p53ZfLuM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792663101;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkeR2xN5aVTEbqa1hAMyTZXFJ5arxpgOVE21xANikHk=;
-	b=v9AH22WkVZqe2ykX+rkXnkr9JnXZjmG6XYJbfYzdnzwnGIbrOnS0z4l+bV6HlHdiC8tDSG
-	RcgitqdNhI6fHUBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792663100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkeR2xN5aVTEbqa1hAMyTZXFJ5arxpgOVE21xANikHk=;
-	b=HiClQ7/tkj+ZJ+Qsx10KHvkjAoPh3hM8x6gk6/+k4qj8YCckcLj55oUrg9GHs02aN/ooLS
-	UhPKfd1fPwEr2JhLsVEwKjIYNdGs3rhjsoF1OjEPmeQhNauiCbYfSedYWtWkFY7UjLbmFF
-	w1Pcy4hVhup88Uou/nOQ3YDnBk5fckI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792663100;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkeR2xN5aVTEbqa1hAMyTZXFJ5arxpgOVE21xANikHk=;
-	b=mzH+91u8khRcUsfzzJYOkCc0iol88VLfRkvBzx9cqOQs3jnvc5F+hWAobqOphk3oEQhhcS
-	TfqaGDqz4o7tfOBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9F011134E6;
-	Thu, 22 Oct 2026 09:58:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id raenGjve2WrlCQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 22 Oct 2026 09:58:19 +0000
-Date: Thu, 22 Oct 2026 10:58:17 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Shivank Garg <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Ankur Arora <ankur.a.arora@oracle.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, Bharata B Rao <bharata@amd.com>, 
-	Hrushikesh Salunke <hsalunke@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, x86@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC] mm/memory: drop PROCESS_PAGES_NON_PREEMPT_BATCH
-Message-ID: <atndhWpGDvs4vHoN@pedro-suse.tail5790ac.ts.net>
-References: <20261022-clear-pages-batch-v1-1-13d3bd0b876e@amd.com>
+	t=1792663191;
+	b=lSmpcpsH10EVec4OwQ3oqfUkbKU/Ttn0LCRONZkIq/lfPGz/Beci3dcSc4NL7rFDhCV4CY
+	ARTiAvmsEPPTE2I6lcmX54BV6Z0A8QHLaw8VHV1z6SanoklRXPJCitYwtNvgrQF9tr4QRM
+	EG1WphnTviP1pkGwJ3tVLZgLoLMNdKg=
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261022095948euoutp019aa5b81a61bf9f401d1960d4929a85e0~g0awIol_21695416954euoutp01Z
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:59:48 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261022095948euoutp019aa5b81a61bf9f401d1960d4929a85e0~g0awIol_21695416954euoutp01Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1792663188;
+	bh=hv6E3isSN5uuykNiknQE/xC/PGsr4qd+KpdT1+FvHPg=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=TwDUOkBJDEyu7SeYdo6P6WD0zhjGiXjfOrJTo34Fa163vrYSJ9lozjO3hC44i6CR1
+	 B1b5btqypZjIC7sZEuwdnSsDWQalzNLVPmZolO2HvHc5Fhecl9sGyxHiSN8qPNtePd
+	 08DumbO2pnoVotKs8EA6rVvh4tW+cDFGH2SvGvrg=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20261022095948eucas1p2590f8e436e6813105bd59ef602218dd1~g0av4_ICu0496304963eucas1p2w;
+	Thu, 22 Oct 2026 09:59:48 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20261022095947eusmtip22aefc6b2d2d828b6789400add0d11953~g0avJsDCr1485414854eusmtip2i;
+	Thu, 22 Oct 2026 09:59:47 +0000 (GMT)
+Message-ID: <e42637d0-c800-48fe-b943-4ec6ac540d82@samsung.com>
+Date: Thu, 22 Oct 2026 11:59:47 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022-clear-pages-batch-v1-1-13d3bd0b876e@amd.com>
-X-Spam-Level: 
-X-Spam-Score: -13.30
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 65C9F160002
-X-Stat-Signature: ohy38pzq8yaucmmecyy4q6a37q4i9378
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v3 0/2] of: reserved_mem: use dynamically allocated
+ reserved_mem array
+To: Rob Herring <robh@kernel.org>
+Cc: linux-mm@kvack.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, Saravana
+	Kannan <saravanak@kernel.org>, Oreoluwa Babatunde
+	<oreoluwa.babatunde@oss.qualcomm.com>, Wandun <chenwandun1@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20261021134138.GC3667411-robh@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20261022095948eucas1p2590f8e436e6813105bd59ef602218dd1
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20261015082333eucas1p28bad74cde14ee0afac2eea11bbe6696c
+X-EPHeader: CA
+X-CMS-RootMailID: 20261015082333eucas1p28bad74cde14ee0afac2eea11bbe6696c
+References: <CGME20261015082333eucas1p28bad74cde14ee0afac2eea11bbe6696c@eucas1p2.samsung.com>
+	<20261015082315.56876-1-m.szyprowski@samsung.com>
+	<20261021134138.GC3667411-robh@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B90FA180006
+X-Stat-Signature: c5rmq9io88fonz5gz7wis7tqfbq1pm65
 X-Rspam-User: 
-X-HE-Tag: 1792663103-554246
-X-HE-Meta: U2FsdGVkX18KmWu+SMtAR3v5pmos+UKsT9yhhBMI5wuJvqtz0HGaOmz8cZgK9AMj65DxIzYaDv6GcVTO86uQz3j4Cqiov+kg/fA06V6Q8719Mi1AwCgcU07PTeRG3Uy0QT8/PJD0lBWJ8Zv3zCG7cXLUQiT8EKW3mGz7twjWArHNEnG02rPy+Du9zOzhXYCPIpCCq+nIoivzZFv3vSYfNG7fn7EIHzFVmJY7mWmowiWjeIcEwdZbgAH1CQfiLSljk8gVbe4TR9lyUxE8HnBK5nYffcsqn7lqIl2Vt2vRA8jRpIMUGaSdamWtG50ajFg6Fq+iCpj2MhCcct57TeDsvHoFtJc9Lml84U39x+HR+zT/fX4wxqL2Fk2F83/2OngijMLvrzF1lyAgeqTz8iIib73j3ZoCGNT2qneSDSHBXPQAMFGBFU5Ij6ZxWhIbBfA0xnQWCVSR2CLqYlAQrAp08QMXKL6S5IAAqNwRPFdfBY9+wN7z4RMzq+u7XMAMvJDRYNpCRx8ZLTk2olFQjKGLZgqY7tI/c1Wo+Hj9Kqf8Z/Cl2s9hcs1p4ZtXCQDVK/44OCkDRoAoXlRN7/eOoe5vF5/Z+yPPzLCTuAWZswE5MWZRxnFYYSS1GueLy/RIVrjKeSnqgp4fn04KO5vIvggVD9JFmOTJ92f+t+XgxTMijdu0F6gdXAQywbrbuloTWiswcMJtpc2PTWNAYR7a8uxvYuhRkS142AD3FlDLvCBHwxD4NRKaWMSxb0+5yCkXNJ+QRAj91N/5/X/qA++qbkpzD4u0o4s7YIuvPyxJx0+mggjWQm4QhRiTeyWsHFjEVYbAt97wl/FhsAbPmbcb5twLAALlsde3451nNzYkYMuTrEYiJrKWvlsXY7fBDpk1JT9hOnm3aHcB1p1u/3y7J9luS6KMV9CuecFO6gvRW8KZxJWvqB1/UDudFGlRIutEjbFXOdRRAKqRjirSuZg0hGa
- GuXJJ9XS
- 8p6sAgMA0sfZQh6lGX05UlyOQS3/gAuxl6fCvuhuWfcy4cOeFiIZeOTzF0GHQAEBA5EBjRQjkBPXmY4ZpTZ9ENqCecUgJ7hV+HEQnLqTvl+dlY9dayIhnye0/H6TFUbg1HTBj11fDLs18lxZrSYobsTFJNLNq90Q5baPyOQPnOmvAHHwQvTaCkJYeNiCbB9wjt8trSk5FxuukVEKcoFQCIEjTKfwtiZDLYkuiwSaDBCO17TJzsmnXr257ztWseKlze/nyHfFScvCItBQat/FZBxWuK/qEOm6nIGUPxhnyIFhHAMQ+VBKtz6d5ueXFLgyvfp4YkYnB5zqfjgVQm4PwcGrHYDdcwg45XRL2uyCZtccdu2Y=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792663190-294747
+X-HE-Meta: U2FsdGVkX195YhrGIeFpZpwVAyD/LV1K0H0zbsNhlFUd64s5omddj0gKZtK4GeF+PF9YuKJjM5pN2no1MxNhqn0cWG+ijDMp4k3w5SsFxKYYEVO9ztOW1/8WlTAYPdg1hqzSLQ0z/nstA64/95wnutOKg04/a3uiYrobGh2BHZfPrpWAvLOR2ogpVQMHKr2FYZFEsJC4WwfrrRvyHURIR70V0Xwx7ChPDPFpgesQTegVpoLg2q8PPMhSaEQCC5Z0apAOoJQsFtVVo+v/P/WC7QLpxavdHzX0+vardlJ7s1PourLK2cL0R0D7coMLjcbErDGozhjjdQfiQKlwS9SR5FiaPzP9zvpk9lGf55XUcIKWYGVuXBH/C5+NFYLA2/kBKqsW3TKKT3gfI9v+kd6pYbi9ir4NOP9QVFuLvstmQ19DV0rJgEn6MOAppgc/Vlv6EytqUVWk+eKVPXDEkE/XqBxJtIC7dgDeQoPTzMTZFy6effSIwnR3V+VSiQ8gLYs32I+OqstIG+cncUqsw6mFSMf4b1onfcMwZxtSf/3qd4q0+63UXPkv+JvDyBnRaeDEfgqdgpMyhJ8OtwHOlSzqFA7w3R125tsI/yLJYzCT9pGuPdoE+BlQ1qZ8GVLbrmabz865wEs2jGQ5dDMuMro9W5sqmvbIYEuI9GTLUOJyCFGGU7wAZ79SAgI/WZNLsetRD+qABiUSKItoVhSWgn/RqRSElAl2pvkRfVkIgyY8rpo6ovkU7QploU9kE1PUYyK8RuZwNeE8Lx0KxHImRdOHDaPwP4PqPxYT9a6Hdl+xgfxgFJW+HlmtQq9MF9kXzrUt1Xv/O1RAuzI4mqkR7rHwmJY6IEg8RdjvhHXkA1bUaLX661JQqRafQuGvcVYS/jtzkSlM2ngxWGmEAYUELE0pxzuRazzmji/Sbi77ZHKyq60vk6CWWb9SICWvALYiJhlF7d1154UvmuUk9956bpI
+ N7jsWYYJ
+ +ZaZLBNbD7jbSh6oEbfqOiIKHi/DYCLoBD94ivgN+ExR0Xzm4fdRVD4/jliSy9Rs166ytxpu7YM7OtYJ2M/BlgxA72ppWQo5Be7y2KJKzrwKV46vI4ebOqZq9P5cvqZiXE/p0DUSaiPhXC7RHZjUvGrfl6+gKgLPY7q+cRZXyjkX5dTQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,64 +111,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 08:14:30AM +0000, Shivank Garg wrote:
-> clear_contig_highpages() clears the whole range at once under
-> preemptible models. Otherwise it clears PROCESS_PAGES_NON_PREEMPT_BATCH
-> pages at a time, with a cond_resched() in between. The batch is 32MB if
-> the architecture defines clear_pages(), and one page otherwise.
-> 
-> Since commit 7dadeaa6e851 ("sched: Further restrict the preemption
-> modes"), architectures that support lazy preemption only offer the
-> full, lazy and RT preemption models, also with PREEMPT_DYNAMIC. x86 is
-> one of them, and it is the only architecture that defines
-> clear_pages(). So the 32MB batch is never used: whenever
-> clear_contig_highpages() runs under a cooperative model, the batch is
-> one page.
-> 
-> Make that explicit. Clear the whole range when CONFIG_PREEMPTION is
-> set, and one page at a time with cond_resched() in between otherwise.
-> Drop PROCESS_PAGES_NON_PREEMPT_BATCH, which has no other users.
-> 
-> PREEMPT_DYNAMIC kernels also have CONFIG_PREEMPTION set, and
-> cond_resched() does nothing on any of these kernels. So a build-time
-> CONFIG_PREEMPTION check is enough, and preempt_model_preemptible() is
-> not needed.
-> 
-> No functional change intended.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
-> This came up in review of the copy_mc_highpages() series [1]. Pedro
-> pointed out that most architecture are full or lazy preempt, so mm does
-> not need to check the preemption model at runtime or batch the copy for
-> cond_resched(), and simple per-page fallback is enough for non-preemptible
-> models. David suggested doing the same for the zeroing path, and
-> this patch does that.
-> 
-> [1] https://lore.kernel.org/all/20261019-batpagecopy-v2-1-d75e7d0dfaae@amd.com 
-> ---
->  include/linux/mm.h | 28 +---------------------------
->  mm/memory.c        | 29 ++++++++++++++++-------------
->  2 files changed, 17 insertions(+), 40 deletions(-)
+On 21.10.2026 15:41, Rob Herring wrote:
+> On Thu, Oct 15, 2026 at 10:23:10AM +0200, Marek Szyprowski wrote:
+>> Mike Rapoport suggested [1] how to properly use dynamically allocated
+>> arrays during early boot.
+>>
+>> Use this approach for reserved_mem array during early scan of the
+>> reserved regions. Having all the reserved regions in a single array
+>> removes the need of the two pass initialization introduced by commit
+>> 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory
+>> regions are processed"), so implement it to make the code simpler,
+>> easier to understand and ready for adding proper error checking.
+>>
+>> Tested on ARM32, ARM64 and RiscV64 based boards. Arch specific issues
+>> with early mappings were discovered by LLM.
+>>
+>> [1] https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
+>>
+>>
+>> Best regards
+>> Marek Szyprowski, PhD
+>> Samsung R&D Institute Poland
+>>
+>>
+>> Changelog:
+>>
+>> v3:
+>> - allocate the reserved_mem array only after all static regions are
+>>   reserved or marked as no-map, so it cannot be placed inside any of
+>>   them
+>> - record failures of the early static reservations and print a single
+>>   message asking to fix the device-tree
+>> - restore conditional compilation of the early mapping code, because
+>>   some architectures lack support for it (C-SKY & Sparc64 as reported
+>>   by kbuild robot)
+>> - allocate the array bottom-up, to avoid allocating from highmem, what
+>>   might be an issue on Xtensa, C-SKY and MIPS32
+>> - don't use the early mapping on PPC64, where the scan is done before
+>>   early_ioremap_setup()
+>>
+>> v2: https://lore.kernel.org/all/20261008152403.766439-1-m.szyprowski@samsung.com/
+>> - removed superfluous ifdefs
+>>
+>> v1: https://lore.kernel.org/all/20261008094125.3197971-1-m.szyprowski@samsung.com/
+>> - initial version
+>>
+>>
+>> Patch summary:
+>>
+>> Marek Szyprowski (2):
+>>   of: reserved_mem: group allocation helpers together
+>>   of: reserved_mem: allocate and map the reserved_mem array early
+> Can you confirm the sashiko issues are not issues?
 
-Awesome!
 
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 35f5fc43861a..1083d0645d63 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5269,7 +5269,7 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
->   *
->   * When running under preemptible models this is not a problem. Under
->   * cooperatively scheduled models, however, the caller is expected to
-> - * limit @npages to no more than PROCESS_PAGES_NON_PREEMPT_BATCH.
-> + * clear one page at a time and call cond_resched() in between.
+I've replied sashiko review. That are again the preexisting issues initially
+targeted by Wandun's patchset:
 
-Why can't clear_pages() itself do cond_resched()? Same question for
-clear_user_pages() and/or clear_user_highpages().
+https://lore.kernel.org/all/20260920092852.614973-1-chenwandun1@gmail.com/
 
+
+> I'll apply this after rc1. Are you willing to be added as reviewer or 
+> maintainer for this code? I'd prefer not to have another entry just for 
+> the reserved mem code, so you'd have to filter out the rest of the DT 
+> code (not the bindings and dts firehose) which isn't too much.
+
+Okay, I can try to take a look at the drivers/of related code as reviewer.
+I will filter it out to reserved_mem related changes locally.
+
+
+Best regards
 -- 
-Pedro
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
