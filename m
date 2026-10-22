@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624E46075D80
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 23:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141CE6077DE0
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 23:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DG7HU12f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L2qAsoJi
 Received: by kanga.kvack.org (Postfix)
-	id CE98D6B0A2D; Thu, 22 Oct 2026 19:27:59 -0400 (EDT)
+	id DD2CE6B0A30; Thu, 22 Oct 2026 19:28:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBF986B0A2E; Thu, 22 Oct 2026 19:27:59 -0400 (EDT)
+	id D82B66B0A32; Thu, 22 Oct 2026 19:28:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B610D6B0A2F; Thu, 22 Oct 2026 19:27:59 -0400 (EDT)
+	id C71636B0A31; Thu, 22 Oct 2026 19:28:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 81EDC6B0A2D
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:27:59 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B9C6612033A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:27:58 +0000 (UTC)
-X-FDA: 85351852236.20.6EE615F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B3654C0004
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:27:56 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DG7HU12f;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 937466B0A2F
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:28:02 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 155C7802F1
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:28:02 +0000 (UTC)
+X-FDA: 85351852404.02.25C06FD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E07FE80005
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:27:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L2qAsoJi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf28.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792711676;
+	s=arc-20220608; t=1792711680;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mw8NuWe2zt3uYUYLmdslwurewyfFMdDfAeZucA82mOY=;
-	b=vE+zzvFDnyVsZ8iJ6ACF/YHFfNJnqSi4v6DqoZuMxSKh64XEQ14oTSfv6EPY7F2QwiadK2
-	Ohc4nVd13uLnCRs+b9X6FDfd6vY0s5W1BDrz0W7k4jBjhca0EKsgvygCUJluWXN801hTLa
-	aXjV5QbZoONBZleGCS3X/NJrldmEq68=
+	bh=zWZPNhlVhHIuHneGcp6Ke1BtZSCn8SBM6DWKl1LXrLo=;
+	b=CvqUmjwg02BHePtdLHVHsFSW+lwiYWyGtIPZ6TYjYlVDlTb5KfB1J3iRccV8FugylfG71/
+	uG3r6yCnIdLKzvMmyYAemCL5Q2Z4RYXy7OmTIEE3G94yJpji07Xgppj34AQEBFrVvcGzK7
+	6aCuP/rN1Agl99WfFAPn2kb2X/BaEE4=
 ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DG7HU12f;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L2qAsoJi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf28.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792711676;
-	b=HVPRN8NkURrA6VcbS1QgP6EHVwcFqltmjHqm4ihzUiNfpHlHkqDmD+fEIr4pGz6+ETdpqx
-	E5PIBtjB7EY4NnO1K15d9h0hUwwPjqg9Hksf792Tl1QzVB0zjAekAlvKFNwT1LFIkynDcO
-	rJ0ZwB57sGoj86l6ER663syGeDAdadw=
+	t=1792711680;
+	b=SQjkfcrvn1Rv9C98AOkhh0aHFOUjnwuENbEyqpZrQps9CtprVuposZOQ6ofsEH3ohCZBNu
+	2PBbZRs4TJSCdkwLfot8fb+haiDa30Ja2ldcO7iAKbbvH+ZfMJp2+UiclyR55C+m3raO8x
+	oin5SIIBmIwelw2TmoXjwfTgZl61oxA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5195C60AA3;
-	Thu, 22 Oct 2026 23:27:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2E3DC4479D;
+	Thu, 22 Oct 2026 23:27:59 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792711676;
-	b=Ibj16u5/bIRb0iNZk3zDQYwojotUEHCdOPDwM0csqkXRoCYqMJkWWoGFIkM22d/L9HmJ
-	 H8+eLv43Wroi2SUA7ZIAG1Ql12mOFkCwKIYsrH2aqe2KzodLBCh+gQ0tUhahIAM7xoQ0B
-	 ilva1KVoiwxroJUQzUQiYPWyB9MwItmJRqr22SoubxP6FUD3stbaArNo9bWwEqIn7tLNG
-	 dIEE8jlRoO4Ao7VBX0DMNkj8ctphqdjTgSx5NdNiqpy6lXBFfglYvhksbTfAVqBA/WfsO
-	 7j55xDUeJjgnr5KNQEzUKtQH/0YOYnvvU9U9TZadmCFvVRMWHub5LslCv+W5EruxmyA==
+	t=1792711679;
+	b=AG9YZT7iV/nBqZBeoBGY5/rljHnq9FnIFsTtzKgbofjxRnn6wlp0cNWCK1FgxofHqNKM
+	 a05sn/KX/4AJOyMx4nr3OCi8Z8BAI6AmilmoXWTyD/nA5ct+9+DXaSbAmlM7ExmWvxuCI
+	 D1qoxCChiKnf5gDvVVgmk6jEMLxC7KWXn/Ek2Xcnbxg/IE3VtJp5uKFh17ENpJzJxy54U
+	 PeCszWunVrHFZsKFBuKRnXi1XYdqmn/hta4NpPH/qXq7jp4TIFDy+pBB2VWwuDd3L7m5j
+	 Pj7Lpp/fchdVh/xSy5gth/tL8q9xzFWfqA/Mql/qSbvD+xKLSOaQjKcu3ta5VfzbxIA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792711676;
+	c=relaxed/relaxed; t=1792711679;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Mw8NuWe2zt3uYUYLmdslwurewyfFMdDfAeZucA82mOY=;
-	b=gkp+MIEIIK0WwRwQBspHz0Ug3TYopEIJUeN3dWhUQTuM9/bO1Ppy32+rVnvo4gPsWFXn
-	 Hwk+mpHHZJ6Li3Z60AzhnRURUqcd4XkBJ7bEi7C6Rvl5qAP51SuhqmZ22HyJa8waE/vzo
-	 vl4NnRb8l4JTAxI032gN2WV+HhtjCvcpzIq1PtS619c5PBuoPFxLCtcxor610AtE2ewyH
-	 fiNhHrMcS3aPZH1ty/kW403Ap7NUnTmo4pM4gBo8m7MijzOWi3wDSJkHSOvk8lgdCKa3D
-	 y3VnETCptW5ALMXWbJlMQXAhp7wCqIwF3Z2YHXF9j+wuaR57a75C+AWYVu0Y6OgYD6w==
+	bh=zWZPNhlVhHIuHneGcp6Ke1BtZSCn8SBM6DWKl1LXrLo=;
+	b=y8DR6msRM5lSYvSba0622zOc5Z3/gw++3Z2z1ejcrx+5d/vVbcw5mCG+FZlV1x5KJkyp
+	 DbzolAVDktScY9qOGq0pqi2rWBDi6M+5+vJWBi74GwKh4+UaGrDPVgivwaLWPWNq1I8rM
+	 KXJ5ySprvMg82ry4coi1G7ddRRE+TN38gYFdKPrzJTo9oV0AyuMlrRAWXlhgaFxv4GWR5
+	 QFtH5OAXmqsQQpJQRNjlfh6dwNdMWjSXaw/dPooS4AoiAF8FT1CPQE4mwXlkjAOgF0j1/
+	 1JHCVADwFCCYRoCInLt8Asyj+K9yzLn3rdlceNAhL5qMs3+dOrrM5anPJnslHI/8EVA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 2EB631F031ED;
+	by smtp.kernel.org (Postfix) with ESMTPS id 79FE51F01180;
 	Thu, 22 Oct 2026 23:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792711676;
-	bh=Mw8NuWe2zt3uYUYLmdslwurewyfFMdDfAeZucA82mOY=;
+	s=k20260515; t=1792711679;
+	bh=zWZPNhlVhHIuHneGcp6Ke1BtZSCn8SBM6DWKl1LXrLo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=DG7HU12fCW7Ul9TeYaF8WXju1U3fRV6dSKP8Zo5SyWXPL3j7JLlHg7+L/oNHCHr3u
-	 PfMIZDPm+hJZLPo79G1+eaDuIxHld/Ld3PQiqS6sx6OsVoAyio1fP5Az8P3N7LFf01
-	 kndl3QAQN/aLegK+5A75g2IetIk01Y4KZ8O1zukE99woUtAYezf0zCf0sXDHYJtfSo
-	 r3ZqFPuBvGItzEoIHNxVlTqII0VQOWp3WSP3IDu07XH/YWqf05F0gQohf+cMAR15KI
-	 7ciKv0w0an7+IaghWduTvLXFxlnoiUzBMQE3ihz3xyFzLXguBYDbODnMnVDPNIPSRe
-	 tjHuyjhOJ4FFg==
+	b=L2qAsoJi3Yw1xzg1+iEw/4NyGOK7j4B0vEy46cKE2BW6vvLfUlhZRnDvk4uqEyqC7
+	 jTm0hkR24QjQPa0yVRX9NDcR23CoEvOy0qWx2XcayTrZ8h1LK7VlH32EDzORq8Xb0W
+	 gRR9pnD9Nc7EV59IhoJY8yxjcM9pBe5bduarOW+qznCox/xwRq7mZR+aacmgOHT4xf
+	 Vqb0DUsKknCQWeGSW2e8rqL5vZSTW2qV/IOrbnR0z5ovGF64MwIQX/kXlEjFVlvmkQ
+	 X3ultXOpji3BcuTiTlFx/1bupYwnSzyNkRBzzcsX20f3Xu4zeBl2369kgNrS5LXDh2
+	 NcBfugKj12clQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 9BCD542062;
+	by lkml.kernel.org (Postfix) with ESMTP id A8AEA42067;
 	Thu, 22 Oct 2026 23:27:48 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 22 Oct 2026 16:27:40 -0700
-Subject: [PATCH RFC v2 08/50] KVM: selftests: Test rejection of unsupported
- filesystem for resource_fd
+Date: Thu, 22 Oct 2026 16:27:41 -0700
+Subject: [PATCH RFC v2 09/50] KVM: selftests: Test rejection of memfd for
+ resource_fd
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261022-gmem-alternative-providers-v2-8-5dd1dc6c660a@google.com>
+Message-Id: <20261022-gmem-alternative-providers-v2-9-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 In-Reply-To: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 To: Alex Williamson <alex@shazbot.org>, Alexander Graf <graf@amazon.de>, 
@@ -149,11 +149,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=1756;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=1909;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=MKtSCk+ZsgV89o0Atosj30SncvaeVEKWTGxyjRkwt3w=;
- b=LXu+Ja9u5BkvgZlmzPdoqaK+INQtueJHsx2u2mHiJGo0Qpee/AO8GRK5ofjeZNlIF2IbkfNgX
- MPs2NATgGOTAyxWhfu7Nl1Hb2BTO+4kwolIttfLzGdtRCeA//sq6R6j
+ bh=qTja1erI/Lan5wmGs9jbLgcIfoZ3cox1rPf5vW4srgs=;
+ b=rew4+7ZZjD6ryhzcWU6m/IEO4Mn/eGn4S6P1gpc2Xyar1xtPPFqbC9vU2tNnvjWrBnFpovP09
+ ++QGuwuIvWnDng1N+Ovvgujyhlo+c7XuMKrwUcV7a74mJEw0lbWBznt
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -162,17 +162,17 @@ X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B3654C0004
-X-Stat-Signature: cgimig7tfdir6kixadkcf8gy6tgr881g
+X-Rspamd-Queue-Id: E07FE80005
+X-Stat-Signature: ssrdkybjfb3api7hhkhpuyd4f3qtf9ck
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792711676-738709
-X-HE-Meta: U2FsdGVkX1/iAiRjY15p+hkWYhfc0dV7qcmvnSj8vq+TF3G106S+ROhLaI5sdNekRSTSyG+/ugfEYA8LiO/aiGwlC3hzFRB2dFtF/TxmasA6y6Uolf5Mxh9ozyA7PPgH2m3hSGVBF41LK3SSLTu7g3j7rd79SYkdvuHKLVYcp18rm/wk6WIGQz+OFBVTrEYOO6Ic18w0SMAEzr9XwMlDQjfb7ZnNEfHN73dxFLtQHYko4fTpWDhSSHivK+lUYiOGLT7XndecqmUOHL2W8M267Ow+0WIwY1l/JbYLenTFifxxGszY0Q/0H7jrZRvGL3O+y36f+3lnu2NQ5Z9ZNVDT+8QMYLUNh1jbouF/Ls76J8DkpDBg8bBi5dWE+Td7O3P5GBImzAyXHzzc43WeKU1HntQ5bcz42DBNcIu857RILNmK/2/R9w8OCaQYco6Mqlu1W66vxoTerHrVjSZLAhuMW2SipUohcpwdUmeAIzSghjrzQ1rlMorBXZFqiNvzsVO024XCeF8AZIR59dGjtb8kdv5hhtL9n6coP0VLceW3crbLRy4hOO4f++jSsWaYUJ0nDZrU48DReTHZzh0nW1DLed6EFxUr8LAxG7Euk1aEuXCsgM8grSxGvGt7te0HVttpwUCy1JUf5BrmQsSBll3spX2VAhrPOz1nAYaJNRCoY2o4vQr9BZcaCj+gDlOsdezphvkSizDG2GGfrPsYPkGI2hH5oUe0WV6td63lwRDIzjC6RA0eBZTfHZKi/fndhw6zWL/t0CukprwplX2adzPBQf+FFt9yhBq7NbtS01h+bglqNnkuE52h/mSiL2C7SCwviemSVO2nnZAz5zLI6LeNUOUBkbuWFrd/v63l6nHi3bTqGvAQ1qWjHxyUde5y47rzQLrBiSkdJI3m3MuMg5FcbePqGNXBW+hEGd5C/F8XoMrjkJMzuw218eAowsQWx1Nzl0raTLjElPSi/m0odUo
- pNlQ8Q5+
- ISoW/sHYNg4pg2LDWh4ZiduzhUXFCYbFxL0E28ZX4Ue8njoiHxBywsllXhlNPqODwqH9HeTJQtWKNJmwQqrhUhOnRuu4Bns+f+6GNwXcE6ljo9+kIabJuHf3URxs9BL4B0+hpozwMTCYmOJf4H0T+PGAus+3m6BKIGQsosdSd/nKaNwYFUZ69Th2qvr84GsjcvLJuvdw48UVTQYYm5w2uwwXBlqDniI1sA7RAc4sbSxovVBCwc4tQWKdMs/SS+yDCW1RB5IZl/aOoNtb8bQx8afY1LZ1AiqAFYKaW1f+5ghLsrMckDeC+u1x8Dik7Or16qJKBoDJHp5gUbxAM5ihyxskMvnqVYsU9E0S0MLFpa/4x/AKE0xM91ha1T/3zYQ3iTm7u3ZtLhRUWfC57rm+CXW9kXJxPWYMB94sULRi2uLNxjiU9Jzq+EZwQkYrAZd9zVot9xZArDsjEhiDKmTqRgvW0hjJAnl5/GjConRivLzVraSSPCACJqD1K7iz4s9kOSzBnLrXkY1lwwYRYtTlhH+tzWs+VB4pHNP2O/wmG9UQWT1akXE413/mBlQ9S6CiRCQYaLlpJqFoZCE6F7q6w5vUWTtonqZTowaE/
+X-HE-Tag: 1792711679-192603
+X-HE-Meta: U2FsdGVkX1+oHvne34/EEBYqnJXrstxhKHBkwDgqtxPcxlnLjjMD0brSNytYd18z9PlbrRNbUSdofdtxJudge5RRI6B4ZKEp5sZ0np8R9OHfEyNi1ckr8rwUMBLkMnr/nvn6iISBQIgUvE9T4lHDJ5FZae/bXGmk9EZd21gNoeLiI3qiuKf5AbHwtINeLx0LdnqNcQMtkg5XGsapNomBxaHe8jiVjOH+vsrUC9aAZx5b0933l4ubzyY/6rPeLQ9VC87XEp3MKE11UXBAhFZqChcMp1kzlkTD6CmcTKR/RyTotYXuekxN16PkA5FXA1wW8DSlvFTdtUJGqyQxLwXU/K4cDCvo3y7DQPrdobb6lsT0CXkg4F6xT6fD7XKeiz1d1kaoApNAAiZIQBZ7czrxTdIfWv+oDHy8l7WE+LZDKbw1/bMEUy7bBCkxPJ3N4eevkGnOjbmF8UTCh5UNxXL9BjDLMq1uy8E+V1YbZkBRo175nnBnRqS/U8AjF1097fhAYsHgPdPpaoGZd/fh7hfdgBlOyhzYLHSB/MwOnfri01CbLPyit+jICumA0vxtysfWTJovT+Ch/sR2MC0sfzmWOgTHHJnuBvRObn+bRCgd13b3FaDjULjkzV2vUq6vy7+00mkz1MYMfBmVrc72D9t6BpM2HjG2g0tA/mEaS7AXoWf+z37MYOYZL9sbW+JNbhl/7klxCFeJg1ecxR+VyZRtqHZndw0Iu5wM5JBw84RjAMIvcbmKJvVtL51jLtOjeY5CorgHQy42GM8CrFJQGNhMtyAlxlo8E5Eh569ReyWnwdIKZwVeAhlTrB9famHp1XelJiLs0AIoOG4W35OiZ+Yx0dRraMQciPhMCCt1dGOR3VGjQY2OVgnEmRGSpUD0VRQMDAWsup5hxtBKcQHQJyf0sAHvaPWx09RhiCOrVzl0qUKxa2IQZgUvENi91GC/qK6UqagPEO3ABq9mz8GATwC
+ QFguKK94
+ 33AWZrgOz3zPVrwwaz6tf4IbeA8L123YlmHhtiHe5IJaQugavPzmeAjKM9MuNtqwkVfPL3rTKZfVKPYmdQPayXkhOSk0FwGOoHYG8hnwDjjvtzSMm/7jg742FYnTx7NH76NwoG2Q7dYRaASqobLC0Ew7UOSMjivszq1zQJvuSf6rM/1yg+q79qAGXbgNTl+6kVuhm1wRZF3OZfVexVU+zsjmeJ1ZndPf6zybdy5bMTxpem0L5sJDC8wDVHHBuAHGk8ZKApIo/vFeIYwXZ1sxE3Lr3vuQZ0yD66YSLQdwjYkuFNRO+spCeeFXtbvYkDvAazg89ksnoyR5HpIk1j1Elhbp2ng/IaIJCTsDzi6n3nqb2c4b8n4m1NO6O3QDRCsfz5juMluEmTfwqmW9SxhwUvXJ3IjnNsby9r/C4sS84CYcULC586u1+KxbYfyOb/vThxIQPYPJM1EqpYaIiHUYWdq1nIteGxwjs2hlI57UOPuXtgLaU3UU1gARQLv6yrjkP1cuoJRufdc/R8+zUMqx8rgVxiIX5xlgTyaLz/gsnXigGJ7Iz7V+xbZvN4SoNCwInOPY3BX3e2jN3kbhGs5canF8tdlRDd5KqI6n54u3XDalauW0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,9 +183,10 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add test coverage verifying that passing a directory file descriptor
-from an unsupported filesystem without provider operations as a resource
-file fails with EOPNOTSUPP.
+Add test coverage verifying that passing an fd created via memfd_create
+as a resource file fails with EOPNOTSUPP, because regular files do not
+implement gmem_provider_ops. Only directory file descriptors representing
+the mount root are supported as resource pools.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
@@ -193,42 +194,42 @@ Signed-off-by: Ackerley Tng <ackerleytng@google.com>
  1 file changed, 22 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 3313d306c0bdc..445396860d819 100644
+index 445396860d819..d62ae23256083 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -436,6 +436,27 @@ static void test_resource_fd_invalid(struct kvm_vm *vm)
- 	TEST_ASSERT_EQ(errno, EBADF);
+@@ -457,6 +457,27 @@ static void test_resource_fd_unsupported_fs(struct kvm_vm *vm)
+ 	close(file_fd);
  }
  
-+static void test_resource_fd_unsupported_fs(struct kvm_vm *vm)
++static void test_resource_fd_memfd(struct kvm_vm *vm)
 +{
 +	int fd, file_fd;
 +
 +	/*
-+	 * Passing an FD from an unsupported filesystem without provider ops
-+	 * (e.g. the /proc mount root directory) is rejected by KVM with
-+	 * EOPNOTSUPP.
++	 * Passing an fd returned by memfd_create is rejected with EOPNOTSUPP
++	 * because regular files do not have gmem_provider_ops defined on their
++	 * f_op. Only directory FDs representing the mount root are supported
++	 * resource pools.
 +	 */
-+	file_fd = open("/proc", O_DIRECTORY | O_RDONLY);
-+	TEST_ASSERT(file_fd >= 0, "open /proc failed");
++	file_fd = memfd_create("test_memfd", 0);
++	TEST_ASSERT(file_fd >= 0, "memfd_create failed");
 +
 +	fd = __vm_create_guest_memfd_resource(vm, page_size,
 +					      GUEST_MEMFD_FLAG_USE_RESOURCE,
 +					      file_fd);
-+	TEST_ASSERT(fd < 0, "guest_memfd with /proc fd should fail");
++	TEST_ASSERT(fd < 0, "guest_memfd with memfd should fail");
 +	TEST_ASSERT_EQ(errno, EOPNOTSUPP);
-+
 +	close(file_fd);
 +}
 +
  #define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
  do {									\
  	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
-@@ -495,6 +516,7 @@ static void test_guest_memfd(unsigned long vm_type)
- 	test_guest_memfd_flags(vm);
+@@ -517,6 +538,7 @@ static void test_guest_memfd(unsigned long vm_type)
  
  	test_resource_fd_invalid(vm);
-+	test_resource_fd_unsupported_fs(vm);
+ 	test_resource_fd_unsupported_fs(vm);
++	test_resource_fd_memfd(vm);
  
  	__test_guest_memfd(vm, 0);
  
