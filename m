@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25574606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1B6606A336
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=N0IFdzR5
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=DuOvJVJx
 Received: by kanga.kvack.org (Postfix)
-	id 923186B0A10; Thu, 22 Oct 2026 18:50:48 -0400 (EDT)
+	id DB4876B0A14; Thu, 22 Oct 2026 18:51:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 882256B0A12; Thu, 22 Oct 2026 18:50:48 -0400 (EDT)
+	id D935D6B0A15; Thu, 22 Oct 2026 18:51:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BFDA6B0A13; Thu, 22 Oct 2026 18:50:48 -0400 (EDT)
+	id C7C4A6B0A15; Thu, 22 Oct 2026 18:51:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 574E86B0A10
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:50:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CEFAAC02F8
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:50:47 +0000 (UTC)
-X-FDA: 85351758534.01.5EA351D
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1C39840005
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:50:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=N0IFdzR5;
-	spf=pass (imf11.hostedemail.com: domain of 3QJPaaggKCC8OXLeWLNVRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--dmatlack.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3QJPaaggKCC8OXLeWLNVRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--dmatlack.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792709446;
-	b=DtqkQMxuRK0VqC4Rd+/7yb6r2+WSr/QPOBnOqNU92KXC4ddHH4w95ICyLjTUclcEWLOmtH
-	xzjQ4jTi+lj5Tymoqzcz02aqm/fec2AAT0u913huo94EcYZ87D+n8W+pbD/DKPwbGDX5bT
-	mUZe03/Wy2QqcDzTzeJHJHn55DedneQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=N0IFdzR5;
-	spf=pass (imf11.hostedemail.com: domain of 3QJPaaggKCC8OXLeWLNVRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--dmatlack.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3QJPaaggKCC8OXLeWLNVRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--dmatlack.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F0B36B0A12
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:51:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 783B94027D
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:51:00 +0000 (UTC)
+X-FDA: 85351759080.03.7C65F1A
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C45CFA0007
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:50:58 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DuOvJVJx;
+	spf=pass (imf15.hostedemail.com: domain of 3UZPaaggKCEAfocvncemiqqing.eqonkpwz-oomxcem.qti@flex--dmatlack.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3UZPaaggKCEAfocvncemiqqing.eqonkpwz-oomxcem.qti@flex--dmatlack.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792709446;
+	s=arc-20220608; t=1792709458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/hb6F/Gq2Qdu71NqEP5pvDxejRfCT+lDCwtB3sS5Hqw=;
-	b=sXekC0b5htAFwZIw4rHi+Fp4mk3lY3bWcGB4dNmrBXQEY+kcdpCbrf7MwECF095piiXDLB
-	ixloid0YurF5Ak5eyxUFSIbjKEfHUn/xscb2Yu5RLmWEEAPtCRWYMB48fgUMQaGHZuMt/l
-	IN45N6zuSd3RK5A6hsV/u0Xf1SEuZPA=
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3adbc9a47fbso262852a91.1
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:50:45 -0700 (PDT)
+	bh=M8wkRoJDHKCl2H3ues/+67+xXGDD9mtv8dtHSiakNgQ=;
+	b=wPEZMkgJhsWXpGVo762B5oGJPWorPnjAHTjLblYfZmG6Wf7YTjGYj7K/icxefXmsRCMINR
+	MXtAAGxIyvgMvUukwfq7Am/AcwqRuQzkbb0m1XC9Vmt+wnHm2Lcw3ZDjO4I8b38oA0HhOo
+	bOjXDqWZJ35RnRyis9avd6z1BgJD/IY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792709458;
+	b=W3TIxzI+sVe2KC+aP+En3uA4wRMtEGJijctrEwJsUdQ10AC1IhcIMOrbivdMae0M39MpFG
+	gdh2vZWOIJwa96RIdcBef4SH6qJC5rYDQpA/eFxoYA5Wa65s8fVqVng7Up5MufgFD8BWei
+	xe/UZt3E0/k3211VywCe/8jTrBrJe3A=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DuOvJVJx;
+	spf=pass (imf15.hostedemail.com: domain of 3UZPaaggKCEAfocvncemiqqing.eqonkpwz-oomxcem.qti@flex--dmatlack.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3UZPaaggKCEAfocvncemiqqing.eqonkpwz-oomxcem.qti@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cd65070d3feso113869a12.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792709445; x=1793314245; darn=kvack.org;
+        d=google.com; s=20251104; t=1792709458; x=1793314258; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/hb6F/Gq2Qdu71NqEP5pvDxejRfCT+lDCwtB3sS5Hqw=;
-        b=N0IFdzR5QcsQ6K4hC6lTO+RujerUcv8Sy/JqylDC3qhhv0pTdrEKzbW0p2mDEu4wbF
-         gU4bVWJQz89rv0pIeytG6lj8e6/GLQhA9Mhj0ccPwD62NC9bIfwNwtRYtbY6hiP7rD7m
-         rMtUPGc65zhSE1V1MWl8oxPg+KxcRl8gLv7eLPIMNCik/gByglD94IWmOv3J/UNzKNHL
-         ZLUoFA7JOH0OWiSNCoxtiC7OJe+s3x4f+0FubBIKBYzrtYb5+tTd+6HIV2gpToq1iHp9
-         qCoK7NDCCmWMdhnDkrJUILHJtkr0vRPRp0MjTPT+tQi9HrSSop59rGtKzRh0vcsGETW+
-         L4cg==
+        bh=M8wkRoJDHKCl2H3ues/+67+xXGDD9mtv8dtHSiakNgQ=;
+        b=DuOvJVJxeubp7e/Ir3+fMr4k93skebrWhi88IPRDdtZf3oAdSqcUfuMBWq40rvHPuC
+         2YAp9TpEJD42p+/WcfCV6Zs7jkE/9uBuUlyBD1kLntH5ZKLKsQ17ARKmlZEoCrM7WIFU
+         eJjrR2asIe5qC/IK/RokgjcCFBlgaBrsACvhUbV8BW5QqU/bOAA6W+x6qRTe55+zQ3WM
+         C98D+5esatJWuZVDyL3bsyxt7MxJDy/PuDkXtHdBWnDJbgV61ymfvB12gk0Bm4XTrGSY
+         cmah6YLDllQ+TgQp+J7ogJs/bngmGgFc/z0G5/dU790e41KGi1nKXJjoOH7IbVc0rNiq
+         w3LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792709445; x=1793314245;
+        d=1e100.net; s=20260707; t=1792709458; x=1793314258;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/hb6F/Gq2Qdu71NqEP5pvDxejRfCT+lDCwtB3sS5Hqw=;
-        b=khoi+7xFS3OWgFIVUtKMduZAfeH4sixfhMUHQ5StnuqTKCsyBn6jw4mcitQp5zDHm0
-         pvbrQ+vA9u4w9SuL0P815s6zATrifVnDKBhVpVzSZLA+W8p8qd42HSOkI6n7QMY2J2fA
-         P7ZTkEbzcnNJgtAvCB8GXBA5ikTyv1EiiiDdwEM4T0y6GIzA6e6jM8f4Mxh0DJxKH3m+
-         zdONuIN1fqbhJqqX5X8TwFY1A1m+Hzjp0mxtz7RIE8jvp9lFyCcFFriwcPHKeKGzTF4C
-         6csUqsCvaaIhkrQpnutQ/QZngKBgyaO+cJDNyoDQ6CQnjAr9ZDmn34bE0Wc7TqRaPmjn
-         nOMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxAfP5FKZbqE7VMFTGKBhW9Ycyoa7QkUs8a6d9y7EYA0JXR1ZexEz5DXpuax1kBd5w9gyZQEtl4mQ==@kvack.org
-X-Gm-Message-State: AFq9FYLU/hsUyv1LA51oAohb352Fa5dvlN+8j5uudE6C2ligJqmUq79I
-	WUaHOkleY/Ofnjr9/pirqw/pbj+Weujyw03UtKCEmans+IMtSlS6ZMOCrDLwTmldoz15GzFXxgC
-	arPrp9ccsiu9DYQ==
+        bh=M8wkRoJDHKCl2H3ues/+67+xXGDD9mtv8dtHSiakNgQ=;
+        b=kIwuDdb5k9yg7FfMS5Qss5B80eVA5XmZOi4f7DlEmJQL1sm11Fs3sKU4jYM9ryLV2W
+         bK/fQRrGAllouwasdQVkJikz4Xdovcg9yDtnISwvW+UXR2Qr2AeHgvg7YRcqJyY8RUto
+         Mn6s9Tgvh8nVeBI1xQ0zf+qVZkJodOR0MhtfsM4GjdcR+T0DvvR7DkiRo4xkfaFzFuw6
+         2uo8nLOJeq4WUfO6annSAEWcr8XRtBVvYOKUS+zAQzfVViTeJwp2Tb4LuZEW8XmUVZaY
+         7fZ2WiAl5v1rNtHRRXx/uCqIRGa54/t6Agi+Z+R/5umtgUx0kem/GTPuHKPcYOtOGwrP
+         KOew==
+X-Forwarded-Encrypted: i=1; AKwUvByagqJuS0PFN+QNIRnxxLZUoGMa/qSo37zmAWwOfwm0FH03YBkrrNW3/wAqwVvB6M94XrgzukP6eg==@kvack.org
+X-Gm-Message-State: AFq9FYJl8+K3VpBoznu7G/BP2as5njZAC0YQf3t4BQubjzlyyWc5U1DF
+	JCUejA0N8TNeZLRNPS5El1O1QbDS6VcGU9+V2z6nM07CiaZDhvDR3VWFs7YCLAW2NL383cRIMBQ
+	zUh9Ra57H9nD0AQ==
 X-Received: from pgbm22-n2.prod.google.com ([2002:a05:6a02:6196:20b0:cd6:a6ae:1ba0])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:538f:b0:3ac:97bc:4c98 with SMTP id 98e67ed59e1d1-3adce7e67bcmr237048a91.64.1792709440118;
- Thu, 22 Oct 2026 15:50:40 -0700 (PDT)
-Date: Thu, 22 Oct 2026 22:50:27 +0000
+ 2002:a05:6300:8001:b0:3e2:78bf:63d6 with SMTP id adf61e73a8af0-3e2a0c4a3a0mr1802376637.46.1792709457482;
+ Thu, 22 Oct 2026 15:50:57 -0700 (PDT)
+Date: Thu, 22 Oct 2026 22:50:33 +0000
 In-Reply-To: <20261022225035.377445-1-dmatlack@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261022225035.377445-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261022225035.377445-3-dmatlack@google.com>
-Subject: [PATCH v2 02/10] selftests: liveupdate: Add tests for preserve and
- retrieve user argument
+Message-ID: <20261022225035.377445-9-dmatlack@google.com>
+Subject: [PATCH v2 08/10] mm/shmem_luo: Allow preserving tmpfs files that are
+ still linked
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
@@ -102,19 +102,19 @@ Cc: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>,
 	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
 	David Matlack <dmatlack@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: srpxsas4kthpgifms6a1shmpd83fekar
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C45CFA0007
+X-Stat-Signature: sqxhcus6y7z66hs3i94hohfarajhg4sb
+X-Rspam-User: 
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1C39840005
-X-Rspam-User: 
-X-HE-Tag: 1792709445-299682
-X-HE-Meta: U2FsdGVkX187O1tQrvrsbI3x1pHh7A2IaXK0LX6nVOLTPsLQ8lYXHUHEfXktpuPrIRpoYsJ0ZpGGj1mEMjjjd1XwQ4N855m8sTgw1N8OcIOjEwPxm85f8a7afTZF95Q7ToC8beonT3fo4h81Ohw0+In24CAg3L0vF7GnhZWNQV9rA/McEsuh+UrNp8gU47KNjm65SiEkkhvCCwQmeGh7uyqSeic3oTVhrzk3rz/yNDggWyaTLOSdEbAlwCafQnxVUFnQItBtZy/GG68qslUX87tnqqpMhkX4Zfny1CW0qpAtO72mGhT+EizU1C0ekdujsRUfEx6U3t7HYoECWzS7EorFezKBwZIsC2PQUBnskVCkQcAsGsIfAms1/vqQy2qDs+MLDR04ofjIQ82XzcYfJ11zJfjpdfr5XF3NKozan2cYAfThJhxpcjvNdaHnlGLWoCPuG/TS7O0St3KMof6YeerKRYPa0FOlCuTzGdoxdztHV+V2dVEpRRj3yYQsiwrbmDP/nERGI6qRpVjxUCN1Q9gOVwF+P1LvNmrvuFeXMIBWpV7waP17hD90mnw/lw7yjlHTo8eORxWmsC+1N57QtzQsS6i7UWS1bMzooPO5iqnFqfOrgx+tAiqNlcU9JJtVx0Hjytga/MRtqC/qizKpXjmKBA/8eTZ+A07M4M0j/d2iVXk0YBUC7Fwh/dN0lce2GOLrnWWoBsb/UJfaroewDr7tGrdTehqXY74IrEWkmRe1dVoUzyhhc6UwNTcqcse/BW7oanIPaaDTDaqYwIe7SgjhZ6UOh0lyucINMmAU8L1HFI9SsGy1orCYesqWcePjjHSlDX7dPZRTKZTVDQmtq+iKb+iv2sbFfYsJ2FxgeOwhao2dDzwHb5AiAgOt8lrBScc979xi63ykxfDm1mOYueOVftuHcgq+7CkzskE+AXO43MzTAfmVDjDj5YjGqt2H1DSDC58Ee5PEGrK3dEE
- r/OBq1Mk
- r20JhygJXz0QBmNLQBnKABu+eGourBRn3ofo/6llfzAEARh6ZxmavRW5LwfhNvBmdfkVI86BeLBI3reZGrCrMLpfhvO0VAkAKorAX1za8+lqxz/e5vJthp20bNX4qeHQo+SQ5yx8S4TmxX+4JPsKyHZuISVCyoCVhQQXQAx+zjblypycrh6DPnn0Pxlz7MepTASAMGq38+CBIuV4aWjBuRwY+xZgRPQTDtS4Dym1bI+ReEL/UYNfjSS9hgPDP2EX+GvgOk8iQN2kltMoa4X/qa43sK986fijvV9r04PIA2X7K1MXVp3aZZWzKSmiD3toGpKdcF1n1xNQ30WrP+qWt8fTHYCyu+3h8bIQmzUnbiA11KO4m/AdkHLexbjnzcBBy5RFRwJxQcYe+QGXzJiHgwHCVKputNVL6b7cUd7jPgwTLmQzu+MpB7s6HbW4ZbyRT3L/yBwWlln7oXUT1fvgJx1YIJrPgFMzhfrFS/4KYL4e9qzEzdITYA6UMDG1zKBZ5MRgTTL7a/0bNcyIgnJEqwKj8ekRBrP1ogR4diRaCJNEsMFkkb0Ak4m5i0XkmKqPQ9rllDLDUzuuE7jhFBq/mxmLAbmFIizGwmoVszdH7NLieYIbgLI+Vob1iIUN+buwhajbTtF6eWIoWiZlGn4YNI/JANw==
+X-HE-Tag: 1792709458-91407
+X-HE-Meta: U2FsdGVkX1+KTMvCBKdpRcCTYEtaNmzGInfWQzxpYKUYvEl8h/hBXQQlh0AuB2QpDbQ7WzAxa1XQOPLJAI4yNwjZtmIOpeg0CDbiYI/redgNpLDy0EfQhAMqWbmYBcXA9clg39ViCLblB2LcfTvGdhlHCtgzYJAOWwhEW3WAKA/ZqjISFebxFmcvnJDuLrRtSLY4SAnCKcclYP+s9v9EwNlOGR59Tn3mCa4PQST+lvDPVSvOyNlKc5N9IKsTo9u5e1H5VBPxTp0R6n5Y8/8cFc9T+KVFEpbAderMNPk60m4ccXs7NVsCwk3WCYXhs4Pc4uEwILJEpfFxIhRaLizReiLujPYsGiBC5ThLfnWv1ucINHPC06AmUObb4DfQ9xhkUpDWU0oG5xd6OwyRraG7ifqVyad2ds3T51x9gqfQrvFBBmCVu0QnraChrHxVOjggdl9jcotNW2ynovlHQxOqKvQGdjcWPCdGolejH+qaQcPX/f2ayTFyBRG352qdP4NMnfAV5S2IuFnK3KuqYTnHoi4mIH749KhxvT3s8GkFKQX8JlFcBx/0Shw+vu6Ns3UwaQlX7MsiIdYpb0N60BbaH4uBsRm+6duilMbMmgGG5oXvfSxjRvnwnDOse56tMmXk4sCvnekYTt9PkjTCtbGLRtOab4F41MINWJJ8rEslK4eoSnpeTR0OwMalmfunxoKMdT5Il06ykvbq4BA7NWChXnth7K2I1/7czpaiA6C/GLw4HOF4GRgh04/w8vuCD5fbzObMOBGxO2/QeQYos0HZCfoDeFViBdF9m6R85gZliYNuo4cmSyMiURLBQTk4EKD8grPSU6Xgj8tTRYrg+J2IlJzDXJ97Ft6LnwnOpd+1n4hW/g+Pfptn7FSzVM3+XJj+A4amJqu4z7Ja0eGDw5fB9UkSwBdKhR8e/MTPG7sf1QCsG6ezbgCGUyNUrn3EEOwy7mqOKkAAwuzkjfkb1q/
+ JHF6gB7/
+ feTK2kfKvi3pMxTNYjRGHHoaV2XNCYcl8z8nQPZllhkJ4sYaBDIgpRQ4zuKtnkoUlSh8M4DqHhALQNHSmylvnGJxS+83CW9/8CL3mIND71ixZa9IYy7pZSbhC79YUcu9rsRbf5wDWpmtpFI8IVLTvNBqRCS2dI5CdMVCJWJIf2N6B1MtLe0xqdKiwlCTvoyIQcF/ZxOe/yIKBwIwrIYPRLQRC4tt+WYGlHFLLz6cqB8tVrSt4vmgpaMYBgLKyED40JdHszoTV9rVa/+HW53OTTVaNR+b/oM6L43Q/jw8TAgpP8Ru+83GtwGyaLR4ykQIzImQERQSAQM8so9XCPOWpraUpqm43hmUoN+qOMUYU610VzZgaNhKnN1fI0E3Ix+Lob5yNvJlwguWu9UKZOF0R52wAEeTILtRDsQsvhMk69jfXzaC7BskRDhjZyMFeBNKlAvivrUHK8jbkG4zGYL3/FlrfCIAyvz2UNvXvY4a7Lz1bGllTAmJreFTdgsxnOjYplP4vZpNBfeCb4JcfO3ci2CvKBuVKVK2Qh0l9NuduGFPk/LMipgrHwO+/Pa+IzP3Q5CSDjrQYwnC1VsTItWgEAOL3TXiR5jZMiA43th5peLtJwvmYdm84aIk4Fe/tpYPIlfhOi7NhbnIfo0w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,152 +123,136 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
+shmem_luo already accepts any shmem file without links, which includes
+unlinked tmpfs files and files created with O_TMPFILE. Also accept tmpfs
+files that are still linked, so that userspace doesn't have to unlink
+files to preserve them and can keep using them by path until the live
+update.
 
-Verify the user argument support in LIVEUPDATE_SESSION_PRESERVE_FD and
-LIVEUPDATE_SESSION_RETRIEVE_FD. Add luo_session_preserve_fd_arg() and
-luo_session_retrieve_fd_arg() helpers to libliveupdate so tests can pass
-a handler-specific argument.
+The path of the file isn't preserved. Like other files from tmpfs
+mounts, a linked file is retrieved onto a tmpfs mount chosen by
+userspace, which can then link it at the path it wants.
 
-Add a preserve_memfd_with_arg test case to verify that memfd
-preservation rejects a non-zero argument with -EOPNOTSUPP, accepts an
-explicit zero argument, and remains compatible with callers passing the
-legacy struct size up to the token field.
+While a file is preserved, its size is frozen, so truncating it,
+fallocate() and writes past its end fail with -EPERM. For a linked file,
+this affects everyone who opens the file by its path, so a caller that
+can only read the file, e.g. a world-readable file in /dev/shm, could
+use it to break the owner of the file. So require permission to write to
+the file to preserve it, for all files. Like FS_IOC_ENABLE_VERITY, don't
+require a file opened for writing, so that binaries that are being
+executed can still be preserved through read-only fds, nor a writable
+mount. If the size of the file can't change anyway, because it is
+immutable or on a read-only superblock, also let its owner preserve it.
+Don't let others do that, since the size could change again once the
+file is made writable.
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Preserving a file also fills its holes, but don't require any permission
+for that. Anyone who can read a tmpfs file can already fill its holes by
+faulting them in through a read-only mapping, also on read-only mounts
+and for immutable files.
+
+Document the frozen size and the permission requirement.
+
+Assisted-by: LLM
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- .../liveupdate/lib/include/libliveupdate.h    |  3 ++
- .../selftests/liveupdate/lib/lu_utils.c       | 17 ++++++-
- .../testing/selftests/liveupdate/liveupdate.c | 44 +++++++++++++++++++
- 3 files changed, 62 insertions(+), 2 deletions(-)
+ mm/shmem_luo.c | 55 +++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 52 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h b/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
-index fa07fed08364..cd1d843a0d3d 100644
---- a/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
-+++ b/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
-@@ -29,7 +29,10 @@ int luo_get_session_name(int session_fd, char *name, size_t name_len);
- 
- int luo_ensure_nofile_limit(long min_limit);
- int luo_session_preserve_fd(int session_fd, int fd, __u64 token);
-+int luo_session_preserve_fd_arg(int session_fd, int fd, __u64 token,
-+				__u64 user_arg);
- int luo_session_retrieve_fd(int session_fd, __u64 token);
-+int luo_session_retrieve_fd_arg(int session_fd, __u64 token, __u64 user_arg);
- 
- int create_and_preserve_memfd(int session_fd, int token, const char *data);
- int restore_and_verify_memfd(int session_fd, int token, const char *expected_data);
-diff --git a/tools/testing/selftests/liveupdate/lib/lu_utils.c b/tools/testing/selftests/liveupdate/lib/lu_utils.c
-index 74d41115c281..db7a90b002cb 100644
---- a/tools/testing/selftests/liveupdate/lib/lu_utils.c
-+++ b/tools/testing/selftests/liveupdate/lib/lu_utils.c
-@@ -79,12 +79,14 @@ int luo_retrieve_session(int luo_fd, const char *name)
- 	return arg.fd;
- }
- 
--int luo_session_preserve_fd(int session_fd, int fd, __u64 token)
-+int luo_session_preserve_fd_arg(int session_fd, int fd, __u64 token,
-+				__u64 user_arg)
- {
- 	struct liveupdate_session_preserve_fd arg = {
- 		.size = sizeof(arg),
- 		.fd = fd,
- 		.token = token,
-+		.arg = user_arg,
- 	};
- 
- 	if (ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &arg))
-@@ -93,11 +95,17 @@ int luo_session_preserve_fd(int session_fd, int fd, __u64 token)
- 	return 0;
- }
- 
--int luo_session_retrieve_fd(int session_fd, __u64 token)
-+int luo_session_preserve_fd(int session_fd, int fd, __u64 token)
-+{
-+	return luo_session_preserve_fd_arg(session_fd, fd, token, 0);
-+}
-+
-+int luo_session_retrieve_fd_arg(int session_fd, __u64 token, __u64 user_arg)
- {
- 	struct liveupdate_session_retrieve_fd arg = {
- 		.size = sizeof(arg),
- 		.token = token,
-+		.arg = user_arg,
- 	};
- 
- 	if (ioctl(session_fd, LIVEUPDATE_SESSION_RETRIEVE_FD, &arg))
-@@ -106,6 +114,11 @@ int luo_session_retrieve_fd(int session_fd, __u64 token)
- 	return arg.fd;
- }
- 
-+int luo_session_retrieve_fd(int session_fd, __u64 token)
-+{
-+	return luo_session_retrieve_fd_arg(session_fd, token, 0);
-+}
-+
- /* Helper function to get a session name via ioctl. */
- int luo_get_session_name(int session_fd, char *name, size_t name_len)
- {
-diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
-index 2dedd5fc2534..4c4272167635 100644
---- a/tools/testing/selftests/liveupdate/liveupdate.c
-+++ b/tools/testing/selftests/liveupdate/liveupdate.c
-@@ -20,6 +20,7 @@
- 
- #include <errno.h>
- #include <fcntl.h>
-+#include <stddef.h>
- #include <string.h>
- #include <sys/ioctl.h>
- #include <unistd.h>
-@@ -530,4 +531,47 @@ TEST_F(liveupdate_device, preserve_many_files)
- 	ASSERT_EQ(close(session_fd), 0);
+diff --git a/mm/shmem_luo.c b/mm/shmem_luo.c
+index ecbeb37d33a8..aba2bc1f18c5 100644
+--- a/mm/shmem_luo.c
++++ b/mm/shmem_luo.c
+@@ -28,6 +28,23 @@
+  * the file are preserved. All others are reset to default. The preserved
+  * properties are described below.
+  *
++ * A tmpfs file can be preserved even if it is linked, but its path is not
++ * preserved. Userspace chooses where to put the file when retrieving it, as
++ * described in "Retrieving Tmpfs Files" below.
++ *
++ * Preserving a file requires permission to write to it, since preserving it
++ * affects all of its users, as described below. But the file doesn't need to
++ * be opened for writing. For example, a binary that is being executed can be
++ * preserved through a read-only file descriptor. The owner of a file whose
++ * size can't change anyway, because it is immutable or on a read-only
++ * superblock, may also preserve it. The file can be preserved through a
++ * read-only mount.
++ *
++ * While a file is preserved, its size can't change and no holes can be punched
++ * into it. Truncating the file, ``fallocate()`` and writes past the end of the
++ * file fail with ``-EPERM``. This applies to all users of the file, including
++ * users that open it by its path.
++ *
+  * .. note::
+  *    The LUO API is not stabilized yet, so the preserved properties of a memfd
+  *    or tmpfs file are also not stable and are subject to backwards
+@@ -298,6 +315,34 @@ static void shmem_luo_unpreserve_folios(struct kho_vmalloc *kho_vmalloc,
+ 	vfree(folios_ser);
  }
  
 +/*
-+ * Test Case: Preserve MemFD with User Argument
++ * Check whether the caller may preserve @file. Preserving the file freezes its
++ * size until it is unpreserved, for all users of the file, so require
++ * permission to write to the file. Like FS_IOC_ENABLE_VERITY, don't require a
++ * file opened for writing, so that e.g. a binary that is being executed can be
++ * preserved, nor a writable mount. If the size of the file can't change
++ * anyway, because it is on a read-only superblock or immutable, its owner may
++ * also preserve it. The size could only change again after the file is made
++ * writable, which is up to the owner or root.
 + *
-+ * Verifies that passing a non-zero user argument to memfd preservation fails
-+ * with -EOPNOTSUPP, while passing a zero argument or using the minimum struct
-+ * size without the arg field succeeds.
++ * Preserving the file also fills its holes, but that doesn't need any
++ * permission: Anyone who can read the file can fill its holes by faulting
++ * them in through a read-only mapping.
 + */
-+TEST_F(liveupdate_device, preserve_memfd_with_arg)
++static int shmem_luo_may_preserve(struct file *file)
 +{
-+	struct liveupdate_session_preserve_fd min_arg = {};
-+	int session_fd, mem_fd1, mem_fd2;
++	struct mnt_idmap *idmap = file_mnt_idmap(file);
++	struct inode *inode = file_inode(file);
++	int err;
 +
-+	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-+	if (self->fd1 < 0 && errno == ENOENT)
-+		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-+	ASSERT_GE(self->fd1, 0);
++	err = inode_permission(idmap, inode, MAY_WRITE);
++	if (err && (sb_rdonly(inode->i_sb) || IS_IMMUTABLE(inode)) &&
++	    inode_owner_or_capable(idmap, inode))
++		return 0;
 +
-+	session_fd = luo_create_session(self->fd1, "preserve-arg-test");
-+	ASSERT_GE(session_fd, 0);
-+
-+	mem_fd1 = memfd_create("arg-memfd-1", 0);
-+	ASSERT_GE(mem_fd1, 0);
-+
-+	/* Non-zero arg is not supported by memfd handler */
-+	EXPECT_EQ(luo_session_preserve_fd_arg(session_fd, mem_fd1, 0x1111, 1),
-+		  -EOPNOTSUPP);
-+
-+	/* Legacy struct size (up to token) should zero-fill arg and succeed */
-+	min_arg.size = offsetof(struct liveupdate_session_preserve_fd, arg);
-+	min_arg.fd = mem_fd1;
-+	min_arg.token = 0x1111;
-+	ASSERT_EQ(ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &min_arg), 0);
-+
-+	/* Explicit zero arg with full struct size should also succeed */
-+	mem_fd2 = memfd_create("arg-memfd-2", 0);
-+	ASSERT_GE(mem_fd2, 0);
-+	ASSERT_EQ(luo_session_preserve_fd_arg(session_fd, mem_fd2, 0x2222, 0), 0);
-+
-+	ASSERT_EQ(close(session_fd), 0);
-+	ASSERT_EQ(close(mem_fd1), 0);
-+	ASSERT_EQ(close(mem_fd2), 0);
++	return err;
 +}
 +
- TEST_HARNESS_MAIN
+ static int shmem_luo_preserve(struct liveupdate_file_op_args *args)
+ {
+ 	struct inode *inode = file_inode(args->file);
+@@ -307,6 +352,11 @@ static int shmem_luo_preserve(struct liveupdate_file_op_args *args)
+ 	int err = 0, seals;
+ 
+ 	inode_lock(inode);
++
++	err = shmem_luo_may_preserve(args->file);
++	if (err)
++		goto err_unlock_inode;
++
+ 	shmem_freeze(inode, true);
+ 
+ 	/* Allocate the main serialization structure in preserved memory */
+@@ -362,6 +412,7 @@ static int shmem_luo_preserve(struct liveupdate_file_op_args *args)
+ 	kho_unpreserve_free(ser);
+ err_unlock:
+ 	shmem_freeze(inode, false);
++err_unlock_inode:
+ 	inode_unlock(inode);
+ 	return err;
+ }
+@@ -710,9 +761,7 @@ static int shmem_luo_retrieve(struct liveupdate_file_op_args *args)
+ static bool shmem_luo_can_preserve(struct liveupdate_file_handler *handler,
+ 				   struct file *file)
+ {
+-	struct inode *inode = file_inode(file);
+-
+-	return shmem_file(file) && !inode->i_nlink;
++	return shmem_file(file);
+ }
+ 
+ static unsigned long shmem_luo_get_id(struct file *file)
 -- 
 2.56.0.257.gf7497c7d27-goog
 
