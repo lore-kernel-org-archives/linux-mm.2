@@ -1,98 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74533606A32C
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4695A606A31B
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cNINS75x
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=iakxD7Fr
 Received: by kanga.kvack.org (Postfix)
-	id 72C606B09FB; Thu, 22 Oct 2026 18:31:23 -0400 (EDT)
+	id 6C2366B02BF; Thu, 22 Oct 2026 18:39:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B0706B09FC; Thu, 22 Oct 2026 18:31:23 -0400 (EDT)
+	id 672B96B09FD; Thu, 22 Oct 2026 18:39:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5781C6B09FD; Thu, 22 Oct 2026 18:31:23 -0400 (EDT)
+	id 561906B09FE; Thu, 22 Oct 2026 18:39:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 24C636B09FB
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:31:23 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95861A02FE
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:31:22 +0000 (UTC)
-X-FDA: 85351709604.22.8E92DC9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 07A6F100005
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:31:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cNINS75x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 30CAE6B02BF
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:39:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B384F160327
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:39:54 +0000 (UTC)
+X-FDA: 85351731108.23.FBC2F8A
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 08ECF40005
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:39:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iakxD7Fr;
+	spf=pass (imf01.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792708793;
+	b=0/q6neZv217YyN5DWS+w8EI/geREe6iHzB6Y2YHEBBdfNACD7rPnGbo3o0Nn7uNF3fPBbI
+	jCf3B1CWnEtjA0NJtMez4a+b1c6nFlPEFXGTPX29q7uvpCRW620EANTgax8NRDgaf0r50O
+	xRXStSh4LbrA7iPDHLtI3TR8CP+Wen0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iakxD7Fr;
+	spf=pass (imf01.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792708281;
+	s=arc-20220608; t=1792708793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S6ItmhQmV+wqX2MpWL8c5Yttc4aPWEpi/wAss+677D8=;
-	b=4XNZekhCviIWmFVL3L1DB24ptr8NGul9c5ENHgUjbJTe62ra8hOMeYZPhGmCcMMPKryfF0
-	kIYe/+0NQ4R5y1hgLbb9PssT49yQ6CQOqSqu4mtgfwfZMIsvVO7hiE46KtV4cYSAfM7U6W
-	+nsL5m+ZrCa9CmowaNWx7915mpNepj4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cNINS75x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792708281;
-	b=Y71Hntlj/3rSPN44c1C0R3U8/qZknZbQo8A5ju3gZyIZ5wFwHjyP1h9oFTXffGn2VmLCli
-	jz/gGq1FEBUWkgW/UJXm2fCvRTRD637NqQbB01vCCPgHE85lAL2x5c24sFC8WXg8N0Fi1k
-	b9y3qARk3maBibWd/Iv6CglObPjHS1Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6433B602C3;
-	Thu, 22 Oct 2026 22:31:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24CE1F01825;
-	Thu, 22 Oct 2026 22:31:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792708280;
-	bh=S6ItmhQmV+wqX2MpWL8c5Yttc4aPWEpi/wAss+677D8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cNINS75xd5z+a3HR344LN34/HXl5PH0//AlhRP2yTNnunWu8M3d7ff06ib5JtDq3m
-	 kjSLPtVghAJmWu7KH3QGsynw+x9DyLWUYE4Cg83B/otaxto9CCwb0Mpo1vze2eKGmN
-	 /g9SqYPp4WU8onhFVZOSWwdFFStB//8ACNEHlMI9Jm/C0K/8/aawzkuA/dxi93ApEy
-	 4aRpstEfkmXSnJ+NJguTOKCftxGiK6f9dIYJ0W3t/R0f0WQ9bhfcs0/sKrgqG4ppSe
-	 /aym6feIyigq3/SICiESMNZJmxYa7W1dHL/NxhzYMUjKEG6W/uT/QEu1zSHsAmvHt+
-	 yer4hVCOeemBg==
-Date: Thu, 22 Oct 2026 18:31:19 -0400
-From: Mike Snitzer <snitzer@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Mike Snitzer <snitzer@hammerspace.com>, Chuck Lever <cel@kernel.org>,
-	linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v7 1/5] mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
-Message-ID: <atqOtyegOnvw45G0@kernel.org>
-References: <20261020220346.28020-1-snitzer@kernel.org>
- <20261020220346.28020-2-snitzer@kernel.org>
- <1315c1dda358121708d6b007dcfa959653988218.camel@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JtKxQk17mKJ5H+rcmhYc0xGV7tRV/52vlvUl23dtKyE=;
+	b=1Yq71Q2SYHQTa1sKRSYfeYqBSYkrKVBmFSlP/rRvt8RXmBKgl/P42o5DjnHoL8NfZgC2/K
+	zgxw6kD4ay+bUrZYVD6dU9CFGgVnKZacH+0Kl61REAhoYFTBHGihpO73vHDohBWnvOGfUu
+	XdCn+Ga/eTAbPbXBO59BRyrx4OQII54=
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-8ad98c3fb15so3026197b3.2
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:39:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792708792; x=1793313592; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JtKxQk17mKJ5H+rcmhYc0xGV7tRV/52vlvUl23dtKyE=;
+        b=iakxD7Frtd5O2EK15flMGH14vppfLnnZlHeTBvrmF42vCgZ3nA0ZPJocseM/66ayXs
+         eGy6X7vjhb1ZOLgm1aAX10BrGindHWpqAx7fUhmeutM1lC58cF3VG1dVjjAel7PX7NAo
+         Y4njcbFHgLA3oU6feY39EpHSmBEfnVs45wj3mwXNWDXEPRa0+7eF7R7/vmrG6Za1ugTm
+         RoaisQhIG6VJGZwv4JZTmcSXD3N5b8ScIO9F3xyciIbZpNOYazjH9mUAHS01SyG/4Ixn
+         /y3YrYAWbKiM/vsTu0Ea2qxUmOGLR5QAg8SzWa9z71FGZZpMSUfWEkZKpP2xVDJK12l/
+         67Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792708792; x=1793313592;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JtKxQk17mKJ5H+rcmhYc0xGV7tRV/52vlvUl23dtKyE=;
+        b=HJSgKRG+ldIhaVz9iEOFh1+k/bMkc/12HqKr0wO1Of8P3ktEu9Q8tHqegW11OQCMXq
+         7fw/uH3NPYmbNdAxk5V2TZ5M0fMM7bmQeqdCTw71P6G9MjTRTGiLrWgP0xZMDcdvjEme
+         TlaJnQ7JQ+dzj9HmHXJMyZC77Dsh8XTNDCE49kd9V4gXqu8exkda4WDtj4/sPacpk0bZ
+         n+Cigwy+f+x7B8c+wPb81DvvfOiGA0WNzGlHIWQ5Nk5SbJDq+TZe1HeG+OEyEJlMk0IT
+         FVfeZGmt/oEiHeZ8jTnQ26CdJa8+6MpY/aTZKUKGRK2I0QP4SP5oTqSDkuirh3ffyZCo
+         n0Jw==
+X-Forwarded-Encrypted: i=1; AKwUvBxCQ9fQB3u0zlmwnzhuV+IPaieRBAtKe9qlTQWo9Z22Wi3k5bq7grCqXV6ZYlqr34h2eCEz3qUJjg==@kvack.org
+X-Gm-Message-State: AFq9FYJRm+LHalI+I18gRebwelft364Vh53k1d4C6GE9W4s8O+Kc9jR9
+	9q2V6btxw7xI6D9TpykikJUg11eguXlg/NEeMea8qskpzGhO2K0rInA9
+X-Gm-Gg: AYBFou0Dkd0JkC5hNXUofqjCWnXCeDPaS906ZN9/n8T7sVOfjoELTvBAoltlbZ1UHvV
+	NgTz/cccOu/xpmaAZ5vZW4+yV+z2fiQ3CLE3gz2zjE6xso6L4myFZjZL1bv5e62CI74wtCWQ4z0
+	VRCMQvCxgVhsk1qqLp8MsgHQe99PnMiMD9aNt1HGL9f2nIJQ6v8HnHqcC+9cs2y9PrmL39zr8Yo
+	GIK9nS3Mxc82z9OKQlwupFe95jk3Ch65Nd/6rGD7YcEm00VYdbqs6UynjTm7dqSJ8d7GRquCQ0/
+	HQ+1bvTt35KcL25ICAP9GBM5vG5tjquJ/DTMeUyBn+dMulCZ7lOE3d+pxsf5a7XZa9ZfO5OUbeU
+	GspCVONoi61+O9OIao9QfFzijN0nfCddfobST9IfGW3DJoQR1Ok5X8FYUKi6DX8vlgvn7ios+MA
+	LLQkDLPeZgPPYNMAg7XGgbljnmPI+hvylIlu7Y2y3abQv1jOxzKwQGE2CsJelIZfV9k7tMkXrKo
+	ikVnGs0iSxMJ0gKtD5rHoiyaJPe2hOfWw47sIOoD1oZnLFr+3wMyKiwYjd/fIz2fIG9ZnMIAT/w
+	oF1JBzIXvVuPmYF3f6NDhcC8qqWbw+5i
+X-Received: by 2002:a05:690c:c4e9:b0:8b0:6d14:23fe with SMTP id 00721157ae682-8b157ef7c05mr3917477b3.52.1792708791905;
+        Thu, 22 Oct 2026 15:39:51 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:41::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b155f8af63sm5238657b3.2.2026.10.22.15.39.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 15:39:51 -0700 (PDT)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/2] memcg: reduce cacheline contention from lruvec stat
+Date: Thu, 22 Oct 2026 15:39:28 -0700
+Message-ID: <20261022223930.138779-1-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.52.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1315c1dda358121708d6b007dcfa959653988218.camel@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 07A6F100005
-X-Stat-Signature: qjmm6fufw5eu766hu49e79bwo9b6bjrf
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1792708280-986389
-X-HE-Meta: U2FsdGVkX19lO8ejKTMt2CtubwtwbG/w+Frf8V7RnUHMAE380eRPxfRIY936hJEXh43OnaZogY3SCW2gxLHSCTzQv87zaQCiQkw+RgMvPc8rlf04YAqt2TZC+uljpI/MF6w40Xjp0d4NmZM2kOvmH0Lgn7KJBBxmLR3QEAZiPDenxyhe5kJ2CJu7SnxOegsOj/gj+kvs5tLA1jLYA6RKJCxgD5fupdIRCJV3/kjg0SpSMeEVMxyWIuvpr8sCaxs7Hg/IYZjKtchSDsTqc4YjyNFeyTSpSAR5o1RXmumCWRqDVX2de9tORH8ap5JaYriYCJiIUvgENCrezL0fhWBIWj44xvu8fCxCTsfitOtOMYsT7rZTxe++h4wopebyF7hnpfs5JIoPzKlqSn/0ONaB9vZY6O4Rv607z18Y26ON4LpKutZlZv29KoO4cAIu6vPBwmb2ty4kg5qehGJhq6Tp+Or+OCrfsrhf36c6agEgVHt5CynGrzGPb1eGM1vhqaB+dQiFcUcyTen7Srb9ugRrpBU2WTIN6prmhwGbALk5YPzGub1jaU5BvIleper2aZ3wISJ7cGHCqV5Q7Z01yfbvXlx/rrSgn6bfXJqknQHU+sXcm5qbqB7cZH41iCmCtgAELaeFOfDi/c2GmdMgj3kDFRErucywaZ7bVD2la9emQRBAZ3Zs+VIYJ6h5ukR4tDL3VKVB9vOmPolMO0yfbVtazA9/mWpb411RrDRQbpRMCBYzPa0A29F7vvJ8586hbVZvVWA0fJQbgd+QRtKJg6b7qsHHmFmRYg9wHv1qic75BsObllROwcS1SHTflo1lHUP4N/0GeRRLfmKCPD4R7BoOD/5eufo+RMTDhsEIUeQKg2clsFrlGkMYvRLjkYjCpuh61p8huXR3mJ8GoBBZbjs5D0yc69hpFDLJZ7IUzCByqHZigt5uESwcLkDXLg1TNP0/yjC5dZXYZiOsOS5p/2T
- sEVCefW1
- /8SQwECDiZN4rgno8f5ig6o8MrkmkwfoS7RLX0zCmIdyQeKCS1MsPN6xBASnCv3rpDyd7gRgPUH7i2Dp6g2kSiI6QjC84RiajOgUYJ7NnmSvlSCdvQ6QJw+Y2qqpBV9cMl7MNEh1CnsVkNumX/wBKux1Hvabg6cOEeRqxnSTvWFKR2znHv+HlTmKbtDrJqFAJH6SL3uk1CP8r+FWv5s4d91fr7ZGjWEct2t7oh9mbbHxcdeVhNzM/9ekUPik1jqqlVeefCMq5G6eKc5iuzEXGOJNHyVV72rVuVndub2MLmhBb4jWnEO719PZ5dHapE9/e1/2Kh4Sh69iF8+WCWm+iR6tXCCfQwD2lKj+h8p/Qs9xFlDpKlyBv8jZxUL5K1f6U9rIVSh00Yu+Dzbc3v+Q558gajYutAsPobMsiJ5hLOshzl1VBF1bx9huwDgU43f5NXdz9NAZ0AJWnHi4KM/A4BDIg+L+4wG6lNb9UJL1yVr6LCNJaRHswa6+wcJFZycQVEbeh9Mh8FGEknaM=
+X-Rspamd-Queue-Id: 08ECF40005
+X-Stat-Signature: hth7kenbp7rns6ihs561uuc8h99htj4i
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792708792-9169
+X-HE-Meta: U2FsdGVkX1+u2d6hQAb/yLnA4N8dOS0GgMtngoe3wuqYTT7VOZgGZU8h6x205JmET0ru1m97R5nikycQhLzeXboR+22idLs2BNuIrq8Pa1dIKetvgG4fephHr3nts1kzT+tf6sMqrgSBb0h6nqXp4/D7AlHgXFUtFqpcUNnjNVPxZvYGkb0OYowbXf6VTOGxivTNCL4WFJ4L68ng3SkXhvVDMqIn5ZeBk64LBFAnnjFiSUqq6rUeEnMAI15P2oHXmNjVTZ7LTXovSQX3L/m19y4l6PSHCxOl4ESqTUrPPNoAXrL3taR+/vRp4fiDUlSCPO2lCXtxTFbCAFRE7k4ZJN9miw54hSckhauDtDXiWxCZz0q2whnGFNpGZyEmQgF9QyY0G7Z375mo6je/q4N5/NLlj0+UtZsGkjUlK9Vswl+Mbo9dxF33xyH2Clgz0mz5liKQ5kB9Xz7mnHBI+iSyUq1d8hyU+NJgs8WPTxBhRpIE/Z9wPUJ9JssLAyOIV7XQWwa/9PWqpUuakeC9WAIwdMaCTjui88ikXYX59W5bRh54JqjZX6AZd0PV56iU5iGNf95UD8tWrFz7SK7Qgf0P95gjERLpU1hO4N/dIs9pCOQkC5TqZKtzv3bX5v9/WCQ93ZLq/WMEnrC2OHsigiAJ03KTFDXmX/tsJl27WCrkRyiojWuMvJUTJWKMZJLe9WxubJv+5ryCOOK4E9Iq4y3nsxZz+XrpJIZ903TYpR/zdSX6dUQKkUepVSSyUhimnp1ntvmQ2E3N+WO4/2nGZ3p93YILHa7Iar9UOrL3aFiW42/KaxFdTyTBb9y09ctd66ewZuy13AXX+UhUtLeprz7zUq91tSeza+Qyu9b0SNHAPUjhkXgOhdp6mmoSIChCM7ugfBjwAevwzWlADIPDtfcWqi34yIDG5+ZC8LjJohopBJsRquunXYff5gF9GmSYCNrpv7Uepy+QTV+XHxZd1pc
+ qbD6IV7t
+ AONUPyN6Ngms14q1tAyAQ4zBr7s4WEJ0U4N704owNWuAnnkGFOTx28xN4A3CRaQpOYbL4ra8goPc+Wxv+FFUauvxNICaAtblOnNAZQbfHI+jInrmN9sohUP9ebO4MwnGZe6i1qyxf70Cwx+11rQ9SEksh23m7wQUXLfbnXyr9UzXq0Y55vPAU5nWrD7hPUIU/wXlOT/ddgiwkzL6kHLj2M9J81QgkTxX4B82eUNBLBQCC2Hs4lwHSFgOL0Nb7fZoCtFWEtTtAvMDRQyjH6FElgDEWZgqFCpLkbYYK7n95gvfDig6f0fgBegpzR3Ab+548HO8F4qJd6EJkVqyJablYXyaoE8RchRVi9x1+eDktOTb2cxWYptUS9Wvr3BmYb3kGRhRavLqYnYMl2f3eXbkxu/S0R5dG01L9FneIVRI7CwDQwa0jIr0PbjlOvDgEhOX7GqIuaQmn8KXb8yJsDgvjxOY/Nx+6ppUOsCbXeXqZ3ddPiH8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,97 +126,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 06:50:47AM -0400, Jeff Layton wrote:
-> On Tue, 2026-10-20 at 18:03 -0400, Mike Snitzer wrote:
-> > The per-bdi_writeback WB_DONTCACHE_DIRTY counter drives how much the
-> > flusher writes back in response to an IOCB_DONTCACHE kick, but it is
-> > not reported anywhere, so the DONTCACHE dirty backlog can only be
-> > inferred from MemFree/Cached movement.
-> > 
-> > Report it as BdiDontcacheDirty in /sys/kernel/debug/bdi/<dev>/stats
-> > and as WbDontcacheDirty in the per-wb stats, next to the
-> > Reclaimable line.  Use wb_stat_sum() rather than wb_stat() to fold in
-> > the per-cpu batches: the flusher targets the summed value and small
-> > backlogs would otherwise read as zero.
-> > 
-> > Fixes: 88d6f128d06d ("mm: track DONTCACHE dirty pages per bdi_writeback")
-> > Cc: Jeff Layton <jlayton@kernel.org>
-> > Cc: Jens Axboe <axboe@kernel.dk>
-> > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > Cc: linux-mm@kvack.org
-> > Assisted-by: LLM
-> > Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-> > ---
-> >  mm/backing-dev.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> > 
-> > diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-> > index 18e999053bae..b8a2c27e07fa 100644
-> > --- a/mm/backing-dev.c
-> > +++ b/mm/backing-dev.c
-> > @@ -46,6 +46,7 @@ struct wb_stats {
-> >  	unsigned long nr_dirty_time;
-> >  	unsigned long nr_writeback;
-> >  	unsigned long nr_reclaimable;
-> > +	unsigned long nr_dontcache_dirty;
-> >  	unsigned long nr_dirtied;
-> >  	unsigned long nr_written;
-> >  	unsigned long dirty_thresh;
-> > @@ -78,6 +79,12 @@ static void collect_wb_stats(struct wb_stats *stats,
-> >  
-> >  	stats->nr_writeback += wb_stat(wb, WB_WRITEBACK);
-> >  	stats->nr_reclaimable += wb_stat(wb, WB_RECLAIMABLE);
-> > +	/*
-> > +	 * Sum the per-cpu batches: the dontcache flusher targets this
-> > +	 * counter via wb_stat_sum() and small backlogs would otherwise
-> > +	 * read as zero here.
-> > +	 */
-> 
-> nit: I don't personally find this comment very helpful.
+Memcg lruvec stat updates read fields of struct mem_cgroup_per_node and struct
+lruvec that can share a 128-byte cacheline pair with lines the lru_lock holder
+writes constantly (the LRU list heads, lru_lock or lru_zone_size[]), depending
+on where struct mem_cgroup_per_node lands in its slab. On CPUs that do spatial
+prefetching (eg Intel CPUs), this makes the stat updates contend with the
+lru_lock holder.
 
-Meant to address "why not just use wb_stat()?". But will drop it (and
-leave it to commit header to explain).
+Patch 1 rearranges struct mem_cgroup_per_node so that its read-mostly line is
+paired with a cold line, and patch 2 makes the folio and kmem stat updates use
+the memcg and node they already know instead of going through the lruvec,
+whose pgdat field shares a cacheline pair with lru_lock or lru_zone_size[].
 
-> > +	stats->nr_dontcache_dirty += wb_stat_sum(wb, WB_DONTCACHE_DIRTY);
-> >  	stats->nr_dirtied += wb_stat(wb, WB_DIRTIED);
-> >  	stats->nr_written += wb_stat(wb, WB_WRITTEN);
-> >  	stats->wb_thresh += wb_calc_thresh(wb, stats->dirty_thresh);
-> > @@ -125,6 +132,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
-> >  	seq_printf(m,
-> >  		   "BdiWriteback:       %10lu kB\n"
-> >  		   "BdiReclaimable:     %10lu kB\n"
-> > +		   "BdiDontcacheDirty:  %10lu kB\n"
-> >  		   "BdiDirtyThresh:     %10lu kB\n"
-> >  		   "DirtyThresh:        %10lu kB\n"
-> >  		   "BackgroundThresh:   %10lu kB\n"
-> > @@ -139,6 +147,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
-> >  		   "state:              %10lx\n",
-> >  		   K(stats.nr_writeback),
-> >  		   K(stats.nr_reclaimable),
-> > +		   K(stats.nr_dontcache_dirty),
-> >  		   K(stats.wb_thresh),
-> >  		   K(dirty_thresh),
-> >  		   K(background_thresh),
-> > @@ -163,6 +172,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
-> >  		   "WbCgIno:           %10lu\n"
-> >  		   "WbWriteback:       %10lu kB\n"
-> >  		   "WbReclaimable:     %10lu kB\n"
-> > +		   "WbDontcacheDirty:  %10lu kB\n"
-> >  		   "WbDirtyThresh:     %10lu kB\n"
-> >  		   "WbDirtied:         %10lu kB\n"
-> >  		   "WbWritten:         %10lu kB\n"
-> > @@ -179,6 +189,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
-> >  #endif
-> >  		   K(stats->nr_writeback),
-> >  		   K(stats->nr_reclaimable),
-> > +		   K(stats->nr_dontcache_dirty),
-> >  		   K(stats->wb_thresh),
-> >  		   K(stats->nr_dirtied),
-> >  		   K(stats->nr_written),
-> 
-> Patch looks fine though:
-> 
-> Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Results on a 2-socket Skylake (80 CPUs), average pages per second for
+threads faulting in and freeing memory in a single memcg:
 
-Thanks! 
+		   base     patch 1   patch 1+2 
+shmem, 20 threads  4.74M    5.59M     5.77M
+shmem, 80 threads  7.94M    8.66M     8.82M
+anon,  20 threads  3.04M    3.08M     3.10M
+
+Changelog
+---------
+v1: https://lore.kernel.org/linux-mm/20261020200730.250189-1-joannelkoong@gmail.com/
+Changes from v1 -> v2:
+- Replace the lruvec_stats_percpu pointers in struct mem_cgroup with a
+  rearranged struct mem_cgroup_per_node layout (Shakeel)
+- Move lruvec_stat_mod_folio()/mod_lruvec_kmem_state() change into its own
+  patch (Shakeel)
+
+Joanne Koong (2):
+  memcg: reduce cacheline contention between lruvec stat updates and LRU
+    lists
+  memcg: don't go through the lruvec for folio and kmem lruvec stat
+    updates
+
+ include/linux/memcontrol.h | 22 ++++++------
+ mm/memcontrol.c            | 71 ++++++++++++++++----------------------
+ 2 files changed, 40 insertions(+), 53 deletions(-)
+
+
+base-commit: fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6
+-- 
+2.52.0
+
 
