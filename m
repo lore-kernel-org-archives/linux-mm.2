@@ -1,125 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9679D606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 08:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E3E606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 08:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=d4slDfi6
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kf+SNUl0
 Received: by kanga.kvack.org (Postfix)
-	id A327B6B08DC; Thu, 22 Oct 2026 04:38:33 -0400 (EDT)
+	id 6E7F06B08DB; Thu, 22 Oct 2026 04:47:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E3526B08DD; Thu, 22 Oct 2026 04:38:33 -0400 (EDT)
+	id 6723B6B08DD; Thu, 22 Oct 2026 04:47:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D2AA6B08DE; Thu, 22 Oct 2026 04:38:33 -0400 (EDT)
+	id 512236B08DF; Thu, 22 Oct 2026 04:47:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BDD06B08DC
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:38:33 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E9334A8424
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:38:32 +0000 (UTC)
-X-FDA: 85349610864.09.2BED7E4
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 19520180003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:38:30 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=d4slDfi6;
-	spf=pass (imf24.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792658311;
-	b=3CxeEkdGtsKuzzpCd7j5LnoxUFy4EC11D/+Qcy61/38e3tzdeY3TZdouZBYWmihu77eIEW
-	8/wExP3lTJ61B1sRkI/Ur1KacEIuiLJZ7irXdOEo6iV4qughTwvER3nqjBQGKVRWGuwHPT
-	XaHLTqz9tZ6lZ3Rz/vtKAB6sXieH68o=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=d4slDfi6;
-	spf=pass (imf24.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2770E6B08DB
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:47:47 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86DD7140722
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:47:46 +0000 (UTC)
+X-FDA: 85349634132.04.AA4265C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 893C6100002
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:47:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kf+SNUl0;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792658311;
+	s=arc-20220608; t=1792658864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dkcN82wBwExuVJyyVBnWtTmTYSL00fmUHuQKj+lYVsk=;
-	b=YoUZXgvtIZIlbXg94u3tp7+V0NzwxPvfbOA2SFzMjuzO/dV6pbpW/MUPzgWWd9HBBP7W4B
-	QxroEFcsXmTm157Q8hYsFt45l4W0qdbhsmvW24VpTehC0mZJBQIL1Qy/fdIc8ovK/zLWni
-	PjrRxULr6COIY1XftJyQZ8iWXZSAdJc=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48e011d370dso1233431f8f.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:38:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792658310; x=1793263110; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dkcN82wBwExuVJyyVBnWtTmTYSL00fmUHuQKj+lYVsk=;
-        b=d4slDfi6mdnhNYOAkM/T2e0MzgeAv/FQ+sxGv3X8vdN2jVdm3WCuvI33Z95nfee8EU
-         tTs5CbujlOuqf4AYFcmy8P0JwWudyy6vKTx4w1fQCJOqO+B++P5gUVvJnsKsyrXfnvLQ
-         tE4Ewy77Y/QmpzKrceiNMj2eiMhbV8XhMxKYaTSygahVnlINOnp8eNsTMvgLfPK/d10u
-         PpgtSQPJb0IgeH7G/4juLEII828KQeH4XUQUagFyMNvxrI8sZI+AgB/IkQr1uweHzo36
-         1ghjJB1ixy/PM/eznKuAuLTMR2oQQoDiIT6V+mbNX+S2G42chGXBCwfmEWgTI/CjfUX4
-         ZCHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792658310; x=1793263110;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dkcN82wBwExuVJyyVBnWtTmTYSL00fmUHuQKj+lYVsk=;
-        b=O1fo5ZG8oaweSeYUQqk5CdY7JIvHoHOb7vsGny3l3yB8fXssM6EMcfPsIC+AR6Skyw
-         K/kdfRki5F5fFP4gQ1cvfYN6yHkvPdd3hzpOx7kZzom6ukxdn0TfkUxKurVoRg4IQNaQ
-         7gLmE+ngwub370VZSEBp2CisJsvq2kunEV5YEejZfbatZeN3ftU416bDU2miK2yEIbCl
-         rZR/jXqWbj1QB4fuPDbzheb+T9GGrUl804HyKX/vNQ6KOe0lK4C5Qh7Oz42517091gY7
-         aVJTOcawFB3HUU6jFYPEGLV0nNB9V2fgeyoiQ38VMZRyu5FZEtHACBak6FaKewnEPibP
-         vMFg==
-X-Gm-Message-State: AFq9FYL/za2q2CLExoeWO9KdYh5gENjxZHwtGsJMbp4zEoXDNiwg5om9
-	cHn7x0FrUoEnYk1pkODgnp4R1o/iPVWCc1VcGsrYgCYPnMQXCHxM2twv
-X-Gm-Gg: AYBFou3q7/Fg6A+rlaRFVBUwMXub4b3M0EGFdmUyydWVJU9nD9F6VFaCsqms7v0Nqkl
-	V8EA2jF44MH9pq/Xcl+ji27BR56KnByKhVE3lt8FM1H8pIftNA/rS9PIeU4hfYQfqbzUMUr2mNy
-	RllI2RUEZxgupKxb0Kfy9iMWlAiQQ+QOTTgfXOvpHpGcJbhhCxSWzjJV2EwUbNCyaVh9Sp11fP9
-	wkAApcgyEnvGZsR8lPcg0MYqNmIBFcilWStuVJaGq1fH/WUXGr3CRwHGaNohIitsC/WfMlpcvhD
-	6As1R5u0zU/OfE64h3fHUp6H1WOvg4Lcl7NaAIz0O6X/S5EbTgvZ88sFVRNATVlijx+yP4GenU8
-	e40qgK0ob8D7v3JzM5YSwvISQzc+aB4wGg/TE6tvD6151vHW8ugCz14Feuk1hZerfzH1BBFAxy8
-	vvXMcjAFNDaOzHQeBZYx/C8Hf93Jp7LfJdck7KKHW2B48u/N5Mpx3EegnSTOivWrhYzuW5Wh02W
-	k3l9Jtfv7gbyOpVard3buquweUaHewlMyd+M0nbP3RXhzOKlmpAjRjom+VQejsdfwlUaY9V
-X-Received: by 2002:a05:6000:2504:b0:489:bc38:9438 with SMTP id ffacd0b85a97d-48e26494161mr9445159f8f.29.1792658309636;
-        Thu, 22 Oct 2026 01:38:29 -0700 (PDT)
-Received: from [192.168.1.18] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828e72sm10155819f8f.26.2026.10.22.01.38.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 01:38:29 -0700 (PDT)
-Message-ID: <2f3e24cf-a09a-4355-a342-5eba8573d78c@gmail.com>
-Date: Thu, 22 Oct 2026 10:38:28 +0200
+	bh=0KhNbGiKqMdAzgzs/EnRYikYSYyFDYoWRp8GQTlZbP8=;
+	b=kMSvViG1AJfcxy+3tPh7eJicbzwENkrKA5rQ3a8fWMco1E8GbHwo7faX1BCKMrboMaij6L
+	5jULCXNjiUBmKNT0uUlygchYY6g5PEFeeMRp36355oUEtrZxIVJydq5VT8Z+CHR/GDV+YG
+	sX3LSnAO+EO5oozjDwZT+j3FYnkfHxc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792658864;
+	b=A6D6tUFgGRXh/QeScR1Sg6EumiWdqgvbd0Uw60LwVCEgjsBDGBRoM0aQmsIJrbpF54w0R5
+	mGtPNO1WOvsvRfKBIyWdZXiBdnwQ2YfUbZHckhnXsYwZ+YkLuclh49mBbP5ZZ8Wimzgmd6
+	NEaSzMzosN4/9Wm/u9c2Ducl4Gf1mKg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kf+SNUl0;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E1F5944788
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:47:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20EF1F000C8
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:47:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792658862;
+	bh=0KhNbGiKqMdAzgzs/EnRYikYSYyFDYoWRp8GQTlZbP8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kf+SNUl0IYrzEyHlJOp2Tsxdcz4Z3jerFxsf7Tbyxnq95JVlJuNSCrco93/c1U0+v
+	 dpeoUSNPK159BkKPrb63P8YOndvCiipdl8vRPm8i1+9e214sYUM7atDL6+QmplAHCb
+	 XsUP4p5e0BRGgjTZupqA3+9h607WUtFTJemd6Z9USjRsHxX08ykxDB48NgwHt/Xsc1
+	 NO4ASc3h/G/j94YeqU5fLVxucKCNcUnp390iXitDa9DyfvDOiuEnpO/X8FHpM2OuL9
+	 h30gYjj6WOZC9yBPdWE/tljQg6m0Eo+3fVvVGt7a4TuLhdMY9jNLueGu5J435AANuR
+	 Fup4aKQDk+e5w==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f20b304c0so187777885a.3
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:47:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxaBr1HHK8gr0IWG5CjLXHJ/O0reoh0OAhF9wkMfb6ni8+R07g7h/yKD6eQAsKDXp7gQMD6cj0Gjg==@kvack.org
+X-Gm-Message-State: AFq9FYJJS/Xsggf3fmHN3MtESSaLFuKOde4bnrVcfc3Guu/lZBC3cx2U
+	ZqaTVxu1YD0BSEfB0gp7wwt8sX2mj8uzcEz+NdU1CkoC/gVmLE4Ms9YPi1fukXdpruor5PR7+Ee
+	E/FMhMAimk7acm3MNvcZKEudCTIj6UFI=
+X-Received: by 2002:a05:620a:1a15:b0:93f:192b:513c with SMTP id
+ af79cd13be357-93f57f5c444mr887910885a.62.1792658862135; Thu, 22 Oct 2026
+ 01:47:42 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] mm: hugetlb: track CMA reservations by pool
-To: Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev, david@kernel.org,
- osalvador@suse.de, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1792651104.git.zhengqi.arch@bytedance.com>
- <29b35f7221c30f1dfa320a933f6095f37b612a37.1792651104.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <29b35f7221c30f1dfa320a933f6095f37b612a37.1792651104.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260920-vmscan-refactor-v1-0-ec04d71cb761@tencent.com>
+In-Reply-To: <20260920-vmscan-refactor-v1-0-ec04d71cb761@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 22 Oct 2026 16:47:30 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yBqZVfrpbXsBJDHhitsHZEGWJhZsHG+uKC+QDxZp42HA@mail.gmail.com>
+X-Gm-Features: AclHuK8XLVqPGA1mX7YdC2w83sO4AOeusxNOJ8q432NXaa2xo-Ms6397XexgORQ
+Message-ID: <CAGsJ_4yBqZVfrpbXsBJDHhitsHZEGWJhZsHG+uKC+QDxZp42HA@mail.gmail.com>
+Subject: Re: [PATCH 0/4] mm/vmscan: refactor shrink_folio_list()
+To: Zhang Peng <zippermonkey@icloud.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Zhang Peng <bruzzhang@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 893C6100002
+X-Stat-Signature: k5597bneprk1hye77kay71553e4xktzu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 19520180003
-X-Stat-Signature: i53khqjittg9kj38f8171qzryb8reagr
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792658310-652273
-X-HE-Meta: U2FsdGVkX18494GuPbyjnStMODXm9uOGr5uvqYOqEsmgoQF/yu/rP/5ftZZJkkE7CIIsPUIpu919TRGws8aGiISDbHatLW3pvbN70ASHbDm+UX8ThG9PR+TE7tJ++V/OCjABobCndj0HP5G7hrMed0Uy/XTKAb7taS/GSjF4aI509APuzQEwtZykKX2EE+npPTRNOhrr/gEMBbYVQ09DCV2V9Wp3KL7xBpmIFweZOYNlQ9B1s5wMijgbA+u9SXdWmfVJSOfX6Uhdv7JFsbLCTTEkEOT1cLSagAegxNFCMswvAWl2F6eXyDn6TJIYRiQQZ5WEwTXJSVfFn8XEfjoG+meAhh0OqmHBBQcCoC3JSWET9HMmd9A1kcPTUOl6RBicvQQ943QPbtWlwo85s5ypuz1tkUGFoi18Xnac+1I4EwecHuuw4exdPpvgzPgogiM5+9QVjJ9clL4jDH0hr7EcFrHBNyMGELhWtWqzCNvN+F6lIBGnxByTTN2eBmjZWGbzLiESKTsv7AYsA89W57MshF9KjXMkX76oTEa6Rvt/k3hwEtTLu+vhrCG7btMO+KJe+V3BOGeJtSti9axiasmbCk1wfgpOfKr8qc/S3S94sRR7unv3orBfZJGhr2kIbLldzS7jznxYoV/RY+ZKcgi/OUWaVez/SeQysiD0IleWAFt+y0GxgnSxklqQtwi5KTMxpx7fCNtHDTVP3rgx06h9WjoAUbRFBSenKFo8q0E7OeIcBxTCIslkwlAyo0yaK9p1/gQtBK1lyEh9pcBbA7twcFQpwHkHKwGvLN928tJvzz0vnyCa2UjeZGt+pyBdirzRL2mHwPywa/pOohGigGSOG4qP7j1YmBPvBXOE1KbNGHb3zw+2OnCPkwhKT0CntJFLRvdpgaIrlvP8KzzpthSkDRu64EcN1fJxAAoDZMcpdui+cRW9gqlmbirAlt1LGso2VdPDz33G9dSv9x3w7Ci
- 2W9AotS+
- +ks/Gx8TfDBrqV4pgvRUnaFQFN8VnrSLdx6bDSP4O1gZncJTTeC3Ie7yzexnn5ZnoKJzGDUzhZZqbeDSuQwipJu3cij3okf5b2i7F2zvil0+S89Ik+KrWbva1DZiDcTloYmckzHJb4uLuKjmHkrrFxkamCkO3JsnogttTVQVlf12cyVCV86SmCGQ/W4V8sivT0rzFB+F52ryfjWsRR7JCEJ6mEVOqKv24cMcLLJvY6QblEO3QEBJS+41fEapxiWN2e1+evw+Mo9xaZS9vJGY/jspu/2M5LeqpxnT8tIemfEiNnyr4uKNM/Kavac0aZcmy7sCLzykeza54epvC8v9W66sgmNfZJnvuyo2SvNjxhrFtjKY8JfqszYWGUlI+MIEgnQBjNK5E72TsHGdY5W/MTjhB+j3uDMvkxwopCVPB94P5LMYTIOxHNmoDCbX9XCV8tA9tTlIzJAdT5DYgbAyStbq6OYaxLv4GOUIo
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792658864-223346
+X-HE-Meta: U2FsdGVkX1/eFeyI3ErGq791jSKHqVlG+66j9ELkmnMC98351FnCJs2Q30i2EaBc+ogFuuy81Zc9063ZMw0/2QPQH8YaIkM6jCfsjCA1zIDZKp7z/sFXZDT64Mk+PBkXYgItru5AFdxOFlfdzWKmt0xy3Ny5//7e3u1N71CDAz12h9fRhGuU/fgCncIkltkifEWsElUF1LqQJvqHtf+EwXVsUdm+9IMarBuWJnL+LIYCrBe1NXh3Uxy59TV6hZ22i2yWex6S1eYD7qWfx6mutZDOfjcyT0kQvscO3GPy7uKZF+pndppA0XDVKbkVnO0qNR8EnerQ6AvA8bSL8zY7c7V8OPzKDIEdKbfM/TEJ9e3GG69gV85Fjmd6Cq2A+xQG3w2he21lmM0gvp+QaEpBHHm7M8oEBI3TYxwncAZuEwWV2xLwXaAWZMcpm8qardppp44ax6A/NWci5WtqHEyKKCB5xIBTo9ppDTVNymPFCR+BLp+8n/RDW8qPHbT/3kxyW0RKFoCG8YXpK3jC4ikL+saTKgKNpOJAwMNr08Lm98YRb6OCKvmQ4dwYQCrX1atW6356y7PmguweTb+GlG2bWg/4qqcDW3V5YMHkPWnnR7nkmFM9jx3D5AujZNez2MJBtbTANtKq/wYk3dLB7Mpp5YIvm61exm+adSibN+NGLHPMuBYdtINlsxSf3VBeqa9WXExGyExHkDqAc6MbnmiyVOkW7yOjvr8rqpLCtCv/NG07JeZyfhQ8qbhbA7tMOTFAxKwaXi/756yf6KkRDZWcz2BXVLVepJjkgXF+4bg2fT41LV9uiNENBktrQhesM1Ai+c4Ruc3WGOSdibkGTq04laTFY2aCng2/iCzZjB7eMQj2OJ7xP6Fs6ups/exg1PiC28QwaIUcFcHDD3rjGb3aqQSNOHOe3DOiOvvt7JzozVjBmdp4TDrloyRYdM4oALeZZJVYMN8ORVBsNF+/sth
+ dawQYu1p
+ yAxHakbYN0+FpgjBqEbuzRiWi3LrBM5+2Kzw/vk80A3he4DKzpqqo4/A4GD4vcQyQPsiFf+DuG6+b4g2bNCovAFiOyYx/ksW8WmUpCpFJQY3Vag/zrNrQuQIOEGn1RZpy1hZT4rpopEKrJB4sfV5Alz/+4Lrv0m5WVw9nMC1uPe3lsno+SQ5inHr8VVUqHQIWTVhTYKAYxeSfd1tjKBlgdIO0DR4D5AW3vJvB8OcHtUw6TbcVCXptjdrJjVWP39gjAJaakAuKtg7ydJNreLO2v48W8hBOh+v6hA5p9f44nQEUyT1sErhPGnX1p2jbGT/BN7oBg69HDeBqYIygTGviOAIMFTClH0TSz9SDKd6ZGyqNBaZE2rcYxShrQ/ypfCukQPYOWlGyz+yqCPBWzlfQbjko8I7uvo8jKIeiAjeJ59l6/EA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,29 +111,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/22/26 9:31 AM, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> Introduce fixed default and PMD pool slots in preparation for PMD-sized
-> HugeTLB CMA support. Continue accepting only the architecture's existing
-> CMA page size and keep all gigantic sizes sharing the default pool.
-> PMD-sized pool support will be added in a subsequent patch.
-> 
-> Select the pool for allocation, CMA-only checks and boot-time accounting.
-> Release folios through the CMA area that owns their physical memory,
-> including after demotion.
-> 
-> Record each pool's successfully reserved capacity and remove
-> hugetlb_cma_validate_params(), since the per-pool CMA-only check handles
-> missing or empty reservations.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-LGTM so:
+On Sun, Sep 20, 2026 at 10:25=E2=80=AFPM Zhang Peng <zippermonkey@icloud.co=
+m> wrote:
+>
+> shrink_folio_list() has grown into a very long function whose body mixes
+> several independent concerns: folio activation, the pageout() dispatch
+> state machine, the unmap step, and the final freeing path.  The control
+> flow between them is expressed entirely through a chain of goto labels
+> (activate_locked, activate_locked_split, keep_locked, keep), which makes
+> it hard to see which decision each block actually reaches.
+>
+> This series extracts four self-contained blocks into helpers, without
+> changing behaviour:
+>
+>   Patch 1: the activation block at activate_locked, into
+>            folio_activate_locked().
+>   Patch 2: the freeing path (buffer release, lazyfree, __remove_mapping,
+>            folio_batch drain), into folio_try_reclaim_free().
+>   Patch 3: the pageout() dispatch state machine, into
+>            folio_try_pageout().
+>   Patch 4: the TTU setup and try_to_unmap() block, into
+>            folio_try_unmap().
+>
+> Rather than returning a boolean, the extracted helpers return an explicit
+> result enum, so the reclaim decisions the caller has to make - activate,
+> keep, or reclaimed - stay visible at the call site instead of being
+> buried in the helper.  Where a folio may be returned either locked or
+> unlocked, the result also records which, so the caller does not have to
+> infer the lock state from an invisible internal decision.
+>
+> This is preparation for batching the dirty TLB flush before pageout,
+> which needs to call the pageout path from a second place.  That change
+> will be posted separately once this cleanup has landed [1].
+>
+> No functional change intended.
+>
+> [1] https://lore.kernel.org/all/CAGsJ_4wrQRGjqavMzWgi2+PrRr1ztf4QRZEb6HKm=
+02OF8nEBUQ@mail.gmail.com/
+>
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
+> ---
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Hi Peng,
 
--- 
-cheers,
-jose a. p-a
+As suggested, I think it would be better to include patch 5
+("[PATCH v5 5/5] mm/vmscan: flush TLB for every 31 folios
+evictions")[1] in the same series as patches 1=E2=80=934, since
+patches 1=E2=80=934 don't really stand on their own without patch 5.
+
+The whole series is a really good idea.
+Looking forward to the next version.
+
+[1] https://lore.kernel.org/linux-mm/20260720-batch-tlb-flush-v5-5-db943a0d=
+0d6b@icloud.com/
+
+Best Regards
+Barry
 
