@@ -1,158 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA2C606A336
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 21:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B71606A31B
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=S/jUlXDH
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EGUHcFnr
 Received: by kanga.kvack.org (Postfix)
-	id 119596B09D3; Thu, 22 Oct 2026 17:52:22 -0400 (EDT)
+	id 912E16B09D5; Thu, 22 Oct 2026 18:02:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C3416B09D4; Thu, 22 Oct 2026 17:52:22 -0400 (EDT)
+	id 8EB736B09D6; Thu, 22 Oct 2026 18:02:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECCCD6B09D5; Thu, 22 Oct 2026 17:52:21 -0400 (EDT)
+	id 802546B09D7; Thu, 22 Oct 2026 18:02:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B5DC46B09D3
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:52:21 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14DED1202F9
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:52:21 +0000 (UTC)
-X-FDA: 85351611282.15.B2FDE76
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 10288180002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:52:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="S/jUlXDH";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=lrizzo@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792705939;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5655F6B09D5
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:02:17 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F5851602E8
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:02:16 +0000 (UTC)
+X-FDA: 85351636272.21.40E9469
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5F61C100010
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:02:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EGUHcFnr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792706534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=enf2YbTyhYZro8noMVoZG0AyfViHUg43We1xb8wdUb4=;
-	b=MwMnjMOlGcqVePkB9sfVJJo2bsDyfKRhIFI95B6E7qu69+GGdHuKbx+0lopdPLXLpdFgAt
-	pJL1M7lr6p9w4IEWJgsCTGWLHdT9nW76q88vd8Bs7+hgIDzU5CfWrci0XfABuq15aJCIMz
-	kMp5teLkzC7b90ELJcwBvVHd5hh5JzU=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="S/jUlXDH";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=lrizzo@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792705939;
-	b=tbkm6SHHaoIddlzquSx1VX+Ls21RxuWL95dS/D1dadSyjML2QIyDZzn5Ja5pOmew+Eybow
-	xsXFKeaCOrAouoReoeC6dMnVyzKyF6T0YG4Fz87egGuzFHl+UmlBI6CramzQhbR5kIs7Fo
-	ojx6ufv12ZsInKHUELLZ1ZdTNxN3MEU=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ea7f9c11e6so7125ad.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:52:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792705938; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pgo7xX9XisejEQ1kNNgtJZQK4evzgKHDJV+j6cggaTy8Vk0MaFmQPVeimz/fEs4DOI
-         xZk9js3qx7xtsGZb31/poyL7GmnaeI90OgT+RMJ9HYlwlSZtjHX1CkgwZxfRI3YPTkFo
-         2daJq9Zf1ImX9kUPUGb9tEQ28bj1TEWDGN5LJNdr6av5Ks0BzO/2lh8kcjvcRLQl/9m5
-         l4kY5YMtYG1yjN6VTlWKE4ftENA+Xzei7wT+nld82NjFSfsRNAXwFHniFsBk3VVWOYta
-         mbITmWU4NyXmKMy9wmIaYuTesw1cF5vSlhcryT/Uj9j8aCi3s3e05CU7JT03PEAk2wkV
-         9Gfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=enf2YbTyhYZro8noMVoZG0AyfViHUg43We1xb8wdUb4=;
-        fh=8rzfzvIozORQpatqOk2QoU4Y8wYpwiM97D9zF2D0TCU=;
-        b=jIyTF7I6BxLuKTfVMZSInulfg0Kz9S1vCbrx3GLviGH0O5VDa72Es8BwU+0ZO/GU4+
-         ue4AoCvgjcK8NrPCuJWX4+fEKW8noRGc34PCOU+CS3INFHDGdVK2ZYckorY69Oqy+Ivg
-         /B/gGkQUW1zvtWhvwNB2sXv4ljWNOn/wbXg2Rj9vhmvEY6BDrzPkyddFxEZGhY1q5FvD
-         ECpLvTC+SsxhWEKwyuAYhuxyWPwEcKt2PvzdZtq+GqvS2EceqFpir2zRphe4E1t+BhYh
-         wPmbyVEM/Ti3i5E21lJbgY64+c4RXCiVSUfwfRAZg7IcxG2FZ+kTOpwx+x21ny05QNn3
-         mvwA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792705938; x=1793310738; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=enf2YbTyhYZro8noMVoZG0AyfViHUg43We1xb8wdUb4=;
-        b=S/jUlXDHNW7o8IX4upKPVZCe7taPSINCXoVA82bY2TAuQmYWCxxJlvHUUbE+VYbG7/
-         6XHyntpVk3PUaXM+7L2v0bkQwLgPYwZghGCIaAwkKDJxQsLVTdSEWS4b5KTyp+Oz6N++
-         xCnJ6biUHN8l7IyTO+ZfAqYB5ws0MqrXXVfGAJCIwKP8resGW5l7+ZjEldZt7GMCmixH
-         f4DFqjZpRxSVODfQCo4LzunkY6I1ohoTdt9a6znIcaj+/3AbfqH+ZkpWCp+sZvjcxCkR
-         tj2IVyeTXt4u01yJdzGMUTTH8yAsmSkvhcHyIoKCjLi6+iemSPHqnfLiiTnD3nu3sJ5q
-         t9SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792705938; x=1793310738;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=enf2YbTyhYZro8noMVoZG0AyfViHUg43We1xb8wdUb4=;
-        b=MqgCZlUs+ky6iqZtj8VOW2VGoS3slIwSoiDtO7giiHJ7SKGtstlbUdh2/siT2ymX3h
-         YpFjryrEP8cM49dNDu8atJdyU2Vn1RV459bgdEXIDQldaPN1Rmbw2pP1OQ3eI+IoP9Hh
-         VDtGsa7GlO3XUtEAFmhoVSBAepMHI74EaZlASSKlzvQW+PoOTc6la1lYeBRHh+qIzfWv
-         w/jdflJOHVxw/oG5YECY8xT6NEx8uEH+eHss1CZ7QvxfjnjFMUfvcFYZJnwIz+hP7Wti
-         IXXsW4BY7j4BDUp/2jaiplJxJnhry4EsQ6VDg3QRj20J1M1/xwmsYjGgtXhBXKciNjIp
-         D40Q==
-X-Forwarded-Encrypted: i=1; AKwUvBy285YHrUnjeIHLgjrewlUg+VSDQpwzwxYW3bK8AB5Tz2Tx8XKtAHF3atw7YGPc/fcjAoscWEcjqA==@kvack.org
-X-Gm-Message-State: AFq9FYJG/R1wI2wUUdp/xavkrVZ7hboUAAQKgss/Dcm9NjEnWJ3M/Cas
-	p5lqegvWVSH7dLUwq/V5hmOPqwjmkxwGC2slr4VofYZbc7dLg49HXdO78c0KCpUZPq0nAsZ7Mjd
-	nqcAdAX2goMbbakFGnofN/704Z4Nar04RdNgmqS1a
-X-Gm-Gg: AYBFou2dMOrQIG58ScNwdP6oVRNbl/lGC+bRCp8/3/4ZJLWVyIWOzg4dRXeb6LxqJKH
-	vdtx48OSrHay6pa2w8ECdQ3McpD6g7LGxegA3oPFQige26wor3GgOGFOSSysngvaYxRF0+58K01
-	Y29pHQsLOepeWttFkklUaYhIiIHTuakaolOo6COwAjh/3jE5uDcVhm8/nTgZ7oIbeU7YeybzRZY
-	E9x0qItm3KKzJ6sjvu8xQT+azcq5BD0umwPdGmVtM0vQg5APXk9PcOW4cr99wuNuF9Y9kBBRj5K
-	LBgp0mK3Avk4vrKYLv+A8uQkrCxtTP5uUHImCozVERH1sx/iQpAeQz5KfhtN/LDIN2OcAsxe6XH
-	3DWAZydcXpLClk12QZkZZiL/hpXmjRymg90WAaKkN5MY4FZe5injAbZNJdZ4=
-X-Received: by 2002:a17:902:e881:b0:2e6:1917:fa with SMTP id
- d9443c01a7336-2ea7ed0feb4mr728955ad.7.1792705937217; Thu, 22 Oct 2026
- 14:52:17 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=dR5/JZntk+U4h5/aN1mZNZOoNy870AQ8Dt4+e9dHiWk=;
+	b=sUrn7I2uiAO+Uu3FPZ6uImI8BhFBLpMqpfIpnIYQ25GhOMYKQBrYxIA0GWxn38mF1pullh
+	Jlx1F80JRmXljk4tsHlbZlNBtc0WStRDL4baa2/4qnUgLU3fStT+Y0r/FMrjH+xLHqF4dL
+	Rzb48KL3jMCJYPTTjtIjfOFNBFUTxIA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EGUHcFnr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792706534;
+	b=2oz4iu2nxwmUzBejZ86teNi0uyTGsUQI03Nq5OKP6HtSTwSvcF1bcx1wva9HvO6T6YkLIN
+	zhhrMcFx2/xyPzTOvfNK0HBXIGmJn/CSrZSOwp1IjSrKcIqazQiFkvsaPBpnmwP62sHefA
+	HNGyZXTxvfdpc2Zc5iix6trdRvNEaLA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C43DE40885;
+	Thu, 22 Oct 2026 22:02:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5B51F01825;
+	Thu, 22 Oct 2026 22:02:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792706532;
+	bh=dR5/JZntk+U4h5/aN1mZNZOoNy870AQ8Dt4+e9dHiWk=;
+	h=From:To:Cc:Subject:Date;
+	b=EGUHcFnr7xc/2FhXy8vW9EKdFMBOrUFYAiSSVgRcVCJ8KCZVL7QvgGRU5AiYbBJ8w
+	 vu9+nE7DIar8Rz00xAuNwdxA2y16Yk9NEdUT937aN90RGWM5HHyVlR/k+Z+/eT6sG9
+	 La4ZRwRjO/UjBRh64ltXkBsWybT0wR520MkkYn9jY6YLNcZR3v96BOxDsNH2edG/NK
+	 3m0Tkdlu8EbwKwhLd7RWKkUjxqgvPiAG49VUvwZ54Uny9z9BhjLb+JFZ+oizgUd08m
+	 HwZ4fNIIEzZC2FP7CT0e+smhpSLKcBVhlaHm+Hnw/cQZJknqIf823NVMfNrj/G9Jqh
+	 zy3XjWe6mFyTA==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: hui.zhu@linux.dev,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	ryncsn@gmail.com,
+	shakeel.butt@linux.dev,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhuhui@kylinos.cn,
+	baoquan.he@linux.dev,
+	liuxiang.277@bytedance.com,
+	wangzicheng@honor.com,
+	lianux.mm@gmail.com,
+	kasong@tencent.com,
+	liam@infradead.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	zhangbo56@xiaomi.com,
+	lyugaofei@xiaomi.com,
+	ridong.chen@linux.dev,
+	kunwu.chan@gmail.com
+Subject: [RFC PATCH v5 00/14] mm: mglru: fix swappiness behavior
+Date: Fri, 23 Oct 2026 06:01:49 +0800
+Message-Id: <20261022220203.91911-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
- <20261022201229.GH3381610@ziepe.ca>
-In-Reply-To: <20261022201229.GH3381610@ziepe.ca>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Thu, 22 Oct 2026 23:51:40 +0200
-X-Gm-Features: AclHuK-9aqzBfV-60_dzPgAjNzAFJyPZLZoLZFY0CUqnWbJGyVX0XJhPkps5rLY
-Message-ID: <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 10288180002
-X-Stat-Signature: zzx1sycyjywf94zo93frpw98b4kfmo3x
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5F61C100010
 X-Rspam-User: 
-X-HE-Tag: 1792705938-368282
-X-HE-Meta: U2FsdGVkX1+pYl2eqUlIxPZX1vDW7CvtrFqGhGPiASE/fAigF8sO1s3o/u4XiOK750Q+crlEopq8lwuoLXeyIZ0TnMib+204qtBqKhSWk5WBNNlZHDXz53aV9GhZEed923APCOlEgeiffUl0x0cAqESkV2gqlwOYpJEQrIxNiUOwsEl+jLomxvGbJ1EMVKkchxOJTownE+UaFuilE4x7qGxiCz8eJ1iYncum+LjZQCJwM+ti6jkealEeA/EjrliCIePdNC5KXU6B9WIRl0risfZXP5MJyQb9Cf4fjoupe3LtwwOOlXdVVCDeTCGZ8gJGrMK97ZfYvve2wi6xhi2Anj77/eI5+4+aMlNYAC7UxGrIr4WO9uCiMrbyXMSOKl2NIjhYUw/Og1Hk9TNmcMDPIhc6SQ6qY0eH6JcWQIW9gsvPRfjo+SqT/rFn/xIZehgUKe0CejhE1SWKJwweR69+xYQA0kCAvmvBkSFGu51n9lRTOv+uz0fFgn9KJXpemBsSu1LgmUGAELdh4Muw9CvChvSIGR7YTXyH9LR7JQep6EAIpblPQrgyQyIzL78cEkvwzMpknX6Yu6Fs+qRxOTYO306xFtBWQu5KUyibaMf64Lw9vAvHmxFXzZdFIyjHWXn6WM03o/dEodD+rS7chrIm9qmSTNYCeJfxVdI1xgRrNjDYFJhn9tczDnCSO+0NmLAkcyfLtk/uWPMqhW5piKMpur8y2LPPD7iVOiSWJDmRivpD9pAxzieMLcD90r97DAOrWEwYF75rVuLR+MNNmUMUdFEeBD7YTQfPIRTWJflJ9SXHZ9Q5F6xww+KgdN3NgNXQLYpM3bDbyEwxoVFPkvsz2/WwABZ40vWQ7DDhNOWi5Egctn7G/kWmxLNOowc6rFOUG+9W2Ha1+IQ07d3fTNqTONM1kQEpis7Vn/bkWTRHf40JYwDv8kK4jbKzKONxvu8dfCVMEN9X4gv2OzFLZOo
- pIm9JJW9
- RnGSy/xiRD7+lDs6knOhPqtLy1bWMSm+K826rkjPCknGOdEjY8EKjBowfMQO6lQYAOpWmmmw3FiHTSMNB/m+Aty6g1r7e6wTHaYWY7QdDMgGhB+ghRf8q5M/ebHOmUUM9/4bQDHBuvBIXpjJfkhqkkMZ5BNx5pONY0+PYMGl0j7Fb6mdIT2MTpBDiCm8zCuJYMdaXd1oX4vwDdkCa3+SQ0wmcZiaY0y6DieNct0QoFwn/ULgY41ERqLzcKpNr4eClF2qF95biRyeKTBkrsmiYhbfLQy5/IJiCs4HIxhgPWDllawtc0jCnc1s3u8oIr+iNbWQ7TSWN4apRV/KjsGRnuAXF6zAgzCiSgHDIIJgLTYp3E8YE/TYP+TCDguTMOWkwKLG0ht9bUfpTkscbxTyy0LIJd3phmAMOu2TBg5QFoGu3JlFG0HL8g29yL7XOGDt+VxQFnnx3+QlLBMnMukVjfExl/A==
+X-Stat-Signature: tcjj7g71pkcmx743oh9asn53scay9eop
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792706534-406438
+X-HE-Meta: U2FsdGVkX18VWK7pSXttW2ucg31dAw0Iips5cpHdSSJm2Ys0u5czuUPtorWbdhMw1mLNTat83BVhDcHGkkh3T5Tj9ouUC+m6w4HznAjHIMo+qR+mUCQ8heUghzjy8Lrka6LRCO9oyrK5s4FMDnYcpLnMLiBR4IBn98kCBk7tpL/vwIRmPWf1/Y8qLma1B5j+a+0YoMBT3vHeu/KOBlExqFJokNf4orhe1VTo1kN835gYaJ2rILZIWr8NIbxAAqIKEv94qLFyCuf7Me4qauF9yHDBdXaczj16mks77xcHsYz6QS/Sp9mMAtXNz0OOlxWTUSU1g9CRTWf4yjy8UhROZb/XBstMHrijBOwrtkVddi+KblBFEJk5r7+loOxyfQcq7+JYEapON9+650KfLTS4aO/mEAYQMzS4/Qh9EiRAaRdIY94djBTfEB+p97jt+hwj3S7WLPrpxjLtpAVCXlshfVLX4/rYylhyxXqE59nKJp3++8/4n+cjnj4FCozOWGS6KIdGAEtkrfKm4iHeXNJGDRPhwHFGQ1rFJr1pj71t1/g+5XnKTNQM9WwgrMJiG8qGMlyAUI0P2FiHl+5PDmFW5hbYEkU9Og75bgGZ/hJb11Z6dL2/k9B8mY1j1qRSe4Noy22U6ccjBLGPUcX8Jczqlx4Z8u5Eve8YzVcWoOevRP7sP27JYXpJ9zMJL5ZgrijKKkEqz3dOvVMIlMbCfXIC9pvoMJgLUudfuVnG9wx3ugRy/lfAzHtDVt35NHvO7Wy1ae1kYk8KrAU1MF8N8YsQQFqKBniW9tk7Pj7z+Z1y4tMwzcs+pwoRJjQHTVU8cgn31BMVuNyZMTzxQvF77BumwJ9jolPr7wEKYNCdkXa5crLbjF91gakk+1IOdYvK1QjSFSlHztS7RA7F80UJTnVLNyqWEp+p8l/khbqBKfKNReQJwb4i2+g/ZLAKFY9BPrN+AGLVLvltT4Map4Ww7uX
+ kLo10bfs
+ ai39wglQfmCvZ23YfSG836iPXk40fNFLk7nrhxc+rEPdH+k5q4tOFAwO6gDDtaJ5i9vszJ7csJ4f4BeRSwOApv7Piu5H2Ts0CZp8MUyaahJDA9BAAmHc8tP07mHo8RLLXD5kwe9hBMT9BNtR+RJon40UO9+sgcfTLih/KsqSTzi/GA5/iGZgtXfAGgq8J54NVjYLP0eVOsV9oFcLTDP8eRFc6AUNixAhmxFgik3Ps2kQOOCWvjBLBnlVKiIe8aF8/qH3plZE9nXsl3Ijm0Vffg1yXGQemv9oN3AoaKGJHYcvuUsw0PVj5H8jVbRmH+lu3bQyDyR3S+TYGESNgmgeHUM0LCvYlkeIql+WwqACfpEEGx3EnMLxv63jJWZ5UdTnXwDBq65ppnCw8XT13D7Qb5miH7mUwB7nWVYMdAfVJvb7o9lI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,140 +119,231 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 10:12=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wro=
-te:
->
-> On Sat, Oct 17, 2026 at 07:11:28PM +0200, Luigi Rizzo wrote:
-> > > We should probably just find a way to describe that this is a POOL th=
-at focuses
-> > > on physical contiguity in some configured granularity.
-> >
-> > Before embarking in a global renaming, I would like to get opinions on
-> > acceptable alternative names (possibly with a short prefix usable for
-> > identifiers in the code). I could think of the following
-> >
-> > DMA_PMAP (for PreMapped or Persistent Mapped)
-> > or, ahemm...
-> > DMA_PISA (Pooled IOMMU Superpage Allocator)
-> > both using dmap_ for internal name prefixes
->
-> Can someone explain what outside netdev would use this? And why you
-> couldn't do this in the netdev page pool?
+Classic LRU respects swappiness, while MGLRU only partially honors it
+when selecting the scan type, resulting in a much smaller overall
+impact.
 
-I can try.
+For example, when building the kernel in a memcg limited to 1024 MB
+of memory, with swappiness=200, CLRU barely scans or reclaims file
+pages, while MGLRU still reclaims a significant number of them.
+Similarly, with swappiness=1, MGLRU does not reclaim as many file
+pages as expected for such an extreme swappiness value:
 
-Regarding users, the next target is disks (not included in this series)
+pgsteal_file
+swappiness   CLRU          MGLRU(no patches)
+1            5,894,538     756,589
+36           799,998       497,282
+71           548,331       415,612
+106          407,012       383,814
+141          253,737       354,249
+176          189,003       347,805
+200          0             346,078
 
-Regarding why not just pagepool, see below.
+pgsteal_anon
+swappiness   CLRU          MGLRU(no patches)
+1            3,962,404     2,768,654
+36           2,830,250     2,976,260
+71           3,121,386     3,142,954
+106          3,521,720     3,382,383
+141          3,504,471     2,970,859
+176          3,592,335     3,163,130
+200          14,095,617    3,209,132
 
-FWIW when I started this (after the previous work on swiotlb copy elision
-https://lore.kernel.org/all/20260824152932.1583506-1-lrizzo@google.com/ )
-I thought this would take only some simple tweaks to pagepool and
-skb_page_frag_refill, a couple of days with some agents tops.
-But the agents did point out that there were a ton of corner
-cases to handle (device detach, reconfiguration, memory
-reclaiming, reducing locking contention...).
+pgscan_file
+swappiness   CLRU          MGLRU(no patches)
+1            10,270,808    886,997
+36           1,010,341     569,036
+71           656,136       490,972
+106          460,326       436,042
+141          295,184       403,132
+176          235,147       390,358
+200          0             398,363
 
-As a reminder my goals are the following:
-- reduce DMA map/unmap costs in strict iommu mode without the DMA-FQ
-  compromise on security
-- address the IOTLB thrashing problem when using 4K mappings
-  (very serious even with DMA-FQ)
-- help reduce bounce buffer usage in confidential computing and
-overcommitted VMs.
+pgscan_anon
+swappiness   CLRU          MGLRU(no patches)
+1            19,341,957    5,960,884
+36           17,530,774    6,394,951
+71           18,624,264    6,673,569
+106          20,088,558    6,976,364
+141          19,686,813    6,206,580
+176          20,936,177    6,344,854
+200          45,313,873    6,295,581
 
-With that in mind:
+refault_file
+swappiness   CLRU          MGLRU(no patches)
+1            5,795,115     678,254
+36           720,877       419,659
+71           469,270       338,518
+106          331,584       308,983
+141          174,509       277,375
+176          113,352       272,390
+200          0             269,349
 
-> It is not a common workload to have the DMA allocator be the one that
-> allocates the memory. Usually we are DMA'ing from memory that was
-> allocated someplace else.
+refault_anon
+swappiness   CLRU          MGLRU(no patches)
+1            738,618       578,308
+36           451,410       665,723
+71           514,961       657,870
+106          633,161       786,893
+141          648,640       662,673
+176          668,779       708,969
+200          4,816,312     672,514
 
-Aside from the fact that dma_alloc_attr()/dma_alloc_coherent()
-does memory allocation + iova allocation/mapping,
-this is not what happens here.
-Maybe the confusion comes from one function name
-(dma_map_alloc_pages()), but it doesn't map any thing.
+In this patchset, patches 1-8 from Kairui introduce a model that uses
+refaults to determine nr_to_scan[] for both file and anon in MGLRU.
+For each reclaim operation, we calculate how many file and anon
+folios to scan, similar to CLRU, rather than relying on
+get_type_to_scan() and fallback mechanisms to decide what to
+reclaim, which have proven rather unreliable in honoring swappiness.
 
-My code (in this version, and more in the upcoming release)
-mainly implements a specialized memory allocator with an
-API equivalent to alloc_pages() and variants, but ensures that
-the order-N blocks come from contiguous 2MB blocks reserved on the fly.
+This model also allows scanning and reclaiming from the two youngest
+generations, including the youngest generation itself. This can help
+resolve OOM situations[1] and reduce the need for aging.
 
-The physical addresses of these blocks are recognized by the
-"dma allocator" (I suppose you meant the entity that allocates the IOVA ran=
-ge)
-so that it can apply specialized IOMMU mappings backed by 2MB IOMMU leaves.
+Patch 9 from Barry fixes a cold/hot inversion exacerbated by patches
+1–8 (which also exists in mainline) and improves reclaim efficiency.
 
-And finally, it hooks into existing kernel subsystem (pagepool,
-the skb transmit buffer allocation, dma_alloc_*(), dma_map_*()
-so that devices can opt-in to use it without any driver code change.
+Patches 10-13 from Gaofei and Barry optimize aging based on folio
+distribution imbalance and improve reclaim behavior at extreme
+swappiness values such as 1 and 200.
 
-Regarding pagepool:
-For the receive path, I do use my allocator to feed pagepool
-(in the next version I have wrapped it into a proper memory provider
-interface. Non-pagepool NICs can either use a few trivial changes
-to call dma_map_alloc_pages() when filling their rings,
-or convert to pagepool (slightly bigger change; anyways
-there are options).
+Patch 14 from Bo Zhang addresses the GFP_NOIO issue in MGLRU.
 
-Note that just feeding the pagepool with 2MB pages is not efficient because
-the fragmentation in pagepool is done with a bump
-allocator, so recycling blocks from a 2MB page is difficult
-(it has to wait until all 512 blocks to become idle). My code
-has a bitmap to track usage, so it naturally recycles at the block level.
+After the patchset, the results track CLRU across the full swappiness
+range (see table below), with more file scanning at low swappiness
+and more anon scanning at high swappiness.
 
-Then there is the transmit path.
+pgsteal_file
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            5,894,538     756,589       7,394,183
+36           799,998       497,282       526,176
+71           548,331       415,612       433,353
+106          407,012       383,814       347,647
+141          253,737       354,249       314,437
+176          189,003       347,805       261,677
+200          0             346,078       188
 
-For skb heads, one simple solution is to use tx head bounce buffers
-some of the patches in the series show that option (the next version
-implements a proper tx-copybreak).
+pgsteal_anon
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            3,962,404     2,768,654     5,362,153
+36           2,830,250     2,976,260     2,736,749
+71           3,121,386     3,142,954     3,246,589
+106          3,521,720     3,382,383     3,074,851
+141          3,504,471     2,970,859     3,178,409
+176          3,592,335     3,163,130     3,650,544
+200          14,095,617    3,209,132     14,538,399
 
-Otherwise we need to populate skb heads with pre-mapped
-memory. In the next version I have a simple modification to
-the slub code to accept an opt-in alternative to alloc_pages().
-I considered using the pagepool, but the changes would be
-similar and the layering seemed really odd, with a cache on top
-of a cache.
+pgscan_file
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            10,270,808    886,997       16,246,260
+36           1,010,341     569,036       614,389
+71           656,136       490,972       484,769
+106          460,326       436,042       367,969
+141          295,184       403,132       328,943
+176          235,147       390,358       268,142
+200          0             398,363       188
 
-For transmit, there is a bit of impedance mismatch as well:
-skb_page_frag_refill() does not know which device
-we want to use (in fact, it is a per-task so there may be
-many netdevs used by a task). We could tweak the pagepool
-to be device-agnostic, but that would be a bit more
-intrusive (more architecturally than in terms of code);
-also we need to make sure dma_map() on those pages does the right thing
-without trying to map/unmap the individual 4K fragments,
-and we need to make sure the skb_free() etc does
-not leak those pages into free_pages().
+pgscan_anon
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            19,341,957    5,960,884     7,646,122
+36           17,530,774    6,394,951     5,914,405
+71           18,624,264    6,673,569     7,167,762
+106          20,088,558    6,976,364     7,821,921
+141          19,686,813    6,206,580     8,495,970
+176          20,936,177    6,344,854     10,585,375
+200          45,313,873    6,295,581     30,313,342
 
->
-> I think Robin is right, this is just a special case of the dma pool,
-> and it certainly shouldn't be something as grandiose as a subsystem..
->
+refault_file
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            5,795,115     678,254       7,315,064
+36           720,877       419,659       448,199
+71           469,270       338,518       355,269
+106          331,584       308,983       270,736
+141          174,509       277,375       237,643
+176          113,352       272,390       184,908
+200          0             269,349       102
 
-dma_pool() could be tweaked to allocate 2MB and return order-N fragments,
-so maybe that could be a provider for pagepool, but it has some caveats:
-- when fragmenting, the freelist is constructed in-band, ie using
-  memory exposed to the IO device. That is really a no-go if we use the IOM=
-MU
-  because we don't trust the device, so we would also need to
-  allocate extra memory for the freelist (no big deal, but
-  that is basically what my dma_pmd_meta supports)
-- memory is never released until the pool is destroyed,
-  so there is a problem of stranded idle memory.
+refault_anon
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            738,618       578,308       1,383,725
+36           451,410       665,723       543,071
+71           514,961       657,870       683,874
+106          633,161       786,893       669,716
+141          648,640       662,673       719,231
+176          668,779       708,969       901,918
+200          4,816,312     672,514       5,511,787
 
-Trying to use dma_pool for the transmit path has all the problems
-listed above: lack of device, inefficient release of memory,
-coarse grained locking...
+[1] https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mix-pressure
 
-In summary: of course we could tweak existing subsystems, trying
-to reuse them in ways that were probably not anticipated
-(see the above partial list of missing features).
+RFC v5:
+* Remove the aging optimizations, which have been merged - thanks for Baolin,
+  Baoqun, Lian Wang, Kairui, Kunwu, Ridong reviewing on this;
+* Add Kairui's model for determining nr_to_scan[] for both types.
+* Fix cold/hot inversion for rejected folios - Barry.
+* Improve and clean up imbalanced aging, and optimize extreme
+  swappiness values of 1 and 200 - Gaofei, Barry.
+* Address the GFP_NOIO issue in MGLRU - Bo Zhang.
+* RFC v4 link:
+ https://lore.kernel.org/linux-mm/20260812121658.69965-1-baohua@kernel.org/ 
 
-I think that once one addresses the functional and performance
-problems, the changes would become quite intrusive and the risk
-of penalizing the currently supported code path might become significant.
+RFC v4:
+* Clean up isolate_folios() based on Baolin's feedback. Thanks!
+* Further improve isolate_folios() and scan_folios(), including
+  handling of exhausted reclaim types.
+* Add fixes and performance improvements to inc_min_seq(),
+  and reduce lock contention.
+* Improve the handling of imbalanced aging and remaining
+  generation-based aging.
+*  RFC v3 link:
+ https://lore.kernel.org/linux-mm/20260731083843.37811-1-baohua@kernel.org/
 
-cheers
-luigi
+RFC v3:
+ - Added Ridong's patch of improving isolate_folios() readability;
+ - for lru_gen_imbalanced(), apply some suggestions from Zicheng
+   and Kairui, considering lruvec size and use macro;
+ - drop "mm: mglru: only fall back when reclaim is running at high
+   priority"
+ - mitigate aging for balanced swappiess value(near middle 100)
+   as swappiness bias is less a concern for them; but slightly
+   increased aging overhead might not be good.
+ *  RFC v2 link:
+   https://lore.kernel.org/linux-mm/20260726122123.7614-1-baohua@kernel.org/
+
+RFC v2:
+ - Quickly address a few issues raised in the Sashiko comments so
+   reviewers can ignore v1 and review a cleaner version instead.
+   https://sashiko.dev/#/patchset/20260726012946.18684-1-baohua@kernel.org
+   Thanks, Sashiko!
+
+Barry Song (Xiaomi) (3):
+  mm/mglru: Avoid placing rejected folios below populated gen
+  mm/mglru: Reduce LRU lock contention by shrinking folio batches in
+    inc_min_seq
+  mm/mglru: Make swappiness=1 file reclaim more aggressive
+
+Bo Zhang (1):
+  mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO
+    allocation
+
+Kairui Song (8):
+  mm/mglru: report evictable sizes per type
+  mm/mglru: extract lruvec_populated_min_seq() helper
+  mm/mglru: reclaim from the oldest populated gen
+  mm/mglru: lift the forced protection of reclaimer
+  mm/mglru: skip zones above reclaim_idx instead of rotating them
+  mm/mglru: return for unavailable anon reclaim earlier
+  mm/mglru: balance anon and file scan budget by refault rate
+  mm/mglru: lift youngest gen protection for higher priority
+
+lyugaofei (2):
+  mm/mglru: Run aging when pages are rare outside the youngest gen
+  mm/mglru: Avoid prolonged anon reclaim with swappiness=200
+
+ include/linux/mm_inline.h |  22 +-
+ mm/vmscan.c               | 482 ++++++++++++++++++++++++--------------
+ 2 files changed, 332 insertions(+), 172 deletions(-)
+
+-- 
+2.34.1
+
 
