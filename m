@@ -1,89 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3098606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 06:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB99A606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 06:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NJx1ezJe
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jYAn2zMP
 Received: by kanga.kvack.org (Postfix)
-	id D4C166B089E; Thu, 22 Oct 2026 02:19:28 -0400 (EDT)
+	id 3FEA36B08A0; Thu, 22 Oct 2026 02:19:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D23A46B08A0; Thu, 22 Oct 2026 02:19:28 -0400 (EDT)
+	id 3ADF56B08A2; Thu, 22 Oct 2026 02:19:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C39A56B08A1; Thu, 22 Oct 2026 02:19:28 -0400 (EDT)
+	id 276E06B08A3; Thu, 22 Oct 2026 02:19:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A08746B089E
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:19:28 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0537B6B08A0
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:19:30 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9809AA83BD
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:27 +0000 (UTC)
-X-FDA: 85349260374.21.F787DDB
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F8CC1A073C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:30 +0000 (UTC)
+X-FDA: 85349260500.21.19601E5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E4B8040003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJx1ezJe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9CBD540004
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:28 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jYAn2zMP;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792649966;
+	s=arc-20220608; t=1792649968;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uRlAEAWzxFVgMWIuR/lCToZqqyKqdgYYKOQdpFsy6mA=;
-	b=bHw9lU6B9vVORJWjFPS3P/+YVVpX0uepUgYVxItJaUGiyhi3JkdxACuSEIKbjPon6gbVw8
-	714JOhXR3Rt8K6K6ypkSUnaQj0pTGNDWxuZ/Lf/cnXHBImMU0ideiAw6wpemKoz4oaHq7m
-	QCIistOlH600tO0YHoCLLqCzATBO5wY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJx1ezJe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=xDDt5c2tWGco5eVEO28pzQoTZcipkDC1augLw2TGaJ4=;
+	b=Y++d20RkFLPzJeYryZ0ah49ep5ykMXnL2uKV6EBKLCIfGaaY0F8UYqXCt5CGTnka7t2W3l
+	/QxNI+xq1RxCj1j2N1MnUA80vNyTj2g4RO23rOfMdYd1euBhvh1CH6rT9vG9+pISp3ubpN
+	gp8fstz6c8wPkhK1Fhd4XyzWr85svt8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792649966;
-	b=HkZ7q1y2i8Mqxfe+rxpGx55FNzOoEnbo5xtRbUqMDcwb+2zmfJKHqpy8nmUmOdU5zmP7H6
-	tPTS1NixQlB5mdA9kxtW+yqujUn+oK0cK8pEnFI+J1H3EUzaFlQfoH6SBTIH/BuzV6o5I8
-	lErmSA5Lo3awSrzqF2MnchW1VEOFPyo=
+	t=1792649968;
+	b=6Hye8PVjUzhA5YLq57C+f0t+tAdSJkxaSIT061ZQw85bBBMm+KByvfDiH0DvkWArNrwHkr
+	REIYrEugO37paC9k9xR1pO1QFTBGm7xFhzEijDbbQ+PdGgVmssG2KorepnwMRsso93j/Lj
+	CkrAa2ym19OsdKL1hkFe8fNXL24dD68=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jYAn2zMP;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 433A64060E;
+	by sea.source.kernel.org (Postfix) with ESMTP id D61BB414C2;
+	Thu, 22 Oct 2026 06:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13F21F000C2;
 	Thu, 22 Oct 2026 06:19:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2248C1F000C2;
-	Thu, 22 Oct 2026 06:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792649965;
-	bh=uRlAEAWzxFVgMWIuR/lCToZqqyKqdgYYKOQdpFsy6mA=;
+	s=k20260515; t=1792649967;
+	bh=xDDt5c2tWGco5eVEO28pzQoTZcipkDC1augLw2TGaJ4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NJx1ezJepF8emQraP0Rl1fOjBh7MxW+QAcKl9G3HoeO70nB+qeqYhYuApkcwGVsaU
-	 wuvRGv9FD77n470XVadnoc7cm5DRYNO8qcV+GvrxY26Qw6kyp19neJpZGdbNoqAEz2
-	 KcxtV/14cTjSZxfBUE9VofmXuZ4xXDolrEaSEquvpjDGaoM32VlP8+rE2YofBjdY5i
-	 6JdKC1HKufe6HJEZ2Y3RwNNiFuBnRY/nK48V4YoiaMy3kiVmCeRYJHwm15McUjnL9p
-	 BdhC2AflAf698GEMrct4rb1T1qCnBvs3d6vbDQCintOpUVsH/hmUFHt6CjnM3zABk9
-	 EJ2kMlerj38MQ==
-Message-ID: <sashiko-outbox-181082@kernel.org>
+	b=jYAn2zMPzsBJXUZZv8q9s07Bqe0haVOuwGRWPjuYQ6zkJ8+q1agtFIejcIQS9O8iT
+	 w3G1iOauq4X3yWx5kuRdM8fYXrpPtRO41dVALSFHp07JZcIj64MadkTZhuE6zcNdRW
+	 UpzzlLy3kx/+rdTij8LfjBFrWYzNzaxuA58+eViFciPPNNk3SXAmLyZt+3XDa/Jchm
+	 nfTPpsmUZRpM0uX9opDlhDaC6GKhrvj9LuSYgmkIGNdcJOAaNN9TghznV6N43tWgc4
+	 kDCbOrDqqQqTqNDkG3B/uYMz2YYgdMWnfQXByE/8Z1Qlz3FDyOiXBCarE5ClP2CAQf
+	 XYxcC9Tm4j41g==
+Message-ID: <sashiko-outbox-181084@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 08/12] mm, swap: only charge physical swap entries
+Subject: Re: [PATCH v6 10/12] mm, swap: defer memcg_table allocation for
+ physical swap clusters
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Nhat Pham" <nphamcs@gmail.com>, akpm@linux-foundation.org
 Cc: chrisl@kernel.org, kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, riel@surriel.com, gourry@gourry.net, haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, skhan@linuxfoundation.org, rdunlap@infradead.org, kunwu.chan@linux.dev, kernel-team@meta.com, linux-mm@kvack.org
-In-Reply-To: <20261021060323.553433-9-nphamcs@gmail.com>
+In-Reply-To: <20261021061837.1569125-1-nphamcs@gmail.com>
 References: <20261021060323.553433-1-nphamcs@gmail.com>
- <20261021060323.553433-9-nphamcs@gmail.com>
+ <20261021061837.1569125-1-nphamcs@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 06:19:22 +0000
-X-Rspamd-Queue-Id: E4B8040003
+Date: Thu, 22 Oct 2026 06:19:25 +0000
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9CBD540004
+X-Stat-Signature: u1b7cr7ws1611onxx5uozninroqfeodx
 X-Rspam-User: 
-X-Stat-Signature: q41sdybhwweypjsf411wyn8qcd3fk3yw
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792649965-795511
-X-HE-Meta: U2FsdGVkX1+T6oAXi9DFiUtG9fQAbjmGNDlsRrA1rkbvhYd1MYdqH3Pkv6j9GetTw4Ohr1A83zlrBoI8+IFvcpM9efPTdWcNrkG0uArzzkUTAv5VRJtE+XURKG+Tze2AjLiKI23ZNydNyBrNDvBB9kmzf0UE/lgO0HX8iSZ3Qscbgez3pRgachYydactNA1oM2S7702GlgVov9wlxR8pEXNQX3GjcVEohiO/70N0bFLIHsLqbaDCVvahA+RQakhOBn3Qzwzfe9OD1VPAzHYxqIQgfwVKxYkS1RQ4D5T+bAegOuwrkj5jkGGrAO1Y/TTC3synZ+vzQe+4LvdV8WDrigSeHWMr9xYof8OcR+rguew4SkzhoWoJ0C4AzbgaNNB0N2bjS49Jipf3wgHGcS3gmq8wOjkRAKsPiUhG5dQ1PzIb5WdLV60qJGD6M1uROgI9iw/N/CcIoQUHL2ONjnj4mm8SeQyVqhU+FXozuGXCe1sRPO/KoCXCFjRE5sit5kKj/Sp1o79NnNAdHW0RNchUMScs0V3TjMkoyH6yDV92MZzdtQR/Y7rRFKUMgulR61Z/9OALBZ34RX+LrVL+3U/4JIVbPsv2gRc2fATPDs/BRR791MC5M35swAvzlWWa0e+1mklaqd2iN+cL1DH/5ZgkaCyMU4qJHXds+C3MxiIopUtHN19tuYSE1ThnSo0/q19j7yJd2X+Ybfm5bhplflCFN/2nOTAOwne1xdpR/Yuxh4d79LMP0Co9C8kxelcwyKXyRl/vUxpaz1npdZMAAjhBd8C/biTnSZ8D+V0G5iRsQCLfYvcHg3vzE7vHdvGyXBVrziRLFUM9F9dYggnLAcppDeKPiwRQeqXQCyNj0wHFhYSWTGG5P3edGwy8Ez6ZlVfTHeKYaDH/jrvbDd7j0EEUqEUG7Y7eHVBt0b8dzK1O0z7zqJwg1vm7UKFUpG12SXFt3b9QjG/4qc5QYNoJUNR
- danf4zH5
- UpbuwMzuddLRQPUK6Lfq/ubRNlF2RzFLovpZvW4RC9kNdZG8S87C/6/U8bMaW+AerU2oOXSSqjYuWWWHK7zrBa62MEwrocNZ0Ulm4FFMbhqRf1/cxYUQn57H9yjACWpW2asVcyie3GUhQYmUXx60jFcEoBInJcuOgJGt9flGaoF1TnKK6rwFyapoTYftBc2ovqu0rfyB84rPFFJPqEyxTA9vWkoC4gQPtDwC4Eiit6IQ8kKoE05WX6Rglhr8KRryNUbc6CJaSveTmP8TMsf0htJwC85c0sR7y4EV+h70QZrULW5Ardvzfpb8j0iz/fjCa/98bM/x9NVxfG4pxYpOFsLonl9zArTjAqPpY7XFJF/ZRkX8wkmoZMAqCtGzVBh3vr8VSxDn0uN8PVbSB+cRlYWldNl+Ix753+ltXxbuyDQmUUPKxbvwlKRf8HO5u+7QPNH1vr+puVvlfWph+eq7hqh0a89+Rr0kj3I9T96BvgdKA3uJ93THotHJcZeXPnBX8zhG3MvtWwUgExD23a8KjClIPAkgdoFq8VIVzOTMlTOm58eu2FHt9+JdhylMZ1Oh7nynK5kd77ZMJobJaDxdr9G5kLJCzRZDNIp5B/UXmOpj9F38=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792649968-145125
+X-HE-Meta: U2FsdGVkX19bN9EmqUHD110LuicHO7DBaMaQdTLaJfzczS4B8lSNteoCyj9NQoGXuAtJTNFf15PJkkQg2IwySks8xBEEtj9q2xrXMn66/HdQbdeZVPSrBo4lvC9XTp/O6sbStcPduQJcL4QLYlOZpXzLYMCVR1UX5Pg1bC5vju0sKiVMclcw5HefQBpyjLIaXjfFXHwV5vKVgkUk+rS3OTs3cVcig7lWHWPPUYrNgCDYcYnUGleqOY8kwljLEqgFrhDTGZZKorFSXThhFMpaGsUwFIpa3UMwW13/zhhBOBQ+YE2tLto2KzGrXur/Eugq2cniKRQChVfLzoQDkUYous6V+gQ6rTEbOEmrRRK5wT8hyfEFver65C7/QD3GqsxArl1suKokJcDR6CcUbCi9+StmaGUumaXU9oC0WU5Z163tfJZYah0k8wsP2E29oVnS/LO+3F83hnKNAP4bcnTOPXENfNF7KTziT0DNuQmUA3pI5Zu/XsxiLZp4/rSFsPXXkVfJFs+8OXpMoBli7kELQMa0FWCLj2oAdSp4kluBHvnYZj/HtKK5HYyNYo71XmR6w03lR9dna8JgGP+P1H/kpx462UmgJhc6OTbbNUxKdFtDs9hJdAwfkXx7vYbnJ0cSD5cP50jbp5IHQuFHJ+zCnQ7ZQu652376u+B/WCvHIcUPZwADggUNhKBTfaMVp2gQEvVe8gZNY03GI85eZE1dLMwQblsHRmtOIcaNuNbH6Kjlq5wnnWl+ss7Ud4LyJ7X6e81xVgOmx+fN1R3xcQrdhPy6HkzoswiebLlZHdIlmAsRvJc528/v47JqRdvmtrrnfjuSipD71GUFyDzDReD/uvUaH713huIHnm+xzW2XmuXcnye7r6fGNnknAr4gva7thnHvLJhjYcWIYHnw7qbVdOu4ivnvnCCx58WWeW2OseTB9k3i/9UpV9Sb886bXHS0NTtqqx/GeYJ5xSNcGrv
+ 2Yw2AeKf
+ lp84DmnURi52ldLJYfszGQIRFXSUtq1IfMIJhyLs/42DYo8eo8edIJz++5fW8rhlgEjoH7TK43vSov0bgjGRiCyPELsUo94oyjYGQHsyEBXb0Yejrlig5L0RCr1GzpGhk1ty3RuGwwPmL9X76y79Bn018ZvGRu7NY2EizVM3M/Wy9/Zl61fQpmFhr3sS6qrMykleX/LTtG6K46paAHuAoOjqwMOoBEgctt6ws8/Ib+VR7Pe6JXPQMnnZ3xvkP5p7NlLEynjP50OWYtFpndVuVDyHW5yMZyhWS8FYdEOpTTOP5/CnfPfjapPMEJivcgWEKidoWQ5zZUoaHIEvzqnNqGQ/XZVht1WIaQS1ckG5Qm73/I9Ti8PmkidVXSlcOpCHfLEqWfimWe1infKzc5INi2r7mjLHh5jAD0huWzQZf9BN/7EnNEJosRSm/XR4oCKOwLO7Pt+ER8Jg74OfAEquYJxNE+FKqUff4BZuzJmd3lETqYWbHwuj0Nu/e8xf+Z/OzKhm5NpxbBy/9dT/Wzz6fd0OqOJ6BeXVi2CiQrWeElggXhuL0RXLEROKQDrMxkqbUr43v9UamGBYXTYOXJDkT8cwSgPcPQ1TAV4mcFUBdL1bDA4y8FRZaUB+In11yvYNMb8dHkXBHs5eIkQU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,210 +96,289 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] mm, swap: folio_realloc_swap() allocates physical swap before ch=
-arging memcg
-- [Medium] mm: memcontrol-v1: __memcg1_swapout() omits physical vswap from =
-MEMCG_SWAP
+- [High] mm, swap: infinite loop and cluster demotion on lazy memcg_table a=
+lloc failure
+- [High] mm, swap: NULL ci->table deref when lazy memcg_table alloc fails i=
+n race
 --
 
-commit c922e31fae8f71fd3ae6707b90202f40d4d0babb
+commit d992a89e7fdb8e94a85278f2c60420245b2472d5
 Author: Nhat Pham <nphamcs@gmail.com>
 
-mm, swap: only charge physical swap entries
+mm, swap: defer memcg_table allocation for physical swap clusters
 
-This commit changes swap memcg accounting so that virtual swap entries are
-charged against a memcg's swap counter only when physical swap backing is
-allocated rather than when the virtual swap entry is first allocated. It al=
-so
-splits the swap memcg helpers into separate get, record, charge, uncharge,
-and put operations.
-
-> diff --git a/Documentation/admin-guide/cgroup-v1/memory.rst b/Documentati=
-on/admin-guide/cgroup-v1/memory.rst
-> index 7d2a44af52c93..2a67356d25a0d 100644
-> --- a/Documentation/admin-guide/cgroup-v1/memory.rst
-> +++ b/Documentation/admin-guide/cgroup-v1/memory.rst
-> @@ -553,7 +553,7 @@ memory.stat file includes following statistics:
->      pgpgout         # of uncharging events to the memory cgroup. The unc=
-harging
->                      event happens each time a page is unaccounted from t=
-he
->                      cgroup.
-> -    swap            # of bytes of swap usage
-> +    swap            # of bytes of physical swap usage
->      swapcached      # of bytes of swap cached in memory
->      dirty           # of bytes that are waiting to get written back to t=
-he disk.
->      writeback       # of bytes of file/anon cache that are queued for sy=
-ncing to
-
-[ ... ]
-
-> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index b7f2868885071..4e4946728db5a 100644
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -15,6 +15,7 @@
->  #include "internal.h"
->  #include "swap.h"
->  #include "swap_table.h"
-> +#include "vswap.h"
->  #include "memcontrol-v1.h"
-> =20
->  /* for OOM */
-> @@ -299,7 +300,8 @@ void __memcg1_swapout(struct folio *folio, struct swa=
-p_cluster_info *ci)
->  	 */
->  	nr_entries =3D folio_nr_pages(folio);
->  	private_id =3D mem_cgroup_private_id_get(memcg, nr_entries);
-> -	mod_memcg_state(memcg, MEMCG_SWAP, nr_entries);
-> +	if (!is_vswap_entry(folio->swap))
-> +		mod_memcg_state(memcg, MEMCG_SWAP, nr_entries);
-> =20
->  	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries, priv=
-ate_id);
-
-[Severity: Medium]
-Documentation/admin-guide/cgroup-v1/memory.rst is updated above to describe
-the swap counter in memory.stat as bytes of physical swap usage.
-
-On cgroup v1 (where do_memsw_account() is true) with vswap and zswap enable=
-d,
-mem_cgroup_may_zswap() returns true when !cgroup_subsys_on_dfl(memory_cgrp_=
-subsys),
-so folio_may_vswap() returns true and folio_alloc_swap() allocates virtual
-swap entries via vswap_alloc() where is_vswap_entry(folio->swap) is true.
-
-When a vswap folio acquires physical swapfile backing via
-folio_realloc_swap() -- either in swap_writeout() when zswap_store() rejects
-the folio or in zswap_writeback_entry() when zswap writes an entry back to
-disk -- folio->swap remains a virtual swap entry while the physical slot is
-recorded in the cluster's virtual_table:
-
-  folio_realloc_swap()
-    __vtable_set(ci_dyn, voff + i, vtable_mk_phys(pe));
-
-In folio_realloc_swap(), __mem_cgroup_swap_charge() returns 0 early because
-do_memsw_account() is true (and memcg_id in ci->memcg_table is 0 while the
-folio is still in the swap cache on cgroup v1).
-
-When writeback completes and the folio is removed from the swap cache via
-__swap_cache_del_folio() -> __memcg1_swapout(), __memcg1_swapout() checks
-!is_vswap_entry(folio->swap) (and the subsequent commit "mm, swap: add vmst=
-at
-and memcg counters for vswap" branches on is_vswap_entry(folio->swap) betwe=
-en
-the vswap and swap counters) and skips incrementing the swap state counter
-even when the vswap entry is backed by physical swap. Likewise,
-__mem_cgroup_swap_uncharge() and __mem_cgroup_swap_put() never decrement the
-swap state counter for vswap entries on cgroup v1.
-
-Does this cause swap and total_swap in cgroup v1 memory.stat to remain at 0
-for all vswap-allocated pages backed by physical swap slots?
-
-[ ... ]
+This patch defers allocating ci->memcg_table for physical swap clusters when
+vswap is enabled until a direct-use swap slot is allocated in
+alloc_swap_scan_cluster(). Clusters that only hold vswap backings skip
+allocating ci->memcg_table altogether.
 
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 640e38a55497e..341077fee23be 100644
+> index 12cd5caeaaf23..e95f2441fdd7c 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
+> @@ -476,7 +476,8 @@ static void swap_cluster_free_table(struct swap_clust=
+er_info *ci)
+>  	swap_cluster_free_count_table(table);
+>  }
+> =20
+> -static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t =
+gfp)
+> +static int swap_cluster_alloc_table(struct swap_info_struct *si,
+> +				    struct swap_cluster_info *ci, gfp_t gfp)
+>  {
+>  	struct swap_table *table =3D NULL;
+>  	struct folio *folio;
+> @@ -497,7 +498,14 @@ static int swap_cluster_alloc_table(struct swap_clus=
+ter_info *ci, gfp_t gfp)
+>  		return -ENOMEM;
+> =20
+>  #ifdef CONFIG_MEMCG
+> -	if (!mem_cgroup_disabled()) {
+> +	/*
+> +	 * A physical cluster under vswap may hold only vswap backings, which
+> +	 * record their memcg on the vswap cluster's table, not this one. Such
+> +	 * clusters defer memcg_table allocation until they hand out a direct-u=
+se
+> +	 * slot, including one for hibernation.
+> +	 */
+> +	if ((!vswap_is_enabled() || swap_is_vswap(si)) &&
+> +	    !mem_cgroup_disabled()) {
+>  		VM_WARN_ON_ONCE(ci->memcg_table);
+>  		ci->memcg_table =3D kzalloc_obj(*ci->memcg_table, gfp);
+>  		if (!ci->memcg_table) {
+> @@ -575,8 +583,8 @@ swap_cluster_populate(struct swap_info_struct *si,
+>  		lockdep_assert_held(&si->global_cluster_lock);
+>  	lockdep_assert_held(&ci->lock);
+> =20
+> -	if (!swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+> -					  __GFP_NOWARN))
+> +	if (!swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+> +					      __GFP_NOWARN))
+>  		return ci;
+> =20
+>  	/*
+> @@ -589,8 +597,8 @@ swap_cluster_populate(struct swap_info_struct *si,
+>  		spin_unlock(&si->global_cluster_lock);
+>  	local_unlock(&percpu_swap_cluster.lock);
+> =20
+> -	ret =3D swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+> -					   GFP_KERNEL);
+> +	ret =3D swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+> +					       GFP_KERNEL);
+> =20
+>  	/*
+>  	 * Back to atomic context. We might have migrated to a new CPU with a
 
 [ ... ]
 
-> @@ -2297,18 +2353,33 @@ swp_entry_t folio_realloc_swap(struct folio *foli=
-o)
->  	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
->  	VM_WARN_ON(!is_vswap_entry(vswap_entry));
+> @@ -1090,7 +1098,9 @@ static bool __swap_cluster_alloc_entries(struct swa=
+p_info_struct *si,
+>  /* Try use a new cluster for current CPU and allocate from it. */
+>  static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+>  					    struct swap_cluster_info *ci,
+> -					    struct folio *folio, unsigned long offset)
+> +					    struct folio *folio,
+> +					    unsigned long offset,
+> +					    bool *nomem)
+>  {
+>  	unsigned int next =3D SWAP_ENTRY_INVALID, found =3D SWAP_ENTRY_INVALID;
+>  	unsigned long start =3D ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
+> @@ -1119,6 +1129,23 @@ static unsigned int alloc_swap_scan_cluster(struct=
+ swap_info_struct *si,
+>  			if (!ret)
+>  				continue;
+>  		}
+> +#ifdef CONFIG_MEMCG
+> +		/*
+> +		 * Lazy-allocate memcg_table on the first direct-use slot of a
+> +		 * physical cluster.
+> +		 */
+> +		if (vswap_is_enabled() &&
+> +		    (!folio || !folio_test_swapcache(folio)) &&
+> +		    !mem_cgroup_disabled() && !ci->memcg_table) {
+> +			ci->memcg_table =3D kzalloc_obj(*ci->memcg_table,
+> +						      GFP_ATOMIC | __GFP_NOWARN);
+> +			if (!ci->memcg_table) {
+> +				if (nomem)
+> +					*nomem =3D true;
+> +				goto out;
+> +			}
+> +		}
+> +#endif
+>  		if (!__swap_cluster_alloc_entries(si, ci, folio, offset % SWAPFILE_CLU=
+STER))
+>  			break;
+>  		found =3D offset;
+> @@ -1128,7 +1155,15 @@ static unsigned int alloc_swap_scan_cluster(struct=
+ swap_info_struct *si,
+>  		break;
+>  	}
+>  out:
+> -	relocate_cluster(si, ci);
+> +	/*
+> +	 * On a discard-capable device, relocating a cluster whose memcg_table
+> +	 * allocation failed queues a discard for slots that were never used,
+> +	 * which folio_alloc_phys_swap() reads as progress and retries on.
+> +	 */
+> +	if (nomem && *nomem && !ci->count)
+> +		__free_cluster(si, ci);
+> +	else
+> +		relocate_cluster(si, ci);
+
+[Severity: High]
+Can a concurrent caller with nomem =3D=3D NULL race with swap_cluster_popul=
+ate()
+here and free ci->table before swap_cluster_populate() finishes isolating t=
+he
+cluster?
+
+In mm/swapfile.c, when isolate_lock_cluster() isolates an empty physical
+cluster from si->free_clusters and the initial atomic table allocation fail=
+s,
+swap_cluster_populate() drops ci->lock and percpu_swap_cluster.lock to call
+swap_cluster_alloc_table() with GFP_KERNEL:
+
+    spin_unlock(&ci->lock);
+    if (!(si->flags & SWP_SOLIDSTATE))
+        spin_unlock(&si->global_cluster_lock);
+    local_unlock(&percpu_swap_cluster.lock);
+
+    ret =3D swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+                                           GFP_KERNEL);
+
+With this patch, swap_cluster_alloc_table() skips allocating ci->memcg_table
+for physical clusters when vswap_is_enabled() is true, and publishes
+rcu_assign_pointer(ci->table, table) while ci->lock is not held.
+
+Before swap_cluster_populate() re-acquires ci->lock, another caller whose
+cached percpu_swap_cluster.offset[order] or si->global_cluster->next[order]
+still points into ci (such as swap_alloc_fast(), cluster_alloc_swap_entry(),
+or swap_alloc_hibernation_slot()) can lock ci, see cluster_is_usable(ci,
+order) =3D=3D true and cluster_is_empty(ci) =3D=3D true, and call
+alloc_swap_scan_cluster(si, ci, folio, offset, NULL) with nomem =3D=3D NULL=
+ for a
+direct-use slot.
+
+If the lazy kzalloc_obj(*ci->memcg_table, GFP_ATOMIC | __GFP_NOWARN) fails =
+in
+alloc_swap_scan_cluster(), it jumps to out with ci->count =3D=3D 0. Because=
+ nomem
+is NULL, the check (nomem && *nomem && !ci->count) is false, so it calls
+relocate_cluster(si, ci) -> free_cluster(si, ci), which either frees
+ci->table via __free_cluster() and moves ci back to si->free_clusters, or
+queues ci on si->discard_clusters when SWP_PAGE_DISCARD is set.
+
+When swap_cluster_populate() then re-acquires ci->lock, it only checks if
+(ret) before returning ci to isolate_lock_cluster() -> alloc_swap_scan_list=
+()
+-> alloc_swap_scan_cluster() -> cluster_scan_range() -> __swap_table_get(),
+dereferencing a NULL ci->table (or allocating from a cluster on
+si->discard_clusters).
+
+>  	swap_cluster_unlock(ci);
+>  	if (swap_is_vswap(si)) {
+>  		this_cpu_write(percpu_vswap_cluster.offset[order], next);
+> @@ -1149,7 +1184,13 @@ static unsigned int alloc_swap_scan_list(struct sw=
+ap_info_struct *si,
+>  					 bool scan_all)
+>  {
+>  	unsigned int found =3D SWAP_ENTRY_INVALID;
+> +	bool nomem =3D false;
 > =20
-> -	phys_entry =3D vswap_to_phys(vswap_entry);
-> -	if (phys_entry.val)
-> -		return phys_entry;
-> +	voff =3D swp_cluster_offset(vswap_entry);
-> +	ci =3D __swap_entry_to_cluster(vswap_entry);
-> +	ci_dyn =3D container_of(ci, struct swap_cluster_info_dynamic, ci);
-> +
-> +	spin_lock(&ci->lock);
-> +	vt =3D __vtable_get(ci_dyn, voff);
-> +	if (vtable_type(vt) =3D=3D VSWAP_SWAPFILE) {
-> +		spin_unlock(&ci->lock);
-> +		return vtable_to_phys(vt);
-> +	}
-> +	memcg_id =3D __swap_cgroup_get(ci, voff);
-> +	spin_unlock(&ci->lock);
+> +	/*
+> +	 * In rare cases alloc_swap_scan_cluster() can fail due to
+> +	 * memcg_table allocation failure. Short-circuit to avoid looping
+> +	 * over the list indefinitely.
+> +	 */
+>  	do {
+>  		struct swap_cluster_info *ci =3D isolate_lock_cluster(si, list);
+>  		unsigned long offset;
+> @@ -1157,10 +1198,10 @@ static unsigned int alloc_swap_scan_list(struct s=
+wap_info_struct *si,
+>  		if (!ci)
+>  			break;
+>  		offset =3D cluster_offset(si, ci);
+> -		found =3D alloc_swap_scan_cluster(si, ci, folio, offset);
+> +		found =3D alloc_swap_scan_cluster(si, ci, folio, offset, &nomem);
+>  		if (found)
+>  			break;
+> -	} while (scan_all);
+> +	} while (scan_all && !nomem);
 > =20
->  	phys_entry =3D folio_alloc_phys_swap(folio);
-> -	if (!phys_entry.val)
-> +	if (!phys_entry.val) {
-> +		mem_cgroup_swap_fail(memcg_id);
->  		return (swp_entry_t){};
-> +	}
-> =20
-> -	voff =3D swp_cluster_offset(vswap_entry);
-> +	if (mem_cgroup_swap_charge(memcg_id, nr)) {
-> +		__swap_cluster_free_phys_backing(__swap_entry_to_info(phys_entry),
-> +						 __swap_entry_to_cluster(phys_entry),
-> +						 swp_cluster_offset(phys_entry),
-> +						 nr);
-> +		return (swp_entry_t){};
-> +	}
+>  	return found;
+>  }
 
-[Severity: Medium]
-With vswap and zswap enabled, a cgroup with memory.swap.max set to 0 (or at
-its physical swap limit) can reclaim anonymous pages via:
+[Severity: High]
+What happens in cluster_alloc_swap_entry() and swap_alloc_slow() when the
+lazy GFP_ATOMIC allocation of ci->memcg_table fails under memory pressure?
 
-  mem_cgroup_can_swap()
-  shrink_folio_list()
-    folio_alloc_swap()
+Previously, swap_cluster_populate() had a lock-dropping GFP_KERNEL fallback
+when allocating ci->memcg_table, and swapon pre-allocated ci->memcg_table
+with GFP_KERNEL for cluster 0 and the bad/EOF clusters. Moving physical
+cluster ci->memcg_table allocation into alloc_swap_scan_cluster() under
+ci->lock and percpu_swap_cluster.lock with GFP_ATOMIC | __GFP_NOWARN appears
+to cause several issues when that atomic allocation fails during direct
+physical swap allocation:
 
-which allocates a vswap entry without charging memcg->swap. When zswap_stor=
-e()
-subsequently fails in swap_writeout() (for example, when the global zswap p=
-ool
-is full or memory.zswap.max is reached), swap_writeout() calls
-folio_realloc_swap(folio). Similarly, zswap_writeback_entry() calls
-folio_realloc_swap(folio) if a cgroup reaches memory.swap.max during a
-writeback walk.
+1. For an empty cluster isolated from si->free_clusters,
+swap_cluster_populate() has just allocated ci->table (potentially dropping
+locks to use GFP_KERNEL), and alloc_swap_scan_cluster() immediately calls
+__free_cluster(si, ci) -> swap_cluster_free_table(ci), freeing the newly
+allocated ci->table via call_rcu() and returning ci to si->free_clusters.
 
-In folio_realloc_swap(), memcg_id and nr are already known before calling
-folio_alloc_phys_swap(folio), yet physical swap is allocated before
-mem_cgroup_swap_charge(memcg_id, nr) is checked. When
-mem_cgroup_swap_charge() fails, __swap_cluster_free_phys_backing() frees the
-newly allocated physical slot(s):
+2. For a non-empty cluster (ci->count > 0) isolated from
+si->nonfull_clusters[order] (such as cluster 0, the EOF cluster, or a
+partially filled vswap-backing cluster), the check (nomem && *nomem &&
+!ci->count) in alloc_swap_scan_cluster() is false, so relocate_cluster(si,
+ci) demotes the cluster from si->nonfull_clusters[order] to
+si->frag_clusters[ci->order].
 
-  __swap_cluster_free_phys_backing()
-    pci->count -=3D nr_pages;
-    ...
-    __swap_cluster_finish_free()
-      if (!ci->count)
-        free_cluster(si, ci);
+3. In alloc_swap_scan_list(), stopping on !nomem skips any remaining cluste=
+rs
+on si->nonfull_clusters[order] that already have ci->memcg_table allocated,
+while nomem is not propagated to cluster_alloc_swap_entry(). As a result,
+cluster_alloc_swap_entry() continues to si->free_clusters,
+swap_reclaim_full_clusters(), and the order-0 higher-order stealing loop ov=
+er
+si->frag_clusters[o] and si->nonfull_clusters[o], demoting or fragmenting
+higher-order clusters.
 
-Whenever folio_alloc_phys_swap() isolated a fresh empty cluster from
-si->free_clusters (which cluster_alloc_swap_entry() prefers on discard-enab=
-led
-swap devices), pci->count drops from nr back to 0 and free_cluster() is
-called. On discard-enabled swap devices, free_cluster() marks the entire
-cluster for discard and schedules discard_work; on non-discard devices,
-__free_cluster() frees pci->table via call_rcu(). In both cases,
-percpu_swap_cluster becomes unusable (!cluster_is_usable()) for the next pa=
-ge,
-forcing every subsequent rejected page into swap_alloc_slow() to populate a=
-nd
-immediately tear down or discard another free cluster.
+4. When cluster_alloc_swap_entry(si, folio) returns 0 to
+swap_alloc_slow(folio) for an order-0 folio (!folio_test_large(folio)),
+swap_alloc_slow() does not bail out:
 
-Could folio_realloc_swap() charge the memcg via
-mem_cgroup_swap_charge(memcg_id, nr) before calling folio_alloc_phys_swap(),
-and uncharge if physical swap allocation fails, so physical swap clusters a=
-re
-not allocated and immediately destroyed when the cgroup is at memory.swap.m=
-ax?
+    plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+        /* Rotate the device and switch to a new cluster */
+        plist_requeue(&si->avail_list, &swap_avail_head);
+        spin_unlock(&swap_avail_lock);
+        if (get_swap_device_info(si)) {
+            found =3D cluster_alloc_swap_entry(si, folio);
+            put_swap_device(si);
+            if (found)
+                return swp_entry(si->type, found);
+            if (folio_test_large(folio))
+                return (swp_entry_t){};
+        }
+
+Because no slots were allocated, si is not full and stays on swap_avail_hea=
+d.
+When two or more swap devices share the same priority on swap_avail_head,
+plist_requeue(&si->avail_list, &swap_avail_head) moves si after next on each
+iteration, causing swap_alloc_slow() to loop indefinitely between those
+devices while holding percpu_swap_cluster.lock.
+
+Could swap_cluster_populate() or a lock-dropping fallback in the caller
+handle allocating ci->memcg_table with GFP_KERNEL, and avoid demoting
+clusters or looping in swap_alloc_slow() when allocation fails?
+
+> @@ -1181,7 +1222,8 @@ static unsigned int vswap_alloc_cluster(struct swap=
+_info_struct *si,
 
 [ ... ]
 
-([c922e31fae8f ("mm, swap: only charge physical swap entries")](https://git=
-.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3Dc922e3=
-1fae8f71fd3ae6707b90202f40d4d0babb))
+>
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021060323.5534=
-33-1-nphamcs@gmail.com?part=3D8
+33-1-nphamcs@gmail.com?part=3D10
 
