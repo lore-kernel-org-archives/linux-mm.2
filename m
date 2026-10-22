@@ -1,147 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B12606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 00:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6A3606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 00:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=MsbGv7A9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ims99RF8
 Received: by kanga.kvack.org (Postfix)
-	id 934A36B027D; Wed, 21 Oct 2026 20:42:41 -0400 (EDT)
+	id AC2856B0809; Wed, 21 Oct 2026 20:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B7B76B027E; Wed, 21 Oct 2026 20:42:41 -0400 (EDT)
+	id A99FF6B080A; Wed, 21 Oct 2026 20:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 757CB6B0280; Wed, 21 Oct 2026 20:42:41 -0400 (EDT)
+	id 9D6996B080B; Wed, 21 Oct 2026 20:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C3B06B027D
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:42:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9CBFEC0434
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:42:40 +0000 (UTC)
-X-FDA: 85348411680.16.C7F85B2
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AAEF3100003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:42:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=MsbGv7A9;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792629758;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 72A9C6B0809
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:49:33 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6008A8380
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:49:32 +0000 (UTC)
+X-FDA: 85348428984.28.85902DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 568F4C0004
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:49:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ims99RF8;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792630171;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GniLS46Pd/diYcFVcDjCnHYBi+2sUltr0IiHdgmwVU0=;
-	b=rPZHX/5MLmrY1jzh+AXI1TnVfajYo/+rPOEfAB50gtGuvJpqtRf/Sd4OgqKEJ1CyHg6QE/
-	aKhEju+qHxQZ13rfAcylU+TIrulEB4xvZx3528VWRzKSHFjdR+vGYFONmtzLtzac7o3d9I
-	V8OjIVeH4oBdchZi9QnJT6D5I4mq2Z4=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=MsbGv7A9;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792629758;
-	b=EKPjY+2FgXh+SLtyKld/XDs67yXHPj+/6XHWdc3gCbrUsPjxCbsPk+Ek8ylIXtURHaBq7F
-	YZwB/M2SmrZGrIaYtLGweNbtXvB3x3BaqEVs8kpZAwmR6DdPc/hklJJwZ3ioD0hmBE65wq
-	lRDaDMypb4di97KOCz5EEiAnfVmf04U=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b203527bceso1810831a12.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:42:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792629757; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BPILVaWXWUoya1/mnkL2UaNA8lsQiDCbpo8HfZIC0S6G7fFrPNpjKWEwFecEZPQ+D/
-         TLStsm2P26zhCB3s03ua7+dzmaB0bMYvnXL+1wxZofnwEhgt4yufu51+djCWPmRGeSjU
-         ja1ND0Q+egXdZ3xKB00dRLdrszki6vS/Z8qg5DuQu0KeIos1qZHqTY6qalg9ZfHbgFv8
-         H5zy2woCCPeXzP/u9frdeOHt16CZkF/wlyENg6RZPoxk8kadM+tls/Y6S8HjzFnMRStv
-         v/xsX3y2erI6UrQAKJxiDKgOvBfTarkUn8HZl04shuDqiiQuxUbOAVp+oCm//PYwwKwd
-         bSKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=GniLS46Pd/diYcFVcDjCnHYBi+2sUltr0IiHdgmwVU0=;
-        fh=bK1FqVQxztEuXfb+l4ZAgOeBLNHqdp67ioIwc6YdqQg=;
-        b=otGYUx1jI279mBVr30AteL+C2CCr2mMYItBjifKmFKMNU0YUeqyPBRq1Q9sljt2Rqe
-         /rxR1lTdEtA4YxvTsi5r3IYC0wQcpn3FYaiuK8eRJXwydBgCet4V2KN7fpIVuqXmIVIj
-         pLGh19U3FxuIKIhFE2e9EVLlsOxQlYrHDl5A/4nh2GLsE2nHoKWDConAcg84AJ+0ucEG
-         RdPPDl+aC191BcrsYwp7ckW4s+FFocN1R19zparwJGZmgsHyYLKhaKnj0lzw4uIhRJ9b
-         kCPJAJ/FRyEK/TTsOcw2oUGtyKoBZiJxCuqRSdL3P1G2bAxIdPLTlDRAR8rln5oTqIZP
-         QzlA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792629757; x=1793234557; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GniLS46Pd/diYcFVcDjCnHYBi+2sUltr0IiHdgmwVU0=;
-        b=MsbGv7A97RETDfCCFsm8ihCYrc2DruxI58Imq/yTZra214yKHWt/1ajV3Xb21ncGZv
-         d8HNitnCq35rKwl2/+WKGm6CJ4U+U1Mjdipgvh/tY+2cb5lcqHZl2r6lPDg9Oh9MVRJE
-         H4BaJAOARlh1UuT2ZPczmWFgG6dXZ2flmWSOeBkCgQ1/xbxB7Nm5dtM/8hCVmjhpTrX3
-         USY23j8A11QNxJIDY6MT+qCR/VHRwHprG9bc3wdJaqepTwhzIOpoPS7moHa/087lVG40
-         tW9YYjrlIuMGNu3LnL4zRsHkiESPZwpO9CLJ0zzKGWSAOBqFNfAB37oyPRTbRGWov1VW
-         2/wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792629757; x=1793234557;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=GniLS46Pd/diYcFVcDjCnHYBi+2sUltr0IiHdgmwVU0=;
-        b=R4oH7Z6gkMUA3x/C2kKwQqOLsvZoso81iqvSOHsuggrWqXBWeNijMjUPUT6NuOG7W3
-         T969qd8z30cKsWoRA90sLUee35B0MQwsga7mVlUZtJw+MD82aeCpabDuVGf/dJfibZ2z
-         NwFUQzhHZgHvzB8pJeoYI9HE0xjkNPHmOOdLYkX0UgyXBJy+Z6bLqkO7m3iVaFwgPsxU
-         jxtLgGQ+iT/wtzTTN891yXfn1AkdcKWDaCejd+9oQq4e7jgSQJb2qy/D/G6ozt+zyeB7
-         P2UyK1G7kaoDFUIIZqYgeZQd/QV5Ow1q4DD8qXNn0tt2L5SkCoTDv0p3YYX66bLkFDS4
-         On5g==
-X-Forwarded-Encrypted: i=1; AKwUvBwSPFqnOOgtTmtkkuoVjSSJdtkCyFnc4Afl9Y4Kw5tDfTZBSHBTzwdz7+joRuGfUlKH3ZYP/OP7+g==@kvack.org
-X-Gm-Message-State: AFq9FYK+fKVXSxrNDk62PsFf99pBpx641iTa4vcE+gfhs1KfUrPDiCC8
-	xklm6iRe4B+r5Lg/mu/yDJPQVmMdqO/YLF9GRVnQStihIeasnhUuxmeTdjD9yfLkoejNZgJfjGW
-	bL2VKs5r9ZWgzHRkemrBPefIPX9LgeYE7klVD15Z9lg==
-X-Gm-Gg: AYBFou3x6TY2HGzJcvsQW6hlpnw3lapmirQDZ5pv2uudg5kVYKYcFrq3YZAZs6GB5+7
-	SnjiwczynyWsWAbh4nUKzxE1hqbkFEzVlYpTecf6ZhhgTYliB4h38KqB6wxAcfwuAXGYD5D3fh/
-	q9SOgJO63AozMla5V5JOZy2a5xTuz68w+bgDYSXSqD0UZbTRi/Nx0K2Y+na3Z4kHOMTwy+wjM/w
-	V/+p/J4wSswOODWrMu4Fv3CdGbyxRCjrMF+WzvzL1VRlyjVtHzamBdaPQ3JJq7SFhph7ySHj8JJ
-	6GQTjtEKOrahMgc9Rskb1lkkKiKBg7FVfsiDoONSlMpDfTxXIOD8l1PlI3mKcHLqqH7TR0Pttk+
-	A14grU8femwQRxnIkV625d9ZHnR3u6WW/othmvwM3tEReoFdY6VSJH6VBxv1SRE4YXxmHDGVtaT
-	UzMpHFjh3h+Bd4
-X-Received: by 2002:a05:6402:28c3:b0:6b1:b5ea:2580 with SMTP id
- 4fb4d7f45d1cf-6b408f158c0mr2564977a12.44.1792629756618; Wed, 21 Oct 2026
- 17:42:36 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-5-tarunsahu@google.com>
- <CA+CK2bCWo7ixrNLKPvqETn3JSFwSNaB2UsPgy9RHVAhWroJURQ@mail.gmail.com> <atlINfvlXY4wMbpO@google.com>
-In-Reply-To: <atlINfvlXY4wMbpO@google.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 21 Oct 2026 20:41:59 -0400
-X-Gm-Features: AclHuK9RD7eBi8LXJX6p9TV9aNPWci2BfQZ8v_Dy1k8oV1MBnEFNI7PYFBzBpTQ
-Message-ID: <CA+CK2bDf-pKbH2J13mRYRT7Ddj-Q+VXaGYePs+E-azSWXKzV5w@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 4/4] mm: memfd_luo: Add the 2-bit pair feature header
-To: David Matlack <dmatlack@google.com>
-Cc: Tarun Sahu <tarunsahu@google.com>, Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
-	Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
-	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: AAEF3100003
-X-Stat-Signature: zjbd6zaxjs4pjatc45cqu5t7itgrinkr
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	bh=On0IRKe4yglB4frXH+Fm+UPqKv05FYubzJr21eeqbEY=;
+	b=C/QfZcnb7djirQjbbpYqw0kF8RP8LV/gd00InVgNnyMxisjoAy8dEBFMQFfJgfqGDD/f2R
+	Jn8yQAopj/NkKT11RwOhqo9LkZQGLAmuhIB4Wfq9tbyxyElCAq67okfV774oiEeOJH4Xfi
+	PuOpAzbhzYy7IpQYAqyuwfHPos8Cnfc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792630171;
+	b=QOOXmUtBaeeaLp9/imLm+Fb76oqD18vpbGjyjNn/A2CIWXR/oCmY+ySmOZpMRStvOfVdjY
+	lV3kAiGu5VpQ/7t4DRdPWrDwM2GvziICsyeiMGfrwwlAiaoQvtDtdyIup8kfETH7hjPGZ8
+	sU6PmU3QYHTxULCBR/4T5wz+Ccmcd2A=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ims99RF8;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C7ED960098;
+	Thu, 22 Oct 2026 00:49:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FC21F000C1;
+	Thu, 22 Oct 2026 00:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792630170;
+	bh=On0IRKe4yglB4frXH+Fm+UPqKv05FYubzJr21eeqbEY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ims99RF8i4IDGm1oTGxJrMH5zr1ZW4XM3gKTQ2zuJkTsYRMCRAmbnmOOy5KCmHAdE
+	 fmKWfL22/F8VA5uUXpce5YVAPjvfVsBVIezCe/BL0UkdG1crTGeS1nqGYqq7MZWu3j
+	 MkXgt484iA/T44oPBenCy56oRH4E48fuz4Z+IxjCa0LBk8r2cIX76kK/nXUIe2cNkS
+	 3S05V4AK4sVvc1yToG4DrpU5Dph4uwFivW77fgW2Fa+ZfgxvTeluhQjWlc8PaPhU9r
+	 5i2KpASFzOoVFDiMDQTG2LQ2SrfH/DNULyhkELMrwEG/lLTH9C93+woLWY5Hv3zoAE
+	 R9Q5wroMqR0sw==
+Message-ID: <sashiko-outbox-180837@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] tools/mm: rewrite show_page_info.py with modular
+ design and new features
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ye Liu" <ye.liu@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "SeongJae Park" <sj@kernel.org>, "Stephen Brennan" <stephen.s.brennan@oracle.com>, linux-mm@kvack.org, "Ye
+ Liu" <liuye@kylinos.cn>
+In-Reply-To: <20261021-show_page_info_refactor-v2-1-c28d1173b336@linux.dev>
+References: <20261021-show_page_info_refactor-v2-1-c28d1173b336@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 00:49:29 +0000
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 568F4C0004
+X-Stat-Signature: k1zyh7i5whekyk93kysysm6n7bpmsoym
 X-Rspam-User: 
-X-HE-Tag: 1792629758-157122
-X-HE-Meta: U2FsdGVkX1/I2koRaojuybtV/QirheV4hwSy6WmBATG002FxnLhYDsPil3HVid0zNDoUazA4q1uKgykq2rzEGGDrB+JR2WyKo/BcpDb2+gVcjHkJ8YHqsb90EzWceASMV01QJRMnoLjVWWwqU9m6XYilXfEX9Fa37IaA8QsXXcAMgE+fKuwVNG32uoGjGmsOpy7o6Z94Z4wjTXC7RxcXrKdgLjfSiLfw5k29UCnApjh845Y9Ka7DgCnRQJoVEMH8blD/5vIC5WUgDWWEz3zrUd8QKeUEyFSZMsc642S2ZpNygr0/WT0r8AWBwSBmFv0ZNdmOdS0Lwj5BWIhNgJ7vDFjG0Zrx8dy8PXE2iiWf/KrMaUptW54FHHW2uzA0MsQWWAumz7aOuaKzaDEtXximkZnp4Qs2f+/R5k/wqhna3qv7LzCUJrrMHizUQtH1nJm5Xa00cgRrvGxo8Z2yqvIYLGCdENieUPsntFKuyrPgGspKbsY4vFr5Pd+RU7cMJNrbFSHsrAjZawB797NvDZldY5R86BpUyxWYISxzXbzLetYi4kIrzS5FWbpKa2rILk8jZK2SqwiwWrCCCFegLogXhiTiADqHLH+JaESaN3Ftp7yGwcfIdVZl5ugkHlGszIeAeRtj9521cXGii+gPoZhw+uq2BfYaq8GFyfgaSNZpR8vBiW44jG8I7TA5V3ThWnajtpUYjOe5vslg8zPWOv3GNLoixj8Z1/GwOKqMGZvcNkXt8Hp7J37EpSa0iZ2SFJbhppewUUELaelz7MDnvySiUPDQZAMbV+0zNuUXRABXDx6nG0U4SizcFhtu38UguA90Ja7O8MSsBBPIDrg1Ce56E2IoITiQJkbEihnvjxlTrmXGQJiLYYJivVARuBT/m52ctB3tbZkG49wOwoY9GVCO1078Ee5QIRxB7P+WHyk0CWw29JGoYiU4oNPF4NKdKlMutT4ijeUQ/N41P2WqI5/
- mftowiTO
- 4fX0id0VScoreao9aBTF34jjhi0iK36cS1YSiZB6am3qrD93ZxNpztHdA4pcmV1BIuGgY6yksN6mBY41akoep2ktu2hbsD76JxnsWdXtY2hOSGEKeqgtZGhkwwxuwqSbznWbGNGSsbRRYdH1Os7XqSdN5I+Lw/d5sAZsWMlGIRqe/v2BbOhvKp6TQnL7+t9VGU17yS0OA+TIB1Qz+dCdKSSZAOq04Bg49fA+Qa+TxAWgrez5jRqm5K3uH5ywxsayleLZlnz/ujmeuz/MuXqyXHZ7lAgPmKwnfNV6UqCwF09gB8raNOJR4A+mXPBoCjd0LlH1xZ5J+cK4i1shLkmhXVOotzUEf+/YvcdYxEb+MkQraXYI=
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792630171-407458
+X-HE-Meta: U2FsdGVkX1/Y+43X/ei4rL1XcrBpf9Mqea0R2BvMgxep70atsRvhb/lWpRY9irp53I/5mAJc95zQO2JWpjZWUwWmNeLoq9jAf3ksRgin23xpwLznmh+apk+4R4sL5yGwNUoMZ9LlKoVHRJ7bAZw724V52XIKo78lCrkLuEamyAkVWXWlZG2WaT67vtaSgZ06HdrrEbV4ZPSolLyN1R0okY5mA1P1XEPGKbXdc+3X1JYM98QRcW+AxlPk6/zAmo0pvsxfBsUa8pNELsWuwl7vvu+wj4a2tlKo0LBef/xhGtZwEZn9NThVdfJ+BqD3OBFo62qGfEmDtBS36EaQw41xWv1zUVPFjuP6jJZF0+VMQm/TQ7E7iJbZE+YLrWeHKxJncHAZXd2bI66cZ6s3MoKLk5Z3RCQ7GiwzTXhT0nLwSSTj+qPJYSywcLrZYiQQuvbWkp8AK66yO78Hoz5pbaJkcdypBXXKkvGVoE8pFfUi5qr/MBrgr7S2LPDfYeibXnOnbIcK+Nq9Dhm57o+yJmCaccVHplpH+Y6iisDtQEfNnA35Sy9eXi8Gnp+YLyz2WDfq9xXRs0J0OqD+1ELC7lmMX760dHRkZDcsB1D19QYrauSvf4IhojconPTufepkdq9LqHb0raMQh1bqESPM6q2utiFTlCLabqAYKuEoYCB345rrHJD0otpAHDUwc96+6eEK+qUDjnDr1UG0eX8zND/TCBE4Jql7OCKk+ZMJ/tGlzGwO2FEtx/lq710CIKfqCvz8CrcYglM6nqb/u32i+9tPYfDFZ7ahrPrrF4P5j8fCj3FpzBP8jp3aQUgCWuKbheyaS+zvoO1ynHpEI2szzcFlYxMamFZxuvd7K8phD4GYxPn2BNhpoz5YZDzPOdVehN83rpbZc1RMmhFJE7+LONlUIxDYMzZrgmXkJLUxuHgCJJm7vnGfjrjXE3MfNHZAu6FlPQ0nRfo0ZU8lCxCZ+xv
+ 6blXTYI5
+ kd4Qbna1jlxIZFSIW/hvxfXQwZGlPj/lRQzcL/G8tvUlKBRafT6sl6vpq8AupRsetisuZg0rQcZ17wg2aDyVNXN1YKd9cOYr1aKDRPVk3LWO3xGlu+PlGZjR7tyZXjKI2V4Tw1zEz7Vql0AAePZTiHXqBWqrrKPFuMDdOV9YBzX7GZRg1n6b762chZlZIb96jfKAXSpORnpSJw0umgN7codLziaZKYaHHq44ZqJlGtSSYm77AVrYmRJ06kjzgk5xgqAcTIcDdkmiPPe5+EsgBTnlsjFCcujZZoMNWdbfsgtAE4LqSpfIGIiqQ6EDGEnGPZTVPwlifCGNMwrqiooRMOZJ+LT70wJtCfNjSh6iomhugfvtjZRt+PvmKVG8fqGPHqirkxMDgzmxiCtdstFfDx2vtU05YOdYdfWPhxqR38eNXV6xeme2G3iCec8+jAwv9Z57XZEI9hijH3Si7SxCAJtrorlMnYjsGdV7Siyh/V8e46asHxcZ0U5742Wt7zHJ4YAwSG9utqFB5YeXUv4k4/1a3ywg5cNRo70WqNSkdG66WBAd/tnfo8gZYfA3Jk0bMQbgM3q4aXYOMiQS1Qtrm5GZWrl5dY6jHUry4fQrsvdUwgyM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,245 +92,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-> > >  /**
-> > >   * struct memfd_luo_ser - Main serialization structure for a memfd.
-> > > + * @features:  ABI feature and size header for memfd_luo_ser.
-> > >   * @pos:       The file's current position (f_pos).
-> > >   * @size:      The total size of the file in bytes (i_size).
-> > >   * @seals:     The seals present on the memfd. The seals are uABI so it is safe
-> > > @@ -79,6 +103,7 @@ struct memfd_luo_folio_ser {
-> > >   *             struct memfd_luo_folio_ser.
-> > >   */
-> > >  struct memfd_luo_ser {
-> > > +       struct luo_feature_hdr features;
-> >
-> > I have not looked into this yet, but I would prefer to use some kind
-> > of macro constructor for serialized structs. That way, they will
-> > automatically include the header, making it easier to search the code
-> > for what is actually preserved versus what exists only in this kernel.
->
-> If you want to know what is preserved don't you just look at
-> include/linux/kho/abi?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] tools/mm: _compound_fields() queries compound order on tail page=
+ instead of head
+--
 
-Yes, and having it initialized and declared in the code correctly with
-proper macros and verified just gives the right handling and avoids
-making silly mistakes. The second reason is so we never forget to
-include the header, and to make it expandable and easy for everyone to
-use. I think this kind of constructor is just useful overall. Are
-there any reasons why we wouldn't want to use it?
+commit 559aca0f2b19f1194e73dadf4d12451f4bc08a7d
+Author: Ye Liu <liuye@kylinos.cn>
 
-> > So, I think something like this:
-> > /* Base serialization header: 4 bytes total size, 4 bytes flags */
-> > struct luo_ser_hdr {
-> >     __u32 total_size;
->
-> Why do we need the size? I'm not really opposed to it I just don't
-> understand what problem it solves.
-[...]
-> The luo_ser_hdr is needed for top-level file handler and FLB ser
-> structs. Those structs are always dynamically allocated and preserved
-> with KHO.
+tools/mm: rewrite show_page_info.py with modular design and new features
 
-The top level is not enough. I think it is needed for every single
-serialized struct in kho/abi - the blocks, the FLBs, etc. They all
-must
-be expandable in case we need to allow that. Let's have future
-protection for everything that gets preserved.
+This commit rewrites tools/mm/show_page_info.py into a modular
+field-collector design, adds new input modes and page debugging fields, and
+fixes field access issues for slab, memcg, and compound pages.
 
-For example, take a look at vCPU preservation:
-https://lore.kernel.org/all/20260920193650.3373435-9-pasha.tatashin@soleen.com
-https://lore.kernel.org/all/20260920193650.3373435-11-pasha.tatashin@soleen.com
+> diff --git a/tools/mm/show_page_info.py b/tools/mm/show_page_info.py
+> index c46d8ea283d7d..638fc669b694a 100644
+> --- a/tools/mm/show_page_info.py
+> +++ b/tools/mm/show_page_info.py
 
-+struct kvm_vcpu_ser {
-+    u32 vcpu_id;
-+    u32 flags;
-+    u64 vm_token;
-+    DECLARE_KHOSER_PTR(arch_state, struct kvm_vcpu_arch_ser *);
-+};
+[ ... ]
 
-We might want to add fields to the arch-independent part, and we also
-absolutely must keep the arch-dependent parts expandable. Therefore,
-the header needs to stay small and flexible enough to grow as needed.
+> +def _compound_fields(page, head, fields):
+> +    """Collect compound page fields."""
+> +    if not PageCompound(page):
+> +        return
+> +    fields["Compound Order"] =3D compound_order(page).value_()
+> +    offset =3D page_to_pfn(page).value_() - page_to_pfn(head).value_()
+> +    fields["Folio Page Index"] =3D f"{offset}/{compound_nr(page).value_(=
+)}"
+> +    if head.value_() !=3D page.value_():
+> +        fields["Head Page"] =3D hex(head.value_())
 
-> On retrieve, KHO gives you back the blob of memory. You look at the
-> header to determine what features are used in the struct, and then
-> access the fields associated with those features. At no point do you
-> need to check the size.
->
-> The only time you need the size is for a KHO block array. You want to
-> store the size of the KHO block array elements so that the retrieving
-> kernel can correctly initialize the iterator.
->
-> e.g. from the PCI base series:
->
-> /**
->  * struct pci_ser - PCI Subsystem Live Update State
->  *
->  * This struct tracks state about all devices that are being preserved across
->  * a Live Update for the next kernel. It contains only state owned by the PCI
->  * core; the state a driver needs to resume its device is preserved separately
->  * by that driver.
->  *
->  * @required_flags: Features that the next kernel must support to take over
->  *                  the preserved devices. No flags are currently defined.
->  * @optional_flags: Features that the next kernel may ignore if it does not
->  *                  support them. No flags are currently defined.
->  * @dev_ser_size: The size in bytes of each struct pci_dev_ser in @devices.
->  * @nr_devices: The number of devices that were preserved.
->  * @devices: Physical address of the first KHO block containing pci_dev_ser.
->  */
-> struct pci_ser {
->         u64 required_flags;
->         u64 optional_flags;
->         u32 dev_ser_size; <==========
->         u32 nr_devices;
->         u64 devices;
-> };
+[Severity: Medium]
+When show_page_state() calls _compound_fields() in
+tools/mm/show_page_info.py for a tail page of a compound page, should
+compound_order() and compound_nr() be called on head instead of page?
 
-Having `total_size` embedded in the standard header of every
-serialized struct solves this uniformly: any struct can be placed in a
-block array without needing an ad-hoc `*_ser_size` field in the parent
-struct, and on retrieve we can always sanity-check that the preserved
-blob is at least as large as the struct fields implied by the flags.
+Both the kernel's compound_order() in include/linux/mm.h and drgn's
+compound_order() check whether PG_head is set on the page passed to them
+and return 0 for tail pages:
 
->
-> >     __u32 flags;
-> > };
-> >
-> > #define LUO_SER_INIT_HDR(obj, _flags) do {           \
-> >     (obj)->hdr.total_size = sizeof(*(obj));          \
-> >     (obj)->hdr.flags = (_flags);                     \
-> > } while (0)
-> >
-> > #define DECLARE_LUO_SER(name, expected_size, members)       \
-> >     struct name {                                           \
-> >         struct luo_ser_hdr hdr;                             \
-> >         members                                             \
-> >     };                                                      \
-> >     static_assert(sizeof(struct name) == (expected_size),   \
-> >                   "LUO struct " #name " size mismatch!")
->
-> Why?
->
-> Practically every change to a serialized struct is going to involve
-> appending one or more fields to the end of the struct. Asserting the
-> size means we have to update the hard-coded size as well every time we
-> do that.
->
-> Is this to protect against embedded structs accidentally changing?
->
+include/linux/mm.h:compound_order() {
+	const struct folio *folio =3D (struct folio *)page;
 
-Yes, exactly. See how kvm_vcpu_arch_ser is proposed in that same series:
+	if (!test_bit(PG_head, &folio->flags.f))
+		return 0;
+	return folio_large_order(folio);
+}
 
-+struct kvm_vcpu_arch_ser {
-+    struct kvm_regs regs;
-+    struct kvm_sregs sregs;
-+    struct kvm_mp_state mp_state;
-+    u32 pad;
-+    struct kvm_xcrs xcrs;
-+    struct kvm_lapic_state lapic;
-+    u8 pad_xsave[40];
-+    struct kvm_xsave xsave;
-+    struct kvm_vcpu_events events;
-+    struct kvm_debugregs debugregs;
-+    u32 num_msrs;
-+    u32 cpuid_nent;
-+    struct kvm_msr_entry msrs[];
-+};
+Because compound_nr() computes 1 << compound_order(), passing a tail page
+causes _compound_fields() to report Compound Order as 0 and Folio Page
+Index as <offset>/1 instead of using the compound head's order and page
+count.
 
-All the above structs are uAPI, so they are stable compared to random
-kernel structs, but they still have a size and can be expanded. So,
-having the size and a static assert guarantees that when we expand
-these uAPI structs, we automatically catch that in this struct and add
-the appropriate flag to notify the next kernel of the changed world.
-Also, it catches implicit compiler padding changes across
-architectures.
+[ ... ]
 
-> >
-> > Usage:
-> > /*
-> >  * Header:  8 bytes (hdr: 4 bytes total_size + 4 bytes flags)
-> >  * Payload: 8 (pos) + 8 (size) + 4 (seals) + 4 (_pad) = 24 bytes
-> >  * Total:   32 bytes
-> >  */
-> > DECLARE_LUO_SER(memfd_luo_ser, 32,
-> >     __u64 pos;
-> >     __u64 size;
-> >     __u32 seals;
-> >     __u32 _pad;
-> > );
->
-> IMO this makes the code harder to read. I think open coding keeps things
-> simpler.
-
-I am ok switching to a different construct or way of declaring these
-structs if what I proposed is hard to read. However, we still need
-standardization so that every serialized struct has a common,
-expandable header (taking only 8 bytes by default), has its size
-verified at both compile time and runtime, and is initialized in a
-uniform way.
-
->
-> struct pci_ser {
->         struct luo_ser_hdr header;
->         __u32 dev_ser_size;
->         __u32 nr_devices;
->         __u64 devices;
-> };
-> LUO_SER_ASSSERT_SIZE(pci_ser, 32);
->
-> >
-> > struct memfd_luo_ser *ser;
-> > ...
-> > LUO_SER_INIT_HDR(ser, 0);
-> >
-> > Thanks,
-> > Pasha
-> >
-> > >         u64 pos;
-> > >         u64 size;
-> > >         u32 seals;
-> > > diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> > > index 64f8b8cb75bd..ea1f4c8cd259 100644
-> > > --- a/mm/memfd_luo.c
-> > > +++ b/mm/memfd_luo.c
-> > > @@ -84,6 +84,10 @@
-> > >
-> > >  #include "internal.h"
-> > >
-> > > +static const u8 memfd_luo_features[MEMFD_LUO_FEAT_MAX] = {
-> > > +       [MEMFD_LUO_FEAT_CORE] = LUO_FEAT_REQUIRED,
-> > > +};
-> > > +
-> > >  static int memfd_luo_preserve_folios(struct file *file,
-> > >                                      struct kho_vmalloc *kho_vmalloc,
-> > >                                      struct memfd_luo_folio_ser **out_folios_ser,
-> > > @@ -284,6 +288,8 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
-> > >                 goto err_free_ser;
-> > >         }
-> > >
-> > > +       luo_feature_hdr_init(&ser->features, sizeof(*ser),
-> > > +                            memfd_luo_features);
-> > >         ser->pos = args->file->f_pos;
-> > >         inode_size = i_size_read(inode);
-> > >
-> > > @@ -525,6 +531,14 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
-> > >         if (!ser)
-> > >                 return -EINVAL;
-> > >
-> > > +       err = luo_feature_hdr_validate(&ser->features, memfd_luo_features);
-> > > +       if (err) {
-> > > +               pr_err("memfd_luo_ser feature header validation failed (size=%llu, flags[0]=%#llx): %pe\n",
-> > > +                      ser->features.size, ser->features.flags[0],
-> > > +                      ERR_PTR(err));
-> > > +               goto free_ser;
-> > > +       }
-> > > +
-> > >         /* Make sure the file only has seals supported by this version. */
-> > >         if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
-> > >                 err = -EOPNOTSUPP;
-> > > --
-> > > 2.56.0.212.g129ede20d9-goog
-> > >
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-show_page_=
+info_refactor-v2-1-c28d1173b336@linux.dev?part=3D1
 
