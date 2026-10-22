@@ -1,125 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A5B606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 04:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE45606A332
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 04:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jOCJOiOM
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=PLbOETe2
 Received: by kanga.kvack.org (Postfix)
-	id F27F76B029B; Thu, 22 Oct 2026 00:17:31 -0400 (EDT)
+	id 1825B6B0879; Thu, 22 Oct 2026 00:29:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F00626B029F; Thu, 22 Oct 2026 00:17:31 -0400 (EDT)
+	id 133D26B087A; Thu, 22 Oct 2026 00:29:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E14DF6B02A5; Thu, 22 Oct 2026 00:17:31 -0400 (EDT)
+	id F3D946B087B; Thu, 22 Oct 2026 00:29:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA6F46B029B
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:17:31 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 38E8A1C3DCA
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:17:31 +0000 (UTC)
-X-FDA: 85348953102.20.771A4A8
-Received: from mail-yx2-f5.google.com (mail-yx2-f5.google.com [74.125.224.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6FAD2120005
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:17:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jOCJOiOM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.133 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CF3606B0879
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:29:46 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 414CBA8388
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:29:46 +0000 (UTC)
+X-FDA: 85348983972.23.99CADC8
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 89E6140002
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:29:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PLbOETe2;
+	spf=pass (imf11.hostedemail.com: domain of 3NpHZagcKCB0P87EBI79HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--wfelipe.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3NpHZagcKCB0P87EBI79HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792643384;
+	b=avUFcpyoseHsVJdbdfoAx9hQRscJlg8Fi6o7Ph9TlXmhvtPVg3Dv8hIPJubRgmV0+n6qyR
+	vf5IKQhGrT+OoSwHqrq325rrEB6i1qAXnBewNhd+sLA18DasFK9rU+ih+Z+oOeHEAMV0N+
+	y/S6ACgFoVmO4exurp5O/kYehlEvlQw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PLbOETe2;
+	spf=pass (imf11.hostedemail.com: domain of 3NpHZagcKCB0P87EBI79HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--wfelipe.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3NpHZagcKCB0P87EBI79HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792642649;
+	s=arc-20220608; t=1792643384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D4fgTxnwo+3lhaoW5IJ3HlnUCymtn0k12F/Qm8PcmcU=;
-	b=6jGIBk33cWi5gdL/ydGDfh6liAMA9iaA6EAJNdFdhIx3SgkeHjI5XXRy++VJPAAT/sZn8y
-	ZjpSDs9HVcS5nmTPHNDK48pnp/oHxpAcoxwPqFs5bZgEknc/riJ6bCY3yCcWY5Dt55ikc0
-	J5GRgpJxEDRab5ixe4jQ7re9afu2TTY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jOCJOiOM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.133 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792642649;
-	b=HjRoB2nR0m7c2H/fVJH1PoWWDjrqKXKOThj/H3+EonMur2I3dUEA/HpZdXy33Dfzd27hbW
-	SmNtZe8BKpbIgDcLZdHHbwLywSvWfYS7n/cCug3R3eXLCLjUe7FKkEtN7UHyRFB4G3O5kW
-	fIbLcgcSYvZUOkKj03WA30znkQ5w8PM=
-Received: by mail-yx2-f5.google.com with SMTP id 956f58d0204a3-672d92bbfd3so618482d50.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:17:29 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LjbRg1MxTdPPALlsDxB0y7vfr1lMEHLi3/W3/ZQqmuk=;
+	b=2KyDE3zNe8nj6HSjAsbr8YdFSFWOwvJixCEK7deLrezRYW339N+apDl8EhtvyTTo/HCPOr
+	t31hsLX9NiuuoVGucxltJq70k8r9ku6eEWzJDcQQJfqkesDHwBY5t7zKp67hrCMclupuLO
+	OQiKhYXJtN7gIOOrJgkA01ZJJixmGz4=
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cd6532dbd7bso925165a12.2
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:29:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792642648; x=1793247448; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=D4fgTxnwo+3lhaoW5IJ3HlnUCymtn0k12F/Qm8PcmcU=;
-        b=jOCJOiOMef7tWbUz8HGRghvq4ntoEFNUZyxyRUUMFclEnZSRJDW7t+jrNPEC5/9wbx
-         1vUwQRYeyxWmSvXJyxNR6YxC6wmgEvu5X5j6cBxdrC3LI4ac+sydPx0+jKkdV311QFXx
-         01KVHA3t3gE315t57eGLlg2uKy6YehNlQFkZpeGsDe+88SyM9JmDaInwf4SUf+QKGZrN
-         1IpXwUwRIUjXSfT2qUmZVLOUUrXuXf8ACGB+pdokt9aB92Eh91i4C0kwN5U5BUurD8yV
-         VQ+spri0a3Hwbabfbv6dumnTVjLqshPksPDs4tXRh8bEGFHeotjRX0qxBtwcnTNQE562
-         LZPw==
+        d=google.com; s=20251104; t=1792643383; x=1793248183; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=LjbRg1MxTdPPALlsDxB0y7vfr1lMEHLi3/W3/ZQqmuk=;
+        b=PLbOETe2Mr0/0qeS5vBY0dVD2HsL81cC0tb+i/A/sIP9TuoOUGUYEqDFH/cVxbV41+
+         aKvCvpHSnCQjJY0tJbuhWV2lD1JuZcwGrXousyIpSDUH3a0dmnqX2Fl6uuVPLMIUDXXD
+         YCkguiZXELLGL8uZcs+AjfnFvaH45qR+itkXqLsPovYO1LLB4XiFdEudaLCurbtoCmUD
+         a0BGEprNLGcV76BWl6+WJ3536toiYEr2JKRTG/NGsR7Ibl7IvtiXjMFyOwYz5E5/rmTr
+         X2dYY9ISF9GNL6nqqzepM0L3N+KI314F/U/CjWDIsOTBTFTJFuU2nKGU0K0/oMqPS0vm
+         O7tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792642648; x=1793247448;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D4fgTxnwo+3lhaoW5IJ3HlnUCymtn0k12F/Qm8PcmcU=;
-        b=WU/9faDEf+JDY7+G7Muv5lNa/U3JRFLipDxT0/m4y3miiPA429wpSwm+BlgEJLm9D7
-         9uTnYzAAFOPlIY+seCZERH+pyBs0ckuP3rixfE9SXMV0/1to6rHBl07hT6v+L75PiX2O
-         ObNyUxwXAupKNKRjGb/eEY1wMiR6BJtFufCZmauu6z9EmxZJH7AsArVt2tK4iGjnCNYz
-         K9Iak9y73ooYwcyzpGAZlrwU1zpGJZEniNodJ8HbL8Ql0rEem88b40IrtHBlzoZMqE78
-         KCM6H/7oyeWH96JD7g6ii7/6gU7XVa3qHyk8nJd7NK/eC2jat+JO2QSVQfcqO+PxnL8n
-         LPCw==
-X-Forwarded-Encrypted: i=1; AKwUvBx8am+fOlT0c+nngT24gu/3kYTizJfc2zVRJJVkOnBzS4AxcVvPH6acEGUvKKZwDCrKXt5kXYTm0Q==@kvack.org
-X-Gm-Message-State: AFq9FYJ4GIHL6rdR15yyQqTRN+n0HWvrjbhe8pyEO8FpZOw2l2dJ3PcI
-	afEAdL4pHNEZfHOVHx05Mm4ffAVTN5qalpFzUtIy+WwtL0xbMRbbA4g=
-X-Gm-Gg: AYBFou01iypBAFJk8xiCYVjBvh0P5AitPv+S43IsHMa0X6qEtxgxgIIbXd7xKVuNb/Q
-	wNujMZpWRmJiyTVefIbS7/eDEiwcXfxhr3zCdk2LAqziuWGgD+YNHMVNo1NGel2kdWYTSis+tTj
-	Q+F4Z1jXL4Q1+L7zaHzt2KhgG+c8vwbSKP/iNrKy7Tz0wa+//b9goYw6EOzDRzSgqROeKpV3FId
-	ETIze0LkXX2wFB/gN6tRLjD1UVUONLmpUIDeho0r8mdZEw5TnMjbNmJ2i2AMVnZjIjhnpJOvI6A
-	4/Onnq+aF3rG48OGfqT+DUbiKFCDz65Ca4tThkFmBFgXZTE2RBAawkncw55r97ZCqsCBaucIqnK
-	ateBTDVrZn8Q39QpR2OeGSSWNNB96gPiqp/FBBvyubt1b+dxvpJfz8nKrnVRgCYi5vSUfTe+lap
-	v8jMAaZbwA6iWzacyPV9P3HbUKuwWEqyr0PqDUALEZkUez5WkG2PIwIrnpUaKhb8ydMri4BYK3M
-	+KbIITOHKd7Y7lXDIqho+7ZK4b/TXD1MOwLcD/TlWfGGJpILoEm2elsdODg171q0eV8wf27/0Of
-	+6L+zfr+4V5SB18Z7EJHeYQ=
-X-Received: by 2002:a05:690e:c4f:b0:679:5d6b:a3d0 with SMTP id 956f58d0204a3-67a0e5cd260mr1515313d50.162.1792642648484;
-        Wed, 21 Oct 2026 21:17:28 -0700 (PDT)
-Received: from localhost.localdomain ([2600:1700:4577:1050:cde2:63f1:eb1b:b344])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b142cf9708sm10230967b3.4.2026.10.21.21.17.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 21:17:27 -0700 (PDT)
-From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-To: sj@kernel.org
-Cc: corbet@lwn.net,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	rdunlap@infradead.org,
-	skhan@linuxfoundation.org,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Subject: Re: [RFC PATCH v0] Docs/mm/damon/design: document data attributes report infra design (beyond page table accessed-bit milestone 2)
-Date: Wed, 21 Oct 2026 21:17:24 -0700
-Message-ID: <20261022041724.2712-1-ravis.opensrc@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261017195747.89961-1-sj@kernel.org>
-References: <20261017195747.89961-1-sj@kernel.org>
+        d=1e100.net; s=20260707; t=1792643383; x=1793248183;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LjbRg1MxTdPPALlsDxB0y7vfr1lMEHLi3/W3/ZQqmuk=;
+        b=24jxQM83X2uOrKl3LZaV6Czaui+z9ZdpnQTFrzpu7z5ga8DMsrsuXfdmGJOtrt1A8Q
+         gYC8dhI7kX823IOY68BNob/zsUJr0MhxzZBWC3Lqh1khQ1fwzdipar1AbkuBcPpbwF+v
+         wIFb8ttDOt6gH0Df2yuLc1gk1Q57LV/TQ03sIA4ZIOFXwjfa7K7ZOEj3aXY5JsASUT4H
+         XZJ3Ua4hr6/m6YVOI7/y6JYc7Zqu6pwb+kpo1BkWszQ4fXiNXAFBMrvc8GtWj7XE1yvy
+         xuJdbscyJkeBjSwtpZ62V0IbLezOYw17mLTaJdzldYyfhbXE7fnMOJ3QUlQIyn4MZO/N
+         Ozhw==
+X-Forwarded-Encrypted: i=1; AKwUvBymbmeMAiBMK0vM6xgX78NwSdANfd5q59OD/i/Xm8sI/X4kt1q4VIGNkTBtUOBQTlup4Rb0zxKY8A==@kvack.org
+X-Gm-Message-State: AFq9FYIh6RhF/65M9FVw0rJI13YF6ki7BlPq+vOuwWV0KCPVeAa8uVcc
+	PTKq43r53uJO1Jnjm5BZsbqvBOXTyAXOp2EZSMGu+ITBjC0NT+UfsehJqMP5WDB+rjZj6i2yWZc
+	LvpCF1owKRA==
+X-Received: from pfbhw13.prod.google.com ([2002:a05:6a00:890d:b0:896:c545:14b])
+ (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3cce:b0:898:9b2:605b
+ with SMTP id d2e1a72fcca58-8a089d6fd9bmr3412569b3a.56.1792643382842; Wed, 21
+ Oct 2026 21:29:42 -0700 (PDT)
+Date: Thu, 22 Oct 2026 04:28:57 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6FAD2120005
-X-Stat-Signature: 8sru5q7ys38renxujo7jti6dkxh7mpqo
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.218.g1ec904b173-goog
+Message-ID: <20261022042921.711624-1-wfelipe@google.com>
+Subject: [PATCH] selftests/cgroup: convert cg_read_key_*() helpers to s64
+From: Wilson Felipe Pereira <wfelipe@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Shuah Khan <shuah@kernel.org>
+Cc: Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Wilson Felipe Pereira <wfelipe@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 3px53pzffq778tf54uqgrtx91momwgzr
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 89E6140002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792642649-737616
-X-HE-Meta: U2FsdGVkX1+sB5C+gqCo5G8o/vsX7sqih6YTFvCPs3tv0/bDDm7fyld25cv4nETtcxjWLzGj7burshX3ByuV2/5KrjCCBadEUa/Erh1F76zZHKZonG9Sg7oMK7pdLqK/9WWL3tdJrBco3R4RNMvb3PC6YQpbJe/npziv6LX+AHhh8a0NPhaML4O/owzX3nqG5lITsjRJmf5ez4U+vz5+Yqmi1ZTSdvXWQBN7SXaM89YxmfydYXJOdZE/bLUO/gaRkUpgYmg9N0Y4XZcf+goStPAnDeftQoYQHcML3h/aqO3DRNq3HGnV8H2h7xSjNxsV4RoOHWiOt9dzSIUhE4qLlozX5xZDvdubfzih5lDffCjwtG8wF61G5JPFOZpMvX6sw20Z4BjjrQ1ZtwJBnPDnVMlcQrps5/6evRG8axKXNGRZ+LsLkJhLrBChi8dI+Lleg1pBICZg6/5OgNXil6G6TWZb1Qj9OoWFLY2c9heGQLzBU45N+fa8b22idM5GkXT+85xzdDNLzXtRvEwrFONSbNEPy512yOdVQCxQRiZm3WsoXqLDJfPLHdZRN/Y9dJ3PpFDN4JkVJz4+lbZZRhsPQ3ilQC59DgHWJ+qFKdN5xpBxYqS4IOCvPbZ5wJBfdBGdX8jqyCfDdYCilRWfDRolNOOwTAuGcklMH3jKqd85bVRDpvlFz8F3HJoN9UJnoaNOvuPLF4oNDkyb7T2yKMxHtrNIT7lPoDLrRgqWwd+3k9HPZLe+rQdH/o2iFQBAoizoGLQvRKdruvkgHzrkG4m0H5txegknsnqm7+ZE56ybDGDMfvTqV3JCI1d6QkavvEjlQYr3cvtQQlWlBfdKetrVzhx1ZHRZ4mf2LlxO1T5X01WOcrmXjaVSmodTPqht4Sdt9ktJKWXvvneH94a+DUXFZhAZr1g3qSp3O+E19ZbCOFi+8bc8FHR8gNGiRqKfuZmYsT7TTGZcFI2BKd59F/L
- D5HnwDma
- qmtOj7URNHygaxwFQ2ziZT8DITmKP4y7bDAozakY+GC5y5b2ajZ6Ik63mmHlbVSlrQF2qxmNN3cwOV4qXrzilkTKQ3s18QehCCkLAHe0+GwXvwFdw6VQA76gLzlh4rhsbJ/dJoLjKeMparPM9/GtgrW6TjEaPO4tOLuD56qfD8X+ViRncJWRoynMzPjP8u+7RslBqzPUuBAFL3+UjO4Obma/hsMbKy3Arg4Lv3HDbGewZpfKDIVpr1Kr3kIoX7mzpYbTckPAo9EPvroijo10dlA2hUGS81H7nNIYg8N4KmuUZuDE7LXKDTZPmHFLB11OvPCiQePNerf5aVqb5pUldukylN9/WXh9rBRwQPtG6365/iw8i+o5idMeZvE9WWirsJbnG25Aoy4LKKvU/nnvB4mzjPmrd13rrzhLNlSAtnLYiifTa6pSGWv+hVT1RCUn3xRC/RFhZFFs60O5i/gCFIj29FJWvn5ozMTHb
+X-HE-Tag: 1792643384-13795
+X-HE-Meta: U2FsdGVkX190wuL7sFNjK38KG+5kAKNWEzeMMcHB88TQ1Rnzxb1oOSBu1mLjhNwsnyCXs3ym4kgmJs4rbgizpASb7MzaW4JttjLwPSF1KowJ4Xs9BL+YgQe2TiXgvq1XuFSSivVG01660WWoBjEGTWEkbdVYtVqGZubLo4YYAEEmzqQm28k3Lk0xn3pH5jIWORRftB+Id8zzVwOd2aB+Qa0p/C6boRj72bhpw9c45vH2AkEtkffHcDPcBBcECK1LyHSBf5fHNUSrwcx61hLiy7HOxLe7BrpQMjVHt4Qh7h3OW5mgFLM0g/frLwQxXKt8NyEQHsrBGj7WSo5uhh9vl5Oyu8C1TlTmcbwr1kVEuQ0lKWErL1Qhzo//GYf7MosKWo10k1Nv0wzATAFBFk5Pj0Z3TNh7UhsVZNyWEry04bvwUq49tt1Q9UDFuEZBV7cHP7GOwsN1Qyg3v9cVlj8OOFLu0l1TySipWXWgemKAq7O/3PofJKJsEiWRrq7MuxBVbhZqrCFdWOIIWF9U7EDw0Ts/DuRBVaOSwscOZkpPDCL/zYZbybDhj4FjhWIUcCoBZ1V1Vz/L5U3Xbuh3YHhWzxaV/sghahZY75U7n62YWk9LybIhjmndtbK/MS/McQ7yO8LYzniu0SZhUwVvh0oHUM/fc2frgjAbqgJZ8JF0Fr33xagPIN9cBiyrox+Gz+8IsVRv4OMO5ZD8bBjmY4OhbdeUd/qSt+EixdL3v2F0Me3JpaUPnZgRi3WMBkCNFNT37shGXYosinAENjFOP9NTztWUkgpGIqH+8Qj/YDENDq9DKRS8nKdUbcE165bIXm4GE6wDcPK8A/VjVEYpC3wf8YM84e6DFzZMmwjlH2GBZq413iarlvzZLN/3N6nM9ug30L/q6bMhEa0YK15KzkEglnxrDI9d8b94tn4Re4fSKt/LHhqT5mN4FXP+RdQ+mYktIlp/hIV/Zg1J317rkpE
+ b1DN6O3P
+ ZbuyjslXoTsscNU75bKUzRy/ItvhTsUtRxtKk61m8q2cb8tTTdu2LBOfdlkbnyrN+/AkccGTNpEPlYQIbLPbhdq/n18pW+eT6P9OYY9moEl84pVfVR54LfljYXdS4cpKqN0JVCRFQCRbU1Cxkt4onWGhY9nsTkliaOA95lVKv6mv3CM8gBYIV5qaBkXVFs1nB9cczIJtmtL/93fASS0TIutbpeEHahPUejNCOZ5N+OkTTpIcsVv5M01TDkgcIRO+4zVkzOVoT6b+BpmAymXkiDfy6kf7UreGjv3VKodKPpF0Gx9qV5GgToWgTJZ/2HjbSJrYvXzLtyrNgYblw5dk6p4+e/Qb8Mmf05+mFotdSspHpvOWmEsmxRxN4zhcH833lzQlUSWhrw+3IohfyFSRKP+i7gdPe7K/hqSK22UeETkHYyYaTocIMpSMFxjzrJI1gahXMIlZ7CQ90wWPhnBXQnxwflFFngYvHQJmaSYdl5ksZVIGXbV1O0pZo407hYHAMaxSjflYJ+TdBqb0IN1cr3HJI2OZY8DrV+1Cqk8cYKqf2DZT4UvYNvH4ibDhXUXElJogoAwEZN5eJygybylM6r7BMnj6KpxpkKGfxvzcFl0PIlhQEW4NXkJD40EUQ66W0i/eKZ/WqwjV0Bxc9nznifJyib9dkztkT6hk+ydEgbV19nHFZBfzhDhEZaqbKUd3MycsHfRveK9/G4NLpkslJkDYbjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,106 +117,1002 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+In the kernel, cgroup statistics and event counters in multi-key control
+files (such as memory.stat, cpu.stat, and memory.events) are internally
+stored and exported as 64-bit values.
 
-Thank you for sharing the design early.  Short version: the design makes
-sense to me, with one main suggestion.  The first report type should use
-the data address the PMU captures at sample time, rather than decode the
-instruction later in kdamond.  The measurements behind it are in my
-reply to your answer to sashiko.
+On 32-bit platforms, cg_read_key_long() relies on atol(), which returns a
+32-bit signed long. When values in memory.stat or event counters exceed
+2.14GB (such as on 32-bit systems with large memory), the parsed value
+overflows and wraps into negative numbers, leading to subtle bugs and
+false test failures.
 
-On Sat, 17 Oct 2026 12:57:45 -0700 SJ Park <sj@kernel.org> wrote:
+Standardize on explicitly-sized 64-bit helpers and types across the
+cgroup selftests:
 
-> Does the idea for perf CPU cycle sampling based access monitoring makes
-> sense?
+- Define s64 in cgroup_util.h as signed long long.
+- Convert cg_read_key_long() to cg_read_key_s64() using atoll().
+- Convert cg_read_key_long_poll() to cg_read_key_s64_poll(), updating
+  both the return type and the expected argument to s64.
+- Update values_close() and values_close_report() to operate on s64 and
+  use llabs() to prevent downcasting/truncation of 64-bit differences.
+- Migrate helper functions (get_cg_wb_count(), get_zswpout(),
+  get_zswap_incomp(), wait_for_writeback(), and cg_check_freezetime())
+  and their callers to s64.
+- Migrate all callers across test_cpu, test_kmem, test_memcontrol,
+  test_pids, test_freezer, and test_zswap to cg_read_key_s64().
+- Update corresponding printf formats to %lld and difference checks to
+  llabs() for s64.
 
-On AMD, yes, with precise_ip (cpu-cycles:p routes to IBS Op): its
-memory-op samples carry a data address and load/store type.  On Intel,
-even precise cycles samples (cycles:pp) carry no data address; PEBS
-memory events do.  Decode from saved registers worked for one of two
-test loops on Intel and for neither on AMD (details in the other reply),
-hence the suggestion above.
+Suggested-by: Michal Koutn=C3=BD <mkoutny@suse.com>
+Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+---
 
-> Does the design provides clear idea about how it can be extended for the
-> future extensions that already scoped for milestone 3 (AMD IBS, Intel
-> PEBS, Arm SPE)?
+Notes:
+    This patch was previously Patch 2/3 of v6 ("selftests/cgroup: fixes for
+    test_zswap on single core VM"):
+    https://lore.kernel.org/all/20260904225103.2955759-1-wfelipe@google.com=
+/
+   =20
+    Since Patches 1 and 3 from that series were already applied to mm-stabl=
+e
+    from v4 ("selftests/cgroup: test_zswap: wait for cgroup to unpopulate i=
+n
+    test_zswap_writeback" and "selftests/cgroup: test_zswap: fix implicit
+    unsigned promotion bug in test_no_kmem_bypass"), this standalone patch =
+is
+    rebased on top of mm-stable to complete the s64 conversion across the
+    cgroup selftests (including updating test_no_kmem_bypass() to s64).
 
-Yes, if the report has an address field with a validity bit and carries
-the producing report-type (attr) id.  Then IBS, PEBS, Arm SPE (through
-an adapter, since SPE uses the perf AUX buffer) and device-side
-monitors all produce the same report, into the same queues and probes.
+ .../selftests/cgroup/lib/cgroup_util.c        | 14 ++--
+ .../cgroup/lib/include/cgroup_util.h          | 22 +++---
+ tools/testing/selftests/cgroup/test_cpu.c     | 47 ++++++-------
+ tools/testing/selftests/cgroup/test_freezer.c | 16 ++---
+ tools/testing/selftests/cgroup/test_kmem.c    | 56 ++++++++-------
+ .../selftests/cgroup/test_memcontrol.c        | 69 ++++++++++---------
+ tools/testing/selftests/cgroup/test_pids.c    |  5 +-
+ tools/testing/selftests/cgroup/test_zswap.c   | 62 +++++++++--------
+ 8 files changed, 151 insertions(+), 140 deletions(-)
 
-> For the foreseeable extensions (AMD IBS, Intel PEBS, Arm SPE), would the
-> required change minimum and maintainable?
+diff --git a/tools/testing/selftests/cgroup/lib/cgroup_util.c b/tools/testi=
+ng/selftests/cgroup/lib/cgroup_util.c
+index 2596c12cd864..ed3c4893833a 100644
+--- a/tools/testing/selftests/cgroup/lib/cgroup_util.c
++++ b/tools/testing/selftests/cgroup/lib/cgroup_util.c
+@@ -172,7 +172,7 @@ long cg_read_long_fd(int fd)
+ 	return atol(buf);
+ }
+=20
+-long cg_read_key_long(const char *cgroup, const char *control, const char =
+*key)
++s64 cg_read_key_s64(const char *cgroup, const char *control, const char *k=
+ey)
+ {
+ 	char buf[BUF_SIZE];
+ 	char *ptr;
+@@ -184,18 +184,18 @@ long cg_read_key_long(const char *cgroup, const char =
+*control, const char *key)
+ 	if (!ptr)
+ 		return -1;
+=20
+-	return atol(ptr + strlen(key));
++	return atoll(ptr + strlen(key));
+ }
+=20
+-long cg_read_key_long_poll(const char *cgroup, const char *control,
+-			   const char *key, long expected, int retries,
+-			   useconds_t wait_interval_us)
++s64 cg_read_key_s64_poll(const char *cgroup, const char *control,
++			 const char *key, s64 expected, int retries,
++			 useconds_t wait_interval_us)
+ {
+-	long val =3D -1;
++	s64 val =3D -1;
+ 	int i;
+=20
+ 	for (i =3D 0; i < retries; i++) {
+-		val =3D cg_read_key_long(cgroup, control, key);
++		val =3D cg_read_key_s64(cgroup, control, key);
+ 		if (val < 0)
+ 			return val;
+=20
+diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/too=
+ls/testing/selftests/cgroup/lib/include/cgroup_util.h
+index 5d39c709ac7a..ddb05932d9c7 100644
+--- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
++++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+@@ -2,6 +2,8 @@
+ #include <stdbool.h>
+ #include <stdlib.h>
+=20
++typedef signed long long s64;
++
+ #ifndef BUF_SIZE
+ #define BUF_SIZE 4096
+ #endif
+@@ -24,25 +26,25 @@
+ /*
+  * Checks if two given values differ by less than err% of their sum.
+  */
+-static inline int values_close(long a, long b, int err)
++static inline int values_close(s64 a, s64 b, int err)
+ {
+-	return labs(a - b) <=3D (a + b) / 100 * err;
++	return llabs(a - b) <=3D (a + b) / 100 * err;
+ }
+=20
+ /*
+  * Checks if two given values differ by less than err% of their sum and as=
+sert
+  * with detailed debug info if not.
+  */
+-static inline int values_close_report(long a, long b, int err)
++static inline int values_close_report(s64 a, s64 b, int err)
+ {
+-	long diff  =3D labs(a - b);
+-	long limit =3D (a + b) / 100 * err;
++	s64 diff  =3D llabs(a - b);
++	s64 limit =3D (a + b) / 100 * err;
+ 	double actual_err =3D (a + b) ? (100.0 * diff / (a + b)) : 0.0;
+ 	int close =3D diff <=3D limit;
+=20
+ 	if (!close)
+ 		fprintf(stderr,
+-			"[FAIL] actual=3D%ld expected=3D%ld | diff=3D%ld | limit=3D%ld | "
++			"[FAIL] actual=3D%lld expected=3D%lld | diff=3D%lld | limit=3D%lld | "
+ 			"tolerance=3D%d%% | actual_error=3D%.2f%%\n",
+ 			a, b, diff, limit, err, actual_err);
+=20
+@@ -69,10 +71,10 @@ extern int cg_read_strstr(const char *cgroup, const cha=
+r *control,
+ 			  const char *needle);
+ extern long cg_read_long(const char *cgroup, const char *control);
+ extern long cg_read_long_fd(int fd);
+-long cg_read_key_long(const char *cgroup, const char *control, const char =
+*key);
+-long cg_read_key_long_poll(const char *cgroup, const char *control,
+-			   const char *key, long expected, int retries,
+-			   useconds_t wait_interval_us);
++s64 cg_read_key_s64(const char *cgroup, const char *control, const char *k=
+ey);
++s64 cg_read_key_s64_poll(const char *cgroup, const char *control,
++			 const char *key, s64 expected, int retries,
++			 useconds_t wait_interval_us);
+ extern long cg_read_lc(const char *cgroup, const char *control);
+ extern int cg_write(const char *cgroup, const char *control, char *buf);
+ extern int cg_open(const char *cgroup, const char *control, int flags);
+diff --git a/tools/testing/selftests/cgroup/test_cpu.c b/tools/testing/self=
+tests/cgroup/test_cpu.c
+index 735a53bb222b..11da1de9cdeb 100644
+--- a/tools/testing/selftests/cgroup/test_cpu.c
++++ b/tools/testing/selftests/cgroup/test_cpu.c
+@@ -24,7 +24,7 @@ enum hog_clock_type {
+ struct cpu_hogger {
+ 	char *cgroup;
+ 	pid_t pid;
+-	long usage;
++	s64 usage;
+ };
+=20
+ struct cpu_hog_func_param {
+@@ -185,7 +185,7 @@ static int hog_cpus_timed(const char *cgroup, void *arg=
+)
+ static int test_cpucg_stats(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+-	long usage_usec, user_usec, system_usec;
++	s64 usage_usec, user_usec, system_usec;
+ 	long usage_seconds =3D 2;
+ 	long expected_usage_usec =3D usage_seconds * USEC_PER_SEC;
+ 	char *cpucg;
+@@ -197,9 +197,9 @@ static int test_cpucg_stats(const char *root)
+ 	if (cg_create(cpucg))
+ 		goto cleanup;
+=20
+-	usage_usec =3D cg_read_key_long(cpucg, "cpu.stat", "usage_usec");
+-	user_usec =3D cg_read_key_long(cpucg, "cpu.stat", "user_usec");
+-	system_usec =3D cg_read_key_long(cpucg, "cpu.stat", "system_usec");
++	usage_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "usage_usec");
++	user_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "user_usec");
++	system_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "system_usec");
+ 	if (usage_usec !=3D 0 || user_usec !=3D 0 || system_usec !=3D 0)
+ 		goto cleanup;
+=20
+@@ -214,8 +214,8 @@ static int test_cpucg_stats(const char *root)
+ 	if (cg_run(cpucg, hog_cpus_timed, (void *)&param))
+ 		goto cleanup;
+=20
+-	usage_usec =3D cg_read_key_long(cpucg, "cpu.stat", "usage_usec");
+-	user_usec =3D cg_read_key_long(cpucg, "cpu.stat", "user_usec");
++	usage_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "usage_usec");
++	user_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "user_usec");
+ 	if (user_usec <=3D 0)
+ 		goto cleanup;
+=20
+@@ -239,7 +239,7 @@ static int test_cpucg_nice(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	int status;
+-	long user_usec, nice_usec;
++	s64 user_usec, nice_usec;
+ 	long usage_seconds =3D 2;
+ 	long expected_nice_usec =3D usage_seconds * USEC_PER_SEC;
+ 	char *cpucg;
+@@ -252,8 +252,8 @@ static int test_cpucg_nice(const char *root)
+ 	if (cg_create(cpucg))
+ 		goto cleanup;
+=20
+-	user_usec =3D cg_read_key_long(cpucg, "cpu.stat", "user_usec");
+-	nice_usec =3D cg_read_key_long(cpucg, "cpu.stat", "nice_usec");
++	user_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "user_usec");
++	nice_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "nice_usec");
+ 	if (nice_usec =3D=3D -1)
+ 		ret =3D KSFT_SKIP;
+ 	if (user_usec !=3D 0 || nice_usec !=3D 0)
+@@ -289,8 +289,8 @@ static int test_cpucg_nice(const char *root)
+ 		if (!WIFEXITED(status))
+ 			goto cleanup;
+=20
+-		user_usec =3D cg_read_key_long(cpucg, "cpu.stat", "user_usec");
+-		nice_usec =3D cg_read_key_long(cpucg, "cpu.stat", "nice_usec");
++		user_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "user_usec");
++		nice_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "nice_usec");
+ 		if (user_usec <=3D 0)
+ 			goto cleanup;
+ 		if (!values_close_report(nice_usec, expected_nice_usec, 1))
+@@ -357,8 +357,8 @@ run_cpucg_weight_test(
+ 	}
+=20
+ 	for (i =3D 0; i < ARRAY_SIZE(children); i++)
+-		children[i].usage =3D cg_read_key_long(children[i].cgroup,
+-				"cpu.stat", "usage_usec");
++		children[i].usage =3D cg_read_key_s64(children[i].cgroup,
++						    "cpu.stat", "usage_usec");
+=20
+ 	if (validate(children, ARRAY_SIZE(children)))
+ 		goto cleanup;
+@@ -486,7 +486,7 @@ run_cpucg_nested_weight_test(const char *root, bool ove=
+rprovisioned)
+ 	int ret =3D KSFT_FAIL, i;
+ 	char *parent =3D NULL, *child =3D NULL;
+ 	struct cpu_hogger leaf[3] =3D {};
+-	long nested_leaf_usage, child_usage;
++	s64 nested_leaf_usage, child_usage;
+ 	int nprocs =3D get_nprocs();
+=20
+ 	if (!overprovisioned) {
+@@ -567,8 +567,8 @@ run_cpucg_nested_weight_test(const char *root, bool ove=
+rprovisioned)
+ 	}
+=20
+ 	for (i =3D 0; i < ARRAY_SIZE(leaf); i++) {
+-		leaf[i].usage =3D cg_read_key_long(leaf[i].cgroup,
+-				"cpu.stat", "usage_usec");
++		leaf[i].usage =3D cg_read_key_s64(leaf[i].cgroup, "cpu.stat",
++						"usage_usec");
+ 		if (leaf[i].usage <=3D 0)
+ 			goto cleanup;
+ 	}
+@@ -580,8 +580,7 @@ run_cpucg_nested_weight_test(const char *root, bool ove=
+rprovisioned)
+ 	} else if (!values_close_report(leaf[0].usage * 2, nested_leaf_usage, 15)=
+)
+ 		goto cleanup;
+=20
+-
+-	child_usage =3D cg_read_key_long(child, "cpu.stat", "usage_usec");
++	child_usage =3D cg_read_key_s64(child, "cpu.stat", "usage_usec");
+ 	if (child_usage <=3D 0)
+ 		goto cleanup;
+ 	if (!values_close_report(child_usage, nested_leaf_usage, 1))
+@@ -679,7 +678,8 @@ static int test_cpucg_max(const char *root)
+ 	long duration_seconds =3D 1;
+=20
+ 	long duration_usec;
+-	long usage_usec, n_periods, remainder_usec, expected_usage_usec;
++	long n_periods, remainder_usec, expected_usage_usec;
++	s64 usage_usec;
+ 	char *cpucg;
+ 	char quota_buf[32];
+=20
+@@ -708,7 +708,7 @@ static int test_cpucg_max(const char *root)
+ 	if (cg_run(cpucg, hog_cpus_timed, (void *)&param))
+ 		goto cleanup;
+=20
+-	usage_usec =3D cg_read_key_long(cpucg, "cpu.stat", "usage_usec");
++	usage_usec =3D cg_read_key_s64(cpucg, "cpu.stat", "usage_usec");
+ 	if (usage_usec <=3D 0)
+ 		goto cleanup;
+=20
+@@ -746,7 +746,8 @@ static int test_cpucg_max_nested(const char *root)
+ 	long duration_seconds =3D 1;
+=20
+ 	long duration_usec;
+-	long usage_usec, n_periods, remainder_usec, expected_usage_usec;
++	long n_periods, remainder_usec, expected_usage_usec;
++	s64 usage_usec;
+ 	char *parent, *child;
+ 	char quota_buf[32];
+=20
+@@ -782,7 +783,7 @@ static int test_cpucg_max_nested(const char *root)
+ 	if (cg_run(child, hog_cpus_timed, (void *)&param))
+ 		goto cleanup;
+=20
+-	usage_usec =3D cg_read_key_long(child, "cpu.stat", "usage_usec");
++	usage_usec =3D cg_read_key_s64(child, "cpu.stat", "usage_usec");
+ 	if (usage_usec <=3D 0)
+ 		goto cleanup;
+=20
+diff --git a/tools/testing/selftests/cgroup/test_freezer.c b/tools/testing/=
+selftests/cgroup/test_freezer.c
+index f28bb02e9783..f4f082c13d4b 100644
+--- a/tools/testing/selftests/cgroup/test_freezer.c
++++ b/tools/testing/selftests/cgroup/test_freezer.c
+@@ -807,10 +807,9 @@ static int test_cgfreezer_vfork(const char *root)
+ /*
+  * Get the current frozen_usec for the cgroup.
+  */
+-static long cg_check_freezetime(const char *cgroup)
++static s64 cg_check_freezetime(const char *cgroup)
+ {
+-	return cg_read_key_long(cgroup, "cgroup.stat.local",
+-				"frozen_usec ");
++	return cg_read_key_s64(cgroup, "cgroup.stat.local", "frozen_usec ");
+ }
+=20
+ /*
+@@ -820,7 +819,7 @@ static int test_cgfreezer_time_empty(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *cgroup =3D NULL;
+-	long prev, curr;
++	s64 prev, curr;
+=20
+ 	cgroup =3D cg_name(root, "cg_time_test_empty");
+ 	if (!cgroup)
+@@ -839,7 +838,7 @@ static int test_cgfreezer_time_empty(const char *root)
+ 		goto cleanup;
+ 	}
+ 	if (curr > 0) {
+-		debug("Expect time (%ld) to be 0\n", curr);
++		debug("Expect time (%lld) to be 0\n", curr);
+ 		goto cleanup;
+ 	}
+=20
+@@ -853,8 +852,7 @@ static int test_cgfreezer_time_empty(const char *root)
+ 	usleep(1000);
+ 	curr =3D cg_check_freezetime(cgroup);
+ 	if (curr < 1000) {
+-		debug("Expect time (%ld) to be at least 1000 us\n",
+-		      curr);
++		debug("Expect time (%lld) to be at least 1000 us\n", curr);
+ 		goto cleanup;
+ 	}
+=20
+@@ -867,7 +865,7 @@ static int test_cgfreezer_time_empty(const char *root)
+ 	prev =3D curr;
+ 	curr =3D cg_check_freezetime(cgroup);
+ 	if (curr <=3D prev) {
+-		debug("Expect time (%ld) to be more than previous check (%ld)\n",
++		debug("Expect time (%lld) to be more than previous check (%lld)\n",
+ 		      curr, prev);
+ 		goto cleanup;
+ 	}
+@@ -879,7 +877,7 @@ static int test_cgfreezer_time_empty(const char *root)
+ 	prev =3D curr;
+ 	curr =3D cg_check_freezetime(cgroup);
+ 	if (curr !=3D prev) {
+-		debug("Expect time (%ld) to be unchanged from previous check (%ld)\n",
++		debug("Expect time (%lld) to be unchanged from previous check (%lld)\n",
+ 		      curr, prev);
+ 		goto cleanup;
+ 	}
+diff --git a/tools/testing/selftests/cgroup/test_kmem.c b/tools/testing/sel=
+ftests/cgroup/test_kmem.c
+index 437f2d35f205..249898f3b81e 100644
+--- a/tools/testing/selftests/cgroup/test_kmem.c
++++ b/tools/testing/selftests/cgroup/test_kmem.c
+@@ -54,7 +54,8 @@ static int test_kmem_basic(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *cg =3D NULL;
+-	long slab0, slab1, current;
++	s64 slab0, slab1;
++	long current;
+=20
+ 	cg =3D cg_name(root, "kmem_basic_test");
+ 	if (!cg)
+@@ -66,7 +67,7 @@ static int test_kmem_basic(const char *root)
+ 	if (cg_run(cg, alloc_dcache, (void *)100000))
+ 		goto cleanup;
+=20
+-	slab0 =3D cg_read_key_long(cg, "memory.stat", "slab ");
++	slab0 =3D cg_read_key_s64(cg, "memory.stat", "slab ");
+ 	if (slab0 < (1 << 20))
+ 		goto cleanup;
+=20
+@@ -75,7 +76,7 @@ static int test_kmem_basic(const char *root)
+ 	/* wait for RCU freeing */
+ 	sleep(1);
+=20
+-	slab1 =3D cg_read_key_long(cg, "memory.stat", "slab ");
++	slab1 =3D cg_read_key_s64(cg, "memory.stat", "slab ");
+ 	if (slab1 < 0)
+ 		goto cleanup;
+=20
+@@ -167,7 +168,8 @@ static int cg_run_in_subcgroups(const char *parent,
+  */
+ static int test_kmem_memcg_deletion(const char *root)
+ {
+-	long current, anon, file, kernel, sock, sum;
++	long current;
++	s64 anon, file, kernel, sock, sum;
+ 	int ret =3D KSFT_FAIL;
+ 	char *parent;
+=20
+@@ -185,23 +187,23 @@ static int test_kmem_memcg_deletion(const char *root)
+ 		goto cleanup;
+=20
+ 	current =3D cg_read_long(parent, "memory.current");
+-	anon =3D cg_read_key_long(parent, "memory.stat", "anon ");
+-	file =3D cg_read_key_long(parent, "memory.stat", "file ");
+-	kernel =3D cg_read_key_long(parent, "memory.stat", "kernel ");
+-	sock =3D cg_read_key_long(parent, "memory.stat", "sock ");
++	anon =3D cg_read_key_s64(parent, "memory.stat", "anon ");
++	file =3D cg_read_key_s64(parent, "memory.stat", "file ");
++	kernel =3D cg_read_key_s64(parent, "memory.stat", "kernel ");
++	sock =3D cg_read_key_s64(parent, "memory.stat", "sock ");
+ 	if (current < 0 || anon < 0 || file < 0 || kernel < 0 || sock < 0)
+ 		goto cleanup;
+=20
+ 	sum =3D anon + file + kernel + sock;
+-	if (labs(sum - current) < MAX_VMSTAT_ERROR) {
++	if (llabs(sum - current) < MAX_VMSTAT_ERROR) {
+ 		ret =3D KSFT_PASS;
+ 	} else {
+ 		printf("memory.current =3D %ld\n", current);
+-		printf("anon + file + kernel + sock =3D %ld\n", sum);
+-		printf("anon =3D %ld\n", anon);
+-		printf("file =3D %ld\n", file);
+-		printf("kernel =3D %ld\n", kernel);
+-		printf("sock =3D %ld\n", sock);
++		printf("anon + file + kernel + sock =3D %lld\n", sum);
++		printf("anon =3D %lld\n", anon);
++		printf("file =3D %lld\n", file);
++		printf("kernel =3D %lld\n", kernel);
++		printf("sock =3D %lld\n", sock);
+ 	}
+=20
+ cleanup:
+@@ -248,7 +250,7 @@ static int spawn_1000_threads(const char *cgroup, void =
+*arg)
+ 	int nr_threads =3D 1000;
+ 	pthread_t *tinfo;
+ 	unsigned long i;
+-	long stack;
++	s64 stack;
+ 	int ret =3D -1;
+=20
+ 	tinfo =3D calloc(nr_threads, sizeof(pthread_t));
+@@ -263,7 +265,7 @@ static int spawn_1000_threads(const char *cgroup, void =
+*arg)
+ 		}
+ 	}
+=20
+-	stack =3D cg_read_key_long(cgroup, "memory.stat", "kernel_stack ");
++	stack =3D cg_read_key_s64(cgroup, "memory.stat", "kernel_stack ");
+ 	if (stack >=3D 4096 * 1000)
+ 		ret =3D 0;
+=20
+@@ -307,7 +309,7 @@ static int test_kmem_dead_cgroups(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *parent;
+-	long dead =3D -1;
++	s64 dead =3D -1;
+=20
+ 	parent =3D cg_name(root, "kmem_dead_cgroups_test");
+ 	if (!parent)
+@@ -328,9 +330,10 @@ static int test_kmem_dead_cgroups(const char *root)
+ 	 * from a specific kernel constant, and can be adjusted if reclaim
+ 	 * behavior changes in the future.
+ 	 */
+-	dead =3D cg_read_key_long_poll(parent, "cgroup.stat",
+-					"nr_dying_descendants ", 0, KMEM_DEAD_WAIT_RETRIES,
+-					DEFAULT_WAIT_INTERVAL_US);
++	dead =3D cg_read_key_s64_poll(parent, "cgroup.stat",
++				    "nr_dying_descendants ", 0,
++				    KMEM_DEAD_WAIT_RETRIES,
++				    DEFAULT_WAIT_INTERVAL_US);
+ 	if (dead)
+ 		goto cleanup;
+=20
+@@ -353,7 +356,8 @@ static int test_percpu_basic(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *parent, *child;
+-	long current, percpu, slab;
++	long current;
++	s64 percpu, slab;
+ 	int i;
+=20
+ 	parent =3D cg_name(root, "percpu_basic_test");
+@@ -382,15 +386,15 @@ static int test_percpu_basic(const char *root)
+ 	}
+=20
+ 	current =3D cg_read_long(parent, "memory.current");
+-	percpu =3D cg_read_key_long(parent, "memory.stat", "percpu ");
+-	slab =3D cg_read_key_long(parent, "memory.stat", "slab ");
++	percpu =3D cg_read_key_s64(parent, "memory.stat", "percpu ");
++	slab =3D cg_read_key_s64(parent, "memory.stat", "slab ");
+=20
+ 	if (current > 0 && percpu > 0 && slab >=3D 0 &&
+-			labs(current - (percpu + slab)) < MAX_VMSTAT_ERROR)
++	    llabs(current - (percpu + slab)) < MAX_VMSTAT_ERROR)
+ 		ret =3D KSFT_PASS;
+ 	else
+-		printf("memory.current %ld\npercpu %ld\nslab %ld\ndelta %ld\n",
+-			current, percpu, slab, current - (percpu + slab));
++		printf("memory.current %ld\npercpu %lld\nslab %lld\ndelta %lld\n",
++		       current, percpu, slab, current - (percpu + slab));
+=20
+ cleanup_children:
+ 	for (i =3D 0; i < 1000; i++) {
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testi=
+ng/selftests/cgroup/test_memcontrol.c
+index 0ed82347044e..186f3a07cad6 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -192,7 +192,8 @@ static int alloc_anon_50M_check(const char *cgroup, voi=
+d *arg)
+ {
+ 	size_t size =3D MB(50);
+ 	char *buf;
+-	long anon, current;
++	s64 anon;
++	long current;
+ 	int ret =3D -1;
+=20
+ 	buf =3D alloc_and_populate_anon(size);
+@@ -206,7 +207,7 @@ static int alloc_anon_50M_check(const char *cgroup, voi=
+d *arg)
+ 	if (!values_close(size, current, 3))
+ 		goto cleanup;
+=20
+-	anon =3D cg_read_key_long(cgroup, "memory.stat", "anon ");
++	anon =3D cg_read_key_s64(cgroup, "memory.stat", "anon ");
+ 	if (anon < 0)
+ 		goto cleanup;
+=20
+@@ -223,7 +224,8 @@ static int alloc_pagecache_50M_check(const char *cgroup=
+, void *arg)
+ {
+ 	size_t size =3D MB(50);
+ 	int ret =3D -1;
+-	long current, file;
++	long current;
++	s64 file;
+ 	int fd;
+=20
+ 	fd =3D get_temp_fd();
+@@ -237,7 +239,7 @@ static int alloc_pagecache_50M_check(const char *cgroup=
+, void *arg)
+ 	if (current < size)
+ 		goto cleanup;
+=20
+-	file =3D cg_read_key_long(cgroup, "memory.stat", "file ");
++	file =3D cg_read_key_s64(cgroup, "memory.stat", "file ");
+ 	if (file < 0)
+ 		goto cleanup;
+=20
+@@ -623,10 +625,10 @@ static int test_memcg_protection(const char *root, bo=
+ol min)
+ 	for (i =3D 0; i < ARRAY_SIZE(children); i++) {
+ 		int ignore_low_events_index =3D has_recursiveprot ? 2 : -1;
+ 		int no_low_events_index =3D 1;
+-		long low, oom;
++		s64 low, oom;
+=20
+-		oom =3D cg_read_key_long(children[i], "memory.events", "oom ");
+-		low =3D cg_read_key_long(children[i], "memory.events", "low ");
++		oom =3D cg_read_key_s64(children[i], "memory.events", "oom ");
++		low =3D cg_read_key_s64(children[i], "memory.events", "low ");
+=20
+ 		if (oom)
+ 			goto cleanup;
+@@ -711,7 +713,7 @@ static int test_memcg_high(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *memcg;
+-	long high;
++	s64 high;
+=20
+ 	memcg =3D cg_name(root, "memcg_test");
+ 	if (!memcg)
+@@ -738,7 +740,7 @@ static int test_memcg_high(const char *root)
+ 	if (cg_run(memcg, alloc_pagecache_max_30M, NULL))
+ 		goto cleanup;
+=20
+-	high =3D cg_read_key_long(memcg, "memory.events", "high ");
++	high =3D cg_read_key_s64(memcg, "memory.events", "high ");
+ 	if (high <=3D 0)
+ 		goto cleanup;
+=20
+@@ -774,8 +776,8 @@ static int test_memcg_high_sync(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL, pid, fd =3D -1;
+ 	char *memcg;
+-	long pre_high, pre_max;
+-	long post_high, post_max;
++	s64 pre_high, pre_max;
++	s64 post_high, post_max;
+=20
+ 	memcg =3D cg_name(root, "memcg_test");
+ 	if (!memcg)
+@@ -784,8 +786,8 @@ static int test_memcg_high_sync(const char *root)
+ 	if (cg_create(memcg))
+ 		goto cleanup;
+=20
+-	pre_high =3D cg_read_key_long(memcg, "memory.events", "high ");
+-	pre_max =3D cg_read_key_long(memcg, "memory.events", "max ");
++	pre_high =3D cg_read_key_s64(memcg, "memory.events", "high ");
++	pre_max =3D cg_read_key_s64(memcg, "memory.events", "max ");
+ 	if (pre_high < 0 || pre_max < 0)
+ 		goto cleanup;
+=20
+@@ -808,8 +810,8 @@ static int test_memcg_high_sync(const char *root)
+=20
+ 	cg_wait_for(fd);
+=20
+-	post_high =3D cg_read_key_long(memcg, "memory.events", "high ");
+-	post_max =3D cg_read_key_long(memcg, "memory.events", "max ");
++	post_high =3D cg_read_key_s64(memcg, "memory.events", "high ");
++	post_max =3D cg_read_key_s64(memcg, "memory.events", "max ");
+ 	if (post_high < 0 || post_max < 0)
+ 		goto cleanup;
+=20
+@@ -836,7 +838,8 @@ static int test_memcg_max(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *memcg;
+-	long current, max;
++	long current;
++	s64 max;
+=20
+ 	memcg =3D cg_name(root, "memcg_test");
+ 	if (!memcg)
+@@ -865,7 +868,7 @@ static int test_memcg_max(const char *root)
+ 	if (current > MB(30) || !current)
+ 		goto cleanup;
+=20
+-	max =3D cg_read_key_long(memcg, "memory.events", "max ");
++	max =3D cg_read_key_s64(memcg, "memory.events", "max ");
+ 	if (max <=3D 0)
+ 		goto cleanup;
+=20
+@@ -1029,7 +1032,8 @@ static int test_memcg_swap_max_peak(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *memcg;
+-	long max, peak;
++	s64 max;
++	long peak;
+ 	struct stat ss;
+ 	int swap_peak_fd =3D -1, mem_peak_fd =3D -1;
+=20
+@@ -1122,10 +1126,10 @@ static int test_memcg_swap_max_peak(const char *roo=
+t)
+ 	if (!cg_run(memcg, alloc_anon, (void *)MB(100)))
+ 		goto cleanup;
+=20
+-	if (cg_read_key_long(memcg, "memory.events", "oom ") !=3D 1)
++	if (cg_read_key_s64(memcg, "memory.events", "oom ") !=3D 1)
+ 		goto cleanup;
+=20
+-	if (cg_read_key_long(memcg, "memory.events", "oom_kill ") !=3D 1)
++	if (cg_read_key_s64(memcg, "memory.events", "oom_kill ") !=3D 1)
+ 		goto cleanup;
+=20
+ 	peak =3D cg_read_long(memcg, "memory.peak");
+@@ -1186,7 +1190,7 @@ static int test_memcg_swap_max_peak(const char *root)
+ 	if (cg_run(memcg, alloc_anon_50M_check_swap, (void *)MB(30)))
+ 		goto cleanup;
+=20
+-	max =3D cg_read_key_long(memcg, "memory.events", "max ");
++	max =3D cg_read_key_s64(memcg, "memory.events", "max ");
+ 	if (max <=3D 0)
+ 		goto cleanup;
+=20
+@@ -1248,10 +1252,10 @@ static int test_memcg_oom_events(const char *root)
+ 	if (cg_read_strcmp(memcg, "cgroup.procs", ""))
+ 		goto cleanup;
+=20
+-	if (cg_read_key_long(memcg, "memory.events", "oom ") !=3D 1)
++	if (cg_read_key_s64(memcg, "memory.events", "oom ") !=3D 1)
+ 		goto cleanup;
+=20
+-	if (cg_read_key_long(memcg, "memory.events", "oom_kill ") !=3D 1)
++	if (cg_read_key_s64(memcg, "memory.events", "oom_kill ") !=3D 1)
+ 		goto cleanup;
+=20
+ 	ret =3D KSFT_PASS;
+@@ -1354,13 +1358,14 @@ static int tcp_client(const char *cgroup, unsigned =
+short port)
+ 	ret =3D KSFT_FAIL;
+ 	while (retries--) {
+ 		uint8_t buf[0x100000];
+-		long current, sock;
++		long current;
++		s64 sock;
+=20
+ 		if (read(sk, buf, sizeof(buf)) <=3D 0)
+ 			goto close_sk;
+=20
+ 		current =3D cg_read_long(cgroup, "memory.current");
+-		sock =3D cg_read_key_long(cgroup, "memory.stat", "sock ");
++		sock =3D cg_read_key_s64(cgroup, "memory.stat", "sock ");
+=20
+ 		if (current < 0 || sock < 0)
+ 			goto close_sk;
+@@ -1392,7 +1397,7 @@ static int test_memcg_sock(const char *root)
+ 	int bind_retries =3D 5, ret =3D KSFT_FAIL, pid, err;
+ 	unsigned short port;
+ 	char *memcg;
+-	long sock_post =3D -1;
++	s64 sock_post =3D -1;
+=20
+ 	memcg =3D cg_name(root, "memcg_test");
+ 	if (!memcg)
+@@ -1459,7 +1464,7 @@ static int test_memcg_sock(const char *root)
+ 	 * scheduling slack) and require that the "sock " counter
+ 	 * eventually drops to zero.
+ 	 */
+-	sock_post =3D cg_read_key_long_poll(memcg, "memory.stat", "sock ", 0,
++	sock_post =3D cg_read_key_s64_poll(memcg, "memory.stat", "sock ", 0,
+ 					 MEMCG_SOCKSTAT_WAIT_RETRIES,
+ 					 DEFAULT_WAIT_INTERVAL_US);
+ 	if (sock_post)
+@@ -1484,7 +1489,7 @@ static int test_memcg_oom_group_leaf_events(const cha=
+r *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *parent, *child;
+-	long parent_oom_events;
++	s64 parent_oom_events;
+=20
+ 	parent =3D cg_name(root, "memcg_test_0");
+ 	child =3D cg_name(root, "memcg_test_0/memcg_test_1");
+@@ -1519,11 +1524,11 @@ static int test_memcg_oom_group_leaf_events(const c=
+har *root)
+ 	if (cg_test_proc_killed(child))
+ 		goto cleanup;
+=20
+-	if (cg_read_key_long(child, "memory.events", "oom_kill ") <=3D 0)
++	if (cg_read_key_s64(child, "memory.events", "oom_kill ") <=3D 0)
+ 		goto cleanup;
+=20
+-	parent_oom_events =3D cg_read_key_long(
+-			parent, "memory.events", "oom_kill ");
++	parent_oom_events =3D
++		cg_read_key_s64(parent, "memory.events", "oom_kill ");
+ 	/*
+ 	 * If memory_localevents is not enabled (the default), the parent should
+ 	 * count OOM events in its children groups. Otherwise, it should not
+@@ -1639,7 +1644,7 @@ static int test_memcg_oom_group_score_events(const ch=
+ar *root)
+ 	if (!cg_run(memcg, alloc_anon, (void *)MB(100)))
+ 		goto cleanup;
+=20
+-	if (cg_read_key_long(memcg, "memory.events", "oom_kill ") !=3D 3)
++	if (cg_read_key_s64(memcg, "memory.events", "oom_kill ") !=3D 3)
+ 		goto cleanup;
+=20
+ 	if (kill(safe_pid, SIGKILL))
+diff --git a/tools/testing/selftests/cgroup/test_pids.c b/tools/testing/sel=
+ftests/cgroup/test_pids.c
+index 710109b53dfe..f4d5bc9f5f24 100644
+--- a/tools/testing/selftests/cgroup/test_pids.c
++++ b/tools/testing/selftests/cgroup/test_pids.c
+@@ -111,12 +111,11 @@ static int test_pids_events(const char *root)
+ 	if (kill(pid, SIGINT))
+ 		goto cleanup;
+=20
+-	if (cg_read_key_long(cg_child, "pids.events", "max ") !=3D 0)
++	if (cg_read_key_s64(cg_child, "pids.events", "max ") !=3D 0)
+ 		goto cleanup;
+-	if (cg_read_key_long(cg_parent, "pids.events", "max ") !=3D 1)
++	if (cg_read_key_s64(cg_parent, "pids.events", "max ") !=3D 1)
+ 		goto cleanup;
+=20
+-
+ 	ret =3D KSFT_PASS;
+=20
+ cleanup:
+diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/se=
+lftests/cgroup/test_zswap.c
+index d50acc1b83ac..385ddda90af4 100644
+--- a/tools/testing/selftests/cgroup/test_zswap.c
++++ b/tools/testing/selftests/cgroup/test_zswap.c
+@@ -60,14 +60,14 @@ static int get_zswap_stored_pages(size_t *value)
+ 	return read_int(PATH_ZSWAP_STORED_PAGES, value);
+ }
+=20
+-static long get_cg_wb_count(const char *cg)
++static s64 get_cg_wb_count(const char *cg)
+ {
+-	return cg_read_key_long(cg, "memory.stat", "zswpwb");
++	return cg_read_key_s64(cg, "memory.stat", "zswpwb");
+ }
+=20
+-static long get_zswpout(const char *cgroup)
++static s64 get_zswpout(const char *cgroup)
+ {
+-	return cg_read_key_long(cgroup, "memory.stat", "zswpout ");
++	return cg_read_key_s64(cgroup, "memory.stat", "zswpout ");
+ }
+=20
+ static int allocate_and_read_bytes(const char *cgroup, void *arg)
+@@ -126,9 +126,10 @@ static char *setup_test_group_1M(const char *root, con=
+st char *name)
+  * Writeback is asynchronous; poll until at least one writeback has
+  * been recorded for @cg, or until @timeout_ms has elapsed.
+  */
+-static long wait_for_writeback(const char *cg, int timeout_ms)
++static s64 wait_for_writeback(const char *cg, int timeout_ms)
+ {
+-	long elapsed, count;
++	long elapsed;
++	s64 count;
+ 	for (elapsed =3D 0; elapsed < timeout_ms; elapsed +=3D 100) {
+ 		count =3D get_cg_wb_count(cg);
+=20
+@@ -148,7 +149,7 @@ static long wait_for_writeback(const char *cg, int time=
+out_ms)
+  */
+ static int test_zswap_usage(const char *root)
+ {
+-	long zswpout_before, zswpout_after;
++	s64 zswpout_before, zswpout_after;
+ 	int ret =3D KSFT_FAIL;
+ 	char *test_group;
+=20
+@@ -192,7 +193,8 @@ static int test_swapin_nozswap(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *test_group, mem_max_buf[32];
+-	long swap_peak, zswpout, min_swap;
++	long swap_peak, min_swap;
++	s64 zswpout;
+ 	size_t allocation_size =3D page_size * 512;
+=20
+ 	min_swap =3D allocation_size / 4;
+@@ -249,7 +251,7 @@ static int test_zswapin(const char *root)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	char *test_group;
+-	long zswpin;
++	s64 zswpin;
+=20
+ 	test_group =3D cg_name(root, "zswapin_test");
+ 	if (!test_group)
+@@ -265,7 +267,7 @@ static int test_zswapin(const char *root)
+ 	if (cg_run(test_group, allocate_and_read_bytes, (void *)MB(32)))
+ 		goto out;
+=20
+-	zswpin =3D cg_read_key_long(test_group, "memory.stat", "zswpin ");
++	zswpin =3D cg_read_key_s64(test_group, "memory.stat", "zswpin ");
+ 	if (zswpin < 0) {
+ 		ksft_print_msg("failed to get zswpin\n");
+ 		goto out;
+@@ -365,11 +367,11 @@ static int attempt_writeback(const char *cgroup, void=
+ *arg)
+=20
+ static int test_zswap_writeback_one(const char *cgroup, bool wb)
+ {
+-	long zswpwb_before, zswpwb_after;
++	s64 zswpwb_before, zswpwb_after;
+=20
+ 	zswpwb_before =3D get_cg_wb_count(cgroup);
+ 	if (zswpwb_before !=3D 0) {
+-		ksft_print_msg("zswpwb_before =3D %ld instead of 0\n", zswpwb_before);
++		ksft_print_msg("zswpwb_before =3D %lld instead of 0\n", zswpwb_before);
+ 		return -1;
+ 	}
+=20
+@@ -385,7 +387,7 @@ static int test_zswap_writeback_one(const char *cgroup,=
+ bool wb)
+ 		return -1;
+=20
+ 	if (wb !=3D !!zswpwb_after) {
+-		ksft_print_msg("zswpwb_after is %ld while wb is %s\n",
++		ksft_print_msg("zswpwb_after is %lld while wb is %s\n",
+ 				zswpwb_after, wb ? "enabled" : "disabled");
+ 		return -1;
+ 	}
+@@ -475,7 +477,7 @@ static int test_no_invasive_cgroup_shrink(const char *r=
+oot)
+ {
+ 	int ret =3D KSFT_FAIL;
+ 	unsigned int off;
+-	long zswpwb_before, zswpwb_after, zswpwb_target;
++	s64 zswpwb_before, zswpwb_after, zswpwb_target;
+ 	size_t allocation_size =3D page_size * 1024;
+ 	unsigned int nr_pages =3D allocation_size / page_size;
+ 	char zswap_max_buf[32], mem_max_buf[32];
+@@ -508,7 +510,7 @@ static int test_no_invasive_cgroup_shrink(const char *r=
+oot)
+ 		memset(&zw_allocation[off], 0, page_size);
+ 		memset(&zw_allocation[off], 'a', page_size/4);
+ 	}
+-	if (cg_read_key_long(zw_group, "memory.stat", "zswapped") < 1)
++	if (cg_read_key_s64(zw_group, "memory.stat", "zswapped") < 1)
+ 		goto out;
+=20
+ 	/* If the shrinker is enabled, try to let the writebacks finish first */
+@@ -663,12 +665,10 @@ static int test_no_kmem_bypass(const char *root)
+ 			break;
+ 		/* If memory was pushed to zswap, verify it belongs to memcg */
+ 		if (stored_pages > stored_pages_threshold) {
+-			long zswapped =3D cg_read_key_long(
++			s64 zswapped =3D cg_read_key_s64(
+ 				test_group, "memory.stat", "zswapped ");
+-			long long delta =3D
+-				(long long)stored_pages * page_size - zswapped;
+-			long long max_delta =3D
+-				(long long)stored_pages * page_size / 4;
++			s64 delta =3D (s64)stored_pages * page_size - zswapped;
++			s64 max_delta =3D (s64)stored_pages * page_size / 4;
+=20
+ 			ret =3D (delta < max_delta) ? KSFT_PASS : KSFT_FAIL;
+ 			break;
+@@ -739,9 +739,9 @@ static int allocate_random_and_wait(const char *cgroup,=
+ void *arg)
+ 	return 0;
+ }
+=20
+-static long get_zswap_incomp(const char *cgroup)
++static s64 get_zswap_incomp(const char *cgroup)
+ {
+-	return cg_read_key_long(cgroup, "memory.stat", "zswap_incomp ");
++	return cg_read_key_s64(cgroup, "memory.stat", "zswap_incomp ");
+ }
+=20
+ /*
+@@ -757,7 +757,7 @@ static int test_zswap_incompressible(const char *root)
+ 	int ret =3D KSFT_FAIL;
+ 	struct incomp_child_args *values;
+ 	char *test_group;
+-	long zswap_incomp;
++	s64 zswap_incomp;
+ 	pid_t child_pid;
+ 	int child_status;
+ 	char buf;
+@@ -793,13 +793,15 @@ static int test_zswap_incompressible(const char *root=
+)
+=20
+ 	zswap_incomp =3D get_zswap_incomp(test_group);
+ 	if (zswap_incomp <=3D 0) {
+-		long zswpout =3D get_zswpout(test_group);
+-		long zswapped =3D cg_read_key_long(test_group, "memory.stat", "zswapped =
+");
+-		long zswap_b =3D cg_read_key_long(test_group, "memory.stat", "zswap ");
+-
+-		ksft_print_msg("zswap_incomp not increased: %ld\n", zswap_incomp);
+-		ksft_print_msg("debug: zswpout=3D%ld zswapped=3D%ld zswap_b=3D%ld\n",
+-			       zswpout, zswapped, zswap_b);
++		s64 zswpout =3D get_zswpout(test_group);
++		s64 zswapped =3D
++			cg_read_key_s64(test_group, "memory.stat", "zswapped ");
++		s64 zswap_b =3D
++			cg_read_key_s64(test_group, "memory.stat", "zswap ");
++
++		ksft_print_msg("zswap_incomp not increased: %lld\n", zswap_incomp);
++		ksft_print_msg("debug: zswpout=3D%lld zswapped=3D%lld zswap_b=3D%lld\n",
++				zswpout, zswapped, zswap_b);
+ 		ksft_print_msg("debug: madvise ret=3D%d errno=3D%d\n",
+ 			       values->madvise_ret, values->madvise_errno);
+ 		goto out_kill;
+--=20
+2.56.0.218.g1ec904b173-goog
 
-Yes, if staged.  The sample-filter matcher and its sysfs already exist
-per context; attaching them per probe is the main change.  For example:
-
-  M2.1  in-kernel only: damon_report_attrs(), the queue, region
-        lookup, the perf producer; kunit, no new sysfs
-  M2.2  your per-CPU write-only example, set up from user space:
-        attr_reports files, per-filter report_queue,
-        write/cpumask/threads probe filters
-  M2.3  counters, a silence check (tracepoint/debugfs first), tuning
-  M3    more producers: Arm SPE, device monitors
-
-Implementation notes:
-
-1. One sampler per CPU per attr, owned by attr_reports (as in your
-   damon/next usage doc) and shared by all contexts.  IBS has one unit
-   per CPU, so perf time-slices multiple events: on EPYC 9555P one
-   ibs_op event got 67,140 samples; two on the same CPU got
-   33,547 + 33,535.  On Intel the event also needs wakeup_events = 1,
-   or an in-kernel handler sees only the last record of each
-   large-PEBS batch.
-
-2. A lockless queue, as your NOTE in damon_report_access() anticipates.
-   Today's buffer is documented "May sleep" and uses mutex_trylock(),
-   which interrupt context cannot use; its inclusive jiffy staleness
-   check can also count one report in up to three intervals (HZ=250,
-   5 ms interval).  A simple design: a per-CPU circular array with a
-   write counter and a per-slot seqcount_t (using
-   raw_write_seqcount_begin/end() for NMI safety), overwriting the
-   oldest slot.  Readers never consume; each context keeps its
-   last-seen write counter per CPU.  A nested writer (e.g. an NMI over
-   a task-context write) drops its report and counts it.
-
-3. Report fields: paddr, vaddr, size, time, cpu, tid, tgid, the
-   producer's attr id, and flags (is_write, plus a validity bit per
-   address, since 0 is a valid paddr).  Store global ids; translate
-   namespaces at the filter.
-
-4. Binary search over a sorted region snapshot (your todo in
-   kdamond_apply_access_report()) beats a linear walk from about 2
-   reports per interval for 1,000 regions (a model, to be measured).
-
-5. Samplers can stop silently: in a report on the v4 thread [1], IBS
-   Op samples stopped after about 10 minutes on a Ryzen 5 5600H, but
-   not with the NMI watchdog enabled.  So count dropped reports and
-   check for silence against an independent reference.  For tuning,
-   step sample_period rather than use frequency mode, and do not raise
-   perf_event_max_sample_rate: on an early DAMON PEBS prototype (Xeon
-   6960P), perf cut it from 100000 to 10000 in about 20 seconds.
-
-Three decisions would unblock M2.1:
-
-  - The first report type: the PMU-captured address (suggested), or
-    decode from saved registers in kdamond (your current plan).
-  - Whether the report carries the producer's attr id (suggested: yes).
-  - The queue: the per-CPU seqcount design in note 2 (suggested), or
-    ftrace's ring buffer with one iterator per reader.
-
-One question on the ABI: the usage document in your damon/next tree adds
-a report_queue file under each probe filter.  Is it meant as "this
-filter tests reports in queue N"?
-
-Happy to write, review or test any piece: the queue with kunit, the
-AMD/Intel perf producer, a decode-accuracy study on real workloads, or
-runs on Xeon 6960P and EPYC 9555P.  Several exist in RFC v4 [2].
-
-Thanks,
-Ravi
-
-[1] https://lore.kernel.org/r/20261017211613.16456-2-aethernet65535@gmail.com
-[2] https://lore.kernel.org/r/20261005-damon-perf-rfc-v3-send-2026-10-03-v4-0-b03452e137f3@gmail.com
 
