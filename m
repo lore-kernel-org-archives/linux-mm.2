@@ -1,101 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88628606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 08:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3163F606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 08:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W8OWakWc
+	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=a6C+nt7i
 Received: by kanga.kvack.org (Postfix)
-	id A970D6B08CB; Thu, 22 Oct 2026 04:07:20 -0400 (EDT)
+	id 54BDA6B02B4; Thu, 22 Oct 2026 04:14:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A47DD6B08CC; Thu, 22 Oct 2026 04:07:20 -0400 (EDT)
+	id 523956B02B7; Thu, 22 Oct 2026 04:14:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 935EC6B08CD; Thu, 22 Oct 2026 04:07:20 -0400 (EDT)
+	id 45F776B02B9; Thu, 22 Oct 2026 04:14:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 717296B08CB
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:07:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE9568074A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:07:19 +0000 (UTC)
-X-FDA: 85349532198.26.6F938B8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 265AA40008
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:07:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W8OWakWc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 22B176B02B4
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:14:27 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0D9891A0763
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:14:26 +0000 (UTC)
+X-FDA: 85349550132.25.D1EFF2C
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9401F4000A
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:14:23 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=a6C+nt7i;
+	spf=pass (imf01.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792656438;
+	s=arc-20220608; t=1792656864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IK3vlu7wIXXSLKBylI9CXBQS+y3D6BVh2hkB8AeGdBU=;
-	b=gT3CKSyRtlY7YsSgzDRVJ9m4qtfwL4qDMPLXjQeKB3uIBJYet57E3l+QaVcYnBOYhBd/Kv
-	iVgOzX98U8MhNaNV/co2/qIch0c7jSOljYcb1pq9yB5gun78UQd3cSyJ3n/sp0VDW0yP4m
-	tl+eERJATUUyHdztIEh1agtWoqUaTis=
+	bh=3sD0G4G8uCR6QoPuFMFokC4gDJ/4LjJ7maE0ec9iXuw=;
+	b=qMdRj3fvabT+l2nDbaaEK2CgpARrkLcwxOwmVfk5xjt0Tm7ndcjqGp0nvzu+fHhYTf8/D6
+	4dcgIjgZZXiOgG/OVdbgLCYsNRPPFeP5Krt9EWmdqQUHREc9XvzUI89Pc/WcdvDlncX0vv
+	Crn9KSqOspqbPwM5BKBuFgqEojaobzk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W8OWakWc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=a6C+nt7i;
+	spf=pass (imf01.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792656438;
-	b=2XBnHVlyyQ1uyp1EyYWFzWDgWIE1jMsn+CTN49/YmI5SV4jdFqom2EiFYk9yd6JwX/aXN0
-	y6Xe8DYbH6xXo7E4w0r3pm29UgSKlsoQu2gTtiqEk+V5vUDTMK4r5eyIRwb9HNdfLu3HKm
-	tVHqCOul+CxHFXRXjxdVcyAVK+M6adc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01594414E6;
-	Thu, 22 Oct 2026 08:07:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4890C1F000C2;
-	Thu, 22 Oct 2026 08:07:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792656436;
-	bh=IK3vlu7wIXXSLKBylI9CXBQS+y3D6BVh2hkB8AeGdBU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=W8OWakWcVu6p39n/i/pswI3AEMxPh3lVJFQRbJlRBkHWiGvyfX0zXNVk2SA4fB53g
-	 JHz4wNXmab5xisFmoVJgNFDkp+pI303W5So1d0OPUiMMHVQJWz8xuIK2aEajORCG++
-	 reNbr9AqxfCgM8sCBsaPNlNAtM/M7qg+ZuOxPYKUvOrJRA2PnNbcCNNvkN2coaJAdq
-	 FP7utVEamab8mGO32rjrrQwCCeXrVEPqqsXIZBlr2QOEY3hDSZgnzuU+phWNMEaN5b
-	 82XCF3BVPJKHXalMygYHHKD5QJ+Hda5VHcVnDI/8kyvAqN7UYo8dXeht0md63zKLNg
-	 Y4d6s9egOW1PA==
-Date: Thu, 22 Oct 2026 09:07:09 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
-	=?utf-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v4 1/4] mm/rmap: duplicate a PMD mapping as one in
- folio_dup_file_rmap_pmd()
-Message-ID: <atnEFyGRYGGf9shA@gremlin>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
+	t=1792656864;
+	b=YBfalJMiKWztC6xKCG+7g3EBLfSblC3glUuQbZfjmfOY9OdFW6Z0bM9ks8viN6viWYrw90
+	8tHtaVUcAf4WCQUGLdxGlBElGVoMORwtz8xAkA6eGRnmCnukInlWAMeWXbz8QJ8KX5v16h
+	DPuzvFJD2d+DHiNRVbhgocpyhKv2Cyg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=3sD0G4G8uCR6QoPuFMFokC4gDJ/4LjJ7maE0ec9iXuw=; 
+	b=a6C+nt7iqTVvYfxU6QjSdBPTeQZyNPTtqpAaRGegAEHnBAgGiGQM2em8ubMFe1+mi0LpiuxjZQ1
+	qLGSJSv9CpXaRcaIPaU2lN4fTgfJz/Gl9500tuBzTazyvIeYgAhC4rZxMYr+14zYXZcSHuXpwxYB+
+	C4uP7b6XHYzOuIy1PydxpFYJR1ppAkLStuM3jRxtNCRirVs8nkTiRvGvwHTUE56Z0YwUXsqMx0XR4
+	Ts3zuI4z+xMgD/QjZIShvMPQv4Dc1RAg4zE0Hb3mJ/ySFIs9ZDS9zf63dF4+YXPknPIDlROiP2rr2
+	1FpGMsIHAtCV6LFjeG57eTbtesmtOiF5znOg==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xJnw2-00000006Sw6-1DCV;
+	Thu, 22 Oct 2026 16:14:03 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 22 Oct 2026 16:14:02 +0800
+Date: Thu, 22 Oct 2026 16:14:02 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Suseendran Bhaskaran <suseendranb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>,
+	SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
+	linux-crypto@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] crypto: return -ENOSPC on compression destination
+ overflow
+Message-ID: <atnFygk8xsQ-8Mj5@gondor.apana.org.au>
+References: <20261021205626.3286270-1-suseendranb@google.com>
+ <20261021205626.3286270-2-suseendranb@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 265AA40008
-X-Stat-Signature: t69ak6m6tm1iugm33srwt163aqfgioxi
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+In-Reply-To: <20261021205626.3286270-2-suseendranb@google.com>
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9401F4000A
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792656437-486122
-X-HE-Meta: U2FsdGVkX18nXrCjbZ/YtIQ7rFHTpu8JbpRNj6UsHO0NdCUnM4jh9mlXKAlYoxYK68Jz1UDq/j4mxhFKaY/Vr4sEuJ6bZn0oFj6hrjLOX7+b3iAqzBejaSu6z/CabU64GrYlYv+rH+aX7dyuLT+RAw/jqBQNmSLCz0RAs3sTfuPwG2hLw+oWGdrMTM+2mBCQZ7LAG20DUvo7tAMC5gh3O20N0PHHaYAzk5oZaZ8px9M9cIFvqNyknDGVfzkd9aWQb4YgedK1uKRuh+X2aq1sY22HRF1YVWOWiLDR6j0gi6/x4jDyJjT4KuxaroAtq+15Hy2KsQ0P2hRKCG3Lqs0vypfLLlxXouvn59ZD0/WU6T+1sHIRBD9Z8vvFZpdW8AUCyVx1r2JHM8mBwcrO7EawdNYJw80Z6Qq3sZ3ClNy2vLUfeYtfEVchg0XCMl80JX+u3v2oAXE8/s5o9CcHKkonLLlTTQqWNviiQc4ZA2uiSXqcHvGTJViDp60sYcVs2RpttjtISaLYTBbHf4r/7EQMJnp119LVuKpL8RTUQqgI+FFPZwM43tp+MDpp1B9kxTU+zcIqwXVvQ00SS/90/Wwi+1psIOQsTS4aIynvjvlFYEQ900piTHgv/I9IyvxAs2raUbZGQEayNydS8F2NV37Gv9whysV2gCDEm46GU7bmVt2FZ7vKJISyjwRaa+50XD8xhxjhXWgiGsZ+8C3Q6ppNXy9VkJaW2InHj+Nse9CTObLq6LltDc0K+LzJw+bwf80wAC6ia7zh0eMu3JbRsvS6GcanPYPyU5az26607zm8akD205HhZS3VvuucFdorIjLNxSlrRn9djbKLmpdic/j2d07dsEnBj3g+jJTWvKpH/v98gtm3hMxPW3+VNHB+cLmTwfeh0j2HquEjtY48pEcuHkALAdfN9xtwn8iml4jD8ngVi8WYjlOv4fRsrxR7QaunmRO90ubaCMHRrmb2A/v
- HrugSbmc
- Jm+p6Un8wiWuyjIi2O/+82fxl4kcRXieCQSyk58osDUBGVBQLiOC1QTv138waNO2aMdcgmlqIjvj28PCW9eqjg/6EHipJacslmpL4PQlehqI0H83njjZY4Y7eJeCLGQxKAh/lc/eM/Ok6yvpt6F45FPdLBxsI1taTzqeLFxRYqhBslm8NWfTJtmaalhhcNobcFxX4E2wZ0tRX5DHWvIi6NXCz5Eu6QOGtMDu9YQbmDazH/EuLHdsbxjGOrsgZmhezXi8swqkAPpkT5J8b7t7f9n064VwpiXfsrs2Jptrn/iQAH6xVjrBp9vMXEqLZs/SPkxTM7TqfpT6zHLdW3OHIpzpVYqSLVlL/wTkOH57oC4nafoZNSx0OpLx78IJqYJTNhT3YsqC4mRe/tKfdPMFSLqYRRaMoy399Lwl9hOrNzc4ofCHbGew3gE8Yvw==
+X-Stat-Signature: g4m6qku7zowcnn938rqyinxedf58uez3
+X-HE-Tag: 1792656863-175875
+X-HE-Meta: U2FsdGVkX1+WeL6xSpKWlIwf4XYnW13mtupuuhQs6yQupdR2P1hTYQ5I0gjHn27cOq7I4nGkVV98ZgOefpwfLDsDP9W8yaoL/JqdV5vbpCdWQNZQadz0JbtjWObpHu+pQqWO/6mpF/ELw39HKWeE8Dh5stGuVwNg55qZ5HIawBigmVFopcQMghQ+BpY9L9/x5Og+gwv86L5Kjl6/EZzbvYX4nJpovNhcatFs6J756BGpgXZrHjgJwd0aIKDlbhOmEFIsopgnTWJ0uuK8luHXjl571lgw2Fh+xjiYV3DqHQR/gx1tsFabXjQlHqAEV1hh4T9cUkpOVhkglthbdxv6O5fQwoFYwP5iZRKoQCmw4ngH01mLkNqdd/1vBOa26QVi/E8qtVtIDx0+gYDLCVdvION2+lBIKAHKMrbJ0xEgRAi4m9nO5HOGm0ms5nO029RnxAMJW60gHBIU588IagsI6eKR8lGiMoUDuM6ZzjxjJDq4lR61u7W6u3ENPZCisAojNsPg0087k0pEiBh7FNApUGV0Dz/mklxYCGtaFKphh4ay0Lm9OantEpi8cJ0ri8xnX7zke5rctvBappK1W2QtY1+snfAiaPQzJUbk5XgZSFSIVRBxlEZuO3oE940EF7iEzziYawj1/awq3ivxzQLkw6iJaFx2/+Ii3kLBoNeqpOQas+SDXkaq0egxwZLzI5D5Vh6bRvjjGmzjR0eG3fWMpaNkQG7EhTie1M4bhPDHH/WB3gEDpHG5r8CeFl6Wtx8xDz/jwNat5rLWzd9xCQ1Sd1p4aDG3Pfg2BLJWsl0YS6Wx4LxJeLtWgtmGDUIcuFSCN+jd++FcSxNuMq5xDTWtAPbu/EXDiAZv/4TzbmF3dIZ+fHF/J23ICosq4OKEUSzC5WgXmar+Bp6aslstfYIatZreOQpSLltsrnla1fv6OHdyHHmXG2669vkUQ3zjXno1nA6FsXpiMfT0EnkKKKq
+ J8rkVWGy
+ WE/gVdhthJyx4iBR+5duAl2So+7fnAoj/ClzU2mTti3tMqfBsrbdk3l7eC3dtdBTxKOUgE0yd8SIx2d+g0wCAYFrngivY9iJuzMlVOtQfyvdxhEQO1hcGhB4WKNq9OzqYBGZUSTvDD5KoXRMiU99k2YldJxN3Pn1aIOd1zQ+g0OwnoEuzDVD8YK/Ntn52BNa3lO9dF/Vasg8GCxBRuB8vIyF0kn8yK4iP6pQydeCcwQf2ecrvEwvwGk7gn/OGNIogaoHjdqCoWPIuYIUfWQxxTVsmvtILl+HyCaX0Ik2YRBrjk0Yp6dN5GJY+Xw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,51 +103,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 10:36:00PM +0200, Konstantin Khorenko wrote:
-> folio_dup_file_rmap_pmd() passes PGTABLE_LEVEL_PTE to
-> __folio_dup_file_rmap() for HPAGE_PMD_NR pages, so it adds HPAGE_PMD_NR
-> PTE mappings to the folio instead of one PMD mapping. Each unmap of the
-> PMD removes one PMD mapping:
->
-> - the folio's mapcount never returns to zero, and removing the folio
->   from the page cache reports "Bad page cache", or hits a VM_BUG_ON
->   with CONFIG_DEBUG_VM;
-> - the first unmap already counts as the last one and drops the
->   PMD-mapped statistics while the other mm still maps the folio;
-> - the second one drives the entire mapcount below zero and drops them
->   again.
->
-> The helper has no caller yet, the next patch adds the first one. Pass
-> PGTABLE_LEVEL_PMD, as folio_try_dup_anon_rmap_pmd() does.
->
-> Fixes: d8ef5e311d7b ("mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()")
-
-Was this a mistake in d8ef5e311d7b, or actually intentional for whatever reason?
-If the latter this shouldn't be a fixes.
-
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+On Wed, Oct 21, 2026 at 08:56:25PM +0000, Suseendran Bhaskaran wrote:
+> In the acomp/scomp compression interface, callers pass a bounded
+> destination buffer and rely on the return code to distinguish a
+> destination buffer overflow (incompressible input) from genuine
+> compressor failures (such as invalid parameters, uninitialized state, or
+> hardware errors).
+> 
+> While the multi-segment streaming path in zstd_compress(),
+> crypto/deflate.c, and lib/842/842_compress.c returns -ENOSPC when the
+> destination buffer runs out of space, the single-buffer path
+> zstd_compress_one() (taken when input and output are contiguous single
+> pages, such as in zswap) as well as lz4, lz4hc, lzo, and lzo-rle return
+> -EINVAL instead of -ENOSPC on destination buffer overflow.
+> 
+> For users such as zswap, which reduced its per-CPU compression buffer to
+> a single page in commit 0b1bf60c324a ("mm/zswap: reduce the size of the
+> compression buffer to a single page"), incompressible pages typically
+> overflow the PAGE_SIZE destination buffer due to compressor header/token
+> overhead. Because these compressors return -EINVAL rather than -ENOSPC,
+> zswap cannot distinguish a destination buffer overflow from a compressor
+> failure, causing broken debugfs error accounting (reject_compress_fail
+> vs. reject_compress_poor) or masking real compressor errors.
+> 
+> Update zstd_compress_one(), lz4, lz4hc, lzo, and lzo-rle to return
+> -ENOSPC when the compressed output overflows the destination buffer,
+> matching the streaming path in zstd_compress(), deflate, and 842.
+> 
+> Fixes: f5ad93ffb541 ("crypto: zstd - convert to acomp")
+> Signed-off-by: Suseendran Bhaskaran <suseendranb@google.com>
 > ---
->  include/linux/rmap.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index 0b332770abeed..7562017416094 100644
-> --- a/include/linux/rmap.h
-> +++ b/include/linux/rmap.h
-> @@ -558,7 +558,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
->  		struct page *page, struct vm_area_struct *dst_vma)
->  {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PTE);
-> +	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PMD);
->  #else
->  	WARN_ON_ONCE(true);
->  #endif
->
-> --
-> 2.43.0
->
+>  crypto/lz4.c     | 2 +-
+>  crypto/lz4hc.c   | 2 +-
+>  crypto/lzo-rle.c | 2 +-
+>  crypto/lzo.c     | 2 +-
+>  crypto/zstd.c    | 5 ++++-
+>  5 files changed, 8 insertions(+), 5 deletions(-)
 
---
-Cheers, Lorenzo
+I can take this patch through the cryptodev tree.  Is that OK with
+you Yosry?
+
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
