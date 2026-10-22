@@ -1,109 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE95606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DFE606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G5T8AON7
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U7CI7iwW
 Received: by kanga.kvack.org (Postfix)
-	id 5D7A16B02E8; Thu, 22 Oct 2026 18:20:01 -0400 (EDT)
+	id 69D1A6B09F9; Thu, 22 Oct 2026 18:20:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 589086B02ED; Thu, 22 Oct 2026 18:20:01 -0400 (EDT)
+	id 67B626B09FA; Thu, 22 Oct 2026 18:20:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49F346B02EF; Thu, 22 Oct 2026 18:20:01 -0400 (EDT)
+	id 58DB06B09FB; Thu, 22 Oct 2026 18:20:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 136476B02E8
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:20:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88FAB1C1CB3
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:20:00 +0000 (UTC)
-X-FDA: 85351680960.17.4DA347B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 97A504000A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:19:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G5T8AON7;
-	spf=pass (imf17.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792707598;
-	b=hcOqW3ls5gXeMSU9UG+8d3aGuky5uOvXObkgrb5cGfpIL4vt6/DKECFwesIwrESp61FcCE
-	SkiB+kiDHGHhywGYXtuH0m4f/Fxx/AZLliIOxCA1+YTNzY1wIMP08puzavdUmc3lWN+AM6
-	OErKULL2vW5EWWLAkuOoJtI4xBBpG+M=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G5T8AON7;
-	spf=pass (imf17.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 363826B09F9
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:20:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A861D16031A
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:20:36 +0000 (UTC)
+X-FDA: 85351682472.06.0E2EF9D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 47AE520008
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:20:35 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7CI7iwW;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792707598;
+	s=arc-20220608; t=1792707634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZWgLZl94yfWWHBwe8ZSS9sK2vaYD91ERYkHK7zkpQtw=;
-	b=GbPnJiQn+VGLlCTj9BBKU7B1LnR4FbKY351PoyDuE0fFam+F/ZxGRbnByA6+edssilEJ93
-	/hYfvvZZGHytZzN93KKQfGfp4Diencg1FPcZ5oM6ZFI26kEI2cj6ojCMhqJa/eYi4mmGVP
-	yr2DRhIeZxWmF/G21uWTUwK19Dx1sXw=
+	bh=FPgAzjNkQiqM+WkpAExnh3Qvvaifknshl6X+/hr43fA=;
+	b=WyZ1AZqK2aInmVEZu8/fu4qn3uuwAwfizXSnmvWiwdnEuMjxKxVgk6NqYMZdtsdBTDKzhT
+	scVE7UZdJTkuM7LIL2DhpKSKWMwVSoGuV1PaPD+w9/Y32N/mku9pcXY6wRe+P8hkKtmdi1
+	8Q2ewIKDnXf9AjIwOHG1EfZXPNsBhak=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7CI7iwW;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792707634;
+	b=GShFlRao37HTuhkj1nTsw0dmVrNzsnp5We03unPyeWyVQi723DmlEpkIsIvLsHtKVpxv9t
+	O7c3v0xyVBVPsin8pzhvMFZs1+7NzUKjYSRhcjaq1kcYFcgC2B3yh63IlRKhOvO0H3Jl8H
+	mUedPjKoHSqgf0X9yaA9QLr+2m5qRME=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8551543E70
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:19:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C92A1F01825
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:19:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CE7060210
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:20:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A901F01828
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792707597;
-	bh=ZWgLZl94yfWWHBwe8ZSS9sK2vaYD91ERYkHK7zkpQtw=;
+	s=k20260515; t=1792707634;
+	bh=FPgAzjNkQiqM+WkpAExnh3Qvvaifknshl6X+/hr43fA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=G5T8AON76TT8gpbtQKF1JmSrAGG4M04UAl1w44ScxNRfkcmxSCfhB7F6cwnZMhdCO
-	 GAhukxyV0WSYVhpoOqtgeBhLi0Zrn0Yatc48REFP4fyQKaGekhsGhgaUS9GuQ/MKPq
-	 p8ARJPktwuv1Psg6ZwYHKeAOKhBV6rw0bVEQY3c1EVLqam9PYAHYc9JexIFE4PUJPj
-	 dq+yfp0eVzJO4f2kkv9JlEIHWhMASTAge/qL7i1hs/j2C7ZTmhtha/zSK99l11vaGd
-	 Er2n1t8jFBibCZz4/vOM6NM7uv5z6+Ha9uJSGTengjCvjcNjAdj701gdyP4F63OIHx
-	 WI4YS4cw1ZNXg==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c43fbcb4393so41655866b.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:19:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByAdbJVBR99XvQZ+mwi+qaoD1bnrHS01oVYZAtIMzHnzls5UDvsPVNixbrmkTGvq0mzhqPRZUz/RQ==@kvack.org
-X-Gm-Message-State: AFq9FYJe88t65gKQ1en/V+nYAFIelS1hsBUcQzDmDNQ8mS3E9B8v5jgt
-	nisITyeLIPUC+TXbGxWsVJmcYCB/otzPuAIsKGksS2ID4sjMX51BsZpaCCFfCbpekcaR83gn9x4
-	QnnO41dW5TiR0BTevQNA3ckp9cw/CUns=
-X-Received: by 2002:a17:906:9f8b:b0:c43:6d40:4f84 with SMTP id
- a640c23a62f3a-c46a8d5e426mr93984966b.4.1792707596230; Thu, 22 Oct 2026
- 15:19:56 -0700 (PDT)
+	b=U7CI7iwWy/UsWWO4i3RccVaPj+tzN6BNF90oNNKhhno5jxftGJSP0bPFEtpn6rkHu
+	 RLrWnxoYMB3eFUIxb0xmTAn2DFpRboRc6wnUn+qFXog0d4qv1b68912bWXkMcJ5/FD
+	 Ay3v2pbV4WEKxhGEvZcc8zWdukJzy8+6udHBFW/c3Zmb12ipmiUEEx1IoHhAP5scV9
+	 gRl0h5DM1byicpESdI+HtndXbhNswRXtt9Ow0zOAK2UntREH6+W4hHDmXIBKQwb2m9
+	 +JPs/fjgnC14iOicZUsZysJePS0MAkmqwXjdq2HdI42ZQkyZnwW4JdH3ww1ch1QVmF
+	 VpYanze6gpCtg==
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-9196d8543cbso3707366d6.1
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:20:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy4oNcietIruMYTSlrEMr5V93C89rLRuqkPwECWyRH7Bk5ael+HPNQAyXBXIQRf8ZoaPrVdBoB7BQ==@kvack.org
+X-Gm-Message-State: AFq9FYIHF3OFQKqpf0b94ttCCmzSq1MAiJhj5uVFXvvMFfHmVkjByxTO
+	5oYUgfIQWuwEGI5vctWLlp9gPX+VLpRqRnizJae0JxzKn8wfvNCZpKYzSv796kvRBebMqDkcyyB
+	fEktFo/K/LCkTMKW/YUa0f60GlZDJD3w=
+X-Received: by 2002:a05:620a:6848:b0:93e:e394:78df with SMTP id
+ af79cd13be357-93f6f879ee3mr154580885a.58.1792707633528; Thu, 22 Oct 2026
+ 15:20:33 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261021205626.3286270-1-suseendranb@google.com>
- <20261021205626.3286270-2-suseendranb@google.com> <atnFygk8xsQ-8Mj5@gondor.apana.org.au>
- <CAO9r8zOtFTuPm_aR8wrzYsxzNGKQ9pUy76g0eNk_HsPmi6YW-A@mail.gmail.com>
-In-Reply-To: <CAO9r8zOtFTuPm_aR8wrzYsxzNGKQ9pUy76g0eNk_HsPmi6YW-A@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 22 Oct 2026 15:19:45 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zP2cNFQ=CW4LZ0ttXtr3Q2PLs4A=rgMDZoSo=JVNuYpKA@mail.gmail.com>
-X-Gm-Features: AclHuK8jTz73VDjeomuMASBJUg8buDlto1wF_KsKwup243lKYN2RVWgimlLIvpQ
-Message-ID: <CAO9r8zP2cNFQ=CW4LZ0ttXtr3Q2PLs4A=rgMDZoSo=JVNuYpKA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] crypto: return -ENOSPC on compression destination overflow
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Suseendran Bhaskaran <suseendranb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"David S . Miller" <davem@davemloft.net>, Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
-	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261015080157.269079-1-hui.zhu@linux.dev> <CAMgjq7C+EXJBdLUh-JxLGkZHb6wiuvLsq85V7ph6+gPND6mq2g@mail.gmail.com>
+ <94afeb74-44cc-4e02-97dc-961309a12364@linux.dev>
+In-Reply-To: <94afeb74-44cc-4e02-97dc-961309a12364@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 23 Oct 2026 06:20:22 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yXe0hEG7pUhddas+ex6QmA1A6u_P04UKYF8mPxrW31xA@mail.gmail.com>
+X-Gm-Features: AclHuK9qP1mgPJEEaUrfuuFK_eh9pkbInHEkTI7TgyHOfXSR0gKxedCumCxDQdU
+Message-ID: <CAGsJ_4yXe0hEG7pUhddas+ex6QmA1A6u_P04UKYF8mPxrW31xA@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v7] mm/vmscan: throttle MGLRU eviction when
+ isolated folios pile up
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Kairui Song <ryncsn@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 47AE520008
+X-Stat-Signature: 4ytxo814o69qjot6sryeaj4et534rwk8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97A504000A
-X-Stat-Signature: nco4yecz7ctrmsi8wmmsjhywed3gjbr6
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792707598-548618
-X-HE-Meta: U2FsdGVkX1+zfmrMtgF/AHgFeD1Oz314EEqTN6MQu5xRW60SzSB5FhJ/moVzjEmMQGio9aTdmKCfyxrv9cWR6yu7auDBPbIZQWUxpb7HDMd0WFEHMhV6SYTdiQEsYSh125/OZe35qdfLIWYtOerWLNJlMYfEM9Mj46fNpq02UcoU3Xbd/m1w4V05Pqy9B4yQVCAqjQuqw+yxRleF6lDh8P5bnq+pwPSBZTzdt5OjC/paor9UxH/JFw4TVwb4+jwmb1zZCdabl+XBqs4+22kcJt94AWhTyfL2BFU6Iw+R0gODLMGJU2H5T3p5k0Xs1zR6hDAMRQsBdV+t07R+czfZX68UxQqOesFI2hhDi5jUPv2MQ6tWo/UkGOgf2hQIvksmaxNAoIxLZDPEw7g+Zrw33mYidq1D9BpAiBFoYQtIzEthJrwxPaYe+0vmMbMXipUnBitoIoAV1zkBaG3XG1lNoiwoMXx4bLtXu6qbeWgFZ1UWCRXlH4jt50iEp/ixRU+3vKeEzQ4HFi7AdZQ8l4181dpwfuaPeGM9dFvUGlv1/EkeR11S08Ca+m+MTbe/GE76MfCyN0HzGXbGkj6Xdi4f74z0mlia8NVIAcAHgjTBpL/7s0PmTRPXF3RcsFlPVzc0f21z9Dka3IBl8YYMjiQA8K/4wAu88Tm0yyivUGiQn5H0FKIHFlX5hLqyXLapZMwhMfpBdmDF3BbusB6rnpri/egxDXLXr5NtLc//2DFKBSVK+Z6wdmK5ZReyHIxYqn6ySi5EIOUBoEvLRGwxDebMKlWrykSNErFjJ24x6ukLbkcd8b1zDo0KOUKJzSOm247Cs03+k8kVlXknkPNInfUKB3yOSkVN+h+sMibIF40ra+KhlHquylTQ6K4urgqEoPhHSioGobQQEjtnChKawy66WlLK03oz5kQlYLXxLm5HOweAyWQRfBhzyVekEfiEI4mFY4+m4LF6VAoS+G1HNP9
- AnccD1Ys
- FH5nJoTOCjuPMH7iGrVZaRuJdfnByxLeeG8vTilSXMQ2segiMMTh4BxdxFeoWEN9QRkX/fyka6Cwz23fb1YwA6WW3TBxwuALa0ZeAhpXQ1eznjV2eGPqEJX1l5zi36tID9+Va2+/wa7JXM6hBiucr2MLGCiypJly/bfYniG7yqGcDFY/iVTBGnl/ph6xL9Nzl0/pSh1sEdXG0lgHPsDehnmCo+1uzpJBQwNqkeDc69iQ8LuuWcsO8hAKgd0GAV+Fp9qyN6xLR77PlD37fgkRw5Al78UUWmXd9oWZkIQC7SIzILqvdz8MICsKTx/S6eSsksfm383QHZfE9tCL1ekHNPwSPzZZwbWPINoy37ajZiI/fHZ7kK/346RmgJblFvKZ4td9DwCaX2TMtKD0=
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792707635-343551
+X-HE-Meta: U2FsdGVkX1+GP58mLbQ6Rr9/2b40n1uzQ915RVVGYaumeBbTSJbTsHfnZAJ42wX0Eb+KMPOAZZQIRW4oeR/hai1vbeXAA1UWvADGTM2kWtfUj4UWf/pnyTbGQUSFvhbpVoVwPu6Vo3dvMaY4B1uxIfyBdEsBg02/7jh9C7q0Zdk17wWo+6y4f+oJT2Y+Mgo2GAzl8Eb2+yFFYp0WCpqqkwpVrkPvcOaZSdTFURRri+RovO/QEFSzWw5Ds/zBMdheR+lTIwl7Xtn6PI+jxPg3bl7gc9pr/+NK52bR0P8j0xKmUZJ4ekA/fZUjN2mocpjblPeuTLEAohfEbFlGIO52KAR+WeVGbLmQuOjwuXces4rhUs44ZFHxH5Mmjm6zQb55fYuBbkpoKp2CIEsX1bwnz0Vv8Adto8N8wxc1msQ2kayaVoe1S/zXZJf7zfYCR1vesRVcU4+VpfSCyEkfA4oLCIXlBv0sYTExqpAVuLreGur/h8EjmiuXxcxfTyujVHtR0f8K+hpPRsbcT8ExLhw4tI8G3+DAesQL2IcWbUgRG7fahnILx9MX2jHbGp9OIFrNGRIKTZKFe31/GWvGi6355syxQavZ+0sCf6w6PMW3tkAKVwpYo+ZYC2KVrZOwFTcJ7toHo1eWVHCxa825RYu8WdqxrU7ZGKw/BubFh+p+PGvF+xmYMqf+FDGiovhIJ1PDjizsiu/8mptYAhzos0X07h9J1KDTicVkz9LLBejcexT3/fr+SoCRWDgO7nok3V8uqEXC1hUrPAhUdQVPmpcZTzeOJU3+TzFb5XenTvUNSZY4UB4yUiSf+iUlsqoCy6Qg9uftvN6X9qS0LADQ26cc1TBxK0v3CGBS0fm7c1PhDd6Bpr2BC/6xIajVG9EwchMbtVdAX4a66fttQ5KC57vVBdXbHbkJw2E7BO5AlfzkCQ4RAgRXxjfRz3mjT16bv2lQyrqbh8FeJat+LUI77T5
+ rXFZEk3H
+ iwXnFywT96z/Kw3LPeBy+ou6a2FD81O6PzurRZhi2l/hEIKBqe4La4+oVbU6v9dOz+UkFbXnB0BkR/p7ab/DEUbbIfrUJ8mNe32ixRHUwIxDQ7bm7dkqBGK6hWyv7Ym8MsgN0gtRNIJ78NpheIrqwgboKmr4SEc6hy8HJ+//Wh8BFlsIlzmCN/Hf63l4Hnb9ivl6tg/Kjx8XZAp6NeyyzvpH+3ryBdHRtnumiwzBaVolru1i5CntOmiwnVYdkzv83c/aVbkvgvqt5G31rGzPzJHKVLwyDCqUYdHOAA560W4cf5hW9Kfu3vtZ3Hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,67 +112,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 8:34=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Thu, Oct 22, 2026 at 1:14=E2=80=AFAM Herbert Xu <herbert@gondor.apana.=
-org.au> wrote:
+On Tue, Oct 20, 2026 at 5:29=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
+[...]
 > >
-> > On Wed, Oct 21, 2026 at 08:56:25PM +0000, Suseendran Bhaskaran wrote:
-> > > In the acomp/scomp compression interface, callers pass a bounded
-> > > destination buffer and rely on the return code to distinguish a
-> > > destination buffer overflow (incompressible input) from genuine
-> > > compressor failures (such as invalid parameters, uninitialized state,=
- or
-> > > hardware errors).
-> > >
-> > > While the multi-segment streaming path in zstd_compress(),
-> > > crypto/deflate.c, and lib/842/842_compress.c returns -ENOSPC when the
-> > > destination buffer runs out of space, the single-buffer path
-> > > zstd_compress_one() (taken when input and output are contiguous singl=
-e
-> > > pages, such as in zswap) as well as lz4, lz4hc, lzo, and lzo-rle retu=
-rn
-> > > -EINVAL instead of -ENOSPC on destination buffer overflow.
-> > >
-> > > For users such as zswap, which reduced its per-CPU compression buffer=
- to
-> > > a single page in commit 0b1bf60c324a ("mm/zswap: reduce the size of t=
-he
-> > > compression buffer to a single page"), incompressible pages typically
-> > > overflow the PAGE_SIZE destination buffer due to compressor header/to=
-ken
-> > > overhead. Because these compressors return -EINVAL rather than -ENOSP=
-C,
-> > > zswap cannot distinguish a destination buffer overflow from a compres=
-sor
-> > > failure, causing broken debugfs error accounting (reject_compress_fai=
-l
-> > > vs. reject_compress_poor) or masking real compressor errors.
-> > >
-> > > Update zstd_compress_one(), lz4, lz4hc, lzo, and lzo-rle to return
-> > > -ENOSPC when the compressed output overflows the destination buffer,
-> > > matching the streaming path in zstd_compress(), deflate, and 842.
-> > >
-> > > Fixes: f5ad93ffb541 ("crypto: zstd - convert to acomp")
-> > > Signed-off-by: Suseendran Bhaskaran <suseendranb@google.com>
-> > > ---
-> > >  crypto/lz4.c     | 2 +-
-> > >  crypto/lz4hc.c   | 2 +-
-> > >  crypto/lzo-rle.c | 2 +-
-> > >  crypto/lzo.c     | 2 +-
-> > >  crypto/zstd.c    | 5 ++++-
-> > >  5 files changed, 8 insertions(+), 5 deletions(-)
+> > It seems a lot of trouble is caused by the design of the reclaim loop,
+> > so will it work better if we calculate the number & type to reclaim
+> > first like CLRU?
 > >
-> > I can take this patch through the cryptodev tree.  Is that OK with
-> > you Yosry?
+> > There is a demonstration from Barry:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/baohua/linux.git/log/?h=
+=3Dkairui_scanbalance_0.3
+> >
+> > And instead of throttle at the reclaim loop, balance the scan budge
+> > based on (size - isolation) number, and throttle a while LRU simply
+> > when the total isolated number is larger than total size /
+> > MIN_NR_GENS.
+> >
+> > Just an idea for reference, seems could help get rid of a lot of comple=
+x logic.
 >
-> Thanks Herbert. I think we should wait to see how patch #2 turns out.
-> If I understand correctly, as of now patch #2 keys off -ENOSPC to make
-> a behavioral change in zswap, so the zswap patch would need to land
-> *after* this patch. Unless you want to fast track this to Linus right
-> away?
+> Hi Kairui,
+>
+> Thanks for the pointer. I had a rough look at kairui_scanbalance_0.3 and
+> I am quite interested in it.
+>
+> I think that branch still needs an over-isolation guard. The scan budget
+> answers "which type and how much", but it is computed once per
+> try_to_shrink_lruvec() and does not see what other reclaimers are
+> holding. Each reclaimer's in-flight isolation is bounded by the batch
+> size rather than by the budget, so N reclaimers entering together all
+> see the same state and all proceed.
+>
+> On the other hand, that branch would also make the guard much simpler
+> and clearer. Since evict_folios() already takes the type from its
+> caller, the allowed mask, the type rewrite and the fallback restriction
+> in isolate_folios() all go away, and the throttle reduces to a single
+> check on the totals in the shrink loop, which is basically the second
+> half of what you suggested.
+>
+> So I would like to ask what the development plan for this branch is,
+> and whether you think it is worth moving the MGLRU too_many_isolated()
+> work over to it.
 
-Patch 2 will be re-sent separately, so please feel free to take this
-patch as-is. Thanks!
+FYI, here is the RFC:
+
+https://lore.kernel.org/linux-mm/20261022220203.91911-1-baohua@kernel.org/
+
+Best Regards
+Barry
 
