@@ -1,102 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347A5606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 15:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DD9606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 15:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JSUy/MnX
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=SS5lJWA7
 Received: by kanga.kvack.org (Postfix)
-	id B76636B0985; Thu, 22 Oct 2026 11:44:30 -0400 (EDT)
+	id E43086B0987; Thu, 22 Oct 2026 11:52:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4E366B0987; Thu, 22 Oct 2026 11:44:30 -0400 (EDT)
+	id DD3A66B0989; Thu, 22 Oct 2026 11:52:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8C206B0988; Thu, 22 Oct 2026 11:44:30 -0400 (EDT)
+	id C94606B098A; Thu, 22 Oct 2026 11:52:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D3C56B0985
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:44:30 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF82EA0132
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:29 +0000 (UTC)
-X-FDA: 85350684258.01.BBEB36B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2F23F40003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JSUy/MnX";
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 994666B0987
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:52:00 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 163FF40193
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:52:00 +0000 (UTC)
+X-FDA: 85350703200.10.E118D8D
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 50AF040008
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:51:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SS5lJWA7;
+	spf=pass (imf07.hostedemail.com: domain of 3HDHaagsKCEUz1zllukyhuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--suseendranb.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3HDHaagsKCEUz1zllukyhuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--suseendranb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792683868;
-	b=ZFV7knEDzBWL9p8GeR8NceFlvKqq2pVge4gl/30owWCAZdkCExRmdYKDIaWiWJD8jgz6AN
-	+cMk1bOtQbGS/z9S7nRIe1TjYYWrTjJcGGZkDIeEH4o39UTZTB4bo0iv2ZFQuXxwXPRQOl
-	fnuucT8sM00pt1HIBwShShmEEEFXORU=
+	t=1792684318;
+	b=w8P/Jw0icK+yRTaz3trZDtAY/fquHkQdMsuBLhl9Dkzoa4lzYG3r7wYALjn6DTtXydvTaJ
+	bf3az7bsgH7LQrcuddyx710uSQAIY/tijS/0eNcoyUglRfPYG04+JpSI6VBa0MJj8udWZ6
+	9kiPvRhFw8ukusP1Ca5KMl1vnnQhb10=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JSUy/MnX";
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SS5lJWA7;
+	spf=pass (imf07.hostedemail.com: domain of 3HDHaagsKCEUz1zllukyhuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--suseendranb.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3HDHaagsKCEUz1zllukyhuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--suseendranb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792683868;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1792684318;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cY1hvaWh6Vk6/nIEt5/9rTdze650y5g5R3I1CecXjyo=;
-	b=o2VEzF/P+7nbMdwM9OvNAWBXVka1+ZtEHMY4xm+d67kbnJlH66HB2Dxr3ryCNTYPXAWdP0
-	61mG8hc0QyrNkKoXOJgYqmocuwObAfKb14PyYKA6j2pflwv9YJJquLgxHhwWtGz9WGS3L3
-	3IhsFebybct89bE0Z+Vhd7XfRi48wgU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C293E63E44;
-	Thu, 22 Oct 2026 15:44:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71EC1F031E0;
-	Thu, 22 Oct 2026 15:44:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792683867;
-	bh=cY1hvaWh6Vk6/nIEt5/9rTdze650y5g5R3I1CecXjyo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JSUy/MnXegcnSG+fWAukS384bsK/wMQrMy5lkpbYQrgfGOExC0iCbDW599V2t85vN
-	 vlzi8IJtSWee8I3GcVM0qy3olrYcraklK8mP7Sanqsn3XZEjm+axsN9qDtq2fh6+/K
-	 lJmjlhjwSdYpMrRg2hpHK5khWNoZID5t9A1/y33+eGFLYna6wHU5alGgecC5p0k2x+
-	 WWO10DiH3C4BP+0kvN1jWvKiP4HYj5MrHGdFfkS4YYoHADaTxvyDgUdHdomvvVMoYh
-	 +j/x+peLVgtFX44NhkG+2mhxRsKxGSYKYAOEmt4m7qrDAyHTdQwnfsYaKbkK5YNFWU
-	 YWux0CxHmkuJw==
-Message-ID: <sashiko-outbox-181724@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 8/8] selftests/dmabuf-heaps: Add dma-buf memcg
- accounting tests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
- Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Jonathan
- Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Sumit
- Semwal" <sumit.semwal@linaro.org>, =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Michal
- Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Benjamin Gaignard" <benjamin.gaignard@collabora.com>, "Brian
- Starkey" <Brian.Starkey@arm.com>, "John Stultz" <jstultz@google.com>, "T.J.
- Mercier" <tjmercier@google.com>, "Christian Brauner" <brauner@kernel.org>, "Paul
- Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Stephen Smalley" <stephen.smalley.work@gmail.com>, "Shuah
- Khan" <shuah@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
- =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, mripard@kernel.org, echanude@redhat.com, media-ci@linuxtv.org
-In-Reply-To: <20261021-v2_20230123_tjmercier_google_com-v2-8-ef6ee2dd8c5c@redhat.com>
-References: <20261021-v2_20230123_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com>
- <20261021-v2_20230123_tjmercier_google_com-v2-8-ef6ee2dd8c5c@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 15:44:25 +0000
+	bh=JAYxwJeGd7Vqjt15irwA6c0ELx0VJ3FSuBJg/5kMUGI=;
+	b=Z9S/EU75Y2q94ydG8ubcSRrc1awFuHFhDuiVYq3P4IoYLANd22wrIW6Yn+DWU8rPmS0CL/
+	3sps3NwxWoWoo9yGv7UgRN93H6n4DejFarzGq64N5DL5ro2d190KgYsrPPdGN2bvpJSCqs
+	G8PKCCbMRNamPwxKy+0uYKJovH91NGU=
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a06da65d92so24157b3a.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792684317; x=1793289117; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JAYxwJeGd7Vqjt15irwA6c0ELx0VJ3FSuBJg/5kMUGI=;
+        b=SS5lJWA7VseLP+k0E2RoGcfDZfUQkUJyT+rf8UO8q3baKhZB5lso4y2OiATsXIPmOM
+         zLXhIxAD42Chi3SSKRyuisPkJMd3blOxMIkFwDu5lHRq7c5+D3nAhvPCdhrA3fRPkKpZ
+         64Q6MdLkEDnrWEwMHvdbxay8qRA3JsnDAZWdR82nborNLyZfvCpJcSFCOkD9hGwyPcgr
+         48Dv9TG3YEYLAGztPyQsQ9l8XTb8Q2v4eVTQxwIa22RHZRdDoO3Z19K/xN78V2/YznVo
+         ynJBfkRe8Jndrc7i9W0T04jZ6B649oc4iYvAzYHvuh5nkV18nSpID2KmXnv238aBqV8Y
+         Jwkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792684317; x=1793289117;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JAYxwJeGd7Vqjt15irwA6c0ELx0VJ3FSuBJg/5kMUGI=;
+        b=ygMsKLDL+9pmS3SQ/KyMSOYf3wHNnhYjUk0qaIxdLT1xn0aSsbaWTjifAmu7a+CIJb
+         5k/VLe7SB+7mPPhHydR6XkO8mo16sC28UrODEUqZC1ZVQzr/4zyYWdKcU1wlYTGKgWC4
+         I2m/rYnzFjd0YJW5Ip0QKgZt5JfPbeLKoiDiHo6gCM6WSbXHAHedQHIUDttGZVlFwLAb
+         yWcTjLwN5daVFOt2GQHwaKC0sN6coQVJD7Z3jnNNhQ0GjJYIXbGuyB1gTOW20x8s1NzC
+         OvQn4rPefMeMyBiNxXKeIjg7FYKOlvTZFYF8gtI+s6qkndI3Y/ZqwXjrpchfhaY7fqSP
+         xbkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz6/J3iYwHcs5WhTBEfjW1w21xz+E1cSgEBQhD0NjNZlpYSjptWWQlBvaSBZX2MdnHuT2TBOLgjSg==@kvack.org
+X-Gm-Message-State: AFq9FYLZJwyiup/H5kJC4MAJ576/U/NyVMrnukdpuBN+eKP9JqwGQfei
+	6rAxD/x6DfPcufiPtniWIoh+AuOTt6Za5j6PfXV2bAUH5/RRIlJboqdYpOkpIko/CCg2gl8a0er
+	Qn5bkl8GTAOVuKfu9MfS21ocULg==
+X-Received: from pfay28.prod.google.com ([2002:a05:6a00:181c:b0:885:756d:3709])
+ (user=suseendranb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:1905:b0:8a0:1dab:fd50 with SMTP id d2e1a72fcca58-8a089e1f4dfmr4253077b3a.20.1792684316760;
+ Thu, 22 Oct 2026 08:51:56 -0700 (PDT)
+Date: Thu, 22 Oct 2026 15:51:44 +0000
+In-Reply-To: <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+References: <20261021205626.3286270-1-suseendranb@google.com>
+ <20261021205626.3286270-3-suseendranb@google.com> <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
+X-Mailer: git-send-email 2.56.0.218.g1ec904b173-goog
+Message-ID: <20261022155144.4177200-1-suseendranb@google.com>
+Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor compression
+From: Suseendran Bhaskaran <suseendranb@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Suseendran Bhaskaran <suseendranb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
+	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F23F40003
-X-Stat-Signature: y6isrfics49ducoxrc9trxaa5hjdmgby
+X-Rspamd-Queue-Id: 50AF040008
+X-Stat-Signature: d98ksqdkuzek9hhegn6189gnaai4gkn4
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792683868-836797
-X-HE-Meta: U2FsdGVkX1/gPFahtM3qNTQpHXoJ464k3hljLSLVG78+Xr592AoBQXEmpUFQWQPGR+TT7K+cwUoLsChfM/pDlULV1HAgnnJ4okjP86bAa/iyQcEvR1i+VY3b+ohaPplO7w7J6u85BLXzKEtvKlXa2/qxxF35Qmyh/AKzhvpBmOhb+BC4ntWZEFz1tdPRP6D65n+cNa8JlaRAuB4Kl0HtRh0aB49uNfOQ6748NWNUB2jIxCVUUaRmO8JJmsYr3E9PfwHWTwTr4g7B1l57jjtAzmf/PMZPGuq7rshint2VYjVBIyn+t+OkXPEwvXDFiLhEi5OXY1rFZ2Rir4ibDGaZlMQJECF3aPs0nrZgcMW1xdUGqjgulHLy+qi15HGtB5kwdE1cNBwEIodJAab2wD4vmxiynygGayiedwaQDKATewLaE9E9ziS83+avDQrliWMPRTJ42sriNufLl8nYBsr0xi+VGt8rv2rhyRkftd7IMfQi0F/1nD9U5gV+5zDbOWn0DiS58w5XP9y4Gr3ZnPeuq++zU53Vixt360TQCMNqxeiluzZdNK+bZhg2JF8QGuEsrDbrA6rxf+txbDG/PWzGgLf28sQrvz5VDiHMkUL/dTt1BPoaSIezq87DF7a2pEDTbMho4awBTRBhXInkMhI8ZIkfFv0nTn4/+5V8hdynVprvSWPw0zzUwEyxB04uulNxOd3TP2fiD8A6JQGS+UaaFqo1QTI1nFODHkQKY5SF2GPPNAxf+JqdK6WJMzMihHOwXAvHX0VRvJgMm7MeNF8oeTrKnEmHg0YkGBvOogl30OTwaF7eTyhMR8Aac20pg9qlAtmHJLQo8nOi8JWbM20/6q7ZOuXyV3JwafpIXMi0Uo+9cCrmpXkTSCq/dNQszHjgjoERciQW8PQc3DDEEiFnxf85Sphh+rAb4LYMex0dTGFwP00GbVi4j/bZ7yuVTJ4sFIO6D0vcBZjMpcXfTVW
- d+R1FglV
- ymKtNFVuP7Jl9YaSto3qr2yhu6WKfT8+5a5ShTkNUOOP4aBMmFnpeLrBDgvC3oZP0mddu5uPjjpK6Vcrf+o9mIm0tLVWWB5fBBjjZ5kijodW33PEGqKY/eepb8ZND9B2N7O1Lp2RUKgUZ7yrKKR5XjrwYme1A8dOMCrdkskNnTwg15l5iVVuLcZDkC7AUrd7zo6lXzvdmKTRoAwnTfLZpbCXaAnxKS/PkdFA3TwCmkBqZJMIp6pT1hVR6YUWemxCgTHK3HbgUFyNK6onBknfo6xVbjaqRtQuB3DO+AAID4FpXsxQJngdPwjhG5dIXJt/fwR1OmfAOaNuYguoUtBJfVP7pgA7+mWsTHM3lb0aUjosNWP2SVM1BoUh35xBVSfglfEatemXMlIQZNK5I1qyeTMrCfeT0ch+aRxIRcmATPDmVcENMM9+5coPavPZ/YvS9flzkHVY/EPMTtVrxRirYbDM4hoProsO+HUKrCSydyW8V8ojd3OoN4ASlqJCvvPnEqFcaZaM030fL0bAHtvIS9o1D3vtN2wrHBhXbDwQ1Dwm/OPnOcVH5K1c9ABRVfBtGxEArv3Eq5WGWUaVdIy1cR1pqjI1zgq4iQs/BOJJSslmDB6Zfo0iGGqIAveCHBpDXBzppCfiUrRI8pxsU1mq/C3aEG8hfAG4NLltH
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792684318-325539
+X-HE-Meta: U2FsdGVkX19DLBQIE5qPFwe41x6AN6vJtgnYr5qtniVHt4ZEuC/PSAcs6etj4j3psupBajt5raDc2ZEy3sLNP2+GGikE2wE7YRBWZStKqlzGI81h56K6NnEPVI8SDwfJ/SuoHrkO/d0a7LimAQASVf7UUQm6PwESKDvx0D1D8v+swFxAmMDij5DpIjhrhQbeTmJ4D0agvVmG7tJHWVPo/myv54vIehvtgV3A4WAsL8y8vJEq32UCkVacJmHBgaoLrDqHmUhEpfg5rRHoYtE9i8PZb/VYg9bD8WTboOCqccoww7d1eS+UBxLHn4BKPZDEcZb978KYOX7zqOVX351SRy2vcqOTD3k27D2Oh2F+0ag/bYlBWIeKxH0xWilR2CPnCGYncMh3NWNcdk44JC82e4cbyDXjbM5q81tnIS83Nf3GZdvPrEK9ZqKef8HU77m1gKHKPVvtCT/f7zl1JfnNysgbLhC1VaXX3is5j1ODO+pz9kMTjKh2nxKovmg1wqJJ159SEM7yS/INCGvjEzWl1Y2VJJwPklb1CDA1Q1TmU0mu1EflT8QdCDomR8TTMlFDbjFQqh+wovTngZecusAlpOMdGyOweujFKVijbLIc0AI9akuNar29BvuaAr35ZEZJwXnNOEaAz4lxWzP2Fc4DpgOfN/4idYyw5Goxw5tSpP5Qo7zHviP4lp/ZGTzsCLl6M/m0QwGC8HNSnR+0cRd7ieLCjlbnODgw3ktR+gFZUO6Q6QsDKPJNeY6E9ZdP51x3BgqAx4JlkX12htxQ9SAd5uIc0JLHD9ATdvuTsnNrbCDKCNSIAUky37+rZMbDujmDGYEdVEKbUhdyvo5i8kgc6dsxOXLcIJAlgVo/Geu++VDtTIusH0m6nrX9aJ8xsoEKBy3sSv2SvV9MMnjeNFfsDqMH6hdicfvOgRwoVS5BMb5rc55jzQuB6FMXh3Rv/U+7oyZnWaWGm2a6Tjv03mU
+ OCKy3OmS
+ 9o7ja/Yaevuf38lftHFyvW4HiZ+zMibB6gHCjP2L7WNDLsSn/0KDg2erMCVO+1otlBAnDi5yv//xR9QFxzvWqEViHbkGmCAFSRGhncHPgGXxVaoZzkNBimtBEABEo/MXsx2FLqzgmuj+y3YUmMI8TQ8oxGF7CoftRvEsIm9SXHH244e7Agg0wq8AJn7/lW2BKP35si4BhfB5iOyD+YtVvnMDXTa0QLlqbLlXRSYhQkF0Q9cJir9Do1fLcg3kquTlQ7hfggE0M2EetwDx7q10sfUMT/a1BgV2Twfco4W/UW9cyLOyEITMehHI5cKY7iEUt29vtNoQgQj4cpFF2QZ4UjAxz4gwXmVG45XZ3hjZ6DbIrCXFu9+xFN3ukYYhA1gj8AcKJi8rsO+dvGouH3643eACUmD2wFxEOwX3ULpk76cC2WMxXVbex2ym+Z+/HB7OO16XWCmYCCBTDsKzZN1sbUX2LOOStF0ZeEOlnYKKwkpxq8q1/DVmMG5udbrU/dB6FFSBwq1HZfJOZIV7zSTY2icMx6s4bpOha4Fg4bzGhBKpV+uzNlIUN63VOeRANaCYeNx9Rm+R/d/oIwSpweFHj7BJexCacSdMCxu1CpKumoaERQzbP1fj4THr4ww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,300 +118,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Medium] selftests/dmabuf-heaps: missing skip check in test_xfer_charge_c=
-groupfd_self()
-- [Medium] selftests/dmabuf-heaps: missing cgroup2 and memcg checks in open=
-_self_cgroupfd()
-- [Medium] selftests/dmabuf-heaps: vmtest.sh executes runner from unshared =
-/tmp in guest
-- [Medium] selftests/dmabuf-heaps: vmtest.sh runs vng/make before check_dep=
-s()
---
+On Wed, Oct 21, 2026 at 02:47:46PM -0700, Yosry Ahmed wrote:
+> On Wed, Oct 21, 2026 at 1:57 PM Suseendran Bhaskaran
+> <suseendranb@google.com> wrote:
+> >
+> > 1. When zswap writeback is disabled (e.g. memory.zswap.writeback = 0),
+> >    zswap_compress() sets 'comp_ret = comp_ret ? comp_ret : -EINVAL' and
+> >    jumps to unlock. Whether the compressor fails on destination overflow
+> >    with -EINVAL or succeeds with dlen == PAGE_SIZE, comp_ret becomes
+> >    -EINVAL. Consequently, incompressible pages are misaccounted in
+> >    debugfs under reject_compress_fail instead of reject_compress_poor
+> >    (leaving reject_compress_poor stuck at 0 and triggering false
+> >    compressor failure alerts on normal incompressible workloads).
+>
+> Hmm IIUC this is completely fixed by patch 1, so it doesn't belong here, right?
 
-commit 0809a03b2fbc81e6f2b637ef5c0744b2c8ae99f1
-Author: Albert Esteve <aesteve@redhat.com>
+You are right, thank you for pointing this out. For the destination
+buffer overflow case, Patch 1 alone fixes it since comp_ret is already
+-ENOSPC and 'comp_ret ? comp_ret : -EINVAL' preserves it. The only case
+not covered by Patch 1 when writeback is disabled is when compression
+succeeds (!comp_ret) with dlen >= PAGE_SIZE, where 'comp_ret ? comp_ret :
+-EINVAL' sets comp_ret to -EINVAL instead of -ENOSPC.
 
-selftests/dmabuf-heaps: Add dma-buf memcg accounting tests
+> > 2. When zswap writeback is enabled, any non-zero comp_ret (such as
+> >    -EINVAL from an invalid compressor context, -ENOMEM, or a hardware
+> >    accelerator error) is treated identically to an incompressible page:
+> >    comp_ret is cleared to 0 and the raw page is stored uncompressed in
+> >    zsmalloc. This silently masks genuine compressor failures
+> >    (reject_compress_fail is never incremented) and miscounts pages that
+> >    encountered a compressor error under stored_incompressible_pages.
+>
+> Storing pages in zswap when compression fails to avoid LRU inversion
+> was intentional in commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE
+> compression failed page as-is"). Unless we think this needs to be
+> changed, I think all we really need to do is make sure we account
+> debugfs correctly for -ENOSPC vs other error codes? Or am I missing
+> something?
 
-This commit adds selftests for dma-buf memcg accounting via charge_fd in
-tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c and
-tools/testing/selftests/cgroup/test_memcontrol.c, along with a virtme-ng
-runner script in tools/testing/selftests/dmabuf-heaps/vmtest.sh.
+Thank you for the context. Keeping the writeback-enabled behavior from
+commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
+as-is") as-is makes sense.
 
-> diff --git a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c b/tools/t=
-esting/selftests/dmabuf-heaps/dmabuf-heap.c
-> index 1d49df6719198..b1c58e5883f64 100644
-> --- a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-> +++ b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
+With that unchanged, existing zswap_compress() already accounts -ENOSPC
+vs other error codes when writeback is disabled, except for the
+!comp_ret && dlen >= PAGE_SIZE case mentioned above:
 
-[ ... ]
+-			comp_ret = comp_ret ? comp_ret : -EINVAL;
++			comp_ret = comp_ret ? comp_ret :
++				   (dlen >= PAGE_SIZE ? -ENOSPC : -EINVAL);
 
-> @@ -496,6 +505,213 @@ static void test_alloc_no_fd_leak_on_efault(char *h=
-eap_name)
-
-[ ... ]
-
-> +static int open_self_cgroupfd(void)
-> +{
-> +	char cgroup_path[PATH_MAX];
-> +	char buf[PATH_MAX];
-> +	FILE *f;
-> +
-> +	f =3D fopen("/proc/self/cgroup", "r");
-> +	if (!f)
-> +		return -1;
-> +
-> +	cgroup_path[0] =3D '\0';
-> +	while (fgets(buf, sizeof(buf), f)) {
-> +		char *p =3D buf;
-> +
-> +		if (strncmp(p, "0::", 3) =3D=3D 0) {
-> +			p +=3D 3;
-> +			p[strcspn(p, "\n")] =3D '\0';
-> +			snprintf(cgroup_path, sizeof(cgroup_path),
-> +				 "/sys/fs/cgroup%s", p);
-> +			break;
-> +		}
-> +	}
-> +	fclose(f);
-> +
-> +	if (!cgroup_path[0])
-> +		return -1;
-> +
-> +	return open(cgroup_path, O_RDONLY | O_DIRECTORY);
-> +}
-> +
-> +/*
-> + * Test: allocate charging the calling process's own cgroup via a cgroup=
-fd.
-> + */
-> +static void test_alloc_cgroupfd_self(char *heap_name)
-> +{
-> +	int heap_fd =3D -1, cgroup_fd =3D -1, dmabuf_fd =3D -1, ret;
-> +
-> +	heap_fd =3D dmabuf_heap_open(heap_name);
-> +
-> +	if (!pidfd_alloc_supported(heap_fd)) {
-> +		ksft_test_result_skip("charge_fd not supported by this kernel\n");
-> +		goto out;
-> +	}
-> +
-> +	cgroup_fd =3D open_self_cgroupfd();
-> +	if (cgroup_fd < 0) {
-> +		ksft_test_result_skip("cannot open self cgroupfd\n");
-> +		goto out;
-> +	}
-> +
-> +	ret =3D dmabuf_heap_alloc_pidfd(heap_fd, ONE_MEG, 0, cgroup_fd, &dmabuf=
-_fd);
-> +	ksft_test_result(!ret, "Allocation with cgroupfd %d\n", ret);
-> +	if (dmabuf_fd >=3D 0)
-> +		close(dmabuf_fd);
-> +	close(cgroup_fd);
-> +out:
-> +	close(heap_fd);
-> +}
-
-[Severity: Medium]
-Can open_self_cgroupfd() return a directory fd that causes
-test_alloc_cgroupfd_self() and test_xfer_charge_cgroupfd_self() to report a
-hard failure instead of skipping when cgroup v2 or the memory controller is
-not active on that path?
-
-In open_self_cgroupfd(), the 0:: entry from /proc/self/cgroup is appended t=
-o a
-hardcoded /sys/fs/cgroup prefix without checking that /sys/fs/cgroup is a
-cgroup2 mount. On systems using a hybrid hierarchy where /sys/fs/cgroup is a
-tmpfs and unified cgroup v2 is mounted at /sys/fs/cgroup/unified, opening
-/sys/fs/cgroup/ succeeds on tmpfs, and the kernel's cgroup_get_from_fd() th=
-en
-rejects charge_fd with EBADF.
-
-Furthermore, unlike the pidfd path in dma_heap_ioctl_allocate() and
-dma_buf_xfer_charge() which resolves the effective memcg via
-get_mem_cgroup_from_mm(task->mm), the cgroupfd path calls
-cgroup_css(cgrp, &memory_cgrp_subsys) directly on the target cgroup and
-returns ENOENT if the memory controller is not enabled for that specific
-cgroup (for example, when the test runs in a non-root cgroup whose parent h=
-as
-not enabled +memory in cgroup.subtree_control).
-
-Should open_self_cgroupfd() verify that the resolved directory is on a
-cgroup2 filesystem with the memory controller enabled, or should the callers
-skip when the ioctl fails with ENOENT or EBADF?
-
-> +
-> +/*
-> + * Test: transfer a dma-buf's charge to self cgroup via DMA_BUF_IOCTL_XF=
-ER_CHARGE.
-> + */
-> +static void test_xfer_charge_cgroupfd_self(char *heap_name)
-> +{
-> +	int heap_fd =3D -1, cgroup_fd =3D -1, dmabuf_fd =3D -1, ret;
-> +	struct dma_buf_transfer_charge xfer =3D { 0 };
-> +
-> +	heap_fd =3D dmabuf_heap_open(heap_name);
-> +
-> +	ret =3D dmabuf_heap_alloc(heap_fd, ONE_MEG, 0, &dmabuf_fd);
-> +	if (ret) {
-> +		ksft_test_result_fail("Allocation failed %d\n", ret);
-> +		goto out;
-> +	}
-> +
-> +	cgroup_fd =3D open_self_cgroupfd();
-> +	if (cgroup_fd < 0) {
-> +		ksft_test_result_skip("cannot open self cgroupfd\n");
-> +		close(dmabuf_fd);
-> +		goto out;
-> +	}
-> +
-> +	xfer.charge_fd =3D cgroup_fd;
-> +	ret =3D ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer);
-> +	ksft_test_result(!ret, "XFER_CHARGE to self cgroupfd %d\n", ret);
-> +
-> +	close(cgroup_fd);
-> +	close(dmabuf_fd);
->  out:
->  	close(heap_fd);
->  }
-
-[Severity: Medium]
-Unlike test_alloc_pidfd_self(), test_alloc_pidfd_child(), and
-test_alloc_cgroupfd_self(), test_xfer_charge_cgroupfd_self() does not call
-pidfd_alloc_supported(heap_fd) or check for errno =3D=3D ENOTTY when
-ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer) fails.
-
-On an unpatched kernel where dmabuf_heap_alloc() and open_self_cgroupfd()
-both succeed, won't ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer) retu=
-rn
--1 with errno =3D=3D ENOTTY and cause ksft_test_result(!ret, ...) to report=
- a
-failure instead of skipping?
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/dmabuf-heaps/vmtest.sh b/tools/testi=
-ng/selftests/dmabuf-heaps/vmtest.sh
-> new file mode 100755
-> index 0000000000000..434857b765b84
-> --- /dev/null
-> +++ b/tools/testing/selftests/dmabuf-heaps/vmtest.sh
-> @@ -0,0 +1,205 @@
-
-[ ... ]
-
-> +readonly DMABUF_HEAP_TEST=3D"${SCRIPT_DIR}"/dmabuf-heap
-> +readonly MEMCONTROL_TEST=3D"${CGROUP_DIR}"/test_memcontrol
-> +readonly TMP_DIR=3D$(mktemp -d /tmp/dmabuf-vmtest.XXXXXXXX)
-
-[ ... ]
-
-> +build_selftests() {
-> +	make -C "${KERNEL_CHECKOUT}" headers_install \
-> +		INSTALL_HDR_PATH=3D"${TMP_DIR}/usr" -j"$(nproc)"
-> +
-> +	local khdr=3D"-isystem ${TMP_DIR}/usr/include"
-> +
-> +	if ! make -C "${SCRIPT_DIR}" KHDR_INCLUDES=3D"${khdr}" -j"$(nproc)"; th=
-en
-> +		die "failed to build dmabuf-heaps selftests"
-> +	fi
-> +
-> +	if ! make -C "${CGROUP_DIR}" KHDR_INCLUDES=3D"${khdr}" \
-> +		"${MEMCONTROL_TEST}" -j"$(nproc)"; then
-> +		die "failed to build cgroup/test_memcontrol selftest"
-> +	fi
-> +}
-
-[ ... ]
-
-> +make_runner() {
-> +	# virtme-ng shares the host filesystem, so TMP_DIR is accessible
-> +	# inside the VM at the same absolute path.
-> +	cat > "${TMP_DIR}/run_tests.sh" <<-EOF
-
-[ ... ]
-
-> +	EOF
-> +	chmod +x "${TMP_DIR}/run_tests.sh"
-> +}
-> +
-> +run_vm() {
-> +	local verbose_opt=3D""
-> +	local kernel_opt=3D""
-> +
-> +	${VERBOSE} && verbose_opt=3D"--verbose"
-> +
-> +	# If we are running from within the kernel source tree, use the kernel
-> +	# source tree as the kernel to boot, otherwise use the running kernel.
-> +	if [[ "$(realpath "$(pwd)")" =3D=3D "${KERNEL_CHECKOUT}"* ]]; then
-> +		kernel_opt=3D"${KERNEL_CHECKOUT}"
-> +	fi
-> +
-> +	vng --run ${kernel_opt} ${verbose_opt} --user root --memory 512M \
-> +		--exec "${TMP_DIR}/run_tests.sh"
-> +}
-
-[Severity: Medium]
-Will "${TMP_DIR}/run_tests.sh" be visible inside the guest VM when TMP_DIR =
-is
-created under /tmp?
-
-When virtme-ng boots the guest, virtme-init mounts a fresh tmpfs over /tmp
-inside the VM, which masks the host's /tmp directory unless TMP_DIR is
-explicitly shared via --rodir / --rwdir or created under a shared directory
-such as SCRIPT_DIR. Won't vng --run --exec "${TMP_DIR}/run_tests.sh" fail in
-the guest because /tmp/dmabuf-vmtest.XXXXXXXX/run_tests.sh does not exist
-there?
-
-> +
-> +while getopts :hvbH:p: o
-> +do
-> +	case $o in
-> +	v) VERBOSE=3Dtrue;;
-> +	b) BUILD=3Dtrue;;
-> +	H) BUILD_HOST=3D$OPTARG;;
-> +	p) BUILD_HOST_PODMAN_CONTAINER_NAME=3D$OPTARG;;
-> +	h|*) usage;;
-> +	esac
-> +done
-> +shift $((OPTIND-1))
-> +
-> +trap cleanup EXIT
-> +
-> +check_vng
-> +handle_build
-> +check_deps
-> +make_runner
-> +
-> +echo "Booting VM and running tests..."
-> +run_vm
-
-[Severity: Medium]
-Should check_deps() verify vng and make before check_vng() and handle_build=
-()
-are called?
-
-Right now, if vng or make is not installed, check_vng() runs vng --version
-first and prints a command-not-found error plus an untested-version warning,
-and if -b is passed, handle_build() fails via die() with KSFT_FAIL instead =
-of
-exiting with KSFT_SKIP in check_deps().
-
-Also, in handle_build(), the script uses pushd "${KERNEL_CHECKOUT}" and popd
-to build the kernel, whereas run_vm() only sets kernel_opt=3D"${KERNEL_CHEC=
-KOUT}"
-when $(pwd) is inside KERNEL_CHECKOUT. If vmtest.sh -b is invoked from
-outside KERNEL_CHECKOUT, won't run_vm() ignore the freshly built kernel and
-boot the running host kernel instead? And in build_selftests(), should the
-make headers_install command also be checked for failure before building the
-tests?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-v2_2023012=
-3_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com?part=3D8
+Would you prefer that I narrow Patch 2 to just that change in v2, or drop
+Patch 2 and only send Patch 1?
 
