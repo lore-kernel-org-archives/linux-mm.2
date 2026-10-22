@@ -1,99 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0A1606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 19:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405C9606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 19:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ZqPT3x0k
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kGaVyFZt
 Received: by kanga.kvack.org (Postfix)
-	id 589266B09B9; Thu, 22 Oct 2026 15:33:31 -0400 (EDT)
+	id 3E4BC6B09BA; Thu, 22 Oct 2026 15:39:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5604D6B09BA; Thu, 22 Oct 2026 15:33:31 -0400 (EDT)
+	id 395E16B09BC; Thu, 22 Oct 2026 15:39:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49D2D6B09BB; Thu, 22 Oct 2026 15:33:31 -0400 (EDT)
+	id 285F16B09BD; Thu, 22 Oct 2026 15:39:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 28F546B09B9
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:33:31 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF4794029C
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:33:30 +0000 (UTC)
-X-FDA: 85351261380.19.F14448D
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 66D4D40008
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:33:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZqPT3x0k;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf04.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F42046B09BA
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:39:24 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E86A8C027B
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:39:23 +0000 (UTC)
+X-FDA: 85351276206.22.23B3840
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 14DF010000E
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:39:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kGaVyFZt;
+	spf=pass (imf14.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792697608;
+	s=arc-20220608; t=1792697962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mCLgkUSjfiPQ2Z/7aDng4XXocalO4USE3TUieu+yZLc=;
-	b=1htF4F8XJjnWXA6SOwzc7xElsI+vy+RLG51/Frn7WTn89yOgTweQ+ySyKYKjOrGA43+Ygm
-	OujE0dxbYWqOiylhpQvaZPUcyZSM28q2hyCZ95wC4TkKbqHHHo4uGgF/ti/xFCF5TpgaVL
-	CG2CeibPyZg3swyniDWSzHbp58BwT8E=
+	bh=CXFOQ58yRb7ArLvRTOCPZICunogkgYzN7mdYgP5TB4k=;
+	b=6jxlw+ofkLAYO3D2iCPLOpI6bggJF+S+qWFVD/Hs/I2OwRmTY0hzZTIdWuPywCsM7koQK4
+	Fia1wHag/pxsk7muvZouOBNfb6tQUI1dqHbNe+u2bHbwkHVvCx6dtSQ8gn6httKQQgP9nN
+	aG+ox7RsIrMYrD4QV/tWvEgIxtuy2cM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZqPT3x0k;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf04.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kGaVyFZt;
+	spf=pass (imf14.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792697608;
-	b=J2j1P8y5jJtk91cBSRX5Hl2TwN1FYD+52jat6W3/4T0c4yijCScok0YJVsnOMTZs6mwCBO
-	OevTSQ9cqIXdl4ryaUWbf6J8xdgZGT6PYSLg7h1dCBijxX9TSGS73+doFYV6/NtKKNblO5
-	zlbUBCq8VQsamWlDqGfrzyDDw5f4Fmw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=mCLgkUSjfiPQ2Z/7aDng4XXocalO4USE3TUieu+yZLc=; b=ZqPT3x0k+CkPYo13D5zgsJ31Zh
-	JSJ2yQy9T2F9ZvFcBhY+Z/TsYvx16xi5yE85WvpB2WwilwZxtPJ172IuYZAlhKM9hBKf8xUo001L1
-	KcTkOIdULCe5RBTRqtRCfz9nTJTrvqdnAA0jvDHlsZdkWIbYSA8CBt3y3Jlck+YFtCCpf8Kj7c0hb
-	Rp1BprJM9xy8SSEPfotOjGut3et+hWHK00vTkqsylvvHEIpK9lniM1vm0xEQAAbmKmzsr4CmZZq5H
-	qio3WsXzmjQC7G571OtOw+iVIhxTRPBYODRQA5oyszhf8Yi4Xf3IFUljEFquZQ2s/kCNk0eiKG7TO
-	G75+oKiw==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xJyXT-0000000EpQv-49dK;
-	Thu, 22 Oct 2026 19:33:24 +0000
-Date: Thu, 22 Oct 2026 15:33:16 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Jann Horn <jannh@google.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, 
-	oleg@redhat.com, peterz@infradead.org, mhiramat@kernel.org, jolsa@kernel.org, 
-	akpm@linux-foundation.org, ljs@kernel.org, surenb@google.com, david@kernel.org, 
-	vbabka@kernel.org, hughd@google.com, kees@kernel.org, mingo@redhat.com, 
-	tglx@kernel.org, x86@kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf-next 4/9] uprobes/x86: Don't WARN if an optimized
- probe can't be written
-Message-ID: <dabdsge2cphfoulqobeswzj7xxkvlq2qyyi3iauqgmftfj6vg6@hbmosdt6t4bd>
-References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
- <20261022015712.1297331-5-alexei.starovoitov@gmail.com>
- <CAG48ez0cG532aaXZF_asCDk+fsnQmE9L5PA9T+JN6OGdx6yjGQ@mail.gmail.com>
+	t=1792697962;
+	b=AM7XEc2ALTfDoULEPMv5UUChUJ9nRwRPMe2uS4CKcekQacgSwl4FiQZnR6KpcRsxq16U9V
+	51Cocpuk9uY+5JsR+Fe9wcdR81y7kkNLBdsLw9+ioPiLvcScBehiT+6KBawYmoBGuIwk5E
+	4OUJpscjjARp4HUcSqiHj/hAr5DOFG8=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a1ec92f655so1125025e9.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:39:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792697960; x=1793302760; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CXFOQ58yRb7ArLvRTOCPZICunogkgYzN7mdYgP5TB4k=;
+        b=kGaVyFZtfjw6hwN8o4koom6fSoyvgUmqUhPaSQN7OzZBeHLZMFV8qriDmZqQrqS5yn
+         4p4vUZ0K1+l8rECJpe6pv6jVNHYfS/n9dSfrD4A6kKQrZrMgzUCJJ5U7D/3fx7C330Rm
+         5JOWTNxenadwbWhfMY/PmEKPgeaRmNH3wu3nai5ib3VQ11ZRMdvA8YmNnSxC7fD+YGNk
+         4kSwpBqLteanrglXbSYT2jzfw8MbbQx0+5My4vqg/9mU1x4UpB2FaqI7MTqIlElrr4yf
+         Tw0pMV9ggkPQiHXmtTfG/+rG/Wt3X2hf5GCXDERuDVqVYF4dTFY4bFQCPZCMyGNNk0Zf
+         +NRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792697960; x=1793302760;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CXFOQ58yRb7ArLvRTOCPZICunogkgYzN7mdYgP5TB4k=;
+        b=fADqzr5G+lX2conR6VSoB/T43QpRNZcGsmYGdri4gSaKVEWqmRG8A968T7b/s1csxk
+         GsT2f4pTIIGKbFm6bbgHBcNbCd0KLKg5M+K2bu4YT17Ngi4cz/0nkYta3kLQbJCMkq5B
+         JCMSDKC1q7lFEEbGm6ahw30dcmWIbdY0dEfWyTEtHuRqmCXyjJwkmtplvpd1MIT0Y98C
+         wMXm0OwGjiwetOX6GO8DRdfKY1qpPmXFgemYpT4pmTlu2v4IiGKNDhHYqSwHW8RwWWLv
+         o37OXEM7o0Fggadhy0bmFEYngwkwlJwgnvlw09zpMxKhn6Nq+lvWBhQBwIbE3I5ImmpT
+         S5Bw==
+X-Forwarded-Encrypted: i=1; AKwUvByy+jj/JuidPkTJYyawNARzGbqiywyMZIi6uAAK0xOYIAMY4NhY1aTUN6vSDxy+b7Eqlu1kDUltww==@kvack.org
+X-Gm-Message-State: AFq9FYK6MQlcw+1Yx6Url2w5+51uBFi3W9ZRMs6W+Fp+gLOgOuVE0Ae8
+	KTgLtXTadqg0XkWMoHLrtuw9T7LobxaNX5Nx1T6jLtK9oCPjIio9bbtB
+X-Gm-Gg: AYBFou1NT+xUGTFWGCcBdnIPdkcFFGvtMRj5U1exh4FlyQBZaQd2BiMaHyiz4yeF3iZ
+	IxYqlNaGkh36l1s6PEz+L4/U6t5h7cT+hDSfluXsOgpnBpiXUHtgw053k/rLIwJkAtArgmgdAlA
+	DoGjYP0Rbf1z7HlSApbaEyV+EV9yAVU0pHiP7rTQQNJq4rvy/536u+MZJAQa0O21Nm0IaydaWuX
+	bTQ/n2Pr8e8Z39hKiXxYMm14xTYY2zxVYY1QH5hLzZk5D2c/7Xt3VY9TEP2Gol73fiXMWwx3uLl
+	xbMGPC6d2AF4eFvt/MWdWQDXFxsfGmxk1WbYwJZZ5ch4YAvfwnex1wGDMWL5WLPefV1Uh8XRc3V
+	fGxZr5zqD4P4lwlI042qWUoFcIFwbFo6vxQ1fmrnOgFqK/rsl9yYpfXVsoE/91v8J7TQFicc7dt
+	E2TK9qA20vrqTatzv5f4pMoZBXS+OplMz/kTt1/eazCUMTKI0ALVJYTMtz9o2kUtUL4Q3ojiHjH
+	q4m9GH+h+tk6lP0h0xtHB17HmkEBGB2yTv2ovRKRGM=
+X-Received: by 2002:a05:600c:1d1e:b0:4a0:34a:588c with SMTP id 5b1f17b1804b1-4a211c859dbmr1721105e9.14.1792697960247;
+        Thu, 22 Oct 2026 12:39:20 -0700 (PDT)
+Received: from krava ([176.74.159.170])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a2101cedcesm20827015e9.0.2026.10.22.12.39.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 12:39:19 -0700 (PDT)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Thu, 22 Oct 2026 21:39:18 +0200
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: Re: [RFC bpf-next 3/9] mm: Expose locked mprotect operation
+Message-ID: <atpmZt_Je09hdlja@krava>
+References: <20261021195759.119421-1-jolsa@kernel.org>
+ <20261021195759.119421-4-jolsa@kernel.org>
+ <atnjEc2-6CuKjFzH@gremlin>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez0cG532aaXZF_asCDk+fsnQmE9L5PA9T+JN6OGdx6yjGQ@mail.gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 66D4D40008
-X-Stat-Signature: 9q71mbo686n5tfuootoo4idamsojdbm9
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+In-Reply-To: <atnjEc2-6CuKjFzH@gremlin>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 14DF010000E
+X-Stat-Signature: jnc9adxdfena9jtpyn4mh44y3uxmfq7e
+X-Rspam-User: 
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792697608-363569
-X-HE-Meta: U2FsdGVkX19OxXMZ+f1LuFcFABR1KvARbJRXriPieJWOkus3B9+dMDWxCI6AA/fKX2RmzRJGnKiYhoKtNDs8ya5LvRyYfcYaKwzj8X+tOWenPFewJb7W0+HYXCMmvKYiKBS9HBphHcACgUnPK/q3ChYKPP6eazP2YRqEcYc12ciRu2llbKegjJQot/oh2mCCwKaaARaz2hpXnueL5Yc+q0QZ2vO8obeYRGZ0O6dcfr+LWHIigBOwVW9Z/R7SZWvjGsVPGiTVcmTzoXMRJsl26yG5F9XgkR6MKPZTO2DBDAeei/Uhxm9gQAu9eBceNaHOBm0cy9WGgJ2iiubOwqgsV7q7x+YrSyTi82MWpYBxo7mXunJa3/grXJooqp5cou9ldTzz1Ya8+bKaL5TVdaQcbbwVh9O/xFPTD3bOPYX00ctdxp55THBs7koJGLdhVOllJPeLvRJ+XXfGD+txEho42bo3gOeAQxPCVaJNlVosJbrZdP7U3BLJc013+2x2i0BPbsnX3Hf3FSRe60wU8YSfcMF+zbjGL1mTgxLN6jYQkrGexfxBIR260YBjtxuT/p7pbrjd7MIp8vu49nKkIX6RXAfSG2aaT+k4+ZCrXHVZQXl0rvJMiGFxzPzm0yjBFk/ex7g6fQj0e6yTd7KlQHrB51tKGVw+g9vrPTWR2/rpRGrIdeRvvCoxmcZ6n7127kBumCAirWE3xYFVhWWXz9wEV0/7RnJBNmAkzfmNBUuR7Gp5nF6TaQJBCg1SHlSL7fb2F5aMCmhRRsW9JTRBIzfnCNd3Gq8nlzwHrkA9WDMLlZAYr00MchcdCrCicKeRxFGq4yxXRI4s5mRzrwGDVPmxyrKqPPV4KgzIQ258L+1DbgqjMbprmpMmiszkpKiQGADkz8wUyLWdRp/TfPu12UtQ/Q+yi1ttu98bIN9uR6BUoQlpJAW1G+fyNt3H+UtXbLGNqoJnBscwMEC97Vr3mzZ
- kQzLAOKL
- Rc23++V0wZK1FLFxPCMn4R5GCPMptKlK3hPKpz0cbcM+kFXFd6vdIKInTukY/fS8PvRkSr/PR/LccT7eLrFAYbVpmZ9J5/JGsk4cawS0b6Bd9ZJoSF8fR7KGVjWT7dtfGbXb36kSrnfnbBYAkml7HsL5k2jPOfsDfkaIn1xTsysMSniY3Gau/xC5jEQGGlKR5WOcjapwNbAkdHPRS4oeVAplK5LQsoyoWCEgztJaKDQ9SgUh9ovmUcIMIHixOW8ClMzKlkFGKOkwRQiMIjqwtyXqL8VhRs8vph61kGhvMBVs5go/TJrl9UEJFgjL3l2jb1eXUR9dqpubDZW1aRTWgkmeFEo1mdsW1EPYE+n9ePr0JQO/LC6IA3QgikdYcA2Y+rr77RNFFMsgAyXWepZatbGjcuA==
+X-HE-Tag: 1792697961-886388
+X-HE-Meta: U2FsdGVkX188W/lyOfQhNQNl28+foxFQeS7Vuc1/FJPpmze9y8npTFeUVMahitsTgxnUNKS+RpxVLwZk/n1inD/Ozz9hfV5HMvP8eUr3t0o25FDQoV/0nViHVpgykuyJ/oBbWe4cjcIO1VFrcSZTRp332n3EJ4E9qvOm8PDRi74gWnPt+DX46v+CATwMk505zmKrYO2U4NtnDGTt1pwHGtbD1zozekSlrqnO2hBZcGVeC9tqHsL5vTzo7q64TpeTaX+6JNER5doKPX1nH7LvF019Tklgn9ieADtcaZyhkLIqJ+v3nBb19Xo9ojFZgQMckK/fQ7duy/Zp6VhpLLbzXmYRRgvzDsAG7rYuMOGQKzCoZEO8HANJhncmsx9E/CFoezfUCVofaGgAjNtftP6Fl15U9C8y42A3db2ag+OqaVEzY+oyVa8I0RiWVvib9kfNMA8QshdwK8fGBuN38PIXNz/lFItqyqSHt+wmaHz/K3vXFg/44EafRJfBsxrOKHHe15gzThTYLfoIcJQBOEHzDA8K+fhDP1Ll7odk1eGZ8OVayqX2k6Cp973E0ED13eheE1VcS9j52D0dNlGpmTN06WQ60gWSPhsNJjxFyo2bgDCMTJXS1lvwKMWFKd5aiYZWf9yBCkyoHcNBhPFMez54C3WLri7tKV2SnuXYicZCgfP+iEaqe9a5+argrcaN5yF3UwFsSYfXt+FMJl/sppwF241yHCrZK/VwBvnSmFRzCwMnypT8rakOlQWgekhn8a/ffIRVpDurFt/M1r75MlnU1zTeR8hlubqwgsniEdSApPpvaN1O9PIYP+Vqg+HwP3wQEw2LiNYxwZSNhk780xvv11sdBHToeuy5zEy24TluPDicgzt8oYH/n3sy5I70BRzrrKZgGQpzh5e3deBLPs2ZbVcdIi4iyMidOzQvccerlr33cFDpelgxEEw28GqtvkmTM1csN7acXq+NAlirv0t
+ 6wlqPWhZ
+ Qs1ce4TvVPYlSTXl0L14LjB0ZQgikOQBDe+n0onQvXnXJwDCM49ufOPYdQd7lLIVlkVCh6wpxtXAYy51euHcp2OuPBD4N9ZMcoXdP1+n9zidIXGXV89NQJDvj1HaxZo6ppHGnH8jZfh4FJw+eeknATTUTOAG9njLNgxyp+Je6JTSuaI1PtmKN9YPksfVCCbq8pKZLbjbERuAtroR2gtKJ1kwn7OsySbI1U9xK5DhRHeBwPoHl4LAslyvnp95xHP3ZZ6urUwjr6rzQYiCdbiwGLmvMdKUf5VmrMWDQuwbxY83kcrSz8p+O/XFBOTaudz3xwAce4w4Zf8sV6N6mDSPd5YjC3SyDmbFQWuNcrfWMTMNoabXh++wI0Y5rFOHlW0baPNxnzvVpGUbRCGk6aVoCtOyWyEp8K+6P/GXm82U/d6HVz8cvt9jLNQnBghBe6dd3oZjsyDTBhtDKKDpnw2fUd4gE/v8M82wRTYd2GZ0O2qB1XdyBCegYLucMfuJ/bw7/cdwfMMLDTlqtrnF2ufz4XR546nStzBJyW1tQ0nAYqjnFzNJvCdKByvwZFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,37 +133,103 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26/10/22 07:56PM, Jann Horn wrote:
-> On Thu, Oct 22, 2026 at 3:57 AM Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
-> > @@ -1197,7 +1194,7 @@ static int __arch_uprobe_optimize(struct arch_uprobe *auprobe, struct mm_struct
-> >         if (IS_ERR(tramp))
-> >                 return PTR_ERR(tramp);
-> >         ret = swbp_optimize(auprobe, vma, vaddr, tramp->vm_start);
-> > -       if (WARN_ON_ONCE(ret) && new_mapping)
-> > +       if (ret && new_mapping)
-> >                 WARN_ON_ONCE(do_munmap(mm, tramp->vm_start, PAGE_SIZE, NULL));
+On Thu, Oct 22, 2026 at 11:25:31AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Oct 21, 2026 at 09:57:52PM +0200, Jiri Olsa wrote:
+> > The bpf_user_page_exec() in following patch needs to change page
+> > protections while holding current->mm's mmap write lock.
+> >
+> > Exposing the do_mprotect_pkey_locked helper for that.
 > 
-> Not an issue with your patch, just FYI regarding this preexisting
-> WARN_ON_ONCE():
-> A failing small GFP_KERNEL allocation could theoretically cause
-> do_munmap() to fail; the VMA tree has the ugly quirk that you can't
-> reliably _remove_ elements without memory allocation.
+> Err, we'll need some more justification than this for exposing internal mm
+> logic to the rest of the kernel please.
+> 
+> Note that you're already allowing any caller to bypass
+> CONFIG_ARCH_HAS_PKEYS here which is immediately a broken thing.
+> 
+> >
+> > Assisted-by: Codex:GPT-6
+> > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> 
+> It's a no to this in its current form.
 
-During munmap() we may need an allocation of one or two vma(s)
-(splitting a vma or punching a hole) - and those may have anon vma
-chains that need to be allocated, we may need to allocate for uffd
-reasons, and we may need to allocate for the maple tree.
+yes I suspected it'd be a problem, but as you mentioned
+in the other reply, Alexei's proposal takes care of that
 
-That said, this path exclusively uses GFP_KERNEL which means we will
-invoke the shrinker.  If the shrinker comes back unsuccessful, we will
-invoke OOM.  This either succeed or it does not matter (we'll kill this
-task).
+thanks,
+jirka
 
-The other two possibilities is that the OOM is disabled during
-hibernate/suspend calls, or error injection caused the failure.
-
-Thanks,
-Liam
-
+> 
+> > ---
+> >  include/linux/mm.h |  3 +++
+> >  mm/mprotect.c      | 20 +++++++++++++++-----
+> >  2 files changed, 18 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 63f40e615754..47e853093601 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -3435,6 +3435,9 @@ extern long change_protection(struct mmu_gather *tlb,
+> >  extern int mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> >  	  struct vm_area_struct *vma, struct vm_area_struct **pprev,
+> >  	  unsigned long start, unsigned long end, vm_flags_t newflags);
+> > +/* Caller must hold current->mm's mmap write lock. */
+> > +int do_mprotect_pkey_locked(unsigned long start, size_t len,
+> > +			    unsigned long prot, int pkey);
+> >
+> >  /*
+> >   * doesn't attempt to fault and will return short.
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index 2888ee638d87..8d800830d3e1 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+> > @@ -868,8 +868,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> >  /*
+> >   * pkey==-1 when doing a legacy mprotect()
+> >   */
+> > -static int do_mprotect_pkey(unsigned long start, size_t len,
+> > -		unsigned long prot, int pkey)
+> > +int do_mprotect_pkey_locked(unsigned long start, size_t len,
+> > +			    unsigned long prot, int pkey)
+> >  {
+> >  	unsigned long nstart, end, tmp, reqprot;
+> >  	struct vm_area_struct *vma, *prev;
+> > @@ -899,8 +899,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+> >
+> >  	reqprot = prot;
+> >
+> > -	if (mmap_write_lock_killable(current->mm))
+> > -		return -EINTR;
+> > +	mmap_assert_write_locked(current->mm);
+> >
+> >  	/*
+> >  	 * If userspace did not allocate the pkey, do not let
+> > @@ -1013,10 +1012,21 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+> >  		error = -ENOMEM;
+> >
+> >  out:
+> > -	mmap_write_unlock(current->mm);
+> >  	return error;
+> >  }
+> >
+> > +static int do_mprotect_pkey(unsigned long start, size_t len,
+> > +			    unsigned long prot, int pkey)
+> > +{
+> > +	int ret;
+> > +
+> > +	if (mmap_write_lock_killable(current->mm))
+> > +		return -EINTR;
+> > +	ret = do_mprotect_pkey_locked(start, len, prot, pkey);
+> > +	mmap_write_unlock(current->mm);
+> > +	return ret;
+> > +}
+> > +
+> >  SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
+> >  		unsigned long, prot)
+> >  {
+> > --
+> > 2.54.0
+> >
+> 
+> --
+> Cheers, Lorenzo
 
