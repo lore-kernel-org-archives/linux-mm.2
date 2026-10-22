@@ -1,118 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C261460A3816
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 18:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9D5606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 18:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=vUN4yWgl
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=MFhr+NLQ
 Received: by kanga.kvack.org (Postfix)
-	id E70386B09B1; Thu, 22 Oct 2026 14:33:30 -0400 (EDT)
+	id 79CB26B09B3; Thu, 22 Oct 2026 14:42:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E19116B09B2; Thu, 22 Oct 2026 14:33:30 -0400 (EDT)
+	id 74E166B09B4; Thu, 22 Oct 2026 14:42:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D30526B09B3; Thu, 22 Oct 2026 14:33:30 -0400 (EDT)
+	id 63BA66B09B5; Thu, 22 Oct 2026 14:42:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A321F6B09B1
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:33:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 58DE340260
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:33:29 +0000 (UTC)
-X-FDA: 85351110138.28.A7CB8CD
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8E73E40009
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:33:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vUN4yWgl;
+	by kanga.kvack.org (Postfix) with ESMTP id 39A186B09B3
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:42:44 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B68AC1A0280
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:42:43 +0000 (UTC)
+X-FDA: 85351133406.22.8651097
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C13AA1C0003
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:42:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=MFhr+NLQ;
+	spf=pass (imf20.hostedemail.com: domain of jannh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=jannh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 39VbaagsKCGoacaMMVLZIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--suseendranb.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=39VbaagsKCGoacaMMVLZIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--suseendranb.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792694007;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792694561;
+	b=L+SjunYxmQILhT0dj8MXJTNXUJQ6jnokIxyc0eqmonoAJfOghVwSmXdjAlD7whrhGVJpZy
+	qj96T9R+QPRaqDiOcDZziGTdci0yaO441emAiEbjn1omlNmPMQCl1MoVPVyY3IQElUgbAv
+	iLGiMVE7IrxVcUvpy4h9uS1dmScr6z0=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=MFhr+NLQ;
+	spf=pass (imf20.hostedemail.com: domain of jannh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792694561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kMc2eNn/OrrFKUYMVyLnIB+VtX1ihRJBTMeBnYRefLE=;
-	b=Rhm2nBa61Jic+Ql/+9a6LQTXL7Ru9zbasb+LPF7FkOABgI+YLms7u2z3vuiAwc2cEXORnP
-	2jaUBwq22ND/3cAU6HmrohmYN4FiDMHIwsd9wFWOu1s9baFC2FUZrt9ebGZwtLuW3K5r8d
-	/5iVjoQEZxHeFDu0l7eSiakJCC27X/Q=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vUN4yWgl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 39VbaagsKCGoacaMMVLZIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--suseendranb.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=39VbaagsKCGoacaMMVLZIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--suseendranb.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792694007;
-	b=avXiwGoJsHkJAZDPx9i4qBfm/VZ2sq21GC4IdMFOGCWvjfxYg3/mxzsdKo+8BtRbKBxYYZ
-	FEWyQ+ZoTXB2o1JmkgWH7hhngbSLA5pk8Lu6ah5As9EFnNstQwZFNtoQjevl26wwG98GbH
-	q9B632fqjqmcJ22odXhwB7k/2iU0+uE=
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a064f294cbso111502b3a.2
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:33:27 -0700 (PDT)
+	bh=IZ/uBrhQVS3DiMAnoAWQ1amBgCkO8xqm7sNIOjhR87M=;
+	b=tOS5Sz2vns+/6B6PvFUwXa/7LjtmAFBlOLLoA4w4Pta5NvSf2ArOhkHmaRCO9aGP+/v/iq
+	ZBW/uRfIqXWgTPsQqViLxriNwxamuo0mdLyflW1o2hwlOTe+bdCLHQo3KLczvsNELOOtcP
+	5/ZYfIyy2v7WAG1IDDbrfuKNSsJeYGs=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2db33db4de9so10585ad.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:42:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792694560; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FTkTC+bW80nhie4F8PLtBxKjenpAHARkGmQGhtfYrhq7JffeDgNJxhqtGHbbcxS73I
+         5xYx76R1mTjn32Odx+dFrC5TzDwNY9j+KBzR3xgtSUJQ+v0/6jskQ19bEhjneOMzlk0A
+         zFIYCzGKL7ESqbrOnrqaWTfFKjI9W4Ou9z16RQ2aMftYwUQRKYhBk6pbW+0ik7J02mFY
+         P2lL1y6NnvxWN6qN/6ZI3K/EMFn5cuSLdK+jzXt8Qso1MZQjl+Rim6sP3aysVfnpg15T
+         pRWPn+P+uSehQ7JExKMqYl++UlwjlqYy/WS0jEQIMP2aPuczV0/BDSOftYqoL21wzZNG
+         +blg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IZ/uBrhQVS3DiMAnoAWQ1amBgCkO8xqm7sNIOjhR87M=;
+        fh=5RYm7scnu1FI+JNRGUCsftpWOapnanQXOJ790zUl+d8=;
+        b=TT02jG8WnrkQBZlLgMZQoJZufwiGkeDxUDrBCRMxT51L5Wf0VYG6AhLYpOInlZkJvB
+         SpB6w/xb9MqJJHL4tkPGQFjBlHxqbJVNk2O/qwN+47332kAY+Gn5CnDluRMTRrpdkSAu
+         ZG0FSoe/8ytydBPxLAUlvcGEMSb0vOKM0mGzKPUB1kpjr8YT9qTBFpx3xfLdVDQmwRrf
+         K3tEa71P6OSi1oS67jkhUAGNt09AnjVmE/pex/Dh/iTNUlw4o8MKA77WcWVz1xSzE0yj
+         AyhvTtmgcQElB1ap74I42Ps6NixE++M8BT5tw7j5lfOkjnvSpRBROHXm3nfOejJaoEZ2
+         fjUA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792694006; x=1793298806; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kMc2eNn/OrrFKUYMVyLnIB+VtX1ihRJBTMeBnYRefLE=;
-        b=vUN4yWglDuw/echXdVjZ+x/lDJISsFmbyGLs8FQoZNn+sg7qvNzyPP7vnjSt6jgwMd
-         CR5ZS40H6bFHdrxEtoTxUT/kQnLMteHxeAb67VPcFCXEGy5DEws4YiCAWYSNbsl4ORV+
-         XSqZxmvPSHA6qYnh/xBTtWzr73fXoFEVOvT3CiaBrxRm+OPufH9KHAzpGEs0bPRciun7
-         mT8oylDMCIXwFZXnCNz1243w3JiYlMgikDE0jWSizd4m4LHGvjqevVbV8lop4S1nv4J4
-         hPc7tm9Au6RTgQiM1y5px7FnL0kD7TgQViRblsIH4Z9Mf2F21Iet8gG/juXmyQAWWQ8y
-         FfJA==
+        d=google.com; s=20251104; t=1792694560; x=1793299360; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IZ/uBrhQVS3DiMAnoAWQ1amBgCkO8xqm7sNIOjhR87M=;
+        b=MFhr+NLQsfQkt5PydtnCR5NYwFx2XQCz072BcjhLdf11pgBusbGke4KsT0HU1EIgDI
+         0etzYfFHmrd5vuT6IZsgZ/cxSHpJ8wRtDXlT9CpoHEgxULfsTppi+AnQ60y/qZawK56X
+         /Y4DF4i9WmTwsN55gplyE3GWK+V07eYW6/3PTcKJJLD/dQ+MhQv8E1mQ4fYQFubAzNoa
+         kjql+e775K7NBeywk+DOx3uq2nnsSuTzaE8Wv7sqnpUb8TqJe5sBDU1NThhGRyWd8vpV
+         /iZpRKhydZnFrY7J9oh4tkxyRCDPfXAXW5IJOrlaWm3uHPQysYzoSlrY7cZ+32vs9veW
+         Rkhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792694006; x=1793298806;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kMc2eNn/OrrFKUYMVyLnIB+VtX1ihRJBTMeBnYRefLE=;
-        b=KcW0leWcPLnZHg6WTtnKKSTb1dya3dAyIb/yMBjrSuZL40cbUHPlmfRCrHDB3WPudd
-         K4jqW69QbeaHgOtC3zUkT9sNxDlRl/ClCSjbSraS5jfrPv/n6+go9pXmJRpZzIV5elpo
-         m36yJYdBBBkK0LcXv7QaN06jFOXTt6R0R1O+u2lgNr3Ay7dVRD13y1VCbn+LFgVfmHl/
-         Fzosgalv4nLf9z1b9whJUj+OEXOO7DyTNjSXU9XswGgDhNO4bxN4qVMzjv8gV/f1FbhV
-         Qka+1iKSz1XcpXKNfhsRK/175a/cCou1td3UjYQ6z+6roX0NA/G7InugkgDKpPShXHMM
-         45uQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxJ+rbhg14HaBbELcLNL4TBQUXTVRJ3wtvn7u5pku3U7TvLHoijk1j3lfdBlSlqTPP+ji0oc2RYvw==@kvack.org
-X-Gm-Message-State: AFq9FYLbJy2pqlGT/Rka2ieqTCr7JrUCrNgDA6lP5AiKwWFHzlk5E1+L
-	yVA0ZPVNHkOmGjOhO6Quoz18T7o1TPQqYvUI2wcauU+324STuHDvZ5aSyVHH+KFelTU/fUgZOWh
-	FvcpFgyBbo/kbnL+MV8+DlKmYlQ==
-X-Received: from pfdc25.prod.google.com ([2002:aa7:8c19:0:b0:89d:3267:4348])
- (user=suseendranb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2395:b0:857:7317:cff5 with SMTP id d2e1a72fcca58-8a2c5f488famr51343b3a.22.1792694005807;
- Thu, 22 Oct 2026 11:33:25 -0700 (PDT)
-Date: Thu, 22 Oct 2026 18:33:18 +0000
-In-Reply-To: <CAO9r8zP+GUE-hcGWSGzhLNLcchFoZ38EMVCAtX5yZ78tZ0bbgA@mail.gmail.com>
+        d=1e100.net; s=20260707; t=1792694560; x=1793299360;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IZ/uBrhQVS3DiMAnoAWQ1amBgCkO8xqm7sNIOjhR87M=;
+        b=P8dhLQkVvCwisbuSCXOgJAPC6bJPWTcA/xZEfy0+B84maCFR/AYsP+3bljsvIC0lxS
+         wG5jey4Pt3E4ta2HwwFk97RLPuPl0IDnSPUw+uquxj4S9cv7XM65P6y/BgEAtqVV3+CO
+         0vv0+uiK9p6xP+ICqcwaCydXVjXy8GIBsP4vub/iQB5/Acn7CPN80F0BvFPS4NTcgsKN
+         sN+wZ+M2QKfSVpxHUeOh2QpIFNQXBhgYoJYi7gVQ/skZCL0mdupw73eYF+wHvecE6u93
+         rRpThCoEXl6368zkr2vbtMRi4anjyayhlWBUK9LnhNBpdlX2PW8WnvEuEHhupvpPZ1JY
+         hdqQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx0PMlcW6y8ze2selVKC86XliKVJkrZmIHYcDbLbGpsdpe1mXIyq7WGLEBIlwavAv7GrGmMmTKE2Q==@kvack.org
+X-Gm-Message-State: AFq9FYLjJeAId5Qq1ZbrwHh0TSz66cYMU/USQUub+mLhaX/T9GwB8rZi
+	GaP1r76G3FJoFaeEj5cbmsOvYU2/FYDiVxwNSKoXXCXCLczeDwso2sfHWVDe4MiTsYGQInRCIuB
+	OkofLmb3TsrZJZ7i5d5pxc968lbphtFKrVudsj7qk
+X-Gm-Gg: AYBFou1bW+sHibfmQmRAl9OYllOeUWt15d8wXJgX7Esc7SGXmVDWYF6HRfpa+pna7Cn
+	+92RQ6wqR0B8MNoygTDlsS1wOM9CWDz0HspcMqVvzqJU7DbIpNkHbn6M7Lo2CWcKijhf9D1H3UG
+	k77xNbbj37weuszig4v7f3t6llwz7zSyEoqm/ucct/8repzRxT8Hp8pWtcvR8xc6ZErLRoCax7S
+	fWLEChTRvazTwjD1up7Rx336Un9BGuwzgrMZgzIWqiCsQCiNLLdZSzNpGwmaUBKWEB+7fYpagcs
+	EJjbvFidKd+jDbUXrHlYEi5CV1SYexaBkgEvGn8hoSeZGmOgyDka41wH3zXyndWlYFYswfP6RhJ
+	VMYoU/cr/Z33DUJnjDsFqT0JBCE9TA4zbXMjLUjX17RWqaF7qPltHAph369ZWnhDS6mVjhHyYyK
+	ZtnHO7HJ4GA5snBnJdMkYtmAWpE+/TNbyxCW9x4pOfe1U=
+X-Received: by 2002:a17:903:98f:b0:2e6:12af:5b04 with SMTP id
+ d9443c01a7336-2ea7c74bcb0mr574065ad.0.1792694560033; Thu, 22 Oct 2026
+ 11:42:40 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261021205626.3286270-1-suseendranb@google.com>
- <20261021205626.3286270-3-suseendranb@google.com> <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
- <20261022155144.4177200-1-suseendranb@google.com> <CAO9r8zP+GUE-hcGWSGzhLNLcchFoZ38EMVCAtX5yZ78tZ0bbgA@mail.gmail.com>
-X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261022183319.163484-1-suseendranb@google.com>
-Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor compression
-From: Suseendran Bhaskaran <suseendranb@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Suseendran Bhaskaran <suseendranb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
-	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com> <20261022015712.1297331-7-alexei.starovoitov@gmail.com>
+In-Reply-To: <20261022015712.1297331-7-alexei.starovoitov@gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 22 Oct 2026 20:42:03 +0200
+X-Gm-Features: AclHuK-4emBvKnbiUXwxsP0RzswCumffVqYk-pDdBlhbp7tQ8eLavk3E__t9lUU
+Message-ID: <CAG48ez28oYxMAxJaXnYtT_8xGReS6SLC5vURw4eStWpuPsSSdg@mail.gmail.com>
+Subject: Re: [PATCH bpf-next 6/9] uprobes: Don't sleep on mmap_lock with
+ dup_mmap_sem held in dup_mmap()
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, peterz@infradead.org, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>
+Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	eddyz87@gmail.com, memxor@gmail.com, oleg@redhat.com, mhiramat@kernel.org, 
+	jolsa@kernel.org, akpm@linux-foundation.org, liam@infradead.org, 
+	ljs@kernel.org, surenb@google.com, david@kernel.org, vbabka@kernel.org, 
+	hughd@google.com, kees@kernel.org, tglx@kernel.org, x86@kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8E73E40009
-X-Stat-Signature: m3cextojhechumzr5wwrsqfh4gfaiii6
-X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: c4dmgzm48frf3ikyy9jqix7rtpjooybk
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C13AA1C0003
 X-Rspam-User: 
-X-HE-Tag: 1792694007-464720
-X-HE-Meta: U2FsdGVkX1+1rmn0XQPpRrYHfVwP0VKsoMXjQ2Bb56MVFRwgZNBYSid3ogFdFqv/Dw+B0Sfaq5qWIRqXGAMnq+EqNumUKdFte6e61Og6WR8wPcMzhrtiogOdGHPePmD4Igf+w3e3pcGEvADPxmgonCIUFrO4Nevm1Jyk0CvK1OyeVJ4XGc7bI07FDaZVTv7jGqebzGFVg6gJg/oXeVMFgPhlztktkxWzEMSjXclIn208QWMv/I69RcEGGpme/hXYJ9w8fwBIi9uvmLqwe6fqyh6h5VUeZYJI1JsAAMaxJ4jA43h5yd07VWqFRzRO/GQgTJM7loP9Kpf+ksqZWdwXHlVy2gXbSUREdb3FTa6CVqskSlgpIgs8f5b9cMDt7/NT9Cc2qLXlJXFcF7d6jkAvjK5cd3EkS4dYFCAJ3Ls+oheKDp2xDKuZ67ax8iPdiREFfv+nj4zQkkdcz18TTThnvDOYTyh/ycT5wr8DuMWFJG0dm+Kd+vUeSF02snqtmQbGPmrWZoD50b2xdeHb65WiyN5RFokC+Ec+Nf4sr3xCsd+p8HBGmSOkoGlqHprll0bpC09Ux0t6+46rTSZKJCkAAv9Y+UM8F2HebfppwfNWYTy20D0Oopc06q+mFC7AiSXRfoF3gASfGuD+mV3w8HRux7TbaJro0vdq2F/GyFXhmwXTgiC7n/HMX6lIU0P1TBpiXXmFmvv4qNdGYH+aKW26QtadI0uvTTPOqYYVcAs2xR+c1miCZO1xZLgWVfp5Z9bTrwePCK80IqoGevtgh4Hqck6tHbywVM+Aus5MxI9ekwGIRvDj78d5D1Luo01RIjeyLlYQ4PQA3U1VEiNQC516OWlk5yRZQLfyvc/r9Ce28X2Xu1VHKseeeSHgw4TmEs+RLdLhCC/vIHOqxQmcUVRIKQYu0MPRDgkAvaVAJrJPVZOMKKIupbs5jBnwkvbgEoVrDvW3e35sbsyIhKhMFMN
- kiFJjURT
- LdlB4qDiJWrpAyqaTmkyNh2OlVrQLwIUwdi5LPdGYrgjt96P/vqngU5LcLzsS4YQJaNf6ndeLO4MtdnHJ8GG6G3+H5mAm8jGhTjl1jxhtaItsuIv+4Sdf+743wNkpV4E9Jxiwa/i/izcDGBpiQiSqp2fmLLDxD9RQ7yv2jOHKKUjkTD6Fv8mhsDtZ2VqILSWGTTYvA28APU4Clo6NrF9TP/q4FzybGHz4AaWAlZM8YZ7BUEThFx0Bavy2zrXXH3V/i3AfTwDNdupVfQJWximdxIVB/PX9Qi2ILRwr+YDYaUeOHv/NG9Ms5a7ZX/7k/3t2AlkdVx84D4ZoMbiIR0YO5vs8rWNax1k6jxMFX9H35KL1lFFlXlsRMihdBtqm/5yE4k/tcfv6yQO5QkDPKkPIQJc0LYtfXTLmGw8kfBLXmjJ8XN1uMzB8YN2ydYpN1NCtJnVOo1mDECgaG6mZW1bUaVcCKHbiJwifOqnUDxG2W8A5A6/TWinQ2Y2j2g/6AUfcAwO93B0GvGgWSq1Y460Coz/09XYZXnr+TgKqAa+cwWVspeV9sZ98CSsdF9bv2WzV36SMxjzYL96XuRfbjvFCrfCBy2V03l3KmyXiLLDmNgUcv+vpzSmNgZxV6g==
+X-HE-Tag: 1792694561-191611
+X-HE-Meta: U2FsdGVkX1+v8VezB73IX3gsw/cvR6VTeywyD3rj9Hey7vf6IDHkNSWsK/+mLCgeFML5oReD82zdU+ydMM8+l3W7WXuheLlvhVKTeSlIKnq9gnzGjZPJuHlAjF+VeUyX8DPA8xgWrgc+7v1djMat4xxgHcCKeUOzAWWcDvKTpRHVcBYPGP1gCg/DkhLqEtF0IdqmtQfUTdtR4nxyN9qPKkndyjQZRGObLws8vo90pkSyyqwfcGdals2soPLPCXiRLA7n4dYVv86h64Sry+f3ajYujbDhsBeU3h0p2oXBGldwssdqNYlXfmzJPCB0cdkz6/fcsaLMQ5qJaiPbzkBc8NTVydmK3Wpw3zKCk+1yjJu5yiKRmGdzW+rszpF3mnK/txsJhe1K7Z27g87yNcf09da1qpi9Ymiu/sH512k5AuUCVKJeUKeDvoh47mC4VmOmFPka0nE/fMEtazm8TtcnqnrU2qGXqu0fHTDS28HzvLxGXuJ5SfaJdZ94wr/NG/iLUiqfL/4J8f3EUH3UJQgpBPU3BMHI09s05LKY4Zs9iDketGTrdKUIOvu2vmTeFosfgVY0VAdWGIaL+PKBDhEk0KcJ7LTKLNS5D1N6uIfn7/8/GjdQ9cbkU+E9gpOSwIPYcGUs6LbLi6KOB8diMbvFvEvGBWWLcIUVKs25AuuDX5vCq2Jg04LzuTDPcNF09h8V0+LfgIrhU1ajDl1EMuSpwdPvdaRHRnfafj5+IClt3tzL9t1SE/XPvlAtqwedcRxwas519JoSUEf71iOFUj8ugY0xB7kfPOi/23f2JBEjZgumC0GX06Qw5b/Z/ALx58yu1+yrY7W0WDLeTDvtFylqfRfzNRIwoXg6FDGqWyDC1lp0ixjabL+0IawxhDIbB3QeSG0DXmY6ZbNqpMpzPZHAQXf1SEdper7Bxp+dbSFgvf2pVKYocCO5vov9UIjXk7WFX6dBk3mSq2Jur+VR2/L
+ akIjAR0s
+ spSEB1BqoiKtRp2czxoBs1+hq9oBdkEW2N3vajIXHoGhYSIznOPD4kH3aGkN89+5OospTPxNWxCGib/EjX4iHw7R2zSwIwqqxy3r7e36Imnm8VuMeRsekF+LgxluMD0+dAE/YwzeshlQM9ppPXkW3r5yutk7EOMT7SIVjzmtO0vAffB+B/7Y1xeoT9CyQRKKlHrDI+jBbLp/MGQ24LcxTg+pY2hC0ZCgydQoJkXbwZZzMQv34uNM/TODRXG6ROd6dTLxVmB0AsEH0ZuOdW3hxl2WVrD359wysjijLgHYZalPBSn1Rcc8Z5HoW5u04flefoyjcUl0rr6qZFu5yzFdTOYcyK5/uUEh7Mu9R+VoSQ0t4S2yhba6loSvsuc93cnjXjnba
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,97 +151,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 09:01:02AM -0700, Yosry Ahmed wrote:
-> On Thu, Oct 22, 2026 at 8:51 AM Suseendran Bhaskaran
-> <suseendranb@google.com> wrote:
-[...]
-> > With that unchanged, existing zswap_compress() already accounts -ENOSPC
-> > vs other error codes when writeback is disabled, except for the
-> > !comp_ret && dlen >= PAGE_SIZE case mentioned above:
+On Thu, Oct 22, 2026 at 3:57=E2=80=AFAM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+> @@ -1713,8 +1713,22 @@ __latent_entropy int dup_mmap(struct mm_struct *mm=
+, struct mm_struct *oldmm)
+>         LIST_HEAD(uf);
+>         VMA_ITERATOR(vmi, mm, 0);
 >
-> Is this actually possible? When we changed the buffer size to
-> PAGE_SIZE, I thought we made sure all compressors wouldn't write
-> beyond the buffer size. dlen > PAGE_SIZE means buffer overflow, which
-> is a bigger problem than debugfs stats. Or maybe compressors can set
-> dlen > PAGE_SIZE but won't actually write to the buffer? I didn't
-> check.
+> -       if (mmap_write_lock_killable(oldmm))
+> -               return -EINTR;
+> +       /*
+> +        * Take mmap_lock of oldmm and dup_mmap_sem of uprobes.
+> +        * Don't sleep on one of them while holding the other.
+> +        */
+> +       for (;;) {
+> +               if (mmap_write_lock_killable(oldmm))
+> +                       return -EINTR;
+> +               if (uprobe_try_start_dup_mmap())
+> +                       break;
+> +               mmap_write_unlock(oldmm);
+> +
+> +               uprobe_start_dup_mmap();
+> +               if (mmap_write_trylock(oldmm))
+> +                       break;
+> +               uprobe_end_dup_mmap();
+> +       }
 
-dlen > PAGE_SIZE isn't possible, since all compressors bound their
-output by the input req->dlen (PAGE_SIZE) as you mentioned, and only
-set req->dlen <= PAGE_SIZE. The 'dlen >= PAGE_SIZE' check in commit
-dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
-as-is") was written when the buffer was still 2 * PAGE_SIZE prior to
-commit 0b1bf60c324a ("mm/zswap: reduce the size of the compression
-buffer to a single page").
+I guess in practice that probably works fine, though in theory this
+locking pattern could potentially lead to livelock?
 
-> As for the (!comp_ret && dlen == PAGE_SIZE) case specifically, yeah we
-> should probably use -ENOSPC to count it as poor compression.
+Like, if two threads T1/T2 both try to acquire the locks L1 and L2
+with this pattern, you could get something like:
 
-Ack.
+Thread 2: lock L1
+Thread 2: trylock L2 [fails due to contention by a third thread]
+Thread 2: unlock L1
 
-> The compt_ret and dlen checks are not super intuitive tbh, I wonder
-> how they should relate. What is the expected value of dlen if comp_ret
-> is an error? Is it always 0, or can the compressor set it as a
-> non-zero value if compression fails?
+Thread 1: lock L1
+Thread 2: lock L2
+Thread 1: trylock L2 fails
+Thread 2: trylock L1 fails
+Thread 1: unlock L1
+Thread 2: unlock L2
 
-On error (comp_ret != 0), dlen is not guaranteed to be 0. The value
-left in dlen depends on the compressor used. For example:
-- zstd, 842, and qat set dlen = 0 on error.
-- lz4, lz4hc, lzo, lzo-rle (via scomp_acomp_comp_decomp()), deflate,
-  and iaa return the error code without modifying dlen, so dlen
-  remains at its input value (PAGE_SIZE).
-- hisi_zip sets dlen to the hardware-reported produced bytes even
-  on error.
+Thread 1: lock L2
+Thread 2: lock L1
+Thread 1: trylock L1 fails
+Thread 2: trylock L2 fails
+Thread 1: unlock L2
+Thread 2: unlock L1
+... and so on
 
-So dlen is only meaningful when !comp_ret. The !dlen check was
-added in commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE
-compression failed page as-is") as a defensive check for the case when
-comp_ret is 0 with 0 dlen which shouldn't happen unless the compressor
-is faulty.
-
-> >
-> > -                       comp_ret = comp_ret ? comp_ret : -EINVAL;
-> > +                       comp_ret = comp_ret ? comp_ret :
-> > +                                  (dlen >= PAGE_SIZE ? -ENOSPC : -EINVAL);
-> >
-> > Would you prefer that I narrow Patch 2 to just that change in v2, or drop
-> > Patch 2 and only send Patch 1?
->
-> Let's figure out what needs to be done for patch 2 first, if anything.
-
-Since dlen is only valid when !comp_ret, we could normalize comp_ret
-first when !comp_ret and then just check 'if (comp_ret)':
-
-diff --git a/mm/zswap.c b/mm/zswap.c
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -874,19 +874,24 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	 */
- 	comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->req), &acomp_ctx->wait);
- 	dlen = acomp_ctx->req->dlen;
-+	if (!comp_ret) {
-+		if (dlen == PAGE_SIZE)
-+			comp_ret = -ENOSPC;
-+		else if (WARN_ON_ONCE(!dlen || dlen > PAGE_SIZE))
-+			comp_ret = -EINVAL;
-+	}
- 
- 	/*
- 	 * If a page cannot be compressed into a size smaller than PAGE_SIZE,
- 	 * save the content as is without a compression, to keep the LRU order
- 	 * of writebacks.  If writeback is disabled, reject the page since it
- 	 * only adds metadata overhead.  swap_writeout() will put the page back
- 	 * to the active LRU list in the case.
- 	 */
--	if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
-+	if (comp_ret) {
- 		rcu_read_lock();
- 		if (!mem_cgroup_zswap_writeback_enabled(
- 					folio_memcg(page_folio(page)))) {
- 			rcu_read_unlock();
--			comp_ret = comp_ret ? comp_ret : -EINVAL;
- 			goto unlock;
- 		}
-
-Does this look good to you?
+In practice, it's probably fine as long as SMP cores don't run in
+perfect lockstep...
 
