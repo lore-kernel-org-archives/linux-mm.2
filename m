@@ -1,152 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F006606A328
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 01:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBA4606A31B
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 01:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Z+h4tP58
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=BG8PB+uy
 Received: by kanga.kvack.org (Postfix)
-	id EB4FC6B0813; Wed, 21 Oct 2026 21:26:50 -0400 (EDT)
+	id 1392A6B0815; Wed, 21 Oct 2026 21:45:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5F226B0814; Wed, 21 Oct 2026 21:26:50 -0400 (EDT)
+	id 0EA736B0816; Wed, 21 Oct 2026 21:45:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFF066B0815; Wed, 21 Oct 2026 21:26:50 -0400 (EDT)
+	id F42246B0817; Wed, 21 Oct 2026 21:45:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 909616B0813
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:26:50 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08DB7160713
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:26:48 +0000 (UTC)
-X-FDA: 85348522896.03.E880B3A
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1678A1C0003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:26:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Z+h4tP58;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792632406;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C6A646B0815
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:45:00 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31BCFC0653
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:45:00 +0000 (UTC)
+X-FDA: 85348568760.06.BEAD117
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C38C420002
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:44:58 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=BG8PB+uy;
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792633498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o28ydFuUHHD4c/U0AkyEgOljfI5EK57zWWg+tuRSc8Y=;
-	b=8DtvEbAPtPbEb9/0gUp6sZ4iqMUUI8T6JtQetmEgdPRLPZp2tp0/+hr1JzIXhL7yGM76mN
-	RfedyPMgGh1ydG0flRP84XZTo+5kAjQ5Y9Bn+RPqW+v9SJqAJzotrMgGQn763PLp3YqucD
-	ZyU4Cr0b/Rf9kPuBAw8l1RDpeB3rtkk=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Z+h4tP58;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792632406;
-	b=G4pFscRomLSfNJEyM3yFVu0ZV0E6R/VaI/amWRxjwhXVy5sQQGOMn8hRvFXw2uJayx27Dh
-	OT1l7JVJCK7I9itaOkPzIuFj/fkazKoziDUD29dlznCTajTFOODiLdFz6Y4mztDt1N90XD
-	zN+OyE95F1aQBApipZBQHtIvT2dinN4=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b1f4d8e09aso1997398a12.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:26:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792632405; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Bdl/iq9vM2ZnULHsTVgPVhyjrVBLRCE5+s3kPXePtNRkp2lODlAXhNHmXPmISgiESW
-         vajhL9cGezB+r9DjxR1OlPUIEiwljSzkN4q8EBL2bA7oL9NtKDiHRbAeqOT6UgOW9MZw
-         18S8Eiq7Ab2i5vG2uTrr5NZr+EeYwl6e9RAbOBOLwYE2csb8JHtvaCVwTqlZy+nkZvLy
-         /ntVclUkaI8adOP9sDcpWcUtJqK29q0ePfQQCiIBNmylL0Ar4WUTKMC8vkJFY27hms7q
-         NySYqay9TSxx8N3A9hKBFmQESXeFyGQrj4VN3bN904WEFY2SHOuucQ1wIobwITPII/LZ
-         oP5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=o28ydFuUHHD4c/U0AkyEgOljfI5EK57zWWg+tuRSc8Y=;
-        fh=CUHnOGIgs8nzRMdrnMe3u4Kxax15nSWsQ5pkmD4Wmos=;
-        b=olg1ysxvu6d8SuyjkXaiFHFW+FH1aFak3Keod/L5GnxZTexKG/JEdEopYI376tHCtP
-         nFItCx/5ZYPyJoqOvpIl1v+hA/w//4ujg/1HpU5ImsEqm8xTJ+tbJqq0LZmCxzcWkhC4
-         Con6z9sf658AUNrQNaERK3qpBMEogMTWZCbDNfpHWJczeIyTUd8Abn3I5jsePHOJybh8
-         rZe9xLeWSp1TU82n9oAvuFq92rKcHUTSPdknYzcZPZLhBBx9qqMmDzf1pN2re8DjoMUB
-         ZiWNvGLDUghtpSNLVmGz6jFvQHjk4teRYuiKvbElJdiCi1A35dptHXMu5NR5GxScNThL
-         LZyA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=LS+EicQQq2YSXAcv/CHPjd9x8RnM4wjQksgtpzHAKuY=;
+	b=r9l2vw2Y848LtCIahIHdTcAeyUiemJ3ookCiL3BawFZUcdv3vY007N5IGUosHA+eqpXws6
+	BKpUwvMS4DgDfiie4C9Lz3DR9y4snystwbzJOhNah3FRml8tgn29j7GOzayClmAT//whap
+	YQUfiDRzmckE9NHSvbD+eWqSghEGcuM=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=BG8PB+uy;
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792633498;
+	b=eRAq8maeLT7n55PUhb/vji3FTcjIV4e1l31EZ9dx656PtbQgjyKYknvfYZGZNeDZIB4rh9
+	vr9BiLWN0XBHME5VV4qdD2U0lOt58pIviLBLx3120KAWGZBHNVA16/TOxZp2hMl4adCLTy
+	51YY3eQnO2dE6YmCeLadku3m/rC/2DY=
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5eaeb7fdda2so1177038e0c.3
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:44:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792632405; x=1793237205; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=soleen.com; s=google; t=1792633497; x=1793238297; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=o28ydFuUHHD4c/U0AkyEgOljfI5EK57zWWg+tuRSc8Y=;
-        b=Z+h4tP58lYdPqsc2GcRJgdXMr353eilMvbcYtoShABJsO3AY8uk7OYxFN5cCRyFxrk
-         uYYMO9nltaqkcvupOVgp039jYnvjth5zVi+aNlTIcucx/cUMcGG9nE9INxrBIKvW3kDb
-         C/J7C8fmcbKLyleALm1tPT3tegc805xWFqiWMUvryksqccEkmL1rh06qDG2Dk3yjL0Bw
-         XFeCB8t/1zYp00Y19pjksOpsAQcq5c7O/h3xr/zpmW08CEvWJeYaaL79KdIMRu0y55uv
-         H6OF/vgLUL+TX1UXH8pGEwmzCrV343xfPHGq5BwhSPGgXSi6p44cgzzeISwPAooGBpMX
-         699w==
+        bh=LS+EicQQq2YSXAcv/CHPjd9x8RnM4wjQksgtpzHAKuY=;
+        b=BG8PB+uy/ff16mT6cmKpeZk9rphOXS8+JZgXGWrBNKA28dJnTos/TSsFN9/WWMN/0i
+         bJBC9P3DGK2K5QEj1rJWQmAcpoG9UIz8rqvKEoGCYVCypXQdDPx2vqC6mPIPk3/vzhsL
+         lVxqjDOXWSEtvaVUNr5U3qVMTeboq3rzTiL/vJvtwEYoWpinLIQA89dxin3I49TR3Uvq
+         VAqjOUFM4qgHXsDO+WPAF0K3qBUX6WZL5CLbF0wF/oF+N/Pdmt7s/EM2sGG+UtFxM7gw
+         0R+u1c4M1ej3DRLLHjLt/k7FXcFmaZnLUdx8b8SmUu2rMz8j7fD5mRrhLyrH41QpBiHQ
+         IKxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792632405; x=1793237205;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1792633497; x=1793238297;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=o28ydFuUHHD4c/U0AkyEgOljfI5EK57zWWg+tuRSc8Y=;
-        b=PPURU9CwCOUJhBWzwcgj6cFlW5vyx0UFX7yY200fdXUVc3+rNNT/6ZaKfI1BjfJ11h
-         aJaQjB0pQRU7nSGgjpZkacjHpl30pWiJNar3wnfjzhTrtW+WtU+D6WW4phMenhMuVQki
-         6LhcNue0phdhViPuU+lpoUCuVEVMtd95q/wMFGyk/zz1CU9DiYrYAs24gM3/h0z7kVRE
-         6Uv/06V0YuxQTO2ydBW1XlfNmqtudW4CdN7zy4KsKBfVlhq0j9yIBYOVuIjkp7cBtjxF
-         gzsR0xIjPOOF4nMKYB6p/avKREL7l9B/WAcsU3XJd5LahHtMEiGk0mpWvf6ZZQtkaTw6
-         m91g==
-X-Forwarded-Encrypted: i=1; AKwUvBz9AvvUPfpquIXKRV+lSgRu6vSeAKDvvFaiEY6CvuLDJHtZvSLpYFgIE00dvXKvZMIpGa4nJZI+gg==@kvack.org
-X-Gm-Message-State: AFq9FYJUP927tqua+AfwmT/28cdZcnTLJqQuPBTzTV4qQGbRY29VAXro
-	/OumOENRZXzcYMd+XWfZWk0QXhoKFe94T+P+5hd1GppvQDF4phEgIjvTCphu10BXK66u0d8fxCK
-	G1M7QIKkj9fvf9InEggzvlDqLVFyQJZLBOnxWrZC2Og==
-X-Gm-Gg: AYBFou2qj+9CtQfs+MReW+FV8rU7TgFuq+pJrmCUkMMuMJS4TUy1P6jXzzM8wffbMxH
-	VlCCbmwDSIayc7WWor+CiNq8eVWTZclWqhkzlYAdEmgj0z3gEgqLQtNHEFNbC7uOXB9N4r7nPsP
-	YncZaC1nJLtKA9TdsqGo9jMdvEq2ZDX8JyGFp+hjxg9HXo1VmYv+f834uZ6I83CHbb0707I8yZm
-	bBgDfDjHP+0jZVNkuPekb0MwJy+Kzxwd+NRnU4o/YFZGuVQzXT9oRRJnxYoyJUtaL5xgyR7RrMc
-	ykoUM6OcUM792x8xatUryyLUnA/y8quTrTTTBAS1tAovd/iP5NAlsUEcf9ktuI/kYjHh+J1vKwy
-	09BVoOHG+ucKkoYqLC3k5dyh+Gck/r0YVCPv2NK68KWT1SwgP6O80WdIkno+Qt4h/1P4=
-X-Received: by 2002:a05:6402:2801:b0:6b3:a1ad:ef6d with SMTP id
- 4fb4d7f45d1cf-6b408dcce19mr2969744a12.6.1792632404378; Wed, 21 Oct 2026
- 18:26:44 -0700 (PDT)
+        bh=LS+EicQQq2YSXAcv/CHPjd9x8RnM4wjQksgtpzHAKuY=;
+        b=PTx4JYRga+h87LxMcOhh8XDtdogn42k3fUUD1QbhPQ7mHAtSrSEdtsaiQS41QSlVo7
+         cs+sQ1SJpjK5bTP/CG7qPSkRKwyc70K+uyEaik3bqzRbi9En5nfNa8YzvV6nGWCUlhp9
+         VgDc94sa+Rry9IKKctZDUHrbkIwBIoPBiTKMUBLTN93wQWsohaAB17g1AGJS3GW+eRcg
+         DVDqpTp336/ezo4nU3/jwVCN5HpxVHpzneyffdHA0i6UoaKh5skUqmH6+uaH1SmUS1ru
+         ukaofa8UX8PXO3gfxPi+DppnUo1ft9zu9EXS6ztN/rm5THDkjNgni0WR1+W/Iu0PvSpL
+         XTag==
+X-Forwarded-Encrypted: i=1; AKwUvByZqRNQrsEmbSH00yNrxBVccf21/96OmztUb6RHetIJB0prpgVqK1yILeTT/kn685OdsIo1dXsfOA==@kvack.org
+X-Gm-Message-State: AFq9FYIA9A0jjsW9EcwgjpJIkXsb2G8uSQztJ/5xGp023BsHwL9XTziw
+	NJxAno3JvLXB6mE5VBeERZwjR7WHhw8c+q4ZYuvyRYLlDPEK8cEDVCsODte39A7H9e0=
+X-Gm-Gg: AYBFou1oM6RBxONHQUEO0+yYuKr1SyqIuC8Dpgnxuue0jFPNOn5OpxkV6nwZK2ZGP9E
+	qGKRySLzBQWFtZFtfgZazuvKn7uah3T85ln7quhqVzvLifYQxQX4RpsU4JucLkkiyik02UeWSnx
+	x6JOkqoU2tSaPA75UzjJ3GfrumWLmkz2V5VB/Zl/VROhsZPHE2/3XANX2vzjv9ym4wI1tbYHxfJ
+	mD2NyhfG4lvF4504IDnPEcsd1bOpG4+Pr0iWfaeHmDQgkaJw9T142VF+OA2Y3VAJUAuOpSsLkjm
+	bLn+oAaeWHogEpZrPaomu6jfpn/6As3eMc8rOMOIZHxFFntiGEnTnOJmGPr1mwYB5t42LaNVAeY
+	VaYY60Dq/PTFPbHjRh99EsAPrueIO94iVavDLk8cWLTKoVn9LAKXRL7OAm8w1SqC6iPpj0DV4rZ
+	L9iWP6b7Qdb226s5yEVmGM4tVehyQlW8I6UPspkoC0f34CculZnxsowfgNFflIxTcCIrkJgjIMy
+	Cgqse7K3/8jJPlTvRgAJ+dEm3Hk1pRyGdQMqXS+M0sONK0+M8ik6q2UAVOnSmgjlsMSdK2IaJjz
+	VrCLiVF8u63w9+YiTrubM9/IhpLTWEHecCZSv05Ydsb8ENdX2KdwxfylyelObBj6+wTEkCVELrb
+	fXg==
+X-Received: by 2002:a05:6102:418a:b0:7be:25d4:7ff0 with SMTP id ada2fe7eead31-7cc92469ecdmr1660230137.4.1792633497085;
+        Wed, 21 Oct 2026 18:44:57 -0700 (PDT)
+Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-990d104017bsm4933026241.4.2026.10.21.18.44.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 18:44:55 -0700 (PDT)
+Date: Wed, 21 Oct 2026 21:44:55 -0400
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org, vipinsh@google.com,
+	linux-kernel@vger.kernel.org, dmatlack@google.com,
+	kexec@lists.infradead.org, graf@amazon.com
+Subject: Re: [PATCH v2 1/2] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
+ to freeze sessions early
+Message-ID: <atlql8V0YcXGRxS3@google.com>
+References: <20261020144710.4154339-1-pasha.tatashin@soleen.com>
+ <20261020144710.4154339-2-pasha.tatashin@soleen.com>
+ <2vxz4iefgy36.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
- <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
- <9huzecdi6go0.fsf@tarunix.c.googlers.com> <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
- <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com> <atlKsD-aJB3mJr2j@google.com>
-In-Reply-To: <atlKsD-aJB3mJr2j@google.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 21 Oct 2026 21:26:06 -0400
-X-Gm-Features: AclHuK8Appp8OBdUFGLxu0V1hBTCm-a-9f142JZiexa4wOQOsDrRrU21F_J0R34
-Message-ID: <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-To: David Matlack <dmatlack@google.com>
-Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
-	Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
-	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1678A1C0003
-X-Stat-Signature: 16t914arttxrsotr3mq8i1nnkffi3w39
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxz4iefgy36.fsf@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1792632405-288569
-X-HE-Meta: U2FsdGVkX19RcMAuDnigqatAzG2bnkJoOcrYqm6YFzJ8lg8zOWi9I4Ku3//KzoRajumsoXHAVgvSwuYjJ4sP2xA8b5XJifAB4ltSU5VhzgxNmedkXVPjgM8vQuVvrBCS/XcYkLU7ixsUfHeYqhldAyhXvGOR25Zy51bX3PUQAKaTSpB2mjtBiHhIScDwrgcSaLbwYt9MIZzYseq5qrqlz5c/jrrNSyHRfGNjOaPWF2wkb2xH4C4XjnhkEEzhRVpsY8VRF8+sJ7XEMuzqxbc+PaIPhiAWEhgpiojHzbTt2rLqBCFZE+TNYI0627W58vw/WjYzRSvviMpq3liEgEtdJuDcLRThctw3dLtmhtyeLmrXsGtHfzAkXF29LJzqH5+p+29Vore/gTI1rDGCO1i52P5GTWt2qmh0oqrv9k+gIotnLqlrTFevTqQF+kUMG35qCkxfG0glWp+NYfUTiba/SE+xUUa3YwdSnWtzH6ccaTB4kfmuxNQkGivjgFpWOVYUvaqFC60UfshuUr/JNKP208j84y0eDetRmorSnzc+xGkp715kc57kaKrZMwrrzK1xxc9TbyLEbOC1dje6cI00HWhLQg2fJ8yq+hgbYvpFDEW6fWgWm2Oq/TOKaJ/JX6lggS/SadDAjxObrGs6/JBLavMmxlhWvsU3YAxyi/mdAb805U9fGtRrZQBMwnYx7KpTZmjHeYZq+BrzQmk5ng7bB0ZVxzhSIXGAg7mS61T3Cezw5X99qsT9tZySl8yJrj/1/hYtOPBhLmhYHhSfDp5Bdvd8uCdmK7VTESh0k1HcmLYc99CDeKdEi7EYjJ2It6s5uHdeZfyyeyXPfMC4j6oLC13dg0utMYBfuWxzQSspkhY2UWs6IIDgYyxD9fNpmKCi0xqz33vrFg9Z/32IxmDJc1JxCzYSRSA5Rt7/TJ3E2SQrHYCr7VHisph0i6kmz9YYN+uCVeZHOTojUdUiQyu
- EaiAB3hD
- 8M6eE7fQVkjszI+ZwR/ugU7qygWCypEv0CwzHUmpMH/OblRfnlJ1PZ82e8pSC+W6+jqZ5/6mWMB4T5z+RA957tTgGNLIGJ/ij/A9rpWWwVrSrxKYkoqeUYRd7fMXh+10G0+vXR7XNNEFUlCytst/W6nsrndVOKKONEhvr8Scq/ISf4LS5ejNIYxmKn5I6w8mkZeApHueb6eWPAfYCRDQLjMtrtzuc10MT+7npkGWm/BZw67SFuwQ9QqYljXhEwmcYAesKMljQs+NihDoA3DUNKuhwIP0tRt1/L2lfA50xB48RGWTzsWc+J00Fvp9+XTvbqEdN
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C38C420002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: xdw8mcwcm88wcs58y5zjezz3j7joy8js
+X-HE-Tag: 1792633498-136491
+X-HE-Meta: U2FsdGVkX186Q3JxlYR6X4xUQFfeg8CP50yQmX3WZpFisMzuBTt6aBv2a/8XAhls90g0f4OI2yg0637GIgJ69KTQTXfpO1XX2+E36IDQa/5wddyFDhiPI4tpqOLAdQ589nI7FaPmVZWEFqZMFqxb1w0F0q6uzv2vCz3aiuSp4ymJCAuB1tLjgWHfjoHHDpxMDE9rTEm23tV3a4TJa2nN/+E06CbHaFIgj411TH1tFKDuwhPW0+1AtQzS9xvwzhJnyNOlOh9br/JyhUCcG+hQFARff73wYsuo41VLxmKu7xzsphWY6WvpfwgovDnoVVRn47zdMudgg5AAVjQbDqPRPNsZimrfjaQeq1P8ip7kVNZGP8ZLeaFy6Lrabw2fqVycFH9cqbQj6DikY4ryKd5YfyGWHM7H5Duveml+j7b1HIkBnqR0o0bmLY/pPqva5hrXmmQdyUSoEnQ6J3hgyPNQdqvPfe+Q1NvPktMRsypM8wQYLNNgfASjv+HQVvdLfiGKWbr/4UPLs2AORFeoYOtSha4TVF0plsRmGH2F9CtaMM9K6oIkEMrFCYei1lZtKIcw8vn6X+sCr2pPxwGNa7zMpF6AntebpvxT2KjDcjV3JqjLXwfsUhaLMcVV+o0cDbmy+HhhLNFRvGjRH5PRNrnkM9nT3yVnAYEcQb2Ryhjgos3wewytO2y8qNnh0RsTdBsxfJmnhL8RSUA53/Oilw1yQyUqeRKFatJLYaV2uodglAC0PozSsiLo1jjFZolyx/nyjK7ZuwIgLxsNFoFVxEJPzV+BqhC0gYRuakePnTKxSYTKkdHYn4wJJ244n1BxHDuf1+lG1+E1GnCtYpasAdTlkz2igkPBuAGCx6p4GztUxJE85kv7+FR6yJO14PSZCrXltIsuBRD0H3/yZ43wm8iGVKQrvCN1VJYgNiCANVzCQGydK0FRlwoOz065qo3fLKl2Iby2j00krLq2+2fORO5
+ XN3yJ/ZK
+ WiJJup9FehboZFMBMnSRdhL9QBfzXY/qzof89aq1GF1qYn635jq4HnDwNWExWc8YctnSrt1Av9vXh1EjOMZaIUqyHx0ZMBaIIOYGh9oEC+dBkmb2Ui6IZaw5mx54BaRvo7mUT7JE7poJrb7AAWkBDn2NgkUrrC6qVmrESuviLhHXplZHgd3nYEqDSKzY24ac0JNsX58ZwsHlop9Yhwj+akjTHguLvm28mbk2SVn10kXtLbqFDOVuipKi8HEu7Yb+pBCz75WQ0F2r5qzLECWtL42Co0UOj9kKDm3zMQxHZDYC6dC5U9lP6HUmEG33se4OoKvzT3tk5maFMjgAP1ez9vO4gaPNs8LtJjiSZ4u1R3ByZnW8py3BY7ezXqmaguiFxRzT99tQ4WNJJ5nHnzSrOFvr8vhygAkmqLhFLLBz+Ds4AlDRAEPJUZLjm6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,95 +130,145 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 7:28=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
->
-> On 2026-10-21 02:50 PM, Pasha Tatashin wrote:
-> > On Wed, Oct 21, 2026 at 2:47=E2=80=AFPM David Matlack <dmatlack@google.=
-com> wrote:
-> > >
-> > > On Wed, Oct 21, 2026 at 11:40=E2=80=AFAM <tarunsahu@google.com> wrote=
-:
-> > > >
-> > > > Pasha Tatashin <pasha.tatashin@soleen.com> writes:
-> > > >
-> > > > > On Wed, Oct 21, 2026 at 11:25=E2=80=AFAM Tarun Sahu <tarunsahu@go=
-ogle.com> wrote:
-> > > > >>
-> > > > >> LUO and its file handlers validate handed-over state with monoli=
-thic
-> > > > >> compatibility strings ("luo-v5", "memfd-v2"). Any change to a se=
-rialized
-> > > > >> structure, even an optional additive one, must bump the string, =
-which
-> > > > >> breaks live update between adjacent kernels. Replace the string =
-in
-> > > > >> struct luo_ser with a feature header, so that the target kernel =
-can
-> > > > >> accept or reject the source kernel state per feature.
-> > > > >>
-> > > > >> struct luo_feature_hdr is a fixed 128-byte header: the serialize=
-d
-> > > > >
-> > > > > This patch is all wrong; 128 bytes is far too large. For every _s=
-er
-> > > > > struct, we only need 8 bytes instead.
-> > > >
-> > > > NOO, It is not. It is intended to avoid complex mess with unnecessa=
-ry
-> > > > over-engineering.
+On 10-21 12:14, Pratyush Yadav wrote:
+> On Tue, Oct 20 2026, Pasha Tatashin wrote:
+> 
+> > Currently, LUO sessions are frozen automatically only inside the
+> > reboot(LINUX_REBOOT_CMD_KEXEC) pathway, where luo_session_serialize()
+> > iterates through all outgoing sessions under global write locks and
+> > freezes them serially during shutdown. Allowing userspace to decide when
+> > to freeze a session once it is done with it (and to freeze multiple
+> > sessions in parallel, since luo_session_freeze() only acquires the
+> > per-session mutex) avoids postponing this work to kexec shutdown and
+> > reduces blackout time.
 > >
-> > 128-byte per serialized struct is not starter.
+> > Introduce LIVEUPDATE_SESSION_FREEZE on session file descriptors to freeze
+> > a session early. The ioctl runs .freeze() across all preserved files in the
+> > session and serializes their metadata. Once frozen, no additional files can
+> > be added to the session, and subsequent freeze calls return -EBUSY. Freeze
+> > is only valid on outgoing sessions and returns -EINVAL on incoming ones.
 > >
-> > > >
-> > > > >
-> > > > > The first 4 bytes are the size, and the next 4 bytes are flags (i=
-.e.,
-> > > > > 30 feature flags + 2 reserved bits for flags extension). The last=
- two
-> > > > > bits of the flags indicate whether an extended flags field is pre=
-sent.
-> > > > > Each extended flags field is 8 bytes, and its last two bits indic=
-ate
-> > > > > that yet another extended flags field follows.
-> > > >
-> > > > If we will have dynamic extension of flags, Think about this.
-> > >
-> > > To support dynamic extensions in a backward compatible way you want
-> > > something like this:
-> > >
-> > > struct luo_feature_hdr {
-> > >    size
-> > >    flags
+> > During kexec, sessions that were already frozen early are skipped, while
+> > sessions that did not invoke this ioctl auto-freeze as before. If an
+> > early-frozen session is released before kexec, its files are rolled back
+> > via .unfreeze() before being unpreserved.
 > >
-> > __u32 size
-> > __u32 flags
-> >
-> > >    extensions  // offset of first luo_feature_extensions (or 0)
-> >
-> > __u64 extensions[0]  --> but the size should be specificed in
-> > declaration macro that I showed in the next patch.
->
-> I think you may have misunderstood what I meant. In my proposal,
-> extensions is an offset to the first extension, not an array of
-> extensions that immediately follow the header.
->
-> If the extensions immediately follow the header, then the number of
-> extensions is baked into the struct layout. Every field after them sits
-> at an offset that depends on how many extensions there are. If we ever
-> need one more extension, all the fields shift and old and new kernels
-> can no longer read each other's struct. That is the problem Tarun
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> [...]
+> > @@ -218,18 +219,33 @@ static int luo_session_finish_one(struct luo_session *session)
+> >  	return luo_file_finish(&session->file_set);
+> >  }
+> >  
+> > -static void luo_session_unfreeze_one(struct luo_session *session,
+> > -				     struct luo_session_ser *ser)
+> > +static void luo_session_unserialize_one(struct luo_session *session,
+> > +					struct luo_session_ser *ser)
+> >  {
+> >  	guard(mutex)(&session->mutex);
+> > -	luo_file_unfreeze(&session->file_set, &ser->file_set_ser);
+> > +	if (!session->frozen)
+> > +		luo_file_unfreeze(&session->file_set);
+> 
+> "Wait, this looks wrong. If session is not frozen then unfreeze it?
+> Should be the other way round, right?"
+> 
+> This was my first reaction until I realized that you only unfreeze
+> _automatically_ frozen sessions. User-frozen sessions stay frozen. Which
+> makes sense, but is not obvious at all.
+> 
+> Perhaps rename this to session->user_frozen and add a comment here?
+> 
+> With that fixed, feel free to add
+> 
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-We can structure it cleanly by nesting the payload: something like
-struct { struct header {...}h; struct serialize_data { ... }p; };
-That way, the header can expand dynamically at the front, while all
-fields inside `serialize_data` stay at fixed offsets relative to the
-start
-of the payload.
+Thank you, I am going to send out a new version soon.
 
-Since the header size is self-describing via continuation bits (e.g.,
-the last two bits indicating whether another flag word follows), LUO
-can
-easily compute where the payload begins in the incoming blob. This
-keeps the implementation simple, avoids linked lists of offsets.
+Pasha
+
+> 
+> > +	memset(ser, 0, sizeof(*ser));
+> >  }
+> >  
+> > -static int luo_session_freeze_one(struct luo_session *session,
+> > -				  struct luo_session_ser *ser)
+> > +static int luo_session_serialize_one(struct luo_session *session,
+> > +				     struct luo_session_ser *ser)
+> >  {
+> > +	int err;
+> > +
+> >  	guard(mutex)(&session->mutex);
+> > -	return luo_file_freeze(&session->file_set, &ser->file_set_ser);
+> > +	if (!session->frozen) {
+> > +		err = luo_file_freeze(&session->file_set);
+> > +		if (err)
+> > +			return err;
+> > +	}
+> > +
+> > +	strscpy(ser->name, session->name, sizeof(ser->name));
+> > +	ser->file_set_ser.count = session->file_set.count;
+> > +	ser->file_set_ser.files =
+> > +		kho_block_set_head_pa(&session->file_set.block_set);
+> > +
+> > +	return 0;
+> >  }
+> >  
+> >  static int luo_session_release(struct inode *inodep, struct file *filep)
+> [...]
+> > @@ -267,6 +286,9 @@ static int luo_session_preserve_fd(struct luo_session *session,
+> >  	int err;
+> >  
+> >  	guard(mutex)(&session->mutex);
+> > +	if (session->frozen)
+> > +		return -EBUSY;
+> > +
+> >  	err = luo_preserve_file(&session->file_set, argp->token, argp->fd);
+> >  	if (err)
+> >  		return err;
+> > @@ -340,11 +362,40 @@ static int luo_session_get_name(struct luo_session *session,
+> >  	return luo_ucmd_respond(ucmd, sizeof(*argp));
+> >  }
+> >  
+> > +static int luo_session_freeze(struct luo_session *session,
+> > +			      struct luo_ucmd *ucmd)
+> > +{
+> > +	struct liveupdate_session_freeze *argp = ucmd->cmd;
+> > +	int err;
+> > +
+> > +	if (argp->reserved)
+> > +		return -EINVAL;
+> > +
+> > +	guard(mutex)(&session->mutex);
+> > +	if (session->frozen)
+> > +		return -EBUSY;
+> > +
+> > +	err = luo_file_freeze(&session->file_set);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	err = luo_ucmd_respond(ucmd, sizeof(*argp));
+> > +	if (err) {
+> > +		luo_file_unfreeze(&session->file_set);
+> > +		return err;
+> > +	}
+> > +
+> > +	session->frozen = true;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  union ucmd_buffer {
+> >  	struct liveupdate_session_finish finish;
+> >  	struct liveupdate_session_preserve_fd preserve;
+> >  	struct liveupdate_session_retrieve_fd retrieve;
+> >  	struct liveupdate_session_get_name get_name;
+> > +	struct liveupdate_session_freeze freeze;
+> >  };
+> >  
+> >  /* Type of sessions the ioctl applies to. */
+> [...]
+> 
+> -- 
+> Regards,
+> Pratyush Yadav
 
