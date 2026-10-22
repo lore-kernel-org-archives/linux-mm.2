@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A99606A31B
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 15:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEDC606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 15:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D3i4qVmA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Prysm9Or
 Received: by kanga.kvack.org (Postfix)
-	id F1F666B097F; Thu, 22 Oct 2026 11:44:22 -0400 (EDT)
+	id 50DC26B0981; Thu, 22 Oct 2026 11:44:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAAB16B0981; Thu, 22 Oct 2026 11:44:22 -0400 (EDT)
+	id 4BE8F6B0984; Thu, 22 Oct 2026 11:44:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBFDF6B0982; Thu, 22 Oct 2026 11:44:22 -0400 (EDT)
+	id 402A56B0981; Thu, 22 Oct 2026 11:44:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A75436B097F
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:44:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 18C911C0D0D
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:22 +0000 (UTC)
-X-FDA: 85350683964.04.1131634
+	by kanga.kvack.org (Postfix) with ESMTP id DE6DA6B0981
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:44:26 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FFDC1C1DA1
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:25 +0000 (UTC)
+X-FDA: 85350684090.12.973A273
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 75C411A0006
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D3i4qVmA;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id B08DF18000B
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Prysm9Or;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792683863;
+	b=gkCQBEUczr5nnDNPLEDB9EQbnuZL0/lV4dSQ5plEU5ie9JgYay9nBiQW4V0cyHjhdEsyPs
+	1b/c9hwBmkTSRsiLzB0QkwOR4TJlC4VzZkbNcbYabRrJUfr9TL+U6gMWU/AnLHrIRP8aL2
+	RQE0rcFaD6kmwYCpZjvSVmLCuMzXW2c=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Prysm9Or;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792683860;
+	s=arc-20220608; t=1792683863;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FQNoDGzEIRA1SKlEsB0k8OEtsPm86udTUByyB+9XNMk=;
-	b=qcMJXBDiHxsxgeofOMCTV/TYZZSiZAwdkgYLUkU8WaQDy/19f2jufDqeVOLsiSQ0s+Bo5M
-	+maFwg8Ev5RfhHXN8RWCrWC1Bcj8jSijLuUvVz0ND8/GPXkpk4u3ibhv/U7Ak/FOR/s6w5
-	mN8CVnJe5lfbDx19rok6M/qEKYJDNiQ=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D3i4qVmA;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792683860;
-	b=KPt4R6xSWH54lIveL6LBhvx/dZEE9YgRM4kt3qwr80fm/6K3L8fwSPTStm3IXfvaVlu5Fa
-	71GGYS2Tqj3Ock7R9x1A0yVQazoOm3uwwsV6bPkBqQBM53xg1vc2gtD5dL161GDD/p82OF
-	x2Ti9+16lSpxwUeBNWkuHV5V0SdCtcg=
+	bh=ozJPu6PuFiBw8wNtJS3YSSh7biusWXg0zaL2eC86BNE=;
+	b=K9oWbiOJWIyg/cZwGXEm7L3fx7VI6ZJ3u9ig7AUHw6QVuWYo2nBdD/7m3bn0jOppEK8fL5
+	hAwftBvXfGOXNaxpCIDCpuyo23+TnMmicfR5zTEBEWMzyyoV1WEQYmRtK1Qij+Q7yuqxnn
+	jr1ltbeTGw66Fd97M7C6FbdNaCXpZkc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C37A043D42;
-	Thu, 22 Oct 2026 15:44:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8E31F031E1;
-	Thu, 22 Oct 2026 15:44:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E10F340582;
+	Thu, 22 Oct 2026 15:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023BF1F031E2;
+	Thu, 22 Oct 2026 15:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792683859;
-	bh=FQNoDGzEIRA1SKlEsB0k8OEtsPm86udTUByyB+9XNMk=;
+	s=k20260515; t=1792683862;
+	bh=ozJPu6PuFiBw8wNtJS3YSSh7biusWXg0zaL2eC86BNE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=D3i4qVmAKJMU1NOTSbYoqzcCWpAmDrHWsUE0/fqlfQIbyHJve9e5H7Qa7wFAr9Ixp
-	 seu/Q5PVFm93fPjSZZ3NOUZYEmmLyQEZjOKaBfWl8M3RH4gWw0gxd/EG5QGKuxSyHI
-	 NVfsh2ce2tEoFgxZQDPHJufxQLgXbpSo5z/4V4frVQ+aGcVYBoOp0bZU1WkLkHA/Ha
-	 LYcZaJg9Hcwmst8WGDnnCniWa9DIOB7cN5QutcAtmJe9PSxllVmVdAPSyRr7V09wax
-	 adC2VeJ+ceHt9D/uo0DZb42BKeR7xQxAscUKcC8jicNx2hfSIadNfp9fYiAu6Ibb8U
-	 9sjFTcmGonjug==
-Message-ID: <sashiko-outbox-181720@kernel.org>
+	b=Prysm9OrP1mDl89rTMgWgqvYlKXUNbl8HxNyfyNvKsdAYw0He6eps4UGF9HklFCwa
+	 YQd3uOhGW4bteX46E1QOZqIybMUImGs6yAe/DwhxZ2evZn/bP/o37xFaagIYLLptyZ
+	 t01buezxrVDq/lB5krh+ba7qgOwjnk5oORWlrAWhGNWENKXrcw3MYpe+F83WehuoCG
+	 ftSbG1ygt5e5eibG/Xzh96+sc9E8UGe6vJm7GDpqzOQW+4AV58QtENhFuBB4rxttN4
+	 o8UT79YwVgADfq265as1Y/VwJ5Nql8+JVHtgupszuOZS+h9GUtmDGrbNN3u/ZCGZV+
+	 JP8yCFkELIitw==
+Message-ID: <sashiko-outbox-181722@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 4/8] security: dma-buf: Add dma_buf_charge_cgroup
- LSM hook
+Subject: Re: [PATCH RFC v2 6/8] selinux: Restrict dma-buf direct cgroup
+ charging
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Jonathan
@@ -79,24 +79,24 @@ To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  Khan" <shuah@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
  =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
 Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, mripard@kernel.org, echanude@redhat.com, media-ci@linuxtv.org
-In-Reply-To: <20261021-v2_20230123_tjmercier_google_com-v2-4-ef6ee2dd8c5c@redhat.com>
+In-Reply-To: <20261021-v2_20230123_tjmercier_google_com-v2-6-ef6ee2dd8c5c@redhat.com>
 References: <20261021-v2_20230123_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com>
- <20261021-v2_20230123_tjmercier_google_com-v2-4-ef6ee2dd8c5c@redhat.com>
+ <20261021-v2_20230123_tjmercier_google_com-v2-6-ef6ee2dd8c5c@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 15:44:17 +0000
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 75C411A0006
+Date: Thu, 22 Oct 2026 15:44:20 +0000
+X-Stat-Signature: x6mor6noeoo73nipe79gz5oqakt5bni6
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: hrnj1qasw35je6md9h6j8qxdz8416d6f
-X-HE-Tag: 1792683860-315561
-X-HE-Meta: U2FsdGVkX1/mLJA6p/bBAC2s9SDJTMuyswpGvGUaAgpxCppnfIfIhJKZpufwg4GhZLneEdXGl/UtNF9BQPsiyaCHZjj0sPE3kItMSAwm5VKVMgZM/Z5J4ayfN9Z+IQMtf40UJJJvugGHz5vzidbQKlS40+23w6ERS2a2NIT0xgcfceUY099H4BNlYHdtFdAsPI8nfEGZuAawIWBd10r4LqKJchRYLDl5M4fY8I1dA+qs5auBJEAwa5CnzmiiHVORcUsOB4d7cn2EPOjRYVMOlPrLNc9OTcuXfONMbDEdKG8IM7OjWr2wlf2CSFhtnHT9vaNEvabyzady/akvrqaFrfbxQxy+IyK4vTBvzjsZg9vkT2vjdr7nmzVTVbFhMEJPft2PE9ROGpYO9Mh908i9wdrJSjbKKyrifri+kOphDKr1Nwy4e8S78E7UDi09PYGKHSnJAJfTFfp1YLEx+Ax2HNmLJbJUdzodADM6j6vlNeIn2Dh/wI0SSYsJEZ0VGDggeBC3eYA6uBg9AeXHBavJCA6UYvGAMPm1mHxHGZVU5VarBySxI1SWyYhWr0SnlWsj7Xxr2uSHebAweV7KiW80pvX1LQCSH7QWiPxArydTdRAJzqnKueVp2Wk1Yg8c51Oq4spfCUtxV+cu5nU2Fifyk9B/4DK1IM8bdRO9Wib0ElOnehNv4FJeFvxTLCL9MlRdjtNDXQidvnudbr3BddR4wxrLZkIjL92aDL0Tgmn3HVdMhjyk5FkXrzct8JAEUswm29uxiUTIC82KU2sO7uSpSvtpL8G3BeeeBBg55jv/uu/tFAgzt9jJpTKglyP2RND6CnF7TCZGaJKpz3tyjCMNDmhxgaXWYd7xDdl1hxN550uM87KvkcQmTZ2Kcr1y1BummrvqeSEZGzY/rMYrddPOW8ujbzWxr3Mqy6+YwY940ETov0ByoIqEe72I43xjfEhqx+lAt4WdXyr8fpVzEnf
- h82FdylJ
- 7jwG8blEp66skXnOjWpYQuDTQmpDH6TixNzO1THP+35VaWvPduSzML4i67O1L8WALDeRZ6VaWy4/EwrpauXFi9O0x2uWMCDmITV9Jzz3Q8vteo98zryiDXP5GRMuPfhYGM4+Q2Y4MR7t5eOHozNYF+jckwYeXYBheOhU7nxX0UHNOdLcLuF0QHf35O8KaN1LPCxB/ZzSF5hQexSKKF4PnP7aUQnNpOZMl9gvNmP14ZHn5bshgEgXK6QAR8hIAxExP7rH1ab9KgkLy35F0wJfmA1yS8ha0/amPFLC8K6+8VUS3mT2s2jIc9ydUMp/Tf8+Yk74HQlV0C98v5phv4Is20J9qWvYx8mRhvK/pHmYBuOcCVsnOmQs3Ixbwq8rqyt9m+BpTDT+O0AH5144473QINKHvv65FqxW1liI3Q+t7lVw6A2IUaYKSH6t7/KiB6beKMSEQk49M1DcKBMR0XxR1u3jQnMzU4i7FWoq3QfVVQbGbegiwsIvpTi4nilWSUqWvkI+9NbTuWY/oeMqBipi4jnUTi7xgvFG+z2qyZB13w1H0ORNo//PSkDNcr4W3JlaQm2A15jr7roHFt8gMYzP2wqwJ6vkkJ9Y+jVWdgHg22CuJU8y7d6BOQJrVSbxwMnguyC7KI7Vk59tEsI1YgRkIcaHmdH7fcI9JgF+Ih5G/1s+OOEWvnIVfrhYEH9PCbIZvPLr54E0r9d1mf2Hzi8R5JoeqVg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B08DF18000B
+X-Rspam-User: 
+X-HE-Tag: 1792683863-510705
+X-HE-Meta: U2FsdGVkX1/zTbtGuMJVcEPaINIRi+8XXAoAaRG47jk281nIwOT7vygEufCKOXrfrPaVlqM+RzgFFZo88SHVGkPkYA9dx+DxaEHyBM2TEST/z0bRFCrkOWsib+H8/Dn66mNnZMDUMGj2jQcn8m5LEXOTvzc3QbU87oE1yGFidCPxuNlBoZogjk/U7Iqjy9R0HTQm5Iq/sMIus4rAhlNEmFbwE+OxCBElW891B6V1CE2zt1c9H8AAQNW24OG/ipvIzRExjTFCxRC6WQcIUagNuhtE8vzkO4ZWtRD6OIeB04Qh5ghsZiopa2uGl/ONJIMcN8LhpKs3XnurnoDRgG1vALGFdiacM5YhsFS13lmeKmLkcpRdi2fFyEjzNQhWk5/ifRZ5F44kFKrhv+rtDnpS+JMYW8ySi+FltQAhlomWd2AJm9O1z/P8t0mKcYboOcBmajvpcxZKoXR2QBdYZHWI7HYn9Z7/UV/j+U6p2dhi70o6tbUdZ1mPucJW65yKC6/rdnBYmisv+ga9F8PF4sNlz/66cUi/5o+zvEHrsRxxIytjEamxbCwD/uu0AXVYre1BTc86BnO1eiOtV2iOMvGJnCi6N5nmQo2Nj6chB/OWCMaR9s3X9k8mH5uMf/fmC38hSigv/Y5dsrSU4wIpJcdP+lBTU26lYuPaPQKVteSXaLbBSI7c6q87L7cv7ZdP36GJOeaABEVJ+EhBpTnlq8xNwyjS3nJnXHIS8/WiqN//kFAVP+WYS3nqeKI8YEFfHx7v41ltU9CwaUtg+fIfJMyEj7EpVLG/K1qXhyi2qMeKCDGZmk7gd6beTKSwM7QdsXcAiMALNpw7prWWM0Mz2zLStbr5fLqUAFdbsYWJkrNj5W0xJt16sSvLHlIPMv9Qsm76U7J7M9pNtPoPBrLGHw5PUbHy1uM3tPRjtdlqSD6JypZzt97sBGAm8t/s2RShRgadveajvZUd++Eym5bDAdt
+ L80fdydS
+ 5l0PxR2QYX/Bwe39zmeg3Oghd0ujpI3xtp9ocgDX65fbOwPKZkG/k/zaMFXWam1PeYNVXlLtIWz6bLzq+XIIGM0ALKKjE6zrNnUBe7vq6UaJDoi0jlot4ilw/rRHr7hsNRMIXXQRDzfCV2cSoAD+FKVrnFPBcwViCJ+znzxupP/gF2vn3PXdjgFUoWxkfS3jmSe4x1m/8cLiolbfyNYCn32GwR7zqFHCkHTu7FizQBRi1llfo7aWmFeFpwmiCB8H+bGP2+v8SKA6pydeqIVbXUrBy6nP03OePS6X5PKd9aTziOFIfsBnC8r9GdtEpQBjMiEmyjfkwgQ8PVCAtJ/rPpHZh3ANLtwrHV2TAJk5HfcQZpMPbiIE1tZR0UNcdekUhEhJzrvXrzfG/+aTWybdydyWD4UJAzCyT5KOH6LGl9ijzsEQ6xcB4WIjlGCByRDiR//Ed42cLEmH1eTU8UpC6yXVkDaVuRZbFA+MlKgmCTHqNMZmY+XX4Wu4nBCdv8azfeGqkZJ4py++A/ve4enyQ1v8AW+FC3Hnmk/5be/+hUT7mSQwM4LvLmeJ125stNrgg5eNBsNXBlvnbXrVcJua26GNuhO+HHIbzVF54LLfAClX+/vnBhicPKQHcxJd6LPXR44kfxiaYQgw3vymUUS/jJ5wGouyppWnqr5HA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,140 +106,215 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] dma-buf: heaps: build failure in dma_heap_ioctl_allocate() when =
-CONFIG_MEMCG=3Dn
-- [Medium] dma-heap: missing __padding zero check in dma_heap_ioctl_allocat=
-e()
+- [High] selinux: selinux_dma_buf_charge_cgroup() bypasses check for genfsc=
+on cgroups
+- [Medium] selinux: stale xattr length in selinux_dma_buf_charge_cgroup() o=
+n race
+- [Low] selinux: build failure in selinux_dma_buf_charge_cgroup() if !CONFI=
+G_CGROUPS
 --
 
-commit c7d9f1c9769a263b2541e4535f61a1da114ca74b
+commit 8979483cce99c621c0be48bae510af01c958c235
 Author: Albert Esteve <aesteve@redhat.com>
 
-security: dma-buf: Add dma_buf_charge_cgroup LSM hook
+selinux: Restrict dma-buf direct cgroup charging
 
-This patch adds the security_dma_buf_charge_cgroup() LSM hook and calls it
-in dma_heap_ioctl_allocate() when charge_fd refers to a cgroupfd. When
-CONFIG_SECURITY is disabled, the hook compiles to a no-op inline returning =
-0.
+This commit implements the selinux_dma_buf_charge_cgroup() hook and adds the
+charge_cgroup permission to the dma_buf security class to control cross-cgr=
+oup
+dma-buf charging. It derives the target security identifier from the
+security.selinux extended attribute on the cgroup kernfs node and checks
+access via avc_has_perm().
 
-> diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
-> index c315739178867..e06131f4655d8 100644
-> --- a/drivers/dma-buf/dma-heap.c
-> +++ b/drivers/dma-buf/dma-heap.c
-> @@ -115,7 +115,13 @@ static struct dma_buf *dma_heap_ioctl_allocate(struc=
-t file *file, void *data)
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 8f39d91eabc97..8de5e16951dec 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -2210,6 +2210,38 @@ static int selinux_dma_buf_charge_task(const struc=
+t cred *from, const struct cre
+>  			    SECCLASS_DMA_BUF, DMA_BUF__CHARGE_TASK, NULL);
+>  }
 > =20
->  			memcg =3D mem_cgroup_from_css(css);
->  			rcu_read_unlock();
+> +static int selinux_dma_buf_charge_cgroup(const struct cred *cred, struct=
+ cgroup *cgrp)
+> +{
+> +	u32 cgrp_sid, clen;
+> +	int rc;
+> +	char *context;
 > +
-> +			ret =3D security_dma_buf_charge_cgroup(current_cred(), cgrp);
->  			cgroup_put(cgrp);
-> +			if (ret) {
-> +				mem_cgroup_put(memcg);
-> +				return ERR_PTR(ret);
-> +			}
+> +	rc =3D kernfs_xattr_get(cgrp->kn, XATTR_NAME_SELINUX, NULL, 0);
 
-[Severity: Medium]
-Will drivers/dma-buf/dma-heap.c fail to build when CONFIG_DMABUF_HEAPS=3Dy =
-and
-CONFIG_MEMCG=3Dn (or CONFIG_CGROUPS=3Dn)?
+[Severity: Low]
+Will this fail to build when CONFIG_SECURITY_SELINUX is enabled and
+CONFIG_CGROUPS is disabled?
 
-In drivers/dma-buf/Kconfig, DMABUF_HEAPS only selects DMA_SHARED_BUFFER and
-does not depend on CONFIG_MEMCG or CONFIG_CGROUPS:
+In security/selinux/hooks.c, selinux_dma_buf_charge_cgroup() is compiled
+unconditionally and dereferences cgrp->kn. However, the full definition of
+struct cgroup in include/linux/cgroup-defs.h is guarded by CONFIG_CGROUPS:
 
-    menuconfig DMABUF_HEAPS
-    	bool "DMA-BUF Userland Memory Heaps"
-    	select DMA_SHARED_BUFFER
+include/linux/cgroup-defs.h:
+#ifdef CONFIG_CGROUPS
 
-In dma_heap_ioctl_allocate(), the cgroupfd path introduced earlier in this
-series ("dma-heap: charge dma-buf memory via explicit memcg") and updated
-here unconditionally references cgroup_get_from_fd(), cgroup_css(),
-memory_cgrp_subsys, css_tryget_online(), and cgroup_put():
+struct cgroup;
 
-		cgrp =3D cgroup_get_from_fd(heap_allocation->charge_fd);
-		if (!IS_ERR(cgrp)) {
-			/* charge_fd is a cgroupfd */
-			rcu_read_lock();
-			css =3D cgroup_css(cgrp, &memory_cgrp_subsys);
-			if (!css || !css_tryget_online(css)) {
-				rcu_read_unlock();
-				cgroup_put(cgrp);
-				return ERR_PTR(-ENOENT);
+When CONFIG_CGROUPS is disabled, include/linux/cgroup.h only forward-declar=
+es
+struct cgroup as an incomplete type:
+
+include/linux/cgroup.h:
+#else /* !CONFIG_CGROUPS */
+
+struct cgroup_subsys_state;
+struct cgroup;
+
+Since CONFIG_SECURITY_SELINUX does not depend on CONFIG_CGROUPS, dereferenc=
+ing
+cgrp->kn without a CONFIG_CGROUPS guard will reference an incomplete type.
+
+> +	if (rc =3D=3D -ENODATA)
+> +		return 0;
+
+[Severity: High]
+Does returning 0 on -ENODATA in selinux_dma_buf_charge_cgroup() bypass the
+permission check for all cgroups that use default genfscon labeling (such as
+cgroup_t)?
+
+When a process calls dma_heap_ioctl_allocate() or dma_buf_xfer_charge() ->
+security_dma_buf_charge_cgroup() -> selinux_dma_buf_charge_cgroup(), this c=
+ode
+queries XATTR_NAME_SELINUX directly on cgrp->kn.
+
+However, cgroup and cgroup2 filesystems are configured with SE_SBGENFS |
+SE_SBGENFS_XATTR. When a cgroup inode is initialized in
+security/selinux/hooks.c:inode_doinit_with_dentry(), its default label from
+genfscon (for example, cgroup_t) is resolved via selinux_genfs_get_sid() and
+passed as def_sid to inode_doinit_use_xattr():
+
+security/selinux/hooks.c:inode_doinit_with_dentry() {
+    ...
+			rc =3D selinux_genfs_get_sid(dentry, sclass,
+						   sbsec->flags, &sid);
+			if (rc) {
+				dput(dentry);
+				goto out;
 			}
 
-In include/linux/cgroup_subsys.h, SUBSYS(memory) (which declares
-memory_cgrp_subsys in include/linux/cgroup.h) is only emitted when
-CONFIG_MEMCG is enabled:
+			if ((sbsec->flags & SE_SBGENFS_XATTR) &&
+			    (inode->i_opflags & IOP_XATTR)) {
+				rc =3D inode_doinit_use_xattr(inode, dentry,
+							    sid, &sid);
+    ...
+}
 
-    #if IS_ENABLED(CONFIG_MEMCG)
-    SUBSYS(memory)
-    #endif
+In security/selinux/hooks.c:inode_doinit_use_xattr(), when no explicit
+security.selinux xattr has been set on the kernfs node, getxattr returns
+-ENODATA and the inode falls back to def_sid in memory without writing
+XATTR_NAME_SELINUX to cgrp->kn:
 
-Additionally, in include/linux/cgroup.h, cgroup_get_from_fd(),
-css_tryget_online(), cgroup_css(), and cgroup_put() are only declared inside
-#ifdef CONFIG_CGROUPS and have no stubs when CONFIG_CGROUPS=3Dn, unlike the
-helpers in include/linux/memcontrol.h.
+security/selinux/hooks.c:inode_doinit_use_xattr() {
+    ...
+	if (rc < 0) {
+		kfree(context);
+		if (rc !=3D -ENODATA) {
+			pr_warn("SELinux: %s:  getxattr returned %d for dev=3D%s ino=3D%llu\n",
+				__func__, -rc, inode->i_sb->s_id, inode->i_ino);
+			return rc;
+		}
+		*sid =3D def_sid;
+		return 0;
+	}
+    ...
+}
 
-Should the cgroupfd resolution block in dma_heap_ioctl_allocate() be guarded
-with #ifdef CONFIG_MEMCG?
+Similarly, selinux_kernfs_init_security() sees -ENODATA on the parent node =
+and
+returns 0 without setting XATTR_NAME_SELINUX on child cgroup nodes so that
+they also fall back to genfscon.
 
->  		} else {
->  			/* charge_fd is a pidfd  */
->  			task =3D pidfd_get_task(heap_allocation->charge_fd, &pidfd_flags);
+As a result, unless a cgroup directory has been explicitly relabeled via
+setxattr(), kernfs_xattr_get(cgrp->kn, XATTR_NAME_SELINUX, NULL, 0) returns
+-ENODATA and selinux_dma_buf_charge_cgroup() returns 0 without calling
+avc_has_perm(), leaving default-labeled cgroup_t cgroups unrestricted.
+
+> +	else if (rc < 0)
+> +		return rc;
+> +
+> +	clen =3D (u32)rc;
+> +	context =3D kmalloc(clen, GFP_KERNEL);
+> +	if (!context)
+> +		return -ENOMEM;
+> +
+> +	rc =3D kernfs_xattr_get(cgrp->kn, XATTR_NAME_SELINUX, context, clen);
+> +	if (rc < 0) {
+> +		kfree(context);
+> +		return rc;
+> +	}
+> +
+> +	rc =3D security_context_to_sid(context, clen, &cgrp_sid, GFP_KERNEL);
 
 [Severity: Medium]
-Also in dma_heap_ioctl_allocate(), should non-zero values in
-heap_allocation->__padding be rejected with ERR_PTR(-EINVAL)?
+Could passing clen instead of rc to security_context_to_sid() read
+uninitialized heap memory if the security.selinux xattr is concurrently
+shortened via setxattr()?
 
-Earlier in this series ("dma-heap: charge dma-buf memory via explicit
-memcg"), struct dma_heap_allocation_data in include/uapi/linux/dma-heap.h w=
-as
-extended with charge_fd and __padding:
+In selinux_dma_buf_charge_cgroup(), context is allocated with
+kmalloc(clen, GFP_KERNEL) using the length from the first kernfs_xattr_get()
+call. In fs/xattr.c:simple_xattr_get(), the lookup is only protected by a
+local rcu read lock per call:
 
-     * @__padding:		reserved, must be zero
-     *
-     * Provided by userspace as an argument to the ioctl
-     */
-    struct dma_heap_allocation_data {
-    	__u64 len;
-    	__u32 fd;
-    	__u32 fd_flags;
-    	__u64 heap_flags;
-    	__u32 charge_fd;
-    	__u32 __padding;
-    };
+fs/xattr.c:simple_xattr_get() {
+    ...
+	guard(rcu)();
+	xattr =3D rhashtable_lookup(ht, &key, simple_xattr_params);
+	if (xattr) {
+		ret =3D xattr->size;
+		if (buffer) {
+			if (size < xattr->size)
+				ret =3D -ERANGE;
+			else
+				memcpy(buffer, xattr->value, xattr->size);
+		}
+	}
+	return ret;
+}
 
-When a userspace process issues ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc)
-with a 32-byte struct dma_heap_allocation_data where alloc.__padding !=3D 0,
-dma_heap_ioctl() copies all 32 bytes into kdata and calls
-dma_heap_ioctl_allocate(file, kdata). However, dma_heap_ioctl_allocate() on=
-ly
-checks fd, fd_flags, and heap_flags before processing charge_fd:
+If a concurrent setxattr() replaces security.selinux on the cgroup with a
+shorter, non-nul-terminated context string between the two kernfs_xattr_get=
+()
+calls, the second kernfs_xattr_get() copies only the new rc bytes into cont=
+ext
+and returns rc < clen, leaving context[rc .. clen - 1] uninitialized.
 
-	if (heap_allocation->fd)
-		return ERR_PTR(-EINVAL);
+Passing the stale clen to security_context_to_sid() then causes
+security/selinux/ss/services.c:security_context_to_sid_core() to copy all c=
+len
+bytes and place the terminator at index clen:
 
-	if (heap_allocation->fd_flags & ~DMA_HEAP_VALID_FD_FLAGS)
-		return ERR_PTR(-EINVAL);
+security/selinux/ss/services.c:security_context_to_sid_core() {
+    ...
+	/* Copy the string to allow changes and ensure a NUL terminator */
+	scontext2 =3D kmemdup_nul(scontext, scontext_len, gfp_flags);
+	if (!scontext2)
+		return -ENOMEM;
+    ...
+}
 
-	if (heap_allocation->heap_flags & ~DMA_HEAP_VALID_HEAP_FLAGS)
-		return ERR_PTR(-EINVAL);
+Should security_context_to_sid() be passed rc from the second
+kernfs_xattr_get() call instead of clen?
 
-Because dma_heap_ioctl() zeroes trailing bytes when ksize > in_size:
-
-	if (ksize > in_size)
-		memset(kdata + in_size, 0, ksize - in_size);
-
-legacy 24-byte ioctl callers already have __padding zeroed, whereas 32-byte
-callers can currently pass arbitrary non-zero values in __padding without
-receiving -EINVAL, preventing __padding from being safely repurposed in the
-future.
+> +	kfree(context);
+> +	if (rc)
+> +		return rc;
+> +
+> +	return avc_has_perm(cred_sid(cred), cgrp_sid,
+> +			    SECCLASS_DMA_BUF, DMA_BUF__CHARGE_CGROUP, NULL);
+> +}
 
 [ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-v2_2023012=
-3_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com?part=3D4
+3_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com?part=3D6
 
