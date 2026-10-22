@@ -1,92 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F500606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96CD606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AnSddiiG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ew+ST9iO
 Received: by kanga.kvack.org (Postfix)
-	id 357CB6B02E9; Thu, 22 Oct 2026 18:52:59 -0400 (EDT)
+	id E0A1E6B0A1D; Thu, 22 Oct 2026 18:55:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E1AE6B02EA; Thu, 22 Oct 2026 18:52:59 -0400 (EDT)
+	id DBBF26B0A1E; Thu, 22 Oct 2026 18:55:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AA346B02ED; Thu, 22 Oct 2026 18:52:59 -0400 (EDT)
+	id CF7996B0A1F; Thu, 22 Oct 2026 18:55:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E87DB6B02E9
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:52:58 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0EA9FA025B
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:52:58 +0000 (UTC)
-X-FDA: 85351764036.11.4BBCAAB
-Received: from mta0.migadu.com (out-2.mta0.migadu.com [91.218.175.2])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E58AB1C0004
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:52:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AnSddiiG;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.2 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A77FC6B0A1D
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:55:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F08EE160332
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:55:02 +0000 (UTC)
+X-FDA: 85351769244.26.189E50A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 54261A0007
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:55:01 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ew+ST9iO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792709576;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1792709701;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eFP7exUez9GGOtJ+smGmBVLg4Y3+zmrZrmNma5qSW4w=;
-	b=kWH0gjXGSRnQOLbaljv0lQD7ZPR1cHmWZQ9z1NWcxo/jZRYL+6zD2dS0HH8nWr/SCmep6E
-	mqamIeHnaR0iSKIzwX6YGPyZ3dbHzhFMtiqOf2PYJXQfnlxCbKkYdlIhD2WRY1cotpRH2J
-	OpO4yTWxDaAx2Pk04+j9V9O2snz0Wdo=
+	bh=L/VAmHs3WPkaKDCUDbFDqnQos+34yRbV2GllagT5bVI=;
+	b=TcdDiaJ88R+kbrbDeKZz051vmJGwQBVl6hLys0LWUY02LBdtZ9xro86PymyjtCN2FTlhXv
+	ZuIS7AdF+/LKt7+tAvdb9EQ3TY4MIljF7v8dk8E0Z62luBxVk+IpRirN91XQWdU1rdpX8h
+	wWd6rExnV8BvVQh3MwBmhihlAFLs+CI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AnSddiiG;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.2 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ew+ST9iO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792709576;
-	b=4tY1ffNalYG241m6s/8Rymp4pPApzNlE4U3Iu7YqvhDg7WKkIPxDXiMgRaRD1kpV4di9l2
-	sAE/j+4YFDUGHIJZBKDo58N+NvQ1TGg1YAy2oiqnS8NVnww8wQHJkaB4F3CWwJtLLKSuxN
-	9A5QuSbeqRHs+8lzd3cz40t3qUQOup0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VuEHBkjmYNYLgKZ9YnKdlHZbNCNfQZmriQK22FO6a38=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792709574; v=1; x=1793314374;
- b=AnSddiiGBk015l6rIxyItypoyRc8nAMVaqeECu3YHpxKsNIhRQGvrx7fCVtbO4kKu0KsB8Mo
- nE63PIboSlE/dw/JzD97LKOzqOOhQKG2M9AwcIkxFBsQxN539l+RRdD0j3Dfj5xNWDiblZZ/60T
- EsQ6AhnpIL1n8Os1jXSPxaZQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3f89389d0b74c4ae;
-	Thu, 22 Oct 2026 22:52:54 +0000
-X-Mizu-Trace-ID: 3f89389d0b74c4ae
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 22 Oct 2026 15:52:53 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Yosry Ahmed <yosry@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/2] memcg: don't go through the lruvec for folio and
- kmem lruvec stat updates
-Message-ID: <atqTqvZRVHk0IVQV@linux.dev>
-References: <20261022223930.138779-1-joannelkoong@gmail.com>
- <20261022223930.138779-3-joannelkoong@gmail.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022223930.138779-3-joannelkoong@gmail.com>
+	t=1792709701;
+	b=JxxT76dDir8evtYwSxZPxlOee2woD9p3XOCj9YzA1L06Bht4/b1HQzg2EI1PMrt/sjW1gU
+	MPpRe2DoPENpc6omWsXxP/bsqVZz7RfOUGUWHi1i2zXYmO1VRRIlAJaK8Je+ofBk9iqjNB
+	Zfmcq8mBVrWIGnBUfPeqAh5eJQ2LpgI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 94EA0407CF;
+	Thu, 22 Oct 2026 22:55:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2331F01825;
+	Thu, 22 Oct 2026 22:55:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792709700;
+	bh=L/VAmHs3WPkaKDCUDbFDqnQos+34yRbV2GllagT5bVI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ew+ST9iOKkZ+xl/krXhNO+wEnsaRGuTfCRg0IveistS5gP0Bg9f97Xt7RyU4Frvrv
+	 gOQu0X8PsvSCafxvK/CgKVP+PJ3G2pUcJUoiVqkmkRVlrGK4P1JOYOZPFDGgCvXwnX
+	 WN1Mm2byMNyhj41gliOAEbzIA7xOu8B/fMl3M0w0Xa5afzhB1Sy2T9i52WNZWj/sMO
+	 XBzxvhZMRMCi4NoJikRbgIyRyYkfsA+77gSvEJQTH85IRwwmOSpREOb8KIXcTxknxu
+	 kUXPADoEt+In/JB05dYb/6zJv88v2fyl9a1CE951z5tdSGWEpxf9cVjE0FHgCpqJup
+	 UiW7T91yl/N7A==
+Message-ID: <sashiko-outbox-182137@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] docs: core-api: include documentation from
+ linux/uaccess.h
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jonathan Corbet" <corbet@lwn.net>, linux-mm@kvack.org
+Cc: "Shuah Khan" <skhan@linuxfoundation.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>
+In-Reply-To: <878q3q4qby.fsf@trenco.lwn.net>
+References: <878q3q4qby.fsf@trenco.lwn.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 22:54:59 +0000
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E58AB1C0004
-X-Stat-Signature: ruqsnqgjw6jrzb58dtp79qtpoowriu4n
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 54261A0007
+X-Stat-Signature: qg87cbg4j711burb885geawjo5nta1ni
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792709575-38810
-X-HE-Meta: U2FsdGVkX18MhRx4v8N/HxziZRZwebZI5KEIfxUkx+qgA6bs0v2ulXvFDLiqARWxZl5vai8VenXpPUoNdhWSzs3UZbwkyrUuu8UxedF0yvDJDHvNOChu98uEPrMmFxPzAISNsZWrO7O4OAz6xa9flpwx9jlRv3MhrbnLzQ4pUqo8SZotZ3l42XKJEhkCW/c4yjbJhOVxmEAQF6c3max/mXy7K1vH9hmGjvoxgKFVAbpewKY/39CVVjpNj+SrFSWfQKujUjXIFl1GtiAoeZ8aE+hwX6De5R/fP8AcR3RUD4wc1m3TjsEZTnozeU5OWxsDXf90moc0HCToIZJ7Nrha2gNc3dawx/WaZaK/f5lbjh9LCZPKVwI4aR826dTyLbpai7stn8DMzILu7wXxbdmoFp72ZXUn4ibURziTXX3J+zUy2PC7+UKLGlboLQFk8I1Q6+C940ph+Dwd6ONtlUdOqpLpeXexpXRdQ9dQlQHKoqvS/esMDs5yvzD8UdePmXNi1H0wBjry7a5owNe7+6L1sVe3a7DWM50BiGme+aZerILRaQMRHygeqr0bTtuyWAbh1cekg+BVlUHV7RnGv56ZO8bOwrf/TAGFn1QmAkR4vBimyZZA9jT+MAp8FAWciGGX+Ty8AFKOQdoi2xvllvJp19DS6X3Pdvq5yDkD4T4Z0NsEodFYPWEUH1V0aDyiO9Ee/AKqaAYOaoPojr4PjaJ3d1O1EVMr2EkJN0AXoDnWF7gZsAtKFvoR1LKu4Od+00ZxbKTSgEB5vvrOTaUNS8N7ts789BdvuvHt3govxpUbkW9lHSmGNKybx6EUxY04mvWZFq60zE2T/ZdcdbXZAWxTRYYPv2il+i39JGSp3CU2vE/H0ovDpX3hzi81q7NmbiO88MVwGniHdqgfJXPC38q2ilYxQBRK40EOkZstQwpiokS/lKtZTiFZlNEEDkwD54x+KM82b4IcTgDQoVS/3al
- ePDXFgkF
- KOOWpEsIqTmqyMsyISbt+dVj/n9U4zD+hZR29A9OXlnZYOTaX4vyL2SJ3E5HFyLMHaHFKzzKLbDRH9p8oVHHOZfwyosbBpesWJ/pH36DiqN9Rd3TuZHPVKVOPDReKhtwfoBe468IfvbD2Gbqb01wfpRTuRZmggSiba+B4sudFN3qPFstaiNahQtBmeZFjaT6arRjAu1DC0eZm/73jzalSVWtQbYKvXGMiQ2oy3P2pPkXey71kAbthiNgBJhFtWQG4vTR2jYHWj6XrrVz3HSbHZsqwiUkZo7wLN3YT
+X-HE-Tag: 1792709701-783759
+X-HE-Meta: U2FsdGVkX1/JOlPycBWkQ6g/u2AJWIlWYM59syM7qQObg7f0CfEMf2lTOLMUSc+gXMkljIq5XLzQBAhunIz+QK9BSglMILnwQfqSuBA3iDMJXCJdUTarzLN6n7yM/0mOgDksiuAVPhRnJOrt6MtxEbjjrnP8XHCJv7J3HFP9+AAip+kjMtw4Era/JzK6jAseHizP3ZD5MCmTmJW9TV5XRJYr9rrCy3fp1wMj2r5wUGLTqZngqpqtsQgMymCuWE3bNQXpXY9s0BswRC9R8k+OM0GaN6d/K65vgWtOSD5HG0TgfFJcmfo2L2kW2o3fImFml5NyfQnCow1I0D29vhKHDdLGzyGEj7nHEhOivnE0y/EY2x3Di0mevqzAni62buMSc702Jwmce8d1J7+BFMEzyT2h4LBSk9+Jm8GbD2neWfyTjm6NfXYL1tr0v0GHStqPFZdf0rb8weGAcdO8K7Td6KYEdvCxcBYiLcSv/ivsSw+1zR1eDu27QLPDDrqDJq1VHGk4BpTWQZaVqy0TYSIM5HYEQke+SutqDipxylZvbq1A4clye6sEhNNhTPs/bt1dY8SODTU7yVwHTbnA1YFLDw0fKd6ZYsxKftCrLPv40bAPa7UAjctSEZK4o8gsQyzkzFIYEMKGKf392pPhJanJfFczyzC/uQJD+owQTIAUeZfpU4mua7wgowFsaKVqWJX/fSPq1vIS4ntEhjPVprbiEDkfIfapEBmm0ocn/ry2WcJNDvxBGqZQODN6FaxZsWFJXuF7HVkxBx00k9Dz8gYcME3c3eULIeztLSQU8tcTEpB6hy2OVw8wwhOZCCMcKuSCnshTiJQcx2hERXDBMs/m+qoWnNav6YSOAXdVK/2zosmdBXnvY69rz/fxJ6i9nDIqao29AF29ZfGZLBk0SxFfeYOJ+S+WUfZ5BIaWSd1Je5UXLBHIL2mV3ELjoFNQSibQeKiplsxoGS7BquyuD72
+ UYVYiWWe
+ ovzNGgpqHfiJA/85XFP/5D3K6BFoFPkhgLsqVHU0oKfpWOS7GNOgUTIU5hHCdj9M4Bcn3jl2MAPpB1eq/MwyM8ozzf631G3BSB0l4/AWMHFvimKOGjIJVU/vmPT6Bd8WWUAeuYFCoxs8eazUuhXrmfvUDGMae/Z3I6k7cRWdeGul1fZbgB8SGYj+DA4c8/5q3K8NzbHAnPJAATsCbvP/XEXkx3BbTl1qe8hiLvNnE1AQWL8FDF+kcMHT98r1cuYflMBw+KBoQ+DMqWLjPTFqh8UjFlrp6/LzAZT7Si4Z5Xm0y8DLTu+hKX+Qi+AIdL9Tz7pDbzPQHHVtavA2N+XKm5DM9XcdpBHt+L8dCOc7jVp2ReIqkS6VBHc+sxs6LPx2Uls55eaNHtZ5tnZ9FpWrTD7XBwQSqfFBS/4H60T/d2y1sdyf5Gsxe/Ydx3Ke1cgA0ZNiTMUI+MQ9YoH/v5edojwHMYPuNMCXTnw+jrCbCm5D+WTfA7JaHFCl5QfGqV6wvkpR/TRTtC+c+i5tW/Ao5H9lK8IefWyAxBJ1l9R1NnWs9RyQCh8IHDKXvjOJ8BBr9On3wN/Ts4yUyXZj+AozfHcnzcHr/qno9MsUGavzOU8YfZlY9VUOPXYamPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,26 +92,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Thu, Oct 22, 2026 at 03:39:30PM -0700, Joanne Koong wrote:
-> lruvec_stat_mod_folio() and mod_lruvec_kmem_state() already know the memcg
-> and the node, but look up the lruvec with mem_cgroup_lruvec() and update
-> the stats through mod_lruvec_state(), which reads lruvec->pgdat and
-> mem_cgroup_per_node->memcg to get them back. lruvec->pgdat shares a
-> 128-byte cacheline pair with lines that the lru_lock holder writes
-> constantly (lru_lock or lru_zone_size[], depending on the alignment of
-> struct mem_cgroup_per_node), so on CPUs that do spatial prefetching
-> these per-folio stat updates contend with the lru_lock holder.
-> 
-> Pass the memcg and node they already know to mod_memcg_node_state()
-> instead.
-> 
-> On top of the mem_cgroup_per_node rearrangement, on a 2-socket Skylake
-> (80 CPUs) with threads faulting in and freeing shmem in a single memcg,
-> this improves throughput by about 3% at 20 threads (5.59M -> 5.77M
-> pages/sec) and 2% at 80 threads (8.66M -> 8.82M).
-> 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] docs: core-api: kernel-doc and Sphinx warnings from linux/uaccess.h
+--
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+commit 2999ceef858b0ddc1bc84f5c20261a45d3fb5ade
+Author: Jonathan Corbet <corbet@lwn.net>
+
+docs: core-api: include documentation from linux/uaccess.h
+
+This commit adds a kernel-doc directive to Documentation/core-api/mm-api.rst
+to include internal kernel-doc comments from include/linux/uaccess.h.
+
+> diff --git a/Documentation/core-api/mm-api.rst b/Documentation/core-api/m=
+m-api.rst
+> index c1d03a5a2a192..b8c00bc5314e1 100644
+> --- a/Documentation/core-api/mm-api.rst
+> +++ b/Documentation/core-api/mm-api.rst
+> @@ -8,6 +8,9 @@ User Space Memory Access
+>  .. kernel-doc:: arch/x86/include/asm/uaccess.h
+>     :internal:
+> =20
+> +.. kernel-doc:: include/linux/uaccess.h
+> +   :internal:
+> +
+>  .. kernel-doc:: arch/x86/lib/usercopy_32.c
+>     :export:
+> =20
+
+[Severity: Low]
+Does pulling include/linux/uaccess.h into the documentation build introduce
+kernel-doc and Sphinx warnings during make htmldocs?
+
+First, in include/linux/uaccess.h, the comments above
+copy_struct_from_bounce_buffer() and copy_struct_to_bounce_buffer() start
+with /** without a kernel-doc identifier line:
+
+    /**
+     * This is like copy_struct_from_user(), but the
+     * src buffer was already copied into a kernel
+     * bounce buffer, so it will never return -EFAULT.
+     */
+    static __always_inline __must_check int
+    copy_struct_from_bounce_buffer(void *dst, size_t dstsize,
+                                   const void *src, size_t srcsize)
+
+When KernelDoc.process_name() in tools/lib/python/kdoc/kdoc_parser.py parses
+these comments, it emits a warning that the comment starts with /** but is
+not a valid kernel-doc comment, and omits both functions from the generated
+output.
+
+Second, the kernel-doc comments for copy_struct_from_user(),
+copy_struct_to_user(), and __scoped_user_access() in include/linux/uaccess.h
+include indented C code examples preceded by : or . rather than a :: literal
+block marker:
+
+     * @ksize is just sizeof(*dst), and @usize should've been passed by use=
+rspace.
+     * The recommended usage is something like the following:
+     *
+     *   SYSCALL_DEFINE2(foobar, const struct foo __user *, uarg, size_t, u=
+size)
+     *   {
+     *      int err;
+     *      struct foo karg =3D {};
+
+and in __scoped_user_access():
+
+     * wrapped. See unsafe_get_user() for reference.
+     *
+     *	scoped_user_rw_access(ptr, efault) {
+     *		unsafe_get_user(rval, &ptr->rval, efault);
+     *		unsafe_put_user(wval, &ptr->wval, efault);
+     *	}
+     *	return 0;
+     *  efault:
+     *	return -EFAULT;
+
+Without ::, RestFormat.output_highlight() in
+tools/lib/python/kdoc/kdoc_output.py does not treat these blocks as literal
+code, causing Sphinx to emit unexpected unindent warnings on the closing
+braces and the efault: label, as well as inline emphasis warnings on the
+unescaped pointer asterisks in sizeof(*dst), sizeof(*src), and
+struct foo __user *.
+
+Finally, in __scoped_user_access(), scoped_user_read_access(),
+scoped_user_write_access(), and scoped_user_rw_access() in
+include/linux/uaccess.h, parameter references sit directly adjacent to
+token-pasting or dereference operators:
+
+     * When the scope is left user_##@_mode##_access_end() is automatically
+
+and:
+
+     * The size of the access starting from @usrc is determined via sizeof(=
+*@usrc)).
+
+RestFormat expands @param into **param**, turning these into
+user_##**_mode**##_access_end() and sizeof(***usrc**)) (along with *@udst a=
+nd
+*@uptr), which triggers further Sphinx inline strong/emphasis markup
+warnings. Should the comments in include/linux/uaccess.h be cleaned up befo=
+re
+including the header in Documentation/core-api/mm-api.rst?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/878q3q4qby.fsf@tren=
+co.lwn.net?part=3D1
 
