@@ -1,91 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87F6606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 04:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0EA606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 05:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=PhKWZl+l
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=J2nGQySl
 Received: by kanga.kvack.org (Postfix)
-	id B718C6B0298; Thu, 22 Oct 2026 00:52:18 -0400 (EDT)
+	id F07B46B087D; Thu, 22 Oct 2026 01:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B22D66B029F; Thu, 22 Oct 2026 00:52:18 -0400 (EDT)
+	id EDF346B087E; Thu, 22 Oct 2026 01:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A39EF6B02A5; Thu, 22 Oct 2026 00:52:18 -0400 (EDT)
+	id DF6546B087F; Thu, 22 Oct 2026 01:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D00D6B0298
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:52:18 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9641080702
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:52:17 +0000 (UTC)
-X-FDA: 85349040714.26.D7E5641
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9449B1C0003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:52:15 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PhKWZl+l;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B9AB56B087D
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:22:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1605B1A0729
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:22:52 +0000 (UTC)
+X-FDA: 85349117784.12.0098084
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7CB84100002
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:22:50 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=J2nGQySl;
+	spf=pass (imf05.hostedemail.com: domain of 3qZ3ZagkKCKgKPQPaPMVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--chihsheng.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3qZ3ZagkKCKgKPQPaPMVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--chihsheng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792644736;
+	s=arc-20220608; t=1792646570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aKmRIxZbD0nMDMPI/mEiihjsp8gY8MgQFkQF67TPGtQ=;
-	b=euy4wCbaTX457/mGzofIxvlLNv+yXU7oAkHg+2P0YClUDRWSwYS+gzNW1WkZMjHdMiPDS4
-	zIkSA37G1+hOuI1yTuvVYHJLaSpGw3GlSKOK16326+Ejuh/wqjOLEHprPfQnMUnU7CvLq0
-	xREf1IQI/3ODa0Gral3ruTrIevYT3NU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PhKWZl+l;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=i0ib49ykkVTIXodpiuOe5mlbictVGMpVlOsQqgxbR10=;
+	b=CSntIkI+GVC0UtZ0Mc3pNKIzItzI8jZNSQU/z8y+CqPm+l3BiZmbAdF0tDYRdMEEFlWKYU
+	bWUBxFeceZt8PGGwozq08pRzWhgqiWqab/jrRkJZ/fCJW8ER9RRIul9Y7lb/Vnh1JnEKgB
+	aRn550vpf+LHLMPrxTYktgzTQgsPIvg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792644736;
-	b=2OdhmfUrfBXW2ynM2PZ20rsjo8z9pwF83cEOukLq+cRJmscsNTicFZcbuCEgOsNAl4BA3/
-	H7K/iaxrRrpOHU+tCRMn9/sUQFaVrg4Dw5GXjDYTIL5fCjqQIFt/rWTimoSAQ7KtOhQT7d
-	Eje3nTs5vDvqQ8OdDM6Gz9QxMg/+hWY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3669215A1;
-	Wed, 21 Oct 2026 21:52:11 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8A763F673;
-	Wed, 21 Oct 2026 21:52:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792644734; bh=44sAahlGBWki3CLzttdyPd9BArWJwv9oFthryRDKXxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PhKWZl+lITNgn2s18xxBwN4IQraWSJ3Cly36ez4WrldNA0izm/ZvQ/eT/q/NtTu2O
-	 4PgjE7ydajX26F5KF1L4HW9UCok/SYdFTfGDRxwnyEZHfcRCJdbgY0fzXDcLsdWysU
-	 B8KvEu2vSg01HkJZwbIe1Sxh4H0+haQQcOBzWu9A=
-Date: Thu, 22 Oct 2026 10:22:10 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Chris Down <chris@chrisdown.name>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] mm/page_counter: use WRITE_ONCE() for emin/elow when
- parent is the root
-Message-ID: <ckukoxkv5cgvk5yywqe7fzxyo43cu7jh7ys5d6qs4rbasxutev@ixfqdcpsppmm>
-References: <20261021204818.3431099-1-shakeel.butt@linux.dev>
+	t=1792646570;
+	b=YcpqrB3Ou7itiV7m8IZyzKOciNoGj0RYmM+2o8nNbNp07LnuHHmjN/yICE04M0EPtDlxkh
+	KZ8LZ5vzAl/GNaLlR0bk4xbc0K0WrJ+zTHHpxH6RyQ6/1nPpGbgge75t9w/Fk6HyU78ylq
+	uVYncdhJAKWYY8l7GtECxncCDKp0Oj4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=J2nGQySl;
+	spf=pass (imf05.hostedemail.com: domain of 3qZ3ZagkKCKgKPQPaPMVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--chihsheng.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3qZ3ZagkKCKgKPQPaPMVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--chihsheng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a0522cdaf3so1118619b3a.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:22:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792646569; x=1793251369; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=i0ib49ykkVTIXodpiuOe5mlbictVGMpVlOsQqgxbR10=;
+        b=J2nGQySlHdWUjF+2MzEu5j2fKW4BJzjlc/M81xwCOFSqyl7LsYiGbY0ENEoSDX94lq
+         OddSneZjzXLUagCGBZGSmm4o4eSYsPyyWaRaMX8uFEztvqSa6fGBRdhAEtWg1gfNn0ik
+         rF+abKsTmG3f0n1zxTeUgcOhVtm5RC1hsgcp3txfNbpGEeeGHIRg/Mq5Iy+HB8jk01x0
+         ze5joq6F65hDW0PCxeNn2O2bZcKe29aHcOyaTup356Pdy0+IpXummJSt2J8QDO1GyBvJ
+         kElLCq5rrq/BHxeFgcbUALpYSx8j7fpsbFDC1kgg5cUxkfHelcklvYyfc23A/cqJEqzC
+         lmVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792646569; x=1793251369;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i0ib49ykkVTIXodpiuOe5mlbictVGMpVlOsQqgxbR10=;
+        b=om/bNCE5KQfgBeGujtbciqqyJx4PrOj0o6053Cyfp5stoOgL4hEJTzddp2mASodRqm
+         WGgtGae3PH5uOuUnOlTxcdytV5TgBEAiV80ZYXG03SAHyf11V1QzSy0/HLn8qzoDoTK2
+         J06lrZudAnnYlWzxz6ObZan9H4E7czp2E4lGVGT86QMnkKWL2DkRHmS/d15XcP7JpiST
+         ZV7aWhi/TMgfmhew75KpW6yOD8rmmyG9Iy/7TDLjSIOB+ewYW6SUZJzemWp7BabMbq2x
+         Fgp7gNYDZnAgAMWtnvddec++qI9zHC31VS5Py3a0bMpRMH459K+svibSgn3vI7IoB+1c
+         Lv5Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwoWCE98mHk2e3xWBFj52nxbKpK/tksfs9AMY5/Jm09R54Ql82h4KraLJQCzJFpJkDNmXnuAVIHrg==@kvack.org
+X-Gm-Message-State: AFq9FYIXfry716HHePzsmxzG8yBNwOoMf+EoYhjAtEuWhTVFQsye2yDt
+	o0cIL5w6cRNFnWuywAozmp0B1RLvpZGtWel0vQxY0F5keMUvnUNYWxufmLMSTm3Xm9Vu/uT9pb2
+	uH9mbZ9LtTXq7YvxvtQ==
+X-Received: from pfwo8.prod.google.com ([2002:a05:6a00:1bc8:b0:8a2:1bc3:8884])
+ (user=chihsheng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:349a:b0:881:4b47:f31a with SMTP id d2e1a72fcca58-8a089cdf1a4mr3211775b3a.11.1792646569217;
+ Wed, 21 Oct 2026 22:22:49 -0700 (PDT)
+Date: Thu, 22 Oct 2026 05:22:44 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021204818.3431099-1-shakeel.butt@linux.dev>
-X-Rspamd-Queue-Id: 9449B1C0003
-X-Stat-Signature: rd74iethfxcct5stkwxgey4yt1imamt8
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261022052245.1138709-1-chihsheng@google.com>
+Subject: [PATCH 1/2] selftests/cpu-hotplug: Use $(id -u) instead of $UID for
+ root check
+From: Darren Chang <chihsheng@google.com>
+To: shuah@kernel.org, david@kernel.org, osalvador@suse.de
+Cc: linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Darren Chang <chihsheng@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7CB84100002
+X-Stat-Signature: ykusy1hzakchhmp7aw5fw8wkk1d1du4q
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792644735-238708
-X-HE-Meta: U2FsdGVkX1+qHJe+tfhvfBZJQOQzJOipYuNEoj2szDrilba9CePTMt2C7hoD1cB4E5GdeTU6ACWq9LQQd9frF2RtHvVPhtZqwOW4EfQkA1zX76iwX2M2dHPSKrARd7aoYtx91YCnKKrPGOO8Wg9yWNGDN1xsc1Er5C06GjuH25NbA8IIzbQk3ic/h3ZBUd3q7aROsB3ElWWNCM7VKmcafHcP0UheN8+ZrLauNsyM0C56ygn1W3EDgCVgdBZ/wUDk7lds58gcTKc8vAqdJZ4t2R8XttLf7KV8B59gjbUs5+HE4FJT1030NTKR8Q8pOEsdHrz1c8KLvwElNMdjguJXufmqGX0+rCZGEmhtGV0SxnMGATbOLJ9mpTkv4UrCwdQdOofreJcxqLV/6a2gK59Bo4f9P569MNXZe5XDhertCSq9w1+rpDEQS+9BEf9tBSO/9IAVueI10EN1kP+axyKoGtrF1BD4umphbxYXrA/Tox6tf2wIBDz7qHJOG8oSxvPz8lpoq6NLTvOI/vI3RkAuFLYlU8TU+O2Xvg0e9bLbfDfVIjwrj7Fxiwx63oack1CB3PcI/rIrDdERq25Fdc1+FDX45Xl28m9T3pPiChzxM3eBHwYFKkDsmXHrGXNfdoz5/84wxJbpIwgiKWRQ/BIq2BaEob7T3z46A6uOoNyfUjBicM2nynrP3OVRhincunrTYCNvrbTdN0Opcvp48sT15hcR5Ql5L5aHL2UEgP/MMuSCq6obhGIDVmNHXnkj/ESNAlAkthi06heYdMrqu3ZSQhBWbty7asGUmHUQMGLXbkyZoVmJoVirBlt8f3cledbakT0hd0v8Nw9FRne1mNoXFV+HyLteHyZXI1YzYVbQCQN1H3VDkWSzVJmIGGwAj/twaGpkV2ZKzmGM+KaLR1u0t3Op8FO8k7LNLFesnLNNfC1tggMjwBg05pa0INkMHtFT943eprw2pd1h3G9UX3i
- /iQTmEHg
- IgzHMSSb/qD2zO6i+ZgRqIWlrevYPJbdUgjT0a6rMblaiTSbp2AtJm4S4oR+TezlyR06pSvRzZ7sfVdCW9QFACyR9wUx+UOSj4kBDq9UXaj93Lqqft47dfvk574fOZVOlDrQztTkwc/VDqFLJPjT0qttzYQuCjvAkNBFBUGWq5HQ+xens4w+Jch6MNZFCf+if0CPAsZyocBgyAAdqYbPra7vFpX+vyLJ+UzNiBMHyvJhBTM6m5H90h2Y6iuT/ZpLRPmF31YKrAkryLQPtYIaO4jKm1+2IVW1+yzHc57EpAoiMu+DccGiDxjEZRGffihpuK0Noq2dzJtcTwbjJTWOAFTwZqGRUTW3bECWdIvgHqTbe58Crqko4sk1dMTKJixVbWCW4c97CIp1cwirRUZKg/G7ImA==
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792646570-930616
+X-HE-Meta: U2FsdGVkX1/vGuX6fyHbjUfWdeRQRkJQMPctNxrojRqKMdHgZSQ/wNDN5foHSEXDUyF1BNmesrRFTb4C9YbVQzElhrhQ6M7AMS6c1HKx9mi3zlFwqjm1POH7yl8QRtjXGniBMho2BVDBGRY1oLlZc6ENUd/StKj6VBL47na+u/dN53pr7p3Y9sVoN1A8f3hmoiDzVWn35DbOGOiR/OSAn1t0bulnVhZKJQHyyOco2w0QbGwcfaa5Kwag9YeE6jgpbh1tnJERt77/DtUh111VfSDawOn9G2ZTPqiNa+5oka1RfVXNRegicM0hosludIM40/b+Ey+HHxH7aGuSgqUhdqF2yqU3/tWERbU/i1DXUHM0Elqf5T+qlTOEIGydwpy32IQ/56I8lqiKS+7lL0Y52Y+2dC8PyirycurPP3u0e2VOM5uC3aJmNYzzcUnCPNyCuOvQXwJpJSslhNRPKAEf4ZeaQGHQvw4kSOl4yT88m7hRZNqnu81MO7PGj6Bx36pYl/BlaCq4X2yqGyRrs5tDPrz3+BREE8PtRG+uGgKxXZtRkbGHVJ+4Jt5yyusn70ryoEbxf9WzIAjU8pepdZXgohvDqMzy+HOaYFGYcI0jX3algZqRtlaGSgxXlIbe5POyKC5rYJY3izIclDDxZBBDcSqUh9eSQaKoNfOQYmxnILBMRRyNpgMIK0uwwMkv7T7VkTu9gEbP43SqV6i+/RSa9wn+Moj6HiNXYRbX80ilTNAM7fc15v9f0pxSzg5pKypV+ckrYxec2JPNQaJU9WjeJFNfGWObyhBpRfWrw7hrGOb4A1K0CeIAsPhSZk+1V3DWjDNVOS6l8jrFvBL1utqT+n40WEct9BtttpLJ91zsB+czOG98pe5UluXRVuFXwCdacvnrjOnn/xJc4DOImTufySpK8a7TNz+KTYmo7mxAb/v1gFYxK4m5bIeGRltBOBzwY6ssnXSQicF+nJi1ceu
+ BfzCgn4z
+ yff2eUTnQYDidkEF9sMgcjpumV9JWgqpH/pB+ycj8ed16tFZ9M2iXKKrpHLMSlSHjC3Cx09JE2CpS6A2u66Azn9A8YFF6BmaCVlt1MyDntugPHdA9cF4Ssu3WeCJkNZg6vEwqJcWvpnD8Nq48mU4vU8u24hjFGuxtmaNRvbqxGkIc8RZ5M7GXWz7AM5jCGK4eHNDkaFyQLIPSn+k6gnDoNYAzeHcI+WdzswMHvEl85ZaUTT46vMwBRQK8ih27Tuaiok+u3SAT2x1Mf/6imRV5Vn6byZqmOyrmkBfAreOXXjrwlaVlEId/13Aya7NkpukGLsM57KRjPw0vv/JaOd51tGRQFytbs2PKHyyhZyYmecPxf3gmMeV6xmmH4DGKyN2NduMJYvQLZEeVjw1//C3bp6Riysc+hEhWdUrBGspCtX/rNBWmrl86vp8oMHk1d4qGSjdLqw+cnhiGPsCiJpWGn6dqocU6TztOUObUjnTmAnDQBQmvRlXfCwHOPWG+wr8MiAvbCGheXGaF6LxY9YLn2qGwhhPq+9ssO5OhTfeOa+6nTDZT5jLwkpc0D+jjPy1Hc6+IuN0bnpZS12uXjUh4JepAPQc4r4pWYSea0bMG4LBZApAB5iuQ/T81MP/nngr7jqbWSrMuMhHOegY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,72 +110,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 01:48:18PM -0700, Shakeel Butt wrote:
-> page_counter_calculate_protection() runs without locks. Several
-> reclaimers can update the same counter's emin and elow at the same
-> time, and readers such as mem_cgroup_below_min(), mem_cgroup_protection()
-> and the dmem eviction code load them with READ_ONCE().
-> 
-> Commit b3a7822e5e75 ("mm, memcg: prevent mem_cgroup_protected store
-> tearing") made the main path store emin and elow with WRITE_ONCE(), but
-> it missed the early return for a counter whose parent is the reclaim
-> root. Those two stores are the only plain accesses to emin and elow
-> left.
-> 
-> With CONFIG_KCSAN_STRICT=y, a few tasks writing to the same cgroup's
-> memory.reclaim trigger reports like this within seconds:
-> 
->   BUG: KCSAN: data-race in page_counter_calculate_protection / shrink_node
-> 
->   read (marked) to 0xff1f91b146d40e40 of 8 bytes by task 163 on cpu 4:
->    shrink_node+0x57a/0x1210
->    do_try_to_free_pages+0x194/0x930
->    try_to_free_mem_cgroup_pages+0x204/0x3f0
->    user_proactive_reclaim+0x28a/0x4d0
->    memory_reclaim+0x35/0x50
->    ...
-> 
->   write to 0xff1f91b146d40e40 of 8 bytes by task 167 on cpu 6:
->    page_counter_calculate_protection+0x1fa/0x360
->    mem_cgroup_calculate_protection+0x4e/0x70
->    shrink_node+0x53e/0x1210
->    ...
-> 
-> The default KCSAN config does not report it, because it treats aligned
-> word-sized plain writes as atomic.
-> 
-> Use WRITE_ONCE() for these two stores as well.
-> 
-> There is no functional change. Readers already accept stale values, and
-> compilers emit a single word-sized store either way: with GCC 14 the
-> x86-64 object code is the same before and after this change.
-> 
-> Fixes: b3a7822e5e75 ("mm, memcg: prevent mem_cgroup_protected store tearing")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+$UID is a bash-specific variable and is not defined in other shells such
+as Android's /system/bin/sh (mksh) or POSIX sh. When running this test
+on environments without bash (e.g. Android), $UID is unset and
+'[ $UID != 0 ]' expands to '[ != 0 ]', causing a syntax error.
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Replace $UID with "$(id -u)" so the root privilege check works across
+different shells.
 
-> ---
->  mm/page_counter.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/page_counter.c b/mm/page_counter.c
-> index 9167ffd1380c..5293460831f8 100644
-> --- a/mm/page_counter.c
-> +++ b/mm/page_counter.c
-> @@ -472,8 +472,8 @@ void page_counter_calculate_protection(struct page_counter *root,
->  		return;
->  
->  	if (parent == root) {
-> -		counter->emin = READ_ONCE(counter->min);
-> -		counter->elow = READ_ONCE(counter->low);
-> +		WRITE_ONCE(counter->emin, READ_ONCE(counter->min));
-> +		WRITE_ONCE(counter->elow, READ_ONCE(counter->low));
->  		return;
->  	}
->  
-> -- 
-> 2.53.0-Meta
-> 
+Signed-off-by: Darren Chang <chihsheng@google.com>
+---
+ tools/testing/selftests/cpu-hotplug/cpu-on-off-test.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/cpu-hotplug/cpu-on-off-test.sh b/tools/testing/selftests/cpu-hotplug/cpu-on-off-test.sh
+index 287cfd5809f6..6653507b9348 100755
+--- a/tools/testing/selftests/cpu-hotplug/cpu-on-off-test.sh
++++ b/tools/testing/selftests/cpu-hotplug/cpu-on-off-test.sh
+@@ -10,7 +10,7 @@ prerequisite()
+ {
+ 	msg="skip all tests:"
+ 
+-	if [ $UID != 0 ]; then
++	if [ "$(id -u)" -ne 0 ]; then
+ 		echo $msg must be run as root >&2
+ 		exit $ksft_skip
+ 	fi
+-- 
+2.56.0.257.gf7497c7d27-goog
+
 
