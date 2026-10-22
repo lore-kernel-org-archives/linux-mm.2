@@ -1,93 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408E2606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 01:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEBC606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 01:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bEeDOlBf
 Received: by kanga.kvack.org (Postfix)
-	id 2EFF26B0280; Wed, 21 Oct 2026 21:49:47 -0400 (EDT)
+	id EC5606B0819; Wed, 21 Oct 2026 21:57:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A07A6B0281; Wed, 21 Oct 2026 21:49:47 -0400 (EDT)
+	id E46C16B081A; Wed, 21 Oct 2026 21:57:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16B996B0282; Wed, 21 Oct 2026 21:49:47 -0400 (EDT)
+	id D35186B081B; Wed, 21 Oct 2026 21:57:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D30836B0280
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:49:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57AA31406A2
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:49:46 +0000 (UTC)
-X-FDA: 85348580772.18.40C542B
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A48EFA0003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:49:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf25.hostedemail.com: domain of 3t2vZagkbAFICIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3t2vZagkbAFICIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ADBA76B0819
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:57:18 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EE7D40753
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:57:18 +0000 (UTC)
+X-FDA: 85348599756.13.09F17A9
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6309F180008
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:57:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bEeDOlBf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792633784;
+	s=arc-20220608; t=1792634236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=JssOmerse6tIPNiF9hOfYFsHOXG2slRdb88lB5aCnO4=;
-	b=A+WTvfp7Wjsdhm7bvKjJu8zY4SU6UscBnqbMcdublLlQU2tGPQTI9aUtScVE8bNWTlbh81
-	lqn+EolRSrehcwtt42G+BuQBTxtHqZbz23q3PQQkSz74BpKcojNvcPMMsmBurBpjjDn++C
-	cKxcnAUmeqVGqrpiR10p3GYOKt5XuN4=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jDvqirGSK7roV0OwhESQvxR+V4XuKQKeS3pYEmaAuqs=;
+	b=RW0rgEonXV0Sq5yWY070/MATYVdyDAcRa2NNZgZSiLteKv/PfDECmtc4s1OlyUb8j7cnkI
+	jobKr8T/ktiDFJgi7E1fmdUBlNraSr0L8blyLGt3N1nQ7VQRs2aeovJiEDEdqxH2XhH8O0
+	u02eIKhthhfpjSy/dijPjUj5hXviMnw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf25.hostedemail.com: domain of 3t2vZagkbAFICIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3t2vZagkbAFICIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bEeDOlBf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792633784;
-	b=WKKtlvMJm5Ed6yNCBWdXS2d1F30X2O/k28SX0qrNVwl37PTsQhatFAtCt37kpjHOEU7zjI
-	9XZIrQK+diAlGF0t/Y+UMBEdGi30DrSXJZu2Y2oBGmYSQ7I+QnRT8u1Y/ORfnLrNKhM8LT
-	pmUrDxuv5JlZtRzo/NPsQZuRNLMfx58=
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4a45b3f0bdfso1866497b6e.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:49:44 -0700 (PDT)
+	t=1792634236;
+	b=ySOY0uj+wAW8H+RZYe8mK3D03G06Gs86KMaLAZ5u3P4EO8bXD77cvYl9fIfWHBFcATv8qh
+	sSPC6vfjn/6TXyVBUkfLPSgtAMR15a2zSzHbUiA6F6wbeUP0oOOui+EufsGJjcAomQkUgk
+	RgAJxGr0sNYK06b9SwGChnbP6WCKTW8=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a06c60065fso871866b3a.1
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:57:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792634235; x=1793239035; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jDvqirGSK7roV0OwhESQvxR+V4XuKQKeS3pYEmaAuqs=;
+        b=bEeDOlBfU7jIC/5HnAJmbkyd8Qz/dO20lYSFIa4LZjXc8gN1FmS6kS8Ipw8uT7k09a
+         XbD7KAUitsuG80WSZcopB0R9pNc7I112GRoI03VMlwTnjfHlfPaorFEiKlzNvOlLc4jO
+         kPypAYTFAirQmb71g3RxfbxeoBBu71Lkn0N5L3IJbksYYcvxt94ksAsrm0y+AvUhTnXt
+         3dEafh3tGZdllATlY7mbTtSSi8tw2rReYZFChNWsleVNEUpjMIDUSzC9+XgSyrRRM04L
+         7DTo7QldTnwf1xgG4wuBgakKfPoXxd8cmQAB3QbeS0+YJzifZRkWaYYgwuK7FSKaYgth
+         7YUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792633784; x=1793238584;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JssOmerse6tIPNiF9hOfYFsHOXG2slRdb88lB5aCnO4=;
-        b=ybcBssnm0570rwYriGTcj0mfHi0NG4xuzoT2/zH7BLq6mMHlW7A8f3tmdW3qJglVVW
-         NMTkrKedSFtX6TBmNkIOMbEUGC5Q5sSs6p98APWzCuYivEnysNNQomNwRxbTeUcL+A9o
-         /ePP99x/Cv1XNIHbaMxhFlxONe18Muf/P8g+Gr/M9FwMOS2QZaIUlzdAW+srRA0i5oYV
-         ExHLtw5vRbgDgDDSO7k8PSlpfKtMXo9lv+xdHnoYPDgUY9ygzLcWXxz0yvpEnUvoqx+J
-         PPjto5cJyZsO7+xsf8xdnUO+hx+xHNr7AfrDfcB+Tg0cuJBCaLF2beZ6X2jn+2ioVZNv
-         UD8A==
-X-Forwarded-Encrypted: i=1; AKwUvBzyXEkmeB0AfwGM0+K12PD9oOp6q5Id3kE6nv9t3QHeqepnXSYbzkII2d9B2YsQJZnyMXpJx6e6pA==@kvack.org
-X-Gm-Message-State: AFq9FYJ+7elKflhSsZbm/ccVB9fLo/79a3rCX2HedaknPVQG9uTFVE0z
-	LqqxHiKOhYF+rKRl5MvbVq4EnesZQmL578YdQPM5TREu+OGeb0jNWClLr+VFaBIZcrQ655a+APx
-	5begjUq7RDZxqgfpJil6rhl0NNQRSo/l2XvDIAa+9mHF39VPKVtCcI5M2HT8=
+        d=1e100.net; s=20260707; t=1792634235; x=1793239035;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jDvqirGSK7roV0OwhESQvxR+V4XuKQKeS3pYEmaAuqs=;
+        b=LBdguruRwu6WMDVMG7ZvXRkg1xjL3kWFfRQGeBggWuxMN1mcGfoyNhBhJnJoFJFg9B
+         vT4WWBMPvdaR+aAoyuwyBtMho+OFfTmuqt9lwo2V7v8DsVV9BjAmHBWjeZhb0UPE2TCH
+         0R8ufcJHh7FtxsA5MnIIDMrwD3GcFSCMlbtNEVwDA72G9JSopQN+mcEzIYL7BwxHIv82
+         l5kjIsmMUIc/C546shI3JDs17MJoNfLI/Igl0BGDS/8AihbMmJDYNqNNZZ/NM6fYsvgr
+         yFVTM0msc4h33Ae1gqkGXiNoqCvrLETcehl9rkyfKoiPRngXse1UCdDnwAfx6gn/I3N/
+         6WoA==
+X-Forwarded-Encrypted: i=1; AKwUvBxLwFXw7GplCKnhbwvyzglgF9p3DuFg/aHPymlw+oZdBl7gxZMmN1iJzhjDTuSP+lmbZesM6p2VKQ==@kvack.org
+X-Gm-Message-State: AFq9FYImOkWuw4PVc8ZUoBoRkb/rogi6rhSWErVh5OKoEODaFt3JGGDm
+	WIhhhcsadUXOTf+3AkzEmOcD2Bc6YLzhxJkBOFnwDuqsLvamnMOVhkHX
+X-Gm-Gg: AYBFou3ALsOh99MA2e7GI5ms/6wApKKlRn74Lk9G9k2J0mY3qyvC9xxHBkAiFXJhAmF
+	dXK7FBgrQuSH4cBnbCS5y4pa3a7vSWr++isiv6gNe4UbhgM1qq+WdTkVF8Ca3HFxNAktUOfRdPF
+	JFMwsCTPWFfo6OKKDG5Z5EndICLyRR6H2yBccAnuyc+Dr4xucwaaTn95xDShVXpzVHwWF9yYRHZ
+	ZsP/Ttox/rKyabrOBU2fL19oJE0aXrR9jem/HV0YQlr5f2bRxt7VFiRqD5X0mOWAe2loQbtXiZ3
+	mlS2U/TfM7W0FW7oyfc4B75nLdkrGKbLorUC064pEj1TTg3UomcgXlMfzwPa90B/dngXC3uaIQF
+	YA0gdTdGSY0sIR4A9sOdIqxTQND+z8e/pNDOn79dHvGH7/drG6F4WvZEQWoLU9R60Hp83ERezb7
+	DT9nZ1YiaxqWhnUw+2UXMffFXCSArq2gTuPadJY0q2rdGssrR8h8Uc8nkVBws9Gre4Nxp59yAnI
+	0ceUumPURQKOQWa1Vr8Pb2lo9/NlCZGgjdocD+bnP6Kj6qlBOjHUYHY4a626SMai3HBDkb2cX7j
+	FgGlEhoi43gyvFawsycXMc5ufCQVDVeHvQSM8pkdHr6foO6c8tnJ7WA5jcZEgPnzN5s4B/WoTFP
+	wIZaV4Mh4eDWU6YLsVchuWoRj
+X-Received: by 2002:a05:6a00:1493:b0:880:5fe5:a818 with SMTP id d2e1a72fcca58-8a089d7c431mr2804454b3a.59.1792634235101;
+        Wed, 21 Oct 2026 18:57:15 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.249])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a089614ce0sm1426295b3a.55.2026.10.21.18.57.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 18:57:14 -0700 (PDT)
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To: bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	oleg@redhat.com,
+	peterz@infradead.org,
+	mhiramat@kernel.org,
+	jolsa@kernel.org,
+	akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	surenb@google.com,
+	david@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	hughd@google.com,
+	kees@kernel.org,
+	mingo@redhat.com,
+	tglx@kernel.org,
+	x86@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH bpf-next 0/9] uprobes: Don't stall fork() when mmap_lock is busy
+Date: Thu, 22 Oct 2026 01:57:03 +0000
+Message-ID: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1687:b0:4eb:b0b9:2dbe with SMTP id
- 5614622812f47-5535700ff21mr2591872b6e.27.1792633783759; Wed, 21 Oct 2026
- 18:49:43 -0700 (PDT)
-Date: Wed, 21 Oct 2026 18:49:43 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ad96bb7.d1c214cc.659fa.0082.GAE@google.com>
-Subject: [syzbot] [mm?] KCSAN: data-race in _copy_to_iter / _copy_to_iter (3)
-From: syzbot <syzbot+68c0534b26fbda7ed84f@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, hughd@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: A48EFA0003
-X-Stat-Signature: 1frf37hzq81ym6bad8hbasqn1sp4arix
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6309F180008
+X-Stat-Signature: 679ycqaibi6an4fbzzd6znhhaj99ok3j
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792633784-573199
-X-HE-Meta: U2FsdGVkX18AnY/Ay7FQyIzZt+KJWIPr3JUUclQrIQuHXSUW04ZXiEdMCnFkitjulvShRUbYNMG30+PtM1Ez7Gtyq2vyxsizMspOWgnhjoBzckhC4FhC0b9cYXtkX6m5aSGyNUSApTXxBLOTuuGwnHVYwk44jjySag5nYeaZaDhVqSoPRH/AEMcfVc6XMbSDIXzN9IFGo2oRzMFXVEtIktl0k3n3wEcM0I1TslrysEzhTVfexSxFAon+BDySrtTy0oxcdjt3Hv/XL9sXsLpAKgelOL+gafJ5AjyR4uLhBLzs6QA6PBqm6o7Kl0zuWJk78aPQgpyf025QnCOCXYRzNNNmAvBrCX/bqWJZKBhO7eXHlGllcOaIngpX+T0HmidwqcuZPmN2VK2KRcOA8LsCL0+AFLjzXglym1wHOal8T7lVeAPp5tgxiIS+XLs8rnUXIixcmr11i5fLXZagWGv41x0NqEFKA0WtoWs/egGJaH5IzOWKDpzCO2P1szwmp02j41i+RlxczwGL76sDXBJ9LB6YcJClsvKmUAWgHVFx/ALNg+I1HsZhQDfMdKM+0mMwxb4q9fbJ8Ms55B6uGxgxr4jraZjvdo38Qw06e0TU+p1AWUopOy7nxD7nZsZLU5eEcVLYFP4GEi1A/KBpEmP9km273xuJvSL9Wb/3Hs7wczCbbgRj6NNPYviqPAetZSJ0uIwzdyDQTq1ATvXM9f0K8fZxmDM/EF6RhCVQL5oYEtWFCPFUY6/aWmD7zxq8JxokxuT6tsaYuC0FQ3of7PGnMVkoGzYoc2T7DOPEp8dZnwTG4gtkPeMnjklAnWzdliAYaUDjr0r5PrDkmh48hylE+IsS77mGdasAtZBYCx3c3tW94JFiKIPPaI+Er+oeZt3aMlaC8yCKSVliFzrFT8Po9G+Kq8GvhlfiNK5BTKYhi13OvPmq5lPPToPZBvZPJqhWh0RJTNbPTRRTCurGQZY
- nbknNZbR
- +OQzJgcjbcdSog+wxu4G6aopapvo/MBu2NTzCK+GKjWrnl7m0nEQ/gnvzZoyz+Vw5iuJDkkjQEUkYleweTLk4rQRSEvVNVW38zxtkPxDbpMqf4nMV+Pq+Zch/Pbf/1sDNjY9OxwmXCghx5r0xCKcvITrSTJCQKpCXNZDmgBrGixKSRhhn633uMGwVwK9GEgl1bb6qIYdyDIItNNF96xNqJut7HkPB3gIzP9++iwKUj4A3/OUA1E31KwrTOBNKtFXggraGFiiFztIfp/dT9ZvkqzKgCs0O0eyeQuM6lYtSnI5I93MVDyrO+S6jQk0nYa0TCEGAIOzj3vTbgM/EYF/CBQ6ut3DnfT8dAfFPN8JsDcqMqyr0y2TNP10iw2qgQ9GJuu3285FkBLkKsab+jeeTsgwXsqb71hzBOa6kTyc061Nn+mZ6s9M9HlCwXwXZoZIygbc67qjhR8qIlvH8W5rmb+YZIamjNosSrAjbDdoVsI1bZB2GvduVh2N+8SatFVkw1bJUqNy0vLtQsm/uZMleMhV8e/UvIVG9Ji68vhG0zljRXnZ7mgwcNwKv5KtgIBotQGVvFfGmjR5GFROoVLVj2nnaGn+2lxC2ElMDJd3zDp8Gc3BeOMY3/y3nQRsL0ku9XLU1mp4bc7XoIHL5jCSE86NaasfHXIDEpkUd/CX0VVihHfrx6pbwD4H6mnnCU+Ef6rWz6svtcwUOTa2hEfM6PM4GIUt4puJg77viC2V4BbUH6ZF0HQzoWUmiqEcD63M4P2lCHvO88z/df8IMx9zdT0Nd/SYotMSPSuLnjFOBxYgenedclBw1hnEuuCfCtLkVgly0wvxiL2DcWOLQoQo8L5RbvwyAqqPRxe1sbz9u6T4p/Owkm0cVm4oNApuMnybctJSC91FVm4x+pzO4C42ka6Mx5qWduy3eNXyaBtKx0ItM1WJPjXG9ww7EaYh0g6LtzGsnRwL9J7VJG9WumQYBmDCTYNDF
- r7Aiw5eM
- D8geluzzigDalvDP3HW2KS0znJSXVJz9R8NuPL6rYVF9JqcypjJ+a1Oyad8sF8GhWCcDWUVjwKzThslVELFkiN5wy7bEVj/U7/8l0iXrtZJGubAIijsK1qKHD8cU8v2hJ73yaY3zXBxlFS4+b+EQXEfu9CPftvyVvuG4fooA+6iZza6FxM/H7abo78//5WFgHebTKsV7DNpD+LVZ3Aco2Kg+WEj7CEY13xznOXRCnYnECJwsHrM74W9Sl9RiHZRnauh/VflT3Z2Mm5uFfCvY0kY3XebhLWFO9LiGmLYgxprfjg+H0mqvJFqomQfhrmox9CsjJ8uaz6vn0KlNf3VIsvJ/q2q00ii6gGXzr3uZ8D/FKl6/WWhW2s3R0DqcZTgyUH1Wj3ibjzrS0QHq7SCG7FnRO7PE8zAmlvMSpiQsIB8yqoAGKeyqRnfaDC1KjMqtKHJcckN4csw=
+X-HE-Tag: 1792634236-790163
+X-HE-Meta: U2FsdGVkX1/xkTxNc1CedIEUgQwSu/BPKCXFbaRlhpZfZGz4RCtHj1+Yf0f8M4uYX8JGsAcetp3bK8eIsUkqR3dlbd0gTyCswjEnHHWAtxTUtMug801PATakK7aAXlODLpqJAy88cLkYQVj3q8xq3va4WCKYHMJKAvQJN1edsJYZbbdcbiQ6GtXVvb38roYV88WCTOsuz5iW3Uh+wWzzv9J9HhuRslT+KIRuTcun8EsFKO+TXtI78IIg8pUUi/j2PB38AOByfnOOuaXrOjLVlAfCeZgninywn2FL6MJ9HfaM2Q56DcW8vSq7zLiTw0Hv3B45DBn7s49fAX8TH5/sNwKF3qCPh+WL0TP3hBmMEJy+SRg+IRJvNC9L92wxmVFOF52C/ufODqQUh/arL6L5qXIQoyPhYQIjxS/QptTIa+0i1HhZNop/fPjblBNVb6H33Hl8wO1J6va3zFbwgwzjGaMJdTCIJhkPqBMwBg7aQ4bheSBcx7CMB9bl2f2aZgS+oA7e91YSPb2BjeMKKAIqB1XkS9e79T9yf6HaBw44VhlEFcrjOErLfCKe4MgLUgAI/XNzIt7DUCRhcVe6QXruSgE3selfLRhp4jGF3Zfk8WE3VTw2I6EW8dUBf3A++9xY8cVDm8dVa6qN4F0whYZ2D2/u0dXOPjSjpv2cCo7rKubTJarmwPsA2wbnqyAq4V3YY79d+C1CZwgvr+DtZnj8V+yLvrTVKqi/kYL3A/8mH0FM1kPFsYf3UFbhqQBMnsoIU33MBUxnbEZd6PwSEMOYPiWunZy8mPuJkfqMKtXhKaSM0Ibjuwn4mCi/DiY4+xlBpVRYu0xlO38otF1pPr2pHhvOKv1fqppJS4JfI2iC1LKAHdyHju/nL6WP0zlHf1MaD9SmR6wGyXQ2UYlfTltWCNCdCdaaPC9d9jgV/XeNJzlpPISpEbaMHshAev6A9cUXz8AOLfMQWap8xPPmJaN
+ SOXWLSub
+ VHGjr8cZeC/5nFMRCs1fSBwGk4wRRR8C2TGk8UIIwslO4rkaS866A84ir0b8SbbEPVwzENbSwVSTFm/gbXj22ReZ52PGJRCynNQ3bYkD5hGQjpD4c43VgTuQ+DV/jb7AO0fwmL0GG6yoXnBtUDjqX1b0qchdlnWzJivNGv+LOkiF0ZOaXRCJBmy11j21fiKsto8sQbnLbWhuQSKysQULv5Wfk+51foKVNYaQn/KijVcfDpAmx5KvA94sJh9RXAk60sjohDYywHn1Et47f5TXPBSo4+yhg39xCxG6CTzn/1zawcCI3jrCsNKLdyRD72Tyb7LGAT73mtZ6gdaj3OtTejzBYy0lxBCvbGqOscuA+uEaU0eEOCCSxXxs2P7+A3TKFPhOeZiuZilch7ah4sR1KU6x9M9GilwXosw+5Wm32UkszcO1a9eoCQwNRxpKr7P4oz2Ux2xqbpwqzONEwWD90qa1u1qwjPTz0wectMc2yUXMJdqvBnTyyQ0f+OQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,97 +143,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello,
+From: Alexei Starovoitov <ast@kernel.org>
 
-syzbot found the following issue on:
+uprobe_register() and uprobe_unregister() stall every fork() in the system
+when some process keeps its mmap_lock busy:
+- register_for_each_vma() sleeps on that mmap_lock with dup_mmap_sem held
+  for writing.
+- fork() of that process sleeps on that mmap_lock with dup_mmap_sem held
+  for reading. The next register_for_each_vma() waits for it, and other
+  forks wait for the writer. The process doesn't have to map the file.
 
-HEAD commit:    a804c5742bff Merge tag 'lsm-pr-20261016' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=170e93cd580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e0a09745349d136e
-dashboard link: https://syzkaller.appspot.com/bug?extid=68c0534b26fbda7ed84f
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+We found it the hard way by using uprobes in production. uprobes were
+attached to libraries and binaries that many processes map, on a large
+number of hosts. On some of them every fork() was stuck for minutes while
+uprobe was being registered.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Patch 5 fixes the first one. Patch 6 fixes the second one. Patch 1 is
+a helper for them and patch 9 is the selftest.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/171f09113e28/disk-a804c574.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/0f8812b149fb/vmlinux-a804c574.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6349a85938ab/bzImage-a804c574.xz
+The rest fix old bugs that patches 5 and 6 make easier to hit:
+- Patch 2: exit_mmap() runs under dup_mmap_sem.
+- Patches 3, 4: x86. The removal of optimized uprobe that failed half-way
+  is never finished, and SIGKILL triggers WARN_ON_ONCE().
+- Patch 7: the child loses the breakpoint of an inherited perf event.
+- Patch 8: the tracer that is killed leaves its breakpoints behind.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+68c0534b26fbda7ed84f@syzkaller.appspotmail.com
+A process loops over mmap(4G, MAP_POPULATE) and munmap(). Another process
+calls fork() in a loop. The longest fork() while uprobes are being attached
+and the time to attach, in msec. 32 cpu VM, HZ=1000, no debug options,
+median of 15-45 runs:
 
-==================================================================
-BUG: KCSAN: data-race in _copy_to_iter / _copy_to_iter
+                                       fork()          attach
+                                    before  after   before  after
+the busy process maps the file
+  uprobe_multi, 1 uprobe               201   0.25      217    232
+  uprobe_multi, 4 uprobes              422   0.34     1483   1558
+  perf_event, 4 uprobes                421   0.47     3150   3322
+it forks and doesn't map the file
+  uprobe_multi, 1 uprobe               198   0.07      212    9.6
+  uprobe_multi, 4 uprobes              203   0.08      213   13.4
+  perf_event, 4 uprobes                419   0.08      630   12.3
+nobody keeps mmap_lock busy
+  uprobe_multi, 1000 processes        1.93   1.83     4.24   4.49
+  uprobe_multi, 5000 processes        8.88   8.60     8.33   9.23
 
-write to 0xffff88810d40b000 of 1024 bytes by task 12 on cpu 1:
- memcpy_to_iter lib/iov_iter.c:77 [inline]
- iterate_bvec include/linux/iov_iter.h:123 [inline]
- iterate_and_advance2 include/linux/iov_iter.h:306 [inline]
- iterate_and_advance include/linux/iov_iter.h:330 [inline]
- _copy_to_iter+0x605/0xea0 lib/iov_iter.c:197
- copy_page_to_iter+0x174/0x210 lib/iov_iter.c:374
- copy_folio_to_iter include/linux/uio.h:204 [inline]
- shmem_file_read_iter+0x29c/0x4a0 mm/shmem.c:3391
- lo_rw_aio+0x6a6/0x760 drivers/block/loop.c:-1
- do_req_filebacked drivers/block/loop.c:-1 [inline]
- loop_handle_cmd drivers/block/loop.c:1949 [inline]
- loop_process_work+0x569/0xac0 drivers/block/loop.c:1984
- loop_workfn+0x31/0x40 drivers/block/loop.c:2008
- process_one_work kernel/workqueue.c:3396 [inline]
- process_scheduled_works+0x53f/0xa10 kernel/workqueue.c:3479
- worker_thread+0x569/0x750 kernel/workqueue.c:3560
- kthread+0x223/0x270 kernel/kthread.c:436
- ret_from_fork+0x146/0x330 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+I don't care which tree it goes through. It targets bpf-next only because
+BPF CI will run the patches, including the new selftest.
 
-read to 0xffff88810d40b000 of 512 bytes by task 13858 on cpu 0:
- instrument_copy_to_user include/linux/instrumented.h:130 [inline]
- copy_to_user_iter lib/iov_iter.c:24 [inline]
- iterate_ubuf include/linux/iov_iter.h:30 [inline]
- iterate_and_advance2 include/linux/iov_iter.h:302 [inline]
- iterate_and_advance include/linux/iov_iter.h:330 [inline]
- _copy_to_iter+0x130/0xea0 lib/iov_iter.c:197
- copy_page_to_iter+0x174/0x210 lib/iov_iter.c:374
- copy_folio_to_iter include/linux/uio.h:204 [inline]
- filemap_read+0x3f8/0xad0 mm/filemap.c:2875
- blkdev_read_iter+0x21e/0x2d0 block/fops.c:838
- new_sync_read fs/read_write.c:493 [inline]
- vfs_read+0x699/0x7c0 fs/read_write.c:574
- ksys_read+0xdc/0x1a0 fs/read_write.c:716
- __do_sys_read fs/read_write.c:725 [inline]
- __se_sys_read fs/read_write.c:723 [inline]
- __x64_sys_read+0x40/0x50 fs/read_write.c:723
- x64_sys_call+0x2135/0x2550 arch/x86/include/generated/asm/syscalls_64.h:1
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 13858 Comm: udevd Not tainted syzkaller #0 PREEMPT(lazy) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
-==================================================================
+Alexei Starovoitov (9):
+  mm: Bring back mmap_write_trylock()
+  uprobes: Don't run exit_mmap() under dup_mmap_sem
+  uprobes/x86: Finish an unoptimization which failed half-way
+  uprobes/x86: Don't WARN if an optimized probe can't be written
+  uprobes: Don't sleep on mmap_lock under dup_mmap_sem
+  uprobes: Don't sleep on mmap_lock with dup_mmap_sem held in dup_mmap()
+  fork: Let the new task point to its mm before uprobes can find it
+  uprobes: Don't leak the breakpoints if the unregistering task is
+    killed
+  selftests/bpf: Test uprobes and fork() with busy mmap_lock
 
+ arch/x86/kernel/uprobes.c                     |  23 +-
+ include/linux/mmap_lock.h                     |  12 +
+ include/linux/uprobes.h                       |   5 +
+ kernel/events/uprobes.c                       | 260 ++++++++--
+ kernel/fork.c                                 |  13 +-
+ mm/internal.h                                 |   3 +-
+ mm/mmap.c                                     |  33 +-
+ mm/nommu.c                                    |   3 +-
+ .../selftests/bpf/prog_tests/uprobe_busy_mm.c | 447 ++++++++++++++++++
+ .../selftests/bpf/progs/uprobe_busy_mm.c      |  22 +
+ 10 files changed, 766 insertions(+), 55 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/uprobe_busy_mm.c
+ create mode 100644 tools/testing/selftests/bpf/progs/uprobe_busy_mm.c
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+-- 
+2.55.0
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
