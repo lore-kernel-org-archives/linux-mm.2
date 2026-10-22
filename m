@@ -1,91 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E80606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 18:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C261460A3816
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 18:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZdNG0Qo
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=vUN4yWgl
 Received: by kanga.kvack.org (Postfix)
-	id 3DDA76B09AF; Thu, 22 Oct 2026 14:11:28 -0400 (EDT)
+	id E70386B09B1; Thu, 22 Oct 2026 14:33:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38F476B09B0; Thu, 22 Oct 2026 14:11:28 -0400 (EDT)
+	id E19116B09B2; Thu, 22 Oct 2026 14:33:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A52B6B09B1; Thu, 22 Oct 2026 14:11:28 -0400 (EDT)
+	id D30526B09B3; Thu, 22 Oct 2026 14:33:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 03BFE6B09AF
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:11:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 888FC160243
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:11:27 +0000 (UTC)
-X-FDA: 85351054614.12.27ED091
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EB8E72000A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:11:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZdNG0Qo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A321F6B09B1
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:33:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 58DE340260
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:33:29 +0000 (UTC)
+X-FDA: 85351110138.28.A7CB8CD
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8E73E40009
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:33:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vUN4yWgl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 39VbaagsKCGoacaMMVLZIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--suseendranb.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=39VbaagsKCGoacaMMVLZIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--suseendranb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792692685;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1792694007;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VFgWVgLfe7OQeHc3CR1C8glp/R4J3/wE95dB+Ij2ZAc=;
-	b=lp5U5c6TE1VIfWtsFHDitNZNoaIiqkfW0EMN13kbDgwC/e4n7Gy352bI++60Qrrl+u/uVS
-	0mN74PkTdPG/BzUZ1LwvRVpxEOKRjgWmhYB3WkrDIAYArn7WanjhOi2/1xd6mCc7KH3V8o
-	kfgc3uSgjzfbk4yDnweM2ZihucXcoaI=
+	bh=kMc2eNn/OrrFKUYMVyLnIB+VtX1ihRJBTMeBnYRefLE=;
+	b=Rhm2nBa61Jic+Ql/+9a6LQTXL7Ru9zbasb+LPF7FkOABgI+YLms7u2z3vuiAwc2cEXORnP
+	2jaUBwq22ND/3cAU6HmrohmYN4FiDMHIwsd9wFWOu1s9baFC2FUZrt9ebGZwtLuW3K5r8d
+	/5iVjoQEZxHeFDu0l7eSiakJCC27X/Q=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZdNG0Qo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vUN4yWgl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 39VbaagsKCGoacaMMVLZIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--suseendranb.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=39VbaagsKCGoacaMMVLZIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--suseendranb.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792692686;
-	b=pDe2GlH/JvQ+ek9DjYFBppP7Xw07rG8XWTx48U43LHdsBhfpqw2oyht5SJN2Xz4lUsVtdx
-	MItw/DSnkQwUeZEwqEJXkAdp+BdrEkW3Eo5Si8VsdmH6jhfzaZSoQUTOLh0lQkXJ7gYZEw
-	TLYadqg/WXjpqNtfuhb9uwdfCR60p6k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CEEF4600E2;
-	Thu, 22 Oct 2026 18:11:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096D71F01825;
-	Thu, 22 Oct 2026 18:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792692684;
-	bh=VFgWVgLfe7OQeHc3CR1C8glp/R4J3/wE95dB+Ij2ZAc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OZdNG0Qo4UE3rRN/7HUpzE5O1MrPxMIZXwfae4t+cP20oYdkNfSBi4C9HtR8DdunM
-	 NlncAXufU6v5edZBbnLNHoSDiqBMR/VdwBII3PKHejsiMb+svgEn2VEcG6f5DeMFSW
-	 VaY8Jfd8OFCNJF2fri3Edz98SH2s46xeZSKuflzxQU8NZAvHb0YeEDeVuZwep5oU62
-	 1QwwD/YnvSms43Ec7XTyEjPXwoUUzv6NmoPH0rLofYmY0uHScUnAcgrd0nL2iKNc4V
-	 GbHzoVdFTgPcDQcaVru9iROeUyLBBcTxFP9Bf5DpLNDGYyckK5TsILL2sEREa7X66b
-	 YoCz56qNZ5YbA==
-Message-ID: <sashiko-outbox-181904@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] selftests/mm: test fork of a device DAX PUD
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Konstantin Khorenko" <khorenko@virtuozzo.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Alistair
- Popple" <apopple@nvidia.com>, "Dan Williams" <djbw@kernel.org>
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev
-In-Reply-To: <20261021-vstor-150143-copy_huge_pud-folio-refcount-v1-2-8bd88551f9be@virtuozzo.com>
-References: <20261021-vstor-150143-copy_huge_pud-folio-refcount-v1-0-8bd88551f9be@virtuozzo.com>
- <20261021-vstor-150143-copy_huge_pud-folio-refcount-v1-2-8bd88551f9be@virtuozzo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 18:11:23 +0000
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EB8E72000A
-X-Stat-Signature: xoq5f5f6r3y3i7c4gb74fyk1fia51x91
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	t=1792694007;
+	b=avXiwGoJsHkJAZDPx9i4qBfm/VZ2sq21GC4IdMFOGCWvjfxYg3/mxzsdKo+8BtRbKBxYYZ
+	FEWyQ+ZoTXB2o1JmkgWH7hhngbSLA5pk8Lu6ah5As9EFnNstQwZFNtoQjevl26wwG98GbH
+	q9B632fqjqmcJ22odXhwB7k/2iU0+uE=
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a064f294cbso111502b3a.2
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:33:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792694006; x=1793298806; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kMc2eNn/OrrFKUYMVyLnIB+VtX1ihRJBTMeBnYRefLE=;
+        b=vUN4yWglDuw/echXdVjZ+x/lDJISsFmbyGLs8FQoZNn+sg7qvNzyPP7vnjSt6jgwMd
+         CR5ZS40H6bFHdrxEtoTxUT/kQnLMteHxeAb67VPcFCXEGy5DEws4YiCAWYSNbsl4ORV+
+         XSqZxmvPSHA6qYnh/xBTtWzr73fXoFEVOvT3CiaBrxRm+OPufH9KHAzpGEs0bPRciun7
+         mT8oylDMCIXwFZXnCNz1243w3JiYlMgikDE0jWSizd4m4LHGvjqevVbV8lop4S1nv4J4
+         hPc7tm9Au6RTgQiM1y5px7FnL0kD7TgQViRblsIH4Z9Mf2F21Iet8gG/juXmyQAWWQ8y
+         FfJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792694006; x=1793298806;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kMc2eNn/OrrFKUYMVyLnIB+VtX1ihRJBTMeBnYRefLE=;
+        b=KcW0leWcPLnZHg6WTtnKKSTb1dya3dAyIb/yMBjrSuZL40cbUHPlmfRCrHDB3WPudd
+         K4jqW69QbeaHgOtC3zUkT9sNxDlRl/ClCSjbSraS5jfrPv/n6+go9pXmJRpZzIV5elpo
+         m36yJYdBBBkK0LcXv7QaN06jFOXTt6R0R1O+u2lgNr3Ay7dVRD13y1VCbn+LFgVfmHl/
+         Fzosgalv4nLf9z1b9whJUj+OEXOO7DyTNjSXU9XswGgDhNO4bxN4qVMzjv8gV/f1FbhV
+         Qka+1iKSz1XcpXKNfhsRK/175a/cCou1td3UjYQ6z+6roX0NA/G7InugkgDKpPShXHMM
+         45uQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxJ+rbhg14HaBbELcLNL4TBQUXTVRJ3wtvn7u5pku3U7TvLHoijk1j3lfdBlSlqTPP+ji0oc2RYvw==@kvack.org
+X-Gm-Message-State: AFq9FYLbJy2pqlGT/Rka2ieqTCr7JrUCrNgDA6lP5AiKwWFHzlk5E1+L
+	yVA0ZPVNHkOmGjOhO6Quoz18T7o1TPQqYvUI2wcauU+324STuHDvZ5aSyVHH+KFelTU/fUgZOWh
+	FvcpFgyBbo/kbnL+MV8+DlKmYlQ==
+X-Received: from pfdc25.prod.google.com ([2002:aa7:8c19:0:b0:89d:3267:4348])
+ (user=suseendranb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:2395:b0:857:7317:cff5 with SMTP id d2e1a72fcca58-8a2c5f488famr51343b3a.22.1792694005807;
+ Thu, 22 Oct 2026 11:33:25 -0700 (PDT)
+Date: Thu, 22 Oct 2026 18:33:18 +0000
+In-Reply-To: <CAO9r8zP+GUE-hcGWSGzhLNLcchFoZ38EMVCAtX5yZ78tZ0bbgA@mail.gmail.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+References: <20261021205626.3286270-1-suseendranb@google.com>
+ <20261021205626.3286270-3-suseendranb@google.com> <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
+ <20261022155144.4177200-1-suseendranb@google.com> <CAO9r8zP+GUE-hcGWSGzhLNLcchFoZ38EMVCAtX5yZ78tZ0bbgA@mail.gmail.com>
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261022183319.163484-1-suseendranb@google.com>
+Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor compression
+From: Suseendran Bhaskaran <suseendranb@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Suseendran Bhaskaran <suseendranb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
+	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8E73E40009
+X-Stat-Signature: m3cextojhechumzr5wwrsqfh4gfaiii6
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792692685-294725
-X-HE-Meta: U2FsdGVkX1+wzbFGMl7yakDBviPBVP9E5TYNtGsWjvreaBRIF7Lk7DHnZbFaFeJClHgWF8NZ4dN58ithDLSJTj19g2q9LLYVEgQy5Orhi5EVToRsr9eRnUfO/aLSUPhcHlj+9G3cOw4JgmohXykqoNQXbdCZXdNrlvApg3CVBH5xImTtux/RDD/o7WavByA16ICFTAHlCiMV/TXZ4HBnkQ9ytrZU3KORqR4zv/48IJtLuZP8m74ChX4itIHJFVhvhk8UM1Tx4789OOY3ahfldlLyxg5G9WFLibgiy7Llix8Oe1Rq5qZQ0TV7DiYflh2W/FCaII/bhLkKDoGHu0tmMq+zoY3bzspc2YTdx2mSsBbMPHttMYtXkEtZi8XjSoOgOIjvRER/r9ZbvzvhYV4X+DYlr+QaLoTcx4dpze77/bXcxzFkRjj/DWHV1TCxlAvLTl1D6fH/FkM3MFnJ20zXZEL15uyxaKvTzE3fnxTz2qRXz1qhjW9E00e3tItdnJsM7LwhXau0JLIPr2vGxj9SH39NziJNV9+ERGo2dGqeYOu06uH+pEWSlF7LRXQcXg0ed6U0XMr44Een/n015+sMP58wLGRsZl1YYOUaYBoFPf7HX32uHeKvxnwbAC6ToHx1ywvY8wI/jOtrGVw70wg0/yXJBqpk2KMCzxPSHav82GL5OADPURh85QWcMeGhpLX+uKxf6LiST/Hzm9YAu4iIpaoQ099l5kmH8kCgl2g5N7RWdSHE18+OhoM2GQQipFIivzlVHrOeLOVG+d/oyTgrGlIbpQM36kmG+rs5WMYCFt6LcIBPMN0qauWEpesy2YkVzF672LnyN4aIo2jcJc/pf9Vtb5UvWWcT/2oZwuRlwsMqhFSrApHxoG9pZaGrnngotSlYISweQ/A2AQ6Ur5uS9V8uzsyRirEHpyML4YiWMHYeZcYeqF9dw43YY7jAw1YHaP0kgqxw9uMj3N0z91s
- rhjQLzWj
- MZMNlBiC7QKOJ5qjXKPakgypwo0HjH2ljIQzJF3S6eir9aVUgql0SyxFOPIftUyW2pyLIgYy5dYJOXhWG+nsLB+keqJEWLZjL1BtcNBVLPI2mrB3S/tfcnFRru7MQr6TBb8Y9AzIuSBRBhwki5w5Wdyzc0PpUJs7iZ5PRsRt+8kmw37MUm4eQWecxscReaUEc8ADEXy+lmoejj1Dmso470J5QXPAWTQjg3gPfvTUl2yi0ZRC+PJV934myXOdv/CrBf4j3CfrnCLTMAxPkW5t4+jSf8JrRtOwBPLk5fTQSLHJ75P8F3iDDL/sPDAKa3lJZpVDVSlqh7W4t+PEBcZk35DwUpYlCA70gnTLQM6broVikLP1Zk02QEb1EeBvFipFKKRIX05tSzcZ6GjzjNhLG8qnvpC3f3wgOQ/NmbDVOIo1BKOqHz8DXU0CZL79GKOgrQ4wGdilBa2kle1EA1dfTDs3/S7BfK0FvvkrZI+AV4YO9bNyr5WUYs28C0Ol4HjGhEo/f5CxLuQwNKy0T4UlOv+l/oJBcPNJnuVPunduogpUUdBRUXrdSC/GBw8Xf195u7pEjdXk+Nq8eHg1Q5iQe05oTvnePv14xkyWJi6nhF7kP6q3DL0Q8XBC/Tw==
+X-HE-Tag: 1792694007-464720
+X-HE-Meta: U2FsdGVkX1+1rmn0XQPpRrYHfVwP0VKsoMXjQ2Bb56MVFRwgZNBYSid3ogFdFqv/Dw+B0Sfaq5qWIRqXGAMnq+EqNumUKdFte6e61Og6WR8wPcMzhrtiogOdGHPePmD4Igf+w3e3pcGEvADPxmgonCIUFrO4Nevm1Jyk0CvK1OyeVJ4XGc7bI07FDaZVTv7jGqebzGFVg6gJg/oXeVMFgPhlztktkxWzEMSjXclIn208QWMv/I69RcEGGpme/hXYJ9w8fwBIi9uvmLqwe6fqyh6h5VUeZYJI1JsAAMaxJ4jA43h5yd07VWqFRzRO/GQgTJM7loP9Kpf+ksqZWdwXHlVy2gXbSUREdb3FTa6CVqskSlgpIgs8f5b9cMDt7/NT9Cc2qLXlJXFcF7d6jkAvjK5cd3EkS4dYFCAJ3Ls+oheKDp2xDKuZ67ax8iPdiREFfv+nj4zQkkdcz18TTThnvDOYTyh/ycT5wr8DuMWFJG0dm+Kd+vUeSF02snqtmQbGPmrWZoD50b2xdeHb65WiyN5RFokC+Ec+Nf4sr3xCsd+p8HBGmSOkoGlqHprll0bpC09Ux0t6+46rTSZKJCkAAv9Y+UM8F2HebfppwfNWYTy20D0Oopc06q+mFC7AiSXRfoF3gASfGuD+mV3w8HRux7TbaJro0vdq2F/GyFXhmwXTgiC7n/HMX6lIU0P1TBpiXXmFmvv4qNdGYH+aKW26QtadI0uvTTPOqYYVcAs2xR+c1miCZO1xZLgWVfp5Z9bTrwePCK80IqoGevtgh4Hqck6tHbywVM+Aus5MxI9ekwGIRvDj78d5D1Luo01RIjeyLlYQ4PQA3U1VEiNQC516OWlk5yRZQLfyvc/r9Ce28X2Xu1VHKseeeSHgw4TmEs+RLdLhCC/vIHOqxQmcUVRIKQYu0MPRDgkAvaVAJrJPVZOMKKIupbs5jBnwkvbgEoVrDvW3e35sbsyIhKhMFMN
+ kiFJjURT
+ LdlB4qDiJWrpAyqaTmkyNh2OlVrQLwIUwdi5LPdGYrgjt96P/vqngU5LcLzsS4YQJaNf6ndeLO4MtdnHJ8GG6G3+H5mAm8jGhTjl1jxhtaItsuIv+4Sdf+743wNkpV4E9Jxiwa/i/izcDGBpiQiSqp2fmLLDxD9RQ7yv2jOHKKUjkTD6Fv8mhsDtZ2VqILSWGTTYvA28APU4Clo6NrF9TP/q4FzybGHz4AaWAlZM8YZ7BUEThFx0Bavy2zrXXH3V/i3AfTwDNdupVfQJWximdxIVB/PX9Qi2ILRwr+YDYaUeOHv/NG9Ms5a7ZX/7k/3t2AlkdVx84D4ZoMbiIR0YO5vs8rWNax1k6jxMFX9H35KL1lFFlXlsRMihdBtqm/5yE4k/tcfv6yQO5QkDPKkPIQJc0LYtfXTLmGw8kfBLXmjJ8XN1uMzB8YN2ydYpN1NCtJnVOo1mDECgaG6mZW1bUaVcCKHbiJwifOqnUDxG2W8A5A6/TWinQ2Y2j2g/6AUfcAwO93B0GvGgWSq1Y460Coz/09XYZXnr+TgKqAa+cwWVspeV9sZ98CSsdF9bv2WzV36SMxjzYL96XuRfbjvFCrfCBy2V03l3KmyXiLLDmNgUcv+vpzSmNgZxV6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,112 +120,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] selftests/mm: sysfs_ul() and rss_file_kb() duplicate vm_util.h h=
-elpers
---
+On Thu, Oct 22, 2026 at 09:01:02AM -0700, Yosry Ahmed wrote:
+> On Thu, Oct 22, 2026 at 8:51 AM Suseendran Bhaskaran
+> <suseendranb@google.com> wrote:
+[...]
+> > With that unchanged, existing zswap_compress() already accounts -ENOSPC
+> > vs other error codes when writeback is disabled, except for the
+> > !comp_ret && dlen >= PAGE_SIZE case mentioned above:
+>
+> Is this actually possible? When we changed the buffer size to
+> PAGE_SIZE, I thought we made sure all compressors wouldn't write
+> beyond the buffer size. dlen > PAGE_SIZE means buffer overflow, which
+> is a bigger problem than debugfs stats. Or maybe compressors can set
+> dlen > PAGE_SIZE but won't actually write to the buffer? I didn't
+> check.
 
-commit d02ba4b69f400c48de47f25c78208f1cfd2fe974
-Author: Konstantin Khorenko <khorenko@virtuozzo.com>
+dlen > PAGE_SIZE isn't possible, since all compressors bound their
+output by the input req->dlen (PAGE_SIZE) as you mentioned, and only
+set req->dlen <= PAGE_SIZE. The 'dlen >= PAGE_SIZE' check in commit
+dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
+as-is") was written when the buffer was still 2 * PAGE_SIZE prior to
+commit 0b1bf60c324a ("mm/zswap: reduce the size of the compression
+buffer to a single page").
 
-selftests/mm: test fork of a device DAX PUD
+> As for the (!comp_ret && dlen == PAGE_SIZE) case specifically, yeah we
+> should probably use -ENOSPC to count it as poor compression.
 
-This commit adds the fork_dax_pud selftest to verify that fork() properly
-accounts a copied device DAX PUD mapping in the child's RssFile when page
-tables are copied due to a guard region in the VMA.
+Ack.
 
-> diff --git a/tools/testing/selftests/mm/fork_dax_pud.c b/tools/testing/se=
-lftests/mm/fork_dax_pud.c
-> new file mode 100644
-> index 0000000000000..1fcf46341ace2
-> --- /dev/null
-> +++ b/tools/testing/selftests/mm/fork_dax_pud.c
-[ ... ]
-> +#include "kselftest.h"
-> +#include "vm_util.h"
-> +
-> +#define SZ_1G		(1UL << 30)
-> +#define DAX_SYSFS	"/sys/bus/dax/devices"
-> +
-> +static sigjmp_buf sigbus_jmp;
-> +
-> +static void sigbus_handler(int sig)
-> +{
-> +	siglongjmp(sigbus_jmp, 1);
-> +}
-> +
-> +static unsigned long sysfs_ul(const char *dev, const char *attr)
-> +{
-> +	char path[PATH_MAX], buf[64];
-> +	unsigned long val =3D 0;
-> +	FILE *f;
-> +
-> +	snprintf(path, sizeof(path), DAX_SYSFS "/%s/%s", dev, attr);
-> +	f =3D fopen(path, "r");
-> +	if (!f)
-> +		return 0;
-> +	if (fgets(buf, sizeof(buf), f))
-> +		val =3D strtoul(buf, NULL, 0);
-> +	fclose(f);
-> +	return val;
-> +}
-> +
-> +static bool dax_dev_ok(const char *path)
-> +{
-> +	const char *name =3D strrchr(path, '/');
-> +
-> +	name =3D name ? name + 1 : path;
-> +	return sysfs_ul(name, "align") =3D=3D SZ_1G &&
-> +	       sysfs_ul(name, "size") >=3D 2 * SZ_1G;
-> +}
-> +
-> +static long rss_file_kb(void)
-> +{
-> +	char line[256];
-> +	long kb =3D -1;
-> +	FILE *f =3D fopen("/proc/self/status", "r");
-> +
-> +	if (!f)
-> +		return -1;
-> +	while (fgets(line, sizeof(line), f))
-> +		if (sscanf(line, "RssFile: %ld", &kb) =3D=3D 1)
-> +			break;
-> +	fclose(f);
-> +	return kb;
-> +}
+> The compt_ret and dlen checks are not super intuitive tbh, I wonder
+> how they should relate. What is the expected value of dlen if comp_ret
+> is an error? Is it always 0, or can the compressor set it as a
+> non-zero value if compression fails?
 
-[Severity: Medium]
-fork_dax_pud.c includes vm_util.h and links against vm_util.c, which already
-provide shared helpers for reading sysfs attributes and parsing
-/proc/self/status:
+On error (comp_ret != 0), dlen is not guaranteed to be 0. The value
+left in dlen depends on the compressor used. For example:
+- zstd, 842, and qat set dlen = 0 on error.
+- lz4, lz4hc, lzo, lzo-rle (via scomp_acomp_comp_decomp()), deflate,
+  and iaa return the error code without modifying dlen, so dlen
+  remains at its input value (PAGE_SIZE).
+- hisi_zip sets dlen to the hardware-reported produced bytes even
+  on error.
 
-tools/testing/selftests/mm/vm_util.h:
-bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len=
-);
-uint64_t read_pmd_pagesize(void);
-unsigned long rss_anon(void);
-...
-int write_sysfs(const char *file_path, unsigned long val);
-int read_sysfs(const char *file_path, unsigned long *val);
+So dlen is only meaningful when !comp_ret. The !dlen check was
+added in commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE
+compression failed page as-is") as a defensive check for the case when
+comp_ret is 0 with 0 dlen which shouldn't happen unless the compressor
+is faulty.
 
-In main() -> dax_dev_ok() -> sysfs_ul(), the test hand-rolls sysfs unsigned
-long reading with fopen(), fgets(), strtoul(), and fclose() to read the
-device align and size attributes under /sys/bus/dax/devices/<dev>/.
+> >
+> > -                       comp_ret = comp_ret ? comp_ret : -EINVAL;
+> > +                       comp_ret = comp_ret ? comp_ret :
+> > +                                  (dlen >= PAGE_SIZE ? -ENOSPC : -EINVAL);
+> >
+> > Would you prefer that I narrow Patch 2 to just that change in v2, or drop
+> > Patch 2 and only send Patch 1?
+>
+> Let's figure out what needs to be done for patch 2 first, if anything.
 
-Similarly, in the child path of main() -> rss_file_kb(), the test manually
-scans /proc/self/status for RssFile using fopen(), fgets(), and sscanf().
+Since dlen is only valid when !comp_ret, we could normalize comp_ret
+first when !comp_ret and then just check 'if (comp_ret)':
 
-Could sysfs_ul() use read_sysfs() (or read_file()), and could rss_file_kb()
-use check_for_pattern() or be added alongside rss_anon() in vm_util.c inste=
-ad
-of reimplementing these helpers locally?
+diff --git a/mm/zswap.c b/mm/zswap.c
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -874,19 +874,24 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	 */
+ 	comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->req), &acomp_ctx->wait);
+ 	dlen = acomp_ctx->req->dlen;
++	if (!comp_ret) {
++		if (dlen == PAGE_SIZE)
++			comp_ret = -ENOSPC;
++		else if (WARN_ON_ONCE(!dlen || dlen > PAGE_SIZE))
++			comp_ret = -EINVAL;
++	}
+ 
+ 	/*
+ 	 * If a page cannot be compressed into a size smaller than PAGE_SIZE,
+ 	 * save the content as is without a compression, to keep the LRU order
+ 	 * of writebacks.  If writeback is disabled, reject the page since it
+ 	 * only adds metadata overhead.  swap_writeout() will put the page back
+ 	 * to the active LRU list in the case.
+ 	 */
+-	if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
++	if (comp_ret) {
+ 		rcu_read_lock();
+ 		if (!mem_cgroup_zswap_writeback_enabled(
+ 					folio_memcg(page_folio(page)))) {
+ 			rcu_read_unlock();
+-			comp_ret = comp_ret ? comp_ret : -EINVAL;
+ 			goto unlock;
+ 		}
 
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-vstor-1501=
-43-copy_huge_pud-folio-refcount-v1-0-8bd88551f9be@virtuozzo.com?part=3D2
+Does this look good to you?
 
