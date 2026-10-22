@@ -1,107 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96263606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 21:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76DE606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 21:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMy3VULZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PBRo7gdT
 Received: by kanga.kvack.org (Postfix)
-	id 08A676B02A6; Thu, 22 Oct 2026 17:19:56 -0400 (EDT)
+	id B0C246B09D1; Thu, 22 Oct 2026 17:38:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03C276B09CE; Thu, 22 Oct 2026 17:19:55 -0400 (EDT)
+	id ABCCF6B09D2; Thu, 22 Oct 2026 17:38:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93E06B09D0; Thu, 22 Oct 2026 17:19:55 -0400 (EDT)
+	id 9ABD36B09D3; Thu, 22 Oct 2026 17:38:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C0EFD6B02A6
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:19:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 822251C2E48
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:19:20 +0000 (UTC)
-X-FDA: 85351528080.14.BB00376
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 942DC40002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:19:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kMy3VULZ;
+	by kanga.kvack.org (Postfix) with ESMTP id 614146B09D1
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:38:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D5CDB1601F6
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:38:23 +0000 (UTC)
+X-FDA: 85351576086.17.2786CF7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3E5F1100006
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:38:22 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBRo7gdT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792703958;
+	s=arc-20220608; t=1792705102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T3k78ZLZiyk9GODqNKVNMBZwgmj6EtW4p2/GpEyhS5k=;
-	b=uXRpA75LCfNlRBj+At9YNL2akVxwxy1qkeqJJsO6CR2zc627gE1a646n+JBNJHKRGSU6J2
-	kPhndg57WRxPEVe3cCUBYGCfSp2CmDv/I31/ugU0YTFP7+vQAJlS+S8nuAx82ZjAv2DYS3
-	YFrywOZENRZhVfbcH4t+pFA1wZkbgXk=
+	bh=50yYjaY+y96cqwOxv67YA9yqjn2siKXdLV0ULyvr6yM=;
+	b=TXzEcVLt5EpiiNqQUo4hesSfSs+HOt6xNp72iNvTFmmRXlPO7zG4DQNfCtfO3kOq92wZHm
+	BXI21U5mpQGjn4w2rOWY2H3ZWIDexSVZcRTWPupmSOAX0WiGM3zfT294ttJMjjnzNtA50q
+	6w3jmboKxeW+IWOlOhRkwFNS0IuKbp4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kMy3VULZ;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBRo7gdT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792703958;
-	b=upuwZzcoyV77PT8f/MMpJBdBQCcjzQ34GAjY+IYFb29cNhgmko7IW5xTiXW4hEEidOOdH+
-	bwsS4s7Pz4L6atKJWLaVgfOK8tkE/mzqon8wTMTwO5lH3pX/H1Blql/rwvZCnYmbU89IkV
-	mazkYCKQlw5DF55onxQlXluwELctkKc=
+	t=1792705102;
+	b=STPvUT9MLe60Jgts9bOYOkweh5ydSvEdZfJhldXpJ7GQeAZ3EwT4r+0X80Aw6Axu0kjcnk
+	U9oL9LEbJ1QieyUFxAMxDrCIIb80Y/uJybSKwXAJsb49GDdddJ+0e6Xzudk9xVJlNmsogL
+	fFqsn+qWN1Fo4nr01+7tTzhKeVkvaVA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB53943FE7
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:19:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44601F031EC
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:19:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7AD8860200;
+	Thu, 22 Oct 2026 21:38:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D6F1F01825;
+	Thu, 22 Oct 2026 21:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792703957;
-	bh=T3k78ZLZiyk9GODqNKVNMBZwgmj6EtW4p2/GpEyhS5k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=kMy3VULZbphqL7iPhLqeTx9EzvhqrBamiLgDgRxnDyd6zjcCmSD9pbrfkXI30xug3
-	 aCGhfOcfgFaDoQ6WVYtWXX0rdejPMfarVCwB2wITskPzS9ThqjLh/3CI8NykivzDCP
-	 A7orY7/cfqZ8kTH+mso+HLDF5MZsbeVumfXf7meGF+HszLtws0513mMHeKJTEmqPWX
-	 mhfE0Tw0OsoHfnbqIrefqYGyvgrq6oPbxjw+IVXJigzhN/IR55sFskm9YEQsKI7djl
-	 gc4DGyskOK9x4ZS0zOP2Ez5tQb0TiA53xVl21dGFGUpvn2YsIjmau+9xxwz750TaV2
-	 bl0ezCUwbd8qA==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93f1cf92c9eso25015385a.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:19:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByx08GNDW5cVm2rqFXwUOQHeiBq4SPDA4uTpEKf0VfhxjwOXLrlokSC896Ht2XDUqVGZjaPYAqy4A==@kvack.org
-X-Gm-Message-State: AFq9FYJ10gPy1bwqbI0kdPMSZQdcO3/0cNRLfrd8m9t5ySPrOZWKsASa
-	nlUsHaePoPNjUXt3SuNbrdBDDYpivnOy+LIr9UCBYR3fhb1bUYHfVLfh4YatCSMc6tXngKc1ZMy
-	ZQwRYFb0ZF4tS+daQwnTKLpSxGsEF4ao=
-X-Received: by 2002:a05:620a:261e:b0:93f:2658:7e54 with SMTP id
- af79cd13be357-93f6f54d44emr122297585a.3.1792703956938; Thu, 22 Oct 2026
- 14:19:16 -0700 (PDT)
+	s=k20260515; t=1792705101;
+	bh=50yYjaY+y96cqwOxv67YA9yqjn2siKXdLV0ULyvr6yM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PBRo7gdTqnIgoF150jineM85hgi4fjPmYFKIpfo9uOJ3lkItGY2msTBCZ/KMO/gJd
+	 540aDBCg2Qy8Imwg5leZFDWqhK/IwgEYZAJ4IlaQ4yAWqyuh3Y8sJ4xWzOMt8yxPx8
+	 uKUB1YmDavp37wgBX1ZlFbL3ZqOgVa9tzNb+sjjJ2ynEMuUqGeK3I4H3YHhupVmYbJ
+	 tmn8flTmxnbuEALgeCiu4Dt2nhEL7ykZvjSzmIdQThmrnYSpQ6XyW/k2FKMJmAulfD
+	 KGX5027pXdOKb7aNtIZ2cfDHqnAmTAcVQJv/hBvVSzAtzSZ0hrCxig+NCXi42nu7F4
+	 6u5/9hr6xYOmw==
+Date: Thu, 22 Oct 2026 17:38:20 -0400
+From: Mike Snitzer <snitzer@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Mike Snitzer <snitzer@hammerspace.com>, Chuck Lever <cel@kernel.org>,
+	linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v7 3/5] mm, iomap: keep a partly covered page until an
+ uncached write completes it
+Message-ID: <atqCTLf42kkGZmSd@kernel.org>
+References: <20261020220346.28020-1-snitzer@kernel.org>
+ <20261020220346.28020-4-snitzer@kernel.org>
+ <c3842f844845a0c461ed7a895cff3a6d3d3f74c0.camel@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <0cbd219d-f69d-4f72-aec5-43e1f2d978de@linux.alibaba.com>
- <20261022102726.56682-1-baohua@kernel.org> <fc302ca3-6bf6-4bde-b3e8-8d2e93a4e4ac@linux.alibaba.com>
-In-Reply-To: <fc302ca3-6bf6-4bde-b3e8-8d2e93a4e4ac@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 23 Oct 2026 05:19:05 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z9GZkpV+mpoGogma4oSX4cHy+2UDzyUQSjjOLOfekEPg@mail.gmail.com>
-X-Gm-Features: AclHuK9j6Sq7bDCxc6TVPv0MaH-O7v3jJE353lVb3gr4xcVRJVBmmqL18xwlDFw
-Message-ID: <CAGsJ_4z9GZkpV+mpoGogma4oSX4cHy+2UDzyUQSjjOLOfekEPg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] mm: vmscan: avoid anon scanning for GFP_NOIO with
- low swapcache in MGLRU
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, baoquan.he@linux.dev, 
-	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, liuxiang.277@bytedance.com, 
-	ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 942DC40002
-X-Stat-Signature: ee7dh53jioe1ie98t4rtop14mfwiaw4j
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c3842f844845a0c461ed7a895cff3a6d3d3f74c0.camel@kernel.org>
+X-Rspamd-Queue-Id: 3E5F1100006
+X-Stat-Signature: 41a79181gztsyxxryte8e69c4xngw6nh
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792703958-467950
-X-HE-Meta: U2FsdGVkX1+P99Zc+Z//V3pRmLf4b/h8m4FMdHH++97zhbmIt2TKjYHN67iDgnYs0YfFq2lW9Fpu1HWugbzxK1Kyobn9O3luqzSuVKM6Qz5Rub2Ud2Grz48CSGch8JspFDYl9NiUM9eFTuNfMmyAmsxzORNmQ7dXqjkensGBCFxN/6QOy29zzMVyBt08IWR69L1QrH3Gg0dnbL+cvDQGNzl062nzsLU3R3qGhHk+j8SV0OpzdpBaGP+DOYkvU0eBWmQq2czmBR1mgG9bvKSZQGKvdTAKQ8tONLb/q12CwCQhmCEuvyxvwGHu26jOJwhuv7XMFINTmF9nGkG7Gv4datVkkOUp81QYAk9H3jwkh9EzCsKQdbn9ffWIPgsbrSXGdJVyL9dj8s+z4ijwz6tOSNwFq0Yz99mmPnoEGyQsR16B/djehWNaoPQdCX1xXOuFi5+9xD4lL7bnFGF+Jb9HBcBIDqvdX+gsO79Zocj74bb+PcWPFMsHZbhLKuSBiA7R35RwaWAuMJV9XeB0cgo0rZI6LJqAzKycOj59KwpXD17QhaX41tJSmoxReymwo0KlmHPWcUlxnP8LK0bLSFZMSEWXtgXbNdOy73T0yUOGyyk0FPII6rm06kSf+dj1fy7D/8bEMT3B//1sdLWnLAnSCepWyaTiyDyyhD+CTTBOEZyR7CKCR4SHWG/NkSpZRFTWqfr2Dw/wlz3sCJPc6UcDs7//m0Z7IcHnM40gMZ6C7ROMysO56OUmNx8wclZ6m2NRyYfXknQGyyHaYck7oFmZgabJhxT3XYcVvoqkIrPe1YK77Ta8rLMnGvIc6vSnrZvlRnY7R34yY97Fdp3u55vBLxfRlkoQlex7X7ubeQYyDOndz0qOeWTZC4Zb9ObHQGWR/m/FJYUryx4fDeGq78Q47wRZElWyz1X4VGcpClwnQ/MDRf0uOWogo0tWLxnAH1se4Aa+KDDReKUVPiulvIS
- fiSHmyiI
- ahc2d8SpEaOpMMjzkrC0Ngf+VW2KEwOP5t4x7dtP7f4lE4cXHS+OJ9insKFxhBM+w5H4nbKPpQaKSq5e/6U7q9YiXDgjjGxt7pcqLnfThDHRd+VocxYKzcQCgAewZ6LUkryoiVeoDS/XH4e/PEls4q8QHlxDPVUPyd9OxmwGnKrLn5FD6cUiEryTiecCNYIt+PXEZjV5dc0WPGnWkyELI0xygZc9QTWreclxwXhVPlK6oS5ZaGL9a32XpVnILBkJrgm490ltVE4Nla8yNln++8ob0PagpDYojLWWqrsxeNWk5dk3v7Aoyj/CQEmm3rTJGcF7KXtepCaDXQLTg7FIugdBtxF9yRXy4UzR7awhUXfXWeJk=
+X-HE-Tag: 1792705102-983645
+X-HE-Meta: U2FsdGVkX1+U/iJ7DbeTP+gZwdrcU6FBHkAgBeqHdnXI9RlM1nsD4Vu0MqXMVCqK43gkClC6gGq3FKECP4TSj7YxjxiIEvF3nO7LjDj++tA8/uPziOo1VH2x0BHwIjbZrLQI5PsMc57ZnXIDNKjMNjfuua8PJX0LRfK0EMLmWq2wjsgBkQZyNDwYZo7v5eBkU+Zsnp4r8iV+a76WdQg3ghTcTaTc0pzGRQk6LAm7IyKFQeuBBzLj4NQihZ04NoY0mMAgHXJcqJ27/xfwCYsafcpfrJMNXFPg/J0okhAuwhPcHra36Nz0oe/JOTVJexhNunUSqyJEL5Zvr1KNwp2lA4x80nArKMlU7QfH32JcohMRi3Y0L2HBbRZWxeKglHO2PGwdOMg6TDJZNmIy+XBX3VAVmqPOiIMVfzZ4zgqWWibDYa2Ha1cCZmoDejl94274HU6bB45tfPoSDhyMst/4ItDUwMIf/z4Sx1L5gQaaTa752G0FDdfO/LcT5EhQFC4X3DoUM6mOTxhTdmkIQadB6MNPTfF2wSZHWYXohQBJRIas3l0f/Uy3KRSm4mLBzikiQgdKMz+h4/i/iu4SyEf3ttbK9xwfxMUoAgLCDGcaBpZDqF0mF+MpqJo98QHB187o96SE0Lckow/fSIadTLZCrro0sBtfj0SJRow9S5qWdvOD3vqTK6Z3RVD9HZGVmv8vhckx7Qn/Pfh6b0UIcNPmkyYgmjFwoafnu2mtfAugW2v84YjTlOtcdrXmiNkBd0trli84oBhm1kRqaNgFWVc822uCb2fgthB1523H4A00Ztbj0n+8t5jYWFiqm3RWsN0++ULpp+BHR9vuaSAtsHw8mDSyD2p/7SPx8dhZ0HYRRbGmpIrbfXbmdNdaiobcgqtIr1TUGnbMKKr1BVEhqdJHmhQ+mnikNhktWzqBZz48eIf8HhMrdWNKyel+N2l5exjGsucaTRMx7gjHww1j3uu
+ xRfTMdLB
+ Mv66ec9mLn3gadIZCNsRK64oaS3Nxr/ZJs6WyrWFhFT48uHiphVeuFkkphiIQeuK8ctJdqfoGV7I6Pl0Yrke4f9h92fBAQAVX+Qp11glexzclE05MHOx/jLhLS1LDMhQplvyDF2+aj8TLst7/RwD4wqHG/fgUcTu85aLOv1Yh9V/5eey/eruFMBSgOY4XajMhWVSvYW2cJhVd1X3eSfw95OuHJja8TjtLJfEWV3MPWRbqH0Po/tqJ3upg1F7GUkG6RiQwUBWUINDstN17oX80Xbk0RcuxyPrnT52ROlyjILOqZTF5zamGEl3cR+qlNMDeUFxgZ2kx8Q3gU7j/5xRIzc/IGjuW2rJTYPlF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,112 +102,128 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 7:26=E2=80=AFPM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
-[...]
+On Wed, Oct 21, 2026 at 10:36:07AM -0400, Jeff Layton wrote:
+> On Tue, 2026-10-20 at 18:03 -0400, Mike Snitzer wrote:
+> > An uncached (RWF_DONTCACHE) buffered write marks drop-behind every folio
+> > it creates, so writeback drops each one as soon as this write's data is
+> > on disk.  A page the write covers only partly is usually shared with the
+> > neighbouring write, the one that ends or starts in it.  Once the first
+> > of the two has been written back, the page is gone, and the second has
+> > to read the block back from disk before it can write its part: one read
+> > per misaligned write.
+> > 
+> > Measured locally on XFS (emulated 4Kn NVMe, 4 KiB pages), 32 threads
+> > writing interleaved records to one file with pwritev2(), 1 GiB per run,
+> > before and after this patch:
+> > 
+> >   record  flags                     4 KiB device       MiB/s
+> >   bytes                             reads per write
+> >                                     before   after     before  after
+> >   47008   RWF_DONTCACHE             0.97     0.000     831     2281
+> >   47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.000     601     1227
+> >   6000    RWF_DONTCACHE             0.97     0.000     121      488
+> >   6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.000      90      206
+> > 
+> > Before this patch every write waited for its read, and because XFS holds
+> > its IOLOCK exclusively across a buffered write, the other 31 writers
+> > waited too: both record sizes ran at about 20 thousand writes a second,
+> > one device read per write; after it nothing is read back.  With
+> > RWF_DSYNC each write still waits for its own sync, so the gain is
+> > smaller: the uncached write now runs as fast as the same write without
+> > RWF_DONTCACHE, 1237 and 209 MiB/s against 1227 and 206 in the table.
+> > Records of 49152 bytes, which cover only whole pages, read nothing
+> > before or after.
+> > 
+> > NFSD DIRECT issues the misaligned ends of a WRITE as buffered uncached
+> > segments and gains the same way.  Without any handling of the shared
+> > page, 32 interleaved writers of 47008-byte records read 45144 blocks
+> > for 45664 WRITEs; with this patch, and no NFSD code for the shared page,
+> > 0.0001 to 0.0008 blocks per WRITE whether each record is sent as one
+> > FILE_SYNC WRITE, as two one after the other, as two together, or as two
+> > UNSTABLE.  The page cache then marks the completed page while it is
+> > still dirty, so each segment of a stable WRITE wakes the DONTCACHE
+> > writeback kick (23 to 65 thousand rounds a run); the next two patches
+> > let NFSD mark it after its sync instead.
+> > 
+> > Let the write path say which pages a write covers only partly
+> > (FGP_DONTCACHE_EDGE, set by iomap when the write starts inside a page or
+> > ends before its end) and get such a page as a single page.  A folio
+> > created for it is not marked, so writing back this write's part does not
+> > drop it.  A folio found uptodate is the neighbour's, already written:
+> > this write completes it, so mark it, under the folio lock and before its
+> > own data goes in, and the writeback that cleans both writes' data drops
+> > it.  The folio lock orders the two writes, so the second always finds
+> > the first's data in place.
+> > 
+> > A page whose neighbour never writes, such as the last page of a file,
+> > stays cached until reclaim.  A partly covered page another task had
+> > cached and that is uptodate is now dropped after the write's writeback,
+> > where before an uncached write never dropped a page it did not create.
+> > 
+> > Only iomap file systems say which pages a write covers partly so far;
+> > write_begin_get_folio() users such as ext4 and the NFS client do not.
+> > With blocks smaller than a page, a write that crosses an extent boundary
+> > inside a page asks for it as two partly covered halves, so the page,
+> > though one write covers it whole, stays cached until reclaim.
+> > 
+> > Assisted-by: LLM
+> > Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+> > ---
+> >  fs/iomap/buffered-io.c  | 12 +++++++++++-
+> >  include/linux/pagemap.h |  5 +++++
+> >  mm/filemap.c            | 19 ++++++++++++++++++-
+> >  3 files changed, 34 insertions(+), 2 deletions(-)
+> > 
+> 
+> The nfsd case typically uses buffered or DONTCACHE for the unaligned
+> sub-page-sized "ends" when direct is in force, so mostly these ends get
+> submitted as small (< PAGE_SIZE or folio_size()) buffered I/Os.
 
-> >>                   }
-> >>
-> >>                   if (should_run_aging(lruvec, max_seq, sc, swappiness=
-)) {
-> >> -                       if (try_to_inc_max_seq(lruvec, max_seq,
-> >> swappiness, false))
-> >
-> > This is quite tricky. If we pass swappiness=3D0, anon aging will be
-> > skipped. Do we want that for GFP_NOIO cases? I mean, these are not
-> > real cases where anon aging should be disabled.
->
-> No, we have real use cases where 'vm_swappiness' is set to 0, which
-> means the workload never reclaims anon folios. So in this case we don't
-> need to age anon folios.
+Yes.
+ 
+> Why do we need this special casing instead of just making those
+> unaligned ends use regular buffered I/O? Isn't it basically the same
+> thing?
 
-My concern is that setting swappiness to 0 for GFP_NOIO also skips
-anon aging, making it behave the same as a real swappiness=3D0.
-However, GFP_NOIO is only a temporary state, and subsequent
-allocations may not use GFP_NOIO.
+No.
 
-> > static int should_skip_vma(unsigned long start, unsigned long end, stru=
-ct mm_walk *args)
-> > {
-> >          ...
-> >          if (vma =3D=3D get_gate_vma(vma->vm_mm))
-> >                  return true;
-> >          ...
-> > }
-> >
-> >> +                       bool force_anon_aging =3D is_force_anon_aging(=
-sc,
-> >> lruvec, swappiness);
-> >
-> > Adding a force_anon_aging argument to inc_max_seq() seems like
-> > quite a burden. Maybe a cleaner approach is to pass sc all the
-> > way to inc_max_seq() and let it detect GFP_NOIO cases itself?
->
-> OK, still look good to me.
->
-> > BTW, I guess we don't need to worry about swappiness at all. We can
-> > simply bypass anon reclaim?
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index fc823fe3bd1f..fa6d9860156d 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4903,6 +4903,8 @@ static int scan_folios(unsigned long nr_to_scan, =
-struct lruvec *lruvec,
-> >       int skipped =3D 0;
-> >       unsigned long remaining =3D nr_to_scan;
-> >       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> > +     struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
-> > +     struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> >
-> >       VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
-> >       VM_WARN_ON_ONCE(!list_empty(list));
-> > @@ -4910,6 +4912,9 @@ static int scan_folios(unsigned long nr_to_scan, =
-struct lruvec *lruvec,
-> >       if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS)
-> >               return 0;
-> >
-> > +     if (!type && reclaimable_anon_is_low(memcg, pgdat->node_id, sc))
-> > +             return 0;
-> > +
-> >       gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
-> >
-> >       for (i =3D MAX_NR_ZONES; i > 0; i--) {
-> > @@ -5164,12 +5169,19 @@ static int evict_folios(unsigned long nr_to_sca=
-n, struct lruvec *lruvec,
-> >   static bool should_run_aging(struct lruvec *lruvec, unsigned long max=
-_seq,
-> >                            struct scan_control *sc, int swappiness)
-> >   {
-> > +     struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
-> > +     struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> >       DEFINE_MIN_SEQ(lruvec);
-> >
-> >       /* have to run aging, since eviction is not possible anymore */
-> >       if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_se=
-q)
-> >               return true;
-> >
-> > +     /* run aging when GFP_NOIO limits anon reclaim with few swapcache=
- folios */
-> > +     if (swappiness && min_seq[LRU_GEN_FILE] + MIN_NR_GENS > max_seq &=
-&
-> > +         reclaimable_anon_is_low(memcg, pgdat->node_id, sc))
-> > +             return true;
->
-> I've considered this, but we'd still need to add some code in
-> get_nr_to_scan()/lruvec_is_sizable() to filter out the anon folios for
-> GFP_NOIO case. Rather than spreading the logic across multiple places,
-> I'd prefer adding a helper with proper comments to handle the aging
-> issue, like the sample code I showed.
->
+For the first of the two writes that share a page it is the same
+thing: 3/5 gets that page as a single page and doesn't mark it
+drop-behind, just as a regular buffered write wouldn't.  The
+difference is what happens after the second write completes the page.
+With regular buffered I/O the page stays cached until reclaim; with
+3/5 the second write marks it, and the writeback that cleans both
+writes' data drops it.
 
-I'd rather we avoid hacking get_swappiness() any further, TBH.
-MGLRU's get_swappiness() is quite weird, and CLRU doesn't have it.
-I hope we can remove it someday and use the real swappiness
-everywhere, while handling special cases based on system state,
-just like CLRU does.
+That difference is the point of NFSD DIRECT: each misaligned WRITE
+leaves one shared page behind, so with buffered ends the page cache
+grows by about a page per WRITE and nothing ever reads it.  We
+measured exactly the alternative you describe, with NFSD's
+direct_misaligned_dontcache knob, on IOR-hard (47008-byte O_DIRECT
+records, 192 ranks on 3 clients, 4 NFS servers, XFS on NVMe, 240 s):
 
-Best Regards
-Barry
+  ends written as                write MiB/s  device reads  page cache
+                                              per record    growth
+  regular buffered               35,140       0.000         +653.7 GiB
+  DONTCACHE, the shared page     34,463       0.015         +10.7 GiB
+  kept until completed
+
+Same rate, and neither reads back, but buffered ends filled ~650 GiB of
+page cache in four minutes (about one 4 KiB page per 47008-byte record,
+8.7% of everything written), which a longer run turns into reclaim.
+The second row is an NFSD-only version of this (the shared page
+claimed in nfsd itself); Chuck asked for it to live in mm, which is
+patches 3/5 to 5/5 of this series -- which yields even less "device
+reads per record" than the 0.015 result above (again, because mm is
+the proper place for these changes, less unqualified work by NFSD).
+
+And it isn't only NFSD's: any RWF_DONTCACHE writer whose writes share
+pages reads each one back today (0.97 reads per write in the cover
+letter's pwritev2() table, 831 -> 2281 MiB/s with 3/5), because
+writeback drops the page after the first of the two writes.  Making
+those writes use regular buffered I/O isn't an option for an
+application that asked for RWF_DONTCACHE.
+
+Thanks,
+Mike
 
