@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C5C606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 15:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265BD606A31B
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 15:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HLfFQCw3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W06cjuZW
 Received: by kanga.kvack.org (Postfix)
-	id 72F9D6B097B; Thu, 22 Oct 2026 11:44:19 -0400 (EDT)
+	id B7C7E6B097D; Thu, 22 Oct 2026 11:44:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7089E6B097D; Thu, 22 Oct 2026 11:44:19 -0400 (EDT)
+	id AFEF56B097F; Thu, 22 Oct 2026 11:44:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6450D6B097E; Thu, 22 Oct 2026 11:44:19 -0400 (EDT)
+	id A15C36B0980; Thu, 22 Oct 2026 11:44:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 231C56B097B
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:44:19 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78E3180190
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:18 +0000 (UTC)
-X-FDA: 85350683796.10.550906F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 672266B097D
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:44:21 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3C791C0D0D
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:20 +0000 (UTC)
+X-FDA: 85350683880.06.ED26279
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BA9671C0004
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLfFQCw3;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 239A020009
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:44:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W06cjuZW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792683856;
+	s=arc-20220608; t=1792683859;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hk/ssgrdkq8/qRRZXVzyxWia5Ficp9oJf+3Qtn+7r0E=;
-	b=nNFeJ1NzbnNdpf7OBVQWfOxhzXwTD/Y90zVSpkPhcPBNsqMU+v1b1l6pwk0Swp+Oea/IR+
-	U9DbFrxih1znYTXhvj6RApHrco1iqlg41HrPWEV+HAIooXxSCos+U8rJuEvMT40I8YLKk8
-	/HqUs4OZqAGO8MtCxjpIPGbd2klnmkI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792683856;
-	b=LuuHZtIAVw7xUoBN2bcT9X0hreNE8lLSgO6RIHBFVy5uAyWtT2cF4sAzK1h1A8ouUZ3Hy/
-	4b/kNFu7eZ/UpUqQb2iS8Tqpx3J0mijoKj9CQlT5Q8EpTMfiMPF+4GRIqPo62Er8lJSeiP
-	I9GaWjObl/ccdD+rludLhZR+0VkOmK0=
+	bh=7djcSuZ+VkivDbF5yVqI2iBloYUAv2eSmgTqsy+UUpo=;
+	b=6p/GG6J7+3xwsSkF6vIhaYgEk6cdRn0sSFB9aYJQY7f76D83AtoGd976f0oA9xDwY9EpHF
+	9DL4P9jPnN2h3GexIG0JSdZ548fhJdZnw+MCwYkBfstun4Ul27aTHKjPkvT1b5htNtkG9O
+	cwQFsbxFN37it0i7qhtVbZCv6LOtSkU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLfFQCw3;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W06cjuZW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792683859;
+	b=z69LWZVUICIUiJ0mZWePiYmq7JrXLbjh0LE+n0cHxqb6giQ1U7grNomCOfOoNR7V+DApKv
+	exoZ9QWvKUCS+aFglXeQ66cvQIUfvUQ8rDfjACheSg7Ju19AKORkp8YtRETBmoFpzsYXC6
+	xLmLjnS7sBhGNl+FqJVCTRFDlMCISx4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2AE24439A7;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7FCB1419D0;
+	Thu, 22 Oct 2026 15:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966311F01825;
 	Thu, 22 Oct 2026 15:44:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD751F031E0;
-	Thu, 22 Oct 2026 15:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792683855;
-	bh=Hk/ssgrdkq8/qRRZXVzyxWia5Ficp9oJf+3Qtn+7r0E=;
+	s=k20260515; t=1792683857;
+	bh=7djcSuZ+VkivDbF5yVqI2iBloYUAv2eSmgTqsy+UUpo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HLfFQCw35QAZKM3oc9hlBiQXn69xCnF8xSNmpeDoic8f5QCE+aKcxtksbvb6FxAQu
-	 q1qlc3cKbJUFOrn34LE879xlXJ/IwFJpJm/eXley7KuwCQqOIWuHNTHypiCG39oF2H
-	 XUosBF3HjQTSB+pSG7vpjOQ6tX/v9HZolXkECzqqaWGOyGiXDH01+tkIMFvadaW475
-	 syntUvrfe3WKl2b3s7iL+zq/7BlV7e9htmJ9jfgGTG6u2dyv89kZn+adlbF4xY0RSg
-	 IoD/dYfEsto7ANh38xv/N2np2eA4x9oidCg3bqgk/O8GokU+eSgnBQgfjHHa+DJPDj
-	 uXzz+qrFdWXPA==
-Message-ID: <sashiko-outbox-181718@kernel.org>
+	b=W06cjuZWWPxaajUZFU2Wwg4ejVWMo7Bk69w/xcOgiEB0Y2gVKfSCd5Ql1rpFj3/od
+	 Nd0c3Kr4dlmkL1wrd5w2ggFj5zmwDXAr+5ol+TrpBp46qB0G6YAx4RQGBoeDBgDYTC
+	 A4NWE8P1hLktCI+RylJeGRUjk25Qo92EW41R7DzPuQMLDayiWRSC8nV3Fc0jY6OJHr
+	 Z6vFDxxvGXD2fPFJGh2pqtzXVdpfskCPKStKZ50RCrnRB22CEhRmgp4qidPO9V6ExL
+	 igmaN5FbtU8OF+ONrQby7LX/EClvvTrMppuwq2XyZx5Hg7d+ykaouUe2rMAa4slETv
+	 BYzmvkcBcX/OQ==
+Message-ID: <sashiko-outbox-181719@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 2/8] dma-heap: charge dma-buf memory via explicit
- memcg
+Subject: Re: [PATCH RFC v2 3/8] security: dma-buf: Add dma_buf_charge_task
+ LSM hook
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Jonathan
@@ -79,24 +79,24 @@ To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  Khan" <shuah@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
  =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
 Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, mripard@kernel.org, echanude@redhat.com, media-ci@linuxtv.org
-In-Reply-To: <20261021-v2_20230123_tjmercier_google_com-v2-2-ef6ee2dd8c5c@redhat.com>
+In-Reply-To: <20261021-v2_20230123_tjmercier_google_com-v2-3-ef6ee2dd8c5c@redhat.com>
 References: <20261021-v2_20230123_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com>
- <20261021-v2_20230123_tjmercier_google_com-v2-2-ef6ee2dd8c5c@redhat.com>
+ <20261021-v2_20230123_tjmercier_google_com-v2-3-ef6ee2dd8c5c@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 15:44:12 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BA9671C0004
-X-Stat-Signature: 5g1mtxqhdrbtafbiyp331rcge9pmdktf
+Date: Thu, 22 Oct 2026 15:44:15 +0000
+X-Rspamd-Queue-Id: 239A020009
 X-Rspam-User: 
+X-Stat-Signature: qm8au6rcp4ub98payubb68hct58tsxay
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792683856-942354
-X-HE-Meta: U2FsdGVkX1/ihN4YmKVzB5G2t2Pl1fn94zq3Xxhu+KIr/n60f81xokyfs631Xebn7vkAqQdOWgHsrkIuFfMsjllee8/+4OU1WZydwJ1kOyvZ2J0CapATu0UGBq/GV4iypVl/i0bZINZHmrInr5CObnysXXXDqtciBJJt+9cKs3rQ5ReCAQzqsb3DLwVhuyQ/oWyzaCB72RrEgcJPT+KYdSf6hResw11xP1GWC9mFX6OytVxCQYJw3MCexf1BzBeFlGIgqgY2OxV8pqnzPhqSyqAuHYwc5JmpM1UGdT/6lTFaBhaP4Q3dwhdna5wNayKfcov0FTJULPwVtg1ByRGw+q5Rsnt+dkb/CkUDBq4hry5O3kOay76Yot15bofhjCKAyWqXmHyGwB+niI7LWPkofYatB7UVgEFFSZBpxJuJODMj9sgrvDZBpf1ivOqJB5cFIIGLF0TCizf6LN4nv7T3ZurhK5okxj76GopyBylFYiq7kGAUwQQR6PxJux2ZoqAdYVlthEBTpY9JHVUFAWMP7d0cBZO0wrphjM3z3gW3SrKFttxLWdxDHhZNwIFGDxxU19eXE/y+bUbt6SU3VC3lsFidnZt665LLyobVBgtYniNGXBdOXCJ6sS1c4MywDFdgXsHtme0qQ4WKx468tfclLTZo3WKjzfRyIhnytflFQINy9/ZBPg5UElmAzJW4eDJpaJuiuSg8ogRb1zMvCX7Uo2LWoh9d1BeBSdZJjZ7OezBcEOMjtV/W9KnCpvebpex4QBXC7f+rX//vX32Q1YOM6pMN7ai5fcl1nzQYGJ7dRop7+iGmWgBK4wx7wtF0m0qrm6TcousoFfQl+vpjw8xD/m2L1+gGsQlLwU+QNqhre/BDkF+WKvNZoSyvsnhWNOZrhrSVSdUNNrOYR4/vFg8Ge2WlzhWDCIz9FPtl3bRfT5JI/kDWxwHdwChwNjMtLIjdqCsUyET2N58qABw9uV8
- dngh816i
- gowRbkLsVAk6n2zwCgLEaPR3IAafrIVPMt+wRtt5aQu9tFsmCKDf3BRmoEP6AP1s6EYZ3y7WLFn/VOXm8fhaTOFAB0Vr3LxpjIfOJMOpIvxUJP949IyjNRYproKyNLqh2c57oZ660XUYSAl56BRfHk5bRYbUgV3moPeaQ0pFjUq3NaO4kYEoP1s2jqnVRb1sistsduveB1Vv9vjqUhBiNHbb/cd+QtVD55e3/5SyOQeSgYVm5jQV86Byx+H1F+divB5/MNKrVSRfoFj2pH7HvtwrwXEIlRfxReT6s13qYpX6YYRzyTH4AT5Geh9Zd3j7QcmZLbV6uB0gDvpMvl6moXhVZ1ZzZWdz+LtKlqeFJZJQw72MhTrAnbqTTMB2sWikhbGupSAC1C0uQv3inAFAkdRmtQlBdv+Bz4ptxPXvXd55MtaErmWJx8Np2zn2vEx/3FEY4v3UPB0zFQc2fhzeajTwZL40nl/WbH2rAAXJq5ZkvgZmxCtb2T+1j4TRAmvUW6ZjomUlobQuyjQqtnxcUAZ0cGH2BE01J6AEuVAJzkQNfLvc5Sd+ho5FPxAelumwbHhI5FmlhDdpU3IBpOxsJUTfSioxmCJ/4j8kAEM1Z3iWgWyWX49UBW7331yK+SU8CQkrOT18SRGU9NdaCLXKzwmx26nZFfSmQWHfN
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792683858-263223
+X-HE-Meta: U2FsdGVkX19e2XI/QgI4Q5eU9YXDMi+MpdYCmXMCGyZNITZNzEdBiSrsTrdNX44Bdf+2rbSsUOvAx6EBrTNItGCnzsdq1XUaRpYQREHgXyrCMW/KfGILv0bzzFiOWxV2jPvHe8BihPAe3TWWC91WAPiDvegufFMwNxNMogVaaWzolxXyqhZI8jrCM3EtgP1xhypSjsMfl/4ddQT4aQ7Wg9jj8c2w7OUUSWb1zHY/EMqg9o5odiY3NzPn3MlKId0tX1fQaAo+7yfGKcEjutBF2Re6/FGga9mtk9ihcvXnuMYpXkTStwb648g93+FX+Sxfcu9sZ3ATJgQQyXZG+GrJ7RR/3j6HYUEODp/zA6dkHAHD7VJttBdh3YB2OtXCPVpMhteyTwMb0mHvGYopYq7RDNjsDSAjuMpFf9a8g1IrGOkXgTgAuE8qso6Kh+z3d6K1CHQ98U/tYp2jO5AAU/g+7891PJVonJNxoFAmnHzoqe/foRxCQO9ELqtO8AqR6nYczgaYqtd1NeDCHvo4oyMIoMeKA9y8xbniUVi8RuTkdtfrxb1Avm52JMxjYQhDNzJ2slB+dJSa7zFvZ0wD99ruAGBc41i+FZS2H95nLlBVh79LTfwSN+tK0QOwhxKU8geyGqyRQTaAITtj2kC7Omx/fKITPDkgdqa6iRsAhwtIYeMaS8pvNgmweqE8isyeEFLXjtQNKze6zrnntHvtX3U3F+ds19TMwTKt2uOkfKQvZXlLcqNDKbhAT+30WSHTCiyBjQ2KjIuxJgTjH6Ay20Ll/JKur+78g62FPq8yQJ4/GcD41FQO6Z+fxO5L7L+paP1yk0188/nITsmfR1vdxZdPZhxDK8vOICGc7PPGouFhEaJVzJgvtZyZAW87KYWQzViLEst/yNZ1xbKa8XqfOkS4L7mGIuOuhHCSvQXtFZ9oI+f21xh7s4wEOmACE1gO+2xTHo/kMWUbovUS/F/XWa6
+ /j0+l3in
+ Ugw/umNOmf4fqu0VNVp10S5tpI+ZEQq7oM1TSfQzBh47hH/N56ghtY8xE3vsVpqYvhy5GYf5jmuCZnbyr+EVwws4UmtnDQ543seIi/qmdLq+D9w+BW1h/97Tx2YVDtzQNvBE988tlrbfXyZHKpGk4jgmwMBK7Kpyb6RjS2WOjy8OMzZ4RlpD1X0gNa2epg17FrVhVwzdAGkkIj/bLAHF+6VsF1+gzbgAC5396mZTP95qBOX0qBEdh0cfbmR1TVYdBryGQ0tuVml+sQwG8yf/gfkBMNhkcjqVmKmG0HkUrDGEyxFQOOJ6FZXkL9aMVocrUP7pvUhbuuaL/i9GoDMBk+c7YZb4McBaPEA51Lxj4/TVVNIvaervd1oj4ViL4u2eaSMiaMXoCp/DfOElwh82Skvc7oeW37qJNnzl8blMO0egu1evQ4Katx59nJfkcr+LHQG54XYiZ5DPqHig04NdnFkNFktev83Li5N2ps8ny+N2tH6J8BD87ON5nWbugfNxYy2jYIYO5v9Xf1vuBZrsQgEYfgpsDJhCVdu91KWXVXVNrQY5bZVkBLXTP0eBxDQWtNNQmLUTuLX7rh4G47j4j+g0cRHNf6IwNIcJNpmXZ7AWI2wuj/RQAEVY3yu5Iikd3lZ/IY1sle0JS48VJ2k44cU1bY6gXSdCovpATYXIX6aHfILi8Asf9KZKi0Av3CJbFyCFLGBKbgYeG96bvOd9Ood/z6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,340 +106,212 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Critical] dma-heap: UAF and wrong memcg fallback on task->mm in dma_heap=
-_ioctl_allocate()
-- [High] dma-heap: missing permission check on charge_fd in dma_heap_ioctl_=
-allocate()
-- [Medium] dma-heap: missing __padding validation in dma_heap_ioctl_allocat=
-e()
-- [Medium] dma-heap: physical pages allocated before memcg charge in dma_he=
-ap_ioctl_allocate()
-- [Low] dma-heap: build failure in dma_heap_ioctl_allocate() when CONFIG_ME=
-MCG=3Dn
+- [Critical] dma-buf: heaps: UAF on remote task->mm in dma_heap_ioctl_alloc=
+ate()
+- [High] dma-buf: allocate() runs before memcg charge in dma_heap_ioctl_all=
+ocate()
+- [Medium] dma-buf: heaps: unguarded cgroup symbols in dma_heap_ioctl_alloc=
+ate()
 --
 
-commit 662cb8c6d2fd1fbf166b582f9ede716df0713b4a
+commit 4f97d3e850a29378e70a6ab0cb15c71860e1fcea
 Author: Albert Esteve <aesteve@redhat.com>
 
-dma-heap: charge dma-buf memory via explicit memcg
+security: dma-buf: Add dma_buf_charge_task LSM hook
 
-This commit adds a charge_fd field to struct dma_heap_allocation_data so
-DMA_HEAP_IOCTL_ALLOC can resolve a target cgroup from a cgroupfd or pidfd
-and charge the allocated dma-buf to that memcg via
-mem_cgroup_charge_dmabuf(). When charge_fd is unset and mem_accounting is
-enabled, the allocation is charged to the calling process's memcg.
+This commit adds the security_dma_buf_charge_task() LSM hook and calls it
+in dma_heap_ioctl_allocate() when charge_fd refers to a process via pidfd,
+allowing security modules to control cross-cgroup dma-buf charging.
 
 > diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
-> index 8a6c2b6e0cc60..be77a4c168ab0 100644
+> index be77a4c168ab0..c315739178867 100644
 > --- a/drivers/dma-buf/dma-heap.c
 > +++ b/drivers/dma-buf/dma-heap.c
-> @@ -7,14 +7,18 @@
->   */
-> =20
->  #include <linux/cdev.h>
-> +#include <linux/cgroup.h>
->  #include <linux/device.h>
->  #include <linux/dma-buf.h>
->  #include <linux/dma-heap.h>
-> +#include <linux/memcontrol.h>
-> +#include <linux/sched/mm.h>
->  #include <linux/err.h>
->  #include <linux/export.h>
->  #include <linux/list.h>
->  #include <linux/minmax.h>
->  #include <linux/nospec.h>
-> +#include <linux/pidfd.h>
->  #include <linux/syscalls.h>
->  #include <linux/uaccess.h>
->  #include <linux/xarray.h>
-> @@ -75,9 +79,14 @@ static int dma_heap_open(struct inode *inode, struct f=
-ile *file)
-> =20
->  static struct dma_buf *dma_heap_ioctl_allocate(struct file *file, void *=
-data)
->  {
-> +	struct cgroup *cgrp;
-> +	struct cgroup_subsys_state *css;
->  	struct dma_heap_allocation_data *heap_allocation =3D data;
->  	struct dma_heap *heap =3D file->private_data;
->  	struct dma_buf *dmabuf;
-> +	struct mem_cgroup *memcg =3D NULL;
-> +	struct task_struct *task;
-> +	unsigned int pidfd_flags;
->  	int fd;
->  	size_t len;
-> =20
-> @@ -90,15 +99,56 @@ static struct dma_buf *dma_heap_ioctl_allocate(struct=
- file *file, void *data)
->  	if (heap_allocation->heap_flags & ~DMA_HEAP_VALID_HEAP_FLAGS)
->  		return ERR_PTR(-EINVAL);
-> =20
-> +	if (heap_allocation->charge_fd) {
-> +		cgrp =3D cgroup_get_from_fd(heap_allocation->charge_fd);
-> +		if (!IS_ERR(cgrp)) {
-> +			/* charge_fd is a cgroupfd */
-> +			rcu_read_lock();
-> +			css =3D cgroup_css(cgrp, &memory_cgrp_subsys);
-> +			if (!css || !css_tryget_online(css)) {
-> +				rcu_read_unlock();
-> +				cgroup_put(cgrp);
-> +				return ERR_PTR(-ENOENT);
-> +			}
-> +
-> +			memcg =3D mem_cgroup_from_css(css);
-> +			rcu_read_unlock();
-> +			cgroup_put(cgrp);
-
-[Severity: Low]
-Will this build when CONFIG_DMABUF_HEAPS=3Dy and CONFIG_MEMCG=3Dn (or
-CONFIG_CGROUPS=3Dn)?
-
-In drivers/dma-buf/Kconfig, DMABUF_HEAPS only selects DMA_SHARED_BUFFER and
-does not depend on CONFIG_MEMCG or CONFIG_CGROUPS:
-
-drivers/dma-buf/Kconfig:
-    menuconfig DMABUF_HEAPS
-        bool "DMA-BUF Userland Memory Heaps"
-        select DMA_SHARED_BUFFER
-
-In include/linux/cgroup_subsys.h, SUBSYS(memory) is guarded by
-#if IS_ENABLED(CONFIG_MEMCG), so memory_cgrp_subsys is only declared when
-both CONFIG_CGROUPS and CONFIG_MEMCG are enabled:
-
-include/linux/cgroup_subsys.h:
-    #if IS_ENABLED(CONFIG_MEMCG)
-    SUBSYS(memory)
-    #endif
-
-Additionally, when CONFIG_CGROUPS=3Dn, include/linux/cgroup.h does not prov=
-ide
-declarations or stubs for cgroup_get_from_fd(), cgroup_css(),
-css_tryget_online(), or cgroup_put(). Referencing memory_cgrp_subsys and
-those helpers unconditionally in drivers/dma-buf/dma-heap.c:
-dma_heap_ioctl_allocate() breaks the build when CONFIG_MEMCG=3Dn. Should th=
-is
-resolution block be guarded by IS_ENABLED(CONFIG_MEMCG) or moved into a
-memcontrol helper with a !CONFIG_MEMCG stub?
-
-> +		} else {
-> +			/* charge_fd is a pidfd  */
-> +			task =3D pidfd_get_task(heap_allocation->charge_fd, &pidfd_flags);
-> +			if (IS_ERR(task))
-> +				return ERR_CAST(task);
-> +
-> +			memcg =3D get_mem_cgroup_from_mm(task->mm);
-> +			put_task_struct(task);
-> +		}
-> +	}
-
-[Severity: Critical]
-Can passing task->mm directly to get_mem_cgroup_from_mm(task->mm) in
-drivers/dma-buf/dma-heap.c:dma_heap_ioctl_allocate() trigger a
-use-after-free on struct mm_struct or silently charge the wrong memcg?
-
-pidfd_get_task() only increments task->usage and does not hold
-task_lock(task) or pin task->mm via get_task_mm(task). If the target task
-concurrently exits in kernel/exit.c:exit_mm() or execs in
-fs/exec.c:exec_mmap() -> exec_mm_put_old(), it clears or replaces task->mm
-under task_lock() and drops its reference via mmput(mm) -> __mmdrop(mm) ->
-free_mm(mm):
-
-kernel/exit.c:exit_mm() {
-    ...
-    task_lock(current);
-    smp_mb__after_spinlock();
-    local_irq_disable();
-    current->mm =3D NULL;
-    membarrier_update_current_mm(NULL);
-    enter_lazy_tlb(mm, current);
-    local_irq_enable();
-    task_unlock(current);
-    mmap_read_unlock(mm);
-    mm_update_next_owner(mm);
-    mmput(mm);
-}
-
-Because mm_cachep is not SLAB_TYPESAFE_BY_RCU, free_mm() frees the mm_struct
-immediately while mm/memcontrol.c:get_mem_cgroup_from_mm() dereferences
-rcu_dereference(mm->owner):
-
-mm/memcontrol.c:get_mem_cgroup_from_mm() {
-    if (unlikely(!mm)) {
-        memcg =3D active_memcg();
-        if (unlikely(memcg)) {
-            /* remote memcg must hold a ref */
-            css_get(&memcg->css);
-            return memcg;
-        }
-        mm =3D current->mm;
-        if (unlikely(!mm))
-            return root_mem_cgroup;
-    }
-
-    rcu_read_lock();
-    do {
-        memcg =3D mem_cgroup_from_task(rcu_dereference(mm->owner));
-    ...
-}
-
-In addition, if task->mm is already NULL when charge_fd is resolved (for
-instance, a zombie task after exit_mm() whose pidfd is still valid, a
-thread-group leader that exited via pthread_exit() while other threads
-remain alive, or a kernel thread), get_mem_cgroup_from_mm(NULL) falls back
-to current->mm and silently charges the central allocator's own cgroup
-(even when mem_accounting is disabled) instead of failing with an error
-such as -ESRCH. Should this use get_task_mm(task) / mmput(mm) and return an
-error if mm is NULL, or resolve the memcg directly from task under RCU?
-
-[Severity: High]
-What prevents an unprivileged process with access to /dev/dma_heap/* from
-passing an arbitrary pidfd or read-only cgroupfd in charge_fd to escape its
-own memory.max limit or trigger OOM kills in another cgroup?
-
-In drivers/dma-buf/dma-heap.c:dma_heap_ioctl_allocate(), charge_fd is
-resolved via cgroup_get_from_fd() or pidfd_get_task() and charged via
-mem_cgroup_charge_dmabuf() without checking whether the caller has
-permission to charge the target cgroup or task:
-
-1. sys_pidfd_open() in kernel/pid.c allows opening a pidfd for any task
-   visible in the caller's PID namespace (such as PID 1 in the root cgroup
-   or a task in a peer cgroup) without permission checks.
-2. cgroup_get_from_fd() in kernel/cgroup/cgroup.c only checks that the file
-   descriptor refers to a cgroup v2 directory and does not check write
-   permission (unlike cgroup_css_set_fork(), which checks
-   cgroup_may_write()), so any world-readable /sys/fs/cgroup directory
-   opened with O_RDONLY | O_DIRECTORY or O_PATH can be charged.
-
-While later commits in this series ("security: dma-buf: Add
-dma_buf_charge_task LSM hook", "security: dma-buf: Add
-dma_buf_charge_cgroup LSM hook", "selinux: Restrict cross-cgroup dma-buf
-charging", and "selinux: Restrict dma-buf direct cgroup charging") add LSM
-hooks and SELinux policy checks, there is no baseline DAC,
-cgroup_may_write(), ptrace_may_access(), or capability check (such as
-CAP_SYS_RESOURCE). On systems without SELinux enabled (or with
-CONFIG_SECURITY=3Dn or other LSMs), or on SELinux systems where cgroup
-directories lack explicit security.selinux xattrs (-ENODATA in
-selinux_dma_buf_charge_cgroup()) or tasks share a domain, unprivileged
-cross-cgroup charging remains unrestricted. Should dma_heap_ioctl_allocate()
-enforce baseline permission checks on the target cgroup and task in addition
-to the LSM hooks?
-
-> +
->  	len =3D PAGE_ALIGN(heap_allocation->len);
-> -	if (!len)
-> +	if (!len) {
-> +		mem_cgroup_put(memcg);
->  		return ERR_PTR(-EINVAL);
-> +	}
-> =20
->  	dmabuf =3D heap->ops->allocate(heap, len, heap_allocation->fd_flags,
->  				     heap_allocation->heap_flags);
-> =20
-> -	if (IS_ERR(dmabuf))
-> +	if (IS_ERR(dmabuf)) {
-> +		mem_cgroup_put(memcg);
->  		return dmabuf;
-> +	}
-> +
-> +	if (!memcg && mem_accounting)
-> +		memcg =3D get_mem_cgroup_from_mm(current->mm);
-> +
-> +	if (memcg) {
-> +		if (!mem_cgroup_charge_dmabuf(dmabuf, memcg, GFP_KERNEL)) {
-> +			mem_cgroup_put(memcg);
-> +			dma_buf_put(dmabuf);
-> +			return ERR_PTR(-ENOMEM);
-> +		}
-> +	}
-
-[Severity: Medium]
-Could calling heap->ops->allocate() before mem_cgroup_charge_dmabuf() in
-drivers/dma-buf/dma-heap.c:dma_heap_ioctl_allocate() allow a process in a
-memory-limited cgroup to allocate and pin physical memory far beyond its
-memory.max limit before the charge check happens?
-
-Prior to commit "memcg: Add MEMCG_DMABUF accounting infrastructure" in this
-series, system_heap_allocate() passed __GFP_ACCOUNT to alloc_pages() when
-mem_accounting was enabled, charging the memcg incrementally as each page
-was allocated and aborting as soon as memory.max was reached.
-
-With __GFP_ACCOUNT removed from system_heap_allocate(),
-dma_heap_ioctl_allocate() now allocates and zeroes the entire requested len
-of physical backing pages inside heap->ops->allocate() before
-mem_cgroup_charge_dmabuf() calls try_charge(). A task confined to a small
-memory.max limit can request a multi-gigabyte buffer and force the kernel to
-allocate all physical pages (potentially triggering global reclaim or global
-OOM) before try_charge() rejects the charge. In addition, if the allocation
-would only fit after reclaiming from the target cgroup, allocating the
-physical pages before try_charge() prevents cgroup reclaim from freeing the
-target cgroup's pages prior to the physical allocation. Could the memcg be
-charged before invoking heap->ops->allocate() and uncharged if the
-allocation fails?
 
 [ ... ]
 
-> diff --git a/include/uapi/linux/dma-heap.h b/include/uapi/linux/dma-heap.h
-> index a4cf716a49fa6..bfcd1c25bc7ea 100644
-> --- a/include/uapi/linux/dma-heap.h
-> +++ b/include/uapi/linux/dma-heap.h
-> @@ -29,6 +29,11 @@
->   *			handle to the allocated dma-buf
->   * @fd_flags:		file descriptor flags used when allocating
->   * @heap_flags:		flags passed to heap
-> + * @charge_fd:		optional pidfd or cgroupfd whose cgroup should be
-> + *			charged for this allocation; 0 means charge the calling
-> + *			process's cgroup when the mem_accounting module parameter
-> + *			is enabled, or skip charging otherwise
-> + * @__padding:		reserved, must be zero
->   *
->   * Provided by userspace as an argument to the ioctl
->   */
-> @@ -37,6 +42,8 @@ struct dma_heap_allocation_data {
->  	__u32 fd;
->  	__u32 fd_flags;
->  	__u64 heap_flags;
-> +	__u32 charge_fd;
-> +	__u32 __padding;
->  };
+> @@ -81,13 +82,14 @@ static struct dma_buf *dma_heap_ioctl_allocate(struct=
+ file *file, void *data)
+>  {
+>  	struct cgroup *cgrp;
+>  	struct cgroup_subsys_state *css;
+> +	const struct cred *tcred;
+>  	struct dma_heap_allocation_data *heap_allocation =3D data;
+>  	struct dma_heap *heap =3D file->private_data;
+>  	struct dma_buf *dmabuf;
+>  	struct mem_cgroup *memcg =3D NULL;
+>  	struct task_struct *task;
+>  	unsigned int pidfd_flags;
+> -	int fd;
+> +	int fd, ret;
+>  	size_t len;
+> =20
+>  	if (heap_allocation->fd)
 
 [Severity: Medium]
-Should drivers/dma-buf/dma-heap.c:dma_heap_ioctl_allocate() reject non-zero
-values in heap_allocation->__padding with -EINVAL?
+Will this cause a build regression in dma_heap_ioctl_allocate() when
+CONFIG_DMABUF_HEAPS=3Dy is built with CONFIG_MEMCG=3Dn or CONFIG_CGROUPS=3D=
+n?
 
-include/uapi/linux/dma-heap.h documents @__padding as "reserved, must be
-zero", and dma_heap_ioctl_allocate() validates heap_allocation->fd,
-heap_allocation->fd_flags, and heap_allocation->heap_flags, but never checks
-heap_allocation->__padding:
+In drivers/dma-buf/dma-heap.c, dma_heap_ioctl_allocate() unconditionally
+references cgroup_get_from_fd(), cgroup_css(), memory_cgrp_subsys,
+css_tryget_online(), and cgroup_put() in the charge_fd resolution block
+(introduced earlier in this series by commit "dma-heap: charge dma-buf
+memory via explicit memcg" and updated here):
 
-drivers/dma-buf/dma-heap.c:dma_heap_ioctl_allocate() {
-    if (heap_allocation->fd)
-        return ERR_PTR(-EINVAL);
+	if (heap_allocation->charge_fd) {
+		cgrp =3D cgroup_get_from_fd(heap_allocation->charge_fd);
+		if (!IS_ERR(cgrp)) {
+			/* charge_fd is a cgroupfd */
+			rcu_read_lock();
+			css =3D cgroup_css(cgrp, &memory_cgrp_subsys);
+			if (!css || !css_tryget_online(css)) {
+				rcu_read_unlock();
+				cgroup_put(cgrp);
+				return ERR_PTR(-ENOENT);
+			}
 
-    if (heap_allocation->fd_flags & ~DMA_HEAP_VALID_FD_FLAGS)
-        return ERR_PTR(-EINVAL);
+In drivers/dma-buf/Kconfig, DMABUF_HEAPS only selects DMA_SHARED_BUFFER and
+does not depend on CONFIG_MEMCG or CONFIG_CGROUPS. However, in
+include/linux/cgroup_subsys.h, SUBSYS(memory) (which declares
+memory_cgrp_subsys) is guarded by:
 
-    if (heap_allocation->heap_flags & ~DMA_HEAP_VALID_HEAP_FLAGS)
-        return ERR_PTR(-EINVAL);
+#if IS_ENABLED(CONFIG_MEMCG)
+SUBSYS(memory)
+#endif
 
-    if (heap_allocation->charge_fd) {
-    ...
-}
+Furthermore, in include/linux/cgroup.h, the SUBSYS() declarations along
+with cgroup_get_from_fd(), cgroup_css(), css_tryget_online(), and
+cgroup_put() are only declared inside #ifdef CONFIG_CGROUPS without stub
+definitions when CONFIG_CGROUPS is disabled. Should this path be guarded by
+IS_ENABLED(CONFIG_MEMCG), or should Kconfig dependencies/stubs be added?
 
-Whereas a later commit in this series validates arg.__padding !=3D 0 in
-dma_buf_xfer_charge(), dma_heap_ioctl_allocate() leaves __padding unchecked
-throughout the series. Also, using charge_fd =3D=3D 0 as the unset sentinel
-without a flag in heap_flags makes it impossible to pass valid file
-descriptor 0 as charge_fd and causes older kernels to silently ignore
-charge_fd. Note that extending struct dma_heap_allocation_data here also
-causes tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c:
-dmabuf_heap_alloc_newer() (which places .garbage1 =3D 0xffffffff at this
-offset) to fail with -EBADF at this commit until the selftest struct layout
-is updated in commit 0809a03b2fbc81e6f2b637ef5c0744b2c8ae99f1
-("selftests/dmabuf-heaps: Add dma-buf memcg accounting tests").
+> @@ -120,6 +122,14 @@ static struct dma_buf *dma_heap_ioctl_allocate(struc=
+t file *file, void *data)
+>  			if (IS_ERR(task))
+>  				return ERR_CAST(task);
+> =20
+> +			tcred =3D get_task_cred(task);
+> +			ret =3D security_dma_buf_charge_task(current_cred(), tcred);
+> +			put_cred(tcred);
+> +			if (ret) {
+> +				put_task_struct(task);
+> +				return ERR_PTR(ret);
+> +			}
+> +
+>  			memcg =3D get_mem_cgroup_from_mm(task->mm);
+
+[Severity: Critical]
+Can passing task->mm directly to get_mem_cgroup_from_mm(task->mm) in
+dma_heap_ioctl_allocate() trigger a use-after-free on struct mm_struct, or
+silently charge the wrong memcg when task->mm is NULL?
+
+When resolving heap_allocation->charge_fd via pidfd_get_task(), the caller
+only holds a reference on task->usage, which does not pin task->mm. After
+security_dma_buf_charge_task() returns 0, dma_heap_ioctl_allocate() reads
+task->mm and passes it to get_mem_cgroup_from_mm(task->mm) without holding
+task_lock(task) or acquiring an mm reference via get_task_mm(task) (a
+pattern introduced in commit "dma-heap: charge dma-buf memory via explicit
+memcg", modified here, and duplicated in commit "dma-buf: transfer memcg
+charges via DMA_BUF_IOCTL_XFER_CHARGE").
+
+If the target task concurrently exits via do_exit() -> exit_mm() in
+kernel/exit.c (or replaces its mm during exec via exec_mmap() ->
+exec_mm_put_old() in fs/exec.c), it clears task->mm under task_lock() and
+drops the last reference via mmput() -> __mmdrop() -> free_mm():
+
+	local_irq_disable();
+	current->mm =3D NULL;
+	membarrier_update_current_mm(NULL);
+	enter_lazy_tlb(mm, current);
+	local_irq_enable();
+	task_unlock(current);
+	mmap_read_unlock(mm);
+	mm_update_next_owner(mm);
+	mmput(mm);
+
+Because mm_cachep is not SLAB_TYPESAFE_BY_RCU and __mmdrop() frees the
+mm_struct immediately without an RCU grace period, get_mem_cgroup_from_mm()
+in mm/memcontrol.c can dereference freed memory at mm->owner:
+
+	rcu_read_lock();
+	do {
+		memcg =3D mem_cgroup_from_task(rcu_dereference(mm->owner));
+
+In addition, if the target task is already a zombie (having completed
+exit_mm() while still reachable via pidfd_get_task()) or a kernel thread,
+task->mm is NULL. Even though get_task_cred(task) and
+security_dma_buf_charge_task() authorized charging the target task,
+get_mem_cgroup_from_mm(NULL) in mm/memcontrol.c takes the !mm fallback:
+
+	if (unlikely(!mm)) {
+		memcg =3D active_memcg();
+		if (unlikely(memcg)) {
+			/* remote memcg must hold a ref */
+			css_get(&memcg->css);
+			return memcg;
+		}
+		mm =3D current->mm;
+		if (unlikely(!mm))
+			return root_mem_cgroup;
+	}
+
+which silently charges current->mm (the allocating caller's own memcg) or
+root_mem_cgroup instead of charging the target task's cgroup or returning
+an error. Should this pin the mm with get_task_mm(task) / mmput(mm) (or
+resolve the memcg from the task under rcu_read_lock() via
+mem_cgroup_from_task())?
+
+>  			put_task_struct(task);
+>  		}
+
+[Severity: High]
+Should the memcg charge happen before heap->ops->allocate() allocates the
+physical backing pages in dma_heap_ioctl_allocate()?
+
+Immediately following the charge_fd resolution in drivers/dma-buf/dma-heap.=
+c,
+dma_heap_ioctl_allocate() invokes heap->ops->allocate() for the full
+requested len before charging memcg via mem_cgroup_charge_dmabuf():
+
+	dmabuf =3D heap->ops->allocate(heap, len, heap_allocation->fd_flags,
+				     heap_allocation->heap_flags);
+
+	if (IS_ERR(dmabuf)) {
+		mem_cgroup_put(memcg);
+		return dmabuf;
+	}
+
+	if (!memcg && mem_accounting)
+		memcg =3D get_mem_cgroup_from_mm(current->mm);
+
+	if (memcg) {
+		if (!mem_cgroup_charge_dmabuf(dmabuf, memcg, GFP_KERNEL)) {
+			mem_cgroup_put(memcg);
+			dma_buf_put(dmabuf);
+			return ERR_PTR(-ENOMEM);
+		}
+	}
+
+Because commit "memcg: Add MEMCG_DMABUF accounting infrastructure" removed
+__GFP_ACCOUNT from alloc_largest_available() in
+drivers/dma-buf/heaps/system_heap.c:
+
+		flags =3D order_flags[i];
+		page =3D alloc_pages(flags, orders[i]);
+
+system_heap_allocate() allocates and zeroes the entire buffer of size len
+using uncharged alloc_pages() calls before try_charge() is evaluated in
+mem_cgroup_charge_dmabuf(). Can a process inside a memory-limited cgroup
+(or targeting one via charge_fd in DMA_HEAP_IOCTL_ALLOC) use this window to
+exhaust host physical memory and trigger the global OOM killer before the
+cgroup limit check runs?
+
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-v2_2023012=
-3_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com?part=3D2
+3_tjmercier_google_com-v2-0-ef6ee2dd8c5c@redhat.com?part=3D3
 
