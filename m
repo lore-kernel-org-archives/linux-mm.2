@@ -1,155 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D44C606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 20:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC10E606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 20:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=CVMKShan
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kcTsICfZ
 Received: by kanga.kvack.org (Postfix)
-	id 6C4326B0296; Thu, 22 Oct 2026 16:54:10 -0400 (EDT)
+	id D33DC6B09C9; Thu, 22 Oct 2026 16:57:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6753B6B09C7; Thu, 22 Oct 2026 16:54:10 -0400 (EDT)
+	id D0B826B09CA; Thu, 22 Oct 2026 16:57:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53EF56B09C8; Thu, 22 Oct 2026 16:54:10 -0400 (EDT)
+	id C48F16B09CB; Thu, 22 Oct 2026 16:57:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 291CB6B0296
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:54:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 92DFFA025E
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:54:09 +0000 (UTC)
-X-FDA: 85351464618.14.93E866E
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 89A2A40003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:54:07 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CVMKShan;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792702447;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B56C6B09C9
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:57:38 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C4B71602BB
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:57:36 +0000 (UTC)
+X-FDA: 85351473312.17.AA9F0B5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 04DA8A000B
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:57:34 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kcTsICfZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792702655;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q7AHGxYo2F1tyAP4/knTgDUev2PNwFvE7RNfo85FnlQ=;
-	b=rIXNKIl3sgYioIODsXS4wuCHJH/NtWHSswVBAUymZWnbC5YLq5ddfaw/X84W9oQrHpg4/b
-	JRAr0VZFXnRrLhM0QeVJHlsHfV1xTlbR1bghNEo9wlPOc6NFvR9hnD6nX4mr6f+QvnUzGt
-	rvcicKrEIKZQGQXTqLpJIKvXhr+nC3E=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CVMKShan;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792702447;
-	b=Gw4YbYs8+pkDeAE8gU3PhS2z0FvkX8KLVTBckaHxm+qUfUqDo1GItyPJY6d0Ntk/u3RYUj
-	aMrTV1zsQsG9vPVqZmqJI78+8JwGKFmfa4uSgFvQjn7fuoUF1dE9UCBKJbU1VfMMQut63R
-	G+SgwR8NJBtxHxgDUf/V36+Hiy62TGM=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b1aa2848d2so210964a12.3
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 13:54:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792702446; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CF1p3Fq1MePZrQyRKyNCav1zyKd19GilaANOKUFty5/uq/mSiy2uBkdwIUB+PItSkv
-         xVDHHC1LMvHXVZvMbbMkSuA50BSY+0oMNchXwzqmYkHBClvPXTz8jx27d+bNGCZbqv+Q
-         qbkBAEM/eaYmWBDUjxBIQ3fea7zYgV5Xap8b1ooF3yMIVNPwT04nvao6l3fQ1Fpe22PU
-         r2y/F6v5LrISjxPj06ORzMwk/5RV9osqBb2VsBZxSnzJvusSpkOESxp42RomuZ17XDZq
-         x2wa9qgszNSnZj7wnQRHB3oLYyJmq3aTn7ZrZuKJYQQJrJ1W/I+aXUMAUMdxqhofQhMJ
-         9+ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=q7AHGxYo2F1tyAP4/knTgDUev2PNwFvE7RNfo85FnlQ=;
-        fh=jsMlt5HJvN1zA+oPfYCo1H7tpLrjyKqUkotK8ihYg8o=;
-        b=PFZ7WepYfG5gfY9idp4ulT09+RA37omy/OFBO4h3P3PjLj4YmfaNdu+SD+G1kdFdcU
-         cQWqKUCSi9vL3iotELpt6u3967Sy7nHbMWweUqkmHBJofPt/zbxV/5Lm9Q/LllNUfAke
-         PL8ZZF/Wv11TMauUKWgUjlRs8loJB/ZrljTdLf9p0i+9zGLTUfH5dHAwXJXpU0Tc4M9u
-         2iMn41ikM3SWy2t/5j3I6R7FWNvx86J0fwCN6IfSsi6SkwxY7JlxZzvOmEwbclkmKoZo
-         r23GMqsm38As7P51ug3l6g+jo1rWyJptxKaIpiAQcMIm9Y3BF37NX0p00zxZ2Z4h8GUi
-         Brqg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792702446; x=1793307246; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=q7AHGxYo2F1tyAP4/knTgDUev2PNwFvE7RNfo85FnlQ=;
-        b=CVMKShanQqqDupOH2/YX3r4qynJpIUXyrJFWdPsopdnVuUvxTdMaA6uvqQsFAScOfS
-         aMTST0N0lv090CUdnRrUuHjU8SE4gVnJsw7ESZJWDbGw5fo3b1tzjBu9P++XXK5COe+D
-         +o75lUu6aqh3yn11PNTB+ughdvjYbYoaMT/+DVnHXd/X/DM5aDR2BPiBNs9iba0nb2/C
-         xepSSgDmknR0GydyA23xdXlEeqJTnQeM+sIychTZDZ4UcdMUq+ryIlQompsj0ISHH8GR
-         tHeGxqlrqLU5j4IJvqIpSgjhlq4lXi14EgSBwIty1wbnmYgVJspUnlCdi/bbXAwg0r5w
-         g4ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792702446; x=1793307246;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q7AHGxYo2F1tyAP4/knTgDUev2PNwFvE7RNfo85FnlQ=;
-        b=rJGsARH1nwL6TadJhxKR8dyXmriqsAEMA4d5eSl0V+OXhV3J5Y5PePL7CklTUN4BC0
-         FP5TVLPrRMA/ER2oqYLvoCCNCR79xOs8ryr6yAkAje6ZgxkTCLx/THLGrx9QLn+RWiZ3
-         AC/QJEY5WJXBujsqwALiUScJ+d1NRiHcXS/NEq1yLvz2ZAIloGsqUJ5gU9Lrog7k9qAr
-         3zpRYV8u2LcnrM+ZMeijLKD4nvRpGQXgsuO53Cm0cXblYtQU3+9cso34/S79P1YHD3lX
-         kKK0nQeeWeVRyNLgAp3HP0lNFuIWCwUGzGLJE9qzUedd2BmaT5ynClsGZy+LsQFh3UGt
-         XqLQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx/c9c7hvKkTQrV9cQW19oUtDT4RKGCylj3vSVfZA4qhf1vXkvZoJdilz105lt4iO7WIkFpDajVXQ==@kvack.org
-X-Gm-Message-State: AFq9FYJ8zVn4SGzwTfx8+XIWOSNDWkFzU3Fokh/0AJStsuRjp7HpQ4KA
-	UbJIY+7W1pBo2O/kMC1+MUeqSzQEty7TpD07OOlm97QN8dnF6q6X/EVX88p+d1Hh3v7cTYBswbq
-	1Wq/gZeQcky0smAHZN/kxMeuV3YCPfly/pAa4Yinkkw==
-X-Gm-Gg: AYBFou2eBLw8UCZhioPfaxVPpfE6Q+FfIKJXXzXc0PEx8gHQXxTjcDpmLK342qsZ23V
-	UADsnVei+5IYSMj9qyAQfNThGRT5qenLSiCeLgPRW+wLEJwP+eEgS1IU9jnJewSbMYirOUa0TD0
-	rpMHfqDL+TeAc8DrHbENwbZ6WBtef5TU9RDgiMo9V5+s8P4ErlCjURGoyk3O+5p2pDM5uzddSn+
-	k0EJBIYFECFEE0VDBAUqEadAljv2jMQaV93k2ujtd3PQmobIO1Uizfq8f540i0T+gyA8+EYgb5Z
-	EC6Y0gSnMu/mx062PGOAFpDMfm0S6Kjyt+x/o8nITXa3jDRZ22AGOImqETsB7hXzQx9Hahh53At
-	zfJNF3V6azjX8M4pSyyQrAVzB+f0z9oIhZe/8MM+TFOe/T80iqZqrXtq5kPPSxIjRdAg9
-X-Received: by 2002:a05:6402:321c:b0:6b1:c299:b3f8 with SMTP id
- 4fb4d7f45d1cf-6b432c1a486mr859420a12.33.1792702445990; Thu, 22 Oct 2026
- 13:54:05 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
- <9huzecdi6go0.fsf@tarunix.c.googlers.com> <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
- <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
- <atlKsD-aJB3mJr2j@google.com> <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
- <atl7peoVHdP5hz7z@google.com> <CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
- <CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
- <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com> <atpNFEFIlqAoYIwH@google.com>
-In-Reply-To: <atpNFEFIlqAoYIwH@google.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 22 Oct 2026 16:53:28 -0400
-X-Gm-Features: AclHuK_o-bcMo-_bEmG9OJEk39HO6mWdZ96jtolFahfwsqDnw1LYQXgLWQ4gcJk
-Message-ID: <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-To: David Matlack <dmatlack@google.com>
-Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
-	Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
-	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	bh=LIhfmmcjoIFyE9XcthoG6P+kIqoTwbVtmyT4W+Ofg3k=;
+	b=orrICpwXmHb8nEiPtz1TEcjmksXkgFDtGUB2a9gz/6gd2w53ggTKSvzMoyc5qXaoE1Lbty
+	2wHWJpSr8pHxR+/05Zx6G84QMsdtYOyWjmMThtV/5/2gGxPPCyJR/A8Mf2/O9CZ5fe2FrB
+	doQ/KMuSBECDFlu5LoRBlUusgQcyLgA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kcTsICfZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792702655;
+	b=2evjk7Y7jYBTleTP1JN7mHOYOsGgVUyiUFP0Bkjv4Pl/QIgqbWhRUwLEB7mhqDALqqwQnO
+	QDAVqQ5YgJylpSxx1tz8ZcHD9m78wW/NvEYbtvr0mW2kqi4rcONufDJOVhKikhZ9h4UWb1
+	uq7kQr+YZQNCwcgnEldO5312BS6u+zc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 618DF42A3B;
+	Thu, 22 Oct 2026 20:57:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510B31F01828;
+	Thu, 22 Oct 2026 20:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792702653;
+	bh=LIhfmmcjoIFyE9XcthoG6P+kIqoTwbVtmyT4W+Ofg3k=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=kcTsICfZDioQU+wZci6SIJUDQUMw648cJ9rpOrODjZHKhZYtSqEgmoEOidSUoWaJw
+	 oOGYTtFqdfj1un1kqeVHKaKO7Z1Y+6z2DPxi56uHJId1fXJ2yyj9qlC29HsPPjMCMg
+	 xQq5jHPob1ZDZuCCYeC2FHA6NjlLGhQRZRd2dnRDzFiKE6CzlXUUOF1cyV77gPS/s2
+	 tdjK3+BPYjO2tGsnP1Q6PIVqcwZUyt0wv4kI68w/adndXAH89cwK9RG7KCahnlLocU
+	 BHGYwPKbQ8KkUz2Yvh1MHEPHsfXXYiHKvZnrSDo0zFdp4CqVQth0qZ6xdwp93fzmcb
+	 5V/JbvnuYLTBA==
+Message-ID: <sashiko-outbox-182032@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor
+ compression
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Suseendran Bhaskaran" <suseendranb@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Herbert
+ Xu" <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed" <yosry@kernel.org>, "Nhat Pham" <nphamcs@gmail.com>
+Cc: "Chengming Zhou" <chengming.zhou@linux.dev>, "Nick Terrell" <terrelln@fb.com>, "David
+ Sterba" <dsterba@suse.com>, "SJ Park" <sj@kernel.org>, "Chris Li" <chrisl@kernel.org>, "Giovanni
+ Cabiddu" <giovanni.cabiddu@intel.com>, "Suman Kumar Chakraborty" <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261021205626.3286270-3-suseendranb@google.com>
+References: <20261021205626.3286270-1-suseendranb@google.com>
+ <20261021205626.3286270-3-suseendranb@google.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 89A2A40003
-X-Stat-Signature: ar6hq3txt1szba6rjo8z185owjj3ka3n
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Date: Thu, 22 Oct 2026 20:57:31 +0000
+X-Rspamd-Queue-Id: 04DA8A000B
+X-Stat-Signature: cgny9sio6q7hhbzzskpdoze6gqcm4p5z
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792702447-389922
-X-HE-Meta: U2FsdGVkX197pzZOWsWEzznh4+gRvDD5GXxbjrFhgkjRu0EYSizrHzpMY3NGrG5e4eHNPhPaLEo0eyoKQSSUMR65SQ4Kcqlfshj8P7whaAbL/8g9Fz6xy/DSAGp8sYSPhL8mC9ABmNUe0gcsCX76pgh9y0YpauN69BYQacc0visWsOwK7L3/gIFcIFShe5REZzdLy8RUWN9XbTVQAXrzl+fYeA3M2NHd1tdIknH2TNJvW/KaHAaHIr8+iSPQe+hdW3alSEnHSv3mEwDBt+JQO6KcoDYoSUs0CmeEcGDk4m65SdhV9I8mRg8w/tDEN19pNefJeAnKxK4L3sYwwkcuo1k0sGp/XsvyqjOJAgwqT639TUlerPJrAIg1HRQmxLP0bkehYLSshtywPUW57WebixB8weTmdPXYfU36ZAhGEBppW5Ekv2iviQHqb1UEEeq+jAJDzbQgPXwOtWNdR5dYLkde9pE578RyIWSW0vVilg/xABmJkkb1EBZHxkUAGua4GurKT716pvaEbUl+MNU5q8iQF5uYdGg6azQ4xiSbQK30HgYl3iUmFjLm9gdskmmWQlKrz5iqXnQoW4Cmyll6ZFRbDWD2QPl5EXy4R0tIue+EErp2/ZswHk1U2uu/JcfX0fMk9MbVMdILI/b+jaIaHMuuMiBVM1v/yQzmhLkjIpIaP4K9mGvOBWNZ3mCUd5DWtTscRYL2tUQchEi6f4xfA3QG+bsk5VSZ5+LO5bxLWi7hsy9TqYBSmETT8elPZMNU/RwWTtTxYeMrBs4U56+HTuCgRLIu0hDy+oHCPh8IVeh6FIAS/Z6WiXW6WcoyCX0M6pTjZuFpxilxy3aZvIrj9BB379e4v8bVKBFkT0uYOmsSQeuuoON1jAbLCDsTmXSXkYFnK9zYrDA/RUFUDvLywJIQKESQFsNoRkspgDsxYDAAD7TIhkIA0J5+WK8q0faOulkyKtdlomcLcsd5Ejh
- gWeTzDRI
- h24UKBM89kOdB3zJWxSpG/yU0KQsiwkwtre9IMZYh/MxUz/aEKyifeRdvIyPVp43f6FizLXcfGUYlue+JBSPmPXNMnTh68yezGdd+vjMzPVRifFpgIcShUAdYXD0B0Dv6c0GPjBimnDu/eFu3xhc5IGDnm1RDMOYYRoKNL+c5pyfxzEEf+rFwWtG8YWIIyPUHCHSLmICrbm56WjWLJ6KKXI7OGthOuScdoC00v2C1eoilr/aW5EH8q7T2K37HmekQ0zlncL0zQyyBaZs=
+X-HE-Tag: 1792702654-192048
+X-HE-Meta: U2FsdGVkX196Hy87WwTpPOTumMyrxVBdfatsWDuOqXU22Wt+Ei/VsHz/NDqZcEJLUzruLooOhmYJC2HFCn1Pay5Gw45A47oh9+yMsidxQ0BY2yXNVjD4dYL67RWo4b1Zy68c5/y0XnK3SpXbQjiYvwSDYWBE5lsYKnwwzd0J6mTCvHyaFiHTgCPTwyF5y3E19M+2ofaLeV6eUT4Z03WBsQvg+w8/KRbwF/MQoG/xVmhKmBKsonCiE+9QnXGn1vMqbBUFDxwTBhKAfnCWiQH8X/KadvXI/AU1vF7/qfuAtxWGE/vUtqD0DMZFfu+4qhEsDGqwJLBcXMJ2Zkw0GVJ2Cext3/pbesGbphCOPV4LXdRbCXU/hgYZUpXRRc6cWqvIPAN0+XPsoSNqneZztQKa+Qp5X8cxHPa80weqUaZ0fuNkhD9pSnm/wlWYEpTlFLkKkNf2ny9/izodTTdpx2vFrdBD7o81QzKGwKs6vxNzqzStXCCKqayLfD0cUVMaasYDAQHjehMpeaoAY/lKbped85mjO1IRC5CPlHMhU3hcrrTZGn3N6KDRUigz/96Jan7ibDFDii1CkS4r8R8pIkLV22PkMdTzhamTXRosUSN2hdT3fcOX2EuHxl6xnmOB9615Ga/sAEut+ZcOgDmuKiaXJaEBV0dBHOmx8EI6E6NcahtsYsBigpji+w5uB91BPzmH8LDFWibY8QDt9AYuM+LoeH51mMF3rkqbuJ6EPfx7KT8kwfk63RdLdaeXn/AlB9EgQckif8CODvrFTj2fsa8ZcC6SbbgJpPApFOJakyyrxGb+hW4oHxcdS7Q8ZvSm31h7tPKZMcarcxj/IV6P33vHBIftijtvXhJjmRNkqRO3PiiV13J2l/+AN52kpnUXolxPbCU7xaJ+QgNk+ApTsloE8Ce5ftr4ffpe7RQelzQoy2P2NTofcniXXKHQiAuUeYaRn7712lm1cWZ01mhpW1D
+ FM0jh4Wm
+ nphA6ZYn256LXRhFpXSjdZzGQw8RfrR/Xn7qal723BopnH4FiSRG0An5/vRIub7ulWtwLbUkhWlJna+Cb4QnGGIhsYO+2qpzDtwthGLAhVWkkFVCqMYRuj2pYDUPLuCGiNl9AMYJw0hOY0q0Ja4Gcu8uR3GO+lhlnKtjVH95yicQ5dAn1gNZD81bS+fTJilUlL/Z1Yo7c4N5gvG1iF35jCLkPvAeaWIixCrqdDITy8paHlAjZJSOqFFgvOYhSmbgKfnwxgT1eI537tSxq28Y6Ov7lQ+lbqcoKlv3bCf/bu7QzIWTOlPHjJXwhmfQyuxE6WvKAU+a0DYRZtAfHNzpwjZEEwawdb6OEkQSdr2T1Xoc1gP9hJ12VkD2/PNconNul6+aGK6htX72mIVbkcXqWVkp4JgXfShP2JDxbwCGsWG8EcaGC+pOhb35rlDgLCQDMHsR5BLDMmvOf8u1ANyz2ouPKs4qdOkjBhG9e9S8gk87A1KgM711xr6rTWwePkBWwtmyEVrwiS88yVCUCqVoQoYYjRJprbuU8oZPyUMlByZ1eNvEgqwNEChAadQRkvHmQomv/5K0TAoOQ1/DcJzGjRcX5/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,174 +96,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Thu, Oct 22, 2026 at 1:51=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
->
-> On 2026-10-22 12:11 AM, Pasha Tatashin wrote:
-> > On Wed, Oct 21, 2026 at 11:53=E2=80=AFPM David Matlack <dmatlack@google=
-.com> wrote:
->
-> > > > #define DECLARE_LUO_SER(name, expected_size, ext_flags_count, paylo=
-ad_type) \
-> > > >     struct name {                                                  =
-         \
-> > > >         __u32 size;                                                =
-         \
-> > > >         __u32 flags;                                               =
-         \
-> > > >         __u64 ext_flags[ext_flags_count];                          =
-         \
-> > > >         payload_type payload;                                      =
-         \
-> > > >     };                                                             =
-         \
-> > > >     static_assert(sizeof(struct name) =3D=3D (expected_size),      =
-             \
-> > > >                   "LUO struct " #name " size mismatch!")
-> > > >
-> > > > For example:
-> > > >
-> > > > struct luo_memfd_payload {
-> > > >     __u64 pos;
-> > > >     __u64 size;
-> > > > };
-> > > >
-> > > > DECLARE_LUO_SER(luo_memfd_ser, 24, 0, struct luo_memfd_payload);
-> > >
-> > > This looks pretty reasonable but I would name the payload
-> > > luo_memfd_ser. The combined struct that DECLARE_LUO_SER() creates
-> > > should never be used directly since the offset of the payload in that
-> > > struct is only valid in the current kernel. So I would give that
-> > > struct a special name that makes it obvious you shouldn't be using it=
-.
-> >
-> > Lets drop the fourth macro argument and generate the combined struct na=
-me:
-> >
-> > #define DECLARE_LUO_SER(name, expected_size, ext_flags_count)          =
-    \
-> >     struct name##_hdr {                                                =
-    \
-> >         __u32 size;                                                    =
-    \
-> >         __u32 flags;                                                   =
-    \
-> >         __u64 ext_flags[ext_flags_count];                              =
-    \
-> >         struct name payload;                                           =
-    \
-> >     };                                                                 =
-    \
-> >     static_assert(sizeof(struct name##_hdr) =3D=3D (expected_size),    =
-        \
-> >                   "LUO struct " #name " size mismatch!")
-> >
-> > For example:
-> >
-> > struct luo_memfd_ser {
-> >     __u64 pos;
-> >     __u64 size;
-> > };
-> >
-> > DECLARE_LUO_SER_HDR(luo_memfd_ser, 24, 0);
->
-> I think we are getting close, bu I have two remaining concerns:
->
->  * Reserving bits in each flags word for continuation leaves gaps
->    in the flag space that users have to know to skip.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/zswap: zswap_compress() mishandles -E2BIG overflow from hw co=
+mpressors
+--
 
-Yes, but callers should never manipulate the raw flag words directly,
-and we can provide simple accessor macros or inlines that take a
-contiguous feature ID (0, 1, 2, ...)
+commit 6e958455f7e6f806b4bd7b7afc39fe7c9fb8cd1f
+Author: Suseendran Bhaskaran <suseendranb@google.com>
 
-enum luo_memfd_feats {
-    LUO_MEMFD_FEAT_HUGETLB =3D 0,
-    LUO_MEMFD_FEAT_SEALS   =3D 1,
-    /* ... */
-    LUO_MEMFD_FEAT_FOO     =3D 15, /* Automatically lands in
-ext_flags[0] bits 0:1 */
-    LUO_MEMFD_NR_FEATS
-};
+mm/zswap: classify compression dst overflow as poor compression
 
-if (luo_ser_get_feat(hdr, LUO_MEMFD_FEAT_HUGETLB)) {
-    /* handle hugetlb */
+This commit updates zswap_compress() to treat only -ENOSPC or an output
+length of at least PAGE_SIZE as an incompressible page, while routing other
+non-zero return values from crypto_acomp_compress() to the compressor failu=
+re
+path.
+
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 37f34e406c8e3..5f2a941fcaf1e 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -881,12 +881,12 @@ static bool zswap_compress(struct page *page, struc=
+t zswap_entry *entry,
+>  	 * only adds metadata overhead.  swap_writeout() will put the page back
+>  	 * to the active LRU list in the case.
+>  	 */
+> -	if (comp_ret || !dlen || dlen >=3D PAGE_SIZE) {
+> +	if (comp_ret =3D=3D -ENOSPC || (!comp_ret && dlen >=3D PAGE_SIZE)) {
+>  		rcu_read_lock();
+>  		if (!mem_cgroup_zswap_writeback_enabled(
+>  					folio_memcg(page_folio(page)))) {
+>  			rcu_read_unlock();
+> -			comp_ret =3D comp_ret ? comp_ret : -EINVAL;
+> +			comp_ret =3D -ENOSPC;
+>  			goto unlock;
+>  		}
+>  		rcu_read_unlock();
+> @@ -894,6 +894,9 @@ static bool zswap_compress(struct page *page, struct =
+zswap_entry *entry,
+>  		dlen =3D PAGE_SIZE;
+>  		dst =3D kmap_local_page(page);
+>  		mapped =3D true;
+> +	} else if (comp_ret || !dlen) {
+> +		comp_ret =3D comp_ret ? comp_ret : -EINVAL;
+> +		goto unlock;
+>  	}
+> =20
+>  	gfp =3D GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE;
+
+[Severity: Medium]
+Does restricting the incompressible page check to comp_ret =3D=3D -ENOSPC c=
+ause a
+regression when using hardware acomp drivers that return -E2BIG or -EOVERFL=
+OW
+on destination buffer overflow?
+
+When zswap_store() -> zswap_store_page() -> zswap_compress() compresses an
+incompressible page into a PAGE_SIZE destination buffer, hardware acomp
+drivers in drivers/crypto/ do not return -ENOSPC when the compressed output
+exceeds the destination buffer:
+
+drivers/crypto/intel/iaa/iaa_crypto_main.c:check_completion() {
+	if (comp->status =3D=3D IAA_ANALYTICS_ERROR &&
+	    comp->error_code =3D=3D IAA_ERROR_COMP_BUF_OVERFLOW && compress) {
+		ret =3D -E2BIG;
+		dev_dbg(dev, "compressed > uncompressed size,"
+			" not compressing, size=3D0x%x\n",
+			comp->output_size);
+		update_completion_comp_buf_overflow_errs();
+		goto out;
+	}
 }
 
->  * struct name##_hdr only matches structs written by the current kernel
->    (in terms of length of array and offset of payload).
+Similarly, the QAT acomp driver (which registers deflate and zstd with
+priority 4001) completes destination buffer overflows with -E2BIG in
+qat_comp_generic_callback() (and -E2BIG or -EOVERFLOW in
+qat_comp_lz4s_zstd_callback()):
 
-This is not an issue on the incoming path, we never cast incoming data
-to struct name##_hdr or access ->payload directly. Instead, we parse
-the incoming buffer, dynamically compute the header size from the
-continuation bits, and cast the payload offset to "struct name *"
-based on the negotiated feature flags.
+drivers/crypto/intel/qat/qat_common/qat_comp_algs.c:qat_comp_generic_callba=
+ck() {
+	if (unlikely(produced > qat_req->actual_dlen)) {
+		memset(inst->dc_data->ovf_buff, 0,
+		       inst->dc_data->ovf_buff_sz);
+		dev_dbg(&GET_DEV(accel_dev),
+			"Actual buffer overflow: produced=3D%d, dlen=3D%d\n",
+			produced, qat_req->actual_dlen);
 
->
-> How about this instead:
->
-> struct luo_ser_hdr {
->     __u32 size;        /* Size of header + payload in bytes */
->     __u32 nr_flags;    /* Number of features encoded in flags[] */
->     __u64 flags[];
-> };
->
-> Each feature occupies 2 bits of flags[], so feature N is always bits
-> [2N+1:2N] of flags[N / 32], with no gaps:
->
->   00: Feature not present
->   01: Feature present, safe to ignore if not supported
->   11: Feature present, must be supported by the next kernel
->   10: Invalid
->
-> The length of flags[] and the header size are computed directly rather
-> than by walking continuation bits:
->
-> static inline u32 luo_ser_nr_flag_words(const struct luo_ser_hdr *hdr)
-> {
->     return DIV_ROUND_UP(hdr->nr_flags, 32);
-> }
->
-> static inline size_t luo_ser_hdr_size(const struct luo_ser_hdr *hdr)
-> {
->     return struct_size(hdr, flags, luo_ser_nr_flag_words(hdr));
-> }
->
-> static inline void *luo_ser_payload(const struct luo_ser_hdr *hdr)
-> {
->     return (void *)hdr + luo_ser_hdr_size(hdr);
-> }
->
-> and bounds checking is just luo_ser_hdr_size(hdr) <=3D hdr->size. The
-> payload is always 8-byte aligned.
->
-> Payload structs are then declared on their own, with no header:
->
-> struct luo_memfd_ser {
->     __u64 pos;
->     __u64 size;
-> };
-> LUO_SER_ASSERT_SIZE(luo_memfd_ser, 16);
->
-> The static_assert covers the payload to catch embedded structs changing
-> size.  Asserting the header doesn't add anything since its size varies
-> by kernel. And because flags[] is a flexible array, the header can't be
-> embedded in front of a payload in a combined struct; it can only be
-> reached through luo_ser_payload().
->
-> I think the only downside is that the header increases to 16-bytes when
-> there is at least 1 flag. But I don't think we need to be so concerned
-> about an 8 byte difference...
+		res =3D -E2BIG;
+		areq->dlen =3D 0;
+		goto end;
+	}
+}
 
-I would prefer to keep the default header at 8 bytes. With 15 features
-fitting directly inside the base __u32 flags word, adding the first 15
-features to a struct keeps the header at 8 bytes and does not shift
-the payload.
+With this change, -E2BIG and -EOVERFLOW fall into the else if (comp_ret ||
+!dlen) branch and jump to unlock. When zswap writeback is enabled,
+incompressible pages will be rejected instead of being stored uncompressed =
+in
+zsmalloc, and zswap_reject_compress_fail will be incremented instead of
+zswap_reject_compress_poor.
 
-Computation-wise it is also very similar: for the 99% of structs that
-have <=3D 15 features, LUO_FLAGS_CONT is 0, so computing the header size
-is just a single bit test with no loop. Even if a struct ever needs
-ext_flags, the loop will walk at most one or two extra words.
+Should those hardware acomp drivers be updated to return -ENOSPC on
+destination overflow, or should zswap_compress() also handle -E2BIG and
+-EOVERFLOW as poor compression?
 
-Pasha
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021205626.3286=
+270-1-suseendranb@google.com?part=3D2
 
