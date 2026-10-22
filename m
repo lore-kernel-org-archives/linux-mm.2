@@ -1,122 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2162F606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 12:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8C9606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 12:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dAUOmnUw
 Received: by kanga.kvack.org (Postfix)
-	id 2D1F26B0921; Thu, 22 Oct 2026 08:01:08 -0400 (EDT)
+	id 1FACF6B0923; Thu, 22 Oct 2026 08:11:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2827C6B0922; Thu, 22 Oct 2026 08:01:08 -0400 (EDT)
+	id 1D2EC6B0924; Thu, 22 Oct 2026 08:11:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14AE96B0923; Thu, 22 Oct 2026 08:01:08 -0400 (EDT)
+	id 0EB526B0925; Thu, 22 Oct 2026 08:11:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE1336B0921
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:01:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD33D160394
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:01:06 +0000 (UTC)
-X-FDA: 85350121332.27.95B3CB5
-Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8C7404000F
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:01:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E19786B0923
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:11:21 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7541A407D6
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:11:21 +0000 (UTC)
+X-FDA: 85350147162.29.2BB8E2B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DD4EA16000E
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:11:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dAUOmnUw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792670465;
+	s=arc-20220608; t=1792671079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s4DjmkflJ85sDaL3EcGa6JYsCik1zYKmblb+K5Ua+5E=;
-	b=ruPQDcnCoVC38DY+nawQDsAh6YZocpoW+6OG2VP5NmWQYSo6tK8YWO0Q1NgvU7lEC9q30p
-	plKZjDoWfQ4pvqp0a84b0iEufcvozFmo21Wcsryg/srQY0LEEcjvGIcr+5gsODyIDfITdl
-	Yyg2oZhEudeLQp4KdmLPMdg0XMo7bFA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=R45se70P3EMmhMkKtYLGOoSJA2q332w3U9R9/qm3AvU=;
+	b=NwFYUx57f+8PNPXWmSjD6HZWjNaZ9n9EVPh/oHWZMCB9XI4jC6VGUvKRK30JaGbZvoTozz
+	L8GUelRDSCEa1cmRwvbaKbt96UuWOXcBPwVUqwwLgxtujpygnYZ1RPmM8ofE29bZvlcTPW
+	cvpv2nCmzA29v1Xi8muAaBy7nG9b/FE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dAUOmnUw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792670465;
-	b=Fgu5UVcHcWIYit1M1+vNByepD2jy+dTVgmnyIS2bJjJlXida67XhshXRW4BqYPFTZlTLEJ
-	UbHXUdwX8u76pWjt6ShYmcCxhSgH3lJVbLzk232adnlnzDmupP/45Nt6/Hfysqh2aj6SDY
-	e6IRH8hPnGnCSjR1rGwwjeCJh9/y0lA=
-Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
-	by 156.147.23.52 with ESMTP; 22 Oct 2026 21:00:58 +0900
-X-Original-SENDERIP: 156.147.1.127
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.127 with ESMTP; 22 Oct 2026 21:00:58 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 22 Oct 2026 21:00:58 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Barry Song <baohua@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <atn6+gEwHUxUKhLB@yjaykim-PowerEdge-T330>
-References: <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
- <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
- <20261014195354.GA371161@cmpxchg.org>
- <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
- <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org>
- <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
- <CACePvbVbMPZTrD5y=--XgBS+sa4CHb7e4RFTYCbWfzHzVc3vXA@mail.gmail.com>
- <7e998cd5-57e0-432b-a8e0-676a5b773436@kernel.org>
+	t=1792671079;
+	b=u8AkKf7hhzWMdjaHjGtgARcolcM7Vr1DeqfY9pnYx0l0pdD7f5VdR66SyRAzz7FnWCRtAH
+	EheC/OXYuR9m5cg3EUv1duBYAINYzGbZCSHhI3sLTAIri7J9tGbtMuyES3htZ5ZGl5BAe4
+	ue+585tG6V9rfA+bGcoIVNFyqpqST7M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5A77B60018;
+	Thu, 22 Oct 2026 12:11:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5AD1F000C1;
+	Thu, 22 Oct 2026 12:11:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792671079;
+	bh=R45se70P3EMmhMkKtYLGOoSJA2q332w3U9R9/qm3AvU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dAUOmnUwYmXnqjnb7xpvzxZUOGMYgicvXndxs7prGd8mnPM1HRCMzBTCy5Wqgajt0
+	 7ydupNhuB0KEpvBHR5rfrH5IvHMKVlKDABORylIiEdm8FrF1lNL770+I6n0iaPeAVl
+	 YC1M6XYdYp6OHunXm7cWdAcaU2dlpD3/998uXguRKcEj5GyZBrTEdi5TpuzW9WUY6V
+	 uR+cGqMYiHlpxwrDQC84R50dPT0QbaRbkx4eFfEHe0Fx1GsqR0lASPJUmBltm4xaIO
+	 vLuGnuxQA7/bhka5CHm5PNZw6Q7Lk2fsakVxVTvA/ssGxs5iP3VkeQW16AkZtzvLOY
+	 hPwMuhCsUC5Uw==
+Date: Thu, 22 Oct 2026 13:11:11 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Konstantin Khorenko <khorenko@virtuozzo.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
+	=?utf-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH v4 1/4] mm/rmap: duplicate a PMD mapping as one in
+ folio_dup_file_rmap_pmd()
+Message-ID: <atn3SPG5MKpj2Unj@gremlin>
+References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
+ <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
+ <atnEFyGRYGGf9shA@gremlin>
+ <71101695-339d-4f8f-b9d8-dfadf7dbd0ed@virtuozzo.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7e998cd5-57e0-432b-a8e0-676a5b773436@kernel.org>
-X-Rspamd-Queue-Id: 8C7404000F
+In-Reply-To: <71101695-339d-4f8f-b9d8-dfadf7dbd0ed@virtuozzo.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DD4EA16000E
+X-Stat-Signature: x48tboqojrooronpagfnarywqnw516og
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: 1jg1hjg4wgjubbe3pdcyn4tbd5kabioa
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792670463-338634
-X-HE-Meta: U2FsdGVkX19KdqUIBhzGhM3gSXbPsSlcBnsWxO7RkP/p027ShhXuAR9K1O7ZF9zov2wR8JGPPULtTlhnjkdfb8DBTfC5leIbuPx4M4ELhP0fK8ghOYMFwqTOmvZJq+e6iEqSxYuOwrh2Su9Fz1ahZg6uFVQ2XhEUYKWbbyfxkII3RQlapw8U9Ojg4hStP3w0vMcIcnhU+OiRoCxI51L1l6TEila1lyAcqNxkW8qZCj/F/pC4E04pESS6m5FAHPUhV484spCsDaIjatTj8QmA8vxgk7Ag+67IwxhPVEEhjfHcLHlHIBDVR6g4Y1sk7sZqtNxmZGUNoGHvV5Jed1QX5FkUUs3ZUr0jg5obyrJVaE2ju1+KMc1yWEBxuGrDLl6f3Z+QtEm8WNgI0651XV0PhTuwQgZ8Fjbou6rdIawuwR2e9MGvKgB+XU7LbzwauTUm0okLz8NaBd9cI+lvaMgmxY2WSfN6BYISuoJkO15NDsiQOMNaIDB3TRIyIdY66ZV9x4as77p3udn04oUA+JyaRmw+hk0cO4RpY0RKA7wvGoA25fNN0gXP2n4yBjbpXe4xXurCf+wQeM5nKgFJZL9NikuLYKLO84Hri5wS3LRvAkrkobt9Wt2/Ocu2joMF6tJorkzMJjQGrSD0ys/kCxJD8RD+ulO3Fh2Jv+NqhReuN5N2MsH97TW81iYC35NaZBwWJZdOh7c96hGgXrAScdNaN/jRsE7H23g1NBUES5zM8OI8uksYGaF9kLhR3LDg36Dixrqf7l3lLB/rlttrDyD9LPQx6XXcFEAfIF9hFf+uco/3NEoTFuv8GFC8xtqwes7ev31CS3f7fvIPYd8+hFDc44DsS0m0McrLjOFFgyU4us+xqqIq8t9mPKgAZbgDGn1DXiRdiqG3XRu0lepvV9676uxNUXMaWsXhnLcTiZUqWAH/mVIjVHSL4rMb4hZUCzxUxPn9FLUpbp0MTX68wkx
- CZ/khUG7
- lNpkekkS8CPO3ZyKWrz5DVdnTBL8o8XktQZ/+zPOVXf+BKE2HG2Zm42IiQbbvJiRrRT/N6VpaLEzXC62VKNFKOLWQQfUp3yiVOzcdEy847bN7X5aOvZ01TrcIF1WjhNePykzyxsOe8e2IlPTDnMD5VION/4uZhdMuG2spbtvuR+WCOTm1U4UsGo0HoE4Jlf4uTDEjAzo7sS6STFGyc/s2fUs/a7YhjyUMdQZAKyzFIfPOxkl/zjQIhQuhxivMn8E89TEAoWr97vS81tDQ0tHYzGGvfuRBQiC0PRuYA8qfQYahBNjlizo8AZp8waFmI1ESRJS03V7zmAUMLXXSZvDtKQo19PB34CQoetvL9wACHMqEi5oecwb8ZREKQA==
+X-HE-Tag: 1792671079-633190
+X-HE-Meta: U2FsdGVkX1/pFM4g5Mh6U8eNrnWDh0sMIx3PzTQ/ai2z99YrgCp7yrn4Q9pVtbOmFsSMvZFWUFXBm4t28JElJ8NrCOGrwUFWtU6Y91WC2Y1BNlUnAXVOaZsjrt0q9vb3PsEiiIQ5oyxHjVMC+2ZNpg7R3f7Klun9lijF6fsT7gV4qflFrq6EbAWRiFyEJVI4OkuBc+uUcTzrsStfju1As9snkkdYwlbr3oPDIhFyJW1LT1BGOeRfaZfAqHYPFMovd4ICe8DEFaj2EKqxpE3AvoYEvl7wGYsawaoh3tC96+fh4wCHQT1O8jfIQXbu+Ca/pgKwQEZCGKZeefANVvtelTcxKSsZsKbYOLMA3N5BmHKTmtv7PT93IDb/lu+ms99mToCJ5jzHvLgv4MKg3vcgga2jyTsVbNiw6d8zpsqaaQdxT5GQd5OutJ0JI1njNPtAD4VeFGVcw6+80p7AC7ye8zahGbHO7mzvE6oANgxUhmqRFMFUpIq/gu3Af35UlHyyMAv012NWngB03dzZ9Bbp6yyKkTodNt9caTFe5Nvq/0m/A1MZsnGo+gzJY9JFkDHT6GplPiXJW7O8Zn0CQOoFfcTpFkeylLyuV7hPke1CjOh/OGm+2muYxaRbdnLP9TIjZgqSgEbsRqw6yE2nj9UuNxQ15M5vsAqf6iXw1ncfHnCuRUH49Ljz95XPK754ahNP3Cwdp52ceDw9N6x22y6RlmwFxpYGWSCZ84NIW1c7J5jhDbivqDYyanAX6BONRxqDQNiw6DmswzDVvbfz+i7gldJFR7zVmDSok/XHN2l4p6+diiaM+mMOMEFNlPrxRPupfTk7Pj18AnJJ0E6g32BTnKG3DT21BLNkCADSNDJG1aKIei+6cCt+Qk8niQzcJvEruNKxqJJqhWiaS6qVOO3kPNay0gs3Xf/70OKI3b752wDrGI1uFsUBPMNCUnnGAeHZH5ul0NygxmBImjZFQV9
+ 8Arcoi86
+ vWKBRWBQGEZ/6P0KmLY7r+y2QDrD8maNIKtmMgTUk3HGkOVa0vyXbZlWp6KertEUAf+xUrzyQIuHad4Zh7ucj3qlANteOWRTWbskJ2iCLtck08j0tlpMYnYdorXfFAjD5n84UImHasH9phAxuqfQ6R/6PSVot+h4dVwV5beZ4AiUu+S0piOsneH/FlcO5lCpKCrTYYjfqtCOi+omDDHVcbQKorz63HLqN2yCoHEUqA8l4WktaJj7eZXw5PVwXo11+FImQJBKRryR6iDD8OTOO+7OPOxp248vu1qFTBT7MCPFPkXII3wSpX2nE3lWxXzJmeAXTNb93WXj2vMefiNI4EH/iKyYBj1dyph8OTPSxYhNYeU6N1QsIW+NlJwfKL6h5hcfAzaxUDLw3n40=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,62 +106,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 10:18:35AM +0200, David Hildenbrand (Arm) wrote:
-> On 10/21/26 09:41, Chris Li wrote:
-> > On Mon, Oct 19, 2026 at 5:35 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> >>
-> >> On Mon, Oct 19, 2026 at 5:28 AM David Hildenbrand (Arm)
-> >> <david@kernel.org> wrote:
-> >>>
-> >>>
-> >>> I'm traveling this week, so it's a bit tricky. I cannot make Thursday morning.
-> >>>
-> >>> On Thursday I'll be traveling back from Cambridge. But hang on.
-> >>>
-> >>> My plan lands on Oct 22, 11:10 PM. I should be home around Friday 1.30am - 2am.
-> >>>
-> >>> I could just naturally join that day.
-> >>>
-> >>> So one day later would work for me.
-> >>
-> >> Would that be too rushed for you? :)
-> >>
-> >> For everyone's convenience, this would be the time slot:
-> >>
-> >> PDT: Thu Oct 22, 5:00 PM
-> > 
-> > Works for me :-)
-> > 
-> >> EDT: Thu Oct 22, 8:00 PM
-> >> Europe: Fri Oct 23, 2:00 AM
-> > 
-> > Ouch, David. If you commit to that, I understand it is very
-> > challenging. Thank you for taking one for the team.
-> > 
-> >> China: Fri Oct 23, 8:00 AM
-> > 
-> > Other swap developers: Kairui, Baoquan, YoungJun and Barry, when you
-> > have time, please comment on whether you can make the meeting as well.
-> 
-> I took the liberty to schedule the meeting and send out google calendar
-> invitations to everyone on the CC list (to keep it simple on my end ;) ).
-> 
-> If anybody did not receive an invite but wants to join, please let me know.
-> 
-> If anybody received an invite and does not want to join, just ignore :)
-> 
-> -- 
-> Cheers,
-> 
-> David
+On Thu, Oct 22, 2026 at 12:44:40PM +0200, Konstantin Khorenko wrote:
+> On 10/22/26 10:07, Lorenzo Stoakes (ARM) wrote:
+> >> Fixes: d8ef5e311d7b ("mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()")
+>
+> > Was this a mistake in d8ef5e311d7b, or actually intentional for whatever reason?
+> > If the latter this shouldn't be a fixes.
+>
+> commit d8ef5e311d7bfde54b60ab45026f206eff31b2d2
+>
+>     mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()
+>
+> ...
+> +static inline void folio_dup_file_rmap_ptes(struct folio *folio,
+> +               struct page *page, int nr_pages)
+> +{
+> +       __folio_dup_file_rmap(folio, page, nr_pages, RMAP_LEVEL_PTE);
+> +}
+>
+> ...
+> +static inline void folio_dup_file_rmap_pmd(struct folio *folio,
+> +               struct page *page)
+> +{
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +       __folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, RMAP_LEVEL_PTE);
+> +#else
+> +       WARN_ON_ONCE(true);
+> +#endif
+> +}
 
-Thanks, David and Chris!
+OK so it was just wrong at the time :)
 
-I'd like to participate in the meeting (This is 9:00 AM KST.)
+>
+> Both functions were introduced in a single commit, i think it's a simple copy-paste issue.
+>
+> The helper never had a caller, so nobody could hit it. If you prefer, I
+> can drop the Fixes tag and only mention d8ef5e311d7b in the changelog, as
+> there is nothing to backport.
 
-However, I have a company meeting and issue around that time.
-If everything is fine, I’ll join and participate in the discussion. 
-And If an issue comes up, I may need to leave early.
+I mean, it seems like a bug to me? If there's no harm in backporting it I think you
+should add Cc: stable@vger.kernel.org in that case actually.
 
-Youngjun
+--
+Cheers, Lorenzo
 
