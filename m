@@ -1,95 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092F5606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 10:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2951C606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 10:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iQeZti5A
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CSWTZWHN
 Received: by kanga.kvack.org (Postfix)
-	id 26BC86B08FE; Thu, 22 Oct 2026 06:25:40 -0400 (EDT)
+	id 491C76B02CD; Thu, 22 Oct 2026 06:27:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21C2F6B0900; Thu, 22 Oct 2026 06:25:40 -0400 (EDT)
+	id 46B436B02CE; Thu, 22 Oct 2026 06:27:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 132326B0901; Thu, 22 Oct 2026 06:25:40 -0400 (EDT)
+	id 3A9076B02CF; Thu, 22 Oct 2026 06:27:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EAE906B08FE
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:25:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 73334A81AE
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:25:39 +0000 (UTC)
-X-FDA: 85349880798.23.ECACBF3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E10038000A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:25:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iQeZti5A;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F44A6B02CD
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:27:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A11A11C4120
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:27:34 +0000 (UTC)
+X-FDA: 85349885628.29.6B85C35
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C7E0B180003
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:27:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CSWTZWHN;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792664737;
+	s=arc-20220608; t=1792664852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NDsI0V/DrB0oah071lr270oK5k2KUhctBjE7DETfs40=;
-	b=3t+RULsXCaXw8XXf5NCfyoN3PL2kjoHP9BRDNLK3lR+4xp2kCq+m6sBUfkaTE2IMHZ4ET8
-	23WEM6xM03PSR1PuF/hyZ5jYz/GIgPhtMWNlvLzEDC/dIOt2PgrtUgcG4I0l3ddLoHMGtI
-	LjMuMiVRtbhRQgCLhVj9yE6l9m0CczU=
+	bh=TgOOEpqKih5ogHRUxdmTCh2GDiwR8Qk5ZwygPDFgL2Q=;
+	b=DTHKm6jlyuocUHlsG/mE6ZoyaDKnyPEqagvCzZy+7Ct8liUpxa85LETGLUNlQT8NbDM1DK
+	6mHtwNvhBjCCot5m0ErrDNRdnHo9zP6FyY1X0eSDmb3gYLGZab48iQ7O6FCWe6U47UCdQ6
+	eYYSMzawYpcwoVwjB+uHiSjyZYzPa6M=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iQeZti5A;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CSWTZWHN;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792664737;
-	b=QbUDhmOZBq76nzbYjA6WhLVvMdqzeBXtNsXCWi4fTDRRp83EAQEGQ7gyg9MTi4bpStH/ct
-	Zfkqpk+W50YQppdxD5vSYnSgG5BttXCxgj80axWBiMw4cIc//4gWE/q4ZZKIZ3ghxlDklU
-	EBPW8l5hulRxTwYTowtE1YZUMV7YNyc=
+	t=1792664852;
+	b=76NgFvIOjZEsvDvdnVIL7+sTDqWLnzxwbINiZyfg8MhTmeSuWAbYYzaasPQbrjAM9qOj7c
+	9oszUUyJXbNS/7X2JNmxjNf1azj2KL7f4woC88F8pGcem2e5JIbiFjHb7mkOE36VRbfezv
+	SVwXkGbSOTAeaBhowfRhaUOe7EU4vkI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F3DA60200;
-	Thu, 22 Oct 2026 10:25:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BF01F000C1;
-	Thu, 22 Oct 2026 10:25:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A1FF240E5D;
+	Thu, 22 Oct 2026 10:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0F01F000C1;
+	Thu, 22 Oct 2026 10:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792664736;
-	bh=NDsI0V/DrB0oah071lr270oK5k2KUhctBjE7DETfs40=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iQeZti5A3LdIdAWPvUzMpxpmbMHI195SAFMfniFpmwTfM2Tdf2f2a5+3uRRnsMJco
-	 21chjCodtp6w6WFflNdaWUHSjRqg96YHecPIoDkSM+OnpdRdPn4Ea89ucr+YeihBTQ
-	 ZgXq0WLhbXPux6BGXVbIIWncwK702hzgm5s6kr2Qz3BTKhzx09DuWBkcb3lLKLtfBE
-	 COoHsjMoWDcUV8Gs4XXuGiBSXTRbXOhdrLW4ONiWs4DMdqE2sULTv67HyUaPY8+Rhg
-	 U90V0/SmTUz2sZdXd2QQ2e3PwIGLe/F3GIE/0SaWwa5uQojXaMZnode5rwkyC5EnOJ
-	 thTp8OZXHHKWA==
-Date: Thu, 22 Oct 2026 11:25:31 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>
-Subject: Re: [RFC bpf-next 3/9] mm: Expose locked mprotect operation
-Message-ID: <atnjEc2-6CuKjFzH@gremlin>
-References: <20261021195759.119421-1-jolsa@kernel.org>
- <20261021195759.119421-4-jolsa@kernel.org>
+	s=k20260515; t=1792664851;
+	bh=TgOOEpqKih5ogHRUxdmTCh2GDiwR8Qk5ZwygPDFgL2Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=CSWTZWHNAPgbOsZV8oU+qLEamweoNFqgirBvIl5wObWslAcgYViZzguK3G9viL4h0
+	 ZEhIj+GxdH0NMm2E7gHROpgyO/RQ07LuvOLtwc1+NLrwmoTM6ry4q9D8seBEltQzkb
+	 Pw+pR0leUEOgDclcB8BVGOhGKvVMOdlgzLbIGdfF+lP0FZIxb8rY5jKQ3ax2zR7+Tk
+	 z58nK1YiONSh7y/NvYLhPu0YIpH6cwn0KFA0ItHux2S7JPt1cTOVKLgQd2oEP3jVkY
+	 xKAhuF1J0ADym5Y6HtHUn5TTf7YNAyynHZjYuPVEBqtoqP1kO7yJEFvSZ572lpWDz5
+	 oYBE5SCUFxRFQ==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: baolin.wang@linux.alibaba.com
+Cc: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baoquan.he@linux.dev,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	kasong@tencent.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	liuxiang.277@bytedance.com,
+	ljs@kernel.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhangbo56@xiaomi.com
+Subject: Re: [RFC PATCH v2] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache in MGLRU
+Date: Thu, 22 Oct 2026 18:27:26 +0800
+Message-Id: <20261022102726.56682-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <0cbd219d-f69d-4f72-aec5-43e1f2d978de@linux.alibaba.com>
+References: <0cbd219d-f69d-4f72-aec5-43e1f2d978de@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021195759.119421-4-jolsa@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C7E0B180003
+X-Stat-Signature: 4bc6upsqsia5h1qqttf598gy4iqpfyjy
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E10038000A
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: dio4m7imrbpw5c3bydhis6p9ct9ex6qs
-X-HE-Tag: 1792664737-942067
-X-HE-Meta: U2FsdGVkX1+O8TXhnlGqncqIHUImw6/9QHPQXbCEN7u6BQEcWj3GEHJzqAidzH0qD3p6pxNLBbkRXyCizUof45mxMCLzneYO+raOZeDpIO/oe5/ejen4BrVMlyYRGWrwG0Q7BOHN10r3KCqzLW7Y/gOLuvT1RgG2ZwA11vjreTug679X0WU9o/8Qs5h36LNPaK2hRgBdvUoz0POE29ikCVx03rodDi6LqcJxUHqTJBc1DkJuq+Nvx9ODO4dzBP1ZfsUNdBgR9jQiWgFPpauQf8FlIl/Eb0TXcchIj3s13dkFNan4d13QERd6mM5Efb1rhGwalnh6JsRC+zYLEQLK67RLCqNW+dGdWkpJYHG6j1dUK6qvWPQl9IBMAwzulDV2QibTNoCv5Wgj3GSIqEw1J9CjVNq8Ws6D3XjJoSbqlnlqE6TyegVhlFmPH034vCEFcgAdNCRNRgoxE7vd2NpY/420Qx00YHdiPdOV2nvXsIl4ye3bWItf6GDmfjtzCnay9LDwZ0jpy6bX/RBtMS4XVf05uXuzmKu+WrjiVW3t5n2TBWIp1iKU4p7FIr6JJ8dzHKf9Fj2YZgcDFgSVjz6h88pm2JL6torgrPHUxTMN83bIitZTyihN724bZ2HNSMtI/KUO0Dzhj5EtqO+ttjcsz/YlcGFmGHfDSdCB6w+fjXlWlwuviGJ/2enLwyJa8DkpJnkm5MVPi/Yg/+NNiFzeoRLpWG2fyZF5AZ6F+LkAPOT2h1C2+lNIWUI/8uNCU1zj0PORiW0zVGnJFOELSkHvFWw29CxiPT+y34hiVeM/evFBXdzDZ4q3AVtg8QdaxxFJbPaXmlH1O3R0WPqriw5xnQ/QsCU4Bdc3liM9rLX3jRFe1wmkL70lJBCXBwUXY7fTxT7kwQRJmnhOXtF4Us8T/exwkMdPq08cCpDQRKoBxdyMfYtXh4OY5CRmSPWE1NkPER49vXjGSEVgV6yVPAq
- JVqITKFu
- L456tm7cl2hrtSWQpxesRDLmne4+O6PY1C5ZmccTM2qEX2PLNcU0A11hl+BvpZo5UCCniGTlm9bsYDv+BFmt2QBh+EcMnQOYT8QhB7JSqyJi+N1dnsSU0gsPjWebF1NW0u/RnJImgT6jfwu04VSAHFtK8zQE1NvZT1CgbTzP75E+DaF8l35JH3l9uCh99Bpm7MGhPbFwz/PmsVMvJ95mNLrF7MZcgYTquPuXNP3ple+3bRk6T/Q5CNWUTOnYFZKfMbTKrnLe7e1syzqsIm1JG734dnizuFNkeiEeTEC+ciXMp0O/ya0/ZDJQBe/1jApLl7pXD2oZBawq4DmIdPwN/PJDuzeu7RH/xY7MaeNvSPl26UD2fQVAPkjH4PA==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792664852-436679
+X-HE-Meta: U2FsdGVkX1+VgYwumJMsGdd4OgTKg3kJAzpNVFRbxvTW0FFfPX2AsRo7IqDUwjOddKHVetoCLgy3E+DXjSv/FnZr1WmjU2KJuYK75NG+44FV2SmHqXZIafV6GIqgSZ0GcZ//j/SPRAYG8C29IyYSwO35eO3fFzl9tamQgae3XoXwtMyTnVmAKDYC7goLeLie5lCQKFqS1cAnITMMHMALq0DMY3VJZNIe17RWrDiwbMe2/sY/ZNpEH/LsCcbuLQosSUIkRDDG2HX8HQBzKtIl2xeYDMeJ7FMWrcjqWBoHy5KKkoibu0spt0jZx1J1akDhJRH0yOlqADHz7mFW9GRyGHsQ4ie/8qi7NOGzm1IjKtZJw718XsbMR7JiOZ4Fqu71NeURniFnPhiVCgB5SGLO0Pb+Jd8WU2ePh/XyN+9IO60jafazaIOHZjK/9EkcXvK4hi8BxWZBr7mkzGTInTXI/Ukw99C4ejr6aWli1ofZb+H/xI+ufagliRzLFdpSBGB7r22qzkD6wdUeyvqYQ95NB30XbwDaZIrI7EeIy5pxqwMcmhh6myzLo4rCMHgfUo/rP85I6QTa0c9bRAObpOAev5uwqXSVo5AHTD5S8Qna0qLKeVJrh/zwcGfP+C0bqkRptw0Fs79C5elF03UnvCXrNIAhoCgvcZQ+txXMyz6M9fat8kokedRZkn77vYxHejQJdC6b5zkky7Ae39PUndgpSGRQwYSqQcdSEIMrhP1bmGbpcGriVo6T7l3O5/H0ypqfRceZafkYx7ZjwoRgj27CURR5D0cTQrlILOxdcLgqJaOafZtCi1ZL+rm6eHvFq2FuUsQm58NqXMAjE6/wJI/ZW4Mt/vvlZWYt9e+xSu1I2Cuu6MUi/6RKD358aKSeC9eOWoftXf5PrR4iraMak8+jmgpSJleCT4YBsW4HQ+u6OVwBsyGjjWUk9lKEi7jRrqzfpaLxIjQNYVLqQ4W1weu
+ FeTtErqv
+ SR2jsJui3Cy4GgLQbNv8U/bjhNg3AgRF30/F7LKhofGyxdxhu/GUV9PewEh44rOflPRvThZmUieob1G/ga3vLTQGAjOk4+LBnsI5RKLapwlyw1ImZvcIvZtEnR+VIJTjKgilKiizUl1aokQGNoZUKRT0+ZORako0cgkrUE3TRmDuGf4GoUcvEP4b+x1ZyWTE8LYLpKXwRMnvK3T9bFP1h8BDraMk/TcbtwUV+CKyXdus3ctOBUh5+nyJMIOTAJzIF4db/C/fgCA2HLuylUA0UoVhuED8oS7a7Jo98xiqJKYfZm059fdmOixddGd6DrjZR1agv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,95 +110,243 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 09:57:52PM +0200, Jiri Olsa wrote:
-> The bpf_user_page_exec() in following patch needs to change page
-> protections while holding current->mm's mmap write lock.
+On Thu, Oct 22, 2026 at 4:49 PM Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 >
-> Exposing the do_mprotect_pkey_locked helper for that.
+>
+>
+> On 10/22/26 5:55 AM, Barry Song wrote:
+> > On Wed, Oct 21, 2026 at 3:28 PM Baolin Wang
+> > <baolin.wang@linux.alibaba.com> wrote:
+> > [...]
+> >
+> >>>    static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
+> >>>    {
+> >>>        unsigned long total;
+> >>>        int swappiness = get_swappiness(lruvec, sc);
+> >>>        struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+> >>>
+> >>> +     swappiness = get_scan_swappiness(lruvec, sc, swappiness);
+> >>> +
+> >>>        total = lruvec_evictable_size(lruvec, swappiness);
+> >>>
+> >>>        /* whether the size is big enough to be helpful */
+> >>> @@ -5249,9 +5265,10 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+> >>>        bool need_rotate = false, should_age = false;
+> >>>        long nr_batch, nr_to_scan;
+> >>>        int swappiness = get_swappiness(lruvec, sc);
+> >>> +     int scan_swappiness = get_scan_swappiness(lruvec, sc, swappiness);
+> >>
+> >> IMO, 'swappiness' and 'scan_swappiness' are really confusing. Why move
+> >> this logic into get_swappiness()? In get_swappiness(), we already have
+> >> some similar logic to adjust swappiness when there is no available swap
+> >> space.
+> >>
+> >
+> > Yes. It is very confusing. we can't do that in get_swappiness() as otherwise,
+> > we will get cold/hot inversion due to GFP_NOIO. for a real swappiness=0,
+> > we allow cold/hot inversion for anon, but for GFP_NOIO, this is not the
+> > case.
+>
+> But can_reclaim_anon_pages() doesn't only handle the GFP_NOIO case, it
+> also covers the swap space limitation scenario. The latter is what
+> concerns me more.
+>
+> If we're only talking about the GFP_NOIO case, I'd agree with your
+> concern. However, we could introduce a helper to force anon aging and
+> add comments explaining why we need this. That would look more
+> maintainable than 2 confusing swappiness variables, no?
+>
+> Just my 2 cents.
+>
+> Something like below (untested):
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index daa7e37c2236..7c1d26e6b9d7 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -2890,7 +2890,7 @@ static int get_swappiness(struct lruvec *lruvec,
+> struct scan_control *sc)
+>          if (swappiness == SWAPPINESS_ANON_ONLY)
+>                  return swappiness;
+>
+> -       if (!sc->may_swap)
+> +       if (!sc->may_swap || !(sc->gfp_mask & __GFP_IO))
+>                  return 0;
 
-Err, we'll need some more justification than this for exposing internal mm
-logic to the rest of the kernel please.
-
-Note that you're already allowing any caller to bypass
-CONFIG_ARCH_HAS_PKEYS here which is immediately a broken thing.
+For GFP_NOIO, we should also check whether swapcache is low, since
+GFP_NOIO can reclaim swapcache. We already have
+reclaimable_anon_is_low() for this.
 
 >
-> Assisted-by: Codex:GPT-6
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-
-It's a no to this in its current form.
-
-> ---
->  include/linux/mm.h |  3 +++
->  mm/mprotect.c      | 20 +++++++++++++++-----
->  2 files changed, 18 insertions(+), 5 deletions(-)
+>          if (!can_demote(pgdat->node_id, sc, memcg) &&
+> @@ -4049,7 +4049,7 @@ static inline void flush_lru_batch(struct
+> list_head *head, struct list_head **ba
+>          *batch_end = NULL;
+>   }
 >
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 63f40e615754..47e853093601 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3435,6 +3435,9 @@ extern long change_protection(struct mmu_gather *tlb,
->  extern int mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->  	  struct vm_area_struct *vma, struct vm_area_struct **pprev,
->  	  unsigned long start, unsigned long end, vm_flags_t newflags);
-> +/* Caller must hold current->mm's mmap write lock. */
-> +int do_mprotect_pkey_locked(unsigned long start, size_t len,
-> +			    unsigned long prot, int pkey);
+> -static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+> +static bool inc_min_seq(struct lruvec *lruvec, int type, int
+> swappiness, bool force_anon_aging)
+>   {
+>          int zone;
+>          int remaining = MAX_LRU_BATCH;
+> @@ -4063,7 +4063,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int
+> type, int swappiness)
+>                  goto done;
 >
->  /*
->   * doesn't attempt to fault and will return short.
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 2888ee638d87..8d800830d3e1 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -868,8 +868,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->  /*
->   * pkey==-1 when doing a legacy mprotect()
->   */
-> -static int do_mprotect_pkey(unsigned long start, size_t len,
-> -		unsigned long prot, int pkey)
-> +int do_mprotect_pkey_locked(unsigned long start, size_t len,
-> +			    unsigned long prot, int pkey)
->  {
->  	unsigned long nstart, end, tmp, reqprot;
->  	struct vm_area_struct *vma, *prev;
-> @@ -899,8 +899,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+>          /* For anon type, skip the check if swappiness is zero (file
+> only) */
+> -       if (!type && !swappiness)
+> +       if (!type && !swappiness && !force_anon_aging)
+>                  goto done;
 >
->  	reqprot = prot;
+>          VM_WARN_ON_ONCE(get_nr_gens(lruvec, type) != MAX_NR_GENS);
+> @@ -4183,7 +4183,20 @@ static void try_to_inc_min_seq(struct lruvec
+> *lruvec, int swappiness)
+>          }
+>   }
 >
-> -	if (mmap_write_lock_killable(current->mm))
-> -		return -EINTR;
-> +	mmap_assert_write_locked(current->mm);
->
->  	/*
->  	 * If userspace did not allocate the pkey, do not let
-> @@ -1013,10 +1012,21 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
->  		error = -ENOMEM;
->
->  out:
-> -	mmap_write_unlock(current->mm);
->  	return error;
->  }
->
-> +static int do_mprotect_pkey(unsigned long start, size_t len,
-> +			    unsigned long prot, int pkey)
+> -static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int
+> swappiness)
+> +static bool is_force_anon_aging(struct scan_control *sc, struct lruvec
+> *lruvec,
+> +               int swappiness)
 > +{
-> +	int ret;
+> +       if (swappiness || (sc->gfp_mask & __GFP_IO))
+> +               return false;
+
+As above, GFP_NOIO doesn't imply swappiness=0 if there are many
+swapcache folios to reclaim. So we should check
+reclaimable_anon_is_low() here.
+
 > +
-> +	if (mmap_write_lock_killable(current->mm))
-> +		return -EINTR;
-> +	ret = do_mprotect_pkey_locked(start, len, prot, pkey);
-> +	mmap_write_unlock(current->mm);
-> +	return ret;
+> +       /*
+> +        * Explain why we neeed to force increase anon min seq.
+> +        * xxxxxx
+> +        */
+> +       return swappiness != sc_swappiness(sc, lruvec_memcg(lruvec));
 > +}
 > +
->  SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
->  		unsigned long, prot)
->  {
-> --
-> 2.54.0
+> +static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int
+> swappiness, bool force_anon_aging)
+>   {
+>          bool success;
+>          int prev, next;
+> @@ -4205,7 +4218,7 @@ static bool inc_max_seq(struct lruvec *lruvec,
+> unsigned long seq, int swappiness
+>                  if (get_nr_gens(lruvec, type) != MAX_NR_GENS)
+>                          continue;
 >
+> -               if (inc_min_seq(lruvec, type, swappiness))
+> +               if (inc_min_seq(lruvec, type, swappiness, force_anon_aging))
+>                          continue;
+>
+>                  lruvec_unlock_irq(lruvec);
+> @@ -4249,7 +4262,7 @@ static bool inc_max_seq(struct lruvec *lruvec,
+> unsigned long seq, int swappiness
+>   }
+>
+>   static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
+> -                              int swappiness, bool force_scan)
+> +                              int swappiness, bool force_scan, bool
+> force_anon_aging)
+>   {
+>          bool success;
+>          struct lru_gen_mm_walk *walk;
+> @@ -4260,7 +4273,7 @@ static bool try_to_inc_max_seq(struct lruvec
+> *lruvec, unsigned long seq,
+>          VM_WARN_ON_ONCE(seq > READ_ONCE(lrugen->max_seq));
+>
+>          if (!mm_state)
+> -               return inc_max_seq(lruvec, seq, swappiness);
+> +               return inc_max_seq(lruvec, seq, swappiness,
+> force_anon_aging);
+>
+>          /* see the comment in iterate_mm_list() */
+>          if (seq <= READ_ONCE(mm_state->seq))
+> @@ -4295,7 +4308,7 @@ static bool try_to_inc_max_seq(struct lruvec
+> *lruvec, unsigned long seq,
+>          } while (mm);
+>   done:
+>          if (success) {
+> -               success = inc_max_seq(lruvec, seq, swappiness);
+> +               success = inc_max_seq(lruvec, seq, swappiness,
+> force_anon_aging);
+>                  WARN_ON_ONCE(!success);
+>          }
+>
+> @@ -5262,7 +5275,9 @@ static bool try_to_shrink_lruvec(struct lruvec
+> *lruvec, struct scan_control *sc)
+>                  }
+>
+>                  if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
+> -                       if (try_to_inc_max_seq(lruvec, max_seq,
+> swappiness, false))
 
---
-Cheers, Lorenzo
+This is quite tricky. If we pass swappiness=0, anon aging will be
+skipped. Do we want that for GFP_NOIO cases? I mean, these are not
+real cases where anon aging should be disabled.
+
+static int should_skip_vma(unsigned long start, unsigned long end, struct mm_walk *args)
+{
+        ...  
+        if (vma == get_gate_vma(vma->vm_mm))
+                return true;
+        ...  
+}
+
+> +                       bool force_anon_aging = is_force_anon_aging(sc,
+> lruvec, swappiness);
+
+Adding a force_anon_aging argument to inc_max_seq() seems like
+quite a burden. Maybe a cleaner approach is to pass sc all the
+way to inc_max_seq() and let it detect GFP_NOIO cases itself?
+
+BTW, I guess we don't need to worry about swappiness at all. We can
+simply bypass anon reclaim?
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index fc823fe3bd1f..fa6d9860156d 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4903,6 +4903,8 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	int skipped = 0;
+ 	unsigned long remaining = nr_to_scan;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 
+ 	VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+ 	VM_WARN_ON_ONCE(!list_empty(list));
+@@ -4910,6 +4912,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	if (get_nr_gens(lruvec, type) == MIN_NR_GENS)
+ 		return 0;
+ 
++	if (!type && reclaimable_anon_is_low(memcg, pgdat->node_id, sc))
++		return 0;
++
+ 	gen = lru_gen_from_seq(lrugen->min_seq[type]);
+ 
+ 	for (i = MAX_NR_ZONES; i > 0; i--) {
+@@ -5164,12 +5169,19 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+ 			     struct scan_control *sc, int swappiness)
+ {
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	DEFINE_MIN_SEQ(lruvec);
+ 
+ 	/* have to run aging, since eviction is not possible anymore */
+ 	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
+ 		return true;
+ 
++	/* run aging when GFP_NOIO limits anon reclaim with few swapcache folios */
++	if (swappiness && min_seq[LRU_GEN_FILE] + MIN_NR_GENS > max_seq &&
++	    reclaimable_anon_is_low(memcg, pgdat->node_id, sc))
++		return true;
++
+ 	/* try to avoid aging, do gentle reclaim at the default priority */
+ 	if (sc->priority == DEF_PRIORITY)
+ 		return false;
+
 
