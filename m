@@ -1,133 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D258F606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184AD606A328
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=BcWhzLNN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TiRT+YNx
 Received: by kanga.kvack.org (Postfix)
-	id DF5276B028B; Wed, 21 Oct 2026 22:36:23 -0400 (EDT)
+	id 285536B084B; Wed, 21 Oct 2026 22:37:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCD3C6B028C; Wed, 21 Oct 2026 22:36:23 -0400 (EDT)
+	id 25D7A6B084C; Wed, 21 Oct 2026 22:37:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE32D6B028F; Wed, 21 Oct 2026 22:36:23 -0400 (EDT)
+	id 173686B084D; Wed, 21 Oct 2026 22:37:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A24C76B028B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:36:23 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0CA871C404F
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:36:23 +0000 (UTC)
-X-FDA: 85348698246.03.C7ECD4C
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3858880005
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:36:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=BcWhzLNN;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE0706B084B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:37:28 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E432806F1
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:37:28 +0000 (UTC)
+X-FDA: 85348700976.16.12EB0F3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C3D2D20003
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:37:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TiRT+YNx;
+	spf=pass (imf13.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792636646;
+	b=ny7jc+mpkfQaYoXsLnikch8pqEEt0sfi1/S4LuTLSb9vKQu2T/2v4btQ6ibCymuQeUjHN8
+	Z/FuJsdc2ojzFvxYw73o/UBSa2+U49s+2cprtV7dl6cUVhw2PHHBtoyK2lGsQOoy1+0k41
+	7eV9xNFvjThTBvmgH04Bf0BU/qZujKc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TiRT+YNx;
+	spf=pass (imf13.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792636581;
+	s=arc-20220608; t=1792636646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OnfyzMLO0P5DWvV355CXnkmHdcF8VekAj3yYMzW5EvM=;
-	b=GPdpmekg1W1cBnm3SbhDHKDFzqnfSYjcWfBfwRhbnwDw/JG2o8kPSTCUuzt6SYvrRtaBqS
-	U0td4kKhsy/WgYEpD5xDZhMp7MZzlVGc0VcWG/2BDOHWmSIu0sTktMf8DhDVjy6NfeoCiD
-	CRC1A/L/zILXhdSQaXIGn/mncPXwZd8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=BcWhzLNN;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792636581;
-	b=GwR3zja6uJwjAQNhqzqh1C2kYvDUEC+uUXpFZd8zsA9dBt8GokrRQlWn6J7+39VH8XZkqf
-	K8+wYOPsq4i5lqzBtydXAqFq9Or/H4GSWQn1l7ol+0z7D7XUwR3EOH7dQKdWMATrFNsr8C
-	DkKmHj0revKTivm9tIyxKOYBszoM/CE=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-534e6545939so10597281cf.3
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:36:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792636580; x=1793241380; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OnfyzMLO0P5DWvV355CXnkmHdcF8VekAj3yYMzW5EvM=;
-        b=BcWhzLNNR5z84gdLU6IFnN/TvzLVnTicJn81h6t737NsZRtNj/0TvkwrBsfDuPC7Bf
-         W4Hn8EePLAR+BgyI8qSUOzFh+olx1y1PWHS8ucHR3ah1MDTXuH4+WG3WuJXtOS32Akso
-         LSK1lZ+E69gNVVwYM7Vs6EDRZVM7SIMPZEjEHdNaSazKunOHh4dEPBsA1ErX08sj005b
-         0AGCUAW90TXv3qJYYTCur4xsMj3OQmfi+PDtdxpC9CLwMK8LxcAWj39WddB21SiinFec
-         g9OzKGD6iPm+MFMjNB9Spi0E2bAbpSTsih+8n7Mi/JLgFqJP10OTMsUvNbLJPeHt/9es
-         Yegg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792636580; x=1793241380;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OnfyzMLO0P5DWvV355CXnkmHdcF8VekAj3yYMzW5EvM=;
-        b=MJ/amZif1F58CRFisFkniraUfAFNWbMfhd3c1y5PW6Ld201ebBwMpU6w3RHMMshdrp
-         bDxuRtrmEP7ErMuf5kL9iGeBb1JbNLwGa2aSBIKkpwcBCozlfsirjeEQpQqV3nXMYjY0
-         J5M9QBhO89ullbaWdHuKCk4kN5d4jG4UnnTXryXkhy3ceXjVOgQlLsT8TjHRBFlFBNWj
-         pa2sG9D8p/32+ooSC5OSEiyYUsDUTYHHSgVXJoUGd0oOvazTeUjhkivuN+WDgHsTX0bb
-         ndxwCxSQVoL+G6kgWIEib2cXjS03BKjkXbQyow3SuyUz4m31aoElY5j+s+9qqrlfIDMv
-         WYcA==
-X-Forwarded-Encrypted: i=1; AKwUvBxYIsxalYrJtRR1B7rWjSaiXoNFZK5FwIkX32FvmNqXVApHWiKvOtRYWGz8SIA0P9u3/1USDZtfBw==@kvack.org
-X-Gm-Message-State: AFq9FYJPnAmJxVAg3aYTDMYQ1VeSzAOafHUwnApEs0KgwfptJDeYotP5
-	NePPc4X5UGzoHPbE9yHI29xg/7xm2rq842QWbbcsPJlUHIk+zLpaA7k/SmwBLABlaF4=
-X-Gm-Gg: AYBFou3OClu/oat0rEuf4r0KUoRskI7czE2I64ULb8RMKpG43OCpdmxH9QYXTHyMSmt
-	+5zpewK9Jk7wB4uJvdMgWv22OJhlb9DimfbxflFgolfzqdm3kHRGpP2S0VzkhKYVe7c96FwrrCl
-	EZWC6JkldpQZHp3R5Okl9EKQU+hUqlkZEPBCY4SFfxNGTR2H/5ImXL8HVbk2eZ8WrEdZpaKaOtJ
-	Y7T+j5BWJV4elgC+evx6fj6ClbMAyI8UAa6GgK4b1WQ8X9WvNQxag4WYq9+zELRSmNHvI56FU+4
-	SyH+/jFScYXBTEpOibOXcxjubUeTddJl+mfDTd2ysbqmAntzzL2Ccs8Iw876jrSbBJ8KKCZhO0H
-	DHhecCIxNOLyLRgLO73XoULCANwWXw1Zvk4LdBkpQTlWPHUdNq9P0ezhVVkont+Lp+ky6FN9ZIJ
-	QVl8bMID1f4ebm1V6vthWYzSTtiUFeFE0+RojG5RAwZMCX50Tj7yDKCRWdkYpg4KqoY3UEMpFSZ
-	TasbmBqd3ZBnsL0U3CNkZQrtNF8GOrwAebSbh1OOvPaB8T20WbvHvjzyrwm9Mz9Wq5K4bP/vTVI
-	aDFXzZvBIyCzp1dzk10L2OI7FVw=
-X-Received: by 2002:a05:622a:4cd:b0:533:2bf3:3301 with SMTP id d75a77b69052e-5369b86ae59mr66504611cf.36.1792636580301;
-        Wed, 21 Oct 2026 19:36:20 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536ab73b09dsm16032801cf.17.2026.10.21.19.36.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 19:36:19 -0700 (PDT)
+	bh=mu0ZdecmwjeGyJjNTgvVUayi9FotXs8zWmgYmq7DBn0=;
+	b=4rzx8WLxzK3o98q9lRSvpA/OAnExIfNDJ3hMdWHezOIXxGxTw5u0oNtPh+zgUisjcT5DvW
+	3uZxwqKeVoSo1HtcrEbLWIncpU2nwSon7chnHQOKLMSF3oj7f2uUHdmAaZHm190GZqMQBl
+	CRc7Gx8jD7uunO6Y1ehvu61xb3i4paE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F315241292;
+	Thu, 22 Oct 2026 02:37:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CF71F000C1;
+	Thu, 22 Oct 2026 02:37:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792636645;
+	bh=mu0ZdecmwjeGyJjNTgvVUayi9FotXs8zWmgYmq7DBn0=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=TiRT+YNx/lgHQ1yXQxr9QPqsiqcs+RLqLTMqj2gxU/1W5Zq1oC8HSQb/69DNXic4G
+	 y18it3L5P5PBtzxYvtYioketNnsK46pvwXIpWdnns//glGGPHZ9KnOcy9cZoYhQ9mK
+	 cg8/qoKwkO7sywYEq6QsVPannc9U9DlUryBm+aEnLogO3Tt0N12awaZH6+flVWLLme
+	 sVVRCrXQ/U62zZGm9LN2l69bSIxozwgCAk2Lyz3sj9S9SkNohwXqdC1/CyYFWpmi+y
+	 mRRXhg9ZhsBtwFbXQqIXvKhOwIhftUL7/Kmi1PEAkrIcV9VCL+Y/UCy/2qefrn71sB
+	 iehmc92NUKGgw==
+Content-Type: multipart/mixed; boundary="===============0611072890556344315=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 00/12] Virtual Swap Space (Swap Table Edition)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
- hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
- shakeel.butt@linux.dev, yosry@kernel.org, david@kernel.org, 
- muchun.song@linux.dev, shikemeng@huaweicloud.com, baoquan.he@linux.dev, 
- baohua@kernel.org, youngjun.park@lge.com, chengming.zhou@linux.dev, 
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
- surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, 
- yuanchu@google.com, weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
- haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, 
- baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, 
- skhan@linuxfoundation.org, rdunlap@infradead.org, kunwu.chan@linux.dev, 
- kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, cgroups@vger.kernel.org
-In-Reply-To: <20261021060323.553433-1-nphamcs@gmail.com>
-References: <20261021060323.553433-1-nphamcs@gmail.com>
-Date: Wed, 21 Oct 2026 22:36:17 -0400
-Message-Id: <179263657717.2549665.11401372071846447074.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 3858880005
-X-Stat-Signature: mwf9gtsayzdmyys8uj37xmz14xago9rj
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Message-Id: <cc14f512d55c6d2db491abe7d6021daee3866b53a4b4dd8659c6d8c3800f4d97@mail.kernel.org>
+In-Reply-To: <20261022015712.1297331-5-alexei.starovoitov@gmail.com>
+References: <20261022015712.1297331-5-alexei.starovoitov@gmail.com>
+Subject: Re: [PATCH bpf-next 4/9] uprobes/x86: Don't WARN if an optimized probe can't be written
+From: bot+bpf-ci@kernel.org
+To: alexei.starovoitov@gmail.com,bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,oleg@redhat.com,peterz@infradead.org,mhiramat@kernel.org,jolsa@kernel.org,akpm@linux-foundation.org,liam@infradead.org,ljs@kernel.org,surenb@google.com,david@kernel.org,vbabka@kernel.org,jannh@google.com,hughd@google.com,kees@kernel.org,mingo@redhat.com,tglx@kernel.org,x86@kernel.org,linux-trace-kernel@vger.kernel.org,linux-mm@kvack.org,linux-perf-users@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Thu, 22 Oct 2026 02:37:24 +0000 (UTC)
+X-Stat-Signature: ucjhbcnp8pgz6b1jneq6jqhu98dnyaqo
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C3D2D20003
 X-Rspam-User: 
-X-HE-Tag: 1792636581-187397
-X-HE-Meta: U2FsdGVkX1/3eSgV+at0Q+QPb+dDWlCWGld3kwMjx07E92YDevgjAM153r1FCDsPYJXmVStbo4E3e4BJkFngzdz08o2fzYo1dUfusUlzozkDliafLgvbRa/5C5vgkMA57sElXsMtYncndskzk5EFJNKMnMafGyrIvEDP5dZci/Ou772/aaIgdKjVINcHLlh8lW09oivjduX8vWjM+uuD84UtxLz9Vx9YCUVogFiS1Qa9MUayqV7w56t/IWivuZoq2hqIiGRLElM16m5uR92S383N2oxeooT7/wDRqTxae6ppVgT8Y/RN9VFTFyzdAgtZFoF2gs86ZS8CZhmr7+QVNqFCzyRc1LofgVxblVlxhZws4GYSP7VzQodEsoVxKK2BTH4kaPD/nj5s9FvhqRrQ+nT+NSpWWBiGHAAKiiBSVa4Z6c4I0R5jZJPbb4q6DXuUYnI1Tfg56ZT69TIMwM0TjOXQP3NvR/HM/aejrAH0FgHnyhfIUOhFuVLvz8EoqPdOAKDScD6CyUg5ZPsa3k8Hx3A/uX3VqQW5HnD6AdxEDzRnZIYK9pDyWX96v/hjySS/+m1lj1Qyi11UvSk0uONZRIz5nPwmOfJa8isKqdtf6Q0lirMPi1ni4tpKI7rVBD1fN3Hmw9KuO6ZneAi3emFB670COCFKO2t7X303mJg4mtC6cV6SrHUTirXKkfIW1eSifRH77zZBGBT0sjTNaIl2PzCGNGletJnpI5DIw480sT2o1Fa5dSgG166yLjN/fyKcwrsLI9mywXSgYNH3SM7LOzd/90z8yw7VumP69jUqQiXFBSPCnqadYNfXe6TnPA575PaPpEeZmq072eWaZCilHl+bUVVreXyMsbhd5R9wsjdAHpcSnLetZWxX4gh8bKHaThz87BvZwsvr/idMmWSsuQ8YaY1+MNY08aExuWW+ilJDcSFv+Lhk2Q/uCmEjebDbwm9xq1LrFk3ozwLs6dg
- xLPdhmRI
- yGtzKKdTsqdY0Sg31kZXFb1erhUtGAKK4WIl+Z3l5I6fLdou6ILFUunlPSLdEUqZ3ug7MWEm/PAKV1JTig6W4IirTYHlszFRXhz/GXOTedlqtuvFYvxEo8xdm2smrOePS4nJl1ts7P24L6cAtw828AIqHPjuWl0ftmHiAKkn2D7cexxKYDMp3wqMM6kI80PVzBWdoByjZ9x5qsdrdV4+Y2vn7cfFMpwdbwijn49BGgTgG8XcMAsizm2rYXR9AepQL5g1RRodvHWzbXHn8n42wXQR/HI1JB2fkDqrFR7OvrE3yq49C3+9u6p3fLA==
+X-HE-Tag: 1792636646-331728
+X-HE-Meta: U2FsdGVkX1/eVpEW2Hlst1B+ZaAr051wsg/NcSa2oTmwk0nnJUS76K4jRlPP6ySeGHuYcHcifYRYCvPe+2NKmpO1KWA88IUg37cFAPWlSWhN0h8Uc2h+U6/v1774zHISBqyHIQLFmjl47mR1M/USNXgfhZoy4YDQWR35NaRmINXmwzHjSVx7aL7RCB0Y6s7IZR6ezTo1msbKfMkVJrj8eCdRAdKDbuZiApvxmNiMEJTdbjszS5pX81JbZlpP8elpUfdZ/ItlwivGaqeHgX3E2oFOCJxulwJn+CnPOvpJKvPWm7bDg3/olz2Zr07On5wzXBrZThrwahMkAWR+zpNm8cuWAxHksz/e1ikca94MSJphC/V38OC7YgGk01IFnMfRl8sQvd7zfTCsCXsL8rmoBMQ1E3MYluxGNHPopiRqiScmBsLpDjJijMw/SkOBtIwxZSJLyFhV0l6OKTlduLK3j9pTrKlMNMxkgcEq5k9Ujsv72GHSGvc4X6UDxTpG245zkyLEUplVlYipUYfcy5dpUTHVrA4Hnq66iHLlPLTufYULjON9qYdG3Nov6iUpo9+wDtGFO2A8H6wWgdC4jHcISC2lEw7fXSdm+49yGCQzkP4XQ8QJ3zy0KNuoceIhY9pZGlX703qNS914Bglj1mB/Cp7f6CnLH98JcEdBZZo7pNKcABq8CpVWWRMwCIV36ONt0MpMYw1n+wW5mIcIhfRjW1gJPDdxfEPYgFrApv6fg16i9cCp8A69ej6SxBHY4hgGTM70o8xBVMPmKI4LB242+1HhRKQo8H3Pq+8juoZ1tA6+Ns+2LBtcvb8MzGb11GKyaKlpVx7mwEfnAITJoeOVS9cui2AWedx12DtIKtbjqO+/+IZqwt7m6+MDaJmWKSjgq95UUWL19etTrA3HTfMNiLjJawsy7GHBo2v9/OxCACHuLW97lrk8MQAKLRfIx2Nf8v3+Oq65gm9kiqricX0
+ fPeRiABa
+ 0mE1nzfT071v9mwGKd8PZNXYcI9mcP9d3u8aDKdgvZ/gc0zdEf6yVzSfHOdkcwP0ks7FtVUHByGq5BIj7xNRraZXbC64h68IoBZNc1kmd8vfLoJYwaA2EVqn54sfbuwGXD3KQJdPu8Upn79YbNJyGXQEmKw3ycfJsawBPnhtjKGd6o3H9ac+mhd+lBxLN+qEA4AIUIYZm0n4SfYJMMQg8md0tYCXjzIHQdP9OGk9ah2dhEI87cI8xdy8zebLFOHcNcnabdT/aw6J1apypL/g7wePQq6x45xB4q4QZov38mQLUhG9mMCwGDTqDytSOOYZHSWgKR8Qcfi5aM5e7Hv0RaWfxCsnxflBFFYVI7U2aQbBkR/9ERmF148TEVPpSuQVr7p936H0zm+1depK0r9tBhePCDaODCGMO4SD7TCI04wUxCakA11BIu/7rtG5LQk7RQd5n0W4G9+oZtt0Ujh4Tbo2Hdpx/IcvP5QRndR6pkkpdvjmblK3U+YnWgTf3/z0dVAUaMzfRLTA51FM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,36 +91,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-20 23:03 -0700, Nhat Pham wrote:
-> B. Semi-synthetic Workloads (memhog, usemem, kernel build)
-> ==========================================================
-> 
-> All values are mean +/- standard deviation across rounds.
-> 
-> Test system: x86_64, 52 cores, 64 GB swapfile for all 3 benchmarks.
-> Swap backend: zswap (zstd) with the traditional active/inactive LRU. We
-> focus on zswap here because it is the motivating use case for vswap.
+--===============0611072890556344315==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+> uprobes/x86: Don't WARN if an optimized probe can't be written
+
+TL;DR: Commit message only: it says all callers handle the error, but
+handler_chain() ignores a failed unoptimize on UPROBE_HANDLER_REMOVE, so with
+the WARN dropped that failure goes unreported.
+
+>     uprobes/x86: Don't WARN if an optimized probe can't be written
 >
+>     __arch_uprobe_optimize() and set_orig_insn() do WARN_ON_ONCE() when
+>     uprobe_write() fails, and user space can make it fail:
+>     - -EINTR from get_user_pages_remote() when current is being killed.
+>     - -ENOMEM when COW can't be broken, since memcg is at its limit.
+>     - -EINVAL from __update_ref_ctr() when the process cleared the semaphore
+>       of SDT probe.
+>
+>     Kill the processes that call probed nop10. It warns in 8 of 8 runs:
+>
+>       WARNING: arch/x86/kernel/uprobes.c:1186 at arch_uprobe_optimize+0x291/0x3a0
+>        uprobe_notify_resume+0x1c3/0x4c0
+>        exit_to_user_mode_loop+0x63/0x4e0
+>        exc_int3+0x1f3/0x250
+>
+>     The next patch calls set_orig_insn() from fork(). Kill the processes that
+>     fork and keep mmap_lock busy, while a trace event on nop10 is enabled and
+>     disabled. The kernel with the next two patches and without this one warns
+>     in 3 of 3 runs. The whole series in 0 of 3:
+>
+>       WARNING: arch/x86/kernel/uprobes.c:1161 at set_orig_insn+0x161/0x170
+>        register_one_mm+0x154/0x180
+>        uprobe_dup_mmap+0x61/0xb0
+>        dup_mmap+0x149/0x9f0
+>
+>     The callers handle the error. arch_uprobe_optimize() marks uprobe as not
+>     optimizable and byte 0 stays a breakpoint. set_orig_insn() returns
+>     the error. Drop both WARNs.
+>
+>     This depends on the previous patch. Without it WARN was the only sign of
+>     the bytes that set_orig_insn() cannot restore. Hence no Fixes tag.
+>
+>     Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-I get that the motivation is zswap, but it would be nice to have
-disk-swap performance numbers here as well right in the cover.
+This isn't a bug, but the changelog says "The callers handle the error".
+Is that accurate for every caller of set_orig_insn()?
 
-If only because...
+set_orig_insn() is reached through remove_breakpoint(), and one of its
+callers drops the result:
 
-> For each benchmark, we test 3 kernels:
-> * Baseline: mm-unstable, no vswap patches.
-> * VSS off: vswap series applied, vswap=off, to verify that there is no
->   regression to existing swap paths when we disable vswap.
-> * VSS on: vswap series applied, vswap=on.
-> 
+kernel/events/uprobes.c:handler_chain() {
+    ...
+        if (!filter_chain(uprobe, current->mm)) {
+            WARN_ON(!uprobe_is_active(uprobe));
+            unapply_uprobe(uprobe, current->mm);
+        }
+    ...
+}
 
-If the numbers you presented carry through, I'm left wondering why this
-is a boot option and not a build option.  I rather dislike the boot
-option compromise in general - but other reasoning aside, if there's no
-performance impact, then I don't see why it shouldn't be the default.
+unapply_uprobe() ORs the remove_breakpoint() result into its return value,
+but handler_chain() ignores it.  So if a consumer returns
+UPROBE_HANDLER_REMOVE on an optimized nop10 and swbp_unoptimize() fails
+(-EINTR, -ENOMEM or -EINVAL as listed above), nothing is propagated or
+logged on this path once the WARN_ON_ONCE() is gone.
 
-~Gregory
+The other path, register_for_each_vma(), does propagate the error.
 
--- 
-Gregory Price (Meta) <gourry@gourry.net>
+Could the changelog say that handler_chain() treats the removal as
+best-effort and ignores the result, instead of saying all callers handle the
+error?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39710454342
+--===============0611072890556344315==--
 
