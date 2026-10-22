@@ -1,90 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B678606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 06:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3098606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 06:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EMOldWTV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NJx1ezJe
 Received: by kanga.kvack.org (Postfix)
-	id A655E6B089C; Thu, 22 Oct 2026 02:19:25 -0400 (EDT)
+	id D4C166B089E; Thu, 22 Oct 2026 02:19:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3CF06B089E; Thu, 22 Oct 2026 02:19:25 -0400 (EDT)
+	id D23A46B08A0; Thu, 22 Oct 2026 02:19:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 979D76B089F; Thu, 22 Oct 2026 02:19:25 -0400 (EDT)
+	id C39A56B08A1; Thu, 22 Oct 2026 02:19:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 72D536B089C
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:19:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12E91C075C
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:25 +0000 (UTC)
-X-FDA: 85349260290.08.43A5512
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A08746B089E
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:19:28 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9809AA83BD
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:27 +0000 (UTC)
+X-FDA: 85349260374.21.F787DDB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5F51A40002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EMOldWTV;
+	by imf27.hostedemail.com (Postfix) with ESMTP id E4B8040003
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJx1ezJe;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792649963;
+	s=arc-20220608; t=1792649966;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xESupiZXdxa3YgPna/4sC2Lw6QY0qKopaBrR8WCBn2w=;
-	b=tGoxfl8ybhQa5f2okcERjgcUOen3wBWyNjnpXdqywO678SvhZyuYvHCr9WlD9Rj2X2ALGB
-	d5kZZ6bQlSPsUfWET3N+41bbUGMv/iK3RRZ9D9P0LyA8cUD66cFYC+5saUz25JsBjJyWKv
-	4coN2/R7l7QlGI5hqO/Zx2mqpQXlcBA=
+	bh=uRlAEAWzxFVgMWIuR/lCToZqqyKqdgYYKOQdpFsy6mA=;
+	b=bHw9lU6B9vVORJWjFPS3P/+YVVpX0uepUgYVxItJaUGiyhi3JkdxACuSEIKbjPon6gbVw8
+	714JOhXR3Rt8K6K6ypkSUnaQj0pTGNDWxuZ/Lf/cnXHBImMU0ideiAw6wpemKoz4oaHq7m
+	QCIistOlH600tO0YHoCLLqCzATBO5wY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EMOldWTV;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJx1ezJe;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792649963;
-	b=KrjGPHcjafFnqIDjY5Wb+qtIZNscxoMxGiLI15UiHj6adKw2HE66V9JCZXYrSydt5dJLe9
-	looGT9gLvYRuDU8o1mZt8F7A961BpevVjTCuMt3kg4uE3arfKcI1YfOj9g49LFYKiiCNS8
-	GcTw7T45t8/z44pXhfYUaqYZu/Sl2ow=
+	t=1792649966;
+	b=HkZ7q1y2i8Mqxfe+rxpGx55FNzOoEnbo5xtRbUqMDcwb+2zmfJKHqpy8nmUmOdU5zmP7H6
+	tPTS1NixQlB5mdA9kxtW+yqujUn+oK0cK8pEnFI+J1H3EUzaFlQfoH6SBTIH/BuzV6o5I8
+	lErmSA5Lo3awSrzqF2MnchW1VEOFPyo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A968740EFB;
-	Thu, 22 Oct 2026 06:19:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FD51F000C1;
-	Thu, 22 Oct 2026 06:19:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 433A64060E;
+	Thu, 22 Oct 2026 06:19:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2248C1F000C2;
+	Thu, 22 Oct 2026 06:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792649962;
-	bh=xESupiZXdxa3YgPna/4sC2Lw6QY0qKopaBrR8WCBn2w=;
+	s=k20260515; t=1792649965;
+	bh=uRlAEAWzxFVgMWIuR/lCToZqqyKqdgYYKOQdpFsy6mA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EMOldWTVsKh3FdohnyWQBZYsGt0TRHuuizZhDz1azyQdmEjfsJRUJ4S72KIV2Fsrh
-	 OTNpV6sKUEThiaIHLru7NR3ZJwgCzMU3sC/zgeRKDlSp1YcgVccrO2WSLQlIWWIqq8
-	 aT4IdrSMIVEVrGyFLujgWQXGAWd5n/z5tfHjtWqO4ILRyxkPg6DCODyN/1OjE8eZdF
-	 d07Vqm6s/Dmg66FfCMbcTjydn42N6GbnFlOV4cQKE16xFuIMsosTTNUf8oxjmZTMvZ
-	 NMACKPhzwKkgTLR1Gy+sL76eoh+VbLLq2/67onqbRYIhPegA9/X5sNTInyJ9sGGN8f
-	 3opuB1+qs5wow==
-Message-ID: <sashiko-outbox-181081@kernel.org>
+	b=NJx1ezJepF8emQraP0Rl1fOjBh7MxW+QAcKl9G3HoeO70nB+qeqYhYuApkcwGVsaU
+	 wuvRGv9FD77n470XVadnoc7cm5DRYNO8qcV+GvrxY26Qw6kyp19neJpZGdbNoqAEz2
+	 KcxtV/14cTjSZxfBUE9VofmXuZ4xXDolrEaSEquvpjDGaoM32VlP8+rE2YofBjdY5i
+	 6JdKC1HKufe6HJEZ2Y3RwNNiFuBnRY/nK48V4YoiaMy3kiVmCeRYJHwm15McUjnL9p
+	 BdhC2AflAf698GEMrct4rb1T1qCnBvs3d6vbDQCintOpUVsH/hmUFHt6CjnM3zABk9
+	 EJ2kMlerj38MQ==
+Message-ID: <sashiko-outbox-181082@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 07/12] mm, swap: reclaim physical slots backing
- cache-only vswap entries
+Subject: Re: [PATCH v6 08/12] mm, swap: only charge physical swap entries
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Nhat Pham" <nphamcs@gmail.com>, akpm@linux-foundation.org
 Cc: chrisl@kernel.org, kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, riel@surriel.com, gourry@gourry.net, haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, skhan@linuxfoundation.org, rdunlap@infradead.org, kunwu.chan@linux.dev, kernel-team@meta.com, linux-mm@kvack.org
-In-Reply-To: <20261021060323.553433-8-nphamcs@gmail.com>
+In-Reply-To: <20261021060323.553433-9-nphamcs@gmail.com>
 References: <20261021060323.553433-1-nphamcs@gmail.com>
- <20261021060323.553433-8-nphamcs@gmail.com>
+ <20261021060323.553433-9-nphamcs@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 06:19:20 +0000
-X-Rspamd-Queue-Id: 5F51A40002
-X-Stat-Signature: nwzt37kungapi1xwid7tsqw5zakmzjnu
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+Date: Thu, 22 Oct 2026 06:19:22 +0000
+X-Rspamd-Queue-Id: E4B8040003
 X-Rspam-User: 
-X-HE-Tag: 1792649963-253486
-X-HE-Meta: U2FsdGVkX19aflxMaTVEqYKNnGmElCByfH5+N3K0sQif4z3ffY8GMPJf2F5EgEVuDZhj8X+9J585E8kV7X/LMf0nEzPEDWItzkqmDwLt9Nd+C4pIx/oLxcp1tSCXIkjLeyfJ6dPlbFDkgSqls1Dub4amgXcrcyaA8hpbOyzxRbqavg/iL4zc81OpbA3SEqDrrmlIgwWGJaOMJLX3B826rAl1ZJUj5yaghRS1IwrEqz4u3n7hxxJlmC3FbGEad0OcGiwFFiTHWWm/cDD4uIyA6O5T6D2mNI4yJeG3/Uc3yl1oWOxKw3DMzvqYLFbs7JBAsX6GF1tmIuwIbz2QkmXGLC0r5OnOyRP7VQ9Lqj8XWulsn3ePhrPCtVXUjiOV8n5kgEVZjTedVigrRWkfxaALCO5RYoZQXoJJ0DX1nH+PUdyWfBlOEuvAd4E7K5BI6TXYGGM5jHDxWJgQ6Qe/fk/kK3KsxL0/Lc3a47BvHBZZSrx7gLy0ILu1egCw9aFEEMjx/UAbDcIhIBvGivHJzj6QnhoWeXP41EQjisMiv2eLC6IN1FCVWP0KoymGixQk0Jv1a0Ao1A1Ep2xJscBYh7TBU9uFShBms+moR462/5NU6+hToxYfWBAmEiRiq6Duui0hxny6dZSPb5NHSGUzyqtEwIVwbK0og5MY+uDGOvA6oyxItuIeH+kDDouI7qVcdb5MrtOjgFxM0I+/v/3vCGFIXaoad5SQASG12fUIdWtIe+YRPQdb3x2Z2QLoEcADGyWEKWQLzUkGF/DHuWt6Iiz8gQSuXrK0bH/nutvbOr54bVs1/QvhqV40fjXHdZvRDDQq68qA5SKf6KW/AZ9Evx7JB3eg+thOlDjiQ3oX3PnLVZH5XwZe6vkRWhbvU7Bxwkozm5VbBNTDIDGsl1Mnz5EaaUnuNCSlhZB3PxBmQruhm3a8OrQrJaz1hK3+zju1jRDr7HQdIwyeFdRqKlICgVk
- QvmomLOT
- I3G+tsVu7sPnuLKN54Js2P2u/MBWShQlQFNklFjLShXYzqaaIAjkRvASIWNigI2zH92gMN3/gBA4BBvltQLXh4NxGdmzTFRc4Ov3I6/EImJMSlNLVVHuZcC/yi/GEB6GpDSxEdG5RFO86Ixxc4ckab23IFybl9BnjQBDTpv/AuwrNyHnQKydwZDRKS4aRlkMO2mA5rWyj9cc7XfRVVOcRs9p8IbVgQ8YyUaef/ATsvflFibgBUIN6vN6WlTrNAbFHt1Eio7Q3DbWX1mSiqiaEQuJPYm9LGNvzCZ0WaV/N/buOVP2DHdrplFURC1CiT3M45GNHGb+pJ/XcQpcWhrlriJ+VggEmFZPZrho2hYclrhJEgE7tEGXiZatpjCQl2bWv2Uz9enxUBVf/JvirO9hIdZaQgZ+yrgOVlf8SPbiT1UDCyRYhAsAWrc3FWmA1CHhg7Z3Gvn52TydNhsephNgRik0iOs6rnQ7lFqY+JcGTbYmvbl7lSnS9dQs9rdKijzG52pQvRossPJN9Wk8qzctYlp4yfNEkVEDpJwedPYUKTcMftV/ynWfY4YsKa/HOm6ySihwyCGcvN7w2zGjL7gWvfTJD7Q==
+X-Stat-Signature: q41sdybhwweypjsf411wyn8qcd3fk3yw
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792649965-795511
+X-HE-Meta: U2FsdGVkX1+T6oAXi9DFiUtG9fQAbjmGNDlsRrA1rkbvhYd1MYdqH3Pkv6j9GetTw4Ohr1A83zlrBoI8+IFvcpM9efPTdWcNrkG0uArzzkUTAv5VRJtE+XURKG+Tze2AjLiKI23ZNydNyBrNDvBB9kmzf0UE/lgO0HX8iSZ3Qscbgez3pRgachYydactNA1oM2S7702GlgVov9wlxR8pEXNQX3GjcVEohiO/70N0bFLIHsLqbaDCVvahA+RQakhOBn3Qzwzfe9OD1VPAzHYxqIQgfwVKxYkS1RQ4D5T+bAegOuwrkj5jkGGrAO1Y/TTC3synZ+vzQe+4LvdV8WDrigSeHWMr9xYof8OcR+rguew4SkzhoWoJ0C4AzbgaNNB0N2bjS49Jipf3wgHGcS3gmq8wOjkRAKsPiUhG5dQ1PzIb5WdLV60qJGD6M1uROgI9iw/N/CcIoQUHL2ONjnj4mm8SeQyVqhU+FXozuGXCe1sRPO/KoCXCFjRE5sit5kKj/Sp1o79NnNAdHW0RNchUMScs0V3TjMkoyH6yDV92MZzdtQR/Y7rRFKUMgulR61Z/9OALBZ34RX+LrVL+3U/4JIVbPsv2gRc2fATPDs/BRR791MC5M35swAvzlWWa0e+1mklaqd2iN+cL1DH/5ZgkaCyMU4qJHXds+C3MxiIopUtHN19tuYSE1ThnSo0/q19j7yJd2X+Ybfm5bhplflCFN/2nOTAOwne1xdpR/Yuxh4d79LMP0Co9C8kxelcwyKXyRl/vUxpaz1npdZMAAjhBd8C/biTnSZ8D+V0G5iRsQCLfYvcHg3vzE7vHdvGyXBVrziRLFUM9F9dYggnLAcppDeKPiwRQeqXQCyNj0wHFhYSWTGG5P3edGwy8Ez6ZlVfTHeKYaDH/jrvbDd7j0EEUqEUG7Y7eHVBt0b8dzK1O0z7zqJwg1vm7UKFUpG12SXFt3b9QjG/4qc5QYNoJUNR
+ danf4zH5
+ UpbuwMzuddLRQPUK6Lfq/ubRNlF2RzFLovpZvW4RC9kNdZG8S87C/6/U8bMaW+AerU2oOXSSqjYuWWWHK7zrBa62MEwrocNZ0Ulm4FFMbhqRf1/cxYUQn57H9yjACWpW2asVcyie3GUhQYmUXx60jFcEoBInJcuOgJGt9flGaoF1TnKK6rwFyapoTYftBc2ovqu0rfyB84rPFFJPqEyxTA9vWkoC4gQPtDwC4Eiit6IQ8kKoE05WX6Rglhr8KRryNUbc6CJaSveTmP8TMsf0htJwC85c0sR7y4EV+h70QZrULW5Ardvzfpb8j0iz/fjCa/98bM/x9NVxfG4pxYpOFsLonl9zArTjAqPpY7XFJF/ZRkX8wkmoZMAqCtGzVBh3vr8VSxDn0uN8PVbSB+cRlYWldNl+Ix753+ltXxbuyDQmUUPKxbvwlKRf8HO5u+7QPNH1vr+puVvlfWph+eq7hqh0a89+Rr0kj3I9T96BvgdKA3uJ93THotHJcZeXPnBX8zhG3MvtWwUgExD23a8KjClIPAkgdoFq8VIVzOTMlTOm58eu2FHt9+JdhylMZ1Oh7nynK5kd77ZMJobJaDxdr9G5kLJCzRZDNIp5B/UXmOpj9F38=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,254 +93,212 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] mm, swap: try_to_reclaim_vswap_backing() overshoots physical run=
- when i > 0
-- [Medium] mm, swap: folio_realloc_swap() misses SWP_RMAP_CACHE_ONLY when s=
-wap_count is 0
-- [Medium] mm, swap: missing vswap cache-only reclaim in cluster_scan_range=
-()
+- [Medium] mm, swap: folio_realloc_swap() allocates physical swap before ch=
+arging memcg
+- [Medium] mm: memcontrol-v1: __memcg1_swapout() omits physical vswap from =
+MEMCG_SWAP
 --
 
-commit e03ce92e52f674a68e33585bcd17c229fae53bf0
+commit c922e31fae8f71fd3ae6707b90202f40d4d0babb
 Author: Nhat Pham <nphamcs@gmail.com>
 
-mm, swap: reclaim physical slots backing cache-only vswap entries
+mm, swap: only charge physical swap entries
 
-This commit introduces a SWP_RMAP_CACHE_ONLY flag on physical swap table rm=
-ap
-entries when a vswap slot's swap count drops to zero while its folio remains
-in the swap cache. It teaches swap_reclaim_full_clusters() to reclaim those
-physical backing slots via try_to_reclaim_vswap_backing().
+This commit changes swap memcg accounting so that virtual swap entries are
+charged against a memcg's swap counter only when physical swap backing is
+allocated rather than when the virtual swap entry is first allocated. It al=
+so
+splits the swap memcg helpers into separate get, record, charge, uncharge,
+and put operations.
+
+> diff --git a/Documentation/admin-guide/cgroup-v1/memory.rst b/Documentati=
+on/admin-guide/cgroup-v1/memory.rst
+> index 7d2a44af52c93..2a67356d25a0d 100644
+> --- a/Documentation/admin-guide/cgroup-v1/memory.rst
+> +++ b/Documentation/admin-guide/cgroup-v1/memory.rst
+> @@ -553,7 +553,7 @@ memory.stat file includes following statistics:
+>      pgpgout         # of uncharging events to the memory cgroup. The unc=
+harging
+>                      event happens each time a page is unaccounted from t=
+he
+>                      cgroup.
+> -    swap            # of bytes of swap usage
+> +    swap            # of bytes of physical swap usage
+>      swapcached      # of bytes of swap cached in memory
+>      dirty           # of bytes that are waiting to get written back to t=
+he disk.
+>      writeback       # of bytes of file/anon cache that are queued for sy=
+ncing to
+
+[ ... ]
+
+> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> index b7f2868885071..4e4946728db5a 100644
+> --- a/mm/memcontrol-v1.c
+> +++ b/mm/memcontrol-v1.c
+> @@ -15,6 +15,7 @@
+>  #include "internal.h"
+>  #include "swap.h"
+>  #include "swap_table.h"
+> +#include "vswap.h"
+>  #include "memcontrol-v1.h"
+> =20
+>  /* for OOM */
+> @@ -299,7 +300,8 @@ void __memcg1_swapout(struct folio *folio, struct swa=
+p_cluster_info *ci)
+>  	 */
+>  	nr_entries =3D folio_nr_pages(folio);
+>  	private_id =3D mem_cgroup_private_id_get(memcg, nr_entries);
+> -	mod_memcg_state(memcg, MEMCG_SWAP, nr_entries);
+> +	if (!is_vswap_entry(folio->swap))
+> +		mod_memcg_state(memcg, MEMCG_SWAP, nr_entries);
+> =20
+>  	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries, priv=
+ate_id);
+
+[Severity: Medium]
+Documentation/admin-guide/cgroup-v1/memory.rst is updated above to describe
+the swap counter in memory.stat as bytes of physical swap usage.
+
+On cgroup v1 (where do_memsw_account() is true) with vswap and zswap enable=
+d,
+mem_cgroup_may_zswap() returns true when !cgroup_subsys_on_dfl(memory_cgrp_=
+subsys),
+so folio_may_vswap() returns true and folio_alloc_swap() allocates virtual
+swap entries via vswap_alloc() where is_vswap_entry(folio->swap) is true.
+
+When a vswap folio acquires physical swapfile backing via
+folio_realloc_swap() -- either in swap_writeout() when zswap_store() rejects
+the folio or in zswap_writeback_entry() when zswap writes an entry back to
+disk -- folio->swap remains a virtual swap entry while the physical slot is
+recorded in the cluster's virtual_table:
+
+  folio_realloc_swap()
+    __vtable_set(ci_dyn, voff + i, vtable_mk_phys(pe));
+
+In folio_realloc_swap(), __mem_cgroup_swap_charge() returns 0 early because
+do_memsw_account() is true (and memcg_id in ci->memcg_table is 0 while the
+folio is still in the swap cache on cgroup v1).
+
+When writeback completes and the folio is removed from the swap cache via
+__swap_cache_del_folio() -> __memcg1_swapout(), __memcg1_swapout() checks
+!is_vswap_entry(folio->swap) (and the subsequent commit "mm, swap: add vmst=
+at
+and memcg counters for vswap" branches on is_vswap_entry(folio->swap) betwe=
+en
+the vswap and swap counters) and skips incrementing the swap state counter
+even when the vswap entry is backed by physical swap. Likewise,
+__mem_cgroup_swap_uncharge() and __mem_cgroup_swap_put() never decrement the
+swap state counter for vswap entries on cgroup v1.
+
+Does this cause swap and total_swap in cgroup v1 memory.stat to remain at 0
+for all vswap-allocated pages backed by physical swap slots?
+
+[ ... ]
 
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index be66ac79313ce..640e38a55497e 100644
+> index 640e38a55497e..341077fee23be 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
+
 [ ... ]
-> @@ -877,6 +882,55 @@ static int swap_cluster_setup_bad_slot(struct swap_i=
-nfo_struct *si,
->  	return ret;
->  }
+
+> @@ -2297,18 +2353,33 @@ swp_entry_t folio_realloc_swap(struct folio *foli=
+o)
+>  	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
+>  	VM_WARN_ON(!is_vswap_entry(vswap_entry));
 > =20
-> +/*
-> + * Try to reclaim a Vswap-tagged physical slot backing a vswap entry.
-> + * The physical cluster lock must NOT be held. Returns the backing folio=
-'s
-> + * page count, negated if the slots could not be reclaimed, or 0 if the
-> + * folio could not be shown to own @offset (i.e. there is a race).
-> + */
-> +static int try_to_reclaim_vswap_backing(struct swap_info_struct *si,
-> +					unsigned long offset,
-> +					swp_entry_t vswap_entry)
-> +{
-> +	swp_entry_t phys_base;
-> +	struct folio *folio;
-> +	unsigned int i;
-> +	int ret;
-> +
-> +	folio =3D swap_cache_get_folio(vswap_entry);
-> +	if (!folio)
-> +		return 0;
-> +
-> +	if (!folio_trylock(folio)) {
-> +		/* Unvalidated: the folio may not even own @offset. */
-> +		folio_put(folio);
-> +		return 0;
-> +	}
-> +
-> +	if (!folio_matches_swap_entry(folio, vswap_entry)) {
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +		return 0;
-> +	}
-> +
-> +	i =3D vswap_entry.val - folio->swap.val;
-> +	phys_base =3D vswap_to_phys(folio->swap);
-> +	if (!phys_base.val || swp_type(phys_base) !=3D si->type ||
-> +	    swp_offset(phys_base) + i !=3D offset) {
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +		return 0;
-> +	}
-> +
-> +	/* The run is ours: skip it all, whether or not the free succeeds. */
-> +	ret =3D folio_nr_pages(folio);
-> +	if (!folio_free_swap(folio))
-> +		ret =3D -ret;
-> +	folio_unlock(folio);
-> +	folio_put(folio);
-> +	return ret;
-> +}
-
-[Severity: Medium]
-When try_to_reclaim_vswap_backing() in mm/swapfile.c is called for a large
-folio at a non-zero subpage offset (where i =3D vswap_entry.val -
-folio->swap.val > 0 and offset =3D=3D swp_offset(phys_base) + i), doesn't
-returning folio_nr_pages(folio) cause swap_reclaim_full_clusters() to
-overshoot the end of the folio's physical slot run by i slots?
-
-This can happen when scanning a cluster in swap_reclaim_full_clusters() if:
-- subpages 0..i-1 still have swap_count > 0 (so SWP_RMAP_CACHE_ONLY is not
-  set on them) while subpage i had its swap_count drop to 0 via single-PTE
-  swap-in or partial unmap,
-- folio_trylock(folio) fails on subpages 0..i-1 and then succeeds on
-  subpage i, or
-- a concurrent swap_put_entries_cluster() marks the folio's subpages
-  SWP_RMAP_CACHE_ONLY after the scanner has already advanced past subpages
-  0..i-1.
-
-Because swap_reclaim_full_clusters() advances offset by:
-
-    offset +=3D abs(nr_reclaim);
-
-returning folio_nr_pages(folio) instead of folio_nr_pages(folio) - i advanc=
-es
-offset to swp_offset(phys_base) + i + folio_nr_pages(folio), skipping the
-first i physical slots of the following folio(s) in the cluster. Should ret
-be initialized to folio_nr_pages(folio) - i instead?
-
-> @@ -1182,6 +1237,19 @@ static void swap_reclaim_full_clusters(struct swap=
-_info_struct *si, bool force)
->  					offset +=3D abs(nr_reclaim);
->  					continue;
->  				}
-> +			} else if (swp_tb_is_vswap(swp_tb) &&
-> +				   (swp_tb & SWP_RMAP_CACHE_ONLY)) {
-> +				vswap_entry =3D swp_tb_vswap_to_swp_entry(swp_tb);
-> +				spin_unlock(&ci->lock);
-> +				nr_reclaim =3D try_to_reclaim_vswap_backing(si, offset,
-> +									  vswap_entry);
-> +				ci =3D swap_cluster_lock(si, offset);
-> +				if (!ci)
-> +					goto next;
-> +				if (nr_reclaim) {
-> +					offset +=3D abs(nr_reclaim);
-> +					continue;
-> +				}
->  			}
->  			offset++;
->  		}
-
-[Severity: Medium]
-While swap_reclaim_full_clusters() in mm/swapfile.c is updated here to
-reclaim SWP_RMAP_CACHE_ONLY entries from full clusters, what about non-full
-or fragmented clusters scanned during allocation via
-folio_alloc_phys_swap() -> alloc_swap_scan_cluster()?
-
-In mm/swapfile.c, cluster_scan_range() currently only checks for direct
-folio entries with swap_count =3D=3D 0:
-
-    if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(swp_tb)) {
-        if (swap_is_vswap(si) || !vm_swap_full())
-            return false;
-        *need_reclaim =3D true;
-        continue;
-    }
-    /* Slot with zero count can only be NULL or folio */
-    VM_WARN_ON(!swp_tb_get_count(swp_tb));
-    return false;
-
-And cluster_reclaim_range() stops on any entry where swp_tb_get_count(swp_t=
-b)
-is non-zero (which returns -EINVAL for Vswap-tagged entries):
-
-    do {
-        swp_tb =3D swap_table_get(ci, offset % SWAPFILE_CLUSTER);
-        if (swp_tb_get_count(swp_tb))
-            break;
-        if (swp_tb_is_folio(swp_tb))
-            if (__try_to_reclaim_swap(si, offset, TTRS_ANYWAY) < 0)
-                break;
-    } while (++offset < end);
-
-If a physical cluster has some free slots (ci->count < SWAPFILE_CLUSTER, so
-it sits on percpu_swap_cluster, global_cluster, si->nonfull_clusters[order],
-or si->frag_clusters[order] rather than si->full_clusters), won't
-SWP_RMAP_CACHE_ONLY slots in that cluster prevent cluster_scan_range() and
-cluster_reclaim_range() from reclaiming them when vm_swap_full() is true,
-causing high-order physical swap allocations to fail prematurely?
-
-[ ... ]
-> @@ -1752,6 +1820,8 @@ static void swap_put_entries_cluster(struct swap_in=
-fo_struct *si,
->  			}
->  			/* count will be 0 after put, slot can be reclaimed */
->  			need_reclaim =3D true;
-> +			if (swap_is_vswap(si))
-> +				vswap_mark_cache_only(ci, ci_off);
->  		}
->  		/*
->  		 * A count !=3D 1 or cached slot can't be freed. Put its swap
-[ ... ]
-> @@ -2008,6 +2080,51 @@ int folio_alloc_swap(struct folio *folio)
->  	return order ? -E2BIG : -ENOMEM;
->  }
-> =20
-> +static void vswap_mark_cache_only(struct swap_cluster_info *ci,
-> +				  unsigned int ci_off)
-> +{
-> +	struct swap_cluster_info_dynamic *ci_dyn;
-> +	struct swap_cluster_info *pci;
-> +	swp_entry_t phys;
-> +	unsigned long vt;
-> +
+> -	phys_entry =3D vswap_to_phys(vswap_entry);
+> -	if (phys_entry.val)
+> -		return phys_entry;
+> +	voff =3D swp_cluster_offset(vswap_entry);
+> +	ci =3D __swap_entry_to_cluster(vswap_entry);
 > +	ci_dyn =3D container_of(ci, struct swap_cluster_info_dynamic, ci);
-> +	vt =3D __vtable_get(ci_dyn, ci_off);
 > +
+> +	spin_lock(&ci->lock);
+> +	vt =3D __vtable_get(ci_dyn, voff);
 > +	if (vtable_type(vt) =3D=3D VSWAP_SWAPFILE) {
-> +		phys =3D vtable_to_phys(vt);
-> +		pci =3D __swap_entry_to_cluster(phys);
-> +		swap_rmap_mark_cache_only(pci, swp_cluster_offset(phys));
+> +		spin_unlock(&ci->lock);
+> +		return vtable_to_phys(vt);
 > +	}
-> +}
+> +	memcg_id =3D __swap_cgroup_get(ci, voff);
+> +	spin_unlock(&ci->lock);
+> =20
+>  	phys_entry =3D folio_alloc_phys_swap(folio);
+> -	if (!phys_entry.val)
+> +	if (!phys_entry.val) {
+> +		mem_cgroup_swap_fail(memcg_id);
+>  		return (swp_entry_t){};
+> +	}
+> =20
+> -	voff =3D swp_cluster_offset(vswap_entry);
+> +	if (mem_cgroup_swap_charge(memcg_id, nr)) {
+> +		__swap_cluster_free_phys_backing(__swap_entry_to_info(phys_entry),
+> +						 __swap_entry_to_cluster(phys_entry),
+> +						 swp_cluster_offset(phys_entry),
+> +						 nr);
+> +		return (swp_entry_t){};
+> +	}
 
 [Severity: Medium]
-Can physical swap slots remain unmarked with SWP_RMAP_CACHE_ONLY if a vswap
-slot already has swap_count =3D=3D 0 when folio_realloc_swap() in mm/swapfi=
-le.c
-installs its physical backing?
+With vswap and zswap enabled, a cgroup with memory.swap.max set to 0 (or at
+its physical swap limit) can reclaim anonymous pages via:
 
-In folio_realloc_swap(), folio_alloc_phys_swap() ->
-__swap_cluster_alloc_entries() initializes the physical swap_table entries
-with swp_entry_to_swp_tb_vswap(v) (with SWP_RMAP_CACHE_ONLY clear), and then
-folio_realloc_swap() writes VSWAP_SWAPFILE into virtual_table under ci->loc=
-k:
+  mem_cgroup_can_swap()
+  shrink_folio_list()
+    folio_alloc_swap()
 
-    for (i =3D 0; i < nr; i++) {
-        pe.val =3D phys_entry.val + i;
-        __vtable_set(ci_dyn, voff + i, vtable_mk_phys(pe));
-    }
+which allocates a vswap entry without charging memcg->swap. When zswap_stor=
+e()
+subsequently fails in swap_writeout() (for example, when the global zswap p=
+ool
+is full or memory.zswap.max is reached), swap_writeout() calls
+folio_realloc_swap(folio). Similarly, zswap_writeback_entry() calls
+folio_realloc_swap(folio) if a cgroup reaches memory.swap.max during a
+writeback walk.
 
-However, vswap_mark_cache_only() only sets SWP_RMAP_CACHE_ONLY during
-swap_put_entries_cluster() when swap_count transitions from 1 to 0 and
-vtable_type(vt) is already VSWAP_SWAPFILE. A vswap slot can already have
-swap_count =3D=3D 0 when folio_realloc_swap() installs VSWAP_SWAPFILE in two
-cases:
+In folio_realloc_swap(), memcg_id and nr are already known before calling
+folio_alloc_phys_swap(folio), yet physical swap is allocated before
+mem_cgroup_swap_charge(memcg_id, nr) is checked. When
+mem_cgroup_swap_charge() fails, __swap_cluster_free_phys_backing() frees the
+newly allocated physical slot(s):
 
-1. During swap_writeout() or zswap_writeback_entry(), the folio is locked
-   while virtual_table is still VSWAP_NONE or VSWAP_ZSWAP. A concurrent PTE
-   zap (such as munmap() or MADV_DONTNEED calling free_swap_and_cache_nr() =
-->
-   swap_put_entries_direct() -> swap_put_entries_cluster()) can drop the
-   vswap slot's swap_count from 1 to 0 before folio_realloc_swap() sets
-   VSWAP_SWAPFILE. At that point vswap_mark_cache_only() sees
-   vtable_type(vt) !=3D VSWAP_SWAPFILE, and __try_to_reclaim_swap() cannot
-   lock the folio.
-2. When swapping out a partially unmapped large folio (mTHP), some subpages
-   may already have swap_count =3D=3D 0 while other subpages have swap_coun=
-t > 0.
+  __swap_cluster_free_phys_backing()
+    pci->count -=3D nr_pages;
+    ...
+    __swap_cluster_finish_free()
+      if (!ci->count)
+        free_cluster(si, ci);
 
-Since swap_count is already 0, swap_put_entries_cluster() will not run on
-those slots again. Should folio_realloc_swap() check whether
-__swp_tb_get_count(__swap_table_get(ci, voff + i)) =3D=3D 0 while holding
-ci->lock and mark the corresponding physical rmap entry with
-SWP_RMAP_CACHE_ONLY?
+Whenever folio_alloc_phys_swap() isolated a fresh empty cluster from
+si->free_clusters (which cluster_alloc_swap_entry() prefers on discard-enab=
+led
+swap devices), pci->count drops from nr back to 0 and free_cluster() is
+called. On discard-enabled swap devices, free_cluster() marks the entire
+cluster for discard and schedules discard_work; on non-discard devices,
+__free_cluster() frees pci->table via call_rcu(). In both cases,
+percpu_swap_cluster becomes unusable (!cluster_is_usable()) for the next pa=
+ge,
+forcing every subsequent rejected page into swap_alloc_slow() to populate a=
+nd
+immediately tear down or discard another free cluster.
+
+Could folio_realloc_swap() charge the memcg via
+mem_cgroup_swap_charge(memcg_id, nr) before calling folio_alloc_phys_swap(),
+and uncharge if physical swap allocation fails, so physical swap clusters a=
+re
+not allocated and immediately destroyed when the cgroup is at memory.swap.m=
+ax?
 
 [ ... ]
+
+([c922e31fae8f ("mm, swap: only charge physical swap entries")](https://git=
+.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3Dc922e3=
+1fae8f71fd3ae6707b90202f40d4d0babb))
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021060323.5534=
-33-1-nphamcs@gmail.com?part=3D7
+33-1-nphamcs@gmail.com?part=3D8
 
