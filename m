@@ -1,111 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF96606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 17:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8BF606A334
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 17:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=DtnTQk/c
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mqeR3tq8
 Received: by kanga.kvack.org (Postfix)
-	id 28D876B09A4; Thu, 22 Oct 2026 13:38:35 -0400 (EDT)
+	id D6FDA6B0284; Thu, 22 Oct 2026 13:45:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21EBD6B09A6; Thu, 22 Oct 2026 13:38:35 -0400 (EDT)
+	id D20B86B0296; Thu, 22 Oct 2026 13:45:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091DF6B09A7; Thu, 22 Oct 2026 13:38:34 -0400 (EDT)
+	id C0FDE6B02A5; Thu, 22 Oct 2026 13:45:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C8F8E6B09A4
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 13:38:34 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5938440216
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:38:34 +0000 (UTC)
-X-FDA: 85350971748.11.B86B15C
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 84AB9180002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:38:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="DtnTQk/c";
-	spf=pass (imf24.hostedemail.com: domain of 3Fkraag0KCHEPQWXhWTZQPePiVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--abhishekbapat.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3Fkraag0KCHEPQWXhWTZQPePiVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792690712;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9515A6B0284
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 13:45:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D3081C27B2
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:45:30 +0000 (UTC)
+X-FDA: 85350989220.07.259A778
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 38271180002
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:45:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mqeR3tq8;
+	spf=pass (imf16.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792691128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X6SRqz0wu3RKsaKxsc5vvLTus3kwMNmtPQXe2gI16No=;
-	b=4SPGh+keWyga6QaheH2Jv3UlmiarHdxPLfF+hKB5GKYtkmbcVLikp2EJ0nuziF+0yLyhqj
-	yRMZ3Drpdv6YNCHyDo2lk/cyP0xhZ3V4e8E/bSPeh6G5goqpSR0wS6WmASezPDWEVhTF7t
-	5o2QEqg3ruu66PNMwzYlTvq31CemFO0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="DtnTQk/c";
-	spf=pass (imf24.hostedemail.com: domain of 3Fkraag0KCHEPQWXhWTZQPePiVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--abhishekbapat.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3Fkraag0KCHEPQWXhWTZQPePiVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792690712;
-	b=WOUI1cI6UD1HC13pGZ0PhLnTC3ovaPh5eZqh9MNPLTTSoWdt5v39YNLXnFC1zbxpkygd3S
-	NezkFR/yKfnJcqrZ0D9JS6NDNnMehX0Tj63++0eiXc+0cV+5EKrnI99tRRbv4zm8Wx7kEB
-	jtpYwe5Yi5Agar+UoSA+YB/oaDqeLOQ=
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso61806eec.1
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:38:32 -0700 (PDT)
+	bh=Q/kJZkRDh+A2dbcPNuvHi4UCiR28b887/rQN2752RCM=;
+	b=gmqeQiBVSnLIFTuFW45r6E624lF9zNbi5q8HZknNTpjy9gj74kdt7SsPLVtYhtKQPrPKxj
+	9IZem9lKlGtn7rigrgEoSKi6OTFo2q7wsXBG8Hbjb2caCGcdkajnWzymHC4dyWNkd+5JGz
+	ePvgYam9iH4Zw43370jOsAHTpOzKEiQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792691128;
+	b=B80f4qlCaHHtBIFmRZqCgHyaBNVLTVJYmOgc8kT4PzUyQIRXNiN8J/C2CgxZiN0EDJDxJo
+	EH/OKzTBca0MYsrgeBIDQLo9O2HBDBrkF9Z7IKRMv3ZAESw/qbGqg5Tnm6eHSE+RDx7YH6
+	SB2fRvwk7rxMT9oezuB8/Sq6BknCsjQ=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mqeR3tq8;
+	spf=pass (imf16.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c468bd799ecso10008666b.1
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:45:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792691127; cv=none;
+        d=google.com; s=arc-20260327;
+        b=K2nkSZyNeig1o4+5iDz8shT8gDxLxqejUKfS2sWguW0+pMlN79o4hUv0kPobsIUgGi
+         DA7Pf6F7go7T55/tDCy0b2HUtbdAT+VmAWLRFBLL0I1QnGr1lq7E0z0KiEeRpvp8PwEz
+         xOkeuOuczxtYoNeprGoRALHCE+JoIQ3wD06mN8180dfQeMaRXiZiiG6tIplrIR3blDrx
+         rcdYZaEQQnH+bl/MKfJ2P7S/NeaTa2sbRywIR58NF9zcTA2ywz0jBZrDuN+LFNZ5e8p3
+         kIFeibKAJH8+axXlBaMfHEZZSf1u8uBaJqFBhxXw7S3pteAMqooUju0HReBidcddUTTC
+         R6yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Q/kJZkRDh+A2dbcPNuvHi4UCiR28b887/rQN2752RCM=;
+        fh=1ko4W8RwZw4bk8Xy8u0THVJ1fv84s8ZANy+k1gwD1yI=;
+        b=hn80aoXW2xrO74F/bpmY7oJLDy8BVqqtR2jnNfXHjWU/GqgO+YYMRA/CdZVPIv/r0x
+         zOsfVjPvNpOKMAwdXizs6j+qlDyYcoEVyS7lpoAhM2m1mw3wrRQChlv2f3xwVTs4FanK
+         XGcmR1Vhti2GejDl/2jkQhwB+JkykmglaOPkM1RiZQllBuJOKaWJKFp6aZjQqd0r9tkA
+         xJd/f2JxRMQ+k1IBeej0vNDevuMspisq69oN8Zs7Kshy0mvelfoT1GjaxaX1YIZrUtOT
+         XCTS+fqf0ULX8mNgj2mxfO0+F82OQ7lQXEMdVe+g9/38PbAQnjKYCQ8fzXTDOKZVsGIT
+         5A7A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792690711; x=1793295511; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X6SRqz0wu3RKsaKxsc5vvLTus3kwMNmtPQXe2gI16No=;
-        b=DtnTQk/cjzVf211WwwOQi/RWdjuxdpwE5eOxij9TJMwJxk9fQzTOctSOGPwdlRvTy/
-         dKstzExqlg+0XPp9QtBGNqrxKDcktAWztztd67Exa351eG8Yt0I3GrsN1djpYMUOUY3e
-         d0rZ8yyCjkwhqCNJNLAq16tiMsg+WHsdvreatXfvx60Dr+INdSQnq/yV5RznKUSweXEy
-         1KWIMmwqpivC7xjxu/VcJejadkQE4Dd4JnKfmtlp0YwmtEf4LfrQMDmJHqJB6HCenqCg
-         jFBoEFNH0zNvMTkoYu3iHf53Rurfnd+wfWNYlIm7Z9+lv32J1zS9tyXM0cDX/ZcBCc3P
-         DnKw==
+        d=google.com; s=20251104; t=1792691127; x=1793295927; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Q/kJZkRDh+A2dbcPNuvHi4UCiR28b887/rQN2752RCM=;
+        b=mqeR3tq8tOWwLNtjiTWBgwf70hQBZvOEUt/8Vpe6ljKE7n3CRZDfWHGCMZ/APfNg5l
+         /zSlEw0zIgJFLah58mjIAOa5cxE3bDU9qSsoDP4TA2+5Vr6s9oJnPeEm29w50kgRpSe1
+         Yop/kh9xZQehVkP50TLZuF720TFrsw7LNTYP3X74Q28SGK3y8LPjVuw4/Kht5SceaiAd
+         IB1RSISlNbRO+ANRZS+NCoTdHAQ3mxYHa7oDg6yG1SK6BKb3rL0GFIBBL8vWilsFhGA7
+         0sI/DMG5cRZPmNeZ1fnv+SWTYozAcDsjHZRcjvDU8DTTnmLim6obV6ruJ/HZr/Asv25s
+         YHbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792690711; x=1793295511;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X6SRqz0wu3RKsaKxsc5vvLTus3kwMNmtPQXe2gI16No=;
-        b=WG+y1X1AA0Vl1kXJrkfL3JA4uDZpYuGp6fi7m07ohrjEwMnSw9Ix0Tk8WDV2+ob+7H
-         /kmrKCtH6R+KxgkrhPbgb+IbqXbfKOVqeshSXzymedv1iZfxIZcjH2kKoch5OLn67gi5
-         XRqZtJdmfMZ56OeGHdAy7e2JQmb3n9MTeuDwVvYFUPKt7QmRUgzJZ+H8GYZ7HRS1ZtUk
-         baChvVXdZYFCy72iCdmME0Kg74jzBHdfFMFbJrKwS/It5twEaOtDrW1M3AEhwvxZqc0d
-         URe9mluCbttwooNuJkW3Tz7Btz3HCAo0CicwK+fYBemKbpKmY23qA74qxpGAWG1TAMQD
-         fYdA==
-X-Forwarded-Encrypted: i=1; AKwUvBwBEcS9+DG7GMptqAz9s6FK7k8mjAh74f0/EkSYN76S6dXs93WZ0PdWxVocirCsZxG+RRMyqRe1Xg==@kvack.org
-X-Gm-Message-State: AFq9FYLIgNO1DP/ts+u+rddl4OiLwORY3M2KbgBeUu2oJmSGhwGH478B
-	y+OZ+03k597XmIW9dRyI7wNE9r0cffI8pqjd19IFNp3UynKczEBOzyO6HxWOCLUhGOCWAcSyf35
-	mZyT8pg9KDOGUAn7Z1ZpCZQVvh5O1FRolNA==
-X-Received: from dybnq2.prod.google.com ([2002:a05:7300:e502:b0:366:233a:49c7])
- (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7300:6c85:b0:35f:5591:e40c with SMTP id 5a478bee46e88-3674de4ca70mr11857901eec.22.1792690710622;
- Thu, 22 Oct 2026 10:38:30 -0700 (PDT)
-Date: Thu, 22 Oct 2026 17:38:23 +0000
-In-Reply-To: <cover.1792690544.git.abhishekbapat@google.com>
+        d=1e100.net; s=20260707; t=1792691127; x=1793295927;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Q/kJZkRDh+A2dbcPNuvHi4UCiR28b887/rQN2752RCM=;
+        b=JVyXhxajY2mKm2tK4GALzmZDSdfXb+aCcpNCjNoJxFWsua4B9DG3GVbfg+OJM0vxv1
+         sMJcqiuccaoJTEyjYvbwI4G0qvcssMFJUpRSofGfZs2QToLT+ikBDIJg+WXfpqJT/eVO
+         cRk/RaGRvdHoeETYE3Iz2wE4KuZs4eJSIVo60LLlQ6fMkSIgyzuGUpClPWB9PmGwve1B
+         Q+FL3SeydlPkWiegcdtyHuihdhWUJkn8N3gr5bLlIWw6HqKuHvqt0DIKzYtxq914IkV3
+         2fnYCQWmJWsRBCb6fSmShgdvEXBylW+zRVKbO7pNlj9V54TuEeDWnfSXlhAjllaJ2ikt
+         RFmQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz//W9sOepCx9MUS3F0uK7Vm6SvNAkOxxs+69Xfzj0A1v4RKAgzbBeQIF5m0iGF66oTEIyC1p6aSQ==@kvack.org
+X-Gm-Message-State: AFq9FYKnuBvJdPQ7FReCzDfAveJVIPqJM0V4+CuCdJ3pkH1Vx1fMeFR/
+	fmNhPaP75h94e6i1+8pyF5Sge6Y42Ukv0gEuRV5iN1/fq9WJSm3pM8jXOgwY+XkuyDw2DhKODqI
+	8k5HNg6TX3YEygG1EwlVFLxvVpQgtg5eABV4t6Q/F
+X-Gm-Gg: AYBFou3NvysEjkbYJD5UXWfuWTjdydj1m32laFnH8/GfBcm8yJhrqZn4QJ6cPerfsbS
+	/BEwdmFcBK0NA53ZxIWyvI55UmVGtTlKI7Eq/9hFhJQYAevOhXXPw1sW7IMC65loIQKoLAUWCbT
+	X3zi9kPfE7Qxr5bxRVw0aMjwfxObeEb4CfEGUBReKtUSfOApdcKhxrkm0tOyz8fh0D4Hquk8wDB
+	HEp1RVO61LhSLHTRT9eSuhvdgkSci/6tuHvctHV8BD856j7uQoFhI4gApjAanS2MOiVYAYCwD1N
+	CAXGljZEUSukh3S1ndSE3hiG8gtOIGBBOUhzfyUoSWBolHSj9u2BdDqYN5gi6u0+aOhudB1HfXQ
+	WDfwVLA3Ruhj5t4iRUvoFIBqX9J0YrCKGFg9qxKalyPKyq/9ZCxA6FCST4jyFSh7zQsPLDwVnFr
+	sbmWMTqjXidnz/qixjpE8F4YbAjkSJ+LBKSwPFyVMh/jLrVI2OkbeOkGeG4301V8U4fpck1FIiW
+	UQcIDcN
+X-Received: by 2002:a17:906:d553:b0:c26:1649:47ad with SMTP id
+ a640c23a62f3a-c467976e841mr649670766b.35.1792691126016; Thu, 22 Oct 2026
+ 10:45:26 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <cover.1792690544.git.abhishekbapat@google.com>
-X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <46a82e8f6e901531704ecf14c714e0b83d4e6f36.1792690544.git.abhishekbapat@google.com>
-Subject: [PATCH v4 4/4] alloc_tag: Add a test for trace state toggle and filtering
-From: Abhishek Bapat <abhishekbapat@google.com>
-To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, Abhishek Bapat <abhishekbapat@google.com>
+MIME-Version: 1.0
+References: <20261003002123.505555-1-jthoughton@google.com>
+ <20261003002123.505555-4-jthoughton@google.com> <B8A44041-1516-4405-976D-534AA2412A49@linux.dev>
+ <CADrL8HUOJwEgjUzefxSUa=AZHj4JO7koonj2_-WYhcL8QcXPZA@mail.gmail.com> <440A9FCF-2B5D-43A9-9B02-C32F5955AC82@linux.dev>
+In-Reply-To: <440A9FCF-2B5D-43A9-9B02-C32F5955AC82@linux.dev>
+From: James Houghton <jthoughton@google.com>
+Date: Thu, 22 Oct 2026 10:44:49 -0700
+X-Gm-Features: AclHuK8OCQjsmkJ8ztkh2B9wQVyT8iKcOFLwut_LnlB7__hy8ym6E5QTYBptOqc
+Message-ID: <CADrL8HWNaurYHGnpvC9qwr6bVU74YhhucCuhoVYcvqmSX+R6+Q@mail.gmail.com>
+Subject: Re: [PATCH v2 03/20] hugetlb_vmemmap: Always flush TLB if needed upon
+ PTE remapping
+To: Muchun Song <muchun.song@linux.dev>, Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
+	Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	David Hildenbrand <david@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Nanyong Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>, 
+	Frank van der Linden <fvdl@google.com>, David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 38271180002
+X-Stat-Signature: 1izpz1ue6fnw9tgjogxzdgyrapmaai4a
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 84AB9180002
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 573phkft7sxtcr6od7nzzfeigpejbdqz
-X-HE-Tag: 1792690712-29545
-X-HE-Meta: U2FsdGVkX192k4vxLEicM1bBeR9E/tNDN82OJ8aUiqg7Fh2KJwlZoe/k32M4luwdJ4nTrUs8aX6hZ0wFCaxfDzPzUu+AMwr7TXaOUidydICMsWsrQBsdfwMZrtiF8vqPHMVuJk/ZX2DHltv+wbJ4XAxz3rTxVOQKUzA2YoXYedz63ibUzU0BfRKzdxELQx6u89YUhl3jIxC48naXmvl/XdqS7wfcTut8GeqUUpQhMseO0wHg+GxZNw6+bWnAg39R2+HSRHTtg1/jT3XFkQhbA4vWxt+O8WMoNsJFcs8MJGIm24VuDzSGovD6kv157vT67MoVD1W8XHsyr/bJldm4GHy7zxN22YO+weAcp6trEQt1B+ZcHhXuJ5f7vDN+nD9hOWvo1jh6ulZ8xlbDTG9wcvuJcmMB/XnKiiiX7yMIeK+1NbhDd2mttlpEcaMbtm6Mp2IGPwhGUVzhfUQByGuDsjZXURK17Eu2s9/O8h2fxNoxL2/r/+PHlDzjjk4SWEtEwcjkfaGyCRYRtt6lm5MYMKFDJzOqNHMwOmYS02XaqSsW5W6heekpWlgoHJ8icR2MxcrGDdUW+JYb7IHP1tISZ270OKG67dHqnAxP0Od7RH46xmk6d/+IUhEZ19qIF7EPQLBD5ZzMFIz5O9YtbJKIwQe7u38yqsQ1lhR3KZpk4RJgflZt4jhQjVqxMEpLcZTCyWYuUb8AbvA+H++3Tv8oW6kEUgBX9LmPewGs5Jrl74ja12ux1/fG9z7zw2jIwOpIn3NUW5iARsoeXcROWSTcTv8deOct0Lewl5MfN02Axgq1oc0yJVRM+gFTZRDCcF40n40/KlMhMP6jDS/2KEmJYy6LmvKCh1R9Xs1d6j9x/j5D/4pFjci2KF1SovUKd5G/AULNtJWO4fvzmoo/pkra4HSFUF+ZcmSQfC7eTOh2OO1JCkDT+q1vDl2w7ikyeO/+dqDX6EaWyltl74K57c9
- WcRwi0fM
- 33EVW6g0I6OltNu/n6AoQaMJPSa8GqmvtFFfx0Vg1ueMvmUfPv0zawDh0FOcL/i/jiurRoWKD0WowPIBhoCIMtVjz6TCNL5HzMUHMp+dnAGlJ4hZUcwizx8WGqC1kw5gLvslWwiw6+Jj0GXev9kLPH86rqZ2dSA9DVWJ52Gr2691reUbLvFkHXzBfUiiMjVv9jTba9etqcKXsJwhiw0QxyDVtwI6DI7ZXA2/Sy8qdfWuzeI7Y3jvW2+rGBHOBGmavR5ZMPL0TeeIOEZCScREqtl/vD8ZxSQ5LMSimJcOMWz1Ypq+GESk2YcxKaKStgZaXhl1ljcBLuzRbZXXOMMUlV6SBfllL3EVtropF1b092CZmg+C/V5f0twvZSUTNK/ivvKTAzi1I8AMd0BBEPV5dWnlrdOzVYEjXU/mp8Hr6duidVZEzEJZaPt+C4utQ9X7P54sAZdmD4Lhi8OgR2tNs66LMQOUjIk5yYByc8SVhpLo2xTsF8PsjPOmrWdWDIBLjK2C9JWBwWpCKjif+6HsTdBwoGtciNaKj0IaOZ0XPXav2i2QeFnmRGM6QemkN48xhuBHKmM1tERWrml4i8XHZ/0Es57wzKD+/PgotNucdtbbSIbTTQEIytonnlLDotcE6m8OIZFfWkE6vcLa+ID21rWNCrdbCrSpFgqvIS8o8EANB8Q4=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792691128-36832
+X-HE-Meta: U2FsdGVkX19XTmia5bo0yAOcEg7/s20VzyjV4KTpI/tUstzdJXd0SOlBuy2Y28B0h/aQVXIMqWRDhKqwXPAHWgv/WTx2afCm3kO3T1rbviDL+r2Pzh+gS3BUuoC4alWwulcoIYNJYJGaSk38NMT4xJNkABiO6XG832lhrtn3u0SLoWscwhxwKyB8QW+GVafHrLdfR8Ti5oM0Ne/RWcBI5VXiOxDwLhQcZLRF5/0fojKoLVrqKCr7aKUBqqgVgjIBM9hej3Q9uZ73gE5BjUUxnNQcp8453xX+YHCRz3HFUGnaOGktuKTQH42iKMQTsR+1vNJoRZD39OvnMDB1ArjwqXvoXfyYLTOmHCcKK8bpyXJdFym7BRxsnQhkfceksciTEiX+vZyzu7mOS9Ml3SaEr4Syfb5kHRTNurJq/YG2OMFQW9s4RgRQI1XXgMZUshq5m9DihnapnVC2V3U/P9VdjAohRIwsJ3LVCa8Tuo5qInYW9bwP3v+fH4nmegwRwSOVtXWOEAE4upHHTALQKIzQ0BE9pv46pBFEx4od7sR104EcdB24GeelwkyNbCHz5SAwgo0wZnQPPF5Qbhy9vgC3nFlKlF9jiyJE/GdEXWbAJ+EJcTihoCRjydlT+qM+60colrDDZocofLKZEGfWvUQgRTnJc3pBbSW2sXdqSe92BtmDO4fPfHejdGH6LaL2YVmOcFa2cFfSvAEc+UT31Thh0L+n5gljVtiKEOZDVhwzGIbA6PT+QpYwH8IJwN+4ev4t9pHDyalHwxb91jav5/xTThHF+xl2/LrPXWNrCyg1qtlFhZvP0ylFn7V16JPKmVXECXTC2Kez4K8qXqBxgF9AREqF1QXssueA6+HS0iAloLEkBLCVMSf79UiMhSchNjmdOGYWdXHOI9f48O22em4odYRAGS/4/uHbTRVAla6SfAQWb82Ma3q/PznRFYzKTw0oXuHudJHLa0c1X7/1j8K
+ AqWYm+CI
+ GhkeMP9wlpW4cb+veiKFvqMdQT7SZw6FCJE1gCrUSuxZgp8uGOnuYMDMDPnskZlzzAZaqznolp8SGhD2vOlTPCG8qOJii3sJnwPnNExuSH/hEE4nR88LZop0Z9L2ePYMkigFiAaXr4G5XxknjvnjpSulUTgz/o4ZBq7HER6iJwwpuJy1Use7Wj86ebp2GFYG1MHn0lKzrdlUALSm5kKyezRuns8ZF2/LKX1Cq23W1kMGSARs1NmJgaSYNsdTN+N88WET+2wTv1f2uex4/WIBOV+85H8gWWX9JWrDq2Hh4REV/ifyqqoZrfU9YNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,188 +153,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Following the introduction of the ALLOCINFO_IOC_TOGGLE_TRACE IOCTL and
-ALLOCINFO_FILTER_MASK_TRACE_ON filters for selective memory allocation
-tracing, update the kselftests to validate this behaviour.
+On Thu, Oct 22, 2026 at 2:18=E2=80=AFAM Muchun Song <muchun.song@linux.dev>=
+ wrote:
+>
+> > On Oct 22, 2026, at 05:59, James Houghton <jthoughton@google.com> wrote=
+:
+> >
+> > On Wed, Oct 21, 2026 at 2:54=E2=80=AFAM Muchun Song <muchun.song@linux.=
+dev> wrote:
+> >>
+> >> Hi James,
+> >>
+> >>> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> wrot=
+e:
+> >>>
+> >>> vmemmap_remap_range() can potentially leave the vmemmap in a partiall=
+y
+> >>> optimized state. In this case, a TLB flush should be done if the walk
+> >>> caller asked for it, even if the optimization was not fully applied.
+> >>>
+> >>> A follow-up patch will more completely deal with partially-optimized
+> >>> folios.
+> >>
+> >> Why are we dealing with partial optimization cases right from
+> >> the start?
+> >>
+> >> I know that in patch 12, you try cmpxchg 16 times, and if it
+> >> fails, it leads to the partial optimization state. What I want
+> >> to ask is, why do we limit the maximum number of attempts? Is
+> >> it because during testing you found that this kind of failure
+> >> is very common? If we did not limit the number of attempts,
+> >> was it because during testing you found that the scheduling
+> >> latency caused here is very large? Or is this just defensive
+> >> programming? In my view, scenarios with such intense
+> >> concurrent access to these struct page structures should be
+> >> very rare.
+> >
+> > This was done defensively, yes. With 16 retries, I never hit this
+> > without fault injection. (Perhaps I should try with no retries...)
+> >
+> >> If your testing did not find any problems, my suggestion is
+> >> not to set an upper limit on the number of cmpxchg attempts.
+> >> This should be able to simplify the design of the initial
+> >> version of the code to a certain extent. If we want to
+> >> determine whether an upper limit should be added in the
+> >> future, I think we can add timing monitoring in the arm64
+> >> try_update_vmemmap_pte function and trigger a warning when
+> >> the measured time exceeds a certain threshold. If someone
+> >> reports this kind of warning to the community in the future,
+> >> then I think we can improve it at that time.
+> >>
+> >> What do you think?
+> >
+> > From userspace, you could use kpageflags or page_idle to continuously
+> > access a single struct page over and over again. I think that's a
+>
+> page_idle does not support HugeTLB pages, right? We should only consider
+> /proc/kpageflags; reading this file requires privilege =E2=80=94 unless a=
+ privileged
+> user intentionally creates malicious software.
 
-Introduce `test_tracing_toggle_and_filter`, which validates the
-architecture by:
-1. Dynamically flipping trace execution state for a designated allocation.
-2. Query the same tag again, and check that the returned tag reports the
-   new state in its `trace_on` field.
-3. Restore the tag's original trace state, also on failure, so the test
-   does not leave tracing changed on the system.
+Oh yeah, page_idle only uses LRU pages (which HugeTLB pages are not),
+that's right.
 
-The test uses `dup_mm()` function name with the function filter in the
-IOCTL to run the above steps. If the `dup_mm()` tag is not found, the
-test is skipped.
+For kpageflags (and kpagecount and kpagecgroup), I still think it is
+"bad" to provide a mechanism that allows userspace, even privileged
+userspace, to permanently freeze a CPU. Fuzzers could find it, for
+example.
 
-Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
----
- .../alloc_tag/allocinfo_ioctl_test.c          | 113 +++++++++++++++++-
- 1 file changed, 110 insertions(+), 3 deletions(-)
+I wonder what Catalin thinks about my reasoning. :)
 
-diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-index 74fd64b2370c..eb52ca1a1dc4 100644
---- a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-+++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-@@ -48,6 +48,11 @@ static inline int __allocinfo_get_next(int dev_fd, struct allocinfo_tag_data *pa
- 	return ioctl(dev_fd, ALLOCINFO_IOC_GET_NEXT, params);
- }
- 
-+static inline int __allocinfo_toggle_trace(int dev_fd, struct allocinfo_toggle_traces *params)
-+{
-+	return ioctl(dev_fd, ALLOCINFO_IOC_TOGGLE_TRACE, params);
-+}
-+
- static bool match_entry(const struct allocinfo_tag_data *procfs_entry,
- 			const struct allocinfo_tag_data *tag_data,
- 			bool match_bytes, bool match_calls, bool match_lineno,
-@@ -289,6 +294,8 @@ static int run_filter_test(const struct allocinfo_filter *filter)
- 	return ret;
- }
- 
-+static const char *target_test_function = "dup_mm";
-+
- static int test_filename_filter(void)
- {
- 	struct allocinfo_filter filter;
-@@ -304,11 +311,10 @@ static int test_filename_filter(void)
- static int test_function_filter(void)
- {
- 	struct allocinfo_filter filter;
--	const char *target_function = "dup_mm";
- 
- 	memset(&filter, 0, sizeof(filter));
- 	filter.mask |= ALLOCINFO_FILTER_MASK_FUNCTION;
--	strncpy(filter.fields.function, target_function, ALLOCINFO_STR_SIZE);
-+	strncpy(filter.fields.function, target_test_function, ALLOCINFO_STR_SIZE);
- 
- 	return run_filter_test(&filter);
- }
-@@ -514,11 +520,106 @@ static int test_lineno_filter(void)
- 	return ret;
- }
- 
-+static enum ioctl_ret toggle_trace(struct allocinfo_tag *target_tag,
-+				   bool enable)
-+{
-+	int fd;
-+	struct allocinfo_toggle_traces toggle_params;
-+
-+	fd = open(ALLOCINFO_PROC, O_RDONLY);
-+	if (fd < 0) {
-+		ksft_print_msg("Failed to open " ALLOCINFO_PROC ": %s\n", strerror(errno));
-+		return IOCTL_FAILURE;
-+	}
-+
-+	memset(&toggle_params, 0, sizeof(toggle_params));
-+	toggle_params.filter.mask = ALLOCINFO_FILTER_MASK_MODNAME | ALLOCINFO_FILTER_MASK_FUNCTION |
-+				    ALLOCINFO_FILTER_MASK_FILENAME | ALLOCINFO_FILTER_MASK_LINENO;
-+	toggle_params.filter.fields = *target_tag;
-+	toggle_params.enable = enable;
-+
-+	if (__allocinfo_toggle_trace(fd, &toggle_params)) {
-+		close(fd);
-+		return IOCTL_FAILURE;
-+	}
-+
-+	close(fd);
-+	return IOCTL_SUCCESS;
-+}
-+
-+static int test_tracing_toggle_and_filter(void)
-+{
-+	struct allocinfo_filter filter = { 0 };
-+	enum ioctl_ret ioctl_status;
-+	int ret = KSFT_PASS;
-+	bool initial_state, target_state;
-+	struct allocinfo_tag target_tag;
-+	struct allocinfo_tag_data_vec *tags = calloc(1, sizeof(*tags));
-+
-+	if (!tags) {
-+		ksft_print_msg("Memory allocation failed.\n");
-+		return KSFT_FAIL;
-+	}
-+
-+	filter.mask |= ALLOCINFO_FILTER_MASK_FUNCTION;
-+	strncpy(filter.fields.function, target_test_function, ALLOCINFO_STR_SIZE);
-+
-+	ioctl_status = get_filtered_ioctl_entries(tags, &filter, 0);
-+	if (ioctl_status != IOCTL_SUCCESS || tags->count == 0) {
-+		ksft_print_msg("Could not retrieve IOCTL entries for %s\n", target_test_function);
-+		ret = KSFT_SKIP;
-+		goto exit;
-+	}
-+
-+	target_tag = tags->tag[0].tag;
-+	initial_state = tags->tag[0].counter.trace_on;
-+	target_state = !initial_state;
-+
-+	ioctl_status = toggle_trace(&target_tag, target_state);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Failed to toggle tracing\n");
-+		ret = KSFT_FAIL;
-+		goto exit;
-+	}
-+
-+	filter.mask |= ALLOCINFO_FILTER_MASK_TRACE_ON;
-+	filter.tracing = target_state;
-+
-+	ioctl_status = get_filtered_ioctl_entries(tags, &filter, 0);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Error retrieving IOCTL entries with trace filter.\n");
-+		ret = KSFT_FAIL;
-+		goto exit_revert;
-+	}
-+
-+	if (tags->count != 1) {
-+		ksft_print_msg("Expected exactly 1 entry, but got %llu\n", tags->count);
-+		ret = KSFT_FAIL;
-+		goto exit_revert;
-+	}
-+
-+	if (tags->tag[0].counter.trace_on != target_state) {
-+		ksft_print_msg("Entry returned by trace filter does not match target state\n");
-+		ret = KSFT_FAIL;
-+	}
-+
-+exit_revert:
-+	ioctl_status = toggle_trace(&target_tag, initial_state);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Failed to revert tracing to initial state\n");
-+		ret = KSFT_FAIL;
-+	}
-+
-+exit:
-+	free(tags);
-+	return ret;
-+}
-+
- int main(int argc, char *argv[])
- {
- 	int ret;
- 
--	ksft_set_plan(4);
-+	ksft_set_plan(5);
- 
- 	ret = test_filename_filter();
- 	if (ret == KSFT_SKIP)
-@@ -526,6 +627,12 @@ int main(int argc, char *argv[])
- 	else
- 		ksft_test_result(ret == KSFT_PASS, "test_filename_filter\n");
- 
-+	ret = test_tracing_toggle_and_filter();
-+	if (ret == KSFT_SKIP)
-+		ksft_test_result_skip("Skipping test_tracing_toggle_and_filter\n");
-+	else
-+		ksft_test_result(ret == KSFT_PASS, "test_tracing_toggle_and_filter\n");
-+
- 	ret = test_function_filter();
- 	if (ret == KSFT_SKIP)
- 		ksft_test_result_skip("Skipping test_function_filter\n");
--- 
-2.56.0.257.gf7497c7d27-goog
+> > pretty good reason to have a bound. Also, the AF can be set even
+> > without an architectural memory access (so a mispredicted branch can
+> > still set AF, for example); that also makes me want to have a bound.
+>
+> However, I don't think this scenario would cause a significant amount of
+> concurrent reads.
 
+The fact that AF can be set without an architectural access means we
+can't really reason about what may or may not set the AF. It
+definitely seems implausible for the microarchitecture to continuously
+attempt to set the AF for a generally-unused but valid PTE many times
+in a row, but it isn't forbidden (as far as I can tell).
+
+> >
+> > Catalin also said wanted a bound here. See the bottom of this reply at =
+[1].
+>
+> I see, but I'd still like to explain my reasoning and see what everyone
+> thinks.
+
+Thanks, yeah I'm curious what others think too. I can go either way really.
+
+> >
+> > So I think we should leave it in. The extra complexity is pretty much
+> > entirely in patch #4[2], and I don't think it's too large of a change.
+> > I hope you agree. :)
+>
+> Because I personally feel that having only part of the vmemmap optimized
+> is a somewhat awkward intermediate state =E2=80=94 the all-or-nothing sem=
+antics
+> seems more natural to me. At least until a clear problem actually arises,
+> I'd prefer not to consider it. At the same time, we can also keep the des=
+ign
+> simple.
+
+Yeah that's fair. Thanks for your feedback, Muchun.
 
