@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E4C606A31B
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 08:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F50606A32C
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 08:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HHd5gRUn
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iNN9pxJF
 Received: by kanga.kvack.org (Postfix)
-	id 4F89F6B08D3; Thu, 22 Oct 2026 04:33:13 -0400 (EDT)
+	id 7B7F06B08D4; Thu, 22 Oct 2026 04:33:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A9A86B08D4; Thu, 22 Oct 2026 04:33:13 -0400 (EDT)
+	id 769096B08D6; Thu, 22 Oct 2026 04:33:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BFDE6B08D5; Thu, 22 Oct 2026 04:33:13 -0400 (EDT)
+	id 6A6316B08D7; Thu, 22 Oct 2026 04:33:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 13E926B08D3
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:33:13 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77AA5C07AE
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:33:12 +0000 (UTC)
-X-FDA: 85349597424.14.F361773
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C60AF1A000A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:33:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHd5gRUn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 464E76B08D4
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:33:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EAC4416025F
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:33:21 +0000 (UTC)
+X-FDA: 85349597802.10.0CCFCD7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5218240008
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:33:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iNN9pxJF;
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792657990;
+	s=arc-20220608; t=1792658000;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I7P4Z0m4H0zqdvZ0EHWJXAmTbybltS5XLjPO30+Sp4U=;
-	b=WqU5b6lk/Vjjid9n1cW2XmiFlaHqxsRxIIYr7TGcfn0p+lpw60QA/c0ZvYWizvn4wG/zRI
-	mHlp/+pAbsxKSliFUMFmKrD/QCQxlNxhpOhTP0U2C4P5xej6pfPf6S3yGXwq95KYp93on4
-	seBuJCrmEz/nglq38Oz2YTYR9oOsE3g=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHd5gRUn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=flFPZllbaKoBIHFswczsH7CR5as1Rw0sc8rUxUyOmGI=;
+	b=7kV/00Mn4yO4QQNd4dY0ccIMSuojF0gnD50EJ96ovZFs08SgBy9Ayvld9m0fJV+adYzUxz
+	rql/pFlZ1A/mwS3gnNu4GIk5/wU7N4MzOSc2BurzXmZLwD6ID6d3bo0NYW4pTpw2X+r/zb
+	ctwG/fcp/5hFCeno8TCmsi7B9eS87U0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792657990;
-	b=f+yU9aVCrLf9jTmvAyuSACkb3C+oftKvyjhVEPNwgziTfsumhzNhZo4NG1SeBcEPW8zZ4w
-	EwfYAFMJKAN2R6JGqMFZETfQcFJBrjdvJqPlyTnIrXkGEA/2M04urs2Z+WVusPCCrJssYG
-	zbQQdNlTRhLXmYMWacWbyW51US7wYmY=
+	t=1792658000;
+	b=0YEKFNi6aAO4JJxud/g/7Jlg7Y0dhGss0W0MXQjF5lirj4q9suh13Gpa3CL+bogWQCWyDg
+	Ri2Pgh/X7iDstpxAr7kYAIP9uZgVy08dCaSvb9NqsLIE8bWiIJr1gDJrofVLk8SYXsgqTZ
+	zg9JGH3xDeBysRU+zmuU22gGrlsarD8=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iNN9pxJF;
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10D9343583;
-	Thu, 22 Oct 2026 08:33:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3205D1F000C4;
-	Thu, 22 Oct 2026 08:33:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B8EA3601F1;
+	Thu, 22 Oct 2026 08:33:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E4B1F000C2;
+	Thu, 22 Oct 2026 08:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792657989;
-	bh=I7P4Z0m4H0zqdvZ0EHWJXAmTbybltS5XLjPO30+Sp4U=;
+	s=k20260515; t=1792657999;
+	bh=flFPZllbaKoBIHFswczsH7CR5as1Rw0sc8rUxUyOmGI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HHd5gRUnE0JYDC3bp5XYFM4M/eFH8QH8Dc9624RyNopi6jrA63TrpPxiyLDK/Hxjp
-	 dw5vmKunP6b5VJRmYtyolQYedMj8zpkxe4kTSvv6Yx5TLKjoz7LVRCaaJRZ4SmqgXS
-	 RM6TsMCxzxI4Qw+eWb4axqtD9EgAr/ui5D8M22eqSDsnysEV9vlhxtFEAf7EDzaMV3
-	 LVkNFsb2Og6luB4nAm1yyk8i2bQVKZXnn3Wz1vbnU+J8D78hHl/zN+anlyf9In7npl
-	 qFa9L+D6YdrtMpgoGXVDuikaojWF4qso2fNrL2X5Luk7ZwdIzcdEo79jL6ezwFUHb2
-	 byjglWZorCaRg==
-Message-ID: <sashiko-outbox-181179@kernel.org>
+	b=iNN9pxJF/9PFRFCBOoaXQOn8ujjifNb20yGhbn2HabesYdauaidzpm/MkGmUUFCyy
+	 bE80P2WRFeGrj5ltvDXJVQQTy/i0/9MlWgJHD7XtemlXn0qec6E8ETp6L6Ieds9N30
+	 1O8kDzFxKbu713xi5/fU0j2Tg1chVMArbx7aOpw+Cwmlb+hr6kRPKnE36QGLhspWoT
+	 B7BpQvDA57hXsFMsy1NqMIkqcOsp9NuM+IYIckpuzqKuK7VAZEUZ3DiNl21ZzFLVHO
+	 lPEl7wm2qZYg7m0XifQ38ufLdsKeh+BQdnfINwPZjZXB57PkNf9XIYopp1SrVowRjL
+	 1xiGL7CycOLRA==
+Message-ID: <sashiko-outbox-181183@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 3/8] crash_core: serialize crash header preparation
- against hotplug
+Subject: Re: [PATCH v9 7/8] of: reserved_mem: mark /reserved-memory entries
+ with MEMBLOCK_NODUMP
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wandun Chen" <chenwandun1@gmail.com>, robh@kernel.org, baoquan.he@linux.dev, rppt@kernel.org, m.szyprowski@samsung.com
 Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, chenhuacai@kernel.org, kernel@xen0n.name, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, saravanak@kernel.org, akpm@linux-foundation.org, pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev, robin.murphy@arm.com, devicetree@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, conor+dt@kernel.org
-In-Reply-To: <20261021083011.2170525-4-chenwandun1@gmail.com>
+In-Reply-To: <20261021083011.2170525-8-chenwandun1@gmail.com>
 References: <20261021083011.2170525-1-chenwandun1@gmail.com>
- <20261021083011.2170525-4-chenwandun1@gmail.com>
+ <20261021083011.2170525-8-chenwandun1@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 08:33:07 +0000
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C60AF1A000A
-X-Stat-Signature: epuidfu78to4tcg768unq9rdnef4r6s8
+Date: Thu, 22 Oct 2026 08:33:17 +0000
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5218240008
+X-Stat-Signature: q7bcati5ooryey4m3xd45r7b9yfru8xx
+X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792657990-834931
-X-HE-Meta: U2FsdGVkX1+iD775b34KPrcJs3HINdXGsek5R9ro/EgU5TAn5lYmN8iSCl1OP+HEJa1Wk4XrvkotpbUwZD10kp31f+qgXD3SNZ1dPvyTFOpjKOVUCp/WqQ57LtCYYNDXMIOwX2sbTl0uW1ww3ShraDvD2zsP7wjGDZpkQUj+jfNunm90kokIHEUv3AGD8u9Uk3GDMOa+0vrzLk4C6daJrStz0C6nEwkDa4qrUdSlt3b9P0TYBLXSrLT+MKYhpwPrKXIVyeD/FL8C2Bktr8LQ+QUXr4pH6ca9kCTE4WbU/6BSL4Wmto5GM9TpAWFQXpNahHYsikpLD8KjUZ75NfkdDs3Gzp6u4kNTeiFBH+2HZMXG1/Gje/Yh6fUaRzzfL5LWncgGkw/DeAorplmOoM11+XfOLlcLlQecRLaaWY99yoy+DqhyoWLLKm3A1XitWBVTH25eAH1uZvD6Dt0rw1TubNh62UvHnWRmTlfsxQIxNeeMtZJILweNU4tOoH1GX1YwrdoICmmP6mgaQCUnP9ddtIyYY32mmtermI8dHibz1XE6+c4e+t2DxiLXBoLm/rRoYR58yoD1/9TiDupfObm95aSvRJz7t02zyhnJJE7p8V2H9gtg4Tg2TrwkLhmnDRDYm6wpf3E9kgw6rAOCkT60qyBzJaVg+fcwH5Wy+Z9QLHowSiUcx4RY0xOKsjgYHcdaNbfLf94Vt4s9gFvtjLRN1PVaEImLWzpTmcxQIE8RyszGyCLlnha/v5FzvV0NpiYxbj/4yXX3x+Ndh1eP3Wul3MyKXPJ5Wp2jMFuIWP/HMyNzeUu9XvY2+rn/xumKA5mMFOrpYbKR2MM/y4BlDWn6KMTWxvx/1YBGH6FXEz3xg/PVEmC8uZXXuBereXejVKGbNplNEZOaLtim+kBXbveDiiRTVRryPI/65Pd/4+Yd9EDtaVEudIF5YoB80iFRP7c6CRHpHSUoj0ALBqjL9Mi
- OKlZaPLw
- ELI/oAoNZyjfj+QTFkJj7t0ZjQ/9eeZCi9fpscNACedJ66svt2bUmQ9BSLvyreijdqzQi3V4nZA+CKnwntTXbIhetK19kHCpOLT//pSXQc4TvHFnimHrgNH66SSDYdoCq5Q5OLZtKwn6oqVaXjaC8m1dFK3Wf3QtM5cpfepJuSy31mKi8UwdiVYL6QBp61Y2s6mgMXoJVWvOV8sT2NpRWjfAnT9Sl4dBgnafOMlqxU9mZn+sRZ3iwGIlsyudqPO6QbwdzRHA9jBxc8SfB2GR4xkVzgdnE2wmReOjtN6XPXJY1YCPa4wxijodQ15NG62cgNDY+3P7rIPGu2GiEJ5gZRdUkKlEAdEByZ5FbjU2+sGVUcU8XfiCJI2v0fKaptquK645ND6JFSbLFx6BEF8r3/xmPAuCQEJ+7VRvoMbk0u4e8mgWTBsyvwMLMdiavanfhNOdcq1ZaDNqoE9Bymcen8BicMNjR9D8osAt654xREvXQun8biTsha7cOenM3r1Gksbn45xJy12F/M1B18hfPuNCQvN60nPR/VPRiXTyeLSbGjWMgQDOOojBTIIq+VqpWB3Q0ohkL10QS8Hd7uMHUkFUvN7j0YSdlu7XsS+smPfdX9M720ehavGCSGTT/vBcwFu82DzRUZw3DVdLjJEcSOmFW1l1lHLv8y1Ic34QxYizMA6FSEN5nSARrA8LvnsBJvqLtw25a6o9AJ5yT/yGzWimBzeqlWsGAU4pGC5sNkYYYN2w1ljCSQxzsRS7OsaPds8Pw9aGhhpUgxWDEpc9gSz1hob9+K7zID1KfitjC7YnEan9ZxsbSce7+kbgtIdQ6fn5e
+X-HE-Tag: 1792658000-469291
+X-HE-Meta: U2FsdGVkX1+Lh1yZXI12hbnxyVboi7RFZtCJESBMF3yju7/ZcZBvigDYhFs1lgGXIqjS4UqiaWgAlplpa+P+TEwcnW5Yn7CnR7REqe4yYesFfDry5xRvlBtro9lNE6UyON2psSBqoVeUkarSmE2p6GbW8NDZdSOzwhbBfuaQs2fpeHT6i2qNvAeFEO02ZcS1oeqZbTGL/oXcDmLwbef1Txeq7UyEj5sUvw6gl7q5EezfzqEnqWm4uN6qb3YgKChQg9RzfF6ZmqF+PcaW3nVI/dGIL1ZeKU3QRcesMSETZNY0WwchQxu/8lGWeX+hWGQrEEwUIaS0VWzTbEjUYRnSgup7ABy2Wvp2VxvNOCecFvQr+LJkzS3dHIeDY9claPVCSUvz5mY+Y2uF8r6SB3j+A0QkupM8v05u+wY4rbHQ1+RW/H/cP0XMAJ4oEVq1RQqzW0INN/0BsoIzQDyX7vRpyQD1PgR12aztkfedm7k4Qjtyxs2POcV0Vm13N7R/OQuKZrZYyYKX8jg1aaILFv2M8yRoQZqgIAi7/7sMdKCB+I7lG6syWyHTloEXJL7if+ptggIvZB0WiRd8pCoNzS2lxqseTSolMee78PTruN2lnDxEkJCLe7ywhoeDAO6l7KjedQLwepX4qXbHqCk7eqakNBOP0ZOOq9fDcqUsaC81+4SFpTuX02PQZeXEFKvIuUnWQEs/2JMKSkCvBdLsnePjD9xx+DMarGNRnIhDs/KxfXuLv0HoWaq5UB75YyljW1yNsy6tDGiRfPcDTZvJnNO0MEvsI6Qm4rtrZkE0o0SWYheqyTfshuTNwDYxvQrtPDnskOVN5ISDlS7gfc59xDfNgmbqKAu5EuB6JpCLRhaNSoYSATw9WPNXrr2ZBNv61lPx7Fw4xxJxvHLIXRl+5WtHMqqE8eVd/4uY3Gau6sZmB9Hf8ZhPteNsPOdHL5ib2YdkZEzq8akSF1bXNmy2alr
+ PzjZDZ4k
+ kV5my4O1MkFf08LNfiLgUWFsilaLMGukf1z1REAIhA40ZP7RKbtp7kzWxiGQUKRy54kgUzgSkJIg5Cwi1nSX3PItHxU0kl3wRDlLK7G7tOeNCe0TadAM+fab82sfZH6hvt4V3Zp47hXk6SWn7GthNG1a+KIpkW2Nqx7cnIqDZNYWtTbSZGeOzIFwogbMZNbxTfHvpUsFzmIJZgNj/E/FiCdLlxG0DKthm5PfHWKsmYoQoTysBPuxUnQHB5I//6AHMLkyLGJFnBE8RvJzSHDpnBV88Yl+TzyjrJzsQ+aad/gjqN+l9eJMXGswvo1/fLYmU9WnzMChJLvfBeFEz2DZ0iCMwXTTfHBPemeKNZToQIdr5IhUPXwXKxD4nZ5L8DCAq1uVP13Vnal69nyzAZl/dmyMCyw5HnyyUHnxs5ALCncOQ+Yz3oJ4zAPe6DN8Oqjbqy1toel7TZD4kTxsmkWhsxTNhcVj9VytC/gPPPei4992/bBLOCr9WwLOQh77uca+5F9xCIgK/V5XwCEsjCePFR/MBG3TIRTiQbBZVOlrxF3f2BzFrwbcNK2qTigD4WYJt2+ucmnRHQDc/e14K9ZmUAmrj+k3VM+N0Sh+azcqiwtu3iT+J/DyqvLcOQ8YY5CbRgQsuXOD912o3j2ORSWI7SkjMO3Icw1tbwDxdHvIWOnkiajkZZrqxbR2jqDmFdgAZLP3LbIU0CHo5xLHVQzDx8knZyOqL3eHp9dFEj//kEfY6r+GuJfrcX8wfCc0WqzhKbXcLHGoj1QG7wK4MGkiTsbZGucKlOkys40JfwHDg51sybwE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,161 +94,164 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] crash_core: cmem->ranges overflow via unlocked iomem_resource ho=
-tplug
+- [High] of: reserved_mem: unaligned memblock split in fdt_mark_reserve_mem=
+_nodump()
+- [Medium] of: reserved_mem: fdt_mark_reserve_mem_nodump() marks failed res=
+ervations
 --
 
-commit 24cd8bf08b74ae3e07f992972d3cd97b77d9fcf6
+commit a452b9d1fad838de511c25fe48e4541c58357355
 Author: Wandun Chen <chenwandun@lixiang.com>
 
-crash_core: serialize crash header preparation against hotplug
+of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
 
-This commit serializes crash_prepare_headers() with device_hotplug_lock
-to prevent concurrent memory hotplug from changing the number of memory
-ranges between counting and populating cmem->ranges. It also introduces
-__crash_prepare_headers() for hotplug paths that already hold the lock.
+This commit adds fdt_mark_reserve_mem_nodump() to mark non-dumpable
+reserved-memory regions in memblock.memory so kdump omits them from the
+vmcore when crash dump support is enabled.
 
-Link: https://sashiko.dev/#/message/20260806101002.1F84E1F000E9@smtp.kernel=
-.org
-
-> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-> index faa0f22dbb41d..8a861a946e261 100644
-> --- a/kernel/crash_core.c
-> +++ b/kernel/crash_core.c
-[ ... ]
-> @@ -344,8 +345,8 @@ int crash_exclude_core_ranges(struct crash_mem **cmem)
->  	return 0;
+> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+> index 8c9d6395d6a39..db2bf76000d23 100644
+> --- a/drivers/of/of_reserved_mem.c
+> +++ b/drivers/of/of_reserved_mem.c
+> @@ -677,6 +677,24 @@ static void __init fdt_init_reserved_mem_node(unsign=
+ed long node, const char *un
+>  	reserved_mem_count++;
 >  }
 > =20
-> -int crash_prepare_headers(int need_kernel_map, void **addr, unsigned lon=
-g *sz,
-> -			  unsigned long *nr_mem_ranges)
-> +int __crash_prepare_headers(int need_kernel_map, void **addr, unsigned l=
-ong *sz,
-> +			    unsigned long *nr_mem_ranges)
->  {
->  	unsigned int max_nr_ranges;
->  	struct crash_mem *cmem;
-> @@ -382,6 +383,18 @@ int crash_prepare_headers(int need_kernel_map, void =
-**addr, unsigned long *sz,
->  	return ret;
->  }
-> =20
-> +int crash_prepare_headers(int need_kernel_map, void **addr, unsigned lon=
-g *sz,
-> +			  unsigned long *nr_mem_ranges)
+> +void __init fdt_mark_reserve_mem_nodump(void)
 > +{
-> +	int ret;
+> +	struct reserved_mem *rmem;
+> +	int i;
 > +
-> +	lock_device_hotplug();
-> +	ret =3D __crash_prepare_headers(need_kernel_map, addr, sz, nr_mem_range=
-s);
-> +	unlock_device_hotplug();
+> +	if (!IS_ENABLED(CONFIG_CRASH_DUMP))
+> +		return;
 > +
-> +	return ret;
-> +}
+> +	if (!IS_ENABLED(CONFIG_KEXEC_FILE) && !IS_ENABLED(CONFIG_CRASH_HOTPLUG))
+> +		return;
+> +
+> +	for (i =3D 0; i < reserved_mem_count; i++) {
+> +		rmem =3D &reserved_mem[i];
+> +		if (rmem->size && !rmem->dumpable)
+> +			memblock_mark_nodump(rmem->base, rmem->size);
+> +	}
 
-[Severity: Medium]
-Can cmem->ranges[] still overflow during __crash_prepare_headers() even when
-device_hotplug_lock is held?
+[Severity: High]
+What happens here when rmem->base or rmem->size is not page-aligned, or
+when rmem->size is smaller than a page?
 
-In __crash_prepare_headers(), arch_get_system_nr_ranges() counts the current
-system ram ranges (plus a fixed number of split slots for exclusions),
-allocates cmem via alloc_cmem(max_nr_ranges), and then populates
-cmem->ranges[] in arch_crash_populate_cmem().
+Previously, mapped reserved-memory regions were only recorded in
+memblock.reserved and did not split memblock.memory. Calling
+memblock_mark_nodump() splits memblock.memory at rmem->base and
+rmem->base + rmem->size, but reserved-memory regions are not guaranteed to
+be page-aligned:
 
-Neither the x86 callback in arch/x86/kernel/crash.c:
-
-static int prepare_elf64_ram_headers_callback(struct resource *res, void *a=
-rg)
-{
-	struct crash_mem *cmem =3D arg;
-
-	cmem->ranges[cmem->nr_ranges].start =3D res->start;
-	cmem->ranges[cmem->nr_ranges].end =3D res->end;
-	cmem->nr_ranges++;
-
-	return 0;
+drivers/of/of_reserved_mem.c:early_init_dt_alloc_reserved_memory_arch() {
+	end =3D !end ? MEMBLOCK_ALLOC_ANYWHERE : end;
+	align =3D !align ? SMP_CACHE_BYTES : align;
+	base =3D memblock_phys_alloc_range(size, align, start, end);
 }
 
-nor the weak implementation in kernel/crash_core.c:
+Static device tree regions without no-map can also be smaller than a page
+or unaligned to the page size (for example, cfe-stub@0 in
+arch/arm64/boot/dts/broadcom/bcmbca/bcm4908.dtsi with a 0x1000 size under
+16k or 64k page configurations).
 
-int __weak arch_crash_populate_cmem(struct crash_mem *cmem)
-{
-	phys_addr_t start, end;
-	u64 i;
+When memblock.memory is split at an unaligned or sub-page boundary,
+__next_mem_pfn_range() rounds each region inward to page boundaries and
+skips sub-page regions:
 
-	for_each_mem_range(i, &start, &end) {
-		cmem->ranges[cmem->nr_ranges].start =3D start;
-		cmem->ranges[cmem->nr_ranges].end =3D end - 1;
-		cmem->nr_ranges++;
+mm/memblock.c:__next_mem_pfn_range() {
+	while (++*idx < type->cnt) {
+		r =3D &type->regions[*idx];
+		r_nid =3D memblock_get_region_node(r);
+
+		if (PFN_UP(r->base) >=3D PFN_DOWN(r->base + r->size))
+			continue;
+}
+
+This drops any page frame straddling an unaligned split boundary from
+for_each_mem_pfn_range() and the page allocator.
+
+In addition, request_standard_resources() in arch/arm64/kernel/setup.c and
+init_resources() in arch/riscv/kernel/setup.c register each mapped
+memblock.memory region using memblock_region_memory_base_pfn() and
+memblock_region_memory_end_pfn():
+
+arch/riscv/kernel/setup.c:init_resources() {
+		res->start =3D __pfn_to_phys(memblock_region_memory_base_pfn(region));
+		res->end =3D __pfn_to_phys(memblock_region_memory_end_pfn(region)) - 1;
+
+		ret =3D add_resource(&iomem_resource, res);
+		if (ret < 0)
+			goto error;
+}
+
+For a sub-page region where PFN_UP(base) >=3D PFN_DOWN(base + size), res->e=
+nd
+becomes smaller than res->start (or underflows when end_pfn is 0), causing
+add_resource() on riscv to fail and tear down iomem_resource, and producing
+an inverted or underflowed resource on arm64.
+
+Splitting memblock.memory also splits hyp_memory[] on arm64 pkvm, where
+check_range_allowed_memory() in arch/arm64/kvm/hyp/nvhe/mem_protect.c
+requires checked ranges to fall within a single region:
+
+arch/arm64/kvm/hyp/nvhe/mem_protect.c:check_range_allowed_memory() {
+	reg =3D find_mem_range(start, &range);
+	if (!is_in_mem_range(end - 1, &range))
+		return -EINVAL;
+}
+
+Could memblock_mark_nodump() corrupt resource registration, drop straddling
+pages, or break pkvm range checks when regions are not page-aligned?
+
+[Severity: Medium]
+Can fdt_mark_reserve_mem_nodump() also end up marking active kernel memory
+as non-dumpable if an early static reservation failed?
+
+During early boot in fdt_scan_reserved_mem(), __reserved_mem_reserve_reg()
+logs an error if early_init_dt_reserve_memory() fails (for example, if a
+static region overlaps the kernel image or initrd), but still returns 0:
+
+drivers/of/of_reserved_mem.c:__reserved_mem_reserve_reg() {
+	if (size && early_init_dt_reserve_memory(base, size, nomap) =3D=3D 0) {
+		fdt_fixup_reserved_mem_node(node, base, size);
+		pr_debug("Reserved memory: reserved region for node '%s': base %pa, size =
+%lu MiB\n",
+			 uname, &base, (unsigned long)(size / SZ_1M));
+	} else {
+		pr_err("Reserved memory: failed to reserve memory for node '%s': base %pa=
+, size %lu MiB\n",
+		       uname, &base, (unsigned long)(size / SZ_1M));
 	}
 	return 0;
 }
 
-checks whether cmem->nr_ranges has reached cmem->max_nr_ranges before writi=
-ng
-to cmem->ranges[cmem->nr_ranges++].
+Later, fdt_scan_reserved_mem_late() scans all available static nodes in
+/reserved-memory and passes them to fdt_init_reserved_mem_node(), recording
+them in reserved_mem[] regardless of whether the early reservation
+succeeded:
 
-However, Xen balloon memory hotplug inserts new system ram resources into
-iomem_resource before acquiring device_hotplug_lock via the call chain:
-
-balloon_thread() / xen_alloc_ballooned_pages()
-  -> add_ballooned_pages()
-    -> reserve_additional_memory()
-      -> additional_memory_resource()
-
-Specifically, in drivers/xen/balloon.c:
-
-static struct resource *additional_memory_resource(phys_addr_t size)
-{
-	...
-	res->name =3D "System RAM";
-	res->flags =3D IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
-
-	ret =3D allocate_resource(&iomem_resource, res,
-				size, 0, -1,
-				PAGES_PER_SECTION * PAGE_SIZE, NULL, NULL);
-	...
+drivers/of/of_reserved_mem.c:fdt_scan_reserved_mem_late() {
+		if (size) {
+			uname =3D fdt_get_name(fdt, child, NULL);
+			fdt_init_reserved_mem_node(child, uname, base, size);
+		}
 }
 
-static enum bp_state reserve_additional_memory(void)
-{
-	...
-	resource =3D additional_memory_resource(balloon_hotplug * PAGE_SIZE);
-	if (!resource)
-		goto err;
-	...
-	mutex_unlock(&balloon_mutex);
-	/* add_memory_resource() requires the device_hotplug lock */
-	lock_device_hotplug();
-	rc =3D add_memory_resource(nid, resource, MHP_MERGE_RESOURCE);
-	unlock_device_hotplug();
-	mutex_lock(&balloon_mutex);
-	...
-	balloon_stats.total_pages +=3D balloon_hotplug;
-	...
-}
+Wouldn't fdt_mark_reserve_mem_nodump() then mark that unreserved range in
+memblock.memory, causing kdump to omit memory that is actually in use by
+the kernel?
 
-Because reserve_additional_memory() inserts the resource into iomem_resource
-and drops balloon_mutex before waiting on lock_device_hotplug(), and only
-updates balloon_stats.total_pages after add_memory_resource() completes,
-concurrent callers (such as balloon_thread() and xen_alloc_ballooned_pages(=
-))
-can insert new system ram entries into iomem_resource while
-crash_prepare_headers() or arch_crash_handle_hotplug_event() holds
-device_hotplug_lock.
-
-If those entries are inserted between arch_get_system_nr_ranges() and
-arch_crash_populate_cmem(), wouldn't the extra ranges consume the reserved
-split slots (causing crash_exclude_mem_range() to fail) or overflow
-cmem->ranges[]? Should arch_crash_populate_cmem() and
-prepare_elf64_ram_headers_callback() also bounds-check cmem->nr_ranges
-against cmem->max_nr_ranges?
+> +}
+> +
+>  struct rmem_assigned_device {
+>  	struct device *dev;
+>  	struct reserved_mem *rmem;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021083011.2170=
-525-1-chenwandun1@gmail.com?part=3D3
+525-1-chenwandun1@gmail.com?part=3D7
 
