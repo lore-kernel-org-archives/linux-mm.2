@@ -1,122 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A76606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 14:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110C3606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 14:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=L68KFl/s
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AmZMQS6I
 Received: by kanga.kvack.org (Postfix)
-	id 2CAED6B0948; Thu, 22 Oct 2026 10:02:27 -0400 (EDT)
+	id E8A876B094A; Thu, 22 Oct 2026 10:02:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A2076B094A; Thu, 22 Oct 2026 10:02:27 -0400 (EDT)
+	id E62766B094B; Thu, 22 Oct 2026 10:02:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DF8E6B094B; Thu, 22 Oct 2026 10:02:27 -0400 (EDT)
+	id D9F5F6B094C; Thu, 22 Oct 2026 10:02:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E32266B0948
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:02:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CBE540129
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:02:26 +0000 (UTC)
-X-FDA: 85350427092.02.E8DA047
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 439131C0011
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:02:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="L68KFl/s";
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AF97B6B094A
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:02:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23354A37CD
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:02:43 +0000 (UTC)
+X-FDA: 85350427806.04.E29E621
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 32E83C0016
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:02:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AmZMQS6I;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792677761;
+	b=P6CDoYABzGTMHqjjmowpELmOLccVuaPpyZLGUXy4WRPyVTvBKlO6bKHxduJ7wxIQcUsgmr
+	nL79vF0ienFdpB81dyn/Xe4Lmhm9qCQux/BGTiSNeqm0El+FSEKMcVxK9O9ojB9Y9Pwzqa
+	O3pQIcw/+io8GvVUA/0enVM41EKitLg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AmZMQS6I;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792677744;
+	s=arc-20220608; t=1792677761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nI0a4ft3AKrVHH4EyHbLl5cpGzeZJh7lCRd+MnM1tIw=;
-	b=ftVO+bUsBUHU+xsrfNr9DEoQdVBvWD3fuBKjd2/QSCWbIm1NMm3sDd9LOqGVaOeQXL4fqi
-	C8rBUdhmn8KjbbaYMlhLToTAjWYVxPGeCe3pMlyr+mVdvaPde5YzEn+L3a5siza/d4HjJo
-	nXsEz77Krbsh9mPj9giD520DtLtkMaU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="L68KFl/s";
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792677744;
-	b=DeZkqZtm+2c6mUDtLaPgTlWJkzj7LJuy1uU03rtcY3fo6JetGxGhbSu4hrr0Gyfl0B5fQH
-	ZduV2IqnODITrQxRXpehAue3Iq5aklREJbtlTwzhVwuLyXMLuryu4/PQBUrg3e/2lJVy6Z
-	HrFVog0s618VMURVNUfc8uaea3SzJco=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93f1e5d7450so179434485a.2
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:02:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792677743; x=1793282543; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nI0a4ft3AKrVHH4EyHbLl5cpGzeZJh7lCRd+MnM1tIw=;
-        b=L68KFl/sXzgjvaFDsBDY99eWgXpyp3Va56MGur+1iIOnj3pFAoKZUXWH31AEO+EbX7
-         mSmVwxLe7zn0uQ2PwCfrAcVZmZVlJ4feqLv8zb6sAU4rCRHQshNTOWmp8GrR9ihUVpdL
-         y/3Bs4dZRmZteUApxDOWFKT5gafLB7zZcuGn7HaUpmC71asUpMEa8wmjBQ8zMEF4YFkt
-         haiQgDfQG4ubh7DCBb2Nj1k/9WJ8tFVthMCEai7swaKuDXdk9PW/ZCQYYGhaenV/Hrhq
-         jIFKbnzXrSI54SV93ovCgDNJ/ulFu/0xEQ7zQhfdWPADXZd4MvqIKEwPtjxdoavwU4af
-         TuEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792677743; x=1793282543;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nI0a4ft3AKrVHH4EyHbLl5cpGzeZJh7lCRd+MnM1tIw=;
-        b=0OcRGEaJyZTp5sW7IjytEBuosLzL1Am8FFTfLBXc0MwAZXd6sBJm8yQVlUgCYRasML
-         rhSKs+DCJDSEiiUsofXzEHIhCCMyL4T5BLNnQtwg2ALoNYoT5r5zONx/+wderBFIr1e/
-         qTr0QUSK9BeEiaLmSmLu2E2mbQu7U9m/V7jBs+hH9elA9o6gK/K1tpJXL7jO2OAkF/PO
-         YMWnGKs48ICk/ucuIu+VcooMQoImHv4viGksDKv0NZ8S4fntvhqZdr36BfxOCXYJ48FG
-         TpYPghnw3J4Id1dpgpPRZqSEzOAtu8xoFZ6NGwodKx7e3A83QAZiFl7h1Tn/zM/689KS
-         Thag==
-X-Gm-Message-State: AFq9FYKHvj+GYkh4U0RvEKEh0/GIhTBlos0a1bxulHEP2fMQt0yPxMcI
-	runQoL+J7rZawM8iBvxI+NlGmDNXS9SBvcv/whE6XJTHSQIQ6rPEE2X+Dy934UphtU0=
-X-Gm-Gg: AYBFou2ZRIgW7B+5E7xgw8zlMLZbwOG2+F+Q+aozBCkQzYZQqkt4hcec7iLmcRgoix7
-	+CWhjBsemUZP8Fxes8n2Lz8hqxSLEXukwjRo5BM7eMlNnRQgOCBr8jTKlR7wALHb0Iy0rNIkauK
-	nzPnr19vdAEomvH2+Om36UveTFIYpsEutpoYwtGtbjXaaxw+HXnvaFLIgiB3hsH5WvglY7Ff4jm
-	Ej8lSfCit94AGN3il0XtrTYFXbfV9v1a8DFPd4syKRn75Mtx29RdoeQ3oXSztnXI2FX1tIoghWW
-	MESF3/UIly5Ijm+lPb+QGR20nqzXinTpMlGYUaAA+Rd+W0NE7DihIfsOYg15s9Sosz0/krey09T
-	H5vkdvdoxZPwyP9EHfjyJ3FMfh23s5NMhpAe6GiMtrLenEwllQtjkS7g2O3FX5GM4wknbiqivLI
-	PeFDAeoKs3cfdiih+xU62/tmzVeksdhxlWSOJvIjFryz1urgUzWC138YqJfQqZPOJwgLLDM55Rk
-	CIHfpiOhWGUpnmmHhbPLcODIiuyyAEbn6otE/df3gz5xpXCEEHz2dNuSktQwVjZE6TJzol/mRK8
-	Sa5mIm0KNW/fnJQJxer+Z/8bzd25FRvllMj+
-X-Received: by 2002:a05:620a:400a:b0:93f:175a:f4ce with SMTP id af79cd13be357-93f57f7f30fmr941477185a.80.1792677743141;
-        Thu, 22 Oct 2026 07:02:23 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56e068e3sm517528185a.32.2026.10.22.07.02.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 07:02:21 -0700 (PDT)
-Date: Thu, 22 Oct 2026 10:02:20 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Enze Li <lienze@kylinos.cn>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, muchun.song@linux.dev,
-	osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org
-Subject: Re: [PATCH] mm/hugetlb: drop unused mm parameter from
- unmap_ref_private()
-Message-ID: <atoXbKzJP-jFnbNa@gourry-fedora-PF4VCD3F>
-References: <20261021061901.376104-1-lienze@kylinos.cn>
- <atjO4rhSYGJjaWCC@gourry-fedora-PF4VCD3F>
- <ca400732-79c7-48b3-85f6-a5374d80e58f@kylinos.cn>
+	bh=sbNemcwZ2jC1Uc7605k/VmRdjgt1QXoYjX9veU4w4sg=;
+	b=KNckhg2pnyI4zxY4nvpmefRVyDGS+XSh6gY/ZOUX5r5ENzEm6Os5knvPK80Qyfk/bqCtK1
+	KMvHCrSlw41HtciNgbTAbzG2RnKJa0SZYjaBpmR4jztRr61c9IYP23m0Ujyx94qI/A6FqO
+	MqTbwXk7MWB16Z40fgzIlhhXPpxmhRo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EABBE60A89;
+	Thu, 22 Oct 2026 14:02:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EB21F000C1;
+	Thu, 22 Oct 2026 14:02:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792677759;
+	bh=sbNemcwZ2jC1Uc7605k/VmRdjgt1QXoYjX9veU4w4sg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AmZMQS6IkrbnfBT7rmh94KaapbRI+T4bPXW5CLrWD95W9hDFLpbSOXSkpw3xXQo/Q
+	 JYxbCN3+IRkhfvwGbKgCVvGpsM9JFe3wWNJGlkRGMQA8ANaf9+k/k8xlBIbAcWnzPp
+	 Gu/m6krdg/kpRdIkq5YulAXt+UH8IoI0/ZzjF63qWP73OIbZYob0g17timLVgd5BY9
+	 qL1SDa2n9NHAzqyNmZU3icOaKvdcHz1y30fvMGOMzo/Hy1SlheQVwh6rxzfGOQ5vtU
+	 IaQ5DJGIKcl9/aAKwhsqjbLGlEgU37FyaIqXZWnYggqAyaYAm21ybJnZiBUcAHUWfa
+	 UUVl8+gih695A==
+From: SJ Park <sj@kernel.org>
+To: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Fernand Sieber <sieberf@amazon.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sjpark@amazon.de>,
+	Leonard Foerster <foersleo@amazon.de>,
+	Shubhang Kaushik <shubhang@os.amperecomputing.com>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon: align MMU notifier range when clearing PTE young bit
+Date: Thu, 22 Oct 2026 07:02:31 -0700
+Message-ID: <20261022140232.93962-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261021-damon-align-pte-young-notifier-v1-1-d0365ac45b66@gentwo.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ca400732-79c7-48b3-85f6-a5374d80e58f@kylinos.cn>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 439131C0011
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 5fc148n3f9yqwbxqrnskru7fbtxfcgxc
-X-HE-Tag: 1792677744-743742
-X-HE-Meta: U2FsdGVkX1+AKG+wVrkBE1qu6L6KUrQm/PAFRfDEeku6fcJrkGK7YuBgn2w29nRouSoNkstIORoZXCbxGcPDkcXR0aqfGILLZHRSs6zFxyXLoaeHEzU1oLd04R6m3hdFizDqFHh4L/XrdgDJUBX6YywS4m4riES4vKdXMIdNXQdFxd1wuE2m42ihSF6Hiew5qFB+kH8505wyQlRilDhX6WLX8FMGtujAuQ+wTfZ7qNBOAk7CYKg//Uu6lw+MRzUNi+NC7xZ1hz1x/DuW6yGLKUG4aD/aWqrzda2Im6kWmJERzL+h8/lcE1yFNm/IaLq7uvmANaFuXUFYXg7dhPHlY03i7WiCqzVC49SYTijFRP5kvQMdLDnPrq7D3YVyq+Ox4BfFWuOJHgzVyXCsy12n/l3lbIFZ5foFNnvS50zqhvyoB03VDGcAGYOwMysay9zRxs0qWOzpXPRnYSX4kIPpLWWJxtW6yn2nVRwsZ6O1F+wZaPsIa1bshSewBk58ndBN1CBJCeEDZJb4D6gFsDOKQmBPpn+bAGvWljGvBzCUBuhGWCXALekxZmtpxn9WdEgsYx2U38BKqSed1FnL661cBwNXTXVvGtOOkOljQaInHg+oSZ0SC09gQKizMuJvmCNiIUKxtnzyQ3H3m9SPKKtwWVeJ1L1fx3Y/nKrRt1oOtou5eofBnbWrj9xIO2psgWjVef5jxBIOFs/8z+zPhUQI9rb9MtIM/QCjm1YRLhC4PrEAm70lyFdOFmZEXRCdN/tVm6WZjpJ5Xy7y4PwukCPSsgF8SP1/YiWUY1qAn12UX+ahJ8fcIiHk7dQ0ajam+aCGtY8ITYXmssd1QaW+zt0tkfj+ZSUFRr5XDrGMgZX+OkLyQmlyVi++cWYMgX9U6qO2AO2kN9oNOzSkNl67ttVZ5mnkWBnxWdDsIEL+EFb8gK9VyY1SD4nx+hhVT5rfeCuodR5lWCha3tIPlFzWK4T
- aI7QNX8L
- 6/hl3s3PPpdExTF8Esx2gNpciVnu7FOqAe+fYsrsZj92cXfK5EHqk8uaf0E3umeLYN7P6hFBrCyrHRceAW2nZFKr8PXy6mKkx7LrqUcbAHoS87Lc9/F6RUbDILVGu7jsZm1DBmSvwNqm5GcHv8PA+fpu9JLb1+BYkhqUjGL2sLwIOQS8/472CNvYN1Fr57ppiDSFafvsXWs5/4RG5P4lJBzLr31KbYMBFyKDNJtHFJrfb+MuotB9YP1WXH+SgWcFf7JrZ7gm5zcEYu/+RaQ7xakG06kI7gbI8TriUwV8ek7A4asj6y2wjvDvbswQkaLrg1BfXN3gDU0efSJA81zhnPrJZ3FVAIXTso8F/Au7qPLeYcBUFIsv4MyrD8xdQxpjOLhSK5pC+PnC5vQeD+0cNAP2KQPknd4CRu8KwKQrrJF+zqRoiDLL/kuDPQ+EShqMQRJwlmL4seGaK20KqBssxl+e+vQ==
+X-Rspamd-Queue-Id: 32E83C0016
+X-Stat-Signature: n9gqg9h7by8zt8up76jq5f3wfck3s18m
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792677761-100109
+X-HE-Meta: U2FsdGVkX18Htcly+1HLZqbO1Jfsz86ztOzht2rNgnMVQ5MP2jr6mqQRnrceMRdQevAfmrJO+xB6gl5MQuerSfnCjBHlz5Q0FAXVu716ztccamoPETjLCJmDhN2asihH7eSdEncGqEJRSVK3OxENq833r/rL1gNOym8ZJSsDqWI/1mObTsHx4XjUS664X6M6AXEOFrLzoTKaHLNWYPQjPqLDk6HHvYgIWslrQwI+9dh74cR6cNKtVWvAnL2XIWzTN8xZG1Jfa+CZcmwYpaCWhkJsY4az9px+CRyXiagPZNzKzWPYbKQdRRZ9HkpESWHf9IFu3L3Gu3ClQgYhECgDgOsBONZqZ6LPboioyJ6xRJxttTcTtCbk1HwRKM8jBC6alnlZrq9jf8pdrTwK7oD7HYRZAA1lE9i/HOGh7WJ4bcp/QuQfFch4b3CuNq1sA52Inxa0bDtFb3BXxUFYhbBeX+lwfZrAJrdkxAWiLZ6W2hZ5FIJZNoihDntF6NNLIM9803vkhB6AilMrBY/WrUeAtdXiObHTu2gKqUR3CkgTHifS3F/zp6+fXZaxsJQNox0XwaLENIsD80Ygzn9EXKlNj6FGN9dnQ5EQt0XKWANTDWEtfaV/nLndeWNG/lPLLQsUrFmN7Tp7aByCOry7AEMxrH+z25oqxVaibkRBsaTT3imGoTmgADWmNU+uBSV7bbb6lY4ynWj7OtcJmVafmmDnj68sQTy02DPscFauXnc17UDzWEF/d+QM36wVe/8wUdkKbTLHYYJoPfPWVrhMJd4O6T3APO6S0sb7CfQvzBPuH/s5+yiTUhiULto2Tu7/O8TRJDFS6s3OyC/imE9oGLiyZ06tRzU16ZJwAKRvA+L3WWarPesdNCdc78fnbmht+/i56vW9iD+Kery2YyupYBAY8Q27tWfZlXMH+DkD4htl3+R/Jr9e/E3jPfS8aXyNi2HPBikOzF7lS4Nm7KmJyFv
+ C45qNExx
+ bEuN7cnUSVRuPgoeCMOfWntc4ApieIvt2CucIz6EyXlOL31Pdz6aq3ZFVHVuAtpMZnO6c6Psme95MI/RORdxL0daHDRkRgIk+myH7GZNdSb2KN8Io3ScE1Kk3IGszrbEdS3aXsD5HRRAHy5WUlt65XfYp2ptcr/QHLJBe2Qauk0flwsjAaumOKSV/08ya2LOStfi/5AF6qeevvqJZXt6i4pHP5dFy0v48TlBkhz52TTwyirbmGAIyZY5Cm/B9L2QH3Zqnq0+R60bv4oYnzy5n0xpQvd+Wxq7pj8XHG8Xi7FaSRHQxG56kaSXB9JKfVT/3Zi3a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,30 +102,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 02:59:46PM +0800, Enze Li wrote:
-> Thank you, Gregory!
-> 
-> I noticed this was sent off-list, so looping the list back in for
-> record.
-> 
-> Thanks,
-> Enze
-> 
-> On 10/21/26 10:41 PM, Gregory Price wrote:
-> > On Wed, Oct 21, 2026 at 02:19:01PM +0800, Enze Li wrote:
-> >> The mm parameter has never been used since the helper was introduced in
-> >> commit 04f2cbe35699 ("hugetlb: guarantee that COW faults for a process that
-> >> called mmap(MAP_PRIVATE) on hugetlbfs will succeed").  Remove it and drop
-> >> it at the sole call site.
-> >>
-> >> Signed-off-by: Enze Li <lienze@kylinos.cn>
-> > 
-> > Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> 
+Hello Shubhang,
 
-Yes sorry, I was working on tooling last night and hit the wrong macros
-apparently.
+On Wed, 21 Oct 2026 23:36:19 -0700 "Shubhang Kaushik (Ampere)" <sh@gentwo.org> wrote:
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> DAMON selects a byte-granular sampling address.  damon_ptep_mkold()
+> clears the young bit of the PTE covering that address, but passes the
+> unaligned range [addr, addr + PAGE_SIZE) to MMU notifiers.
+> 
+> For an unaligned address, that range extends into the following page.
+> KVM ages every guest page intersecting the notifier range, so it can age
+> a secondary mapping for the following page although DAMON cleared only
+> the sampled page's primary PTE.
+> 
+> Align the address before both the primary PTE operation and the
+> MMU notifier call so that they cover the same page.
 
+Thank you for finding and fixing this!
+
+> 
+> Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
+
+I once thought if we need to Cc: stable@.  Because this is only for monitoring
+accruacy improvement and DAMON is only beest-effort, I think we don't need to.
+
+> Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+I applied  this patch to damon/next [1] tree.  We are now in the middle of the
+merge window.  It may better to focus on making mm.git changes pulled into the
+mainline, rather than adding more changes that are not really urgent.  I
+understand this series is not really urgent.  Hence, Andrew might not add this
+patch until next -rc1 release.  In the case, I will request adding this to
+mm.git after next -rc1 release.  So, no action from your side is needed for
+now.  Let me know if you think this is really urgent.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
