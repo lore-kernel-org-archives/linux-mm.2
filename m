@@ -1,110 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E8D606A32F
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 19:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0A1606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 19:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ggZEktIu
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ZqPT3x0k
 Received: by kanga.kvack.org (Postfix)
-	id 828026B08B6; Thu, 22 Oct 2026 15:16:08 -0400 (EDT)
+	id 589266B09B9; Thu, 22 Oct 2026 15:33:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FEE06B09B8; Thu, 22 Oct 2026 15:16:08 -0400 (EDT)
+	id 5604D6B09BA; Thu, 22 Oct 2026 15:33:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73BB96B09B9; Thu, 22 Oct 2026 15:16:08 -0400 (EDT)
+	id 49D2D6B09BB; Thu, 22 Oct 2026 15:33:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A4D06B08B6
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:16:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 846FCA6E12
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:16:06 +0000 (UTC)
-X-FDA: 85351217532.02.224150E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9949780008
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:16:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ggZEktIu;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 28F546B09B9
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:33:31 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF4794029C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:33:30 +0000 (UTC)
+X-FDA: 85351261380.19.F14448D
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 66D4D40008
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:33:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZqPT3x0k;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf04.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792696564;
+	s=arc-20220608; t=1792697608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aXEotVyVHJYDPptgK6vNC0rI1V41OJrJxrbuxV/+QY4=;
-	b=pa6s4WZe+9vL/154BqF12Mo9fqSjdTj4NMVsFR7amKPl0VYDjZlaY2iFJnkUZH/uHG1chX
-	3qRhn/RJHhPWI/qMbKJSFfGFjzwREsbd9afCIIIW63DRHSsppFYqbdHD7614lmHBbPt9Q6
-	uGcWtuw0uwU5dzeKB5xCsAA8oOOTFgc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792696564;
-	b=aGMeeusV+hb8MpQzSSgqQ6nPrRja9uxqrlEyrzPo4g5ED9PUL5q26jONMse1A0/XiKjzkv
-	XHZj1oL6tczPJfMgFKqLn9Wd7jh2lzfeSGpekTxlc5UcKcy10fpxj8I7RF4XUpfumr30Tq
-	UyrvphnLEMWAwb/egG0BzOjRWPBQhQk=
+	bh=mCLgkUSjfiPQ2Z/7aDng4XXocalO4USE3TUieu+yZLc=;
+	b=1htF4F8XJjnWXA6SOwzc7xElsI+vy+RLG51/Frn7WTn89yOgTweQ+ySyKYKjOrGA43+Ygm
+	OujE0dxbYWqOiylhpQvaZPUcyZSM28q2hyCZ95wC4TkKbqHHHo4uGgF/ti/xFCF5TpgaVL
+	CG2CeibPyZg3swyniDWSzHbp58BwT8E=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ggZEktIu;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AAB59609CE
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:16:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797DC1F031EE
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792696563;
-	bh=aXEotVyVHJYDPptgK6vNC0rI1V41OJrJxrbuxV/+QY4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ggZEktIu+eC0ocrsZZXiVHxUntX/tF/RiCECaz1exsAYChneQQq5R9Zw1zHCAZ+Ny
-	 46dYopslFW4D4BIJ86ovTrPhIEApOeoKUDyI44l7UbPdKSYK6V6zQyS4VaIlbL3W5m
-	 KufrO3ZTfHynnu+DYQqKa6UE3P4tfmww1BG43u+EJ8Uwnx3ox8YxyuKhJErLEXA5gl
-	 8RoevceTnFtiiTYiPn3gEVGVrjIvdWVXpERr23iLocMiOU0P0+UqSTRrW08U+Immcg
-	 ygmko5cwJXvek8zOVUHeeZTPLXrzeKV7yr4gLgyiqmszdV5OX4yWp1A4A5k+SjSn1n
-	 ZHxmsFIw0hxLw==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b1a86c0316so122286a12.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:16:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz6bAVAHrbRP8lcHkJ1ZF1DJNtavu9HisWxqWVAU3cD6GFDC+xtzONVsDCTRpWrgiHiil+96ZRspw==@kvack.org
-X-Gm-Message-State: AFq9FYL8DHUolUuXnNC7SgjjpCuggK4Gt7sTXr10mcHDoMg/avmpd9bD
-	weRHrN6CjKejSS+XPUGvbCgezppAQTiQI4vEeAJk7XEc7kvf0Bois25jLD9Hw94DN4SVnfdvHgf
-	USwOwbD/xiLH6gNtggxv+INbKBqm/eZU=
-X-Received: by 2002:a17:907:9c06:b0:c3e:34fa:611d with SMTP id
- a640c23a62f3a-c46a93f0638mr14493466b.35.1792696562242; Thu, 22 Oct 2026
- 12:16:02 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZqPT3x0k;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf04.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792697608;
+	b=J2j1P8y5jJtk91cBSRX5Hl2TwN1FYD+52jat6W3/4T0c4yijCScok0YJVsnOMTZs6mwCBO
+	OevTSQ9cqIXdl4ryaUWbf6J8xdgZGT6PYSLg7h1dCBijxX9TSGS73+doFYV6/NtKKNblO5
+	zlbUBCq8VQsamWlDqGfrzyDDw5f4Fmw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=mCLgkUSjfiPQ2Z/7aDng4XXocalO4USE3TUieu+yZLc=; b=ZqPT3x0k+CkPYo13D5zgsJ31Zh
+	JSJ2yQy9T2F9ZvFcBhY+Z/TsYvx16xi5yE85WvpB2WwilwZxtPJ172IuYZAlhKM9hBKf8xUo001L1
+	KcTkOIdULCe5RBTRqtRCfz9nTJTrvqdnAA0jvDHlsZdkWIbYSA8CBt3y3Jlck+YFtCCpf8Kj7c0hb
+	Rp1BprJM9xy8SSEPfotOjGut3et+hWHK00vTkqsylvvHEIpK9lniM1vm0xEQAAbmKmzsr4CmZZq5H
+	qio3WsXzmjQC7G571OtOw+iVIhxTRPBYODRQA5oyszhf8Yi4Xf3IFUljEFquZQ2s/kCNk0eiKG7TO
+	G75+oKiw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xJyXT-0000000EpQv-49dK;
+	Thu, 22 Oct 2026 19:33:24 +0000
+Date: Thu, 22 Oct 2026 15:33:16 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Jann Horn <jannh@google.com>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, 
+	oleg@redhat.com, peterz@infradead.org, mhiramat@kernel.org, jolsa@kernel.org, 
+	akpm@linux-foundation.org, ljs@kernel.org, surenb@google.com, david@kernel.org, 
+	vbabka@kernel.org, hughd@google.com, kees@kernel.org, mingo@redhat.com, 
+	tglx@kernel.org, x86@kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next 4/9] uprobes/x86: Don't WARN if an optimized
+ probe can't be written
+Message-ID: <dabdsge2cphfoulqobeswzj7xxkvlq2qyyi3iauqgmftfj6vg6@hbmosdt6t4bd>
+References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
+ <20261022015712.1297331-5-alexei.starovoitov@gmail.com>
+ <CAG48ez0cG532aaXZF_asCDk+fsnQmE9L5PA9T+JN6OGdx6yjGQ@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261021205626.3286270-1-suseendranb@google.com>
- <20261021205626.3286270-3-suseendranb@google.com> <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
- <20261022155144.4177200-1-suseendranb@google.com> <CAO9r8zP+GUE-hcGWSGzhLNLcchFoZ38EMVCAtX5yZ78tZ0bbgA@mail.gmail.com>
- <20261022183319.163484-1-suseendranb@google.com>
-In-Reply-To: <20261022183319.163484-1-suseendranb@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 22 Oct 2026 12:15:51 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zN6hN4h5m9pg4xQpirJj3o2nhGx5dxAuSddZ8+UenYnMg@mail.gmail.com>
-X-Gm-Features: AclHuK_hJDFj0vZeNwHlzwbNEbCyCqR7zIQWw8UnwCHO6c8KrbK1Hg29ZhvDHe4
-Message-ID: <CAO9r8zN6hN4h5m9pg4xQpirJj3o2nhGx5dxAuSddZ8+UenYnMg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor compression
-To: Suseendran Bhaskaran <suseendranb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S . Miller" <davem@davemloft.net>, Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
-	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9949780008
-X-Stat-Signature: jm8b947uhtke5a1b5uu6f5gioxjiq18r
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez0cG532aaXZF_asCDk+fsnQmE9L5PA9T+JN6OGdx6yjGQ@mail.gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 66D4D40008
+X-Stat-Signature: 9q71mbo686n5tfuootoo4idamsojdbm9
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792696564-924503
-X-HE-Meta: U2FsdGVkX1/0lfcOIMvSrLbFJAi1cblX7SfdKOJiAhTX8oBKZHkcLcQud8Q36bEEHEShKEVCH3ulWES/mOpjTR/vAlZqofxHKTRKGjUFXQO0N0OccfTfxB/1ioTyyGvPWh/5tfBMSBesom5tICCgBGCBwpXNYOTtm7ZxzQIqaaRCrdf6jCIo2mLNGD2JMUmjp9YRB28GgSmvJPl92AswX6X4yCx6qnmU6rP6q86WPIh+Cg/htpEgHo0VS9JBWtO1NriyQqOq8RO0afHR7/7uuCZ1rLG3GNr1l3yNm0phBd9rDDX6bteWnWFhqPhAd2csVAdJtDBQiTvtfwLvk6YKiEau5X8ooTJnz8Wq988iDvBnaRen23WJ6uDoo5NsLkVEzLUqNlm127daeSsGEuRnhribWFCYivviQmG3DnAadcOJh4GKeeijA48doQXh5Lw73/pX82wPFwjfWKWqI7/zP4NL3RjcQbqBqVSwKlpkT58CCoCzrSpJj5graqgz1c/h68NmknzzdN8Q8i6n5Ng15R6vvned4B0HwJhuH6ndf9fxYLIjJLjDOVOieSOYqxiPkMvdem15gDhosF/veZnGq1XN1R140Uz5YNxDeNtnrwdyFM9yWov2/YxvhapEJNH1ikr1W2UWudTPwQmCzTmfklP7/0BfT8Yq/emT8Lwkv/MshLwO2KJsyAnSjHQycOBL5WOmieJbvIloEktbPqSNSsibxmlm+mlmD9jh7wF9WpMYZO2kZ+v/u551Pe8tbm15MGPIgpRZEq01qV+W7tuxvI7oy3V8wq7bRqDkws8Hy7epso2UtK4HawcCFLYaK3syLFm5bOiCh3Qx5Wsdyd1CQF+BRnRpAS2vXwuKWOZp6zF/57I1F4vv37JScmiB4DNsFUoHe55qnqhiAPvcVWBaLJLn1SAQQqN5CpJFsqy2SGjwb67P3gSEJ2ZtDILT91hlSnShzjN5q+NqAJlZK7k
- YmRHBFHp
- xLymUGNR3ZQeSqC8jfKzoPkLTc0NvIEcObQkdN1TwnMv8TRvnP4b6V2FbQkV6AVOwPEcmm6qtrs/xYFCz8v4r8OVsXw0nqtyvGhnOS8p6xHXSUzIgYBpsaxHjXv+5ARt7JIjCoG/cor9ffsY3fLR6ZE06p5R6B1XaI1gSPTYdAdnFiFCcZiLHoMVJxqRzdrGWxnMw5xw5cUTWcW+4DhPwl4EV4RDBoKNHKvryq1Y55NC15RvihFXkl4ry+g4xALQr7k2FIqOKLJUVvIgl5Gy3HzWs24O5aUni3Ct2Y0DoJIZ7JWwd8Y+IgjDpNyqvRuwwiXBWt0t9pHeDX/HcpZXAV/vtSg==
+X-Rspam-User: 
+X-HE-Tag: 1792697608-363569
+X-HE-Meta: U2FsdGVkX19OxXMZ+f1LuFcFABR1KvARbJRXriPieJWOkus3B9+dMDWxCI6AA/fKX2RmzRJGnKiYhoKtNDs8ya5LvRyYfcYaKwzj8X+tOWenPFewJb7W0+HYXCMmvKYiKBS9HBphHcACgUnPK/q3ChYKPP6eazP2YRqEcYc12ciRu2llbKegjJQot/oh2mCCwKaaARaz2hpXnueL5Yc+q0QZ2vO8obeYRGZ0O6dcfr+LWHIigBOwVW9Z/R7SZWvjGsVPGiTVcmTzoXMRJsl26yG5F9XgkR6MKPZTO2DBDAeei/Uhxm9gQAu9eBceNaHOBm0cy9WGgJ2iiubOwqgsV7q7x+YrSyTi82MWpYBxo7mXunJa3/grXJooqp5cou9ldTzz1Ya8+bKaL5TVdaQcbbwVh9O/xFPTD3bOPYX00ctdxp55THBs7koJGLdhVOllJPeLvRJ+XXfGD+txEho42bo3gOeAQxPCVaJNlVosJbrZdP7U3BLJc013+2x2i0BPbsnX3Hf3FSRe60wU8YSfcMF+zbjGL1mTgxLN6jYQkrGexfxBIR260YBjtxuT/p7pbrjd7MIp8vu49nKkIX6RXAfSG2aaT+k4+ZCrXHVZQXl0rvJMiGFxzPzm0yjBFk/ex7g6fQj0e6yTd7KlQHrB51tKGVw+g9vrPTWR2/rpRGrIdeRvvCoxmcZ6n7127kBumCAirWE3xYFVhWWXz9wEV0/7RnJBNmAkzfmNBUuR7Gp5nF6TaQJBCg1SHlSL7fb2F5aMCmhRRsW9JTRBIzfnCNd3Gq8nlzwHrkA9WDMLlZAYr00MchcdCrCicKeRxFGq4yxXRI4s5mRzrwGDVPmxyrKqPPV4KgzIQ258L+1DbgqjMbprmpMmiszkpKiQGADkz8wUyLWdRp/TfPu12UtQ/Q+yi1ttu98bIN9uR6BUoQlpJAW1G+fyNt3H+UtXbLGNqoJnBscwMEC97Vr3mzZ
+ kQzLAOKL
+ Rc23++V0wZK1FLFxPCMn4R5GCPMptKlK3hPKpz0cbcM+kFXFd6vdIKInTukY/fS8PvRkSr/PR/LccT7eLrFAYbVpmZ9J5/JGsk4cawS0b6Bd9ZJoSF8fR7KGVjWT7dtfGbXb36kSrnfnbBYAkml7HsL5k2jPOfsDfkaIn1xTsysMSniY3Gau/xC5jEQGGlKR5WOcjapwNbAkdHPRS4oeVAplK5LQsoyoWCEgztJaKDQ9SgUh9ovmUcIMIHixOW8ClMzKlkFGKOkwRQiMIjqwtyXqL8VhRs8vph61kGhvMBVs5go/TJrl9UEJFgjL3l2jb1eXUR9dqpubDZW1aRTWgkmeFEo1mdsW1EPYE+n9ePr0JQO/LC6IA3QgikdYcA2Y+rr77RNFFMsgAyXWepZatbGjcuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,113 +102,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 11:33=E2=80=AFAM Suseendran Bhaskaran
-<suseendranb@google.com> wrote:
->
-> On Thu, Oct 22, 2026 at 09:01:02AM -0700, Yosry Ahmed wrote:
-> > On Thu, Oct 22, 2026 at 8:51 AM Suseendran Bhaskaran
-> > <suseendranb@google.com> wrote:
-> [...]
-> > > With that unchanged, existing zswap_compress() already accounts -ENOS=
-PC
-> > > vs other error codes when writeback is disabled, except for the
-> > > !comp_ret && dlen >=3D PAGE_SIZE case mentioned above:
-> >
-> > Is this actually possible? When we changed the buffer size to
-> > PAGE_SIZE, I thought we made sure all compressors wouldn't write
-> > beyond the buffer size. dlen > PAGE_SIZE means buffer overflow, which
-> > is a bigger problem than debugfs stats. Or maybe compressors can set
-> > dlen > PAGE_SIZE but won't actually write to the buffer? I didn't
-> > check.
->
-> dlen > PAGE_SIZE isn't possible, since all compressors bound their
-> output by the input req->dlen (PAGE_SIZE) as you mentioned, and only
-> set req->dlen <=3D PAGE_SIZE. The 'dlen >=3D PAGE_SIZE' check in commit
-> dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
-> as-is") was written when the buffer was still 2 * PAGE_SIZE prior to
-> commit 0b1bf60c324a ("mm/zswap: reduce the size of the compression
-> buffer to a single page").
->
-> > As for the (!comp_ret && dlen =3D=3D PAGE_SIZE) case specifically, yeah=
- we
-> > should probably use -ENOSPC to count it as poor compression.
->
-> Ack.
->
-> > The compt_ret and dlen checks are not super intuitive tbh, I wonder
-> > how they should relate. What is the expected value of dlen if comp_ret
-> > is an error? Is it always 0, or can the compressor set it as a
-> > non-zero value if compression fails?
->
-> On error (comp_ret !=3D 0), dlen is not guaranteed to be 0. The value
-> left in dlen depends on the compressor used. For example:
-> - zstd, 842, and qat set dlen =3D 0 on error.
-> - lz4, lz4hc, lzo, lzo-rle (via scomp_acomp_comp_decomp()), deflate,
->   and iaa return the error code without modifying dlen, so dlen
->   remains at its input value (PAGE_SIZE).
-> - hisi_zip sets dlen to the hardware-reported produced bytes even
->   on error.
->
-> So dlen is only meaningful when !comp_ret. The !dlen check was
-> added in commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE
-> compression failed page as-is") as a defensive check for the case when
-> comp_ret is 0 with 0 dlen which shouldn't happen unless the compressor
-> is faulty.
->
-> > >
-> > > -                       comp_ret =3D comp_ret ? comp_ret : -EINVAL;
-> > > +                       comp_ret =3D comp_ret ? comp_ret :
-> > > +                                  (dlen >=3D PAGE_SIZE ? -ENOSPC : -=
-EINVAL);
-> > >
-> > > Would you prefer that I narrow Patch 2 to just that change in v2, or =
-drop
-> > > Patch 2 and only send Patch 1?
-> >
-> > Let's figure out what needs to be done for patch 2 first, if anything.
->
-> Since dlen is only valid when !comp_ret, we could normalize comp_ret
-> first when !comp_ret and then just check 'if (comp_ret)':
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -874,19 +874,24 @@ static bool zswap_compress(struct page *page, struc=
-t zswap_entry *entry,
->          */
->         comp_ret =3D crypto_wait_req(crypto_acomp_compress(acomp_ctx->req=
-), &acomp_ctx->wait);
->         dlen =3D acomp_ctx->req->dlen;
-> +       if (!comp_ret) {
-> +               if (dlen =3D=3D PAGE_SIZE)
-> +                       comp_ret =3D -ENOSPC;
-> +               else if (WARN_ON_ONCE(!dlen || dlen > PAGE_SIZE))
-> +                       comp_ret =3D -EINVAL;
-> +       }
->
->         /*
->          * If a page cannot be compressed into a size smaller than PAGE_S=
-IZE,
->          * save the content as is without a compression, to keep the LRU =
-order
->          * of writebacks.  If writeback is disabled, reject the page sinc=
-e it
->          * only adds metadata overhead.  swap_writeout() will put the pag=
-e back
->          * to the active LRU list in the case.
->          */
-> -       if (comp_ret || !dlen || dlen >=3D PAGE_SIZE) {
-> +       if (comp_ret) {
->                 rcu_read_lock();
->                 if (!mem_cgroup_zswap_writeback_enabled(
->                                         folio_memcg(page_folio(page)))) {
->                         rcu_read_unlock();
-> -                       comp_ret =3D comp_ret ? comp_ret : -EINVAL;
->                         goto unlock;
->                 }
->
-> Does this look good to you?
+On 26/10/22 07:56PM, Jann Horn wrote:
+> On Thu, Oct 22, 2026 at 3:57 AM Alexei Starovoitov
+> <alexei.starovoitov@gmail.com> wrote:
+> > @@ -1197,7 +1194,7 @@ static int __arch_uprobe_optimize(struct arch_uprobe *auprobe, struct mm_struct
+> >         if (IS_ERR(tramp))
+> >                 return PTR_ERR(tramp);
+> >         ret = swbp_optimize(auprobe, vma, vaddr, tramp->vm_start);
+> > -       if (WARN_ON_ONCE(ret) && new_mapping)
+> > +       if (ret && new_mapping)
+> >                 WARN_ON_ONCE(do_munmap(mm, tramp->vm_start, PAGE_SIZE, NULL));
+> 
+> Not an issue with your patch, just FYI regarding this preexisting
+> WARN_ON_ONCE():
+> A failing small GFP_KERNEL allocation could theoretically cause
+> do_munmap() to fail; the VMA tree has the ugly quirk that you can't
+> reliably _remove_ elements without memory allocation.
 
-Yes. I assume this is completely independent from patch 1, so we can
-tell Herbert to pick up patch 1 and send this separately?
+During munmap() we may need an allocation of one or two vma(s)
+(splitting a vma or punching a hole) - and those may have anon vma
+chains that need to be allocated, we may need to allocate for uffd
+reasons, and we may need to allocate for the maple tree.
+
+That said, this path exclusively uses GFP_KERNEL which means we will
+invoke the shrinker.  If the shrinker comes back unsuccessful, we will
+invoke OOM.  This either succeed or it does not matter (we'll kill this
+task).
+
+The other two possibilities is that the OOM is disabled during
+hibernate/suspend calls, or error injection caused the failure.
+
+Thanks,
+Liam
+
 
