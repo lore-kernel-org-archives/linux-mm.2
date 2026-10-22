@@ -1,130 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB95B606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 12:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BdopsFQp
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29EA606A334
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 12:28:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D04B06B063A; Thu, 22 Oct 2026 08:18:46 -0400 (EDT)
+	id CF0446B0927; Thu, 22 Oct 2026 08:28:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8E996B0926; Thu, 22 Oct 2026 08:18:46 -0400 (EDT)
+	id CC75B6B0928; Thu, 22 Oct 2026 08:28:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B36026B0927; Thu, 22 Oct 2026 08:18:46 -0400 (EDT)
+	id C075D6B0929; Thu, 22 Oct 2026 08:28:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7105D6B063A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:18:46 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB27CA8512
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:18:44 +0000 (UTC)
-X-FDA: 85350165768.17.C5A5ABB
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2EE631A000A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:18:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BdopsFQp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of danishkhateeb03@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=danishkhateeb03@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B7D36B0927
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:28:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10EEB40834
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:28:16 +0000 (UTC)
+X-FDA: 85350189792.18.4726EAA
+Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6E4CD140004
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:28:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lL6HT0fV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792671523;
+	s=arc-20220608; t=1792672094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=DZU48ffXnuc37LAObRV7DmUJm85ZVuXLv374YtKlykA=;
-	b=35o3AnsG/31nA9CuG3qCf+/YwEpVT9oaoj0VAKG7LysUrW3fOOYyup3bng064W9uvot6h9
-	8OX8/7o6O6QkK5M132xkvFYxCb6eeeRYM2Wg4yG+C0630NgLEmMQXU3a0TV6geLpLSdEP5
-	CHJ8hmWILYP0YAWL3Y6SqzPcryBJoMs=
+	bh=CPqnyF5S+r1Kaagrptzy8zg+kN7I2FQmxGKs9M2Lbgo=;
+	b=xKQ0md7qceI55/urr1O9LCw/52o59FTqu/SXgNNKiV0YTG2DjfgPpGPRDvbsS1Luzs0wA8
+	zhr7BdMBEox9wSOl9a4ncpxRr1k+wlipWhyXT9ersAkrFldZ2WuKenBOA9U7JcQ4KfuBQm
+	8hHscmjf+tdWijNevl4NYToQePtvBwA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BdopsFQp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of danishkhateeb03@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=danishkhateeb03@gmail.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lL6HT0fV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792671523;
-	b=hl2OJebFWtYzwvgYq96Rfvh0/xgWCIGpqwWgBwkiHWx7q3r1MDEH3bVELESKfhi2ZPU55b
-	VfpZnvk1QyYXHZQRBInRq+qyuckFiZcJuXcgatZm4G3BLvne7aPlpDtJwbjfyDTVQgv+wR
-	7LKFCeRrsEZIny2FfHPnIBI1r4UF0Qk=
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4ed6d69bdfaso971057b6e.3
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:18:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792671522; x=1793276322; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DZU48ffXnuc37LAObRV7DmUJm85ZVuXLv374YtKlykA=;
-        b=BdopsFQp7FMnmeeDcNVQfJgPaFJdKbHgZgOr9rPoMbI16qltilFwDlXOoioDiAqp4v
-         RmRdBACBluSeWAhJySfwpkA6igeancjb71TyzRIxAzQAnq5KZanryD7h/pzOISn6+DKJ
-         fcrcbRrVYkMLANMLVfpcE4O5rSA3ck8mEWx8NCR5fLGiXzkYemB5RNFWtRvfYNdIHZ07
-         dmG3uJzuFlgsdRxiOJzVCw5jxxDYX/Jna2Hz5XR75K3nJ4MwStj/lf+7APGcsGf+AUzQ
-         jHiIcyjlSxk/W+HmCYoFwqGQ/781yECQ1ft1rkecyePV8wCFtTYc3KEzkdEBFYkyvak0
-         dIAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792671522; x=1793276322;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DZU48ffXnuc37LAObRV7DmUJm85ZVuXLv374YtKlykA=;
-        b=yACPMb3D1Qz8CwluV84eqCC++jC/Rn3TnfxYEQmmMWKJAb3B5p7lAN91adE0+DB4ug
-         HOFELCmbEoPkGL19zUjyADSRBKnFsvxuYpU3M1xX9QrCmFfM3oFMzHrZ16PK2HIfe1GT
-         8W8CM9bzcvyuoyiJSJuhPZmQOCYl/igXZ5f84qn9XvyiVYL8m0Xjny3cuMOL8ty+NptZ
-         YQrJo6I3R48sXzWpUNg/ZcfFYgtfw/7fiQ15287Da/YMNc2jxS9uo2vhZ+LUK9MoA4hf
-         LUlLNW5cOkdpssJ0lbWrsnAHCdg65bVuXPw3d6QzLU5jL9vCa0WMbyHS+KEA6leFW+KJ
-         GRiw==
-X-Forwarded-Encrypted: i=1; AKwUvBxmN/67GQYZLGKqhAPc7NO4zcjg/LKj3UxlIS+LNIoxXhkWg47L6x6rTPhV/czs0fIA6sdmr09pxg==@kvack.org
-X-Gm-Message-State: AFq9FYLGE4yhsKW9N8Wjhem+WiL+U0b25tmo/LxyPC2vk6tQTCfyXKhc
-	wIwMLZ3G51MSC1KN0ztatA3/zJQEsH1jkn9v52UpNN3kd2F2qSvpGjnb
-X-Gm-Gg: AYBFou1vU7Key+UKfQZGGn7Rc8F35ybwVFOmwKljpX7/ySJd8k4Bh6jQTYKcdf2qPgn
-	433rb2LLGv/AsWFQHnN//CmWgBYtVi9o5NIZvxtU1FeMHIlhPV1lSohqX30bLy2WhxR+Y6+zHW1
-	YNA6nwWCnGS3z3M4FGxXcDW+yRiFZnbfCl0CgRWbEqOSmK/EGe7RPvo83cw24ijdCra8GzcjiGV
-	wMEXpZHaZ2Q/c5SlSvQx7blS2tS+ce8I1XWQ3LSQmIjQEY1mTRno275B6dOd/oRRMiuQ9WNHcbN
-	aGiYXwgFub/zEGiLkx8pfnYeHy+fjl63PQPETI7mb/gGTdnYpCez3GWNBmvVYMyOMkfDZWj7axO
-	Ie0mih7vmqhKb4S25RHDdp7RyrX/iH0o24fhw+FOugB/SO9nUtci7MymxPwuWnEHgnFM5tHPiXV
-	xg5rnQILzh50NWFeEAPkphc8P3fOdRwQM5r0qKHm1RTQ0R440HhLkTp+v8/GEqhtKDTL+Zmd1eO
-	MLFdK0inZgU4v/RYnltcsOwYlXOsf3/aUsfJrZrB/iqR1OS/CPhRHZd6fblEivA/zVQ3L4tPTou
-	xspnDOrK+w53PYZ+JZPgTSSo15/4W4kM1f6FoYRrquc=
-X-Received: by 2002:a05:6808:1301:b0:537:3bdb:2d7b with SMTP id 5614622812f47-5535d4e1eb9mr4210437b6e.11.1792671521547;
-        Thu, 22 Oct 2026 05:18:41 -0700 (PDT)
-Received: from archlinux.lan ([136.34.156.120])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-552b4104048sm4469598b6e.5.2026.10.22.05.18.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 05:18:39 -0700 (PDT)
-From: Danish Khateeb <danishkhateeb03@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Gregory Price <gourry@gourry.net>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danish Khateeb <danishkhateeb03@gmail.com>
-Subject: [PATCH v3] selftests/mm: merge: keep the far mremap() targets in the carveout
-Date: Thu, 22 Oct 2026 07:18:37 -0500
-Message-ID: <20261022121837.28723-1-danishkhateeb03@gmail.com>
+	t=1792672094;
+	b=DLEc0/ZnVWQolp2FFK/YNHPavJHLdd43xZ7b6awZ+RCGRs4oFDfj3kE5K58H6qxwCdRaV4
+	x96vbzPEqttBm1nqx2VSJaZ5kzbmBWtSuM7U0BMOGTraIy5ixrumj+mnyXYpRFrYGwAvBQ
+	rjMbUJJ3On6w50OpsqAspmJHRBVC1EA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=RaO38nP1XUoYBIOSBrcJ/lr2ZncC6R8OQavI7uqsSh0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792672089; v=1; x=1793276889;
+ b=lL6HT0fVMXdH/cfbNz+Bkobw+qtTRWP68b1DxyAqguoMxnsiFz7MgDtWv6bxo/5fr/3ueh78
+ wLEF0NaaDqaqxhtWTFUhFHg2040axbMgBx+2VExBgWfDc2kNfeew+aLOWlBbplESAlj8VXJj7K9
+ lFhigJO3rnICUqgmfS0075Us=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4fe0cf934d8eb657;
+	Thu, 22 Oct 2026 12:28:09 +0000
+X-Mizu-Trace-ID: 4fe0cf934d8eb657
+X-Migadu-Flow: FLOW_OUT
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: rppt@kernel.org,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+Subject: [PATCH v2] mm/page_alloc: mark pages freed by __free_pages_core() as not tagged
+Date: Thu, 22 Oct 2026 20:27:52 +0800
+Message-ID: <20261022122752.74774-1-zenghui.yu@linux.dev>
 X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2EE631A000A
+X-Rspamd-Queue-Id: 6E4CD140004
+X-Stat-Signature: 5ksd6wb7b51zri91cfz7zybmfrk8cfbf
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: dnq3npauhqzorwz1p5kmpgwq666emqrx
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792671523-933962
-X-HE-Meta: U2FsdGVkX1/ERme/sMrecVO5g3sHXAq+DAOHlL9oNRds050t+z4+96iKQveTh/dpt92xmxgcK6QhlKPslpkJL3fGAvHPdhrkO8lQKOaRkOOEA+ujEbANqYD2W1/lkiHfLYyJkyX8M1MA2p1v44F26FtQDYzl7q+mH7SAJV/4eKXSeeskTL9Nq9vL37v3hc8r+vFkXHIFLTxvq/ZdkbERjqhg/45Y++iCuiIPJfD1L8I3lsSsE52/TwQCAdj3nDEKLbz+w/p5YQu2tkXwZEWQi8+NV6/YQlEpm5kCxO8xD8vrPoQv0HQWlExywyRilcmJabja7mrYZDDQabOpvv5fwU8Ljp4eBmJyYPGH75Nqc2E6usPuyjLJ1cZO8twge2HTJVPMedxsh0UHh7nLcdo1w3RXqzYCouFNkZpiwmztcXvXghIFzvxuaGQ7gljZcvYCncCcUCya0CSdMYV1GXPaU8RzYxrBfrBYes1f7w5z59k41bc44smOT3Xn0T2ayeiqz26x+n2I26rJBg90Gl2vs+QJPsvWW5Lx0QoG7T+fUB78VYiHKleT1we/h9nRObO5bH67TD1v25Eq9zzvlH66HMYDsmUR9y7G/D4JzpVmqtRPv9jG8YL7nZHZd3KsomTZL5WYkas8urHBduJTITv3OC+LFtNI0NHq4ScQ6uxbNqgF8GozotMzndPCP8/weQn3ZChd3mKZx9IP0nhObu0ea+bg/bFLC1U6K076eauAyqgAwbR/VnWEbvv1qJSFrXkty0irx1jiqC7gcrWB4Zt0+calt4e8XJVC0bdooSD1ytlg9dAxng0eKb24VA94VycaVR0JYPHC0fzF/Ws/LwH+Ou3xDEkEVxA2RrSyeItdVmeJ58wpzmRMjQkDTiKnUFzniJhT6KRGHcIGH024qfVfrO6hw+OEpAT+yIGIBxYHZnkQ2xCnOobKP8eAKC9iJFvpVxqruyrl6ZsWOPhVgYX
- zNNZkw1B
- z311PPgXazGKyLgH1Gi5sQW6mzJ07MBKODG/uNFYXZOPKPPotbrzHIQp3m3ulQaBm8F4fgzsd1DjLQuy6MjWcS/l0dApX4v1N0uB7ZFVCidQXMxeR757CPRSoOP7kvMgar4Fasb4RLZ/Kff1+GdnApryUCCD0yZ5eK/8bPat8QUdviWs/JcL1kt61OLO6oYltbw131S/TV1hMx03wQVobTPGTXit2p3v5TrnMI7tCjUHl8pbISCjX/biF9WkPtKa6TiSAk2M3rbcE6j6zkrEmBySlTodHEoAqBuwmhFnF5bo9v2jJNAW/G89ragNIDQFQsZTA9f+0oQs8FsDgSqMJJFWIkUGHuIJSPRHRQ8M3tkZmRgCZ8F0eikez323i0vhqoAGvUVE50kPKq21uNFLPn0MeWA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792672092-734613
+X-HE-Meta: U2FsdGVkX18O+Ws2xyk6jBMqN59CSpKrJ+otAFddwLTwOGfKyg4YEXa06Mrzjn+3IGM9K+4z1TbFYvL2D/soEznF048KVuhuWY8SOS7tyj/fa6lb6mv7wadUy/PXAy3o9gYSSbJen9bQze+Mj5MNMk5PgrpQHmnuN2cQQ/lHG7g1AIdkf5L9QHqdx9rWVNFtweQCU75qHPU0nIJ+5/VP3M5U2xZ7sDmuJ/BoOsm/tbOS85csuOVU5pj8SdhAEpnoOu31Ya503k8TulYXG8pTobNIGFcn3VFYfxh6FWGAfXWNXnbrlpqLF+cNl9XIInCm0wSvpCCHfYLpofM+WQC+qS+k6jlKk6Ub47xDygUjHKzVWh4qaM61LivsMuDzinOx7e2W1+eAMfGWap+mAQe/wnwyksqemHImGLXr+v/yJXp4qvF5SP/nTtJermJhyGYn7kN9RqDMIvO5jPMQRXEJYj/CdJGBvz0lSqhecGfMzV0+Yb396a4cs7tguRXWIYpu9H8PAB5EpdDbPiQ5+lhrydEJO0GkT6fccrMImsIdHV+9dSU+nP/mYiL8e33dViuZknvFHw9babjCjQqqLY5/qYKtXwYBXEOl1SlZUBrVlQ/JOJgRx3Kpbl4sbtORcSCpYvnn/yBrYWgaANJE8XOoZMCVJzdN3ROArKuv4qpJZfKF1QooYfbAAINDWZdyQdBwy8hn3Zm0/QZYjfuUxXC6tgClF3iwOh+RNPYgYDCr46yRfYotuCI1cMLYzTqjXTYkbUspSU4iJ3XKXqzIc4PeoAkOZmgB1MuKydgAHjNVynD2qRdg8JOe6u93AjwtLv8r2YDabTY7qmZXWWwM/hNjArwzLTWgcPlaKi8Sn0dmOuQaQQSscUYj3Rluxh4g+glr80OxpytV2UBVd1sBWUdaVQzWOh6YXpFQVepMMpsx1rB3YSpt/hVUz2IDkx96blr4rVKF9kWhJa6+bp32qvp
+ DFmroYUU
+ JPhoPMu8W/CwO2IaXo8LRntLHtd82OhB3omgCr1Erd+/rfudVJfHpSt08/7oK1gQ//74yJAG0Wl7zTjADzJBtCpNAn1LtS9fs2pBFFsHrz4DlK7MDUGBdVD4sfBKw1z+FtqKTLx0RTeSgf6c+x23tT6gQP2b/PNDq3gtoOBTNzJfDk5haKKwmv4zi5O2eXdfMaKOubZ/lrQD/tKc9jBvofxpw4xrHqHiEGlu6cb8a1x5hvW/MBjMfJTF6CB4/r+iuiRdr9RlV2HS7pL8M1XsONNhK9eZs3iepLrVFcdm1P5Qjhos=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,194 +95,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The merge tests map their areas at fixed addresses within a 30-page
-PROT_NONE carveout. Several mremap() tests move an area 1000 or 2000
-pages away to separate it from the others, but those targets are outside
-the carveout, and MREMAP_FIXED unmaps whatever is mapped there.
+From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 
-Under virtme-ng, the shared libraries are packed right above the
-carveout and the dynamic linker starts about 4 MiB above it. The moves
-then replace part of its text with an anonymous mapping, and the test
-crashes in its next lazily bound call:
+Onlining hotplugged memory (e.g., a dev_dax device bound to kmem) with
+CONFIG_MEM_ALLOC_PROFILING_DEBUG triggers:
 
-  merge[6980]: segfault at 7f7ebb3c1e60 ip 00007f7ebb3c1e60 sp 00007ffd35fbaec8 error 14
+  alloc_tag was not set
+  WARNING: ./include/linux/alloc_tag.h:166 at __pgalloc_tag_sub+0x1fc/0x254
+  Call trace:
+   __pgalloc_tag_sub+0x1fc/0x254 (P)
+   __free_pages_ok+0x14c/0x6ac
+   __free_pages_core+0xa8/0x188
+   generic_online_page+0x14/0x20
+   online_pages+0x220/0x3b0
+   memory_subsys_online+0xfc/0x198
+   device_online+0x58/0xe0
+   state_store+0xf0/0xf8
 
-Two to four of the mremap() tests then fail with "Test terminated
-unexpectedly by signal 11", depending on the exact layout. On a host
-where libc is mapped at a 2 MiB aligned address, the targets happen to
-land above the dynamic linker and the tests pass.
+Pages entering the buddy through __free_pages_core() have never been
+allocated, so their allocation tag references are NULL.  The free path,
+__free_pages_prepare() -> pgalloc_tag_sub(), expects a valid tag or a
+CODETAG_EMPTY mark and warns otherwise.  Paths feeding never-allocated
+pages into the buddy are therefore expected to mark them with
+clear_page_tag_ref() first, like init_cma_reserved_pageblock() and
+free_reserved_pages() do; of __free_pages_core()'s callers only
+memblock_free_pages() clears the tag ref itself, and the hotplug
+onlining path was missed.
 
-Since the areas are all within the first 30 pages, moving one by 30
-pages is enough to keep it apart from the others. Add FAR_PAGES for
-that distance, move areas by FAR_PAGES or 2 * FAR_PAGES pages, and make
-the carveout 3 * FAR_PAGES pages so that it covers every target.
+Since all __free_pages_core() callers free never-allocated pages, mark the
+head page as not tagged in __free_pages_core() itself instead of relying on
+each caller, and drop the now-redundant clearing from
+memblock_free_pages().
 
-Fixes: 4e25f85b9f85 ("tools/testing/selftests: add mremap() unfaulted/faulted test cases")
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: Danish Khateeb <danishkhateeb03@gmail.com>
+Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 ---
 
-Notes:
-    v3:
-    - Drop the comment above FAR_PAGES (Lorenzo Stoakes).
-    - Add Lorenzo's Reviewed-by.
-    v2: https://lore.kernel.org/all/20261021164810.45846-1-danishkhateeb03@gmail.com/
-    - Replace the 1000 and 2000 page offsets in the tests with FAR_PAGES
-      and 2 * FAR_PAGES, and derive the carveout size from FAR_PAGES,
-      instead of only enlarging the carveout (Gregory Price).
-    v1: https://lore.kernel.org/all/20261021011929.89150-1-danishkhateeb03@gmail.com/
-    
-    Tested under virtme-ng (9p root, glibc 2.44) on next-20261020 with a
-    KASAN/lockdep kernel, three runs of each binary:
-    
-      merge before:  pass:22 fail:4 skip:1 (SIGSEGV in ld-linux-x86-64.so.2)
-      merge after:   pass:26 fail:0 skip:1
-    
-    On the host (glibc 2.44, libc mapped 2 MiB aligned) the results are the
-    same with and without the patch.
-    
-    An LLM was used to help with this patch.
+* From v1 [1]:
+  - Clear the tag ref once on the head page in __free_pages_core() for both
+    meminit contexts, instead of once per page in the MEMINIT_HOTPLUG loop
+    (Sashiko)
 
- tools/testing/selftests/mm/merge.c | 33 ++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+[1] https://lore.kernel.org/20261020161053.59879-1-zenghui.yu@linux.dev
 
-diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
-index 7dd2933417c1..6def490186a9 100644
---- a/tools/testing/selftests/mm/merge.c
-+++ b/tools/testing/selftests/mm/merge.c
-@@ -22,9 +22,12 @@ FIXTURE(merge)
- 	struct procmap_fd procmap;
- };
+ mm/mm_init.c    | 2 --
+ mm/page_alloc.c | 3 +++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 01fb46be3d25..92e4a78207ca 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2475,8 +2475,6 @@ void __init memblock_free_pages(unsigned long pfn, unsigned int order)
+ 		return;
+ 	}
  
-+#define FAR_PAGES	30
-+#define CARVEOUT_PAGES	(3 * FAR_PAGES)
-+
- static char *map_carveout(unsigned int page_size)
- {
--	return mmap(NULL, 30 * page_size, PROT_NONE,
-+	return mmap(NULL, CARVEOUT_PAGES * page_size, PROT_NONE,
- 		    MAP_ANON | MAP_PRIVATE, -1, 0);
+-	/* pages were reserved and not allocated */
+-	clear_page_tag_ref(page);
+ 	__free_pages_core(page, order, MEMINIT_EARLY);
  }
  
-@@ -73,7 +76,7 @@ FIXTURE_SETUP(merge)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index e71e514ea18d..0396c50b96f0 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1617,6 +1617,9 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
+ 		atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
+ 	}
  
- FIXTURE_TEARDOWN(merge)
- {
--	ASSERT_EQ(munmap(self->carveout, 30 * self->page_size), 0);
-+	ASSERT_EQ(munmap(self->carveout, CARVEOUT_PAGES * self->page_size), 0);
- 	/* May fail for parent of forked process. */
- 	close_procmap(&self->procmap);
- 	/*
-@@ -115,7 +118,7 @@ FIXTURE_SETUP(merge_with_fork)
- 
- FIXTURE_TEARDOWN(merge_with_fork)
- {
--	ASSERT_EQ(munmap(self->carveout, 30 * self->page_size), 0);
-+	ASSERT_EQ(munmap(self->carveout, CARVEOUT_PAGES * self->page_size), 0);
- 	ASSERT_EQ(close_procmap(&self->procmap), 0);
- 	/* See above. */
- 	prctl(PR_SET_MEMORY_MERGE, 0, 0, 0, 0);
-@@ -660,7 +663,7 @@ TEST_F(merge, mremap_unfaulted_to_faulted)
- 
- 	/* Offset ptr2 further away. */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -721,7 +724,7 @@ TEST_F(merge, mremap_unfaulted_behind_faulted)
- 
- 	/* Offset ptr2 further away. */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -785,12 +788,12 @@ TEST_F(merge, mremap_unfaulted_between_faulted)
- 
- 	/* Offset ptr3 further away. */
- 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
- 	ASSERT_NE(ptr3, MAP_FAILED);
- 
- 	/* Offset ptr2 further away. */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -870,13 +873,13 @@ TEST_F(merge, mremap_unfaulted_between_faulted_unfaulted)
- 
- 	/* Offset ptr3 further away. */
- 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
- 	ASSERT_NE(ptr3, MAP_FAILED);
- 
- 
- 	/* Offset ptr2 further away. */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -1035,11 +1038,11 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 */
- 	ptr3 = &ptr[10 * page_size];
- 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 2000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + 2 * FAR_PAGES * page_size);
- 	ASSERT_NE(ptr3, MAP_FAILED);
- 	ptr2 = &ptr[5 * page_size];
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -1075,7 +1078,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 *                  ptr2      \       ptr       \       ptr3
- 	 */
- 	ptr = sys_mremap(ptr, 5 * page_size, 5 * page_size,
--			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + page_size * 1000);
-+			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
- 	/*
-@@ -1110,7 +1113,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 *                  ptr2      \       ptr       \       ptr3
- 	 */
- 	ptr = sys_mremap(ptr, 5 * page_size, 5 * page_size,
--			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + page_size * 1000);
-+			 MREMAP_MAYMOVE | MREMAP_FIXED, ptr + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
- 	/*
-@@ -1168,7 +1171,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 *      ptr                     ptr3      \       ptr2
- 	 */
- 	ptr2 = sys_mremap(ptr2, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr2 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr2, MAP_FAILED);
- 
- 	/*
-@@ -1203,7 +1206,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	 *            ptr                         \       ptr3
- 	 */
- 	ptr3 = sys_mremap(ptr3, 5 * page_size, 5 * page_size,
--			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + page_size * 1000);
-+			  MREMAP_MAYMOVE | MREMAP_FIXED, ptr3 + FAR_PAGES * page_size);
- 	ASSERT_NE(ptr3, MAP_FAILED);
- 
- 	/*
-
-base-commit: fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6
++	/* pages were never allocated */
++	clear_page_tag_ref(page);
++
+ 	if (page_contains_unaccepted(page, order)) {
+ 		if (order == MAX_PAGE_ORDER && __free_unaccepted(page))
+ 			return;
 -- 
 2.56.0
 
