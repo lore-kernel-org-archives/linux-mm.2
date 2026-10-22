@@ -1,125 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD857606A32C
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 09:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF1D606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 09:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YqyfSynn
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gf0hWT+S
 Received: by kanga.kvack.org (Postfix)
-	id DEBE26B02BD; Thu, 22 Oct 2026 05:05:24 -0400 (EDT)
+	id 6815E6B08E5; Thu, 22 Oct 2026 05:13:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D95DE6B02BF; Thu, 22 Oct 2026 05:05:24 -0400 (EDT)
+	id 62A7D6B08E6; Thu, 22 Oct 2026 05:13:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAB6A6B02C1; Thu, 22 Oct 2026 05:05:24 -0400 (EDT)
+	id 517F56B08E7; Thu, 22 Oct 2026 05:13:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AA7926B02BD
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:05:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C9641207C9
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:05:24 +0000 (UTC)
-X-FDA: 85349678568.04.854D523
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 39CB640009
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:05:22 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YqyfSynn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 15FF26B08E5
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:13:09 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A32ABA845E
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:13:08 +0000 (UTC)
+X-FDA: 85349698056.16.BC46C93
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 097FE80009
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:13:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gf0hWT+S;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792659922;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792660387;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iYTz++wjFMvqtqXyscp+99eRXfkEkYxGMNfxByS7fDA=;
-	b=SfcaggMhJHxAPaCETnI9eeEVy4oFAms78U7o6qmMYdnf1dtf/XSqCOKnF9Fz0jPCLJtZBq
-	EiDrKV6rczXAQuf49OjQXpH2Ay3hZi1U/W1hQP2uV8bRmV7//+XySkFiwoYvhujTFIibnX
-	EFz5K5DwmS2n3xlwBcKO3sJXn066/uc=
+	bh=hATo3DMTpQ0X7N+H6fzS91u6XcHTdRSqM0j0c/rawLY=;
+	b=BX0TIlYM5sE2mQh3uTyaGo4GA5e98v31oLDhCJyvsHx/yD9WJlup+lAbWtP0bA3ql536wv
+	QoHT9ofNjInKVGLhS7BO3ghOHyb8XecIh3l2qPqh8fAiYd3sYrQpUNS6PbgAqNXWLxfjYk
+	GuaXeHpwdKJ7i2oRjbBZ1TnNecmy+xg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YqyfSynn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gf0hWT+S;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792659922;
-	b=Wu7FyDalivcO79dTg4wzC4VZD32uezk8gDVXQZpHnuHcHkyzDKAw0UBhn87X6L2IfAhomI
-	0oUTI+EgoR3U4H/dtzLYsvZU/NT7k3GAWFdrmC+dIzSiOO0gjYUMr3V/ETpVGqLG5hiFAn
-	Egy8hYqL3Rc+XFmLmUKc4p5dmiTiDkk=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49d05d51553so11467375e9.2
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792659921; x=1793264721; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iYTz++wjFMvqtqXyscp+99eRXfkEkYxGMNfxByS7fDA=;
-        b=YqyfSynn/KZpKob7xcE5wkR7XvEsnPejN21H3BTQO0CJASe4tq9QY4Mf+hcMFv+A9t
-         RewN8r5P5wu430t7T6FrIx1Y9KUy1mTHE7NRXsV6cWG5UXwA+JkbtxzDkf/AkdAIR6Z9
-         LMwsKBhjpQDYWm5mcYiYyg290xl4dDH2ESvvaOwNen/NuwL6PDFSbEuVVSQVHeCWB20T
-         KS5M40XOIzXsC2oUC0QN9Cu80yXAUhldIejPtVTQyEgvhM3JBKXAOanrLe2qH1Xpx/MM
-         VEWLYf1+zmhYbVQZOKc3zOED3T+VMt3TtU2cHwWHlyPQVRFLJt3u89z0BbO9ZWknMUSp
-         k5/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792659921; x=1793264721;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iYTz++wjFMvqtqXyscp+99eRXfkEkYxGMNfxByS7fDA=;
-        b=0Mp1TvIE3nML8FCnGSP9DxAik1y1zZW2KejZFx8EeqG1xoWziOZ7nBVlPrq+yZxBmi
-         wf81+aOVpWacR5nVOmeKsfxL+dLV5dTFlNhkY9gyCJLVmp9IC1dF1yxsAov2ULWy4O3e
-         EZb159TSjYJfxw9R6Vo7no13rzexl3qZ/yE4MWRcta3HSptA+CFAx/69bAmHTk7OrmMP
-         OJvRqpLzD1AgJQ2n+eBf8D63VhUgRNX7czdkM61ye4cvLCqhMzTysBQ44KRw7Ejd6vAY
-         rywK7wO0q/enwzfcfiSjtXib6A+d+EThLQArnba6EQdXShavCY2RzMMGWyAgscpOADd7
-         FicQ==
-X-Gm-Message-State: AFq9FYIygbVDOdhWYZBD0WElUAXbluuLLKkDLxtfFxEsm0CsWMiTamlZ
-	YlBTch4Ylgq3zzvNa7gB9BuDoLxzeLeLEvMEW9H9I0GC6diFoB2it5N2
-X-Gm-Gg: AYBFou1awYlfJKm3GH7PYgm+Hmwo+h2S7hG7hiHIpbGV/8B3X9C8i54lNL3OzoYlwKj
-	ICx/79stpjFsINwMl1iitY3dMHRKH/WzqfEGzBNz0VnTBa0GvE0OSEhmSotSvdp74FM0+Hlml8t
-	lE6BaueyfNlnZxgA5d/Et0viFeBELxgB1iW7jiJfTkOUwKnoC6NdjpBM0q83YgN6xESl3VVTqC1
-	5kQGkCftXwG1NwqwnKPJM5kh/RnOMtBBCmXqW6ssL2BzOOZH0Yb9sohEpOy1U242JeDobkPUMXQ
-	EOsPwreBfzQvcS3auaM7wv7hzhaKQJBTJtE60ogZmU26UYj+KxlUjZ0EeLlfJW/mRtpjLfZEfaZ
-	2WU3Z0+7eT9dnA2k0o6d8vsXjffJ1Def/QjwrLwbrHKAoiQENxpBc18rcJ/Yq8ft/iBJ0v1uyAK
-	cypLWvImYM24y/QVWL+paOJLdFaTVUo3J9aH3k2qclbU4xpcPC5laN2Ono85U6TsuMpg3j1rXen
-	RjNdsdkbu5PNAZoGBggaeIHFdVzALolVuY7cORP6vWoe0ZyLeM=
-X-Received: by 2002:a05:600c:8b0a:b0:4a1:7ed5:99e8 with SMTP id 5b1f17b1804b1-4a1fdd23003mr92757395e9.22.1792659920208;
-        Thu, 22 Oct 2026 02:05:20 -0700 (PDT)
-Received: from [192.168.1.18] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203a4fec8sm57925135e9.13.2026.10.22.02.05.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 02:05:19 -0700 (PDT)
-Message-ID: <f5db959b-3744-4f7d-9837-e8a4aed70ab9@gmail.com>
-Date: Thu, 22 Oct 2026 11:05:18 +0200
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+	t=1792660387;
+	b=MbopjIj3WaW9Xx5XN+ghVmZaGyPDA0motoKJC6kdBg3tjFyYlEtaNbUZ7fT4Wntu64ov0j
+	Q5KRMNOxVe5PaRHyaIp7wjupu2win6GFkz9RUEPfFe5FxWwEa9kPmIarpD8MFLz/uXZnJC
+	4P1xw+z4fIWN4Bg/p3hheQv6yIx0KIk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4408A41955;
+	Thu, 22 Oct 2026 09:13:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CF71F000C1;
+	Thu, 22 Oct 2026 09:13:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792660386;
+	bh=hATo3DMTpQ0X7N+H6fzS91u6XcHTdRSqM0j0c/rawLY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Gf0hWT+SJB3tVJytql1rg+BnzUx+nuVxPRO0N/x4D5lq9DrYb2khrkcV2Vb3EXPQl
+	 Qc6ue0kLvg23lP/Z8+zZu8A00A/iwZvbWCzPZNHsCpJ1neolPCiBk+4C0uumoYKHdd
+	 25WIEo1Sd7ou8/DJ381pkC+Wh7a5OliIFowHRNXPwKBOwRP0FowQPmYB43slYRztN/
+	 iiQLvAQDpLuoUrfzT8tQrBZb5BxDeiQO/hdkTry+IqOjUn6ue93WKeZpGylZH2j+k6
+	 HLIq8yeqJA5gti0QTBlcIBJ6qOgR8pXNqD2u4UzSWGyKfECqNB5UXLNxIla5xVpDQU
+	 C6VTT92GgEKjw==
+Message-ID: <sashiko-outbox-181243@kernel.org>
+From: sashiko-bot@kernel.org
 Subject: Re: [PATCH v2 5/5] mm: hugetlb: enable CMA allocation for PMD-sized
  pages
-To: Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev, david@kernel.org,
- osalvador@suse.de, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, lance.yang@linux.dev
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Qi Zheng" <qi.zheng@linux.dev>, muchun.song@linux.dev, david@kernel.org, osalvador@suse.de, akpm@linux-foundation.org, azpijr@gmail.com
+Cc: linux-mm@kvack.org, "Qi Zheng" <zhengqi.arch@bytedance.com>
+In-Reply-To: <5edd1dc82bd3b0b09005c0b36cafa2f7baea6d3d.1792651104.git.zhengqi.arch@bytedance.com>
 References: <cover.1792651104.git.zhengqi.arch@bytedance.com>
  <5edd1dc82bd3b0b09005c0b36cafa2f7baea6d3d.1792651104.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-In-Reply-To: <5edd1dc82bd3b0b09005c0b36cafa2f7baea6d3d.1792651104.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 39CB640009
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 09:13:05 +0000
 X-Rspam-User: 
-X-Stat-Signature: ytxsqq7uroh8zsyo95qjm3notdou4fcj
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792659922-881727
-X-HE-Meta: U2FsdGVkX19Qy0iAZnbF0iqgnsbYlyeruVJGIRaVJm7u2KuLdnLue5HGNLkZLZ+doZ/0wBv7hR5kqMj7R2G+Fdr+1VG80wwr3IIc8/jJ1izFjjKGq+bbFhCCl9olkLY2nVkqzLBsG2o5RdX3N7ZAQSKEaVvct8SMS9X/UgHEckSYnReBGrVnvEKsBC70KPfStO7MjNb/QZ1iHMmErQlz9RqGT0OqKdgYPwJp7/h2YYHj+0+uoY3buz2fkSPbHfvFNew7mxj/d6XNxdrWK2Wga2Xkxc7UvjAz2fVEwXzJDbqaur0jXm8RH1UV3mbM7+G6GpA1J7VBoym4URL82n+orGdCnIGm0aUGrrNGEz6ovt1wq6BIqRxg1kQlF/JRy6JwWpDvhYBBMdLO+zBkZUms+hLXQibjfL592ITFYVQKIZE76dz+e6rrRgLJk3ZPVCY5m+xGbHFxfgIEpNAWZbw3jh6HYKfBoAUk3xnFlMffKCVmPjFnZzHsILkRfnTNHz3/FQlJeO5tCGeCLmUxmC5lc7cFyMwKAnMUSM3jo12IuYwnS1h+aYiPXLObsfW68r/2bkO0gRoE33rg5veT4bNijwssOFFL6TjIcVUvJPwP15T4s3ULuogMrL6Ob33ivNLq/efcSQaa0Cx+/weaeLiTa2nfmQo71k8/iy9SPQN+1U7TDLD204l65D4qqfkg/wPg+nSv+j/vrdw0PwqQqFI4qLsYmYMorumRg3slhJkOTKVzz5r+q23aoowrAiHpD0/e1AobF5RMd+wFO41TQEK/Hmodo4sBLHAS9Zmp7RWQE7jRpmThRb6B0Rsv//HB6tjxdqhyDlFAjpVQ3KppzryiaEor0jtuPpfEZZ7GpNyXjEDEbJH3SeScB22OFBWoYLahRm6Xw4aYu6PJLqcxrGF0Wo72qjZ+fOqx3u4WOn3XXGA1m4UdVE7QtTs67ZUtRsOn8NBbyfQLvfxk99fVIhL
- j/NcGJ7n
- HpK7jshBk4i6CJZQooASX3T4KjoF8O6SZxHOagWDQHO0VD6ewyCg0nHWA0DCDyaXTduONg2X3uryU98GGYV6ffrNRCYhHoX6vX97SAgo3SiQTiDySDOleDUg7NcXLfsme7r/u7NbVtKhIEUAtl0ZINrtSz4YZ53xphEAqgiRoHMn7zIL43jupMlCH92EX3G+m2fHXKqsk5KzenMJmgqq4K5fVEvX0nAKwBsIcKJcTXcRkJR2FH3T0/yFveC2qGs89M9ZlHDR3GBucdFv63QAeanpdYL6Fs0w7QMTn9vLka8ERMfLD/xZpmTQo1ULZmMxrZhnz3rn0K8i9+SGIM/fpONALEFMWpnaAORodmgsmSSQ8QTK6fBrscwuWuvbBBLxYvBpBqNhRlqgbvckPRK+4KM3+Sy03OD/yRZyMn2+achKwjtn0aZ9zqcvyIRV362+hPA9lI5/WPQmrxNCzX8mFZvL1H6hmtBX+YpzwFxQM+cqZpaY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 097FE80009
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: dqfkozxhzktqua6txp4q6qy6jfj6mhd6
+X-HE-Tag: 1792660386-61016
+X-HE-Meta: U2FsdGVkX1/8JzWSrWb9IseEZPNSUbHwLxU4HFipBkDBilupC4dxvwCNGtUAnU4lCh1dBc1G72awIHbUM8vCWO9EtyKtEVJQ+K0XQeQs0KaLAcrX0C2GDbOPHI2LtdtZyvMdgSLqQ51chzWcvIEdzPkrJY8J5fgDleIPBTqbTUN9JTrwIDNRoL4wAxH5HR8Go5FUYNAwLUR5ndWjsomyzGbuuTPEbw1hfU8tc0dUfClf/iOQwYz8uKMofYJoXmbydRVbyjMUAL+i30tQH9EPv2DwbmxKNCiyiVLkCidlSNbo4u6DBX1x6y6kVAjipP86xm3DddZl/TXHp/lDGmPxYRD8xnRbK6ExVXvBlB00AMEyZzUb+QwQ6cxks3/UKcp2MX7IFIHvXtrKUN1DwMLrPhKuDvF1Ciou35ELQboSJkaGLZyOiXxcYQXwSWkWGxEvdlpMbrWkl+5NkUf/IGUupUsWPI8WamqcW8mYmgLg+MttKibtmBTEl/4uoznTKvmJ60wZj5b7wTFgYxApJ/xJxlxYldr75xhnjnqFgA2BiSSo3LNM5vGWf9uOYaMJ4w2XxJtUJUVlIOyHasMz8hDXvnatachqFZ6Vluwv9IZgAz/fPqqg83b/UR/Byi/CRdAaQ4TFnNtJmy6e9IThZdbTwf+brx2VoZX+Ql91xupUeE5TlxFvdcxDRfkJQS64CWPcnSYUt312/pmNp0JIrXBZNLZrKBvTkuWIPajh/+BiH7/12P0Bwz/Lild6DCcxLGc8uFEiKS84nYgt1xbfxEkq3B2AZNvfnwzErgsZBmIgj39gArOZ33joklQ58sMaSC0G+cSCQAOSxT9EfSEk5l+oy7LjSrXbTTwLpBu1IZD5RjLmXCGxauiTPUAhBl79FTHmvlb5XRE8IWuLXLPyy7NLMgQsA+/CtO5Jdgj29f4VbShICwIYvZ88qcVNa1ifPUTnblxQSlA6yrrO4ZYVgXg
+ EqrlRhH7
+ gETNB51Cd4cL4gfKhpdh8j+4dWAnkAj3S42zsX4kiX6XMKjo946Zj+teSkL1qyZTqEM9YbTd8kVE/kexbCCa+oprBHyZI8UxoCARqoL0CRFwwVXLoKPdMIS78LHgAjON/jIlX32wXHJpVu6sOK2dLojbXZx/1UglAIScn9NJaO0F5obPRMINjeWNYHobn119O0EQL/remeF+5nlCLok1GN1m1Jo2rdeVm7eEtiFAhOq+SHLThe2EsOETW8WoXPmRV4TW9LiT0XntBgVrj6NRf5elTAiq03Aip0YivNOfYz0SDuqpyPQR2iU4LUEDYBJTUwGQAcXkgzEpuY/TbayMTQRRZWWbsJVRwB0goO/7pz/1OqYXjpJ2ajt0lHqg8QPhBrvufaJ8tfJtXw0dDDP7EODRWDDEi4ooWVSxWXc94Weoez72+Mnx9BO2tzOyKM9jmtcYog6EMBtPY52c9oZy0+GHRlTnS5SCV/8KzHNBiYLK8dMV8kjj/euDFkRnuCakUDE2vTFDo81uVrMNT/OGQfqGNRjvKkdiNcWGmXrZwKsZfk8p5I6fRmgoYhIvj9xvhYUMVFSNKfn9MrS1Uf7pyRf7HtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,37 +92,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 10/22/26 9:31 AM, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> Allow hugetlb_cma=<capacity>@<page-size> to select the architecture's PMD
-> size in addition to its existing CMA size. PMD pages are 2M on x86-64 and
-> 2M, 32M or 512M on arm64 with 4K, 16K or 64K base pages.
-> 
-> Give PMD pages their own pool while preserving the existing sharing among
-> gigantic sizes. Unsuffixed arguments and an explicit default size continue
-> to configure the default pool. Gigantic PMD sizes retain access to that
-> pool when no PMD pool is reserved. Apply this mapping consistently to
-> allocation, CMA-only policy and boot-time accounting.
-> 
-> Try buddy allocation first for non-gigantic PMD pages, with CMA as a
-> fallback, to reduce CMA migration and leave CMA capacity for later
-> allocations. Preserve CMA-only policy and CMA-first allocation for
-> gigantic pages.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] mm: hugetlb: infinite FOLL_LONGTERM migration loop for PMD CMA fol=
+ios
+- [High] mm: hugetlb: alloc_buddy_frozen_folio() consumes CMA pages without=
+ bitmap bits
+- [High] mm: hugetlb: folio_lock deadlock in CMA alloc for PMD hugetlb faul=
+ts
+--
 
-on v1 you told Lance [1]:
+commit 9cf077a849a76f9279657f4fa6aef60b1b9348ba
+Author: Qi Zheng <qi.zheng@linux.dev>
 
-> The same missing PF_MEMALLOC_PIN check also affects 1 GiB CMA
-> allocations, so I had planned to fix it separately.
+mm: hugetlb: enable CMA allocation for PMD-sized pages
 
-why did v2 go out before the fix then? 1G CMA pins fail with -ENOMEM
-today, so it's this patch that makes it hang.
+This commit enables configuring a dedicated CMA pool for PMD-sized HugeTLB
+pages via hugetlb_cma=3D<capacity>@<page-size>, trying buddy allocation fir=
+st
+for non-gigantic PMD pages before falling back to CMA.
 
-[1]
-https://lore.kernel.org/all/04c89538-28c8-4d03-92c1-08d854a46ac4@linux.dev/
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index c1a8d00be11ac..bad5cd4978c5e 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1835,22 +1835,20 @@ static struct folio *only_alloc_fresh_hugetlb_fol=
+io(struct hstate *h,
+>  {
+>  	struct folio *folio =3D NULL;
+>  	int order =3D huge_page_order(h);
+> +	bool cma_only =3D hugetlb_cma_exclusive_alloc(order);
+> =20
+>  	if (nid =3D=3D NUMA_NO_NODE)
+>  		nid =3D numa_mem_id();
+> =20
+> -	if (allow_cma && order_is_gigantic(order))
+> +	if (!order_is_gigantic(order) && !cma_only)
+> +		folio =3D alloc_buddy_frozen_folio(order, gfp_mask, nid, nmask,
+> +						 node_alloc_noretry);
 
--- 
-cheers,
-jose a. p-a
+[Severity: High]
+When hugetlb_cma=3D<size>@<pmd-size> is configured without hugetlb_cma_only=
+=3D1,
+can calling alloc_buddy_frozen_folio() first consume pages from the reserved
+CMA pool without marking the CMA bitmap, leading to a livelock in
+alloc_and_dissolve_hugetlb_folio() or premature failure in cma_range_alloc(=
+)?
+
+For non-gigantic PMD hstates where hugepage_movable_supported(h) is true,
+htlb_alloc_mask(h) includes GFP_HIGHUSER_MOVABLE. In
+__alloc_frozen_pages_noprof(), prepare_alloc_pages() and
+alloc_flags_slowpath() set ALLOC_CMA via alloc_flags_cma(gfp_mask), which
+allows mm/page_alloc.c:__rmqueue() to allocate PMD-sized folios directly
+from the MIGRATE_CMA freelists of the hugetlb_cma pool without setting bits
+in cmr->bitmap:
+
+mm/page_alloc.c:__rmqueue()
+	case RMQUEUE_CMA:
+		if (alloc_flags & ALLOC_CMA) {
+			page =3D __rmqueue_cma_fallback(zone, order);
+			if (page) {
+				*mode =3D RMQUEUE_CMA;
+				return page;
+			}
+		}
+
+Once completely free PMD-order buddy blocks are exhausted,
+only_alloc_fresh_hugetlb_folio() falls back to
+hugetlb_cma_alloc_frozen_folio() -> cma_alloc_frozen_compound() ->
+cma_range_alloc(). Because the bitmap bits for the buddy-allocated PMD
+HugeTLB folios are still zero, cma_range_alloc() selects those ranges and
+calls alloc_contig_frozen_range() -> isolate_migratepages_block() ->
+isolate_or_dissolve_huge_folio() -> alloc_and_dissolve_hugetlb_folio().
+
+During batch pool allocation in hugetlb_hstate_alloc_pages_onenode(),
+hugetlb_pages_alloc_boot_node(), or set_max_huge_pages(), the earlier
+buddy-allocated folios are still held on the caller's local list with
+refcount 0 and without the hugetlb_freed flag set until
+prep_and_add_allocated_folios() runs after the loop. When
+alloc_and_dissolve_hugetlb_folio() encounters one of those folios, it spins
+indefinitely waiting for the current task to enqueue it on the freelist:
+
+mm/hugetlb.c:alloc_and_dissolve_hugetlb_folio()
+	} else if (!folio_test_hugetlb_freed(old_folio)) {
+		spin_unlock_irq(&hugetlb_lock);
+		cond_resched();
+		goto retry;
+	} else {
+		h =3D folio_hstate(old_folio);
+		if (!new_folio) {
+			spin_unlock_irq(&hugetlb_lock);
+			gfp_mask =3D htlb_alloc_mask(h) | __GFP_THISNODE;
+			new_folio =3D alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
+							      NULL, false);
+			if (!new_folio)
+				return -ENOMEM;
+
+Even when old_folio is already on the HugeTLB freelist (or in use when no
+free pool pages remain), alloc_and_dissolve_hugetlb_folio() or
+unmap_and_move_hugetlb_folio() -> alloc_migration_target() calls
+alloc_fresh_hugetlb_folio() with allow_cma set to false. That retries the
+same alloc_buddy_frozen_folio() call that just failed and returns -ENOMEM,
+causing mm/cma.c:cma_range_alloc() to break out of the bitmap scan loop
+immediately without trying the remaining CMA pageblocks:
+
+mm/cma.c:cma_range_alloc()
+		mutex_lock(&cma->alloc_mutex);
+		ret =3D alloc_contig_frozen_range(pfn, pfn + count, ACR_FLAGS_CMA, gfp);
+		mutex_unlock(&cma->alloc_mutex);
+		if (!ret)
+			break;
+
+		cma_clear_bitmap(cma, cmr, pfn, count);
+		if (ret !=3D -EBUSY)
+			break;
+
+> +
+> +	if (!folio && allow_cma)
+>  		folio =3D hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nmask);
+
+[Severity: High]
+Can this cause an infinite migration loop when a userspace process pins a
+PMD-sized HugeTLB mapping with FOLL_LONGTERM via __gup_longterm_locked() or
+memfd_pin_folios()?
+
+Folios allocated by hugetlb_cma_alloc_frozen_folio() are placed in
+MIGRATE_CMA pageblocks, so folio_is_longterm_pinnable() returns false. When
+pinning with FOLL_LONGTERM, mm/gup.c:__gup_longterm_locked() (and
+memfd_pin_folios()) sets PF_MEMALLOC_PIN via memalloc_pin_save() and loops
+while check_and_migrate_movable_pages() returns -EAGAIN:
+
+mm/gup.c:__gup_longterm_locked()
+	flags =3D memalloc_pin_save();
+	do {
+		nr_pinned_pages =3D __get_user_pages_locked(mm, start, nr_pages,
+							  pages, locked,
+							  gup_flags);
+		if (nr_pinned_pages <=3D 0) {
+			rc =3D nr_pinned_pages;
+			break;
+		}
+
+		/* FOLL_LONGTERM implies FOLL_PIN */
+		rc =3D check_and_migrate_movable_pages(nr_pinned_pages, pages);
+	} while (rc =3D=3D -EAGAIN);
+
+Previously, only gigantic folios were allocated from hugetlb_cma, and
+alloc_migrate_hugetlb_folio() rejected gigantic hstates, terminating the
+loop with -ENOMEM. With non-gigantic PMD folios now allocated from CMA,
+migrate_longterm_unpinnable_folios() calls migrate_pages() with
+alloc_migration_target() and MR_LONGTERM_PIN, which passes allow_cma as true
+(mtc->reason !=3D MR_CONTIG_RANGE):
+
+mm/migrate.c:alloc_migration_target()
+	if (folio_test_hugetlb(src)) {
+		struct hstate *h =3D folio_hstate(src);
+
+		gfp_mask =3D htlb_modify_alloc_mask(h, gfp_mask);
+		return alloc_hugetlb_folio_nodemask(h, nid,
+						mtc->nmask, gfp_mask,
+						htlb_allow_alloc_fallback(mtc->reason),
+						mtc->reason !=3D MR_CONTIG_RANGE);
+	}
+
+When dequeue_hugetlb_folio_node_exact() skips free CMA folios in the pool
+because PF_MEMALLOC_PIN is set and falls back to
+alloc_migrate_hugetlb_folio() -> alloc_fresh_hugetlb_folio() ->
+only_alloc_fresh_hugetlb_folio(), if cma_only is true or if
+alloc_buddy_frozen_folio() fails to find a non-movable buddy block,
+hugetlb_cma_alloc_frozen_folio() in mm/hugetlb_cma.c does not check
+PF_MEMALLOC_PIN and allocates another MIGRATE_CMA folio. Migration then
+succeeds into the new CMA folio, check_and_migrate_movable_pages() returns
+-EAGAIN, and the pin path loops indefinitely migrating between CMA folios.
+
+Should hugetlb_cma_alloc_frozen_folio() or only_alloc_fresh_hugetlb_folio()
+skip CMA allocation when current->flags & PF_MEMALLOC_PIN is set?
+
+[Severity: High]
+Could falling back to hugetlb_cma_alloc_frozen_folio() for non-gigantic PMD
+pages during a HugeTLB page fault also deadlock on folio_lock?
+
+During a HugeTLB fault (hugetlb_fault() -> hugetlb_wp() or
+hugetlb_no_page()), alloc_hugetlb_folio() is called while holding
+hugetlb_fault_mutex_table[hash] and hugetlb_vma_lock_read(vma). In the
+copy-on-write path in mm/hugetlb.c:hugetlb_wp(), the faulting task also
+holds folio_lock(old_folio) with HPG_migratable set on old_folio:
+
+mm/hugetlb.c:hugetlb_wp()
+	spin_unlock(vmf->ptl);
+	new_folio =3D alloc_hugetlb_folio(vma, vmf->address, cow_from_owner);
+
+When surplus allocation in alloc_surplus_hugetlb_folio() ->
+only_alloc_fresh_hugetlb_folio() falls back to
+hugetlb_cma_alloc_frozen_folio() -> cma_alloc_frozen_compound() ->
+cma_range_alloc() -> alloc_contig_frozen_range(), if the target CMA range
+contains an in-use buddy-allocated PMD HugeTLB folio src,
+mm/hugetlb.c:isolate_or_dissolve_huge_folio() only rejects gigantic folios
+and isolates src onto cc.migratepages:
+
+mm/hugetlb.c:isolate_or_dissolve_huge_folio()
+	if (order_is_gigantic(folio_order(folio)))
+		return -ENOMEM;
+
+	if (folio_ref_count(folio) && folio_isolate_hugetlb(folio, list))
+		ret =3D 0;
+
+__alloc_contig_migrate_range() then calls migrate_pages() ->
+migrate_hugetlbs() -> unmap_and_move_hugetlb_folio() with mode set to
+MIGRATE_SYNC. Once alloc_migration_target() obtains a replacement folio, on
+pass > 2 (force =3D=3D 1) mm/migrate.c:unmap_and_move_hugetlb_folio() perfo=
+rms a
+blocking folio_lock(src):
+
+mm/migrate.c:unmap_and_move_hugetlb_folio()
+	if (!folio_trylock(src)) {
+		if (!force)
+			goto out;
+		switch (mode) {
+		case MIGRATE_SYNC:
+			break;
+		default:
+			goto out;
+		}
+		folio_lock(src);
+	}
+
+In hugetlb_wp(), if src is old_folio, the current task already holds
+folio_lock(old_folio) and will self-deadlock. Even if src is a different
+folio (or in hugetlb_no_page()), blocking on folio_lock(src) while holding
+hugetlb_fault_mutex_table[hash] and hugetlb_vma_lock_read(vma) inverts the
+hugetlb_fault_mutex -> vma_lock -> folio_lock lock ordering against a
+concurrent task in hugetlb_wp() on src, which holds folio_lock(src) while
+dropping and re-acquiring hugetlb_fault_mutex_table[hash] and
+hugetlb_vma_lock_read(vma) around unmap_ref_private().
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1792651104.gi=
+t.zhengqi.arch@bytedance.com?part=3D5
 
